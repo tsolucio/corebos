@@ -1887,6 +1887,14 @@ function QuickCreate($module) {
 
 	$tabid = getTabid($module);
 
+	// Load default values from map
+	$bmapname = $module.'2'.$module;
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	$mapdefaults =array();
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$mapdefaults = $cbMap->Mapping($mapdefaults, $mapdefaults);
+	}
 	//Adding Security Check
 	$userprivs = $current_user->getPrivileges();
 	if ($userprivs->hasGlobalReadPermission()) {
@@ -1918,7 +1926,9 @@ function QuickCreate($module) {
 		$typeofdata = $adb->query_result($result, $i, 'typeofdata');
 		$defaultvalue = $adb->query_result($result, $i, 'defaultvalue');
 		$col_fields[$fieldname] = $defaultvalue;
-
+		if (empty($col_fields[$fieldname]) && !empty($mapdefaults[$fieldname])) {
+			$col_fields[$fieldname] = $mapdefaults[$fieldname];
+		}
 		//to get validationdata
 		$fldLabel_array = array();
 		$fldLabel_array[getTranslatedString($fieldlabel)] = $typeofdata;
@@ -2043,17 +2053,16 @@ function Button_Check($module) {
 }
 
 /**
- * 	Function to Check whether the User is allowed to delete a particular record from listview of each module using
- * 	mass delete button.
+ * 	Retrieve the display or entity name of a list of CRMIDs
  * 	@param string $module -- module name
  * 	@param array $ids_list -- Record id
- * 	Returns the Record Names of each module that is not permitted to delete
+ * 	@return array of display/entity name of records indexed by ID
  * */
 function getEntityName($module, $ids_list) {
 	global $log;
 	$log->debug('> getEntityName '.$module);
-	if ($module == 'Events') {
-		$module = 'Calendar';
+	if ($module == 'com_vtiger_workflow') {
+		return getEntityNameWorkflow($ids_list);
 	}
 	if ($module != '') {
 		$ids_list = (array)$ids_list;
@@ -2077,6 +2086,34 @@ function getEntityName($module, $ids_list) {
 		return $entityDisplay;
 	}
 	$log->debug('< getEntityName');
+}
+
+/**
+ * 	Retrieve the display or entity name of a list of Workflow IDs
+ * 	@param string $module -- module name
+ * 	@param array $ids_list -- Record id
+ * 	@return array of display/entity name of records indexed by ID
+ * */
+function getEntityNameWorkflow($ids_list) {
+	global $log;
+	$log->debug('> getEntityNameWorkflow');
+	$ids_list = (array)$ids_list;
+	if (count($ids_list) <= 0) {
+		return array();
+	}
+	$entityDisplay = array();
+	$entity_field_info['tablename'] = 'com_vtiger_workflows';
+	$entity_field_info['fieldname'] = 'summary';
+	$entity_field_info['entityidfield'] = 'workflow_id';
+	$entity_FieldValue = getEntityFieldValues($entity_field_info, $ids_list);
+
+	foreach ($entity_FieldValue as $entityInfo) {
+		foreach ($entityInfo as $key => $entityName) {
+			$entityDisplay[$key] = $entityName[$entity_field_info['fieldname']];
+		}
+	}
+	$log->debug('< getEntityNameWorkflow');
+	return $entityDisplay;
 }
 
 /*
@@ -2335,7 +2372,6 @@ function getTemplateDetails($templateid, $crmid = null) {
 function getMergedDescription($description, $id, $parent_type) {
 	global $adb, $log, $current_user;
 	$log->debug("> getMergedDescription $id, $parent_type");
-	$token_data_pair = explode('$', $description);
 	if (empty($parent_type)) {
 		$parent_type = getSalesEntityType($id);
 	}
@@ -2350,14 +2386,17 @@ function getMergedDescription($description, $id, $parent_type) {
 		$emailTemplate = new EmailTemplate($parent_type, $description, $id, $current_user);
 		$description = $emailTemplate->getProcessedDescription();
 	}
+	$pmods = array('users', 'custom');
 	$token_data_pair = explode('$', $description);
 	$fields = array();
-	for ($i = 1, $iMax = count($token_data_pair); $i < $iMax; $i+=2) {
+	for ($i = 1, $iMax = count($token_data_pair); $i < $iMax; $i++) {
 		if (strpos($token_data_pair[$i], '-') === false) {
 			continue;
 		}
 		$module = explode('-', $token_data_pair[$i]);
-		$fields[$module[0]][] = $module[1];
+		if (in_array($module[0], $pmods)) {
+			$fields[$module[0]][] = $module[1];
+		}
 	}
 	if (isset($fields['custom']) && is_array($fields['custom']) && count($fields['custom']) > 0) {
 		// Custom date & time fields
@@ -3017,14 +3056,14 @@ function getEmailTemplateVariables($modules_list = null) {
  */
 function getPickListValues($tablename, $roleid) {
 	global $adb;
-	$query = "select $tablename
+	$query = 'select '.$tablename."id, $tablename
 		from vtiger_$tablename
 		inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$tablename.picklist_valueid
 		where roleid=? and picklistid in (select picklistid from vtiger_picklist) order by sortid";
 	$result = $adb->pquery($query, array($roleid));
 	$fldVal = array();
 	while ($row = $adb->fetch_array($result)) {
-		$fldVal[] = $row[$tablename];
+		$fldVal[$row[$tablename.'id']] = $row[$tablename];
 	}
 	return $fldVal;
 }
@@ -3331,6 +3370,10 @@ function vt_hasRTE() {
 	return GlobalVariable::getVariable('Application_Use_RTE', 1);
 }
 
+function vt_hasRTESpellcheck() {
+	return GlobalVariable::getVariable('Application_RTESpellcheck', 0);
+}
+
 function getNameInDisplayFormat($input, $dispFormat = "lf") {
 	if (empty($dispFormat)) {
 		$dispFormat = "lf";
@@ -3438,8 +3481,7 @@ function getmail_contents_portalUser($request_array, $password, $type = '') {
 
 	$query='SELECT subject,template FROM vtiger_msgtemplate WHERE reference=?';
 	$result = $adb->pquery($query, array('Customer Login Details'));
-	$body=$adb->query_result($result, 0, 'body');
-	$contents=$body;
+	$contents = $adb->query_result($result, 0, 'template');
 	$contents = str_replace('$contact_name$', $request_array['first_name']." ".$request_array['last_name'], $contents);
 	$contents = str_replace('$login_name$', $request_array['username'], $contents);
 	$contents = str_replace('$password$', $password, $contents);
@@ -3448,9 +3490,8 @@ function getmail_contents_portalUser($request_array, $password, $type = '') {
 	$contents = str_replace('$logo$', '<img src="cid:logo" />', $contents);
 
 	if ($type == 'LoginDetails') {
-		$temp=$contents;
 		$value['subject']=$adb->query_result($result, 0, 'subject');
-		$value['body']=$temp;
+		$value['body']=$contents;
 		return $value;
 	}
 

@@ -405,6 +405,11 @@ class CobroPago extends CRMEntity {
 			// TODO Handle actions before this module is updated.
 		} elseif ($event_type == 'module.postupdate') {
 			// TODO Handle actions after this module is updated.
+			global $adb;
+			$module = Vtiger_Module::getInstance($modulename);
+			$field = Vtiger_Field::getInstance('reference', $module);
+			$adb->query("update vtiger_field set uitype=4, typeofdata='V~O' where fieldid={$field->id}");
+			BusinessActions::addLink(getTabid('CobroPago'), 'DETAILVIEWBASIC', 'Pay', 'notifications.php?type=Pay&cpid=$RECORD$', 'themes/images/Opportunities.gif', 0, null, false, 0);
 		}
 	}
 

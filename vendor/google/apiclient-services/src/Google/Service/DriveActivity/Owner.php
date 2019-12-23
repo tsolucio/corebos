@@ -19,6 +19,8 @@ class Google_Service_DriveActivity_Owner extends Google_Model
 {
   protected $domainType = 'Google_Service_DriveActivity_Domain';
   protected $domainDataType = '';
+  protected $driveType = 'Google_Service_DriveActivity_DriveReference';
+  protected $driveDataType = '';
   protected $teamDriveType = 'Google_Service_DriveActivity_TeamDriveReference';
   protected $teamDriveDataType = '';
   protected $userType = 'Google_Service_DriveActivity_User';
@@ -37,6 +39,20 @@ class Google_Service_DriveActivity_Owner extends Google_Model
   public function getDomain()
   {
     return $this->domain;
+  }
+  /**
+   * @param Google_Service_DriveActivity_DriveReference
+   */
+  public function setDrive(Google_Service_DriveActivity_DriveReference $drive)
+  {
+    $this->drive = $drive;
+  }
+  /**
+   * @return Google_Service_DriveActivity_DriveReference
+   */
+  public function getDrive()
+  {
+    return $this->drive;
   }
   /**
    * @param Google_Service_DriveActivity_TeamDriveReference

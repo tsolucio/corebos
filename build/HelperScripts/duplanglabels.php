@@ -37,6 +37,7 @@ if (empty($argv[1]) || !file_exists($argv[1])) {
 		$dups = array_filter($frec, function ($f) {
 			return ($f>1);
 		});
+		//var_dump($dups);
 		$exit = (count($dups)>0 ? 1 : 0);
 		exit($exit);
 	} else {

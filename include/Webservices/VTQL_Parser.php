@@ -439,36 +439,36 @@ Array (
 **  self::$yy_default	   Default action for each state.
 */
 	const YY_SZ_ACTTAB = 60;
-	static public $yy_action = array(
- /*	 0 */	36,   29,   28,   30,   31,   38,   39,   37,   41,   26,
- /*	10 */	18,   57,	7,   10,   27,   22,   50,   55,   17,   18,
- /*	20 */	15,	9,   12,   42,   43,   35,   25,   16,   33,   51,
- /*	30 */	52,  101,   56,   21,   47,	2,   19,   46,   52,   44,
- /*	40 */	 3,   20,   53,   49,   24,   34,   23,	6,   40,   45,
- /*	50 */	 1,	4,   13,   54,   11,   48,	5,   14,   32,	8,
+	public static $yy_action = array(
+/*	 0 */	36,   29,   28,   30,   31,   38,   39,   37,   41,   26,
+/*	10 */	18,   57,	7,   10,   27,   22,   50,   55,   17,   18,
+/*	20 */	15,	9,   12,   42,   43,   35,   25,   16,   33,   51,
+/*	30 */	52,  101,   56,   21,   47,	2,   19,   46,   52,   44,
+/*	40 */	 3,   20,   53,   49,   24,   34,   23,	6,   40,   45,
+/*	50 */	 1,	4,   13,   54,   11,   48,	5,   14,   32,	8,
 	);
-	static public $yy_lookahead = array(
- /*	 0 */	14,   15,   16,   17,   18,   19,   20,   21,   41,   42,
- /*	10 */	43,   13,   44,   33,   46,   47,   11,   12,   42,   43,
- /*	20 */	37,   38,	2,   23,   24,	4,	5,   30,	8,	7,
- /*	30 */	 8,   28,   29,   36,   35,   22,	4,   13,	8,	8,
- /*	40 */	 1,	6,   26,	3,	8,	3,   13,	3,	7,   45,
- /*	50 */	40,	6,   34,   39,   31,   48,   10,   32,	9,   25,
+	public static $yy_lookahead = array(
+/*	 0 */	14,   15,   16,   17,   18,   19,   20,   21,   41,   42,
+/*	10 */	43,   13,   44,   33,   46,   47,   11,   12,   42,   43,
+/*	20 */	37,   38,	2,   23,   24,	4,	5,   30,	8,	7,
+/*	30 */	 8,   28,   29,   36,   35,   22,	4,   13,	8,	8,
+/*	40 */	 1,	6,   26,	3,	8,	3,   13,	3,	7,   45,
+/*	50 */	40,	6,   34,   39,   31,   48,   10,   32,	9,   25,
 	);
 	const YY_SHIFT_USE_DFLT = -15;
 	const YY_SHIFT_MAX = 27;
-	static public $yy_shift_ofst = array(
- /*	 0 */	39,   45,  -15,   21,  -15,  -15,  -14,	0,   33,   44,
- /*	10 */	34,   46,   49,   16,   13,	5,   20,   22,   -2,   41,
- /*	20 */	32,   42,   40,   36,   24,   35,   30,   31,
+	public static $yy_shift_ofst = array(
+/*	 0 */	39,   45,  -15,   21,  -15,  -15,  -14,	0,   33,   44,
+/*	10 */	34,   46,   49,   16,   13,	5,   20,   22,   -2,   41,
+/*	20 */	32,   42,   40,   36,   24,   35,   30,   31,
 	);
 	const YY_REDUCE_USE_DFLT = -34;
 	const YY_REDUCE_MAX = 14;
-	static public $yy_reduce_ofst = array(
- /*	 0 */	 3,  -33,  -32,   -3,  -24,  -17,   10,	4,	7,   14,
- /*	10 */	18,   25,   23,   -1,  -20,
+	public static $yy_reduce_ofst = array(
+/*	 0 */	 3,  -33,  -32,   -3,  -24,  -17,   10,	4,	7,   14,
+/*	10 */	18,   25,   23,   -1,  -20,
 	);
-	static public $yyExpectedTokens = array(
+	public static $yyExpectedTokens = array(
 		/* 0 */ array(1, ),
 		/* 1 */ array(6, ),
 		/* 2 */ array(),
@@ -528,13 +528,13 @@ Array (
 		/* 56 */ array(),
 		/* 57 */ array(),
 	);
-	static public $yy_default = array(
- /*	 0 */   100,   77,   91,   64,   77,   71,  100,   94,  100,  100,
- /*	10 */	96,   67,  100,  100,   87,   66,  100,  100,  100,  100,
- /*	20 */   100,  100,  100,   97,  100,  100,   74,   88,   80,   79,
- /*	30 */	81,   82,   65,   63,   60,   61,   78,   85,   83,   84,
- /*	40 */	62,   72,   92,   93,   90,   86,   98,   59,   95,   89,
- /*	50 */	69,   73,   76,   99,   68,   70,   58,   75,
+	public static $yy_default = array(
+/*	 0 */   100,   77,   91,   64,   77,   71,  100,   94,  100,  100,
+/*	10 */	96,   67,  100,  100,   87,   66,  100,  100,  100,  100,
+/*	20 */   100,  100,  100,   97,  100,  100,   74,   88,   80,   79,
+/*	30 */	81,   82,   65,   63,   60,   61,   78,   85,   83,   84,
+/*	40 */	62,   72,   92,   93,   90,   86,   98,   59,   95,   89,
+/*	50 */	69,   73,   76,   99,   68,   70,   58,   75,
 	);
 /* The next thing included is series of defines which control
 ** various aspects of the generated parser.
@@ -568,7 +568,7 @@ Array (
 	 * but it does not parse, the type of the token is changed to ID and
 	 * the parse is retried before an error is thrown.
 	 */
-	static public $yyFallback = array(
+	public static $yyFallback = array(
 	);
 	/**
 	 * Turn parser tracing on by giving a stream to which to write the trace
@@ -610,12 +610,12 @@ Array (
 	/**
 	 * @var resource|0
 	 */
-	static public $yyTraceFILE;
+	public static $yyTraceFILE;
 	/**
 	 * String to prepend to debug output
 	 * @var string|0
 	 */
-	static public $yyTracePrompt;
+	public static $yyTracePrompt;
 	/**
 	 * @var int
 	 */
@@ -634,7 +634,7 @@ Array (
 	 * are required.  The following table supplies these names
 	 * @var array
 	 */
-	static public $yyTokenName = array(
+	public static $yyTokenName = array(
 	'$',			 'SELECT',		'FRM',		   'COLUMNNAME',
 	'ASTERISK',	  'COUNT',		 'PARENOPEN',	 'PARENCLOSE',
 	'COMMA',		 'TABLENAME',	 'WHERE',		 'LOGICAL_AND',
@@ -654,49 +654,49 @@ Array (
 	 * For tracing reduce actions, the names of all rules are required.
 	 * @var array
 	 */
-	static public $yyRuleName = array(
- /*   0 */ "sql ::= select_statement",
- /*   1 */ "select_statement ::= SELECT selectcol_list FRM table_list where_condition order_clause limit_clause end_stmt",
- /*   2 */ "selectcol_list ::= selectcolumn_exp COLUMNNAME",
- /*   3 */ "selectcol_list ::= ASTERISK",
- /*   4 */ "selectcol_list ::= COUNT PARENOPEN ASTERISK PARENCLOSE",
- /*   5 */ "selectcolumn_exp ::= selectcol_list COMMA",
- /*   6 */ "selectcolumn_exp ::=",
- /*   7 */ "table_list ::= TABLENAME",
- /*   8 */ "where_condition ::= WHERE condition",
- /*   9 */ "where_condition ::=",
- /*  10 */ "condition ::= expr_set expr",
- /*  11 */ "expr_set ::= condition LOGICAL_AND",
- /*  12 */ "expr_set ::= condition LOGICAL_OR",
- /*  13 */ "expr_set ::=",
- /*  14 */ "expr ::= COLUMNNAME logical_term valuelist",
- /*  15 */ "valuelist ::= PARENOPEN valueref PARENCLOSE",
- /*  16 */ "valuelist ::= valueref",
- /*  17 */ "valueref ::= value_exp VALUE",
- /*  18 */ "value_exp ::= valueref COMMA",
- /*  19 */ "value_exp ::=",
- /*  20 */ "logical_term ::= EQ",
- /*  21 */ "logical_term ::= LT",
- /*  22 */ "logical_term ::= GT",
- /*  23 */ "logical_term ::= LTE",
- /*  24 */ "logical_term ::= GTE",
- /*  25 */ "logical_term ::= NE",
- /*  26 */ "logical_term ::= IN",
- /*  27 */ "logical_term ::= LIKE",
- /*  28 */ "order_clause ::= ORDERBY column_group clause",
- /*  29 */ "order_clause ::=",
- /*  30 */ "column_group ::= column_list",
- /*  31 */ "column_list ::= column_exp COLUMNNAME",
- /*  32 */ "column_exp ::= column_list COMMA",
- /*  33 */ "column_exp ::=",
- /*  34 */ "clause ::= ASC",
- /*  35 */ "clause ::= DESC",
- /*  36 */ "clause ::=",
- /*  37 */ "limit_clause ::= LIMIT limit_set",
- /*  38 */ "limit_clause ::=",
- /*  39 */ "limit_set ::= VALUE",
- /*  40 */ "limit_set ::= VALUE COMMA VALUE",
- /*  41 */ "end_stmt ::= SEMICOLON",
+	public static $yyRuleName = array(
+/*   0 */ "sql ::= select_statement",
+/*   1 */ "select_statement ::= SELECT selectcol_list FRM table_list where_condition order_clause limit_clause end_stmt",
+/*   2 */ "selectcol_list ::= selectcolumn_exp COLUMNNAME",
+/*   3 */ "selectcol_list ::= ASTERISK",
+/*   4 */ "selectcol_list ::= COUNT PARENOPEN ASTERISK PARENCLOSE",
+/*   5 */ "selectcolumn_exp ::= selectcol_list COMMA",
+/*   6 */ "selectcolumn_exp ::=",
+/*   7 */ "table_list ::= TABLENAME",
+/*   8 */ "where_condition ::= WHERE condition",
+/*   9 */ "where_condition ::=",
+/*  10 */ "condition ::= expr_set expr",
+/*  11 */ "expr_set ::= condition LOGICAL_AND",
+/*  12 */ "expr_set ::= condition LOGICAL_OR",
+/*  13 */ "expr_set ::=",
+/*  14 */ "expr ::= COLUMNNAME logical_term valuelist",
+/*  15 */ "valuelist ::= PARENOPEN valueref PARENCLOSE",
+/*  16 */ "valuelist ::= valueref",
+/*  17 */ "valueref ::= value_exp VALUE",
+/*  18 */ "value_exp ::= valueref COMMA",
+/*  19 */ "value_exp ::=",
+/*  20 */ "logical_term ::= EQ",
+/*  21 */ "logical_term ::= LT",
+/*  22 */ "logical_term ::= GT",
+/*  23 */ "logical_term ::= LTE",
+/*  24 */ "logical_term ::= GTE",
+/*  25 */ "logical_term ::= NE",
+/*  26 */ "logical_term ::= IN",
+/*  27 */ "logical_term ::= LIKE",
+/*  28 */ "order_clause ::= ORDERBY column_group clause",
+/*  29 */ "order_clause ::=",
+/*  30 */ "column_group ::= column_list",
+/*  31 */ "column_list ::= column_exp COLUMNNAME",
+/*  32 */ "column_exp ::= column_list COMMA",
+/*  33 */ "column_exp ::=",
+/*  34 */ "clause ::= ASC",
+/*  35 */ "clause ::= DESC",
+/*  36 */ "clause ::=",
+/*  37 */ "limit_clause ::= LIMIT limit_set",
+/*  38 */ "limit_clause ::=",
+/*  39 */ "limit_set ::= VALUE",
+/*  40 */ "limit_set ::= VALUE COMMA VALUE",
+/*  41 */ "end_stmt ::= SEMICOLON",
 	);
 
 	/**
@@ -1065,7 +1065,7 @@ Array (
 	 * );
 	 * </pre>
 	 */
-	static public $yyRuleInfo = array(
+	public static $yyRuleInfo = array(
 	array( 'lhs' => 28, 'rhs' => 1 ),
 	array( 'lhs' => 29, 'rhs' => 8 ),
 	array( 'lhs' => 30, 'rhs' => 2 ),
@@ -1116,7 +1116,7 @@ Array (
 	 *
 	 * If a rule is not set, it has no handler.
 	 */
-	static public $yyReduceMap = array(
+	public static $yyReduceMap = array(
 		1 => 1,
 		2 => 2,
 		3 => 3,

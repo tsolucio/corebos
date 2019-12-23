@@ -8,14 +8,12 @@
   * All Rights Reserved.
   *********************************************************************************/
 -->*}
-<table border=0 cellspacing=0 cellpadding=0 width=100% class="small rel_mod_data_paging" 
+{if $RELATEDLISTDATA.navigation.0!='' || $RELATEDLISTDATA.navigation.1 != '' || isset($RELATEDLISTDATA.CUSTOM_BUTTON)}
+<table border=0 cellspacing=0 cellpadding=0 width=100% class="small rel_mod_data_paging"
 	style="border-bottom:1px solid #999999;padding:5px; background-color: #eeeeff;">
 	<tr>
 		<td align="left">
 			{$RELATEDLISTDATA.navigation.0}
-			{if $MODULE eq 'Campaigns' && ($RELATED_MODULE eq 'Contacts' || $RELATED_MODULE eq 'Leads'
-				|| $RELATED_MODULE eq 'Accounts') && $RELATEDLISTDATA.entries|@count > 0}
-			{/if}
 		</td>
 		<td align="center">{$RELATEDLISTDATA.navigation.1} </td>
 		<td align="right">
@@ -23,6 +21,7 @@
 		</td>
 	</tr>
 </table>
+{/if}
 
 <table border=0 cellspacing=1 cellpadding=3 width=100% style="background-color:#eaeaea;" class="small rel_mod_data">
 	<tr style="height:25px" bgcolor=white class="rel_mod_data_header">

@@ -57,7 +57,7 @@
 	</tr>
 	<tr>
 		<td colspan=2>
-		{$CRON_DETAILS.description}
+		{$CRON_DETAILS.description|@getTranslatedString:$CRON_MODULE}
 		</td>
 	<tr>
 	</table>

@@ -96,7 +96,7 @@ class DuocomSMS implements ISMSProvider {
 		$httpClient = new Vtiger_Net_Client($serviceURL);
 		$response = $httpClient->doPost($params);
 
-		$responseLines = split("\n", $response);
+		$responseLines = explode("\n", $response);
 
 		$results = array();
 		foreach ($responseLines as $responseLine) {
@@ -115,7 +115,7 @@ class DuocomSMS implements ISMSProvider {
 				}
 				$result['statusmessage'] = $matches[0]; // Complete error message
 				$result['status'] = self::MSG_STATUS_FAILED;
-			} elseif (strcmp($responseLine, "1") == 0) {
+			} elseif (strcmp($responseLine, '1') == 0) {
 				$result['error'] = false;
 				$result['status'] = self::MSG_STATUS_DELIVERED;
 				if (count($tonumbers) > 1) {

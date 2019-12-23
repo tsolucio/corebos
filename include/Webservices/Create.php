@@ -10,13 +10,12 @@
 require_once 'include/Webservices/SetRelation.php';
 
 function vtws_create($elementType, $element, $user) {
-
 	static $vtws_create_cache = array();
 
 	global $root_directory;
 	$types = vtws_listtypes(null, $user);
 	if (!in_array($elementType, $types['types'])) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to perform the operation is denied");
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
 	}
 
 	global $log, $adb;
@@ -27,6 +26,9 @@ function vtws_create($elementType, $element, $user) {
 
 	if (!empty($element['attachments'])) {
 		foreach ($element['attachments'] as $fieldname => $attachment) {
+			if (empty($attachment['name']) || empty($attachment['content'])) {
+				continue;
+			}
 			$filepath = $root_directory.'cache/'.$attachment['name'];
 			file_put_contents($filepath, base64_decode($attachment['content']));
 			$_FILES[$fieldname] = array(

@@ -141,13 +141,19 @@ class DecisionTable extends processcbMap {
 				if (isset($value->decisionTable->searches)) {
 					foreach ($value->decisionTable->searches->search as $k => $v) {
 						foreach ($v->condition as $k => $v) {
-							$queryGenerator->addCondition((String)$v->field, $context[(String)$v->input], (String)$v->operation, $queryGenerator::$AND);
+							if (isset($context[(String)$v->input]) && $context[(String)$v->input]!='__IGNORE__') {
+								$queryGenerator->addCondition((String)$v->field, $context[(String)$v->input], (String)$v->operation, $queryGenerator::$AND);
+							}
 						}
 					}
 				}
 				$field = (String)$value->decisionTable->output;
 				$orderby = (String)$value->decisionTable->orderby;
-				$queryFields = array($field);
+				if (strpos($field, ',')) {
+					$queryFields = explode(',', $field);
+				} else {
+					$queryFields = array($field);
+				}
 				if (!empty($orderby)) {
 					$queryFields[] = $orderby;
 				}
@@ -158,8 +164,16 @@ class DecisionTable extends processcbMap {
 				}
 				$result = $adb->pquery($query, array());
 				$seqcnt = 1;
+				$numfields = $adb->num_fields($result);
 				while ($row = $adb->fetch_array($result)) {
-					if (isset($row[$field])) {
+					if ($ruleOutput == 'Row') {
+						$seqidx = $sequence.'_'.sprintf("%'.04d", $seqcnt++);
+						$ret = $row;
+						for ($col=0; $col < $numfields; $col++) {
+							unset($ret[$col]);
+						}
+						$outputs[$seqidx] = $ret;
+					} elseif (isset($row[$field])) {
 						$eval = $row[$field];
 						$seqidx = $sequence.'_'.sprintf("%'.04d", $seqcnt++);
 						if ($ruleOutput == 'ExpressionResult' || $ruleOutput == 'FieldValue') {

@@ -26,8 +26,8 @@
 class Google_Service_Compute_Resource_GlobalForwardingRules extends Google_Service_Resource
 {
   /**
-   * Deletes the specified GlobalForwardingRule resource.
-   * (globalForwardingRules.delete)
+   * Deletes the specified GlobalForwardingRule resource. (== suppress_warning
+   * http-rest-shadowed ==) (globalForwardingRules.delete)
    *
    * @param string $project Project ID for this request.
    * @param string $forwardingRule Name of the ForwardingRule resource to delete.
@@ -55,7 +55,8 @@ class Google_Service_Compute_Resource_GlobalForwardingRules extends Google_Servi
   }
   /**
    * Returns the specified GlobalForwardingRule resource. Gets a list of available
-   * forwarding rules by making a list() request. (globalForwardingRules.get)
+   * forwarding rules by making a list() request. (== suppress_warning http-rest-
+   * shadowed ==) (globalForwardingRules.get)
    *
    * @param string $project Project ID for this request.
    * @param string $forwardingRule Name of the ForwardingRule resource to return.
@@ -70,7 +71,8 @@ class Google_Service_Compute_Resource_GlobalForwardingRules extends Google_Servi
   }
   /**
    * Creates a GlobalForwardingRule resource in the specified project using the
-   * data included in the request. (globalForwardingRules.insert)
+   * data included in the request. (== suppress_warning http-rest-shadowed ==)
+   * (globalForwardingRules.insert)
    *
    * @param string $project Project ID for this request.
    * @param Google_Service_Compute_ForwardingRule $postBody
@@ -98,7 +100,8 @@ class Google_Service_Compute_Resource_GlobalForwardingRules extends Google_Servi
   }
   /**
    * Retrieves a list of GlobalForwardingRule resources available to the specified
-   * project. (globalForwardingRules.listGlobalForwardingRules)
+   * project. (== suppress_warning http-rest-shadowed ==)
+   * (globalForwardingRules.listGlobalForwardingRules)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -151,8 +154,8 @@ class Google_Service_Compute_Resource_GlobalForwardingRules extends Google_Servi
   }
   /**
    * Changes target URL for the GlobalForwardingRule resource. The new target
-   * should be of the same type as the old target.
-   * (globalForwardingRules.setTarget)
+   * should be of the same type as the old target. (== suppress_warning http-rest-
+   * shadowed ==) (globalForwardingRules.setTarget)
    *
    * @param string $project Project ID for this request.
    * @param string $forwardingRule Name of the ForwardingRule resource in which

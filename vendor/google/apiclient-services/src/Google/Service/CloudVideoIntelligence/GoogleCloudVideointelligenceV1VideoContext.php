@@ -22,12 +22,16 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1VideoC
   protected $explicitContentDetectionConfigDataType = '';
   protected $labelDetectionConfigType = 'Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1LabelDetectionConfig';
   protected $labelDetectionConfigDataType = '';
+  protected $objectTrackingConfigType = 'Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1ObjectTrackingConfig';
+  protected $objectTrackingConfigDataType = '';
   protected $segmentsType = 'Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1VideoSegment';
   protected $segmentsDataType = 'array';
   protected $shotChangeDetectionConfigType = 'Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1ShotChangeDetectionConfig';
   protected $shotChangeDetectionConfigDataType = '';
   protected $speechTranscriptionConfigType = 'Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1SpeechTranscriptionConfig';
   protected $speechTranscriptionConfigDataType = '';
+  protected $textDetectionConfigType = 'Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1TextDetectionConfig';
+  protected $textDetectionConfigDataType = '';
 
   /**
    * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1ExplicitContentDetectionConfig
@@ -56,6 +60,20 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1VideoC
   public function getLabelDetectionConfig()
   {
     return $this->labelDetectionConfig;
+  }
+  /**
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1ObjectTrackingConfig
+   */
+  public function setObjectTrackingConfig(Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1ObjectTrackingConfig $objectTrackingConfig)
+  {
+    $this->objectTrackingConfig = $objectTrackingConfig;
+  }
+  /**
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1ObjectTrackingConfig
+   */
+  public function getObjectTrackingConfig()
+  {
+    return $this->objectTrackingConfig;
   }
   /**
    * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1VideoSegment
@@ -98,5 +116,19 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1VideoC
   public function getSpeechTranscriptionConfig()
   {
     return $this->speechTranscriptionConfig;
+  }
+  /**
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1TextDetectionConfig
+   */
+  public function setTextDetectionConfig(Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1TextDetectionConfig $textDetectionConfig)
+  {
+    $this->textDetectionConfig = $textDetectionConfig;
+  }
+  /**
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1TextDetectionConfig
+   */
+  public function getTextDetectionConfig()
+  {
+    return $this->textDetectionConfig;
   }
 }

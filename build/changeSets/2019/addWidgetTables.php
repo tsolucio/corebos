@@ -17,7 +17,6 @@
 class AddWidgetTables extends cbupdaterWorker {
 
 	public function applyChange() {
-		global $adb;
 		if ($this->hasError()) {
 			$this->sendError();
 		}
@@ -26,33 +25,33 @@ class AddWidgetTables extends cbupdaterWorker {
 		} else {
 			// add vtiger_home_customwidget Table
 			$this->ExecuteQuery(
-				"CREATE TABLE `vtiger_home_customwidget` (
-                    `stuffid` int(19) NOT NULL,
-                    `modulename` varchar(100) NOT NULL,
-                    `setype` varchar(100) NOT NULL,
-                    PRIMARY KEY  (`stuffid`)
-                  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+				"CREATE TABLE IF NOT EXISTS `vtiger_home_customwidget` (
+					`stuffid` int(19) NOT NULL,
+					`modulename` varchar(100) NOT NULL,
+					`setype` varchar(100) NOT NULL,
+					PRIMARY KEY  (`stuffid`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
 				array()
 			);
 			// add vtiger_home_cw_fields Table
 			$this->ExecuteQuery(
-				"CREATE TABLE `vtiger_home_cw_fields` (
-                    `stuffid` int(19) NOT NULL,
-                    `filtername` int(19) NOT NULL,
-                    `aggregate` varchar(10) NOT NULL,
-                    `field` varchar(100) NOT NULL
-                  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+				"CREATE TABLE IF NOT EXISTS `vtiger_home_cw_fields` (
+					`stuffid` int(19) NOT NULL,
+					`filtername` int(19) NOT NULL,
+					`aggregate` varchar(10) NOT NULL,
+					`field` varchar(100) NOT NULL
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
 				array()
 			);
 			// add vtiger_seq_temp Table
 			$this->ExecuteQuery(
-				"CREATE TABLE `vtiger_seq_temp` (
-                    `value` int(19) NOT NULL
-                  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+				"CREATE TABLE IF NOT EXISTS `vtiger_seq_temp` (
+					`value` int(19) NOT NULL
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
 				array()
 			);
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}

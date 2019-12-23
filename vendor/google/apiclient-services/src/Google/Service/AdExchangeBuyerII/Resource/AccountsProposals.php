@@ -139,8 +139,6 @@ class Google_Service_AdExchangeBuyerII_Resource_AccountsProposals extends Google
    * @param string $accountId Account ID of the buyer.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The page token as returned from
-   * ListProposalsResponse.
    * @opt_param int pageSize Requested page size. The server may return fewer
    * results than requested. If unspecified, the server will pick an appropriate
    * default.
@@ -151,6 +149,8 @@ class Google_Service_AdExchangeBuyerII_Resource_AccountsProposals extends Google
    *
    * Nested repeated fields, such as proposal.deals.targetingCriterion, cannot be
    * filtered.
+   * @opt_param string pageToken The page token as returned from
+   * ListProposalsResponse.
    * @return Google_Service_AdExchangeBuyerII_ListProposalsResponse
    */
   public function listAccountsProposals($accountId, $optParams = array())

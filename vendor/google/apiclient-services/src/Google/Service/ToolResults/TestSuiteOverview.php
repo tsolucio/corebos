@@ -17,6 +17,8 @@
 
 class Google_Service_ToolResults_TestSuiteOverview extends Google_Model
 {
+  protected $elapsedTimeType = 'Google_Service_ToolResults_Duration';
+  protected $elapsedTimeDataType = '';
   public $errorCount;
   public $failureCount;
   public $name;
@@ -25,6 +27,20 @@ class Google_Service_ToolResults_TestSuiteOverview extends Google_Model
   protected $xmlSourceType = 'Google_Service_ToolResults_FileReference';
   protected $xmlSourceDataType = '';
 
+  /**
+   * @param Google_Service_ToolResults_Duration
+   */
+  public function setElapsedTime(Google_Service_ToolResults_Duration $elapsedTime)
+  {
+    $this->elapsedTime = $elapsedTime;
+  }
+  /**
+   * @return Google_Service_ToolResults_Duration
+   */
+  public function getElapsedTime()
+  {
+    return $this->elapsedTime;
+  }
   public function setErrorCount($errorCount)
   {
     $this->errorCount = $errorCount;

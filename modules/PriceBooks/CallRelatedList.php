@@ -42,6 +42,10 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 
 	// Identify this module as custom module.
 	$smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
+	$errormessageclass = isset($_REQUEST['error_msgclass']) ? vtlib_purify($_REQUEST['error_msgclass']) : '';
+	$errormessage = isset($_REQUEST['error_msg']) ? vtlib_purify($_REQUEST['error_msg']) : '';
+	$smarty->assign('ERROR_MESSAGE_CLASS', $errormessageclass);
+	$smarty->assign('ERROR_MESSAGE', $errormessage);
 
 	$smarty->assign('APP', $app_strings);
 	$smarty->assign('MOD', $mod_strings);
@@ -86,7 +90,34 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 		$rel_array = getRelatedLists($currentModule, $focus, $restrictedRelations);
 		foreach ($rltabs['panes'][$_RelatedPane]['blocks'] as $blk) {
 			if ($blk['type']=='RelatedList') {
-				$related_array[$blk['loadfrom']] = empty($rel_array[$blk['loadfrom']]) ? $rel_array[$blk['label']] : $rel_array[$blk['loadfrom']];
+				if (empty($rel_array[$blk['loadfrom']])) {
+					if (empty($rel_array[$blk['label']])) {
+						$i18n = getTranslatedString($blk['label'], $blk['label']);
+						if (empty($rel_array[$i18n])) {
+							if (!empty($blk['relatedid'])) {
+								$found = false;
+								foreach ($rel_array as $RLLabel => $RLDetails) {
+									if ($RLDetails['relationId']==$blk['relatedid']) {
+										$related_array[$RLLabel] = $RLDetails;
+										$found = true;
+										break;
+									}
+								}
+								if (!$found) {
+									continue;
+								}
+							} else {
+								continue;
+							}
+						} else {
+							$related_array[$blk['loadfrom']] = $rel_array[$i18n];
+						}
+					} else {
+						$related_array[$blk['loadfrom']] = $rel_array[$blk['label']];
+					}
+				} else {
+					$related_array[$blk['loadfrom']] = $rel_array[$blk['loadfrom']];
+				}
 			} else {
 				if (!empty($blk['loadphp'])) {
 					try {

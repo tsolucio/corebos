@@ -44,8 +44,6 @@ function getRelatedModulesManytoOne($module) {
 		'PurchaseOrder;;contact_id'=>'Contacts',
 		'SalesOrder;;contact_id'=>'Contacts',
 		'Invoice;;contact_id'=>'Contacts',
-		'Quotes;;potential_id'=>'Potentials',
-		'SalesOrder;;potential_id'=>'Potentials',
 		'SalesOrder;;quote_id'=>'Quotes',
 		'Invoice;;salesorder_id'=>'SalesOrder',
 	);

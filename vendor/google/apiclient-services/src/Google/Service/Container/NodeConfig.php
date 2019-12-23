@@ -31,6 +31,8 @@ class Google_Service_Container_NodeConfig extends Google_Collection
   public $oauthScopes;
   public $preemptible;
   public $serviceAccount;
+  protected $shieldedInstanceConfigType = 'Google_Service_Container_ShieldedInstanceConfig';
+  protected $shieldedInstanceConfigDataType = '';
   public $tags;
   protected $taintsType = 'Google_Service_Container_NodeTaint';
   protected $taintsDataType = 'array';
@@ -136,6 +138,20 @@ class Google_Service_Container_NodeConfig extends Google_Collection
   public function getServiceAccount()
   {
     return $this->serviceAccount;
+  }
+  /**
+   * @param Google_Service_Container_ShieldedInstanceConfig
+   */
+  public function setShieldedInstanceConfig(Google_Service_Container_ShieldedInstanceConfig $shieldedInstanceConfig)
+  {
+    $this->shieldedInstanceConfig = $shieldedInstanceConfig;
+  }
+  /**
+   * @return Google_Service_Container_ShieldedInstanceConfig
+   */
+  public function getShieldedInstanceConfig()
+  {
+    return $this->shieldedInstanceConfig;
   }
   public function setTags($tags)
   {

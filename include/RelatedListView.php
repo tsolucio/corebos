@@ -36,6 +36,11 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 	$log->debug('> GetRelatedList '.$module.','.$relatedmodule.','.get_class($focus).','.$query.','.$button.','.$returnset.','.$edit_val.','.$del_val);
 	global $GetRelatedList_ReturnOnlyQuery;
 	if (isset($GetRelatedList_ReturnOnlyQuery) && $GetRelatedList_ReturnOnlyQuery) {
+		$order_by = $focus->getOrderBy();
+		$sorder = $focus->getSortOrder();
+		if (!empty($order_by)) {
+			$query .= ' ORDER BY '.$order_by.' '.$sorder;
+		}
 		return array('query'=>$query);
 	}
 	require_once 'Smarty_setup.php';
@@ -87,8 +92,8 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 
 	if (empty($_SESSION['rlvs'][$module][$relatedmodule])) {
 		$modObj = new ListViewSession();
-		$modObj->sortby = $focus->default_order_by;
-		$modObj->sorder = $focus->default_sort_order;
+		$modObj->sortby = $focus->getOrderBy();
+		$modObj->sorder = $focus->getSortOrder();
 		coreBOS_Session::set('rlvs^'.$module.'^'.$relatedmodule, get_object_vars($modObj));
 	}
 
@@ -108,15 +113,14 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 		$sorder = $_SESSION['rlvs'][$module][$relatedmodule]['sorder'];
 		$order_by = $_SESSION['rlvs'][$module][$relatedmodule]['sortby'];
 	} else {
-		$order_by = $focus->default_order_by;
-		$sorder = $focus->default_sort_order;
+		$order_by = $focus->getOrderBy();
+		$sorder = $focus->getSortOrder();
 	}
 
 	// AssignedTo ordering issue in Related Lists
 	$query_order_by = $order_by;
 	if ($order_by == 'smownerid') {
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name',
-														'last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query_order_by = "case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end ";
 	} elseif ($order_by != 'crmid' && !empty($order_by)) {
 		$tabname = getTableNameForField($relatedmodule, $order_by);
@@ -171,6 +175,9 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 
 	$limit_start_rec = ($start-1) * $list_max_entries_per_page;
 
+	if (GlobalVariable::getVariable('Debug_RelatedList_Query', '0') == '1') {
+		echo '<br>'."$query LIMIT $limit_start_rec, $list_max_entries_per_page".'<br>';
+	}
 	$list_result = $adb->pquery($query." LIMIT $limit_start_rec, $list_max_entries_per_page", array());
 
 	/* Save the related list in session for when we click in a register
@@ -327,8 +334,8 @@ function getPriceBookRelatedProducts($query, $focus, $returnset = '') {
 	$relatedmodule = 'Products';
 	if (empty($_SESSION['rlvs'][$module][$relatedmodule])) {
 		$modObj = new ListViewSession();
-		$modObj->sortby = $focus->default_order_by;
-		$modObj->sorder = $focus->default_sort_order;
+		$modObj->sortby = $focus->getOrderBy();
+		$modObj->sorder = $focus->getSortOrder();
 		coreBOS_Session::set('rlvs^'.$module.'^'.$relatedmodule, get_object_vars($modObj));
 	}
 

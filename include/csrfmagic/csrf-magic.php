@@ -244,7 +244,7 @@ function csrf_get_tokens() {
     $secret = csrf_get_secret();
     if (!$has_cookies && $secret) {
         // :TODO: Harden this against proxy-spoofing attacks
-        $ip = ';ip:' . csrf_hash($_SERVER['IP_ADDRESS']);
+        $ip = ';ip:' . csrf_hash(isset($_SERVER['IP_ADDRESS']) ? $_SERVER['IP_ADDRESS'] : '127.0.0.1');
     } else {
         $ip = '';
     }
@@ -294,11 +294,25 @@ function csrf_flattenpost2($level, $key, $data) {
 function csrf_callback($tokens) {
     // (yes, $tokens is safe to echo without escaping)
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden');
-    echo "<html><head><title>CSRF check failed</title></head>
-        <body>
-        <p>coreBOS security error, please try reloading the page</p>
-        </body></html>
-";
+    include_once 'Smarty_setup.php';
+    $smarty = new vtigerCRM_Smarty();
+    global $app_strings, $current_language, $default_language;
+    if (empty($current_language)) {
+        // if the language is not set yet, then set it to the default language.
+        if (isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_user_language'] != '') {
+            $current_language = $_SESSION['authenticated_user_language'];
+        } else {
+            if (!empty($current_user->language)) {
+                $current_language = $current_user->language;
+            } else {
+                $current_language = $default_language;
+            }
+        }
+    }
+    $app_strings = return_application_language($current_language);
+    $smarty->assign('csrfWarning', $app_strings['csrf_warning']);
+    $smarty->assign('csrfReload', $app_strings['csrf_reload']);
+    $smarty->display('csrf-warning.tpl');
 }
 
 /**

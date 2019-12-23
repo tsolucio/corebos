@@ -177,7 +177,7 @@
                                                           <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
                                                        </div>
                                                   </td>
-                                             {elseif $keyid eq '19' || $keyid eq '20'} <!--TextArea/Description-->
+                                             {elseif $keyid eq '19'} <!--TextArea/Description-->
 						<!-- we will empty the value of ticket and faq comment -->
 						{if isset($MOD.LBL_ADD_COMMENT) && $label eq $MOD.LBL_ADD_COMMENT}
 							{assign var=keyval value=''}
@@ -199,25 +199,13 @@
 									</div>
 								</td>
 							{/if}
-                                             {elseif $keyid eq '21' || $keyid eq '24' || $keyid eq '22'} <!--TextArea/Street-->
+                                             {elseif $keyid eq '21'} <!--TextArea/Street-->
                                                   <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}" style="word-break:break-word;">{$keyval}</span>
                                               		<div id="editarea_{$keyfldname}" style="display:none;">
                                               		  <textarea id="txtbox_{$keyfldname}" name="{$keyfldname}" class="detailedViewTextBox" style="word-break:break-word;" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" rows=2>{$keyval|regex_replace:"/<br\s*\/>/":""}</textarea>
                                               		  <br><a class="detailview_ajaxbutton ajax_save_detailview" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
                                               		  <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
                                                        </div>
-                                                  </td>
-                                             {elseif $keyid eq '73' || $keyid eq '51'} <!--AccountPopup-->
-                                                  <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="vtlib_listview.trigger('cell.onmouseover', this);" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">&nbsp;<a href="{$keyseclink}">{$keyval}</a>
-                                                  </td>
-                                             {elseif $keyid eq '57'} <!--ContactPopup-->
-						<!-- Ajax edit link not provided for contact - Reports To -->
-                                                  	<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyseclink}">{$keyval}</a></td>
-                                             {elseif $keyid eq 76} <!--PotentialPopup-->
-                                                  <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyseclink}">{$keyval}</a>
-                                                  </td>
-                                             {elseif $keyid eq 78} <!--QuotePopup-->
-                                                  <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyseclink}">{$keyval}</a>
                                                   </td>
                                              {elseif $keyid eq 82} <!--Email Body-->
                                                   <td colspan="3" width=100% class="dvtCellInfo" align="left"><div id="dtlview_{$keyfldname}" style="width:100%;height:200px;overflow:hidden;border:1px solid gray" class="detailedViewTextBox" onmouseover="this.className='detailedViewTextBoxOn'" onmouseout="this.className='detailedViewTextBox'">{$keyval}</div>
@@ -327,7 +315,7 @@
 			{/if}
                         </td>
 
-						{elseif $keyid eq 83}<!-- Handle the Tax in Inventory -->
+						{elseif $keyid eq 83 && count($TAX_DETAILS)>0}<!-- Handle the Tax in Inventory -->
 							<td class="dvtCellInfo" colspan=3>&nbsp;</td></tr>
 							{foreach item=tax key=count from=$TAX_DETAILS}
 							<tr style="height:25px">
@@ -389,7 +377,7 @@
 					</td>
 
 				{elseif $keyid eq 69 || $keyid eq '69m'}<!-- for Image Reflection -->
-					<td align="left" width=25%>&nbsp;{$keyval}</td>
+					<td align="left" width=25%>{$keyval}</td>
 				{elseif $keyid eq 68 || $keyid eq 101}
 					<td class="dvtCellInfo" id="mouseArea_{$keyfldname}" align="left" width=25% onmouseover="vtlib_listview.trigger('cell.onmouseover', this);" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">&nbsp;{$keyval}</td>
 				{elseif $keyid eq 10}<!-- for vtlib reference field -->
@@ -412,7 +400,7 @@
 								{/foreach}
 								</select>
 							{/if}
-							<input id="txtbox_{$keyfldname}" name="{$keyfldname}" type="hidden" value="{$data.extendedfieldinfo.entityid}">
+							<input id="txtbox_{$keyfldname}" name="{$keyfldname}" id="{$keyfldname}" type="hidden" value="{$data.extendedfieldinfo.entityid}">
 							<input id="{$keyfldname}_display" name="{$keyfldname}_display" readonly type="text" style="border:1px solid #bababa;" value="{$data.extendedfieldinfo.displayvalue}" onclick='return {$vtui10func}("DetailView","{$keyfldname}","{$MODULE}","{$ID}");'>&nbsp;
 							<img src="{'select.gif'|@vtiger_imageurl:$THEME}"
 								alt="{'LBL_SELECT'|@getTranslatedString}" title="{'LBL_SELECT'|@getTranslatedString}" onclick='return {$vtui10func}("DetailView","{$keyfldname}","{$MODULE}","{$ID}");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;

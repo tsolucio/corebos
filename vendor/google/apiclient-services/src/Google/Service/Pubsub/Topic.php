@@ -17,9 +17,20 @@
 
 class Google_Service_Pubsub_Topic extends Google_Model
 {
+  public $kmsKeyName;
   public $labels;
+  protected $messageStoragePolicyType = 'Google_Service_Pubsub_MessageStoragePolicy';
+  protected $messageStoragePolicyDataType = '';
   public $name;
 
+  public function setKmsKeyName($kmsKeyName)
+  {
+    $this->kmsKeyName = $kmsKeyName;
+  }
+  public function getKmsKeyName()
+  {
+    return $this->kmsKeyName;
+  }
   public function setLabels($labels)
   {
     $this->labels = $labels;
@@ -27,6 +38,20 @@ class Google_Service_Pubsub_Topic extends Google_Model
   public function getLabels()
   {
     return $this->labels;
+  }
+  /**
+   * @param Google_Service_Pubsub_MessageStoragePolicy
+   */
+  public function setMessageStoragePolicy(Google_Service_Pubsub_MessageStoragePolicy $messageStoragePolicy)
+  {
+    $this->messageStoragePolicy = $messageStoragePolicy;
+  }
+  /**
+   * @return Google_Service_Pubsub_MessageStoragePolicy
+   */
+  public function getMessageStoragePolicy()
+  {
+    return $this->messageStoragePolicy;
   }
   public function setName($name)
   {

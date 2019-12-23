@@ -251,18 +251,34 @@ class Emails extends CRMEntity {
 	}
 
 	public static function emailServerCheck() {
-		global $adb;
-		$emailcfg = $adb->pquery('select 1 from vtiger_systems where server_type = ?', array('email'));
-		return ($adb->num_rows($emailcfg)>0);
+		global $adb, $current_user;
+		$user_og_server_config = $adb->pquery('select 1 from vtiger_mail_accounts where user_id = ? AND og_server_status=1', array($current_user->id));
+		$global_og_server_config = $adb->pquery('select 1 from vtiger_systems where server_type = ?', array('email'));
+		return ($adb->num_rows($global_og_server_config) > 0 || $adb->num_rows($user_og_server_config) > 0);
 	}
 
 	public static function useEmailHook() {
 		return true;
 	}
 
-	public static function sendEMail($to_email, $from_name, $from_email, $subject, $contents, $cc, $bcc, $attachment, $emailid, $logo, $qrScan, $replyto, $replyToEmail) {
+	public static function sendEMail(
+		$to_email,
+		$from_name,
+		$from_email,
+		$subject,
+		$contents,
+		$cc,
+		$bcc,
+		$attachment,
+		$emailid,
+		$logo,
+		$qrScan,
+		$brScan,
+		$replyto,
+		$replyToEmail
+	) {
 		$mail = new PHPMailer();
-		setMailerProperties($mail, $subject, $contents, $from_email, $from_name, trim($to_email, ','), $attachment, $emailid, $logo, $qrScan);
+		setMailerProperties($mail, $subject, $contents, $from_email, $from_name, trim($to_email, ','), $attachment, $emailid, $logo, $qrScan, $brScan);
 		// Return immediately if Outgoing server not configured
 		if (empty($mail->Host)) {
 			return 0;
@@ -315,10 +331,12 @@ class Emails extends CRMEntity {
 			$query .= " LEFT JOIN vtiger_users AS vtiger_usersEmails ON vtiger_usersEmails.id = vtiger_crmentityEmails.smownerid";
 		}
 		if ($queryPlanner->requireTable("vtiger_lastModifiedByEmails")) {
-			$query .= " LEFT JOIN vtiger_users AS vtiger_lastModifiedByEmails ON vtiger_lastModifiedByEmails.id = vtiger_crmentityEmails.modifiedby and vtiger_seactivityreltmpEmails.activityid = vtiger_activityEmails.activityid";
+			$query .= " LEFT JOIN vtiger_users AS vtiger_lastModifiedByEmails ON vtiger_lastModifiedByEmails.id = vtiger_crmentityEmails.modifiedby and
+				vtiger_seactivityreltmpEmails.activityid = vtiger_activityEmails.activityid";
 		}
 		if ($queryPlanner->requireTable("vtiger_CreatedByEmails")) {
-			$query .= " left join vtiger_users as vtiger_CreatedByEmails on vtiger_CreatedByEmails.id = vtiger_crmentityEmails.smcreatorid and vtiger_seactivityreltmpEmails.activityid = vtiger_activityEmails.activityid";
+			$query .= " left join vtiger_users as vtiger_CreatedByEmails on vtiger_CreatedByEmails.id = vtiger_crmentityEmails.smcreatorid and 
+				vtiger_seactivityreltmpEmails.activityid = vtiger_activityEmails.activityid";
 		}
 		if ($queryPlanner->requireTable("vtiger_email_track")) {
 			$query .= " LEFT JOIN vtiger_email_track ON vtiger_email_track.mailid = vtiger_emaildetails.emailid and vtiger_email_track.crmid = vtiger_crmentity.crmid";
@@ -394,39 +412,6 @@ class Emails extends CRMEntity {
 		return $return_value;
 	}
 
-	/** Returns the column name that needs to be sorted */
-	public function getSortOrder() {
-		global $log;
-		$log->debug('> getSortOrder');
-		if (isset($_REQUEST['sorder'])) {
-			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
-		} else {
-			$sorder = (!empty($_SESSION['EMAILS_SORT_ORDER']) ? ($_SESSION['EMAILS_SORT_ORDER']) : ($this->default_sort_order));
-		}
-
-		$log->debug('< getSortOrder');
-		return $sorder;
-	}
-
-	/** Returns the order in which the records need to be sorted */
-	public function getOrderBy() {
-		global $log;
-		$log->debug('> getOrderBy');
-
-		$use_default_order_by = '';
-		if (GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0)) {
-			$use_default_order_by = $this->default_order_by;
-		}
-
-		if (isset($_REQUEST['order_by'])) {
-			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
-		} else {
-			$order_by = (!empty($_SESSION['EMAILS_ORDER_BY']) ? ($_SESSION['EMAILS_ORDER_BY']) : ($use_default_order_by));
-		}
-
-		$log->debug('< getOrderBy');
-		return $order_by;
-	}
 
 	/** Returns a list of the associated users */
 	public function get_users($id) {
@@ -436,12 +421,13 @@ class Emails extends CRMEntity {
 		$id = $_REQUEST['record'];
 
 		$button = '<input title="' . getTranslatedString('LBL_BULK_MAILS') . '" accessykey="F" class="crmbutton small create"
-			onclick="this.form.action.value=\"sendmail\";this.form.return_action.value=\"DetailView\";this.form.module.value=\"Emails\";this.form.return_module.value=\"Emails\";"
+			onclick="this.form.action.value=\"sendmail\";this.form.return_action.value=\"DetailView\";this.form.module.value=\"Emails\";
+			this.form.return_module.value=\"Emails\";"
 			name="button" value="' . getTranslatedString('LBL_BULK_MAILS') . '" type="submit">&nbsp;
 			<input title="' . getTranslatedString('LBL_BULK_MAILS') . '" accesskey="" tabindex="2" class="crmbutton small edit"
 			value="' . getTranslatedString('LBL_SELECT_USER_BUTTON_LABEL') . '" name="Button"
-			onclick=\"return window.open("index.php?module=Users&return_module=Emails&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=true&return_id='.
-			$id . '&recordid=' . $id . '","test","width=640,height=520,resizable=0,scrollbars=0");\"type="button">';
+			onclick=\"return window.open("index.php?module=Users&return_module=Emails&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=
+			true&return_id='.$id . '&recordid=' . $id . '","test","width=640,height=520,resizable=0,scrollbars=0");\"type="button">';
 
 		$query = 'SELECT vtiger_users.id, vtiger_users.first_name, vtiger_users.last_name, vtiger_users.user_name, vtiger_users.email1, vtiger_users.email2,
 			vtiger_users.secondaryemail, vtiger_users.phone_home, vtiger_users.phone_work, vtiger_users.phone_mobile, vtiger_users.phone_other, vtiger_users.phone_fax
@@ -582,7 +568,17 @@ class Emails extends CRMEntity {
 		return $list_buttons;
 	}
 
-	public static function sendEmailTemplate($templateName, $context, $module, $to_email, $par_id, $from_name = '', $from_email = '', $desired_lang = null, $default_lang = null) {
+	public static function sendEmailTemplate(
+		$templateName,
+		$context,
+		$module,
+		$to_email,
+		$par_id,
+		$from_name = '',
+		$from_email = '',
+		$desired_lang = null,
+		$default_lang = null
+	) {
 		require_once 'modules/Emails/mail.php';
 		global $adb, $default_charset;
 		$sql = fetchEmailTemplateInfo($templateName, $desired_lang, $default_lang);

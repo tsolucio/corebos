@@ -255,7 +255,7 @@ if ($sql_error) {
 	//Added to select Multiple records in multiple pages
 		$smarty->assign('SELECTEDIDS', isset($_REQUEST['selobjs']) ? vtlib_purify($_REQUEST['selobjs']) : '');
 		$smarty->assign('ALLSELECTEDIDS', isset($_REQUEST['selobjs']) ? vtlib_purify($_REQUEST['allselobjs']) : '');
-		$smarty->assign('CURRENT_PAGE_BOXES', implode(array_keys($listview_entries), ';'));
+		$smarty->assign('CURRENT_PAGE_BOXES', implode(';', array_keys($listview_entries)));
 		ListViewSession::setSessionQuery($currentModule, $list_query, $viewid);
 
 	// Gather the custom link information to display
@@ -270,6 +270,7 @@ if (is_array($listview_header_search)) {
 	$tks_list = getListColumnSearch($listview_header_search, $currentModule);
 	$smarty->assign('TKS_LIST_SEARCH', $tks_list);
 	$smarty->assign('LVCSearchActive', GlobalVariable::getVariable('Application_ListView_SearchColumns', 0));
+	$smarty->assign('LVCSearchAcTrigger', GlobalVariable::getVariable('Application_ListView_SearchColumns_AC_Trigger', 3));
 }
 // Search Panel Status
 $DEFAULT_SEARCH_PANEL_STATUS = GlobalVariable::getVariable('Application_ListView_SearchPanel_Open', 1);

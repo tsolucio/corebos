@@ -39,7 +39,7 @@ class VTEntityMethodManager {
 		$adb = $this->adb;
 		$moduleName = $entityData->getModuleName();
 		$result = $adb->pquery(
-			'select function_path, function_name from com_vtiger_workflowtasks_entitymethod where module_name=? and method_name=?',
+			"select function_path, function_name from com_vtiger_workflowtasks_entitymethod where (module_name=? or module_name='*') and method_name=?",
 			array($moduleName, $methodName)
 		);
 		if ($adb->num_rows($result)!=0) {
@@ -52,11 +52,11 @@ class VTEntityMethodManager {
 	}
 
 	public function methodsForModule($moduleName) {
-		$result = $this->adb->pquery('select method_name from com_vtiger_workflowtasks_entitymethod where module_name=?', array($moduleName));
+		$result = $this->adb->pquery("select method_name from com_vtiger_workflowtasks_entitymethod where module_name=? or module_name='*'", array($moduleName));
 		$it = new SqlResultIterator($this->adb, $result);
 		$methodNames = array();
 		foreach ($it as $row) {
-			$methodNames[] = $row->method_name;
+			$methodNames[] = array($row->method_name, getTranslatedString($row->method_name, 'com_vtiger_workflow'));
 		}
 		return $methodNames;
 	}

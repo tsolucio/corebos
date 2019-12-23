@@ -137,17 +137,17 @@ class Documents extends CRMEntity {
 		} elseif ($this->column_fields[$filetype_fieldname] == 'E') {
 			$filelocationtype = 'E';
 			$filename = $this->column_fields[$filename_fieldname];
-			// If filename does not has the protocol prefix, default it to http://
+			// If filename does not has the protocol prefix, default it to https://
 			// Protocol prefix could be like (https://, smb://, file://, \\, smb:\\,...)
 			if (!empty($filename) && !preg_match('/^\w{1,5}:\/\/|^\w{0,3}:?\\\\\\\\/', trim($filename))) {
-				$filename = "http://$filename";
+				$filename = "https://$filename";
 			}
 			$filetype = '';
 			$filesize = 0;
 			$filedownloadcount = null;
 		}
 		$query = 'UPDATE vtiger_notes SET filename = ? ,filesize = ?, filetype = ? , filelocationtype = ? , filedownloadcount = ? WHERE notesid = ?';
-		$adb->pquery($query, array($filename, $filesize, $filetype, $filelocationtype, $filedownloadcount, $this->id));
+		$adb->pquery($query, array(decode_html($filename), $filesize, $filetype, $filelocationtype, $filedownloadcount, $this->id));
 		//Inserting into attachments table
 		if ($filelocationtype == 'I') {
 			$this->insertIntoAttachment($this->id, 'Documents');
@@ -272,44 +272,6 @@ class Documents extends CRMEntity {
 		}
 	}
 
-	/** Function used to get the sort order for Documents listview
-	* @return string  $sorder - first check the $_REQUEST['sorder'] if request value is empty then check in the $_SESSION['NOTES_SORT_ORDER']
-	* 	 if this session value is empty then default sort order will be returned.
-	*/
-	public function getSortOrder() {
-		global $log;
-		$log->debug('> getSortOrder');
-		if (isset($_REQUEST['sorder'])) {
-			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
-		} else {
-			$sorder = (!empty($_SESSION['NOTES_SORT_ORDER']) ? $this->db->sql_escape_string($_SESSION['NOTES_SORT_ORDER']) : $this->default_sort_order);
-		}
-		$log->debug('< getSortOrder');
-		return $sorder;
-	}
-
-	/** Function used to get the order by value for Documents listview
-	* @return string  $order_by  - first check the $_REQUEST['order_by'] if request value is empty then check in the $_SESSION['NOTES_ORDER_BY']
-	* 	 if this session value is empty then default order by will be returned.
-	*/
-	public function getOrderBy() {
-		global $currentModule,$log;
-		$log->debug('> getOrderBy');
-		$use_default_order_by = '';
-		if (GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0, $currentModule)) {
-			$use_default_order_by = $this->default_order_by;
-		}
-		if (isset($_REQUEST['order_by'])) {
-			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
-		} elseif (isset($_SESSION[$currentModule.'_Order_By'])) {
-			$order_by = $this->db->sql_escape_string($_SESSION[$currentModule.'_Order_By']);
-		} else {
-			$order_by = (!empty($_SESSION['NOTES_ORDER_BY']) ? $this->db->sql_escape_string($_SESSION['NOTES_ORDER_BY']) : $use_default_order_by);
-		}
-		$log->debug('< getOrderBy');
-		return $order_by;
-	}
-
 	/**
 	 * Function used to get the sort order for Documents listview
 	 * @return String $sorder - sort order for a given folder.
@@ -336,6 +298,9 @@ class Documents extends CRMEntity {
 		}
 		if (isset($_REQUEST['order_by']) && $_REQUEST['folderid'] == $folderId) {
 			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
+			if ($order_by == 'notes_title') {
+				$order_by = 'title';
+			}
 		} elseif (!empty($_SESSION['NOTES_FOLDER_ORDER_BY']) && is_array($_SESSION['NOTES_FOLDER_ORDER_BY']) && !empty($_SESSION['NOTES_FOLDER_ORDER_BY'][$folderId])) {
 			$order_by = $_SESSION['NOTES_FOLDER_ORDER_BY'][$folderId];
 		} else {

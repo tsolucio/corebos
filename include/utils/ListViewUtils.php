@@ -12,6 +12,7 @@ require_once 'include/ComboUtil.php';
 require_once 'include/utils/CommonUtils.php';
 require_once 'include/utils/UserInfoUtil.php';
 require_once 'include/CustomFieldUtil.php';
+require_once 'modules/com_vtiger_workflow/VTWorkflow.php';
 
 /** This function is used to get the list view header values in a list view
  * Param $focus - module object
@@ -542,7 +543,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 	$ui_col_array = array();
 
 	$params = array();
-	$query = 'SELECT uitype, columnname, fieldname FROM vtiger_field ';
+	$query = 'SELECT uitype, columnname, fieldname, typeofdata FROM vtiger_field ';
 
 	if ($module == 'Calendar') {
 		$query .=' WHERE vtiger_field.tabid in (9,16) and vtiger_field.presence in (0,2)';
@@ -571,7 +572,9 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 		$uitype = $adb->query_result($result, $i, 'uitype');
 		$columnname = $adb->query_result($result, $i, 'columnname');
 		$field_name = $adb->query_result($result, $i, 'fieldname');
+		$typeofdata = $adb->query_result($result, $i, 'typeofdata');
 		$tempArr[$uitype] = $columnname;
+		$tempArr['typeofdata'] = $typeofdata;
 		$ui_col_array[$field_name] = $tempArr;
 	}
 	//end
@@ -894,6 +897,9 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '', $returnset, (is_object($oCv) ? $oCv->setdefaultviewid : ''));
 							$uicolarr = isset($ui_col_array[$fieldname]) ? $ui_col_array[$fieldname] : array('1'=>$fieldname);
 							foreach ($uicolarr as $key => $val) {
+								if ($key=='typeofdata') {
+									continue;
+								}
 								$uitype = $key;
 								$colname = $val;
 							}
@@ -932,7 +938,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 				if (isPermitted($module, 'EditView', $entity_id) == 'yes') {
 					$racbr = $wfs->getRACRuleForRecord($module, $entity_id);
 					if (!$racbr || $racbr->hasListViewPermissionTo('edit')) {
-						$edit_link = getListViewEditLink($module, $entity_id, $relatedlist, $varreturnset, $list_result, $list_result_count);
+						$edit_link = getListViewEditLink($module, $entity_id, $relatedlist, $varreturnset);
 						$links_info .= "<a href=\"$edit_link$linkstart\">" . $app_strings['LNK_EDIT'] . '</a>';
 					}
 				}
@@ -1059,7 +1065,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 	//constructing the uitype and columnname array
 	$ui_col_array = array();
 
-	$query = 'SELECT uitype, columnname, fieldname
+	$query = 'SELECT uitype, columnname, fieldname, typeofdata
 		FROM vtiger_field
 		WHERE tabid=?
 		AND fieldname IN (' . generateQuestionMarks($field_list) . ') and vtiger_field.presence in (0,2)';
@@ -1070,7 +1076,9 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 		$uitype = $adb->query_result($result, $i, 'uitype');
 		$columnname = $adb->query_result($result, $i, 'columnname');
 		$field_name = $adb->query_result($result, $i, 'fieldname');
+		$typeofdata = $adb->query_result($result, $i, 'typeofdata');
 		$tempArr[$uitype] = $columnname;
+		$tempArr['typeofdata'] = $typeofdata;
 		$ui_col_array[$field_name] = $tempArr;
 	}
 
@@ -1078,8 +1086,10 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 		$hasGlobalReadPermission = $userprivs->hasGlobalReadPermission();
 		for ($i = 1; $i <= $noofrows; $i++) {
 			//Getting the entityid
-			if ($module != 'Users') {
+			if ($module != 'Users' && $module != 'com_vtiger_workflow') {
 				$entity_id = $adb->query_result($list_result, $i - 1, 'crmid');
+			} elseif ($module == 'com_vtiger_workflow') {
+				$entity_id = $adb->query_result($list_result, $i - 1, 'workflow_id');
 			} else {
 				$entity_id = $adb->query_result($list_result, $i - 1, 'id');
 			}
@@ -1125,8 +1135,8 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 							$account_id = $adb->query_result($list_result, $i - 1, 'accountid');
 							$account_name = getAccountName($account_id);
 							$value = textlength_check($account_name);
-						} // vtlib customization: Generic popup handling
-						elseif (isset($focus->popup_fields) && in_array($fieldname, $focus->popup_fields)) {
+						} elseif (isset($focus->popup_fields) && in_array($fieldname, $focus->popup_fields)) {
+							// vtlib customization: Generic popup handling
 							global $default_charset;
 							$forfield = isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '';
 							$forfield = htmlspecialchars($forfield, ENT_QUOTES, $default_charset);
@@ -1285,6 +1295,9 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 	return_module_language($current_language, $module);
 	$uicolarr = isset($field_result[$fieldname]) ? $field_result[$fieldname] : array('1'=>$fieldname);
 	foreach ($uicolarr as $key => $value) {
+		if ($key=='typeofdata') {
+			continue;
+		}
 		$uitype = $key;
 		$colname = $value;
 	}
@@ -1311,8 +1324,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		} else {
 			$value = '';
 		}
-	} // END
-	elseif ($uitype == '1025') {
+	} elseif ($uitype == '1025') {
 		$parent_id = $temp_val;
 		if (!empty($parent_id)) {
 			$values=explode(' |##| ', $parent_id);
@@ -1349,14 +1361,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 	} elseif ($uitype == 52 || $uitype == 101) {
 		$value = getOwnerName($adb->query_result($list_result, $list_result_count, $colname));
 		$value = textlength_check($value);
-	} elseif ($uitype == 51) {//Accounts - Member Of
-		$parentid = $adb->query_result($list_result, $list_result_count, 'parentid');
-		if ($module == 'Accounts') {
-			$entity_name = textlength_check(getAccountName($parentid));
-		} elseif ($module == 'Products') {
-			$entity_name = textlength_check(getProductName($parentid));
-		}
-		$value = '<a href="index.php?module=' . $module . '&action=DetailView&record=' . $parentid . '&parenttab=' . $tabname . '">' . $entity_name . '</a>';
 	} elseif ($uitype == '69m' && $module == 'Products') {
 		$queryPrdt = 'SELECT vtiger_attachments.path,vtiger_attachments.attachmentsid,vtiger_attachments.`name`
 			FROM vtiger_attachments
@@ -1478,18 +1482,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		} else {
 			$value = '';
 		}
-	} elseif ($uitype == 57) {
-		if ($temp_val != '') {
-			$sql = 'SELECT * FROM vtiger_contactdetails WHERE contactid=?';
-			$result = $adb->pquery($sql, array($temp_val));
-			$value = '';
-			if ($adb->num_rows($result)) {
-				$name = getFullNameFromQResult($result, 0, 'Contacts');
-				$value = '<a href=index.php?module=Contacts&action=DetailView&record=' . $temp_val . '>' . textlength_check($name) . '</a>';
-			}
-		} else {
-			$value = '';
-		}
 	} elseif ($uitype == 61) {
 		$attachmentid = $adb->query_result($adb->pquery('SELECT * FROM vtiger_seattachmentsrel WHERE crmid=?', array($entity_id)), 0, 'attachmentsid');
 		$value = '<a href = "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=downloadfile&return_module=' . $module
@@ -1531,33 +1523,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		} else {
 			$value = '';
 		}
-	} elseif ($uitype == 66) {
-		$parentid = $adb->query_result($list_result, $list_result_count, 'parent_id');
-		$parenttype = $adb->query_result($list_result, $list_result_count, 'parent_type');
-
-		if ($parenttype == 'Leads') {
-			$tablename = 'vtiger_leaddetails';
-			$fieldname = 'lastname';
-			$idname = 'leadid';
-		}
-		if ($parenttype == 'Accounts') {
-			$tablename = 'vtiger_account';
-			$fieldname = 'accountname';
-			$idname = 'accountid';
-		}
-		if ($parenttype == 'HelpDesk') {
-			$tablename = 'vtiger_troubletickets';
-			$fieldname = 'title';
-			$idname = 'ticketid';
-		}
-		if ($parentid != '') {
-			$sql = "SELECT $fieldname FROM $tablename WHERE $idname = ?";
-			$fieldvalue = $adb->query_result($adb->pquery($sql, array($parentid)), 0, $fieldname);
-
-			$value = '<a href=index.php?module=' . $parenttype . '&action=DetailView&record=' . $parentid . '>' . textlength_check($fieldvalue) . '</a>';
-		} else {
-			$value = '';
-		}
 	} elseif ($uitype == 67) {
 		$parentid = $adb->query_result($list_result, $list_result_count, 'parent_id');
 		$parenttype = $adb->query_result($list_result, $list_result_count, 'parent_type');
@@ -1579,24 +1544,10 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		} else {
 			$value = '';
 		}
-	} elseif ($uitype == 78) {
-		if ($temp_val != '') {
-			$quote_name = getQuoteName($temp_val);
-			$value = '<a href=index.php?module=Quotes&action=DetailView&record=' . $temp_val . '>' . textlength_check($quote_name) . '</a>';
-		} else {
-			$value = '';
-		}
 	} elseif ($uitype == 79) {
 		if ($temp_val != '') {
 			$purchaseorder_name = getPoName($temp_val);
 			$value = '<a href=index.php?module=PurchaseOrder&action=DetailView&record=' . $temp_val . '>' . textlength_check($purchaseorder_name) . '</a>';
-		} else {
-			$value = '';
-		}
-	} elseif ($uitype == 80) {
-		if ($temp_val != '') {
-			$salesorder_name = getSoName($temp_val);
-			$value = "<a href=index.php?module=SalesOrder&action=DetailView&record=$temp_val&parenttab=".urlencode($tabname).">".textlength_check($salesorder_name).'</a>';
 		} else {
 			$value = '';
 		}
@@ -1663,9 +1614,8 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		$res = $adb->pquery('select foldername from vtiger_attachmentsfolder where folderid = ?', array($temp_val));
 		$foldername = $adb->query_result($res, 0, 'foldername');
 		$value = $foldername;
-	} //added for asterisk integration
-	elseif ($uitype == 11) {
-		// Fix added for Trac Id: 6139
+	} elseif ($uitype == 11) {
+		//added for asterisk integration
 		if (get_use_asterisk($current_user->id)) {
 			$value = "<a href='javascript:;' onclick='startCall(&quot;$temp_val&quot;, &quot;$entity_id&quot;)'>" . textlength_check($temp_val) . '</a>';
 		} else {
@@ -1677,7 +1627,11 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			$value = vt_suppressHTMLTags(implode(',', json_decode($temp_val, true)));
 		}
 	} elseif ($uitype == 7) {
-		$value = CurrencyField::convertToUserFormat($temp_val);
+		if (substr($field_result[$fieldname]['typeofdata'], 0, 2)=='I~') {
+			$value = empty($temp_val) ? 0 : $temp_val;
+		} else {
+			$value = CurrencyField::convertToUserFormat($temp_val);
+		}
 	} else {
 		if ($fieldname == $focus->list_link_field) {
 			if ($mode == 'search') {
@@ -1775,6 +1729,14 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					} else {
 						$unitprice = '';
 					}
+					$parr = array(
+						'module' => $module,
+						'moduleid' => $focus->id,
+						'accountid' => isset($_REQUEST['accid']) ? vtlib_purify($_REQUEST['accid']) : 0,
+						'contactid' => isset($_REQUEST['ctoid']) ? vtlib_purify($_REQUEST['ctoid']) : 0,
+						'productid' => $entity_id,
+					);
+					list($unitprice, $dtopdo, $void) = cbEventHandler::do_filter('corebos.filter.inventory.getprice', array($unitprice, 0, $parr));
 					$sub_products = '';
 					$sub_prod = '';
 					$sub_prod_query = $adb->pquery(
@@ -1809,9 +1771,9 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$slashes_temp_desc = decode_html(htmlspecialchars($description, ENT_QUOTES, $default_charset));
 
 					$slashes_desc = str_replace(array("\r", "\n"), array('\r', '\n'), $slashes_temp_desc);
-					$tmp_arr = array("entityid" => $entity_id, "prodname" => stripslashes(decode_html(nl2br($slashes_temp_val))), "unitprice" => "$unitprice", "qtyinstk" => "$qty_stock", "taxstring" => "$tax_str", "rowid" => "$row_id", "desc" => "$slashes_desc", "subprod_ids" => "$sub_det");
+					$tmp_arr = array("entityid" => $entity_id, "prodname" => stripslashes(decode_html(nl2br($slashes_temp_val))), "unitprice" => "$unitprice", "qtyinstk" => "$qty_stock", "taxstring" => "$tax_str", "rowid" => "$row_id", "desc" => "$slashes_desc", "subprod_ids" => "$sub_det", 'dto'=>$dtopdo);
 					$prod_arr = json_encode($tmp_arr);
-					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $qty_stock . '","' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '","' . $sub_det . '");\' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($temp_val) . '</a>';
+					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $qty_stock . '","' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '","' . $sub_det . '",'.$dtopdo.');\' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($temp_val) . '</a>';
 				} elseif ($popuptype == 'inventory_prod_po') {
 					$row_id = $_REQUEST['curr_row'];
 
@@ -1883,7 +1845,14 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					} else {
 						$unitprice = '';
 					}
-
+					$parr = array(
+						'module' => $module,
+						'moduleid' => $focus->id,
+						'accountid' => isset($_REQUEST['accid']) ? vtlib_purify($_REQUEST['accid']) : 0,
+						'contactid' => isset($_REQUEST['ctoid']) ? vtlib_purify($_REQUEST['ctoid']) : 0,
+						'productid' => $entity_id,
+					);
+					list($unitprice, $dtopdo, $void) = cbEventHandler::do_filter('corebos.filter.inventory.getprice', array($unitprice, 0, $parr));
 					$slashes_temp_val = popup_from_html($field_val);
 					$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
 					$description = popup_from_html($adb->query_result($list_result, $list_result_count, 'description'));
@@ -1896,11 +1865,12 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						'unitprice' => "$unitprice",
 						'taxstring' => "$tax_str",
 						'rowid' => "$row_id",
-						'desc' => "$slashes_desc"
+						'desc' => "$slashes_desc",
+						'dto' => $dtopdo
 					);
 					$prod_arr = json_encode($tmp_arr);
 
-					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '");\' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($temp_val) . '</a>';
+					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '",'.$dtopdo.');\' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($temp_val) . '</a>';
 				} elseif ($popuptype == 'inventory_pb') {
 					$prod_id = $_REQUEST['productid'];
 					$flname = $_REQUEST['fldname'];
@@ -2273,6 +2243,17 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 				$value = textlength_check($value);
 			}
 		} else {
+			if ($module=='com_vtiger_workflow') {
+				switch ($fieldname) {
+					case 'module_name':
+						$temp_val = getTranslatedString($temp_val, $temp_val);
+						break;
+					case 'execution_condition':
+						$triggerlabels = Workflow::geti18nTriggerLabels();
+						$temp_val = getTranslatedString($triggerlabels[$temp_val], 'Settings');
+						break;
+				}
+			}
 			$value = textlength_check($temp_val);
 			if (substr($value, -3) == '...') {
 				$value = '<span title="'.$field_val.'">'.$value.'<span>';
@@ -2282,7 +2263,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 
 	// right justify currency value
 	if (in_array($uitype, array(71, 72, 7, 9, 90))) {
-		$value = '<span style="float:right;padding-right:6px;display:block;">' . $value . '</span>';
+		$value = '<span style="float:right;padding-right:10px;display:block;">' . $value . '</span>';
 	}
 	$log->debug('< getValue');
 	return $value;
@@ -3496,39 +3477,26 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
  * 		For relatedlists, return_module, return_action and return_id values will be passed like &return_module=Accounts&return_action=CallRelatedList&return_id=10
  * 	return string	$edit_link	- url string which contains the editlink details (module, action, record, etc.,) like index.php?module=Accounts&action=EditView&record=10
  */
-function getListViewEditLink($module, $entity_id, $relatedlist, $returnset, $result, $count) {
+function getListViewEditLink($module, $entity_id, $relatedlist, $returnset) {
 	global $adb;
 	$return_action = 'index';
-	if ($module == 'Calendar') {
-		$edit_link = "index.php?module=Calendar4You&action=EventEditView&record=$entity_id";
-	} else {
-		$edit_link = "index.php?module=$module&action=EditView&record=$entity_id";
-	}
-	$tabname = getParentTab();
+	$edit_link = "index.php?module=$module&action=EditView&record=$entity_id";
 	$url = getBasic_Advance_SearchURL();
 
 	//This is relatedlist listview
 	if ($relatedlist == 'relatedlist') {
 		$edit_link .= $returnset;
 	} else {
-		if ($module == 'Calendar') {
-			$return_action = 'ListView';
-			$actvity_type = $adb->query_result($result, $count, 'type');
-			if ($actvity_type == 'Task') {
-				$edit_link .= '&activity_mode=Task';
-			} else {
-				$edit_link .= '&activity_mode=Events';
-			}
-		}
 		$edit_link .= "&return_module=$module&return_action=$return_action";
 	}
 
-	$edit_link .= '&parenttab=' . $tabname . $url;
+	$edit_link .= $url;
 	//Appending view name while editing from ListView
 	$edit_link .= '&return_viewname=' . (isset($_SESSION['lvs'][$module]['viewname']) ? $_SESSION['lvs'][$module]['viewname'] : '');
 	if ($module == 'Emails') {
 		$edit_link = 'javascript:;" onclick="OpenCompose(\'' . $entity_id . '\',\'edit\');';
 	}
+	list($module, $entity_id, $edit_link) = cbEventHandler::do_filter('corebos.relatedlist.editlink', array($module, $entity_id, $edit_link));
 	return $edit_link;
 }
 
@@ -3541,18 +3509,11 @@ function getListViewEditLink($module, $entity_id, $relatedlist, $returnset, $res
  * 	return string	$del_link	- url string which cotains the editlink details (module, action, record, etc.,) like index.php?module=Accounts&action=Delete&record=10
  */
 function getListViewDeleteLink($module, $entity_id, $relatedlist, $returnset, $linkstart) {
-	$tabname = getParentTab();
 	$current_module = vtlib_purify($_REQUEST['module']);
 	$viewname = isset($_SESSION['lvs'][$current_module]['viewname']) ? $_SESSION['lvs'][$current_module]['viewname'] : '';
 
-	//Added to fix 4600
 	$url = getBasic_Advance_SearchURL();
-
-	if ($module == 'Calendar') {
-		$return_action = 'ListView';
-	} else {
-		$return_action = 'index';
-	}
+	$return_action = 'index';
 
 	//This is added to avoid the del link in Product related list for the following modules
 	$avoid_del_links = array('PurchaseOrder', 'SalesOrder', 'Quotes', 'Invoice');
@@ -3570,7 +3531,7 @@ function getListViewDeleteLink($module, $entity_id, $relatedlist, $returnset, $l
 		$del_link .= "&return_module=$module&return_action=$return_action";
 	}
 
-	$del_link .= '&parenttab=' . $tabname . '&return_viewname=' . $viewname . $url;
+	$del_link .= '&return_viewname=' . $viewname . $url;
 
 	// vtlib customization: override default delete link for custom modules
 	$requestModule = $current_module;
@@ -3584,7 +3545,7 @@ function getListViewDeleteLink($module, $entity_id, $relatedlist, $returnset, $l
 		$del_link = "index.php?module=$requestModule&action=updateRelations&parentid=$requestRecord";
 		$del_link .= "&destination_module=$module&idlist=$entity_id&mode=delete";
 	}
-
+	list($module, $entity_id, $del_link) = cbEventHandler::do_filter('corebos.relatedlist.dellink', array($module, $entity_id, $del_link));
 	return $del_link;
 }
 
@@ -3744,18 +3705,14 @@ function getMergeFields($module, $str) {
  */
 function getFirstModule($module, $fieldname) {
 	global $adb;
-	$sql = 'select fieldid, uitype from vtiger_field where tabid=? and fieldname=?';
-	$result = $adb->pquery($sql, array(getTabid($module), $fieldname));
-
+	$result = $adb->pquery('select fieldid, uitype from vtiger_field where tabid=? and fieldname=?', array(getTabid($module), $fieldname));
+	$data = '';
 	if ($adb->num_rows($result) > 0) {
 		$uitype = $adb->query_result($result, 0, 'uitype');
-
 		if ($uitype == 10) {
 			$fieldid = $adb->query_result($result, 0, 'fieldid');
-			$sql = 'select relmodule from vtiger_fieldmodulerel where fieldid=? order by sequence';
-			$result = $adb->pquery($sql, array($fieldid));
+			$result = $adb->pquery('select relmodule from vtiger_fieldmodulerel where fieldid=? order by sequence', array($fieldid));
 			$count = $adb->num_rows($result);
-
 			if ($count > 0) {
 				$data = $adb->query_result($result, 0, 'relmodule');
 			}

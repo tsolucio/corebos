@@ -19,6 +19,8 @@ class Google_Service_CloudBuild_Results extends Google_Collection
 {
   protected $collection_key = 'images';
   public $artifactManifest;
+  protected $artifactTimingType = 'Google_Service_CloudBuild_TimeSpan';
+  protected $artifactTimingDataType = '';
   public $buildStepImages;
   public $buildStepOutputs;
   protected $imagesType = 'Google_Service_CloudBuild_BuiltImage';
@@ -32,6 +34,20 @@ class Google_Service_CloudBuild_Results extends Google_Collection
   public function getArtifactManifest()
   {
     return $this->artifactManifest;
+  }
+  /**
+   * @param Google_Service_CloudBuild_TimeSpan
+   */
+  public function setArtifactTiming(Google_Service_CloudBuild_TimeSpan $artifactTiming)
+  {
+    $this->artifactTiming = $artifactTiming;
+  }
+  /**
+   * @return Google_Service_CloudBuild_TimeSpan
+   */
+  public function getArtifactTiming()
+  {
+    return $this->artifactTiming;
   }
   public function setBuildStepImages($buildStepImages)
   {

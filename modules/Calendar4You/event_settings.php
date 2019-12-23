@@ -89,7 +89,7 @@ if ($mode == 'user') {
 	<tbody><tr>
 <?php
 if ($mode != "user" && $id != "invite") {
-?>
+	?>
 	<td class="dvtTabCache" style="width:10px" nowrap="">&nbsp;</td>
 	<td id="cellTabEventColor" class="dvtSelectedCell" align="center" nowrap="">
 	<a href="javascript:doNothing()" onclick="switchClass('cellTabEventColor','on');switchClass('cellTabEventInfo','off');switchClass('cellTabGoogleSync','off');fnShowDrop('TabColorInCalendar');fnHideDrop('TabEventInfoInCalendar');fnHideDrop('TabEventGoogleCalSync');">
@@ -102,19 +102,19 @@ if ($mode != "user" && $id != "invite") {
 	<?php echo $mod_strings['LBL_DISPLAYED_INFO']; ?>
 	</a>
 	</td>
-<?php if ($google_sync_id) { ?>
+	<?php if ($google_sync_id) { ?>
 	<td class="dvtTabCache" style="width:10px">&nbsp;</td>
 	<td id="cellTabGoogleSync" class="dvtUnSelectedCell" align="center" nowrap="">
 	<a href="javascript:doNothing()" onclick="switchClass('cellTabEventColor','off');switchClass('cellTabEventInfo','off');switchClass('cellTabGoogleSync','on');fnHideDrop('TabColorInCalendar');fnHideDrop('TabEventInfoInCalendar');fnShowDrop('TabEventGoogleCalSync');">
-	<?php echo $mod_strings['LBL_GOOGLE_SYNC']; ?>
+		<?php echo $mod_strings['LBL_GOOGLE_SYNC']; ?>
 	</a>
 	</td>
-<?php } ?>
+	<?php } ?>
 	<td class="dvtTabCache" style="width:30%">&nbsp;</td>
 <?php } else { ?>
 		<td id="cellTabEventColor" class="dvtSelectedCell" align="center" nowrap=""><?php echo $mod_strings['LBL_COLOR_IN_CALENDAR']; ?></td>
 		<td class="dvtTabCache" style="width:70%">&nbsp;</td>
-<?php
+	<?php
 }
 ?>
 	</tr>

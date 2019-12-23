@@ -142,6 +142,23 @@ class Google_Service_CloudSourceRepositories_Resource_ProjectsRepos extends Goog
     return $this->call('setIamPolicy', array($params), "Google_Service_CloudSourceRepositories_Policy");
   }
   /**
+   * Synchronize a connected repo.
+   *
+   * The response contains SyncRepoMetadata in the metadata field. (repos.sync)
+   *
+   * @param string $name The name of the repo to synchronize. Values are of the
+   * form `projects//repos/`.
+   * @param Google_Service_CloudSourceRepositories_SyncRepoRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_CloudSourceRepositories_Operation
+   */
+  public function sync($name, Google_Service_CloudSourceRepositories_SyncRepoRequest $postBody, $optParams = array())
+  {
+    $params = array('name' => $name, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('sync', array($params), "Google_Service_CloudSourceRepositories_Operation");
+  }
+  /**
    * Returns permissions that a caller has on the specified resource. If the
    * resource does not exist, this will return an empty set of permissions, not a
    * NOT_FOUND error. (repos.testIamPermissions)

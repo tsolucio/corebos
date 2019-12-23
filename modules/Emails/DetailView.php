@@ -51,9 +51,6 @@ if (isset($_REQUEST['record'])) {
 		$focus->name = $focus->column_fields['subject'];
 	}
 }
-if (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
-	$focus->id = '';
-}
 
 //needed when creating a new email with default values passed in
 if (isset($_REQUEST['contact_name']) && is_null($focus->contact_name)) {

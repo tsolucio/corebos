@@ -20,6 +20,53 @@ include_once 'config.inc.php';
 require_once 'include/logging.php';
 require_once 'include/utils/utils.php';
 require_once 'modules/evvtgendoc/compile.php';
+require_once 'Smarty_setup.php';
+
+function outputOOModuleHeader($module) {
+	$i18n = getTranslatedString($module, $module);
+	$icon = getModuleIcon($module);
+	echo '<div class="slds-page-header" style="width:100%">
+<div class="slds-page-header__row">
+<div class="slds-p-right_medium">
+<div class="slds-media">
+<div class="slds-media__figure">
+<span class="slds-icon_container slds-icon-standard-contact" title="'.$i18n.'">
+<svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="include/LD/assets/icons/'.$icon['__ICONLibrary'].'-sprite/svg/symbols.svg#'.$icon['__ICONName'].'"></use>
+</svg>
+<span class="slds-assistive-text">'.$i18n.'</span>
+</span>
+</div>
+<div class="slds-media__body">
+<div class="slds-page-header__name">
+<div class="slds-page-header__name-title">
+<span class="slds-page-header__title slds-truncate" title="'.$i18n.'">'.$i18n.'</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>';
+}
+
+function outputOONoIconHeader($i18n) {
+	echo '<div class="slds-page-header" style="width:100%">
+<div class="slds-page-header__row">
+<div class="slds-p-right_medium">
+<div class="slds-media__body">
+<div class="slds-page-header__name">
+<div class="slds-page-header__name-title">
+<span class="slds-page-header__title slds-truncate" title="'.$i18n.'">'.$i18n.'</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>';
+}
+
+$smarty = new vtigerCRM_Smarty();
 
 echo '
 <script src="modules/EtiquetasOO/clipboard.min.js"></script>
@@ -28,7 +75,16 @@ function go_tab(obj){
 	location.href = "#"+obj.options[obj.selectedIndex].value;
 }
 </script>';
-
+$smarty->assign('APP', $app_strings);
+$smarty->assign('MOD', $mod_strings);
+$smarty->assign('MODULE', $currentModule);
+$smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
+include 'modules/cbupdater/forcedButtons.php';
+$smarty->assign('CHECK', $tool_buttons);
+$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
+$smarty->assign('THEME', $theme);
+$smarty->display('Buttons_List.tpl');
+echo '<div id="oocontainer" style="width:96%;margin: 5px auto">';
 if (isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_user_language'] != '') {
 	$current_language = $_SESSION['authenticated_user_language'];
 } else {
@@ -38,15 +94,14 @@ if (isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_
 $app_strings = return_application_language($current_language);
 $app_list_strings = return_app_list_strings_language($current_language);
 $eoo_strings = return_module_language($current_language, $currentModule);
-//echo '<pre>';var_dump($app_strings);echo '</pre>';
-echo '<div style="margin-left: 15px;">';
-echo '<h1>'.$eoo_strings['EOO_Title'].'</h1>';
 
 $SQL = "SELECT tabid, name, tablabel FROM vtiger_tab WHERE name='Users' or isentitytype";
 $res_tab = $adb->query($SQL);
 $num_tabs = $adb->num_rows($res_tab);
 $arr_options = array();
-echo '<span style="font-size:large">' . $eoo_strings['ElijaModulo'].'</span>&nbsp;<select onchange="go_tab(this);">';
+echo '<div class="slds-form-element__control">
+<div class="slds-select_container" style="width:90%;margin: 5px auto;">
+	<select name="oomodule" id="oomodule" onchange="go_tab(this);" class="slds-select">';
 while ($tab = $adb->fetch_array($res_tab)) {
 	if ($tab['tablabel'] == 'PBXManager') {
 		continue;
@@ -61,11 +116,13 @@ foreach ($special_modules as $sp_key => $sp_value) {
 	//echo '<option value="'.$sp_value.'">'.$etiq_tab.'</option>';
 }
 array_multisort($arr_options);
+echo '<option value="top">'.$eoo_strings['ElijaModulo'].'</option>';
+echo '<option value="speciallabels">**'.$eoo_strings['SpecialVars'].'**</option>';
 foreach ($arr_options as $op_key => $op_value) {
 	echo '<option value="'.$op_key.'">'.$op_value.'</option>';
 }
-echo '</select><br/>';
-echo '<br/><span style="font-size:large"><a href="#speciallabels"><b>' . $eoo_strings['SpecialVars'] . '</b></a></span><br/><hr>';
+echo '</select></div></div>';
+echo '<hr>';
 $btnclose = '<img src="modules/EtiquetasOO/copyclipboard.png" alt="'.getTranslatedString('Copy', 'EtiquetasOO').'" style="height:12px;vertical-align:middle"></button>';
 $res_tab = $adb->query($SQL);
 echo '<ul>';
@@ -76,28 +133,31 @@ while ($tab = $adb->fetch_array($res_tab)) {
 	$sp_tab[$tab['name']] = $tab['tabid'];
 	$mod_strings = return_module_language($current_language, $tab['name']);
 	$etiq_tab = (empty($app_strings[$tab['tablabel']]) ? $tab['tablabel'] : $app_strings[$tab['tablabel']] );
-	echo '<li><a name="'.$tab['name'].'"></a><h2>'.$etiq_tab.'</h2>';
-	echo '<table border="0">';
+	echo '<li><a name="'.$tab['name'].'"></a>';
+	outputOOModuleHeader($tab['name']);
+	echo '<table class="slds-table slds-table_cell-buffer slds-table_bordered">';
 	$SQL_FIELDS = 'SELECT fieldname,fieldlabel FROM vtiger_field WHERE presence IN (0,2) AND tabid=?';
 	$res_field = $adb->pquery($SQL_FIELDS, array($tab['tabid']));
 	while ($field = $adb->fetch_array($res_field)) {
 		$etiqueta = (empty($mod_strings[$field['fieldlabel']]) ? $field['fieldlabel'] : $mod_strings[$field['fieldlabel']]);
-		echo '<tr><td><b>'.$etiqueta.'</b>:</td><td>{'.$tab['name'].'.'.$field['fieldname'].'}';
+		echo '<tr class="slds-hint-parent" data-clipboard-text="{'.$tab['name'].'.'.$field['fieldname'].'}"><td style="width:350px;"><b>'.$etiqueta.'</b>:</td><td>{'.$tab['name'].'.'.$field['fieldname'].'}';
 		echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{'.$tab['name'].'.'.$field['fieldname'].'}">' . $btnclose;
 		echo '</td></tr>';
 	}
 	echo '</table>';
-	echo '<h3>'.$eoo_strings['RelatedModules'].'</h3>';
+	echo '<div class="slds-page-header__col-meta">
+		<h3 class="slds-text-heading_small"><u>'.$eoo_strings['RelatedModules'].'</u></h3>
+		</div>';
 	echo '<ul>';
 	if (array_key_exists($tab['name'], $related_module)) {
-		echo '<li>'.$eoo_strings['OneEntity'];
-		echo '<table>';
+		echo '<li><p class="slds-page-header__name-meta"><u>'.$eoo_strings['OneEntity'].'</u></p>';
+		echo '<table class="slds-table slds-table_cell-buffer slds-table_bordered">';
 		foreach ($related_module[$tab['name']] as $rel_key => $rel_value) {
 			$etiq_reltab = (empty($app_strings[$rel_key]) ? $rel_key : $app_strings[$rel_key] );
 			if (!in_array($etiq_reltab, $arr_options)) {
 				continue;
 			}
-			echo '<tr><td><a href="#'.$rel_key.'"><b>'.$etiq_reltab.':</b></a></td><td>{'.$rel_key.'}';
+			echo '<tr class="slds-hint-parent" data-clipboard-text="{'.$rel_key.'}"><td style="width:350px;"><a href="#'.$rel_key.'"><b>'.$etiq_reltab.':</b></a></<a><td>{'.$rel_key.'}';
 			echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{'.$rel_key.'}">' . $btnclose;
 			echo '</td></tr>';
 		}
@@ -107,8 +167,8 @@ while ($tab = $adb->fetch_array($res_tab)) {
 	$SQL_REL = 'SELECT related_tabid, label FROM vtiger_relatedlists WHERE tabid=? AND related_tabid<>0 AND name<>\'get_history\'';
 	$res_rel = $adb->pquery($SQL_REL, array($tab['tabid']));
 	if ($adb->num_rows($res_rel) > 0) {
-		echo '<li>'.$eoo_strings['VariosEntity'];
-		echo '<table>';
+		echo '<li><p class="slds-page-header__name-meta" title="'.getTranslatedString($eoo_strings['VariosEntity']).'"><u>'.$eoo_strings['VariosEntity'].'</u></p>';
+		echo '<table class="slds-table slds-table_cell-buffer slds-table_bordered">';
 		while ($rel_varios = $adb->fetch_array($res_rel)) {
 			$SQL_RELN = "SELECT name, tablabel FROM vtiger_tab WHERE tabid=?";
 			$res_reln = $adb->pquery($SQL_RELN, array($rel_varios['related_tabid']));
@@ -135,7 +195,7 @@ while ($tab = $adb->fetch_array($res_tab)) {
 					$etiq_reltab = $app_strings[$rel_varios['label']];
 				}
 			}
-			echo '<tr><td><a href="#'.$rel_name.'"><b>'.$etiq_reltab.':</b></a></td><td>{'.$rel_name.'}';
+			echo '<tr class="slds-hint-parent" data-clipboard-text="{'.$rel_name.'}"><td style="width:350px;"><a href="#'.$rel_name.'"><b>'.$etiq_reltab.':</b></a></td><td>{'.$rel_name.'}';
 			echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{'.$rel_name.'}">' . $btnclose;
 			echo '</td></tr>';
 		}
@@ -143,23 +203,28 @@ while ($tab = $adb->fetch_array($res_tab)) {
 		echo '</li>';
 	}
 	echo '</ul>';
-	echo '<a onclick="history.go(-1);">'.$eoo_strings['Back'].'</a>&nbsp;|&nbsp;<a href="#top">'.$eoo_strings['Up'].'</a>';
+	echo '<a onclick="history.go(-1);" class="slds-text-heading_small">'.$eoo_strings['Back'].'</a><span class="slds-text-heading_small">&nbsp;|&nbsp;</span><a href="#top"class="slds-text-heading_small">'.$eoo_strings['Up'].'</a>';
 	echo '</li>';
 }
 foreach ($special_modules as $sp_key => $sp_value) {
 	//$mod_strings = return_module_language($current_language, $sp_value);
 	$etiq_tab = $sp_key;
-	echo '<li><a name="'.$sp_key.'"></a><h2>'.$etiq_tab.'</h2>';
-	echo '<table border="0">';
+	echo '<li><a name="'.$sp_key.'"></a>';
+	outputOONoIconHeader($etiq_tab);
+	echo '<table class="slds-table slds-table_cell-buffer slds-table_bordered">';
 	if (is_array($sp_value)) {
 		foreach ($sp_value as $sp_valmod) {
 			$mod_strings = return_module_language($current_language, $sp_valmod);
 			$SQL_FIELDS = "SELECT fieldname,fieldlabel FROM vtiger_field WHERE presence IN (0,2) AND tabid=?";
 			$res_field = $adb->pquery($SQL_FIELDS, array($sp_tab[$sp_valmod]));
-			echo '<tr><td colspan="2"><h3>'.$sp_valmod.'</h3></td></tr>';
+			echo '<tr><td colspan="2">';
+			echo '<div class="slds-page-header__col-meta">
+			<h3 class="slds-text-heading_small"><u>'.$sp_valmod.'</u></h3>
+			</div>';
+			echo '</td></tr>';
 			while ($field = $adb->fetch_array($res_field)) {
 				$etiqueta = (empty($mod_strings[$field['fieldlabel']]) ? $field['fieldlabel'] : $mod_strings[$field['fieldlabel']]);
-				echo '<tr><td><b>'.$etiqueta.'</b>:</td><td>{'.$sp_key.'.'.$field['fieldname'].'}';
+				echo '<tr class="slds-hint-parent" data-clipboard-text="{'.$sp_key.'.'.$field['fieldname'].'}"><td style="width:350px;"><b>'.$etiqueta.'</b>:</td><td>{'.$sp_key.'.'.$field['fieldname'].'}';
 				echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{'.$sp_key.'.'.$field['fieldname'].'}">' . $btnclose;
 				echo '</td></tr>';
 			}
@@ -170,7 +235,7 @@ foreach ($special_modules as $sp_key => $sp_value) {
 		$res_field = $adb->pquery($SQL_FIELDS, array($sp_tab[$sp_value]));
 		while ($field = $adb->fetch_array($res_field)) {
 			$etiqueta = (empty($mod_strings[$field['fieldlabel']]) ? $field['fieldlabel'] : $mod_strings[$field['fieldlabel']]);
-			echo '<tr><td><b>'.$etiqueta.'</b>:</td><td>{'.$sp_key.'.'.$field['fieldname'].'}';
+			echo '<tr class="slds-hint-parent" data-clipboard-text="{'.$sp_key.'.'.$field['fieldname'].'}"><td style="width:350px;"><b>'.$etiqueta.'</b>:</td><td>{'.$sp_key.'.'.$field['fieldname'].'}';
 			echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{'.$sp_key.'.'.$field['fieldname'].'}">' . $btnclose;
 			echo '</td></tr>';
 		}
@@ -187,78 +252,81 @@ foreach ($special_modules as $sp_key => $sp_value) {
 		}
 		echo '</ul>';
 	}
-	echo '<a onclick="history.go(-1);" style="cursor: pointer;">'.$eoo_strings['Back'].'</a>&nbsp;|&nbsp;<a href="#top">'.$eoo_strings['Up'].'</a>';
+	echo '<a onclick="history.go(-1);" class="slds-text-heading_small">'.$eoo_strings['Back'].'</a><span class="slds-text-heading_small">&nbsp;|&nbsp;</span><a href="#top"class="slds-text-heading_small">'.$eoo_strings['Up'].'</a>';
 	echo '</li>';
 }
 include 'modules/evvtgendoc/commands_' . substr($current_language, 0, 2) . '.php';
-echo '<li><a name="speciallabels"></a><h2>'.$eoo_strings['SpecialVars'].'</h2>';
-echo '<table border="0">';
-echo '<tr><td><b>'.$foreachGD.'</b>:</td><td>'.$foreachGD.'}';
+echo '<li><a name="speciallabels"></a>';
+outputOONoIconHeader($eoo_strings['SpecialVars']);
+echo '<table class="slds-table slds-table_cell-buffer slds-table_bordered">';
+echo '<tr class="slds-hint-parent" data-clipboard-text="'.$foreachGD.'}'.$foreachEndGD.'"><td style="width:350px;"><b>'.$foreachGD.'</b>:</td><td>'.$foreachGD.'}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="'.$foreachGD.'}'.$foreachEndGD.'">' . $btnclose;
 echo '</td></tr>';
-echo '<tr><td><b>'.$ifexistsGD.'</b>:</td><td>'.$ifexistsGD.'}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="'.$ifexistsGD.'}'.$ifexistsEndGD.'"><td style="width:350px;"><b>'.$ifexistsGD.'</b>:</td><td>'.$ifexistsGD.'}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="'.$ifexistsGD.'}'.$ifexistsEndGD.'">' . $btnclose;
 echo '</td></tr>';
-echo '<tr><td><b>'.$ifnotexistsGD.'</b>:</td><td>'.$ifnotexistsGD.'}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="'.$ifnotexistsGD.'}'.$ifnotexistsEndGD.'"><td style="width:350px;"><b>'.$ifnotexistsGD.'</b>:</td><td>'.$ifnotexistsGD.'}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="'.$ifnotexistsGD.'}'.$ifnotexistsEndGD.'">' . $btnclose;
 echo '</td></tr>';
-echo '<tr><td><b>'.$imageGD.'</b>:</td><td>'.$imageGD.'}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="'.$imageGD.'}"><td style="width:350px;"><b>'.$imageGD.'</b>:</td><td>'.$imageGD.'}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="'.$imageGD.'}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr><td><b>'.$includeGD.'</b>:</td><td>'.$includeGD.'}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="'.$includeGD.'}"><td style="width:350px;"><b>'.$includeGD.'</b>:</td><td>'.$includeGD.'}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="'.$includeGD.'}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr><td><b>'.$insertindexGD.'</b>:</td><td>'.$insertindexGD.'';
+echo '<tr class="slds-hint-parent" data-clipboard-text="'.$insertindexGD.'"><td style="width:350px;"><b>'.$insertindexGD.'</b>:</td><td>'.$insertindexGD.'';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="'.$insertindexGD.'">' . $btnclose;
 echo '</td></tr>';
-echo '<tr><td><b>'.$dateGD.'</b>:</td><td>{'.$dateGD.':'.$eoo_strings['format'].'}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{'.$dateGD.'}"><td style="width:350px;"><b>'.$dateGD.'</b>:</td><td>{'.$dateGD.':'.$eoo_strings['format'].'}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{'.$dateGD.'}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr><td><b>'.$repeticionGD.'</b>:</td><td>{'.$repeticionGD.'}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{'.$repeticionGD.'}"><td style="width:350px;"><b>'.$repeticionGD.'</b>:</td><td>{'.$repeticionGD.'}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{'.$repeticionGD.'}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr><td><b>'.$expressionGD.'</b>:</td><td>{'.$expressionGD.$eoo_strings['WorkflowExpresion'].'}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{'.$expressionGD.'}"><td style="width:350px;"><b>'.$expressionGD.'</b>:</td><td>{'.$expressionGD.$eoo_strings['WorkflowExpresion'].'}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{'.$expressionGD.'}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr><td><b>'.$lineGD.'</b>:</td><td>{'.$lineGD.'}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{'.$lineGD.'}"><td style="width:350px;"><b>'.$lineGD.'</b>:</td><td>{'.$lineGD.'}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{'.$lineGD.'}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr><td><b>Organization</b>:</td><td>{Organization.organizationname}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{Organization.organizationname}"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.organizationname}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{Organization.organizationname}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr><td><b>Organization</b>:</td><td>{Organization.address}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{Organization.address}"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.address}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{Organization.address}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr><td><b>Organization</b>:</td><td>{Organization.city}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{Organization.city}"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.city}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{Organization.city}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr><td><b>Organization</b>:</td><td>{Organization.state}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{Organization.state}"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.state}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{Organization.state}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr><td><b>Organization</b>:</td><td>{Organization.code}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{Organization.code}"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.code}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{Organization.code}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr><td><b>Organization</b>:</td><td>{Organization.country}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{Organization.country}"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.country}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{Organization.country}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr><td><b>Organization</b>:</td><td>{Organization.phone}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{Organization.phone}"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.phone}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{Organization.phone}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr><td><b>Organization</b>:</td><td>{Organization.fax}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{Organization.fax}"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.fax}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{Organization.fax}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr><td><b>Organization</b>:</td><td>{Organization.website}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{Organization.website}"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.website}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{Organization.website}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr><td><b>Organization</b>:</td><td>{Organization.'.$eoo_strings['field'].'}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{Organization.}"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.'.$eoo_strings['field'].'}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{Organization.}">' . $btnclose;
 echo '</td></tr>';
 echo '</table>';
-echo '<a onclick="history.go(-1);" style="cursor: pointer;">'.$eoo_strings['Back'].'</a>&nbsp;|&nbsp;<a href="#top">'.$eoo_strings['Up'].'</a>';
+echo '<a onclick="history.go(-1);" class="slds-text-heading_small">'.$eoo_strings['Back'].'</a><span class="slds-text-heading_small">&nbsp;|&nbsp;</span><a href="#top"class="slds-text-heading_small">'.$eoo_strings['Up'].'</a>';
 echo '</li>';
 echo '</ul>';
 echo '</div>';
+echo '</div>'; // container
 ?>
 <script>
 new Clipboard('.btn');
+new Clipboard('.slds-hint-parent');
 </script>

@@ -178,7 +178,11 @@ function saveFieldInfo(fieldid,module,sub_mode,typeofdata){
 		}
 		urlstring = urlstring + '&defaultvalue=' + encodeURIComponent(defaultvalue);
 	}
-
+	if (document.getElementById('dependent_list_'+fieldid) && document.getElementById('dependent_list_'+fieldid).length > 0) {
+		let dependentlistselectElement = document.getElementById('dependent_list_'+fieldid);
+		let dependentlistselectedValues = Array.from(dependentlistselectElement.selectedOptions).map(option => option.value);
+		urlstring = urlstring + '&dependentmoduleselected=' + encodeURIComponent(dependentlistselectedValues);
+	}
 	VtigerJS_DialogBox.showbusy();
 	jQuery.ajax({
 		method:"POST",
@@ -186,7 +190,7 @@ function saveFieldInfo(fieldid,module,sub_mode,typeofdata){
 			'&fieldid='+fieldid+'&fld_module='+module+'&ajax=true'+urlstring
 	}).done(function(response) {
 		fninvsh('editfield_'+fieldid);
-		document.getElementById("cfList").innerHTML=response;
+		document.getElementById('cfList').innerHTML=response;
 		VtigerJS_DialogBox.hidebusy();
 	});
 }

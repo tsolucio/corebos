@@ -525,6 +525,10 @@ $app_strings = array(
 	'LBL_TAX' => 'adó',
 	'LBL_ADJUSTMENT' => 'Kézi módosítási lehetőség',
 	'LBL_GRAND_TOTAL' => 'Teljes összeg',
+	'LBL_PAYMENT_INFORMATION'=> 'Payment Information',
+	'Total Amount' => 'Total Amount',
+	'Total Pending' => 'Total Pending',
+	'Balance' => 'Balance',
 	'LBL_QUOTE_ID' => 'Ajánlat No.',
 	'LBL_SALES_ORDER_ID' => 'Megrendelés No.',
 	'LBL_PURCHASE_ORDER_ID' => 'Beszerzés No.',
@@ -582,6 +586,7 @@ $app_strings = array(
 	'LBL_SO_STATUS' => 'Rendelés Állapot',
 	'LBL_INVOICE_STATUS' => 'Díjbekérő Állapot',
 	'LBL_MODULE' => 'Modul',
+	'LBL_TOTAL_FILTERED' => 'Total',
 	'Active' => 'Aktív',
 	'Inactive' => 'InAktív',
 	'Last 2 Days' => 'Előző 2 Nap',
@@ -1262,6 +1267,19 @@ $app_strings = array(
 	'Select Related Module' => 'Select Related Module',
 	'No Module' => 'No related Module',
 	'Entity Name' => 'Entity Name',
+	'Add event' => 'Add event',
+	'Create Invoice' => 'Create Invoice',
+	'Send Email With PDF' => 'Send Email With PDF',
+	'Export To PDF' => 'Export To PDF',
+	'Generate Sales Order' => 'Generate Sales Order',
+	'Generate Invoice' => 'Generate Invoice',
+	'Create Quote' => 'Create Quote',
+	'Create Purchase Order' => 'Create Purchase Order',
+	'Create Sales Order' => 'Create Sales Order',
+	'csrf_warning' => 'CSRF Error. The reason this happens is that the page has been open without any interaction for too
+	long. For security reason, it has expired. Please reload the page by hitting CTRL + R or press reload below.',
+	'csrf_reload' => 'Reload the page',
+	'LBL_NOPRODUCTS' => 'Can\'t convert SalesOrder to Invoice because there aren\'t any remaining products to invoice.',
 );
 
 // Translation for currency names

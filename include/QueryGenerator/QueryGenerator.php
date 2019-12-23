@@ -1505,7 +1505,9 @@ class QueryGenerator {
 			if (!empty($advft_criteria)) {
 				$advft_criteria = json_decode($advft_criteria, true);
 			}
-			$advft_criteria_groups = (empty($input['advft_criteria_groups']) ? $_REQUEST['advft_criteria_groups'] : $input['advft_criteria_groups']);
+			$advft_criteria_groups = (empty($input['advft_criteria_groups']) ?
+				(isset($_REQUEST['advft_criteria_groups']) ? $_REQUEST['advft_criteria_groups'] : null) :
+				$input['advft_criteria_groups']);
 			if (!empty($advft_criteria_groups)) {
 				$advft_criteria_groups = json_decode($advft_criteria_groups, true);
 			}

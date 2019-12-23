@@ -32,10 +32,6 @@ if (empty($_REQUEST['record']) || $focus->user_name == '') {
 	exit;
 }
 
-if (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
-	$focus->id = '';
-}
-
 global $theme;
 $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
@@ -81,14 +77,14 @@ if ((is_admin($current_user) || $_REQUEST['record'] == $current_user->id)
 		&& isset($lock_default_user_name)
 		&& $lock_default_user_name == true
 ) {
-	$buttons = "<input title='".$app_strings['LBL_EDIT_BUTTON_TITLE']."' accessKey='".$app_strings['LBL_EDIT_BUTTON_KEY']."' class='crmButton small edit'"
+	$buttons = "<button title='".$app_strings['LBL_EDIT_BUTTON_TITLE']."' accessKey='".$app_strings['LBL_EDIT_BUTTON_KEY']."' class='slds-button slds-button_neutral'"
 		." onclick=\"this.form.return_module.value='Users'; this.form.return_action.value='DetailView'; this.form.return_id.value='$focus->id'; "
-		."this.form.action.value='EditView';\" type='submit' name='Edit' value='  ".$app_strings['LBL_EDIT_BUTTON_LABEL']."  '>";
+		."this.form.action.value='EditView';\" type='submit' name='Edit'>  ".$app_strings['LBL_EDIT_BUTTON_LABEL']."  </button>";
 	$smarty->assign('EDIT_BUTTON', $buttons);
 } elseif ((is_admin($current_user) && !in_array($focus->user_name, $cbodBlockedUsers)) || $_REQUEST['record'] == $current_user->id) {
-	$buttons = "<input title='".$app_strings['LBL_EDIT_BUTTON_TITLE']."' accessKey='".$app_strings['LBL_EDIT_BUTTON_KEY']."' class='crmButton small edit'"
+	$buttons = "<button title='".$app_strings['LBL_EDIT_BUTTON_TITLE']."' accessKey='".$app_strings['LBL_EDIT_BUTTON_KEY']."' class='slds-button slds-button_neutral'"
 		." onclick=\"this.form.return_module.value='Users'; this.form.return_action.value='DetailView'; this.form.return_id.value='$focus->id'; "
-		."this.form.action.value='EditView';\" type='submit' name='Edit' value='  ".$app_strings['LBL_EDIT_BUTTON_LABEL']."  '>";
+		."this.form.action.value='EditView';\" type='submit' name='Edit'>  ".$app_strings['LBL_EDIT_BUTTON_LABEL']."  </button>";
 	$smarty->assign('EDIT_BUTTON', $buttons);
 	$authType = GlobalVariable::getVariable('User_AuthenticationType', 'SQL');
 	if (is_admin($current_user)) {
@@ -111,9 +107,12 @@ if ((is_admin($current_user) || $_REQUEST['record'] == $current_user->id)
 	$smarty->assign('CHANGE_PW_BUTTON', $buttons);
 }
 if (is_admin($current_user) && !in_array($focus->user_name, $cbodBlockedUsers)) {
-	$buttons = "<input title='".$app_strings['LBL_DUPLICATE_BUTTON_TITLE']."' accessKey='".$app_strings['LBL_DUPLICATE_BUTTON_KEY']."' class='crmButton small create'"
-		." onclick=\"this.form.return_module.value='Users'; this.form.return_action.value='DetailView'; this.form.isDuplicate.value=true; this.form.return_id.value='"
-		.vtlib_purify($_REQUEST['record'])."';this.form.action.value='EditView'\" type='submit' name='Duplicate' value='".$app_strings['LBL_DUPLICATE_BUTTON_LABEL']."'>";
+	$buttons = "<a title='".$app_strings['LBL_DUPLICATE_BUTTON_TITLE']."' accessKey='".$app_strings['LBL_DUPLICATE_BUTTON_KEY']."' role='menuitem'"
+		." href='javascript:void(0);'"
+		." onclick=\"window.forms['DetailView'].return_module.value='Users'; window.forms['DetailView'].return_action.value='DetailView';"
+		." window.forms['DetailView'].isDuplicate.value=true; window.forms['DetailView'].return_id.value='".vtlib_purify($_REQUEST['record'])
+		."';window.forms['DetailView'].action.value='EditView'; window.forms['DetailView'].submit();\" name='Duplicate'>"
+		."<span class='slds-truncate' title='".$app_strings['LBL_DUPLICATE_BUTTON_LABEL']."'><span>".$app_strings['LBL_DUPLICATE_BUTTON_LABEL'].'</span></span></a>';
 	$smarty->assign('DUPLICATE_BUTTON', $buttons);
 
 	//done so that only the admin user can see the customize tab button
@@ -163,9 +162,14 @@ if ($current_user->id == $_REQUEST['record'] || is_admin($current_user) == true)
 		$smarty->assign('mustChangePassword', 0);
 	}
 	if (isset($_REQUEST['error_string'])) {
+		$errormessageclass = isset($_REQUEST['error_msgclass']) ? vtlib_purify($_REQUEST['error_msgclass']) : '';
+		$smarty->assign('ERROR_MESSAGE_CLASS', $errormessageclass);
 		$smarty->assign('ERROR_MESSAGE', vtlib_purify($_REQUEST['error_string']));
 	}
-
+	// Gather the custom link information to display
+	include_once 'vtlib/Vtiger/Link.php';
+	$customlink_params = array('MODULE'=>$currentModule, 'RECORD'=>$focus->id, 'ACTION'=>vtlib_purify($_REQUEST['action']));
+	$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType($tabid, array('DETAILVIEWBASIC'), $customlink_params, null, $focus->id));
 	$smarty->assign('view', null);
 	$smarty->display('UserDetailView.tpl');
 } else {

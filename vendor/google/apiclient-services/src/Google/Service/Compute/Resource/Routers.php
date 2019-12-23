@@ -26,7 +26,8 @@
 class Google_Service_Compute_Resource_Routers extends Google_Service_Resource
 {
   /**
-   * Retrieves an aggregated list of routers. (routers.aggregatedList)
+   * Retrieves an aggregated list of routers. (== suppress_warning http-rest-
+   * shadowed ==) (routers.aggregatedList)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -78,7 +79,8 @@ class Google_Service_Compute_Resource_Routers extends Google_Service_Resource
     return $this->call('aggregatedList', array($params), "Google_Service_Compute_RouterAggregatedList");
   }
   /**
-   * Deletes the specified Router resource. (routers.delete)
+   * Deletes the specified Router resource. (== suppress_warning http-rest-
+   * shadowed ==) (routers.delete)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
@@ -107,7 +109,8 @@ class Google_Service_Compute_Resource_Routers extends Google_Service_Resource
   }
   /**
    * Returns the specified Router resource. Gets a list of available routers by
-   * making a list() request. (routers.get)
+   * making a list() request. (== suppress_warning http-rest-shadowed ==)
+   * (routers.get)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
@@ -122,8 +125,8 @@ class Google_Service_Compute_Resource_Routers extends Google_Service_Resource
     return $this->call('get', array($params), "Google_Service_Compute_Router");
   }
   /**
-   * Retrieves runtime Nat mapping information of VM endpoints.
-   * (routers.getNatMappingInfo)
+   * Retrieves runtime Nat mapping information of VM endpoints. (==
+   * suppress_warning http-rest-shadowed ==) (routers.getNatMappingInfo)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
@@ -178,8 +181,8 @@ class Google_Service_Compute_Resource_Routers extends Google_Service_Resource
     return $this->call('getNatMappingInfo', array($params), "Google_Service_Compute_VmEndpointNatMappingsList");
   }
   /**
-   * Retrieves runtime information of the specified router.
-   * (routers.getRouterStatus)
+   * Retrieves runtime information of the specified router. (== suppress_warning
+   * http-rest-shadowed ==) (routers.getRouterStatus)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
@@ -195,7 +198,8 @@ class Google_Service_Compute_Resource_Routers extends Google_Service_Resource
   }
   /**
    * Creates a Router resource in the specified project and region using the data
-   * included in the request. (routers.insert)
+   * included in the request. (== suppress_warning http-rest-shadowed ==)
+   * (routers.insert)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
@@ -223,8 +227,8 @@ class Google_Service_Compute_Resource_Routers extends Google_Service_Resource
     return $this->call('insert', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Retrieves a list of Router resources available to the specified project.
-   * (routers.listRouters)
+   * Retrieves a list of Router resources available to the specified project. (==
+   * suppress_warning http-rest-shadowed ==) (routers.listRouters)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
@@ -279,7 +283,7 @@ class Google_Service_Compute_Resource_Routers extends Google_Service_Resource
   /**
    * Patches the specified Router resource with the data included in the request.
    * This method supports PATCH semantics and uses JSON merge patch format and
-   * processing rules. (routers.patch)
+   * processing rules. (== suppress_warning http-rest-shadowed ==) (routers.patch)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
@@ -309,7 +313,8 @@ class Google_Service_Compute_Resource_Routers extends Google_Service_Resource
   }
   /**
    * Preview fields auto-generated during router create and update operations.
-   * Calling this method does NOT create or update the router. (routers.preview)
+   * Calling this method does NOT create or update the router. (==
+   * suppress_warning http-rest-shadowed ==) (routers.preview)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
@@ -326,7 +331,10 @@ class Google_Service_Compute_Resource_Routers extends Google_Service_Resource
   }
   /**
    * Updates the specified Router resource with the data included in the request.
-   * (routers.update)
+   * This method conforms to PUT semantics, which requests that the state of the
+   * target resource be created or replaced with the state defined by the
+   * representation enclosed in the request message payload. (== suppress_warning
+   * http-rest-shadowed ==) (routers.update)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.

@@ -7,16 +7,14 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
-require_once('install/installAddons.php');
-require_once('config.php');
-require_once('include/logging.php');
-require_once('modules/Users/Users.php');
-require_once('modules/Users/LoginHistory.php');
-require_once('data/Tracker.php');
-require_once('include/utils/utils.php');
-require_once('modules/Users/DefaultDataPopulator.php');
-require_once('modules/Users/CreateUserPrivilegeFile.php');
+require_once 'install/installAddons.php';
+require_once 'config.inc.php';
+require_once 'include/logging.php';
+require_once 'modules/Users/Users.php';
+require_once 'modules/Users/LoginHistory.php';
+require_once 'data/Tracker.php';
+require_once 'include/utils/utils.php';
+require_once 'modules/Users/CreateUserPrivilegeFile.php';
 
 global $php_max_execution_time;
 set_time_limit($php_max_execution_time);
@@ -24,11 +22,11 @@ set_time_limit($php_max_execution_time);
 session_start();
 
 $auth_key = $_REQUEST['auth_key'];
-if($_SESSION['authentication_key'] != $auth_key) {
+if ($_SESSION['authentication_key'] != $auth_key) {
 	die($installationStrings['ERR_NOT_AUTHORIZED_TO_PERFORM_THE_OPERATION']);
 }
 global $selected_optional_modules;
-if(isset($_REQUEST['selected_modules'])) {
+if (isset($_REQUEST['selected_modules'])) {
 	$_SESSION['installation_info']['selected_optional_modules'] = $_REQUEST['selected_modules'] ;
 }
 
@@ -57,11 +55,11 @@ $_SESSION = array();
 // If it's desired to kill the session, also delete the session cookie.
 // Note: This will destroy the session, and not just the session data!
 if (isset($_COOKIE[session_name()])) {
-   setcookie(session_name(), '', time()-42000, '/');
+	setcookie(session_name(), '', time()-42000, '/');
 }
 
 // Finally, destroy the session.
-session_destroy(); 
+session_destroy();
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>

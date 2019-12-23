@@ -17,6 +17,8 @@
 
 class Google_Service_DriveActivity_Target extends Google_Model
 {
+  protected $driveType = 'Google_Service_DriveActivity_Drive';
+  protected $driveDataType = '';
   protected $driveItemType = 'Google_Service_DriveActivity_DriveItem';
   protected $driveItemDataType = '';
   protected $fileCommentType = 'Google_Service_DriveActivity_FileComment';
@@ -24,6 +26,20 @@ class Google_Service_DriveActivity_Target extends Google_Model
   protected $teamDriveType = 'Google_Service_DriveActivity_TeamDrive';
   protected $teamDriveDataType = '';
 
+  /**
+   * @param Google_Service_DriveActivity_Drive
+   */
+  public function setDrive(Google_Service_DriveActivity_Drive $drive)
+  {
+    $this->drive = $drive;
+  }
+  /**
+   * @return Google_Service_DriveActivity_Drive
+   */
+  public function getDrive()
+  {
+    return $this->drive;
+  }
   /**
    * @param Google_Service_DriveActivity_DriveItem
    */

@@ -35,6 +35,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Debug_Send_AdminLoginIPAuth_Error',
 				'Debug_Send_UserLoginIPAuth_Error',
 				'Debug_Calculate_Response_Time',
+				'Debug_ActivityReminder_Deactivated',
 
 				'Application_Global_Search_SelectedModules',
 				'Application_Global_Search_Binary',
@@ -56,6 +57,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Display_World_Clock',
 				'Application_Display_Mini_Calendar',
 				'Application_Use_RTE',
+				'Application_RTESpellcheck',
 				'Application_Default_Action',
 				'Application_Default_Module',
 				'Application_Allow_Exports',
@@ -70,6 +72,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_ListView_Compute_Page_Count',
 				'Application_ListView_Sum_Currency',
 				'Application_ListView_SearchColumns',
+				'Application_ListView_SearchColumns_AC_Trigger',
 				'Application_SaveAndRepeatActive',
 				'Application_Upload_MaxSize',
 				'Application_Single_Pane_View',
@@ -125,6 +128,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Mobile_UI_Enabled',
 
 				'Webservice_showUserAdvancedBlock',
+				'Webservice_PermitQueryOnInactiveUsers',
 				'Webservice_CORS_Enabled_Domains',
 				'Webservice_Enabled',
 				'WebService_Session_Life_Span',
@@ -138,6 +142,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'User_AuthenticationType',
 				'User_2FAAuthentication',
 				'User_2FAAuthentication_SendMethod',
+				'User_MandatoryAuthenticationSQL',
 
 				'Accounts_BlockDuplicateName',
 				'Campaign_CreatePotentialOnAccountRelation',
@@ -189,9 +194,14 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Document_CreateSelectContactFolder',
 				'Document_CreateSelectAccountFolder',
 				'Document_CreateSelectAccountFolderForContact',
+				'Attachment_ShowDownloadName',
 				'HomePage_Widget_Group_Size',
 				'Zero_Bounce_API_KEY',
 				'GenDoc_CopyLabelToClipboard',
+				'GenDoc_Convert_URL',
+				'CobroPago_Invoice_Status_OnPaid',
+				'CobroPago_PurchaseOrder_Status_OnPaid',
+				'CobroPago_SalesOrder_Status_OnPaid',
 
 				'Report_Send_Scheduled_ifEmpty',
 				'Report_ListView_PageSize',
@@ -202,6 +212,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 
 				'Inventory_ListPrice_ReadOnly',
 				'Inventory_Show_ShippingHandlingCharges',
+				'Inventory_Check_Invoiced_Lines',
 				'GContacts_Max_Results',
 
 				'CustomerPortal_PDF_Modules',
@@ -210,7 +221,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'CustomerPortal_PDFTemplate_SalesOrder',
 				'CustomerPortal_PDFTemplate_Invoice',
 				'CustomerPortal_PDFTemplate_PurchaseOrder',
-
+				'Project_Gantt_Type',
 				'RecordVersioningModules',
 			);
 			$delete_these = array(
@@ -246,6 +257,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'corebos_app_url',
 				'SOAP_Thunderbird_Enabled',
 				'Home_Display_Empty_Blocks',
+				'Gantt_Type',
 			);
 			$rename_these = array(
 				'Show_Copy_Adress_Header' => array(

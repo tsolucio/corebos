@@ -44,7 +44,7 @@ function duplicaterec($currentModule, $record_id, $bmap) {
 	if ($cbMapid && $cbMap->DuplicateRelations()->DuplicateDirectRelations()) {
 		$invmods = getInventoryModules();
 		foreach ($focus->column_fields as $fieldname => $value) {
-			$sql = 'SELECT * FROM vtiger_field WHERE columnname = ? AND uitype IN (10,51,57,73,76,78,80)';
+			$sql = 'SELECT * FROM vtiger_field WHERE columnname=? AND uitype=10';
 			$result = $adb->pquery($sql, array($fieldname));
 			if ($adb->num_rows($result) == 1 && !empty($value)) {
 				$module = getSalesEntityType($value);
@@ -268,6 +268,20 @@ function get_dependent_tables($dependents_list, $currentModule) {
 		}
 	}
 	return $dependent_tables;
+}
+
+function getUIType10DependentModules($module) {
+	global $adb;
+	$dep = array();
+	$sql = 'SELECT module,tablename,columnname FROM vtiger_fieldmodulerel JOIN vtiger_field ON vtiger_fieldmodulerel.fieldid=vtiger_field.fieldid WHERE relmodule=?';
+	$result = $adb->pquery($sql, array($module));
+	while ($r = $adb->fetch_array($result)) {
+		$dep[$r['module']] = array(
+			'tablename' => $r['tablename'],
+			'columname' => $r['columnname'],
+		);
+	}
+	return $dep;
 }
 
 function dup_dependent_rec($record_id, $relatedModule, $new_record_id, $dependent_tables, $maped_relations) {

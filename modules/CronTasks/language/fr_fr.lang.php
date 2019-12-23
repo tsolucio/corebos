@@ -45,5 +45,6 @@ $mod_strings = array (
 	'Scheduler' => 'Planificateur',
 	'Cron Job' => 'Tâche Cron',
 	'cronWatcherService' => 'Cron Watcher Service',
+	'Send out warning email for long running cron tasks' => 'Send out warning email for long running cron tasks.',
 );
 ?>

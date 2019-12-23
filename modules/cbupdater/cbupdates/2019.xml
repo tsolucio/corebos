@@ -146,4 +146,241 @@
 	<classname>addValueOnBusinessAction</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>add sendgrid notification driver</description>
+	<filename>build/changeSets/2019/sendgridnotificationdriver.php</filename>
+	<classname>sendgridnotificationdriver</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add default and quick create fields to Taxes</description>
+	<filename>build/changeSets/2019/AddConfigFieldsToTaxes.php</filename>
+	<classname>AddConfigFieldsToTaxes</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>migrate uitype 76 (potential capture) to uitype 10 (standard capture)</description>
+	<filename>build/changeSets/2019/migrateUIType76to10.php</filename>
+	<classname>migrateUIType76to10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>update datetime for both cbtranslation and cbTermConditions modules</description>
+	<filename>build/changeSets/2019/updateDateTime.php</filename>
+	<classname>updateDateTime</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Generate Document Workflow Task</description>
+	<filename>build/changeSets/2019/addGenerateDocumentTaskType.php</filename>
+	<classname>addGenerateDocumentTaskType</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add payment control fields to Accounts</description>
+	<filename>build/changeSets/2019/addPaymentFieldsToAccounts.php</filename>
+	<classname>addPaymentFieldsToAccounts</classname>
+	<systemupdate>false</systemupdate>
+	<blocked>true</blocked>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add payment control fields to Contacts</description>
+	<filename>build/changeSets/2019/addPaymentFieldsToContacts.php</filename>
+	<classname>addPaymentFieldsToContacts</classname>
+	<systemupdate>false</systemupdate>
+	<blocked>true</blocked>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add payment control fields to Vendors</description>
+	<filename>build/changeSets/2019/addPaymentFieldsToVendors.php</filename>
+	<classname>addPaymentFieldsToVendors</classname>
+	<systemupdate>false</systemupdate>
+	<blocked>true</blocked>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add payment control fields to Invoice</description>
+	<filename>build/changeSets/2019/addPaymentFieldsToInvoice.php</filename>
+	<classname>addPaymentFieldsToInvoice</classname>
+	<systemupdate>false</systemupdate>
+	<blocked>true</blocked>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add payment control fields to Purchase Order</description>
+	<filename>build/changeSets/2019/addPaymentFieldsToPO.php</filename>
+	<classname>addPaymentFieldsToPO</classname>
+	<systemupdate>false</systemupdate>
+	<blocked>true</blocked>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add payment control fields to Sales Order</description>
+	<filename>build/changeSets/2019/addPaymentFieldsToSO.php</filename>
+	<classname>addPaymentFieldsToSO</classname>
+	<systemupdate>false</systemupdate>
+	<blocked>true</blocked>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Increment the size of menu columns</description>
+	<filename>build/changeSets/2019/incrementMenuFieldsSize.php</filename>
+	<classname>incrementMenuFieldsSize</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>migrate uitype 20 (textbox) to uitype 19 (textbox)</description>
+	<filename>build/changeSets/2019/convertUitype20to19.php</filename>
+	<classname>convertUitype20to19</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>migrate uitype 22 and 24 to uitype 21</description>
+	<filename>build/changeSets/2019/convertUitype22and24to21.php</filename>
+	<classname>convertUitype22and24to21</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Install ro_ro language</description>
+	<filename>build/changeSets/2019/installrorolanguage.php</filename>
+	<classname>installrorolanguage</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>elifuraha</author>
+	<description>Add coreBOS Rule web service call missing context </description>
+	<filename>build/changeSets/2019/addCbRuleMissingContext.php</filename>
+	<classname>addCbRuleMissingContext</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Activate Quick Create support for taxes in Product/Service</description>
+	<filename>build/changeSets/2019/activateQCProdServ.php</filename>
+	<classname>activateQCProdServ</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>install Push Notifications Workflow Task</description>
+	<filename>build/changeSets/2019/installPushNotWorkflowTask.php</filename>
+	<classname>installPushNotWorkflowTask</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add business question materialized view fields and actions</description>
+	<filename>build/changeSets/2019/addcbquestionfieldsandactions.php</filename>
+	<classname>addcbquestionfieldsandactions</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>Elifuraha</author>
+	<description>migrate uitype 80 (Sale Order capture) to uitype 10 (standard capture)</description>
+	<filename>build/changeSets/2019/migrateUIType80to10.php</filename>
+	<classname>migrateUIType80to10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>glorymoshi</author>
+	<description>add new parameter to upsert function</description>
+	<filename>build/changeSets/2019/addParameterinupsertfunction.php</filename>
+	<classname>addParameterinupsertfunction</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>Kiko Jover</author>
+	<description>Add new fields to InventoryDetails to control remaining units in SO</description>
+	<filename>build/changeSets/2019/add_RU_Relline_InventoryDetails.php</filename>
+	<classname>add_RU_Relline_InventoryDetails</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>Kiko Jover</author>
+	<description>Initialise remaining units in InventoryDetails</description>
+	<filename>build/changeSets/2019/upd_RemainingUnits_InventoryDetails.php</filename>
+	<classname>upd_RemainingUnits_InventoryDetails</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mocodertz</author>
+	<description>Generate Image Code Task</description>
+	<filename>build/changeSets/2019/installGenerateImageCodeWorkflowTask.php</filename>
+	<classname>installGenerateImageCodeWorkflowTask</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Fix incorrect Mass Edit value for Business Questions</description>
+	<filename>build/changeSets/2019/fixcbQuestionMassEdit.php</filename>
+	<classname>fixcbQuestionMassEdit</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Unblock coreBOS Rule web service call missing context </description>
+	<filename>build/changeSets/2019/addCbRuleMissingContextUnblock.php</filename>
+	<classname>addCbRuleMissingContextUnblock</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Unblock login users automatically after a few minutes</description>
+	<filename>build/changeSets/2019/cronUnblockLoginUsers.php</filename>
+	<classname>cronUnblockLoginUsers</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Creating table for authorized scripts</description>
+	<filename>build/changeSets/2019/authorizedScriptsTable.php</filename>
+	<classname>authorizedScriptsTable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>change Validation Map Name to follow the same convention as other business maps (apply by name)</description>
+	<filename>build/changeSets/2019/changeValidationMapNames.php</filename>
+	<classname>changeValidationMapNames</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Business Action Web Service Context Parameter</description>
+	<filename>build/changeSets/2019/BActionContextParameter.php</filename>
+	<classname>BActionContextParameter</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>Elifuraha</author>
+	<description>migrate uitype 66 (Parent_id capture) to uitype 10 (standard capture)</description>
+	<filename>build/changeSets/2019/migrateUIType66to10.php</filename>
+	<classname>migrateUIType66to10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>migrate uitype 78 (quotes capture) to uitype 10 (standard capture)</description>
+	<filename>build/changeSets/2019/migrateUIType78to10.php</filename>
+	<classname>migrateUIType78to10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>migrate uitypes 51,57,73 (account/contact capture) to uitype 10 (standard capture)</description>
+	<filename>build/changeSets/2019/migrateUIType515773to10.php</filename>
+	<classname>migrateUIType515773to10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

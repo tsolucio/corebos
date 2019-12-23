@@ -7,6 +7,50 @@
  * All Rights Reserved.
  ********************************************************************************/
 
+function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid) {
+	var baseurl = 'index.php?action=GlobalVariableAjax&file=SearchGlobalVar&module=GlobalVariable';
+	if (gvuserid==undefined || gvuserid=='') {
+		if (typeof gVTUserID=='undefined') {
+			gvuserid = '';
+		} else {
+			gvuserid = gVTUserID;
+		}
+	} // current connected user
+	if (gvmodule==undefined || gvmodule=='') {
+		gvmodule = gVTModule;
+	} // current module
+	// Return a new promise avoiding jquery and prototype
+	return new Promise(function (resolve, reject) {
+		var url = baseurl + '&gvname='+gvname+'&gvuserid='+gvuserid+'&gvmodule='+gvmodule+'&gvdefault='+gvdefault+'&returnvalidation=0';
+		var req = new XMLHttpRequest();
+		req.open('GET', url, true);  // make call asynchronous
+
+		req.onload = function () {
+			// check the status
+			if (req.status == 200) {
+				// Resolve the promise with the response text
+				try {
+					JSON.parse(req.response);
+					resolve(req.response);
+				} catch (e) {
+					resolve('{"'+gvname+'":"'+gvdefault+'"}');
+				}
+			} else {
+				// Otherwise reject with the status text which will hopefully be a meaningful error
+				reject(new Error(req.statusText));
+			}
+		};
+
+		// Handle errors
+		req.onerror = function () {
+			reject(new Error('Network/Script Error'));
+		};
+
+		// Make the request
+		req.send();
+	});
+}
+
 //Utility Functions
 
 function getTagCloud(crmid) {
@@ -29,7 +73,7 @@ function DeleteTag(id, recordid) {
 		method:'POST',
 		url:'index.php?file=TagCloud&module='+gVTModule+'&action='+gVTModule+'Ajax&ajxaction=DELETETAG&recordid='+recordid+'&tagid=' +id,
 	}).done(function (response) {
-		getTagCloud();
+		getTagCloud(recordid);
 		VtigerJS_DialogBox.hidebusy();
 	});
 }
@@ -699,6 +743,9 @@ function dateComparison(fldName1, fldLabel1, fldName2, fldLabel2, type) {
 }
 
 function dateComparisonObject(fldObj1, fldLabel1, fldObj2, fldLabel2, type) {
+	if (typeof fldObj1=='undefined' || typeof fldObj2=='undefined') {
+		return true;
+	}
 	var dateval1=fldObj1.value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 	var dateval2=fldObj2.value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 
@@ -1248,6 +1295,79 @@ function __addLog(message) {
 	r.scrollTop = r.scrollHeight;
 }
 
+function runBAScript(scripturi) {
+	VtigerJS_DialogBox.block();
+	let SVModule = gVTModule;
+	let cbmod = document.getElementById('module');
+	if (cbmod) {
+		SVModule = cbmod.value;
+	}
+	let SVRecord = 0;
+	let cbrec = document.getElementById('record');
+	if (cbrec) {
+		SVRecord = cbrec.value;
+	}
+	jQuery.ajax({
+		url: scripturi+'&__module='+SVModule+'&__crmid='+SVRecord,
+		type:'get'
+	}).fail(function (jqXHR, textStatus) {
+		document.getElementById('appnotifydiv').innerHTML='</b>'+alert_arr.Error+'</b>';
+		document.getElementById('appnotifydiv').style.display='block';
+		VtigerJS_DialogBox.unblock();
+	}).done(function (msg) {
+		if (msg.search('%%%MSG%%%') > -1) { // Show message in appdiv
+			//message to display
+			var display = msg.split('%%%MSG%%%');
+			document.getElementById('appnotifydiv').outerHTML=display;
+			document.getElementById('appnotifydiv').style.display='block';
+			VtigerJS_DialogBox.unblock();
+		} else if (msg.search('%%%FUNCTION%%%') > -1) { //call user function
+			var callfunc = msg.split('%%%FUNCTION%%%');
+			var params = '';
+			if (callfunc[1].search('%%%PARAMS%%%') > -1) { //function has params string
+				var cfp = callfunc[1].split('%%%PARAMS%%%');
+				callfunc = cfp[0];
+				params = cfp[1];
+			} else {
+				callfunc = callfunc[1];
+			}
+			if (typeof window[callfunc] == 'function') {
+				window[callfunc](params);
+				VtigerJS_DialogBox.unblock();
+			}
+		} else { //Error
+			alert(msg);
+			VtigerJS_DialogBox.unblock();
+		}
+	});
+	return false;
+}
+
+function runBAWorkflow(workflowid, crmids) {
+	VtigerJS_DialogBox.block();
+	if (typeof workflowid == undefined || workflowid == '') {
+		return false;
+	}
+	if (typeof crmids == undefined || crmids == '' || crmids == 'RECORD') {
+		let cbrec = document.getElementById('record');
+		if (cbrec) {
+			crmids = cbrec.value;
+		}
+	}
+	if (typeof crmids == undefined || crmids == '') {
+		return false;
+	}
+	ExecuteFunctions('execwf', 'wfid='+workflowid+'&ids='+crmids).then(function (data) {
+		if (data) {
+			alert('Ok');
+		} else { //Error
+			alert(alert_arr.Error);
+		}
+		VtigerJS_DialogBox.unblock();
+	});
+	return false;
+}
+
 function doModuleValidation(edit_type, editForm, callback) {
 	if (editForm == undefined) {
 		var formName = 'EditView';
@@ -1339,7 +1459,13 @@ function doServerValidation(edit_type, formName, callback) {
 						callfunc = callfunc[1];
 					}
 					if (typeof window[callfunc] == 'function') {
-						window[callfunc](edit_type, formName, callback, params);
+						if (window[callfunc](edit_type, formName, action, callback, params)) {
+							if (typeof callback == 'function') {
+								callback('submit');
+							} else {
+								submitFormForAction(formName, action);
+							}
+						}
 					} else {
 						if (typeof callback == 'function') {
 							callback('submit');
@@ -2342,13 +2468,32 @@ function AjaxDuplicateValidate(module, fieldname, oform) {
 	});
 }
 
-/**to get SelectContacts Popup
-check->to check select options enable or disable
-*type->to differentiate from task
-*frmName->form name*/
-function selectContact(check, type, frmName) {
+function selectContactvtlib(fromlink, fldname, MODULE, ID) {
+	if (typeof(document.EditView) == 'undefined') {
+		return vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
+	}
+	switch (MODULE) {
+	case 'Contacts':
+	case 'PurchaseOrder':
+	case 'SalesOrder':
+	case 'Invoice':
+	case 'Quotes':
+		selectContact('false', document.EditView);
+		break;
+	default:
+		vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
+		break;
+	}
+}
+
+/**
+ * get Select Contacts Popup
+ * check boolean select options enable or disable
+ * frmName string form name
+ */
+function selectContact(check, frmName) {
 	var record = document.getElementsByName('record')[0].value;
-	if (document.getElementById('single_accountid')) {
+	if (document.getElementById('account_id_display')) {
 		var potential_id = '';
 		if (document.getElementById('potential_id')) {
 			potential_id = frmName.potential_id.value;
@@ -2374,7 +2519,7 @@ function selectContact(check, type, frmName) {
 		} else {
 			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
 		}
-	} else if ((document.getElementById('parentid')) && type != 'task') {
+	} else if ((document.getElementById('parentid'))) {
 		if (getObj('parent_type')) {
 			rel_parent_module = frmName.parent_type.value;
 			record_id = frmName.parent_id.value;
@@ -2396,34 +2541,16 @@ function selectContact(check, type, frmName) {
 		} else {
 			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&return_module=Calendar&select=enable&popuptype=detailview&form=EditView&form_submit=false', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
 		}
-	} else if ((document.getElementById('contact_name')) && type == 'task') {
-		var formName = frmName.name;
-		var task_recordid = '';
-		var popuptype = '';
-		if (formName == 'EditView') {
-			if (document.getElementById('parent_type')) {
-				task_parent_module = frmName.parent_type.value;
-				task_recordid = frmName.parent_id.value;
-				task_module = task_parent_module.split('&');
-				popuptype='&popuptype=specific';
-			}
-		}
-		if (task_recordid != '' && task_module[0] == 'Leads' ) {
-			alert(alert_arr.CANT_SELECT_CONTACTS);
-		} else {
-			if (popuptype != '') {
-				window.open('index.php?module=Contacts&action=Popup&html=Popup_picker'+popuptype+'&form='+formName+'&task_relmod_id='+task_recordid+'&task_parent_module='+task_module[0], 'test', 'width=640,height=602,resizable=0,scrollbars=0');
-			} else {
-				window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form='+formName, 'test', 'width=640,height=602,resizable=0,scrollbars=0');
-			}
-		}
 	} else {
 		window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView&recordid='+record, 'test', 'width=640,height=602,resizable=0,scrollbars=0');
 	}
 }
 
 //to get Select Potential Popup
-function selectPotential() {
+function selectPotential(fromlink, fldname, MODULE, ID) {
+	if (typeof(document.EditView) == 'undefined') {
+		return vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
+	}
 	// To support both B2B and B2C model
 	var record_id = '';
 	var parent_module = '';
@@ -2444,7 +2571,10 @@ function selectPotential() {
 }
 
 //to select Quote Popup
-function selectQuote() {
+function selectQuote(fromlink, fldname, MODULE, ID) {
+	if (typeof(document.EditView) == 'undefined') {
+		return vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
+	}
 	// To support both B2B and B2C model
 	var record_id = '';
 	var parent_module = '';
@@ -2465,7 +2595,10 @@ function selectQuote() {
 }
 
 //to get select SalesOrder Popup
-function selectSalesOrder() {
+function selectSalesOrder(fromlink, fldname, MODULE, ID) {
+	if (typeof(document.EditView) == 'undefined') {
+		return vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
+	}
 	// To support both B2B and B2C model
 	var record_id = '';
 	var parent_module = '';
@@ -2482,6 +2615,16 @@ function selectSalesOrder() {
 		window.open('index.php?module=SalesOrder&action=Popup&html=Popup_picker&popuptype=specific&form=EditView&relmod_id='+record_id+'&parent_module='+parent_module, 'test', 'width=640,height=602,resizable=0,scrollbars=0');
 	} else {
 		window.open('index.php?module=SalesOrder&action=Popup&html=Popup_picker&popuptype=specific&form=EditView', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+	}
+}
+
+function set_return_account_details(fromlink, fldname, MODULE, ID) {
+	if (fldname == 'account_id') {
+		var baseURL = 'index.php?module=Accounts&action=Popup&popuptype=specific_account_address&form=TasksEditView&form_submit=false&fromlink=';
+		var WindowSettings = 'width=680,height=602,resizable=0,scrollbars=0,top=150,left=200';
+		window.open(baseURL, 'vtlibui10', WindowSettings);
+	} else {
+		vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
 	}
 }
 
@@ -2619,9 +2762,9 @@ function validateUrl(name) {
 	var wProtocol;
 	var oRegex = new Object();
 	oRegex.UriProtocol = new RegExp('');
-	oRegex.UriProtocol.compile('^(((http):\/\/)|mailto:)', 'gi');
+	oRegex.UriProtocol.compile('^(((https):\/\/)|mailto:)', 'gi');
 	oRegex.UrlOnChangeProtocol = new RegExp('');
-	oRegex.UrlOnChangeProtocol.compile('^(http)://(?=.)', 'gi');
+	oRegex.UrlOnChangeProtocol.compile('^(https)://(?=.)', 'gi');
 	wUrl = Url.value;
 	wProtocol=oRegex.UrlOnChangeProtocol.exec(wUrl);
 	if (wProtocol) {
@@ -3148,7 +3291,13 @@ function ActivityReminderRemovePopupDOM(id) {
 
 /* ActivityReminder Customization: Pool Callback */
 var ActivityReminder_regcallback_timer;
-var ActivityReminder_Deactivated = false;
+var ActivityReminder_Deactivated = 0;
+GlobalVariable_getVariable('Debug_ActivityReminder_Deactivated', 0, 'cbCalendar', '').then(function (response) {
+	var obj = JSON.parse(response);
+	ActivityReminder_Deactivated = obj.Debug_ActivityReminder_Deactivated;
+}, function (error) {
+	ActivityReminder_Deactivated = 0;
+});
 
 var ActivityReminder_callback_delay = 40 * 1000; // Milli Seconds
 var ActivityReminder_autohide = false; // If the popup should auto hide after callback_delay?
@@ -4877,7 +5026,7 @@ function UnifiedSearch_GetModules() {
 		jQuery('#status').show();
 		jQuery.ajax({
 			method:'POST',
-			url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModules&ajax=true'
+			url:'index.php?module=Utilities&action=UtilitiesAjax&file=UnifiedSearchModules&ajax=true'
 		}).done(function (response) {
 			jQuery('#status').hide();
 			jQuery('#UnifiedSearch_modulelistwrapper').html(response);
@@ -4896,7 +5045,7 @@ function UnifiedSearch_OnComboSelect(value) {
 	document.forms.UnifiedSearch.search_onlyin.value = prepVal;
 	jQuery.ajax({
 		method:'POST',
-		url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModulesSave&search_onlyin=' + encodeURIComponent(prepVal)
+		url:'index.php?module=Utilities&action=UtilitiesAjax&file=UnifiedSearchModulesSave&search_onlyin=' + encodeURIComponent(prepVal)
 	}).done(function (response) {
 		// continue
 	});
@@ -4991,6 +5140,11 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
 function AutocompleteSetup() {
 	var acInputs = document.querySelectorAll('.autocomplete-input');
+
+	window.currentAc = false,
+	window.currentAcItem = false;
+	window.addEventListener('keyup', handleAcKeys);
+
 	for (var i = 0; i < acInputs.length; i++) {
 		(function (_i) {
 			var ac = new AutocompleteRelation(acInputs[_i], _i);
@@ -5002,6 +5156,74 @@ function AutocompleteSetup() {
 				ac.targetUL.hide();
 			});
 		})(i);
+	}
+}
+
+function handleAcKeys(e) {
+	if (window.currentAc !== false) {
+		switch (e.keyCode) {
+		case 13:
+			// Enter key
+			window.currentAcItem.click();
+			break;
+		case 27:
+			// Escape key
+			window.currentAc.clearTargetUL();
+			window.currentAc.targetUL.hide();
+			window.currentAc.deactivate();
+			break;
+		case 38:
+			// Up
+			highlightAcItemUp();
+			break;
+		case 40:
+			// Down
+			highlightAcItemDown();
+			break;
+		}
+	}
+}
+
+function toggleFormEnter(state) {
+	if (state === false) {
+		window.addEventListener('keydown', preventWindowEnter);
+	} else {
+		window.removeEventListener('keydown', preventWindowEnter);
+	}
+}
+
+function preventWindowEnter(e) {
+	if (e.keyCode === 13) {
+		e.preventDefault();
+		return false;
+	}
+}
+
+function highlightAcItem(node, state) {
+	if (state === true) {
+		node.classList.add('slds-color__background_gray-4');
+	} else {
+		node.classList.remove('slds-color__background_gray-4');
+	}
+}
+
+function highlightAcItemUp() {
+	if (typeof window.currentAcItem === 'object'
+	&& window.currentAcItem.parentElement.classList.contains('relation-autocomplete__target')
+	&& window.currentAcItem.previousElementSibling !== null) {
+		highlightAcItem(window.currentAcItem, false);
+		window.currentAcItem = window.currentAcItem.previousElementSibling;
+		highlightAcItem(window.currentAcItem, true);
+	}
+}
+
+function highlightAcItemDown() {
+	if (typeof window.currentAcItem === 'object'
+	&& window.currentAcItem.parentElement.classList.contains('relation-autocomplete__target')
+	&& window.currentAcItem.nextElementSibling !== null) {
+		highlightAcItem(window.currentAcItem, false);
+		window.currentAcItem = window.currentAcItem.nextElementSibling;
+		highlightAcItem(window.currentAcItem, true);
 	}
 }
 
@@ -5044,6 +5266,16 @@ function AutocompleteRelation(target, i) {
 	this.targetUL.style.transition = 'opacity 100ms ease';
 }
 
+AutocompleteRelation.prototype.activate = function () {
+	window.currentAc = this;
+	toggleFormEnter(false);
+};
+
+AutocompleteRelation.prototype.deactivate = function () {
+	window.currentAc = false;
+	toggleFormEnter(true);
+};
+
 AutocompleteRelation.prototype.get = function (e) {
 	var term = e.target.value;
 	if (this.multiselect==='true') {
@@ -5054,6 +5286,7 @@ AutocompleteRelation.prototype.get = function (e) {
 	if (term.length >= this.mincharstoSearch && (typeof(this.data.searchin) != 'undefined' || typeof(this.data.searchfields) != 'undefined') ) {
 		this.data.term = term;
 		var acInstance = this;
+		this.activate();
 
 		this.displayFields 	= this.showFields();
 		this.entityName		= this.entityField();
@@ -5109,6 +5342,10 @@ AutocompleteRelation.prototype.set = function (items) {
 					});
 				}
 			});
+			if (i === 0) {
+				window.currentAcItem = li;
+				highlightAcItem(li, true);
+			}
 		}
 		if (acInstance.inputField.name==='query_string') {
 			var span = document.createElement('li');
@@ -5129,6 +5366,7 @@ AutocompleteRelation.prototype.select = function (params) {
 	// Housekeeping after selection
 	this.clearTargetUL();
 	this.targetUL.hide();
+	this.deactivate();
 	// Schedular.AutoComplete.Current.clear();
 };
 
@@ -5371,7 +5609,7 @@ AutocompleteRelation.prototype.MaxResults = function () {
 };
 
 AutocompleteRelation.prototype.MinCharsToSearch = function () {
-	if (typeof this.data.mincharstosearch === 'number') {
+	if (typeof Number(this.data.mincharstosearch) === 'number') {
 		return this.data.mincharstosearch;
 	} else if (typeof this.data.mincharstosearch === undefined) {
 		var ref_module = this.getReferenceModule();
@@ -5888,7 +6126,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 	/*
 	 * Globals
 	 */
-	if (!window.hasOwnProperty('dropdownKeycodeMap')) {
+	if (!Object.prototype.hasOwnProperty.call(window, 'dropdownKeycodeMap')) {
 		window.dropdownKeycodeMap = {
 			38: 'up',
 			40: 'down',
@@ -6033,11 +6271,3 @@ function checkOneRevisionSelected() {
 
 
 window.cbOnUpScrollers.push(headerOnUpScroll);
-
-$(document).ready(function () {
-	$('#blankDiv').height($('#global-header').outerHeight(true)-90);
-});
-
-$(window).on('resize', function () {
-	$('#blankDiv').height($('#global-header').outerHeight(true)-90);
-});

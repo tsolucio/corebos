@@ -9,6 +9,8 @@
  * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 24/05/2018 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
   ************************************************************************************/
 $mod_strings = array(
+'com_vtiger_workflow' => 'Workflows',
+'SINGLE_com_vtiger_workflow' => 'Workflow',
 'VTEmailTask' => 'Enviar e-mail',
 'VTEntityMethodTask' => 'Invocar função personalizada',
 'VTCreateTodoTask' => 'Criar compromisso',
@@ -87,6 +89,7 @@ $mod_strings = array(
 'Portal Url' => 'Url do portal',
 'groupEmailList' => 'Lista de e-mail do grupo',
 
+'Recommended frequency for Workflow is 15 mins' => 'Recommended frequency for Workflow is 15 mins',
 'Workflow'=>'Workflow',
 'WORKFLOW_DELETE_CONFIRMATION' => 'Tem certeza que deseja apagar este Workflow?',
 'LBL_DELETE_WORKFLOW' => 'Apagar Workflow',
@@ -124,6 +127,10 @@ $mod_strings = array(
 'WhatsappWorkflowTask' => 'Enviar mensagem WhatsApp',
 'Many to Many Relation Task' => 'Tarefa de N para N relacionamentos',
 'Set Many to Many Relation' => 'Configurar N to N relacionamentos',
+'NotifyOnPortalTicketCreation' => 'Notify On Portal Ticket Creation',
+'NotifyOnPortalTicketComment' => 'Notify On Portal Ticket Comment',
+'NotifyOwnerOnTicketChange' => 'Notify Owner On Ticket Change',
+'NotifyParentOnTicketChange' => 'Notify Parent On Ticket Change',
 'LBL_EVENTNAME' => 'Nome do evento',
 'LBL_DESCRIPTION' => 'Descrição',
 'LBL_STATUS' => 'Estado',
@@ -178,5 +185,22 @@ $mod_strings = array(
 'Templates'=>'Modelos',
 'launchrelwf' => 'Executar workflows em atualizações relacionadas',
 'LBL_WFPURPOSE' => 'Propósito',
+'Run Webservice Workflow Task' => 'Run Web Service',
+'RunWebserviceWorkflowTask' => 'Run Web Service',
+'runwebserviceworkflowtask' => 'Run Web Service',
+'Select IO Map' => 'Select IO Map',
+'Select Config Map' => 'Select Configuration Map',
+'CBPushNotificationTask' => 'Push Notification',
+'pushnoturl' => 'Push Notification URL',
+'CBQuestionMViewFunction' => 'Update Materialized View',
+'LBL_WHERE_TO_SAVE' => 'Where to Save:',
+'LBL_WHAT_TO_ENCODE' => 'What to Encode',
+'Select Field to Save Encoded Value' => 'Select Field to Save Encoded Value',
+'Select Field to Encode' => 'Select Field to Encode',
+'Encoding Type' => 'Encoding Type',
+'Select Encoding Type' => 'Select Encoding Type',
+'Generate Image Code' => 'Generate Image Code',
+'Generate Image Code Workflow Task' => 'Generate Image Code Workflow Task',
+'GenerateImageCodeWorkflowTask' => 'Generate Image Code Workflow Task',
 );
 ?>

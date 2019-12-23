@@ -26,7 +26,39 @@
 class Google_Service_Compute_Resource_Disks extends Google_Service_Resource
 {
   /**
-   * Retrieves an aggregated list of persistent disks. (disks.aggregatedList)
+   * Adds existing resource policies to a disk. You can only add one policy which
+   * will be applied to this disk for scheduling snapshot creation. (==
+   * suppress_warning http-rest-shadowed ==) (disks.addResourcePolicies)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $zone The name of the zone for this request.
+   * @param string $disk The disk name for this request.
+   * @param Google_Service_Compute_DisksAddResourcePoliciesRequest $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string requestId An optional request ID to identify requests.
+   * Specify a unique request ID so that if you must retry your request, the
+   * server will know to ignore the request if it has already been completed.
+   *
+   * For example, consider a situation where you make an initial request and the
+   * request times out. If you make the request again with the same request ID,
+   * the server can check if original operation with the same request ID was
+   * received, and if so, will ignore the second request. This prevents clients
+   * from accidentally creating duplicate commitments.
+   *
+   * The request ID must be a valid UUID with the exception that zero UUID is not
+   * supported (00000000-0000-0000-0000-000000000000).
+   * @return Google_Service_Compute_Operation
+   */
+  public function addResourcePolicies($project, $zone, $disk, Google_Service_Compute_DisksAddResourcePoliciesRequest $postBody, $optParams = array())
+  {
+    $params = array('project' => $project, 'zone' => $zone, 'disk' => $disk, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('addResourcePolicies', array($params), "Google_Service_Compute_Operation");
+  }
+  /**
+   * Retrieves an aggregated list of persistent disks. (== suppress_warning http-
+   * rest-shadowed ==) (disks.aggregatedList)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -78,7 +110,8 @@ class Google_Service_Compute_Resource_Disks extends Google_Service_Resource
     return $this->call('aggregatedList', array($params), "Google_Service_Compute_DiskAggregatedList");
   }
   /**
-   * Creates a snapshot of a specified persistent disk. (disks.createSnapshot)
+   * Creates a snapshot of a specified persistent disk. (== suppress_warning http-
+   * rest-shadowed ==) (disks.createSnapshot)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -86,7 +119,10 @@ class Google_Service_Compute_Resource_Disks extends Google_Service_Resource
    * @param Google_Service_Compute_Snapshot $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool guestFlush
+   * @opt_param bool guestFlush [Input Only] Specifies to create an application
+   * consistent snapshot by informing the OS to prepare for the snapshot process.
+   * Currently only supported on Windows instances using the Volume Shadow Copy
+   * Service (VSS).
    * @opt_param string requestId An optional request ID to identify requests.
    * Specify a unique request ID so that if you must retry your request, the
    * server will know to ignore the request if it has already been completed.
@@ -111,7 +147,7 @@ class Google_Service_Compute_Resource_Disks extends Google_Service_Resource
    * Deletes the specified persistent disk. Deleting a disk removes its data
    * permanently and is irreversible. However, deleting a disk does not delete any
    * snapshots previously made from the disk. You must separately delete
-   * snapshots. (disks.delete)
+   * snapshots. (== suppress_warning http-rest-shadowed ==) (disks.delete)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -140,7 +176,8 @@ class Google_Service_Compute_Resource_Disks extends Google_Service_Resource
   }
   /**
    * Returns a specified persistent disk. Gets a list of available persistent
-   * disks by making a list() request. (disks.get)
+   * disks by making a list() request. (== suppress_warning http-rest-shadowed ==)
+   * (disks.get)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -156,7 +193,8 @@ class Google_Service_Compute_Resource_Disks extends Google_Service_Resource
   }
   /**
    * Gets the access control policy for a resource. May be empty if no such policy
-   * or resource exists. (disks.getIamPolicy)
+   * or resource exists. (== suppress_warning http-rest-shadowed ==)
+   * (disks.getIamPolicy)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -175,7 +213,7 @@ class Google_Service_Compute_Resource_Disks extends Google_Service_Resource
    * request. You can create a disk with a sourceImage, a sourceSnapshot, or
    * create an empty 500 GB data disk by omitting all properties. You can also
    * create a disk that is larger than the default size by specifying the sizeGb
-   * property. (disks.insert)
+   * property. (== suppress_warning http-rest-shadowed ==) (disks.insert)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -204,8 +242,8 @@ class Google_Service_Compute_Resource_Disks extends Google_Service_Resource
     return $this->call('insert', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Retrieves a list of persistent disks contained within the specified zone.
-   * (disks.listDisks)
+   * Retrieves a list of persistent disks contained within the specified zone. (==
+   * suppress_warning http-rest-shadowed ==) (disks.listDisks)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -258,8 +296,38 @@ class Google_Service_Compute_Resource_Disks extends Google_Service_Resource
     return $this->call('list', array($params), "Google_Service_Compute_DiskList");
   }
   /**
+   * Removes resource policies from a disk. (== suppress_warning http-rest-
+   * shadowed ==) (disks.removeResourcePolicies)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $zone The name of the zone for this request.
+   * @param string $disk The disk name for this request.
+   * @param Google_Service_Compute_DisksRemoveResourcePoliciesRequest $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string requestId An optional request ID to identify requests.
+   * Specify a unique request ID so that if you must retry your request, the
+   * server will know to ignore the request if it has already been completed.
+   *
+   * For example, consider a situation where you make an initial request and the
+   * request times out. If you make the request again with the same request ID,
+   * the server can check if original operation with the same request ID was
+   * received, and if so, will ignore the second request. This prevents clients
+   * from accidentally creating duplicate commitments.
+   *
+   * The request ID must be a valid UUID with the exception that zero UUID is not
+   * supported (00000000-0000-0000-0000-000000000000).
+   * @return Google_Service_Compute_Operation
+   */
+  public function removeResourcePolicies($project, $zone, $disk, Google_Service_Compute_DisksRemoveResourcePoliciesRequest $postBody, $optParams = array())
+  {
+    $params = array('project' => $project, 'zone' => $zone, 'disk' => $disk, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('removeResourcePolicies', array($params), "Google_Service_Compute_Operation");
+  }
+  /**
    * Resizes the specified persistent disk. You can only increase the size of the
-   * disk. (disks.resize)
+   * disk. (== suppress_warning http-rest-shadowed ==) (disks.resize)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -289,7 +357,8 @@ class Google_Service_Compute_Resource_Disks extends Google_Service_Resource
   }
   /**
    * Sets the access control policy on the specified resource. Replaces any
-   * existing policy. (disks.setIamPolicy)
+   * existing policy. (== suppress_warning http-rest-shadowed ==)
+   * (disks.setIamPolicy)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -306,7 +375,8 @@ class Google_Service_Compute_Resource_Disks extends Google_Service_Resource
   }
   /**
    * Sets the labels on a disk. To learn more about labels, read the Labeling
-   * Resources documentation. (disks.setLabels)
+   * Resources documentation. (== suppress_warning http-rest-shadowed ==)
+   * (disks.setLabels)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -335,8 +405,8 @@ class Google_Service_Compute_Resource_Disks extends Google_Service_Resource
     return $this->call('setLabels', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Returns permissions that a caller has on the specified resource.
-   * (disks.testIamPermissions)
+   * Returns permissions that a caller has on the specified resource. (==
+   * suppress_warning http-rest-shadowed ==) (disks.testIamPermissions)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.

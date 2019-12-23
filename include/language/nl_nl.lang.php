@@ -540,6 +540,10 @@ $app_strings = array(
 	'LBL_TAX' => 'Belasting',
 	'LBL_ADJUSTMENT' => 'Bijstelling',
 	'LBL_GRAND_TOTAL' => 'TOTAAL',
+	'LBL_PAYMENT_INFORMATION'=> 'Payment Information',
+	'Total Amount' => 'Total Amount',
+	'Total Pending' => 'Total Pending',
+	'Balance' => 'Balance',
 	'LBL_QUOTE_ID' => 'Offerte nummer',
 	'LBL_SALES_ORDER_ID' => 'Verkoopordernummer',
 	'LBL_PURCHASE_ORDER_ID' => 'Inkoopordernummer',
@@ -598,6 +602,7 @@ $app_strings = array(
 	'LBL_SO_STATUS' => 'Verkooporder status',
 	'LBL_INVOICE_STATUS' => 'Factuur status',
 	'LBL_MODULE' => 'Module',
+	'LBL_TOTAL_FILTERED' => 'Total',
 	'Active' => 'Aktief',
 	'Inactive' => 'Inaktief',
 	'Today' => 'Vandaag',
@@ -1232,6 +1237,19 @@ $app_strings = array(
 	'Select Related Module' => 'Select Related Module',
 	'No Module' => 'No related Module',
 	'Entity Name' => 'Entity Name',
+	'Add event' => 'Add event',
+	'Create Invoice' => 'Create Invoice',
+	'Send Email With PDF' => 'Send Email With PDF',
+	'Export To PDF' => 'Export To PDF',
+	'Generate Sales Order' => 'Generate Sales Order',
+	'Generate Invoice' => 'Generate Invoice',
+	'Create Quote' => 'Create Quote',
+	'Create Purchase Order' => 'Create Purchase Order',
+	'Create Sales Order' => 'Create Sales Order',
+	'csrf_warning' => 'CSRF Fout. Dit gebeurt wanneer een pagina een tijd open heeft gestaan zonder dat er interactie is geweest. 
+		Ter beveiliging is deze pagina niet langer geldig. Druk op CTRL + R om te herladen of klik hieronder op herladen.',
+	'csrf_reload' => 'Herlaad de pagina',
+	'LBL_NOPRODUCTS' => 'Can\'t convert SalesOrder to Invoice because there aren\'t any remaining products to invoice.',
 );
 
 // Translation for currency names

@@ -39,7 +39,7 @@ function getFieldByReportLabel($module, $label) {
 }
 
 function isReferenceUIType($uitype) {
-	static $options = array('101', '117', '26', '357', '51', '52', '53', '57', '66', '73', '76', '77', '78', '80');
+	static $options = array('101', '117', '26', '357', '52', '53', '77');
 	return in_array($uitype, $options);
 }
 
@@ -141,7 +141,7 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 		require_once 'modules/PickList/PickListUtils.php';
 		$content = getPicklistValuesSpecialUitypes($field->getUIType(), $field->getFieldName(), $value, 'DetailView');
 		$fieldvalue = strip_tags(implode(', ', $content));
-	} elseif ($fieldInfo['uitype'] == '1616' && !empty($value)) {
+	} elseif (!empty($value) && !empty($fieldInfo) && $fieldInfo['uitype'] == '1616') {
 		global $adb;
 		$cvrs = $adb->pquery('select viewname,entitytype from vtiger_customview where cvid=?', array($value));
 		if ($cvrs && $adb->num_rows($cvrs)>0) {

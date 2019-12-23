@@ -222,6 +222,11 @@ $mod_strings = array (
 	'not equal to' => 'non uguale a',
 	'starts with' => 'Inizia con',
 	'ends with' => 'Termina con',
+	'does not start with' => 'Does not start with',
+	'does not end with' => 'Does not end with',
+	'before' => 'Before',
+	'after' => 'After',
+	'between' => 'Between',
 
 	'LBL_SET_AS_PUBLIC' => 'Imposta a Pubblico ',
 	'LBL_NEW' => 'Nuovo',

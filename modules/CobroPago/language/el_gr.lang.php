@@ -107,6 +107,8 @@ $mod_strings = array(
 'ERR_ALREADY_PAID' => "This payment has been already paid.",
 'ERR_NO_ACCOUNT' => "There's no related account.",
 'ERR_NO_TOKEN' => "No token for this account.",
+
+'Pay' => 'Pay',
 );
 
 ?>

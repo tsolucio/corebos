@@ -77,6 +77,7 @@ class ConvertInventoryModule extends VTTask {
 		} else {
 			$fromEntity = CRMEntity::getInstance($cbfrommodule);
 			$record = preg_replace('/[^0-9]/', '', substr($entity->data['id'], strpos($entity->data['id'], 'x')));
+			$fromEntity->retrieve_entity_info($record, $cbfrommodule);
 			$associated_prod = getAssociatedProducts($cbfrommodule, $fromEntity, $record);
 
 			if (empty($associated_prod[1]['entityType1'])) {
@@ -85,8 +86,11 @@ class ConvertInventoryModule extends VTTask {
 				$logbg->debug('ConvertInventoryModule: converting from {$cbfrommodule} to {$this->convertto} failed because there is no related products');
 				return;
 			}
+
 			$toEntity = CRMEntity::getInstance($this->convertto);
-			$data = $toEntity->column_fields;
+			$data = array_merge($fromEntity->column_fields, $toEntity->column_fields);
+			$data['record_id'] = $record;
+			$data['relations'] = $entity->getId();
 			$data['assigned_user_id'] = $current_user->id;
 			$data['created_user_id'] = $current_user->id;
 			$data['account_id'] = getRelatedAccountContact($record, 'Accounts');
@@ -96,7 +100,7 @@ class ConvertInventoryModule extends VTTask {
 			$data['invoicestatus'] = 'AutoCreated';
 			$data['sostatus'] = 'AutoCreated';
 			$data['postatus'] = 'AutoCreated';
-			if (GlobalVariable::getVariable('Application_B2B', '1')) {
+			if (GlobalVariable::getVariable('Application_B2B', '1') && !empty($data['account_id'])) {
 				require_once 'modules/Accounts/Accounts.php';
 				$acct_focus = new Accounts();
 				$acct_focus->retrieve_entity_info($data['account_id'], 'Accounts');
@@ -112,7 +116,7 @@ class ConvertInventoryModule extends VTTask {
 				$data['ship_country'] = isset($acct_focus->column_fields['ship_country']) ? $acct_focus->column_fields['ship_country'] : '';
 				$data['bill_pobox'] = isset($acct_focus->column_fields['bill_pobox']) ? $acct_focus->column_fields['bill_pobox'] : '';
 				$data['ship_pobox'] = isset($acct_focus->column_fields['ship_pobox']) ? $acct_focus->column_fields['ship_pobox'] : '';
-			} else {
+			} elseif (!empty($data['contact_id'])) {
 				require_once 'modules/Contacts/Contacts.php';
 				$cto_focus = new Contacts();
 				$cto_focus->retrieve_entity_info($data['contact_id'], 'Contacts');
@@ -128,6 +132,8 @@ class ConvertInventoryModule extends VTTask {
 				$data['ship_country'] = isset($cto_focus->column_fields['othercountry']) ? $cto_focus->column_fields['othercountry'] : '';
 				$data['bill_pobox'] = isset($cto_focus->column_fields['mailingpobox']) ? $cto_focus->column_fields['mailingpobox'] : '';
 				$data['ship_pobox'] = isset($cto_focus->column_fields['otherpobox']) ? $cto_focus->column_fields['otherpobox'] : '';
+			} else {
+				throw new WebServiceException(WebServiceErrorCode::$MANDFIELDSMISSING, 'Neither Account nor Contact present');
 			}
 			$data['hdnTaxType'] = GlobalVariable::getVariable('Inventory_Tax_Type_Default', 'individual', $this->convertto);
 			$data['conversion_rate'] = 1;
@@ -147,8 +153,8 @@ class ConvertInventoryModule extends VTTask {
 			for ($i = 1; $i<=count($associated_prod); $i++) {
 				$related['productid'] = $associated_prod[$i]['hdnProductId'.$i];
 				$related['comment'] = '';
-				$related['qty'] = $associated_prod[$i]['qty'.$i];
-				$related['listprice'] = $associated_prod[$i]['listPrice'.$i];
+				$related['qty'] = empty($data['qty'.$i]) ? $associated_prod[$i]['qty'.$i] : $data['qty'.$i];
+				$related['listprice'] = empty($data['listPrice'.$i]) ? $associated_prod[$i]['listPrice'.$i] : $data['listPrice'.$i];
 				$list_price_sum += ($related['qty'] * $related['listprice']);
 				$related['discount'] = 0 ;
 				$related['discount_type'] = 0;
@@ -159,6 +165,7 @@ class ConvertInventoryModule extends VTTask {
 			$data['hdnGrandTotal']= $list_price_sum;
 			$data['hdnSubTotal']= $list_price_sum;
 		}
+		$data['shipping_handling_charge'] = $_REQUEST['shipping_handling_charge'] = 0;
 		$holdaction = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 		$holdajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
 		$_REQUEST['action'] = '';

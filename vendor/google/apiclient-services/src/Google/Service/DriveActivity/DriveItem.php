@@ -17,6 +17,10 @@
 
 class Google_Service_DriveActivity_DriveItem extends Google_Model
 {
+  protected $driveFileType = 'Google_Service_DriveActivity_DriveFile';
+  protected $driveFileDataType = '';
+  protected $driveFolderType = 'Google_Service_DriveActivity_DriveFolder';
+  protected $driveFolderDataType = '';
   protected $fileType = 'Google_Service_DriveActivity_DriveactivityFile';
   protected $fileDataType = '';
   protected $folderType = 'Google_Service_DriveActivity_Folder';
@@ -27,6 +31,34 @@ class Google_Service_DriveActivity_DriveItem extends Google_Model
   protected $ownerDataType = '';
   public $title;
 
+  /**
+   * @param Google_Service_DriveActivity_DriveFile
+   */
+  public function setDriveFile(Google_Service_DriveActivity_DriveFile $driveFile)
+  {
+    $this->driveFile = $driveFile;
+  }
+  /**
+   * @return Google_Service_DriveActivity_DriveFile
+   */
+  public function getDriveFile()
+  {
+    return $this->driveFile;
+  }
+  /**
+   * @param Google_Service_DriveActivity_DriveFolder
+   */
+  public function setDriveFolder(Google_Service_DriveActivity_DriveFolder $driveFolder)
+  {
+    $this->driveFolder = $driveFolder;
+  }
+  /**
+   * @return Google_Service_DriveActivity_DriveFolder
+   */
+  public function getDriveFolder()
+  {
+    return $this->driveFolder;
+  }
   /**
    * @param Google_Service_DriveActivity_DriveactivityFile
    */

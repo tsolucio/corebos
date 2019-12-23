@@ -11,3 +11,5 @@
 ./include/integrations/zendesk/vendor/zendesk/zendesk_api_client_php/bin/console
 ./include/sw-precache/regen_swprecache
 ./modules/evvtgendoc/unoservice.sh
+./vendor/monolog/monolog/src/Monolog/Handler/Slack/SlackRecord.php
+./vendor/tecnickcom/tcpdf/tools/tcpdf_addfont.php

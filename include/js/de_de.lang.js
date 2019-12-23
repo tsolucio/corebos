@@ -369,6 +369,7 @@ var alert_arr = {
 	'LBL_DOES_NOT_END_WITH' : 'endet nicht mit',
 	'DOES_NOT_START_WITH':'beginnt nicht mit',
 	'DOES_NOT_END_WITH':'endet nicht mit',
+	'Widget_Deleted_Sucessfully':'Widget deleted sucessfully',
 	'LBL_AFTER' : 'nach',
 	'LBL_IS_TODAY' : 'ist heute',
 	'LBL_LESS_THAN_DAYS_AGO' : 'vor weniger als ... Tagen',
@@ -418,5 +419,6 @@ var alert_arr = {
 	'OF' : 'von',
 	'ERR_Massedit' : 'Fehler bei der Massenbearbeitung',
 	'ProcessFINISHED' : 'Prozess beendet',
-	'duplicatednotallowed' : 'Duplizierte Module sind nicht erlaubt'
+	'duplicatednotallowed' : 'Duplizierte Module sind nicht erlaubt',
+	'HAS_THIS_AS_NTH_CHILD' : 'Hat dieses als ein weiteres Kind'
 };

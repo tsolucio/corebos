@@ -20,6 +20,10 @@ class Google_Service_CloudScheduler_HttpTarget extends Google_Model
   public $body;
   public $headers;
   public $httpMethod;
+  protected $oauthTokenType = 'Google_Service_CloudScheduler_OAuthToken';
+  protected $oauthTokenDataType = '';
+  protected $oidcTokenType = 'Google_Service_CloudScheduler_OidcToken';
+  protected $oidcTokenDataType = '';
   public $uri;
 
   public function setBody($body)
@@ -45,6 +49,34 @@ class Google_Service_CloudScheduler_HttpTarget extends Google_Model
   public function getHttpMethod()
   {
     return $this->httpMethod;
+  }
+  /**
+   * @param Google_Service_CloudScheduler_OAuthToken
+   */
+  public function setOauthToken(Google_Service_CloudScheduler_OAuthToken $oauthToken)
+  {
+    $this->oauthToken = $oauthToken;
+  }
+  /**
+   * @return Google_Service_CloudScheduler_OAuthToken
+   */
+  public function getOauthToken()
+  {
+    return $this->oauthToken;
+  }
+  /**
+   * @param Google_Service_CloudScheduler_OidcToken
+   */
+  public function setOidcToken(Google_Service_CloudScheduler_OidcToken $oidcToken)
+  {
+    $this->oidcToken = $oidcToken;
+  }
+  /**
+   * @return Google_Service_CloudScheduler_OidcToken
+   */
+  public function getOidcToken()
+  {
+    return $this->oidcToken;
   }
   public function setUri($uri)
   {

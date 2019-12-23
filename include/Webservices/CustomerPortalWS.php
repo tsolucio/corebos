@@ -1025,7 +1025,18 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		LIMIT $limit");
 	$ret = array();
 
+	$parr = array(
+		'module' => vtlib_purify($_REQUEST['sourceModule']),
+		'moduleid' => vtlib_purify($_REQUEST['modid']),
+		'accountid' => isset($_REQUEST['accid']) ? vtlib_purify($_REQUEST['accid']) : 0,
+		'contactid' => isset($_REQUEST['ctoid']) ? vtlib_purify($_REQUEST['ctoid']) : 0,
+		'productid' => 0,
+	);
 	while ($prodser = $adb->fetch_array($r)) {
+		$unitprice = $prodser['unit_price'];
+		$parr['productid'] = $prodser['id'];
+		list($unitprice, $dtopdo, $void) = cbEventHandler::do_filter('corebos.filter.inventory.getprice', array($unitprice, 0, $parr));
+
 		$ret_prodser = array(
 			'meta' => array(
 				'image' => '',
@@ -1038,7 +1049,8 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 				'id' => $prodser['id'],
 			),
 			'pricing' => array(
-				'unit_price' => number_format((float)$prodser['unit_price'], $cur_user_decimals, '.', ''),
+				'unit_price' => number_format((float)$unitprice, $cur_user_decimals, '.', ''),
+				'discount' => number_format((float)$dtopdo, $cur_user_decimals, '.', ''),
 				'unit_cost' => number_format((float)$prodser['cost_price'], $cur_user_decimals, '.', ''),
 			),
 			'logistics' => array(
@@ -1080,7 +1092,7 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
 	if (empty($searchinmodule) || empty($fields)) {
 		return $respuesta;
 	}
-	if (!(vtlib_isModuleActive($searchinmodule) && isPermitted($searchinmodule, 'DetailView'))) {
+	if (!(vtlib_isModuleActive($searchinmodule) && isPermitted($searchinmodule, 'DetailView')=='yes')) {
 		return $respuesta;
 	}
 	if (empty($returnfields)) {

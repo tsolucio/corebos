@@ -44,7 +44,7 @@ class vtigerCRM_Smarty extends Smarty {
 		$this->assign('Application_JSCalendar_Load', GlobalVariable::getVariable('Application_JSCalendar_Load', 1, $currentModule));
 
 		// Query For TagCloud only when required
-		if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'DetailView') {
+		if ((isset($_REQUEST['action']) && $_REQUEST['action'] == 'DetailView') || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'DetailViewAjax')) {
 			//Added to provide User based Tagcloud
 			$this->assign('TAG_CLOUD_DISPLAY', self::lookupTagCloudView((isset($current_user) ? $current_user->id : '')));
 		}

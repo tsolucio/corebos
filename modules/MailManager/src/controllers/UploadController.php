@@ -50,6 +50,9 @@ class MailManager_UploadFile {
 			$document->column_fields['folderid']         = $this->getAttachmentsFolder();
 			$document->column_fields['filesize']         = $this->getSize();
 			$document->column_fields['assigned_user_id'] = $current_user->id;
+			if (!empty($_REQUEST['parent_id'])) {
+				$document->parentid = vtlib_purify($_REQUEST['parent_id']);
+			}
 			$document->save('Documents');
 
 			// Link file attached to document

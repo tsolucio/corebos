@@ -22,6 +22,9 @@ class Google_Service_Testing_IosModel extends Google_Collection
   public $formFactor;
   public $id;
   public $name;
+  public $screenDensity;
+  public $screenX;
+  public $screenY;
   public $supportedVersionIds;
   public $tags;
 
@@ -56,6 +59,30 @@ class Google_Service_Testing_IosModel extends Google_Collection
   public function getName()
   {
     return $this->name;
+  }
+  public function setScreenDensity($screenDensity)
+  {
+    $this->screenDensity = $screenDensity;
+  }
+  public function getScreenDensity()
+  {
+    return $this->screenDensity;
+  }
+  public function setScreenX($screenX)
+  {
+    $this->screenX = $screenX;
+  }
+  public function getScreenX()
+  {
+    return $this->screenX;
+  }
+  public function setScreenY($screenY)
+  {
+    $this->screenY = $screenY;
+  }
+  public function getScreenY()
+  {
+    return $this->screenY;
   }
   public function setSupportedVersionIds($supportedVersionIds)
   {

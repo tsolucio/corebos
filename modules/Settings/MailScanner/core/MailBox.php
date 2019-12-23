@@ -78,24 +78,23 @@ class Vtiger_MailBox {
 		if ($mailboxsettings['connecturl']) {
 			$connecturl = $mailboxsettings['connecturl'];
 			$this->log("Trying to connect using connecturl $connecturl$folder", true);
-			$imap = @imap_open("$connecturl$folder", $mailboxsettings[username], $mailboxsettings[password]);
+			$imap = @imap_open("$connecturl$folder", $mailboxsettings['username'], $mailboxsettings['password']);
 			if ($imap) {
 				$this->_imapurl = $connecturl;
 				$this->_imapfolder = $folder;
 				$isconnected = true;
-
 				$this->log('Successfully connected', true);
 			}
 		}
 
 		if (!$imap) {
-			$connectString = '{'. "$mailboxsettings[server]:$mailboxsettings[port]/$mailboxsettings[protocol]/$mailboxsettings[ssltype]/$mailboxsettings[sslmethod]" ."}";
-			$connectStringShort = '{'. "$mailboxsettings[server]/$mailboxsettings[protocol]:$mailboxsettings[port]" ."}";
+			$connectString = '{'. "$mailboxsettings[server]:$mailboxsettings[port]/$mailboxsettings[protocol]/$mailboxsettings[ssltype]/$mailboxsettings[sslmethod]".'}';
+			$connectStringShort = '{'. "$mailboxsettings[server]/$mailboxsettings[protocol]:$mailboxsettings[port]".'}';
 
 			$this->log("Trying to connect using $connectString$folder", true);
-			if (!$imap = @imap_open("$connectString$folder", $mailboxsettings[username], $mailboxsettings[password])) {
+			if (!$imap = @imap_open("$connectString$folder", $mailboxsettings['username'], $mailboxsettings['password'])) {
 				$this->log("Connect failed using $connectString$folder, trying with $connectStringShort$folder...", true);
-				$imap = @imap_open("$connectStringShort$folder", $mailboxsettings[username], $mailboxsettings[password]);
+				$imap = @imap_open("$connectStringShort$folder", $mailboxsettings['username'], $mailboxsettings['password']);
 				if ($imap) {
 					$this->_imapurl = $connectStringShort;
 					$this->_imapfolder = $folder;
@@ -137,7 +136,7 @@ class Vtiger_MailBox {
 		$isconnected = false;
 		$connectString = $this->_imapurl;
 		$this->log("Trying to open folder using $connectString$folder");
-		$imap = @imap_open("$connectString$folder", $mailboxsettings[username], $mailboxsettings[password]);
+		$imap = @imap_open("$connectString$folder", $mailboxsettings['username'], $mailboxsettings['password']);
 		if ($imap) {
 			// Perform cleanup task before re-initializing the connection
 			$this->close();
@@ -163,12 +162,12 @@ class Vtiger_MailBox {
 				if ($searchfor == 'ALL') {
 					$searchQuery = "SINCE $lastscanOn";
 				} elseif ($searchfor == 'ALLUNSEEN') {
-					$searchQuery = "UNSEEN";
+					$searchQuery = 'UNSEEN';
 				} else {
 					$searchQuery = "$searchfor SINCE $lastscanOn";
 				}
 			} else {
-				$searchQuery = $lastscanOn? "SINCE $lastscanOn" : "BEFORE ". date('d-M-Y');
+				$searchQuery = $lastscanOn? "SINCE $lastscanOn" : 'BEFORE '. date('d-M-Y');
 			}
 		}
 		if ($this->open($folder)) {

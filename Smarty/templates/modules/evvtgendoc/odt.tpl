@@ -18,21 +18,15 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
 -->*}
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
+{include file="Buttons_List.tpl"}
+<table class="showPanelBg" style="width:96%; margin: 5px auto; padding: 5px;">
 <tbody>
 <tr>
-	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
+	<td style="padding: 10px;" valign="top" width="100%">
 	<div align=center>
-		<table border=0 cellspacing=0 cellpadding=10 width=60% >
-		<tr>
-			<td valign=top>
-			<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
-			<tr><td>{$OUTPUT}</td></tr>
-			<tr><td align="right"><a href="{$ZIPNAME}">{'LNK_DOWNLOAD'|getTranslatedString:'Documents'}</a></td></tr>
-			</table>
-			</td>
-		</tr>
+		<table border=0 cellspacing=0 cellpadding=5 width=100% >
+		<tr><td>{$OUTPUT}</td></tr>
+		<tr><td align="right"><a href="{$ZIPNAME}">{'LNK_DOWNLOAD'|getTranslatedString:'Documents'}</a></td></tr>
 		</table>
 	</div>
 	</td>

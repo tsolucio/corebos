@@ -26,7 +26,7 @@
 class Google_Service_CloudSearch_Resource_SettingsDatasources extends Google_Service_Resource
 {
   /**
-   * Creates data source. (datasources.create)
+   * Creates a datasource. (datasources.create)
    *
    * @param Google_Service_CloudSearch_DataSource $postBody
    * @param array $optParams Optional parameters.
@@ -39,14 +39,13 @@ class Google_Service_CloudSearch_Resource_SettingsDatasources extends Google_Ser
     return $this->call('create', array($params), "Google_Service_CloudSearch_Operation");
   }
   /**
-   * Deletes a data source. (datasources.delete)
+   * Deletes a datasource. (datasources.delete)
    *
-   * @param string $name Name of the data source. Format: datasources/{source_id}.
+   * @param string $name Name of the datasource. Format: datasources/{source_id}.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool debugOptions.enableDebugging If set, the request will enable
-   * debugging features of Cloud Search. Only turn on this field, if asked by
-   * Google to help with debugging.
+   * @opt_param bool debugOptions.enableDebugging If you are asked by Google to
+   * help with debugging, set this field. Otherwise, ignore this field.
    * @return Google_Service_CloudSearch_Operation
    */
   public function delete($name, $optParams = array())
@@ -56,15 +55,14 @@ class Google_Service_CloudSearch_Resource_SettingsDatasources extends Google_Ser
     return $this->call('delete', array($params), "Google_Service_CloudSearch_Operation");
   }
   /**
-   * Gets a data source. (datasources.get)
+   * Gets a datasource. (datasources.get)
    *
-   * @param string $name Name of the data source resource. Format:
+   * @param string $name Name of the datasource resource. Format:
    * datasources/{source_id}.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool debugOptions.enableDebugging If set, the request will enable
-   * debugging features of Cloud Search. Only turn on this field, if asked by
-   * Google to help with debugging.
+   * @opt_param bool debugOptions.enableDebugging If you are asked by Google to
+   * help with debugging, set this field. Otherwise, ignore this field.
    * @return Google_Service_CloudSearch_DataSource
    */
   public function get($name, $optParams = array())
@@ -74,15 +72,14 @@ class Google_Service_CloudSearch_Resource_SettingsDatasources extends Google_Ser
     return $this->call('get', array($params), "Google_Service_CloudSearch_DataSource");
   }
   /**
-   * Lists data sources. (datasources.listSettingsDatasources)
+   * Lists datasources. (datasources.listSettingsDatasources)
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool debugOptions.enableDebugging If set, the request will enable
-   * debugging features of Cloud Search. Only turn on this field, if asked by
-   * Google to help with debugging.
+   * @opt_param bool debugOptions.enableDebugging If you are asked by Google to
+   * help with debugging, set this field. Otherwise, ignore this field.
    * @opt_param string pageToken Starting index of the results.
-   * @opt_param int pageSize Maximum number of data sources to fetch in a request.
+   * @opt_param int pageSize Maximum number of datasources to fetch in a request.
    * The max value is 100. The default value is 10
    * @return Google_Service_CloudSearch_ListDataSourceResponse
    */
@@ -93,10 +90,10 @@ class Google_Service_CloudSearch_Resource_SettingsDatasources extends Google_Ser
     return $this->call('list', array($params), "Google_Service_CloudSearch_ListDataSourceResponse");
   }
   /**
-   * Updates a data source. (datasources.update)
+   * Updates a datasource. (datasources.update)
    *
-   * @param string $name Name of the data source resource. Format:
-   * datasources/{source_id}. The name is ignored when creating a data source.
+   * @param string $name Name of the datasource resource. Format:
+   * datasources/{source_id}. The name is ignored when creating a datasource.
    * @param Google_Service_CloudSearch_UpdateDataSourceRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_CloudSearch_Operation

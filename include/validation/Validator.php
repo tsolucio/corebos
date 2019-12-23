@@ -423,6 +423,29 @@ class Validator
     }
 
     /**
+     * Validate a field is contained within a list of values
+     *
+     * @param  string $field
+     * @param  mixed  $value
+     * @param  array  $params
+     * @return bool
+     */
+    protected function validateListContains($field, $value, $params)
+    {
+        $isAssoc = array_values($value) !== $value;
+        if ($isAssoc) {
+            $value = array_keys($value);
+        }
+
+        $strict = false;
+        if (isset($params[1])) {
+            $strict = $params[1];
+        }
+
+        return in_array($params[0], $value, $strict);
+    }
+
+    /**
      * Validate a field is not contained within a list of values
      *
      * @param  string $field
@@ -489,7 +512,7 @@ class Validator
         if (!is_array($params[0])) {
             $params[0] = array($params[0]);
         }
-        if (is_scalar($value)) {
+        if (is_scalar($value) || is_null($value)) {
             return $this->validateIn($field, $value, $params);
         }
 
@@ -999,6 +1022,23 @@ class Validator
         return true;
     }
 
+    protected function validateArrayHasKeys($field, $value, $params)
+    {
+        if (!is_array($value) || !isset($params[0])) {
+            return false;
+        }
+        $requiredFields = $params[0];
+        if (count($requiredFields) === 0) {
+            return false;
+        }
+        foreach ($requiredFields as $fieldName) {
+            if (!array_key_exists($fieldName, $value)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * Get array of fields and data
      *
@@ -1141,7 +1181,7 @@ class Validator
 
                 // Don't validate if the field is not required and the value is empty and we don't have a conditionally required rule present on the field
                 if (($this->hasRule('optional', $field) && isset($values)) 
-                    || ($this->hasRule('requiredWith', $field) || $this->hasRule('requiredWithout', $field))) {
+                    || ($this->hasRule('expression', $field) || $this->hasRule('requiredWith', $field) || $this->hasRule('requiredWithout', $field))) {
                     //Continue with execution below if statement
                 } elseif (
                     $v['rule'] !== 'required' && !$this->hasRule('required', $field) &&
@@ -1318,7 +1358,7 @@ class Validator
     /**
      * Convenience method to add a single validation rule
      *
-     * @param string|callback $rule
+     * @param string|callable $rule
      * @param array|string $fields
      * @return Validator
      * @throws \InvalidArgumentException

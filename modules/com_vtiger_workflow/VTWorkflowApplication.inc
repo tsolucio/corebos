@@ -81,5 +81,10 @@ class VTWorkflowApplication {
 	public function errorPageUrl($message) {
 		return "index.php?module={$this->name}&action=errormessage&message=".urlencode($message);
 	}
+
+	public function activatedeactivateTaskUrl($id, $active) {
+		$idPart="&workflow_id=$id";
+		return "index.php?module={$this->name}&action=activatedeactivateTask$idPart&active=$active&return_url=".urlencode($this->returnUrl());
+	}
 }
 ?>

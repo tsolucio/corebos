@@ -85,7 +85,7 @@ function getMenuJSON2() {
 			$menustructure[] = array(
 				'id' => $menu['evvtmenuid'],
 				'parent' => $menu['mparent'],
-				'text' => $label,
+				'text' => $label.(isset($_REQUEST['menudebug']) ? ' ('.$menu['mseq'].')' : ''),
 				'li_attr' => array('class'=>'jstree-drop',),
 				'a_attr' => array('onclick' => 'getMenuInfo('.$info.');', 'mseq' => $menu['mseq'])
 			);

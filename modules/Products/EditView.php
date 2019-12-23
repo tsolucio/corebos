@@ -319,9 +319,5 @@ $smarty->assign('SandRActive', GlobalVariable::getVariable('Application_SaveAndR
 $cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule);
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
 
-if ($focus->mode == 'edit') {
-	$smarty->display('Inventory/InventoryEditView.tpl');
-} else {
-	$smarty->display('Inventory/InventoryCreateView.tpl');
-}
+$smarty->display('Inventory/InventoryEditView.tpl');
 ?>

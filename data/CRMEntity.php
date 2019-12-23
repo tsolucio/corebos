@@ -774,6 +774,8 @@ class CRMEntity {
 					if ($insertion_mode == 'edit') {
 						$fldvalue = $this->adjustCurrencyField($fieldname, $fldvalue, $tabid);
 					}
+				} elseif ($uitype == '69m' || $uitype == '69') {
+					$fldvalue = urldecode($this->column_fields[$fieldname]);
 				} else {
 					$fldvalue = $this->column_fields[$fieldname];
 				}
@@ -1271,11 +1273,6 @@ class CRMEntity {
 	public function get_column_value($columnname, $fldvalue, $fieldname, $uitype, $datatype = '') {
 		global $log;
 		$log->debug("> get_column_value $columnname, $fldvalue, $fieldname, $uitype, $datatype");
-
-		// Added for the fields of uitype '57' which has datatype mismatch in crmentity table and particular entity table
-		if ($uitype == 57 && $fldvalue == '') {
-			return 0;
-		}
 		if (is_uitype($uitype, '_date_') && $fldvalue == '') {
 			return null;
 		}
@@ -2201,6 +2198,61 @@ class CRMEntity {
 	}
 
 	/**
+	 * Generic function to handle the workflow related list for a module.
+	 */
+	public function getWorkflowRelatedList($id, $cur_tab_id, $rel_tab_id, $actions = false) {
+		require_once 'modules/com_vtiger_workflow/VTWorkflow.php';
+		global $currentModule, $singlepane_view;
+
+		$parenttab = getParentTab();
+
+		$related_module = 'com_vtiger_workflow';
+		$other = new Workflow();
+		unset($other->list_fields['Tools'], $other->list_fields_name['Tools']);
+		$button = '';
+		if ($actions) {
+			if (is_string($actions)) {
+				$actions = explode(',', strtoupper($actions));
+			}
+			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
+				$button .= "<input title='" . getTranslatedString('LBL_SELECT') . ' ' . getTranslatedString($related_module, $related_module).
+					"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
+					"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',".
+					"'width=640,height=602,resizable=0,scrollbars=0');\" value='" . getTranslatedString('LBL_SELECT') . ' '.
+					getTranslatedString($related_module, $related_module) . "'>&nbsp;";
+			}
+			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
+				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
+				$button .= "<input type='hidden' name='createmode' value='link' />" .
+					"<input title='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "' class='crmbutton small create'" .
+					" onclick='this.form.action.value=\"workflowlist\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
+					" value='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "'>&nbsp;";
+			}
+		}
+
+		// To make the edit or del link actions to return back to same view.
+		if ($singlepane_view == 'true') {
+			$returnset = "&return_module=$currentModule&return_action=DetailView&return_id=$id";
+		} else {
+			$returnset = "&return_module=$currentModule&return_action=CallRelatedList&return_id=$id";
+		}
+
+		$query = 'SELECT *,workflow_id as crmid ';
+		$query .= ' FROM com_vtiger_workflows';
+		$query .= ' INNER JOIN vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid = workflow_id OR vtiger_crmentityrel.crmid = workflow_id)';
+		$query .= " WHERE (vtiger_crmentityrel.crmid = $id OR vtiger_crmentityrel.relcrmid = $id)";
+
+		$return_value = GetRelatedList($currentModule, $related_module, $other, $query, $button, $returnset);
+
+		if ($return_value == null) {
+			$return_value = array('header'=>array(),'entries'=>array(),'navigation'=>array('',''));
+		}
+		$return_value['CUSTOM_BUTTON'] = $button;
+
+		return $return_value;
+	}
+
+	/**
 	 * Default (generic) function to handle the related list for the module.
 	 * NOTE: Vtiger_Module::setRelatedList sets reference to this function in vtiger_relatedlists table
 	 * if function name is not explicitly specified.
@@ -2286,10 +2338,6 @@ class CRMEntity {
 		$query .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
 		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
 		$query .= " WHERE vtiger_crmentity.deleted = 0 AND (vtiger_crmentityrel.crmid = $id OR vtiger_crmentityrel.relcrmid = $id)";
-
-		if (GlobalVariable::getVariable('Debug_RelatedList_Query', '0') == '1') {
-			echo '<br>'.$query.'<br>';
-		}
 
 		$return_value = GetRelatedList($currentModule, $related_module, $other, $query, $button, $returnset);
 
@@ -2569,12 +2617,18 @@ class CRMEntity {
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb, $log;
 		$log->debug('> transferRelatedRecords '.$module.','.print_r($transferEntityIds, true).','.$entityId);
-
+		include_once 'include/utils/duplicate.php';
 		$rel_table_arr = array('Activities'=>'vtiger_seactivityrel');
-
 		$tbl_field_arr = array('vtiger_seactivityrel'=>'activityid');
-
 		$entity_tbl_field_arr = array('vtiger_seactivityrel'=>'crmid');
+		$depmods = getUIType10DependentModules($module);
+		unset($depmods['ModComments']);
+		foreach ($depmods as $mod => $details) {
+			$rel_table_arr[$mod] = $details['tablename'];
+			$modobj = CRMEntity::getInstance($mod);
+			$tbl_field_arr[$details['tablename']] = $modobj->tab_name_index[$details['tablename']];
+			$entity_tbl_field_arr[$details['tablename']] = $details['columname'];
+		}
 
 		foreach ($transferEntityIds as $transferId) {
 			foreach ($rel_table_arr as $rel_table) {
@@ -2598,9 +2652,12 @@ class CRMEntity {
 				}
 			}
 
-			// Pick the records related to the entity to be transfered, but do not pick the once which are already related to the current entity.
-			$relatedRecords = $adb->pquery("SELECT relcrmid, relmodule FROM vtiger_crmentityrel WHERE crmid=? AND module=?" .
-					" AND relcrmid NOT IN (SELECT relcrmid FROM vtiger_crmentityrel WHERE crmid=? AND module=?)", array($transferId, $module, $entityId, $module));
+			// Pick the records related to the entity to be transfered, but do not pick the ones which are already related to the current entity.
+			$relatedRecords = $adb->pquery(
+				'SELECT relcrmid, relmodule FROM vtiger_crmentityrel WHERE crmid=? AND module=?'
+					.' AND relcrmid NOT IN (SELECT relcrmid FROM vtiger_crmentityrel WHERE crmid=? AND module=?)',
+				array($transferId, $module, $entityId, $module)
+			);
 			$numOfRecords = $adb->num_rows($relatedRecords);
 			for ($i = 0; $i < $numOfRecords; $i++) {
 				$relcrmid = $adb->query_result($relatedRecords, $i, 'relcrmid');
@@ -2611,7 +2668,7 @@ class CRMEntity {
 				);
 			}
 
-			// Pick the records to which the entity to be transfered is related, but do not pick the once to which current entity is already related.
+			// Pick the records to which the entity to be transfered is related, but do not pick the ones to which current entity is already related.
 			$parentRecords = $adb->pquery(
 				'SELECT crmid, module FROM vtiger_crmentityrel WHERE relcrmid=? AND relmodule=? AND crmid NOT IN
 					(SELECT crmid FROM vtiger_crmentityrel WHERE relcrmid=? AND relmodule=?)',
@@ -3317,13 +3374,14 @@ class CRMEntity {
 	 * return string $sorder    - sortorder string either 'ASC' or 'DESC'
 	 */
 	public function getSortOrder() {
-		global $log,$currentModule;
+		global $log;
+		$cmodule = get_class($this);
 		$log->debug('> getSortOrder');
-		$sorder = strtoupper(GlobalVariable::getVariable('Application_ListView_Default_OrderDirection', $this->default_sort_order, $currentModule));
+		$sorder = strtoupper(GlobalVariable::getVariable('Application_ListView_Default_OrderDirection', $this->default_sort_order, $cmodule));
 		if (isset($_REQUEST['sorder'])) {
 			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
-		} elseif (!empty($_SESSION[$currentModule.'_Sort_Order'])) {
-			$sorder = $this->db->sql_escape_string($_SESSION[$currentModule.'_Sort_Order']);
+		} elseif (!empty($_SESSION[$cmodule.'_Sort_Order'])) {
+			$sorder = $this->db->sql_escape_string($_SESSION[$cmodule.'_Sort_Order']);
 		}
 		$log->debug('< getSortOrder');
 		return $sorder;
@@ -3334,18 +3392,18 @@ class CRMEntity {
 	 * return string $order_by    - fieldname(eg: 'accountname')
 	 */
 	public function getOrderBy() {
-		global $log, $currentModule;
+		global $log;
 		$log->debug('> getOrderBy');
-
+		$cmodule = get_class($this);
 		$order_by = '';
-		if (GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0, $currentModule)) {
-			$order_by = GlobalVariable::getVariable('Application_ListView_Default_OrderField', $this->default_order_by, $currentModule);
+		if (GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0, $cmodule)) {
+			$order_by = GlobalVariable::getVariable('Application_ListView_Default_OrderField', $this->default_order_by, $cmodule);
 		}
 
 		if (isset($_REQUEST['order_by'])) {
 			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
-		} elseif (!empty($_SESSION[$currentModule.'_Order_By'])) {
-			$order_by = $this->db->sql_escape_string($_SESSION[$currentModule.'_Order_By']);
+		} elseif (!empty($_SESSION[$cmodule.'_Order_By'])) {
+			$order_by = $this->db->sql_escape_string($_SESSION[$cmodule.'_Order_By']);
 		}
 		$log->debug('< getOrderBy');
 		return $order_by;

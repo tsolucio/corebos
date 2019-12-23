@@ -117,6 +117,7 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 		return_module_language($current_language, 'Settings'),
 		return_module_language($current_language, $module->name)
 	));
+	$smarty->assign('ISADMIN', is_admin($current_user));
 	$smarty->assign('THEME', $theme);
 	$smarty->assign('IMAGE_PATH', $image_path);
 	$smarty->assign('MODULE_NAME', $module->label);

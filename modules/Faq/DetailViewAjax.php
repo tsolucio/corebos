@@ -1,5 +1,5 @@
 <?php
-/*+**********************************************************************************
+/************************************************************************************
  * The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
  * The Original Code is:  vtiger CRM Open Source
@@ -7,7 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-global $currentModule;
+require_once 'Smarty_setup.php';
+global $currentModule, $mod_strings, $app_strings, $current_user, $theme;
+
+$smarty = new vtigerCRM_Smarty();
 $modObj = CRMEntity::getInstance($currentModule);
 $ajaxaction = $_REQUEST['ajxaction'];
 if ($ajaxaction == 'DETAILVIEW') {
@@ -16,8 +19,7 @@ if ($ajaxaction == 'DETAILVIEW') {
 	$fieldvalue = utf8RawUrlDecode($_REQUEST['fieldValue']);
 	if ($crmid != '') {
 		$modObj->retrieve_entity_info($crmid, $currentModule);
-
-		//Added to avoid the comment save, when we edit other fields through ajax edit
+		// Added to avoid the comment save, when we edit other fields through ajax edit
 		if ($fieldname != 'comments') {
 			$modObj->column_fields['comments'] = '';
 		}
@@ -30,12 +32,8 @@ if ($ajaxaction == 'DETAILVIEW') {
 		} else {
 			$modObj->save($currentModule);
 			if ($modObj->id != '') {
-				if ($fieldname == 'comments') {
-					$comments = $modObj->getFAQComments($modObj->id);
-					echo ':#:SUCCESS'.$comments;
-				} else {
-					echo ':#:SUCCESS';
-				}
+				echo ':#:SUCCESS:#:';
+				require_once 'modules/'.$currentModule.'/DetailView.php';
 			} else {
 				echo ':#:FAILURE';
 			}

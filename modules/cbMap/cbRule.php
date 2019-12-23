@@ -82,11 +82,11 @@ class coreBOS_Rule {
 				$ruleinfo = $cbmap->ConditionQuery($idComponents[1]);
 				break;
 			case 'DecisionTable':
-				$ruleinfo = $cbmap->DecisionTable($contextid);
+				$ruleinfo = $cbmap->DecisionTable($context);
 				break;
 			case 'Condition Expression':
 			default:
-				$ruleinfo = $cbmap->ConditionExpression($contextid);
+				$ruleinfo = $cbmap->ConditionExpression($context);
 				break;
 		}
 		return $ruleinfo;

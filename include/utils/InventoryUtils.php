@@ -245,6 +245,8 @@ function getAllTaxes($available = 'all', $sh = '', $mode = '', $id = '') {
 			$taxtypes[$i]['deleted'] = $adb->query_result($res, $i, 'deleted');
 			if ($sh == '') {
 				$taxtypes[$i]['retention'] = $adb->query_result($res, $i, 'retention');
+				$taxtypes[$i]['default'] = $adb->query_result($res, $i, 'tdefault');
+				$taxtypes[$i]['qcreate'] = $adb->query_result($res, $i, 'qcreate');
 			}
 		}
 	} // corebos tax calculation

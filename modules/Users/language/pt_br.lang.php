@@ -51,6 +51,8 @@ $mod_strings = array(
 'LBL_DATE_FORMAT'=>'Formato da data',
 
 'LBL_ERROR'=>'Erro:',
+'FORM_TOKEN_EXPIRED'=>'Edit token has expired. Try again.',
+'ERR_CANNOTEDITUSER' => 'Not Permitted. You cannot edit this User',
 'LBL_PASSWORD'=>'Senha',
 'LBL_USER_NAME'=>'Usuário',
 'LBL_2FACODE' => 'Código',
@@ -794,6 +796,7 @@ $mod_strings = array(
 'LBL_USERLOGGEDOUTOK' => 'O usuário foi desconectado corretamente.',
 'LBL_USERLOGGEDOUTNOK' => 'O usuário não pode ser desconectado.',
 'LBL_UNBLOCK_USR' => 'Desbloquear a sessão para iniciar uma nova sessão?',
+'LOGGED IN' => 'Logged In',
 // LDAP
 'LBL_QUERY' => 'Pergunta',
 'LBL_FORE_LASTNAME' => 'Nome ou sobrenome',

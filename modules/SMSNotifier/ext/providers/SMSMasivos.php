@@ -100,7 +100,7 @@ class SMSMasivos implements ISMSProvider {
 			$response = $httpClient->doPost($params);
 			$responseobj = json_decode($response);
 			$referencia = $responseobj->referencia;
-			$responseLines = split("\n", $response);
+			$responseLines = explode("\n", $response);
 			$i = 0;
 			foreach ($responseLines as $responseLine) {
 				$responseLine = trim($responseLine);

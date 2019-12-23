@@ -79,7 +79,7 @@ function __cb_aggregation_operation($arr) {
 }
 
 function __cb_aggregation_getQuery($arr, $userdefinedoperation = true) {
-	global $adb, $GetRelatedList_ReturnOnlyQuery;
+	global $adb, $GetRelatedList_ReturnOnlyQuery, $logbg;
 	$validoperations = array('sum', 'min', 'max', 'avg', 'count', 'std', 'variance', 'time_to_sec');
 	$operation = strtolower($arr[0]);
 	if (!in_array($operation, $validoperations)) {
@@ -136,6 +136,7 @@ function __cb_aggregation_getQuery($arr, $userdefinedoperation = true) {
 	} else {
 		$query = 'select '.$operation.'('.$rfield->table.'.'.$rfield->column.') as aggop '.$qfrom;
 	}
+	$logbg->debug("Agg query: $query");
 	return $query;
 }
 
@@ -177,11 +178,17 @@ function __cb_aggregation_queryonsamemodule($conditions, $module, $relfield, $re
 			$v = trim($v, '[');
 			$v = trim($v, ']');
 		});
+		$numconds = count($c);
+		$cnd = 1;
 		foreach ($c as $cond) {
 			$cndparams = explode(',', $cond);
+			if ($cnd == $numconds) {
+				$cndparams[3] = QueryGenerator::$AND;
+			}
 			$ct = new VTSimpleTemplate($cndparams[2]);
 			$value = $ct->render($entityCache, $entityId);
 			$qg->addCondition($cndparams[0], $value, $cndparams[1], $cndparams[3]);
+			$cnd++;
 		}
 	}
 	return $qg->getQuery();

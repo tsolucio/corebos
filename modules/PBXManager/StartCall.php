@@ -50,7 +50,7 @@ function startCall() {
 		$callerInfo = array('id'=>$record, 'module'=>$callerModule, 'name'=>$callerName);
 
 		//adds to pbx manager
-		addToCallHistory($extension, $extension, $number, 'outgoing', $adb, $callerInfo);
+		addToCallHistory($extension, $extension, $number, 'outgoing', $adb, $callerInfo, 0);
 
 		// add to the records activity history
 		addOutgoingcallHistory($current_user, $extension, $record, $adb);

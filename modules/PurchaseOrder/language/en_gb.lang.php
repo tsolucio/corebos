@@ -157,5 +157,9 @@ $mod_strings = array(
 	'PurchaseOrder No' => 'Purchase Order No.',
 	'SINGLE_PurchaseOrder' => 'Purchase Order',
 	'PurchaseOrder ID' => 'Purchase Order ID',
+	'LBL_PARTIAL_PAYMENTS_INFO' => 'Partial Payments Information',
+	'Amount Due'=>'Amount Due',
+	'Amount Paid'=>'Amount Paid',
+	'Total Amount'=>'Total Amount',
 );
 ?>

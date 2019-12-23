@@ -184,5 +184,10 @@ $mod_strings = array(
 	'Net Total' => 'Netto totaal voor korting',
 	'VAT' => 'BTW',
 	'Grand Total' => 'Eindtotaal',
+	'Add Payment' => 'Voeg een betaling toe',
+	'LBL_PARTIAL_PAYMENTS_INFO' => 'Betalingsinformatie',
+	'Amount Due' => 'Openstaand bedrag',
+	'Amount Paid' => 'Bedrag betaald',
+	'Total Amount' => 'Totaalbedrag',
 );
 ?>

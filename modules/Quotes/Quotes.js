@@ -33,7 +33,7 @@ function set_return(product_id, product_name) {
 }
 
 function set_return_specific(product_id, product_name) {
-	var fldName = getOpenerObj('quote_name');
+	var fldName = getOpenerObj('quote_id_display');
 	var fldId = getOpenerObj('quote_id');
 	fldName.value = product_name;
 	fldId.value = product_id;

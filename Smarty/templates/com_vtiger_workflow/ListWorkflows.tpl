@@ -20,23 +20,20 @@
 	fn.addStylesheet('modules/{$module->name}/resources/style.css');
 </script>
 
-{include file='SetMenu.tpl'}
+<table border=0 cellspacing=0 cellpadding=20 width="99%" class="settingsUI">
+<tr>
+<td valign=top>
+<table border=0 cellspacing=0 cellpadding=0 width=100%>
+<tr>
+<td class="small" valign=top align=left>
 <div id="view" class="workflows-list">
 	{include file='com_vtiger_workflow/ModuleTitle.tpl'}
-	<table class="listTableTopButtons" width="100%" border="0" cellspacing="0" cellpadding="5">
-		<tr>
-			<td class="small"> <span id="status_message"></span> </td>
-			<td class="small cblds-t-align_right" align="right">
-				<input type="button" class="crmButton create small" value="{$MOD.LBL_NEW_WORKFLOW}" id='new_workflow'/>
-			</td>
-		</tr>
-	</table>
 	<datatable url="index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=getJSON" template="workflowlist_row_template">
 	<header>
 			<div class="slds-grid slds-gutters" style="width: 650px;">
 				<div class="slds-col">
 					<div class="slds-form-element slds-lookup" data-select="single" style="width: 162px; margin-bottom: 6px;">
-						<label class="slds-form-element__label" for="lookup-339">{'LBL_MODULE'|getTranslatedString:'Reports'} {'LBL_Search'|getTranslatedString:'MailManager'}</label>
+						<label class="slds-form-element__label" for="lookup-339">{'LBL_MODULE'|getTranslatedString:'Reports'} </label>
 						<div class="slds-form-element__control slds-grid slds-box_border">
 							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
 								<svg aria-hidden="true" class="slds-input__icon">
@@ -54,7 +51,7 @@
 				<div class="slds-col">
 					<div class="slds-form-element" style="width: 162px; margin-bottom: 6px;">
 						<label class="slds-form-element__label" for="text-input-id-1">
-						{'LBL_DESCRIPTION'|getTranslatedString:'Reports'} {'LBL_Search'|getTranslatedString:'MailManager'}
+						{'LBL_DESCRIPTION'|getTranslatedString:'Reports'} 
 						</label>
 						<div class="slds-form-element__control">
 							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
@@ -69,7 +66,7 @@
 				<div class="slds-col">
 					<div class="slds-form-element" style="width: 162px;">
 						<label class="slds-form-element__label" for="text-input-id-1">
-						{'LBL_PURPOSE'|getTranslatedString:'Reports'} {'LBL_Search'|getTranslatedString:'MailManager'}
+						{'LBL_PURPOSE'|getTranslatedString:'Reports'} 
 						</label>
 						<div class="slds-form-element__control">
 							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
@@ -83,7 +80,7 @@
 				</div>
 				<div class="slds-col">
 					<div class="slds-form-element slds-lookup" data-select="single" style="width: 162px; margin-bottom: 6px;">
-						<label class="slds-form-element__label" for="lookup-339">{'LBL_TRIGGER'|getTranslatedString:'Reports'} {'LBL_Search'|getTranslatedString:'MailManager'}</label>
+						<label class="slds-form-element__label" for="lookup-339">{'LBL_TRIGGER'|getTranslatedString:'Reports'} </label>
 						<div class="slds-form-element__control slds-grid slds-box_border">
 							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
 								<svg aria-hidden="true" class="slds-input__icon">
@@ -96,6 +93,11 @@
 								</select>
 							</div>
 						</div>
+					</div>
+				</div>
+				<div class="slds-col">
+					<div class="slds-form-element slds-float_right" style="width: 162px; margin-top: 24px;">
+						<button class="slds-button slds-button_success" id='new_workflow'>{$MOD.LBL_NEW_WORKFLOW}</button>
 					</div>
 				</div>
 			</div>
@@ -116,12 +118,22 @@
 	<tr>
 		{foreach key=dtkey item=dtheader from=$LIST_FIELDS}
 			{if $dtheader eq 'workflow_id'}
-			<td class="rptData">
-				<a av="href:Record"><span>
-				<img border="0" title="{'LBL_EDIT'|@getTranslatedString}" alt="{'LBL_EDIT'|@getTranslatedString}"
-					style="cursor: pointer;" src="{'editfield.gif'|@vtiger_imageurl:$THEME}"/></span></a>
-				<a av="href:RecordDel" data-handler="remove" class="deleteanchor"><span av="id:workflow_id"><img border="0" title="{'LBL_DELETE'|@getTranslatedString}" alt="{'LBL_DELETE'|@getTranslatedString}"
-					src="{'delete.gif'|@vtiger_imageurl:$THEME}" style="cursor: pointer;"</span>
+			<td class="rptData" style="min-width:90px;">
+				<a av="href:Record">
+				<span class="slds-icon_container slds-icon_container_circle slds-icon-action-edit" title="{'LBL_EDIT_BUTTON'|@getTranslatedString:$MODULE_NAME}">
+					<svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#edit"></use>
+					</svg>
+					<span class="slds-assistive-text">{'LBL_EDIT_BUTTON'|@getTranslatedString:$MODULE_NAME}</span>
+				</span>
+				</a>
+				<a av="href:RecordDel" data-handler="remove" class="deleteanchor">
+				<span av="id:workflow_id" class="slds-icon_container slds-icon_container_circle slds-icon-action-delete" title="{'LBL_DELETE_BUTTON'|@getTranslatedString:$MODULE_NAME}">
+					<svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#delete"></use>
+					</svg>
+					<span class="slds-assistive-text">{'LBL_DELETE_BUTTON'|@getTranslatedString:$MODULE_NAME}</span>
+				</span>
 				</a>
 			</td>
 			{else}
@@ -142,7 +154,7 @@ Template.define('workflowlist_row_template', {
 				document.getElementById('confirm-prompt').style.display = 'none';
 			};
 			document.getElementById('yes_button').onclick = function () {
-				var return_url = encodeURIComponent('index.php?module=com_vtiger_workflow&action=workflowlist&parenttab=Settings');
+				var return_url = encodeURIComponent('index.php?module=com_vtiger_workflow&action=workflowlist');
 				document.getElementById('confirm-prompt').style.display = 'none';
 				var base_url = (window.location.origin + window.location.pathname).replace('index.php', '');
 				var idPart= '&workflow_id='+data.workflow_id;

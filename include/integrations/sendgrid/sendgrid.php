@@ -17,11 +17,11 @@
  *  Author    : JPL TSolucio, S. L.
  *************************************************************************************************/
 require_once 'include/integrations/sendgrid/vendor/autoload.php';
+include_once 'vtlib/Vtiger/Module.php';
+require_once 'include/events/include.inc';
 
 class corebos_sendgrid {
 	// Configuration Properties
-	private $sg_user = '123';
-	private $sg_pass = 'abcde';
 	private $usesg_transactional = 'a';
 	private $srv_transactional = 'wxyz';
 	private $user_transactional = '123';
@@ -31,11 +31,8 @@ class corebos_sendgrid {
 	private $user_marketing = '123';
 	private $pass_marketing = 'abcde';
 
-
 	// Configuration Keys
 	const KEY_ISACTIVE = 'sendgrid_isactive';
-	const KEY_SG_USER = 'sguser';
-	const KEY_SG_PASS = 'sgpass';
 	const KEY_USESG_TRANSACTIONAL = 'usesgtransactional';
 	const KEY_SRV_TRANSACTIONAL = 'srvtransactional';
 	const KEY_USER_TRANSACTIONAL = 'usertransactional';
@@ -44,9 +41,6 @@ class corebos_sendgrid {
 	const KEY_SRV_MARKETING = 'srvmarketing';
 	const KEY_USER_MARKETING = 'usermarketing';
 	const KEY_PASS_MARKETING = 'passwordmarketing';
-
-	// Debug
-	const DEBUG = true;
 
 	// Errors
 	public static $ERROR_NONE = 0;
@@ -61,8 +55,6 @@ class corebos_sendgrid {
 	}
 
 	public function initGlobalScope() {
-		$this->sg_user = coreBOS_Settings::getSetting(self::KEY_SG_USER, '');
-		$this->sg_pass = coreBOS_Settings::getSetting(self::KEY_SG_PASS, '');
 		$this->usesg_transactional = coreBOS_Settings::getSetting(self::KEY_USESG_TRANSACTIONAL, '');
 		$this->srv_transactional = coreBOS_Settings::getSetting(self::KEY_SRV_TRANSACTIONAL, '');
 		$this->user_transactional = coreBOS_Settings::getSetting(self::KEY_USER_TRANSACTIONAL, '');
@@ -75,8 +67,6 @@ class corebos_sendgrid {
 
 	public function saveSettings(
 		$isactive,
-		$sg_user,
-		$sg_pass,
 		$usesg_transactional,
 		$srv_transactional,
 		$user_transactional,
@@ -87,8 +77,6 @@ class corebos_sendgrid {
 		$pass_marketing
 	) {
 		coreBOS_Settings::setSetting(self::KEY_ISACTIVE, $isactive);
-		coreBOS_Settings::setSetting(self::KEY_SG_USER, $sg_user);
-		coreBOS_Settings::setSetting(self::KEY_SG_PASS, $sg_pass);
 		coreBOS_Settings::setSetting(self::KEY_USESG_TRANSACTIONAL, $usesg_transactional);
 		coreBOS_Settings::setSetting(self::KEY_SRV_TRANSACTIONAL, $srv_transactional);
 		coreBOS_Settings::setSetting(self::KEY_USER_TRANSACTIONAL, $user_transactional);
@@ -97,13 +85,18 @@ class corebos_sendgrid {
 		coreBOS_Settings::setSetting(self::KEY_SRV_MARKETING, $srv_marketing);
 		coreBOS_Settings::setSetting(self::KEY_USER_MARKETING, $user_marketing);
 		coreBOS_Settings::setSetting(self::KEY_PASS_MARKETING, $pass_marketing);
+		global $adb;
+		$em = new VTEventsManager($adb);
+		if (self::useEmailHook()) {
+			$em->registerHandler('corebos.filter.systemEmailClass.getname', 'include/integrations/sendgrid/sendgrid.php', 'corebos_sendgrid');
+		} else {
+			$em->unregisterHandler('corebos_sendgrid');
+		}
 	}
 
 	public function getSettings() {
 		return array(
 			'isActive' => coreBOS_Settings::getSetting(self::KEY_ISACTIVE, ''),
-			'sg_user' => coreBOS_Settings::getSetting(self::KEY_SG_USER, ''),
-			'sg_pass' => coreBOS_Settings::getSetting(self::KEY_SG_PASS, ''),
 			'usesg_transactional' => coreBOS_Settings::getSetting(self::KEY_USESG_TRANSACTIONAL, ''),
 			'srv_transactional' => coreBOS_Settings::getSetting(self::KEY_SRV_TRANSACTIONAL, ''),
 			'user_transactional' => coreBOS_Settings::getSetting(self::KEY_USER_TRANSACTIONAL, ''),
@@ -115,17 +108,16 @@ class corebos_sendgrid {
 		);
 	}
 
-	public function isActive() {
+	public static function isActive() {
 		$isactive = coreBOS_Settings::getSetting(self::KEY_ISACTIVE, '0');
 		return ($isactive=='1');
 	}
 
 	public static function emailServerCheck() {
-		return $this->isActive();
+		return self::useEmailHook();
 	}
 
-	public function sendmail(
-		$module,
+	public static function sendEMail(
 		$to_email,
 		$from_name,
 		$from_email,
@@ -137,44 +129,160 @@ class corebos_sendgrid {
 		$emailid = '',
 		$logo = '',
 		$replyto = '',
-		$qrScan = ''
+		$qrScan = '',
+		$brScan = ''
 	) {
-		$sendgrid = coreBOS_Settings::getSetting(self::KEY_ISACTIVE, '0');
-		$usetrans = coreBOS_Settings::getSetting(self::KEY_USESG_TRANSACTIONAL, '0');
-		if ($sendgrid && $usetrans) {
-			include_once 'modules/MarketingDashboard/sendEmail.php';
+		global $adb, $log;
+		if (self::useEmailHook()) {
 			if (is_array($attachment)) {
 				$atts = $attachment;
 			} else {
 				$atts = getAllAttachments($emailid);
 			}
-			$rs = $adb->pquery("select first_name,last_name from vtiger_users where user_name=?", array($from_name));
+			if (isset($_REQUEST['filename_hidden_docu'])) {
+				$file_name = $_REQUEST['filename_hidden_docu'];
+				$atts[]=array('fname'=>$file_name,'fpath'=>$file_name);
+			}
+			if (isset($_REQUEST['filename_hidden_gendoc'])) {
+				$file_name = $_REQUEST['filename_hidden_gendoc'];
+				$atts[]=array('fname'=>$file_name,'fpath'=>$file_name);
+			}
+			if ($logo == 1) {
+				$cmp = retrieveCompanyDetails();
+				$atts[]=array(
+					'fname' => basename($cmp['companylogo']),
+					'fpath' => $cmp['companylogo'],
+					'attachtype' => 'inline',
+					'attachmarker' => 'logo', // '<img src="cid:logo" />',
+				);
+			}
+			preg_match_all('/<img src="cid:(qrcode.*)"/', $contents, $matches);
+			if ($qrScan == 1 || count($matches[1])>0) {
+				foreach ($matches[1] as $qrname) {
+					$atts[]=array(
+						'fname' => $qrname.'.png',
+						'fpath' => 'cache/images/'.$qrname.'.png',
+						'attachtype' => 'inline',
+						'attachmarker' => $qrname, //'<img src="cid:'.$qrname.'" />',
+					);
+				}
+			}
+			preg_match_all('/<img src="cid:(barcode.*)"/', $contents, $matches);
+			if ($brScan == 1 || count($matches[1])>0) {
+				foreach ($matches[1] as $brname) {
+					$atts[]=array(
+						'fname' => $brname.'.png',
+						'fpath' => 'cache/images/'.$brname.'.png',
+						'attachtype' => 'inline',
+						'attachmarker' => $brname, //'<img src="cid:'.$brname.'" />',
+					);
+				}
+			}
+			$rs = $adb->pquery('select first_name,last_name from vtiger_users where user_name=?', array($from_name));
 			if ($adb->num_rows($rs) > 0) {
-				$from_name = decode_html($adb->query_result($rs, 0, "first_name")." ".$adb->query_result($rs, 0, "last_name"));
+				$from_name = decode_html($adb->query_result($rs, 0, 'first_name').' '.$adb->query_result($rs, 0, 'last_name'));
 			}
 			if (!is_array($to_email)) {
-				$to_email = trim($to_email, ",");
+				$to_email = trim($to_email, ',');
 				$to_email = explode(',', $to_email);
 			}
+			if (empty($cc)) {
+				$cc = array();
+			}
 			if (!is_array($cc)) {
-				$cc = setSendGridCCAddress($cc);
+				$cc = self::setSendGridCCAddress($cc);
+			}
+			if (empty($bcc)) {
+				$bcc = array();
 			}
 			if (!is_array($bcc)) {
-				$bcc = setSendGridCCAddress($bcc);
+				$bcc = self::setSendGridCCAddress($bcc);
 			}
 			$subject = '=?UTF-8?B?'.base64_encode($subject).'?=';
-			$mail_error = sendGridMail($to_email, $contents, $subject, array($from_email=>$from_name), 0, 'Transactional', $emailid, $atts, $cc, $bcc);
+			$email = new \SendGrid\Mail\Mail();
+			$email->setFrom($from_email, $from_name);
+			$email->setSubject($subject);
+			$alreadysent = array();
+			foreach ($to_email as $oneemail) {
+				if (!in_array($oneemail, $alreadysent)) {
+					$email->addTo($oneemail);
+					$alreadysent[] = $oneemail;
+				}
+			}
+			foreach ($cc as $oneemail) {
+				if (!in_array($oneemail, $alreadysent)) {
+					$email->addCc($oneemail);
+					$alreadysent[] = $oneemail;
+				}
+			}
+			foreach ($bcc as $oneemail) {
+				if (!in_array($oneemail, $alreadysent)) {
+					$email->addBcc($oneemail);
+					$alreadysent[] = $oneemail;
+				}
+			}
+			if (!empty($replyto)) {
+				$email->setReplyTo($replyto);
+			}
+			//$email->addContent("text/plain", "and easy to do anywhere, even with PHP");
+			$email->addContent('text/html', $contents);
+			$email->addAttachments(self::convertAttachmentArray($atts));
+			$email->addCategory('Transactional');
+			$email->addCustomArg('crmid', (string)$emailid);
+			$sendgrid = new \SendGrid(coreBOS_Settings::getSetting(self::KEY_PASS_TRANSACTIONAL, ''));
+			try {
+				$response = $sendgrid->send($email);
+				if ($response->statusCode() > 299) {
+					$log->fatal('Caught SENDGRID email error: '.$response->statusCode());
+					$log->fatal($response->body());
+					return $response->statusCode();
+				}
+				return 1;
+			} catch (Exception $e) {
+				$log->fatal('Caught SENDGRID email exception: '. $e->getMessage());
+				return 0;
+			}
 		}
+	}
+
+	/** convert coreBOS attachments array to SendGrid attachments array
+	 * @param array filename, filepath, "attachment | inline", "inline position marker"
+	 * @return array "base64 encoded content2", "filename", "mime type", "attachment | inline", "inline position marker"
+	 */
+	public static function convertAttachmentArray($attachments) {
+		$atts = array();
+		foreach ($attachments as $att) {
+			if (empty($att)) {
+				continue;
+			}
+			if (is_string($att)) {
+				$fname = $att;
+				$att = array();
+				$att['fpath'] = $fname;
+				$att['fname'] = basename($fname);
+			}
+			$attype = isset($att['attachtype']) ? $att['attachtype'] : 'attachment';
+			$atposition = isset($att['attachmarker']) ? $att['attachmarker'] : '';
+			$atts[] = array(
+				base64_encode(file_get_contents($att['fpath'])),
+				mime_content_type($att['fpath']),
+				$att['fname'],
+				$attype,
+				$atposition,
+			);
+		}
+		return $atts;
 	}
 
 	/** Function to set the CC or BCC addresses in the mail
 	 * @param string $cc_bcc - comma separated list of emails to set as CC or BCC in the mail
+	 * @return array of emails
 	 */
-	public function setSendGridCCAddress($cc_bcc) {
+	public static function setSendGridCCAddress($cc_bcc) {
 		global $log;
 		$log->debug('> setSendGridCCAddress');
 		if ($cc_bcc != '') {
-			$address = '';
+			$address = array();
 			$ccmail = explode(',', trim($cc_bcc, ','));
 			for ($i=0; $i<count($ccmail); $i++) {
 				$addr = $ccmail[$i];
@@ -185,12 +293,11 @@ class corebos_sendgrid {
 					$addr = trim($name_addr_pair[1], '>');
 				}
 				if ($ccmail[$i] != '') {
-					$address .= $addr.',';
+					$address[] = $addr;
 				}
 			}
-			$address = trim($address, ',');
 			$log->debug('< setSendGridCCAddress');
-			return $address;
+			return array_unique($address);
 		}
 		$log->debug('< setSendGridCCAddress');
 		return $cc_bcc;
@@ -199,17 +306,14 @@ class corebos_sendgrid {
 	public static function useEmailHook() {
 		$sendgrid = coreBOS_Settings::getSetting(self::KEY_ISACTIVE, '0');
 		$usetrans = coreBOS_Settings::getSetting(self::KEY_USESG_TRANSACTIONAL, '0');
-		if ($sendgrid && $usesg_trans) {
-			if ($attachment == 'attMessages') {
-				if (isset($_REQUEST['filename_hidden_docu'])) {
-					$file_name = $_REQUEST['filename_hidden_docu'];
-					addAttachment($mail, $file_name, $emailid);
-				}
-				if (isset($_REQUEST['filename_hidden_gendoc'])) {
-					$file_name = $_REQUEST['filename_hidden_gendoc'];
-					addAttachment($mail, $file_name, $emailid);
-				}
-			}
+		return ($sendgrid != '0' && $usetrans != '0');
+	}
+
+	public function handleFilter($handlerType, $parameter) {
+		if ($handlerType == 'corebos.filter.systemEmailClass.getname' && corebos_sendgrid::useEmailHook()) {
+			return array('corebos_sendgrid', 'include/integrations/sendgrid/sendgrid.php');
+		} else {
+			return $parameter;
 		}
 	}
 }

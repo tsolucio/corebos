@@ -131,7 +131,7 @@ class BusinessActions extends CRMEntity {
 		}
 	}
 
-	private static function convertToObject($tabid, $valuemap) {
+	public static function convertToObject($tabid, $valuemap) {
 		$link_obj = new Vtiger_Link();
 		$link_obj->tabid = (string) $tabid;
 		$link_obj->linkid = $valuemap['businessactionsid'];
@@ -266,12 +266,13 @@ class BusinessActions extends CRMEntity {
 		}
 
 		$result = array();
+		$alreadyLoaded = array();
 		if ($multitype) {
 			foreach ($type as $t) {
 				$result[$t] = array();
+				$alreadyLoaded[$t] = array();
 			}
 		}
-
 		foreach ($accumulator as $row) {
 			/** Should the widget be shown */
 			$return = cbEventHandler::do_filter('corebos.filter.link.show', array($row, $type, $parameters));
@@ -288,7 +289,6 @@ class BusinessActions extends CRMEntity {
 				$linkData = new Vtiger_LinkData($link, $current_user);
 				$ignore = call_user_func(array($row['handler_class'], $row['handler']), $linkData);
 				if (!$ignore) {
-					self::log("Ignoring Link ... ".var_export($row, true));
 					continue;
 				}
 			}
@@ -301,10 +301,17 @@ class BusinessActions extends CRMEntity {
 				$link->linkurl = $strtemplate->merge($link->linkurl);
 				$link->linkicon= $strtemplate->merge($link->linkicon);
 			}
-
 			if ($multitype) {
+				if (in_array($link->linktype, array('HEADERSCRIPT', 'HEADERCSS', 'HEADERSCRIPT_POPUP', 'HEADERCSS_POPUP', 'FOOTERSCRIPT')) && in_array($link->linkurl, $alreadyLoaded[$link->linktype])) {
+					continue;
+				}
+				$alreadyLoaded[$link->linktype][] = $link->linkurl;
 				$result[$link->linktype][] = $link;
 			} else {
+				if (in_array($link->linktype, array('HEADERSCRIPT', 'HEADERCSS', 'HEADERSCRIPT_POPUP', 'HEADERCSS_POPUP', 'FOOTERSCRIPT')) && in_array($link->linkurl, $alreadyLoaded)) {
+					continue;
+				}
+				$alreadyLoaded[] = $link->linkurl;
 				$result[] = $link;
 			}
 		}
@@ -466,6 +473,36 @@ class BusinessActions extends CRMEntity {
 				vtws_revise($linkInfo, $current_user);
 			}
 		}
+	}
+
+	public static function getModuleLinkStatusInfo($actiontype, $actionlabel) {
+		global $adb;
+		$allEntities = array();
+		$allModules = array();
+		$entityQuery = "SELECT tabid,name FROM vtiger_tab WHERE isentitytype=1 and name NOT IN ('Rss','Recyclebin','Events','Calendar')";
+		$result = $adb->pquery($entityQuery, array());
+		while ($result && $row = $adb->fetch_array($result)) {
+			$allEntities[$row['tabid']] = getTranslatedString($row['name'], $row['name']);
+			$allModules[$row['tabid']] = $row['name'];
+		}
+		asort($allEntities);
+		$mlist = array();
+		foreach ($allEntities as $tabid => $mname) {
+			$checkres = $adb->pquery(
+				'SELECT 1
+					FROM vtiger_businessactions
+					INNER JOIN vtiger_crmentity ON crmid = businessactionsid
+					WHERE vtiger_crmentity.deleted = 0
+						AND (module_list = ? OR module_list LIKE ? OR module_list LIKE ? OR module_list LIKE ?)
+						AND elementtype_action=? AND linklabel=?',
+				array($allModules[$tabid], $allModules[$tabid].' %', '% '.$allModules[$tabid].' %', '% '.$allModules[$tabid], $actiontype, $actionlabel)
+			);
+			$mlist[$tabid] = array(
+				'name' => $mname,
+				'active' => $adb->num_rows($checkres),
+			);
+		}
+		return $mlist;
 	}
 
 	/**

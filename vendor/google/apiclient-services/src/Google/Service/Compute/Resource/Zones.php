@@ -27,7 +27,7 @@ class Google_Service_Compute_Resource_Zones extends Google_Service_Resource
 {
   /**
    * Returns the specified Zone resource. Gets a list of available zones by making
-   * a list() request. (zones.get)
+   * a list() request. (== suppress_warning http-rest-shadowed ==) (zones.get)
    *
    * @param string $project Project ID for this request.
    * @param string $zone Name of the zone resource to return.
@@ -41,8 +41,8 @@ class Google_Service_Compute_Resource_Zones extends Google_Service_Resource
     return $this->call('get', array($params), "Google_Service_Compute_Zone");
   }
   /**
-   * Retrieves the list of Zone resources available to the specified project.
-   * (zones.listZones)
+   * Retrieves the list of Zone resources available to the specified project. (==
+   * suppress_warning http-rest-shadowed ==) (zones.listZones)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.

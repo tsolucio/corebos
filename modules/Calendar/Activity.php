@@ -11,7 +11,7 @@
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
  ********************************************************************************/
-include_once('config.php');
+include_once('config.inc.php');
 require_once('include/logging.php');
 require_once('include/database/PearDatabase.php');
 require_once('modules/Calendar/RenderRelatedListUI.php');

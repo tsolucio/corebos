@@ -293,13 +293,16 @@ function CBMassiveUpdateRelatedTask($, fieldvaluemapping) {
 		validator.addValidator('validateDuplicateFields', validateDuplicateFields);
 
 		vtinst.extendSession(handleError(function (result) {
-			vtinst.get('getRelatedModulesManytoOne', {'module':moduleName}, handleError(function (result) {
+			vtinst.post('getRelatedModulesInfomation', {'module':moduleName}, handleError(function (result) {
 				getTranslatedString;
 				var modarray={};
 				var combination;
-				for (var arr=0; arr<result.length; arr++) {
-					combination=result[arr]['name']+'__'+result[arr]['field'];
-					modarray[combination]=result[arr]['label'];
+				for (var prop in result) {
+					if (result[prop]['related_module']=='') {
+						continue;
+					}
+					combination=result[prop]['related_module']+'__'+result[prop]['relatedfield'];
+					modarray[combination]=result[prop]['labeli18n'];
 				}
 				function addFieldValueMapping(mappingno) {
 					$('#save_fieldvaluemapping').append(

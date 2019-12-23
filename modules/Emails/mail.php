@@ -47,8 +47,9 @@ require_once 'include/utils/CommonUtils.php';
 					wherever you want the logo to appear
  * $replyto    - email address that an automatic "reply to" will be sent
  * $qrScan     - if we should load qrcode images from cache directory   <img src="cid:qrcode{$fname}" />
+ * $brScan     - if we should load barcode images from cache directory   <img src="cid:barcode{$fname}" />
  */
-function send_mail($module, $to_email, $from_name, $from_email, $subject, $contents, $cc = '', $bcc = '', $attachment = '', $emailid = '', $logo = '', $replyto = '', $qrScan = '') {
+function send_mail($module, $to_email, $from_name, $from_email, $subject, $contents, $cc = '', $bcc = '', $attachment = '', $emailid = '', $logo = '', $replyto = '', $qrScan = '', $brScan = '') {
 	global $adb;
 	$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
 
@@ -142,6 +143,7 @@ function send_mail($module, $to_email, $from_name, $from_email, $subject, $conte
 			$emailid,
 			$logo,
 			$qrScan,
+			$brScan,
 			$replyto,
 			$replyToEmail
 		)
@@ -204,7 +206,7 @@ function addSignature($contents, $fromname) {
   * $attachment	-- see sendmail explanation
   * $emailid	-- id of the email object which will be used to get the vtiger_attachments - optional
   */
-function setMailerProperties($mail, $subject, $contents, $from_email, $from_name, $to_email, $attachment = '', $emailid = '', $logo = '', $qrScan = '') {
+function setMailerProperties($mail, $subject, $contents, $from_email, $from_name, $to_email, $attachment = '', $emailid = '', $logo = '', $qrScan = '', $brScan = '') {
 	global $adb;
 	$adb->println('> setMailerProperties');
 	if ($logo == 1) {
@@ -215,6 +217,12 @@ function setMailerProperties($mail, $subject, $contents, $from_email, $from_name
 		preg_match_all('/<img src="cid:(qrcode.*)"/', $contents, $matches);
 		foreach ($matches[1] as $qrname) {
 			$mail->AddEmbeddedImage('cache/images/'.$qrname.'.png', $qrname, $qrname.'.png', 'base64', 'image/png');
+		}
+	}
+	if ($brScan == 1) {
+		preg_match_all('/<img src="cid:(barcode.*)"/', $contents, $matches);
+		foreach ($matches[1] as $brname) {
+			$mail->AddEmbeddedImage('cache/images/'.$brname.'.png', $brname, $brname.'.png', 'base64', 'image/png');
 		}
 	}
 	$mail->Subject = $subject;
@@ -307,29 +315,48 @@ function setMailerProperties($mail, $subject, $contents, $from_email, $from_name
   * $mail -- reference of the mailobject
   */
 function setMailServerProperties($mail) {
-	global $adb,$default_charset;
+	global $adb,$default_charset, $current_user;
 	$adb->println('> setMailServerProperties');
-
+	$user_mail_config = $adb->pquery('select * from vtiger_mail_accounts where user_id=? AND og_server_status=1', array($current_user->id));
 	$res = $adb->pquery('select * from vtiger_systems where server_type=?', array('email'));
 	if (isset($_REQUEST['server'])) {
 		$server = $_REQUEST['server'];
 	} else {
-		$server = $adb->query_result($res, 0, 'server');
+		if ($user_mail_config && $adb->num_rows($user_mail_config)>0) {
+			$server = $adb->query_result($user_mail_config, 0, 'og_server_name');
+		} else {
+			$server = $adb->query_result($res, 0, 'server');
+		}
 	}
 	if (isset($_REQUEST['server_username'])) {
 		$username = $_REQUEST['server_username'];
 	} else {
-		$username = $adb->query_result($res, 0, 'server_username');
+		if ($user_mail_config && $adb->num_rows($user_mail_config)>0) {
+			$username = $adb->query_result($user_mail_config, 0, 'og_server_username');
+		} else {
+			$username = $adb->query_result($res, 0, 'server_username');
+		}
 	}
 	if (isset($_REQUEST['server_password'])) {
 		$password = $_REQUEST['server_password'];
 	} else {
-		$password = html_entity_decode($adb->query_result($res, 0, 'server_password'), ENT_QUOTES, $default_charset);
+		if ($user_mail_config && $adb->num_rows($user_mail_config)>0) {
+			require_once 'include/database/PearDatabase.php';
+			require_once 'modules/Users/Users.php';
+			$focus = new Users();
+			$password = $focus->de_cryption($adb->query_result($user_mail_config, 0, 'og_server_password'));
+		} else {
+			$password = html_entity_decode($adb->query_result($res, 0, 'server_password'), ENT_QUOTES, $default_charset);
+		}
 	}
 	if (isset($_REQUEST['smtp_auth'])) {
 		$smtp_auth = $_REQUEST['smtp_auth'];
 	} else {
-		$smtp_auth = $adb->query_result($res, 0, 'smtp_auth');
+		if ($user_mail_config && $adb->num_rows($user_mail_config)>0) {
+			$smtp_auth = $adb->query_result($user_mail_config, 0, 'og_smtp_auth	');
+		} else {
+			$smtp_auth = $adb->query_result($res, 0, 'smtp_auth');
+		}
 	}
 
 	$adb->println("Mail server name,username & password => '".$server."','".$username."','".$password."'");
@@ -620,8 +647,8 @@ function parseEmailErrorString($mail_error_str) {
 	$errorstr = '';
 	foreach ($mail_status as $val) {
 		$status_str = explode('=', $val);
-		$adb->println('Mail id => "'.$status_str[0].'".........status => "'.$status_str[1].'"');
-		if ($status_str[1] != 1 && $status_str[1] != '') {
+		$adb->println('Mail id => "'.$status_str[0].'"....status => "'.(isset($status_str[1]) ? $status_str[1] : '').'"');
+		if (isset($status_str[1]) && $status_str[1] != 1) {
 			$adb->println('Error in mail sending');
 			if ($status_str[1] == 'connect_host') {
 				$adb->println('if part - Mail sever is not configured');

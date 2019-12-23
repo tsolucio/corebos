@@ -182,6 +182,7 @@ $mod_strings = array(
 
 'Recurring Invoice Information' => 'Información Facturación Recurrente',
 'RecurringInvoice' => 'Facturación Recurrente',
+'Recommended frequency for RecurringInvoice is 12 hours' => 'La frecuencia recomendada para la Facturación Recurrente es de 12 horas',
 'Enable Recurring' => 'Habilitar facturación recurrente',
 'Frequency' => 'Frecuencia',
 '--None--'=>'--Ninguna--',
@@ -204,5 +205,11 @@ $mod_strings = array(
 'Net 60 days' => '60 días',
 
 'SalesOrder ID' => 'Id Orden de Venta',
+
+'LBL_PARTIAL_PAYMENTS_INFO' => 'Información Pagos Parciales',
+'Amount Due'=>'Pendiente a Pagar',
+'Amount Paid'=>'Total Pagado',
+'Total Amount'=>'Total a Pagar',
+'Invoiced' => 'Facturado',
 );
 ?>

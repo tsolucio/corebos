@@ -246,6 +246,7 @@ $mod_strings = array(
 	'Monthly' => 'Havi',
 	'Annually' => 'Éves',
 	'LBL_SCHEDULE_REPORT' => 'Jelentés időzítése',
+	'Recommended frequency for ScheduleReports is 15 mins' => 'Recommended frequency for ScheduleReports is 15 mins',
 	'ScheduleReports'=>'Jelentés időzítése',
 	'LBL_SCHEDULE_FREQUENCY' => 'Gyakoriság',
 	'OPTION_SCHEDULE_EMAIL_CHOOSE' => 'Válassz ..... ',

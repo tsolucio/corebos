@@ -365,6 +365,7 @@ var alert_arr = {
 	'LBL_DOES_NOT_END_WITH' : 'no acaba por',
 	'DOES_NOT_START_WITH':'no empieza por',
 	'DOES_NOT_END_WITH':'no acaba por',
+	'Widget_Deleted_Sucessfully':'Widget eliminado correctamente',
 	'LBL_AFTER' : 'después',
 	'LBL_IS_TODAY' : 'es hoy',
 	'LBL_LESS_THAN_DAYS_AGO' : 'hace menos de x días',
@@ -416,5 +417,6 @@ var alert_arr = {
 	'OF' : 'de',
 	'ERR_Massedit' : 'Error en Edición Masiva',
 	'ProcessFINISHED' : 'Proceso Terminado',
-	'duplicatednotallowed' : 'No se permiten módulos duplicados'
+	'duplicatednotallowed' : 'No se permiten módulos duplicados',
+	'HAS_THIS_AS_NTH_CHILD' : 'Tiene este niño como una'
 };

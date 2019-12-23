@@ -48,12 +48,12 @@ class Google_Service_Container_Resource_ProjectsLocationsClusters extends Google
    * By default, the cluster is created in the project's [default
    * network](/compute/docs/networks-and-firewalls#networks).
    *
-   * One firewall is added for the cluster. After cluster creation, the cluster
+   * One firewall is added for the cluster. After cluster creation, the Kubelet
    * creates routes for each node to allow the containers on that node to
    * communicate with all other instances in the cluster.
    *
    * Finally, an entry is added to the project's global metadata indicating which
-   * CIDR range is being used by the cluster. (clusters.create)
+   * CIDR range the cluster is using. (clusters.create)
    *
    * @param string $parent The parent (project and location) where the cluster
    * will be created. Specified in the format 'projects/locations'.
@@ -73,23 +73,23 @@ class Google_Service_Container_Resource_ProjectsLocationsClusters extends Google
    * Firewalls and routes that were configured during cluster creation are also
    * deleted.
    *
-   * Other Google Compute Engine resources that might be in use by the cluster
-   * (e.g. load balancer resources) will not be deleted if they weren't present at
-   * the initial create time. (clusters.delete)
+   * Other Google Compute Engine resources that might be in use by the cluster,
+   * such as load balancer resources, are not deleted if they weren't present when
+   * the cluster was initially created. (clusters.delete)
    *
    * @param string $name The name (project, location, cluster) of the cluster to
    * delete. Specified in the format 'projects/locations/clusters'.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string projectId Deprecated. The Google Developers Console
-   * [project ID or project
-   * number](https://support.google.com/cloud/answer/6158840). This field has been
-   * deprecated and replaced by the name field.
    * @opt_param string zone Deprecated. The name of the Google Compute Engine
    * [zone](/compute/docs/zones#available) in which the cluster resides. This
    * field has been deprecated and replaced by the name field.
    * @opt_param string clusterId Deprecated. The name of the cluster to delete.
    * This field has been deprecated and replaced by the name field.
+   * @opt_param string projectId Deprecated. The Google Developers Console
+   * [project ID or project
+   * number](https://support.google.com/cloud/answer/6158840). This field has been
+   * deprecated and replaced by the name field.
    * @return Google_Service_Container_Operation
    */
   public function delete($name, $optParams = array())
@@ -121,6 +121,22 @@ class Google_Service_Container_Resource_ProjectsLocationsClusters extends Google
     $params = array('name' => $name);
     $params = array_merge($params, $optParams);
     return $this->call('get', array($params), "Google_Service_Container_Cluster");
+  }
+  /**
+   * Gets the public component of the cluster signing keys in JSON Web Key format.
+   * This API is not yet intended for general use, and is not available for all
+   * clusters. (clusters.getJwks)
+   *
+   * @param string $parent The cluster (project, location, cluster id) to get keys
+   * for. Specified in the format 'projects/locations/clusters'.
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Container_GetJSONWebKeysResponse
+   */
+  public function getJwks($parent, $optParams = array())
+  {
+    $params = array('parent' => $parent);
+    $params = array_merge($params, $optParams);
+    return $this->call('getJwks', array($params), "Google_Service_Container_GetJSONWebKeysResponse");
   }
   /**
    * Lists all clusters owned by a project in either the specified zone or all
@@ -225,9 +241,9 @@ class Google_Service_Container_Resource_ProjectsLocationsClusters extends Google
     return $this->call('setMaintenancePolicy', array($params), "Google_Service_Container_Operation");
   }
   /**
-   * Used to set master auth materials. Currently supports :- Changing the admin
-   * password for a specific cluster. This can be either via password generation
-   * or explicitly set the password. (clusters.setMasterAuth)
+   * Sets master auth materials. Currently supports changing the admin password or
+   * a specific cluster, either via password generation or explicitly setting the
+   * password. (clusters.setMasterAuth)
    *
    * @param string $name The name (project, location, cluster) of the cluster to
    * set auth. Specified in the format 'projects/locations/clusters'.
@@ -257,7 +273,7 @@ class Google_Service_Container_Resource_ProjectsLocationsClusters extends Google
     return $this->call('setMonitoring', array($params), "Google_Service_Container_Operation");
   }
   /**
-   * Enables/Disables Network Policy for a cluster. (clusters.setNetworkPolicy)
+   * Enables or disables Network Policy for a cluster. (clusters.setNetworkPolicy)
    *
    * @param string $name The name (project, location, cluster id) of the cluster
    * to set networking policy. Specified in the format
@@ -288,7 +304,7 @@ class Google_Service_Container_Resource_ProjectsLocationsClusters extends Google
     return $this->call('setResourceLabels', array($params), "Google_Service_Container_Operation");
   }
   /**
-   * Start master IP rotation. (clusters.startIpRotation)
+   * Starts master IP rotation. (clusters.startIpRotation)
    *
    * @param string $name The name (project, location, cluster id) of the cluster
    * to start IP rotation. Specified in the format 'projects/locations/clusters'.

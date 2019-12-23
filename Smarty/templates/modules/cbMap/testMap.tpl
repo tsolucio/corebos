@@ -52,7 +52,7 @@
 									<td><b>{$xmlikey}</b></td>
 									<td>
 										{if $xmliinfo|is_array}
-											<table style="margin-left: 6px;text-align: left;" border=0>
+											<table style="margin-left: 6px;text-align: left;" border=1>
 											<tr><th colspan="3">{$xmlikey}</th></tr>
 											{foreach key=xmldkey item=xmldinfo from=$xmliinfo}
 											<tr>

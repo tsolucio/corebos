@@ -42,18 +42,21 @@ class Google_Service_ToolResults extends Google_Service
   public $projects_histories_executions_steps_perfMetricsSummary;
   public $projects_histories_executions_steps_perfSampleSeries;
   public $projects_histories_executions_steps_perfSampleSeries_samples;
+  public $projects_histories_executions_steps_testCases;
   public $projects_histories_executions_steps_thumbnails;
   
   /**
    * Constructs the internal representation of the ToolResults service.
    *
-   * @param Google_Client $client
+   * @param Google_Client $client The client used to deliver requests.
+   * @param string $rootUrl The root URL used for requests to the service.
    */
-  public function __construct(Google_Client $client)
+  public function __construct(Google_Client $client, $rootUrl = null)
   {
     parent::__construct($client);
-    $this->rootUrl = 'https://www.googleapis.com/';
+    $this->rootUrl = $rootUrl ?: 'https://www.googleapis.com/';
     $this->servicePath = 'toolresults/v1beta3/projects/';
+    $this->batchPath = 'batch/toolresults/v1beta3';
     $this->version = 'v1beta3';
     $this->serviceName = 'toolresults';
 
@@ -656,6 +659,79 @@ class Google_Service_ToolResults extends Google_Service
                   'required' => true,
                 ),
                 'sampleSeriesId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->projects_histories_executions_steps_testCases = new Google_Service_ToolResults_Resource_ProjectsHistoriesExecutionsStepsTestCases(
+        $this,
+        $this->serviceName,
+        'testCases',
+        array(
+          'methods' => array(
+            'get' => array(
+              'path' => '{projectId}/histories/{historyId}/executions/{executionId}/steps/{stepId}/testCases/{testCaseId}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'projectId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'historyId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'executionId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'stepId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'testCaseId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'list' => array(
+              'path' => '{projectId}/histories/{historyId}/executions/{executionId}/steps/{stepId}/testCases',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'projectId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'historyId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'executionId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'stepId' => array(
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,

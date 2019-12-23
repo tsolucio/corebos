@@ -344,3 +344,14 @@ function hideresult() {
 function sendfile_email() {
 	OpenCompose(document.getElementById('dldfilename').value, 'Documents');
 }
+
+function toggleModule_mod(tabid, action) {
+	document.getElementById('status').style.display='block';
+	jQuery.ajax({
+		method: 'post',
+		url: 'index.php?module=Documents&action=DocumentsAjax&file=BasicSettings&tabid='+tabid+'&status='+action+'&ajax=true',
+	}).done(function (response) {
+		document.getElementById('status').style.display='none';
+		document.getElementById('modDocsContents').innerHTML=response;
+	});
+}

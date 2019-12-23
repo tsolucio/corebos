@@ -55,7 +55,7 @@ class AuditTrail {
 			'Action Date'=>'actiondate',
 		);
 
-	public $default_order_by = "actiondate";
+	public $default_order_by = 'actiondate';
 	public $default_sort_order = 'DESC';
 
 	/**
@@ -89,9 +89,9 @@ class AuditTrail {
 		$log->debug('> getAuditTrailEntries '.$userid);
 
 		if ($sorder != '' && $order_by != '') {
-			$list_query = 'Select * from vtiger_audit_trial where userid =? order by '.$adb->sql_escape_string($order_by).' '.$adb->sql_escape_string($sorder);
+			$list_query = 'Select * from vtiger_audit_trial where userid=? order by '.$adb->sql_escape_string($order_by).' '.$adb->sql_escape_string($sorder);
 		} else {
-			$list_query = "Select * from vtiger_audit_trial where userid =? order by ".$this->default_order_by." ".$this->default_sort_order;
+			$list_query = 'Select * from vtiger_audit_trial where userid=? order by '.$this->default_order_by.' '.$this->default_sort_order;
 		}
 		$result = $adb->pquery($list_query, array($userid));
 		$entries_list = array();
@@ -123,13 +123,13 @@ class AuditTrail {
 			array_push($params, $userid);
 		}
 		if (!empty($action_search)) {
-			$where .= " and action like ? ";
-			array_push($params, "%" . $action_search . "%");
+			$where .= ' and action like ? ';
+			array_push($params, '%' . $action_search . '%');
 		}
 		if ($sorder != '' && $order_by != '') {
 			$list_query = "Select * from vtiger_audit_trial $where order by $order_by $sorder";
 		} else {
-			$list_query = "Select * from vtiger_audit_trial $where order by ".$this->default_order_by." ".$this->default_sort_order;
+			$list_query = "Select * from vtiger_audit_trial $where order by ".$this->default_order_by.' '.$this->default_sort_order;
 		}
 		$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize', 40);
 		$from = ($page-1)*$rowsperpage;

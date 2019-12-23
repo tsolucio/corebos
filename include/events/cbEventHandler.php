@@ -48,7 +48,7 @@ class cbEventHandler {
 		$startTime = microtime(true);
 		self::$numCounter[0]++;
 
-		// if vtiger.footer Action is called, output the timings for admins
+		// if corebos.footer Action is called, output the timings for admins
 		if ($eventName == 'corebos.footer') {
 			global $current_user;
 			$show_response_time = GlobalVariable::getVariable('Debug_Calculate_Response_Time', 0);

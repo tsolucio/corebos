@@ -276,7 +276,7 @@
 				</td>
 				<td width="19%" align="right" class="colData small cblds-t-align_right">
 					<img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="fnvshNrm('editfield_{$value.fieldselect}'); posLay(this, 'editfield_{$value.fieldselect}');" alt="Popup" title="{$MOD.LBL_EDIT_PROPERTIES}"/>&nbsp;&nbsp;
-					<div id="editfield_{$value.fieldselect}" style="display:none; position: absolute; width: 225px; left: 300px; top: 300px;" >
+					<div id="editfield_{$value.fieldselect}" style="display:none; position: absolute; left: 300px; top: 300px;" >
 						<div class="layerPopup" style="position:relative; display:block">
 									<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
 										<tr class="detailedViewHeader">
@@ -288,16 +288,17 @@
 											</th>
 										</tr>
 										<tr>
-											<td colspan="2" style="margin:auto; valign="top" class="dvtCellInfo" width="10px">
+											<td colspan="2" style="margin:auto; valign="top" class="dvtCellInfo" class="slds-p-around_medium">
 											<span> {$value.columnname}</span>
 											<span> {$value.type}</span>
-											<span> {$value.fieldsize}</span>
+											<span> {$value.fieldsize}</span><br>
+											<span> {$value.colspec}</span>
 											</td>
 										</tr>
 									</table>
 									<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
 										<tr>
-											<td valign="top" class="dvtCellInfo" align="left" width="10px">
+											<td class="dvtCellInfo" align="left" width="10px">
 												<input id="mandatory_check_{$value.fieldselect}" type="checkbox"
 												{if $value.fieldtype neq 'M' && $value.mandatory eq '0'}
 													 disabled
@@ -389,6 +390,24 @@
 												_FIELD_ELEMENT_ID=$fieldElementId
 												_ALL_AVAILABLE_VALUES=$defaultsetting._allvalues
 											}
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<td colspan='2' valign="top" class="dvtCellInfo" align="left">
+										{if $value.uitype eq 10}
+											&nbsp;<label><b>{$MOD.LBL_SELECT_MODULE}</b></label>
+											<select id="dependent_list_{$value.fieldselect}" name="dependent_list_{$value.fieldselect}" rows="10" class="txtBox" multiple="multiple">
+												{foreach from=$entityrelmods key=outerkey item=outervalue}
+													{assign var='isSelected' value=''}
+													{foreach from=$curmodsinrel key=innerkey item=innervalue}
+														{if ($innervalue eq $value.fieldselect) and ($innerkey eq $outerkey)}
+															{assign var='isSelected' value='selected'}
+														{/if}
+													{/foreach}
+													<option value={$outerkey} {$isSelected}>{$outervalue}</option>
+												{/foreach}
+											</select>
 										{/if}
 									</td>
 								</tr>

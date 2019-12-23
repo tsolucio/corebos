@@ -84,7 +84,6 @@ function displayCoords(currObj,obj,mode,curr_row)
 	<td colspan="3" class="dvInnerHeader">
 		<b>{$APP.LBL_ITEM_DETAILS}</b>
 	</td>
-
 	<td class="dvInnerHeader" align="center" colspan="2">
 		<input type="hidden" value="{$INV_CURRENCY_ID}" id="prev_selected_currency_id" />
 		<b>{$APP.LBL_CURRENCY}</b>&nbsp;&nbsp;
@@ -141,6 +140,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 	{assign var="entityIdentifier" value="entityType"|cat:$row_no}
 	{assign var="entityType" value=$data.$entityIdentifier}
 	{assign var="lineitem_id" value="lineitem_id"|cat:$row_no}
+	{assign var="rel_lineitem_id" value="rel_lineitem_id"|cat:$row_no}
 	{assign var="moreinfo" value="moreinfo"|cat:$row_no}
 
 	{assign var="discount_type" value="discount_type"|cat:$row_no}
@@ -157,7 +157,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 	{assign var="taxTotal" value="taxTotal"|cat:$row_no}
 	{assign var="netPrice" value="netPrice"|cat:$row_no}
 
-   <tr id="row{$row_no}" valign="top">
+   <tr id="row{$row_no}" valign="top" data-corebosinvrow=1>
 
 	<!-- column 1 - delete link - starts -->
 	<td class="crmTableRow small lineOnTop inv-editview__toolscol">
@@ -172,6 +172,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 		{/if}
 		<input type="hidden" id="{$deleted}" name="{$deleted}" value="0">
 		<input type="hidden" id="{$lineitem_id}" name="{$lineitem_id}" value="{$data[$lineitem_id]}">
+		<input type="hidden" id="{$rel_lineitem_id}" name="{$rel_lineitem_id}" value="{$data[$rel_lineitem_id]}">
 	</td>
 
 	<!-- column 2 - Product Name - starts -->
@@ -344,6 +345,9 @@ function displayCoords(currObj,obj,mode,curr_row)
 
    </tr>
    <!-- Product Details First row - Ends -->
+	{if !empty($customtemplaterows)}
+		{include file=$customtemplaterows ROWNO=$row_no ITEM=$data}
+	{/if}
    {/foreach}
 </table>
 
@@ -405,7 +409,6 @@ so we will get that array, parse that array and fill the details
 	</td>
 	<td id="discountTotal_final" class="crmTableRow small lineOnTop cblds-t-align_right" align="right">{$FINAL.discountTotal_final}</td>
    </tr>
-
 
    <!-- Group Tax - starts -->
    <tr id="group_tax_row" valign="top" class="TaxHide">
@@ -512,12 +515,11 @@ so we will get that array, parse that array and fill the details
 
 <!-- Added to calculate the tax and total values when page loads -->
 <script>
- decideTaxDiv();
- {if $TAX_TYPE eq 'group'}
- 	calcGroupTax();
- {/if}
- calcTotal();
- calcSHTax();
+decideTaxDiv();
+{if $TAX_TYPE eq 'group'}
+calcGroupTax();
+{/if}
+calcTotal();
+calcSHTax();
 </script>
 <!-- This above div is added to display the tax informations --> 
-

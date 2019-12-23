@@ -50,13 +50,15 @@ class Google_Service_CloudSourceRepositories extends Google_Service
    * Constructs the internal representation of the CloudSourceRepositories
    * service.
    *
-   * @param Google_Client $client
+   * @param Google_Client $client The client used to deliver requests.
+   * @param string $rootUrl The root URL used for requests to the service.
    */
-  public function __construct(Google_Client $client)
+  public function __construct(Google_Client $client, $rootUrl = null)
   {
     parent::__construct($client);
-    $this->rootUrl = 'https://sourcerepo.googleapis.com/';
+    $this->rootUrl = $rootUrl ?: 'https://sourcerepo.googleapis.com/';
     $this->servicePath = '';
+    $this->batchPath = 'batch';
     $this->version = 'v1';
     $this->serviceName = 'sourcerepo';
 
@@ -169,6 +171,16 @@ class Google_Service_CloudSourceRepositories extends Google_Service
               'httpMethod' => 'POST',
               'parameters' => array(
                 'resource' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'sync' => array(
+              'path' => 'v1/{+name}:sync',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'name' => array(
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,

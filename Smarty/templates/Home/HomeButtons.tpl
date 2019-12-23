@@ -135,7 +135,7 @@
 			{*<!-- popup specific content fill in starts -->*}
 			<table border="0" cellspacing="0" cellpadding="3" width="100%" align="center" bgcolor="white">
 			<tr id="StuffTitleId" style="display:block;">
-				<td class="dvtCellLabel"  width="110" align="right">
+				<td class="dvtCellLabel" width="110" align="right">
 					{$MOD.LBL_HOME_STUFFTITLE}
 					<font color='red'>*</font>
 				</td>
@@ -145,7 +145,7 @@
 			</tr>
 			{*<!--
 			<tr id="homeURLField" style="display:block;">
-				<td class="dvtCellLabel"  width="110" align="right">
+				<td class="dvtCellLabel" width="110" align="right">
 					{$MOD.LBL_URL}
 					<font color='red'>*</font>
 				</td>
@@ -155,7 +155,7 @@
 			</tr>
 			-->*}
 			<tr id="showrow">
-				<td class="dvtCellLabel"  width="110" align="right">{$MOD.LBL_HOME_SHOW}</td>
+				<td class="dvtCellLabel" width="110" align="right">{$MOD.LBL_HOME_SHOW}</td>
 				<td class="dvtCellInfo" width="300" colspan="2">
 					<select name="maxentries" id="maxentryid" class="detailedViewTextBox" onfocus="this.className='detailedViewTextBoxOn'" onblur="this.className='detailedViewTextBox'" style="width:60%">
 						{section name=iter start=1 loop=13 step=1}
@@ -165,7 +165,7 @@
 				</td>
 			</tr>
 			<tr id="moduleNameRow" style="display:block">
-				<td class="dvtCellLabel"  width="110" align="right">{$MOD.LBL_HOME_MODULE}</td>
+				<td class="dvtCellLabel" width="110" align="right">{$MOD.LBL_HOME_MODULE}</td>
 				<td width="300" class="dvtCellInfo" colspan="2">
 					<select name="selmodule" id="selmodule_id" onchange="setFilter(this)" class="detailedViewTextBox" onfocus="this.className='detailedViewTextBoxOn'" onblur="this.className='detailedViewTextBox'" style="width:60%">
 						{foreach item=arr from=$MODULE_NAME}
@@ -178,14 +178,14 @@
 			</tr>
 			<tr id="moduleFilters" style="display:block">
 				<td class="dvtCellLabel" id="filterby" align="right" width="110" >{$MOD.LBL_HOME_FILTERBY}</td>
-				<td class="dvtCellLabel" id="filterbyim" align="right" width="110" ><img width="27" height="27" alt"{$MOD.LBL_HOME_ADDWINDOW}" onClick='filterValidate();' onMouseOut='fnRemoveWindow();' src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" border="0" title="{$MOD.LBL_HOME_ADDWINDOW}"  style="cursor:pointer;">
+				<td class="dvtCellLabel" id="filterbyim" align="right" width="110" ><img width="27" height="27" alt"{$MOD.LBL_HOME_ADDWINDOW}" onClick='filterValidate();' onMouseOut='fnRemoveWindow();' src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" border="0" title="{$MOD.LBL_HOME_ADDWINDOW}" style="cursor:pointer;">
 					&nbsp;{$MOD.LBL_HOME_FILTERBY}
 				</td>
-				<td id="selModFilter_id"  width="300" colspan="2"  class="dvtCellInfo"> </td>
+				<td id="selModFilter_id" width="300" colspan="2" class="dvtCellInfo"> </td>
 			</tr>
 			<tr id="moduleLabelsRow" style="display:block">
 				<td class="dvtCellLabel" align="right" id="aggr" width="110">{$MOD.LBL_HOME_AGGREGATE}</td>
-				<td id="selModAggregate_id"  width="300" colspan="2"  class="dvtCellInfo">
+				<td id="selModAggregate_id" width="300" colspan="2" class="dvtCellInfo">
 					<select class="detailedViewTextBox" id="selAggregateid" name="selAggregatename" style="width:60%">
 					<option value="sum">{'SUM'|getTranslatedString:'Reports'}</option>
 					<option value="avg">{'AVG'|getTranslatedString:'Reports'}</option>
@@ -197,14 +197,14 @@
 			</tr>
 			<tr id="moduleCombosRow" style="display:block">
 				<td class="dvtCellLabel" align="right" id="fields" width="110">{$MOD.LBL_HOME_AG_FIELDS}</td>
-				<td id="selModPrime_id"  width="300"  colspan="2" class="dvtCellInfo"></td>
+				<td id="selModPrime_id" width="300" colspan="2" class="dvtCellInfo"></td>
 			</tr>
 			<tr id="rssRow" style="display:none">
-				<td class="dvtCellLabel"  width="110" align="right">{$MOD.LBL_HOME_RSSURL}<font color='red'>*</font></td>
+				<td class="dvtCellLabel" width="110" align="right">{$MOD.LBL_HOME_RSSURL}<font color='red'>*</font></td>
 				<td width="300" colspan="2" class="dvtCellInfo"><input type="text" name="txtRss" id="txtRss_id" class="detailedViewTextBox" onfocus="this.className='detailedViewTextBoxOn'" onblur="this.className='detailedViewTextBox'" style="width:58%"></td>
 			</tr>
 			<tr id="dashNameRow" style="display:none">
-				<td class="dvtCellLabel"  width="110" align="right">{$MOD.LBL_HOME_DASHBOARD_NAME}</td>
+				<td class="dvtCellLabel" width="110" align="right">{$MOD.LBL_HOME_DASHBOARD_NAME}</td>
 				<td id="selDashName" class="dvtCellInfo" colspan="2" width="300"></td>
 			</tr>
 			<tr id="homewidget" style="display:none">
@@ -221,7 +221,7 @@
 				</td>
 			</tr>
 			<tr id="reportNameRow" style="display:none">
-				<td class="dvtCellLabel"  width="110" align="right">{'LBL_HOME_REPORT_NAME'|@getTranslatedString:$MODULE}</td>
+				<td class="dvtCellLabel" width="110" align="right">{'LBL_HOME_REPORT_NAME'|@getTranslatedString:$MODULE}</td>
 				<td id="selReportName" class="dvtCellInfo" colspan="2" width="300"></td>
 			</tr>
 			<tr id="reportTypeRow" style="display:none">

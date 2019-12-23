@@ -20,6 +20,7 @@
 ./include/js/ListView.js
 ./include/js/loadjslog.js
 ./include/js/Mail.js
+./include/js/massive.js
 ./include/js/Merge.js
 ./include/js/nl_nl.lang.js
 ./include/js/notebook.js
@@ -30,6 +31,7 @@
 ./include/js/pt_br.lang.js
 ./include/js/QuickCreate.js
 ./include/js/RelatedLists.js
+./include/js/ro_ro.lang.js
 ./include/js/search.js
 ./include/js/vtlib.js
 ./include/Webservices/WSClient.js
@@ -63,12 +65,17 @@
 ./modules/com_vtiger_workflow/resources/edittaskscript.js
 ./modules/com_vtiger_workflow/resources/editworkflowscript.js
 ./modules/com_vtiger_workflow/resources/emailtaskscript.js
+./modules/com_vtiger_workflow/resources/entitymethodtask.js
 ./modules/com_vtiger_workflow/resources/fieldexpressionpopup.js
 ./modules/com_vtiger_workflow/resources/fieldvalidator.js
 ./modules/com_vtiger_workflow/resources/functional.js
+./modules/com_vtiger_workflow/resources/generateimagecode.js
+./modules/com_vtiger_workflow/resources/many2manyrelation.js
 ./modules/com_vtiger_workflow/resources/parallelexecuter.js
 ./modules/com_vtiger_workflow/resources/updatefieldstaskscript.js
+./modules/com_vtiger_workflow/resources/updatemassivefieldstaskscript.js
 ./modules/com_vtiger_workflow/resources/vtigerwebservices.js
+./modules/com_vtiger_workflow/resources/Whatsappckeditor.js
 ./modules/com_vtiger_workflow/resources/whatsappworkflowtaskscript.js
 ./modules/com_vtiger_workflow/resources/workflowlistscript.js
 ./modules/Contacts/Contacts.js
@@ -79,6 +86,8 @@
 ./modules/Dashboard/Dashboard.js
 ./modules/Documents/Documents.js
 ./modules/Emails/Emails.js
+./modules/EtiquetasOO/EtiquetasOO.js
+./modules/evvtgendoc/evvtgendoc.js
 ./modules/evvtMenu/evvtMenu.js
 ./modules/Faq/Faq.js
 ./modules/GlobalVariable/GlobalVariable.js
@@ -91,6 +100,7 @@
 ./modules/Invoice/Invoice.js
 ./modules/Leads/Leads.js
 ./modules/MailManager/MailManager.js
+./modules/Messages/Messages.js
 ./modules/Mobile/resources/crmtogo.js
 ./modules/Mobile/resources/documents.js
 ./modules/Mobile/resources/getScrollcontent.js
@@ -102,11 +112,13 @@
 ./modules/Mobile/resources/lang/fr_fr.lang.js
 ./modules/Mobile/resources/lang/nl_nl.lang.js
 ./modules/Mobile/resources/lang/pt_br.lang.js
+./modules/Mobile/resources/lang/ro_ro.lang.js
 ./modules/Mobile/resources/settings.js
 ./modules/ModComments/ModCommentsCommon.js
 ./modules/ModComments/ModComments.js
 ./modules/ModTracker/ModTrackerCommon.js
 ./modules/ModTracker/ModTracker.js
+./modules/MsgTemplate/MsgTemplate.js
 ./modules/PBXManager/PBXManager.js
 ./modules/PickList/DependencyPicklist.js
 ./modules/Portal/Portal.js
@@ -130,6 +142,7 @@
 ./modules/RecycleBin/language/it_it.lang.js
 ./modules/RecycleBin/language/nl_nl.lang.js
 ./modules/RecycleBin/language/pt_br.lang.js
+./modules/RecycleBin/language/ro_ro.lang.js
 ./modules/RecycleBin/RecycleBin.js
 ./modules/Reports/Reports.js
 ./modules/Reports/ReportsSteps.js
@@ -160,6 +173,7 @@
 ./modules/Webforms/language/it_it.lang.js
 ./modules/Webforms/language/nl_nl.lang.js
 ./modules/Webforms/language/pt_br.lang.js
+./modules/Webforms/language/ro_ro.lang.js
 ./modules/Webforms/Webforms.js
 ./modules/WSAPP/WSAPP.js
 ./themes/login/login.js

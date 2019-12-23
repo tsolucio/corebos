@@ -14,6 +14,7 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 -->*}
+{assign var="slds_role" value=""}
 {if !empty($ERROR_MESSAGE)}
 {if empty($ERROR_MESSAGE_CLASS) || $ERROR_MESSAGE_CLASS eq "cb-alert-danger"}
 	{assign var="slds_role" value="error"}
@@ -26,13 +27,13 @@
 {else}
 	{assign var="slds_role" value="error"}
 {/if}
-<div class="slds-m-top_x-small slds-m-bottom_x-small">
+{/if}
+<div id="appnotifydiv" class="slds-m-top_x-small slds-m-bottom_x-small" {if empty($ERROR_MESSAGE)}style="display:none"{/if}>
 	<div class="slds-notify slds-notify_alert slds-theme_{$slds_role} slds-theme_alert-texture" role="alert" style="padding:0.1rem">
 	<h2>
 		<svg class="slds-icon slds-icon_small slds-m-right_x-small" aria-hidden="true">
 		<use xlink:href="include/LD//assets/icons/utility-sprite/svg/symbols.svg#{$slds_role}"></use>
-		</svg>{$ERROR_MESSAGE}
+		</svg>{if !empty($ERROR_MESSAGE)}{$ERROR_MESSAGE}{/if}
 	</h2>
 	</div>
 </div>
-{/if}

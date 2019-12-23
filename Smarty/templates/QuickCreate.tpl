@@ -27,8 +27,8 @@
 			{assign var="fromlink" value="qcreate"}
 			{foreach item=subdata from=$QUICKCREATE}
 				<tr>
-					{foreach key=mainlabel item=maindata from=$subdata}
-						{if count($maindata)>0}{include file='EditViewUI.tpl'}{/if}
+					{foreach key=mainlabel item=maindata from=$subdata name=rowlayoutloop}
+						{if count($maindata)>0}{include file='EditViewUI.tpl' rowiteration=$smarty.foreach.rowlayoutloop.iteration}{/if}
 					{/foreach}
 				</tr>
 			{/foreach}
@@ -37,8 +37,8 @@
 		<!-- save cancel buttons -->
 		<table border="0" cellspacing="0" cellpadding="5" width="100%" class=qcTransport>
 			<tr>
-				<td width="50%" align="right"><input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  "></td>
-				<td width="50%" align="left"><input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="hide('{if $FROM eq 'popup'}qcformpop{else}qcform{/if}');" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  "></td>
+				<td style="width:50%;text-align:right;"><input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  "></td>
+				<td style="width:50%;text-align:left;"><input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="hide('{if $FROM eq 'popup'}qcformpop{else}qcform{/if}');" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  "></td>
 			</tr>
 		</table>
 

@@ -24,7 +24,12 @@
 {include file='com_vtiger_workflow/ErrorMessageBox.tpl'}
 <!--Done popups-->
 
-{include file='SetMenu.tpl'}
+<table border=0 cellspacing=0 cellpadding=20 width="99%" class="settingsUI">
+<tr>
+<td valign=top>
+<table border=0 cellspacing=0 cellpadding=0 width=100%>
+<tr>
+<td class="small" valign=top align=left>
 <div id="view">
 	{include file='com_vtiger_workflow/ModuleTitle.tpl'}
 	<form name="new_task" id="new_task_form" method="post" onsubmit="VtigerJS_DialogBox.block();">
@@ -69,6 +74,8 @@
 			<td width='15%' nowrap="nowrap"><input type="checkbox" name="check_select_date" value="" id="check_select_date" {if !empty($trigger)}checked{/if}>
 			<b>{$MOD.MSG_EXECUTE_TASK_DELAY}</b></td>
 			<td>
+			<div class="slds-grid slds-gutters">
+				<div  class="slds-col slds-size_2-of-3">
 				<div id="select_date" {if empty($trigger)}style="display:none;"{/if}>
 					<input type="text" name="select_date_days" value="{if isset($trigger.days)}{$trigger.days}{/if}" id="select_date_days" class="small"> {$MOD.LBL_DAYS}
 					<select name="select_date_direction" class="small">
@@ -76,16 +83,18 @@
 						<option {if isset($trigger.direction) && $trigger.direction eq 'before'}selected{/if} value='before'>{$MOD.LBL_BEFORE}</option>
 					</select>
 					<select name="select_date_field" class="small">
-		{foreach key=name item=label from=$dateFields}
+					{foreach key=name item=label from=$dateFields}
 						<option value='{$name}' {if isset($trigger.field) && $trigger.field eq $name}selected{/if}>
 							{$label}
 						</option>
-		{/foreach}
+					{/foreach}
 					</select>
-					<div style="float:right">
-					<input  type="checkbox" name="reevaluate" id="reevaluate" {if isset($task->reevaluate) && $task->reevaluate eq 1}checked{/if}>&nbsp;{$MOD.LBL_REEVALCONDITIONS}
-				    </div>
 				</div>
+				</div>
+				<div class="slds-col slds-size_1-of-3">
+				<input type="checkbox" name="reevaluate" id="reevaluate" {if isset($task->reevaluate) && $task->reevaluate eq 1}checked{/if}>&nbsp;{$MOD.LBL_REEVALCONDITIONS}
+				</div>
+			</div>
 			</td>
 		</tr>
 		</table>

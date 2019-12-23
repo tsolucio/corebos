@@ -12,6 +12,7 @@
 <script type="text/javascript" src="include/js/ListView.js"></script>
 <script type="text/javascript" src="include/js/RelatedLists.js"></script>
 {include file='Buttons_List.tpl' isDetailView=true}
+{include file='applicationmessage.tpl'}
 <!-- Contents -->
 <div id="editlistprice" style="position:absolute;width:300px;"></div>
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>

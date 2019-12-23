@@ -16,7 +16,7 @@
  */
 
 /**
- * Service definition for CloudTasks (v2beta3).
+ * Service definition for CloudTasks (v2).
  *
  * <p>
  * Manages the execution of large numbers of distributed requests.</p>
@@ -41,14 +41,16 @@ class Google_Service_CloudTasks extends Google_Service
   /**
    * Constructs the internal representation of the CloudTasks service.
    *
-   * @param Google_Client $client
+   * @param Google_Client $client The client used to deliver requests.
+   * @param string $rootUrl The root URL used for requests to the service.
    */
-  public function __construct(Google_Client $client)
+  public function __construct(Google_Client $client, $rootUrl = null)
   {
     parent::__construct($client);
-    $this->rootUrl = 'https://cloudtasks.googleapis.com/';
+    $this->rootUrl = $rootUrl ?: 'https://cloudtasks.googleapis.com/';
     $this->servicePath = '';
-    $this->version = 'v2beta3';
+    $this->batchPath = 'batch';
+    $this->version = 'v2';
     $this->serviceName = 'cloudtasks';
 
     $this->projects_locations = new Google_Service_CloudTasks_Resource_ProjectsLocations(
@@ -58,7 +60,7 @@ class Google_Service_CloudTasks extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'v2beta3/{+name}',
+              'path' => 'v2/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -68,7 +70,7 @@ class Google_Service_CloudTasks extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'v2beta3/{+name}/locations',
+              'path' => 'v2/{+name}/locations',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -100,7 +102,7 @@ class Google_Service_CloudTasks extends Google_Service
         array(
           'methods' => array(
             'create' => array(
-              'path' => 'v2beta3/{+parent}/queues',
+              'path' => 'v2/{+parent}/queues',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'parent' => array(
@@ -110,7 +112,7 @@ class Google_Service_CloudTasks extends Google_Service
                 ),
               ),
             ),'delete' => array(
-              'path' => 'v2beta3/{+name}',
+              'path' => 'v2/{+name}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'name' => array(
@@ -120,7 +122,7 @@ class Google_Service_CloudTasks extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'v2beta3/{+name}',
+              'path' => 'v2/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -130,7 +132,7 @@ class Google_Service_CloudTasks extends Google_Service
                 ),
               ),
             ),'getIamPolicy' => array(
-              'path' => 'v2beta3/{+resource}:getIamPolicy',
+              'path' => 'v2/{+resource}:getIamPolicy',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'resource' => array(
@@ -140,17 +142,13 @@ class Google_Service_CloudTasks extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'v2beta3/{+parent}/queues',
+              'path' => 'v2/{+parent}/queues',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'parent' => array(
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
-                ),
-                'filter' => array(
-                  'location' => 'query',
-                  'type' => 'string',
                 ),
                 'pageToken' => array(
                   'location' => 'query',
@@ -160,9 +158,13 @@ class Google_Service_CloudTasks extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
               ),
             ),'patch' => array(
-              'path' => 'v2beta3/{+name}',
+              'path' => 'v2/{+name}',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'name' => array(
@@ -176,7 +178,7 @@ class Google_Service_CloudTasks extends Google_Service
                 ),
               ),
             ),'pause' => array(
-              'path' => 'v2beta3/{+name}:pause',
+              'path' => 'v2/{+name}:pause',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'name' => array(
@@ -186,7 +188,7 @@ class Google_Service_CloudTasks extends Google_Service
                 ),
               ),
             ),'purge' => array(
-              'path' => 'v2beta3/{+name}:purge',
+              'path' => 'v2/{+name}:purge',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'name' => array(
@@ -196,7 +198,7 @@ class Google_Service_CloudTasks extends Google_Service
                 ),
               ),
             ),'resume' => array(
-              'path' => 'v2beta3/{+name}:resume',
+              'path' => 'v2/{+name}:resume',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'name' => array(
@@ -206,7 +208,7 @@ class Google_Service_CloudTasks extends Google_Service
                 ),
               ),
             ),'setIamPolicy' => array(
-              'path' => 'v2beta3/{+resource}:setIamPolicy',
+              'path' => 'v2/{+resource}:setIamPolicy',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'resource' => array(
@@ -216,7 +218,7 @@ class Google_Service_CloudTasks extends Google_Service
                 ),
               ),
             ),'testIamPermissions' => array(
-              'path' => 'v2beta3/{+resource}:testIamPermissions',
+              'path' => 'v2/{+resource}:testIamPermissions',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'resource' => array(
@@ -236,7 +238,7 @@ class Google_Service_CloudTasks extends Google_Service
         array(
           'methods' => array(
             'create' => array(
-              'path' => 'v2beta3/{+parent}/tasks',
+              'path' => 'v2/{+parent}/tasks',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'parent' => array(
@@ -246,7 +248,7 @@ class Google_Service_CloudTasks extends Google_Service
                 ),
               ),
             ),'delete' => array(
-              'path' => 'v2beta3/{+name}',
+              'path' => 'v2/{+name}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'name' => array(
@@ -256,7 +258,7 @@ class Google_Service_CloudTasks extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'v2beta3/{+name}',
+              'path' => 'v2/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -270,7 +272,7 @@ class Google_Service_CloudTasks extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'v2beta3/{+parent}/tasks',
+              'path' => 'v2/{+parent}/tasks',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'parent' => array(
@@ -292,7 +294,7 @@ class Google_Service_CloudTasks extends Google_Service
                 ),
               ),
             ),'run' => array(
-              'path' => 'v2beta3/{+name}:run',
+              'path' => 'v2/{+name}:run',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'name' => array(

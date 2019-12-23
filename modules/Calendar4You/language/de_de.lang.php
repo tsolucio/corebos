@@ -74,6 +74,7 @@ $mod_strings = array (
 "LBL_GOOGLEINS"=>"Von Google einfügen?",
 'LIST_MODULES' => 'Liste der Module',
 'Gmail_ChangeAccount'=>'Wenn Sie den Gmail-Account wechseln wollen, entfernen Sie die eingegebenen Daten',
+'TASKS_FINISHED' => 'You finished all the tasks, good job!',
 'Click2PickColor' => 'Hier klicken, um eine Farbe auszuwählen',
 );
 ?>

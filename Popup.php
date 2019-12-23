@@ -47,8 +47,7 @@ $smarty->assign('HEADERSCRIPTS', $COMMONHDRLINKS['HEADERSCRIPT_POPUP']);
 $smarty->assign('HEADERCSS', $COMMONHDRLINKS['HEADERCSS_POPUP']);
 
 $qc_modules = getQuickCreateModules();
-for ($i=0; $i<count($qc_modules);
-$i++) {
+for ($i=0; $i<count($qc_modules); $i++) {
 	$qcmod[$i]=$qc_modules[$i][1];
 }
 $smarty->assign('QCMODULEARRAY', $qcmod);
@@ -61,18 +60,13 @@ if (!empty($_REQUEST['popqc']) && $_REQUEST['popqc'] = 'true' && empty($_REQUEST
 		"SELECT vtiger_field.fieldlabel,vtiger_field.tablename,vtiger_field.columnname,vtiger_field.fieldname,vtiger_entityname.entityidfield
 			FROM vtiger_field
 			INNER JOIN vtiger_entityname on vtiger_field.tabid=vtiger_entityname.tabid and modulename=?
-			WHERE vtiger_entityname.fieldname like concat('%',vtiger_field.fieldname,'%')",
+			WHERE vtiger_entityname.fieldname like concat('%',vtiger_field.columnname,'%')",
 		array($currentModule)
 	);
 	$row = $adb->fetch_array($fldrs);
 	$fieldLabelEscaped = str_replace(' ', '_', $row['fieldlabel']);
-	$optionvalue = $row['tablename'].':'.$row['columnname'].':'.$row['fieldname'].':'.$currentModule.'_'.$fieldLabelEscaped.':V';
-	$fldvalrs = $adb->pquery(
-		'select '.$row['columnname'].' from '.$row['tablename'].' inner join vtiger_crmentity on crmid = '.$row['entityidfield']
-		.' where '.$row['entityidfield'].'=? ORDER BY createdtime DESC LIMIT 1',
-		array($_REQUEST['record'])
-	);
-	$fldval = $adb->query_result($fldvalrs, 0, 0);
+	$optionvalue = $row['tablename'].':'.$row['entityidfield'].':'.$row['entityidfield'].':'.$currentModule.'_'.$fieldLabelEscaped.':V';
+	$fldval = vtlib_purify($_REQUEST['record']);
 	$_REQUEST['searchtype']='advance';
 	$_REQUEST['query'] = 'true';
 	$_REQUEST['advft_criteria'] = '[{"groupid":"1","columnname":"'.$optionvalue.'","comparator":"e","value":"'.$fldval.'","columncondition":""}]';
@@ -144,11 +138,23 @@ switch ($currentModule) {
 		}
 		$alphabetical = AlphabeticalSearch($currentModule, 'Popup', 'lastname', 'true', 'basic', $popuptype, '', '', $url);
 		break;
+	case 'Project':
+		$log = LoggerManager::getLogger('project_list');
+		$smarty->assign('SINGLE_MOD', 'Project');
+		if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='') {
+			$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
+		} else {
+			$smarty->assign('RETURN_MODULE', 'Emails');
+		}
+		$alphabetical = AlphabeticalSearch($currentModule, 'Popup', 'projectname', 'true', 'basic', $popuptype, '', '', $url);
+		break;
 	case 'Potentials':
 		$log = LoggerManager::getLogger('potential_list');
 		$smarty->assign('SINGLE_MOD', 'Opportunity');
 		if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='') {
 			$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
+		} else {
+			$smarty->assign('RETURN_MODULE', 'Emails');
 		}
 		$alphabetical = AlphabeticalSearch($currentModule, 'Popup', 'potentialname', 'true', 'basic', $popuptype, '', '', $url);
 		break;
@@ -531,4 +537,5 @@ if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
 } else {
 	$smarty->display('Popup.tpl');
 }
+cbEventHandler::do_action('corebos.popup.footer');
 ?>

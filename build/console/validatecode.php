@@ -38,8 +38,8 @@ class validatecodeCommand extends Command {
 		$path = $input->getArgument("file");
 		if (file_exists($path)) {
 			$fileext = explode('.', strrev($path), 2);
-			if (strrev($fileext[0]) == 'php' || strrev($fileext[0]) == 'inc') {
-				$val = shell_exec("phpcs --standard=build/cbSR $path");
+			if (strrev($fileext[0]) == 'php' || strrev($fileext[0]) == 'inc'  || strrev($fileext[0]) == 'service') {
+				$val = shell_exec("phpcs --standard=build/cbSR --extensions=inc,js,php,service $path");
 				echo $val;
 			} elseif (strrev($fileext[0]) == 'js') {
 				$val = shell_exec("eslint -c build/cbSR/eslintrc.js $path");

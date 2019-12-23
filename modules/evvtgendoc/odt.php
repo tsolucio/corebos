@@ -124,7 +124,23 @@ if ($mergetemplate=='1') {
 	}
 	$zip->save();
 	$smarty = new vtigerCRM_Smarty;
+	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 	$smarty->assign('THEME', $theme);
+	$smarty->assign('APP', $app_strings);
+	$smarty->assign('MOD', $mod_strings);
+	$smarty->assign('MODULE', $currentModule);
+	$tool_buttons = array(
+		'EditView' => 'no',
+		'CreateView' => 'no',
+		'index' => 'yes',
+		'Import' => 'no',
+		'Export' => 'no',
+		'Merge' => 'no',
+		'DuplicatesHandling' => 'no',
+		'Calendar' => 'no',
+		'moduleSettings' => 'no',
+	);
+	$smarty->assign('CHECK', $tool_buttons);
 	$smarty->assign('OUTPUT', $out);
 	$smarty->assign('ZIPNAME', $filename);
 	$smarty->display('modules/evvtgendoc/odt.tpl');

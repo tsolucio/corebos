@@ -174,5 +174,10 @@ $mod_strings = array(
 'PurchaseOrder ID'=>'Einkaufsbestellungs-ID',
 
 'Terms & Conditions'=>'Geschäftsbedingungen',
+
+'LBL_PARTIAL_PAYMENTS_INFO' => 'Partial Payments Information',
+'Amount Due'=>'Amount Due',
+'Amount Paid'=>'Amount Paid',
+'Total Amount'=>'Total Amount',
 );
 ?>

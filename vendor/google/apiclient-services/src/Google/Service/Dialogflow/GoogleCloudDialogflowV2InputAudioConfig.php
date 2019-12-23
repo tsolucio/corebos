@@ -20,8 +20,10 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2InputAudioConfig extends 
   protected $collection_key = 'phraseHints';
   public $audioEncoding;
   public $languageCode;
+  public $modelVariant;
   public $phraseHints;
   public $sampleRateHertz;
+  public $singleUtterance;
 
   public function setAudioEncoding($audioEncoding)
   {
@@ -39,6 +41,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2InputAudioConfig extends 
   {
     return $this->languageCode;
   }
+  public function setModelVariant($modelVariant)
+  {
+    $this->modelVariant = $modelVariant;
+  }
+  public function getModelVariant()
+  {
+    return $this->modelVariant;
+  }
   public function setPhraseHints($phraseHints)
   {
     $this->phraseHints = $phraseHints;
@@ -54,5 +64,13 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2InputAudioConfig extends 
   public function getSampleRateHertz()
   {
     return $this->sampleRateHertz;
+  }
+  public function setSingleUtterance($singleUtterance)
+  {
+    $this->singleUtterance = $singleUtterance;
+  }
+  public function getSingleUtterance()
+  {
+    return $this->singleUtterance;
   }
 }

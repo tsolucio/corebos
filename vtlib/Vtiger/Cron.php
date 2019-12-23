@@ -68,6 +68,21 @@ class Vtiger_Cron {
 	public function getStatus() {
 		return (int)$this->data['status'];
 	}
+
+	/**
+	 * Set the timestamp lastrun started.
+	 */
+	public function setLastStart($timestamp) {
+		$this->data['laststart'] = $timestamp;
+	}
+
+	/**
+	 * Set the timestamp lastrun ended.
+	 */
+	public function setLastEnd($timestamp) {
+		$this->data['lastend'] = $timestamp;
+	}
+
 	/**
 	 * Get the timestamp lastrun started.
 	 */

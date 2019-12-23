@@ -50,7 +50,7 @@ for ($i=0; $i<$no_of_portals; $i++) {
 	$portal_info[] = $portal_array;
 	?>
 	mysitesArray['<?php echo $portalid;?>'] = {url: "<?php echo $portalurl;?>", embed: <?php echo $embed;?>};
-<?php
+	<?php
 }
 ?>
 </script>

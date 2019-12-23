@@ -348,6 +348,7 @@ var alert_arr = {
 	'LBL_DOES_NOT_END_WITH' : 'does not end with',
 	'DOES_NOT_START_WITH':'does not start with',
 	'DOES_NOT_END_WITH':'does not end with',
+	'Widget_Deleted_Sucessfully':'Widget deleted sucessfully',
 	'LBL_IS_TODAY' : 'is today',
 	'LBL_LESS_THAN_DAYS_AGO' : 'less than days ago',
 	'LBL_MORE_THAN_DAYS_AGO' : 'more than days ago',
@@ -398,5 +399,6 @@ var alert_arr = {
 	'OF' : 'of',
 	'ERR_Massedit' : 'Error on Mass Edit',
 	'ProcessFINISHED' : 'Process Finished',
-	'duplicatednotallowed' : 'Duplicated Modules Not Allowed'
+	'duplicatednotallowed' : 'Duplicated Modules Not Allowed',
+	'HAS_THIS_AS_NTH_CHILD' : 'Ez még egy másik gyermek'
 };

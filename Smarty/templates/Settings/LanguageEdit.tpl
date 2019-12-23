@@ -27,23 +27,25 @@ function lang_changeEditTab(obj1, obj2, SelTab, unSelTab) {
 	var tabName2 = document.getElementById(obj2);
 	var tagName1 = document.getElementById(SelTab);
 	var tagName2 = document.getElementById(unSelTab);
-	if (tabName1.className == "dvtUnSelectedCell") { tabName1.className = "dvtSelectedCell"; } 
-	if (tabName2.className == "dvtSelectedCell") { tabName2.className = "dvtUnSelectedCell"; } 
-	tagName1.style.display = "block"; 
-	tagName2.style.display = "none";
+	if (tabName1.className == 'dvtUnSelectedCell') {
+		tabName1.className = 'dvtSelectedCell';
+	}
+	if (tabName2.className == 'dvtSelectedCell') {
+		tabName2.className = 'dvtUnSelectedCell';
+	}
+	tagName1.style.display = 'block';
+	tagName2.style.display = 'none';
 }
-{/literal}
-{literal}
-    var k=0;
-	function changeModule(form){
-		form.action.value='LanguageEdit'; 
-		form.parenttab.value='Settings';
-		form.submit();
-	}
-	function addLabel(){
-		document.getElementById("tableofLabels").innerHTML+='<tr style="background-color:#FFF;"><td valign="top" class="listTableRow small"><input style="width:100%" name="newLabels['+k+'][key]"/></td><td valign="top" class="listTableRow small"><input style="width:100%" /></td><td class="listTableRow small" valign=top><input type="text" name="newLabels['+k+'][value]"  class="small" style="width:100%"></td></tr>';   
-		k++; 
-	}
+var k=0;
+function changeModule(form) {
+	form.action.value='LanguageEdit';
+	form.parenttab.value='Settings';
+	form.submit();
+}
+function addLabel() {
+	document.getElementById('tableofLabels').innerHTML+='<tr style="background-color:#FFF;"><td valign="top" class="listTableRow small"><input style="width:100%" name="newLabels['+k+'][key]"/></td><td valign="top" class="listTableRow small"><input style="width:100%" /></td><td class="listTableRow small" valign=top><input type="text" name="newLabels['+k+'][value]"  class="small" style="width:100%"></td></tr>';
+	k++;
+}
 {/literal}
 </script>
 <br>
@@ -61,7 +63,7 @@ function lang_changeEditTab(obj1, obj2, SelTab, unSelTab) {
 								<!-- table --> <!-- SetMenu.tpl -->
 									<!-- tr --> <!-- SetMenu.tpl -->
 										<!-- td --> <!-- SetMenu.tpl -->
-											<form id="modulefrom" action="index.php" method="POST">
+											<form id="modulefrom" name="modulefrom" action="index.php" method="POST" enctype="multipart/form-data">
 												<input type="hidden" name="action" value="SettingsAjax">
 												<input type="hidden" name="module" value="Settings">
 												<input type="hidden" name="file">
@@ -79,8 +81,8 @@ function lang_changeEditTab(obj1, obj2, SelTab, unSelTab) {
 													</tbody>
 												</table>
 												<br>
-												{if $APP.$MODULE eq ''}
-													{if $UMOD.$MODULE eq ''}
+												{if empty($APP.$MODULE)}
+													{if empty($UMOD.$MODULE)}
 														{assign var = "module_trad" value=$MODULE}
 													{else}
 														{assign var = "module_trad" value=$UMOD.$MODULE}
@@ -93,7 +95,7 @@ function lang_changeEditTab(obj1, obj2, SelTab, unSelTab) {
 														<tr>
 															<td class="big" nowrap><strong><span id="module_info">{$UMOD.LBL_TRANSLATE} "{$module_trad}" {$APP.LBL_MODULE}</span></strong> </td>
 															<td class="small" align="right">
-																{$UMOD.LBL_SELECT_TRANSLATE_MODULE}{$sel_value}
+																{$UMOD.LBL_SELECT_TRANSLATE_MODULE}
 																<select name="pick_module" class="importBox" onChange="changeModule(this.form);">
 																	{foreach key=sel_value item=value from=$MODULES}
 																		{if $MODULE eq $sel_value}
@@ -115,7 +117,7 @@ function lang_changeEditTab(obj1, obj2, SelTab, unSelTab) {
 													<input value="{$APP.LBL_SAVE_BUTTON_LABEL}" class="crmButton small save" onclick="this.form.file.value='LanguageSave';" type="submit"/>
 													<input type="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmButton small cancel" onclick="gotourl('index.php?module=Settings&action=ModuleManager&parenttab=Settings')"/>
 												</div>
-												<div style="text-align:right;margin:3px;"> {$APP.LBL_VIEW} 
+												<div style="text-align:right;margin:3px;"> {$APP.LBL_VIEW}
 													<select name='filter_translate' id='filter_translate' class="importBox" onchange='changeModule(this.form);'>
 														<option value='all' {if $FILTER == 'all'}selected{/if}> {$APP.SHOW_ALL} </option>
 														<option value='fieldsnontranslated' {if $FILTER == 'fieldsnontranslated'}selected{/if}>{$UMOD.FieldsNotTranslated}</option>

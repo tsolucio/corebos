@@ -108,6 +108,8 @@ class Google_Service_DLP_Resource_ProjectsDlpJobs extends Google_Service_Resourc
    * project-id.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string pageToken The standard list page token.
+   * @opt_param int pageSize The standard list page size.
    * @opt_param string orderBy Optional comma separated list of fields to order
    * by, followed by `asc` or `desc` postfix. This list is case-insensitive,
    * default sorting order is ascending, redundant space characters are
@@ -131,19 +133,21 @@ class Google_Service_DLP_Resource_ProjectsDlpJobs extends Google_Service_Resourc
    * Supported fields/values for inspect jobs:     - `state` -
    * PENDING|RUNNING|CANCELED|FINISHED|FAILED     - `inspected_storage` -
    * DATASTORE|CLOUD_STORAGE|BIGQUERY     - `trigger_name` - The resource name of
-   * the trigger that created job. * Supported fields for risk analysis jobs:
-   * - `state` - RUNNING|CANCELED|FINISHED|FAILED * The operator must be `=` or
-   * `!=`.
+   * the trigger that created job.     - 'end_time` - Corresponds to time the job
+   * finished.     - 'start_time` - Corresponds to time the job finished. *
+   * Supported fields for risk analysis jobs:     - `state` -
+   * RUNNING|CANCELED|FINISHED|FAILED     - 'end_time` - Corresponds to time the
+   * job finished.     - 'start_time` - Corresponds to time the job finished. *
+   * The operator must be `=` or `!=`.
    *
    * Examples:
    *
    * * inspected_storage = cloud_storage AND state = done * inspected_storage =
    * cloud_storage OR inspected_storage = bigquery * inspected_storage =
-   * cloud_storage AND (state = done OR state = canceled)
+   * cloud_storage AND (state = done OR state = canceled) * end_time >
+   * \"2017-12-12T00:00:00+00:00\"
    *
    * The length of this field should be no more than 500 characters.
-   * @opt_param string pageToken The standard list page token.
-   * @opt_param int pageSize The standard list page size.
    * @return Google_Service_DLP_GooglePrivacyDlpV2ListDlpJobsResponse
    */
   public function listProjectsDlpJobs($parent, $optParams = array())

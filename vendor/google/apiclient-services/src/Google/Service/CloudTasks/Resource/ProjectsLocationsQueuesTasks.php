@@ -30,11 +30,9 @@ class Google_Service_CloudTasks_Resource_ProjectsLocationsQueuesTasks extends Go
    *
    * Tasks cannot be updated after creation; there is no UpdateTask command.
    *
-   * * For App Engine queues, the maximum task size is   100KB. (tasks.create)
+   * * The maximum task size is 100KB. (tasks.create)
    *
-   * @param string $parent Required.
-   *
-   * The queue name. For example:
+   * @param string $parent Required. The queue name. For example:
    * `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID`
    *
    * The queue must already exist.
@@ -54,9 +52,7 @@ class Google_Service_CloudTasks_Resource_ProjectsLocationsQueuesTasks extends Go
    * A task can be deleted if it is scheduled or dispatched. A task cannot be
    * deleted if it has executed successfully or permanently failed. (tasks.delete)
    *
-   * @param string $name Required.
-   *
-   * The task name. For example:
+   * @param string $name Required. The task name. For example:
    * `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID`
    * @param array $optParams Optional parameters.
    * @return Google_Service_CloudTasks_CloudtasksEmpty
@@ -70,9 +66,7 @@ class Google_Service_CloudTasks_Resource_ProjectsLocationsQueuesTasks extends Go
   /**
    * Gets a task. (tasks.get)
    *
-   * @param string $name Required.
-   *
-   * The task name. For example:
+   * @param string $name Required. The task name. For example:
    * `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID`
    * @param array $optParams Optional parameters.
    *
@@ -104,9 +98,7 @@ class Google_Service_CloudTasks_Resource_ProjectsLocationsQueuesTasks extends Go
    * The tasks may be returned in any order. The ordering may change at any time.
    * (tasks.listProjectsLocationsQueuesTasks)
    *
-   * @param string $parent Required.
-   *
-   * The queue name. For example:
+   * @param string $parent Required. The queue name. For example:
    * `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID`
    * @param array $optParams Optional parameters.
    *
@@ -128,12 +120,13 @@ class Google_Service_CloudTasks_Resource_ProjectsLocationsQueuesTasks extends Go
    * returned from the previous call to ListTasks method.
    *
    * The page token is valid for only 2 hours.
-   * @opt_param int pageSize Requested page size. Fewer tasks than requested might
-   * be returned.
+   * @opt_param int pageSize Maximum page size.
+   *
+   * Fewer tasks than requested might be returned, even if more tasks exist; use
+   * next_page_token in the response to determine if more tasks exist.
    *
    * The maximum page size is 1000. If unspecified, the page size will be the
-   * maximum. Fewer tasks than requested might be returned, even if more tasks
-   * exist; use next_page_token in the response to determine if more tasks exist.
+   * maximum.
    * @return Google_Service_CloudTasks_ListTasksResponse
    */
   public function listProjectsLocationsQueuesTasks($parent, $optParams = array())
@@ -164,9 +157,7 @@ class Google_Service_CloudTasks_Resource_ProjectsLocationsQueuesTasks extends Go
    * RunTask returns NOT_FOUND when it is called on a task that has already
    * succeeded or permanently failed. (tasks.run)
    *
-   * @param string $name Required.
-   *
-   * The task name. For example:
+   * @param string $name Required. The task name. For example:
    * `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID`
    * @param Google_Service_CloudTasks_RunTaskRequest $postBody
    * @param array $optParams Optional parameters.

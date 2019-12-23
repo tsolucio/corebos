@@ -17,6 +17,9 @@
 {/if}
 {if vt_hasRTE()}
 <script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
+{if vt_hasRTESpellcheck()}
+<script type="text/javascript" src="include/ckeditor/config_spellcheck.js"></script>
+{/if}
 {/if}
 
 {include file='Buttons_List.tpl' isEditView=true}

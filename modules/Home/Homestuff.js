@@ -36,6 +36,10 @@ function chooseType(typeName) {
 			document.getElementById('dashTypeRow').style.display='none';
 			document.getElementById('dashNameRow').style.display='none';
 			document.getElementById('StuffTitleId').style.display='none';
+			document.getElementById('selModFilter_id').style.display='none';
+			document.getElementById('moduleLabelsRow').style.display='none';
+			document.getElementById('moduleFilters').style.display='none';
+			document.getElementById('moduleCombosRow').style.display='none';
 			VtigerJS_DialogBox.hidebusy();
 			document.getElementById('reportNameRow').style.display='none';
 			document.getElementById('reportTypeRow').style.display='none';
@@ -289,7 +293,7 @@ function DelStuff(sid) {
 				var delchild = document.getElementById('stuff_'+sid);
 				odeletedChild = document.getElementById('MainMatrix').removeChild(delchild);
 				document.getElementById('seqSettings').innerHTML= '<table cellpadding="10" cellspacing="0" border="0" width="100%" class="vtResultPop small"><tr>'
-					+ '<td align="center">Widget deleted sucessfully.</td></tr></table>';
+					+ '<td align="center">'+ alert_arr.Widget_Deleted_Sucessfully +'.</td></tr></table>';
 				document.getElementById('seqSettings').style.display = 'block';
 				document.getElementById('seqSettings').style.display = 'none';
 				placeAtCenter(document.getElementById('seqSettings'));
@@ -361,7 +365,7 @@ function loadStuff(stuffid, stufftype) {
 		if (stufftype=='DashBoard') {
 			document.getElementById('a_'+stuffid).href = 'index.php?module=Dashboard&action=index&type='+document.getElementById('more_'+stuffid).value;
 		}
-		if (stufftype=='ReportCharts') {
+		if (stufftype=='ReportCharts' && document.getElementById('more_'+stuffid)) {
 			document.getElementById('a_'+stuffid).href = 'index.php?module=Reports&action=SaveAndRun&record='+document.getElementById('more_'+stuffid).value;
 		}
 		if (stufftype=='Tag Cloud') {
@@ -393,7 +397,7 @@ function loadAllWidgets(widgetInfoList, batchSize) {
 				var responseVal=JSON.parse(response);
 				var tagcloudfound = false;
 				for (var widgetId in responseVal) {
-					if (responseVal.hasOwnProperty(widgetId)) {
+					if (Object.prototype.hasOwnProperty.call(responseVal, widgetId)) {
 						document.getElementById('stuffcont_'+widgetId).innerHTML = responseVal[widgetId];
 						document.getElementById('refresh_'+widgetId).innerHTML='';
 						var widgetType = widgetInfo[widgetId];

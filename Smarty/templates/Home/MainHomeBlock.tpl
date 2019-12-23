@@ -60,15 +60,15 @@
 
 	<table width="100%" cellpadding="0" cellspacing="0" class="small" style="padding-right:0px;padding-left:0px;padding-top:0px;">
 {if $tablestuff.Stufftype eq "Module"}
-		<tr id="maincont_row_{$tablestuff.Stuffid}" class="show_tab winmarkModulesusr">
+		<tr id="maincont_row_{$tablestuff.Stuffid}" class="show_tab">
 {elseif $tablestuff.Stufftype eq "Default" && $tablestuff.Stufftitle neq $homepagedashboard_title}
 		<tr id="maincont_row_{$tablestuff.Stuffid}" class="show_tab winmarkModulesdef">
 {elseif $tablestuff.Stufftype eq "RSS"}
-		<tr id="maincont_row_{$tablestuff.Stuffid}" class="show_tab winmarkRSS">
+		<tr id="maincont_row_{$tablestuff.Stuffid}" class="show_tab">
 {elseif $tablestuff.Stufftype eq "DashBoard" || $tablestuff.Stufftype eq "ReportCharts"}
-		<tr id="maincont_row_{$tablestuff.Stuffid}" class="show_tab winmarkDashboardusr">
+		<tr id="maincont_row_{$tablestuff.Stuffid}" class="show_tab">
 {elseif $tablestuff.Stufftype eq "Default" && $tablestuff.Stufftitle eq $homepagedashboard_title}
-		<tr id="maincont_row_{$tablestuff.Stuffid}" class="show_tab winmarkDashboarddef">
+		<tr id="maincont_row_{$tablestuff.Stuffid}" class="show_tab">
 {elseif $tablestuff.Stufftype eq "Notebook" || $tablestuff.Stufftype eq "Tag Cloud"}
 		<tr id="maincont_row_{$tablestuff.Stuffid}">
 {else}

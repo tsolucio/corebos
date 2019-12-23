@@ -10,8 +10,10 @@
 require_once 'include/logging.php';
 require_once 'modules/Users/Users.php';
 require_once 'include/database/PearDatabase.php';
-global $adb ,$mod_strings, $current_user;
+require_once 'Smarty_setup.php';
+global $adb ,$mod_strings, $current_user, $currentModule, $app_strings, $theme;
 
+$smarty = new vtigerCRM_Smarty();
 $local_log = LoggerManager::getLogger('UsersAjax');
 $ajaxaction = vtlib_purify($_REQUEST['ajxaction']);
 if ($ajaxaction == 'DETAILVIEW') {
@@ -60,7 +62,8 @@ if ($ajaxaction == 'DETAILVIEW') {
 		$_REQUEST['tagcloudview'] = $homeStuffOrder['Tag Cloud'];
 		$userObj->save('Users');
 		if ($userObj->id != '') {
-			echo ':#:SUCCESS';
+			echo ':#:SUCCESS:#:';
+			require_once 'modules/'.$currentModule.'/DetailView.php';
 		} else {
 			echo ':#:FAILURE';
 		}

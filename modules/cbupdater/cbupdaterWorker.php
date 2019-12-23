@@ -241,6 +241,15 @@ class cbupdaterWorker {
 		}
 	}
 
+	/* Given an array of field names this method will activate them in Quick Create in the given order
+	 * all other fields will be deactivated
+	 * The layout is an array of Field Names
+		array(
+			'{fieldname1}',
+			'{fieldname2}',
+			'{fieldname3}',
+		),
+	*/
 	public function setQuickCreateFields($moduleName, $qcfields) {
 		global $adb;
 		$module = VTiger_Module::getInstance($moduleName);
@@ -249,8 +258,12 @@ class cbupdaterWorker {
 		$upd = 'UPDATE vtiger_field SET quickcreate=2, quickcreatesequence=? WHERE fieldid=?';
 		foreach ($qcfields as $fldname) {
 			$field = VTiger_Field::getInstance($fldname, $module);
-			$adb->pquery($upd, array($order, $field->id));
-			$order++;
+			if ($field) {
+				$adb->pquery($upd, array($order, $field->id));
+				$order++;
+			} else {
+				$this->sendMsgError('QuickCreate field not found: '.$fldname);
+			}
 		}
 	}
 
@@ -322,7 +335,7 @@ class cbupdaterWorker {
 	}
 
 	/* Given an array of field definitions this method will hide the fields.
-	 * The layout is an array of Module Name and Field Definition
+	 * The layout is an array of Module Name and Field Name
 		array(
 			'{modulename}' => array(
 					'{fieldname1}',
@@ -348,7 +361,7 @@ class cbupdaterWorker {
 	}
 
 	/* Given an array of field definitions this method will delete the fields.
-	 * The layout is an array of Module Name and Field Definition
+	 * The layout is an array of Module Name and Field Name
 		array(
 			'{modulename}' => array(
 					'{fieldname1}',
@@ -573,7 +586,7 @@ class cbupdaterWorker {
 
 	public function sendError() {
 		$this->updError = true;
-		echo '<tr width="100%"><td colspan=3<span style="color:red">ERROR: Class '.get_class($this).'called without update record in application!!</span></td></tr></table>';
+		echo '<tr width="100%"><td colspan=3<span style="color:red">ERROR: Class '.get_class($this).' called without update record in application!!</span></td></tr></table>';
 		die();
 	}
 
@@ -598,7 +611,7 @@ EOT;
 	<td width="25%" align="left"><b>{$this->query_count}</b></td>
 	</tr>
 	<tr>
-	<td align="right">Queries Successed : </td>
+	<td align="right">Queries Succeeded : </td>
 	<td align="left"><b style="color:#006600;">{$this->success_query_count}</b></td>
 	</tr>
 	<tr>

@@ -8,7 +8,7 @@
  * All Rights Reserved.
  *************************************************************************************/
 
-$mod_strings = array (
+$mod_strings = array(
 	'Import' => 'Import',
 	'LBL_IMPORT_STEP_1' => 'Step 1',
 	'LBL_IMPORT_STEP_2' => 'Step 2',
@@ -75,12 +75,11 @@ $mod_strings = array (
 	'LBL_RUNNING' => 'Running',
 	'LBL_CLEAR_DATA' => 'Clear Data',
 	'ERR_MODULE_IMPORT_LOCKED' => 'You are not allowed to import for this module right now, as another import is in progress. Try again later.',
-	'LBL_MODULE_NAME' => 'Module',
+	'LBL_MODULE_NAME' => 'Import',
 	'LBL_USER_NAME' => 'User',
 	'LBL_LOCKED_TIME' => 'Locked Time',
 	'LBL_CANCEL_IMPORT' => 'Cancel Import',
 	'ERR_IMPORT_INTERRUPTED' => 'Current Import has been interrupted. Please try again later.',
-
 	'LBL_INVALID_FILE' => 'Invalid File',
 	'LBL_FILE_TYPE' => 'File Type',
 	'csv' => 'CSV',

@@ -208,7 +208,7 @@ function cbexpsql_setype($arr, $mmodule) {
 	$ret = '';
 	if (!empty($arr[0])) {
 		$crmid = __cbexpsql_functionparamsvalue($arr[0], $mmodule);
-		if ($crmid[0] == "'") {
+		if (is_string($crmid) && $crmid[0] == "'") {
 			$crmid = trim($crmid, "'");
 		}
 		preg_match('/[0-9]+x[0-9]+/', $crmid, $crmidmatches);
@@ -418,8 +418,16 @@ class cbexpsql_environmentstub {
 		return $this->data;
 	}
 
-	public function get($value) {
-		return $value;
+	public function setData($data) {
+		$this->data = $data;
+	}
+
+	public function get($fieldName) {
+		return (isset($this->data[$fieldName]) ? $this->data[$fieldName] : $fieldName);
+	}
+
+	public function set($fieldName, $value) {
+		$this->data[$fieldName] = $value;
 	}
 }
 ?>

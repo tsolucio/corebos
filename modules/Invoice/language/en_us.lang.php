@@ -168,5 +168,10 @@ $mod_strings = array(
 
 'SINGLE_Invoice'=>'Invoice',
 'Invoice ID'=>'Invoice ID',
+
+'LBL_PARTIAL_PAYMENTS_INFO' => 'Partial Payments Information',
+'Amount Due'=>'Amount Due',
+'Amount Paid'=>'Amount Paid',
+'Total Amount'=>'Total Amount',
 );
 ?>

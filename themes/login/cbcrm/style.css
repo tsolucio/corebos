@@ -23,7 +23,7 @@ a:hover {
 }
 
 .loginContainer {
-    width: 100%;
+	width: 100%;
 	height: 100%;
 }
 
@@ -33,17 +33,17 @@ a:hover {
 	left: 0;
 	position: absolute;
 	background: rgb(255,255,255); /* Old browsers */
-    background:#ffffff url(../../../themes/login/cbcrm/logoportadafondo.png);
-    background-size: cover;
-    -moz-background-size: cover;
-    -webkit-background-size: cover;
+	background:#ffffff url(../../../themes/login/cbcrm/logoportadafondo.png);
+	background-size: cover;
+	-moz-background-size: cover;
+	-webkit-background-size: cover;
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFFFF', endColorstr='#7ba5d8',GradientType=0 ); /* IE6-9 */
 }
 
 .loginWrapperFondo {
 	padding: 10px;
 	background: rgb(255,255,255); /* Old browsers */
-    background:#ffffff url(../../../themes/login/cbcrm/logoportadafondo.png) repeat;
+	background:#ffffff url(../../../themes/login/cbcrm/logoportadafondo.png) repeat;
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFFFF', endColorstr='#7ba5d8',GradientType=0 ); /* IE6-9 */
 }
 
@@ -68,7 +68,7 @@ a:hover {
 #loginTop{
 	height: 60px;
 	padding-top: 69px;
-      /*border: 1px solid black;*/
+	/*border: 1px solid black;*/
 }
 
 #loginBody{
@@ -97,14 +97,14 @@ a:hover {
 /*
 .loginForm {
 	background: rgb(80,133,206); /* Old browsers */
-	background: -moz-linear-gradient(top, rgba(80,133,206,1) 0%, rgba(123,165,216,1) 15%, rgba(255,255,255,1) 50%, rgba(255,255,255,1) 50%, rgba(123,165,216,1) 85%, rgba(80,133,206,1) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(80,133,206,1)), color-stop(15%,rgba(123,165,216,1)), color-stop(50%,rgba(255,255,255,1)), color-stop(50%,rgba(255,255,255,1)), color-stop(85%,rgba(123,165,216,1)), color-stop(100%,rgba(80,133,206,1))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, rgba(80,133,206,1) 0%,rgba(123,165,216,1) 15%,rgba(255,255,255,1) 50%,rgba(255,255,255,1) 50%,rgba(123,165,216,1) 85%,rgba(80,133,206,1) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, rgba(80,133,206,1) 0%,rgba(123,165,216,1) 15%,rgba(255,255,255,1) 50%,rgba(255,255,255,1) 50%,rgba(123,165,216,1) 85%,rgba(80,133,206,1) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, rgba(80,133,206,1) 0%,rgba(123,165,216,1) 15%,rgba(255,255,255,1) 50%,rgba(255,255,255,1) 50%,rgba(123,165,216,1) 85%,rgba(80,133,206,1) 100%); /* IE10+ */
-	background: linear-gradient(top, rgba(80,133,206,1) 0%,rgba(123,165,216,1) 15%,rgba(255,255,255,1) 50%,rgba(255,255,255,1) 50%,rgba(123,165,216,1) 85%,rgba(80,133,206,1) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5085ce', endColorstr='#FFFFFF',GradientType=0 ); /* IE6-9 */
-}
+/*	background: -moz-linear-gradient(top, rgba(80,133,206,1) 0%, rgba(123,165,216,1) 15%, rgba(255,255,255,1) 50%, rgba(255,255,255,1) 50%, rgba(123,165,216,1) 85%, rgba(80,133,206,1) 100%); /* FF3.6+ */
+/*	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(80,133,206,1)), color-stop(15%,rgba(123,165,216,1)), color-stop(50%,rgba(255,255,255,1)), color-stop(50%,rgba(255,255,255,1)), color-stop(85%,rgba(123,165,216,1)), color-stop(100%,rgba(80,133,206,1))); /* Chrome,Safari4+ */
+/*	background: -webkit-linear-gradient(top, rgba(80,133,206,1) 0%,rgba(123,165,216,1) 15%,rgba(255,255,255,1) 50%,rgba(255,255,255,1) 50%,rgba(123,165,216,1) 85%,rgba(80,133,206,1) 100%); /* Chrome10+,Safari5.1+ */
+/*	background: -o-linear-gradient(top, rgba(80,133,206,1) 0%,rgba(123,165,216,1) 15%,rgba(255,255,255,1) 50%,rgba(255,255,255,1) 50%,rgba(123,165,216,1) 85%,rgba(80,133,206,1) 100%); /* Opera 11.10+ */
+/*	background: -ms-linear-gradient(top, rgba(80,133,206,1) 0%,rgba(123,165,216,1) 15%,rgba(255,255,255,1) 50%,rgba(255,255,255,1) 50%,rgba(123,165,216,1) 85%,rgba(80,133,206,1) 100%); /* IE10+ */
+/*	background: linear-gradient(top, rgba(80,133,206,1) 0%,rgba(123,165,216,1) 15%,rgba(255,255,255,1) 50%,rgba(255,255,255,1) 50%,rgba(123,165,216,1) 85%,rgba(80,133,206,1) 100%); /* W3C */
+/*	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5085ce', endColorstr='#FFFFFF',GradientType=0 ); /* IE6-9 */
+/*}
 */
 .loginForm {
 	-webkit-box-shadow: 3px 3px 3px 3px rgba(150, 150, 150, 0.5);
@@ -125,11 +125,11 @@ a:hover {
 }
 
 .vtmktTitle .poweredBy {
-    width: 550px;
-    font-size: 0.4em;
-    text-align: right;
-    color: whitesmoke;
-    position: relative;
+	width: 550px;
+	font-size: 0.4em;
+	text-align: right;
+	color: whitesmoke;
+	position: relative;
 }
 
 .loginForm .poweredBy {
@@ -178,4 +178,3 @@ a:hover {
 #loginFooter img{
 	padding-right: 20px;
 }
-

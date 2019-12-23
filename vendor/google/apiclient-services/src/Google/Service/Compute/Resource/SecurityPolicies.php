@@ -26,7 +26,8 @@
 class Google_Service_Compute_Resource_SecurityPolicies extends Google_Service_Resource
 {
   /**
-   * Inserts a rule into a security policy. (securityPolicies.addRule)
+   * Inserts a rule into a security policy. (== suppress_warning http-rest-
+   * shadowed ==) (securityPolicies.addRule)
    *
    * @param string $project Project ID for this request.
    * @param string $securityPolicy Name of the security policy to update.
@@ -41,7 +42,8 @@ class Google_Service_Compute_Resource_SecurityPolicies extends Google_Service_Re
     return $this->call('addRule', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Deletes the specified policy. (securityPolicies.delete)
+   * Deletes the specified policy. (== suppress_warning http-rest-shadowed ==)
+   * (securityPolicies.delete)
    *
    * @param string $project Project ID for this request.
    * @param string $securityPolicy Name of the security policy to delete.
@@ -68,8 +70,8 @@ class Google_Service_Compute_Resource_SecurityPolicies extends Google_Service_Re
     return $this->call('delete', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * List all of the ordered rules present in a single specified policy.
-   * (securityPolicies.get)
+   * List all of the ordered rules present in a single specified policy. (==
+   * suppress_warning http-rest-shadowed ==) (securityPolicies.get)
    *
    * @param string $project Project ID for this request.
    * @param string $securityPolicy Name of the security policy to get.
@@ -83,7 +85,8 @@ class Google_Service_Compute_Resource_SecurityPolicies extends Google_Service_Re
     return $this->call('get', array($params), "Google_Service_Compute_SecurityPolicy");
   }
   /**
-   * Gets a rule at the specified priority. (securityPolicies.getRule)
+   * Gets a rule at the specified priority. (== suppress_warning http-rest-
+   * shadowed ==) (securityPolicies.getRule)
    *
    * @param string $project Project ID for this request.
    * @param string $securityPolicy Name of the security policy to which the
@@ -102,7 +105,8 @@ class Google_Service_Compute_Resource_SecurityPolicies extends Google_Service_Re
   }
   /**
    * Creates a new policy in the specified project using the data included in the
-   * request. (securityPolicies.insert)
+   * request. (== suppress_warning http-rest-shadowed ==)
+   * (securityPolicies.insert)
    *
    * @param string $project Project ID for this request.
    * @param Google_Service_Compute_SecurityPolicy $postBody
@@ -130,6 +134,7 @@ class Google_Service_Compute_Resource_SecurityPolicies extends Google_Service_Re
   }
   /**
    * List all the policies that have been configured for the specified project.
+   * (== suppress_warning http-rest-shadowed ==)
    * (securityPolicies.listSecurityPolicies)
    *
    * @param string $project Project ID for this request.
@@ -182,8 +187,8 @@ class Google_Service_Compute_Resource_SecurityPolicies extends Google_Service_Re
     return $this->call('list', array($params), "Google_Service_Compute_SecurityPolicyList");
   }
   /**
-   * Patches the specified policy with the data included in the request.
-   * (securityPolicies.patch)
+   * Patches the specified policy with the data included in the request. (==
+   * suppress_warning http-rest-shadowed ==) (securityPolicies.patch)
    *
    * @param string $project Project ID for this request.
    * @param string $securityPolicy Name of the security policy to update.
@@ -211,7 +216,8 @@ class Google_Service_Compute_Resource_SecurityPolicies extends Google_Service_Re
     return $this->call('patch', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Patches a rule at the specified priority. (securityPolicies.patchRule)
+   * Patches a rule at the specified priority. (== suppress_warning http-rest-
+   * shadowed ==) (securityPolicies.patchRule)
    *
    * @param string $project Project ID for this request.
    * @param string $securityPolicy Name of the security policy to update.
@@ -228,7 +234,8 @@ class Google_Service_Compute_Resource_SecurityPolicies extends Google_Service_Re
     return $this->call('patchRule', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Deletes a rule at the specified priority. (securityPolicies.removeRule)
+   * Deletes a rule at the specified priority. (== suppress_warning http-rest-
+   * shadowed ==) (securityPolicies.removeRule)
    *
    * @param string $project Project ID for this request.
    * @param string $securityPolicy Name of the security policy to update.

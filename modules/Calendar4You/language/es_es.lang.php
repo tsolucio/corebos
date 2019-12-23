@@ -91,6 +91,7 @@ $mod_strings = array (
 'Medium'=>'Medio',
 'Low'=>'Bajo',
 'Gmail_ChangeAccount'=>'Antes de cambiar tu Cuenta de Google limpia, los datos guardados',
+'TASKS_FINISHED' => 'Has terminado todas las tareas, ¡buen trabajo!',
 'Click2PickColor' => 'Pulsa aquí para seleccionar el color',
 );
 ?>

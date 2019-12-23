@@ -39,18 +39,6 @@
 	</span>
 	</label>
 </div>
-<div class="slds-form-element slds-m-top--small">
-	<label class="slds-form-element__label" for="sg_user">{'LBL_USERNAME'|@getTranslatedString:'Settings'}</label>
-	<div class="slds-form-element__control">
-		<input type="text" id="sg_user" name="sg_user" class="slds-input" value="{$sg_user}" />
-	</div>
-</div>
-<div class="slds-form-element slds-m-top--small">
-	<label class="slds-form-element__label" for="sg_pass">{'LBL_PASWRD'|@getTranslatedString:'Settings'}</label>
-	<div class="slds-form-element__control">
-		<input type="password" id="sg_pass" name="sg_pass" class="slds-input" value="{$sg_pass}" />
-	</div>
-</div>
 <br />
 <br />
 <div class="slds-grid slds-gutters">

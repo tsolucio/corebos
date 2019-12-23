@@ -32,6 +32,10 @@
 
 <table border=0 cellspacing=0 cellpadding=5 width=100% class="listTableTopButtons">
 <tr>
+	<th class="big" nowrap>{'LBL_TOTAL'|getTranslatedString:'Users'} {$TOTALUSERS}</th>
+	<th class="big" nowrap>{'LBL_ADMIN'|getTranslatedString:'Users'} : {$TOTALADMIN}</th>
+	<th class="big" nowrap>{'Active'|getTranslatedString:'Users'} : {$TOTALACTIVE}</th>
+	<th class="big" nowrap>{'Inactive'|getTranslatedString:'Users'} : {$TOTALINACTIVE}</th>
 	<td class="big" nowrap align="right">
 		<div align="right">
 		<input title="{$CMOD.LBL_NEW_USER_BUTTON_TITLE}" accessyKey="{$CMOD.LBL_NEW_USER_BUTTON_KEY}" type="submit" name="button" value="{$CMOD.LBL_NEW_USER_BUTTON_LABEL}" class="crmButton create small">
@@ -112,6 +116,11 @@
 						</div>
 					</div>
 				</div>
+				<div class="slds-col">
+					<div class="slds-form-element slds-lookup slds-text-align_right" style="width: 162px; margin-bottom: 6px;">
+						<br><br><span class="slds-text-title_bold">{'LBL_TOTAL_FILTERED'|getTranslatedString:'Users'}&nbsp;:&nbsp;<span id="current_rows"></span></span>
+					</div>
+				</div>
 			</div>
 		</header>
 		<footer>
@@ -141,6 +150,12 @@
 						<img border="0" title="{'LBL_DELETE'|@getTranslatedString}" alt="{'LBL_DELETE'|@getTranslatedString}" src="{'delete.gif'|@vtiger_imageurl:$THEME}" style="cursor: pointer;"/>
 					</span>
 				</a>
+				<span class="slds-icon_container slds-icon-utility-wifi" av="id:userid" title="{'LOGGED IN'|@getTranslatedString}">
+					<svg class="slds-icon slds-icon-text-default slds-icon_xx-small" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#wifi"></use>
+					</svg>
+					<span class="slds-assistive-text">{'LOGGED IN'|@getTranslatedString}</span>
+				</span>
 				<a av="href:Record">
 					<span>
 						<img src="{'logout.png'|@vtiger_imageurl:$THEME}" data-handler="logoutUser" border="0" alt="{$APP.LBL_LOGOUT}" title="{$APP.LBL_LOGOUT}" style="cursor:pointer;width:16px;"/>
@@ -173,19 +188,19 @@
 		{/foreach}
 	</tr>
 </table>
-	
-<script type="text/javascript">
+
+<script>
 {literal}
 Template.define('userlist_row_template', {
 	deleteUser:function(obj,data) {
 		obj.addEventListener('click', function (event) {
 			event.preventDefault();
 			jQuery.ajax({
-					method:"POST",
+					method:'POST',
 					url:'index.php?module=Users&action=UsersAjax&file=UserDeleteStep1&record='+data.id
 				}).done(function(response) {
-					document.getElementById("tempdiv").innerHTML= response;
-					fnvshobj(obj,"tempdiv");
+					document.getElementById('tempdiv').innerHTML= response;
+					fnvshobj(obj,'tempdiv');
 				}
 			);
 		});
@@ -194,11 +209,10 @@ Template.define('userlist_row_template', {
 		obj.addEventListener('click', function (event) {
 			event.preventDefault();
 			jQuery.ajax({
-					method:"POST",
+					method:'POST',
 					url:'index.php?module=Users&action=UsersAjax&file=LogoutUser&logoutuserid='+data.id
 				}).done(function(response) {
-					console.log(data.id,response);
-					document.getElementById("status").style.display="none";
+					document.getElementById('status').style.display='none';
 					alert(response);
 				}
 			);
@@ -208,9 +222,13 @@ Template.define('userlist_row_template', {
 DataTable.onRedraw(document.getElementsByTagName('datatable')[0], function (data) {
 	for (index in data.data) {
 		if (((data.data[index].Status == 'Active') && data.data[index].iscurrentuser && data.data[index].isblockeduser) || (data.data[index].Status == 'Inactive')) {
-			document.getElementById(data.data[index].id).style.display = "none";
+			document.getElementById(data.data[index].id).style.display = 'none';
+		}
+		if (!data.data[index].loggedin) {
+			document.getElementById(data.data[index].userid).style.display = 'none';
 		}
 	}
+	document.getElementById('current_rows').innerHTML = data.listtotalrecord;
 });
 {/literal}
 Pagination._config.langFirst = "{$APP.LNK_LIST_START}";

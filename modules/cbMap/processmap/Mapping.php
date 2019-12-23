@@ -153,6 +153,22 @@ class Mapping extends processcbMap {
 					$ct = new VTSimpleTemplateOnData($testexpression);
 					$value.= $ct->render($entityCache, $mapping['origin'], $ofields).$delim;
 					$util->revertUser();
+				} elseif (strtoupper($idx[0])=='RULE') {
+					$mapid = array_pop($fieldinfo);
+					$fieldname = array_pop($fieldinfo);
+					if (!empty($ofields['record_id'])) {
+						$context = $ofields;
+						if (strpos($context['record_id'], 'x')===false) {
+							$context['record_id'] = vtws_getEntityId(getSalesEntityType($context['record_id'])).'x'.$context['record_id'];
+						}
+						$entity = new VTWorkflowEntity($current_user, $context['record_id'], true);
+						if (is_array($entity->data)) { // valid context
+							$context = array_merge($entity->data, $context);
+						}
+					} else {
+						$context = $ofields[$fieldname];
+					}
+					$value .= coreBOS_Rule::evaluate($mapid, $context).$delim;
 				} else {
 					$fieldname = array_pop($fieldinfo);
 					$value.= (isset($ofields[$fieldname]) ? $ofields[$fieldname] : '').$delim;
@@ -176,7 +192,14 @@ class Mapping extends processcbMap {
 			}
 			$allmergeFields=array();
 			foreach ($v->Orgfields->Orgfield as $value) {
-				$allmergeFields[]=array((String)$value->OrgfieldID=>(String)$value->OrgfieldName);
+				if (isset($value->Rule)) {
+					$arr = array(
+						(String)$value->OrgfieldID=>(String)$value->OrgfieldName,
+						"mapid"=>(String)$value->Rule);
+				} else {
+					$arr = array((String)$value->OrgfieldID=>(String)$value->OrgfieldName);
+				}
+				$allmergeFields[] = $arr;
 			}
 			if (isset($v->Orgfields->delimiter)) {
 				$target_fields[$fieldname]['delimiter']=(String)$v->Orgfields->delimiter;

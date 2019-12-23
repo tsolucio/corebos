@@ -102,9 +102,10 @@ $rellistinfo = getRelatedListInfo($fld_module);
 $smarty->assign('RELATEDLIST', $rellistinfo);
 $pickListResult=getAllowedPicklistModules();
 $nonRelatableModules = array('PBXManager','SMSNotifier','cbupdater','GlobalVariable','Calendar','Emails','ModComments');
+$smsRelatableModules = array('Accounts','Contacts','Leads');
 $entityrelmods=array();
 foreach ($pickListResult as $pValue) {
-	if (!in_array($pValue, $nonRelatableModules)) {
+	if (!in_array($pValue, $nonRelatableModules) || (in_array($fld_module, $smsRelatableModules) && $pValue=='SMSNotifier')) {
 		$entityrelmods[$pValue] = getTranslatedString($pValue, $pValue);
 	}
 }
@@ -138,6 +139,13 @@ while ($rl = $adb->fetch_array($brmrs)) {
 }
 $notBlockRelatedModules = array_diff_key($relmods, $blockrelmods);
 $smarty->assign('NotBlockRelatedModules', $notBlockRelatedModules);
+
+$curmodsinrel_result = $adb->pquery('SELECT fieldid,relmodule FROM vtiger_fieldmodulerel WHERE module=?', array($fld_module));
+$curmodsinrel = array();
+while ($row = $adb->fetch_array($curmodsinrel_result)) {
+	$curmodsinrel[$row['relmodule']] = $row['fieldid'];
+}
+$smarty->assign('curmodsinrel', $curmodsinrel);
 
 if ((isset($_REQUEST['duplicate']) && $_REQUEST['duplicate'] == 'yes') || $duplicate == 'yes') {
 	echo 'ERROR';
@@ -337,6 +345,7 @@ function getFieldListEntries($module) {
 						$cf_element[$count]['columnname']=$row_field['columnname'];
 						$cf_element[$count]['fieldsize']=$fieldsize;
 						$cf_element[$count]['defaultvalue']= array('permitted' => $defaultPermitted, 'value' => $defaultValue, '_allvalues' => $allValues);
+						$cf_element[$count]['colspec']= CustomView::getFilterFieldDefinition($fieldid, $module);
 						$cf_element[$count] = array_merge($cf_element[$count], $visibility);
 
 						$count++;
@@ -353,6 +362,7 @@ function getFieldListEntries($module) {
 						$cf_hidden_element[$hiddencount]['columnname']=$row_field['columnname'];
 						$cf_hidden_element[$hiddencount]['fieldsize']=$fieldsize;
 						$cf_hidden_element[$hiddencount]['defaultvalue']= array('permitted' => $defaultPermitted, 'value' => $defaultValue, '_allvalues' => $allValues);
+						$cf_hidden_element[$hiddencount]['colspec']=CustomView::getFilterFieldDefinition($fieldid, $module);
 						$cf_hidden_element[$hiddencount] = array_merge($cf_hidden_element[$hiddencount], $visibility);
 
 						$hiddencount++;
@@ -686,6 +696,32 @@ function updateFieldProperties() {
 	$presence_check = vtlib_purify($_REQUEST['isPresent']);
 	$massedit_check = vtlib_purify($_REQUEST['massedit']);
 	$defaultvalue = vtlib_purify($_REQUEST['defaultvalue']);
+	$dependentmodules = isset($_REQUEST['dependentmoduleselected']) ? vtlib_purify($_REQUEST['dependentmoduleselected']) : null;
+
+	if (!empty($dependentmodules)) {
+		$newdependetmodules = explode(",", $_REQUEST['dependentmoduleselected']);
+		$result = $adb->pquery('SELECT relmodule FROM vtiger_fieldmodulerel WHERE fieldid=? AND module=?', array($fieldid, $fld_module));
+		$olddependetmodules = array();
+		for ($i=0; $i<$adb->num_rows($result); $i++) {
+			$olddependetmodules[] = $adb->query_result($result, $i, 'relmodule');
+		}
+
+		foreach ($newdependetmodules as $module) {
+			if (!in_array($module, $olddependetmodules)) {
+				$parentmodule = Vtiger_Module::getInstance($fld_module);
+				$relationfield = Vtiger_Field::getInstance($fieldname, $parentmodule);
+				$relationfield->setRelatedModules($module);
+			}
+		}
+
+		foreach ($olddependetmodules as $module) {
+			if (!in_array($module, $newdependetmodules)) {
+				$parentmodule = Vtiger_Module::getInstance($fld_module);
+				$relationfield = Vtiger_Field::getInstance($fieldname, $parentmodule);
+				$relationfield->unsetRelatedModules($module);
+			}
+		}
+	}
 
 	if (!empty($defaultvalue)) {
 		if ($uitype == 56) {
@@ -1176,7 +1212,7 @@ function show_move_hiddenfields($submode) {
 	$sel_arr = array();
 	$sel_arr = explode(':', $selected);
 	$sequence = $adb->pquery(
-		'select max(sequence) as maxseq from vtiger_field where block = ? and tabid = ?',
+		'select coalesce(max(sequence), 0) as maxseq from vtiger_field where block=? and tabid=?',
 		array(vtlib_purify($_REQUEST['blockid']), vtlib_purify($_REQUEST['tabid']))
 	);
 	$max = $adb->query_result($sequence, 0, 'maxseq');
@@ -1238,15 +1274,20 @@ function createRelatedList() {
 	$tabmod = Vtiger_Module::getInstance($module);
 	$rmodule = vtlib_purify($_REQUEST['relwithmod']);
 	$relmod = Vtiger_Module::getInstance($rmodule);
+	$actions = array('ADD','SELECT');
 	switch ($rmodule) {
 		case 'Documents':
 			$funcname = 'get_attachments';
+			break;
+		case 'cbCalendar':
+			$funcname = 'get_activities';
+			$actions = array('ADD');
 			break;
 		default:
 			$funcname = 'get_related_list';
 			break;
 	}
-	$tabmod->setRelatedList($relmod, $rmodule, array('ADD','SELECT'), $funcname);
+	$tabmod->setRelatedList($relmod, $rmodule, $actions, $funcname);
 }
 
 function changeRelatedListOrder() {

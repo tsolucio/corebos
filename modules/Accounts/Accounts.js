@@ -41,10 +41,10 @@ function set_return(product_id, product_name) {
 function set_return_specific(product_id, product_name) {
 	//getOpenerObj used for DetailView
 	if (document.getElementById('from_link').value != '') {
-		var fldName = window.opener.document.QcEditView.account_name;
+		var fldName = window.opener.document.QcEditView.account_id_display;
 		var fldId = window.opener.document.QcEditView.account_id;
 	} else {
-		var fldName = window.opener.document.EditView.account_name;
+		var fldName = window.opener.document.EditView.account_id_display;
 		var fldId = window.opener.document.EditView.account_id;
 	}
 	fldName.value = product_name;
@@ -56,16 +56,16 @@ function add_data_to_relatedlist(entity_id, recordid) {
 }
 
 function set_return_formname_specific(formname, product_id, product_name) {
-	window.opener.document.EditView1.account_name.value = product_name;
+	window.opener.document.EditView1.account_id_display.value = product_name;
 	window.opener.document.EditView1.account_id.value = product_id;
 }
 
 function set_return_address(account_id, account_name, bill_street, ship_street, bill_city, ship_city, bill_state, ship_state, bill_code, ship_code, bill_country, ship_country, bill_pobox, ship_pobox) {
 	if (document.getElementById('from_link').value != '') {
-		window.opener.document.QcEditView.account_name.value = account_name;
+		window.opener.document.QcEditView.account_id_display.value = account_name;
 		window.opener.document.QcEditView.account_id.value = account_id;
 	} else {
-		window.opener.document.EditView.account_name.value = account_name;
+		window.opener.document.EditView.account_id_display.value = account_name;
 		window.opener.document.EditView.account_id.value = account_id;
 	}
 
@@ -152,6 +152,11 @@ function set_return_address(account_id, account_name, bill_street, ship_street, 
 
 //added to select bill or ship address
 function set_return_shipbilladdress(account_id, account_name, bill_street, ship_street, bill_city, ship_city, bill_state, ship_state, bill_code, ship_code, bill_country, ship_country, bill_pobox, ship_pobox) {
+	if (typeof(window.opener.document.EditView) == 'undefined') {
+		vtlib_setvalue_from_popup(account_id, account_name, 'account_id', 'EditView');
+		window.close();
+		return;
+	}
 	jQuery.ajax({
 		url : 'index.php?module=Accounts&action=AccountsAjax&file=SelectAccountAddress',
 		context : document.body
@@ -184,8 +189,8 @@ function saa_fillinvalues() {
 	var account_id = jQuery('#account_id').val();
 	var account_name = jQuery('#account_name').val();
 	if (window.opener.gVTModule != 'Issuecards') {
-		if (typeof (window.opener.document.EditView.account_name) != 'undefined') {
-			window.opener.document.EditView.account_name.value = account_name;
+		if (typeof (window.opener.document.EditView.account_id_display) != 'undefined') {
+			window.opener.document.EditView.account_id_display.value = account_name;
 		}
 		if (typeof (window.opener.document.EditView.account_id) != 'undefined') {
 			window.opener.document.EditView.account_id.value = account_id;
@@ -300,15 +305,18 @@ function setReturnAddressShip() {
 //added to populate address
 function set_return_contact_address(account_id, account_name, bill_street, ship_street, bill_city, ship_city, bill_state, ship_state, bill_code, ship_code, bill_country, ship_country, bill_pobox, ship_pobox) {
 	if (document.getElementById('from_link').value != '') {
-		if (typeof (window.opener.document.QcEditView.account_name) != 'undefined') {
-			window.opener.document.QcEditView.account_name.value = account_name;
+		if (typeof (window.opener.document.QcEditView.account_id_display) != 'undefined') {
+			window.opener.document.QcEditView.account_id_display.value = account_name;
 		}
 		if (typeof (window.opener.document.QcEditView.account_id) != 'undefined') {
 			window.opener.document.QcEditView.account_id.value = account_id;
 		}
 	} else {
-		if (typeof (window.opener.document.EditView.account_name) != 'undefined') {
-			window.opener.document.EditView.account_name.value = account_name;
+		if (window.opener.gVTModule == 'Contacts' && typeof(window.opener.document.EditView) == 'undefined') {
+			return vtlib_setvalue_from_popup(account_id, account_name, 'account_id', 'EditView');
+		}
+		if (typeof (window.opener.document.EditView.account_id_display) != 'undefined') {
+			window.opener.document.EditView.account_id_display.value = account_name;
 		}
 		if (typeof (window.opener.document.EditView.account_id) != 'undefined') {
 			window.opener.document.EditView.account_id.value = account_id;

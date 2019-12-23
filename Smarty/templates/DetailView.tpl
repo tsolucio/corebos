@@ -55,31 +55,22 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 
 <div id="lstRecordLayout" class="layerPopup" style="display:none;width:325px;height:300px;"></div>
 
-{if $MODULE eq 'Accounts' || $MODULE eq 'Contacts' || $MODULE eq 'Leads'}
+{if $MODULE eq 'Accounts' || $MODULE eq 'Contacts'}
 	{if $MODULE eq 'Accounts'}
-		{assign var=address1 value='$MOD.LBL_BILLING_ADDRESS'}
-		{assign var=address2 value='$MOD.LBL_SHIPPING_ADDRESS'}
+		{assign var=address1 value=$MOD.LBL_BILLING_ADDRESS}
+		{assign var=address2 value=$MOD.LBL_SHIPPING_ADDRESS}
 	{/if}
 	{if $MODULE eq 'Contacts'}
-		{assign var=address1 value='$MOD.LBL_PRIMARY_ADDRESS'}
-		{assign var=address2 value='$MOD.LBL_ALTERNATE_ADDRESS'}
+		{assign var=address1 value=$MOD.LBL_PRIMARY_ADDRESS}
+		{assign var=address2 value=$MOD.LBL_ALTERNATE_ADDRESS}
 	{/if}
-	<div id="locateMap" onMouseOut="fninvsh('locateMap')" onMouseOver="fnvshNrm('locateMap')">
-		<table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="100%">
-			<tr>
-				<td>
-					{if $MODULE eq 'Accounts'}
-						<a href="javascript:;" onClick="fninvsh('locateMap'); searchMapLocation( 'Main' );" class="calMnu">{$MOD.LBL_BILLING_ADDRESS}</a>
-						<a href="javascript:;" onClick="fninvsh('locateMap'); searchMapLocation( 'Other' );" class="calMnu">{$MOD.LBL_SHIPPING_ADDRESS}</a>
-					{/if}
-					{if $MODULE eq 'Contacts'}
-						<a href="javascript:;" onClick="fninvsh('locateMap'); searchMapLocation( 'Main' );" class="calMnu">{$MOD.LBL_PRIMARY_ADDRESS}</a>
-						<a href="javascript:;" onClick="fninvsh('locateMap'); searchMapLocation( 'Other' );" class="calMnu">{$MOD.LBL_ALTERNATE_ADDRESS}</a>
-					{/if}
-
-				</td>
-			</tr>
-		</table>
+	<div class="slds-card" id="locateMap" onMouseOut="fninvsh('locateMap')" onMouseOver="fnvshNrm('locateMap')">
+		<div class="slds-card__body slds-card__body_inner">
+			<a href="javascript:;" onClick="fninvsh('locateMap'); searchMapLocation( 'Main' );" class="calMnu">{$address1}</a>
+		</div>
+		<div class="slds-card__body slds-card__body_inner">
+			<a href="javascript:;" onClick="fninvsh('locateMap'); searchMapLocation( 'Main' );" class="calMnu">{$address2}</a>
+		</div>
 	</div>
 {/if}
 
@@ -163,10 +154,10 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 													<tr valign=top>
 														<td style="padding:5px">
 															<!-- Command Buttons -->
+															<form action="index.php" method="post" name="DetailView" id="formDetailView">
+																<input type="hidden" id="hdtxt_IsAdmin" value="{if isset($hdtxt_IsAdmin)}{$hdtxt_IsAdmin}{else}0{/if}">
+																{include file='DetailViewHidden.tpl'}
 															<table border=0 cellspacing=0 cellpadding=0 width=100%>
-																<form action="index.php" method="post" name="DetailView" id="formDetailView">
-																	<input type="hidden" id="hdtxt_IsAdmin" value="{if isset($hdtxt_IsAdmin)}{$hdtxt_IsAdmin}{else}0{/if}">
-																	{include file='DetailViewHidden.tpl'}
 																	{foreach key=header item=detail from=$BLOCKS name=BLOCKS}
 																		<tr><td style="padding:5px">
 																				<!-- Detailed View Code starts here-->
@@ -256,7 +247,7 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 																											{assign var=_readonly value=$data.readonly}
 																											{assign var=extendedfieldinfo value=$data.extendedfieldinfo}
 
-																											{if $label ne ''}
+																											{if $label ne '' && ($keyid ne 83 || count($TAX_DETAILS)>0)}
 																												<td class="dvtCellLabel" align=right width=25% style="white-space: normal;">{strip}
 																												{if $keycntimage ne ''}
 																													{$keycntimage}
@@ -340,46 +331,59 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 
 												{* vtlib customization: Custom links on the Detail view basic links *}
 												{if $CUSTOM_LINKS && $CUSTOM_LINKS.DETAILVIEWBASIC}
-													<table width="100%" border="0" cellpadding="5" cellspacing="0">
+													<ul>
 														{foreach item=CUSTOMLINK from=$CUSTOM_LINKS.DETAILVIEWBASIC}
-															<tr class="actionlink actionlink_customlink actionlink_{$CUSTOMLINK->linklabel|lower|replace:' ':'_'}">
-																<td align="left" style="padding-left:10px;">
-																	{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
-																	{assign var="customlink_label" value=$CUSTOMLINK->linklabel}
-																	{if $customlink_label eq ''}
-																		{assign var="customlink_label" value=$customlink_href}
-																	{else}
-																		{* Pickup the translated label provided by the module *}
-																		{assign var="customlink_label" value=$customlink_label|@getTranslatedString:$CUSTOMLINK->module()}
-																	{/if}
+															<li class="actionlink actionlink_customlink actionlink_{$CUSTOMLINK->linklabel|lower|replace:' ':'_'}">
+																{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
+																{assign var="customlink_label" value=$CUSTOMLINK->linklabel}
+																{if $customlink_label eq ''}
+																	{assign var="customlink_label" value=$customlink_href}
+																{else}
+																	{* Pickup the translated label provided by the module *}
+																	{assign var="customlink_label" value=$customlink_label|@getTranslatedString:$CUSTOMLINK->module()}
+																{/if}
+																{if $customlink_href=='ACTIONSUBHEADER'}
+																	<span class="genHeaderSmall slds-truncate">{$customlink_label}</span>
+																{else}
 																	{if $CUSTOMLINK->linkicon}
-																		<a class="webMnu" href="{$customlink_href}"><img hspace=5 align="absmiddle" border=0 src="{$CUSTOMLINK->linkicon}"></a>
+																		{if strpos($CUSTOMLINK->linkicon, '}')>0}
+																			{assign var="customlink_iconinfo" value=$CUSTOMLINK->linkicon|json_decode:true}
+																			<span class="slds-icon_container slds-icon-{$customlink_iconinfo.library}-{$customlink_iconinfo.icon}" title="{$customlink_label}">
+																			<svg class="slds-icon slds-icon-text-default slds-icon_x-small" aria-hidden="true">
+																				<use xlink:href="include/LD/assets/icons/{$customlink_iconinfo.library}-sprite/svg/symbols.svg#{$customlink_iconinfo.icon}"></use>
+																			</svg>
+																			<span class="slds-assistive-text">{$customlink_label}</span>
+																			</span>
+																		{else}
+																			<a class="webMnu" href="{$customlink_href}"><img hspace=5 align="absmiddle" border=0 src="{$CUSTOMLINK->linkicon}"></a>
+																		{/if}
 																	{else}
 																		<a class="webMnu" href="{$customlink_href}"><img hspace=5 align="absmiddle" border=0 src="themes/images/no_icon.png"></a>
 																	{/if}
-																	<a class="webMnu" href="{$customlink_href}">{$customlink_label}</a>
-																</td>
-															</tr>
+																	&nbsp;<a class="slds-text-link_reset" href="{$customlink_href}">{$customlink_label}</a>
+																{/if}
+															</li>
 														{/foreach}
-													</table>
+													</ul>
 												{/if}
 
 												{* vtlib customization: Custom links on the Detail view *}
 												{if $CUSTOM_LINKS && $CUSTOM_LINKS.DETAILVIEW}
 													<br>
 													{if !empty($CUSTOM_LINKS.DETAILVIEW)}
-														<table width="100%" border="0" cellpadding="5" cellspacing="0">
-															<tr><td align="left" class="dvtUnSelectedCell dvtCellLabel">
-																	<a href="javascript:;" onmouseover="fnvshobj(this,'vtlib_customLinksLay');" onclick="fnvshobj(this,'vtlib_customLinksLay');"><b>{$APP.LBL_MORE} {$APP.LBL_ACTIONS} &#187;</b></a>
-																</td></tr>
+														<table>
+															<tr><td class="dvtUnSelectedCell" style="background-color: rgb(204, 204, 204); padding: 5px;">
+																<a href="javascript:;" onmouseover="fnvshobj(this,'vtlib_customLinksLay');" onclick="fnvshobj(this,'vtlib_customLinksLay');"><b>{$APP.LBL_MORE} {$APP.LBL_ACTIONS} &#187;</b></a>
+															</td></tr>
 														</table>
 														<br>
-														<div style="display: none; left: 193px; top: 106px;width:155px; position:absolute;" id="vtlib_customLinksLay"
+														<div style="display: none; left: 193px; top: 106px;width:215px; position:absolute;" class="slds-box_border slds-card" id="vtlib_customLinksLay"
 															 onmouseout="fninvsh('vtlib_customLinksLay')" onmouseover="fnvshNrm('vtlib_customLinksLay')">
-															<table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="100%">
+															<table class="slds-p-around_xx-small">
 																<tr><td style="border-bottom: 1px solid rgb(204, 204, 204); padding: 5px;"><b>{$APP.LBL_MORE} {$APP.LBL_ACTIONS} &#187;</b></td></tr>
 																<tr>
-																	<td>
+																	<td class="slds-p-around_xx-small">
+																	<ul>
 																		{foreach item=CUSTOMLINK from=$CUSTOM_LINKS.DETAILVIEW}
 																			{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
 																			{assign var="customlink_label" value=$CUSTOMLINK->linklabel}
@@ -389,8 +393,26 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 																				{* Pickup the translated label provided by the module *}
 																				{assign var="customlink_label" value=$customlink_label|@getTranslatedString:$CUSTOMLINK->module()}
 																			{/if}
-																			<a href="{$customlink_href}" class="drop_down">{$customlink_label}</a>
+																			<li>
+																			{if $CUSTOMLINK->linkicon}
+																				{if strpos($CUSTOMLINK->linkicon, '}')>0}
+																					{assign var="customlink_iconinfo" value=$CUSTOMLINK->linkicon|json_decode:true}
+																					<span class="slds-icon_container slds-icon-{$customlink_iconinfo.library}-{$customlink_iconinfo.icon}" title="{$customlink_label}">
+																					<svg class="slds-icon slds-icon-text-default slds-icon_x-small" aria-hidden="true">
+																						<use xlink:href="include/LD/assets/icons/{$customlink_iconinfo.library}-sprite/svg/symbols.svg#{$customlink_iconinfo.icon}"></use>
+																					</svg>
+																					<span class="slds-assistive-text">{$customlink_label}</span>
+																					</span>
+																				{else}
+																					<a class="webMnu" href="{$customlink_href}"><img hspace=5 align="absmiddle" border=0 src="{$CUSTOMLINK->linkicon}"></a>
+																				{/if}
+																			{else}
+																				<a class="webMnu" href="{$customlink_href}"><img hspace=5 align="absmiddle" border=0 src="themes/images/no_icon.png"></a>
+																			{/if}
+																			&nbsp;<a class="slds-text-link_reset" href="{$customlink_href}">{$customlink_label}</a>
+																			</li>
 																		{/foreach}
+																		</ul>
 																	</td>
 																</tr>
 															</table>
@@ -426,7 +448,7 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 																	<td class="rightMailMergeContent"><div id="detailview_block_{$CUSTOMLINK_NO}"></div></td>
 																</tr>
 																<script type="text/javascript">
-																			vtlib_loadDetailViewWidget("{$customlink_href}", "detailview_block_{$CUSTOMLINK_NO}", "detailview_block_{$CUSTOMLINK_NO}_indicator");
+																	vtlib_loadDetailViewWidget("{$customlink_href}", "detailview_block_{$CUSTOMLINK_NO}", "detailview_block_{$CUSTOMLINK_NO}_indicator");
 																</script>
 															</table>
 														{/if}

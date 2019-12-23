@@ -133,7 +133,7 @@ class BURAK_Gantt {
 		$this->colors["weekend"] = "CFCFCF";
 		$this->colors["today"] = "F7F5DC";
 		$this->colors["grid"] = "E6E6E6";
-		$this->colors["task"] = "C8C8C8";
+		$this->colors["task"] = "B3CCFF";
 		$this->colors["lag"] = "F7F5DC";
 		$this->colors["progress"] = "FF3300";
 		$this->colors["milestone"] = "FF3300";
@@ -309,9 +309,10 @@ class BURAK_Gantt {
 	*
 	* @param string $file File name
 	* @param integer $quality Image quality 0-100
+	* @param integer $project_gantt_type Type of Project Gantt 1-3 1 for daily, 2 for weekly and 3 for monthly
 	*/
-	function outputGantt($file=null,$quality=90){
-		$this->drawGantt();
+	function outputGantt($file=null,$quality=90, $project_gantt_type){
+		$this->drawGantt($project_gantt_type);
 		if(!empty($file)){
 			imagejpeg($this->im,$file,$quality);
 		}else{
@@ -392,10 +393,10 @@ class BURAK_Gantt {
 	* Creates canvas
 	*
 	*/
-	function createCanvas(){
+	function createCanvas($project_gantt_type){
 		$this->n = $this->data_count["T"] + $this->data_count["M"] + ($this->data_count["G"]*2);
 		$this->calGroupRange();
-		$this->calRange();
+		$this->calRange($project_gantt_type);
 		// calculate the height of the gantt image
 		$this->gantt_height = ($this->n * $this->inc_y) + ($this->heights["month"]*2) + ($this->heights["day"]*2) + ($this->inc_y * 2);
 		// calculate the width of the  gantt image
@@ -417,7 +418,7 @@ class BURAK_Gantt {
 	* This function also extends the gantt chart depending on the grid type.
 	* The extra space is needed to allow for long labels.
 	*/
-	function calRange(){
+	function calRange($project_gantt_type){
 		// calculate min and max dates 
 		foreach($this->data_gantt as $k=>$v){
 			switch($v["type"]){
@@ -438,6 +439,9 @@ class BURAK_Gantt {
 		$this->gantt_start = $this->date_min - ($s_offset[gmdate("w",$this->date_min)] * 86400);
 		$this->gantt_end = $this->date_max + ($e_offset[gmdate("w",$this->date_max)] * 86400) + (86400*6);
 		// if grid type is not set
+
+		$this->grid = $project_gantt_type;
+		/*
 		if(strtoupper($this->grid) == "AUTO"){
 			// determine grid type
 			$dif = ceil(($this->gantt_end - $this->gantt_start)/86400);
@@ -449,6 +453,8 @@ class BURAK_Gantt {
 				$this->grid = 3; //monthly grid
 			}
 		}
+		*/
+
 		switch($this->grid){
 			case 1:
 				$this->inc_x = 15;
@@ -610,8 +616,8 @@ class BURAK_Gantt {
 		$i++;
 	}
 	
-	function drawGantt(){
-		$this->createCanvas();
+	function drawGantt($project_gantt_type){
+		$this->createCanvas($project_gantt_type);
 		$this->createStartOrder();
 		$this->createSequence();
 		$this->drawGrid();

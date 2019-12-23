@@ -35,5 +35,7 @@ $mod_strings = array(
 	'Inventory Details No' => 'Voorraad details nummer',
 	'Total Stock' => 'Total Stock',
 	'InventoryDetailsTaxBlock' => 'Belastingen',
+	'Remaining Units' => 'Remaining Units',
+	'Related Line Item ID' => 'Related Line Item ID',
 );
 ?>

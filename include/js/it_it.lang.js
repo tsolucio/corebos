@@ -134,6 +134,7 @@ var alert_arr = {
 	'LBL_DOES_NOT_END_WITH' : 'does not end with',
 	'DOES_NOT_START_WITH':'does not start with',
 	'DOES_NOT_END_WITH':'does not end with',
+	'Widget_Deleted_Sucessfully':'Widget deleted sucessfully',
 
 	'OPPORTUNITYNAME_CANNOT_BE_EMPTY':'Il campo nome per le opportunit&egrave; non deve essere vuoto',
 	'NAME_DESC':' per Nome Cartella & Descrizione',
@@ -289,7 +290,7 @@ var alert_arr = {
 	'LBL_ENTER_RSS_URL':'Per favore inserire l\'URL dell\'RSS',
 	'LBL_ADD_HOME_WIDGET':'Impossibile aggiungere il widget! Per favore riprova',
 	'LBL_DEFAULT_VALUE_FOR_THIS_FIELD':'Valore predefinito per questo campo',
-	'RECIPIENTS_CANNOT_BE_EMPTY' :'Il campo selezionato nn pu� essere vuoto',
+	'RECIPIENTS_CANNOT_BE_EMPTY' :'Il campo selezionato nn pui essere vuoto',
 	'VALID_SCANNER_NAME' :'Prego selezionare un nome valido per lo scanner (solo numeri e lettere)',
 	'ERR_SAME_SOURCE_AND_TARGET' :'Campo di origine e destinazione non possono essere uguali',
 	'ERR_ATLEAST_ONE_VALUE_FOR' :'Devi selezionare almeno un valore',
@@ -403,5 +404,6 @@ var alert_arr = {
 	'OF' : 'di',
 	'ERR_Massedit' : 'Errore di Mass Edit',
 	'ProcessFINISHED' : 'Processo Terminato',
-	'duplicatednotallowed' : 'Non sono permessi Moduli Duplicati'
+	'duplicatednotallowed' : 'Non sono permessi Moduli Duplicati',
+	'HAS_THIS_AS_NTH_CHILD' : 'ha questo record come figlio unico'
 };

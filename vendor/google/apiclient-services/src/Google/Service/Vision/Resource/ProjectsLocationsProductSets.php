@@ -36,7 +36,7 @@ class Google_Service_Vision_Resource_ProjectsLocationsProductSets extends Google
    * * Returns NOT_FOUND if the Product or the ProductSet doesn't exist.
    * (productSets.addProduct)
    *
-   * @param string $name The resource name for the ProductSet to modify.
+   * @param string $name Required. The resource name for the ProductSet to modify.
    *
    * Format is: `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
    * @param Google_Service_Vision_AddProductToProductSetRequest $postBody
@@ -57,7 +57,8 @@ class Google_Service_Vision_Resource_ProjectsLocationsProductSets extends Google
    * * Returns INVALID_ARGUMENT if display_name is missing, or is longer than
    * 4096 characters. (productSets.create)
    *
-   * @param string $parent The project in which the ProductSet should be created.
+   * @param string $parent Required. The project in which the ProductSet should be
+   * created.
    *
    * Format is `projects/PROJECT_ID/locations/LOC_ID`.
    * @param Google_Service_Vision_ProductSet $postBody
@@ -80,12 +81,9 @@ class Google_Service_Vision_Resource_ProjectsLocationsProductSets extends Google
    * ProductSet are not deleted.
    *
    * The actual image files are not deleted from Google Cloud Storage.
+   * (productSets.delete)
    *
-   * Possible errors:
-   *
-   * * Returns NOT_FOUND if the ProductSet does not exist. (productSets.delete)
-   *
-   * @param string $name Resource name of the ProductSet to delete.
+   * @param string $name Required. Resource name of the ProductSet to delete.
    *
    * Format is: `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
    * @param array $optParams Optional parameters.
@@ -104,7 +102,7 @@ class Google_Service_Vision_Resource_ProjectsLocationsProductSets extends Google
    *
    * * Returns NOT_FOUND if the ProductSet does not exist. (productSets.get)
    *
-   * @param string $name Resource name of the ProductSet to get.
+   * @param string $name Required. Resource name of the ProductSet to get.
    *
    * Format is: `projects/PROJECT_ID/locations/LOG_ID/productSets/PRODUCT_SET_ID`
    * @param array $optParams Optional parameters.
@@ -129,8 +127,8 @@ class Google_Service_Vision_Resource_ProjectsLocationsProductSets extends Google
    * the format of the csv file please see
    * ImportProductSetsGcsSource.csv_file_uri. (productSets.import)
    *
-   * @param string $parent The project in which the ProductSets should be
-   * imported.
+   * @param string $parent Required. The project in which the ProductSets should
+   * be imported.
    *
    * Format is `projects/PROJECT_ID/locations/LOC_ID`.
    * @param Google_Service_Vision_ImportProductSetsRequest $postBody
@@ -151,7 +149,8 @@ class Google_Service_Vision_Resource_ProjectsLocationsProductSets extends Google
    * * Returns INVALID_ARGUMENT if page_size is greater than 100, or less   than
    * 1. (productSets.listProjectsLocationsProductSets)
    *
-   * @param string $parent The project from which ProductSets should be listed.
+   * @param string $parent Required. The project from which ProductSets should be
+   * listed.
    *
    * Format is `projects/PROJECT_ID/locations/LOC_ID`.
    * @param array $optParams Optional parameters.
@@ -198,14 +197,9 @@ class Google_Service_Vision_Resource_ProjectsLocationsProductSets extends Google
     return $this->call('patch', array($params), "Google_Service_Vision_ProductSet");
   }
   /**
-   * Removes a Product from the specified ProductSet.
+   * Removes a Product from the specified ProductSet. (productSets.removeProduct)
    *
-   * Possible errors:
-   *
-   * * Returns NOT_FOUND If the Product is not found under the ProductSet.
-   * (productSets.removeProduct)
-   *
-   * @param string $name The resource name for the ProductSet to modify.
+   * @param string $name Required. The resource name for the ProductSet to modify.
    *
    * Format is: `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
    * @param Google_Service_Vision_RemoveProductFromProductSetRequest $postBody

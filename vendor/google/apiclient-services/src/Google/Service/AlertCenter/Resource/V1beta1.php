@@ -42,7 +42,7 @@ class Google_Service_AlertCenter_Resource_V1beta1 extends Google_Service_Resourc
     return $this->call('getSettings', array($params), "Google_Service_AlertCenter_Settings");
   }
   /**
-   * Update the customer-level settings. (v1beta1.updateSettings)
+   * Updates the customer-level settings. (v1beta1.updateSettings)
    *
    * @param Google_Service_AlertCenter_Settings $postBody
    * @param array $optParams Optional parameters.

@@ -31,8 +31,7 @@ class Google_Service_Blogger_Resource_PostUserInfos extends Google_Service_Resou
    * to the user. (postUserInfos.get)
    *
    * @param string $userId ID of the user for the per-user information to be
-   * fetched. Either the word 'self' (sans quote marks) or the user's profile
-   * identifier.
+   * fetched. Either the word 'self' or the user's profile identifier.
    * @param string $blogId The ID of the blog.
    * @param string $postId The ID of the post to get.
    * @param array $optParams Optional parameters.
@@ -53,8 +52,7 @@ class Google_Service_Blogger_Resource_PostUserInfos extends Google_Service_Resou
    * rights, specific to the user. (postUserInfos.listPostUserInfos)
    *
    * @param string $userId ID of the user for the per-user information to be
-   * fetched. Either the word 'self' (sans quote marks) or the user's profile
-   * identifier.
+   * fetched. Either the word 'self' or the user's profile identifier.
    * @param string $blogId ID of the blog to fetch posts from.
    * @param array $optParams Optional parameters.
    *

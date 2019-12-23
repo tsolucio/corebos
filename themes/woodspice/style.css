@@ -86,10 +86,6 @@ input:disabled {
 	font-size: 11px;
 }
 
-	text-transform: uppercase;
-	font-size: 11px;
-}
-
 .tabUnSelected {
     background-color:#D7D5BE;
     font-family: Arial, Helvetica, sans-serif;
@@ -1117,7 +1113,6 @@ ul li{
 }
 
 #locateMap{
-    width:120px;
     background-color:#CCCCCC;
     border:1px solid #DDDDDD;
     padding-top:5px;
@@ -2010,6 +2005,7 @@ textarea {
     padding:5px;
     position:absolute;
     background-color:#FFFFFF;
+	z-index: 100;
     display:none;
 }
 
@@ -2249,36 +2245,6 @@ a.drop_down:Hover{
 .hide_tab{display:none;}
 
 .show_tab{display:inline-table;}
-
-.winmarkModulesdef{
-    background-image:url(../images/windowmarkModules.jpg);
-    background-position:top right;
-    background-repeat:no-repeat;
-}
-
-.winmarkModulesusr{
-    background-image:url(../images/windowmarkModulesusr.jpg);
-    background-position:top right;
-    background-repeat:no-repeat;
-}
-
-.winmarkRSS{
-    background-image:url(../images/windowmarkRSS.jpg);
-    background-position:top right;
-    background-repeat:no-repeat;
-}
-
-.winmarkDashboardusr{
-    background-image:url(../images/windowmarkDashboardusr.jpg);
-    background-position:top right;
-    background-repeat:no-repeat;
-}
-
-.winmarkDashboarddef{
-    background-image:url(../images/windowmarkDashboard.jpg);
-    background-position:top right;
-    background-repeat:no-repeat;
-}
 
 /*added for the hanlder of the div in the home page */
 .headerrow{
@@ -2875,6 +2841,7 @@ a.drop_down_usersettings_name{
 .listview_row_total, .listview_row_sigma {
 	font-weight: bold;
 	float: right;
+	padding-right:6px;
 }
 
 .listview_row_sigma {

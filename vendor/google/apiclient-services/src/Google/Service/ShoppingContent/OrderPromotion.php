@@ -22,11 +22,13 @@ class Google_Service_ShoppingContent_OrderPromotion extends Google_Collection
   protected $applicableItemsDataType = 'array';
   protected $appliedItemsType = 'Google_Service_ShoppingContent_OrderPromotionItem';
   protected $appliedItemsDataType = 'array';
+  public $endTime;
   public $funder;
   public $merchantPromotionId;
-  protected $pretaxValueType = 'Google_Service_ShoppingContent_Price';
-  protected $pretaxValueDataType = '';
+  protected $priceValueType = 'Google_Service_ShoppingContent_Price';
+  protected $priceValueDataType = '';
   public $shortTitle;
+  public $startTime;
   public $subtype;
   protected $taxValueType = 'Google_Service_ShoppingContent_Price';
   protected $taxValueDataType = '';
@@ -61,6 +63,14 @@ class Google_Service_ShoppingContent_OrderPromotion extends Google_Collection
   {
     return $this->appliedItems;
   }
+  public function setEndTime($endTime)
+  {
+    $this->endTime = $endTime;
+  }
+  public function getEndTime()
+  {
+    return $this->endTime;
+  }
   public function setFunder($funder)
   {
     $this->funder = $funder;
@@ -80,16 +90,16 @@ class Google_Service_ShoppingContent_OrderPromotion extends Google_Collection
   /**
    * @param Google_Service_ShoppingContent_Price
    */
-  public function setPretaxValue(Google_Service_ShoppingContent_Price $pretaxValue)
+  public function setPriceValue(Google_Service_ShoppingContent_Price $priceValue)
   {
-    $this->pretaxValue = $pretaxValue;
+    $this->priceValue = $priceValue;
   }
   /**
    * @return Google_Service_ShoppingContent_Price
    */
-  public function getPretaxValue()
+  public function getPriceValue()
   {
-    return $this->pretaxValue;
+    return $this->priceValue;
   }
   public function setShortTitle($shortTitle)
   {
@@ -98,6 +108,14 @@ class Google_Service_ShoppingContent_OrderPromotion extends Google_Collection
   public function getShortTitle()
   {
     return $this->shortTitle;
+  }
+  public function setStartTime($startTime)
+  {
+    $this->startTime = $startTime;
+  }
+  public function getStartTime()
+  {
+    return $this->startTime;
   }
   public function setSubtype($subtype)
   {

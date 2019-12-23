@@ -13,6 +13,7 @@ require_once 'include/Webservices/DescribeObject.php';
 class Webforms {
 
 	public $LBL_WEBFORMS='Webforms';
+	public $moduleIcon = array('library' => 'doctype', 'containerClass' => 'slds-icon_container slds-icon-doctype-gform', 'class' => 'slds-icon', 'icon'=>'gform');
 
 	// Cache to speed up describe information store
 	protected static $moduleDescribeCache = array();

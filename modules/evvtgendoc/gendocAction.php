@@ -67,6 +67,7 @@ if ($mergetemplate=='1') {
 			readfile('cache/wordtemplatedownload/'.$entityid.$filename);
 		}
 	} else {
+		require_once 'Smarty_setup.php';
 		$smarty = new vtigerCRM_Smarty();
 		$smarty->assign('APP', $app_strings);
 		$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');

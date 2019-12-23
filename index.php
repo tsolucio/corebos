@@ -21,6 +21,17 @@ if (version_compare(phpversion(), '5.4.0') < 0 || version_compare(phpversion(), 
 	die();
 }
 
+if (!is_file('config.inc.php')) {
+	header('Location: install.php');
+	exit();
+}
+
+require_once 'config.inc.php';
+if (!isset($dbconfig['db_hostname']) || $dbconfig['db_status'] == '_DB_STAT_') {
+	header('Location: install.php');
+	exit();
+}
+
 require_once 'include/utils/utils.php';
 
 global $currentModule;
@@ -35,16 +46,6 @@ if (isset($_REQUEST['view'])) {
 	coreBOS_Session::set('view', $view);
 }
 
-if (!is_file('config.inc.php')) {
-	header('Location: install.php');
-	exit();
-}
-
-require_once 'config.inc.php';
-if (!isset($dbconfig['db_hostname']) || $dbconfig['db_status']=='_DB_STAT_') {
-	header('Location: install.php');
-	exit();
-}
 
 require_once 'include/logging.php';
 require_once 'modules/Users/Users.php';
@@ -269,7 +270,7 @@ if (isset($action) && isset($module)) {
 	}
 
 	if ($action == 'UnifiedSearch') {
-		$currentModuleFile = 'modules/Home/'.$action.'.php';
+		$currentModuleFile = 'modules/Utilities/'.$action.'.php';
 	} else {
 		$currentModuleFile = 'modules/'.$module.'/'.$action.'.php';
 	}
@@ -450,7 +451,9 @@ if (!$skipSecurityCheck && $use_current_login) {
 	if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
 		$display = isPermitted($module, $now_action, $_REQUEST['record']);
 	} else {
-		if ($now_action=='EditView' || $now_action=='EventEditView' || $now_action=='Save') {
+		if ($now_action=='EditView' || $now_action=='EventEditView' || $now_action=='Save'
+			|| ($now_action=='DetailViewAjax' && isset($_REQUEST['ajxaction']) && $_REQUEST['ajxaction']=='WIDGETADDCOMMENT')
+		) {
 			$now_action = 'CreateView';
 		}
 		$display = isPermitted($module, $now_action);

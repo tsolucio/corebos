@@ -19,7 +19,6 @@ class Google_Service_ShoppingContent_OrderLineItemProduct extends Google_Collect
 {
   protected $collection_key = 'variantAttributes';
   public $brand;
-  public $channel;
   public $condition;
   public $contentLanguage;
   protected $feesType = 'Google_Service_ShoppingContent_OrderLineItemProductFee';
@@ -45,14 +44,6 @@ class Google_Service_ShoppingContent_OrderLineItemProduct extends Google_Collect
   public function getBrand()
   {
     return $this->brand;
-  }
-  public function setChannel($channel)
-  {
-    $this->channel = $channel;
-  }
-  public function getChannel()
-  {
-    return $this->channel;
   }
   public function setCondition($condition)
   {

@@ -110,6 +110,7 @@ var alert_arr = {
 	'LBL_DOES_NOT_END_WITH' : 'não termina com',
 	'DOES_NOT_START_WITH':'não começa com',
 	'DOES_NOT_END_WITH':'não termina com',
+	'Widget_Deleted_Sucessfully':'Widget deleted sucessfully',
 	'LESS_OR_EQUALS':'menor ou igual',
 	'GREATER_OR_EQUALS':'maior ou igual',
 

@@ -75,7 +75,7 @@ class smsFactor implements ISMSProvider {
 	}
 
 	public function query($messageid) {
-		$messageidSplit = split('--', $messageid);
+		$messageidSplit = explode('--', $messageid);
 		$clientMessageReference = trim($messageidSplit[0]);
 		$number = trim($messageidSplit[1]);
 		$response = $this->queryMessage($clientMessageReference);
@@ -94,7 +94,7 @@ class smsFactor implements ISMSProvider {
 
 	private function validEmail($email) {
 		$isValid = true;
-		$atIndex = strrpos($email, "@");
+		$atIndex = strrpos($email, '@');
 		if (is_bool($atIndex) && !$atIndex) {
 			$isValid = false;
 		} else {
@@ -120,10 +120,10 @@ class smsFactor implements ISMSProvider {
 			} elseif (preg_match('/\\.\\./', $domain)) {
 				// domain part has two consecutive dots
 				$isValid = false;
-			} elseif (!preg_match('/^(\\\\.|[A-Za-z0-9!#%&`_=\\/$\'*+?^{}|~.-])+$/', str_replace("\\\\", "", $local))) {
+			} elseif (!preg_match('/^(\\\\.|[A-Za-z0-9!#%&`_=\\/$\'*+?^{}|~.-])+$/', str_replace("\\\\", '', $local))) {
 				// character not valid in local part unless
 				// local part is quoted
-				if (!preg_match('/^"(\\\\"|[^"])+"$/', str_replace("\\\\", "", $local))) {
+				if (!preg_match('/^"(\\\\"|[^"])+"$/', str_replace("\\\\", '', $local))) {
 					$isValid = false;
 				}
 			}
@@ -178,13 +178,13 @@ class smsFactor implements ISMSProvider {
 	private function processSendMessageResult($response, $clientMessageReference, $tonumbers) {
 		$results = array();
 
-		$responseLines = split("\n", $response);
+		$responseLines = explode("\n", $response);
 
 		if (trim($responseLines[0]) === '#1#') {
 			//Successful transaction
-			$numberResults = split(",", $responseLines[1]);
+			$numberResults = explode(',', $responseLines[1]);
 			foreach ($numberResults as $numberResult) {
-				$numberResultSplit = split(":", $numberResult);
+				$numberResultSplit = explode(':', $numberResult);
 				$number = trim($numberResultSplit[0]);
 				$code = trim($numberResultSplit[1]);
 
@@ -227,13 +227,13 @@ class smsFactor implements ISMSProvider {
 	private function processQueryMessageResult($response, $number) {
 		$result = array();
 
-		$responseLines = split("\n", $response);
+		$responseLines = explode("\n", $response);
 
 		if (trim($responseLines[0]) === '#1#') {
 			//Successful transaction
-			$numberResults = split(",", $responseLines[1]);
+			$numberResults = explode(',', $responseLines[1]);
 			foreach ($numberResults as $numberResult) {
-				$numberResultSplit = split(":", $numberResult);
+				$numberResultSplit = explode(':', $numberResult);
 				$thisNumber = trim($numberResultSplit[0]);
 				$code = (int)trim($numberResultSplit[1]);
 

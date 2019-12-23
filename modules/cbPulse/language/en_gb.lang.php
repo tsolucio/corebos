@@ -11,7 +11,7 @@
 $mod_strings = array(
 	'cbpulse_no' => 'Pulse No',
 	'questionid' => 'Question ID',
-	'pactive' => 'pactive',
+	'pactive' => 'Active',
 	'sendmethod' => 'send method',
 	'schtypeid' => 'Type Id',
 	'schtime' => 'Time',

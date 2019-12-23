@@ -27,8 +27,8 @@ class Google_Service_Compute_Resource_InterconnectLocations extends Google_Servi
 {
   /**
    * Returns the details for the specified interconnect location. Gets a list of
-   * available interconnect locations by making a list() request.
-   * (interconnectLocations.get)
+   * available interconnect locations by making a list() request. (==
+   * suppress_warning http-rest-shadowed ==) (interconnectLocations.get)
    *
    * @param string $project Project ID for this request.
    * @param string $interconnectLocation Name of the interconnect location to
@@ -44,7 +44,8 @@ class Google_Service_Compute_Resource_InterconnectLocations extends Google_Servi
   }
   /**
    * Retrieves the list of interconnect locations available to the specified
-   * project. (interconnectLocations.listInterconnectLocations)
+   * project. (== suppress_warning http-rest-shadowed ==)
+   * (interconnectLocations.listInterconnectLocations)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.

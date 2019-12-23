@@ -17,19 +17,11 @@
 
 class Google_Service_ShoppingContent_InvoiceSummary extends Google_Collection
 {
-  protected $collection_key = 'promotionSummaries';
+  protected $collection_key = 'additionalChargeSummaries';
   protected $additionalChargeSummariesType = 'Google_Service_ShoppingContent_InvoiceSummaryAdditionalChargeSummary';
   protected $additionalChargeSummariesDataType = 'array';
-  protected $customerBalanceType = 'Google_Service_ShoppingContent_Amount';
-  protected $customerBalanceDataType = '';
-  protected $googleBalanceType = 'Google_Service_ShoppingContent_Amount';
-  protected $googleBalanceDataType = '';
-  protected $merchantBalanceType = 'Google_Service_ShoppingContent_Amount';
-  protected $merchantBalanceDataType = '';
   protected $productTotalType = 'Google_Service_ShoppingContent_Amount';
   protected $productTotalDataType = '';
-  protected $promotionSummariesType = 'Google_Service_ShoppingContent_Promotion';
-  protected $promotionSummariesDataType = 'array';
 
   /**
    * @param Google_Service_ShoppingContent_InvoiceSummaryAdditionalChargeSummary
@@ -48,48 +40,6 @@ class Google_Service_ShoppingContent_InvoiceSummary extends Google_Collection
   /**
    * @param Google_Service_ShoppingContent_Amount
    */
-  public function setCustomerBalance(Google_Service_ShoppingContent_Amount $customerBalance)
-  {
-    $this->customerBalance = $customerBalance;
-  }
-  /**
-   * @return Google_Service_ShoppingContent_Amount
-   */
-  public function getCustomerBalance()
-  {
-    return $this->customerBalance;
-  }
-  /**
-   * @param Google_Service_ShoppingContent_Amount
-   */
-  public function setGoogleBalance(Google_Service_ShoppingContent_Amount $googleBalance)
-  {
-    $this->googleBalance = $googleBalance;
-  }
-  /**
-   * @return Google_Service_ShoppingContent_Amount
-   */
-  public function getGoogleBalance()
-  {
-    return $this->googleBalance;
-  }
-  /**
-   * @param Google_Service_ShoppingContent_Amount
-   */
-  public function setMerchantBalance(Google_Service_ShoppingContent_Amount $merchantBalance)
-  {
-    $this->merchantBalance = $merchantBalance;
-  }
-  /**
-   * @return Google_Service_ShoppingContent_Amount
-   */
-  public function getMerchantBalance()
-  {
-    return $this->merchantBalance;
-  }
-  /**
-   * @param Google_Service_ShoppingContent_Amount
-   */
   public function setProductTotal(Google_Service_ShoppingContent_Amount $productTotal)
   {
     $this->productTotal = $productTotal;
@@ -100,19 +50,5 @@ class Google_Service_ShoppingContent_InvoiceSummary extends Google_Collection
   public function getProductTotal()
   {
     return $this->productTotal;
-  }
-  /**
-   * @param Google_Service_ShoppingContent_Promotion
-   */
-  public function setPromotionSummaries($promotionSummaries)
-  {
-    $this->promotionSummaries = $promotionSummaries;
-  }
-  /**
-   * @return Google_Service_ShoppingContent_Promotion
-   */
-  public function getPromotionSummaries()
-  {
-    return $this->promotionSummaries;
   }
 }

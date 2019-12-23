@@ -68,8 +68,18 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
         $doc = new DOMDocument();
         $doc->encoding = 'UTF-8'; // theoretically, the above has this covered
 
+        $options = 0;
+        if ($config->get('Core.AllowParseManyTags') && defined('LIBXML_PARSEHUGE')) {
+            $options |= LIBXML_PARSEHUGE;
+        }
+
         set_error_handler(array($this, 'muteErrorHandler'));
-        $doc->loadHTML($html);
+        // loadHTML() fails on PHP 5.3 when second parameter is given
+        if ($options) {
+            $doc->loadHTML($html, $options);
+        } else {
+            $doc->loadHTML($html);
+        }
         restore_error_handler();
 
         $body = $doc->getElementsByTagName('html')->item(0)-> // <html>

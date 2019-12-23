@@ -26,7 +26,8 @@
 class Google_Service_Compute_Resource_Projects extends Google_Service_Resource
 {
   /**
-   * Disable this project as a shared VPC host project. (projects.disableXpnHost)
+   * Disable this project as a shared VPC host project. (== suppress_warning http-
+   * rest-shadowed ==) (projects.disableXpnHost)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -52,8 +53,9 @@ class Google_Service_Compute_Resource_Projects extends Google_Service_Resource
     return $this->call('disableXpnHost', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Disable a serivce resource (a.k.a service project) associated with this host
-   * project. (projects.disableXpnResource)
+   * Disable a service resource (also known as service project) associated with
+   * this host project. (== suppress_warning http-rest-shadowed ==)
+   * (projects.disableXpnResource)
    *
    * @param string $project Project ID for this request.
    * @param Google_Service_Compute_ProjectsDisableXpnResourceRequest $postBody
@@ -80,7 +82,8 @@ class Google_Service_Compute_Resource_Projects extends Google_Service_Resource
     return $this->call('disableXpnResource', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Enable this project as a shared VPC host project. (projects.enableXpnHost)
+   * Enable this project as a shared VPC host project. (== suppress_warning http-
+   * rest-shadowed ==) (projects.enableXpnHost)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -108,7 +111,7 @@ class Google_Service_Compute_Resource_Projects extends Google_Service_Resource
   /**
    * Enable service resource (a.k.a service project) for a host project, so that
    * subnets in the host project can be used by instances in the service project.
-   * (projects.enableXpnResource)
+   * (== suppress_warning http-rest-shadowed ==) (projects.enableXpnResource)
    *
    * @param string $project Project ID for this request.
    * @param Google_Service_Compute_ProjectsEnableXpnResourceRequest $postBody
@@ -135,7 +138,8 @@ class Google_Service_Compute_Resource_Projects extends Google_Service_Resource
     return $this->call('enableXpnResource', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Returns the specified Project resource. (projects.get)
+   * Returns the specified Project resource. (== suppress_warning http-rest-
+   * shadowed ==) (projects.get)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -149,7 +153,8 @@ class Google_Service_Compute_Resource_Projects extends Google_Service_Resource
   }
   /**
    * Gets the shared VPC host project that this project links to. May be empty if
-   * no link exists. (projects.getXpnHost)
+   * no link exists. (== suppress_warning http-rest-shadowed ==)
+   * (projects.getXpnHost)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -163,7 +168,8 @@ class Google_Service_Compute_Resource_Projects extends Google_Service_Resource
   }
   /**
    * Gets service resources (a.k.a service project) associated with this host
-   * project. (projects.getXpnResources)
+   * project. (== suppress_warning http-rest-shadowed ==)
+   * (projects.getXpnResources)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -216,7 +222,7 @@ class Google_Service_Compute_Resource_Projects extends Google_Service_Resource
   }
   /**
    * Lists all shared VPC host projects visible to the user in an organization.
-   * (projects.listXpnHosts)
+   * (== suppress_warning http-rest-shadowed ==) (projects.listXpnHosts)
    *
    * @param string $project Project ID for this request.
    * @param Google_Service_Compute_ProjectsListXpnHostsRequest $postBody
@@ -269,7 +275,8 @@ class Google_Service_Compute_Resource_Projects extends Google_Service_Resource
     return $this->call('listXpnHosts', array($params), "Google_Service_Compute_XpnHostList");
   }
   /**
-   * Moves a persistent disk from one zone to another. (projects.moveDisk)
+   * Moves a persistent disk from one zone to another. (== suppress_warning http-
+   * rest-shadowed ==) (projects.moveDisk)
    *
    * @param string $project Project ID for this request.
    * @param Google_Service_Compute_DiskMoveRequest $postBody
@@ -297,7 +304,7 @@ class Google_Service_Compute_Resource_Projects extends Google_Service_Resource
   }
   /**
    * Moves an instance and its attached persistent disks from one zone to another.
-   * (projects.moveInstance)
+   * (== suppress_warning http-rest-shadowed ==) (projects.moveInstance)
    *
    * @param string $project Project ID for this request.
    * @param Google_Service_Compute_InstanceMoveRequest $postBody
@@ -325,7 +332,8 @@ class Google_Service_Compute_Resource_Projects extends Google_Service_Resource
   }
   /**
    * Sets metadata common to all instances within the specified project using the
-   * data included in the request. (projects.setCommonInstanceMetadata)
+   * data included in the request. (== suppress_warning http-rest-shadowed ==)
+   * (projects.setCommonInstanceMetadata)
    *
    * @param string $project Project ID for this request.
    * @param Google_Service_Compute_Metadata $postBody
@@ -354,7 +362,8 @@ class Google_Service_Compute_Resource_Projects extends Google_Service_Resource
   /**
    * Sets the default network tier of the project. The default network tier is
    * used when an address/forwardingRule/instance is created without specifying
-   * the network tier field. (projects.setDefaultNetworkTier)
+   * the network tier field. (== suppress_warning http-rest-shadowed ==)
+   * (projects.setDefaultNetworkTier)
    *
    * @param string $project Project ID for this request.
    * @param Google_Service_Compute_ProjectsSetDefaultNetworkTierRequest $postBody
@@ -383,7 +392,8 @@ class Google_Service_Compute_Resource_Projects extends Google_Service_Resource
   /**
    * Enables the usage export feature and sets the usage export bucket where
    * reports are stored. If you provide an empty request body using this method,
-   * the usage export feature will be disabled. (projects.setUsageExportBucket)
+   * the usage export feature will be disabled. (== suppress_warning http-rest-
+   * shadowed ==) (projects.setUsageExportBucket)
    *
    * @param string $project Project ID for this request.
    * @param Google_Service_Compute_UsageExportLocation $postBody

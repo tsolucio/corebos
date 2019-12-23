@@ -27,8 +27,8 @@ class Google_Service_Compute_Resource_SslPolicies extends Google_Service_Resourc
 {
   /**
    * Deletes the specified SSL policy. The SSL policy resource can be deleted only
-   * if it is not in use by any TargetHttpsProxy or TargetSslProxy resources.
-   * (sslPolicies.delete)
+   * if it is not in use by any TargetHttpsProxy or TargetSslProxy resources. (==
+   * suppress_warning http-rest-shadowed ==) (sslPolicies.delete)
    *
    * @param string $project Project ID for this request.
    * @param string $sslPolicy Name of the SSL policy to delete. The name must be
@@ -56,8 +56,8 @@ class Google_Service_Compute_Resource_SslPolicies extends Google_Service_Resourc
     return $this->call('delete', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Lists all of the ordered rules present in a single specified policy.
-   * (sslPolicies.get)
+   * Lists all of the ordered rules present in a single specified policy. (==
+   * suppress_warning http-rest-shadowed ==) (sslPolicies.get)
    *
    * @param string $project Project ID for this request.
    * @param string $sslPolicy Name of the SSL policy to update. The name must be
@@ -73,7 +73,8 @@ class Google_Service_Compute_Resource_SslPolicies extends Google_Service_Resourc
   }
   /**
    * Returns the specified SSL policy resource. Gets a list of available SSL
-   * policies by making a list() request. (sslPolicies.insert)
+   * policies by making a list() request. (== suppress_warning http-rest-shadowed
+   * ==) (sslPolicies.insert)
    *
    * @param string $project Project ID for this request.
    * @param Google_Service_Compute_SslPolicy $postBody
@@ -101,7 +102,8 @@ class Google_Service_Compute_Resource_SslPolicies extends Google_Service_Resourc
   }
   /**
    * Lists all the SSL policies that have been configured for the specified
-   * project. (sslPolicies.listSslPolicies)
+   * project. (== suppress_warning http-rest-shadowed ==)
+   * (sslPolicies.listSslPolicies)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -154,7 +156,8 @@ class Google_Service_Compute_Resource_SslPolicies extends Google_Service_Resourc
   }
   /**
    * Lists all features that can be specified in the SSL policy when using custom
-   * profile. (sslPolicies.listAvailableFeatures)
+   * profile. (== suppress_warning http-rest-shadowed ==)
+   * (sslPolicies.listAvailableFeatures)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -206,8 +209,8 @@ class Google_Service_Compute_Resource_SslPolicies extends Google_Service_Resourc
     return $this->call('listAvailableFeatures', array($params), "Google_Service_Compute_SslPoliciesListAvailableFeaturesResponse");
   }
   /**
-   * Patches the specified SSL policy with the data included in the request.
-   * (sslPolicies.patch)
+   * Patches the specified SSL policy with the data included in the request. (==
+   * suppress_warning http-rest-shadowed ==) (sslPolicies.patch)
    *
    * @param string $project Project ID for this request.
    * @param string $sslPolicy Name of the SSL policy to update. The name must be

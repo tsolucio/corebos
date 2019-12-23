@@ -418,6 +418,8 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 			} else {
 				$where="$table_name.$column_name like '". formatForSqlLike($search_string) ."'";
 			}
+		} else {
+			$where = "$search_field like '". formatForSqlLike($search_string) ."'";
 		}
 	}
 	if (false !== stripos($where, "like '%%'")) {
@@ -774,11 +776,11 @@ function getSearchURL($input) {
 	global $default_charset;
 	$urlString='';
 	if (isset($input['searchtype']) && $input['searchtype']=='advance') {
-		$advft_criteria = vtlib_purify($input['advft_criteria']);
+		$advft_criteria = isset($input['advft_criteria']) ? vtlib_purify($input['advft_criteria']) : '';
 		if (empty($advft_criteria)) {
 			return $urlString;
 		}
-		$advft_criteria_groups = vtlib_purify($input['advft_criteria_groups']);
+		$advft_criteria_groups = isset($input['advft_criteria_groups']) ? vtlib_purify($input['advft_criteria_groups']) : '';
 		$urlString .= '&advft_criteria='.urlencode($advft_criteria).'&advft_criteria_groups='.urlencode($advft_criteria_groups).'&searchtype=advance';
 	} elseif (isset($input['type']) && $input['type']=='dbrd') {
 		if (isset($input['leadsource'])) {
@@ -1060,16 +1062,16 @@ function getAdvancedSearchCriteriaList($advft_criteria, $advft_criteria_groups, 
 				continue;
 			}
 
-			$adv_filter_column = $column_condition["columnname"];
-			$adv_filter_comparator = $column_condition["comparator"];
-			$adv_filter_value = $column_condition["value"];
-			$adv_filter_column_condition = $column_condition["columncondition"];
-			$adv_filter_groupid = $column_condition["groupid"];
+			$adv_filter_column = $column_condition['columnname'];
+			$adv_filter_comparator = $column_condition['comparator'];
+			$adv_filter_value = $column_condition['value'];
+			$adv_filter_column_condition = $column_condition['columncondition'];
+			$adv_filter_groupid = $column_condition['groupid'];
 
-			$column_info = explode(":", $adv_filter_column);
+			$column_info = explode(':', $adv_filter_column);
 
 			$fieldName = $column_info[2];
-			$fieldObj = $moduleFields[$fieldName];
+			$fieldObj = isset($moduleFields[$fieldName]) ? $moduleFields[$fieldName] : false;
 			if (is_object($fieldObj)) {
 				$fieldType = $fieldObj->getFieldDataType();
 
@@ -1349,7 +1351,11 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 	} elseif ($fieldname == 'inventorymanager') {
 		$value = $tablename.'.'.$fieldname.getAdvancedSearchComparator($comparator, getUserId_Ol($value), $datatype);
 	} elseif (!empty($change_table_field[$fieldname])) { //Added to handle special cases
-		$value = $change_table_field[$fieldname].getAdvancedSearchComparator($comparator, $value, $datatype);
+		$val = $change_table_field[$fieldname].getAdvancedSearchComparator($comparator, $value, $datatype);
+		if (is_numeric($value) && in_array($fieldname, array('contactid', 'contact_id', 'potentialid', 'vendorid', 'vendor_id', 'campaignid'))) {
+			$val = "$val OR $tablename.$fieldname=$value";
+		}
+		$value = $val;
 	} elseif (!empty($change_table_field[$tablename.'.'.$fieldname])) { //Added to handle special cases
 		$tmp_value = '';
 		if ((($comparator=='e' || $comparator=='s' || $comparator=='c') && trim($value) == '') || (($comparator == 'n' || $comparator == 'k') && trim($value) != '')) {

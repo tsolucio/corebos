@@ -78,7 +78,7 @@ class VTEmailTask extends VTTask {
 		}
 	}
 	public function doTask(&$entity) {
-		global $logbg;
+		global $logbg,$adb;
 		$util = new VTWorkflowUtils();
 
 		$admin = $util->adminUser();
@@ -140,7 +140,6 @@ class VTEmailTask extends VTTask {
 		}
 		if (!empty($this->attfieldnames)) {
 			if (substr($this->attfieldnames, -24) == ' : (Documents) filename)') {
-				global $adb;
 				$this->attfieldnames = substr($this->attfieldnames, 1, strlen($this->attfieldnames)-25);
 				$rsfld = $adb->pquery(
 					'select 1 from vtiger_field
@@ -176,6 +175,7 @@ class VTEmailTask extends VTTask {
 		$content = $ct->render($entityCache, $entity->getId());
 		$logo = (strpos($this->content, '(general : (__VtigerMeta__) logo)')===false) ? '' : '1';
 		$qrScan = (strpos($this->content, '(general : (__VtigerMeta__) scanQRCode')===false) ? '' : '1';
+		$brScan = (strpos($this->content, '(general : (__VtigerMeta__) scanBarCode')===false) ? '' : '1';
 		$element['saved_toid'] = $to_email;
 		$element['parent_type'] = $module;
 		$element['parent_id'] = $entity->getId();
@@ -190,7 +190,7 @@ class VTEmailTask extends VTTask {
 		if ($crmid=='') {
 			list($wsid, $crmid) = explode('x', $emailid);
 		}
-		$rdo = send_mail($module, $to_email, $from_name, $from_email, $subject, $content, $cc, $bcc, $this->attachmentsinfo, $crmid, $logo, $replyto, $qrScan);
+		$rdo = send_mail($module, $to_email, $from_name, $from_email, $subject, $content, $cc, $bcc, $this->attachmentsinfo, $crmid, $logo, $replyto, $qrScan, $brScan);
 		$logbg->debug("VTEmailTask\nTo: $to_email\nFromName: $from_name\nFromEmail: $from_email\nCC: $cc\nBCC: $bcc\nResult: $rdo");
 		$util->revertUser();
 	}

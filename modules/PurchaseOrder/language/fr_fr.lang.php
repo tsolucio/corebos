@@ -156,5 +156,10 @@ $mod_strings = array(
 	'PurchaseOrder No' => 'Commande n°',
 'SINGLE_PurchaseOrder'=>'Cammande fournisseur',
 'PurchaseOrder ID'=>'Cammande fournisseur ID',
+
+'LBL_PARTIAL_PAYMENTS_INFO' => 'Partial Payments Information',
+'Amount Due'=>'Amount Due',
+'Amount Paid'=>'Amount Paid',
+'Total Amount'=>'Total Amount',
 );
 ?>

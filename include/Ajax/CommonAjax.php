@@ -7,17 +7,20 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
+$moduleFilepath='..';
 
-$moduleFilepath = 'modules/'.$_REQUEST['module'].'/'.$_REQUEST['file'].'.php';
-
-if (isset($_REQUEST['actionname'])) {
-	require_once 'vtlib/Vtiger/controllers/ActionController.php';
-	require_once 'include/utils/Request.php';
-	$moduleFilepath = 'modules/' . $_REQUEST['module'] . '/actions/'. $_REQUEST['actionname'].'.php';
-} elseif (file_exists($moduleFilepath) == false) {
-	$moduleFilepath = 'modules/Vtiger/'.$_REQUEST['file'].'.php';
+if (isset($_REQUEST['module'])) {
+	if (isset($_REQUEST['actionname'])) {
+		require_once 'vtlib/Vtiger/controllers/ActionController.php';
+		require_once 'include/utils/Request.php';
+		$moduleFilepath = 'modules/' . $_REQUEST['module'] . '/actions/'. $_REQUEST['actionname'].'.php';
+	} elseif (isset($_REQUEST['file'])) {
+		$moduleFilepath = 'modules/'.$_REQUEST['module'].'/'.$_REQUEST['file'].'.php';
+		if (file_exists($moduleFilepath) == false) {
+			$moduleFilepath = 'modules/Vtiger/'.$_REQUEST['file'].'.php';
+		}
+	}
 }
-
 checkFileAccessForInclusion($moduleFilepath);
 require_once $moduleFilepath;
 

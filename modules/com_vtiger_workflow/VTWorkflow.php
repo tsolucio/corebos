@@ -33,22 +33,45 @@ class Workflow {
 
 	// This is the list of vtiger_fields that are in the lists.
 	public $list_fields = array(
-			'Module' => array('com_vtiger_workflows'=>'module_name'),
-			'Description' => array('com_vtiger_workflows'=>'summary'),
-			'Purpose' => array('com_vtiger_workflows'=>'purpose'),
-			'Trigger' => array('com_vtiger_workflows'=> 'execution_condition'),
-			'Tools' => array('com_vtiger_workflows'=>'workflow_id'),
-		);
-
+		'Module' => array('com_vtiger_workflows'=>'module_name'),
+		'Description' => array('com_vtiger_workflows'=>'summary'),
+		'Purpose' => array('com_vtiger_workflows'=>'purpose'),
+		'Trigger' => array('com_vtiger_workflows'=> 'execution_condition'),
+		'Tools' => array('com_vtiger_workflows'=>'workflow_id'),
+	);
 	public $list_fields_name = array(
-			'Module'=> 'module_name',
-			'Description' => 'summary',
-			'Purpose' =>'purpose',
-			'Trigger' => 'execution_condition',
-			'Tools' => 'workflow_id',
-		);
+		'Module'=> 'module_name',
+		'Description' => 'summary',
+		'Purpose' =>'purpose',
+		'Trigger' => 'execution_condition',
+		'Tools' => 'workflow_id',
+	);
 
-	public $default_order_by = "module_name";
+	// Make the field link to detail view from list view (Fieldname)
+	public $list_link_field = 'summary';
+
+	// For Popup listview and UI type support
+	public $search_fields = array(
+		/* Format: Field Label => array(tablename => columnname) */
+		// tablename should not have prefix 'vtiger_'
+		'Description'=> array('com_vtiger_workflows' => 'summary'),
+		'Module' => array('com_vtiger_workflows' => 'module_name'),
+		'Purpose' => array('com_vtiger_workflows'=>'purpose'),
+	);
+	public $search_fields_name = array(
+		/* Format: Field Label => fieldname */
+		'Description'=> 'summary',
+		'Module' => 'module_name',
+		'Purpose' =>'purpose',
+	);
+
+	// For Popup window record selection
+	public $popup_fields = array('summary');
+
+	// For Alphabetical search
+	public $def_basicsearch_col = 'summary';
+
+	public $default_order_by = 'summary';
 	public $default_sort_order = 'DESC';
 
 	/**
@@ -67,6 +90,60 @@ class Workflow {
 		);
 		$log->debug('< getWorkListHeader');
 		return $header_array;
+	}
+
+	public function filterInactiveFields($module) {
+		return;
+	}
+
+	/**
+	 * Function to get sort order
+	 * return string $sorder    - sortorder string either 'ASC' or 'DESC'
+	 */
+	public function getSortOrder() {
+		global $log;
+		$cmodule = get_class($this);
+		$log->debug('> getSortOrder');
+		$sorder = strtoupper(GlobalVariable::getVariable('Application_ListView_Default_OrderDirection', $this->default_sort_order, $cmodule));
+		if (isset($_REQUEST['sorder'])) {
+			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
+		} elseif (!empty($_SESSION[$cmodule.'_Sort_Order'])) {
+			$sorder = $this->db->sql_escape_string($_SESSION[$cmodule.'_Sort_Order']);
+		}
+		$log->debug('< getSortOrder');
+		return $sorder;
+	}
+
+	/**
+	 * Function to get order by
+	 * return string $order_by    - fieldname(eg: 'accountname')
+	 */
+	public function getOrderBy() {
+		global $log;
+		$log->debug('> getOrderBy');
+		$cmodule = get_class($this);
+		$order_by = '';
+		if (GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0, $cmodule)) {
+			$order_by = GlobalVariable::getVariable('Application_ListView_Default_OrderField', $this->default_order_by, $cmodule);
+		}
+
+		if (isset($_REQUEST['order_by'])) {
+			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
+		} elseif (!empty($_SESSION[$cmodule.'_Order_By'])) {
+			$order_by = $this->db->sql_escape_string($_SESSION[$cmodule.'_Order_By']);
+		}
+		$log->debug('< getOrderBy');
+		return $order_by;
+	}
+
+	/**
+	 * Function to initialize the sortby fields array
+	 */
+	public function initSortByField($module) {
+		global $log;
+		$log->debug('> initSortByField '.$module);
+		$this->sortby_fields = array('summary','purpose','description','trigger');
+		$log->debug('< initSortByField');
 	}
 
 	public function setup($row) {
@@ -121,9 +198,16 @@ class Workflow {
 		$adb->pquery('INSERT INTO com_vtiger_workflow_activatedonce (entity_id, workflow_id) VALUES (?,?)', array($recordId, $this->id));
 	}
 
-	public function performTasks($entityData) {
+	public function performTasks(&$entityData, $context = array(), $webservice = false) {
 		global $adb,$logbg;
 		$logbg->debug('> PerformTasks for Workflow: '.$this->id);
+		$wflaunch = 0;
+		$wf = $adb->pquery('select execution_condition from com_vtiger_workflows where workflow_id=?', array($this->id));
+		if ($wf && $adb->num_rows($wf)>0) {
+			$wflaunch = $wf->fields['execution_condition'];
+		}
+		$entityData->WorkflowEvent = $wflaunch;
+		$entityData->WorkflowContext = $context;
 		$data = $entityData->getData();
 		$util = new VTWorkflowUtils();
 		$user = $util->adminUser();
@@ -135,7 +219,7 @@ class Workflow {
 		$tm = new VTTaskManager($adb);
 		$taskQueue = new VTTaskQueue($adb);
 		$tasks = $tm->getTasksForWorkflow($this->id);
-
+		$errortasks = array();
 		foreach ($tasks as $task) {
 			if (is_object($task) && $task->active) {
 				$logbg->debug($task->summary);
@@ -145,7 +229,7 @@ class Workflow {
 				} else {
 					$delay = 0;
 				}
-				if ($task->executeImmediately==true) {
+				if ($task->executeImmediately==true || $this->executionCondition==VTWorkflowManager::$MANUAL) {
 					// we permit update field delayed tasks even though some may not make sense
 					// for example a mathematical operation or a decision on a value of a field that
 					// may change during the delay. This is for some certain types of updates, generally
@@ -154,12 +238,32 @@ class Workflow {
 						$taskQueue->queueTask($task->id, $entityData->getId(), $delay);
 					} else {
 						if (empty($task->test) || $task->evaluate($entityCache, $entityData->getId())) {
-							$task->doTask($entityData);
+							try {
+								$task->startTask($entityData);
+								$task->doTask($entityData);
+								$task->endTask($entityData);
+							} catch (Exception $e) {
+								$errortasks[] = array(
+									'entitydata' => $entityData->data,
+									'entityid' => $entityData->getId(),
+									'taskid' => $task->id,
+									'error' => $e->getMessage(),
+								);
+							}
 						}
 					}
 				} else {
 					$taskQueue->queueTask($task->id, $entityData->getId(), $delay);
 				}
+			}
+		}
+		if (count($errortasks)>0) {
+			$logbg->fatal('> *** Workflow Tasks Errors:');
+			$logbg->fatal($errortasks);
+			$logbg->fatal('> **************************');
+			if ($webservice) {
+				require_once 'include/Webservices/WebServiceError.php';
+				throw new WebServiceException(WebServiceErrorCode::$WORKFLOW_TASK_FAILED, print_r($errortasks, true));
 			}
 		}
 	}
@@ -440,14 +544,8 @@ class Workflow {
 		return $nextTime;
 	}
 
-	/**
-	 * public function getWorkFlowJSON($userid, $page, $order_by = 'module_name', $sorder = 'DESC', $action_search = '')
-	 */
-	public function getWorkFlowJSON($modulename, $executioncondtionid, $page, $order_by = 'module_name', $sorder = 'DESC', $desc_search = '', $purpose_search = '') {
-		global $log, $adb;
-		$log->debug('> getWorkFlowJSON');
-
-		$workflow_execution_condtion_list = array(
+	public static function geti18nTriggerLabels() {
+		return array(
 			VTWorkflowManager::$ON_FIRST_SAVE => 'LBL_ONLY_ON_FIRST_SAVE',
 			VTWorkflowManager::$ONCE => 'LBL_UNTIL_FIRST_TIME_CONDITION_TRUE',
 			VTWorkflowManager::$ON_EVERY_SAVE => 'LBL_EVERYTIME_RECORD_SAVED',
@@ -457,6 +555,16 @@ class Workflow {
 			VTWorkflowManager::$MANUAL => 'LBL_MANUAL',
 			VTWorkflowManager::$RECORD_ACCESS_CONTROL => 'LBL_RECORD_ACCESS_CONTROL',
 		);
+	}
+
+	/**
+	 * public function getWorkFlowJSON($userid, $page, $order_by = 'module_name', $sorder = 'DESC', $action_search = '')
+	 */
+	public function getWorkFlowJSON($modulename, $executioncondtionid, $page, $order_by = 'module_name', $sorder = 'DESC', $desc_search = '', $purpose_search = '') {
+		global $log, $adb;
+		$log->debug('> getWorkFlowJSON');
+
+		$workflow_execution_condtion_list = self::geti18nTriggerLabels();
 
 		$where = ' where 1 ';
 		$params = array();
@@ -469,17 +577,17 @@ class Workflow {
 			array_push($params, $executioncondtionid);
 		}
 		if (!empty($desc_search)) {
-			$where .= " and summary like ? ";
-			array_push($params, "%" . $desc_search . "%");
+			$where .= ' and summary like ? ';
+			array_push($params, '%' . $desc_search . '%');
 		}
 		if (!empty($purpose_search)) {
-			$where .= " and purpose like ? ";
-			array_push($params, "%" . $purpose_search . "%");
+			$where .= ' and purpose like ? ';
+			array_push($params, '%' . $purpose_search . '%');
 		}
 		if ($sorder != '' && $order_by != '') {
 			$list_query = "Select * from com_vtiger_workflows $where order by $order_by $sorder";
 		} else {
-			$list_query = "Select * from com_vtiger_workflows $where order by ".$this->default_order_by." ".$this->default_sort_order;
+			$list_query = "Select * from com_vtiger_workflows $where order by ".$this->default_order_by.' '.$this->default_sort_order;
 		}
 		$rowsperpage = GlobalVariable::getVariable('Workflow_ListView_PageSize', 20);
 		$from = ($page-1)*$rowsperpage;
@@ -513,7 +621,7 @@ class Workflow {
 			$entries_list['next_page_url'] = 'index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=getJSON&page='.($islastpage ? $page : $page+1);
 		}
 		$entries_list['prev_page_url'] = 'index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=getJSON&page='.($page == 1 ? 1 : $page-1);
-		$edit_return_url = 'index.php?module=com_vtiger_workflow&action=workflowlist&parenttab=Settings';
+		$edit_return_url = 'index.php?module=com_vtiger_workflow&action=workflowlist';
 		$vtwfappObject= new VTWorkflowApplication('workflowlist', $edit_return_url);
 		while ($lgn = $adb->fetch_array($result)) {
 			$entry = array();

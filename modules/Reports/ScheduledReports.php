@@ -70,6 +70,18 @@ class VTScheduledReport extends Reports {
 				$this->scheduledTime		= $cachedInfo['scheduledTime'];
 				return true;
 			}
+		} else {
+			$this->isScheduled			= false;
+			$this->scheduledFormat		= '';
+			$this->scheduledInterval	= array(
+				'scheduletype' => '',
+				'time' => '',
+				'date' => '',
+				'day' => '',
+				'month' => '',
+			);
+			$this->scheduledRecipients	= array();
+			$this->scheduledTime		= '';
 		}
 		return false;
 	}

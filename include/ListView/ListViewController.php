@@ -349,9 +349,6 @@ class ListViewController {
 					} else {
 						$value = ' --';
 					}
-				} elseif ($field->getFieldDataType() == 'picklist') {
-					$value = getTranslatedString($value, $module);
-					$value = textlength_check($value);
 				} elseif ($field->getFieldDataType() == 'date' || $field->getFieldDataType() == 'datetime') {
 					if (!empty($value) && $value != '0000-00-00' && $value != '0000-00-00 00:00') {
 						$date = new DateTimeField($value);
@@ -390,7 +387,7 @@ class ListViewController {
 						} else {
 							$value = CurrencyField::convertToUserFormat($value);
 						}
-						$value = '<span style="float:right;padding-right:6px;">'.$value.'</span>';
+						$value = '<span style="float:right;padding-right:10px;">'.$value.'</span>';
 					}
 				} elseif ($field->getFieldDataType() == 'double') {
 					if ($value != '') {
@@ -523,12 +520,24 @@ class ListViewController {
 						}
 					}
 					$value = textlength_check(implode(', ', $content));
+				} elseif ($field->getUIType() == 3313 || $field->getUIType() == 3314) {
+					require_once 'modules/PickList/PickListUtils.php';
+					$modlist = explode(' |##| ', $value);
+					$modlist = array_map(
+						function ($m) {
+							return getTranslatedString($m, $m);
+						},
+						$modlist
+					);
+					$value = implode(', ', $modlist);
+				} elseif ($field->getFieldDataType() == 'picklist') {
+					$value = getTranslatedString($value, $module);
+					$value = textlength_check($value);
 				} elseif ($field->getFieldDataType() == 'skype') {
 					$value = ($value != '') ? "<a href='skype:$value?call'>".textlength_check($value).'</a>' : '';
 				} elseif ($field->getFieldDataType() == 'phone') {
 					if ($useAsterisk == 'true') {
-						$value = "<a href='javascript:;' onclick='startCall(&quot;$value&quot;, ".
-							"&quot;$recordId&quot;)'>".textlength_check($value).'</a>';
+						$value = "<a href='javascript:;' onclick='startCall(&quot;$value&quot;, &quot;$recordId&quot;)'>".textlength_check($value).'</a>';
 					} else {
 						$value = textlength_check($value);
 					}
@@ -766,7 +775,7 @@ class ListViewController {
 			}
 			$fieldLabel = $field->getFieldLabelKey();
 			if (in_array($field->getColumnName(), $focus->sortby_fields)) {
-				if ($orderBy == $field->getFieldName()) {
+				if ($orderBy == $field->getFieldName() || ($orderBy == 'title' && $field->getFieldName() == 'notes_title')) {
 					$temp_sorder = $change_sorder[$sorder];
 					$arrow = "&nbsp;<img src ='".vtiger_imageurl($arrow_gif[$sorder], $theme)."' border='0'>";
 				} else {
@@ -787,10 +796,18 @@ class ListViewController {
 						getTranslatedString('LBL_LIST_USER_NAME_ROLE', $module).$arrow.'</a>';
 				} else {
 					if ($this->isHeaderSortingEnabled()) {
+						if (isset($_SESSION['lvs'][$module]['start'])) {
+							if (is_array($_SESSION['lvs'][$module]['start'])) {
+								$sesStart = reset($_SESSION['lvs'][$module]['start']);
+							} else {
+								$sesStart = $_SESSION['lvs'][$module]['start'];
+							}
+						} else {
+							$sesStart = '';
+						}
 						$name = "<a href='javascript:;' onClick='getListViewEntries_js(\"".$module.
 							"\",\"parenttab=".$tabname.'&foldername=Default&order_by='.$field->getFieldName().'&start='.
-							(isset($_SESSION['lvs'][$module]['start']) ? $_SESSION['lvs'][$module]['start'] : '').
-							'&sorder='.$temp_sorder.$sort_qry."\");' class='listFormHeaderLinks'>".$label.$arrow.'</a>';
+							$sesStart.'&sorder='.$temp_sorder.$sort_qry."\");' class='listFormHeaderLinks'>".$label.$arrow.'</a>';
 					} else {
 						$name = $label;
 					}

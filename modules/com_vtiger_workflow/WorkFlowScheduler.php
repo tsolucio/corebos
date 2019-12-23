@@ -136,7 +136,7 @@ class WorkFlowScheduler {
 		@date_default_timezone_set($adminTimeZone);
 		$currentTimestamp = date("Y-m-d H:i:s");
 		@date_default_timezone_set($default_timezone);
-
+		$errortasks = array();
 		$scheduledWorkflows = $vtWorflowManager->getScheduledWorkflows($currentTimestamp);
 		foreach ($scheduledWorkflows as $workflow) {
 			$tm = new VTTaskManager($adb);
@@ -171,7 +171,18 @@ class WorkFlowScheduler {
 							}
 							if ($task->executeImmediately == true && $wfminutes==null) {
 								if (empty($task->test) || $task->evaluate($entityCache, $entityData->getId())) {
-									$task->doTask($entityData);
+									try {
+										$task->startTask($entityData);
+										$task->doTask($entityData);
+										$task->endTask($entityData);
+									} catch (Exception $e) {
+										$errortasks[] = array(
+											'entitydata' => $entityData->data,
+											'entityid' => $entityData->getId(),
+											'taskid' => $task->id,
+											'error' => $e->getMessage(),
+										);
+									}
 								}
 							} else {
 								$taskQueue->queueTask($task->id, $entityData->getId(), $delay);
@@ -181,6 +192,11 @@ class WorkFlowScheduler {
 				}
 			}
 			$vtWorflowManager->updateNexTriggerTime($workflow);
+		}
+		if (count($errortasks)>0) {
+			$logbg->fatal('> *** Workflow Scheduled Tasks Errors:');
+			$logbg->fatal($errortasks);
+			$logbg->fatal('> **************************');
 		}
 		$scheduledWorkflows = null;
 	}

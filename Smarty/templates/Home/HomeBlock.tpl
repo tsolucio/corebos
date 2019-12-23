@@ -169,6 +169,8 @@
 			<td align="left">{$HOME_STUFF}</td>
 		</tr>
 	</table>
+{elseif $HOME_STUFFTYPE eq 'ReportCharts' && isset($HOME_STUFF.error)}
+	{$HOME_STUFF.error}
 {elseif $HOME_STUFFTYPE eq "ReportCharts"}
 	<input type=hidden id=more_{$HOME_STUFFID} value="{$DASHDETAILS[$HOME_STUFFID].ReportId}"/>
 	<table border=0 cellspacing=0 cellpadding=5 width=100%>
@@ -189,11 +191,12 @@ window.doChart{$HOME_STUFFID} = function(charttype) {ldelim}
 		}]
 	};
 	var maxnum = Math.max.apply(Math, chartDataObject.datasets[0].data);
-	var maxgrph = Math.ceil(maxnum + (5 * maxnum / 100));
+	var maxgrph = Math.ceil(maxnum + (6 * maxnum / 100));
 	Chart.scaleService.updateScaleDefaults('linear', {
 		ticks: {
 			min: 0,
-			max: maxgrph
+			max: maxgrph,
+			precision: 0
 		}
 	});
 	window.schart{/literal}{$HOME_STUFFID}{literal} = new Chart(stuffchart,{

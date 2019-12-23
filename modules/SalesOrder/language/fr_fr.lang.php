@@ -158,6 +158,7 @@ $mod_strings = array (
 	'SalesOrder No' => 'Bon de commande n°',
 	'Recurring Invoice Information' => 'Facturation récurrente',
 	'RecurringInvoice' => 'Facturation Récurrente',
+	'Recommended frequency for RecurringInvoice is 12 hours' => 'Recommended frequency for Recurring Invoice is 12 hours',
 	'Enable Recurring' => 'Activer la récurrence',
 	'Frequency' => 'Fréquence',
 	'Start Period' => 'Début',
@@ -180,5 +181,10 @@ $mod_strings = array (
 	'4years' => '4 ans',
 	'5years' => '5 ans',
 	'SalesOrder ID' => 'Bon de commande ID',
+	'LBL_PARTIAL_PAYMENTS_INFO' => 'Partial Payments Information',
+	'Amount Due'=>'Amount Due',
+	'Amount Paid'=>'Amount Paid',
+	'Total Amount'=>'Total Amount',
+	'Invoiced' => 'Invoiced',
 );
 ?>

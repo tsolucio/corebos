@@ -35,6 +35,8 @@ class Google_Service_Sheets_ChartSpec extends Google_Model
   protected $orgChartDataType = '';
   protected $pieChartType = 'Google_Service_Sheets_PieChartSpec';
   protected $pieChartDataType = '';
+  protected $scorecardChartType = 'Google_Service_Sheets_ScorecardChartSpec';
+  protected $scorecardChartDataType = '';
   public $subtitle;
   protected $subtitleTextFormatType = 'Google_Service_Sheets_TextFormat';
   protected $subtitleTextFormatDataType = '';
@@ -179,6 +181,20 @@ class Google_Service_Sheets_ChartSpec extends Google_Model
   public function getPieChart()
   {
     return $this->pieChart;
+  }
+  /**
+   * @param Google_Service_Sheets_ScorecardChartSpec
+   */
+  public function setScorecardChart(Google_Service_Sheets_ScorecardChartSpec $scorecardChart)
+  {
+    $this->scorecardChart = $scorecardChart;
+  }
+  /**
+   * @return Google_Service_Sheets_ScorecardChartSpec
+   */
+  public function getScorecardChart()
+  {
+    return $this->scorecardChart;
   }
   public function setSubtitle($subtitle)
   {

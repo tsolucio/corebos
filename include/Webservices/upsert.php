@@ -13,15 +13,23 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-function vtws_upsert($elementType, $element, $searchOn, $user) {
+function vtws_upsert($elementType, $element, $searchOn, $updatedfields, $user) {
 	global $adb;
-	$searchFields = explode(",", $searchOn);
+	$searchFields = explode(',', $searchOn);
+	array_walk(
+		$searchFields,
+		function (&$val, $idx) {
+			$val = trim($val);
+		}
+	);
+	$fields = explode(',', $updatedfields);
+	array_walk(
+		$fields,
+		function (&$val, $idx) {
+			$val = trim($val);
+		}
+	);
 	$searchWithValues = [];
-
-	//remove id field if exists from input
-	if (isset($element['id'])) {
-		unset($element['id']);
-	}
 
 	//check if all the values that will we be used for comparison exist
 	foreach ($searchFields as $searchField) {
@@ -42,8 +50,11 @@ function vtws_upsert($elementType, $element, $searchOn, $user) {
 	//get only one record of many possible records
 	$query = $queryGenerator->getQuery(false, 1);
 	$result = $adb->pquery($query, []);
-
 	if ($adb->num_rows($result) == 0) {
+		//remove id field if exists from input
+		if (isset($element['id'])) {
+			unset($element['id']);
+		}
 		$record = vtws_create($elementType, $element, $user);
 	} else {
 		$meta = $queryGenerator->getMeta($elementType);
@@ -51,6 +62,12 @@ function vtws_upsert($elementType, $element, $searchOn, $user) {
 		$moduleTableIndexList = $meta->getEntityTableIndexList();
 		$baseTableIndex = $moduleTableIndexList[$baseTable];
 		$crmId = $adb->query_result($result, 0, $baseTableIndex);
+		//search for updatedfields
+		foreach (array_keys($element) as $key) {
+			if (!in_array($key, $fields)) {
+				unset($element[$key]);
+			}
+		}
 		$element['id'] = vtws_getEntityId($elementType).'x'.$crmId;
 		$record = vtws_revise($element, $user);
 	}

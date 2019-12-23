@@ -320,46 +320,6 @@ function convertArrayOfJsonObjectsToString(arrayofjson) {
 	return rdo;
 }
 
-function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid) {
-	var baseurl = 'index.php?action=GlobalVariableAjax&file=SearchGlobalVar&module=GlobalVariable';
-	if (gvuserid==undefined || gvuserid=='') {
-		gvuserid = gVTUserID;
-	} // current connected user
-	if (gvmodule==undefined || gvmodule=='') {
-		gvmodule = gVTModule;
-	} // current module
-	// Return a new promise avoiding jquery and prototype
-	return new Promise(function (resolve, reject) {
-		var url = baseurl + '&gvname='+gvname+'&gvuserid='+gvuserid+'&gvmodule='+gvmodule+'&gvdefault='+gvdefault+'&returnvalidation=0';
-		var req = new XMLHttpRequest();
-		req.open('GET', url, true);  // make call asynchronous
-
-		req.onload = function () {
-			// check the status
-			if (req.status == 200) {
-				// Resolve the promise with the response text
-				try {
-					JSON.parse(req.response);
-					resolve(req.response);
-				} catch (e) {
-					resolve('{"'+gvname+'":"'+gvdefault+'"}');
-				}
-			} else {
-				// Otherwise reject with the status text which will hopefully be a meaningful error
-				reject(new Error(req.statusText));
-			}
-		};
-
-		// Handle errors
-		req.onerror = function () {
-			reject(new Error('Network/Script Error'));
-		};
-
-		// Make the request
-		req.send();
-	});
-}
-
 function ExecuteFunctions(functiontocall, params) {
 	// params += `&${csrfMagicName}=${csrfMagicToken}`;
 	// return fetch(
@@ -400,5 +360,21 @@ function ExecuteFunctions(functiontocall, params) {
 		// Make the request
 		req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 		req.send(params);
+	});
+}
+
+function vtlib_toggleModule(module, action, type) {
+	if (typeof(type) == 'undefined') {
+		type = '';
+	}
+	var URL = 'index.php?module=Settings&action=SettingsAjax&file=ModuleManager&module_name=' + encodeURIComponent(module) + '&' + action + '=true&module_type=' + type;
+	VtigerJS_DialogBox.block();
+	jQuery.ajax({
+		method:'POST',
+		url:URL
+	}).done(function (response) {
+		VtigerJS_DialogBox.unblock();
+		// Reload the page to apply the effect of module setting
+		window.location.href = 'index.php?module=Settings&action=ModuleManager&parenttab=Settings';
 	});
 }

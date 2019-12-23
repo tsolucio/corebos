@@ -1,3 +1,4 @@
+**.DS_Store
 /cache
 /test
 /Smarty/templates_c
@@ -8,3 +9,6 @@
 /config-dev.inc.php
 /modules/Calendar4You/googlekeys
 /include/csrfmagic/csrf-secret.php
+/.vscode
+/.scannerwork
+/node_modules

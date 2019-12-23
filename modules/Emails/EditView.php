@@ -75,7 +75,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] !='') {
 		$Users_Default_Send_Email_Template = vtlib_purify($_REQUEST['templatename']);
 		$crmid = (int)vtlib_purify($_REQUEST['idlist']);
 	} else {
-		$Users_Default_Send_Email_Template = GlobalVariable::getVariable('Users_Default_Send_Email_Template', 0);
+		$Users_Default_Send_Email_Template = GlobalVariable::getVariable('Users_Default_Send_Email_Template', 0, $_REQUEST['pmodule']);
 	}
 	if (!empty($Users_Default_Send_Email_Template)) {
 		$emltpl = getTemplateDetails($Users_Default_Send_Email_Template, $crmid);

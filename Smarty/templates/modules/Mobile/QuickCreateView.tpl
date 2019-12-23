@@ -52,7 +52,7 @@
 					{foreach item=_FIELD from=$_FIELDS}
 							{if $_FIELD->displaytype() eq '1' && ($_FIELD->quickcreate() || $_FIELD->ismandatory() eq 'M')}
 								<div>
-									{if $_FIELD->uitype() eq '1' || $_FIELD->uitype() eq '2' || $_FIELD->uitype() eq '55' || $_FIELD->uitype() eq '255' || $_FIELD->uitype() eq '11'  || $_FIELD->uitype() eq '13'  || $_FIELD->uitype() eq '17' || $_FIELD->uitype() eq '72' || $_FIELD->uitype() eq '22'  || $_FIELD->uitype() eq '20'}
+									{if $_FIELD->uitype() eq '1' || $_FIELD->uitype() eq '2' || $_FIELD->uitype() eq '55' || $_FIELD->uitype() eq '255' || $_FIELD->uitype() eq '11'  || $_FIELD->uitype() eq '13'  || $_FIELD->uitype() eq '17' || $_FIELD->uitype() eq '72'}
 										<label for="{$_FIELD->label()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
 										<input  type="text" name="{$_FIELD->name()}" id="{$_FIELD->label()}" value="{$_FIELD->valueLabel()}" {if $_FIELD->ismandatory() eq 'M'}class="required"{/if} />
 									{/if}
@@ -189,7 +189,7 @@
 											</textarea>
 										</div>
 									{/if}
-									{if ($_FIELD->uitype() eq '10')||  ($_FIELD->uitype() eq '51')|| ($_FIELD->uitype() eq '68')}
+									{if ($_FIELD->uitype() eq '10')|| ($_FIELD->uitype() eq '68')}
 										<div class="ui-field-contain">
 											<div>
 											<label for="{$_FIELD->name()}_selector">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>

@@ -26,8 +26,8 @@
 class Google_Service_Compute_Resource_RegionBackendServices extends Google_Service_Resource
 {
   /**
-   * Deletes the specified regional BackendService resource.
-   * (regionBackendServices.delete)
+   * Deletes the specified regional BackendService resource. (== suppress_warning
+   * http-rest-shadowed ==) (regionBackendServices.delete)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.
@@ -55,8 +55,8 @@ class Google_Service_Compute_Resource_RegionBackendServices extends Google_Servi
     return $this->call('delete', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Returns the specified regional BackendService resource.
-   * (regionBackendServices.get)
+   * Returns the specified regional BackendService resource. (== suppress_warning
+   * http-rest-shadowed ==) (regionBackendServices.get)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.
@@ -72,7 +72,7 @@ class Google_Service_Compute_Resource_RegionBackendServices extends Google_Servi
   }
   /**
    * Gets the most recent health check results for this regional BackendService.
-   * (regionBackendServices.getHealth)
+   * (== suppress_warning http-rest-shadowed ==) (regionBackendServices.getHealth)
    *
    * @param string $project
    * @param string $region Name of the region scoping this request.
@@ -92,7 +92,8 @@ class Google_Service_Compute_Resource_RegionBackendServices extends Google_Servi
    * Creates a regional BackendService resource in the specified project using the
    * data included in the request. There are several restrictions and guidelines
    * to keep in mind when creating a regional backend service. Read  Restrictions
-   * and Guidelines for more information. (regionBackendServices.insert)
+   * and Guidelines for more information. (== suppress_warning http-rest-shadowed
+   * ==) (regionBackendServices.insert)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.
@@ -121,8 +122,8 @@ class Google_Service_Compute_Resource_RegionBackendServices extends Google_Servi
   }
   /**
    * Retrieves the list of regional BackendService resources available to the
-   * specified project in the given region.
-   * (regionBackendServices.listRegionBackendServices)
+   * specified project in the given region. (== suppress_warning http-rest-
+   * shadowed ==) (regionBackendServices.listRegionBackendServices)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.
@@ -179,7 +180,8 @@ class Google_Service_Compute_Resource_RegionBackendServices extends Google_Servi
    * in the request. There are several restrictions and guidelines to keep in mind
    * when updating a backend service. Read  Restrictions and Guidelines for more
    * information. This method supports PATCH semantics and uses the JSON merge
-   * patch format and processing rules. (regionBackendServices.patch)
+   * patch format and processing rules. (== suppress_warning http-rest-shadowed
+   * ==) (regionBackendServices.patch)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.
@@ -211,7 +213,8 @@ class Google_Service_Compute_Resource_RegionBackendServices extends Google_Servi
    * Updates the specified regional BackendService resource with the data included
    * in the request. There are several restrictions and guidelines to keep in mind
    * when updating a backend service. Read  Restrictions and Guidelines for more
-   * information. (regionBackendServices.update)
+   * information. (== suppress_warning http-rest-shadowed ==)
+   * (regionBackendServices.update)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.

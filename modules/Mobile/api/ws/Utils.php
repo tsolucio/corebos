@@ -117,7 +117,7 @@ class crmtogo_WS_Utils {
 		if (isset(self::$detectFieldnamesToResolveCache[$module])) {
 			return self::$detectFieldnamesToResolveCache[$module];
 		}
-		$resolveUITypes = array(10, 101, 117, 26, 357, 51, 52, 53, 57, 66, 68, 73, 76, 77, 78, 80);
+		$resolveUITypes = array(10, 101, 117, 26, 357, 52, 53, 68, 77);
 		$result = $db->pquery(
 			'SELECT fieldname FROM vtiger_field WHERE uitype IN('.generateQuestionMarks($resolveUITypes) .') AND tabid=?',
 			array($resolveUITypes, getTabid($module))

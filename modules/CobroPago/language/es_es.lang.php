@@ -106,6 +106,11 @@ $mod_strings = array(
 'ERR_ALREADY_PAID' => "Este cobro ya ha sido pagado.",
 'ERR_NO_ACCOUNT' => "Este cobro no tiene una cuenta asociada.",
 'ERR_NO_TOKEN' => "La cuenta asociada no tiene un token de pago.",
-);
 
+'Pay' => 'Pagar',
+'Invalid payment.' => 'Pago Inválido.',
+'Payment done.' => 'Pago Correcto.',
+'Redirecting to payment gateway...' => 'Enviando a pasarela de pago...',
+'Payment error.' => 'Error en Pago.',
+);
 ?>

@@ -1,0 +1,1 @@
+CKEDITOR.config.disableNativeSpellChecker = false;

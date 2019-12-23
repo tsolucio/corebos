@@ -157,6 +157,161 @@ class number2string {
 				'million' => 'MILLION',
 				'millions' => 'MILLIONS',
 			),
+			'nl' => array(
+				'coma' => 'punt',
+				'and' => 'en',
+				'one' => 'EEN',
+				'uni' => array(
+					'',
+					'EEN', 'TWEE', 'DRIE', 'VIER',
+					'VIJF', 'ZES', 'ZEVEN', 'ACHT',
+					'NEGEN', 'TIEN', 'ELF', 'TWAALF',
+					'DERTIEN', 'VEERTIEN', 'VIJFTIEN', 'ZESTIEN',
+					'ZEVENTIEN', 'ACHTTIEN', 'NEGENTIEN', 'TWINTIG',
+					'EENENTWINTIG', 'TWEEËNTWINTIG', 'DRIEËNTWINTIG', 'VIERENTWINTIG',
+					'VIJFENTWINTIG', 'ZESENTWINTIG', 'ZEVENENTWINTIG', 'ACHTENTWINTIG', 'NEGENENTWINTIG'
+				),
+				'dec' => array(
+					'', '', '',
+					'DERTIG', 'VEERTIG', 'VIJFTIG',
+					'ZESTIG', 'ZEVENTIG', 'TACHTIG', 'NEGENTIG'
+				),
+				'cent' => array(
+					'',
+					'HONDERD', 'TWEEHONDERD', 'DRIEHONDERD',
+					'VIERHONDERD', 'VIJFHONDERD', 'ZESHONDERD', 'ZEVENHONDERD',
+					'ACHTHONDERD', 'NEGENHONDERD'
+				),
+				'zero' => 'NUL',
+				'hundred' => 'HONDERD',
+				'thousand' => 'DUIZEND',
+				'million' => 'MILJOEN',
+				'millions' => 'MILJOEN',
+			),
+			'pt' => array(
+				'coma' => 'virgula',
+				'and' => '',
+				'one' => 'UM',
+				'uni' => array(
+					'',
+					'UM', 'DOIS', 'TRÊS', 'QUATRO',
+					'CINCO', 'SEIS', 'SETE', 'OITO',
+					'NOVE', 'DEZ', 'ONZE', 'DOZE',
+					'TREZE', 'QUATORZE', 'QUINZE', 'DEZESSEIS',
+					'DEZESSETE', 'DEZOITO', 'DEZENOVE', 'VINTE',
+					'VINTE UM', 'VINTE DOIS', 'VINTE TRES', 'VINTE QUATRO',
+					'VINTE CINCO', 'VINTE SEIS', 'VINTE SETE', 'VINTE OITO', 'VINTE NOVE'
+				),
+				'dec' => array(
+					'', '', '',
+					'TRINTA', 'QUARENTA', 'CINQUENTA',
+					'SESSENTA', 'SETENTA', 'OITENTA', 'NOVENTA'
+				),
+				'cent' => array(
+					'',
+					'CEM', 'DUZENTOS', 'TREZENTOS',
+					'QUATROCENTOS', 'QUINHENTOS', 'SEISSENTOS', 'SETECENTOS',
+					'OITOCENTOS', 'NOVECENTOS'
+				),
+				'zero' => 'ZERO',
+				'hundred' => 'CEM',
+				'thousand' => 'MIL',
+				'million' => 'MILHÃO',
+				'millions' => 'MILHÕES',
+			),
+			'it' => array(
+				'coma' => 'punto',
+				'and' => '',
+				'one' => 'UNO',
+				'uni' => array(
+					'',
+					'UNO', 'DUE', 'TRE', 'QUATTRO',
+					'CINQUE', 'SEI', 'SETTE', 'OTTO',
+					'NOVE', 'DIECI', 'UNDICI', 'DODICI',
+					'TREDICI', 'QUATTORDICI', 'QUINDICI', 'SEDICI',
+					'DICIASSETTE', 'DICIOTTO', 'DICIANOVE', 'VENTI', 'VENTUNO',  'VENTIDUE',
+					'VENTITRE', 'VENTIQUATTRO', 'VENTICINQUE', 'VENTISEI',
+					'VENTISETTE', 'VENTOTTO','VENTINOVE'
+				),
+				'dic' => array(
+					'', '', '',
+					'TRENTA', 'QUARANTA', 'CINQUANTA',
+					'SESSANTA', 'SETTANTA', 'OTTANTA', 'NOVANTA'
+				),
+				'centi' => array(
+					'',
+					'CENTO', 'DUECENTO', 'TRECENTO',
+					'QUATTROCENTO', 'CINQUECENTO', 'SEICENTO', 'SETTECENTO',
+					'OTTOCENTO', 'NOVECENTO'
+				),
+				'zero' => 'ZERO',
+				'hundred' => 'CENTINAIO',
+				'thousand' => 'MILLE',
+				'million' => 'MILIONE',
+				'millions' => 'MILIONI',
+			),
+			'fr' => array(
+				'coma' => 'point',
+				'and' => '',
+				'one' => 'UN',
+				'uni' => array(
+					'',
+					'UN', 'DEUX', 'TROIS', 'QUATRE',
+					'CINQ', 'SIX', 'SEPT', 'HUIT',
+					'NEUF', 'DIX', 'ONZE', 'DOUZE',
+					'TREIZE', 'QUATORZE', 'QUINZE', 'SEIZE',
+					'DIX-SEPT', 'DIX-HUIT', 'DIX-NEUF', 'VINGT',
+					'VINGT-ET-UN', 'VINGT-DEUX', 'VINGT-TROIS', 'VINGT-QUATRE',
+					'VINGT-CINQ', 'VINGT-SIX', 'VINGT-SEPT', 'VINGT-HUIT', 'VINGT-NEUF'
+				),
+				'dec' => array(
+					'', '', '',
+					'TRENTE', 'QUARANTE', 'CINQUANTE',
+					'SOIXANTE', 'SOIXANTE-DIX', 'QUATRE-VINGTS', 'QUATRE-VINGT-DIX'
+				),
+				'cent' => array(
+					'',
+					'CENT', 'DEUX-CENTS', 'TROIS-CENTS',
+					'QUATRE-CENTS', 'CINQ-CENTS', 'SIX-CENTS', 'SEPT-CENTS',
+					'HUIT-CENTS', 'NEUF-CENTS'
+				),
+				'zero' => 'ZERO',
+				'hundred' => 'CENT',
+				'thousand' => 'MILLE',
+				'million' => 'MILLION',
+				'millions' => 'MILLIONS',
+			),
+			'ro' => array(
+				'coma' => 'virgula',
+				'and' => 'si',
+				'one' => 'UNU',
+				'uni' => array(
+					'',
+					'UNA', 'DOUA', 'TREI', 'PATRU',
+					'CINCI', 'SASE', 'SAPTE', 'OPT',
+					'NOUA', 'ZECE', 'UNSPREZECE', 'DOISPREZECE',
+					'TREISPREZECE', 'PAISPREZECE', 'CINCISPREZECE', 'SAISPREZECE',
+					'SAPTESPREZECE', 'OPTSPREZECE', 'NOUASPREZECE', 'DOUAZECI',
+					'DOUAZECI SI UNA', 'DOUAZECISI DOUA', 'DOUAZECI SI TREI', 'DOUAZECI SI PATRU',
+					'DOUAZECI SI CINCI', 'DOUAZECI SI SASE', 'DOUAZECI SI SAPTE', 'DOUAZECI SI OPT', 'DOUAZECI SI NOUA'
+				),
+				'dec' => array(
+					'', '', '',
+					'TREIZECI', 'PATRUZECI', 'CINCIZECI',
+					'SAIZECI', 'SAPTEZECI', 'OPTZECI', 'NOUAZECI'
+				),
+				'cent' => array(
+					'',
+					'O SUTA', 'DOUA SUTE', 'TREI SUTE',
+					'PATRU SUTE', 'CINCI SUTE', 'SASE SUTE', 'SAPTE SUTE',
+					'OPT SUTE', 'NOUA SUTE'
+				),
+				'zero' => 'ZERO',
+				'hundred' => 'SUTA',
+				'thousand' => 'MIE',
+				'million' => 'MILION',
+				'millions' => 'MILIOANE',
+			),
 		);
 		return (isset($languages[$lang]) ? $languages[$lang] : $languages['en']);
 	}

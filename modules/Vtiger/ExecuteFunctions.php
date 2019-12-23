@@ -126,6 +126,12 @@ switch ($functiontocall) {
 		}
 		die();
 		break;
+	case 'getWeekendDates':
+		$startDate = vtlib_purify($_REQUEST['startFrom']);
+		$endDate = vtlib_purify($_REQUEST['endFrom']);
+		$format = isset($_REQUEST['dateFormat']) ? vtlib_purify($_REQUEST['dateFormat']) : 'Y-m-d';
+		$ret =  DateTimeField::getWeekendDates($startDate, $endDate, $format);
+		break;
 	case 'ValidationLoad':
 		$valmod = vtlib_purify($_REQUEST['valmodule']);
 		include_once 'modules/cbMap/processmap/Validations.php';
@@ -168,11 +174,13 @@ switch ($functiontocall) {
 	case 'updateBrowserTabSession':
 		$newssid = vtlib_purify($_REQUEST['newtabssid']);
 		$oldssid = vtlib_purify($_REQUEST['oldtabssid']);
-		foreach ($_SESSION as $key => $value) {
-			if (strpos($key, $oldssid) !== false && strpos($key, $oldssid.'__prev') === false) {
-				$newkey = str_replace($oldssid, $newssid, $key);
-				coreBOS_Session::set($newkey, $value);
-				coreBOS_Session::set($key, (isset($_SESSION[$key.'__prev']) ? $_SESSION[$key.'__prev'] : ''));
+		if (!empty($oldssid)) {
+			foreach ($_SESSION as $key => $value) {
+				if (strpos($key, $oldssid) !== false && strpos($key, $oldssid.'__prev') === false) {
+					$newkey = str_replace($oldssid, $newssid, $key);
+					coreBOS_Session::set($newkey, $value);
+					coreBOS_Session::set($key, (isset($_SESSION[$key.'__prev']) ? $_SESSION[$key.'__prev'] : ''));
+				}
 			}
 		}
 		$ret = '';
@@ -302,8 +310,13 @@ switch ($functiontocall) {
 		foreach ($ids as $crmid) {
 			$crmids[] = $wsid.$crmid;
 		}
+		if (empty($_REQUEST['ctx'])) {
+			$context = '[]';
+		} else {
+			$context = vtlib_purify($_REQUEST['ctx']);
+		}
 		try {
-			$ret = cbwsExecuteWorkflow($wfid, json_encode($crmids), $current_user);
+			$ret = cbwsExecuteWorkflowWithContext($wfid, json_encode($crmids), $context, $current_user);
 		} catch (Exception $e) {
 			$ret = false;
 		}

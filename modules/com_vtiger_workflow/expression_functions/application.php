@@ -84,4 +84,17 @@ function __cb_getcrudmode($arr) {
 		return 'edit';
 	}
 }
+
+function __cb_getfromcontext($arr) {
+	if (empty($arr[1]->WorkflowContext[$arr[0]])) {
+		return '';
+	} else {
+		return $arr[1]->WorkflowContext[$arr[0]];
+	}
+}
+
+function __cb_setfromcontext($arr) {
+	$arr[2]->WorkflowContext[$arr[0]] = $arr[1];
+	return $arr[1];
+}
 ?>

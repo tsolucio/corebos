@@ -9,6 +9,14 @@
  ********************************************************************************/
 
 $mod_strings = array(
+	// Translations for JS (please use the prefix JSLBL in key)
+	'JSLBL_Saving_And_Verifying' => 'Saving & Verifying',
+	'JSLBL_PASSWORD_CANNOT_BE_EMPTY'=>'Password cannot be empty',
+	'JSLBL_SERVERNAME_CANNOT_BE_EMPTY'=>'Server Name cannot be empty',
+	'JSLBL_USERNAME_CANNOT_BE_EMPTY'=>'User Name cannot be empty',
+	'JSLBL_ERROR' => 'Error',
+
+	// General translations
 	'SUCCESSFUL_REGISTRATION_TITLE' => 'Authentification Correct',
 	'SUCCESSFUL_REGISTRATION_MESSAGE' => 'You have correctly established authentification credentials with %s. You can now start using the functionality.',
 	'UNSUCCESSFUL_REGISTRATION_TITLE' => 'Authentification Incorrect',
@@ -46,6 +54,21 @@ $mod_strings = array(
 	'TransEmail_subtitle' => 'Substitutes outgoing email server',
 	'MktEmail_title' => 'Configuration for Marketing Email',
 	'MktEmail_subtitle' => 'Only for messages, programmed emails and specificaly programmed processes',
+	'LBL_CONFIG_INCOMING_MAIL_SERVER' => 'Configure Incoming Mail Server',
+	'LBL_SELECT_SERVER_TYPE' => 'Select Server Type',
+	'LBL_CONFIG_OUTGOING_MAIL_SERVER' => 'Configure Outgoing Mail Server',
+	'LBL_USER_SMTP_CONFIG' => 'User IMAP/SMTP Configuration',
+	'LBL_IC_SUCCESS_CONFIG_VALIDATION' => 'Incoming Mail Server Configuration Saved and Validated',
+	'LBL_IC_WARNING_CONFIG_VALIDATION' => 'Incoming Mail Server Configuration Not Validated',
+	'LBL_IC_CONFIG_VALIDATION_FAIL' => 'Incoming Mail Server Configuration Validation Failed',
+	'LBL_OG_SUCCESS_CONFIG_VALIDATION' => 'Outgoing Mail Server Configuration Saved and Validated',
+	'LBL_OG_WARNING_CONFIG_VALIDATION' => 'Outgoing Mail Server Configuration Not Validated',
+	'LBL_OG_CONFIG_VALIDATION_FAIL' => 'Outgoing Mail Server Configuration Validation Failed',
+	'LBL_ERROR' => 'Error',
+	'GMP Activation' => 'Google Measurement Protocol Activation',
+	'gmp_gid' => 'Google Universal analytics ID',
+	'gmp_gversion' => 'Measurement Protocol Version',
+	'gmp_deacterror' => 'Workflows that use this task exist!! Please eliminate them before deactivating.',
 	'Record Versioning' => 'Record Versioning',
 );
 ?>

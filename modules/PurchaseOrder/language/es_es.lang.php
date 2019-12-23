@@ -175,5 +175,10 @@ $mod_strings = array(
 
 'PurchaseOrder No'=>'No Orden Compra',
 'PurchaseOrder ID'=>'Id Orden Compra',
+
+'LBL_PARTIAL_PAYMENTS_INFO' => 'Información Pagos Parciales',
+'Amount Due'=>'Pendiente a Pagar',
+'Amount Paid'=>'Total Pagado',
+'Total Amount'=>'Total a Pagar',
 );
 ?>

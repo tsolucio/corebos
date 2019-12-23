@@ -26,7 +26,7 @@
 class Google_Service_Drive_Resource_Teamdrives extends Google_Service_Resource
 {
   /**
-   * Creates a new Team Drive. (teamdrives.create)
+   * Deprecated use drives.create instead. (teamdrives.create)
    *
    * @param string $requestId An ID, such as a random UUID, which uniquely
    * identifies this user's request for idempotent creation of a Team Drive. A
@@ -44,8 +44,7 @@ class Google_Service_Drive_Resource_Teamdrives extends Google_Service_Resource
     return $this->call('create', array($params), "Google_Service_Drive_TeamDrive");
   }
   /**
-   * Permanently deletes a Team Drive for which the user is an organizer. The Team
-   * Drive cannot contain any untrashed items. (teamdrives.delete)
+   * Deprecated use drives.delete instead. (teamdrives.delete)
    *
    * @param string $teamDriveId The ID of the Team Drive
    * @param array $optParams Optional parameters.
@@ -57,7 +56,7 @@ class Google_Service_Drive_Resource_Teamdrives extends Google_Service_Resource
     return $this->call('delete', array($params));
   }
   /**
-   * Gets a Team Drive's metadata by ID. (teamdrives.get)
+   * Deprecated use drives.get instead. (teamdrives.get)
    *
    * @param string $teamDriveId The ID of the Team Drive
    * @param array $optParams Optional parameters.
@@ -74,7 +73,7 @@ class Google_Service_Drive_Resource_Teamdrives extends Google_Service_Resource
     return $this->call('get', array($params), "Google_Service_Drive_TeamDrive");
   }
   /**
-   * Lists the user's Team Drives. (teamdrives.listTeamdrives)
+   * Deprecated use drives.list instead. (teamdrives.listTeamdrives)
    *
    * @param array $optParams Optional parameters.
    *
@@ -93,7 +92,7 @@ class Google_Service_Drive_Resource_Teamdrives extends Google_Service_Resource
     return $this->call('list', array($params), "Google_Service_Drive_TeamDriveList");
   }
   /**
-   * Updates a Team Drive's metadata (teamdrives.update)
+   * Deprecated use drives.update instead (teamdrives.update)
    *
    * @param string $teamDriveId The ID of the Team Drive
    * @param Google_Service_Drive_TeamDrive $postBody

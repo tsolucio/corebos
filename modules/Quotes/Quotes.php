@@ -420,5 +420,13 @@ class Quotes extends CRMEntity {
 		$log->debug('< create_export_query');
 		return $query;
 	}
+
+	public function getvtlib_open_popup_window_function($fieldname, $basemodule) {
+		if ($basemodule=='SalesOrder' && $fieldname=='quote_id') {
+			return 'selectQuote';
+		} else {
+			return 'vtlib_open_popup_window';
+		}
+	}
 }
 ?>

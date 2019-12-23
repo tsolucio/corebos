@@ -78,6 +78,14 @@ switch ($_REQUEST['_op']) {
 	case 'setconfigsendgrid':
 		include_once 'include/integrations/sendgrid/settings.php';
 		break;
+	case 'getconfigsmtp':
+	case 'setconfigsmtp':
+		include_once 'include/integrations/smtp/settings.php';
+		break;
+	case 'getconfiggmp':
+	case 'setconfiggmp':
+		include_once 'include/integrations/gmp/settings.php';
+		break;
 	case 'getconfigrecordversioning':
 	case 'setconfigrecordversioning':
 		include_once 'include/integrations/recordversioning/settings.php';

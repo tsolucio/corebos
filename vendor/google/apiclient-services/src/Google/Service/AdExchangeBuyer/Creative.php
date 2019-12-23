@@ -24,6 +24,8 @@ class Google_Service_AdExchangeBuyer_Creative extends Google_Collection
   public $hTMLSnippet;
   public $accountId;
   public $adChoicesDestinationUrl;
+  protected $adTechnologyProvidersType = 'Google_Service_AdExchangeBuyer_CreativeAdTechnologyProviders';
+  protected $adTechnologyProvidersDataType = '';
   public $advertiserId;
   public $advertiserName;
   public $agencyId;
@@ -79,6 +81,20 @@ class Google_Service_AdExchangeBuyer_Creative extends Google_Collection
   public function getAdChoicesDestinationUrl()
   {
     return $this->adChoicesDestinationUrl;
+  }
+  /**
+   * @param Google_Service_AdExchangeBuyer_CreativeAdTechnologyProviders
+   */
+  public function setAdTechnologyProviders(Google_Service_AdExchangeBuyer_CreativeAdTechnologyProviders $adTechnologyProviders)
+  {
+    $this->adTechnologyProviders = $adTechnologyProviders;
+  }
+  /**
+   * @return Google_Service_AdExchangeBuyer_CreativeAdTechnologyProviders
+   */
+  public function getAdTechnologyProviders()
+  {
+    return $this->adTechnologyProviders;
   }
   public function setAdvertiserId($advertiserId)
   {

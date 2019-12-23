@@ -13,7 +13,7 @@ require_once 'modules/Calendar4You/CalendarUtils.php';
 
 global $adb, $current_user, $default_timezone, $default_theme, $default_language;
 
-$currentModule = 'Calendar';
+$currentModule = 'cbCalendar';
 $controlmonths = GlobalVariable::getVariable('GoogleCalendarSync_BaseCreateMonths', '6');
 $controltime = strtotime('-'.$controlmonths.' month');
 $controldate = date('Y-m-d', $controltime);
@@ -72,9 +72,8 @@ if ($num_rows1 > 0) {
 						if ($adb->num_rows($gers)==0) { // we already have this one > it will be updated
 							if (!in_array($event->getId(), $repeatedid)) {
 								if ($event->getStatus()!='cancelled') {
-									$tab_type = 'Events';
 									$focus = CRMEntity::getInstance($currentModule);
-									$focus->column_fields['subject'] = $event->getSummary();
+																		$focus->column_fields['subject'] = $event->getSummary();
 									if (empty($focus->column_fields['subject'])) { // we don't create events with no subject
 										$repeatedid[]=$event->getId();
 										continue;
@@ -132,12 +131,14 @@ if ($num_rows1 > 0) {
 									$focus->column_fields['due_date'] = $user_date_end;
 									$focus->column_fields['time_start'] = $user_time_start;
 									$focus->column_fields['time_end'] = $user_time_end;
+																		$focus->column_fields['dtstart'] = $user_date_start.' '.$user_time_start;
+																		$focus->column_fields['dtend'] = $user_date_end.' '.$user_time_end;
 									$duration_time = $new_time_end_time - $new_time_start_time;
 									$duration_hour = floor($duration_time / 3600);
 									$duration_minutes = ($duration_time - ($duration_hour * 3600 )) / 60;
 									$focus->column_fields['duration_hours'] = $duration_hour;
 									$focus->column_fields['duration_minutes'] = $duration_minutes;
-								//}
+																		$focus->column_fields['linkmodemodule'] = $currentModule;
 									$focus->saveentity($currentModule);
 									$sql3 = 'insert into its4you_googlesync4you_events (crmid,geventid,userid,eventtype,lastmodified) values (?,?,?,?,?)';
 									$adb->pquery($sql3, array($focus->id, $event->getId(), $userid, $type, $event->getUpdated()));

@@ -66,7 +66,7 @@ function fetchEditCron(id) {
 function move_module(tabid, move) {
 	jQuery.ajax({
 		method: 'POST',
-		url: 'index.php?module=CronTasks&action=CronTasksAjax&file=CronSequence&parenttab=Settings&record='+tabid+'&move='+move
+		url: 'index.php?module=CronTasks&action=CronTasksAjax&file=CronSequence&record='+tabid+'&move='+move
 	}).done(function (response) {
 		document.getElementById('notifycontents').innerHTML=response;
 	});

@@ -26,6 +26,10 @@ if (!is_admin($current_user)) {
 
 	$menu_array = array();
 
+	$menu_array['CONFIGURATION']['location'] = 'index.php?module=Documents&action=BasicSettings&parenttab=Settings&formodule=Documents';
+	$menu_array['CONFIGURATION']['image_src']= 'themes/images/toggleactive.png';
+	$menu_array['CONFIGURATION']['desc'] = getTranslatedString('LBL_MASSUPLOAD_DESCRIPTION', $module);
+	$menu_array['CONFIGURATION']['label']= getTranslatedString('LBL_DOCUMENTS_MASSUPLOAD', $module);
 	$menu_array['LayoutEditor']['location'] = 'index.php?module=Settings&action=LayoutBlockList&parenttab=Settings&formodule='.$module;
 	$menu_array['LayoutEditor']['image_src'] = 'themes/images/orgshar.gif';
 	$menu_array['LayoutEditor']['desc'] = getTranslatedString('LBL_LAYOUT_EDITOR_DESCRIPTION');

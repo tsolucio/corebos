@@ -19,6 +19,7 @@ class Google_Service_CloudSearch_QueryInterpretation extends Google_Model
 {
   public $interpretationType;
   public $interpretedQuery;
+  public $reason;
 
   public function setInterpretationType($interpretationType)
   {
@@ -35,5 +36,13 @@ class Google_Service_CloudSearch_QueryInterpretation extends Google_Model
   public function getInterpretedQuery()
   {
     return $this->interpretedQuery;
+  }
+  public function setReason($reason)
+  {
+    $this->reason = $reason;
+  }
+  public function getReason()
+  {
+    return $this->reason;
   }
 }

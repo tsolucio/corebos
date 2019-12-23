@@ -546,6 +546,9 @@ function isPermitted($module, $actionname, $record_id = '') {
  */
 function _vtisPermitted($module, $actionname, $record_id = '') {
 	global $log, $adb, $current_user;
+	if ($module=='com_vtiger_workflow') {
+		$module='CronTasks';
+	}
 	$log->debug('> isPermitted '.$module.','.$actionname.','.$record_id);
 	if (strpos($record_id, 'x')>0) { // is webserviceid
 		list($void,$record_id) = explode('x', $record_id);
@@ -679,7 +682,13 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 		//Checking if the Record Owner is the Subordinate User
 		foreach ($userprivs->getSubordinateRoles2Users() as $userids) {
 			if (in_array($recOwnId, $userids)) {
-				$permission = 'yes';
+				if (($actionname!='EditView' && $actionname!='Delete' && $actionname!='DetailView' && $actionname!='CreateView')
+					|| (!$racbr || $racbr->hasDetailViewPermissionTo($actionname, true))
+				) {
+					$permission = 'yes';
+				} else {
+					$permission = 'no';
+				}
 				$log->debug('< isPermitted');
 				return $permission;
 			}

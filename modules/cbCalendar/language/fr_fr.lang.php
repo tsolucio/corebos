@@ -38,6 +38,7 @@ $mod_strings = array(
 	'No Time' => 'Toute la journée',
 	'Send Reminder' => 'Envoyer rappel',
 	'LBL_SENDREMINDER' => 'Envoyer rappel',
+	'Recommended frequency for SendReminder is 15 mins' => 'Recommended frequency for Send Reminder is 15 mins',
 	'Created Time' => 'Créé le',
 	'Modified Time' => 'Modifié le',
 	'Description' => 'Description ',

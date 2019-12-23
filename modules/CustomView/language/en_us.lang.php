@@ -246,6 +246,11 @@ following values "Call","Meeting" or "Task".',
 'not equal to'=>'Not equal to',
 'starts with'=>'Starts with',
 'ends with'=>'Ends with',
+'does not start with' => 'Does not start with',
+'does not end with' => 'Does not end with',
+'before' => 'Before',
+'after' => 'After',
+'between' => 'Between',
 //'Product Code'=>'Product Code',
 
 //Added for Role based Custom filters

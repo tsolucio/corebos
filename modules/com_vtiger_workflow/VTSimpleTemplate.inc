@@ -502,14 +502,16 @@ class VTSimpleTemplate {
 			}
 		}
 		if (substr($fieldname, 0, 10) == 'scanQRCode') {
-			$field = substr($fieldname, 16);
-			$fieldname = 'scanQRCode';
+			list($fieldname, $field) = explode('->', decode_html($fieldname));
 		}
 		if (substr($fieldname, 0, 16)=='inventorydetails') {
 			$inventoryspec = explode('_', $fieldname);
 			$format = isset($inventoryspec[1]) ? $inventoryspec[1] : 'html';
 			$field = isset($inventoryspec[2]) ? $inventoryspec[2] : '*';
 			$fieldname = 'inventorydetails';
+		}
+		if (substr($fieldname, 0, 11) == 'scanBarCode') {
+			list($fieldname, $codetype, $field) = explode('->', decode_html($fieldname));
 		}
 		switch ($fieldname) {
 			case 'date':
@@ -582,14 +584,46 @@ class VTSimpleTemplate {
 				$moduleName = $this->parent->getModuleName();
 				$focus = CRMEntity::getInstance($moduleName);
 				$focus->retrieve_entity_info($recordId, $moduleName);
-				$fieldValue = $focus->column_fields[$field];
-				$tfa = new TwoFactorAuth('emailwfqrcode');
-				$qrcodeprovider = $tfa->getQrCodeProvider();
-				$img = $qrcodeprovider->getQRCodeImage($fieldValue, 150);
-				$fname = uniqid('qrcode');
-				@unlink('cache/images/'.$fname.'.png');
-				file_put_contents('cache/images/'.$fname.'.png', $img);
-				return '<img src="cid:'.$fname.'" />';
+				if (!empty($focus->column_fields[$field])) {
+					$fieldValue = $focus->column_fields[$field];
+					$tfa = new TwoFactorAuth('emailwfqrcode');
+					$qrcodeprovider = $tfa->getQrCodeProvider();
+					$img = $qrcodeprovider->getQRCodeImage($fieldValue, 150);
+					$fname = uniqid('qrcode');
+					@unlink('cache/images/'.$fname.'.png');
+					file_put_contents('cache/images/'.$fname.'.png', $img);
+					return '<img src="cid:'.$fname.'" />';
+				} else {
+					return '';
+				}
+			case 'scanBarCode':
+				$wsId = $this->parent->getId();
+				$parts = explode('x', $wsId);
+				$recordId = $parts[1];
+				$moduleName = $this->parent->getModuleName();
+				$focus = CRMEntity::getInstance($moduleName);
+				$focus->retrieve_entity_info($recordId, $moduleName);
+				if (!empty($focus->column_fields[$field])) {
+					$tcpdf1dEncodingTypes = array('EAN8' => 'EAN8','EAN13' => 'EAN13');
+					$tcpdf2dEncodingTypes = array('QRCODE,L' => 'QRCODE,L','QRCODE,M' => 'QRCODE,M','QRCODE,Q' => 'QRCODE,Q','QRCODE,H' => 'QRCODE,H');
+					$fieldValue = $focus->column_fields[$field];
+
+					require_once 'include/tcpdf/tcpdf_barcodes_2d.php';
+					require_once 'include/tcpdf/tcpdf_barcodes_1d.php';
+
+					if (array_key_exists($codetype, $tcpdf1dEncodingTypes)) {
+						$barcodeobj = new TCPDFBarcode($fieldValue, $codetype);
+					} elseif (array_key_exists($codetype, $tcpdf2dEncodingTypes)) {
+						$barcodeobj = new TCPDF2DBarcode($fieldValue, $codetype);
+					}
+					$img = $barcodeobj->getBarcodePngData();
+					$fname = uniqid('barcode');
+					@unlink('cache/images/'.$fname.'.png');
+					file_put_contents('cache/images/'.$fname.'.png', $img);
+					return '<img src="cid:'.$fname.'" />';
+				} else {
+					return '';
+				}
 			default:
 				'';
 		}

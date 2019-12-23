@@ -13,32 +13,47 @@
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody>
 	<tr>
-		<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 		<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-		<br>
 		<div align=center>
-			{include file='SetMenu.tpl'}
-			<!-- DISPLAY -->
-			<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
+			<table border=0 cellspacing=0 cellpadding=0 width=100%>
 			<tr>
-				<td width="50" rowspan="2" valign="top" class="cblds-p_none"><img src="{'Cron.png'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_SCHEDULER}" width="48" height="48" border=0 title="{$MOD.LBL_SCHEDULER}"></td>
-				<td colspan="2" class="heading2" valign=bottom align="left"><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_SCHEDULER} </b></td>
-				<td rowspan=2 class="small" align=right>&nbsp;</td>
-			</tr>
-			<tr>
-				<td valign=top class="small cblds-p-v_none" align="left">{$MOD.LBL_SCHEDULER}</td>
-			</tr>
-			</table>
-			<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
-				<tr><td>&nbsp;</td></tr>
-			</table>
-			<table width="100%" border="0" cellpadding="5" cellspacing="0" class="listTableTopButtons">
-			<tr >
-				<td style="padding-left:5px;" class="big">{$MOD.LBL_SCHEDULER}</td>
-				<td align="right">&nbsp;</td>
-			</tr>
-			</table>
-
+			<td class="small " valign=top align=left>
+			<div class="slds-page-header__row">
+				<div class="slds-p-right_medium">
+					<div class="slds-media">
+						<div class="slds-media__figure">
+							<a class="hdrLink" href="index.php?action=index&module=CronTasks">
+							<span class="slds-icon_container" title="{$MOD.LBL_SCHEDULER}">
+							<img width="48" height="48" border="0" src="{'Cron.png'|@vtiger_imageurl:$THEME}"/>
+							<span class="slds-assistive-text">{$MOD.LBL_SCHEDULER}</span>
+							</span>
+							</a>
+						</div>
+						<div class="slds-media__body">
+							<div class="slds-page-header__name">
+								<div class="slds-page-header__name-title">
+									<span class="slds-page-header__title slds-truncate" title="{$MOD.LBL_SCHEDULER}">
+										<span class="slds-page-header__title slds-truncate" title="{$MOD.LBL_SCHEDULER}">
+											<b>
+											{if $ISADMIN}
+											<a href="index.php?module=Settings&action=index&parenttab=Settings">
+											{/if}
+											{'Settings'|@getTranslatedString:'Settings'}
+											{if $ISADMIN}
+											</a>
+											{/if}
+											&nbsp;>&nbsp;
+											<a href="index.php?module=CronTasks&action=index">{$MOD.LBL_SCHEDULER}</a>
+											</b>
+										</span>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br>
 			<div id="notifycontents">
 			{include file='modules/CronTasks/CronContents.tpl'}
 			</div>
@@ -52,10 +67,6 @@
 	</td>
 	</tr>
 	</table>
-	</td>
-	</tr>
-	</table>
-
 	</div>
 
 </td>

@@ -6,13 +6,11 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-/*********************************************************************************
- * $Header:  \modules\com_vtiger_workflow\language\hu_hu.lang.php - 9:46 2011.11.12. $
- * Description:  Defines the Hungarian language pack for the com_vtiger_workflow module vtiger 5.3.x
- * All Rights Reserved.
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
  ********************************************************************************/
 $mod_strings = array(
+	'com_vtiger_workflow' => 'Workflows',
+	'SINGLE_com_vtiger_workflow' => 'Workflow',
 	'VTEmailTask' => 'Email küldés',
 	'VTEntityMethodTask' => 'Egyedi funkció meghívása',
 	'VTCreateTodoTask' => 'Teendő létrehozása',
@@ -37,7 +35,7 @@ $mod_strings = array(
 	'LBL_WORKFLOW_LIST' => 'Automatikus Műveletek Listája',
 	'LBL_AVAILABLE_WORKLIST_LIST' => 'Elérhető Automatikus Műveletek',
 	'LBL_LOADING' => 'Betöltés...',
-	'LBL_REEVALCONDITIONS' => 'Evaluate conditions on execution',
+	'LBL_REEVALCONDITIONS' => 'Evaluate conditions on delayed execution',
 	'LBL_VALIDATION_ERROR' => 'Érvényesítési hiba',
 	'LBL_SELECT_OPTION_DOTDOTDOT' => 'Opció kiválasztása...',
 	'LBL_WORKFLOW_NOTE_CRON_CONFIG' => 'Megjegyzés: az Automatikus Műveletek időzítőt (cron script) be kell állítani.',
@@ -124,6 +122,10 @@ $mod_strings = array(
 	'WhatsappWorkflowTask' => 'Send WhatsApp Message',
 	'Many to Many Relation Task' => 'Many to Many Relation Task',
 	'Set Many to Many Relation' => 'Set Many to Many Relation',
+	'NotifyOnPortalTicketCreation' => 'Notify On Portal Ticket Creation',
+	'NotifyOnPortalTicketComment' => 'Notify On Portal Ticket Comment',
+	'NotifyOwnerOnTicketChange' => 'Notify Owner On Ticket Change',
+	'NotifyParentOnTicketChange' => 'Notify Parent On Ticket Change',
 	'LBL_HELPDESK_SUPPORT_EMAILID' => 'Ügyfélszolgálat E-mail címe',
 	'LBL_HELPDESK_SUPPORT_NAME' => 'Ügyfélszolgálat E-mail feladó neve',
 	'LBL_ORGANIZATION_LOGO' => 'Cég Logo',
@@ -158,7 +160,30 @@ $mod_strings = array(
 	'Calculate or Update forecast amount' => 'Calculate or Update forecast amount',
 	'LBL_METHOD_NAME' => 'Method Name',
 	'NO_METHOD_AVAILABLE' => 'No method is available for this module.',
+	'LBL_URLQUERY' => 'Query GMP',
+	'gmp_url_explanation' => 'Module will apply default config (GA ID, version & ClientId), you must place in the query only specific elemnts,like hit type (t). You can look for Google Measurement protocol parameters here: <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters">Measurement Protocol Parameter Reference</a>',
+	'url_query' => 'Query GMP',
+	'CBGMPTask' => 'Google Measurement Protocol',
+	'GenerateDocument'=>'Generate Document',
+	'Templates'=>'Templates',
 	'launchrelwf' => 'Launch workflows on related updates',
 	'LBL_WFPURPOSE' => 'Purpose',
+	'Run Webservice Workflow Task' => 'Run Web Service',
+	'RunWebserviceWorkflowTask' => 'Run Web Service',
+	'runwebserviceworkflowtask' => 'Run Web Service',
+	'Select IO Map' => 'Select IO Map',
+	'Select Config Map' => 'Select Configuration Map',
+	'CBPushNotificationTask' => 'Push Notification',
+	'pushnoturl' => 'Push Notification URL',
+	'CBQuestionMViewFunction' => 'Update Materialized View',
+	'LBL_WHERE_TO_SAVE' => 'Where to Save:',
+	'LBL_WHAT_TO_ENCODE' => 'What to Encode',
+	'Select Field to Save Encoded Value' => 'Select Field to Save Encoded Value',
+	'Select Field to Encode' => 'Select Field to Encode',
+	'Encoding Type' => 'Encoding Type',
+	'Select Encoding Type' => 'Select Encoding Type',
+	'Generate Image Code' => 'Generate Image Code',
+	'Generate Image Code Workflow Task' => 'Generate Image Code Workflow Task',
+	'GenerateImageCodeWorkflowTask' => 'Generate Image Code Workflow Task',
 );
 ?>

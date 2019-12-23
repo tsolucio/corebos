@@ -175,6 +175,75 @@ class cbQuestion extends CRMEntity {
 	 */
 	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 
+	public static function getSQL($qid, $params = array()) {
+		global $current_user, $adb, $log;
+		if (isPermitted('cbQuestion', 'DetailView', $qid) != 'yes') {
+			return array('type' => 'ERROR', 'answer' => 'LBL_PERMISSION');
+		}
+		include_once 'include/Webservices/Query.php';
+		include_once 'include/Webservices/VtigerModuleOperation.php';
+		$q = new cbQuestion();
+		$q->retrieve_entity_info($qid, 'cbQuestion');
+		if ($q->column_fields['sqlquery']=='1') {
+			$mod = CRMEntity::getInstance($q->column_fields['qmodule']);
+			$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.$mod->table_name.' ';
+			if (!empty($q->column_fields['qcondition'])) {
+				$conds = decode_html($q->column_fields['qcondition']);
+				foreach ($params as $param => $value) {
+					$conds = str_replace($param, $value, $conds);
+				}
+				$query .= $conds;
+			}
+			if (!empty($q->column_fields['groupby'])) {
+				$query .= ' GROUP BY '.$q->column_fields['groupby'];
+			}
+			if (!empty($q->column_fields['orderby'])) {
+				$query .= ' ORDER BY '.$q->column_fields['orderby'];
+			}
+			if (!empty($q->column_fields['qpagesize'])) {
+				$query .= ' LIMIT '.$q->column_fields['qpagesize'];
+			}
+			$query .= ';';
+		} else {
+			$chkrs = $adb->pquery(
+				'SELECT 1 FROM (select name from `vtiger_ws_entity` UNION select name from vtiger_tab) as tnames where name=?',
+				array($q->column_fields['qmodule'])
+			);
+			if (!$chkrs || $adb->num_rows($chkrs)==0) {
+				return getTranslatedString('SQLError', 'cbQuestion').': <b>Incorrect module name.</b>';
+			}
+			$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.decode_html($q->column_fields['qmodule']);
+			if (!empty($q->column_fields['qcondition'])) {
+				$conds = decode_html($q->column_fields['qcondition']);
+				foreach ($params as $param => $value) {
+					$conds = str_replace($param, $value, $conds);
+				}
+				$query .= ' WHERE '.$conds;
+			}
+			if (!empty($q->column_fields['groupby'])) {
+				$query .= ' GROUP BY '.$q->column_fields['groupby'];
+			}
+			if (!empty($q->column_fields['orderby'])) {
+				$query .= ' ORDER BY '.$q->column_fields['orderby'];
+			}
+			if (!empty($q->column_fields['qpagesize'])) {
+				$query .= ' LIMIT '.$q->column_fields['qpagesize'];
+			}
+			$query .= ';';
+			try {
+				$webserviceObject = VtigerWebserviceObject::fromQuery($adb, $query);
+				$handlerPath = $webserviceObject->getHandlerPath();
+				$handlerClass = $webserviceObject->getHandlerClass();
+				require_once $handlerPath;
+				$handler = new $handlerClass($webserviceObject, $current_user, $adb, $log);
+				$query = $handler->wsVTQL2SQL($query, $meta, $queryRelatedModules);
+			} catch (Exception $e) {
+				return getTranslatedString('SQLError', 'cbQuestion').': '.$query;
+			}
+		}
+		return $query;
+	}
+
 	public static function getAnswer($qid, $params = array()) {
 		global $current_user, $default_charset;
 		if (isPermitted('cbQuestion', 'DetailView', $qid) != 'yes') {
@@ -183,9 +252,9 @@ class cbQuestion extends CRMEntity {
 		include_once 'include/Webservices/Query.php';
 		$q = new cbQuestion();
 		$q->retrieve_entity_info($qid, 'cbQuestion');
-		$query = 'SELECT '.$q->column_fields['qcolumns'].' FROM '.$q->column_fields['qmodule'];
+		$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.decode_html($q->column_fields['qmodule']);
 		if (!empty($q->column_fields['qcondition'])) {
-			$conds = $q->column_fields['qcondition'];
+			$conds = decode_html($q->column_fields['qcondition']);
 			foreach ($params as $param => $value) {
 				$conds = str_replace($param, $value, $conds);
 			}
@@ -236,7 +305,7 @@ class cbQuestion extends CRMEntity {
 			$answer = $ans['answer'];
 			$module = $ans['module'];
 			$properties = json_decode($ans['properties']);
-			$columnLabels = $properties->columnlabels;
+			$columnLabels = empty($properties->columnlabels) ? array() : $properties->columnlabels;
 			$limit = GlobalVariable::getVariable('BusinessQuestion_TableAnswer_Limit', 2000);
 			$table .= '<table>';
 			$table .= '<tr>';
@@ -302,11 +371,12 @@ class cbQuestion extends CRMEntity {
 							}]
 						};
 						var maxnum = Math.max.apply(Math, chartDataObject.datasets[0].data);
-						var maxgrph = Math.ceil(maxnum + (5 * maxnum / 100));
+						var maxgrph = Math.ceil(maxnum + (6 * maxnum / 100));
 						Chart.scaleService.updateScaleDefaults("linear", {
 							ticks: {
 								min: 0,
-								max: maxgrph
+								max: maxgrph,
+								precision: 0
 							}
 						});
 						window.chartAns = new Chart(chartans,{

@@ -16,24 +16,27 @@ function set_return(product_id, product_name) {
 		window.opener.document.EditView.parent_id.value = product_id;
 	}
 }
+
 function set_return_specific(product_id, product_name) {
 	var fldName = getOpenerObj('potential_name');
 	var fldId = getOpenerObj('potential_id');
 	fldName.value = product_name;
 	fldId.value = product_id;
 }
+
 function add_data_to_relatedlist(entity_id, recordid) {
 	opener.document.location.href='index.php?module=Emails&action=updateRelations&destination_module=Contacts&entityid='+entity_id+'&parentid='+recordid;
 }
+
 function set_return_address(potential_id, potential_name, account_id, account_name, bill_street, ship_street, bill_city, ship_city, bill_state, ship_state, bill_code, ship_code, bill_country, ship_country, bill_pobox, ship_pobox) {
-	if (typeof(window.opener.document.EditView.potential_name) != 'undefined') {
-		window.opener.document.EditView.potential_name.value = potential_name;
+	if (typeof(window.opener.document.EditView.potential_id_display) != 'undefined') {
+		window.opener.document.EditView.potential_id_display.value = potential_name;
 	}
 	if (typeof(window.opener.document.EditView.potential_id) != 'undefined') {
 		window.opener.document.EditView.potential_id.value = potential_id;
 	}
-	if (typeof(window.opener.document.EditView.account_name) != 'undefined') {
-		window.opener.document.EditView.account_name.value = account_name;
+	if (typeof(window.opener.document.EditView.account_id_display) != 'undefined') {
+		window.opener.document.EditView.account_id_display.value = account_name;
 	}
 	if (typeof(window.opener.document.EditView.account_id) != 'undefined') {
 		window.opener.document.EditView.account_id.value = account_id;
@@ -75,20 +78,22 @@ function set_return_address(potential_id, potential_name, account_id, account_na
 		window.opener.document.EditView.ship_pobox.value = ship_pobox;
 	}
 }
+
 function set_return_contact(potential_id, potential_name, contact_id, contact_name) {
-	if (typeof(window.opener.document.EditView.potential_name) != 'undefined') {
-		window.opener.document.EditView.potential_name.value = potential_name;
+	if (typeof(window.opener.document.EditView.potential_id_display) != 'undefined') {
+		window.opener.document.EditView.potential_id_display.value = potential_name;
 	}
 	if (typeof(window.opener.document.EditView.potential_id) != 'undefined') {
 		window.opener.document.EditView.potential_id.value = potential_id;
 	}
-	if (typeof(window.opener.document.EditView.contact_name) != 'undefined') {
-		window.opener.document.EditView.contact_name.value = contact_name;
+	if (typeof(window.opener.document.EditView.contact_id_display) != 'undefined') {
+		window.opener.document.EditView.contact_id_display.value = contact_name;
 	}
 	if (typeof(window.opener.document.EditView.contact_id) != 'undefined') {
 		window.opener.document.EditView.contact_id.value = contact_id;
 	}
 }
+
 function set_return_todo(product_id, product_name) {
 	if (document.getElementById('from_link').value != '') {
 		window.opener.document.QcEditView.task_parent_name.value = product_name;

@@ -32,12 +32,12 @@ class CoreBOS_ActionController extends CoreBOS_Controller {
 	 */
 	public function __construct(Vtiger_Request $request) {
 		$this->request = $request;
-		$method = $request->get("method");
+		$method = $request->get('method');
 		if ($method != '') {
 			if (method_exists($this, $method)) {
 				$this->$method();
 			} else {
-				new Exception("Method does not Exist", 404);
+				new Exception('Method does not Exist', 404);
 			}
 		} else {
 			$this->main();

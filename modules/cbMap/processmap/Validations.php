@@ -145,7 +145,7 @@ class Validations extends processcbMap {
 		$v = new cbValidator($screen_values);
 		$validations = array();
 		foreach ($mapping['fields'] as $valfield => $vals) {
-			$fl = $adb->pquery('select fieldlabel from vtiger_field where tabid=? and columnname=?', array($tabid,$valfield));
+			$fl = $adb->pquery('select fieldlabel from vtiger_field where tabid=? and (columnname=? or fieldname=?)', array($tabid, $valfield, $valfield));
 			$fieldlabel = $adb->query_result($fl, 0, 0);
 			$i18n = getTranslatedString($fieldlabel, $mapping['origin']);
 			foreach ($vals as $val) {
@@ -410,9 +410,10 @@ class Validations extends processcbMap {
 			}
 		}
 		$record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : (isset($screen_values['record']) ? vtlib_purify($screen_values['record']) : 0));
-		$q = 'select cbmapid from vtiger_cbmap
+		$q = "select cbmapid
+			from vtiger_cbmap
 			inner join vtiger_crmentity on crmid=cbmapid
-			where deleted=0 and maptype=? and targetname=?';
+			where deleted=0 and maptype=? and targetname=? and mapname like '%_Validations'";
 		$rs = $adb->pquery($q, array('Validations', $module));
 		$focus = new cbMap();
 		$focus->mode = '';

@@ -26,8 +26,8 @@
 class Google_Service_Compute_Resource_AcceleratorTypes extends Google_Service_Resource
 {
   /**
-   * Retrieves an aggregated list of accelerator types.
-   * (acceleratorTypes.aggregatedList)
+   * Retrieves an aggregated list of accelerator types. (== suppress_warning http-
+   * rest-shadowed ==) (acceleratorTypes.aggregatedList)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -79,7 +79,8 @@ class Google_Service_Compute_Resource_AcceleratorTypes extends Google_Service_Re
     return $this->call('aggregatedList', array($params), "Google_Service_Compute_AcceleratorTypeAggregatedList");
   }
   /**
-   * Returns the specified accelerator type. (acceleratorTypes.get)
+   * Returns the specified accelerator type. (== suppress_warning http-rest-
+   * shadowed ==) (acceleratorTypes.get)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -94,7 +95,8 @@ class Google_Service_Compute_Resource_AcceleratorTypes extends Google_Service_Re
     return $this->call('get', array($params), "Google_Service_Compute_AcceleratorType");
   }
   /**
-   * Retrieves a list of accelerator types available to the specified project.
+   * Retrieves a list of accelerator types available to the specified project. (==
+   * suppress_warning http-rest-shadowed ==)
    * (acceleratorTypes.listAcceleratorTypes)
    *
    * @param string $project Project ID for this request.

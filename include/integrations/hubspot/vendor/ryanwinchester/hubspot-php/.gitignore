@@ -1,0 +1,13 @@
+# Directories
+/.idea
+/api
+/docs
+/public
+/output
+/vendor
+
+# Files
+composer.phar
+composer.lock
+test.php
+.phpintel

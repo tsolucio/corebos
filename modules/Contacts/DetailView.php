@@ -12,6 +12,7 @@ require_once 'Smarty_setup.php';
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
 $smarty = new vtigerCRM_Smarty();
+require_once 'modules/Vtiger/DetailView.php';
 
 if (useInternalMailer() == 1) {
 	$smarty->assign('INT_MAILER', 'true');
@@ -23,8 +24,6 @@ if (isPermitted('Emails', 'CreateView', '') == 'yes') {
 }
 
 $smarty->assign('CONTACT_PERMISSION', CheckFieldPermission('contact_id', 'Calendar'));
-
-require_once 'modules/Vtiger/DetailView.php';
 
 $smarty->display('DetailView.tpl');
 ?>

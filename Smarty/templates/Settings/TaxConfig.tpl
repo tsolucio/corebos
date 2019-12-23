@@ -58,9 +58,7 @@
 </table>
 
 <br>
-<table border=0 cellspacing=0 cellpadding=10 width=100%>
-	<tr>
-	<td style="border-right:1px dotted #CCCCCC;" valign="top">
+<div width=100%>
 		<!-- if EDIT_MODE is true then Textbox will be displayed else the value will be displayed-->
 		<form name="{$formname}" method="POST" action="index.php" onsubmit="VtigerJS_DialogBox.block();">
 		<input type="hidden" name="module" value="Settings">
@@ -99,9 +97,15 @@
 		{if $TAX_COUNT eq 0}
 			<tr><td>{$MOD.LBL_NO_TAXES_AVAILABLE}. {$MOD.LBL_PLEASE} {$MOD.LBL_ADD_TAX_BUTTON}.</td></tr>
 		{else}
-			<tr><th>{$MOD.LBL_TAXCLASS}</th><th>{$MOD.LBL_PERCENTAGE}</th><th>{$MOD.LBL_RETENTION}</th><th>{$MOD.LBL_ENABLED}</th></tr>
+			<tr>
+				<th>{$MOD.LBL_TAXCLASS}</th>
+				<th>{$MOD.LBL_PERCENTAGE}</th>
+				<th>{$MOD.LBL_RETENTION}</th>
+				<th>{$MOD.LBL_DEFAULT}</th>
+				<th>{$MOD.LBL_QUICK_CREATE}</th>
+				<th>{$MOD.LBL_ENABLED}</th>
+			</tr>
 			{foreach item=tax key=count from=$TAX_VALUES}
-
 				<!-- To set the color coding for the taxes which are active and inactive-->
 				{if $tax.deleted eq 0}
 					<tr><!-- set color to taxes which are active now-->
@@ -111,29 +115,43 @@
 
 				<!--assinging tax label name for javascript validation-->
 				{assign var=tax_label value="taxlabel_"|cat:$tax.taxname}
-				<td width=35% class="cellLabel small" >
+				<td class="cellLabel small" >
 					{if $EDIT_MODE eq 'true'}
-						{assign var = pstax value = $tax.taxlabel}
+						{assign var=pstax value=$tax.taxlabel}
 						<input name="{$pstax|bin2hex}" id={$tax_label} type="text" value="{$tax.taxlabel}" class="detailedViewTextBox small">
 					{else}
 						{$tax.taxlabel}
 					{/if}
 				</td>
-				<td width=45% class="cellText small">
+				<td class="cellText small">
 					{if $EDIT_MODE eq 'true'}
 						<input name="{$tax.taxname}" id="{$tax.taxname}" type="text" value="{$tax.percentage}" style="width:65%" class="detailedViewTextBox small">&nbsp;%
 					{else}
 						{$tax.percentage}&nbsp;%
 					{/if}
 				</td>
-				<td width=10% class="cellText small">
+				<td class="cellText small">
 					{if $EDIT_MODE eq 'true'}
 						<input name="{$tax.taxname}retention" id="{$tax.taxname}retention" type="checkbox" {if $tax.retention neq 0}checked{/if}>
 					{else}
 						{if $tax.retention eq 0}{$APP.LBL_NO}{else}{$APP.LBL_YES}{/if}
 					{/if}
 				</td>
-				<td width=10% class="cellText small">
+				<td class="cellText small">
+					{if $EDIT_MODE eq 'true'}
+						<input name="{$tax.taxname}default" id="{$tax.taxname}default" type="checkbox" {if $tax.default neq 0}checked{/if}>
+					{else}
+						{if $tax.default eq 0}{$APP.LBL_NO}{else}{$APP.LBL_YES}{/if}
+					{/if}
+				</td>
+				<td class="cellText small">
+					{if $EDIT_MODE eq 'true'}
+						<input name="{$tax.taxname}qcreate" id="{$tax.taxname}qcreate" type="checkbox" {if $tax.qcreate neq 0}checked{/if}>
+					{else}
+						{if $tax.qcreate eq 0}{$APP.LBL_NO}{else}{$APP.LBL_YES}{/if}
+					{/if}
+				</td>
+				<td class="cellText small">
 					{if $tax.deleted eq 0}
 						<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&disable=true&taxname={$tax.taxname}"><img src="{'enabled.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$MOD.LBL_ENABLED}" title="{$MOD.LBL_ENABLED}"></a>
 					{else}
@@ -149,10 +167,8 @@
 		</table>
 		<!-- Table to display the List of Product Tax values - Ends -->
 		</form>
-	</td>
 
 	<!-- Shipping Tax Config Table Starts Here -->
-	<td width="50%" valign="top">
 		<form name="{$shformname}" method="POST" action="index.php">
 		<input type="hidden" name="module" value="Settings">
 		<input type="hidden" name="action" value="">
@@ -233,10 +249,8 @@
 		</table>
 		<!-- Table to display the List of S&H Tax Values - Ends -->
 		</form>
-	</td>
 	<!-- Shipping Tax Ends Here -->
-</tr>
-</table>
+</div>
 
 <table border=0 cellspacing=0 cellpadding=5 width=100% >
 <tr>
@@ -256,8 +270,13 @@
 </tbody>
 </table>
 <script>
-var tax_labelarr = {ldelim}SAVE_BUTTON:'{$APP.LBL_SAVE_BUTTON_LABEL}',
- CANCEL_BUTTON:'{$APP.LBL_CANCEL_BUTTON_LABEL}',
- TAX_NAME:'{$APP.LBL_TAX_NAME}',
- TAX_VALUE:'{$APP.LBL_TAX_VALUE}'{rdelim};
+var tax_labelarr = {ldelim}
+	SAVE_BUTTON:'{$APP.LBL_SAVE_BUTTON_LABEL}',
+	CANCEL_BUTTON:'{$APP.LBL_CANCEL_BUTTON_LABEL}',
+	TAX_NAME:'{$APP.LBL_TAX_NAME}',
+	TAX_VALUE:'{$APP.LBL_TAX_VALUE}',
+	TAX_RETENTION:'{$MOD.LBL_RETENTION}',
+	TAX_DEFAULT:'{$MOD.LBL_DEFAULT}',
+	TAX_QCREATE:'{$MOD.LBL_QUICK_CREATE}',
+{rdelim};
 </script>

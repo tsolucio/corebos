@@ -46,12 +46,15 @@ function set_return_formname_specific(formname, product_id, product_name) {
 	window.opener.document.EditView1.product_id.value = product_id;
 }
 
-function set_return_inventory(product_id, product_name, unitprice, taxstr, curr_row, desc) {
+function set_return_inventory(product_id, product_name, unitprice, taxstr, curr_row, desc, dto) {
 	window.opener.document.EditView.elements['productName'+curr_row].value = product_name;
 	window.opener.document.EditView.elements['hdnProductId'+curr_row].value = product_id;
 	window.opener.document.EditView.elements['listPrice'+curr_row].value = unitprice;
 	window.opener.document.EditView.elements['comment'+curr_row].value = desc;
-
+	if (dto!=0) {
+		window.opener.document.EditView.elements['discount'+curr_row][1].checked = true;
+		window.opener.document.EditView.elements['discount_percentage'+curr_row].value = dto;
+	}
 	// Apply decimal round-off to value
 	if (!isNaN(parseFloat(unitprice))) {
 		unitprice = roundPriceValue(unitprice);
@@ -92,7 +95,8 @@ function InventorySelectAllServices(mod, z, image_pth) {
 				var taxstring = prod_array['taxstring'];
 				var desc = prod_array['desc'];
 				var row_id = prod_array['rowid'];
-				set_return_inventory(prod_id, prod_name, unit_price, taxstring, parseInt(row_id), desc);
+				var dto = prod_array['dto'];
+				set_return_inventory(prod_id, prod_name, unit_price, taxstring, parseInt(row_id), desc, dto);
 				y=1;
 			} else {
 				alert(alert_arr.SELECT);
@@ -110,12 +114,13 @@ function InventorySelectAllServices(mod, z, image_pth) {
 					var unit_price = prod_array['unitprice'];
 					var taxstring = prod_array['taxstring'];
 					var desc = prod_array['desc'];
+					var dto = prod_array['dto'];
 					if (y>0) {
 						var row_id = window.opener.fnAddServiceRow(mod, image_pth);
 					} else {
 						var row_id = prod_array['rowid'];
 					}
-					set_return_inventory(prod_id, prod_name, unit_price, taxstring, parseInt(row_id), desc);
+					set_return_inventory(prod_id, prod_name, unit_price, taxstring, parseInt(row_id), desc, dto);
 					y=y+1;
 				}
 			}
@@ -175,7 +180,10 @@ function fnAddServiceRow(module, image_path) {
 
 	var tableName = document.getElementById('proTab');
 	var prev = tableName.rows.length;
-	var count = eval(prev)-1;//As the table has two headers, we should reduce the count
+	var pdoRows = document.getElementById('proTab').querySelectorAll('[id^="row"]');
+	var iPrevRowId = pdoRows.length;
+	var iPrevRowIndex = pdoRows[iPrevRowId-1].rowIndex;
+	var count = pdoRows.length+1;
 	var row = tableName.insertRow(prev);
 	row.id = 'row'+count;
 	row.style.verticalAlign = 'top';
@@ -189,20 +197,13 @@ function fnAddServiceRow(module, image_path) {
 	var colseven = row.insertCell(6);
 
 	/* Product Re-Ordering Feature Code Addition Starts */
-	iMax = tableName.rows.length;
-	for (iCount=1; iCount<=iMax-3; iCount++) {
-		if (document.getElementById('row'+iCount) && document.getElementById('row'+iCount).style.display != 'none') {
-			iPrevRowIndex = iCount;
-		}
-	}
-	iPrevCount = eval(iPrevRowIndex);
-	var oPrevRow = tableName.rows[iPrevRowIndex+1];
+	var iPrevCount = iPrevRowId;
+	var oPrevRow = tableName.rows[iPrevRowIndex];
 	var delete_row_count=count;
 	/* Product Re-Ordering Feature Code Addition ends */
 
 	//Delete link
 	colone.className = 'crmTableRow small';
-	colone.id = row.id+'_col1';
 	colone.innerHTML='<img src="themes/softed/images/delete.gif" border="0" onclick="deleteRow(\''+module+'\','+count+',\''+image_path+'\')" style="cursor:pointer;" title="'+alert_arr.LBL_DELETE_EMAIL+'"><input id="deleted'+count+'" name="deleted'+count+'" type="hidden" value="0"><br/><br/>&nbsp;<a href="javascript:moveUpDown(\'UP\',\''+module+'\','+count+')" title="'+alert_arr.MoveUp+'"><img src="themes/images/up_layout.gif" border="0"></a>';
 	/* Product Re-Ordering Feature Code Addition Starts */
 	if (iPrevCount != 1) {
@@ -216,7 +217,7 @@ function fnAddServiceRow(module, image_path) {
 	coltwo.className = 'crmTableRow small';
 	coltwo.innerHTML= '<table border="0" cellpadding="1" cellspacing="0" width="100%"><tr><td class="small"><div class="slds-combobox_container slds-has-inline-listbox cbds-product-search" style="width:70%;display:inline-block">'+
 					'<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-combobox-lookup" aria-expanded="false" aria-haspopup="listbox" role="combobox">'+
-					'<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none"><input id="productName'+count+'" class="slds-input slds-combobox__input '+
+					'<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none"><input id="productName'+count+'" name="productName'+count+'" class="slds-input slds-combobox__input '+
 					'cbds-inventoryline__input--name" aria-autocomplete="list" aria-controls="listbox-unique-id" autocomplete="off" role="textbox" placeholder="'+inventoryi18n.typetosearch_prodser+'" value="" '+
 					'type="text" style="box-shadow: none;"></div></div></div>'+
 					'&nbsp;<img id="searchIcon'+count+'" title="'+alert_arr.Services+'" src="themes/images/services.gif" style="cursor: pointer;" onclick="servicePickList(this,\''+module+'\','+count+')" align="absmiddle">'+

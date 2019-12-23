@@ -1169,7 +1169,6 @@ ul li{
 }
 
 #locateMap{
-	width:120px;
 	background-color:#CCCCCC;
 	border:1px solid #DDDDDD;
 	padding-top:5px;
@@ -2047,6 +2046,7 @@ textarea {
 	padding:5px;
 	position:absolute;
 	background-color:#FFFFFF;
+	z-index: 100;
 	display:none;
 }
 
@@ -2352,24 +2352,6 @@ a.drop_downnew_parent{
 	padding-right:10px;
 	padding-top:2px;
 	padding-bottom:2px;
-}
-
-.winmarkModulesusr{
-	background-image:url(../images/windowmarkModulesusr.jpg);
-	background-position:top right;
-	background-repeat:no-repeat;
-}
-
-.winmarkRSS{
-	background-image:url(../images/windowmarkRSS.jpg);
-	background-position:top right;
-	background-repeat:no-repeat;
-}
-
-.winmarkDashboardusr{
-	background-image:url(../images/windowmarkDashboardusr.jpg);
-	background-position:top right;
-	background-repeat:no-repeat;
 }
 
 .groupname{
@@ -3032,6 +3014,7 @@ a.allMnu:Hover{
 .listview_row_total, .listview_row_sigma {
 	font-weight: bold;
 	float: right;
+	padding-right:6px;
 }
 
 .listview_row_sigma {

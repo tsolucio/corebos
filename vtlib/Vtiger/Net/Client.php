@@ -61,6 +61,17 @@ class Vtiger_Net_Client {
 	}
 
 	/**
+	 * Set File Upload
+	 * @param string fieldName name of file-upload field
+	 * @param string|resource|array  filename full name of local file, pointer to open file or an array of files
+	 * @param string sendFilename filename to send in the request
+	 * @param string contentType content-type of file being upload
+	 */
+	public function setFileUpload($fieldName, $filename, $sendFilename = null, $contentType = null) {
+		$this->client->addUpload($fieldName, $filename, $sendFilename, $contentType);
+	}
+
+	/**
 	 * Perform a GET request
 	 * @param Map key-value pair or false
 	 * @param Integer timeout value

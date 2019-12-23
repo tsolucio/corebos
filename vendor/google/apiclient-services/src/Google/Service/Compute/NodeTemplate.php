@@ -28,6 +28,8 @@ class Google_Service_Compute_NodeTemplate extends Google_Model
   protected $nodeTypeFlexibilityDataType = '';
   public $region;
   public $selfLink;
+  protected $serverBindingType = 'Google_Service_Compute_ServerBinding';
+  protected $serverBindingDataType = '';
   public $status;
   public $statusMessage;
 
@@ -116,6 +118,20 @@ class Google_Service_Compute_NodeTemplate extends Google_Model
   public function getSelfLink()
   {
     return $this->selfLink;
+  }
+  /**
+   * @param Google_Service_Compute_ServerBinding
+   */
+  public function setServerBinding(Google_Service_Compute_ServerBinding $serverBinding)
+  {
+    $this->serverBinding = $serverBinding;
+  }
+  /**
+   * @return Google_Service_Compute_ServerBinding
+   */
+  public function getServerBinding()
+  {
+    return $this->serverBinding;
   }
   public function setStatus($status)
   {

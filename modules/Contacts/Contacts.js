@@ -191,7 +191,7 @@ function set_return_contact_address(contact_id, contact_name, mailingstreet, oth
 		}
 	}
 	var form = window.opener.document.forms[formName];
-	form.contact_name.value = contact_name;
+	form.contact_id_display.value = contact_name;
 	form.contact_id.value = contact_id;
 	if (typeof(form.bill_street) != 'undefined') {
 		if (confirm(alert_arr.OVERWRITE_EXISTING_CONTACT1+contact_name+alert_arr.OVERWRITE_EXISTING_CONTACT2)) {
@@ -269,8 +269,8 @@ function sca_fillinvalues() {
 	var contact_id = jQuery('#contact_id').val();
 	var contact_name = jQuery('#contact_name').val();
 	if (window.opener.gVTModule != 'Issuecards') {
-		if (typeof(window.opener.document.EditView.contact_name) != 'undefined') {
-			window.opener.document.EditView.contact_name.value = contact_name;
+		if (typeof(window.opener.document.EditView.contact_id_display) != 'undefined') {
+			window.opener.document.EditView.contact_id_display.value = contact_name;
 		}
 		if (typeof(window.opener.document.EditView.contact_id) != 'undefined') {
 			window.opener.document.EditView.contact_id.value = contact_id;
@@ -479,4 +479,14 @@ function googleContactsLogOut(module) {
 	}).done(function (msg) {
 		window.location.reload();
 	});
+}
+
+function open_contact_account_details(fromlink, fldname, MODULE, ID) {
+	if (fldname == 'account_id') {
+		var baseURL = 'index.php?module=Accounts&action=Popup&popuptype=specific_contact_account_address&form=TasksEditView&form_submit=false&fromlink=';
+		var WindowSettings = 'width=680,height=602,resizable=0,scrollbars=0,top=150,left=200';
+		window.open(baseURL, 'vtlibui10', WindowSettings);
+	} else {
+		vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
+	}
 }

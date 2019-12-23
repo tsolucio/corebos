@@ -19,6 +19,8 @@ class Google_Service_Compute_RouterStatusNatStatus extends Google_Collection
 {
   protected $collection_key = 'userAllocatedNatIps';
   public $autoAllocatedNatIps;
+  public $drainAutoAllocatedNatIps;
+  public $drainUserAllocatedNatIps;
   public $minExtraNatIpsNeeded;
   public $name;
   public $numVmEndpointsWithNatMappings;
@@ -32,6 +34,22 @@ class Google_Service_Compute_RouterStatusNatStatus extends Google_Collection
   public function getAutoAllocatedNatIps()
   {
     return $this->autoAllocatedNatIps;
+  }
+  public function setDrainAutoAllocatedNatIps($drainAutoAllocatedNatIps)
+  {
+    $this->drainAutoAllocatedNatIps = $drainAutoAllocatedNatIps;
+  }
+  public function getDrainAutoAllocatedNatIps()
+  {
+    return $this->drainAutoAllocatedNatIps;
+  }
+  public function setDrainUserAllocatedNatIps($drainUserAllocatedNatIps)
+  {
+    $this->drainUserAllocatedNatIps = $drainUserAllocatedNatIps;
+  }
+  public function getDrainUserAllocatedNatIps()
+  {
+    return $this->drainUserAllocatedNatIps;
   }
   public function setMinExtraNatIpsNeeded($minExtraNatIpsNeeded)
   {

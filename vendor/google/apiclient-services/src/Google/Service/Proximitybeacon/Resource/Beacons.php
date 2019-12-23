@@ -187,6 +187,8 @@ class Google_Service_Proximitybeacon_Resource_Beacons extends Google_Service_Res
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string pageToken A pagination token obtained from a previous
+   * request to list beacons.
    * @opt_param string q Filter query string that supports the following field
    * filters:
    *
@@ -246,8 +248,6 @@ class Google_Service_Proximitybeacon_Resource_Beacons extends Google_Service_Res
    * @opt_param string projectId The project id to list beacons under. If not
    * present then the project credential that made the request is used as the
    * project. Optional.
-   * @opt_param string pageToken A pagination token obtained from a previous
-   * request to list beacons.
    * @return Google_Service_Proximitybeacon_ListBeaconsResponse
    */
   public function listBeacons($optParams = array())

@@ -16,6 +16,7 @@ $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
 
 $smarty = new vtigerCRM_Smarty;
+$focus = CRMEntity::getInstance($currentModule);
 
 $qcreate_array = QuickCreate($currentModule);
 $validationData = $qcreate_array['data'];
@@ -42,6 +43,16 @@ $smarty->assign('PRICE_DETAILS', $price_details);
 $base_currency = 'curname' . $product_base_currency;
 $smarty->assign('BASE_CURRENCY', $base_currency);
 //End - add multi currency
+
+//Tax handling (get the available taxes only) - starts
+$smarty->assign('MODE', '');
+$tax_details = getAllTaxes('available');
+for ($i=0; $i<count($tax_details); $i++) {
+	$tax_details[$i]['check_name'] = $tax_details[$i]['taxname'].'_check';
+	$tax_details[$i]['check_value'] = 0;
+}
+$smarty->assign('TAX_DETAILS', $tax_details);
+//Tax handling - ends
 
 $smarty->display('QuickCreate.tpl');
 ?>

@@ -10,6 +10,7 @@
 require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 require 'modules/Vtiger/default_module_view.php';
+require_once 'modules/Invoice/Invoice.php';
 require_once 'modules/InventoryDetails/InventoryDetails.php';
 
 class SalesOrder extends CRMEntity {
@@ -371,6 +372,7 @@ class SalesOrder extends CRMEntity {
 		);
 		return isset($rel_tables[$secmodule]) ? $rel_tables[$secmodule] : '';
 	}
+	public $popup_function = 'salesordersetvalue_from_popup';
 
 	// Function to unlink an entity with given Id from another entity
 	public function unlinkRelationship($id, $return_module, $return_id) {
@@ -472,6 +474,14 @@ class SalesOrder extends CRMEntity {
 
 		$log->debug('< create_export_query');
 		return $query;
+	}
+
+	public function getvtlib_open_popup_window_function($fieldname, $basemodule) {
+		if ($basemodule=='Invoice' && $fieldname=='salesorder_id') {
+			return 'selectSalesOrder';
+		} else {
+			return 'vtlib_open_popup_window';
+		}
 	}
 }
 ?>

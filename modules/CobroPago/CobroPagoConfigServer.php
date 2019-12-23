@@ -24,24 +24,23 @@ $smarty->assign('IMAGE_PATH', $image_path);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('CMOD', $mod_strings);
 $smarty->assign('MODULE_LBL', $currentModule);
+$smarty->assign('THEME', $theme);
+$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 // Operation to be restricted for non-admin users.
 if (!is_admin($current_user)) {
 	$smarty->display(vtlib_getModuleTemplate('Vtiger', 'OperationNotPermitted.tpl'));
 } else {
-	$mode = $_REQUEST['mode'];
+	$mode = isset($_REQUEST['mode']) ? vtlib_purify($_REQUEST['mode']) : '';
 
 	if (!empty($mode) && $mode == 'Save') {
 		$adb->query('delete from vtiger_cobropagoconfig');
-		$adb->pquery('insert into vtiger_cobropagoconfig values(?,?,?,?)', array($_POST['cyp_user'],$_POST['cyp_password'],$_POST['bluepay_mode'],$_POST['block_paid']));
+		$adb->pquery('insert into vtiger_cobropagoconfig values(?,?,?,?)', array(0, 0, 0, $_POST['block_paid']));
 	}
 	$results = $adb->query('select * from vtiger_cobropagoconfig');
-	$ts_baccid = $adb->query_result($results, 0, 'bluepay_accountid');
-	$ts_bskey = $adb->query_result($results, 0, 'bluepay_secretkey');
-	$ts_bmode = $adb->query_result($results, 0, 'bluepay_mode');
 	$ts_bpaid = $adb->query_result($results, 0, 'block_paid');
-?>
+	?>
 	<div style="margin:2em;">
-<?php $smarty->display('SetMenu.tpl'); ?>
+	<?php $smarty->display('SetMenu.tpl'); ?>
 	<h2><?php echo getTranslatedString('SERVER_CONFIGURATION');?></h2>
 	<form name="myform" action="index.php" method="POST">
 	<input type="hidden" name="module" value="CobroPago">
@@ -50,35 +49,6 @@ if (!is_admin($current_user)) {
 	<input type="hidden" name="formodule" value="CobroPago">
 	<input type="hidden" name="mode" value="Save">
 	<table>
-	<!-- 
-	<tr>
-		<td>
-		<b>BLUEPAY AccountId</b>
-		</td>
-		<td>
-		<input type="text" name="cyp_user" value="<?php echo $ts_baccid;?>">
-		</td>
-	</tr>
-	<tr>
-		<td>
-		<b>BLUEPAY Secret Key</b>
-		</td>
-		<td>
-		<input type="text" name="cyp_password" value="<?php echo $ts_bskey;?>">
-		</td>
-	</tr>
-	<tr>
-		<td>
-		<b>BLUEPAY Mode</b>
-		</td>
-		<td>
-		<select name="bluepay_mode">
-			<option value='LIVE'<?php echo ($ts_bmode=='LIVE' ? ' selected="selected"' : '');?>>LIVE</option>
-			<option value='TEST'<?php echo ($ts_bmode=='TEST' ? ' selected="selected"' : '');?>>TEST</option>
-		</select>
-		</td>
-	</tr>
-	-->
 	<tr>
 		<td>
 		<b>Prevent edit/delete if paid</b>
@@ -94,6 +64,6 @@ if (!is_admin($current_user)) {
 	</tr>
 	</table>
 	</form>
-<?php
+	<?php
 }
 ?>

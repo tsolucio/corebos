@@ -158,6 +158,7 @@ $mod_strings = array (
   'S&H Amount' => 'Ammontare S&H ',
 'SalesOrder No' => 'Nr. Ordine di Vendita',
 'Recurring Invoice Information' => 'Informazioni Fattura Periodica',
+'Recommended frequency for RecurringInvoice is 12 hours' => 'Recommended frequency for Recurring Invoice is 12 hours',
 'RecurringInvoice' => 'Fattura Periodica',
 'Enable Recurring' => 'Abilita Periodicit&agrave;',
 'Frequency' => 'Frequenza',
@@ -180,5 +181,11 @@ $mod_strings = array (
 '3years' => '3 Years',
 '4years' => '4 Years',
 '5years' => '5 Years',
+
+'LBL_PARTIAL_PAYMENTS_INFO' => 'Partial Payments Information',
+'Amount Due'=>'Amount Due',
+'Amount Paid'=>'Amount Paid',
+'Total Amount'=>'Total Amount',
+'Invoiced' => 'Invoiced',
 );
 ?>

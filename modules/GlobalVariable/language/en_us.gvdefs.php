@@ -97,6 +97,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'If set to 1 the full email conversation will be output to the log file so you can debug email settings issues. The log file debugging must be activated.',
 ),
+'Debug_ActivityReminder_Deactivated' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Debug',
+	'values' => '0 | 1',
+	'definition' => 'If set to 1 the Activity Reminder will be deactivated, if set to 0 the Activity Reminder will be activated. The default is 0. This avoids a lot of noise in the application debug log.',
+),
 'Accounts_BlockDuplicateName' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
@@ -201,6 +208,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'Use Rich Text Editor in those modules that support it',
+),
+'Application_RTESpellcheck' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Activate browser\'s spellchecker in the Rich Text Editor.',
 ),
 'Webservice_Enabled' => array(
 	'status' => 'Implemented',
@@ -368,7 +382,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Email',
 	'category' => 'Application',
 	'values' => '',
-	'definition' => '"Reply To" email address for emails going out from the HelpDesk support module (and some other system emails). It will only be used if it is different from HelpDesk_Support_EMail',
+	'definition' => '"Reply To" email address for emails going out from the Application.',
 ),
 'HelpDesk_Notify_Owner_EMail' => array(
 	'status' => 'Implemented',
@@ -776,6 +790,27 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Valid Quote status picklist values',
 	'definition' => 'When saving a Sales Order related to a Quote, the status of the quote will be set to the value contained in this variable. The special value "DoNotChange" will deactivate this functionality and no change will be done.',
 ),
+'CobroPago_Invoice_Status_OnPaid' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'string',
+	'category' => 'Application',
+	'values' => 'Valid Invoice status picklist values',
+	'definition' => 'When saving a Payment related to an Invoice, the status of the Invoice will be set to the value contained in this variable. The special value "DoNotChange" will deactivate this functionality and no change will be done.',
+),
+'CobroPago_PurchaseOrder_Status_OnPaid' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'string',
+	'category' => 'Application',
+	'values' => 'Valid Purchase Order status picklist values',
+	'definition' => 'When saving a Payment related to a Purchase Order, the status of the Purchase Order will be set to the value contained in this variable. The special value "DoNotChange" will deactivate this functionality and no change will be done.',
+),
+'CobroPago_SalesOrder_Status_OnPaid' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'string',
+	'category' => 'Application',
+	'values' => 'Valid Sales Order status picklist values',
+	'definition' => 'When saving a Payment related to a Sales Order, the status of the quote will be set to the value contained in this variable. The special value "DoNotChange" will deactivate this functionality and no change will be done.',
+),
 'Application_ListView_MaxColumns' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',
@@ -963,7 +998,14 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Boolean',
 	'category' => 'Webservice',
 	'values' => '0 | 1',
-	'definition' => 'Show user fields contained in the advanced user block',
+	'definition' => 'Show user fields contained in the advanced user block. Create a block named LBL_USER_ADV_OPTIONS and move the fields you want to export to that block.',
+),
+'Webservice_PermitQueryOnInactiveUsers' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => 'Include inactive users in results of web service query.',
 ),
 'GoogleCalendarSync_BaseUpdateMonths' => array(
 	'status' => 'Implemented',
@@ -1301,6 +1343,27 @@ $GlobalVariableDefinitons = array(
 	'values' => '0|1',
 	'definition' => 'Make the copy links in Detail View copy GenDoc labels instead of field values. By default deactivated.',
 ),
+'GenDoc_Save_Document_Folder' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Extension',
+	'values' => 'Documents folder name',
+	'definition' => 'Name of the folder where GenDoc will save generated documents. By default the first folder found will be used.',
+),
+'GenDoc_Default_Compile_Language' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Extension',
+	'values' => 'supported GenDoc languages: en es it pl',
+	'definition' => 'Language in which the templates are created and compiled. By default, the selected language of the current user is used.',
+),
+'GenDoc_Convert_URL' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Extension',
+	'values' => 'URL',
+	'definition' => 'URL to the conversion server: https://github.com/sfoxdev/docker-unoconv',
+),
 'BusinessQuestion_TableAnswer_Limit' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',
@@ -1335,6 +1398,34 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '',
 	'definition' => 'Number of rows to show per page in the workflow list view grid. The default is 20.',
+),
+'Project_Gantt_Type' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Module Functionality',
+	'values' => '1 | 2 | 3',
+	'definition' => 'Used to define Gantt Chart type. 1 for daily, 2 for weekly and 3 for monthly. Default value is set to 2.',
+),
+'Attachment_ShowDownloadName' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0|1',
+	'definition' => 'In Detail View, will show the image/attachment name as a download link above the image itself.',
+),
+'Inventory_Check_Invoiced_Lines' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0|1',
+	'definition' => 'When activated (1), system checks quantity of product or service invoiced from a Sales Order and transfer to Invoice the maximum number permitted to invoice from a Sales Order. Defalut is 0 (deactivated)',
+),
+'Application_ListView_SearchColumns_AC_Trigger' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => 'Any integer',
+	'definition' => 'The minimal number of characters needed to trigger an autocomplete-search in the search boxes on top of the columns (only visible when Application_ListView_SearchColumns is activated). Defaults to 3',
 ),
 );
 

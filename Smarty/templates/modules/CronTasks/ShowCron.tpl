@@ -28,7 +28,7 @@
 						<td align="left" class="cellText small" width="104px">{$CRON_DETAILS.frequency} {if $CRON_DETAILS.time eq 'min'} {$MOD.LBL_MINS} {else} {$MOD.LBL_HOURS} {/if}</td>
 					</tr>
 					<tr>
-						<td colspan=2>{$CRON_DETAILS.description}</td>
+						<td colspan=2>{$CRON_DETAILS.description|@getTranslatedString:$CRON_MODULE}</td>
 					<tr>
 				</table>
 			</td>

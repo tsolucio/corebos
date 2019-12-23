@@ -17,7 +17,7 @@ require_once 'VTWorkflowManager.inc';
 require_once 'VTWorkflowUtils.php';
 
 function vtTaskEdit($adb, $request, $current_language, $app_strings) {
-	global $theme;
+	global $theme, $current_user;
 	$util = new VTWorkflowUtils();
 	$request = vtlib_purify($request);  // this cleans all values of the array
 	$image_path = "themes/$theme/images/";
@@ -43,6 +43,9 @@ function vtTaskEdit($adb, $request, $current_language, $app_strings) {
 		$workflowId = $request['workflow_id'];
 		$taskClass = $request['task_type'];
 		$task = $tm->createTask($taskClass, $workflowId);
+		if (in_array($taskClass, VTTaskManager::$reevaluateTasks)) {
+			$task->reevaluate = 1;
+		}
 	}
 
 	if ($task==null) {
@@ -115,6 +118,7 @@ function vtTaskEdit($adb, $request, $current_language, $app_strings) {
 	));
 	$smarty->assign('APP', $app_strings);
 	$smarty->assign('dateFormat', parse_calendardate($app_strings['NTC_DATE_FORMAT']));
+	$smarty->assign('ISADMIN', is_admin($current_user));
 	$smarty->assign('IMAGE_PATH', $image_path);
 	$smarty->assign('THEME', $theme);
 	$smarty->assign('MODULE_NAME', $module->label);

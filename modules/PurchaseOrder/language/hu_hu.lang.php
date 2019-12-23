@@ -158,6 +158,10 @@ $mod_strings = array(
 	'PurchaseOrder No' => 'Beszerzés No.',
 	'SINGLE_PurchaseOrder' => 'Beszerzés',
 	'PurchaseOrder ID' => 'Beszerzés AZ',
-	'Order Id' => 'Beszerzés AZ'
+	'Order Id' => 'Beszerzés AZ',
+	'LBL_PARTIAL_PAYMENTS_INFO' => 'Partial Payments Information',
+	'Amount Due'=>'Amount Due',
+	'Amount Paid'=>'Amount Paid',
+	'Total Amount'=>'Total Amount',
 );
 ?>

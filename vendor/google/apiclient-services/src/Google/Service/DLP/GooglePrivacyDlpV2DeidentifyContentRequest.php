@@ -25,6 +25,7 @@ class Google_Service_DLP_GooglePrivacyDlpV2DeidentifyContentRequest extends Goog
   public $inspectTemplateName;
   protected $itemType = 'Google_Service_DLP_GooglePrivacyDlpV2ContentItem';
   protected $itemDataType = '';
+  public $location;
 
   /**
    * @param Google_Service_DLP_GooglePrivacyDlpV2DeidentifyConfig
@@ -83,5 +84,13 @@ class Google_Service_DLP_GooglePrivacyDlpV2DeidentifyContentRequest extends Goog
   public function getItem()
   {
     return $this->item;
+  }
+  public function setLocation($location)
+  {
+    $this->location = $location;
+  }
+  public function getLocation()
+  {
+    return $this->location;
   }
 }

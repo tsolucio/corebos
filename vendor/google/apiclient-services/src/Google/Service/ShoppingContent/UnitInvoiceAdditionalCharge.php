@@ -15,13 +15,10 @@
  * the License.
  */
 
-class Google_Service_ShoppingContent_UnitInvoiceAdditionalCharge extends Google_Collection
+class Google_Service_ShoppingContent_UnitInvoiceAdditionalCharge extends Google_Model
 {
-  protected $collection_key = 'additionalChargePromotions';
   protected $additionalChargeAmountType = 'Google_Service_ShoppingContent_Amount';
   protected $additionalChargeAmountDataType = '';
-  protected $additionalChargePromotionsType = 'Google_Service_ShoppingContent_Promotion';
-  protected $additionalChargePromotionsDataType = 'array';
   public $type;
 
   /**
@@ -37,20 +34,6 @@ class Google_Service_ShoppingContent_UnitInvoiceAdditionalCharge extends Google_
   public function getAdditionalChargeAmount()
   {
     return $this->additionalChargeAmount;
-  }
-  /**
-   * @param Google_Service_ShoppingContent_Promotion
-   */
-  public function setAdditionalChargePromotions($additionalChargePromotions)
-  {
-    $this->additionalChargePromotions = $additionalChargePromotions;
-  }
-  /**
-   * @return Google_Service_ShoppingContent_Promotion
-   */
-  public function getAdditionalChargePromotions()
-  {
-    return $this->additionalChargePromotions;
   }
   public function setType($type)
   {

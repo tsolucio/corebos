@@ -108,6 +108,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
 		$txtTax=((isset($so_focus->column_fields['txtTax']) && $so_focus->column_fields['txtTax'] != '') ? $so_focus->column_fields['txtTax'] : '0.000');
 		$txtAdj=((isset($so_focus->column_fields['txtAdjustment']) && $so_focus->column_fields['txtAdjustment']!='') ? $so_focus->column_fields['txtAdjustment']:'0.000');
 
+		$smarty->assign('SOID', $soid);
 		$smarty->assign('CONVERT_MODE', vtlib_purify($_REQUEST['convertmode']));
 		$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
 		$smarty->assign('MODE', $so_focus->mode);
@@ -405,6 +406,9 @@ if ($cbMap!=null && isPermitted('InventoryDetails', 'EditView')=='yes') {
 		$associated_prod = $product_Detail;
 	}
 }
+
+list($v1, $v2, $associated_prod, $customtemplatename) = cbEventHandler::do_filter('corebos.filter.inventory.itemrow.edit', array($currentModule, $focus, $associated_prod, ''));
+$smarty->assign('customtemplaterows', $customtemplatename);
 $smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
 
 if (isset($_REQUEST['return_module'])) {
@@ -503,5 +507,11 @@ $smarty->assign('TAX_TYPE', GlobalVariable::getVariable('Inventory_Tax_Type_Defa
 $smarty->assign('SHOW_COPY_ADDRESS', GlobalVariable::getVariable('Application_Show_Copy_Address', 1, $currentModule, $current_user->id));
 $smarty->assign('SHOW_SHIPHAND_CHARGES', GlobalVariable::getVariable('Inventory_Show_ShippingHandlingCharges', 1, $currentModule, $current_user->id));
 
-$smarty->display('Inventory/InventoryEditView.tpl');
+if (empty($associated_prod) && GlobalVariable::getVariable('Inventory_Check_Invoiced_Lines', 0, $currentModule) == 1
+	 && isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'sotoinvoice') {
+	$smarty->assign('OPERATION_MESSAGE', $app_strings['LBL_NOPRODUCTS']);
+	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
+} else {
+	$smarty->display('Inventory/InventoryEditView.tpl');
+}
 ?>

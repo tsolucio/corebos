@@ -22,7 +22,6 @@ class Google_Service_ServiceControl_Peer extends Google_Model
   public $port;
   public $principal;
   public $regionCode;
-  public $service;
 
   public function setIp($ip)
   {
@@ -63,13 +62,5 @@ class Google_Service_ServiceControl_Peer extends Google_Model
   public function getRegionCode()
   {
     return $this->regionCode;
-  }
-  public function setService($service)
-  {
-    $this->service = $service;
-  }
-  public function getService()
-  {
-    return $this->service;
   }
 }

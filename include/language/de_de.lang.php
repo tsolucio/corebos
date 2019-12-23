@@ -514,6 +514,10 @@ $app_strings = array(
 'LBL_TAX'=>'Mwst.',
 'LBL_ADJUSTMENT'=>'Anpassung',
 'LBL_GRAND_TOTAL'=>'Summe brutto',
+'LBL_PAYMENT_INFORMATION'=> 'Payment Information',
+'Total Amount' => 'Total Amount',
+'Total Pending' => 'Total Pending',
+'Balance' => 'Balance',
 'LBL_QUOTE_ID'=>'Angebots-ID',
 'LBL_SALES_ORDER_ID'=>'Verkaufsnummer',
 'LBL_PURCHASE_ORDER_ID'=>'Einkaufsnummer',
@@ -570,6 +574,7 @@ $app_strings = array(
 'LBL_SO_STATUS'=>'Status der Verkaufsbestellung',
 'LBL_INVOICE_STATUS'=>'Rechnungsstatus',
 'LBL_MODULE'=>'Modul',
+'LBL_TOTAL_FILTERED' => 'Total',
 'Active'=>'Aktiv',
 'Inactive'=>'Nicht aktiv',
 'Today'=>'Heute',
@@ -1309,7 +1314,18 @@ $app_strings = array(
 'Send Email' => 'Sende E-Mail',
 'Mailer Export' => 'E-Mail Export',
 'Add Payment' => 'Zahlung hinzufügen',
-
+'Add event' => 'Add event',
+'Create Invoice' => 'Create Invoice',
+'Send Email With PDF' => 'Send Email With PDF',
+'Export To PDF' => 'Export To PDF',
+'Generate Sales Order' => 'Generate Sales Order',
+'Generate Invoice' => 'Generate Invoice',
+'Create Quote' => 'Create Quote',
+'Create Purchase Order' => 'Create Purchase Order',
+'Create Sales Order' => 'Create Sales Order',
+'csrf_warning' => 'CSRF Error. The reason this happens is that the page has been open without any interaction for too
+	long. For security reason, it has expired. Please reload the page by hitting CTRL + R or press reload below.',
+'csrf_reload' => 'Reload the page',
 'LBL_MORE'=>'mehr',
 'LBL_CRM_SETTINGS' => 'CRM Einstellungen',
 'LBL_RELATED_TO_THIS' =>'bezogen auf',
@@ -1349,6 +1365,7 @@ $app_strings = array(
 'Select Related Module' => 'Select Related Module',
 'No Module' => 'No related Module',
 'Entity Name' => 'Entity Name',
+'LBL_NOPRODUCTS' => 'Can\'t convert SalesOrder to Invoice because there aren\'t any remaining products to invoice.',
 );
 
 // Translation for currency names

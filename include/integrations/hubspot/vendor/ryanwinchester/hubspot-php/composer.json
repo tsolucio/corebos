@@ -1,0 +1,34 @@
+{
+    "name": "ryanwinchester/hubspot-php",
+    "description": "HubSpot PHP API client",
+    "keywords": [ "hubspot", "api" ],
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Ryan Winchester",
+            "email": "fungku@gmail.com",
+            "homepage": "http://ryanwinchester.ca"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.0",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "~2.0",
+        "phpunit/phpunit": "~4.0",
+        "codeclimate/php-test-reporter": " dev-master@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "SevenShores\\Hubspot\\": "src/"
+        },
+        "files": [ "src/helpers.php" ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+          "SevenShores\\Hubspot\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "stable"
+}

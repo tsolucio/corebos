@@ -26,7 +26,8 @@
 class Google_Service_Compute_Resource_NodeTypes extends Google_Service_Resource
 {
   /**
-   * Retrieves an aggregated list of node types. (nodeTypes.aggregatedList)
+   * Retrieves an aggregated list of node types. (== suppress_warning http-rest-
+   * shadowed ==) (nodeTypes.aggregatedList)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -79,7 +80,8 @@ class Google_Service_Compute_Resource_NodeTypes extends Google_Service_Resource
   }
   /**
    * Returns the specified node type. Gets a list of available node types by
-   * making a list() request. (nodeTypes.get)
+   * making a list() request. (== suppress_warning http-rest-shadowed ==)
+   * (nodeTypes.get)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -94,8 +96,8 @@ class Google_Service_Compute_Resource_NodeTypes extends Google_Service_Resource
     return $this->call('get', array($params), "Google_Service_Compute_NodeType");
   }
   /**
-   * Retrieves a list of node types available to the specified project.
-   * (nodeTypes.listNodeTypes)
+   * Retrieves a list of node types available to the specified project. (==
+   * suppress_warning http-rest-shadowed ==) (nodeTypes.listNodeTypes)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.

@@ -139,7 +139,7 @@
 							{/if}
 								<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="false" aria-haspopup="listbox" id="primary-search-combobox-id-1" role="combobox">
 									<input type="hidden" name="action" value="UnifiedSearch">
-									<input type="hidden" name="module" value="Home">
+									<input type="hidden" name="module" value="Utilities">
 									<input type="hidden" name="parenttab" value="{$CATEGORY}">
 									<input type="hidden" name="search_onlyin" value="--USESELECTED--">
 									<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left slds-global-search__form-element" role="none">
@@ -149,9 +149,11 @@
 												</svg>
 											</span>
 										<input name="query_string" id="query_string" class="slds-input slds-combobox__input{if $GLOBAL_AC} autocomplete-input{/if}" type="text" role="textbox" placeholder="{$APP.LBL_SEARCH_TITLE}{$coreBOS_app_name}" aria-autocomplete="list" autoComplete="off" data-autocomp='{$GS_AUTOCOMP|@json_encode}' />
+										{if $GLOBAL_AC}
 										<div role="listbox" class="">
 											<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0;display:block;visibility: visible;" role="presentation"></ul>
 										</div>
+										{/if}
 									</div>
 								</div>
 							</form>
@@ -318,7 +320,6 @@
 		</div>
 	</div>
 </header>
-<div id = "blankDiv" style="width: 1px; height: 0px;" ></div>
 <!-- END LDS Global header -->
 <a name="top"></a>
 

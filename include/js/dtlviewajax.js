@@ -214,6 +214,7 @@ function dtlViewAjaxSave(fieldLabel, module, uitype, tableName, fieldName, crmId
 }
 
 function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName, crmId) {
+	VtigerJS_DialogBox.block();
 	var dtlView = 'dtlview_'+ fieldLabel;
 	var editArea = 'editarea_'+ fieldLabel;
 	var groupurl = '';
@@ -261,11 +262,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 		var txtBox= 'txtbox_'+ fieldLabel;
 	}
 
-	var popupTxt= 'popuptxt_'+ fieldLabel;
-	var hdTxt = 'hdtxt_'+ fieldLabel;
-
 	VtigerJS_DialogBox.showbusy();
-	var isAdmin = document.getElementById('hdtxt_IsAdmin').value;
 
 	//overriden the tagValue based on UI Type for checkbox
 	if (uitype == '56') {
@@ -331,9 +328,20 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 			alert(alert_str);
 			VtigerJS_DialogBox.hidebusy();
 		} else if (response.indexOf(':#:SUCCESS')>-1) {
+			var result = response.split(':#:');
+			if (result[2] != null) {
+				var target = null;
+				if (module == 'Users') {
+					target = document.getElementsByClassName('user-detailview')[0];
+				} else {
+					target = document.getElementsByClassName('detailview_wrapper_table')[0];
+				}
+				target.innerHTML = result[2];
+				vtlib_executeJavascriptInElement(target);
+			}
 			//For HD & FAQ - comments, we should empty the field value
 			if ((module == 'HelpDesk' || module == 'Faq') && fieldName == 'comments') {
-				var comments = response.replace(':#:SUCCESS', '');
+				var comments = result[3] != null ? result[3] : '';
 				if (getObj('comments_div') != null) {
 					getObj('comments_div').innerHTML = comments;
 				}
@@ -349,154 +357,8 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 			}
 			VtigerJS_DialogBox.hidebusy();
 		}
+		VtigerJS_DialogBox.unblock();
 	});
-	tagValue = get_converted_html(tagValue);
-	if (uitype == '13') {
-		var temp_fieldname = 'internal_mailer_'+fieldName;
-		if (document.getElementById(temp_fieldname)) {
-			var mail_chk_arr = document.getElementById(temp_fieldname).innerHTML.split('####');
-			var fieldId = mail_chk_arr[0];
-			var internal_mailer_flag = mail_chk_arr[1];
-			if (internal_mailer_flag == 1) {
-				var email_link = '<a href="javascript:InternalMailer('+crmId+','+fieldId+',\''+fieldName+'\',\''+module+'\',\'record_id\');" onclick=\'event.stopPropagation();\'>'+tagValue+'&nbsp;</a>';
-			} else {
-				var email_link = '<a href="mailto:'+ tagValue+'" target="_blank" onclick=\'event.stopPropagation();\'>'+tagValue+'&nbsp;</a>';
-			}
-		}
-		getObj(dtlView).innerHTML = email_link;
-		if (fieldName == 'email' || fieldName == 'email1') {
-			var priEmail = getObj('pri_email');
-			if (priEmail) {
-				priEmail.value = tagValue;
-			}
-		} else {
-			var secEmail = getObj('sec_email');
-			if (secEmail) {
-				secEmail.value = tagValue;
-			}
-		}
-	} else if (uitype == '11') {
-		if (typeof(use_asterisk) != 'undefined' && use_asterisk == true) {
-			getObj(dtlView).innerHTML = '<a href="javascript:;" onclick="startCall(\''+tagValue+'\',\''+crmId+'\')" onclick=\'event.stopPropagation();\'>'+tagValue+'</a>';
-		} else {
-			getObj(dtlView).innerHTML = tagValue;
-		}
-	} else if (uitype == '17') {
-		var matchPattern = /^[\w]+:\/\//;
-		if (tagValue.match(matchPattern)) {
-			getObj(dtlView).innerHTML = '<a href="'+ tagValue+'" target="_blank" onclick=\'event.stopPropagation();\'>'+tagValue+'&nbsp;</a>';
-		} else {
-			getObj(dtlView).innerHTML = '<a href="http://'+ tagValue+'" target="_blank" onclick=\'event.stopPropagation();\'>'+tagValue+'&nbsp;</a>';
-		}
-	} else if (uitype == '85') {
-		getObj(dtlView).innerHTML = '<a href="skype:'+ tagValue+'?call" onclick=\'event.stopPropagation();\'><img src=\'themes/images/skype.gif\' align=\'absmiddle\'></img>&nbsp;'+tagValue+'&nbsp;</a>';
-	} else if (uitype == '53') {
-		var hdObj = getObj(hdTxt);
-		var assigntype = document.getElementsByName('assigntype');
-		if (assigntype.length > 0) {
-			var assign_type_U = assigntype[0].checked;
-			var assign_type_G = false;
-			if (assigntype[1]!=undefined) {
-				assign_type_G = assigntype[1].checked;
-			}
-		} else {
-			var assign_type_U = assigntype[0].checked;
-		}
-		if (isAdmin == '0') {
-			getObj(dtlView).innerHTML = hdObj.value;
-		} else if (isAdmin == '1' && assign_type_U == true) {
-			getObj(dtlView).innerHTML = '<a href="index.php?module=Users&action=DetailView&record='+tagValue+'" onclick=\'event.stopPropagation();\'>'+hdObj.value+'&nbsp;</a>';
-		} else if (isAdmin == '1' && assign_type_G == true) {
-			getObj(dtlView).innerHTML = '<a href="index.php?module=Settings&action=GroupDetailView&groupId='+tagValue+'" onclick=\'event.stopPropagation();\'>'+hdObj.value+'&nbsp;</a>';
-		}
-	} else if (uitype == '52' || uitype == '77') {
-		if (isAdmin == '1') {
-			getObj(dtlView).innerHTML = '<a href="index.php?module=Users&action=DetailView&record='+tagValue+'">'+document.getElementById(txtBox).options[document.getElementById(txtBox).selectedIndex].text+'&nbsp;</a>';
-		} else {
-			getObj(dtlView).innerHTML = document.getElementById(txtBox).options[document.getElementById(txtBox).selectedIndex].text;
-		}
-	} else if (uitype == '56') {
-		if (tagValue == '1') {
-			getObj(dtlView).innerHTML = alert_arr.YES;
-		} else {
-			getObj(dtlView).innerHTML = alert_arr.NO;
-		}
-	} else if (uitype == 117) {
-		getObj(dtlView).innerHTML = document.getElementById(txtBox).options[document.getElementById(txtBox).selectedIndex].text;
-	} else if (uitype == '10') {
-		getObj(dtlView).innerHTML = '<a href="index.php?module='+document.getElementById(fieldName+'_type').value+'&action=DetailView&record='+tagValue+'">'+document.getElementById(fieldName+'_display').value+'&nbsp;</a>';
-	} else if (getObj(popupTxt)) {
-		var popObj = getObj(popupTxt);
-		if (uitype == '73' || uitype == '51') {
-			getObj(dtlView).innerHTML = '<a href="index.php?module=Accounts&action=DetailView&record='+tagValue+'">'+popObj.value+'&nbsp;</a>';
-		} else if (uitype == '57') {
-			getObj(dtlView).innerHTML = '<a href="index.php?module=Contacts&action=DetailView&record='+tagValue+'">'+popObj.value+'&nbsp;</a>';
-		} else if (uitype == '76') {
-			getObj(dtlView).innerHTML = '<a href="index.php?module=Potentials&action=DetailView&record='+tagValue+'">'+popObj.value+'&nbsp;</a>';
-		} else if (uitype == '78') {
-			getObj(dtlView).innerHTML = '<a href="index.php?module=Quotes&action=DetailView&record='+tagValue+'">'+popObj.value+'&nbsp;</a>';
-		} else if (uitype == '80') {
-			getObj(dtlView).innerHTML = '<a href="index.php?module=SalesOrder&action=DetailView&record='+tagValue+'">'+popObj.value+'&nbsp;</a>';
-		} else if (uitype == '53') {
-			var hdObj = getObj(hdTxt);
-			if (isAdmin == '0') {
-				getObj(dtlView).innerHTML = hdObj.value;
-			} else if (isAdmin == '1') {
-				getObj(dtlView).innerHTML = '<a href="index.php?module=Users&action=DetailView&record='+tagValue+'">'+hdObj.value+'&nbsp;</a>';
-			}
-		} else if (uitype == '56') {
-			if (tagValue == '1') {
-				getObj(dtlView).innerHTML = alert_arr.YES;
-			} else {
-				getObj(dtlView).innerHTML = '';
-			}
-		} else {
-			getObj(dtlView).innerHTML = popObj.value;
-		}
-	} else if (uitype == '15' || uitype == '16' || uitype == '31' || uitype == '32') {
-		var notaccess =document.getElementById(txtBox);
-		tagValue = notaccess.options[notaccess.selectedIndex].text;
-		if (tagValue == alert_arr.LBL_NOT_ACCESSIBLE) {
-			getObj(dtlView).innerHTML = '<font color=\'red\'>'+get_converted_html(tagValue)+'</font>';
-		} else {
-			getObj(dtlView).innerHTML = get_converted_html(tagValue);
-		}
-	} else if (uitype == '33' || uitype == '3313' || uitype == '3314') {
-		/* Wordwrap a long list of multi-select combo box items at the item separator string */
-		var DETAILVIEW_WORDWRAP_WIDTH = '70'; // must match value in DetailViewUI.tpl.
-
-		var lineLength = 0;
-		for (var i=0; i < notaccess_label.length; i++) {
-			lineLength += notaccess_label[i].length + 2; // + 2 for item separator string
-			/*if(lineLength > DETAILVIEW_WORDWRAP_WIDTH && i > 0) {
-				lineLength = notaccess_label[i].length + 2; // reset.
-				notaccess_label[i] = '<br/>&nbsp;' + notaccess_label[i]; // prepend newline.
-			}*/
-			notaccess_label[i] = get_converted_html(notaccess_label[i]);
-			// Prevent a browser splitting multiword items:
-			//notaccess_label[i] = notaccess_label[i].replace(/ /g, '&nbsp;');
-			notaccess_label[i] = notaccess_label[i].replace(alert_arr.LBL_NOT_ACCESSIBLE, '<font color=\'red\'>'+alert_arr.LBL_NOT_ACCESSIBLE+'</font>'); // for Not accessible label.
-		}
-		/* Join items with item separator string (which must match string in DetailViewUI.tpl, EditViewUtils.php and CRMEntity.php)!! */
-		getObj(dtlView).innerHTML = notaccess_label.join(', ');
-	} else if (uitype == '19') {
-		var desc = trim(document.getElementById(txtBox).value);
-		desc = desc.replace(/(^|[\n ])([\w]+?:\/\/.*?[^ \"\n\r\t<]*)/g, '$1<a href="$2" target="_blank">$2</a>');
-		desc = desc.replace(/(^|[\n ])((www|ftp)\.[\w\-]+\.[\w\-.\~]+(?:\/[^ \"\t\n\r<]*)?)/g, '$1<a href="http://$2" target="_blank">$2</a>');
-		desc = desc.replace(/(^|[\n ])([a-z0-9&\-_.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)/i, '$1<a href="mailto:$2@$3">$2@$3</a>');
-		desc = desc.replace(/,\"|\.\"|\)\"|\)\.\"|\.\)\"/, '"');
-		//desc = desc.replace(/[\n\r]/g, "<br>&nbsp;");
-		getObj(dtlView).textContent = desc;
-	} else if (uitype == '50') {
-		let timefmt = tagValue.substring(tagValue.length-2);
-		if (timefmt == '24') {
-			timefmt = '';
-		}
-		getObj(dtlView).innerHTML = tagValue.substring(0, tagValue.length-2)+'&nbsp;<font size=1><em>&nbsp;<span id=\'timefmt_'+fieldName+'\'>'+timefmt+'</span></em></font>';
-	} else {
-		getObj(dtlView).innerHTML = tagValue.replace(/[\n\r]+/g, '<br>&nbsp;');
-	}
-	showHide(dtlView, editArea);  //show,hide
 	itsonview=false;
 }
 
@@ -597,6 +459,23 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 						}
 					} else if (msg.search('%%%OK%%%') > -1) { //No error
 						dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName, crmId);
+					} else if (msg.search('%%%FUNCTION%%%') > -1) { //call user function
+						var callfunc = msg.split('%%%FUNCTION%%%');
+						var params = '';
+						if (callfunc[1].search('%%%PARAMS%%%') > -1) { //function has params string
+							var cfp = callfunc[1].split('%%%PARAMS%%%');
+							callfunc = cfp[0];
+							params = cfp[1];
+						} else {
+							callfunc = callfunc[1];
+						}
+						if (typeof window[callfunc] == 'function') {
+							if (window[callfunc]('', '', 'Save', dtlViewAjaxFinishSave, params)) {
+								dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName, crmId);
+							}
+						} else {
+							dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName, crmId);
+						}
 					} else { //Error
 						alert(msg);
 					}
@@ -627,18 +506,6 @@ function SaveTag(tagfield, crmId, module) {
 			getObj('tagfields').innerHTML = response;
 			document.getElementById(tagfield).value = '';
 		}
-		VtigerJS_DialogBox.hidebusy();
-	});
-}
-
-function DeleteTag(id, recordid) {
-	VtigerJS_DialogBox.showbusy();
-	jQuery('#tag_'+id).fadeOut();
-	jQuery.ajax({
-		method:'POST',
-		url:'index.php?file=TagCloud&module=' + module + '&action=' + module + 'Ajax&ajxaction=DELETETAG&recordid='+recordid+'&tagid='+id
-	}).done(function (response) {
-		getTagCloud();
 		VtigerJS_DialogBox.hidebusy();
 	});
 }
@@ -689,8 +556,8 @@ function hndMouseClick(fieldLabel) {
 function setCoOrdinate(elemId) {
 	var oBtnObj = document.getElementById(elemId);
 	var tagName = document.getElementById('lstRecordLayout');
-	leftpos  = 0;
-	toppos = 0;
+	var leftpos = 0;
+	var toppos = 0;
 	var aTag = oBtnObj;
 	do {
 		leftpos += aTag.offsetLeft;

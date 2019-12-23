@@ -280,17 +280,29 @@ class Users extends CRMEntity {
 	 * @return true if the user is authenticated, false otherwise
 	 */
 	public function doLogin($user_password) {
-		$authType = GlobalVariable::getVariable('User_AuthenticationType', 'SQL');
-		if ($this->is_admin) {
-			$authType = 'SQL'; // admin users always login locally
+		$usr_name = $this->column_fields['user_name'];
+		$result = $this->db->pquery('select id from vtiger_users where user_name=?', array($usr_name));
+		if ($result && $this->db->num_rows($result)==1) {
+			$row = $this->db->fetchByAssoc($result);
+			$userid = $row['id'];
+		} else {
+			return false;
 		}
-		$usr_name = $this->column_fields["user_name"];
+		$authType = GlobalVariable::getVariable('User_AuthenticationType', 'SQL', 'Users', $userid);
+
+		$sql_auth_users = GlobalVariable::getVariable('User_MandatoryAuthenticationSQL', 'admin', 'Users', $userid);
+		$sql_auth_users = explode(',', $sql_auth_users);
+
+		if (in_array($usr_name, $sql_auth_users)) {
+			$this->log->debug("$usr_name exists in sql_auth_users, so using SQL Authentication");
+			$authType = 'SQL';
+		}
 
 		switch (strtoupper($authType)) {
 			case 'LDAP':
-				$this->log->debug("Using LDAP authentication");
+				$this->log->debug('Using LDAP authentication');
 				require_once 'modules/Users/authTypes/LDAP.php';
-				$result = ldapAuthenticate($this->column_fields["user_name"], $user_password);
+				$result = ldapAuthenticate($usr_name, $user_password);
 				if ($result == null) {
 					return false;
 				} else {
@@ -302,7 +314,7 @@ class Users extends CRMEntity {
 				$this->log->debug("Using Active Directory authentication");
 				require_once 'modules/Users/authTypes/adLDAP.php';
 				$adldap = new adLDAP();
-				if ($adldap->authenticate($this->column_fields["user_name"], $user_password)) {
+				if ($adldap->authenticate($usr_name, $user_password)) {
 					return true;
 				} else {
 					return false;
@@ -583,6 +595,9 @@ class Users extends CRMEntity {
 	}
 
 	public function mustChangePassword() {
+		if (empty($this->id)) {
+			return false;
+		}
 		$cnuser=$this->db->getColumnNames('vtiger_users');
 		if (!in_array('change_password', $cnuser)) {
 			$this->db->query("ALTER TABLE `vtiger_users` ADD `change_password` boolean NOT NULL DEFAULT 0");
@@ -593,6 +608,7 @@ class Users extends CRMEntity {
 
 	public function de_cryption($data) {
 		require_once 'include/utils/encryption.php';
+		$decrypted_password = '';
 		$de_crypt = new Encryption();
 		if (isset($data)) {
 			$decrypted_password = $de_crypt->decrypt($data);
@@ -1002,23 +1018,23 @@ class Users extends CRMEntity {
 
 		$result = array();
 		foreach ($this->tab_name_index as $table_name => $index) {
-			$result[$table_name] = $adb->pquery("select * from " . $table_name . " where " . $index . "=?", array($record));
+			$result[$table_name] = $adb->pquery('select * from ' . $table_name . ' where ' . $index . '=?', array($record));
 		}
 		$tabid = getTabid($module);
-		$sql1 = "select columnname, tablename, fieldname from vtiger_field where tabid=? and vtiger_field.presence in (0,2)";
+		$sql1 = 'select columnname, tablename, fieldname from vtiger_field where tabid=? and vtiger_field.presence in (0,2)';
 		$result1 = $adb->pquery($sql1, array($tabid));
 		$noofrows = $adb->num_rows($result1);
 		for ($i = 0; $i < $noofrows; $i++) {
-			$fieldcolname = $adb->query_result($result1, $i, "columnname");
-			$tablename = $adb->query_result($result1, $i, "tablename");
-			$fieldname = $adb->query_result($result1, $i, "fieldname");
+			$fieldcolname = $adb->query_result($result1, $i, 'columnname');
+			$tablename = $adb->query_result($result1, $i, 'tablename');
+			$fieldname = $adb->query_result($result1, $i, 'fieldname');
 
 			$fld_value = $adb->query_result($result[$tablename], 0, $fieldcolname);
 			$this->column_fields[$fieldname] = $fld_value;
 			$this->$fieldname = $fld_value;
 		}
-		$this->column_fields["record_id"] = $record;
-		$this->column_fields["record_module"] = $module;
+		$this->column_fields['record_id'] = $record;
+		$this->column_fields['record_module'] = $module;
 
 		$currency_query = "select * from vtiger_currency_info where id=? and currency_status='Active' and deleted=0";
 		$currency_result = $adb->pquery($currency_query, array($this->column_fields["currency_id"]));
@@ -1030,12 +1046,12 @@ class Users extends CRMEntity {
 		if (isset($currency_array[$adb->query_result($currency_result, 0, "currency_symbol")])) {
 			$ui_curr = $currency_array[$adb->query_result($currency_result, 0, "currency_symbol")];
 		} else {
-			$ui_curr = $adb->query_result($currency_result, 0, "currency_symbol");
+			$ui_curr = $adb->query_result($currency_result, 0, 'currency_symbol');
 		}
-		$this->column_fields["currency_name"] = $this->currency_name = $adb->query_result($currency_result, 0, "currency_name");
-		$this->column_fields["currency_code"] = $this->currency_code = $adb->query_result($currency_result, 0, "currency_code");
-		$this->column_fields["currency_symbol"] = $this->currency_symbol = $ui_curr;
-		$this->column_fields["conv_rate"] = $this->conv_rate = $adb->query_result($currency_result, 0, "conversion_rate");
+		$this->column_fields['currency_name'] = $this->currency_name = $adb->query_result($currency_result, 0, 'currency_name');
+		$this->column_fields['currency_code'] = $this->currency_code = $adb->query_result($currency_result, 0, 'currency_code');
+		$this->column_fields['currency_symbol'] = $this->currency_symbol = $ui_curr;
+		$this->column_fields['conv_rate'] = $this->conv_rate = $adb->query_result($currency_result, 0, 'conversion_rate');
 
 		// TODO - This needs to be cleaned up once default values for fields are picked up in a cleaner way.
 		// This is just a quick fix to ensure things doesn't start breaking when the user currency configuration is missing
@@ -1575,37 +1591,25 @@ class Users extends CRMEntity {
 	}
 
 	/** Function to export the Users records in CSV Format
-	* @param reference variable - where condition is passed when the query is executed
-	* Returns Export Users Query.
+	* @param string where condition is passed when the query is executed
+	* @return string Users SQL Query.
 	*/
 	public function create_export_query($where = '') {
 		global $log, $current_user;
 		$log->debug('> create_export_query '.$where);
-
 		$query = '';
-
 		if (is_admin($current_user)) {
-			include "include/utils/ExportUtils.php";
-
-			//To get the Permitted fields query and the permitted fields list
+			include_once 'include/utils/ExportUtils.php';
 			$sql = getPermittedFieldsQuery('Users', 'detail_view');
 			$fields_list = getFieldsListFromQuery($sql);
-
 			$query = "SELECT $fields_list
-				FROM vtiger_crmentity
-				INNER JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.crmid
+				FROM vtiger_users
 				INNER JOIN vtiger_user2role ON vtiger_user2role.userid = vtiger_users.id
-				INNER JOIN vtiger_asteriskextensions ON vtiger_asteriskextensions.userid = vtiger_users.id";
-
+				LEFT JOIN vtiger_asteriskextensions ON vtiger_asteriskextensions.userid = vtiger_users.id";
 			$query .= $this->getNonAdminAccessControlQuery('Users', $current_user);
-			$where_auto = ' vtiger_crmentity.deleted = 0 ';
-
 			if ($where != '') {
-				$query .= " WHERE ($where) AND ".$where_auto;
-			} else {
-				$query .= ' WHERE '.$where_auto;
+				$query .= " WHERE ($where)";
 			}
-
 			$log->debug('< create_export_query');
 		}
 		return $query;
@@ -1635,7 +1639,7 @@ class Users extends CRMEntity {
 	 * $adminstatus, $userstatus, $page, $order_by, $sorder, $email_search, $namerole_search
 	 * public function getUsersJSON($userid, $page, $order_by = 'module_name', $sorder = 'DESC', $action_search = '')
 	 */
-	public function getUsersJSON($adminstatus, $userstatus, $page, $order_by = 'user_name', $sorder = 'DESC', $email_search = '', $namerole_search = '') {
+	public function getUsersJSON($adminstatus, $userstatus, $page, $order_by = 'user_name', $sorder = 'DESC', $email_search = '', $namerole_search = '', $loggedInFilter = '') {
 		global $log, $adb, $current_user;
 		$log->debug('> getUserJSON');
 
@@ -1660,7 +1664,7 @@ class Users extends CRMEntity {
 		if ($sorder != '' && $order_by != '') {
 			$list_query = "Select * from vtiger_users $where order by $order_by $sorder";
 		} else {
-			$list_query = "Select * from vtiger_users $where order by ".$this->default_order_by." ".$this->default_sort_order;
+			$list_query = "Select * from vtiger_users $where order by ".$this->default_order_by.' '.$this->default_sort_order;
 		}
 		$rowsperpage = GlobalVariable::getVariable('Workflow_ListView_PageSize', 30);
 		$from = ($page-1)*$rowsperpage;
@@ -1696,14 +1700,22 @@ class Users extends CRMEntity {
 		$entries_list['prev_page_url'] = 'index.php?module=Users&action=UsersAjax&file=getJSON&page='.($page == 1 ? 1 : $page-1);
 		while ($lgn = $adb->fetch_array($result)) {
 			$entry = array();
-
+			$isuserloggedin = 'cbodUserConnection'.$lgn['id'];
+			if (coreBOS_Settings::SettingExists($isuserloggedin)) {
+				$entry['loggedin'] = true;
+			} else {
+				if ($loggedInFilter) {
+					continue;
+				}
+				$entry['loggedin'] = false;
+			}
+			$value = $lgn['email1'];
 			if ($_SESSION['internal_mailer'] == 1) {
 				$recordId = $lgn['id'];
-				$module = "Users";
+				$module = 'Users';
 				$tabid = getTabid($module);
 				$fieldId = $adb->getone("select fieldid from vtiger_field where tabid=".$tabid." and tablename='vtiger_users' and fieldname='email1'");
-				$fieldName = "email1";
-				$value = $lgn['email1'];
+				$fieldName = 'email1';
 				$entry['sendmail'] = "<a href=\"javascript:InternalMailer($recordId, $fieldId, '$fieldName', '$module', 'record_id');\">".textlength_check($value).'</a>';
 			} else {
 				$entry['sendmail'] = '<a href="mailto:'.$value.'">'.textlength_check($value).'</a>';
@@ -1735,6 +1747,7 @@ class Users extends CRMEntity {
 			$entry['Email2'] = $lgn['email2'];
 			$entry['username'] = $lgn['user_name'];
 			$entry['id'] = $lgn['id'];
+			$entry['userid'] = $lgn['id'].'user';
 			$entry['firstname'] = $lgn['first_name'];
 			$entry['lastname'] = $lgn['last_name'];
 			$entry['Status'] = $lgn['status'];
@@ -1750,6 +1763,7 @@ class Users extends CRMEntity {
 			$entries_list['data'][] = $entry;
 		}
 		$log->debug('< getUsersJSON');
+		$entries_list['listtotalrecord'] = count($entries_list['data']);
 		return json_encode($entries_list);
 	}
 

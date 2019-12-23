@@ -20,7 +20,7 @@ class Google_Service_Bigquery_ModelDefinition extends Google_Collection
   protected $collection_key = 'trainingRuns';
   protected $modelOptionsType = 'Google_Service_Bigquery_ModelDefinitionModelOptions';
   protected $modelOptionsDataType = '';
-  protected $trainingRunsType = 'Google_Service_Bigquery_TrainingRun';
+  protected $trainingRunsType = 'Google_Service_Bigquery_BqmlTrainingRun';
   protected $trainingRunsDataType = 'array';
 
   /**
@@ -38,14 +38,14 @@ class Google_Service_Bigquery_ModelDefinition extends Google_Collection
     return $this->modelOptions;
   }
   /**
-   * @param Google_Service_Bigquery_TrainingRun
+   * @param Google_Service_Bigquery_BqmlTrainingRun
    */
   public function setTrainingRuns($trainingRuns)
   {
     $this->trainingRuns = $trainingRuns;
   }
   /**
-   * @return Google_Service_Bigquery_TrainingRun
+   * @return Google_Service_Bigquery_BqmlTrainingRun
    */
   public function getTrainingRuns()
   {

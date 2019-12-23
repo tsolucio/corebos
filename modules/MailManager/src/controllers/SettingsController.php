@@ -45,6 +45,22 @@ class MailManager_SettingsController extends MailManager_MainUIController {
 				$response->isJSON(true);
 				$response->setError(101, $connector->lastError());
 			}
+		} elseif ('valconfig' == $request->getOperationArg()) {
+			$model = $this->getMailBoxModel();
+			$model->setServer($request->get('ic_mail_server_name'));
+			$model->setUsername($request->get('ic_mail_server_username'));
+			$model->setPassword($request->get('ic_mail_server_password'));
+			$model->setProtocol($request->get('ic_mail_server_protocol', 'imap2'));
+			$model->setSSLType($request->get('ic_mail_server_ssltype', 'tls'));
+			$model->setCertValidate($request->get('ic_mail_server_sslmeth', 'novalidate-cert'));
+			$model->setRefreshTimeOut($request->get('ic_mail_server_refresh_time'));
+			$connector = $this->getConnector();
+			if ($connector->isConnected()) {
+				$response->setResult(array('status' => true));
+			} elseif ($connector->hasError()) {
+				$response->isJSON(true);
+				$response->setError(101, $connector->lastError());
+			}
 		} elseif ('remove' == $request->getOperationArg()) {
 			$model = $this->getMailBoxModel();
 			$model->delete();

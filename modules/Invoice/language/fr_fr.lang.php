@@ -157,5 +157,9 @@ $mod_strings = array(
 	'Valid Date' => 'Date de validité',
 	'SINGLE_Invoice'=>'Facture',
 	'Invoice ID'=>'Facture ID',
+	'LBL_PARTIAL_PAYMENTS_INFO' => 'Partial Payments Information',
+	'Amount Due'=>'Amount Due',
+	'Amount Paid'=>'Amount Paid',
+	'Total Amount'=>'Total Amount',
 );
 ?>

@@ -45,6 +45,8 @@ define('RB_RECORD_DELETED', 'delete');
 define('RB_RECORD_INSERTED', 'insert');
 define('RB_RECORD_UPDATED', 'update');
 
+//libxml_disable_entity_loader(true);
+
 /** Function to load global browser variables for javascript
  * @param smarty object to load the variables, if empty it will only return the variables in an array
  * @returns array with the variables
@@ -128,8 +130,7 @@ function return_name(&$row, $first_column, $last_column) {
 	if ($full_name != '' && $last_name != '') {
 		// append a space, then the last name
 		$full_name .= ' '.$last_name;
-	} // If we have no first name, but we have a last name
-	elseif ($last_name != '') {
+	} elseif ($last_name != '') { // If we have no first name, but we have a last name
 		// append the last name without the space.
 		$full_name .= $last_name;
 	}
@@ -170,7 +171,7 @@ function get_assigned_user_name($assigned_user_id) {
 		return $user_list[$assigned_user_id];
 	}
 	$log->debug('< get_assigned_user_name');
-	return "";
+	return '';
 }
 
 /** Function returns the user key in user array
@@ -222,7 +223,7 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 					from vtiger_users
 					where id=? and status='Active'
 					union
-					select $orderFields vtiger_user2role.userid as id,vtiger_users.user_name as user_name, vtiger_users.first_name as first_name, vtiger_users.last_name as last_name
+					select $orderFields vtiger_user2role.userid as id,vtiger_users.user_name as user_name,vtiger_users.first_name as first_name,vtiger_users.last_name as last_name
 					from vtiger_user2role
 					inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
 					inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
@@ -464,9 +465,9 @@ function return_module_language($language, $module) {
 	$log->debug('> return_module_language '.$language.','. $module);
 	static $cachedModuleStrings = array();
 
-	if (!empty($cachedModuleStrings[$module])) {
+	if (!empty($cachedModuleStrings[$module.$language])) {
 		$log->debug('< return_module_language');
-		return $cachedModuleStrings[$module];
+		return $cachedModuleStrings[$module.$language];
 	}
 
 	$temp_mod_strings = $mod_strings;
@@ -505,7 +506,7 @@ function return_module_language($language, $module) {
 	$mod_strings = $temp_mod_strings;
 
 	$log->debug('< return_module_language');
-	$cachedModuleStrings[$module] = $return_value;
+	$cachedModuleStrings[$module.$language] = $return_value;
 	return $return_value;
 }
 
@@ -537,7 +538,7 @@ function return_specified_module_language($language, $module) {
 	return $return_value;
 }
 
-/** If the session variable is defined and is not equal to "" then return it. Otherwise, return the default value. */
+/** If the session variable is defined and is not equal to '' then return it. Otherwise, return the default value. */
 function return_session_value_or_default($varname, $default) {
 	global $log;
 	$log->debug('> return_session_value_or_default '.$varname.','. $default);
@@ -552,7 +553,7 @@ function return_session_value_or_default($varname, $default) {
 
 /**
   * Creates an array of where restrictions. These are used to construct a where SQL statement on the query
-  * It looks for the variable in the $_REQUEST array. If it is set and is not "" it will create a where clause out of it.
+  * It looks for the variable in the $_REQUEST array. If it is set and is not '' it will create a where clause out of it.
   * @param &$where_clauses - The array to append the clause to
   * @param $variable_name - The name of the variable to look for an add to the where clause if found
   * @param $SQL_name - [Optional] If specified, this is the SQL column name that is used. If not specified, the $variable_name is used as the SQL_name.
@@ -597,15 +598,15 @@ function create_guid() {
 	global $log;
 	$log->debug('> create_guid');
 	$microTime = microtime();
-	list($a_dec, $a_sec) = explode(" ", $microTime);
+	list($a_dec, $a_sec) = explode(' ', $microTime);
 
-	$dec_hex = sprintf("%x", $a_dec* 1000000);
-	$sec_hex = sprintf("%x", $a_sec);
+	$dec_hex = sprintf('%x', $a_dec* 1000000);
+	$sec_hex = sprintf('%x', $a_sec);
 
 	ensure_length($dec_hex, 5);
 	ensure_length($sec_hex, 6);
 
-	$guid = "";
+	$guid = '';
 	$guid .= $dec_hex;
 	$guid .= create_guid_section(3);
 	$guid .= '-';
@@ -1164,7 +1165,7 @@ function upload_product_image_file($mode, $id) {
 		$file_name = $_REQUEST['imagename_hidden'];
 	} else {
 		//allowed file pathname like UTF-8 Character
-		$file_name = ltrim(basename(" ".$file_path_name)); // basename($file_path_name);
+		$file_name = ltrim(basename(' '.$file_path_name)); // basename($file_path_name);
 	}
 	$file_name = $id.'_'.$file_name;
 	//$filetype= $_FILES['imagename']['type'];
@@ -1735,58 +1736,58 @@ function get_days_n_dates($st, $en) {
 function start_end_dates($period) {
 	global $log;
 	$log->debug('> start_end_dates '.$period);
-	$st_thisweek= date("Y-m-d", mktime(0, 0, 0, date("n"), (date("j")-date("w")), date("Y")));
-	if ($period=="tweek") {
-		$st_date= date("Y-m-d", mktime(0, 0, 0, date("n"), (date("j")-date("w")), date("Y")));
-		$end_date = date("Y-m-d", mktime(0, 0, 0, date("n"), (date("j")-1), date("Y")));
-		$st_week= date("w", mktime(0, 0, 0, date("n"), date("j"), date("Y")));
+	$st_thisweek= date('Y-m-d', mktime(0, 0, 0, date('n'), (date('j')-date('w')), date('Y')));
+	if ($period=='tweek') {
+		$st_date= date('Y-m-d', mktime(0, 0, 0, date('n'), (date('j')-date('w')), date('Y')));
+		$end_date = date('Y-m-d', mktime(0, 0, 0, date('n'), (date('j')-1), date('Y')));
+		$st_week= date('w', mktime(0, 0, 0, date('n'), date('j'), date('Y')));
 		if ($st_week==0) {
-			$start_week=explode("-", $st_thisweek);
-			$st_date = date("Y-m-d", mktime(0, 0, 0, date("$start_week[1]"), (date("$start_week[2]")-7), date("$start_week[0]")));
-			$end_date = date("Y-m-d", mktime(0, 0, 0, date("$start_week[1]"), (date("$start_week[2]")-1), date("$start_week[0]")));
+			$start_week=explode('-', $st_thisweek);
+			$st_date = date('Y-m-d', mktime(0, 0, 0, date("$start_week[1]"), (date("$start_week[2]")-7), date("$start_week[0]")));
+			$end_date = date('Y-m-d', mktime(0, 0, 0, date("$start_week[1]"), (date("$start_week[2]")-1), date("$start_week[0]")));
 		}
-		$period_type="week";
-		$width="360";
-	} elseif ($period=="lweek") {
-		$start_week=explode("-", $st_thisweek);
-		$st_date = date("Y-m-d", mktime(0, 0, 0, date("$start_week[1]"), (date("$start_week[2]")-7), date("$start_week[0]")));
-		$end_date = date("Y-m-d", mktime(0, 0, 0, date("$start_week[1]"), (date("$start_week[2]")-1), date("$start_week[0]")));
-		$st_week= date("w", mktime(0, 0, 0, date("n"), date("j"), date("Y")));
+		$period_type='week';
+		$width='360';
+	} elseif ($period=='lweek') {
+		$start_week=explode('-', $st_thisweek);
+		$st_date = date('Y-m-d', mktime(0, 0, 0, date("$start_week[1]"), (date("$start_week[2]")-7), date("$start_week[0]")));
+		$end_date = date('Y-m-d', mktime(0, 0, 0, date("$start_week[1]"), (date("$start_week[2]")-1), date("$start_week[0]")));
+		$st_week= date('w', mktime(0, 0, 0, date('n'), date('j'), date('Y')));
 		if ($st_week==0) {
-			$start_week=explode("-", $st_thisweek);
-			$st_date = date("Y-m-d", mktime(0, 0, 0, date("$start_week[1]"), (date("$start_week[2]")-14), date("$start_week[0]")));
-			$end_date = date("Y-m-d", mktime(0, 0, 0, date("$start_week[1]"), (date("$start_week[2]")-8), date("$start_week[0]")));
+			$start_week=explode('-', $st_thisweek);
+			$st_date = date('Y-m-d', mktime(0, 0, 0, date("$start_week[1]"), (date("$start_week[2]")-14), date("$start_week[0]")));
+			$end_date = date('Y-m-d', mktime(0, 0, 0, date("$start_week[1]"), (date("$start_week[2]")-8), date("$start_week[0]")));
 		}
-		$period_type="week";
-		$width="360";
-	} elseif ($period=="tmon") {
-		$period_type="month";
-		$width="840";
-		$st_date = date("Y-m-d", mktime(0, 0, 0, date("m"), "01", date("Y")));
-		$end_date = date("Y-m-t");
-	} elseif ($period=="lmon") {
-		$st_date=date("Y-m-d", mktime(0, 0, 0, date("n")-1, date("1"), date("Y")));
-		$end_date = date("Y-m-d", mktime(0, 0, 1, date("n"), 0, date("Y")));
-		$period_type="month";
-		$start_month=date("d", mktime(0, 0, 0, date("n"), date("j"), date("Y")));
+		$period_type='week';
+		$width='360';
+	} elseif ($period=='tmon') {
+		$period_type='month';
+		$width='840';
+		$st_date = date('Y-m-d', mktime(0, 0, 0, date('m'), '01', date('Y')));
+		$end_date = date('Y-m-t');
+	} elseif ($period=='lmon') {
+		$st_date=date('Y-m-d', mktime(0, 0, 0, date('n')-1, date('1'), date('Y')));
+		$end_date = date('Y-m-d', mktime(0, 0, 1, date('n'), 0, date('Y')));
+		$period_type='month';
+		$start_month=date('d', mktime(0, 0, 0, date('n'), date('j'), date('Y')));
 		if ($start_month==1) {
-			$st_date=date("Y-m-d", mktime(0, 0, 0, date("n")-2, date("1"), date("Y")));
-			$end_date = date("Y-m-d", mktime(0, 0, 1, date("n")-1, 0, date("Y")));
+			$st_date=date('Y-m-d', mktime(0, 0, 0, date('n')-2, date('1'), date('Y')));
+			$end_date = date('Y-m-d', mktime(0, 0, 1, date('n')-1, 0, date('Y')));
 		}
-		$width="840";
+		$width='840';
 	} else {
-		$curr_date=date("Y-m-d", mktime(0, 0, 0, date("m"), date("d"), date("Y")));
-		$today_date=explode("-", $curr_date);
-		$lastday_date=date("Y-m-d", mktime(0, 0, 0, date("$today_date[1]"), date("$today_date[2]")-1, date("$today_date[0]")));
+		$curr_date=date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y')));
+		$today_date=explode('-', $curr_date);
+		$lastday_date=date('Y-m-d', mktime(0, 0, 0, date("$today_date[1]"), date("$today_date[2]")-1, date("$today_date[0]")));
 		$st_date=$lastday_date;
 		$end_date=$lastday_date;
-		$period_type="yday";
-		$width="250";
+		$period_type='yday';
+		$width='250';
 	}
-	if ($period_type=="yday") {
-		$height="160";
+	if ($period_type=='yday') {
+		$height='160';
 	} else {
-		$height="250";
+		$height='250';
 	}
 	$datevalues=array($st_date,$end_date,$period_type,$width,$height);
 	$log->debug('< start_end_dates');
@@ -1800,15 +1801,15 @@ function start_end_dates($period) {
 function Graph_n_table_format($period_type, $date_value) {
 	global $log;
 	$log->debug('> Graph_n_table_format '.$period_type.','.$date_value);
-	$date_val=explode("-", $date_value);
-	if ($period_type=="month") {  //to get the vtiger_table format dates
-		$table_format=date("j", mktime(0, 0, 0, date($date_val[1]), (date($date_val[2])), date($date_val[0])));
-		$graph_format=date("D", mktime(0, 0, 0, date($date_val[1]), (date($date_val[2])), date($date_val[0])));
-	} elseif ($period_type=="week") {
-		$table_format=date("d/m", mktime(0, 0, 0, date($date_val[1]), (date($date_val[2])), date($date_val[0])));
-		$graph_format=date("D", mktime(0, 0, 0, date($date_val[1]), (date($date_val[2])), date($date_val[0])));
-	} elseif ($period_type=="yday") {
-		$table_format=date("j", mktime(0, 0, 0, date($date_val[1]), (date($date_val[2])), date($date_val[0])));
+	$date_val=explode('-', $date_value);
+	if ($period_type=='month') {  //to get the vtiger_table format dates
+		$table_format=date('j', mktime(0, 0, 0, date($date_val[1]), (date($date_val[2])), date($date_val[0])));
+		$graph_format=date('D', mktime(0, 0, 0, date($date_val[1]), (date($date_val[2])), date($date_val[0])));
+	} elseif ($period_type=='week') {
+		$table_format=date('d/m', mktime(0, 0, 0, date($date_val[1]), (date($date_val[2])), date($date_val[0])));
+		$graph_format=date('D', mktime(0, 0, 0, date($date_val[1]), (date($date_val[2])), date($date_val[0])));
+	} elseif ($period_type=='yday') {
+		$table_format=date('j', mktime(0, 0, 0, date($date_val[1]), (date($date_val[2])), date($date_val[0])));
 		$graph_format=$table_format;
 	}
 	$values=array($graph_format,$table_format);
@@ -1894,7 +1895,7 @@ function useInternalMailer() {
 */
 function utf8RawUrlDecode($source) {
 	global $default_charset;
-	$decodedStr = "";
+	$decodedStr = '';
 	$pos = 0;
 	$len = strlen($source);
 	while ($pos < $len) {
@@ -1907,7 +1908,7 @@ function utf8RawUrlDecode($source) {
 				$pos++;
 				$unicodeHexVal = substr($source, $pos, 4);
 				$unicode = hexdec($unicodeHexVal);
-				$entity = "&#". $unicode . ';';
+				$entity = '&#'. $unicode . ';';
 				$decodedStr .= utf8_encode($entity);
 				$pos += 4;
 			} else {
@@ -1970,7 +1971,7 @@ function _html_to_utf8($data) {
 		$i = 5;
 		while (($i--) > 0) {
 			if ($data != ($a = $data % ($p = pow(64, $i)))) {
-				$ret = chr(base_convert(str_pad(str_repeat(1, $i + 1), 8, "0"), 2, 10) + (($data - $a) / $p));
+				$ret = chr(base_convert(str_pad(str_repeat(1, $i + 1), 8, '0'), 2, 10) + (($data - $a) / $p));
 				for ($i; $i > 0; $i--) {
 					$ret .= chr(128 + ((($data % pow(64, $i)) - ($data % ($p = pow(64, $i - 1)))) / $p));
 				}
@@ -2006,7 +2007,7 @@ function generateQuestionMarks($items_list) {
 function is_uitype($uitype, $reqtype) {
 	$ui_type_arr = array(
 		'_date_' => array(5, 6, 23, 70),
-		'_picklist_' => array(15, 16, 52, 53, 54, 55, 62, 63, 66, 76, 77, 78, 80, 98, 101, 115, 357),
+		'_picklist_' => array(15, 16, 52, 53, 54, 55, 62, 63, 77, 98, 101, 115, 357),
 		'_users_list_' => array(52),
 	);
 
@@ -2148,14 +2149,14 @@ function getAccessPickListValues($module) {
 
 	$temp_status = array();
 	for ($i=0; $i < $adb->num_rows($result); $i++) {
-		$fieldname = $adb->query_result($result, $i, "fieldname");
+		$fieldname = $adb->query_result($result, $i, 'fieldname');
 		if ($fieldname == 'firstname') {
 			continue;
 		}
-		$fieldlabel = $adb->query_result($result, $i, "fieldlabel");
-		$columnname = $adb->query_result($result, $i, "columnname");
-		$tabid = $adb->query_result($result, $i, "tabid");
-		$uitype = $adb->query_result($result, $i, "uitype");
+		$fieldlabel = $adb->query_result($result, $i, 'fieldlabel');
+		$columnname = $adb->query_result($result, $i, 'columnname');
+		$tabid = $adb->query_result($result, $i, 'tabid');
+		$uitype = $adb->query_result($result, $i, 'uitype');
 
 		$keyvalue = $columnname;
 		$fieldvalues = array();
@@ -2262,30 +2263,10 @@ function getRecordValues($id_array, $module) {
 					} else {
 						$value_pair['disp_value']=$app_strings['yes'];
 					}
-				} elseif ($ui_type == 51 || $ui_type == 50) {
-					$entity_id=$field_values[$j][$fld_name];
-					if ($module !='Products') {
-						$entity_name=getAccountName($entity_id);
-					} else {
-						$entity_name=getProductName($entity_id);
-					}
-					$value_pair['disp_value']=$entity_name;
 				} elseif ($ui_type == 53) {
 					$owner_id=$field_values[$j][$fld_name];
 					$ownername=getOwnerName($owner_id);
 					$value_pair['disp_value']=$ownername;
-				} elseif ($ui_type ==57) {
-					$contact_id= $field_values[$j][$fld_name];
-					$contactname = '';
-					if ($contact_id != '') {
-						$displayValueArray = getEntityName('Contacts', $contact_id);
-						if (!empty($displayValueArray)) {
-							foreach ($displayValueArray as $field_value) {
-								$contactname = $field_value;
-							}
-						}
-					}
-					$value_pair['disp_value']=$contactname;
 				} elseif ($ui_type == 52) {
 					$user_id = $field_values[$j][$fld_name];
 					$user_name=getUserFullName($user_id);
@@ -2333,16 +2314,15 @@ function getDuplicateQuery($module, $field_values, $ui_type_arr) {
 	$tbl_col_fld = explode(',', $field_values);
 	$i=0;
 	foreach ($tbl_col_fld as $val) {
-		list($tbl[$i], $cols[$i], $fields[$i]) = explode(".", $val);
-		$tbl_cols[$i] = $tbl[$i]. "." . $cols[$i];
+		list($tbl[$i], $cols[$i], $fields[$i]) = explode('.', $val);
+		$tbl_cols[$i] = $tbl[$i]. '.' . $cols[$i];
 		$i++;
 	}
 	$table_cols = implode(',', $tbl_cols);
 	$sec_parameter = getSecParameterforMerge($module);
 
 	if ($module == 'Contacts') {
-		$nquery = "SELECT vtiger_contactdetails.contactid AS recordid,
-				vtiger_users_last_import.deleted,".$table_cols."
+		$nquery = "SELECT vtiger_contactdetails.contactid AS recordid, vtiger_users_last_import.deleted,$table_cols
 				FROM vtiger_contactdetails
 				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_contactdetails.contactid
 				INNER JOIN vtiger_contactaddress ON vtiger_contactdetails.contactid = vtiger_contactaddress.contactaddressid
@@ -2368,8 +2348,7 @@ function getDuplicateQuery($module, $field_values, $ui_type_arr) {
 					ON ".get_on_clause($field_values, $ui_type_arr, $module) ."
 								WHERE vtiger_crmentity.deleted=0 $sec_parameter ORDER BY $table_cols,vtiger_contactdetails.contactid ASC";
 	} elseif ($module == 'Accounts') {
-		$nquery="SELECT vtiger_account.accountid AS recordid,
-			vtiger_users_last_import.deleted,".$table_cols."
+		$nquery= "SELECT vtiger_account.accountid AS recordid, vtiger_users_last_import.deleted,$table_cols
 			FROM vtiger_account
 			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_account.accountid
 			INNER JOIN vtiger_accountbillads ON vtiger_account.accountid = vtiger_accountbillads.accountaddressid
@@ -2414,8 +2393,7 @@ function getDuplicateQuery($module, $field_values, $ui_type_arr) {
 				ON ".get_on_clause($field_values, $ui_type_arr, $module) ."
 				WHERE vtiger_crmentity.deleted=0 AND vtiger_leaddetails.converted = $val_conv $sec_parameter ORDER BY $table_cols,vtiger_leaddetails.leadid ASC";
 	} elseif ($module == 'Products') {
-		$nquery = "SELECT vtiger_products.productid AS recordid,
-			vtiger_users_last_import.deleted,".$table_cols."
+		$nquery = "SELECT vtiger_products.productid AS recordid, vtiger_users_last_import.deleted,$table_cols
 			FROM vtiger_products
 			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
 			LEFT JOIN vtiger_users_last_import ON vtiger_users_last_import.bean_id=vtiger_products.productid
@@ -2433,8 +2411,7 @@ function getDuplicateQuery($module, $field_values, $ui_type_arr) {
 			ON ".get_on_clause($field_values, $ui_type_arr, $module) ."
 							WHERE vtiger_crmentity.deleted=0 $sec_parameter ORDER BY $table_cols,vtiger_products.productid ASC";
 	} elseif ($module == "HelpDesk") {
-		$nquery = "SELECT vtiger_troubletickets.ticketid AS recordid,
-			vtiger_users_last_import.deleted,".$table_cols."
+		$nquery = "SELECT vtiger_troubletickets.ticketid AS recordid,vtiger_users_last_import.deleted,$table_cols
 			FROM vtiger_troubletickets
 			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_troubletickets.ticketid
 			LEFT JOIN vtiger_ticketcf ON vtiger_ticketcf.ticketid = vtiger_troubletickets.ticketid
@@ -2456,8 +2433,7 @@ function getDuplicateQuery($module, $field_values, $ui_type_arr) {
 			ON ".get_on_clause($field_values, $ui_type_arr, $module) ."
 							WHERE vtiger_crmentity.deleted=0 $sec_parameter ORDER BY $table_cols,vtiger_troubletickets.ticketid ASC";
 	} elseif ($module == "Potentials") {
-		$nquery = "SELECT vtiger_potential.potentialid AS recordid,
-			vtiger_users_last_import.deleted,".$table_cols."
+		$nquery = "SELECT vtiger_potential.potentialid AS recordid,vtiger_users_last_import.deleted,$table_cols
 			FROM vtiger_potential
 			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_potential.potentialid
 			LEFT JOIN vtiger_potentialscf ON vtiger_potentialscf.potentialid = vtiger_potential.potentialid
@@ -2475,8 +2451,7 @@ function getDuplicateQuery($module, $field_values, $ui_type_arr) {
 			ON ".get_on_clause($field_values, $ui_type_arr, $module) ."
 							WHERE vtiger_crmentity.deleted=0 $sec_parameter ORDER BY $table_cols,vtiger_potential.potentialid ASC";
 	} elseif ($module == "Vendors") {
-		$nquery = "SELECT vtiger_vendor.vendorid AS recordid,
-			vtiger_users_last_import.deleted,".$table_cols."
+		$nquery = "SELECT vtiger_vendor.vendorid AS recordid,vtiger_users_last_import.deleted,$table_cols
 			FROM vtiger_vendor
 			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_vendor.vendorid
 			LEFT JOIN vtiger_vendorcf ON vtiger_vendorcf.vendorid=vtiger_vendor.vendorid
@@ -2512,7 +2487,7 @@ function getDuplicateRecordsArr($module, $use_limit = true) {
 	$dup_query = getDuplicateQuery($module, $field_values, $ui_type);
 	// added for page navigation
 	$dup_count_query = substr($dup_query, stripos($dup_query, 'FROM'), strlen($dup_query));
-	$dup_count_query = "SELECT count(*) as count ".$dup_count_query;
+	$dup_count_query = 'SELECT count(*) as count '.$dup_count_query;
 	$count_res = $adb->query($dup_count_query);
 	$no_of_rows = $adb->query_result($count_res, 0, 'count');
 
@@ -2525,7 +2500,7 @@ function getDuplicateRecordsArr($module, $use_limit = true) {
 	$navigation_array = getNavigationValues($start, $no_of_rows, $list_max_entries_per_page);
 	$start_rec = $navigation_array['start'];
 	//$end_rec = $navigation_array['end_val'];
-	$navigationOutput = getTableHeaderNavigation($navigation_array, "", $module, "FindDuplicate", "");
+	$navigationOutput = getTableHeaderNavigation($navigation_array, '', $module, 'FindDuplicate', '');
 	if ($start_rec == 0) {
 		$limit_start_rec = 0;
 	} else {
@@ -2550,14 +2525,14 @@ function getDuplicateRecordsArr($module, $use_limit = true) {
 				</tr>
 				<tr>
 				<td class='small' align='right' nowrap='nowrap'>
-				<a href='javascript:window.history.back();'>".$app_strings['LBL_GO_BACK']."</a><br></td>
+				<a href='javascript:window.history.back();'>".$app_strings['LBL_GO_BACK'].'</a><br></td>
 				</tr>
 				</tbody></table>
 				</div>
-				</td></tr></table>";
+				</td></tr></table>';
 			exit();
 		} else {
-			echo "<br><br><table align='center' class='reportCreateBottom big' width='95%'><tr><td align='center'>".$app_strings['LBL_NO_DUPLICATE']."</td></tr></table>";
+			echo "<br><br><table align='center' class='reportCreateBottom big' width='95%'><tr><td align='center'>".$app_strings['LBL_NO_DUPLICATE'].'</td></tr></table>';
 			die;
 		}
 	}
@@ -2580,7 +2555,7 @@ function getDuplicateRecordsArr($module, $use_limit = true) {
 				$temp = $sl_arr;
 				$ii = 0;
 			}
-			$grp = "group".$gcnt;
+			$grp = 'group'.$gcnt;
 		}
 		$fld_values[$grp][$ii]['recordid'] = $result['recordid'];
 		for ($k=0, $kMax = count($col_arr); $k< $kMax; $k++) {
@@ -2593,20 +2568,6 @@ function getDuplicateRecordsArr($module, $use_limit = true) {
 				} else {
 					$result[$col_arr[$k]]=$app_strings['yes'];
 				}
-			}
-			if ($ui_type[$fld_arr[$k]] ==57) {
-				$contact_id= $result[$col_arr[$k]];
-				if ($contact_id != '') {
-					$parent_module = 'Contacts';
-					$displayValueArray = getEntityName($parent_module, $contact_id);
-					if (!empty($displayValueArray)) {
-						foreach ($displayValueArray as $field_value) {
-							$contactname = $field_value;
-						}
-					}
-				}
-
-				$result[$col_arr[$k]]=$contactname;
 			}
 			if ($ui_type[$fld_arr[$k]] == 15 || $ui_type[$fld_arr[$k]] == 16) {
 				$result[$col_arr[$k]]=getTranslatedString($result[$col_arr[$k]], $module);
@@ -2624,18 +2585,6 @@ function getDuplicateRecordsArr($module, $use_limit = true) {
 					$owner=getOwnerName($result[$col_arr[$k]]);
 				}
 				$result[$col_arr[$k]]=$owner;
-			}
-			if ($ui_type[$fld_arr[$k]] ==50 || $ui_type[$fld_arr[$k]] ==51) {
-				if ($module!='Products') {
-					$entity_name=getAccountName($result[$col_arr[$k]]);
-				} else {
-					$entity_name=getProductName($result[$col_arr[$k]]);
-				}
-				if ($entity_name != '') {
-					$result[$col_arr[$k]]=$entity_name;
-				} else {
-					$result[$col_arr[$k]]='';
-				}
 			}
 			/*uitype 10 handling*/
 			if ($ui_type[$fld_arr[$k]] == 10) {
@@ -2702,7 +2651,7 @@ function deleteExactDuplicates($dup_records, $module) {
 	$focus = CRMEntity::getInstance($module);
 	foreach ($dup_records_ids as $id) {
 		if (isPermitted($module, 'Delete', $id) == 'yes') {
-			$del_response=DeleteEntity($module, $module, $focus, $id, "");
+			$del_response=DeleteEntity($module, $module, $focus, $id, '');
 			if ($del_response[0]) {
 				$delete_fail_status = true;
 			}
@@ -2715,60 +2664,60 @@ function deleteExactDuplicates($dup_records, $module) {
 
 /** Function to get on clause criteria for sub tables like address tables to construct duplicate check query */
 function get_special_on_clause($field_list) {
-	$field_array = explode(",", $field_list);
+	$field_array = explode(',', $field_list);
 	$ret_str = '';
 	$sel_clause = '';
 	$i=1;
 	$cnt = count($field_array);
 	$spl_chk = ($_REQUEST['modulename'] != '')?$_REQUEST['modulename']:$_REQUEST['module'];
 	foreach ($field_array as $fld) {
-		$sub_arr = explode(".", $fld);
+		$sub_arr = explode('.', $fld);
 		$tbl_name = $sub_arr[0];
 		$col_name = $sub_arr[1];
 		//$fld_name = $sub_arr[2];
 
 		//need to handle aditional conditions with sub tables for further modules of duplicate check
 		if ($tbl_name == 'vtiger_leadsubdetails' || $tbl_name == 'vtiger_contactsubdetails') {
-			$tbl_alias = "subd";
+			$tbl_alias = 'subd';
 		} elseif ($tbl_name == 'vtiger_leadaddress' || $tbl_name == 'vtiger_contactaddress') {
-			$tbl_alias = "addr";
+			$tbl_alias = 'addr';
 		} elseif ($tbl_name == 'vtiger_account' && $spl_chk == 'Contacts') {
-			$tbl_alias = "acc";
+			$tbl_alias = 'acc';
 		} elseif ($tbl_name == 'vtiger_accountbillads') {
-			$tbl_alias = "badd";
+			$tbl_alias = 'badd';
 		} elseif ($tbl_name == 'vtiger_accountshipads') {
-			$tbl_alias = "sadd";
+			$tbl_alias = 'sadd';
 		} elseif ($tbl_name == 'vtiger_crmentity') {
-			$tbl_alias = "crm";
+			$tbl_alias = 'crm';
 		} elseif ($tbl_name == 'vtiger_customerdetails') {
-			$tbl_alias = "custd";
+			$tbl_alias = 'custd';
 		} elseif ($tbl_name == 'vtiger_contactdetails' && spl_chk == 'HelpDesk') {
-			$tbl_alias = "contd";
+			$tbl_alias = 'contd';
 		} elseif (stripos($tbl_name, 'cf') === (strlen($tbl_name) - strlen('cf'))) {
-			$tbl_alias = "tcf"; // Custom Field Table Prefix to use in subqueries
+			$tbl_alias = 'tcf'; // Custom Field Table Prefix to use in subqueries
 		} else {
-			$tbl_alias = "t";
+			$tbl_alias = 't';
 		}
 
-		$sel_clause .= $tbl_alias.".".$col_name.",";
+		$sel_clause .= $tbl_alias.'.'.$col_name.',';
 		$ret_str .= " $tbl_name.$col_name = $tbl_alias.$col_name";
 		if ($cnt != $i) {
-			$ret_str .= " and ";
+			$ret_str .= ' and ';
 		}
 		$i++;
 	}
 	$ret_arr['on_clause'] = $ret_str;
-	$ret_arr['sel_clause'] = trim($sel_clause, ",");
+	$ret_arr['sel_clause'] = trim($sel_clause, ',');
 	return $ret_arr;
 }
 
 /** Function to get on clause criteria for duplicate check queries */
 function get_on_clause($field_list, $uitype_arr, $module) {
-	$field_array = explode(",", $field_list);
+	$field_array = explode(',', $field_list);
 	$ret_str = '';
 	$i=1;
 	foreach ($field_array as $fld) {
-		$sub_arr = explode(".", $fld);
+		$sub_arr = explode('.', $fld);
 		$tbl_name = $sub_arr[0];
 		$col_name = $sub_arr[1];
 		//$fld_name = $sub_arr[2];
@@ -2776,7 +2725,7 @@ function get_on_clause($field_list, $uitype_arr, $module) {
 		$ret_str .= " ifnull($tbl_name.$col_name,'null') = ifnull(temp.$col_name,'null')";
 
 		if (count($field_array) != $i) {
-			$ret_str .= " and ";
+			$ret_str .= ' and ';
 		}
 		$i++;
 	}
@@ -2784,8 +2733,8 @@ function get_on_clause($field_list, $uitype_arr, $module) {
 }
 
 function elimina_acentos($cadena) {
-	$tofind = utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊẼËèéêẽëÌÍĨÎÏìíîĩïÙÚÛŨÜúùûũüÿçÇºªñÑ");
-	$replac = "AAAAAAaaaaaaOOOOOOooooooEEEEEeeeeeIIIIIiiiiiUUUUUuuuuuycCoanN";
+	$tofind = utf8_decode('ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊẼËèéêẽëÌÍĨÎÏìíîĩïÙÚÛŨÜúùûũüÿçÇºªñÑ');
+	$replac = 'AAAAAAaaaaaaOOOOOOooooooEEEEEeeeeeIIIIIiiiiiUUUUUuuuuuycCoanN';
 	return utf8_encode(strtr(utf8_decode($cadena), $tofind, $replac));
 }
 
@@ -2817,9 +2766,9 @@ function get_subquery_recordids($sub_query) {
 	$sub_res = '';
 	if ($row_count > 0) {
 		while ($rows = $adb->fetchByAssoc($sub_result)) {
-			$sub_res .= $rows[$id].",";
+			$sub_res .= $rows[$id].',';
 		}
-		$sub_res = trim($sub_res, ",");
+		$sub_res = trim($sub_res, ',');
 	} else {
 		$sub_res .= "''";
 	}
@@ -2838,8 +2787,8 @@ function getFieldValues($module) {
 	$special_fld_arr = array();
 	$tabid = getTabid($module);
 
-	$fieldname_query="select fieldname,fieldlabel,uitype,tablename,columnname from vtiger_field where fieldid in
-			(select fieldid from vtiger_user2mergefields WHERE tabid=? AND userid=? AND visible = ?) and vtiger_field.presence in (0,2)";
+	$fieldname_query='select fieldname,fieldlabel,uitype,tablename,columnname from vtiger_field where fieldid in
+		(select fieldid from vtiger_user2mergefields WHERE tabid=? AND userid=? AND visible=?) and vtiger_field.presence in (0,2)';
 	$fieldname_result = $adb->pquery($fieldname_query, array($tabid, $current_user->id, 1));
 
 	$field_num_rows = $adb->num_rows($fieldname_result);
@@ -2852,7 +2801,7 @@ function getFieldValues($module) {
 		$field_name = $adb->query_result($fieldname_result, $j, 'fieldname');
 		$field_lbl = $adb->query_result($fieldname_result, $j, 'fieldlabel');
 		$ui_type = $adb->query_result($fieldname_result, $j, 'uitype');
-		$table_col = $tablename.".".$column_name;
+		$table_col = $tablename.'.'.$column_name;
 		if (getFieldVisibilityPermission($module, $current_user->id, $field_name) == 0) {
 			$fld_name = (!empty($special_fld_arr[$field_name]))?$special_fld_arr[$field_name]:$field_name;
 
@@ -2862,16 +2811,16 @@ function getFieldValues($module) {
 				$table_col = $fld_table_arr[$table_col];
 			}
 
-			$field_values_array['fieldnames_list'][] = $table_col . "." . $fld_name;
+			$field_values_array['fieldnames_list'][] = $table_col . '.' . $fld_name;
 			$fld_labl_arr[]=$field_lbl;
 			$uitype[$field_name]=$ui_type;
 		}
 	}
-	$field_values_array['fieldnames_list']=implode(",", $field_values_array['fieldnames_list']);
-	$field_values=implode(",", $fld_arr);
+	$field_values_array['fieldnames_list']=implode(',', $field_values_array['fieldnames_list']);
+	$field_values=implode(',', $fld_arr);
 	$field_values_array['fieldnames']=$field_values;
-	$field_values_array["fieldnames_array"]=$fld_arr;
-	$field_values_array["columnnames_array"]=$col_arr;
+	$field_values_array['fieldnames_array']=$fld_arr;
+	$field_values_array['columnnames_array']=$col_arr;
 	$field_values_array['fieldlabels_array']=$fld_labl_arr;
 	$field_values_array['fieldname_uitype']=$uitype;
 
@@ -2964,7 +2913,7 @@ function transferProductCurrency($old_cur, $new_cur) {
 function transferPriceBookCurrency($old_cur, $new_cur) {
 	global $log, $adb;
 	$log->debug('> transferPriceBookCurrency');
-	$pb_res = $adb->pquery("select pricebookid from vtiger_pricebook where currency_id = ?", array($old_cur));
+	$pb_res = $adb->pquery('select pricebookid from vtiger_pricebook where currency_id=?', array($old_cur));
 	$numRows = $adb->num_rows($pb_res);
 	$pb_ids = array();
 	for ($i=0; $i<$numRows; $i++) {
@@ -3008,7 +2957,7 @@ function getCallerName($from) {
 		$caller = $caller."<br>
 			<a target='_blank' href='index.php?module=Leads&action=EditView&phone=$from'>".getTranslatedString('LBL_CREATE_LEAD')."</a><br>
 			<a target='_blank' href='index.php?module=Contacts&phone=$from'>".getTranslatedString('LBL_CREATE_CONTACT')."</a><br>
-			<a target='_blank' href='index.php?module=Accounts&action=EditView&phone=$from'>".getTranslatedString('LBL_CREATE_ACCOUNT')."</a>";
+			<a target='_blank' href='index.php?module=Accounts&action=EditView&phone=$from'>".getTranslatedString('LBL_CREATE_ACCOUNT').'</a>';
 	}
 	return $caller;
 }
@@ -3036,7 +2985,7 @@ function getCallerInfo($number) {
 		$fieldsArray = explode(',', $fieldsString);
 		foreach ($numArray as $number) {
 			foreach ($fieldsArray as $field) {
-				$result = $adb->pquery("SELECT tabid, uitype FROM vtiger_field WHERE columnname = ?", array($field));
+				$result = $adb->pquery('SELECT tabid, uitype FROM vtiger_field WHERE columnname=?', array($field));
 				for ($i = 0; $i< $adb->num_rows($result); $i++) {
 					$module = vtlib_getModuleNameById($adb->query_result($result, $i, 0));
 					$uitype = $adb->query_result($result, $i, 1);
@@ -3128,10 +3077,9 @@ function get_use_asterisk($id) {
  * @param string $status - the status of the call (outgoing/incoming/missed)
  * @param object $adb - the peardatabase object
  */
-function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $useCallerInfo) {
-	$sql = "select * from vtiger_asteriskextensions where asterisk_extension=?";
-	$result = $adb->pquery($sql, array($userExtension));
-	$userID = $adb->query_result($result, 0, "userid");
+function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $useCallerInfo, $pbxuuid) {
+	$result = $adb->pquery('select userid from vtiger_asteriskextensions where asterisk_extension=?', array($userExtension));
+	$userID = $adb->query_result($result, 0, 'userid');
 	if (empty($userID)) {
 		// call to extension not configured in application > return NULL
 		return;
@@ -3139,8 +3087,8 @@ function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $us
 	$crmID = $adb->getUniqueID('vtiger_crmentity');
 	$timeOfCall = date('Y-m-d H:i:s');
 
-	$sql = "insert into vtiger_crmentity values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
-	$params = array($crmID, $userID, $userID, 0, "PBXManager", "", $timeOfCall, $timeOfCall, null, null, 0, 1, 0);
+	$sql = 'insert into vtiger_crmentity values (?,?,?,?,?,?,?,?,?,?,?,?,?)';
+	$params = array($crmID, $userID, $userID, 0, 'PBXManager', '', $timeOfCall, $timeOfCall, null, null, 0, 1, 0);
 	$adb->pquery($sql, $params);
 	$unknownCaller = GlobalVariable::getVariable('PBX_Unknown_CallerID', 'Unknown', 'PBXManager');
 	if (empty($callfrom)) {
@@ -3150,12 +3098,12 @@ function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $us
 		$callto = $unknownCaller;
 	}
 
-	$sql = 'select * from vtiger_asteriskextensions where asterisk_extension=?';
+	$sql = 'select userid from vtiger_asteriskextensions where asterisk_extension=?';
 	if ($status == 'outgoing') {
 		//call is from user to record
 		$result = $adb->pquery($sql, array($callfrom));
 		if ($adb->num_rows($result)>0) {
-			$userid = $adb->query_result($result, 0, "userid");
+			$userid = $adb->query_result($result, 0, 'userid');
 			$callerName = getUserFullName($userid);
 		}
 
@@ -3163,7 +3111,7 @@ function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $us
 		if (empty($receiver)) {
 			$receiver = $unknownCaller;
 		} else {
-			$receiver = "<a href='index.php?module=".$receiver['module']."&action=DetailView&record=".$receiver['id']."'>".$receiver['name']."</a>";
+			$receiver = "<a href='index.php?module=".$receiver['module']."&action=DetailView&record=".$receiver['id']."'>".$receiver['name'].'</a>';
 		}
 	} else {
 		//call is from record to user
@@ -3375,7 +3323,7 @@ function getRelationTables($module, $secmodule) {
 			$ui10_columnname = $adb->query_result($ui10_query, 0, 'columnname');
 			$ui10_tabid = $adb->query_result($ui10_query, 0, 'tabid');
 			if ($primary_obj->table_name == $ui10_tablename) {
-				$reltables = array($ui10_tablename=>array("".$primary_obj->table_index."","$ui10_columnname"));
+				$reltables = array($ui10_tablename=>array(''.$primary_obj->table_index.'',"$ui10_columnname"));
 			} elseif ($secondary_obj->table_name == $ui10_tablename) {
 				$reltables = array(
 					$ui10_tablename => array($ui10_columnname, $secondary_obj->table_index),
@@ -3387,7 +3335,7 @@ function getRelationTables($module, $secmodule) {
 					$reltables = array($ui10_tablename=>array($ui10_columnname, $rel_field), $primary_obj->table_name => $primary_obj->table_index);
 				} else {
 					$rel_field = $primary_obj->tab_name_index[$ui10_tablename];
-					//$reltables = array($ui10_tablename=>array("$rel_field","$ui10_columnname"),"".$primary_obj->table_name."" => "".$primary_obj->table_index."");
+					//$reltables = array($ui10_tablename=>array("$rel_field","$ui10_columnname"),$primary_obj->table_name => $primary_obj->table_index);
 					$reltables = array($ui10_tablename => array($rel_field, $ui10_columnname));
 				}
 			}
@@ -3398,7 +3346,10 @@ function getRelationTables($module, $secmodule) {
 	if (is_array($reltables) && !empty($reltables)) {
 		$rel_array = $reltables;
 	} else {
-		$rel_array = array("vtiger_crmentityrel"=>array("crmid","relcrmid"),"".$primary_obj->table_name."" => "".$primary_obj->table_index."");
+		$rel_array = array(
+			'vtiger_crmentityrel' => array('crmid','relcrmid'),
+			$primary_obj->table_name => $primary_obj->table_index
+		);
 	}
 	return $rel_array;
 }
@@ -3471,7 +3422,7 @@ function getRelatedInfo($id) {
 	$data = array();
 	$result = $adb->pquery('select related_to from vtiger_potential where potentialid=?', array($id));
 	if ($adb->num_rows($result)>0) {
-		$relID = $adb->query_result($result, 0, "related_to");
+		$relID = $adb->query_result($result, 0, 'related_to');
 		$result = $adb->pquery('select setype from vtiger_crmentity where crmid=?', array($relID));
 		if ($adb->num_rows($result)>0) {
 			$setype = $adb->query_result($result, 0, 'setype');
@@ -3632,11 +3583,10 @@ function _phpset_memorylimit_MB($newvalue) {
  * @return String - Sanitized file name
  */
 function sanitizeUploadFileName($fileName, $badFileExtensions) {
-
 	$fileName = preg_replace('/\s+/', '_', $fileName);//replace space with _ in filename
 	$fileName = rtrim($fileName, '\\/<>?*:"<>|');
 
-	$fileNameParts = explode(".", $fileName);
+	$fileNameParts = explode('.', $fileName);
 	$countOfFileNameParts = count($fileNameParts);
 	$badExtensionFound = false;
 
@@ -3648,10 +3598,10 @@ function sanitizeUploadFileName($fileName, $badFileExtensions) {
 		}
 	}
 
-	$newFileName = implode(".", $fileNameParts);
+	$newFileName = implode('.', $fileNameParts);
 
 	if ($badExtensionFound) {
-		$newFileName .= ".txt";
+		$newFileName .= '.txt';
 	}
 	return $newFileName;
 }
@@ -3834,7 +3784,7 @@ function getSelectedRecords($input, $module, $idstring, $excludedRecords) {
 			}
 			$storearray = array_unique($storearray);
 		} else {
-			$storearray = explode(";", $idstring);
+			$storearray = explode(';', $idstring);
 		}
 	} elseif ($idstring == 'all') {
 		$result = getSelectAllQuery($input, $module);
@@ -3848,7 +3798,7 @@ function getSelectedRecords($input, $module, $idstring, $excludedRecords) {
 		$excludedRecords = explode(';', $excludedRecords);
 		$storearray = array_diff($storearray, $excludedRecords);
 	} else {
-		$storearray = explode(";", $idstring);
+		$storearray = explode(';', $idstring);
 	}
 
 	return $storearray;
@@ -3859,15 +3809,15 @@ function getSelectAllQuery($input, $module) {
 
 	$viewid = vtlib_purify($input['viewname']);
 
-	if ($module == "Calendar") {
+	if ($module == 'Calendar') {
 		$listquery = getListQuery($module);
 		$oCustomView = new CustomView($module);
 		$query = $oCustomView->getModifiedCvListQuery($viewid, $listquery, $module);
 		$where = '';
 		if (isset($input['query']) && $input['query'] == 'true') {
-			list($where, $ustring) = explode("#@@#", getWhereCondition($module, $input));
+			list($where, $ustring) = explode('#@@#', getWhereCondition($module, $input));
 			if (isset($where) && $where != '') {
-				$query .= " AND " .$where;
+				$query .= ' AND ' .$where;
 			}
 		}
 	} else {
@@ -3883,7 +3833,7 @@ function getSelectAllQuery($input, $module) {
 		if ($module == 'Documents' && GlobalVariable::getVariable('Document_Folder_View', 1, 'Documents')) {
 			$folderid = vtlib_purify($input['folderidstring']);
 			$folderid = str_replace(';', ',', $folderid);
-			$query .= " AND vtiger_notes.folderid in (".$folderid.")";
+			$query .= ' AND vtiger_notes.folderid in ('.$folderid.')';
 		}
 	}
 
@@ -3892,28 +3842,28 @@ function getSelectAllQuery($input, $module) {
 
 function getCampaignAccountIds($id) {
 	global $adb;
-	$sql = "SELECT vtiger_account.accountid as id FROM vtiger_account
+	$sql = 'SELECT vtiger_account.accountid as id FROM vtiger_account
 		INNER JOIN vtiger_campaignaccountrel ON vtiger_campaignaccountrel.accountid = vtiger_account.accountid
 		LEFT JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_account.accountid
-		WHERE vtiger_campaignaccountrel.campaignid = ? AND vtiger_crmentity.deleted=0";
+		WHERE vtiger_campaignaccountrel.campaignid = ? AND vtiger_crmentity.deleted=0';
 	return $adb->pquery($sql, array($id));
 }
 
 function getCampaignContactIds($id) {
 	global $adb;
-	$sql = "SELECT vtiger_contactdetails.contactid as id FROM vtiger_contactdetails
+	$sql = 'SELECT vtiger_contactdetails.contactid as id FROM vtiger_contactdetails
 		INNER JOIN vtiger_campaigncontrel ON vtiger_campaigncontrel.contactid = vtiger_contactdetails.contactid
 		LEFT JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid
-		WHERE vtiger_campaigncontrel.campaignid = ? AND vtiger_crmentity.deleted=0";
+		WHERE vtiger_campaigncontrel.campaignid = ? AND vtiger_crmentity.deleted=0';
 	return $adb->pquery($sql, array($id));
 }
 
 function getCampaignLeadIds($id) {
 	global $adb;
-	$sql = "SELECT vtiger_leaddetails.leadid as id FROM vtiger_leaddetails
+	$sql = 'SELECT vtiger_leaddetails.leadid as id FROM vtiger_leaddetails
 		INNER JOIN vtiger_campaignleadrel ON vtiger_campaignleadrel.leadid = vtiger_leaddetails.leadid
 		LEFT JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_leaddetails.leadid
-		WHERE vtiger_campaignleadrel.campaignid = ? AND vtiger_crmentity.deleted=0";
+		WHERE vtiger_campaignleadrel.campaignid = ? AND vtiger_crmentity.deleted=0';
 	return $adb->pquery($sql, array($id));
 }
 
@@ -3926,17 +3876,17 @@ function dateDiff($d1, $d2) {
 	$baseYear = min(date('Y', $d1), date('Y', $d2));
 	$diff = mktime(0, 0, $diffSecs, 1, 1, $baseYear);
 	return array(
-		"years" => date("Y", $diff) - $baseYear,
-		"months_total" => (date("Y", $diff) - $baseYear) * 12 + date("n", $diff) - 1,
-		"months" => date("n", $diff) - 1,
-		"days_total" => floor($diffSecs / (3600 * 24)),
-		"days" => date("j", $diff) - 1,
-		"hours_total" => floor($diffSecs / 3600),
-		"hours" => date("G", $diff),
-		"minutes_total" => floor($diffSecs / 60),
-		"minutes" => (int) date("i", $diff),
-		"seconds_total" => $diffSecs,
-		"seconds" => (int) date("s", $diff)
+		'years' => date('Y', $diff) - $baseYear,
+		'months_total' => (date('Y', $diff) - $baseYear) * 12 + date('n', $diff) - 1,
+		'months' => date('n', $diff) - 1,
+		'days_total' => floor($diffSecs / (3600 * 24)),
+		'days' => date('j', $diff) - 1,
+		'hours_total' => floor($diffSecs / 3600),
+		'hours' => date('G', $diff),
+		'minutes_total' => floor($diffSecs / 60),
+		'minutes' => (int) date('i', $diff),
+		'seconds_total' => $diffSecs,
+		'seconds' => (int) date('s', $diff)
 	);
 }
 
@@ -3991,7 +3941,7 @@ function retrieveCompanyDetails() {
 		array()
 	);
 	if ($query && $adb->num_rows($query) > 0) {
-		$record = $adb->query_result($query, 0, 'cbcompanyid');
+		//$record = $adb->query_result($query, 0, 'cbcompanyid');
 		$companyDetails['name']     = $companyDetails['companyname'] = decode_html($adb->query_result($query, 0, 'companyname'));
 		$companyDetails['website']  = $adb->query_result($query, 0, 'website');
 		$companyDetails['email']  = $adb->query_result($query, 0, 'email');

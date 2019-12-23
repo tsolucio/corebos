@@ -19,7 +19,6 @@ class Google_Service_ServiceControl_Request extends Google_Model
 {
   protected $authType = 'Google_Service_ServiceControl_Auth';
   protected $authDataType = '';
-  public $fragment;
   public $headers;
   public $host;
   public $id;
@@ -45,14 +44,6 @@ class Google_Service_ServiceControl_Request extends Google_Model
   public function getAuth()
   {
     return $this->auth;
-  }
-  public function setFragment($fragment)
-  {
-    $this->fragment = $fragment;
-  }
-  public function getFragment()
-  {
-    return $this->fragment;
   }
   public function setHeaders($headers)
   {
