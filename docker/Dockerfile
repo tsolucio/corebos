@@ -4,7 +4,7 @@ RUN mkdir /www
 
 RUN mkdir -p /run/php
 
-RUN apk add bash php7-fpm php7-cli php7-phar php7-tokenizer php7-simplexml php7-imap
+RUN apk add bash php7-fpm php7-cli php7-phar php7-tokenizer php7-simplexml php7-imap php7-xmlwriter
 
 COPY . /www
 
