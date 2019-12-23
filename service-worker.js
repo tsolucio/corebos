@@ -9200,7 +9200,7 @@ if (workbox) {
   },
   {
     "url": "include/js/general.js",
-    "revision": "c2d99513c9be76d2b0992369a9da049e"
+    "revision": "28f376dca41efa0668c6544dabc67755"
   },
   {
     "url": "include/js/hu_hu.lang.js",
@@ -9292,7 +9292,7 @@ if (workbox) {
   },
   {
     "url": "include/js/vtlib.js",
-    "revision": "5225cf265c0cdb19f97381bee69ff3a5"
+    "revision": "184b11ec74674cac2fe250b876b724a6"
   },
   {
     "url": "include/chart.js/Chart.bundle.js",
