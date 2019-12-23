@@ -678,6 +678,12 @@ $app_strings = array(
 
 	'group' => 'Groupe',
 	'individual' => 'individuel',
+	'Revision' => 'Version',
+	'Active Revision' => 'Active Version',
+	'Revisiones' => 'Version Control',
+	'Recover' => 'Recover Version',
+	'CRevision' => 'Create Version',
+	'CreatingRevision' => 'Saving all your work for future reference. Please be patient...',
 	'contains' => 'contient',
 	'does_not_contains' => 'ne contient pas',
 	'is' => 'est',

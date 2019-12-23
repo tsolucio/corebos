@@ -1,4 +1,18 @@
 <?php
+/*************************************************************************************************
+ * Copyright 2019 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+* Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
+* file except in compliance with the License. You can redistribute it and/or modify it
+* under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
+* granted by the License. coreBOS distributed by JPL TSolucio S.L. is distributed in
+* the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+* warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Unless required by
+* applicable law or agreed to in writing, software distributed under the License is
+* distributed on an "AS IS" BASIS, WITHOUT ANY WARRANTIES OR CONDITIONS OF ANY KIND,
+* either express or implied. See the License for the specific language governing
+* permissions and limitations under the License. You may obtain a copy of the License
+* at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
+*************************************************************************************************/
 class addFieldsToCyP extends cbupdaterWorker {
 	public function applyChange() {
 		global $adb;
@@ -11,11 +25,11 @@ class addFieldsToCyP extends cbupdaterWorker {
 			global $adb;
 			$modname = 'CobroPago';
 			$module = Vtiger_Module::getInstance($modname);
-						$block = Vtiger_Block::getInstance('LBL_COBROPAGO_INFORMATION', $module);
-						$fld_ref = Vtiger_Field::getInstance('reference', $module);
-						$this->ExecuteQuery("UPDATE vtiger_field SET typeofdata='V~O' WHERE fieldid={$fld_ref->id}");
-						$this->ExecuteQuery("UPDATE vtiger_field SET sequence=sequence+1 WHERE block={$block->id} AND sequence>1");
-					$field = Vtiger_Field::getInstance('cyp_no', $module);
+			$block = Vtiger_Block::getInstance('LBL_COBROPAGO_INFORMATION', $module);
+			$fld_ref = Vtiger_Field::getInstance('reference', $module);
+			$this->ExecuteQuery("UPDATE vtiger_field SET typeofdata='V~O' WHERE fieldid={$fld_ref->id}");
+			$this->ExecuteQuery("UPDATE vtiger_field SET sequence=sequence+1 WHERE block={$block->id} AND sequence>1");
+			$field = Vtiger_Field::getInstance('cyp_no', $module);
 			if (!$field) {
 				$field1 = new Vtiger_Field();
 				$field1->name = 'cyp_no';
@@ -29,12 +43,12 @@ class addFieldsToCyP extends cbupdaterWorker {
 				$field1->presence = 0;
 				$block->addField($field1);
 			}
-						$fld_due = Vtiger_Field::getInstance('duedate', $module);
-						$qry = "SELECT sequence FROM vtiger_field WHERE fieldid={$fld_due->id}";
-						$res = $adb->query($qry);
-						$seq = $adb->query_result($res, 0, 'sequence');
-						$this->ExecuteQuery("UPDATE vtiger_field SET sequence=sequence+1 WHERE block={$block->id} AND sequence>$seq");
-					$field = Vtiger_Field::getInstance('paymentdate', $module);
+			$fld_due = Vtiger_Field::getInstance('duedate', $module);
+			$qry = "SELECT sequence FROM vtiger_field WHERE fieldid={$fld_due->id}";
+			$res = $adb->query($qry);
+			$seq = $adb->query_result($res, 0, 'sequence');
+			$this->ExecuteQuery("UPDATE vtiger_field SET sequence=sequence+1 WHERE block={$block->id} AND sequence>$seq");
+			$field = Vtiger_Field::getInstance('paymentdate', $module);
 			if (!$field) {
 				$field1 = new Vtiger_Field();
 				$field1->name = 'paymentdate';
@@ -48,15 +62,14 @@ class addFieldsToCyP extends cbupdaterWorker {
 				$field1->presence = 0;
 				$block->addField($field1);
 			}
-						$res_ui4 = $adb->pquery("SELECT * FROM vtiger_field WHERE tabid=? AND uitype=? AND fieldname<>?", array($module->id,'4','cyp_no'));
+			$res_ui4 = $adb->pquery("SELECT * FROM vtiger_field WHERE tabid=? AND uitype=? AND fieldname<>?", array($module->id,'4','cyp_no'));
 			if ($adb->num_rows($res_ui4)!=0) {
 				$fld_ui4_id = $adb->query_result($res_ui4, 0, 'fieldid');
 				$fld_ui4_name = $adb->query_result($res_ui4, 0, 'fieldname');
 				$fld_ui4_colname = $adb->query_result($res_ui4, 0, 'columnname');
 				$this->ExecuteQuery("UPDATE vtiger_field SET uitype=? WHERE fieldid=?", array('1',$fld_ui4_id));
 			}
-
-												$res = $adb->query("SELECT * FROM vtiger_modentity_num WHERE semodule='CobroPago'");
+			$res = $adb->query("SELECT * FROM vtiger_modentity_num WHERE semodule='CobroPago'");
 			if ($adb->num_rows($res)==0) {
 				$focus = CRMEntity::getInstance($modname);
 				$focus->setModuleSeqNumber('configure', $modname, 'PAY-', '0000001');
@@ -78,10 +91,8 @@ class addFieldsToCyP extends cbupdaterWorker {
 				$task->field_value_mapping = '[{"fieldname":"'.$fld_ui4_name.'","valuetype":"fieldname","value":"cyp_no "}]';
 				$tm->saveTask($task);
 			}
-
-						$this->ExecuteQuery("UPDATE vtiger_entityname SET fieldname=CONCAT(fieldname,',cyp_no') WHERE tabid={$module->id}");
-						$this->ExecuteQuery("UPDATE vtiger_cobropago SET paymentdate=duedate");
-
+			$this->ExecuteQuery("UPDATE vtiger_entityname SET fieldname=CONCAT(fieldname,',cyp_no') WHERE tabid={$module->id}");
+			$this->ExecuteQuery("UPDATE vtiger_cobropago SET paymentdate=duedate");
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
@@ -101,5 +112,4 @@ class addFieldsToCyP extends cbupdaterWorker {
 		$this->finishExecution();
 	}
 }
-
 ?>

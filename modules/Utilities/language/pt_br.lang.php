@@ -69,5 +69,6 @@ $mod_strings = array(
 	'gmp_gid' => 'Google Universal analytics ID',
 	'gmp_gversion' => 'Measurement Protocol Version',
 	'gmp_deacterror' => 'Workflows that use this task exist!! Please eliminate them before deactivating.',
+	'Record Versioning' => 'Record Versioning',
 );
 ?>

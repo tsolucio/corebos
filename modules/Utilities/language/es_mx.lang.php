@@ -75,5 +75,6 @@ $mod_strings = array(
 	'gmp_gid' => 'ID Analíticas Universales de Google',
 	'gmp_gversion' => 'Versión de Measurement Protocol',
 	'gmp_deacterror' => '¡Existen flujos de trabajo que usan esta tarea! Elimínelos antes de desactivar la funcionalidad.',
+	'Record Versioning' => 'Versionado de Registros',
 );
 ?>

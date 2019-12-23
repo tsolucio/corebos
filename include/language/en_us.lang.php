@@ -684,6 +684,13 @@ $app_strings = array(
 'group'=>'Group',
 'individual'=>'individual',
 
+'Revision' => 'Version',
+'Active Revision' => 'Active Version',
+'Revisiones' => 'Version Control',
+'Recover' => 'Recover Version',
+'CRevision' => 'Create Version',
+'CreatingRevision' => 'Saving all your work for future reference. Please be patient...',
+
 //Added for values of picklist in Advanced Search filter
 //Modified for 5.0.3 GA release
 'contains'=>'contains',
