@@ -1363,11 +1363,11 @@ class CRMEntity {
 
 		// Select Custom Field Table Columns if present
 		if (!empty($this->customFieldTable)) {
-			$query .= ", " . $this->customFieldTable[0] . ".* ";
+			$query .= ', ' . $this->customFieldTable[0] . '.* ';
 		}
 
 		$query .= " FROM $this->table_name";
-		$query .= "	INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
+		$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
 
 		$joinedTables[] = $this->table_name;
 		$joinedTables[] = 'vtiger_crmentity';
@@ -1377,15 +1377,19 @@ class CRMEntity {
 			$query.=" INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1]." = $this->table_name.$this->table_index";
 			$joinedTables[] = $this->customFieldTable[0];
 		}
-		$query .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
-		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+		$query .= ' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid';
+		$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
 
 		$joinedTables[] = 'vtiger_users';
 		$joinedTables[] = 'vtiger_groups';
 
-		$linkedModulesQuery = $this->db->pquery("SELECT distinct tablename, columnname, relmodule FROM vtiger_field" .
-			" INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid" .
-			" WHERE uitype='10' AND vtiger_fieldmodulerel.module=?", array($module));
+		$linkedModulesQuery = $this->db->pquery(
+			'SELECT distinct tablename, columnname, relmodule
+			FROM vtiger_field
+			INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid'
+			." WHERE uitype='10' AND vtiger_fieldmodulerel.module=?",
+			array($module)
+		);
 		$linkedFieldsCount = $this->db->num_rows($linkedModulesQuery);
 
 		for ($i=0; $i<$linkedFieldsCount; $i++) {
@@ -1402,7 +1406,7 @@ class CRMEntity {
 		}
 
 		$query .= $this->getNonAdminAccessControlQuery($module, $current_user);
-		$query .= "	WHERE vtiger_crmentity.deleted = 0 ".$usewhere;
+		$query .= ' WHERE vtiger_crmentity.deleted=0 '.$usewhere;
 		return $query;
 	}
 

@@ -3,7 +3,7 @@
 	<tr>
 		<td>
 			<div style='background-color: #FFFABF; padding: 2px; margin: 0 0 2px 0; border: 1px solid yellow'>
-			<b style='color: red'>{$MOD.VTLIB_LBL_WARNING}:</b> {$DIR_NOTWRITABLE_LIST|@implode:', '} <b>{$MOD.VTLIB_LBL_NOT_WRITEABLE}!</b>
+			<b style='color: red'>{$MOD.VTLIB_LBL_WARNING}:</b> {', '|@implode:$DIR_NOTWRITABLE_LIST} <b>{$MOD.VTLIB_LBL_NOT_WRITEABLE}!</b>
 		</td>
 	</tr>
 </table>
