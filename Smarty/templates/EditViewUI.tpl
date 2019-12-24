@@ -1154,6 +1154,9 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				{assign var=header value='LBL_PRICING_INFORMATION'|@getTranslatedString:'Products'}
 			{/if}
 			{foreach item=tax key=count from=$TAX_DETAILS}
+				{if $fromlink eq 'qcreate' && $tax.qcreate==0}
+				{continue}
+				{/if}
 				{if $rloopit==2}
 					<tr name="tbl{$header|replace:' ':''}Content" style="height:25px" class="createview_field_row">
 				{else}
