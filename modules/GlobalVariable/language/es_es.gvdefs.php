@@ -1424,9 +1424,16 @@ $GlobalVariableDefinitons = array(
 'Application_ListView_SearchColumns_AC_Trigger' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Entero',
-	'category' => 'Application',
-	'values' => 'Any integer',
+	'category' => 'Aplicación',
+	'values' => 'Entero positivo',
 	'definition' => 'El número mínimo de caracteres necesarios para activar una búsqueda de autocompletar en los cuadros de búsqueda en la parte superior de las columnas (solo visible cuando Application_ListView_SearchColumns está activado). El valor predeterminado es 3',
+),
+'Inventory_Tax_FillInMode' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'All | Default | None',
+	'definition' => 'En el modo de impuestos GRUPO permitirá seleccionar los impuestos activados. Por defecto, se aplica el valor "Todos", que es el comportamiento antes de la existencia de esta variable. "Todos" calcula todos los impuestos activos, "Ninguno", establece todos los impuestos a 0 y "Predeterminado" activa los impuestos marcados como predeterminados en la configuración',
 ),
 );
 

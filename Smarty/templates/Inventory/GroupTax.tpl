@@ -4,9 +4,23 @@
 	<td align="right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnhide('group_tax_div')" style="cursor:pointer;"></td>
 </tr>
 {foreach item=tax_detail name=group_tax_loop key=loop_count from=$GROUP_TAXES}
+{if $TAXFILLINMODE=='None'}
+	{assign var=taxfilledvalue value=0.00}
+	{assign var=taxfilledpercent value=$tax_detail.percentage}
+{elseif $TAXFILLINMODE=='Default'}
+	{if $tax_detail.default==1}
+		{assign var=taxfilledvalue value=$tax_detail.percentage}
+	{else}
+		{assign var=taxfilledvalue value=0.00}
+	{/if}
+	{assign var=taxfilledpercent value=$tax_detail.percentage}
+{else}
+	{assign var=taxfilledvalue value=$tax_detail.percentage}
+	{assign var=taxfilledpercent value=''}
+{/if}
 <tr>
 	<td align="left" class="lineOnTop">
-		<input type="text" class="small" size="5" name="{$tax_detail.taxname}_group_percentage" id="group_tax_percentage{$smarty.foreach.group_tax_loop.iteration}" value="{$tax_detail.percentage}" onBlur="calcTotal()">&nbsp;%
+		<input type="text" class="small" size="5" name="{$tax_detail.taxname}_group_percentage" id="group_tax_percentage{$smarty.foreach.group_tax_loop.iteration}" value="{$taxfilledvalue}" onBlur="calcTotal()">&nbsp;{$taxfilledpercent}%
 	</td>
 	<td align="center" class="lineOnTop">{$tax_detail.taxlabel}</td>
 	<td align="right" class="lineOnTop">

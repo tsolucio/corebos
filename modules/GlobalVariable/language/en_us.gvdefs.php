@@ -1427,6 +1427,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Any integer',
 	'definition' => 'The minimal number of characters needed to trigger an autocomplete-search in the search boxes on top of the columns (only visible when Application_ListView_SearchColumns is activated). Defaults to 3',
 ),
+'Inventory_Tax_FillInMode' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'All | Default | None',
+	'definition' => 'In group tax mode will permit selecting the activated taxes. By default, the "All" value is applied which is the behavior before the existence of this variable. "All" calculates all active taxes, "None", sets all taxes to 0 and "Default" activates the taxes marked as default in settings',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php', GLOB_BRACE) as $tcode) {
