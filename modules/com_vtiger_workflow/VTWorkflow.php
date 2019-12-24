@@ -656,7 +656,11 @@ class Workflow {
 			$entry['RecordDetail'] = $lgn['workflow_id'];
 			$entry['workflow_id'] = $lgn['workflow_id'];
 			$entry['Purpose'] = $lgn['purpose'];
-			$entry['Trigger'] = getTranslatedString($workflow_execution_condtion_list[$lgn['execution_condition']], 'Settings');
+			$i18n = getTranslatedString($workflow_execution_condtion_list[$lgn['execution_condition']], 'Settings');
+			if ($i18n==$workflow_execution_condtion_list[$lgn['execution_condition']]) {
+				$i18n = getTranslatedString($workflow_execution_condtion_list[$lgn['execution_condition']], 'com_vtiger_workflow');
+			}
+			$entry['Trigger'] = $i18n;
 			$entries_list['data'][] = $entry;
 		}
 		$log->debug('< getWorkFlowJSON');
