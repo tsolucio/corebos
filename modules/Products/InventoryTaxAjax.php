@@ -60,7 +60,7 @@ for ($i=0,$j=$i+1; $i<count($tax_details); $i++,$j++) {
 		</td>
 		<td align="center" class="lineOnTop">'.$tax_label.'</td>
 		<td align="right" class="lineOnTop">
-			<input type="text" class="small" size="6" name="'.$tax_name_total.'" id="'.$tax_name_total.'" style="cursor:pointer;" value="'.$tax_total.'" readonly>
+			<input type="text" class="small" size="6" name="'.$tax_name_total.'" id="'.$tax_name_total.$i.'" style="cursor:pointer;" value="'.$tax_total.'" readonly>
 		</td>
 	</tr>';
 }

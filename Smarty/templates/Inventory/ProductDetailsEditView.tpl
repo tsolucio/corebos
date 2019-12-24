@@ -285,12 +285,12 @@ function displayCoords(currObj,obj,mode,curr_row)
 					<!-- we will form the table with all taxes -->
 					<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small" id="tax_table{$row_no}">
 					   <tr>
-						<td id="tax_div_title{$row_no}" nowrap align="left" ><b>Set Tax for : {$data.$totalAfterDiscount}</b></td>
+						<td id="tax_div_title{$row_no}" nowrap align="left" ><b>{$APP.LABEL_SET_TAX_FOR} : {$data.$totalAfterDiscount}</b></td>
 						<td>&nbsp;</td>
 						<td align="right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnhide('tax_div{$row_no}')" style="cursor:pointer;"></td>
 					   </tr>
 					{if isset($data.taxes)}
-					{foreach key=tax_row_no item=tax_data from=$data.taxes}
+					{foreach key=tax_row_no item=tax_data from=$data.taxes name=taxloop}
 					   {assign var="taxname" value=$tax_data.taxname|cat:"_percentage"|cat:$row_no}
 					   {assign var="taxlinerowno" value=$tax_row_no+1}
 					   {assign var="tax_id_name" value="hidden_tax"|cat:$taxlinerowno|cat:"_percentage"|cat:$row_no}
@@ -303,7 +303,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 						</td>
 						<td align="center" class="cblds-t-align_center" class="lineOnTop">{$tax_data.taxlabel}</td>
 						<td align="right" class="lineOnTop cblds-t-align_right">
-							<input type="text" class="small" size="6" name="{$popup_tax_rowname}" id="{$popup_tax_rowname}" style="cursor:pointer;" value="0.0" readonly>
+							<input type="text" class="small" size="6" name="{$popup_tax_rowname}" id="{$popup_tax_rowname}{$smarty.foreach.taxloop.iteration}" style="cursor:pointer;" value="0.0" readonly>
 						</td>
 					   </tr>
 					{/foreach}
@@ -316,7 +316,6 @@ function displayCoords(currObj,obj,mode,curr_row)
 		</table>
 	</td>
 	<!-- column 5 - List Price with Discount, Total After Discount and Tax as table - ends -->
-
 
 	<!-- column 6 - Product Total - starts -->
 	<td class="crmTableRow small lineOnTop inv-editview__totalscol"align="right">
