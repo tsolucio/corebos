@@ -1659,13 +1659,21 @@ class CRMEntity {
 	/** Function to unlink an entity with given Id from another entity */
 	public function unlinkRelationship($id, $return_module, $return_id) {
 		global $currentModule;
+		$data = array();
+		$data['sourceModule'] = getSalesEntityType($id);
+		$data['sourceRecordId'] = $id;
+		$data['destinationModule'] = $return_module;
+		$data['destinationRecordId'] = $return_id;
+		cbEventHandler::do_action('corebos.entity.link.delete', $data);
 
 		$query = 'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND relmodule=? AND relcrmid=?) OR (relcrmid=? AND module=? AND crmid=?)';
 		$params = array($id, $return_module, $return_id, $id, $return_module, $return_id);
 		$this->db->pquery($query, $params);
 
-		$fieldRes = $this->db->pquery('SELECT tabid, tablename, columnname FROM vtiger_field WHERE fieldid IN (
-			SELECT fieldid FROM vtiger_fieldmodulerel WHERE module=? AND relmodule=?)', array($currentModule, $return_module));
+		$fieldRes = $this->db->pquery(
+			'SELECT tabid, tablename, columnname FROM vtiger_field WHERE fieldid IN (SELECT fieldid FROM vtiger_fieldmodulerel WHERE module=? AND relmodule=?)',
+			array($currentModule, $return_module)
+		);
 		$numOfFields = $this->db->num_rows($fieldRes);
 		for ($i = 0; $i < $numOfFields; $i++) {
 			$tabId = $this->db->query_result($fieldRes, $i, 'tabid');
@@ -1679,6 +1687,7 @@ class CRMEntity {
 			$updateParams = array(null, $return_id, $id);
 			$this->db->pquery($updateQuery, $updateParams);
 		}
+		cbEventHandler::do_action('corebos.entity.link.delete.final', $data);
 	}
 
 	/** Function to restore a deleted record of specified module with given crmid
