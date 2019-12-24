@@ -164,6 +164,11 @@ class Workflow {
 		}
 		$this->purpose = isset($row['purpose']) ? $row['purpose'] : '';
 		$this->nexttrigger_time = isset($row['nexttrigger_time']) ? $row['nexttrigger_time'] : '';
+		if ($row['execution_condition']==VTWorkflowManager::$ON_RELATE || $row['execution_condition']==VTWorkflowManager::$ON_UNRELATE) {
+			$this->relatemodule = isset($row['relatemodule']) ? $row['relatemodule'] : '';
+		} else {
+			$this->relatemodule = '';
+		}
 	}
 
 	public function evaluate($entityCache, $id) {
@@ -270,7 +275,7 @@ class Workflow {
 
 	public function executionConditionAsLabel($label = null) {
 		if ($label==null) {
-			$arr = array('ON_FIRST_SAVE', 'ONCE', 'ON_EVERY_SAVE', 'ON_MODIFY', 'ON_DELETE', 'ON_SCHEDULE', 'MANUAL', 'RECORD_ACCESS_CONTROL');
+			$arr=array('ON_FIRST_SAVE', 'ONCE', 'ON_EVERY_SAVE', 'ON_MODIFY', 'ON_DELETE', 'ON_SCHEDULE', 'MANUAL', 'RECORD_ACCESS_CONTROL', 'ON_RELATE', 'ON_UNRELATE');
 			return $arr[$this->executionCondition-1];
 		} else {
 			$arr = array(
@@ -282,6 +287,8 @@ class Workflow {
 				'ON_SCHEDULE'=>VTWorkflowManager::$ON_SCHEDULE,
 				'MANUAL'=>VTWorkflowManager::$MANUAL,
 				'RECORD_ACCESS_CONTROL'=>VTWorkflowManager::$RECORD_ACCESS_CONTROL,
+				'ON_RELATE'=>VTWorkflowManager::$ON_RELATE,
+				'ON_UNRELATE'=>VTWorkflowManager::$ON_UNRELATE
 			);
 			$this->executionCondition = $arr[$label];
 		}
@@ -554,6 +561,8 @@ class Workflow {
 			VTWorkflowManager::$ON_SCHEDULE => 'LBL_ON_SCHEDULE',
 			VTWorkflowManager::$MANUAL => 'LBL_MANUAL',
 			VTWorkflowManager::$RECORD_ACCESS_CONTROL => 'LBL_RECORD_ACCESS_CONTROL',
+			VTWorkflowManager::$ON_RELATE => 'LBL_ON_RELATE',
+			VTWorkflowManager::$ON_UNRELATE => 'LBL_ON_UNRELATE',
 		);
 	}
 

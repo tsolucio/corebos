@@ -185,5 +185,7 @@ $mod_strings = array(
 	'Generate Image Code' => 'Generate Image Code',
 	'Generate Image Code Workflow Task' => 'Generate Image Code Workflow Task',
 	'GenerateImageCodeWorkflowTask' => 'Generate Image Code Workflow Task',
+	'LBL_ON_RELATE' => 'On Relate with',
+	'LBL_ON_UNRELATE' => 'On Unrelate with',
 );
 ?>

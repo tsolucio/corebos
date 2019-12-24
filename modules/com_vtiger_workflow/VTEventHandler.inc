@@ -49,6 +49,10 @@ class VTWorkflowEventHandler extends VTEventHandler {
 				continue;
 			}
 			switch ($workflow->executionCondition) {
+				case VTWorkflowManager::$ON_RELATE:
+				case VTWorkflowManager::$ON_UNRELATE:
+					// these are processed in WorkflowRelationEventHandler.php
+					continue 2;
 				case VTWorkflowManager::$ON_FIRST_SAVE:
 					if ($isNew) {
 						$doEvaluate = true;

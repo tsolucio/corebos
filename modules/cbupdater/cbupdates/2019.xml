@@ -383,4 +383,11 @@
 	<classname>migrateUIType515773to10</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mocodertz</author>
+	<description>Add and Register New Relate/Unrelate Events for Workflow</description>
+	<filename>build/changeSets/2019/WorkflowRelateAndUnrelateTriggers.php</filename>
+	<classname>WorkflowRelateAndUnrelateTriggers</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
