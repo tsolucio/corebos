@@ -59,8 +59,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 	}
 
 	/**
-	 * returns tabid that can be consumed for database lookup purpose generally, events and
-	 * calendar are treated as the same module
+	 * returns tabid that can be consumed for database lookup
 	 * @return Integer
 	 */
 	public function getEffectiveTabId() {

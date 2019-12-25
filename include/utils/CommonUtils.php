@@ -2046,7 +2046,7 @@ function Button_Check($module) {
 		$tempPer = isPermitted($module, $action, '');
 		$permit_arr[$action] = $tempPer;
 	}
-	$permit_arr['Calendar'] = isPermitted('Calendar', 'index', '');
+	$permit_arr['Calendar'] = isPermitted('cbCalendar', 'index', '');
 	$permit_arr['moduleSettings'] = isModuleSettingPermitted($module);
 	$log->debug('< Button_Check');
 	return $permit_arr;
