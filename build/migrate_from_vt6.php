@@ -127,6 +127,9 @@ $cnmsg = $adb->getColumnNames('com_vtiger_workflows');
 if (!in_array('purpose', $cnmsg)) {
 	$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `purpose` TEXT NULL;');
 }
+if (!in_array('relatemodule', $cnmsg)) {
+	$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `relatemodule` varchar(100) default NULL;');
+}
 $cnmsg = $adb->getColumnNames('vtiger_profile2field');
 if (!in_array('summary', $cnmsg)) {
 	$adb->query("ALTER TABLE vtiger_profile2field ADD summary enum('T', 'H','B', 'N') DEFAULT 'B' NOT NULL");
