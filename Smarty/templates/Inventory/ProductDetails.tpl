@@ -325,7 +325,6 @@ function displayCoords(currObj,obj,mode,curr_row)
 	<td id="discountTotal_final" class="crmTableRow small lineOnTop" align="right">0.00</td>
    </tr>
 
-
    <!-- Group Tax - starts -->
    <tr id="group_tax_row" valign="top" class="TaxHide">
 	<td class="crmTableRow small lineOnTop" style="border-right:1px #dadada;">&nbsp;</td>
