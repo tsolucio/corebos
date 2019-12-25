@@ -10,6 +10,8 @@ build/missingLanguage.sh
 build/oo-merge
 build/InstallRESTChanges.php
 build/WebserviceVQLParser
+build/console
+console
 include/install/resources/gdinfo.php
 include/install/resources/utils.php
 include/utils/DBHealthCheck.php
