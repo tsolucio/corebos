@@ -125,12 +125,10 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 	);
 	$relatedmodule = 'Any';
 	foreach ($relatedMods as $modval) {
-		$rs = $adb->pquery('select relationtype from vtiger_relatedlists where relation_id=?', array($modval['relationId']));
-		$reltype = $adb->query_result($rs, 0, 'relationtype');
 		if ($workflow->relatemodule == $modval['related_module']) {
 			$relatedmodule = $modval['related_module'];
 		}
-		if ($reltype == 'N:N' && !empty($modval['related_module'])) {
+		if ($modval['relationtype'] == 'N:N' && !empty($modval['related_module'])) {
 			$relatedmodules[$modval['related_module']] = $modval['labeli18n'];
 		}
 	}
