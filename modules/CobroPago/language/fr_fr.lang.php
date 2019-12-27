@@ -114,5 +114,6 @@ $mod_strings = array(
 'Payment done.' => 'Payment done.',
 'Redirecting to payment gateway...' => 'Redirecting to payment gateway...',
 'Payment error.' => 'Payment error.',
+'PreventEdit' => 'Prevent edit/delete if paid',
 );
 ?>

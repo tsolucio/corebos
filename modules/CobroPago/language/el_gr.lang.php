@@ -109,6 +109,7 @@ $mod_strings = array(
 'ERR_NO_TOKEN' => "No token for this account.",
 
 'Pay' => 'Pay',
-);
 
+'PreventEdit' => 'Prevent edit/delete if paid',
+);
 ?>
