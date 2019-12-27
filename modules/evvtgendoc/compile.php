@@ -644,6 +644,72 @@ function getModuleFromCondition($condition) {
 	return $token_pair[0];
 }
 
+function make_json_condition($modname, $text_condition) {
+	preg_match_all('/(\w+)\s?(>|<|=|!=|<=|>=)\s?(\'?\w+\'?)\s?(&&|\|\|)?\s?/', $text_condition, $pieces, PREG_SET_ORDER);
+	$conds_array = array();
+	$opmap = array(
+		'string' => array(
+			'=' => 'is',
+			'!=' => 'does not start with',
+		),
+		'number' => array(
+			'=' => 'equal to',
+			'!=' => 'does not equal',
+			'>' => 'greater than',
+			'<' => 'less than',
+			'<=' => 'less than or equal to',
+			'>=' => 'greater than or equal to',
+		),
+		'bool' => array(
+			'=' => 'is',
+			'!=' => 'is not',
+		),
+		'datetime' => array(
+			'=' => 'is',
+			'!=' => 'is not',
+			'>' => 'greater than',
+			'<' => 'less than',
+			'<=' => 'less than or equal to',
+			'>=' => 'greater than or equal to',
+		),
+	);
+	$typeofdatamap = array(
+		'string' => array('V', 'E'),
+		'number' => array('I', 'N', 'NN'),
+		'bool' => array('C'),
+		'datetime' => array('D', 'DT', 'T'),
+	);
+	if (count($pieces) > 0) {
+		foreach ($pieces as $piece) {
+			$field_tod = getTypeOfDataByFieldName($modname, trim($piece[1]));
+			$type = 'string';
+			foreach ($typeofdatamap as $typeofdata => $typesofdata) {
+				if (in_array($field_tod, $typesofdata)) {
+					$type = $typeofdata;
+				}
+			}
+			if ($field_tod === 'C') {
+				$piece[3] = $piece[3] == '1' ? 'true:boolean' : 'false:boolean';
+			}
+			if (isset($piece[4])) {
+				$glue = $piece[4] == '||' ? 'or' : 'and';
+			} else {
+				$glue = 'and';
+			}
+			$cond = array(
+				'fieldname' => trim($piece[1]),
+				'operation' => $opmap[$type][trim($piece[2])],
+				'value' => trim(str_replace('\'', '', $piece[3])),
+				'valuetype' => 'rawtext',
+				'joincondition' => $glue,
+				'groupid' => '0',
+			);
+			$conds_array[] = $cond;
+		}
+	}
+	return json_encode($conds_array);
+}
+
 function eval_paracada($condition, $id, $module, $check = false) {
 	global $adb, $iter_modules, $special_modules, $currentModule, $related_module, $rootmod, $enGD, $current_user;
 	OpenDocument::debugmsg('<h3>FOREACH -- Condition: '.$condition.' ID: '.$id.' MODULE: '.$module.'</h3>');
@@ -683,6 +749,15 @@ function eval_paracada($condition, $id, $module, $check = false) {
 	}
 
 	$token_pair = explode('.', $condition_pair[0]);
+
+	preg_match('/(\w+)\s\((.+)+\)/', $condition, $cond_elements); // Multiple conditions?
+	if (count($cond_elements) > 0 && isset($cond_elements[2])) {
+		$json_condition = make_json_condition($cond_elements[1], $cond_elements[2]);
+		$comp = 'wfeval';
+		$token_first_space_split = explode(' ', $token_pair[0]);
+		$token_pair[0] = $token_first_space_split[0];
+	}
+
 	if (array_key_exists($token_pair[0], $special_modules)) {
 		$relmodule = $special_modules[$token_pair[0]];
 		$SQL_label = " AND label='{$token_pair[0]}'";
@@ -765,8 +840,23 @@ function eval_paracada($condition, $id, $module, $check = false) {
 							case $enGD:
 								$cond_ok = (count(array_intersect($conditions, $values)) > 0);
 								break;
+							case 'wfeval':
+								include_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
+								include_once 'modules/com_vtiger_workflow/VTJsonCondition.inc';
+								include_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
+
+								$wsid = $adb->query_result($adb->query("SELECT id FROM vtiger_ws_entity WHERE name = '$relmodule'"), 0, 'id');
+								$wsid = $wsid . 'x' . $value;
+								$util = new VTWorkflowUtils();
+								$adminUser = $util->adminUser();
+								$entityCache = new VTEntityCache($adminUser);
+								$entityCache->forId($wsid);
+								$cs = new VTJsonCondition();
+								$util->revertUser();
+								$cond_ok = $cs->evaluate($json_condition, $entityCache, $wsid);
+								break;
 						}
-						if ($negado) {
+						if ($negado && ($comp != 'wfeval')) {
 							$cond_ok = !$cond_ok;
 						}
 						OpenDocument::debugmsg(array('ID' => $key, 'NEG' => $negado, 'COND' => $cond . $comp . $val, 'EVAL'=> $cond_ok));
