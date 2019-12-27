@@ -2707,18 +2707,13 @@ function getUItypeByFieldName($module, $fieldname) {
 function getTypeOfDataByFieldName($module, $fieldname) {
 	global $log, $adb;
 	$log->debug('> getTypeOfDataByFieldName ' . $module);
-	$tabIdList = array();
-	//To find tabid for this module
-	$tabIdList[] = getTabid($module);
-	if ($module == 'Calendar') {
-		$tabIdList[] = getTabid('Events');
-	}
-	$sql = 'select typeofdata from vtiger_field where tabid IN (' . generateQuestionMarks($tabIdList) . ') and fieldname=?';
-	$result = $adb->pquery($sql, array($tabIdList, $fieldname));
+	$sql = 'select typeofdata from vtiger_field where tabid = ? and fieldname=?';
+	$result = $adb->pquery($sql, array(getTabid($module), $fieldname));
 	$tod = explode('~', $adb->query_result($result, 0, 'typeofdata'))[0];
 	$log->debug('< getTypeOfDataByFieldName');
 	return $tod;
 }
+
 
 /**
  * Function to get the UItype for a field.
