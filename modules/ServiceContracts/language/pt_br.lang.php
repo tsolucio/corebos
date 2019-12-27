@@ -56,5 +56,7 @@ $mod_strings = array (
 'Incidents'=>'Incidentes',
 'LBL_MODULE_NAME'=>'Contratos de Serviços',
 'Service Requests'=>'Solicitação de Serviços',
+'SyncHelpDesk' => 'Synchronize Support Tickets',
+'SyncHelpDeskDescription' => 'Synchronize with Support Tickets Time and Effort',
 );
 ?>
