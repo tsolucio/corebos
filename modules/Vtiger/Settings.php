@@ -50,6 +50,9 @@ if (!is_admin($current_user)) {
 			$menu_array['Workflow']['label'] = getTranslatedString($adb->query_result($sql_result, 0, 'name'), 'com_vtiger_workflow');
 		}
 	}
+	if (isset($custom_menu_array) && is_array($custom_menu_array)) {
+		$menu_array = array_merge($menu_array, $custom_menu_array);
+	}
 	//add blanks for 3-column layout
 	$count = count($menu_array)%3;
 	if ($count>0) {
