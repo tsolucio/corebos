@@ -750,14 +750,15 @@ function eval_paracada($condition, $id, $module, $check = false) {
 
 	$token_pair = explode('.', $condition_pair[0]);
 
-	preg_match('/(\w+)\s\((.+)+\)/', $condition, $cond_elements); // Multiple conditions?
+	preg_match('/(\w+)\s\[(.+)+\]/', $condition, $cond_elements); // Multiple conditions?
 	if (count($cond_elements) > 0 && isset($cond_elements[2])) {
 		$json_condition = make_json_condition($cond_elements[1], $cond_elements[2]);
+		OpenDocument::debugmsg($json_condition);
 		$comp = 'wfeval';
 		$token_first_space_split = explode(' ', $token_pair[0]);
 		$token_pair[0] = $token_first_space_split[0];
 	}
-
+	$token_pair[0] = trim($token_pair[0]);
 	if (array_key_exists($token_pair[0], $special_modules)) {
 		$relmodule = $special_modules[$token_pair[0]];
 		$SQL_label = " AND label='{$token_pair[0]}'";
@@ -814,10 +815,12 @@ function eval_paracada($condition, $id, $module, $check = false) {
 						$conditions = multiple_values(retrieve_from_db($condition_pair[0], $key, $token_pair[0]));
 						$cond = $conditions[0];
 						$cond = str_replace(',', '.', $cond);
-						$uitype = getUItypeByFieldName($module, $token_pair[1]);
-						if (in_array($uitype, array(7, 71, 72))) {
-							$numField = new CurrencyField($cond);
-							$cond = $numField->getDBInsertedValue($current_user, false);
+						if (!empty($token_pair[1])) {
+							$uitype = getUItypeByFieldName($module, $token_pair[1]);
+							if (in_array($uitype, array(7, 71, 72))) {
+								$numField = new CurrencyField($cond);
+								$cond = $numField->getDBInsertedValue($current_user, false);
+							}
 						}
 						$vals = multiple_values($condition_pair[1]);
 						$val = $vals[0];
@@ -844,8 +847,8 @@ function eval_paracada($condition, $id, $module, $check = false) {
 								include_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 								include_once 'modules/com_vtiger_workflow/VTJsonCondition.inc';
 								include_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
-
-								$wsid = $adb->query_result($adb->query("SELECT id FROM vtiger_ws_entity WHERE name = '$relmodule'"), 0, 'id');
+								$rs = $adb->pquery('SELECT id FROM vtiger_ws_entity WHERE name=?', array($relmodule));
+								$wsid = $adb->query_result($rs, 0, 'id');
 								$wsid = $wsid . 'x' . $value;
 								$util = new VTWorkflowUtils();
 								$adminUser = $util->adminUser();
