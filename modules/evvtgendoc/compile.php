@@ -349,7 +349,7 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 							$cadena='';
 						}
 					}
-					switch (getDataType($module, $token_pair[1])) {
+					switch (getTypeOfDataByFieldName($module, $token_pair[1])) {
 						case 'I':
 							$cadena = number_format($cadena, 0);
 							break;
@@ -1682,17 +1682,6 @@ function getEntityModule($crmid) {
 		$modname = '';
 	}
 	return $modname;
-}
-
-function getDataType($module, $fieldname) {
-	global $adb;
-	$seltab = "SELECT tabid FROM vtiger_tab WHERE name=?";
-	$restab = $adb->pquery($seltab, array($module));
-	$tabid = $adb->query_result($restab, 0, 'tabid');
-	$selfield = "SELECT typeofdata FROM vtiger_field WHERE tabid=? AND fieldname=?";
-	$resfield = $adb->pquery($selfield, array($tabid,$fieldname));
-	$type = $adb->query_result($resfield, 0, 'typeofdata');
-	return substr($type, 0, 1);
 }
 
 function getUitypefield($module, $fieldname) {
