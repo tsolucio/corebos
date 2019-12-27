@@ -49,6 +49,7 @@ function getRelatedModulesInfomation($module, $user) {
 				'actions' => $actions,
 				'relationId' => $relationId,
 				'relatedfield' => $relationfield,
+				'relationtype' => $adb->query_result($result, $i, 'relationtype'),
 				'filterFields'=> vtws_getfilterfields($relModuleName, $user),
 			);
 		} else {
@@ -60,6 +61,7 @@ function getRelatedModulesInfomation($module, $user) {
 				'actions' => $actions,
 				'relationId' => $relationId,
 				'relatedfield' => $relationfield,
+				'relationtype' => $adb->query_result($result, $i, 'relationtype'),
 				'filterFields'=> vtws_getfilterfields($module, $user),
 			);
 		}

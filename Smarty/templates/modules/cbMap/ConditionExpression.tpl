@@ -31,9 +31,9 @@
 
 <div class="slds-p-around_x-small slds-grid slds-gutters">
 <div class="slds-col  slds-size_1-of-3 slds-form-element slds-text-align_left">
+	<legend class="slds-form-element__legend slds-form-element__label">{'LBL_MODULE'|@getTranslatedString:'cbMap'}</legend>
 	<div class="slds-form-element__control">
 		<div class="slds-select_container">
-			<legend class="slds-form-element__legend slds-form-element__label">{'LBL_MODULE'|@getTranslatedString:'cbMap'}</legend>
 			<select id="msmodules" required name="msmodules" class="slds-select" onchange="editpopupobj.setModule(this.value)">
 				{foreach item=arr from=$MODULES}
 					<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>

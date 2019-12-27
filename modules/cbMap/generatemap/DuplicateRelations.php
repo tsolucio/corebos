@@ -16,38 +16,31 @@
 require_once 'Smarty_setup.php';
 require_once 'modules/PickList/PickListUtils.php';
 
-class genConditionExpression extends generatecbMap {
+class genDuplicateRelations extends generatecbMap {
 
 	public function generateMap() {
 		$Map = $this->getMap();
 		include 'modules/cbMap/generatemap/GenMapHeader.php';
 		$xml = $this->getXMLContent();
-		$mapcontent = $fname = '';
-		$fparams = array();
-		if (isset($xml->expression)) {
-			$maptype='expression';
-			$mapcontent = $xml->expression;
-		} elseif (isset($xml->function)) {
-			$maptype='function';
-			$fname = $xml->function->name;
-			foreach ($xml->function->parameters->parameter as $prm) {
-				$fparams[] = $prm;
+		$relmods = array();
+		$DuplicateDirectRelations = (isset($xml->DuplicateDirectRelations) && strtolower($xml->DuplicateDirectRelations)=='true');
+		if (isset($xml->relatedmodules)) {
+			foreach ($xml->relatedmodules->relatedmodule as $relm) {
+				$relmods[] = array(
+					(string)$relm->module,
+					(string)$relm->relation,
+				);
 			}
-		} else {
-			$maptype='template';
-			$mapcontent = $xml->template;
 		}
 		$module = $Map->column_fields['targetname'];
 		$smarty->assign('MODULES', getPicklistValuesSpecialUitypes('1613', '', $module));
 		$smarty->assign('targetmodule', $module);
-		$smarty->assign('maptype', $maptype);
-		$smarty->assign('mapcontent', $mapcontent);
-		$smarty->assign('fname', $fname);
-		$smarty->assign('fparams', $fparams);
+		$smarty->assign('DuplicateDirectRelations', $DuplicateDirectRelations);
+		$smarty->assign('RelatedModules', $relmods);
 		$smarty->assign('MapID', $Map->id);
 		$smarty->assign('MapFields', $Map->column_fields);
 		$smarty->assign('NameOFMap', $Map->column_fields['mapname']);
-		$smarty->display('modules/cbMap/ConditionExpression.tpl');
+		$smarty->display('modules/cbMap/DuplicateRelations.tpl');
 		$smarty->display('modules/cbMap/GenMapFooter.tpl');
 	}
 
@@ -56,23 +49,23 @@ class genConditionExpression extends generatecbMap {
 		$Map = $this->getMap();
 		$module = $Map->column_fields['targetname'];
 		if ($module!=$_REQUEST['tmodule']) {
-			$adb->pquery('update vtiger_cbmap set targetname=? where cbmapid=?', array(vtlib_purify($_REQUEST['tmodule']), $Map->id));
+			$module = vtlib_purify($_REQUEST['tmodule']);
+			$adb->pquery('update vtiger_cbmap set targetname=? where cbmapid=?', array($module, $Map->id));
 		}
 		$xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><map/>');
-		$content=urldecode($_REQUEST['content']);
-		if ($_REQUEST['mtype']=='template') {
-			$m = $xml->addChild('template', $content);
-		} elseif ($_REQUEST['mtype']=='function') {
-			$m = $xml->addChild('function');
-			$m->addChild('name', vtlib_purify($_REQUEST['fname']));
-			$p = $m->addChild('parameters');
-			$params=explode(',', urldecode($_REQUEST['params']));
-			foreach ($params as $param) {
-				$p->addChild('parameter', $param);
+		$m = $xml->addChild('originmodule');
+		$m->addChild('originname', $module);
+		if (!empty($_REQUEST['relmods'])) {
+			$r = $xml->addChild('relatedmodules');
+			$rels = explode(',', urldecode($_REQUEST['relmods']));
+			foreach ($rels as $rel) {
+				$rl = explode('|', $rel);
+				$rlm = $r->addChild('relatedmodule');
+				$rlm->addChild('module', $rl[0]);
+				$rlm->addChild('relation', $rl[1]);
 			}
-		} else {
-			$m = $xml->addChild('expression', $content);
 		}
+		$xml->addChild('DuplicateDirectRelations', empty($_REQUEST['DuplicateDirectRelations']) ? 'false' : 'true');
 		return str_replace('<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL, '', $xml->asXML());
 	}
 }
