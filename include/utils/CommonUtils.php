@@ -2734,11 +2734,14 @@ function getUItypeByFieldName($module, $fieldname) {
 function getTypeOfDataByFieldName($module, $fieldname) {
 	global $log, $adb;
 	$log->debug('> getTypeOfDataByFieldName ' . $module);
-	$sql = 'select typeofdata from vtiger_field where tabid = ? and fieldname=?';
-	$result = $adb->pquery($sql, array(getTabid($module), $fieldname));
-	$tod_pieces = explode('~', $adb->query_result($result, 0, 'typeofdata'));
+	$result = $adb->pquery('select typeofdata from vtiger_field where tabid=? and fieldname=?', array(getTabid($module), $fieldname));
+	if ($result && $adb->num_rows($result)>0) {
+		list($tod, $mandatory) = explode('~', $result->fields['typeofdata']);
+	} else {
+		$tod = '';
+	}
 	$log->debug('< getTypeOfDataByFieldName');
-	return $tod[0];
+	return $tod;
 }
 
 /**
