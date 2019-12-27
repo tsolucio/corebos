@@ -744,18 +744,20 @@ function eval_paracada($condition, $id, $module, $check = false) {
 		$values = explode(',', $valstr);
 	}
 
-	preg_match('/(\w+)\s\((.+)+\)/', $condition, $cond_elements); // Multiple conditions?
-	if (count($cond_elements) > 0 && isset($cond_elements[2])) {
-		$json_condition = make_json_condition($cond_elements[1], $cond_elements[2]);
-		$comp = 'wfeval';
-	}
-
 	for ($i=0; $i<count($condition_pair); $i++) {
 		$condition_pair[$i] = trim($condition_pair[$i]);
 	}
 
 	$token_pair = explode('.', $condition_pair[0]);
-	$token_pair[0] = explode(' ', $token_pair[0])[0];
+
+	preg_match('/(\w+)\s\((.+)+\)/', $condition, $cond_elements); // Multiple conditions?
+	if (count($cond_elements) > 0 && isset($cond_elements[2])) {
+		$json_condition = make_json_condition($cond_elements[1], $cond_elements[2]);
+		$comp = 'wfeval';
+		$token_first_space_split = explode(' ', $token_pair[0]);
+		$token_pair[0] = $token_first_space_split[0];
+	}
+
 	if (array_key_exists($token_pair[0], $special_modules)) {
 		$relmodule = $special_modules[$token_pair[0]];
 		$SQL_label = " AND label='{$token_pair[0]}'";
