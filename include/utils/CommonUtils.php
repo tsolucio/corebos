@@ -2709,11 +2709,10 @@ function getTypeOfDataByFieldName($module, $fieldname) {
 	$log->debug('> getTypeOfDataByFieldName ' . $module);
 	$sql = 'select typeofdata from vtiger_field where tabid = ? and fieldname=?';
 	$result = $adb->pquery($sql, array(getTabid($module), $fieldname));
-	$tod = explode('~', $adb->query_result($result, 0, 'typeofdata'))[0];
+	$tod_pieces = explode('~', $adb->query_result($result, 0, 'typeofdata'));
 	$log->debug('< getTypeOfDataByFieldName');
-	return $tod;
+	return $tod[0];
 }
-
 
 /**
  * Function to get the UItype for a field.
