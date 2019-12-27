@@ -47,7 +47,6 @@ class genConditionExpression extends generatecbMap {
 		$smarty->assign('MapID', $Map->id);
 		$smarty->assign('MapFields', $Map->column_fields);
 		$smarty->assign('NameOFMap', $Map->column_fields['mapname']);
-		$smarty->assign('SelectedModules', '');
 		$smarty->display('modules/cbMap/ConditionExpression.tpl');
 		$smarty->display('modules/cbMap/GenMapFooter.tpl');
 	}
