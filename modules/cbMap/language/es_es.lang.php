@@ -54,5 +54,7 @@ $mod_strings = array(
 	'TypeOfExpression' => 'Tipo de Expresión',
 	'FunctionName' => 'Nombre Función',
 	'FunctionParams' => 'Parámetros Función',
+	'Relations' => 'Relaciones',
+	'DuplicateDirectRelations' => 'Duplicar Relaciones Directas',
 );
 ?>
