@@ -39,7 +39,8 @@ class DuplicateRecords extends VTTask {
 				}
 				duplicateRecordRelations($module, $cto_id, $duplicatedfrom, $this->bmapid);
 			} else {
-				duplicaterec($module, $cto_id, $this->bmapid);
+				$new_record_id = duplicaterec($module, $cto_id, $this->bmapid);
+				dq_updateRevisionFields($module, $cto_id, $new_record_id);
 			}
 		}
 	}
