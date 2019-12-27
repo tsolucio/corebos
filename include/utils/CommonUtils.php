@@ -2727,6 +2727,24 @@ function getUItypeByFieldName($module, $fieldname) {
 }
 
 /**
+ * Function to get the Type of data for a field by the fieldname.
+ * Takes the input as $module - module name,and fieldname of the field
+ * returns the type of data, varchar type
+ */
+function getTypeOfDataByFieldName($module, $fieldname) {
+	global $log, $adb;
+	$log->debug('> getTypeOfDataByFieldName ' . $module);
+	$result = $adb->pquery('select typeofdata from vtiger_field where tabid=? and fieldname=?', array(getTabid($module), $fieldname));
+	if ($result && $adb->num_rows($result)>0) {
+		list($tod, $mandatory) = explode('~', $result->fields['typeofdata']);
+	} else {
+		$tod = '';
+	}
+	$log->debug('< getTypeOfDataByFieldName');
+	return $tod;
+}
+
+/**
  * Function to get the UItype for a field.
  * Takes the input as $module - module name,and columnname of the field
  * returns the uitype, integer type

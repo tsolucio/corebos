@@ -349,7 +349,7 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 							$cadena='';
 						}
 					}
-					switch (getDataType($module, $token_pair[1])) {
+					switch (getTypeOfDataByFieldName($module, $token_pair[1])) {
 						case 'I':
 							$cadena = number_format($cadena, 0);
 							break;
@@ -644,6 +644,72 @@ function getModuleFromCondition($condition) {
 	return $token_pair[0];
 }
 
+function make_json_condition($modname, $text_condition) {
+	preg_match_all('/(\w+)\s?(>|<|=|!=|<=|>=)\s?(\'?\w+\'?)\s?(&&|\|\|)?\s?/', $text_condition, $pieces, PREG_SET_ORDER);
+	$conds_array = array();
+	$opmap = array(
+		'string' => array(
+			'=' => 'is',
+			'!=' => 'does not start with',
+		),
+		'number' => array(
+			'=' => 'equal to',
+			'!=' => 'does not equal',
+			'>' => 'greater than',
+			'<' => 'less than',
+			'<=' => 'less than or equal to',
+			'>=' => 'greater than or equal to',
+		),
+		'bool' => array(
+			'=' => 'is',
+			'!=' => 'is not',
+		),
+		'datetime' => array(
+			'=' => 'is',
+			'!=' => 'is not',
+			'>' => 'greater than',
+			'<' => 'less than',
+			'<=' => 'less than or equal to',
+			'>=' => 'greater than or equal to',
+		),
+	);
+	$typeofdatamap = array(
+		'string' => array('V', 'E'),
+		'number' => array('I', 'N', 'NN'),
+		'bool' => array('C'),
+		'datetime' => array('D', 'DT', 'T'),
+	);
+	if (count($pieces) > 0) {
+		foreach ($pieces as $piece) {
+			$field_tod = getTypeOfDataByFieldName($modname, trim($piece[1]));
+			$type = 'string';
+			foreach ($typeofdatamap as $typeofdata => $typesofdata) {
+				if (in_array($field_tod, $typesofdata)) {
+					$type = $typeofdata;
+				}
+			}
+			if ($field_tod === 'C') {
+				$piece[3] = $piece[3] == '1' ? 'true:boolean' : 'false:boolean';
+			}
+			if (isset($piece[4])) {
+				$glue = $piece[4] == '||' ? 'or' : 'and';
+			} else {
+				$glue = 'and';
+			}
+			$cond = array(
+				'fieldname' => trim($piece[1]),
+				'operation' => $opmap[$type][trim($piece[2])],
+				'value' => trim(str_replace('\'', '', $piece[3])),
+				'valuetype' => 'rawtext',
+				'joincondition' => $glue,
+				'groupid' => '0',
+			);
+			$conds_array[] = $cond;
+		}
+	}
+	return json_encode($conds_array);
+}
+
 function eval_paracada($condition, $id, $module, $check = false) {
 	global $adb, $iter_modules, $special_modules, $currentModule, $related_module, $rootmod, $enGD, $current_user;
 	OpenDocument::debugmsg('<h3>FOREACH -- Condition: '.$condition.' ID: '.$id.' MODULE: '.$module.'</h3>');
@@ -683,6 +749,16 @@ function eval_paracada($condition, $id, $module, $check = false) {
 	}
 
 	$token_pair = explode('.', $condition_pair[0]);
+
+	preg_match('/(\w+)\s\[(.+)+\]/', $condition, $cond_elements); // Multiple conditions?
+	if (count($cond_elements) > 0 && isset($cond_elements[2])) {
+		$json_condition = make_json_condition($cond_elements[1], $cond_elements[2]);
+		OpenDocument::debugmsg($json_condition);
+		$comp = 'wfeval';
+		$token_first_space_split = explode(' ', $token_pair[0]);
+		$token_pair[0] = $token_first_space_split[0];
+	}
+	$token_pair[0] = trim($token_pair[0]);
 	if (array_key_exists($token_pair[0], $special_modules)) {
 		$relmodule = $special_modules[$token_pair[0]];
 		$SQL_label = " AND label='{$token_pair[0]}'";
@@ -739,10 +815,12 @@ function eval_paracada($condition, $id, $module, $check = false) {
 						$conditions = multiple_values(retrieve_from_db($condition_pair[0], $key, $token_pair[0]));
 						$cond = $conditions[0];
 						$cond = str_replace(',', '.', $cond);
-						$uitype = getUItypeByFieldName($module, $token_pair[1]);
-						if (in_array($uitype, array(7, 71, 72))) {
-							$numField = new CurrencyField($cond);
-							$cond = $numField->getDBInsertedValue($current_user, false);
+						if (!empty($token_pair[1])) {
+							$uitype = getUItypeByFieldName($module, $token_pair[1]);
+							if (in_array($uitype, array(7, 71, 72))) {
+								$numField = new CurrencyField($cond);
+								$cond = $numField->getDBInsertedValue($current_user, false);
+							}
 						}
 						$vals = multiple_values($condition_pair[1]);
 						$val = $vals[0];
@@ -765,8 +843,23 @@ function eval_paracada($condition, $id, $module, $check = false) {
 							case $enGD:
 								$cond_ok = (count(array_intersect($conditions, $values)) > 0);
 								break;
+							case 'wfeval':
+								include_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
+								include_once 'modules/com_vtiger_workflow/VTJsonCondition.inc';
+								include_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
+								$rs = $adb->pquery('SELECT id FROM vtiger_ws_entity WHERE name=?', array($relmodule));
+								$wsid = $adb->query_result($rs, 0, 'id');
+								$wsid = $wsid . 'x' . $value;
+								$util = new VTWorkflowUtils();
+								$adminUser = $util->adminUser();
+								$entityCache = new VTEntityCache($adminUser);
+								$entityCache->forId($wsid);
+								$cs = new VTJsonCondition();
+								$util->revertUser();
+								$cond_ok = $cs->evaluate($json_condition, $entityCache, $wsid);
+								break;
 						}
-						if ($negado) {
+						if ($negado && ($comp != 'wfeval')) {
 							$cond_ok = !$cond_ok;
 						}
 						OpenDocument::debugmsg(array('ID' => $key, 'NEG' => $negado, 'COND' => $cond . $comp . $val, 'EVAL'=> $cond_ok));
@@ -1592,17 +1685,6 @@ function getEntityModule($crmid) {
 		$modname = '';
 	}
 	return $modname;
-}
-
-function getDataType($module, $fieldname) {
-	global $adb;
-	$seltab = "SELECT tabid FROM vtiger_tab WHERE name=?";
-	$restab = $adb->pquery($seltab, array($module));
-	$tabid = $adb->query_result($restab, 0, 'tabid');
-	$selfield = "SELECT typeofdata FROM vtiger_field WHERE tabid=? AND fieldname=?";
-	$resfield = $adb->pquery($selfield, array($tabid,$fieldname));
-	$type = $adb->query_result($resfield, 0, 'typeofdata');
-	return substr($type, 0, 1);
 }
 
 function getUitypefield($module, $fieldname) {
