@@ -1040,7 +1040,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 		</td>
 		<td id="td_val_{$fldname}" width="30%" align=left class="dvtCellInfo">
 			<span style='display:none;' id='{$fldname}_hidden'></span>
-			<select name="{$fldname}" tabindex="{$vt_tab}" class="small">
+			<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small">
 				{foreach item=v key=k from=$fldvalue}
 				<option value="{$k}">{$v}</option>
 				{/foreach}

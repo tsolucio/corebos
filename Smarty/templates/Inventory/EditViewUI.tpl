@@ -662,7 +662,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 		<font color="red">{$mandatory_field}</font>{$fldlabel}
 		</span>
 		<span width="30%" class="mdCellInfo">
-			<select name="{$fldname}" tabindex="{$vt_tab}" class="small">
+			<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small">
 				{foreach item=v key=k from=$fldvalue}
 				<option value="{$k}">{$v}</option>
 				{/foreach}
