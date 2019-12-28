@@ -15,7 +15,14 @@ $smarty = new vtigerCRM_Smarty();
 
 require_once 'modules/Vtiger/DetailView.php';
 
-$smarty->assign('QSQL', cbQuestion::getSQL($record));
+if ($focus->column_fields['qtype']=='Mermaid') {
+	$smarty->assign('QSQL', 'graph '.$focus->column_fields['typeprops']."\n".$focus->column_fields['qcolumns']);
+} else {
+	$smarty->assign('QSQL', cbQuestion::getSQL($record));
+}
 
 $smarty->display('DetailView.tpl');
+if ($focus->column_fields['qtype']=='Mermaid') {
+	echo '<script type="text/javascript" src="modules/cbQuestion/resources/mermaid.min.js"></script>';
+}
 ?>

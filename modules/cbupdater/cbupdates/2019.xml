@@ -390,4 +390,11 @@
 	<classname>WorkflowRelateAndUnrelateTriggers</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Mermaid Question Type value</description>
+	<filename>build/changeSets/2019/addPLValueOnQuestion.php</filename>
+	<classname>addPLValueOnQuestion</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
