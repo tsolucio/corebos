@@ -303,7 +303,15 @@ class cbQuestion extends CRMEntity {
 				$ret = self::getChartFromAnswer($ans);
 				break;
 			case 'Mermaid':
-				$ret = $ans['answer'];
+				$ret = '<div class="mermaid" name="cbqm'.$qid.'">'.$ans['answer'].'</div>
+				<script src="modules/cbQuestion/resources/mermaid.min.js"></script>
+				<script>document.addEventListener("DOMContentLoaded", function(event) {
+					mermaid.initialize({
+						securityLevel: "loose"
+					});
+					mermaid.init();
+				});
+				</script>';
 				break;
 			case 'ERROR':
 			default:
