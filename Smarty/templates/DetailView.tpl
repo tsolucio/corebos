@@ -167,10 +167,8 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																					{/if}
 
 																					{if $header neq 'Comments' && (!isset($BLOCKS.$header.relatedlist) || $BLOCKS.$header.relatedlist eq 0)}
-
 																						<tr class="detailview_block_header">{strip}
 																							<td colspan=4 class="dvInnerHeader">
-
 																								<div style="float:left;font-weight:bold;"><div style="float:left;"><a href="javascript:showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$IMAGE_PATH}');">
 																											{if isset($BLOCKINITIALSTATUS[$header]) && $BLOCKINITIALSTATUS[$header] eq 1}
 																												<span class="exp_coll_block inactivate">

@@ -1237,6 +1237,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 	$result = $adb->pquery($query, array($tabid));
 	$noofrows = $adb->num_rows($result);
 	$blockid_list = array();
+	$aBlockStatus = array();
 	for ($i = 0; $i < $noofrows; $i++) {
 		$blockid = $adb->query_result($result, $i, 'blockid');
 		$blockid_list[] = $blockid;
