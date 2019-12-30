@@ -570,7 +570,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 	 */
 	public static function parseOverview($result) {
 		$instance = new self();
-		$instance->setSubject($result->subject);
+		$instance->setSubject(isset($result->subject) ? $result->subject : '');
 		$instance->setFrom((isset($result->from) ? $result->from : ''));
 		$instance->setDate($result->date);
 		$instance->setRead($result->seen);
