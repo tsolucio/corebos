@@ -26,30 +26,6 @@
 var clipcopyobject = new ClipboardJS('#clipcopylink');
 clipcopyobject.on('success', function(e) { clipcopyclicked = false; });
 clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
-function showHideStatus(sId,anchorImgId, sImagePath) {
-	var oObj = document.getElementById(sId);
-	if (oObj.style.display == 'block') {
-		oObj.style.display = 'none';
-		if (anchorImgId !=null) {
-{/literal}
-			document.getElementById(anchorImgId).src = 'themes/images/inactivate.gif';
-			document.getElementById(anchorImgId).alt = '{'LBL_Show'|@getTranslatedString:'Settings'}';
-			document.getElementById(anchorImgId).title = '{'LBL_Show'|@getTranslatedString:'Settings'}';
-			document.getElementById(anchorImgId).parentElement.className = 'exp_coll_block activate';
-{literal}
-		}
-	} else {
-		oObj.style.display = 'block';
-		if (anchorImgId !=null) {
-{/literal}
-			document.getElementById(anchorImgId).src = 'themes/images/activate.gif';
-			document.getElementById(anchorImgId).alt = '{'LBL_Hide'|@getTranslatedString:'Settings'}';
-			document.getElementById(anchorImgId).title = '{'LBL_Hide'|@getTranslatedString:'Settings'}';
-			document.getElementById(anchorImgId).parentElement.className = 'exp_coll_block inactivate';
-{literal}
-		}
-	}
-}
 {/literal}
 </script>
 

@@ -1908,6 +1908,27 @@ function showBlock(divId) {
 	document.getElementById(divId).style.display = 'block';
 }
 
+function showHideStatus(sId, anchorImgId, sImagePath) {
+	oObj = document.getElementById(sId);
+	if (oObj.style.display == 'block') {
+		oObj.style.display = 'none';
+		if (anchorImgId !=null) {
+			document.getElementById(anchorImgId).src = 'themes/images/inactivate.gif';
+			document.getElementById(anchorImgId).alt = alert_arr.LBL_Show;
+			document.getElementById(anchorImgId).title = alert_arr.LBL_Show;
+			document.getElementById(anchorImgId).parentElement.className = 'exp_coll_block activate';
+		}
+	} else {
+		oObj.style.display = 'block';
+		if (anchorImgId !=null) {
+			document.getElementById(anchorImgId).src = 'themes/images/activate.gif';
+			document.getElementById(anchorImgId).alt = alert_arr.LBL_Hide;
+			document.getElementById(anchorImgId).title = alert_arr.LBL_Hide;
+			document.getElementById(anchorImgId).parentElement.className = 'exp_coll_block inactivate';
+		}
+	}
+}
+
 /*
 * hide the div tag
 * @param divId :: div tag ID
