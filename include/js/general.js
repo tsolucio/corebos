@@ -1910,8 +1910,10 @@ function showBlock(divId) {
 
 function showHideStatus(sId, anchorImgId, sImagePath) {
 	oObj = document.getElementById(sId);
+	var params = '&dvblock='+sId+'&dvmodule='+gVTModule+'&dvstatus=';
 	if (oObj.style.display == 'block') {
 		oObj.style.display = 'none';
+		ExecuteFunctions('setDetailViewBlockStatus', params+'0');
 		if (anchorImgId !=null) {
 			document.getElementById(anchorImgId).src = 'themes/images/inactivate.gif';
 			document.getElementById(anchorImgId).alt = alert_arr.LBL_Show;
@@ -1920,6 +1922,7 @@ function showHideStatus(sId, anchorImgId, sImagePath) {
 		}
 	} else {
 		oObj.style.display = 'block';
+		ExecuteFunctions('setDetailViewBlockStatus', params+'1');
 		if (anchorImgId !=null) {
 			document.getElementById(anchorImgId).src = 'themes/images/activate.gif';
 			document.getElementById(anchorImgId).alt = alert_arr.LBL_Hide;

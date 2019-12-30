@@ -321,6 +321,20 @@ switch ($functiontocall) {
 			$ret = false;
 		}
 		break;
+	case 'setDetailViewBlockStatus':
+		if (GlobalVariable::getVariable('Application_DetailView_Sticky_BlockStatus', '0')=='1') {
+			$blockssesion = coreBOS_Session::get('DVBLOCKSTATUS^'.$_REQUEST['dvmodule']);
+			$blocks = getBlockOpenClosedStatus($_REQUEST['dvmodule'], 'detail');
+			foreach ($blocks as $blabel => $bstatus) {
+				if ('tbl'.str_replace(' ', '', $blabel)==$_REQUEST['dvblock']) {
+					$blockssesion[$blabel] = vtlib_purify($_REQUEST['dvstatus']);
+					break;
+				}
+			}
+			coreBOS_Session::set('DVBLOCKSTATUS^'.$_REQUEST['dvmodule'], $blockssesion);
+		}
+		$ret = true;
+		break;
 	case 'ismoduleactive':
 	default:
 		$mod = vtlib_purify($_REQUEST['checkmodule']);

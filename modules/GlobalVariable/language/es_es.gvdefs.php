@@ -357,6 +357,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Activa la edición en línea para los campos que el usuario puede editar. El valor predeterminado es 1',
 ),
+'Application_DetailView_Sticky_BlockStatus' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Mantiene el estado abierto/cerrado de cada bloque de vista detaille durante la sesión del usuario. Por defecto no se mantiene (0).',
+),
 'Application_Upload_MaxSize' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Entero',

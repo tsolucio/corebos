@@ -1199,6 +1199,31 @@ function make_clickable($text) {
 }
 
 /**
+ * This function returns the Open/Closed status of the blocks of a module indexed by their label.
+ * @param string $module - module name
+ * @param string $disp_view - display view (edit, create or detail)
+ * @return array
+ */
+function getBlockOpenClosedStatus($module, $disp_view) {
+	global $log, $adb;
+	$log->debug('> getBlockOpenClosedStatus ' . $module . ',' . $disp_view);
+	$disp_view = $disp_view.'_view';
+	$query = "select blocklabel,display_status,isrelatedlist from vtiger_blocks where tabid=? and $disp_view=0 and visible = 0 order by sequence";
+	$result = $adb->pquery($query, array(getTabid($module)));
+	$aBlockStatus = array();
+	while ($b = $adb->fetch_array($result)) {
+		if (!is_null($b['isrelatedlist']) && $b['isrelatedlist'] != 0) {
+			$sLabelVal = $b['blocklabel'];
+		} else {
+			$sLabelVal = getTranslatedString($b['blocklabel'], $module);
+		}
+		$aBlockStatus[$sLabelVal] = $b['display_status'];
+	}
+	$log->debug('< getBlockOpenClosedStatus');
+	return $aBlockStatus;
+}
+
+/**
  * This function returns the blocks and its related information for given module.
  * Input Parameter are $module - module name, $disp_view = display view (edit,detail or create),$mode - edit, $col_fields - * column_fields/
  * This function returns an array
@@ -1331,7 +1356,12 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 			}
 		}
 	}
-	coreBOS_Session::set('BLOCKINITIALSTATUS', $aBlockStatus);
+	if (!coreBOS_Session::has('DVBLOCKSTATUS^'.$module) || GlobalVariable::getVariable('Application_DetailView_Sticky_BlockStatus', '0')!='1') {
+		coreBOS_Session::set('DVBLOCKSTATUS^'.$module, $aBlockStatus);
+		coreBOS_Session::set('BLOCKINITIALSTATUS', $aBlockStatus);
+	} else {
+		coreBOS_Session::set('BLOCKINITIALSTATUS', coreBOS_Session::get('DVBLOCKSTATUS^'.$module));
+	}
 	$log->debug('< getBlocks');
 	return $getBlockInfo;
 }
