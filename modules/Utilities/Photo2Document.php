@@ -48,14 +48,14 @@ $wsrecid = vtws_getEntityId($formodule).'x'.$forrecord;
 	display: flex;
 	flex-direction: row;
 	width:100%;
-	padding; 10px;
+	padding: 6px;
 }
 .fieldlabel {
-	padding-top:10px;
+	padding-top:6px;
 	width:180px;
 }
 .fieldinput {
-	padding-top:10px;
+	padding-top:6px;
 }
 .fieldinput input, .fieldinput select, .fieldinput textarea {
 	width:280px;
@@ -159,17 +159,18 @@ function afterCreateRecord(result, args) {
 	}
 }
 
+
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+	// Elements for taking the snapshot
+	var canvas = document.getElementById('canvas');
+	var context = canvas.getContext('2d');
+	var video = document.getElementById('video');
 	// Not adding `{ audio: true }` since we only want video now
 	navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
-		video.src = window.URL.createObjectURL(stream);
+		video.srcObject = stream;
 		video.play();
 	});
 }
-// Elements for taking the snapshot
-var canvas = document.getElementById('canvas');
-var context = canvas.getContext('2d');
-var video = document.getElementById('video');
 
 // Trigger photo take
 document.getElementById("snap").addEventListener("click", function() {
