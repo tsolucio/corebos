@@ -299,10 +299,9 @@ class BusinessActions extends CRMEntity {
 			}
 
 			if ($parameters) {
-				$link->linkurl = $strtemplate->merge($link->linkurl);
-				$link->linkicon= $strtemplate->merge($link->linkicon);
-
 				if (!empty($parameters['RECORD'])) {
+					$link->linkurl = $strtemplate->merge($link->linkurl);
+					$link->linkicon= $strtemplate->merge($link->linkicon);
 					$focus_bs = CRMEntity::getInstance($parameters['MODULE']);
 					$focus_bs->retrieve_entity_info($parameters['RECORD'], $parameters['MODULE']);
 					$data_retrieve = $focus_bs->column_fields;
@@ -311,10 +310,10 @@ class BusinessActions extends CRMEntity {
 					$subtring_start += strlen('$');
 					$size = strpos($str, '$', $subtring_start) - $subtring_start;
 					$substring = substr($str, $subtring_start, $size);
-					$match = str_replace('$'.$substring.'$', $data_retrieve[$substring], $link->linkurl);
-					include_once 'include/Webservices/Create.php';
+					$link->linkurl = str_replace('$'.$substring.'$', $data_retrieve[$substring], $link->linkurl);
+					include_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 					$entityCache = new VTEntityCache($current_user);
-					$ct = new VTSimpleTemplate($match, false);
+					$ct = new VTSimpleTemplate($link->linkurl, false);
 					$link->linkurl = $ct->render($entityCache, vtws_getEntityId($parameters['MODULE']).'x'.$parameters['RECORD']);
 				}
 			}
