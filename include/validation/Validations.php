@@ -120,16 +120,26 @@ function validate_notDuplicate($field, $fieldval, $params, $fields) {
 /** accept a workflow expression and evaluate it
  * in the context of the new screen values
  */
-function validate_expression($field, $fieldval, $params) {
-	$crmid = $params[0];
+function validate_expression($field, $fieldval, $params, $fields) {
 	$bmap = $params[1];
-
-	if (coreBOS_Rule::evaluate($bmap, $crmid)) {
-		return true;
-	} else {
-		return false;
+	if (empty($params[0])) { // isNew
+		// check that cbmapid is correct and load it
+		if (preg_match('/^[0-9]+x[0-9]+$/', $bmap)) {
+			list($cbmapws, $bmap) = explode('x', $bmap);
+		}
+		if (is_numeric($bmap)) {
+			$cbmap = cbMap::getMapByID($bmap);
+		} else {
+			$cbmapid = GlobalVariable::getVariable('BusinessMapping_'.$bmap, cbMap::getMapIdByName($bmap));
+			$cbmap = cbMap::getMapByID($cbmapid);
+		}
+		if (empty($cbmap) || $cbmap->column_fields['maptype'] != 'Condition Expression') {
+			return false;
+		}
+		return $cbmap->ConditionExpression($fields);
+	} else { // editing
+		$fields['record_id'] = $params[0];
+		return coreBOS_Rule::evaluate($bmap, $fields);
 	}
-
-	return false;
 }
 ?>

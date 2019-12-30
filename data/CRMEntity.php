@@ -79,7 +79,7 @@ class CRMEntity {
 
 	public function saveentity($module, $fileid = '') {
 		global $current_user, $adb;
-		if (property_exists($module, 'HasDirectImageField') && $this->HasDirectImageField) {
+		if (property_exists($module, 'HasDirectImageField') && $this->HasDirectImageField && !empty($this->id)) {
 			// we have to save these names to delete previous overwritten values in uitype 69 field
 			$sql = 'SELECT tablename,columnname FROM vtiger_field WHERE uitype=69 and vtiger_field.tabid = ?';
 			$tabid = getTabid($module);
@@ -1273,11 +1273,6 @@ class CRMEntity {
 	public function get_column_value($columnname, $fldvalue, $fieldname, $uitype, $datatype = '') {
 		global $log;
 		$log->debug("> get_column_value $columnname, $fldvalue, $fieldname, $uitype, $datatype");
-
-		// Added for the fields of uitype '57' which has datatype mismatch in crmentity table and particular entity table
-		if ($uitype == 57 && $fldvalue == '') {
-			return 0;
-		}
 		if (is_uitype($uitype, '_date_') && $fldvalue == '') {
 			return null;
 		}
@@ -1368,11 +1363,11 @@ class CRMEntity {
 
 		// Select Custom Field Table Columns if present
 		if (!empty($this->customFieldTable)) {
-			$query .= ", " . $this->customFieldTable[0] . ".* ";
+			$query .= ', ' . $this->customFieldTable[0] . '.* ';
 		}
 
 		$query .= " FROM $this->table_name";
-		$query .= "	INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
+		$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
 
 		$joinedTables[] = $this->table_name;
 		$joinedTables[] = 'vtiger_crmentity';
@@ -1382,15 +1377,19 @@ class CRMEntity {
 			$query.=" INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1]." = $this->table_name.$this->table_index";
 			$joinedTables[] = $this->customFieldTable[0];
 		}
-		$query .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
-		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+		$query .= ' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid';
+		$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
 
 		$joinedTables[] = 'vtiger_users';
 		$joinedTables[] = 'vtiger_groups';
 
-		$linkedModulesQuery = $this->db->pquery("SELECT distinct tablename, columnname, relmodule FROM vtiger_field" .
-			" INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid" .
-			" WHERE uitype='10' AND vtiger_fieldmodulerel.module=?", array($module));
+		$linkedModulesQuery = $this->db->pquery(
+			'SELECT distinct tablename, columnname, relmodule
+			FROM vtiger_field
+			INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid'
+			." WHERE uitype='10' AND vtiger_fieldmodulerel.module=?",
+			array($module)
+		);
 		$linkedFieldsCount = $this->db->num_rows($linkedModulesQuery);
 
 		for ($i=0; $i<$linkedFieldsCount; $i++) {
@@ -1407,7 +1406,7 @@ class CRMEntity {
 		}
 
 		$query .= $this->getNonAdminAccessControlQuery($module, $current_user);
-		$query .= "	WHERE vtiger_crmentity.deleted = 0 ".$usewhere;
+		$query .= ' WHERE vtiger_crmentity.deleted=0 '.$usewhere;
 		return $query;
 	}
 
@@ -1660,13 +1659,21 @@ class CRMEntity {
 	/** Function to unlink an entity with given Id from another entity */
 	public function unlinkRelationship($id, $return_module, $return_id) {
 		global $currentModule;
+		$data = array();
+		$data['sourceModule'] = getSalesEntityType($id);
+		$data['sourceRecordId'] = $id;
+		$data['destinationModule'] = $return_module;
+		$data['destinationRecordId'] = $return_id;
+		cbEventHandler::do_action('corebos.entity.link.delete', $data);
 
 		$query = 'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND relmodule=? AND relcrmid=?) OR (relcrmid=? AND module=? AND crmid=?)';
 		$params = array($id, $return_module, $return_id, $id, $return_module, $return_id);
 		$this->db->pquery($query, $params);
 
-		$fieldRes = $this->db->pquery('SELECT tabid, tablename, columnname FROM vtiger_field WHERE fieldid IN (
-			SELECT fieldid FROM vtiger_fieldmodulerel WHERE module=? AND relmodule=?)', array($currentModule, $return_module));
+		$fieldRes = $this->db->pquery(
+			'SELECT tabid, tablename, columnname FROM vtiger_field WHERE fieldid IN (SELECT fieldid FROM vtiger_fieldmodulerel WHERE module=? AND relmodule=?)',
+			array($currentModule, $return_module)
+		);
 		$numOfFields = $this->db->num_rows($fieldRes);
 		for ($i = 0; $i < $numOfFields; $i++) {
 			$tabId = $this->db->query_result($fieldRes, $i, 'tabid');
@@ -1680,6 +1687,7 @@ class CRMEntity {
 			$updateParams = array(null, $return_id, $id);
 			$this->db->pquery($updateQuery, $updateParams);
 		}
+		cbEventHandler::do_action('corebos.entity.link.delete.final', $data);
 	}
 
 	/** Function to restore a deleted record of specified module with given crmid
@@ -2200,6 +2208,61 @@ class CRMEntity {
 			}
 			cbEventHandler::do_action('corebos.entity.link.delete.final', $data);
 		}
+	}
+
+	/**
+	 * Generic function to handle the workflow related list for a module.
+	 */
+	public function getWorkflowRelatedList($id, $cur_tab_id, $rel_tab_id, $actions = false) {
+		require_once 'modules/com_vtiger_workflow/VTWorkflow.php';
+		global $currentModule, $singlepane_view;
+
+		$parenttab = getParentTab();
+
+		$related_module = 'com_vtiger_workflow';
+		$other = new Workflow();
+		unset($other->list_fields['Tools'], $other->list_fields_name['Tools']);
+		$button = '';
+		if ($actions) {
+			if (is_string($actions)) {
+				$actions = explode(',', strtoupper($actions));
+			}
+			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
+				$button .= "<input title='" . getTranslatedString('LBL_SELECT') . ' ' . getTranslatedString($related_module, $related_module).
+					"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
+					"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',".
+					"'width=640,height=602,resizable=0,scrollbars=0');\" value='" . getTranslatedString('LBL_SELECT') . ' '.
+					getTranslatedString($related_module, $related_module) . "'>&nbsp;";
+			}
+			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
+				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
+				$button .= "<input type='hidden' name='createmode' value='link' />" .
+					"<input title='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "' class='crmbutton small create'" .
+					" onclick='this.form.action.value=\"workflowlist\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
+					" value='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "'>&nbsp;";
+			}
+		}
+
+		// To make the edit or del link actions to return back to same view.
+		if ($singlepane_view == 'true') {
+			$returnset = "&return_module=$currentModule&return_action=DetailView&return_id=$id";
+		} else {
+			$returnset = "&return_module=$currentModule&return_action=CallRelatedList&return_id=$id";
+		}
+
+		$query = 'SELECT *,workflow_id as crmid ';
+		$query .= ' FROM com_vtiger_workflows';
+		$query .= ' INNER JOIN vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid = workflow_id OR vtiger_crmentityrel.crmid = workflow_id)';
+		$query .= " WHERE (vtiger_crmentityrel.crmid = $id OR vtiger_crmentityrel.relcrmid = $id)";
+
+		$return_value = GetRelatedList($currentModule, $related_module, $other, $query, $button, $returnset);
+
+		if ($return_value == null) {
+			$return_value = array('header'=>array(),'entries'=>array(),'navigation'=>array('',''));
+		}
+		$return_value['CUSTOM_BUTTON'] = $button;
+
+		return $return_value;
 	}
 
 	/**

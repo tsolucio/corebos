@@ -17,27 +17,42 @@
 
 class Google_Service_Bigquery_TrainingRun extends Google_Collection
 {
-  protected $collection_key = 'iterationResults';
-  protected $iterationResultsType = 'Google_Service_Bigquery_IterationResult';
-  protected $iterationResultsDataType = 'array';
+  protected $collection_key = 'results';
+  protected $evaluationMetricsType = 'Google_Service_Bigquery_EvaluationMetrics';
+  protected $evaluationMetricsDataType = '';
+  protected $resultsType = 'Google_Service_Bigquery_IterationResult';
+  protected $resultsDataType = 'array';
   public $startTime;
-  public $state;
-  protected $trainingOptionsType = 'Google_Service_Bigquery_TrainingRunTrainingOptions';
+  protected $trainingOptionsType = 'Google_Service_Bigquery_TrainingOptions';
   protected $trainingOptionsDataType = '';
 
   /**
+   * @param Google_Service_Bigquery_EvaluationMetrics
+   */
+  public function setEvaluationMetrics(Google_Service_Bigquery_EvaluationMetrics $evaluationMetrics)
+  {
+    $this->evaluationMetrics = $evaluationMetrics;
+  }
+  /**
+   * @return Google_Service_Bigquery_EvaluationMetrics
+   */
+  public function getEvaluationMetrics()
+  {
+    return $this->evaluationMetrics;
+  }
+  /**
    * @param Google_Service_Bigquery_IterationResult
    */
-  public function setIterationResults($iterationResults)
+  public function setResults($results)
   {
-    $this->iterationResults = $iterationResults;
+    $this->results = $results;
   }
   /**
    * @return Google_Service_Bigquery_IterationResult
    */
-  public function getIterationResults()
+  public function getResults()
   {
-    return $this->iterationResults;
+    return $this->results;
   }
   public function setStartTime($startTime)
   {
@@ -47,23 +62,15 @@ class Google_Service_Bigquery_TrainingRun extends Google_Collection
   {
     return $this->startTime;
   }
-  public function setState($state)
-  {
-    $this->state = $state;
-  }
-  public function getState()
-  {
-    return $this->state;
-  }
   /**
-   * @param Google_Service_Bigquery_TrainingRunTrainingOptions
+   * @param Google_Service_Bigquery_TrainingOptions
    */
-  public function setTrainingOptions(Google_Service_Bigquery_TrainingRunTrainingOptions $trainingOptions)
+  public function setTrainingOptions(Google_Service_Bigquery_TrainingOptions $trainingOptions)
   {
     $this->trainingOptions = $trainingOptions;
   }
   /**
-   * @return Google_Service_Bigquery_TrainingRunTrainingOptions
+   * @return Google_Service_Bigquery_TrainingOptions
    */
   public function getTrainingOptions()
   {

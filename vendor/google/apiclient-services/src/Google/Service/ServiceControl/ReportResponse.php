@@ -23,6 +23,7 @@ class Google_Service_ServiceControl_ReportResponse extends Google_Collection
   protected $reportInfosType = 'Google_Service_ServiceControl_ReportInfo';
   protected $reportInfosDataType = 'array';
   public $serviceConfigId;
+  public $serviceRolloutId;
 
   /**
    * @param Google_Service_ServiceControl_ReportError
@@ -59,5 +60,13 @@ class Google_Service_ServiceControl_ReportResponse extends Google_Collection
   public function getServiceConfigId()
   {
     return $this->serviceConfigId;
+  }
+  public function setServiceRolloutId($serviceRolloutId)
+  {
+    $this->serviceRolloutId = $serviceRolloutId;
+  }
+  public function getServiceRolloutId()
+  {
+    return $this->serviceRolloutId;
   }
 }

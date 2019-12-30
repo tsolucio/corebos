@@ -281,6 +281,10 @@ if ($cbMap!=null && isPermitted('InventoryDetails', 'EditView')=='yes') {
 	}
 }
 
+list($v1, $v2, $associated_prod, $customtemplatename) = cbEventHandler::do_filter('corebos.filter.inventory.itemrow.edit', array($currentModule, $focus, $associated_prod, ''));
+$smarty->assign('customtemplaterows', $customtemplatename);
+$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
+
 if (isset($_REQUEST['return_module'])) {
 	$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
 } else {
@@ -373,6 +377,7 @@ $smarty->assign('PRODUCT_OR_SERVICE', GlobalVariable::getVariable('Inventory_Pro
 $smarty->assign('Inventory_ListPrice_ReadOnly', GlobalVariable::getVariable('Inventory_ListPrice_ReadOnly', '0', $currentModule, $current_user->id));
 //Set taxt type group or individual by default when create
 $smarty->assign('TAX_TYPE', GlobalVariable::getVariable('Inventory_Tax_Type_Default', 'individual', $currentModule, $current_user->id));
+$smarty->assign('TAXFILLINMODE', GlobalVariable::getVariable('Inventory_Tax_FillInMode', 'All', $currentModule, $current_user->id));
 //Show or not the Header to copy address to left or right
 $smarty->assign('SHOW_COPY_ADDRESS', GlobalVariable::getVariable('Application_Show_Copy_Address', 1, $currentModule, $current_user->id));
 $smarty->assign('SHOW_SHIPHAND_CHARGES', GlobalVariable::getVariable('Inventory_Show_ShippingHandlingCharges', 1, $currentModule, $current_user->id));

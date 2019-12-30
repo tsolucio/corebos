@@ -1,1 +1,1 @@
-Statement: <input type="text" name="statement" value="{$task->statement}" id="statement">
+<span style="color:red;">**ERROR:**&nbsp;</span> {$task->statement}

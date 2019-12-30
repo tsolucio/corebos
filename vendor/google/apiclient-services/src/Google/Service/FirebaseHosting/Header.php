@@ -19,6 +19,7 @@ class Google_Service_FirebaseHosting_Header extends Google_Model
 {
   public $glob;
   public $headers;
+  public $regex;
 
   public function setGlob($glob)
   {
@@ -35,5 +36,13 @@ class Google_Service_FirebaseHosting_Header extends Google_Model
   public function getHeaders()
   {
     return $this->headers;
+  }
+  public function setRegex($regex)
+  {
+    $this->regex = $regex;
+  }
+  public function getRegex()
+  {
+    return $this->regex;
   }
 }

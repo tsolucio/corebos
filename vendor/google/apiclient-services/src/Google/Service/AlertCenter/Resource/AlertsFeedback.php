@@ -26,10 +26,13 @@
 class Google_Service_AlertCenter_Resource_AlertsFeedback extends Google_Service_Resource
 {
   /**
-   * Creates new feedback for an alert. (feedback.create)
+   * Creates new feedback for an alert. Attempting to create a feedback for a non-
+   * existent alert returns `NOT_FOUND` error. Attempting to create a feedback for
+   * an alert that is marked for deletion returns `FAILED_PRECONDITION' error.
+   * (feedback.create)
    *
    * @param string $alertId Required. The identifier of the alert this feedback
-   * belongs to. Returns a `NOT_FOUND` error if no such alert.
+   * belongs to.
    * @param Google_Service_AlertCenter_AlertFeedback $postBody
    * @param array $optParams Optional parameters.
    *
@@ -45,20 +48,20 @@ class Google_Service_AlertCenter_Resource_AlertsFeedback extends Google_Service_
     return $this->call('create', array($params), "Google_Service_AlertCenter_AlertFeedback");
   }
   /**
-   * Lists all the feedback for an alert. (feedback.listAlertsFeedback)
+   * Lists all the feedback for an alert. Attempting to list feedbacks for a non-
+   * existent alert returns `NOT_FOUND` error. (feedback.listAlertsFeedback)
    *
    * @param string $alertId Required. The alert identifier. The "-" wildcard could
-   * be used to represent all alerts. If alert does not exist returns a
-   * `NOT_FOUND` error.
+   * be used to represent all alerts.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string customerId Optional. The unique identifier of the G Suite
+   * organization account of the customer the alert feedback are associated with.
+   * Inferred from the caller identity if not provided.
    * @opt_param string filter Optional. A query string for filtering alert
    * feedback results. For more details, see [Query filters](/admin-
    * sdk/alertcenter/guides/query-filters) and [Supported query filter fields
    * ](/admin-sdk/alertcenter/reference/filter-fields#alerts.feedback.list).
-   * @opt_param string customerId Optional. The unique identifier of the G Suite
-   * organization account of the customer the alert feedback are associated with.
-   * Inferred from the caller identity if not provided.
    * @return Google_Service_AlertCenter_ListAlertFeedbackResponse
    */
   public function listAlertsFeedback($alertId, $optParams = array())

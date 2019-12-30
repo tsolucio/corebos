@@ -1358,6 +1358,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'idiomas soportados por GenDoc: en es it pl',
 	'definition' => 'Idioma en el que se crean y compilan las plantillas. Por defecto, se usa el idioma seleccionado del usuario actual.',
 ),
+'GenDoc_Convert_URL' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Extensión',
+	'values' => 'URL',
+	'definition' => 'URL al servidor de conversión: https://github.com/sfoxdev/docker-unoconv',
+),
 'BusinessQuestion_TableAnswer_Limit' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Entero',
@@ -1408,11 +1415,25 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'En la vista de detalle, mostrará el nombre de la imagen/adjunto como un enlace para descargar el fichero.',
 ),
 'Inventory_Check_Invoiced_Lines' => array(
-	'status' => 'Implemented',
-	'valuetype' => 'Boolean',
-	'category' => 'Application',
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
 	'values' => '0|1',
 	'definition' => 'Cuando se activa (1), el sistema chequea la cantidad de producto o servicio facturado desde una Orden de Venta y transfiere a la Factura la máxina cantidad permitida desde la Orden de Venta. Predeterminado es 0 (desactivado)',
+),
+'Application_ListView_SearchColumns_AC_Trigger' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'Aplicación',
+	'values' => 'Entero positivo',
+	'definition' => 'El número mínimo de caracteres necesarios para activar una búsqueda de autocompletar en los cuadros de búsqueda en la parte superior de las columnas (solo visible cuando Application_ListView_SearchColumns está activado). El valor predeterminado es 3',
+),
+'Inventory_Tax_FillInMode' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'All | Default | None',
+	'definition' => 'En el modo de impuestos GRUPO permitirá seleccionar los impuestos activados. Por defecto, se aplica el valor "Todos", que es el comportamiento antes de la existencia de esta variable. "Todos" calcula todos los impuestos activos, "Ninguno", establece todos los impuestos a 0 y "Predeterminado" activa los impuestos marcados como predeterminados en la configuración',
 ),
 );
 

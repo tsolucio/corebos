@@ -133,6 +133,13 @@ class VTExpressionsManager {
 			'getGEODistanceFromUser2ContactShipping' => 'getGEODistanceFromUser2ContactShipping(contact,address_specification)',
 			'getGEODistanceFromAssignUser2ContactShipping' => 'getGEODistanceFromAssignUser2ContactShipping(contact,assigned_user,address_specification)',
 			'getGEODistanceFromCoordinates' => 'getGEODistanceFromCoordinates({lat1},{long1},{lat2},{long2})',
+			'getFromContext' => 'getFromContext(variablename)',
+			'setToContext' => 'setToContext(variablename, value)',
+			'getCRUDMode' => 'getCRUDMode()',
+			'isNumeric' => 'isNumeric(fieldname)',
+			'isString' => 'isString(fieldname)',
+			'OR' => 'OR(condition1, condition2)',
+			'AND' => 'AND(condition1, condition2)',
 		);
 		$wfexpfuncs = $adb->query('select expname,expinfo from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {

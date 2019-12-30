@@ -58,6 +58,30 @@
 	<tr><td><input type="radio" name="execution_condition" value="ON_DELETE" onclick="onschedule_preparescreen(this);"
 		{if $workflow->executionConditionAsLabel() eq 'ON_DELETE'}checked{/if} /></td>
 		<td>{$MOD.LBL_ON_DELETE}.</td></tr>
+	<tr><td><input type="radio" name="execution_condition" value="ON_RELATE" onclick="onschedule_preparescreen(this);"
+		{if $workflow->executionConditionAsLabel() eq 'ON_RELATE'}checked{/if} /></td>
+		<td>
+			<div class="slds-grid slds-gutters">
+				<div class="slds-col slds-col slds-size_2-of-10 slds-p-top_x-small">{$MOD.LBL_ON_RELATE}</div>
+				<div class="slds-col slds-size_4-of-10">
+				<select id='onrelatemodule' name='onrelatemodule' class="slds-select" onchange="onschedule_selectschedule(this);">
+					{html_options options=$relatedmodules selected=$onrelatedmodule}
+				</select>
+				</div>
+			</div>
+		</td></tr>
+	<tr><td><input type="radio" name="execution_condition" value="ON_UNRELATE" onclick="onschedule_preparescreen(this);"
+		{if $workflow->executionConditionAsLabel() eq 'ON_UNRELATE'}checked{/if} /></td>
+		<td>
+			<div class="slds-grid slds-gutters">
+				<div class="slds-col slds-col slds-size_2-of-10 slds-p-top_x-small">{$MOD.LBL_ON_UNRELATE}</div>
+				<div class="slds-col slds-size_4-of-10">
+				<select id='onunrelatemodule' name='onunrelatemodule' class="slds-select" onchange="onschedule_selectschedule(this);">
+					{html_options options=$relatedmodules selected=$onunrelatedmodule}
+				</select>
+				</div>
+			</div>
+		</td></tr>
 	<tr><td valign="top"><input type="radio" name="execution_condition" value="ON_SCHEDULE" onclick="onschedule_preparescreen(this);"
 		{if $workflow->executionConditionAsLabel() eq 'ON_SCHEDULE'}checked{/if} {if $ScheduledWorkflowsCount>$MaxAllowedScheduledWorkflows}disabled{/if} /></td>
 		<td>{$MOD.LBL_ON_SCHEDULE}.

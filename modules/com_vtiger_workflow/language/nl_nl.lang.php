@@ -8,6 +8,8 @@
  * All Rights Reserved.
  ************************************************************************************/
 $mod_strings = array(
+'com_vtiger_workflow' => 'Workflows',
+'SINGLE_com_vtiger_workflow' => 'Workflow',
 'VTEmailTask' => 'Verstuur e-mail',
 'VTEntityMethodTask' => 'Start maatwerkfunctie',
 'VTCreateTodoTask' => 'Maak Taak',
@@ -198,5 +200,7 @@ $mod_strings = array(
 'Generate Image Code' => 'Generate Image Code',
 'Generate Image Code Workflow Task' => 'Generate Image Code Workflow Task',
 'GenerateImageCodeWorkflowTask' => 'Generate Image Code Workflow Task',
+'LBL_ON_RELATE' => 'On Relate with',
+'LBL_ON_UNRELATE' => 'On Unrelate with',
 );
 ?>

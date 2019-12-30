@@ -246,6 +246,11 @@ seguintes valores "Chamada", "Reunião" ou "Tarefa".',
 'not equal to'=>'Diferente de',
 'starts with'=>'Inícia com',
 'ends with'=>'Termina com',
+'does not start with' => 'Does not start with',
+'does not end with' => 'Does not end with',
+'before' => 'Before',
+'after' => 'After',
+'between' => 'Between',
 //'Product Code'=>'Product Code',
 
 //Added for Role based Custom filters

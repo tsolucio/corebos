@@ -1,6 +1,6 @@
 <script src='include/js/clipboard.min.js'></script>
 <div class="slds-grid slds-gutters">
-	<div class="slds-col slds-size_11-of-12 slds-m-left_x-small">
+	<div class="slds-col slds-size_11-of-12 slds-m-left_x-small mermaid" style="word-break: break-all;">
 	{$QSQL}
 	</div>
 	<div class="slds-col slds-size_1-of-12 slds-m-top_x-small">

@@ -334,4 +334,67 @@
 	<classname>addCbRuleMissingContextUnblock</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Unblock login users automatically after a few minutes</description>
+	<filename>build/changeSets/2019/cronUnblockLoginUsers.php</filename>
+	<classname>cronUnblockLoginUsers</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Creating table for authorized scripts</description>
+	<filename>build/changeSets/2019/authorizedScriptsTable.php</filename>
+	<classname>authorizedScriptsTable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>change Validation Map Name to follow the same convention as other business maps (apply by name)</description>
+	<filename>build/changeSets/2019/changeValidationMapNames.php</filename>
+	<classname>changeValidationMapNames</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Business Action Web Service Context Parameter</description>
+	<filename>build/changeSets/2019/BActionContextParameter.php</filename>
+	<classname>BActionContextParameter</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>Elifuraha</author>
+	<description>migrate uitype 66 (Parent_id capture) to uitype 10 (standard capture)</description>
+	<filename>build/changeSets/2019/migrateUIType66to10.php</filename>
+	<classname>migrateUIType66to10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>migrate uitype 78 (quotes capture) to uitype 10 (standard capture)</description>
+	<filename>build/changeSets/2019/migrateUIType78to10.php</filename>
+	<classname>migrateUIType78to10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>migrate uitypes 51,57,73 (account/contact capture) to uitype 10 (standard capture)</description>
+	<filename>build/changeSets/2019/migrateUIType515773to10.php</filename>
+	<classname>migrateUIType515773to10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mocodertz</author>
+	<description>Add and Register New Relate/Unrelate Events for Workflow</description>
+	<filename>build/changeSets/2019/WorkflowRelateAndUnrelateTriggers.php</filename>
+	<classname>WorkflowRelateAndUnrelateTriggers</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Mermaid Question Type value</description>
+	<filename>build/changeSets/2019/addPLValueOnQuestion.php</filename>
+	<classname>addPLValueOnQuestion</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

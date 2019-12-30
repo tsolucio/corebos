@@ -15,7 +15,7 @@
 require_once 'include/Webservices/Utils.php';
 
 /* Given a module, get all the many to one related modules */
-function getRelatedModulesManytoOne($module) {
+function getRelatedModulesManytoOne($module, $user) {
 	global $adb;
 	$result = $adb->pquery(
 		'SELECT module,fieldname
@@ -31,32 +31,6 @@ function getRelatedModulesManytoOne($module) {
 			'name' => $rel['module'],
 			'field' => $rel['fieldname'],
 		);
-	}
-
-	$customuimod=array(
-		'Accounts;;account_id'=>'Accounts',
-		'Contacts;;account_id'=>'Accounts',
-		'SalesOrder;;account_id'=>'Accounts',
-		'Invoice;;account_id'=>'Accounts',
-		'Quotes;;account_id'=>'Accounts',
-		'Contacts;;contact_id'=>'Contacts',
-		'Quotes;;contact_id'=>'Contacts',
-		'PurchaseOrder;;contact_id'=>'Contacts',
-		'SalesOrder;;contact_id'=>'Contacts',
-		'Invoice;;contact_id'=>'Contacts',
-		'SalesOrder;;quote_id'=>'Quotes',
-		'Invoice;;salesorder_id'=>'SalesOrder',
-	);
-
-	foreach ($customuimod as $key => $val) {
-		if ($val==$module) {
-			$keysplit=explode(';;', $key);
-			$modules[] = array(
-				'label' => getTranslatedString($keysplit[0], $keysplit[0]),
-				'name' => $keysplit[0],
-				'field' => $keysplit[1],
-			);
-		}
 	}
 	return $modules;
 }

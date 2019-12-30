@@ -47,5 +47,14 @@ $mod_strings = array(
 	'MAP_NOT_IMPLEMENTED_YET'=> 'No hay una validación para este mapa',
 	'DecisionTable' => 'Tabla de Decisión',
 	'Webservice Mapping' => 'Llamada Web Service',
+	'FieldInfo' => 'Información de Campos',
+	'GlobalSearchAutocomplete' => 'Sugerencias en Búsqueda Global',
+	'RelatedPanes' => 'Pestañas Relacionadas',
+	'Function' => 'Función',
+	'TypeOfExpression' => 'Tipo de Expresión',
+	'FunctionName' => 'Nombre Función',
+	'FunctionParams' => 'Parámetros Función',
+	'Relations' => 'Relaciones',
+	'DuplicateDirectRelations' => 'Duplicar Relaciones Directas',
 );
 ?>

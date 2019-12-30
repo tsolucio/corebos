@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2016 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Copyright 2019 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
  * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
  * file except in compliance with the License. You can redistribute it and/or modify it
  * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
@@ -15,7 +15,7 @@
  *************************************************************************************************
  *  Module       : Business Mappings
  *  Version      : 1.0
- *  Author       : JPL TSolucio, S. L.
+ *  Author       : Spike Associates
  *************************************************************************************************
 *The accepted format is
  <?xml version="1.0"?>
@@ -205,7 +205,7 @@ class WebserviceMapping extends cbMapcore {
 			$userwsid = vtws_getEntityId('Users');
 			$ofields['assigned_user_id'] = vtws_getId($userwsid, $current_user->id);
 		}
-		$tfields = $arguments[1];
+		$tfields = array();
 		foreach ($mapping['fields'] as $targetfield => $sourcefields) {
 			$value = '';
 			$delim = (isset($sourcefields['delimiter']) ? $sourcefields['delimiter'] : '');
@@ -217,10 +217,9 @@ class WebserviceMapping extends cbMapcore {
 					$fieldName = $relInformation['fieldname'];
 					$otherid = $ofields[$linkField];
 					if (!empty($otherid)) {
-						include_once "modules/$relModule/$relModule.php";
 						$otherModule = CRMEntity::getInstance($relModule);
 						$otherModule->retrieve_entity_info($otherid, $relModule);
-						$takediv = explode(",", $relInformation['linkvalue']);
+						$takediv = explode(',', $relInformation['linkvalue']);
 						$takedivconcat = '';
 						if (count($takediv)>1) {
 							for ($b = 0; $b < count($takediv); $b++) {
@@ -238,64 +237,82 @@ class WebserviceMapping extends cbMapcore {
 				}
 			}
 
-			foreach ($sourcefields['merge'] as $fieldinfo) {
-				$idx = array_keys($fieldinfo);
-				if (strtoupper($idx[0])=='CONST') {
-					$const = array_pop($fieldinfo);
-					$value.= $const.$delim;
-				} elseif (strtoupper($idx[0])=='EXPRESSION') {
-					$testexpression = array_pop($fieldinfo);
-					$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($testexpression)));
-					$expression = $parser->expression();
-					$exprEvaluater = new VTFieldExpressionEvaluater($expression);
-					if (empty($ofields['record_id'])) {
-						$exprEvaluation = $exprEvaluater->evaluate(false);
+			if (isset($sourcefields['merge'])) {
+				foreach ($sourcefields['merge'] as $fieldinfo) {
+					$idx = array_keys($fieldinfo);
+					if (strtoupper($idx[0])=='CONST') {
+						$const = array_pop($fieldinfo);
+						$value.= $const.$delim;
+					} elseif (strtoupper($idx[0])=='EXPRESSION') {
+						$testexpression = array_pop($fieldinfo);
+						$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($testexpression)));
+						$expression = $parser->expression();
+						$exprEvaluater = new VTFieldExpressionEvaluater($expression);
+						if (empty($ofields['record_id'])) {
+							$exprEvaluation = $exprEvaluater->evaluate(false);
+						} else {
+							$entity = new VTWorkflowEntity($current_user, $entityId);
+							$exprEvaluation = $exprEvaluater->evaluate($entity);
+						}
+						$value.= $exprEvaluation.$delim;
+					} elseif (!empty($ofields['record_id']) && (strtoupper($idx[0])=='FIELD' || strtoupper($idx[0])=='TEMPLATE')) {
+						$util = new VTWorkflowUtils();
+						$adminUser = $util->adminUser();
+						$entityCache = new VTEntityCache($adminUser);
+						$testexpression = array_pop($fieldinfo);
+						if (strtoupper($idx[0])=='FIELD') {
+							$testexpression = trim($testexpression);
+							if (substr($testexpression, 0, 1) != '$') {
+								$testexpression = '$' . $testexpression;
+							}
+						}
+						$ct = new VTSimpleTemplate($testexpression);
+						$value.= $ct->render($entityCache, $entityId).$delim;
+						$util->revertUser();
+					} elseif (empty($ofields['record_id']) && (strtoupper($idx[0])=='FIELD' || strtoupper($idx[0])=='TEMPLATE')) {
+						$util = new VTWorkflowUtils();
+						$adminUser = $util->adminUser();
+						$entityCache = new VTEntityCache($adminUser);
+						$testexpression = array_pop($fieldinfo);
+						if (strtoupper($idx[0])=='FIELD') {
+							$testexpression = trim($testexpression);
+							if (substr($testexpression, 0, 1) != '$') {
+								$testexpression = '$' . $testexpression;
+							}
+						}
+						$ct = new VTSimpleTemplateOnData($testexpression);
+						$value.= $ct->render($entityCache, $mapping['origin'], $ofields).$delim;
+						$util->revertUser();
+					} elseif (strtoupper($idx[0])=='RULE') {
+						$mapid = array_pop($fieldinfo);
+						$fieldname = array_pop($fieldinfo);
+						if (!empty($ofields['record_id'])) {
+							$context = $ofields;
+							if (strpos($context['record_id'], 'x')===false) {
+								$context['record_id'] = vtws_getEntityId(getSalesEntityType($context['record_id'])).'x'.$context['record_id'];
+							}
+							$entity = new VTWorkflowEntity($current_user, $context['record_id'], true);
+							if (is_array($entity->data)) { // valid context
+								$context = array_merge($entity->data, $context);
+							}
+						} else {
+							$context = $ofields[$fieldname];
+						}
+						$value .= coreBOS_Rule::evaluate($mapid, $context).$delim;
 					} else {
-						$entity = new VTWorkflowEntity($current_user, $entityId);
-						$exprEvaluation = $exprEvaluater->evaluate($entity);
+						$fieldname = array_pop($fieldinfo);
+						$value.= (isset($ofields[$fieldname]) ? $ofields[$fieldname] : '').$delim;
 					}
-					$value.= $exprEvaluation.$delim;
-				} elseif (!empty($ofields['record_id']) && (strtoupper($idx[0])=='FIELD' || strtoupper($idx[0])=='TEMPLATE')) {
-					$util = new VTWorkflowUtils();
-					$adminUser = $util->adminUser();
-					$entityCache = new VTEntityCache($adminUser);
-					$testexpression = array_pop($fieldinfo);
-					if (strtoupper($idx[0])=='FIELD') {
-						$testexpression = trim($testexpression);
-						if (substr($testexpression, 0, 1) != '$') {
-							$testexpression = '$' . $testexpression;
-						}
-					}
-					$ct = new VTSimpleTemplate($testexpression);
-					$value.= $ct->render($entityCache, $entityId).$delim;
-					$util->revertUser();
-				} elseif (empty($ofields['record_id']) && (strtoupper($idx[0])=='FIELD' || strtoupper($idx[0])=='TEMPLATE')) {
-					$util = new VTWorkflowUtils();
-					$adminUser = $util->adminUser();
-					$entityCache = new VTEntityCache($adminUser);
-					$testexpression = array_pop($fieldinfo);
-					if (strtoupper($idx[0])=='FIELD') {
-						$testexpression = trim($testexpression);
-						if (substr($testexpression, 0, 1) != '$') {
-							$testexpression = '$' . $testexpression;
-						}
-					}
-					$ct = new VTSimpleTemplateOnData($testexpression);
-					$value.= $ct->render($entityCache, $mapping['origin'], $ofields).$delim;
-					$util->revertUser();
-				} else {
-					$fieldname = array_pop($fieldinfo);
-					$value.= (isset($ofields[$fieldname]) ? $ofields[$fieldname] : '').$delim;
 				}
 			}
 			$value = rtrim($value, $delim);
 			if ($targetfield =='Response' || $targetfield =='WSConfig') {
 				$value = $sourcefields;
 			}
-
 			$tfields[$targetfield] = $value;
 		}
-		return $tfields;
+		$mapping['fields'] = $tfields;
+		return $mapping;
 	}
 
 	public function convertMap2Array() {
@@ -324,34 +341,32 @@ class WebserviceMapping extends cbMapcore {
 			} elseif (!empty($v->Orgfields[0]->Relfield) && isset($v->Orgfields[0]->Relfield)) {
 				$allRelValues = array();
 				foreach ($v->Orgfields->Relfield as $value1) {
-					$allRelValues = array('fieldname'=>(String)$value1->RelfieldName,'relmodule'=>(String)$value1->RelModule,
-						  'linkfield'=>(String)$value1->linkfield,'linkvalue'=>(String)$value1->Relfieldvalue);
+					$allRelValues = array(
+						'fieldname'=>(String)$value1->RelfieldName,
+						'relmodule'=>(String)$value1->RelModule,
+						'linkfield'=>(String)$value1->linkfield,
+						'linkvalue'=>(String)$value1->Relfieldvalue
+					);
 				}
 				$allmergeFields[] = $allRelValues;
 				if (isset($v->Orgfields[0]->Relfield->delimiter)) {
-					$target_fields[$fieldname]["delimiter"] = (String)$v->Orgfields[0]->Relfield->delimiter;
+					$target_fields[$fieldname]['delimiter'] = (String)$v->Orgfields[0]->Relfield->delimiter;
 				}
-				$target_fields[$fieldname]["relatedFields"] = $allmergeFields;
+				$target_fields[$fieldname]['relatedFields'] = $allmergeFields;
 			}
 		}
+		$mapping['fields'] = $target_fields;
 		//response block
 		if (!empty($xml->Response[0]) && isset($xml->Response[0])) {
 			foreach ($xml->Response[0] as $v) {
 				$fieldname1 = (String) $v->fieldname;
-				if (!empty($v->value)) {
-					$target_fields1[$fieldname1] = array("value" => $v->value);
-				} elseif (!empty($v->Orgfields[0]->Orgfield) && isset($v->Orgfields[0]->Orgfield)) {
-					foreach ($v->Orgfields->Orgfield as $value2) {
-						$allmergeresponse = array('fieldname'=>(String)$value2->OrgfieldName);
-					}
-					$target_fields1[$fieldname1]["field"] = $allmergeresponse;
-					if (isset($v->Orgfields->delimiter)) {
-						$target_fields1[$fieldname1]["delimiter"] = (String)$v->Orgfields->delimiter;
-					}
-				}
+				$target_fields1[$fieldname1] = array(
+					'field' => (empty($v->destination->field) ? '' : (String)$v->destination->field),
+					'context' => (empty($v->destination->context) ? 'wsctx_'.$fieldname1 : (String)$v->destination->context),
+				);
 			}
 		}
-		$target_fields["Response"] = $target_fields1;
+		$mapping['Response'] = $target_fields1;
 
 		//ws config block
 		if (!empty($xml->wsconfig[0]) && isset($xml->wsconfig[0])) {
@@ -367,7 +382,7 @@ class WebserviceMapping extends cbMapcore {
 						foreach ($hd->header[$ind] as $v2) {
 							$hdr[] = $v2;
 						}
-						$formhdr = implode(":", $hdr);
+						$formhdr = implode(':', $hdr);
 						$ind++;
 						$headers[] = $formhdr;
 					}
@@ -375,9 +390,7 @@ class WebserviceMapping extends cbMapcore {
 				}
 			}
 		}
-		$target_fields["WSConfig"] = $target_fields2;
-
-		$mapping['fields'] = $target_fields;
+		$mapping['WSConfig'] = $target_fields2;
 		return $mapping;
 	}
 }

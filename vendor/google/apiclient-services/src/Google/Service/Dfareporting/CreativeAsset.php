@@ -26,6 +26,8 @@ class Google_Service_Dfareporting_CreativeAsset extends Google_Collection
   public $artworkType;
   protected $assetIdentifierType = 'Google_Service_Dfareporting_CreativeAssetId';
   protected $assetIdentifierDataType = '';
+  public $audioBitRate;
+  public $audioSampleRate;
   protected $backupImageExitType = 'Google_Service_Dfareporting_CreativeCustomEvent';
   protected $backupImageExitDataType = '';
   public $bitRate;
@@ -42,6 +44,7 @@ class Google_Service_Dfareporting_CreativeAsset extends Google_Collection
   protected $expandedDimensionDataType = '';
   public $fileSize;
   public $flashVersion;
+  public $frameRate;
   public $hideFlashObjects;
   public $hideSelectionBoxes;
   public $horizontallyLocked;
@@ -54,6 +57,7 @@ class Google_Service_Dfareporting_CreativeAsset extends Google_Collection
   protected $offsetDataType = '';
   public $orientation;
   public $originalBackup;
+  public $politeLoad;
   protected $positionType = 'Google_Service_Dfareporting_OffsetPosition';
   protected $positionDataType = '';
   public $positionLeftUnit;
@@ -133,6 +137,22 @@ class Google_Service_Dfareporting_CreativeAsset extends Google_Collection
   public function getAssetIdentifier()
   {
     return $this->assetIdentifier;
+  }
+  public function setAudioBitRate($audioBitRate)
+  {
+    $this->audioBitRate = $audioBitRate;
+  }
+  public function getAudioBitRate()
+  {
+    return $this->audioBitRate;
+  }
+  public function setAudioSampleRate($audioSampleRate)
+  {
+    $this->audioSampleRate = $audioSampleRate;
+  }
+  public function getAudioSampleRate()
+  {
+    return $this->audioSampleRate;
   }
   /**
    * @param Google_Service_Dfareporting_CreativeCustomEvent
@@ -256,6 +276,14 @@ class Google_Service_Dfareporting_CreativeAsset extends Google_Collection
   {
     return $this->flashVersion;
   }
+  public function setFrameRate($frameRate)
+  {
+    $this->frameRate = $frameRate;
+  }
+  public function getFrameRate()
+  {
+    return $this->frameRate;
+  }
   public function setHideFlashObjects($hideFlashObjects)
   {
     $this->hideFlashObjects = $hideFlashObjects;
@@ -347,6 +375,14 @@ class Google_Service_Dfareporting_CreativeAsset extends Google_Collection
   public function getOriginalBackup()
   {
     return $this->originalBackup;
+  }
+  public function setPoliteLoad($politeLoad)
+  {
+    $this->politeLoad = $politeLoad;
+  }
+  public function getPoliteLoad()
+  {
+    return $this->politeLoad;
   }
   /**
    * @param Google_Service_Dfareporting_OffsetPosition

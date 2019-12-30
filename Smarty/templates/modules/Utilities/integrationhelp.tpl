@@ -30,6 +30,7 @@
 		<li><div class="slds-box"><a href="index.php?action=integration&module=Utilities&_op=getconfiggcontact">{'GOOGLE_CONTACTS'|@getTranslatedString:'Contacts'}</a></div></li>
 		<li><div class="slds-box"><a href="index.php?action=integration&module=Utilities&_op=getconfighubspot">{'HubSpot Activation'|@getTranslatedString:'Utilities'}</a></div></li>
 		<li><div class="slds-box"><a href="index.php?action=integration&module=Utilities&_op=getconfigsmtp&savemode=false">{'SMTP Configuration'|@getTranslatedString:'Utilities'}</a></div></li>
+		<li><div class="slds-box"><a href="index.php?action=integration&module=Utilities&_op=getconfigrecordversioning">{'Record Versioning'|@getTranslatedString:'Utilities'}</a></div></li>
 		</ul>
 	</div>
 	<div class="slds-col">

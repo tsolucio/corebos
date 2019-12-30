@@ -50,7 +50,7 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 			$reporttype = $oReport->reporttype;
 		} else {
 			$get_secondmodules = get_Secondmodules($oReport, $primarymodule);
-			$reporttype = "tabular";
+			$reporttype = 'tabular';
 			$permission = $get_secondmodules[0];
 			$secondarymodule = $get_secondmodules[1];
 		}
@@ -64,17 +64,16 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 			);
 			echo json_encode($response);
 		} else {
-			echo json_encode(array("permission"=>0,"primarymodule" => $primarymodule,"secondarymodule"=>$secondarymodule));
+			echo json_encode(array('permission'=>0,'primarymodule' => $primarymodule,'secondarymodule'=>$secondarymodule));
 		}
-	} //  ======== STEP 4 ==========
-	elseif ($step == 4) {
+	} elseif ($step == 4) {
 		if (isset($_REQUEST['cbreporttype']) && ($_REQUEST['cbreporttype']=='external' || $_REQUEST['cbreporttype']=='directsql')) {
 			echo json_encode(array('permission'=>1));
 			die();
 		}
 		if (isset($recordid)) {
 			$get_secondmodules = get_Secondmodules($oReport, $primarymodule);
-			$reporttype = "tabular";
+			$reporttype = 'tabular';
 			$secondarymodule = $get_secondmodules[1];
 			$permission = $get_secondmodules[0];
 
@@ -86,7 +85,7 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 
 			$BLOCK2 = $oReport->getSelectedColumnsList($recordid);
 			if ($permission == false) {
-				echo json_encode(array("permission"=>0));
+				echo json_encode(array('permission'=>0));
 			} else {
 				if (isset($_REQUEST['cbreporttype']) && $_REQUEST['cbreporttype']=='crosstabsql') {
 					echo json_encode(array(
@@ -99,7 +98,7 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 						'crosstabaggfunction' => $minfo['crosstabaggfunction'],
 					));
 				} else {
-					echo json_encode(array("permission"=>1,"BLOCK1"=>$BLOCK1,"BLOCK2"=>$BLOCK2));
+					echo json_encode(array('permission'=>1,'BLOCK1'=>$BLOCK1,'BLOCK2'=>$BLOCK2));
 				}
 			}
 		} else {
@@ -135,7 +134,7 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 					'crosstabaggfunction' => $minfo['crosstabaggfunction'],
 				));
 			} else {
-				echo json_encode(array("BLOCK1"=>$BLOCK1));
+				echo json_encode(array('BLOCK1'=>$BLOCK1));
 			}
 		} else {
 			$oReport = new Reports();
@@ -149,7 +148,7 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 				}
 			}
 			$BLOCK1 = $oReport->sgetColumntoTotal($primarymodule, $secondarymodule);
-			echo json_encode(array("BLOCK1"=>$BLOCK1));
+			echo json_encode(array('BLOCK1'=>$BLOCK1));
 		}
 	} elseif ($step == 6) {
 		require_once 'modules/CustomView/CustomView.php';
@@ -172,7 +171,7 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 			//added to fix the ticket #5117
 			$selectedcolumnvalue = '"'. $oReport->stdselectedcolumn . '"';
 			if (!is_admin($current_user) && isset($oReport->stdselectedcolumn) && strpos($BLOCK1, $selectedcolumnvalue) === false) {
-				$BLOCK1 = array_merge((array)$BLOCK1, array("selected"=>true,"value"=>"Not Accessible","label"=>$app_strings['LBL_NOT_ACCESSIBLE']));
+				$BLOCK1 = array_merge((array)$BLOCK1, array('selected'=>true,'value'=>'Not Accessible','label'=>$app_strings['LBL_NOT_ACCESSIBLE']));
 			}
 
 			$BLOCKCRITERIA = $oReport->getSelectedStdFilterCriteria($oReport->stdselectedfilter);
@@ -202,8 +201,8 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 			if (!empty($oReport->related_modules[$primarymodule])) {
 				foreach ($oReport->related_modules[$primarymodule] as $key => $value) {
 					if (isset($_REQUEST['secondarymodule_'.$value])) {
-						$BLOCK1 = array_merge((array)$BLOCK1, (array)getSecondaryStdFilterHTML($_REQUEST["secondarymodule_".$value]));
-						$COLUMNS_BLOCK = array_merge((array)$COLUMNS_BLOCK, (array)getSecondaryColumns_AdvFilterHTML($_REQUEST["secondarymodule_".$value]));
+						$BLOCK1 = array_merge((array)$BLOCK1, (array)getSecondaryStdFilterHTML($_REQUEST['secondarymodule_'.$value]));
+						$COLUMNS_BLOCK = array_merge((array)$COLUMNS_BLOCK, (array)getSecondaryColumns_AdvFilterHTML($_REQUEST['secondarymodule_'.$value]));
 					}
 				}
 			}
@@ -231,14 +230,14 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 		$roleid = $current_user->column_fields['roleid'];
 		$user_array = getAllUserName();
 		asort($user_array);
-		$userIdStr = "";
-		$userNameStr = "";
+		$userIdStr = '';
+		$userNameStr = '';
 		$m=0;
 		foreach ($user_array as $userid => $username) {
 			if ($userid != $current_user->id) {
 				if ($m != 0) {
-					$userIdStr .= ",";
-					$userNameStr .= ",";
+					$userIdStr .= ',';
+					$userNameStr .= ',';
 				}
 				$userIdStr .= $userid;
 				$userNameStr .="'".addslashes(decode_html($username))."'";
@@ -248,13 +247,13 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 
 		$user_groups = getAllGroupName();
 		asort($user_groups);
-		$groupIdStr = "";
-		$groupNameStr = "";
+		$groupIdStr = '';
+		$groupNameStr = '';
 		$l=0;
 		foreach ($user_groups as $grpid => $groupname) {
 			if ($l != 0) {
-				$groupIdStr .= ",";
-				$groupNameStr .= ",";
+				$groupIdStr .= ',';
+				$groupNameStr .= ',';
 			}
 			$groupIdStr .= $grpid;
 			$groupNameStr .= "'".addslashes(decode_html($groupname))."'";
@@ -383,9 +382,9 @@ function getPrimaryColumnsHTML($module, $secondmodule) {
 		if (isset($ogReport->pri_module_columnslist[$module][$value]) && !isset($block_listed[$value])) {
 			$block_listed[$value] = true;
 			if ($id_added==false) {
-				$v = "vtiger_crmentity:crmid:".$module."_ID:crmid:I";
+				$v = 'vtiger_crmentity:crmid:'.$module.'_ID:crmid:I';
 				$label = getTranslatedString($module.' ID', $module);
-				$modules_optgroup[] = array("value"=>$v,"label"=>$label);
+				$modules_optgroup[] = array('value'=>$v,'label'=>$label);
 				$id_added=true;
 			}
 			foreach ($ogReport->pri_module_columnslist[$module][$value] as $field => $fieldlabel) {
@@ -443,7 +442,7 @@ function getSecondaryColumnsHTML($module) {
  *  This function generates the combo values for the columns  for the given module
  *  and return a HTML string
  */
-function getPrimaryColumns_GroupingHTML($module, $selected = "") {
+function getPrimaryColumns_GroupingHTML($module, $selected = '') {
 	global $oReport, $current_language;
 	$id_added=false;
 	$mod_strings = return_module_language($current_language, $module);
@@ -458,38 +457,38 @@ function getPrimaryColumns_GroupingHTML($module, $selected = "") {
 			$block_listed[$value] = true;
 
 			$optgroup = array(
-				"label" => getTranslatedString($module, $module)." ".getTranslatedString($value, $module),
-				"class" => "select",
-				"style" => "border:none"
+				'label' => getTranslatedString($module, $module).' '.getTranslatedString($value, $module),
+				'class' => 'select',
+				'style' => 'border:none'
 			);
 
 			if ($id_added==false) {
 				$option = array(
-					"value" => "vtiger_crmentity:crmid:".$module."_ID:crmid:I",
-					"label" => getTranslatedString($module, $module).' '.getTranslatedString('ID', $module)
+					'value' => 'vtiger_crmentity:crmid:'.$module.'_ID:crmid:I',
+					'label' => getTranslatedString($module, $module).' '.getTranslatedString('ID', $module)
 				);
 
-				if ($selected == "vtiger_crmentity:crmid:".$module."_ID:crmid:I") {
-					$option["selected"] = true;
+				if ($selected == 'vtiger_crmentity:crmid:'.$module.'_ID:crmid:I') {
+					$option['selected'] = true;
 				}
-				$optgroup["options"][] = $option;
+				$optgroup['options'][] = $option;
 
 				$id_added=true;
 			}
 			foreach ($oReport->pri_module_columnslist[$module][$value] as $field => $fieldlabel) {
-				$option = array("value" => $field);
+				$option = array('value' => $field);
 
 				if (isset($mod_strings[$fieldlabel])) {
-					$option["label"] = $mod_strings[$fieldlabel];
+					$option['label'] = $mod_strings[$fieldlabel];
 				} else {
-					$option["label"] = $fieldlabel;
+					$option['label'] = $fieldlabel;
 				}
 
 				if ($selected == decode_html($field)) {
-					$option["selected"] = true;
+					$option['selected'] = true;
 				}
 
-				$optgroup["options"][] = $option;
+				$optgroup['options'][] = $option;
 			}
 			$list[] = $optgroup;
 		}
@@ -504,14 +503,14 @@ function getPrimaryColumns_GroupingHTML($module, $selected = "") {
  *  This function generates the combo values for the columns for the given module
  *  and return a HTML string
  */
-function getSecondaryColumns_GroupingHTML($module, $selected = "") {
+function getSecondaryColumns_GroupingHTML($module, $selected = '') {
 	global $oReport, $current_language;
 	$oReport->getPriModuleColumnsList($module);
 
 	$selected = decode_html($selected);
 	$list = array();
-	if ($module != "") {
-		$secmodule = explode(":", $module);
+	if ($module != '') {
+		$secmodule = explode(':', $module);
 		foreach ($secmodule as $mod) {
 			if (vtlib_isModuleActive($mod)) {
 				$i18nModule = getTranslatedString($mod, $mod);
@@ -522,25 +521,25 @@ function getSecondaryColumns_GroupingHTML($module, $selected = "") {
 						$block_listed[$value] = true;
 
 						$optgroup = array(
-							"label" => $i18nModule." ".getTranslatedString($value, $mod),
-							"class" => "select",
-							"style" => "border:none"
+							'label' => $i18nModule.' '.getTranslatedString($value, $mod),
+							'class' => 'select',
+							'style' => 'border:none'
 						);
 
 						foreach ($oReport->sec_module_columnslist[$mod][$value] as $field => $fieldlabel) {
-							$option = array("value" => $field);
+							$option = array('value' => $field);
 
 							if (isset($mod_strings[$fieldlabel])) {
-								$option["label"] = $mod_strings[$fieldlabel];
+								$option['label'] = $mod_strings[$fieldlabel];
 							} else {
-								$option["label"] = $fieldlabel;
+								$option['label'] = $fieldlabel;
 							}
 
 							if ($selected == decode_html($field)) {
-								$option["selected"] = true;
+								$option['selected'] = true;
 							}
 
-							$optgroup["options"][] = $option;
+							$optgroup['options'][] = $option;
 						}
 						$list[] = $optgroup;
 					}
@@ -564,11 +563,11 @@ function getGroupByTimeDiv($sortid, $reportid = '') {
 	$rows = $adb->num_rows($result);
 
 	$options = array(
-		array("value" => "None","label" => $mod_strings['LBL_NONE']),
-		array("value" => "Year","label" => $mod_strings['LBL_YEAR']),
-		array("value" => "Month","label" => $mod_strings['LBL_MONTH']),
-		array("value" => "Quarter","label" => $mod_strings['LBL_QUARTER']),
-		array("value" => "Day","label" => $mod_strings['LBL_DAY'])
+		array('value' => 'None','label' => $mod_strings['LBL_NONE']),
+		array('value' => 'Year','label' => $mod_strings['LBL_YEAR']),
+		array('value' => 'Month','label' => $mod_strings['LBL_MONTH']),
+		array('value' => 'Quarter','label' => $mod_strings['LBL_QUARTER']),
+		array('value' => 'Day','label' => $mod_strings['LBL_DAY'])
 	);
 
 	if ($rows > 0) {
@@ -576,8 +575,8 @@ function getGroupByTimeDiv($sortid, $reportid = '') {
 		$selected_groupby = $adb->query_result($result, 0, 'dategroupbycriteria');
 
 		foreach ($options as $key => $option) {
-			if (strtolower($option["value"]) == strtolower($selected_groupby)) {
-				$options[$key]["selected"] = true;
+			if (strtolower($option['value']) == strtolower($selected_groupby)) {
+				$options[$key]['selected'] = true;
 			}
 		}
 	} else {
@@ -593,12 +592,12 @@ function getGroupByTimeDiv($sortid, $reportid = '') {
  * @param  {String} $sortorder Order type
  * @return {Array} returns an array of options
  */
-function getOrderGrouping($sortorder = "") {
+function getOrderGrouping($sortorder = '') {
 	global $app_strings;
 
-	$ascending = array("value"=>"Ascending","label"=>$app_strings['Ascending']);
-	$descending = array("value"=>"Descending","label"=>$app_strings['Descending']);
-	$selected = array("selected"=>true);
+	$ascending = array('value'=>'Ascending','label'=>$app_strings['Ascending']);
+	$descending = array('value'=>'Descending','label'=>$app_strings['Descending']);
+	$selected = array('selected'=>true);
 
 	$ascending_order = array(
 		array_merge($ascending, $selected),
@@ -610,7 +609,7 @@ function getOrderGrouping($sortorder = "") {
 		array_merge($descending, $selected)
 	);
 
-	if ($sortorder != "Descending") {
+	if ($sortorder != 'Descending') {
 		$ASCDESC = $ascending_order;
 	} else {
 		$ASCDESC = $descending_order;
@@ -625,7 +624,7 @@ function getOrderGrouping($sortorder = "") {
  * @param $selected : Type String(optional)
  *  This Returns a HTML combo srings
  */
-function getPrimaryStdFilterHTML($module, $selected = "") {
+function getPrimaryStdFilterHTML($module, $selected = '') {
 	$ogReport = new Reports();
 	$ogReport->oCustomView=new CustomView();
 	$result = $ogReport->oCustomView->getStdCriteriaByModule($module);
@@ -633,9 +632,9 @@ function getPrimaryStdFilterHTML($module, $selected = "") {
 	if (isset($result)) {
 		foreach ($result as $key => $value) {
 			if ($key == $selected) {
-				$filters[] = array("selected"=>true,"value"=>$key,"label"=>getTranslatedString($module, $module)." - ".getTranslatedString($value, $module));
+				$filters[] = array('selected'=>true,'value'=>$key,'label'=>getTranslatedString($module, $module).' - '.getTranslatedString($value, $module));
 			} else {
-				$filters[] = array("value"=>$key,"label"=>getTranslatedString($module, $module)." - ".getTranslatedString($value, $module));
+				$filters[] = array('value'=>$key,'label'=>getTranslatedString($module, $module).' - '.getTranslatedString($value, $module));
 			}
 		}
 	}
@@ -648,13 +647,13 @@ function getPrimaryStdFilterHTML($module, $selected = "") {
  * @param $selected : Type String(optional)
  *  This Returns a HTML combo srings for the secondary modules
  */
-function getSecondaryStdFilterHTML($module, $selected = "") {
+function getSecondaryStdFilterHTML($module, $selected = '') {
 	global $current_language;
 	$ogReport = new Reports();
 	$ogReport->oCustomView=new CustomView();
 	$filters = array();
-	if ($module != "") {
-		$secmodule = explode(":", $module);
+	if ($module != '') {
+		$secmodule = explode(':', $module);
 		foreach ($secmodule as $mod) {
 			$result = $ogReport->oCustomView->getStdCriteriaByModule($mod);
 			if (isset($result)) {
@@ -663,15 +662,15 @@ function getSecondaryStdFilterHTML($module, $selected = "") {
 				foreach ($result as $key => $value) {
 					if (isset($mod_strings[$value])) {
 						if ($key == $selected) {
-							$filters[] = array("selected"=>true,"value"=>$key, "label"=>$i18nModule." - ".getTranslatedString($value, $mod));
+							$filters[] = array('selected'=>true,'value'=>$key, 'label'=>$i18nModule.' - '.getTranslatedString($value, $mod));
 						} else {
-							$filters[] = array("value"=>$key, "label"=>$i18nModule." - ".getTranslatedString($value, $mod));
+							$filters[] = array('value'=>$key, 'label'=>$i18nModule.' - '.getTranslatedString($value, $mod));
 						}
 					} else {
 						if ($key == $selected) {
-							$filters[] = array("selected"=>true, "value"=>$key, "label"=>$i18nModule." - ".$value);
+							$filters[] = array('selected'=>true, 'value'=>$key, 'label'=>$i18nModule.' - '.$value);
 						} else {
-							$filters[] = array("value"=>$key, "label"=>$i18nModule." - ".$value);
+							$filters[] = array('value'=>$key, 'label'=>$i18nModule.' - '.$value);
 						}
 					}
 				}
@@ -687,7 +686,7 @@ function getSecondaryStdFilterHTML($module, $selected = "") {
  *  This generate columns of the primary modules for the advanced filter
  *  It returns a HTML string of combo values
  */
-function getPrimaryColumns_AdvFilterHTML($module, $selected = "") {
+function getPrimaryColumns_AdvFilterHTML($module, $selected = '') {
 	$selected = decode_html($selected);
 	$block_listed = array();
 	$ogReport = new Reports();
@@ -697,15 +696,15 @@ function getPrimaryColumns_AdvFilterHTML($module, $selected = "") {
 		if (isset($ogReport->pri_module_columnslist[$module][$value]) && empty($block_listed[$value])) {
 			$block_listed[$value] = true;
 			$optgroup = array(
-				"label"=>getTranslatedString($module, $module)." ".getTranslatedString($value, $module),
-				"class"=>"select",
-				"style"=>"border:none");
+				'label'=>getTranslatedString($module, $module).' '.getTranslatedString($value, $module),
+				'class'=>'select',
+				'style'=>'border:none');
 			foreach ($ogReport->pri_module_columnslist[$module][$value] as $field => $fieldlabel) {
 				$field = decode_html($field);
 				$fldlbl = str_replace(array("\n","\r"), '', getTranslatedString($fieldlabel, $module));
-				$option = array("value"=>$field,"label"=>$fldlbl);
+				$option = array('value'=>$field,'label'=>$fldlbl);
 				if ($selected == $field) {
-					$option["selected"] = true;
+					$option['selected'] = true;
 				}
 				$optgroup['options'][] = $option;
 			}
@@ -720,12 +719,12 @@ function getPrimaryColumns_AdvFilterHTML($module, $selected = "") {
  *  This generate columns of the secondary module for the advanced filter
  *  It returns a HTML string of combo values
  */
-function getSecondaryColumns_AdvFilterHTML($module, $selected = "") {
+function getSecondaryColumns_AdvFilterHTML($module, $selected = '') {
 	$ogReport = new Reports();
 	$filters = array();
 	if ($module != '') {
 		$ogReport->getSecModuleColumnsList($module);
-		$secmodule = explode(":", $module);
+		$secmodule = explode(':', $module);
 		for ($i=0; $i < count($secmodule); $i++) {
 			if (vtlib_isModuleActive($secmodule[$i])) {
 				$block_listed = array();
@@ -734,17 +733,17 @@ function getSecondaryColumns_AdvFilterHTML($module, $selected = "") {
 					if (isset($ogReport->sec_module_columnslist[$secmodule[$i]][$value]) && empty($block_listed[$value])) {
 						$block_listed[$value] = true;
 						$optgroup = array(
-							"label"=>$i18nModule." ".getTranslatedString($value, $secmodule[$i]),
-							"class"=>"select",
-							"style"=>"border:none"
+							'label'=>$i18nModule.' '.getTranslatedString($value, $secmodule[$i]),
+							'class'=>'select',
+							'style'=>'border:none'
 						);
 						foreach ($ogReport->sec_module_columnslist[$secmodule[$i]][$value] as $field => $fieldlabel) {
 							$fldlbl = str_replace(array("\n","\r"), '', getTranslatedString($fieldlabel, $secmodule[$i]));
 							$field = decode_html($field);
 
-							$option = array("value"=>$field,"label"=>$fldlbl);
+							$option = array('value'=>$field,'label'=>$fldlbl);
 							if ($selected == $field) {
-								$option["selected"] = true;
+								$option['selected'] = true;
 							}
 							$optgroup['options'][] = $option;
 						}
@@ -762,18 +761,18 @@ function getSecondaryColumns_AdvFilterHTML($module, $selected = "") {
  * @param  string $selected [description]
  * @return [type]           [description]
  */
-function getRelatedColumns($selected = "") {
+function getRelatedColumns($selected = '') {
 	$ogReport = new Reports();
 	$rel_colums = array();
 	$rel_fields = $ogReport->adv_rel_fields;
 	if ($selected!='All') {
-		$selected = explode(":", $selected);
+		$selected = explode(':', $selected);
 	}
 	$related_fields = array();
 	foreach ($rel_fields as $i => $index) {
 		foreach ($index as $value) {
-			$fieldarray = explode("::", $value);
-			$rel_colums = array("value"=>$fieldarray[0], "label"=>$fieldarray[1]);
+			$fieldarray = explode('::', $value);
+			$rel_colums = array('value'=>$fieldarray[0], 'label'=>$fieldarray[1]);
 		}
 		$related_fields[$i] = $rel_colums;
 	}

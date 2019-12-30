@@ -26,7 +26,7 @@
 class Google_Service_Container_Resource_ProjectsZones extends Google_Service_Resource
 {
   /**
-   * Returns configuration info about the Kubernetes Engine service.
+   * Returns configuration info about the Google Kubernetes Engine service.
    * (zones.getServerconfig)
    *
    * @param string $projectId Deprecated. The Google Developers Console [project
@@ -38,7 +38,7 @@ class Google_Service_Container_Resource_ProjectsZones extends Google_Service_Res
    * @param array $optParams Optional parameters.
    *
    * @opt_param string name The name (project and location) of the server config
-   * to get Specified in the format 'projects/locations'.
+   * to get, specified in the format 'projects/locations'.
    * @return Google_Service_Container_ServerConfig
    */
   public function getServerconfig($projectId, $zone, $optParams = array())

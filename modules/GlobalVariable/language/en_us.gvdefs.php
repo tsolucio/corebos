@@ -1357,6 +1357,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'supported GenDoc languages: en es it pl',
 	'definition' => 'Language in which the templates are created and compiled. By default, the selected language of the current user is used.',
 ),
+'GenDoc_Convert_URL' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Extension',
+	'values' => 'URL',
+	'definition' => 'URL to the conversion server: https://github.com/sfoxdev/docker-unoconv',
+),
 'BusinessQuestion_TableAnswer_Limit' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',
@@ -1412,6 +1419,20 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '0|1',
 	'definition' => 'When activated (1), system checks quantity of product or service invoiced from a Sales Order and transfer to Invoice the maximum number permitted to invoice from a Sales Order. Defalut is 0 (deactivated)',
+),
+'Application_ListView_SearchColumns_AC_Trigger' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => 'Any integer',
+	'definition' => 'The minimal number of characters needed to trigger an autocomplete-search in the search boxes on top of the columns (only visible when Application_ListView_SearchColumns is activated). Defaults to 3',
+),
+'Inventory_Tax_FillInMode' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'All | Default | None',
+	'definition' => 'In group tax mode will permit selecting the activated taxes. By default, the "All" value is applied which is the behavior before the existence of this variable. "All" calculates all active taxes, "None", sets all taxes to 0 and "Default" activates the taxes marked as default in settings',
 ),
 );
 

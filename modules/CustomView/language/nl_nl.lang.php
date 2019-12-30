@@ -257,6 +257,11 @@ $mod_strings = array(
 'not equal to'=>'Niet gelijk aan',
 'starts with'=>'begint met',
 'ends with'=>'eindigt op',
+'does not start with' => 'Does not start with',
+'does not end with' => 'Does not end with',
+'before' => 'Before',
+'after' => 'After',
+'between' => 'Between',
 //'Product Code'=>'Product Code',
 
 //Added for Role based Custom filters

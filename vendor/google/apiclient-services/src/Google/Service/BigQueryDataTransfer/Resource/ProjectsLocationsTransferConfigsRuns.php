@@ -28,8 +28,8 @@ class Google_Service_BigQueryDataTransfer_Resource_ProjectsLocationsTransferConf
   /**
    * Deletes the specified transfer run. (runs.delete)
    *
-   * @param string $name The field will contain name of the resource requested,
-   * for example:
+   * @param string $name Required. The field will contain name of the resource
+   * requested, for example:
    * `projects/{project_id}/transferConfigs/{config_id}/runs/{run_id}`
    * @param array $optParams Optional parameters.
    * @return Google_Service_BigQueryDataTransfer_BigquerydatatransferEmpty
@@ -43,8 +43,8 @@ class Google_Service_BigQueryDataTransfer_Resource_ProjectsLocationsTransferConf
   /**
    * Returns information about the particular transfer run. (runs.get)
    *
-   * @param string $name The field will contain name of the resource requested,
-   * for example:
+   * @param string $name Required. The field will contain name of the resource
+   * requested, for example:
    * `projects/{project_id}/transferConfigs/{config_id}/runs/{run_id}`
    * @param array $optParams Optional parameters.
    * @return Google_Service_BigQueryDataTransfer_TransferRun
@@ -59,9 +59,9 @@ class Google_Service_BigQueryDataTransfer_Resource_ProjectsLocationsTransferConf
    * Returns information about running and completed jobs.
    * (runs.listProjectsLocationsTransferConfigsRuns)
    *
-   * @param string $parent Name of transfer configuration for which transfer runs
-   * should be retrieved. Format of transfer configuration resource name is:
-   * `projects/{project_id}/transferConfigs/{config_id}`.
+   * @param string $parent Required. Name of transfer configuration for which
+   * transfer runs should be retrieved. Format of transfer configuration resource
+   * name is: `projects/{project_id}/transferConfigs/{config_id}`.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string pageToken Pagination token, which can be used to request a

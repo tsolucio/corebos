@@ -6,13 +6,11 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-/*********************************************************************************
- * $Header:  \modules\com_vtiger_workflow\language\hu_hu.lang.php - 9:46 2011.11.12. $
- * Description:  Defines the Hungarian language pack for the com_vtiger_workflow module vtiger 5.3.x
- * All Rights Reserved.
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
  ********************************************************************************/
 $mod_strings = array(
+	'com_vtiger_workflow' => 'Workflows',
+	'SINGLE_com_vtiger_workflow' => 'Workflow',
 	'VTEmailTask' => 'Email küldés',
 	'VTEntityMethodTask' => 'Egyedi funkció meghívása',
 	'VTCreateTodoTask' => 'Teendő létrehozása',
@@ -187,5 +185,7 @@ $mod_strings = array(
 	'Generate Image Code' => 'Generate Image Code',
 	'Generate Image Code Workflow Task' => 'Generate Image Code Workflow Task',
 	'GenerateImageCodeWorkflowTask' => 'Generate Image Code Workflow Task',
+	'LBL_ON_RELATE' => 'On Relate with',
+	'LBL_ON_UNRELATE' => 'On Unrelate with',
 );
 ?>

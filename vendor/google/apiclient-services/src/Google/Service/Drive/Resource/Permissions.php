@@ -26,9 +26,9 @@
 class Google_Service_Drive_Resource_Permissions extends Google_Service_Resource
 {
   /**
-   * Creates a permission for a file or Team Drive. (permissions.create)
+   * Creates a permission for a file or shared drive. (permissions.create)
    *
-   * @param string $fileId The ID of the file or Team Drive.
+   * @param string $fileId The ID of the file or shared drive.
    * @param Google_Service_Drive_Permission $postBody
    * @param array $optParams Optional parameters.
    *
@@ -38,14 +38,18 @@ class Google_Service_Drive_Resource_Permissions extends Google_Service_Resource
    * when sharing to users or groups. This defaults to true for users and groups,
    * and is not allowed for other requests. It must not be disabled for ownership
    * transfers.
-   * @opt_param bool supportsTeamDrives Whether the requesting application
-   * supports Team Drives.
+   * @opt_param bool supportsAllDrives Deprecated - Whether the requesting
+   * application supports both My Drives and shared drives. This parameter will
+   * only be effective until June 1, 2020. Afterwards all applications are assumed
+   * to support shared drives.
+   * @opt_param bool supportsTeamDrives Deprecated use supportsAllDrives instead.
    * @opt_param bool transferOwnership Whether to transfer ownership to the
    * specified user and downgrade the current owner to a writer. This parameter is
    * required as an acknowledgement of the side effect.
    * @opt_param bool useDomainAdminAccess Issue the request as a domain
    * administrator; if set to true, then the requester will be granted access if
-   * they are an administrator of the domain to which the item belongs.
+   * the file ID parameter refers to a shared drive and the requester is an
+   * administrator of the domain to which the shared drive belongs.
    * @return Google_Service_Drive_Permission
    */
   public function create($fileId, Google_Service_Drive_Permission $postBody, $optParams = array())
@@ -57,15 +61,19 @@ class Google_Service_Drive_Resource_Permissions extends Google_Service_Resource
   /**
    * Deletes a permission. (permissions.delete)
    *
-   * @param string $fileId The ID of the file or Team Drive.
+   * @param string $fileId The ID of the file or shared drive.
    * @param string $permissionId The ID of the permission.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool supportsTeamDrives Whether the requesting application
-   * supports Team Drives.
+   * @opt_param bool supportsAllDrives Deprecated - Whether the requesting
+   * application supports both My Drives and shared drives. This parameter will
+   * only be effective until June 1, 2020. Afterwards all applications are assumed
+   * to support shared drives.
+   * @opt_param bool supportsTeamDrives Deprecated use supportsAllDrives instead.
    * @opt_param bool useDomainAdminAccess Issue the request as a domain
    * administrator; if set to true, then the requester will be granted access if
-   * they are an administrator of the domain to which the item belongs.
+   * the file ID parameter refers to a shared drive and the requester is an
+   * administrator of the domain to which the shared drive belongs.
    */
   public function delete($fileId, $permissionId, $optParams = array())
   {
@@ -80,11 +88,15 @@ class Google_Service_Drive_Resource_Permissions extends Google_Service_Resource
    * @param string $permissionId The ID of the permission.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool supportsTeamDrives Whether the requesting application
-   * supports Team Drives.
+   * @opt_param bool supportsAllDrives Deprecated - Whether the requesting
+   * application supports both My Drives and shared drives. This parameter will
+   * only be effective until June 1, 2020. Afterwards all applications are assumed
+   * to support shared drives.
+   * @opt_param bool supportsTeamDrives Deprecated use supportsAllDrives instead.
    * @opt_param bool useDomainAdminAccess Issue the request as a domain
    * administrator; if set to true, then the requester will be granted access if
-   * they are an administrator of the domain to which the item belongs.
+   * the file ID parameter refers to a shared drive and the requester is an
+   * administrator of the domain to which the shared drive belongs.
    * @return Google_Service_Drive_Permission
    */
   public function get($fileId, $permissionId, $optParams = array())
@@ -94,23 +106,27 @@ class Google_Service_Drive_Resource_Permissions extends Google_Service_Resource
     return $this->call('get', array($params), "Google_Service_Drive_Permission");
   }
   /**
-   * Lists a file's or Team Drive's permissions. (permissions.listPermissions)
+   * Lists a file's or shared drive's permissions. (permissions.listPermissions)
    *
-   * @param string $fileId The ID of the file or Team Drive.
+   * @param string $fileId The ID of the file or shared drive.
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize The maximum number of permissions to return per page.
-   * When not set for files in a Team Drive, at most 100 results will be returned.
-   * When not set for files that are not in a Team Drive, the entire list will be
-   * returned.
+   * When not set for files in a shared drive, at most 100 results will be
+   * returned. When not set for files that are not in a shared drive, the entire
+   * list will be returned.
    * @opt_param string pageToken The token for continuing a previous list request
    * on the next page. This should be set to the value of 'nextPageToken' from the
    * previous response.
-   * @opt_param bool supportsTeamDrives Whether the requesting application
-   * supports Team Drives.
+   * @opt_param bool supportsAllDrives Deprecated - Whether the requesting
+   * application supports both My Drives and shared drives. This parameter will
+   * only be effective until June 1, 2020. Afterwards all applications are assumed
+   * to support shared drives.
+   * @opt_param bool supportsTeamDrives Deprecated use supportsAllDrives instead.
    * @opt_param bool useDomainAdminAccess Issue the request as a domain
    * administrator; if set to true, then the requester will be granted access if
-   * they are an administrator of the domain to which the item belongs.
+   * the file ID parameter refers to a shared drive and the requester is an
+   * administrator of the domain to which the shared drive belongs.
    * @return Google_Service_Drive_PermissionList
    */
   public function listPermissions($fileId, $optParams = array())
@@ -122,20 +138,24 @@ class Google_Service_Drive_Resource_Permissions extends Google_Service_Resource
   /**
    * Updates a permission with patch semantics. (permissions.update)
    *
-   * @param string $fileId The ID of the file or Team Drive.
+   * @param string $fileId The ID of the file or shared drive.
    * @param string $permissionId The ID of the permission.
    * @param Google_Service_Drive_Permission $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param bool removeExpiration Whether to remove the expiration date.
-   * @opt_param bool supportsTeamDrives Whether the requesting application
-   * supports Team Drives.
+   * @opt_param bool supportsAllDrives Deprecated - Whether the requesting
+   * application supports both My Drives and shared drives. This parameter will
+   * only be effective until June 1, 2020. Afterwards all applications are assumed
+   * to support shared drives.
+   * @opt_param bool supportsTeamDrives Deprecated use supportsAllDrives instead.
    * @opt_param bool transferOwnership Whether to transfer ownership to the
    * specified user and downgrade the current owner to a writer. This parameter is
    * required as an acknowledgement of the side effect.
    * @opt_param bool useDomainAdminAccess Issue the request as a domain
    * administrator; if set to true, then the requester will be granted access if
-   * they are an administrator of the domain to which the item belongs.
+   * the file ID parameter refers to a shared drive and the requester is an
+   * administrator of the domain to which the shared drive belongs.
    * @return Google_Service_Drive_Permission
    */
   public function update($fileId, $permissionId, Google_Service_Drive_Permission $postBody, $optParams = array())

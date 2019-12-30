@@ -23,12 +23,17 @@ class Google_Service_Dns_ManagedZone extends Google_Collection
   public $dnsName;
   protected $dnssecConfigType = 'Google_Service_Dns_ManagedZoneDnsSecConfig';
   protected $dnssecConfigDataType = '';
+  protected $forwardingConfigType = 'Google_Service_Dns_ManagedZoneForwardingConfig';
+  protected $forwardingConfigDataType = '';
   public $id;
   public $kind;
   public $labels;
   public $name;
   public $nameServerSet;
   public $nameServers;
+  protected $privateVisibilityConfigType = 'Google_Service_Dns_ManagedZonePrivateVisibilityConfig';
+  protected $privateVisibilityConfigDataType = '';
+  public $visibility;
 
   public function setCreationTime($creationTime)
   {
@@ -67,6 +72,20 @@ class Google_Service_Dns_ManagedZone extends Google_Collection
   public function getDnssecConfig()
   {
     return $this->dnssecConfig;
+  }
+  /**
+   * @param Google_Service_Dns_ManagedZoneForwardingConfig
+   */
+  public function setForwardingConfig(Google_Service_Dns_ManagedZoneForwardingConfig $forwardingConfig)
+  {
+    $this->forwardingConfig = $forwardingConfig;
+  }
+  /**
+   * @return Google_Service_Dns_ManagedZoneForwardingConfig
+   */
+  public function getForwardingConfig()
+  {
+    return $this->forwardingConfig;
   }
   public function setId($id)
   {
@@ -115,5 +134,27 @@ class Google_Service_Dns_ManagedZone extends Google_Collection
   public function getNameServers()
   {
     return $this->nameServers;
+  }
+  /**
+   * @param Google_Service_Dns_ManagedZonePrivateVisibilityConfig
+   */
+  public function setPrivateVisibilityConfig(Google_Service_Dns_ManagedZonePrivateVisibilityConfig $privateVisibilityConfig)
+  {
+    $this->privateVisibilityConfig = $privateVisibilityConfig;
+  }
+  /**
+   * @return Google_Service_Dns_ManagedZonePrivateVisibilityConfig
+   */
+  public function getPrivateVisibilityConfig()
+  {
+    return $this->privateVisibilityConfig;
+  }
+  public function setVisibility($visibility)
+  {
+    $this->visibility = $visibility;
+  }
+  public function getVisibility()
+  {
+    return $this->visibility;
   }
 }

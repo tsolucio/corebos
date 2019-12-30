@@ -131,23 +131,33 @@ function getCFLeadMapping($module) {
  */
 function getListLeadMapping($cfid) {
 	global $adb;
-	$result = $adb->pquery('select * from vtiger_convertleadmapping where cfmid =?', array($cfid));
+	$result = $adb->pquery('select * from vtiger_convertleadmapping where cfmid=?', array($cfid));
 	$noofrows = $adb->num_rows($result);
 	for ($i = 0; $i < $noofrows; $i++) {
 		$accountid = $adb->query_result($result, $i, 'accountfid');
 		$contactid = $adb->query_result($result, $i, 'contactfid');
 		$potentialid = $adb->query_result($result, $i, 'potentialfid');
-
-		$result2 = $adb->pquery('select fieldlabel from vtiger_field where fieldid =?', array($accountid));
-		$accountfield = $adb->query_result($result2, 0, 'fieldlabel');
-		$label['accountlabel'] = getTranslatedString($accountfield, 'Accounts');
-
-		$result3 = $adb->pquery('select fieldlabel from vtiger_field where fieldid =?', array($contactid));
-		$contactfield = $adb->query_result($result3, 0, 'fieldlabel');
-		$label['contactlabel'] = getTranslatedString($contactfield, 'Contacts');
-		$result4 = $adb->pquery('select fieldlabel from vtiger_field where fieldid =?', array($potentialid));
-		$potentialfield = $adb->query_result($result4, 0, 'fieldlabel');
-		$label['potentiallabel'] = getTranslatedString($potentialfield, 'Potentials');
+		if (empty($accountid)) {
+			$label['accountlabel'] = '';
+		} else {
+			$result2 = $adb->pquery('select fieldlabel from vtiger_field where fieldid=?', array($accountid));
+			$accountfield = $adb->query_result($result2, 0, 'fieldlabel');
+			$label['accountlabel'] = getTranslatedString($accountfield, 'Accounts');
+		}
+		if (empty($contactid)) {
+			$label['contactlabel'] = '';
+		} else {
+			$result3 = $adb->pquery('select fieldlabel from vtiger_field where fieldid=?', array($contactid));
+			$contactfield = $adb->query_result($result3, 0, 'fieldlabel');
+			$label['contactlabel'] = getTranslatedString($contactfield, 'Contacts');
+		}
+		if (empty($potentialid)) {
+			$label['potentiallabel'] = '';
+		} else {
+			$result4 = $adb->pquery('select fieldlabel from vtiger_field where fieldid=?', array($potentialid));
+			$potentialfield = $adb->query_result($result4, 0, 'fieldlabel');
+			$label['potentiallabel'] = getTranslatedString($potentialfield, 'Potentials');
+		}
 	}
 	return $label;
 }

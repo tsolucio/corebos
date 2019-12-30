@@ -34,7 +34,7 @@ function vtSaveTask($adb, $request) {
 		$workflowId = $request['workflow_id'];
 		$task = $tm->createTask($taskType, $workflowId);
 	}
-	$task->summary = $request['summary'];
+	$task->summary = decode_html($request['summary']);
 
 	if ($request['active']=='true') {
 		$task->active=true;
@@ -84,11 +84,11 @@ function vtSaveTask($adb, $request) {
 
 	$module->setReturnUrl('');
 	$returnUrl=$module->editWorkflowUrl($task->workflowId);
-?>
+	?>
 	<script type="text/javascript" charset="utf-8">
 		window.location="<?php echo $returnUrl?>";
 	</script>
-<?php
+	<?php
 }
 vtSaveTask($adb, $_REQUEST);
 ?>

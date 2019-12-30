@@ -54,28 +54,28 @@ class RelatedModuleMeta {
 		switch ($relationId) {
 			case $this->CAMPAIGNCONTACTREL:
 				return array(
-				'relationTable' => 'vtiger_campaigncontrel',
-				'Campaigns' => 'campaignid',
-				'Contacts' => 'contactid'
-			);
+					'relationTable' => 'vtiger_campaigncontrel',
+					'Campaigns' => 'campaignid',
+					'Contacts' => 'contactid'
+				);
 			case $this->PRODUCTINVOICEREL:
 				return array(
-				'relationTable' => 'vtiger_inventoryproductrel',
-				'Products' => 'productid',
-				'Invoice' => 'id'
-			);
+					'relationTable' => 'vtiger_inventoryproductrel',
+					'Products' => 'productid',
+					'Invoice' => 'id'
+				);
 			case $this->PRODUCTQUOTESREL:
 				return array(
-				'relationTable' => 'vtiger_inventoryproductrel',
-				'Products' => 'productid',
-				'Quotes' => 'id'
-			);
+					'relationTable' => 'vtiger_inventoryproductrel',
+					'Products' => 'productid',
+					'Quotes' => 'id'
+				);
 			case $this->PRODUCTPURCHASEORDERREL:
 				return array(
-				'relationTable' => 'vtiger_inventoryproductrel',
-				'Products' => 'productid',
-				'PurchaseOrder' => 'id'
-			);
+					'relationTable' => 'vtiger_inventoryproductrel',
+					'Products' => 'productid',
+					'PurchaseOrder' => 'id'
+				);
 		}
 	}
 }

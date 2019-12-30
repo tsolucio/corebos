@@ -86,7 +86,7 @@ class coreBOS_Rule {
 				break;
 			case 'Condition Expression':
 			default:
-				$ruleinfo = $cbmap->ConditionExpression($contextid);
+				$ruleinfo = $cbmap->ConditionExpression($context);
 				break;
 		}
 		return $ruleinfo;

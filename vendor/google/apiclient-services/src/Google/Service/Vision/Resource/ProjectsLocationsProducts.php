@@ -35,7 +35,8 @@ class Google_Service_Vision_Resource_ProjectsLocationsProducts extends Google_Se
    * characters. * Returns INVALID_ARGUMENT if product_category is missing or
    * invalid. (products.create)
    *
-   * @param string $parent The project in which the Product should be created.
+   * @param string $parent Required. The project in which the Product should be
+   * created.
    *
    * Format is `projects/PROJECT_ID/locations/LOC_ID`.
    * @param Google_Service_Vision_Product $postBody
@@ -58,13 +59,9 @@ class Google_Service_Vision_Resource_ProjectsLocationsProducts extends Google_Se
    *
    * Metadata of the product and all its images will be deleted right away, but
    * search queries against ProductSets containing the product may still work
-   * until all related caches are refreshed.
+   * until all related caches are refreshed. (products.delete)
    *
-   * Possible errors:
-   *
-   * * Returns NOT_FOUND if the product does not exist. (products.delete)
-   *
-   * @param string $name Resource name of product to delete.
+   * @param string $name Required. Resource name of product to delete.
    *
    * Format is: `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`
    * @param array $optParams Optional parameters.
@@ -83,7 +80,7 @@ class Google_Service_Vision_Resource_ProjectsLocationsProducts extends Google_Se
    *
    * * Returns NOT_FOUND if the Product does not exist. (products.get)
    *
-   * @param string $name Resource name of the Product to get.
+   * @param string $name Required. Resource name of the Product to get.
    *
    * Format is: `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`
    * @param array $optParams Optional parameters.
@@ -103,8 +100,8 @@ class Google_Service_Vision_Resource_ProjectsLocationsProducts extends Google_Se
    * * Returns INVALID_ARGUMENT if page_size is greater than 100 or less than 1.
    * (products.listProjectsLocationsProducts)
    *
-   * @param string $parent The project OR ProductSet from which Products should be
-   * listed.
+   * @param string $parent Required. The project OR ProductSet from which Products
+   * should be listed.
    *
    * Format: `projects/PROJECT_ID/locations/LOC_ID`
    * @param array $optParams Optional parameters.
@@ -155,5 +152,44 @@ class Google_Service_Vision_Resource_ProjectsLocationsProducts extends Google_Se
     $params = array('name' => $name, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('patch', array($params), "Google_Service_Vision_Product");
+  }
+  /**
+   * Asynchronous API to delete all Products in a ProductSet or all Products that
+   * are in no ProductSet.
+   *
+   * If a Product is a member of the specified ProductSet in addition to other
+   * ProductSets, the Product will still be deleted.
+   *
+   * It is recommended to not delete the specified ProductSet until after this
+   * operation has completed. It is also recommended to not add any of the
+   * Products involved in the batch delete to a new ProductSet while this
+   * operation is running because those Products may still end up deleted.
+   *
+   * It's not possible to undo the PurgeProducts operation. Therefore, it is
+   * recommended to keep the csv files used in ImportProductSets (if that was how
+   * you originally built the Product Set) before starting PurgeProducts, in case
+   * you need to re-import the data after deletion.
+   *
+   * If the plan is to purge all of the Products from a ProductSet and then re-use
+   * the empty ProductSet to re-import new Products into the empty ProductSet, you
+   * must wait until the PurgeProducts operation has finished for that ProductSet.
+   *
+   * The google.longrunning.Operation API can be used to keep track of the
+   * progress and results of the request. `Operation.metadata` contains
+   * `BatchOperationMetadata`. (progress) (products.purge)
+   *
+   * @param string $parent Required. The project and location in which the
+   * Products should be deleted.
+   *
+   * Format is `projects/PROJECT_ID/locations/LOC_ID`.
+   * @param Google_Service_Vision_PurgeProductsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Vision_Operation
+   */
+  public function purge($parent, Google_Service_Vision_PurgeProductsRequest $postBody, $optParams = array())
+  {
+    $params = array('parent' => $parent, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('purge', array($params), "Google_Service_Vision_Operation");
   }
 }

@@ -74,6 +74,16 @@ class Google_Service_CloudMachineLearningEngine_Resource_ProjectsJobs extends Go
    * requested. See the operation documentation for the appropriate value for this
    * field.
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param int options.requestedPolicyVersion Optional. The policy format
+   * version to be returned.
+   *
+   * Valid values are 0, 1, and 3. Requests specifying an invalid value will be
+   * rejected.
+   *
+   * Requests for policies with any conditional bindings must specify version 3.
+   * Policies without any conditional bindings may specify any valid value or
+   * leave the field unset.
    * @return Google_Service_CloudMachineLearningEngine_GoogleIamV1Policy
    */
   public function getIamPolicy($resource, $optParams = array())
@@ -105,9 +115,10 @@ class Google_Service_CloudMachineLearningEngine_Resource_ProjectsJobs extends Go
    * @opt_param string filter Optional. Specifies the subset of jobs to retrieve.
    * You can filter on the value of one or more attributes of the job object. For
    * example, retrieve jobs with a job identifier that starts with 'census':
-   * gcloud ml-engine jobs list --filter='jobId:census*' List all failed jobs with
-   * names that start with 'rnn': gcloud ml-engine jobs list --filter='jobId:rnn*
-   * AND state:FAILED' For more examples, see the guide to monitoring jobs.
+   * gcloud ai-platform jobs list --filter='jobId:census*' List all failed jobs
+   * with names that start with 'rnn': gcloud ai-platform jobs list
+   * --filter='jobId:rnn* AND state:FAILED' For more examples, see the guide to
+   * monitoring jobs.
    * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ListJobsResponse
    */
   public function listProjectsJobs($parent, $optParams = array())
@@ -148,7 +159,10 @@ class Google_Service_CloudMachineLearningEngine_Resource_ProjectsJobs extends Go
   }
   /**
    * Sets the access control policy on the specified resource. Replaces any
-   * existing policy. (jobs.setIamPolicy)
+   * existing policy.
+   *
+   * Can return Public Errors: NOT_FOUND, INVALID_ARGUMENT and PERMISSION_DENIED
+   * (jobs.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
    * specified. See the operation documentation for the appropriate value for this

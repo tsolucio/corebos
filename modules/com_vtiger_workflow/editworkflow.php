@@ -16,6 +16,7 @@ require_once 'VTTaskManager.inc';
 require_once 'VTWorkflowApplication.inc';
 require_once 'VTWorkflowTemplateManager.inc';
 require_once 'VTWorkflowUtils.php';
+require_once 'include/Webservices/getRelatedModules.php';
 
 function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_strings) {
 	global $theme, $current_user;
@@ -117,6 +118,25 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 		return_module_language($current_language, 'Settings'),
 		return_module_language($current_language, $module->name)
 	));
+	// Related Module List for Relate Event Triggers
+	$relatedMods = getRelatedModulesInfomation($workflow->moduleName, $current_user);
+	$relatedmodules = array(
+		'Any' => getTranslatedString('Any', 'Settings'),
+	);
+	$relatedmodule = 'Any';
+	foreach ($relatedMods as $modval) {
+		if ($workflow->relatemodule == $modval['related_module']) {
+			$relatedmodule = $modval['related_module'];
+		}
+		if ($modval['relationtype'] == 'N:N' && !empty($modval['related_module'])) {
+			$relatedmodules[$modval['related_module']] = $modval['labeli18n'];
+		}
+	}
+	$smarty->assign('relatedmodules', $relatedmodules);
+	$smarty->assign('onrelatedmodule', $workflow->executionConditionAsLabel() == 'ON_RELATE' ? $relatedmodule : 'Any');
+	$smarty->assign('onunrelatedmodule', $workflow->executionConditionAsLabel() == 'ON_UNRELATE' ? $relatedmodule : 'Any');
+
+	$smarty->assign('ISADMIN', is_admin($current_user));
 	$smarty->assign('THEME', $theme);
 	$smarty->assign('IMAGE_PATH', $image_path);
 	$smarty->assign('MODULE_NAME', $module->label);

@@ -12,12 +12,12 @@ class VTDummyTask extends VTTask {
 	public $executeImmediately = true;
 
 	public function getFieldNames() {
-		return array();
+		return array('statement');
 	}
 
 	public function doTask(&$entity) {
 		$statement=$this->statement;
-		echo "This is a dummy workflow task with $statement";
+		echo "This is a dummy workflow task: $statement";
 	}
 }
 ?>

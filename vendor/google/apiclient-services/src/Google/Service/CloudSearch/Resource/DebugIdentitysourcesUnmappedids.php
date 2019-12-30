@@ -38,9 +38,8 @@ class Google_Service_CloudSearch_Resource_DebugIdentitysourcesUnmappedids extend
    * @opt_param int pageSize Maximum number of items to fetch in a request.
    * Defaults to 100.
    * @opt_param string resolutionStatusCode Limit users selection to this status.
-   * @opt_param bool debugOptions.enableDebugging If set, the request will enable
-   * debugging features of Cloud Search. Only turn on this field, if asked by
-   * Google to help with debugging.
+   * @opt_param bool debugOptions.enableDebugging If you are asked by Google to
+   * help with debugging, set this field. Otherwise, ignore this field.
    * @return Google_Service_CloudSearch_ListUnmappedIdentitiesResponse
    */
   public function listDebugIdentitysourcesUnmappedids($parent, $optParams = array())

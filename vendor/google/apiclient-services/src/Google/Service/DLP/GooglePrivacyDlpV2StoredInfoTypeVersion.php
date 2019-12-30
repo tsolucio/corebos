@@ -24,6 +24,8 @@ class Google_Service_DLP_GooglePrivacyDlpV2StoredInfoTypeVersion extends Google_
   protected $errorsType = 'Google_Service_DLP_GooglePrivacyDlpV2Error';
   protected $errorsDataType = 'array';
   public $state;
+  protected $statsType = 'Google_Service_DLP_GooglePrivacyDlpV2StoredInfoTypeStats';
+  protected $statsDataType = '';
 
   /**
    * @param Google_Service_DLP_GooglePrivacyDlpV2StoredInfoTypeConfig
@@ -68,5 +70,19 @@ class Google_Service_DLP_GooglePrivacyDlpV2StoredInfoTypeVersion extends Google_
   public function getState()
   {
     return $this->state;
+  }
+  /**
+   * @param Google_Service_DLP_GooglePrivacyDlpV2StoredInfoTypeStats
+   */
+  public function setStats(Google_Service_DLP_GooglePrivacyDlpV2StoredInfoTypeStats $stats)
+  {
+    $this->stats = $stats;
+  }
+  /**
+   * @return Google_Service_DLP_GooglePrivacyDlpV2StoredInfoTypeStats
+   */
+  public function getStats()
+  {
+    return $this->stats;
   }
 }

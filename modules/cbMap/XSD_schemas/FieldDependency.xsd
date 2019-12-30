@@ -47,35 +47,35 @@
                           <xs:element name="hide" maxOccurs="unbounded" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
-                                <xs:element type="xs:string" name="field" minOccurs="1" maxOccurs="1"/>
+                                <xs:element type="xs:string" name="field" minOccurs="1" maxOccurs="unbounded"/>
                               </xs:sequence>
                             </xs:complexType>
                           </xs:element>
                           <xs:element name="readonly" maxOccurs="unbounded" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
-                                <xs:element type="xs:string" name="field" minOccurs="1" maxOccurs="1"/>
+                                <xs:element type="xs:string" name="field" minOccurs="1" maxOccurs="unbounded"/>
                               </xs:sequence>
                             </xs:complexType>
                           </xs:element>
                           <xs:element name="editable" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
-                                <xs:element type="xs:string" name="field" minOccurs="1" maxOccurs="1"/>
+                                <xs:element type="xs:string" name="field" minOccurs="1" maxOccurs="unbounded"/>
                               </xs:sequence>
                             </xs:complexType>
                           </xs:element>
                           <xs:element name="collapse" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
-                                <xs:element type="xs:string" name="block"  minOccurs="1" maxOccurs="1"/>
+                                <xs:element type="xs:string" name="block"  minOccurs="1" maxOccurs="unbounded"/>
                               </xs:sequence>
                             </xs:complexType>
                           </xs:element>
                           <xs:element name="show" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
-                                <xs:element type="xs:string" name="block" minOccurs="1" maxOccurs="1"/>
+                                <xs:element type="xs:string" name="block" minOccurs="1" maxOccurs="unbounded"/>
                               </xs:sequence>
                             </xs:complexType>
                           </xs:element>
@@ -97,21 +97,21 @@
                           <xs:element name="disappear" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
-                                <xs:element type="xs:string" name="block" minOccurs="1" maxOccurs="1"/>
+                                <xs:element type="xs:string" name="block" minOccurs="1" maxOccurs="unbounded"/>
                               </xs:sequence>
                             </xs:complexType>
                           </xs:element>   
                            <xs:element name="appear" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
-                                <xs:element type="xs:string" name="block" minOccurs="1" maxOccurs="1"/>
+                                <xs:element type="xs:string" name="block" minOccurs="1" maxOccurs="unbounded"/>
                               </xs:sequence>
                             </xs:complexType>
                           </xs:element> 
                            <xs:element name="open" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
-                                <xs:element type="xs:string" name="block" minOccurs="1" maxOccurs="1"/>
+                                <xs:element type="xs:string" name="block" minOccurs="1" maxOccurs="unbounded"/>
                               </xs:sequence>
                             </xs:complexType>
                           </xs:element>  

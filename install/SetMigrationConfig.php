@@ -12,13 +12,13 @@ $current_dir = pathinfo(dirname(__FILE__));
 $current_dir = $current_dir['dirname']."/";
 
 $cur_dir_path = false;
-if (is_file("config.php") && is_file("config.inc.php")) {
-	require_once("config.inc.php");	
+if (is_file('config.inc.php')) {
+	require_once 'config.inc.php';
 	$cur_dir_path = true;
-	if(!isset($dbconfig['db_hostname']) || $dbconfig['db_status']=='_DB_STAT_') {
+	if (!isset($dbconfig['db_hostname']) || $dbconfig['db_status']=='_DB_STAT_') {
 		$cur_dir_path = false;
 	}
-} 
+}
 
 !isset($_SESSION['migration_info']['root_directory']) ? $root_directory = $current_dir : $root_directory = $_SESSION['migration_info']['root_directory'];
 !isset($_SESSION['migration_info']['source_directory']) ? $source_directory = "" : $source_directory = $_SESSION['migration_info']['source_directory'];

@@ -418,6 +418,8 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 			} else {
 				$where="$table_name.$column_name like '". formatForSqlLike($search_string) ."'";
 			}
+		} else {
+			$where = "$search_field like '". formatForSqlLike($search_string) ."'";
 		}
 	}
 	if (false !== stripos($where, "like '%%'")) {

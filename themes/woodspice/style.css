@@ -2005,6 +2005,7 @@ textarea {
     padding:5px;
     position:absolute;
     background-color:#FFFFFF;
+	z-index: 100;
     display:none;
 }
 

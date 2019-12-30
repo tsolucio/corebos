@@ -63,7 +63,7 @@ class Google_Service_Blogger_Resource_Blogs extends Google_Service_Resource
    * Retrieves a list of blogs, possibly filtered. (blogs.listByUser)
    *
    * @param string $userId ID of the user whose blogs are to be fetched. Either
-   * the word 'self' (sans quote marks) or the user's profile identifier.
+   * the word 'self' or the user's profile identifier.
    * @param array $optParams Optional parameters.
    *
    * @opt_param bool fetchUserInfo Whether the response is a list of blogs with

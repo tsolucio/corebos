@@ -26,8 +26,8 @@
 class Google_Service_Compute_Resource_TargetInstances extends Google_Service_Resource
 {
   /**
-   * Retrieves an aggregated list of target instances.
-   * (targetInstances.aggregatedList)
+   * Retrieves an aggregated list of target instances. (== suppress_warning http-
+   * rest-shadowed ==) (targetInstances.aggregatedList)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -79,7 +79,8 @@ class Google_Service_Compute_Resource_TargetInstances extends Google_Service_Res
     return $this->call('aggregatedList', array($params), "Google_Service_Compute_TargetInstanceAggregatedList");
   }
   /**
-   * Deletes the specified TargetInstance resource. (targetInstances.delete)
+   * Deletes the specified TargetInstance resource. (== suppress_warning http-
+   * rest-shadowed ==) (targetInstances.delete)
    *
    * @param string $project Project ID for this request.
    * @param string $zone Name of the zone scoping this request.
@@ -108,7 +109,8 @@ class Google_Service_Compute_Resource_TargetInstances extends Google_Service_Res
   }
   /**
    * Returns the specified TargetInstance resource. Gets a list of available
-   * target instances by making a list() request. (targetInstances.get)
+   * target instances by making a list() request. (== suppress_warning http-rest-
+   * shadowed ==) (targetInstances.get)
    *
    * @param string $project Project ID for this request.
    * @param string $zone Name of the zone scoping this request.
@@ -124,7 +126,8 @@ class Google_Service_Compute_Resource_TargetInstances extends Google_Service_Res
   }
   /**
    * Creates a TargetInstance resource in the specified project and zone using the
-   * data included in the request. (targetInstances.insert)
+   * data included in the request. (== suppress_warning http-rest-shadowed ==)
+   * (targetInstances.insert)
    *
    * @param string $project Project ID for this request.
    * @param string $zone Name of the zone scoping this request.
@@ -153,7 +156,8 @@ class Google_Service_Compute_Resource_TargetInstances extends Google_Service_Res
   }
   /**
    * Retrieves a list of TargetInstance resources available to the specified
-   * project and zone. (targetInstances.listTargetInstances)
+   * project and zone. (== suppress_warning http-rest-shadowed ==)
+   * (targetInstances.listTargetInstances)
    *
    * @param string $project Project ID for this request.
    * @param string $zone Name of the zone scoping this request.

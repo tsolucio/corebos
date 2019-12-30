@@ -37,9 +37,9 @@ if (typeof window.opener.document.getElementById('_mail_replyfrm_subject_') != '
 	window.opener.MailManager.mail_reply_rteinit(window.document.frmrepstr.repstr.value);
 <?php
 while ($row = $adb->getNextRow($result, false)) {
-?>
+	?>
 	window.opener.addAttachments(<?php echo $row['notesid']; ?>, '','Documents','ajax', '');
-<?php
+	<?php
 }
 ?>
 	window.close();

@@ -28,9 +28,8 @@ class Google_Service_CloudTalentSolution_Resource_ProjectsCompanies extends Goog
   /**
    * Creates a new company entity. (companies.create)
    *
-   * @param string $parent Required.
-   *
-   * Resource name of the project under which the company is created.
+   * @param string $parent Required. Resource name of the project under which the
+   * company is created.
    *
    * The format is "projects/{project_id}", for example, "projects/api-test-
    * project".
@@ -48,9 +47,7 @@ class Google_Service_CloudTalentSolution_Resource_ProjectsCompanies extends Goog
    * Deletes specified company. Prerequisite: The company has no jobs associated
    * with it. (companies.delete)
    *
-   * @param string $name Required.
-   *
-   * The resource name of the company to be deleted.
+   * @param string $name Required. The resource name of the company to be deleted.
    *
    * The format is "projects/{project_id}/companies/{company_id}", for example,
    * "projects/api-test-project/companies/foo".
@@ -66,9 +63,8 @@ class Google_Service_CloudTalentSolution_Resource_ProjectsCompanies extends Goog
   /**
    * Retrieves specified company. (companies.get)
    *
-   * @param string $name Required.
-   *
-   * The resource name of the company to be retrieved.
+   * @param string $name Required. The resource name of the company to be
+   * retrieved.
    *
    * The format is "projects/{project_id}/companies/{company_id}", for example,
    * "projects/api-test-project/companies/foo".
@@ -85,24 +81,19 @@ class Google_Service_CloudTalentSolution_Resource_ProjectsCompanies extends Goog
    * Lists all companies associated with the service account.
    * (companies.listProjectsCompanies)
    *
-   * @param string $parent Required.
-   *
-   * Resource name of the project under which the company is created.
+   * @param string $parent Required. Resource name of the project under which the
+   * company is created.
    *
    * The format is "projects/{project_id}", for example, "projects/api-test-
    * project".
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Optional.
-   *
-   * The starting indicator from which to return results.
-   * @opt_param int pageSize Optional.
-   *
-   * The maximum number of companies to be returned, at most 100. Default is 100
-   * if a non-positive number is provided.
-   * @opt_param bool requireOpenJobs Optional.
-   *
-   * Set to true if the companies requested must have open jobs.
+   * @opt_param string pageToken Optional. The starting indicator from which to
+   * return results.
+   * @opt_param int pageSize Optional. The maximum number of companies to be
+   * returned, at most 100. Default is 100 if a non-positive number is provided.
+   * @opt_param bool requireOpenJobs Optional. Set to true if the companies
+   * requested must have open jobs.
    *
    * Defaults to false.
    *

@@ -84,7 +84,6 @@ function displayCoords(currObj,obj,mode,curr_row)
 	<td colspan="3" class="dvInnerHeader">
 		<b>{$APP.LBL_ITEM_DETAILS}</b>
 	</td>
-
 	<td class="dvInnerHeader" align="center" colspan="2">
 		<input type="hidden" value="{$INV_CURRENCY_ID}" id="prev_selected_currency_id" />
 		<b>{$APP.LBL_CURRENCY}</b>&nbsp;&nbsp;
@@ -158,7 +157,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 	{assign var="taxTotal" value="taxTotal"|cat:$row_no}
 	{assign var="netPrice" value="netPrice"|cat:$row_no}
 
-   <tr id="row{$row_no}" valign="top">
+   <tr id="row{$row_no}" valign="top" data-corebosinvrow=1>
 
 	<!-- column 1 - delete link - starts -->
 	<td class="crmTableRow small lineOnTop inv-editview__toolscol">
@@ -280,34 +279,37 @@ function displayCoords(currObj,obj,mode,curr_row)
 			</td>
 		   </tr>
 		   <tr id="individual_tax_row{$row_no}" class="TaxShow">
-			<td align="right" class="cblds-t-align_right" style="padding:5px;" nowrap>
+			<th align="right" class="cblds-t-align_right" style="padding:5px;" nowrap>
 				(+)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,'tax_div{$row_no}','tax','{$row_no}')" >{$APP.LBL_TAX} </a> : </b>
 				<div class="discountUI" id="tax_div{$row_no}">
 					<!-- we will form the table with all taxes -->
-					<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small" id="tax_table{$row_no}">
-					   <tr>
-						<td id="tax_div_title{$row_no}" nowrap align="left" ><b>Set Tax for : {$data.$totalAfterDiscount}</b></td>
-						<td>&nbsp;</td>
-						<td align="right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnhide('tax_div{$row_no}')" style="cursor:pointer;"></td>
-					   </tr>
+					<table class="slds-table slds-table_cell-buffer slds-table_bordered" id="tax_table{$row_no}">
+					<thead>
+						<tr class="slds-line-height_reset">
+						<th id="tax_div_title{$row_no}" class="slds-p-left_none" scope="col" colspan="2">&nbsp;{$APP.LABEL_SET_TAX_FOR} : {$data.$totalAfterDiscount}</th>
+						<th class="cblds-t-align_right slds-p-right_none" scope="col"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnhide('tax_div{$row_no}')" style="cursor:pointer;"></th>
+						</tr>
+					</thead>
 					{if isset($data.taxes)}
-					{foreach key=tax_row_no item=tax_data from=$data.taxes}
-					   {assign var="taxname" value=$tax_data.taxname|cat:"_percentage"|cat:$row_no}
-					   {assign var="taxlinerowno" value=$tax_row_no+1}
-					   {assign var="tax_id_name" value="hidden_tax"|cat:$taxlinerowno|cat:"_percentage"|cat:$row_no}
-					   {assign var="taxlabel" value=$tax_data.taxlabel|cat:"_percentage"|cat:$row_no}
-					   {assign var="popup_tax_rowname" value="popup_tax_row"|cat:$row_no}
-					   <tr>
-						<td align="left" class="lineOnTop">
+					<tbody>
+					{foreach key=tax_row_no item=tax_data from=$data.taxes name=taxloop}
+						{assign var="taxname" value=$tax_data.taxname|cat:"_percentage"|cat:$row_no}
+						{assign var="taxlinerowno" value=$tax_row_no+1}
+						{assign var="tax_id_name" value="hidden_tax"|cat:$taxlinerowno|cat:"_percentage"|cat:$row_no}
+						{assign var="taxlabel" value=$tax_data.taxlabel|cat:"_percentage"|cat:$row_no}
+						{assign var="popup_tax_rowname" value="popup_tax_row"|cat:$row_no}
+						<tr class="slds-hint-parent">
+						<td scope="row" class="slds-p-left_none">
 							<input type="text" class="small" size="5" name="{$taxname}" id="{$taxname}" value="{$tax_data.percentage}" onBlur="calcCurrentTax('{$taxname}',{$row_no},{$tax_row_no})">&nbsp;%
 							<input type="hidden" id="{$tax_id_name}" value="{$taxname}">
 						</td>
-						<td align="center" class="cblds-t-align_center" class="lineOnTop">{$tax_data.taxlabel}</td>
-						<td align="right" class="lineOnTop cblds-t-align_right">
-							<input type="text" class="small" size="6" name="{$popup_tax_rowname}" id="{$popup_tax_rowname}" style="cursor:pointer;" value="0.0" readonly>
+						<td>{$tax_data.taxlabel}&nbsp;</td>
+						<td class="cblds-t-align_right slds-p-right_none">
+							<input type="text" class="small" size="6" name="{$popup_tax_rowname}" id="{$popup_tax_rowname}{$smarty.foreach.taxloop.iteration}" style="cursor:pointer;" value="0.0" readonly>
 						</td>
-					   </tr>
+						</tr>
 					{/foreach}
+					</tbody>
 					{/if}
 					</table>
 				</div>
@@ -317,7 +319,6 @@ function displayCoords(currObj,obj,mode,curr_row)
 		</table>
 	</td>
 	<!-- column 5 - List Price with Discount, Total After Discount and Tax as table - ends -->
-
 
 	<!-- column 6 - Product Total - starts -->
 	<td class="crmTableRow small lineOnTop inv-editview__totalscol"align="right">
@@ -346,6 +347,9 @@ function displayCoords(currObj,obj,mode,curr_row)
 
    </tr>
    <!-- Product Details First row - Ends -->
+	{if !empty($customtemplaterows)}
+		{include file=$customtemplaterows ROWNO=$row_no ITEM=$data}
+	{/if}
    {/foreach}
 </table>
 
@@ -407,7 +411,6 @@ so we will get that array, parse that array and fill the details
 	</td>
 	<td id="discountTotal_final" class="crmTableRow small lineOnTop cblds-t-align_right" align="right">{$FINAL.discountTotal_final}</td>
    </tr>
-
 
    <!-- Group Tax - starts -->
    <tr id="group_tax_row" valign="top" class="TaxHide">
@@ -514,12 +517,11 @@ so we will get that array, parse that array and fill the details
 
 <!-- Added to calculate the tax and total values when page loads -->
 <script>
- decideTaxDiv();
- {if $TAX_TYPE eq 'group'}
- 	calcGroupTax();
- {/if}
- calcTotal();
- calcSHTax();
+decideTaxDiv();
+{if $TAX_TYPE eq 'group'}
+calcGroupTax();
+{/if}
+calcTotal();
+calcSHTax();
 </script>
 <!-- This above div is added to display the tax informations --> 
-

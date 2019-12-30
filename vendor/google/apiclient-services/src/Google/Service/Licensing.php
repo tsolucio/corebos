@@ -19,11 +19,11 @@
  * Service definition for Licensing (v1).
  *
  * <p>
- * Views and manages licenses for your domain.</p>
+ * Licensing API to view and manage licenses for your domain</p>
  *
  * <p>
  * For more information about this service, see the API
- * <a href="https://developers.google.com/google-apps/licensing/" target="_blank">Documentation</a>
+ * <a href="https://developers.google.com/admin-sdk/licensing/" target="_blank">Documentation</a>
  * </p>
  *
  * @author Google, Inc.
@@ -39,13 +39,15 @@ class Google_Service_Licensing extends Google_Service
   /**
    * Constructs the internal representation of the Licensing service.
    *
-   * @param Google_Client $client
+   * @param Google_Client $client The client used to deliver requests.
+   * @param string $rootUrl The root URL used for requests to the service.
    */
-  public function __construct(Google_Client $client)
+  public function __construct(Google_Client $client, $rootUrl = null)
   {
     parent::__construct($client);
-    $this->rootUrl = 'https://www.googleapis.com/';
+    $this->rootUrl = $rootUrl ?: 'https://www.googleapis.com/';
     $this->servicePath = 'apps/licensing/v1/product/';
+    $this->batchPath = 'batch/licensing/v1';
     $this->version = 'v1';
     $this->serviceName = 'licensing';
 

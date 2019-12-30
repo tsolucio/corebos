@@ -13,26 +13,6 @@ $image_path = $theme_path . 'images/';
 require_once 'include/utils/utils.php';
 require_once 'include/Webservices/Utils.php';
 
-global $adv_filter_options;
-
-$adv_filter_options = array(
-	'e' => $mod_strings['equals'],
-	'n' => $mod_strings['not equal to'],
-	's' => $mod_strings['starts with'],
-	'ew' => $mod_strings['ends with'],
-	'dnsw' => $mod_strings['does not start with'],
-	'dnew' => $mod_strings['does not end with'],
-	'c' => $mod_strings['contains'],
-	'k' => $mod_strings['does not contain'],
-	'l' => $mod_strings['less than'],
-	'g' => $mod_strings['greater than'],
-	'm' => $mod_strings['less or equal'],
-	'h' => $mod_strings['greater or equal'],
-	'b' => $mod_strings['before'],
-	'a' => $mod_strings['after'],
-	'bw' => $mod_strings['between'],
-);
-
 class CustomView extends CRMEntity {
 
 	public $module_list = array();
@@ -89,9 +69,9 @@ class CustomView extends CRMEntity {
 		global $adb, $current_user;
 		$now_action = isset($_REQUEST['action']) ? vtlib_purify($_REQUEST['action']) : '';
 		if (empty($_REQUEST['viewname'])) {
-			if (isset($_SESSION['lvs'][$module]["viewname"]) && $_SESSION['lvs'][$module]["viewname"] != '') {
-				$viewid = $_SESSION['lvs'][$module]["viewname"];
-			} elseif ($this->setdefaultviewid != "") {
+			if (isset($_SESSION['lvs'][$module]['viewname']) && $_SESSION['lvs'][$module]['viewname'] != '') {
+				$viewid = $_SESSION['lvs'][$module]['viewname'];
+			} elseif ($this->setdefaultviewid != '') {
 				$viewid = $this->setdefaultviewid;
 			} else {
 				$defcv_result = $adb->pquery(
@@ -101,7 +81,7 @@ class CustomView extends CRMEntity {
 				if ($adb->num_rows($defcv_result) > 0) {
 					$viewid = $adb->query_result($defcv_result, 0, 'default_cvid');
 				} else {
-					$query = "select cvid from vtiger_customview where setdefault=1 and entitytype=?";
+					$query = 'select cvid from vtiger_customview where setdefault=1 and entitytype=?';
 					$cvresult = $adb->pquery($query, array($module));
 					if ($adb->num_rows($cvresult) > 0) {
 						$viewid = $adb->query_result($cvresult, 0, 'cvid');
@@ -185,15 +165,15 @@ class CustomView extends CRMEntity {
 		$def_cvid = $adb->query_result($usercv_result, 0, 'default_cvid');
 
 		while ($cvrow = $adb->fetch_array($result)) {
-			$customviewlist["viewname"] = $cvrow["viewname"];
+			$customviewlist['viewname'] = $cvrow['viewname'];
 			if ((isset($def_cvid) || $def_cvid != '') && $def_cvid == $cvid) {
-				$customviewlist["setdefault"] = 1;
+				$customviewlist['setdefault'] = 1;
 			} else {
-				$customviewlist["setdefault"] = $cvrow["setdefault"];
+				$customviewlist['setdefault'] = $cvrow['setdefault'];
 			}
-			$customviewlist["setmetrics"] = $cvrow["setmetrics"];
-			$customviewlist["userid"] = $cvrow["userid"];
-			$customviewlist["status"] = $cvrow["status"];
+			$customviewlist['setmetrics'] = $cvrow['setmetrics'];
+			$customviewlist['userid'] = $cvrow['userid'];
+			$customviewlist['status'] = $cvrow['status'];
 		}
 		return $customviewlist;
 	}
@@ -253,7 +233,7 @@ class CustomView extends CRMEntity {
 				$disp_viewname = $viewname;
 			} else {
 				$userName = getFullNameFromArray('Users', $cvrow);
-				$disp_viewname = $viewname . " [" . $userName . "] ";
+				$disp_viewname = $viewname . ' [' . $userName . '] ';
 			}
 
 			if ($cvrow['setdefault'] == 1 && $viewid == '') {
@@ -272,19 +252,19 @@ class CustomView extends CRMEntity {
 					$shtml_user .= $option;
 				} elseif ($cvrow['status'] == CV_STATUS_PUBLIC) {
 					if ($shtml_public == '') {
-						$shtml_public = "<option disabled>--- " . $app_strings['LBL_PUBLIC'] . " ---</option>";
+						$shtml_public = '<option disabled>--- ' . $app_strings['LBL_PUBLIC'] . ' ---</option>';
 					}
 					$shtml_public .= $option;
 				} elseif ($cvrow['status'] == CV_STATUS_PENDING) {
 					if (in_array($cvrow['userid'], $cuserroles) || $userprivs->isAdmin()) {
 						if ($shtml_pending == '') {
-							$shtml_pending = "<option disabled>--- " . $app_strings['LBL_PENDING'] . " ---</option>";
+							$shtml_pending = '<option disabled>--- ' . $app_strings['LBL_PENDING'] . ' ---</option>';
 						}
 						$shtml_pending .= $option;
 					}
 				} else {
 					if ($shtml_others == '') {
-						$shtml_others = "<option disabled>--- " . $app_strings['LBL_OTHERS'] . " ---</option>";
+						$shtml_others = '<option disabled>--- ' . $app_strings['LBL_OTHERS'] . ' ---</option>';
 					}
 					$shtml_others .= $option;
 				}
@@ -307,19 +287,19 @@ class CustomView extends CRMEntity {
 	 */
 	public function getColumnsListbyBlock($module, $block, $markMandatory = true) {
 		global $adb, $current_user;
-		$block_ids = explode(",", $block);
+		$block_ids = explode(',', $block);
 		$tabid = getTabid($module);
 		$userprivs = $current_user->getPrivileges();
 		if (empty($this->meta) && $module != 'Calendar') {
 			$this->meta = $this->getMeta($module, $current_user);
 		}
 		if ($tabid == 9) {
-			$tabid = "9,16";
+			$tabid = '9,16';
 		}
-		$display_type = " vtiger_field.displaytype in (1,2,3,4)";
+		$display_type = ' vtiger_field.displaytype in (1,2,3,4)';
 
 		if ($userprivs->hasGlobalReadPermission()) {
-			$tab_ids = explode(",", $tabid);
+			$tab_ids = explode(',', $tabid);
 			$sql = 'select * from vtiger_field ';
 			$sql.= ' where vtiger_field.tabid in (' . generateQuestionMarks($tab_ids) . ') and vtiger_field.block in (' . generateQuestionMarks($block_ids) . ')';
 			$sql.= ' and vtiger_field.presence in (0,2) and ' . $display_type;
@@ -329,7 +309,7 @@ class CustomView extends CRMEntity {
 			$sql.= ' order by sequence';
 			$params = array($tab_ids, $block_ids);
 		} else {
-			$tab_ids = explode(",", $tabid);
+			$tab_ids = explode(',', $tabid);
 			$profileList = getCurrentUserProfileList();
 			$uniqueFieldsRestriction = 'vtiger_field.fieldid IN (select min(vtiger_field.fieldid) from vtiger_field
 				where vtiger_field.tabid in ('. generateQuestionMarks($tab_ids) .') GROUP BY vtiger_field.columnname)';
@@ -343,7 +323,7 @@ class CustomView extends CRMEntity {
 			$params = array($tab_ids, $block_ids);
 
 			if (count($profileList) > 0) {
-				$sql.= "  and vtiger_profile2field.profileid in (" . generateQuestionMarks($profileList) . ")";
+				$sql.= '  and vtiger_profile2field.profileid in (' . generateQuestionMarks($profileList) . ')';
 				$params[] = $profileList;
 			}
 			if ($tabid == 9 || $tabid == 16) {
@@ -353,7 +333,7 @@ class CustomView extends CRMEntity {
 			$sql.= ' order by sequence';
 		}
 		if ($tabid == '9,16') {
-			$tabid = "9";
+			$tabid = '9';
 		}
 		$result = $adb->pquery($sql, $params);
 		$noofrows = $adb->num_rows($result);
@@ -365,16 +345,16 @@ class CustomView extends CRMEntity {
 			$moduleFieldList = $this->meta->getModuleFields();
 		}
 		for ($i = 0; $i < $noofrows; $i++) {
-			$fieldtablename = $adb->query_result($result, $i, "tablename");
-			$fieldcolname = $adb->query_result($result, $i, "columnname");
+			$fieldtablename = $adb->query_result($result, $i, 'tablename');
+			$fieldcolname = $adb->query_result($result, $i, 'columnname');
 			if ($fieldtablename=='vtiger_user2role') {
 				continue;
 			}
-			$fieldname = $adb->query_result($result, $i, "fieldname");
-			$fieldtype = $adb->query_result($result, $i, "typeofdata");
-			$fieldtype = explode("~", $fieldtype);
+			$fieldname = $adb->query_result($result, $i, 'fieldname');
+			$fieldtype = $adb->query_result($result, $i, 'typeofdata');
+			$fieldtype = explode('~', $fieldtype);
 			$fieldtypeofdata = $fieldtype[0];
-			$fieldlabel = $adb->query_result($result, $i, "fieldlabel");
+			$fieldlabel = $adb->query_result($result, $i, 'fieldlabel');
 			if (!empty($moduleFieldList[$fieldname]) && $moduleFieldList[$fieldname]->getFieldDataType() == 'reference') {
 				$fieldtypeofdata = 'V';
 			} else {
@@ -382,24 +362,24 @@ class CustomView extends CRMEntity {
 				//displayed Correctly in Custom view Advance Filter.
 				$fieldtypeofdata = ChangeTypeOfData_Filter($fieldtablename, $fieldcolname, $fieldtypeofdata);
 			}
-			if ($fieldlabel == "Related To") {
-				$fieldlabel = "Related to";
+			if ($fieldlabel == 'Related To') {
+				$fieldlabel = 'Related to';
 			}
-			if ($fieldlabel == "Start Date & Time") {
-				$fieldlabel = "Start Date";
+			if ($fieldlabel == 'Start Date & Time') {
+				$fieldlabel = 'Start Date';
 				if ($module == 'Calendar' && $block == 19) {
 					$module_columnlist['vtiger_activity:time_start::Calendar_Start_Time:I'] = 'Start Time';
 				}
 			}
-			$fieldlabel1 = str_replace(" ", "_", $fieldlabel);
-			$optionvalue = $fieldtablename . ":" . $fieldcolname . ":" . $fieldname . ":" . $module . "_" .
-					$fieldlabel1 . ":" . $fieldtypeofdata;
+			$fieldlabel1 = str_replace(' ', '_', $fieldlabel);
+			$optionvalue = $fieldtablename . ':' . $fieldcolname . ':' . $fieldname . ':' . $module . '_' .
+					$fieldlabel1 . ':' . $fieldtypeofdata;
 			//added to escape attachments fields in customview as we have multiple attachments
 			$fieldlabel = getTranslatedString($fieldlabel, $module); //added to support i18n issue
 			if ($module != 'HelpDesk' || $fieldname != 'filename') {
 				$module_columnlist[$optionvalue] = $fieldlabel;
 			}
-			if ($markMandatory && $fieldtype[1] == "M") {
+			if ($markMandatory && $fieldtype[1] == 'M') {
 				$this->mandatoryvalues[] = "'" . $optionvalue . "'";
 				$this->showvalues[] = $fieldlabel;
 				$this->data_type[$fieldlabel] = $fieldtype[1];
@@ -498,9 +478,9 @@ class CustomView extends CRMEntity {
 		}
 
 		if ($userprivs->hasGlobalReadPermission()) {
-			$sql = "select * from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid ";
-			$sql.= " where vtiger_field.tabid=? and vtiger_field.block in (" . generateQuestionMarks($blockids) . ") and vtiger_field.uitype in (5,6,23,70,50)";
-			$sql.= " and vtiger_field.presence in (0,2) order by vtiger_field.sequence";
+			$sql = 'select * from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid ';
+			$sql.= ' where vtiger_field.tabid=? and vtiger_field.block in (' . generateQuestionMarks($blockids) . ') and vtiger_field.uitype in (5,6,23,70,50)';
+			$sql.= ' and vtiger_field.presence in (0,2) order by vtiger_field.sequence';
 			$params = array($tabid, $blockids);
 		} else {
 			$profileList = getCurrentUserProfileList();
@@ -515,22 +495,22 @@ class CustomView extends CRMEntity {
 			$params = array($tabid, $blockids);
 
 			if (count($profileList) > 0) {
-				$sql.= " and vtiger_profile2field.profileid in (" . generateQuestionMarks($profileList) . ")";
+				$sql.= ' and vtiger_profile2field.profileid in (' . generateQuestionMarks($profileList) . ')';
 				$params[] = $profileList;
 			}
 
-			$sql.= " order by vtiger_field.sequence";
+			$sql.= ' order by vtiger_field.sequence';
 		}
 
 		$result = $adb->pquery($sql, $params);
 		$stdcriteria_list = array();
 		while ($criteriatyperow = $adb->fetch_array($result)) {
-			$fieldtablename = $criteriatyperow["tablename"];
-			$fieldcolname = $criteriatyperow["columnname"];
-			$fieldlabel = $criteriatyperow["fieldlabel"];
-			$fieldname = $criteriatyperow["fieldname"];
-			$fieldlabel1 = str_replace(" ", "_", $fieldlabel);
-			$optionvalue = $fieldtablename . ":" . $fieldcolname . ":" . $fieldname . ":" . $module . "_" . $fieldlabel1;
+			$fieldtablename = $criteriatyperow['tablename'];
+			$fieldcolname = $criteriatyperow['columnname'];
+			$fieldlabel = $criteriatyperow['fieldlabel'];
+			$fieldname = $criteriatyperow['fieldname'];
+			$fieldlabel1 = str_replace(' ', '_', $fieldlabel);
+			$optionvalue = $fieldtablename . ':' . $fieldcolname . ':' . $fieldname . ':' . $module . '_' . $fieldlabel1;
 			$stdcriteria_list[$optionvalue] = $fieldlabel;
 		}
 
@@ -562,46 +542,46 @@ class CustomView extends CRMEntity {
 	 * 		                             		|
 	 * 		     n => array('value'=>$filterkeyn,'text'=>$mod_strings[$filterkeyn],'selected'=>$selected)
 	 */
-	public function getStdFilterCriteria($selcriteria = "") {
+	public function getStdFilterCriteria($selcriteria = '') {
 		global $mod_strings;
 		$filter = array();
 
-		$stdfilter = array("custom" => "" . $mod_strings['Custom'] . "",
-			"prevfy" => "" . $mod_strings['Previous FY'] . "",
-			"thisfy" => "" . $mod_strings['Current FY'] . "",
-			"nextfy" => "" . $mod_strings['Next FY'] . "",
-			"prevfq" => "" . $mod_strings['Previous FQ'] . "",
-			"thisfq" => "" . $mod_strings['Current FQ'] . "",
-			"nextfq" => "" . $mod_strings['Next FQ'] . "",
-			"yesterday" => "" . $mod_strings['Yesterday'] . "",
-			"today" => "" . $mod_strings['Today'] . "",
-			"tomorrow" => "" . $mod_strings['Tomorrow'] . "",
-			"lastweek" => "" . $mod_strings['Last Week'] . "",
-			"thisweek" => "" . $mod_strings['Current Week'] . "",
-			"nextweek" => "" . $mod_strings['Next Week'] . "",
-			"lastmonth" => "" . $mod_strings['Last Month'] . "",
-			"thismonth" => "" . $mod_strings['Current Month'] . "",
-			"nextmonth" => "" . $mod_strings['Next Month'] . "",
-			"last7days" => "" . $mod_strings['Last 7 Days'] . "",
-			"last30days" => "" . $mod_strings['Last 30 Days'] . "",
-			"last60days" => "" . $mod_strings['Last 60 Days'] . "",
-			"last90days" => "" . $mod_strings['Last 90 Days'] . "",
-			"last120days" => "" . $mod_strings['Last 120 Days'] . "",
-			"next30days" => "" . $mod_strings['Next 30 Days'] . "",
-			"next60days" => "" . $mod_strings['Next 60 Days'] . "",
-			"next90days" => "" . $mod_strings['Next 90 Days'] . "",
-			"next120days" => "" . $mod_strings['Next 120 Days'] . "",
+		$stdfilter = array('custom' => '' . $mod_strings['Custom'] . '',
+			'prevfy' => '' . $mod_strings['Previous FY'] . '',
+			'thisfy' => '' . $mod_strings['Current FY'] . '',
+			'nextfy' => '' . $mod_strings['Next FY'] . '',
+			'prevfq' => '' . $mod_strings['Previous FQ'] . '',
+			'thisfq' => '' . $mod_strings['Current FQ'] . '',
+			'nextfq' => '' . $mod_strings['Next FQ'] . '',
+			'yesterday' => '' . $mod_strings['Yesterday'] . '',
+			'today' => '' . $mod_strings['Today'] . '',
+			'tomorrow' => '' . $mod_strings['Tomorrow'] . '',
+			'lastweek' => '' . $mod_strings['Last Week'] . '',
+			'thisweek' => '' . $mod_strings['Current Week'] . '',
+			'nextweek' => '' . $mod_strings['Next Week'] . '',
+			'lastmonth' => '' . $mod_strings['Last Month'] . '',
+			'thismonth' => '' . $mod_strings['Current Month'] . '',
+			'nextmonth' => '' . $mod_strings['Next Month'] . '',
+			'last7days' => '' . $mod_strings['Last 7 Days'] . '',
+			'last30days' => '' . $mod_strings['Last 30 Days'] . '',
+			'last60days' => '' . $mod_strings['Last 60 Days'] . '',
+			'last90days' => '' . $mod_strings['Last 90 Days'] . '',
+			'last120days' => '' . $mod_strings['Last 120 Days'] . '',
+			'next30days' => '' . $mod_strings['Next 30 Days'] . '',
+			'next60days' => '' . $mod_strings['Next 60 Days'] . '',
+			'next90days' => '' . $mod_strings['Next 90 Days'] . '',
+			'next120days' => '' . $mod_strings['Next 120 Days'] . '',
 		);
 
 		foreach ($stdfilter as $FilterKey => $FilterValue) {
 			if ($FilterKey == $selcriteria) {
 				$shtml['value'] = $FilterKey;
 				$shtml['text'] = $FilterValue;
-				$shtml['selected'] = "selected";
+				$shtml['selected'] = 'selected';
 			} else {
 				$shtml['value'] = $FilterKey;
 				$shtml['text'] = $FilterValue;
-				$shtml['selected'] = "";
+				$shtml['selected'] = '';
 			}
 			$filter[] = $shtml;
 		}
@@ -624,8 +604,8 @@ class CustomView extends CRMEntity {
 	public function getStdFilterByCvid($cvid) {
 		global $adb;
 
-		$sSQL = "select vtiger_cvstdfilter.* from vtiger_cvstdfilter inner join vtiger_customview on vtiger_customview.cvid = vtiger_cvstdfilter.cvid";
-		$sSQL .= " where vtiger_cvstdfilter.cvid=?";
+		$sSQL = 'select vtiger_cvstdfilter.* from vtiger_cvstdfilter inner join vtiger_customview on vtiger_customview.cvid = vtiger_cvstdfilter.cvid';
+		$sSQL .= ' where vtiger_cvstdfilter.cvid=?';
 
 		$result = $adb->pquery($sSQL, array($cvid));
 		$stdfilterrow = $adb->fetch_array($result);
@@ -634,28 +614,28 @@ class CustomView extends CRMEntity {
 		if (empty($stdfilterrow)) {
 			return $stdfilterlist;
 		}
-		$stdfilterlist["columnname"] = $stdfilterrow["columnname"];
-		$stdfilterlist["stdfilter"] = $stdfilterrow["stdfilter"];
+		$stdfilterlist['columnname'] = $stdfilterrow['columnname'];
+		$stdfilterlist['stdfilter'] = $stdfilterrow['stdfilter'];
 
-		if ($stdfilterrow["stdfilter"] == "custom" || $stdfilterrow["stdfilter"] == "") {
-			if ($stdfilterrow["startdate"] != "0000-00-00" && $stdfilterrow["startdate"] != "") {
-				$startDateTime = new DateTimeField($stdfilterrow["startdate"] . ' ' . date('H:i:s'));
-				$stdfilterlist["startdate"] = $startDateTime->getDisplayDate();
+		if ($stdfilterrow['stdfilter'] == 'custom' || $stdfilterrow['stdfilter'] == '') {
+			if ($stdfilterrow['startdate'] != '0000-00-00' && $stdfilterrow['startdate'] != '') {
+				$startDateTime = new DateTimeField($stdfilterrow['startdate'] . ' ' . date('H:i:s'));
+				$stdfilterlist['startdate'] = $startDateTime->getDisplayDate();
 			} else {
 				$stdfilterlist['startdate'] = '';
 			}
-			if ($stdfilterrow["enddate"] != "0000-00-00" && $stdfilterrow["enddate"] != "") {
-				$endDateTime = new DateTimeField($stdfilterrow["enddate"] . ' ' . date('H:i:s'));
-				$stdfilterlist["enddate"] = $endDateTime->getDisplayDate();
+			if ($stdfilterrow['enddate'] != '0000-00-00' && $stdfilterrow['enddate'] != '') {
+				$endDateTime = new DateTimeField($stdfilterrow['enddate'] . ' ' . date('H:i:s'));
+				$stdfilterlist['enddate'] = $endDateTime->getDisplayDate();
 			} else {
 				$stdfilterlist['enddate'] = '';
 			}
 		} else { //if it is not custom get the date according to the selected duration
-			$datefilter = $this->getDateforStdFilterBytype($stdfilterrow["stdfilter"]);
+			$datefilter = $this->getDateforStdFilterBytype($stdfilterrow['stdfilter']);
 			$startDateTime = new DateTimeField($datefilter[0] . ' ' . date('H:i:s'));
-			$stdfilterlist["startdate"] = $startDateTime->getDisplayDate();
+			$stdfilterlist['startdate'] = $startDateTime->getDisplayDate();
 			$endDateTime = new DateTimeField($datefilter[1] . ' ' . date('H:i:s'));
-			$stdfilterlist["enddate"] = $endDateTime->getDisplayDate();
+			$stdfilterlist['enddate'] = $endDateTime->getDisplayDate();
 		}
 		return $stdfilterlist;
 	}
@@ -722,7 +702,7 @@ class CustomView extends CRMEntity {
 					$advfilterval = decode_html($advfilterval);
 				}
 				$criteria['value'] = $advfilterval;
-				$criteria['column_condition'] = $relcriteriarow["column_condition"];
+				$criteria['column_condition'] = $relcriteriarow['column_condition'];
 
 				$advft_criteria[$i]['columns'][$j] = $criteria;
 				$advft_criteria[$i]['condition'] = $groupCondition;
@@ -834,7 +814,6 @@ class CustomView extends CRMEntity {
 	 * @param $cvid :: Type Integer
 	 * @returns  $stdfiltersql as a string
 	 * This function will return the standard filter criteria for the given customfield
-	 *
 	 */
 	public function getCVStdFilterSQL($cvid, $webserviceQL = false) {
 		global $adb;
@@ -842,27 +821,29 @@ class CustomView extends CRMEntity {
 		$stdfiltersql = '';
 		$stdfilterlist = array();
 
-		$sSQL = "select vtiger_cvstdfilter.* from vtiger_cvstdfilter inner join vtiger_customview on vtiger_customview.cvid = vtiger_cvstdfilter.cvid";
-		$sSQL .= " where vtiger_cvstdfilter.cvid=?";
-
+		$sSQL = 'select vtiger_cvstdfilter.* from vtiger_cvstdfilter inner join vtiger_customview on vtiger_customview.cvid = vtiger_cvstdfilter.cvid';
+		$sSQL .= ' where vtiger_cvstdfilter.cvid=?';
 		$result = $adb->pquery($sSQL, array($cvid));
+		if ($result==false || $adb->num_rows($result)==0) {
+			return '';
+		}
 		$stdfilterrow = $adb->fetch_array($result);
 
 		$stdfilterlist = array();
-		$stdfilterlist["columnname"] = $stdfilterrow["columnname"];
-		$stdfilterlist["stdfilter"] = $stdfilterrow["stdfilter"];
+		$stdfilterlist['columnname'] = $stdfilterrow['columnname'];
+		$stdfilterlist['stdfilter'] = $stdfilterrow['stdfilter'];
 
-		if ($stdfilterrow["stdfilter"] == "custom" || $stdfilterrow["stdfilter"] == "") {
-			if ($stdfilterrow["startdate"] != "0000-00-00" && $stdfilterrow["startdate"] != "") {
-				$stdfilterlist["startdate"] = $stdfilterrow["startdate"];
+		if ($stdfilterrow['stdfilter'] == 'custom' || $stdfilterrow['stdfilter'] == '') {
+			if ($stdfilterrow['startdate'] != '0000-00-00' && $stdfilterrow['startdate'] != '') {
+				$stdfilterlist['startdate'] = $stdfilterrow['startdate'];
 			}
-			if ($stdfilterrow["enddate"] != "0000-00-00" && $stdfilterrow["enddate"] != "") {
-				$stdfilterlist["enddate"] = $stdfilterrow["enddate"];
+			if ($stdfilterrow['enddate'] != '0000-00-00' && $stdfilterrow['enddate'] != '') {
+				$stdfilterlist['enddate'] = $stdfilterrow['enddate'];
 			}
 		} else { //if it is not custom get the date according to the selected duration
-			$datefilter = $this->getDateforStdFilterBytype($stdfilterrow["stdfilter"]);
-			$stdfilterlist["startdate"] = $datefilter[0];
-			$stdfilterlist["enddate"] = $datefilter[1];
+			$datefilter = $this->getDateforStdFilterBytype($stdfilterrow['stdfilter']);
+			$stdfilterlist['startdate'] = $datefilter[0];
+			$stdfilterlist['enddate'] = $datefilter[1];
 		}
 
 		if (isset($stdfilterlist)) {
@@ -928,7 +909,7 @@ class CustomView extends CRMEntity {
 		foreach ($advfilter as $groupid => $groupinfo) {
 			$groupcolumns = $groupinfo['columns'];
 			$groupcondition = $groupinfo['condition'];
-			$advfiltergroupsql = "";
+			$advfiltergroupsql = '';
 
 			foreach ($groupcolumns as $columnindex => $columninfo) {
 				$columnname = $columninfo['columnname'];
@@ -936,7 +917,7 @@ class CustomView extends CRMEntity {
 				$value = $columninfo['value'];
 				$columncondition = $columninfo['column_condition'];
 
-				$columns = explode(":", $columnname);
+				$columns = explode(':', $columnname);
 				$datatype = (isset($columns[4])) ? $columns[4] : '';
 
 				if ($columnname != '' && $comparator != '') {
@@ -960,13 +941,13 @@ class CustomView extends CRMEntity {
 							"' and '" . getValidDBInsertDateTimeValue(trim($valuearray[1]), $datatype) . "')";
 					} else {
 						//Added for getting vtiger_activity Status -Jaguar
-						if ($this->customviewmodule == "Calendar" && ($columns[1] == "status" || $columns[1] == "eventstatus")) {
-							if (getFieldVisibilityPermission("Calendar", $current_user->id, 'taskstatus') == '0') {
+						if ($this->customviewmodule == 'Calendar' && ($columns[1] == 'status' || $columns[1] == 'eventstatus')) {
+							if (getFieldVisibilityPermission('Calendar', $current_user->id, 'taskstatus') == '0') {
 								$advfiltersql = "case when (vtiger_activity.status not like '')
 									then vtiger_activity.status
 									else vtiger_activity.eventstatus end" . $this->getAdvComparator($comparator, trim($value), $datatype);
 							} else {
-								$advfiltersql = "vtiger_activity.eventstatus" . $this->getAdvComparator($comparator, trim($value), $datatype);
+								$advfiltersql = 'vtiger_activity.eventstatus' . $this->getAdvComparator($comparator, trim($value), $datatype);
 							}
 						} elseif ($this->customviewmodule == 'Documents' && $columns[1] == 'folderid') {
 							$advfiltersql = 'vtiger_attachmentsfolder.foldername' . $this->getAdvComparator($comparator, trim($value), $datatype);
@@ -992,7 +973,7 @@ class CustomView extends CRMEntity {
 				}
 			}
 
-			if (trim($advfiltergroupsql) != "") {
+			if (trim($advfiltergroupsql) != '') {
 				$advfiltergroupsql = "( $advfiltergroupsql ) ";
 				if ($groupcondition != null && $groupcondition != '' && $advfilter > $groupid) {
 					$advfiltergroupsql .= ' ' . $groupcondition . ' ';
@@ -1001,7 +982,7 @@ class CustomView extends CRMEntity {
 				$advcvsql .= $advfiltergroupsql;
 			}
 		}
-		if (trim($advcvsql) != "") {
+		if (trim($advcvsql) != '') {
 			$advcvsql = '(' . $advcvsql . ')';
 		}
 		return $advcvsql;
@@ -1059,11 +1040,11 @@ class CustomView extends CRMEntity {
 		if ($viewid != '' && $listquery != '') {
 			$query = 'select ' . $this->getCvColumnListSQL($viewid) . ' ,vtiger_crmentity.crmid ';
 			$listviewquery = substr($listquery, strpos($listquery, 'FROM'), strlen($listquery));
-			if ($module == "Calendar" || $module == "Emails") {
+			if ($module == 'Calendar' || $module == 'Emails') {
 				$query.= ", vtiger_activity.activityid, vtiger_activity.activitytype as type, vtiger_activity.priority,
 					case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end as status,
 					vtiger_contactdetails.contactid " . $listviewquery;
-				if ($module == "Calendar") {
+				if ($module == 'Calendar') {
 					$query = str_replace('vtiger_seactivityrel.crmid,', '', $query);
 				}
 			} elseif ($module == 'Documents') {
@@ -1098,7 +1079,7 @@ class CustomView extends CRMEntity {
 	 * @returns  $query
 	 */
 	public function getMetricsCvListQuery($viewid, $listquery, $module) {
-		if ($viewid != "" && $listquery != "") {
+		if ($viewid != '' && $listquery != '') {
 			$listviewquery = substr($listquery, strpos($listquery, 'FROM'), strlen($listquery));
 
 			$query = 'select count(*) AS count ' . $listviewquery;
@@ -1122,8 +1103,8 @@ class CustomView extends CRMEntity {
 		global $adb, $current_language;
 		$current_mod_strings = return_specified_module_language($current_language, $module);
 		$block_info = array();
-		$modules_list = explode(",", $module);
-		if ($module == "Calendar") {
+		$modules_list = explode(',', $module);
+		if ($module == 'Calendar') {
 			$module = "Calendar','Events";
 			$modules_list = array('Calendar', 'Events');
 		}
@@ -1152,7 +1133,7 @@ class CustomView extends CRMEntity {
 			where displaytype != 3 and vtiger_tab.name in (' . generateQuestionMarks($modules_list) . ') and vtiger_field.presence in (0,2) order by block';
 		$result = $adb->pquery($Sql, array($modules_list));
 		if ($module == "Calendar','Events") {
-			$module = "Calendar";
+			$module = 'Calendar';
 		}
 
 		$pre_block_label = '';
@@ -1165,11 +1146,11 @@ class CustomView extends CRMEntity {
 			}
 
 			if (trim($block_label) == '') {
-				$block_info[$pre_block_label] = $block_info[$pre_block_label] . "," . $block_result['block'];
+				$block_info[$pre_block_label] = $block_info[$pre_block_label] . ',' . $block_result['block'];
 			} else {
 				$lan_block_label = isset($current_mod_strings[$block_label])?$current_mod_strings[$block_label]:$block_label;
 				if (isset($block_info[$lan_block_label]) && $block_info[$lan_block_label] != '') {
-					$block_info[$lan_block_label] = $block_info[$lan_block_label] . "," . $block_result['block'];
+					$block_info[$lan_block_label] = $block_info[$lan_block_label] . ',' . $block_result['block'];
 				} else {
 					$block_info[$lan_block_label] = $block_result['block'];
 				}
@@ -1190,7 +1171,7 @@ class CustomView extends CRMEntity {
 		global $adb;
 
 		if ($this->_status === false || $this->_userid === false) {
-			$query = "SELECT status, userid FROM vtiger_customview WHERE cvid=?";
+			$query = 'SELECT status, userid FROM vtiger_customview WHERE cvid=?';
 			$result = $adb->pquery($query, array($viewid));
 			if ($result && $adb->num_rows($result)) {
 				$this->_status = $adb->query_result($result, 0, 'status');
@@ -1207,7 +1188,7 @@ class CustomView extends CRMEntity {
 		global $log, $current_user;
 		$log->debug("> isPermittedCustomView $record_id,$action,$module");
 
-		$permission = "yes";
+		$permission = 'yes';
 
 		if ($record_id != '') {
 			$status_userid_info = $this->getStatusAndUserid($record_id);
@@ -1218,7 +1199,7 @@ class CustomView extends CRMEntity {
 
 				if ($status == CV_STATUS_DEFAULT) {
 					$log->debug('status=0');
-					if ($action == 'ListView' || $action == $module . "Ajax" || $action == 'index' || $action == 'DetailView') {
+					if ($action == 'ListView' || $action == $module . 'Ajax' || $action == 'index' || $action == 'DetailView') {
 						$permission = 'yes';
 					} else {
 						$permission = 'no';
@@ -1231,7 +1212,7 @@ class CustomView extends CRMEntity {
 						$permission = 'yes';
 					} elseif ($status == CV_STATUS_PUBLIC) {
 						$log->debug('status=3');
-						if ($action == 'ListView' || $action == $module . "Ajax" || $action == 'index' || $action == 'DetailView') {
+						if ($action == 'ListView' || $action == $module . 'Ajax' || $action == 'index' || $action == 'DetailView') {
 							$permission = 'yes';
 						} else {
 							$user_array = getRoleAndSubordinateUserIds($current_user->column_fields['roleid']);
@@ -1244,7 +1225,7 @@ class CustomView extends CRMEntity {
 					} elseif ($status == CV_STATUS_PRIVATE || $status == CV_STATUS_PENDING) {
 						$log->debug('status=1 or 2');
 						if ($userid == $current_user->id) {
-							$permission = "yes";
+							$permission = 'yes';
 						} else {
 							$log->debug('status=1 or status=2 and action equals ListView or '.$module.'Ajax or index');
 							$user_array = getRoleAndSubordinateUserIds($current_user->column_fields['roleid']);

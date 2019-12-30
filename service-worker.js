@@ -9152,7 +9152,7 @@ if (workbox) {
   },
   {
     "url": "include/js/corebosjshooks.js",
-    "revision": "b21bd8c9efd56f95368fd6f393a8bf6c"
+    "revision": "db0d92e2bce8439f4e3f1c1730f78bce"
   },
   {
     "url": "include/js/customview.js",
@@ -9200,7 +9200,7 @@ if (workbox) {
   },
   {
     "url": "include/js/general.js",
-    "revision": "94ccb0f7b21562bd0ee5dc687bb61c22"
+    "revision": "28f376dca41efa0668c6544dabc67755"
   },
   {
     "url": "include/js/hu_hu.lang.js",
@@ -9208,7 +9208,7 @@ if (workbox) {
   },
   {
     "url": "include/js/Inventory.js",
-    "revision": "562e1ad5de7ffa1bd1085a14a2821ccb"
+    "revision": "6dead368343016a16759c677d4478f7f"
   },
   {
     "url": "include/js/it_it.lang.js",
@@ -9264,7 +9264,7 @@ if (workbox) {
   },
   {
     "url": "include/js/popup.js",
-    "revision": "59c8473aba27363b30e73c68471e15ba"
+    "revision": "5e044cb7f6a56e9b2cdfc3ec8b1e908a"
   },
   {
     "url": "include/js/pt_br.lang.js",
@@ -9292,7 +9292,7 @@ if (workbox) {
   },
   {
     "url": "include/js/vtlib.js",
-    "revision": "544f0dbc5a7c8286c4b12c4a72c5352e"
+    "revision": "184b11ec74674cac2fe250b876b724a6"
   },
   {
     "url": "include/chart.js/Chart.bundle.js",
@@ -9341,6 +9341,10 @@ if (workbox) {
   {
     "url": "include/jquery.steps.css",
     "revision": "17c65e7385c544455d2235531d60c29d"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/com_vtiger_workflow.js",
+    "revision": "d41d8cd98f00b204e9800998ecf8427e"
   },
   {
     "url": "modules/com_vtiger_workflow/com_vtiger_workflow.png",
@@ -9780,11 +9784,11 @@ if (workbox) {
   },
   {
     "url": "modules/Potentials/Potentials.js",
-    "revision": "de1459b79e171a9b5cfa2f584da66549"
+    "revision": "4ebb204b35da3e737622cff83e0de88c"
   },
   {
     "url": "modules/CronTasks/CronTasks.js",
-    "revision": "c28cdd8d0cd619f7830c25cdb0170d96"
+    "revision": "15c0cddcf8a51fbdba01970fddedb9ad"
   },
   {
     "url": "modules/PBXManager/PBXManager.js",
@@ -9804,7 +9808,7 @@ if (workbox) {
   },
   {
     "url": "modules/cbQuestion/cbQuestion.js",
-    "revision": "8133d889330211b643e23114945b2809"
+    "revision": "92ff41c2163e79d1f8ea14d5b839cb00"
   },
   {
     "url": "modules/Portal/Portal.js",
@@ -9824,11 +9828,11 @@ if (workbox) {
   },
   {
     "url": "modules/Accounts/Accounts.js",
-    "revision": "04cb9261dc739144dabd4e3df9eb8466"
+    "revision": "3756bbb7779e531b7866ee82190d46b9"
   },
   {
     "url": "modules/cbMap/cbMap.js",
-    "revision": "d5c244bdeb7a46b2fcc0756827d3c2ca"
+    "revision": "ede7f6180a6de61909d602b3cd3ba5a0"
   },
   {
     "url": "modules/cbTermConditions/cbTermConditions.js",
@@ -9856,7 +9860,7 @@ if (workbox) {
   },
   {
     "url": "modules/Home/Homestuff.js",
-    "revision": "523be48f77c7f5c871f8334dd8756a67"
+    "revision": "93d9fa4ef0d77c580a19d848f257a19d"
   },
   {
     "url": "modules/Home/js/HelpMeNow.js",
@@ -9892,7 +9896,7 @@ if (workbox) {
   },
   {
     "url": "modules/Contacts/Contacts.js",
-    "revision": "25530e91e96304253196890027011051"
+    "revision": "9d308c5d71a695c8d5099f7768d14140"
   },
   {
     "url": "modules/Dashboard/Dashboard.js",
@@ -9900,7 +9904,7 @@ if (workbox) {
   },
   {
     "url": "modules/Services/Services.js",
-    "revision": "672ddc901d26fba8ea0a11da5af22bdd"
+    "revision": "74287451dfbb75a08787abb5ef195eeb"
   },
   {
     "url": "modules/Vendors/Vendors.js",
@@ -9948,7 +9952,7 @@ if (workbox) {
   },
   {
     "url": "modules/Quotes/Quotes.js",
-    "revision": "ea218806a1ac1a128df0453c43ecee63"
+    "revision": "8f1160d87b3221354d4cf0d5bfde30b5"
   },
   {
     "url": "modules/PurchaseOrder/PurchaseOrder.js",

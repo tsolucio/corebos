@@ -30,9 +30,12 @@ class Google_Service_Vault_Query extends Google_Model
   protected $hangoutsChatOptionsDataType = '';
   protected $mailOptionsType = 'Google_Service_Vault_MailOptions';
   protected $mailOptionsDataType = '';
+  public $method;
   protected $orgUnitInfoType = 'Google_Service_Vault_OrgUnitInfo';
   protected $orgUnitInfoDataType = '';
   public $searchMethod;
+  protected $sharedDriveInfoType = 'Google_Service_Vault_SharedDriveInfo';
+  protected $sharedDriveInfoDataType = '';
   public $startTime;
   protected $teamDriveInfoType = 'Google_Service_Vault_TeamDriveInfo';
   protected $teamDriveInfoDataType = '';
@@ -133,6 +136,14 @@ class Google_Service_Vault_Query extends Google_Model
   {
     return $this->mailOptions;
   }
+  public function setMethod($method)
+  {
+    $this->method = $method;
+  }
+  public function getMethod()
+  {
+    return $this->method;
+  }
   /**
    * @param Google_Service_Vault_OrgUnitInfo
    */
@@ -154,6 +165,20 @@ class Google_Service_Vault_Query extends Google_Model
   public function getSearchMethod()
   {
     return $this->searchMethod;
+  }
+  /**
+   * @param Google_Service_Vault_SharedDriveInfo
+   */
+  public function setSharedDriveInfo(Google_Service_Vault_SharedDriveInfo $sharedDriveInfo)
+  {
+    $this->sharedDriveInfo = $sharedDriveInfo;
+  }
+  /**
+   * @return Google_Service_Vault_SharedDriveInfo
+   */
+  public function getSharedDriveInfo()
+  {
+    return $this->sharedDriveInfo;
   }
   public function setStartTime($startTime)
   {

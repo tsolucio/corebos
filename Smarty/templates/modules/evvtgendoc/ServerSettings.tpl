@@ -53,6 +53,31 @@
 			<table border=0 cellspacing=0 cellpadding=10 width=100% class="tableHeading">
 			<tr>
 				<td class="small">
+					<strong>{'PDF Links'|@getTranslatedString:$MODULE}:&nbsp;</strong>
+					<input type="checkbox" name="pdflinkactive" id="pdflinkactive" {$pdflinkactive}/>&nbsp;
+					{if $pdflinkactive eq 'checked'}
+						{'Active'|@getTranslatedString:$MODULE}
+					{else}
+						{'Inactive'|@getTranslatedString:$MODULE}
+					{/if}
+				</td>
+			</tr>
+			</table>
+			<table border=0 cellspacing=0 cellpadding=10 width=100% class="tableHeading">
+			<tr>
+				<td class="small">
+					<strong>{'GenDoc URL'|@getTranslatedString:$MODULE}:&nbsp;</strong>
+					{if empty($gendocurl)}
+						{'is not set'|@getTranslatedString:$MODULE}
+					{else}
+						{'is set to'|@getTranslatedString:$MODULE} {$gendocurl}
+					{/if}
+				</td>
+			</tr>
+			</table>
+			<table border=0 cellspacing=0 cellpadding=10 width=100% class="tableHeading">
+			<tr>
+				<td class="small">
 					<input type="checkbox" name="active" id="active" {$active}/>&nbsp;<strong>{'External Server'|@getTranslatedString:$MODULE}</strong>
 					<div style="float: right">
 					<input title="{$APP.LBL_SAVE_BUTTON_LABEL}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmButton small save" type="submit" name="button" value="{$APP.LBL_SAVE_BUTTON_LABEL}" >&nbsp;&nbsp;
@@ -78,7 +103,7 @@
 							<tr valign="top">
 								<td nowrap class="small cellLabel"><strong>{'LBL_USERNAME'|@getTranslatedString:'Settings'}</strong></td>
 								<td class="small cellText">
-								<input type="text" class="detailedViewTextBox small" value="{$user}" name="user" id="user">
+								<input type="text" class="detailedViewTextBox small" style="width:90%" value="{$user}" name="user" id="user">
 								</td>
 							</tr>
 							<tr>

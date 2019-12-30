@@ -405,7 +405,6 @@ if ($currentModule == 'Products' && !empty($_REQUEST['record_id']) && ($popuptyp
 	$smarty->assign('PRODUCT_NAME', $product_name);
 	$smarty->assign('RECORD_ID', vtlib_purify($_REQUEST['record_id']));
 }
-//Added to fix the issue #2307
 $order_by = $focus->getOrderBy();
 $sorder = $focus->getSortOrder();
 $listview_header_search=getSearchListHeaderValues($focus, $currentModule, $url_string, $sorder, $order_by);

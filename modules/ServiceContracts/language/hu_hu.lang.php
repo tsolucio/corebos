@@ -82,6 +82,8 @@ $mod_strings = array(
 	'Website' => 'Weboldal',
 	'Description' => 'Leírás',
 	'Price Book Name' => 'Csomagár neve',
-	'LBL_NO_TAXES_ASSOCIATED' => 'Nincs adó hozzárendelve'
+	'LBL_NO_TAXES_ASSOCIATED' => 'Nincs adó hozzárendelve',
+	'SyncHelpDesk' => 'Synchronize Support Tickets',
+	'SyncHelpDeskDescription' => 'Synchronize with Support Tickets Time and Effort',
 );
 ?>

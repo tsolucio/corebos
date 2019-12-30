@@ -9,6 +9,8 @@
  * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 24/05/2018 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
   ************************************************************************************/
 $mod_strings = array(
+'com_vtiger_workflow' => 'Workflows',
+'SINGLE_com_vtiger_workflow' => 'Workflow',
 'VTEmailTask' => 'Enviar e-mail',
 'VTEntityMethodTask' => 'Invocar função personalizada',
 'VTCreateTodoTask' => 'Criar compromisso',
@@ -200,5 +202,7 @@ $mod_strings = array(
 'Generate Image Code' => 'Generate Image Code',
 'Generate Image Code Workflow Task' => 'Generate Image Code Workflow Task',
 'GenerateImageCodeWorkflowTask' => 'Generate Image Code Workflow Task',
+'LBL_ON_RELATE' => 'On Relate with',
+'LBL_ON_UNRELATE' => 'On Unrelate with',
 );
 ?>

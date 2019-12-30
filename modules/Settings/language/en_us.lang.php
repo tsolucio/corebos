@@ -785,6 +785,8 @@ $mod_strings = array(
 'LBL_NEW_CONDITION_BUTTON_LABEL'=>'New Condition',
 'LBL_TASKS'=>'Tasks',
 'LBL_NEW_TASK_BUTTON_LABEL'=>'New Task',
+'LBL_ACTIVATE_ALL_BUTTON_LABEL'=>'Activate All',
+'LBL_DIACTIVATE_ALL_BUTTON_LABEL'=>'Deactivate All',
 'LBL_TASK'=>'Task',
 'LBL_DELAY' => 'Delay',
 

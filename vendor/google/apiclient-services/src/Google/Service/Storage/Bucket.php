@@ -38,6 +38,7 @@ class Google_Service_Storage_Bucket extends Google_Collection
   protected $lifecycleType = 'Google_Service_Storage_BucketLifecycle';
   protected $lifecycleDataType = '';
   public $location;
+  public $locationType;
   protected $loggingType = 'Google_Service_Storage_BucketLogging';
   protected $loggingDataType = '';
   public $metageneration;
@@ -201,6 +202,14 @@ class Google_Service_Storage_Bucket extends Google_Collection
   public function getLocation()
   {
     return $this->location;
+  }
+  public function setLocationType($locationType)
+  {
+    $this->locationType = $locationType;
+  }
+  public function getLocationType()
+  {
+    return $this->locationType;
   }
   /**
    * @param Google_Service_Storage_BucketLogging

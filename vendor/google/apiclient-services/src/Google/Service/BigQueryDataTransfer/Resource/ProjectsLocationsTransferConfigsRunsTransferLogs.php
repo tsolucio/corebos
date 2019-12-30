@@ -29,7 +29,7 @@ class Google_Service_BigQueryDataTransfer_Resource_ProjectsLocationsTransferConf
    * Returns user facing log messages for the data transfer run.
    * (transferLogs.listProjectsLocationsTransferConfigsRunsTransferLogs)
    *
-   * @param string $parent Transfer run name in the form:
+   * @param string $parent Required. Transfer run name in the form:
    * `projects/{project_id}/transferConfigs/{config_Id}/runs/{run_id}`.
    * @param array $optParams Optional parameters.
    *

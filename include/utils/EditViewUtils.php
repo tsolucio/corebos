@@ -39,10 +39,11 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$fldmod_result = $adb->pquery(
 			'SELECT relmodule, status
 			FROM vtiger_fieldmodulerel
-			INNER JOIN vtiger_tab ON vtiger_fieldmodulerel.relmodule=vtiger_tab.name and vtiger_tab.presence=0
 			WHERE fieldid=
 				(SELECT fieldid FROM vtiger_field, vtiger_tab
 				WHERE vtiger_field.tabid=vtiger_tab.tabid AND fieldname=? AND name=? and vtiger_field.presence in (0,2) and vtiger_tab.presence=0)
+				AND vtiger_fieldmodulerel.relmodule IN
+				(select vtiger_tab.name FROM vtiger_tab WHERE vtiger_tab.presence=0 UNION select "com_vtiger_workflow")
 			order by sequence',
 			array($fieldname, $module_name)
 		);
@@ -343,20 +344,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 		$fieldvalue[]=$users_combo;
 		$fieldvalue[] = $groups_combo;
-	} elseif ($uitype == 51 || $uitype == 73) {
-		if (!isset($_REQUEST['convertmode']) || ($_REQUEST['convertmode'] != 'update_quote_val' && $_REQUEST['convertmode'] != 'update_so_val')) {
-			if (isset($_REQUEST['account_id']) && $_REQUEST['account_id'] != '') {
-				$value = vtlib_purify($_REQUEST['account_id']);
-			}
-		}
-		if ($value != '') {
-			$account_name = getAccountName($value);
-		} else {
-			$account_name = '';
-		}
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue[] = $account_name;
-		$fieldvalue[] = $value;
 	} elseif ($uitype == 54) {
 		$options = array();
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
@@ -441,33 +428,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$fieldvalue[] = is_admin($current_user);
 	} elseif ($uitype == 56) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue[] = $value;
-	} elseif ($uitype == 57) {
-		$contact_name = '';
-		if ($value != '') {
-			$displayValueArray = getEntityName('Contacts', $value);
-			if (!empty($displayValueArray)) {
-				foreach ($displayValueArray as $key => $field_value) {
-					$contact_name = $field_value;
-				}
-			}
-		} elseif (isset($_REQUEST['contact_id']) && $_REQUEST['contact_id'] != '') {
-			if ($_REQUEST['module'] == 'Contacts' && $fieldname = 'contact_id') {
-				$contact_name = '';
-			} else {
-				$value = $_REQUEST['contact_id'];
-				$displayValueArray = getEntityName('Contacts', $value);
-				if (!empty($displayValueArray)) {
-					foreach ($displayValueArray as $key => $field_value) {
-						$contact_name = $field_value;
-					}
-				} else {
-					$contact_name='';
-				}
-			}
-		}
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue[] = $contact_name;
 		$fieldvalue[] = $value;
 	} elseif ($uitype == 61) {
 		if ($value != '') {
@@ -678,53 +638,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$editview_label[] = array("Leads&action=Popup","Accounts&action=Popup","Potentials&action=Popup","Products&action=Popup","Invoice&action=Popup","PurchaseOrder&action=Popup","SalesOrder&action=Popup","Quotes&action=Popup","HelpDesk&action=Popup");
 		$fieldvalue[] =$parent_name;
 		$fieldvalue[] =$value;
-	} elseif ($uitype == 66) {
-		if (!empty($_REQUEST['parent_id'])) {
-			$value = vtlib_purify($_REQUEST['parent_id']);
-		}
-		$parent_module = '';
-		if (!empty($value)) {
-			$parent_module = getSalesEntityType($value);
-			if ($parent_module != "Contacts") {
-				$entity_names = getEntityName($parent_module, $value);
-				$parent_name = $entity_names[$value];
-
-				$fieldvalue[] = $parent_name;
-				$fieldvalue[] = $value;
-			}
-		}
-		$act_mode = $_REQUEST['activity_mode'];
-
-		$parentModulesList = array(
-			'Leads' => $app_strings['COMBO_LEADS'],
-			'Accounts' => $app_strings['COMBO_ACCOUNTS'],
-			'Potentials' => $app_strings['COMBO_POTENTIALS'],
-			'HelpDesk' => $app_strings['COMBO_HELPDESK'],
-			'Campaigns' => $app_strings['COMBO_CAMPAIGNS'],
-			'Vendors' => $app_strings['COMBO_VENDORS'] //MSL
-		);
-		if ($act_mode == "Task") {
-			$parentModulesList['Quotes'] = $app_strings['COMBO_QUOTES'];
-			$parentModulesList['PurchaseOrder'] = $app_strings['COMBO_PORDER'];
-			$parentModulesList['SalesOrder'] = $app_strings['COMBO_SORDER'];
-			$parentModulesList['Invoice'] = $app_strings['COMBO_INVOICES'];
-		}
-		$parentModuleNames = array_keys($parentModulesList);
-		$parentModuleLabels = array_values($parentModulesList);
-
-		$editview_label[0] = $parentModuleLabels;
-		$editview_label[1] = array_fill(0, count($parentModulesList), '');
-		$selectedModuleIndex = array_search($parent_module, $parentModuleNames);
-		if ($selectedModuleIndex > -1) {
-			$editview_label[1][$selectedModuleIndex] = 'selected';
-		}
-
-		$parentModulePopupUrl = array();
-		foreach ($parentModuleNames as $parentModule) {
-			$parentModulePopupUrl[] = $parentModule.'&action=Popup';
-		}
-
-		$editview_label[2] = $parentModulePopupUrl;
 	} elseif ($uitype == 357) { // added for better email support
 		$pmodule = isset($_REQUEST['pmodule']) ? $_REQUEST['pmodule'] : (isset($_REQUEST['par_module']) ? $_REQUEST['par_module'] : null);
 		if (isset($_REQUEST['emailids']) && $_REQUEST['emailids'] != '') {
@@ -914,18 +827,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$currencySymbol = $currencyField->getCurrencySymbol();
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name).': ('.$currencySymbol.')';
-	} elseif ($uitype == 78) {
-		if ($value != '') {
-			$quote_name = getQuoteName($value);
-		} elseif (isset($_REQUEST['quote_id']) && $_REQUEST['quote_id'] != '') {
-			$value = $_REQUEST['quote_id'];
-			$quote_name = getQuoteName($value);
-		} else {
-			$quote_name = '';
-		}
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue[] = $quote_name;
-		$fieldvalue[] = $value;
 	} elseif ($uitype == 79) {
 		if ($value != '') {
 			$purchaseorder_name = getPoName($value);

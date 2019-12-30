@@ -26,7 +26,8 @@
 class Google_Service_Compute_Resource_Networks extends Google_Service_Resource
 {
   /**
-   * Adds a peering to the specified network. (networks.addPeering)
+   * Adds a peering to the specified network. (== suppress_warning http-rest-
+   * shadowed ==) (networks.addPeering)
    *
    * @param string $project Project ID for this request.
    * @param string $network Name of the network resource to add peering to.
@@ -54,7 +55,8 @@ class Google_Service_Compute_Resource_Networks extends Google_Service_Resource
     return $this->call('addPeering', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Deletes the specified network. (networks.delete)
+   * Deletes the specified network. (== suppress_warning http-rest-shadowed ==)
+   * (networks.delete)
    *
    * @param string $project Project ID for this request.
    * @param string $network Name of the network to delete.
@@ -82,7 +84,7 @@ class Google_Service_Compute_Resource_Networks extends Google_Service_Resource
   }
   /**
    * Returns the specified network. Gets a list of available networks by making a
-   * list() request. (networks.get)
+   * list() request. (== suppress_warning http-rest-shadowed ==) (networks.get)
    *
    * @param string $project Project ID for this request.
    * @param string $network Name of the network to return.
@@ -97,7 +99,7 @@ class Google_Service_Compute_Resource_Networks extends Google_Service_Resource
   }
   /**
    * Creates a network in the specified project using the data included in the
-   * request. (networks.insert)
+   * request. (== suppress_warning http-rest-shadowed ==) (networks.insert)
    *
    * @param string $project Project ID for this request.
    * @param Google_Service_Compute_Network $postBody
@@ -124,8 +126,8 @@ class Google_Service_Compute_Resource_Networks extends Google_Service_Resource
     return $this->call('insert', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Retrieves the list of networks available to the specified project.
-   * (networks.listNetworks)
+   * Retrieves the list of networks available to the specified project. (==
+   * suppress_warning http-rest-shadowed ==) (networks.listNetworks)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -178,7 +180,8 @@ class Google_Service_Compute_Resource_Networks extends Google_Service_Resource
   }
   /**
    * Patches the specified network with the data included in the request. Only the
-   * following fields can be modified: routingConfig.routingMode. (networks.patch)
+   * following fields can be modified: routingConfig.routingMode. (==
+   * suppress_warning http-rest-shadowed ==) (networks.patch)
    *
    * @param string $project Project ID for this request.
    * @param string $network Name of the network to update.
@@ -206,7 +209,8 @@ class Google_Service_Compute_Resource_Networks extends Google_Service_Resource
     return $this->call('patch', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Removes a peering from the specified network. (networks.removePeering)
+   * Removes a peering from the specified network. (== suppress_warning http-rest-
+   * shadowed ==) (networks.removePeering)
    *
    * @param string $project Project ID for this request.
    * @param string $network Name of the network resource to remove peering from.
@@ -234,8 +238,8 @@ class Google_Service_Compute_Resource_Networks extends Google_Service_Resource
     return $this->call('removePeering', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Switches the network mode from auto subnet mode to custom subnet mode.
-   * (networks.switchToCustomMode)
+   * Switches the network mode from auto subnet mode to custom subnet mode. (==
+   * suppress_warning http-rest-shadowed ==) (networks.switchToCustomMode)
    *
    * @param string $project Project ID for this request.
    * @param string $network Name of the network to be updated.
@@ -260,5 +264,37 @@ class Google_Service_Compute_Resource_Networks extends Google_Service_Resource
     $params = array('project' => $project, 'network' => $network);
     $params = array_merge($params, $optParams);
     return $this->call('switchToCustomMode', array($params), "Google_Service_Compute_Operation");
+  }
+  /**
+   * Updates the specified network peering with the data included in the request
+   * Only the following fields can be modified:
+   * NetworkPeering.export_custom_routes, and NetworkPeering.import_custom_routes
+   * (== suppress_warning http-rest-shadowed ==) (networks.updatePeering)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $network Name of the network resource which the updated peering
+   * is belonging to.
+   * @param Google_Service_Compute_NetworksUpdatePeeringRequest $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string requestId An optional request ID to identify requests.
+   * Specify a unique request ID so that if you must retry your request, the
+   * server will know to ignore the request if it has already been completed.
+   *
+   * For example, consider a situation where you make an initial request and the
+   * request times out. If you make the request again with the same request ID,
+   * the server can check if original operation with the same request ID was
+   * received, and if so, will ignore the second request. This prevents clients
+   * from accidentally creating duplicate commitments.
+   *
+   * The request ID must be a valid UUID with the exception that zero UUID is not
+   * supported (00000000-0000-0000-0000-000000000000).
+   * @return Google_Service_Compute_Operation
+   */
+  public function updatePeering($project, $network, Google_Service_Compute_NetworksUpdatePeeringRequest $postBody, $optParams = array())
+  {
+    $params = array('project' => $project, 'network' => $network, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('updatePeering', array($params), "Google_Service_Compute_Operation");
   }
 }

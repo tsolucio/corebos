@@ -87,16 +87,15 @@ class Google_Service_Directory_Resource_Users extends Google_Service_Resource
    * field instead.
    * @opt_param string event Event on which subscription is intended (if
    * subscribing)
-   * @opt_param int maxResults Maximum number of results to return. Default is
-   * 100. Max allowed is 500
+   * @opt_param int maxResults Maximum number of results to return.
    * @opt_param string orderBy Column to use for sorting results
    * @opt_param string pageToken Token to specify next page in the list
    * @opt_param string projection What subset of fields to fetch for this user.
    * @opt_param string query Query string search. Should be of the form "".
    * Complete documentation is at https://developers.google.com/admin-
    * sdk/directory/v1/guides/search-users
-   * @opt_param string showDeleted If set to true retrieves the list of deleted
-   * users. Default is false
+   * @opt_param string showDeleted If set to true, retrieves the list of deleted
+   * users. (Default: false)
    * @opt_param string sortOrder Whether to return results in ascending or
    * descending order.
    * @opt_param string viewType Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC
@@ -182,16 +181,15 @@ class Google_Service_Directory_Resource_Users extends Google_Service_Resource
    * field instead.
    * @opt_param string event Event on which subscription is intended (if
    * subscribing)
-   * @opt_param int maxResults Maximum number of results to return. Default is
-   * 100. Max allowed is 500
+   * @opt_param int maxResults Maximum number of results to return.
    * @opt_param string orderBy Column to use for sorting results
    * @opt_param string pageToken Token to specify next page in the list
    * @opt_param string projection What subset of fields to fetch for this user.
    * @opt_param string query Query string search. Should be of the form "".
    * Complete documentation is at https://developers.google.com/admin-
    * sdk/directory/v1/guides/search-users
-   * @opt_param string showDeleted If set to true retrieves the list of deleted
-   * users. Default is false
+   * @opt_param string showDeleted If set to true, retrieves the list of deleted
+   * users. (Default: false)
    * @opt_param string sortOrder Whether to return results in ascending or
    * descending order.
    * @opt_param string viewType Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC

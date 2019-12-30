@@ -75,8 +75,7 @@ class OutlookSyncServer extends SyncServer {
 					$updateRecords[$clientRecordId]['module'] = $record['module'];
 					$clientModifiedTimeList[$clientRecordId] = $record['values']['modifiedtime'];
 				}
-			} // End
-			else {
+			} else {
 				$lookupResult = $db->pquery(
 					'SELECT serverid,clientmodifiedtime FROM vtiger_wsapp_recordmapping WHERE appid=? AND clientid=?',
 					array($appid, $clientRecordId)

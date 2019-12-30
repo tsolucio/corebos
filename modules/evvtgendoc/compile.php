@@ -183,7 +183,7 @@ $iter_modules = array();
 global $from_compile;
 $from_compile = true;
 
-function compile($text, $id, $module, $changeamp = false) {
+function compile($text, $id, $module, $changeamp = false, $applyformat = true) {
 	global $expressionGD;
 	if (empty($text)) {
 		return $text;
@@ -210,10 +210,10 @@ function compile($text, $id, $module, $changeamp = false) {
 			if (substr($marcador, 0, strlen($expressionGD)) == $expressionGD) {
 				$replacewith = eval_expression($marcador, $id);
 			} elseif ($changeamp) {
-				$compiled_marc = retrieve_from_db($marcador, $id, $module);
+				$compiled_marc = retrieve_from_db($marcador, $id, $module, $applyformat);
 				$replacewith = str_replace('&', '&amp;', $compiled_marc);
 			} else {
-				$replacewith = retrieve_from_db($marcador, $id, $module);
+				$replacewith = retrieve_from_db($marcador, $id, $module, $applyformat);
 			}
 			OpenDocument::debugmsg('REPLACE WITH: '.$replacewith);
 			$compiled_text = str_replace('{'.$marcador.'}', $replacewith, $compiled_text);
@@ -230,10 +230,11 @@ function eval_expression($marcador, $entityid) {
 	$lenexp = strlen($expressionGD);
 	$compile_expression = substr($marcador, $lenexp);
 	$type = getSalesEntityType($entityid);
-	if (strpos($compile_expression, '~')>0 && strpos($compile_expression, '¬')>0) {
+	if (strpos($compile_expression, '~')!==false && strpos($compile_expression, '¬')!==false) {
 		$compile_expression = str_replace('~', '{', $compile_expression);
 		$compile_expression = str_replace('¬', '}', $compile_expression);
-		$compile_expression = compile($compile_expression, $entityid, $type);
+		OpenDocument::debugmsg('COMPILE EXPRESSION: GenDocWF substitution: '.$compile_expression.' WITH: '.$type.' ('.$entityid.')');
+		$compile_expression = compile($compile_expression, $entityid, $type, false, false);
 	}
 	OpenDocument::debugmsg('COMPILE EXPRESSION: '.$compile_expression.' WITH: '.$type.' ('.$entityid.')');
 	$entityws = $adb->getone("SELECT id FROM vtiger_ws_entity WHERE name='$type'");
@@ -309,9 +310,7 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 		if ($token_pair[2]=='enletras') {
 			require_once 'modules/cbtranslation/number2string.php';
 			$nuevomarcador = $token_pair[0].'.'.$token_pair[1];
-			$reemplazo = retrieve_from_db($nuevomarcador, $id, $module);
-			$reemplazo = str_replace('.', '', $reemplazo);
-			$reemplazo = str_replace(',', '.', $reemplazo);
+			$reemplazo = retrieve_from_db($nuevomarcador, $id, $module, false);
 			$reemplazo = strtolower(number2string::convert($reemplazo, OpenDocument::$compile_language));
 			return $reemplazo;
 		}
@@ -350,12 +349,12 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 							$cadena='';
 						}
 					}
-					switch (getDataType($module, $token_pair[1])) {
+					switch (getTypeOfDataByFieldName($module, $token_pair[1])) {
 						case 'I':
 							$cadena = number_format($cadena, 0);
 							break;
 						case 'N':
-							$cadena = number_format($cadena, 2, ',', '.');
+							$cadena = CurrencyField::convertToUserFormat($cadena, null, true);
 							break;
 						//case 'C':
 						//    $cadena = ($cadena == '1' ? 'Yes' : 'No');
@@ -400,10 +399,10 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 				if ($applyformat) {
 					switch ($token_pair[1]) {
 						case 'TaxTotal':
-							$reemplazo = number_format(($totalFra-$sbtotalFra), 2, ',', '.');
+							$reemplazo = CurrencyField::convertToUserFormat(($totalFra-$sbtotalFra), null, true);
 							break;
 						case 'TaxPercent':
-							$reemplazo = number_format((($totalFra-$sbtotalFra)*100/$sbtotalFra), 0, ',', '.');
+							$reemplazo = CurrencyField::convertToUserFormat((($totalFra-$sbtotalFra)*100/$sbtotalFra), null, true);
 							break;
 					}
 				}
@@ -426,13 +425,13 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 				if (array_key_exists($token_pair[1], $iter_modules[$token_pair[0]][0])) {
 					$reemplazo=getTranslatedString(elimina_llave(html_entity_decode($iter_modules[$token_pair[0]][0][$token_pair[1]], ENT_QUOTES, $default_charset)), $module);
 				} else {
-					$reemplazo=retrieve_from_db($marcador, $iter_modules[$token_pair[0]][0]['productid'], $token_pair[0]);
+					$reemplazo=retrieve_from_db($marcador, $iter_modules[$token_pair[0]][0]['productid'], $token_pair[0], $applyformat);
 				}
 			} else {
-				$reemplazo = retrieve_from_db($marcador, $iter_modules[$token_pair[0]][0], $token_pair[0]);
+				$reemplazo = retrieve_from_db($marcador, $iter_modules[$token_pair[0]][0], $token_pair[0], $applyformat);
 			}
 		} elseif (areModulesRelated($token_pair[0], $module)) {
-			$reemplazo = retrieve_from_db($marcador, $focus->column_fields[$related_module[$module][$token_pair[0]]], $token_pair[0]);
+			$reemplazo = retrieve_from_db($marcador, $focus->column_fields[$related_module[$module][$token_pair[0]]], $token_pair[0], $applyformat);
 		} elseif ($token_pair[0] == 'Organization' || $token_pair[0] == 'cbCompany') {
 			$res = $adb->query('SELECT * FROM vtiger_cbcompany WHERE defaultcompany=1');
 			$org_fields = $adb->getFieldsArray($res);
@@ -473,10 +472,10 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 							break;
 					}
 					$marcador = 'cbCompany.'.$token_pair[1];
-					$reemplazo = retrieve_from_db($marcador, $id, 'cbCompany');
+					$reemplazo = retrieve_from_db($marcador, $id, 'cbCompany', $applyformat);
 				} else {
 					$marcador = 'Accounts.'.$token_pair[1];
-					$reemplazo = retrieve_from_db($marcador, $accid, 'Accounts');
+					$reemplazo = retrieve_from_db($marcador, $accid, 'Accounts', $applyformat);
 				}
 			}
 		} else {
@@ -487,7 +486,7 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 			if (array_key_exists($token_pair[1], $iter_modules[$token_pair[0]][0])) {
 				$reemplazo = getTranslatedString(elimina_llave(html_entity_decode($iter_modules[$token_pair[0]][0][$token_pair[1]], ENT_QUOTES, $default_charset)), $module);
 			} else {
-				$reemplazo = retrieve_from_db($marcador, $iter_modules[$token_pair[0]][0]['productid'], $token_pair[0]);
+				$reemplazo = retrieve_from_db($marcador, $iter_modules[$token_pair[0]][0]['productid'], $token_pair[0], $applyformat);
 			}
 		} elseif (array_key_exists($module, $special_modules)) {
 			if (is_array($special_modules[$module])) {
@@ -495,7 +494,7 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 				foreach ($special_modules[$module] as $multvalue) {
 					$entitymod = getEntityModule($id);
 					if ($entitymod == $multvalue) {
-						$reemplazo = retrieve_from_db($multvalue.'.'.$token_pair[1], $id, $multvalue);
+						$reemplazo = retrieve_from_db($multvalue.'.'.$token_pair[1], $id, $multvalue, $applyformat);
 						if ($reemplazo == '{'.$token_pair[0].'.'.$token_pair[1].'}') {
 							$reemplazo = '';
 						}
@@ -504,10 +503,10 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 				}
 			} else {
 				$map = $special_modules[$module];
-				$reemplazo = retrieve_from_db($map.'.'.$token_pair[1], $id, $map);
+				$reemplazo = retrieve_from_db($map.'.'.$token_pair[1], $id, $map, $applyformat);
 			}
 		} else {
-			$reemplazo = retrieve_from_db($marcador, $iter_modules[$token_pair[0]][0], $token_pair[0]);
+			$reemplazo = retrieve_from_db($marcador, $iter_modules[$token_pair[0]][0], $token_pair[0], $applyformat);
 		}
 	} elseif (array_key_exists($module, $special_modules)) {
 		if (is_array($special_modules[$module])) {
@@ -515,7 +514,7 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 			foreach ($special_modules[$module] as $multvalue) {
 				$entitymod = getEntityModule($id);
 				if ($entitymod == $multvalue) {
-					$reemplazo = retrieve_from_db($multvalue.'.'.$token_pair[1], $id, $multvalue);
+					$reemplazo = retrieve_from_db($multvalue.'.'.$token_pair[1], $id, $multvalue, $applyformat);
 					if ($reemplazo == '{'.$token_pair[0].'.'.$token_pair[1].'}') {
 						$reemplazo = '';
 					}
@@ -524,10 +523,10 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 			}
 		} else {
 			$map = $special_modules[$module];
-			$reemplazo = retrieve_from_db($map.'.'.$token_pair[1], $id, $map);
+			$reemplazo = retrieve_from_db($map.'.'.$token_pair[1], $id, $map, $applyformat);
 		}
 	} elseif ($token_pair[0] == 'QuestionList' && $module == 'QuestionListCat') {
-		$reemplazo = retrieve_from_db($marcador, $id['Revision'], 'Revision');
+		$reemplazo = retrieve_from_db($marcador, $id['Revision'], 'Revision', $applyformat);
 	} else {
 		$reemplazo = '{'.$marcador.'}';
 	}
@@ -645,6 +644,72 @@ function getModuleFromCondition($condition) {
 	return $token_pair[0];
 }
 
+function make_json_condition($modname, $text_condition) {
+	preg_match_all('/(\w+)\s?(>|<|=|!=|<=|>=)\s?(\'?\w+\'?)\s?(&&|\|\|)?\s?/', $text_condition, $pieces, PREG_SET_ORDER);
+	$conds_array = array();
+	$opmap = array(
+		'string' => array(
+			'=' => 'is',
+			'!=' => 'does not start with',
+		),
+		'number' => array(
+			'=' => 'equal to',
+			'!=' => 'does not equal',
+			'>' => 'greater than',
+			'<' => 'less than',
+			'<=' => 'less than or equal to',
+			'>=' => 'greater than or equal to',
+		),
+		'bool' => array(
+			'=' => 'is',
+			'!=' => 'is not',
+		),
+		'datetime' => array(
+			'=' => 'is',
+			'!=' => 'is not',
+			'>' => 'greater than',
+			'<' => 'less than',
+			'<=' => 'less than or equal to',
+			'>=' => 'greater than or equal to',
+		),
+	);
+	$typeofdatamap = array(
+		'string' => array('V', 'E'),
+		'number' => array('I', 'N', 'NN'),
+		'bool' => array('C'),
+		'datetime' => array('D', 'DT', 'T'),
+	);
+	if (count($pieces) > 0) {
+		foreach ($pieces as $piece) {
+			$field_tod = getTypeOfDataByFieldName($modname, trim($piece[1]));
+			$type = 'string';
+			foreach ($typeofdatamap as $typeofdata => $typesofdata) {
+				if (in_array($field_tod, $typesofdata)) {
+					$type = $typeofdata;
+				}
+			}
+			if ($field_tod === 'C') {
+				$piece[3] = $piece[3] == '1' ? 'true:boolean' : 'false:boolean';
+			}
+			if (isset($piece[4])) {
+				$glue = $piece[4] == '||' ? 'or' : 'and';
+			} else {
+				$glue = 'and';
+			}
+			$cond = array(
+				'fieldname' => trim($piece[1]),
+				'operation' => $opmap[$type][trim($piece[2])],
+				'value' => trim(str_replace('\'', '', $piece[3])),
+				'valuetype' => 'rawtext',
+				'joincondition' => $glue,
+				'groupid' => '0',
+			);
+			$conds_array[] = $cond;
+		}
+	}
+	return json_encode($conds_array);
+}
+
 function eval_paracada($condition, $id, $module, $check = false) {
 	global $adb, $iter_modules, $special_modules, $currentModule, $related_module, $rootmod, $enGD, $current_user;
 	OpenDocument::debugmsg('<h3>FOREACH -- Condition: '.$condition.' ID: '.$id.' MODULE: '.$module.'</h3>');
@@ -684,6 +749,16 @@ function eval_paracada($condition, $id, $module, $check = false) {
 	}
 
 	$token_pair = explode('.', $condition_pair[0]);
+
+	preg_match('/(\w+)\s\[(.+)+\]/', $condition, $cond_elements); // Multiple conditions?
+	if (count($cond_elements) > 0 && isset($cond_elements[2])) {
+		$json_condition = make_json_condition($cond_elements[1], $cond_elements[2]);
+		OpenDocument::debugmsg($json_condition);
+		$comp = 'wfeval';
+		$token_first_space_split = explode(' ', $token_pair[0]);
+		$token_pair[0] = $token_first_space_split[0];
+	}
+	$token_pair[0] = trim($token_pair[0]);
 	if (array_key_exists($token_pair[0], $special_modules)) {
 		$relmodule = $special_modules[$token_pair[0]];
 		$SQL_label = " AND label='{$token_pair[0]}'";
@@ -740,10 +815,12 @@ function eval_paracada($condition, $id, $module, $check = false) {
 						$conditions = multiple_values(retrieve_from_db($condition_pair[0], $key, $token_pair[0]));
 						$cond = $conditions[0];
 						$cond = str_replace(',', '.', $cond);
-						$uitype = getUItypeByFieldName($module, $token_pair[1]);
-						if (in_array($uitype, array(7, 71, 72))) {
-							$numField = new CurrencyField($cond);
-							$cond = $numField->getDBInsertedValue($current_user, false);
+						if (!empty($token_pair[1])) {
+							$uitype = getUItypeByFieldName($module, $token_pair[1]);
+							if (in_array($uitype, array(7, 71, 72))) {
+								$numField = new CurrencyField($cond);
+								$cond = $numField->getDBInsertedValue($current_user, false);
+							}
 						}
 						$vals = multiple_values($condition_pair[1]);
 						$val = $vals[0];
@@ -766,8 +843,23 @@ function eval_paracada($condition, $id, $module, $check = false) {
 							case $enGD:
 								$cond_ok = (count(array_intersect($conditions, $values)) > 0);
 								break;
+							case 'wfeval':
+								include_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
+								include_once 'modules/com_vtiger_workflow/VTJsonCondition.inc';
+								include_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
+								$rs = $adb->pquery('SELECT id FROM vtiger_ws_entity WHERE name=?', array($relmodule));
+								$wsid = $adb->query_result($rs, 0, 'id');
+								$wsid = $wsid . 'x' . $value;
+								$util = new VTWorkflowUtils();
+								$adminUser = $util->adminUser();
+								$entityCache = new VTEntityCache($adminUser);
+								$entityCache->forId($wsid);
+								$cs = new VTJsonCondition();
+								$util->revertUser();
+								$cond_ok = $cs->evaluate($json_condition, $entityCache, $wsid);
+								break;
 						}
-						if ($negado) {
+						if ($negado && ($comp != 'wfeval')) {
 							$cond_ok = !$cond_ok;
 						}
 						OpenDocument::debugmsg(array('ID' => $key, 'NEG' => $negado, 'COND' => $cond . $comp . $val, 'EVAL'=> $cond_ok));
@@ -909,8 +1001,9 @@ function eval_imagen($entity, $id, $module) {
 				inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
 				where vtiger_crmentity.setype="Products Image" and productid=?';
 			$result = $adb->pquery($sql, array($entid));
-			$att_name = $adb->query_result($result, 0, 0);
-			if (empty($att_name)) {
+			if ($result && $adb->num_rows($result)>0) {
+				$att_name = $adb->query_result($result, 0, 0);
+			} else {
 				return 'modules/evvtgendoc/no_image_entity.jpg';
 			}
 		}
@@ -926,7 +1019,11 @@ function eval_imagen($entity, $id, $module) {
 				inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
 				where vtiger_crmentity.setype="Products Image" and productid=?';
 			$result = $adb->pquery($sql, array($entid));
-			$att_name = $adb->query_result($result, 0, 0);
+			if ($result && $adb->num_rows($result)>0) {
+				$att_name = $adb->query_result($result, 0, 0);
+			} else {
+				$att_name = 'modules/evvtgendoc/no_image_entity.jpg';
+			}
 		} else {
 			$att_name = retrieve_from_db($entity, $iter_modules['InventoryDetails'][0], 'InventoryDetails');
 		}
@@ -1138,7 +1235,7 @@ function getProductList($module, $id) {
 					$row[$field] = number_format($row[$field], 0);
 					break;
 				case 'D':
-					$row[$field] = number_format($row[$field], 2, ',', '.');
+					$row[$field] = CurrencyField::convertToUserFormat($row[$field], null, true);
 					break;
 			}
 		}
@@ -1195,7 +1292,7 @@ function getServiceList($module, $id) {
 					$row[$field] = number_format($row[$field], 0);
 					break;
 				case 'D':
-					$row[$field] = number_format($row[$field], 2, ',', '.');
+					$row[$field] = CurrencyField::convertToUserFormat($row[$field], null, true);
 					break;
 			}
 		}
@@ -1481,11 +1578,9 @@ function get_plantilla($entid) {
 	$SQL = 'SELECT setype FROM vtiger_crmentity WHERE crmid=?';
 	$res = $adb->pquery($SQL, array($entid));
 	$relmodule = $adb->query_result($res, 0, 'setype');
-	$search_field_name = '';
 	switch ($relmodule) {
 		case 'Documents':
 			$plantillaid = $entid;
-			$search_field_name = 'tipo_documento';
 			break;
 		case 'Invoice':
 			$fld_no = 'invoice_no';
@@ -1513,45 +1608,13 @@ function get_plantilla($entid) {
 			break;
 		case 'Products':
 			$camp_plantilla = 'plantilla';
-			$search_field_name = 'productcategory';
 			break;
 		default:
 			$camp_plantilla = 'plantillaid';
 	}
-
 	//EntityName
-	switch ($relmodule) {
-		case 'Invoice':
-			$namefield = array('invoice_no');
-			break;
-		case 'SalesOrder':
-			$namefield = array('salesorder_no');
-			break;
-		case 'Quotes':
-			$namefield = array('quote_no');
-			break;
-		case 'Accounts':
-			$namefield = array('accountname');
-			break;
-		case 'Contacts':
-			$namefield = array('firstname','lastname');
-			break;
-		case 'Potentials':
-			$namefield = array('potentialname');
-			break;
-		case 'Products':
-			$namefield = array('productname');
-			break;
-		case 'Vendors':
-			$namefield = array('vendorname');
-			break;
-		case 'Incidencias':
-			$namefield = array('incidencia_no');
-			break;
-		default:
-			$namefield = array('');
-			break;
-	}
+	$namefield = getEntityFieldNames($relmodule);
+	$namefield = (array)$namefield['fieldname'];
 
 	if ($relmodule != 'Documents') {
 		$queryGenerator = new QueryGenerator($relmodule, $current_user);
@@ -1593,11 +1656,6 @@ function get_plantilla($entid) {
 		$plantilla = $adb->query_result($res_att, 0, 'name');
 		$ruta = $adb->query_result($res_att, 0, 'path');
 		$prefix = $adb->query_result($res_att, 0, 'attachmentsid').'_';
-		if (!empty($search_field_name)) {
-			$name = $focus_rel->column_fields[$search_field_name];
-		} else {
-			$name = (!empty($app_strings[$relmodule]) ? $app_strings[$relmodule] : $relmodule);
-		}
 		list($name,$ext) = explode('.', $plantilla);
 	}
 
@@ -1627,17 +1685,6 @@ function getEntityModule($crmid) {
 		$modname = '';
 	}
 	return $modname;
-}
-
-function getDataType($module, $fieldname) {
-	global $adb;
-	$seltab = "SELECT tabid FROM vtiger_tab WHERE name=?";
-	$restab = $adb->pquery($seltab, array($module));
-	$tabid = $adb->query_result($restab, 0, 'tabid');
-	$selfield = "SELECT typeofdata FROM vtiger_field WHERE tabid=? AND fieldname=?";
-	$resfield = $adb->pquery($selfield, array($tabid,$fieldname));
-	$type = $adb->query_result($resfield, 0, 'typeofdata');
-	return substr($type, 0, 1);
 }
 
 function getUitypefield($module, $fieldname) {

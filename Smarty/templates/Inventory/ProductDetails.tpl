@@ -81,10 +81,9 @@ function displayCoords(currObj,obj,mode,curr_row)
 
 <table width="100%"  border="0" align="center" cellpadding="5" cellspacing="0" class="crmTable" id="proTab">
 	<tr>
-			<td colspan="3" class="dvInnerHeader">
+	<td colspan="3" class="dvInnerHeader">
 		<b>{$APP.LBL_ITEM_DETAILS}</b>
 	</td>
-	
 	<td class="dvInnerHeader" align="center" colspan="2">
 		<input type="hidden" value="{$INV_CURRENCY_ID}" id="prev_selected_currency_id" />
 		<b>{$APP.LBL_CURRENCY}</b>&nbsp;&nbsp;
@@ -99,7 +98,6 @@ function displayCoords(currObj,obj,mode,curr_row)
 		{/foreach}
 		</select>
 	</td>
-	
 	<td class="dvInnerHeader" align="center" colspan="2">
 		<b>{$APP.LBL_TAX_MODE}</b>&nbsp;&nbsp;
 		<select id="taxtype" name="taxtype" onchange="decideTaxDiv(); calcTotal();">
@@ -125,12 +123,11 @@ function displayCoords(currObj,obj,mode,curr_row)
 	<td width=10% valign="top" class="lvtCol" align="right"><b>{$APP.LBL_NET_PRICE}</b></td>
 	</tr>
 
-	<tr valign="top" id="row1">
+	<tr valign="top" id="row1" data-corebosinvrow=1>
 
 	<!-- column 1 - delete link - starts -->
 	<td class="crmTableRow small lineOnTop">&nbsp;
 		<input type="hidden" id="deleted1" name="deleted1" value="0">
-		<input type="hidden" id="lineitem_id1" name="lineitem_id1" value="1">
 	</td>
 
 	<!-- column 2 - Product Name - starts -->
@@ -245,7 +242,6 @@ function displayCoords(currObj,obj,mode,curr_row)
 	</td>
 	<!-- column 5 - List Price with Discount, Total After Discount and Tax as table - ends -->
 
-
 	<!-- column 6 - Product Total - starts -->
 	<td class="crmTableRow small lineOnTop" align="right">
 		<table width="100%" cellpadding="5" cellspacing="0">
@@ -271,6 +267,9 @@ function displayCoords(currObj,obj,mode,curr_row)
 
    </tr>
    <!-- Product Details First row - Ends -->
+	{if !empty($customtemplaterows)}
+		{include file=$customtemplaterows ROWNO=1 ITEM=$ASSOCIATEDPRODUCTS.0}
+	{/if}
 </table>
 
 <table width="100%"  border="0" align="center" cellpadding="5" cellspacing="0" class="crmTable">
@@ -325,7 +324,6 @@ function displayCoords(currObj,obj,mode,curr_row)
 	</td>
 	<td id="discountTotal_final" class="crmTableRow small lineOnTop" align="right">0.00</td>
    </tr>
-
 
    <!-- Group Tax - starts -->
    <tr id="group_tax_row" valign="top" class="TaxHide">
@@ -414,16 +412,13 @@ function displayCoords(currObj,obj,mode,curr_row)
 		<input type="hidden" name="total" id="total" value="">
 </td></tr>
 
-
 <!-- Added to calculate the tax and total values when page loads -->
 <script>
- decideTaxDiv();
- {if $TAX_TYPE eq 'group'}
- 	calcGroupTax();
- {/if}
- calcTotal();
- calcSHTax();
+decideTaxDiv();
+{if $TAX_TYPE eq 'group'}
+calcGroupTax();
+{/if}
+calcTotal();
+calcSHTax();
 </script>
 <!-- This above div is added to display the tax informations --> 
-
-

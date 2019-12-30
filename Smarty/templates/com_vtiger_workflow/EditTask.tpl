@@ -24,7 +24,12 @@
 {include file='com_vtiger_workflow/ErrorMessageBox.tpl'}
 <!--Done popups-->
 
-{include file='SetMenu.tpl'}
+<table border=0 cellspacing=0 cellpadding=20 width="99%" class="settingsUI">
+<tr>
+<td valign=top>
+<table border=0 cellspacing=0 cellpadding=0 width=100%>
+<tr>
+<td class="small" valign=top align=left>
 <div id="view">
 	{include file='com_vtiger_workflow/ModuleTitle.tpl'}
 	<form name="new_task" id="new_task_form" method="post" onsubmit="VtigerJS_DialogBox.block();">

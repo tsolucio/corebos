@@ -33,6 +33,7 @@ class migrateLinksIntoBusinessActionEntities extends cbupdaterWorker {
 				return;
 			}
 			$this->ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `purpose` TEXT NULL;');
+			$this->ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `relatemodule` varchar(100) default NULL;');
 			if ($this->isModuleInstalled('BusinessActions')) {
 				vtlib_toggleModuleAccess('BusinessActions', true);
 				global $adb, $current_user;

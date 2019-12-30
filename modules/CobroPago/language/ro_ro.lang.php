@@ -108,5 +108,6 @@ $mod_strings = array(
 	'EURO' => 'EURO',
 	'Activities' => 'Activitati',
 	'Documents' => 'Documente',
+	'PreventEdit' => 'Prevent edit/delete if paid',
 );
 ?>

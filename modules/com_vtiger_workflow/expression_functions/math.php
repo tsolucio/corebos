@@ -12,7 +12,15 @@ function __vt_add($arr) {
 	if (count($arr) == 1) {
 		return $arr[0];
 	} else {
-		return $arr[0]+$arr[1];
+		if (is_numeric($arr[0]) && is_numeric($arr[1])) {
+			return $arr[0]+$arr[1];
+		} elseif (is_numeric($arr[0])) {
+			return $arr[0];
+		} elseif (is_numeric($arr[1])) {
+			return $arr[1];
+		} else {
+			return 0;
+		}
 	}
 }
 
@@ -20,7 +28,15 @@ function __vt_sub($arr) {
 	if (count($arr) == 1) {
 		return -$arr[0];
 	} else {
-		return $arr[0]-$arr[1];
+		if (is_numeric($arr[0]) && is_numeric($arr[1])) {
+			return $arr[0]-$arr[1];
+		} elseif (is_numeric($arr[0])) {
+			return $arr[0];
+		} elseif (is_numeric($arr[1])) {
+			return $arr[1];
+		} else {
+			return 0;
+		}
 	}
 }
 

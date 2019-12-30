@@ -20,7 +20,7 @@
 		<div id="status" style="position:absolute;left:850px;top:5px;height:27px;white-space:nowrap;display:none"><img src="themes/softed/images/status.gif"></div>
 		{if $module.visible eq '1'}
 			<a href="javascript:void(0);" onclick="toggleModule_mod('{$module.tabid}', 'module_disable');">
-			 <img src="{'enabled.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{'LBL_DISABLE'|@getTranslatedString:'Settings'} {$module.name|@getTranslatedString:$module.name}" title="{'LBL_DISABLE'|@getTranslatedString:'Settings'} {$module.name|@getTranslatedString:$module.name}">
+			<img src="{'enabled.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{'LBL_DISABLE'|@getTranslatedString:'Settings'} {$module.name|@getTranslatedString:$module.name}" title="{'LBL_DISABLE'|@getTranslatedString:'Settings'} {$module.name|@getTranslatedString:$module.name}">
 			</a>
 		{else}
 			<a href="javascript:void(0);" onclick="toggleModule_mod('{$module.tabid}', 'module_enable');">

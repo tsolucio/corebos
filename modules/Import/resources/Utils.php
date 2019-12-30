@@ -12,14 +12,14 @@ require_once 'modules/Import/ui/Viewer.php';
 
 class Import_Utils {
 
-	static public $AUTO_MERGE_NONE = 0;
-	static public $AUTO_MERGE_IGNORE = 1;
-	static public $AUTO_MERGE_OVERWRITE = 2;
-	static public $AUTO_MERGE_MERGEFIELDS = 3;
+	public static $AUTO_MERGE_NONE = 0;
+	public static $AUTO_MERGE_IGNORE = 1;
+	public static $AUTO_MERGE_OVERWRITE = 2;
+	public static $AUTO_MERGE_MERGEFIELDS = 3;
 
-	static public $supportedFileEncoding = array('UTF-8'=>'UTF-8', 'ISO-8859-1'=>'ISO-8859-1');
-	static public $supportedDelimiters = array(','=>'comma', ';'=>'semicolon');
-	static public $supportedFileExtensions = array('csv','vcf');
+	public static $supportedFileEncoding = array('UTF-8'=>'UTF-8', 'ISO-8859-1'=>'ISO-8859-1');
+	public static $supportedDelimiters = array(','=>'comma', ';'=>'semicolon');
+	public static $supportedFileExtensions = array('csv','vcf');
 
 	public static function getSupportedFileExtensions() {
 		return self::$supportedFileExtensions;

@@ -26,8 +26,8 @@
 class Google_Service_Compute_Resource_ForwardingRules extends Google_Service_Resource
 {
   /**
-   * Retrieves an aggregated list of forwarding rules.
-   * (forwardingRules.aggregatedList)
+   * Retrieves an aggregated list of forwarding rules. (== suppress_warning http-
+   * rest-shadowed ==) (forwardingRules.aggregatedList)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -79,7 +79,8 @@ class Google_Service_Compute_Resource_ForwardingRules extends Google_Service_Res
     return $this->call('aggregatedList', array($params), "Google_Service_Compute_ForwardingRuleAggregatedList");
   }
   /**
-   * Deletes the specified ForwardingRule resource. (forwardingRules.delete)
+   * Deletes the specified ForwardingRule resource. (== suppress_warning http-
+   * rest-shadowed ==) (forwardingRules.delete)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.
@@ -107,7 +108,8 @@ class Google_Service_Compute_Resource_ForwardingRules extends Google_Service_Res
     return $this->call('delete', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Returns the specified ForwardingRule resource. (forwardingRules.get)
+   * Returns the specified ForwardingRule resource. (== suppress_warning http-
+   * rest-shadowed ==) (forwardingRules.get)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.
@@ -123,7 +125,8 @@ class Google_Service_Compute_Resource_ForwardingRules extends Google_Service_Res
   }
   /**
    * Creates a ForwardingRule resource in the specified project and region using
-   * the data included in the request. (forwardingRules.insert)
+   * the data included in the request. (== suppress_warning http-rest-shadowed ==)
+   * (forwardingRules.insert)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.
@@ -152,7 +155,8 @@ class Google_Service_Compute_Resource_ForwardingRules extends Google_Service_Res
   }
   /**
    * Retrieves a list of ForwardingRule resources available to the specified
-   * project and region. (forwardingRules.listForwardingRules)
+   * project and region. (== suppress_warning http-rest-shadowed ==)
+   * (forwardingRules.listForwardingRules)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.
@@ -206,7 +210,8 @@ class Google_Service_Compute_Resource_ForwardingRules extends Google_Service_Res
   }
   /**
    * Changes target URL for forwarding rule. The new target should be of the same
-   * type as the old target. (forwardingRules.setTarget)
+   * type as the old target. (== suppress_warning http-rest-shadowed ==)
+   * (forwardingRules.setTarget)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.

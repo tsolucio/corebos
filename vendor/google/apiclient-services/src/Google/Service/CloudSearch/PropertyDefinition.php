@@ -35,6 +35,8 @@ class Google_Service_CloudSearch_PropertyDefinition extends Google_Model
   public $isRepeatable;
   public $isReturnable;
   public $isSortable;
+  public $isSuggestable;
+  public $isWildcardSearchable;
   public $name;
   protected $objectPropertyOptionsType = 'Google_Service_CloudSearch_ObjectPropertyOptions';
   protected $objectPropertyOptionsDataType = '';
@@ -172,6 +174,22 @@ class Google_Service_CloudSearch_PropertyDefinition extends Google_Model
   public function getIsSortable()
   {
     return $this->isSortable;
+  }
+  public function setIsSuggestable($isSuggestable)
+  {
+    $this->isSuggestable = $isSuggestable;
+  }
+  public function getIsSuggestable()
+  {
+    return $this->isSuggestable;
+  }
+  public function setIsWildcardSearchable($isWildcardSearchable)
+  {
+    $this->isWildcardSearchable = $isWildcardSearchable;
+  }
+  public function getIsWildcardSearchable()
+  {
+    return $this->isWildcardSearchable;
   }
   public function setName($name)
   {

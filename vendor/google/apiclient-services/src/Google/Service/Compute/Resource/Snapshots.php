@@ -31,7 +31,8 @@ class Google_Service_Compute_Resource_Snapshots extends Google_Service_Resource
    * data on the snapshot that is marked for deletion is needed for subsequent
    * snapshots, the data will be moved to the next corresponding snapshot.
    *
-   * For more information, see Deleting snapshots. (snapshots.delete)
+   * For more information, see Deleting snapshots. (== suppress_warning http-rest-
+   * shadowed ==) (snapshots.delete)
    *
    * @param string $project Project ID for this request.
    * @param string $snapshot Name of the Snapshot resource to delete.
@@ -59,7 +60,8 @@ class Google_Service_Compute_Resource_Snapshots extends Google_Service_Resource
   }
   /**
    * Returns the specified Snapshot resource. Gets a list of available snapshots
-   * by making a list() request. (snapshots.get)
+   * by making a list() request. (== suppress_warning http-rest-shadowed ==)
+   * (snapshots.get)
    *
    * @param string $project Project ID for this request.
    * @param string $snapshot Name of the Snapshot resource to return.
@@ -74,7 +76,8 @@ class Google_Service_Compute_Resource_Snapshots extends Google_Service_Resource
   }
   /**
    * Gets the access control policy for a resource. May be empty if no such policy
-   * or resource exists. (snapshots.getIamPolicy)
+   * or resource exists. (== suppress_warning http-rest-shadowed ==)
+   * (snapshots.getIamPolicy)
    *
    * @param string $project Project ID for this request.
    * @param string $resource Name or id of the resource for this request.
@@ -89,7 +92,8 @@ class Google_Service_Compute_Resource_Snapshots extends Google_Service_Resource
   }
   /**
    * Retrieves the list of Snapshot resources contained within the specified
-   * project. (snapshots.listSnapshots)
+   * project. (== suppress_warning http-rest-shadowed ==)
+   * (snapshots.listSnapshots)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -142,7 +146,8 @@ class Google_Service_Compute_Resource_Snapshots extends Google_Service_Resource
   }
   /**
    * Sets the access control policy on the specified resource. Replaces any
-   * existing policy. (snapshots.setIamPolicy)
+   * existing policy. (== suppress_warning http-rest-shadowed ==)
+   * (snapshots.setIamPolicy)
    *
    * @param string $project Project ID for this request.
    * @param string $resource Name or id of the resource for this request.
@@ -158,7 +163,8 @@ class Google_Service_Compute_Resource_Snapshots extends Google_Service_Resource
   }
   /**
    * Sets the labels on a snapshot. To learn more about labels, read the Labeling
-   * Resources documentation. (snapshots.setLabels)
+   * Resources documentation. (== suppress_warning http-rest-shadowed ==)
+   * (snapshots.setLabels)
    *
    * @param string $project Project ID for this request.
    * @param string $resource Name or id of the resource for this request.
@@ -173,8 +179,8 @@ class Google_Service_Compute_Resource_Snapshots extends Google_Service_Resource
     return $this->call('setLabels', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Returns permissions that a caller has on the specified resource.
-   * (snapshots.testIamPermissions)
+   * Returns permissions that a caller has on the specified resource. (==
+   * suppress_warning http-rest-shadowed ==) (snapshots.testIamPermissions)
    *
    * @param string $project Project ID for this request.
    * @param string $resource Name or id of the resource for this request.

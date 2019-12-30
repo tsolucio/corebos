@@ -38,10 +38,14 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		if (!empty($parent_id)) {
 			$parent_module = '';
 			$fldrs = $adb->pquery(
-				'select relmodule
-				from vtiger_fieldmodulerel
-				inner join vtiger_field on vtiger_field.fieldid=vtiger_fieldmodulerel.fieldid
-				where vtiger_field.fieldname=? and vtiger_field.tabid=?',
+				'SELECT relmodule
+				FROM vtiger_fieldmodulerel
+				WHERE fieldid=
+					(SELECT fieldid FROM vtiger_field, vtiger_tab
+					WHERE vtiger_field.tabid=vtiger_tab.tabid AND fieldname=? AND vtiger_tab.tabid=? and vtiger_field.presence in (0,2) and vtiger_tab.presence=0)
+					AND vtiger_fieldmodulerel.relmodule IN
+					(select vtiger_tab.name FROM vtiger_tab WHERE vtiger_tab.presence=0 UNION select "com_vtiger_workflow")
+				order by sequence',
 				array($fieldname, $tabid)
 			);
 			if ($adb->num_rows($fldrs)==1) {
@@ -65,10 +69,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$label_fld = array($fieldlabel,
 				"<a href='index.php?module=$parent_module&action=DetailView&record=$parent_id' title='$valueTitle'>$displayValue</a>$vtlib_metainfo");
 		} else {
-			$moduleSpecificMessage = 'MODULE_NOT_SELECTED';
-			if (!empty($mod_strings[$moduleSpecificMessage])) {
-				$moduleSpecificMessage = $mod_strings[$moduleSpecificMessage];
-			}
+			// 'MODULE_NOT_SELECTED'
 			$label_fld = array($fieldlabel, '');
 			$parent_id = '';
 		}
@@ -273,20 +274,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$col_fields[$fieldname] = nl2br($col_fields[$fieldname]);
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = $col_fields[$fieldname];
-	} elseif ($uitype == 51 || $uitype == 73) {
-		$account_id = $col_fields[$fieldname];
-		if ($account_id != '') {
-			$account_name = getAccountName($account_id);
-		}
-		// vtlib customization: For listview javascript triggers
-		$modMetaInfo=getEntityFieldNames('Accounts');
-		$modEName=(is_array($modMetaInfo['fieldname']) ? $modMetaInfo['fieldname'][0] : $modMetaInfo['fieldname']);
-		$vtlib_metainfo = "<span type='vtlib_metainfo' vtrecordid='$account_id' vtfieldname='$modEName' vtmodule='Accounts' style='display:none;'></span>";
-		$label_fld[] = getTranslatedString($fieldlabel, $module);
-		$label_fld[] = $account_name.$vtlib_metainfo;
-		$label_fld['secid'] = $account_id;
-		$label_fld['link'] = 'index.php?module=Accounts&action=DetailView&record=' . $account_id;
-		//Account Name View
 	} elseif ($uitype == 52 || $uitype == 77 || $uitype == 101) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$user_id = $col_fields[$fieldname];
@@ -473,21 +460,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$displayValue = $app_strings['no'];
 		}
 		$label_fld[] = $displayValue;
-	} elseif ($uitype == 57) {
-		$label_fld[] = getTranslatedString($fieldlabel, $module);
-		$contact_id = $col_fields[$fieldname];
-		$contact_name = '';
-		if ($contact_id != '') {
-			$displayValueArray = getEntityName('Contacts', $contact_id);
-			if (!empty($displayValueArray)) {
-				foreach ($displayValueArray as $key => $field_value) {
-					$contact_name = $field_value;
-				}
-			}
-		}
-		$label_fld[] = $contact_name;
-		$label_fld['secid'] = $contact_id;
-		$label_fld['link'] = 'index.php?module=Contacts&action=DetailView&record=' . $contact_id;
 	} elseif ($uitype == 61) {
 		global $adb;
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
@@ -782,97 +754,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 				. '" alt="' . $col_fields['user_name'] . '" title="' . $col_fields['user_name'] . '" border="0"></a>';
 		} else {
 			$label_fld[] = '';
-		}
-	} elseif ($uitype == 66) {
-		$value = $col_fields[$fieldname];
-		if ($value != '') {
-			$parent_module = getSalesEntityType($value);
-			if ($parent_module == 'Leads') {
-				$label_fld[] = $app_strings['LBL_LEAD_NAME'];
-				$displayValueArray = getEntityName($parent_module, $value);
-				if (!empty($displayValueArray)) {
-					foreach ($displayValueArray as $key => $field_value) {
-						$lead_name = $field_value;
-					}
-				}
-				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $lead_name . '</a>';
-			} elseif ($parent_module == "Accounts") {
-				$label_fld[] = $app_strings['LBL_ACCOUNT_NAME'];
-				$sql = "select accountname from vtiger_account where accountid=?";
-				$result = $adb->pquery($sql, array($value));
-				$account_name = $adb->query_result($result, 0, "accountname");
-
-				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $account_name . '</a>';
-			} elseif ($parent_module == "Potentials") {
-				$label_fld[] = $app_strings['LBL_POTENTIAL_NAME'];
-				$sql = "select potentialname from vtiger_potential where potentialid=?";
-				$result = $adb->pquery($sql, array($value));
-				$potentialname = $adb->query_result($result, 0, "potentialname");
-
-				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $potentialname . '</a>';
-			} elseif ($parent_module == "Quotes") {
-				$label_fld[] = $app_strings['LBL_QUOTE_NAME'];
-				$sql = "select subject from vtiger_quotes where quoteid=?";
-				$result = $adb->pquery($sql, array($value));
-				$quotename = $adb->query_result($result, 0, "subject");
-
-				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $quotename . '</a>';
-			} elseif ($parent_module == "PurchaseOrder") {
-				$label_fld[] = $app_strings['LBL_PORDER_NAME'];
-				$sql = "select subject from vtiger_purchaseorder where purchaseorderid=?";
-				$result = $adb->pquery($sql, array($value));
-				$pordername = $adb->query_result($result, 0, 'subject');
-
-				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $pordername . '</a>';
-			} elseif ($parent_module == "SalesOrder") {
-				$label_fld[] = $app_strings['LBL_SORDER_NAME'];
-				$sql = "select subject from vtiger_salesorder where salesorderid=?";
-				$result = $adb->pquery($sql, array($value));
-				$sordername = $adb->query_result($result, 0, 'subject');
-
-				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $sordername . '</a>';
-			} elseif ($parent_module == "Invoice") {
-				$label_fld[] = $app_strings['LBL_INVOICE_NAME'];
-				$sql = "select subject from vtiger_invoice where invoiceid=?";
-				$result = $adb->pquery($sql, array($value));
-				$invoicename = $adb->query_result($result, 0, "subject");
-
-				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $invoicename . '</a>';
-			} elseif ($parent_module == "Campaigns") {
-				$label_fld[] = $app_strings['LBL_CAMPAIGN_NAME'];
-				$sql = "select campaignname from vtiger_campaign where campaignid=?";
-				$result = $adb->pquery($sql, array($value));
-				$campaignname = $adb->query_result($result, 0, "campaignname");
-				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $campaignname . '</a>';
-			} elseif ($parent_module == "HelpDesk") {
-				$label_fld[] = $app_strings['LBL_HELPDESK_NAME'];
-				$sql = "select title from vtiger_troubletickets where ticketid=?";
-				$result = $adb->pquery($sql, array($value));
-				$tickettitle = $adb->query_result($result, 0, 'title');
-				if (strlen($tickettitle) > 25) {
-					$tickettitle = substr($tickettitle, 0, 25) . '...';
-				}
-				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $tickettitle . '</a>';
-			} elseif ($parent_module == "Vendors") { //MSL
-				$label_fld[] = $app_strings['LBL_VENDOR_NAME'];
-				$sql = "select vendorname from vtiger_vendor where vendorid=?";
-				$result = $adb->pquery($sql, array($value));
-				$vendor_name = $adb->query_result($result, 0, 'vendorname');
-				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $vendor_name . '</a>';
-			} else {
-				$label_fld[] = '';
-				$label_fld[] = '';
-			}
-			// vtlib customization: For listview javascript triggers
-			$modMetaInfo=getEntityFieldNames($parent_module);
-			$modEName=(is_array($modMetaInfo['fieldname']) ? $modMetaInfo['fieldname'][0] : $modMetaInfo['fieldname']);
-			$vtlib_metainfo = "<span type='vtlib_metainfo' vtrecordid='$value' vtfieldname='$modEName' vtmodule='$parent_module' style='display:none;'></span>";
-
-			$last_lbl_fld = count($label_fld) - 1;
-			$label_fld[$last_lbl_fld] .= $vtlib_metainfo;
-		} else {
-			$label_fld[] = getTranslatedString($fieldlabel, $module);
-			$label_fld[] = $value;
 		}
 	} elseif ($uitype == 67) {
 		$value = $col_fields[$fieldname];
@@ -1446,7 +1327,7 @@ function getDetailAssociatedProducts($module, $focus) {
 		$output .= '<td class="crmTableRow small lineOnTop detailview_inventory_npricecell" valign="bottom" align="right">';
 		$output .= CurrencyField::convertToUserFormat($netprice, null, true) . '</td>';
 		$output .= '</tr>';
-
+		list($v1, $v2, $v3, $v4, $output) = cbEventHandler::do_filter('corebos.filter.inventory.itemrow.detail', array($module, $focus, $result, $i, $output));
 		$netTotal = $netTotal + $netprice;
 	}
 
@@ -1700,7 +1581,7 @@ function isPresentRelatedLists($module, $activity_mode = '') {
 	$result = $adb->pquery(
 		'select relation_id,vtiger_relatedlists.related_tabid,label,vtiger_tab.presence
 			from vtiger_relatedlists
-			inner join vtiger_tab on vtiger_tab.tabid=vtiger_relatedlists.related_tabid
+			left join vtiger_tab on vtiger_tab.tabid=vtiger_relatedlists.related_tabid
 			where vtiger_relatedlists.tabid=? order by sequence',
 		array($tab_id)
 	);
@@ -1774,13 +1655,13 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 			if (isset($custfld[2]) && $custfld[2]==10) {
 				$fldmod_result = $adb->pquery(
 					'SELECT relmodule, status
-						FROM vtiger_fieldmodulerel
-						INNER JOIN vtiger_tab ON vtiger_fieldmodulerel.relmodule=vtiger_tab.name and vtiger_tab.presence=0
-						WHERE fieldid=
-						(SELECT fieldid
-							FROM vtiger_field, vtiger_tab
-							WHERE vtiger_field.tabid=vtiger_tab.tabid AND fieldname=? AND name=? and vtiger_field.presence in (0,2) and vtiger_tab.presence=0)
-						order by sequence',
+					FROM vtiger_fieldmodulerel
+					WHERE fieldid=
+						(SELECT fieldid FROM vtiger_field, vtiger_tab
+						WHERE vtiger_field.tabid=vtiger_tab.tabid AND fieldname=? AND name=? and vtiger_field.presence in (0,2) and vtiger_tab.presence=0)
+						AND vtiger_fieldmodulerel.relmodule IN
+						(select vtiger_tab.name FROM vtiger_tab WHERE vtiger_tab.presence=0 UNION select "com_vtiger_workflow")
+					order by sequence',
 					array($fieldname, $module)
 				);
 				$entityTypes = array();

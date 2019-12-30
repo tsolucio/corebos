@@ -86,6 +86,10 @@ switch ($_REQUEST['_op']) {
 	case 'setconfiggmp':
 		include_once 'include/integrations/gmp/settings.php';
 		break;
+	case 'getconfigrecordversioning':
+	case 'setconfigrecordversioning':
+		include_once 'include/integrations/recordversioning/settings.php';
+		break;
 	default:
 		$smarty = new vtigerCRM_Smarty();
 		$titlemessage = getTranslatedString('Available Integrations', $currentModule);

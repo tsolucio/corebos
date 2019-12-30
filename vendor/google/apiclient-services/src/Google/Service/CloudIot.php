@@ -44,19 +44,19 @@ class Google_Service_CloudIot extends Google_Service
   public $projects_locations_registries_devices_states;
   public $projects_locations_registries_groups;
   public $projects_locations_registries_groups_devices;
-  public $projects_locations_registries_groups_devices_configVersions;
-  public $projects_locations_registries_groups_devices_states;
   
   /**
    * Constructs the internal representation of the CloudIot service.
    *
-   * @param Google_Client $client
+   * @param Google_Client $client The client used to deliver requests.
+   * @param string $rootUrl The root URL used for requests to the service.
    */
-  public function __construct(Google_Client $client)
+  public function __construct(Google_Client $client, $rootUrl = null)
   {
     parent::__construct($client);
-    $this->rootUrl = 'https://cloudiot.googleapis.com/';
+    $this->rootUrl = $rootUrl ?: 'https://cloudiot.googleapis.com/';
     $this->servicePath = '';
+    $this->batchPath = 'batch';
     $this->version = 'v1';
     $this->serviceName = 'cloudiot';
 
@@ -125,13 +125,13 @@ class Google_Service_CloudIot extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'patch' => array(
@@ -231,14 +231,6 @@ class Google_Service_CloudIot extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'fieldMask' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
@@ -262,6 +254,14 @@ class Google_Service_CloudIot extends Google_Service
                   'type' => 'string',
                 ),
                 'gatewayListOptions.associationsGatewayId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'fieldMask' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -358,17 +358,7 @@ class Google_Service_CloudIot extends Google_Service
         'groups',
         array(
           'methods' => array(
-            'bindDeviceToGateway' => array(
-              'path' => 'v1/{+parent}:bindDeviceToGateway',
-              'httpMethod' => 'POST',
-              'parameters' => array(
-                'parent' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),'getIamPolicy' => array(
+            'getIamPolicy' => array(
               'path' => 'v1/{+resource}:getIamPolicy',
               'httpMethod' => 'POST',
               'parameters' => array(
@@ -398,16 +388,6 @@ class Google_Service_CloudIot extends Google_Service
                   'required' => true,
                 ),
               ),
-            ),'unbindDeviceFromGateway' => array(
-              'path' => 'v1/{+parent}:unbindDeviceFromGateway',
-              'httpMethod' => 'POST',
-              'parameters' => array(
-                'parent' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
             ),
           )
         )
@@ -418,21 +398,7 @@ class Google_Service_CloudIot extends Google_Service
         'devices',
         array(
           'methods' => array(
-            'get' => array(
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'GET',
-              'parameters' => array(
-                'name' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'fieldMask' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-              ),
-            ),'list' => array(
+            'list' => array(
               'path' => 'v1/{+parent}/devices',
               'httpMethod' => 'GET',
               'parameters' => array(
@@ -440,6 +406,18 @@ class Google_Service_CloudIot extends Google_Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'fieldMask' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
                 'deviceIds' => array(
                   'location' => 'query',
@@ -462,100 +440,6 @@ class Google_Service_CloudIot extends Google_Service
                 'gatewayListOptions.associationsGatewayId' => array(
                   'location' => 'query',
                   'type' => 'string',
-                ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'fieldMask' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-              ),
-            ),'modifyCloudToDeviceConfig' => array(
-              'path' => 'v1/{+name}:modifyCloudToDeviceConfig',
-              'httpMethod' => 'POST',
-              'parameters' => array(
-                'name' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),'patch' => array(
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'PATCH',
-              'parameters' => array(
-                'name' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'updateMask' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-              ),
-            ),'sendCommandToDevice' => array(
-              'path' => 'v1/{+name}:sendCommandToDevice',
-              'httpMethod' => 'POST',
-              'parameters' => array(
-                'name' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),
-          )
-        )
-    );
-    $this->projects_locations_registries_groups_devices_configVersions = new Google_Service_CloudIot_Resource_ProjectsLocationsRegistriesGroupsDevicesConfigVersions(
-        $this,
-        $this->serviceName,
-        'configVersions',
-        array(
-          'methods' => array(
-            'list' => array(
-              'path' => 'v1/{+name}/configVersions',
-              'httpMethod' => 'GET',
-              'parameters' => array(
-                'name' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'numVersions' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-              ),
-            ),
-          )
-        )
-    );
-    $this->projects_locations_registries_groups_devices_states = new Google_Service_CloudIot_Resource_ProjectsLocationsRegistriesGroupsDevicesStates(
-        $this,
-        $this->serviceName,
-        'states',
-        array(
-          'methods' => array(
-            'list' => array(
-              'path' => 'v1/{+name}/states',
-              'httpMethod' => 'GET',
-              'parameters' => array(
-                'name' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'numStates' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
                 ),
               ),
             ),

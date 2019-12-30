@@ -17,9 +17,18 @@
 
 class Google_Service_Container_NetworkConfig extends Google_Model
 {
+  public $enableIntraNodeVisibility;
   public $network;
   public $subnetwork;
 
+  public function setEnableIntraNodeVisibility($enableIntraNodeVisibility)
+  {
+    $this->enableIntraNodeVisibility = $enableIntraNodeVisibility;
+  }
+  public function getEnableIntraNodeVisibility()
+  {
+    return $this->enableIntraNodeVisibility;
+  }
   public function setNetwork($network)
   {
     $this->network = $network;

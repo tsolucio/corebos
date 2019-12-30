@@ -25,6 +25,16 @@ class Google_Service_CloudSearch_RestrictItem extends Google_Model
   protected $driveMimeTypeRestrictDataType = '';
   protected $driveTimeSpanRestrictType = 'Google_Service_CloudSearch_DriveTimeSpanRestrict';
   protected $driveTimeSpanRestrictDataType = '';
+  protected $gmailActionRestrictType = 'Google_Service_CloudSearch_GmailActionRestrict';
+  protected $gmailActionRestrictDataType = '';
+  protected $gmailAttachmentRestrictType = 'Google_Service_CloudSearch_GmailAttachmentRestrict';
+  protected $gmailAttachmentRestrictDataType = '';
+  protected $gmailFolderRestrictType = 'Google_Service_CloudSearch_GmailFolderRestrict';
+  protected $gmailFolderRestrictDataType = '';
+  protected $gmailIntelligentRestrictType = 'Google_Service_CloudSearch_GmailIntelligentRestrict';
+  protected $gmailIntelligentRestrictDataType = '';
+  protected $gmailTimeRestrictType = 'Google_Service_CloudSearch_GmailTimeRestrict';
+  protected $gmailTimeRestrictDataType = '';
   public $searchOperator;
 
   /**
@@ -82,6 +92,76 @@ class Google_Service_CloudSearch_RestrictItem extends Google_Model
   public function getDriveTimeSpanRestrict()
   {
     return $this->driveTimeSpanRestrict;
+  }
+  /**
+   * @param Google_Service_CloudSearch_GmailActionRestrict
+   */
+  public function setGmailActionRestrict(Google_Service_CloudSearch_GmailActionRestrict $gmailActionRestrict)
+  {
+    $this->gmailActionRestrict = $gmailActionRestrict;
+  }
+  /**
+   * @return Google_Service_CloudSearch_GmailActionRestrict
+   */
+  public function getGmailActionRestrict()
+  {
+    return $this->gmailActionRestrict;
+  }
+  /**
+   * @param Google_Service_CloudSearch_GmailAttachmentRestrict
+   */
+  public function setGmailAttachmentRestrict(Google_Service_CloudSearch_GmailAttachmentRestrict $gmailAttachmentRestrict)
+  {
+    $this->gmailAttachmentRestrict = $gmailAttachmentRestrict;
+  }
+  /**
+   * @return Google_Service_CloudSearch_GmailAttachmentRestrict
+   */
+  public function getGmailAttachmentRestrict()
+  {
+    return $this->gmailAttachmentRestrict;
+  }
+  /**
+   * @param Google_Service_CloudSearch_GmailFolderRestrict
+   */
+  public function setGmailFolderRestrict(Google_Service_CloudSearch_GmailFolderRestrict $gmailFolderRestrict)
+  {
+    $this->gmailFolderRestrict = $gmailFolderRestrict;
+  }
+  /**
+   * @return Google_Service_CloudSearch_GmailFolderRestrict
+   */
+  public function getGmailFolderRestrict()
+  {
+    return $this->gmailFolderRestrict;
+  }
+  /**
+   * @param Google_Service_CloudSearch_GmailIntelligentRestrict
+   */
+  public function setGmailIntelligentRestrict(Google_Service_CloudSearch_GmailIntelligentRestrict $gmailIntelligentRestrict)
+  {
+    $this->gmailIntelligentRestrict = $gmailIntelligentRestrict;
+  }
+  /**
+   * @return Google_Service_CloudSearch_GmailIntelligentRestrict
+   */
+  public function getGmailIntelligentRestrict()
+  {
+    return $this->gmailIntelligentRestrict;
+  }
+  /**
+   * @param Google_Service_CloudSearch_GmailTimeRestrict
+   */
+  public function setGmailTimeRestrict(Google_Service_CloudSearch_GmailTimeRestrict $gmailTimeRestrict)
+  {
+    $this->gmailTimeRestrict = $gmailTimeRestrict;
+  }
+  /**
+   * @return Google_Service_CloudSearch_GmailTimeRestrict
+   */
+  public function getGmailTimeRestrict()
+  {
+    return $this->gmailTimeRestrict;
   }
   public function setSearchOperator($searchOperator)
   {

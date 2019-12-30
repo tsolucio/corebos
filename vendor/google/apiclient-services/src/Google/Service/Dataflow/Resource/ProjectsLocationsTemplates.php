@@ -30,7 +30,9 @@ class Google_Service_Dataflow_Resource_ProjectsLocationsTemplates extends Google
    *
    * @param string $projectId Required. The ID of the Cloud Platform project that
    * the job belongs to.
-   * @param string $location The location to which to direct the request.
+   * @param string $location The [regional endpoint]
+   * (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) to which
+   * to direct the request.
    * @param Google_Service_Dataflow_CreateJobFromTemplateRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Dataflow_Job
@@ -46,7 +48,9 @@ class Google_Service_Dataflow_Resource_ProjectsLocationsTemplates extends Google
    *
    * @param string $projectId Required. The ID of the Cloud Platform project that
    * the job belongs to.
-   * @param string $location The location to which to direct the request.
+   * @param string $location The [regional endpoint]
+   * (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) to which
+   * to direct the request.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string view The view to retrieve. Defaults to METADATA_ONLY.
@@ -66,19 +70,21 @@ class Google_Service_Dataflow_Resource_ProjectsLocationsTemplates extends Google
    *
    * @param string $projectId Required. The ID of the Cloud Platform project that
    * the job belongs to.
-   * @param string $location The location to which to direct the request.
+   * @param string $location The [regional endpoint]
+   * (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) to which
+   * to direct the request.
    * @param Google_Service_Dataflow_LaunchTemplateParameters $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string dynamicTemplate.stagingLocation Cloud Storage path for
-   * staging dependencies. Must be a valid Cloud Storage URL, beginning with
-   * `gs://`.
    * @opt_param bool validateOnly If true, the request is validated but not
    * actually executed. Defaults to false.
    * @opt_param string gcsPath A Cloud Storage path to the template from which to
    * create the job. Must be valid Cloud Storage URL, beginning with 'gs://'.
    * @opt_param string dynamicTemplate.gcsPath Path to dynamic template spec file
    * on GCS. The file must be a Json serialized DynamicTemplateFieSpec object.
+   * @opt_param string dynamicTemplate.stagingLocation Cloud Storage path for
+   * staging dependencies. Must be a valid Cloud Storage URL, beginning with
+   * `gs://`.
    * @return Google_Service_Dataflow_LaunchTemplateResponse
    */
   public function launch($projectId, $location, Google_Service_Dataflow_LaunchTemplateParameters $postBody, $optParams = array())

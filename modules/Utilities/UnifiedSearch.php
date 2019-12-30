@@ -236,11 +236,11 @@ if (isset($query_string) && $query_string != '') {
 
 	//Added to display the Total record count
 	if (empty($_REQUEST['ajax'])) {
-?>
+		?>
 	<script>
 document.getElementById("global_search_total_count").innerHTML = " <?php echo $app_strings['LBL_TOTAL_RECORDS_FOUND'] ?><b><?php echo $total_record_count; ?></b>";
 	</script>
-<?php
+		<?php
 	}
 } else {
 	echo '<br><br>';
@@ -256,19 +256,19 @@ document.getElementById("global_search_total_count").innerHTML = " <?php echo $a
  */
 function getSearchModulesComboList($search_module) {
 	global $object_array, $app_strings;
-?>
+	?>
 		<script>
 		function displayModuleList(selectmodule_view) {
 			<?php
 			foreach ($object_array as $module => $object_name) {
 				if (isPermitted($module, 'index') == 'yes') {
-			?>
+					?>
 				mod = "global_list_"+"<?php echo $module; ?>";
 				if (selectmodule_view.options[selectmodule_view.options.selectedIndex].value == "All")
 					show(mod);
 				else
 					hide(mod);
-			<?php
+					<?php
 				}
 			}
 			?>
@@ -295,9 +295,9 @@ function getSearchModulesComboList($search_module) {
 					$selected = 'selected';
 				}
 				if (isPermitted($module, 'index') == 'yes') {
-			?>
+					?>
 				<option value="<?php echo $module; ?>" <?php echo $selected; ?> ><?php echo getTranslatedString($module, $module); ?></option>
-			<?php
+					<?php
 				}
 			}
 			?>
@@ -305,7 +305,7 @@ function getSearchModulesComboList($search_module) {
 		</td>
 		</tr>
 		</table>
-<?php
+	<?php
 }
 
 // To get the modules allowed for global search

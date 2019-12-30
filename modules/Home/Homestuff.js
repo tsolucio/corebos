@@ -365,7 +365,7 @@ function loadStuff(stuffid, stufftype) {
 		if (stufftype=='DashBoard') {
 			document.getElementById('a_'+stuffid).href = 'index.php?module=Dashboard&action=index&type='+document.getElementById('more_'+stuffid).value;
 		}
-		if (stufftype=='ReportCharts') {
+		if (stufftype=='ReportCharts' && document.getElementById('more_'+stuffid)) {
 			document.getElementById('a_'+stuffid).href = 'index.php?module=Reports&action=SaveAndRun&record='+document.getElementById('more_'+stuffid).value;
 		}
 		if (stufftype=='Tag Cloud') {

@@ -24,6 +24,7 @@ $smarty->assign('IMAGE_PATH', $image_path);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('CMOD', $mod_strings);
 $smarty->assign('MODULE_LBL', $currentModule);
+$smarty->assign('MODULE', $currentModule);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 // Operation to be restricted for non-admin users.
@@ -31,39 +32,14 @@ if (!is_admin($current_user)) {
 	$smarty->display(vtlib_getModuleTemplate('Vtiger', 'OperationNotPermitted.tpl'));
 } else {
 	$mode = isset($_REQUEST['mode']) ? vtlib_purify($_REQUEST['mode']) : '';
-
 	if (!empty($mode) && $mode == 'Save') {
 		$adb->query('delete from vtiger_cobropagoconfig');
-		$adb->pquery('insert into vtiger_cobropagoconfig values(?,?,?,?)', array(0, 0, 0, $_POST['block_paid']));
+		$adb->pquery('insert into vtiger_cobropagoconfig values(?,?,?,?)', array(0, 0, 0, isset($_POST['block_paid']) ? 'on' : '0'));
 	}
 	$results = $adb->query('select * from vtiger_cobropagoconfig');
 	$ts_bpaid = $adb->query_result($results, 0, 'block_paid');
-?>
-	<div style="margin:2em;">
-<?php $smarty->display('SetMenu.tpl'); ?>
-	<h2><?php echo getTranslatedString('SERVER_CONFIGURATION');?></h2>
-	<form name="myform" action="index.php" method="POST">
-	<input type="hidden" name="module" value="CobroPago">
-	<input type="hidden" name="action" value="CobroPagoConfigServer">
-	<input type="hidden" name="parenttab" value="Settings">
-	<input type="hidden" name="formodule" value="CobroPago">
-	<input type="hidden" name="mode" value="Save">
-	<table>
-	<tr>
-		<td>
-		<b>Prevent edit/delete if paid</b>
-		</td>
-		<td>
-		<input type="checkbox" name="block_paid" <?php echo ($ts_bpaid=='on' ? 'checked' : '');?>>
-		</td>
-	</tr>
-	<tr>
-		<td>
-		<input type='submit' value='Save'>
-		</td> 
-	</tr>
-	</table>
-	</form>
-<?php
+	$smarty->assign('ts_bpaid', ($ts_bpaid ? 'checked' : ''));
+	$smarty->display('SetMenu.tpl');
+	$smarty->display('modules/CobroPago/CyPEdit.tpl');
 }
 ?>

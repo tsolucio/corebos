@@ -74,4 +74,13 @@ foreach ($delmods as $module) {
 	}
 }
 
+ExecuteQuery("CREATE TABLE IF NOT EXISTS `vtiger_loginhistory` (
+	`login_id` int(11) NOT NULL AUTO_INCREMENT,
+	`user_name` varchar(255) NOT NULL,
+	`user_ip` varchar(25) NOT NULL,
+	`logout_time` timestamp NULL DEFAULT NULL,
+	`login_time` timestamp NULL DEFAULT NULL,
+	`status` varchar(25) DEFAULT NULL,
+	PRIMARY KEY (`login_id`)
+  ) ENGINE=InnoDB AUTO_INCREMENT=156 DEFAULT CHARSET=utf8;");
 ExecuteQuery("update vtiger_version set old_version='6.3.0', current_version='6.4.0' where id=1");

@@ -5,6 +5,8 @@
  **/
 
 $mod_strings = array(
+'com_vtiger_workflow' => 'Flujos de Trabajo',
+'SINGLE_com_vtiger_workflow' => 'Flujo de Trabajo',
 'VTEmailTask' => 'Enviar Correo',
 'VTEntityMethodTask' => 'Ejecutar Función',
 'VTCreateTodoTask' => 'Crear Tarea',
@@ -200,5 +202,7 @@ $mod_strings = array(
 'Generate Image Code' => 'Generar Imagen Codificada',
 'Generate Image Code Workflow Task' => 'Generar Imagen Codificada',
 'GenerateImageCodeWorkflowTask' => 'Generar Imagen Codificada',
+'LBL_ON_RELATE' => 'Al Relacionar con',
+'LBL_ON_UNRELATE' => 'Al Quitar Relación con',
 );
 ?>

@@ -13,9 +13,14 @@ require_once 'modules/com_vtiger_workflow/VTSimpleTemplate.inc';
 class VTWorkflowEntity {
 	private $isDeleted = false;
 	public $WorkflowEvent = 0;
+	public $WorkflowContext = array();
 
 	public function __construct($user, $id, $deleted = false, $queue = false) {
 		$this->moduleName = null;
+		if (strpos($id, 'x')===false) {
+			$this->moduleName = getSalesEntityType($id);
+			$id = vtws_getEntityId($this->moduleName).'x'.$id;
+		}
 		$this->id = $id;
 		$this->user = $user;
 		$this->isDeleted=$deleted;
@@ -42,6 +47,15 @@ class VTWorkflowEntity {
 	 */
 	public function getData() {
 		return $this->data;
+	}
+
+	/**
+	 * Set the data of the entity object from an array.
+	 * @param array data to load into object
+	 * @return void
+	 */
+	public function setData($data) {
+		$this->data = $data;
 	}
 
 	/**
@@ -102,6 +116,14 @@ class VTWorkflowEntity {
 	public function isDeleted() {
 		return $this->isDeleted;
 	}
+
+	public function getContext() {
+		return $this->WorkflowContext;
+	}
+
+	public function setContext($WorkflowContext) {
+		$this->WorkflowContext = $WorkflowContext;
+	}
 }
 
 class VTEntityCache {
@@ -114,7 +136,7 @@ class VTEntityCache {
 	public function forId($id) {
 		if (!isset($this->cache[$id]) || $this->cache[$id]==null) {
 			$deleted=!isRecordExists($id);
-			$data  = new VTWorkflowEntity($this->user, $id, $deleted);
+			$data = new VTWorkflowEntity($this->user, $id, $deleted);
 			$this->cache[$id] = $data;
 		}
 		return $this->cache[$id];

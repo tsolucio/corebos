@@ -55,6 +55,7 @@ class Google_Service_Partners extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://partners.googleapis.com/';
     $this->servicePath = '';
+    $this->batchPath = 'batch';
     $this->version = 'v2';
     $this->serviceName = 'partners';
 

@@ -17,23 +17,23 @@ echo '<hr style="height: 1px">';
 $Vtiger_Utils_Log = true;
 
 require_once 'include/utils/utils.php';
-include_once('vtlib/Vtiger/Module.php');
+include_once 'vtlib/Vtiger/Module.php';
 include_once 'vtlib/Vtiger/Cron.php';
-require_once('modules/com_vtiger_workflow/include.inc');
-require_once('modules/com_vtiger_workflow/tasks/VTEntityMethodTask.inc');
-require_once('modules/com_vtiger_workflow/VTEntityMethodManager.inc');
-require_once('include/Webservices/Utils.php');
-@include_once('include/events/include.inc');
+require_once 'modules/com_vtiger_workflow/include.inc';
+require_once 'modules/com_vtiger_workflow/tasks/VTEntityMethodTask.inc';
+require_once 'modules/com_vtiger_workflow/VTEntityMethodManager.inc';
+require_once 'include/Webservices/Utils.php';
+@include_once 'include/events/include.inc';
 global $current_user,$adb;
 set_time_limit(0);
-ini_set('memory_limit','1024M');
+ini_set('memory_limit', '1024M');
 
 $current_user = new Users();
 $current_user->retrieveCurrentUserInfoFromFile(Users::getActiveAdminId());
-if(isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_user_language'] != '') {
+if (isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_user_language'] != '') {
 	$current_language = $_SESSION['authenticated_user_language'];
 } else {
-	if(!empty($current_user->language)) {
+	if (!empty($current_user->language)) {
 		$current_language = $current_user->language;
 	} else {
 		$current_language = $default_language;
@@ -47,13 +47,13 @@ $failure_query_count=0;
 $success_query_array=array();
 $failure_query_array=array();
 
-function ExecuteQuery($query,$params=array()) {
+function ExecuteQuery($query, $params = array()) {
 	global $adb,$log;
 	global $query_count, $success_query_count, $failure_query_count, $success_query_array, $failure_query_array;
 
-	$status = $adb->pquery($query,$params);
+	$status = $adb->pquery($query, $params);
 	$query_count++;
-	if(is_object($status)) {
+	if (is_object($status)) {
 		echo '
 		<tr width="100%">
 		<td width="10%">'.get_class($status).'</td>
@@ -89,8 +89,11 @@ function installManifestModule($module) {
 	$out = ob_get_contents();
 	ob_end_clean();
 	putMsg($out);
-	if ($rdo) putMsg("$module installed!");
-	else putMsg("<span style='color:red'>ERROR installing $module!</span>");
+	if ($rdo) {
+		putMsg("$module installed!");
+	} else {
+		putMsg("<span style='color:red'>ERROR installing $module!</span>");
+	}
 }
 
 echo "<table width=80% align=center border=1>";
@@ -120,41 +123,52 @@ if (!($adb->num_rows($result))) {
 	ExecuteQuery('ALTER TABLE com_vtiger_workflowtasks ADD executionorder INT(10)', array());
 	ExecuteQuery('ALTER TABLE `com_vtiger_workflowtasks` ADD INDEX(`executionorder`)');
 }
+$cnmsg = $adb->getColumnNames('com_vtiger_workflows');
+if (!in_array('purpose', $cnmsg)) {
+	$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `purpose` TEXT NULL;');
+}
+if (!in_array('relatemodule', $cnmsg)) {
+	$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `relatemodule` varchar(100) default NULL;');
+}
+$cnmsg = $adb->getColumnNames('vtiger_profile2field');
+if (!in_array('summary', $cnmsg)) {
+	$adb->query("ALTER TABLE vtiger_profile2field ADD summary enum('T', 'H','B', 'N') DEFAULT 'B' NOT NULL");
+}
 
 $force = (isset($_REQUEST['force']) ? 1 : 0);
 
 $cver = vtws_getVtigerVersion();
-if ($cver=='6.5.0' or $force) {
+if ($cver=='6.5.0' || $force) {
 	putMsg('<h2>** Starting Migration from 6.5 **</h2>');
 	include 'build/migrate6/migrate_from_vt65.php';
 }
 
 $cver = vtws_getVtigerVersion();
-if ($cver=='6.4.0' or $force) {
+if ($cver=='6.4.0' || $force) {
 	putMsg('<h2>** Starting Migration from 6.4 **</h2>');
 	include 'build/migrate6/migrate_from_vt64.php';
 }
 
 $cver = vtws_getVtigerVersion();
-if ($cver=='6.3.0' or $force) {
+if ($cver=='6.3.0' || $force) {
 	putMsg('<h2>** Starting Migration from 6.3 **</h2>');
 	include 'build/migrate6/migrate_from_vt63.php';
 }
 
 $cver = vtws_getVtigerVersion();
-if ($cver=='6.2.0' or $force) {
+if ($cver=='6.2.0' || $force) {
 	putMsg('<h2>** Starting Migration from 6.2 **</h2>');
 	include 'build/migrate6/migrate_from_vt62.php';
 }
 
 $cver = vtws_getVtigerVersion();
-if ($cver=='6.1.0' or $force) {
+if ($cver=='6.1.0' || $force) {
 	putMsg('<h2>** Starting Migration from 6.1 **</h2>');
 	include 'build/migrate6/migrate_from_vt61.php';
 }
 
 $cver = vtws_getVtigerVersion();
-if ($cver=='6.0.0' or $force) {
+if ($cver=='6.0.0' || $force) {
 	putMsg('<h2>** Starting Migration from 6.0 **</h2>');
 	include 'build/migrate6/migrate_from_vt60.php';
 }
@@ -172,10 +186,11 @@ RecalculateSharingRules();
 <br /><br />
 <b style="color:#FF0000">Failed Queries Log</b>
 <div id="failedLog" style="border:1px solid #666666;width:90%;position:relative;height:200px;overflow:auto;left:5%;top:10px;">
-	<?php
-		foreach($failure_query_array as $failed_query)
-			echo '<br><font color="red">'.$failed_query.'</font>';
-	?>
+<?php
+foreach ($failure_query_array as $failed_query) {
+	echo '<br><font color="red">'.$failed_query.'</font>';
+}
+?>
 </div>
 <br /><br />
 <table width="35%" border="0" cellpadding="5" cellspacing="0" align="center" class="small">
@@ -210,7 +225,7 @@ RecalculateSharingRules();
 </table>
 <?php
 
-require_once('Smarty_setup.php');
+require_once 'Smarty_setup.php';
 $adb->query("SET sql_mode=''");
 $currentModule = $_REQUEST['module'] = 'cbupdater';
 $_REQUEST['action'] = 'getupdates';
@@ -228,13 +243,12 @@ include 'modules/cbupdater/dowork.php';
 
 if (file_exists('build/addVATFields.php')) {
 	//Add VAT fields & Workflows
-	include ('build/addVATFields.php');
+	include 'build/addVATFields.php';
 	// Webservices
 	include 'build/campaign_reg_ws.php';
 }
 
 putMsg("<span style='color:red'>NOW LOG IN AND APPLY ALL THE UPDATES AGAIN</span>");
-
 ?>
 </body>
 </html>

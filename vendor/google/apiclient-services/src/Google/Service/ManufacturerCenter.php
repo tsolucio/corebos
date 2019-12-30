@@ -39,13 +39,15 @@ class Google_Service_ManufacturerCenter extends Google_Service
   /**
    * Constructs the internal representation of the ManufacturerCenter service.
    *
-   * @param Google_Client $client
+   * @param Google_Client $client The client used to deliver requests.
+   * @param string $rootUrl The root URL used for requests to the service.
    */
-  public function __construct(Google_Client $client)
+  public function __construct(Google_Client $client, $rootUrl = null)
   {
     parent::__construct($client);
-    $this->rootUrl = 'https://manufacturers.googleapis.com/';
+    $this->rootUrl = $rootUrl ?: 'https://manufacturers.googleapis.com/';
     $this->servicePath = '';
+    $this->batchPath = 'batch';
     $this->version = 'v1';
     $this->serviceName = 'manufacturers';
 

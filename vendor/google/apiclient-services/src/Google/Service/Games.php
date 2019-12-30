@@ -33,7 +33,7 @@ class Google_Service_Games extends Google_Service
   /** View and manage its own configuration data in your Google Drive. */
   const DRIVE_APPDATA =
       "https://www.googleapis.com/auth/drive.appdata";
-  /** Share your Google+ profile information and view and manage your game activity. */
+  /** Create, edit, and delete your Google Play Games activity. */
   const GAMES =
       "https://www.googleapis.com/auth/games";
 
@@ -56,13 +56,15 @@ class Google_Service_Games extends Google_Service
   /**
    * Constructs the internal representation of the Games service.
    *
-   * @param Google_Client $client
+   * @param Google_Client $client The client used to deliver requests.
+   * @param string $rootUrl The root URL used for requests to the service.
    */
-  public function __construct(Google_Client $client)
+  public function __construct(Google_Client $client, $rootUrl = null)
   {
     parent::__construct($client);
-    $this->rootUrl = 'https://www.googleapis.com/';
+    $this->rootUrl = $rootUrl ?: 'https://www.googleapis.com/';
     $this->servicePath = 'games/v1/';
+    $this->batchPath = 'batch/games/v1';
     $this->version = 'v1';
     $this->serviceName = 'games';
 

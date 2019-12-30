@@ -47,12 +47,12 @@ if ($number==0) {
 	$gendoc_pdfactive = coreBOS_Settings::getSetting('cbgendoc_active', 0);
 	$gendoc_showpdf = coreBOS_Settings::getSetting('cbgendoc_showpdflinks', 0);
 	$gendoc_active = ($gendoc_pdfactive==1 || $gendoc_showpdf==1);
-?>
+	?>
 	</select><br/>
 	<table>
-<?php
-if ($gendoc_active) {
-?>
+	<?php
+	if ($gendoc_active) {
+		?>
 <tr class="actionlink">
 	<td align="left" style="padding-left:10px;">
 		<a class="webMnu" href="javascript:gendocAction('export','pdf','<?php echo $moduletemplate; ?>','<?php echo $forrecord; ?>','<?php echo $modulei18n; ?>');"><img src="modules/evvtgendoc/images/genpdf.gif" hspace="5" align="absmiddle" border="0"/></a>
@@ -71,9 +71,9 @@ if ($gendoc_active) {
 		<a class="webMnu" href="javascript:gendocAction('save','pdf','<?php echo $moduletemplate; ?>','<?php echo $forrecord; ?>','<?php echo $modulei18n; ?>');"><?php echo getTranslatedString('Save PDF', 'evvtgendoc'); ?></a>
 	</td>
 </tr>
-<?php
-}
-?>
+		<?php
+	}
+	?>
 	<tr class="actionlink">
 		<td align="left" style="padding-left:10px;">
 			<a class="webMnu" href="javascript:gendocAction('export','doc','<?php echo $moduletemplate; ?>','<?php echo $forrecord; ?>','<?php echo $modulei18n; ?>');"><img src="modules/evvtgendoc/images/genoo.png" hspace="5" align="absmiddle" border="0"/></a>
@@ -94,6 +94,6 @@ if ($gendoc_active) {
 	</tr>
 	</table>
 	<iframe id="gendociframe" style="display:none"></iframe>
-<?php
+	<?php
 }
 ?>

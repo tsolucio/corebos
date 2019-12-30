@@ -78,6 +78,10 @@ $result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('p
 if (!($adb->num_rows($result))) {
 	$adb->query("ALTER TABLE `com_vtiger_workflows` ADD `purpose` TEXT NULL;", array());
 }
+$result = $adb->pquery('show columns from com_vtiger_workflows like ?', array('relatemodule'));
+if (!($adb->num_rows($result))) {
+	$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `relatemodule` varchar(100) default NULL;', array());
+}
 $taskTypes = array();
 $defaultModules = array('include' => array(), 'exclude'=>array());
 $createToDoModules = array('include' => array("Leads","Accounts","Potentials","Contacts","HelpDesk","Campaigns","Quotes","PurchaseOrder","SalesOrder","Invoice"), 'exclude'=>array("Calendar", "FAQ", "Events"));

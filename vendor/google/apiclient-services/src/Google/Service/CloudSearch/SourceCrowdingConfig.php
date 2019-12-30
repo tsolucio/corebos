@@ -17,19 +17,9 @@
 
 class Google_Service_CloudSearch_SourceCrowdingConfig extends Google_Model
 {
-  public $field;
   public $numResults;
   public $numSuggestions;
-  public $source;
 
-  public function setField($field)
-  {
-    $this->field = $field;
-  }
-  public function getField()
-  {
-    return $this->field;
-  }
   public function setNumResults($numResults)
   {
     $this->numResults = $numResults;
@@ -45,13 +35,5 @@ class Google_Service_CloudSearch_SourceCrowdingConfig extends Google_Model
   public function getNumSuggestions()
   {
     return $this->numSuggestions;
-  }
-  public function setSource($source)
-  {
-    $this->source = $source;
-  }
-  public function getSource()
-  {
-    return $this->source;
   }
 }

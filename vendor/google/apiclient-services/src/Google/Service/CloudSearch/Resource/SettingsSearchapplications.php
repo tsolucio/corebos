@@ -45,9 +45,8 @@ class Google_Service_CloudSearch_Resource_SettingsSearchapplications extends Goo
    * applications/{application_id}.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool debugOptions.enableDebugging If set, the request will enable
-   * debugging features of Cloud Search. Only turn on this field, if asked by
-   * Google to help with debugging.
+   * @opt_param bool debugOptions.enableDebugging If you are asked by Google to
+   * help with debugging, set this field. Otherwise, ignore this field.
    * @return Google_Service_CloudSearch_Operation
    */
   public function delete($name, $optParams = array())
@@ -63,9 +62,8 @@ class Google_Service_CloudSearch_Resource_SettingsSearchapplications extends Goo
    * applications/{application_id}.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool debugOptions.enableDebugging If set, the request will enable
-   * debugging features of Cloud Search. Only turn on this field, if asked by
-   * Google to help with debugging.
+   * @opt_param bool debugOptions.enableDebugging If you are asked by Google to
+   * help with debugging, set this field. Otherwise, ignore this field.
    * @return Google_Service_CloudSearch_SearchApplication
    */
   public function get($name, $optParams = array())
@@ -80,9 +78,8 @@ class Google_Service_CloudSearch_Resource_SettingsSearchapplications extends Goo
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool debugOptions.enableDebugging If set, the request will enable
-   * debugging features of Cloud Search. Only turn on this field, if asked by
-   * Google to help with debugging.
+   * @opt_param bool debugOptions.enableDebugging If you are asked by Google to
+   * help with debugging, set this field. Otherwise, ignore this field.
    * @opt_param string pageToken The next_page_token value returned from a
    * previous List request, if any.  The default value is 10
    * @opt_param int pageSize The maximum number of items to return.

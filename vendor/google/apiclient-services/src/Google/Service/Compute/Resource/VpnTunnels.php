@@ -26,7 +26,8 @@
 class Google_Service_Compute_Resource_VpnTunnels extends Google_Service_Resource
 {
   /**
-   * Retrieves an aggregated list of VPN tunnels. (vpnTunnels.aggregatedList)
+   * Retrieves an aggregated list of VPN tunnels. (== suppress_warning http-rest-
+   * shadowed ==) (vpnTunnels.aggregatedList)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -78,7 +79,8 @@ class Google_Service_Compute_Resource_VpnTunnels extends Google_Service_Resource
     return $this->call('aggregatedList', array($params), "Google_Service_Compute_VpnTunnelAggregatedList");
   }
   /**
-   * Deletes the specified VpnTunnel resource. (vpnTunnels.delete)
+   * Deletes the specified VpnTunnel resource. (== suppress_warning http-rest-
+   * shadowed ==) (vpnTunnels.delete)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
@@ -107,7 +109,8 @@ class Google_Service_Compute_Resource_VpnTunnels extends Google_Service_Resource
   }
   /**
    * Returns the specified VpnTunnel resource. Gets a list of available VPN
-   * tunnels by making a list() request. (vpnTunnels.get)
+   * tunnels by making a list() request. (== suppress_warning http-rest-shadowed
+   * ==) (vpnTunnels.get)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
@@ -123,7 +126,8 @@ class Google_Service_Compute_Resource_VpnTunnels extends Google_Service_Resource
   }
   /**
    * Creates a VpnTunnel resource in the specified project and region using the
-   * data included in the request. (vpnTunnels.insert)
+   * data included in the request. (== suppress_warning http-rest-shadowed ==)
+   * (vpnTunnels.insert)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
@@ -152,7 +156,8 @@ class Google_Service_Compute_Resource_VpnTunnels extends Google_Service_Resource
   }
   /**
    * Retrieves a list of VpnTunnel resources contained in the specified project
-   * and region. (vpnTunnels.listVpnTunnels)
+   * and region. (== suppress_warning http-rest-shadowed ==)
+   * (vpnTunnels.listVpnTunnels)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.

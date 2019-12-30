@@ -362,3 +362,19 @@ function ExecuteFunctions(functiontocall, params) {
 		req.send(params);
 	});
 }
+
+function vtlib_toggleModule(module, action, type) {
+	if (typeof(type) == 'undefined') {
+		type = '';
+	}
+	var URL = 'index.php?module=Settings&action=SettingsAjax&file=ModuleManager&module_name=' + encodeURIComponent(module) + '&' + action + '=true&module_type=' + type;
+	VtigerJS_DialogBox.block();
+	jQuery.ajax({
+		method:'POST',
+		url:URL
+	}).done(function (response) {
+		VtigerJS_DialogBox.unblock();
+		// Reload the page to apply the effect of module setting
+		window.location.href = 'index.php?module=Settings&action=ModuleManager&parenttab=Settings';
+	});
+}

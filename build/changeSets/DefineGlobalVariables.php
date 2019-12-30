@@ -72,6 +72,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_ListView_Compute_Page_Count',
 				'Application_ListView_Sum_Currency',
 				'Application_ListView_SearchColumns',
+				'Application_ListView_SearchColumns_AC_Trigger',
 				'Application_SaveAndRepeatActive',
 				'Application_Upload_MaxSize',
 				'Application_Single_Pane_View',
@@ -197,6 +198,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'HomePage_Widget_Group_Size',
 				'Zero_Bounce_API_KEY',
 				'GenDoc_CopyLabelToClipboard',
+				'GenDoc_Convert_URL',
 				'CobroPago_Invoice_Status_OnPaid',
 				'CobroPago_PurchaseOrder_Status_OnPaid',
 				'CobroPago_SalesOrder_Status_OnPaid',
@@ -211,6 +213,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Inventory_ListPrice_ReadOnly',
 				'Inventory_Show_ShippingHandlingCharges',
 				'Inventory_Check_Invoiced_Lines',
+				'Inventory_Tax_FillInMode',
 				'GContacts_Max_Results',
 
 				'CustomerPortal_PDF_Modules',
@@ -220,6 +223,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'CustomerPortal_PDFTemplate_Invoice',
 				'CustomerPortal_PDFTemplate_PurchaseOrder',
 				'Project_Gantt_Type',
+				'RecordVersioningModules',
 			);
 			$delete_these = array(
 				'preload_prototype',

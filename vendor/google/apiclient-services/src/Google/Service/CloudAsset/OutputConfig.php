@@ -17,9 +17,25 @@
 
 class Google_Service_CloudAsset_OutputConfig extends Google_Model
 {
+  protected $bigqueryDestinationType = 'Google_Service_CloudAsset_BigQueryDestination';
+  protected $bigqueryDestinationDataType = '';
   protected $gcsDestinationType = 'Google_Service_CloudAsset_GcsDestination';
   protected $gcsDestinationDataType = '';
 
+  /**
+   * @param Google_Service_CloudAsset_BigQueryDestination
+   */
+  public function setBigqueryDestination(Google_Service_CloudAsset_BigQueryDestination $bigqueryDestination)
+  {
+    $this->bigqueryDestination = $bigqueryDestination;
+  }
+  /**
+   * @return Google_Service_CloudAsset_BigQueryDestination
+   */
+  public function getBigqueryDestination()
+  {
+    return $this->bigqueryDestination;
+  }
   /**
    * @param Google_Service_CloudAsset_GcsDestination
    */

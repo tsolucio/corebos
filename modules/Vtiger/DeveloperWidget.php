@@ -38,6 +38,10 @@ class DeveloperBlock {
 	}
 
 	public function getModuleToRender() {
+		global $currentModule;
+		if (empty($this->myModule)) {
+			$this->myModule = $currentModule;
+		}
 		return $this->myModule;
 	}
 

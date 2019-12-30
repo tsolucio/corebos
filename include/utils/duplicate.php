@@ -44,7 +44,7 @@ function duplicaterec($currentModule, $record_id, $bmap) {
 	if ($cbMapid && $cbMap->DuplicateRelations()->DuplicateDirectRelations()) {
 		$invmods = getInventoryModules();
 		foreach ($focus->column_fields as $fieldname => $value) {
-			$sql = 'SELECT * FROM vtiger_field WHERE columnname = ? AND uitype IN (10,51,57,73,78)';
+			$sql = 'SELECT * FROM vtiger_field WHERE columnname=? AND uitype=10';
 			$result = $adb->pquery($sql, array($fieldname));
 			if ($adb->num_rows($result) == 1 && !empty($value)) {
 				$module = getSalesEntityType($value);
@@ -153,7 +153,7 @@ function dup_related_lists($new_record_id, $currentModule, $related_list, $recor
 	$sqldocs = 'INSERT INTO vtiger_senotesrel (crmid,notesid) SELECT ?,notesid FROM vtiger_senotesrel WHERE crmid=?';
 	foreach ($related_list as $rel_module) {
 		// Get and check condition type
-		$condition = $maped_relations[$rel_module]['condition'];
+		$condition = !empty($maped_relations[$rel_module]['condition']) ? $maped_relations[$rel_module]['condition'] : '';
 
 		if (!empty($condition)) {
 			if (is_numeric($condition)) {
@@ -331,6 +331,37 @@ function dup_dependent_rec($record_id, $relatedModule, $new_record_id, $dependen
 				unset($_REQUEST['__cbisduplicatedfromrecordid']);
 			}
 		}
+	}
+}
+
+function dq_updateRevisionFields($module, $crmid, $new_record_id) {
+	global $adb;
+	$focus =CRMEntity::getInstance($module);
+	$entityidfield = $focus->table_index;
+	$table_name = $focus->table_name;
+	$cn = $adb->getColumnNames($table_name);
+	if (in_array('revision', $cn) && in_array('revisionactiva', $cn)) {
+		$queryfield = $adb->pquery(
+			'select columnname from vtiger_field join vtiger_tab on vtiger_field.tabid=vtiger_tab.tabid where uitype=4 and name=?',
+			array($module)
+		);
+		if ($adb->num_rows($queryfield)==0) {
+			$uniquefield = $focus->list_link_field;
+		} else {
+			$uniquefield = $adb->query_result($queryfield, 0, 0);
+		}
+		$seqnors = $adb->pquery("select $uniquefield from $table_name where $entityidfield=?", array($crmid));
+		$seqno = $adb->query_result($seqnors, 0, 0);
+		$revisiones=$adb->pquery(
+			"select count($entityidfield) as num_revisiones
+			from $table_name
+			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $table_name.$entityidfield
+			where deleted=0 and $uniquefield=? order by revision",
+			array($seqno)
+		);
+		$new_num_revision=intval($adb->query_result($revisiones, '0', 'num_revisiones')) + 1;
+		$adb->pquery("update $table_name set revision=?,$uniquefield=?,revisionactiva=1 where $entityidfield=?", array($new_num_revision,$seqno,$new_record_id));
+		$adb->pquery("update $table_name set revisionactiva=0 where $entityidfield!=? and $uniquefield=?", array($new_record_id, $seqno));
 	}
 }
 ?>

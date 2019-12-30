@@ -18,6 +18,8 @@
 *  Author       : JPL TSolucio, S. L.
 *************************************************************************************************/
 
+$totalops = 0;
+$totalopsok = 0;
 if (count($argv)!=3) {
 	echo "\nIncorrect number of parameters:\n";
 	echo "  doworkcli.php [apply|undo] [all|comma_separated_list_of_ids]\n\n";

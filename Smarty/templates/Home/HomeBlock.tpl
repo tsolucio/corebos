@@ -169,6 +169,8 @@
 			<td align="left">{$HOME_STUFF}</td>
 		</tr>
 	</table>
+{elseif $HOME_STUFFTYPE eq 'ReportCharts' && isset($HOME_STUFF.error)}
+	{$HOME_STUFF.error}
 {elseif $HOME_STUFFTYPE eq "ReportCharts"}
 	<input type=hidden id=more_{$HOME_STUFFID} value="{$DASHDETAILS[$HOME_STUFFID].ReportId}"/>
 	<table border=0 cellspacing=0 cellpadding=5 width=100%>

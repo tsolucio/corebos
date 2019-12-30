@@ -1,6 +1,6 @@
 <?php
 /***********************************************************************************
- * Copyright 2018 JPL TSolucio, S.L.  --  This file is a part of coreBOS.
+ * Copyright 2019 JPL TSolucio, S.L.  --  This file is a part of coreBOS.
  * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
  * Vizsage Public License (the "License"). You may not use this file except in compliance with the
  * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
@@ -14,7 +14,7 @@
  ************************************************************************************/
 
 function getBusinessActions($view, $module, $id, $linktype, $user) {
-	global $adb, $log, $current_user;
+	global $adb, $log;
 
 	$tabid = getTabid($module);
 	$type = explode(',', $linktype);
@@ -23,7 +23,7 @@ function getBusinessActions($view, $module, $id, $linktype, $user) {
 	$recordId = null;
 
 	//check if the user has access to the specified module
-	$types = vtws_listtypes(null, $current_user);
+	$types = vtws_listtypes(null, $user);
 	if (!in_array($module, $types['types'])) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
 	}
@@ -40,7 +40,7 @@ function getBusinessActions($view, $module, $id, $linktype, $user) {
 			$handlerPath = $webserviceObject->getHandlerPath();
 			$handlerClass = $webserviceObject->getHandlerClass();
 			require_once $handlerPath;
-			$handler = new $handlerClass($webserviceObject, $current_user, $adb, $log);
+			$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 			$meta = $handler->getMeta();
 
 			if ($meta->hasReadAccess()!==true) {
@@ -58,6 +58,6 @@ function getBusinessActions($view, $module, $id, $linktype, $user) {
 		}
 	}
 
-	$businessActions = Vtiger_Link::getAllByType($tabid, $type, $parameters, $current_user->id, $recordId);
+	$businessActions = Vtiger_Link::getAllByType($tabid, $type, $parameters, $user->id, $recordId);
 	return json_encode($businessActions);
 }

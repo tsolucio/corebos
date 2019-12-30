@@ -85,9 +85,6 @@ class Google_Service_YouTubeAnalytics_Resource_Groups extends Google_Service_Res
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The `pageToken` parameter identifies a specific
-   * page in the result set that should be returned. In an API response, the
-   * `nextPageToken` property identifies the next page that can be retrieved.
    * @opt_param string onBehalfOfContentOwner This parameter can only be used in a
    * properly authorized request. **Note:** This parameter is intended exclusively
    * for YouTube content partners that own and manage many different YouTube
@@ -110,6 +107,9 @@ class Google_Service_YouTubeAnalytics_Resource_Groups extends Google_Service_Res
    * @opt_param bool mine This parameter can only be used in a properly authorized
    * request. Set this parameter's value to true to retrieve all groups owned by
    * the authenticated user.
+   * @opt_param string pageToken The `pageToken` parameter identifies a specific
+   * page in the result set that should be returned. In an API response, the
+   * `nextPageToken` property identifies the next page that can be retrieved.
    * @return Google_Service_YouTubeAnalytics_ListGroupsResponse
    */
   public function listGroups($optParams = array())

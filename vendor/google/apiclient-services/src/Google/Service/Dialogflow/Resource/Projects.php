@@ -26,6 +26,38 @@
 class Google_Service_Dialogflow_Resource_Projects extends Google_Service_Resource
 {
   /**
+   * Creates/updates the specified agent. (projects.agent)
+   *
+   * @param string $parent Required. The project of this agent. Format:
+   * `projects/`.
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2Agent $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask Optional. The mask to control which fields get
+   * updated.
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2Agent
+   */
+  public function agent($parent, Google_Service_Dialogflow_GoogleCloudDialogflowV2Agent $postBody, $optParams = array())
+  {
+    $params = array('parent' => $parent, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('agent', array($params), "Google_Service_Dialogflow_GoogleCloudDialogflowV2Agent");
+  }
+  /**
+   * Deletes the specified agent. (projects.deleteAgent)
+   *
+   * @param string $parent Required. The project that the agent to delete is
+   * associated with. Format: `projects/`.
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Dialogflow_GoogleProtobufEmpty
+   */
+  public function deleteAgent($parent, $optParams = array())
+  {
+    $params = array('parent' => $parent);
+    $params = array_merge($params, $optParams);
+    return $this->call('deleteAgent', array($params), "Google_Service_Dialogflow_GoogleProtobufEmpty");
+  }
+  /**
    * Retrieves the specified agent. (projects.getAgent)
    *
    * @param string $parent Required. The project that the agent to fetch is

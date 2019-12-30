@@ -26,8 +26,8 @@
 class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
 {
   /**
-   * Adds an access config to an instance's network interface.
-   * (instances.addAccessConfig)
+   * Adds an access config to an instance's network interface. (==
+   * suppress_warning http-rest-shadowed ==) (instances.addAccessConfig)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -59,7 +59,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
   }
   /**
    * Retrieves aggregated list of all of the instances in your project across all
-   * regions and zones. (instances.aggregatedList)
+   * regions and zones. (== suppress_warning http-rest-shadowed ==)
+   * (instances.aggregatedList)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -114,7 +115,7 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
    * Attaches an existing Disk resource to an instance. You must first create the
    * disk before you can attach it. It is not possible to create and attach a disk
    * at the same time. For more information, read Adding a persistent disk to your
-   * instance. (instances.attachDisk)
+   * instance. (== suppress_warning http-rest-shadowed ==) (instances.attachDisk)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -123,8 +124,7 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param bool forceAttach Whether to force attach the disk even if it's
-   * currently attached to another instance. This is only available for regional
-   * disks.
+   * currently attached to another instance.
    * @opt_param string requestId An optional request ID to identify requests.
    * Specify a unique request ID so that if you must retry your request, the
    * server will know to ignore the request if it has already been completed.
@@ -147,7 +147,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
   }
   /**
    * Deletes the specified Instance resource. For more information, see Stopping
-   * or Deleting an Instance. (instances.delete)
+   * or Deleting an Instance. (== suppress_warning http-rest-shadowed ==)
+   * (instances.delete)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -175,8 +176,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
     return $this->call('delete', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Deletes an access config from an instance's network interface.
-   * (instances.deleteAccessConfig)
+   * Deletes an access config from an instance's network interface. (==
+   * suppress_warning http-rest-shadowed ==) (instances.deleteAccessConfig)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -206,7 +207,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
     return $this->call('deleteAccessConfig', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Detaches a disk from an instance. (instances.detachDisk)
+   * Detaches a disk from an instance. (== suppress_warning http-rest-shadowed ==)
+   * (instances.detachDisk)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -237,7 +239,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
   }
   /**
    * Returns the specified Instance resource. Gets a list of available instances
-   * by making a list() request. (instances.get)
+   * by making a list() request. (== suppress_warning http-rest-shadowed ==)
+   * (instances.get)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -252,8 +255,30 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
     return $this->call('get', array($params), "Google_Service_Compute_Instance");
   }
   /**
+   * Returns the specified guest attributes entry. (== suppress_warning http-rest-
+   * shadowed ==) (instances.getGuestAttributes)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $zone The name of the zone for this request.
+   * @param string $instance Name of the instance scoping this request.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string queryPath Specifies the guest attributes path to be
+   * queried.
+   * @opt_param string variableKey Specifies the key for the guest attributes
+   * entry.
+   * @return Google_Service_Compute_GuestAttributes
+   */
+  public function getGuestAttributes($project, $zone, $instance, $optParams = array())
+  {
+    $params = array('project' => $project, 'zone' => $zone, 'instance' => $instance);
+    $params = array_merge($params, $optParams);
+    return $this->call('getGuestAttributes', array($params), "Google_Service_Compute_GuestAttributes");
+  }
+  /**
    * Gets the access control policy for a resource. May be empty if no such policy
-   * or resource exists. (instances.getIamPolicy)
+   * or resource exists. (== suppress_warning http-rest-shadowed ==)
+   * (instances.getIamPolicy)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -268,8 +293,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
     return $this->call('getIamPolicy', array($params), "Google_Service_Compute_Policy");
   }
   /**
-   * Returns the last 1 MB of serial port output from the specified instance.
-   * (instances.getSerialPortOutput)
+   * Returns the last 1 MB of serial port output from the specified instance. (==
+   * suppress_warning http-rest-shadowed ==) (instances.getSerialPortOutput)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -291,8 +316,25 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
     return $this->call('getSerialPortOutput', array($params), "Google_Service_Compute_SerialPortOutput");
   }
   /**
+   * Returns the Shielded Instance Identity of an instance (== suppress_warning
+   * http-rest-shadowed ==) (instances.getShieldedInstanceIdentity)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $zone The name of the zone for this request.
+   * @param string $instance Name or id of the instance scoping this request.
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Compute_ShieldedInstanceIdentity
+   */
+  public function getShieldedInstanceIdentity($project, $zone, $instance, $optParams = array())
+  {
+    $params = array('project' => $project, 'zone' => $zone, 'instance' => $instance);
+    $params = array_merge($params, $optParams);
+    return $this->call('getShieldedInstanceIdentity', array($params), "Google_Service_Compute_ShieldedInstanceIdentity");
+  }
+  /**
    * Creates an instance resource in the specified project using the data included
-   * in the request. (instances.insert)
+   * in the request. (== suppress_warning http-rest-shadowed ==)
+   * (instances.insert)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -328,8 +370,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
     return $this->call('insert', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Retrieves the list of instances contained within the specified zone.
-   * (instances.listInstances)
+   * Retrieves the list of instances contained within the specified zone. (==
+   * suppress_warning http-rest-shadowed ==) (instances.listInstances)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -383,8 +425,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
   }
   /**
    * Retrieves the list of referrers to instances contained within the specified
-   * zone. For more information, read Viewing Referrers to VM Instances.
-   * (instances.listReferrers)
+   * zone. For more information, read Viewing Referrers to VM Instances. (==
+   * suppress_warning http-rest-shadowed ==) (instances.listReferrers)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -439,8 +481,9 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
     return $this->call('listReferrers', array($params), "Google_Service_Compute_InstanceListReferrers");
   }
   /**
-   * Performs a reset on the instance. For more information, see Resetting an
-   * instance. (instances.reset)
+   * Performs a reset on the instance. This is a hard reset the VM does not do a
+   * graceful shutdown. For more information, see Resetting an instance. (==
+   * suppress_warning http-rest-shadowed ==) (instances.reset)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -468,7 +511,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
     return $this->call('reset', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Sets deletion protection on the instance. (instances.setDeletionProtection)
+   * Sets deletion protection on the instance. (== suppress_warning http-rest-
+   * shadowed ==) (instances.setDeletionProtection)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -498,8 +542,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
     return $this->call('setDeletionProtection', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Sets the auto-delete flag for a disk attached to an instance.
-   * (instances.setDiskAutoDelete)
+   * Sets the auto-delete flag for a disk attached to an instance. (==
+   * suppress_warning http-rest-shadowed ==) (instances.setDiskAutoDelete)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -532,7 +576,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
   }
   /**
    * Sets the access control policy on the specified resource. Replaces any
-   * existing policy. (instances.setIamPolicy)
+   * existing policy. (== suppress_warning http-rest-shadowed ==)
+   * (instances.setIamPolicy)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -549,7 +594,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
   }
   /**
    * Sets labels on an instance. To learn more about labels, read the Labeling
-   * Resources documentation. (instances.setLabels)
+   * Resources documentation. (== suppress_warning http-rest-shadowed ==)
+   * (instances.setLabels)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -579,7 +625,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
   }
   /**
    * Changes the number and/or type of accelerator for a stopped instance to the
-   * values specified in the request. (instances.setMachineResources)
+   * values specified in the request. (== suppress_warning http-rest-shadowed ==)
+   * (instances.setMachineResources)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -609,7 +656,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
   }
   /**
    * Changes the machine type for a stopped instance to the machine type specified
-   * in the request. (instances.setMachineType)
+   * in the request. (== suppress_warning http-rest-shadowed ==)
+   * (instances.setMachineType)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -639,7 +687,7 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
   }
   /**
    * Sets metadata for the specified instance to the data included in the request.
-   * (instances.setMetadata)
+   * (== suppress_warning http-rest-shadowed ==) (instances.setMetadata)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -670,7 +718,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
   /**
    * Changes the minimum CPU platform that this instance should use. This method
    * can only be called on a stopped instance. For more information, read
-   * Specifying a Minimum CPU Platform. (instances.setMinCpuPlatform)
+   * Specifying a Minimum CPU Platform. (== suppress_warning http-rest-shadowed
+   * ==) (instances.setMinCpuPlatform)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -699,7 +748,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
     return $this->call('setMinCpuPlatform', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Sets an instance's scheduling options. (instances.setScheduling)
+   * Sets an instance's scheduling options. (== suppress_warning http-rest-
+   * shadowed ==) (instances.setScheduling)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -729,8 +779,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
   }
   /**
    * Sets the service account on the instance. For more information, read Changing
-   * the service account and access scopes for an instance.
-   * (instances.setServiceAccount)
+   * the service account and access scopes for an instance. (== suppress_warning
+   * http-rest-shadowed ==) (instances.setServiceAccount)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -759,8 +809,40 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
     return $this->call('setServiceAccount', array($params), "Google_Service_Compute_Operation");
   }
   /**
+   * Sets the Shielded Instance integrity policy for an instance. You can only use
+   * this method on a running instance. This method supports PATCH semantics and
+   * uses the JSON merge patch format and processing rules. (== suppress_warning
+   * http-rest-shadowed ==) (instances.setShieldedInstanceIntegrityPolicy)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $zone The name of the zone for this request.
+   * @param string $instance Name or id of the instance scoping this request.
+   * @param Google_Service_Compute_ShieldedInstanceIntegrityPolicy $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string requestId An optional request ID to identify requests.
+   * Specify a unique request ID so that if you must retry your request, the
+   * server will know to ignore the request if it has already been completed.
+   *
+   * For example, consider a situation where you make an initial request and the
+   * request times out. If you make the request again with the same request ID,
+   * the server can check if original operation with the same request ID was
+   * received, and if so, will ignore the second request. This prevents clients
+   * from accidentally creating duplicate commitments.
+   *
+   * The request ID must be a valid UUID with the exception that zero UUID is not
+   * supported (00000000-0000-0000-0000-000000000000).
+   * @return Google_Service_Compute_Operation
+   */
+  public function setShieldedInstanceIntegrityPolicy($project, $zone, $instance, Google_Service_Compute_ShieldedInstanceIntegrityPolicy $postBody, $optParams = array())
+  {
+    $params = array('project' => $project, 'zone' => $zone, 'instance' => $instance, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('setShieldedInstanceIntegrityPolicy', array($params), "Google_Service_Compute_Operation");
+  }
+  /**
    * Sets network tags for the specified instance to the data included in the
-   * request. (instances.setTags)
+   * request. (== suppress_warning http-rest-shadowed ==) (instances.setTags)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -789,8 +871,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
     return $this->call('setTags', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Simulates a maintenance event on the instance.
-   * (instances.simulateMaintenanceEvent)
+   * Simulates a maintenance event on the instance. (== suppress_warning http-
+   * rest-shadowed ==) (instances.simulateMaintenanceEvent)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -806,7 +888,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
   }
   /**
    * Starts an instance that was stopped using the instances().stop method. For
-   * more information, see Restart an instance. (instances.start)
+   * more information, see Restart an instance. (== suppress_warning http-rest-
+   * shadowed ==) (instances.start)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -835,7 +918,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
   }
   /**
    * Starts an instance that was stopped using the instances().stop method. For
-   * more information, see Restart an instance. (instances.startWithEncryptionKey)
+   * more information, see Restart an instance. (== suppress_warning http-rest-
+   * shadowed ==) (instances.startWithEncryptionKey)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -868,8 +952,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
    * the instance at a later time. Stopped instances do not incur VM usage charges
    * while they are stopped. However, resources that the VM is using, such as
    * persistent disks and static IP addresses, will continue to be charged until
-   * they are deleted. For more information, see Stopping an instance.
-   * (instances.stop)
+   * they are deleted. For more information, see Stopping an instance. (==
+   * suppress_warning http-rest-shadowed ==) (instances.stop)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -897,8 +981,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
     return $this->call('stop', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Returns permissions that a caller has on the specified resource.
-   * (instances.testIamPermissions)
+   * Returns permissions that a caller has on the specified resource. (==
+   * suppress_warning http-rest-shadowed ==) (instances.testIamPermissions)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -916,8 +1000,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
   /**
    * Updates the specified access config from an instance's network interface with
    * the data included in the request. This method supports PATCH semantics and
-   * uses the JSON merge patch format and processing rules.
-   * (instances.updateAccessConfig)
+   * uses the JSON merge patch format and processing rules. (== suppress_warning
+   * http-rest-shadowed ==) (instances.updateAccessConfig)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -948,7 +1032,40 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
     return $this->call('updateAccessConfig', array($params), "Google_Service_Compute_Operation");
   }
   /**
+   * Updates the Display config for a VM instance. You can only use this method on
+   * a stopped VM instance. This method supports PATCH semantics and uses the JSON
+   * merge patch format and processing rules. (== suppress_warning http-rest-
+   * shadowed ==) (instances.updateDisplayDevice)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $zone The name of the zone for this request.
+   * @param string $instance Name of the instance scoping this request.
+   * @param Google_Service_Compute_DisplayDevice $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string requestId An optional request ID to identify requests.
+   * Specify a unique request ID so that if you must retry your request, the
+   * server will know to ignore the request if it has already been completed.
+   *
+   * For example, consider a situation where you make an initial request and the
+   * request times out. If you make the request again with the same request ID,
+   * the server can check if original operation with the same request ID was
+   * received, and if so, will ignore the second request. This prevents clients
+   * from accidentally creating duplicate commitments.
+   *
+   * The request ID must be a valid UUID with the exception that zero UUID is not
+   * supported (00000000-0000-0000-0000-000000000000).
+   * @return Google_Service_Compute_Operation
+   */
+  public function updateDisplayDevice($project, $zone, $instance, Google_Service_Compute_DisplayDevice $postBody, $optParams = array())
+  {
+    $params = array('project' => $project, 'zone' => $zone, 'instance' => $instance, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('updateDisplayDevice', array($params), "Google_Service_Compute_Operation");
+  }
+  /**
    * Updates an instance's network interface. This method follows PATCH semantics.
+   * (== suppress_warning http-rest-shadowed ==)
    * (instances.updateNetworkInterface)
    *
    * @param string $project Project ID for this request.
@@ -977,5 +1094,37 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
     $params = array('project' => $project, 'zone' => $zone, 'instance' => $instance, 'networkInterface' => $networkInterface, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('updateNetworkInterface', array($params), "Google_Service_Compute_Operation");
+  }
+  /**
+   * Updates the Shielded Instance config for an instance. You can only use this
+   * method on a stopped instance. This method supports PATCH semantics and uses
+   * the JSON merge patch format and processing rules. (== suppress_warning http-
+   * rest-shadowed ==) (instances.updateShieldedInstanceConfig)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $zone The name of the zone for this request.
+   * @param string $instance Name or id of the instance scoping this request.
+   * @param Google_Service_Compute_ShieldedInstanceConfig $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string requestId An optional request ID to identify requests.
+   * Specify a unique request ID so that if you must retry your request, the
+   * server will know to ignore the request if it has already been completed.
+   *
+   * For example, consider a situation where you make an initial request and the
+   * request times out. If you make the request again with the same request ID,
+   * the server can check if original operation with the same request ID was
+   * received, and if so, will ignore the second request. This prevents clients
+   * from accidentally creating duplicate commitments.
+   *
+   * The request ID must be a valid UUID with the exception that zero UUID is not
+   * supported (00000000-0000-0000-0000-000000000000).
+   * @return Google_Service_Compute_Operation
+   */
+  public function updateShieldedInstanceConfig($project, $zone, $instance, Google_Service_Compute_ShieldedInstanceConfig $postBody, $optParams = array())
+  {
+    $params = array('project' => $project, 'zone' => $zone, 'instance' => $instance, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('updateShieldedInstanceConfig', array($params), "Google_Service_Compute_Operation");
   }
 }

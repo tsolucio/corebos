@@ -25,6 +25,9 @@ $smarty->assign('IMAGE_PATH', $image_path);
 if (!is_admin($current_user)) {
 	$smarty->display(vtlib_getModuleTemplate('Vtiger', 'OperationNotPermitted.tpl'));
 } else {
+	$gendoc_url = GlobalVariable::getVariable('GenDoc_Convert_URL', '', 'evvtgendoc');
+	$pdflinkactive = coreBOS_Settings::getSetting('cbgendoc_showpdflinks', 0)!=0 ? 'checked' : '';
+	$smarty->assign('pdflinkactive', $pdflinkactive);
 	$gendoc_active = coreBOS_Settings::getSetting('cbgendoc_active', 0);
 	$gendoc_server = coreBOS_Settings::getSetting('cbgendoc_server', '');
 	$gendoc_user = coreBOS_Settings::getSetting('cbgendoc_user', '');
@@ -34,6 +37,7 @@ if (!is_admin($current_user)) {
 	$smarty->assign('server', $gendoc_server);
 	$smarty->assign('user', $gendoc_user);
 	$smarty->assign('key', $gendoc_accesskey);
+	$smarty->assign('gendocurl', $gendoc_url);
 	$smarty->display(vtlib_getModuleTemplate($currentModule, 'ServerSettings.tpl'));
 }
 ?>

@@ -61,5 +61,7 @@ $mod_strings = array(
 	'Created By' => 'Created By',
 	'Documents' => 'Documents',
 	'Timecontrol' => 'Timecontrol',
+	'SyncHelpDesk' => 'Synchronize Support Tickets',
+	'SyncHelpDeskDescription' => 'Synchronize with Support Tickets Time and Effort',
 );
 ?>

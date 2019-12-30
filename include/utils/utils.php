@@ -779,14 +779,8 @@ function getColumnFields($module) {
 
 	if ($cachedModuleFields === false) {
 		$tabid = getTabid($module);
-		if ($module == 'Calendar') {
-			$tabid = array('9','16');
-		}
-
 		// Let us pick up all the fields first so that we can cache information
-		$sql = 'SELECT tabid, fieldname, fieldid, fieldlabel, columnname, tablename, uitype, typeofdata, presence FROM vtiger_field WHERE tabid in ('
-			.generateQuestionMarks($tabid).')';
-
+		$sql = 'SELECT tabid, fieldname, fieldid, fieldlabel, columnname, tablename, uitype, typeofdata, presence FROM vtiger_field WHERE tabid=?';
 		$result = $adb->pquery($sql, array($tabid));
 		$noofrows = $adb->num_rows($result);
 
@@ -809,15 +803,6 @@ function getColumnFields($module) {
 
 		// For consistency get information from cache
 		$cachedModuleFields = VTCacheUtils::lookupFieldInfo_Module($module);
-	}
-
-	if ($module == 'Calendar') {
-		$cachedEventsFields = VTCacheUtils::lookupFieldInfo_Module('Events');
-		if ($cachedModuleFields == false) {
-			$cachedModuleFields = $cachedEventsFields;
-		} else {
-			$cachedModuleFields = array_merge($cachedModuleFields, $cachedEventsFields);
-		}
 	}
 
 	$column_fld = array();
@@ -1489,11 +1474,7 @@ function getTableNameForField($module, $fieldname) {
 	global $log, $adb;
 	$log->debug('> getTableNameForField '.$module.','.$fieldname);
 	$tabid = getTabid($module);
-	//Asha
-	if ($module == 'Calendar') {
-		$tabid = array('9','16');
-	}
-	$sql = 'select tablename from vtiger_field where tabid in ('. generateQuestionMarks($tabid) .') and vtiger_field.presence in (0,2) and columnname like ?';
+	$sql = 'select tablename from vtiger_field where tabid=? and vtiger_field.presence in (0,2) and columnname like ?';
 	$res = $adb->pquery($sql, array($tabid, '%'.$fieldname.'%'));
 
 	$tablename = '';
@@ -2007,7 +1988,7 @@ function generateQuestionMarks($items_list) {
 function is_uitype($uitype, $reqtype) {
 	$ui_type_arr = array(
 		'_date_' => array(5, 6, 23, 70),
-		'_picklist_' => array(15, 16, 52, 53, 54, 55, 62, 63, 66, 77, 78, 98, 101, 115, 357),
+		'_picklist_' => array(15, 16, 52, 53, 54, 55, 62, 63, 77, 98, 101, 115, 357),
 		'_users_list_' => array(52),
 	);
 
@@ -2263,30 +2244,10 @@ function getRecordValues($id_array, $module) {
 					} else {
 						$value_pair['disp_value']=$app_strings['yes'];
 					}
-				} elseif ($ui_type == 51 || $ui_type == 50) {
-					$entity_id=$field_values[$j][$fld_name];
-					if ($module !='Products') {
-						$entity_name=getAccountName($entity_id);
-					} else {
-						$entity_name=getProductName($entity_id);
-					}
-					$value_pair['disp_value']=$entity_name;
 				} elseif ($ui_type == 53) {
 					$owner_id=$field_values[$j][$fld_name];
 					$ownername=getOwnerName($owner_id);
 					$value_pair['disp_value']=$ownername;
-				} elseif ($ui_type ==57) {
-					$contact_id= $field_values[$j][$fld_name];
-					$contactname = '';
-					if ($contact_id != '') {
-						$displayValueArray = getEntityName('Contacts', $contact_id);
-						if (!empty($displayValueArray)) {
-							foreach ($displayValueArray as $field_value) {
-								$contactname = $field_value;
-							}
-						}
-					}
-					$value_pair['disp_value']=$contactname;
 				} elseif ($ui_type == 52) {
 					$user_id = $field_values[$j][$fld_name];
 					$user_name=getUserFullName($user_id);
@@ -2589,20 +2550,6 @@ function getDuplicateRecordsArr($module, $use_limit = true) {
 					$result[$col_arr[$k]]=$app_strings['yes'];
 				}
 			}
-			if ($ui_type[$fld_arr[$k]] ==57) {
-				$contact_id= $result[$col_arr[$k]];
-				if ($contact_id != '') {
-					$parent_module = 'Contacts';
-					$displayValueArray = getEntityName($parent_module, $contact_id);
-					if (!empty($displayValueArray)) {
-						foreach ($displayValueArray as $field_value) {
-							$contactname = $field_value;
-						}
-					}
-				}
-
-				$result[$col_arr[$k]]=$contactname;
-			}
 			if ($ui_type[$fld_arr[$k]] == 15 || $ui_type[$fld_arr[$k]] == 16) {
 				$result[$col_arr[$k]]=getTranslatedString($result[$col_arr[$k]], $module);
 			}
@@ -2619,18 +2566,6 @@ function getDuplicateRecordsArr($module, $use_limit = true) {
 					$owner=getOwnerName($result[$col_arr[$k]]);
 				}
 				$result[$col_arr[$k]]=$owner;
-			}
-			if ($ui_type[$fld_arr[$k]] ==50 || $ui_type[$fld_arr[$k]] ==51) {
-				if ($module!='Products') {
-					$entity_name=getAccountName($result[$col_arr[$k]]);
-				} else {
-					$entity_name=getProductName($result[$col_arr[$k]]);
-				}
-				if ($entity_name != '') {
-					$result[$col_arr[$k]]=$entity_name;
-				} else {
-					$result[$col_arr[$k]]='';
-				}
 			}
 			/*uitype 10 handling*/
 			if ($ui_type[$fld_arr[$k]] == 10) {
@@ -3855,32 +3790,19 @@ function getSelectAllQuery($input, $module) {
 
 	$viewid = vtlib_purify($input['viewname']);
 
-	if ($module == 'Calendar') {
-		$listquery = getListQuery($module);
-		$oCustomView = new CustomView($module);
-		$query = $oCustomView->getModifiedCvListQuery($viewid, $listquery, $module);
-		$where = '';
-		if (isset($input['query']) && $input['query'] == 'true') {
-			list($where, $ustring) = explode('#@@#', getWhereCondition($module, $input));
-			if (isset($where) && $where != '') {
-				$query .= ' AND ' .$where;
-			}
-		}
-	} else {
-		$queryGenerator = new QueryGenerator($module, $current_user);
-		$queryGenerator->initForCustomViewById($viewid);
+	$queryGenerator = new QueryGenerator($module, $current_user);
+	$queryGenerator->initForCustomViewById($viewid);
 
-		if (isset($input['query']) && $input['query'] == 'true') {
-			$queryGenerator->addUserSearchConditions($input);
-		}
-		$queryGenerator->setFields(array('id'));
-		$query = $queryGenerator->getQuery();
+	if (isset($input['query']) && $input['query'] == 'true') {
+		$queryGenerator->addUserSearchConditions($input);
+	}
+	$queryGenerator->setFields(array('id'));
+	$query = $queryGenerator->getQuery();
 
-		if ($module == 'Documents' && GlobalVariable::getVariable('Document_Folder_View', 1, 'Documents')) {
-			$folderid = vtlib_purify($input['folderidstring']);
-			$folderid = str_replace(';', ',', $folderid);
-			$query .= ' AND vtiger_notes.folderid in ('.$folderid.')';
-		}
+	if ($module == 'Documents' && GlobalVariable::getVariable('Document_Folder_View', 1, 'Documents')) {
+		$folderid = vtlib_purify($input['folderidstring']);
+		$folderid = str_replace(';', ',', $folderid);
+		$query .= ' AND vtiger_notes.folderid in ('.$folderid.')';
 	}
 
 	return $adb->pquery($query, array());

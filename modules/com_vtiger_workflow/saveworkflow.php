@@ -19,7 +19,7 @@ require_once 'modules/com_vtiger_workflow/tasks/VTCreateEventTask.inc';
 function vtWorkflowSave($adb, $request) {
 	global $current_language;
 	$util = new VTWorkflowUtils();
-	$edit_return_url = 'index.php?module=com_vtiger_workflow&action=workflowlist&parenttab=Settings';
+	$edit_return_url = 'index.php?module=com_vtiger_workflow&action=workflowlist';
 	$module = new VTWorkflowApplication('saveworkflow', $edit_return_url);
 	$mod = return_module_language($current_language, $module->name);
 	$request = vtlib_purify($request);  // this cleans all values of the array
@@ -29,7 +29,7 @@ function vtWorkflowSave($adb, $request) {
 		return;
 	}
 
-	$description = $request['description'];
+	$description = decode_html($request['description']);
 	$purpose = $request['purpose'];
 	$moduleName = $request['module_name'];
 	$conditions = $request['conditions'];
@@ -63,6 +63,15 @@ function vtWorkflowSave($adb, $request) {
 	$schannualdates = json_encode(array($schannualdates));
 	$schminuteinterval = $request['schminuteinterval'];
 
+	// for relate and unrelate execution conditions
+	if ($executionCondition == 'ON_RELATE' && isset($request['onrelatemodule'])) {
+		$relatemodule = $request['onrelatemodule'];
+	} elseif ($executionCondition == 'ON_UNRELATE' && isset($request['onunrelatemodule'])) {
+		$relatemodule = $request['onunrelatemodule'];
+	} else {
+		$relatemodule = '';
+	}
+
 	$wm = new VTWorkflowManager($adb);
 	if ($saveType == 'new') {
 		$wf = $wm->newWorkflow($moduleName);
@@ -76,6 +85,7 @@ function vtWorkflowSave($adb, $request) {
 		$wf->schdayofweek = isset($schdayofweek) ? json_encode($schdayofweek) : '';
 		$wf->schannualdates = $schannualdates;
 		$wf->schminuteinterval = $schminuteinterval;
+		$wf->relatemodule = $relatemodule;
 		$wm->save($wf);
 	} elseif ($saveType == 'edit') {
 		$wf = $wm->retrieve($request["workflow_id"]);
@@ -89,6 +99,7 @@ function vtWorkflowSave($adb, $request) {
 		$wf->schdayofweek = isset($schdayofweek) ? json_encode($schdayofweek) : '';
 		$wf->schannualdates = $schannualdates;
 		$wf->schminuteinterval = $schminuteinterval;
+		$wf->relatemodule = $relatemodule;
 		$wm->save($wf);
 	} else {
 		throw new Exception();
