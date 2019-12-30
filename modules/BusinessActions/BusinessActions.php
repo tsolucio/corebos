@@ -299,17 +299,17 @@ class BusinessActions extends CRMEntity {
 			}
 
 			if ($parameters) {
-                $link->linkurl = $strtemplate->merge($link->linkurl);
-                $link->linkicon= $strtemplate->merge($link->linkicon);    
+				$link->linkurl = $strtemplate->merge($link->linkurl);
+				$link->linkicon= $strtemplate->merge($link->linkicon);
 
 				if (!empty($parameters['RECORD'])) {
 					$focus_bs = CRMEntity::getInstance($parameters['MODULE']);
 					$focus_bs->retrieve_entity_info($parameters['RECORD'], $parameters['MODULE']);
 					$data_retrieve = $focus_bs->column_fields;
 					$str = $link->linkurl;
-					$subtring_start = strpos($str, '$'); 
-					$subtring_start += strlen('$');   
-					$size = strpos($str, '$', $subtring_start) - $subtring_start;   
+					$subtring_start = strpos($str, '$');
+					$subtring_start += strlen('$');
+					$size = strpos($str, '$', $subtring_start) - $subtring_start;
 					$substring = substr($str, $subtring_start, $size);
 					$match = str_replace('$'.$substring.'$', $data_retrieve[$substring], $link->linkurl);
 					include_once 'include/Webservices/Create.php';
@@ -317,7 +317,7 @@ class BusinessActions extends CRMEntity {
 					$ct = new VTSimpleTemplate($match, false);
 					$link->linkurl = $ct->render($entityCache, vtws_getEntityId($parameters['MODULE']).'x'.$parameters['RECORD']);
 				}
-            }
+			}
 			if ($multitype) {
 				if (in_array($link->linktype, array('HEADERSCRIPT', 'HEADERCSS', 'HEADERSCRIPT_POPUP', 'HEADERCSS_POPUP', 'FOOTERSCRIPT')) && in_array($link->linkurl, $alreadyLoaded[$link->linktype])) {
 					continue;
