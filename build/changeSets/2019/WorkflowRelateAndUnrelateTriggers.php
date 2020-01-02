@@ -24,7 +24,10 @@ class WorkflowRelateAndUnrelateTriggers extends cbupdaterWorker {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			global $adb;
-			$this->ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `relatemodule` varchar(100) default NULL;', array());
+			$cnmsg = $adb->getColumnNames('com_vtiger_workflows');
+			if (!in_array('relatemodule', $cnmsg)) {
+				$this->ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `relatemodule` varchar(100) default NULL;', array());
+			}
 			$ev = new VTEventsManager($adb);
 			$ev->registerHandler('corebos.entity.link.after', 'modules/com_vtiger_workflow/handlers/WorkflowRelationEventHandler.php', 'WorkflowRelationEventHandler');
 			$ev->registerHandler('corebos.entity.link.delete.final', 'modules/com_vtiger_workflow/handlers/WorkflowRelationEventHandler.php', 'WorkflowRelationEventHandler');
