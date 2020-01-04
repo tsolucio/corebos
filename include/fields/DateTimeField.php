@@ -63,7 +63,7 @@ class DateTimeField {
 		if (empty($format)) {
 			$format = 'dd-mm-yyyy';
 		}
-		if (strpos($this->datetime, ' ')>0) {
+		if (strpos($datetime, ' ')>0) {
 			list($date,$time) = explode(' ', $datetime);
 		} else {
 			$date = $datetime;
