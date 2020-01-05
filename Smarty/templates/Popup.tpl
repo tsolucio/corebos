@@ -144,7 +144,7 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 								<input type="hidden" name="curr_row" id="curr_row" value="{$CURR_ROW}">
 								<input type="hidden" name="fldname_pb" value="{$FIELDNAME}">
 								<input type="hidden" name="productid_pb" value="{$PRODUCTID}">
-								<input name="popuptype" id="popup_type" type="hidden" value="{$POPUPTYPE}">
+								<input type="hidden" name="popuptype" value="{$POPUPTYPE}">
 								<input name="recordid" id="recordid" type="hidden" value="{$RECORDID}">
 								<input name="record_id" id="record_id" type="hidden" value="{$RECORD_ID}">
 								<input name="return_module" id="return_module" type="hidden" value="{$RETURN_MODULE}">
