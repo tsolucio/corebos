@@ -9264,7 +9264,7 @@ if (workbox) {
   },
   {
     "url": "include/js/popup.js",
-    "revision": "5e044cb7f6a56e9b2cdfc3ec8b1e908a"
+    "revision": "78fc1dbeb4e8e267772afbf5d4c9fc14"
   },
   {
     "url": "include/js/pt_br.lang.js",
@@ -9808,7 +9808,7 @@ if (workbox) {
   },
   {
     "url": "modules/cbQuestion/cbQuestion.js",
-    "revision": "92ff41c2163e79d1f8ea14d5b839cb00"
+    "revision": "df1beb66383c404ca19595bfede77a1f"
   },
   {
     "url": "modules/Portal/Portal.js",
@@ -9940,7 +9940,7 @@ if (workbox) {
   },
   {
     "url": "modules/Reports/Reports.js",
-    "revision": "12e350597bd40b7aa4aa0b238ef1a708"
+    "revision": "1161972ff88570a33502046241a535d3"
   },
   {
     "url": "modules/Reports/ReportsSteps.js",
