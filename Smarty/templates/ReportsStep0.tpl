@@ -12,6 +12,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
 	<title>{$MOD.TITLE_VTIGERCRM_CREATE_REPORT}</title>
+	<link REL="SHORTCUT ICON" HREF="{$COMPANY_DETAILS.favicon}">
 	<link href="{$THEME_PATH}style.css" rel="stylesheet" type="text/css">
 	<link href="include/jquery.steps.css" rel="stylesheet">
 	<style>
