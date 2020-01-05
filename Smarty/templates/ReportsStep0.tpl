@@ -49,6 +49,7 @@
 	<script type="text/javascript" src="include/js/vtlib.js"></script>
 	<script type="text/javascript" src="include/js/{$LANGUAGE}.lang.js"></script>
 	<script type="text/javascript" src="modules/Reports/Reports.js"></script>
+	<script type="text/javascript" src="modules/cbQuestion/cbQuestion.js"></script>
 </head>
 <body topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
 <table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0" class="mailClient mailClientBg">
@@ -118,7 +119,24 @@
 							<td colspan="2"><b>{'Direct SQL Statement'|@getTranslatedString:'Reports'} : </b></td>
 						</tr>
 						<tr>
-							<td colspan="2"><textarea name="directsqlcommand" class="txtBox" rows="5">{$REPORTMINFO}</textarea></td>
+							<td colspan="2">
+								<textarea name="directsqlcommand" id="directsqlcommand" class="txtBox" rows="5">{$REPORTMINFO}</textarea>
+								<br><br>
+								{'cbQuestion'|@getTranslatedString:'cbQuestion'}
+								<input type='hidden' class='small' name="cbquestion_type" id="cbquestion_type" value="cbQuestion">
+								<input id="cbquestion" name="cbquestion" type="hidden" value="">
+								<input
+									id="cbquestion_display"
+									name="cbquestion_display"
+									readonly
+									type="text"
+									style="border:1px solid #bababa;"
+									onclick="return window.open('index.php?module=cbQuestion&action=Popup&html=Popup_picker&form=NewReport&forfield=cbquestion&srcmodule=Reports','vtlibui10wf','width=680,height=602,resizable=0,scrollbars=0,top=150,left=200');"
+									value="">&nbsp;
+								<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{'LBL_SELECT'|@getTranslatedString}" title="{'LBL_SELECT'|@getTranslatedString}"
+									onclick="return window.open('index.php?module=cbQuestion&action=Popup&html=Popup_picker&form=NewReport&forfield=cbquestion&srcmodule=Reports','vtlibui10wf','width=680,height=602,resizable=0,scrollbars=0,top=150,left=200');"
+									align="absmiddle" style='cursor:hand;cursor:pointer'>
+							</td>
 						</tr>
 					{/if}
 					<tr>
