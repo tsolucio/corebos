@@ -13,6 +13,7 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
+require_once 'modules/cbQuestion/cbQuestion.php';
 
 class qactions_Action extends CoreBOS_ActionController {
 
@@ -39,6 +40,11 @@ class qactions_Action extends CoreBOS_ActionController {
 			$field => $value,
 		);
 		vtws_revise($upd, $current_user);
+	}
+
+	public function getSQL() {
+		$record = $this->checkQIDParam();
+		echo json_encode(cbQuestion::getSQL($record));
 	}
 
 	public function testSQL() {
