@@ -336,8 +336,8 @@ if (isset($_REQUEST['convertmode']) && ($_REQUEST['convertmode'] == 'quotetoso' 
 	$associated_prod = getAssociatedProducts('SalesOrder', $focus);
 	$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
 	$smarty->assign('MODE', $focus->mode);
-} elseif (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
-	$smarty->assign('ASSOCIATEDPRODUCTS', $SO_associated_prod);
+} elseif ($isduplicate == 'true') {
+	$associated_prod = $SO_associated_prod;
 	$smarty->assign('AVAILABLE_PRODUCTS', 'true');
 	$smarty->assign('MODE', $focus->mode);
 }

@@ -225,8 +225,8 @@ if ($focus->mode == 'edit' || $isduplicate == 'true') {
 if ($focus->mode == 'edit') {
 	$associated_prod = getAssociatedProducts("PurchaseOrder", $focus);
 	$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
-} elseif (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
-	$smarty->assign('ASSOCIATEDPRODUCTS', $PO_associated_prod);
+} elseif ($isduplicate == 'true') {
+	$associated_prod = $PO_associated_prod;
 	$smarty->assign('AVAILABLE_PRODUCTS', 'true');
 	$smarty->assign('MODE', $focus->mode);
 }

@@ -240,12 +240,11 @@ if ($focus->mode == 'edit' || $isduplicate == 'true') {
 	$smarty->assign('NAME', $recordName);
 	$smarty->assign('UPDATEINFO', updateInfo($record));
 }
-
 if ($focus->mode == 'edit') {
 	$associated_prod = getAssociatedProducts('Quotes', $focus);//getProductDetailsBlockInfo('edit','Quotes',$focus);
 	$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
-} elseif (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
-	$smarty->assign('ASSOCIATEDPRODUCTS', $QUOTE_associated_prod);
+} elseif ($isduplicate == 'true') {
+	$associated_prod = $QUOTE_associated_prod;
 	$smarty->assign('AVAILABLE_PRODUCTS', 'true');
 	$smarty->assign('MODE', $focus->mode);
 } else {
