@@ -57,7 +57,7 @@ $record = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : null;
 $isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : null;
 
 $searchurl = getBasic_Advance_SearchURL();
-$smarty->assign("SEARCH", $searchurl);
+$smarty->assign('SEARCH', $searchurl);
 
 $currencyid = fetchCurrency($current_user->id);
 $rate_symbol = getCurrencySymbolandCRate($currencyid);
@@ -97,7 +97,7 @@ if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] == 'SalesOrd
 }
 // End addition to get products when coming from a salesorder
 $focus->preEditCheck($_REQUEST, $smarty);
-if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == "true") {
+if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == 'true') {
 	if (!empty($_REQUEST['encode_val'])) {
 		global $current_user;
 		$encode_val = vtlib_purify($_REQUEST['encode_val']);
@@ -105,7 +105,7 @@ if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == "true") {
 		$explode_decode_val = explode('&', trim($decode_val, '&'));
 		$tabid = getTabid($currentModule);
 		foreach ($explode_decode_val as $fieldvalue) {
-			$value = explode("=", $fieldvalue);
+			$value = explode('=', $fieldvalue);
 			$field_name_val = $value[0];
 			$field_value =urldecode($value[1]);
 			$finfo = VTCacheUtils::lookupFieldInfo($tabid, $field_name_val);
@@ -143,7 +143,7 @@ if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == "true") {
 }
 if (isset($_REQUEST['product_id']) && $_REQUEST['product_id'] !='') {
 	$focus->column_fields['product_id'] = $_REQUEST['product_id'];
-	$associated_prod = getAssociatedProducts("Products", $focus, $focus->column_fields['product_id']);
+	$associated_prod = getAssociatedProducts('Products', $focus, $focus->column_fields['product_id']);
 	for ($i=1; $i<=count($associated_prod); $i++) {
 		$associated_prod_id = $associated_prod[$i]['hdnProductId'.$i];
 		$associated_prod_prices = getPricesForProducts($currencyid, array($associated_prod_id), 'Products', false);
@@ -160,7 +160,7 @@ if (isset($_REQUEST['product_id']) && $_REQUEST['product_id'] !='') {
 if (!empty($_REQUEST['parent_id']) && !empty($_REQUEST['return_module'])) {
 	if ($_REQUEST['return_module'] == 'Services') {
 		$focus->column_fields['product_id'] = vtlib_purify($_REQUEST['parent_id']);
-		$associated_prod = getAssociatedProducts("Services", $focus, $focus->column_fields['product_id']);
+		$associated_prod = getAssociatedProducts('Services', $focus, $focus->column_fields['product_id']);
 		for ($i=1; $i<=count($associated_prod); $i++) {
 			$associated_prod_id = $associated_prod[$i]['hdnProductId'.$i];
 			$associated_prod_prices = getPricesForProducts($currencyid, array($associated_prod_id), 'Services');
@@ -206,7 +206,7 @@ $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('CATEGORY', $category);
-$smarty->assign("THEME", $theme);
+$smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('ID', $focus->id);
 $smarty->assign('MODE', $focus->mode);
@@ -223,7 +223,7 @@ if ($focus->mode == 'edit' || $isduplicate == 'true') {
 }
 
 if ($focus->mode == 'edit') {
-	$associated_prod = getAssociatedProducts("PurchaseOrder", $focus);
+	$associated_prod = getAssociatedProducts('PurchaseOrder', $focus);
 	$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
 } elseif ($isduplicate == 'true') {
 	$associated_prod = $PO_associated_prod;
@@ -265,37 +265,37 @@ $smarty->assign('customtemplaterows', $customtemplatename);
 $smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
 
 if (isset($_REQUEST['return_module'])) {
-	$smarty->assign("RETURN_MODULE", vtlib_purify($_REQUEST['return_module']));
+	$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
 } else {
-	$smarty->assign("RETURN_MODULE", "PurchaseOrder");
+	$smarty->assign('RETURN_MODULE', 'PurchaseOrder');
 }
 if (isset($_REQUEST['return_action'])) {
-	$smarty->assign("RETURN_ACTION", vtlib_purify($_REQUEST['return_action']));
+	$smarty->assign('RETURN_ACTION', vtlib_purify($_REQUEST['return_action']));
 } else {
-	$smarty->assign("RETURN_ACTION", "index");
+	$smarty->assign('RETURN_ACTION', 'index');
 }
 if (isset($_REQUEST['return_id'])) {
-	$smarty->assign("RETURN_ID", vtlib_purify($_REQUEST['return_id']));
+	$smarty->assign('RETURN_ID', vtlib_purify($_REQUEST['return_id']));
 }
 if (isset($_REQUEST['return_viewname'])) {
-	$smarty->assign("RETURN_VIEWNAME", vtlib_purify($_REQUEST['return_viewname']));
+	$smarty->assign('RETURN_VIEWNAME', vtlib_purify($_REQUEST['return_viewname']));
 }
 $upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize', 3000000, $currentModule);
-$smarty->assign("UPLOADSIZE", $upload_maxsize/1000000); //Convert to MB
-$smarty->assign("UPLOAD_MAXSIZE", $upload_maxsize);
+$smarty->assign('UPLOADSIZE', $upload_maxsize/1000000); //Convert to MB
+$smarty->assign('UPLOAD_MAXSIZE', $upload_maxsize);
 
 // Field Validation Information
 $tabid = getTabid($currentModule);
 $validationData = getDBValidationData($focus->tab_name, $tabid);
 $validationArray = split_validationdataArray($validationData);
 
-$smarty->assign("VALIDATION_DATA_FIELDNAME", $validationArray['fieldname']);
-$smarty->assign("VALIDATION_DATA_FIELDDATATYPE", $validationArray['datatype']);
-$smarty->assign("VALIDATION_DATA_FIELDLABEL", $validationArray['fieldlabel']);
+$smarty->assign('VALIDATION_DATA_FIELDNAME', $validationArray['fieldname']);
+$smarty->assign('VALIDATION_DATA_FIELDDATATYPE', $validationArray['datatype']);
+$smarty->assign('VALIDATION_DATA_FIELDLABEL', $validationArray['fieldlabel']);
 
 // In case you have a date field
-$smarty->assign("CALENDAR_LANG", $app_strings['LBL_JSCALENDAR_LANG']);
-$smarty->assign("CALENDAR_DATEFORMAT", parse_calendardate($app_strings['NTC_DATE_FORMAT']));
+$smarty->assign('CALENDAR_LANG', $app_strings['LBL_JSCALENDAR_LANG']);
+$smarty->assign('CALENDAR_DATEFORMAT', parse_calendardate($app_strings['NTC_DATE_FORMAT']));
 
 // Module Sequence Numbering
 $mod_seq_field = getModuleSequenceField($currentModule);
@@ -303,7 +303,7 @@ if ($focus->mode != 'edit' && $mod_seq_field != null) {
 	$autostr = getTranslatedString('MSG_AUTO_GEN_ON_SAVE');
 	list($mod_seq_string, $mod_seq_prefix, $mod_seq_no, $doNative) = cbEventHandler::do_filter('corebos.filter.ModuleSeqNumber.get', array('', '', '', true));
 	if ($doNative) {
-		$mod_seq_string = $adb->pquery("SELECT prefix, cur_id from vtiger_modentity_num where semodule = ? and active=1", array($currentModule));
+		$mod_seq_string = $adb->pquery('SELECT prefix, cur_id from vtiger_modentity_num where semodule=? and active=1', array($currentModule));
 		$mod_seq_prefix = $adb->query_result($mod_seq_string, 0, 'prefix');
 		$mod_seq_no = $adb->query_result($mod_seq_string, 0, 'cur_id');
 	}
@@ -313,7 +313,7 @@ if ($focus->mode != 'edit' && $mod_seq_field != null) {
 			.' - '. getTranslatedString('LBL_PLEASE_CLICK') .' <a href="index.php?module=Settings&action=CustomModEntityNo&parenttab=Settings&selmodule='
 			.$currentModule.'">'.getTranslatedString('LBL_HERE').'</a> '.getTranslatedString('LBL_TO_CONFIGURE').' '.getTranslatedString($mod_seq_field['label']).'</b>');
 	} else {
-		$smarty->assign("MOD_SEQ_ID", $autostr);
+		$smarty->assign('MOD_SEQ_ID', $autostr);
 	}
 } else {
 	if (!empty($mod_seq_field) && !empty($mod_seq_field['name']) && !empty($focus->column_fields[$mod_seq_field['name']])) {
@@ -334,12 +334,12 @@ if ($focus->mode != 'edit') {
 $smarty->assign('GROUP_TAXES', $tax_details);
 $smarty->assign('SH_TAXES', $sh_tax_details);
 
-$smarty->assign("CURRENCIES_LIST", getAllCurrencies());
+$smarty->assign('CURRENCIES_LIST', getAllCurrencies());
 if ($focus->mode == 'edit') {
 	$inventory_cur_info = getInventoryCurrencyInfo('PurchaseOrder', $focus->id);
-	$smarty->assign("INV_CURRENCY_ID", $inventory_cur_info['currency_id']);
+	$smarty->assign('INV_CURRENCY_ID', $inventory_cur_info['currency_id']);
 } else {
-	$smarty->assign("INV_CURRENCY_ID", $currencyid);
+	$smarty->assign('INV_CURRENCY_ID', $currencyid);
 }
 
 $smarty->assign('CREATEMODE', isset($_REQUEST['createmode']) ? vtlib_purify($_REQUEST['createmode']) : '');

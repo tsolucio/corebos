@@ -70,7 +70,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
 		$quoteid = $_REQUEST['record'];
 		$quote_focus = new Quotes();
 		$quote_focus->id = $quoteid;
-		$quote_focus->retrieve_entity_info($quoteid, "Quotes");
+		$quote_focus->retrieve_entity_info($quoteid, 'Quotes');
 		$focus = getConvertQuoteToSoObject($focus, $quote_focus, $quoteid);
 
 		// Reset the value w.r.t Quote Selected
@@ -78,7 +78,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
 		$rate = $quote_focus->column_fields['conversion_rate'];
 
 		//Added to display the Quotes's associated vtiger_products -- when we create SO from Quotes DetailView
-		$associated_prod = getAssociatedProducts("Quotes", $quote_focus);
+		$associated_prod = getAssociatedProducts('Quotes', $quote_focus);
 		$smarty->assign('CONVERT_MODE', vtlib_purify($_REQUEST['convertmode']));
 		$smarty->assign('QUOTE_ID', $quoteid);
 		$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
@@ -102,7 +102,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
 		$smarty->assign('QUOTE_ID', $focus->column_fields['quote_id']);
 		$quote_focus = new Quotes();
 		$quote_focus->id = $quoteid;
-		$quote_focus->retrieve_entity_info($quoteid, "Quotes");
+		$quote_focus->retrieve_entity_info($quoteid, 'Quotes');
 		$focus = getConvertQuoteToSoObject($focus, $quote_focus, $quoteid);
 		$focus->id = $_REQUEST['record'];
 		$focus->mode = 'edit';
@@ -134,7 +134,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
 		$quoteid = $focus->column_fields['quote_id'];
 		$quote_focus = new Quotes();
 		$quote_focus->id = $quoteid;
-		$quote_focus->retrieve_entity_info($quoteid, "Quotes");
+		$quote_focus->retrieve_entity_info($quoteid, 'Quotes');
 		$focus = getConvertQuoteToSoObject($focus, $quote_focus, $quoteid);
 
 		// Reset the value w.r.t Quote Selected
@@ -162,7 +162,7 @@ if ($isduplicate == 'true') {
 	$smarty->assign('__cbisduplicatedfromrecordid', $record);
 }
 $focus->preEditCheck($_REQUEST, $smarty);
-if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == "true") {
+if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == 'true') {
 	if (!empty($_REQUEST['encode_val'])) {
 		global $current_user;
 		$encode_val = vtlib_purify($_REQUEST['encode_val']);
@@ -170,7 +170,7 @@ if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == "true") {
 		$explode_decode_val = explode('&', trim($decode_val, '&'));
 		$tabid = getTabid($currentModule);
 		foreach ($explode_decode_val as $fieldvalue) {
-			$value = explode("=", $fieldvalue);
+			$value = explode('=', $fieldvalue);
 			$field_name_val = $value[0];
 			$field_value =urldecode($value[1]);
 			$finfo = VTCacheUtils::lookupFieldInfo($tabid, $field_name_val);
@@ -245,7 +245,7 @@ if (isset($_REQUEST['product_id']) && $_REQUEST['product_id'] != '') {
 if (!empty($_REQUEST['parent_id']) && !empty($_REQUEST['return_module'])) {
 	if ($_REQUEST['return_module'] == 'Services') {
 		$focus->column_fields['product_id'] = vtlib_purify($_REQUEST['parent_id']);
-		$associated_prod = getAssociatedProducts("Services", $focus, $focus->column_fields['product_id']);
+		$associated_prod = getAssociatedProducts('Services', $focus, $focus->column_fields['product_id']);
 		for ($i=1; $i<=count($associated_prod); $i++) {
 			$associated_prod_id = $associated_prod[$i]['hdnProductId'.$i];
 			$associated_prod_prices = getPricesForProducts($currencyid, array($associated_prod_id), 'Services');

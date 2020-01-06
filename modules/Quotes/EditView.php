@@ -90,7 +90,7 @@ if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == 'true') {
 		$explode_decode_val = explode('&', trim($decode_val, '&'));
 		$tabid = getTabid($currentModule);
 		foreach ($explode_decode_val as $fieldvalue) {
-			$value = explode("=", $fieldvalue);
+			$value = explode('=', $fieldvalue);
 			$field_name_val = $value[0];
 			$field_value =urldecode($value[1]);
 			$finfo = VTCacheUtils::lookupFieldInfo($tabid, $field_name_val);
@@ -225,7 +225,7 @@ $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('CATEGORY', $category);
-$smarty->assign("THEME", $theme);
+$smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('ID', $focus->id);
 $smarty->assign('MODE', $focus->mode);
