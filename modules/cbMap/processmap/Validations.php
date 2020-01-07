@@ -146,7 +146,11 @@ class Validations extends processcbMap {
 		$validations = array();
 		foreach ($mapping['fields'] as $valfield => $vals) {
 			$fl = $adb->pquery('select fieldlabel from vtiger_field where tabid=? and (columnname=? or fieldname=?)', array($tabid, $valfield, $valfield));
-			$fieldlabel = $adb->query_result($fl, 0, 0);
+			if ($fl && $adb->num_rows($fl)>0) {
+				$fieldlabel = $adb->query_result($fl, 0, 0);
+			} else {
+				$fieldlabel = $valfield;
+			}
 			$i18n = getTranslatedString($fieldlabel, $mapping['origin']);
 			foreach ($vals as $val) {
 				if (isset($screen_values['action']) && $screen_values['action']=='MassEditSave' && empty($screen_values[$valfield.'_mass_edit_check'])) {
