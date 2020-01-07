@@ -1187,6 +1187,30 @@ function validateFileSize(form_ele, uploadSize) {
 	}
 }
 
+function cbTaxclassRequiredValid() {
+	var accepted = false;
+	var i = 1;
+	var taxchk = null;
+	while (!accepted) {
+		taxchk=document.getElementById('tax'+i+'_check');
+		if (!taxchk) {
+			break;
+		}
+		accepted = taxchk.checked;
+		i++;
+	}
+	// and it's value positive
+	if (accepted) {
+		if (document.getElementById('tax'+(i-1)).value < 0) {
+			accepted = false;
+		}
+	}
+	if (!accepted) {
+		alert(alert_arr.CORRECT_TAX_VALUE);
+	}
+	return accepted;
+}
+
 /* Function to Display FileSize while uploading */
 function displayFileSize(form_ele) {
 	var fileSize = form_ele.files[0].size;
@@ -1549,6 +1573,7 @@ function doformValidation(edit_type) {
 			}
 		}
 	}
+	var type='';
 	for (var i=0; i<fieldname.length; i++) {
 		if (edit_type == 'mass_edit') {
 			if (fieldname[i]!='salutationtype') {
@@ -1558,8 +1583,14 @@ function doformValidation(edit_type) {
 				continue;
 			}
 		}
+		if (fieldname[i] == 'taxclass' && (gVTModule=='Products' || gVTModule=='Services')) {
+			type=fielddatatype[i].split('~');
+			if (type[1]=='M' && !cbTaxclassRequiredValid()) {
+				return false;
+			}
+		}
 		if (getObj(fieldname[i]) != null) {
-			var type=fielddatatype[i].split('~');
+			type=fielddatatype[i].split('~');
 			if (type[1]=='M') {
 				if (!emptyCheck(fieldname[i], fieldlabel[i], getObj(fieldname[i]).type)) {
 					return false;
