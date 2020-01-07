@@ -37,11 +37,14 @@ if ($module_import_step == 'Step2') {
 			$uploadfilename = null;
 		}
 	} else {
-		$url = $_REQUEST['module_url'];
+		$url = vtlib_purify($_REQUEST['module_url']);
 		if (!preg_match('%^\w+://%', $url)) {
 			$smarty->assign('MODULEIMPORT_FAILED', 'true');
 			$uploadfilename = null;
 		} else {
+			if (substr($url, -4)=='.git') {
+				$url = substr($url, 0, strlen($url)-4);
+			}
 			if (!preg_match('/.zip$/', $url)) {
 				$url = rtrim($url, '/');
 				$url .= '/archive/master.zip';
