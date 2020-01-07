@@ -170,6 +170,7 @@ class Validations extends processcbMap {
 					case 'date':
 					case 'IBAN_BankAccount':
 					case 'EU_VAT':
+					case 'cbtaxclassrequired':
 						if (isset($val['msg'])) {
 							$v->rule($rule, $valfield)->message($val['msg'])->label($i18n);
 						} else {
@@ -336,10 +337,15 @@ class Validations extends processcbMap {
 		foreach ($validationData as $fname => $finfo) {
 			foreach ($finfo as $flabel => $fvalidation) {
 				if (strpos($fvalidation, '~M')) {
-					if (isset($mapping['fields'][$fname])) {
-						$mapping['fields'][$fname][] = array('rule'=>'required', 'rst'=>array());
+					if ($fname=='taxclass') {
+						unset($mapping['fields'][$fname]);
+						$mapping['fields']['tax1_check'] = array(array('rule'=>'cbtaxclassrequired', 'rst' => array(), 'msg'=> getTranslatedString('ENTER_VALID_TAX')));
 					} else {
-						$mapping['fields'][$fname] = array(array('rule'=>'required', 'rst'=>array()));
+						if (isset($mapping['fields'][$fname])) {
+							$mapping['fields'][$fname][] = array('rule'=>'required', 'rst'=>array());
+						} else {
+							$mapping['fields'][$fname] = array(array('rule'=>'required', 'rst'=>array()));
+						}
 					}
 				}
 				if (strpos($fvalidation, '~OTH~')) { //D~O~OTH~GE~support_start_date~Support Start Date

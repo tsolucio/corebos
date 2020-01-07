@@ -142,4 +142,28 @@ function validate_expression($field, $fieldval, $params, $fields) {
 		return coreBOS_Rule::evaluate($bmap, $fields);
 	}
 }
+
+/** validate taxes on Products and Services **/
+function cbTaxclassRequired($field, $fieldval, $params, $fields) {
+	require_once 'include/utils/InventoryUtils.php';
+	if ($fields['mode'] == 'edit') {
+		$tax_details = getTaxDetailsForProduct($fields['record'], 'available_associated');
+	} else {
+		$tax_details = getAllTaxes('available');
+	}
+	// at least one of the checkboxes must be accepted
+	$accepted = false;
+	$i = 0;
+	while (!$accepted && $i < count($tax_details)) {
+		$accepted = ($fields[$tax_details[$i]['taxname'].'_check']=='on' || $fields[$tax_details[$i]['taxname'].'_check']=='1');
+		$i++;
+	}
+	// and it's value positive
+	if ($accepted) {
+		if ($fields[$tax_details[$i-1]['taxname']] < 0) {
+			return false;
+		}
+	}
+	return $accepted;
+}
 ?>
