@@ -156,6 +156,7 @@ class Validations extends processcbMap {
 				$restrictions = $val['rst'];
 				switch ($rule) {
 					case 'required':
+					case 'optional':
 					case 'accepted':
 					case 'numeric':
 					case 'integer':
