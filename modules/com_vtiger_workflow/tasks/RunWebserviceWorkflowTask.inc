@@ -142,16 +142,21 @@ class RunWebserviceWorkflowTask extends VTTask {
 							$r2 = '';
 						}
 						if (!empty($v['field'])) {
-							$conds[] = $v['field']."=\"$r2\"";
+							$conds[$v['field']] = $r2;
 						}
 						$entity->WorkflowContext[$v['context']] = $r2;
 					}
 					if (count($conds)>0) {
-						$conditions = implode(',', $conds);
 						$q = $adb->pquery('select * from vtiger_entityname where modulename=?', array($origin_module));
 						$table = $adb->query_result($q, 0, 'tablename');
 						$id = $adb->query_result($q, 0, 'entityidfield');
-						$adb->pquery("update $table set $conditions where $id=$therecid", array());
+						$focus = new $origin_module();
+						$focus->mode = 'edit';
+						$focus->id=$therecid;
+						foreach ($conds as $key => $value) {
+							$focus->column_fields[$key] = $value;
+						}
+						$focus->saveentity($origin_module);
 					}
 				}
 			}
@@ -237,20 +242,24 @@ class RunWebserviceWorkflowTask extends VTTask {
 								$r2 = '';
 							}
 							if (!empty($v['field'])) {
-								$conds[] = $v['field']."=\"$r2\"";
+								$conds[$v['field']] = $r2;
 							}
 							$entity->WorkflowContext[$v['context']] = $r2;
 						}
 						if (count($conds)>0) {
-							$conditions = implode(',', $conds);
 							$q = $adb->pquery('select * from vtiger_entityname where modulename=?', array($origin_module));
 							$table = $adb->query_result($q, 0, 'tablename');
 							$id = $adb->query_result($q, 0, 'entityidfield');
-							$adb->pquery("update $table set $conditions where $id=$therecid", array());
+							$focus = new $origin_module();
+							$focus->mode = 'edit';
+							$focus->id=$therecid;
+							foreach ($conds as $key => $value) {
+								$focus->column_fields[$key] = $value;
+							}
+							$focus->saveentity($origin_module);
 						}
 					}
 				}
-
 				//write logs for response
 				$dateofresponse = date('l jS \of F Y h:i:s A');
 				error_log("\n\nResponse header: ".json_encode($options), 3, $logname.'.log');
