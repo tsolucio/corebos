@@ -415,6 +415,16 @@ class Validations extends processcbMap {
 			foreach ($module_to_edit->column_fields as $key => $value) {
 				$screen_values['current_'.$key] = $value;
 			}
+			if ($screen_values['module']=='Products' || $screen_values['module']=='Services') {
+				unset($screen_values['current_taxclass']);
+				$tax_details = getTaxDetailsForProduct($screen_values['record'], 'available_associated');
+				foreach ($tax_details as $tax) {
+					$tax_value = getProductTaxPercentage($tax['taxname'], $screen_values['record']);
+					if ($tax_value!='') {
+						$screen_values['current_'.$tax['taxname']] = $tax['percentage'];
+					}
+				}
+			}
 		}
 		$record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : (isset($screen_values['record']) ? vtlib_purify($screen_values['record']) : 0));
 		$q = "select cbmapid
