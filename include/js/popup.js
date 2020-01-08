@@ -94,7 +94,7 @@ function callSearch(searchtype) {
 		urlstring += '&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups;
 		urlstring += '&searchtype=advance&';
 	}
-	var popuptype = document.getElementsByName('popuptype')[0].value;;
+	var popuptype = document.getElementsByName('popuptype')[0].value;
 	var module = document.getElementById('module').value;
 	var act_tab = document.getElementById('maintab').value;
 	urlstring += '&popuptype='+popuptype;
@@ -208,8 +208,7 @@ function getcbcustominfo(urlstring) {
 
 function getListViewEntries_js(module, url) {
 	gstart='&'+url;
-
-	var popuptype = document.getElementsByName('popuptype')[0].value;;
+	var popuptype = document.getElementsByName('popuptype')[0].value;
 	var urlstring ='module='+module+'&action='+module+'Ajax&file=Popup&ajax=true&'+url;
 	urlstring +=gethiddenelements();
 	var record_id = document.basicSearch.record_id.value;
