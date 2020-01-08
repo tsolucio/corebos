@@ -424,7 +424,7 @@ class Homestuff {
 		$cvid=$adb->query_result($resultcvid, 0, 'customviewid');
 		$maxval=$adb->query_result($resultcvid, 0, 'maxentries');
 		$column_count = $adb->num_rows($resultcvid);
-		$cvid_check_query = $adb->pquery('SELECT * FROM vtiger_customview WHERE cvid = ?', array($cvid));
+		$cvid_check_query = $adb->pquery('SELECT viewname FROM vtiger_customview WHERE cvid=?', array($cvid));
 		if (isPermitted($modname, 'index') == 'yes') {
 			if ($adb->num_rows($cvid_check_query)>0) {
 				$focus = CRMEntity::getInstance($modname);
@@ -457,6 +457,7 @@ class Homestuff {
 				$return_value = array(
 					'ModuleName' => $modname,
 					'cvid' => $cvid,
+					'cvidname' => $cvid_check_query->fields['viewname'],
 					'Maxentries' => $maxval,
 					'Header' => $header,
 					'Entries' => $listview_entries
