@@ -152,6 +152,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 						$id = $adb->query_result($q, 0, 'entityidfield');
 						$focus = new $origin_module();
 						$focus->mode = 'edit';
+						$focus->retrieve_entity_info($therecid, $origin_module);
 						$focus->id=$therecid;
 						foreach ($conds as $key => $value) {
 							$focus->column_fields[$key] = $value;
@@ -252,6 +253,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 							$id = $adb->query_result($q, 0, 'entityidfield');
 							$focus = new $origin_module();
 							$focus->mode = 'edit';
+							$focus->retrieve_entity_info($therecid, $origin_module);
 							$focus->id=$therecid;
 							foreach ($conds as $key => $value) {
 								$focus->column_fields[$key] = $value;
