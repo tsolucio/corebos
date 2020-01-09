@@ -21,7 +21,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $logbg, $from_wf;
+		global $adb, $logbg, $from_wf, $current_user;
 		$from_wf = true;
 		$logbg->debug('> RunWebservice');
 		$util = new VTWorkflowUtils();
@@ -48,6 +48,9 @@ class RunWebserviceWorkflowTask extends VTTask {
 		$headers = $wsconfig['wsheader'];
 		$wsuser = $wsconfig['wsuser'];
 		$wspass = $wsconfig['wspass'];
+
+		$handler = vtws_getModuleHandlerFromName($origin_module, $current_user);
+		$meta = $handler->getMeta();
 
 		if ($wstype == 'REST') {
 			$arrconv = array();
@@ -142,16 +145,23 @@ class RunWebserviceWorkflowTask extends VTTask {
 							$r2 = '';
 						}
 						if (!empty($v['field'])) {
-							$conds[] = $v['field']."=\"$r2\"";
+							$conds[$v['field']] = $r2;
 						}
 						$entity->WorkflowContext[$v['context']] = $r2;
 					}
 					if (count($conds)>0) {
-						$conditions = implode(',', $conds);
 						$q = $adb->pquery('select * from vtiger_entityname where modulename=?', array($origin_module));
 						$table = $adb->query_result($q, 0, 'tablename');
 						$id = $adb->query_result($q, 0, 'entityidfield');
-						$adb->pquery("update $table set $conditions where $id=$therecid", array());
+						$focus = new $origin_module();
+						$focus->mode = 'edit';
+						$focus->retrieve_entity_info($therecid, $origin_module);
+						$focus->id=$therecid;
+						foreach ($conds as $key => $value) {
+							$focus->column_fields[$key] = $value;
+						}
+						$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $meta);
+						$focus->saveentity($origin_module);
 					}
 				}
 			}
@@ -237,20 +247,26 @@ class RunWebserviceWorkflowTask extends VTTask {
 								$r2 = '';
 							}
 							if (!empty($v['field'])) {
-								$conds[] = $v['field']."=\"$r2\"";
+								$conds[$v['field']] = $r2;
 							}
 							$entity->WorkflowContext[$v['context']] = $r2;
 						}
 						if (count($conds)>0) {
-							$conditions = implode(',', $conds);
 							$q = $adb->pquery('select * from vtiger_entityname where modulename=?', array($origin_module));
 							$table = $adb->query_result($q, 0, 'tablename');
 							$id = $adb->query_result($q, 0, 'entityidfield');
-							$adb->pquery("update $table set $conditions where $id=$therecid", array());
+							$focus = new $origin_module();
+							$focus->mode = 'edit';
+							$focus->retrieve_entity_info($therecid, $origin_module);
+							$focus->id=$therecid;
+							foreach ($conds as $key => $value) {
+								$focus->column_fields[$key] = $value;
+							}
+							$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $meta);
+							$focus->saveentity($origin_module);
 						}
 					}
 				}
-
 				//write logs for response
 				$dateofresponse = date('l jS \of F Y h:i:s A');
 				error_log("\n\nResponse header: ".json_encode($options), 3, $logname.'.log');
