@@ -21,7 +21,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $logbg, $from_wf;
+		global $adb, $logbg, $from_wf, $current_user;
 		$from_wf = true;
 		$logbg->debug('> RunWebservice');
 		$util = new VTWorkflowUtils();
@@ -48,6 +48,9 @@ class RunWebserviceWorkflowTask extends VTTask {
 		$headers = $wsconfig['wsheader'];
 		$wsuser = $wsconfig['wsuser'];
 		$wspass = $wsconfig['wspass'];
+
+		$handler = vtws_getModuleHandlerFromName($origin_module, $current_user);
+		$meta = $handler->getMeta();
 
 		if ($wstype == 'REST') {
 			$arrconv = array();
@@ -157,6 +160,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 						foreach ($conds as $key => $value) {
 							$focus->column_fields[$key] = $value;
 						}
+						$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $meta);
 						$focus->saveentity($origin_module);
 					}
 				}
@@ -258,6 +262,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 							foreach ($conds as $key => $value) {
 								$focus->column_fields[$key] = $value;
 							}
+							$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $meta);
 							$focus->saveentity($origin_module);
 						}
 					}
