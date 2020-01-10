@@ -7,6 +7,28 @@
 * All Rights Reserved.
 ********************************************************************************/
 
+html {
+  background: url('/themes/images/content-bg-1.png') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;  
+}
+
+#page-header {
+  z-index: 99;
+  transition: padding 100ms linear, top 150ms linear, margin 150ms linear, width 150ms linear;
+}
+
+#page-header-surplus {
+  overflow: hidden;
+  transition: height 100ms linear;
+}
+
+#page-header-icon {
+  transition: width 180ms linear, height 180ms linear;
+}
+
 /* =========================================================== */
 /* ========================== CBDS =========================== */
 /* =========================================================== */

@@ -506,7 +506,7 @@ if ((!$viewAttachment) && (!$viewAttachment && $action!='home_rss') && $action!=
 		$coreBOS_uiapp_companyname = GlobalVariable::getVariable('Application_UI_CompanyName', $coreBOS_uiapp_name);
 		$coreBOS_uiapp_version = GlobalVariable::getVariable('Application_UI_Version', $coreBOS_app_version);
 		$coreBOS_uiapp_url = GlobalVariable::getVariable('Application_UI_URL', $coreBOS_app_url);
-		echo "<br><br><br><table border=0 cellspacing=0 cellpadding=5 width=100% class=settingsSelectedUI >";
+		echo "<br><br><br><table border=0 cellspacing=0 cellpadding=5 width=100% class=settingsSelectedUI style=\"background: none\">";
 		echo "<tr><td class=small align=left><span style='color: rgb(153, 153, 153);'>".$coreBOS_uiapp_name." <span id='_vtiger_product_version_'>$coreBOS_uiapp_version</span>";
 		$coreBOS_uiapp_showgitversion = GlobalVariable::getVariable('Application_UI_ShowGITVersion', 0);
 		$coreBOS_uiapp_showgitdate = GlobalVariable::getVariable('Application_UI_ShowGITDate', 0);
