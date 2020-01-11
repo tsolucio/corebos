@@ -858,7 +858,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							$value = '<a href="index.php?module=Potentials&action=DetailView&record=' . $potential_id . '">' . textlength_check($potential_name) . '</a>';
 						} elseif ($module == 'Emails' && $relatedlist != '' && ($name == 'Subject' || $name == 'Date Sent' || $name == 'To')) {
 							$list_result_count = $i - 1;
-							$tmp_value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, "list", '', $returnset, (is_object($oCv) ? $oCv->setdefaultviewid : ''));
+							$tmp_value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '', $returnset, (is_object($oCv) ? $oCv->setdefaultviewid : ''));
 							if (Emails::EmailHasBeenSent($entity_id)) {
 								$value = '<img src="themes/images/arrow_up.png">&nbsp;';
 							} else {
@@ -1911,7 +1911,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						.popup_decode_html($bill_state) . '", "' . popup_decode_html($ship_state) . '", "' . popup_decode_html($bill_code) . '", "'
 						.popup_decode_html($ship_code) . '", "' . popup_decode_html($bill_country) . '", "' . popup_decode_html($ship_country) . '","'
 						.popup_decode_html($bill_pobox) . '", "' . popup_decode_html($ship_pobox) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
-				} elseif ($popuptype == "specific_contact_account_address") {
+				} elseif ($popuptype == 'specific_contact_account_address') {
 					require_once 'modules/Accounts/Accounts.php';
 					$acct_focus = new Accounts();
 					$acct_focus->retrieve_entity_info($entity_id, 'Accounts');
