@@ -1279,7 +1279,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
  * Param $focus - module object
  * Param $module - module name
  * Param $entity_id - entity id
- * Param $list_result_count - list result count
+ * Param $list_result_count - row of the field to use
  * Param $mode - mode type
  * Param $popuptype - popup type
  * Param $returnset - list query parameters in url string
@@ -1288,7 +1288,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
  */
 function getValue($field_result, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, $mode, $popuptype, $returnset = '', $viewid = '') {
 	global $log, $app_strings, $current_language, $currentModule, $adb, $current_user, $default_charset;
-	$log->debug('> getValue '.print_r($field_result, true).",list_result,$fieldname,focus,$module,$entity_id,$list_result_count,$mode,$popuptype,$returnset,$viewid");
+	$log->debug('> getValue '.print_r($field_result, true).",list_result,$fieldname,focus,$module,$entity_id,$list_result_count,$mode,$popuptype");
 
 	$tabname = getParentTab();
 	$tabid = getTabid($module);
@@ -1486,71 +1486,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		$attachmentid = $adb->query_result($adb->pquery('SELECT * FROM vtiger_seattachmentsrel WHERE crmid=?', array($entity_id)), 0, 'attachmentsid');
 		$value = '<a href = "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=downloadfile&return_module=' . $module
 			.'&fileid=' . $attachmentid . '&filename=' . $temp_val . '">' . textlength_check($temp_val) . '</a>';
-	} elseif ($uitype == 62) {
-		$parentid = $adb->query_result($list_result, $list_result_count, 'parent_id');
-		$parenttype = $adb->query_result($list_result, $list_result_count, 'parent_type');
-
-		if ($parenttype == 'Leads') {
-			$tablename = 'vtiger_leaddetails';
-			$fieldname = 'lastname';
-			$idname = 'leadid';
-		}
-		if ($parenttype == 'Accounts') {
-			$tablename = 'vtiger_account';
-			$fieldname = 'accountname';
-			$idname = 'accountid';
-		}
-		if ($parenttype == 'Products') {
-			$tablename = 'vtiger_products';
-			$fieldname = 'productname';
-			$idname = 'productid';
-		}
-		if ($parenttype == 'HelpDesk') {
-			$tablename = 'vtiger_troubletickets';
-			$fieldname = 'title';
-			$idname = 'ticketid';
-		}
-		if ($parenttype == 'Invoice') {
-			$tablename = 'vtiger_invoice';
-			$fieldname = 'subject';
-			$idname = 'invoiceid';
-		}
-
-		if ($parentid != '') {
-			$sql = "SELECT $fieldname FROM $tablename WHERE $idname = ?";
-			$fieldvalue = $adb->query_result($adb->pquery($sql, array($parentid)), 0, $fieldname);
-			$value = '<a href=index.php?module=' . $parenttype . '&action=DetailView&record=' . $parentid . '>' . textlength_check($fieldvalue) . '</a>';
-		} else {
-			$value = '';
-		}
-	} elseif ($uitype == 67) {
-		$parentid = $adb->query_result($list_result, $list_result_count, 'parent_id');
-		$parenttype = $adb->query_result($list_result, $list_result_count, 'parent_type');
-
-		if ($parenttype == 'Leads') {
-			$tablename = 'vtiger_leaddetails';
-			$fieldname = 'lastname';
-			$idname = 'leadid';
-		}
-		if ($parenttype == 'Contacts') {
-			$tablename = 'vtiger_contactdetails';
-			$fieldname = 'contactname';
-			$idname = 'contactid';
-		}
-		if ($parentid != '') {
-			$sql = "SELECT $fieldname FROM $tablename WHERE $idname = ?";
-			$fieldvalue = $adb->query_result($adb->pquery($sql, array($parentid)), 0, $fieldname);
-			$value = '<a href=index.php?module=' . $parenttype . '&action=DetailView&record=' . $parentid . '>' . textlength_check($fieldvalue) . '</a>';
-		} else {
-			$value = '';
-		}
-	} elseif ($uitype == 79) {
-		if ($temp_val != '') {
-			$purchaseorder_name = getPoName($temp_val);
-			$value = '<a href=index.php?module=PurchaseOrder&action=DetailView&record=' . $temp_val . '>' . textlength_check($purchaseorder_name) . '</a>';
-		} else {
-			$value = '';
-		}
 	} elseif ($uitype == 98) {
 		$value = '<a href="index.php?action=RoleDetailView&module=Settings&parenttab=Settings&roleid='.$temp_val.'">'.textlength_check(getRoleName($temp_val)).'</a>';
 	} elseif ($uitype == 33) {
@@ -1652,8 +1587,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						require_once 'modules/Contacts/Contacts.php';
 						$cntct_focus = new Contacts();
 						$cntct_focus->retrieve_entity_info($entity_id, 'Contacts');
-						$slashes_temp_val = popup_from_html($temp_val);
-						$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
 						//ADDED TO CHECK THE FIELD PERMISSIONS FOR
 						$xyz = array('mailingstreet', 'mailingcity', 'mailingzip', 'mailingpobox', 'mailingcountry', 'mailingstate', 'otherstreet', 'othercity', 'otherzip', 'otherpobox', 'othercountry', 'otherstate');
 						for ($i = 0; $i < 12; $i++) {
