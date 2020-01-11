@@ -858,7 +858,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							$value = '<a href="index.php?module=Potentials&action=DetailView&record=' . $potential_id . '">' . textlength_check($potential_name) . '</a>';
 						} elseif ($module == 'Emails' && $relatedlist != '' && ($name == 'Subject' || $name == 'Date Sent' || $name == 'To')) {
 							$list_result_count = $i - 1;
-							$tmp_value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '', $returnset, (is_object($oCv) ? $oCv->setdefaultviewid : ''));
+							$tmp_value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
 							if (Emails::EmailHasBeenSent($entity_id)) {
 								$value = '<img src="themes/images/arrow_up.png">&nbsp;';
 							} else {
@@ -871,20 +871,20 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							}
 							$value.= '<a href="javascript:;" onClick="ShowEmail(\'' . $entity_id . '\');">' . textlength_check($tmp_value) . '</a>';
 							if ($name == 'Date Sent') {
-								$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '', $returnset, (is_object($oCv) ? $oCv->setdefaultviewid : ''));
+								$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
 							}
 						} elseif ($module == 'Calendar' && ($fieldname != 'taskstatus' && $fieldname != 'eventstatus')) {
 							if ($activitytype == 'Task') {
 								if (getFieldVisibilityPermission('Calendar', $current_user->id, $fieldname) == '0') {
 									$list_result_count = $i - 1;
-									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '', $returnset, (is_object($oCv) ? $oCv->setdefaultviewid : ''));
+									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
 								} else {
 									$value = '';
 								}
 							} else {
 								if (getFieldVisibilityPermission('Events', $current_user->id, $fieldname) == '0') {
 									$list_result_count = $i - 1;
-									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '', $returnset, (is_object($oCv) ? $oCv->setdefaultviewid : ''));
+									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
 								} else {
 									$value = '';
 								}
@@ -894,7 +894,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							$value = $val_raw;
 						} else {
 							$list_result_count = $i - 1;
-							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '', $returnset, (is_object($oCv) ? $oCv->setdefaultviewid : ''));
+							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
 							$uicolarr = isset($ui_col_array[$fieldname]) ? $ui_col_array[$fieldname] : array('1'=>$fieldname);
 							foreach ($uicolarr as $key => $val) {
 								if ($key=='typeofdata') {
@@ -990,16 +990,12 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 
 /* * This function generates the List view entries in a popup list view
  * Param $focus - module object
+ * Param $module
  * Param $list_result - resultset of a listview query
  * Param $navigation_array - navigation values in an array
- * Param $relatedlist - check for related list flag
- * Param $returnset - list query parameters in url string
- * Param $edit_action - Edit action value
- * Param $del_action - delete action value
- * Param $oCv - vtiger_customview object
  * Returns an array type
  */
-function getSearchListViewEntries($focus, $module, $list_result, $navigation_array, $form = '') {
+function getSearchListViewEntries($focus, $module, $list_result, $navigation_array) {
 	global $log, $adb, $app_strings, $current_user;
 	$log->debug('> getSearchListViewEntries ' . get_class($focus) . ',' . $module . ',' . $list_result);
 
@@ -1157,7 +1153,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 							}
 						} else {
 							$list_result_count = $i - 1;
-							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'search', $focus->popup_type, $form);
+							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'search', $focus->popup_type);
 						}
 					}
 					// vtlib customization: For listview javascript triggers
@@ -1286,7 +1282,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
  * Param $viewid - custom view id
  * Returns an string value
  */
-function getValue($field_result, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, $mode, $popuptype, $returnset = '', $viewid = '') {
+function getValue($field_result, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, $mode, $popuptype) {
 	global $log, $app_strings, $current_language, $currentModule, $adb, $current_user, $default_charset;
 	$log->debug('> getValue '.print_r($field_result, true).",list_result,$fieldname,focus,$module,$entity_id,$list_result_count,$mode,$popuptype");
 

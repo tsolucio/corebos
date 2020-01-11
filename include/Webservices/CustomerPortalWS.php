@@ -745,7 +745,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 							$value = textlength_check($potential_name);
 						} elseif ($module =='Emails' && $relatedlist != '' && ($name=='Subject' || $name=='Date Sent' || $name == 'To')) {
 							$list_result_count = $i-1;
-							$tmp_value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '', $returnset, $oCv->setdefaultviewid, false);
+							$tmp_value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
 							$tmp_value = evvt_strip_html_links($tmp_value);
 							$value = textlength_check($tmp_value);
 							if ($name == 'Date Sent') {
@@ -753,7 +753,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 								$result=$adb->pquery($sql, array($entity_id));
 								$email_flag=$adb->query_result($result, 0, 'email_flag');
 								if ($email_flag != 'SAVED') {
-									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '', $returnset, $oCv->setdefaultviewid, false);
+									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
 									$value = evvt_strip_html_links($value);
 								} else {
 									$value = '';
@@ -763,7 +763,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 							if ($activitytype == 'Task') {
 								if (getFieldVisibilityPermission('Calendar', $current_user->id, $fieldname) == '0') {
 									$list_result_count = $i-1;
-									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '', $returnset, $oCv->setdefaultviewid, false);
+									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
 									$value = evvt_strip_html_links($value);
 								} else {
 									$value = '';
@@ -771,7 +771,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 							} else {
 								if (getFieldVisibilityPermission('Events', $current_user->id, $fieldname) == '0') {
 									$list_result_count = $i-1;
-									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '', $returnset, $oCv->setdefaultviewid, false);
+									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
 									$value = evvt_strip_html_links($value);
 								} else {
 									$value = '';
@@ -779,7 +779,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 							}
 						} else {
 							$list_result_count = $i-1;
-							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '', $returnset, $oCv->setdefaultviewid, false);
+							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
 							$value = evvt_strip_html_links($value);
 						}
 					}

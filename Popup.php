@@ -72,7 +72,6 @@ if (!empty($_REQUEST['popqc']) && $_REQUEST['popqc'] = 'true' && empty($_REQUEST
 	$_REQUEST['advft_criteria'] = '[{"groupid":"1","columnname":"'.$optionvalue.'","comparator":"e","value":"'.$fldval.'","columncondition":""}]';
 }
 
-$form = isset($_REQUEST['form']) ? vtlib_purify($_REQUEST['form']) : '';
 //added to get relatedto field value for todo, while selecting from the popup list, after done the alphabet or basic search.
 if (isset($_REQUEST['maintab']) && $_REQUEST['maintab'] != '') {
 	$act_tab = vtlib_purify($_REQUEST['maintab']);
@@ -501,7 +500,7 @@ $listview_header = getSearchListViewHeader($focus, $currentModule, $url_string, 
 $smarty->assign('LISTHEADER', $listview_header);
 $smarty->assign('HEADERCOUNT', count($listview_header)+1);
 
-$listview_entries = getSearchListViewEntries($focus, $currentModule, $list_result, $navigation_array, $form);
+$listview_entries = getSearchListViewEntries($focus, $currentModule, $list_result, $navigation_array);
 $smarty->assign('LISTENTITY', $listview_entries);
 if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, $currentModule)) {
 	$record_string = getRecordRangeMessage($list_result, $limstart, $noofrows);
