@@ -3892,8 +3892,11 @@ function html_substr($str, $start, $length = null) {
 	}
 }
 
-function counterValue() {
+function counterValue($reset = false) {
 	static $counter = 0;
+	if ($reset) {
+		$counter = -1;
+	}
 	$counter = $counter + 1;
 	return $counter;
 }
