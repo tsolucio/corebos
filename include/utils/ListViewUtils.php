@@ -1450,16 +1450,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		}
 	} elseif ($uitype == 13 && (!empty($_REQUEST['action']) && $_REQUEST['action'] != 'Popup' && (empty($_REQUEST['file']) || $_REQUEST['file'] != 'Popup'))) {
 		if (isset($_SESSION['internal_mailer']) && $_SESSION['internal_mailer'] == 1) {
-			//check added for email link in user detailview
-			if ($module == 'Calendar') {
-				if (getActivityType($entity_id) == 'Task') {
-					$tabid = 9;
-				} else {
-					$tabid = 16;
-				}
-			} else {
-				$tabid = getTabid($module);
-			}
+			$tabid = getTabid($module);
 			$fieldid = getFieldid($tabid, $fieldname);
 			if (empty($popuptype)) {
 				$value = '<a href="javascript:InternalMailer(' . $entity_id . ',' . $fieldid . ',\'' . $fieldname . '\',\'' . $module . '\',\'record_id\');">' . textlength_check($temp_val) . '</a>';
@@ -2154,7 +2145,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					}
 				}
 			}
-		} elseif ($module == 'Calendar' && ($fieldname == 'time_start' || $fieldname == 'time_end')) {
+		} elseif ($module == 'cbCalendar' && ($fieldname == 'time_start' || $fieldname == 'time_end')) {
 			$dateField = 'date_start';
 			if ($fieldname == 'time_end') {
 				$dateField = 'due_date';
