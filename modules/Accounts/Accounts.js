@@ -55,11 +55,6 @@ function add_data_to_relatedlist(entity_id, recordid) {
 	opener.document.location.href = 'index.php?module=Emails&action=updateRelations&destination_module=Accounts&entityid=' + entity_id + '&parentid=' + recordid;
 }
 
-function set_return_formname_specific(formname, product_id, product_name) {
-	window.opener.document.EditView1.account_id_display.value = product_name;
-	window.opener.document.EditView1.account_id.value = product_id;
-}
-
 function set_return_address(account_id, account_name, bill_street, ship_street, bill_city, ship_city, bill_state, ship_state, bill_code, ship_code, bill_country, ship_country, bill_pobox, ship_pobox) {
 	if (document.getElementById('from_link').value != '') {
 		window.opener.document.QcEditView.account_id_display.value = account_name;

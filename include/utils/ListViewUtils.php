@@ -1625,11 +1625,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 							$value .= "<input type='hidden' id='document_attachment_{$entity_id}' value='{$attachment}'>";
 						}
 					}
-				} elseif ($popuptype == 'formname_specific') {
-					$slashes_temp_val = popup_from_html($temp_val);
-					$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
-					$count = counterValue();
-					$value = '<a href="javascript:window.close();" onclick=\'set_return_formname_specific("' . $_REQUEST['form'] . '", "' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
 				} elseif ($popuptype == 'inventory_prod') {
 					$row_id = $_REQUEST['curr_row'];
 

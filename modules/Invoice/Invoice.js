@@ -38,11 +38,6 @@ function set_return_specific(product_id, product_name) {
 	fldId.value = product_id;
 }
 
-function set_return_formname_specific(formname, product_id, product_name) {
-	window.opener.document.EditView1.product_name.value = product_name;
-	window.opener.document.EditView1.product_id.value = product_id;
-}
-
 function set_return_inventory(product_id, product_name, unitprice, qtyinstock, curr_row) {
 	window.opener.document.EditView.elements['txtProduct'+curr_row].value = product_name;
 	window.opener.document.EditView.elements['hdnProductId'+curr_row].value = product_id;

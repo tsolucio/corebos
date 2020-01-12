@@ -31,11 +31,6 @@ function set_return_specific(product_id, product_name) {
 	fldId.value = product_id;
 }
 
-function set_return_formname_specific(formname, product_id, product_name) {
-	window.opener.document.EditView1.product_name.value = product_name;
-	window.opener.document.EditView1.product_id.value = product_id;
-}
-
 function set_return_product(product_id, product_name) {
 	if (document.getElementById('from_link').value != '') {
 		window.opener.document.QcEditView.parent_name.value = product_name;
