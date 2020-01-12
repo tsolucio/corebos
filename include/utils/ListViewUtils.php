@@ -1286,7 +1286,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 	global $log, $app_strings, $current_language, $currentModule, $adb, $current_user, $default_charset;
 	$log->debug('> getValue '.print_r($field_result, true).",list_result,$fieldname,focus,$module,$entity_id,$list_result_count,$mode,$popuptype");
 
-	$tabname = getParentTab();
 	$tabid = getTabid($module);
 	return_module_language($current_language, $module);
 	$uicolarr = isset($field_result[$fieldname]) ? $field_result[$fieldname] : array('1'=>$fieldname);
@@ -2113,30 +2112,29 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 				if (($module == 'Leads' && $colname == 'lastname') || ($module == 'Contacts' && $colname == 'lastname')) {
 					$count = counterValue();
 					$value = '<a href="index.php?action=DetailView&module='.$module.'&record='.$entity_id.'" id='.$count.'>'.textlength_check($temp_val).'</a>';
-				} elseif ($module == 'Calendar') {
+				} elseif ($module == 'cbCalendar') {
 					$actvity_type = $adb->query_result($list_result, $list_result_count, 'activitytype');
 					$actvity_type = ($actvity_type != '') ? $actvity_type : $adb->query_result($list_result, $list_result_count, 'type');
+					$count = counterValue();
 					if ($actvity_type == 'Task') {
-						$count = counterValue();
-						$value = '<a href="index.php?action=DetailView&module=cbCalendar&record=' . $entity_id . '&activity_mode=Task&parenttab=' . $tabname . '" id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+						$value = '<a href="index.php?action=DetailView&module=cbCalendar&record='.$entity_id.'&activity_mode=Task" id='.$count.'>'.textlength_check($temp_val).'</a>';
 					} else {
-						$count = counterValue();
-						$value = '<a href="index.php?action=DetailView&module=cbCalendar&record=' . $entity_id . '&activity_mode=Events&parenttab=' . $tabname . '" id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+						$value = '<a href="index.php?action=DetailView&module=cbCalendar&record='.$entity_id.'&activity_mode=Events" id='.$count.'>'.textlength_check($temp_val).'</a>';
 					}
 				} elseif ($module == 'Emails') {
 					$value = $temp_val;
 				} elseif (($module == 'Users' && $colname == 'last_name')) {
 					$temp_val = getFullNameFromQResult($list_result, $list_result_count, $module);
-					$value = '<a href="index.php?action=DetailView&module=' . $module . '&record=' . $entity_id . '&parenttab=' . $tabname . '">' . textlength_check($temp_val) . '</a>';
+					$value = '<a href="index.php?action=DetailView&module='.$module.'&record='.$entity_id.'">'.textlength_check($temp_val).'</a>';
 				} else {
 					$count = counterValue();
 					$opennewtab = GlobalVariable::getVariable('Application_OpenRecordInNewXOnRelatedList', '', $module);
 					if ($opennewtab=='') {
-						$value = '<a href="index.php?action=DetailView&module=' . $module . '&record=' . $entity_id . '&parenttab=' . $tabname . '" id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+						$value = '<a href="index.php?action=DetailView&module='.$module.'&record='.$entity_id.'" id='.$count.'>'.textlength_check($temp_val).'</a>';
 					} elseif ($opennewtab=='window') {
-						$value = '<a href="#" onclick="window.open(\'index.php?action=DetailView&module=' . $module . '&record=' . $entity_id . '&parenttab=' . $tabname . "', '$module-$entity_id', 'width=1300, height=900, scrollbars=yes'); return false;" . '" id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+						$value = '<a href="#" onclick="window.open(\'index.php?action=DetailView&module='.$module.'&record='.$entity_id."', '$module-$entity_id', 'width=1300, height=900, scrollbars=yes'); return false;".'" id='.$count.'>'.textlength_check($temp_val).'</a>';
 					} else {
-						$value = '<a href="index.php?action=DetailView&module=' . $module . '&record=' . $entity_id . '&parenttab=' . $tabname . '" id = ' . $count . ' target="_blank" >' . textlength_check($temp_val) . '</a>';
+						$value = '<a href="index.php?action=DetailView&module='.$module.'&record='.$entity_id.'" id='.$count.' target="_blank" >'.textlength_check($temp_val).'</a>';
 					}
 				}
 			}
