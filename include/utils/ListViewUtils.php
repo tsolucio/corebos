@@ -1297,11 +1297,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		$colname = $value;
 	}
 	$field_val = $adb->query_result($list_result, $list_result_count, $colname);
-	if ($uitype != 8) {
-		$temp_val = html_entity_decode($field_val, ENT_QUOTES, $default_charset);
-	} else {
-		$temp_val = $field_val;
-	}
+	$temp_val = html_entity_decode($field_val, ENT_QUOTES, $default_charset);
 	// vtlib customization: New uitype to handle relation between modules
 	if ($uitype == '10') {
 		$parent_id = $field_val;
@@ -1544,7 +1540,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		}
 	} elseif ($uitype == 8) {
 		if (!empty($temp_val)) {
-			$temp_val = html_entity_decode($temp_val, ENT_QUOTES, $default_charset);
 			$value = vt_suppressHTMLTags(implode(',', json_decode($temp_val, true)));
 		}
 	} elseif ($uitype == 7) {
