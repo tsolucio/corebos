@@ -257,7 +257,7 @@ class cbQuestion extends CRMEntity {
 				'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
 				'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
 				'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),
-				'answer' => 'graph '.$q->column_fields['typeprops']."\n".html_entity_decode($q->column_fields['qcolumns'], ENT_QUOTES, $default_charset),
+				'answer' => 'graph '.$q->column_fields['typeprops']."\n\n".html_entity_decode($q->column_fields['qcolumns'], ENT_QUOTES, $default_charset),
 			);
 		} else {
 			include_once 'include/Webservices/Query.php';
