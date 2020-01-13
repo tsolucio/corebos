@@ -3408,6 +3408,10 @@ function vt_suppressHTMLTags($string) {
 	return preg_replace(array('/</', '/>/', '/"/'), array('&lt;', '&gt;', '&quot;'), $string);
 }
 
+function gtltTagsToHTML($string) {
+	return preg_replace(array('/</', '/>/'), array('&lt;', '&gt;'), $string);
+}
+
 function vt_hasRTE() {
 	return GlobalVariable::getVariable('Application_Use_RTE', 1);
 }
