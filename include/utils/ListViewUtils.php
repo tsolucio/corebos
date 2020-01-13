@@ -3563,7 +3563,7 @@ function textlength_check($field_val, $overrideLength = 0) {
 	} else {
 		$temp_val = $field_val;
 	}
-	return $temp_val;
+	return gtltTagsToHTML($temp_val);
 }
 
 /** Function to get permitted fields of current user of a particular module to find duplicate records */
