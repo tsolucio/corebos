@@ -1188,6 +1188,9 @@ function validateFileSize(form_ele, uploadSize) {
 }
 
 function cbTaxclassRequiredValid() {
+	if (!document.getElementById('tax1_check')) {
+		return true;
+	}
 	var accepted = false;
 	var i = 1;
 	var taxchk = null;
@@ -4885,6 +4888,12 @@ function QCformValidate() {
 	eval(st.innerHTML);
 	for (var i=0; i<qcfieldname.length; i++) {
 		var curr_fieldname = qcfieldname[i];
+		if (qcfieldname[i] == 'taxclass' && (document.forms.QcEditView.module.value=='Products' || document.forms.QcEditView.module.value=='Services')) {
+			var type=qcfielddatatype[i].split('~');
+			if (type[1]=='M' && !cbTaxclassRequiredValid()) {
+				return false;
+			}
+		}
 		if (window.document.QcEditView[curr_fieldname] != null) {
 			var type=qcfielddatatype[i].split('~');
 			var input_type = window.document.QcEditView[curr_fieldname].type;
