@@ -9200,7 +9200,7 @@ if (workbox) {
   },
   {
     "url": "include/js/general.js",
-    "revision": "b2e18c95979bf9b00a4369519f12cbcc"
+    "revision": "9ed4d35f87101099c04ee219db10487a"
   },
   {
     "url": "include/js/hu_hu.lang.js",
@@ -9264,7 +9264,7 @@ if (workbox) {
   },
   {
     "url": "include/js/popup.js",
-    "revision": "78fc1dbeb4e8e267772afbf5d4c9fc14"
+    "revision": "9ea67febb4daaa61456e88a625df209b"
   },
   {
     "url": "include/js/pt_br.lang.js",
@@ -9724,7 +9724,7 @@ if (workbox) {
   },
   {
     "url": "modules/SalesOrder/SalesOrder.js",
-    "revision": "f39757087df369c9e6a0451c71dc038b"
+    "revision": "20916140c09d05b2965c64907a7a76d0"
   },
   {
     "url": "modules/Settings/Settings.js",
@@ -9744,7 +9744,7 @@ if (workbox) {
   },
   {
     "url": "modules/Products/Products.js",
-    "revision": "3d7a85576cf2a244be2ebb71926fe890"
+    "revision": "ccfc370693479b43ba71ff20822c3199"
   },
   {
     "url": "modules/ModComments/ModComments.js",
@@ -9764,7 +9764,7 @@ if (workbox) {
   },
   {
     "url": "modules/Assets/Assets.js",
-    "revision": "141a6ee0aca308dafbcd94c375d4db6c"
+    "revision": "69636c3bb0f5569277b10c98016af69a"
   },
   {
     "url": "modules/Emails/Emails.js",
@@ -9828,7 +9828,7 @@ if (workbox) {
   },
   {
     "url": "modules/Accounts/Accounts.js",
-    "revision": "3756bbb7779e531b7866ee82190d46b9"
+    "revision": "30d1fe6fb85db01cd7a3661ab4e5ed60"
   },
   {
     "url": "modules/cbMap/cbMap.js",
@@ -9844,7 +9844,7 @@ if (workbox) {
   },
   {
     "url": "modules/Invoice/Invoice.js",
-    "revision": "9313f7a8d83ca5f1cd8a666086c3605d"
+    "revision": "6491883f6fec8e2268507b4acb12e98a"
   },
   {
     "url": "modules/CobroPago/CobroPago.js",
@@ -9904,7 +9904,7 @@ if (workbox) {
   },
   {
     "url": "modules/Services/Services.js",
-    "revision": "74287451dfbb75a08787abb5ef195eeb"
+    "revision": "d34e13ea0f282e64fa4b8483157228d0"
   },
   {
     "url": "modules/Vendors/Vendors.js",
@@ -9952,11 +9952,11 @@ if (workbox) {
   },
   {
     "url": "modules/Quotes/Quotes.js",
-    "revision": "8f1160d87b3221354d4cf0d5bfde30b5"
+    "revision": "e13706328f79bdc133480d480ede4968"
   },
   {
     "url": "modules/PurchaseOrder/PurchaseOrder.js",
-    "revision": "3dff644c53c450fc2e197316662b3a8f"
+    "revision": "e7a778edc2cbf9bbc6849469beb2746e"
   },
   {
     "url": "include/Webservices/WSClient.js",
