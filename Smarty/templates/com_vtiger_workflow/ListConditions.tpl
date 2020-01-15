@@ -10,13 +10,32 @@
 -->*}
 <script>
 function setTabToggle(h, s) {
-	document.getElementById(h).classList.add('slds-hide');
-	document.getElementById(h).classList.remove('slds-show');
-	document.getElementById(h+'-tab').classList.remove('slds-is-active');
-	document.getElementById(s).classList.add('slds-show');
-	document.getElementById(s).classList.remove('slds-hide');
-	document.getElementById(s+'-tab').classList.add('slds-is-active');
+	//allow switching tabs only if seleted wf trigger is `Schedule` or `System` otherwise `Record Set` tab stays disabled
+	var selectedTrigger = $('input[name="execution_condition"]:checked').val();
+	if(selectedTrigger=='ON_SCHEDULE' || selectedTrigger=='MANUAL') {
+		document.getElementById(h).classList.add('slds-hide');
+		document.getElementById(h).classList.remove('slds-show');
+		document.getElementById(h+'-tab').classList.remove('slds-is-active');
+		document.getElementById(s).classList.add('slds-show');
+		document.getElementById(s).classList.remove('slds-hide');
+		document.getElementById(s+'-tab').classList.add('slds-is-active');
+	}
 }
+
+//switch to conditions tab if tab-records is shown while changing selected trigger
+$('input[name="execution_condition"]').click(function(){
+	if($(this).val()!='ON_SCHEDULE' && $(this).val()!='MANUAL') {
+		document.getElementById('tab-records').classList.add('slds-hide');
+		document.getElementById('tab-records').classList.remove('slds-show');
+		document.getElementById('tab-records-tab').classList.remove('slds-is-active');
+		document.getElementById('tab-records-tab').classList.add('disabled');
+		document.getElementById('tab-conditions').classList.add('slds-show');
+		document.getElementById('tab-conditions').classList.remove('slds-hide');
+		document.getElementById('tab-conditions-tab').classList.add('slds-is-active');
+	} else {
+		document.getElementById('tab-records-tab').classList.remove('disabled');
+	}
+});
 </script>
 
 <div class="slds-tabs_default" style="height:12rem">
@@ -32,7 +51,7 @@ function setTabToggle(h, s) {
 				</span>
 			</span>{$MOD.LBL_CONDITIONS}</a>
 		</li>
-		<li id="tab-records-tab" class="slds-tabs_default__item" title="{'Record Set'|@getTranslatedString:$MODULE_NAME}" role="presentation">
+		<li id="tab-records-tab" class="disabled slds-tabs_default__item" title="{'Record Set'|@getTranslatedString:$MODULE_NAME}" role="presentation">
 			<a class="slds-tabs_default__link" href="javascript:setTabToggle('tab-conditions', 'tab-records');" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-2" id="tab-default-2__item">
 			<span class="slds-tabs__left-icon">
 				<span class="slds-icon_container slds-icon-standard-case" title="{'Record Set'|@getTranslatedString:$MODULE_NAME}">
