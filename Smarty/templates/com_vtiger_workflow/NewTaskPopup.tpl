@@ -10,7 +10,7 @@
 -->*}
 
 <!-- A popup to create a new task-->
-<div id="new_task_popup" class='layerPopup' style="display:none;">
+<div id="new_task_popup" class='layerPopup' style="display:none;z-index:99">
 	<table width="100%" cellspacing="0" cellpadding="5" border="0" class="layerHeadingULine">
 		<tr>
 			<td width="60%" align="left" class="layerPopupHeading">
