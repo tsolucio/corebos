@@ -145,6 +145,9 @@ function validate_expression($field, $fieldval, $params, $fields) {
 
 /** validate taxes on Products and Services **/
 function cbTaxclassRequired($field, $fieldval, $params, $fields) {
+	if ($fields['action'] == 'DetailViewEdit') {
+		return true;
+	}
 	require_once 'include/utils/InventoryUtils.php';
 	if ($fields['mode'] == 'edit') {
 		$tax_details = getTaxDetailsForProduct($fields['record'], 'available_associated');
