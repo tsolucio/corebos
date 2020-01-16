@@ -193,6 +193,7 @@ class Validations extends processcbMap {
 					case 'dateBefore':
 					case 'dateAfter':
 					case 'contains':
+					case 'RelatedModuleExists':
 						if (substr($restrictions[0], 0, 2)=='{{' && substr($restrictions[0], -2)=='}}'
 							&& isset($screen_values[substr($restrictions[0], 2, strlen($restrictions[0])-4)])
 						) {

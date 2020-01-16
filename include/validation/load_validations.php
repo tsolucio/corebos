@@ -24,6 +24,7 @@ class cbValidator extends Validator {
 		'notDuplicate' => 'validate_notDuplicate',
 		'expression' => 'validate_expression',
 		'cbtaxclassrequired' => 'cbTaxclassRequired',
+		'RelatedModuleExists' => 'validateRelatedModuleExists',
 	);
 
 	public function __construct($data, $fields = array()) {

@@ -117,6 +117,50 @@ function validate_notDuplicate($field, $fieldval, $params, $fields) {
 	}
 }
 
+/** check if related record exists on given module
+ * params[0] related module name
+ */
+function validateRelatedModuleExists($field, $fieldval, $params, $fields) {
+	global $adb;
+	$existsrelated = true;
+	$relatedmodule = $params[0];
+	if (!empty($relatedmodule) && !empty($fields['record']) && !empty($fields['module'])) {
+		$crmid = $fields['record'];
+		$module = $fields['module'];
+		$moduleId = getTabid($module);
+		$relatedModuleId = getTabid($relatedmodule);
+		$moduleInstance = CRMEntity::getInstance($module);
+		$relationResult = $adb->pquery(
+			'SELECT * FROM vtiger_relatedlists WHERE tabid=? AND related_tabid=?',
+			array($moduleId, $relatedModuleId)
+		);
+
+		if (!$relationResult || !$adb->num_rows($relationResult)) {
+			// MODULES_NOT_RELATED
+			return false;
+		}
+
+		$relationInfo = $adb->fetch_array($relationResult);
+		$params = array($crmid, $moduleId, $relatedModuleId);
+		global $GetRelatedList_ReturnOnlyQuery;
+		$holdValue = $GetRelatedList_ReturnOnlyQuery;
+		$GetRelatedList_ReturnOnlyQuery = true;
+		$relationData = call_user_func_array(array($moduleInstance, $relationInfo['name']), $params);
+		if (!isset($relationData['query'])) {
+			// OPERATIONNOTSUPPORTED
+			return false;
+		}
+		$GetRelatedList_ReturnOnlyQuery = $holdValue;
+		$query = mkXQuery($relationData['query'], '1');
+		$query = stripTailCommandsFromQuery($query).' LIMIT 1';
+		$result = $adb->pquery($relationData['query'], array());
+		if ($result) {
+			$existsrelated = ($adb->num_rows($result) > 0);
+		}
+	}
+	return $existsrelated;
+}
+
 /** accept a workflow expression and evaluate it
  * in the context of the new screen values
  */
