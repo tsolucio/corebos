@@ -34,6 +34,13 @@ $('input[name="execution_condition"]').click(function(){
 		document.getElementById('tab-conditions-tab').classList.add('slds-is-active');
 	} else {
 		document.getElementById('tab-records-tab').classList.remove('disabled');
+		//enable button "Launch Now" only if System trigger is selected
+		if($(this).val()!='MANUAL') {
+			$('.btn-launch_now').attr("disabled", true);
+		}
+		else {
+			$('.btn-launch_now').attr("disabled", false);
+		}
 	}
 });
 </script>
@@ -51,7 +58,7 @@ $('input[name="execution_condition"]').click(function(){
 				</span>
 			</span>{$MOD.LBL_CONDITIONS}</a>
 		</li>
-		<li id="tab-records-tab" class="disabled slds-tabs_default__item" title="{'Record Set'|@getTranslatedString:$MODULE_NAME}" role="presentation">
+		<li id="tab-records-tab" class="slds-tabs_default__item" title="{'Record Set'|@getTranslatedString:$MODULE_NAME}" role="presentation">
 			<a class="slds-tabs_default__link" href="javascript:setTabToggle('tab-conditions', 'tab-records');" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-2" id="tab-default-2__item">
 			<span class="slds-tabs__left-icon">
 				<span class="slds-icon_container slds-icon-standard-case" title="{'Record Set'|@getTranslatedString:$MODULE_NAME}">
@@ -96,19 +103,19 @@ $('input[name="execution_condition"]').click(function(){
 					readonly
 					type="text"
 					style="border:1px solid #bababa;"
-					onclick='return WHATEVER;'
+					onclick='return vtlib_open_popup_window("","cbquestion", "cbQuestion","");'
 					value="">&nbsp;
-				<span class="slds-icon_container slds-icon-standard-choice" title="choose">
+				<span class="slds-icon_container slds-icon-standard-choice" title="choose" onclick='return vtlib_open_popup_window("","cbquestion", "cbQuestion","");'>
 				<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
 				</svg>
 				</span>
-				<span class="slds-icon_container slds-icon-standard-choice" title="add">
+				<span class="slds-icon_container slds-icon-standard-choice" title="add" onclick='return window.open("index.php?module=cbQuestion&action=EditView");'>
 				<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_create"></use>
 				</svg>
 				</span>
-				<span class="slds-icon_container slds-icon-standard-choice" title="clear">
+				<span class="slds-icon_container slds-icon-standard-choice" title="clear" onclick="document.getElementById('cbquestion').value = ''; document.getElementById('cbquestion_display').value = ''; return false;">
 				<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
 				</svg>
@@ -129,19 +136,19 @@ $('input[name="execution_condition"]').click(function(){
 					readonly
 					type="text"
 					style="border:1px solid #bababa;"
-					onclick='return WHATEVER;'
+					onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=EditView&forfield=recordset&query=true&search=true&searchtype=BasicSearch&search_field=maptype&search_text=Record%20Set%20Mapping', '', 'width=640,height=602,resizable=0,scrollbars=0');"
 					value="">&nbsp;
-				<span class="slds-icon_container slds-icon-standard-choice" title="choose">
+				<span class="slds-icon_container slds-icon-standard-choice" title="choose" onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=EditView&forfield=recordset&query=true&search=true&searchtype=BasicSearch&search_field=maptype&search_text=Record%20Set%20Mapping', '', 'width=640,height=602,resizable=0,scrollbars=0');">
 				<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
 				</svg>
 				</span>
-				<span class="slds-icon_container slds-icon-standard-choice" title="add">
+				<span class="slds-icon_container slds-icon-standard-choice" title="add" onclick='return window.open("index.php?module=cbMap&action=EditView");'>
 				<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_create"></use>
 				</svg>
 				</span>
-				<span class="slds-icon_container slds-icon-standard-choice" title="clear">
+				<span class="slds-icon_container slds-icon-standard-choice" title="clear" onclick="document.getElementById('recordset').value = ''; document.getElementById('recordset_display').value = ''; return false;">
 				<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
 				</svg>
@@ -155,7 +162,7 @@ $('input[name="execution_condition"]').click(function(){
 			<span class="slds-radio_faux"></span>
 			<span class="slds-form-element__label">
 				<span style="width:150px;display:inline-block;">{'Record'|@getTranslatedString}</span>
-				<input type='hidden' class='small' name="onerecord_type" id="onerecord_type" value="WORKFLOW_MODULE">
+				<input type='hidden' class='small' name="onerecord_type" id="onerecord_type" value={$workflow->moduleName}>
 				<input id="onerecord" name="onerecord" type="hidden" value="">
 				<input
 					id="onerecord_display"
@@ -163,19 +170,19 @@ $('input[name="execution_condition"]').click(function(){
 					readonly
 					type="text"
 					style="border:1px solid #bababa;"
-					onclick='return WHATEVER;'
+					onclick='return vtlib_open_popup_window("","onerecord","{$workflow->moduleName}","");'
 					value="">&nbsp;
-				<span class="slds-icon_container slds-icon-standard-choice" title="choose">
+				<span class="slds-icon_container slds-icon-standard-choice" title="choose" onclick='return vtlib_open_popup_window("","onerecord","{$workflow->moduleName}","");'>
 				<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
 				</svg>
 				</span>
-				<span class="slds-icon_container slds-icon-standard-choice" title="add">
+				<span class="slds-icon_container slds-icon-standard-choice" title="add" onclick='return window.open("index.php?module={$workflow->moduleName}&action=EditView");'>
 				<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_create"></use>
 				</svg>
 				</span>
-				<span class="slds-icon_container slds-icon-standard-choice" title="clear">
+				<span class="slds-icon_container slds-icon-standard-choice" title="clear" onclick="document.getElementById('onerecord').value = ''; document.getElementById('onerecord_display').value = ''; return false;">
 				<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
 				</svg>
@@ -185,7 +192,7 @@ $('input[name="execution_condition"]').click(function(){
 			</span>
 			</div>
 			<span class="slds-p-top_small slds-align_absolute-center">
-			<button class="slds-button slds-button_success">Launch Now</button>
+			<button class="slds-button slds-button_success btn-launch_now">Launch Now</button>
 			</span>
 			</fieldset>
 		</div>

@@ -17,7 +17,7 @@
 <td class="small" valign=top align=left>
 <div id="view" class="workflows-edit">
 	{include file='com_vtiger_workflow/ModuleTitle.tpl'}
-	<form name="edit_workflow_form" action="index.php" method="POST" id="edit_workflow_form" onsubmit="VtigerJS_DialogBox.block();">
+	<form name="EditView" action="index.php" method="POST" id="edit_workflow_form" onsubmit="VtigerJS_DialogBox.block();">
 		{include file='com_vtiger_workflow/EditWorkflowMeta.tpl'}
 
 		{include file='com_vtiger_workflow/EditWorkflowBasicInfo.tpl'}
