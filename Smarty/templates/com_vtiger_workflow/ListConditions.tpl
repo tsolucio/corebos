@@ -58,6 +58,7 @@ $('input[name="execution_condition"]').click(function(){
 				</span>
 			</span>{$MOD.LBL_CONDITIONS}</a>
 		</li>
+		{if $RecordSetTab}
 		<li id="tab-records-tab" class="slds-tabs_default__item" title="{'Record Set'|@getTranslatedString:$MODULE_NAME}" role="presentation">
 			<a class="slds-tabs_default__link" href="javascript:setTabToggle('tab-conditions', 'tab-records');" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-2" id="tab-default-2__item">
 			<span class="slds-tabs__left-icon">
@@ -68,6 +69,7 @@ $('input[name="execution_condition"]').click(function(){
 				</span>
 			</span>{'Record Set'|@getTranslatedString:$MODULE_NAME}</a>
 		</li>
+		{/if}
 		</ul>
 		<div id="tab-conditions" class="slds-tabs_default__content slds-show" role="tabpanel" aria-labelledby="tab-default-1__item">
 		<table class="tableHeading" width="100%" border="0" cellspacing="0" cellpadding="5">

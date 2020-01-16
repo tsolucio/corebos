@@ -102,7 +102,7 @@
 		<table border="0" cellpadding="5" cellspacing="0" width="100%" class="small">
 		<tr>
 			<td width='100%' nowrap="nowrap">
-			{include file='com_vtiger_workflow/ListConditions.tpl' }
+			{include file='com_vtiger_workflow/ListConditions.tpl' RecordSetTab=0}
 			</td>
 		</tr>
 		</table>
