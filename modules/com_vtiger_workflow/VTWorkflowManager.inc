@@ -197,7 +197,7 @@ class VTWorkflowManager {
 
 	public function getRACRuleForRecord($moduleName, $recordid) {
 		$adb=$this->adb;
-		$not_supported = array('RecycleBin','Users','Home');
+		$not_supported = array('RecycleBin','Users','Home','com_vtiger_workflow');
 		if (in_array($moduleName, $not_supported)) {
 			return false;
 		}
