@@ -2732,6 +2732,20 @@ function makeRandomPassword() {
 }
 
 /**
+ * Function to get the columnname for a certain fieldname, given
+ * the fieldname and the module name
+ */
+function getColumnnameByFieldname($modname, $fieldname) {
+	global $log, $adb;
+	$log->debug('> getColumnnameByFieldname ' . $modname . ' ' . $fieldname);
+	$q = "SELECT columnname FROM vtiger_field WHERE fieldname = '{$fieldname}'
+			AND tabid IN (SELECT tabid FROM vtiger_tab WHERE name = '{$modname}')";
+	$r = $adb->query($q);
+	$log->debug('< getColumnnameByFieldname');
+	return $adb->query_result($r, 0, 'columnname');
+}
+
+/**
  * Function to get the UItype for a field by the fieldname.
  * Takes the input as $module - module name,and fieldname of the field
  * returns the uitype, integer type

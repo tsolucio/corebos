@@ -792,7 +792,15 @@ function eval_paracada($condition, $id, $module, $check = false) {
 				$GetRelatedList_ReturnOnlyQuery = true;
 				$relatedsql = $focus->$func_rel($id, $tab_mod, $tab_rel);
 				$GetRelatedList_ReturnOnlyQuery = false;
-				$related = getRelatedCRMIDs($relatedsql['query']);
+				preg_match('/\*((\w+)\s(ASC|DESC|asc|desc))\*/', $condition, $sortinfo); // Has sort condition?
+				if (count($sortinfo) > 0) {
+					list($sortstring, $bare_sortstring, $fieldname, $sortorder) = $sortinfo;
+					$columnname = getColumnnameByFieldname($relmodule, $fieldname);
+					$sortinfo = array('cname' => $columnname, 'order' => $sortorder);
+				} else {
+					$sortinfo = false;
+				}
+				$related = getRelatedCRMIDs($relatedsql['query'], $sortinfo);
 			} else {
 				if (areModulesRelated($token_pair[0], $module)) {
 					$clave = $focus->column_fields[$related_module[$module][$token_pair[0]]];
@@ -1697,8 +1705,9 @@ function getUitypefield($module, $fieldname) {
 	return $adb->query_result($resfield, 0, 'uitype');
 }
 
-function getRelatedCRMIDs($relsql) {
+function getRelatedCRMIDs($relsql, $sortinfo = false) {
 	global $adb;
+	$relsql = !!$sortinfo ? $relsql . ' ORDER BY ' . $sortinfo['cname'] . ' ' . $sortinfo['order'] : $relsql;
 	$res = $adb->pquery($relsql, array());
 	$nr = $adb->num_rows($res);
 	$ret = array('entries' => array());
