@@ -188,12 +188,22 @@ class Validations extends processcbMap {
 					case 'lengthMax':
 					case 'min':
 					case 'max':
+					case 'bigger':
+					case 'greater':
+					case 'smaller':
+					case 'lesser':
 					case 'ip':
 					case 'dateFormat':
 					case 'dateBefore':
 					case 'dateAfter':
 					case 'contains':
 					case 'RelatedModuleExists':
+						if ($rule=='greater' || $rule=='bigger') {
+							$rule='min';
+						}
+						if ($rule=='smaller' || $rule=='lesser') {
+							$rule='max';
+						}
 						if (substr($restrictions[0], 0, 2)=='{{' && substr($restrictions[0], -2)=='}}'
 							&& isset($screen_values[substr($restrictions[0], 2, strlen($restrictions[0])-4)])
 						) {
