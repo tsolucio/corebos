@@ -164,8 +164,9 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 				$isModuleBundle = (string)$this->_modulexml->modulebundle;
 
 				if ($isModuleBundle === 'true' && (!empty($this->_modulexml)) &&
-						(!empty($this->_modulexml->dependencies)) &&
-						(!empty($this->_modulexml->dependencies->vtiger_version))) {
+					(!empty($this->_modulexml->dependencies)) &&
+					(!empty($this->_modulexml->dependencies->vtiger_version))
+				) {
 					$languagefile_found = true;
 					break;
 				}
