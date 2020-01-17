@@ -758,6 +758,12 @@ function eval_paracada($condition, $id, $module, $check = false) {
 		$token_first_space_split = explode(' ', $token_pair[0]);
 		$token_pair[0] = $token_first_space_split[0];
 	}
+
+	preg_match('/\*((\w+)\s(ASC|DESC|asc|desc))\*/', $condition, $sortinfo); // Has sort condition?
+	if (count($sortinfo) > 0) {
+		$token_pair[0] = str_replace($sortinfo[0], '', $token_pair[0]);
+	}
+
 	$token_pair[0] = trim($token_pair[0]);
 	if (array_key_exists($token_pair[0], $special_modules)) {
 		$relmodule = $special_modules[$token_pair[0]];
@@ -792,7 +798,6 @@ function eval_paracada($condition, $id, $module, $check = false) {
 				$GetRelatedList_ReturnOnlyQuery = true;
 				$relatedsql = $focus->$func_rel($id, $tab_mod, $tab_rel);
 				$GetRelatedList_ReturnOnlyQuery = false;
-				preg_match('/\*((\w+)\s(ASC|DESC|asc|desc))\*/', $condition, $sortinfo); // Has sort condition?
 				if (count($sortinfo) > 0) {
 					list($sortstring, $bare_sortstring, $fieldname, $sortorder) = $sortinfo;
 					$columnname = getColumnnameByFieldname($relmodule, $fieldname);
