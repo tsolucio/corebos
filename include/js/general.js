@@ -2405,7 +2405,8 @@ function SelectAll(mod, parmod) {
 				}
 			//end
 			} else {
-				opener.document.location.href='index.php?module='+module+'&parentid='+entity_id+'&action=updateRelations&destination_module='+mod+'&idlist='+idstring+'&parenttab='+parenttab;
+				let urlstring = getcbcustominfo('');
+				opener.document.location.href='index.php?module='+module+'&parentid='+entity_id+'&action=updateRelations&destination_module='+mod+'&idlist='+idstring+urlstring;
 			}
 			if (document.getElementById('closewindow').value=='true') {
 				self.close();
