@@ -2309,7 +2309,7 @@ function OpenCompose(id, mode, crmid) {
 	openPopUp('xComposeEmail', this, url, 'createemailWin', 920, 700, 'menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes');
 }
 
-//Function added for Mass select in Popup - Philip
+// Mass select in Popup
 function SelectAll(mod, parmod) {
 	var k=0;
 	var i=0;
@@ -2325,22 +2325,14 @@ function SelectAll(mod, parmod) {
 		return false;
 	}
 	if (document.selectall.selected_id != undefined) {
-		x = document.selectall.selected_id.length;
+		var x = document.selectall.selected_id.length;
 		var y=0;
-		if (parmod != 'Calendar') {
-			var module = window.opener.document.getElementById('RLreturn_module').value;
-			var entity_id = window.opener.document.getElementById('RLparent_id').value;
-			var parenttab = window.opener.document.getElementById('parenttab').value;
-		}
-		idstring = '';
-		namestr = '';
-
+		var module = window.opener.document.getElementById('RLreturn_module').value;
+		var entity_id = window.opener.document.getElementById('RLparent_id').value;
+		var idstring = '';
 		if (x == undefined) {
 			if (document.selectall.selected_id.checked) {
 				idstring = document.selectall.selected_id.value;
-				if (parmod == 'Calendar') {
-					namestr = document.getElementById('calendarCont'+idstring).innerHTML;
-				}
 				y=1;
 			} else {
 				alert(alert_arr.SELECT);
@@ -2351,10 +2343,6 @@ function SelectAll(mod, parmod) {
 			for (i = 0; i < x; i++) {
 				if (document.selectall.selected_id[i].checked) {
 					idstring = document.selectall.selected_id[i].value +';'+idstring;
-					if (parmod == 'Calendar') {
-						idval = document.selectall.selected_id[i].value;
-						namestr = document.getElementById('calendarCont'+idval).innerHTML+'\n'+namestr;
-					}
 					y=y+1;
 				}
 			}
@@ -2366,48 +2354,8 @@ function SelectAll(mod, parmod) {
 			return false;
 		}
 		if (confirm(alert_arr.ADD_CONFIRMATION+y+alert_arr.RECORDS)) {
-			if (parmod == 'Calendar') {
-				//this blcok has been modified to provide delete option for contact in Calendar
-				idval = window.opener.document.EditView.contactidlist.value;
-				if (idval != '') {
-					var avalIds = new Array();
-					avalIds = idstring.split(';');
-
-					var selectedIds = new Array();
-					selectedIds = idval.split(';');
-
-					for (i=0; i < (avalIds.length-1); i++) {
-						var rowFound=false;
-						for (k=0; k < selectedIds.length; k++) {
-							if (selectedIds[k]==avalIds[i]) {
-								rowFound=true;
-								break;
-							}
-						}
-						if (rowFound != true) {
-							idval = idval+';'+avalIds[i];
-							window.opener.document.EditView.contactidlist.value = idval;
-							var str=document.getElementById('calendarCont'+avalIds[i]).innerHTML;
-							window.opener.addOption(avalIds[i], str);
-						}
-					}
-				} else {
-					window.opener.document.EditView.contactidlist.value = idstring;
-					var temp = new Array();
-					temp = namestr.split('\n');
-
-					var tempids = new Array();
-					tempids = idstring.split(';');
-
-					for (k=0; k < temp.length; k++) {
-						window.opener.addOption(tempids[k], temp[k]);
-					}
-				}
-			//end
-			} else {
-				let urlstring = getcbcustominfo('');
-				opener.document.location.href='index.php?module='+module+'&parentid='+entity_id+'&action=updateRelations&destination_module='+mod+'&idlist='+idstring+urlstring;
-			}
+			let urlstring = getcbcustominfo('');
+			opener.document.location.href='index.php?module='+module+'&parentid='+entity_id+'&action=updateRelations&destination_module='+mod+'&idlist='+idstring+urlstring;
 			if (document.getElementById('closewindow').value=='true') {
 				self.close();
 			}
