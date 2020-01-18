@@ -251,7 +251,7 @@ class VTEmailTask extends VTTask {
 				$result = $adb->pquery('SELECT potential_no,related_to FROM vtiger_potential WHERE potentialid=?', array($to_id));
 				$related_to = $adb->query_result($result, 0, 'related_to');
 				$potential_no = $adb->query_result($result, 0, 'potential_no');
-				$desc_name .= ' '.getTranslatedString('LBL_FROM', 'MailManager').' '.getTranslatedString('SINGLE_Potentials', 'Potential').' '.$potential_no;
+				$desc_name .= ' '.getTranslatedString('LBL_FROM', 'MailManager').' '.getTranslatedString('SINGLE_Potentials', 'Potentials').' '.$potential_no;
 				if (getSalesEntityType($related_to) == 'Accounts') {
 					$focus->column_fields['account_message'] = $related_to;
 				} elseif (getSalesEntityType($related_to) == 'Contacts') {
