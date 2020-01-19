@@ -530,6 +530,9 @@ class ListViewController {
 						$modlist
 					);
 					$value = implode(', ', $modlist);
+				} elseif ($field->getUIType() == '1613') {
+					$value = getTranslatedString($value, $value);
+					$value = textlength_check($value);
 				} elseif ($field->getFieldDataType() == 'picklist') {
 					$value = getTranslatedString($value, $module);
 					$value = textlength_check($value);
