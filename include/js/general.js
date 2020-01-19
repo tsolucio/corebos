@@ -4149,7 +4149,9 @@ function submitFormForAction(formName, action) {
 		return false;
 	}
 	form.action.value = action;
-	form.submit();
+	if (corebosjshook_submitFormForAction(formName, action)) {
+		form.submit();
+	}
 	return true;
 }
 
