@@ -188,7 +188,7 @@ class VTEmailTask extends VTTask {
 			list($wsid, $crmid) = explode('x', $emailid);
 		}
 		$rdo = send_mail($module, $to_email, $from_name, $from_email, $subject, $content, $cc, $bcc, $this->attachmentsinfo, $crmid, $logo, $replyto, $qrScan, $brScan);
-		$logbg->debug("VTEmailTask\nTo: $to_email\nFromName: $from_name\nFromEmail: $from_email\nCC: $cc\nBCC: $bcc\nResult: $rdo");
+		$logbg->debug("VTEmailTask\nTo: $to_email\nFromName: $from_name\nFromEmail: $from_email\nCC: $cc\nBCC: $bcc\nResult: $rdo\nAttInfo: ".print_r($this->attachmentsinfo, true));
 		$util->revertUser();
 	}
 
