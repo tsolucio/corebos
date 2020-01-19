@@ -645,7 +645,12 @@ function fnAddProductRow(module, image_path) {
 	var tableName = document.getElementById('proTab');
 	var prev = tableName.rows.length;
 	var pdoRows = document.getElementById('proTab').querySelectorAll('[id^="row"]');
-	var iPrevRowId = pdoRows.length;
+	for (var iCount=pdoRows.length; iCount>=1; iCount--) {
+		if (document.getElementById('row'+iCount) && document.getElementById('row'+iCount).style.display != 'none') {
+			var iPrevRowId = iCount;
+			break;
+		}
+	}
 	var iPrevRowIndex = pdoRows[iPrevRowId-1].rowIndex;
 	var count = pdoRows.length+1;
 	var row = tableName.insertRow(prev);
