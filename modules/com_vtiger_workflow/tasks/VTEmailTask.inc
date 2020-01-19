@@ -172,6 +172,7 @@ class VTEmailTask extends VTTask {
 		$logo = (strpos($this->content, '(general : (__VtigerMeta__) logo)')===false) ? '' : '1';
 		$qrScan = (strpos($this->content, '(general : (__VtigerMeta__) scanQRCode')===false) ? '' : '1';
 		$brScan = (strpos($this->content, '(general : (__VtigerMeta__) scanBarCode')===false) ? '' : '1';
+		$element = array();
 		$element['saved_toid'] = $to_email;
 		$element['parent_type'] = $module;
 		$element['parent_id'] = $entity->getId();
