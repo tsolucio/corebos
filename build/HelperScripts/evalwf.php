@@ -100,6 +100,8 @@ function evalwfEmailTask($entityid, $task) {
 	$subject = $st->render($entityCache, $entityid);
 	$ct = new VTSimpleTemplate($task->content);
 	$content = $ct->render($entityCache, $entityid);
+	$task->after_retrieve();
+	$att = $task->attachmentsinfo;
 	$util->revertUser();
 	return array(
 		'from_name' => $fromname,
@@ -109,6 +111,7 @@ function evalwfEmailTask($entityid, $task) {
 		'bcc' => $bcc,
 		'subject' => $subject,
 		'content' => $content,
+		'attachments' => print_r($att, true),
 	);
 }
 
