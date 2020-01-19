@@ -9152,7 +9152,7 @@ if (workbox) {
   },
   {
     "url": "include/js/corebosjshooks.js",
-    "revision": "db0d92e2bce8439f4e3f1c1730f78bce"
+    "revision": "1607aa9f922cfb8476b3635d3edd8286"
   },
   {
     "url": "include/js/customview.js",
@@ -9200,7 +9200,7 @@ if (workbox) {
   },
   {
     "url": "include/js/general.js",
-    "revision": "c846b90ced46ae5f653dda9936d48b04"
+    "revision": "e0685cba8bddddd5a9bc69e6cfa1514b"
   },
   {
     "url": "include/js/hu_hu.lang.js",
@@ -9208,7 +9208,7 @@ if (workbox) {
   },
   {
     "url": "include/js/Inventory.js",
-    "revision": "b59f8a5e7a5ce58afd9c5031b008a1b3"
+    "revision": "a68fa4332a4bb0f0ce18ddec3d586319"
   },
   {
     "url": "include/js/it_it.lang.js",
