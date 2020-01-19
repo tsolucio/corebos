@@ -668,7 +668,6 @@ function fnAddProductRow(module, image_path) {
 	/* Product Re-Ordering Feature Code Addition Starts */
 	var iPrevCount = iPrevRowId;
 	var oPrevRow = tableName.rows[iPrevRowIndex];
-	var delete_row_count=count;
 	/* Product Re-Ordering Feature Code Addition ends */
 
 	//Delete link
