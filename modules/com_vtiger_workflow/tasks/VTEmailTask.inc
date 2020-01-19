@@ -133,11 +133,7 @@ class VTEmailTask extends VTTask {
 		if (strlen(trim($to_email, " \t\n,")) == 0 && strlen(trim($cc, " \t\n,")) == 0 && strlen(trim($bcc, " \t\n,")) == 0) {
 			return ;
 		}
-		if (!empty($this->attachmentsinfo)) {
-			$this->after_retrieve();
-		} else {
-			$this->attachmentsinfo = '';
-		}
+		$this->after_retrieve();
 		if (!empty($this->attfieldnames)) {
 			if (substr($this->attfieldnames, -24) == ' : (Documents) filename)') {
 				$this->attfieldnames = substr($this->attfieldnames, 1, strlen($this->attfieldnames)-25);
