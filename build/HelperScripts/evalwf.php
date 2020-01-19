@@ -197,7 +197,11 @@ foreach ($tasks as $task) {
 		echo "<br><br><b>** EMail TASK **</b><br><br>";
 		$email = evalwfEmailTask($crm_record_to_evaluate, $task);
 		foreach ($email as $key => $value) {
-			echo "<h2>$key</h2>$value <br><hr>";
+			if (is_array($value)) {
+				echo "<h2>$key</h2>".print_r($value, true).' <br><hr>';
+			} else {
+				echo "<h2>$key</h2>$value <br><hr>";
+			}
 		}
 	}
 }
