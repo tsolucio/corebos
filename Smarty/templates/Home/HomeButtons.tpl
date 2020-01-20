@@ -49,16 +49,34 @@
 	</div>
 	<div id="page-header-surplus">
 		<div class="slds-page-header__row">
-			<div class="slds-page-header__col-meta">
-				<div class="slds-page-header__meta-text" style="display: flex;">
+			<div class="slds-page-header__col-meta" style="min-width: 0;">
+				<div class="slds-page-header__meta-text slds-grid">
 					{if !empty($isDetailView) || !empty($isEditView)}
-					<div style="min-width: 30%">{$UPDATEINFO}</div>
+					<div class="slds-p-right_small">{$UPDATEINFO}</div>
 					{/if}
 					{assign var=ANNOUNCEMENT value=get_announcements()}
 					{if $ANNOUNCEMENT}
-					<marquee id="rss" direction="left" scrolldelay="10" scrollamount="3" behavior="scroll" class="slds-align_absolute-center marStyle"
-						onMouseOver="javascript:stop();" onMouseOut="javascript:start();">
-						&nbsp;{$ANNOUNCEMENT}</marquee>
+					<style>
+						#marquee span {
+							display: inline-block;
+							padding-left: 100%;
+							animation: marquee {$ANNOUNCEMENT|count_characters / 3}s linear infinite;
+						}
+						#marquee span:hover {
+							animation-play-state: paused
+						}
+						@keyframes marquee {
+							0% {
+							transform: translate(0, 0);
+							}
+							100% {
+							transform: translate(-100%, 0);
+							}
+						}
+					</style>
+					<div class="slds-col slds-truncate" id="marquee">
+						<span>{$ANNOUNCEMENT}</span>
+					</div>
 					{/if}
 				</div>
 			</div>
