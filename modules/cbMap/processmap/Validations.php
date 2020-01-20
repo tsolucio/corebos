@@ -232,7 +232,15 @@ class Validations extends processcbMap {
 						}
 						break;
 					case 'in':
+					case 'In':
+					case 'notin':
 					case 'notIn':
+						if ($rule=='In') {
+							$rule = 'in';
+						}
+						if ($rule=='notin') {
+							$rule = 'notIn';
+						}
 						if (isset($val['msg'])) {
 							$v->rule($rule, $valfield, $restrictions)->message($val['msg'])->label($i18n);
 						} else {
