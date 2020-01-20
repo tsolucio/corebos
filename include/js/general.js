@@ -6239,7 +6239,9 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 })();
 
 var pageHeaderInfo = {};
-window.addEventListener('load', function(){
+window.addEventListener('load', setupPageHeader);
+
+function setupPageHeader() {
 	pageHeaderInfo.ph = document.getElementById('page-header'),
 	pageHeaderInfo.gh = document.getElementById('global-header'),
 	pageHeaderInfo.phi = document.getElementById('page-header-icon'),
@@ -6254,7 +6256,7 @@ window.addEventListener('load', function(){
 	pageHeaderInfo.phat = pageHeaderInfo.pha.getBoundingClientRect().top + window.scrollY,
 	pageHeaderInfo.phs.style.height = pageHeaderInfo.phsh + 'px',
 	pageHeaderInfo.ph.style.top = pageHeaderInfo.phat + 'px';
-});
+}
 
 function pageHeaderDownScroll() {
 	const curSurplusHeight = Number(pageHeaderInfo.phs.style.height.replace('px', '')),
