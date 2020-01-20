@@ -26,7 +26,7 @@ function getUserFldArray($fld_module, $roleid) {
 	$query="SELECT vtiger_field.fieldlabel,vtiger_field.columnname,vtiger_field.fieldname, vtiger_field.uitype
 		FROM vtiger_field inner
 		JOIN vtiger_picklist on vtiger_field.fieldname = vtiger_picklist.name
-		WHERE (displaytype in (1,2,4) and vtiger_field.tabid=? and vtiger_field.uitype in ('15','55','33','16')
+		WHERE (displaytype in (1,2,3,4) and vtiger_field.tabid=? and vtiger_field.uitype in ('15','55','33','16')
 			or (vtiger_field.tabid=? and fieldname='salutationtype' and fieldname !='vendortype'))
 			and vtiger_field.presence in (0,2) ORDER BY vtiger_picklist.picklistid ASC";
 
