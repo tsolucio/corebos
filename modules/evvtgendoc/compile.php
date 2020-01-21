@@ -354,6 +354,7 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 							$cadena = number_format($cadena, 0);
 							break;
 						case 'N':
+						case 'NN':
 							$cadena = CurrencyField::convertToUserFormat($cadena, null, true);
 							break;
 						//case 'C':
