@@ -984,5 +984,7 @@ $mod_strings = array(
 'SM_BeBackSoon' => 'We&rsquo;ll be back soon!',
 'SM_SorryInconvenience' => 'Sorry for the inconvenience but we&rsquo;re performing some maintenance at the moment. We&rsquo;ll be back online shortly!',
 'LBL_CC' => 'CC',
+'LBL_GROUP_NAME_ERROR'=>'Group Name already exists!',
+
 );
 ?>
