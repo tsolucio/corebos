@@ -9,10 +9,6 @@
  *********************************************************************************/
 
 /**
- * this file will be used to store the functions to be used in the picklist module
- */
-
-/**
  * Function to get picklist fields for the given module
  * @ param $fld_module
  * It gets the picklist details array for the given module in the given format
