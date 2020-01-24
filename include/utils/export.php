@@ -340,6 +340,8 @@ class ExportUtils {
 				$value = CurrencyField::convertToUserFormat($value, null, true);
 			} elseif ($uitype == 7 || $fieldInfo['typeofdata'] == 'N~O' || $uitype == 9) {
 				$value = number_format($value, 2, $decimal, $numsep);
+			} elseif ($uitype == 98) {
+				$value = getRoleName($value);
 			}
 		}
 		return $arr;
