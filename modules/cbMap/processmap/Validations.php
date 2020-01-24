@@ -295,12 +295,23 @@ class Validations extends processcbMap {
 						if (file_exists($restrictions[0])) {
 							@include_once $restrictions[0];
 							if (function_exists($restrictions[2])) {
-								$lbl = (isset($restrictions[3]) ? getTranslatedString($restrictions[3], $mapping['origin']) : getTranslatedString('INVALID', $mapping['origin']));
+								if (isset($restrictions[3])) {
+									if (is_array($restrictions[3])) {
+										$params = $restrictions[3];
+										$lbl = getTranslatedString('INVALID', $mapping['origin']);
+									} else {
+										$params = array();
+										$lbl = getTranslatedString($restrictions[3], $mapping['origin']);
+									}
+								}
+								if (isset($restrictions[4])) {
+									$params = $restrictions[4];
+								}
 								$v->addRule($restrictions[1], $restrictions[2], $lbl);
 								if (isset($val['msg'])) {
-									$v->rule($restrictions[1], $valfield)->message($val['msg'])->label($i18n);
+									$v->rule($restrictions[1], $valfield, $params)->message($val['msg'])->label($i18n);
 								} else {
-									$v->rule($restrictions[1], $valfield)->label($i18n);
+									$v->rule($restrictions[1], $valfield, $params)->label($i18n);
 								}
 							}
 						}
@@ -341,6 +352,13 @@ class Validations extends processcbMap {
 				if (isset($val->restrictions)) {
 					foreach ($val->restrictions->restriction as $rv) {
 						$rst[]=(String)$rv;
+					}
+					if (isset($val->restrictions->parameters)) {
+						$params = array();
+						foreach ($val->restrictions->parameters->parameter as $prm) {
+							$params[(String)$prm->name]=(String)$prm->value;
+						}
+						$rst[]=$params;
 					}
 				}
 				$retval['rst'] = $rst;
