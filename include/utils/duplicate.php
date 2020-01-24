@@ -21,7 +21,7 @@ require_once 'include/utils/utils.php';
 require_once 'include/utils/CommonUtils.php';
 
 function duplicaterec($currentModule, $record_id, $bmap) {
-	global $adb, $current_user;
+	global $adb, $current_user, $logbg;
 
 	$focus = CRMEntity::getInstance($currentModule);
 	$focus->retrieve_entity_info($record_id, $currentModule);
@@ -39,9 +39,11 @@ function duplicaterec($currentModule, $record_id, $bmap) {
 	} else {
 		$maped_relations = array();
 	}
-
+	$logbg->debug('BMap: '.$cbMapid);
+	$logbg->debug('Relations to be copied: '.print_r($maped_relations, true));
 	// Duplicate Records that this Record is dependent of
 	if ($cbMapid && $cbMap->DuplicateRelations()->DuplicateDirectRelations()) {
+		$logbg->debug('Duplicating Direct Relations');
 		$invmods = getInventoryModules();
 		foreach ($focus->column_fields as $fieldname => $value) {
 			$sql = 'SELECT * FROM vtiger_field WHERE columnname=? AND uitype=10';
@@ -51,6 +53,7 @@ function duplicaterec($currentModule, $record_id, $bmap) {
 				if (in_array($module, $invmods)) {
 					continue; // we can't duplicate these
 				}
+				$logbg->debug("Duplicating $value ($module)");
 				$handler = vtws_getModuleHandlerFromName($module, $current_user);
 				$meta = $handler->getMeta();
 				$entity = CRMEntity::getInstance($module);
@@ -67,6 +70,7 @@ function duplicaterec($currentModule, $record_id, $bmap) {
 				$entity->column_fields = DataTransform::sanitizeRetrieveEntityInfo($entity->column_fields, $meta);
 				$entity->save($module);
 				$focus->column_fields[$fieldname] = $entity->id;
+				$logbg->debug('Duplicated record: '.$entity->id);
 				if (count($imageFields)>0) {
 					foreach ($imageFields as $imgfld) {
 						unset($_FILES[$imgfld], $_REQUEST[$imgfld.'_hidden']);
@@ -98,8 +102,10 @@ function duplicaterec($currentModule, $record_id, $bmap) {
 	$new_record_id = $focus->id;
 	$curr_tab_id = gettabid($currentModule);
 	$related_list = get_related_lists($curr_tab_id, $maped_relations);
+	$logbg->debug('Relations M Found: '.print_r($related_list, true));
 	dup_related_lists($new_record_id, $currentModule, $related_list, $record_id, $maped_relations);
 	$dependents_list = get_dependent_lists($curr_tab_id);
+	$logbg->debug('Relations 1 Found: '.print_r($dependents_list, true));
 	$dependent_tables = get_dependent_tables($dependents_list, $currentModule);
 	dup_dependent_rec($record_id, $currentModule, $new_record_id, $dependent_tables, $maped_relations);
 	return $new_record_id;
@@ -107,6 +113,7 @@ function duplicaterec($currentModule, $record_id, $bmap) {
 
 // The duplicate has already been created elsewhere, so here we just do the relations, not the direct relations, only the related lists
 function duplicateRecordRelations($currentModule, $duplicatedrecord, $duplicatedfrom, $bmap) {
+	global $logbg;
 	if (is_numeric($bmap)) {
 		$cbMapid = $bmap;
 	} else {
@@ -120,11 +127,14 @@ function duplicateRecordRelations($currentModule, $duplicatedrecord, $duplicated
 	} else {
 		$maped_relations = array();
 	}
-
+	$logbg->debug('BMap: '.$cbMapid);
+	$logbg->debug('Relations to be copied: '.print_r($maped_relations, true));
 	$curr_tab_id = gettabid($currentModule);
 	$related_list = get_related_lists($curr_tab_id, $maped_relations);
+	$logbg->debug('Relations M Found: '.print_r($related_list, true));
 	dup_related_lists($duplicatedrecord, $currentModule, $related_list, $duplicatedfrom, $maped_relations);
 	$dependents_list = get_dependent_lists($curr_tab_id);
+	$logbg->debug('Relations 1 Found: '.print_r($dependents_list, true));
 	$dependent_tables = get_dependent_tables($dependents_list, $currentModule);
 	dup_dependent_rec($duplicatedfrom, $currentModule, $duplicatedrecord, $dependent_tables, $maped_relations);
 	return $duplicatedrecord;
