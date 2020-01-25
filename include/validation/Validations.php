@@ -153,7 +153,7 @@ function validateRelatedModuleExists($field, $fieldval, $params, $fields) {
 		$GetRelatedList_ReturnOnlyQuery = $holdValue;
 		$query = mkXQuery($relationData['query'], '1');
 		$query = stripTailCommandsFromQuery($query).' LIMIT 1';
-		$result = $adb->pquery($relationData['query'], array());
+		$result = $adb->pquery($query, array());
 		if ($result) {
 			$existsrelated = ($adb->num_rows($result) > 0);
 		}
