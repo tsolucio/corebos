@@ -93,6 +93,8 @@ class VTFieldExpressionEvaluater {
 			'isString' => '__cb_is_string',
 			'OR' => '__cb_or',
 			'AND' => '__cb_and',
+			'exists' => '__cb_exists',
+			'existsrelated' => '__cb_existsrelated',
 			'add_workdays' => '__cb_add_workdays',
 		);
 		$this->operationsSQL = array(
@@ -196,6 +198,8 @@ class VTFieldExpressionEvaluater {
 			'__cb_getcrudmode',
 			'__cb_getfromcontext',
 			'__cb_setfromcontext',
+			'__cb_exists',
+			'__cb_existsrelated',
 		);
 		$wfexpfuncs = $adb->query('select expname,funcname,rawparams,needscontext from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {
