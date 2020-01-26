@@ -56,7 +56,7 @@ function __cb_aggregation($arr) {
  *   => value will be evaluated against the main module record as an expression
  *   => may be empty
  *   => if main module and related module are different the relation condition will be added automatically
- * @param array[4] environment data, this is automatically added but the application
+ * @param array[4] environment data, this is automatically added by the application
  */
 function __cb_aggregation_operation($arr) {
 	global $adb;
