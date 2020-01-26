@@ -170,10 +170,10 @@ class VTFieldExpressionEvaluater {
 			'max' => 'cbexpsql_max',
 			'avg' => 'cbexpsql_avg',
 			'count' => 'cbexpsql_count',
-			'isNumeric' => '__cb_is_numeric',
-			'isString' => '__cb_is_string',
-			'OR' => '__cb_or',
-			'AND' => '__cb_and'
+			'isNumeric' => 'cbexpsql_isnumber',
+			'isString' => 'cbexpsql_isstring',
+			'OR' => 'cbexpsql_or',
+			'AND' => 'cbexpsql_and'
 		);
 		$this->rawparams = array(
 			'__cb_getGEODistanceFromUser2AccountBilling',

@@ -162,6 +162,14 @@ function cbexpsql_modulo($arr, $mmodule) {
 	return __cbexpsql_functionparams('MOD', $arr, $mmodule);
 }
 
+function cbexpsql_isstring($arr, $mmodule) {
+	return __cbexpsql_functionparams("concat('',".__cbexpsql_functionparamsvalue($arr[0], $mmodule).'*1)!=', $arr, $mmodule);
+}
+
+function cbexpsql_isnumber($arr, $mmodule) {
+	return __cbexpsql_functionparams("concat('',".__cbexpsql_functionparamsvalue($arr[0], $mmodule).'*1)=', $arr, $mmodule);
+}
+
 function cbexpsql_hash($arr, $mmodule) {
 	if (count($arr)==1) {
 		$arr[1] = 'sha1';
@@ -396,6 +404,12 @@ function cbexpsql_getGEODistanceFromAssignUser2ContactShipping($arr, $mmodule) {
 	return 'TRUE';
 }
 function cbexpsql_getGEODistanceFromCoordinates($arr, $mmodule) {
+	return 'TRUE';
+}
+function cbexpsql_or($arr, $mmodule) {
+	return 'TRUE';
+}
+function cbexpsql_and($arr, $mmodule) {
 	return 'TRUE';
 }
 
