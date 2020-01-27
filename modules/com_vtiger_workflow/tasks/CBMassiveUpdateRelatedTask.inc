@@ -22,7 +22,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $current_user, $logbg, $from_wf;
+		global $adb, $current_user, $logbg, $from_wf, $currentModule;
 		$from_wf = true;
 		$logbg->debug('> CBMassiveUpdateRelatedTask');
 		$util = new VTWorkflowUtils();
@@ -30,6 +30,9 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 		$isqueue=$entity->isqueue;
 		$taskQueue = new VTTaskQueue($adb);
 		$moduleName = $entity->getModuleName();
+		if (empty($currentModule) || $currentModule!=$moduleName) {
+			$currentModule = $moduleName;
+		}
 		$entityId = $entity->getId();
 		$recordId = vtws_getIdComponents($entityId);
 		$recordId = $recordId[1];
