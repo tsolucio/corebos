@@ -9228,7 +9228,7 @@ if (workbox) {
   },
   {
     "url": "include/js/Mail.js",
-    "revision": "22e1a51b143bc27361107aa9d40490b5"
+    "revision": "d80319931dbb8f169c19c78b561f5b82"
   },
   {
     "url": "include/js/massive.js",
@@ -9753,6 +9753,10 @@ if (workbox) {
   {
     "url": "modules/ModComments/ModCommentsCommon.js",
     "revision": "90cb31321c92bc6d3f1e73e5ecd0255a"
+  },
+  {
+    "url": "modules/MsgTemplate/MsgTemplate.js",
+    "revision": "54e5bf71a38236d6b12e84c41c1931af"
   },
   {
     "url": "modules/ProjectTask/ProjectTask.js",

@@ -70,6 +70,7 @@ module.exports = {
 		'modules/Products/Products.js',
 		'modules/ModComments/ModComments.js',
 		'modules/ModComments/ModCommentsCommon.js',
+		'modules/MsgTemplate/MsgTemplate.js',
 		'modules/ProjectTask/ProjectTask.js',
 		'modules/Project/Project.js',
 		'modules/Assets/Assets.js',
