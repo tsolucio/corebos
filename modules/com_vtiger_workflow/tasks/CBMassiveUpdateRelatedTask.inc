@@ -132,8 +132,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 					$rs = $adb->query($query);
 					while ($row = $adb->fetch_array($rs)) {
 						$relId = $row['crmid'];
-						$entity = vtws_getEntityId($relmodule);
-						if ($businessMap == '' || ($businessMap == 'Condition Expression' && $focusmap->ConditionExpression($entity.'x'.$relId))) {
+						if ($businessMap == '' || ($businessMap == 'Condition Expression' && $focusmap->ConditionExpression(vtws_getEntityId($relmodule).'x'.$relId))) {
 							$focusrel[$fldmod]->id = $relId;
 							$focusrel[$fldmod]->mode = 'edit';
 							$focusrel[$fldmod]->retrieve_entity_info($relId, $relmodule, false, $from_wf);
