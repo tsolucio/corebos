@@ -8,8 +8,8 @@
  * All Rights Reserved.
  ********************************************************************************/
 require_once 'modules/Users/Users.php';
-include_once('vtlib/Vtiger/Module.php');
-require_once('Smarty_setup.php');
+include_once 'vtlib/Vtiger/Module.php';
+require_once 'Smarty_setup.php';
 global $adb,$app_strings;
 
 if (!is_admin($current_user)) {
