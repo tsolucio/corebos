@@ -450,7 +450,9 @@ class Validations extends processcbMap {
 			}
 			$screen_values['pdoInformation'] = $products;
 		}
-		if (!empty($screen_values['record'])) {
+		$record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : (isset($screen_values['record']) ? vtlib_purify($screen_values['record']) : 0));
+		if (!empty($record)) {
+			$screen_values['record'] = $record;
 			$module_to_edit = CRMEntity::getInstance($screen_values['module']);
 			$module_to_edit->retrieve_entity_info($screen_values['record'], $screen_values['module']);
 			foreach ($module_to_edit->column_fields as $key => $value) {
@@ -467,7 +469,6 @@ class Validations extends processcbMap {
 				}
 			}
 		}
-		$record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : (isset($screen_values['record']) ? vtlib_purify($screen_values['record']) : 0));
 		$q = "select cbmapid
 			from vtiger_cbmap
 			inner join vtiger_crmentity on crmid=cbmapid
