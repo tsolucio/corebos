@@ -8,10 +8,18 @@
  * All Rights Reserved.
  ********************************************************************************/
 require_once 'modules/Users/Users.php';
+include_once 'vtlib/Vtiger/Module.php';
+require_once 'Smarty_setup.php';
 global $adb,$app_strings;
 
 if (!is_admin($current_user)) {
-	die("<br><br><center>".$app_strings['LBL_PERMISSION']." <a href='javascript:window.history.back()'>".$app_strings['LBL_GO_BACK'].".</a></center>");
+	$smarty = new vtigerCRM_Smarty();
+	include 'modules/Vtiger/header.php';
+	$smarty->assign('APP', $app_strings);
+	$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-danger');
+	$smarty->assign('ERROR_MESSAGE', $app_strings['LBL_PERMISSION']." <a href='javascript:window.history.back()'>".$app_strings['LBL_GO_BACK']);
+	$smarty->display('applicationmessage.tpl');
+	die();
 }
 
 $del_id = vtlib_purify($_REQUEST['delete_user_id']);
