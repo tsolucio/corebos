@@ -154,7 +154,6 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 		require_once 'modules/CustomView/CustomView.php';
 
 		if (isset($recordid)) {
-			//added to fix the ticket #5117
 			global $current_user;
 
 			$oReport->getSelectedStandardCriteria($recordid);
@@ -168,7 +167,6 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 
 			$BLOCK1 = getPrimaryStdFilterHTML($oReport->primodule, $oReport->stdselectedcolumn);
 			$BLOCK1 =array_merge((array)$BLOCK1, (array)getSecondaryStdFilterHTML($oReport->secmodule, $oReport->stdselectedcolumn));
-			//added to fix the ticket #5117
 			$selectedcolumnvalue = '"'. $oReport->stdselectedcolumn . '"';
 			if (!is_admin($current_user) && isset($oReport->stdselectedcolumn) && strpos($BLOCK1, $selectedcolumnvalue) === false) {
 				$BLOCK1 = array_merge((array)$BLOCK1, array('selected'=>true,'value'=>'Not Accessible','label'=>$app_strings['LBL_NOT_ACCESSIBLE']));

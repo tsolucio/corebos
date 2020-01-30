@@ -710,19 +710,21 @@ class Reports extends CRMEntity {
 		$blockname = getBlockName($block);
 		if ($blockname == 'LBL_RELATED_PRODUCTS' && in_array($module, getInventoryModules())) {
 			$fieldtablename = 'vtiger_inventoryproductrel';
-			$fields = array('productid'=>getTranslatedString('Product Name', $module),
-							'serviceid'=>getTranslatedString('Service Name', $module),
-							'listprice'=>getTranslatedString('List Price', $module),
-							'discount'=>getTranslatedString('Discount', $module),
-							'quantity'=>getTranslatedString('Quantity', $module),
-							'comment'=>getTranslatedString('Comments', $module),
+			$fields = array(
+				'productid'=>getTranslatedString('Product Name', $module),
+				'serviceid'=>getTranslatedString('Service Name', $module),
+				'listprice'=>getTranslatedString('List Price', $module),
+				'discount'=>getTranslatedString('Discount', $module),
+				'quantity'=>getTranslatedString('Quantity', $module),
+				'comment'=>getTranslatedString('Comments', $module),
 			);
-			$fields_datatype = array('productid'=>'V',
-							'serviceid'=>'V',
-							'listprice'=>'N',
-							'discount'=>'N',
-							'quantity'=>'N',
-							'comment'=>'V',
+			$fields_datatype = array(
+				'productid'=>'V',
+				'serviceid'=>'V',
+				'listprice'=>'N',
+				'discount'=>'N',
+				'quantity'=>'N',
+				'comment'=>'V',
 			);
 			foreach ($fields as $fieldcolname => $label) {
 				$fieldtypeofdata = $fields_datatype[$fieldcolname];
@@ -751,11 +753,14 @@ class Reports extends CRMEntity {
 			where vtiger_report.reportid=?';
 		$result = $adb->pquery($sSQL, array($reportid));
 		$selectedstdfilter = $adb->fetch_array($result);
-
-		$this->stdselectedcolumn = $selectedstdfilter['datecolumnname'];
-		$this->stdselectedfilter = $selectedstdfilter['datefilter'];
-
-		if ($selectedstdfilter['datefilter'] == 'custom') {
+		if ($selectedstdfilter && $adb->num_rows($selectedstdfilter)>0) {
+			$this->stdselectedcolumn = $selectedstdfilter['datecolumnname'];
+			$this->stdselectedfilter = $selectedstdfilter['datefilter'];
+		} else {
+			$this->stdselectedcolumn = '';
+			$this->stdselectedfilter = '';
+		}
+		if (!empty($selectedstdfilter) && $selectedstdfilter['datefilter']=='custom') {
 			if ($selectedstdfilter['startdate'] != '0000-00-00') {
 				$startDateTime = new DateTimeField($selectedstdfilter['startdate'].' '. date('H:i:s'));
 				$this->startdate = $startDateTime->getDisplayDate();
