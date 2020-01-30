@@ -238,6 +238,7 @@ wizard.steps({
 		if (cbreporttype == 'external' || cbreporttype == 'directsql') {
 			if (currentIndex >= 1 && currentIndex <= 6) {
 				wizard.steps('setStep', 6);
+				document.getElementById('report-steps-p-6').style.display='block';
 			}
 		}
 
