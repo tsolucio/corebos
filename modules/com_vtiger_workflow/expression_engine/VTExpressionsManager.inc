@@ -89,6 +89,7 @@ class VTExpressionsManager {
 			'add_time(timefield, minutes)' => 'add_time(timefield, minutes)',
 			'sub_time(timefield, minutes)' => 'sub_time(timefield, minutes)',
 			'today' => "get_date('today')",
+			'today' => "get_date('now')",
 			'tomorrow' => "get_date('tomorrow')",
 			'yesterday' => "get_date('yesterday')",
 			'time' => "get_date('time')",
