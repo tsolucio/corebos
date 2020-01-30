@@ -955,6 +955,23 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 						}
 					}
 				}
+				$current_action = $_REQUEST['module'].'Ajax';
+				if (isPermitted($module, 'LISTVIEW', $entity_id) == 'yes' && $_REQUEST['action'] == $current_action) {
+					$tabid = getTabid($module);
+					include_once 'vtlib/Vtiger/Link.php';
+					$customlink_params = array('MODULE'=>$module, 'RECORD'=>$entity_id, 'ACTION'=>vtlib_purify($_REQUEST['action']));
+					$linksurls =  Vtiger_Link::getAllByType($tabid, array('LISTVIEWROW'), $customlink_params, null, $entity_id);
+					$linkviewrows = $linksurls['LISTVIEWROW'];
+					$links_info .= '';
+					if ($linkviewrows && count($linkviewrows) > 0) {
+						for ($x =0; $x < count($linkviewrows); $x++) {
+							$linklabel = $linkviewrows[$x]->linklabel;
+							$linkurl = $linkviewrows[$x]->linkurl;
+							$links_info .= ' | ';
+							$links_info .= "<a href=\"$linkurl\">".getTranslatedString($linklabel, $module).'</a> ';
+						}
+					}
+				}
 			}
 			// Record Change Notification
 			if (method_exists($focus, 'isViewed') && GlobalVariable::getVariable('Application_ListView_Record_Change_Indicator', 1, $module)) {

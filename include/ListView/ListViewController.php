@@ -660,6 +660,22 @@ class ListViewController {
 					}
 				}
 			}
+			if (isPermitted($module, 'LISTVIEW', $recordId) == 'yes' && $_REQUEST['action'] == 'index') {
+				$tabid = getTabid($currentModule);
+				include_once 'vtlib/Vtiger/Link.php';
+				$customlink_params = array('MODULE'=>$currentModule, 'RECORD'=>$recordId, 'ACTION'=>vtlib_purify($_REQUEST['action']));
+				$linksurls =  Vtiger_Link::getAllByType($tabid, array('LISTVIEWROW'), $customlink_params, null, $recordId);
+				$linkviewrows = $linksurls['LISTVIEWROW'];
+				$actionLinkInfo .= '';
+				if ($linkviewrows && count($linkviewrows) > 0) {
+					for ($x =0; $x < count($linkviewrows); $x++) {
+						$linklabel = $linkviewrows[$x]->linklabel;
+						$linkurl = $linkviewrows[$x]->linkurl;
+						$actionLinkInfo .= ' | ';
+						$actionLinkInfo .= "<a href=\"$linkurl\">".getTranslatedString($linklabel, $module).'</a> ';
+					}
+				}
+			}
 			// Record Change Notification
 			if (method_exists($focus, 'isViewed') && GlobalVariable::getVariable('Application_ListView_Record_Change_Indicator', 1, $module)) {
 				if (!$focus->isViewed($recordId)) {
