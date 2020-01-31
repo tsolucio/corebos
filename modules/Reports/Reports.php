@@ -764,63 +764,6 @@ class Reports extends CRMEntity {
 		return $options;
 	}
 
-	/** Function to get the selected standard filter columns
-	 *  This function returns the selected standard filter criteria
-	 *  which is selected for vtiger_reports as an array
-	 *  Array stdcriteria_list[fieldtablename:fieldcolname:module_fieldlabel1]=fieldlabel
-	 */
-	public function getStdCriteriaByModule($module) {
-		global $adb, $log, $current_user;
-		$userprivs = $current_user->getPrivileges();
-
-		$tabid = getTabid($module);
-		foreach ($this->module_list[$module] as $blockid) {
-			$blockids[] = $blockid;
-		}
-		$blockids = implode(',', $blockids);
-
-		$params = array($tabid, $blockids);
-		if ($userprivs->hasGlobalReadPermission()) {
-			//uitype 6 and 23 added for start_date,EndDate,Expected Close Date
-			$sql = 'select *
-				from vtiger_field
-				where vtiger_field.tabid=? and (vtiger_field.uitype=5 or vtiger_field.uitype=6 or vtiger_field.uitype=23 or vtiger_field.displaytype=2 or vtiger_field.displaytype=4)
-					and vtiger_field.block in ('. generateQuestionMarks($block) .') and vtiger_field.presence in (0,2) order by vtiger_field.sequence';
-		} else {
-			$profileList = getCurrentUserProfileList();
-			$sql = 'select *
-				from vtiger_field
-				inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid
-				inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid
-				inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid
-				where vtiger_field.tabid=? and (vtiger_field.uitype=5 or vtiger_field.displaytype=2 or vtiger_field.displaytype=4) and vtiger_profile2field.visible=0
-					and vtiger_def_org_field.visible=0 and vtiger_field.block in ('. generateQuestionMarks($block) .') and vtiger_field.presence in (0,2)';
-			if (count($profileList) > 0) {
-				$sql .= ' and vtiger_profile2field.profileid in ('. generateQuestionMarks($profileList) .')';
-				$params[] = $profileList;
-			}
-			$sql .= ' order by vtiger_field.sequence';
-		}
-
-		$result = $adb->pquery($sql, $params);
-
-		while ($criteriatyperow = $adb->fetch_array($result)) {
-			$fieldtablename = $criteriatyperow['tablename'];
-			$fieldcolname = $criteriatyperow['columnname'];
-			$fieldlabel = $criteriatyperow['fieldlabel'];
-
-			if ($fieldtablename == 'vtiger_crmentity') {
-				$fieldtablename = $fieldtablename.$module;
-			}
-			$fieldlabel1 = str_replace(' ', '_', $fieldlabel);
-			$optionvalue = $fieldtablename.':'.$fieldcolname.':'.$module.'_'.$fieldlabel1;
-			$stdcriteria_list[$optionvalue] = $fieldlabel;
-		}
-
-		$log->debug('Reports :: StdfilterColumns-> returned Stdfilter for'.$module);
-		return $stdcriteria_list;
-	}
-
 	/** Function to form a javascript to determine the start date and end date for a standard filter */
 	public function getCriteriaJS() {
 		return getCriteriaJS('NewReport');
