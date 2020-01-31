@@ -103,7 +103,7 @@ class Reports extends CRMEntity {
 		$userprivs = $current_user->getPrivileges();
 		$is_admin = is_admin($current_user);
 		$this->initListOfModules();
-		if ($reportid != "") {
+		if ($reportid != '') {
 			// Lookup information in cache first
 			$cachedInfo = VTCacheUtils::lookupReport_Info($current_user->id, $reportid);
 			$subordinate_users = VTCacheUtils::lookupReport_SubordinateUsers($reportid);
@@ -121,7 +121,7 @@ class Reports extends CRMEntity {
 				$user_groups = $userGroups->user_groups;
 				$user_group_query = '';
 				if (!empty($user_groups) && !$is_admin) {
-					$user_group_query = " (shareid IN (".generateQuestionMarks($user_groups).") AND setype='groups') OR";
+					$user_group_query = ' (shareid IN ('.generateQuestionMarks($user_groups).") AND setype='groups') OR";
 					$params[] = $user_groups;
 				}
 
@@ -277,23 +277,23 @@ class Reports extends CRMEntity {
 				}
 
 				$relatedmodules = $adb->pquery(
-					"SELECT vtiger_tab.name, vtiger_relatedlists.tabid FROM vtiger_tab
+					'SELECT vtiger_tab.name, vtiger_relatedlists.tabid FROM vtiger_tab
 					INNER JOIN vtiger_relatedlists on vtiger_tab.tabid=vtiger_relatedlists.related_tabid
 					WHERE vtiger_tab.isentitytype=1
-					AND vtiger_tab.name NOT IN(".generateQuestionMarks($restricted_modules).")
+					AND vtiger_tab.name NOT IN('.generateQuestionMarks($restricted_modules).")
 					AND vtiger_tab.presence = 0 AND vtiger_relatedlists.label!='Activity History' AND vtiger_relatedlists.name not like 'getPotentialsMonth\_%'
 					UNION
 					SELECT module, vtiger_tab.tabid FROM vtiger_fieldmodulerel
 					INNER JOIN vtiger_tab on vtiger_tab.name = vtiger_fieldmodulerel.relmodule
 					WHERE vtiger_tab.isentitytype = 1
-					AND vtiger_tab.name NOT IN(".generateQuestionMarks($restricted_modules).")
+					AND vtiger_tab.name NOT IN(".generateQuestionMarks($restricted_modules).')
 					AND vtiger_tab.presence = 0
 					UNION
 					SELECT relmodule, vtiger_tab.tabid FROM vtiger_fieldmodulerel
 					INNER JOIN vtiger_tab on vtiger_tab.name = vtiger_fieldmodulerel.module
 					WHERE vtiger_tab.isentitytype = 1
-					AND vtiger_tab.name NOT IN(".generateQuestionMarks($restricted_modules).")
-					AND vtiger_tab.presence = 0",
+					AND vtiger_tab.name NOT IN('.generateQuestionMarks($restricted_modules).')
+					AND vtiger_tab.presence = 0',
 					array($restricted_modules,$restricted_modules,$restricted_modules)
 				);
 				if ($adb->num_rows($relatedmodules)) {
@@ -399,7 +399,7 @@ class Reports extends CRMEntity {
 		$userprivs = $current_user->getPrivileges();
 		$is_admin = is_admin($current_user);
 		$current_user_parent_role_seq = $userprivs->getParentRoleSequence();
-		$grpurlid = ($userprivs->hasGroups() ? '&grpid='.implode(",", $userprivs->getGroups()) : '');
+		$grpurlid = ($userprivs->hasGroups() ? '&grpid='.implode(',', $userprivs->getGroups()) : '');
 		require_once 'include/utils/GetUserGroups.php';
 		$userGroups = new GetUserGroups();
 		$userGroups->getAllUserGroups($current_user->id);
@@ -440,14 +440,14 @@ class Reports extends CRMEntity {
 		if (count($report)>0) {
 			do {
 				$report_details = array();
-				$report_details['customizable'] = $report["customizable"];
-				$report_details['reportid'] = $report["reportid"];
-				$report_details['primarymodule'] = $report["primarymodule"];
-				$report_details['secondarymodules'] = $report["secondarymodules"];
-				$report_details['state'] = $report["state"];
-				$report_details['description'] = $report["description"];
-				$report_details['reportname'] = $report["reportname"];
-				$report_details['sharingtype'] = $report["sharingtype"];
+				$report_details['customizable'] = $report['customizable'];
+				$report_details['reportid'] = $report['reportid'];
+				$report_details['primarymodule'] = $report['primarymodule'];
+				$report_details['secondarymodules'] = $report['secondarymodules'];
+				$report_details['state'] = $report['state'];
+				$report_details['description'] = $report['description'];
+				$report_details['reportname'] = $report['reportname'];
+				$report_details['sharingtype'] = $report['sharingtype'];
 				$report_details['reporttype'] = $report['reporttype'];
 				$report_details['cbreporttype'] = $report['cbreporttype'];
 				if ($report['cbreporttype']=='external') {
@@ -635,7 +635,7 @@ class Reports extends CRMEntity {
 			}
 			$profileList = getCurrentUserProfileList();
 			if (count($profileList) > 0) {
-				$sql .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
+				$sql .= ' and vtiger_profile2field.profileid in ('. generateQuestionMarks($profileList) .')';
 				$params[] = $profileList;
 			}
 			$sql .= ' and tablename NOT IN ('.generateQuestionMarks($skipTalbes).') ';
@@ -683,8 +683,8 @@ class Reports extends CRMEntity {
 			}
 			$fieldlabel1 = str_replace(' ', '_', $fieldlabel);
 			$fieldlabel1 = ReportRun::replaceSpecialChar($fieldlabel1);
-			$optionvalue = $fieldtablename.":".$fieldcolname.":".$module."_".$fieldlabel1.":".$fieldname.":".$fieldtypeofdata;
-			$comparefield = '$'.$module.'#'.$fieldname.'$'."::".getTranslatedString($module, $module)." ".getTranslatedString($fieldlabel, $module);
+			$optionvalue = $fieldtablename.':'.$fieldcolname.':'.$module.'_'.$fieldlabel1.':'.$fieldname.':'.$fieldtypeofdata;
+			$comparefield = '$'.$module.'#'.$fieldname.'$::'.getTranslatedString($module, $module).' '.getTranslatedString($fieldlabel, $module);
 			switch ($fieldtypeofdata) {
 				case 'NN':
 				case 'N':
@@ -729,9 +729,9 @@ class Reports extends CRMEntity {
 			foreach ($fields as $fieldcolname => $label) {
 				$fieldtypeofdata = $fields_datatype[$fieldcolname];
 				if ($fieldcolname != 'productid' || $fieldcolname !='serviceid') {
-					$optionvalue = $fieldtablename.$module.":".$fieldcolname.":".$module."_".$label.":".$fieldcolname.":".$fieldtypeofdata;
+					$optionvalue = $fieldtablename.$module.':'.$fieldcolname.':'.$module.'_'.$label.':'.$fieldcolname.':'.$fieldtypeofdata;
 				} else {
-					$optionvalue = $fieldtablename.":".$fieldcolname.":".$module."_".$label.":".$fieldcolname.":".$fieldtypeofdata;
+					$optionvalue = $fieldtablename.':'.$fieldcolname.':'.$module.'_'.$label.':'.$fieldcolname.':'.$fieldtypeofdata;
 				}
 				$module_columnlist[$optionvalue] = $label;
 			}
@@ -776,29 +776,28 @@ class Reports extends CRMEntity {
 	 *  This function get the combo values for the standard filter for the given vtiger_report
 	 *  and return a HTML string
 	 */
-	public function getSelectedStdFilterCriteria($selecteddatefilter = "") {
+	public function getSelectedStdFilterCriteria($selecteddatefilter = '') {
 		global $mod_strings;
 		$options = array();
-		$datefiltervalue = array("custom","prevfy","thisfy","nextfy","prevfq","thisfq","nextfq",
-				"yesterday","today","tomorrow","lastweek","thisweek","nextweek","lastmonth","thismonth",
-				"nextmonth","last7days","last14days","last30days", "last60days","last90days","last120days",
-				"next30days","next60days","next90days","next120days"
-				);
-
-		$datefilterdisplay = array("Custom","Previous FY", "Current FY","Next FY","Previous FQ","Current FQ","Next FQ","Yesterday",
-				"Today","Tomorrow","Last Week","Current Week","Next Week","Last Month","Current Month",
-				"Next Month","Last 7 Days","Last 14 Days","Last 30 Days","Last 60 Days","Last 90 Days","Last 120 Days",
-				"Next 7 Days","Next 30 Days","Next 60 Days","Next 90 Days","Next 120 Days"
-				);
-
+		$datefiltervalue = array(
+			'custom','prevfy','thisfy','nextfy','prevfq','thisfq','nextfq',
+			'yesterday','today','tomorrow','lastweek','thisweek','nextweek','lastmonth','thismonth',
+			'nextmonth','last7days','last14days','last30days', 'last60days','last90days','last120days',
+			'next30days','next60days','next90days','next120days'
+		);
+		$datefilterdisplay = array(
+			'Custom','Previous FY', 'Current FY','Next FY','Previous FQ','Current FQ','Next FQ','Yesterday',
+			'Today','Tomorrow','Last Week','Current Week','Next Week','Last Month','Current Month',
+			'Next Month','Last 7 Days','Last 14 Days','Last 30 Days','Last 60 Days','Last 90 Days','Last 120 Days',
+			'Next 7 Days','Next 30 Days','Next 60 Days','Next 90 Days','Next 120 Days'
+		);
 		for ($i=0; $i<count($datefiltervalue); $i++) {
 			if ($selecteddatefilter == $datefiltervalue[$i]) {
-				$options[] = array("selected"=>true,"value"=>$datefiltervalue[$i],"label"=>$mod_strings[$datefilterdisplay[$i]]);
+				$options[] = array('selected'=>true,'value'=>$datefiltervalue[$i],'label'=>$mod_strings[$datefilterdisplay[$i]]);
 			} else {
-				$options[] = array("value"=>$datefiltervalue[$i],"label"=>$mod_strings[$datefilterdisplay[$i]]);
+				$options[] = array('value'=>$datefiltervalue[$i],'label'=>$mod_strings[$datefilterdisplay[$i]]);
 			}
 		}
-
 		return $options;
 	}
 
@@ -850,8 +849,8 @@ class Reports extends CRMEntity {
 			if ($fieldtablename == 'vtiger_crmentity') {
 				$fieldtablename = $fieldtablename.$module;
 			}
-			$fieldlabel1 = str_replace(" ", "_", $fieldlabel);
-			$optionvalue = $fieldtablename.":".$fieldcolname.":".$module."_".$fieldlabel1;
+			$fieldlabel1 = str_replace(' ', '_', $fieldlabel);
+			$optionvalue = $fieldtablename.':'.$fieldcolname.':'.$module.'_'.$fieldlabel1;
 			$stdcriteria_list[$optionvalue] = $fieldlabel;
 		}
 
@@ -1019,8 +1018,8 @@ class Reports extends CRMEntity {
 		$j = 0;
 		$groupsresult = $adb->pquery('SELECT * FROM vtiger_relcriteria_grouping WHERE queryid = ? ORDER BY groupid', array($reportid));
 		while ($relcriteriagroup = $adb->fetch_array($groupsresult)) {
-			$groupId = $relcriteriagroup["groupid"];
-			$groupCondition = $relcriteriagroup["group_condition"];
+			$groupId = $relcriteriagroup['groupid'];
+			$groupCondition = $relcriteriagroup['group_condition'];
 
 			$ssql = 'select vtiger_relcriteria.*
 				from vtiger_report
@@ -1061,7 +1060,7 @@ class Reports extends CRMEntity {
 					}
 				}
 
-				$temp_val = explode(",", $relcriteriarow['value']);
+				$temp_val = explode(',', $relcriteriarow['value']);
 				if ($col[4] == 'D' || ($col[4] == 'T' && $col[1] != 'time_start' && $col[1] != 'time_end') || ($col[4] == 'DT')) {
 					$val = array();
 					for ($x=0; $x<count($temp_val); $x++) {
@@ -1121,7 +1120,7 @@ class Reports extends CRMEntity {
 		$options = array();
 		$options []= $this->sgetColumnstoTotalHTML($primarymodule, 0);
 		if (!empty($secondarymodule)) {
-			//$secondarymodule = explode(":",$secondarymodule);
+			//$secondarymodule = explode(':',$secondarymodule);
 			for ($i=0; $i < count($secondarymodule); $i++) {
 				$options []= $this->sgetColumnstoTotalHTML($secondarymodule[$i], ($i+1));
 			}
