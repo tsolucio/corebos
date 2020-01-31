@@ -707,8 +707,11 @@ class Reports extends CRMEntity {
 			$uniq = array_keys($uniq);
 			$this->adv_rel_fields[$ftypes] = $uniq;
 		}
-		$blockname = getBlockName($block);
-		if ($blockname == 'LBL_RELATED_PRODUCTS' && in_array($module, getInventoryModules())) {
+		$hasRelatedProducts = false;
+		foreach ((array)$block as $blkid) {
+			$hasRelatedProducts = ($hasRelatedProducts || getBlockName($blkid)=='LBL_RELATED_PRODUCTS');
+		}
+		if ($hasRelatedProducts && in_array($module, getInventoryModules())) {
 			$fieldtablename = 'vtiger_inventoryproductrel';
 			$fields = array(
 				'productid'=>getTranslatedString('Product Name', $module),
@@ -736,7 +739,7 @@ class Reports extends CRMEntity {
 				$module_columnlist[$optionvalue] = $label;
 			}
 		}
-		$log->debug('Reports :: FieldColumns-> returned ColumnslistbyBlock'.$module.$block);
+		$log->debug('Reports :: FieldColumns returned ColumnslistbyBlock');
 		return $module_columnlist;
 	}
 
@@ -1246,9 +1249,8 @@ class Reports extends CRMEntity {
 		$ssql.= ' order by sequence';
 
 		$result = $adb->pquery($ssql, $sparams);
-		$columntototalrow = $adb->fetch_array($result);
 		$options_list = array();
-		do {
+		while ($columntototalrow = $adb->fetch_array($result)) {
 			$typeofdata = explode('~', $columntototalrow['typeofdata']);
 			$columntototalrow['fieldlabel'] = decode_html($columntototalrow['fieldlabel']);
 			if (($typeofdata[0] == 'N' || $typeofdata[0] == 'NN' || $typeofdata[0] == 'I' || $typeofdata[0] == 'T' || $columntototalrow['columnname']=='totaltime')
@@ -1305,7 +1307,7 @@ class Reports extends CRMEntity {
 				}
 				$options_list [] = $filters;
 			}
-		} while ($columntototalrow = $adb->fetch_array($result));
+		}
 
 		$log->debug('Reports :: returned sgetColumnstoTotalHTML');
 		return $options_list;
