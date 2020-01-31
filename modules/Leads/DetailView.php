@@ -13,6 +13,8 @@ global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
 $smarty = new vtigerCRM_Smarty();
 
+require_once 'modules/Vtiger/DetailView.php';
+
 if (useInternalMailer() == 1) {
 	$smarty->assign('INT_MAILER', 'true');
 }
@@ -21,8 +23,6 @@ if (isPermitted('Emails', 'CreateView', '') == 'yes') {
 	$parent_email = getEmailParentsList('Leads', $_REQUEST['record'], $focus);
 	$smarty->assign('HIDDEN_PARENTS_LIST', $parent_email);
 }
-
-require_once 'modules/Vtiger/DetailView.php';
 
 if (!leadCanBeConverted($record)) {
 	$smarty->assign('ERROR_MESSAGE', getTranslatedString('LeadAlreadyConverted', 'Leads'));
