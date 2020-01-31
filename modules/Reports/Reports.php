@@ -482,6 +482,7 @@ class Reports extends CRMEntity {
 		if (empty($module)) {
 			return;
 		}
+		$ret_module_list = array();
 		foreach ($this->module_list[$module] as $key => $value) {
 			$temp = $this->getColumnsListbyBlock($module, $key);
 			if (!empty($ret_module_list[$module][$value])) {
@@ -1188,8 +1189,10 @@ class Reports extends CRMEntity {
 			) {
 				$options = array();
 				$filters = array();
-				$options['label'][] = getTranslatedString($columntototalrow['tablabel'], $columntototalrow['tablabel']).' -'.getTranslatedString($columntototalrow['fieldlabel'], $columntototalrow['tablabel']);
-				$filters['label'][] = getTranslatedString($columntototalrow['tablabel'], $columntototalrow['tablabel']).' -'.getTranslatedString($columntototalrow['fieldlabel'], $columntototalrow['tablabel']);
+				$i18ntablabel = getTranslatedString($columntototalrow['tablabel'], $columntototalrow['tablabel']);
+				$i18nfldlabel = getTranslatedString($columntototalrow['fieldlabel'], $columntototalrow['tablabel']);
+				$options['label'][] = $i18ntablabel.' -'.$i18nfldlabel;
+				$filters['label'][] = $i18ntablabel.' -'.$i18nfldlabel;
 				if (isset($this->columnssummary)) {
 					$selectedcolumn = '';
 					$selectedcolumn1 = array();
@@ -1204,7 +1207,7 @@ class Reports extends CRMEntity {
 					}
 
 					$columntototalrow['fieldlabel'] = str_replace(' ', '_', $columntototalrow['fieldlabel']);
-					$options[] = getTranslatedString($columntototalrow['tablabel'], $columntototalrow['tablabel']).' - '.getTranslatedString($columntototalrow['fieldlabel'], $columntototalrow['tablabel']);
+					$options[] = $i18ntablabel.' - '.getTranslatedString($columntototalrow['fieldlabel'], $columntototalrow['tablabel']);
 					$baseColName = 'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'];
 					if (isset($selectedcolumn1[2]) && $selectedcolumn1[2] == $baseColName.'_SUM:2') {
 						$filters['checkboxes'][] = array('name'=>$baseColName.'_SUM:2','checked'=>true);
