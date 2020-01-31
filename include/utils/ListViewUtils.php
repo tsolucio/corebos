@@ -588,6 +588,9 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 	$wfs = new VTWorkflowManager($adb);
 	$totals = array();
 	if ($navigation_array['start'] != 0) {
+		$tabid = getTabid($module);
+		include_once 'vtlib/Vtiger/Link.php';
+		$customlink_params = array('MODULE'=>$module, 'ACTION'=>vtlib_purify($_REQUEST['action']));
 		$hasGlobalReadPermission = $userprivs->hasGlobalReadPermission();
 		for ($i = 1; $i <= $noofrows; $i++) {
 			$list_header = array();
@@ -955,7 +958,21 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 						}
 					}
 				}
+
+				$customlink_params['RECORD'] = $entity_id;
+				$linksurls =  Vtiger_Link::getAllByType($tabid, array('LISTVIEWROW'), $customlink_params, null, $entity_id);
+				if (!empty($linksurls['LISTVIEWROW'])) {
+					$linkviewrows = $linksurls['LISTVIEWROW'];
+					for ($x =0; $x < count($linkviewrows); $x++) {
+						$lvrobj = $linkviewrows[$x];
+						$linklabel = $lvrobj->linklabel;
+						$linkurl = $lvrobj->linkurl;
+						$links_info .= ' | ';
+						$links_info .= "<a href=\"$linkurl\">".getTranslatedString($linklabel, $module).'</a> ';
+					}
+				}
 			}
+
 			// Record Change Notification
 			if (method_exists($focus, 'isViewed') && GlobalVariable::getVariable('Application_ListView_Record_Change_Indicator', 1, $module)) {
 				if (!$focus->isViewed($entity_id)) {

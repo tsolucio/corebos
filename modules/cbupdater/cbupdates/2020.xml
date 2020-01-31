@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updatesChangeLog>
+<changeSet>
+	<author>george1806</author>
+	<description>Add a new type of Business Action - LISTVIEWROW</description>
+	<filename>build/changeSets/2020/addListviewrowBAtype.php</filename>
+	<classname>addListviewrowBAtype</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+</updatesChangeLog>

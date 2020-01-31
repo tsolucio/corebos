@@ -211,6 +211,10 @@ class ListViewController {
 		$wfs = new VTWorkflowManager($adb);
 		$totals = array();
 		$data = array();
+
+		$tabid = getTabid($currentModule);
+		include_once 'vtlib/Vtiger/Link.php';
+		$customlink_params = array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_REQUEST['action']));
 		for ($i = 0; $i < $rowCount; ++$i) {
 			//Getting the recordId
 			if ($module != 'Users') {
@@ -660,6 +664,20 @@ class ListViewController {
 					}
 				}
 			}
+
+			$customlink_params['RECORD'] = $recordId;
+			$linksurls =  Vtiger_Link::getAllByType($tabid, array('LISTVIEWROW'), $customlink_params, null, $recordId);
+			if (!empty($linksurls['LISTVIEWROW'])) {
+				$linkviewrows = $linksurls['LISTVIEWROW'];
+				for ($x =0; $x < count($linkviewrows); $x++) {
+					$lvrobj = $linkviewrows[$x];
+					$linklabel = $lvrobj->linklabel;
+					$linkurl = $lvrobj->linkurl;
+					$actionLinkInfo .= ' | ';
+					$actionLinkInfo .= "<a href=\"$linkurl\">".getTranslatedString($linklabel, $module).'</a> ';
+				}
+			}
+
 			// Record Change Notification
 			if (method_exists($focus, 'isViewed') && GlobalVariable::getVariable('Application_ListView_Record_Change_Indicator', 1, $module)) {
 				if (!$focus->isViewed($recordId)) {
