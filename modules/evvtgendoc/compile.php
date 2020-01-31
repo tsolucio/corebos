@@ -251,6 +251,7 @@ function eval_expression($marcador, $entityid) {
 function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 	global $current_user,$repe,$adb,$related_module,$special_modules,$special_inv,$iter_modules,$default_charset,$genxmlaggregates;
 	global $dateGD, $repeticionGD, $lineGD;
+	$module = trim(preg_replace('/\*(\w|\s)+\*/', '', $module));
 	OpenDocument::debugmsg("retrieve_from_db: $marcador with $module($id)");
 	$token_pair = explode('.', $marcador);
 	if (count($token_pair) == 1) {
