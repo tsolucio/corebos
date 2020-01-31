@@ -55,7 +55,7 @@ $reportname = (isset($_REQUEST['reportName']) ? vtlib_purify($_REQUEST['reportNa
 $reportdescription = (isset($_REQUEST['reportDesc']) ? vtlib_purify($_REQUEST['reportDesc']) : '');
 $cbreporttype = (!empty($_REQUEST['cbreporttype']) ? vtlib_purify($_REQUEST['cbreporttype']) : '');
 $reporttype = (isset($_REQUEST['reportType']) ? vtlib_purify($_REQUEST['reportType']) : 'tabular');
-$folderid = (!empty($_REQUEST['folder']) ? vtlib_purify($_REQUEST['folder']) : !empty($_REQUEST['reportfolder']) ? vtlib_purify($_REQUEST['reportfolder']) : 1);
+$folderid = (!empty($_REQUEST['folder']) ? vtlib_purify($_REQUEST['folder']) : (!empty($_REQUEST['reportfolder']) ? vtlib_purify($_REQUEST['reportfolder']) : 1));
 //<<<<<<<report>>>>>>>>>
 
 //<<<<<<<standarfilters>>>>>>>>>
