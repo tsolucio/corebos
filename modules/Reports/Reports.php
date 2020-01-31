@@ -845,7 +845,7 @@ class Reports extends CRMEntity {
 		return $querycolumn;
 	}
 
-	public function getaccesfield($module) {
+	public function getaccesfield() {
 		global $adb;
 		$access_fields = array();
 
@@ -937,7 +937,7 @@ class Reports extends CRMEntity {
 				list($tablename, $colname, $module_field, $fieldname, $single) = explode(':', $fieldcolname);
 				list($module,$field) = explode('_', $module_field);
 				if (count($permitted_fields) == 0 && !$hasGlobalReadPermission) {
-					$permitted_fields = $this->getaccesfield($module);
+					$permitted_fields = $this->getaccesfield();
 				}
 				$fieldlabel = trim(str_replace($module, ' ', $module_field));
 				$mod_arr=explode('_', $fieldlabel);
