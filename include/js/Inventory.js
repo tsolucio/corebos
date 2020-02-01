@@ -1140,13 +1140,12 @@ function moveUpDown(sType, oModule, iIndex) {
 			}
 		}
 	} else {
-		for (iCount=iIndex; iCount<=iMax; iCount++) {
+		for (iCount=iIndex+1; iCount<=iMax; iCount++) {
 			if (document.getElementById('row'+iCount) && document.getElementById('row'+iCount).style.display != 'none' && document.getElementById('deleted'+iCount).value == 0) {
 				iSwapIndex = iCount;
 				break;
 			}
 		}
-		iSwapIndex += 1;
 	}
 	var iTableRowIndex = document.getElementById('row'+iIndex).rowIndex;
 	var iTableRowSwapIndex = document.getElementById('row'+iSwapIndex).rowIndex;
