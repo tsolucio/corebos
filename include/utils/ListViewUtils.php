@@ -960,7 +960,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 				}
 
 				$customlink_params['RECORD'] = $entity_id;
-				$linksurls =  Vtiger_Link::getAllByType($tabid, array('LISTVIEWROW'), $customlink_params, null, $entity_id);
+				$linksurls = BusinessActions::getAllByType($tabid, array('LISTVIEWROW'), $customlink_params, null, $entity_id);
 				if (!empty($linksurls['LISTVIEWROW'])) {
 					$linkviewrows = $linksurls['LISTVIEWROW'];
 					for ($x =0; $x < count($linkviewrows); $x++) {

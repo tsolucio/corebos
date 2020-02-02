@@ -666,7 +666,7 @@ class ListViewController {
 			}
 
 			$customlink_params['RECORD'] = $recordId;
-			$linksurls =  Vtiger_Link::getAllByType($tabid, array('LISTVIEWROW'), $customlink_params, null, $recordId);
+			$linksurls = BusinessActions::getAllByType($tabid, array('LISTVIEWROW'), $customlink_params, null, $recordId);
 			if (!empty($linksurls['LISTVIEWROW'])) {
 				$linkviewrows = $linksurls['LISTVIEWROW'];
 				for ($x =0; $x < count($linkviewrows); $x++) {
