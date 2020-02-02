@@ -352,17 +352,17 @@ function splitDateVal(dateval) {
 	}
 
 	switch (userDateFormat) {
-	case 'yyyy-mm-dd' :
+	case 'yyyy-mm-dd':
 		dateelements[0]=dateval.substr(dateval.lastIndexOf(datesep)+1, dateval.length); //dd
 		dateelements[1]=dateval.substring(dateval.indexOf(datesep)+1, dateval.lastIndexOf(datesep)); //mm
 		dateelements[2]=dateval.substring(0, dateval.indexOf(datesep)); //yyyyy
 		break;
-	case 'mm-dd-yyyy' :
+	case 'mm-dd-yyyy':
 		dateelements[0]=dateval.substring(dateval.indexOf(datesep)+1, dateval.lastIndexOf(datesep));
 		dateelements[1]=dateval.substring(0, dateval.indexOf(datesep));
 		dateelements[2]=dateval.substr(dateval.lastIndexOf(datesep)+1, dateval.length);
 		break;
-	case 'dd-mm-yyyy' :
+	case 'dd-mm-yyyy':
 		dateelements[0]=dateval.substring(0, dateval.indexOf(datesep));
 		dateelements[1]=dateval.substring(dateval.indexOf(datesep)+1, dateval.lastIndexOf(datesep));
 		dateelements[2]=dateval.substr(dateval.lastIndexOf(datesep)+1, dateval.length);
@@ -5271,7 +5271,7 @@ function AutocompleteRelation(target, i) {
 			this.classList.add('active');
 		}
 	};
-	this.targetUL.hide 	= function () {
+	this.targetUL.hide = function () {
 		if (this.classList.contains('active')) {
 			this.style.opacity = 0;
 			this.classList.remove('active');
@@ -5303,7 +5303,7 @@ AutocompleteRelation.prototype.get = function (e) {
 		var acInstance = this;
 		this.activate();
 
-		this.displayFields 	= this.showFields();
+		this.displayFields	= this.showFields();
 		this.entityName		= this.entityField();
 		this.fillfields		= this.fillFields();
 		acInstance.isReferenceField(e);
