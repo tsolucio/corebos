@@ -694,6 +694,13 @@ class CRMEntity {
 						}
 						$vek=array_unique(array_merge(array_diff($currentvalues, $uservalues), $selectedvalues));
 						$fldvalue = implode(' |##| ', $vek);
+						if ($uitype == 3313 || $uitype == 3314) {
+							// this value cannot be over 1010 characters if it has an index, so we cut it at that length always
+							$fldvaluecut = substr($fldvalue, 0, 1010);
+							if ($fldvalue!=$fldvaluecut) {
+								$fldvalue = substr($fldvaluecut, 0, strrpos($fldvaluecut, ' |##| '));
+							}
+						}
 					}
 				} elseif ($uitype == 5 || $uitype == 6 || $uitype == 23) {
 					//Added to avoid function call getDBInsertDateValue in ajax save

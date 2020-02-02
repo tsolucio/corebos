@@ -7,4 +7,11 @@
 	<classname>addListviewrowBAtype</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Resize Business Acttion, Global Variable and Filter Management module_list field to its maximum length</description>
+	<filename>build/changeSets/2020/resizeModuleListFields.php</filename>
+	<classname>resizeModuleListFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
