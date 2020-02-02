@@ -9200,7 +9200,7 @@ if (workbox) {
   },
   {
     "url": "include/js/general.js",
-    "revision": "e0685cba8bddddd5a9bc69e6cfa1514b"
+    "revision": "d649213342f6719f6dbed0ac43660eb4"
   },
   {
     "url": "include/js/hu_hu.lang.js",
@@ -9208,7 +9208,7 @@ if (workbox) {
   },
   {
     "url": "include/js/Inventory.js",
-    "revision": "a68fa4332a4bb0f0ce18ddec3d586319"
+    "revision": "01c5cfc415242b39fe22d3ab6053d826"
   },
   {
     "url": "include/js/it_it.lang.js",
