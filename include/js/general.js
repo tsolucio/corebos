@@ -5314,6 +5314,9 @@ AutocompleteRelation.prototype.get = function (e) {
 				var json_data = JSON.parse(r.response);
 				if (json_data.length == 0) {
 					acInstance.clearTargetUL();
+					if (!!window.currentAc) {
+						window.currentAc.deactivate();
+					}
 				} else {
 					acInstance.set(json_data);
 				}
