@@ -9200,7 +9200,7 @@ if (workbox) {
   },
   {
     "url": "include/js/general.js",
-    "revision": "d649213342f6719f6dbed0ac43660eb4"
+    "revision": "2ec654a309cb6d6e3058b9f5e57bec91"
   },
   {
     "url": "include/js/hu_hu.lang.js",
@@ -9220,7 +9220,7 @@ if (workbox) {
   },
   {
     "url": "include/js/ListView.js",
-    "revision": "592e52d859dceee1b288805939c06ed7"
+    "revision": "c7e3e2d4ec7fc2f43747ff5560d956c4"
   },
   {
     "url": "include/js/loadjslog.js",
