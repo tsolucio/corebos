@@ -403,7 +403,7 @@ function massEditRecords(obj, divid, idstring, module) {
 }
 
 function mergeMassEditRecords(selectedNames, obj, divid, module) {
-	var idstring = getMergeRecords(selectedNames);
+	var idstring = getMergeRecords(selectedNames, 100);
 	if (idstring !== false) {
 		idstring = idstring.replace(/,/g, ';');
 		massEditRecords(obj, divid, idstring, module);
