@@ -8,7 +8,7 @@
 <br>
 <table border="0" align ="center" width ="95%">
 	<tr>
-		<td >
+		<td>
 			{assign var='massDelete' value='LBL_MASS_DELETE'|getTranslatedString:$MODULE}
 			{if $DELETE eq $massDelete}
 				<input class="crmbutton small delete" type="button" value="{$APP.LBL_DELETE}" onclick="return delete_fields('{$MODULE}')"/>
@@ -56,8 +56,8 @@
 					</td>
 					{foreach key=key item=newdata2 from=$newdata1}
 						<td >
-							{if $key eq 'recordid'}	
-								<a href="index.php?module={$MODULE}&action=DetailView&record={$data.$key3.recordid}&parenttab={$CATEGORY}" target ="blank">{$newdata2}</a>
+							{if $key eq 'recordid'}
+								<a href="index.php?module={$MODULE}&action=DetailView&record={$data.$key3.recordid}" target ="blank">{$newdata2}</a>
 							{else}
 								{if $key eq 'Entity Type'}
 									{if $newdata2 eq 0 && $newdata2 neq NULL}
@@ -74,12 +74,14 @@
 								{/if}
 							{/if}
 						</td>
-					{/foreach}	
+					{/foreach}
 					<td cellpadding="3" nowrap width="80px">
-						<input name="{$key1}" id="{$key1}" value="{$data.$key3.recordid}"  type="checkbox">
+						<input name="{$key1}" id="{$key1}" value="{$data.$key3.recordid}" type="checkbox">
 					</td>
 					{if $cnt2 eq 0}
-						<td align="center" rowspan='{$cnt}'><input class="crmbutton small edit" name="merge" value="{$APP.LBL_MERGE}" onclick="merge_fields('{$key1}','{$MODULE}','{$CATEGORY}');" type="button"></td>
+						<td align="center" rowspan='{$cnt}'>
+						<input class="crmbutton small edit" name="merge" value="{$APP.LBL_MERGE}" onclick="merge_fields('{$key1}','{$MODULE}');" type="button">
+						</td>
 					{/if}
 					{assign var=cnt2 value=$cnt2+1}
 				</tr>

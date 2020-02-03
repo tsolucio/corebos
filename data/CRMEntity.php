@@ -671,7 +671,7 @@ class CRMEntity {
 						$res = $adb->pquery($sql, array($tabid,$fieldname));
 						$colj=$adb->query_result($res, 0, 0);
 						$tabj = $adb->query_result($res, 0, 1);
-						$sql1="select $colj from $tabj where " . $this->tab_name_index[$tabj] . "=?";
+						$sql1="select $colj from $tabj where " . $this->tab_name_index[$tabj] . '=?';
 						$res = $adb->pquery($sql1, array($this->id));
 						$vlera=$adb->query_result($res, 0, $colj);
 						if (empty($vlera)) {
