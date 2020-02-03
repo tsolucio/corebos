@@ -1,5 +1,5 @@
 <!-- MassEdit Feature -->
-<div id="massedit" class="layerPopup" style="display:none;width:80%;">
+<div id="massedit" class="layerPopup" style="display:none;width:80%;z-index:100;">
 <table width="100%" border="0" cellpadding="3" cellspacing="0" class="layerHeadingULine">
 <tr>
 	<td class="layerPopupHeading" align="left" width="60%">{$APP.LBL_MASSEDIT_FORM_HEADER}</td>
