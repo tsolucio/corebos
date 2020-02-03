@@ -3664,14 +3664,12 @@ function lastImport(module, req_module) {
 	}
 }
 
-function merge_fields(selectedNames, module, parent_tab) {
+function getMergeRecords(selectedNames) {
 	var select_options=document.getElementsByName(selectedNames);
-	var x= select_options.length;
-	var req_module=module;
+	var x = select_options.length;
 	var num_group=document.getElementById('group_count').innerHTML;
 	var pass_url='';
 	var flag=0;
-	//var i=0;
 	var xx = 0;
 	for (var i = 0; i < x; i++) {
 		if (select_options[i].checked) {
@@ -3680,7 +3678,7 @@ function merge_fields(selectedNames, module, parent_tab) {
 		}
 	}
 	var tmp = 0;
-	if ( xx != 0) {
+	if (xx != 0) {
 		if (xx > 3) {
 			alert(alert_arr.MAX_THREE);
 			return false;
@@ -3707,9 +3705,18 @@ function merge_fields(selectedNames, module, parent_tab) {
 				return false;
 			}
 		}
-		window.open('index.php?module='+req_module+'&action=ProcessDuplicates&mergemode=mergefields&passurl='+pass_url+'&parenttab='+parent_tab, 'Merge', 'width=750,height=602,menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes');
+		return pass_url;
 	} else {
 		alert(alert_arr.ATLEAST_TWO);
+		return false;
+	}
+}
+
+function merge_fields(selectedNames, module) {
+	var pass_url = getMergeRecords(selectedNames);
+	if (pass_url !== false) {
+		window.open('index.php?module='+module+'&action=ProcessDuplicates&mergemode=mergefields&passurl='+pass_url, 'Merge', 'width=750,height=602,menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes');
+	} else {
 		return false;
 	}
 }
