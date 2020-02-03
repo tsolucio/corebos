@@ -397,25 +397,47 @@ function mass_edit(obj, divid, module, parenttab) {
 	fnvshobj(obj, divid);
 }
 
+function massEditRecords(obj, divid, idstring, module) {
+	mass_edit_formload(idstring, module);
+	fnvshobj(obj, divid);
+}
+
+function mergeMassEditRecords(selectedNames, obj, divid, module) {
+	var idstring = getMergeRecords(selectedNames);
+	if (idstring !== false) {
+		idstring = idstring.replace(/,/g, ';');
+		massEditRecords(obj, divid, idstring, module);
+	} else {
+		return false;
+	}
+}
+
 function mass_edit_formload(idstring, module, parenttab) {
 	if (typeof (parenttab) == 'undefined') {
 		parenttab = '';
 	}
-	var excludedRecords = document.getElementById('excludedRecords').value;
+	var excludedRecords = document.getElementById('excludedRecords');
+	if (excludedRecords) {
+		excludedRecords = excludedRecords.value;
+	} else {
+		excludedRecords = '';
+	}
 	var viewid = getviewId();
 	document.getElementById('status').style.display = 'inline';
 	var urlstring = '';
-	var searchtype = document.basicSearch.searchtype.value;
-	if (document.basicSearch.searchtype.searchlaunched != undefined && document.basicSearch.searchtype.searchlaunched == 'basic') {
-		var search_fld_val = document.getElementById('bas_searchfield').options[document.getElementById('bas_searchfield').selectedIndex].value;
-		var search_txt_val = encodeURIComponent(document.basicSearch.search_text.value);
-		if (search_txt_val != '') {// if the search fields are not empty
-			urlstring = '&query=true&ajax=true&search=true&search_field=' + search_fld_val + '&searchtype=BasicSearch&search_text=' + search_txt_val;
+	if (document.basicSearch) {
+		var searchtype = document.basicSearch.searchtype.value;
+		if (document.basicSearch.searchtype.searchlaunched != undefined && document.basicSearch.searchtype.searchlaunched == 'basic') {
+			var search_fld_val = document.getElementById('bas_searchfield').options[document.getElementById('bas_searchfield').selectedIndex].value;
+			var search_txt_val = encodeURIComponent(document.basicSearch.search_text.value);
+			if (search_txt_val != '') {// if the search fields are not empty
+				urlstring = '&query=true&ajax=true&search=true&search_field=' + search_fld_val + '&searchtype=BasicSearch&search_text=' + search_txt_val;
+			}
+		} else if (document.basicSearch.searchtype.searchlaunched != undefined && document.basicSearch.searchtype.searchlaunched == 'advance' && checkAdvancedFilter()) {
+			var advft_criteria = encodeURIComponent(document.getElementById('advft_criteria').value);
+			var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
+			urlstring = '&query=true&ajax=true&search=true&advft_criteria=' + advft_criteria + '&advft_criteria_groups=' + advft_criteria_groups + '&searchtype=advance';
 		}
-	} else if (document.basicSearch.searchtype.searchlaunched != undefined && document.basicSearch.searchtype.searchlaunched == 'advance' && checkAdvancedFilter()) {
-		var advft_criteria = encodeURIComponent(document.getElementById('advft_criteria').value);
-		var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
-		urlstring = '&query=true&ajax=true&search=true&advft_criteria=' + advft_criteria + '&advft_criteria_groups=' + advft_criteria_groups + '&searchtype=advance';
 	}
 	jQuery.ajax({
 		method: 'POST',

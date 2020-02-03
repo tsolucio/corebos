@@ -1,3 +1,6 @@
+<script type="text/javascript" src="include/js/FieldDependencies.js"></script>
+<script type="text/javascript" src="include/js/FieldDepFunc.js"></script>
+{include file='MassEditHtml.tpl'}
 <table width='100%' border='0' cellpadding='5' cellspacing='0' class='tableHeading'>
 	<tr>
 		<td class='big' align='left'>
@@ -26,7 +29,7 @@
 <table class="lvt small" border="0" cellpadding="3" align="center" cellspacing="1" width="95%">
 <tr>
 	<td class="lvtCol" width="40px">
-		<input type="checkbox" name="CheckAll" onclick='selectAllDel(this.checked,"del");'>
+		<input type="checkbox" name="CheckAll" id="dedupselectall" onclick='selectAllDel(this.checked,"del");'>
 	</td>
 	{foreach key=key item=field_values from=$FIELD_NAMES}
 		<td class="lvtCol big"> 
@@ -81,6 +84,7 @@
 					{if $cnt2 eq 0}
 						<td align="center" rowspan='{$cnt}'>
 						<input class="crmbutton small edit" name="merge" value="{$APP.LBL_MERGE}" onclick="merge_fields('{$key1}','{$MODULE}');" type="button">
+						<input class="crmbutton small edit" type="button" value="{$APP.LBL_MASS_EDIT}" onclick="return mergeMassEditRecords('{$key1}', document.getElementById('dedupselectall'), 'massedit', '{$MODULE}')"/>
 						</td>
 					{/if}
 					{assign var=cnt2 value=$cnt2+1}
