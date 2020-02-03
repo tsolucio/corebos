@@ -32,6 +32,20 @@
                                     </xs:sequence>
                                   </xs:complexType>
                                 </xs:element>
+                                <xs:element name="parameters" maxOccurs="1" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="parameter" maxOccurs="unbounded" minOccurs="1">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element type="xs:string" name="name"/>
+                                            <xs:element type="xs:string" name="value"/>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
                                 <xs:element type="xs:string" name="message" maxOccurs="1" minOccurs="0"/>
                               </xs:sequence>
                             </xs:complexType>
