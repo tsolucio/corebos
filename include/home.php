@@ -212,13 +212,7 @@ class Homestuff {
 
 			$nontrans_stufftitle = $adb->query_result($resultstuff, $i, 'stufftitle');
 			$trans_stufftitle = getTranslatedString($nontrans_stufftitle);
-			$stufftitle=decode_html($trans_stufftitle);
-			if (strlen($stufftitle)>100) {
-				$stuff_title=substr($stufftitle, 0, 97).'...';
-			} else {
-				$stuff_title = $stufftitle;
-			}
-
+			$stuff_title = textlength_check($trans_stufftitle, 100);
 			if ($stufftype == 'Default' && $nontrans_stufftitle != 'Home Page Dashboard' && $nontrans_stufftitle != 'Tag Cloud') {
 				if ($modulename != 'NULL') {
 					if (isPermitted($modulename, 'index') == 'yes') {
