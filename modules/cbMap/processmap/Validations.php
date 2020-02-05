@@ -404,9 +404,10 @@ class Validations extends processcbMap {
 
 	public static function ValidationsExist($module) {
 		global $adb;
-		$q = 'select 1 from vtiger_cbmap
+		$q = "select 1
+			from vtiger_cbmap
 			inner join vtiger_crmentity on crmid=cbmapid
-			where deleted=0 and maptype=? and targetname=? limit 1';
+			where deleted=0 and maptype=? and targetname=? and mapname like '%_Validations' limit 1";
 		$rs = $adb->pquery($q, array('Validations',$module));
 		return ($rs && $adb->num_rows($rs)==1);
 	}
