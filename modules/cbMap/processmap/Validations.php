@@ -403,13 +403,28 @@ class Validations extends processcbMap {
 	}
 
 	public static function ValidationsExist($module) {
-		global $adb;
+		global $adb, $current_user;
 		$q = "select 1
 			from vtiger_cbmap
 			inner join vtiger_crmentity on crmid=cbmapid
 			where deleted=0 and maptype=? and targetname=? and mapname like '%_Validations' limit 1";
 		$rs = $adb->pquery($q, array('Validations',$module));
-		return ($rs && $adb->num_rows($rs)==1);
+		if ($rs && $adb->num_rows($rs)==1) {
+			return true;
+		}
+		$q = 'select globalvariableid
+			from vtiger_globalvariable
+			inner join vtiger_crmentity on crmid=globalvariableid
+			where deleted=0 and gvname=? and module_list=? and bmapid!=0 and bmapid is not null';
+		$rs = $adb->pquery($q, array('BusinessMapping_Validations', $module));
+		if ($rs && $adb->num_rows($rs)>0) {
+			while ($gv = $adb->fetch_array($rs)) {
+				if (GlobalVariable::isAppliable($gv['globalvariableid'], $module, $current_user->id)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	public static function recordIsAssignedToInactiveUser() {
@@ -433,7 +448,7 @@ class Validations extends processcbMap {
 	}
 
 	public static function processAllValidationsFor($module) {
-		global $adb;
+		global $adb, $current_user;
 		$screen_values = json_decode($_REQUEST['structure'], true);
 		if (in_array($module, getInventoryModules())) {
 			$products = array();
@@ -470,18 +485,35 @@ class Validations extends processcbMap {
 				}
 			}
 		}
+		$valmaps = array();
 		$q = "select cbmapid
 			from vtiger_cbmap
 			inner join vtiger_crmentity on crmid=cbmapid
 			where deleted=0 and maptype=? and targetname=? and mapname like '%_Validations'";
 		$rs = $adb->pquery($q, array('Validations', $module));
+		while ($val = $adb->fetch_array($rs)) {
+			$valmaps[] = $val['cbmapid'];
+		}
+		$q = 'select globalvariableid, bmapid
+			from vtiger_globalvariable
+			inner join vtiger_crmentity on crmid=globalvariableid
+			where deleted=0 and gvname=? and module_list=? and bmapid!=0 and bmapid is not null';
+		$rs = $adb->pquery($q, array('BusinessMapping_Validations', $module));
+		if ($rs && $adb->num_rows($rs)>0) {
+			while ($gv = $adb->fetch_array($rs)) {
+				if (GlobalVariable::isAppliable($gv['globalvariableid'], $module, $current_user->id)) {
+					$valmaps[] = $gv['bmapid'];
+				}
+			}
+		}
+		$valmaps = array_unique($valmaps);
 		$focus = new cbMap();
 		$focus->mode = '';
 		$validation = true;
 		$addFieldValidations = true;
-		while ($val = $adb->fetch_array($rs)) {
-			$focus->id = $val['cbmapid'];
-			$focus->retrieve_entity_info($val['cbmapid'], 'cbMap');
+		foreach ($valmaps as $val) {
+			$focus->id = $val;
+			$focus->retrieve_entity_info($val, 'cbMap');
 			$validation = $focus->Validations($screen_values, $record, $addFieldValidations);
 			$addFieldValidations = false;
 			if ($validation!==true) {
