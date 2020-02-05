@@ -28,6 +28,7 @@ function __cb_or($arr) {
 function __cb_and($arr) {
 	return $arr[0] && $arr[1];
 }
+
 function __cb_number_format($arr) {
 	if (count($arr)>0) {
 		$number = $arr[0];
