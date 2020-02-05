@@ -417,6 +417,62 @@ class GlobalVariable extends CRMEntity {
 		return $default;
 	}
 
+	/* returns true if the given variable affects the given module and user
+	 * param $var: the ID of the variable
+	 * param $module: module to search in
+	 * param $userid: user to apply for
+	 * returns: boolean
+	 */
+	public static function isAppliable($var, $module = '', $gvuserid = '') {
+		global $adb, $current_user, $currentModule, $installationStrings;
+		if (!is_object($adb) || is_null($adb->database) || !is_numeric($var) || isset($installationStrings)) {
+			return false;
+		}
+		if (empty($gvuserid) && !empty($current_user)) {
+			$gvuserid = $current_user->id;
+		}
+		if (empty($gvuserid) || !is_numeric($gvuserid) || $gvuserid<0) {
+			return false;
+		}
+		if (empty($module)) {
+			$module = $currentModule;
+		}
+		$sql = 'SELECT default_check,mandatory,module_list,in_module_list,smownerid
+			FROM vtiger_globalvariable
+			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid
+			WHERE vtiger_crmentity.deleted=0 and globalvariableid=?';
+		$rs = $adb->pquery($sql, array($var));
+		if (!$rs || $adb->num_rows($rs)==0) {
+			return false;
+		}
+		$smownerid = $rs->fields['smownerid'];
+		$moduleList = $rs->fields['module_list'];
+		$inModuleList = ($rs->fields['in_module_list']=='1');
+		$appliesForModule = (!$inModuleList || $moduleList==$module || strpos($moduleList, $module.' ')!==false || strpos($moduleList, ' '.$module.' ')!==false || strpos($moduleList, ' '.$module)!==false);
+		if ($appliesForModule && ($rs->fields['mandatory']=='1' || $rs->fields['default_check']=='1' || $smownerid==$gvuserid)) {
+			return true;
+		}
+
+		$sql = 'SELECT 1
+			FROM vtiger_globalvariable
+			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid
+			INNER JOIN vtiger_user2role ON vtiger_user2role.userid=?
+			WHERE globalvariableid=? and '."concat(rolegv, ' ') like concat('%', vtiger_user2role.roleid, ' %')";
+		$rs = $adb->pquery($sql, array($gvuserid, $var));
+		if ($appliesForModule && $rs && $adb->num_rows($rs)>0) {
+			return true;
+		}
+
+		require_once 'include/utils/GetUserGroups.php';
+		$UserGroups = new GetUserGroups();
+		$UserGroups->getAllUserGroups($gvuserid);
+		if ($appliesForModule && count($UserGroups->user_groups)>0 && in_array($smownerid, $UserGroups->user_groups)) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public static function getValidationInfo() {
 		return self::$validationinfo;
 	}
