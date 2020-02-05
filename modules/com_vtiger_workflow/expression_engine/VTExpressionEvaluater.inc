@@ -96,6 +96,7 @@ class VTFieldExpressionEvaluater {
 			'exists' => '__cb_exists',
 			'existsrelated' => '__cb_existsrelated',
 			'add_workdays' => '__cb_add_workdays',
+			'number_format' => '__cb_number_format',
 		);
 		$this->operationsSQL = array(
 			'+'  => 'cbexpsql_add',
