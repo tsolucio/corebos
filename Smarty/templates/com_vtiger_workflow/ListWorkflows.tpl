@@ -12,6 +12,29 @@
 <script src="include/bunnyjs/datatable.icons.min.js"></script>
 <script src="include/bunnyjs/element.min.js"></script>
 <script src="include/bunnyjs/datatable.scrolltop.min.js"></script>
+<style>
+	.arrow-up:after,
+	.arrow-down:after {
+		margin-left: 5px;
+		margin-top: -5px;
+		background-size: cover;
+		position: relative;
+		display: inline-block;
+		top: 2px;
+		width: 12px;
+		height: 12px;
+	}
+
+	.arrow-up:after {
+		content: ' ';
+		background-image: url('include/LD/assets/icons/utility/chevronup_60.png');
+	}
+
+	.arrow-down:after {
+		content: ' ';
+		background-image: url('include/LD/assets/icons/utility/chevrondown_60.png');
+	}
+</style>
 <!-- BunnyJs Script Files -->
 
 <script src="modules/{$module->name}/resources/functional.js" type="text/javascript" charset="utf-8"></script>
@@ -105,10 +128,10 @@
 		<footer>
 			<pagination limit={$PAGINATION_LIMIT} outer></pagination>
 		</footer>
-		<table class="rptTable">
+		<table class="slds-table slds-table_cell-buffer slds-table_bordered">
 			<tr>
 			{foreach key=dtkey item=dtheader from=$LIST_HEADER}
-				<th pid="{$dtkey}" class="rptCellLabel">{$dtheader}</th>
+				<th pid="{$dtkey}"><strong>{$dtheader}</strong></th>
 			{/foreach}
 			</tr>
 		</table>
@@ -118,7 +141,7 @@
 	<tr>
 		{foreach key=dtkey item=dtheader from=$LIST_FIELDS}
 			{if $dtheader eq 'workflow_id'}
-			<td class="rptData" style="min-width:90px;">
+			<td style="min-width:90px;">
 				<a av="href:Record">
 				<span class="slds-icon_container slds-icon_container_circle slds-icon-action-edit" title="{'LBL_EDIT_BUTTON'|@getTranslatedString:$MODULE_NAME}">
 					<svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
@@ -137,7 +160,7 @@
 				</a>
 			</td>
 			{else}
-			<td v="{$dtkey}" class="rptData"></td>
+			<td v="{$dtkey}"></td>
 			{/if}
 		{/foreach}
 	</tr>

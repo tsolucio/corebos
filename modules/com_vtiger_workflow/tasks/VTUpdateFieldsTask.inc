@@ -19,6 +19,12 @@ class VTUpdateFieldsTask extends VTTask {
 		return array('field_value_mapping', 'launchrelwf');
 	}
 
+	public function after_retrieve() {
+		if (!isset($this->launchrelwf)) {
+			$this->launchrelwf = 0;
+		}
+	}
+
 	public function doTask(&$entity) {
 		global $adb, $current_user, $logbg,$from_wf;
 		$from_wf = true;

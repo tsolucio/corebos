@@ -34,7 +34,7 @@ class VTWorkflowManager {
 
 	public function save($workflow) {
 		$adb=$this->adb;
-		if (!isset($workflow->schtypeid)) {
+		if (empty($workflow->schtypeid)) {
 			$workflow->schtypeid = 0;
 		}
 		if (!isset($workflow->schtime)) {
