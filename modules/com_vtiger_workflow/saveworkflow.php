@@ -88,7 +88,7 @@ function vtWorkflowSave($adb, $request) {
 		$wf->relatemodule = $relatemodule;
 		$wm->save($wf);
 	} elseif ($saveType == 'edit') {
-		$wf = $wm->retrieve($request["workflow_id"]);
+		$wf = $wm->retrieve($request['workflow_id']);
 		$wf->description = $description;
 		$wf->purpose = $purpose;
 		$wf->test = $conditions;
