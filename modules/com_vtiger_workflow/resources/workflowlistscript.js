@@ -7,6 +7,42 @@
  * All Rights Reserved.
  ********************************************************************************/
 
+function wfListDataProvider(params, callback) {
+	const xhr = new XMLHttpRequest();
+	var url2call = url + '&page=' + (params.page+1);
+	// `params.filters` format: [{ path: 'lastName', direction: 'asc' }, ...];
+	var sendparams = '';
+	if (params.filters.length) {
+		sendparams += '&filters=' + encodeURIComponent(JSON.stringify(params.filters));
+	}
+	if (params.sortOrders) {
+		sendparams += '&sorder=' + encodeURIComponent(JSON.stringify(params.sortOrders));
+	}
+	xhr.open('POST', url2call, true);
+	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
+	xhr.onload = function () {
+		const response = JSON.parse(xhr.responseText);
+		grid.size = parseInt(response.total, 10);
+		callback(response.data);
+	};
+	xhr.send(sendparams);
+}
+
+function wfRemoveFromList(delWorkflowURL) {
+	document.getElementById('confirm-prompt').style.display = 'block';
+	document.getElementById('no_button').onclick = function () {
+		document.getElementById('confirm-prompt').style.display = 'none';
+	};
+	document.getElementById('yes_button').onclick = function () {
+		document.getElementById('confirm-prompt').style.display = 'none';
+		// var return_url = encodeURIComponent('index.php?module=com_vtiger_workflow&action=workflowlist');
+		//delWorkflowURL = window.location.origin + window.location.pathname + delWorkflowURL;
+		// var idPart= '&workflow_id='+workflow_id;
+		// var deleteURL =base_url + '?module=com_vtiger_workflow&action=deleteworkflow'+idPart+'&return_url='+return_url;
+		window.location.href = delWorkflowURL;
+	};
+}
+
 function workflowlistscript($) {
 
 	function jsonget(operation, params, callback) {
