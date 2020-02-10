@@ -9,9 +9,10 @@
 <div id="view" class="workflows-list">
 	{include file='com_vtiger_workflow/ModuleTitle.tpl'}
 </div>
-<div class="slds-grid slds-gutters slds-m-around--xxx-small">
+<div class="slds-grid slds-gutters slds-m-around_xxx-small">
 	<div class="slds-col">
 		<button class="slds-button slds-button_success" id='new_workflow'>{$MOD.LBL_NEW_WORKFLOW}</button>
+		{include file='com_vtiger_workflow/ActionMenu.tpl'}
 	</div>
 </div>
 <!--New workflow popup-->
