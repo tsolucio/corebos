@@ -94,6 +94,7 @@
 </div>
 
 <vaadin-grid id="wfgrid" theme="row-dividers" column-reordering-allowed multi-sort class="slds-table slds-table_cell-buffer slds-table_bordered slds-carousel__panel-action slds-m-around_xx-small" style="height: 60vh;">
+	<vaadin-grid-selection-column auto-select frozen></vaadin-grid-selection-column>
 	{foreach key=dtkey item=dtheader from=$LIST_HEADER}
 		{if $dtheader=='Tools'}
 			<vaadin-grid-column id="wftoolcol" header="{$APP.LBL_TOOLS}" width="180px" flex-grow="0"></vaadin-grid-column>
@@ -226,6 +227,7 @@
 	GlobalVariable_getVariable('Workflow_ListView_PageSize', 20, '', gVTUserID).then(function (response) {
 		var obj = JSON.parse(response);
 		grid.pageSize = parseInt(obj.Workflow_ListView_PageSize, 10);
+		grid.querySelector('vaadin-checkbox[aria-label="Select All"]').style.display = 'none';
 	});
 {/literal}
 </script>
