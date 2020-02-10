@@ -159,7 +159,7 @@ class VTWorkflowTemplateManager {
 			$template->moduleName = $el['moduleName'];
 			$template->title = $el['title'];
 			$template->template = $el['template'];
-			$this->save($template);
+			$this->saveTemplate($template);
 			$this->createWorkflow($template);
 		}
 	}
