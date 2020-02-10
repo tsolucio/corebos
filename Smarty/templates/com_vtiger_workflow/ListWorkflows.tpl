@@ -96,12 +96,12 @@
 <vaadin-grid id="wfgrid" theme="row-dividers" column-reordering-allowed multi-sort class="slds-table slds-table_cell-buffer slds-table_bordered slds-carousel__panel-action slds-m-around_xx-small" style="height: 60vh;">
 	{foreach key=dtkey item=dtheader from=$LIST_HEADER}
 		{if $dtheader=='Tools'}
-			<vaadin-grid-column id="wftoolcol" header="{$dtheader}" width="180px" flex-grow="0" ></vaadin-grid-column>
+			<vaadin-grid-column id="wftoolcol" header="{$APP.LBL_TOOLS}" width="180px" flex-grow="0"></vaadin-grid-column>
 		{elseif $dtheader=='Module'}
 			<vaadin-grid-column-group resizable>
 				<vaadin-grid-column>
 					<template class="header">
-						<vaadin-grid-sorter path="{$dtheader}" header="{$dtheader}">{$dtheader}</vaadin-grid-sorter><br>
+						<vaadin-grid-sorter path="{$dtheader}" header="{$APP.LBL_MODULE}">{$APP.LBL_MODULE}</vaadin-grid-sorter><br>
 						<vaadin-grid-filter id="wfmodfilter" path="{$dtheader}" value="">
 							<div class="slds-form-element slds-lookup" data-select="single" style="width: 162px; margin-bottom: 6px;" slot="filter">
 								<div class="slds-form-element__control slds-grid slds-box_border">
@@ -127,7 +127,7 @@
 			<vaadin-grid-column-group resizable>
 				<vaadin-grid-column>
 					<template class="header">
-						<vaadin-grid-sorter path="{$dtheader}" header="{$dtheader}">{$dtheader}</vaadin-grid-sorter><br>
+						<vaadin-grid-sorter path="{$dtheader}" header="{$APP.LBL_DESCRIPTION}">{$APP.LBL_DESCRIPTION}</vaadin-grid-sorter><br>
 						<vaadin-grid-filter id="wfdescfilter" path="{$dtheader}" value="">
 							<div class="slds-form-element" style="width: 162px; margin-bottom: 6px;" slot="filter">
 								<div class="slds-form-element__control">
@@ -148,7 +148,7 @@
 			<vaadin-grid-column-group resizable>
 				<vaadin-grid-column>
 					<template class="header">
-						<vaadin-grid-sorter path="{$dtheader}" header="{$dtheader}">{$dtheader}</vaadin-grid-sorter><br>
+						<vaadin-grid-sorter path="{$dtheader}" header="{$APP.LBL_PURPOSE}">{$APP.LBL_PURPOSE}</vaadin-grid-sorter><br>
 						<vaadin-grid-filter id="wfpurposefilter" path="{$dtheader}" value="">
 							<div class="slds-form-element" style="width: 162px;" slot="filter">
 								<div class="slds-form-element__control">
@@ -169,7 +169,7 @@
 			<vaadin-grid-column-group resizable>
 				<vaadin-grid-column>
 					<template class="header">
-						<vaadin-grid-sorter path="{$dtheader}" header="{$dtheader}">{$dtheader}</vaadin-grid-sorter><br>
+						<vaadin-grid-sorter path="{$dtheader}" header="{$APP.LBL_TRIGGER}">{$APP.LBL_TRIGGER}</vaadin-grid-sorter><br>
 						<vaadin-grid-filter id="wftriggerfilter" path="{$dtheader}" value="">
 							<div class="slds-form-element slds-lookup" data-select="single" style="width: 162px; margin-bottom: 6px;" slot="filter">
 								<div class="slds-form-element__control slds-grid slds-box_border">

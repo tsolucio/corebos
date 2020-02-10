@@ -57,7 +57,7 @@ function vtDisplayWorkflowList($adb, $request, $requestUrl, $app_strings, $curre
 	$smarty->assign('PAGINATION_LIMIT', GlobalVariable::getVariable('Application_Pagination_Limit', '12', $module->name, $current_user->id));
 	$smarty->assign('module', $module);
 	$smarty->assign('MODULE', $module->name);
-	$smarty->assign('LIST_HEADER', $focus->getWorkListHeader());
+	$smarty->assign('LIST_HEADER', array_keys($focus->list_fields_name));
 	$smarty->assign('LIST_FIELDS', $focus->list_fields_name);
 	$smarty->assign('CRON_TASK', Vtiger_Cron::getInstance('Workflow'));
 	$smarty->display("{$module->name}/ListWorkflows.tpl");
