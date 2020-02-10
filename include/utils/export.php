@@ -30,6 +30,7 @@ require_once 'modules/Quotes/Quotes.php';
 require_once 'modules/PurchaseOrder/PurchaseOrder.php';
 require_once 'modules/SalesOrder/SalesOrder.php';
 require_once 'include/utils/Session.php';
+require_once 'modules/com_vtiger_workflow/VTWorkflowManager.inc';
 coreBOS_Session::init();
 
 // Set the current language and the language strings, if not already set.
@@ -222,6 +223,11 @@ function export($type) {
 				$value = strip_tags($value);
 				$value = str_replace('&nbsp;', '', $value);
 				$new_arr[] = $value;
+			} elseif ($type == 'com_vtiger_workflow' && $key == 'workflow_id') {
+				$wfm = new VTworkflowManager($adb);
+				$workflow = $wfm->retrieve($value);
+				$value = $wfm->serializeWorkflow($workflow);
+				$new_arr[] = base64_encode($value);
 			} elseif ($key != 'user_name') {
 				// Let us provide the module to transform the value before we save it to CSV file
 				$value = $focus->transform_export_value($key, $value);

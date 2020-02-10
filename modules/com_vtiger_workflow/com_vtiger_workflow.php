@@ -11,12 +11,64 @@ class com_vtiger_workflow extends CRMEntity {
 
 	public $table_name = 'com_vtiger_workflows';
 	public $table_index= 'workflow_id';
+	public $default_order_by = 'summary';
+	public $default_sort_order='ASC';
 
 	/**
 	 * Track the viewing of a detail record.
 	 * params $user_id - The user that is viewing the record.
 	 */
 	public function track_view($user_id, $current_module, $id = '') {
+	}
+
+	public function create_export_query($where) {
+		global $adb;
+		$search_type = vtlib_purify($_REQUEST['search_type']);
+		$filters = vtlib_purify($_REQUEST['filters']);
+		if ($search_type=='includesearch' && $filters!='') {
+			$filters = json_decode($filters, true);
+			$conds = '';
+			if (json_last_error() == JSON_ERROR_NONE && count($filters)>0) {
+				$conds = $params = array();
+				foreach ($filters as $filter) {
+					switch ($filter['path']) {
+						case 'Module':
+							if (!empty($filter['value']) && $filter['value'] != 'all') {
+								$conds[] = 'module_name=?';
+								$params[] = $filter['value'];
+							}
+							break;
+						case 'Description':
+							if (!empty($filter['value'])) {
+								$conds[] = 'summary like ?';
+								$params[] = '%' . $filter['value'] . '%';
+							}
+							break;
+						case 'Purpose':
+							if (!empty($filter['value'])) {
+								$conds[] = 'purpose like ?';
+								$params[] = '%' . $filter['value'] . '%';
+							}
+							break;
+						case 'Trigger':
+							if (!empty($filter['value']) && $filter['value'] != 'all') {
+								$conds[] = 'execution_condition=?';
+								$params[] = $filter['value'];
+							}
+							break;
+						default:
+					}
+				}
+				if (count($conds)>0) {
+					$conds = 'where '.$adb->convert2Sql(implode(' and ', $conds), $params);
+				} else {
+					$conds = '';
+				}
+			}
+			return 'select * from com_vtiger_workflows '.$conds;
+		} else {
+			return 'select * from com_vtiger_workflows where 1 ';
+		}
 	}
 
 	/**
