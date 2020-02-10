@@ -19,6 +19,7 @@ module.exports = {
 		'include/style.css',
 		'include/print.css',
 		'include/jquery.steps.css',
+		'include/ldswc/vaadingrid/vaadingrid.js',
 		'modules/com_vtiger_workflow/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
 		'modules/GlobalVariable/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
 		'modules/evvtMenu/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',

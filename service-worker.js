@@ -9208,7 +9208,7 @@ if (workbox) {
   },
   {
     "url": "include/js/Inventory.js",
-    "revision": "e2d2eb3a1419a3dd084bd4e672d0be79"
+    "revision": "db6d03467b028c769727d12b9456144c"
   },
   {
     "url": "include/js/it_it.lang.js",
@@ -9343,6 +9343,10 @@ if (workbox) {
     "revision": "17c65e7385c544455d2235531d60c29d"
   },
   {
+    "url": "include/ldswc/vaadingrid/vaadingrid.js",
+    "revision": "6a9f7628348c8847f005a5be6693fdc9"
+  },
+  {
     "url": "modules/com_vtiger_workflow/com_vtiger_workflow.js",
     "revision": "d41d8cd98f00b204e9800998ecf8427e"
   },
@@ -9444,7 +9448,7 @@ if (workbox) {
   },
   {
     "url": "modules/com_vtiger_workflow/resources/workflowlistscript.js",
-    "revision": "00e3a63fff9e973d6d8ad24f452089f4"
+    "revision": "317aa177b4cfaef0a22e26c05c4b4458"
   },
   {
     "url": "modules/GlobalVariable/GlobalVariable.js",
