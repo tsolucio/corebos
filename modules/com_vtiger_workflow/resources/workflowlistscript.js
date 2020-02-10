@@ -63,6 +63,37 @@ function wfExportList() {
 	gotourl(url);
 }
 
+function wfDeleteList() {
+	if (grid.selectedItems.length) {
+		document.getElementById('confirm-prompt').style.display = 'block';
+		document.getElementById('no_button').onclick = function () {
+			document.getElementById('confirm-prompt').style.display = 'none';
+		};
+		document.getElementById('yes_button').onclick = function () {
+			document.getElementById('confirm-prompt').style.display = 'none';
+			var params = `&${csrfMagicName}=${csrfMagicToken}`;
+			var deleteURL = 'index.php?module=com_vtiger_workflow&action=deleteworkflow&workflow_id=';
+			grid.selectedItems.forEach(function (item) {
+				fetch(
+					deleteURL+item.workflow_id,
+					{
+						method: 'post',
+						headers: {
+							'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						},
+						credentials: 'same-origin',
+						body: params
+					}
+				);
+			});
+			window.location.reload();
+		};
+	} else {
+		alert(alert_arr.SELECT);
+		return false;
+	}
+}
+
 function workflowlistscript($) {
 
 	function jsonget(operation, params, callback) {

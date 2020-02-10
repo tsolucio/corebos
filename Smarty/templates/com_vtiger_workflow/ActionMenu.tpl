@@ -26,7 +26,7 @@
 	</a>
 	</li>
 	<li class="slds-dropdown__item" role="presentation">
-	<a class="slds-has-error" href="javascript:void(0);" role="menuitem" onclick="deleteUser(22);">
+	<a class="slds-has-error" href="javascript:void(0);" role="menuitem" onclick="wfDeleteList();">
 	<span class="slds-truncate" title="{'LBL_DELETE'|@getTranslatedString:'Users'}">
 	<span class="slds-assistive-text">{'LBL_DELETE'|@getTranslatedString:'Users'}</span>
 	<span>{'LBL_DELETE'|@getTranslatedString:'Users'}</span>
