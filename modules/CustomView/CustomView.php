@@ -42,7 +42,7 @@ class CustomView extends CRMEntity {
 		$this->escapemodule[] = '_';
 		$this->smownerid = $current_user->id;
 		$this->moduleMetaInfo = array();
-		if ($module != '' && $module != 'Calendar') {
+		if ($module != '' && $module != 'com_vtiger_workflow') {
 			$this->meta = $this->getMeta($module, $current_user);
 		}
 	}
