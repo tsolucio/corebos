@@ -1123,7 +1123,7 @@ function resetSHandAdjValues() {
  * It will be responsible for moving record up/down, 1 step at a time
  */
 function moveUpDown(sType, oModule, iIndex) {
-	var aFieldIds = Array('hidtax_row_no', 'productName', 'subproduct_ids', 'hdnProductId', 'comment', 'qty', 'listPrice', 'discount_type', 'discount_percentage', 'discount_amount', 'tax1_percentage', 'hidden_tax1_percentage', 'popup_tax_row', 'tax2_percentage', 'hidden_tax2_percentage', 'lineItemType', 'lineitem_id','rel_lineitem_id');
+	var aFieldIds = Array('hidtax_row_no', 'productName', 'subproduct_ids', 'hdnProductId', 'comment', 'qty', 'listPrice', 'discount_type', 'discount_percentage', 'discount_amount', 'tax1_percentage', 'hidden_tax1_percentage', 'popup_tax_row', 'tax2_percentage', 'hidden_tax2_percentage', 'lineItemType', 'lineitem_id', 'rel_lineitem_id');
 	aFieldIds = aFieldIds.concat(moreInfoFields);
 	var aContentIds = Array('qtyInStock', 'netPrice', 'subprod_names');
 	var aOnClickHandlerIds = Array('searchIcon');
