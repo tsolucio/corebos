@@ -171,5 +171,8 @@ $mod_strings = array(
 	'GenerateImageCodeWorkflowTask' => 'Generate Image Code Workflow Task',
 	'LBL_ON_RELATE' => 'On Relate with',
 	'LBL_ON_UNRELATE' => 'On Unrelate with',
+	'LBL_ROW' => 'Row',
+	'ERR_IncorrectFile' => 'Incorrect File or File Content',
+	'ERR_CannotProcess' => 'Cannot process workflow',
 );
 ?>

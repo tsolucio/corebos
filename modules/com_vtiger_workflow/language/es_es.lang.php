@@ -200,5 +200,8 @@ $mod_strings = array(
 'GenerateImageCodeWorkflowTask' => 'Generar Imagen Codificada',
 'LBL_ON_RELATE' => 'Al Relacionar con',
 'LBL_ON_UNRELATE' => 'Al Quitar Relación con',
+'LBL_ROW' => 'Fila',
+'ERR_IncorrectFile' => 'Fichero o Contenido Incorrecto',
+'ERR_CannotProcess' => 'No se ha podido procesar el flujo de trabajo',
 );
 ?>
