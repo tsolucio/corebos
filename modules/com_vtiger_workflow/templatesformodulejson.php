@@ -14,7 +14,7 @@ function vtTemplatesForModuleJson($adb, $request) {
 	$templates = $tm->getTemplatesForModule($moduleName);
 	$arr = array();
 	foreach ($templates as $template) {
-		$arr[] = array("title"=>$template->title, 'id'=>$template->id);
+		$arr[] = array('title'=>$template->title, 'id'=>$template->id);
 	}
 	echo json_encode($arr);
 }
