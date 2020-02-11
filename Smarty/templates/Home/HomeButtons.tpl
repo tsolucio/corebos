@@ -8,59 +8,147 @@
  * All Rights Reserved.
 ********************************************************************************/
 -->*}
-
-{*<!-- buttons for the home page -->*}
-<table border=0 cellspacing=0 cellpadding=5 width="50%" class="small homePageButtons">
-<tr style="cursor: pointer;">
-	<td style="padding-left:10px;padding-right:50px" width=10% class="moduleName" nowrap>
-		<a class="hdrLink" href="index.php?action=index&module={$MODULE}">
-			{$APP.$MODULE}
-		</a>
-	</td>
-	<td class="sep1">
-		&nbsp;
-	</td>
-
-	<td align='left'>
-		<img width="27" height="27" onClick='fnAddWindow(this,"addWidgetDropDown");' onMouseOut='fnRemoveWindow();' src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" title="{$MOD.LBL_HOME_ADDWINDOW}" alt"{$MOD.LBL_HOME_ADDWINDOW}" style="cursor:pointer;border:0;max-width:initial;">
-	</td>
-
-{if $CHECK.Calendar eq 'yes' && $CALENDAR_ACTIVE eq 'yes' && $CALENDAR_DISPLAY eq 'true'}
-	<td id="LB_CalButton" class="LB_Button" style="padding-right:0px;padding-left:10px;">
-		<a href="javascript:;" onclick="fnvshobj(this,'miniCal');getITSMiniCal('');">
-		<img src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CALENDAR_ALT}" title="{$APP.LBL_CALENDAR_TITLE}" style="border:0;max-width:initial;">
-		</a>
-	</td>
-{/if}
-{if $WORLD_CLOCK_DISPLAY eq 'true' }
-	<td id="LB_ClockButton" class="LB_Button" style="padding-right:0px">
-		<a href="javascript:;"><img src="{$IMAGE_PATH}btnL3Clock.gif" alt="{$APP.LBL_CLOCK_ALT}" title="{$APP.LBL_CLOCK_TITLE}" style="border:0;max-width:initial;" onClick="fnvshobj(this,'wclock');"></a>
-	</td>
-{/if}
-	<td align='left'>
-		<img width="27" height="27" onClick='showOptions("changeLayoutDiv");' src="{'orgshar.gif'|@vtiger_imageurl:$THEME}" style="border:0;max-width:initial;" title="{$MOD.LBL_HOME_LAYOUT}" alt"{$MOD.LBL_HOME_LAYOUT}" style="cursor:pointer;">
-	</td>
-
-	<td width="100%" align="center">
-		<span id="vtbusy_info" style="display:none;" valign="bottom">
-		<div role="status" class="slds-spinner slds-spinner_brand slds-spinner_x-small" style="position:relative; top:6px;">
-			<div class="slds-spinner__dot-a"></div>
-			<div class="slds-spinner__dot-b"></div>
-		</div>
-		</span>
-		{assign var=ANNOUNCEMENT value=get_announcements()}
-		{if $ANNOUNCEMENT}
-			<div width="100%">
-				<div align=center>
-					<marquee id="rss" style="margin-left:12px;width:90%;" direction="left" scrolldelay="10" scrollamount="3" behavior="scroll" class="marStyle slds-float_left" onMouseOver="javascript:stop();" onMouseOut="javascript:start();">&nbsp;{$ANNOUNCEMENT}</marquee>
-					<div align="right" style="padding-right:38px;width:8%;" class="slds-float_right"><img src="{'Announce.PNG'|@vtiger_imageurl:$THEME}"></div>
+<div id="page-header-anchor" class="slds-m-vertical_small"></div>
+<div id="page-header" class="slds-page-header slds-m-vertical_none slds-is-fixed" style="width: 98.5%; margin-left: 0.75%;">
+	<div class="slds-page-header__row">
+		<div class="slds-page-header__col-title">
+			<div class="slds-page-header__col-meta">
+				<div class="slds-page-header__meta-text" style="display: flex;">
+					<span class="slds-icon_container slds-icon-standard-home">
+						<svg class="slds-icon" id="page-header-icon" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#home"></use>
+						</svg>
+					</span>
 				</div>
 			</div>
-		{/if}
-	</td>
-</tr>
-</table>
-
+		</div>
+		<div class="slds-page-header__col-actions">
+			<div class="slds-page-header__controls">
+				<div class="slds-page-header__control">
+					<ul class="slds-button-group-list">
+						<li class="slds-m-right_small slds-m-top_x-small">
+							<span id="vtbusy_info" style="display:none;">
+								<div role="status" class="slds-spinner slds-spinner_brand slds-spinner_x-small" style="position:relative; top:6px;">
+									<div class="slds-spinner__dot-a"></div>
+									<div class="slds-spinner__dot-b"></div>
+								</div>
+							</span>
+						</li>
+						<li>
+							<button 
+								class="slds-button slds-button_neutral"
+								onClick='fnAddWindow(this,"addWidgetDropDown");'
+								onMouseOut='fnRemoveWindow();'>
+									{$MOD.LBL_HOME_ADDWINDOW}
+							</button>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="page-header-surplus">
+		<div class="slds-page-header__row">
+			<div class="slds-page-header__col-meta" style="min-width: 0;">
+				<div class="slds-page-header__meta-text slds-grid">
+					{if !empty($isDetailView) || !empty($isEditView)}
+					<div class="slds-p-right_small">{$UPDATEINFO}</div>
+					{/if}
+					{assign var=ANNOUNCEMENT value=get_announcements()}
+					{if $ANNOUNCEMENT}
+					<style>
+						#marquee span {
+							display: inline-block;
+							padding-left: 100%;
+							animation: marquee {$ANNOUNCEMENT|count_characters / 3}s linear infinite;
+						}
+						#marquee span:hover {
+							animation-play-state: paused
+						}
+						@keyframes marquee {
+							0% {
+							transform: translate(0, 0);
+							}
+							100% {
+							transform: translate(-100%, 0);
+							}
+						}
+					</style>
+					<div class="slds-col slds-truncate" id="marquee">
+						<span>{$ANNOUNCEMENT}</span>
+					</div>
+					{/if}
+				</div>
+			</div>
+			<div class="slds-page-header__col-controls">
+				<div class="slds-page-header__controls">
+					<div class="slds-page-header__control">
+						{if $ANNOUNCEMENT}
+						<button
+							class="slds-button slds-button_icon slds-button_icon-border-filled"
+							aria-haspopup="true"
+							style="transform: scale(-1,1); color: #d3451d;">
+								<svg class="slds-button__icon" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#announcement"></use>
+								</svg>
+						</button>
+						{/if}
+						<div class="slds-button-group" role="group">
+							{* Calendar button *}
+							{if $CALENDAR_DISPLAY eq 'true'}
+								{$canusecalendar = true}
+								{if $CHECK.Calendar != 'yes'}
+									{$canusecalendar = false}
+								{/if}
+							<button
+								class="slds-button slds-button_icon slds-button_icon-border-filled"
+								aria-haspopup="true"
+								{if $canusecalendar == false}disabled=""{/if}
+								onclick="fnvshobj(this,'miniCal');getITSMiniCal('');"
+								title="{$APP.LBL_CALENDAR_TITLE}">
+									<svg class="slds-button__icon" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#monthlyview"></use>
+									</svg>
+									<span class="slds-assistive-text">
+										{$APP.LBL_CALENDAR_TITLE}
+									</span>
+							</button>
+							{/if}
+							{* World clock button *}
+							{if $WORLD_CLOCK_DISPLAY eq 'true'}
+							<button
+								class="slds-button slds-button_icon slds-button_icon-border-filled"
+								aria-haspopup="true"
+								onClick="fnvshobj(this,'wclock');"
+								title="{$APP.LBL_CLOCK_TITLE}">
+									<svg class="slds-button__icon" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#world"></use>
+									</svg>
+									<span class="slds-assistive-text">
+										{$APP.LBL_CLOCK_TITLE}
+									</span>
+							</button>
+							{/if}
+							{* Change layout button *}
+							<button
+								class="slds-button slds-button_icon slds-button_icon-border-filled"
+								aria-haspopup="true"
+								title="{$MOD.LBL_HOME_LAYOUT}"
+								onclick='showOptions("changeLayoutDiv");'>
+									<svg class="slds-button__icon" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#layout"></use>
+									</svg>
+									<span class="slds-assistive-text">
+										{$MOD.LBL_HOME_LAYOUT}
+									</span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 {*<!--button related stuff -->*}
 <form name="Homestuff" id="formStuff" style="display: inline;" method="post">
 	<input type="hidden" name="action" value="homestuff">

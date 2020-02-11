@@ -6213,6 +6213,88 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 	}
 })();
 
+var pageHeaderInfo = {};
+window.addEventListener('load', setupPageHeader);
+
+function setupPageHeader() {
+	pageHeaderInfo.ph = document.getElementById('page-header'),
+	pageHeaderInfo.gh = document.getElementById('global-header'),
+	pageHeaderInfo.phi = document.getElementById('page-header-icon'),
+	pageHeaderInfo.ghh = pageHeaderInfo.gh.getBoundingClientRect().height,
+	pageHeaderInfo.ghm = pageHeaderInfo.gh.getElementsByClassName('slds-context-bar__secondary')[0],
+	pageHeaderInfo.ghmh = pageHeaderInfo.ghm.getBoundingClientRect().height,
+	pageHeaderInfo.phs = document.getElementById('page-header-surplus'),
+	pageHeaderInfo.phsh = pageHeaderInfo.phs.getBoundingClientRect().height,
+	pageHeaderInfo.phh = pageHeaderInfo.ph.getBoundingClientRect().height,
+	pageHeaderInfo.pha = document.getElementById('page-header-anchor'),
+	pageHeaderInfo.pha.style.height = pageHeaderInfo.phh + 'px',
+	pageHeaderInfo.phat = pageHeaderInfo.pha.getBoundingClientRect().top + window.scrollY,
+	pageHeaderInfo.phs.style.height = pageHeaderInfo.phsh + 'px',
+	pageHeaderInfo.ph.style.top = pageHeaderInfo.phat + 'px';
+}
+
+function pageHeaderDownScroll() {
+	const curSurplusHeight = Number(pageHeaderInfo.phs.style.height.replace('px', '')),
+		curHeaderMLeft = Number(pageHeaderInfo.ph.style.marginLeft.replace('%', '')),
+		curHeaderWidth = Number(pageHeaderInfo.ph.style.width.replace('%', '')),
+		curHeaderTop = Number(pageHeaderInfo.ph.style.top.replace('px', ''))
+
+	if (curSurplusHeight > 1) {
+		pageHeaderInfo.phs.style.height = curSurplusHeight - 2 + 'px';
+	} else if (curSurplusHeight == 1) {
+		pageHeaderInfo.phs.style.height = '0px';
+	}
+	if (curHeaderMLeft > 0) {
+		pageHeaderInfo.ph.style.marginLeft = curHeaderMLeft - 0.2 + '%';
+	}
+	if (curHeaderWidth < 100) {
+		pageHeaderInfo.ph.style.width = curHeaderWidth + 0.3 + '%';
+	}
+	if (curHeaderTop > pageHeaderInfo.ghmh) {
+		pageHeaderInfo.ph.style.top = curHeaderTop - 8 + 'px';
+	} else if (curHeaderTop < pageHeaderInfo.ghmh) {
+		pageHeaderInfo.ph.style.top = pageHeaderInfo.ghmh + 'px';
+	}
+	if (window.scrollY > 200) {
+		pageHeaderInfo.phs.style.height = '0px';
+		pageHeaderInfo.ph.style.marginLeft = '0%';
+	}
+	pageHeaderInfo.ph.classList.add('slds-p-around_xx-small');
+	pageHeaderInfo.phi.classList.add('slds-icon_small');
+	pageHeaderInfo.phi.parentElement.classList.add('slds-m-top_x-small');
+	pageHeaderInfo.phi.classList.remove('slds-page-header__icon');
+}
+window.cbOnDownScrollers.push(pageHeaderDownScroll);
+
+function pageHeaderUpScroll() {
+	const curSurplusHeight = Number(pageHeaderInfo.phs.style.height.replace('px', '')),
+		curHeaderMLeft = Number(pageHeaderInfo.ph.style.marginLeft.replace('%', '')),
+		curHeaderWidth = Number(pageHeaderInfo.ph.style.width.replace('%', '')),
+		curHeaderTop = Number(pageHeaderInfo.ph.style.top.replace('px', ''))
+
+	if (curSurplusHeight <= pageHeaderInfo.phsh) {
+		pageHeaderInfo.phs.style.height = curSurplusHeight + 1.5 + 'px';
+	}
+	if (curHeaderMLeft < 0.75) {
+		pageHeaderInfo.ph.style.marginLeft = curHeaderMLeft + 0.25 + '%';
+	}
+	if (curHeaderWidth > 98.5) {
+		pageHeaderInfo.ph.style.width = curHeaderWidth-0.3 + '%';
+	}
+	if (curHeaderTop < pageHeaderInfo.phat) {
+		pageHeaderInfo.ph.style.top = (curHeaderTop + 5) + 'px';
+	}
+	if (window.scrollY < 3) {
+		pageHeaderInfo.ph.style.top = pageHeaderInfo.phat + 'px';
+		pageHeaderInfo.phs.style.height = pageHeaderInfo.phsh + 'px';
+	}
+	pageHeaderInfo.ph.classList.remove('slds-p-around_xx-small');
+	pageHeaderInfo.phi.classList.remove('slds-icon_small');
+	pageHeaderInfo.phi.parentElement.classList.remove('slds-m-top_x-small');
+	pageHeaderInfo.phi.classList.add('slds-page-header__icon');
+}
+window.cbOnUpScrollers.push(pageHeaderUpScroll);
+
 function headerOnDownScroll() {
 	var h = document.getElementById('global-header');
 	h.classList.add('header-scrolling');
@@ -6233,6 +6315,8 @@ function headerOnUpScroll() {
 		}
 	}
 }
+
+window.cbOnUpScrollers.push(headerOnUpScroll);
 
 function dqrevCreate(crmid, module) {
 	VtigerJS_DialogBox.block();
@@ -6288,5 +6372,3 @@ function checkOneRevisionSelected() {
 		return true;
 	}
 }
-
-window.cbOnUpScrollers.push(headerOnUpScroll);
