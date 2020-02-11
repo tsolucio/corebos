@@ -30,7 +30,7 @@
 		</tr>
 	</table>
 
-	<form action="index.php" method="post" accept-charset="utf-8" onsubmit="VtigerJS_DialogBox.block();">
+	<form action="index.php" method="post" accept-charset="utf-8" onsubmit="wfCreateSubmit();">
 		<div class="popup_content">
 			<table width="100%" cellpadding="0" cellspacing="0" border="0">
 				<tr align="left">
@@ -44,9 +44,10 @@
 				<tr align="left">
 					<td width='10%' nowrap="nowrap">{$MOD.LBL_CREATE_WORKFLOW_FOR}</td>
 					<td>
+						<input type="hidden" name="pick_module" value="{$listModule}" id="pick_module">
 						<select name="module_name" id="module_list" class="small">
 							{foreach item=moduleName from=$moduleNames}
-							<option value="{$moduleName}" {if $moduleName eq $listModule}selected="selected"{/if}>
+							<option value="{$moduleName}" {if $moduleName eq $listModule}selected{/if}>
 								{$moduleName|@getTranslatedString:$moduleName}
 							</option>
 							{/foreach}
@@ -114,7 +115,6 @@
 										<select name="list_module" id="list_module" class="slds-lookup__search-input slds-input_bare" type="search" style="height: 30px;"
 											aria-owns="list_module" role="combobox" aria-activedescendent="" aria-expanded="false" aria-autocomplete="list"
 											onchange="document.getElementById('wfmodfilter').value=this.value">
-											<option value="all" selected="true">{$APP.LBL_ALLPICKLIST}</option>
 											{$modulelist}
 										</select>
 									</div>

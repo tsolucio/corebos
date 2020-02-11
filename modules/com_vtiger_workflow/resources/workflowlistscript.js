@@ -94,6 +94,15 @@ function wfDeleteList() {
 	}
 }
 
+function wfCreateSubmit() {
+	if (document.getElementById('module_list').value=='') {
+		alert(alert_arr.SELECT);
+		return false;
+	}
+	VtigerJS_DialogBox.block();
+	return true;
+}
+
 function workflowlistscript($) {
 
 	function jsonget(operation, params, callback) {
@@ -205,6 +214,8 @@ function workflowlistscript($) {
 		if (filterModule!='All') {
 			$('#module_list').val(filterModule);
 			$('#module_list').change();
+			$('#list_module').val(filterModule);
+			$('#list_module').change();
 		}
 
 		$('#new_workflow_popup_save').click(function () {
