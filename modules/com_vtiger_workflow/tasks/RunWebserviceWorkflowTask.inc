@@ -89,7 +89,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 			}
 
 			if ($inputtype == 'URL') {
-				$url.= '?'.implode('&', $listreq;
+				$url.= '?'.implode('&', $listreq);
 			}
 
 			//call REST Webservice
