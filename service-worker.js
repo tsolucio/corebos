@@ -9448,7 +9448,7 @@ if (workbox) {
   },
   {
     "url": "modules/com_vtiger_workflow/resources/workflowlistscript.js",
-    "revision": "317aa177b4cfaef0a22e26c05c4b4458"
+    "revision": "c2b792dc1cd2b7611a7a4673ac83f607"
   },
   {
     "url": "modules/GlobalVariable/GlobalVariable.js",
