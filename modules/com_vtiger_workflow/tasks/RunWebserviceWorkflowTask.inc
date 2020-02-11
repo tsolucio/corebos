@@ -58,7 +58,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 				if ($inputtype == 'JSON') {
 					$arrconv[$key2] = $value2;
 				} elseif ($inputtype == 'URL') {
-					$arrconv = "$key2=$value2";
+					$arrconv[] = "$key2=$value2";
 				} elseif ($inputtype == 'URLRESTFUL') {
 					$url = str_replace('$'.$key2, $value2, $url);
 				}
@@ -87,7 +87,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 			}
 
 			if ($inputtype == 'URL') {
-				$url.= '?'.$listreq;
+				$url.= '?'.implode('&', $listreq;
 			}
 
 			//call REST Webservice
