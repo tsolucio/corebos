@@ -102,7 +102,7 @@
 					{elseif $CHECK.CreateView eq 'yes' && $MODULE neq 'Emails'}
 						<li>
 							<a
-							class="slds-button slds-button_neutral" 
+							class="slds-button slds-button_neutral"
 							href="index.php?module={$MODULE}&action=EditView&return_action=DetailView&parenttab={$CATEGORY}"
 							title="{$APP.LBL_CREATE_BUTTON_LABEL} {$SINGLE_MOD|getTranslatedString:$MODULE}...">
 								<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
@@ -118,12 +118,12 @@
 							</button>
 						</li>
 					{/if}
-					{if $EDIT_PERMISSION eq 'yes'}
+					{if isset($EDIT_PERMISSION) && $EDIT_PERMISSION eq 'yes'}
 						<li>
-							<button 
+							<button
 								class="slds-button slds-button_neutral"
 								title="{$APP.LBL_EDIT_BUTTON_TITLE}"
-								accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" 
+								accessKey="{$APP.LBL_EDIT_BUTTON_KEY}"
 								onclick="
 									DetailView.return_module.value='{$MODULE}';
 									DetailView.return_action.value='DetailView';
@@ -154,7 +154,7 @@
 									DetailView.isDuplicate.value='true';
 									DetailView.module.value='{$MODULE}';
 									submitFormForAction('DetailView','EditView');"
-								type="button" 
+								type="button"
 								name="Duplicate">
 									<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#file"></use>
@@ -163,7 +163,7 @@
 							</button>
 						</li>
 					{/if}
-					{if $DELETE eq 'permitted'}
+					{if isset($DELETE) && $DELETE eq 'permitted'}
 						<li>
 							<button
 								class="slds-button slds-button_neutral"
@@ -171,7 +171,7 @@
 								accessKey="{$APP.LBL_DELETE_BUTTON_KEY}"
 								onclick="
 									DetailView.return_module.value='{$MODULE}';
-									DetailView.return_action.value='index'; 
+									DetailView.return_action.value='index';
 									{if $MODULE eq 'Accounts'}
 										var confirmMsg = '{$APP.NTC_ACCOUNT_DELETE_CONFIRMATION}'
 									{else}
@@ -403,8 +403,8 @@
 							</button>
 							{/if}
 							{* Deduplicate button *}
-							{if $CHECK.DuplicatesHandling eq 'yes' 
-								&& $MODULE neq 'Calendar4You' 
+							{if $CHECK.DuplicatesHandling eq 'yes'
+								&& $MODULE neq 'Calendar4You'
 								&& ($smarty.request.action eq 'ListView' || $smarty.request.action eq 'index')
 							}
 							<button

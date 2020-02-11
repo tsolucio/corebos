@@ -35,7 +35,7 @@
 							</span>
 						</li>
 						<li>
-							<button 
+							<button
 								class="slds-button slds-button_neutral"
 								onClick='fnAddWindow(this,"addWidgetDropDown");'
 								onMouseOut='fnRemoveWindow();'>
