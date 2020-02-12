@@ -81,10 +81,10 @@ class AuditTrail {
 	  * @param integer $userid - User's ID
 	  * @param $navigation_array - Array values to navigate through the number of entries.
 	  * @param $sortorder - DESC
-	  * @param $orderby - actiondate
+	  * @param $order_by - actiondate
 	  * Returns the audit trail entries in an array format.
 	**/
-	public function getAuditTrailEntries($userid, $navigation_array, $sorder = '', $orderby = '') {
+	public function getAuditTrailEntries($userid, $navigation_array, $sorder = '', $order_by = '') {
 		global $log, $adb;
 		$log->debug('> getAuditTrailEntries '.$userid);
 
