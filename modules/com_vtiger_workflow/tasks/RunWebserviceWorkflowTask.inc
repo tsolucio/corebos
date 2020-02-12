@@ -55,12 +55,10 @@ class RunWebserviceWorkflowTask extends VTTask {
 		if ($wstype == 'REST') {
 			$arrconv = array();
 			foreach ($target_fields['fields'] as $key2 => $value2) {
-				if ($inputtype == 'JSON') {
+				if ($inputtype == 'JSON' || $inputtype == 'XML') {
 					$arrconv[$key2] = $value2;
 				} elseif ($inputtype == 'URL') {
 					$arrconv[] = "$key2=$value2";
-				} elseif ($inputtype == 'XML') {
-					$arrconv[$key2] = urlencode($value2);
 				} elseif ($inputtype == 'URLRESTFUL') {
 					$url = str_replace('$'.$key2, $value2, $url);
 				}
@@ -102,7 +100,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 				curl_setopt($channel, CURLOPT_CUSTOMREQUEST, $method);
 			}
 			if ($inputtype != 'URL') {
-				if (in_array('Content-type:application/x-www-form-urlencoded', $headers) || in_array('Content-type:multipart/form-data', $headers)) {
+				if ($inputtype=='XML' || in_array('Content-type:application/x-www-form-urlencoded', $headers) || in_array('Content-type:multipart/form-data', $headers)) {
 					curl_setopt($channel, CURLOPT_POSTFIELDS, http_build_query($listreq));
 				} else {
 					curl_setopt($channel, CURLOPT_POSTFIELDS, json_encode($listreq));
