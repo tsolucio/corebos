@@ -39,7 +39,12 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 		$order_by = $focus->getOrderBy();
 		$sorder = $focus->getSortOrder();
 		if (!empty($order_by)) {
-			$query .= ' ORDER BY '.$order_by.' '.$sorder;
+			$tabname = getTableNameForField($relatedmodule, $order_by);
+			if ($tabname !== '' && $tabname != null) {
+				$query .= ' ORDER BY '.$tabname.'.'.$order_by.' '.$sorder;
+			} else {
+				$query .= ' ORDER BY '.$order_by.' '.$sorder;
+			}
 		}
 		return array('query'=>$query);
 	}
