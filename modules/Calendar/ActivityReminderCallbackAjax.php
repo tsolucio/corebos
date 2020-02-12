@@ -21,7 +21,7 @@ if (isset($_SESSION['next_reminder_time']) && $_SESSION['next_reminder_time'] ==
 	echo 'None';
 	die();
 } elseif (isset($_SESSION['next_reminder_time']) && (($_SESSION['next_reminder_time'] - $_SESSION['next_reminder_interval']) > $cur_time)) {
-	echo "<script type='text/javascript' id='_vtiger_activityreminder_callback_interval_'>".($_SESSION['next_reminder_interval'] * 1000)."</script>";
+	echo "<script type='text/javascript' id='_vtiger_activityreminder_callback_interval_'>".($_SESSION['next_reminder_interval'] * 1000).'</script>';
 	return;
 }
 $log = LoggerManager::getLogger('Activity_Reminder');
@@ -60,9 +60,9 @@ if (isPermitted('Calendar', 'index') == 'yes') {
 		$cbrows = $adb->num_rows($result);
 		if ($cbrows > 0) {
 			for ($index = 0; $index < $cbrows; ++$index) {
-				$reminderid = $adb->query_result($result, $index, "reminderid");
-				$cbrecord = $adb->query_result($result, $index, "recordid");
-				$cbmodule = $adb->query_result($result, $index, "semodule");
+				$reminderid = $adb->query_result($result, $index, 'reminderid');
+				$cbrecord = $adb->query_result($result, $index, 'recordid');
+				$cbmodule = $adb->query_result($result, $index, 'semodule');
 				if ($cbmodule == 'Events') {
 					$cbmodule = 'Calendar';
 				}
@@ -95,12 +95,12 @@ if (isPermitted('Calendar', 'index') == 'yes') {
 					$cbtime = $cbtimeArr['starthour'].':'.$cbtimeArr['startmin'].''.$cbtimeArr['startfmt'];
 				}
 
-				$cbstatus = $focus->column_fields["eventstatus"];
+				$cbstatus = $focus->column_fields['eventstatus'];
 
 				$cbstatus = getTranslatedString($cbstatus, $currentModule);
 				$atrs = $adb->pquery('select activitytype from vtiger_activity where activityid=?', array($cbrecord));
 				$actType = $adb->query_result($atrs, 0, 'activitytype');
-				$smarty->assign("activityimage", $actType);
+				$smarty->assign('activityimage', $actType);
 				$cbactivitytype = getTranslatedString($cbactivitytype, $currentModule);
 
 				// Appending recordid we can get unique callback dom id for that record.
@@ -123,7 +123,7 @@ if (isPermitted('Calendar', 'index') == 'yes') {
 				$smarty->assign('activitytype', $cbactivitytype);
 				$smarty->display('ActivityReminderCallback.tpl');
 
-				$mark_reminder_as_read = "UPDATE vtiger_activity_reminder_popup set status = 1 where reminderid = ?";
+				$mark_reminder_as_read = 'UPDATE vtiger_activity_reminder_popup set status=1 where reminderid=?';
 				$adb->pquery($mark_reminder_as_read, array($reminderid));
 				echo "<script type='text/javascript'>window.top.document.title= '".
 					$app_strings['LBL_NEW_BUTTON_LABEL'].$app_strings['LBL_Reminder']."';</script>";
@@ -144,7 +144,7 @@ if (isPermitted('Calendar', 'index') == 'yes') {
 			}
 			coreBOS_Session::set('next_reminder_time', $nextReminderTime - ($intervalInMinutes * 60));
 		}
-		echo "<script type='text/javascript' id='_vtiger_activityreminder_callback_interval_'>".($_SESSION['next_reminder_interval'] * 1000)."</script>";
+		echo "<script type='text/javascript' id='_vtiger_activityreminder_callback_interval_'>".($_SESSION['next_reminder_interval'] * 1000).'</script>';
 	}
 }
 ?>
