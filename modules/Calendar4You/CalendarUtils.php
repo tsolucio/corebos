@@ -14,7 +14,7 @@ function getaddITSEventPopupTime($starttime, $endtime, $format) {
 	$timearr = array();
 	list($sthr,$stmin) = explode(':', $starttime);
 	list($edhr,$edmin) = explode(':', $endtime);
-	if ($format == 'am/pm') {
+	if ($format == 'am/pm' || $format == '12') {
 		$hr = $sthr+0;
 		$timearr['startfmt'] = ($hr >= 12) ? 'pm' : 'am';
 		if ($hr == 0) {
@@ -30,17 +30,15 @@ function getaddITSEventPopupTime($starttime, $endtime, $format) {
 		}
 		$timearr['endhour'] = twoDigit(($edhr>12)?($edhr-12):$edhr);
 		$timearr['endmin']  = $edmin;
-		return $timearr;
-	}
-	if ($format == '24') {
+	} elseif ($format == '24') {
 		$timearr['starthour'] = twoDigit($sthr);
 		$timearr['startmin']  = $stmin;
 		$timearr['startfmt']  = '';
 		$timearr['endhour']   = twoDigit($edhr);
 		$timearr['endmin']    = $edmin;
 		$timearr['endfmt']    = '';
-		return $timearr;
 	}
+	return $timearr;
 }
 
 /**
