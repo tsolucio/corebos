@@ -25,7 +25,7 @@ $badpassword.= $mod_strings['Min. 1 special character'].'<br>';
 <HTML><HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset='<?php echo $default_charset; ?>'">
 <title><?php echo $app_strings['LBL_BROWSER_TITLE']; ?></title>
-<style type="text/css">@import url("themes/<?php echo $theme; ?>/style.css"); </style>
+<link rel="stylesheet" type="text/css" media="all" href="themes/<?php echo $theme; ?>/style.css">
 </HEAD><BODY leftMargin="5" topMargin="5" MARGINHEIGHT="0" MARGINWIDTH="0">
 <link REL="SHORTCUT ICON" HREF="themes/images/blank.gif">
 <script type="text/javascript" src="include/jquery/jquery.js"></script>

@@ -14,7 +14,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
 <title>{$MOD.TITLE_VTIGERCRM_MAIL}</title>
 <link REL="SHORTCUT ICON" HREF="themes/images/favicon.ico">	
-<style type="text/css">@import url("themes/{$THEME}/style.css");</style>
+<link rel="stylesheet" type="text/css" media="all" href="themes/{$THEME}/style.css">
 	<body onLoad="window.print()">
 		<table style="width:98%;margin:auto;">
 			<tr>

@@ -14,7 +14,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
 <title>{$CMOD.LBL_ROLES} - {$coreBOS_uiapp_name}</title>
 <link REL="SHORTCUT ICON" HREF="themes/images/blank.gif">
-<style type="text/css">@import url("themes/{$THEME}/style.css");</style>
+<link rel="stylesheet" type="text/css" media="all" href="themes/{$THEME}/style.css">
 <style type="text/css">
 	a.x {ldelim}
 		color:black;

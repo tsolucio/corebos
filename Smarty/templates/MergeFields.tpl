@@ -13,7 +13,7 @@
 <head>
 	<title>{$USER} - {$MODULENAME|@getTranslatedString:$MODULENAME} - {$coreBOS_app_name}</title>
 	<link REL="SHORTCUT ICON" HREF="{$FAVICON}">
-	<style type="text/css">@import url("themes/{$THEME}/style.css");</style>
+	<link rel="stylesheet" type="text/css" media="all" href="themes/{$THEME}/style.css">
 	<!-- ActivityReminder customization for callback -->
 	{literal}
 	<style type="text/css">div.fixedLay1 { position:fixed; }</style>

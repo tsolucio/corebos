@@ -1,7 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html><head><title>coreBOS Utility loader</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<style type="text/css">@import url("themes/softed/style.css");br { display: block; margin: 2px; }</style>
+<link rel="stylesheet" type="text/css" media="all" href="themes/softed/style.css">
+<style type="text/css">br { display: block; margin: 2px; }</style>
 </head><body class=small style="font-size: 12px; margin: 2px; padding: 2px; background-color:#f7fff3; ">
 <table width="100%" border=0>
 <tr>
