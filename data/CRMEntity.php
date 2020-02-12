@@ -1998,8 +1998,8 @@ class CRMEntity {
 		}
 
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-		$query = "select case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name," .
-				"'Documents' ActivityType,vtiger_attachments.type FileType,crm2.modifiedtime lastmodified,vtiger_crmentity.modifiedtime,
+		$query = "select case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
+				'Documents' ActivityType,vtiger_attachments.type FileType,crm2.modifiedtime lastmodified,vtiger_crmentity.modifiedtime,
 				vtiger_seattachmentsrel.attachmentsid attachmentsid, vtiger_crmentity.smownerid smownerid, vtiger_notes.notesid crmid,
 				vtiger_notes.notecontent description,vtiger_notes.*
 			from vtiger_notes
@@ -2007,8 +2007,7 @@ class CRMEntity {
 			left join vtiger_notescf ON vtiger_notescf.notesid= vtiger_notes.notesid
 			inner join vtiger_crmentity on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
 			inner join vtiger_crmentity crm2 on crm2.crmid=vtiger_senotesrel.crmid
-			LEFT JOIN vtiger_groups
-			ON vtiger_groups.groupid = vtiger_crmentity.smownerid
+			left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
 			left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid =vtiger_notes.notesid
 			left join vtiger_attachments on vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
 			left join vtiger_users on vtiger_crmentity.smownerid= vtiger_users.id
