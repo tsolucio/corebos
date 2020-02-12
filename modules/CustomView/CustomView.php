@@ -895,10 +895,7 @@ class CustomView extends CRMEntity {
 	 * @param $cvid :: Type Integer
 	 * @returns  $advfiltersql as a string
 	 * This function will return the advanced filter criteria for the given customfield
-	 *
 	 */
-	// Needs to be modified according to the new advanced filter (support for grouping).
-	// Not modified as of now, as this function is not used for now (Instead Query Generator is used for better performance).
 	public function getCVAdvFilterSQL($cvid, $webserviceQL = false) {
 		global $current_user;
 
@@ -910,8 +907,8 @@ class CustomView extends CRMEntity {
 			$groupcolumns = $groupinfo['columns'];
 			$groupcondition = $groupinfo['condition'];
 			$advfiltergroupsql = '';
-
-			foreach ($groupcolumns as $columnindex => $columninfo) {
+			$index = 1;
+			foreach ($groupcolumns as $columninfo) {
 				$columnname = $columninfo['columnname'];
 				$comparator = $columninfo['comparator'];
 				$value = $columninfo['value'];
@@ -967,10 +964,11 @@ class CustomView extends CRMEntity {
 					}
 
 					$advfiltergroupsql .= $advfiltersql;
-					if ($columncondition != null && $columncondition != '' && count($groupcolumns) > $columnindex) {
+					if ($columncondition != null && $columncondition != '' && count($groupcolumns) > $index) {
 						$advfiltergroupsql .= ' ' . $columncondition . ' ';
 					}
 				}
+				$index++;
 			}
 
 			if (trim($advfiltergroupsql) != '') {
