@@ -60,7 +60,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 				} elseif ($inputtype == 'URL') {
 					$arrconv[] = "$key2=$value2";
 				} elseif ($inputtype == 'XML') {
-					$arrconv[$key2] = url_encode($value2);
+					$arrconv[$key2] = urlencode($value2);
 				} elseif ($inputtype == 'URLRESTFUL') {
 					$url = str_replace('$'.$key2, $value2, $url);
 				}
