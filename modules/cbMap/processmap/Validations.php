@@ -442,6 +442,8 @@ class Validations extends processcbMap {
 					return true;
 				}
 			}
+		} elseif ($screen_values['module']=='Users') {
+			return false;
 		} else {
 			return recordIsAssignedToInactiveUser($screen_values['record']);
 		}
