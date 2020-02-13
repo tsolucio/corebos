@@ -433,6 +433,29 @@ class CustomView extends CRMEntity {
 				}
 			}
 		}
+		// assigned user fields
+		$mod = 'Users';
+		$this->getCustomViewModuleInfo($mod);
+		$userFilterFields = array(
+			'vtiger_users:user_name:user_name:Users_User_Name:V',
+			'vtiger_users:first_name:first_name:Users_First_Name:V',
+			'vtiger_users:last_name:last_name:Users_Last_Name:V',
+			'vtiger_users:title:title:Users_Title:V',
+			'vtiger_users:department:department:Users_Department:V',
+		);
+		foreach ($this->module_list[$mod] as $key => $value) {
+			$columnlist = $this->getColumnsListbyBlock($mod, $value, false);
+			if (isset($columnlist)) {
+				foreach ($columnlist as $col => $label) {
+					if (!in_array($col, $userFilterFields)) {
+						unset($columnlist[$col]);
+					}
+				}
+				if (count($columnlist)>0) {
+					$ret_module_list[$mod][$key] = $columnlist;
+				}
+			}
+		}
 		return $ret_module_list;
 	}
 
