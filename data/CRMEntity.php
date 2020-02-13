@@ -311,6 +311,11 @@ class CRMEntity {
 		} else {
 			$upload_status = @move_uploaded_file($filetmp_name, $upload_file_path . $current_id . '_' . $binFile);
 		}
+
+		if($upload_status && !empty($forfield)) {
+			unset($_FILES[$forfield]);
+		}
+
 		if ($upload_status) {
 			$description_val = empty($this->column_fields['description']) ? '' : $this->column_fields['description'];
 			if (($module == 'Contacts' || $module == 'Products') && $forfield=='imagename') {
