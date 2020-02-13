@@ -98,7 +98,7 @@ function mandatoryCheck()
       <td align="left" valign="top">
       <table width="100%"  border="0" cellspacing="0" cellpadding="5">
 		<tr>
-		 	<td colspan="4" class="detailedViewHeader"><strong>{$MOD.Details}</strong></td>
+			<td colspan="4" class="detailedViewHeader"><strong>{$MOD.Details}</strong></td>
 		</tr>
 		<tr>
 			<td colspan=4 width="100%" style="padding:0px">
@@ -139,9 +139,9 @@ function mandatoryCheck()
 		</tr>
 		<tr><td colspan="4">&nbsp;</td></tr>
 		<tr>
-		 <td colspan="4" class="detailedViewHeader">
-		  <b>{$MOD.LBL_STEP_2_TITLE} </b>
-		 </td>
+			<td colspan="4" class="detailedViewHeader">
+				<b>{$MOD.LBL_STEP_2_TITLE} </b>
+			</td>
 		</tr>
 		{section name=SelectColumn start=1 loop=$FILTERROWS step=1}
 		<tr class="{cycle values="dvtCellLabel,dvtCellInfo"}">
@@ -247,24 +247,24 @@ function mandatoryCheck()
 			     </script></td>
 	            	  </tr>
 			  <tr>
-			     <td align="right" class="dvtCellLabel">{$MOD.End_Date} :</td> 
-  			     <td width="25%" align=left class="dvtCellInfo">
-			     <input name="enddate" {$msg_style} id="jscal_field_date_end" type="text" size="10" class="textField small" value="{if isset($ENDDATE)}{$ENDDATE}{/if}">
-			     <img src="{$IMAGE_PATH}btnL3Calendar.gif" id="jscal_trigger_date_end" style="vertical-align:middle;{$img_style}">
-			     <font size=1><em old="(yyyy-mm-dd)">({$DATEFORMAT})</em></font>
-			     <script type="text/javascript">
+				<td align="right" class="dvtCellLabel">{$MOD.End_Date} :</td>
+				<td width="25%" align=left class="dvtCellInfo">
+				<input name="enddate" {$msg_style} id="jscal_field_date_end" type="text" size="10" class="textField small" value="{if isset($ENDDATE)}{$ENDDATE}{/if}">
+				<img src="{$IMAGE_PATH}btnL3Calendar.gif" id="jscal_trigger_date_end" style="vertical-align:middle;{$img_style}">
+				<font size=1><em old="(yyyy-mm-dd)">({$DATEFORMAT})</em></font>
+				<script type="text/javascript">
 					Calendar.setup ({ldelim}
 					inputField : "jscal_field_date_end", ifFormat : "{$JS_DATEFORMAT}", showsTime : false, button : "jscal_trigger_date_end", singleClick : true, step : 1
 					{rdelim})
-			     </script></td>
+				</script></td>
 			  </tr>
 			</table>
-		      </td></tr>
-		      <tr><td>&nbsp;</td></tr>
-            </table>
-   </div>
-   <div id="mnuTab2" {$advdiv} >
-   		<table width="100%" cellspacing="0" cellpadding="5" class="dvtContentSpace">
+			</td></tr>
+			<tr><td>&nbsp;</td></tr>
+		</table>
+	</div>
+	<div id="mnuTab2" {$advdiv} >
+		<table width="100%" cellspacing="0" cellpadding="5" class="dvtContentSpace">
 			<tr><td><br>
 			<table width="75%" border="0" cellpadding="5" cellspacing="0" align="center">
 			<tr>

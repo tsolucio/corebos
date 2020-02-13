@@ -51,10 +51,8 @@
 </script>
 <script type="text/JavaScript">
 function addColumnConditionGlue(columnIndex) {ldelim}
-
 	var columnConditionGlueElement = document.getElementById('columnconditionglue_'+columnIndex);
-
-	if(columnConditionGlueElement) {ldelim}
+	if (columnConditionGlueElement) {ldelim}
 		columnConditionGlueElement.innerHTML = "<select name='fcon"+columnIndex+"' id='fcon"+columnIndex+"' class='detailedViewTextBox'>"+
 			"<option value='and'>{'LBL_CRITERIA_AND'|@getTranslatedString:$MODULE}</option>"+
 			"<option value='or'>{'LBL_CRITERIA_OR'|@getTranslatedString:$MODULE}</option>"+
@@ -64,10 +62,10 @@ function addColumnConditionGlue(columnIndex) {ldelim}
 
 function addConditionRow(groupIndex) {ldelim}
 	var groupColumns = column_index_array[groupIndex];
-	if(typeof(groupColumns) != 'undefined') {ldelim}
-		for(var i=groupColumns.length - 1; i>=0; --i) {ldelim}
+	if (typeof(groupColumns) != 'undefined') {ldelim}
+		for (var i=groupColumns.length - 1; i>=0; --i) {ldelim}
 			var prevColumnIndex = groupColumns[i];
-			if(document.getElementById('conditioncolumn_'+groupIndex+'_'+prevColumnIndex)) {ldelim}
+			if (document.getElementById('conditioncolumn_'+groupIndex+'_'+prevColumnIndex)) {ldelim}
 				addColumnConditionGlue(prevColumnIndex);
 				break;
 			{rdelim}
@@ -79,8 +77,8 @@ function addConditionRow(groupIndex) {ldelim}
 
 	var newNode = document.createElement('tr');
 	newNodeId = 'conditioncolumn_'+groupIndex+'_'+columnIndex;
-  	newNode.setAttribute('id',newNodeId);
-  	newNode.setAttribute('name','conditionColumn');
+	newNode.setAttribute('id',newNodeId);
+	newNode.setAttribute('name','conditionColumn');
 	nextNode.parentNode.insertBefore(newNode, nextNode);
 
 	node1 = document.createElement('td');
@@ -168,19 +166,21 @@ function addConditionRow(groupIndex) {ldelim}
 	node5.setAttribute('width', '30px');
 	newNode.appendChild(node5);
 	node5.innerHTML = '<a onclick="deleteColumnRow('+groupIndex+','+columnIndex+');" href="javascript:;">'+
-					'<img src="themes/images/delete.gif" align="absmiddle" border="0"></a>';
+		'<img src="themes/images/delete.gif" align="absmiddle" border="0"></a>';
 
-	if(document.getElementById('fcol'+columnIndex)) updatefOptions(document.getElementById('fcol'+columnIndex), 'fop'+columnIndex);
-	if(typeof(column_index_array[groupIndex]) == 'undefined') column_index_array[groupIndex] = [];
+	if (document.getElementById('fcol'+columnIndex)) {
+		updatefOptions(document.getElementById('fcol'+columnIndex), 'fop'+columnIndex);
+	}
+	if (typeof(column_index_array[groupIndex]) == 'undefined') {
+		column_index_array[groupIndex] = [];
+	}
 	column_index_array[groupIndex].push(columnIndex);
 	advft_column_index_count++;
-
 {rdelim}
 
 function addGroupConditionGlue(groupIndex) {ldelim}
-
 	var groupConditionGlueElement = document.getElementById('groupconditionglue_'+groupIndex);
-	if(groupConditionGlueElement) {ldelim}
+	if (groupConditionGlueElement) {ldelim}
 		groupConditionGlueElement.innerHTML = "<select name='gpcon"+groupIndex+"' id='gpcon"+groupIndex+"' class='small'>"+
 			"<option value='and'>{'LBL_CRITERIA_AND'|@getTranslatedString:$MODULE}</option>"+
 			"<option value='or'>{'LBL_CRITERIA_OR'|@getTranslatedString:$MODULE}</option>"+
@@ -189,10 +189,9 @@ function addGroupConditionGlue(groupIndex) {ldelim}
 {rdelim}
 
 function addConditionGroup(parentNodeId) {ldelim}
-
-	for(var i=group_index_array.length - 1; i>=0; --i) {ldelim}
+	for (var i=group_index_array.length - 1; i>=0; --i) {ldelim}
 		var prevGroupIndex = group_index_array[i];
-		if(document.getElementById('conditiongroup_'+prevGroupIndex)) {ldelim}
+		if (document.getElementById('conditiongroup_'+prevGroupIndex)) {ldelim}
 			addGroupConditionGlue(prevGroupIndex);
 			break;
 		{rdelim}
@@ -203,10 +202,10 @@ function addConditionGroup(parentNodeId) {ldelim}
 
 	var newNode = document.createElement('div');
 	newNodeId = 'conditiongroup_'+groupIndex;
-  	newNode.setAttribute('id',newNodeId);
-  	newNode.setAttribute('name','conditionGroup');
+	newNode.setAttribute('id',newNodeId);
+	newNode.setAttribute('name','conditionGroup');
 
-  	newNode.innerHTML = "<table class='small crmTable' border='0' cellpadding='5' cellspacing='1' width='100%' valign='top' id='conditiongrouptable_"+groupIndex+"'>"+
+	newNode.innerHTML = "<table class='small crmTable' border='0' cellpadding='5' cellspacing='1' width='100%' valign='top' id='conditiongrouptable_"+groupIndex+"'>"+
 			"<tr id='groupheader_"+groupIndex+"'>"+
 				"<td colspan='5' align='right' class='cblds-t-align_right'>"+
 					"<a href='javascript:void(0);' onclick='deleteGroup(\""+groupIndex+"\");'><img border=0 src={'close.gif'|@vtiger_imageurl:$THEME} alt='{$APP.LBL_DELETE_GROUP}' title='{$APP.LBL_DELETE_GROUP}'/></a>"+
@@ -230,17 +229,17 @@ function addConditionGroup(parentNodeId) {ldelim}
 {rdelim}
 
 function add_grouping_criteria(grouping_criteria) {ldelim}
-	if(grouping_criteria == null)
+	if (grouping_criteria == null) {
 		return false;
+	}
 	var grouping_criteria_length = Object.keys(grouping_criteria).length;
 
-	if(grouping_criteria_length > 0) {
-		for(var i = 1;i <= grouping_criteria_length; i++) {
+	if (grouping_criteria_length > 0) {
+		for (var i = 1;i <= grouping_criteria_length; i++) {
 			var group_columns = grouping_criteria[i].columns;
 			addConditionGroup('adv_filter_div');
 			for (var key in group_columns) {
 				if (group_columns.hasOwnProperty(key)) {
-
 					addConditionRow(i);
 					var conditionColumnRowElement = document.getElementById('fcol'+advft_column_index_count);
 
@@ -252,22 +251,25 @@ function add_grouping_criteria(grouping_criteria) {ldelim}
 						updateRelFieldOptions(conditionColumnRowElement, 'fval_'+advft_column_index_count);
 					{/if}
 					var columnvalue = group_columns[key].value;
-					if(group_columns[key].comparator == 'bw' && columnvalue != '') {
+					if (group_columns[key].comparator == 'bw' && columnvalue != '') {
 						var values = columnvalue.split(",");
 						document.getElementById('fval'+advft_column_index_count).value = values[0];
-						if(values.length == 2 && document.getElementById('fval_ext'+advft_column_index_count))
+						if (values.length == 2 && document.getElementById('fval_ext'+advft_column_index_count)) {
 							document.getElementById('fval_ext'+advft_column_index_count).value = values[1];
+						}
 					} else {
 						document.getElementById('fval'+advft_column_index_count).value = columnvalue;
 					}
-                                        var keyprev=key-1;
-					if(document.getElementById('fcon'+keyprev))
+					var keyprev=key-1;
+					if (document.getElementById('fcon'+keyprev)) {
 						document.getElementById('fcon'+keyprev).value = group_columns[keyprev].column_condition;
+					}
 				}
 			}
-                        var iprev=i-1;
-			if(document.getElementById('gpcon'+iprev))
+			var iprev=i-1;
+			if (document.getElementById('gpcon'+iprev)) {
 				document.getElementById('gpcon'+iprev).value = grouping_criteria[iprev].condition;
+			}
 		}
 	} else {
 		addNewConditionGroup('adv_filter_div');
