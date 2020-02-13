@@ -312,7 +312,7 @@ class CRMEntity {
 			$upload_status = @move_uploaded_file($filetmp_name, $upload_file_path . $current_id . '_' . $binFile);
 		}
 
-		if($upload_status && !empty($forfield)) {
+		if ($upload_status && !empty($forfield)) {
 			unset($_FILES[$forfield]);
 		}
 
