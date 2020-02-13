@@ -123,8 +123,8 @@ class RunWebserviceWorkflowTask extends VTTask {
 
 			//write response to record fields
 			if (count($target_fields['Response']) > 0) {
+				$conds = array();
 				if ($outputtype == 'JSON') {
-					$conds = array();
 					foreach ($target_fields['Response'] as $fld => $v) {
 						if (is_array($response2)) {
 							if (strpos($fld, '.')) {
@@ -149,20 +149,44 @@ class RunWebserviceWorkflowTask extends VTTask {
 						}
 						$entity->WorkflowContext[$v['context']] = $r2;
 					}
-					if (count($conds)>0) {
-						$q = $adb->pquery('select * from vtiger_entityname where modulename=?', array($origin_module));
-						$table = $adb->query_result($q, 0, 'tablename');
-						$id = $adb->query_result($q, 0, 'entityidfield');
-						$focus = new $origin_module();
-						$focus->mode = 'edit';
-						$focus->retrieve_entity_info($therecid, $origin_module);
-						$focus->id=$therecid;
-						foreach ($conds as $key => $value) {
-							$focus->column_fields[$key] = $value;
+				}
+				if ($outputtype == 'XML') {
+					$xml = simplexml_load_string($respp);
+					$json = json_encode($xml);
+					$response2 = json_decode($json, true);
+					foreach ($target_fields['Response'] as $fld => $v) {
+						if (strpos($fld, '.')) {
+							list ($elemresponse, $elemfield) = explode('.', $fld);
+							if (is_array($response2[$elemresponse])) {
+								$r2 = $response2[$elemresponse][$elemfield];
+							} else {
+								$r2 = $response2[$fld];
+							}
+						} else {
+							$r2 = $response2[$fld];
 						}
-						$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $meta);
-						$focus->saveentity($origin_module);
+						if ((string)$r2 == 'null' || is_null($r2)) {
+							$r2 = '';
+						}
+						if (!empty($v['field'])) {
+							$conds[$v['field']] = $r2;
+						}
+						$entity->WorkflowContext[$v['context']] = $r2;
 					}
+				}
+				if (count($conds)>0) {
+					$q = $adb->pquery('select * from vtiger_entityname where modulename=?', array($origin_module));
+					$table = $adb->query_result($q, 0, 'tablename');
+					$id = $adb->query_result($q, 0, 'entityidfield');
+					$focus = new $origin_module();
+					$focus->mode = 'edit';
+					$focus->retrieve_entity_info($therecid, $origin_module);
+					$focus->id=$therecid;
+					foreach ($conds as $key => $value) {
+						$focus->column_fields[$key] = $value;
+					}
+					$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $meta);
+					$focus->saveentity($origin_module);
 				}
 			}
 		}
