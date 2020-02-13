@@ -320,6 +320,16 @@ function cbexpsql_avg($arr, $mmodule) {
 function cbexpsql_count($arr, $mmodule) {
 	return __cbexpsql_functionparams('COUNT', $arr, $mmodule);
 }
+function cbexpsql_number_format($arr, $mmodule) {
+	if (count($arr)>0) {
+		$number = $arr[0];
+		$decimals = isset($arr[1]) ? $arr[1] : 0;
+		$dec_points = isset($arr[2]) ? $arr[2] : '.';
+		$thousands_sep = isset($arr[3]) ? $arr[3] : ',';
+		return 'REPLACE(REPLACE(REPLACE(FORMAT('.__cbexpsql_functionparamsvalue($number, $mmodule).', '.$decimals.'), ".", "@"), ",", '.__cbexpsql_functionparamsvalue($thousands_sep, $mmodule).'), "@", '.__cbexpsql_functionparamsvalue($dec_points, $mmodule).')';
+	}
+	return '""';
+}
 
 //// UNSUPPORTED FUNCTIONS
 function cbexpsql_uppercasefirst($arr, $mmodule) {

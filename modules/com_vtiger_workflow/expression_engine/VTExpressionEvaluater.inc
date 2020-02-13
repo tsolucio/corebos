@@ -174,7 +174,8 @@ class VTFieldExpressionEvaluater {
 			'isNumeric' => 'cbexpsql_isnumber',
 			'isString' => 'cbexpsql_isstring',
 			'OR' => 'cbexpsql_or',
-			'AND' => 'cbexpsql_and'
+			'AND' => 'cbexpsql_and',
+			'number_format' => 'cbexpsql_number_format',
 		);
 		$this->rawparams = array(
 			'__cb_getGEODistanceFromUser2AccountBilling',
