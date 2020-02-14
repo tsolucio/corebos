@@ -9208,7 +9208,7 @@ if (workbox) {
   },
   {
     "url": "include/js/Inventory.js",
-    "revision": "db6d03467b028c769727d12b9456144c"
+    "revision": "83b773fcf2e7b96c97c89c4cd1695e9c"
   },
   {
     "url": "include/js/it_it.lang.js",
