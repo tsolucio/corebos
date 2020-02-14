@@ -947,4 +947,17 @@ function vtws_getWebserviceDefaultLanguage() {
 	global $default_language;
 	return $default_language;
 }
+
+function vtws_getWsIdForFilteredRecord($moduleName, $conditions, $user) {
+	global $adb;
+	$queryGenerator = new QueryGenerator($moduleName, $user);
+	$queryGenerator->setFields(array('id'));
+	$queryGenerator->addUserSearchConditions($queryGenerator->constructAdvancedSearchConditions($moduleName, $conditions));
+	$query = $queryGenerator->getQuery(false, 1);
+	$result = $adb->pquery($query, array());
+	if ($adb->num_rows($result) == 0) {
+		return null;
+	}
+	return vtws_getEntityId($moduleName).'x'.$adb->query_result($result, 0, 0);
+}
 ?>
