@@ -33,6 +33,10 @@ function vtws_gettranslation($totranslate, $portal_language, $module, $user) {
 			$applanguage_used=false;
 		}
 	}
+	if ($applanguage_used != false && file_exists("include/language/$applanguage_used.custom.php")) {
+		@include "include/language/$applanguage_used.custom.php";
+		$app_strings = array_merge($app_strings, $custom_strings);
+	}
 
 	// $mod_strings
 	$modlanguage_used = '';
@@ -49,6 +53,10 @@ function vtws_gettranslation($totranslate, $portal_language, $module, $user) {
 				$modlanguage_used = false;
 			}
 		}
+	}
+	if ($modlanguage_used != false && file_exists("modules/$module/language/$modlanguage_used.custom.php")) {
+		@include "modules/$module/language/$modlanguage_used.custom.php";
+		$mod_strings = array_merge($mod_strings, $custom_strings);
 	}
 
 	if (!$applanguage_used && !$modlanguage_used) {
