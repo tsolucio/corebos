@@ -1031,6 +1031,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		'accountid' => isset($_REQUEST['accid']) ? vtlib_purify($_REQUEST['accid']) : 0,
 		'contactid' => isset($_REQUEST['ctoid']) ? vtlib_purify($_REQUEST['ctoid']) : 0,
 		'productid' => 0,
+		'related_module' => $sourceModule,
 	);
 	while ($prodser = $adb->fetch_array($r)) {
 		$unitprice = $prodser['unit_price'];
