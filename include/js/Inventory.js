@@ -134,9 +134,13 @@ function getInventoryModuleTaxRelatedInformation() {
 	var ship_country = '';
 	if (document.getElementsByName('contact_id').length != 0) {
 		contact_id= document.EditView.contact_id.value;
+	} else if (document.getElementsByName('ctoid').length != 0) {
+		contact_id= document.EditView.ctoid.value;
 	}
 	if (document.getElementsByName('account_id').length != 0) {
 		account_id= document.EditView.account_id.value;
+	} else if (document.getElementsByName('accid').length != 0) {
+		account_id= document.EditView.accid.value;
 	}
 	if (document.getElementsByName('vendor_id').length != 0) {
 		vendor_id= document.EditView.vendor_id.value;
