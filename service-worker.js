@@ -9132,7 +9132,7 @@ if (workbox) {
   },
   {
     "url": "include/js/advancefilter.js",
-    "revision": "fd8009cb447a3e22d14c7855ebae42ba"
+    "revision": "d4456b817530dde55f20b67bfa34f8e8"
   },
   {
     "url": "include/js/asterisk.js",
@@ -9284,7 +9284,7 @@ if (workbox) {
   },
   {
     "url": "include/js/search.js",
-    "revision": "63fa7f4c39690b7520726ebcd341f1aa"
+    "revision": "d5c8ddcb6451bc0c05aa26f123363e0f"
   },
   {
     "url": "include/js/smoothscroll.js",
