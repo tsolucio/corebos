@@ -1,4 +1,9 @@
 module.exports = {
+	"inlineWorkboxRuntime": true,
+	"mode": "development",
+	"sourcemap": false,
+	"skipWaiting": true,
+	"clientsClaim": true,
 	"globDirectory": ".",
 	"globPatterns": [
 		'include/sw-precache/service-worker-registration.js',
@@ -129,6 +134,5 @@ module.exports = {
 		'include/freetag/tagcanvas.min.js',
 		'include/freetag/tagcanvas.js'
 	],
-	"swDest": "service-worker.js",
-	"swSrc": "include/sw-precache/workboxtpl.js"
+	"swDest": "service-worker.js"
 };
