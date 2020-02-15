@@ -270,28 +270,6 @@ document.getElementById('global_search_total_count').innerHTML = " <?php echo $a
 function getSearchModulesComboList($search_module) {
 	global $object_array, $app_strings;
 	?>
-		<script>
-		function displayModuleList(selectmodule_view) {
-			<?php
-			foreach ($object_array as $module => $object_name) {
-				if (isPermitted($module, 'index') == 'yes') {
-					?>
-				mod = "global_list_"+"<?php echo $module; ?>";
-				if (selectmodule_view.options[selectmodule_view.options.selectedIndex].value == "All")
-					show(mod);
-				else
-					hide(mod);
-					<?php
-				}
-			}
-			?>
-
-			if (selectmodule_view.options[selectmodule_view.options.selectedIndex].value != 'All') {
-				selectedmodule='global_list_'+selectmodule_view.options[selectmodule_view.options.selectedIndex].value;
-				show(selectedmodule);
-			}
-		}
-		</script>
 		<div class="slds-page-header" style="position: sticky;top:40px;z-index:4;">
 			<div class="slds-page-header__row">
 				<div class="slds-page-header__col-title">
