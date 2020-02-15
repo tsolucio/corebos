@@ -251,7 +251,7 @@ if (isset($query_string) && $query_string != '') {
 	if (empty($_REQUEST['ajax'])) {
 		?>
 	<script>
-document.getElementById("global_search_total_count").innerHTML = " <?php echo $app_strings['LBL_TOTAL_RECORDS_FOUND'] ?><b><?php echo $total_record_count; ?></b>";
+document.getElementById('global_search_total_count').innerHTML = " <?php echo $app_strings['LBL_TOTAL_RECORDS_FOUND']; ?>&nbsp;<b><?php echo $total_record_count; ?></b>";
 	</script>
 		<?php
 	}
@@ -286,38 +286,63 @@ function getSearchModulesComboList($search_module) {
 			}
 			?>
 
-			if (selectmodule_view.options[selectmodule_view.options.selectedIndex].value != "All") {
-				selectedmodule="global_list_"+selectmodule_view.options[selectmodule_view.options.selectedIndex].value;
+			if (selectmodule_view.options[selectmodule_view.options.selectedIndex].value != 'All') {
+				selectedmodule='global_list_'+selectmodule_view.options[selectmodule_view.options.selectedIndex].value;
 				show(selectedmodule);
 			}
 		}
 		</script>
-		<table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
-		<tr>
-		<td colspan="3" id="global_search_total_count" style="padding-left:30px">&nbsp;</td>
-		<td nowrap align="right"><?php echo $app_strings['LBL_SHOW_RESULTS'] ?>&nbsp;
-			<select id="global_search_module" name="global_search_module" onChange="displayModuleList(this);" class="small">
-			<option value="All"><?php echo $app_strings['COMBO_ALL'] ?></option>
-			<?php
-			foreach ($object_array as $module => $object_name) {
-				$selected = '';
-				if ($search_module != '' && $module == $search_module) {
-					$selected = 'selected';
-				}
-				if ($search_module == '' && $module == 'All') {
-					$selected = 'selected';
-				}
-				if (isPermitted($module, 'index') == 'yes') {
-					?>
-				<option value="<?php echo $module; ?>" <?php echo $selected; ?> ><?php echo getTranslatedString($module, $module); ?></option>
-					<?php
-				}
-			}
-			?>
-			</select>
-		</td>
-		</tr>
-		</table>
+		<div class="slds-page-header" style="position: sticky;top:40px;z-index:4;">
+			<div class="slds-page-header__row">
+				<div class="slds-page-header__col-title">
+				<div class="slds-media">
+					<div class="slds-media__figure">
+					<span class="slds-icon_container slds-icon-standard-search" title="<?php echo getTranslatedString('LBL_SEARCH'); ?>">
+						<svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#search"></use>
+						</svg>
+						<span class="slds-assistive-text"><?php echo getTranslatedString('LBL_SEARCH'); ?></span>
+					</span>
+					</div>
+					<div class="slds-media__body" style="flex:unset;width:50%;">
+					<div class="slds-page-header__name">
+						<div class="slds-page-header__name-title">
+						<h1>
+							<span class="slds-page-header__title slds-truncate" id="global_search_total_count"></span>
+						</h1>
+						</div>
+					</div>
+					</div>
+					<div class="slds-form-element" style="width:30%;">
+						<label class="slds-form-element__label" for="global_search_module"><?php echo $app_strings['LBL_SHOW_RESULTS'] ?></label>
+						<div class="slds-form-element__control">
+							<div class="slds-select_container">
+								<select id="global_search_module" name="global_search_module" onChange="displayModuleList(this);" class="slds-select">
+								<option value="All"><?php echo $app_strings['COMBO_ALL'] ?></option>
+								<?php
+								foreach ($object_array as $module => $object_name) {
+									$selected = '';
+									if ($search_module != '' && $module == $search_module) {
+										$selected = 'selected';
+									}
+									if ($search_module == '' && $module == 'All') {
+										$selected = 'selected';
+									}
+									if (isPermitted($module, 'index') == 'yes') {
+										?>
+									<option value="<?php echo $module; ?>" <?php echo $selected; ?> ><?php echo getTranslatedString($module, $module); ?></option>
+										<?php
+									}
+								}
+								?>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+				</div>
+			</div>
+		</div>
 	<?php
 }
 

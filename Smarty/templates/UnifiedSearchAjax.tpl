@@ -18,7 +18,6 @@
 	<div id="global_list_{$MODULE}" style="display:block">
 {/if}
 <form name="massdelete" method="POST">
-<table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
 	<input name="idlist" type="hidden">
 	<input name="change_owner" type="hidden">
 	<input name="change_status" type="hidden">
@@ -26,54 +25,56 @@
 	<input name="search_criteria" type="hidden" value="{$SEARCH_STRING}">
 	<input name="module" type="hidden" value="{$MODULE}" />
 	<input name="{$MODULE}RecordCount" id="{$MODULE}RecordCount" type="hidden" value="{$ModuleRecordCount.$MODULE.count}" />
-	<tr>
-		<td>
-		<!-- PUBLIC CONTENTS STARTS-->
-		<br>
-		<div class="small" style="padding:2px">
-			<table border=0 cellspacing=1 cellpadding=0 width=100% class="lvtBg">
-				<tr >
-					<td>
-						<table border=0 cellspacing=0 cellpadding=2 width=100% class="small">
-							<tr>
-								<td style="padding-right:20px" nowrap ><b class=big>{$MODULE|@getTranslatedString:$MODULE}</b>{$SEARCH_CRITERIA}</td>
-								<td style="padding-right:20px" class="small" align="right" nowrap>{$ModuleRecordCount.$MODULE.recordListRangeMessage}</td>
-								<td nowrap width="50%">
-									<table border=0 cellspacing=0 cellpadding=0 class="small">
-										<tr>{$NAVIGATION}</tr>
-									</table>
-								</td>
-							</tr>
-						</table>
-						<div class="searchResults">
-							<table border=0 cellspacing=0 cellpadding=3 width=100% class="small">
-								<tr>
-								{if $DISPLAYHEADER eq 1}
-									{foreach item=header from=$LISTHEADER}
-									<td class="mailSubHeader">{$header}</td>
-									{/foreach}
-								{else}
-									<td class="searchResultsRow" colspan=$HEADERCOUNT> {$APP.LBL_NO_DATA} </td>
-								{/if}
-								</tr>
-								{foreach item=entity key=entity_id from=$LISTENTITY}
-								<tr bgcolor=white onMouseOver="this.className='lvtColDataHover'" onMouseOut="this.className='lvtColData'" >
-								{foreach item=data from=$entity}
-									<td onmouseout="vtlib_listview.trigger('cell.onmouseout', this)" onmouseover="vtlib_listview.trigger('cell.onmouseover', this)">{$data}</td>
-								{/foreach}
-								</tr>
-								{/foreach}
-							</table>
-						</div>
-					</td>
+	<br>
+	{assign var='MODULEICON' value=$MODULE|@getModuleIcon}
+	<div class="small slds-m-top_small slds-m-bottom_small">
+		<div class="slds-m-left_large slds-m-right_large slds-grid slds-gutters slds-m-bottom_x-small slds-page-header slds-page-header__row">
+			<div class="slds-col slds-size_1-of-3 slds-media">
+				<div class="slds-media__figure">
+					<a class="hdrLink" href="index.php?action=index&module={$MODULE}" target="_blank">
+					<span class="{$MODULEICON.__ICONContainerClass}" title="{$MODULE|@getTranslatedString:$MODULE}">
+					<svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+						<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="include/LD/assets/icons/{$MODULEICON.__ICONLibrary}-sprite/svg/symbols.svg#{$MODULEICON.__ICONName}" />
+					</svg>
+					<span class="slds-assistive-text">{$MODULELABEL}</span>
+					</span>
+					</a>
+				</div>
+				<div class="slds-media__body">
+				<span class='slds-dynamic-menu__header'>{$MODULE|@getTranslatedString:$MODULE}</span><br>{$SEARCH_CRITERIA}
+				</div>
+			</div>
+			<div class="slds-col slds-size_1-of-3 slds-chat-message__text">{$ModuleRecordCount.$MODULE.recordListRangeMessage}</div>
+			<div class="slds-col slds-size_1-of-3">
+				<span>{if $ModuleRecordCount.$MODULE.recordListRangeMessage!=''}{$NAVIGATION}{/if}</span>
+			</div>
+		</div>
+		<div class="searchResults slds-m-left_large slds-m-right_large">
+			<table class="slds-table slds-table_cell-buffer slds-table_bordered">
+			<thead>
+				<tr class="slds-line-height_reset">
+				{if $DISPLAYHEADER eq 1}
+					{foreach item=header from=$LISTHEADER}
+					<th class="mailSubHeader">{$header}</th>
+					{/foreach}
+				{else}
+					<th class="searchResultsRow" colspan=$HEADERCOUNT> {$APP.LBL_NO_DATA} </th>
+				{/if}
 				</tr>
+			</thead>
+			<tbody>
+				{foreach item=entity key=entity_id from=$LISTENTITY}
+				<tr class="slds-hint-parent">
+				{foreach item=data from=$entity}
+					<td scope="row" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)" onmouseover="vtlib_listview.trigger('cell.onmouseover', this)">{$data}</td>
+				{/foreach}
+				</tr>
+				{/foreach}
+			</tbody>
 			</table>
 		</div>
-	</td>
-	</tr>
-</table>
+	</div>
 </form>
-</div>
 {if $SEARCH_MODULE eq 'All'}
 <script>
 displayModuleList(document.getElementById('global_search_module'));
