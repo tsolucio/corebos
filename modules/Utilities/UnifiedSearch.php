@@ -31,6 +31,19 @@ if (substr($query_string, 0, 5)=='tag::') {
 	$_REQUEST['search_module'] = 'All';
 	unset($_REQUEST['search_onlyin']);
 }
+$fieldtype = '';
+if (strpos($query_string, '::')) {
+	$resttype = substr($query_string, 0, strpos($query_string, '::'));
+	$fldtypes = array();
+	$rsft = $adb->query('SELECT distinct `fieldtype` FROM `vtiger_ws_fieldtype`');
+	while ($ft = $adb->fetch_array($rsft)) {
+		$fldtypes[] = $ft['fieldtype'];
+	}
+	if (in_array($resttype, $fldtypes)) {
+		$query_string = substr($query_string, strpos($query_string, '::')+2);
+		$fieldtype = $resttype;
+	}
+}
 $curModule = vtlib_purify($_REQUEST['module']);
 $search_tag = isset($_REQUEST['search_tag']) ? vtlib_purify($_REQUEST['search_tag']) : '';
 
@@ -134,7 +147,7 @@ if (isset($query_string) && $query_string != '') {
 					$search_msg = $app_strings['LBL_TAG_SEARCH'];
 					$search_msg .= "<b>".to_html($search_val)."</b>";
 				} else { //This is for Global search
-					$where = getUnifiedWhere($listquery, $module, $search_val);
+					$where = getUnifiedWhere($listquery, $module, $search_val, $fieldtype);
 					$search_msg = $app_strings['LBL_SEARCH_RESULTS_FOR'];
 					$search_msg .=	"<b>".htmlentities($search_val, ENT_QUOTES, $default_charset)."</b>";
 				}
