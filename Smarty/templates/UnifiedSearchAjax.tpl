@@ -80,3 +80,4 @@
 displayModuleList(document.getElementById('global_search_module'));
 </script>
 {/if}
+</div>
