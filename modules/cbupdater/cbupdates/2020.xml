@@ -14,4 +14,11 @@
 	<classname>resizeModuleListFields</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>add cbquestion filter format for conditions field</description>
+	<filename>build/changeSets/2020/addcbquestionfilterformatfield.php</filename>
+	<classname>addcbquestionfilterformatfield</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
