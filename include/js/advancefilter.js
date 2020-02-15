@@ -58,25 +58,19 @@ function updatefOptions(sel, opSelName) {
 	if (currField.value != null && currField.value.length != 0) {
 		fieldtype = trimfValues(currField.value);
 		var ops = typeofdata[fieldtype];
-		var off = 0;
 		if (ops != null) {
 			nMaxVal = selObj.length;
 			for (nLoop = 0; nLoop < nMaxVal; nLoop++) {
 				selObj.remove(0);
 			}
-			selObj.options[0] = new Option('None', '');
-			if (currField.value == '') {
-				selObj.options[0].selected = true;
-			}
-			off = 1;
 			for (var i = 0; i < ops.length; i++) {
 				var label = fLabels[ops[i]];
 				if (label == null) {
 					continue;
 				}
 				var option = new Option(fLabels[ops[i]], ops[i]);
-				selObj.options[i + off] = option;
-				if (currOption != null && currOption.value == option.value) {
+				selObj.options[i] = option;
+				if (currOption != null && (currOption.value == option.value || (currOption.value == '' && option.value == 'e'))) {
 					option.selected = true;
 				}
 			}
@@ -85,10 +79,6 @@ function updatefOptions(sel, opSelName) {
 		nMaxVal = selObj.length;
 		for (nLoop = 0; nLoop < nMaxVal; nLoop++) {
 			selObj.remove(0);
-		}
-		selObj.options[0] = new Option('None', '');
-		if (currField.value == '') {
-			selObj.options[0].selected = true;
 		}
 	}
 }
