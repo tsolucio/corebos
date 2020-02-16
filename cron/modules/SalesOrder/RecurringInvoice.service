@@ -162,6 +162,7 @@ function createInvoice($salesorder_id) {
 	}
 	$focus->_salesorderid = $salesorder_id;
 	$focus->_recurring_mode = 'recurringinvoice_from_so';
+	$_REQUEST['action'] = 'Save';
 	$focus->save('Invoice');
 }
 ?>
