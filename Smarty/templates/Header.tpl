@@ -43,9 +43,9 @@
 	<![endif]-->
 {/literal}
 	<!-- End -->
+	{include file='BrowserVariables.tpl'}
+	{include file="Components.tpl"}
 </head>
-{include file='BrowserVariables.tpl'}
-{include file="Components.tpl"}
 <body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small style="min-width:1100px; width: 100%"> 
 	<!-- header -->
 	<script type="text/javascript" src="include/sw-precache/service-worker-registration.js"></script>
