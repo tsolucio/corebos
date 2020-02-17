@@ -295,12 +295,12 @@ class Validations extends processcbMap {
 						if (file_exists($restrictions[0])) {
 							@include_once $restrictions[0];
 							if (function_exists($restrictions[2])) {
+								$lbl = getTranslatedString('INVALID', $mapping['origin']);
+								$params = array();
 								if (isset($restrictions[3])) {
 									if (is_array($restrictions[3])) {
 										$params = $restrictions[3];
-										$lbl = getTranslatedString('INVALID', $mapping['origin']);
 									} else {
-										$params = array();
 										$lbl = getTranslatedString($restrictions[3], $mapping['origin']);
 									}
 								}
