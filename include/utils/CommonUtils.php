@@ -2759,15 +2759,11 @@ function getColumnnameByFieldname($tabid, $fieldname) {
 function getUItypeByFieldName($module, $fieldname) {
 	global $log, $adb;
 	$log->debug('> getUItypeByFieldName ' . $module);
-	$tabIdList = array();
-	//To find tabid for this module
-	$tabIdList[] = getTabid($module);
-	if ($module == 'Calendar') {
-		$tabIdList[] = getTabid('Events');
+	$uitype = false;
+	$result = $adb->pquery('select uitype from vtiger_field where tabid=? and fieldname=?', array(getTabid($module), $fieldname));
+	if ($result && $adb->num_rows($result)>0) {
+		$uitype = $result->fields['uitype'];
 	}
-	$sql = 'select uitype from vtiger_field where tabid IN (' . generateQuestionMarks($tabIdList) . ') and fieldname=?';
-	$result = $adb->pquery($sql, array($tabIdList, $fieldname));
-	$uitype = $adb->query_result($result, 0, 'uitype');
 	$log->debug('< getUItypeByFieldName');
 	return $uitype;
 }
@@ -2798,15 +2794,11 @@ function getTypeOfDataByFieldName($module, $fieldname) {
 function getUItype($module, $columnname) {
 	global $log, $adb;
 	$log->debug('> getUItype ' . $module);
-	$tabIdList = array();
-	//To find tabid for this module
-	$tabIdList[] = getTabid($module);
-	if ($module == 'Calendar') {
-		$tabIdList[] = getTabid('Events');
+	$uitype = false;
+	$result = $adb->pquery('select uitype from vtiger_field where tabid=? and columnname=?', array(getTabid($module), $columnname));
+	if ($result && $adb->num_rows($result)>0) {
+		$uitype = $result->fields['uitype'];
 	}
-	$sql = 'select uitype from vtiger_field where tabid IN (' . generateQuestionMarks($tabIdList) . ') and columnname=?';
-	$result = $adb->pquery($sql, array($tabIdList, $columnname));
-	$uitype = $adb->query_result($result, 0, 'uitype');
 	$log->debug('< getUItype');
 	return $uitype;
 }
