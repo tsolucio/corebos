@@ -2750,7 +2750,7 @@ function getColumnnameByFieldname($modname, $fieldname) {
 		$q = "SELECT columnname FROM vtiger_field WHERE fieldname = '{$fieldname}'
 		AND tabid IN (SELECT tabid FROM vtiger_tab WHERE name = '{$modname}')";
 		$r = $adb->query($q);
-		$name = $adb->query_result($r, 0, 'columnname')
+		$name = $adb->query_result($r, 0, 'columnname');
 	}
 	$log->debug('< getColumnnameByFieldname');
 	return $cname;
