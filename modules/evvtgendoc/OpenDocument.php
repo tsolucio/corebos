@@ -1076,6 +1076,7 @@ class OpenDocument {
 						$ramaparacada=$this->contextoParacada[$this->contextoActual]['ramaparacada'];
 						$condicionparacada=$this->contextoParacada[$this->contextoActual]['condicion'];
 						$ctxmodule=$this->contextoParacada[$this->contextoActual]['module'];
+						$ctxmodule = trim(preg_replace('/\*(\w|\s)+\*/', '', $ctxmodule));
 						$modid=$iter_modules[$ctxmodule][0];
 						eval_paracada($condicionparacada, $modid, $ctxmodule);
 						$num_iter =iterations();

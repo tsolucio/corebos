@@ -2732,6 +2732,26 @@ function makeRandomPassword() {
 }
 
 /**
+ * Function to get the columnname for a certain fieldname, given
+ * the fieldname and the module name
+ */
+function getColumnnameByFieldname($tabid, $fieldname) {
+	global $log;
+	$log->debug('> getColumnnameByFieldname ' . $tabid . ' ' . $fieldname);
+	$fieldinfo = VTCacheUtils::lookupFieldInfo($tabid, $fieldname);
+	if ($fieldinfo === false) {
+		getColumnFields(getTabModuleName($tabid));
+		$fieldinfo = VTCacheUtils::lookupFieldInfo($tabid, $fieldname);
+	}
+	$column = false;
+	if ($fieldinfo) {
+		$column = $fieldinfo['columnname'];
+	}
+	$log->debug('< getColumnnameByFieldname');
+	return $column;
+}
+
+/**
  * Function to get the UItype for a field by the fieldname.
  * Takes the input as $module - module name,and fieldname of the field
  * returns the uitype, integer type
