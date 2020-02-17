@@ -2735,25 +2735,20 @@ function makeRandomPassword() {
  * Function to get the columnname for a certain fieldname, given
  * the fieldname and the module name
  */
-function getColumnnameByFieldname($modname, $fieldname) {
-	global $log, $adb;
-	$log->debug('> getColumnnameByFieldname ' . $modname . ' ' . $fieldname);
-	$cname = false;
-	$modfields = VTCacheUtils::lookupFieldInfo_Module($modname);
-	foreach ($modfields as $modfield) {
-		if ($modfield['fieldname'] == $fieldname) {
-			$cname = $modfield['columnname'];
-			break;
-		}
+function getColumnnameByFieldname($tabid, $fieldname) {
+	global $log;
+	$log->debug('> getColumnnameByFieldname ' . $tabid . ' ' . $fieldname);
+	$fieldinfo = VTCacheUtils::lookupFieldInfo($tabid, $fieldname);
+	if ($fieldinfo === false) {
+		getColumnFields(getTabModuleName($tabid));
+		$fieldinfo = VTCacheUtils::lookupFieldInfo($tabid, $fieldname);
 	}
-	if (!$cname) {
-		$q = "SELECT columnname FROM vtiger_field WHERE fieldname = '{$fieldname}'
-		AND tabid IN (SELECT tabid FROM vtiger_tab WHERE name = '{$modname}')";
-		$r = $adb->query($q);
-		$name = $adb->query_result($r, 0, 'columnname');
+	$column = false;
+	if ($fieldinfo) {
+		$column = $fieldinfo['columnname'];
 	}
 	$log->debug('< getColumnnameByFieldname');
-	return $cname;
+	return $column;
 }
 
 /**

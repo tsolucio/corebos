@@ -801,7 +801,7 @@ function eval_paracada($condition, $id, $module, $check = false) {
 				$GetRelatedList_ReturnOnlyQuery = false;
 				if (count($sortinfo) > 0) {
 					list($sortstring, $bare_sortstring, $fieldname, $sortorder) = $sortinfo;
-					$columnname = getColumnnameByFieldname($relmodule, $fieldname);
+					$columnname = getColumnnameByFieldname($tab_rel, $fieldname);
 					$sortinfo = array('cname' => $columnname, 'order' => $sortorder);
 				} else {
 					$sortinfo = false;
