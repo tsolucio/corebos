@@ -3666,8 +3666,11 @@ function lastImport(module, req_module) {
 	}
 }
 
-function getMergeRecords(selectedNames, upperlimit) {
-	if (typeof upperlimit == 'undefined') {
+function getMergeRecords(selectedNames, upperlimit, lowerlimit) {
+	if (typeof lowerlimit == 'undefined' || lowerlimit == null) {
+		lowerlimit = 2;
+	}
+	if (typeof upperlimit == 'undefined' || upperlimit == null) {
 		upperlimit = 3;
 	}
 	var select_options=document.getElementsByName(selectedNames);
@@ -3705,7 +3708,7 @@ function getMergeRecords(selectedNames, upperlimit) {
 				alert(alert_arr.SAME_GROUPS);
 				return false;
 			}
-			if (xx <2) {
+			if (xx <lowerlimit) {
 				alert(alert_arr.ATLEAST_TWO);
 				return false;
 			}
