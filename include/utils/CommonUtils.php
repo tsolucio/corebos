@@ -2738,13 +2738,19 @@ function makeRandomPassword() {
 function getColumnnameByFieldname($modname, $fieldname) {
 	global $log, $adb;
 	$log->debug('> getColumnnameByFieldname ' . $modname . ' ' . $fieldname);
-	$cname = '';
+	$cname = false;
 	$modfields = VTCacheUtils::lookupFieldInfo_Module($modname);
 	foreach ($modfields as $modfield) {
 		if ($modfield['fieldname'] == $fieldname) {
 			$cname = $modfield['columnname'];
 			break;
 		}
+	}
+	if (!$cname) {
+		$q = "SELECT columnname FROM vtiger_field WHERE fieldname = '{$fieldname}'
+		AND tabid IN (SELECT tabid FROM vtiger_tab WHERE name = '{$modname}')";
+		$r = $adb->query($q);
+		$name = $adb->query_result($r, 0, 'columnname')
 	}
 	$log->debug('< getColumnnameByFieldname');
 	return $cname;
