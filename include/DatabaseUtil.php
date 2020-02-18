@@ -86,6 +86,20 @@ function mkTotQuery($query, $column) {
 	return $query;
 }
 
+//Strip tailing commands
+function stripTailCommandsFromQuery($query) {
+	if (stripos($query, ' LIMIT ') > 0) {
+		$query = substr($query, 0, stripos($query, ' LIMIT '));
+	}
+	if (stripos($query, ' GROUP BY ') > 0) {
+		$query = substr($query, 0, stripos($query, ' GROUP BY '));
+	}
+	if (stripos($query, ' ORDER BY ') > 0) {
+		$query = substr($query, 0, stripos($query, ' ORDER BY '));
+	}
+	return $query;
+}
+
 //Make a count query
 function mkCountQuery($query) {
 	$query = mkXQuery($query, 'count(*) AS count');

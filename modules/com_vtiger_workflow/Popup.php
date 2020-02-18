@@ -181,7 +181,7 @@ $listview_header = getSearchListViewHeader($focus, $currentModule, $url_string, 
 $smarty->assign('LISTHEADER', $listview_header);
 $smarty->assign('HEADERCOUNT', count($listview_header)+1);
 $focus->popup_type=$popuptype;
-$listview_entries = getSearchListViewEntries($focus, $currentModule, $list_result, $navigation_array, '');
+$listview_entries = getSearchListViewEntries($focus, $currentModule, $list_result, $navigation_array);
 $smarty->assign('LISTENTITY', $listview_entries);
 if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, $currentModule)) {
 	$record_string = getRecordRangeMessage($list_result, $limstart, $noofrows);

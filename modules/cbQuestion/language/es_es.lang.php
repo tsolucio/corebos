@@ -89,5 +89,6 @@ $mod_strings = array(
 	'Sync all active materialized views.' => 'Actualizar todas las vistas materializadas activas.',
 	'MVIEWWFAdded' => 'Flujo Trabajo Vista Materializada Añadido',
 	'MVIEWWFDeleted' => 'Flujo Trabajo Vista Materializada Eliminado',
+	'condfilterformat' => 'Condiciones en Formato de Filtro',
 );
 ?>

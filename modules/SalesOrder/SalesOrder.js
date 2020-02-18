@@ -54,11 +54,6 @@ function salesordersetvalue_from_popup(recordid, fieldN, target_fld, form) {
 	window.close();
 }
 
-function set_return_formname_specific(formname, product_id, product_name) {
-	window.opener.document.EditView1.purchaseorder_name.value = product_name;
-	window.opener.document.EditView1.purchaseorder_id.value = product_id;
-}
-
 function set_return_todo(product_id, product_name) {
 	if (document.getElementById('from_link').value != '') {
 		window.opener.document.QcEditView.task_parent_name.value = product_name;

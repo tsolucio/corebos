@@ -311,6 +311,11 @@ class CRMEntity {
 		} else {
 			$upload_status = @move_uploaded_file($filetmp_name, $upload_file_path . $current_id . '_' . $binFile);
 		}
+
+		if ($upload_status && !empty($forfield)) {
+			unset($_FILES[$forfield]);
+		}
+
 		if ($upload_status) {
 			$description_val = empty($this->column_fields['description']) ? '' : $this->column_fields['description'];
 			if (($module == 'Contacts' || $module == 'Products') && $forfield=='imagename') {
@@ -671,7 +676,7 @@ class CRMEntity {
 						$res = $adb->pquery($sql, array($tabid,$fieldname));
 						$colj=$adb->query_result($res, 0, 0);
 						$tabj = $adb->query_result($res, 0, 1);
-						$sql1="select $colj from $tabj where " . $this->tab_name_index[$tabj] . "=?";
+						$sql1="select $colj from $tabj where " . $this->tab_name_index[$tabj] . '=?';
 						$res = $adb->pquery($sql1, array($this->id));
 						$vlera=$adb->query_result($res, 0, $colj);
 						if (empty($vlera)) {
@@ -694,6 +699,13 @@ class CRMEntity {
 						}
 						$vek=array_unique(array_merge(array_diff($currentvalues, $uservalues), $selectedvalues));
 						$fldvalue = implode(' |##| ', $vek);
+						if ($uitype == 3313 || $uitype == 3314) {
+							// this value cannot be over 1010 characters if it has an index, so we cut it at that length always
+							$fldvaluecut = substr($fldvalue, 0, 1010);
+							if ($fldvalue!=$fldvaluecut) {
+								$fldvalue = substr($fldvaluecut, 0, strrpos($fldvaluecut, ' |##| '));
+							}
+						}
 					}
 				} elseif ($uitype == 5 || $uitype == 6 || $uitype == 23) {
 					//Added to avoid function call getDBInsertDateValue in ajax save
@@ -720,10 +732,8 @@ class CRMEntity {
 						if (isset($_REQUEST['timefmt_' . $fieldname])) {
 							$timefmt = vtlib_purify($_REQUEST['timefmt_' . $fieldname]);
 							unset($_REQUEST['timefmt_' . $fieldname]);
-							$fldvalue = DateTimeField::formatDatebaseTimeString($fldvalue, $timefmt);
-						} else {
-							$fldvalue = DateTimeField::formatDatebaseTimeString($fldvalue, $timefmt);
 						}
+						$fldvalue = DateTimeField::formatDatebaseTimeString($fldvalue, $timefmt);
 						$this->column_fields[$fieldname] = $fldvalue;
 					}
 				//} elseif ($uitype == 7) {
@@ -1991,8 +2001,8 @@ class CRMEntity {
 		}
 
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-		$query = "select case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name," .
-				"'Documents' ActivityType,vtiger_attachments.type FileType,crm2.modifiedtime lastmodified,vtiger_crmentity.modifiedtime,
+		$query = "select case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
+				'Documents' ActivityType,vtiger_attachments.type FileType,crm2.modifiedtime lastmodified,vtiger_crmentity.modifiedtime,
 				vtiger_seattachmentsrel.attachmentsid attachmentsid, vtiger_crmentity.smownerid smownerid, vtiger_notes.notesid crmid,
 				vtiger_notes.notecontent description,vtiger_notes.*
 			from vtiger_notes
@@ -2000,8 +2010,7 @@ class CRMEntity {
 			left join vtiger_notescf ON vtiger_notescf.notesid= vtiger_notes.notesid
 			inner join vtiger_crmentity on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
 			inner join vtiger_crmentity crm2 on crm2.crmid=vtiger_senotesrel.crmid
-			LEFT JOIN vtiger_groups
-			ON vtiger_groups.groupid = vtiger_crmentity.smownerid
+			left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
 			left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid =vtiger_notes.notesid
 			left join vtiger_attachments on vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
 			left join vtiger_users on vtiger_crmentity.smownerid= vtiger_users.id

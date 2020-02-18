@@ -14,7 +14,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
 <title>{$MOD.TITLE_COMPOSE_MAIL}</title>
 <link REL="SHORTCUT ICON" HREF="themes/images/favicon.ico">
-<style type="text/css">@import url("themes/{$THEME}/style.css");</style>
+<link rel="stylesheet" type="text/css" media="all" href="themes/{$THEME}/style.css">
 <script type="text/javascript" src="include/jquery/jquery.js"></script>
 <script type="text/javascript" src="include/js/general.js"></script>
 <script type="text/javascript" src="include/js/{$LANGUAGE}.lang.js"></script>

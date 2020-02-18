@@ -41,6 +41,9 @@ module.exports = {
         "no-inner-declarations": [
             "off"
         ],
+        "no-extra-boolean-cast": [
+            "off"
+        ],
         "no-trailing-spaces": [
             2,
             {

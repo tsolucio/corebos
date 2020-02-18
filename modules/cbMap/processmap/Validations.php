@@ -146,7 +146,11 @@ class Validations extends processcbMap {
 		$validations = array();
 		foreach ($mapping['fields'] as $valfield => $vals) {
 			$fl = $adb->pquery('select fieldlabel from vtiger_field where tabid=? and (columnname=? or fieldname=?)', array($tabid, $valfield, $valfield));
-			$fieldlabel = $adb->query_result($fl, 0, 0);
+			if ($fl && $adb->num_rows($fl)>0) {
+				$fieldlabel = $adb->query_result($fl, 0, 0);
+			} else {
+				$fieldlabel = $valfield;
+			}
 			$i18n = getTranslatedString($fieldlabel, $mapping['origin']);
 			foreach ($vals as $val) {
 				if (isset($screen_values['action']) && $screen_values['action']=='MassEditSave' && empty($screen_values[$valfield.'_mass_edit_check'])) {
@@ -156,6 +160,7 @@ class Validations extends processcbMap {
 				$restrictions = $val['rst'];
 				switch ($rule) {
 					case 'required':
+					case 'optional':
 					case 'accepted':
 					case 'numeric':
 					case 'integer':
@@ -169,6 +174,7 @@ class Validations extends processcbMap {
 					case 'date':
 					case 'IBAN_BankAccount':
 					case 'EU_VAT':
+					case 'cbtaxclassrequired':
 						if (isset($val['msg'])) {
 							$v->rule($rule, $valfield)->message($val['msg'])->label($i18n);
 						} else {
@@ -182,11 +188,22 @@ class Validations extends processcbMap {
 					case 'lengthMax':
 					case 'min':
 					case 'max':
+					case 'bigger':
+					case 'greater':
+					case 'smaller':
+					case 'lesser':
 					case 'ip':
 					case 'dateFormat':
 					case 'dateBefore':
 					case 'dateAfter':
 					case 'contains':
+					case 'RelatedModuleExists':
+						if ($rule=='greater' || $rule=='bigger') {
+							$rule='min';
+						}
+						if ($rule=='smaller' || $rule=='lesser') {
+							$rule='max';
+						}
 						if (substr($restrictions[0], 0, 2)=='{{' && substr($restrictions[0], -2)=='}}'
 							&& isset($screen_values[substr($restrictions[0], 2, strlen($restrictions[0])-4)])
 						) {
@@ -215,7 +232,15 @@ class Validations extends processcbMap {
 						}
 						break;
 					case 'in':
+					case 'In':
+					case 'notin':
 					case 'notIn':
+						if ($rule=='In') {
+							$rule = 'in';
+						}
+						if ($rule=='notin') {
+							$rule = 'notIn';
+						}
 						if (isset($val['msg'])) {
 							$v->rule($rule, $valfield, $restrictions)->message($val['msg'])->label($i18n);
 						} else {
@@ -270,12 +295,23 @@ class Validations extends processcbMap {
 						if (file_exists($restrictions[0])) {
 							@include_once $restrictions[0];
 							if (function_exists($restrictions[2])) {
-								$lbl = (isset($restrictions[3]) ? getTranslatedString($restrictions[3], $mapping['origin']) : getTranslatedString('INVALID', $mapping['origin']));
+								if (isset($restrictions[3])) {
+									if (is_array($restrictions[3])) {
+										$params = $restrictions[3];
+										$lbl = getTranslatedString('INVALID', $mapping['origin']);
+									} else {
+										$params = array();
+										$lbl = getTranslatedString($restrictions[3], $mapping['origin']);
+									}
+								}
+								if (isset($restrictions[4])) {
+									$params = $restrictions[4];
+								}
 								$v->addRule($restrictions[1], $restrictions[2], $lbl);
 								if (isset($val['msg'])) {
-									$v->rule($restrictions[1], $valfield)->message($val['msg'])->label($i18n);
+									$v->rule($restrictions[1], $valfield, $params)->message($val['msg'])->label($i18n);
 								} else {
-									$v->rule($restrictions[1], $valfield)->label($i18n);
+									$v->rule($restrictions[1], $valfield, $params)->label($i18n);
 								}
 							}
 						}
@@ -317,6 +353,13 @@ class Validations extends processcbMap {
 					foreach ($val->restrictions->restriction as $rv) {
 						$rst[]=(String)$rv;
 					}
+					if (isset($val->restrictions->parameters)) {
+						$params = array();
+						foreach ($val->restrictions->parameters->parameter as $prm) {
+							$params[(String)$prm->name]=(String)$prm->value;
+						}
+						$rst[]=$params;
+					}
 				}
 				$retval['rst'] = $rst;
 				if (isset($val->message)) {
@@ -335,10 +378,15 @@ class Validations extends processcbMap {
 		foreach ($validationData as $fname => $finfo) {
 			foreach ($finfo as $flabel => $fvalidation) {
 				if (strpos($fvalidation, '~M')) {
-					if (isset($mapping['fields'][$fname])) {
-						$mapping['fields'][$fname][] = array('rule'=>'required', 'rst'=>array());
+					if ($fname=='taxclass') {
+						unset($mapping['fields'][$fname]);
+						$mapping['fields']['tax1_check'] = array(array('rule'=>'cbtaxclassrequired', 'rst' => array(), 'msg'=> getTranslatedString('ENTER_VALID_TAX')));
 					} else {
-						$mapping['fields'][$fname] = array(array('rule'=>'required', 'rst'=>array()));
+						if (isset($mapping['fields'][$fname])) {
+							$mapping['fields'][$fname][] = array('rule'=>'required', 'rst'=>array());
+						} else {
+							$mapping['fields'][$fname] = array(array('rule'=>'required', 'rst'=>array()));
+						}
 					}
 				}
 				if (strpos($fvalidation, '~OTH~')) { //D~O~OTH~GE~support_start_date~Support Start Date
@@ -355,12 +403,28 @@ class Validations extends processcbMap {
 	}
 
 	public static function ValidationsExist($module) {
-		global $adb;
-		$q = 'select 1 from vtiger_cbmap
+		global $adb, $current_user;
+		$q = "select 1
+			from vtiger_cbmap
 			inner join vtiger_crmentity on crmid=cbmapid
-			where deleted=0 and maptype=? and targetname=? limit 1';
+			where deleted=0 and maptype=? and targetname=? and mapname like '%_Validations' limit 1";
 		$rs = $adb->pquery($q, array('Validations',$module));
-		return ($rs && $adb->num_rows($rs)==1);
+		if ($rs && $adb->num_rows($rs)==1) {
+			return true;
+		}
+		$q = 'select globalvariableid
+			from vtiger_globalvariable
+			inner join vtiger_crmentity on crmid=globalvariableid
+			where deleted=0 and gvname=? and module_list=? and bmapid!=0 and bmapid is not null';
+		$rs = $adb->pquery($q, array('BusinessMapping_Validations', $module));
+		if ($rs && $adb->num_rows($rs)>0) {
+			while ($gv = $adb->fetch_array($rs)) {
+				if (GlobalVariable::isAppliable($gv['globalvariableid'], $module, $current_user->id)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	public static function recordIsAssignedToInactiveUser() {
@@ -378,13 +442,15 @@ class Validations extends processcbMap {
 					return true;
 				}
 			}
+		} elseif ($screen_values['module']=='Users') {
+			return false;
 		} else {
 			return recordIsAssignedToInactiveUser($screen_values['record']);
 		}
 	}
 
 	public static function processAllValidationsFor($module) {
-		global $adb;
+		global $adb, $current_user;
 		$screen_values = json_decode($_REQUEST['structure'], true);
 		if (in_array($module, getInventoryModules())) {
 			$products = array();
@@ -402,26 +468,54 @@ class Validations extends processcbMap {
 			}
 			$screen_values['pdoInformation'] = $products;
 		}
-		if (!empty($screen_values['record'])) {
+		$record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : (isset($screen_values['record']) ? vtlib_purify($screen_values['record']) : 0));
+		if (!empty($record)) {
+			$screen_values['record'] = $record;
 			$module_to_edit = CRMEntity::getInstance($screen_values['module']);
 			$module_to_edit->retrieve_entity_info($screen_values['record'], $screen_values['module']);
 			foreach ($module_to_edit->column_fields as $key => $value) {
 				$screen_values['current_'.$key] = $value;
 			}
+			if ($screen_values['module']=='Products' || $screen_values['module']=='Services') {
+				unset($screen_values['current_taxclass']);
+				$tax_details = getTaxDetailsForProduct($screen_values['record'], 'available_associated');
+				foreach ($tax_details as $tax) {
+					$tax_value = getProductTaxPercentage($tax['taxname'], $screen_values['record']);
+					if ($tax_value!='') {
+						$screen_values['current_'.$tax['taxname']] = $tax['percentage'];
+					}
+				}
+			}
 		}
-		$record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : (isset($screen_values['record']) ? vtlib_purify($screen_values['record']) : 0));
+		$valmaps = array();
 		$q = "select cbmapid
 			from vtiger_cbmap
 			inner join vtiger_crmentity on crmid=cbmapid
 			where deleted=0 and maptype=? and targetname=? and mapname like '%_Validations'";
 		$rs = $adb->pquery($q, array('Validations', $module));
+		while ($val = $adb->fetch_array($rs)) {
+			$valmaps[] = $val['cbmapid'];
+		}
+		$q = 'select globalvariableid, bmapid
+			from vtiger_globalvariable
+			inner join vtiger_crmentity on crmid=globalvariableid
+			where deleted=0 and gvname=? and module_list=? and bmapid!=0 and bmapid is not null';
+		$rs = $adb->pquery($q, array('BusinessMapping_Validations', $module));
+		if ($rs && $adb->num_rows($rs)>0) {
+			while ($gv = $adb->fetch_array($rs)) {
+				if (GlobalVariable::isAppliable($gv['globalvariableid'], $module, $current_user->id)) {
+					$valmaps[] = $gv['bmapid'];
+				}
+			}
+		}
+		$valmaps = array_unique($valmaps);
 		$focus = new cbMap();
 		$focus->mode = '';
 		$validation = true;
 		$addFieldValidations = true;
-		while ($val = $adb->fetch_array($rs)) {
-			$focus->id = $val['cbmapid'];
-			$focus->retrieve_entity_info($val['cbmapid'], 'cbMap');
+		foreach ($valmaps as $val) {
+			$focus->id = $val;
+			$focus->retrieve_entity_info($val, 'cbMap');
 			$validation = $focus->Validations($screen_values, $record, $addFieldValidations);
 			$addFieldValidations = false;
 			if ($validation!==true) {

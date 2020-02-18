@@ -90,5 +90,6 @@ $mod_strings = array(
 	'MVIEWWFAdded' => 'Materialized View Workflow Added',
 	'MVIEWWFDeleted' => 'Materialized View Workflow Deleted',
 	'EXECUTESCRIPTNOK' => 'Error executing the script',
+	'condfilterformat' => 'Conditions in Filter Format',
 );
 ?>

@@ -26,8 +26,18 @@ class UtilitiesEventsHandler extends VTEventHandler {
 
 	public function handleFilter($handlerType, $parameter) {
 		if ($handlerType=='corebos.filter.listview.querygenerator.before' && GlobalVariable::getVariable('RecordVersioningModules', '')==1) {
-			// $parameter is the QueryGenerator Object
-			$parameter->addCondition('revisionactiva', 1, 'e', 'and');
+			global $adb;
+			$recexists = $adb->pquery(
+				'select module_list from vtiger_globalvariable inner join vtiger_crmentity on crmid=globalvariableid where deleted=0 and gvname=?',
+				array('RecordVersioningModules')
+			);
+			if ($adb->num_rows($recexists) > 0) {
+				$modulelist = explode(' |##| ', $adb->query_result($recexists, 0, 'module_list'));
+				// $parameter is the QueryGenerator Object
+				if (in_array($parameter->getModule(), $modulelist)) {
+					$parameter->addCondition('revisionactiva', 1, 'e', 'and');
+				}
+			}
 		}
 		return $parameter;
 	}

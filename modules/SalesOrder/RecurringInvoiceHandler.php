@@ -38,8 +38,7 @@ class RecurringInvoiceHandler extends VTEventHandler {
 					$adb->pquery($query, $params);
 				}
 			} else {
-				$query = 'DELETE FROM vtiger_invoice_recurring_info WHERE salesorderid = ?';
-				$adb->pquery($query, array($soId));
+				$adb->pquery('DELETE FROM vtiger_invoice_recurring_info WHERE salesorderid=?', array($soId));
 			}
 		}
 	}

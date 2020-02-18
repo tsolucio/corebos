@@ -1181,7 +1181,7 @@ class Validator
 
                 // Don't validate if the field is not required and the value is empty and we don't have a conditionally required rule present on the field
                 if (($this->hasRule('optional', $field) && isset($values)) 
-                    || ($this->hasRule('expression', $field) || $this->hasRule('requiredWith', $field) || $this->hasRule('requiredWithout', $field))) {
+                    || ($this->hasRule('cbtaxclassrequired', $field) || $this->hasRule('expression', $field) || $this->hasRule('requiredWith', $field) || $this->hasRule('requiredWithout', $field))) {
                     //Continue with execution below if statement
                 } elseif (
                     $v['rule'] !== 'required' && !$this->hasRule('required', $field) &&

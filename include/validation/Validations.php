@@ -117,6 +117,50 @@ function validate_notDuplicate($field, $fieldval, $params, $fields) {
 	}
 }
 
+/** check if related record exists on given module
+ * params[0] related module name
+ */
+function validateRelatedModuleExists($field, $fieldval, $params, $fields) {
+	global $adb;
+	$existsrelated = true;
+	$relatedmodule = $params[0];
+	if (!empty($relatedmodule) && !empty($fields['record']) && !empty($fields['module'])) {
+		$crmid = $fields['record'];
+		$module = $fields['module'];
+		$moduleId = getTabid($module);
+		$relatedModuleId = getTabid($relatedmodule);
+		$moduleInstance = CRMEntity::getInstance($module);
+		$relationResult = $adb->pquery(
+			'SELECT * FROM vtiger_relatedlists WHERE tabid=? AND related_tabid=?',
+			array($moduleId, $relatedModuleId)
+		);
+
+		if (!$relationResult || !$adb->num_rows($relationResult)) {
+			// MODULES_NOT_RELATED
+			return false;
+		}
+
+		$relationInfo = $adb->fetch_array($relationResult);
+		$params = array($crmid, $moduleId, $relatedModuleId);
+		global $GetRelatedList_ReturnOnlyQuery;
+		$holdValue = $GetRelatedList_ReturnOnlyQuery;
+		$GetRelatedList_ReturnOnlyQuery = true;
+		$relationData = call_user_func_array(array($moduleInstance, $relationInfo['name']), $params);
+		if (!isset($relationData['query'])) {
+			// OPERATIONNOTSUPPORTED
+			return false;
+		}
+		$GetRelatedList_ReturnOnlyQuery = $holdValue;
+		$query = mkXQuery($relationData['query'], '1');
+		$query = stripTailCommandsFromQuery($query).' LIMIT 1';
+		$result = $adb->pquery($query, array());
+		if ($result) {
+			$existsrelated = ($adb->num_rows($result) > 0);
+		}
+	}
+	return $existsrelated;
+}
+
 /** accept a workflow expression and evaluate it
  * in the context of the new screen values
  */
@@ -141,5 +185,32 @@ function validate_expression($field, $fieldval, $params, $fields) {
 		$fields['record_id'] = $params[0];
 		return coreBOS_Rule::evaluate($bmap, $fields);
 	}
+}
+
+/** validate taxes on Products and Services **/
+function cbTaxclassRequired($field, $fieldval, $params, $fields) {
+	if ($fields['action'] == 'DetailViewEdit') {
+		return true;
+	}
+	require_once 'include/utils/InventoryUtils.php';
+	if ($fields['mode'] == 'edit') {
+		$tax_details = getTaxDetailsForProduct($fields['record'], 'available_associated');
+	} else {
+		$tax_details = getAllTaxes('available');
+	}
+	// at least one of the checkboxes must be accepted
+	$accepted = false;
+	$i = 0;
+	while (!$accepted && $i < count($tax_details)) {
+		$accepted = ($fields[$tax_details[$i]['taxname'].'_check']=='on' || $fields[$tax_details[$i]['taxname'].'_check']=='1');
+		$i++;
+	}
+	// and it's value positive
+	if ($accepted) {
+		if ($fields[$tax_details[$i-1]['taxname']] < 0) {
+			return false;
+		}
+	}
+	return $accepted;
 }
 ?>

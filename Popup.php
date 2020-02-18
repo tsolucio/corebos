@@ -72,7 +72,6 @@ if (!empty($_REQUEST['popqc']) && $_REQUEST['popqc'] = 'true' && empty($_REQUEST
 	$_REQUEST['advft_criteria'] = '[{"groupid":"1","columnname":"'.$optionvalue.'","comparator":"e","value":"'.$fldval.'","columncondition":""}]';
 }
 
-$form = isset($_REQUEST['form']) ? vtlib_purify($_REQUEST['form']) : '';
 //added to get relatedto field value for todo, while selecting from the popup list, after done the alphabet or basic search.
 if (isset($_REQUEST['maintab']) && $_REQUEST['maintab'] != '') {
 	$act_tab = vtlib_purify($_REQUEST['maintab']);
@@ -425,7 +424,12 @@ if (isset($where) && $where != '') {
 }
 
 if (isset($order_by) && $order_by != '') {
-	$query .= ' ORDER BY '.$order_by.' '.$sorder;
+	$tabname = getTableNameForField($currentModule, $order_by);
+	if ($tabname !== '' && $tabname != null) {
+		$query .= ' ORDER BY '.$tabname.'.'.$order_by.' '.$sorder;
+	} else {
+		$query .= ' ORDER BY '.$order_by.' '.$sorder;
+	}
 }
 
 // vtlib customization: To override module specific popup query for a given field
@@ -501,7 +505,7 @@ $listview_header = getSearchListViewHeader($focus, $currentModule, $url_string, 
 $smarty->assign('LISTHEADER', $listview_header);
 $smarty->assign('HEADERCOUNT', count($listview_header)+1);
 
-$listview_entries = getSearchListViewEntries($focus, $currentModule, $list_result, $navigation_array, $form);
+$listview_entries = getSearchListViewEntries($focus, $currentModule, $list_result, $navigation_array);
 $smarty->assign('LISTENTITY', $listview_entries);
 if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, $currentModule)) {
 	$record_string = getRecordRangeMessage($list_result, $limstart, $noofrows);

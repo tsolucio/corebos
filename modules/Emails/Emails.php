@@ -203,20 +203,20 @@ class Emails extends CRMEntity {
 		global $log, $adb;
 		$log->debug('> insertIntoAttachment '.$id.','.$module);
 
-		$file_saved = false;
-
 		//Added to send generated Invoice PDF with mail
 		$pdfAttached = isset($_REQUEST['pdf_attachment']) ? $_REQUEST['pdf_attachment'] : '';
 		//created Invoice pdf is attached with the mail
 		if (isset($_REQUEST['pdf_attachment']) && $_REQUEST['pdf_attachment'] != '') {
-			$file_saved = pdfAttach($this, $module, $pdfAttached, $id);
+			pdfAttach($this, $module, $pdfAttached, $id);
 		}
 
 		//This is to added to store the existing attachment id of the contact where we should delete this when we give new image
-		foreach ($_FILES as $fileindex => $files) {
-			if ($files['name'] != '' && $files['size'] > 0) {
-				$files['original_name'] = (empty($_REQUEST[$fileindex.'_hidden']) ? vtlib_purify($files['name']) : vtlib_purify($_REQUEST[$fileindex.'_hidden']));
-				$file_saved = $this->uploadAndSaveFile($id, $module, $files);
+		if (!empty($_FILES)) {
+			foreach ($_FILES as $fileindex => $files) {
+				if ($files['name'] != '' && $files['size'] > 0) {
+					$files['original_name'] = (empty($_REQUEST[$fileindex.'_hidden']) ? vtlib_purify($files['name']) : vtlib_purify($_REQUEST[$fileindex.'_hidden']));
+					$this->uploadAndSaveFile($id, $module, $files);
+				}
 			}
 		}
 		if ($module == 'Emails' && isset($_REQUEST['att_id_list']) && $_REQUEST['att_id_list'] != '') {

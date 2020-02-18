@@ -16,6 +16,9 @@
 		<td align="right" class="homePageMatrixHdr" nowrap style="height:28px;" width=60%>
 			<input type="button" title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  " name="save" class="crmbutton small save" onclick="saveEntries('maxentries_{$HOME_STUFFID}')">
 			<input type="button" title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  " name="cancel" class="crmbutton small cancel" onclick="cancelEntries('editRowmodrss_{$HOME_STUFFID}')">
+			{if $HOME_STUFFTYPE eq 'Module'}
+			{$HOME_STUFF.ModuleName|@getTranslatedString:$HOME_STUFF.ModuleName}::{$HOME_STUFF.cvidname|@getTranslatedString:$HOME_STUFF.ModuleName}
+			{/if}
 		</td>
 {elseif $HOME_STUFFTYPE eq "DashBoard"}
 		<td  valign="top" align='center' class="homePageMatrixHdr" style="height:28px;" width=60%>

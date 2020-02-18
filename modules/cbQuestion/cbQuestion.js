@@ -24,6 +24,20 @@ function cbqdowork(work, qid) {
 	});
 }
 
+function cbqgetsql(qid) {
+	return fetch(
+		'index.php?module=cbQuestion&action=cbQuestionAjax&actionname=qactions&method=getSQL&qid='+qid,
+		{
+			method: 'post',
+			headers: {
+				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+			},
+			credentials: 'same-origin',
+			body: '&'+csrfMagicName+'='+csrfMagicToken
+		}
+	).then(response => response.json());
+}
+
 function cbqtestsql(qid) {
 	cbqdowork('testSQL', qid);
 }

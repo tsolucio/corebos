@@ -588,6 +588,9 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 	$wfs = new VTWorkflowManager($adb);
 	$totals = array();
 	if ($navigation_array['start'] != 0) {
+		$tabid = getTabid($module);
+		include_once 'vtlib/Vtiger/Link.php';
+		$customlink_params = array('MODULE'=>$module, 'ACTION'=>vtlib_purify($_REQUEST['action']));
 		$hasGlobalReadPermission = $userprivs->hasGlobalReadPermission();
 		for ($i = 1; $i <= $noofrows; $i++) {
 			$list_header = array();
@@ -858,7 +861,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							$value = '<a href="index.php?module=Potentials&action=DetailView&record=' . $potential_id . '">' . textlength_check($potential_name) . '</a>';
 						} elseif ($module == 'Emails' && $relatedlist != '' && ($name == 'Subject' || $name == 'Date Sent' || $name == 'To')) {
 							$list_result_count = $i - 1;
-							$tmp_value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, "list", '', $returnset, (is_object($oCv) ? $oCv->setdefaultviewid : ''));
+							$tmp_value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
 							if (Emails::EmailHasBeenSent($entity_id)) {
 								$value = '<img src="themes/images/arrow_up.png">&nbsp;';
 							} else {
@@ -871,20 +874,20 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							}
 							$value.= '<a href="javascript:;" onClick="ShowEmail(\'' . $entity_id . '\');">' . textlength_check($tmp_value) . '</a>';
 							if ($name == 'Date Sent') {
-								$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '', $returnset, (is_object($oCv) ? $oCv->setdefaultviewid : ''));
+								$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
 							}
 						} elseif ($module == 'Calendar' && ($fieldname != 'taskstatus' && $fieldname != 'eventstatus')) {
 							if ($activitytype == 'Task') {
 								if (getFieldVisibilityPermission('Calendar', $current_user->id, $fieldname) == '0') {
 									$list_result_count = $i - 1;
-									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '', $returnset, (is_object($oCv) ? $oCv->setdefaultviewid : ''));
+									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
 								} else {
 									$value = '';
 								}
 							} else {
 								if (getFieldVisibilityPermission('Events', $current_user->id, $fieldname) == '0') {
 									$list_result_count = $i - 1;
-									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '', $returnset, (is_object($oCv) ? $oCv->setdefaultviewid : ''));
+									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
 								} else {
 									$value = '';
 								}
@@ -894,7 +897,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							$value = $val_raw;
 						} else {
 							$list_result_count = $i - 1;
-							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '', $returnset, (is_object($oCv) ? $oCv->setdefaultviewid : ''));
+							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
 							$uicolarr = isset($ui_col_array[$fieldname]) ? $ui_col_array[$fieldname] : array('1'=>$fieldname);
 							foreach ($uicolarr as $key => $val) {
 								if ($key=='typeofdata') {
@@ -955,7 +958,21 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 						}
 					}
 				}
+
+				$customlink_params['RECORD'] = $entity_id;
+				$linksurls = BusinessActions::getAllByType($tabid, array('LISTVIEWROW'), $customlink_params, null, $entity_id);
+				if (!empty($linksurls['LISTVIEWROW'])) {
+					$linkviewrows = $linksurls['LISTVIEWROW'];
+					for ($x =0; $x < count($linkviewrows); $x++) {
+						$lvrobj = $linkviewrows[$x];
+						$linklabel = $lvrobj->linklabel;
+						$linkurl = $lvrobj->linkurl;
+						$links_info .= ' | ';
+						$links_info .= "<a href=\"$linkurl\">".getTranslatedString($linklabel, $module).'</a> ';
+					}
+				}
 			}
+
 			// Record Change Notification
 			if (method_exists($focus, 'isViewed') && GlobalVariable::getVariable('Application_ListView_Record_Change_Indicator', 1, $module)) {
 				if (!$focus->isViewed($entity_id)) {
@@ -990,16 +1007,12 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 
 /* * This function generates the List view entries in a popup list view
  * Param $focus - module object
+ * Param $module
  * Param $list_result - resultset of a listview query
  * Param $navigation_array - navigation values in an array
- * Param $relatedlist - check for related list flag
- * Param $returnset - list query parameters in url string
- * Param $edit_action - Edit action value
- * Param $del_action - delete action value
- * Param $oCv - vtiger_customview object
  * Returns an array type
  */
-function getSearchListViewEntries($focus, $module, $list_result, $navigation_array, $form = '') {
+function getSearchListViewEntries($focus, $module, $list_result, $navigation_array) {
 	global $log, $adb, $app_strings, $current_user;
 	$log->debug('> getSearchListViewEntries ' . get_class($focus) . ',' . $module . ',' . $list_result);
 
@@ -1157,7 +1170,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 							}
 						} else {
 							$list_result_count = $i - 1;
-							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'search', $focus->popup_type, $form);
+							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'search', $focus->popup_type);
 						}
 					}
 					// vtlib customization: For listview javascript triggers
@@ -1279,18 +1292,17 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
  * Param $focus - module object
  * Param $module - module name
  * Param $entity_id - entity id
- * Param $list_result_count - list result count
+ * Param $list_result_count - row of the field to use
  * Param $mode - mode type
  * Param $popuptype - popup type
  * Param $returnset - list query parameters in url string
  * Param $viewid - custom view id
  * Returns an string value
  */
-function getValue($field_result, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, $mode, $popuptype, $returnset = '', $viewid = '') {
+function getValue($field_result, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, $mode, $popuptype) {
 	global $log, $app_strings, $current_language, $currentModule, $adb, $current_user, $default_charset;
-	$log->debug('> getValue '.print_r($field_result, true).",list_result,$fieldname,focus,$module,$entity_id,$list_result_count,$mode,$popuptype,$returnset,$viewid");
+	$log->debug('> getValue '.print_r($field_result, true).",list_result,$fieldname,focus,$module,$entity_id,$list_result_count,$mode,$popuptype");
 
-	$tabname = getParentTab();
 	$tabid = getTabid($module);
 	return_module_language($current_language, $module);
 	$uicolarr = isset($field_result[$fieldname]) ? $field_result[$fieldname] : array('1'=>$fieldname);
@@ -1302,11 +1314,8 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		$colname = $value;
 	}
 	$field_val = $adb->query_result($list_result, $list_result_count, $colname);
-	if ($uitype != 8) {
-		$temp_val = html_entity_decode($field_val, ENT_QUOTES, $default_charset);
-	} else {
-		$temp_val = $field_val;
-	}
+	$field_valEncoded = trim(html_entity_decode($field_val, ENT_QUOTES, $default_charset));
+	$field_valHTML = trim(gtltTagsToHTML($field_valEncoded));
 	// vtlib customization: New uitype to handle relation between modules
 	if ($uitype == '10') {
 		$parent_id = $field_val;
@@ -1325,7 +1334,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			$value = '';
 		}
 	} elseif ($uitype == '1025') {
-		$parent_id = $temp_val;
+		$parent_id = $field_valEncoded;
 		if (!empty($parent_id)) {
 			$values=explode(' |##| ', $parent_id);
 			$numvals = count($values);
@@ -1380,24 +1389,21 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		$value = getOwnerName($adb->query_result($list_result, $list_result_count, 'inventorymanager'));
 		$value = textlength_check($value);
 	} elseif ($uitype == 5 || $uitype == 6 || $uitype == 23 || $uitype == 70) {
-		$temp_val = trim($temp_val);
-
-		if (empty($temp_val) || $temp_val == '0000-00-00') {
+		if (empty($field_valEncoded) || $field_valEncoded == '0000-00-00') {
 			$value = '';
 		} else {
-			if (strpos($temp_val, ' ') == false) {
-				$value = DateTimeField::convertToUserFormat($temp_val);
+			if (strpos($field_valEncoded, ' ') == false) {
+				$value = DateTimeField::convertToUserFormat($field_valEncoded);
 			} else {
-				$date = new DateTimeField($temp_val);
+				$date = new DateTimeField($field_valEncoded);
 				$value = $date->getDisplayDateTimeValue();
 			}
 		}
 	} elseif ($uitype == 50) {
-		$temp_val = trim($temp_val);
-		if (empty($temp_val) || $temp_val == '0000-00-00 00:00') {
+		if (empty($field_valEncoded) || $field_valEncoded == '0000-00-00 00:00') {
 			$value = '';
 		} else {
-			$date = new DateTimeField($temp_val);
+			$date = new DateTimeField($field_valEncoded);
 			$value = $date->getDisplayDateTimeValue();
 			$user_format = ($current_user->hour_format=='24' ? '24' : '12');
 			if ($user_format != '24') {
@@ -1409,18 +1415,18 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			}
 		}
 	} elseif ($uitype == 15 || ($uitype == 55 && $fieldname == 'salutationtype') || $uitype == 16 || $uitype == 1613 || $uitype == 1614 || $uitype == 1615) {
-		$value = getTranslatedString($temp_val, $module);
+		$value = getTranslatedString($field_valEncoded, $module);
 		$value = textlength_check($value);
 	} elseif ($uitype == 1616) {
-		$cvrs = $adb->pquery('select viewname,entitytype from vtiger_customview where cvid=?', array($temp_val));
+		$cvrs = $adb->pquery('select viewname,entitytype from vtiger_customview where cvid=?', array($field_valEncoded));
 		if ($cvrs && $adb->num_rows($cvrs)>0) {
 			$cv = $adb->fetch_array($cvrs);
 			$value = $cv['viewname'].' ('.getTranslatedString($cv['entitytype'], $cv['entitytype']).')';
 		} else {
-			$value = $temp_val;
+			$value = $field_valHTML;
 		}
 	} elseif ($uitype == 71 || $uitype == 72) {
-		if ($temp_val != '') {
+		if ($field_valEncoded != '') {
 			// Some of the currency fields like Unit Price, Total, Sub-total etc of Inventory modules, do not need currency conversion
 			if ($uitype == 72) {
 				if ($fieldname == 'unit_price') {
@@ -1431,14 +1437,14 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$currency_info = getInventoryCurrencyInfo($module, $entity_id);
 					$currency_symbol = $currency_info['currency_symbol'];
 				}
-				$currencyValue = CurrencyField::convertToUserFormat($temp_val, null, true);
+				$currencyValue = CurrencyField::convertToUserFormat($field_valEncoded, null, true);
 				$value = CurrencyField::appendCurrencySymbol($currencyValue, $currency_symbol);
 			} else {
 				//changes made to remove currency symbol in front of each potential amount
-				if ($temp_val != 0) {
-					$value = CurrencyField::convertToUserFormat($temp_val);
+				if ($field_valEncoded != 0) {
+					$value = CurrencyField::convertToUserFormat($field_valEncoded);
 				} else {
-					$value = $temp_val;
+					$value = $field_valEncoded;
 				}
 			}
 		} else {
@@ -1448,113 +1454,39 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		$matchPattern = "^[\w]+:\/\/^";
 		preg_match($matchPattern, $field_val, $matches);
 		if (!empty($matches[0])) {
-			$value = '<a href="' . $field_val . '" target="_blank">' . textlength_check($temp_val) . '</a>';
+			$value = '<a href="' . $field_val . '" target="_blank">' . textlength_check($field_valEncoded) . '</a>';
 		} else {
-			$value = '<a href="http://' . $field_val . '" target="_blank">' . textlength_check($temp_val) . '</a>';
+			$value = '<a href="http://' . $field_val . '" target="_blank">' . textlength_check($field_valEncoded) . '</a>';
 		}
 	} elseif ($uitype == 13 && (!empty($_REQUEST['action']) && $_REQUEST['action'] != 'Popup' && (empty($_REQUEST['file']) || $_REQUEST['file'] != 'Popup'))) {
 		if (isset($_SESSION['internal_mailer']) && $_SESSION['internal_mailer'] == 1) {
-			//check added for email link in user detailview
-			if ($module == 'Calendar') {
-				if (getActivityType($entity_id) == 'Task') {
-					$tabid = 9;
-				} else {
-					$tabid = 16;
-				}
-			} else {
-				$tabid = getTabid($module);
-			}
+			$tabid = getTabid($module);
 			$fieldid = getFieldid($tabid, $fieldname);
 			if (empty($popuptype)) {
-				$value = '<a href="javascript:InternalMailer(' . $entity_id . ',' . $fieldid . ',\'' . $fieldname . '\',\'' . $module . '\',\'record_id\');">' . textlength_check($temp_val) . '</a>';
+				$value = '<a href="javascript:InternalMailer(' . $entity_id . ',' . $fieldid . ',\'' . $fieldname . '\',\'' . $module . '\',\'record_id\');">' . textlength_check($field_valEncoded) . '</a>';
 			} else {
-				$value = $temp_val;
-				$value = textlength_check($value);
+				$value = textlength_check($field_valEncoded);
 			}
 		} else {
-			$value = '<a href="mailto:' . $field_val . '">' . textlength_check($temp_val) . '</a>';
+			$value = '<a href="mailto:' . $field_val . '">' . textlength_check($field_valEncoded) . '</a>';
 		}
 	} elseif ($uitype == 56) {
-		if ($temp_val == 1) {
+		if ($field_val == 1) {
 			$value = $app_strings['yes'];
-		} elseif ($temp_val == 0) {
+		} elseif ($field_val == 0) {
 			$value = $app_strings['no'];
 		} else {
 			$value = '';
 		}
 	} elseif ($uitype == 61) {
 		$attachmentid = $adb->query_result($adb->pquery('SELECT * FROM vtiger_seattachmentsrel WHERE crmid=?', array($entity_id)), 0, 'attachmentsid');
+
 		$value = '<a href = "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=downloadfile&return_module=' . $module
-			.'&fileid=' . $attachmentid . '&filename=' . $temp_val . '">' . textlength_check($temp_val) . '</a>';
-	} elseif ($uitype == 62) {
-		$parentid = $adb->query_result($list_result, $list_result_count, 'parent_id');
-		$parenttype = $adb->query_result($list_result, $list_result_count, 'parent_type');
-
-		if ($parenttype == 'Leads') {
-			$tablename = 'vtiger_leaddetails';
-			$fieldname = 'lastname';
-			$idname = 'leadid';
-		}
-		if ($parenttype == 'Accounts') {
-			$tablename = 'vtiger_account';
-			$fieldname = 'accountname';
-			$idname = 'accountid';
-		}
-		if ($parenttype == 'Products') {
-			$tablename = 'vtiger_products';
-			$fieldname = 'productname';
-			$idname = 'productid';
-		}
-		if ($parenttype == 'HelpDesk') {
-			$tablename = 'vtiger_troubletickets';
-			$fieldname = 'title';
-			$idname = 'ticketid';
-		}
-		if ($parenttype == 'Invoice') {
-			$tablename = 'vtiger_invoice';
-			$fieldname = 'subject';
-			$idname = 'invoiceid';
-		}
-
-		if ($parentid != '') {
-			$sql = "SELECT $fieldname FROM $tablename WHERE $idname = ?";
-			$fieldvalue = $adb->query_result($adb->pquery($sql, array($parentid)), 0, $fieldname);
-			$value = '<a href=index.php?module=' . $parenttype . '&action=DetailView&record=' . $parentid . '>' . textlength_check($fieldvalue) . '</a>';
-		} else {
-			$value = '';
-		}
-	} elseif ($uitype == 67) {
-		$parentid = $adb->query_result($list_result, $list_result_count, 'parent_id');
-		$parenttype = $adb->query_result($list_result, $list_result_count, 'parent_type');
-
-		if ($parenttype == 'Leads') {
-			$tablename = 'vtiger_leaddetails';
-			$fieldname = 'lastname';
-			$idname = 'leadid';
-		}
-		if ($parenttype == 'Contacts') {
-			$tablename = 'vtiger_contactdetails';
-			$fieldname = 'contactname';
-			$idname = 'contactid';
-		}
-		if ($parentid != '') {
-			$sql = "SELECT $fieldname FROM $tablename WHERE $idname = ?";
-			$fieldvalue = $adb->query_result($adb->pquery($sql, array($parentid)), 0, $fieldname);
-			$value = '<a href=index.php?module=' . $parenttype . '&action=DetailView&record=' . $parentid . '>' . textlength_check($fieldvalue) . '</a>';
-		} else {
-			$value = '';
-		}
-	} elseif ($uitype == 79) {
-		if ($temp_val != '') {
-			$purchaseorder_name = getPoName($temp_val);
-			$value = '<a href=index.php?module=PurchaseOrder&action=DetailView&record=' . $temp_val . '>' . textlength_check($purchaseorder_name) . '</a>';
-		} else {
-			$value = '';
-		}
+			.'&fileid=' . $attachmentid . '&filename=' . $field_valEncoded . '">' . textlength_check($field_valEncoded) . '</a>';
 	} elseif ($uitype == 98) {
-		$value = '<a href="index.php?action=RoleDetailView&module=Settings&parenttab=Settings&roleid='.$temp_val.'">'.textlength_check(getRoleName($temp_val)).'</a>';
+		$value = '<a href="index.php?action=RoleDetailView&module=Settings&parenttab=Settings&roleid='.$field_val.'">'.textlength_check(getRoleName($field_valEncoded)).'</a>';
 	} elseif ($uitype == 33) {
-		$value = ($temp_val != '') ? str_ireplace(' |##| ', ', ', $temp_val) : '';
+		$value = ($field_valEncoded != '') ? str_ireplace(' |##| ', ', ', $field_valEncoded) : '';
 		if (!is_admin($current_user) && $value != '') {
 			$value = ($field_val != '') ? str_ireplace(' |##| ', ', ', $field_val) : '';
 			if ($value != '') {
@@ -1606,31 +1538,30 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			}
 		}
 	} elseif ($uitype == 85) {
-		$value = ($temp_val != '') ? "<a href='skype:{$temp_val}?call'>{$temp_val}</a>" : '';
+		$value = ($field_valEncoded != '') ? "<a href='skype:{$field_valEncoded}?call'>{$field_valHTML}</a>" : '';
 	} elseif ($uitype == 117) {
 		// NOTE: Without symbol the value could be used for filtering/lookup hence avoiding the translation
-		$value = ($temp_val != '') ? getCurrencyName($temp_val, false) : '';
+		$value = ($field_valEncoded != '') ? getCurrencyName($field_valEncoded, false) : '';
 	} elseif ($uitype == 26) {
-		$res = $adb->pquery('select foldername from vtiger_attachmentsfolder where folderid = ?', array($temp_val));
+		$res = $adb->pquery('select foldername from vtiger_attachmentsfolder where folderid = ?', array($field_valEncoded));
 		$foldername = $adb->query_result($res, 0, 'foldername');
 		$value = $foldername;
 	} elseif ($uitype == 11) {
 		//added for asterisk integration
 		if (get_use_asterisk($current_user->id)) {
-			$value = "<a href='javascript:;' onclick='startCall(&quot;$temp_val&quot;, &quot;$entity_id&quot;)'>" . textlength_check($temp_val) . '</a>';
+			$value = "<a href='javascript:;' onclick='startCall(&quot;$field_valEncoded&quot;, &quot;$entity_id&quot;)'>" . textlength_check($field_valEncoded) . '</a>';
 		} else {
-			$value = $temp_val;
+			$value = $field_valHTML;
 		}
 	} elseif ($uitype == 8) {
-		if (!empty($temp_val)) {
-			$temp_val = html_entity_decode($temp_val, ENT_QUOTES, $default_charset);
-			$value = vt_suppressHTMLTags(implode(',', json_decode($temp_val, true)));
+		if (!empty($field_valEncoded)) {
+			$value = vt_suppressHTMLTags(implode(',', json_decode($field_valEncoded, true)));
 		}
 	} elseif ($uitype == 7) {
 		if (substr($field_result[$fieldname]['typeofdata'], 0, 2)=='I~') {
-			$value = empty($temp_val) ? 0 : $temp_val;
+			$value = empty($field_valHTML) ? 0 : $field_valHTML;
 		} else {
-			$value = CurrencyField::convertToUserFormat($temp_val);
+			$value = CurrencyField::convertToUserFormat($field_valEncoded);
 		}
 	} else {
 		if ($fieldname == $focus->list_link_field) {
@@ -1638,22 +1569,20 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 				if ($popuptype == 'specific') {
 					// Added for get the first name of contact in Popup window
 					if ($colname == 'lastname' && $module == 'Contacts') {
-						$temp_val = getFullNameFromQResult($list_result, $list_result_count, 'Contacts');
+						$field_valEncoded = getFullNameFromQResult($list_result, $list_result_count, 'Contacts');
 					}
 
-					$slashes_temp_val = popup_from_html($temp_val);
+					$slashes_temp_val = popup_from_html($field_valEncoded);
 					$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
 					$count = counterValue();
 
 					//Added to avoid the error when select SO from Invoice through AjaxEdit
 					if ($module == 'SalesOrder') {
-						$value = '<a href="javascript:window.close();" onclick=\'set_return_specific("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '","' . $_REQUEST['form'] . '");\' id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+						$value = '<a href="javascript:window.close();" onclick=\'set_return_specific("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '","' . $_REQUEST['form'] . '");\' id = ' . $count . '>' . textlength_check($field_valEncoded) . '</a>';
 					} elseif ($module == 'Contacts') {
 						require_once 'modules/Contacts/Contacts.php';
 						$cntct_focus = new Contacts();
 						$cntct_focus->retrieve_entity_info($entity_id, 'Contacts');
-						$slashes_temp_val = popup_from_html($temp_val);
-						$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
 						//ADDED TO CHECK THE FIELD PERMISSIONS FOR
 						$xyz = array('mailingstreet', 'mailingcity', 'mailingzip', 'mailingpobox', 'mailingcountry', 'mailingstate', 'otherstreet', 'othercity', 'otherzip', 'otherpobox', 'othercountry', 'otherstate');
 						for ($i = 0; $i < 12; $i++) {
@@ -1675,16 +1604,16 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						.popup_decode_html($cntct_focus->column_fields['mailingzip']) . '", "' . popup_decode_html($cntct_focus->column_fields['otherzip']) . '", "'
 						.popup_decode_html($cntct_focus->column_fields['mailingcountry']) . '", "' . popup_decode_html($cntct_focus->column_fields['othercountry']).'","'
 						.popup_decode_html($cntct_focus->column_fields['mailingpobox']) . '", "' . popup_decode_html($cntct_focus->column_fields['otherpobox']) . '","'
-						.$form . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+						.$form . '");\'id = ' . $count . '>' . textlength_check($field_valEncoded) . '</a>';
 					} else {
-						$value = '<a href="javascript:window.close();" onclick=\'set_return_specific("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+						$value = '<a href="javascript:window.close();" onclick=\'set_return_specific("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '");\'id = ' . $count . '>' . textlength_check($field_valEncoded) . '</a>';
 					}
 				} elseif ($popuptype == 'detailview') {
 					if ($colname == 'lastname' && ($module == 'Contacts' || $module == 'Leads')) {
-						$temp_val = getFullNameFromQResult($list_result, $list_result_count, $module);
+						$field_valEncoded = getFullNameFromQResult($list_result, $list_result_count, $module);
 					}
 
-					$slashes_temp_val = popup_from_html($temp_val);
+					$slashes_temp_val = popup_from_html($field_valEncoded);
 					$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
 
 					$focus->record_id = isset($_REQUEST['recordid']) ? vtlib_purify($_REQUEST['recordid']) : 0;
@@ -1692,24 +1621,19 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$callBack = isset($_REQUEST['callback']) ? vtlib_purify($_REQUEST['callback']) : '';
 					if ($_REQUEST['return_module'] == 'Calendar') {
 						$count = counterValue();
-						$value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" id="calendarCont' . $entity_id . '" onclick=\'add_data_to_relatedlist_incal("' . $entity_id . '","' . decode_html($slashes_temp_val) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+						$value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" id="calendarCont' . $entity_id . '" onclick=\'add_data_to_relatedlist_incal("' . $entity_id . '","' . decode_html($slashes_temp_val) . '");\'id = ' . $count . '>' . textlength_check($field_valEncoded) . '</a>';
 					} else {
 						$count = counterValue();
 						if (empty($callBack)) {
-							$value = '<a style="cursor:pointer;" onclick=\'add_data_to_relatedlist("' . $entity_id . '","' . $focus->record_id . '","' . $module . '","' . $popupMode . '");\'>' . textlength_check($temp_val) . '</a>';
+							$value = '<a style="cursor:pointer;" onclick=\'add_data_to_relatedlist("' . $entity_id . '","' . $focus->record_id . '","' . $module . '","' . $popupMode . '");\'>' . textlength_check($field_valEncoded) . '</a>';
 						} else {
-							$value = '<a style="cursor:pointer;" onclick=\'add_data_to_relatedlist("' . $entity_id . '","' . $focus->record_id . '","' . $module . '","' . $popupMode . '",' . $callBack . ');\'>' . textlength_check($temp_val) . '</a>';
+							$value = '<a style="cursor:pointer;" onclick=\'add_data_to_relatedlist("' . $entity_id . '","' . $focus->record_id . '","' . $module . '","' . $popupMode . '",' . $callBack . ');\'>' . textlength_check($field_valEncoded) . '</a>';
 						}
 						if ($module === 'Documents' && $_REQUEST['return_module'] === 'Emails') {
 							$attachment = $adb->query_result($list_result, $list_result_count, 'filename');
 							$value .= "<input type='hidden' id='document_attachment_{$entity_id}' value='{$attachment}'>";
 						}
 					}
-				} elseif ($popuptype == 'formname_specific') {
-					$slashes_temp_val = popup_from_html($temp_val);
-					$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
-					$count = counterValue();
-					$value = '<a href="javascript:window.close();" onclick=\'set_return_formname_specific("' . $_REQUEST['form'] . '", "' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
 				} elseif ($popuptype == 'inventory_prod') {
 					$row_id = $_REQUEST['curr_row'];
 
@@ -1735,6 +1659,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						'accountid' => isset($_REQUEST['accid']) ? vtlib_purify($_REQUEST['accid']) : 0,
 						'contactid' => isset($_REQUEST['ctoid']) ? vtlib_purify($_REQUEST['ctoid']) : 0,
 						'productid' => $entity_id,
+						'related_module' => isset($_REQUEST['return_module']) ? vtlib_purify($_REQUEST['return_module']) : '',
 					);
 					list($unitprice, $dtopdo, $void) = cbEventHandler::do_filter('corebos.filter.inventory.getprice', array($unitprice, 0, $parr));
 					$sub_products = '';
@@ -1773,7 +1698,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$slashes_desc = str_replace(array("\r", "\n"), array('\r', '\n'), $slashes_temp_desc);
 					$tmp_arr = array("entityid" => $entity_id, "prodname" => stripslashes(decode_html(nl2br($slashes_temp_val))), "unitprice" => "$unitprice", "qtyinstk" => "$qty_stock", "taxstring" => "$tax_str", "rowid" => "$row_id", "desc" => "$slashes_desc", "subprod_ids" => "$sub_det", 'dto'=>$dtopdo);
 					$prod_arr = json_encode($tmp_arr);
-					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $qty_stock . '","' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '","' . $sub_det . '",'.$dtopdo.');\' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($temp_val) . '</a>';
+					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $qty_stock . '","' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '","' . $sub_det . '",'.$dtopdo.');\' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($field_valEncoded) . '</a>';
 				} elseif ($popuptype == 'inventory_prod_po') {
 					$row_id = $_REQUEST['curr_row'];
 
@@ -1825,7 +1750,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$slashes_desc = str_replace(array("\r", "\n"), array('\r', '\n'), $slashes_temp_desc);
 					$tmp_arr = array("entityid" => $entity_id, "prodname" => stripslashes(decode_html(nl2br($slashes_temp_val))), "unitprice" => "$unitprice", "qtyinstk" => "0", "taxstring" => "$tax_str", "rowid" => "$row_id", "desc" => "$slashes_desc", "subprod_ids" => "$sub_det");
 					$prod_arr = json_encode($tmp_arr);
-					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory_po("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '","' . $sub_det . '"); \' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($temp_val) . '</a>';
+					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory_po("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '","' . $sub_det . '"); \' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($field_valEncoded) . '</a>';
 				} elseif ($popuptype == 'inventory_service') {
 					$row_id = $_REQUEST['curr_row'];
 
@@ -1870,20 +1795,20 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					);
 					$prod_arr = json_encode($tmp_arr);
 
-					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '",'.$dtopdo.');\' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($temp_val) . '</a>';
+					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '",'.$dtopdo.');\' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($field_valEncoded) . '</a>';
 				} elseif ($popuptype == 'inventory_pb') {
 					$prod_id = $_REQUEST['productid'];
 					$flname = $_REQUEST['fldname'];
 					$listprice = getListPrice($prod_id, $entity_id);
 
-					$temp_val = popup_from_html($temp_val);
+					$field_valEncoded = popup_from_html($field_valEncoded);
 					$count = counterValue();
-					$value = '<a href="javascript:window.close();" onclick=\'set_return_inventory_pb("' . $listprice . '", "' . $flname . '"); \'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+					$value = '<a href="javascript:window.close();" onclick=\'set_return_inventory_pb("' . $listprice . '", "' . $flname . '"); \'id = ' . $count . '>' . textlength_check($field_valEncoded) . '</a>';
 				} elseif ($popuptype == 'specific_account_address') {
 					require_once 'modules/Accounts/Accounts.php';
 					$acct_focus = new Accounts();
 					$acct_focus->retrieve_entity_info($entity_id, 'Accounts');
-					$slashes_temp_val = popup_from_html($temp_val);
+					$slashes_temp_val = popup_from_html($field_valEncoded);
 					$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
 					$xyz = array('bill_street', 'bill_city', 'bill_code', 'bill_pobox', 'bill_country', 'bill_state', 'ship_street', 'ship_city', 'ship_code', 'ship_pobox', 'ship_country', 'ship_state');
 					for ($i = 0; $i < 12; $i++) {
@@ -1910,13 +1835,13 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						.$bill_street . '", "' . $ship_street . '", "' . popup_decode_html($bill_city) . '", "' . popup_decode_html($ship_city) . '", "'
 						.popup_decode_html($bill_state) . '", "' . popup_decode_html($ship_state) . '", "' . popup_decode_html($bill_code) . '", "'
 						.popup_decode_html($ship_code) . '", "' . popup_decode_html($bill_country) . '", "' . popup_decode_html($ship_country) . '","'
-						.popup_decode_html($bill_pobox) . '", "' . popup_decode_html($ship_pobox) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
-				} elseif ($popuptype == "specific_contact_account_address") {
+						.popup_decode_html($bill_pobox) . '", "' . popup_decode_html($ship_pobox) . '");\'id = ' . $count . '>' . textlength_check($field_valEncoded) . '</a>';
+				} elseif ($popuptype == 'specific_contact_account_address') {
 					require_once 'modules/Accounts/Accounts.php';
 					$acct_focus = new Accounts();
 					$acct_focus->retrieve_entity_info($entity_id, 'Accounts');
 
-					$slashes_temp_val = popup_from_html($temp_val);
+					$slashes_temp_val = popup_from_html($field_valEncoded);
 					$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
 
 					$bill_street = str_replace(array("\r", "\n"), array('\r', '\n'), popup_decode_html($acct_focus->column_fields['bill_street']));
@@ -1936,9 +1861,9 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						.'", "' . $bill_street . '", "' . $ship_street . '", "' . popup_decode_html($bill_city) . '", "' . popup_decode_html($ship_city) . '", "'
 						.popup_decode_html($bill_state) . '", "' . popup_decode_html($ship_state) . '", "' . popup_decode_html($bill_code) . '", "'
 						.popup_decode_html($ship_code) . '", "' . popup_decode_html($bill_country) . '", "' . popup_decode_html($ship_country) . '","'
-						.popup_decode_html($bill_pobox) . '", "' . popup_decode_html($ship_pobox) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+						.popup_decode_html($bill_pobox) . '", "' . popup_decode_html($ship_pobox) . '");\'id = ' . $count . '>' . textlength_check($field_valEncoded) . '</a>';
 				} elseif ($popuptype == 'specific_potential_account_address') {
-					$slashes_temp_val = popup_from_html($temp_val);
+					$slashes_temp_val = popup_from_html($field_valEncoded);
 					$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
 
 					// For B2C support, Potential was enabled to be linked to Contacts also.
@@ -1972,7 +1897,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 							.popup_decode_html($acct_focus->column_fields['bill_code']) . '", "' . popup_decode_html($acct_focus->column_fields['ship_code']) . '", "'
 							.popup_decode_html($acct_focus->column_fields['bill_country']) . '", "' . popup_decode_html($acct_focus->column_fields['ship_country']).'","'
 							.popup_decode_html($acct_focus->column_fields['bill_pobox']) . '", "' . popup_decode_html($acct_focus->column_fields['ship_pobox'])
-							.'");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+							.'");\'id = ' . $count . '>' . textlength_check($field_valEncoded) . '</a>';
 					} elseif ($relatedentity == 'Contacts') {
 						require_once 'modules/Contacts/Contacts.php';
 						$displayValueArray = getEntityName('Contacts', $relatedid);
@@ -1987,9 +1912,9 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						$slashes_contact_name = popup_from_html($contact_name);
 						$slashes_contact_name = htmlspecialchars($slashes_contact_name, ENT_QUOTES, $default_charset);
 						$count = counterValue();
-						$value = '<a href="javascript:window.close();" onclick=\'set_return_contact("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '", "' . $relatedid . '", "' . nl2br(decode_html($slashes_contact_name)) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+						$value = '<a href="javascript:window.close();" onclick=\'set_return_contact("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '", "' . $relatedid . '", "' . nl2br(decode_html($slashes_contact_name)) . '");\'id = ' . $count . '>' . textlength_check($field_valEncoded) . '</a>';
 					} else {
-						$value = $temp_val;
+						$value = $field_valHTML;
 					}
 				} elseif ($popuptype == 'set_return_emails') {
 					if (empty($_REQUEST['email_field'])) {
@@ -2168,64 +2093,63 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						$value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" onclick=\'return set_return_emails(' . $entity_id . ',' . $fieldid . ',"' . decode_html($slashes_name) . '","' . $emailaddress . '","' . $emailaddress2 . '","' . $email_check . '"'.$sre_param.'); \'id = ' . $count . '>' . textlength_check($name) . '</a>';
 					}
 				} elseif ($popuptype == 'specific_campaign') {
-					$slashes_temp_val = popup_from_html($temp_val);
+					$slashes_temp_val = popup_from_html($field_valEncoded);
 					$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
 					$count = counterValue();
-					$value = '<a href="javascript:window.close();" onclick=\'set_return_specific_campaign("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+					$value = '<a href="javascript:window.close();" onclick=\'set_return_specific_campaign("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '");\'id = ' . $count . '>' . textlength_check($field_valEncoded) . '</a>';
 				} else {
 					if ($colname == 'lastname') {
-						$temp_val = getFullNameFromQResult($list_result, $list_result_count, $module);
+						$field_valEncoded = getFullNameFromQResult($list_result, $list_result_count, $module);
 					} elseif ($module == 'Users' && $fieldname == 'last_name') {
-						$temp_val = getFullNameFromQResult($list_result, $list_result_count, $module);
+						$field_valEncoded = getFullNameFromQResult($list_result, $list_result_count, $module);
 					}
-					$slashes_temp_val = popup_from_html($temp_val);
+					$slashes_temp_val = popup_from_html($field_valEncoded);
 					$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
 
 					$log->debug('< getValue');
 					if (isset($_REQUEST['maintab']) && $_REQUEST['maintab'] == 'Calendar') {
 						$count = counterValue();
-						$value = '<a href="javascript:window.close();" onclick=\'set_return_todo("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+						$value = '<a href="javascript:window.close();" onclick=\'set_return_todo("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '");\'id = ' . $count . '>' . textlength_check($field_valEncoded) . '</a>';
 					} else {
 						$value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" onclick=\'set_return("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '");\'';
 						if (empty($_REQUEST['forfield']) && $focus->popup_type != 'detailview') {
 							$count = counterValue();
 							$value .= " id='$count' ";
 						}
-						$value .= '>' . textlength_check($temp_val) . '</a>';
+						$value .= '>' . textlength_check($field_valEncoded) . '</a>';
 					}
 				}
 			} else {
 				if (($module == 'Leads' && $colname == 'lastname') || ($module == 'Contacts' && $colname == 'lastname')) {
 					$count = counterValue();
-					$value = '<a href="index.php?action=DetailView&module='.$module.'&record='.$entity_id.'" id='.$count.'>'.textlength_check($temp_val).'</a>';
-				} elseif ($module == 'Calendar') {
+					$value = '<a href="index.php?action=DetailView&module='.$module.'&record='.$entity_id.'" id='.$count.'>'.textlength_check($field_valEncoded).'</a>';
+				} elseif ($module == 'cbCalendar') {
 					$actvity_type = $adb->query_result($list_result, $list_result_count, 'activitytype');
 					$actvity_type = ($actvity_type != '') ? $actvity_type : $adb->query_result($list_result, $list_result_count, 'type');
+					$count = counterValue();
 					if ($actvity_type == 'Task') {
-						$count = counterValue();
-						$value = '<a href="index.php?action=DetailView&module=cbCalendar&record=' . $entity_id . '&activity_mode=Task&parenttab=' . $tabname . '" id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+						$value = '<a href="index.php?action=DetailView&module=cbCalendar&record='.$entity_id.'&activity_mode=Task" id='.$count.'>'.textlength_check($field_valEncoded).'</a>';
 					} else {
-						$count = counterValue();
-						$value = '<a href="index.php?action=DetailView&module=cbCalendar&record=' . $entity_id . '&activity_mode=Events&parenttab=' . $tabname . '" id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+						$value = '<a href="index.php?action=DetailView&module=cbCalendar&record='.$entity_id.'&activity_mode=Events" id='.$count.'>'.textlength_check($field_valEncoded).'</a>';
 					}
 				} elseif ($module == 'Emails') {
-					$value = $temp_val;
+					$value = $field_valHTML;
 				} elseif (($module == 'Users' && $colname == 'last_name')) {
-					$temp_val = getFullNameFromQResult($list_result, $list_result_count, $module);
-					$value = '<a href="index.php?action=DetailView&module=' . $module . '&record=' . $entity_id . '&parenttab=' . $tabname . '">' . textlength_check($temp_val) . '</a>';
+					$field_valEncoded = getFullNameFromQResult($list_result, $list_result_count, $module);
+					$value = '<a href="index.php?action=DetailView&module='.$module.'&record='.$entity_id.'">'.textlength_check($field_valEncoded).'</a>';
 				} else {
 					$count = counterValue();
 					$opennewtab = GlobalVariable::getVariable('Application_OpenRecordInNewXOnRelatedList', '', $module);
 					if ($opennewtab=='') {
-						$value = '<a href="index.php?action=DetailView&module=' . $module . '&record=' . $entity_id . '&parenttab=' . $tabname . '" id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+						$value = '<a href="index.php?action=DetailView&module='.$module.'&record='.$entity_id.'" id='.$count.'>'.textlength_check($field_valEncoded).'</a>';
 					} elseif ($opennewtab=='window') {
-						$value = '<a href="#" onclick="window.open(\'index.php?action=DetailView&module=' . $module . '&record=' . $entity_id . '&parenttab=' . $tabname . "', '$module-$entity_id', 'width=1300, height=900, scrollbars=yes'); return false;" . '" id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+						$value = '<a href="#" onclick="window.open(\'index.php?action=DetailView&module='.$module.'&record='.$entity_id."', '$module-$entity_id', 'width=1300, height=900, scrollbars=yes'); return false;".'" id='.$count.'>'.textlength_check($field_valEncoded).'</a>';
 					} else {
-						$value = '<a href="index.php?action=DetailView&module=' . $module . '&record=' . $entity_id . '&parenttab=' . $tabname . '" id = ' . $count . ' target="_blank" >' . textlength_check($temp_val) . '</a>';
+						$value = '<a href="index.php?action=DetailView&module='.$module.'&record='.$entity_id.'" id='.$count.' target="_blank" >'.textlength_check($field_valEncoded).'</a>';
 					}
 				}
 			}
-		} elseif ($module == 'Calendar' && ($fieldname == 'time_start' || $fieldname == 'time_end')) {
+		} elseif ($module == 'cbCalendar' && ($fieldname == 'time_start' || $fieldname == 'time_end')) {
 			$dateField = 'date_start';
 			if ($fieldname == 'time_end') {
 				$dateField = 'due_date';
@@ -2238,7 +2162,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 				$value = '--';
 			} else {
 				$date_val = $adb->query_result($list_result, $list_result_count, $dateField);
-				$date = new DateTimeField($date_val . ' ' . $temp_val);
+				$date = new DateTimeField($date_val . ' ' . $field_valEncoded);
 				$value = $date->getDisplayTime();
 				$value = textlength_check($value);
 			}
@@ -2246,15 +2170,15 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			if ($module=='com_vtiger_workflow') {
 				switch ($fieldname) {
 					case 'module_name':
-						$temp_val = getTranslatedString($temp_val, $temp_val);
+						$field_valEncoded = getTranslatedString($field_valEncoded, $field_valEncoded);
 						break;
 					case 'execution_condition':
 						$triggerlabels = Workflow::geti18nTriggerLabels();
-						$temp_val = getTranslatedString($triggerlabels[$temp_val], 'Settings');
+						$field_valEncoded = getTranslatedString($triggerlabels[$field_valEncoded], 'Settings');
 						break;
 				}
 			}
-			$value = textlength_check($temp_val);
+			$value = textlength_check($field_valEncoded);
 			if (substr($value, -3) == '...') {
 				$value = '<span title="'.$field_val.'">'.$value.'<span>';
 			}
@@ -3657,7 +3581,7 @@ function textlength_check($field_val, $overrideLength = 0) {
 	} else {
 		$temp_val = $field_val;
 	}
-	return $temp_val;
+	return gtltTagsToHTML($temp_val);
 }
 
 /** Function to get permitted fields of current user of a particular module to find duplicate records */
@@ -3959,8 +3883,11 @@ function html_substr($str, $start, $length = null) {
 	}
 }
 
-function counterValue() {
+function counterValue($reset = false) {
 	static $counter = 0;
+	if ($reset) {
+		$counter = -1;
+	}
 	$counter = $counter + 1;
 	return $counter;
 }

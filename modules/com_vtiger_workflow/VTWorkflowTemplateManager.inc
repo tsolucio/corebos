@@ -105,7 +105,7 @@ class VTWorkflowTemplateManager {
 				array($template->title, $template->moduleName, $template->template, $templateId)
 			);
 		} else {
-			$templateId = $this->adb->getUniqueID("com_vtiger_workflowtemplates");
+			$templateId = $this->adb->getUniqueID('com_vtiger_workflowtemplates');
 			$template->id = $templateId;
 			$this->adb->pquery(
 				'insert into com_vtiger_workflowtemplates (template_id, title, module_name, template) values (?, ?, ?, ?)',
@@ -159,7 +159,7 @@ class VTWorkflowTemplateManager {
 			$template->moduleName = $el['moduleName'];
 			$template->title = $el['title'];
 			$template->template = $el['template'];
-			$this->save($template);
+			$this->saveTemplate($template);
 			$this->createWorkflow($template);
 		}
 	}

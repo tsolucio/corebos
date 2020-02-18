@@ -1313,3 +1313,11 @@ function formSelectedColumnString() {
 	}
 	document.NewReport.selectedColumnsStr.value = selectedColStr;
 }
+
+function ReportssetValueFromCapture(recordid, value, target_fieldname) {
+	if (target_fieldname=='cbquestion') {
+		cbqgetsql(recordid).then(response => {
+			document.getElementById('directsqlcommand').value = response;
+		});
+	}
+}

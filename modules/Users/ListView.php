@@ -12,7 +12,12 @@ require_once 'Smarty_setup.php';
 global $app_strings, $currentModule, $current_user;
 $list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $currentModule);
 if ($current_user->is_admin != 'on') {
-	die('<br><br><center>'.$app_strings['LBL_PERMISSION']." <a href='javascript:window.history.back()'>".$app_strings['LBL_GO_BACK'].'.</a></center>');
+	$smarty = new vtigerCRM_Smarty();
+	$smarty->assign('APP', $app_strings);
+	$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-danger');
+	$smarty->assign('ERROR_MESSAGE', $app_strings['LBL_PERMISSION']." <a href='javascript:window.history.back()'><br>".$app_strings['LBL_GO_BACK'].'<br><br>');
+	$smarty->display('applicationmessage.tpl');
+	die();
 }
 
 $log = LoggerManager::getLogger('user_list');

@@ -192,7 +192,24 @@ class cbQuestion extends CRMEntity {
 				foreach ($params as $param => $value) {
 					$conds = str_replace($param, $value, $conds);
 				}
-				$query .= $conds;
+				if ($q->column_fields['condfilterformat']=='1') { // filter conditions
+					$queryGenerator = new QueryGenerator($q->column_fields['qmodule'], $current_user);
+					$fields = array();
+					$cols = explode(',', decode_html(str_replace(' ', '', $q->column_fields['qcolumns'])));
+					foreach ($cols as $col) {
+						if (strpos($col, '.')) {
+							list($t, $col) = explode('.', $col);
+						}
+						$fields[] = $col;
+					}
+					$queryGenerator->setFields($fields);
+					$conds = json_decode($conds, true);
+					$conditions = $queryGenerator->constructAdvancedSearchConditions($q->column_fields['qmodule'], $conds);
+					$queryGenerator->addUserSearchConditions($conditions);
+					$query = $queryGenerator->getQuery();
+				} else {
+					$query .= $conds;
+				}
 			}
 			if (!empty($q->column_fields['groupby'])) {
 				$query .= ' GROUP BY '.$q->column_fields['groupby'];
@@ -257,7 +274,7 @@ class cbQuestion extends CRMEntity {
 				'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
 				'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
 				'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),
-				'answer' => 'graph '.$q->column_fields['typeprops']."\n".html_entity_decode($q->column_fields['qcolumns'], ENT_QUOTES, $default_charset),
+				'answer' => 'graph '.$q->column_fields['typeprops']."\n\n".html_entity_decode($q->column_fields['qcolumns'], ENT_QUOTES, $default_charset),
 			);
 		} else {
 			include_once 'include/Webservices/Query.php';
@@ -303,7 +320,15 @@ class cbQuestion extends CRMEntity {
 				$ret = self::getChartFromAnswer($ans);
 				break;
 			case 'Mermaid':
-				$ret = $ans['answer'];
+				$ret = '<div class="mermaid" name="cbqm'.$qid.'">'.$ans['answer'].'</div>
+				<script src="modules/cbQuestion/resources/mermaid.min.js"></script>
+				<script>document.addEventListener("DOMContentLoaded", function(event) {
+					mermaid.initialize({
+						securityLevel: "loose"
+					});
+					mermaid.init();
+				});
+				</script>';
 				break;
 			case 'ERROR':
 			default:

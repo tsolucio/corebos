@@ -72,7 +72,7 @@
 					{assign var=plinfo value='::'|explode:$keyval}
 					{$plinfo[0]|@getTranslatedString:$plinfo[0]} {$plinfo[1]|@getTranslatedString:$plinfo[0]}
 				{else}
-					{$keyval|@getTranslatedString:$MODULE}
+					{$keyval|@getTranslatedString:$keyval}
 				{/if}
 			</td>
 		{elseif $keyid eq '33' || $keyid eq '3313' || $keyid eq '3314'}

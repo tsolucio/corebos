@@ -352,17 +352,17 @@ function splitDateVal(dateval) {
 	}
 
 	switch (userDateFormat) {
-	case 'yyyy-mm-dd' :
+	case 'yyyy-mm-dd':
 		dateelements[0]=dateval.substr(dateval.lastIndexOf(datesep)+1, dateval.length); //dd
 		dateelements[1]=dateval.substring(dateval.indexOf(datesep)+1, dateval.lastIndexOf(datesep)); //mm
 		dateelements[2]=dateval.substring(0, dateval.indexOf(datesep)); //yyyyy
 		break;
-	case 'mm-dd-yyyy' :
+	case 'mm-dd-yyyy':
 		dateelements[0]=dateval.substring(dateval.indexOf(datesep)+1, dateval.lastIndexOf(datesep));
 		dateelements[1]=dateval.substring(0, dateval.indexOf(datesep));
 		dateelements[2]=dateval.substr(dateval.lastIndexOf(datesep)+1, dateval.length);
 		break;
-	case 'dd-mm-yyyy' :
+	case 'dd-mm-yyyy':
 		dateelements[0]=dateval.substring(0, dateval.indexOf(datesep));
 		dateelements[1]=dateval.substring(dateval.indexOf(datesep)+1, dateval.lastIndexOf(datesep));
 		dateelements[2]=dateval.substr(dateval.lastIndexOf(datesep)+1, dateval.length);
@@ -1187,6 +1187,33 @@ function validateFileSize(form_ele, uploadSize) {
 	}
 }
 
+function cbTaxclassRequiredValid() {
+	if (!document.getElementById('tax1_check')) {
+		return true;
+	}
+	var accepted = false;
+	var i = 1;
+	var taxchk = null;
+	while (!accepted) {
+		taxchk=document.getElementById('tax'+i+'_check');
+		if (!taxchk) {
+			break;
+		}
+		accepted = taxchk.checked;
+		i++;
+	}
+	// and it's value positive
+	if (accepted) {
+		if (document.getElementById('tax'+(i-1)).value < 0) {
+			accepted = false;
+		}
+	}
+	if (!accepted) {
+		alert(alert_arr.CORRECT_TAX_VALUE);
+	}
+	return accepted;
+}
+
 /* Function to Display FileSize while uploading */
 function displayFileSize(form_ele) {
 	var fileSize = form_ele.files[0].size;
@@ -1251,22 +1278,24 @@ function run_massedit() {
 		worker.addEventListener('message', function (e) {
 			var message = e.data;
 			if (e.data == 'CLOSE') {
-				var srch = document.basicSearch.searchtype.searchlaunched;
-				if (srch=='basic') {
-					callSearch('Basic');
-				} else if (srch=='advance') {
-					callSearch('Advanced');
-				} else {
-					jQuery.ajax({
-						method: 'POST',
-						url: 'index.php?module='+gVTModule+'&action='+gVTModule+'Ajax&file=ListView&ajax=meditupdate'
-					}).done(function (response) {
-						var result = response.split('&#&#&#');
-						document.getElementById('ListViewContents').innerHTML= result[2];
-						if (result[1] != '') {
-							alert(result[1]);
-						}
-					});
+				if (document.basicSearch) {
+					var srch = document.basicSearch.searchtype.searchlaunched;
+					if (srch=='basic') {
+						callSearch('Basic');
+					} else if (srch=='advance') {
+						callSearch('Advanced');
+					} else {
+						jQuery.ajax({
+							method: 'POST',
+							url: 'index.php?module='+gVTModule+'&action='+gVTModule+'Ajax&file=ListView&ajax=meditupdate'
+						}).done(function (response) {
+							var result = response.split('&#&#&#');
+							document.getElementById('ListViewContents').innerHTML= result[2];
+							if (result[1] != '') {
+								alert(result[1]);
+							}
+						});
+					}
 				}
 				__addLog('<br><b>' + alert_arr.ProcessFINISHED + '!</b>');
 				var pBar = document.getElementById('progressor');
@@ -1549,6 +1578,7 @@ function doformValidation(edit_type) {
 			}
 		}
 	}
+	var type='';
 	for (var i=0; i<fieldname.length; i++) {
 		if (edit_type == 'mass_edit') {
 			if (fieldname[i]!='salutationtype') {
@@ -1558,8 +1588,14 @@ function doformValidation(edit_type) {
 				continue;
 			}
 		}
+		if (fieldname[i] == 'taxclass' && (gVTModule=='Products' || gVTModule=='Services')) {
+			type=fielddatatype[i].split('~');
+			if (type[1]=='M' && !cbTaxclassRequiredValid()) {
+				return false;
+			}
+		}
 		if (getObj(fieldname[i]) != null) {
-			var type=fielddatatype[i].split('~');
+			type=fielddatatype[i].split('~');
 			if (type[1]=='M') {
 				if (!emptyCheck(fieldname[i], fieldlabel[i], getObj(fieldname[i]).type)) {
 					return false;
@@ -1908,6 +1944,30 @@ function showBlock(divId) {
 	document.getElementById(divId).style.display = 'block';
 }
 
+function showHideStatus(sId, anchorImgId, sImagePath) {
+	oObj = document.getElementById(sId);
+	var params = '&dvblock='+sId+'&dvmodule='+gVTModule+'&dvstatus=';
+	if (oObj.style.display == 'block') {
+		oObj.style.display = 'none';
+		ExecuteFunctions('setDetailViewBlockStatus', params+'0');
+		if (anchorImgId !=null) {
+			document.getElementById(anchorImgId).src = 'themes/images/inactivate.gif';
+			document.getElementById(anchorImgId).alt = alert_arr.LBL_Show;
+			document.getElementById(anchorImgId).title = alert_arr.LBL_Show;
+			document.getElementById(anchorImgId).parentElement.className = 'exp_coll_block activate';
+		}
+	} else {
+		oObj.style.display = 'block';
+		ExecuteFunctions('setDetailViewBlockStatus', params+'1');
+		if (anchorImgId !=null) {
+			document.getElementById(anchorImgId).src = 'themes/images/activate.gif';
+			document.getElementById(anchorImgId).alt = alert_arr.LBL_Hide;
+			document.getElementById(anchorImgId).title = alert_arr.LBL_Hide;
+			document.getElementById(anchorImgId).parentElement.className = 'exp_coll_block inactivate';
+		}
+	}
+}
+
 /*
 * hide the div tag
 * @param divId :: div tag ID
@@ -2251,7 +2311,7 @@ function OpenCompose(id, mode, crmid) {
 	openPopUp('xComposeEmail', this, url, 'createemailWin', 920, 700, 'menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes');
 }
 
-//Function added for Mass select in Popup - Philip
+// Mass select in Popup
 function SelectAll(mod, parmod) {
 	var k=0;
 	var i=0;
@@ -2267,22 +2327,14 @@ function SelectAll(mod, parmod) {
 		return false;
 	}
 	if (document.selectall.selected_id != undefined) {
-		x = document.selectall.selected_id.length;
+		var x = document.selectall.selected_id.length;
 		var y=0;
-		if (parmod != 'Calendar') {
-			var module = window.opener.document.getElementById('RLreturn_module').value;
-			var entity_id = window.opener.document.getElementById('RLparent_id').value;
-			var parenttab = window.opener.document.getElementById('parenttab').value;
-		}
-		idstring = '';
-		namestr = '';
-
+		var module = window.opener.document.getElementById('RLreturn_module').value;
+		var entity_id = window.opener.document.getElementById('RLparent_id').value;
+		var idstring = '';
 		if (x == undefined) {
 			if (document.selectall.selected_id.checked) {
 				idstring = document.selectall.selected_id.value;
-				if (parmod == 'Calendar') {
-					namestr = document.getElementById('calendarCont'+idstring).innerHTML;
-				}
 				y=1;
 			} else {
 				alert(alert_arr.SELECT);
@@ -2293,10 +2345,6 @@ function SelectAll(mod, parmod) {
 			for (i = 0; i < x; i++) {
 				if (document.selectall.selected_id[i].checked) {
 					idstring = document.selectall.selected_id[i].value +';'+idstring;
-					if (parmod == 'Calendar') {
-						idval = document.selectall.selected_id[i].value;
-						namestr = document.getElementById('calendarCont'+idval).innerHTML+'\n'+namestr;
-					}
 					y=y+1;
 				}
 			}
@@ -2308,47 +2356,8 @@ function SelectAll(mod, parmod) {
 			return false;
 		}
 		if (confirm(alert_arr.ADD_CONFIRMATION+y+alert_arr.RECORDS)) {
-			if (parmod == 'Calendar') {
-				//this blcok has been modified to provide delete option for contact in Calendar
-				idval = window.opener.document.EditView.contactidlist.value;
-				if (idval != '') {
-					var avalIds = new Array();
-					avalIds = idstring.split(';');
-
-					var selectedIds = new Array();
-					selectedIds = idval.split(';');
-
-					for (i=0; i < (avalIds.length-1); i++) {
-						var rowFound=false;
-						for (k=0; k < selectedIds.length; k++) {
-							if (selectedIds[k]==avalIds[i]) {
-								rowFound=true;
-								break;
-							}
-						}
-						if (rowFound != true) {
-							idval = idval+';'+avalIds[i];
-							window.opener.document.EditView.contactidlist.value = idval;
-							var str=document.getElementById('calendarCont'+avalIds[i]).innerHTML;
-							window.opener.addOption(avalIds[i], str);
-						}
-					}
-				} else {
-					window.opener.document.EditView.contactidlist.value = idstring;
-					var temp = new Array();
-					temp = namestr.split('\n');
-
-					var tempids = new Array();
-					tempids = idstring.split(';');
-
-					for (k=0; k < temp.length; k++) {
-						window.opener.addOption(tempids[k], temp[k]);
-					}
-				}
-			//end
-			} else {
-				opener.document.location.href='index.php?module='+module+'&parentid='+entity_id+'&action=updateRelations&destination_module='+mod+'&idlist='+idstring+'&parenttab='+parenttab;
-			}
+			let urlstring = getcbcustominfo('');
+			opener.document.location.href='index.php?module='+module+'&parentid='+entity_id+'&action=updateRelations&destination_module='+mod+'&idlist='+idstring+urlstring;
 			if (document.getElementById('closewindow').value=='true') {
 				self.close();
 			}
@@ -3312,7 +3321,7 @@ var ActivityReminder_popup_onscreen = 2 * 1000; // Milli Seconds (should be less
 var ActivityReminder_callback_win_uniqueids = new Object();
 
 function ActivityReminderCallback() {
-	if (typeof(jQuery) == 'undefined' || ActivityReminder_Deactivated) {
+	if (typeof(jQuery) == 'undefined' || ActivityReminder_Deactivated == 1) {
 		return;
 	}
 	if (ActivityReminder_regcallback_timer) {
@@ -3657,14 +3666,18 @@ function lastImport(module, req_module) {
 	}
 }
 
-function merge_fields(selectedNames, module, parent_tab) {
+function getMergeRecords(selectedNames, upperlimit, lowerlimit) {
+	if (typeof lowerlimit == 'undefined' || lowerlimit == null) {
+		lowerlimit = 2;
+	}
+	if (typeof upperlimit == 'undefined' || upperlimit == null) {
+		upperlimit = 3;
+	}
 	var select_options=document.getElementsByName(selectedNames);
-	var x= select_options.length;
-	var req_module=module;
+	var x = select_options.length;
 	var num_group=document.getElementById('group_count').innerHTML;
 	var pass_url='';
 	var flag=0;
-	//var i=0;
 	var xx = 0;
 	for (var i = 0; i < x; i++) {
 		if (select_options[i].checked) {
@@ -3673,8 +3686,8 @@ function merge_fields(selectedNames, module, parent_tab) {
 		}
 	}
 	var tmp = 0;
-	if ( xx != 0) {
-		if (xx > 3) {
+	if (xx != 0) {
+		if (xx > upperlimit) {
 			alert(alert_arr.MAX_THREE);
 			return false;
 		}
@@ -3695,14 +3708,23 @@ function merge_fields(selectedNames, module, parent_tab) {
 				alert(alert_arr.SAME_GROUPS);
 				return false;
 			}
-			if (xx <2) {
+			if (xx <lowerlimit) {
 				alert(alert_arr.ATLEAST_TWO);
 				return false;
 			}
 		}
-		window.open('index.php?module='+req_module+'&action=ProcessDuplicates&mergemode=mergefields&passurl='+pass_url+'&parenttab='+parent_tab, 'Merge', 'width=750,height=602,menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes');
+		return pass_url;
 	} else {
 		alert(alert_arr.ATLEAST_TWO);
+		return false;
+	}
+}
+
+function merge_fields(selectedNames, module) {
+	var pass_url = getMergeRecords(selectedNames);
+	if (pass_url !== false) {
+		window.open('index.php?module='+module+'&action=ProcessDuplicates&mergemode=mergefields&passurl='+pass_url, 'Merge', 'width=750,height=602,menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes');
+	} else {
 		return false;
 	}
 }
@@ -4142,7 +4164,9 @@ function submitFormForAction(formName, action) {
 		return false;
 	}
 	form.action.value = action;
-	form.submit();
+	if (corebosjshook_submitFormForAction(formName, action)) {
+		form.submit();
+	}
 	return true;
 }
 
@@ -4830,6 +4854,12 @@ function QCformValidate() {
 	eval(st.innerHTML);
 	for (var i=0; i<qcfieldname.length; i++) {
 		var curr_fieldname = qcfieldname[i];
+		if (qcfieldname[i] == 'taxclass' && (document.forms.QcEditView.module.value=='Products' || document.forms.QcEditView.module.value=='Services')) {
+			var type=qcfielddatatype[i].split('~');
+			if (type[1]=='M' && !cbTaxclassRequiredValid()) {
+				return false;
+			}
+		}
 		if (window.document.QcEditView[curr_fieldname] != null) {
 			var type=qcfielddatatype[i].split('~');
 			var input_type = window.document.QcEditView[curr_fieldname].type;
@@ -5256,7 +5286,7 @@ function AutocompleteRelation(target, i) {
 			this.classList.add('active');
 		}
 	};
-	this.targetUL.hide 	= function () {
+	this.targetUL.hide = function () {
 		if (this.classList.contains('active')) {
 			this.style.opacity = 0;
 			this.classList.remove('active');
@@ -5288,7 +5318,7 @@ AutocompleteRelation.prototype.get = function (e) {
 		var acInstance = this;
 		this.activate();
 
-		this.displayFields 	= this.showFields();
+		this.displayFields	= this.showFields();
 		this.entityName		= this.entityField();
 		this.fillfields		= this.fillFields();
 		acInstance.isReferenceField(e);
@@ -5299,6 +5329,9 @@ AutocompleteRelation.prototype.get = function (e) {
 				var json_data = JSON.parse(r.response);
 				if (json_data.length == 0) {
 					acInstance.clearTargetUL();
+					if (!!window.currentAc) {
+						window.currentAc.deactivate();
+					}
 				} else {
 					acInstance.set(json_data);
 				}

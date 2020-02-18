@@ -56,7 +56,7 @@ function __cb_aggregation($arr) {
  *   => value will be evaluated against the main module record as an expression
  *   => may be empty
  *   => if main module and related module are different the relation condition will be added automatically
- * @param array[4] environment data, this is automatically added but the application
+ * @param array[4] environment data, this is automatically added by the application
  */
 function __cb_aggregation_operation($arr) {
 	global $adb;
@@ -79,7 +79,7 @@ function __cb_aggregation_operation($arr) {
 }
 
 function __cb_aggregation_getQuery($arr, $userdefinedoperation = true) {
-	global $adb, $GetRelatedList_ReturnOnlyQuery, $logbg;
+	global $adb, $GetRelatedList_ReturnOnlyQuery, $logbg, $currentModule;
 	$validoperations = array('sum', 'min', 'max', 'avg', 'count', 'std', 'variance', 'time_to_sec');
 	$operation = strtolower($arr[0]);
 	if (!in_array($operation, $validoperations)) {
@@ -114,14 +114,17 @@ function __cb_aggregation_getQuery($arr, $userdefinedoperation = true) {
 		$relationInfo = $adb->fetch_array($relationResult);
 		$moduleInstance = CRMEntity::getInstance($mainmodule);
 		$params = array($crmid, $moduleId, $relatedModuleId);
+		$hold = isset($currentModule) ? $currentModule : '';
+		$currentModule = $mainmodule;
 		$GetRelatedList_ReturnOnlyQuery = true;
 		$relationData = call_user_func_array(array($moduleInstance,$relationInfo['name']), $params);
+		$currentModule = $hold;
+		unset($GetRelatedList_ReturnOnlyQuery);
 		if (!isset($relationData['query'])) {
 			return 0; // no query found
 		}
 		$query = $relationData['query'];
 		$query = str_replace(array("\n", "\t", "\r"), ' ', $query);
-		unset($GetRelatedList_ReturnOnlyQuery);
 		if (!empty($arr[3])) {
 			$query .= ' and ('.__cb_aggregation_getconditions($arr[3], $relmodule, $mainmodule, $crmid).')';
 		}

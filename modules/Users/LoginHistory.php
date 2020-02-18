@@ -89,10 +89,10 @@ class LoginHistory {
 	  * Function to get the Login History values of the User.
 	  * @param $navigation_array - Array values to navigate through the number of entries.
 	  * @param $sortorder - DESC
-	  * @param $orderby - login_time
+	  * @param $order_by - login_time
 	  * Returns the login history entries in an array format.
 	**/
-	public function getHistoryListViewEntries($username, $navigation_array, $sorder = '', $orderby = '') {
+	public function getHistoryListViewEntries($username, $navigation_array, $sorder = '', $order_by = '') {
 		global $log, $adb;
 		$log->debug('> getHistoryListViewEntries');
 

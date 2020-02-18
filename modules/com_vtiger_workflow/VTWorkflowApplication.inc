@@ -52,9 +52,9 @@ class VTWorkflowApplication {
 		return "index.php?module={$this->name}&action=editworkflow$idPart&return_url=".urlencode($this->returnUrl());
 	}
 
-	public function deleteWorkflowUrl($id) {
+	public function deleteWorkflowUrl($id, $withReturn = true) {
 		$idPart="&workflow_id=$id";
-		return "index.php?module={$this->name}&action=deleteworkflow$idPart&return_url=".urlencode($this->returnUrl());
+		return "index.php?module={$this->name}&action=deleteworkflow$idPart".($withReturn ? '&return_url='.urlencode($this->returnUrl()) : '');
 	}
 
 	public function editTaskUrl($id = null) {

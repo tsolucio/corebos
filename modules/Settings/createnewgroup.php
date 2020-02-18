@@ -28,7 +28,10 @@ if (isset($_REQUEST['groupId']) && $_REQUEST['groupId'] != '') {
 	$groupId = 0;
 	$groupInfo = array(0=>'',1=>'');
 	if (isset($_REQUEST['error']) && ($_REQUEST['error']=='true')) {
-		$Err_msg = "<center><font color='red'><b>".$mod_strings['LBL_GROUP_NAME_ERROR'].'</b></font></center>';
+		$smarty = new vtigerCRM_Smarty();
+		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-danger');
+		$smarty->assign('ERROR_MESSAGE', getTranslatedString('LBL_GROUP_NAME_ERROR', 'Users'));
+		$smarty->display('applicationmessage.tpl');
 		$groupInfo[] = vtlib_purify($_REQUEST['groupname']);
 		$groupInfo[] = vtlib_purify($_REQUEST['desc']);
 	}

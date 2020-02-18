@@ -1498,6 +1498,39 @@ class QueryGenerator {
 		$this->groupInfo .= " $glue ";
 	}
 
+	public function constructAdvancedSearchConditions($module, $conditions) {
+		$output = array();
+		if (empty($module) || empty($conditions)) {
+			return $output;
+		}
+		$output['query'] = 'true';
+		$output['searchtype'] = 'advance';
+		$advft_criteria_groups = array();
+		$advft_criteria = array();
+		$groupid = 1;
+		foreach ($conditions as $fields) {
+			$lastcondition = '';
+			$curfld = 1;
+			foreach ($fields as $field) {
+				$fieldcond = array(
+					'groupid' => $groupid,
+					'columnname' => CustomView::getFilterFieldDefinition($field['field'], $module),
+					'comparator' => $field['op'],
+					'value' => $field['value'],
+					'columncondition' => ($curfld==count($fields) ? '' : $field['glue']),
+				);
+				$lastcondition = $field['glue'];
+				$advft_criteria[] = $fieldcond;
+				$curfld++;
+			}
+			$advft_criteria_groups[$groupid] = array('groupcondition' => ($groupid==count($conditions) ? '' : $lastcondition));
+			$groupid++;
+		}
+		$output['advft_criteria'] = json_encode($advft_criteria);
+		$output['advft_criteria_groups'] = json_encode($advft_criteria_groups);
+		return $output;
+	}
+
 	public function addUserSearchConditions($input) {
 		global $default_charset;
 		if (isset($input['searchtype']) && $input['searchtype']=='advance') {

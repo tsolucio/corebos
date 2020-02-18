@@ -26,30 +26,6 @@
 var clipcopyobject = new ClipboardJS('#clipcopylink');
 clipcopyobject.on('success', function(e) { clipcopyclicked = false; });
 clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
-function showHideStatus(sId,anchorImgId, sImagePath) {
-	var oObj = document.getElementById(sId);
-	if (oObj.style.display == 'block') {
-		oObj.style.display = 'none';
-		if (anchorImgId !=null) {
-{/literal}
-			document.getElementById(anchorImgId).src = 'themes/images/inactivate.gif';
-			document.getElementById(anchorImgId).alt = '{'LBL_Show'|@getTranslatedString:'Settings'}';
-			document.getElementById(anchorImgId).title = '{'LBL_Show'|@getTranslatedString:'Settings'}';
-			document.getElementById(anchorImgId).parentElement.className = 'exp_coll_block activate';
-{literal}
-		}
-	} else {
-		oObj.style.display = 'block';
-		if (anchorImgId !=null) {
-{/literal}
-			document.getElementById(anchorImgId).src = 'themes/images/activate.gif';
-			document.getElementById(anchorImgId).alt = '{'LBL_Hide'|@getTranslatedString:'Settings'}';
-			document.getElementById(anchorImgId).title = '{'LBL_Hide'|@getTranslatedString:'Settings'}';
-			document.getElementById(anchorImgId).parentElement.className = 'exp_coll_block inactivate';
-{literal}
-		}
-	}
-}
 {/literal}
 </script>
 
@@ -114,7 +90,7 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 											{/if}
 										</div>
 										<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_top" id="detailview_utils_table_tabactionsep_top"></div>
-										<div class="detailview_utils_table_actions detailview_utils_table_actions_top" id="detailview_utils_actions">
+										<div class="detailview_utils_table_actions detailview_utils_table_actions_top" id="detailview_utils_actions_top">
 												{if $EDIT_PERMISSION eq 'yes'}
 													<input title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="crmbutton small edit" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.return_id.value='{$ID}';DetailView.module.value='{$MODULE}';submitFormForAction('DetailView','EditView');" type="button" name="Edit" value="&nbsp;{$APP.LBL_EDIT_BUTTON_LABEL}&nbsp;">&nbsp;
 												{/if}
@@ -191,10 +167,8 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 																					{/if}
 
 																					{if $header neq 'Comments' && (!isset($BLOCKS.$header.relatedlist) || $BLOCKS.$header.relatedlist eq 0)}
-
 																						<tr class="detailview_block_header">{strip}
 																							<td colspan=4 class="dvInnerHeader">
-
 																								<div style="float:left;font-weight:bold;"><div style="float:left;"><a href="javascript:showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$IMAGE_PATH}');">
 																											{if isset($BLOCKINITIALSTATUS[$header]) && $BLOCKINITIALSTATUS[$header] eq 1}
 																												<span class="exp_coll_block inactivate">
@@ -475,7 +449,7 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 											{/if}
 										</div>
 										<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_bottom" id="detailview_utils_table_tabactionsep_bottom"></div>
-										<div class="detailview_utils_table_actions detailview_utils_table_actions_bottom" id="detailview_utils_actions">
+										<div class="detailview_utils_table_actions detailview_utils_table_actions_bottom" id="detailview_utils_actions_bottom">
 												{if $EDIT_PERMISSION eq 'yes'}
 													<input title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="crmbutton small edit" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.return_id.value='{$ID}';DetailView.module.value='{$MODULE}';submitFormForAction('DetailView','EditView');" type="submit" name="Edit" value="&nbsp;{$APP.LBL_EDIT_BUTTON_LABEL}&nbsp;">&nbsp;
 												{/if}

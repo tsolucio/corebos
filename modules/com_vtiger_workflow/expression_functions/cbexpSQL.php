@@ -162,6 +162,14 @@ function cbexpsql_modulo($arr, $mmodule) {
 	return __cbexpsql_functionparams('MOD', $arr, $mmodule);
 }
 
+function cbexpsql_isstring($arr, $mmodule) {
+	return __cbexpsql_functionparams("concat('',".__cbexpsql_functionparamsvalue($arr[0], $mmodule).'*1)!=', $arr, $mmodule);
+}
+
+function cbexpsql_isnumber($arr, $mmodule) {
+	return __cbexpsql_functionparams("concat('',".__cbexpsql_functionparamsvalue($arr[0], $mmodule).'*1)=', $arr, $mmodule);
+}
+
 function cbexpsql_hash($arr, $mmodule) {
 	if (count($arr)==1) {
 		$arr[1] = 'sha1';
@@ -312,6 +320,16 @@ function cbexpsql_avg($arr, $mmodule) {
 function cbexpsql_count($arr, $mmodule) {
 	return __cbexpsql_functionparams('COUNT', $arr, $mmodule);
 }
+function cbexpsql_number_format($arr, $mmodule) {
+	if (count($arr)>0) {
+		$number = $arr[0];
+		$decimals = isset($arr[1]) ? $arr[1] : 0;
+		$dec_points = isset($arr[2]) ? $arr[2] : '.';
+		$thousands_sep = isset($arr[3]) ? $arr[3] : ',';
+		return 'REPLACE(REPLACE(REPLACE(FORMAT('.__cbexpsql_functionparamsvalue($number, $mmodule).', '.$decimals.'), ".", "@"), ",", '.__cbexpsql_functionparamsvalue($thousands_sep, $mmodule).'), "@", '.__cbexpsql_functionparamsvalue($dec_points, $mmodule).')';
+	}
+	return '""';
+}
 
 //// UNSUPPORTED FUNCTIONS
 function cbexpsql_uppercasefirst($arr, $mmodule) {
@@ -396,6 +414,12 @@ function cbexpsql_getGEODistanceFromAssignUser2ContactShipping($arr, $mmodule) {
 	return 'TRUE';
 }
 function cbexpsql_getGEODistanceFromCoordinates($arr, $mmodule) {
+	return 'TRUE';
+}
+function cbexpsql_or($arr, $mmodule) {
+	return 'TRUE';
+}
+function cbexpsql_and($arr, $mmodule) {
 	return 'TRUE';
 }
 

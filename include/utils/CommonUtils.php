@@ -1199,6 +1199,31 @@ function make_clickable($text) {
 }
 
 /**
+ * This function returns the Open/Closed status of the blocks of a module indexed by their label.
+ * @param string $module - module name
+ * @param string $disp_view - display view (edit, create or detail)
+ * @return array
+ */
+function getBlockOpenClosedStatus($module, $disp_view) {
+	global $log, $adb;
+	$log->debug('> getBlockOpenClosedStatus ' . $module . ',' . $disp_view);
+	$disp_view = $disp_view.'_view';
+	$query = "select blocklabel,display_status,isrelatedlist from vtiger_blocks where tabid=? and $disp_view=0 and visible = 0 order by sequence";
+	$result = $adb->pquery($query, array(getTabid($module)));
+	$aBlockStatus = array();
+	while ($b = $adb->fetch_array($result)) {
+		if (!is_null($b['isrelatedlist']) && $b['isrelatedlist'] != 0) {
+			$sLabelVal = $b['blocklabel'];
+		} else {
+			$sLabelVal = getTranslatedString($b['blocklabel'], $module);
+		}
+		$aBlockStatus[$sLabelVal] = $b['display_status'];
+	}
+	$log->debug('< getBlockOpenClosedStatus');
+	return $aBlockStatus;
+}
+
+/**
  * This function returns the blocks and its related information for given module.
  * Input Parameter are $module - module name, $disp_view = display view (edit,detail or create),$mode - edit, $col_fields - * column_fields/
  * This function returns an array
@@ -1212,6 +1237,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 	$result = $adb->pquery($query, array($tabid));
 	$noofrows = $adb->num_rows($result);
 	$blockid_list = array();
+	$aBlockStatus = array();
 	for ($i = 0; $i < $noofrows; $i++) {
 		$blockid = $adb->query_result($result, $i, 'blockid');
 		$blockid_list[] = $blockid;
@@ -1331,7 +1357,12 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 			}
 		}
 	}
-	coreBOS_Session::set('BLOCKINITIALSTATUS', $aBlockStatus);
+	if (!coreBOS_Session::has('DVBLOCKSTATUS^'.$module) || GlobalVariable::getVariable('Application_DetailView_Sticky_BlockStatus', '0')!='1') {
+		coreBOS_Session::set('DVBLOCKSTATUS^'.$module, $aBlockStatus);
+		coreBOS_Session::set('BLOCKINITIALSTATUS', $aBlockStatus);
+	} else {
+		coreBOS_Session::set('BLOCKINITIALSTATUS', coreBOS_Session::get('DVBLOCKSTATUS^'.$module));
+	}
 	$log->debug('< getBlocks');
 	return $getBlockInfo;
 }
@@ -2701,6 +2732,26 @@ function makeRandomPassword() {
 }
 
 /**
+ * Function to get the columnname for a certain fieldname, given
+ * the fieldname and the module name
+ */
+function getColumnnameByFieldname($tabid, $fieldname) {
+	global $log;
+	$log->debug('> getColumnnameByFieldname ' . $tabid . ' ' . $fieldname);
+	$fieldinfo = VTCacheUtils::lookupFieldInfo($tabid, $fieldname);
+	if ($fieldinfo === false) {
+		getColumnFields(getTabModuleName($tabid));
+		$fieldinfo = VTCacheUtils::lookupFieldInfo($tabid, $fieldname);
+	}
+	$column = false;
+	if ($fieldinfo) {
+		$column = $fieldinfo['columnname'];
+	}
+	$log->debug('< getColumnnameByFieldname');
+	return $column;
+}
+
+/**
  * Function to get the UItype for a field by the fieldname.
  * Takes the input as $module - module name,and fieldname of the field
  * returns the uitype, integer type
@@ -2708,15 +2759,11 @@ function makeRandomPassword() {
 function getUItypeByFieldName($module, $fieldname) {
 	global $log, $adb;
 	$log->debug('> getUItypeByFieldName ' . $module);
-	$tabIdList = array();
-	//To find tabid for this module
-	$tabIdList[] = getTabid($module);
-	if ($module == 'Calendar') {
-		$tabIdList[] = getTabid('Events');
+	$uitype = false;
+	$result = $adb->pquery('select uitype from vtiger_field where tabid=? and fieldname=?', array(getTabid($module), $fieldname));
+	if ($result && $adb->num_rows($result)>0) {
+		$uitype = $result->fields['uitype'];
 	}
-	$sql = 'select uitype from vtiger_field where tabid IN (' . generateQuestionMarks($tabIdList) . ') and fieldname=?';
-	$result = $adb->pquery($sql, array($tabIdList, $fieldname));
-	$uitype = $adb->query_result($result, 0, 'uitype');
 	$log->debug('< getUItypeByFieldName');
 	return $uitype;
 }
@@ -2747,15 +2794,11 @@ function getTypeOfDataByFieldName($module, $fieldname) {
 function getUItype($module, $columnname) {
 	global $log, $adb;
 	$log->debug('> getUItype ' . $module);
-	$tabIdList = array();
-	//To find tabid for this module
-	$tabIdList[] = getTabid($module);
-	if ($module == 'Calendar') {
-		$tabIdList[] = getTabid('Events');
+	$uitype = false;
+	$result = $adb->pquery('select uitype from vtiger_field where tabid=? and columnname=?', array(getTabid($module), $columnname));
+	if ($result && $adb->num_rows($result)>0) {
+		$uitype = $result->fields['uitype'];
 	}
-	$sql = 'select uitype from vtiger_field where tabid IN (' . generateQuestionMarks($tabIdList) . ') and columnname=?';
-	$result = $adb->pquery($sql, array($tabIdList, $columnname));
-	$uitype = $adb->query_result($result, 0, 'uitype');
 	$log->debug('< getUItype');
 	return $uitype;
 }
@@ -3375,6 +3418,10 @@ function getEntityFieldNameDisplay($module, $fieldsName, $fieldValues) {
 
 function vt_suppressHTMLTags($string) {
 	return preg_replace(array('/</', '/>/', '/"/'), array('&lt;', '&gt;', '&quot;'), $string);
+}
+
+function gtltTagsToHTML($string) {
+	return preg_replace(array('/</', '/>/'), array('&lt;', '&gt;'), $string);
 }
 
 function vt_hasRTE() {

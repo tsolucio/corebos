@@ -2262,6 +2262,10 @@ class ReportRun extends CRMEntity {
 						$resp[$tmptblname] = $tmptbldetails['query'];
 					}
 				}
+				if ($noofrows==0) {
+					$resp['data'] = array();
+					return json_encode($resp);
+				}
 				if ($outputformat == 'JSONPAGED') {
 					$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize', 40);
 					$resp['per_page'] = $rowsperpage;

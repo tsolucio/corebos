@@ -46,11 +46,6 @@ function add_data_to_relatedlist(entity_id, recordid) {
 	opener.document.location.href='index.php?module=Emails&action=updateRelations&destination_module=Accounts&entityid='+entity_id+'&parentid='+recordid;
 }
 
-function set_return_formname_specific(formname, product_id, product_name) {
-	window.opener.document.EditView1.quote_name.value = product_name;
-	window.opener.document.EditView1.quote_id.value = product_id;
-}
-
 function set_return_todo(product_id, product_name) {
 	if (document.getElementById('from_link').value != '') {
 		window.opener.document.QcEditView.task_parent_name.value = product_name;

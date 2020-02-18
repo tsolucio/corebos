@@ -84,9 +84,9 @@
 			</td>
 	{elseif ($keyid eq '15' || $keyid eq '16' || $keyid eq '1613' || $keyid eq '1614')} <!--ComboBox-->
 		{if picklistHasDependency($keyfldname,$MODULE)}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$MODULE}</span>
+		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
 		{else}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'><span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$MODULE}</span>
+		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'><span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
 			<div id="editarea_{$keyfldname}" style="display:none;">
 				<select id="txtbox_{$keyfldname}" name="{$keyfldname}" class="small" style="width:280px;">
 					{foreach item=arr from=$keyoptions}

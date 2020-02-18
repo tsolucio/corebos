@@ -284,6 +284,7 @@ class MailManager_Connector {
 		for ($i = 0; $i<count($msgno); $i++) {
 			@imap_delete($this->mBox, $msgno[$i]);
 		}
+		@imap_expunge($this->mBox);
 	}
 
 	/**

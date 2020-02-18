@@ -33,12 +33,11 @@ function vtDisplayWorkflowList($adb, $request, $requestUrl, $app_strings, $curre
 	$smarty = new vtigerCRM_Smarty();
 	$wfs = new VTWorkflowManager($adb);
 	$focus = new Workflow();
+	$listModule = isset($request['list_module']) ? $request['list_module'] : '';
 	$smarty->assign('moduleNames', $util->vtGetModules($adb));
-	$smarty->assign('modulelist', $util->getModulesList($adb));
+	$smarty->assign('modulelist', $util->getModulesList($adb, $listModule));
 	$smarty->assign('triggerlist', $util->getWorkflowExecutionConditionList());
 	$smarty->assign('returnUrl', $requestUrl);
-
-	$listModule = isset($request['list_module']) ? $request['list_module'] : '';
 	$smarty->assign('listModule', $listModule);
 	if ($listModule==null || strtolower($listModule)=='all') {
 		$smarty->assign('workflows', $wfs->getWorkflows());
@@ -57,7 +56,7 @@ function vtDisplayWorkflowList($adb, $request, $requestUrl, $app_strings, $curre
 	$smarty->assign('PAGINATION_LIMIT', GlobalVariable::getVariable('Application_Pagination_Limit', '12', $module->name, $current_user->id));
 	$smarty->assign('module', $module);
 	$smarty->assign('MODULE', $module->name);
-	$smarty->assign('LIST_HEADER', $focus->getWorkListHeader());
+	$smarty->assign('LIST_HEADER', array_keys($focus->list_fields_name));
 	$smarty->assign('LIST_FIELDS', $focus->list_fields_name);
 	$smarty->assign('CRON_TASK', Vtiger_Cron::getInstance('Workflow'));
 	$smarty->display("{$module->name}/ListWorkflows.tpl");

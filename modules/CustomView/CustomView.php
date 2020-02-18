@@ -42,7 +42,7 @@ class CustomView extends CRMEntity {
 		$this->escapemodule[] = '_';
 		$this->smownerid = $current_user->id;
 		$this->moduleMetaInfo = array();
-		if ($module != '' && $module != 'Calendar') {
+		if ($module != '' && $module != 'com_vtiger_workflow') {
 			$this->meta = $this->getMeta($module, $current_user);
 		}
 	}
@@ -430,6 +430,29 @@ class CustomView extends CRMEntity {
 					if (isset($columnlist)) {
 						$ret_module_list[$mod][$key] = $columnlist;
 					}
+				}
+			}
+		}
+		// assigned user fields
+		$mod = 'Users';
+		$this->getCustomViewModuleInfo($mod);
+		$userFilterFields = array(
+			'vtiger_users:user_name:user_name:Users_User_Name:V',
+			'vtiger_users:first_name:first_name:Users_First_Name:V',
+			'vtiger_users:last_name:last_name:Users_Last_Name:V',
+			'vtiger_users:title:title:Users_Title:V',
+			'vtiger_users:department:department:Users_Department:V',
+		);
+		foreach ($this->module_list[$mod] as $key => $value) {
+			$columnlist = $this->getColumnsListbyBlock($mod, $value, false);
+			if (isset($columnlist)) {
+				foreach ($columnlist as $col => $label) {
+					if (!in_array($col, $userFilterFields)) {
+						unset($columnlist[$col]);
+					}
+				}
+				if (count($columnlist)>0) {
+					$ret_module_list[$mod][$key] = $columnlist;
 				}
 			}
 		}
@@ -895,10 +918,7 @@ class CustomView extends CRMEntity {
 	 * @param $cvid :: Type Integer
 	 * @returns  $advfiltersql as a string
 	 * This function will return the advanced filter criteria for the given customfield
-	 *
 	 */
-	// Needs to be modified according to the new advanced filter (support for grouping).
-	// Not modified as of now, as this function is not used for now (Instead Query Generator is used for better performance).
 	public function getCVAdvFilterSQL($cvid, $webserviceQL = false) {
 		global $current_user;
 
@@ -910,8 +930,8 @@ class CustomView extends CRMEntity {
 			$groupcolumns = $groupinfo['columns'];
 			$groupcondition = $groupinfo['condition'];
 			$advfiltergroupsql = '';
-
-			foreach ($groupcolumns as $columnindex => $columninfo) {
+			$index = 1;
+			foreach ($groupcolumns as $columninfo) {
 				$columnname = $columninfo['columnname'];
 				$comparator = $columninfo['comparator'];
 				$value = $columninfo['value'];
@@ -967,10 +987,11 @@ class CustomView extends CRMEntity {
 					}
 
 					$advfiltergroupsql .= $advfiltersql;
-					if ($columncondition != null && $columncondition != '' && count($groupcolumns) > $columnindex) {
+					if ($columncondition != null && $columncondition != '' && count($groupcolumns) > $index) {
 						$advfiltergroupsql .= ' ' . $columncondition . ' ';
 					}
 				}
+				$index++;
 			}
 
 			if (trim($advfiltergroupsql) != '') {

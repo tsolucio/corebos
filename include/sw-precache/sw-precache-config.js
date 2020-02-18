@@ -1,4 +1,9 @@
 module.exports = {
+	"inlineWorkboxRuntime": true,
+	"mode": "development",
+	"sourcemap": false,
+	"skipWaiting": true,
+	"clientsClaim": true,
 	"globDirectory": ".",
 	"globPatterns": [
 		'include/sw-precache/service-worker-registration.js',
@@ -19,6 +24,7 @@ module.exports = {
 		'include/style.css',
 		'include/print.css',
 		'include/jquery.steps.css',
+		'include/ldswc/vaadingrid/vaadingrid.js',
 		'modules/com_vtiger_workflow/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
 		'modules/GlobalVariable/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
 		'modules/evvtMenu/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
@@ -70,6 +76,7 @@ module.exports = {
 		'modules/Products/Products.js',
 		'modules/ModComments/ModComments.js',
 		'modules/ModComments/ModCommentsCommon.js',
+		'modules/MsgTemplate/MsgTemplate.js',
 		'modules/ProjectTask/ProjectTask.js',
 		'modules/Project/Project.js',
 		'modules/Assets/Assets.js',
@@ -127,6 +134,5 @@ module.exports = {
 		'include/freetag/tagcanvas.min.js',
 		'include/freetag/tagcanvas.js'
 	],
-	"swDest": "service-worker.js",
-	"swSrc": "include/sw-precache/workboxtpl.js"
+	"swDest": "service-worker.js"
 };

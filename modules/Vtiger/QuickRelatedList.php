@@ -21,6 +21,14 @@ $userprivs = $current_user->getPrivileges();
 $is_admin = $userprivs->isAdmin();
 $fortabid = getTabid($formodule);
 $forrecord = vtlib_purify($_REQUEST['forrecord']);
+$Modules2Show = array();
+$bmapname = $formodule.'_QuickRelatedList';
+$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+if ($cbMapid) {
+	$cbMap = cbMap::getMapByID($cbMapid);
+	$ModSet = $cbMap->ModuleSetMapping();
+	$Modules2Show = $ModSet->getFullModuleSet();
+}
 $rls = array();
 $query = 'select relation_id,related_tabid,label,vtiger_tab.name,actions,relationfieldid,vtiger_tab.presence
 	from vtiger_relatedlists
@@ -33,27 +41,29 @@ while ($rel = $adb->fetch_array($result)) {
 	$relatedTabId = $rel['related_tabid'];
 	//check for disabled module.
 	$permitted = $rel['presence'];
-	if ($permitted === 0 || empty($relatedTabId)) {
+	if ($permitted == 0 || empty($relatedTabId)) {
 		if ($is_admin || $userprivs->hasModuleAccess($relatedTabId) || empty($relatedTabId)) {
-			$rls[$relatedId] = array(
-				'label'=>$relationLabel,
-				'tabid'=>$relatedTabId,
-				'module'=>$rel['name'],
-				'actions'=>$rel['actions'],
-				'relationfieldid'=>$rel['relationfieldid'],
-			);
+			if (count($Modules2Show)==0 || in_array($rel['name'], $Modules2Show)) {
+				$rls[$relatedId] = array(
+					'label'=>$relationLabel,
+					'tabid'=>$relatedTabId,
+					'module'=>$rel['name'],
+					'actions'=>$rel['actions'],
+					'relationfieldid'=>$rel['relationfieldid'],
+				);
+			}
 		}
 	}
 }
 $goto = getTranslatedString('LBL_JUMP_BTN');
 $add = getTranslatedString('LBL_CREATE');
-echo '<table width="100%" border=0>';
+echo '<table  class="slds-table slds-table_cell-buffer slds-table_header-hidden">';
 foreach ($rls as $relid => $relinfo) {
 	$module = $relinfo['module'];
 	$label = $relinfo['label'];
 	$actions = $relinfo['actions'];
 	$labelnospace = str_replace(' ', '', $label);
-	echo '<tr>';
+	echo '<tr class="slds-hint-parent">';
 	$formodule = urlencode($formodule);
 	$forrecord = urlencode($forrecord);
 	$labelnospace = urlencode($labelnospace);
@@ -62,17 +72,17 @@ foreach ($rls as $relid => $relinfo) {
 	if ($singlepane_view=='true') {
 		$url = "module=$formodule&action={$formodule}Ajax&file=DetailViewAjax&record={$forrecord}";
 		$url.= "&ajxaction=LOADRELATEDLIST&header={$label}&relation_id={$relid}&actions={$actions}";
-		$onclick = "onclick=\"javascript:loadRelatedListBlock(".
-				"'$url',".
-				"'tbl_{$formodule}_{$labelnospace}','{$formodule}_{$labelnospace}');document.location='#tbl_".$formodule.'_'.$labelnospace.'\';"';
-		echo '<td><a title="'.$goto.'" href="javascript:;" '.$onclick.'>'.getTranslatedString($relinfo['label'], $module).'</a></td>';
+		$onclick = 'onclick="javascript:loadRelatedListBlock('
+			."'$url',"
+			."'tbl_{$formodule}_{$labelnospace}','{$formodule}_{$labelnospace}');document.location='#tbl_".$formodule.'_'.$labelnospace.'\';"';
+		echo '<td scope="row" class="slds-p-left_none"><a title="'.$goto.'" href="javascript:;" '.$onclick.'>'.getTranslatedString($relinfo['label'], $module).'</a></td>';
 	} else {
 		$url = "index.php?action=CallRelatedList&module=$formodule&record=$forrecord&selected_header=$label&relation_id=$relid#tbl_".$formodule.'_'.$labelnospace;
-		echo '<td><a title="'.$goto.'" href="'.$url.'">'.getTranslatedString($relinfo['label'], $module).'</a></td>';
+		echo '<td scope="row" class="slds-p-left_none"><a title="'.$goto.'" href="'.$url.'">'.getTranslatedString($relinfo['label'], $module).'</a></td>';
 	}
 	if ($module=='Emails') {
 		$url = "fnvshobj(this,'sendmail_cont');sendmail('$formodule',$forrecord);";
-		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="'.$url.'"></td>';
+		echo '<td scope="row" class="slds-align_absolute-center"><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="'.$url.'"></td>';
 	} else {
 		if (empty($relinfo['relationfieldid'])) {
 			$linkmode = '&createmode=link';
@@ -86,7 +96,7 @@ foreach ($rls as $relid => $relinfo) {
 		}
 		$url = "document.location='index.php?module=".urlencode($module).'&action=EditView'.$linkmode.'&return_id='.$forrecord;
 		$url.= '&return_action=DetailView&return_module='.$formodule.'&cbfromid='.$forrecord."'";
-		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="'.$url.'"></td>';
+		echo '<td scope="row" class="slds-align_absolute-center"><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="'.$url.'"></td>';
 	}
 	echo '</tr>';
 }

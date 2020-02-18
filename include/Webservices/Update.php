@@ -35,7 +35,7 @@ function vtws_update($element, $user) {
 	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 	$meta = $handler->getMeta();
 	$entityName = $meta->getObjectEntityName($element['id']);
-
+	$wsAttachments = array();
 	if (!empty($element['attachments'])) {
 		foreach ($element['attachments'] as $fieldname => $attachment) {
 			$filepath = $root_directory.'cache/'.$attachment['name'];
@@ -47,6 +47,7 @@ function vtws_update($element, $user) {
 				'error' => 0,
 				'size' => $attachment['size']
 			);
+			$wsAttachments[] = $filepath;
 		}
 		unset($element['attachments']);
 	}
@@ -122,9 +123,9 @@ function vtws_update($element, $user) {
 		$adb->pquery('update vtiger_troubletickets set update_log=? where ticketid=?', array($updlog, $idList[1]));
 	}
 	VTWS_PreserveGlobal::flush();
-	if (!empty($_FILES)) {
-		foreach ($_FILES as $file) {
-			unlink($file['tmp_name']);
+	if (!empty($wsAttachments)) {
+		foreach ($wsAttachments as $file) {
+			@unlink($file);
 		}
 	}
 	// Dereference WSIDs

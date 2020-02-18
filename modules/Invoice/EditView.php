@@ -372,7 +372,7 @@ if ($focus->mode == 'edit') {
 	$associated_prod = getAssociatedProducts('Invoice', $focus);
 	$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
 	$smarty->assign('MODE', $focus->mode);
-} elseif (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
+} elseif ($isduplicate == 'true') {
 	$associated_prod = $INVOICE_associated_prod;
 	$smarty->assign('AVAILABLE_PRODUCTS', 'true');
 	$smarty->assign('MODE', $focus->mode);

@@ -21,7 +21,7 @@ class Encryption {
 		$binaryOutput = '';
 		$strSize = strlen($inputString);
 		for ($x=0; $x<$strSize; $x++) {
-			$charBin = decbin(ord($inputString{$x}));
+			$charBin = decbin(ord($inputString[$x]));
 			$charBin = str_pad($charBin, $byteLength, '0', STR_PAD_LEFT);
 			$binaryOutput .= $charBin;
 		}

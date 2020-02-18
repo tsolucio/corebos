@@ -88,7 +88,7 @@ function cbws_uploadProductImages($recordID, $fileData, $user) {
 			'size' => filesize($filepath),
 		);
 		$product->insertIntoAttachment($crmid, 'Products', true);
-		unlink($filepath);
+		@unlink($filepath);
 		$myResult['FileName'][] = $imageDetail['name'];
 		$newnumimages++;
 		if ($newnumimages >= $maximages) {

@@ -46,7 +46,9 @@
  * PEAR/Exception.php
  * @ignore
  */
-require_once 'PEAR/Exception.php';
+if (!class_exists('PEAR_Exception')) {
+    require_once 'PEAR/Exception.php';
+}
 
 /**
  * HTTP_Session2_Exception

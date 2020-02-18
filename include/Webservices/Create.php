@@ -23,7 +23,7 @@ function vtws_create($elementType, $element, $user) {
 		$relations=$element['relations'];
 		unset($element['relations']);
 	}
-
+	$wsAttachments = array();
 	if (!empty($element['attachments'])) {
 		foreach ($element['attachments'] as $fieldname => $attachment) {
 			if (empty($attachment['name']) || empty($attachment['content'])) {
@@ -38,6 +38,7 @@ function vtws_create($elementType, $element, $user) {
 				'error' => 0,
 				'size' => $attachment['size']
 			);
+			$wsAttachments[] = $filepath;
 		}
 		unset($element['attachments']);
 	}
@@ -118,16 +119,16 @@ function vtws_create($elementType, $element, $user) {
 			vtws_internal_setrelation($newrecid, $modname, $relations);
 		}
 		VTWS_PreserveGlobal::flush();
-		if (!empty($_FILES)) {
-			foreach ($_FILES as $field => $file) {
-				@unlink($file['tmp_name']);
+		if (!empty($wsAttachments)) {
+			foreach ($wsAttachments as $file) {
+				@unlink($file);
 			}
 		}
 		return $entity;
 	} else {
-		if (!empty($_FILES)) {
-			foreach ($_FILES as $field => $file) {
-				unlink($file['tmp_name']);
+		if (!empty($wsAttachments)) {
+			foreach ($wsAttachments as $file) {
+				@unlink($file);
 			}
 		}
 		return null;

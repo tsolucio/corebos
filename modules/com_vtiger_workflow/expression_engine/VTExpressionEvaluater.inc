@@ -93,7 +93,10 @@ class VTFieldExpressionEvaluater {
 			'isString' => '__cb_is_string',
 			'OR' => '__cb_or',
 			'AND' => '__cb_and',
+			'exists' => '__cb_exists',
+			'existsrelated' => '__cb_existsrelated',
 			'add_workdays' => '__cb_add_workdays',
+			'number_format' => '__cb_number_format',
 		);
 		$this->operationsSQL = array(
 			'+'  => 'cbexpsql_add',
@@ -168,10 +171,11 @@ class VTFieldExpressionEvaluater {
 			'max' => 'cbexpsql_max',
 			'avg' => 'cbexpsql_avg',
 			'count' => 'cbexpsql_count',
-			'isNumeric' => '__cb_is_numeric',
-			'isString' => '__cb_is_string',
-			'OR' => '__cb_or',
-			'AND' => '__cb_and'
+			'isNumeric' => 'cbexpsql_isnumber',
+			'isString' => 'cbexpsql_isstring',
+			'OR' => 'cbexpsql_or',
+			'AND' => 'cbexpsql_and',
+			'number_format' => 'cbexpsql_number_format',
 		);
 		$this->rawparams = array(
 			'__cb_getGEODistanceFromUser2AccountBilling',
@@ -196,6 +200,8 @@ class VTFieldExpressionEvaluater {
 			'__cb_getcrudmode',
 			'__cb_getfromcontext',
 			'__cb_setfromcontext',
+			'__cb_exists',
+			'__cb_existsrelated',
 		);
 		$wfexpfuncs = $adb->query('select expname,funcname,rawparams,needscontext from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {

@@ -154,20 +154,6 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 	$moduleId = getTabid($module);
 
 	// check permission on module
-	list($wsid,$crmid) = explode('x', $id);
-	if ((vtws_getEntityId('Calendar')==$wsid || vtws_getEntityId('Events')==$wsid) && getSalesEntityType($crmid)=='cbCalendar') {
-		$id = vtws_getEntityId('cbCalendar') . 'x' . $crmid;
-	}
-	if (vtws_getEntityId('cbCalendar')==$wsid && getSalesEntityType($crmid)=='Calendar') {
-		$rs = $adb->pquery('select activitytype from vtiger_activity where activityid=?', array($crmid));
-		if ($rs && $adb->num_rows($rs)==1) {
-			if ($adb->query_result($rs, 0, 0)=='Task') {
-				$id = vtws_getEntityId('Calendar') . 'x' . $crmid;
-			} else {
-				$id = vtws_getEntityId('Events') . 'x' . $crmid;
-			}
-		}
-	}
 	$webserviceObject = VtigerWebserviceObject::fromId($adb, $id);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
@@ -289,21 +275,13 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 			break;
 		default:
 			$relation_criteria = '';
-			switch ($relatedModule) {
-				case 'ProductComponent':
-					if ($module == 'Products') {  // Product Bundles
-						if (!empty($productDiscriminator) && $productDiscriminator == 'productparent') {
-							$relation_criteria = " and label like '%parent%'";
-						} else {
-							$relation_criteria = " and label like '%bundle%'";  // bundle by default
-						}
-					}
-					break;
-				case 'Calendar':
-					$relation_criteria = " and label like '%Activities%'";
-					// History not supported
-					//$relation_criteria = " and label like '%History%'";
-					break;
+			if ($relatedModule == 'ProductComponent' && $module == 'Products') {
+				// Product Bundles
+				if (!empty($productDiscriminator) && $productDiscriminator == 'productparent') {
+					$relation_criteria = " and label like '%parent%'";
+				} else {
+					$relation_criteria = " and label like '%bundle%'";  // bundle by default
+				}
 			}
 			// special product relation with Q/SO/I/PO
 			if ($relatedModule == 'Products' && in_array($module, array('Invoice','Quotes','SalesOrder','PurchaseOrder'))) {

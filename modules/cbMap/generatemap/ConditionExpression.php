@@ -33,9 +33,12 @@ class genConditionExpression extends generatecbMap {
 			foreach ($xml->function->parameters->parameter as $prm) {
 				$fparams[] = $prm;
 			}
-		} else {
+		} elseif (isset($xml->template)) {
 			$maptype='template';
 			$mapcontent = $xml->template;
+		} else {
+			$maptype='expression';
+			$mapcontent = '';
 		}
 		$module = $Map->column_fields['targetname'];
 		$smarty->assign('MODULES', getPicklistValuesSpecialUitypes('1613', '', $module));

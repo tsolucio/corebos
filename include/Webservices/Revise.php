@@ -39,7 +39,7 @@ function vtws_revise($element, $user) {
 	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 	$meta = $handler->getMeta();
 	$entityName = $meta->getObjectEntityName($element['id']);
-
+	$wsAttachments = array();
 	if (!empty($element['attachments'])) {
 		foreach ($element['attachments'] as $fieldname => $attachment) {
 			$filepath = $root_directory.'cache/'.$attachment['name'];
@@ -51,6 +51,7 @@ function vtws_revise($element, $user) {
 				'error' => 0,
 				'size' => $attachment['size']
 			);
+			$wsAttachments[] = $filepath;
 		}
 		unset($element['attachments']);
 	}
@@ -116,10 +117,10 @@ function vtws_revise($element, $user) {
 
 	$entity = $handler->revise($element);
 	VTWS_PreserveGlobal::flush();
-	if (!empty($_FILES)) {
-		foreach ($_FILES as $file) {
-			if (file_exists($file['tmp_name'])) {
-				unlink($file['tmp_name']);
+	if (!empty($wsAttachments)) {
+		foreach ($wsAttachments as $file) {
+			if (file_exists($file)) {
+				@unlink($file);
 			}
 		}
 	}

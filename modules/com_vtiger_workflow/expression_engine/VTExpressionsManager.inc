@@ -89,6 +89,7 @@ class VTExpressionsManager {
 			'add_time(timefield, minutes)' => 'add_time(timefield, minutes)',
 			'sub_time(timefield, minutes)' => 'sub_time(timefield, minutes)',
 			'today' => "get_date('today')",
+			'today' => "get_date('now')",
 			'tomorrow' => "get_date('tomorrow')",
 			'yesterday' => "get_date('yesterday')",
 			'time' => "get_date('time')",
@@ -140,6 +141,8 @@ class VTExpressionsManager {
 			'isString' => 'isString(fieldname)',
 			'OR' => 'OR(condition1, condition2)',
 			'AND' => 'AND(condition1, condition2)',
+			'exists' => 'exists(fieldname, value)',
+			'existsrelated' => 'existsrelated(relatedmodule, fieldname, value)',
 		);
 		$wfexpfuncs = $adb->query('select expname,expinfo from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {

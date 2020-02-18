@@ -7,6 +7,36 @@
 * Portions created by vtiger are Copyright (C) vtiger.
 * All Rights Reserved.
 ************************************************************************************/
+?>
+<footer class="slds-grid slds-gutters slds-card__footer" style="width:100%;">
+<div class="slds-col slds-size_1-of-2 slds-p-left_x-large" style='text-align:left;'>
+<span class='small' style='color: rgb(153, 153, 153);'>
+	<?php echo $coreBOS_uiapp_name; ?> <span id='_vtiger_product_version_'><?php echo $coreBOS_uiapp_version; ?></span>
+</span>
+<span class='small'>
+<?php
+if ($coreBOS_uiapp_showgitversion || $coreBOS_uiapp_showgitdate) {
+	list($gitversion,$gitdate) = explode(' ', file_get_contents('include/sw-precache/gitversion'));
+	$gitdate = trim(str_replace('-', '', $gitdate));
+	echo '&nbsp;('.($coreBOS_uiapp_showgitversion ? $gitversion : '').($coreBOS_uiapp_showgitdate ? $gitdate : '').')';
+}
+if ($calculate_response_time) {
+	$startTime = microtime(true);
+	$endTime = microtime(true);
+	$deltaTime = round($endTime - $startTime, 2);
+	echo('&nbsp;Server response time: '.$deltaTime.' seconds.');
+}
+?>
+	</span>
+</span>
+</div>
+<div class="slds-col slds-size_1-of-2 cblds-t-align_right">
+<span class='cblds-t-align_right small slds-p-right_small'>
+	&copy; 2004-<?php echo date('Y'); ?> <a href='<?php echo $coreBOS_uiapp_url; ?>' target='_blank'><?php echo $coreBOS_uiapp_companyname; ?></a>
+</span>
+</div>
+</footer>
+<?php
 if (isset($adb) && !empty($current_user->id)) {
 	$COMMONFTRLINKS = Vtiger_Link::getAllByType(Vtiger_Link::IGNORE_MODULE, array('FOOTERSCRIPT'), array('MODULE'=>$currentModule));
 	foreach ($COMMONFTRLINKS['FOOTERSCRIPT'] as $fscript) {
@@ -15,8 +45,5 @@ if (isset($adb) && !empty($current_user->id)) {
 }
 cbEventHandler::do_action('corebos.footer');
 ?>
-</td></tr>
-<tr><td colspan="2" align="center">
-</td></tr></table>
 </body>
 </html>

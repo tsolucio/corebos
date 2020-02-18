@@ -356,6 +356,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Activates inline edit for those fields that the user can edit. The default is 1',
 ),
+'Application_DetailView_Sticky_BlockStatus' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Keep the open/closed status of each Detail View block during the user session. By default it is not kept (0).',
+),
 'Application_Upload_MaxSize' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',
