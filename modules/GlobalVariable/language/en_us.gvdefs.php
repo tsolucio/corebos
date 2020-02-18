@@ -630,11 +630,11 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'The number of units that is set when creating a new product line in inventory modules. The default value is 1.',
 ),
 'Inventory_Quantity_Precision' => array(
-    'status' => 'Implemented',
-    'valuetype' => 'Integer',
-    'category' => 'Application',
-    'values' => '',
-    'definition' => 'The number of decimals to use in the quantity field of the inventory lines. The default value is 2.',
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'The number of decimals to use in the quantity field of the inventory lines. The default value is 2.',
 ),
 'Inventory_Service_Default_Units' => array(
 	'status' => 'Implemented',
