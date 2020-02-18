@@ -93,6 +93,7 @@ class VTFieldExpressionEvaluater {
 			'isString' => '__cb_is_string',
 			'OR' => '__cb_or',
 			'AND' => '__cb_and',
+			'NOT' => '__cb_not',
 			'exists' => '__cb_exists',
 			'existsrelated' => '__cb_existsrelated',
 			'allrelatedare' => '__cb_allrelatedare',
@@ -176,6 +177,7 @@ class VTFieldExpressionEvaluater {
 			'isString' => 'cbexpsql_isstring',
 			'OR' => 'cbexpsql_or',
 			'AND' => 'cbexpsql_and',
+			'NOT' => 'cbexpsql_not',
 			'number_format' => 'cbexpsql_number_format',
 		);
 		$this->rawparams = array(

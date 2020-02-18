@@ -422,6 +422,9 @@ function cbexpsql_or($arr, $mmodule) {
 function cbexpsql_and($arr, $mmodule) {
 	return 'TRUE';
 }
+function cbexpsql_not($arr, $mmodule) {
+	return 'FALSE';
+}
 
 class cbexpsql_environmentstub {
 	private $crmid;

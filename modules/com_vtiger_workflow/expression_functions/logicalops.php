@@ -28,6 +28,9 @@ function __cb_or($arr) {
 function __cb_and($arr) {
 	return $arr[0] && $arr[1];
 }
+function __cb_not($arr) {
+	return !($arr[0]);
+}
 
 function __cb_exists($arr) {
 	global $current_user, $adb;
