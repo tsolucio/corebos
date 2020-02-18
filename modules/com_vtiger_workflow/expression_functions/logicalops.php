@@ -49,8 +49,16 @@ function __cb_exists($arr) {
 }
 
 function __cb_existsrelated($params) {
+	return __cb_relatedevaluations('existsrelated', $params);
+}
+
+function __cb_allrelatedare($params) {
+	return __cb_relatedevaluations('allrelatedare', $params);
+}
+
+function __cb_relatedevaluations($evaluation, $params) {
 	global $adb;
-	$existsrelated = false;
+	$return = false;
 	$relatedmodule = $params[0];
 	$env = $params[3];
 	$data = $env->getData();
@@ -89,11 +97,24 @@ function __cb_existsrelated($params) {
 			return false;
 		}
 		$query = mkXQuery($relationData['query'], '1');
-		$query = stripTailCommandsFromQuery($query).' AND '.$fld->table.'.'.$fld->column.'=? LIMIT 1';
-		$result = $adb->pquery($query, array($params[2]));
-		if ($result) {
-			$existsrelated = ($adb->num_rows($result) > 0);
+		switch ($evaluation) {
+			case 'existsrelated':
+				$query = stripTailCommandsFromQuery($query).' AND '.$fld->table.'.'.$fld->column.'=? LIMIT 1';
+				$result = $adb->pquery($query, array($params[2]));
+				if ($result) {
+					$return = ($adb->num_rows($result) > 0);
+				}
+				break;
+			case 'allrelatedare':
+				$query = stripTailCommandsFromQuery($query).' AND '.$fld->table.'.'.$fld->column.'!=? LIMIT 1';
+				$result = $adb->pquery($query, array($params[2]));
+				if ($result) {
+					$return = ($adb->num_rows($result) == 0);
+				}
+				break;
+			default:
+				return false;
 		}
 	}
-	return $existsrelated;
+	return $return;
 }

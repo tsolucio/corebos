@@ -95,6 +95,7 @@ class VTFieldExpressionEvaluater {
 			'AND' => '__cb_and',
 			'exists' => '__cb_exists',
 			'existsrelated' => '__cb_existsrelated',
+			'allrelatedare' => '__cb_allrelatedare',
 			'add_workdays' => '__cb_add_workdays',
 			'number_format' => '__cb_number_format',
 		);
@@ -202,6 +203,7 @@ class VTFieldExpressionEvaluater {
 			'__cb_setfromcontext',
 			'__cb_exists',
 			'__cb_existsrelated',
+			'__cb_allrelatedare',
 		);
 		$wfexpfuncs = $adb->query('select expname,funcname,rawparams,needscontext from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {
