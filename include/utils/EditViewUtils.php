@@ -1422,7 +1422,9 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 		if ($module != 'PurchaseOrder') {
 			$product_Detail[$i]['qtyInStock'.$i]=$qtyinstock;
 		}
-		$qty = number_format($qty, 2, '.', ''); //Convert to 2 decimals
+		
+		$Inventory_Quantity_Precision = GlobalVariable::getVariable('Inventory_Quantity_Precision',2,$module);
+		$qty = number_format($qty, $Inventory_Quantity_Precision, '.', ''); //Convert to 2 decimals
 		$product_Detail[$i]['qty'.$i]=$qty;
 		$product_Detail[$i]['listPrice'.$i]=CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($listprice, null, true), null, true);
 		$product_Detail[$i]['unitPrice'.$i]=CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($unitprice, null, true), null, true);
