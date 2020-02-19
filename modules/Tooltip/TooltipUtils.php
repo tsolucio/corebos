@@ -126,10 +126,7 @@ function getToolTipText($view, $fieldname, $module, $value) {
 			if (empty($fieldvalue)) {
 				$fieldvalue = '&nbsp;';
 			}
-			$ttMaxFieldValueLength = GlobalVariable::getVariable('ToolTip_MaxFieldValueLength', 35, $module);
-			if (strlen($fieldvalue)>$ttMaxFieldValueLength) {
-				$fieldvalue = substr($fieldvalue, 0, $ttMaxFieldValueLength).'...';
-			}
+			$fieldvalue = textlength_check($fieldvalue, GlobalVariable::getVariable('ToolTip_MaxFieldValueLength', 35, $module));
 			$uitype = $adb->query_result($result, $i, 'uitype');
 			if ($uitype==17) { // website
 				$fieldvalue = '<a href="//'.$value[0][$fieldname].'" target=_blank>'.$fieldvalue.'</a>';
