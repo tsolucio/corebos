@@ -1177,7 +1177,7 @@ function getConvertQuoteToSoObject($focus, $quote_focus, $quoteid) {
 * Return type is an object array
 */
 function getAssociatedProducts($module, $focus, $seid = '') {
-	global $log, $adb, $currentModule;
+	global $log, $adb, $currentModule, $current_user;
 	$log->debug('> getAssociatedProducts '.$module.','.get_class($focus).','.$seid);
 
 	$product_Detail = array();
@@ -1422,7 +1422,7 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 		if ($module != 'PurchaseOrder') {
 			$product_Detail[$i]['qtyInStock'.$i]=$qtyinstock;
 		}
-		$qty = number_format($qty, 2, '.', ''); //Convert to 2 decimals
+		$qty = number_format($qty, GlobalVariable::getVariable('Inventory_Quantity_Precision', $current_user->no_of_currency_decimals, $module), '.', '');
 		$product_Detail[$i]['qty'.$i]=$qty;
 		$product_Detail[$i]['listPrice'.$i]=CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($listprice, null, true), null, true);
 		$product_Detail[$i]['unitPrice'.$i]=CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($unitprice, null, true), null, true);

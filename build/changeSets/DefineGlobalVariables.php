@@ -215,6 +215,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Inventory_Show_ShippingHandlingCharges',
 				'Inventory_Check_Invoiced_Lines',
 				'Inventory_Tax_FillInMode',
+				'Inventory_Quantity_Precision',
 				'GContacts_Max_Results',
 
 				'CustomerPortal_PDF_Modules',

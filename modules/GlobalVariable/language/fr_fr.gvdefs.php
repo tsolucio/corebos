@@ -629,6 +629,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Nombre d\'unités prédéfinies lors de la création d\'une nouvelle ligne de produit dans les modules Commande Fournisseur, Bon de Commande, Devis, Facture et "Issuecards". La valeur par défaut est (1).',
 ),
+'Inventory_Quantity_Precision' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'The number of decimals to use in the quantity field of the inventory lines. The default value is set to the current user decimal settings.',
+),
 'Inventory_Service_Default_Units' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Decimal',

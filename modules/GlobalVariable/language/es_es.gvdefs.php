@@ -630,6 +630,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'El número de unidades que se establece al crear una nueva línea de productos en módulos de inventario. El valor predeterminado es 1.',
 ),
+'Inventory_Quantity_Precision' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'Aplicación',
+	'values' => '',
+	'definition' => 'El número de decimales para usar en el campo de cantidad de las líneas de inventario. El valor predeterminado se establece en la configuración decimal del usuario actual.',
+),
 'Inventory_Service_Default_Units' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Decimal',
