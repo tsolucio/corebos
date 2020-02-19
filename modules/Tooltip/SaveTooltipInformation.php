@@ -98,6 +98,9 @@ function getFieldLabels($checkedFields) {
 	for ($i=0; $i<$count; $i++) {
 		$data[] = getTranslatedString($adb->query_result($result, $i, 'fieldlabel'), $module);
 	}
+	if (in_array(-1, $checkedFields)) {
+		$data[] = getTranslatedString('ModComments', 'ModComments');
+	}
 	return $data;
 }
 ?>

@@ -58,6 +58,12 @@ function getRelatedFieldsList($fieldid, $related_fields) {
 		$temp_relatedfield['fieldname'] = $related_fieldname;
 		$relatedFieldsArray[] = $temp_relatedfield;
 	}
+	$relatedFieldsArray[] = array(
+		'fieldlabel' => getTranslatedString('ModComments', 'ModComments'),
+		'input' => "<input type='checkbox' value='-1' name='ModComments' ".(tooltip_exists($fieldid, -1) ? 'checked' : '').'>',
+		'fieldid' => -1,
+		'fieldname' => 'ModComments',
+	);
 	$relatedFieldsArray = array_chunk($relatedFieldsArray, 4);
 	return $relatedFieldsArray;
 }
@@ -97,8 +103,9 @@ function tooltip_exists($fieldid, $related_fieldid) {
 /**
  * function to return the tooltip information
  * @param int $view - there can be multiple tooltips for a single module; this variable decides which is for which field
- * @param int $tabid - tabid of the field for which the tooltip has to be fetched
- * @param int $id - this is the crmid of the record
+ * @param int $fieldname - field for which the tooltip has to be fetched
+ * @param string $module - this is the module of the field
+ * @param array $value - column fields with values of the current record
  * returns the tooltip string
  */
 function getToolTipText($view, $fieldname, $module, $value) {
@@ -108,12 +115,16 @@ function getToolTipText($view, $fieldname, $module, $value) {
 	$fieldlabel = array();
 	require_once 'modules/Reports/ReportUtils.php';
 	$fieldid = getFieldid(getTabid($module), $fieldname);
-	$quickview = 'select fieldname,fieldlabel,uitype
+	$quickview = "select fieldname,fieldlabel,uitype,vtiger_quickview.sequence
 		from vtiger_quickview
 		inner join vtiger_field on vtiger_quickview.related_fieldid=vtiger_field.fieldid
 		where vtiger_quickview.fieldid=? and currentview=? and vtiger_field.presence in (0,2)
-		order by vtiger_quickview.sequence';
-	$result = $adb->pquery($quickview, array($fieldid,$view));
+		UNION
+		select 'ModComments','ModComments',1,2000
+		from vtiger_quickview
+		where vtiger_quickview.fieldid=? and currentview=? and vtiger_quickview.related_fieldid=-1
+		order by 4";
+	$result = $adb->pquery($quickview, array($fieldid, $view, $fieldid, $view));
 	$count = $adb->num_rows($result);
 	$text=array();
 	for ($i=0; $i<$count; $i++) {
@@ -137,6 +148,26 @@ function getToolTipText($view, $fieldname, $module, $value) {
 				$fieldvalue = '<a href="index.php?module='.$relmodule.'&action=DetailView&record='.$crmid.'" target=_blank>'.$fieldvalue.'</a>';
 			}
 			$text[$label] = $fieldvalue;
+		} elseif ($fieldname=='ModComments') {
+			list($wsmod, $crmid) = explode('x', $value[0]['id']);
+			$query = 'SELECT vtiger_crmentity.smownerid, vtiger_modcomments.commentcontent, vtiger_crmentity.modifiedtime
+				FROM vtiger_modcomments
+				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_modcomments.modcommentsid
+				LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
+				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
+				WHERE vtiger_crmentity.deleted=0 AND vtiger_modcomments.related_to=?
+				ORDER BY vtiger_crmentity.createdtime desc LIMIT '.GlobalVariable::getVariable('ToolTip_NumberOfComments', 5, $module);
+			$rs = $adb->pquery($query, array($crmid));
+			$coms = '<br>';
+			$i18nAuthor = getTranslatedString('LBL_AUTHOR', 'ModComments');
+			$i18nOn = getTranslatedString('LBL_ON_DATE', 'ModComments');
+			while ($row=$adb->fetch_array($rs)) {
+				$coms .= '<div class="dataField" style="width: 80%; padding-top: 5px;" valign="top">'.nl2br($row['commentcontent']).'</div>
+				<div class="dataLabel" style="border-bottom: 1px dotted rgb(204, 204, 204); width: 80%; padding-bottom: 5px;" valign="top">
+					<span style="color:darkred;">'.$i18nAuthor.': '.getUserName($row['smownerid']).' '.$i18nOn.' '.$row['modifiedtime'].'</span>
+				</div>';
+			}
+			$text[getTranslatedString('ModComments', 'ModComments')] = $coms;
 		}
 	}
 	return $text;
