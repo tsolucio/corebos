@@ -146,6 +146,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Nombre maximum de caratères affichable par champ dans les infobulles. La valeur par défaut est (35) caractères. Variable utilisable pour chaque module indépendamment.',
 ),
+'ToolTip_NumberOfComments' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Module Functionality',
+	'values' => '',
+	'definition' => 'The maximum number of comments to show in the tooltip. The default value is 5.',
+),
 'Debug_Send_VtigerCron_Error' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Liste CSV',

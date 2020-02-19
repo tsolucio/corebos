@@ -146,6 +146,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'The maximum number of characters of a value to show in the tooltip. The default value is 35.',
 ),
+'ToolTip_NumberOfComments' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Module Functionality',
+	'values' => '',
+	'definition' => 'The maximum number of comments to show in the tooltip. The default value is 5.',
+),
 'Debug_Send_VtigerCron_Error' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'CSV EMail',

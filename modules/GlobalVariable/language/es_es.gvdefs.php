@@ -146,6 +146,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Número máximo de caracteres de un valor que se mostrarán en la ayuda emergente. El valor por defecto es 35.',
 ),
+'ToolTip_NumberOfComments' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'Funcionalidad Módulo',
+	'values' => '',
+	'definition' => 'El número máximo de comentarios para mostrar en la ayuda emergente. El valor predeterminado es 5.',
+),
 'Debug_Send_VtigerCron_Error' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'CSV EMail',

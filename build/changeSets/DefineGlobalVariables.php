@@ -186,6 +186,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'EMail_CustomCurrentDate_Format',
 				'MailManager_Show_SentTo_Links',
 				'ToolTip_MaxFieldValueLength',
+				'ToolTip_NumberOfComments',
 				'HelpDesk_Support_EMail',
 				'HelpDesk_Support_Name',
 				'HelpDesk_Support_Reply_EMail',
