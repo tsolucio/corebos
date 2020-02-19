@@ -20,7 +20,7 @@ function getFieldList($module_name, $field_name = '') {
 	global $adb;
 	$tabid = getTabid($module_name);
 
-	$query = 'select * from vtiger_field where tabid = ?';
+	$query = 'select fieldid,fieldname,fieldlabel from vtiger_field where tabid=?';
 	$params = array($tabid);
 	$query.= " and columnname not like 'imagename' and uitype not in (61, 122) and vtiger_field.presence in (0,2)";
 	$result = $adb->pquery($query, $params);
@@ -111,12 +111,11 @@ function getToolTipText($view, $fieldname, $module, $value) {
 	$quickview = 'select fieldname,fieldlabel,uitype
 		from vtiger_quickview
 		inner join vtiger_field on vtiger_quickview.related_fieldid=vtiger_field.fieldid
-		where vtiger_quickview.fieldid = ? and currentview= ? and vtiger_field.presence in (0,2)
+		where vtiger_quickview.fieldid=? and currentview=? and vtiger_field.presence in (0,2)
 		order by vtiger_quickview.sequence';
 	$result = $adb->pquery($quickview, array($fieldid,$view));
 	$count = $adb->num_rows($result);
 	$text=array();
-	$fieldname = array();
 	for ($i=0; $i<$count; $i++) {
 		$fieldname = $adb->query_result($result, $i, 'fieldname');
 		if (in_array($fieldname, $keys)) {
@@ -148,7 +147,7 @@ function getToolTipText($view, $fieldname, $module, $value) {
  * @param $text - the tooltip text which is to be formatted
  * @param $format - the format in which tooltip has to be formatted; default value will be each entry in single line
  */
-function getToolTip($text, $format = "default") {
+function getToolTip($text, $format = 'default') {
 	require_once 'Smarty_setup.php';
 	$smarty = new vtigerCRM_Smarty;
 	$tip = '';
@@ -209,9 +208,9 @@ function vttooltip_processResult($result, $descObj) {
 			$result[0][$name] = getOwnerName($id);
 		} elseif ($field['type']['name'] == 'boolean') {
 			if ($result[0][$name] == 1) {
-				$result[0][$name] = "on";
+				$result[0][$name] = 'on';
 			} else {
-				$result[0][$name] = "off";
+				$result[0][$name] = 'off';
 			}
 		} elseif ($field['type']['name'] == 'picklist') {
 			$temp = '';
@@ -246,7 +245,7 @@ function QuickViewFieldList($module) {
 	global $adb, $app_strings,$mod_strings;
 
 	$tabid = getTabid($module);
-	$query = "select * from vtiger_field where tabid = ? and columnname not like 'imagename' and uitype not in (61, 122) and vtiger_field.presence in (0,2)";
+	$query = "select fieldname,fieldlabel from vtiger_field where tabid=? and columnname not like 'imagename' and uitype not in (61, 122) and vtiger_field.presence in (0,2)";
 	$result = $adb->pquery($query, array($tabid));
 	if ($adb->num_rows($result)>0) {
 		$fieldlist = '<select onchange="getRelatedFieldInfo(this)" class="importBox" id="pick_field" name="pick_field">';

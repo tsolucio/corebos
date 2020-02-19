@@ -89,7 +89,7 @@ function getDetailViewForTooltip($fieldid, $checkedFields) {
 function getFieldLabels($checkedFields) {
 	global $adb;
 	$data = array();
-	$sql = 'select * from vtiger_field where fieldid in ('.generateQuestionMarks($checkedFields).') and vtiger_field.presence in (0,2)';
+	$sql = 'select tabid,fieldlabel from vtiger_field where fieldid in ('.generateQuestionMarks($checkedFields).') and vtiger_field.presence in (0,2)';
 	$result = $adb->pquery($sql, array($checkedFields));
 	$count = $adb->num_rows($result);
 	// to fix the localization of strings
