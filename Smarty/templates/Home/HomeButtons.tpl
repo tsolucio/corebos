@@ -8,8 +8,7 @@
  * All Rights Reserved.
 ********************************************************************************/
 -->*}
-<div id="page-header-anchor" class="slds-m-vertical_small"></div>
-<div id="page-header" class="slds-page-header slds-m-vertical_none slds-is-fixed" style="width: 98.5%; margin-left: 0.75%;">
+<div id="page-header" class="slds-page-header slds-m-vertical_medium">
 	<div class="slds-page-header__row">
 		<div class="slds-page-header__col-title">
 			<div class="slds-page-header__col-meta">

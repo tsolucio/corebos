@@ -17,12 +17,25 @@ html {
 
 #page-header {
   z-index: 99;
-  transition: padding 100ms linear, top 150ms linear, margin 150ms linear, width 150ms linear;
+  width: 98.5%;
+  margin-left: 0.75%;
+  position: sticky;
+  top: 5.325rem;
+  transition: top 100ms linear, width 200ms linear;
+}
+
+#page-header.page-header_stickup {
+  top: 2.5rem;
+}
+
+#page-header.page-header_collapsed {
+  width: 100%; 
+  margin-left: 0;
 }
 
 #page-header-surplus {
   overflow: hidden;
-  transition: height 100ms linear;
+  transition: height 80ms linear;
 }
 
 #page-header-icon {
