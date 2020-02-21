@@ -80,9 +80,10 @@ class RunWebserviceWorkflowTask extends VTTask {
 			foreach ($headers as $head) {
 				$findauth = explode(':', $head);
 				if ($findauth[0] == 'Authorization') {
-					if (strstr($findauth[1], "getContext")) {
-						$context = str_replace(array("getContext(",")"), array("",""), $findauth[1]);
-						$token = $entity->getContext()[$context];
+					if (strstr($findauth[1], 'getContext')) {
+						$context = str_replace(array('getContext(', ')'), array('', ''), $findauth[1]);
+						$token = $entity->getContext();
+						$token = $token[$context];
 					} else {
 						$token = $findauth[1];
 					}
