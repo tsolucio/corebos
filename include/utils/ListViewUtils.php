@@ -1776,6 +1776,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						'accountid' => isset($_REQUEST['accid']) ? vtlib_purify($_REQUEST['accid']) : 0,
 						'contactid' => isset($_REQUEST['ctoid']) ? vtlib_purify($_REQUEST['ctoid']) : 0,
 						'productid' => $entity_id,
+						'related_module' => isset($_REQUEST['return_module']) ? vtlib_purify($_REQUEST['return_module']) : '',
 					);
 					list($unitprice, $dtopdo, $void) = cbEventHandler::do_filter('corebos.filter.inventory.getprice', array($unitprice, 0, $parr));
 					$slashes_temp_val = popup_from_html($field_val);
