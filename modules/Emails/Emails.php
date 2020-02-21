@@ -210,7 +210,7 @@ class Emails extends CRMEntity {
 			pdfAttach($this, $module, $pdfAttached, $id);
 		}
 
-		//This is to added to store the existing attachment id of the contact where we should delete this when we give new image
+		//added to store the existing attachment id of the contact > we should delete this when we get new image
 		if (!empty($_FILES)) {
 			foreach ($_FILES as $fileindex => $files) {
 				if ($files['name'] != '' && $files['size'] > 0) {

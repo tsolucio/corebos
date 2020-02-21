@@ -206,7 +206,7 @@ function email_validate(oform, mode) {
 		alert(no_rcpts_err_msg);
 		return false;
 	}
-	//Changes made to fix tickets #4633, # 5111 to accomodate all possible email formats
+	//accomodate all possible email formats
 	var email_regex = /^[a-zA-Z0-9]+([\_\-\.]*[a-zA-Z0-9]+[\_\-]?)*@[a-zA-Z0-9]+([\_\-]?[a-zA-Z0-9]+)*\.+([\_\-]?[a-zA-Z0-9])+(\.?[a-zA-Z0-9]+)*$/;
 	var arr = new Array();
 	if (document.EditView.ccmail != null) {
