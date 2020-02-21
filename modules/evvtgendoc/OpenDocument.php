@@ -990,17 +990,17 @@ class OpenDocument {
 						$pcincluir=false;
 						// procesar paracada
 						$this->contextoActual=0;
-							$num_iter =iterations();
-							$repe[] = 0;
-							$last_repe = count($repe)-1;
+						$num_iter =iterations();
+						$repe[] = 0;
+						$last_repe = count($repe)-1;
 						for ($repe[$last_repe]=1; $repe[$last_repe]<=$num_iter; $repe[$last_repe]++) {
 							$ramaparacada=$this->contextoParacada[0]['ramaparacada'];
 							$this->contextoParacada[0]['repe'] = $repe[$last_repe];
 							$this->toGenDoc($ramaparacada, $id, $module);
 							pop_iter_modules();
 						}
-							array_pop($repe);
-							$this->contextoParacada=array();
+						array_pop($repe);
+						$this->contextoParacada=array();
 					}
 				} else {
 					$ramaparacada->append($child);
