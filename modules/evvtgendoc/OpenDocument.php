@@ -943,7 +943,7 @@ class OpenDocument {
 	 * @access public
 	 */
 	public function toGenDoc($obj, $id, $module, $root_module = null) {
-		global $siincluir,$changedImage,$newImageAdded;
+		global $siincluir, $changedImage, $newImageAdded, $includeOriginalDirective;
 		global $ramaparacada,$pcincluir,$tempincluir,$iter_modules,$rootmod;
 		global $repe,$log, $parentArray,$currentModule;
 		//commands
@@ -957,6 +957,7 @@ class OpenDocument {
 		} elseif (!is_null($obj)) {
 			$iterat=$obj->getChildren();
 		}
+		$includeOriginalDirective = isset($includeOriginalDirective) ? $includeOriginalDirective : '';
 		foreach ($iterat as $child) {
 			if ($pcincluir) {
 				$pnode=$child->getNode();
@@ -1001,6 +1002,7 @@ class OpenDocument {
 						}
 						array_pop($repe);
 						$this->contextoParacada=array();
+						$includeOriginalDirective = '';
 					}
 				} else {
 					$ramaparacada->append($child);
@@ -1055,6 +1057,7 @@ class OpenDocument {
 						continue 2;
 					}
 					if (strtolower(substr($texto_p, 0, strlen($foreachGD)))==$foreachGD) {
+						$includeOriginalDirective = '';
 						$pcincluir=true;
 						$ramaparacada= new ArrayObject;
 						// obtener condición
@@ -1089,6 +1092,7 @@ class OpenDocument {
 						array_pop($repe);
 						$ramaparacada=$this->saveContextoActual['ramaparacada'];
 						$this->contextoActual--;
+						$includeOriginalDirective = '';
 						continue 2;
 					}
 					if (strtolower(substr($texto_p, 0, strlen($imageGD)))==$imageGD) {
@@ -1104,6 +1108,12 @@ class OpenDocument {
 					}
 					if (strtolower(substr($texto_p, 0, strlen($includeGD)))==$includeGD) {
 						$entidadincluir = rtrim(trim(substr($texto_p, strlen($includeGD))), '}');
+						if ($includeOriginalDirective=='' && $entidadincluir=='Documents') {
+							$includeOriginalDirective = 'Documents';
+						}
+						if ($includeOriginalDirective!='') {
+							$entidadincluir = $includeOriginalDirective;
+						}
 						$reemp = $includeGD.eval_incluir($entidadincluir, $id, $module).'}';
 						$pnc->replaceData(0, strlen($pnc->wholeText), $reemp);
 					}
