@@ -2285,10 +2285,10 @@ function OpenCompose(id, mode, crmid) {
 		url = 'index.php?module=Emails&action=EmailsAjax&file=EditView';
 		break;
 	case 'forward':
-		url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&record='+id+'&forward=true';
+		url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&forward=true&record='+id;
 		break;
 	case 'reply':
-		url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&record='+id+'&reply=true';
+		url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&reply=true&record='+id;
 		break;
 	case 'Invoice':
 		url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&pmodule=Invoice&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
@@ -2303,10 +2303,10 @@ function OpenCompose(id, mode, crmid) {
 		url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&pmodule=Quotes&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
 		break;
 	case 'Documents':
-		url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&pmodule=Documents&attachment='+id+'';
+		url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&pmodule=Documents&attachment='+id;
 		break;
 	case 'print':
-		url = 'index.php?module=Emails&action=EmailsAjax&file=PrintEmail&record='+id+'&print=true';
+		url = 'index.php?module=Emails&action=EmailsAjax&file=PrintEmail&print=true&record='+id;
 	}
 	openPopUp('xComposeEmail', this, url, 'createemailWin', 920, 700, 'menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes');
 }
