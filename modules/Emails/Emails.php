@@ -232,8 +232,7 @@ class Emails extends CRMEntity {
 				$query = 'select attachmentsid from vtiger_seattachmentsrel where crmid=?';
 				$res = $adb->pquery($query, array($documentIds[$i]));
 				$attachmentId = $adb->query_result($res, 0, 0);
-				$query = 'insert into vtiger_seattachmentsrel values(?, ?)';
-				$adb->pquery($query, array($id,$attachmentId));
+				$adb->pquery('insert ignore into vtiger_seattachmentsrel values(?, ?)', array($id, $attachmentId));
 			}
 		}
 		$log->debug('< insertIntoAttachment');
