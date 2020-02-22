@@ -794,9 +794,8 @@ class OpenDocument {
 			include 'modules/evvtgendoc/commands_en.php';
 		}
 		$strlen_includeGD = strlen($includeGD);
-		$xpath = new DOMXPath($this->contentDOM);
-		//foreach ($xpath->evaluate('//*[count(*) = 0]') as $pnode) {
-		foreach ($xpath->evaluate('//text:p[contains(text(), "'.$includeGD.'")]') as $pnode) {
+		//foreach ($this->contentXPath->evaluate('//*[count(*) = 0]') as $pnode) {
+		foreach ($this->contentXPath->evaluate('//text:p[contains(text(), "'.$includeGD.'")]') as $pnode) {
 			$texto_p='';
 			foreach ($pnode->childNodes as $pnc) {
 				$texto_p = (empty($pnc->wholeText) ? (empty($pnc->nodeValue) ? '' : $pnc->nodeValue) : $pnc->wholeText);
@@ -864,11 +863,11 @@ class OpenDocument {
 						$pnode->parentNode->replaceChild($newdoc, $pnode);
 						unset($newdoc);
 						// include styles
-						$docstyles = $this->contentDOM->getElementsByTagNameNS('urn:oasis:names:tc:opendocument:xmlns:office:1.0', 'automatic-styles')->item(0);
+						//$docstyles = $this->contentDOM->getElementsByTagNameNS('urn:oasis:names:tc:opendocument:xmlns:office:1.0', 'automatic-styles')->item(0);
 						$innodelist = $inccontentDOM->getElementsByTagNameNS('urn:oasis:names:tc:opendocument:xmlns:office:1.0', 'automatic-styles')->item(0);
 						foreach ($innodelist->childNodes as $incnode) {
 							$newnode = $this->contentDOM->importNode($incnode, true);
-							$docstyles->appendChild($newnode);
+							$this->styles->appendChild($newnode);
 						}
 						// include images
 						$innodelist = $inccontentDOM->getElementsByTagNameNS('urn:oasis:names:tc:opendocument:xmlns:drawing:1.0', 'image');
