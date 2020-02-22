@@ -2774,7 +2774,7 @@ class OpenDocument {
 		if (!is_dir('cache/genxml')) {
 			mkdir('cache/genxml');
 		}
-		$cacheFile = 'cache/genxml/xmlgen'.$record.'.xml';
+		$cacheFile = 'cache/genxml/xmlgen'.$id.'.xml';
 		if (file_exists($cacheFile)) {
 			unlink($cacheFile);
 		}
