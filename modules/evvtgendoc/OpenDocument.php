@@ -443,7 +443,7 @@ class OpenDocument {
 		$this->contentXPath->registerNamespace('text', self::NS_TEXT);
 		$this->styles_array = $this->getStyles();
 
-				$this->listChildren();
+		$this->listChildren();
 		$this->setMax();
 	}
 
@@ -2307,7 +2307,7 @@ class OpenDocument {
 
 	/**
 	 * Add a full path to the file entry list in this manifest document.
-	 * Creates a DOM element with the tag 'manifest:file-enty' and
+	 * Creates a DOM element with the tag 'manifest:file-entry' and
 	 * adds 'manifest:full-path', and 'manifest:media-type' attributes to it.
 	 *
 	 * @return		DOMElement A DOM element which contains a single file entry.

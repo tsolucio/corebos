@@ -81,7 +81,7 @@
 		<input type="hidden" name="treeIds" id="treeIds" value="">
 		<input type="hidden" name="treeParents" id="treeParents" value="">
 		<input type="hidden" name="treePositions" id="treePositions" value="">
-	  <div class="slds-form_horizontal" style="float:left;margin-left:40px;;width:90%;text-align:left;">
+	  <div class="slds-form_horizontal" style="float:left;margin-left:40px;width:90%;text-align:left;">
 		  <div id="typeForm">
 			  <label class="slds-form-element__label evvtmenu-label" for="mtype">{'MenuType'|getTranslatedString:$MODULE}</label>
 			  <div class="slds-form-element__control">
