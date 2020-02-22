@@ -1046,6 +1046,14 @@ class OpenDocument {
 		} else {
 			include 'modules/evvtgendoc/commands_en.php';
 		}
+		$lenforeachGD=strlen($foreachGD);
+		$lenforeachEndGD=strlen($foreachEndGD);
+		$lenimageGD=strlen($imageGD);
+		$lenincludeGD=strlen($includeGD);
+		$lenifexistsGD=strlen($ifexistsGD);
+		$lenifnotexistsGD=strlen($ifnotexistsGD);
+		$lenifexistsEndGD=strlen($ifexistsEndGD);
+		$lenifnotexistsEndGD=strlen($ifnotexistsEndGD);
 		if (get_class($obj)=='ArrayObject') {
 			$iterat=$obj;
 		} elseif (!is_null($obj)) {
@@ -1063,20 +1071,20 @@ class OpenDocument {
 						break; // utilizo el primer texto no vacío que encuentro
 					}
 				}
-				if (strtolower(substr($texto_p, 0, strlen($foreachGD)))==$foreachGD) {
+				if (strtolower(substr($texto_p, 0, $lenforeachGD))==$foreachGD) {
 					$spn=$child->createSpan('putforeachhere'); // Marcamos el inicio paracada para saber donde poner el siguiente una vez compilado
 					$ramaparacada->append($spn);
 					$this->contextoParacada[$this->contextoActual]['ramaparacada']=$ramaparacada; // guardo contexto modulos encontrados
 					$this->contextoActual++;
 					$ramaparacada= new ArrayObject;
 					// obtener condición
-					$condicionparacada=rtrim(trim(substr($texto_p, strlen($foreachGD))), '}');
+					$condicionparacada=rtrim(trim(substr($texto_p, $lenforeachGD)), '}');
 					$module_pcada = getModuleFromCondition($this->contextoParacada[$this->contextoActual-1]['condicion']);
 					$this->contextoParacada[$this->contextoActual]=array(  // guardo contexto modulos encontrados
 						'condicion'=>$condicionparacada,
 						'module'=>($module_pcada=='Organization' ? 'cbCompany' : $module_pcada),
 					);
-				} elseif (strtolower(substr($texto_p, 0, strlen($foreachEndGD)))==$foreachEndGD) {
+				} elseif (strtolower(substr($texto_p, 0, $lenforeachEndGD))==$foreachEndGD) {
 					$this->contextoParacada[$this->contextoActual]['ramaparacada']=$ramaparacada; // guardo contexto modulos encontrados
 					if ($this->contextoActual>0) {
 						$this->contextoActual--;
@@ -1118,9 +1126,9 @@ class OpenDocument {
 							break; // utilizo el primer texto no vacío que encuentro
 						}
 					}
-					if (strtolower(substr($texto_p, 0, strlen($ifexistsGD)))==$ifexistsGD) {
+					if (strtolower(substr($texto_p, 0, $lenifexistsGD))==$ifexistsGD) {
 						// obtener condición
-						$condicion=rtrim(trim(substr($texto_p, strlen($ifexistsGD))), '}');
+						$condicion=rtrim(trim(substr($texto_p, $lenifexistsGD)), '}');
 						// evaluar condición
 						$cumple_cond = eval_existe($condicion, $id, $module);
 						if ($cumple_cond && $hayqueincluir) {
@@ -1130,9 +1138,9 @@ class OpenDocument {
 						}
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, strlen($ifnotexistsGD)))==$ifnotexistsGD) {
+					if (strtolower(substr($texto_p, 0, $lenifnotexistsGD))==$ifnotexistsGD) {
 						// obtener condición
-						$condicion=rtrim(trim(substr($texto_p, strlen($ifnotexistsGD))), '}');
+						$condicion=rtrim(trim(substr($texto_p, $lenifnotexistsGD)), '}');
 						// evaluar condición
 						$cumple_cond = eval_noexiste($condicion, $id, $module);
 						if ($cumple_cond && $hayqueincluir) {
@@ -1142,20 +1150,20 @@ class OpenDocument {
 						}
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, strlen($ifexistsEndGD)))==$ifexistsEndGD) {
+					if (strtolower(substr($texto_p, 0, $lenifexistsEndGD))==$ifexistsEndGD) {
 						array_pop($siincluir);
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, strlen($ifnotexistsEndGD)))==$ifnotexistsEndGD) {
+					if (strtolower(substr($texto_p, 0, $lenifnotexistsEndGD))==$ifnotexistsEndGD) {
 						array_pop($siincluir);
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, strlen($foreachGD)))==$foreachGD) {
+					if (strtolower(substr($texto_p, 0, $lenforeachGD))==$foreachGD) {
 						$includeOriginalDirective = '';
 						$pcincluir=true;
 						$ramaparacada= new ArrayObject;
 						// obtener condición
-						$condicionparacada=rtrim(trim(substr($texto_p, strlen($foreachGD))), '}');
+						$condicionparacada=rtrim(trim(substr($texto_p, $lenforeachGD)), '}');
 						eval_paracada($condicionparacada, $id, $module);
 						$this->contextoActual=0;
 						$this->contextoParacada[0]=array(  // guardo contexto modulos encontrados
@@ -1189,8 +1197,8 @@ class OpenDocument {
 						$includeOriginalDirective = '';
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, strlen($imageGD)))==$imageGD) {
-						$entidadimagen=rtrim(trim(substr($texto_p, strlen($imageGD))), '}');
+					if (strtolower(substr($texto_p, 0, $lenimageGD))==$imageGD) {
+						$entidadimagen=rtrim(trim(substr($texto_p, $lenimageGD)), '}');
 						//Comento codigo para una sola imagen, nada nos asegura que sólo haya una, pueden haber campos personalizados de imagen
 						// if ($this->contextoParacada[$this->contextoActual]['repe']>0) { // en un paracada y ya hemos agotado la primera imagen, todas las demas son nuevas
 						$this->newImages[]=eval_imagen($entidadimagen, $id, $module);
@@ -1200,8 +1208,8 @@ class OpenDocument {
 						// }
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, strlen($includeGD)))==$includeGD) {
-						$entidadincluir = rtrim(trim(substr($texto_p, strlen($includeGD))), '}');
+					if (strtolower(substr($texto_p, 0, $lenincludeGD))==$includeGD) {
+						$entidadincluir = rtrim(trim(substr($texto_p, $lenincludeGD)), '}');
 						if ($includeOriginalDirective=='' && $entidadincluir=='Documents') {
 							$includeOriginalDirective = 'Documents';
 						}
