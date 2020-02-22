@@ -901,7 +901,7 @@ class OpenDocument {
 	}
 
 	public function postprocessing($filename, $pFilename = null) {
-		global $log, $adb, $root_directory;
+		global $root_directory;
 
 		if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php')) {
 			include 'modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php';
@@ -909,49 +909,29 @@ class OpenDocument {
 			include 'modules/evvtgendoc/commands_en.php';
 		}
 
-		$properties = array(
-		'includeGD' => $includeGD,
-		'insertindexGD' => $insertindexGD,
-		);
-
-		// Prepare include docs information
-		$xmlText = $this->contentDOM->saveXML();
-		$result = preg_match_all('/\\'.$includeGD.'([\w\d]+)\}/', $xmlText, $matches);
-		$this->debugmsg('Post processing: '.print_r(array($includeGD,$result, $matches), true));
-		if ($result) {
-			foreach ($matches[1] as $match) {
-				$sql = "select notesid from vtiger_notes where note_no='{$match}'";
-				$res = $adb->query($sql);
-				$docid = $adb->query_result($res, 0, 0);
-				$sql = "SELECT at.attachmentsid, at.name, at.path
-					FROM vtiger_seattachmentsrel ar
-					LEFT JOIN vtiger_attachments at ON ar.attachmentsid=at.attachmentsid
-					WHERE crmid={$docid}";
-				$res = $adb->query($sql);
-				$name = $adb->query_result($res, 0, 'name');
-				$path = $adb->query_result($res, 0, 'path');
-				$prefix = $adb->query_result($res, 0, 'attachmentsid').'_';
-				$incFilename = $path.$prefix.$name;
-				$properties['match.'.$match] = 'file://'.$root_directory.$incFilename;
+		$xp = new DOMXPath($this->contentDOM);
+		$search = $xp->evaluate('//text:p[contains(text(), "'.$insertindexGD.'")]');
+		if ($search && $search->length>0) {
+			$properties = array(
+				'insertindexGD' => $insertindexGD,
+			);
+			$pFilename = tempnam('/tmp', 'gendoc-');
+			$handle = fopen($pFilename, 'w');
+			foreach ($properties as $key => $value) {
+				fwrite($handle, "{$key} = {$value}\n");
 			}
+			fclose($handle);
+			// Process and save
+			$filename = escapeshellarg('file://'.$filename);
+			$command = "{$root_directory}modules/evvtgendoc/unoservice.sh {$pFilename} {$filename} {$filename}";
+			//$command = "{$root_directory}modules/evvtgendoc/unoservice.sh {$pFilename} {$filename} {$filename} >>{$root_directory}/modules/evvtgendoc/unoservice.log 2>&1";
+			$status = exec($command);
+			$this->debugmsg('Post processing: '.print_r(array($command, $status), true));
+			// Remove temp files
+			unlink($pFilename);
+		} else {
+			$this->debugmsg('Post processing No Index');
 		}
-		$pFilename = tempnam('/tmp', 'gendoc-');
-		$handle = fopen($pFilename, 'w');
-		foreach ($properties as $key => $value) {
-			fwrite($handle, "{$key} = {$value}\n");
-		}
-		fclose($handle);
-		// Process and save
-		$filename = escapeshellarg($filename);
-		$command = "{$root_directory}modules/evvtgendoc/unoservice.sh {$pFilename} file://{$filename} file://{$filename}";
-		//$command = "{$root_directory}modules/evvtgendoc/unoservice.sh {$pFilename} file://{$filename} file://{$filename} >>{$root_directory}/modules/evvtgendoc/unoservice.log 2>&1";
-		//echo $command;
-		$status = exec($command);
-		$this->debugmsg('Post processing: '.print_r(array($command, $status), true));
-		$log->debug("unoservice.sh: {$status}");
-
-		// Remove temp files
-		unlink($pFilename);
 	}
 
 	public static function debugmsg($msg, $isbranch = false) {

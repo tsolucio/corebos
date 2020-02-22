@@ -21,4 +21,11 @@
 	<classname>addcbquestionfilterformatfield</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>delete gendoc compiled helper so it gets compiled again with the new changes to exclude INCLUDE DOC</description>
+	<filename>build/changeSets/2020/gendocdeleteUnoservice.php</filename>
+	<classname>gendocdeleteUnoservice</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
