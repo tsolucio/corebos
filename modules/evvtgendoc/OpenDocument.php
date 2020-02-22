@@ -785,6 +785,121 @@ class OpenDocument {
 		return $listelement;
 	}
 
+	public function processInclude() {
+		global $newImageAdded, $current_user;
+		require_once 'modules/Documents/Documents.php';
+		if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php')) {
+			include 'modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php';
+		} else {
+			include 'modules/evvtgendoc/commands_en.php';
+		}
+		$strlen_includeGD = strlen($includeGD);
+		$xpath = new DOMXPath($this->contentDOM);
+		//foreach ($xpath->evaluate('//*[count(*) = 0]') as $pnode) {
+		foreach ($xpath->evaluate('//text:p[contains(text(), "'.$includeGD.'")]') as $pnode) {
+			$texto_p='';
+			foreach ($pnode->childNodes as $pnc) {
+				$texto_p = (empty($pnc->wholeText) ? (empty($pnc->nodeValue) ? '' : $pnc->nodeValue) : $pnc->wholeText);
+				if (!empty($texto_p) && is_string($texto_p)) {
+					break; // utilizo el primer texto no vacío que encuentro
+				}
+			}
+			$docno = substr($texto_p, $strlen_includeGD);
+			$docno = trim($docno, ' }');
+			if ($docno!='Documents') {
+				$path = Documents::getAttachmentPath($docno);
+				if ($path!='') {
+					$inccontentDOM = new DOMDocument('1.0', 'UTF-8');
+					if ($inccontentDOM->loadXML(ZipWrapper::read($path, self::FILE_CONTENT))) {
+						OpenDocument::debugmsg('INCLUDING FILE: '.$path);
+						// include content
+						$innodelist = $inccontentDOM->getElementsByTagNameNS('urn:oasis:names:tc:opendocument:xmlns:office:1.0', 'body');
+						$xmlText = simplexml_import_dom($innodelist->item(0)->firstChild);
+						$nxml = $xmlText->asXML();
+						unset($xmlText);
+						$nxml = preg_replace('/<office:text.*>/U', '<text:section>', $nxml);
+						$nxml = str_replace('</office:text>', '</text:section>', $nxml);
+						$nxml = '<?xml version="1.0" encoding="UTF-8"?>
+						<office:document-content
+							xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+							xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+							xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+							xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+							xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
+							xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"
+							xmlns:xlink="http://www.w3.org/1999/xlink"
+							xmlns:dc="http://purl.org/dc/elements/1.1/"
+							xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0"
+							xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0"
+							xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0"
+							xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0"
+							xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0"
+							xmlns:math="http://www.w3.org/1998/Math/MathML"
+							xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0"
+							xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0"
+							xmlns:ooo="http://openoffice.org/2004/office"
+							xmlns:ooow="http://openoffice.org/2004/writer"
+							xmlns:oooc="http://openoffice.org/2004/calc"
+							xmlns:dom="http://www.w3.org/2001/xml-events"
+							xmlns:xforms="http://www.w3.org/2002/xforms"
+							xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+							xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+							xmlns:rpt="http://openoffice.org/2005/report"
+							xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2"
+							xmlns:xhtml="http://www.w3.org/1999/xhtml"
+							xmlns:grddl="http://www.w3.org/2003/g/data-view#"
+							xmlns:officeooo="http://openoffice.org/2009/office"
+							xmlns:tableooo="http://openoffice.org/2009/table"
+							xmlns:drawooo="http://openoffice.org/2010/draw"
+							xmlns:calcext="urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0"
+							xmlns:loext="urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0"
+							xmlns:field="urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0"
+							xmlns:formx="urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0"
+							xmlns:css3t="http://www.w3.org/TR/css3-text/"
+							office:version="1.2">'.$nxml.'</office:document-content>';
+						$newdoc = new DOMDocument('1.0', 'UTF-8');
+						$newdoc->loadXML($nxml);
+						$nwnodelist = $newdoc->getElementsByTagNameNS('urn:oasis:names:tc:opendocument:xmlns:text:1.0', 'section');
+						$newdoc = $this->contentDOM->importNode($nwnodelist->item(0), true);
+						$pnode->parentNode->replaceChild($newdoc, $pnode);
+						unset($newdoc);
+						// include styles
+						$docstyles = $this->contentDOM->getElementsByTagNameNS('urn:oasis:names:tc:opendocument:xmlns:office:1.0', 'automatic-styles')->item(0);
+						$innodelist = $inccontentDOM->getElementsByTagNameNS('urn:oasis:names:tc:opendocument:xmlns:office:1.0', 'automatic-styles')->item(0);
+						foreach ($innodelist->childNodes as $incnode) {
+							$newnode = $this->contentDOM->importNode($incnode, true);
+							$docstyles->appendChild($newnode);
+						}
+						// include images
+						$innodelist = $inccontentDOM->getElementsByTagNameNS('urn:oasis:names:tc:opendocument:xmlns:drawing:1.0', 'image');
+						if ($innodelist->length>0) {
+							$tmpdir = 'cache/gendocoutput/img'.$current_user->id;
+							@mkdir($tmpdir);
+							ZipWrapper::unlinkRecursive($tmpdir, false);
+							$zipinc = new ZipArchive;
+							$zipinc->open(realpath($path));
+							$zipinc->extractTo($tmpdir);
+							$zipinc->close();
+							foreach ($innodelist as $incnode) {
+								$nifname = $incnode->getAttribute('xlink:href');
+								$this->newImages[] = $tmpdir.'/'.$nifname;
+								$mimetype = $incnode->getAttribute('loext:mime-type');
+								$this->makeFileEntryElement($nifname, $mimetype);
+							}
+						}
+						// $xp = new DOMXPath($inccontentDOM);
+						// foreach ($xp->evaluate('//*[count(*) = 0]') as $incnode) {
+						// 	$incitem = $this->contentDOM->importNode($incnode, true);
+						// 	//$this->contentDOM->documentElement->appendChild($incitem);
+						// 	// $incitem = $this->contentDOM->importNode($incnode->item($incns), true);
+						// 	$this->contentDOM->documentElement->insertBefore($incitem, $pnode);
+						// }
+					}
+				}
+			}
+		}
+	}
+
 	public function postprocessing($filename, $pFilename = null) {
 		global $log, $adb, $root_directory;
 
@@ -932,6 +1047,7 @@ class OpenDocument {
 		$this->debugmsg($originFile." START toGenDoc $endcompile");
 		set_time_limit(0);
 		$this->toGenDoc($obj, $id, $module, $root_module);//exit;
+		$this->processInclude();
 		$endcompile = microtime(true)-$startcompile;
 		$this->debugmsg("END GenDOC $endcompile s");
 	}
