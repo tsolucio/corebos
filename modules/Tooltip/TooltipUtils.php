@@ -158,7 +158,7 @@ function getToolTipText($view, $fieldname, $module, $value) {
 				WHERE vtiger_crmentity.deleted=0 AND vtiger_modcomments.related_to=?
 				ORDER BY vtiger_crmentity.createdtime desc LIMIT '.GlobalVariable::getVariable('ToolTip_NumberOfComments', 5, $module);
 			$rs = $adb->pquery($query, array($crmid));
-			$coms = '<br>';
+			$coms = '<br><div id="ttmodcomments" style="max-height:210px;overflow-y:auto;">';
 			$i18nAuthor = getTranslatedString('LBL_AUTHOR', 'ModComments');
 			$i18nOn = getTranslatedString('LBL_ON_DATE', 'ModComments');
 			while ($row=$adb->fetch_array($rs)) {
@@ -167,7 +167,7 @@ function getToolTipText($view, $fieldname, $module, $value) {
 					<span style="color:darkred;">'.$i18nAuthor.': '.getUserName($row['smownerid']).' '.$i18nOn.' '.$row['modifiedtime'].'</span>
 				</div>';
 			}
-			$text[getTranslatedString('ModComments', 'ModComments')] = $coms;
+			$text[getTranslatedString('ModComments', 'ModComments')] = $coms.'</div>';
 		}
 	}
 	return $text;
