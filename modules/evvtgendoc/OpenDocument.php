@@ -786,7 +786,7 @@ class OpenDocument {
 	}
 
 	public function processInclude() {
-		global $newImageAdded, $current_user;
+		global $current_user;
 		require_once 'modules/Documents/Documents.php';
 		if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php')) {
 			include 'modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php';
@@ -987,7 +987,7 @@ class OpenDocument {
 	 * @access public
 	 */
 	public function GenDoc($originFile, $id, $module, $root_module = null, $documentid = null) {
-		global $parentArray,$currentModule,$iter_modules,$rootmod,$template_id;
+		global $parentArray, $iter_modules, $rootmod, $template_id;
 		if (!is_null($root_module)) {
 			$rootmod = $root_module[0];
 			$iter_modules[$root_module[0]] = array($root_module[1]);
@@ -1039,9 +1039,8 @@ class OpenDocument {
 	 * @access public
 	 */
 	public function toGenDoc($obj, $id, $module, $root_module = null) {
-		global $siincluir, $changedImage, $newImageAdded, $includeOriginalDirective;
-		global $ramaparacada,$pcincluir,$tempincluir,$iter_modules,$rootmod;
-		global $repe,$log, $parentArray,$currentModule;
+		global $siincluir, $changedImage, $newImageAdded, $includeOriginalDirective, $repe;
+		global $ramaparacada, $pcincluir, $tempincluir, $iter_modules, $rootmod, $parentArray;
 		//commands
 		if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php')) {
 			include 'modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php';
@@ -1194,7 +1193,7 @@ class OpenDocument {
 					if (strtolower(substr($texto_p, 0, strlen($imageGD)))==$imageGD) {
 						$entidadimagen=rtrim(trim(substr($texto_p, strlen($imageGD))), '}');
 						//Comento codigo para una sola imagen, nada nos asegura que sólo haya una, pueden haber campos personalizados de imagen
-						// if ($this->contextoParacada[$this->contextoActual]['repe']>0) {  // estamos en un paracada y ya hemos agotado la primera imagen, todas las demas son nuevas
+						// if ($this->contextoParacada[$this->contextoActual]['repe']>0) { // en un paracada y ya hemos agotado la primera imagen, todas las demas son nuevas
 						$this->newImages[]=eval_imagen($entidadimagen, $id, $module);
 						$newImageAdded=true;
 						// } else {   // sustituimos imagen existente
@@ -1222,7 +1221,7 @@ class OpenDocument {
 						OpenDocument::copyAttributes($child, $pgsp);
 						array_push($parentArray, $pgsp);
 						$this->toGenDoc($child, $id, $module);
-						$elem=array_pop($parentArray);
+						array_pop($parentArray);
 					}
 					break;
 				case 'OpenDocument_TextElement':
@@ -2797,8 +2796,6 @@ class OpenDocument {
 	}
 
 	public function convert($frompath, $topath, $format = 'pdf') {
-		global $adb;
-
 		$gendoc_active = coreBOS_Settings::getSetting('cbgendoc_active', 0);
 		if ($gendoc_active == 1) {
 			include_once 'include/wsClient/WSClient.php';
@@ -2836,7 +2833,7 @@ class OpenDocument {
 			file_put_contents($topath, $post);
 		} else {
 			$cmd = 'unoconv -v -f '.escapeshellarg($format) . ' ' . escapeshellarg($frompath) . ' 2>&1';
-			$return = exec($cmd, $out);
+			exec($cmd, $out);
 			$ret = print_r($out, true);
 			foreach ($out as $line) {
 				$find = false;
@@ -2849,7 +2846,7 @@ class OpenDocument {
 			}
 			if ($find) {
 				$cmd = "mv $file_conv " . escapeshellarg($topath);
-				$return = exec($cmd, $out);
+				exec($cmd, $out);
 			}
 			$ret .= "\n\n".print_r($out, true);
 			return $ret;
@@ -2863,7 +2860,7 @@ class OpenDocument {
 	 * @access public
 	 */
 	public function GenXML($originFile, $id, $module, $root_module = null) {
-		global $parentArray,$currentModule,$iter_modules;
+		global $iter_modules;
 		if (!is_null($root_module)) {
 			$iter_modules[$root_module[0]] = array($root_module[1]);
 		}
@@ -2888,7 +2885,7 @@ class OpenDocument {
 	}
 
 	public function processBranch($doc, $crmid, $module) {
-		global $adb,$iter_modules,$repe;
+		global $iter_modules,$repe;
 		foreach ($doc->childNodes as $node) {
 			if (empty($node->tagName)) {
 				continue;
