@@ -1071,7 +1071,8 @@ class OpenDocument {
 						break; // utilizo el primer texto no vacío que encuentro
 					}
 				}
-				if (strtolower(substr($texto_p, 0, $lenforeachGD))==$foreachGD) {
+				$texto_plow = strtolower($texto_p);
+				if (substr($texto_plow, 0, $lenforeachGD)==$foreachGD) {
 					$spn=$child->createSpan('putforeachhere'); // Marcamos el inicio paracada para saber donde poner el siguiente una vez compilado
 					$ramaparacada->append($spn);
 					$this->contextoParacada[$this->contextoActual]['ramaparacada']=$ramaparacada; // guardo contexto modulos encontrados
@@ -1084,7 +1085,7 @@ class OpenDocument {
 						'condicion'=>$condicionparacada,
 						'module'=>($module_pcada=='Organization' ? 'cbCompany' : $module_pcada),
 					);
-				} elseif (strtolower(substr($texto_p, 0, $lenforeachEndGD))==$foreachEndGD) {
+				} elseif (substr($texto_plow, 0, $lenforeachEndGD)==$foreachEndGD) {
 					$this->contextoParacada[$this->contextoActual]['ramaparacada']=$ramaparacada; // guardo contexto modulos encontrados
 					if ($this->contextoActual>0) {
 						$this->contextoActual--;
@@ -1126,7 +1127,8 @@ class OpenDocument {
 							break; // utilizo el primer texto no vacío que encuentro
 						}
 					}
-					if (strtolower(substr($texto_p, 0, $lenifexistsGD))==$ifexistsGD) {
+					$texto_plow = strtolower($texto_p);
+					if (substr($texto_plow, 0, $lenifexistsGD)==$ifexistsGD) {
 						// obtener condición
 						$condicion=rtrim(trim(substr($texto_p, $lenifexistsGD)), '}');
 						// evaluar condición
@@ -1138,7 +1140,7 @@ class OpenDocument {
 						}
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, $lenifnotexistsGD))==$ifnotexistsGD) {
+					if (substr($texto_plow, 0, $lenifnotexistsGD)==$ifnotexistsGD) {
 						// obtener condición
 						$condicion=rtrim(trim(substr($texto_p, $lenifnotexistsGD)), '}');
 						// evaluar condición
@@ -1150,15 +1152,15 @@ class OpenDocument {
 						}
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, $lenifexistsEndGD))==$ifexistsEndGD) {
+					if (substr($texto_plow, 0, $lenifexistsEndGD)==$ifexistsEndGD) {
 						array_pop($siincluir);
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, $lenifnotexistsEndGD))==$ifnotexistsEndGD) {
+					if (substr($texto_plow, 0, $lenifnotexistsEndGD)==$ifnotexistsEndGD) {
 						array_pop($siincluir);
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, $lenforeachGD))==$foreachGD) {
+					if (substr($texto_plow, 0, $lenforeachGD)==$foreachGD) {
 						$includeOriginalDirective = '';
 						$pcincluir=true;
 						$ramaparacada= new ArrayObject;
@@ -1174,7 +1176,7 @@ class OpenDocument {
 						);
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, 14))=='putforeachhere') {
+					if (substr($texto_plow, 0, 14)=='putforeachhere') {
 						$this->saveContextoActual['ramaparacada']=$ramaparacada;
 						// obtener contexto
 						$this->contextoActual++;
@@ -1197,7 +1199,7 @@ class OpenDocument {
 						$includeOriginalDirective = '';
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, $lenimageGD))==$imageGD) {
+					if (substr($texto_plow, 0, $lenimageGD)==$imageGD) {
 						$entidadimagen=rtrim(trim(substr($texto_p, $lenimageGD)), '}');
 						//Comento codigo para una sola imagen, nada nos asegura que sólo haya una, pueden haber campos personalizados de imagen
 						// if ($this->contextoParacada[$this->contextoActual]['repe']>0) { // en un paracada y ya hemos agotado la primera imagen, todas las demas son nuevas
@@ -1208,7 +1210,7 @@ class OpenDocument {
 						// }
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, $lenincludeGD))==$includeGD) {
+					if (substr($texto_plow, 0, $lenincludeGD)==$includeGD) {
 						$entidadincluir = rtrim(trim(substr($texto_p, $lenincludeGD)), '}');
 						if ($includeOriginalDirective=='' && $entidadincluir=='Documents') {
 							$includeOriginalDirective = 'Documents';
@@ -1314,7 +1316,12 @@ class OpenDocument {
 		} else {
 			include 'modules/evvtgendoc/commands_en.php';
 		}
-
+		$lenforeachGD=strlen($foreachGD);
+		$lenforeachEndGD=strlen($foreachEndGD);
+		$lenifexistsGD=strlen($ifexistsGD);
+		$lenifnotexistsGD=strlen($ifnotexistsGD);
+		$lenifexistsEndGD=strlen($ifexistsEndGD);
+		$lenifnotexistsEndGD=strlen($ifnotexistsEndGD);
 		if (get_class($obj)=='ArrayObject') {
 			$iterat=$obj;
 		} else {
@@ -1325,7 +1332,7 @@ class OpenDocument {
 				$pnode=$child->getNode();
 				$pnodecld=$pnode->childNodes;
 				$texto_p=($pnodecld->length==0 ? '' : $pnodecld->item(0)->wholeText);
-				if (strtolower(substr($texto_p, 0, strlen($foreachEndGD)))==$foreachEndGD) {
+				if (strtolower(substr($texto_p, 0, $lenforeachEndGD))==$foreachEndGD) {
 					$pcincluir=false;
 					// procesar paracada
 					$num_iter = iterations();
@@ -1371,9 +1378,10 @@ class OpenDocument {
 					$pnode=$child->getNode();
 					$pnodecld=$pnode->childNodes;
 					$texto_p=($pnodecld->length==0 ? '' : $pnodecld->item(0)->wholeText);
-					if (strtolower(substr($texto_p, 0, strlen($ifexistsGD)))==$ifexistsGD) {
+					$texto_plow = strtolower($texto_p);
+					if (substr($texto_plow, 0, $lenifexistsGD)==$ifexistsGD) {
 						// obtener condición
-						$condicion=rtrim(substr($texto_p, strlen($ifexistsGD)), '}');
+						$condicion=rtrim(substr($texto_p, $lenifexistsGD), '}');
 						// evaluar condición
 						$cumple_cond = eval_existe($condicion, $id, $module);
 						if ($cumple_cond && $hayqueincluir) {
@@ -1383,9 +1391,9 @@ class OpenDocument {
 						}
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, strlen($ifnotexistsGD)))==$ifnotexistsGD) {
+					if (substr($texto_plow, 0, $lenifnotexistsGD)==$ifnotexistsGD) {
 						// obtener condición
-						$condicion=rtrim(substr($texto_p, strlen($ifnotexistsGD)), '}');
+						$condicion=rtrim(substr($texto_p, $lenifnotexistsGD), '}');
 						// evaluar condición
 						$cumple_cond = eval_noexiste($condicion, $id, $module);
 						if ($cumple_cond && $hayqueincluir) {
@@ -1395,19 +1403,19 @@ class OpenDocument {
 						}
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, strlen($ifexistsEndGD)))==$ifexistsEndGD) {
+					if (substr($texto_plow, 0, $lenifexistsEndGD)==$ifexistsEndGD) {
 						array_pop($siincluir);
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, strlen($ifnotexistsEndGD)))==$ifnotexistsEndGD) {
+					if (substr($texto_plow, 0, $lenifnotexistsEndGD)==$ifnotexistsEndGD) {
 						array_pop($siincluir);
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, strlen($foreachGD)))==$foreachGD) {
+					if (substr($texto_plow, 0, $lenforeachGD)==$foreachGD) {
 						$pcincluir=true;
 						$ramaparacada= new ArrayObject;
 						// obtener condición
-						$condicionparacada=rtrim(substr($texto_p, strlen($foreachGD)), '}');
+						$condicionparacada=rtrim(substr($texto_p, $lenforeachGD), '}');
 						eval_paracada($condicionparacada, $id, $module);
 						continue 2;
 					}
