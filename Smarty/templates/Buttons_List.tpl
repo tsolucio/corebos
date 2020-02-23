@@ -42,6 +42,7 @@
 {assign var='MODULELABEL' value=$MODULE|@getTranslatedString:$MODULE}
 {/if}
 {assign var='MODULEICON' value=$MODULE|@getModuleIcon}
+<div id="page-header-placeholder"></div>
 <div id="page-header" class="slds-page-header slds-m-vertical_medium">
 	<div class="slds-page-header__row">
 		<div class="slds-page-header__col-title">
@@ -98,7 +99,7 @@
 						<li>
 							<button class="slds-button slds-button_neutral" {$ADD_ONMOUSEOVER}>{$MOD.LBL_ADD_EVENT}</button>
 						</li>
-					{elseif $CHECK.CreateView eq 'yes' && $MODULE neq 'Emails'}
+					{elseif $CHECK.CreateView eq 'yes' && $MODULE neq 'Emails' && $OP_MODE != 'create_view'}
 						<li>
 							<a
 							class="slds-button slds-button_neutral"
@@ -110,10 +111,45 @@
 								{$APP.LBL_CREATE_BUTTON_LABEL} {$SINGLE_MOD|getTranslatedString:$MODULE}
 							</a>
 						</li>
-					{else}
+					{/if}
+					{if $OP_MODE == 'edit_view' || $OP_MODE == 'create_view'}
 						<li>
-							<button class="slds-button slds-button_neutral" disabled="">
-								{$APP.LBL_CREATE_BUTTON_LABEL} {$SINGLE_MOD|getTranslatedString:$MODULE}
+							<button
+								class="slds-button slds-button_success"
+								title="{$APP.LBL_SAVE_BUTTON_TITLE}"
+								accessKey="{$APP.LBL_SAVE_BUTTON_KEY}"
+								onclick="
+									document.forms.EditView.action.value='Save';
+									displaydeleted();
+									{if isset($INV_CURRENCY_ID)}
+										return validateInventory('{$MODULE}');
+									{else}
+										return formValidate();
+									{/if}"
+								type="submit"
+								name="button">
+									<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
+									</svg>
+									{$APP.LBL_SAVE_BUTTON_LABEL}
+							</button>
+						</li>
+						<li>
+							<button
+								class="slds-button slds-button_destructive"
+								title="{$APP.LBL_CANCEL_BUTTON_TITLE}"
+								accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}"
+								onclick="
+									{if isset($smarty.request.Module_Popup_Edit)}window.close()
+									{elseif isset($CANCELGO)}window.location.href='{$CANCELGO}'
+									{else}window.history.back()
+									{/if};"
+								type="submit"
+								name="button">
+									<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use>
+									</svg>
+									{$APP.LBL_CANCEL_BUTTON_LABEL}
 							</button>
 						</li>
 					{/if}

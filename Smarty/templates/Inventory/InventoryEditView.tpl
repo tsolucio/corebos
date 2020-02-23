@@ -28,7 +28,7 @@
 {include file='Buttons_List.tpl' isEditView=true}
 
 {*<!-- Contents -->*}
-<table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
+<table border=0 cellspacing=0 cellpadding=0 width=98% align=center class="slds-m-around_medium" style="width: auto;">
 	<tr>
 	<td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 
@@ -65,14 +65,12 @@
 										<tr>
 										<td colspan=4 style="padding:5px">
 											<div align="center">
-												<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save'; displaydeleted(); return validateInventory('{$MODULE}')" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
 												{if isset($SandRActive) && $SandRActive!=0 && (!isset($MED1x1MODE) || $MED1x1MODE==0)}
 												<input title="{$APP.LBL_SAVEREPEAT_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVEREPEAT_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.saverepeat.value='1';this.form.action.value='Save'; displaydeleted(); return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVEREPEAT_BUTTON_LABEL}  ">
 												{/if}
 												{if isset($MED1x1MODE) && $MED1x1MODE!=0}
 												<input title="{$APP.LBL_SKIP_BUTTON_TITLE}" accessKey="{$APP.LBL_SKIP_BUTTON_KEY}" class="crmbutton small cancel" onclick="this.form.saverepeat.value='skip';this.form.action.value='Save'; displaydeleted();" type="submit" name="button" value="  {$APP.LBL_SKIP_BUTTON_LABEL}  ">
 												{/if}
-												<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="{if isset($smarty.request.Module_Popup_Edit)}window.close(){elseif isset($CANCELGO)}window.location.href='{$CANCELGO}'{else}window.history.back(){/if};" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
 											</div>
 										</td>
 										</tr>
@@ -125,14 +123,12 @@
 										<tr>
 										<td colspan=4 style="padding:5px">
 											<div align="center">
-												<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save'; displaydeleted(); return validateInventory('{$MODULE}')" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
 												{if isset($SandRActive) && $SandRActive!=0 && (!isset($MED1x1MODE) || $MED1x1MODE==0)}
 												<input title="{$APP.LBL_SAVEREPEAT_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVEREPEAT_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.saverepeat.value='1';this.form.action.value='Save'; displaydeleted(); return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVEREPEAT_BUTTON_LABEL}  ">
 												{/if}
 												{if isset($MED1x1MODE) && $MED1x1MODE!=0}
 												<input title="{$APP.LBL_SKIP_BUTTON_TITLE}" accessKey="{$APP.LBL_SKIP_BUTTON_KEY}" class="crmbutton small cancel" onclick="this.form.saverepeat.value='skip';this.form.action.value='Save'; displaydeleted();" type="submit" name="button" value="  {$APP.LBL_SKIP_BUTTON_LABEL}  ">
 												{/if}
-												<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="{if isset($smarty.request.Module_Popup_Edit)}window.close(){elseif isset($CANCELGO)}window.location.href='{$CANCELGO}'{else}window.history.back(){/if};" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
 											</div>
 										</td>
 										</tr>
