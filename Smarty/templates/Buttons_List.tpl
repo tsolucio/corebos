@@ -118,6 +118,47 @@
 							</button>
 						</li>
 					{/if}
+					{if $OP_MODE == 'edit_view' || $OP_MODE == 'create_view'}
+						<li>
+							<button
+								class="slds-button slds-button_success"
+								title="{$APP.LBL_SAVE_BUTTON_TITLE}"
+								accessKey="{$APP.LBL_SAVE_BUTTON_KEY}"
+								onclick="
+									document.forms.EditView.action.value='Save';
+									displaydeleted();
+									{if isset($INV_CURRENCY_ID)}
+										return validateInventory('{$MODULE}');
+									{else}
+										return formValidate();
+									{/if}"
+								type="submit"
+								name="button">
+									<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
+									</svg>
+									{$APP.LBL_SAVE_BUTTON_LABEL}
+							</button>
+						</li>
+						<li>
+							<button
+								class="slds-button slds-button_destructive"
+								title="{$APP.LBL_CANCEL_BUTTON_TITLE}"
+								accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}"
+								onclick="
+									{if isset($smarty.request.Module_Popup_Edit)}window.close()
+									{elseif isset($CANCELGO)}window.location.href='{$CANCELGO}'
+									{else}window.history.back()
+									{/if};"
+								type="submit"
+								name="button">
+									<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use>
+									</svg>
+									{$APP.LBL_CANCEL_BUTTON_LABEL}
+							</button>
+						</li>
+					{/if}
 					{if $EDIT_PERMISSION eq 'yes'}
 						<li>
 							<button 
