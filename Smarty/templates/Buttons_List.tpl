@@ -99,10 +99,10 @@
 						<li>
 							<button class="slds-button slds-button_neutral" {$ADD_ONMOUSEOVER}>{$MOD.LBL_ADD_EVENT}</button>
 						</li>
-					{elseif $CHECK.CreateView eq 'yes' && $MODULE neq 'Emails'}
+					{elseif $CHECK.CreateView eq 'yes' && $MODULE neq 'Emails' && $OP_MODE != 'create_view'}
 						<li>
 							<a
-							class="slds-button slds-button_neutral" 
+							class="slds-button slds-button_neutral"
 							href="index.php?module={$MODULE}&action=EditView&return_action=DetailView&parenttab={$CATEGORY}"
 							title="{$APP.LBL_CREATE_BUTTON_LABEL} {$SINGLE_MOD|getTranslatedString:$MODULE}...">
 								<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
@@ -110,12 +110,6 @@
 								</svg>
 								{$APP.LBL_CREATE_BUTTON_LABEL} {$SINGLE_MOD|getTranslatedString:$MODULE}
 							</a>
-						</li>
-					{else}
-						<li>
-							<button class="slds-button slds-button_neutral" disabled="">
-								{$APP.LBL_CREATE_BUTTON_LABEL} {$SINGLE_MOD|getTranslatedString:$MODULE}
-							</button>
 						</li>
 					{/if}
 					{if $OP_MODE == 'edit_view' || $OP_MODE == 'create_view'}
