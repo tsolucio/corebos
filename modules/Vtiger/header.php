@@ -107,5 +107,4 @@ getBrowserVariables($smarty);
 $smarty->assign('Module_Popup_Edit', isset($_REQUEST['Module_Popup_Edit']) ? vtlib_purify($_REQUEST['Module_Popup_Edit']) : 0);
 
 $smarty->display('Header.tpl');
-cbEventHandler::do_action('corebos.header');
 ?>

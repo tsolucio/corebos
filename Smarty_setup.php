@@ -9,6 +9,7 @@
 ********************************************************************************/
 require 'Smarty/libs/Smarty.class.php';
 include_once 'include/smarty/function.process_widget.php';
+include_once 'include/smarty/function.get_custom_header.php';
 
 class vtigerCRM_Smarty extends Smarty {
 
@@ -50,6 +51,7 @@ class vtigerCRM_Smarty extends Smarty {
 		}
 		$this->loadFilter('output', 'trimwhitespace');
 		$this->registerPlugin('function', 'process_widget', 'smarty_function_process_widget');
+		$this->registerPlugin('function', 'corebos_header', 'smarty_function_getCustomHeader');
 	}
 }
 ?>

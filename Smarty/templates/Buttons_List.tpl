@@ -506,4 +506,5 @@
 		</div>
 	</div>
 </div>
+{corebos_header}
 {/if}
