@@ -19,23 +19,28 @@ html {
   z-index: 99;
   width: 98.5%;
   margin-left: 0.75%;
-  position: sticky;
-  top: 5.325rem;
-  transition: top 100ms linear, width 200ms linear;
+  top: 5.625rem;
+  transition: top 100ms linear, margin 100ms linear, padding 100ms linear;
+}
+
+#page-header.page-header_collapsed {
+  width: 100%; 
+  margin-left: 0;
+  padding: 0.35rem;
+  border-radius: 0;
 }
 
 #page-header.page-header_stickup {
   top: 2.5rem;
 }
 
-#page-header.page-header_collapsed {
-  width: 100%; 
-  margin-left: 0;
+#page-header.page-header_sticky {
+  margin-top: 0;
 }
 
 #page-header-surplus {
   overflow: hidden;
-  transition: height 80ms linear;
+  transition: height 150ms linear;
 }
 
 #page-header-icon {
