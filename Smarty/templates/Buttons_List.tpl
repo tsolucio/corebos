@@ -25,10 +25,10 @@
 {if $TITLEPREFIX eq ''} {assign var='TITLEPREFIX' value=$ID} {/if}
 {assign var='MODULELABEL' value=$NAME}
 {elseif !empty($isEditView)}
-{if $OP_MODE eq 'edit_view'}
+{if isset($OP_MODE) && $OP_MODE eq 'edit_view'}
 {assign var='TITLEPREFIX' value=$APP.LBL_EDITING}
 {assign var='MODULELABEL' value=$NAME}
-{elseif $OP_MODE eq 'create_view'}
+{elseif isset($OP_MODE) && $OP_MODE eq 'create_view'}
 {if $DUPLICATE neq 'true'}
 {assign var='TITLEPREFIX' value=$APP.LBL_CREATING}
 {assign var='MODULELABEL' value=$SINGLE_MOD|@getTranslatedString:$MODULE}
@@ -99,7 +99,7 @@
 						<li>
 							<button class="slds-button slds-button_neutral" {$ADD_ONMOUSEOVER}>{$MOD.LBL_ADD_EVENT}</button>
 						</li>
-					{elseif $CHECK.CreateView eq 'yes' && $MODULE neq 'Emails' && $OP_MODE != 'create_view'}
+					{elseif $CHECK.CreateView eq 'yes' && $MODULE neq 'Emails' && (empty($OP_MODE) || $OP_MODE != 'create_view')}
 						<li>
 							<a
 							class="slds-button slds-button_neutral"
@@ -112,7 +112,7 @@
 							</a>
 						</li>
 					{/if}
-					{if $OP_MODE == 'edit_view' || $OP_MODE == 'create_view'}
+					{if isset($OP_MODE) && ($OP_MODE == 'edit_view' || $OP_MODE == 'create_view')}
 						<li>
 							<button
 								class="slds-button slds-button_success"
@@ -177,7 +177,7 @@
 					{if ((isset($CREATE_PERMISSION) && $CREATE_PERMISSION eq 'permitted')
 						|| (isset($EDIT_PERMISSION) && $EDIT_PERMISSION eq 'yes'))
 						&& $MODULE neq 'Documents'
-						&& $isDetailView}
+						&& !empty($isDetailView)}
 						<li>
 							<button
 								class="slds-button slds-button_neutral"
