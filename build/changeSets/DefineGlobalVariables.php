@@ -88,6 +88,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_UI_ShowGITDate',
 				'Application_UI_Version',
 				'Application_UI_URL',
+				'Application_UI_CoverImage',
 				'Application_Group_Selection_Permitted',
 				'Application_B2B',
 				'Application_FirstTimeLogin_Template',

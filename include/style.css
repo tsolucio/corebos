@@ -7,14 +7,6 @@
 * All Rights Reserved.
 ********************************************************************************/
 
-html {
-  background: url('/themes/images/content-bg-1.png') no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-}
-
 #page-header {
   z-index: 99;
   width: 98.5%;

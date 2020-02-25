@@ -545,6 +545,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Show approximate last git commit date after the application version number.',
 ),
+'Application_UI_CoverImage' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'file path',
+	'definition' => 'Image to use as back ground cover.',
+),
 'Document_Folder_View' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
