@@ -6238,25 +6238,23 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 	}
 })();
 
-const headerCollapse = new Event('collapse'),
-	  headerExpand = new Event('expand');
-
-window.addEventListener('load', function(){
-	const gh = document.getElementById('global-header');
-	pageHeader.initialize();
-	gh.addEventListener('collapse', pageHeader.moveup);
-	gh.addEventListener('expand', pageHeader.movedown);
-});
-
 const pageHeader = {
 	'initialize' : () => {
 		var h = pageHeader.node().getBoundingClientRect().height;
 
 		if (pageHeader.isCollapsed) h = h + pageHeader.getSurplusHeight();
 		pageHeader.totalHeight = h;
-		pageHeader.stickPoint = pageHeader.node().getBoundingClientRect().top -
+		pageHeader.stickPoint = pageHeader.getStickPoint();
+	},
+	'getStickPoint' : () => {
+			let premenuHeight = pageHeader.getPremenuHeight();
+			return pageHeader.node().getBoundingClientRect().top -
 			document.getElementById('cbmenu').getBoundingClientRect().height -
-			2;
+			premenuHeight -	2; // 2 for adjusting for the border
+	},
+	'getPremenuHeight' : () => {
+		let premenu = document.getElementById('premenu-wrapper')
+		return premenu === undefined ? 0 : premenu.getBoundingClientRect().height;
 	},
 	'moveup' : () => {
 		pageHeader.node().classList.add('page-header_stickup');
@@ -6276,6 +6274,7 @@ const pageHeader = {
 			pageHeader.node().classList.add('page-header_sticky');
 			pageHeader.node().classList.add('slds-is-fixed');
 			pageHeader.placeholder().style.height = pageHeader.totalHeight + 'px';
+			pageHeader.node().style.transform = 'translateY(' + pageHeader.getPremenuHeight() + 'px)';
 			pageHeader.collapse();
 		} else if (pageHeader.isSticky && !pageHeader.isCollapsed) {
 			pageHeader.collapse();
@@ -6288,6 +6287,7 @@ const pageHeader = {
 			pageHeader.node().classList.remove('page-header_sticky');
 			pageHeader.node().classList.remove('slds-is-fixed');
 			pageHeader.placeholder().style.height = '0px';
+			pageHeader.node().style.transform = 'translateY(0px)';
 		}
 	},
 	'isSticky' : false,
