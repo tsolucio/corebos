@@ -6238,6 +6238,16 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 	}
 })();
 
+const headerCollapse = new Event('collapse'),
+	  headerExpand = new Event('expand');
+
+window.addEventListener('load', function(){
+	const gh = document.getElementById('global-header');
+	pageHeader.initialize();
+	gh.addEventListener('collapse', pageHeader.moveup);
+	gh.addEventListener('expand', pageHeader.movedown);
+});
+
 const pageHeader = {
 	'initialize' : () => {
 		var h = pageHeader.node().getBoundingClientRect().height;
