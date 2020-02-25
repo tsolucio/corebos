@@ -657,6 +657,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Products | Services',
 	'definition' => 'Lors de la création d\'un enregistrement dans un des modules "Commande Fournisseur", Bon de Commande, Devis, Facture et "Issuecards", la première ligne de cet enregistrement est soit un produit soit un service en fonction de la valeur de la variable.',
 ),
+'Inventory_Other_Modules' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'comma separated list of other inventory modules',
+	'definition' => 'Inventory modules are special due to their product lines, this variable will permit you to add that type of functionality to your custom modules by adding it here.',
+),
 'Report_Send_Scheduled_ifEmpty' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Booléen',

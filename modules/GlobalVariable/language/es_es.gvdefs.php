@@ -658,6 +658,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Products | Services',
 	'definition' => 'Al crear un nuevo registro de módulo de inventario, la primera línea de producto que se muestra será un Producto o un Servicio dependiendo del valor de esta variable.',
 ),
+'Inventory_Other_Modules' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'lista separada por comas de módulos con soporte de líneas de producto',
+	'definition' => 'Los módulos de inventario son especiales debido a sus líneas de productos, esta variable le permitirá agregar ese tipo de funcionalidad a tus módulos personalizados añadiendolo aquí.',
+),
 'Report_Send_Scheduled_ifEmpty' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',

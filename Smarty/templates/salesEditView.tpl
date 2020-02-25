@@ -126,7 +126,7 @@
 
 									   {/foreach}
 									   <!-- Added to display the Product Details in Inventory-->
-									   {if $MODULE eq 'PurchaseOrder' || $MODULE eq 'SalesOrder' || $MODULE eq 'Quotes' || $MODULE eq 'Invoice' || $MODULE eq 'Issuecards' || $MODULE eq 'Receiptcards'}
+									   {if in_array($MODULE, getInventoryModules())}
 									   <tr>
 										<td colspan=4>
 										{if $OP_MODE eq 'create_view'}

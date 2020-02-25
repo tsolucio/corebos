@@ -657,6 +657,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Products | Services',
 	'definition' => 'When creating a new inventory module record, the first product line that is shown will be a Product or a Service depending on the value of the variable.',
 ),
+'Inventory_Other_Modules' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'comma separated list of other inventory modules',
+	'definition' => 'Inventory modules are special due to their product lines, this variable will permit you to add that type of functionality to your custom modules by adding it here.',
+),
 'Report_Send_Scheduled_ifEmpty' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
