@@ -162,6 +162,10 @@ function getInventoryModuleTaxRelatedInformation() {
 	additionalinfo = additionalinfo +'&ship_country=' + encodeURIComponent(ship_country);
 	var custompopup = ['ctoid', 'accid', 'vndid', 'ship_state', 'ship_code', 'ship_country'];
 	additionalinfo += '&cbcustompopupinfo='+custompopup.join(';');
+	if (typeof(document.getElementsByName('whid')) != 'undefined' && document.getElementsByName('whid').length != 0) {
+		whid= document.EditView.whid.value;
+		additionalinfo = additionalinfo +'&whid=' + encodeURIComponent(whid);
+	}
 	return trim(additionalinfo);
 }
 

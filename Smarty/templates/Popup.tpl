@@ -167,6 +167,9 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 								{if !empty($smarty.request.currencyid)}
 									<input type="hidden" name="currencyid" id="currencyid" value="{$smarty.request.currencyid|@vtlib_purify}">
 								{/if}
+								{if !empty($smarty.request.srcwhid)}
+									<input type="hidden" name="srcwhid" id="srcwhid" value="{$smarty.request.srcwhid|@vtlib_purify}">
+								{/if}
 							</td>
 							<td width="18%" class="dvtCellLabel">
 								<input type="button" name="search" value=" &nbsp;{$APP.LBL_SEARCH_NOW_BUTTON}&nbsp; " onClick="callSearch('Basic');" class="crmbutton small create">

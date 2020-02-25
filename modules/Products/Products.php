@@ -1372,5 +1372,50 @@ class Products extends CRMEntity {
 			}
 		}
 	}
+
+	public function getvtlib_open_popup_window_function($fieldname, $basemodule) {
+		if ($basemodule=='Movement') {
+			return 'WareHouseProductsOpenCapture';
+		} else {
+			return 'vtlib_open_popup_window';
+		}
+	}
+
+	/**
+	 * Return query to use based on given modulename, fieldname
+	 * Useful to handle specific case handling for Popup
+	 */
+	public function getQueryByModuleField($module, $fieldname, $srcrecord, $query = '') {
+		global $adb;
+		$wherepos = stripos($query, 'where'); // there is always a where
+		$query_body = substr($query, 0, $wherepos-1);
+		$query_cond = substr($query, $wherepos+5);
+		if ($module == 'Movement') {
+			$srcwhID = empty($_REQUEST['srcwhid']) ? 0 : vtlib_purify($_REQUEST['srcwhid']);
+			$whrs = $adb->pquery('SELECT warehno FROM vtiger_warehouse WHERE warehouseid=?', array($srcwhID));
+			if ($whrs && $adb->num_rows($whrs) && $whrs->fields['warehno'] != 'Purchase') {
+				return 'SELECT vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_crmentity.description, vtiger_products.*,
+					vtiger_productcf.*,vtiger_stock.stocknum as qtyinstock
+				FROM vtiger_products INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_products.productid
+				INNER JOIN vtiger_productcf ON vtiger_products.productid = vtiger_productcf.productid
+				INNER JOIN vtiger_stock ON vtiger_stock.pdoid=vtiger_products.productid
+				INNER JOIN vtiger_crmentity crmstock ON vtiger_stock.stockid=crmstock.crmid and crmstock.deleted = 0
+				LEFT JOIN vtiger_vendor ON vtiger_vendor.vendorid = vtiger_products.vendor_id
+				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
+				LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
+				WHERE vtiger_products.productid > 0 AND vtiger_crmentity.deleted = 0 and vtiger_products.discontinued <> 0
+				and vtiger_stock.whid='.$srcwhID;
+			}
+		} elseif (vtlib_isModuleActive('Warehouse') && ($module == 'Invoice' || $module == 'Quotes' || $module == 'SalesOrder' || $module == 'MassiveMovements')) {
+			$query_relation = ' INNER JOIN vtiger_stock ON vtiger_stock.pdoid=vtiger_products.productid
+				INNER JOIN vtiger_crmentity crmstock ON vtiger_stock.stockid=crmstock.crmid and crmstock.deleted=0';
+			$whID = empty($_REQUEST['whid']) ? 0 : vtlib_purify($_REQUEST['whid']);
+			$whrs = $adb->pquery('SELECT warehno FROM vtiger_warehouse WHERE warehouseid=?', array($whID));
+			if ($whrs && $adb->num_rows($whrs) && $whrs->fields['warehno'] != 'Purchase' && $whID != 0) {
+				return $query_body .$query_relation.' WHERE vtiger_stock.whid='.$whID.' and '.$query_cond;
+			}
+		}
+		return $query;
+	}
 }
 ?>
