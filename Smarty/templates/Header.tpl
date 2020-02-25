@@ -288,7 +288,7 @@
 		</div>
 	</div>
 	{if $COREBOS_HEADER_PREMENU}
-	<div style="width:100%; background-color:#fff;">
+	<div style="width:100%; background-color:#fff;"  id="premenu-wrapper">
 	{$COREBOS_HEADER_PREMENU}
 	</div>
 	{/if}
