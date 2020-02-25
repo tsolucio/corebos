@@ -203,7 +203,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 			<tr>
 				<td class="small cblds-p_xx-small">
 					<input type="hidden" value="{$data.$subproduct_ids}" id="{$subproduct_ids}" name="{$subproduct_ids}" />
-					<span id="{$subprod_names}" name="{$subprod_names}"  style="color:#C0C0C0;font-style:italic;">{$data.$subprod_names}</span>
+					<span id="{$subprod_names}" name="{$subprod_names}" style="color:#C0C0C0;font-style:italic;">{$data.$subprod_names}</span>
 				</td>
 			</tr>
 			<tr>
