@@ -553,6 +553,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Mostrar la última fecha aproximada de git después del número de versión de la aplicación.',
 ),
+'Application_UI_CoverImage' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'ruta de archivo',
+	'definition' => 'Imagen para usar como fondo.',
+),
 'Document_Folder_View' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',

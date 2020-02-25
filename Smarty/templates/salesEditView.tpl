@@ -25,7 +25,7 @@
 {include file='Buttons_List.tpl' isEditView=true}
 
 {*<!-- Contents -->*}
-<table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
+<table border=0 cellspacing=0 cellpadding=0 width=98% align=center class="slds-m-around_medium" style="width: auto;">
    <tr>
 	<td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 
@@ -63,7 +63,6 @@
 									   <tr>
 										<td colspan=4 style="padding:5px">
 											<div align="center">
-												<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save'; displaydeleted(); return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
 												{if isset($SandRActive) && $SandRActive!=0 && (!isset($MED1x1MODE) || $MED1x1MODE==0)}
 												<input title="{$APP.LBL_SAVEREPEAT_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVEREPEAT_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.saverepeat.value='1';this.form.action.value='Save'; displaydeleted(); return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVEREPEAT_BUTTON_LABEL}  ">
 												{/if}
@@ -73,7 +72,6 @@
 												{if isset($gobackBTN) && !$gobackBTN}
 												<input title="{$APP.LBL_GOBACK_BUTTON_TITLE}" accessKey="{$APP.LBL_GOBACK_BUTTON_KEY}" class="crmbutton small cancel" onclick="this.form.saverepeat.value='goback';this.form.action.value='Save'; displaydeleted();" type="submit" name="button" value="  {$APP.LBL_GOBACK_BUTTON_LABEL}  ">
 												{/if}
-												<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="{if isset($smarty.request.Module_Popup_Edit)}window.close(){elseif isset($CANCELGO)}window.location.href='{$CANCELGO}'{else}window.history.back(){/if};" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
 											</div>
 										</td>
 									   </tr>
@@ -149,7 +147,6 @@
 										<input title="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_TITLE}" accessKey="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_KEY}" class="crmbutton small create" onclick="window.open('index.php?module=Users&action=lookupemailtemplates&entityid={$ENTITY_ID}&entity={$ENTITY_TYPE}','emailtemplate','top=100,left=200,height=400,width=300,menubar=no,addressbar=no,status=yes')" type="button" name="button" value="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_LABEL}">
 										<input title="{$MOD.LBL_SEND}" accessKey="{$MOD.LBL_SEND}" class="crmbutton small save" onclick="this.form.action.value='Save';this.form.send_mail.value='true'; return formValidate()" type="submit" name="button" value="  {$MOD.LBL_SEND}  " >
 										{/if}
-												<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save';  displaydeleted();return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
 												{if isset($SandRActive) && $SandRActive!=0 && (!isset($MED1x1MODE) || $MED1x1MODE==0)}
 												<input title="{$APP.LBL_SAVEREPEAT_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVEREPEAT_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.saverepeat.value='1';this.form.action.value='Save'; displaydeleted(); return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVEREPEAT_BUTTON_LABEL}  ">
 												{/if}
@@ -159,7 +156,6 @@
 												{if isset($gobackBTN) && !$gobackBTN}
 												<input title="{$APP.LBL_GOBACK_BUTTON_TITLE}" accessKey="{$APP.LBL_GOBACK_BUTTON_KEY}" class="crmbutton small cancel" onclick="this.form.saverepeat.value='goback';this.form.action.value='Save'; displaydeleted();" type="submit" name="button" value="  {$APP.LBL_GOBACK_BUTTON_LABEL}  ">
 												{/if}
-												<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="{if isset($smarty.request.Module_Popup_Edit)}window.close(){elseif isset($CANCELGO)}window.location.href='{$CANCELGO}'{else}window.history.back(){/if};" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
 											</div>
 										</td>
 									   </tr>

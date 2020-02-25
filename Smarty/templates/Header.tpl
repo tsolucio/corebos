@@ -22,6 +22,15 @@
 	<link rel="stylesheet" href="include/LD/assets/styles/mainmenu.css" type="text/css" />
 	<link rel="stylesheet" href="include/LD/assets/styles/override_lds.css" type="text/css" />
 	<link rel="stylesheet" href="include/style.css" type="text/css" />
+	<style type="text/css">
+		html {
+			background: url({$coreBOS_app_coverimage}) no-repeat center center fixed;
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+		}
+	</style>
 {* vtlib customization: Inclusion of custom javascript and css as registered *}
 {if $HEADERCSS}
 	<!-- Custom Header CSS -->
@@ -288,7 +297,7 @@
 		</div>
 	</div>
 	{if $COREBOS_HEADER_PREMENU}
-	<div style="width:100%; background-color:#fff;">
+	<div style="width:100%; background-color:#fff;"  id="premenu-wrapper">
 	{$COREBOS_HEADER_PREMENU}
 	</div>
 	{/if}

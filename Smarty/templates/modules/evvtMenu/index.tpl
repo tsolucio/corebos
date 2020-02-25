@@ -58,7 +58,7 @@
 	</div>
 </div>
 
-<div id="evvtmenu" class="k-content">
+<div id="evvtmenu" class="k-content slds-box slds-m-around_medium" style="float: left; width: 98%; box-sizing: border-box; background: #ffffff;">
   <div class="evvtmenu-section">
 	<div class="evvtmenu_header">
 		{'evvtMenuLayout'|getTranslatedString:$MODULE}
