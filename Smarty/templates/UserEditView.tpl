@@ -118,7 +118,7 @@ function check_duplicate() {ldelim}
 <!-- END -->
 
 <br>
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="98%" class="slds-m-around_medium" style="width: auto;">
 <tbody><tr>
 	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
