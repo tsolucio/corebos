@@ -6241,7 +6241,7 @@ const pageHeader = {
 	},
 	'getPremenuHeight' : () => {
 		let premenu = document.getElementById('premenu-wrapper')
-		return premenu === undefined ? 0 : premenu.getBoundingClientRect().height;
+		return premenu === null ? 0 : premenu.getBoundingClientRect().height;
 	},
 	'moveup' : () => {
 		pageHeader.node().classList.add('page-header_stickup');
