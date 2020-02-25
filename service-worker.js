@@ -9113,13 +9113,13 @@ precacheAndRoute([{
   "revision": "01c714bf88b7c2535199273cf80e89be"
 }, {
   "url": "include/js/general.js",
-  "revision": "b68e5cf25683d03a3d7d6c62f67a1897"
+  "revision": "758efcf8833c46b114c0867c50c1dbb2"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "d5a7067172555edc0df55b3452f1532b"
 }, {
   "url": "include/js/Inventory.js",
-  "revision": "08836a1a07506ef7c58ddee60927cc64"
+  "revision": "d71b3dbfbb25c65a426efa62488aa40c"
 }, {
   "url": "include/js/it_it.lang.js",
   "revision": "aa4f748eba04c76881db396a039355da"
@@ -9545,7 +9545,7 @@ precacheAndRoute([{
   "revision": "69636c3bb0f5569277b10c98016af69a"
 }, {
   "url": "modules/Emails/Emails.js",
-  "revision": "d37ea32077a5434152b2ca683c19042f"
+  "revision": "c15c02da75b33de92f4290c57a936c11"
 }, {
   "url": "modules/Rss/Rss.js",
   "revision": "9e93cf2f8dddbea42be801f31e1f73f3"
