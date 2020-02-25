@@ -85,9 +85,9 @@
 		</div>
 		<div class="slds-page-header__col-actions">
 			<div class="slds-page-header__controls">
-				<div class="slds-page-header__control">
-					<ul class="slds-button-group-list">
-						<li class="slds-m-right_small slds-m-top_x-small">
+				<div class="slds-page-header__control slds-grid">
+					<ul class="buttons-group-list">
+						<li class="slds-m-right_small slds-m-top_small">
 							<span id="vtbusy_info" style="display:none;">
 								<div role="status" class="slds-spinner slds-spinner_brand slds-spinner_x-small" style="position:relative; top:6px;">
 									<div class="slds-spinner__dot-a"></div>
@@ -95,6 +95,8 @@
 								</div>
 							</span>
 						</li>
+					</ul>
+					<ul class="slds-button-group-list">
 					{if $CHECK.CreateView eq 'yes' && ($MODULE eq 'Calendar' || $MODULE eq 'Calendar4You')}
 						<li>
 							<button class="slds-button slds-button_neutral" {$ADD_ONMOUSEOVER}>{$MOD.LBL_ADD_EVENT}</button>
