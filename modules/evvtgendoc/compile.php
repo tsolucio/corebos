@@ -102,10 +102,15 @@ $related_module = array(
 		'SalesOrder' => 'related_to',
 		'PurchaseOrder' => 'related_to',
 	),
+	'HelpDesk' => array(
+		'HDRelatedTo' => 'parent_id',
+		'HDProducts' => 'product_id',
+	),
 	'Organization' => array(
 		'Accounts' => 'accid'
 	),
 );
+
 
 //Array de mapeig de moduls especials, p.e. el presciptors son comptes
 //aleshores el tag Prescriptor el mapegem a Accounts
@@ -166,6 +171,14 @@ $special_modules = array(
 		'Potentials',
 		'Project',
 		'ProjectTask'
+	),
+	'HDRelatedTo' => array(
+		'Accounts',
+		'Contacts'
+	),
+	'HDProducts' => array(
+		'Products',
+		'Services'
 	),
 );
 
