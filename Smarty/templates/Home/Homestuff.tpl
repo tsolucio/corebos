@@ -70,7 +70,7 @@ initHomePage();
 /**
  * this function is used to display the add window for different dashboard widgets
  */
-function fnAddWindow(obj,CurrObj){
+function fnAddWindow(obj, CurrObj) {
 	var tagName = document.getElementById(CurrObj);
 	var left_Side = findPosX(obj);
 	var top_Side = findPosY(obj);
@@ -79,7 +79,7 @@ function fnAddWindow(obj,CurrObj){
 	tagName.style.display = 'block';
 	document.getElementById("addmodule").href="javascript:chooseType('Module');fnRemoveWindow();setFilter(document.getElementById('selmodule_id'))";
 	document.getElementById("addNotebook").href="javascript:chooseType('Notebook');fnRemoveWindow();show('addWidgetsDiv');placeAtCenter(document.getElementById('addWidgetsDiv'));";
-    document.getElementById("defaultwidget").href="javascript:chooseType('defaultwidget');fnRemoveWindow();";
+	document.getElementById("defaultwidget").href="javascript:chooseType('defaultwidget');fnRemoveWindow();";
 	//document.getElementById("addURL").href="javascript:chooseType('URL');fnRemoveWindow();show('addWidgetsDiv');placeAtCenter(document.getElementById('addWidgetsDiv'));";
 {/literal}
 {if $ALLOW_RSS eq "yes"}
@@ -89,7 +89,7 @@ function fnAddWindow(obj,CurrObj){
 	document.getElementById("adddash").href="javascript:chooseType('DashBoard');fnRemoveWindow()";
 {/if}
 {if $ALLOW_REPORT eq "yes"}
-    document.getElementById("addReportCharts").href="javascript:chooseType('ReportCharts');fnRemoveWindow()";
+	document.getElementById("addReportCharts").href="javascript:chooseType('ReportCharts');fnRemoveWindow()";
 {/if}
 {literal}
 }
