@@ -14,13 +14,13 @@ function getaddITSEventPopupTime($starttime, $endtime, $format) {
 	$timearr = array();
 	list($sthr,$stmin) = explode(':', $starttime);
 	list($edhr,$edmin) = explode(':', $endtime);
-	if ($format == 'am/pm' || $format == '12') {
+	if ($format == '12' || $format == 'am/pm') {
 		$hr = $sthr+0;
 		$timearr['startfmt'] = ($hr >= 12) ? 'pm' : 'am';
 		if ($hr == 0) {
 			$hr = 12;
 		}
-		$timearr['starthour'] = twoDigit(($hr>12)?($hr-12):$hr);
+		$timearr['starthour'] = twoDigit(($hr>12) ? ($hr-12) : $hr);
 		$timearr['startmin']  = $stmin;
 
 		$edhr = $edhr+0;
@@ -28,17 +28,19 @@ function getaddITSEventPopupTime($starttime, $endtime, $format) {
 		if ($edhr == 0) {
 			$edhr = 12;
 		}
-		$timearr['endhour'] = twoDigit(($edhr>12)?($edhr-12):$edhr);
+		$timearr['endhour'] = twoDigit(($edhr>12) ? ($edhr-12) : $edhr);
 		$timearr['endmin']  = $edmin;
-	} elseif ($format == '24') {
+		return $timearr;
+	}
+	if ($format == '24') {
 		$timearr['starthour'] = twoDigit($sthr);
 		$timearr['startmin']  = $stmin;
 		$timearr['startfmt']  = '';
 		$timearr['endhour']   = twoDigit($edhr);
 		$timearr['endmin']    = $edmin;
 		$timearr['endfmt']    = '';
+		return $timearr;
 	}
-	return $timearr;
 }
 
 /**
