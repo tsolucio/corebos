@@ -250,7 +250,7 @@ function vtlib_getFieldHelpInfo($module) {
 		$result = $adb->pquery('SELECT fieldname,helpinfo FROM vtiger_field WHERE tabid=?', array(getTabid($module)));
 		if ($result && $adb->num_rows($result)) {
 			while ($fieldrow = $adb->fetch_array($result)) {
-				$helpinfo = decode_html($fieldrow['helpinfo']);
+				$helpinfo = trim(decode_html($fieldrow['helpinfo']));
 				if (!empty($helpinfo)) {
 					$fieldhelpinfo[$fieldrow['fieldname']] = getTranslatedString($helpinfo, $module);
 				}
