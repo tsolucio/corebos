@@ -6217,9 +6217,9 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 })();
 
 const headerCollapse = new Event('collapse'),
-	  headerExpand = new Event('expand');
+	headerExpand = new Event('expand');
 
-window.addEventListener('load', function(){
+window.addEventListener('load', function () {
 	const gh = document.getElementById('global-header');
 	if (pageHeader.node() !== null) {
 		pageHeader.initialize();
@@ -6232,18 +6232,18 @@ const pageHeader = {
 	'initialize' : () => {
 		var h = pageHeader.node().getBoundingClientRect().height;
 
-		if (pageHeader.isCollapsed) h = h + pageHeader.getSurplusHeight();
+		if (pageHeader.isCollapsed) {
+			h = h + pageHeader.getSurplusHeight();
+		}
 		pageHeader.totalHeight = h;
 		pageHeader.stickPoint = pageHeader.getStickPoint();
 	},
 	'getStickPoint' : () => {
-			let premenuHeight = pageHeader.getPremenuHeight();
-			return pageHeader.node().getBoundingClientRect().top -
-			document.getElementById('cbmenu').getBoundingClientRect().height -
-			premenuHeight -	2; // 2 for adjusting for the border
+		let premenuHeight = pageHeader.getPremenuHeight();
+		return pageHeader.node().getBoundingClientRect().top - document.getElementById('cbmenu').getBoundingClientRect().height - premenuHeight - 2; // 2 for adjusting for the border
 	},
 	'getPremenuHeight' : () => {
-		let premenu = document.getElementById('premenu-wrapper')
+		let premenu = document.getElementById('premenu-wrapper');
 		return premenu === null ? 0 : premenu.getBoundingClientRect().height;
 	},
 	'moveup' : () => {
@@ -6294,19 +6294,21 @@ const pageHeader = {
 	'getSurplusHeight' : () => {
 		let children = [...pageHeader.getSurplus().children],
 			height = 0;
-		children.forEach((child) => {height = height + child.getBoundingClientRect().height});
+		children.forEach((child) => {
+			height = height + child.getBoundingClientRect().height;
+		});
 		return height;
 	},
 	'collapse' : () => {
 		if (!pageHeader.isCollapsed) {
-			pageHeader.node().classList.add('page-header_collapsed')
+			pageHeader.node().classList.add('page-header_collapsed');
 			pageHeader.getSurplus().style.height = '0px';
 			pageHeader.isCollapsed = true;
 		}
 	},
 	'expand' : () => {
 		if (pageHeader.isCollapsed) {
-			pageHeader.node().classList.remove('page-header_collapsed')
+			pageHeader.node().classList.remove('page-header_collapsed');
 			pageHeader.getSurplus().style.height = pageHeader.getSurplusHeight() + 'px';
 			pageHeader.isCollapsed = false;
 		}
