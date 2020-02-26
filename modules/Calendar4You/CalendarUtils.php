@@ -47,8 +47,8 @@ function getaddITSEventPopupTime($starttime, $endtime, $format) {
  * Function creates HTML to display small(mini) Calendar
  * @param array   $cal    - collection of objects and strings
  */
-function get_its_mini_calendar(& $cal) {
-	global $mod_strings, $theme;
+function get_its_mini_calendar(&$cal) {
+	global $mod_strings;
 	$count = 0;
 	//To decide number of rows(weeks) in a month
 	if ($cal['calendar']->month_array[$cal['calendar']->slices[35]]->start_time->month != $cal['calendar']->date_time->month) {
@@ -56,31 +56,35 @@ function get_its_mini_calendar(& $cal) {
 	} else {
 		$rows = 6;
 	}
-	$minical = '';
 	$mt = substr('0' . $cal['calendar']->date_time->month, -2);
 	$dy = substr('0' . $cal['calendar']->date_time->day, -2);
-	$minical .= "<table class='mailClient ' bgcolor='white' border='0' cellpadding='2' cellspacing='0' width='98%'>
-		<tr>
-			<td class='calHdr'>&nbsp;</td>
-			<td style='padding:5px' colspan='6' class='calHdr' align='center'>".get_previous_its_cal($cal).'&nbsp;';
-			$minical .= "<a style='text-decoration: none;' href='javascript:changeCalendarMonthDate(\"".$cal['calendar']->date_time->year.'","'.$mt.'","'.$dy."\");'><b>"
-				.display_date($cal['view'], $cal['calendar']->date_time).'</b></a>&nbsp;'.get_next_its_cal($cal).'</td>';
-			//$minical .= "<a style='text-decoration: none;' href='index.php?module=Calendar&action=index&view=".$cal['view']."".$cal['calendar']->date_time->get_date_str()."&parenttab=".$category."'><b>".display_date($cal['view'],$cal['calendar']->date_time)."</b></a>&nbsp;".get_next_its_cal($cal)."</td>";
-			$minical .= "<td class='calHdr' align='right'><a href='javascript:ghide(\"miniCal\");'><img src='"
-				.vtiger_imageurl('close.gif', $theme). "' align='right' border='0'></a>
-		</td></tr>";
-	$minical .= "<tr class='hdrNameBg'>";
+	$minical = '<div class="slds-grid slds-badge_lightest">
+		<div class="slds-col slds-size_1-of-6">&nbsp;</div>
+		<div class="slds-col slds-size_1-of-6 slds-align_absolute-center">'.get_previous_its_cal($cal).'</div>';
+	$minical .= "<div class='slds-col slds-size_2-of-6 slds-align_absolute-center'>
+		<a style='text-decoration:none;' href='javascript:void(0);' onclick='return changeCalendarMonthDate(\"".$cal['calendar']->date_time->year.'","'.$mt.'","'.$dy."\");'>"
+		.'<b>'.display_date($cal['view'], $cal['calendar']->date_time).'</b></a></div>';
+	$minical .=  '<div class="slds-col slds-size_1-of-6 slds-align_absolute-center">'.get_next_its_cal($cal).'</div>';
+	$minical .= '<div class="slds-col slds-size_1-of-6" align="right">
+		<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true"
+			onClick="ghide(\'miniCal\');" title="'.getTranslatedString('LBL_CLOSE').'">
+			<svg class="slds-button__icon" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+			</svg>
+			<span class="slds-assistive-text">'.getTranslatedString('LBL_CLOSE').'</span>
+		</button></div></div>';
+	$minical .= '<table class="slds-table slds-table_cell-buffer slds-table_bordered slds-p-around_xx-small"><thead><tr class="slds-line-height_reset">';
 	//To display days in week
-	$minical .= '<th width="12%">'.$mod_strings['LBL_WEEK'].'</th>';
+	$minical .= '<th width="12%" scope="col">'.$mod_strings['LBL_WEEK'].'</th>';
 	for ($i = 0; $i < 7; $i ++) {
 		$weekday = $mod_strings['cal_weekdays_short'][$i];
-		$minical .= '<th width="12%">'.$weekday.'</th>';
+		$minical .= '<th width="12%" scope="col">'.$weekday.'</th>';
 	}
-	$minical .= '</tr>';
+	$minical .= '</tr></thead><tbody>';
 	$event_class = '';
 	$class = '';
 	for ($i = 0; $i < $rows; $i++) {
-		$minical .= '<tr>';
+		$minical .= '<tr class="slds-hint-parent">';
 
 		//calculate blank days for first week
 		for ($j = 0; $j < 7; $j ++) {
@@ -89,7 +93,7 @@ function get_its_mini_calendar(& $cal) {
 			if ($j == 0) {
 				$mt = substr('0' . $cal['slice']->start_time->month, -2);
 				$dy = substr('0' . $cal['slice']->start_time->day, -2);
-				$minical .= "<td style='text-align:center' ><a href='javascript:changeCalendarWeekDate(\"".$cal['slice']->start_time->year.'","'.$mt.'","'.$dy."\");'>"
+				$minical .= "<td scope='row' style='text-align:center'><a href='javascript:void(0);' onclick='return changeCalendarWeekDate(\"".$cal['slice']->start_time->year.'","'.$mt.'","'.$dy."\");'>"
 					.$cal['slice']->start_time->week.'</td>';
 				//index.php?module=Calendar&action=index&view=week".$cal['slice']->start_time->get_date_str()."&parenttab=".$category
 			}
@@ -112,32 +116,38 @@ function get_its_mini_calendar(& $cal) {
 				$minical .= "<td ".$class." style='text-align:center' >";
 				$mt = substr('0' . $cal['slice']->start_time->month, -2);
 				$dy = substr('0' . $cal['slice']->start_time->day, -2);
-				$minical .= "<a href='javascript:changeCalendarDayDate(\"".$cal['slice']->start_time->year.'","'.$mt.'","'.$dy."\");'>";
+				$minical .= "<a href='javascript:void(0);' onClick='return changeCalendarDayDate(\"".$cal['slice']->start_time->year.'","'.$mt.'","'.$dy."\");'>";
 				//$minical .= "<a href='index.php?module=Calendar&action=index&view=".$cal['slice']->getView()."".$cal['slice']->start_time->get_date_str()."&parenttab=".$category."'>BBBBBB";
-				$minical .= $cal['slice']->start_time->get_Date()."</a></td>";
+				$minical .= $cal['slice']->start_time->get_Date()."</a></a>";
 			} else {
-				$minical .= "<td style='text-align:center' ></td>";
+				$minical .= "<td style='text-align:center'></td>";
 			}
 			$count++;
 		}
 		$minical .= '</tr>';
 	}
-	$minical .= '</table>';
+	$minical .= '</tbody></table>';
 	echo $minical;
 }
 
 function get_previous_its_cal(& $cal) {
-	global $theme;
-	$link = "<a href='javascript:getITSMiniCal(\"view=".$cal['calendar']->view."".$cal['calendar']->get_datechange_info('prev')."\")'><img src= '"
-		.vtiger_imageurl('small_left.gif', $theme)."' border='0' align='absmiddle' /></a>";
-	return $link;
+	return '<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true"
+		onClick="getITSMiniCal(\'view='.$cal['calendar']->view.$cal['calendar']->get_datechange_info('prev').'\');" title="'.getTranslatedString('LNK_LIST_PREVIOUS').'">
+		<svg class="slds-button__icon" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#left"></use>
+		</svg>
+		<span class="slds-assistive-text">'.getTranslatedString('LNK_LIST_PREVIOUS').'</span>
+	</button>';
 }
 
 function get_next_its_cal(& $cal) {
-	global $theme;
-	$link = "<a href='javascript:getITSMiniCal(\"view=".$cal['calendar']->view."".$cal['calendar']->get_datechange_info('next')."\")' ><img src='"
-		.vtiger_imageurl('small_right.gif', $theme)."' border='0' align='absmiddle' /></a>";
-	return $link;
+	return '<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true"
+		onClick="getITSMiniCal(\'view='.$cal['calendar']->view.$cal['calendar']->get_datechange_info('next').'\');" title="'.getTranslatedString('LNK_LIST_NEXT').'">
+		<svg class="slds-button__icon" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#right"></use>
+		</svg>
+		<span class="slds-assistive-text">'.getTranslatedString('LNK_LIST_NEXT').'</span>
+	</button>';
 }
 
 function getActTypeForCalendar($activitytypeid, $translate = true) {

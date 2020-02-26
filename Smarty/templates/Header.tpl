@@ -332,7 +332,7 @@
 <!-- END LDS Global header -->
 <a name="top"></a>
 
-<div id='miniCal' style='width:300px; position:absolute; display:none; left:100px; top:100px; z-index:100000'></div>
+<div id='miniCal' style='position:absolute; display:none; left:100px; top:100px; z-index:100000'></div>
 
 {if $MODULE_NAME eq 'Calendar'}
 	<div id="CalExport" style="width:300px; position:absolute; display:none; left:500px; top:100px; z-index:100000" class="layerPopup">
