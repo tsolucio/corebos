@@ -153,53 +153,53 @@
 <form name="Homestuff" id="formStuff" style="display: inline;" method="post">
 	<input type="hidden" name="action" value="homestuff">
 	<input type="hidden" name="module" value="Home">
-	<div id='addWidgetDropDown' style='background-color: #fff; display:none;' onmouseover='fnShowWindow()' onmouseout='fnRemoveWindow()'>
-		<ul class="widgetDropDownList">
-		<li>
-			<a href='javascript:;' class='drop_down' id="addmodule">
+	<div id='addWidgetDropDown' class="slds-dropdown slds-dropdown_right slds-m-right_small slds-dropdown_actions" onmouseover='fnShowWindow()' onmouseout='fnRemoveWindow()'>
+	<ul class="slds-dropdown__list" role="menu">
+		<li class="slds-dropdown__item" role="presentation">
+			<a href='javascript:;' role="menuitem" id="addmodule">
 				{$MOD.LBL_HOME_MODULE}
 			</a>
 		</li>
-		<li>
-			<a href='javascript:chooseType("CustomWidget");fnRemoveWindow();setFilter(document.getElementById("selmodule_id"));' class='drop_down' id="addcustomwidget">
+		<li class="slds-dropdown__item" role="presentation">
+			<a href='javascript:chooseType("CustomWidget");fnRemoveWindow();setFilter(document.getElementById("selmodule_id"));' role="menuitem" id="addcustomwidget">
 				{$MOD.LBL_HOME_CUSTOM_WIDGET}
 			</a>
 		</li>
 {if $ALLOW_RSS eq "yes"}
-		<li>
-			<a href='javascript:;' class='drop_down' id="addrss">
+		<li class="slds-dropdown__item" role="presentation">
+			<a href='javascript:;' role="menuitem" id="addrss">
 				{$MOD.LBL_HOME_RSS}
 			</a>
 		</li>
 {/if}	
 {if $ALLOW_DASH eq "yes"}
-		<li>
-			<a href='javascript:;' class='drop_down' id="adddash">
+		<li class="slds-dropdown__item" role="presentation">
+			<a href='javascript:;' role="menuitem" id="adddash">
 				{$MOD.LBL_HOME_DASHBOARD}
 			</a>
 		</li>
 {/if}
-		<li>
-			<a href='javascript:;' class='drop_down' id="addNotebook">
+		<li class="slds-dropdown__item" role="presentation">
+			<a href='javascript:;' role="menuitem" id="addNotebook">
 				{$MOD.LBL_NOTEBOOK}
 			</a>
 		</li>
 
 {if $ALLOW_REPORT eq "yes"}
-		<li>
-			<a href='javascript:;' class='drop_down' id="addReportCharts">
+		<li class="slds-dropdown__item" role="presentation">
+			<a href='javascript:;' role="menuitem" id="addReportCharts">
 				{'LBL_REPORTCHARTS'|@getTranslatedString:$MODULE}
 			</a>
 		</li>
 {/if}
-		<li>
-			<a href='javascript:;' class='drop_down' id="defaultwidget">
+		<li class="slds-dropdown__item" role="presentation">
+			<a href='javascript:;' role="menuitem" id="defaultwidget">
 				{'LBL_DEFAULT_WIDGET'|@getTranslatedString:$MODULE}
 			</a>
 		</li>
 		{*<!-- this has been commented as some websites are opening up in full page (they have a target="_top")
-		<li>
-			<a href='javascript:;' class='drop_down' id="addURL">
+		<li class="slds-dropdown__item" role="presentation">
+			<a href='javascript:;' role="menuitem" id="addURL">
 				{$MOD.LBL_URL}
 			</a>
 		</li>
