@@ -57,7 +57,7 @@ function vtws_sendRecoverPassword($username) {
 			from vtiger_contactdetails
 			inner join vtiger_portalinfo on id=contactid
 			where isactive=1 and user_name=?', array($username));
-	if (!ctors || $adb->num_rows($ctors)==0) {
+	if (!$ctors || $adb->num_rows($ctors)==0) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALIDUSERPWD, 'Invalid username: username not found or not active');
 	}
 	require_once 'modules/Emails/mail.php';
