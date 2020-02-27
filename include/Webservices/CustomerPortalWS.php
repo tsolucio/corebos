@@ -428,26 +428,17 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 			$params = array($tabid);
 		} else {
 			$profileList = getCurrentUserProfileList();
-			$params = array();
 			$query  = 'SELECT DISTINCT vtiger_field.fieldname
-			FROM vtiger_field
-			INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid
-			INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid = vtiger_field.fieldid';
-
-			if ($module == 'Calendar') {
-				$query .=' WHERE vtiger_field.tabid in (9,16) and vtiger_field.presence in (0,2)';
-			} else {
-				$query .=' WHERE vtiger_field.tabid = ? and vtiger_field.presence in (0,2)';
-				$params[] = $tabid;
-			}
-
-			$query .=' AND vtiger_profile2field.visible = 0
-			AND vtiger_profile2field.visible = 0
-			AND vtiger_def_org_field.visible = 0
-			AND vtiger_profile2field.profileid IN ('. generateQuestionMarks($profileList) .')
-			AND vtiger_field.fieldname IN ('. generateQuestionMarks($field_list) .')';
-
-			array_push($params, $profileList, $field_list);
+				FROM vtiger_field
+				INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid
+				INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
+				WHERE vtiger_field.tabid=? and vtiger_field.presence in (0,2)
+				AND vtiger_profile2field.visible = 0
+				AND vtiger_profile2field.visible = 0
+				AND vtiger_def_org_field.visible = 0
+				AND vtiger_profile2field.profileid IN ('. generateQuestionMarks($profileList) .')
+				AND vtiger_field.fieldname IN ('. generateQuestionMarks($field_list) .')';
+			$params = array($tabid, $profileList, $field_list);
 		}
 
 		$result = $adb->pquery($query, $params);
@@ -458,18 +449,10 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 	//constructing the uitype and columnname array
 	$ui_col_array=array();
 
-	$params = array();
-	$query = 'SELECT uitype, columnname, fieldname FROM vtiger_field ';
-
-	if ($module == 'Calendar') {
-		$query .=' WHERE vtiger_field.tabid in (9,16) and vtiger_field.presence in (0,2)';
-	} else {
-		$query .=' WHERE vtiger_field.tabid = ? and vtiger_field.presence in (0,2)';
-		$params[] = $tabid;
-	}
-	$query .= ' AND fieldname IN ('. generateQuestionMarks($field_list).') ';
-	$params[] = $field_list;
-
+	$query = 'SELECT uitype, columnname, fieldname
+		FROM vtiger_field
+		WHERE vtiger_field.tabid=? and vtiger_field.presence in (0,2) AND fieldname IN ('. generateQuestionMarks($field_list).') ';
+	$params = array($tabid, $field_list);
 	$result = $adb->pquery($query, $params);
 	$num_rows=$adb->num_rows($result);
 	for ($i=0; $i<$num_rows; $i++) {
@@ -753,24 +736,6 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 								$result=$adb->pquery($sql, array($entity_id));
 								$email_flag=$adb->query_result($result, 0, 'email_flag');
 								if ($email_flag != 'SAVED') {
-									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
-									$value = evvt_strip_html_links($value);
-								} else {
-									$value = '';
-								}
-							}
-						} elseif ($module == 'Calendar' && ($fieldname!='taskstatus' && $fieldname!='eventstatus')) {
-							if ($activitytype == 'Task') {
-								if (getFieldVisibilityPermission('Calendar', $current_user->id, $fieldname) == '0') {
-									$list_result_count = $i-1;
-									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
-									$value = evvt_strip_html_links($value);
-								} else {
-									$value = '';
-								}
-							} else {
-								if (getFieldVisibilityPermission('Events', $current_user->id, $fieldname) == '0') {
-									$list_result_count = $i-1;
 									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
 									$value = evvt_strip_html_links($value);
 								} else {
