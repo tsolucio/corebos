@@ -20,7 +20,8 @@
 require_once 'Smarty_setup.php';
 require_once 'modules/cbMap/cbMap.php';
 require_once 'modules/cbMap/processmap/processMap.php';
-
+error_reporting(-1);
+ini_set('display_errors', 1);
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $singlepane_view;
 
 $smarty = new vtigerCRM_Smarty();
@@ -77,10 +78,27 @@ if ($contentok !== true) {
 
 switch ($focus->column_fields['maptype']) {
 	case 'Condition Query':
-		$mapinfo = $focus->ConditionQuery(74);
+		if (!empty($_REQUEST['testrecord'])) {
+			$testrecord = vtlib_purify($_REQUEST['testrecord']);
+		} else {
+			$testrecord = 74;
+		}
+		$currentModule = getSalesEntityType($testrecord);
+		$mapinfo = (array) $focus->ConditionQuery(74);
+		$currentModule = 'cbMap';
+		$mapinfo['TEST RECORD'] = "<h3>Testing with $testrecord</h3>";
 		break;
 	case 'Condition Expression':
-		$mapinfo = $focus->ConditionExpression('11x74');
+		if (!empty($_REQUEST['testrecord'])) {
+			$testrecord = vtlib_purify($_REQUEST['testrecord']);
+		} else {
+			$testrecord = '11x74';
+		}
+		list($wsid, $crmid) = explode('x', $testrecord);
+		$currentModule = getSalesEntityType($crmid);
+		$mapinfo = (array) $focus->ConditionExpression('11x74');
+		$currentModule = 'cbMap';
+		$mapinfo['TEST RECORD'] = "<h3>Testing with $testrecord</h3>";
 		break;
 	case 'Mapping':
 		$sofocus = CRMEntity::getInstance('SalesOrder');
