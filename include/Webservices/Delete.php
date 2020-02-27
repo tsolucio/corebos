@@ -34,6 +34,10 @@ function vtws_delete($id, $user) {
 	$meta = $handler->getMeta();
 	$entityName = $meta->getObjectEntityName($id);
 
+	if ($entityName == 'Users') {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Incorrect method: use DeleteUser method to delete users');
+	}
+
 	$types = vtws_listtypes(null, $user);
 	if (!in_array($entityName, $types['types'])) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
