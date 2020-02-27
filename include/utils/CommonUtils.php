@@ -2886,14 +2886,13 @@ function SaveTagCloudView($id = '') {
 	}
 
 	if (!empty($id)) {
-		$query = "update vtiger_homestuff set visible = ? where userid=? and stufftype='Tag Cloud'";
+		$query = "update vtiger_homestuff set visible=? where userid=? and stufftype='Tag Cloud'";
 		$adb->pquery($query, array($tag_cloud_view, $id));
 	}
 
 	if (!empty($id) && !empty($_REQUEST['showtagas'])) {
 		$tag_cloud_showas = vtlib_purify($_REQUEST['showtagas']);
-		$query = 'update vtiger_users set showtagas = ? where id=?';
-		$adb->pquery($query, array($tag_cloud_showas, $id));
+		$adb->pquery('update vtiger_users set showtagas=? where id=?', array($tag_cloud_showas, $id));
 	}
 	$log->debug('< SaveTagCloudView');
 }

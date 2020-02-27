@@ -786,9 +786,6 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 					$list_header[$name] = $value;
 				}
 			}
-			$varreturnset = '';
-
-			$varreturnset = $returnset;
 			$webserviceEntityId=vtyiicpng_getWSEntityId($module);
 			$list_header['id']=$webserviceEntityId.$entity_id;
 			$list_header['search_module_name']=$module;
@@ -984,40 +981,40 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 
 	$r = $adb->query("
 		SELECT 
-		    vtiger_products.productname AS name, 
-		    vtiger_products.divisible AS divisible, 
-		    'Products' AS type, 
-		    vtiger_products.vendor_part_no AS ven_no, 
-		    vtiger_products.cost_price AS cost_price, 
-		    vtiger_products.mfr_part_no AS mfr_no, 
-		    vtiger_products.qtyinstock AS qtyinstock, 
-		    {$prod_aliasquery}
-		    vtiger_crmentity.deleted AS deleted, 
-		    vtiger_crmentity.crmid AS id, 
-		    vtiger_products.unit_price AS unit_price 
-		    FROM vtiger_products 
-			INNER JOIN vtiger_crmentity ON vtiger_products.productid = vtiger_crmentity.crmid 
-			INNER JOIN vtiger_productcf ON vtiger_products.productid = vtiger_productcf.productid 
+			vtiger_products.productname AS name,
+			vtiger_products.divisible AS divisible,
+			'Products' AS type,
+			vtiger_products.vendor_part_no AS ven_no,
+			vtiger_products.cost_price AS cost_price,
+			vtiger_products.mfr_part_no AS mfr_no,
+			vtiger_products.qtyinstock AS qtyinstock,
+			{$prod_aliasquery}
+			vtiger_crmentity.deleted AS deleted,
+			vtiger_crmentity.crmid AS id,
+			vtiger_products.unit_price AS unit_price
+			FROM vtiger_products
+			INNER JOIN vtiger_crmentity ON vtiger_products.productid = vtiger_crmentity.crmid
+			INNER JOIN vtiger_productcf ON vtiger_products.productid = vtiger_productcf.productid
 			".getNonAdminAccessControlQuery('Products', $current_user)."
 			WHERE ({$productsearchquery}) 
 			{$prodcondquery} 
 			AND vtiger_products.discontinued = 1 AND vtiger_crmentity.deleted = 0
 		UNION
 		SELECT
-		    vtiger_service.servicename AS name, 
-		    vtiger_service.divisible AS divisible, 
-		    'Services' AS type,
-		    '' AS ven_no, 
-		    '' AS mfr_no,
-		    0 AS qtyinstock,
-		    '' AS cost_price,
-		    {$serv_aliasquery}
-		    vtiger_crmentity.deleted AS deleted, 
-		    vtiger_crmentity.crmid AS id, 
-		    vtiger_service.unit_price AS unit_price 
-		    FROM vtiger_service 
-			INNER JOIN vtiger_crmentity ON vtiger_service.serviceid = vtiger_crmentity.crmid 
-			INNER JOIN vtiger_servicecf ON vtiger_service.serviceid = vtiger_servicecf.serviceid 
+			vtiger_service.servicename AS name,
+			vtiger_service.divisible AS divisible,
+			'Services' AS type,
+			'' AS ven_no,
+			'' AS mfr_no,
+			0 AS qtyinstock,
+			'' AS cost_price,
+			{$serv_aliasquery}
+			vtiger_crmentity.deleted AS deleted,
+			vtiger_crmentity.crmid AS id,
+			vtiger_service.unit_price AS unit_price
+			FROM vtiger_service
+			INNER JOIN vtiger_crmentity ON vtiger_service.serviceid = vtiger_crmentity.crmid
+			INNER JOIN vtiger_servicecf ON vtiger_service.serviceid = vtiger_servicecf.serviceid
 			".getNonAdminAccessControlQuery('Services', $current_user)."
 			WHERE ({$servicesearchquery}) 
 			{$servcondquery} 
