@@ -2877,7 +2877,7 @@ function getTagCloudView($id = '') {
 function SaveTagCloudView($id = '') {
 	global $log, $adb;
 	$log->debug('> SaveTagCloudView '.$id);
-	$tag_cloud_status = vtlib_purify($_REQUEST['tagcloudview']);
+	$tag_cloud_status = isset($_REQUEST['tagcloudview']) ? vtlib_purify($_REQUEST['tagcloudview']) : '';
 
 	if ($tag_cloud_status == 'true') {
 		$tag_cloud_view = 0;
