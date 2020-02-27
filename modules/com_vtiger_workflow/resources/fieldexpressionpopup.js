@@ -25,6 +25,7 @@ function fieldExpressionPopup(moduleName, $) {
 
 	function show() {
 		$('#editpopup').css('display', 'block');
+		$('#editpopup').css('height', '370px');
 		center($('#editpopup'));
 	}
 
@@ -33,7 +34,7 @@ function fieldExpressionPopup(moduleName, $) {
 			position: 'absolute'
 		});
 		el.css({
-			width: '650px'
+			width: '950px'
 		});
 		//placeAtCenter(el.get(0));
 	}
@@ -78,22 +79,15 @@ function fieldExpressionPopup(moduleName, $) {
 
 	function handleExpressionType(ele) {
 		var value = ele.val();
-		var helpElements = $('.layerPopup .helpmessagebox');
-		$.each(helpElements, function (index, helpElement) {
-			hideElement(helpElement);
-		});
 		if (value == 'fieldname') {
-			showElement($('#fieldname_help'), 'block');
 			showElement($('#editpopup_fieldnames'));
 			hideElement($('#editpopup_functions'));
 			setFieldType('string')(opType);
 		} else if (value == 'expression') {
-			showElement($('#expression_help'), 'block');
 			showElement($('#editpopup_fieldnames'));
 			showElement($('#editpopup_functions'));
 			setFieldType('string')(opType);
 		} else {
-			showElement($('#text_help'), 'block');
 			hideElement($('#editpopup_fieldnames'));
 			hideElement($('#editpopup_functions'));
 			var fieldType = $('#editpopup_field_type').val();
@@ -164,7 +158,7 @@ function fieldExpressionPopup(moduleName, $) {
 					opType['picklistValues']
 				)
 			);
-			value.replaceWith('<select id="editpopup_expression" class="value">'+options+'</select>');
+			value.replaceWith('<select id="editpopup_expression" class="slds-select">'+options+'</select>');
 		}
 
 		function forInteger(opType) {
@@ -182,7 +176,7 @@ function fieldExpressionPopup(moduleName, $) {
 					ownersList
 				)
 			);
-			value.replaceWith('<select id="editpopup_expression" class="value">'+options+'</select>');
+			value.replaceWith('<select id="editpopup_expression" class="slds-select">'+options+'</select>');
 		}
 		function forDateField(opType) {
 			var value = $('#editpopup_expression');
@@ -194,18 +188,25 @@ function fieldExpressionPopup(moduleName, $) {
 		}
 		function forReferenceField(opType) {
 			var value = $('#editpopup_expression');
-			var refcode = '<span id="editpopup_expression" class="value"><input id="wfrelfield" name="wfrelfield" type="hidden" value="">'
-				+ '<select name="wfrelfield_type" id="wfrelfield_type" class="small" onchange="this.form.wfrelfield.value=\'\';this.form.wfrelfield_display.value=\'\';">';
+			var refcode = '<span id="editpopup_expression"><input id="wfrelfield" name="wfrelfield" type="hidden" value="">'
+				+ '<select name="wfrelfield_type" id="wfrelfield_type" class="slds-select" onchange="this.form.wfrelfield.value=\'\';this.form.wfrelfield_display.value=\'\';">';
 			for (var mod=0; mod<opType.refersTo.length; mod++) {
 				refcode = refcode + '<option value="' + opType.refersTo[mod] + '">' + opType.refersTo[mod] + '</option>';
 			}
-			refcode = refcode + '</select>&nbsp;'
-				+ '<input id="wfrelfield_display" name="wfrelfield_display" readonly type="text" style="border:1px solid #bababa;width:200px;" value="">&nbsp;'
-				+ '<img id="entity" src="themes/softed/images/select.gif" alt="SELECT" title="SELECT" align="absmiddle" style="cursor:hand;cursor:pointer" '
+			refcode = refcode + '</select><div class="slds-grid slds-p-around_xx-small">'
+				+ '<div class="slds-col slds-size_5-of-6">'
+				+ '<input id="wfrelfield_display" name="wfrelfield_display" readonly type="text" style="border:1px solid #bababa;background-color: white;" class="slds-input" value="">'
+				+ '</div><div class="slds-col slds-size_1-of-6">'
+				+ '<span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-p-left_small" '
 				+ 'onClick=\'return vtlib_open_popup_window("","wfrelfield","com_vtiger_workflow","");\'>'
-				+ '<input type="image" src="themes/images/clear_field.gif"'
-				+ 'alt="CLEAR" title="CLEAR" onClick="this.form.wfrelfield.value=\'\';'
-				+ 'this.form.wfrelfield_display.value=\'\'; return false;" align="absmiddle" style="cursor:hand;cursor:pointer"></span>';
+				+ '<svg class="slds-icon slds-icon slds-icon_small slds-icon-text-default" aria-hidden="true">'
+				+ '<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>'
+				+ '</svg></span>'
+				+ '<span class="slds-icon_container slds-icon-utility-clear slds-input__icon slds-p-left_small" '
+				+ 'onClick="document.forms[\'edit_workflow_form\'].wfrelfield.value=\'\';document.forms[\'edit_workflow_form\'].wfrelfield_display.value=\'\';return false;">'
+				+ '<svg class="slds-icon slds-icon slds-icon_small slds-icon-text-default" aria-hidden="true">'
+				+ '<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>'
+				+ '</svg></span></div></div></span>'
 			value.replaceWith(refcode);
 		}
 		function forTimeField(opType) {
@@ -223,12 +224,12 @@ function fieldExpressionPopup(moduleName, $) {
 		var functions = {
 			string:function (opType) {
 				var value = $('#editpopup_expression');
-				value.replaceWith('<textarea name="Name" rows="10" cols="50" id="editpopup_expression"></textarea>');
+				value.replaceWith('<textarea name="Name" id="editpopup_expression" class="slds-textarea" style="height:200px;"></textarea>');
 			},
 			'boolean': function (opType) {
 				var value = $('#editpopup_expression');
 				value.replaceWith(
-					'<select id="editpopup_expression" value="true" class="value"> \
+					'<select id="editpopup_expression" value="true" class="slds-select"> \
 						<option value="true:boolean">'+alert_arr.YES+'</option>\
 						<option value="false:boolean">'+alert_arr.NO+'</option>\
 					</select>'
