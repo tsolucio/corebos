@@ -901,9 +901,6 @@ class CRMEntity {
 	 */
 	public function retrieve_entity_info($record, $module, $deleted = false, $from_wf = false) {
 		global $adb, $app_strings, $current_user;
-		$preFmt = '<br><br><center>';
-		$postFmt = '.</a></center>';
-		$i8nGoBack = $app_strings['LBL_GO_BACK'];
 		$result = array();
 
 		//Here we check if user can see this record.
@@ -918,19 +915,29 @@ class CRMEntity {
 		}
 		$isRecordDeleted = $adb->query_result($result['vtiger_crmentity'], 0, 'deleted');
 		if ($isRecordDeleted !== 0 && $isRecordDeleted !== '0' && !$deleted) {
-			die($preFmt . $app_strings['LBL_RECORD_DELETE'] . " $module: $record <a href='javascript:window.history.back()'>" . $i8nGoBack . $postFmt);
+			require_once 'Smarty_setup.php';
+			$smarty = new vtigerCRM_Smarty();
+			$smarty->assign('APP', $app_strings);
+			$smarty->assign('OPERATION_MESSAGE', $app_strings['LBL_RECORD_DELETE']." $module: $record");
+			$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
+			die();
 		}
 
 		/* Block access to empty record */
 		if (isset($this->table_name)) {
 			$mod_index_col = $this->tab_name_index[$this->table_name];
 			if ($adb->query_result($result[$this->table_name], 0, $mod_index_col) == '') {
-				echo $preFmt . $app_strings['LBL_RECORD_NOT_FOUND'] . ". <a href='javascript:window.history.back()'>" . $i8nGoBack . $postFmt;
+				require_once 'Smarty_setup.php';
+				$smarty = new vtigerCRM_Smarty();
+				$smarty->assign('APP', $app_strings);
+				$smarty->assign('OPERATION_MESSAGE', $app_strings['LBL_RECORD_NOT_FOUND']);
+				$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 				if (GlobalVariable::getVariable('Debug_Record_Not_Found', false)) {
-					echo $preFmt . 'Looking for ' . $this->table_name . '.' . $mod_index_col . ' in <br>' . print_r($result[$this->table_name]->sql, true) . '</center>';
+					echo '<div class="slds-m-around_x-large">';
+					echo 'Looking for ' . $this->table_name . '.' . $mod_index_col . ' in <br>' . print_r($result[$this->table_name]->sql, true);
 					echo '<pre>';
 					debug_print_backtrace();
-					echo '</pre>';
+					echo '</pre></div>';
 				}
 				die();
 			}
