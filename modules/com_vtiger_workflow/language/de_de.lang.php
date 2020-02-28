@@ -36,6 +36,7 @@ $mod_strings = array(
 	'LBL_AVAILABLE_WORKLIST_LIST'=>'Verfügbare Workflows',
 	'LBL_LOADING'=>'Lade...',
 	'LBL_REEVALCONDITIONS' => 'Bedingungen bei Ausführung überprüfen',
+	'evaluate' => 'Evaluate',
 	'LBL_VALIDATION_ERROR'=>'Überprüfungsfehler',
 	'LBL_SELECT_OPTION_DOTDOTDOT'=>'Option wählen...',
 	'LBL_WORKFLOW_NOTE_CRON_CONFIG'=>'Hinweis: Sie können die Ersatzfelder verwenden.',
@@ -203,5 +204,7 @@ $mod_strings = array(
 	'LBL_ROW' => 'Row',
 	'ERR_IncorrectFile' => 'Incorrect File or File Content',
 	'ERR_CannotProcess' => 'Cannot process workflow',
+	'ERR_ExpTypeUndefined' => 'Expression Type Undefined',
+	'ERR_NoCRMIDforEvaluate' => 'No record selected for evaluation context',
 );
 ?>

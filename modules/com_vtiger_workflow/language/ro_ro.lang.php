@@ -42,6 +42,7 @@ $mod_strings = array(
 	'LBL_AVAILABLE_WORKLIST_LIST' => 'Available Workflows',
 	'LBL_LOADING' => 'Loading...',
 	'LBL_REEVALCONDITIONS' => 'Evaluate conditions on delayed execution',
+	'evaluate' => 'Evaluate',
 	'LBL_VALIDATION_ERROR' => 'Validation Error',
 	'LBL_SELECT_OPTION_DOTDOTDOT' => 'Select Option...',
 	'LBL_WORKFLOW_NOTE_CRON_CONFIG' => 'NOTE: You should have Workflow cron script configured.',
@@ -174,5 +175,7 @@ $mod_strings = array(
 	'LBL_ROW' => 'Row',
 	'ERR_IncorrectFile' => 'Incorrect File or File Content',
 	'ERR_CannotProcess' => 'Cannot process workflow',
+	'ERR_ExpTypeUndefined' => 'Expression Type Undefined',
+	'ERR_NoCRMIDforEvaluate' => 'No record selected for evaluation context',
 );
 ?>

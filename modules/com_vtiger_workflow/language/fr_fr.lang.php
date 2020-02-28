@@ -35,6 +35,7 @@ $mod_strings = array(
 	'LBL_AVAILABLE_WORKLIST_LIST'=>'Flux disponibles',
 	'LBL_LOADING'=>'Chargement...',
 	'LBL_REEVALCONDITIONS' => 'Evaluate conditions on delayed execution',
+	'evaluate' => 'Evaluate',
 	'LBL_VALIDATION_ERROR'=>'Erreur de validation',
 	'LBL_SELECT_OPTION_DOTDOTDOT'=>'Sélectionnez une option...',
 	'LBL_WORKFLOW_NOTE_CRON_CONFIG'=>'NOTE: Vous devez avoir un script d\'exécution valide et configuré.',
@@ -197,5 +198,7 @@ $mod_strings = array(
 	'LBL_ROW' => 'Row',
 	'ERR_IncorrectFile' => 'Incorrect File or File Content',
 	'ERR_CannotProcess' => 'Cannot process workflow',
+	'ERR_ExpTypeUndefined' => 'Expression Type Undefined',
+	'ERR_NoCRMIDforEvaluate' => 'No record selected for evaluation context',
 );
 ?>

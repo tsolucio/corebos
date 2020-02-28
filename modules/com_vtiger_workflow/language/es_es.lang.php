@@ -32,6 +32,7 @@ $mod_strings = array(
 'LBL_AVAILABLE_WORKLIST_LIST'=>'Flujos de Trabajo Disponibles',
 'LBL_LOADING'=>'Cargando...',
 'LBL_REEVALCONDITIONS' => 'Evaluar condiciones en el momento de la ejecución diferida',
+'evaluate' => 'Evaluar',
 'LBL_VALIDATION_ERROR'=>'Error de Validación',
 'LBL_SELECT_OPTION_DOTDOTDOT'=>'Selecciona Opción...',
 'LBL_WORKFLOW_NOTE_CRON_CONFIG'=>'NOTA: Debes configurar la tarea programada de Flujo de Trabajo.',
@@ -203,5 +204,7 @@ $mod_strings = array(
 'LBL_ROW' => 'Fila',
 'ERR_IncorrectFile' => 'Fichero o Contenido Incorrecto',
 'ERR_CannotProcess' => 'No se ha podido procesar el flujo de trabajo',
+'ERR_ExpTypeUndefined' => 'Tipo Expresión sin definir',
+'ERR_NoCRMIDforEvaluate' => 'No se ha seleccionado un registro de contexto para la evaluación',
 );
 ?>

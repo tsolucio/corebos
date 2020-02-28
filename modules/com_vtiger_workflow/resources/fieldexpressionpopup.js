@@ -25,7 +25,7 @@ function fieldExpressionPopup(moduleName, $) {
 
 	function show() {
 		$('#editpopup').css('display', 'block');
-		$('#editpopup').css('height', '370px');
+		$('#editpopup').css('height', '450px');
 		center($('#editpopup'));
 	}
 
@@ -371,7 +371,36 @@ function fieldExpressionPopup(moduleName, $) {
 	return fieldExpressionPopup_LOADED;
 }
 
+function evaluateit() {
+	params = `&${csrfMagicName}=${csrfMagicToken}`;
+	params += '&crmid='+document.getElementById('evalid').value;
+	params += '&crmmod='+document.getElementById('evalid_type').value;
+	params += '&exp='+ encodeURIComponent(document.getElementById('editpopup_expression').value);
+	params += '&exptype='+document.getElementById('editpopup_expression_type').value;
+	return fetch(
+		'index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=evaluateit',
+		{
+			method: 'post',
+			headers: {
+				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+			},
+			credentials: "same-origin",
+			body: params
+		}
+	)
+	.then(response => response.text())
+	.then(response => {
+		document.getElementById('evaluateexpressionresult').innerHTML = response;
+	});
+
+}
+
 function com_vtiger_workflowsetValueFromCapture(recordid, value, target_fieldname) {
+	if (target_fieldname == 'evalid') {
+		document.getElementById('evalid').value = recordid;
+		document.getElementById('evalid_display').value = value;
+		return true;
+	}
 	if (target_fieldname == 'relModlist') {
 		var seldiv = window.document.getElementById('selected_recordsDiv');
 		var retrecList = window.addrecList(recordid, value);

@@ -113,6 +113,20 @@
 		</div>
 	</div>
 	<div class="slds-grid">
+		<div class="slds-col slds-size_2-of-4 slds-p-around_small">
+			<input id="evalid" name="evalid" type="hidden" value="">
+			<input id="evalid_type" name="evalid_type" type="hidden" value="{$workflow->moduleName}">
+			<input id="evalid_display" name="evalid_display" readonly type="text" style="border:1px solid #bababa;background-color:white;width:200px;" class="slds-input" value="">
+			<span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-p-left_x-small slds-p-right_small" onClick='return vtlib_open_popup_window("","evalid","com_vtiger_workflow","");'>
+				<svg class="slds-icon slds-icon slds-icon_small slds-icon-text-default" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+				</svg>
+			</span>
+			<button name="evaluate" type="button" class="slds-button slds-button_brand" onclick="evaluateit();">{$MOD.evaluate}</button>
+		</div>
+		<div class="slds-col slds-size_2-of-4 slds-p-around_small" id="evaluateexpressionresult"></div>
+	</div>
+	<div class="slds-grid">
 		<div class="slds-col slds-size_4-of-4 slds-p-around_small slds-align_absolute-center">
 			<button name="save" id='editpopup_save' type="button" class="slds-button slds-button_success">{$APP.LBL_SAVE_BUTTON_LABEL}</button>
 			<button name="cancel" id='editpopup_cancel' type="button" class="slds-button slds-button_destructive">{$APP.LBL_CANCEL_BUTTON_LABEL}</button>

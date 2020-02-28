@@ -35,6 +35,7 @@ $mod_strings = array(
 'LBL_AVAILABLE_WORKLIST_LIST'=>'Beschikbare Werkstromen',
 'LBL_LOADING'=>'Laden...',
 'LBL_REEVALCONDITIONS' => 'Evaluate conditions on delayed execution',
+'evaluate' => 'Evaluate',
 'LBL_VALIDATION_ERROR'=>'Validatie Fout',
 'LBL_SELECT_OPTION_DOTDOTDOT'=>'Selecteer Optie...',
 'LBL_WORKFLOW_NOTE_CRON_CONFIG'=>'NOTE: U moet het Werkstroom cron script geconfigureerd hebben.',
@@ -205,5 +206,7 @@ $mod_strings = array(
 'LBL_ROW' => 'Row',
 'ERR_IncorrectFile' => 'Incorrect File or File Content',
 'ERR_CannotProcess' => 'Cannot process workflow',
+'ERR_ExpTypeUndefined' => 'Expression Type Undefined',
+'ERR_NoCRMIDforEvaluate' => 'No record selected for evaluation context',
 );
 ?>
