@@ -20,6 +20,7 @@ require_once 'modules/com_vtiger_workflow/expression_engine/VTTokenizer.inc';
 require_once 'modules/com_vtiger_workflow/expression_engine/VTExpressionEvaluater.inc';
 error_reporting(0);
 ini_set('display_errors', 0);
+global $currentModule;
 
 $exp = vtlib_purify($_REQUEST['exp']);
 $exptype = vtlib_purify($_REQUEST['exptype']);
@@ -36,6 +37,8 @@ switch ($exptype) {
 			$msgtype = 'cb-alert-error';
 			$msg = getTranslatedString('ERR_NoCRMIDforEvaluate', 'com_vtiger_workflow');
 		} else {
+			$holdModule = $currentModule;
+			$currentModule = $crmmod;
 			$adminUser = Users::getActiveAdminUser();
 			$entityId = vtws_getEntityId($crmmod).'x'.$crmid;
 			$entity = new VTWorkflowEntity($adminUser, $entityId);
@@ -52,6 +55,7 @@ switch ($exptype) {
 				$msg = $e->getMessage();
 				$msgtype = 'cb-alert-error';
 			}
+			$currentModule = $holdModule;
 		}
 		break;
 	default:
