@@ -249,7 +249,7 @@ class VTFieldExpressionEvaluater {
 					return $this->exec($params[2]);
 				}
 			} else {
-				$func = $this->operations[$op->value];
+				$func = isset($this->operations[$op->value]) ? $this->operations[$op->value] : '';
 				if (in_array($func, $this->rawparams)) {
 					$relto = $expr->getParams();
 					$params = array();
@@ -276,7 +276,14 @@ class VTFieldExpressionEvaluater {
 				$loginfo = print_r($debugparams, true);
 				$logbg->debug("VTExpressionTreeNode: function $func $loginfo");
 				$this->debug[] = $loginfo;
-				return $func($params);
+				if (empty($func)) {
+					throw new Exception('Unknown function '.$op->value.'<br>'.print_r($params, true));
+				}
+				try {
+					return $func($params);
+				} catch (Exception $e) {
+					throw new Exception('Unknown function '.$op->value.' '.print_r($params, true));
+				}
 			}
 		} else {
 			$loginfo = print_r($expr, true);
