@@ -76,5 +76,13 @@ $mod_strings = array(
 	'gmp_gversion' => 'Versión de Measurement Protocol',
 	'gmp_deacterror' => '¡Existen flujos de trabajo que usan esta tarea! Elimínelos antes de desactivar la funcionalidad.',
 	'Record Versioning' => 'Versionado de Registros',
+	'Record Versioning_Desc' => 'Añade versiones a tus registros',
+	'GoTo2FAActivation_Desc' => 'Añade autenticación de dos pasos para tus usuarios',
+	'HubSpot Activation_Desc' => 'Sincroniza tu información con HubSpot',
+	'SMTP Configuration_Desc' => 'Configura cuentas de correo electrónico entrantes y salientes para tus usuarios',
+	'Zendesk Activation_Desc' => 'Sincroniza tu información con ZenDesk',
+	'Whatsapp Activation_Desc' => 'Envía notificaciones a tus contactos usando Whatsapp',
+	'SendGrid Activation_Desc' => 'Enviar correos electrónicos usando SendGrid',
+	'GMP Activation_Desc' => 'Envía tus ventas a Google Analytics',
 );
 ?>
