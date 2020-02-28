@@ -84,15 +84,18 @@ function __cb_relatedevaluations($evaluation, $params) {
 
 		$relationInfo = $adb->fetch_array($relationResult);
 		$relfunp = array($crmid, $moduleId, $relatedModuleId);
-		global $GetRelatedList_ReturnOnlyQuery;
+		global $GetRelatedList_ReturnOnlyQuery, $currentModule;
 		$holdValue = $GetRelatedList_ReturnOnlyQuery;
 		$GetRelatedList_ReturnOnlyQuery = true;
+		$holdCM = $currentModule;
+		$currentModule = $module;
 		$relationData = call_user_func_array(array($moduleInstance, $relationInfo['name']), $relfunp);
+		$currentModule = $holdCM;
+		$GetRelatedList_ReturnOnlyQuery = $holdValue;
 		if (!isset($relationData['query'])) {
 			// OPERATIONNOTSUPPORTED
 			return false;
 		}
-		$GetRelatedList_ReturnOnlyQuery = $holdValue;
 		$relmod = Vtiger_Module::getInstance($relatedmodule);
 		$fld = Vtiger_Field::getInstance($params[1], $relmod);
 		if (!$fld) {

@@ -114,6 +114,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 	}
 
 	// Initialize required globals
+	$holdCM = $currentModule;
 	$currentModule = $module;
 	// END
 	if (empty($queryParameters['productDiscriminator'])) {
@@ -415,6 +416,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 			$query .= ','.$queryParameters['offset'];
 		}
 	}
+	$currentModule = $holdCM;
 	return $query;
 }
 

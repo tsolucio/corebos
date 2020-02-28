@@ -67,12 +67,15 @@ class setManyToManyRelationwf extends VTTask {
 						array($rectabid, $relatedModuleId)
 					);
 					$relationInfo = $adb->fetch_array($relationResult);
-					global $GetRelatedList_ReturnOnlyQuery;
+					global $GetRelatedList_ReturnOnlyQuery, $currentModule;
+					$holdCM = $currentModule;
+					$currentModule = $recmod;
 					$holdValue = $GetRelatedList_ReturnOnlyQuery;
 					$GetRelatedList_ReturnOnlyQuery = true;
 					$params = array($recid, $rectabid, $relatedModuleId);
 					$relationData = call_user_func_array(array($modobj, $relationInfo['name']), $params);
 					$GetRelatedList_ReturnOnlyQuery = $holdValue;
+					$currentModule = $holdCM;
 					if (isset($relationData['query'])) {
 						$query = $relationData['query'];
 						preg_match('/[\t ]from /i', $query, $matches, PREG_OFFSET_CAPTURE);
