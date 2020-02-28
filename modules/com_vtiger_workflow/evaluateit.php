@@ -45,6 +45,9 @@ switch ($exptype) {
 				$expression = $parser->expression();
 				$exprEvaluater = new VTFieldExpressionEvaluater($expression);
 				$msg = $exprEvaluater->evaluate($entity);
+				if (gettype($msg)=='boolean') {
+					$msg = $msg ? 'bool(true)' : 'bool(false)';
+				}
 			} catch (Exception $e) {
 				$msg = $e->getMessage();
 				$msgtype = 'cb-alert-error';
