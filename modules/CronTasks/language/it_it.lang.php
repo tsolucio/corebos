@@ -8,6 +8,8 @@
  * All Rights Reserved.
  ************************************************************************************/
 $mod_strings = array (
+	'CronTasks' => 'Cron Tasks',
+	'SINGLE_CronTasks' => 'Cron Task',
 	'LBL_ACTIVE' => 'Attivo',
 	'LBL_INACTIVE' => 'Inattivo',
 	'LBL_STATUS' => 'Stato',

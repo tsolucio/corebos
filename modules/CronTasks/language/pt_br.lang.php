@@ -9,6 +9,8 @@
  * Contributor(s): Ranieri/Translate terms eCRM web | 11/03/2017 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
  ************************************************************************************/
 $mod_strings = array (
+	'CronTasks' => 'Cron Tasks',
+	'SINGLE_CronTasks' => 'Cron Task',
 	'LBL_ACTIVE' => 'Ativo',
 	'LBL_INACTIVE' => 'Inativo',
 	'LBL_STATUS' => 'Status',

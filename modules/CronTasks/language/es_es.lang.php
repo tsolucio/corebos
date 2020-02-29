@@ -17,6 +17,8 @@
 *  License      : MPL 1.1
 *  *********************************************************/
 $mod_strings = array (
+	'CronTasks' => 'Tareas Programadas',
+	'SINGLE_CronTasks' => 'Tarea Programada',
 	'LBL_ACTIVE' => 'Activo',
 	'LBL_INACTIVE' => 'Inactivo',
 	'LBL_STATUS' => 'Estado',

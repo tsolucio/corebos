@@ -14,6 +14,8 @@
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
  ********************************************************************************/
 $mod_strings = array(
+	'CronTasks' => 'Cron Tasks',
+	'SINGLE_CronTasks' => 'Cron Task',
 	'LBL_ACTIVE' => 'Aktív',
 	'LBL_INACTIVE' => 'Inaktív',
 	'LBL_STATUS' => 'Állapot',
