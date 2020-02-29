@@ -571,7 +571,7 @@ function getContactName($contact_id) {
 
 /**
  * Function to get the Contact Name when a contact id is given
- * Takes the input as $contact_id - contact id
+ * Takes the input as $lead_id - lead id
  * returns the Contact Name in string format.
  */
 function getLeadName($lead_id) {

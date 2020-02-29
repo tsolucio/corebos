@@ -72,7 +72,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 		if ($fieldname == 'accountname' && $module != 'Accounts') {
 			$fieldname = 'account_id';
 		}
-		if ($fieldname == 'lastname' && ($module == 'SalesOrder' || $module == 'PurchaseOrder' || $module == 'Invoice' || $module == 'Quotes' || $module == 'Calendar' )) {
+		if ($fieldname == 'lastname' && ($module == 'SalesOrder' || $module == 'PurchaseOrder' || $module == 'Invoice' || $module == 'Quotes' || $module == 'Calendar')) {
 			$fieldname = 'contact_id';
 		}
 		if ($fieldname == 'productname' && $module != 'Products') {

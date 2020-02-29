@@ -596,7 +596,7 @@ class QueryGenerator {
 				if ($fieldName == 'parent_id' && $baseTable == 'vtiger_seactivityrel') {
 					$tableJoinMapping[$baseTable] = 'LEFT JOIN';
 				} elseif ($fieldName == 'contact_id' && $baseTable == 'vtiger_cntactivityrel') {
-					$tableJoinMapping[$baseTable] = "LEFT JOIN";
+					$tableJoinMapping[$baseTable] = 'LEFT JOIN';
 				} else {
 					$tableJoinMapping[$baseTable] = 'INNER JOIN';
 				}

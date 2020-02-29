@@ -465,25 +465,25 @@ if (!$skipSecurityCheck && $use_current_login) {
 }
 
 if ($display == 'no'
-		&& !(($currentModule=='Tooltip' && $action==$module.'Ajax' && $_REQUEST['file']=='ComputeTooltip')
-			|| ($currentModule=='GlobalVariable' && $action==$module.'Ajax' && $_REQUEST['file']=='SearchGlobalVar'))
-	) {
-		require_once 'Smarty_setup.php';
-		$smarty = new vtigerCRM_Smarty();
-		$smarty->assign('APP', $app_strings);
+	&& !(($currentModule=='Tooltip' && $action==$module.'Ajax' && $_REQUEST['file']=='ComputeTooltip')
+	|| ($currentModule=='GlobalVariable' && $action==$module.'Ajax' && $_REQUEST['file']=='SearchGlobalVar'))
+) {
+	require_once 'Smarty_setup.php';
+	$smarty = new vtigerCRM_Smarty();
+	$smarty->assign('APP', $app_strings);
 	if ($action==$module.'Ajax') {
 		$smarty->assign('PUT_BACK_ACTION', false);
 	}
-		$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
+	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 } elseif (!vtlib_isModuleActive($currentModule)
-		&& !(($currentModule=='Tooltip' && $action==$module.'Ajax' && $_REQUEST['file']=='ComputeTooltip')
-			|| ($currentModule=='GlobalVariable' && $action==$module.'Ajax' && $_REQUEST['file']=='SearchGlobalVar'))
-	) {
-		require_once 'Smarty_setup.php';
-		$smarty = new vtigerCRM_Smarty();
-		$smarty->assign('APP', $app_strings);
-		$smarty->assign('OPERATION_MESSAGE', getTranslatedString($currentModule, $currentModule) . $app_strings['VTLIB_MOD_NOT_ACTIVE']);
-		$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
+	&& !(($currentModule=='Tooltip' && $action==$module.'Ajax' && $_REQUEST['file']=='ComputeTooltip')
+	|| ($currentModule=='GlobalVariable' && $action==$module.'Ajax' && $_REQUEST['file']=='SearchGlobalVar'))
+) {
+	require_once 'Smarty_setup.php';
+	$smarty = new vtigerCRM_Smarty();
+	$smarty->assign('APP', $app_strings);
+	$smarty->assign('OPERATION_MESSAGE', getTranslatedString($currentModule, $currentModule) . $app_strings['VTLIB_MOD_NOT_ACTIVE']);
+	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 } else {
 	include_once $currentModuleFile;
 }

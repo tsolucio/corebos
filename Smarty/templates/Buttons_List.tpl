@@ -49,8 +49,7 @@
 			<div class="slds-media">
 				<div class="slds-media__figure">
 					<a class="hdrLink" href="index.php?action={$action}&module={$MODULE}">
-						<span class="{$MODULEICON.__ICONContainerClass}"
-							title="{$MODULE|@getTranslatedString:$MODULE}">
+						<span class="{$MODULEICON.__ICONContainerClass}" title="{$MODULE|@getTranslatedString:$MODULE}">
 							<svg class="slds-icon slds-page-header__icon" id="page-header-icon" aria-hidden="true">
 								<use xmlns:xlink="http://www.w3.org/1999/xlink"
 									xlink:href="include/LD/assets/icons/{$MODULEICON.__ICONLibrary}-sprite/svg/symbols.svg#{$MODULEICON.__ICONName}" />
@@ -64,11 +63,9 @@
 						<div class="slds-page-header__name-title">
 							<h1>
 								<span>{$MODULE|@getTranslatedString:$MODULE}</span>
-								<span class="slds-page-header__title slds-truncate"
-									title="{$MODULELABEL|@addslashes}">
+								<span class="slds-page-header__title slds-truncate" title="{$MODULELABEL|@addslashes}">
 									{if !empty($isDetailView) || !empty($isEditView)}
-									<span class="slds-page-header__title slds-truncate"
-										title="{$MODULELABEL|@addslashes}">
+									<span class="slds-page-header__title slds-truncate" title="{$MODULELABEL|@addslashes}">
 										<span class="slds-page-header__name-meta">[ {$TITLEPREFIX} ]</span>
 										{$MODULELABEL|textlength_check:30}
 									</span>
