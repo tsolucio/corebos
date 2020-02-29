@@ -15,6 +15,7 @@ global $theme,$app_strings,$mod_strings,$current_language;
 $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
 $smarty = new vtigerCRM_Smarty;
+Vtiger_Cron::orderTasks();
 $cronTasks = Vtiger_Cron::listAllActiveInstances(1);
 $output = array();
 
