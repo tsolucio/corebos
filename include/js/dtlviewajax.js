@@ -358,7 +358,6 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 			VtigerJS_DialogBox.hidebusy();
 		}
 		VtigerJS_DialogBox.unblock();
-		setupPageHeader();
 	});
 	itsonview=false;
 }
