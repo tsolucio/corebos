@@ -8,7 +8,6 @@
  * All Rights Reserved.
  ********************************************************************************/ *}
 <script type="text/javascript" src="include/js/customview.js"></script>
-<script type="text/javascript" src="include/js/general.js"></script>
 <script>
 {literal}
 function check(){

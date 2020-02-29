@@ -13,7 +13,6 @@
 <input type="hidden" name="parenttab" value="Settings">
 <input type="hidden" name="mode">
 <script type="text/javascript" src="include/js/customview.js"></script>
-<script type="text/javascript" src="include/js/general.js"></script>
 <script type="text/javascript" src="modules/Settings/Settings.js"></script>
 <script src="include/jquery/jquery.js"></script>
 <table class="listTable" border="0" cellpadding="3" cellspacing="0" width="100%">
