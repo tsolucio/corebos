@@ -11,44 +11,44 @@
 <script type="text/javascript" src="include/js/general.js"></script>
 <script type="text/javascript" src="include/js/{$LANGUAGE}.lang.js"></script>
 {include file='Buttons_List.tpl'}
-		</td>
-	</tr>
-</table>
-
-{*<!-- Contents -->*}
-<table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
-	<tr>
-	<td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-
-	<td class="showPanelBg" valign="top" width=100% style="padding:10px;">
-			<table width="100%" border="0" cellpadding="5" cellspacing="0">
-				<tr>
-					<td class="moduleName" style="padding-left:10px;">{$APP.LBL_ACCOUNT_HIERARCHY}</td>
-					<td align="right"><input type="button" class="crmbutton small cancel" onclick="window.history.back();" value="{$APP.LBL_BACK}" /></td>
-				</tr>
-			</table>
-			<div id="ListViewContents">
-			{foreach key=header item=detail from=$ACCOUNT_HIERARCHY}
-				{if $header eq 'header'}
-				<table border=0 cellspacing=1 cellpadding=3 width=100% style="background-color:#eaeaea;" class="small">
-					<tr style="height:25px" bgcolor=white>
-					{foreach key=header item=headerfields from=$detail}
-						<td class="lvtCol">{$headerfields}</td>
-					{/foreach}
-					</tr>
-				{elseif $header eq 'entries'}
-					{foreach key=header item=entriesfields from=$detail}
-					<tr bgcolor=white>
-						{foreach key=header item=listfields from=$entriesfields}
-						<td>{$listfields}</td>
-						{/foreach}
-					</tr>
-					{/foreach}
-				</table>
-				{/if}
-			{/foreach}
+<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
+<div class="slds-modal__container slds-p-around_none">
+	<header class="slds-modal__header slds-grid slds-grid_align-spread slds-grid_vertical-align-center" style="text-align: unset;">
+		<h2 id="header43" class="slds-text-heading_medium slds-col slds-size_1-of-2">
+			<div class="slds-media__figure slds-col">
+				<svg aria-hidden="true" class="slds-icon slds-icon-standard-user slds-m-right_small">
+					<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#hierarchy"></use>
+				</svg>
+				{$APP.LBL_ACCOUNT_HIERARCHY}
 			</div>
-	</td>
-	<td valign=top><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
-	</tr>
-</table>
+		</h2>
+		<div class="slds-media__figure slds-col slds-size_1-of-2 cblds-t-align_right">
+			<button class="slds-button slds-button_brand" onclick="window.history.back();">{$APP.LBL_BACK}</button>
+		</div>
+	</header>
+	<div id="ListViewContents">
+		{foreach key=header item=detail from=$ACCOUNT_HIERARCHY}
+			{if $header eq 'header'}
+				<table class="slds-table slds-table_cell-buffer slds-table_bordered">
+				<thead>
+					<tr class="slds-line-height_reset">
+					{foreach key=header item=headerfields from=$detail}
+						<th scope="col">{$headerfields}</th>
+					{/foreach}
+					</tr>
+				</thead>
+				<tbody>
+			{elseif $header eq 'entries'}
+				{foreach key=header item=entriesfields from=$detail}
+				<tr class="slds-hint-parent">
+					{foreach key=header item=listfields from=$entriesfields}
+					<td scope="row">{$listfields}</td>
+					{/foreach}
+				</tr>
+				{/foreach}
+			</table>
+			{/if}
+		{/foreach}
+	</div>
+</div>
+</section>
