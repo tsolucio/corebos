@@ -1,5 +1,3 @@
-{include file='com_vtiger_workflow/Header.tpl'}
-
 {include file='com_vtiger_workflow/EditWorkflowIncludes.tpl'}
 
 {include file='com_vtiger_workflow/WorkflowTemplatePopup.tpl'}
@@ -9,14 +7,9 @@
 {include file='com_vtiger_workflow/ErrorMessageBox.tpl'}
 <!--Done popups-->
 
-<table border=0 cellspacing=0 cellpadding=20 width="99%" class="settingsUI">
-<tr>
-<td valign=top>
-<table border=0 cellspacing=0 cellpadding=0 width=100%>
-<tr>
-<td class="small" valign=top align=left>
-<div id="view" class="workflows-edit">
-	{include file='com_vtiger_workflow/ModuleTitle.tpl'}
+{include file='com_vtiger_workflow/ModuleTitle.tpl'}
+<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
+<div id="view" class="workflows-edit slds-modal__container slds-p-around_none slds-card">
 	<form name="edit_workflow_form" action="index.php" method="POST" id="edit_workflow_form" onsubmit="VtigerJS_DialogBox.block();">
 		{include file='com_vtiger_workflow/EditWorkflowMeta.tpl'}
 
@@ -33,4 +26,4 @@
 	{/if}
 </div>
 <div id="dump" style="display:None;"></div>
-{include file='com_vtiger_workflow/Footer.tpl'}
+</section>

@@ -1,20 +1,13 @@
-<div class="slds-card slds-m-around--x-small" style="height: 75vh;">
 <script type="module" src="./include/ldswc/vaadingrid/vaadingrid.js"></script>
 <script src="modules/{$module->name}/resources/functional.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/workflowlistscript.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
 	fn.addStylesheet('modules/{$module->name}/resources/style.css');
 </script>
+{include file='com_vtiger_workflow/ModuleTitle.tpl' show='wflist'}
+<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
+<div class="slds-modal__container slds-p-around_none">
 
-<div id="view" class="workflows-list">
-	{include file='com_vtiger_workflow/ModuleTitle.tpl'}
-</div>
-<div class="slds-grid slds-gutters slds-m-around_xxx-small">
-	<div class="slds-col">
-		<button class="slds-button slds-button_success" id='new_workflow'>{$MOD.LBL_NEW_WORKFLOW}</button>
-		{include file='com_vtiger_workflow/ActionMenu.tpl'}
-	</div>
-</div>
 <!--New workflow popup-->
 <div id="new_workflow_popup" class="layerPopup" style="display:none;z-index:10;">
 	<table width="100%" cellspacing="0" cellpadding="5" border="0" class="layerHeadingULine">
@@ -95,7 +88,7 @@
 	<div class="slds-backdrop slds-backdrop_open"></div>
 </div>
 
-<vaadin-grid id="wfgrid" theme="row-dividers" column-reordering-allowed multi-sort class="slds-table slds-table_cell-buffer slds-table_bordered slds-carousel__panel-action slds-m-around_xx-small" style="height: 60vh;">
+<vaadin-grid id="wfgrid" theme="row-dividers" column-reordering-allowed multi-sort class="slds-table slds-table_cell-buffer slds-table_bordered slds-carousel__panel-action slds-m-around_xx-small" style="height: 70vh;">
 	<vaadin-grid-selection-column auto-select frozen></vaadin-grid-selection-column>
 	{foreach key=dtkey item=dtheader from=$LIST_HEADER}
 		{if $dtheader=='Tools'}
@@ -199,6 +192,8 @@
 		{/if}
 	{/foreach}
 </vaadin-grid>
+</div>
+</section>
 <script>
 	var url = 'index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=getJSON';
 	document.getElementById('wftoolcol').renderer = (root, grid, rowData) => {
@@ -232,4 +227,3 @@
 	});
 {/literal}
 </script>
-</div>

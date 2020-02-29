@@ -1,57 +1,77 @@
-<div class="slds-page-header__row">
-	<div class="slds-p-right_medium">
-		<div class="slds-media">
-			<div class="slds-media__figure">
-				<a class="hdrLink" href="index.php?action=workflowlist&module={$module->name}">
-				<span class="slds-icon_container slds-icon-standard-user" title="{$MODULE_NAME|@getTranslatedString:$MODULE_NAME}">
-				<img width="48" height="48" border="0" src="{'settingsWorkflow.png'|@vtiger_imageurl:$THEME}"/>
-				<span class="slds-assistive-text">{$MODULE_NAME|@getTranslatedString:$MODULE_NAME}</span>
-				</span>
-				</a>
-			</div>
-			<div class="slds-media__body">
-				<div class="slds-page-header__name">
-					<div class="slds-page-header__name-title">
-						<span class="slds-page-header__title slds-truncate" title="{$MODULE_NAME|@getTranslatedString:$MODULE_NAME}">
-							<span class="slds-page-header__title slds-truncate" title="{$MODULE_NAME|@getTranslatedString:$MODULE_NAME}">
-								<b>
-								{if $ISADMIN}
-								<a href="index.php?module=Settings&action=index&parenttab=Settings">
-								{/if}
-								{'Settings'|@getTranslatedString:$MODULE_NAME}
-								{if $ISADMIN}
-								</a>
-								{/if}
-								&nbsp;>&nbsp;
-								<a href="index.php?module={$module->name}&action=workflowlist">{$MODULE_NAME|@getTranslatedString:$MODULE_NAME}</a>
-								</b>
-							</span>
+{if empty($MODULE)}
+	{assign var='MODULE' value='com_vtiger_workflow'}
+{/if}
+{assign var="MODULELABEL" value=$MODULE|@getTranslatedString:$MODULE}
+{assign var='MODULEICON' value=$MODULE|@getModuleIcon}
+<div id="page-header-placeholder"></div>
+<div id="page-header" class="slds-page-header slds-m-vertical_medium">
+	<div class="slds-page-header__row">
+		<div class="slds-page-header__col-title">
+			<div class="slds-media">
+				<div class="slds-media__figure">
+					<a class="hdrLink" href="index.php?action=workflowlist&module={$MODULE}">
+						<span class="{$MODULEICON.__ICONContainerClass}" title="{$MODULE|@getTranslatedString:$MODULE}">
+							<svg class="slds-icon slds-page-header__icon" id="page-header-icon" aria-hidden="true">
+								<use xmlns:xlink="http://www.w3.org/1999/xlink"
+									xlink:href="include/LD/assets/icons/{$MODULEICON.__ICONLibrary}-sprite/svg/symbols.svg#{$MODULEICON.__ICONName}" />
+							</svg>
+							<span class="slds-assistive-text">{$MODULELABEL}</span>
 						</span>
+					</a>
+				</div>
+				<div class="slds-media__body">
+					<div class="slds-page-header__name">
+						<div class="slds-page-header__name-title">
+							<h1>
+								<span>{$MODULELABEL}</span>
+								<span class="slds-page-header__title slds-truncate" title="{$MODULELABEL|@addslashes}">
+									{if !empty($isDetailView) || !empty($isEditView)}
+									<span class="slds-page-header__title slds-truncate" title="{$MODULELABEL|@addslashes}">
+										<span class="slds-page-header__name-meta">[ {$TITLEPREFIX} ]</span>
+										{$MODULELABEL|textlength_check:30}{$MODULE}
+									</span>
+									{else}
+									<a class="hdrLink" href="index.php?action=workflowlist&module={$MODULE}">{$MODULE_NAME|@getTranslatedString:$MODULE_NAME}</a>
+									{/if}
+								</span>
+							</h1>
+							<p class="slds-page-header__row slds-page-header__name-meta">
+								{if isset($CRON_TASK)}
+									<b>
+									{if $CRON_TASK->isDisabled() }{'LBL_DISABLED'|@getTranslatedString:$MODULE_NAME}{/if}
+									{if $CRON_TASK->isRunning() }{'LBL_RUNNING'|@getTranslatedString:$MODULE_NAME}{/if}
+									{if $CRON_TASK->isEnabled()}
+										{if $CRON_TASK->hadTimedout()}
+											{'LBL_LAST_SCAN_TIMED_OUT'|@getTranslatedString:$MODULE_NAME}.
+										{elseif $CRON_TASK->getLastEndDateTime() neq ''}
+											{'LBL_LAST_SCAN_AT'|@getTranslatedString:$MODULE_NAME}
+											{$CRON_TASK->getLastEndDateTime()}
+											&
+											{'LBL_TIME_TAKEN'|@getTranslatedString:$MODULE_NAME}:
+											{$CRON_TASK->getTimeDiff()}
+											{'LBL_SHORT_SECONDS'|@getTranslatedString:$MODULE_NAME}
+										{else}
+										{/if}
+									{/if}
+									</b>
+								{/if}
+							</p>
+						</div>
 					</div>
 				</div>
-				<p class="slds-page-header__name-meta">
-					{if isset($CRON_TASK)}
-						<b>
-						{if $CRON_TASK->isDisabled() }{'LBL_DISABLED'|@getTranslatedString:$MODULE_NAME}{/if}
-						{if $CRON_TASK->isRunning() }{'LBL_RUNNING'|@getTranslatedString:$MODULE_NAME}{/if}
-						{if $CRON_TASK->isEnabled()}
-							{if $CRON_TASK->hadTimedout()}
-								{'LBL_LAST_SCAN_TIMED_OUT'|@getTranslatedString:$MODULE_NAME}.
-							{elseif $CRON_TASK->getLastEndDateTime() neq ''}
-								{'LBL_LAST_SCAN_AT'|@getTranslatedString:$MODULE_NAME}
-								{$CRON_TASK->getLastEndDateTime()}
-								&
-								{'LBL_TIME_TAKEN'|@getTranslatedString:$MODULE_NAME}:
-								{$CRON_TASK->getTimeDiff()}
-								{'LBL_SHORT_SECONDS'|@getTranslatedString:$MODULE_NAME}
-							{else}
-							{/if}
-						{/if}
-						</b>
-					{/if}
-				</p>
 			</div>
+		</div>
+		<div class="slds-page-header__col-actions">
+			{if isset($show) && $show=='wflist'}
+			<div class="slds-grid slds-gutters slds-m-around_xxx-small">
+				<div class="slds-col">
+					<button class="slds-button slds-button_success" id='new_workflow'>{$MOD.LBL_NEW_WORKFLOW}</button>
+					{include file='com_vtiger_workflow/ActionMenu.tpl'}
+				</div>
+			</div>
+			{/if}
+		</div>
+		<div id="page-header-surplus">
 		</div>
 	</div>
 </div>
-<br>
