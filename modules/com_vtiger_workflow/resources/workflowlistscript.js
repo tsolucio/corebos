@@ -202,8 +202,8 @@ function workflowlistscript($) {
 			} else {
 				$('#template_select_field').hide();
 			}
-
 		});
+
 		$('#module_list').change(function () {
 			if (workflowCreationMode=='from_template') {
 				updateTemplateList();
