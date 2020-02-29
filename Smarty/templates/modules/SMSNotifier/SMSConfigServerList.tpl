@@ -24,15 +24,15 @@
 	}
 </style>
 {/literal}
-<br>
+{include file='SetMenu.tpl'}
+<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
+<div class="slds-modal__container slds-p-around_none">
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 	<tr>
-		<td valign="top"><img src="{$IMAGE_PATH}showPanelTopLeft.gif"></td>
 		<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
 		<br>
 		<div align=center>
 
-			{include file='SetMenu.tpl'}
 
 			<!-- DISPLAY -->
 			<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
@@ -82,7 +82,8 @@
 </tr>
 </tbody>
 </table>
-
+</div>
+</section>
 <form method="POST" action="javascript:void(0);">
 	<div id="editdiv" class="fixedlay" style="display:none;position:absolute;width:450px;"></div>
 </form>

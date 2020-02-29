@@ -44,7 +44,9 @@ if (isset($_REQUEST['module_settings']) && $_REQUEST['module_settings'] == 'true
 	$smarty = new vtigerCRM_Smarty;
 	$smarty->assign('MOD', $mod_strings);
 	$smarty->assign('APP', $app_strings);
-	$smarty->assign('THEME', $theme);
+	$smarty->assign('MODULE', $currentModule);
+	$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
+		$smarty->assign('THEME', $theme);
 	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 
 	$module_disable = isset($_REQUEST['module_disable']) ? vtlib_purify($_REQUEST['module_disable']) : '';

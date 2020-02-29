@@ -8,7 +8,8 @@
 * All Rights Reserved.
 ********************************************************************************/
 -->
-*} <script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
+*}
+<script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
 <!-- header - level 2 tabs -->
 {include file='Buttons_List.tpl'}
 <form enctype="multipart/form-data" name="SelectExports" method="POST">
@@ -22,7 +23,6 @@
 	<input type="hidden" name="typelist" value="{$TYPELIST}">
 	<table align="center" border="0" cellpadding="0" cellspacing="0" width="98%" class="small">
 		<tr>
-			<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}" /></td>
 			<td class="showPanelBg" valign="top" width="100%">
 			<table cellpadding="0" cellspacing="0" width="100%" border=0>
 				<tr>
@@ -94,7 +94,6 @@
 					</td>
 				</tr>
 			</table></td>
-			<td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}" /></td>
 		</tr>
 	</table>
 </form>

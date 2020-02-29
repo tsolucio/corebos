@@ -15,7 +15,7 @@
 {include file='Buttons_List.tpl'}
 {*<!-- Contents -->*}
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center class="slds-m-around_medium" style="width: auto;">
-<tr><td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
+<tr>
 	<td class="showPanelBg" valign="top" width=100% style="padding:10px;">
 
 		<form name="basicSearch" action="index.php" onsubmit="return false;">
@@ -76,7 +76,6 @@
 </table>
 
 	</td>
-	<td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
 </tr>
 </tbody>
 </table>

@@ -116,17 +116,16 @@ function check_duplicate() {ldelim}
 </script>
 {/if}
 <!-- END -->
-
-<br>
+{if $PARENTTAB eq 'Settings'}
+	{include file='SetMenu.tpl'}
+{/if}
+<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
+<div class="slds-modal__container slds-p-around_none">
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%" class="slds-m-around_medium" style="width: auto;">
 <tbody><tr>
-	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
 	<br>
 	<div align=center>
-	{if $PARENTTAB eq 'Settings'}
-		{include file='SetMenu.tpl'}
-	{/if}
 
 	<form name="EditView" method="POST" action="index.php" ENCTYPE="multipart/form-data" onsubmit="VtigerJS_DialogBox.block();">
 		<input type="hidden" name="module" value="Users">
@@ -293,5 +292,6 @@ function check_duplicate() {ldelim}
 </tr>
 </table>
 </td></tr></table>
-<br>
+</div>
+</section>
 {$JAVASCRIPT}

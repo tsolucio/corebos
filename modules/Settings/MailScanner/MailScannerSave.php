@@ -62,7 +62,9 @@ if (!$isconnected) {
 	$smarty = new vtigerCRM_Smarty;
 	$smarty->assign('MOD', return_module_language($current_language, 'Settings'));
 	$smarty->assign('CMOD', $mod_strings);
-	$smarty->assign('APP', $app_strings);
+	$smarty->assign('MODULE', $currentModule);
+	$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
+		$smarty->assign('APP', $app_strings);
 	$smarty->assign('THEME', $theme);
 	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 	$smarty->assign('SCANNERINFO', $newscannerinfo->getAsMap());

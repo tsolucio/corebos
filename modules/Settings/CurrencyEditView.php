@@ -97,6 +97,8 @@ while ($pos=$adb->fetch_array($positionsrs)) {
 $smarty->assign('symbolpositionvalues', $positions);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('APP', $app_strings);
+$smarty->assign('MODULE', $currentModule);
+$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
 $smarty->assign('THEME', $theme);
 $smarty->assign('CURRENCIES', $currencies_not_listed);
 $smarty->assign('PARENTTAB', getParentTab());

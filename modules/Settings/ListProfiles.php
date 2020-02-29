@@ -54,6 +54,8 @@ $smarty->assign('IMAGE_PATH', $image_path);
 $smarty->assign('COUNT', $noofrows);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('CMOD', $mod_strings);
+$smarty->assign('MODULE', $currentModule);
+$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
 
 $smarty->display('UserProfileList.tpl');
 ?>

@@ -24,7 +24,6 @@ var MailManageri18nInfo = {ldelim}{rdelim};
 
 <table border=0 cellspacing=0 cellpadding=0 width=98%>
 <tr>
-	<td valign=top align=right width='8px'><img src='{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}' ></td>
 	<td class='showPanelBg' valign='top' >
 
 		<div id='_progress_' style='float: right; display: none; position: absolute; right: 35px; font-weight: bold;'>
@@ -59,7 +58,6 @@ var MailManageri18nInfo = {ldelim}{rdelim};
 		</div>
 		<div id = '__vtiger__'></div>
 	</td>
-	<td valign=top align=right width='8px'><img src='{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}'></td>
 </tr>
 </table>
 

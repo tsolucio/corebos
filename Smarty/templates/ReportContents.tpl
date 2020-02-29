@@ -10,7 +10,6 @@
 -->*}
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="99%" class="showPanelBg">
 	<tbody><tr>
-	<td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 	<td valign="top" width="50%" style="padding: 10px;border-right:1px dashed #CCCCCC">
 	<!-- Reports Table Starts Here  -->
 	{assign var=poscount value=0}
@@ -94,7 +93,6 @@
 		{include file="ReportsCustomize.tpl"}
 	</div>
 	</td>
-	<td valign=top><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
 	</tr>
 	<tr>
 	<td colspan="2" align="center">&nbsp;</td>

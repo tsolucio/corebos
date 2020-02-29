@@ -24,17 +24,16 @@ function changeInstallType(obj) {
 }
 </script>
 {/literal}
-
+{include file='SetMenu.tpl'}
 <div id="vtlib_modulemanager_import" style="display:block;position:absolute;width:500px;"></div>
-<br>
+<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
+<div class="slds-modal__container slds-p-around_none">
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tr>
-	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-    <td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-    <br>
+	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
+	<br>
 
 	<div align=center>
-		{include file='SetMenu.tpl'}
 		
 		<table class="settingsSelUITopLine" border="0" cellpadding="5" cellspacing="0" width="100%">
 		<tr>
@@ -107,7 +106,7 @@ function changeInstallType(obj) {
    </div>
 
         </td>
-        <td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
 	</tr>
 </table>
-<br>
+</div>
+</section>
