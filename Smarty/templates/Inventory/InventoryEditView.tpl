@@ -28,7 +28,7 @@
 {include file='Buttons_List.tpl' isEditView=true}
 
 {*<!-- Contents -->*}
-<table border=0 cellspacing=0 cellpadding=0 width=98% align=center class="slds-m-around_medium" style="width: auto;">
+<table class="slds-m-around_medium" style="width: 98%;">
 	<tr>
 	<td class="showPanelBg" valign=top width=100%>
 		{*<!-- PUBLIC CONTENTS STARTS-->*}
