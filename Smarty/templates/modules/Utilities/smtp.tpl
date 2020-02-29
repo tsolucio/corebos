@@ -9,7 +9,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 {/foreach}
 </script>
 {include file='Buttons_List.tpl'}
-<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43" aaria-modal="true">
+<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43" aria-modal="true">
 <div class="slds-modal__container slds-p-around_none">
 	<header class="slds-modal__header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
 		<h2 id="header43" class="slds-text-heading_medium">
@@ -21,7 +21,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 		</div>
 		</h2>
 	</header>
-	<div class="slds-modal__content slds-app-launcher__content slds-p-around_medium" id="modal-content-id-1">
+	<div class="slds-modal__content slds-app-launcher__content slds-p-around_medium">
 <div id='_progress_' style='float: right; display: none; position: absolute; right: 35px; font-weight: bold;'>
 	<span id='_progressmsg_'>...</span><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border='0' align='absmiddle'>
 </div>
