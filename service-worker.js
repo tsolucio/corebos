@@ -9089,7 +9089,7 @@ precacheAndRoute([{
   "revision": "3aab10a82c3f05de285ce73b6dc3be35"
 }, {
   "url": "include/js/dtlviewajax.js",
-  "revision": "8e802949f30ad560cd621eb5e45c2088"
+  "revision": "37d8b802631db59f1d1f817c9ae1f69c"
 }, {
   "url": "include/js/en_gb.lang.js",
   "revision": "cd885c780911da90b50fa9d889729a66"
@@ -9299,7 +9299,7 @@ precacheAndRoute([{
   "revision": "83300b809c54b712e7ce3c8e3bf7be64"
 }, {
   "url": "modules/com_vtiger_workflow/resources/workflowlistscript.js",
-  "revision": "c2b792dc1cd2b7611a7a4673ac83f607"
+  "revision": "c772b9cea1354ccf15f30bea58aa0fc2"
 }, {
   "url": "modules/GlobalVariable/GlobalVariable.js",
   "revision": "c240060c1b952bba5d36d4a506fa0e6e"
@@ -9641,7 +9641,7 @@ precacheAndRoute([{
   "revision": "2bc5785bbc8662d43972828563d8e11a"
 }, {
   "url": "modules/Contacts/Contacts.js",
-  "revision": "ba4dcd206eaff35494d0347e26a0c8d8"
+  "revision": "62781c173528c53e1f72e74e5fd6fb9c"
 }, {
   "url": "modules/Dashboard/Dashboard.js",
   "revision": "8ab2b632de69afd4fefcd5daccab5af6"
