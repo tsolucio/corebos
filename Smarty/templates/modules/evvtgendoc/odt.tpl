@@ -19,14 +19,15 @@
  *************************************************************************************************/
 -->*}
 {include file="Buttons_List.tpl"}
+<div class="slds-card slds-page-header__meta-text" style="width:98%;margin:auto;">{$DEBUGINFO}</div>
 <table class="showPanelBg" style="width:96%; margin: 5px auto; padding: 5px;">
 <tbody>
 <tr>
 	<td style="padding: 10px;" valign="top" width="100%">
 	<div align=center>
 		<table border=0 cellspacing=0 cellpadding=5 width=100% >
-		<tr><td>{$OUTPUT}</td></tr>
-		<tr><td align="right"><a href="{$ZIPNAME}">{'LNK_DOWNLOAD'|getTranslatedString:'Documents'}</a></td></tr>
+		<tr><td class="slds-page-header__meta-text">{$OUTPUT}</td></tr>
+		<tr><td class="slds-page-header__meta-text"><a href="{$ZIPNAME}">{'LNK_DOWNLOAD'|getTranslatedString:'Documents'}</a></td></tr>
 		</table>
 	</div>
 	</td>
