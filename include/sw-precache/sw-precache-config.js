@@ -5,6 +5,9 @@ module.exports = {
 	"skipWaiting": true,
 	"clientsClaim": true,
 	"globDirectory": ".",
+	"globIgnores": [
+		'include/LD/assets/icons/utility/advertising.svg'
+	],
 	"globPatterns": [
 		'include/sw-precache/service-worker-registration.js',
 		'jscalendar/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',

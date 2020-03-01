@@ -6472,9 +6472,6 @@ precacheAndRoute([{
   "url": "include/LD/assets/icons/utility/advanced_function.svg",
   "revision": "6ea969ec64d859f3186753e8196a4156"
 }, {
-  "url": "include/LD/assets/icons/utility/advertising.svg",
-  "revision": "aa494eb91eee7cf0a5081189c175faae"
-}, {
   "url": "include/LD/assets/icons/utility/agent_session.svg",
   "revision": "41a014f3cf8619618d6bdf6671f2133d"
 }, {
