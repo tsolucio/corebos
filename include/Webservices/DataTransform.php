@@ -217,33 +217,44 @@ class DataTransform {
 		$references = $meta->getReferenceFieldDetails();
 		$mname = strtolower($meta->getEntityName());
 		foreach ($references as $field => $typeList) {
-			if ($mname == 'emails' && $field=='parent_id' && isset($row['parent_id']) && strpos($row['parent_id'], '@')===true) {
-				list($row['parent_id'], $fieldId) = explode('@', $row['parent_id']);
+			if ($mname == 'emails' && $field=='parent_id' && isset($row['parent_id']) && strpos($row['parent_id'], '@')) {
+				$refs = explode('|', trim($row['parent_id'], '|'));
+				array_walk(
+					$refs,
+					function (&$val, $idx) {
+						list($val, $fieldId) = explode('@', $val);
+					}
+				);
+				$row['parent_id'] = $refs;
 			}
 			if (!empty($row[$field])) {
-				$entity = getSalesEntityType($row[$field]);
-				if ($entity!='') {
-					$row[$field] = vtws_getEntityId($entity).'x'.$row[$field];
-				} else {
-					$found = false;
-					foreach ($typeList as $entity) {
-						$webserviceObject = VtigerWebserviceObject::fromName($adb, $entity);
-						$handlerPath = $webserviceObject->getHandlerPath();
-						$handlerClass = $webserviceObject->getHandlerClass();
-						require_once $handlerPath;
-						$handler = new $handlerClass($webserviceObject, $meta->getUser(), $adb, $log);
-						$entityMeta = $handler->getMeta();
-						if ($entityMeta->exists($row[$field])) {
-							$row[$field] = vtws_getId($webserviceObject->getEntityId(), $row[$field]);
-							$found = true;
-							break;
+				$setref = array();
+				foreach ((array) $row[$field] as $refval) {
+					$entity = getSalesEntityType($refval);
+					if ($entity!='') {
+						$setref[] = vtws_getEntityId($entity).'x'.$refval;
+					} else {
+						$found = false;
+						foreach ($typeList as $entity) {
+							$webserviceObject = VtigerWebserviceObject::fromName($adb, $entity);
+							$handlerPath = $webserviceObject->getHandlerPath();
+							$handlerClass = $webserviceObject->getHandlerClass();
+							require_once $handlerPath;
+							$handler = new $handlerClass($webserviceObject, $meta->getUser(), $adb, $log);
+							$entityMeta = $handler->getMeta();
+							if ($entityMeta->exists($refval)) {
+								$setref[] = vtws_getId($webserviceObject->getEntityId(), $refval);
+								$found = true;
+								break;
+							}
+						}
+						if ($found !== true) {
+							//This is needed as for query operation of the related record is deleted.
+							$setref[] = null;
 						}
 					}
-					if ($found !== true) {
-						//This is needed as for query operation of the related record is deleted.
-						$row[$field] = null;
-					}
 				}
+				$row[$field] = implode('|', $setref);
 			} elseif (isset($row[$field]) && $row[$field]==0) {
 				//0 is the default for most of the reference fields, so handle the case and return null instead as its the
 				//only valid value, which is not a reference Id.
