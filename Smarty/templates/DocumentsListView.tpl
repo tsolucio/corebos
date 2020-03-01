@@ -21,11 +21,11 @@
 {include file='Buttons_List.tpl'}
 
 {*<!-- Contents -->*}
-<table border=0 cellspacing=0 cellpadding=0 width=98% align=center class="slds-m-around_medium" style="width: auto;">
+<table class="slds-m-around_medium" style="width:98%;">
 	<tr>
 
 	<td class="showPanelBg" valign="top" width=100% style="padding:10px;">
-	 <!-- SIMPLE SEARCH -->
+	<!-- SIMPLE SEARCH -->
 <div id="searchAcc" style="{$DEFAULT_SEARCH_PANEL_STATUS};position:relative;">
 <form name="basicSearch" method="post" action="index.php" onSubmit="document.basicSearch.searchtype.searchlaunched='basic';return callSearch('Basic');">
 <table width="100%" cellpadding="5" cellspacing="0"  class="searchUIBasic small" align="center" border=0>
@@ -40,19 +40,19 @@
 		<td class="small" nowrap>
 			<div id="basicsearchcolumns_real">
 			<select name="search_field" id="bas_searchfield" class="txtBox" style="width:150px">
-			 {html_options  options=$SEARCHLISTHEADER }
+			{html_options options=$SEARCHLISTHEADER}
 			</select>
 			</div>
-                        <input type="hidden" name="searchtype" value="BasicSearch">
-                        <input type="hidden" name="module" value="{$MODULE}" id="curmodule">
-						<input name="maxrecords" type="hidden" value="{$MAX_RECORDS}" id='maxrecords'>
-                        <input type="hidden" name="parenttab" value="{$CATEGORY}">
-						<input type="hidden" name="action" value="index">
-                        <input type="hidden" name="query" value="true">
-						<input type="hidden" name="search_cnt">
+			<input type="hidden" name="searchtype" value="BasicSearch">
+			<input type="hidden" name="module" value="{$MODULE}" id="curmodule">
+			<input name="maxrecords" type="hidden" value="{$MAX_RECORDS}" id='maxrecords'>
+			<input type="hidden" name="parenttab" value="{$CATEGORY}">
+			<input type="hidden" name="action" value="index">
+			<input type="hidden" name="query" value="true">
+			<input type="hidden" name="search_cnt">
 		</td>
 		<td class="small" nowrap width=40% >
-			  <input name="submit" type="button" class="crmbutton small create" onClick="callSearch('Basic');document.basicSearch.searchtype.searchlaunched='basic';" value=" {$APP.LBL_SEARCH_NOW_BUTTON} ">&nbsp;
+			<input name="submit" type="button" class="crmbutton small create" onClick="callSearch('Basic');document.basicSearch.searchtype.searchlaunched='basic';" value=" {$APP.LBL_SEARCH_NOW_BUTTON} ">&nbsp;
 		</td>
 		<td class="small closeX" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="searchshowhide('searchAcc','advSearch');document.basicSearch.searchtype.searchlaunched='';">[x]</td>
 	</tr>
@@ -60,9 +60,9 @@
 		<td colspan="7" align="center" class="small">
 			<table border=0 cellspacing=0 cellpadding=0 width=100%>
 				<tr>
-                                                {$ALPHABETICAL}
-                                </tr>
-                        </table>
+					{$ALPHABETICAL}
+				</tr>
+			</table>
 		</td>
 	</tr>
 </table>
@@ -98,13 +98,13 @@
 <div id="mergeDup" style="z-index:1;display:none;position:relative;">
 	{include file="MergeColumns.tpl"}
 </div>
-	   <!-- PUBLIC CONTENTS STARTS-->
-	  <div id="ListViewContents" class="small" style="width:100%;">
-	 		{include file="DocumentsListViewEntries.tpl"}
+	<!-- PUBLIC CONTENTS STARTS-->
+	<div id="ListViewContents" class="small" style="width:100%;">
+		{include file="DocumentsListViewEntries.tpl"}
 	</div>
 
-     </td>
-   </tr>
+	</td>
+</tr>
 </table>
 
 <script type="text/javascript" src="modules/Documents/Documents.js"></script>

@@ -8,7 +8,7 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="99%" class="showPanelBg">
+<table style="width:98%;margin:auto;" class="showPanelBg">
 	<tbody><tr>
 	<td valign="top" width="50%" style="padding: 10px;border-right:1px dashed #CCCCCC">
 	<!-- Reports Table Starts Here  -->

@@ -12,13 +12,29 @@
 <div id="page-header" class="slds-page-header slds-m-vertical_medium">
 	<div class="slds-page-header__row">
 		<div class="slds-page-header__col-title">
-			<div class="slds-page-header__col-meta">
-				<div class="slds-page-header__meta-text" style="display: flex;">
-					<span class="slds-icon_container slds-icon-standard-home">
-						<svg class="slds-icon" id="page-header-icon" aria-hidden="true">
-							<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#home"></use>
-						</svg>
-					</span>
+			<div class="slds-media">
+				<div class="slds-media__figure">
+					<a class="hdrLink" href="index.php?action=index&module={$MODULE}">
+						<span class="slds-icon_container slds-icon-standard-home" title="{$MODULE|@getTranslatedString:$MODULE}">
+							<svg class="slds-icon slds-page-header__icon" id="page-header-icon" aria-hidden="true">
+								<use xmlns:xlink="http://www.w3.org/1999/xlink"
+									xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#home" />
+							</svg>
+							<span class="slds-assistive-text">{$MODULE|@getTranslatedString:$MODULE}</span>
+						</span>
+					</a>
+				</div>
+				<div class="slds-media__body">
+					<div class="slds-page-header__name">
+						<div class="slds-page-header__name-title">
+							<h1>
+								<span>{$MODULE|@getTranslatedString:$MODULE}</span>
+								<span class="slds-page-header__title slds-truncate" title="{$MODULE|@getTranslatedString:$MODULE|@addslashes}">
+									<a class="hdrLink" href="index.php?action=index&module={$MODULE}">{'My Home Page'|@getTranslatedString:$MODULE}</a>
+								</span>
+							</h1>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

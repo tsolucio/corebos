@@ -12,7 +12,7 @@
 
 {include file="Buttons_List.tpl"}
 
-<table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
+<table style="width:98%;margin:auto;">
 <tr>
 	<td class="showPanelBg" valign="top" width="100%" align=center >
 

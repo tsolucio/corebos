@@ -16,7 +16,7 @@ var i18n_DELETE_RSSFEED_CONFIRMATION = '{$APP.DELETE_RSSFEED_CONFIRMATION}';
 <!-- Contents -->
 {include file="Buttons_List.tpl"}
 <div id="temp_alert" style="display:none"></div>
-<table border=0 cellspacing=0 cellpadding=0 width=98% align=center class="slds-m-around_medium" style="width: auto;">
+<table class="slds-m-around_medium" style="width:98%;">
 <tr>
 	<td class="showPanelBg" valign="top" width="100%" align=center >
 			<!-- RSS Reader UI Starts here--><br>

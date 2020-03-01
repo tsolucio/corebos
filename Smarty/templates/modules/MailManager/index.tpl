@@ -22,7 +22,7 @@ var MailManageri18nInfo = {ldelim}{rdelim};
 {/foreach}
 </script>
 
-<table border=0 cellspacing=0 cellpadding=0 width=98%>
+<table style="width:98%;margin:auto;">
 <tr>
 	<td class='showPanelBg' valign='top' >
 

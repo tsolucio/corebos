@@ -21,7 +21,7 @@
 	<input type="hidden" name="from" value="{if isset($FROM)}{$FROM}{/if}">
 	<input type="hidden" name="fieldlist" value="{$FIELDLIST}">
 	<input type="hidden" name="typelist" value="{$TYPELIST}">
-	<table align="center" border="0" cellpadding="0" cellspacing="0" width="98%" class="small">
+	<table style="width:98%;margin:auto;">
 		<tr>
 			<td class="showPanelBg" valign="top" width="100%">
 			<table cellpadding="0" cellspacing="0" width="100%" border=0>
