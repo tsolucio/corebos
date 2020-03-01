@@ -206,7 +206,7 @@ function fieldExpressionPopup(moduleName, $) {
 				+ 'onClick="document.forms[\'edit_workflow_form\'].wfrelfield.value=\'\';document.forms[\'edit_workflow_form\'].wfrelfield_display.value=\'\';return false;">'
 				+ '<svg class="slds-icon slds-icon slds-icon_small slds-icon-text-default" aria-hidden="true">'
 				+ '<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>'
-				+ '</svg></span></div></div></span>'
+				+ '</svg></span></div></div></span>';
 			value.replaceWith(refcode);
 		}
 		function forTimeField(opType) {
@@ -372,7 +372,7 @@ function fieldExpressionPopup(moduleName, $) {
 }
 
 function evaluateit() {
-	params = `&${csrfMagicName}=${csrfMagicToken}`;
+	let params = `&${csrfMagicName}=${csrfMagicToken}`;
 	params += '&crmid='+document.getElementById('evalid').value;
 	params += '&crmmod='+document.getElementById('evalid_type').value;
 	params += '&exp='+ encodeURIComponent(document.getElementById('editpopup_expression').value);
@@ -384,15 +384,13 @@ function evaluateit() {
 			headers: {
 				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
 			},
-			credentials: "same-origin",
+			credentials: 'same-origin',
 			body: params
-		}
-	)
-	.then(response => response.text())
-	.then(response => {
-		document.getElementById('evaluateexpressionresult').innerHTML = response;
-	});
-
+		})
+		.then(response => response.text())
+		.then(response => {
+			document.getElementById('evaluateexpressionresult').innerHTML = response;
+		});
 }
 
 function com_vtiger_workflowsetValueFromCapture(recordid, value, target_fieldname) {
