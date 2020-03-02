@@ -351,10 +351,10 @@ function showProperties(field,man,pres,quickc,massed) {
 var gselected_fieldtype = '';
 {/literal}
 </script>
-<div id="layoutblock">
+{include file='SetMenu.tpl'}
+<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
+<div id="layoutblock" class="slds-modal__container slds-p-around_none">
 <div id="relatedlistdiv" style="display:none; position: absolute; width: 225px; left: 300px; top: 300px;"></div>
-<br>
-
 {assign var=entries value=$CFENTRIES}
 {if $CFENTRIES.0.tabpresence eq '0' }
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
@@ -395,3 +395,4 @@ var gselected_fieldtype = '';
 	{include file='modules/Vtiger/OperationNotPermitted.tpl'}
 {/if}
 </div>
+</section>

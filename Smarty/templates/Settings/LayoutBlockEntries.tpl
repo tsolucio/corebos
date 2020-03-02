@@ -270,159 +270,152 @@
 				<td width="30%" id="colourButton" >&nbsp;
 				<span onmouseover="tooltip.tip(this, showProperties('{$value.label}',{$value.mandatory},{$value.presence},{$value.quickcreate},{$value.massedit}));" onmouseout="tooltip.untip(false);" >{$value.label}</span>
 					{if $value.fieldtype eq 'M'}
-						<font color='red'> *</font>
+						<abbr class="slds-required" title="required">* </abbr>
 					{/if}
 				</td>
 				<td width="19%" align="right" class="colData small cblds-t-align_right">
-					<img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="fnvshNrm('editfield_{$value.fieldselect}'); posLay(this, 'editfield_{$value.fieldselect}');" alt="Popup" title="{$MOD.LBL_EDIT_PROPERTIES}"/>&nbsp;&nbsp;
-					<div id="editfield_{$value.fieldselect}" style="display:none; position: absolute; left: 300px; top: 300px;" >
-						<div class="layerPopup" style="position:relative; display:block">
-									<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
-										<tr class="detailedViewHeader">
-											<th width="95%" align="left">
-												{$value.label}
-											</th>
-											<th width="5%" align="right" class="cblds-t-align_right">
-												<a href="javascript:fninvsh('editfield_{$value.fieldselect}');"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" /></a>
-											</th>
-										</tr>
-										<tr>
-											<td colspan="2" style="margin:auto; valign="top" class="dvtCellInfo" class="slds-p-around_medium">
-											<span> {$value.columnname}</span>
-											<span> {$value.type}</span>
-											<span> {$value.fieldsize}</span><br>
-											<span> {$value.colspec}</span>
-											</td>
-										</tr>
-									</table>
-									<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
-										<tr>
-											<td class="dvtCellInfo" align="left" width="10px">
-												<input id="mandatory_check_{$value.fieldselect}" type="checkbox"
-												{if $value.fieldtype neq 'M' && $value.mandatory eq '0'}
-													 disabled
-												{elseif $value.mandatory eq '0' && $value.fieldtype eq 'M'}
-													 checked disabled
-												{elseif $value.mandatory eq '3' }
-													 disabled
-												{elseif $value.mandatory eq '2'}
-													 checked
-												{/if}
-												onclick = "{if $value.presence neq '0'} enableDisableCheckBox(this,presence_check_{$value.fieldselect}); {/if}
-													{if $value.quickcreate neq '0' && $value.quickcreate neq '3'} enableDisableCheckBox(this,quickcreate_check_{$value.fieldselect}); {/if}">
-									</td>
-									<td valign="top" class="dvtCellInfo" align="left">
-										&nbsp;<label for="mandatory_check_{$value.fieldselect}">{$MOD.LBL_MANDATORY_FIELD}</label>
-									</td>
-								</tr>
-								<tr>
-									<td valign="top" class="dvtCellInfo" align="left" width="10px">
-										<input id="presence_check_{$value.fieldselect}" type="checkbox"
-										{if $value.displaytype eq '2'}
-											checked disabled
-										{else}
-											{if $value.presence eq '0' || $value.mandatory eq '0' || $value.quickcreate eq '0' || $value.mandatory eq '2'}
-												 checked disabled
-											{/if}
-											{if $value.presence eq '2'}
-												 checked
-											{/if}
-											{if $value.presence eq '3'}
-												 disabled
-											{/if}
-										{/if}
-										 >
-									</td>
-									<td valign="top" class="dvtCellInfo" align="left">
-										&nbsp;<label for="presence_check_{$value.fieldselect}">{$MOD.LBL_ACTIVE}</label>
-									</td>
-								</tr>
-								<tr>
-									<td valign="top" class="dvtCellInfo" align="left" width="10px">
-										<input id="quickcreate_check_{$value.fieldselect}" type="checkbox"
-										{if $value.quickcreate eq '0'|| $value.quickcreate eq '2' && ($value.mandatory eq '0' || $value.mandatory eq '2')}
-											 checked disabled
-										{/if}
-										{if $value.quickcreate eq '2'}
-											 checked
-										{/if}
-										{if $value.quickcreate eq '3'}
-											 disabled
-										{/if}
-										 >
-									</td>
-									<td valign="top" class="dvtCellInfo" align="left">
-										&nbsp;<label for="quickcreate_check_{$value.fieldselect}">{$MOD.LBL_QUICK_CREATE}</label>
-									</td>
-								</tr>
-								<tr>
-									<td valign="top" class="dvtCellInfo" align="left" width="10px">
-										<input id="massedit_check_{$value.fieldselect}" type="checkbox"
-										{if $value.massedit eq '0'}
-											 disabled
-										{/if}
-										{if $value.massedit eq '1'}
-											 checked
-										{/if}
-										{if $value.displaytype neq '1' || $value.massedit eq '3'}
-											 disabled
-										{/if}>
-									</td>
-									<td valign="top" class="dvtCellInfo" align="left">
-									&nbsp;<label for="massedit_check_{$value.fieldselect}">{$MOD.LBL_MASS_EDIT}</label>
-									</td>
-								</tr>
-								<tr>
-									<td valign="top" class="dvtCellInfo" align="left" width="10px">
-										{assign var="defaultsetting" value=$value.defaultvalue}
-										<input id="defaultvalue_check_{$value.fieldselect}" type="checkbox"
-										{if $defaultsetting.permitted eq false} disabled{/if}
-										{if $defaultsetting.value neq ''} checked{/if}>
-									</td>
-									<td valign="top" class="dvtCellInfo" align="left">
-										&nbsp;<label for="defaultvalue_check_{$value.fieldselect}">{$MOD.LBL_DEFAULT_VALUE}</label><br>
-										{assign var="fieldElementId" value='defaultvalue_'|cat:$value.fieldselect}
-										{if $defaultsetting.permitted eq true}
-											{include file="Settings/FieldUI.tpl"
-												_FIELD_UI_TYPE=$value.uitype
-												_FIELD_SELECTED_VALUE=$defaultsetting.value
-												_FIELD_ELEMENT_ID=$fieldElementId
-												_ALL_AVAILABLE_VALUES=$defaultsetting._allvalues
-											}
-										{/if}
-									</td>
-								</tr>
-								<tr>
-									<td colspan='2' valign="top" class="dvtCellInfo" align="left">
-										{if $value.uitype eq 10}
-											&nbsp;<label><b>{$MOD.LBL_SELECT_MODULE}</b></label>
-											<select id="dependent_list_{$value.fieldselect}" name="dependent_list_{$value.fieldselect}" rows="10" class="txtBox" multiple="multiple">
-												{foreach from=$entityrelmods key=outerkey item=outervalue}
-													{assign var='isSelected' value=''}
-													{foreach from=$curmodsinrel key=innerkey item=innervalue}
-														{if ($innervalue eq $value.fieldselect) and ($innerkey eq $outerkey)}
-															{assign var='isSelected' value='selected'}
-														{/if}
-													{/foreach}
-													<option value={$outerkey} {$isSelected}>{$outervalue}</option>
-												{/foreach}
-											</select>
-										{/if}
-									</td>
-								</tr>
-								<tr>
-									<td colspan="3" class="dvtCellInfo" align="center">
-										<input type="button" name="save" value=" &nbsp; {$APP.LBL_SAVE_BUTTON_LABEL} &nbsp; " class="crmButton small save" onclick="saveFieldInfo('{$value.fieldselect}','{$MODULE}','updateFieldProperties','{$value.typeofdata}');" />&nbsp;
-										{if $value.customfieldflag neq 0}
-											<input type="button" name="delete" value="{$APP.LBL_DELETE_BUTTON_LABEL}" id="fieldname" class="crmButton small delete" onclick="getData('{$value.columnname}', '{$MODULE}', '{$value.label}'); fnvshobj(this,'hiddenfield_{$value.label}');" />
-										{/if}
-										<input type="button" name="cancel" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmButton small cancel" onclick="fninvsh('editfield_{$value.fieldselect}');" />
-									</td>
-								</tr>
-							</table>
+					<img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="fnvshNrm('editfield_{$value.fieldselect}');" alt="Popup" title="{$MOD.LBL_EDIT_PROPERTIES}"/>&nbsp;&nbsp;
+					<div id="editfield_{$value.fieldselect}" class="slds-panel slds-is-open" aria-hidden="false" style="display:none; position: absolute;">
+						<div class="slds-panel__header">
+							<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="{$value.label}">{$value.label}</h2>
+							<button class="slds-button slds-button_icon slds-button_icon-small slds-panel__close" title="{$APP.LBL_CLOSE}" type="button" onclick="javascript:fninvsh('editfield_{$value.fieldselect}');">
+							<svg class="slds-button__icon" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+							</svg>
+							<span class="slds-assistive-text">{$APP.LBL_CLOSE}</span>
+							</button>
 						</div>
+						<div class="slds-panel__body">
+							<div class="cblds-t-align-left slds-page-header__meta-text slds-p-bottom_small" style="text-align:left;">
+								<span> {$value.columnname} {$value.type} {$value.fieldsize}</span><br><span> {$value.colspec}</span>
+							</div>
+							<table class="slds-table slds-table_cell-buffer slds-table_bordered">
+							<tbody>
+								<tr>
+									<td class="dvtCellInfo" align="left" width="10px">
+										<input id="mandatory_check_{$value.fieldselect}" type="checkbox"
+										{if $value.fieldtype neq 'M' && $value.mandatory eq '0'}
+											disabled
+										{elseif $value.mandatory eq '0' && $value.fieldtype eq 'M'}
+											checked disabled
+										{elseif $value.mandatory eq '3' }
+											disabled
+										{elseif $value.mandatory eq '2'}
+											checked
+										{/if}
+										onclick = "{if $value.presence neq '0'} enableDisableCheckBox(this,presence_check_{$value.fieldselect}); {/if}
+											{if $value.quickcreate neq '0' && $value.quickcreate neq '3'} enableDisableCheckBox(this,quickcreate_check_{$value.fieldselect}); {/if}">
+								</td>
+								<td valign="top" class="dvtCellInfo" align="left">
+									&nbsp;<label for="mandatory_check_{$value.fieldselect}">{$MOD.LBL_MANDATORY_FIELD}</label>
+								</td>
+							</tr>
+							<tr>
+								<td valign="top" class="dvtCellInfo" align="left" width="10px">
+									<input id="presence_check_{$value.fieldselect}" type="checkbox"
+									{if $value.displaytype eq '2'}
+										checked disabled
+									{else}
+										{if $value.presence eq '0' || $value.mandatory eq '0' || $value.quickcreate eq '0' || $value.mandatory eq '2'}
+											checked disabled
+										{/if}
+										{if $value.presence eq '2'}
+											checked
+										{/if}
+										{if $value.presence eq '3'}
+											disabled
+										{/if}
+									{/if}
+									>
+								</td>
+								<td valign="top" class="dvtCellInfo" align="left">
+									&nbsp;<label for="presence_check_{$value.fieldselect}">{$MOD.LBL_ACTIVE}</label>
+								</td>
+							</tr>
+							<tr>
+								<td valign="top" class="dvtCellInfo" align="left" width="10px">
+									<input id="quickcreate_check_{$value.fieldselect}" type="checkbox"
+									{if $value.quickcreate eq '0'|| $value.quickcreate eq '2' && ($value.mandatory eq '0' || $value.mandatory eq '2')}
+										checked disabled
+									{/if}
+									{if $value.quickcreate eq '2'}
+										checked
+									{/if}
+									{if $value.quickcreate eq '3'}
+										disabled
+									{/if}
+									>
+								</td>
+								<td valign="top" class="dvtCellInfo" align="left">
+									&nbsp;<label for="quickcreate_check_{$value.fieldselect}">{$MOD.LBL_QUICK_CREATE}</label>
+								</td>
+							</tr>
+							<tr>
+								<td valign="top" class="dvtCellInfo" align="left" width="10px">
+									<input id="massedit_check_{$value.fieldselect}" type="checkbox"
+									{if $value.massedit eq '0'}
+										disabled
+									{/if}
+									{if $value.massedit eq '1'}
+										checked
+									{/if}
+									{if $value.displaytype neq '1' || $value.massedit eq '3'}
+										disabled
+									{/if}>
+								</td>
+								<td valign="top" class="dvtCellInfo" align="left">
+								&nbsp;<label for="massedit_check_{$value.fieldselect}">{$MOD.LBL_MASS_EDIT}</label>
+								</td>
+							</tr>
+							<tr>
+								<td valign="top" class="dvtCellInfo" align="left" width="10px">
+									{assign var="defaultsetting" value=$value.defaultvalue}
+									<input id="defaultvalue_check_{$value.fieldselect}" type="checkbox"
+									{if $defaultsetting.permitted eq false} disabled{/if}
+									{if $defaultsetting.value neq ''} checked{/if}>
+								</td>
+								<td valign="top" class="dvtCellInfo" align="left">
+									&nbsp;<label for="defaultvalue_check_{$value.fieldselect}">{$MOD.LBL_DEFAULT_VALUE}</label><br>
+									{assign var="fieldElementId" value='defaultvalue_'|cat:$value.fieldselect}
+									{if $defaultsetting.permitted eq true}
+										{include file="Settings/FieldUI.tpl"
+											_FIELD_UI_TYPE=$value.uitype
+											_FIELD_SELECTED_VALUE=$defaultsetting.value
+											_FIELD_ELEMENT_ID=$fieldElementId
+											_ALL_AVAILABLE_VALUES=$defaultsetting._allvalues
+										}
+									{/if}
+								</td>
+							</tr>
+							{if $value.uitype eq 10}
+							<tr>
+								<td colspan='2' valign="top" class="dvtCellInfo" align="left">
+									&nbsp;<label><b>{$MOD.LBL_SELECT_MODULE}</b></label><br>
+									<select id="dependent_list_{$value.fieldselect}" name="dependent_list_{$value.fieldselect}" rows="10" class="slds-select" multiple="multiple">
+										{foreach from=$entityrelmods key=outerkey item=outervalue}
+											{assign var='isSelected' value=''}
+											{foreach from=$curmodsinrel key=innerkey item=innervalue}
+												{if ($innervalue eq $value.fieldselect) and ($innerkey eq $outerkey)}
+													{assign var='isSelected' value='selected'}
+												{/if}
+											{/foreach}
+											<option value={$outerkey} {$isSelected}>{$outervalue}</option>
+										{/foreach}
+									</select>
+								</td>
+							</tr>
+							{/if}
+						</tbody>
+						</table>
 					</div>
-
+					<footer class="slds-modal__footer" style="width:100%;">
+						<button name="cancel" type="button" class="slds-button slds-button_neutral" onclick="fninvsh('editfield_{$value.fieldselect}');">{$APP.LBL_CANCEL_BUTTON_LABEL}</button>
+						{if $value.customfieldflag neq 0}
+							<button name="delete" type="button" class="slds-button slds-button_destructive" onclick="getData('{$value.columnname}', '{$MODULE}', '{$value.label}'); fnvshobj(this,'hiddenfield_{$value.label}');">{$APP.LBL_DELETE_BUTTON_LABEL}</button>
+						{/if}
+						<button name="save" type="button" class="slds-button slds-button_brand" onclick="saveFieldInfo('{$value.fieldselect}','{$MODULE}','updateFieldProperties','{$value.typeofdata}');">{$APP.LBL_SAVE_BUTTON_LABEL}</button>
+					</footer>
+				</div>
 				<div id="hiddenfield_{$value.label}" style="display:none; position:absolute; width:500px; height: 500px; margin-top: -400px">
 					<section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
 						<div class="slds-modal__container">
