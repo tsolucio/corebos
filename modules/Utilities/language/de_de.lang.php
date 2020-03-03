@@ -77,6 +77,11 @@ $mod_strings = array(
 	'Zendesk Activation_Desc' => 'Synchronize your information with ZenDesk',
 	'Whatsapp Activation_Desc' => 'Send notifications to your contacts using Whatsapp',
 	'SendGrid Activation_Desc' => 'Send emails using SendGrid',
-	'GMP Activation_Desc' => 'Send your sales to Google Analytics',
+	'GMP Activation_Desc' => 'Send your sales to Google Analytics',	'Record Versioning_Desc' => 'Add versioning to your records',
+	'ElasticSearch Activation' => 'ElasticSearch Activation',
+	'Map_Query' => 'Get Map Query',
+	'choosemap' => 'Choose a Map',
+	'sel_fields_es' => 'Select Fields for Elasticsearch Mapping',
+	'Analyzed' => 'Analyzed',
 );
 ?>

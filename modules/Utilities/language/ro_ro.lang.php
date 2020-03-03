@@ -69,7 +69,7 @@ $mod_strings = array(
 	'gmp_gid' => 'Google Universal analytics ID',
 	'gmp_gversion' => 'Measurement Protocol Version',
 	'gmp_deacterror' => 'Workflows that use this task exist!! Please eliminate them before deactivating.',
-	'Record Versioning' => 'Versionado de Registros',
+	'Record Versioning' => 'Record Versioning',
 	'Record Versioning_Desc' => 'Add versioning to your records',
 	'GoTo2FAActivation_Desc' => 'Add Two Factor authentication for your users',
 	'HubSpot Activation_Desc' => 'Synchronize your information with HubSpot',
@@ -78,5 +78,10 @@ $mod_strings = array(
 	'Whatsapp Activation_Desc' => 'Send notifications to your contacts using Whatsapp',
 	'SendGrid Activation_Desc' => 'Send emails using SendGrid',
 	'GMP Activation_Desc' => 'Send your sales to Google Analytics',
+	'ElasticSearch Activation' => 'ElasticSearch Activation',
+	'Map_Query' => 'Get Map Query',
+	'choosemap' => 'Choose a Map',
+	'sel_fields_es' => 'Select Fields for Elasticsearch Mapping',
+	'Analyzed' => 'Analyzed',
 );
 ?>

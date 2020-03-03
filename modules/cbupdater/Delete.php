@@ -7,16 +7,33 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-global $currentModule;
+global $currentModule, $adb;
 
-$module = urlencode(vtlib_purify($_REQUEST['module']));
-$return_module = urlencode(vtlib_purify($_REQUEST['return_module']));
-$return_action = urlencode(vtlib_purify($_REQUEST['return_action']));
-if (isset($_REQUEST['return_id'])) {
-	$return_id = urlencode(vtlib_purify($_REQUEST['return_id']));
+if (!empty($_REQUEST['record'])) {
+	$record = vtlib_purify($_REQUEST['record']);
+	$cbu = $adb->pquery('select appcs from vtiger_cbupdater where cbupdaterid=?', array($record));
+	if ($cbu && $adb->num_rows($cbu)>0) {
+		if ($cbu->fields['appcs']=='1') {
+			require_once 'Smarty_setup.php';
+			$smarty = new vtigerCRM_Smarty();
+			$smarty->assign('APP', $app_strings);
+			$smarty->assign('OPERATION_MESSAGE', getTranslatedString('LBL_PERMISSION'));
+			$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
+		} else {
+			require_once 'modules/Vtiger/Delete.php';
+		}
+	} else {
+		require_once 'Smarty_setup.php';
+		$smarty = new vtigerCRM_Smarty();
+		$smarty->assign('APP', $app_strings);
+		$smarty->assign('OPERATION_MESSAGE', getTranslatedString('LBL_PERMISSION'));
+		$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
+	}
 } else {
-	$return_id = (isset($_REQUEST['record']) ? urlencode(vtlib_purify($_REQUEST['record'])) : 0);
+	require_once 'Smarty_setup.php';
+	$smarty = new vtigerCRM_Smarty();
+	$smarty->assign('APP', $app_strings);
+	$smarty->assign('OPERATION_MESSAGE', getTranslatedString('LBL_PERMISSION'));
+	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 }
-$url = getBasic_Advance_SearchURL();
-header("Location: index.php?module=$return_module&action=$return_action&record=$return_id&relmodule=$module".$url);
 ?>

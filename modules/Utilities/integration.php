@@ -90,6 +90,10 @@ switch ($_REQUEST['_op']) {
 	case 'setconfigrecordversioning':
 		include_once 'include/integrations/recordversioning/settings.php';
 		break;
+	case 'getconfigelasticsearch':
+	case 'setconfigelasticsearch':
+		include_once 'include/integrations/elasticsearch/settings.php';
+		break;
 	default:
 		$smarty = new vtigerCRM_Smarty();
 		$titlemessage = getTranslatedString('Available Integrations', $currentModule);
@@ -147,6 +151,12 @@ switch ($_REQUEST['_op']) {
 				'title' => getTranslatedString('GMP Activation', 'Utilities'),
 				'desc' => getTranslatedString('GMP Activation_Desc', 'Utilities'),
 				'url' => 'index.php?action=integration&module=Utilities&_op=getconfiggmp',
+			),
+			array(
+				'abbr' => 'ES',
+				'title' => getTranslatedString('ElasticSearch Activation', 'Utilities'),
+				'desc' => getTranslatedString('Elasticsearch_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigelasticsearch',
 			),
 		);
 		$smarty->assign('integrations', $intgr);

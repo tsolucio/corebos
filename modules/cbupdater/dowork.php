@@ -46,7 +46,7 @@ if (!empty($ids)) {
 	} else {
 		$whattodo = 'apply';
 	}
-	$sql = 'select cbupdaterid,filename,pathfilename,classname, cbupd_no, description from vtiger_cbupdater
+	$sql = 'select cbupdaterid,filename,pathfilename,classname, appcs, cbupd_no, description from vtiger_cbupdater
 			inner join vtiger_crmentity on crmid=cbupdaterid
 			where deleted=0 and ';
 	if ($ids=='all') {
@@ -101,9 +101,39 @@ if (!empty($ids)) {
 				cbupdater_show_error($errmsg);
 			}
 		} else {
-			$error = true;
-			$errmsg = getTranslatedString('err_noupdatefile', $currentModule);
-			cbupdater_show_error($errmsg. ' : ' . $upd['pathfilename']);
+			if ($upd['appcs']==0) {
+				if (empty($upd['description'])) {
+					$error = true;
+					$errmsg = getTranslatedString('err_noupdatedesc', $currentModule);
+					$cburl = '<a href="index.php?module=cbupdater&action=DetailView&record='.$upd['cbupdaterid'].'">'.$upd['cbupd_no'].'</a>';
+					cbupdater_show_error($errmsg. ' : ' . $cburl);
+				} else {
+					$ins = json_decode(decode_html($upd['description']), true);
+					if (json_last_error()!= JSON_ERROR_NONE || empty($ins)) {
+						$error = true;
+						$errmsg = getTranslatedString('err_noupdateformat', $currentModule);
+						$cburl = '<a href="index.php?module=cbupdater&action=DetailView&record='.$upd['cbupdaterid'].'">'.$upd['cbupd_no'].'</a>';
+						cbupdater_show_error($errmsg. ' : ' . $cburl);
+					} else {
+						$msg = '<b><a href="index.php?module=cbupdater&action=DetailView&record='.$upd['cbupdaterid'].'">';
+						$msg.= getTranslatedString('ChangeSet', $currentModule).' '.$upd['cbupd_no'].'</a>:</b> ';
+						$msg.= empty($ins['name']) ? '' : $ins['name'];
+						if (isset($ins['description'])) {
+							$msg.= '<br>'.$ins['description'];
+						}
+						cbupdater_show_message($msg);
+						$cbw = new cbupdaterWorker($upd['cbupdaterid']);
+						$cbw->processManualUpdate($ins);
+						if (!$cbw->updError) {
+							$totalopsok++;
+						}
+					}
+				}
+			} else {
+				$error = true;
+				$errmsg = getTranslatedString('err_noupdatefile', $currentModule);
+				cbupdater_show_error($errmsg. ' : ' . $upd['pathfilename']);
+			}
 		}
 	}
 } else {

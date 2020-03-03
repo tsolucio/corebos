@@ -53,6 +53,9 @@ $mod_strings = array(
 	'err_noupdatesselected' => 'Definizione di modifiche non valido! Probabilmente non riesce a trovare il nome del schedario. Si prega di verificare questo changeset.',
 	'err_invalidclass' => 'Nome della classe specificata non esiste! Vi preghiamo di rivedere la configurazione di aggiornamento.',
 	'err_nomethod' => 'L\'aggiornamento specificato non ha la struttura corretta: metodo di aggiornamento mancante. Vi preghiamo di rivedere il codice di aggiornamento.',
+	'err_noupdatedesc' => 'This manual update does not have instructions.',
+	'err_noupdateformat' => 'This manual update does not have a correct format in the instructions.',
+	'err_opnotfound' => 'Manual changeset operation not found.',
+	'Application Change' => 'Application Change',
 );
-
 ?>

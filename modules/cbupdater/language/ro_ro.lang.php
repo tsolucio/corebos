@@ -57,10 +57,9 @@ $mod_strings = array(
 	'err_noupdatesselected' => 'No updates selected to apply!',
 	'err_invalidclass' => 'Specified class name does not exist! Please review your update configuration.',
 	'err_nomethod' => 'The specified update does not have the correct structue: update method missing. Please review your update code.',
-	'Assigned To' => 'Assigned To',
-	'Created Time' => 'Created Time',
-	'Modified Time' => 'Modified Time',
-	'Description' => 'Description',
-	'Created By' => 'Created By',
+	'err_noupdatedesc' => 'This manual update does not have instructions.',
+	'err_noupdateformat' => 'This manual update does not have a correct format in the instructions.',
+	'err_opnotfound' => 'Manual changeset operation not found.',
+	'Application Change' => 'Application Change',
 );
 ?>
