@@ -28,4 +28,11 @@
 	<classname>gendocdeleteUnoservice</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>loridacito</author>
+	<description>add table for elasticsearch indexes</description>
+	<filename>build/changeSets/2020/addtableforesindexes.php</filename>
+	<classname>Addtableforesindexes</classname>
+	<systemupdate>1</systemupdate>
+</changeSet>
 </updatesChangeLog>

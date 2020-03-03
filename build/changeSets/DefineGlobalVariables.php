@@ -229,6 +229,12 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'CustomerPortal_PDFTemplate_PurchaseOrder',
 				'Project_Gantt_Type',
 				'RecordVersioningModules',
+
+				'ip_elastic_server',
+				'ip_elastic_indexprefix',
+				'esusername',
+				'espassword',
+
 			);
 			$delete_these = array(
 				'preload_prototype',
