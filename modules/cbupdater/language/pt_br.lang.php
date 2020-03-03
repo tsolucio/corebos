@@ -53,6 +53,9 @@ $mod_strings = array(
 	'err_noupdatesselected' => 'Não há atualizações selecionadas a aplicar!',
 	'err_invalidclass' => 'Classe Específica não existe! Por favor reveja a sua Atualização de Configurações.',
 	'err_nomethod' => 'A atualização selecionada não tem a estrutura correta: método de atualização em falta. Por favor reveja o seu código de atualização.',
+	'err_noupdatedesc' => 'This manual update does not have instructions.',
+	'err_noupdateformat' => 'This manual update does not have a correct format in the instructions.',
+	'err_opnotfound' => 'Manual changeset operation not found.',
+	'Application Change' => 'Application Change',
 );
-
 ?>

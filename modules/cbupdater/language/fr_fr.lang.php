@@ -53,6 +53,9 @@ $mod_strings = array(
 	'err_noupdatesselected' => 'Aucune mise à jour n\'a été sélectionnée pour être appliquée!',
 	'err_invalidclass' => 'Le nom de classe fournie n\'existe pas! Vérifiez vontre configuration de mise à jour.',
 	'err_nomethod' => 'La mise à jour forunie a une struture erronée: méthode de mise à jour manquente. Vérifiez le code de la mise à jour.',
+	'err_noupdatedesc' => 'This manual update does not have instructions.',
+	'err_noupdateformat' => 'This manual update does not have a correct format in the instructions.',
+	'err_opnotfound' => 'Manual changeset operation not found.',
+	'Application Change' => 'Application Change',
 );
-
 ?>

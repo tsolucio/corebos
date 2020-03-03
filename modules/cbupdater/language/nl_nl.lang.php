@@ -51,9 +51,9 @@ $mod_strings = array(
 	'err_noupdatesselected' => 'Geen updates geselecteerd om toe te passen!',
 	'err_invalidclass' => 'De aangegeven class naam bestaat niet. Bekijk de configuratie van de update.',
 	'err_nomethod' => 'De aangegeven update heeft niet de juiste opmaak/structuur. Update methode mist. Bekijk uw update code.',
-	'Assigned To' => 'Toegewezen aan',
-	'Created Time' => 'Gemaakt op',
-	'Modified Time' => 'Gewijzigd op',
-	'Description' => 'Beschrijving',
+	'err_noupdatedesc' => 'This manual update does not have instructions.',
+	'err_noupdateformat' => 'This manual update does not have a correct format in the instructions.',
+	'err_opnotfound' => 'Manual changeset operation not found.',
+	'Application Change' => 'Application Change',
 );
 ?>
