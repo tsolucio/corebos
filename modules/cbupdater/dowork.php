@@ -46,6 +46,7 @@ if (!empty($ids)) {
 	} else {
 		$whattodo = 'apply';
 	}
+	$adb->query("ALTER TABLE vtiger_cbupdater ADD COLUMN appcs varchar(3) DEFAULT '1'");
 	$sql = 'select cbupdaterid,filename,pathfilename,classname, appcs, cbupd_no, description from vtiger_cbupdater
 			inner join vtiger_crmentity on crmid=cbupdaterid
 			where deleted=0 and ';
