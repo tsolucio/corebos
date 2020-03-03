@@ -41,6 +41,5 @@
 	<filename>build/changeSets/2020/addFieldAppTocbUpdater.php</filename>
 	<classname>addFieldAppTocbUpdater</classname>
 	<systemupdate>true</systemupdate>
->>>>>>> 1fb144aaa7293a242901f256a9f270ed8cbfe15e
 </changeSet>
 </updatesChangeLog>
