@@ -25,7 +25,7 @@
 		</h2>
 	</header>
 <br>
-<div class="slds-modal__content slds-app-launcher__content slds-p-around_medium">
+<div class="slds-modal__content slds-app-launcher__content slds-p-around_medium slds-card">
 <form role="form" style="margin:0 100px;" name="elsform">
 <input type="hidden" name="module" value="Utilities">
 <input type="hidden" name="action" value="integration">

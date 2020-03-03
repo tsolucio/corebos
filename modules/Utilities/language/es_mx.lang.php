@@ -84,10 +84,10 @@ $mod_strings = array(
 	'Whatsapp Activation_Desc' => 'Envía notificaciones a tus contactos usando Whatsapp',
 	'SendGrid Activation_Desc' => 'Enviar correos electrónicos usando SendGrid',
 	'GMP Activation_Desc' => 'Envía tus ventas a Google Analytics',
-	'ElasticSearch Activation' => 'ElasticSearch Activation',
-	'Map_Query' => 'Get Map Query',
-	'choosemap' => 'Choose a Map',
-	'sel_fields_es' => 'Select Fields for Elasticsearch Mapping',
-	'Analyzed' => 'Analyzed',
+	'ElasticSearch Activation' => 'Activación ElasticSearch',
+	'Map_Query' => 'Seleccionar el Mapa de Consulta',
+	'choosemap' => 'Elige Mapa',
+	'sel_fields_es' => 'Selecciona los Campos para el Mapeado de Elasticsearch',
+	'Analyzed' => 'Analizado',
 );
 ?>
