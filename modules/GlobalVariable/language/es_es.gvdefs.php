@@ -1141,6 +1141,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Cadena de formato de fecha PHP válida',
 	'definition' => 'Formato a aplicar a la variable $custom-currentdate$ en las plantillas de email. Acepta cualquier cadena de formato de fecha válida de PHP. Por defecto dejar vacio para obtener el mes en texto, dia y año.',
 ),
+'EMail_Less_Strict_ContentClean' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Aplicar o no una limpieza estricta del HTML que recibimos del cuerpo del correo electrónico redactado. El valor predeterminado es aplicar una limpieza menos estricta (1).',
+),
 'Workflow_Send_Email_ToCCBCC' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Email CSV',

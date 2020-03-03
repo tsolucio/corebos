@@ -1136,9 +1136,16 @@ $GlobalVariableDefinitons = array(
 'EMail_CustomCurrentDate_Format' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
-	'category' => 'Aplicación',
+	'category' => 'Application',
 	'values' => 'valid PHP date format string',
 	'definition' => 'Format to apply to $custom-currentdate$ variable in email templates. Accepts any valid date format string from PHP. By default leave it empty to get the month in text, day and year.',
+),
+'EMail_Less_Strict_ContentClean' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Apply or not a strict clean of the HTML we receive from the compose email body. The default is to apply a less strict clean (1).',
 ),
 'Workflow_Send_Email_ToCCBCC' => array(
 	'status' => 'Implemented',

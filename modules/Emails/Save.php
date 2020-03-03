@@ -33,7 +33,11 @@ $focus = new Emails();
 
 global $current_user,$mod_strings,$app_strings;
 if (isset($_REQUEST['description']) && $_REQUEST['description'] !='') {
-	$_REQUEST['description'] = vtlib_purify($_REQUEST['description']);
+	if (GlobalVariable::getVariable('EMail_Less_Strict_ContentClean', '1', 'Emails')=='1') {
+		$_REQUEST['description'] = from_html($_REQUEST['description']);
+	} else {
+		$_REQUEST['description'] = vtlib_purify($_REQUEST['description']);
+	}
 }
 
 $all_to_ids = $_REQUEST['hidden_toid'];
