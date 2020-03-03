@@ -59,6 +59,7 @@ class cbupdaterWorker {
 	public $classname;
 	public $execstate = false;
 	public $systemupdate = false;
+	public $appcs = true;
 	public $perspective = false;
 	public $blocked = false;
 	public $execdate;
@@ -68,12 +69,16 @@ class cbupdaterWorker {
 	public $failure_query_count=0;
 	public $failure_query_array=array();
 
-	public function __construct() {
+	public function __construct($cbid = 0) {
 		global $adb;
 		echo '<article class="slds-card slds-m-left_x-large slds-p-left_small slds-m-right_x-large slds-p-right_small slds-p-bottom_small">';
-		$reflector = new ReflectionClass(get_class($this));
-		$fname = basename($reflector->getFileName(), '.php');
-		$cburs = $adb->pquery('select * from vtiger_cbupdater where filename=? and classname=?', array($fname, get_class($this)));
+		if ($cbid>0) {
+			$cburs = $adb->pquery('select * from vtiger_cbupdater where cbupdaterid=?', array($cbid));
+		} else {
+			$reflector = new ReflectionClass(get_class($this));
+			$fname = basename($reflector->getFileName(), '.php');
+			$cburs = $adb->pquery('select * from vtiger_cbupdater where filename=? and classname=?', array($fname, get_class($this)));
+		}
 		if ($cburs && $adb->num_rows($cburs)>0) {  // it exists, we load it
 			$cbu = $adb->fetch_array($cburs);
 			$this->cbupdid = $cbu['cbupdaterid'];
@@ -83,6 +88,7 @@ class cbupdaterWorker {
 			$this->classname = $cbu['classname'];
 			$this->execstate = $cbu['execstate'];
 			$this->systemupdate = ($cbu['systemupdate'] == '1');
+			$this->appcs = ($cbu['appcs'] == '1');
 			$this->perspective = ((bool)(isset($cbu['perspective']) && $cbu['perspective'] == '1'));
 			$this->blocked = ((bool)(isset($cbu['blocked']) && $cbu['blocked'] == '1'));
 			$this->execdate = $cbu['execdate'];
@@ -116,7 +122,7 @@ class cbupdaterWorker {
 		if ($this->hasError()) {
 			$this->sendError();
 		}
-		if ($this->isSystemUpdate()) {
+		if ($this->isSystemUpdate() || $this->isAppChangeset()) {
 			$this->sendMsg('Changeset '.get_class($this).' is a system update, it cannot be undone!');
 		} else {
 			if ($this->isApplied()) {
@@ -130,12 +136,77 @@ class cbupdaterWorker {
 		$this->finishExecution();
 	}
 
+	public function processManualUpdate($ins) {
+		global $currentModule;
+		if ($this->isBlocked()) {
+			return true;
+		}
+		if ($this->hasError()) {
+			$this->sendError();
+		}
+		if ($this->isApplied()) {
+			$this->sendMsg('Changeset '.get_class($this).' already applied!');
+		} else {
+			$rdo = true;
+			switch ($ins['operation']) {
+				case 'deleteAllPicklistValues':
+					$this->deleteAllPicklistValues($ins['setting']['table'], $ins['setting']['module']);
+					break;
+				case 'deletePicklistValues':
+					$this->deletePicklistValues($ins['setting']['values'], $ins['setting']['table'], $ins['setting']['module']);
+					break;
+				case 'setQuickCreateFields':
+					$this->setQuickCreateFields($ins['setting']['module'], $ins['setting']['fields']);
+					break;
+				case 'massCreateFields':
+					$this->massCreateFields($ins['setting']);
+					break;
+				case 'massHideFields':
+					$this->massHideFields(array($ins['setting']['module'] => $ins['setting']['fields']));
+					break;
+				case 'massDeleteFields':
+					$this->massDeleteFields(array($ins['setting']['module'] => $ins['setting']['fields']));
+					break;
+				case 'massMoveFieldsToBlock':
+					$this->massMoveFieldsToBlock(array($ins['setting']['module'] => $ins['setting']['fields']), $ins['setting']['block']);
+					break;
+				case 'orderFieldsInBlocks':
+					$this->orderFieldsInBlocks($ins['setting']);
+					break;
+				case 'convertTextFieldToPicklist':
+					$this->convertTextFieldToPicklist($ins['setting']['field'], $ins['setting']['module'], $ins['setting']['multiple']);
+					break;
+				case 'setTooltip':
+					$this->setTooltip($ins['setting']);
+					break;
+				case 'removeAllMenuEntries':
+					$this->removeAllMenuEntries($ins['setting']['module']);
+					break;
+				default:
+					$errmsg = getTranslatedString('err_opnotfound', $currentModule);
+					$cburl = '<a href="index.php?module=cbupdater&action=DetailView&record='.$this->cbupdid.'">'.$this->cbupd_no.'</a>';
+					cbupdater_show_error($errmsg. ' : ' . $cburl);
+					$rdo = false;
+					break;
+			}
+			if ($rdo) {
+				$this->sendMsg('Changeset '.get_class($this).' applied!');
+				$this->markApplied();
+			}
+		}
+		$this->finishExecution();
+	}
+
 	public function isApplied() {
 		return ($this->execstate=='Executed');
 	}
 
 	public function isSystemUpdate() {
 		return $this->systemupdate;
+	}
+
+	public function isAppChangeset() {
+		return $this->appcs;
 	}
 
 	public function isBlocked() {

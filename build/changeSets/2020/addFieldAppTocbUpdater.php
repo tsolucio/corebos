@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2014 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Copyright 2020 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
 * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
 * file except in compliance with the License. You can redistribute it and/or modify it
 * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
@@ -12,21 +12,37 @@
 * either express or implied. See the License for the specific language governing
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
-*************************************************************************************************
-*  Module       : cbupdater
-*  Version      : 5.5.0
-*  Author       : JPL TSolucio, S. L.
 *************************************************************************************************/
 
-$tool_buttons = array(
-'EditView' => 'no',
-'CreateView' => 'yes',
-'index' => 'yes',
-'Import' => 'no',
-'Export' => 'no',
-'Merge' => 'no',
-'DuplicatesHandling' => 'no',
-'Calendar' => 'no',
-'moduleSettings' => 'no',
-);
-?>
+class addFieldAppTocbUpdater extends cbupdaterWorker {
+
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
+		if ($this->isApplied()) {
+			$this->sendMsg('Changeset '.get_class($this).' already applied!');
+		} else {
+			$this->sendMsg('This changeset add new blocks and fields to cbQuestion module');
+			// Fields preparations
+			$fieldLayout = array(
+				'cbupdater' => array(
+					'LBL_cbupdater_INFORMATION' => array(
+						'appcs' => array(
+							'columntype'=>'varchar(3)',
+							'typeofdata'=>'C~O',
+							'uitype'=>56,
+							'label' => 'Application Change',
+							'displaytype'=>'2',
+						),
+					),
+				),
+			);
+			$this->massCreateFields($fieldLayout);
+			$this->ExecuteQuery('update vtiger_cbupdater set appcs="1"', array());
+			$this->sendMsg('Changeset '.get_class($this).' applied!');
+			$this->markApplied(false);
+		}
+		$this->finishExecution();
+	}
+}

@@ -119,7 +119,11 @@ class cbupdater extends CRMEntity {
 	 * return array  $list_buttons - for module (eg: 'Accounts')
 	 */
 	public function getListButtons($app_strings) {
-		return array();
+		if ($this->column_fields['appcs']=='1') {
+			return array();
+		} else {
+			return parent::getListButtons($app_strings);
+		}
 	}
 
 	public static function exists($cbinfo) {
