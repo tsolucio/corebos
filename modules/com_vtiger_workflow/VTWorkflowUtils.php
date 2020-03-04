@@ -138,9 +138,9 @@ class VTWorkflowUtils {
 	/**
 	 * Get the previous user
 	 */
-	public static function previousUser() {
-		if (is_array(self::$userStack) && count(self::$userStack)>0) {
-			return self::$userStack[count(self::$userStack)-1];
+	public static function previousUser($offset = 1) {
+		if (is_array(self::$userStack) && count(self::$userStack)>=$offset) {
+			return self::$userStack[count(self::$userStack)-$offset];
 		}
 		return false;
 	}
