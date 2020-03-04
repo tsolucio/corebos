@@ -140,7 +140,6 @@ $return_id = $focus->id;
 require_once 'modules/Emails/mail.php';
 if ($current_user->column_fields['send_email_to_sender']=='1' && isset($_REQUEST['send_mail']) && $_REQUEST['send_mail'] && $_REQUEST['parent_id'] != '') {
 	$user_mail_status = send_mail('Emails', $current_user->column_fields['email1'], $current_user->user_name, '', $_REQUEST['subject'], $_REQUEST['description'], $_REQUEST['ccmail'], $_REQUEST['bccmail'], 'all', $focus->id);
-	//if block added to fix the issue #3759
 	if ($user_mail_status != 1) {
 		$adb->pquery('delete from vtiger_crmentity where crmid=?', array($focus->id));
 		$adb->pquery('delete from vtiger_emaildetails where emailid=?', array($focus->id));
