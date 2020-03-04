@@ -81,6 +81,16 @@ if (count($cbupdate_files)>0) {
 								$errmsg = getTranslatedString('err_invalidchangeset', $currentModule).'<br>';
 								$errmsg .= print_r($cbupd, true);
 							}
+						} else {
+							// we check for empty pathnames
+							$sql = "select cbupdaterid
+								from vtiger_cbupdater
+								inner join vtiger_crmentity on crmid=cbupdaterid
+								where deleted=0 and (pathfilename='' or pathname is null) and classname=? and filename=?";
+							$rs = $adb->pquery($sql, array($cbupd['classname'], basename($cbupd['filename'], '.php')));
+							if ($rs && $adb->num_rows($rs)>0) {
+								$adb->pquery('update vtiger_cbupdater set pathfilename=? where cbupdaterid=?', array($cbupd['filename'], $rs->fields['cbupdaterid']));
+							}
 						}
 					}
 				}
