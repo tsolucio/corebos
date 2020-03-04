@@ -89,6 +89,7 @@ function vtws_getPortalUserInfo($user) {
 			$usrinfo[$fld] = $user->column_fields[$fld];
 		}
 	}
+	$usrinfo['id'] = vtws_getEntityId('Users').'x'.$user->id;
 	return $usrinfo;
 }
 
