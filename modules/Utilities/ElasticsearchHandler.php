@@ -48,7 +48,7 @@ class ElasticsearchEventsHandler extends VTEventHandler {
 					if ($mapid != 0 && $mapid != "") {
 						$cbMap = cbMap::getMapByID($mapid);
 						$results = $cbMap->ConditionQuery(array($id));
-						if (count($results)>0) {
+						if ($results && count($results)>0) {
 							$result = $results[0];
 							$resultnew[$entityidfield] = $result[$entityidfield];
 							foreach ($fieldnames as $key => $value) {
@@ -91,37 +91,42 @@ class ElasticsearchEventsHandler extends VTEventHandler {
 							curl_setopt($channel1, CURLOPT_TIMEOUT, 1000);
 							$resp = curl_exec($channel1);
 							$response = json_decode($resp);
-							if ($response->hits->total!=0) {
-								$eid = $response->hits->hits[0]->_id;
-								$endpointUrl = "http://$ip:9200/$indexname/import/$eid";
-								$channel11 = curl_init();
-								curl_setopt($channel11, CURLOPT_URL, $endpointUrl);
-								curl_setopt($channel11, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
-								curl_setopt($channel11, CURLOPT_USERPWD, $username . ":" . $password);
-								curl_setopt($channel11, CURLOPT_RETURNTRANSFER, true);
-								curl_setopt($channel11, CURLOPT_CUSTOMREQUEST, "PUT");
-								curl_setopt($channel11, CURLOPT_POSTFIELDS, json_encode($resultnew));
-								curl_setopt($channel11, CURLOPT_CONNECTTIMEOUT, 100);
-								curl_setopt($channel11, CURLOPT_SSL_VERIFYPEER, false);
-								curl_setopt($channel11, CURLOPT_TIMEOUT, 1000);
-								$responseupdate = curl_exec($channel11);
-								error_log("Update $indexname Record\n", 3, $file);
-								error_log($responseupdate."\n", 3, $file);
-							} else {
-								$endpointUrl = "http://$ip:9200/$indexname/import";
-								$channel11 = curl_init();
-								curl_setopt($channel11, CURLOPT_URL, $endpointUrl);
-								curl_setopt($channel11, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
-								curl_setopt($channel11, CURLOPT_USERPWD, $username . ":" . $password);
-								curl_setopt($channel11, CURLOPT_RETURNTRANSFER, true);
-								curl_setopt($channel11, CURLOPT_POST, true);
-								curl_setopt($channel11, CURLOPT_POSTFIELDS, json_encode($resultnew));
-								curl_setopt($channel11, CURLOPT_CONNECTTIMEOUT, 100);
-								curl_setopt($channel11, CURLOPT_SSL_VERIFYPEER, false);
-								curl_setopt($channel11, CURLOPT_TIMEOUT, 1000);
-								$responsecreate = curl_exec($channel11);
+							if (isset($response->error)) {
 								error_log("Create $indexname Record\n", 3, $file);
-								error_log($responsecreate."\n", 3, $file);
+								error_log('ERROR** '.$response->error->type.' '.$response->error->reason."\n", 3, $file);
+							} else {
+								if ($response->hits->total!=0) {
+									$eid = $response->hits->hits[0]->_id;
+									$endpointUrl = "http://$ip:9200/$indexname/import/$eid";
+									$channel11 = curl_init();
+									curl_setopt($channel11, CURLOPT_URL, $endpointUrl);
+									curl_setopt($channel11, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
+									curl_setopt($channel11, CURLOPT_USERPWD, $username . ":" . $password);
+									curl_setopt($channel11, CURLOPT_RETURNTRANSFER, true);
+									curl_setopt($channel11, CURLOPT_CUSTOMREQUEST, "PUT");
+									curl_setopt($channel11, CURLOPT_POSTFIELDS, json_encode($resultnew));
+									curl_setopt($channel11, CURLOPT_CONNECTTIMEOUT, 100);
+									curl_setopt($channel11, CURLOPT_SSL_VERIFYPEER, false);
+									curl_setopt($channel11, CURLOPT_TIMEOUT, 1000);
+									$responseupdate = curl_exec($channel11);
+									error_log("Update $indexname Record\n", 3, $file);
+									error_log($responseupdate."\n", 3, $file);
+								} else {
+									$endpointUrl = "http://$ip:9200/$indexname/import";
+									$channel11 = curl_init();
+									curl_setopt($channel11, CURLOPT_URL, $endpointUrl);
+									curl_setopt($channel11, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
+									curl_setopt($channel11, CURLOPT_USERPWD, $username . ":" . $password);
+									curl_setopt($channel11, CURLOPT_RETURNTRANSFER, true);
+									curl_setopt($channel11, CURLOPT_POST, true);
+									curl_setopt($channel11, CURLOPT_POSTFIELDS, json_encode($resultnew));
+									curl_setopt($channel11, CURLOPT_CONNECTTIMEOUT, 100);
+									curl_setopt($channel11, CURLOPT_SSL_VERIFYPEER, false);
+									curl_setopt($channel11, CURLOPT_TIMEOUT, 1000);
+									$responsecreate = curl_exec($channel11);
+									error_log("Create $indexname Record\n", 3, $file);
+									error_log($responsecreate."\n", 3, $file);
+								}
 							}
 						}
 					}
