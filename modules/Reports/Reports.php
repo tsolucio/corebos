@@ -716,7 +716,7 @@ class Reports extends CRMEntity {
 			where vtiger_report.reportid=?';
 		$result = $adb->pquery($sSQL, array($reportid));
 		$selectedstdfilter = $adb->fetch_array($result);
-		if ($selectedstdfilter && $adb->num_rows($selectedstdfilter)>0) {
+		if ($selectedstdfilter && count($selectedstdfilter)>0) {
 			$this->stdselectedcolumn = $selectedstdfilter['datecolumnname'];
 			$this->stdselectedfilter = $selectedstdfilter['datefilter'];
 		} else {
