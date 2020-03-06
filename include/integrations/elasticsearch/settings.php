@@ -16,7 +16,7 @@
  *  Version   : 1.0
  *  Author    : AT Consulting
  *************************************************************************************************/
-global $current_user, $adb;
+global $current_user, $adb, $root_directory;
 include_once 'include/Webservices/Create.php';
 include_once "vtlib/Vtiger/Module.php";
 include_once 'include/integrations/elasticsearch/getFields.php';
@@ -41,6 +41,11 @@ $mapid = isset($_REQUEST['bmapid']) ? vtlib_purify($_REQUEST['bmapid']) : '';
 
 $ip = GlobalVariable::getVariable("ip_elastic_server", "", $moduleid);
 $prefix = GlobalVariable::getVariable("ip_elastic_indexprefix", "", $moduleid);
+if (!isset($prefix) || $prefix=="") {
+	$dir = explode("/", $root_directory);
+	$countdir = count($dir)-2;
+	$prefix = strtolower($dir[$countdir]);
+}
 $indexname = $prefix.'_'.strtolower($moduleid.'index');
 
 $table = $adb->pquery("select mapid,fieldnames,fieldtypes,isanalyzed,fieldlabels from elasticsearch_indexes where module=?", array($moduleid));
