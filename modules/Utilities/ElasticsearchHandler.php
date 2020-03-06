@@ -26,13 +26,13 @@ class ElasticsearchEventsHandler extends VTEventHandler {
 	public function handleEvent($handlerType, $entityData) {
 		global $adb;
 		$moduleName = $entityData->getModuleName();
-		require_once 'modules/cbMap/cbMap.php';
 		$ip = GlobalVariable::getVariable('ip_elastic_server', '', $moduleName);
-		$username = GlobalVariable::getVariable('esusername', '');
-		$password = GlobalVariable::getVariable('espassword', '');
-		if ($ip != "") {
+		$table = $adb->pquery('select indexname,mapid,fieldlabels,fieldnames from elasticsearch_indexes where module=?', array($moduleName));
+		if ($ip != '' && $table && $adb->num_rows($table)>0) {
+			require_once 'modules/cbMap/cbMap.php';
+			$username = GlobalVariable::getVariable('esusername', '');
+			$password = GlobalVariable::getVariable('espassword', '');
 			$id = $entityData->getId();
-			$table = $adb->pquery("select indexname,mapid,fieldlabels,fieldnames from elasticsearch_indexes where module=?", array($moduleName));
 			$indexname = $adb->query_result($table, 0, 0);
 			$mapid = $adb->query_result($table, 0, 1);
 			$fieldlabels = explode("##", $adb->query_result($table, 0, 2));
