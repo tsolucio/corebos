@@ -37,7 +37,9 @@ class VTEmailTask extends VTTask {
 			$GenDocActive = vtlib_isModuleActive('evvtgendoc');
 			if ($GenDocActive) {
 				include_once 'modules/evvtgendoc/OpenDocument.php';
-				$GenDocPDF = (coreBOS_Settings::getSetting('cbgendoc_server', '')!='');
+				$gendoc_url = GlobalVariable::getVariable('GenDoc_Convert_URL', '', 'evvtgendoc');
+				$gendoc_srv = coreBOS_Settings::getSetting('cbgendoc_server', '');
+				$GenDocPDF = ($gendoc_srv!='' || $gendoc_url!='');
 			} else {
 				$GenDocPDF = false;
 			}
