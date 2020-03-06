@@ -84,6 +84,7 @@ $mod_strings = array(
 	'Whatsapp Activation_Desc' => 'Envía notificaciones a tus contactos usando Whatsapp',
 	'SendGrid Activation_Desc' => 'Enviar correos electrónicos usando SendGrid',
 	'GMP Activation_Desc' => 'Envía tus ventas a Google Analytics',
+	'Elasticsearch_Desc' => 'Create ElasticSearch Index for module',
 	'ElasticSearch Activation' => 'Activación ElasticSearch',
 	'Map_Query' => 'Seleccionar el Mapa de Consulta',
 	'choosemap' => 'Elige Mapa',
