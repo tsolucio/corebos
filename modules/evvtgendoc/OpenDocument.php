@@ -2324,6 +2324,9 @@ class OpenDocument {
 	 */
 	public static function saveAsDocument($record, $module, $format, $mergeTemplateName, $fullfilename, $name) {
 		global $adb, $current_user;
+		if (substr($mergeTemplateName, -4)=='.odt' || substr($mergeTemplateName, -4)=='.pdf') {
+			$mergeTemplateName = substr($mergeTemplateName, 0, strlen($mergeTemplateName)-4);
+		}
 		$einfo = getEntityName($module, $record);
 		$doc = CRMEntity::getInstance('Documents');
 		$doc->column_fields['notes_title'] = getTranslatedString($module, $module).' '.$einfo[$record].' '.$mergeTemplateName;
@@ -2347,6 +2350,9 @@ class OpenDocument {
 		$_REQUEST['assigntype'] = 'U';
 		$doc->column_fields['assigned_user_id'] = $current_user->id;
 		unset($_FILES);
+		if (substr($name, -4)=='.odt' || substr($name, -4)=='.pdf') {
+			$name = substr($name, 0, strlen($name)-4);
+		}
 		$name .= '_'.str_replace(' ', '_', $mergeTemplateName);
 		$f=array(
 			'name'=>$name.($format=='pdf' ? '.pdf' : '.odt'),

@@ -61,7 +61,7 @@ class VTEmailTask extends VTTask {
 						$format = ($GenDocPDF ? 'pdf' : 'odt');
 						$docfname = OpenDocument::doGenDocMerge($this->entityid, $docid, $format);
 						$mergeTemplateName = $adb->query_result($docrs, 0, 'filename');
-						$name = str_replace(' ', '_', $mergeTemplateName).'_'.str_replace(' ', '_', $this->entityinfo[$this->entityid]);
+						$name = str_replace(' ', '_', $this->entityinfo[$this->entityid]);
 						$docid = OpenDocument::saveAsDocument($this->entityid, $this->entitymodule, $format, $mergeTemplateName, $docfname, $name);
 						$docrs = $adb->pquery($query, array($docid));
 						$this->attachmentids = str_replace($prevdocid, $docid, $this->attachmentids);
