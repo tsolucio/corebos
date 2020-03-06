@@ -53,7 +53,7 @@
 {/literal}
 	<!-- End -->
 	{include file='BrowserVariables.tpl'}
-	{include file="Components.tpl"}
+	{include file='Components/Components.tpl'}
 </head>
 <body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small style="min-width:1100px; width: 100%"> 
 	<!-- header -->
