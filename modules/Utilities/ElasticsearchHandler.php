@@ -17,7 +17,6 @@
  *************************************************************************************************/
 include 'vendor/autoload.php';
 class ElasticsearchEventsHandler extends VTEventHandler {
-	private $_moduleCache = array();
 
 	/**
 	 * @param $handlerType
@@ -35,17 +34,17 @@ class ElasticsearchEventsHandler extends VTEventHandler {
 			$id = $entityData->getId();
 			$indexname = $adb->query_result($table, 0, 0);
 			$mapid = $adb->query_result($table, 0, 1);
-			$fieldlabels = explode("##", $adb->query_result($table, 0, 2));
-			$fieldnames = explode("##", $adb->query_result($table, 0, 3));
+			$fieldlabels = explode('##', $adb->query_result($table, 0, 2));
+			$fieldnames = explode('##', $adb->query_result($table, 0, 3));
 			include_once "modules/$moduleName/$moduleName.php";
 			$focus = new $moduleName;
 			$entityidfield = $focus->table_index;
 			$file = 'logs/elasticsearch.log';
 			switch ($handlerType) {
 				case 'vtiger.entity.aftersave':
-					$msg = "===========".date("Y-m-d H:i:s")."===========";
+					$msg = '==========='.date('Y-m-d H:i:s').'===========';
 					error_log($msg."\n", 3, $file);
-					if ($mapid != 0 && $mapid != "") {
+					if ($mapid != 0 && $mapid != '') {
 						$cbMap = cbMap::getMapByID($mapid);
 						$results = $cbMap->ConditionQuery(array($id));
 						if ($results && count($results)>0) {
@@ -55,34 +54,37 @@ class ElasticsearchEventsHandler extends VTEventHandler {
 								$label = $fieldlabels[$key];
 								$ui = getUItype($moduleName, $value);
 								if ($ui == 69) {
-									$attch = $adb->pquery("select vtiger_attachments.attachmentsid,path from vtiger_attachments"
-												   . " join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_attachments.attachmentsid "
-												   . " join vtiger_seattachmentsrel where deleted=0 and name=? and vtiger_seattachmentsrel.crmid=?", array($result[$value],$id));
+									$attch = $adb->pquery(
+										'select vtiger_attachments.attachmentsid,path from vtiger_attachments'
+										.' join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_attachments.attachmentsid'
+										.' join vtiger_seattachmentsrel where deleted=0 and name=? and vtiger_seattachmentsrel.crmid=?',
+										array($result[$value], $id)
+									);
 									$attid = $adb->query_result($attch, 0, 0);
 									$path = $adb->query_result($attch, 0, 1).$attid.'_'.$result[$value];
 									try {
 										if (file_exists($path)) {
-												$parser = new \Smalot\PdfParser\Parser();
-												$pdf = $parser->parseFile($path);
-												$text = $pdf->getText();
+											$parser = new \Smalot\PdfParser\Parser();
+											$pdf = $parser->parseFile($path);
+											$text = $pdf->getText();
 										} else {
-												$text = "";
+											$text = '';
 										}
 									} catch (Exception $e) {
-										$text = "";
+										$text = '';
 									}
 									$resultnew[$label] = $text;
 								} else {
-										$resultnew[$label] = $result[$value];
+									$resultnew[$label] = $result[$value];
 								}
 							}
 							error_log(json_encode($resultnew)."\n", 3, $file);
 							$endpointUrl = "http://$ip:9200/$indexname/import/_search?pretty";
-							$fieldssearch =array('query'=>array("term"=>array("$entityidfield"=>"$id")));
+							$fieldssearch =array('query'=>array('term'=>array($entityidfield => $id)));
 							$channel1 = curl_init();
 							curl_setopt($channel1, CURLOPT_URL, $endpointUrl);
-							curl_setopt($channel1, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
-							curl_setopt($channel1, CURLOPT_USERPWD, $username . ":" . $password);
+							curl_setopt($channel1, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+							curl_setopt($channel1, CURLOPT_USERPWD, $username . ':' . $password);
 							curl_setopt($channel1, CURLOPT_RETURNTRANSFER, true);
 							curl_setopt($channel1, CURLOPT_POST, true);
 							curl_setopt($channel1, CURLOPT_POSTFIELDS, json_encode($fieldssearch));
@@ -100,10 +102,10 @@ class ElasticsearchEventsHandler extends VTEventHandler {
 									$endpointUrl = "http://$ip:9200/$indexname/import/$eid";
 									$channel11 = curl_init();
 									curl_setopt($channel11, CURLOPT_URL, $endpointUrl);
-									curl_setopt($channel11, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
-									curl_setopt($channel11, CURLOPT_USERPWD, $username . ":" . $password);
+									curl_setopt($channel11, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+									curl_setopt($channel11, CURLOPT_USERPWD, $username . ':' . $password);
 									curl_setopt($channel11, CURLOPT_RETURNTRANSFER, true);
-									curl_setopt($channel11, CURLOPT_CUSTOMREQUEST, "PUT");
+									curl_setopt($channel11, CURLOPT_CUSTOMREQUEST, 'PUT');
 									curl_setopt($channel11, CURLOPT_POSTFIELDS, json_encode($resultnew));
 									curl_setopt($channel11, CURLOPT_CONNECTTIMEOUT, 100);
 									curl_setopt($channel11, CURLOPT_SSL_VERIFYPEER, false);
@@ -115,8 +117,8 @@ class ElasticsearchEventsHandler extends VTEventHandler {
 									$endpointUrl = "http://$ip:9200/$indexname/import";
 									$channel11 = curl_init();
 									curl_setopt($channel11, CURLOPT_URL, $endpointUrl);
-									curl_setopt($channel11, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
-									curl_setopt($channel11, CURLOPT_USERPWD, $username . ":" . $password);
+									curl_setopt($channel11, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+									curl_setopt($channel11, CURLOPT_USERPWD, $username . ':' . $password);
 									curl_setopt($channel11, CURLOPT_RETURNTRANSFER, true);
 									curl_setopt($channel11, CURLOPT_POST, true);
 									curl_setopt($channel11, CURLOPT_POSTFIELDS, json_encode($resultnew));
@@ -133,14 +135,14 @@ class ElasticsearchEventsHandler extends VTEventHandler {
 					break;
 
 				case 'vtiger.entity.beforedelete':
-					$msg = "===========".date("Y-m-d H:i:s")."===========";
+					$msg = '==========='.date('Y-m-d H:i:s').'===========';
 					error_log($msg."\n", 3, $file);
 					$endpointUrl = "http://$ip:9200/$indexname/import/_search?pretty";
-					$fieldssearch =array('query'=>array("term"=>array("$entityidfield"=>"$id")));
+					$fieldssearch =array('query'=>array('term'=>array($entityidfield => $id)));
 					$channel1 = curl_init();
 					curl_setopt($channel1, CURLOPT_URL, $endpointUrl);
-					curl_setopt($channel1, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
-					curl_setopt($channel1, CURLOPT_USERPWD, $username . ":" . $password);
+					curl_setopt($channel1, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+					curl_setopt($channel1, CURLOPT_USERPWD, $username . ':' . $password);
 					curl_setopt($channel1, CURLOPT_RETURNTRANSFER, true);
 					curl_setopt($channel1, CURLOPT_POST, true);
 					curl_setopt($channel1, CURLOPT_POSTFIELDS, json_encode($fieldssearch));
@@ -155,8 +157,8 @@ class ElasticsearchEventsHandler extends VTEventHandler {
 						$channel11 = curl_init();
 						curl_setopt($channel11, CURLOPT_URL, $endpointUrl);
 						curl_setopt($channel11, CURLOPT_RETURNTRANSFER, true);
-						curl_setopt($channel11, CURLOPT_USERPWD, $username . ":" . $password);
-						curl_setopt($channel11, CURLOPT_CUSTOMREQUEST, "DELETE");
+						curl_setopt($channel11, CURLOPT_USERPWD, $username . ':' . $password);
+						curl_setopt($channel11, CURLOPT_CUSTOMREQUEST, 'DELETE');
 						curl_setopt($channel11, CURLOPT_CONNECTTIMEOUT, 100);
 						curl_setopt($channel11, CURLOPT_SSL_VERIFYPEER, false);
 						curl_setopt($channel11, CURLOPT_TIMEOUT, 1000);
