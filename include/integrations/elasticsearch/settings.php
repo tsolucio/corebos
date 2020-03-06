@@ -29,6 +29,7 @@ $fieldsselected = "";
 $types = "";
 $analyzed = "";
 $labels = "";
+$error = "";
 
 $arrfieldsselected = array();
 $arrtypes = array();
@@ -84,8 +85,12 @@ if (!empty($moduleid) && $_REQUEST['_op']=='setconfigelasticsearch') {
 
 		//insert record in table elasticsearch and create index mapping
 		if ($tablecnt == 0) {
-			$adb->pquery("insert into elasticsearch_indexes (indexname,module,mapid,fieldnames,fieldtypes,isanalyzed,fieldlabels) values (?,?,?,?,?,?,?)", array($indexname,$moduleid,$mapid,$fieldsselected,$types,$analyzed,$labels));
-			createindexmapping($ip, $indexname, $arrlabels, $arrtypes, $arranalyzed, $moduleid);
+			if (isset($ip) && $ip != "") {
+				$adb->pquery("insert into elasticsearch_indexes (indexname,module,mapid,fieldnames,fieldtypes,isanalyzed,fieldlabels) values (?,?,?,?,?,?,?)", array($indexname,$moduleid,$mapid,$fieldsselected,$types,$analyzed,$labels));
+				createindexmapping($ip, $indexname, $arrlabels, $arrtypes, $arranalyzed, $moduleid);
+			} else {
+				$error = 1;
+			}
 		}
 
 		if ($count > 0 && !in_array($moduleid, $module_list)) {
@@ -196,6 +201,7 @@ $smarty->assign('TITLE_MESSAGE', 'ElasticSearch');
 $smarty->assign('MODULELIST', $opt);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
+$smarty->assign('ERROR', $error);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");

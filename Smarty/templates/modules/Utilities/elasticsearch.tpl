@@ -25,6 +25,11 @@
 		</h2>
 	</header>
 <br>
+{if $ERROR eq 1}
+<div class="slds-modal__header slds-grid slds-grid_align-spread slds-grid_vertical-align-center" style="color:red">{'Missing_GlobalVar'|getTranslatedString:'Missing_GlobalVar'}
+</div>
+{/if}
+<br>
 <div class="slds-modal__content slds-app-launcher__content slds-p-around_medium slds-card">
 <form role="form" style="margin:0 100px;" name="elsform">
 <input type="hidden" name="module" value="Utilities">

@@ -88,5 +88,6 @@ $mod_strings = array(
 	'choosemap' => 'Elige Mapa',
 	'sel_fields_es' => 'Selecciona los Campos para el Mapeado de Elasticsearch',
 	'Analyzed' => 'Analizado',
+	'Missing_GlobalVar' => 'Global Variables ElasticSearch IP missing',
 );
 ?>
