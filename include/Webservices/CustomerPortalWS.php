@@ -1208,7 +1208,12 @@ function getGlobalSearch($term, $searchin, $limit, $user) {
 			$rsp = array();
 			foreach ($rfields as $rf) {
 				if (strpos($rf, '.')>0) { // other module reference field
-					$colum_name = strtolower(str_replace('.', '', $rf));
+					list($cmod, $cnme) = explode('.', $rf);
+					if ($cmod=='Users') {
+						$colum_name = $cnme;
+					} else {
+						$colum_name = strtolower(str_replace('.', '', $rf));
+					}
 				} else {
 					$colum_name = $mod_fields[$rf]->getColumnName();
 				}
