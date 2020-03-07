@@ -431,12 +431,12 @@ class QueryGenerator {
 					$moduleList = $this->referenceFieldInfoList[$fieldName];
 					foreach ($moduleList as $module) {
 						if (empty($this->moduleNameFields[$module])) {
-							$meta = $this->getMeta($module);
+							$this->getMeta($module);
 						}
 					}
 				} elseif (in_array($fieldName, $this->ownerFields)) {
-					$meta = $this->getMeta('Users');
-					$meta = $this->getMeta('Groups');
+					$this->getMeta('Users');
+					$this->getMeta('Groups');
 				}
 			}
 
@@ -661,24 +661,20 @@ class QueryGenerator {
 		$sql = " FROM $baseTable ";
 		unset($tableList[$baseTable]);
 		foreach ($defaultTableList as $tableName) {
-			$sql .= " $tableJoinMapping[$tableName] $tableName ON $baseTable.".
-					"$baseTableIndex = $tableName.$moduleTableIndexList[$tableName]";
+			$sql .= " $tableJoinMapping[$tableName] $tableName ON $baseTable.$baseTableIndex = $tableName.$moduleTableIndexList[$tableName]";
 			unset($tableList[$tableName]);
 		}
 		$specialTableJoins = array();
 		foreach ($tableList as $tableName) {
 			if ($tableName == 'vtiger_users') {
 				$field = $moduleFields[$ownerField];
-				$sql .= " $tableJoinMapping[$tableName] $tableName ON ".$field->getTableName().".".
-					$field->getColumnName()." = $tableName.id";
+				$sql .= " $tableJoinMapping[$tableName] $tableName ON ".$field->getTableName().'.'.$field->getColumnName()." = $tableName.id";
 			} elseif ($tableName == 'vtiger_groups') {
 				$field = $moduleFields[$ownerField];
-				$sql .= " $tableJoinMapping[$tableName] $tableName ON ".$field->getTableName().".".
-					$field->getColumnName()." = $tableName.groupid";
+				$sql .= " $tableJoinMapping[$tableName] $tableName ON ".$field->getTableName().'.'.$field->getColumnName()." = $tableName.groupid";
 			} else {
-				$sql .= " $tableJoinMapping[$tableName] $tableName ON $baseTable.".
-					"$baseTableIndex = $tableName.$moduleTableIndexList[$tableName]";
-					$specialTableJoins[]=$tableName.$baseTable;
+				$sql .= " $tableJoinMapping[$tableName] $tableName ON $baseTable.$baseTableIndex = $tableName.$moduleTableIndexList[$tableName]";
+				$specialTableJoins[]=$tableName.$baseTable;
 			}
 		}
 

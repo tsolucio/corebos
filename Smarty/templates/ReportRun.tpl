@@ -24,19 +24,18 @@
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody><tr>
 	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-<table class="small reportGenHdr mailClient mailClientBg" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
 	<form name="NewReport" action="index.php" method="POST" onsubmit="VtigerJS_DialogBox.block();">
-    <input type="hidden" name="booleanoperator" value="5"/>
-    <input type="hidden" name="record" value="{$REPORTID}"/>
-    <input type="hidden" name="reload" value=""/>    
-    <input type="hidden" name="module" value="Reports"/>
-    <input type="hidden" name="action" value="SaveAndRun"/>
-    <input type="hidden" name="dlgType" value="saveAs"/>
-    <input type="hidden" name="reportName"/>
-    <input type="hidden" name="folderid" value="{$FOLDERID}"/>
-    <input type="hidden" name="reportDesc"/>
-    <input type="hidden" name="folder"/>
-
+	<input type="hidden" name="booleanoperator" value="5"/>
+	<input type="hidden" name="record" value="{$REPORTID}"/>
+	<input type="hidden" name="reload" value=""/>
+	<input type="hidden" name="module" value="Reports"/>
+	<input type="hidden" name="action" value="SaveAndRun"/>
+	<input type="hidden" name="dlgType" value="saveAs"/>
+	<input type="hidden" name="reportName"/>
+	<input type="hidden" name="folderid" value="{$FOLDERID}"/>
+	<input type="hidden" name="reportDesc"/>
+	<input type="hidden" name="folder"/>
+	<table class="small reportGenHdr mailClient mailClientBg" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
 	<tbody>
 	<tr>
 	<td style="padding: 10px; text-align: left;" width="70%">
@@ -57,7 +56,7 @@
 	</td>
 	</tr>
 	</tbody>
-</table>
+	</table>
 
 <!-- Generate Report UI Filter -->
 <table class="small reportGenerateTable" align="center" cellpadding="5" cellspacing="0" width="95%" border=0>
