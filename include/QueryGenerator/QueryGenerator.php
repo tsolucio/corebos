@@ -162,6 +162,15 @@ class QueryGenerator {
 				}
 			}
 		}
+		if (count($this->ownerFields)>0 && count($this->fields)>0) {
+			foreach ($this->fields as $fld) {
+				if (strtolower(substr($fld, 0, 6))=='users.') {
+					list($fmod, $fname) = explode('.', $fld);
+					$this->referenceFieldNameList[] = 'Users.'.$fname;
+					$this->setReferenceFieldsManually('assigned_user_id', 'Users', $fname);
+				}
+			}
+		}
 	}
 
 	public function setReferenceFieldsManually($referenceField, $refmod, $fname) {
@@ -814,6 +823,13 @@ class QueryGenerator {
 						}
 					}
 				} else {  // FQN
+					if ($fldmod=='Users' && !in_array('vtiger_users', $referenceFieldTableList) && !in_array('vtiger_users', $alreadyinfrom)) {
+						$sql .= ' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid ';
+						$referenceFieldTableList[] = $alreadyinfrom[] = 'vtiger_users';
+						$sql .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid ';
+						$referenceFieldTableList[] = $alreadyinfrom[] = 'vtiger_groups';
+						continue;
+					}
 					foreach ($this->referenceFieldInfoList as $fld => $mods) {
 						if ($fld=='modifiedby' || $fld == 'assigned_user_id') {
 							continue;
