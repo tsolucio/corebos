@@ -379,12 +379,7 @@ function vtlib_isCustomModule($moduleName) {
 function vtlib_isEntityModule($moduleName) {
 	global $adb;
 	$rsent = $adb->pquery('select isentitytype from vtiger_tab where name=?', array($moduleName));
-	if ($rsent && $adb->num_rows($rsent)>0) {
-		if ($adb->query_result($rsent, 0, 0)=='1') {
-			return true;
-		}
-	}
-	return false;
+	return ($rsent && $adb->num_rows($rsent)>0 && $rsent->fields['isentitytype']=='1');
 }
 
 /**
