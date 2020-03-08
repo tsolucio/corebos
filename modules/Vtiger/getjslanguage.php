@@ -22,11 +22,16 @@
  *************************************************************************************************/
 global $current_language, $currentModule;
 
-if (file_exists("modules/$currentModule/language/$current_language.js")) {
-	$filename="modules/$currentModule/language/$current_language.js";
+$langmod = isset($_REQUEST['i18nmodule']) ? vtlib_purify($_REQUEST['i18nmodule']) : $currentModule;
+if (file_exists("modules/$langmod/language/$current_language.js")) {
+	$filename="modules/$langmod/language/$current_language.js";
+	checkFileAccessForInclusion($filename);
+	readfile($filename);
+} elseif (file_exists("modules/$langmod/language/en_us.js")) {
+	$filename="modules/$langmod/language/en_us.js";
+	checkFileAccessForInclusion($filename);
+	readfile($filename);
 } else {
-	$filename="modules/$currentModule/language/en_us.js";
+	echo 'const mod_alert_arr = {};';
 }
-checkFileAccessForInclusion($filename);
-readfile($filename);
 ?>
