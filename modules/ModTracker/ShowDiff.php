@@ -32,7 +32,7 @@ if (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'history') {
 	$trackrecord = ModTracker_Basic::getById($reqid);
 }
 
-if ($trackrecord === false || !$trackrecord->exists()) {
+if ($trackrecord === false || !$trackrecord->exists() || !$trackrecord->isViewPermitted()) {
 	echo 'NOTRACKRECORD';
 } else {
 	if ($trackrecord) {
@@ -57,7 +57,6 @@ if ($trackrecord === false || !$trackrecord->exists()) {
 			'atpoint' => $atpoint,
 			'atpoint_prev' => $prevAtPoint,
 			'atpoint_next' => $nextAtPoint,
-			'ispermitted' => (string)$trackrecord->isViewPermitted(),
 		));
 	}
 }
