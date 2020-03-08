@@ -6,7 +6,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
+loadJS('index.php?module=ModTracker&action=ModTrackerAjax&file=getjslanguage');
 var ModTrackerCommon = {
 	showdiff: function (record, atpoint, highlight) {
 		if (typeof (atpoint) == 'undefined') {
@@ -45,28 +45,27 @@ var ModTrackerCommon = {
 			if (response != 'NOTRACKRECORD') {
 				const tracker = JSON.parse(response),
 					trackData = tracker.trackrecord.latest.details;
-				console.log(tracker);
 				if (!ModTrackerCommon.active) {
 					// First open of the modtracker
-					const modalTitle = 'History for ' + tracker.trackrecord.displayname,
+					const modalTitle = mod_alert_arr['History for'] + ' ' + tracker.trackrecord.displayname,
 						modalContent = `<div id="history-tui-grid">
 											<div class="slds-grid slds-m-bottom_x-small">
-												<button class="slds-button slds-button_icon slds-button_icon-brand" title="Previous"
+												<button class="slds-button slds-button_icon slds-button_icon-brand" title="${alert_arr.JSLBL_PREVIOUS}"
 													onClick="ModTrackerCommon.showhistory(${record}, (ModTrackerCommon.atpoint + 1));">
 													<svg class="slds-button__icon" aria-hidden="true">
 														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronleft"></use>
 													</svg>
-													<span class="slds-assistive-text">Previous</span>
+													<span class="slds-assistive-text">${alert_arr.JSLBL_PREVIOUS}</span>
 												</button>
 												<div class="slds-col slds-align_absolute-center" id="history-whodidwhatwhen">
-													${tracker.trackrecord.latest.modifiedon} by ${tracker.trackrecord.latest.modifiedbylabel}
+													${tracker.trackrecord.latest.modifiedon} ${mod_alert_arr.by} ${tracker.trackrecord.latest.modifiedbylabel}
 												</div>
-												<button class="slds-button slds-button_icon slds-button_icon-brand" title="Next"
+												<button class="slds-button slds-button_icon slds-button_icon-brand" title="${alert_arr.JSLBL_NEXT}"
 													onClick="ModTrackerCommon.showhistory(${record}, (ModTrackerCommon.atpoint - 1));">
 													<svg class="slds-button__icon" aria-hidden="true">
 														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
 													</svg>
-													<span class="slds-assistive-text">Next</span>
+													<span class="slds-assistive-text">${alert_arr.JSLBL_NEXT}</span>
 												</button>
 											</div>
 										</div>`;
@@ -79,16 +78,16 @@ var ModTrackerCommon = {
 						columns: [
 							{
 								name: 'fieldlabel',
-								header: 'Field',
+								header: mod_alert_arr.Field,
 							},
 							{
 								name: 'oldval',
-								header: 'Previous value',
+								header: mod_alert_arr['Previous value'],
 								whiteSpace: 'normal'
 							},
 							{
 								name: 'newval',
-								header: 'Value changed to',
+								header: mod_alert_arr['Value changed to'],
 								whiteSpace: 'normal'
 							}
 						],
@@ -104,13 +103,13 @@ var ModTrackerCommon = {
 					ModTrackerCommon.active = true;
 				} else {
 					// Tracker was already open and got new data
-					document.getElementById('history-whodidwhatwhen').innerText = `${tracker.trackrecord.latest.modifiedon} by ${tracker.trackrecord.latest.modifiedbylabel}`;
+					document.getElementById('history-whodidwhatwhen').innerText = `${tracker.trackrecord.latest.modifiedon} ${mod_alert_arr.by} ${tracker.trackrecord.latest.modifiedbylabel}`;
 				}
 				ModTrackerCommon.gridInstance.clear();
 				ModTrackerCommon.refreshData(trackData);
 			} else if (response == 'NOTRACKRECORD' && ModTrackerCommon.active) {
 				// Tracker modal is open but no further data is available
-				ldsPrompt.show('No further history', 'No further history available for this record');
+				ldsPrompt.show(mod_alert_arr['No further history'], mod_alert_arr['No further history available for this record']);
 				if (direction == 'back') {
 					ModTrackerCommon.atpoint--;
 				} else {
@@ -118,7 +117,7 @@ var ModTrackerCommon = {
 				}
 			} else {
 				// No history at all for this record
-				ldsPrompt.show('No history', 'No history available for this record');
+				ldsPrompt.show(mod_alert_arr['No history'], mod_alert_arr['No history available for this record']);
 			}
 		});
 	},
