@@ -9,21 +9,7 @@
  ************************************************************************************/
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme;
 
-require_once 'Smarty_setup.php';
-
 include_once __DIR__ . '/core/ModTracker_Basic.php';
-
-$smarty = new vtigerCRM_Smarty();
-
-// Identify this module as custom module.
-$smarty->assign('CUSTOM_MODULE', true);
-
-$smarty->assign('MOD', $mod_strings);
-$smarty->assign('APP', $app_strings);
-$smarty->assign('MODULE', $currentModule);
-$smarty->assign('SINGLE_MOD', $currentModule);
-$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
-$smarty->assign('THEME', $theme);
 
 $reqid = vtlib_purify($_REQUEST['id']);
 $atpoint = vtlib_purify($_REQUEST['atpoint']);
