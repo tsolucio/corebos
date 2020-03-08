@@ -421,5 +421,6 @@ var alert_arr = {
 	'OF' : 'de',
 	'ERR_Massedit' : 'Erro na edição em massa',
 	'ProcessFINISHED' : 'Processo Finalizado',
-	'duplicatednotallowed' : 'Módulos duplicados não são permitidos'
+	'duplicatednotallowed' : 'Módulos duplicados não são permitidos',
+	'Okay': 'Okay'
 };

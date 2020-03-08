@@ -5,13 +5,13 @@ const ldsModal = {
 			<div class="slds-modal__container">
 				<header class="slds-modal__header">
 					<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
-							title="Close"
+							title="${alert_arr.LBL_CLOSE_TITLE}"
 							onClick="javascript:ldsModal.close()"
 						>
 						<svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
 							<use xlink: href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
 						</svg>
-						<span class="slds-assistive-text">Close</span>
+						<span class="slds-assistive-text">${alert_arr.LBL_CLOSE_TITLE}</span>
 					</button>
 					<h2 class="slds-modal__title slds-hyphenate slds-text-heading_medium" 
 						id="global-modal-container__title">
@@ -22,10 +22,10 @@ const ldsModal = {
 					${content}
 				</div>
 				<footer class="slds-modal__footer" style="width: 100%;">
-					<button class="slds-button slds-button_neutral" onClick="javascript:ldsModal.close()">Cancel</button>
+					<button class="slds-button slds-button_neutral" onClick="javascript:ldsModal.close()">${alert_arr.JSLBL_CANCEL}</button>
 	${(() => {
 		if (showSave) {
-			return `<button class="slds-button slds-button_brand">Save</button>`;
+			return `<button class="slds-button slds-button_brand">${alert_arr.JSLBL_SAVE}</button>`;
 		} else {
 			return ``;
 		}

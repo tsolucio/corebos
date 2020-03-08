@@ -3,12 +3,12 @@ const ldsPrompt = {
 		let modal = `<section role="alertdialog" tabindex="0" class="slds-modal slds-fade-in-open slds-modal_prompt" aria-modal="true">
 		<div class="slds-modal__container">
 			<header class="slds-modal__header slds-theme_error slds-theme_alert-texture">
-				<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close"
+				<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="${alert_arr.LBL_CLOSE_TITLE}"
 						onClick="ldsPrompt.close();">
 					<svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
 						<use xlink: href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
 					</svg>
-					<span class="slds-assistive-text">Close</span>
+					<span class="slds-assistive-text">${alert_arr.LBL_CLOSE_TITLE}</span>
 				</button>
 			<h2 class="slds-text-heading_medium" id="prompt-heading-id">${headText}</h2>
 			</header>
@@ -16,7 +16,7 @@ const ldsPrompt = {
 				<p>${content}</p>
 			</div>
 			<footer class="slds-modal__footer slds-theme_default" style="width: 100%;">
-				<button class="slds-button slds-button_neutral" onClick="ldsPrompt.close();">Okay</button>
+				<button class="slds-button slds-button_neutral" onClick="ldsPrompt.close();">${alert_arr.Okay}</button>
 			</footer>
 		</div>
 	</section >

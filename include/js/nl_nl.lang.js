@@ -422,5 +422,6 @@ var alert_arr = {
 	'ERR_Massedit' : 'Fout tijdens massa wijzig',
 	'ProcessFINISHED' : 'Proces beëindigd',
 	'duplicatednotallowed' : 'Duplicated Modules Not Allowed',
-	'HAS_THIS_AS_NTH_CHILD' : 'Heeft dit record als Xste kind'
+	'HAS_THIS_AS_NTH_CHILD' : 'Heeft dit record als Xste kind',
+	'Okay': 'Okay'
 };
