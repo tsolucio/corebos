@@ -6420,13 +6420,13 @@ const ldsModal = {
 				</div>
 				<footer class="slds-modal__footer" style="width: 100%;">
 					<button class="slds-button slds-button_neutral" onClick="javascript:ldsModal.close()">Cancel</button>
-					${(() => {
-							if (showSave) {
-								return `<button class="slds-button slds-button_brand">Save</button>`;
-							} else {
-								return ``;
-							}
-					})()}
+	${(() => {
+		if (showSave) {
+			return `<button class="slds-button slds-button_brand">Save</button>`;
+		} else {
+			return ``;
+		}
+	})()}
 				</footer>
 			</div>
 		</section >
@@ -6454,7 +6454,7 @@ const ldsModal = {
 		document.getElementById('global-modal-container__title').innerHTML = title;
 	},
 	active: false
-}
+};
 
 const ldsPrompt = {
 	show : (headText, content) => {
@@ -6498,4 +6498,4 @@ const ldsPrompt = {
 		ldsPrompt.active = false;
 	},
 	active: false
-}
+};

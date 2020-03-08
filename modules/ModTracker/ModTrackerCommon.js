@@ -104,8 +104,7 @@ var ModTrackerCommon = {
 					ModTrackerCommon.active = true;
 				} else {
 					// Tracker was already open and got new data
-					document.getElementById('history-whodidwhatwhen').innerText = 
-						`${tracker.trackrecord.latest.modifiedon} by ${tracker.trackrecord.latest.modifiedbylabel}`;
+					document.getElementById('history-whodidwhatwhen').innerText = `${tracker.trackrecord.latest.modifiedon} by ${tracker.trackrecord.latest.modifiedbylabel}`;
 				}
 				ModTrackerCommon.gridInstance.clear();
 				ModTrackerCommon.refreshData(trackData);
@@ -123,9 +122,9 @@ var ModTrackerCommon = {
 			}
 		});
 	},
-	refreshData : function(trackData) {
+	refreshData : function (trackData) {
 		let data = [];
-		for (item in trackData) {
+		for (var item in trackData) {
 			data.push({
 				id: item,
 				fieldlabel: trackData[item].displayname,
@@ -136,7 +135,7 @@ var ModTrackerCommon = {
 		ModTrackerCommon.gridInstance.resetData(data);
 	},
 	active: false,
-	reset: function() {
+	reset: function () {
 		ModTrackerCommon.active = false;
 		ModTrackerCommon.atpoint = 0;
 	}
