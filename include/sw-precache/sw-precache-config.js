@@ -9,7 +9,6 @@ module.exports = {
 		'include/LD/assets/icons/utility/advertising.svg'
 	],
 	"globPatterns": [
-		'include/sw-precache/service-worker-registration.js',
 		'jscalendar/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
 		'modules/Calendar4You/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
 		'modules/Mobile/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
@@ -21,6 +20,7 @@ module.exports = {
 		'include/dropzone/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
 		'include/images/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
 		'include/js/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
+		'include/components/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
 		'include/chart.js/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
 		'include/jquery/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
 		'include/csrfmagic/csrf-magic.js',
@@ -111,6 +111,7 @@ module.exports = {
 		'modules/Faq/Faq.js',
 		'modules/ModTracker/ModTracker.js',
 		'modules/ModTracker/ModTrackerCommon.js',
+		'modules/ModTracker/language/*.js',
 		'modules/SMSNotifier/workflow/VTSMSTask.js',
 		'modules/SMSNotifier/SMSNotifier.js',
 		'modules/SMSNotifier/SMSConfigServer.js',

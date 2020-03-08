@@ -2224,9 +2224,6 @@ clientsClaim();
  */
 
 precacheAndRoute([{
-  "url": "include/sw-precache/service-worker-registration.js",
-  "revision": "fbc12f5273769a64c1cd5aca240b6308"
-}, {
   "url": "jscalendar/calendar-setup.js",
   "revision": "1d6c5bf60a74c0700cc5a98b345ea68a"
 }, {
@@ -9080,7 +9077,7 @@ precacheAndRoute([{
   "revision": "fac2826174b3ef2d807edd9524c029f3"
 }, {
   "url": "include/js/de_de.lang.js",
-  "revision": "70857aa600a8a1cbe3fa1bd28a522a87"
+  "revision": "d57cb3877baa4f18f8ec680222979b9d"
 }, {
   "url": "include/js/dedup.js",
   "revision": "3aab10a82c3f05de285ce73b6dc3be35"
@@ -9089,16 +9086,16 @@ precacheAndRoute([{
   "revision": "37d8b802631db59f1d1f817c9ae1f69c"
 }, {
   "url": "include/js/en_gb.lang.js",
-  "revision": "cd885c780911da90b50fa9d889729a66"
+  "revision": "2737e453bc7fa15f857cbbee5550cbc2"
 }, {
   "url": "include/js/en_us.lang.js",
-  "revision": "2369f940b5574ab89799c062159adebc"
+  "revision": "d3ec76b762ab267e32515fcbc45d6fa7"
 }, {
   "url": "include/js/es_es.lang.js",
-  "revision": "55a4fa43f64b4abc859f84a4fc483f71"
+  "revision": "b65d741c1b17323773f6a64dfefff22b"
 }, {
   "url": "include/js/es_mx.lang.js",
-  "revision": "92a7ae938f14cefdeb6578befdedfd52"
+  "revision": "c018f76fc281184bb8dc6d13e489dd35"
 }, {
   "url": "include/js/FieldDependencies.js",
   "revision": "e402631525953bc457e64601a1a4f2a2"
@@ -9107,19 +9104,19 @@ precacheAndRoute([{
   "revision": "c87b487b3785ae87d8edfc5e3c8119fe"
 }, {
   "url": "include/js/fr_fr.lang.js",
-  "revision": "01c714bf88b7c2535199273cf80e89be"
+  "revision": "0879b2f4d2cf0a0b5495726b93f024d6"
 }, {
   "url": "include/js/general.js",
-  "revision": "21cef42c24fac56efcfed790f119bf66"
+  "revision": "002572421867fa174a62f65db2adbc9c"
 }, {
   "url": "include/js/hu_hu.lang.js",
-  "revision": "d5a7067172555edc0df55b3452f1532b"
+  "revision": "d4e6cb0fcdf39b76d704ce8f7754a999"
 }, {
   "url": "include/js/Inventory.js",
   "revision": "d71b3dbfbb25c65a426efa62488aa40c"
 }, {
   "url": "include/js/it_it.lang.js",
-  "revision": "aa4f748eba04c76881db396a039355da"
+  "revision": "b1c0ab97c325a7a4e7d0796ad72fbebf"
 }, {
   "url": "include/js/jslog.js",
   "revision": "31c7a760819a0277d2cdb75b82c2c66f"
@@ -9143,7 +9140,7 @@ precacheAndRoute([{
   "revision": "92db09ac10a555be4bfc0398f2a93379"
 }, {
   "url": "include/js/nl_nl.lang.js",
-  "revision": "4581a64990fa14c8805893894485eafa"
+  "revision": "206b714601df0fa8b74bf9e1b4c218da"
 }, {
   "url": "include/js/notebook.js",
   "revision": "d944ea5145ae45ecbafab41bcbd112f3"
@@ -9161,7 +9158,7 @@ precacheAndRoute([{
   "revision": "9ea67febb4daaa61456e88a625df209b"
 }, {
   "url": "include/js/pt_br.lang.js",
-  "revision": "abb44acd785d45e371685919619a742a"
+  "revision": "d14f2868b0498bf7a8b2e267ab7b04f7"
 }, {
   "url": "include/js/QuickCreate.js",
   "revision": "e5029e6a617bfb7f9114191938738069"
@@ -9170,7 +9167,7 @@ precacheAndRoute([{
   "revision": "5bce2a6cf35180a097828b2cde3346ff"
 }, {
   "url": "include/js/ro_ro.lang.js",
-  "revision": "f5d0725d90a6668eaf11924893e4d126"
+  "revision": "6b0a60ed81b382328e016ba481a2adfc"
 }, {
   "url": "include/js/search.js",
   "revision": "d5c8ddcb6451bc0c05aa26f123363e0f"
@@ -9180,6 +9177,21 @@ precacheAndRoute([{
 }, {
   "url": "include/js/vtlib.js",
   "revision": "184b11ec74674cac2fe250b876b724a6"
+}, {
+  "url": "include/components/ldsmodal.js",
+  "revision": "d0c55ad6c9e3bba85d1f4e65269375d2"
+}, {
+  "url": "include/components/ldsprompt.js",
+  "revision": "c18dcbe201720230167dbd4bea44ceb0"
+}, {
+  "url": "include/components/loadjs.js",
+  "revision": "0cd3b9c507677b2cb93c292225399888"
+}, {
+  "url": "include/components/toast-ui/grid/tui-grid.min.css",
+  "revision": "4d43e4d0e8a550b3079b8b713ac405bc"
+}, {
+  "url": "include/components/toast-ui/grid/tui-grid.min.js",
+  "revision": "49b76abb49dcdad1a116458fcac194ef"
 }, {
   "url": "include/chart.js/Chart.bundle.js",
   "revision": "22b07a45d5f33013972b848726c9d051"
@@ -9251,7 +9263,7 @@ precacheAndRoute([{
   "revision": "43155535cd6da302c6ad1c34c077c642"
 }, {
   "url": "modules/com_vtiger_workflow/resources/fieldexpressionpopup.js",
-  "revision": "26a8cec985817455e63e9bf9d47e7ea2"
+  "revision": "b9e363cb10a373cc89e71a3940bc4119"
 }, {
   "url": "modules/com_vtiger_workflow/resources/fieldvalidator.js",
   "revision": "cde6fec9119f368a5eb21d4e506209db"
@@ -9623,7 +9635,40 @@ precacheAndRoute([{
   "revision": "c822e17c71c3f3e039528c4311f4cbae"
 }, {
   "url": "modules/ModTracker/ModTrackerCommon.js",
-  "revision": "48ce6d6bb5df591b73ef0c17dd9e0f37"
+  "revision": "89dc703cd2124886e9d9888d124487c0"
+}, {
+  "url": "modules/ModTracker/language/de_de.js",
+  "revision": "19252fec0dde7cf1a03f469391d5822c"
+}, {
+  "url": "modules/ModTracker/language/en_gb.js",
+  "revision": "19252fec0dde7cf1a03f469391d5822c"
+}, {
+  "url": "modules/ModTracker/language/en_us.js",
+  "revision": "19252fec0dde7cf1a03f469391d5822c"
+}, {
+  "url": "modules/ModTracker/language/es_es.js",
+  "revision": "d70aa7adbf87580a167c9e0db4fbb9ab"
+}, {
+  "url": "modules/ModTracker/language/es_mx.js",
+  "revision": "d70aa7adbf87580a167c9e0db4fbb9ab"
+}, {
+  "url": "modules/ModTracker/language/fr_fr.js",
+  "revision": "19252fec0dde7cf1a03f469391d5822c"
+}, {
+  "url": "modules/ModTracker/language/hu_hu.js",
+  "revision": "19252fec0dde7cf1a03f469391d5822c"
+}, {
+  "url": "modules/ModTracker/language/it_it.js",
+  "revision": "19252fec0dde7cf1a03f469391d5822c"
+}, {
+  "url": "modules/ModTracker/language/nl_nl.js",
+  "revision": "19252fec0dde7cf1a03f469391d5822c"
+}, {
+  "url": "modules/ModTracker/language/pt_br.js",
+  "revision": "19252fec0dde7cf1a03f469391d5822c"
+}, {
+  "url": "modules/ModTracker/language/ro_ro.js",
+  "revision": "19252fec0dde7cf1a03f469391d5822c"
 }, {
   "url": "modules/SMSNotifier/workflow/VTSMSTask.js",
   "revision": "8120de0e05492fe510dd0d89ae500002"
@@ -9671,7 +9716,7 @@ precacheAndRoute([{
   "revision": "65682db92a471ba46f12737f6f6b3e4d"
 }, {
   "url": "modules/Reports/Reports.js",
-  "revision": "1161972ff88570a33502046241a535d3"
+  "revision": "d1fc2fc832501008bf2e3f9afab8313a"
 }, {
   "url": "modules/Reports/ReportsSteps.js",
   "revision": "32b3904edbb237ace0cdd9422a778f9e"
