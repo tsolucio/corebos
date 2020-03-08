@@ -19,6 +19,7 @@
 	{if $Application_JSCalendar_Load neq 0}<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">{/if}
 	<link rel="stylesheet" href="include/print.css" type="text/css" media="print" />
 	<link rel="stylesheet" href="include/LD/assets/styles/salesforce-lightning-design-system.css" type="text/css" />
+	<link rel="stylesheet" href="include/components/toast-ui/grid/tui-grid.min.css" type="text/css" />
 	<link rel="stylesheet" href="include/LD/assets/styles/mainmenu.css" type="text/css" />
 	<link rel="stylesheet" href="include/LD/assets/styles/override_lds.css" type="text/css" />
 	<link rel="stylesheet" href="include/style.css" type="text/css" />
@@ -68,6 +69,7 @@
 	<script type="text/javascript" src="include/js/QuickCreate.js"></script>
 	<script type="text/javascript" src="modules/Calendar/script.js"></script>
 	<script type="text/javascript" src="include/js/notificationPopup.js"></script>
+	{include file='Components/ComponentsJS.tpl'}
 	<script type="text/javascript" src="modules/Calendar4You/fullcalendar/lib/moment.min.js"></script>
 	{if $Application_JSCalendar_Load neq 0}
 	<script type="text/javascript" src="jscalendar/calendar.js"></script>
