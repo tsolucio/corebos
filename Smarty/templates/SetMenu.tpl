@@ -58,18 +58,17 @@
 			</svg>
 			<span class="slds-assistive-text">{'LBL_ACTIONS'|@getTranslatedString}</span>
 			</button>
-			<div class="slds-dropdown slds-dropdown_right">
+			<div class="slds-dropdown slds-dropdown_right slds-grid slds-gutters_medium" style="max-width: unset;">
 				{foreach key=BLOCKID item=BLOCKLABEL from=$BLOCKS}
 				{if $BLOCKLABEL neq 'LBL_MODULE_MANAGER'}
 					{assign var=blocklabel value=$BLOCKLABEL|@getTranslatedString:'Settings'}
-					<div class="slds-accordion__summary">
-					<h3 class="slds-accordion__summary-heading">
+					<div class="slds-col slds-size_1-of-4">
+					<h3 class="slds-accordion__summary-heading slds-accordion__summary-action">
 						<svg class="slds-accordion__summary-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevrondown"></use>
 						</svg>
 						<span class="slds-truncate" title="{$blocklabel}">{$blocklabel}&nbsp;&nbsp;</span>
 					</h3>
-					</div>
 					<ul class="slds-dropdown__list" role="menu">
 						{foreach item=data from=$FIELDS.$BLOCKID}
 							{if $data.link neq ''}
@@ -88,6 +87,7 @@
 							{/if}
 						{/foreach}
 					</ul>
+					</div>
 				{/if}
 				{/foreach}
 			</div>
