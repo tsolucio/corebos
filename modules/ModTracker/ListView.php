@@ -24,10 +24,10 @@ $tool_buttons = Button_Check($currentModule);
 $list_buttons = array();
 
 if (isPermitted($currentModule, 'Delete', '') == 'yes') {
-	$list_buttons['del'] = $app_strings[LBL_MASS_DELETE];
+	$list_buttons['del'] = $app_strings['LBL_MASS_DELETE'];
 }
 if (isPermitted($currentModule, 'EditView', '') == 'yes') {
-	$list_buttons['mass_edit'] = $app_strings[LBL_MASS_EDIT];
+	$list_buttons['mass_edit'] = $app_strings['LBL_MASS_EDIT'];
 }
 
 $focus = new $currentModule();
@@ -165,7 +165,7 @@ $smarty->assign('FIELDS_TO_MERGE', getMergeFields($currentModule, 'fields_to_mer
 //Added to select Multiple records in multiple pages
 $smarty->assign('SELECTEDIDS', vtlib_purify($_REQUEST['selobjs']));
 $smarty->assign('ALLSELECTEDIDS', vtlib_purify($_REQUEST['allselobjs']));
-$smarty->assign('CURRENT_PAGE_BOXES', implode(array_keys($listview_entries), ';'));
+$smarty->assign('CURRENT_PAGE_BOXES', implode(';', array_keys($listview_entries)));
 coreBOS_Session::set($currentModule.'_listquery', $list_query);
 
 // Gather the custom link information to display
@@ -174,7 +174,7 @@ $customlink_params = array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_RE
 $smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('LISTVIEWBASIC','LISTVIEW'), $customlink_params));
 
 if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
-	$smarty->display("ListViewEntries.tpl");
+	$smarty->display('ListViewEntries.tpl');
 } else {
 	$smarty->display('ListView.tpl');
 }
