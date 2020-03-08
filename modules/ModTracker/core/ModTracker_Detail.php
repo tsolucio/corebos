@@ -79,10 +79,16 @@ class ModTracker_Detail {
 	}
 
 	public function diffHighlight() {
-		if ($this->name=='assigned_user_id') {
-			return StringDiff::toHTML($this->prevalue, getUserFullName($this->postvalue));
-		} else {
+		$mod = Vtiger_Module::getInstance($this->parent->module);
+		$fld = Vtiger_Field::getInstance($this->name, $mod);
+		if (in_array($fld->uitype, array(1,19,21))) {
 			return StringDiff::toHTML($this->prevalue, $this->postvalue);
+		} elseif ($fld->uitype==56) {
+			return getTranslatedString($this->postvalue == '0' ? 'LBL_NO' : 'LBL_YES');
+		} elseif (in_array($this->name, array('assigned_user_id', 'modifiedby', 'created_user_id'))) {
+			return getUserFullName($this->postvalue);
+		} else {
+			return $this->postvalue;
 		}
 	}
 
