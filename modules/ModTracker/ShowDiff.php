@@ -47,16 +47,32 @@ if (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'history') {
 }
 
 if ($trackrecord === false || !$trackrecord->exists()) {
-	$smarty->display(vtlib_getModuleTemplate($currentModule, 'ShowDiffNotExist.tpl'));
+	echo 'NOTRACKRECORD';
 } else {
-	if ($trackrecord && $trackrecord->isViewPermitted()) {
-		$smarty->assign('TRACKRECORD', $trackrecord);
-		$smarty->assign('ATPOINT', $atpoint);
-		$smarty->assign('ATPOINT_PREV', $prevAtPoint);
-		$smarty->assign('ATPOINT_NEXT', $nextAtPoint);
-		$smarty->display(vtlib_getModuleTemplate($currentModule, 'ShowDiff.tpl'));
-	} else {
-		$smarty->display(vtlib_getModuleTemplate($currentModule, 'ShowDiffDenied.tpl'));
+	if ($trackrecord) {
+		$details = array();
+		foreach ($trackrecord->getDetails() as $detail) {
+			$details[] = array(
+				'displayname' => $detail->getDisplayName(),
+				'labelforpreval' => $detail->getDisplayLabelForPreValue(),
+				'labelforpostval' => $detail->getDisplayLabelForPostValue(),
+			);
+		}
+		echo json_encode(array(
+			'trackrecord' => array(
+				'raw' => $trackrecord,
+				'displayname' => $trackrecord->getDisplayName(),
+				'latest' => array(
+					'modifiedbylabel' => $trackrecord->getModifiedByLabel(),
+					'modifiedon' => $trackrecord->getModifiedOn(),
+					'details' => $details,
+				),
+			),
+			'atpoint' => $atpoint,
+			'atpoint_prev' => $prevAtPoint,
+			'atpoint_next' => $nextAtPoint,
+			'ispermitted' => (string)$trackrecord->isViewPermitted(),
+		));
 	}
 }
 ?>
