@@ -151,20 +151,27 @@ class ElasticsearchEventsHandler extends VTEventHandler {
 					curl_setopt($channel1, CURLOPT_TIMEOUT, 1000);
 					$resp = curl_exec($channel1);
 					$response = json_decode($resp);
-					if ($response->hits->total!=0) {
-						$eid = $response->hits->hits[0]->_id;
-						$endpointUrl = "http://$ip:9200/$indexname/import/$eid";
-						$channel11 = curl_init();
-						curl_setopt($channel11, CURLOPT_URL, $endpointUrl);
-						curl_setopt($channel11, CURLOPT_RETURNTRANSFER, true);
-						curl_setopt($channel11, CURLOPT_USERPWD, $username . ':' . $password);
-						curl_setopt($channel11, CURLOPT_CUSTOMREQUEST, 'DELETE');
-						curl_setopt($channel11, CURLOPT_CONNECTTIMEOUT, 100);
-						curl_setopt($channel11, CURLOPT_SSL_VERIFYPEER, false);
-						curl_setopt($channel11, CURLOPT_TIMEOUT, 1000);
-						$responsedel = curl_exec($channel11);
+					if (isset($response->error)) {
 						error_log("Delete $indexname Record $eid\n", 3, $file);
-						error_log($responsedel."\n", 3, $file);
+						error_log('ERROR** '.$response->error->type.' '.$response->error->reason."\n", 3, $file);
+					} else {
+						if ($response->hits->total!=0) {
+							$eid = $response->hits->hits[0]->_id;
+							$endpointUrl = "http://$ip:9200/$indexname/import/$eid";
+							$channel11 = curl_init();
+							curl_setopt($channel11, CURLOPT_URL, $endpointUrl);
+							curl_setopt($channel11, CURLOPT_RETURNTRANSFER, true);
+							curl_setopt($channel11, CURLOPT_USERPWD, $username . ':' . $password);
+							curl_setopt($channel11, CURLOPT_CUSTOMREQUEST, 'DELETE');
+							curl_setopt($channel11, CURLOPT_CONNECTTIMEOUT, 100);
+							curl_setopt($channel11, CURLOPT_SSL_VERIFYPEER, false);
+							curl_setopt($channel11, CURLOPT_TIMEOUT, 1000);
+							$responsedel = curl_exec($channel11);
+							error_log("Delete $indexname Record $eid\n", 3, $file);
+							error_log($responsedel."\n", 3, $file);
+						} else {
+							error_log("Delete no hits\n", 3, $file);
+						}
 					}
 					break;
 			}
