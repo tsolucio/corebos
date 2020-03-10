@@ -1384,7 +1384,7 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 			$tmp_value = $change_table_field[$tablename.'.'.$fieldname].' IS NULL or ';
 		}
 		$value = $tmp_value.$change_table_field[$tablename.'.'.$fieldname].getAdvancedSearchComparator($comparator, $value, $datatype);
-	} elseif (($fieldname == "crmid" && $tablename != 'vtiger_crmentity') || $fieldname == "parent_id" || $fieldname == 'parentid') {
+	} elseif (($fieldname == 'crmid' && $tablename != 'vtiger_crmentity') || $fieldname == 'parent_id' || $fieldname == 'parentid') {
 		//For crmentity.crmid the control should not come here. This is only to get the related to modules
 		$value = getAdvancedSearchParentEntityValue($comparator, $value, $datatype, $tablename, $fieldname);
 	} else {

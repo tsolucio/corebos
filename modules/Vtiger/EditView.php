@@ -69,7 +69,7 @@ if ($isduplicate == 'true') {
 	$smarty->assign('__cbisduplicatedfromrecordid', $record);
 }
 $focus->preEditCheck($_REQUEST, $smarty);
-if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == "true") {
+if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == 'true') {
 	if (!empty($_REQUEST['encode_val'])) {
 		global $current_user;
 		$encode_val = vtlib_purify($_REQUEST['encode_val']);
@@ -77,7 +77,7 @@ if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == "true") {
 		$explode_decode_val = explode('&', trim($decode_val, '&'));
 		$tabid = getTabid($currentModule);
 		foreach ($explode_decode_val as $fieldvalue) {
-			$value = explode("=", $fieldvalue);
+			$value = explode('=', $fieldvalue);
 			$field_name_val = $value[0];
 			$field_value =urldecode($value[1]);
 			$finfo = VTCacheUtils::lookupFieldInfo($tabid, $field_name_val);
