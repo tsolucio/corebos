@@ -14,7 +14,7 @@
 <!-- header - level 2 tabs -->
 {include file='Buttons_List.tpl'}
 
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="98%" class="slds-m-around_medium" style="width: auto;">
+<table class="slds-m-around_medium" style="width: 98%; maring: auto;">
 	<tr>
 		<td class="showPanelBg" valign="top" width="100%">
 			<table  cellpadding="0" cellspacing="0" width="100%" border=0>

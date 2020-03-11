@@ -55,7 +55,7 @@ if (isPermitted($_REQUEST['module'], 'Export') == 'no') {
 	$allow_exports='none';
 }
 
-if ($allow_exports=='none' || ( $allow_exports=='admin' && ! is_admin($current_user) )) {
+if ($allow_exports=='none' || ($allow_exports=='admin' && !is_admin($current_user))) {
 	?>
 	<script type='text/javascript'>
 		alert("<?php echo $app_strings['NOT_PERMITTED_TO_EXPORT']?>");
