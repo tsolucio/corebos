@@ -2,7 +2,7 @@ const ldsPrompt = {
 	show : (headText, content) => {
 		let modal = `<section role="alertdialog" tabindex="0" class="slds-modal slds-fade-in-open slds-modal_prompt" aria-modal="true">
 		<div class="slds-modal__container">
-			<header class="slds-modal__header slds-theme_error slds-theme_alert-texture">
+			<header class="slds-modal__header slds-theme_error slds-theme_alert-texture" style="box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16);">
 				<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="${alert_arr.LBL_CLOSE_TITLE}"
 						onClick="ldsPrompt.close();">
 					<svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
@@ -12,7 +12,7 @@ const ldsPrompt = {
 				</button>
 			<h2 class="slds-text-heading_medium" id="prompt-heading-id">${headText}</h2>
 			</header>
-			<div class="slds-modal__content slds-p-around_medium" id="prompt-message-wrapper">
+			<div class="slds-modal__content slds-p-around_medium" id="prompt-message-wrapper" style="box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16);">
 				<p>${content}</p>
 			</div>
 			<footer class="slds-modal__footer slds-theme_default" style="width: 100%;">
