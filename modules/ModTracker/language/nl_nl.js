@@ -7,13 +7,13 @@
  ********************************************************************************/
 
 var mod_alert_arr = {
-	'History for': 'History for',
-	'by': 'by',
-	'Field': 'Field',
-	'Previous value': 'Previous value',
-	'Value changed to': 'Value changed to',
-	'No further history': 'No further history',
-	'No further history available for this record': 'No further history available for this record.',
-	'No history': 'No history',
-	'No history available for this record': 'No history available for this record',
+	'History for': 'Geschiedenis voor',
+	'by': 'door',
+	'Field': 'Veld',
+	'Previous value': 'Voormalige waarde',
+	'Value changed to': 'Huidige waarde',
+	'No further history': 'Geen verdere geschiedenis',
+	'No further history available for this record': 'Geen verdere geschiedenis beschikbaar voor dit record.',
+	'No history': 'Geen geschiedenis',
+	'No history available for this record': 'Geen geschiedenis beschikbaar voor dit record',
 };

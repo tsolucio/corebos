@@ -423,5 +423,5 @@ var alert_arr = {
 	'ProcessFINISHED' : 'Proces beëindigd',
 	'duplicatednotallowed' : 'Duplicated Modules Not Allowed',
 	'HAS_THIS_AS_NTH_CHILD' : 'Heeft dit record als Xste kind',
-	'Okay': 'Okay'
+	'Okay': 'Oké',
 };
