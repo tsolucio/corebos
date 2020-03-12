@@ -231,11 +231,16 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 						'$id' as related_to,
 						'' as parent_comments,
 						ownertype,
-						case when (ownertype = 'user') then vtiger_users.user_name else vtiger_portalinfo.user_name end as owner_name
-					 from vtiger_ticketcomments
-					 left join vtiger_users on vtiger_users.id = ownerid
-					 left join vtiger_portalinfo on vtiger_portalinfo.id = ownerid
-					 where ticketid=$crmid";
+						case when (ownertype = 'user') then vtiger_users.user_name else vtiger_portalinfo.user_name end as owner_name,
+						case when (ownertype = 'user') then vtiger_users.first_name else '' end as owner_firstname,
+						case when (ownertype = 'user') then vtiger_users.last_name else '' end as owner_lastname,
+						case when (ownertype = 'user') then vtiger_users.user_name else vtiger_portalinfo.user_name end as creator_name,
+						case when (ownertype = 'user') then vtiger_users.first_name else '' end as creator_firstname,
+						case when (ownertype = 'user') then vtiger_users.last_name else '' end as creator_lastname
+					from vtiger_ticketcomments
+					left join vtiger_users on vtiger_users.id = ownerid
+					left join vtiger_portalinfo on vtiger_portalinfo.id = ownerid
+					where ticketid=$crmid";
 					break;
 				case 'Faq':
 					$query="select
