@@ -25,7 +25,7 @@ class com_vtiger_workflow extends CRMEntity {
 	public function create_export_query($where) {
 		global $adb;
 		$search_type = vtlib_purify($_REQUEST['search_type']);
-		$filters = isset(($_REQUEST['filters'])) ? vtlib_purify($_REQUEST['filters']) : '';
+		$filters = isset($_REQUEST['filters']) ? vtlib_purify($_REQUEST['filters']) : '';
 		if ($search_type=='includesearch' && $filters!='') {
 			$filters = json_decode($filters, true);
 			$conds = '';
