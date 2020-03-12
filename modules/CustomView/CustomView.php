@@ -287,6 +287,7 @@ class CustomView extends CRMEntity {
 	 */
 	public function getColumnsListbyBlock($module, $block, $markMandatory = true) {
 		global $adb, $current_user;
+		$module_columnlist = null;
 		$block_ids = explode(',', $block);
 		$tabid = getTabid($module);
 		$userprivs = $current_user->getPrivileges();
@@ -317,7 +318,7 @@ class CustomView extends CRMEntity {
 				from vtiger_field
 				inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid
 				inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid';
-			$sql.= " where $uniqueFieldsRestriction and vtiger_field.block in (" . generateQuestionMarks($block_ids) . ") and";
+			$sql.= " where $uniqueFieldsRestriction and vtiger_field.block in (" . generateQuestionMarks($block_ids) . ') and';
 			$sql.= "$display_type and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
 
 			$params = array($tab_ids, $block_ids);
@@ -343,6 +344,9 @@ class CustomView extends CRMEntity {
 		}
 		if ($module != 'Calendar') {
 			$moduleFieldList = $this->meta->getModuleFields();
+		}
+		if ($noofrows > 0) {
+			$module_columnlist = array();
 		}
 		for ($i = 0; $i < $noofrows; $i++) {
 			$fieldtablename = $adb->query_result($result, $i, 'tablename');
@@ -372,8 +376,7 @@ class CustomView extends CRMEntity {
 				}
 			}
 			$fieldlabel1 = str_replace(' ', '_', $fieldlabel);
-			$optionvalue = $fieldtablename . ':' . $fieldcolname . ':' . $fieldname . ':' . $module . '_' .
-					$fieldlabel1 . ':' . $fieldtypeofdata;
+			$optionvalue = $fieldtablename . ':' . $fieldcolname . ':' . $fieldname . ':' . $module . '_' . $fieldlabel1 . ':' . $fieldtypeofdata;
 			//added to escape attachments fields in customview as we have multiple attachments
 			$fieldlabel = getTranslatedString($fieldlabel, $module); //added to support i18n issue
 			if ($module != 'HelpDesk' || $fieldname != 'filename') {
