@@ -410,10 +410,13 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 		$query .= ' order by '.$queryParameters['orderby'];
 	}
 	// now we add limit and offset if needed
-	if ($query!='' && !empty($queryParameters['limit'])) {
-		$query .= ' limit '.$queryParameters['limit'];
-		if (!empty($queryParameters['offset'])) {
-			$query .= ','.$queryParameters['offset'];
+	if ($query!='') {
+		if (!empty($queryParameters['offset']) && !empty($queryParameters['limit'])) {
+			$query .= ' limit '.$queryParameters['offset'].','.$queryParameters['limit'];
+		} elseif (!empty($queryParameters['offset'])) {
+			$query .= ' offset '.$queryParameters['offset'];
+		} elseif (!empty($queryParameters['limit'])) {
+			$query .= ' limit '.$queryParameters['limit'];
 		}
 	}
 	$currentModule = $holdCM;
