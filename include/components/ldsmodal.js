@@ -1,6 +1,6 @@
 const ldsModalClosing = new Event('closemodal');
 const ldsModal = {
-	show : (headText, content, size = 'medium', showSave = true) => {
+	show : (headText, content, size = 'medium', saveAction = '') => {
 		let modal = `<section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_${size}" aria-modal="true">
 			<div class="slds-modal__container">
 				<header class="slds-modal__header">
@@ -24,8 +24,8 @@ const ldsModal = {
 				<footer class="slds-modal__footer" style="width: 100%;">
 					<button class="slds-button slds-button_neutral" onClick="javascript:ldsModal.close()">${alert_arr.JSLBL_CANCEL}</button>
 	${(() => {
-		if (showSave) {
-			return `<button class="slds-button slds-button_brand">${alert_arr.JSLBL_SAVE}</button>`;
+		if (saveAction!==false && saveAction!='') {
+			return `<button class="slds-button slds-button_brand" onclick="${saveAction}">${alert_arr.JSLBL_SAVE}</button>`;
 		} else {
 			return ``;
 		}
