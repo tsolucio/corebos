@@ -21,10 +21,7 @@ if ($coreBOS_uiapp_showgitversion || $coreBOS_uiapp_showgitdate) {
 	echo '&nbsp;('.($coreBOS_uiapp_showgitversion ? $gitversion : '').($coreBOS_uiapp_showgitdate ? $gitdate : '').')';
 }
 if ($calculate_response_time) {
-	$startTime = microtime(true);
-	$endTime = microtime(true);
-	$deltaTime = round($endTime - $startTime, 2);
-	echo('&nbsp;Server response time: '.$deltaTime.' seconds.');
+	echo('&nbsp;&nbsp;Server response time: '.round(microtime(true) - $startTime, 2).' seconds.');
 }
 ?>
 	</span>
