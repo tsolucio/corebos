@@ -13,17 +13,17 @@ function verifyConvertLeadData(form) {
 
 	if ((form.select_account!=null)&&(form.select_contact!=null)) {
 		if (!(form.select_account.checked || form.select_contact.checked)) {
-			alert(alert_arr['ERR_SELECT_EITHER']);
+			ldsPrompt.show(alert_arr['ERROR'], alert_arr['ERR_SELECT_EITHER']);
 			return false;
 		}
 	} else if (form.select_account!=null) {
 		if (!form.select_account.checked) {
-			alert(alert_arr['ERR_SELECT_ACCOUNT']);
+			ldsPrompt.show(alert_arr['ERROR'], alert_arr['ERR_SELECT_ACCOUNT']);
 			return false;
 		}
 	} else if (form.select_contact!=null) {
 		if (!form.select_contact.checked) {
-			alert(alert_arr['ERR_SELECT_CONTACT']);
+			ldsPrompt.show(alert_arr['ERROR'], alert_arr['ERR_SELECT_CONTACT']);
 			return false;
 		}
 	}
@@ -32,7 +32,7 @@ function verifyConvertLeadData(form) {
 		for (i=0; i<no_ele; i++) {
 			if ((convertForm[i].getAttribute('module')=='Accounts') && (convertForm[i].getAttribute('record')=='true')) {
 				if (convertForm[i].value=='') {
-					alert(alert_arr['ERR_MANDATORY_FIELD_VALUE']);
+					ldsPrompt.show(alert_arr['ERROR'], alert_arr['ERR_MANDATORY_FIELD_VALUE']);
 					return false;
 				}
 			}
@@ -42,7 +42,7 @@ function verifyConvertLeadData(form) {
 		for (i=0; i<no_ele; i++) {
 			if ((convertForm[i].getAttribute('module')=='Potentials') && (convertForm[i].getAttribute('record')=='true')) {
 				if (convertForm[i].value=='') {
-					alert(alert_arr['ERR_MANDATORY_FIELD_VALUE']);
+					ldsPrompt.show(alert_arr['ERROR'], alert_arr['ERR_MANDATORY_FIELD_VALUE']);
 					return false;
 				}
 			}
@@ -64,7 +64,7 @@ function verifyConvertLeadData(form) {
 			}
 		}
 		if (form.amount.value!=null && isNaN(val)) {
-			alert(alert_arr['ERR_POTENTIAL_AMOUNT']);
+			ldsPrompt.show(alert_arr['ERROR'], alert_arr['ERR_POTENTIAL_AMOUNT']);
 			return false;
 		}
 	}
@@ -72,7 +72,7 @@ function verifyConvertLeadData(form) {
 		for (i=0; i<no_ele; i++) {
 			if ((convertForm[i].getAttribute('module')=='Contacts') && (convertForm[i].getAttribute('record')=='true')) {
 				if (convertForm[i].value=='') {
-					alert(alert_arr['ERR_MANDATORY_FIELD_VALUE']);
+					ldsPrompt.show(alert_arr['ERROR'], alert_arr['ERR_MANDATORY_FIELD_VALUE']);
 					return false;
 				}
 			}
@@ -85,11 +85,11 @@ function verifyConvertLeadData(form) {
 	}
 
 	if (document.getElementById('transfertoacc').checked && !form.select_account.checked) {
-		alert(alert_arr['ERR_TRANSFER_TO_ACC']);
+		ldsPrompt.show(alert_arr['ERROR'], alert_arr['ERR_TRANSFER_TO_ACC']);
 		return false;
 	}
 	if (document.getElementById('transfertocon').checked && !form.select_contact.checked) {
-		alert(alert_arr['ERR_TRANSFER_TO_CON']);
+		ldsPrompt.show(alert_arr['ERROR'], alert_arr['ERR_TRANSFER_TO_CON']);
 		return false;
 	}
 	return true;
@@ -227,16 +227,27 @@ function toggle_converted() {
 
 function LeadssetValueFromCapture(recordid, value, target_fieldname) {
 	if (target_fieldname=='accountname') {
-		document.getElementById('txtbox_accountname').value = value;
+		document.getElementById('accountname').value = value;
 	}
 }
 
 function callConvertLeadDiv(id) {
-	jQuery.ajax({
-		method:'POST',
-		url:'index.php?module=Leads&action=LeadsAjax&file=ConvertLead&record='+id,
-	}).done(function (response) {
-		jQuery('#convertleaddiv').html(response);
-		jQuery('#conv_leadcal').html();
-	});
+	VtigerJS_DialogBox.block();
+	var params = `&${csrfMagicName}=${csrfMagicToken}`;
+	fetch(
+		'index.php?module=Leads&action=LeadsAjax&file=ConvertLead&record='+id,
+		{
+			method: 'post',
+			headers: {
+				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+			},
+			credentials: 'same-origin',
+			body: params
+		}
+	).then(response => response.text().then(response => {
+		VtigerJS_DialogBox.unblock();
+		ldsModal.show('modalTitle', response, 'medium', "document.getElementById('ConvertLead').action.value='LeadConvertToEntities'; if (verifyConvertLeadData(ConvertLead)) {document.getElementById('ConvertLead').submit();}");
+		ldsModal.updateTitle(document.getElementById('convertLeadHeaderTitle').innerHTML);
+		vtlib_executeJavascriptInElement(document.getElementById('ConvertLead'));
+	}));
 }
