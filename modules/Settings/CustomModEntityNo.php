@@ -109,7 +109,7 @@ if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] == 'true') {
 
 function getCRMSupportedModules() {
 	global $adb;
-	$sql="select tabid,name from vtiger_tab where isentitytype = 1 and presence = 0 and tabid in(select distinct tabid from vtiger_field where uitype='4')";
+	$sql="select tabid,name from vtiger_tab where isentitytype=1 and presence=0 and tabid in (select distinct tabid from vtiger_field where uitype='4')";
 	$result = $adb->pquery($sql, array());
 	$modulelist = array();
 	while ($moduleinfo=$adb->fetch_array($result)) {

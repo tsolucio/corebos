@@ -68,7 +68,7 @@ class WebserviceField {
 		$this->presence = (isset($row['presence']))? $row['presence'] : -1;
 		$this->quickCreate = isset($row['quickcreate']) ? ($row['quickcreate'] === '0' || $row['quickcreate'] === '2')? true: false: false;
 		$this->typeOfData = $typeOfData;
-		$typeOfData = explode("~", $typeOfData);
+		$typeOfData = explode('~', $typeOfData);
 		$this->mandatory = isset($typeOfData[1]) ? ($typeOfData[1] == 'M')? true: false: false;
 		if ($this->uitype == 4) {
 			$this->mandatory = false;
@@ -351,7 +351,7 @@ class WebserviceField {
 			$fieldTypeData = WebserviceField::$fieldTypeMapping[$this->getUIType()];
 			$referenceTypes = array();
 			if ($this->getUIType() != $this->genericUIType) {
-				$sql = "select type from vtiger_ws_referencetype where fieldtypeid=?";
+				$sql = 'select type from vtiger_ws_referencetype where fieldtypeid=?';
 				$params = array($fieldTypeData['fieldtypeid']);
 			} else {
 				$sql = 'select relmodule as type from vtiger_fieldmodulerel where fieldid=?';
@@ -360,7 +360,7 @@ class WebserviceField {
 			$result = $this->pearDB->pquery($sql, $params);
 			$numRows = $this->pearDB->num_rows($result);
 			for ($i=0; $i<$numRows; ++$i) {
-				$referenceTypes[] = $this->pearDB->query_result($result, $i, "type");
+				$referenceTypes[] = $this->pearDB->query_result($result, $i, 'type');
 			}
 
 			//to handle hardcoding done for Calendar module todo activities.
@@ -402,22 +402,22 @@ class WebserviceField {
 	private function getFieldTypeFromTypeOfData() {
 		switch ($this->fieldType) {
 			case 'T':
-				return "time";
+				return 'time';
 			case 'D':
 			case 'DT':
-				return "date";
+				return 'date';
 			case 'E':
-				return "email";
+				return 'email';
 			case 'N':
 			case 'NN':
-				return "double";
+				return 'double';
 			case 'P':
-				return "password";
+				return 'password';
 			case 'I':
-				return "integer";
+				return 'integer';
 			case 'V':
 			default:
-				return "string";
+				return 'string';
 		}
 	}
 
