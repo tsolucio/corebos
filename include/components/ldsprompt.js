@@ -12,7 +12,7 @@ const ldsPrompt = {
 				</button>
 			<h2 class="slds-text-heading_medium" id="prompt-heading-id">${headText}</h2>
 			</header>
-			<div class="slds-modal__content slds-p-around_medium" id="prompt-message-wrapper" style="box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16);">
+			<div class="slds-modal__content slds-p-around_medium slds-page-header__meta-text" id="prompt-message-wrapper" style="box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16);">
 				<p>${content}</p>
 			</div>
 			<footer class="slds-modal__footer slds-theme_default" style="width: 100%;">
