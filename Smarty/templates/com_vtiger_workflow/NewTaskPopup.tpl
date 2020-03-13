@@ -28,7 +28,7 @@
 					<label class="slds-form-element__label slds-page-header__meta-text" for="module_list">{$MOD.LBL_CREATE_TASK_OF_TYPE}</label>
 					<div class="slds-form-element__control">
 						<div class="slds-select_container">
-							<select class="slds-select slds-page-header__meta-text"" name="task_type" id="task_type">
+							<select class="slds-select slds-page-header__meta-text" name="task_type" id="task_type">
 								{foreach item=taskType from=$taskTypes}
 									<option value='{$taskType}'>
 									{$taskType|@getTranslatedString:$module->name}
