@@ -1155,6 +1155,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Si esta variable está definida y contiene una lista separada por comas de correos electrónicos, TODOS los correos electrónicos de los flujos de trabajo se enviarán a esta lista.',
 ),
+'Workflow_Email_GenDoc_Attachment_Name' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'Name|Number',
+	'definition' => 'Al fusionar una plantilla GenDoc adjunto a un correo electrónico de flujo de trabajo, el nombre utilizado para el archivo adjunto será el campo Nombre de la entidad (Name) o el campo Número de entidad (Number) concatenados con el nombre de la plantilla.',
+),
 'Workflow_GeoDistance_Country_Default' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Texto',

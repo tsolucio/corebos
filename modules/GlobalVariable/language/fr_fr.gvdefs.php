@@ -1154,6 +1154,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Liste CSV d\'adresses email valides',
 	'definition' => 'Variable permettant d\'outrepasser les adresses emails définies dans les conditions des flux de travail.',
 ),
+'Workflow_Email_GenDoc_Attachment_Name' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Name|Number',
+	'definition' => 'When merging a GenDoc workflow email attachment, the name used for the attachment will be the Entity Name field (Name) or the Entity Number field (Number) concatenated with the template name.',
+),
 'Workflow_GeoDistance_Country_Default' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Chaîne:<br>Nom de pays en Anglais',
