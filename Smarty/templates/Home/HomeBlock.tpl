@@ -193,8 +193,9 @@ window.doChart{$HOME_STUFFID} = function(charttype) {ldelim}
 			backgroundColor: [{/literal}{foreach item=CVALUE name=chartvalues from=$HOME_STUFF.yaxisData}getRandomColor(){if not $smarty.foreach.chartvalues.last},{/if}{/foreach}{literal}]
 		}]
 	};
-	var maxnum = Math.max.apply(Math, chartDataObject.datasets[0].data);
-	var maxgrph = Math.ceil(maxnum + (6 * maxnum / 100));
+	const arrSum = chartDataObject.datasets[0].data.reduce((a,b) => Number(a) + Number(b), 0);
+	const maxnum = Math.max.apply(Math, chartDataObject.datasets[0].data);
+	const maxgrph = Math.ceil(maxnum + (6 * maxnum / 100));
 	Chart.scaleService.updateScaleDefaults('linear', {
 		ticks: {
 			min: 0,
@@ -202,10 +203,31 @@ window.doChart{$HOME_STUFFID} = function(charttype) {ldelim}
 			precision: 0
 		}
 	});
-	window.schart{/literal}{$HOME_STUFFID}{literal} = new Chart(stuffchart,{
+	window.schart{/literal}{$HOME_STUFFID} = new Chart(stuffchart,{
 		type: charttype,
 		data: chartDataObject,
 		options: {
+			plugins: {
+				datalabels: {
+					{if $GRAPHSHOW=='None'}
+					display: false,
+					{/if}
+					color: '{$GRAPHSHOWCOLOR}',
+					font: {
+						size: 14,
+						weight: 'bold'
+					},
+					{if $GRAPHSHOW=='Percentage' || $GRAPHSHOW=='ValuePercentage'}
+					formatter: function(value, context) {
+						{if $GRAPHSHOW=='ValuePercentage'}
+						return value + ' (' + Math.round(value*100/arrSum) + '%)';
+						{else}
+						return Math.round(value*100/arrSum) + '%';
+						{/if}
+					}
+					{/if}{literal}
+				}
+			},
 			responsive: true,
 			legend: {
 				position: 'right',

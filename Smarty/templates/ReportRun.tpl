@@ -21,6 +21,7 @@
 <script type="text/javascript" src="include/calculator/calc.js"></script>
 <script src="include/chart.js/Chart.min.js"></script>
 <script src="include/chart.js/randomColor.js"></script>
+<script src="include/chart.js/chartjs-plugin-datalabels.min.js"></script>
 <a name="rpttop"></a>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody><tr>

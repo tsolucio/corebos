@@ -1484,6 +1484,20 @@ $GlobalVariableDefinitons = array(
 	'values' => 'All | Default | None',
 	'definition' => 'En el modo de impuestos GRUPO permitirá seleccionar los impuestos activados. Por defecto, se aplica el valor "Todos", que es el comportamiento antes de la existencia de esta variable. "Todos" calcula todos los impuestos activos, "Ninguno", establece todos los impuestos a 0 y "Predeterminado" activa los impuestos marcados como predeterminados en la configuración',
 ),
+'Graph_DataLabels' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'None | Value | Percentage',
+	'definition' => 'Esta variable nos permitirá mostrar o no datos en los gráficos de la aplicación. En cada sección/barra del gráfico podremos mostrar el valor o el porcentaje.',
+),
+'Graph_DataLabels_Color' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'Definición de Color CSS',
+	'definition' => 'Define el color de la etiqueta de datos para usar en la barra/sección del gráfico. Por defecto, se utiliza el color blanco.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {

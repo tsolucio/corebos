@@ -67,6 +67,8 @@ if ($stufftype=='Tag Cloud') {
 	if ($stufftype=='ReportCharts') {
 		$homeObj->getReportChartDetails($stuffid, 'type');
 		$dashdet = $homeObj->reportdetails;
+		$smarty->assign('GRAPHSHOW', GlobalVariable::getVariable('Graph_DataLabels', 'Percentage'));
+		$smarty->assign('GRAPHSHOWCOLOR', GlobalVariable::getVariable('Graph_DataLabels_Color', '#FFFFFF'));
 	}
 }
 
