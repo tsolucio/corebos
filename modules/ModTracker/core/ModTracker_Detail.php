@@ -79,17 +79,15 @@ class ModTracker_Detail {
 	}
 
 	public function diffHighlight() {
-		$mod = Vtiger_Module::getInstance($this->parent->module);
-		$fld = Vtiger_Field::getInstance($this->name, $mod);
-		if (in_array($fld->uitype, array(1,19,21))) {
+		if (in_array($this->fieldInstance->fieldInfo->getUIType(), array(1,19,21))) {
 			return StringDiff::toHTML($this->prevalue, $this->postvalue);
-		} elseif ($fld->uitype==56) {
-			return getTranslatedString($this->postvalue == '0' ? 'LBL_NO' : 'LBL_YES');
-		} elseif (in_array($this->name, array('assigned_user_id', 'modifiedby', 'created_user_id'))) {
-			return getUserFullName($this->postvalue);
 		} else {
-			return $this->postvalue;
+			return '';
 		}
+	}
+
+	public function diff() {
+		return $this->fieldInstance->getFieldDisplayValue($this->parent->module, $this->id, $this->fieldInstance->fieldInfo, $this->postvalue);
 	}
 
 	public function getDisplayName() {
@@ -117,8 +115,8 @@ class ModTracker_Detail {
 	}
 
 	public function getModTrackerField() {
-		$modTrackerFieldInstance = new ModTracker_Field();
-		$modTrackerFieldInstance->initialize($this);
+		$modTrackerFieldInstance = new ModTracker_Field($this);
+		$modTrackerFieldInstance->initialize();
 	}
 }
 ?>
