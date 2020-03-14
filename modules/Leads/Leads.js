@@ -84,11 +84,11 @@ function verifyConvertLeadData(form) {
 		}
 	}
 
-	if (document.getElementById('transfertoacc').checked && !form.select_account.checked) {
+	if (document.getElementById('transfertoacc') && document.getElementById('transfertoacc').checked && !form.select_account.checked) {
 		ldsPrompt.show(alert_arr['ERROR'], alert_arr['ERR_TRANSFER_TO_ACC']);
 		return false;
 	}
-	if (document.getElementById('transfertocon').checked && !form.select_contact.checked) {
+	if (document.getElementById('transfertocon') && document.getElementById('transfertocon').checked && !form.select_contact.checked) {
 		ldsPrompt.show(alert_arr['ERROR'], alert_arr['ERR_TRANSFER_TO_CON']);
 		return false;
 	}
