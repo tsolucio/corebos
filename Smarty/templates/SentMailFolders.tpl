@@ -3,12 +3,11 @@
 <script>
 function ShowFolders(folderid)
 {ldelim}
-
-	if(document.getElementById('mail_fldrname')!=null){ldelim}
+	if (document.getElementById('mail_fldrname')!=null){ldelim}
 		var mail_folder=document.getElementById('mail_fldrname').innerHTML;
 	{rdelim}
 	gselectedrowid = 0;
-	document.getElementById("status").style.display="inline";
+	document.getElementById('status').style.display='inline';
 	gFolderid = folderid;
 	folder='';
 //	getObj('search_text').value = '';
@@ -40,17 +39,17 @@ function ShowFolders(folderid)
 	{rdelim}
 
 	jQuery.ajax({ldelim}
-				method:"POST",
-				url:'index.php?module=Emails&ajax=true&action=EmailsAjax&file=ListView&folderid='+folderid
+		method:'POST',
+		url:'index.php?module=Emails&ajax=true&action=EmailsAjax&file=ListView&folderid='+folderid
 	{rdelim}).done(function(response) {ldelim}
 										document.getElementById("status").style.display="none";
-										if(document.getElementById('mail_fldrname')!=null){ldelim}
+										if (document.getElementById('mail_fldrname')!=null){ldelim}
 											if(document.getElementById('_mailfolder_'+mail_folder)!=null && document.getElementById('_mailfolder_'+mail_folder).className!='mm_folder'){ldelim}
 												document.getElementById('_mailfolder_'+mail_folder).className='mm_folder';
 												document.getElementById('_mailfolder_'+mail_folder).parentNode.className='';
 											{rdelim}
 										{rdelim}
-										if(document.getElementById('_replydiv_')!=null){ldelim}
+										if (document.getElementById('_replydiv_')!=null){ldelim}
 											if(document.getElementById('_replydiv_').style.display!='none')
 											{ldelim}
 											document.getElementById('_replydiv_').style.display='none';
@@ -59,7 +58,7 @@ function ShowFolders(folderid)
 												document.getElementById('_mailfolder_mm_compose').className='';
 											{rdelim}
 										{rdelim}
-										if(document.getElementById('_settingsdiv_')!=null){ldelim}
+										if (document.getElementById('_settingsdiv_')!=null){ldelim}
 											if(document.getElementById('_settingsdiv_').style.display!='none')
 											{ldelim}document.getElementById('_settingsdiv_').style.display='none';
 											document.getElementById('_contentdiv_').style.display='block';
@@ -67,7 +66,7 @@ function ShowFolders(folderid)
 												document.getElementById('_mailfolder_mm_settings').className='';
 											{rdelim}
 										{rdelim}
-										if(document.getElementById('_contentdiv2_')!=null){ldelim}
+										if (document.getElementById('_contentdiv2_')!=null){ldelim}
 											if(document.getElementById('_contentdiv2_').style.display!='none')
 											{ldelim}
 											document.getElementById('_contentdiv2_').style.display='none';
@@ -77,7 +76,7 @@ function ShowFolders(folderid)
 										{rdelim}
 										result = response.split('&#&#&#');
 										if (result[1] != '') alert(result[1]);
-										if(gFolderid == folderid) {ldelim}
+										if (gFolderid == folderid) {ldelim}
 											gselectedrowid = 0;
 											document.getElementById("email_con").innerHTML=result[2];
 											var emaildtl = document.getElementById('EmailDetails');
