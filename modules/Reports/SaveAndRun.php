@@ -169,6 +169,8 @@ if ($numOfRows > 0) {
 			$reports_array[$rep_id]=$rep_name;
 		}
 		$list_report_form->assign('CHECK', Button_Check($ogReport->primodule));
+		$list_report_form->assign('GRAPHSHOW', GlobalVariable::getVariable('Graph_DataLabels', 'Percentage'));
+		$list_report_form->assign('GRAPHSHOWCOLOR', GlobalVariable::getVariable('Graph_DataLabels_Color', '#FFFFFF'));
 		if (empty($_REQUEST['mode']) || $_REQUEST['mode'] != 'ajax') {
 			$list_report_form->assign('REPINFOLDER', $reports_array);
 			include 'modules/Vtiger/header.php';
