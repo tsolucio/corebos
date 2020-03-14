@@ -4,16 +4,17 @@
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
+ * Colaborator: Ranieri Slemer - translate to brazilian portuguese // Sao Paulo / Brazil - 13/03/2020
  ********************************************************************************/
 
 var mod_alert_arr = {
-	'History for': 'History for',
-	'by': 'by',
-	'Field': 'Field',
-	'Previous value': 'Previous value',
-	'Value changed to': 'Value changed to',
-	'No further history': 'No further history',
-	'No further history available for this record': 'No further history available for this record.',
-	'No history': 'No history',
-	'No history available for this record': 'No history available for this record',
+	'History for': 'Histórico para',
+	'by': 'Por',
+	'Field': 'Campo',
+	'Previous value': 'Valor anterior',
+	'Value changed to': 'Valor mudado para',
+	'No further history': 'Não há mais registro de mudanças',
+	'No further history available for this record': 'Não há mais histórico disponível para este registro.',
+	'No history': 'Sem hitórico de mudanças',
+	'No history available for this record': 'Nenhum histórico disponível para este registro',
 };
