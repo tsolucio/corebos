@@ -166,6 +166,7 @@ class ChartUtils {
 	}
 
 	public static function getChartHTML($labels, $values, $graph_title, $target_values, $html_imagename, $width, $height, $left, $right, $top, $bottom, $graph_type, $legend_position = 'right', $responsive = true) {
+		$GRAPHSHOWCOLOR = GlobalVariable::getVariable('Graph_DataLabels_Color', '#FFFFFF');
 		$lbls = implode(',', $labels);
 		$vals = str_replace('::', ',', $values);
 		$realvals = explode(',', $vals);
@@ -216,6 +217,7 @@ window.doChart{$html_imagename} = function(charttype) {
 			backgroundColor: [ $bcolor ]
 		}]
 	};
+	//const arrSum = chartDataObject.datasets[0].data.reduce((a,b) => Number(a) + Number(b), 0);
 	Chart.scaleService.updateScaleDefaults('linear', {
 		ticks: {
 			min: $minscale,
@@ -226,6 +228,16 @@ window.doChart{$html_imagename} = function(charttype) {
 		type: '{$graph_type}',
 		data: chartDataObject,
 		options: {
+			plugins: {
+				datalabels: {
+					display: false,
+					color: '{$GRAPHSHOWCOLOR}',
+					font: {
+						size: 14,
+						weight: 'bold'
+					},
+				}
+			},
 			responsive: $respproperty,
 			legend: {
 				$legend_position

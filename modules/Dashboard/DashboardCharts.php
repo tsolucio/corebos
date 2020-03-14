@@ -123,6 +123,11 @@ class DashboardCharts {
 			'type' => 'bar',
 			'data' => $dataChartObject,
 			'options' => array(
+				'plugins' => [
+					'datalabels' => [
+						'display' => false,
+					]
+				],
 				'responsive' => false,
 				'title' => array(
 					'display' => true,
@@ -300,6 +305,15 @@ class DashboardCharts {
 			'type' => 'bar',
 			'data' => $dataChartObject,
 			'options' => array(
+				'plugins' => [
+					'datalabels' => [
+						'color' => '#000',
+						'font' => [
+							'size' => 14,
+							'weight' => 'normal'
+						],
+					]
+				],
 				'responsive' => false,
 				'title' => array(
 					'display' => true,
@@ -418,6 +432,11 @@ class DashboardCharts {
 			'type' => 'bar',
 			'data' => $dataChartObject,
 			'options' => array(
+				'plugins' => [
+					'datalabels' => [
+						'display' => false,
+					]
+				],
 				'responsive' => false,
 				'title' => array(
 					'display' => true,
@@ -512,6 +531,15 @@ class DashboardCharts {
 			'type' => 'pie',
 			'data' => $dataChartObject,
 			'options' => array(
+				'plugins' => [
+					'datalabels' => [
+						'color' => '#FFF',
+						'font' => [
+							'size' => 14,
+							'weight' => 'bold'
+						],
+					]
+				],
 				'responsive' => false,
 				'title' => array(
 					'display' => true,
