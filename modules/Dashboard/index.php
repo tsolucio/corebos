@@ -20,65 +20,6 @@ if (isset($_REQUEST['type']) && $_REQUEST['type'] != '') {
 	$dashboard_type = 'DashboardHome';
 }
 ?>
-
-<TABLE border=0 cellspacing=0 cellpadding=0 width=100% class=small>
-<tr><td style="height:2px"></td></tr>
-<tr>
-	<td style="padding-left:10px;padding-right:30px" class="moduleName" width="20%" nowrap>
-		<a class="hdrLink" href="index.php?action=index&parenttab=Analytics&module=Dashboard"><?php echo $app_strings['Dashboard'] ?></a>
-	</td>
-
-	<td nowrap width="8%">
-		<table border=0 cellspacing=0 cellpadding=0>
-		<tr>
-			<td class="sep1" style="width:1px;"></td>
-			<td class=small>
-				<table border=0 cellspacing=0 cellpadding=5>
-				<tr>
-					<td style="padding-right:0px;padding-left:10px;"><img src="<?php echo vtiger_imageurl('btnL3Add-Faded.gif', $theme); ?>" border=0></td>
-					<td style="padding-right:10px"><img src="<?php echo vtiger_imageurl('btnL3Search-Faded.gif', $theme); ?>" border=0></td>
-				</tr>
-				</table>
-	</td>
-			</tr>
-			</table>
-	</td>
-	<td width="1">&nbsp;</td>
-	<td class="small" width="10%" align="left">
-		<table border=0 cellspacing=0 cellpadding=5>
-			<tr>
-<?php
-if (GlobalVariable::getVariable('Application_Display_Mini_Calendar', 1, $currentModule)) {
-	?>
-	<td style="padding-right:0px;padding-left:10px;">
-		<a href="javascript:;" onClick='fnvshobj(this,"miniCal");getMiniCal("parenttab=My Home Page");'>
-		<img src="<?php echo vtiger_imageurl('btnL3Calendar.gif', $theme); ?>" alt="<?php echo $app_strings['LBL_CALENDAR_ALT']; ?>" title="<?php echo $app_strings['LBL_CALENDAR_TITLE']; ?>" border=0>
-		</a>
-	</td>
-	<?php
-}
-if (GlobalVariable::getVariable('Application_Display_World_Clock', 1, $currentModule)) {
-	?>
-	<td style="padding-right:0px">
-		<a href="javascript:;">
-		<img src="<?php echo vtiger_imageurl('btnL3Clock.gif', $theme); ?>" alt="<?php echo $app_strings['LBL_CLOCK_ALT']; ?>" title="<?php echo $app_strings['LBL_CLOCK_TITLE']; ?>" border=0 onClick="fnvshobj(this,'wclock');">
-		</a>
-	</td>
-	<?php
-}
-?>
-			</tr>
-		</table>
-	</td>
-	<td width="20">&nbsp;</td>
-	<td class="small" align="left"></td>
-	</tr>
-	</table>
-	</td>
-</tr>
-<tr><td style="height:2px"></td></tr>
-</TABLE>
-<br>
 <link rel="stylesheet" type="text/css" media="all" href="include/chart.js/Chart.min.css">
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script src="include/chart.js/Chart.min.js"></script>
@@ -94,7 +35,7 @@ if (GlobalVariable::getVariable('Application_Display_World_Clock', 1, $currentMo
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td width="100%">
-			<!-- DASHBOARD DEGINS HERE -->
+			<!-- DASHBOARD BEGINS HERE -->
 			<table width="100%" border="0" cellpadding="0" cellspacing="0" class="small">
 			<tr>
 				<td class="dash_top" colspan="3">
@@ -102,11 +43,9 @@ if (GlobalVariable::getVariable('Application_Display_World_Clock', 1, $currentMo
 					<table width="100%" cellpadding="0" cellspacing="0" border="0">
 					<tr>
 						<td width="3%">&nbsp;</td>
+						<td align="right" class="dashHeading"><?php echo $mod_strings['LBL_DASHBOARD'] ?></td>
 						<td align="left">
-							<table border="0" cellpadding="0" cellspacing="5" class="dashSelectBg">
-							<tr>
-								<td>
-								<select name="dashordlists" id="dashboard_combo" onChange="loadDashBoard(this);">
+							<select name="dashordlists" id="dashboard_combo" onChange="loadDashBoard(this);" class="slds-select">
 								<?php
 								foreach ($graph_array as $key => $value) {
 									if ($dashboard_type == $key) {
@@ -117,12 +56,8 @@ if (GlobalVariable::getVariable('Application_Display_World_Clock', 1, $currentMo
 										<?php
 									}
 								} ?>
-								</select>
-								</td>
-							</tr>
-							</table>
+							</select>
 						</td>
-						<td align="right" class="dashHeading"><?php echo $mod_strings['LBL_DASHBOARD'] ?></td>
 						<td width="3%">&nbsp;</td>
 
 									</tr>
@@ -205,7 +140,7 @@ if (GlobalVariable::getVariable('Application_Display_World_Clock', 1, $currentMo
 										<td align="left">
 											<table border="0" cellpadding="0" cellspacing="5" class="dashSelectBg">
 											<tr>
-												<td><select name="dashordlists" id="dashboard_combo1" onChange="loadDashBoard(this);">
+												<td><select name="dashordlists" id="dashboard_combo1" onChange="loadDashBoard(this);" class="slds-select">
 									<?php
 									foreach ($graph_array as $key => $value) {
 										if ($dashboard_type == $key) {
