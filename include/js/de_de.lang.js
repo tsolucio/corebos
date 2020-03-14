@@ -422,5 +422,6 @@ var alert_arr = {
 	'duplicatednotallowed' : 'Duplizierte Module sind nicht erlaubt',
 	'HAS_THIS_AS_NTH_CHILD' : 'Hat dieses als ein weiteres Kind',
 	'Okay': 'Okay',
+	'Failed': 'Failed',
 	'Warning': 'Warning'
 };

@@ -424,5 +424,6 @@ var alert_arr = {
 	'duplicatednotallowed' : 'Duplicated Modules Not Allowed',
 	'HAS_THIS_AS_NTH_CHILD' : 'Heeft dit record als Xste kind',
 	'Okay': 'Oké',
+	'Failed': 'Failed',
 	'Warning': 'Warning'
 };

@@ -420,5 +420,6 @@ var alert_arr = {
 	'duplicatednotallowed' : 'No se permiten módulos duplicados',
 	'HAS_THIS_AS_NTH_CHILD' : 'Tiene este niño como una',
 	'Okay': 'Vale',
+	'Failed': 'Ha fallado',
 	'Warning': 'Aviso'
 };

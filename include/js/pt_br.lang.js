@@ -423,5 +423,6 @@ var alert_arr = {
 	'duplicatednotallowed' : 'Módulos duplicados não são permitidos',
 	'HAS_THIS_AS_NTH_CHILD' : 'Tem este registro como enésimo filho',
 	'Okay': 'Ok',
+	'Failed': 'Failed',
 	'Warning': 'Warning'
 };

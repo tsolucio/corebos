@@ -407,5 +407,6 @@ var alert_arr = {
 	'duplicatednotallowed' : 'Non sono permessi Moduli Duplicati',
 	'HAS_THIS_AS_NTH_CHILD' : 'ha questo record come figlio unico',
 	'Okay': 'Okay',
+	'Failed': 'Failed',
 	'Warning': 'Warning'
 };

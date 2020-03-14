@@ -410,5 +410,6 @@ var alert_arr = {
 	'duplicatednotallowed' : 'Duplicated Modules Not Allowed',
 	'HAS_THIS_AS_NTH_CHILD' : 'A cet enfant comme un autre',
 	'Okay': 'Okay',
+	'Failed': 'Failed',
 	'Warning': 'Warning'
 };

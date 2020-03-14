@@ -388,5 +388,6 @@ var alert_arr = {
 	'duplicatednotallowed' : 'Duplicated Modules Not Allowed',
 	'HAS_THIS_AS_NTH_CHILD' : 'Has this record as nth child',
 	'Okay': 'Okay',
+	'Failed': 'Failed',
 	'Warning': 'Warning'
 };
