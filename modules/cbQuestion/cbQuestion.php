@@ -383,6 +383,7 @@ class cbQuestion extends CRMEntity {
 			}
 			$chartID = uniqid('chartAns');
 			$chart .= '<script src="include/chart.js/Chart.min.js"></script>
+				<link rel="stylesheet" type="text/css" media="all" href="include/chart.js/Chart.min.css">
 				<script src="include/chart.js/randomColor.js"></script>';
 			$chart .= '<div style="width: 80%;">';
 			$chart .= '<h2>'.$title.' - '.$type.' Chart</h2>';
