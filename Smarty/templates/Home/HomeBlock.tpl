@@ -50,7 +50,7 @@
 	</tr>
 	</table>
 </div>
-<input type=hidden id="test_{$HOME_STUFFID}" value = {$HOME_STUFFTYPE}/>
+<input type=hidden id="test_{$HOME_STUFFID}" value={$HOME_STUFFTYPE}/>
 {if $HOME_STUFFTYPE eq "Module"}
 	<input type=hidden id=more_{$HOME_STUFFID} value="{$HOME_STUFF.ModuleName}"/>
 	<input type=hidden id=cvid_{$HOME_STUFFID} value="{$HOME_STUFF.cvid}">
@@ -208,7 +208,7 @@ window.doChart{$HOME_STUFFID} = function(charttype) {ldelim}
 		options: {
 			responsive: true,
 			legend: {
-				position: "right",
+				position: 'right',
 				display: (charttype=='pie'),
 				labels: {
 					fontSize: 11,

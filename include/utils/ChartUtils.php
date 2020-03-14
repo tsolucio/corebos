@@ -31,7 +31,7 @@ class ChartUtils {
 		$report = new ReportRun($reportid);
 		$restrictedModules = array();
 		if ($report->secondarymodule!='') {
-			$reportModules = explode(":", $report->secondarymodule);
+			$reportModules = explode(':', $report->secondarymodule);
 		} else {
 			$reportModules = array();
 		}
@@ -39,7 +39,7 @@ class ChartUtils {
 
 		$restrictedModules = false;
 		foreach ($reportModules as $mod) {
-			if (isPermitted($mod, 'index') != "yes" || vtlib_isModuleActive($mod) == false) {
+			if (isPermitted($mod, 'index') != 'yes' || vtlib_isModuleActive($mod) == false) {
 				if (!is_array($restrictedModules)) {
 					$restrictedModules = array();
 				}
@@ -48,7 +48,7 @@ class ChartUtils {
 		}
 
 		if (is_array($restrictedModules) && count($restrictedModules) > 0) {
-			$ChartDataArray['error'] = "<h4>".getTranslatedString('LBL_NO_ACCESS', 'Reports').' - '.implode(',', $restrictedModules)."</h4>";
+			$ChartDataArray['error'] = '<h4>'.getTranslatedString('LBL_NO_ACCESS', 'Reports').' - '.implode(',', $restrictedModules).'</h4>';
 			return $ChartDataArray;
 		}
 

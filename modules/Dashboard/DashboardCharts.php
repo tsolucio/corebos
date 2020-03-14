@@ -473,7 +473,7 @@ class DashboardCharts {
 				$where .= "'".addslashes($value)."'";
 				$ss_i++;
 			}
-			$where .= ")";
+			$where .= ')';
 		}
 
 		$sql = 'SELECT `leadsource`,count(*) as potcnt,sum(amount) as potsum
