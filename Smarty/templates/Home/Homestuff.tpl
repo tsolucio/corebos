@@ -8,10 +8,11 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
+<link rel="stylesheet" type="text/css" media="all" href="include/chart.js/Chart.min.css">
 <script type="text/javascript" src="modules/Home/Homestuff.js"></script>
 <script type="text/javascript" src="include/js/notebook.js"></script>
 <script type="text/javascript" src="include/freetag/tagcanvas.min.js"></script>
-<script src="include/chart.js/Chart.bundle.min.js"></script>
+<script src="include/chart.js/Chart.min.js"></script>
 <script src="include/chart.js/randomColor.js"></script>
 <input id="homeLayout" type="hidden" value="{$LAYOUT}">
 {*<!--Home Page Entries  -->*}

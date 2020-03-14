@@ -14,6 +14,7 @@
 </script>
 <script type="text/javascript" src="modules/Reports/Reports.js"></script>
 <link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
+<link rel="stylesheet" type="text/css" media="all" href="include/chart.js/Chart.min.css">
 <script type="text/javascript" src="jscalendar/calendar.js"></script>
 <script type="text/javascript" src="jscalendar/lang/calendar-en.js"></script>
 <script type="text/javascript" src="jscalendar/calendar-setup.js"></script>

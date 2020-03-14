@@ -79,9 +79,9 @@ if (GlobalVariable::getVariable('Application_Display_World_Clock', 1, $currentMo
 <tr><td style="height:2px"></td></tr>
 </TABLE>
 <br>
-
+<link rel="stylesheet" type="text/css" media="all" href="include/chart.js/Chart.min.css">
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
-<script src="include/chart.js/Chart.bundle.min.js"></script>
+<script src="include/chart.js/Chart.min.js"></script>
 <script src="include/chart.js/randomColor.js"></script>
 <script type="text/javascript" src="modules/Dashboard/Dashboard.js"></script>
 <a name="top"></a>
