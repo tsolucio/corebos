@@ -12,6 +12,7 @@ var mod_alert_arr = {
 	'Field': 'Field',
 	'Previous value': 'Previous value',
 	'Value changed to': 'Value changed to',
+	'highlight': 'Difference',
 	'No further history': 'No further history',
 	'No further history available for this record': 'No further history available for this record.',
 	'No history': 'No history',

@@ -13,6 +13,7 @@ var mod_alert_arr = {
 	'Field': 'Campo',
 	'Previous value': 'Valor anterior',
 	'Value changed to': 'Valor mudado para',
+	'highlight': 'Difference',
 	'No further history': 'Não há mais registro de mudanças',
 	'No further history available for this record': 'Não há mais histórico disponível para este registro.',
 	'No history': 'Sem hitórico de mudanças',

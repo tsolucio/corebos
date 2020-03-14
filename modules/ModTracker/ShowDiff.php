@@ -41,7 +41,8 @@ if ($trackrecord === false || !$trackrecord->exists() || !$trackrecord->isViewPe
 			$details[] = array(
 				'displayname' => $detail->getDisplayName(),
 				'labelforpreval' => $detail->getDisplayLabelForPreValue(),
-				'labelforpostval' => $detail->diffHighlight(),
+				'labelforpostval' => $detail->diff(),
+				'labelhighlight' => $detail->diffHighlight(),
 			);
 		}
 		echo json_encode(array(

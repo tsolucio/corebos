@@ -12,6 +12,7 @@ var mod_alert_arr = {
 	'Field': 'Veld',
 	'Previous value': 'Voormalige waarde',
 	'Value changed to': 'Huidige waarde',
+	'highlight': 'Difference',
 	'No further history': 'Geen verdere geschiedenis',
 	'No further history available for this record': 'Geen verdere geschiedenis beschikbaar voor dit record.',
 	'No history': 'Geen geschiedenis',

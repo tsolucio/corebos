@@ -89,6 +89,11 @@ var ModTrackerCommon = {
 								name: 'newval',
 								header: mod_alert_arr['Value changed to'],
 								whiteSpace: 'normal'
+							},
+							{
+								name: 'highlight',
+								header: mod_alert_arr['highlight'],
+								whiteSpace: 'normal'
 							}
 						],
 						rowHeight: 'auto',
@@ -128,7 +133,8 @@ var ModTrackerCommon = {
 				id: item,
 				fieldlabel: trackData[item].displayname,
 				oldval: trackData[item].labelforpreval,
-				newval: trackData[item].labelforpostval
+				newval: trackData[item].labelforpostval,
+				highlight: trackData[item].labelhighlight
 			});
 		}
 		ModTrackerCommon.gridInstance.resetData(data);
