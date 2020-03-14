@@ -406,5 +406,6 @@ var alert_arr = {
 	'ProcessFINISHED' : 'Processo Terminato',
 	'duplicatednotallowed' : 'Non sono permessi Moduli Duplicati',
 	'HAS_THIS_AS_NTH_CHILD' : 'ha questo record come figlio unico',
-	'Okay': 'Okay'
+	'Okay': 'Okay',
+	'Warning': 'Warning'
 };

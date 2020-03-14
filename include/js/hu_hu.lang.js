@@ -401,5 +401,6 @@ var alert_arr = {
 	'ProcessFINISHED' : 'Process Finished',
 	'duplicatednotallowed' : 'Duplicated Modules Not Allowed',
 	'HAS_THIS_AS_NTH_CHILD' : 'Ez még egy másik gyermek',
-	'Okay': 'Okay'
+	'Okay': 'Okay',
+	'Warning': 'Warning'
 };

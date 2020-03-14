@@ -409,5 +409,6 @@ var alert_arr = {
 	'ProcessFINISHED' : 'Process Finished',
 	'duplicatednotallowed' : 'Duplicated Modules Not Allowed',
 	'HAS_THIS_AS_NTH_CHILD' : 'A cet enfant comme un autre',
-	'Okay': 'Okay'
+	'Okay': 'Okay',
+	'Warning': 'Warning'
 };
