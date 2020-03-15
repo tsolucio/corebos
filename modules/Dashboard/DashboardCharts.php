@@ -119,11 +119,15 @@ class DashboardCharts {
 			'labels' => $labels,
 			'datasets' => $datay,
 		);
+		$GRAPHCOLORSCHEME = GlobalVariable::getVariable('Graph_ColorScheme', 'tableau.Tableau10', 'Potentials');
 		$chartobject = array(
 			'type' => 'bar',
 			'data' => $dataChartObject,
 			'options' => array(
 				'plugins' => [
+					'colorschemes' => [
+						'scheme' => $GRAPHCOLORSCHEME,
+					],
 					'datalabels' => [
 						'display' => false,
 					]
@@ -301,11 +305,15 @@ class DashboardCharts {
 			'labels' => $labels,
 			'datasets' => $datay,
 		);
+		$GRAPHCOLORSCHEME = GlobalVariable::getVariable('Graph_ColorScheme', 'tableau.Tableau10', 'Potentials');
 		$chartobject = array(
 			'type' => 'bar',
 			'data' => $dataChartObject,
 			'options' => array(
 				'plugins' => [
+					'colorschemes' => [
+						'scheme' => $GRAPHCOLORSCHEME,
+					],
 					'datalabels' => [
 						'color' => '#000',
 						'font' => [
@@ -428,11 +436,15 @@ class DashboardCharts {
 			'labels' => $labels,
 			'datasets' => $datay,
 		);
+		$GRAPHCOLORSCHEME = GlobalVariable::getVariable('Graph_ColorScheme', 'tableau.Tableau10', 'Leads');
 		$chartobject = array(
 			'type' => 'bar',
 			'data' => $dataChartObject,
 			'options' => array(
 				'plugins' => [
+					'colorschemes' => [
+						'scheme' => $GRAPHCOLORSCHEME,
+					],
 					'datalabels' => [
 						'display' => false,
 					]
@@ -527,11 +539,15 @@ class DashboardCharts {
 			'labels' => $labels,
 			'datasets' => array($dset),
 		);
+		$GRAPHCOLORSCHEME = GlobalVariable::getVariable('Graph_ColorScheme', 'tableau.Tableau10', 'Leads');
 		$chartobject = array(
 			'type' => 'pie',
 			'data' => $dataChartObject,
 			'options' => array(
 				'plugins' => [
+					'colorschemes' => [
+						'scheme' => $GRAPHCOLORSCHEME,
+					],
 					'datalabels' => [
 						'color' => '#FFF',
 						'font' => [

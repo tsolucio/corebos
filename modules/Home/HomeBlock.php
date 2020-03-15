@@ -67,9 +67,9 @@ if ($stufftype=='Tag Cloud') {
 	if ($stufftype=='ReportCharts') {
 		$homeObj->getReportChartDetails($stuffid, 'type');
 		$dashdet = $homeObj->reportdetails;
-		$smarty->assign('GRAPHSHOW', GlobalVariable::getVariable('Graph_DataLabels', 'Percentage'));
-		$smarty->assign('GRAPHSHOWCOLOR', GlobalVariable::getVariable('Graph_DataLabels_Color', '#FFFFFF'));
-		$smarty->assign('GRAPHCOLORSCHEME', GlobalVariable::getVariable('Graph_ColorScheme', 'tableau.Tableau10'));
+		$smarty->assign('GRAPHSHOW', GlobalVariable::getVariable('Graph_DataLabels', 'Percentage', $dashdet[$stuffid]['ReportModule']));
+		$smarty->assign('GRAPHSHOWCOLOR', GlobalVariable::getVariable('Graph_DataLabels_Color', '#FFFFFF', $dashdet[$stuffid]['ReportModule']));
+		$smarty->assign('GRAPHCOLORSCHEME', GlobalVariable::getVariable('Graph_ColorScheme', 'tableau.Tableau10', $dashdet[$stuffid]['ReportModule']));
 	}
 }
 

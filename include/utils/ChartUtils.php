@@ -161,9 +161,9 @@ class ChartUtils {
 		return $ChartDataArray;
 	}
 
-	public static function getChartHTML($labels, $values, $graph_title, $target_values, $html_imagename, $width, $height, $left, $right, $top, $bottom, $graph_type, $legend_position = 'right', $responsive = true) {
-		$GRAPHSHOWCOLOR = GlobalVariable::getVariable('Graph_DataLabels_Color', '#FFFFFF');
-		$GRAPHCOLORSCHEME = GlobalVariable::getVariable('Graph_ColorScheme', 'tableau.Tableau10');
+	public static function getChartHTML($labels, $values, $graph_title, $target_values, $html_imagename, $width, $height, $left, $right, $top, $bottom, $graph_type, $legend_position = 'right', $responsive = true, $module) {
+		$GRAPHSHOWCOLOR = GlobalVariable::getVariable('Graph_DataLabels_Color', '#FFFFFF', $module);
+		$GRAPHCOLORSCHEME = GlobalVariable::getVariable('Graph_ColorScheme', 'tableau.Tableau10', $module);
 		$lbls = implode(',', $labels);
 		$vals = str_replace('::', ',', $values);
 		$realvals = explode(',', $vals);
