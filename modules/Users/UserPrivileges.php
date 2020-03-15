@@ -277,7 +277,7 @@ class UserPrivileges {
 	}
 
 	public function hasModuleAccess($tabid) {
-		return (!is_null($tabid) && 0 == $this->profileTabsPermission[$tabid]);
+		return ($this->isAdmin() || (!is_null($tabid) && 0 == $this->profileTabsPermission[$tabid]));
 	}
 
 	public function hasModulePermission($tabid, $actionid) {
