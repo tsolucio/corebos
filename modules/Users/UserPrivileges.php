@@ -269,8 +269,7 @@ class UserPrivileges {
 	}
 
 	public function hasGlobalViewPermission() {
-		return $this->isAdmin()
-			|| (0 == $this->profileGlobalPermission[self::GLOBAL_READ]);
+		return ($this->isAdmin() || (0 == $this->profileGlobalPermission[self::GLOBAL_READ]));
 	}
 
 	public function hasGroups() {
