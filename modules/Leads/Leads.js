@@ -246,7 +246,7 @@ function callConvertLeadDiv(id) {
 		}
 	).then(response => response.text().then(response => {
 		VtigerJS_DialogBox.unblock();
-		ldsModal.show('modalTitle', response, 'medium', "document.getElementById('ConvertLead').action.value='LeadConvertToEntities'; if (verifyConvertLeadData(ConvertLead)) {document.getElementById('ConvertLead').submit();}");
+		ldsModal.show('modalTitle', response, 'medium', "document.getElementById('ConvertLead').action.value='LeadConvertToEntities'; if (verifyConvertLeadData(ConvertLead)) {VtigerJS_DialogBox.block();document.getElementById('ConvertLead').submit();}");
 		ldsModal.updateTitle(document.getElementById('convertLeadHeaderTitle').innerHTML);
 		vtlib_executeJavascriptInElement(document.getElementById('ConvertLead'));
 	}));
