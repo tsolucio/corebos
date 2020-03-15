@@ -49,19 +49,19 @@ class DashboardCharts {
 			$ss_i = 0;
 			foreach ($user_id as $key => $value) {
 				if ($ss_i != 0) {
-					$where .= ", ";
+					$where .= ', ';
 				}
 				$where .= "'".addslashes($value)."'";
 				$ss_i++;
 			}
-			$where .= ")";
+			$where .= ')';
 		}
 
 		$date = new DateTimeField($date_start);
 		$endDate = new DateTimeField($date_end);
 		//build the where clause for the query that matches $date_start and $date_end
 		$where .= " AND closingdate >= '$date_start' AND closingdate <= '$date_end'";
-		$subtitle = $mod_strings['LBL_DATE_RANGE']." ".$date->getDisplayDate()." ".$mod_strings['LBL_DATE_RANGE_TO']." ".$endDate->getDisplayDate();
+		$subtitle = $mod_strings['LBL_DATE_RANGE'].' '.$date->getDisplayDate().' '.$mod_strings['LBL_DATE_RANGE_TO'].' '.$endDate->getDisplayDate();
 
 		$sql = 'SELECT `sales_stage`,smownerid,count(*) as potcnt,sum(amount) as potsum
 			FROM `vtiger_potential`
@@ -102,7 +102,7 @@ class DashboardCharts {
 					$aAlts[$the_id] = array();
 				}
 				if (isset($sum[$stage_key][$the_id])) {
-					array_push($aAlts[$the_id], $the_user.' - '.$count[$stage_key][$the_id]." ".$mod_strings['LBL_OPPS_IN_STAGE']." $stage_translation");
+					array_push($aAlts[$the_id], $the_user.' - '.$count[$stage_key][$the_id].' '.$mod_strings['LBL_OPPS_IN_STAGE']." $stage_translation");
 				} else {
 					array_push($aAlts[$the_id], '');
 				}
@@ -180,7 +180,7 @@ class DashboardCharts {
 		$endDate = new DateTimeField($date_end);
 		//build the where clause for the query that matches $date_start and $date_end
 		$where .= " AND closingdate >= '$date_start' AND closingdate <= '$date_end'";
-		$subtitle = $mod_strings['LBL_DATE_RANGE']." ".$date->getDisplayDate()." ".$mod_strings['LBL_DATE_RANGE_TO']." ".$endDate->getDisplayDate();
+		$subtitle = $mod_strings['LBL_DATE_RANGE'].' '.$date->getDisplayDate().' '.$mod_strings['LBL_DATE_RANGE_TO'].' '.$endDate->getDisplayDate();
 
 		$total = 0;
 		$realwhere = $where." and sales_stage='Closed Won' ";
@@ -363,7 +363,7 @@ class DashboardCharts {
 				$labels[] = getTranslatedString($key, 'Potentials');
 				$ss_i++;
 			}
-			$where .= ")";
+			$where .= ')';
 		}
 
 		$count = count($user_id);
@@ -372,7 +372,7 @@ class DashboardCharts {
 			$ss_i = 0;
 			foreach ($user_id as $key => $value) {
 				if ($ss_i != 0) {
-					$where .= ", ";
+					$where .= ', ';
 				}
 				$where .= "'".addslashes($value)."'";
 				$ss_i++;
@@ -402,7 +402,7 @@ class DashboardCharts {
 		$datay = array();
 		$aTargets = array();
 		$aAlts = array();
-		$cvid = getCvIdOfAll("Potentials");
+		$cvid = getCvIdOfAll('Potentials');
 		$dsetidx = 0;
 		foreach ($user_id as $the_id) {
 			$the_user = getEntityName('Users', $the_id);
@@ -419,7 +419,7 @@ class DashboardCharts {
 					$aAlts[$the_id] = array();
 				}
 				if (isset($sum[$stage_key][$the_id])) {
-					array_push($aAlts[$the_id], $the_user.' - '.$count[$stage_key][$the_id]." ".$mod_strings['LBL_OPPS_OUTCOME']." $stage_translation");
+					array_push($aAlts[$the_id], $the_user.' - '.$count[$stage_key][$the_id].' '.$mod_strings['LBL_OPPS_OUTCOME']." $stage_translation");
 				} else {
 					array_push($aAlts[$the_id], '');
 				}
@@ -490,7 +490,7 @@ class DashboardCharts {
 				$labels[] = getTranslatedString($key, 'Potentials');
 				$ss_i++;
 			}
-			$where .= ")";
+			$where .= ')';
 		}
 
 		$count = count($user_id);
@@ -499,7 +499,7 @@ class DashboardCharts {
 			$ss_i = 0;
 			foreach ($user_id as $key => $value) {
 				if ($ss_i != 0) {
-					$where .= ", ";
+					$where .= ', ';
 				}
 				$where .= "'".addslashes($value)."'";
 				$ss_i++;
