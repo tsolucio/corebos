@@ -9194,16 +9194,34 @@ precacheAndRoute([{
   "revision": "49b76abb49dcdad1a116458fcac194ef"
 }, {
   "url": "include/chart.js/Chart.bundle.js",
-  "revision": "22b07a45d5f33013972b848726c9d051"
+  "revision": "fa54734fcf81ccf0f5d3940e146ea02e"
 }, {
   "url": "include/chart.js/Chart.bundle.min.js",
-  "revision": "658dca7101c0e348da6a8898f04a383f"
+  "revision": "86cc8cd0eb5d5a2b42c1fa46b922d338"
+}, {
+  "url": "include/chart.js/Chart.css",
+  "revision": "28dc89b92b7e59392029cfd2769027ab"
 }, {
   "url": "include/chart.js/Chart.js",
-  "revision": "f6453d2882447c18d2f61772182c44b5"
+  "revision": "aa0d045c7eefcedf60a4e27a6c613d19"
+}, {
+  "url": "include/chart.js/Chart.min.css",
+  "revision": "7d8693e997109f2aeac04066301679d6"
 }, {
   "url": "include/chart.js/Chart.min.js",
-  "revision": "c8fbc7d4d33bcac909ba682cf6739691"
+  "revision": "b5c2301eb15826bf38c9bdcaa3bbe786"
+}, {
+  "url": "include/chart.js/chartjs-plugin-colorschemes.js",
+  "revision": "01e8f3b0edbcca291d30828f2a66c39c"
+}, {
+  "url": "include/chart.js/chartjs-plugin-colorschemes.min.js",
+  "revision": "1334459753dbd8da4dfd2e833d1be02e"
+}, {
+  "url": "include/chart.js/chartjs-plugin-datalabels.js",
+  "revision": "741a33080e9a168f1759f4f3341af817"
+}, {
+  "url": "include/chart.js/chartjs-plugin-datalabels.min.js",
+  "revision": "6d1047f4ab2d92a74bf3f09bf95f945b"
 }, {
   "url": "include/chart.js/randomColor.js",
   "revision": "45019dacca57c65149a9e1a52ae798e6"
