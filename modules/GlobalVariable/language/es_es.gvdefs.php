@@ -1488,8 +1488,8 @@ $GlobalVariableDefinitons = array(
 	'status' => 'Implementada',
 	'valuetype' => 'Cadena',
 	'category' => 'Aplicación',
-	'values' => 'None | Value | Percentage',
-	'definition' => 'Esta variable nos permitirá mostrar o no datos en los gráficos de la aplicación. En cada sección/barra del gráfico podremos mostrar el valor o el porcentaje.',
+	'values' => 'None | Value | Percentage | ValuePercentage',
+	'definition' => 'Esta variable nos permitirá mostrar o no datos en los gráficos de la aplicación. En cada sección/barra del gráfico podremos mostrar el valor, el porcentaje o ambos.',
 ),
 'Graph_DataLabels_Color' => array(
 	'status' => 'Implementada',

@@ -1487,8 +1487,8 @@ $GlobalVariableDefinitons = array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
 	'category' => 'Application',
-	'values' => 'None | Value | Percentage',
-	'definition' => 'This will permit us to show or not data on the application graphs. On each section/bar of the graph we will be able to show the value or the percentage.',
+	'values' => 'None | Value | Percentage | ValuePercentage',
+	'definition' => 'This will permit us to show or not data on the application graphs. On each section/bar of the graph we will be able to show the value, the percentage or both.',
 ),
 'Graph_DataLabels_Color' => array(
 	'status' => 'Implemented',
