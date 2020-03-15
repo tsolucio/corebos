@@ -189,8 +189,7 @@ window.doChart{$HOME_STUFFID} = function(charttype) {ldelim}
 	let chartDataObject = {
 		labels: [{/literal}{foreach item=LABEL name=chartlabels from=$HOME_STUFF.xaxisData}"{$LABEL}"{if not $smarty.foreach.chartlabels.last},{/if}{/foreach}{literal}],
 		datasets: [{
-			data: [{/literal}{foreach item=CVALUE name=chartvalues from=$HOME_STUFF.yaxisData}"{$CVALUE}"{if not $smarty.foreach.chartvalues.last},{/if}{/foreach}{literal}],
-			backgroundColor: [{/literal}{foreach item=CVALUE name=chartvalues from=$HOME_STUFF.yaxisData}getRandomColor(){if not $smarty.foreach.chartvalues.last},{/if}{/foreach}{literal}]
+			data: [{/literal}{foreach item=CVALUE name=chartvalues from=$HOME_STUFF.yaxisData}"{$CVALUE}"{if not $smarty.foreach.chartvalues.last},{/if}{/foreach}{literal}]
 		}]
 	};
 	const arrSum = chartDataObject.datasets[0].data.reduce((a,b) => Number(a) + Number(b), 0);
@@ -208,6 +207,9 @@ window.doChart{$HOME_STUFFID} = function(charttype) {ldelim}
 		data: chartDataObject,
 		options: {
 			plugins: {
+				colorschemes: {
+					scheme: '{$GRAPHCOLORSCHEME}'
+				},
 				datalabels: {
 					{if $GRAPHSHOW=='None'}
 					display: false,

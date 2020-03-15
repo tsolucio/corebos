@@ -1497,6 +1497,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'CSS Color Definition',
 	'definition' => 'Defines the color of the data label to use on the bar/section. By default white is set.',
 ),
+'Graph_ColorScheme' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'https://nagix.github.io/chartjs-plugin-colorschemes/colorchart.html',
+	'definition' => 'Defines the color scheme to use when drawing graphs. By default tableau.Tableau10 is set.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/fr_fr.gvdefs.*.php', GLOB_BRACE) as $tcode) {

@@ -1498,6 +1498,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Definición de Color CSS',
 	'definition' => 'Define el color de la etiqueta de datos para usar en la barra/sección del gráfico. Por defecto, se utiliza el color blanco.',
 ),
+'Graph_ColorScheme' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'https://nagix.github.io/chartjs-plugin-colorschemes/colorchart.html',
+	'definition' => 'Define el esquema de color a utilizar cuando se dibujan gráficos. Por defecto, se utiliza el esquema tableau.Tableau10.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {

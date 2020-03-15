@@ -96,8 +96,7 @@
 let chartDataObject = {
 	labels: [{/literal}{foreach item=LABEL name=chartlabels from=$CHARTDATA.xaxisData}"{$LABEL}"{if not $smarty.foreach.chartlabels.last},{/if}{/foreach}{literal}],
 	datasets: [{
-		data: [{/literal}{foreach item=CVALUE name=chartvalues from=$CHARTDATA.yaxisData}"{$CVALUE}"{if not $smarty.foreach.chartvalues.last},{/if}{/foreach}{literal}],
-		backgroundColor: [{/literal}{foreach item=CVALUE name=chartvalues from=$CHARTDATA.yaxisData}getRandomColor(){if not $smarty.foreach.chartvalues.last},{/if}{/foreach}{literal}]
+		data: [{/literal}{foreach item=CVALUE name=chartvalues from=$CHARTDATA.yaxisData}"{$CVALUE}"{if not $smarty.foreach.chartvalues.last},{/if}{/foreach}{literal}]
 	}]
 };
 const arrSum = chartDataObject.datasets[0].data.reduce((a,b) => Number(a) + Number(b), 0);
@@ -107,8 +106,11 @@ let pchart = new Chart(rptpiechart,{
 	type: 'pie',
 	data: chartDataObject,
 	options: {
-		plugins: {
-			datalabels: {{/literal}
+		plugins: {{/literal}
+			colorschemes: {
+				scheme: '{$GRAPHCOLORSCHEME}'
+			},
+			datalabels: {
 				{if $GRAPHSHOW=='None'}
 				display: false,
 				{/if}
@@ -142,8 +144,11 @@ let barchar = new Chart(rptbarchart,{
 	type: 'horizontalBar',
 	data: chartDataObject,
 	options: {
-		plugins: {
-			datalabels: {{/literal}
+		plugins: {{/literal}
+			colorschemes: {
+				scheme: '{$GRAPHCOLORSCHEME}'
+			},
+			datalabels: {
 				{if $GRAPHSHOW=='None'}
 				display: false,
 				{/if}

@@ -102,6 +102,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 
 				'Graph_DataLabels',
 				'Graph_DataLabels_Color',
+				'Graph_ColorScheme',
 
 				'RelatedList_Activity_DefaultStatusFilter',
 

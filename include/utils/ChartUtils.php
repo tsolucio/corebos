@@ -163,6 +163,7 @@ class ChartUtils {
 
 	public static function getChartHTML($labels, $values, $graph_title, $target_values, $html_imagename, $width, $height, $left, $right, $top, $bottom, $graph_type, $legend_position = 'right', $responsive = true) {
 		$GRAPHSHOWCOLOR = GlobalVariable::getVariable('Graph_DataLabels_Color', '#FFFFFF');
+		$GRAPHCOLORSCHEME = GlobalVariable::getVariable('Graph_ColorScheme', 'tableau.Tableau10');
 		$lbls = implode(',', $labels);
 		$vals = str_replace('::', ',', $values);
 		$realvals = explode(',', $vals);
@@ -210,7 +211,6 @@ window.doChart{$html_imagename} = function(charttype) {
 		datasets: [{
 			data: [ $vals ],
 			$gtitle
-			backgroundColor: [ $bcolor ]
 		}]
 	};
 	//const arrSum = chartDataObject.datasets[0].data.reduce((a,b) => Number(a) + Number(b), 0);
@@ -225,6 +225,9 @@ window.doChart{$html_imagename} = function(charttype) {
 		data: chartDataObject,
 		options: {
 			plugins: {
+				colorschemes: {
+					scheme: '{$GRAPHCOLORSCHEME}'
+				},
 				datalabels: {
 					display: false,
 					color: '{$GRAPHSHOWCOLOR}',
