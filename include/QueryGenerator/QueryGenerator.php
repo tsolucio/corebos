@@ -1539,6 +1539,24 @@ class QueryGenerator {
 		$this->groupInfo .= " $glue ";
 	}
 
+	public static function constructAdvancedSearchURLFromReportCriteria($conditions, $module) {
+		$conds = array();
+		$grpcd = array(null);
+		foreach ($conditions as $grp => $cols) {
+			$grpcd[] = array('groupcondition' => $cols['condition']);
+			foreach ($cols['columns'] as $col) {
+				$col['groupid'] = $grp;
+				$col['columncondition'] = $col['column_condition'];
+				unset($col['column_condition']);
+				$finfo = explode(':', $col['columnname']);
+				$col['columnname'] = $finfo[0].':'.$finfo[1].':'.$finfo[3].':'.$finfo[2].':'.$finfo[4];
+				$conds[] = $col;
+			}
+		}
+		return 'index.php?module=' . $module . '&action=index&query=true&search=true&searchtype=advance&advft_criteria='
+			.urlencode(json_encode($conds)).'&advft_criteria_groups=' . urlencode(json_encode($grpcd));
+	}
+
 	public function constructAdvancedSearchConditions($module, $conditions) {
 		$output = array();
 		if (empty($module) || empty($conditions)) {

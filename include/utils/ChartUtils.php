@@ -80,6 +80,9 @@ class ChartUtils {
 				return $ChartDataArray;
 			}
 		}
+		$cvid = getCvIdOfAll($module);
+		$oReport = new Reports($reportid);
+		$oReport->getAdvancedFilterList($reportid);
 		for ($i = 0; $i < $rows; $i++) {
 			$groupFieldValue = $adb->query_result($queryResult, $i, strtolower($groupbyField));
 			$decodedGroupFieldValue = html_entity_decode($groupFieldValue, ENT_QUOTES, $default_charset);
@@ -128,27 +131,20 @@ class ChartUtils {
 							$link_val = 'index.php?module=' . $module . '&query=true&action=index&' . $advanceSearchCondition;
 						}
 					} else {
-						$cvid = getCvIdOfAll($module);
-						$esc_search_str = urlencode($decodedGroupFieldValue);
-						if ($single == 'DT') {
-							$esc_search_str = urlencode($groupFieldValue);
-							if (strtolower($fieldname) == 'modifiedtime' || strtolower($fieldname) == 'createdtime') {
-								$tablename = 'vtiger_crmentity';
-								$colname = $fieldname;
-							}
+						$conditions = $oReport->advft_criteria;
+						if (count($conditions)>0) {
+							$conditions[count($conditions)]['condition'] = 'and';
 						}
-						if ($fieldname == 'assigned_user_id') {
-							$tablename = 'vtiger_crmentity';
-							$colname = 'smownerid';
-						}
-
-						if ($module == 'Calendar') {
-							$link_val = 'index.php?module=' . $module . '&action=ListView&search_text=' . $esc_search_str.
-								'&search_field=' . $fieldname . '&searchtype=BasicSearch&query=true&operator=e&viewname=' . $cvid;
-						} else {
-							$link_val = 'index.php?module=' . $module . '&action=index&search_text=' . $esc_search_str.
-								'&search_field=' . $fieldname . '&searchtype=BasicSearch&query=true&operator=e&viewname=' . $cvid;
-						}
+						$conditions[count($conditions)+1] = array(  // this array index is important: do not change to push for optimization
+							'columns' => array(array(
+								'columnname' => $fieldDetails,
+								'comparator' => 'e',
+								'value' => $decodedGroupFieldValue,
+								'column_condition' => '',
+							)),
+							'condition' => '',
+						);
+						$link_val = QueryGenerator::constructAdvancedSearchURLFromReportCriteria($conditions, $module).'&viewname='.$cvid;
 					}
 
 					$target_val[] = $link_val;
