@@ -51,7 +51,86 @@ function fixMenuOrder($topofbranch) {
 		}
 	}
 }
+function delSavedMenu($savedone) {
+	global $adb;
+	$selsm = $adb->pquery('select * from vtiger_savemenu where savemenuid=?', array($savedone));
+	if ($selsm && $adb->num_rows($selsm)>0) {
+		$adb->pquery('delete from vtiger_savemenu where savemenuid=?', array($savedone));
+	}
+}
+$dosaved = vtlib_purify($_REQUEST['savedmenudo']);
 
+switch ($dosaved) {
+	case 'doSaveCurrent':
+		$sm = "select * from `vtiger_evvtmenu`";
+		$result = $adb->query($sm);
+		$data = array();
+		if ($result && $adb->num_rows($result)>0) {
+			while ($row = $adb->fetch_array($result)) {
+				$savedm = array($row['evvtmenuid'], $row['mtype'], $row['mvalue'], $row['mlabel'], $row['mparent'], $row['mseq'], $row['mvisible'], $row['mpermission']);
+				$data[] = $savedm;
+			}
+			$structuremenu = json_encode($data, JSON_FORCE_OBJECT);
+			$menuname = vtlib_purify($_REQUEST['menuname']);
+			$adb->pquery(
+				'insert into vtiger_savemenu (menuname,structure) values (?,?)',
+				array($menuname, $structuremenu)
+			);
+		}
+		break;
+	case 'doApplySaved':
+		$savemenuid = vtlib_purify($_REQUEST['savemenuid']);
+		$menuname = vtlib_purify($_REQUEST['menuname']);
+		$menu = $adb->pquery('select structure from vtiger_savemenu where savemenuid=? limit 1', array($savemenuid));
+		if ($menu) {
+			$structure = $adb->query_result($menu, 0, 'structure');
+			$stru = html_entity_decode($structure);
+			$menuitems = json_decode($stru, true);
+			$adb->pquery('delete from vtiger_evvtmenu where evvtmenuid !=?', array(0));
+			foreach ($menuitems as $item) {
+				$adb->pquery('insert into vtiger_evvtmenu (evvtmenuid,mtype,mvalue,mlabel,mparent,mseq,mvisible,mpermission) values ('.generateQuestionMarks($item).')', $item);
+			}
+		}
+		break;
+	case 'doRenameSaved':
+		$savemenuid = vtlib_purify($_REQUEST['savemenuid']);
+		$menuname = vtlib_purify($_REQUEST['menuname']);
+		$apply = $adb->pquery(
+			'update vtiger_savemenu set menuname=? where savemenuid=?',
+			array($menuname, $savemenuid)
+		);
+		break;
+	case 'doImportMenu':
+		if (isset($_FILES) && isset($_FILES['jsonfile']) && is_uploaded_file($_FILES['jsonfile']['tmp_name'])) {
+			$contents = file_get_contents($_FILES['jsonfile']['tmp_name']);
+			$menuname = vtlib_purify($_REQUEST['menuname']);
+			$import = $adb->pquery(
+				'insert into vtiger_savemenu (menuname,structure) values (?,?)',
+				array($menuname, $contents)
+			);
+		}
+		break;
+	case 'doDownloadMenu':
+		$savemenuid = vtlib_purify($_REQUEST['savemenuid']);
+		if ($savemenuid != '') {
+			header('Content-disposition: attachment; filename=savedmenu.json');
+			header('Content-Type: application/json: charset=utf-8');
+			$resu = $adb->pquery('SELECT structure FROM vtiger_savemenu WHERE savemenuid=? limit 1', array($savemenuid));
+			$structure = "";
+			if ($resu) {
+				$menu = $adb->fetch_array($resu);
+				$structure = $menu['structure'];
+			}
+			echo html_entity_decode($structure);
+		}
+		die();
+	break;
+	case 'doDelSaved':
+		$savemenuid = vtlib_purify($_REQUEST['savemenuid']);
+			delSavedMenu($savemenuid);
+		break;
+	break;
+}
 $do = vtlib_purify($_REQUEST['evvtmenudo']);
 
 switch ($do) {
@@ -138,5 +217,5 @@ switch ($do) {
 		break;
 }
 $parenttab = getParentTab();
-header("Location: index.php?action=index&module=evvtMenu&parenttab=$parenttab");
+header("Location:index.php?action=index&module=evvtMenu&parenttab=$parenttab");
 ?>

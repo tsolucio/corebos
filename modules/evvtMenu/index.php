@@ -26,9 +26,11 @@ $smarty = new vtigerCRM_Smarty();
 $menu_structure = getMenuBranch(0);
 $elements = getMenuPicklist(0, 0);
 $json = getMenuJSON2();
+$getsavedM =getsavedMenu();
 
 $smarty->assign('PARENTS', $elements);
 $smarty->assign('MENUSTRUCTURE', $json);
+$smarty->assign('SAVEDMENU', $getsavedM);
 $smarty->assign('PROFILES', getAllProfileInfo());
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 $smarty->assign('MODNAMES', VTWorkflowUtils::vtGetModulesAndExtensions($adb));
