@@ -68,7 +68,7 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 							<tr>
 								<td>
 									<div class="small detailview_utils_table_top">
-										<div class="detailview_utils_table_tabs">
+										<div class="detailview_utils_table_tabs noprint">
 											<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_top">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</div>
 											{if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
 												{if $HASRELATEDPANES eq 'true'}
@@ -427,7 +427,7 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 							</tr>
 							<tr>
 								<td>
-									<div class="small detailview_utils_table_bottom">
+									<div class="small detailview_utils_table_bottom noprint">
 										<div class="detailview_utils_table_tabs">
 											<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_bottom">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</div>
 											{if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}

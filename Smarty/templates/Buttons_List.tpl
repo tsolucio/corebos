@@ -43,7 +43,7 @@
 {/if}
 {assign var='MODULEICON' value=$MODULE|@getModuleIcon}
 <div id="page-header-placeholder"></div>
-<div id="page-header" class="slds-page-header slds-m-vertical_medium">
+<div id="page-header" class="slds-page-header slds-m-vertical_medium noprint">
 	<div class="slds-page-header__row">
 		<div class="slds-page-header__col-title">
 			<div class="slds-media">
