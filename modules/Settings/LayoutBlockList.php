@@ -711,6 +711,8 @@ function updateFieldProperties() {
 				$parentmodule = Vtiger_Module::getInstance($fld_module);
 				$relationfield = Vtiger_Field::getInstance($fieldname, $parentmodule);
 				$relationfield->setRelatedModules($module);
+				$relatedModule = Vtiger_Module::getInstance($module);
+				$parentmodule->setRelatedList($relatedModule, $module, array('ADD'), 'get_dependents_list');
 			}
 		}
 
@@ -719,6 +721,8 @@ function updateFieldProperties() {
 				$parentmodule = Vtiger_Module::getInstance($fld_module);
 				$relationfield = Vtiger_Field::getInstance($fieldname, $parentmodule);
 				$relationfield->unsetRelatedModules($module);
+				$relatedmodule = Vtiger_Module::getInstance($module);
+				$parentmodule->unsetRelatedList($relatedmodule, $module, 'get_dependents_list');
 			}
 		}
 	}
