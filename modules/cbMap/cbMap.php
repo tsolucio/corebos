@@ -193,7 +193,7 @@ class cbMap extends CRMEntity {
 	 */
 	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 
-	public function retrieve_entity_info($cbmapid, $mname, $deleted = false, $from_wf = false) {
+	public function retrieve_entity_info($cbmapid, $mname, $deleted = false, $from_wf = false, $throwexception = false) {
 		global $current_user;
 		$holduser = $current_user;
 		$current_user = Users::getActiveAdminUser();

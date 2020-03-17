@@ -899,7 +899,7 @@ class CRMEntity {
 	 * @param $module -- module:: Type String
 	 * This function retrieves the information from the database and sets the value in the class column_fields array
 	 */
-	public function retrieve_entity_info($record, $module, $deleted = false, $from_wf = false) {
+	public function retrieve_entity_info($record, $module, $deleted = false, $from_wf = false, $throwexception = false) {
 		global $adb, $app_strings, $current_user;
 		$result = array();
 
@@ -915,31 +915,39 @@ class CRMEntity {
 		}
 		$isRecordDeleted = $adb->query_result($result['vtiger_crmentity'], 0, 'deleted');
 		if ($isRecordDeleted !== 0 && $isRecordDeleted !== '0' && !$deleted) {
-			require_once 'Smarty_setup.php';
-			$smarty = new vtigerCRM_Smarty();
-			$smarty->assign('APP', $app_strings);
-			$smarty->assign('OPERATION_MESSAGE', $app_strings['LBL_RECORD_DELETE']." $module: $record");
-			$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
-			die();
+			if ($throwexception) {
+				throw new Exception($app_strings['LBL_RECORD_DELETE']." $module: $record", 1);
+			} else {
+				require_once 'Smarty_setup.php';
+				$smarty = new vtigerCRM_Smarty();
+				$smarty->assign('APP', $app_strings);
+				$smarty->assign('OPERATION_MESSAGE', $app_strings['LBL_RECORD_DELETE']." $module: $record");
+				$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
+				die();
+			}
 		}
 
 		/* Block access to empty record */
 		if (isset($this->table_name)) {
 			$mod_index_col = $this->tab_name_index[$this->table_name];
 			if ($adb->query_result($result[$this->table_name], 0, $mod_index_col) == '') {
-				require_once 'Smarty_setup.php';
-				$smarty = new vtigerCRM_Smarty();
-				$smarty->assign('APP', $app_strings);
-				$smarty->assign('OPERATION_MESSAGE', $app_strings['LBL_RECORD_NOT_FOUND']);
-				$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
-				if (GlobalVariable::getVariable('Debug_Record_Not_Found', false)) {
-					echo '<div class="slds-m-around_x-large">';
-					echo 'Looking for ' . $this->table_name . '.' . $mod_index_col . ' in <br>' . print_r($result[$this->table_name]->sql, true);
-					echo '<pre>';
-					debug_print_backtrace();
-					echo '</pre></div>';
+				if ($throwexception) {
+					throw new Exception($app_strings['LBL_RECORD_NOT_FOUND'], 1);
+				} else {
+					require_once 'Smarty_setup.php';
+					$smarty = new vtigerCRM_Smarty();
+					$smarty->assign('APP', $app_strings);
+					$smarty->assign('OPERATION_MESSAGE', $app_strings['LBL_RECORD_NOT_FOUND']);
+					$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
+					if (GlobalVariable::getVariable('Debug_Record_Not_Found', false)) {
+						echo '<div class="slds-m-around_x-large">';
+						echo 'Looking for ' . $this->table_name . '.' . $mod_index_col . ' in <br>' . print_r($result[$this->table_name]->sql, true);
+						echo '<pre>';
+						debug_print_backtrace();
+						echo '</pre></div>';
+					}
+					die();
 				}
-				die();
 			}
 		}
 

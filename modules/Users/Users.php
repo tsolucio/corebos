@@ -1007,7 +1007,7 @@ class Users extends CRMEntity {
 	 * @param $record -- record id:: Type integer
 	 * @param $module -- module:: Type varchar
 	 */
-	public function retrieve_entity_info($record, $module, $deleted = false, $from_wf = false) {
+	public function retrieve_entity_info($record, $module, $deleted = false, $from_wf = false, $throwexception = false) {
 		global $adb, $log;
 		$log->debug("> retrieve_entity_info $record, $module");
 
