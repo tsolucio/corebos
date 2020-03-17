@@ -6221,10 +6221,13 @@ const headerCollapse = new Event('collapse'),
 
 window.addEventListener('load', function () {
 	const gh = document.getElementById('global-header');
-	if (pageHeader.node() !== null) {
+	if (pageHeader.node() !== null && gh !== null) {
 		pageHeader.initialize();
 		gh.addEventListener('collapse', pageHeader.moveup);
 		gh.addEventListener('expand', pageHeader.movedown);
+	} else if (gh === null) {
+		pageHeader.initialize();
+		pageHeader.node().classList.add('has-no-global-header');
 	}
 });
 
@@ -6239,8 +6242,9 @@ const pageHeader = {
 		pageHeader.stickPoint = pageHeader.getStickPoint();
 	},
 	'getStickPoint' : () => {
-		let premenuHeight = pageHeader.getPremenuHeight();
-		return pageHeader.node().getBoundingClientRect().top - document.getElementById('cbmenu').getBoundingClientRect().height - premenuHeight - 2; // 2 for adjusting for the border
+		let premenuHeight = pageHeader.getPremenuHeight(),
+			menuHeight = document.getElementById('cbmenu') == null ? 0 : document.getElementById('cbmenu').getBoundingClientRect().height;
+		return pageHeader.node().getBoundingClientRect().top - menuHeight - premenuHeight - 2; // 2 for adjusting for the border
 	},
 	'getPremenuHeight' : () => {
 		let premenu = document.getElementById('premenu-wrapper');
@@ -6286,6 +6290,7 @@ const pageHeader = {
 	},
 	'isSticky' : false,
 	'isCollapsed' : false,
+	'hasNoGlobalHeader' : false,
 	'stickPoint' : 0,
 	'totalHeight' : 0,
 	'getSurplus' : () => {
@@ -6317,10 +6322,12 @@ const pageHeader = {
 
 function headerOnDownScroll() {
 	var h = document.getElementById('global-header');
-	h.classList.add('header-scrolling');
-	h.dispatchEvent(headerCollapse);
-	if ($(document).scrollLeft() >= 0 && $(document).scrollTop() == 0) {
-		h.classList.remove('header-scrolling');
+	if (h !== null) {
+		h.classList.add('header-scrolling');
+		h.dispatchEvent(headerCollapse);
+		if ($(document).scrollLeft() >= 0 && $(document).scrollTop() == 0) {
+			h.classList.remove('header-scrolling');
+		}
 	}
 }
 window.cbOnDownScrollers.push(headerOnDownScroll, pageHeader.OnDownScroll);
@@ -6329,11 +6336,13 @@ function headerOnUpScroll() {
 	var h = document.getElementById('global-header'),
 		csy = window.scrollY;
 
-	window.setTimeout(checkHeaderScroll, 50);
-	function checkHeaderScroll() {
-		if (csy <= window.scrollY) {
-			h.classList.remove('header-scrolling');
-			h.dispatchEvent(headerExpand);
+	if (h !== null) {
+		window.setTimeout(checkHeaderScroll, 50);
+		function checkHeaderScroll() {
+			if (csy <= window.scrollY) {
+				h.classList.remove('header-scrolling');
+				h.dispatchEvent(headerExpand);
+			}
 		}
 	}
 }

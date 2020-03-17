@@ -10,7 +10,6 @@
 ********************************************************************************/
 -->*}
 <script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
-{if empty($Module_Popup_Edit)}
 {if empty($CATEGORY)}
 {assign var="CATEGORY" value=""}
 {/if}
@@ -280,6 +279,7 @@
 		</div>
 	</div>
 	<div id="page-header-surplus">
+	{if empty($Module_Popup_Edit)}
 		<div class="slds-page-header__row">
 			<div class="slds-page-header__col-meta" style="min-width: 0;">
 				<div class="slds-page-header__meta-text slds-grid">
@@ -503,7 +503,7 @@
 				</div>
 			</div>
 		</div>
+		{/if}
 	</div>
 </div>
 {corebos_header}
-{/if}
