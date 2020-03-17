@@ -92,6 +92,11 @@ class ElasticsearchEventsHandler extends VTEventHandler {
 							curl_setopt($channel1, CURLOPT_SSL_VERIFYPEER, false);
 							curl_setopt($channel1, CURLOPT_TIMEOUT, 1000);
 							$resp = curl_exec($channel1);
+							if ($resp===false) {
+								error_log("Create $indexname Record\n", 3, $file);
+								error_log("ERROR** curl call returned false\n", 3, $file);
+								return false;
+							}
 							$response = json_decode($resp);
 							if (isset($response->error)) {
 								error_log("Create $indexname Record\n", 3, $file);
@@ -150,6 +155,11 @@ class ElasticsearchEventsHandler extends VTEventHandler {
 					curl_setopt($channel1, CURLOPT_SSL_VERIFYPEER, false);
 					curl_setopt($channel1, CURLOPT_TIMEOUT, 1000);
 					$resp = curl_exec($channel1);
+					if ($resp===false) {
+						error_log("Delete $indexname Record\n", 3, $file);
+						error_log("ERROR** curl call returned false\n", 3, $file);
+						return false;
+					}
 					$response = json_decode($resp);
 					if (isset($response->error)) {
 						error_log("Delete $indexname Record $eid\n", 3, $file);
