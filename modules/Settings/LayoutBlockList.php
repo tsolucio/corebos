@@ -699,7 +699,7 @@ function updateFieldProperties() {
 	$dependentmodules = isset($_REQUEST['dependentmoduleselected']) ? vtlib_purify($_REQUEST['dependentmoduleselected']) : null;
 
 	if (!empty($dependentmodules)) {
-		$newdependetmodules = explode(",", $_REQUEST['dependentmoduleselected']);
+		$newdependetmodules = explode(',', $_REQUEST['dependentmoduleselected']);
 		$result = $adb->pquery('SELECT relmodule FROM vtiger_fieldmodulerel WHERE fieldid=? AND module=?', array($fieldid, $fld_module));
 		$olddependetmodules = array();
 		for ($i=0; $i<$adb->num_rows($result); $i++) {

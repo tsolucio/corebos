@@ -1716,10 +1716,10 @@ function setObjectValuesFromRequest($focus) {
 	$moduleName = get_class($focus);
 	$log->debug("> setObjectValuesFromRequest $moduleName");
 	if (isset($_REQUEST['record']) && (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'edit')) {
-		$focus->id = $_REQUEST['record'];
+		$focus->id = vtlib_purify($_REQUEST['record']);
 	}
 	if (isset($_REQUEST['mode'])) {
-		$focus->mode = $_REQUEST['mode'];
+		$focus->mode = vtlib_purify($_REQUEST['mode']);
 	}
 	foreach ($focus->column_fields as $fieldname => $val) {
 		if (isset($_REQUEST[$fieldname])) {
