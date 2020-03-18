@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 16/03/2020 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 18/03/2020 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
  ********************************************************************************/
 
 $mod_strings = array(
@@ -22,7 +22,7 @@ $mod_strings = array(
 'LBL_LIST_ACCOUNT_NAME'=>'Nome conta',
 'LBL_PRODUCT_NAME'=>'Nome do produto',
 'LBL_LIST_AMOUNT'=>'Valor',
-'LBL_LIST_DATE_CLOSED'=>'Previsão fechamento',
+'LBL_LIST_DATE_CLOSED'=>'Previsão data fechamento',
 'LBL_LIST_SALES_STAGE'=>'Estágio vendas',
 
 'LBL_OPPORTUNITY_NAME'=>'Nome da oportunidade:',
@@ -87,7 +87,7 @@ $mod_strings = array(
 'Type'=>'Tipo',
 'Next Step'=>'Próximo passo',
 'Lead Source'=>'Fonte lead',
-'Sales Stage'=>'Estágio de Vvndas',
+'Sales Stage'=>'Estágio de vendas',
 'Assigned To'=>'Responsável',
 'Probability'=>'Probabilidade',
 'Campaign Source'=>'Fonte campanha',
@@ -130,6 +130,6 @@ $mod_strings = array(
 'Related To' => 'Relacionado à',
 'Potentials ID' => 'ID Oportunidades',
 
-'Forecast Amount'=> 'Valor de forecast',
+'Forecast Amount'=> 'Valor do forecast',
 );
 ?>
