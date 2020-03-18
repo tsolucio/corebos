@@ -88,7 +88,8 @@ switch ($dosaved) {
 			$menuitems = json_decode($stru, true);
 			$adb->pquery('delete from vtiger_evvtmenu where evvtmenuid !=?', array(0));
 			foreach ($menuitems as $item) {
-				$adb->pquery('insert into vtiger_evvtmenu (evvtmenuid,mtype,mvalue,mlabel,mparent,mseq,mvisible,mpermission) values ('.generateQuestionMarks($item).')', $item);
+				$sq = 'insert into vtiger_evvtmenu (evvtmenuid,mtype,mvalue,mlabel,mparent,mseq,mvisible,mpermission) values ('.generateQuestionMarks($item).')';
+				$adb->pquery($sq, $item);
 			}
 		}
 		break;
