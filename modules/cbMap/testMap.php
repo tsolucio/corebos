@@ -80,6 +80,9 @@ switch ($focus->column_fields['maptype']) {
 	case 'Condition Query':
 		if (!empty($_REQUEST['testrecord'])) {
 			$testrecord = vtlib_purify($_REQUEST['testrecord']);
+			if (strpos($testrecord, 'x')>0) {
+				list($wsid, $testrecord) = explode('x', $testrecord);
+			}
 		} else {
 			$testrecord = 74;
 		}
@@ -91,6 +94,9 @@ switch ($focus->column_fields['maptype']) {
 	case 'Condition Expression':
 		if (!empty($_REQUEST['testrecord'])) {
 			$testrecord = vtlib_purify($_REQUEST['testrecord']);
+			if (strpos($testrecord, 'x')===false) {
+				$testrecord = vtws_getEntityId(getSalesEntityType($testrecord)).'x'.$testrecord;
+			}
 		} else {
 			$testrecord = '11x74';
 		}
