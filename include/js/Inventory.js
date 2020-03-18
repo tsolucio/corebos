@@ -1431,10 +1431,14 @@ function InventorySelectAll(mod, image_pth) {
 			var accid = 0;
 			if (document.EditView.account_id != undefined) {
 				accid = document.EditView.account_id.value;
+			} else if (document.EditView.accid != undefined){
+				accid = document.EditView.accid.value;
 			}
 			var ctoid = 0;
 			if (document.EditView.contact_id != undefined) {
 				ctoid = document.EditView.contact_id.value;
+			} else if (document.EditView.ctoid != undefined) {
+				ctoid = document.EditView.ctoid.value;
 			}
 			var _this = this;
 			var r = new XMLHttpRequest();
