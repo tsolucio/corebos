@@ -110,13 +110,6 @@ class DataTransform {
 				}
 				$row['contact_id'] = implode(';', $ctowsids);
 			}
-		} elseif (strtolower($meta->getEntityName()) == 'calendar') {
-			if (empty($row['sendnotification']) || strtolower($row['sendnotification'])=='no'
-				|| $row['sendnotification'] == '0' || $row['sendnotification'] == 'false'
-				|| strtolower($row['sendnotification']) == 'n'
-			) {
-				unset($row['sendnotification']);
-			}
 		}
 		$references = $meta->getReferenceFieldDetails();
 		foreach ($references as $field => $typeList) {

@@ -16,20 +16,6 @@ function vtws_revise($element, $user) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Id specified is incorrect');
 	}
 	$idList = vtws_getIdComponents($element['id']);
-	if ((vtws_getEntityId('Calendar')==$idList[0] || vtws_getEntityId('Events')==$idList[0]) && getSalesEntityType($idList[1])=='cbCalendar') {
-		$idList[0] = vtws_getEntityId('cbCalendar') . 'x' . $idList[1];
-	}
-	if (vtws_getEntityId('cbCalendar')==$idList[0] && getSalesEntityType($idList[1])=='Calendar') {
-		$rs = $adb->pquery('select activitytype from vtiger_activity where activityid=?', array($idList[1]));
-		if ($rs && $adb->num_rows($rs)==1) {
-			if ($adb->query_result($rs, 0, 0)=='Task') {
-				$idList[0] = vtws_getEntityId('Calendar') . 'x' . $idList[1];
-			} else {
-				$idList[0] = vtws_getEntityId('Events') . 'x' . $idList[1];
-			}
-		}
-	}
-
 	$webserviceObject = VtigerWebserviceObject::fromId($adb, $idList[0]);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
