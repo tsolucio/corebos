@@ -127,9 +127,8 @@ switch ($dosaved) {
 	break;
 	case 'doDelSaved':
 		$savemenuid = vtlib_purify($_REQUEST['savemenuid']);
-			delSavedMenu($savemenuid);
+		delSavedMenu($savemenuid);
 		break;
-	break;
 }
 $do = vtlib_purify($_REQUEST['evvtmenudo']);
 
