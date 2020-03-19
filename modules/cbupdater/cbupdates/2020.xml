@@ -42,4 +42,11 @@
 	<classname>addFieldAppTocbUpdater</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete old Calendar Events</description>
+	<filename>build/changeSets/2020/delCalendarEvents.php</filename>
+	<classname>delCalendarEvents</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
