@@ -44,6 +44,13 @@
 </changeSet>
 <changeSet>
 	<author>joebordes</author>
+	<description>Delete old Calendar Events</description>
+	<filename>build/changeSets/2020/delCalendarEvents.php</filename>
+	<classname>delCalendarEvents</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
 	<description>add CBUUID field to application</description>
 	<filename>build/changeSets/2020/addcbuuid.php</filename>
 	<classname>addcbuuid</classname>
