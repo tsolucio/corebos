@@ -24,7 +24,10 @@ class addcbuuid extends cbupdaterWorker {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			global $adb;
-			$this->ExecuteQuery('ALTER TABLE `vtiger_crmentity` ADD `cbuuid` char(40) default "";');
+			$cncrm = $adb->getColumnNames('vtiger_crmentity');
+			if (!in_array('cbuuid', $cncrm)) {
+					$this->ExecuteQuery('ALTER TABLE `vtiger_crmentity` ADD `cbuuid` char(40) default "";');
+			}
 			$batch = 10000;
 			$f = CRMEntity::getInstance('Accounts');
 			$rs = $adb->query('select count(*) as cnt from vtiger_crmentity inner join vtiger_tab on setype=name and isentitytype=1 where cbuuid=""');

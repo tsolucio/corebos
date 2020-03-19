@@ -203,6 +203,10 @@ function getAdminevvtMenu() {
 
 function checkevvtMenuInstalled() {
 	global $adb, $current_user;
+	$cncrm = $adb->getColumnNames('vtiger_crmentity');
+	if (!in_array('cbuuid', $cncrm)) {
+		$adb->query('ALTER TABLE `vtiger_crmentity` ADD `cbuuid` char(40) default "";');
+	}
 	$cnmsg = $adb->getColumnNames('com_vtiger_workflows');
 	if (!in_array('purpose', $cnmsg)) {
 		$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `purpose` TEXT NULL;');
