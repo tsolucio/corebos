@@ -75,11 +75,11 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 	}
 
 	if ($typed) {
-			$handler = vtws_getModuleHandlerFromName($elementType, $user);
-			$moduleMeta = $handler->getMeta();
-			$entityDefaultBaseTables = $moduleMeta->getEntityDefaultTableList();
-			//since there will be only one base table for all entities
-			$baseCRMTable = $entityDefaultBaseTables[0];
+		$handler = vtws_getModuleHandlerFromName($elementType, $user);
+		$moduleMeta = $handler->getMeta();
+		$entityDefaultBaseTables = $moduleMeta->getEntityDefaultTableList();
+		//since there will be only one base table for all entities
+		$baseCRMTable = $entityDefaultBaseTables[0];
 		if ($elementType=='Calendar' || $elementType=='Events') {
 			$baseCRMTable = getSyncQueryBaseTable($elementType);
 		}

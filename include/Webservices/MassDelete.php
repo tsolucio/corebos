@@ -15,7 +15,7 @@
  *************************************************************************************************/
 require_once 'include/Webservices/Delete.php';
 function MassDelete($ids, $user) {
-	$wsIds = explode(",", $ids);
+	$wsIds = explode(',', $ids);
 	$failedDeletes = [];
 	$successDeletes = [];
 
@@ -26,16 +26,16 @@ function MassDelete($ids, $user) {
 			$successDeletes[] = $wsId;
 		} catch (Exception $e) {
 			$failedDeletes[] = [
-				"id" => $wsId,
-				"code" => $e->getCode(),
-				"message" => $e->getMessage()
+				'id' => $wsId,
+				'code' => $e->getCode(),
+				'message' => $e->getMessage()
 			];
 		}
 	}
 
 	$result = [
-		"success_deletes" => $successDeletes,
-		"failed_deletes" => $failedDeletes
+		'success_deletes' => $successDeletes,
+		'failed_deletes' => $failedDeletes
 	];
 
 	return $result;
