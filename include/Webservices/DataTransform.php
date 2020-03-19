@@ -220,31 +220,26 @@ class DataTransform {
 				);
 				$row['parent_id'] = $refs;
 			}
-			if (!empty($row[$field])) {
+			if (isset($row[$field])) {
 				$setref = array();
 				foreach ((array) $row[$field] as $refval) {
-					$entity = getSalesEntityType($refval);
-					if ($entity!='') {
-						$setref[] = vtws_getEntityId($entity).'x'.$refval;
-					} else {
-						$found = false;
-						foreach ($typeList as $entity) {
-							$webserviceObject = VtigerWebserviceObject::fromName($adb, $entity);
-							$handlerPath = $webserviceObject->getHandlerPath();
-							$handlerClass = $webserviceObject->getHandlerClass();
-							require_once $handlerPath;
-							$handler = new $handlerClass($webserviceObject, $meta->getUser(), $adb, $log);
-							$entityMeta = $handler->getMeta();
-							if ($entityMeta->exists($refval)) {
-								$setref[] = vtws_getId($webserviceObject->getEntityId(), $refval);
-								$found = true;
-								break;
-							}
+					$found = false;
+					foreach ($typeList as $entity) {
+						$webserviceObject = VtigerWebserviceObject::fromName($adb, $entity);
+						$handlerPath = $webserviceObject->getHandlerPath();
+						$handlerClass = $webserviceObject->getHandlerClass();
+						require_once $handlerPath;
+						$handler = new $handlerClass($webserviceObject, $meta->getUser(), $adb, $log);
+						$entityMeta = $handler->getMeta();
+						if ($entityMeta->exists($refval)) {
+							$setref[] = vtws_getId($webserviceObject->getEntityId(), $refval);
+							$found = true;
+							break;
 						}
-						if ($found !== true) {
-							//This is needed as for query operation of the related record is deleted.
-							$setref[] = null;
-						}
+					}
+					if ($found !== true) {
+						//This is needed as for query operation of the related record is deleted.
+						$setref[] = null;
 					}
 				}
 				$row[$field] = implode('|', $setref);
