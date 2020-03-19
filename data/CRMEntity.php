@@ -77,6 +77,38 @@ class CRMEntity {
 		return new $modName();
 	}
 
+	public function getUUID() {
+		$hcols = array();
+		$hcols['moduletype'] = $this->column_fields['record_module'];
+		$hcols['record_id'] = empty($this->column_fields['record_id']) ? $_REQUEST['currentid'] : $this->column_fields['record_id'];
+		$hcols['creator'] = isset($this->column_fields['created_user_id']) ? getUserEmail($this->column_fields['created_user_id']) : 'email@lost.tld';
+		$hcols['owner'] = isset($this->column_fields['assigned_user_id']) ? getUserEmail($this->column_fields['assigned_user_id']) : 'nouser@module.tld';
+		//$hcols['description'] = $this->column_fields['description'];
+		$hcols['createdtime'] = $this->column_fields['createdtime'];
+		return sha1(json_encode($hcols));
+	}
+
+	public static function getUUIDfromCRMID($refval) {
+		global $adb;
+		$rs = $adb->pquery('select cbuuid from vtiger_crmentity where crmid=?', array($refval));
+		return ($rs ? $rs->fields['cbuuid'] : '');
+	}
+
+	public static function getCRMIDfromUUID($refval) {
+		global $adb;
+		$rs = $adb->pquery('select crmid from vtiger_crmentity where cbuuid=?', array($refval));
+		return ($rs ? $rs->fields['crmid'] : '');
+	}
+
+	public static function getWSIDfromUUID($refval) {
+		global $adb;
+		$rs = $adb->pquery(
+			'select concat(id,"x",crmid) as wsid from vtiger_crmentity inner join vtiger_ws_entity on name=setype where cbuuid=?',
+			array($refval)
+		);
+		return ($rs ? $rs->fields['wsid'] : '');
+	}
+
 	public function saveentity($module, $fileid = '') {
 		global $current_user, $adb;
 		if (property_exists($module, 'HasDirectImageField') && $this->HasDirectImageField && !empty($this->id)) {
@@ -442,8 +474,12 @@ class CRMEntity {
 		if ($this->mode == 'edit') {
 			$userprivs = $current_user->getPrivileges();
 			$tabid = getTabid($module);
+			$cbuuidupdate = '';
+			if (!empty($this->column_fields['cbuuid'])) {
+				$cbuuidupdate = $adb->convert2Sql(',cbuuid=?', array($this->column_fields['cbuuid']));
+			}
 			if ($userprivs->hasGlobalReadPermission()) {
-				$sql = 'update vtiger_crmentity set smownerid=?,modifiedby=?,description=?, modifiedtime=? where crmid=?';
+				$sql = "update vtiger_crmentity set smownerid=?,modifiedby=?,description=?,modifiedtime=? $cbuuidupdate where crmid=?";
 				$params = array($ownerid, $current_user->id, $description_val, $adb->formatDate($date_var, true), $this->id);
 			} else {
 				$profileList = getCurrentUserProfileList();
@@ -457,10 +493,10 @@ class CRMEntity {
 						vtiger_field.displaytype in (1,3) and vtiger_field.presence in (0,2);";
 				$perm_result = $adb->pquery($perm_qry, array('description', $tabid, $profileList));
 				if ($adb->num_rows($perm_result)>0) {
-					$sql = 'update vtiger_crmentity set smownerid=?,modifiedby=?,description=?, modifiedtime=? where crmid=?';
+					$sql = "update vtiger_crmentity set smownerid=?,modifiedby=?,description=?,modifiedtime=? $cbuuidupdate where crmid=?";
 					$params = array($ownerid, $current_user->id, $description_val, $adb->formatDate($date_var, true), $this->id);
 				} else {
-					$sql = 'update vtiger_crmentity set smownerid=?,modifiedby=?, modifiedtime=? where crmid=?';
+					$sql = "update vtiger_crmentity set smownerid=?,modifiedby=?,modifiedtime=? $cbuuidupdate where crmid=?";
 					$params = array($ownerid, $current_user->id, $adb->formatDate($date_var, true), $this->id);
 				}
 			}
@@ -495,9 +531,11 @@ class CRMEntity {
 				}
 				//NOTE : modifiedtime ignored to support vtws_sync API track changes.
 			}
-
-			$sql = 'insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,modifiedby,createdtime,modifiedtime) values(?,?,?,?,?,?,?,?)';
-			$params = array($current_id, $createdbyuser, $ownerid, $module, $description_val, $current_user->id, $created_date_var, $modified_date_var);
+			$this->column_fields['record_id'] = $current_id;
+			$this->column_fields['record_module'] = $module;
+			$cbuuid = (empty($this->column_fields['cbuuid']) ? $this->getUUID() : $this->column_fields['cbuuid']);
+			$sql = 'insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,modifiedby,createdtime,modifiedtime,cbuuid) values(?,?,?,?,?,?,?,?,?)';
+			$params = array($current_id, $createdbyuser, $ownerid, $module, $description_val, $current_user->id, $created_date_var, $modified_date_var, $cbuuid);
 			$adb->pquery($sql, $params);
 			$this->id = $current_id;
 		}
@@ -1016,6 +1054,7 @@ class CRMEntity {
 
 		$this->column_fields['record_id'] = $record;
 		$this->column_fields['record_module'] = $module;
+		$this->column_fields['cbuuid'] = $adb->query_result($result['vtiger_crmentity'], 0, 'cbuuid');
 	}
 
 	/** Function to retrieve the information of the given recordidS

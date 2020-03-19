@@ -1734,6 +1734,9 @@ function setObjectValuesFromRequest($focus) {
 			$focus->column_fields[$fieldname] = $value;
 		}
 	}
+	if (!empty($_REQUEST['cbuuid'])) {
+		$focus->column_fields['cbuuid'] = vtlib_purify($_REQUEST['cbuuid']);
+	}
 	if (isset($_REQUEST['action']) && ($_REQUEST['action'] == 'EditView' || $_REQUEST['action'] == 'EventEditView')) {
 		$cbfrommodule = $moduleName;
 		$cbfrom = CRMEntity::getInstance($cbfrommodule);

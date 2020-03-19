@@ -16,7 +16,7 @@
 
 function cbws_uploadProductImages($recordID, $fileData, $user) {
 	global $log, $adb, $root_directory;
-
+	$recordID = vtws_getWSID($recordID);
 	$idList = vtws_getIdComponents($recordID);
 	$webserviceObject = VtigerWebserviceObject::fromId($adb, $recordID);
 	$handlerPath = $webserviceObject->getHandlerPath();

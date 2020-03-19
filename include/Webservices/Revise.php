@@ -15,6 +15,7 @@ function vtws_revise($element, $user) {
 	if (empty($element['id'])) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Id specified is incorrect');
 	}
+	$element['id'] = vtws_getWSID($element['id']);
 	$idList = vtws_getIdComponents($element['id']);
 	$webserviceObject = VtigerWebserviceObject::fromId($adb, $idList[0]);
 	$handlerPath = $webserviceObject->getHandlerPath();

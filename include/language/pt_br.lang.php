@@ -909,6 +909,7 @@ $app_strings = array (
 'Activity Type'=>'Tipo atividade',
 'Created Time'=>'Data & hora criação',
 'Modified Time'=>'Data & hora modificação',
+'cbuuid' => 'Unique Identifier',
 'Last Modified By' => 'Modificado por último por',
 'Created By' => 'Criado por',
 'Lead Status'=>'Estágio lead',

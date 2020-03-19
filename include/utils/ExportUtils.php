@@ -146,7 +146,7 @@ function getFieldsListFromQuery($query) {
 		}
 	}
 	$fields = trim($fields, ',');
-
+	$fields .= ',vtiger_crmentity.cbuuid';
 	$log->debug('< getFieldsListFromQuery '.$fields);
 	return $fields;
 }

@@ -30,6 +30,7 @@
 function cbws_getrecordimageinfo($id, $user) {
 	global $log, $adb, $site_URL, $default_charset;
 	$log->debug('> cbws_getrecordimageinfo '.$id);
+	$id = vtws_getWSID($id);
 	$webserviceObject = VtigerWebserviceObject::fromId($adb, $id);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();

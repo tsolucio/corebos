@@ -48,7 +48,7 @@ require_once 'include/Webservices/Utils.php';
  */
 function getRelatedRecords($id, $module, $relatedModule, $queryParameters, $user) {
 	global $adb, $log;
-
+	$id = vtws_getWSID($id);
 	// pickup meta data of related module
 	$webserviceObject = VtigerWebserviceObject::fromName($adb, $relatedModule);
 	$handlerPath = $webserviceObject->getHandlerPath();

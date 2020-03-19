@@ -128,6 +128,18 @@ function vtws_getEntityId($entityName) {
 	return $wsid;
 }
 
+function vtws_getWSID($id) {
+	if (strlen($id)==40) {
+		return CRMEntity::getWSIDfromUUID($id);
+	} elseif (preg_match('/^[0-9]+x[0-9]+$/', $id)) {
+		return $id;
+	} elseif (is_numeric($id)) {
+		return vtws_getEntityId(getSalesEntityType($id)).'x'.$id;
+	} else {
+		return '0x0';
+	}
+}
+
 function getEmailFieldId($meta, $entityId) {
 	global $adb;
 	//no email field accessible in the module. since its only association pick up the field any way.

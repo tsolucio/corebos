@@ -887,6 +887,7 @@ $app_strings = array(
 	'Activity Type' => 'Tip Activitate',
 	'Created Time' => 'Ora Creat',
 	'Modified Time' => 'Ora Modificat',
+	'cbuuid' => 'Unique Identifier',
 	'Last Modified By' => 'Ultima Modificare De',
 	'Created By' => 'Creat De',
 	'Lead Status' => 'Stadiu Prospect',

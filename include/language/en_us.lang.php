@@ -919,6 +919,7 @@ $app_strings = array(
 'Activity Type'=>'Activity Type',
 'Created Time'=>'Created Time',
 'Modified Time'=>'Modified Time',
+'cbuuid' => 'Unique Identifier',
 'Last Modified By' => 'Last Modified By',
 'Created By' => 'Created By',
 'Lead Status'=>'Lead Status',

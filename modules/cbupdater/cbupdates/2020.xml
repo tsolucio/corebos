@@ -33,13 +33,20 @@
 	<description>add table for elasticsearch indexes</description>
 	<filename>build/changeSets/2020/addtableforesindexes.php</filename>
 	<classname>Addtableforesindexes</classname>
-	<systemupdate>1</systemupdate>
+	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
 	<author>joebordes</author>
 	<description>add Application field to Updater</description>
 	<filename>build/changeSets/2020/addFieldAppTocbUpdater.php</filename>
 	<classname>addFieldAppTocbUpdater</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>add CBUUID field to application</description>
+	<filename>build/changeSets/2020/addcbuuid.php</filename>
+	<classname>addcbuuid</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
 </updatesChangeLog>

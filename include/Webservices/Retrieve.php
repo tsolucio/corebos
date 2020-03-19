@@ -12,6 +12,7 @@ include_once 'include/Webservices/getRecordImages.php';
 
 function vtws_retrieve($id, $user) {
 	global $log, $adb;
+	$id = vtws_getWSID($id);
 	$webserviceObject = VtigerWebserviceObject::fromId($adb, $id);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();

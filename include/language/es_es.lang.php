@@ -908,6 +908,7 @@ $app_strings = array (
 	'Due Date' => 'Fecha de Vencimiento',
 	'Created Time' => 'Fecha de Creación',
 	'Modified Time' => 'Fecha de Modificación',
+	'cbuuid' => 'Identificador Univoco',
 	'Last Modified By' => 'Ultima modificación por',
 	'Created By' => 'Creado por',
 	'Lead Status' => 'Estado de Pre-Contacto',

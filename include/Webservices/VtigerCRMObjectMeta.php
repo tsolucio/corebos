@@ -276,6 +276,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 			}
 			$this->fieldColumnMapping['id'] = $this->idColumn;
 		}
+
 		return $this->fieldColumnMapping;
 	}
 
