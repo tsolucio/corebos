@@ -196,7 +196,7 @@ function vtws_getEntityNameFields($moduleName) {
  */
 function vtws_getModuleNameList() {
 	global $adb;
-	$sql = "select name from vtiger_tab where isentitytype=1 and name not in ('Rss','Recyclebin','Events') order by tabsequence";
+	$sql = "select name from vtiger_tab where isentitytype=1 and name not in ('Rss','Recyclebin') order by tabsequence";
 	$res = $adb->pquery($sql, array());
 	$mod_array = array();
 	while ($row = $adb->fetchByAssoc($res)) {
