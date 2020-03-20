@@ -102,10 +102,10 @@ if ($record && cbCalendar::getCalendarActivityType($record)=='Emails') {
 				}
 			}
 		}
-		$smarty->assign("secondvalue", $secondvalue);
-		$smarty->assign("thirdvalue", $thirdvalue);
-		$smarty->assign("fldlabel_combo", $fldlabel_combo);
-		$smarty->assign("fldlabel_sel", $fldlabel_sel);
+		$smarty->assign('secondvalue', $secondvalue);
+		$smarty->assign('thirdvalue', $thirdvalue);
+		$smarty->assign('fldlabel_combo', $fldlabel_combo);
+		$smarty->assign('fldlabel_sel', $fldlabel_sel);
 		$sql = 'select vtiger_users.*,vtiger_invitees.* from vtiger_invitees left join vtiger_users on vtiger_invitees.inviteeid=vtiger_users.id where activityid=?';
 		$result = $adb->pquery($sql, array($focus->id));
 		$num_rows=$adb->num_rows($result);

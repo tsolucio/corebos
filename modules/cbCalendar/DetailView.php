@@ -51,7 +51,7 @@ if ($activitytype == 'Emails') {
 				$fldlabel[$field['fldname']] = $label;
 				if ($field['ui'] == 15 || $field['ui'] == 16) {
 					foreach ($field['options'] as $index => $arr_val) {
-						if ($arr_val[2] == "selected") {
+						if ($arr_val[2] == 'selected') {
 							$finaldata[$field['fldname']] = $arr_val[0];
 						}
 					}
@@ -131,10 +131,10 @@ if ($activitytype == 'Emails') {
 		$username = getFullNameFromQResult($result, $i, 'Users');
 		$invited_users[$userid]=$username;
 	}
-	$smarty->assign("INVITEDUSERS", $invited_users);
+	$smarty->assign('INVITEDUSERS', $invited_users);
 
-	$smarty->assign("LABEL", $fldlabel);
-	$smarty->assign("ACTIVITYDATA", $data);
+	$smarty->assign('LABEL', $fldlabel);
+	$smarty->assign('ACTIVITYDATA', $data);
 
 	$smarty->display('DetailView.tpl');
 }
