@@ -59,15 +59,19 @@ class VtigerEmailOperation extends VtigerModuleOperation {
 				$ids = vtws_getIdComponents($rel);
 				$relid = $ids[1];
 				if (!empty($relid)) {
-					$tabname = $adb->query_result($adb->pquery('select name from vtiger_ws_entity where id=?', array($ids[0])), 0, 'name');
+					$tabname = vtws_getEntityName($ids[0]);
 					$tabid = getTabid($tabname);
 					$rs = $adb->pquery('select fieldid from vtiger_field where tabid=? and uitype=13 and vtiger_field.presence in (0,2)', array($tabid));
 					$fieldid = $adb->query_result($rs, 0, 'fieldid');
 					$_REQUEST['parent_id'] .= $relid.'@'.$fieldid.'|';
 				}
 			}
+			$element['parent_id'] = $_REQUEST['parent_id'];
 		} else {
 			$_REQUEST['parent_id'] = isset($element['parent_id']) ? $element['parent_id'] : '';
+		}
+		if ($element['activitytype'] == 'Email') {
+			$element['activitytype'] = 'Emails'; // just in case
 		}
 		$error = $crmObject->create($element);
 		if (!$error) {
