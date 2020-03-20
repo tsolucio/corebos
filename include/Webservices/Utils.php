@@ -128,6 +128,15 @@ function vtws_getEntityId($entityName) {
 	return $wsid;
 }
 
+function vtws_getEntityName($entityId) {
+	global $adb;
+	$result = $adb->pquery('select name from vtiger_ws_entity where id=?', array($entityId));
+	if ($result && $adb->num_rows($result)>0) {
+		return $result->fields['name'];
+	}
+	return '';
+}
+
 function vtws_getWSID($id) {
 	if (strlen($id)==40) {
 		return CRMEntity::getWSIDfromUUID($id);
