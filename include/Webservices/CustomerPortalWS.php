@@ -214,29 +214,34 @@ function vtws_getReferenceValue($strids, $user) {
 	global $log, $adb, $default_charset;
 	$ids=unserialize($strids);
 	$log->debug('> vtws_getReferenceValue '.$strids);
-	foreach ($ids as $id) {
-		list($wsid,$realid)=explode('x', $id);
-		$rs = $adb->pquery('select name from vtiger_ws_entity where id=?', array($wsid));
-		$modulename = $adb->query_result($rs, 0, 0);
-		if ($modulename=='DocumentFolders') {
-			$rs1 = $adb->pquery('select foldername from vtiger_attachmentsfolder where folderid = ?', array($realid));
-			$result[$id]=array('module'=>$modulename,'reference'=>html_entity_decode($adb->query_result($rs1, 0, 0), ENT_QUOTES, $default_charset));
-		} elseif ($modulename=='Groups') {
-			$rs1 = $adb->pquery('select groupname from vtiger_groups where groupid = ?', array($realid));
-			$result[$id]=array('module'=>$modulename,'reference'=>$adb->query_result($rs1, 0, 0));
-		} else {
-			if ($modulename == 'Currency') {
-				$entityinfo[$realid] = getCurrencyName($realid, true);
+	foreach ($ids as $idref) {
+		if (strpos($idref, '|')>0) {
+			$idref = explode('|', trim($idref, '|'));
+		}
+		foreach ((array) $idref as $id) {
+			list($wsid,$realid)=explode('x', $id);
+			$rs = $adb->pquery('select name from vtiger_ws_entity where id=?', array($wsid));
+			$modulename = $adb->query_result($rs, 0, 0);
+			if ($modulename=='DocumentFolders') {
+				$rs1 = $adb->pquery('select foldername from vtiger_attachmentsfolder where folderid = ?', array($realid));
+				$result[$id]=array('module'=>$modulename,'reference'=>html_entity_decode($adb->query_result($rs1, 0, 0), ENT_QUOTES, $default_charset));
+			} elseif ($modulename=='Groups') {
+				$rs1 = $adb->pquery('select groupname from vtiger_groups where groupid = ?', array($realid));
+				$result[$id]=array('module'=>$modulename,'reference'=>$adb->query_result($rs1, 0, 0));
 			} else {
-				$entityinfo = getEntityName($modulename, $realid);
-				if (isset($entityinfo[$realid])) {
-					$entityinfo[$realid] = html_entity_decode($entityinfo[$realid], ENT_QUOTES, $default_charset);
+				if ($modulename == 'Currency') {
+					$entityinfo[$realid] = getCurrencyName($realid, true);
+				} else {
+					$entityinfo = getEntityName($modulename, $realid);
+					if (isset($entityinfo[$realid])) {
+						$entityinfo[$realid] = html_entity_decode($entityinfo[$realid], ENT_QUOTES, $default_charset);
+					}
 				}
+				if (empty($entityinfo[$realid])) {
+					$entityinfo[$realid] = '';
+				}
+				$result[$id]=array('module'=>$modulename,'reference'=>$entityinfo[$realid]);
 			}
-			if (empty($entityinfo[$realid])) {
-				$entityinfo[$realid] = '';
-			}
-			$result[$id]=array('module'=>$modulename,'reference'=>$entityinfo[$realid]);
 		}
 	}
 	$log->debug('< vtws_getReferenceValue');
