@@ -91,7 +91,16 @@ class CRMEntity {
 	public static function getUUIDfromCRMID($refval) {
 		global $adb;
 		$rs = $adb->pquery('select cbuuid from vtiger_crmentity where crmid=?', array($refval));
-		return ($rs ? $rs->fields['cbuuid'] : '');
+		return (($rs && $adb->num_rows($rs)>0) ? $rs->fields['cbuuid'] : '');
+	}
+
+	public static function getUUIDfromWSID($refval) {
+		$nocbuuid = array('Users', 'Currency', 'DocumentFolders', '');
+		list($wsid, $crmid) = explode('x', $refval);
+		if (in_array(vtws_getEntityName($wsid), $nocbuuid)) {
+			return '';
+		}
+		return CRMEntity::getUUIDfromCRMID($crmid);
 	}
 
 	public static function getCRMIDfromUUID($refval) {
