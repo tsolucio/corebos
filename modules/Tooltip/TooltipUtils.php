@@ -141,7 +141,7 @@ function getToolTipText($view, $fieldname, $module, $value) {
 			if ($uitype==17) { // website
 				$fieldvalue = '<a href="//'.$value[0][$fieldname].'" target=_blank>'.$fieldvalue.'</a>';
 			}
-			if ($uitype==10 || isReferenceUIType($uitype)) {
+			if (($uitype==10 || isReferenceUIType($uitype)) && !empty($value[0][$fieldname])) {
 				list($fieldvalue,$wsid) = explode('::::', $value[0][$fieldname]);
 				list($wsmod,$crmid) = explode('x', $wsid);
 				$relmodule = getSalesEntityType($crmid);
