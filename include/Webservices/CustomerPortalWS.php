@@ -244,7 +244,9 @@ function vtws_getReferenceValue($strids, $user) {
 					$entityinfo = getEntityName($modulename, $realid);
 					if (isset($entityinfo[$realid])) {
 						$entityinfo[$realid] = html_entity_decode($entityinfo[$realid], ENT_QUOTES, $default_charset);
-						$cbuuid = CRMEntity::getUUIDfromCRMID($realid);
+						if ($modulename != 'Users') {
+							$cbuuid = CRMEntity::getUUIDfromCRMID($realid);
+						}
 					}
 				}
 				if (empty($entityinfo[$realid])) {
