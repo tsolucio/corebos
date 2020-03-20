@@ -840,10 +840,10 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$fieldvalue[] = $purchaseorder_name;
 		$fieldvalue[] = $value;
 	} elseif ($uitype == 30) {
-		if ($value!='') {
-			$SET_REM = 'CHECKED';
-		} else {
+		if (empty($value)) {
 			$SET_REM = '';
+		} else {
+			$SET_REM = 'CHECKED';
 		}
 		if (empty($col_fields[$fieldname])) {
 			$col_fields[$fieldname] = 0;
