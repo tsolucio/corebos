@@ -223,24 +223,38 @@ function vtws_getReferenceValue($strids, $user) {
 			$rs = $adb->pquery('select name from vtiger_ws_entity where id=?', array($wsid));
 			$modulename = $adb->query_result($rs, 0, 0);
 			if ($modulename=='DocumentFolders') {
-				$rs1 = $adb->pquery('select foldername from vtiger_attachmentsfolder where folderid = ?', array($realid));
-				$result[$id]=array('module'=>$modulename,'reference'=>html_entity_decode($adb->query_result($rs1, 0, 0), ENT_QUOTES, $default_charset));
+				$rs1 = $adb->pquery('select foldername from vtiger_attachmentsfolder where folderid=?', array($realid));
+				$result[$id]=array(
+					'module'=>$modulename,
+					'reference'=>html_entity_decode($adb->query_result($rs1, 0, 0), ENT_QUOTES, $default_charset),
+					'cbuuid' => '',
+				);
 			} elseif ($modulename=='Groups') {
-				$rs1 = $adb->pquery('select groupname from vtiger_groups where groupid = ?', array($realid));
-				$result[$id]=array('module'=>$modulename,'reference'=>$adb->query_result($rs1, 0, 0));
+				$rs1 = $adb->pquery('select groupname from vtiger_groups where groupid=?', array($realid));
+				$result[$id]=array(
+					'module'=>$modulename,
+					'reference'=>$adb->query_result($rs1, 0, 0),
+					'cbuuid' => '',
+				);
 			} else {
+				$cbuuid = '';
 				if ($modulename == 'Currency') {
 					$entityinfo[$realid] = getCurrencyName($realid, true);
 				} else {
 					$entityinfo = getEntityName($modulename, $realid);
 					if (isset($entityinfo[$realid])) {
 						$entityinfo[$realid] = html_entity_decode($entityinfo[$realid], ENT_QUOTES, $default_charset);
+						$cbuuid = CRMEntity::getUUIDfromCRMID($realid);
 					}
 				}
 				if (empty($entityinfo[$realid])) {
 					$entityinfo[$realid] = '';
 				}
-				$result[$id]=array('module'=>$modulename,'reference'=>$entityinfo[$realid]);
+				$result[$id]=array(
+					'module'=>$modulename,
+					'reference'=>$entityinfo[$realid],
+					'cbuuid' => $cbuuid,
+				);
 			}
 		}
 	}
