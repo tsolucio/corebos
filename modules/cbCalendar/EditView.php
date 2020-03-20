@@ -83,10 +83,17 @@ if ($record && cbCalendar::getCalendarActivityType($record)=='Emails') {
 		list($focus->column_fields['date_start'],$focus->column_fields['time_start']) = explode(' ', $focus->column_fields['dtstart'].' ');
 		list($focus->column_fields['due_date'],$focus->column_fields['time_end']) = explode(' ', $focus->column_fields['dtend'].' ');
 		$focus->column_fields['parent_id'] = $_REQUEST['parent_id'] = $focus->column_fields['rel_id'];
-		$evfocus = CRMEntity::getInstance('Events');
-		$evfocus->retrieve_entity_info($record, 'Events');
-		$colfields = array_merge($evfocus->column_fields, $focus->column_fields);
-		$act_data = getBlocks('Events', 'edit_view', 'edit', $colfields);
+		$act_data = getBlocks('cbCalendar', 'edit_view', 'edit', $focus->column_fields);
+		$result = $adb->pquery('select blockid, blocklabel from vtiger_blocks where tabid=? order by blockid asc limit 1', array($tabid));
+		$block_label[$result->fields['blockid']] = $result->fields['blocklabel'];
+		$sLabelVal = getTranslatedString($result->fields['blocklabel'], 'cbCalendar');
+		$result = $adb->pquery("select *, '0' as readonly from vtiger_field where columnname in ('reminder_time','recurringtype') and tabid=?", array($tabid));
+		$col_fields = array(
+			'reminder_time' => $focus->column_fields['reminder_time'],
+			'recurringtype' => $focus->column_fields['recurringtype'],
+		);
+		$getBlockInfo = getBlockInformation('cbCalendar', $result, $col_fields, $tabid, $block_label, $focus->mode);
+		$act_data = array_merge($act_data, $getBlockInfo);
 		foreach ($act_data as $header => $blockitem) {
 			foreach ($blockitem as $row => $data) {
 				foreach ($data as $key => $maindata) {

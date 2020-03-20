@@ -40,10 +40,17 @@ if ($activitytype == 'Emails') {
 	list($focus->column_fields['date_start'],$focus->column_fields['time_start']) = explode(' ', $focus->column_fields['dtstart'].' ');
 	list($focus->column_fields['due_date'],$focus->column_fields['time_end']) = explode(' ', $focus->column_fields['dtend'].' ');
 	$focus->column_fields['parent_id'] = $focus->column_fields['rel_id'];
-	$evfocus = CRMEntity::getInstance('Events');
-	$evfocus->retrieve_entity_info($record, 'Events');
-	$colfields = array_merge($evfocus->column_fields, $focus->column_fields);
-	$act_data = getBlocks('Events', 'detail_view', '', $colfields);
+	$act_data = getBlocks('cbCalendar', 'detail_view', '', $focus->column_fields);
+	$result = $adb->pquery('select blockid, blocklabel from vtiger_blocks where tabid=? order by blockid asc limit 1', array($tabid));
+	$block_label[$result->fields['blockid']] = $result->fields['blocklabel'];
+	$sLabelVal = getTranslatedString($result->fields['blocklabel'], 'cbCalendar');
+	$result = $adb->pquery("select *, '0' as readonly from vtiger_field where columnname in ('reminder_time','recurringtype') and tabid=?", array($tabid));
+	$col_fields = array(
+		'reminder_time' => $focus->column_fields['reminder_time'],
+		'recurringtype' => $focus->column_fields['recurringtype'],
+	);
+	$getBlockInfo = getDetailBlockInformation('cbCalendar', $result, $col_fields, $tabid, $block_label);
+	$act_data = array_merge($act_data, $getBlockInfo);
 	$finaldata = $fldlabel = array();
 	foreach ($act_data as $block => $entry) {
 		foreach ($entry as $key => $value) {
@@ -74,8 +81,8 @@ if ($activitytype == 'Emails') {
 	} else {
 		$format = $current_user->hour_format;
 	}
-	list($stdate,$sttime) = explode(' ', $finaldata['date_start'].' ');
-	list($enddate,$endtime) = explode(' ', $finaldata['due_date'].' ');
+	list($stdate,$sttime) = explode(' ', $focus->column_fields['dtstart']);
+	list($enddate,$endtime) = explode(' ', $focus->column_fields['dtend']);
 	$time_arr = getaddEventPopupTime($sttime, $endtime, $format);
 	$data = array();
 	$data['starthr'] = $time_arr['starthour'];
@@ -90,13 +97,13 @@ if ($activitytype == 'Emails') {
 	} else {
 		$data['sendnotification'] = $app_strings['LBL_NO'];
 	}
-	$data['subject'] = $finaldata['subject'];
+	$data['subject'] = $focus->column_fields['subject'];
 	$data['date_start'] = $stdate;
 	$data['due_date'] = $enddate;
-	$data['assigned_user_id'] = $finaldata['assigned_user_id'];
+	$data['assigned_user_id'] = $focus->column_fields['assigned_user_id'];
 	$data['visibility'] = (isset($finaldata['visibility']) ? $finaldata['visibility'] : '');
 	$data['activitytype'] = (isset($finaldata['activitytype']) ? $finaldata['activitytype'] : $activitytype);
-	$data['location'] = $finaldata['location'];
+	$data['location'] = $focus->column_fields['location'];
 //Calculating reminder time
 	$rem_days = 0;
 	$rem_hrs = 0;
