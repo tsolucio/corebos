@@ -95,7 +95,7 @@ class CRMEntity {
 	}
 
 	public static function getUUIDfromWSID($refval) {
-		$nocbuuid = array('Users', 'Currency', 'DocumentFolders', '');
+		$nocbuuid = array('Users', 'Currency', 'DocumentFolders', 'Groups', '');
 		list($wsid, $crmid) = explode('x', $refval);
 		if (in_array(vtws_getEntityName($wsid), $nocbuuid)) {
 			return '';
