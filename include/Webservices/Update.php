@@ -129,11 +129,17 @@ function vtws_update($element, $user) {
 		}
 	}
 	if (count($listofrelfields)>0) {
+		if ($entityName=='Emails' && $entity['parent_id']!='') {
+			unset($listofrelfields['parent_id'], $r['parent_id']);
+		}
 		$deref = unserialize(vtws_getReferenceValue(serialize($listofrelfields), $user));
 		foreach ($r as $relfield => $mods) {
 			if (!empty($entity[$relfield])) {
 				$entity[$relfield.'ename'] = $deref[$entity[$relfield]];
 			}
+		}
+		if ($entityName=='Emails' && $entity['parent_id']!='') {
+			$entity['parent_idename'] = unserialize(vtws_getReferenceValue(serialize(array($entity['parent_id'])), $user));
 		}
 	}
 	// Add attachment information
