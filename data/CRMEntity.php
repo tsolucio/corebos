@@ -94,6 +94,9 @@ class CRMEntity {
 	}
 
 	public static function getUUIDfromWSID($refval) {
+		if (empty($refval)) {
+			return '';
+		}
 		$nocbuuid = array('Users', 'Currency', 'DocumentFolders', 'Groups', '');
 		list($wsid, $crmid) = explode('x', $refval);
 		if (in_array(vtws_getEntityName($wsid), $nocbuuid)) {
@@ -104,8 +107,11 @@ class CRMEntity {
 
 	public static function getCRMIDfromUUID($refval) {
 		global $adb;
+		if (empty($refval)) {
+			return '';
+		}
 		$rs = $adb->pquery('select crmid from vtiger_crmentity where cbuuid=?', array($refval));
-		return ($rs ? $rs->fields['crmid'] : '');
+		return (($rs && $adb->num_rows($rs)>0) ? $rs->fields['crmid'] : '');
 	}
 
 	public static function getWSIDfromUUID($refval) {
@@ -114,7 +120,7 @@ class CRMEntity {
 			'select concat(id,"x",crmid) as wsid from vtiger_crmentity inner join vtiger_ws_entity on name=setype where cbuuid=?',
 			array($refval)
 		);
-		return ($rs ? $rs->fields['wsid'] : '');
+		return (($rs && $adb->num_rows($rs)>0) ? $rs->fields['wsid'] : '');
 	}
 
 	public function saveentity($module, $fileid = '') {
