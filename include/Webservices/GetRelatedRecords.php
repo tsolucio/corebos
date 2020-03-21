@@ -79,7 +79,7 @@ function getRelatedRecords($id, $module, $relatedModule, $queryParameters, $user
 	$srvwsid = vtws_getEntityID('Services').'x';
 	while ($row = $adb->fetch_array($result)) {
 		if (($module=='HelpDesk' || $module=='Faq') && $relatedModule=='ModComments') {
-			$records[] = $row;
+			$rec = $row;
 		} else {
 			if ($relatedModule=='Products') {
 				if (isset($row['productid']) && isset($row['sequence_no'])) {
@@ -94,14 +94,17 @@ function getRelatedRecords($id, $module, $relatedModule, $queryParameters, $user
 						$rec['id'] = $pdowsid.$row['productid'];
 						$rec['linetype'] = 'Products';
 					}
-					$records[] = $rec;
 				} else {
-					$records[] =  DataTransform::sanitizeData($row, $meta);
+					$rec = DataTransform::sanitizeData($row, $meta);
 				}
 			} else {
-				$records[] =  DataTransform::sanitizeData($row, $meta);
+				$rec = DataTransform::sanitizeData($row, $meta);
 			}
 		}
+		if (isset($row['cbuuid'])) {
+			$rec['cbuuid'] = $row['cbuuid'];
+		}
+		$records[] = $rec;
 	}
 	return array ('records' => $records);
 }
@@ -458,7 +461,7 @@ function __getRLQueryFields($meta, $cols = '*') {
 		}
 		$qfields .= $columnTable[$col].".$cl,";
 	}
-	$qfields = trim($qfields, ',');  // eliminate last comma
+	$qfields = $qfields.'vtiger_crmentity.cbuuid';
 	return $qfields;
 }
 
