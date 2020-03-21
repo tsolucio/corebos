@@ -67,6 +67,7 @@ function vtws_revise($element, $user) {
 	$referenceFields = $meta->getReferenceFieldDetails();
 	foreach ($referenceFields as $fieldName => $details) {
 		if (isset($element[$fieldName]) && strlen($element[$fieldName]) > 0) {
+			$element[$fieldName] = vtws_getWSID($element[$fieldName]);
 			$ids = vtws_getIdComponents($element[$fieldName]);
 			$elemTypeId = $ids[0];
 			$referenceObject = VtigerWebserviceObject::fromId($adb, $elemTypeId);
