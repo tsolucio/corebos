@@ -85,25 +85,25 @@
 												<label for="{$_FIELD->name()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
 											{/if}
 											<input data-mini="true" type="date" name="{$_FIELD->name()}" id="{$_FIELD->name()}" value="{$_FIELD->value()}" {if $_FIELD->ismandatory() eq 'M'}class="required"{/if} />
-											<div id="format_note_{$_FIELD->name()}" style="margin-bottom:25px;font-style:italic;font-size:10px;display:none;">Format: YYYY-MM-DD</div>
+											<div id="format_note_{$_FIELD->name()}" style="margin-bottom:25px;font-style:italic;font-size:10px;display:none;">{'LBL_FORMAT'|@getTranslatedString:'Mobile'}: YYYY-MM-DD</div>
 										{/if}
 										{if $_FIELD->uitype() eq '252' && $_FIELD->name() eq 'time_start'}
 											<label for="{$_FIELD->name()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
 											<input type="hidden" name="startformat" id="startformat" value="{$dateStr}" />
 											<input type="time" name="time_start" id="time_start" value="{$_FIELD->value()}" class="required" />
-											<div id="format_note_{$_FIELD->name()}" style="margin-bottom:25px;font-style:italic;font-size:10px;display:none;">Format: HH:MM (24 H)</div>
+											<div id="format_note_{$_FIELD->name()}" style="margin-bottom:25px;font-style:italic;font-size:10px;display:none;">{'LBL_FORMAT'|@getTranslatedString:'Mobile'}: HH:MM (24 H)</div>
 										{/if}
 										{if $_FIELD->uitype() eq '252' && $_FIELD->name() eq 'time_end' && ($_MODULE->name() eq 'cbCalendar' || $_MODULE->name() eq 'Timecontrol')}
 											<label for="{$_FIELD->name()}">{$_FIELD->label()|@getTranslatedString:$_MODULE->name()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
 											<input type="time" name="time_end" id="time_end" value="{$_FIELD->value()}" />
-											<div id="format_note_time_end" style="margin-bottom:25px;font-style:italic;font-size:10px;display:none;">Format: HH:MM (24 H)</div>
+											<div id="format_note_time_end" style="margin-bottom:25px;font-style:italic;font-size:10px;display:none;">{'LBL_FORMAT'|@getTranslatedString:'Mobile'}: HH:MM (24 H)</div>
 										{/if}
 										{if $_FIELD->uitype() eq '252' && $_FIELD->name() eq 'followupdt' && $_MODULE->name() eq 'cbCalendar'}
 											<label for="{$_FIELD->name()}">{$_FIELD->label()|@getTranslatedString:$_MODULE->name()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
 											{assign var=fldtime value=" "|explode:$_FIELD->value()}
 											<input data-mini="true" type="date" name="{$_FIELD->name()}" id="{$_FIELD->name()}" value="{$fldtime[0]}" {if $_FIELD->ismandatory() eq 'M'}class="required"{/if} />
 											<input type="time" name="followupdt_time" id="followupdt_time" value="{if isset($fldtime[1])}{$fldtime[1]}{/if}" />
-											<div id="format_note_followupdt_time" style="margin-bottom:25px;font-style:italic;font-size:10px;display:none;">Format: HH:MM (24 H)</div>
+											<div id="format_note_followupdt_time" style="margin-bottom:25px;font-style:italic;font-size:10px;display:none;">{'LBL_FORMAT'|@getTranslatedString:'Mobile'}: HH:MM (24 H)</div>
 										{/if}
 								{/if}
 								{if $_FIELD->uitype() eq '4'}

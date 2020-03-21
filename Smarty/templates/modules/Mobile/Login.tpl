@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <header>
-<title>Login</title> 
+<title>{'LBL_LOGIN'|@getTranslatedString:'Users'}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link REL="SHORTCUT ICON" HREF="resources/images/favicon.ico">
 <script type="text/javascript" src="../../include/sw-precache/service-worker-registration.js"></script>
@@ -28,7 +28,7 @@
 			<input name="checkbox-mini-0" id="showpw" data-mini="true" data-theme=c type="checkbox">
 			<label for="showpw">{$MOD.LBL_SHOW}</label>
 			<div data-role="button" >
-				<input  type="submit" value="Login" >
+				<input  type="submit" value="{'LBL_LOGIN'|getTranslatedString:'Users'}" >
 			</div>
 		</form>
 	</div>

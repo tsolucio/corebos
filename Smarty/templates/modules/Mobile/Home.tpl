@@ -19,7 +19,7 @@
 <script type="text/javascript" src="resources/settings.js" ></script>
 <div data-role="page" data-theme="b" id="home_page">
 	<div data-role="header" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed" class="ui-grid-b ui-responsive">
-		<a href="index.php?_operation=logout" class="ui-btn ui-corner-all ui-icon-power ui-btn-icon-notext" >Logout</a>
+		<a href="index.php?_operation=logout" class="ui-btn ui-corner-all ui-icon-power ui-btn-icon-notext" >{'LBL_LOGOUT'|@getTranslatedString}</a>
 		<h4>{$MOD.LBL_MOD_LIST}</h4>
 	</div><!-- /header -->
 	<div data-role="fieldcontain" data-mini="true">
