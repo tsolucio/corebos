@@ -16,7 +16,7 @@
 	<div id="loginTop" style="text-align:center;">
 		<img src="../../{$COMPANY_LOGO}" style="width: 15em;height: 4.2em;">
 	</div>
-	<div data-role="header"  data-theme="{$COLOR_HEADER_FOOTER}" >
+	<div data-role="header" data-theme="{$COLOR_HEADER_FOOTER}" >
 		<h4>{$COMPANY_NAME}</h4>
 	</div>
 	<div data-role="fieldcontain" class="ui-hide-label">

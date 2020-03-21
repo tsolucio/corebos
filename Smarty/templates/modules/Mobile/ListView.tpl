@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 {strip}
 <head>
-	<title>{$_MODULE->label()} {$MOD.LBL_LIST}</title> 
+	<title>{$_MODULE->label()} {$MOD.LBL_LIST}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="utf-8">
 	<link REL="SHORTCUT ICON" HREF="resources/images/favicon.ico">
-	<link rel="stylesheet" href="resources/css/jquery.mobile-1.4.5.min.css">	
+	<link rel="stylesheet" href="resources/css/jquery.mobile-1.4.5.min.css">
 	<script type="text/javascript" src="resources/jquery-1.11.2.min.js"></script>
 	<script type="text/javascript" src="resources/jquery.mobile-1.4.5.min.js"></script>
 	<script type="text/javascript" src="resources/getScrollcontent.js"></script>
@@ -22,7 +22,7 @@
 	{/if}
 </head>
 <body>
-<div data-role="page" data-theme="b"  id="list_page">
+<div data-role="page" data-theme="b" id="list_page">
 	<input type="hidden" name="modulename" id="modulename" value="{$_MODULE->name()}">
 	<input type="hidden" name="pagerlimit" id="pagerlimit" value="{$PAGELIMIT}">
 	<input type="hidden" name="view" id="view" value="{$_VIEW}">
@@ -36,11 +36,11 @@
 	<!-- header -->
 	<div data-role="header" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed">
 		{if $_MODULE->name() eq 'cbCalendar'}
-			<div style="position: absolute;right: 35px;text-align: right;"> 
+			<div style="position: absolute;right: 35px;text-align: right;">
 				<select name="fliptoggle" id="fliptoggle" data-role="slider" data-mini='true'>
-					<option value="off">{$MOD.LBL_OFF}</option> 
-					<option value="on">{$MOD.LBL_ON}</option> 
-				</select> 
+					<option value="off">{$MOD.LBL_OFF}</option>
+					<option value="on">{$MOD.LBL_ON}</option>
+				</select>
 			</div>
 			<div style="position: absolute;left: 35px;text-align: right;">
 				<select id="scopetoggle" name="scopetoggle" data-mini="true" class="select" data-native-menu="false">
@@ -49,16 +49,16 @@
 				</select>
 			</div>
 		{/if}
-		{if $_MODULE->name() neq 'Quotes' AND  $_MODULE->name() neq 'SalesOrder' AND  $_MODULE->name() neq 'Invoice' AND  $_MODULE->name() neq 'PurchaseOrder' AND  $_MODULE->name() neq 'Products'}
+		{if $_MODULE->name() neq 'Quotes' && $_MODULE->name() neq 'SalesOrder' && $_MODULE->name() neq 'Invoice' && $_MODULE->name() neq 'PurchaseOrder' && $_MODULE->name() neq 'Products'}
 			<a id="create_link" href="?_operation=create&module={$_MODULE->name()}&record=''" class="ui-btn ui-corner-all ui-icon-plus ui-btn-icon-notext" data-transition="turn">{$MOD.LBL_NEW}</a>
 		{/if}
 			<a href="#panelmenu" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
-		<h4>{$_MODULE->label()}</h4> 
+		<h4>{$_MODULE->label()}</h4>
 	</div>
 	<!-- /header -->
-	{if $_MODULE->name() eq 'cbCalendar'}	
+	{if $_MODULE->name() eq 'cbCalendar'}
 	<div id="eventCalendarNoCache" class="ui-input-text ui-body-c" width="100%"></div>
-	<div  id="view-calendar" data-theme="a">
+	<div id="view-calendar" data-theme="a">
 		<div id="calendardiv" style="display:block;" >
 			<div id="calendarcontainer">
 			</div>
@@ -66,7 +66,7 @@
 	</div>
 	{/if}
 	<div data-role="content">
-		<SELECT NAME="viewname" id="viewname" class="select" data-native-menu="false" style ="display:none"  >{$_CUSTOMVIEW_OPTION}</SELECT>
+		<SELECT NAME="viewname" id="viewname" class="select" data-native-menu="false" style ="display:none" >{$_CUSTOMVIEW_OPTION}</SELECT>
 	</div>
 
 	<!-- Search input -->
