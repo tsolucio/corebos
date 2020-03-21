@@ -206,7 +206,7 @@ class crmtogo_WS_Utils {
 		$values = vtlib_getPicklistValues('salutationtype');
 		$options = array();
 		foreach ($values as $value) {
-			$options[] = array( 'value' => $value, 'label' => $value);
+			$options[] = array('value' => $value, 'label' => $value);
 		}
 		return $options;
 	}
@@ -661,9 +661,9 @@ class crmtogo_WS_Utils {
 		$config ['theme'] = $db->query_result($result, 0, 'defaulttheme');
 		//Get organizations details
 		$companyDetails = retrieveCompanyDetails();
-		$config['company_name'] = $companyDetails["companyname"];
-		$config['company_website'] = $companyDetails["website"];
-		$config['company_logo'] = $companyDetails["companylogo"];
+		$config['company_name'] = $companyDetails['companyname'];
+		$config['company_website'] = $companyDetails['website'];
+		$config['company_logo'] = $companyDetails['companylogo'];
 		return $config;
 	}
 

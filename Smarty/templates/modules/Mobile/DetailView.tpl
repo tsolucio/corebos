@@ -65,7 +65,7 @@
 					<input type="hidden" name="{$_FIELD->name()}" id="{$_FIELD->name()}" value="{$_FIELD->valueLabel()}">
 					<div class="ui-grid-a">
 						{if ($_FIELD->uitype() eq '69' || $_FIELD->uitype() eq '69m') && $_FIELD->valueLabel() neq ''}
-							<img src="{$_FIELD->valueLabel()}" style="max-width:100%"></img>
+							<img src="{$_FIELD->valueLabel()}" style="max-width:100%">
 						{else}
 						<div class="ui-block-a">
 							{if $_MODULE->name() eq 'cbCalendar'}
