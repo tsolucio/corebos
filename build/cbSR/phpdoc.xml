@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+  <parser>
+    <target>build/cbdocs</target>
+  </parser>
+  <transformer>
+    <target>build/cbdocs</target>
+  </transformer>
+  <files>
+    <directory>.</directory>
+    <ignore>include/adodb/*</ignore>
+    <ignore>include/antlr/*</ignore>
+    <ignore>include/bunnyjs/*</ignore>
+    <ignore>include/calculator/*</ignore>
+    <ignore>include/chart.js/*</ignore>
+    <ignore>include/ckeditor/*</ignore>
+    <ignore>include/clock/*</ignore>
+    <ignore>include/csrfmagic/*</ignore>
+    <ignore>include/dropzone/*</ignore>
+    <ignore>include/fpdf/*</ignore>
+    <ignore>include/fpdi/*</ignore>
+    <ignore>include/fpdi_protection/*</ignore>
+    <ignore>include/htmlpurifier/*</ignore>
+    <ignore>include/HTTP_Session2/*</ignore>
+    <ignore>include/install/*</ignore>
+    <ignore>include/jquery*/*</ignore>
+    <ignore>include/LD/*</ignore>
+    <ignore>include/ldswc/*</ignore>
+    <ignore>include/log4php/*</ignore>
+    <ignore>include/log4php.debug/*</ignore>
+    <ignore>include/nusoap/*</ignore>
+    <ignore>include/PhpSpreadsheet/*</ignore>
+    <ignore>include/simplepie/*</ignore>
+    <ignore>include/PopulateComboValues.php"</ignore>
+    <ignore>modules/Migration/*</ignore>
+    <ignore>modules/Users/authTypes/*</ignore>
+    <ignore>modules/Calendar/iCal/*</ignore>
+    <ignore>vtlib/thirdparty/*</ignore>
+    <ignore>vtlib/ModuleDir/*</ignore>
+    <ignore>Smarty/*</ignore>
+    <ignore>user_privileges/*</ignore>
+    <ignore>jscalendar/*</ignore>
+    <ignore>install/*</ignore>
+    <ignore>cache/*</ignore>
+    <ignore>packages/*</ignore>
+    <ignore>kcfinder/*</ignore>
+    <ignore>logs/*</ignore>
+    <ignore>vendor/*</ignore>
+    <ignore>build/*</ignore>
+  </files>
+</phpdoc>
+
