@@ -65,8 +65,7 @@ class CRMEntity {
 
 	public static function getInstance($module) {
 		$modName = $module;
-		if ($module == 'Calendar' || $module == 'Events') {
-			$module = 'Calendar';
+		if ($module == 'Calendar') {
 			$modName = 'Activity';
 		}
 		// File access security check
