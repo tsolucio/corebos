@@ -138,7 +138,7 @@ class cbSurveyAnswer extends CRMEntity {
 	 */
 	public function vtlib_handler($modulename, $event_type) {
 		if ($event_type == 'module.postinstall') {
-			// TODO Handle post installation actions
+			// Handle post installation actions
 			$this->setModuleSeqNumber('configure', $modulename, 'srvya-', '0000001');
 			$relwith = array('Leads', 'Accounts', 'Contacts', 'cbSurvey', 'cbSurveyDone', 'cbSurveyQuestion');
 			$module = Vtiger_Module::getInstance($modulename);
@@ -147,15 +147,15 @@ class cbSurveyAnswer extends CRMEntity {
 				$mod->setRelatedList($module, 'cbSurveyAnswer', array('ADD'), 'get_dependents_list');
 			}
 		} elseif ($event_type == 'module.disabled') {
-			// TODO Handle actions when this module is disabled.
+			// Handle actions when this module is disabled.
 		} elseif ($event_type == 'module.enabled') {
-			// TODO Handle actions when this module is enabled.
+			// Handle actions when this module is enabled.
 		} elseif ($event_type == 'module.preuninstall') {
-			// TODO Handle actions when this module is about to be deleted.
+			// Handle actions when this module is about to be deleted.
 		} elseif ($event_type == 'module.preupdate') {
-			// TODO Handle actions before this module is updated.
+			// Handle actions before this module is updated.
 		} elseif ($event_type == 'module.postupdate') {
-			// TODO Handle actions after this module is updated.
+			// Handle actions after this module is updated.
 		}
 	}
 
