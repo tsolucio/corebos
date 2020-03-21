@@ -120,7 +120,7 @@
 										{elseif $_FIELD->name() eq 'skype'}
 											<a href="skype:{$_FIELD->valueLabel()}">{$_FIELD->valueLabel()} </a>
 										{elseif $_FIELD->uitype() eq 'crm_app_map'}
-											<a href="http://maps.google.com/maps?q={$_FIELD->valueLabel()}" target="_blank" class="ui-btn ui-corner-all ui-icon-location ui-btn-icon-right" data-rel="dialog">Google Maps: {$_FIELD->label()}
+											<a href="https://maps.google.com/maps?q={$_FIELD->valueLabel()}" target="_blank" class="ui-btn ui-corner-all ui-icon-location ui-btn-icon-right" data-rel="dialog">Google Maps: {$_FIELD->label()}
 											</a>
 										{elseif $_FIELD->uitype() eq '13'}
 											<a href="#" onclick="window.location.href ='mailto:{$_FIELD->valueLabel()}';">{$_FIELD->valueLabel()} </a>
@@ -129,7 +129,7 @@
 										{elseif $_FIELD->uitype() eq '9'}
 											{$_FIELD->valueLabel()}{if $_FIELD->name() eq 'probability'} %{/if}
 										{elseif $_FIELD->uitype() eq '17'}
-											<a href="#" onclick="window.open('http://{$_FIELD->valueLabel()}','_blank');" rel=external> {$_FIELD->valueLabel()} </a>
+											<a href="#" onclick="window.open('https://{$_FIELD->valueLabel()}','_blank');" rel=external> {$_FIELD->valueLabel()} </a>
 										{elseif ($_FIELD->uitype() eq '69' || $_FIELD->uitype() eq '69m')}
 											<!-- do nothing here for image -->
 										{elseif $_FIELD->uitype() eq '70'}
