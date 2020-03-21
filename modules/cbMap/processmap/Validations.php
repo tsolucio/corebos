@@ -538,7 +538,7 @@ class Validations extends processcbMap {
 				$error = call_user_func(array(__NAMESPACE__ .$res[1], $res[2]), $field);
 			}
 		}
-		return $error;
+		return nl2br($error);
 	}
 }
 ?>
