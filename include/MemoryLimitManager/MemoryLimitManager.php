@@ -53,6 +53,34 @@ class MemoryLimitManager {
 	}
 
 	/**
+	 * @return int
+	 */
+	public function getPHPLimitInBytes() {
+		return $this->limitFromIniInBytes;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getPHPLimitInKiloBytes() {
+		return $this->bytesInKiloBytes($this->limitFromIniInBytes);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getPHPLimitInMegaBytes() {
+		return $this->bytesInMegaBytes($this->limitFromIniInBytes);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getPHPLimitInGigaBytes() {
+		return $this->bytesInGigaBytes($this->limitFromIniInBytes);
+	}
+
+	/**
 	 * @param int $bytes
 	 */
 	public function setBufferInBytes($bytes) {
