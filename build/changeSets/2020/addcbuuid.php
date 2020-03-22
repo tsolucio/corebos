@@ -13,6 +13,7 @@
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
+require_once 'include/MemoryLimitManager/MemoryLimitManager.php';
 
 class addcbuuid extends cbupdaterWorker {
 
@@ -26,12 +27,17 @@ class addcbuuid extends cbupdaterWorker {
 			global $adb;
 			$cncrm = $adb->getColumnNames('vtiger_crmentity');
 			if (!in_array('cbuuid', $cncrm)) {
-					$this->ExecuteQuery('ALTER TABLE `vtiger_crmentity` ADD `cbuuid` char(40) default "";');
+				$this->ExecuteQuery('ALTER TABLE `vtiger_crmentity` ADD `cbuuid` char(40) default "";');
 			}
+			$manager = new MemoryLimitManager();
+			$phplimit = $manager->getPHPLimitInMegaBytes();
+			$manager->setBufferInMegaBytes(100);
+			$manager->setLimitInMegaBytes($phplimit);
 			$batch = 10000;
 			$f = CRMEntity::getInstance('Accounts');
 			$rs = $adb->query('select count(*) as cnt from vtiger_crmentity inner join vtiger_tab on setype=name and isentitytype=1 where cbuuid=""');
 			$cnt = $rs->fields['cnt'];
+			$finished = true;
 			for ($loop=0; $loop<=($cnt/$batch); $loop++) {
 				$rs=$adb->query('select crmid,setype,smcreatorid,smownerid,createdtime from vtiger_crmentity inner join vtiger_tab on setype=name and isentitytype=1 where cbuuid="" limit '.$batch);
 				while ($row = $adb->fetch_array($rs)) {
@@ -45,9 +51,16 @@ class addcbuuid extends cbupdaterWorker {
 				}
 				unset($rs);
 				$this->sendMsg('CBUUID BATCH PROCESSED '.($loop+1).'x'.$batch);
+				if ($manager->isLimitReached()) {
+					$this->sendMsgError('This changeset HAS NOT FINISHED. You must launch it again!');
+					$finished = false;
+					break;
+				}
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied(false);
+			if ($finished) {
+				$this->markApplied(false);
+			}
 		}
 		$this->finishExecution();
 	}
