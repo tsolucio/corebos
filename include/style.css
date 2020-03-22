@@ -30,6 +30,10 @@
   margin-top: 0;
 }
 
+#page-header.has-no-global-header {
+  top: 0;
+}
+
 #page-header-surplus {
   overflow: hidden;
   transition: height 150ms linear;
