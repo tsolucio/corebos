@@ -37,6 +37,11 @@ function processTree(action) {
 	document.getElementById('menuitemform').submit();
 }
 
+function processMenus(action) {
+	document.getElementById('savedmenudo').value = action;
+	document.getElementById('savedmenuform').submit();
+}
+
 function clearForm() {
 	document.getElementById('evvtmenuid').value = '';
 	document.getElementById('mparent').value = '';
@@ -81,4 +86,20 @@ function saveTree() {
 	document.getElementById('treeParents').value = parents;
 	document.getElementById('treePositions').value = positions;
 	document.getElementById('menuitemform').submit();
+}
+
+function opensavedmenu() {
+	document.getElementById('savedmenus').style.display = 'block';
+	document.getElementById('mainmenus').style.display = 'none';
+
+}
+
+function openmainmenu() {
+	document.getElementById('savedmenus').style.display = 'none';
+	document.getElementById('mainmenus').style.display = 'block';
+}
+
+function getsavedmenuname(savedname, savedkey) {
+	document.getElementById('smkey').value=savedkey;
+	document.getElementById('menuname').value=savedname;
 }
