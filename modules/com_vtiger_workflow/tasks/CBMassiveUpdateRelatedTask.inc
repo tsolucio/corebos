@@ -22,7 +22,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $current_user, $logbg, $from_wf;
+		global $adb, $current_user, $logbg, $from_wf, $currentModule;
 		$from_wf = true;
 		$logbg->debug('> CBMassiveUpdateRelatedTask');
 		$util = new VTWorkflowUtils();
@@ -30,6 +30,9 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 		$isqueue=$entity->isqueue;
 		$taskQueue = new VTTaskQueue($adb);
 		$moduleName = $entity->getModuleName();
+		if (empty($currentModule) || $currentModule!=$moduleName) {
+			$currentModule = $moduleName;
+		}
 		$entityId = $entity->getId();
 		$recordId = vtws_getIdComponents($entityId);
 		$recordId = $recordId[1];
@@ -120,8 +123,11 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 				$relationInfo = $adb->fetch_array($relationResult);
 				$params = array($recordId, $rectabid, $relatedModuleId);
 				$logbg->debug('rel func: '.$relationInfo['name'].', params: '.print_r($params, true));
+				$holdCM = $currentModule;
+				$currentModule = $moduleName;
 				$relationData = call_user_func_array(array($focus, $relationInfo['name']), $params);
 				$GetRelatedList_ReturnOnlyQuery = $holdValue;
+				$currentModule = $holdCM;
 				if (isset($relationData['query'])) {
 					$query = $relationData['query'];
 					preg_match('/[\t ]from /i', $query, $matches, PREG_OFFSET_CAPTURE);
@@ -129,8 +135,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 					$rs = $adb->query($query);
 					while ($row = $adb->fetch_array($rs)) {
 						$relId = $row['crmid'];
-						$entity = vtws_getEntityId($relmodule);
-						if ($businessMap == '' || ($businessMap == 'Condition Expression' && $focusmap->ConditionExpression($entity.'x'.$relId))) {
+						if ($businessMap == '' || ($businessMap == 'Condition Expression' && $focusmap->ConditionExpression(vtws_getEntityId($relmodule).'x'.$relId))) {
 							$focusrel[$fldmod]->id = $relId;
 							$focusrel[$fldmod]->mode = 'edit';
 							$focusrel[$fldmod]->retrieve_entity_info($relId, $relmodule, false, $from_wf);

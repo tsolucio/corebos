@@ -89,5 +89,6 @@ $mod_strings = array(
 	'Sync all active materialized views.' => 'Sync all active materialized views.',
 	'MVIEWWFAdded' => 'Materialized View Workflow Added',
 	'MVIEWWFDeleted' => 'Materialized View Workflow Deleted',
+	'condfilterformat' => 'Conditions in Filter Format',
 );
 ?>

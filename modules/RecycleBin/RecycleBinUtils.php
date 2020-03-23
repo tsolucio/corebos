@@ -135,13 +135,13 @@ function getSelectedRecordIds($input, $module, $idstring, $excludedRecords) {
 	if ($idstring=='all') {
 		$queryGenerator = new QueryGenerator($module, $current_user);
 
-		if ($input['query'] == 'true') {
+		if (isset($input['query']) && $input['query'] == 'true') {
 			$queryGenerator->addUserSearchConditions($input);
 		}
 
 		$queryGenerator->setFields(array('id'));
 		$query = $queryGenerator->getQuery();
-		$query = preg_replace("/vtiger_crmentity.deleted\s*=\s*0/i", 'vtiger_crmentity.deleted = 1', $query);
+		$query = preg_replace("/vtiger_crmentity.deleted\s*=\s*0/i", 'vtiger_crmentity.deleted=1', $query);
 		$result = $adb->pquery($query, array());
 		$storearray = array();
 

@@ -12,9 +12,8 @@
 
 {include file="Buttons_List.tpl"}
 
-<table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
+<table style="width:98%;margin:auto;">
 <tr>
-	<td valign=top align=right width=8><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 	<td class="showPanelBg" valign="top" width="100%" align=center >
 
 	<!-- MySites UI Starts -->
@@ -37,6 +36,5 @@
 	<div id="editportal_cont" style="z-index:100001;position:absolute;width:510px;"></div>
 
 	</td>
-	<td valign=top align=right width=8><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
 	</tr>
 	</table>

@@ -10,14 +10,12 @@
 -->*}
 
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
-
-<br>
+{include file='SetMenu.tpl'}
+<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
+<div class="slds-modal__container slds-p-around_none">
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody>
 	<tr>
-		<td valign="top">
-			<img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}">
-		</td>
 		<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
 			<form action="index.php" method="post" id="form">
 			<input type='hidden' name='module' value='Users'>
@@ -27,7 +25,6 @@
 			<input type='hidden' name='parenttab' value='Settings'>
 			<br>
 			<div align=center>
-				{include file='SetMenu.tpl'}
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 					<tr>
 						<td width=50 rowspan=3 valign=top><img src="include/LD/assets/icons/standard/call_60.png" alt="{$MOD.LBL_SOFTPHONE_SERVER_SETTINGS}" style="background-color: #f2cf5b;width:48px;" title="{$MOD.LBL_SOFTPHONE_SERVER_SETTINGS}"></td>
@@ -119,14 +116,12 @@
 				</table>
 			</div>
 		</td>
-		<td valign="top">
-			<img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}">
-		</td>
 	</tr>
 </tbody>
 </form>
 </table>
-
+</div>
+</section>
 {literal}
 <script>
 
@@ -173,4 +168,3 @@ function validatefn1(module){
 
 </script>
 {/literal}
-

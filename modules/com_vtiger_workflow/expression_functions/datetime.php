@@ -180,6 +180,9 @@ function __vt_sub_months($arr) {
 
 function __vt_get_date($arr) {
 	switch (strtolower($arr[0])) {
+		case 'now':
+			return date('Y-m-d H:i:s');
+			break;
 		case 'today':
 			return date('Y-m-d');
 			break;

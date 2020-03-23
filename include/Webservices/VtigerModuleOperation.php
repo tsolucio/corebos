@@ -48,7 +48,12 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
 
-		return DataTransform::filterAndSanitize($crmObject->getFields(), $this->meta);
+		$fields = $crmObject->getFields();
+		$return = DataTransform::filterAndSanitize($fields, $this->meta);
+		if (isset($fields['cbuuid'])) {
+			$return['cbuuid'] = $fields['cbuuid'];
+		}
+		return $return;
 	}
 
 	public function retrieve($id, $deleted = false) {
@@ -60,7 +65,12 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		if (!$error) {
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
-		return DataTransform::filterAndSanitize($crmObject->getFields(), $this->meta);
+		$fields = $crmObject->getFields();
+		$return = DataTransform::filterAndSanitize($fields, $this->meta);
+		if (isset($fields['cbuuid'])) {
+			$return['cbuuid'] = $fields['cbuuid'];
+		}
+		return $return;
 	}
 
 	public function update($element) {
@@ -86,7 +96,12 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		if (!$error) {
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
-		return DataTransform::filterAndSanitize($crmObject->getFields(), $this->meta);
+		$fields = $crmObject->getFields();
+		$return = DataTransform::filterAndSanitize($fields, $this->meta);
+		if (isset($fields['cbuuid'])) {
+			$return['cbuuid'] = $fields['cbuuid'];
+		}
+		return $return;
 	}
 
 	public function revise($element) {

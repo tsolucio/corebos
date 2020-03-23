@@ -22,10 +22,10 @@ class ConfigEditor {
 		if ($event_type == 'module.postinstall') {
 			$registerLink = true;
 		} elseif ($event_type == 'module.disabled') {
-			// TODO Handle actions when this module is disabled.
+			// Handle actions when this module is disabled.
 			$registerLink = false;
 		} elseif ($event_type == 'module.enabled') {
-			// TODO Handle actions when this module is enabled
+			// Handle actions when this module is enabled
 			$registerLink = true;
 		} elseif ($event_type == 'module.preuninstall') {
 			return;

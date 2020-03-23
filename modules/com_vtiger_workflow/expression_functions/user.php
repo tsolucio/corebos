@@ -15,7 +15,7 @@
  *************************************************************************************************/
 
 function __getCurrentUserID() {
-	$user = VTWorkflowUtils::previousUser();
+	$user = VTWorkflowUtils::previousUser(2);
 	if ($user) {
 		return vtws_getEntityId('Users').'x'.$user->id;
 	} else {

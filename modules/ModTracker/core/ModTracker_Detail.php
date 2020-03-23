@@ -79,11 +79,15 @@ class ModTracker_Detail {
 	}
 
 	public function diffHighlight() {
-		if ($this->name=='assigned_user_id') {
-			return StringDiff::toHTML($this->prevalue, getUserFullName($this->postvalue));
-		} else {
+		if (in_array($this->fieldInstance->fieldInfo->getUIType(), array(1,19,21))) {
 			return StringDiff::toHTML($this->prevalue, $this->postvalue);
+		} else {
+			return '';
 		}
+	}
+
+	public function diff() {
+		return $this->fieldInstance->getFieldDisplayValue($this->parent->module, $this->id, $this->fieldInstance->fieldInfo, $this->postvalue);
 	}
 
 	public function getDisplayName() {
@@ -111,8 +115,8 @@ class ModTracker_Detail {
 	}
 
 	public function getModTrackerField() {
-		$modTrackerFieldInstance = new ModTracker_Field();
-		$modTrackerFieldInstance->initialize($this);
+		$modTrackerFieldInstance = new ModTracker_Field($this);
+		$modTrackerFieldInstance->initialize();
 	}
 }
 ?>

@@ -30,14 +30,16 @@ class VTEmailTask extends VTTask {
 		return array('fromname', 'fromemail', 'replyto', 'subject', 'content', 'recepient', 'emailcc', 'emailbcc', 'attfieldnames', 'attachmentids');
 	}
 	public function after_retrieve() {
-		global $adb;
+		global $adb, $current_user;
 		$this->attachmentsinfo = array();
 		$this->dzattinfo = array();
 		if (!empty($this->attachmentids)) {
 			$GenDocActive = vtlib_isModuleActive('evvtgendoc');
 			if ($GenDocActive) {
 				include_once 'modules/evvtgendoc/OpenDocument.php';
-				$GenDocPDF = (coreBOS_Settings::getSetting('cbgendoc_server', '')!='');
+				$gendoc_url = GlobalVariable::getVariable('GenDoc_Convert_URL', '', 'evvtgendoc');
+				$gendoc_srv = coreBOS_Settings::getSetting('cbgendoc_server', '');
+				$GenDocPDF = ($gendoc_srv!='' || $gendoc_url!='');
 			} else {
 				$GenDocPDF = false;
 			}
@@ -59,7 +61,21 @@ class VTEmailTask extends VTTask {
 						$format = ($GenDocPDF ? 'pdf' : 'odt');
 						$docfname = OpenDocument::doGenDocMerge($this->entityid, $docid, $format);
 						$mergeTemplateName = $adb->query_result($docrs, 0, 'filename');
-						$name = str_replace(' ', '_', $mergeTemplateName).'_'.str_replace(' ', '_', $this->entityinfo[$this->entityid]);
+						if (GlobalVariable::getVariable('Workflow_Email_GenDoc_Attachment_Name', 'Name', $this->entitymodule)=='Number') {
+							$numfld = getModuleSequenceField($this->entitymodule);
+							if (is_null($numfld)) {
+								$name = str_replace(' ', '_', $this->entityinfo[$this->entityid]);
+							} else {
+								$queryGenerator = new QueryGenerator($this->entitymodule, $current_user);
+								$queryGenerator->setFields(array($numfld['name']));
+								$queryGenerator->addCondition('id', $this->entityid, 'e');
+								$nfq = $queryGenerator->getQuery();
+								$rsnf = $adb->query($nfq);
+								$name = str_replace(' ', '_', $rsnf->fields[$numfld['name']]);
+							}
+						} else {
+							$name = str_replace(' ', '_', $this->entityinfo[$this->entityid]);
+						}
 						$docid = OpenDocument::saveAsDocument($this->entityid, $this->entitymodule, $format, $mergeTemplateName, $docfname, $name);
 						$docrs = $adb->pquery($query, array($docid));
 						$this->attachmentids = str_replace($prevdocid, $docid, $this->attachmentids);
@@ -133,11 +149,7 @@ class VTEmailTask extends VTTask {
 		if (strlen(trim($to_email, " \t\n,")) == 0 && strlen(trim($cc, " \t\n,")) == 0 && strlen(trim($bcc, " \t\n,")) == 0) {
 			return ;
 		}
-		if (!empty($this->attachmentsinfo)) {
-			$this->after_retrieve();
-		} else {
-			$this->attachmentsinfo = '';
-		}
+		$this->after_retrieve();
 		if (!empty($this->attfieldnames)) {
 			if (substr($this->attfieldnames, -24) == ' : (Documents) filename)') {
 				$this->attfieldnames = substr($this->attfieldnames, 1, strlen($this->attfieldnames)-25);
@@ -176,6 +188,7 @@ class VTEmailTask extends VTTask {
 		$logo = (strpos($this->content, '(general : (__VtigerMeta__) logo)')===false) ? '' : '1';
 		$qrScan = (strpos($this->content, '(general : (__VtigerMeta__) scanQRCode')===false) ? '' : '1';
 		$brScan = (strpos($this->content, '(general : (__VtigerMeta__) scanBarCode')===false) ? '' : '1';
+		$element = array();
 		$element['saved_toid'] = $to_email;
 		$element['parent_type'] = $module;
 		$element['parent_id'] = $entity->getId();
@@ -191,7 +204,7 @@ class VTEmailTask extends VTTask {
 			list($wsid, $crmid) = explode('x', $emailid);
 		}
 		$rdo = send_mail($module, $to_email, $from_name, $from_email, $subject, $content, $cc, $bcc, $this->attachmentsinfo, $crmid, $logo, $replyto, $qrScan, $brScan);
-		$logbg->debug("VTEmailTask\nTo: $to_email\nFromName: $from_name\nFromEmail: $from_email\nCC: $cc\nBCC: $bcc\nResult: $rdo");
+		$logbg->debug("VTEmailTask\nTo: $to_email\nFromName: $from_name\nFromEmail: $from_email\nCC: $cc\nBCC: $bcc\nResult: $rdo\nAttInfo: ".print_r($this->attachmentsinfo, true));
 		$util->revertUser();
 	}
 
@@ -251,7 +264,7 @@ class VTEmailTask extends VTTask {
 				$result = $adb->pquery('SELECT potential_no,related_to FROM vtiger_potential WHERE potentialid=?', array($to_id));
 				$related_to = $adb->query_result($result, 0, 'related_to');
 				$potential_no = $adb->query_result($result, 0, 'potential_no');
-				$desc_name .= ' '.getTranslatedString('LBL_FROM', 'MailManager').' '.getTranslatedString('SINGLE_Potentials', 'Potential').' '.$potential_no;
+				$desc_name .= ' '.getTranslatedString('LBL_FROM', 'MailManager').' '.getTranslatedString('SINGLE_Potentials', 'Potentials').' '.$potential_no;
 				if (getSalesEntityType($related_to) == 'Accounts') {
 					$focus->column_fields['account_message'] = $related_to;
 				} elseif (getSalesEntityType($related_to) == 'Contacts') {

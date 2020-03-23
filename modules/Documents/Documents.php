@@ -512,6 +512,29 @@ class Documents extends CRMEntity {
 	}
 
 	/**
+	 * Function to retrieve the physical path of the file attached to the document
+	 */
+	public static function getAttachmentPath($docid) {
+		global $adb, $root_directory;
+		$path = '';
+		if (!empty($docid)) {
+			$SQL_att = 'SELECT at.attachmentsid, at.name, at.path
+				FROM vtiger_seattachmentsrel ar
+				INNER JOIN vtiger_attachments at ON ar.attachmentsid=at.attachmentsid
+				INNER JOIN vtiger_notes ON notesid=crmid
+				WHERE crmid=? or note_no=?';
+			$res_att = $adb->pquery($SQL_att, array($docid, $docid));
+			if ($res_att && $adb->num_rows($res_att)>0) {
+				$name   = $res_att->fields['name'];
+				$ruta   = $res_att->fields['path'];
+				$prefix = $res_att->fields['attachmentsid'].'_';
+				$path   = $root_directory.$ruta.$prefix.$name;
+			}
+		}
+		return $path;
+	}
+
+	/**
 	 * Customizing the restore procedure.
 	 */
 	public function restore($modulename, $id) {

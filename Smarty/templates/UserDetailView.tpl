@@ -14,18 +14,17 @@
 <span id="crmspanid" style="display:none;position:absolute;"  onmouseover="show('crmspanid');">
 	<a class="link"  align="right" href="javascript:;">{$APP.LBL_EDIT_BUTTON}</a>
 </span>
-
-<br>
+{if $CATEGORY eq 'Settings'}
+	{include file='SetMenu.tpl'}
+{/if}
+<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
+<div class="slds-modal__container slds-p-around_none">
 <!-- Shadow table -->
 <table class="user-detailview" style="border:0;padding: 2px 10px;">
 <tr>
-	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
 	<br>
 	<div align=center>
-		{if $CATEGORY eq 'Settings'}
-			{include file='SetMenu.tpl'}
-		{/if}
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td class="padTab" align="left">
@@ -244,12 +243,13 @@
 			</table>
 
 			</td>
-			<td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
 			</tr>
 			</table>
 
 <br>
 <div id="tempdiv" style="display:block;position:absolute;left:350px;top:200px;"></div>
+</div>
+</section>
 <!-- added for validation -->
 <script>
 var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});

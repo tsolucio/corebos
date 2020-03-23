@@ -27,7 +27,7 @@ require_once 'include/Webservices/Revise.php';
 */
 function vtws_addTicketFaqComment($id, $values, $user) {
 	global $log,$adb,$current_user;
-
+	$id = vtws_getWSID($id);
 	$webserviceObject = VtigerWebserviceObject::fromId($adb, $id);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();

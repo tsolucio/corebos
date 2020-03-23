@@ -32,6 +32,7 @@ function getBusinessActions($view, $module, $id, $linktype, $user) {
 		$parameters['CATEGORY'] = getParentTab();
 	} else {
 		if (!empty($id)) {
+			$id = vtws_getWSID($id);
 			$idComponents = vtws_getIdComponents($id);
 
 			$parameters['RECORD'] = $idComponents[1];

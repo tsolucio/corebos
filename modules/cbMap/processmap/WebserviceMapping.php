@@ -301,7 +301,7 @@ class WebserviceMapping extends cbMapcore {
 						$value .= coreBOS_Rule::evaluate($mapid, $context).$delim;
 					} else {
 						$fieldname = array_pop($fieldinfo);
-						$value.= (isset($ofields[$fieldname]) ? $ofields[$fieldname] : '').$delim;
+						$value.= (isset($ofields[$fieldname]) ? decode_html($ofields[$fieldname]) : '').$delim;
 					}
 				}
 			}

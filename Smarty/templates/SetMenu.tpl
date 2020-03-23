@@ -8,70 +8,91 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
+<script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
 {assign var='BLOCKS' value=getSettingsBlocks()}
 {assign var='FIELDS' value=getSettingsFields()}
-<table border=0 cellspacing=0 cellpadding=20 width="99%" class="settingsUI">
-	<tr>
-		<td valign=top>
-			<table border=0 cellspacing=0 cellpadding=0 width=100%>
-				<tr>
-					<td valign=top id="settingsSideMenu" width="10%" >
-						<!--Left Side Navigation Table-->
-						<table border=0 cellspacing=0 cellpadding=0 width="100%">
-{foreach key=BLOCKID item=BLOCKLABEL from=$BLOCKS}
-	{if $BLOCKLABEL neq 'LBL_MODULE_MANAGER'}
-	{assign var=blocklabel value=$BLOCKLABEL|@getTranslatedString:'Settings'}
-										<tr>
-								<td class="settingsTabHeader" nowrap>
-									{$blocklabel}
-								</td>
-							</tr>
-		{foreach item=data from=$FIELDS.$BLOCKID}
-			{if $data.link neq ''}
-				{assign var=label value=$data.name|@getTranslatedString:$data.module}
-				{if $label eq $data.name}
-				{assign var=label value=$data.name|@getTranslatedString:'Settings'}
-				{/if}
-				{if ($smarty.request.action eq $data.action && $smarty.request.module eq $data.module)}
-							<tr>
-								<td class="settingsTabSelected" nowrap>
-									<a href="{$data.link}">
-										{$label}
+{assign var="MODULELABEL" value=$MODULE|@getTranslatedString:$MODULE}
+<div id="page-header-placeholder"></div>
+<div id="page-header" class="slds-page-header slds-m-vertical_medium">
+	<div class="slds-page-header__row">
+		<div class="slds-page-header__col-title">
+			<div class="slds-media">
+				<div class="slds-media__figure">
+					<a class="hdrLink" href="index.php?action=index&module=Settings">
+						<span class="slds-icon_container slds-icon-standard-account" title="{$MODULELABEL}">
+							<svg class="slds-icon slds-page-header__icon" id="page-header-icon" aria-hidden="true">
+								<use xmlns:xlink="http://www.w3.org/1999/xlink"
+									xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#settings" />
+							</svg>
+							<span class="slds-assistive-text">{$MODULELABEL}</span>
+						</span>
+					</a>
+				</div>
+				<div class="slds-media__body">
+					<div class="slds-page-header__name">
+						<div class="slds-page-header__name-title">
+							<h1>
+								<span>{$MODULELABEL}</span>
+								<span class="slds-page-header__title slds-truncate" title="{$MODULELABEL|@addslashes}">
+									{if !empty($isDetailView) || !empty($isEditView)}
+									<span class="slds-page-header__title slds-truncate" title="{$MODULELABEL|@addslashes}">
+										<span class="slds-page-header__name-meta">[ {$TITLEPREFIX} ]</span>
+										{$MODULELABEL|textlength_check:30}
+									</span>
+									{else}
+									<a class="hdrLink" href="index.php?action=index&module=Settings">{$MODULELABEL}</a>
+									{/if}
+								</span>
+							</h1>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="slds-page-header__col-actions">
+		<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
+			<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" title="{'LBL_ACTIONS'|@getTranslatedString}" style="color:#0070d2;width:5rem;" type="button">
+			{'LBL_ACTIONS'|@getTranslatedString}
+			<svg class="slds-button__icon" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+			</svg>
+			<span class="slds-assistive-text">{'LBL_ACTIONS'|@getTranslatedString}</span>
+			</button>
+			<div class="slds-dropdown slds-dropdown_right slds-grid slds-gutters_medium" style="max-width: unset;">
+				{foreach key=BLOCKID item=BLOCKLABEL from=$BLOCKS}
+				{if $BLOCKLABEL neq 'LBL_MODULE_MANAGER'}
+					{assign var=blocklabel value=$BLOCKLABEL|@getTranslatedString:'Settings'}
+					<div class="slds-col slds-size_1-of-4">
+					<h3 class="slds-accordion__summary-heading slds-accordion__summary-action">
+						<svg class="slds-accordion__summary-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevrondown"></use>
+						</svg>
+						<span class="slds-truncate" title="{$blocklabel}">{$blocklabel}&nbsp;&nbsp;</span>
+					</h3>
+					<ul class="slds-dropdown__list" role="menu">
+						{foreach item=data from=$FIELDS.$BLOCKID}
+							{if $data.link neq ''}
+								{assign var=label value=$data.name|@getTranslatedString:$data.module}
+								{if $label eq $data.name}
+								{assign var=label value=$data.name|@getTranslatedString:'Settings'}
+								{/if}
+								<li class="slds-dropdown__item" role="presentation">
+									<a href="{$data.link}" role="menuitem" {if ($smarty.request.action eq $data.action && $smarty.request.module eq $data.module)}class="slds-has-success"{/if}>
+									<span class="slds-truncate" title="{$label}">
+										<span class="slds-assistive-text">{$label}</span>
+										<span class="slds-page-header__meta-text">{$label}</span>
+									</span>
 									</a>
-								</td>
-							</tr>
-				{else}
-							<tr>
-								<td class="settingsTabList" nowrap>
-									<a href="{$data.link}">
-										{$label}
-									</a>
-								</td>
-							</tr>
+								</li>
+							{/if}
+						{/foreach}
+					</ul>
+					</div>
 				{/if}
-			{/if}
-		{/foreach}
-	{/if}
-{/foreach}
-						</table>
-						<!-- Left side navigation table ends -->
-		
-					</td>
-					<td width="8px" valign="top"> 
-						<img src="{'panel-left.png'|@vtiger_imageurl:$THEME}" title="Hide Menu" id="hideImage" style="display:inline;cursor:pointer;" onclick="toggleShowHide_panel('showImage','settingsSideMenu'); toggleShowHide_panel('showImage','hideImage');" />
-						<img src="{'panel-right.png'|@vtiger_imageurl:$THEME}" title="Show Menu" id="showImage" style="display:none;cursor:pointer;" onclick="toggleShowHide_panel('settingsSideMenu','showImage'); toggleShowHide_panel('hideImage','showImage');"/>
-					</td>
-					<td class="small settingsSelectedUI" valign=top align=left>
-						<script type="text/javascript">
-{literal}
-							function toggleShowHide_panel(showid, hideid){
-								var show_ele = document.getElementById(showid);
-								var hide_ele = document.getElementById(hideid);
-								if(show_ele != null){ 
-									show_ele.style.display = "";
-									}
-								if(hide_ele != null) 
-									hide_ele.style.display = "none";
-							}
-{/literal}
-						</script>
+				{/foreach}
+			</div>
+		</div>
+		</div>
+		<div id="page-header-surplus"></div>
+	</div>
+</div>

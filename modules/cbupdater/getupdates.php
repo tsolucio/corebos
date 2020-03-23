@@ -36,6 +36,7 @@ if (!empty($_REQUEST['update_file'])) {
 	}
 }
 
+$adb->query("ALTER TABLE vtiger_cbupdater ADD COLUMN appcs varchar(3) DEFAULT '1'");
 if (count($cbupdate_files)>0) {
 	libxml_use_internal_errors(true);
 	foreach ($cbupdate_files as $cbupdate_file) {
@@ -73,12 +74,22 @@ if (count($cbupdate_files)>0) {
 								$focus->column_fields['execorder'] = $execorder++;
 								$focus->save('cbupdater');
 								$cbupd['cbupdaterid'] = $focus->id;
-								$adb->pquery('update vtiger_cbupdater set pathfilename=? where cbupdaterid=?', array($cbupd['filename'],$focus->id));
+								$adb->pquery('update vtiger_cbupdater set pathfilename=?,appcs="1" where cbupdaterid=?', array($cbupd['filename'],$focus->id));
 								$cbupdatesfound[] = $cbupd;
 							} else {
 								$error = true;
 								$errmsg = getTranslatedString('err_invalidchangeset', $currentModule).'<br>';
 								$errmsg .= print_r($cbupd, true);
+							}
+						} else {
+							// we check for empty pathnames
+							$sql = "select cbupdaterid
+								from vtiger_cbupdater
+								inner join vtiger_crmentity on crmid=cbupdaterid
+								where deleted=0 and (pathfilename='' or pathfilename is null) and classname=? and filename=?";
+							$rs = $adb->pquery($sql, array($cbupd['classname'], basename($cbupd['filename'], '.php')));
+							if ($rs && $adb->num_rows($rs)>0) {
+								$adb->pquery('update vtiger_cbupdater set pathfilename=? where cbupdaterid=?', array($cbupd['filename'], $rs->fields['cbupdaterid']));
 							}
 						}
 					}

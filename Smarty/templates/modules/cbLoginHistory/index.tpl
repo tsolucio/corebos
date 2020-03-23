@@ -69,6 +69,8 @@
 		</div>
 	</div>
 </div>
+<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
+<div class="slds-m-around_small slds-card">
 <div class="rptContainer" style="width:94%;margin:auto;">
 	<datatable url="index.php?module=cbLoginHistory&action=cbLoginHistoryAjax&file=getJSON" template="report_row_template">
 		<header>
@@ -106,6 +108,8 @@
 		</table>
 	</datatable>
 </div>
+</div>
+</section>
 <table id="report_row_template" hidden>
 	<tr>
 		{foreach key=dtkey item=dtheader from=$LIST_FIELDS}

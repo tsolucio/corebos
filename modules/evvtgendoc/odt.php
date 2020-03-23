@@ -65,6 +65,10 @@ if ($mergetemplate=='1') {
 	$zip = new Vtiger_Zip($zipname);
 	$file2merge = array();
 	$out = '';
+	$debuginfo = '';
+	if ($dodebug) {
+		ob_start();
+	}
 	foreach ($records as $record) {
 		if (!empty($record)) {
 			$record = preg_replace('/[^0-9]/', '', $record);
@@ -124,6 +128,11 @@ if ($mergetemplate=='1') {
 	}
 	$zip->save();
 	$smarty = new vtigerCRM_Smarty;
+	if ($dodebug) {
+		$debuginfo = ob_get_contents();
+		ob_end_clean();
+	}
+	$smarty->assign('DEBUGINFO', $debuginfo);
 	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 	$smarty->assign('THEME', $theme);
 	$smarty->assign('APP', $app_strings);

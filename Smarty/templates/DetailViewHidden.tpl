@@ -35,7 +35,6 @@
 {elseif $MODULE eq 'Contacts'}
 	<input type="hidden" name="reports_to_id">
 	<input type="hidden" name="opportunity_id">
-	<input type="hidden" name="contact_id" value="{$ID}">
 	<input type="hidden" name="parent_id" value="{$ID}">
 	<input type="hidden" name="contact_role">
 	<input type="hidden" name="task_id">
@@ -111,7 +110,7 @@
 	{/if}
 {/if}
 
-<input type="hidden" name="cbcustominfo1" value="{if isset($smarty.request.cbcustominfo1)}{$smarty.request.cbcustominfo1|@urlencode}{/if}" />
-<input type="hidden" name="cbcustominfo2" value="{if isset($smarty.request.cbcustominfo2)}{$smarty.request.cbcustominfo2|@urlencode}{/if}" />
+<input type="hidden" name="cbcustominfo1" id="cbcustominfo1" value="{if isset($smarty.request.cbcustominfo1)}{$smarty.request.cbcustominfo1|@urlencode}{/if}" />
+<input type="hidden" name="cbcustominfo2" id="cbcustominfo2" value="{if isset($smarty.request.cbcustominfo2)}{$smarty.request.cbcustominfo2|@urlencode}{/if}" />
 
 </form>

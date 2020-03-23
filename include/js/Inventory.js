@@ -134,9 +134,13 @@ function getInventoryModuleTaxRelatedInformation() {
 	var ship_country = '';
 	if (document.getElementsByName('contact_id').length != 0) {
 		contact_id= document.EditView.contact_id.value;
+	} else if (document.getElementsByName('ctoid').length != 0) {
+		contact_id= document.EditView.ctoid.value;
 	}
 	if (document.getElementsByName('account_id').length != 0) {
 		account_id= document.EditView.account_id.value;
+	} else if (document.getElementsByName('accid').length != 0) {
+		account_id= document.EditView.accid.value;
 	}
 	if (document.getElementsByName('vendor_id').length != 0) {
 		vendor_id= document.EditView.vendor_id.value;
@@ -156,6 +160,12 @@ function getInventoryModuleTaxRelatedInformation() {
 	additionalinfo = additionalinfo +'&ship_state=' + encodeURIComponent(ship_state);
 	additionalinfo = additionalinfo +'&ship_code=' + encodeURIComponent(ship_code);
 	additionalinfo = additionalinfo +'&ship_country=' + encodeURIComponent(ship_country);
+	var custompopup = ['ctoid', 'accid', 'vndid', 'ship_state', 'ship_code', 'ship_country'];
+	additionalinfo += '&cbcustompopupinfo='+custompopup.join(';');
+	if (typeof(document.getElementsByName('whid')) != 'undefined' && document.getElementsByName('whid').length != 0) {
+		whid= document.EditView.whid.value;
+		additionalinfo = additionalinfo +'&whid=' + encodeURIComponent(whid);
+	}
 	return trim(additionalinfo);
 }
 
@@ -645,7 +655,12 @@ function fnAddProductRow(module, image_path) {
 	var tableName = document.getElementById('proTab');
 	var prev = tableName.rows.length;
 	var pdoRows = document.getElementById('proTab').querySelectorAll('[id^="row"]');
-	var iPrevRowId = pdoRows.length;
+	for (var iCount=pdoRows.length; iCount>=1; iCount--) {
+		if (document.getElementById('row'+iCount) && document.getElementById('row'+iCount).style.display != 'none') {
+			var iPrevRowId = iCount;
+			break;
+		}
+	}
 	var iPrevRowIndex = pdoRows[iPrevRowId-1].rowIndex;
 	var count = pdoRows.length+1;
 	var row = tableName.insertRow(prev);
@@ -663,7 +678,6 @@ function fnAddProductRow(module, image_path) {
 	/* Product Re-Ordering Feature Code Addition Starts */
 	var iPrevCount = iPrevRowId;
 	var oPrevRow = tableName.rows[iPrevRowIndex];
-	var delete_row_count=count;
 	/* Product Re-Ordering Feature Code Addition ends */
 
 	//Delete link
@@ -1119,7 +1133,7 @@ function resetSHandAdjValues() {
  * It will be responsible for moving record up/down, 1 step at a time
  */
 function moveUpDown(sType, oModule, iIndex) {
-	var aFieldIds = Array('hidtax_row_no', 'productName', 'subproduct_ids', 'hdnProductId', 'comment', 'qty', 'listPrice', 'discount_type', 'discount_percentage', 'discount_amount', 'tax1_percentage', 'hidden_tax1_percentage', 'popup_tax_row', 'tax2_percentage', 'hidden_tax2_percentage', 'lineItemType', 'lineitem_id');
+	var aFieldIds = Array('hidtax_row_no', 'productName', 'subproduct_ids', 'hdnProductId', 'comment', 'qty', 'listPrice', 'discount_type', 'discount_percentage', 'discount_amount', 'tax1_percentage', 'hidden_tax1_percentage', 'popup_tax_row', 'tax2_percentage', 'hidden_tax2_percentage', 'lineItemType', 'lineitem_id', 'rel_lineitem_id');
 	aFieldIds = aFieldIds.concat(moreInfoFields);
 	var aContentIds = Array('qtyInStock', 'netPrice', 'subprod_names');
 	var aOnClickHandlerIds = Array('searchIcon');
@@ -1136,13 +1150,12 @@ function moveUpDown(sType, oModule, iIndex) {
 			}
 		}
 	} else {
-		for (iCount=iIndex; iCount<=iMax; iCount++) {
+		for (iCount=iIndex+1; iCount<=iMax; iCount++) {
 			if (document.getElementById('row'+iCount) && document.getElementById('row'+iCount).style.display != 'none' && document.getElementById('deleted'+iCount).value == 0) {
 				iSwapIndex = iCount;
 				break;
 			}
 		}
-		iSwapIndex += 1;
 	}
 	var iTableRowIndex = document.getElementById('row'+iIndex).rowIndex;
 	var iTableRowSwapIndex = document.getElementById('row'+iSwapIndex).rowIndex;
@@ -1418,10 +1431,14 @@ function InventorySelectAll(mod, image_pth) {
 			var accid = 0;
 			if (document.EditView.account_id != undefined) {
 				accid = document.EditView.account_id.value;
+			} else if (document.EditView.accid != undefined) {
+				accid = document.EditView.accid.value;
 			}
 			var ctoid = 0;
 			if (document.EditView.contact_id != undefined) {
 				ctoid = document.EditView.contact_id.value;
+			} else if (document.EditView.ctoid != undefined) {
+				ctoid = document.EditView.ctoid.value;
 			}
 			var _this = this;
 			var r = new XMLHttpRequest();

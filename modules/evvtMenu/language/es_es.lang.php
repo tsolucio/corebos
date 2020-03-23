@@ -31,5 +31,15 @@ $mod_strings = array(
 	'AddNewItem' => 'Añade nuevos elementos utilizando el formulario superior. Los nuevos elementos se añadirán al final del primer menú desde donde podrás moverlo y/o adaptarlo.',
 	'MenuItemPermissions' => 'Cuando se definen permisos de perfil a un elemento de menú, tendrán preferencia sobre los permisos de la aplicación.',
 	'MenuParent' => 'Superior',
+	'LBL_SAVED_Menus'=>'Menús Guardados',
+	'LBL_SAVE_CURRENT_BUTTON'=>'Guardar Actual',
+	'LBL_APPLY_BUTTON'=>'Aplicar',
+	'LBL_RENAME_BUTTON'=>'Renombrar',
+	'LBL_DOWNLOAD_BUTTON'=>'Descargar',
+	'LBL_IMPORT_BUTTON'=>'Importar',
+	'LBL_DELETE_BUTTON'=>'Eliminar',
+	'LBL_ACTIONS'=>'Acciones',
+	'LBL_MENU_BUTTON'=>'Menú',
+	'LBL_IMPORT_EXPORT_BUTTON'=>'Importar/Exportar',
 );
 ?>

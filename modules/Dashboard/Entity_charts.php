@@ -535,9 +535,9 @@ function get_graph_by_type($graph_by, $graph_title, $module, $where, $query, $wi
 		}
 
 		if ($frompage != '') {
-			return ChartUtils::getChartHTML($labels, $values, $graph_title, $target_values, $html_imagename, $width, $height, $left, $right, $top, $bottom, $Chart_Type, $Chart_position);
+			return ChartUtils::getChartHTML($labels, $values, $graph_title, $target_values, $html_imagename, $width, $height, $left, $right, $top, $bottom, $Chart_Type, $Chart_position, true, $module);
 		} else {
-			return ChartUtils::getChartHTML($labels, $values, $graph_title, $target_values, $html_imagename, $width, $height, $left, $right, $top, $bottom, $Chart_Type, $Chart_position, false);
+			return ChartUtils::getChartHTML($labels, $values, $graph_title, $target_values, $html_imagename, $width, $height, $left, $right, $top, $bottom, $Chart_Type, $Chart_position, false, $module);
 		}
 	} else {
 		sleep(1);

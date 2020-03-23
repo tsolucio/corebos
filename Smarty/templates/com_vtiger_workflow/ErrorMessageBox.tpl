@@ -11,7 +11,7 @@
 			</td>
 		</tr>
 	</table>
-	<div class="popup_content" style='text-align: left;'>		
+	<div class="popup_content" style='text-align: left;'>
 		<ol style="list-style-type: none;">
 			<li id="empty_fields_message" style="display:none">
 				<b><font color="red">*</font> {$MOD.LBL_VALIDATION_MISSING_MANDATORY_FIELDS}</b>

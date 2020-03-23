@@ -42,7 +42,6 @@ function gotoUpdateListPrice(id,pbid,proid){
 <div id="editlistprice" style="position:absolute;width:300px;"></div>
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
 <tr>
-	<td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 	<td class="showPanelBg" valign=top width=100%>
 		<!-- PUBLIC CONTENTS STARTS-->
 		<div class="small" style="padding:20px">
@@ -134,7 +133,6 @@ function gotoUpdateListPrice(id,pbid,proid){
 		</div>
 	<!-- PUBLIC CONTENTS STOPS-->
 	</td>
-	<td align=right valign=top><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
 </tr>
 </table>
 

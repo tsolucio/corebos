@@ -34,7 +34,7 @@ class VTWorkflowManager {
 
 	public function save($workflow) {
 		$adb=$this->adb;
-		if (!isset($workflow->schtypeid)) {
+		if (empty($workflow->schtypeid)) {
 			$workflow->schtypeid = 0;
 		}
 		if (!isset($workflow->schtime)) {
@@ -197,7 +197,7 @@ class VTWorkflowManager {
 
 	public function getRACRuleForRecord($moduleName, $recordid) {
 		$adb=$this->adb;
-		$not_supported = array('RecycleBin','Users','Home');
+		$not_supported = array('RecycleBin','Users','Home','com_vtiger_workflow');
 		if (in_array($moduleName, $not_supported)) {
 			return false;
 		}

@@ -571,7 +571,7 @@ function getContactName($contact_id) {
 
 /**
  * Function to get the Contact Name when a contact id is given
- * Takes the input as $contact_id - contact id
+ * Takes the input as $lead_id - lead id
  * returns the Contact Name in string format.
  */
 function getLeadName($lead_id) {
@@ -1716,10 +1716,10 @@ function setObjectValuesFromRequest($focus) {
 	$moduleName = get_class($focus);
 	$log->debug("> setObjectValuesFromRequest $moduleName");
 	if (isset($_REQUEST['record']) && (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'edit')) {
-		$focus->id = $_REQUEST['record'];
+		$focus->id = vtlib_purify($_REQUEST['record']);
 	}
 	if (isset($_REQUEST['mode'])) {
-		$focus->mode = $_REQUEST['mode'];
+		$focus->mode = vtlib_purify($_REQUEST['mode']);
 	}
 	foreach ($focus->column_fields as $fieldname => $val) {
 		if (isset($_REQUEST[$fieldname])) {
@@ -1733,6 +1733,9 @@ function setObjectValuesFromRequest($focus) {
 			$value = trim($_REQUEST[$fieldname.'_hidden']);
 			$focus->column_fields[$fieldname] = $value;
 		}
+	}
+	if (!empty($_REQUEST['cbuuid'])) {
+		$focus->column_fields['cbuuid'] = vtlib_purify($_REQUEST['cbuuid']);
 	}
 	if (isset($_REQUEST['action']) && ($_REQUEST['action'] == 'EditView' || $_REQUEST['action'] == 'EventEditView')) {
 		$cbfrommodule = $moduleName;
@@ -2732,6 +2735,26 @@ function makeRandomPassword() {
 }
 
 /**
+ * Function to get the columnname for a certain fieldname, given
+ * the fieldname and the module name
+ */
+function getColumnnameByFieldname($tabid, $fieldname) {
+	global $log;
+	$log->debug('> getColumnnameByFieldname ' . $tabid . ' ' . $fieldname);
+	$fieldinfo = VTCacheUtils::lookupFieldInfo($tabid, $fieldname);
+	if ($fieldinfo === false) {
+		getColumnFields(getTabModuleName($tabid));
+		$fieldinfo = VTCacheUtils::lookupFieldInfo($tabid, $fieldname);
+	}
+	$column = false;
+	if ($fieldinfo) {
+		$column = $fieldinfo['columnname'];
+	}
+	$log->debug('< getColumnnameByFieldname');
+	return $column;
+}
+
+/**
  * Function to get the UItype for a field by the fieldname.
  * Takes the input as $module - module name,and fieldname of the field
  * returns the uitype, integer type
@@ -2739,15 +2762,11 @@ function makeRandomPassword() {
 function getUItypeByFieldName($module, $fieldname) {
 	global $log, $adb;
 	$log->debug('> getUItypeByFieldName ' . $module);
-	$tabIdList = array();
-	//To find tabid for this module
-	$tabIdList[] = getTabid($module);
-	if ($module == 'Calendar') {
-		$tabIdList[] = getTabid('Events');
+	$uitype = false;
+	$result = $adb->pquery('select uitype from vtiger_field where tabid=? and fieldname=?', array(getTabid($module), $fieldname));
+	if ($result && $adb->num_rows($result)>0) {
+		$uitype = $result->fields['uitype'];
 	}
-	$sql = 'select uitype from vtiger_field where tabid IN (' . generateQuestionMarks($tabIdList) . ') and fieldname=?';
-	$result = $adb->pquery($sql, array($tabIdList, $fieldname));
-	$uitype = $adb->query_result($result, 0, 'uitype');
 	$log->debug('< getUItypeByFieldName');
 	return $uitype;
 }
@@ -2778,15 +2797,11 @@ function getTypeOfDataByFieldName($module, $fieldname) {
 function getUItype($module, $columnname) {
 	global $log, $adb;
 	$log->debug('> getUItype ' . $module);
-	$tabIdList = array();
-	//To find tabid for this module
-	$tabIdList[] = getTabid($module);
-	if ($module == 'Calendar') {
-		$tabIdList[] = getTabid('Events');
+	$uitype = false;
+	$result = $adb->pquery('select uitype from vtiger_field where tabid=? and columnname=?', array(getTabid($module), $columnname));
+	if ($result && $adb->num_rows($result)>0) {
+		$uitype = $result->fields['uitype'];
 	}
-	$sql = 'select uitype from vtiger_field where tabid IN (' . generateQuestionMarks($tabIdList) . ') and columnname=?';
-	$result = $adb->pquery($sql, array($tabIdList, $columnname));
-	$uitype = $adb->query_result($result, 0, 'uitype');
 	$log->debug('< getUItype');
 	return $uitype;
 }
@@ -2865,7 +2880,7 @@ function getTagCloudView($id = '') {
 function SaveTagCloudView($id = '') {
 	global $log, $adb;
 	$log->debug('> SaveTagCloudView '.$id);
-	$tag_cloud_status = vtlib_purify($_REQUEST['tagcloudview']);
+	$tag_cloud_status = isset($_REQUEST['tagcloudview']) ? vtlib_purify($_REQUEST['tagcloudview']) : '';
 
 	if ($tag_cloud_status == 'true') {
 		$tag_cloud_view = 0;
@@ -2874,14 +2889,13 @@ function SaveTagCloudView($id = '') {
 	}
 
 	if (!empty($id)) {
-		$query = "update vtiger_homestuff set visible = ? where userid=? and stufftype='Tag Cloud'";
+		$query = "update vtiger_homestuff set visible=? where userid=? and stufftype='Tag Cloud'";
 		$adb->pquery($query, array($tag_cloud_view, $id));
 	}
 
 	if (!empty($id) && !empty($_REQUEST['showtagas'])) {
 		$tag_cloud_showas = vtlib_purify($_REQUEST['showtagas']);
-		$query = 'update vtiger_users set showtagas = ? where id=?';
-		$adb->pquery($query, array($tag_cloud_showas, $id));
+		$adb->pquery('update vtiger_users set showtagas=? where id=?', array($tag_cloud_showas, $id));
 	}
 	$log->debug('< SaveTagCloudView');
 }

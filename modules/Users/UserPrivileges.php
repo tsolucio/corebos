@@ -269,8 +269,7 @@ class UserPrivileges {
 	}
 
 	public function hasGlobalViewPermission() {
-		return $this->isAdmin()
-			|| (0 == $this->profileGlobalPermission[self::GLOBAL_READ]);
+		return ($this->isAdmin() || (0 == $this->profileGlobalPermission[self::GLOBAL_READ]));
 	}
 
 	public function hasGroups() {
@@ -278,7 +277,7 @@ class UserPrivileges {
 	}
 
 	public function hasModuleAccess($tabid) {
-		return (!is_null($tabid) && 0 == $this->profileTabsPermission[$tabid]);
+		return ($this->isAdmin() || (!is_null($tabid) && 0 == $this->profileTabsPermission[$tabid]));
 	}
 
 	public function hasModulePermission($tabid, $actionid) {

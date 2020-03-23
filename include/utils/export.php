@@ -30,6 +30,7 @@ require_once 'modules/Quotes/Quotes.php';
 require_once 'modules/PurchaseOrder/PurchaseOrder.php';
 require_once 'modules/SalesOrder/SalesOrder.php';
 require_once 'include/utils/Session.php';
+require_once 'modules/com_vtiger_workflow/VTWorkflowManager.inc';
 coreBOS_Session::init();
 
 // Set the current language and the language strings, if not already set.
@@ -54,7 +55,7 @@ if (isPermitted($_REQUEST['module'], 'Export') == 'no') {
 	$allow_exports='none';
 }
 
-if ($allow_exports=='none' || ( $allow_exports=='admin' && ! is_admin($current_user) )) {
+if ($allow_exports=='none' || ($allow_exports=='admin' && !is_admin($current_user))) {
 	?>
 	<script type='text/javascript'>
 		alert("<?php echo $app_strings['NOT_PERMITTED_TO_EXPORT']?>");
@@ -205,9 +206,7 @@ function export($type) {
 		},
 		$fields_array
 	);
-	$header = implode('"'.$CSV_Separator.'"', $translated_fields_array);
-	$header = "\"" .$header;
-	$header .= "\"\r\n";
+	$header = '"'.implode('"'.$CSV_Separator.'"', $translated_fields_array)."\"\r\n";
 
 	/** Output header information */
 	echo $header;
@@ -222,15 +221,18 @@ function export($type) {
 				$value = strip_tags($value);
 				$value = str_replace('&nbsp;', '', $value);
 				$new_arr[] = $value;
+			} elseif ($type == 'com_vtiger_workflow' && $key == 'workflow_id') {
+				$wfm = new VTworkflowManager($adb);
+				$workflow = $wfm->retrieve($value);
+				$value = $wfm->serializeWorkflow($workflow);
+				$new_arr[] = base64_encode($value);
 			} elseif ($key != 'user_name') {
 				// Let us provide the module to transform the value before we save it to CSV file
 				$value = $focus->transform_export_value($key, $value);
 				$new_arr[] = preg_replace("/\"/", "\"\"", $value);
 			}
 		}
-		$line = implode('"'.$CSV_Separator.'"', $new_arr);
-		$line = "\"" .$line;
-		$line .= "\"\r\n";
+		$line = '"'.implode('"'.$CSV_Separator.'"', $new_arr)."\"\r\n";
 		/** Output each row information */
 		echo $line;
 	}
@@ -340,6 +342,8 @@ class ExportUtils {
 				$value = CurrencyField::convertToUserFormat($value, null, true);
 			} elseif ($uitype == 7 || $fieldInfo['typeofdata'] == 'N~O' || $uitype == 9) {
 				$value = number_format($value, 2, $decimal, $numsep);
+			} elseif ($uitype == 98) {
+				$value = getRoleName($value);
 			}
 		}
 		return $arr;

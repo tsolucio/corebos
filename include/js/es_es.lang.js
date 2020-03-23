@@ -420,5 +420,8 @@ var alert_arr = {
 	'ERR_Massedit' : 'Error en Edición Masiva',
 	'ProcessFINISHED' : 'Proceso Terminado',
 	'duplicatednotallowed' : 'No se permiten módulos duplicados',
-	'HAS_THIS_AS_NTH_CHILD' : 'Tiene este niño como una'
+	'HAS_THIS_AS_NTH_CHILD' : 'Tiene este niño como una',
+	'Okay': 'Vale',
+	'Failed': 'Ha fallado',
+	'Warning': 'Aviso'
 };

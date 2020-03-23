@@ -16,6 +16,7 @@ require_once 'include/Webservices/Query.php';
 
 function vtws_setrelation($relateThisId, $withTheseIds, $user) {
 	global $log,$adb;
+	$relateThisId = vtws_getWSID($relateThisId);
 	list($moduleId, $elementId) = vtws_getIdComponents($relateThisId);
 	$webserviceObject = VtigerWebserviceObject::fromId($adb, $moduleId);
 	$handlerPath = $webserviceObject->getHandlerPath();
@@ -58,6 +59,7 @@ function vtws_internal_setrelation($elementId, $moduleName, $withTheseIds) {
 	$withTheseIds = (array)$withTheseIds;
 	$focus = CRMEntity::getInstance($moduleName);
 	foreach ($withTheseIds as $withThisId) {
+		$withThisId = vtws_getWSID($withThisId);
 		list($withModuleId, $withElementId) = vtws_getIdComponents($withThisId);
 		$rsmodname = $adb->pquery('select name from vtiger_ws_entity where id=?', array($withModuleId));
 		$withModuleName = $adb->query_result($rsmodname, 0, 0);

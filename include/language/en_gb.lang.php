@@ -901,6 +901,7 @@ $app_strings = array(
 	'Due Date' => 'Due Date',
 	'Created Time' => 'Created Time',
 	'Modified Time' => 'Modified Time',
+	'cbuuid' => 'Unique Identifier',
 	'Last Modified By' => 'Last Modified By',
 	'Created By' => 'Created By',
 	'Lead Status' => 'Lead Status',

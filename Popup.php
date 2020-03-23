@@ -424,7 +424,12 @@ if (isset($where) && $where != '') {
 }
 
 if (isset($order_by) && $order_by != '') {
-	$query .= ' ORDER BY '.$order_by.' '.$sorder;
+	$tabname = getTableNameForField($currentModule, $order_by);
+	if ($tabname !== '' && $tabname != null) {
+		$query .= ' ORDER BY '.$tabname.'.'.$order_by.' '.$sorder;
+	} else {
+		$query .= ' ORDER BY '.$order_by.' '.$sorder;
+	}
 }
 
 // vtlib customization: To override module specific popup query for a given field

@@ -217,15 +217,15 @@ class InventoryDetails extends CRMEntity {
 				$taskManager->saveTask($task);
 			}
 		} elseif ($event_type == 'module.disabled') {
-			// TODO Handle actions when this module is disabled.
+			// Handle actions when this module is disabled.
 		} elseif ($event_type == 'module.enabled') {
-			// TODO Handle actions when this module is enabled.
+			// Handle actions when this module is enabled.
 		} elseif ($event_type == 'module.preuninstall') {
-			// TODO Handle actions when this module is about to be deleted.
+			// Handle actions when this module is about to be deleted.
 		} elseif ($event_type == 'module.preupdate') {
-			// TODO Handle actions before this module is updated.
+			// Handle actions before this module is updated.
 		} elseif ($event_type == 'module.postupdate') {
-			// TODO Handle actions after this module is updated.
+			// Handle actions after this module is updated.
 		}
 	}
 
@@ -435,6 +435,7 @@ class InventoryDetails extends CRMEntity {
 				}
 			}
 			$invdet_focus->column_fields['lineitem_id'] = $row['lineitem_id'];
+			$invdet_focus->column_fields['discount_amount'] = $row['discount_amount'];
 			$_REQUEST['assigntype'] = 'U';
 			$invdet_focus->column_fields['assigned_user_id'] = $current_user->id;
 			$invdet_focus->column_fields['account_id'] = $accountid;

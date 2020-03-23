@@ -6,10 +6,11 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|30/12/2010|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Ranieri Slemer Brazilian Portuguese|08/03/2020|Sao Paulo/SP/Brasil.|www.slemernrt.com.br
  ************************************************************************************/
 $mod_strings = array (
-'SMSNotifier'                 => 'Notificador SMS',
-'SINGLE_SMSNotifier'          => 'Info SMS',
+'SMSNotifier'                 => 'Disparador SMS',
+'SINGLE_SMSNotifier'          => 'Inf. SMS',
 'LBL_SMSNOTIFIER_INFORMATION' => 'Informação SMS',
 'LBL_CUSTOM_INFORMATION'      => 'Informação Personalizada',
 'Assigned To'                 => 'Atribuído à',
@@ -20,7 +21,7 @@ $mod_strings = array (
 'Related To'                  => 'Relcionado à',
 'Status'                      => 'Status',
 
-'LBL_CHECK_STATUS'            => 'Checar status',
+'LBL_CHECK_STATUS'            => 'Verificar status',
 
 'SERVER_CONFIGURATION'        => 'Configuração Servidor',
 'SERVER_CONFIGURATION_DESCRIPTION' => 'Configurar Informação Servidor SMS',
@@ -37,9 +38,9 @@ $mod_strings = array (
 'ServerNotConfigured' => 'Servidor não configurado?',
 'ReviewModuleSettings' => 'Por favor reveja as definições de SMS.',
 'ContactAdmin' => 'Por favor contacte o seu administrador',
-'SelectPhoneNumbers' => 'Select Phone Numbers',
-'SelectNumberTypes' => 'Please select the number types to send the SMS',
-'ComposeSMS' => 'Compose SMS',
-'characters' => 'characters',
+'SelectPhoneNumbers' => 'Selecione numeros telefone',
+'SelectNumberTypes' => 'Por favor, selecione para quais campos de telefone será enviado o SMS',
+'ComposeSMS' => 'Insira tetxo do SMS',
+'characters' => 'caracteres',
 );
 ?>

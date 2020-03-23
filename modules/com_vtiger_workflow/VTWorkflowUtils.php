@@ -138,9 +138,9 @@ class VTWorkflowUtils {
 	/**
 	 * Get the previous user
 	 */
-	public static function previousUser() {
-		if (is_array(self::$userStack) && count(self::$userStack)>0) {
-			return self::$userStack[count(self::$userStack)-1];
+	public static function previousUser($offset = 1) {
+		if (is_array(self::$userStack) && count(self::$userStack)>=$offset) {
+			return self::$userStack[count(self::$userStack)-$offset];
 		}
 		return false;
 	}
@@ -231,7 +231,7 @@ class VTWorkflowUtils {
 		return $modules;
 	}
 
-	public static function getModulesList($adb) {
+	public static function getModulesList($adb, $selected = '') {
 		$modules_not_supported = array('Calendar', 'Events', 'PBXManager');
 		$sql = 'select distinct vtiger_field.tabid, name
 			from vtiger_field
@@ -248,9 +248,9 @@ class VTWorkflowUtils {
 				return (strtolower(getTranslatedString($a, $a)) < strtolower(getTranslatedString($b, $b))) ? -1 : 1;
 			}
 		);
-		$module_options = '';
+		$module_options = '<option value="all" '.($selected=='' ? 'selected' : '').'>'.getTranslatedString('LBL_ALLPICKLIST').'</option>';
 		foreach ($modules as $moduleName) {
-			$module_options .= "<option value=".$moduleName.">" . getTranslatedString($moduleName, $moduleName) . "</option>";
+			$module_options .= '<option value="'.$moduleName.'"'.($selected==$moduleName ? 'selected' : '').'>' . getTranslatedString($moduleName, $moduleName) . '</option>';
 		}
 		return $module_options;
 	}

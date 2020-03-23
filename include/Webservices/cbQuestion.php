@@ -24,7 +24,7 @@ include_once 'modules/cbQuestion/cbQuestion.php';
  */
 function cbwsGetAnswer($qid, $params, $user) {
 	global $adb, $log;
-
+	$qid = vtws_getWSID($qid);
 	$webserviceObject = VtigerWebserviceObject::fromId($adb, $qid);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();

@@ -72,7 +72,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 		if ($fieldname == 'accountname' && $module != 'Accounts') {
 			$fieldname = 'account_id';
 		}
-		if ($fieldname == 'lastname' && ($module == 'SalesOrder' || $module == 'PurchaseOrder' || $module == 'Invoice' || $module == 'Quotes' || $module == 'Calendar' )) {
+		if ($fieldname == 'lastname' && ($module == 'SalesOrder' || $module == 'PurchaseOrder' || $module == 'Invoice' || $module == 'Quotes' || $module == 'Calendar')) {
 			$fieldname = 'contact_id';
 		}
 		if ($fieldname == 'productname' && $module != 'Products') {
@@ -588,6 +588,9 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 	$wfs = new VTWorkflowManager($adb);
 	$totals = array();
 	if ($navigation_array['start'] != 0) {
+		$tabid = getTabid($module);
+		include_once 'vtlib/Vtiger/Link.php';
+		$customlink_params = array('MODULE'=>$module, 'ACTION'=>vtlib_purify($_REQUEST['action']));
 		$hasGlobalReadPermission = $userprivs->hasGlobalReadPermission();
 		for ($i = 1; $i <= $noofrows; $i++) {
 			$list_header = array();
@@ -955,7 +958,21 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 						}
 					}
 				}
+
+				$customlink_params['RECORD'] = $entity_id;
+				$linksurls = BusinessActions::getAllByType($tabid, array('LISTVIEWROW'), $customlink_params, null, $entity_id);
+				if (!empty($linksurls['LISTVIEWROW'])) {
+					$linkviewrows = $linksurls['LISTVIEWROW'];
+					for ($x =0; $x < count($linkviewrows); $x++) {
+						$lvrobj = $linkviewrows[$x];
+						$linklabel = $lvrobj->linklabel;
+						$linkurl = $lvrobj->linkurl;
+						$links_info .= ' | ';
+						$links_info .= "<a href=\"$linkurl\">".getTranslatedString($linklabel, $module).'</a> ';
+					}
+				}
 			}
+
 			// Record Change Notification
 			if (method_exists($focus, 'isViewed') && GlobalVariable::getVariable('Application_ListView_Record_Change_Indicator', 1, $module)) {
 				if (!$focus->isViewed($entity_id)) {
@@ -1642,6 +1659,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						'accountid' => isset($_REQUEST['accid']) ? vtlib_purify($_REQUEST['accid']) : 0,
 						'contactid' => isset($_REQUEST['ctoid']) ? vtlib_purify($_REQUEST['ctoid']) : 0,
 						'productid' => $entity_id,
+						'related_module' => isset($_REQUEST['return_module']) ? vtlib_purify($_REQUEST['return_module']) : '',
 					);
 					list($unitprice, $dtopdo, $void) = cbEventHandler::do_filter('corebos.filter.inventory.getprice', array($unitprice, 0, $parr));
 					$sub_products = '';
@@ -1758,6 +1776,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						'accountid' => isset($_REQUEST['accid']) ? vtlib_purify($_REQUEST['accid']) : 0,
 						'contactid' => isset($_REQUEST['ctoid']) ? vtlib_purify($_REQUEST['ctoid']) : 0,
 						'productid' => $entity_id,
+						'related_module' => isset($_REQUEST['return_module']) ? vtlib_purify($_REQUEST['return_module']) : '',
 					);
 					list($unitprice, $dtopdo, $void) = cbEventHandler::do_filter('corebos.filter.inventory.getprice', array($unitprice, 0, $parr));
 					$slashes_temp_val = popup_from_html($field_val);

@@ -181,10 +181,13 @@ class DateTimeField {
 				$hour = self::twoDigit($hr);
 			}
 		} else {
+			if ((int)$hr > 12) {
+				$hr = $hr - 12;
+			}
 			if ($hr != '12') {
 				$hour = self::twoDigit((int)$hr+12);
 			} else {
-				$hour = self::twoDigit((int)$hr+1);
+				$hour = self::twoDigit((int)$hr);
 			}
 		}
 		return trim($dt . ' ' . $hour . ':' . self::twoDigit($min));

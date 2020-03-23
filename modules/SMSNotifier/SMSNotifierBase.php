@@ -125,11 +125,11 @@ class SMSNotifierBase extends CRMEntity {
 		} elseif ($event_type == 'module.enabled') {
 			$registerLinks = true;
 		} elseif ($event_type == 'module.preuninstall') {
-			// TODO Handle actions when this module is about to be deleted.
+			// Handle actions when this module is about to be deleted.
 		} elseif ($event_type == 'module.preupdate') {
-			// TODO Handle actions before this module is updated.
+			// Handle actions before this module is updated.
 		} elseif ($event_type == 'module.postupdate') {
-			// TODO Handle actions after this module is updated.
+			// Handle actions after this module is updated.
 		}
 		if ($unregisterLinks) {
 			$smsnotifierModuleInstance = Vtiger_Module::getInstance('SMSNotifier');

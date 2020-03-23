@@ -43,6 +43,7 @@ $list_report_form->assign('THEME', $theme);
 $list_report_form->assign('IMAGE_PATH', $image_path);
 $list_report_form->assign('CATEGORY', getParentTab());
 $list_report_form->assign('MODULE', $currentModule);
+$list_report_form->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $repObj = new Reports();
 $list_report_form->assign('REPT_FLDR', $repObj->sgetRptFldr('SAVED'));
 $cusFldrDtls = array();

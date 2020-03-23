@@ -13,16 +13,15 @@ function openPopup(del_roleid) {ldelim}
 	window.open("index.php?module=Users&action=UsersAjax&file=RolePopup&maskid="+del_roleid+"&parenttab=Settings","roles_popup_window","height=425,width=640,toolbar=no,menubar=no,dependent=yes,resizable =no");
 {rdelim}
 </script>
-<br>
+{include file='SetMenu.tpl'}
+<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
+<div class="slds-modal__container slds-p-around_none">
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tr>
-	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
 	<br>
 
 	<div align=center>
-
-	{include file='SetMenu.tpl'}
 
 {literal}
 <form name="newProfileForm" action="index.php" onsubmit="if(roleDeleteValidate()) { VtigerJS_DialogBox.block();} else { return false; }" method="post">
@@ -70,10 +69,10 @@ function openPopup(del_roleid) {ldelim}
 </tr>
 </table>
 </div>
-<td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
 </tr>
 </table>
-<br>
+</div>
+</section>
 <script>
 {literal}
 function roleDeleteValidate() {

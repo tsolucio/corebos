@@ -5,15 +5,14 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|01/03/2012|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese|6/12/2017|Sao Paulo/SP/Brasil.|www.slemernet.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese|4/05/2019|Sao Paulo/SP/Brasil.|www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese|13/03/2020|Sao Paulo/SP/Brasil.|www.slemernet.com.br
  ********************************************************************************/
 
 var alert_arr = {
 	'DELETE':'Deseja realmente apagar o registro selecionado?',
 	'RECORDS':' registros!',
 	'SELECT':'Por favor, selecione pelo menos uma entidade',
-	'SELECTCONDITION':'Please select at least one condition',
+	'SELECTCONDITION':'Por favor, selecione pelo menos uma condição',
 	'SELECTTEMPLATE':'Por favor, selecione ao menos um modelo de documento',
 	'SELECTMERGE':'Por favor, selecione uma entidade para mesclar!',
 	'GENDOCSAVED':'Documento salvo. Por favor verifique se ele foi criado corretanente.',
@@ -42,7 +41,7 @@ var alert_arr = {
 	'SHOULDNOTBE_EQUAL':' não deve ser igual a ',
 	'PORTAL_PROVIDE_EMAILID':'Por gentileza, forneça um e-mail válido para habilitar o usuário portal auto-serviço',
 	'ADD_CONFIRMATION':'Deseja realmente adicionar o registro selecionado ',
-	'ACCOUNTNAME_CANNOT_EMPTY':'AccountName não pode estar vazio',
+	'ACCOUNTNAME_CANNOT_EMPTY':'Nome da conta não pode estar vazio',
 	'CANT_SELECT_CONTACTS':'você não pode selecionar contatos relacionados do lead',
 	'LBL_THIS':'Este ',
 	'DOESNOT_HAVE_MAILIDS':'não tem nenhum e-mail',
@@ -110,12 +109,12 @@ var alert_arr = {
 	'LBL_DOES_NOT_END_WITH' : 'não termina com',
 	'DOES_NOT_START_WITH':'não começa com',
 	'DOES_NOT_END_WITH':'não termina com',
-	'Widget_Deleted_Sucessfully':'Widget deleted sucessfully',
+	'Widget_Deleted_Sucessfully':'Widget apagado com sucesso',
 	'LESS_OR_EQUALS':'menor ou igual',
 	'GREATER_OR_EQUALS':'maior ou igual',
 
-	'NO_SPECIAL_CHARS':'Caracteres especiais não são permitos no texto da Fatura',
-	'PLS_SELECT_VALID_FILE':'Por favor, selecione um arquivo com a seguinte extensão:\n',
+	'NO_SPECIAL_CHARS':'Caracteres especiais não são permitos no texto da fatura',
+	'PLS_SELECT_VALID_FILE':'Por favor, selecione um arquivo com a seguine extensão:\n',
 	'NO_SPECIAL':'Caracteres especiais não são permitidos',
 	'NO_QUOTES':'Cotações (\' ") e símbolo + não são permitidos ',
 	'IN_PROFILENAME':' no nome do perfil',
@@ -262,7 +261,7 @@ var alert_arr = {
 	/* Webmails */
 	'LBL_PRINT_EMAIL': 'Imprimir',
 	'LBL_DELETE_EMAIL': 'Apagar',
-	'LBL_DOWNLOAD_ATTACHMENTS': 'Download Anexos',
+	'LBL_DOWNLOAD_ATTACHMENTS': 'Baixar Anexos',
 	'LBL_QUALIFY_EMAIL': 'Qualificar',
 	'LBL_FORWARD_EMAIL': 'Encaminhar',
 	'LBL_REPLY_TO_SENDER': 'Responder remetente',
@@ -395,7 +394,7 @@ var alert_arr = {
 	'Services' : 'Serviços',
 	'LBL_Hide' : 'Ocultar',
 	'LBL_Show' : 'Mostrar',
-	'ERR_INVALID_DATE_FORMAT' : 'O formato de data deve ser: yyyy-mm-dd',
+	'ERR_INVALID_DATE_FORMAT' : 'O formato de data deve ser: dd-mm-yyyy',
 	'ERR_INVALID_MONTH' : 'Por favor entre com um mês válido.',
 	'ERR_INVALID_DAY' : 'Por favor entre com um dia válido.',
 	'ERR_INVALID_YEAR' : 'Por favor entre com 4 dígitos válidos para ano.',
@@ -421,5 +420,9 @@ var alert_arr = {
 	'OF' : 'de',
 	'ERR_Massedit' : 'Erro na edição em massa',
 	'ProcessFINISHED' : 'Processo Finalizado',
-	'duplicatednotallowed' : 'Módulos duplicados não são permitidos'
+	'duplicatednotallowed' : 'Módulos duplicados não são permitidos',
+	'HAS_THIS_AS_NTH_CHILD' : 'Tem este registro como enésimo filho',
+	'Okay': 'Ok',
+	'Failed': 'Failed',
+	'Warning': 'Warning'
 };

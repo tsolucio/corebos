@@ -55,7 +55,7 @@ $reportname = (isset($_REQUEST['reportName']) ? vtlib_purify($_REQUEST['reportNa
 $reportdescription = (isset($_REQUEST['reportDesc']) ? vtlib_purify($_REQUEST['reportDesc']) : '');
 $cbreporttype = (!empty($_REQUEST['cbreporttype']) ? vtlib_purify($_REQUEST['cbreporttype']) : '');
 $reporttype = (isset($_REQUEST['reportType']) ? vtlib_purify($_REQUEST['reportType']) : 'tabular');
-$folderid = (!empty($_REQUEST['folder']) ? vtlib_purify($_REQUEST['folder']) : !empty($_REQUEST['reportfolder']) ? vtlib_purify($_REQUEST['reportfolder']) : 1);
+$folderid = (!empty($_REQUEST['folder']) ? vtlib_purify($_REQUEST['folder']) : (!empty($_REQUEST['reportfolder']) ? vtlib_purify($_REQUEST['reportfolder']) : 1));
 //<<<<<<<report>>>>>>>>>
 
 //<<<<<<<standarfilters>>>>>>>>>
@@ -209,9 +209,11 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 					//<<<<step3 vtiger_reportsortcol>>>>>>>
 
 					//<<<<step5 standarfilder>>>>>>>
-					$ireportmodulesql = "insert into vtiger_reportdatefilter (DATEFILTERID,DATECOLUMNNAME,DATEFILTER,STARTDATE,ENDDATE) values (?,?,?,?,?)";
-					$ireportmoduleresult = $adb->pquery($ireportmodulesql, array($genQueryId, $stdDateFilterField, $stdDateFilter, $startdate, $enddate));
-					$log->debug('Reports :: Save-> saved vtiger_reportdatefilter');
+					if (!empty($stdDateFilterField) && !empty($stdDateFilter)) {
+						$ireportmodulesql = 'insert into vtiger_reportdatefilter (DATEFILTERID,DATECOLUMNNAME,DATEFILTER,STARTDATE,ENDDATE) values (?,?,?,?,?)';
+						$ireportmoduleresult = $adb->pquery($ireportmodulesql, array($genQueryId, $stdDateFilterField, $stdDateFilter, $startdate, $enddate));
+						$log->debug('Reports :: Save-> saved vtiger_reportdatefilter');
+					}
 					//<<<<step5 standarfilder>>>>>>>
 
 					//<<<<step4 columnstototal>>>>>>>

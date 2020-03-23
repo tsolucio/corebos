@@ -1,4 +1,3 @@
-{include file='com_vtiger_workflow/Header.tpl'}
 <script src="modules/{$module->name}/resources/jquery.timepicker.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/functional.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/fieldvalidator.js" type="text/javascript" charset="utf-8"></script>
@@ -24,14 +23,9 @@
 {include file='com_vtiger_workflow/ErrorMessageBox.tpl'}
 <!--Done popups-->
 
-<table border=0 cellspacing=0 cellpadding=20 width="99%" class="settingsUI">
-<tr>
-<td valign=top>
-<table border=0 cellspacing=0 cellpadding=0 width=100%>
-<tr>
-<td class="small" valign=top align=left>
-<div id="view">
-	{include file='com_vtiger_workflow/ModuleTitle.tpl'}
+{include file='com_vtiger_workflow/ModuleTitle.tpl'}
+<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
+<div id="view" class="workflows-edit slds-modal__container slds-p-around_none slds-card">
 	<form name="new_task" id="new_task_form" method="post" onsubmit="VtigerJS_DialogBox.block();">
 
 		<table class="tableHeading" width="100%" border="0" cellspacing="0" cellpadding="5">
@@ -126,5 +120,5 @@
 		<input type="hidden" name="conditions" value="" id="save_conditions_json"/>
 	</form>
 </div>
+</section>
 <div id="dump" style="display:None;"></div>
-{include file='com_vtiger_workflow/Footer.tpl'}

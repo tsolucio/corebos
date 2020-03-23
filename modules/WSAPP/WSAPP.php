@@ -25,16 +25,16 @@ class WSAPP {
 			$this->registerWsappWorkflowhandler();
 			$this->registerSynclibEventHandler();
 		} elseif ($event_type == 'module.disabled') {
-			// TODO Handle actions when this module is disabled.
+			// Handle actions when this module is disabled.
 			return;
 		} elseif ($event_type == 'module.enabled') {
-			// TODO Handle actions when this module is enabled.
+			// Handle actions when this module is enabled.
 			return;
 		} elseif ($event_type == 'module.preuninstall') {
-			// TODO Handle actions when this module is about to be deleted.
+			// Handle actions when this module is about to be deleted.
 			return;
 		} elseif ($event_type == 'module.preupdate') {
-			// TODO Handle actions before this module is updated.
+			// Handle actions before this module is updated.
 			return;
 		} elseif ($event_type == 'module.postupdate') {
 			$this->registerSynclibEventHandler();

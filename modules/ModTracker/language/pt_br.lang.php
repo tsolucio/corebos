@@ -7,18 +7,18 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 10/12/2017 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 07-apr-2018 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 13-mar-2020 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
  ********************************************************************************/
 $mod_strings = array (
-'SINGLE_ModTracker' => 'Registro de auditoria',
-'ModTracker' => 'Auditoria',
+'SINGLE_ModTracker' => 'Registro histórico - auditoria',
+'ModTracker' => 'Histórico - Auditoria',
 'Visible'=>'Visibilidade dos módulos',
 'LBL_DISABLE'=>'Desabilitado',
 'LBL_ENABLE' =>'Habilitado',
 'LBL_MODULE'=>'Módulo',
-'LBL_VIEW_ALL_RECORD'=>'Selecione os módulos relacionados?',
-'LBL_TURN_OFF_HIGHLIGHTING' => 'Desligar o destacados',
-'LBL_TURN_ON_HIGHLIGHTING' => 'Ligar o destacados',
+'LBL_VIEW_ALL_RECORD'=>'Selecionar o módulo relacionado?',
+'LBL_TURN_OFF_HIGHLIGHTING' => 'Desligar os destacados',
+'LBL_TURN_ON_HIGHLIGHTING' => 'Ligar os destacados',
 'LBL_BASIC_SETTINGS'=>'Configuração básica',
 'LBL_Field'   => 'Falhou',
 'LBL_Earlier' => 'Valor anterior',

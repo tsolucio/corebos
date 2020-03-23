@@ -1,0 +1,31 @@
+{
+    "description": "free as in freedom php component to validate if your script is reaching the allowed maximum memory usage",
+    "keywords": [
+        "bazzline",
+        "psr",
+        "psr-4",
+        "php", 
+        "component", 
+        "memory", 
+        "limit", 
+        "memory limit", 
+        "maximum memory", 
+        "memory limit manager", 
+        "memory manager", 
+        "memory limit manager", 
+        "lgpl", 
+        "free as in freedom"
+    ],
+    "license": "LGPL-3.0",
+    "name": "net_bazzline/php_component_memory_limit_manager",
+    "type": "library",
+    "authors": [
+        {
+            "email": "artodeto@bazzline.net",
+            "homepage": "https://artodeto.bazzline.et",
+            "name": "Stev Leibelt",
+            "role": "Developer"
+        }
+    ],
+    "version": "1.1.0"
+}

@@ -10,7 +10,6 @@
 
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
 <tr>
-	<td valign=top align=right width=8><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 	<td class="showPanelBg" valign="top" width="100%" align=center >
 	<br><br>
 		<table border="0" cellpadding="0" cellspacing="0" width="98%" align="center" class="mailClient mailClientBg">
@@ -29,6 +28,5 @@
 		</tr>
 		</table>
 	</td>
-	<td valign=top align=right width=8><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
 </tr>
 </table>

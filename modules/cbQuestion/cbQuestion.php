@@ -132,18 +132,18 @@ class cbQuestion extends CRMEntity {
 	 */
 	public function vtlib_handler($modulename, $event_type) {
 		if ($event_type == 'module.postinstall') {
-			// TODO Handle post installation actions
+			// Handle post installation actions
 			$this->setModuleSeqNumber('configure', $modulename, 'cbQ-', '0000001');
 		} elseif ($event_type == 'module.disabled') {
-			// TODO Handle actions when this module is disabled.
+			// Handle actions when this module is disabled.
 		} elseif ($event_type == 'module.enabled') {
-			// TODO Handle actions when this module is enabled.
+			// Handle actions when this module is enabled.
 		} elseif ($event_type == 'module.preuninstall') {
-			// TODO Handle actions when this module is about to be deleted.
+			// Handle actions when this module is about to be deleted.
 		} elseif ($event_type == 'module.preupdate') {
-			// TODO Handle actions before this module is updated.
+			// Handle actions before this module is updated.
 		} elseif ($event_type == 'module.postupdate') {
-			// TODO Handle actions after this module is updated.
+			// Handle actions after this module is updated.
 		}
 	}
 
@@ -192,7 +192,24 @@ class cbQuestion extends CRMEntity {
 				foreach ($params as $param => $value) {
 					$conds = str_replace($param, $value, $conds);
 				}
-				$query .= $conds;
+				if ($q->column_fields['condfilterformat']=='1') { // filter conditions
+					$queryGenerator = new QueryGenerator($q->column_fields['qmodule'], $current_user);
+					$fields = array();
+					$cols = explode(',', decode_html(str_replace(' ', '', $q->column_fields['qcolumns'])));
+					foreach ($cols as $col) {
+						if (strpos($col, '.')) {
+							list($t, $col) = explode('.', $col);
+						}
+						$fields[] = $col;
+					}
+					$queryGenerator->setFields($fields);
+					$conds = json_decode($conds, true);
+					$conditions = $queryGenerator->constructAdvancedSearchConditions($q->column_fields['qmodule'], $conds);
+					$queryGenerator->addUserSearchConditions($conditions);
+					$query = $queryGenerator->getQuery();
+				} else {
+					$query .= $conds;
+				}
 			}
 			if (!empty($q->column_fields['groupby'])) {
 				$query .= ' GROUP BY '.$q->column_fields['groupby'];
@@ -366,6 +383,7 @@ class cbQuestion extends CRMEntity {
 			}
 			$chartID = uniqid('chartAns');
 			$chart .= '<script src="include/chart.js/Chart.min.js"></script>
+				<link rel="stylesheet" type="text/css" media="all" href="include/chart.js/Chart.min.css">
 				<script src="include/chart.js/randomColor.js"></script>';
 			$chart .= '<div style="width: 80%;">';
 			$chart .= '<h2>'.$title.' - '.$type.' Chart</h2>';

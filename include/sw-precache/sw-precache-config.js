@@ -1,7 +1,14 @@
 module.exports = {
+	"inlineWorkboxRuntime": true,
+	"mode": "development",
+	"sourcemap": false,
+	"skipWaiting": true,
+	"clientsClaim": true,
 	"globDirectory": ".",
+	"globIgnores": [
+		'include/LD/assets/icons/utility/advertising.svg'
+	],
 	"globPatterns": [
-		'include/sw-precache/service-worker-registration.js',
 		'jscalendar/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
 		'modules/Calendar4You/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
 		'modules/Mobile/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
@@ -13,12 +20,14 @@ module.exports = {
 		'include/dropzone/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
 		'include/images/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
 		'include/js/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
+		'include/components/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
 		'include/chart.js/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
 		'include/jquery/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
 		'include/csrfmagic/csrf-magic.js',
 		'include/style.css',
 		'include/print.css',
 		'include/jquery.steps.css',
+		'include/ldswc/vaadingrid/vaadingrid.js',
 		'modules/com_vtiger_workflow/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
 		'modules/GlobalVariable/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
 		'modules/evvtMenu/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
@@ -70,6 +79,7 @@ module.exports = {
 		'modules/Products/Products.js',
 		'modules/ModComments/ModComments.js',
 		'modules/ModComments/ModCommentsCommon.js',
+		'modules/MsgTemplate/MsgTemplate.js',
 		'modules/ProjectTask/ProjectTask.js',
 		'modules/Project/Project.js',
 		'modules/Assets/Assets.js',
@@ -101,6 +111,7 @@ module.exports = {
 		'modules/Faq/Faq.js',
 		'modules/ModTracker/ModTracker.js',
 		'modules/ModTracker/ModTrackerCommon.js',
+		'modules/ModTracker/language/*.js',
 		'modules/SMSNotifier/workflow/VTSMSTask.js',
 		'modules/SMSNotifier/SMSNotifier.js',
 		'modules/SMSNotifier/SMSConfigServer.js',
@@ -127,6 +138,5 @@ module.exports = {
 		'include/freetag/tagcanvas.min.js',
 		'include/freetag/tagcanvas.js'
 	],
-	"swDest": "service-worker.js",
-	"swSrc": "include/sw-precache/workboxtpl.js"
+	"swDest": "service-worker.js"
 };

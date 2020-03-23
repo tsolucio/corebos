@@ -17,6 +17,8 @@ $smarty = new vtigerCRM_Smarty;
 
 $smarty->assign('MOD', return_module_language($current_language, 'Settings'));
 $smarty->assign('CMOD', $mod_strings);
+$smarty->assign('MODULE', $currentModule);
+$smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('THEME', $theme);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('IMAGE_PATH', $image_path);

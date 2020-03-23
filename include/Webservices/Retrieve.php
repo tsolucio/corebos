@@ -12,20 +12,7 @@ include_once 'include/Webservices/getRecordImages.php';
 
 function vtws_retrieve($id, $user) {
 	global $log, $adb;
-	list($wsid, $crmid) = explode('x', $id);
-	if ((vtws_getEntityId('Calendar')==$wsid || vtws_getEntityId('Events')==$wsid) && getSalesEntityType($crmid)=='cbCalendar') {
-		$id = vtws_getEntityId('cbCalendar') . 'x' . $crmid;
-	}
-	if (vtws_getEntityId('cbCalendar')==$wsid && getSalesEntityType($crmid)=='Calendar') {
-		$rs = $adb->pquery('select activitytype from vtiger_activity where activityid=?', array($crmid));
-		if ($rs && $adb->num_rows($rs)==1) {
-			if ($adb->query_result($rs, 0, 0)=='Task') {
-				$id = vtws_getEntityId('Calendar') . 'x' . $crmid;
-			} else {
-				$id = vtws_getEntityId('Events') . 'x' . $crmid;
-			}
-		}
-	}
+	$id = vtws_getWSID($id);
 	$webserviceObject = VtigerWebserviceObject::fromId($adb, $id);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
@@ -70,11 +57,17 @@ function vtws_retrieve($id, $user) {
 		}
 	}
 	if (count($listofrelfields)>0) {
+		if ($entityName=='Emails' && $entity['parent_id']!='') {
+			unset($listofrelfields['parent_id'], $r['parent_id']);
+		}
 		$deref = unserialize(vtws_getReferenceValue(serialize($listofrelfields), $user));
 		foreach ($r as $relfield => $mods) {
 			if (!empty($entity[$relfield])) {
 				$entity[$relfield.'ename'] = $deref[$entity[$relfield]];
 			}
+		}
+		if ($entityName=='Emails' && $entity['parent_id']!='') {
+			$entity['parent_idename'] = unserialize(vtws_getReferenceValue(serialize(array($entity['parent_id'])), $user));
 		}
 	}
 	// Add attachment information

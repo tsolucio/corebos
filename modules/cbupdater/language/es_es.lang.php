@@ -53,6 +53,9 @@ $mod_strings = array(
 	'err_noupdatesselected' => 'No se han seleccionado actualizaciones para aplicar!',
 	'err_invalidclass' => 'Una clase con el nombre dado no existe! Revisa la configuración de la actualización.',
 	'err_nomethod' => 'La actualización no contiene una estructura válida: falta el método de actualización. Revisa el código de actualización.',
+	'err_noupdatedesc' => 'Esta actualización manual no tiene instrucciones.',
+	'err_noupdateformat' => 'Esta actualización manual no tiene un formato correcto en las instrucciones.',
+	'err_opnotfound' => 'La operación de este cambio no existe.',
+	'Application Change' => 'Cambio de Aplicación',
 );
-
 ?>

@@ -57,7 +57,7 @@ function vtws_sendRecoverPassword($username) {
 			from vtiger_contactdetails
 			inner join vtiger_portalinfo on id=contactid
 			where isactive=1 and user_name=?', array($username));
-	if (!ctors || $adb->num_rows($ctors)==0) {
+	if (!$ctors || $adb->num_rows($ctors)==0) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALIDUSERPWD, 'Invalid username: username not found or not active');
 	}
 	require_once 'modules/Emails/mail.php';
@@ -89,6 +89,7 @@ function vtws_getPortalUserInfo($user) {
 			$usrinfo[$fld] = $user->column_fields[$fld];
 		}
 	}
+	$usrinfo['id'] = vtws_getEntityId('Users').'x'.$user->id;
 	return $usrinfo;
 }
 
@@ -213,29 +214,50 @@ function vtws_getReferenceValue($strids, $user) {
 	global $log, $adb, $default_charset;
 	$ids=unserialize($strids);
 	$log->debug('> vtws_getReferenceValue '.$strids);
-	foreach ($ids as $id) {
-		list($wsid,$realid)=explode('x', $id);
-		$rs = $adb->pquery('select name from vtiger_ws_entity where id=?', array($wsid));
-		$modulename = $adb->query_result($rs, 0, 0);
-		if ($modulename=='DocumentFolders') {
-			$rs1 = $adb->pquery('select foldername from vtiger_attachmentsfolder where folderid = ?', array($realid));
-			$result[$id]=array('module'=>$modulename,'reference'=>html_entity_decode($adb->query_result($rs1, 0, 0), ENT_QUOTES, $default_charset));
-		} elseif ($modulename=='Groups') {
-			$rs1 = $adb->pquery('select groupname from vtiger_groups where groupid = ?', array($realid));
-			$result[$id]=array('module'=>$modulename,'reference'=>$adb->query_result($rs1, 0, 0));
-		} else {
-			if ($modulename == 'Currency') {
-				$entityinfo[$realid] = getCurrencyName($realid, true);
+	foreach ($ids as $idref) {
+		if (strpos($idref, '|')>0) {
+			$idref = explode('|', trim($idref, '|'));
+		}
+		foreach ((array) $idref as $id) {
+			list($wsid,$realid)=explode('x', $id);
+			$rs = $adb->pquery('select name from vtiger_ws_entity where id=?', array($wsid));
+			$modulename = $adb->query_result($rs, 0, 0);
+			if ($modulename=='DocumentFolders') {
+				$rs1 = $adb->pquery('select foldername from vtiger_attachmentsfolder where folderid=?', array($realid));
+				$result[$id]=array(
+					'module'=>$modulename,
+					'reference'=>html_entity_decode($adb->query_result($rs1, 0, 0), ENT_QUOTES, $default_charset),
+					'cbuuid' => '',
+				);
+			} elseif ($modulename=='Groups') {
+				$rs1 = $adb->pquery('select groupname from vtiger_groups where groupid=?', array($realid));
+				$result[$id]=array(
+					'module'=>$modulename,
+					'reference'=>$adb->query_result($rs1, 0, 0),
+					'cbuuid' => '',
+				);
 			} else {
-				$entityinfo = getEntityName($modulename, $realid);
-				if (isset($entityinfo[$realid])) {
-					$entityinfo[$realid] = html_entity_decode($entityinfo[$realid], ENT_QUOTES, $default_charset);
+				$cbuuid = '';
+				if ($modulename == 'Currency') {
+					$entityinfo[$realid] = getCurrencyName($realid, true);
+				} else {
+					$entityinfo = getEntityName($modulename, $realid);
+					if (isset($entityinfo[$realid])) {
+						$entityinfo[$realid] = html_entity_decode($entityinfo[$realid], ENT_QUOTES, $default_charset);
+						if ($modulename != 'Users') {
+							$cbuuid = CRMEntity::getUUIDfromCRMID($realid);
+						}
+					}
 				}
+				if (empty($entityinfo[$realid])) {
+					$entityinfo[$realid] = '';
+				}
+				$result[$id]=array(
+					'module'=>$modulename,
+					'reference'=>$entityinfo[$realid],
+					'cbuuid' => $cbuuid,
+				);
 			}
-			if (empty($entityinfo[$realid])) {
-				$entityinfo[$realid] = '';
-			}
-			$result[$id]=array('module'=>$modulename,'reference'=>$entityinfo[$realid]);
 		}
 	}
 	$log->debug('< vtws_getReferenceValue');
@@ -428,26 +450,17 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 			$params = array($tabid);
 		} else {
 			$profileList = getCurrentUserProfileList();
-			$params = array();
 			$query  = 'SELECT DISTINCT vtiger_field.fieldname
-			FROM vtiger_field
-			INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid
-			INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid = vtiger_field.fieldid';
-
-			if ($module == 'Calendar') {
-				$query .=' WHERE vtiger_field.tabid in (9,16) and vtiger_field.presence in (0,2)';
-			} else {
-				$query .=' WHERE vtiger_field.tabid = ? and vtiger_field.presence in (0,2)';
-				$params[] = $tabid;
-			}
-
-			$query .=' AND vtiger_profile2field.visible = 0
-			AND vtiger_profile2field.visible = 0
-			AND vtiger_def_org_field.visible = 0
-			AND vtiger_profile2field.profileid IN ('. generateQuestionMarks($profileList) .')
-			AND vtiger_field.fieldname IN ('. generateQuestionMarks($field_list) .')';
-
-			array_push($params, $profileList, $field_list);
+				FROM vtiger_field
+				INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid
+				INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
+				WHERE vtiger_field.tabid=? and vtiger_field.presence in (0,2)
+				AND vtiger_profile2field.visible = 0
+				AND vtiger_profile2field.visible = 0
+				AND vtiger_def_org_field.visible = 0
+				AND vtiger_profile2field.profileid IN ('. generateQuestionMarks($profileList) .')
+				AND vtiger_field.fieldname IN ('. generateQuestionMarks($field_list) .')';
+			$params = array($tabid, $profileList, $field_list);
 		}
 
 		$result = $adb->pquery($query, $params);
@@ -458,18 +471,10 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 	//constructing the uitype and columnname array
 	$ui_col_array=array();
 
-	$params = array();
-	$query = 'SELECT uitype, columnname, fieldname FROM vtiger_field ';
-
-	if ($module == 'Calendar') {
-		$query .=' WHERE vtiger_field.tabid in (9,16) and vtiger_field.presence in (0,2)';
-	} else {
-		$query .=' WHERE vtiger_field.tabid = ? and vtiger_field.presence in (0,2)';
-		$params[] = $tabid;
-	}
-	$query .= ' AND fieldname IN ('. generateQuestionMarks($field_list).') ';
-	$params[] = $field_list;
-
+	$query = 'SELECT uitype, columnname, fieldname
+		FROM vtiger_field
+		WHERE vtiger_field.tabid=? and vtiger_field.presence in (0,2) AND fieldname IN ('. generateQuestionMarks($field_list).') ';
+	$params = array($tabid, $field_list);
 	$result = $adb->pquery($query, $params);
 	$num_rows=$adb->num_rows($result);
 	for ($i=0; $i<$num_rows; $i++) {
@@ -759,24 +764,6 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 									$value = '';
 								}
 							}
-						} elseif ($module == 'Calendar' && ($fieldname!='taskstatus' && $fieldname!='eventstatus')) {
-							if ($activitytype == 'Task') {
-								if (getFieldVisibilityPermission('Calendar', $current_user->id, $fieldname) == '0') {
-									$list_result_count = $i-1;
-									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
-									$value = evvt_strip_html_links($value);
-								} else {
-									$value = '';
-								}
-							} else {
-								if (getFieldVisibilityPermission('Events', $current_user->id, $fieldname) == '0') {
-									$list_result_count = $i-1;
-									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
-									$value = evvt_strip_html_links($value);
-								} else {
-									$value = '';
-								}
-							}
 						} else {
 							$list_result_count = $i-1;
 							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
@@ -786,9 +773,6 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 					$list_header[$name] = $value;
 				}
 			}
-			$varreturnset = '';
-
-			$varreturnset = $returnset;
 			$webserviceEntityId=vtyiicpng_getWSEntityId($module);
 			$list_header['id']=$webserviceEntityId.$entity_id;
 			$list_header['search_module_name']=$module;
@@ -984,40 +968,40 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 
 	$r = $adb->query("
 		SELECT 
-		    vtiger_products.productname AS name, 
-		    vtiger_products.divisible AS divisible, 
-		    'Products' AS type, 
-		    vtiger_products.vendor_part_no AS ven_no, 
-		    vtiger_products.cost_price AS cost_price, 
-		    vtiger_products.mfr_part_no AS mfr_no, 
-		    vtiger_products.qtyinstock AS qtyinstock, 
-		    {$prod_aliasquery}
-		    vtiger_crmentity.deleted AS deleted, 
-		    vtiger_crmentity.crmid AS id, 
-		    vtiger_products.unit_price AS unit_price 
-		    FROM vtiger_products 
-			INNER JOIN vtiger_crmentity ON vtiger_products.productid = vtiger_crmentity.crmid 
-			INNER JOIN vtiger_productcf ON vtiger_products.productid = vtiger_productcf.productid 
+			vtiger_products.productname AS name,
+			vtiger_products.divisible AS divisible,
+			'Products' AS type,
+			vtiger_products.vendor_part_no AS ven_no,
+			vtiger_products.cost_price AS cost_price,
+			vtiger_products.mfr_part_no AS mfr_no,
+			vtiger_products.qtyinstock AS qtyinstock,
+			{$prod_aliasquery}
+			vtiger_crmentity.deleted AS deleted,
+			vtiger_crmentity.crmid AS id,
+			vtiger_products.unit_price AS unit_price
+			FROM vtiger_products
+			INNER JOIN vtiger_crmentity ON vtiger_products.productid = vtiger_crmentity.crmid
+			INNER JOIN vtiger_productcf ON vtiger_products.productid = vtiger_productcf.productid
 			".getNonAdminAccessControlQuery('Products', $current_user)."
 			WHERE ({$productsearchquery}) 
 			{$prodcondquery} 
 			AND vtiger_products.discontinued = 1 AND vtiger_crmentity.deleted = 0
 		UNION
 		SELECT
-		    vtiger_service.servicename AS name, 
-		    vtiger_service.divisible AS divisible, 
-		    'Services' AS type,
-		    '' AS ven_no, 
-		    '' AS mfr_no,
-		    0 AS qtyinstock,
-		    '' AS cost_price,
-		    {$serv_aliasquery}
-		    vtiger_crmentity.deleted AS deleted, 
-		    vtiger_crmentity.crmid AS id, 
-		    vtiger_service.unit_price AS unit_price 
-		    FROM vtiger_service 
-			INNER JOIN vtiger_crmentity ON vtiger_service.serviceid = vtiger_crmentity.crmid 
-			INNER JOIN vtiger_servicecf ON vtiger_service.serviceid = vtiger_servicecf.serviceid 
+			vtiger_service.servicename AS name,
+			vtiger_service.divisible AS divisible,
+			'Services' AS type,
+			'' AS ven_no,
+			'' AS mfr_no,
+			0 AS qtyinstock,
+			'' AS cost_price,
+			{$serv_aliasquery}
+			vtiger_crmentity.deleted AS deleted,
+			vtiger_crmentity.crmid AS id,
+			vtiger_service.unit_price AS unit_price
+			FROM vtiger_service
+			INNER JOIN vtiger_crmentity ON vtiger_service.serviceid = vtiger_crmentity.crmid
+			INNER JOIN vtiger_servicecf ON vtiger_service.serviceid = vtiger_servicecf.serviceid
 			".getNonAdminAccessControlQuery('Services', $current_user)."
 			WHERE ({$servicesearchquery}) 
 			{$servcondquery} 
@@ -1031,6 +1015,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		'accountid' => isset($_REQUEST['accid']) ? vtlib_purify($_REQUEST['accid']) : 0,
 		'contactid' => isset($_REQUEST['ctoid']) ? vtlib_purify($_REQUEST['ctoid']) : 0,
 		'productid' => 0,
+		'related_module' => $sourceModule,
 	);
 	while ($prodser = $adb->fetch_array($r)) {
 		$unitprice = $prodser['unit_price'];
@@ -1066,7 +1051,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		while ($mcinfo = $adb->fetch_array($multic)) {
 			$mc[$mcinfo['currencyid']] = array(
 				'converted_price' => number_format((float)$mcinfo['converted_price'], $cur_user_decimals, '.', ''),
-				'actual_price' => number_format((float)$mcinfo['actual_price'], $cur_user_decimals, '.', ''),
+				'actual_price' => number_format((float)$unitprice, $cur_user_decimals, '.', ''),
 			);
 		}
 		$ret_prodser['pricing']['multicurrency'] = $mc;
@@ -1244,7 +1229,12 @@ function getGlobalSearch($term, $searchin, $limit, $user) {
 			$rsp = array();
 			foreach ($rfields as $rf) {
 				if (strpos($rf, '.')>0) { // other module reference field
-					$colum_name = strtolower(str_replace('.', '', $rf));
+					list($cmod, $cnme) = explode('.', $rf);
+					if ($cmod=='Users') {
+						$colum_name = $cnme;
+					} else {
+						$colum_name = strtolower(str_replace('.', '', $rf));
+					}
 				} else {
 					$colum_name = $mod_fields[$rf]->getColumnName();
 				}

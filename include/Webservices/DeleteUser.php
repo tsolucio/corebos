@@ -29,13 +29,13 @@ function vtws_deleteUser($id, $newOwnerId, $user) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Id specified is incorrect');
 	}
 
-	if (!$meta->hasPermission(EntityMeta::$DELETE, $id)) {
+	if (!is_admin($user) || !$meta->hasPermission(EntityMeta::$DELETE, $id)) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
 	}
 
 	$idComponents = vtws_getIdComponents($id);
 	if (!$meta->exists($idComponents[1])) {
-		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record you are trying to access is not found, idComponent='.$idComponents);
+		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record you are trying to access is not found: '.$id);
 	}
 
 	if ($meta->hasWriteAccess()!==true) {
@@ -45,14 +45,16 @@ function vtws_deleteUser($id, $newOwnerId, $user) {
 	$newIdComponents = vtws_getIdComponents($newOwnerId);
 	if (empty($newIdComponents[1])) {
 		//force the default user to be the default admin user.
-		//added cause eazybusiness team is sending this value empty
-		$newIdComponents[1] = 1;
+		$newIdComponents[1] = Users::getActiveAdminId();
+	}
+	if (!$meta->exists($newIdComponents[1])) {
+		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Transfer user record you are trying to access is not found: '.$newOwnerId);
 	}
 	vtws_transferOwnership($idComponents[1], $newIdComponents[1]);
-	//delete from user vtiger_table;
+	//delete from user table;
 	vtws_runQueryAsTransaction('delete from vtiger_users where id=?', array($idComponents[1]), $result);
 
 	VTWS_PreserveGlobal::flush();
-	return  array('status'=>'successful');
+	return array('status'=>'successful');
 }
 ?>

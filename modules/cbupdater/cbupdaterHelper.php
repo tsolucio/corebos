@@ -61,21 +61,21 @@ EOM;
 
 function cbupdater_dowork_finishExecution($update_count, $success_count, $failure_count) {
 	echo <<<EOT
-<br /><br /><hr>
-<table width="35%" border="0" cellpadding="5" cellspacing="0" align="center" class="small">
-	<tr>
-	<td width="75%" align="right" nowrap>Total Number of updates executed : </td>
-	<td width="25%" align="left"><b>$update_count</b></td>
-	</tr>
-	<tr>
-	<td align="right">Correct Updates : </td>
-	<td align="left"><b style="color:#006600;">$success_count</b></td>
-	</tr>
-	<tr>
-	<td align="right">Failed Updates : </td>
-	<td align="left"><b style="color:#FF0000;">$failure_count</b></td>
-	</tr>
-</table>
+<hr>
+<article class="slds-card slds-m-left_x-large slds-m-right_x-large slds-m-top_small slds-m-bottom_x-large slds-p-around_small">
+	<div class="slds-grid slds-gutters">
+	<div class="slds-col slds-size_2-of-8">Total Number of updates executed : </div>
+	<div class="slds-col slds-size_6-of-8"><b>$update_count</b></div>
+	</div>
+	<div class="slds-grid slds-gutters">
+	<div class="slds-col slds-size_2-of-8">Correct Updates : </div>
+	<div class="slds-col slds-size_6-of-8"><b style="color:#006600;">$success_count</b></div>
+	</div>
+	<div class="slds-grid slds-gutters">
+	<div class="slds-col slds-size_2-of-8">Failed Updates : </div>
+	<div class="slds-col slds-size_6-of-8"><b style="color:#FF0000;">$failure_count</b></div>
+	</div>
+</article>
 EOT;
 }
 ?>

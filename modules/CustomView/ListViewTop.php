@@ -88,7 +88,7 @@ function getKeyMetrics($maxval, $calCnt) {
 	if (isset($metriclists)) {
 		foreach ($metriclists as $metriclist) {
 			$value=array();
-			$CVname = (strlen($metriclist['name']) > 20) ? (substr($metriclist['name'], 0, 20).'...') : $metriclist['name'];
+			$CVname = textlength_check($metriclist['name'], 20);
 			$mlisturl = 'index.php?action=ListView&module='.$metriclist['module'].'&viewname='.$metriclist['id'];
 			$value[]='<a href="'.$mlisturl.'">'.$CVname . '</a> <font style="color:#6E6E6E;">('. $metriclist['user'] .')</font>';
 			$value[]='<a href="'.$mlisturl.'">'.getTranslatedString($metriclist['module']). '</a>';

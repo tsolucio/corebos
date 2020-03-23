@@ -3692,7 +3692,16 @@ function modulesWithEmailField() {
 }
 
 function getInventoryModules() {
-	return array('Invoice','Quotes','PurchaseOrder','SalesOrder','Issuecards', 'Receiptcards');
+	$otherIM = GlobalVariable::getVariable('Inventory_Other_Modules', '');
+	$otherIM = explode(',', $otherIM);
+	array_walk(
+		$otherIM,
+		function (&$val, $idx) {
+			$val = trim($val);
+		}
+	);
+	$nativeIM = array('Invoice','Quotes','PurchaseOrder','SalesOrder','Issuecards', 'Receiptcards');
+	return array_merge($nativeIM, $otherIM);
 }
 
 /**

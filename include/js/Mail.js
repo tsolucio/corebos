@@ -68,6 +68,7 @@ function set_return_emails(entity_id, email_id, parentname, emailadd, emailadd2,
 	if (emailadd != '') {
 		if (emailfield=='default') {
 			window.opener.document.EditView.parent_id.value = window.opener.document.EditView.parent_id.value+entity_id+'@'+email_id+'|';
+			window.opener.document.EditView.listofids.value = window.opener.document.EditView.listofids.value+':'+entity_id;
 			var parentnamevalue = trim(window.opener.document.EditView.parent_name.value);
 			if (parentnamevalue != '' && parentnamevalue.slice(-1)!=',') {
 				parentnamevalue += ',';

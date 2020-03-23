@@ -91,7 +91,7 @@ if (count($cbupdate_files)>0) {
 								$focus->save('cbupdater');
 								$cbupd['cbupdaterid'] = $focus->id;
 								$cbupdate_ids = $cbupdate_ids . $focus->id . ',';
-								$adb->pquery('update vtiger_cbupdater set pathfilename=? where cbupdaterid=?', array($cbupd['filename'],$focus->id));
+								$adb->pquery('update vtiger_cbupdater set pathfilename=?,appcs="1" where cbupdaterid=?', array($cbupd['filename'],$focus->id));
 								$cbupdatesfound[] = $cbupd;
 							} else {
 								$error = 1;

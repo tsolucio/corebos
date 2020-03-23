@@ -60,6 +60,7 @@ if (isset($idlist)) {
 			$focus->retrieve_entity_info($recordid, $currentModule);
 			$focus->mode = 'edit';
 			$focus->id = $recordid;
+			$_REQUEST['record'] = $recordid;
 			foreach ($focus->column_fields as $fieldname => $val) {
 				$fldname = $fieldname.'_mass_edit_check';
 				if (isset($params[$fldname])) {

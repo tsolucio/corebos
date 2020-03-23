@@ -100,5 +100,9 @@ class VtigerWebserviceObject {
 	public function getHandlerClass() {
 		return $this->handlerClass;
 	}
+
+	public function getUUID($crmid) {
+		return CRMEntity::getUUIDfromCRMID($crmid);
+	}
 }
 ?>

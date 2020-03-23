@@ -146,6 +146,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'The maximum number of characters of a value to show in the tooltip. The default value is 35.',
 ),
+'ToolTip_NumberOfComments' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Module Functionality',
+	'values' => '',
+	'definition' => 'The maximum number of comments to show in the tooltip. The default value is 5.',
+),
 'Debug_Send_VtigerCron_Error' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'CSV EMail',
@@ -545,6 +552,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Show approximate last git commit date after the application version number.',
 ),
+'Application_UI_CoverImage' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'file path',
+	'definition' => 'Image to use as back ground cover.',
+),
 'Document_Folder_View' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
@@ -629,6 +643,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'The number of units that is set when creating a new product line in inventory modules. The default value is 1.',
 ),
+'Inventory_Quantity_Precision' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'The number of decimals to use in the quantity field of the inventory lines. The default value is set to the current user decimal settings.',
+),
 'Inventory_Service_Default_Units' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Decimal',
@@ -642,6 +663,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'Products | Services',
 	'definition' => 'When creating a new inventory module record, the first product line that is shown will be a Product or a Service depending on the value of the variable.',
+),
+'Inventory_Other_Modules' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'comma separated list of other inventory modules',
+	'definition' => 'Inventory modules are special due to their product lines, this variable will permit you to add that type of functionality to your custom modules by adding it here.',
 ),
 'Report_Send_Scheduled_ifEmpty' => array(
 	'status' => 'Implemented',
@@ -1108,9 +1136,16 @@ $GlobalVariableDefinitons = array(
 'EMail_CustomCurrentDate_Format' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
-	'category' => 'Aplicación',
+	'category' => 'Application',
 	'values' => 'valid PHP date format string',
 	'definition' => 'Format to apply to $custom-currentdate$ variable in email templates. Accepts any valid date format string from PHP. By default leave it empty to get the month in text, day and year.',
+),
+'EMail_Less_Strict_ContentClean' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Apply or not a strict clean of the HTML we receive from the compose email body. The default is to apply a less strict clean (1).',
 ),
 'Workflow_Send_Email_ToCCBCC' => array(
 	'status' => 'Implemented',
@@ -1118,6 +1153,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Testing',
 	'values' => '',
 	'definition' => 'If this variable is defined and contains a comma separated list of emails, ALL workflow emails will be sent to this list.',
+),
+'Workflow_Email_GenDoc_Attachment_Name' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Name|Number',
+	'definition' => 'When merging a GenDoc workflow email attachment, the name used for the attachment will be the Entity Name field (Name) or the Entity Number field (Number) concatenated with the template name.',
 ),
 'Workflow_GeoDistance_Country_Default' => array(
 	'status' => 'Implemented',
@@ -1440,6 +1482,27 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'All | Default | None',
 	'definition' => 'In group tax mode will permit selecting the activated taxes. By default, the "All" value is applied which is the behavior before the existence of this variable. "All" calculates all active taxes, "None", sets all taxes to 0 and "Default" activates the taxes marked as default in settings',
+),
+'Graph_DataLabels' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'None | Value | Percentage | ValuePercentage',
+	'definition' => 'This will permit us to show or not data on the application graphs. On each section/bar of the graph we will be able to show the value, the percentage or both.',
+),
+'Graph_DataLabels_Color' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'CSS Color Definition',
+	'definition' => 'Defines the color of the data label to use on the bar/section. By default white is set.',
+),
+'Graph_ColorScheme' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'https://nagix.github.io/chartjs-plugin-colorschemes/colorchart.html',
+	'definition' => 'Defines the color scheme to use when drawing graphs. By default tableau.Tableau10 is set.',
 ),
 );
 

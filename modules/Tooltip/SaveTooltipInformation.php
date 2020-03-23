@@ -89,7 +89,7 @@ function getDetailViewForTooltip($fieldid, $checkedFields) {
 function getFieldLabels($checkedFields) {
 	global $adb;
 	$data = array();
-	$sql = 'select * from vtiger_field where fieldid in ('.generateQuestionMarks($checkedFields).') and vtiger_field.presence in (0,2)';
+	$sql = 'select tabid,fieldlabel from vtiger_field where fieldid in ('.generateQuestionMarks($checkedFields).') and vtiger_field.presence in (0,2)';
 	$result = $adb->pquery($sql, array($checkedFields));
 	$count = $adb->num_rows($result);
 	// to fix the localization of strings
@@ -97,6 +97,9 @@ function getFieldLabels($checkedFields) {
 	$module = getTabModuleName($tabid);
 	for ($i=0; $i<$count; $i++) {
 		$data[] = getTranslatedString($adb->query_result($result, $i, 'fieldlabel'), $module);
+	}
+	if (in_array(-1, $checkedFields)) {
+		$data[] = getTranslatedString('ModComments', 'ModComments');
 	}
 	return $data;
 }

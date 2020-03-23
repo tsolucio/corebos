@@ -200,7 +200,7 @@ class GlobalVariable extends CRMEntity {
 	 */
 	public function vtlib_handler($modulename, $event_type) {
 		if ($event_type == 'module.postinstall') {
-			// TODO Handle post installation actions
+			// Handle post installation actions
 			$this->setModuleSeqNumber('configure', $modulename, 'glb-', '0000001');
 			// register webservice functionality
 			require_once 'include/Webservices/Utils.php';
@@ -223,15 +223,15 @@ class GlobalVariable extends CRMEntity {
 				echo 'WS Operation: <b>'.$operationInfo['name'].'</b> already registered<br>';
 			}
 		} elseif ($event_type == 'module.disabled') {
-			// TODO Handle actions when this module is disabled.
+			// Handle actions when this module is disabled.
 		} elseif ($event_type == 'module.enabled') {
-			// TODO Handle actions when this module is enabled.
+			// Handle actions when this module is enabled.
 		} elseif ($event_type == 'module.preuninstall') {
-			// TODO Handle actions when this module is about to be deleted.
+			// Handle actions when this module is about to be deleted.
 		} elseif ($event_type == 'module.preupdate') {
-			// TODO Handle actions before this module is updated.
+			// Handle actions before this module is updated.
 		} elseif ($event_type == 'module.postupdate') {
-			// TODO Handle actions after this module is updated.
+			// Handle actions after this module is updated.
 		}
 	}
 
@@ -337,7 +337,7 @@ class GlobalVariable extends CRMEntity {
 		$key = 'gvcache'.$var.$module.$gvuserid;
 		list($value,$found) = VTCacheUtils::lookupCachedInformation($key);
 		if ($found) {
-			self::$validationinfo[] = "variable found in cache";
+			self::$validationinfo[] = 'variable found in cache';
 			return $value;
 		}
 		$value='';
@@ -415,6 +415,62 @@ class GlobalVariable extends CRMEntity {
 		self::$validationinfo[] = '---';
 		self::$validationinfo[] = "return default value give: $default";
 		return $default;
+	}
+
+	/* returns true if the given variable affects the given module and user
+	 * param $var: the ID of the variable
+	 * param $module: module to search in
+	 * param $userid: user to apply for
+	 * returns: boolean
+	 */
+	public static function isAppliable($var, $module = '', $gvuserid = '') {
+		global $adb, $current_user, $currentModule, $installationStrings;
+		if (!is_object($adb) || is_null($adb->database) || !is_numeric($var) || isset($installationStrings)) {
+			return false;
+		}
+		if (empty($gvuserid) && !empty($current_user)) {
+			$gvuserid = $current_user->id;
+		}
+		if (empty($gvuserid) || !is_numeric($gvuserid) || $gvuserid<0) {
+			return false;
+		}
+		if (empty($module)) {
+			$module = $currentModule;
+		}
+		$sql = 'SELECT default_check,mandatory,module_list,in_module_list,smownerid
+			FROM vtiger_globalvariable
+			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid
+			WHERE vtiger_crmentity.deleted=0 and globalvariableid=?';
+		$rs = $adb->pquery($sql, array($var));
+		if (!$rs || $adb->num_rows($rs)==0) {
+			return false;
+		}
+		$smownerid = $rs->fields['smownerid'];
+		$moduleList = $rs->fields['module_list'];
+		$inModuleList = ($rs->fields['in_module_list']=='1');
+		$appliesForModule = (!$inModuleList || $moduleList==$module || strpos($moduleList, $module.' ')!==false || strpos($moduleList, ' '.$module.' ')!==false || strpos($moduleList, ' '.$module)!==false);
+		if ($appliesForModule && ($rs->fields['mandatory']=='1' || $rs->fields['default_check']=='1' || $smownerid==$gvuserid)) {
+			return true;
+		}
+
+		$sql = 'SELECT 1
+			FROM vtiger_globalvariable
+			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid
+			INNER JOIN vtiger_user2role ON vtiger_user2role.userid=?
+			WHERE globalvariableid=? and '."concat(rolegv, ' ') like concat('%', vtiger_user2role.roleid, ' %')";
+		$rs = $adb->pquery($sql, array($gvuserid, $var));
+		if ($appliesForModule && $rs && $adb->num_rows($rs)>0) {
+			return true;
+		}
+
+		require_once 'include/utils/GetUserGroups.php';
+		$UserGroups = new GetUserGroups();
+		$UserGroups->getAllUserGroups($gvuserid);
+		if ($appliesForModule && count($UserGroups->user_groups)>0 && in_array($smownerid, $UserGroups->user_groups)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public static function getValidationInfo() {

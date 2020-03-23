@@ -15,21 +15,8 @@ function vtws_revise($element, $user) {
 	if (empty($element['id'])) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Id specified is incorrect');
 	}
+	$element['id'] = vtws_getWSID($element['id']);
 	$idList = vtws_getIdComponents($element['id']);
-	if ((vtws_getEntityId('Calendar')==$idList[0] || vtws_getEntityId('Events')==$idList[0]) && getSalesEntityType($idList[1])=='cbCalendar') {
-		$idList[0] = vtws_getEntityId('cbCalendar') . 'x' . $idList[1];
-	}
-	if (vtws_getEntityId('cbCalendar')==$idList[0] && getSalesEntityType($idList[1])=='Calendar') {
-		$rs = $adb->pquery('select activitytype from vtiger_activity where activityid=?', array($idList[1]));
-		if ($rs && $adb->num_rows($rs)==1) {
-			if ($adb->query_result($rs, 0, 0)=='Task') {
-				$idList[0] = vtws_getEntityId('Calendar') . 'x' . $idList[1];
-			} else {
-				$idList[0] = vtws_getEntityId('Events') . 'x' . $idList[1];
-			}
-		}
-	}
-
 	$webserviceObject = VtigerWebserviceObject::fromId($adb, $idList[0]);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
@@ -39,7 +26,7 @@ function vtws_revise($element, $user) {
 	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 	$meta = $handler->getMeta();
 	$entityName = $meta->getObjectEntityName($element['id']);
-
+	$wsAttachments = array();
 	if (!empty($element['attachments'])) {
 		foreach ($element['attachments'] as $fieldname => $attachment) {
 			$filepath = $root_directory.'cache/'.$attachment['name'];
@@ -51,6 +38,7 @@ function vtws_revise($element, $user) {
 				'error' => 0,
 				'size' => $attachment['size']
 			);
+			$wsAttachments[] = $filepath;
 		}
 		unset($element['attachments']);
 	}
@@ -79,6 +67,7 @@ function vtws_revise($element, $user) {
 	$referenceFields = $meta->getReferenceFieldDetails();
 	foreach ($referenceFields as $fieldName => $details) {
 		if (isset($element[$fieldName]) && strlen($element[$fieldName]) > 0) {
+			$element[$fieldName] = vtws_getWSID($element[$fieldName]);
 			$ids = vtws_getIdComponents($element[$fieldName]);
 			$elemTypeId = $ids[0];
 			$referenceObject = VtigerWebserviceObject::fromId($adb, $elemTypeId);
@@ -116,10 +105,10 @@ function vtws_revise($element, $user) {
 
 	$entity = $handler->revise($element);
 	VTWS_PreserveGlobal::flush();
-	if (!empty($_FILES)) {
-		foreach ($_FILES as $file) {
-			if (file_exists($file['tmp_name'])) {
-				unlink($file['tmp_name']);
+	if (!empty($wsAttachments)) {
+		foreach ($wsAttachments as $file) {
+			if (file_exists($file)) {
+				@unlink($file);
 			}
 		}
 	}

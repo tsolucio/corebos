@@ -395,8 +395,8 @@ public class UnoService {
             
             // Operations
             XRefreshable xRefreshable = ((XRefreshable)UnoRuntime.queryInterface(XRefreshable.class, xTextDocument));
-            unoService.includeDocs(xComponent, data);
-            xRefreshable.refresh();
+            //unoService.includeDocs(xComponent, data);
+            //xRefreshable.refresh();
             unoService.insertIndexes(xComponent);
             xRefreshable.refresh();
             unoService.updateIndexes(xComponent);

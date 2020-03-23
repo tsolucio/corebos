@@ -15,7 +15,7 @@
 	<meta name="robots" content="noindex">
 	<title>{$USER} - {$MODULE_NAME|@getTranslatedString:$MODULE_NAME} - {$coreBOS_app_name}</title>
 	<link REL="SHORTCUT ICON" HREF="{$COMPANY_DETAILS.favicon}">
-	<style type="text/css">@import url("themes/{$THEME}/style.css");</style>
+	<link rel="stylesheet" type="text/css" media="all" href="themes/{$THEME}/style.css">
 	{if $Application_JSCalendar_Load neq 0}<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">{/if}
 	<link rel="stylesheet" href="include/print.css" type="text/css" media="print" />
 	<link rel="stylesheet" href="include/LD/assets/styles/salesforce-lightning-design-system.css" type="text/css" />
@@ -24,7 +24,7 @@
 	<link rel="stylesheet" href="include/style.css" type="text/css" />
 </head>
 {include file='BrowserVariables.tpl'}
-{include file="Components.tpl"}
+{include file='Components/Components.tpl'}
 <body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small style="min-width:1100px; width: 100%"> 
 	<script type="text/javascript" src="include/sw-precache/service-worker-registration.js"></script>
 	<script type="text/javascript" src="include/jquery/jquery.js"></script>

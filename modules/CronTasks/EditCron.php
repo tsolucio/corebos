@@ -12,7 +12,7 @@ require_once 'config.inc.php';
 require_once 'vtlib/Vtiger/Cron.php';
 require_once 'config.inc.php';
 global $mod_strings, $app_strings, $current_language, $theme;
-$theme_path="themes/".$theme."/";
+$theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
 
 $smarty = new vtigerCRM_Smarty;
@@ -24,11 +24,11 @@ if (isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 	$cron_freq =  $cronTask->getFrequency();
 	$cron_daily =  $cronTask->getdaily();
 	$cron_desc = $cronTask->getDescription();
-	$lastend = explode(" ", $cronTask->getLastEndDateTime());
+	$lastend = explode(' ', $cronTask->getLastEndDateTime());
 	if (!isset($lastend[1])) {
 		$lastend[1] = '00:00';
 	}
-	$hourminsec = explode(":", $lastend[1]);
+	$hourminsec = explode(':', $lastend[1]);
 	$hourmin = $hourminsec[0].':'.$hourminsec[1];
 	$cron = array();
 	$cron['label'] = $label;

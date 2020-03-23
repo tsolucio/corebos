@@ -25,39 +25,38 @@ td.showPanelBg div.small table.lvtBg tbody tr td table.small {
 	<input type="hidden" name="return_action" value="ListView">
 	<input type="hidden" name="mode" value="save">
 	<table border=0 cellspacing=0 cellpadding=0 width="100%">
-    <tr>
-        <td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
+		<tr>
 			<td class="showPanelBg" valign="top" width="100%" style="padding:05px;">
 				<div class="small" style="padding:30px;width:100%;position:relative;">
 					<table border=0 cellspacing=1 cellpadding=0 width="100%" class="lvtBg" >
-			<tr>
-				<td>
-								<table border=0 cellspacing=0 cellpadding=0 width="95%" class="small" >
-					<!-- Tab Links -->
-						<tr>
-										<td class="dvtSelectedCell" nowrap>{'LBL_CUSTOMERPORTAL_SETTINGS'|@getTranslatedString:$MODULE}</td>
-							<td class="dvtTabCache" width="100%">&nbsp;</td>
-						</tr>
-					<!-- Acutal Contents -->
-						<tr>
-										<td colspan="2">
-											<table border=0 cellspacing=0 cellpadding=10 width="100%" align="center" class="dvtContentSpace" style='border-bottom: 0'>
-												<tr>
-													<td align="left">
-								<div id='portallist'>
-								{include file="modules/CustomerPortal/BasicSetttingsContents.tpl"}
-								</div>
-							</td>
-						</tr>
-						</table>
-										</td>
-						</tr>
-						</table>
-				</td>
-			</tr>
-			</table>
-		</div>
-		</td>
-	</tr>
+					<tr>
+						<td>
+							<table border=0 cellspacing=0 cellpadding=0 width="95%" class="small" >
+							<!-- Tab Links -->
+								<tr>
+									<td class="dvtSelectedCell" nowrap>{'LBL_CUSTOMERPORTAL_SETTINGS'|@getTranslatedString:$MODULE}</td>
+									<td class="dvtTabCache" width="100%">&nbsp;</td>
+								</tr>
+							<!-- Acutal Contents -->
+								<tr>
+									<td colspan="2">
+										<table border=0 cellspacing=0 cellpadding=10 width="100%" align="center" class="dvtContentSpace" style='border-bottom: 0'>
+											<tr>
+												<td align="left">
+													<div id='portallist'>
+													{include file="modules/CustomerPortal/BasicSetttingsContents.tpl"}
+													</div>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					</table>
+				</div>
+			</td>
+		</tr>
 	</table>
 </form>

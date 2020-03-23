@@ -146,6 +146,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Número máximo de caracteres de un valor que se mostrarán en la ayuda emergente. El valor por defecto es 35.',
 ),
+'ToolTip_NumberOfComments' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'Funcionalidad Módulo',
+	'values' => '',
+	'definition' => 'El número máximo de comentarios para mostrar en la ayuda emergente. El valor predeterminado es 5.',
+),
 'Debug_Send_VtigerCron_Error' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'CSV EMail',
@@ -546,6 +553,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Mostrar la última fecha aproximada de git después del número de versión de la aplicación.',
 ),
+'Application_UI_CoverImage' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'ruta de archivo',
+	'definition' => 'Imagen para usar como fondo.',
+),
 'Document_Folder_View' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
@@ -630,6 +644,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'El número de unidades que se establece al crear una nueva línea de productos en módulos de inventario. El valor predeterminado es 1.',
 ),
+'Inventory_Quantity_Precision' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'Aplicación',
+	'values' => '',
+	'definition' => 'El número de decimales para usar en el campo de cantidad de las líneas de inventario. El valor predeterminado se establece en la configuración decimal del usuario actual.',
+),
 'Inventory_Service_Default_Units' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Decimal',
@@ -643,6 +664,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => 'Products | Services',
 	'definition' => 'Al crear un nuevo registro de módulo de inventario, la primera línea de producto que se muestra será un Producto o un Servicio dependiendo del valor de esta variable.',
+),
+'Inventory_Other_Modules' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'lista separada por comas de módulos con soporte de líneas de producto',
+	'definition' => 'Los módulos de inventario son especiales debido a sus líneas de productos, esta variable le permitirá agregar ese tipo de funcionalidad a tus módulos personalizados añadiendolo aquí.',
 ),
 'Report_Send_Scheduled_ifEmpty' => array(
 	'status' => 'Implementada',
@@ -1113,12 +1141,26 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Cadena de formato de fecha PHP válida',
 	'definition' => 'Formato a aplicar a la variable $custom-currentdate$ en las plantillas de email. Acepta cualquier cadena de formato de fecha válida de PHP. Por defecto dejar vacio para obtener el mes en texto, dia y año.',
 ),
+'EMail_Less_Strict_ContentClean' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Aplicar o no una limpieza estricta del HTML que recibimos del cuerpo del correo electrónico redactado. El valor predeterminado es aplicar una limpieza menos estricta (1).',
+),
 'Workflow_Send_Email_ToCCBCC' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Email CSV',
 	'category' => 'Testing',
 	'values' => '',
 	'definition' => 'Si esta variable está definida y contiene una lista separada por comas de correos electrónicos, TODOS los correos electrónicos de los flujos de trabajo se enviarán a esta lista.',
+),
+'Workflow_Email_GenDoc_Attachment_Name' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'Name|Number',
+	'definition' => 'Al fusionar una plantilla GenDoc adjunto a un correo electrónico de flujo de trabajo, el nombre utilizado para el archivo adjunto será el campo Nombre de la entidad (Name) o el campo Número de entidad (Number) concatenados con el nombre de la plantilla.',
 ),
 'Workflow_GeoDistance_Country_Default' => array(
 	'status' => 'Implementada',
@@ -1441,6 +1483,27 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => 'All | Default | None',
 	'definition' => 'En el modo de impuestos GRUPO permitirá seleccionar los impuestos activados. Por defecto, se aplica el valor "Todos", que es el comportamiento antes de la existencia de esta variable. "Todos" calcula todos los impuestos activos, "Ninguno", establece todos los impuestos a 0 y "Predeterminado" activa los impuestos marcados como predeterminados en la configuración',
+),
+'Graph_DataLabels' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'None | Value | Percentage | ValuePercentage',
+	'definition' => 'Esta variable nos permitirá mostrar o no datos en los gráficos de la aplicación. En cada sección/barra del gráfico podremos mostrar el valor, el porcentaje o ambos.',
+),
+'Graph_DataLabels_Color' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'Definición de Color CSS',
+	'definition' => 'Define el color de la etiqueta de datos para usar en la barra/sección del gráfico. Por defecto, se utiliza el color blanco.',
+),
+'Graph_ColorScheme' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'https://nagix.github.io/chartjs-plugin-colorschemes/colorchart.html',
+	'definition' => 'Define el esquema de color a utilizar cuando se dibujan gráficos. Por defecto, se utiliza el esquema tableau.Tableau10.',
 ),
 );
 

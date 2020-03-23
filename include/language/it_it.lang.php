@@ -896,6 +896,7 @@ $app_strings = array (
   'Due Date' => 'Data Chiusura',
   'Created Time' => 'Orario creazione',
   'Modified Time' => 'Orario modifica',
+  'cbuuid' => 'Unique Identifier',
   'Last Modified By' => 'Last Modified By',
   'Created By' => 'Creato da',
   'Lead Status' => 'Stato Lead',

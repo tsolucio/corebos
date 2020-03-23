@@ -87,8 +87,8 @@ function vtws_getUserAccessibleGroups($moduleId, $user) {
 		$rowCount = $adb->num_rows($result);
 		for ($i = 0; $i < $rowCount; $i++) {
 			$nameArray = $adb->query_result_rowdata($result, $i);
-			$groupId=$nameArray["groupid"];
-			$groupName=$nameArray["groupname"];
+			$groupId=$nameArray['groupid'];
+			$groupName=$nameArray['groupname'];
 			$groups[] = array('id'=>$groupId,'name'=>$groupName);
 		}
 	}
@@ -126,6 +126,27 @@ function vtws_getEntityId($entityName) {
 		$wsid = 0;
 	}
 	return $wsid;
+}
+
+function vtws_getEntityName($entityId) {
+	global $adb;
+	$result = $adb->pquery('select name from vtiger_ws_entity where id=?', array($entityId));
+	if ($result && $adb->num_rows($result)>0) {
+		return $result->fields['name'];
+	}
+	return '';
+}
+
+function vtws_getWSID($id) {
+	if (strlen($id)==40) {
+		return CRMEntity::getWSIDfromUUID($id);
+	} elseif (preg_match('/^[0-9]+x[0-9]+$/', $id)) {
+		return $id;
+	} elseif (is_numeric($id)) {
+		return vtws_getEntityId(getSalesEntityType($id)).'x'.$id;
+	} else {
+		return '0x0';
+	}
 }
 
 function getEmailFieldId($meta, $entityId) {
@@ -175,7 +196,7 @@ function vtws_getEntityNameFields($moduleName) {
  */
 function vtws_getModuleNameList() {
 	global $adb;
-	$sql = "select name from vtiger_tab where isentitytype=1 and name not in ('Rss','Recyclebin','Events') order by tabsequence";
+	$sql = "select name from vtiger_tab where isentitytype=1 and name not in ('Rss','Recyclebin') order by tabsequence";
 	$res = $adb->pquery($sql, array());
 	$mod_array = array();
 	while ($row = $adb->fetchByAssoc($res)) {
@@ -324,7 +345,7 @@ function vtws_addDefaultActorTypeEntity($actorName, $actorNameDetails, $withName
 function vtws_addActorTypeWebserviceEntityWithName($moduleName, $filePath, $className, $actorNameDetails) {
 	global $adb;
 	$isModule=0;
-	$entityId = $adb->getUniqueID("vtiger_ws_entity");
+	$entityId = $adb->getUniqueID('vtiger_ws_entity');
 	$adb->pquery(
 		'insert into vtiger_ws_entity(id,name,handler_path,handler_class,ismodule) values (?,?,?,?,?)',
 		array($entityId,$moduleName,$filePath,$className,$isModule)
@@ -514,7 +535,7 @@ function vtws_CreateCompanyLogoFile($fieldname) {
 	$binFile = basename($_FILES[$fieldname]['name']);
 	$fileType = $_FILES[$fieldname]['type'];
 	$fileSize = $_FILES[$fieldname]['size'];
-	$fileTypeArray = explode("/", $fileType);
+	$fileTypeArray = explode('/', $fileType);
 	$fileTypeValue = strtolower($fileTypeArray[1]);
 	if ($fileTypeValue == '') {
 		$fileTypeValue = substr($binFile, strrpos($binFile, '.')+1);
@@ -614,7 +635,7 @@ function vtws_getRelatedNotesAttachments($id, $relatedId) {
 
 	$sql='insert into vtiger_senotesrel(crmid,notesid) values (?,?)';
 	for ($i=0; $i<$rowCount; ++$i) {
-		$noteId=$adb->query_result($result, $i, "notesid");
+		$noteId=$adb->query_result($result, $i, 'notesid');
 		$resultNew = $adb->pquery($sql, array($relatedId, $noteId));
 		if ($resultNew === false) {
 			return false;
@@ -629,7 +650,7 @@ function vtws_getRelatedNotesAttachments($id, $relatedId) {
 
 	$sql = 'insert into vtiger_seattachmentsrel(crmid,attachmentsid) values (?,?)';
 	for ($i=0; $i<$rowCount; ++$i) {
-		$attachmentId=$adb->query_result($result, $i, "attachmentsid");
+		$attachmentId=$adb->query_result($result, $i, 'attachmentsid');
 		$resultNew = $adb->pquery($sql, array($relatedId, $attachmentId));
 		if ($resultNew === false) {
 			return false;
@@ -720,7 +741,7 @@ function vtws_getFieldfromFieldId($fieldId, $fieldObjectList) {
 function vtws_getRelatedActivities($leadId, $accountId, $contactId, $relatedId) {
 
 	if (empty($leadId) || empty($relatedId) || (empty($accountId) && empty($contactId))) {
-		throw new WebServiceException(WebServiceErrorCode::$LEAD_RELATED_UPDATE_FAILED, "Failed to move related Activities/Emails");
+		throw new WebServiceException(WebServiceErrorCode::$LEAD_RELATED_UPDATE_FAILED, 'Failed to move related Activities/Emails');
 	}
 	global $adb;
 	$result = $adb->pquery('select activityid from vtiger_seactivityrel where crmid=?', array($leadId));
@@ -946,5 +967,18 @@ function vtws_getWebserviceCurrentLanguage() {
 function vtws_getWebserviceDefaultLanguage() {
 	global $default_language;
 	return $default_language;
+}
+
+function vtws_getWsIdForFilteredRecord($moduleName, $conditions, $user) {
+	global $adb;
+	$queryGenerator = new QueryGenerator($moduleName, $user);
+	$queryGenerator->setFields(array('id'));
+	$queryGenerator->addUserSearchConditions($queryGenerator->constructAdvancedSearchConditions($moduleName, $conditions));
+	$query = $queryGenerator->getQuery(false, 1);
+	$result = $adb->pquery($query, array());
+	if ($adb->num_rows($result) == 0) {
+		return null;
+	}
+	return vtws_getEntityId($moduleName).'x'.$adb->query_result($result, 0, 0);
 }
 ?>

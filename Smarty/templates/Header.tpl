@@ -15,13 +15,23 @@
 	<meta name="robots" content="noindex">
 	<title>{$USER} - {$MODULE_NAME|@getTranslatedString:$MODULE_NAME} - {$coreBOS_app_name}</title>
 	<link REL="SHORTCUT ICON" HREF="{$COMPANY_DETAILS.favicon}">
-	<style type="text/css">@import url("themes/{$THEME}/style.css");</style>
+	<link rel="stylesheet" type="text/css" media="all" href="themes/{$THEME}/style.css">
 	{if $Application_JSCalendar_Load neq 0}<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">{/if}
 	<link rel="stylesheet" href="include/print.css" type="text/css" media="print" />
 	<link rel="stylesheet" href="include/LD/assets/styles/salesforce-lightning-design-system.css" type="text/css" />
+	<link rel="stylesheet" href="include/components/toast-ui/grid/tui-grid.min.css" type="text/css" />
 	<link rel="stylesheet" href="include/LD/assets/styles/mainmenu.css" type="text/css" />
 	<link rel="stylesheet" href="include/LD/assets/styles/override_lds.css" type="text/css" />
 	<link rel="stylesheet" href="include/style.css" type="text/css" />
+	<style type="text/css">
+		html {
+			background: url({$coreBOS_app_coverimage}) no-repeat center center fixed;
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+		}
+	</style>
 {* vtlib customization: Inclusion of custom javascript and css as registered *}
 {if $HEADERCSS}
 	<!-- Custom Header CSS -->
@@ -43,9 +53,9 @@
 	<![endif]-->
 {/literal}
 	<!-- End -->
+	{include file='BrowserVariables.tpl'}
+	{include file='Components/Components.tpl'}
 </head>
-{include file='BrowserVariables.tpl'}
-{include file="Components.tpl"}
 <body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small style="min-width:1100px; width: 100%"> 
 	<!-- header -->
 	<script type="text/javascript" src="include/sw-precache/service-worker-registration.js"></script>
@@ -59,6 +69,7 @@
 	<script type="text/javascript" src="include/js/QuickCreate.js"></script>
 	<script type="text/javascript" src="modules/Calendar/script.js"></script>
 	<script type="text/javascript" src="include/js/notificationPopup.js"></script>
+	{include file='Components/ComponentsJS.tpl'}
 	<script type="text/javascript" src="modules/Calendar4You/fullcalendar/lib/moment.min.js"></script>
 	{if $Application_JSCalendar_Load neq 0}
 	<script type="text/javascript" src="jscalendar/calendar.js"></script>
@@ -90,8 +101,14 @@
 	<!-- END -->
 {/if}
 
-	{* PREFECTHING IMAGE FOR BLOCKING SCREEN USING VtigerJS_DialogBox API *}
-	<img src="{'layerPopupBg.gif'|@vtiger_imageurl:$THEME}" style="display: none;"/>
+{* PREFECTHING IMAGE FOR BLOCKING SCREEN USING VtigerJS_DialogBox API *}
+<img src="{'layerPopupBg.gif'|@vtiger_imageurl:$THEME}" style="display: none;"/>
+<div id="status" style="position:absolute;display:none;left:65%;top:95px;height:27px;white-space:nowrap;">
+	<div role="status" class="slds-spinner slds-spinner_small slds-spinner_brand">
+		<div class="slds-spinner__dot-a"></div>
+		<div class="slds-spinner__dot-b"></div>
+	</div>
+</div>
 {if empty($Module_Popup_Edit)}
 
 <!-- LDS Global header -->
@@ -288,7 +305,7 @@
 		</div>
 	</div>
 	{if $COREBOS_HEADER_PREMENU}
-	<div style="width:100%; background-color:#fff;">
+	<div style="width:100%; background-color:#fff;"  id="premenu-wrapper">
 	{$COREBOS_HEADER_PREMENU}
 	</div>
 	{/if}
@@ -323,7 +340,7 @@
 <!-- END LDS Global header -->
 <a name="top"></a>
 
-<div id='miniCal' style='width:300px; position:absolute; display:none; left:100px; top:100px; z-index:100000'></div>
+<div id='miniCal' style='position:absolute; display:none; left:100px; top:100px; z-index:100000'></div>
 
 {if $MODULE_NAME eq 'Calendar'}
 	<div id="CalExport" style="width:300px; position:absolute; display:none; left:500px; top:100px; z-index:100000" class="layerPopup">
@@ -397,13 +414,6 @@
 {include file="Clock.tpl"}
 
 <div id="qcform" style="position:absolute;width:700px;top:80px;left:450px;z-index:90000;"></div>
-
-<div id="status" style="position:absolute;display:none;left:65%;top:95px;height:27px;white-space:nowrap;">
-	<div role="status" class="slds-spinner slds-spinner_small slds-spinner_brand">
-		<div class="slds-spinner__dot-a"></div>
-		<div class="slds-spinner__dot-b"></div>
-	</div>
-</div>
 
 <!-- Last visited panel -->
 <div id="cbds-last-visited" class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open slds-is-fixed cbds-last-visited" aria-hidden="false">

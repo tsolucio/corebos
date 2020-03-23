@@ -2,7 +2,6 @@
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody><tr>
-	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 	<td valign="top" width="100%">
 	<div align=center>
 		<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
@@ -54,9 +53,6 @@
 		{/foreach}
 		</form>
 		</div>
-	</td>
-	<td valign="top">
-		<img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}">
 	</td>
 	</tr>
 </tbody>

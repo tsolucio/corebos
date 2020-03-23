@@ -18,6 +18,7 @@ include_once 'include/Webservices/Update.php';
 include_once 'include/Webservices/Revise.php';
 
 function __cbwsCURValidation($element, $user) {
+	$element['id'] = vtws_getWSID($element['id']);
 	list($wsid, $record) = explode('x', $element['id']);
 	$elementType = getSalesEntityType($record);
 	$context = $element;

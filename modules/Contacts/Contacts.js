@@ -299,7 +299,42 @@ function setReturnAddressBill() {
 	var code = jQuery('#mailingzip').val();
 	var country = jQuery('#mailingcountry').val();
 	var pobox = jQuery('#mailingpobox').val();
-	if (window.opener.gVTModule != 'Issuecards') {
+	if (window.opener.gVTModule == 'Contacts') {
+		if (typeof(window.opener.document.EditView.mailingstreet) != 'undefined') {
+			window.opener.document.EditView.mailingstreet.value = street;
+		}
+		if (typeof(window.opener.document.EditView.mailingcity) != 'undefined') {
+			window.opener.document.EditView.mailingcity.value = city;
+		}
+		if (typeof(window.opener.document.EditView.mailingstate) != 'undefined') {
+			window.opener.document.EditView.mailingstate.value = state;
+		}
+		if (typeof(window.opener.document.EditView.mailingzip) != 'undefined') {
+			window.opener.document.EditView.mailingzip.value = code;
+		}
+		if (typeof(window.opener.document.EditView.mailingcountry) != 'undefined') {
+			window.opener.document.EditView.mailingcountry.value = country;
+		}
+		if (typeof(window.opener.document.EditView.mailingpobox) != 'undefined') {
+			window.opener.document.EditView.mailingpobox.value = pobox;
+		}
+	} else if (window.opener.gVTModule == 'Issuecards') {
+		if (typeof (window.opener.document.EditView.calle) != 'undefined') {
+			window.opener.document.EditView.calle.value = street;
+		}
+		if (typeof (window.opener.document.EditView.poblacion) != 'undefined') {
+			window.opener.document.EditView.poblacion.value = city;
+		}
+		if (typeof (window.opener.document.EditView.provincia) != 'undefined') {
+			window.opener.document.EditView.provincia.value = state;
+		}
+		if (typeof (window.opener.document.EditView.cpostal) != 'undefined') {
+			window.opener.document.EditView.cpostal.value = code;
+		}
+		if (typeof (window.opener.document.EditView.pais) != 'undefined') {
+			window.opener.document.EditView.pais.value = country;
+		}
+	} else {
 		if (typeof(window.opener.document.EditView.bill_street) != 'undefined') {
 			window.opener.document.EditView.bill_street.value = street;
 		}
@@ -318,7 +353,36 @@ function setReturnAddressBill() {
 		if (typeof(window.opener.document.EditView.bill_pobox) != 'undefined') {
 			window.opener.document.EditView.bill_pobox.value = pobox;
 		}
-	} else {
+	}
+}
+
+function setReturnAddressShip() {
+	var street = jQuery('#otherstreet').val();
+	var city = jQuery('#othercity').val();
+	var state = jQuery('#otherstate').val();
+	var code = jQuery('#otherzip').val();
+	var country = jQuery('#othercountry').val();
+	var pobox = jQuery('#otherpobox').val();
+	if (window.opener.gVTModule == 'Contacts') {
+		if (typeof(window.opener.document.EditView.otherstreet) != 'undefined') {
+			window.opener.document.EditView.otherstreet.value = street;
+		}
+		if (typeof(window.opener.document.EditView.othercity) != 'undefined') {
+			window.opener.document.EditView.othercity.value = city;
+		}
+		if (typeof(window.opener.document.EditView.otherstate) != 'undefined') {
+			window.opener.document.EditView.otherstate.value = state;
+		}
+		if (typeof(window.opener.document.EditView.otherzip) != 'undefined') {
+			window.opener.document.EditView.otherzip.value = code;
+		}
+		if (typeof(window.opener.document.EditView.othercountry) != 'undefined') {
+			window.opener.document.EditView.othercountry.value = country;
+		}
+		if (typeof(window.opener.document.EditView.otherpobox) != 'undefined') {
+			window.opener.document.EditView.otherpobox.value = pobox;
+		}
+	} else if (window.opener.gVTModule == 'Issuecards') {
 		if (typeof (window.opener.document.EditView.calle) != 'undefined') {
 			window.opener.document.EditView.calle.value = street;
 		}
@@ -334,17 +398,7 @@ function setReturnAddressBill() {
 		if (typeof (window.opener.document.EditView.pais) != 'undefined') {
 			window.opener.document.EditView.pais.value = country;
 		}
-	}
-}
-
-function setReturnAddressShip() {
-	var street = jQuery('#otherstreet').val();
-	var city = jQuery('#othercity').val();
-	var state = jQuery('#otherstate').val();
-	var code = jQuery('#otherzip').val();
-	var country = jQuery('#othercountry').val();
-	var pobox = jQuery('#otherpobox').val();
-	if (window.opener.gVTModule != 'Issuecards') {
+	} else {
 		if (typeof(window.opener.document.EditView.ship_street) != 'undefined') {
 			window.opener.document.EditView.ship_street.value = street;
 		}
@@ -362,22 +416,6 @@ function setReturnAddressShip() {
 		}
 		if (typeof(window.opener.document.EditView.ship_pobox) != 'undefined') {
 			window.opener.document.EditView.ship_pobox.value = pobox;
-		}
-	} else {
-		if (typeof (window.opener.document.EditView.calle) != 'undefined') {
-			window.opener.document.EditView.calle.value = street;
-		}
-		if (typeof (window.opener.document.EditView.poblacion) != 'undefined') {
-			window.opener.document.EditView.poblacion.value = city;
-		}
-		if (typeof (window.opener.document.EditView.provincia) != 'undefined') {
-			window.opener.document.EditView.provincia.value = state;
-		}
-		if (typeof (window.opener.document.EditView.cpostal) != 'undefined') {
-			window.opener.document.EditView.cpostal.value = code;
-		}
-		if (typeof (window.opener.document.EditView.pais) != 'undefined') {
-			window.opener.document.EditView.pais.value = country;
 		}
 	}
 }
@@ -485,7 +523,8 @@ function open_contact_account_details(fromlink, fldname, MODULE, ID) {
 	if (fldname == 'account_id') {
 		var baseURL = 'index.php?module=Accounts&action=Popup&popuptype=specific_contact_account_address&form=TasksEditView&form_submit=false&fromlink=';
 		var WindowSettings = 'width=680,height=602,resizable=0,scrollbars=0,top=150,left=200';
-		window.open(baseURL, 'vtlibui10', WindowSettings);
+		let winname = (fromlink=='qcreate') ? 'vtlibui10qc' : 'vtlibui10';
+		window.open(baseURL, winname, WindowSettings);
 	} else {
 		vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
 	}

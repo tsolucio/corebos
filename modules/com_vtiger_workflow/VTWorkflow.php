@@ -566,44 +566,23 @@ class Workflow {
 		);
 	}
 
-	/**
-	 * public function getWorkFlowJSON($userid, $page, $order_by = 'module_name', $sorder = 'DESC', $action_search = '')
-	 */
-	public function getWorkFlowJSON($modulename, $executioncondtionid, $page, $order_by = 'module_name', $sorder = 'DESC', $desc_search = '', $purpose_search = '') {
+	public function getWorkFlowJSON($conds, $params, $page, $order_by) {
 		global $log, $adb;
 		$log->debug('> getWorkFlowJSON');
 
 		$workflow_execution_condtion_list = self::geti18nTriggerLabels();
 
-		$where = ' where 1 ';
-		$params = array();
-		if (!empty($modulename) && $modulename != 'all') {
-			$where .= ' and module_name = ? ';
-			array_push($params, $modulename);
-		}
-		if (!empty($executioncondtionid)) {
-			$where .= ' and execution_condition = ? ';
-			array_push($params, $executioncondtionid);
-		}
-		if (!empty($desc_search)) {
-			$where .= ' and summary like ? ';
-			array_push($params, '%' . $desc_search . '%');
-		}
-		if (!empty($purpose_search)) {
-			$where .= ' and purpose like ? ';
-			array_push($params, '%' . $purpose_search . '%');
-		}
-		if ($sorder != '' && $order_by != '') {
-			$list_query = "Select * from com_vtiger_workflows $where order by $order_by $sorder";
+		if ($order_by != '') {
+			$list_query = "Select * from com_vtiger_workflows $conds order by $order_by";
 		} else {
-			$list_query = "Select * from com_vtiger_workflows $where order by ".$this->default_order_by.' '.$this->default_sort_order;
+			$list_query = "Select * from com_vtiger_workflows $conds order by ".$this->default_order_by.' '.$this->default_sort_order;
 		}
 		$rowsperpage = GlobalVariable::getVariable('Workflow_ListView_PageSize', 20);
 		$from = ($page-1)*$rowsperpage;
 		$limit = " limit $from,$rowsperpage";
 
 		$result = $adb->pquery($list_query.$limit, $params);
-		$rscnt = $adb->pquery("select count(*) from com_vtiger_workflows $where", array($params));
+		$rscnt = $adb->pquery("select count(*) from com_vtiger_workflows $conds", array($params));
 		$noofrows = $adb->query_result($rscnt, 0, 0);
 		$last_page = ceil($noofrows/$rowsperpage);
 		if ($page*$rowsperpage>$noofrows-($noofrows % $rowsperpage)) {
@@ -622,6 +601,7 @@ class Workflow {
 			'prev_page_url' => '',
 			'from' => $from+1,
 			'to' => $to,
+			'query' => $list_query,
 			'data' => array(),
 		);
 		if ($islastpage && $page!=1) {
@@ -648,7 +628,7 @@ class Workflow {
 					$rurl = 'index.php?module=Reports&action=SaveAndRun&record='.$lgn['workflow_id'];
 				} else {
 					$rurl = $vtwfappObject->editWorkflowUrl($lgn['workflow_id']);
-					$delurl = $vtwfappObject->deleteWorkflowUrl($lgn['workflow_id']);
+					$delurl = $vtwfappObject->deleteWorkflowUrl($lgn['workflow_id'], false);
 				}
 			}
 			$entry['Record'] = $rurl;

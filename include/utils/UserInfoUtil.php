@@ -2608,12 +2608,10 @@ function getUserProfile($userId) {
 	}
 	$roleId=fetchUserRole($userId);
 	$profArr=array();
-	$sql1 = "select profileid from vtiger_role2profile where roleid=?";
-	$result1 = $adb->pquery($sql1, array($roleId));
+	$result1 = $adb->pquery('select profileid from vtiger_role2profile where roleid=?', array($roleId));
 	$num_rows=$adb->num_rows($result1);
 	for ($i=0; $i<$num_rows; $i++) {
-		$profileid=  $adb->query_result($result1, $i, "profileid");
-		$profArr[]=$profileid;
+		$profArr[] = $adb->query_result($result1, $i, 'profileid');
 	}
 	VTCacheUtils::updateCachedInformation($key, $profArr);
 	$log->debug('< getUserProfile');

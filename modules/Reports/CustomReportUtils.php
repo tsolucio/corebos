@@ -102,14 +102,14 @@ class CustomReportUtils {
 				)
 			);
 			$conditionJson = urlencode(json_encode($condition));
-			$condition = "query=true&searchtype=advance&advft_criteria=" . $conditionJson . "&advft_criteria_groups=" . urlencode(json_encode($advft_criteria_groups));
+			$condition = 'query=true&searchtype=advance&advft_criteria=' . $conditionJson . '&advft_criteria_groups=' . urlencode(json_encode($advft_criteria_groups));
 		} elseif (strtolower($criteria) == 'month') {
-			$date = DateTimeField::convertToUserFormat($year . "-" . $month);
+			$date = DateTimeField::convertToUserFormat($year . '-' . $month);
 			$endMonth = $month + 1;
 			if ($endMonth < 10) {
-				$endMonth = "0" . $endMonth;
+				$endMonth = '0' . $endMonth;
 			}
-			$endDate = DateTimeField::convertToUserFormat($year . "-" . $endMonth . "-01");
+			$endDate = DateTimeField::convertToUserFormat($year . '-' . $endMonth . '-01');
 			$condition = array(
 				array(
 					'groupid' => 1,
@@ -162,7 +162,7 @@ class CustomReportUtils {
 				)
 			);
 			$conditionJson = urlencode(json_encode($condition));
-			$condition = "query=true&searchtype=advance&advft_criteria=" . $conditionJson . "&advft_criteria_groups=" . urlencode(json_encode($advft_criteria_groups));
+			$condition = 'query=true&searchtype=advance&advft_criteria=' . $conditionJson . '&advft_criteria_groups=' . urlencode(json_encode($advft_criteria_groups));
 		} elseif (strtolower($criteria) == 'none') {
 			$date = DateTimeField::convertToUserFormat($fieldvalue);
 			$condition = array(
@@ -175,7 +175,7 @@ class CustomReportUtils {
 				)
 			);
 			$conditionJson = urlencode(json_encode($condition));
-			$condition = "query=true&searchtype=advance&advft_criteria=" . $conditionJson . "&advft_criteria_groups=" . urlencode(json_encode($advft_criteria_groups));
+			$condition = 'query=true&searchtype=advance&advft_criteria=' . $conditionJson . '&advft_criteria_groups=' . urlencode(json_encode($advft_criteria_groups));
 		}
 		return $condition;
 	}
@@ -191,11 +191,11 @@ class CustomReportUtils {
 		} elseif (strtolower($criteria) == 'month') {
 			$monthLabel = date('M', $timeStamp);
 			$xaxisLabel = "$monthLabel $year";
-		} elseif (strtolower($criteria) == "quarter") {
+		} elseif (strtolower($criteria) == 'quarter') {
 			$monthNum = date('n', $timeStamp);
 			$quarter = (($monthNum - 1) / 3) + 1;
 			$textNumArray = array('', 'I', 'II', 'III', 'IV');
-			$xaxisLabel = $textNumArray[$quarter] . " Quarter of " . $year;
+			$xaxisLabel = $textNumArray[$quarter] . ' Quarter of ' . $year;
 		} elseif (strtolower($criteria) == 'none') {
 			$xaxisLabel = DateTimeField::convertToUserFormat($dateFieldValue);
 		}
@@ -224,8 +224,7 @@ class CustomReportUtils {
 				$concatSql = $fieldsName;
 			}
 
-			$entityQuery = "SELECT 1 FROM $tableName WHERE $concatSql = ?";
-			$entityResult = $adb->pquery($entityQuery, array($entityName));
+			$entityResult = $adb->pquery("SELECT 1 FROM $tableName WHERE $concatSql=?", array($entityName));
 			$num_rows = $adb->num_rows($entityResult);
 			if ($num_rows > 0) {
 				return $referenceModule;

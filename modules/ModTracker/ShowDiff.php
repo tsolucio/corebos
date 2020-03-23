@@ -9,21 +9,7 @@
  ************************************************************************************/
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme;
 
-require_once 'Smarty_setup.php';
-
 include_once __DIR__ . '/core/ModTracker_Basic.php';
-
-$smarty = new vtigerCRM_Smarty();
-
-// Identify this module as custom module.
-$smarty->assign('CUSTOM_MODULE', true);
-
-$smarty->assign('MOD', $mod_strings);
-$smarty->assign('APP', $app_strings);
-$smarty->assign('MODULE', $currentModule);
-$smarty->assign('SINGLE_MOD', $currentModule);
-$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
-$smarty->assign('THEME', $theme);
 
 $reqid = vtlib_purify($_REQUEST['id']);
 $atpoint = vtlib_purify($_REQUEST['atpoint']);
@@ -46,17 +32,33 @@ if (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'history') {
 	$trackrecord = ModTracker_Basic::getById($reqid);
 }
 
-if ($trackrecord === false || !$trackrecord->exists()) {
-	$smarty->display(vtlib_getModuleTemplate($currentModule, 'ShowDiffNotExist.tpl'));
+if ($trackrecord === false || !$trackrecord->exists() || !$trackrecord->isViewPermitted()) {
+	echo 'NOTRACKRECORD';
 } else {
-	if ($trackrecord && $trackrecord->isViewPermitted()) {
-		$smarty->assign('TRACKRECORD', $trackrecord);
-		$smarty->assign('ATPOINT', $atpoint);
-		$smarty->assign('ATPOINT_PREV', $prevAtPoint);
-		$smarty->assign('ATPOINT_NEXT', $nextAtPoint);
-		$smarty->display(vtlib_getModuleTemplate($currentModule, 'ShowDiff.tpl'));
-	} else {
-		$smarty->display(vtlib_getModuleTemplate($currentModule, 'ShowDiffDenied.tpl'));
+	if ($trackrecord) {
+		$details = array();
+		foreach ($trackrecord->getDetails() as $detail) {
+			$details[] = array(
+				'displayname' => $detail->getDisplayName(),
+				'labelforpreval' => $detail->getDisplayLabelForPreValue(),
+				'labelforpostval' => $detail->diff(),
+				'labelhighlight' => $detail->diffHighlight(),
+			);
+		}
+		echo json_encode(array(
+			'trackrecord' => array(
+				'raw' => $trackrecord,
+				'displayname' => $trackrecord->getDisplayName(),
+				'latest' => array(
+					'modifiedbylabel' => $trackrecord->getModifiedByLabel(),
+					'modifiedon' => $trackrecord->getModifiedOn(),
+					'details' => $details,
+				),
+			),
+			'atpoint' => $atpoint,
+			'atpoint_prev' => $prevAtPoint,
+			'atpoint_next' => $nextAtPoint,
+		));
 	}
 }
 ?>

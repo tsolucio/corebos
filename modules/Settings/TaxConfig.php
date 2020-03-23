@@ -110,6 +110,8 @@ $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', $image_path);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
+$smarty->assign('MODULE', $currentModule);
+$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
 $smarty->display('Settings/TaxConfig.tpl');
 
 /**	Function to update the list of Tax percentages for the passed tax types

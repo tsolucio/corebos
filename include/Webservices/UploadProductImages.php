@@ -16,7 +16,7 @@
 
 function cbws_uploadProductImages($recordID, $fileData, $user) {
 	global $log, $adb, $root_directory;
-
+	$recordID = vtws_getWSID($recordID);
 	$idList = vtws_getIdComponents($recordID);
 	$webserviceObject = VtigerWebserviceObject::fromId($adb, $recordID);
 	$handlerPath = $webserviceObject->getHandlerPath();
@@ -88,7 +88,7 @@ function cbws_uploadProductImages($recordID, $fileData, $user) {
 			'size' => filesize($filepath),
 		);
 		$product->insertIntoAttachment($crmid, 'Products', true);
-		unlink($filepath);
+		@unlink($filepath);
 		$myResult['FileName'][] = $imageDetail['name'];
 		$newnumimages++;
 		if ($newnumimages >= $maximages) {

@@ -84,7 +84,12 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 		}
 		// Establish relations *** this is done by the main vtws_create() function  ***
 
-		return DataTransform::filterAndSanitize($crmObject->getFields(), $this->meta);
+		$fields = $crmObject->getFields();
+		$return = DataTransform::filterAndSanitize($fields, $this->meta);
+		if (isset($fields['cbuuid'])) {
+			$return['cbuuid'] = $fields['cbuuid'];
+		}
+		return $return;
 	}
 
 	public function retrieve($id, $deleted = false) {
@@ -148,18 +153,13 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 
 		$id = $crmObject->getObjectId();
 
-		$error = $crmObject->read($id);
-		if (!$error) {
-			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, 'Database error while performing required operation');
-		}
-
 		if ($element['filelocationtype']=='I' && !empty($attachid)) {
 			// Link file attached to document
 			$adb->pquery('DELETE from vtiger_seattachmentsrel where crmid=?', array($id));
 			$adb->pquery('INSERT INTO vtiger_seattachmentsrel(crmid, attachmentsid) VALUES(?,?)', array($id, $attachid));
 		}
 
-		return DataTransform::filterAndSanitize($crmObject->getFields(), $this->meta);
+		return $this->retrieve(vtws_getEntityId($id).'x'.$id);
 	}
 }
 ?>

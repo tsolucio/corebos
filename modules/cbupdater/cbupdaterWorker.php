@@ -59,6 +59,7 @@ class cbupdaterWorker {
 	public $classname;
 	public $execstate = false;
 	public $systemupdate = false;
+	public $appcs = true;
 	public $perspective = false;
 	public $blocked = false;
 	public $execdate;
@@ -68,12 +69,16 @@ class cbupdaterWorker {
 	public $failure_query_count=0;
 	public $failure_query_array=array();
 
-	public function __construct() {
+	public function __construct($cbid = 0) {
 		global $adb;
-		echo "<table width=80% align=center border=1>";
-		$reflector = new ReflectionClass(get_class($this));
-		$fname = basename($reflector->getFileName(), '.php');
-		$cburs = $adb->pquery('select * from vtiger_cbupdater where filename=? and classname=?', array($fname, get_class($this)));
+		echo '<article class="slds-card slds-m-left_x-large slds-p-left_small slds-m-right_x-large slds-p-right_small slds-p-bottom_small">';
+		if ($cbid>0) {
+			$cburs = $adb->pquery('select * from vtiger_cbupdater where cbupdaterid=?', array($cbid));
+		} else {
+			$reflector = new ReflectionClass(get_class($this));
+			$fname = basename($reflector->getFileName(), '.php');
+			$cburs = $adb->pquery('select * from vtiger_cbupdater where filename=? and classname=?', array($fname, get_class($this)));
+		}
 		if ($cburs && $adb->num_rows($cburs)>0) {  // it exists, we load it
 			$cbu = $adb->fetch_array($cburs);
 			$this->cbupdid = $cbu['cbupdaterid'];
@@ -83,6 +88,7 @@ class cbupdaterWorker {
 			$this->classname = $cbu['classname'];
 			$this->execstate = $cbu['execstate'];
 			$this->systemupdate = ($cbu['systemupdate'] == '1');
+			$this->appcs = ($cbu['appcs'] == '1');
 			$this->perspective = ((bool)(isset($cbu['perspective']) && $cbu['perspective'] == '1'));
 			$this->blocked = ((bool)(isset($cbu['blocked']) && $cbu['blocked'] == '1'));
 			$this->execdate = $cbu['execdate'];
@@ -116,7 +122,7 @@ class cbupdaterWorker {
 		if ($this->hasError()) {
 			$this->sendError();
 		}
-		if ($this->isSystemUpdate()) {
+		if ($this->isSystemUpdate() || $this->isAppChangeset()) {
 			$this->sendMsg('Changeset '.get_class($this).' is a system update, it cannot be undone!');
 		} else {
 			if ($this->isApplied()) {
@@ -130,12 +136,77 @@ class cbupdaterWorker {
 		$this->finishExecution();
 	}
 
+	public function processManualUpdate($ins) {
+		global $currentModule;
+		if ($this->isBlocked()) {
+			return true;
+		}
+		if ($this->hasError()) {
+			$this->sendError();
+		}
+		if ($this->isApplied()) {
+			$this->sendMsg('Changeset '.get_class($this).' already applied!');
+		} else {
+			$rdo = true;
+			switch ($ins['operation']) {
+				case 'deleteAllPicklistValues':
+					$this->deleteAllPicklistValues($ins['setting']['table'], $ins['setting']['module']);
+					break;
+				case 'deletePicklistValues':
+					$this->deletePicklistValues($ins['setting']['values'], $ins['setting']['table'], $ins['setting']['module']);
+					break;
+				case 'setQuickCreateFields':
+					$this->setQuickCreateFields($ins['setting']['module'], $ins['setting']['fields']);
+					break;
+				case 'massCreateFields':
+					$this->massCreateFields($ins['setting']);
+					break;
+				case 'massHideFields':
+					$this->massHideFields(array($ins['setting']['module'] => $ins['setting']['fields']));
+					break;
+				case 'massDeleteFields':
+					$this->massDeleteFields(array($ins['setting']['module'] => $ins['setting']['fields']));
+					break;
+				case 'massMoveFieldsToBlock':
+					$this->massMoveFieldsToBlock(array($ins['setting']['module'] => $ins['setting']['fields']), $ins['setting']['block']);
+					break;
+				case 'orderFieldsInBlocks':
+					$this->orderFieldsInBlocks($ins['setting']);
+					break;
+				case 'convertTextFieldToPicklist':
+					$this->convertTextFieldToPicklist($ins['setting']['field'], $ins['setting']['module'], $ins['setting']['multiple']);
+					break;
+				case 'setTooltip':
+					$this->setTooltip($ins['setting']);
+					break;
+				case 'removeAllMenuEntries':
+					$this->removeAllMenuEntries($ins['setting']['module']);
+					break;
+				default:
+					$errmsg = getTranslatedString('err_opnotfound', $currentModule);
+					$cburl = '<a href="index.php?module=cbupdater&action=DetailView&record='.$this->cbupdid.'">'.$this->cbupd_no.'</a>';
+					cbupdater_show_error($errmsg. ' : ' . $cburl);
+					$rdo = false;
+					break;
+			}
+			if ($rdo) {
+				$this->sendMsg('Changeset '.get_class($this).' applied!');
+				$this->markApplied();
+			}
+		}
+		$this->finishExecution();
+	}
+
 	public function isApplied() {
 		return ($this->execstate=='Executed');
 	}
 
 	public function isSystemUpdate() {
 		return $this->systemupdate;
+	}
+
+	public function isAppChangeset() {
+		return $this->appcs;
 	}
 
 	public function isBlocked() {
@@ -185,19 +256,19 @@ class cbupdaterWorker {
 		$this->query_count++;
 		if (is_object($status)) {
 			echo '
-		<tr width="100%">
-		<td width="10%">'.get_class($status).'</td>
-		<td width="10%"><span style="color:green"> S </span></td>
-		<td width="80%">'.$query.$paramstring.'</td>
-		</tr>';
+		<div class="slds-grid slds-gutters">
+		<div class="slds-col slds-size_2-of-8">'.get_class($status).'</div>
+		<div class="slds-col slds-size_1-of-8"><span style="color:green"> S </span></div>
+		<div class="slds-col slds-size_5-of-8">'.$query.$paramstring.'</div>
+		</div>';
 			$log->debug("Query Success ==> $query");
 		} else {
 			echo '
-		<tr width="100%">
-		<td width="25%">'.$status.'</td>
-		<td width="5%"><span style="color:red"> F </span></td>
-		<td width="70%">'.$query.$paramstring.'</td>
-		</tr>';
+		<div class="slds-grid slds-gutters">
+		<div class="slds-col slds-size_2-of-8">'.$status.'</div>
+		<div class="slds-col slds-size_1-of-8"><span style="color:red"> F </span></div>
+		<div class="slds-col slds-size_5-of-8">'.$query.$paramstring.'</div>
+		</div>';
 			$this->failure_query_array[$this->failure_query_count++] = $query.$paramstring;
 			$this->updError = true;
 			$log->debug("Query Failed ==> $query \n Error is ==> [".$adb->database->ErrorNo()."]".$adb->database->ErrorMsg());
@@ -576,49 +647,48 @@ class cbupdaterWorker {
 	}
 
 	public function sendMsg($msg) {
-		echo '<tr width="100%"><td colspan=3>'.$msg.'</td></tr>';
+		echo '<div class="slds-col slds-size_10-of-10">'.$msg.'</div>';
 	}
 
 	public function sendMsgError($msg) {
-		echo '<tr width="100%"><td colspan=3><span style="color:red">'.$msg.'</span></td></tr>';
+		echo '<div class="slds-col slds-size_10-of-10"><span style="color:red">'.$msg.'</span></div>';
 		$this->updError = true;
 	}
 
 	public function sendError() {
 		$this->updError = true;
-		echo '<tr width="100%"><td colspan=3<span style="color:red">ERROR: Class '.get_class($this).' called without update record in application!!</span></td></tr></table>';
+		echo '<div class="slds-col slds-size_10-of-10"><span style="color:red">ERROR: Class '.get_class($this).' called without update record in application!!</span></div>';
 		die();
 	}
 
 	public function finishExecution() {
-		echo '</table>';
+		echo '</article>';
 		if (count($this->failure_query_array)>0) {
 			echo <<<EOT
-<br /><br />
+<article class="slds-card slds-m-left_x-large slds-m-right_x-large slds-m-top_small slds-m-bottom_x-large slds-p-around_small">
 <b style="color:#FF0000">Failed Queries Log</b>
-<div id="failedLog" style="border:1px solid #666666;width:90%;position:relative;height:200px;overflow:auto;left:5%;top:10px;">
+<div id="failedLog" class="slds-m-left_small slds-m-top_x-small" style="height:200px;overflow:auto;">
 EOT;
 			foreach ($this->failure_query_array as $failed_query) {
-				echo '<br><span style="color:red">'.$failed_query.'</span>';
+				echo '<span style="color:red">'.$failed_query.'</span><br>';
 			}
-			echo '</div>';
+			echo '</div></article>';
 		}
 		echo <<<EOT
-<br /><br />
-<table width="35%" border="0" cellpadding="5" cellspacing="0" align="center" class="small">
-	<tr>
-	<td width="75%" align="right" nowrap>Total Number of queries executed : </td>
-	<td width="25%" align="left"><b>{$this->query_count}</b></td>
-	</tr>
-	<tr>
-	<td align="right">Queries Succeeded : </td>
-	<td align="left"><b style="color:#006600;">{$this->success_query_count}</b></td>
-	</tr>
-	<tr>
-	<td align="right">Queries Failed : </td>
-	<td align="left"><b style="color:#FF0000;">{$this->failure_query_count}</b></td>
-	</tr>
-</table>
+<article class="slds-card slds-m-left_x-large slds-m-right_x-large slds-m-top_small slds-m-bottom_x-large slds-p-around_small">
+	<div class="slds-grid slds-gutters">
+	<div class="slds-col slds-size_2-of-8">Total Number of queries executed : </div>
+	<div class="slds-col slds-size_6-of-8"><b>{$this->query_count}</b></div>
+	</div>
+	<div class="slds-grid slds-gutters">
+	<div class="slds-col slds-size_2-of-8">Queries Succeeded : </div>
+	<div class="slds-col slds-size_6-of-8"><b style="color:#006600;">{$this->success_query_count}</b></div>
+	</div>
+	<div class="slds-grid slds-gutters">
+	<div class="slds-col slds-size_2-of-8">Queries Failed : </div>
+	<div class="slds-col slds-size_6-of-8"><b style="color:#FF0000;">{$this->failure_query_count}</b></div>
+	</div>
+</article>
 EOT;
 	}
 }

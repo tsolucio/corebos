@@ -92,6 +92,8 @@
 		{/if}
 	</div>
 </div>
+<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
+<div class="slds-m-around_small slds-card">
 <div class="rptContainer" style="width:94%;margin:auto;">
 	<datatable url="index.php?module=cbAuditTrail&action=cbAuditTrailAjax&file=getJSON" template="report_row_template">
 		<header>
@@ -159,6 +161,8 @@
 		{/foreach}
 	</tr>
 </table>
+</div>
+</section>
 <script type="text/javascript">
 {literal}
 Template.define('report_row_template', {});

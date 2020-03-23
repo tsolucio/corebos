@@ -25,15 +25,18 @@ function submittemplate(recordid, value, target_fieldname, formname) {
 }
 
 function msgtFillInModuleFields() {
-	let moduleName = document.getElementById('msgt_module').value;
-	var vtinst = new VtigerWebservices('webservice.php');
-	vtinst.extendSession(handleError(function (result) {
-		vtinst.listTypes(handleError(function (accessibleModules) {
-			getDescribeObjects(accessibleModules, moduleName, handleError(function (modules) {
-				fillSelectBox('msgt_fields', modules, moduleName, null);
+	var msgmodule = document.getElementById('msgt_module');
+	if (msgmodule) {
+		let moduleName = msgmodule.value;
+		var vtinst = new VtigerWebservices('webservice.php');
+		vtinst.extendSession(handleError(function (result) {
+			vtinst.listTypes(handleError(function (accessibleModules) {
+				getDescribeObjects(accessibleModules, moduleName, handleError(function (modules) {
+					fillSelectBox('msgt_fields', modules, moduleName, null);
+				}));
 			}));
 		}));
-	}));
+	}
 }
 
 function msgtInsertIntoMsg() {

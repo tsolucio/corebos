@@ -32,7 +32,7 @@ require_once 'include/Webservices/getRecordImages.php';
 function cbws_getproductimageinfo($id, $user) {
 	global $log, $adb;
 	$log->debug('> cbws_getproductimageinfo '.$id);
-
+	$id = vtws_getWSID($id);
 	$webserviceObject = VtigerWebserviceObject::fromId($adb, $id);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();

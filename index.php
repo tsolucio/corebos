@@ -465,25 +465,25 @@ if (!$skipSecurityCheck && $use_current_login) {
 }
 
 if ($display == 'no'
-		&& !(($currentModule=='Tooltip' && $action==$module.'Ajax' && $_REQUEST['file']=='ComputeTooltip')
-			|| ($currentModule=='GlobalVariable' && $action==$module.'Ajax' && $_REQUEST['file']=='SearchGlobalVar'))
-	) {
-		require_once 'Smarty_setup.php';
-		$smarty = new vtigerCRM_Smarty();
-		$smarty->assign('APP', $app_strings);
+	&& !(($currentModule=='Tooltip' && $action==$module.'Ajax' && $_REQUEST['file']=='ComputeTooltip')
+	|| ($currentModule=='GlobalVariable' && $action==$module.'Ajax' && $_REQUEST['file']=='SearchGlobalVar'))
+) {
+	require_once 'Smarty_setup.php';
+	$smarty = new vtigerCRM_Smarty();
+	$smarty->assign('APP', $app_strings);
 	if ($action==$module.'Ajax') {
 		$smarty->assign('PUT_BACK_ACTION', false);
 	}
-		$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
+	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 } elseif (!vtlib_isModuleActive($currentModule)
-		&& !(($currentModule=='Tooltip' && $action==$module.'Ajax' && $_REQUEST['file']=='ComputeTooltip')
-			|| ($currentModule=='GlobalVariable' && $action==$module.'Ajax' && $_REQUEST['file']=='SearchGlobalVar'))
-	) {
-		require_once 'Smarty_setup.php';
-		$smarty = new vtigerCRM_Smarty();
-		$smarty->assign('APP', $app_strings);
-		$smarty->assign('OPERATION_MESSAGE', getTranslatedString($currentModule, $currentModule) . $app_strings['VTLIB_MOD_NOT_ACTIVE']);
-		$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
+	&& !(($currentModule=='Tooltip' && $action==$module.'Ajax' && $_REQUEST['file']=='ComputeTooltip')
+	|| ($currentModule=='GlobalVariable' && $action==$module.'Ajax' && $_REQUEST['file']=='SearchGlobalVar'))
+) {
+	require_once 'Smarty_setup.php';
+	$smarty = new vtigerCRM_Smarty();
+	$smarty->assign('APP', $app_strings);
+	$smarty->assign('OPERATION_MESSAGE', getTranslatedString($currentModule, $currentModule) . $app_strings['VTLIB_MOD_NOT_ACTIVE']);
+	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 } else {
 	include_once $currentModuleFile;
 }
@@ -496,38 +496,10 @@ if (isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_aut
 }
 $theme = basename(vtlib_purify($theme));
 $Ajx_module = (isset($_REQUEST['module']) ? vtlib_purify($_REQUEST['module']) : $module);
-if ($Ajx_module == 'Events') {
-	$Ajx_module = 'Calendar';
-}
-if ((!$viewAttachment) && (!$viewAttachment && $action!='home_rss') && $action!=$Ajx_module.'Ajax' && $action!='massdelete' && $action!='DashboardAjax' && $action!='ActivityAjax') {
-	if ((!$skipFooters) && $action != "ChangePassword" && $action != "body" && $action != $Ajx_module."Ajax" && $action!='Popup' && $action != 'ImportStep3' && $action != 'ActivityAjax' && $action != 'getListOfRecords') {
-		cbEventHandler::do_action('corebos.footer.prefooter');
-		$coreBOS_uiapp_name = GlobalVariable::getVariable('Application_UI_Name', $coreBOS_app_name);
-		$coreBOS_uiapp_companyname = GlobalVariable::getVariable('Application_UI_CompanyName', $coreBOS_uiapp_name);
-		$coreBOS_uiapp_version = GlobalVariable::getVariable('Application_UI_Version', $coreBOS_app_version);
-		$coreBOS_uiapp_url = GlobalVariable::getVariable('Application_UI_URL', $coreBOS_app_url);
-		echo "<br><br><br><table border=0 cellspacing=0 cellpadding=5 width=100% class=settingsSelectedUI >";
-		echo "<tr><td class=small align=left><span style='color: rgb(153, 153, 153);'>".$coreBOS_uiapp_name." <span id='_vtiger_product_version_'>$coreBOS_uiapp_version</span>";
-		$coreBOS_uiapp_showgitversion = GlobalVariable::getVariable('Application_UI_ShowGITVersion', 0);
-		$coreBOS_uiapp_showgitdate = GlobalVariable::getVariable('Application_UI_ShowGITDate', 0);
-		if ($coreBOS_uiapp_showgitversion || $coreBOS_uiapp_showgitdate) {
-			list($gitversion,$gitdate) = explode(' ', file_get_contents('include/sw-precache/gitversion'));
-			$gitdate = trim(str_replace('-', '', $gitdate));
-			echo '&nbsp;('.($coreBOS_uiapp_showgitversion ? $gitversion : '').($coreBOS_uiapp_showgitdate ? $gitdate : '').')';
-		}
-		echo '</span></td>';
-		echo "<td class='cblds-t-align_right small' align=right><span>&copy; 2004-".date('Y')." <a href='$coreBOS_uiapp_url' target='_blank'>$coreBOS_uiapp_companyname</a></span></td></tr></table>";
-		if ($calculate_response_time) {
-			$endTime = microtime(true);
-			echo "<table align='center'><tr><td align='center'>";
-			$deltaTime = round($endTime - $startTime, 2);
-			echo('&nbsp;Server response time: '.$deltaTime.' seconds.');
-			echo "</td></tr></table>\n";
-		}
-	}
+if (!$viewAttachment && (!$viewAttachment && $action!='home_rss') && $action!=$Ajx_module.'Ajax' && $action!='massdelete' && $action!='DashboardAjax' && $action!='ActivityAjax') {
 	// ActivityReminder Customization for callback
 	if (!$skipFooters) {
-		if ($current_user->id!=null && isPermitted('Calendar', 'index') == 'yes' && vtlib_isModuleActive('Calendar')) {
+		if ($current_user->id!=null && isPermitted('cbCalendar', 'index') == 'yes' && vtlib_isModuleActive('cbCalendar')) {
 			echo "<script type='text/javascript'>if(typeof(ActivityReminderCallback) != 'undefined') ";
 			$cur_time = time();
 			$last_reminder_check_time = (isset($_SESSION['last_reminder_check_time']) ? $_SESSION['last_reminder_check_time'] : 0);
@@ -543,8 +515,14 @@ if ((!$viewAttachment) && (!$viewAttachment && $action!='home_rss') && $action!=
 			echo '</script>';
 		}
 	}
-
-	if ((!$skipFooters) && ($action != 'body') && ($action != $Ajx_module.'Ajax') && ($action != 'ActivityAjax')) {
+	if (!$skipFooters && $action!='ChangePassword' && $action!='body' && $action!=$Ajx_module.'Ajax' && $action!='Popup' && $action!='ImportStep3' && $action!='ActivityAjax' && $action!='getListOfRecords') {
+		cbEventHandler::do_action('corebos.footer.prefooter');
+		$coreBOS_uiapp_name = GlobalVariable::getVariable('Application_UI_Name', $coreBOS_app_name);
+		$coreBOS_uiapp_companyname = GlobalVariable::getVariable('Application_UI_CompanyName', $coreBOS_uiapp_name);
+		$coreBOS_uiapp_version = GlobalVariable::getVariable('Application_UI_Version', $coreBOS_app_version);
+		$coreBOS_uiapp_url = GlobalVariable::getVariable('Application_UI_URL', $coreBOS_app_url);
+		$coreBOS_uiapp_showgitversion = GlobalVariable::getVariable('Application_UI_ShowGITVersion', 0);
+		$coreBOS_uiapp_showgitdate = GlobalVariable::getVariable('Application_UI_ShowGITDate', 0);
 		include 'modules/Vtiger/footer.php';
 	}
 }

@@ -102,10 +102,15 @@ $related_module = array(
 		'SalesOrder' => 'related_to',
 		'PurchaseOrder' => 'related_to',
 	),
+	'HelpDesk' => array(
+		'HDRelatedTo' => 'parent_id',
+		'HDProducts' => 'product_id',
+	),
 	'Organization' => array(
 		'Accounts' => 'accid'
 	),
 );
+
 
 //Array de mapeig de moduls especials, p.e. el presciptors son comptes
 //aleshores el tag Prescriptor el mapegem a Accounts
@@ -166,6 +171,14 @@ $special_modules = array(
 		'Potentials',
 		'Project',
 		'ProjectTask'
+	),
+	'HDRelatedTo' => array(
+		'Accounts',
+		'Contacts'
+	),
+	'HDProducts' => array(
+		'Products',
+		'Services'
 	),
 );
 
@@ -251,6 +264,7 @@ function eval_expression($marcador, $entityid) {
 function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 	global $current_user,$repe,$adb,$related_module,$special_modules,$special_inv,$iter_modules,$default_charset,$genxmlaggregates;
 	global $dateGD, $repeticionGD, $lineGD;
+	$module = trim(preg_replace('/\*(\w|\s)+\*/', '', $module));
 	OpenDocument::debugmsg("retrieve_from_db: $marcador with $module($id)");
 	$token_pair = explode('.', $marcador);
 	if (count($token_pair) == 1) {
@@ -354,6 +368,7 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 							$cadena = number_format($cadena, 0);
 							break;
 						case 'N':
+						case 'NN':
 							$cadena = CurrencyField::convertToUserFormat($cadena, null, true);
 							break;
 						//case 'C':
@@ -758,6 +773,12 @@ function eval_paracada($condition, $id, $module, $check = false) {
 		$token_first_space_split = explode(' ', $token_pair[0]);
 		$token_pair[0] = $token_first_space_split[0];
 	}
+
+	preg_match('/\*((\w+)\s(ASC|DESC|asc|desc))\*/', $condition, $sortinfo); // Has sort condition?
+	if (count($sortinfo) > 0) {
+		$token_pair[0] = str_replace($sortinfo[0], '', $token_pair[0]);
+	}
+
 	$token_pair[0] = trim($token_pair[0]);
 	if (array_key_exists($token_pair[0], $special_modules)) {
 		$relmodule = $special_modules[$token_pair[0]];
@@ -792,7 +813,14 @@ function eval_paracada($condition, $id, $module, $check = false) {
 				$GetRelatedList_ReturnOnlyQuery = true;
 				$relatedsql = $focus->$func_rel($id, $tab_mod, $tab_rel);
 				$GetRelatedList_ReturnOnlyQuery = false;
-				$related = getRelatedCRMIDs($relatedsql['query']);
+				if (count($sortinfo) > 0) {
+					list($sortstring, $bare_sortstring, $fieldname, $sortorder) = $sortinfo;
+					$columnname = getColumnnameByFieldname($tab_rel, $fieldname);
+					$sortinfo = array('cname' => $columnname, 'order' => $sortorder);
+				} else {
+					$sortinfo = false;
+				}
+				$related = getRelatedCRMIDs($relatedsql['query'], $sortinfo);
 			} else {
 				if (areModulesRelated($token_pair[0], $module)) {
 					$clave = $focus->column_fields[$related_module[$module][$token_pair[0]]];
@@ -1643,8 +1671,8 @@ function get_plantilla($entid) {
 		$doc->retrieve_entity_info($plantillaid, 'Documents');
 		$title = $doc->column_fields['notes_title'];
 		$no = $doc->column_fields['note_no'];
-		$cat = $doc->column_fields['cat_documento'];
-		$fijado = ($doc->column_fields['fijado_portal'] == 1);
+		$cat = isset($doc->column_fields['cat_documento']) ? $doc->column_fields['cat_documento'] : '';
+		$fijado = !empty($doc->column_fields['fijado_portal']);
 	}
 
 	if (!empty($plantillaid)) {
@@ -1669,7 +1697,7 @@ function get_plantilla($entid) {
 		'doc_no' => $no,
 		'fijado' => $fijado,
 		'categoria' => $cat,
-		'entityname' => (empty($entityname) ? $entityname : elimina_puntuacion(elimina_acentos($entityname))),
+		'entityname' => (empty($entityname) ? '' : elimina_puntuacion(elimina_acentos($entityname))),
 	);
 	return $ret;
 }
@@ -1697,8 +1725,9 @@ function getUitypefield($module, $fieldname) {
 	return $adb->query_result($resfield, 0, 'uitype');
 }
 
-function getRelatedCRMIDs($relsql) {
+function getRelatedCRMIDs($relsql, $sortinfo = false) {
 	global $adb;
+	$relsql = !!$sortinfo ? $relsql . ' ORDER BY ' . $sortinfo['cname'] . ' ' . $sortinfo['order'] : $relsql;
 	$res = $adb->pquery($relsql, array());
 	$nr = $adb->num_rows($res);
 	$ret = array('entries' => array());

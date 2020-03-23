@@ -167,11 +167,11 @@ $list_report_form->assign('REPORT_FORMAT', $scheduledReport->scheduledFormat);
 $selectedRecipientsHTML = $scheduledReport->getSelectedRecipientsHTML();
 $list_report_form->assign('SELECTED_RECIPIENTS', $selectedRecipientsHTML);
 
-$list_report_form->assign('schtypeid', $scheduledReport->scheduledInterval['scheduletype']);
-$list_report_form->assign('schtime', $scheduledReport->scheduledInterval['time']);
-$list_report_form->assign('schday', $scheduledReport->scheduledInterval['date']);
-$list_report_form->assign('schweek', $scheduledReport->scheduledInterval['day']);
-$list_report_form->assign('schmonth', $scheduledReport->scheduledInterval['month']);
+$list_report_form->assign('schtypeid', !empty($scheduledReport->scheduledInterval['scheduletype']) ? $scheduledReport->scheduledInterval['scheduletype'] : null);
+$list_report_form->assign('schtime', !empty($scheduledReport->scheduledInterval['time']) ? $scheduledReport->scheduledInterval['time'] : null);
+$list_report_form->assign('schday', !empty($scheduledReport->scheduledInterval['date']) ? $scheduledReport->scheduledInterval['date'] : null);
+$list_report_form->assign('schweek', !empty($scheduledReport->scheduledInterval['day']) ? $scheduledReport->scheduledInterval['day'] : null);
+$list_report_form->assign('schmonth', !empty($scheduledReport->scheduledInterval['month']) ? $scheduledReport->scheduledInterval['month'] : null);
 
 $list_report_form->assign('FOLDERID', isset($_REQUEST['folder'])?vtlib_purify($_REQUEST['folder']):$folderid);
 $list_report_form->assign('REP_FOLDERS', $repObj->sgetRptFldr());

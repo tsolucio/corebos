@@ -250,7 +250,7 @@ function vtlib_getFieldHelpInfo($module) {
 		$result = $adb->pquery('SELECT fieldname,helpinfo FROM vtiger_field WHERE tabid=?', array(getTabid($module)));
 		if ($result && $adb->num_rows($result)) {
 			while ($fieldrow = $adb->fetch_array($result)) {
-				$helpinfo = decode_html($fieldrow['helpinfo']);
+				$helpinfo = trim(decode_html($fieldrow['helpinfo']));
 				if (!empty($helpinfo)) {
 					$fieldhelpinfo[$fieldrow['fieldname']] = getTranslatedString($helpinfo, $module);
 				}
@@ -379,12 +379,7 @@ function vtlib_isCustomModule($moduleName) {
 function vtlib_isEntityModule($moduleName) {
 	global $adb;
 	$rsent = $adb->pquery('select isentitytype from vtiger_tab where name=?', array($moduleName));
-	if ($rsent && $adb->num_rows($rsent)>0) {
-		if ($adb->query_result($rsent, 0, 0)=='1') {
-			return true;
-		}
-	}
-	return false;
+	return ($rsent && $adb->num_rows($rsent)>0 && $rsent->fields['isentitytype']=='1');
 }
 
 /**

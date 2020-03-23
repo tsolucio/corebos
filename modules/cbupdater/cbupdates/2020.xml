@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updatesChangeLog>
+<changeSet>
+	<author>george1806</author>
+	<description>Add a new type of Business Action - LISTVIEWROW</description>
+	<filename>build/changeSets/2020/addListviewrowBAtype.php</filename>
+	<classname>addListviewrowBAtype</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Resize Business Acttion, Global Variable and Filter Management module_list field to its maximum length</description>
+	<filename>build/changeSets/2020/resizeModuleListFields.php</filename>
+	<classname>resizeModuleListFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>add cbquestion filter format for conditions field</description>
+	<filename>build/changeSets/2020/addcbquestionfilterformatfield.php</filename>
+	<classname>addcbquestionfilterformatfield</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>delete gendoc compiled helper so it gets compiled again with the new changes to exclude INCLUDE DOC</description>
+	<filename>build/changeSets/2020/gendocdeleteUnoservice.php</filename>
+	<classname>gendocdeleteUnoservice</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>loridacito</author>
+	<description>add table for elasticsearch indexes</description>
+	<filename>build/changeSets/2020/addtableforesindexes.php</filename>
+	<classname>Addtableforesindexes</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>add Application field to Updater</description>
+	<filename>build/changeSets/2020/addFieldAppTocbUpdater.php</filename>
+	<classname>addFieldAppTocbUpdater</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete old Calendar Events</description>
+	<filename>build/changeSets/2020/delCalendarEvents.php</filename>
+	<classname>delCalendarEvents</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>add CBUUID field to application</description>
+	<filename>build/changeSets/2020/addcbuuid.php</filename>
+	<classname>addcbuuid</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>Elifuraha</author>
+	<description>add table for saved menu</description>
+	<filename>build/changeSets/2020/addtablevtigersavemenu.php</filename>
+	<classname>addtablevtigersavemenu</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+</updatesChangeLog>

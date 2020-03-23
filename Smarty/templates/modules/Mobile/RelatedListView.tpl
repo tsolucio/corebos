@@ -16,7 +16,7 @@
 <script type="text/javascript" src="resources/lang/{$LANGUAGE}.lang.js"></script>
 {literal}
 	<!-- define the collapsible button size-->
-	<style>	
+	<style>
 	.collapse_header .ui-btn-text{
 		font-size: 10px
 	}
@@ -25,7 +25,7 @@
 </head>
 <body>
 <div data-role="page" data-theme="b" >
-	<div data-role="header" data-theme="{$COLOR_HEADER_FOOTER}"  data-position="fixed">
+	<div data-role="header" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed">
 		<a href="index.php?_operation=fetchRecord&record={$RECORDID}" class="ui-btn ui-btn-left ui-corner-all ui-icon-back ui-btn-icon-notext" rel="external">{$MOD.LBL_CANCEL}</a>
 		<h4>{$MOD.LBL_RELATED_LIST}</h4>
 		<a href="#panelmenu" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
@@ -51,14 +51,14 @@
 								<a class="ui-btn ui-btn-icon-right ui-icon-carat-r" href="?_operation=fetchRecord&record={$_FIELD.relatedlistcontent.id}&lang={$LANGUAGE}" target="_self">
 									{$_FIELD.relatedlistcontent.0}
 									{if isset($_FIELD.relatedlistcontent.1) && $_FIELD.relatedlistcontent.1 neq ''},
-										 {$_FIELD.relatedlistcontent.1}
+										{$_FIELD.relatedlistcontent.1}
 									{/if}
 									{if $_MODULE eq 'Timecontrol'}
 										{if $_FIELD.relatedlistcontent.2 neq ''},
-											 {$_FIELD.relatedlistcontent.2}
+											{$_FIELD.relatedlistcontent.2}
 										{/if}
 										{if $_FIELD.relatedlistcontent.3 neq '0.00'},
-											 {$_FIELD.relatedlistcontent.3}
+											{$_FIELD.relatedlistcontent.3}
 										{/if}
 									{/if}
 								</a>

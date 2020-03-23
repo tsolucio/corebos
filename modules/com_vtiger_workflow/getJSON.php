@@ -29,49 +29,60 @@ if (isset($_REQUEST['page'])) {
 } else {
 	$page = 1;
 }
-if (isset($_REQUEST['trigger_list']) && is_numeric($_REQUEST['trigger_list'])) {
-	$executioncondtionid = vtlib_purify($_REQUEST['trigger_list']);
-} else {
-	$executioncondtionid = 0;
+$conds = '';
+$params = array();
+if (!empty($_REQUEST['filters'])) {
+	$filters = json_decode(vtlib_purify($_REQUEST['filters']), true);
+	if (json_last_error() == JSON_ERROR_NONE && count($filters)>0) {
+		$conds = array();
+		foreach ($filters as $filter) {
+			switch ($filter['path']) {
+				case 'Module':
+					if (!empty($filter['value']) && $filter['value'] != 'all') {
+						$conds[] = 'module_name=?';
+						$params[] = $filter['value'];
+					}
+					break;
+				case 'Description':
+					if (!empty($filter['value'])) {
+						$conds[] = 'summary like ?';
+						$params[] = '%' . $filter['value'] . '%';
+					}
+					break;
+				case 'Purpose':
+					if (!empty($filter['value'])) {
+						$conds[] = 'purpose like ?';
+						$params[] = '%' . $filter['value'] . '%';
+					}
+					break;
+				case 'Trigger':
+					if (!empty($filter['value']) && $filter['value'] != 'all') {
+						$conds[] = 'execution_condition=?';
+						$params[] = $filter['value'];
+					}
+					break;
+				default:
+			}
+		}
+		if (count($conds)>0) {
+			$conds = 'where '.implode(' and ', $conds);
+		} else {
+			$conds = '';
+		}
+	}
 }
-if (isset($_REQUEST['list_module'])) {
-	$modulename = vtlib_purify($_REQUEST['list_module']);
-} else {
-	$modulename = 'all';
-}
-if (isset($_REQUEST['desc_search'])) {
-	$desc_search = vtlib_purify($_REQUEST['desc_search']);
-} else {
-	$desc_search = '';
-}
-if (isset($_REQUEST['purpose_search'])) {
-	$purpose_search = vtlib_purify($_REQUEST['purpose_search']);
-} else {
-	$purpose_search = '';
-}
-if (isset($_REQUEST['order_by']) && is_numeric($_REQUEST['order_by'])) {
-	$order_by = vtlib_purify($_REQUEST['order_by']);
-	switch ($order_by) {
-		case 0:
-			$order_by = $focus->list_fields_name['Module'];
-			break;
-		case 1:
-			$order_by = $focus->list_fields_name['Description'];
-			break;
-		case 2:
-			$order_by = $focus->list_fields_name['Purpose'];
-			break;
-		case 3:
-			$order_by = $focus->list_fields_name['Trigger'];
-			break;
+if (!empty($_REQUEST['sorder'])) {
+	$order_by = '';
+	$sorder = json_decode(vtlib_purify($_REQUEST['sorder']), true);
+	if (json_last_error() == JSON_ERROR_NONE && count($sorder)>0) {
+		$order_by = array();
+		foreach ($sorder as $order) {
+			$order_by[] = $focus->list_fields_name[$order['path']].' '.$order['direction'];
+		}
+		$order_by = implode(', ', $order_by);
 	}
 } else {
-	$order_by = $focus->default_order_by;
+	$order_by = $focus->default_order_by.' '.$focus->default_sort_order;
 }
-if (isset($_REQUEST['order_rule'])) {
-	$sorder = vtlib_purify($_REQUEST['order_rule']);
-} else {
-	$sorder = 'DESC';
-}
-$response = $focus->getWorkFlowJSON($modulename, $executioncondtionid, $page, $order_by, $sorder, $desc_search, $purpose_search);
+$response = $focus->getWorkFlowJSON($conds, $params, $page, $order_by);
 echo $response;

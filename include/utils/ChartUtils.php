@@ -31,7 +31,7 @@ class ChartUtils {
 		$report = new ReportRun($reportid);
 		$restrictedModules = array();
 		if ($report->secondarymodule!='') {
-			$reportModules = explode(":", $report->secondarymodule);
+			$reportModules = explode(':', $report->secondarymodule);
 		} else {
 			$reportModules = array();
 		}
@@ -39,7 +39,7 @@ class ChartUtils {
 
 		$restrictedModules = false;
 		foreach ($reportModules as $mod) {
-			if (isPermitted($mod, 'index') != "yes" || vtlib_isModuleActive($mod) == false) {
+			if (isPermitted($mod, 'index') != 'yes' || vtlib_isModuleActive($mod) == false) {
 				if (!is_array($restrictedModules)) {
 					$restrictedModules = array();
 				}
@@ -48,12 +48,12 @@ class ChartUtils {
 		}
 
 		if (is_array($restrictedModules) && count($restrictedModules) > 0) {
-			$ChartDataArray['error'] = "<h4>".getTranslatedString('LBL_NO_ACCESS', 'Reports').' - '.implode(',', $restrictedModules)."</h4>";
+			$ChartDataArray['error'] = '<h4>'.getTranslatedString('LBL_NO_ACCESS', 'Reports').' - '.implode(',', $restrictedModules).'</h4>';
 			return $ChartDataArray;
 		}
 
 		if ($fieldDetails != '') {
-			list($tablename, $colname, $module_field, $fieldname, $single) = explode(":", $fieldDetails);
+			list($tablename, $colname, $module_field, $fieldname, $single) = explode(':', $fieldDetails);
 			list($module, $field) = explode('_', $module_field);
 			$dateField = false;
 			if ($single == 'D') {
@@ -80,6 +80,9 @@ class ChartUtils {
 				return $ChartDataArray;
 			}
 		}
+		$cvid = getCvIdOfAll($module);
+		$oReport = new Reports($reportid);
+		$oReport->getAdvancedFilterList($reportid);
 		for ($i = 0; $i < $rows; $i++) {
 			$groupFieldValue = $adb->query_result($queryResult, $i, strtolower($groupbyField));
 			$decodedGroupFieldValue = html_entity_decode($groupFieldValue, ENT_QUOTES, $default_charset);
@@ -128,27 +131,20 @@ class ChartUtils {
 							$link_val = 'index.php?module=' . $module . '&query=true&action=index&' . $advanceSearchCondition;
 						}
 					} else {
-						$cvid = getCvIdOfAll($module);
-						$esc_search_str = urlencode($decodedGroupFieldValue);
-						if ($single == 'DT') {
-							$esc_search_str = urlencode($groupFieldValue);
-							if (strtolower($fieldname) == 'modifiedtime' || strtolower($fieldname) == 'createdtime') {
-								$tablename = 'vtiger_crmentity';
-								$colname = $fieldname;
-							}
+						$conditions = $oReport->advft_criteria;
+						if (count($conditions)>0) {
+							$conditions[count($conditions)]['condition'] = 'and';
 						}
-						if ($fieldname == 'assigned_user_id') {
-							$tablename = 'vtiger_crmentity';
-							$colname = 'smownerid';
-						}
-
-						if ($module == 'Calendar') {
-							$link_val = 'index.php?module=' . $module . '&action=ListView&search_text=' . $esc_search_str.
-								'&search_field=' . $fieldname . '&searchtype=BasicSearch&query=true&operator=e&viewname=' . $cvid;
-						} else {
-							$link_val = 'index.php?module=' . $module . '&action=index&search_text=' . $esc_search_str.
-								'&search_field=' . $fieldname . '&searchtype=BasicSearch&query=true&operator=e&viewname=' . $cvid;
-						}
+						$conditions[count($conditions)+1] = array(  // this array index is important: do not change to push for optimization
+							'columns' => array(array(
+								'columnname' => $fieldDetails,
+								'comparator' => 'e',
+								'value' => $decodedGroupFieldValue,
+								'column_condition' => '',
+							)),
+							'condition' => '',
+						);
+						$link_val = QueryGenerator::constructAdvancedSearchURLFromReportCriteria($conditions, $module).'&viewname='.$cvid;
 					}
 
 					$target_val[] = $link_val;
@@ -165,7 +161,9 @@ class ChartUtils {
 		return $ChartDataArray;
 	}
 
-	public static function getChartHTML($labels, $values, $graph_title, $target_values, $html_imagename, $width, $height, $left, $right, $top, $bottom, $graph_type, $legend_position = 'right', $responsive = true) {
+	public static function getChartHTML($labels, $values, $graph_title, $target_values, $html_imagename, $width, $height, $left, $right, $top, $bottom, $graph_type, $legend_position = 'right', $responsive = true, $module = '') {
+		$GRAPHSHOWCOLOR = GlobalVariable::getVariable('Graph_DataLabels_Color', '#FFFFFF', $module);
+		$GRAPHCOLORSCHEME = GlobalVariable::getVariable('Graph_ColorScheme', 'tableau.Tableau10', $module);
 		$lbls = implode(',', $labels);
 		$vals = str_replace('::', ',', $values);
 		$realvals = explode(',', $vals);
@@ -213,9 +211,9 @@ window.doChart{$html_imagename} = function(charttype) {
 		datasets: [{
 			data: [ $vals ],
 			$gtitle
-			backgroundColor: [ $bcolor ]
 		}]
 	};
+	//const arrSum = chartDataObject.datasets[0].data.reduce((a,b) => Number(a) + Number(b), 0);
 	Chart.scaleService.updateScaleDefaults('linear', {
 		ticks: {
 			min: $minscale,
@@ -226,6 +224,19 @@ window.doChart{$html_imagename} = function(charttype) {
 		type: '{$graph_type}',
 		data: chartDataObject,
 		options: {
+			plugins: {
+				colorschemes: {
+					scheme: '{$GRAPHCOLORSCHEME}'
+				},
+				datalabels: {
+					display: false,
+					color: '{$GRAPHSHOWCOLOR}',
+					font: {
+						size: 14,
+						weight: 'bold'
+					},
+				}
+			},
 			responsive: $respproperty,
 			legend: {
 				$legend_position

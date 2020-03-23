@@ -234,19 +234,19 @@ class PBXManager extends CRMEntity {
 			// Mark the module as Standard module
 			$adb->pquery('UPDATE vtiger_tab SET customized=0 WHERE name=?', array($moduleName));
 		} elseif ($eventType == 'module.disabled') {
-		// TODO Handle actions when this module is disabled.
+		// Handle actions when this module is disabled.
 			$em = new VTEventsManager($adb);
 			$em->setHandlerInActive('PBXManagerAfterSaveCreateActivity');
 		} elseif ($eventType == 'module.enabled') {
-		// TODO Handle actions when this module is enabled.
+		// Handle actions when this module is enabled.
 			$em = new VTEventsManager($adb);
 			$em->setHandlerActive('PBXManagerAfterSaveCreateActivity');
 		} elseif ($eventType == 'module.preuninstall') {
-		// TODO Handle actions when this module is about to be deleted.
+		// Handle actions when this module is about to be deleted.
 		} elseif ($eventType == 'module.preupdate') {
-		// TODO Handle actions before this module is updated.
+		// Handle actions before this module is updated.
 		} elseif ($eventType == 'module.postupdate') {
-		// TODO Handle actions after this module is updated.
+		// Handle actions after this module is updated.
 		}
 	}
 

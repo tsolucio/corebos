@@ -46,3 +46,20 @@ function searchhide(argg, argg2) {
 		x.display='none';
 	}
 }
+
+function displayModuleList(selectmodule_view) {
+	for (var i=0; i < selectmodule_view.options.length; i++) {
+		if (selectmodule_view.options[i].value=='All') {
+			continue;
+		}
+		var mod = 'global_list_'+selectmodule_view.options[i].value;
+		if (selectmodule_view.value == 'All') {
+			show(mod);
+		} else {
+			hide(mod);
+		}
+	}
+	if (selectmodule_view.value != 'All') {
+		show('global_list_'+selectmodule_view.value);
+	}
+}

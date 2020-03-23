@@ -119,7 +119,11 @@ class cbupdater extends CRMEntity {
 	 * return array  $list_buttons - for module (eg: 'Accounts')
 	 */
 	public function getListButtons($app_strings) {
-		return array();
+		if ($this->column_fields['appcs']=='1') {
+			return array();
+		} else {
+			return parent::getListButtons($app_strings);
+		}
 	}
 
 	public static function exists($cbinfo) {
@@ -127,11 +131,12 @@ class cbupdater extends CRMEntity {
 		if (empty($cbinfo['filename']) || empty($cbinfo['classname'])) {
 			return false;
 		}
-		$sql = 'select count(*) from vtiger_cbupdater
-			inner join vtiger_crmentity on crmid=cbupdaterid 
-			where deleted=0 and pathfilename=? and classname=?';
-		$rs = $adb->pquery($sql, array($cbinfo['filename'],$cbinfo['classname']));
-		return ($rs && $adb->query_result($rs, 0, 0)==1);
+		$sql = "select 1
+			from vtiger_cbupdater
+			inner join vtiger_crmentity on crmid=cbupdaterid
+			where deleted=0 and (pathfilename=? or pathfilename='' or pathfilename is null) and filename=? and classname=?";
+		$rs = $adb->pquery($sql, array($cbinfo['filename'], basename($cbinfo['filename'], '.php'), $cbinfo['classname']));
+		return ($rs && $adb->num_rows($rs)==1);
 	}
 
 	public static function getMaxExecutionOrder() {
@@ -153,18 +158,18 @@ class cbupdater extends CRMEntity {
 	 */
 	public function vtlib_handler($modulename, $event_type) {
 		if ($event_type == 'module.postinstall') {
-			// TODO Handle post installation actions
+			// Handle post installation actions
 			$this->setModuleSeqNumber('configure', $modulename, 'cbupd-', '0000001');
 		} elseif ($event_type == 'module.disabled') {
-			// TODO Handle actions when this module is disabled.
+			// Handle actions when this module is disabled.
 		} elseif ($event_type == 'module.enabled') {
-			// TODO Handle actions when this module is enabled.
+			// Handle actions when this module is enabled.
 		} elseif ($event_type == 'module.preuninstall') {
-			// TODO Handle actions when this module is about to be deleted.
+			// Handle actions when this module is about to be deleted.
 		} elseif ($event_type == 'module.preupdate') {
-			// TODO Handle actions before this module is updated.
+			// Handle actions before this module is updated.
 		} elseif ($event_type == 'module.postupdate') {
-			// TODO Handle actions after this module is updated.
+			// Handle actions after this module is updated.
 		}
 	}
 

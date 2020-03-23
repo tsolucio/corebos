@@ -33,19 +33,19 @@ class Tooltip {
 				array($adb->getUniqueID('vtiger_settings_field'), getSettingsBlockId($blockname), $name, $icon, $description, $links)
 			);
 		} elseif ($eventType == 'module.disabled') {
-		// TODO Handle actions when this module is disabled.
+		// Handle actions when this module is disabled.
 			$moduleInstance = Vtiger_Module::getInstance('Tooltip');
 			$moduleInstance->deleteLink('HEADERSCRIPT', 'ToolTip_HeaderScript', 'modules/Tooltip/TooltipHeaderScript.js');
 		} elseif ($eventType == 'module.enabled') {
-		// TODO Handle actions when this module is enabled.
+		// Handle actions when this module is enabled.
 			$moduleInstance = Vtiger_Module::getInstance('Tooltip');
 			$moduleInstance->addLink('HEADERSCRIPT', 'ToolTip_HeaderScript', 'modules/Tooltip/TooltipHeaderScript.js');
 		} elseif ($eventType == 'module.preuninstall') {
-		// TODO Handle actions when this module is about to be deleted.
+		// Handle actions when this module is about to be deleted.
 		} elseif ($eventType == 'module.preupdate') {
-		// TODO Handle actions before this module is updated.
+		// Handle actions before this module is updated.
 		} elseif ($eventType == 'module.postupdate') {
-		// TODO Handle actions after this module is updated.
+		// Handle actions after this module is updated.
 		}
 	}
 }

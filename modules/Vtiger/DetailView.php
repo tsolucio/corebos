@@ -94,14 +94,14 @@ if ($cbMapid) {
 }
 if ($singlepane_view == 'true' || $isPresentRelatedListBlock) {
 	$related_array = getRelatedLists($currentModule, $focus);
-	$smarty->assign("RELATEDLISTS", $related_array);
+	$smarty->assign('RELATEDLISTS', $related_array);
 
 	require_once 'include/ListView/RelatedListViewSession.php';
 	if (!empty($_REQUEST['selected_header']) && !empty($_REQUEST['relation_id'])) {
 		RelatedListViewSession::addRelatedModuleToSession(vtlib_purify($_REQUEST['relation_id']), vtlib_purify($_REQUEST['selected_header']));
 	}
 	$open_related_modules = RelatedListViewSession::getRelatedModulesFromSession();
-	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
+	$smarty->assign('SELECTEDHEADERS', $open_related_modules);
 } else {
 	$smarty->assign('RELATEDLISTS', array());
 }

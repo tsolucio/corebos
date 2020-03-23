@@ -97,4 +97,15 @@ function __vt_power($elements) {
 	return 0;
 }
 
+function __cb_number_format($arr) {
+	if (count($arr)>0) {
+		$number = $arr[0];
+		$decimals = isset($arr[1]) ? $arr[1] : 0;
+		$dec_points = isset($arr[2]) ? $arr[2] : '.';
+		$thousands_sep = isset($arr[3]) ? $arr[3] : ',';
+		return number_format($number, $decimals, $dec_points, $thousands_sep);
+	} else {
+		return '';
+	}
+}
 ?>

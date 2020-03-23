@@ -1,3 +1,3 @@
-workbox injectManifest include/sw-precache/sw-precache-config.js
+workbox generateSW include/sw-precache/sw-precache-config.js
 md5sum service-worker.js > include/sw-precache/service-worker.md5
 git log -1 HEAD --format="%h %cd" --date=short > include/sw-precache/gitversion

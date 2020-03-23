@@ -8,22 +8,13 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-
-<script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
-<table border=0 cellspacing=0 cellpadding=0 width=100% class=small>
-	<tr><td style="height:2px"></td></tr>
-	<tr>
-		{assign var="action" value="WebformsListView"}
-		{assign var="MODULELABEL" value=$MODULE|@getTranslatedString:$MODULE}
-		<td style="padding-left:10px;padding-right:50px" class="moduleName" nowrap><a class="hdrLink" href="#">{$MODULELABEL}</a></td>
-	</tr>
-</table>
+{include file='SetMenu.tpl'}
+<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43" aria-modal="true">
+<div class="slds-modal__container slds-p-around_none">
 <table style="border:0;padding: 2px 10px;">
 <tbody><tr>
-	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
 	<br>
-	<div align=center>
 	<table border=0 cellspacing=0 cellpadding=20 width=90% class="settingsUI">
 	<tr>
 		<td>
@@ -90,3 +81,6 @@
 	</td>
 </tr>
 </table>
+
+	</div>
+</section>

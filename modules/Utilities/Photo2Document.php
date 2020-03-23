@@ -25,7 +25,7 @@ $wsrecid = vtws_getEntityId($formodule).'x'.$forrecord;
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $default_charset; ?>">
 	<title><?php echo $app_strings['Photo2Document']; ?></title>
-	<style type="text/css">@import url("themes/<?php echo $theme; ?>/style.css");</style>
+	<link rel="stylesheet" type="text/css" media="all" href="themes/<?php echo $theme; ?>/style.css">
 	<script type="text/javascript" src="include/jquery/jquery.js"></script>
 	<script src="include/Webservices/WSClient.js" type="text/javascript" charset="utf-8"></script>
 <style>

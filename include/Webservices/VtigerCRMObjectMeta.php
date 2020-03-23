@@ -67,9 +67,6 @@ class VtigerCRMObjectMeta extends EntityMeta {
 	}
 
 	public function getTabName() {
-		if ($this->objectName == 'Events') {
-			return 'Calendar';
-		}
 		return $this->objectName;
 	}
 
@@ -279,6 +276,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 			}
 			$this->fieldColumnMapping['id'] = $this->idColumn;
 		}
+
 		return $this->fieldColumnMapping;
 	}
 
@@ -379,13 +377,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 	private function retrieveMetaForBlock($block) {
 		global $adb;
 		$tabid = $this->getTabId();
-		$uniqueFieldsRestriction = 'vtiger_field.fieldid IN (select min(vtiger_field.fieldid) from vtiger_field where vtiger_field.tabid=? GROUP BY vtiger_field.columnname)';
-		//Select condition if we are in Calendar
-		if ($tabid == '9') {
-			$condition = "($uniqueFieldsRestriction or vtiger_field.tablename='vtiger_activitycf')";
-		} else {
-			$condition = $uniqueFieldsRestriction;
-		}
+		$condition = 'vtiger_field.fieldid IN (select min(vtiger_field.fieldid) from vtiger_field where vtiger_field.tabid=? GROUP BY vtiger_field.columnname)';
 		$userprivs = $this->user->getPrivileges();
 		if ($userprivs->hasGlobalReadPermission()) {
 			$sql = "SELECT vtiger_field.*, '0' as readonly, vtiger_blocks.sequence as blkseq
@@ -456,9 +448,6 @@ class VtigerCRMObjectMeta extends EntityMeta {
 			if ($result != null && isset($result)) {
 				if ($adb->num_rows($result)>0) {
 					$seType = $adb->query_result($result, 0, 'setype');
-					if ($seType == 'Calendar') {
-						$seType = vtws_getCalendarEntityType($id);
-					}
 				}
 			}
 		}

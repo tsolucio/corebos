@@ -443,7 +443,7 @@ class OpenDocument {
 		$this->contentXPath->registerNamespace('text', self::NS_TEXT);
 		$this->styles_array = $this->getStyles();
 
-				$this->listChildren();
+		$this->listChildren();
 		$this->setMax();
 	}
 
@@ -785,8 +785,122 @@ class OpenDocument {
 		return $listelement;
 	}
 
+	public function processInclude() {
+		global $current_user;
+		require_once 'modules/Documents/Documents.php';
+		if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php')) {
+			include 'modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php';
+		} else {
+			include 'modules/evvtgendoc/commands_en.php';
+		}
+		$strlen_includeGD = strlen($includeGD);
+		//foreach ($this->contentXPath->evaluate('//*[count(*) = 0]') as $pnode) {
+		foreach ($this->contentXPath->evaluate('//text:p[contains(text(), "'.$includeGD.'")]') as $pnode) {
+			$texto_p='';
+			foreach ($pnode->childNodes as $pnc) {
+				$texto_p = (empty($pnc->wholeText) ? (empty($pnc->nodeValue) ? '' : $pnc->nodeValue) : $pnc->wholeText);
+				if (!empty($texto_p) && is_string($texto_p)) {
+					break; // utilizo el primer texto no vacío que encuentro
+				}
+			}
+			$docno = substr($texto_p, $strlen_includeGD);
+			$docno = trim($docno, ' }');
+			if ($docno!='Documents') {
+				$path = Documents::getAttachmentPath($docno);
+				if ($path!='') {
+					$inccontentDOM = new DOMDocument('1.0', 'UTF-8');
+					if ($inccontentDOM->loadXML(ZipWrapper::read($path, self::FILE_CONTENT))) {
+						OpenDocument::debugmsg('INCLUDING FILE: '.$path);
+						// include content
+						$innodelist = $inccontentDOM->getElementsByTagNameNS('urn:oasis:names:tc:opendocument:xmlns:office:1.0', 'body');
+						$xmlText = simplexml_import_dom($innodelist->item(0)->firstChild);
+						$nxml = $xmlText->asXML();
+						unset($xmlText);
+						$nxml = preg_replace('/<office:text.*>/U', '<text:section>', $nxml);
+						$nxml = str_replace('</office:text>', '</text:section>', $nxml);
+						$nxml = '<?xml version="1.0" encoding="UTF-8"?>
+						<office:document-content
+							xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+							xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+							xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+							xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+							xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
+							xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"
+							xmlns:xlink="http://www.w3.org/1999/xlink"
+							xmlns:dc="http://purl.org/dc/elements/1.1/"
+							xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0"
+							xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0"
+							xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0"
+							xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0"
+							xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0"
+							xmlns:math="http://www.w3.org/1998/Math/MathML"
+							xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0"
+							xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0"
+							xmlns:ooo="http://openoffice.org/2004/office"
+							xmlns:ooow="http://openoffice.org/2004/writer"
+							xmlns:oooc="http://openoffice.org/2004/calc"
+							xmlns:dom="http://www.w3.org/2001/xml-events"
+							xmlns:xforms="http://www.w3.org/2002/xforms"
+							xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+							xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+							xmlns:rpt="http://openoffice.org/2005/report"
+							xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2"
+							xmlns:xhtml="http://www.w3.org/1999/xhtml"
+							xmlns:grddl="http://www.w3.org/2003/g/data-view#"
+							xmlns:officeooo="http://openoffice.org/2009/office"
+							xmlns:tableooo="http://openoffice.org/2009/table"
+							xmlns:drawooo="http://openoffice.org/2010/draw"
+							xmlns:calcext="urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0"
+							xmlns:loext="urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0"
+							xmlns:field="urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0"
+							xmlns:formx="urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0"
+							xmlns:css3t="http://www.w3.org/TR/css3-text/"
+							office:version="1.2">'.$nxml.'</office:document-content>';
+						$newdoc = new DOMDocument('1.0', 'UTF-8');
+						$newdoc->loadXML($nxml);
+						$nwnodelist = $newdoc->getElementsByTagNameNS('urn:oasis:names:tc:opendocument:xmlns:text:1.0', 'section');
+						$newdoc = $this->contentDOM->importNode($nwnodelist->item(0), true);
+						$pnode->parentNode->replaceChild($newdoc, $pnode);
+						unset($newdoc);
+						// include styles
+						//$docstyles = $this->contentDOM->getElementsByTagNameNS('urn:oasis:names:tc:opendocument:xmlns:office:1.0', 'automatic-styles')->item(0);
+						$innodelist = $inccontentDOM->getElementsByTagNameNS('urn:oasis:names:tc:opendocument:xmlns:office:1.0', 'automatic-styles')->item(0);
+						foreach ($innodelist->childNodes as $incnode) {
+							$newnode = $this->contentDOM->importNode($incnode, true);
+							$this->styles->appendChild($newnode);
+						}
+						// include images
+						$innodelist = $inccontentDOM->getElementsByTagNameNS('urn:oasis:names:tc:opendocument:xmlns:drawing:1.0', 'image');
+						if ($innodelist->length>0) {
+							$tmpdir = 'cache/gendocoutput/img'.$current_user->id;
+							@mkdir($tmpdir);
+							ZipWrapper::unlinkRecursive($tmpdir, false);
+							$zipinc = new ZipArchive;
+							$zipinc->open(realpath($path));
+							$zipinc->extractTo($tmpdir);
+							$zipinc->close();
+							foreach ($innodelist as $incnode) {
+								$nifname = $incnode->getAttribute('xlink:href');
+								$this->newImages[] = $tmpdir.'/'.$nifname;
+								$mimetype = $incnode->getAttribute('loext:mime-type');
+								$this->makeFileEntryElement($nifname, $mimetype);
+							}
+						}
+						// $xp = new DOMXPath($inccontentDOM);
+						// foreach ($xp->evaluate('//*[count(*) = 0]') as $incnode) {
+						// 	$incitem = $this->contentDOM->importNode($incnode, true);
+						// 	//$this->contentDOM->documentElement->appendChild($incitem);
+						// 	// $incitem = $this->contentDOM->importNode($incnode->item($incns), true);
+						// 	$this->contentDOM->documentElement->insertBefore($incitem, $pnode);
+						// }
+					}
+				}
+			}
+		}
+	}
+
 	public function postprocessing($filename, $pFilename = null) {
-		global $log, $adb, $root_directory;
+		global $root_directory;
 
 		if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php')) {
 			include 'modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php';
@@ -794,49 +908,29 @@ class OpenDocument {
 			include 'modules/evvtgendoc/commands_en.php';
 		}
 
-		$properties = array(
-		'includeGD' => $includeGD,
-		'insertindexGD' => $insertindexGD,
-		);
-
-		// Prepare include docs information
-		$xmlText = $this->contentDOM->saveXML();
-		$result = preg_match_all('/\\'.$includeGD.'([\w\d]+)\}/', $xmlText, $matches);
-		$this->debugmsg('Post processing: '.print_r(array($includeGD,$result, $matches), true));
-		if ($result) {
-			foreach ($matches[1] as $match) {
-				$sql = "select notesid from vtiger_notes where note_no='{$match}'";
-				$res = $adb->query($sql);
-				$docid = $adb->query_result($res, 0, 0);
-				$sql = "SELECT at.attachmentsid, at.name, at.path
-					FROM vtiger_seattachmentsrel ar
-					LEFT JOIN vtiger_attachments at ON ar.attachmentsid=at.attachmentsid
-					WHERE crmid={$docid}";
-				$res = $adb->query($sql);
-				$name = $adb->query_result($res, 0, 'name');
-				$path = $adb->query_result($res, 0, 'path');
-				$prefix = $adb->query_result($res, 0, 'attachmentsid').'_';
-				$incFilename = $path.$prefix.$name;
-				$properties['match.'.$match] = 'file://'.$root_directory.$incFilename;
+		$xp = new DOMXPath($this->contentDOM);
+		$search = $xp->evaluate('//text:p[contains(text(), "'.$insertindexGD.'")]');
+		if ($search && $search->length>0) {
+			$properties = array(
+				'insertindexGD' => $insertindexGD,
+			);
+			$pFilename = tempnam('/tmp', 'gendoc-');
+			$handle = fopen($pFilename, 'w');
+			foreach ($properties as $key => $value) {
+				fwrite($handle, "{$key} = {$value}\n");
 			}
+			fclose($handle);
+			// Process and save
+			$filename = escapeshellarg('file://'.$filename);
+			$command = "{$root_directory}modules/evvtgendoc/unoservice.sh {$pFilename} {$filename} {$filename}";
+			//$command = "{$root_directory}modules/evvtgendoc/unoservice.sh {$pFilename} {$filename} {$filename} >>{$root_directory}/modules/evvtgendoc/unoservice.log 2>&1";
+			$status = exec($command);
+			$this->debugmsg('Post processing: '.print_r(array($command, $status), true));
+			// Remove temp files
+			unlink($pFilename);
+		} else {
+			$this->debugmsg('Post processing No Index');
 		}
-		$pFilename = tempnam('/tmp', 'gendoc-');
-		$handle = fopen($pFilename, 'w');
-		foreach ($properties as $key => $value) {
-			fwrite($handle, "{$key} = {$value}\n");
-		}
-		fclose($handle);
-		// Process and save
-		$filename = escapeshellarg($filename);
-		$command = "{$root_directory}modules/evvtgendoc/unoservice.sh {$pFilename} file://{$filename} file://{$filename}";
-		//$command = "{$root_directory}modules/evvtgendoc/unoservice.sh {$pFilename} file://{$filename} file://{$filename} >>{$root_directory}/modules/evvtgendoc/unoservice.log 2>&1";
-		//echo $command;
-		$status = exec($command);
-		$this->debugmsg('Post processing: '.print_r(array($command, $status), true));
-		$log->debug("unoservice.sh: {$status}");
-
-		// Remove temp files
-		unlink($pFilename);
 	}
 
 	public static function debugmsg($msg, $isbranch = false) {
@@ -892,7 +986,7 @@ class OpenDocument {
 	 * @access public
 	 */
 	public function GenDoc($originFile, $id, $module, $root_module = null, $documentid = null) {
-		global $parentArray,$currentModule,$iter_modules,$rootmod,$template_id;
+		global $parentArray, $iter_modules, $rootmod, $template_id;
 		if (!is_null($root_module)) {
 			$rootmod = $root_module[0];
 			$iter_modules[$root_module[0]] = array($root_module[1]);
@@ -932,6 +1026,7 @@ class OpenDocument {
 		$this->debugmsg($originFile." START toGenDoc $endcompile");
 		set_time_limit(0);
 		$this->toGenDoc($obj, $id, $module, $root_module);//exit;
+		$this->processInclude();
 		$endcompile = microtime(true)-$startcompile;
 		$this->debugmsg("END GenDOC $endcompile s");
 	}
@@ -943,20 +1038,28 @@ class OpenDocument {
 	 * @access public
 	 */
 	public function toGenDoc($obj, $id, $module, $root_module = null) {
-		global $siincluir,$changedImage,$newImageAdded;
-		global $ramaparacada,$pcincluir,$tempincluir,$iter_modules,$rootmod;
-		global $repe,$log, $parentArray,$currentModule;
+		global $siincluir, $changedImage, $newImageAdded, $includeOriginalDirective, $repe;
+		global $ramaparacada, $pcincluir, $tempincluir, $iter_modules, $rootmod, $parentArray;
 		//commands
 		if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php')) {
 			include 'modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php';
 		} else {
 			include 'modules/evvtgendoc/commands_en.php';
 		}
+		$lenforeachGD=strlen($foreachGD);
+		$lenforeachEndGD=strlen($foreachEndGD);
+		$lenimageGD=strlen($imageGD);
+		$lenincludeGD=strlen($includeGD);
+		$lenifexistsGD=strlen($ifexistsGD);
+		$lenifnotexistsGD=strlen($ifnotexistsGD);
+		$lenifexistsEndGD=strlen($ifexistsEndGD);
+		$lenifnotexistsEndGD=strlen($ifnotexistsEndGD);
 		if (get_class($obj)=='ArrayObject') {
 			$iterat=$obj;
 		} elseif (!is_null($obj)) {
 			$iterat=$obj->getChildren();
 		}
+		$includeOriginalDirective = isset($includeOriginalDirective) ? $includeOriginalDirective : '';
 		foreach ($iterat as $child) {
 			if ($pcincluir) {
 				$pnode=$child->getNode();
@@ -968,20 +1071,21 @@ class OpenDocument {
 						break; // utilizo el primer texto no vacío que encuentro
 					}
 				}
-				if (strtolower(substr($texto_p, 0, strlen($foreachGD)))==$foreachGD) {
+				$texto_plow = strtolower($texto_p);
+				if (substr($texto_plow, 0, $lenforeachGD)==$foreachGD) {
 					$spn=$child->createSpan('putforeachhere'); // Marcamos el inicio paracada para saber donde poner el siguiente una vez compilado
 					$ramaparacada->append($spn);
 					$this->contextoParacada[$this->contextoActual]['ramaparacada']=$ramaparacada; // guardo contexto modulos encontrados
 					$this->contextoActual++;
 					$ramaparacada= new ArrayObject;
 					// obtener condición
-					$condicionparacada=rtrim(trim(substr($texto_p, strlen($foreachGD))), '}');
+					$condicionparacada=rtrim(trim(substr($texto_p, $lenforeachGD)), '}');
 					$module_pcada = getModuleFromCondition($this->contextoParacada[$this->contextoActual-1]['condicion']);
 					$this->contextoParacada[$this->contextoActual]=array(  // guardo contexto modulos encontrados
 						'condicion'=>$condicionparacada,
 						'module'=>($module_pcada=='Organization' ? 'cbCompany' : $module_pcada),
 					);
-				} elseif (strtolower(substr($texto_p, 0, strlen($foreachEndGD)))==$foreachEndGD) {
+				} elseif (substr($texto_plow, 0, $lenforeachEndGD)==$foreachEndGD) {
 					$this->contextoParacada[$this->contextoActual]['ramaparacada']=$ramaparacada; // guardo contexto modulos encontrados
 					if ($this->contextoActual>0) {
 						$this->contextoActual--;
@@ -990,17 +1094,18 @@ class OpenDocument {
 						$pcincluir=false;
 						// procesar paracada
 						$this->contextoActual=0;
-							$num_iter =iterations();
-							$repe[] = 0;
-							$last_repe = count($repe)-1;
+						$num_iter =iterations();
+						$repe[] = 0;
+						$last_repe = count($repe)-1;
 						for ($repe[$last_repe]=1; $repe[$last_repe]<=$num_iter; $repe[$last_repe]++) {
 							$ramaparacada=$this->contextoParacada[0]['ramaparacada'];
 							$this->contextoParacada[0]['repe'] = $repe[$last_repe];
 							$this->toGenDoc($ramaparacada, $id, $module);
 							pop_iter_modules();
 						}
-							array_pop($repe);
-							$this->contextoParacada=array();
+						array_pop($repe);
+						$this->contextoParacada=array();
+						$includeOriginalDirective = '';
 					}
 				} else {
 					$ramaparacada->append($child);
@@ -1022,9 +1127,10 @@ class OpenDocument {
 							break; // utilizo el primer texto no vacío que encuentro
 						}
 					}
-					if (strtolower(substr($texto_p, 0, strlen($ifexistsGD)))==$ifexistsGD) {
+					$texto_plow = strtolower($texto_p);
+					if (substr($texto_plow, 0, $lenifexistsGD)==$ifexistsGD) {
 						// obtener condición
-						$condicion=rtrim(trim(substr($texto_p, strlen($ifexistsGD))), '}');
+						$condicion=rtrim(trim(substr($texto_p, $lenifexistsGD)), '}');
 						// evaluar condición
 						$cumple_cond = eval_existe($condicion, $id, $module);
 						if ($cumple_cond && $hayqueincluir) {
@@ -1034,9 +1140,9 @@ class OpenDocument {
 						}
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, strlen($ifnotexistsGD)))==$ifnotexistsGD) {
+					if (substr($texto_plow, 0, $lenifnotexistsGD)==$ifnotexistsGD) {
 						// obtener condición
-						$condicion=rtrim(trim(substr($texto_p, strlen($ifnotexistsGD))), '}');
+						$condicion=rtrim(trim(substr($texto_p, $lenifnotexistsGD)), '}');
 						// evaluar condición
 						$cumple_cond = eval_noexiste($condicion, $id, $module);
 						if ($cumple_cond && $hayqueincluir) {
@@ -1046,19 +1152,20 @@ class OpenDocument {
 						}
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, strlen($ifexistsEndGD)))==$ifexistsEndGD) {
+					if (substr($texto_plow, 0, $lenifexistsEndGD)==$ifexistsEndGD) {
 						array_pop($siincluir);
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, strlen($ifnotexistsEndGD)))==$ifnotexistsEndGD) {
+					if (substr($texto_plow, 0, $lenifnotexistsEndGD)==$ifnotexistsEndGD) {
 						array_pop($siincluir);
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, strlen($foreachGD)))==$foreachGD) {
+					if (substr($texto_plow, 0, $lenforeachGD)==$foreachGD) {
+						$includeOriginalDirective = '';
 						$pcincluir=true;
 						$ramaparacada= new ArrayObject;
 						// obtener condición
-						$condicionparacada=rtrim(trim(substr($texto_p, strlen($foreachGD))), '}');
+						$condicionparacada=rtrim(trim(substr($texto_p, $lenforeachGD)), '}');
 						eval_paracada($condicionparacada, $id, $module);
 						$this->contextoActual=0;
 						$this->contextoParacada[0]=array(  // guardo contexto modulos encontrados
@@ -1069,13 +1176,14 @@ class OpenDocument {
 						);
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, 14))=='putforeachhere') {
+					if (substr($texto_plow, 0, 14)=='putforeachhere') {
 						$this->saveContextoActual['ramaparacada']=$ramaparacada;
 						// obtener contexto
 						$this->contextoActual++;
 						$ramaparacada=$this->contextoParacada[$this->contextoActual]['ramaparacada'];
 						$condicionparacada=$this->contextoParacada[$this->contextoActual]['condicion'];
 						$ctxmodule=$this->contextoParacada[$this->contextoActual]['module'];
+						$ctxmodule = trim(preg_replace('/\*(\w|\s)+\*/', '', $ctxmodule));
 						$modid=$iter_modules[$ctxmodule][0];
 						eval_paracada($condicionparacada, $modid, $ctxmodule);
 						$num_iter =iterations();
@@ -1088,12 +1196,13 @@ class OpenDocument {
 						array_pop($repe);
 						$ramaparacada=$this->saveContextoActual['ramaparacada'];
 						$this->contextoActual--;
+						$includeOriginalDirective = '';
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, strlen($imageGD)))==$imageGD) {
-						$entidadimagen=rtrim(trim(substr($texto_p, strlen($imageGD))), '}');
+					if (substr($texto_plow, 0, $lenimageGD)==$imageGD) {
+						$entidadimagen=rtrim(trim(substr($texto_p, $lenimageGD)), '}');
 						//Comento codigo para una sola imagen, nada nos asegura que sólo haya una, pueden haber campos personalizados de imagen
-						// if ($this->contextoParacada[$this->contextoActual]['repe']>0) {  // estamos en un paracada y ya hemos agotado la primera imagen, todas las demas son nuevas
+						// if ($this->contextoParacada[$this->contextoActual]['repe']>0) { // en un paracada y ya hemos agotado la primera imagen, todas las demas son nuevas
 						$this->newImages[]=eval_imagen($entidadimagen, $id, $module);
 						$newImageAdded=true;
 						// } else {   // sustituimos imagen existente
@@ -1101,8 +1210,14 @@ class OpenDocument {
 						// }
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, strlen($includeGD)))==$includeGD) {
-						$entidadincluir = rtrim(trim(substr($texto_p, strlen($includeGD))), '}');
+					if (substr($texto_plow, 0, $lenincludeGD)==$includeGD) {
+						$entidadincluir = rtrim(trim(substr($texto_p, $lenincludeGD)), '}');
+						if ($includeOriginalDirective=='' && $entidadincluir=='Documents') {
+							$includeOriginalDirective = 'Documents';
+						}
+						if ($includeOriginalDirective!='') {
+							$entidadincluir = $includeOriginalDirective;
+						}
 						$reemp = $includeGD.eval_incluir($entidadincluir, $id, $module).'}';
 						$pnc->replaceData(0, strlen($pnc->wholeText), $reemp);
 					}
@@ -1115,7 +1230,7 @@ class OpenDocument {
 						OpenDocument::copyAttributes($child, $pgsp);
 						array_push($parentArray, $pgsp);
 						$this->toGenDoc($child, $id, $module);
-						$elem=array_pop($parentArray);
+						array_pop($parentArray);
 					}
 					break;
 				case 'OpenDocument_TextElement':
@@ -1201,7 +1316,12 @@ class OpenDocument {
 		} else {
 			include 'modules/evvtgendoc/commands_en.php';
 		}
-
+		$lenforeachGD=strlen($foreachGD);
+		$lenforeachEndGD=strlen($foreachEndGD);
+		$lenifexistsGD=strlen($ifexistsGD);
+		$lenifnotexistsGD=strlen($ifnotexistsGD);
+		$lenifexistsEndGD=strlen($ifexistsEndGD);
+		$lenifnotexistsEndGD=strlen($ifnotexistsEndGD);
 		if (get_class($obj)=='ArrayObject') {
 			$iterat=$obj;
 		} else {
@@ -1212,7 +1332,7 @@ class OpenDocument {
 				$pnode=$child->getNode();
 				$pnodecld=$pnode->childNodes;
 				$texto_p=($pnodecld->length==0 ? '' : $pnodecld->item(0)->wholeText);
-				if (strtolower(substr($texto_p, 0, strlen($foreachEndGD)))==$foreachEndGD) {
+				if (strtolower(substr($texto_p, 0, $lenforeachEndGD))==$foreachEndGD) {
 					$pcincluir=false;
 					// procesar paracada
 					$num_iter = iterations();
@@ -1258,9 +1378,10 @@ class OpenDocument {
 					$pnode=$child->getNode();
 					$pnodecld=$pnode->childNodes;
 					$texto_p=($pnodecld->length==0 ? '' : $pnodecld->item(0)->wholeText);
-					if (strtolower(substr($texto_p, 0, strlen($ifexistsGD)))==$ifexistsGD) {
+					$texto_plow = strtolower($texto_p);
+					if (substr($texto_plow, 0, $lenifexistsGD)==$ifexistsGD) {
 						// obtener condición
-						$condicion=rtrim(substr($texto_p, strlen($ifexistsGD)), '}');
+						$condicion=rtrim(substr($texto_p, $lenifexistsGD), '}');
 						// evaluar condición
 						$cumple_cond = eval_existe($condicion, $id, $module);
 						if ($cumple_cond && $hayqueincluir) {
@@ -1270,9 +1391,9 @@ class OpenDocument {
 						}
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, strlen($ifnotexistsGD)))==$ifnotexistsGD) {
+					if (substr($texto_plow, 0, $lenifnotexistsGD)==$ifnotexistsGD) {
 						// obtener condición
-						$condicion=rtrim(substr($texto_p, strlen($ifnotexistsGD)), '}');
+						$condicion=rtrim(substr($texto_p, $lenifnotexistsGD), '}');
 						// evaluar condición
 						$cumple_cond = eval_noexiste($condicion, $id, $module);
 						if ($cumple_cond && $hayqueincluir) {
@@ -1282,19 +1403,19 @@ class OpenDocument {
 						}
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, strlen($ifexistsEndGD)))==$ifexistsEndGD) {
+					if (substr($texto_plow, 0, $lenifexistsEndGD)==$ifexistsEndGD) {
 						array_pop($siincluir);
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, strlen($ifnotexistsEndGD)))==$ifnotexistsEndGD) {
+					if (substr($texto_plow, 0, $lenifnotexistsEndGD)==$ifnotexistsEndGD) {
 						array_pop($siincluir);
 						continue 2;
 					}
-					if (strtolower(substr($texto_p, 0, strlen($foreachGD)))==$foreachGD) {
+					if (substr($texto_plow, 0, $lenforeachGD)==$foreachGD) {
 						$pcincluir=true;
 						$ramaparacada= new ArrayObject;
 						// obtener condición
-						$condicionparacada=rtrim(substr($texto_p, strlen($foreachGD)), '}');
+						$condicionparacada=rtrim(substr($texto_p, $lenforeachGD), '}');
 						eval_paracada($condicionparacada, $id, $module);
 						continue 2;
 					}
@@ -2203,6 +2324,9 @@ class OpenDocument {
 	 */
 	public static function saveAsDocument($record, $module, $format, $mergeTemplateName, $fullfilename, $name) {
 		global $adb, $current_user;
+		if (substr($mergeTemplateName, -4)=='.odt' || substr($mergeTemplateName, -4)=='.pdf') {
+			$mergeTemplateName = substr($mergeTemplateName, 0, strlen($mergeTemplateName)-4);
+		}
 		$einfo = getEntityName($module, $record);
 		$doc = CRMEntity::getInstance('Documents');
 		$doc->column_fields['notes_title'] = getTranslatedString($module, $module).' '.$einfo[$record].' '.$mergeTemplateName;
@@ -2226,6 +2350,9 @@ class OpenDocument {
 		$_REQUEST['assigntype'] = 'U';
 		$doc->column_fields['assigned_user_id'] = $current_user->id;
 		unset($_FILES);
+		if (substr($name, -4)=='.odt' || substr($name, -4)=='.pdf') {
+			$name = substr($name, 0, strlen($name)-4);
+		}
 		$name .= '_'.str_replace(' ', '_', $mergeTemplateName);
 		$f=array(
 			'name'=>$name.($format=='pdf' ? '.pdf' : '.odt'),
@@ -2296,7 +2423,7 @@ class OpenDocument {
 
 	/**
 	 * Add a full path to the file entry list in this manifest document.
-	 * Creates a DOM element with the tag 'manifest:file-enty' and
+	 * Creates a DOM element with the tag 'manifest:file-entry' and
 	 * adds 'manifest:full-path', and 'manifest:media-type' attributes to it.
 	 *
 	 * @return		DOMElement A DOM element which contains a single file entry.
@@ -2690,8 +2817,6 @@ class OpenDocument {
 	}
 
 	public function convert($frompath, $topath, $format = 'pdf') {
-		global $adb;
-
 		$gendoc_active = coreBOS_Settings::getSetting('cbgendoc_active', 0);
 		if ($gendoc_active == 1) {
 			include_once 'include/wsClient/WSClient.php';
@@ -2729,7 +2854,7 @@ class OpenDocument {
 			file_put_contents($topath, $post);
 		} else {
 			$cmd = 'unoconv -v -f '.escapeshellarg($format) . ' ' . escapeshellarg($frompath) . ' 2>&1';
-			$return = exec($cmd, $out);
+			exec($cmd, $out);
 			$ret = print_r($out, true);
 			foreach ($out as $line) {
 				$find = false;
@@ -2742,7 +2867,7 @@ class OpenDocument {
 			}
 			if ($find) {
 				$cmd = "mv $file_conv " . escapeshellarg($topath);
-				$return = exec($cmd, $out);
+				exec($cmd, $out);
 			}
 			$ret .= "\n\n".print_r($out, true);
 			return $ret;
@@ -2756,14 +2881,14 @@ class OpenDocument {
 	 * @access public
 	 */
 	public function GenXML($originFile, $id, $module, $root_module = null) {
-		global $parentArray,$currentModule,$iter_modules;
+		global $iter_modules;
 		if (!is_null($root_module)) {
 			$iter_modules[$root_module[0]] = array($root_module[1]);
 		}
 		if (!is_dir('cache/genxml')) {
 			mkdir('cache/genxml');
 		}
-		$cacheFile = 'cache/genxml/xmlgen'.$record.'.xml';
+		$cacheFile = 'cache/genxml/xmlgen'.$id.'.xml';
 		if (file_exists($cacheFile)) {
 			unlink($cacheFile);
 		}
@@ -2781,7 +2906,7 @@ class OpenDocument {
 	}
 
 	public function processBranch($doc, $crmid, $module) {
-		global $adb,$iter_modules,$repe;
+		global $iter_modules,$repe;
 		foreach ($doc->childNodes as $node) {
 			if (empty($node->tagName)) {
 				continue;

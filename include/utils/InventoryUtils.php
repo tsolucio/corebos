@@ -636,37 +636,20 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock = 'fal
 	$log->debug('< saveInventoryProductDetails');
 }
 
-/**	function used to get the tax type for the entity (PO, SO, Quotes or Invoice)
+/**	function used to get the tax type for the Inventory module entity
  *	@param string $module - module name
- *	@param int $id - id of the PO or SO or Quotes or Invoice
+ *	@param int $id - id of the Inventory module
  *	@return string $taxtype - taxtype for the given entity which will be individual or group
  */
 function getInventoryTaxType($module, $id) {
 	global $log, $adb;
 	$log->debug("> getInventoryTaxType $module, $id");
-
-	$inv_table_array = array(
-		'PurchaseOrder' => 'vtiger_purchaseorder',
-		'SalesOrder' => 'vtiger_salesorder',
-		'Quotes' => 'vtiger_quotes',
-		'Invoice' => 'vtiger_invoice',
-		'Issuecards' => 'vtiger_issuecards',
-		'Receiptcards' => 'vtiger_receiptcards',
-	);
-	$inv_id_array = array(
-		'PurchaseOrder' => 'purchaseorderid',
-		'SalesOrder' => 'salesorderid',
-		'Quotes' => 'quoteid',
-		'Invoice' => 'invoiceid',
-		'Issuecards' => 'issuecardid',
-		'Receiptcards' => 'receiptcardid',
-	);
-
-	$res = $adb->pquery("select taxtype from $inv_table_array[$module] where $inv_id_array[$module]=?", array($id));
-	$taxtype = $adb->query_result($res, 0, 'taxtype');
-
+	$modent = CRMEntity::getInstance($module);
+	$table = $modent->table_name;
+	$field = $modent->table_index;
+	$res = $adb->pquery("select taxtype from $table where $field=?", array($id));
 	$log->debug('< getInventoryTaxType');
-	return $taxtype;
+	return (empty($res->fields['taxtype']) ? '' : $res->fields['taxtype']);
 }
 
 /**	function used to get the price type for the entity (PO, SO, Quotes or Invoice)

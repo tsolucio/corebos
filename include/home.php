@@ -29,13 +29,13 @@ class Homestuff {
 	public function addStuff() {
 		global $adb, $current_user;
 		$stuffid=$adb->getUniqueId('vtiger_homestuff');
-		$queryseq="select max(stuffsequence)+1 as seq from vtiger_homestuff";
+		$queryseq='select max(stuffsequence)+1 as seq from vtiger_homestuff';
 		$rs = $adb->pquery($queryseq, array());
 		$sequence=$adb->query_result($rs, 0, 'seq');
 		if (!empty($this->defaulttitle)) {
 			$this->stufftitle = $this->defaulttitle;
 		}
-		$query= $query="insert into vtiger_homestuff(stuffid,stuffsequence,stufftype, userid, visible, stufftitle) values(?, ?, ?, ?, ?, ?)";
+		$query= $query='insert into vtiger_homestuff(stuffid,stuffsequence,stufftype, userid, visible, stufftitle) values(?, ?, ?, ?, ?, ?)';
 		$params = array($stuffid,$sequence,$this->stufftype,$current_user->id,0,$this->stufftitle);
 		$result= $adb->pquery($query, $params);
 
@@ -43,9 +43,9 @@ class Homestuff {
 			return false;
 		}
 
-		if ($this->stufftype=="Module") {
-			$fieldarray=explode(",", $this->fieldvalue);
-			$querymod="insert into vtiger_homemodule(stuffid, modulename, maxentries, customviewid, setype) values(?, ?, ?, ?, ?)";
+		if ($this->stufftype=='Module') {
+			$fieldarray=explode(',', $this->fieldvalue);
+			$querymod='insert into vtiger_homemodule(stuffid, modulename, maxentries, customviewid, setype) values(?, ?, ?, ?, ?)';
 			$params = array($stuffid,$this->selmodule,$this->maxentries,$this->selFiltername,$this->selmodule);
 			$result=$adb->pquery($querymod, $params);
 			if (!$result) {
@@ -72,7 +72,7 @@ class Homestuff {
 			$adb->pquery('update vtiger_homestuff set stuffid=? where stuffid=?', array($id,$stuffid));
 			$adb->query('delete from vtiger_seq_temp');
 			$stuffid=$adb->getUniqueId('vtiger_homestuff');
-			$fieldarray=explode(",", $this->fieldvalue);
+			$fieldarray=explode(',', $this->fieldvalue);
 			$result=$adb->pquery('insert into vtiger_home_customwidget values(?,?,?)', array($id, $this->selmodule, $this->selmodule));
 
 			if (!$result) {
@@ -86,22 +86,22 @@ class Homestuff {
 			}
 
 			$stuffid=$adb->getUniqueId('vtiger_homestuff');
-		} elseif ($this->stufftype=="RSS") {
-			$queryrss="insert into vtiger_homerss values(?,?,?)";
+		} elseif ($this->stufftype=='RSS') {
+			$queryrss='insert into vtiger_homerss values(?,?,?)';
 			$params = array($stuffid,$this->txtRss,$this->maxentries);
 			$resultrss=$adb->pquery($queryrss, $params);
 			if (!$resultrss) {
 				return false;
 			}
-		} elseif ($this->stufftype=="DashBoard") {
-			$querydb="insert into vtiger_homedashbd values(?,?,?)";
+		} elseif ($this->stufftype=='DashBoard') {
+			$querydb='insert into vtiger_homedashbd values(?,?,?)';
 			$params = array($stuffid,$this->seldashbd,$this->seldashtype);
 			$resultdb=$adb->pquery($querydb, $params);
 			if (!$resultdb) {
 				return false;
 			}
-		} elseif ($this->stufftype=="Default") {
-			$querydef="insert into vtiger_homedefault values(?, ?)";
+		} elseif ($this->stufftype=='Default') {
+			$querydef='insert into vtiger_homedefault values(?, ?)';
 			$params = array($stuffid,$this->defaultvalue);
 			$resultdef=$adb->pquery($querydef, $params);
 			if (!$resultdef) {
@@ -109,7 +109,7 @@ class Homestuff {
 			}
 		} elseif ($this->stufftype=='Notebook') {
 			$userid = $current_user->id;
-			$query="insert into vtiger_notebook_contents values(?,?,?)";
+			$query='insert into vtiger_notebook_contents values(?,?,?)';
 			$params= array($userid,$stuffid,'');
 			$result=$adb->pquery($query, $params);
 			if (!$result) {
@@ -117,13 +117,13 @@ class Homestuff {
 			}
 		} elseif ($this->stufftype=='URL') {
 			$userid = $current_user->id;
-			$query="insert into vtiger_homewidget_url values(?, ?)";
+			$query='insert into vtiger_homewidget_url values(?, ?)';
 			$result=$adb->pquery($query, array($stuffid, $this->txtURL));
 			if (!$result) {
 				return false;
 			}
-		} elseif ($this->stufftype == "ReportCharts") {
-			$querydb="insert into vtiger_homereportchart values(?,?,?)";
+		} elseif ($this->stufftype == 'ReportCharts') {
+			$querydb='insert into vtiger_homereportchart values(?,?,?)';
 			$params = array($stuffid,$this->selreport,$this->selreportcharttype);
 			$resultdb=$adb->pquery($querydb, $params);
 			if (!$resultdb) {
@@ -153,13 +153,13 @@ class Homestuff {
 
 	/**
 	 * this function returns the information about a widget in an array
-	 * @return array(stuffid=>"id", stufftype=>"type", stufftitle=>"title")
+	 * @return array(stuffid=>'id', stufftype=>'type', stufftitle=>'title')
 	 */
 	public function getHomePageFrame() {
 		global $adb, $current_user;
-		$querystuff ="select vtiger_homestuff.stuffid,stufftype,stufftitle,setype from vtiger_homestuff
+		$querystuff ='select vtiger_homestuff.stuffid,stufftype,stufftitle,setype from vtiger_homestuff
 						left join vtiger_homedefault on vtiger_homedefault.stuffid=vtiger_homestuff.stuffid
-						where visible=0 and userid=? order by stuffsequence desc";
+						where visible=0 and userid=? order by stuffsequence desc';
 		$resultstuff=$adb->pquery($querystuff, array($current_user->id));
 		$homeval = array();
 		for ($i=0; $i<$adb->num_rows($resultstuff); $i++) {
@@ -172,10 +172,10 @@ class Homestuff {
 				}
 			} elseif ($stufftype == 'Module') {
 				//check for setype in vtiger_homemodule table and hide if module is de-activated
-				$sql = "select setype from vtiger_homemodule where stuffid=?";
+				$sql = 'select setype from vtiger_homemodule where stuffid=?';
 				$result_setype = $adb->pquery($sql, array($stuffid));
 				if ($adb->num_rows($result_setype)>0) {
-					$module_name = $adb->query_result($result_setype, 0, "setype");
+					$module_name = $adb->query_result($result_setype, 0, 'setype');
 				}
 				if (!empty($module_name) && $module_name!='NULL') {
 					if (!vtlib_isModuleActive($module_name)) {
@@ -195,7 +195,7 @@ class Homestuff {
 					continue;
 				} else {
 					require_once 'modules/Reports/CustomReportUtils.php';
-					$query = "SELECT * FROM vtiger_homereportchart WHERE stuffid=?";
+					$query = 'SELECT * FROM vtiger_homereportchart WHERE stuffid=?';
 					$result= $adb->pquery($query, array($stuffid));
 					$reportId = $adb->query_result($result, 0, 'reportid');
 					$reportQuery = CustomReportUtils::getCustomReportsQuery($reportId);
@@ -212,16 +212,10 @@ class Homestuff {
 
 			$nontrans_stufftitle = $adb->query_result($resultstuff, $i, 'stufftitle');
 			$trans_stufftitle = getTranslatedString($nontrans_stufftitle);
-			$stufftitle=decode_html($trans_stufftitle);
-			if (strlen($stufftitle)>100) {
-				$stuff_title=substr($stufftitle, 0, 97)."...";
-			} else {
-				$stuff_title = $stufftitle;
-			}
-
+			$stuff_title = textlength_check($trans_stufftitle, 100);
 			if ($stufftype == 'Default' && $nontrans_stufftitle != 'Home Page Dashboard' && $nontrans_stufftitle != 'Tag Cloud') {
 				if ($modulename != 'NULL') {
-					if (isPermitted($modulename, 'index') == "yes") {
+					if (isPermitted($modulename, 'index') == 'yes') {
 						$homeval[]=array('Stuffid'=>$stuffid,'Stufftype'=>$stufftype,'Stufftitle'=>$stuff_title);
 					}
 				} else {
@@ -230,7 +224,7 @@ class Homestuff {
 			} elseif ($stufftype == 'Tag Cloud') {
 				$homeval[]=array('Stuffid'=>$stuffid,'Stufftype'=>$stufftype,'Stufftitle'=>$stuff_title);
 			} elseif ($modulename != 'NULL') {
-				if (isPermitted($modulename, 'index') == "yes") {
+				if (isPermitted($modulename, 'index') == 'yes') {
 					$homeval[]=array('Stuffid'=>$stuffid,'Stufftype'=>$stufftype,'Stufftitle'=>$stuff_title);
 				}
 			} else {
@@ -242,7 +236,7 @@ class Homestuff {
 
 	/**
 	 * this function returns information about the given widget in an array format
-	 * @return array(stuffid=>"id", stufftype=>"type", stufftitle=>"title")
+	 * @return array(stuffid=>'id', stufftype=>'type', stufftitle=>'title')
 	 */
 	public function getSelectedStuff($sid, $stuffType) {
 		global $adb;
@@ -345,7 +339,7 @@ class Homestuff {
 					//$fieldcolumns[$fldlabel] = array($tabname=>$colname);
 				}
 
-				// $list= getListViewEntries($focus,$modname,$list_result,6,"","","","",$oCustomView,'HomePage',$fieldcolumns);
+				// $list= getListViewEntries($focus,$modname,$list_result,6,'','','','',$oCustomView,'HomePage',$fieldcolumns);
 				if (getUItype($modname, $colname) == 71) {
 					$isCurrencyField = true;
 				} else {
@@ -480,18 +474,18 @@ class Homestuff {
 	 */
 	private function getRssDetails($rid) {
 		global $mod_strings;
-		if (isPermitted('Rss', 'index') == "yes") {
+		if (isPermitted('Rss', 'index') == 'yes') {
 			require_once 'modules/Rss/Rss.php';
 			global $adb;
-			$qry="select * from vtiger_homerss where stuffid=?";
+			$qry='select * from vtiger_homerss where stuffid=?';
 			$res=$adb->pquery($qry, array($rid));
-			$url=$adb->query_result($res, 0, "url");
-			$maxval=$adb->query_result($res, 0, "maxentries");
+			$url=$adb->query_result($res, 0, 'url');
+			$maxval=$adb->query_result($res, 0, 'maxentries');
 			$oRss = new vtigerRSS();
 			if ($oRss->setRSSUrl($url)) {
 				$rss_html = $oRss->getListViewHomeRSSHtml($maxval);
 			} else {
-				$rss_html = "<strong>".$mod_strings['LBL_ERROR_MSG']."</strong>";
+				$rss_html = '<strong>'.$mod_strings['LBL_ERROR_MSG'].'</strong>';
 			}
 			$return_value=array('Maxentries'=>$maxval,'Entries'=>$rss_html);
 		} else {
@@ -505,10 +499,10 @@ class Homestuff {
 	 */
 	public function getDashDetails($did, $chart = '') {
 		global $adb;
-		$qry="select * from vtiger_homedashbd where stuffid=?";
+		$qry='select * from vtiger_homedashbd where stuffid=?';
 		$result=$adb->pquery($qry, array($did));
-		$type=$adb->query_result($result, 0, "dashbdname");
-		$charttype=$adb->query_result($result, 0, "dashbdtype");
+		$type=$adb->query_result($result, 0, 'dashbdname');
+		$charttype=$adb->query_result($result, 0, 'dashbdtype');
 		$dash=array('DashType'=>$type,'Chart'=>$charttype);
 		$this->dashdetails[$did]=$dash;
 		$from_page='HomePage';
@@ -529,10 +523,13 @@ class Homestuff {
 
 	public function getReportChartDetails($stuffId, $skipChart = '') {
 		global $adb;
-		$result=$adb->pquery('select * from vtiger_homereportchart where stuffid=?', array($stuffId));
-		$reportId=$adb->query_result($result, 0, 'reportid');
-		$chartType=$adb->query_result($result, 0, 'reportcharttype');
-		$reportDetails=array('ReportId'=>$reportId, 'Chart'=>$chartType);
+		$result=$adb->pquery(
+			'select * from vtiger_homereportchart inner join vtiger_reportmodules on reportid=reportmodulesid where stuffid=?',
+			array($stuffId)
+		);
+		$reportId = $result->fields['reportid'];
+		$chartType = $result->fields['reportcharttype'];
+		$reportDetails=array('ReportId' => $reportId, 'Chart' => $chartType, 'ReportModule' => $result->fields['primarymodule']);
 		$this->reportdetails[$stuffId] = $reportDetails;
 		if ($skipChart == '') {
 			return $this->getDisplayReportChart($reportId, $chartType);
@@ -553,65 +550,65 @@ class Homestuff {
 		global $adb;
 		$details = array('ModuleName'=>'','Title'=>'','Header'=>'','Entries'=>array(),'search_qry'=>'');
 		$result=$adb->pquery('select * from vtiger_homedefault where stuffid=?', array($dfid));
-		$maxval=$adb->query_result($result, 0, "maxentries");
-		$hometype=$adb->query_result($result, 0, "hometype");
+		$maxval=$adb->query_result($result, 0, 'maxentries');
+		$hometype=$adb->query_result($result, 0, 'hometype');
 
-		if ($hometype=="ALVT" && vtlib_isModuleActive("Accounts")) {
-			include_once "modules/Accounts/ListViewTop.php";
+		if ($hometype=='ALVT' && vtlib_isModuleActive('Accounts')) {
+			include_once 'modules/Accounts/ListViewTop.php';
 			$details['ModuleName'] = 'Accounts';
 			$home_values = getTopAccounts($maxval, $calCnt);
-		} elseif ($hometype=="PLVT" && vtlib_isModuleActive("Potentials")) {
+		} elseif ($hometype=='PLVT' && vtlib_isModuleActive('Potentials')) {
 			$details['ModuleName'] = 'Potentials';
-			if (isPermitted('Potentials', 'index') == "yes") {
-				 include_once "modules/Potentials/ListViewTop.php";
-				 $home_values=getTopPotentials($maxval, $calCnt);
+			if (isPermitted('Potentials', 'index') == 'yes') {
+				include_once 'modules/Potentials/ListViewTop.php';
+				$home_values=getTopPotentials($maxval, $calCnt);
 			}
-		} elseif ($hometype=="QLTQ" && vtlib_isModuleActive("Quotes")) {
+		} elseif ($hometype=='QLTQ' && vtlib_isModuleActive('Quotes')) {
 			$details['ModuleName'] = 'Quotes';
-			if (isPermitted('Quotes', 'index') == "yes") {
+			if (isPermitted('Quotes', 'index') == 'yes') {
 				require_once 'modules/Quotes/ListTopQuotes.php';
 				$home_values=getTopQuotes($maxval, $calCnt);
 			}
-		} elseif ($hometype=="HLT" && vtlib_isModuleActive("HelpDesk")) {
+		} elseif ($hometype=='HLT' && vtlib_isModuleActive('HelpDesk')) {
 			$details['ModuleName'] = 'HelpDesk';
-			if (isPermitted('HelpDesk', 'index') == "yes") {
+			if (isPermitted('HelpDesk', 'index') == 'yes') {
 				require_once 'modules/HelpDesk/ListTickets.php';
 				$home_values=getMyTickets($maxval, $calCnt);
 			}
-		} elseif ($hometype=="GRT") {
+		} elseif ($hometype=='GRT') {
 			$home_values = getGroupTaskLists($maxval);
-		} elseif ($hometype=="OLTSO" && vtlib_isModuleActive("SalesOrder")) {
+		} elseif ($hometype=='OLTSO' && vtlib_isModuleActive('SalesOrder')) {
 			$details['ModuleName'] = 'SalesOrder';
-			if (isPermitted('SalesOrder', 'index') == "yes") {
+			if (isPermitted('SalesOrder', 'index') == 'yes') {
 				require_once 'modules/SalesOrder/ListTopSalesOrder.php';
 				$home_values=getTopSalesOrder($maxval, $calCnt);
 			}
-		} elseif ($hometype=="ILTI" && vtlib_isModuleActive("Invoice")) {
+		} elseif ($hometype=='ILTI' && vtlib_isModuleActive('Invoice')) {
 			$details['ModuleName'] = 'Invoice';
-			if (isPermitted('Invoice', 'index') == "yes") {
+			if (isPermitted('Invoice', 'index') == 'yes') {
 				require_once 'modules/Invoice/ListTopInvoice.php';
 				$home_values=getTopInvoice($maxval, $calCnt);
 			}
-		} elseif ($hometype=="MNL" && vtlib_isModuleActive("Leads")) {
+		} elseif ($hometype=='MNL' && vtlib_isModuleActive('Leads')) {
 			$details['ModuleName'] = 'Leads';
-			if (isPermitted('Leads', 'index') == "yes") {
-				 include_once "modules/Leads/ListViewTop.php";
-				 $home_values=getNewLeads($maxval, $calCnt);
+			if (isPermitted('Leads', 'index') == 'yes') {
+				include_once 'modules/Leads/ListViewTop.php';
+				$home_values=getNewLeads($maxval, $calCnt);
 			}
-		} elseif ($hometype=="OLTPO" && vtlib_isModuleActive("PurchaseOrder")) {
+		} elseif ($hometype=='OLTPO' && vtlib_isModuleActive('PurchaseOrder')) {
 			$details['ModuleName'] = 'PurchaseOrder';
-			if (isPermitted('PurchaseOrder', 'index') == "yes") {
+			if (isPermitted('PurchaseOrder', 'index') == 'yes') {
 				require_once 'modules/PurchaseOrder/ListTopPurchaseOrder.php';
 				$home_values=getTopPurchaseOrder($maxval, $calCnt);
 			}
-		} elseif ($hometype=="LTFAQ" && vtlib_isModuleActive("Faq")) {
+		} elseif ($hometype=='LTFAQ' && vtlib_isModuleActive('Faq')) {
 			$details['ModuleName'] = 'Faq';
-			if (isPermitted('Faq', 'index') == "yes") {
+			if (isPermitted('Faq', 'index') == 'yes') {
 				require_once 'modules/Faq/ListFaq.php';
 				$home_values=getMyFaq($maxval, $calCnt);
 			}
-		} elseif ($hometype=="CVLVT") {
-			include_once "modules/CustomView/ListViewTop.php";
+		} elseif ($hometype=='CVLVT') {
+			include_once 'modules/CustomView/ListViewTop.php';
 			$home_values = getKeyMetrics($maxval, $calCnt);
 		} elseif ($hometype == 'UA' && vtlib_isModuleActive('cbCalendar')) {
 			$details['ModuleName'] = 'cbCalendar';
@@ -641,12 +638,12 @@ class Homestuff {
 	public function getNotebookContents($notebookid) {
 		global $adb, $current_user;
 
-		$sql = "select * from vtiger_notebook_contents where notebookid=? and userid=?";
+		$sql = 'select * from vtiger_notebook_contents where notebookid=? and userid=?';
 		$result = $adb->pquery($sql, array($notebookid,$current_user->id));
 
-		$contents = "";
+		$contents = '';
 		if ($adb->num_rows($result)>0) {
-			$contents = vtlib_purify($adb->query_result($result, 0, "contents"));
+			$contents = vtlib_purify($adb->query_result($result, 0, 'contents'));
 		}
 		return $contents;
 	}
@@ -678,14 +675,14 @@ function getGroupTaskLists($maxval) {
 
 	//Check for permission before constructing the query.
 	if (vtlib_isModuleActive('Leads') && count($groupids) > 0 &&
-		(isPermitted('Leads', 'index') == 'yes' || isPermitted('Calendar', 'index') == "yes" || isPermitted('HelpDesk', 'index') == "yes" ||
-		isPermitted('Potentials', 'index') == "yes" || isPermitted('Accounts', 'index') == "yes" || isPermitted('Contacts', 'index') =='yes' ||
+		(isPermitted('Leads', 'index') == 'yes' || isPermitted('Calendar', 'index') == 'yes' || isPermitted('HelpDesk', 'index') == 'yes' ||
+		isPermitted('Potentials', 'index') == 'yes' || isPermitted('Accounts', 'index') == 'yes' || isPermitted('Contacts', 'index') =='yes' ||
 		isPermitted('Campaigns', 'index') =='yes' || isPermitted('SalesOrder', 'index') =='yes' || isPermitted('Invoice', 'index') =='yes' ||
 		isPermitted('PurchaseOrder', 'index') == 'yes')
 	) {
 		$query = '';
 		$params = array();
-		if (isPermitted('Leads', 'index') == "yes") {
+		if (isPermitted('Leads', 'index') == 'yes') {
 			$query = "(select vtiger_leaddetails.leadid as id,vtiger_leaddetails.lastname as name,vtiger_groups.groupname as groupname, 'Leads     ' as Type
 				from vtiger_leaddetails
 				inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_leaddetails.leadid
@@ -698,7 +695,7 @@ function getGroupTaskLists($maxval) {
 			$query .= " LIMIT $maxval)";
 		}
 
-		if (vtlib_isModuleActive("Calendar") && isPermitted('Calendar', 'index') == "yes") {
+		if (vtlib_isModuleActive('Calendar') && isPermitted('Calendar', 'index') == 'yes') {
 			if ($query !='') {
 				$query .= ' union all ';
 			}
@@ -716,7 +713,7 @@ function getGroupTaskLists($maxval) {
 			$query .= " LIMIT $maxval)";
 		}
 
-		if (vtlib_isModuleActive("HelpDesk") && isPermitted('HelpDesk', 'index') == "yes") {
+		if (vtlib_isModuleActive('HelpDesk') && isPermitted('HelpDesk', 'index') == 'yes') {
 			if ($query !='') {
 				$query .= ' union all ';
 			}
@@ -733,7 +730,7 @@ function getGroupTaskLists($maxval) {
 			$query .= " LIMIT $maxval)";
 		}
 
-		if (vtlib_isModuleActive("Potentials") && isPermitted('Potentials', 'index') == "yes") {
+		if (vtlib_isModuleActive('Potentials') && isPermitted('Potentials', 'index') == 'yes') {
 			if ($query != '') {
 				$query .=' union all ';
 			}
@@ -751,7 +748,7 @@ function getGroupTaskLists($maxval) {
 			$query .= " LIMIT $maxval)";
 		}
 
-		if (vtlib_isModuleActive('Accounts') && isPermitted('Accounts', 'index') == "yes") {
+		if (vtlib_isModuleActive('Accounts') && isPermitted('Accounts', 'index') == 'yes') {
 			if ($query != '') {
 				$query .=' union all ';
 			}
@@ -768,7 +765,7 @@ function getGroupTaskLists($maxval) {
 			$query .= " LIMIT $maxval)";
 		}
 
-		if (vtlib_isModuleActive("Contacts") && isPermitted('Contacts', 'index') =='yes') {
+		if (vtlib_isModuleActive('Contacts') && isPermitted('Contacts', 'index') =='yes') {
 			if ($query != '') {
 				$query .=' union all ';
 			}
@@ -802,7 +799,7 @@ function getGroupTaskLists($maxval) {
 			$query .= " LIMIT $maxval)";
 		}
 
-		if (vtlib_isModuleActive("Quotes") && isPermitted('Quotes', 'index') == 'yes') {
+		if (vtlib_isModuleActive('Quotes') && isPermitted('Quotes', 'index') == 'yes') {
 			if ($query != '') {
 				$query .=' union all ';
 			}
@@ -819,7 +816,7 @@ function getGroupTaskLists($maxval) {
 			$query .= " LIMIT $maxval)";
 		}
 
-		if (vtlib_isModuleActive("SalesOrder") && isPermitted('SalesOrder', 'index') =='yes') {
+		if (vtlib_isModuleActive('SalesOrder') && isPermitted('SalesOrder', 'index') =='yes') {
 			if ($query != '') {
 				$query .=' union all ';
 			}
@@ -853,7 +850,7 @@ function getGroupTaskLists($maxval) {
 			$query .= " LIMIT $maxval)";
 		}
 
-		if (vtlib_isModuleActive("PurchaseOrder") && isPermitted('PurchaseOrder', 'index') == 'yes') {
+		if (vtlib_isModuleActive('PurchaseOrder') && isPermitted('PurchaseOrder', 'index') == 'yes') {
 			if ($query != '') {
 				$query .=' union all ';
 			}
@@ -870,7 +867,7 @@ function getGroupTaskLists($maxval) {
 			$query .= " LIMIT $maxval)";
 		}
 
-		if (vtlib_isModuleActive("Documents") && isPermitted('Documents', 'index') == 'yes') {
+		if (vtlib_isModuleActive('Documents') && isPermitted('Documents', 'index') == 'yes') {
 			if ($query != '') {
 				$query .=' union all ';
 			}
@@ -902,28 +899,28 @@ function getGroupTaskLists($maxval) {
 			$i=1;
 			while ($row = $adb->fetch_array($result)) {
 				$value=array();
-				$row["type"]=trim($row["type"]);
-				if ($row["type"] == "Tickets") {
+				$row['type']=trim($row['type']);
+				if ($row['type'] == 'Tickets') {
 					$list = '<a href=index.php?module=HelpDesk';
-					$list .= '&action=DetailView&record='.$row["id"].'>'.$row["name"].'</a>';
-				} elseif ($row["type"] == "Activities") {
-					$row["type"] = 'Calendar';
-					$acti_type = getActivityType($row["id"]);
-					$list = '<a href=index.php?module='.$row["type"];
+					$list .= '&action=DetailView&record='.$row['id'].'>'.$row['name'].'</a>';
+				} elseif ($row['type'] == 'Activities') {
+					$row['type'] = 'Calendar';
+					$acti_type = getActivityType($row['id']);
+					$list = '<a href=index.php?module='.$row['type'];
 					if ($acti_type == 'Task') {
 						$list .= '&activity_mode=Task';
 					} elseif ($acti_type == 'Call' || $acti_type == 'Meeting') {
 						$list .= '&activity_mode=Events';
 					}
-					$list .= '&action=DetailView&record='.$row["id"].'>'.$row["name"].'</a>';
+					$list .= '&action=DetailView&record='.$row['id'].'>'.$row['name'].'</a>';
 				} else {
-					$list = '<a href=index.php?module='.$row["type"];
-					$list .= '&action=DetailView&record='.$row["id"].'>'.$row["name"].'</a>';
+					$list = '<a href=index.php?module='.$row['type'];
+					$list .= '&action=DetailView&record='.$row['id'].'>'.$row['name'].'</a>';
 				}
 				$value[]=$list;
-				$value[]= $row["groupname"];
-				$value[]= $row["type"];
-				$entries[$row["id"]]=$value;
+				$value[]= $row['groupname'];
+				$value[]= $row['type'];
+				$entries[$row['id']]=$value;
 				$i++;
 			}
 		}

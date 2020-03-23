@@ -116,14 +116,14 @@ function getSearchListHeaderValues($focus, $module, $sort_qry = '', $sorder = ''
 					$fieldname = $focus->list_fields_name[$name];
 				}
 			}
-			if ($fieldname == "lastname" && $module !="Leads" && $module !="Contacts") {
-				$fieldname = "contact_id";
+			if ($fieldname == 'lastname' && $module !='Leads' && $module !='Contacts') {
+				$fieldname = 'contact_id';
 			}
-			if ($fieldname == "accountname" && $module !="Accounts") {
-				$fieldname = "account_id";
+			if ($fieldname == 'accountname' && $module !='Accounts') {
+				$fieldname = 'account_id';
 			}
-			if ($fieldname == "productname" && $module =="Campaigns") {
-				$fieldname = "product_id";
+			if ($fieldname == 'productname' && $module =='Campaigns') {
+				$fieldname = 'product_id';
 			}
 		} else {
 			if ($focus->list_fields_name[$name] == '') {
@@ -132,16 +132,16 @@ function getSearchListHeaderValues($focus, $module, $sort_qry = '', $sorder = ''
 				$fieldname = $focus->list_fields_name[$name];
 			}
 
-			if ($fieldname == "lastname" && $module !="Leads" && $module !="Contacts") {
-				$fieldname = "contact_id";
+			if ($fieldname == 'lastname' && $module !='Leads' && $module !='Contacts') {
+				$fieldname = 'contact_id';
 			}
 		}
 		if ($userprivs->hasGlobalReadPermission() || in_array($fieldname, $field)) {
 			if ($fieldname!='parent_id') {
 				$fld_name=$fieldname;
-				if ($fieldname == 'contact_id' && $module !="Contacts") {
+				if ($fieldname == 'contact_id' && $module !='Contacts') {
 					$name = $app_strings['LBL_CONTACT_LAST_NAME'];
-				} elseif ($fieldname == 'contact_id' && $module =="Contacts") {
+				} elseif ($fieldname == 'contact_id' && $module =='Contacts') {
 					$name = $mod_strings['Reports To']." - ".$mod_strings['LBL_LIST_LAST_NAME'];
 				}
 				$search_header[$fld_name] = getTranslatedString($name);
@@ -974,28 +974,50 @@ function str_replace_once($needle, $replace, $haystack) {
  * @param  string $search_val -- entered search string value
  * @return string $where      -- where condition for the module based on field table entries
  */
-function getUnifiedWhere($listquery, $module, $search_val) {
+function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 	global $adb, $current_user;
 	$userprivs = $current_user->getPrivileges();
 
 	$search_val = $adb->sql_escape_string($search_val);
 	if ($userprivs->hasGlobalReadPermission()) {
-		$query = 'SELECT columnname, tablename, fieldname FROM vtiger_field WHERE tabid = ? and vtiger_field.presence in (0,2)';
-		$qparams = array(getTabid($module));
+		if ($fieldtype=='') {
+			$query = 'SELECT columnname, tablename, fieldname FROM vtiger_field WHERE tabid = ? and vtiger_field.presence in (0,2)';
+			$qparams = array(getTabid($module));
+		} else {
+			$query = 'SELECT columnname, tablename, fieldname
+				FROM vtiger_field
+				LEFT JOIN vtiger_ws_fieldtype ON vtiger_field.uitype=vtiger_ws_fieldtype.uitype
+				WHERE tabid = ? and vtiger_field.presence in (0,2) and fieldtype=?';
+			$qparams = array(getTabid($module), $fieldtype);
+		}
 	} else {
 		$profileList = getCurrentUserProfileList();
-		$query = 'SELECT columnname, tablename, fieldname
-			FROM vtiger_field
-			INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid
-			INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
-			WHERE vtiger_field.tabid = ? AND vtiger_profile2field.visible = 0 AND vtiger_profile2field.profileid IN ('.generateQuestionMarks($profileList)
-				.') AND vtiger_def_org_field.visible = 0 and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid';
-		$qparams = array(getTabid($module), $profileList);
+		if ($fieldtype=='') {
+			$query = 'SELECT columnname, tablename, fieldname
+				FROM vtiger_field
+				INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid
+				INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
+				WHERE vtiger_field.tabid = ? AND vtiger_profile2field.visible = 0 AND vtiger_profile2field.profileid IN ('.generateQuestionMarks($profileList)
+					.') AND vtiger_def_org_field.visible = 0 and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid';
+			$qparams = array(getTabid($module), $profileList);
+		} else {
+			$query = 'SELECT columnname, tablename, fieldname
+				FROM vtiger_field
+				INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid
+				INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
+				LEFT JOIN vtiger_ws_fieldtype ON vtiger_field.uitype=vtiger_ws_fieldtype.uitype
+				WHERE vtiger_field.tabid = ? AND vtiger_profile2field.visible = 0 AND vtiger_profile2field.profileid IN ('.generateQuestionMarks($profileList)
+					.') AND vtiger_def_org_field.visible = 0 and vtiger_field.presence in (0,2) and fieldtype=? GROUP BY vtiger_field.fieldid';
+			$qparams = array(getTabid($module), $profileList, $fieldtype);
+		}
 	}
 	$result = $adb->pquery($query, $qparams);
 	$noofrows = $adb->num_rows($result);
 	$binary_search = GlobalVariable::getVariable('Application_Global_Search_Binary', 0);
 	$where = '';
+	if ($noofrows==0) {
+		$where = ' and false ';
+	}
 	for ($i=0; $i<$noofrows; $i++) {
 		$columnname = $adb->query_result($result, $i, 'columnname');
 		$tablename = $adb->query_result($result, $i, 'tablename');
@@ -1362,7 +1384,7 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 			$tmp_value = $change_table_field[$tablename.'.'.$fieldname].' IS NULL or ';
 		}
 		$value = $tmp_value.$change_table_field[$tablename.'.'.$fieldname].getAdvancedSearchComparator($comparator, $value, $datatype);
-	} elseif (($fieldname == "crmid" && $tablename != 'vtiger_crmentity') || $fieldname == "parent_id" || $fieldname == 'parentid') {
+	} elseif (($fieldname == 'crmid' && $tablename != 'vtiger_crmentity') || $fieldname == 'parent_id' || $fieldname == 'parentid') {
 		//For crmentity.crmid the control should not come here. This is only to get the related to modules
 		$value = getAdvancedSearchParentEntityValue($comparator, $value, $datatype, $tablename, $fieldname);
 	} else {
