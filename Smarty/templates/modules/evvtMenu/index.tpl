@@ -53,13 +53,13 @@
 {/literal}
 
 <div id="mainmenus">
-	<div style="padding:20px;">
+	<div class="slds-p-top_small slds-p-left_large slds-p-right_large">
 		<div style="color: #14a1e9; font-weight: bold; font-size: medium; padding: 10px; border: 1px solid #1399dd; background: #FFFFFF; border-radius: 5px; margin-bottom: 4px;">
 			{'evvtMenuTitle'|getTranslatedString:$MODULE}
 			<button class="slds-button slds-button_neutral" style="float:right;line-height:unset;" onclick="opensavedmenu();">{'LBL_IMPORT_EXPORT_BUTTON'|getTranslatedString:$MODULE}</button>
 		</div>
 	</div>
-	<div id="evvtmenu" class="k-content">
+	<div id="evvtmenu" class="k-content slds-box slds-m-around_medium" style="float: left; width: 98%; box-sizing: border-box; background: #ffffff;">
 		<div class="evvtmenu-section">
 			<div class="evvtmenu_header">
 				{'evvtMenuLayout'|getTranslatedString:$MODULE}
@@ -155,30 +155,29 @@
 </div>
 
 <div id="savedmenus" style="display:none;">
-	<div style="padding:20px">
+	<div class="slds-p-top_small slds-p-left_large slds-p-right_large">
 		<div style="color: #14a1e9; font-weight: bold; font-size: medium; padding: 10px; border: 1px solid #1399dd; background: #FFFFFF; border-radius: 5px; margin-bottom: 4px;">
 			{'evvtMenuTitle'|getTranslatedString:$MODULE}
 			<button class="slds-button slds-button_neutral" style="float:right;line-height:unset;" onclick="openmainmenu();">{'LBL_MENU_BUTTON'|getTranslatedString:$MODULE}</button>
 		</div>
 	</div>
 
-	<div id="evvtmenu" class="k-content">
+	<div id="savedmenu" class="k-content slds-box slds-m-around_medium" style="float: left; width: 98%; box-sizing: border-box; background: #ffffff;">
 		<div class="evvtmenu-section">
 			<div class="evvtmenu_header">
-				Saved Menus
+				{'LBL_SAVED_Menus'|getTranslatedString:$MODULE}
 			</div>
 			<div class="evvtmenu_content">
 				<div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open">
 					<div class="slds-dropdown_left">
-						<ul class="slds-dropdown__list" role="menu" aria-label="Show More">
+						<ul class="slds-dropdown__list" role="menu">
 							{foreach item=menus key=k from=$SAVEDMENU}
-								<li class="slds-dropdown__item" role="presentation">
-									<a href="javascript:void(0);" onclick="getsavedmenuname('{$menus}','{$k}');" role="menuitem" tabindex="0">
+								<li class="slds-dropdown__item slds-page-header__meta-text" role="presentation">
+									<a href="javascript:void(0);" onclick="getsavedmenuname('{$menus}','{$k}');" role="menuitem" style="padding-top:0.1rem;padding-bottom:0.1rem;">
 										<span class="slds-truncate" title="{$menus}">{$menus}</span>
 									</a>
 								</li>
 							{/foreach}
-
 						</ul>
 					</div>
 				</div>
@@ -217,7 +216,7 @@
 							<button class="slds-button slds-button_brand" onclick="VtigerJS_DialogBox.block();processMenus('doSaveCurrent');">{'LBL_SAVE_CURRENT_BUTTON'|getTranslatedString:$MODULE}</button>
 							<button class="slds-button slds-button_brand" onclick="VtigerJS_DialogBox.block();processMenus('doApplySaved');">{'LBL_APPLY_BUTTON'|getTranslatedString:$MODULE}</button>
 							<button class="slds-button slds-button_brand" onclick="VtigerJS_DialogBox.block();processMenus('doRenameSaved');">{'LBL_RENAME_BUTTON'|getTranslatedString:$MODULE}</button>
-							<button class="slds-button slds-button_brand" onclick="VtigerJS_DialogBox.block();processMenus('doDownloadMenu');">{'LBL_DOWNLOAD_BUTTON'|getTranslatedString:$MODULE}</button>
+							<button class="slds-button slds-button_brand" onclick="processMenus('doDownloadMenu');">{'LBL_DOWNLOAD_BUTTON'|getTranslatedString:$MODULE}</button>
 							<button class="slds-button slds-button_brand" onclick="VtigerJS_DialogBox.block();processMenus('doImportMenu');">{'LBL_IMPORT_BUTTON'|getTranslatedString:$MODULE}</button>
 							<button class="slds-button slds-button_destructive" onclick="VtigerJS_DialogBox.block();processMenus('doDelSaved');">{'LBL_DELETE_BUTTON'|getTranslatedString:$MODULE}</button>
 						</div>

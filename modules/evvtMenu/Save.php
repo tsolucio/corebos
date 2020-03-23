@@ -62,8 +62,7 @@ $dosaved = vtlib_purify($_REQUEST['savedmenudo']);
 
 switch ($dosaved) {
 	case 'doSaveCurrent':
-		$sm = "select * from `vtiger_evvtmenu`";
-		$result = $adb->query($sm);
+		$result = $adb->query('select * from vtiger_evvtmenu');
 		$data = array();
 		if ($result && $adb->num_rows($result)>0) {
 			while ($row = $adb->fetch_array($result)) {
@@ -71,7 +70,7 @@ switch ($dosaved) {
 				$data[] = $savedm;
 			}
 			$structuremenu = json_encode($data, JSON_FORCE_OBJECT);
-			$menuname = vtlib_purify($_REQUEST['menuname']);
+			$menuname = empty($_REQUEST['menuname']) ? 'menu_'.date('YmdHis') : vtlib_purify($_REQUEST['menuname']);
 			$adb->pquery(
 				'insert into vtiger_savemenu (menuname,structure) values (?,?)',
 				array($menuname, $structuremenu)
@@ -82,11 +81,11 @@ switch ($dosaved) {
 		$savemenuid = vtlib_purify($_REQUEST['savemenuid']);
 		$menuname = vtlib_purify($_REQUEST['menuname']);
 		$menu = $adb->pquery('select structure from vtiger_savemenu where savemenuid=? limit 1', array($savemenuid));
-		if ($menu) {
+		if ($menu && $adb->num_rows($menu)>0) {
 			$structure = $adb->query_result($menu, 0, 'structure');
 			$stru = html_entity_decode($structure);
 			$menuitems = json_decode($stru, true);
-			$adb->pquery('delete from vtiger_evvtmenu where evvtmenuid !=?', array(0));
+			$adb->pquery('delete from vtiger_evvtmenu where evvtmenuid!=?', array(0));
 			foreach ($menuitems as $item) {
 				$sq = 'insert into vtiger_evvtmenu (evvtmenuid,mtype,mvalue,mlabel,mparent,mseq,mvisible,mpermission) values ('.generateQuestionMarks($item).')';
 				$adb->pquery($sq, $item);
@@ -94,17 +93,19 @@ switch ($dosaved) {
 		}
 		break;
 	case 'doRenameSaved':
-		$savemenuid = vtlib_purify($_REQUEST['savemenuid']);
-		$menuname = vtlib_purify($_REQUEST['menuname']);
-		$apply = $adb->pquery(
-			'update vtiger_savemenu set menuname=? where savemenuid=?',
-			array($menuname, $savemenuid)
-		);
+		if (!empty($_REQUEST['savemenuid']) && !empty($_REQUEST['menuname'])) {
+			$savemenuid = vtlib_purify($_REQUEST['savemenuid']);
+			$menuname = vtlib_purify($_REQUEST['menuname']);
+			$apply = $adb->pquery(
+				'update vtiger_savemenu set menuname=? where savemenuid=?',
+				array($menuname, $savemenuid)
+			);
+		}
 		break;
 	case 'doImportMenu':
-		if (isset($_FILES) && isset($_FILES['jsonfile']) && is_uploaded_file($_FILES['jsonfile']['tmp_name'])) {
+		if (isset($_FILES) && isset($_FILES['jsonfile']) && is_uploaded_file($_FILES['jsonfile']['tmp_name']) && $_FILES['jsonfile']['type']=='application/json') {
 			$contents = file_get_contents($_FILES['jsonfile']['tmp_name']);
-			$menuname = vtlib_purify($_REQUEST['menuname']);
+			$menuname = empty($_REQUEST['menuname']) ? basename($_FILES['jsonfile']['name'], '.json') : vtlib_purify($_REQUEST['menuname']);
 			$import = $adb->pquery(
 				'insert into vtiger_savemenu (menuname,structure) values (?,?)',
 				array($menuname, $contents)
@@ -114,21 +115,22 @@ switch ($dosaved) {
 	case 'doDownloadMenu':
 		$savemenuid = vtlib_purify($_REQUEST['savemenuid']);
 		if ($savemenuid != '') {
-			header('Content-disposition: attachment; filename=savedmenu.json');
-			header('Content-Type: application/json: charset=utf-8');
-			$resu = $adb->pquery('SELECT structure FROM vtiger_savemenu WHERE savemenuid=? limit 1', array($savemenuid));
-			$structure = "";
+			$resu = $adb->pquery('SELECT menuname,structure FROM vtiger_savemenu WHERE savemenuid=? limit 1', array($savemenuid));
 			if ($resu) {
 				$menu = $adb->fetch_array($resu);
 				$structure = $menu['structure'];
+				header('Content-disposition: attachment; filename="'.$menu['menuname'].'.json"');
+				header('Content-Type: application/json: charset=utf-8');
+				echo html_entity_decode($structure);
+				die();
 			}
-			echo html_entity_decode($structure);
 		}
-		die();
-	break;
+		break;
 	case 'doDelSaved':
 		$savemenuid = vtlib_purify($_REQUEST['savemenuid']);
-		delSavedMenu($savemenuid);
+		if ($savemenuid != '') {
+			delSavedMenu($savemenuid);
+		}
 		break;
 }
 $do = vtlib_purify($_REQUEST['evvtmenudo']);
