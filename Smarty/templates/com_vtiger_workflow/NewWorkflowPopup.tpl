@@ -65,9 +65,9 @@
 						</div>
 					</div>
 				</div>
-				<input type="hidden" name="save_type" value="new" id="save_type_new">
-				<input type="hidden" name="module" value="{$module->name}" id="save_module">
-				<input type="hidden" name="action" value="editworkflow" id="save_action">
+				<input type="hidden" name="save_type" value="new">
+				<input type="hidden" name="module" value="{$module->name}">
+				<input type="hidden" name="action" value="editworkflow">
 			</div>
 		</div>
 		<footer class="slds-modal__footer" style="width:100%;">

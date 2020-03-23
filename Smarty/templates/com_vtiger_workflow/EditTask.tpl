@@ -114,9 +114,9 @@
 		<input type="hidden" name="task_id" value="{$task->id}" id="save_task_id">
 {/if}
 		<input type="hidden" name="task_type" value="{$taskType}" id="save_task_type">
-		<input type="hidden" name="action" value="savetask" id="save_action">
-		<input type="hidden" name="module" value="{$module->name}" id="save_module">
-		<input type="hidden" name="return_url" value="{$returnUrl}" id="save_return_url">
+		<input type="hidden" name="action" value="savetask">
+		<input type="hidden" name="module" value="{$module->name}">
+		<input type="hidden" name="return_url" value="{$returnUrl}">
 		<input type="hidden" name="conditions" value="" id="save_conditions_json"/>
 	</form>
 </div>

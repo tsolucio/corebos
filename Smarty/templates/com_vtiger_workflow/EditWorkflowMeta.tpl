@@ -18,8 +18,8 @@
 			<input type="hidden" name="workflow_id" value="{$workflow->id}">
 			{/if}
 			<input type="hidden" name="conditions" value="" id="save_conditions_json"/>
-			<input type="hidden" name="action" value="saveworkflow" id="some_name">
-			<input type="hidden" name="module" value="{$module->name}" id="some_name">
+			<input type="hidden" name="action" value="saveworkflow">
+			<input type="hidden" name="module" value="{$module->name}">
 			<span id="status_message"></span>
 		</td>
 	</tr>
