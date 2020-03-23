@@ -31,5 +31,15 @@ $mod_strings = array(
 	'AddNewItem' => 'Ajoutez des nouveaux éléments en utilisant le formulaire ci-dessus. Les nouveaux éléments seront initialement en bas du menu choisi mais vous pouvez les bouger à votre guise par la suite.',
 	'MenuItemPermissions' => 'Lorsque des permissions sont appliquées à un élément, celles ci outrepassent les permissions existantes de l\'application.',
 	'MenuParent' => 'Parent',
+	'LBL_SAVED_Menus'=>'Saved Menus',
+	'LBL_SAVE_CURRENT_BUTTON'=>'Save Current',
+	'LBL_APPLY_BUTTON'=>'Apply',
+	'LBL_RENAME_BUTTON'=>'Rename',
+	'LBL_DOWNLOAD_BUTTON'=>'Download',
+	'LBL_IMPORT_BUTTON'=>'Import',
+	'LBL_DELETE_BUTTON'=>'Delete',
+	'LBL_ACTIONS'=>'Actions',
+	'LBL_MENU_BUTTON'=>'Menu',
+	'LBL_IMPORT_EXPORT_BUTTON'=>'Import/Export',
 );
 ?>

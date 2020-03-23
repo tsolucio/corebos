@@ -31,5 +31,15 @@ $mod_strings = array(
 	'AddNewItem' => 'Adicione novos elementos utilizando a fórmula anterior. Novos elementos serão adicionados ao fim do primeiro menu, pode mover e adaptá-los a partir do mesmo.',
 	'MenuItemPermissions' => 'Quando as permissões de perfil são aplicadas a um elemento do menu, sobrepor-se-ão às configurações de permissões existentes.',
 	'MenuParent' => 'Origem',
+	'LBL_SAVED_Menus'=>'Saved Menus',
+	'LBL_SAVE_CURRENT_BUTTON'=>'Save Current',
+	'LBL_APPLY_BUTTON'=>'Apply',
+	'LBL_RENAME_BUTTON'=>'Rename',
+	'LBL_DOWNLOAD_BUTTON'=>'Download',
+	'LBL_IMPORT_BUTTON'=>'Import',
+	'LBL_DELETE_BUTTON'=>'Delete',
+	'LBL_ACTIONS'=>'Actions',
+	'LBL_MENU_BUTTON'=>'Menu',
+	'LBL_IMPORT_EXPORT_BUTTON'=>'Import/Export',
 );
 ?>

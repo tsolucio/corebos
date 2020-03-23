@@ -56,4 +56,11 @@
 	<classname>addcbuuid</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>Elifuraha</author>
+	<description>add table for saved menu</description>
+	<filename>build/changeSets/2020/addtablevtigersavemenu.php</filename>
+	<classname>addtablevtigersavemenu</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
