@@ -37,5 +37,15 @@ $mod_strings = array(
 	'AddNewItem' => 'Adaugare elemente noi folosind formularul de deasupra. Elementele noi vor fi adaugate la sfarsitul prmului meniu, pot fi mutate si adaptate de acolo.',
 	'MenuItemPermissions' => 'Cand permisiunile profilului sunt aplicate unui element de meniu, acestea vor suprascrie setarile de permisiuni existente',
 	'MenuParent' => 'Parinte',
+	'LBL_SAVED_Menus'=>'Saved Menus',
+	'LBL_SAVE_CURRENT_BUTTON'=>'Save Current',
+	'LBL_APPLY_BUTTON'=>'Apply',
+	'LBL_RENAME_BUTTON'=>'Rename',
+	'LBL_DOWNLOAD_BUTTON'=>'Download',
+	'LBL_IMPORT_BUTTON'=>'Import',
+	'LBL_DELETE_BUTTON'=>'Delete',
+	'LBL_ACTIONS'=>'Actions',
+	'LBL_MENU_BUTTON'=>'Menu',
+	'LBL_IMPORT_EXPORT_BUTTON'=>'Import/Export',
 );
 ?>
