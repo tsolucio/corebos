@@ -15,12 +15,6 @@
 			<strong>{$MOD.LBL_SUMMARY}</strong>
 		</td>
 		<td class="cblds-t-align_right" align="right">
-			{if $saveType eq "edit"}
-			<input type="button" class="crmButton create small" value="{$MOD.LBL_NEW_TEMPLATE}" id="new_template"/>
-			{/if}
-			<input type="submit" id="save_submit" value="{$APP.LBL_SAVE_LABEL}" class="crmButton small save" style="display:none;">
-			<input type="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmButton small cancel"
-				onclick="window.location.href='index.php?module=com_vtiger_workflow&action=workflowlist'">
 		</td>
 	</tr>
 </table>

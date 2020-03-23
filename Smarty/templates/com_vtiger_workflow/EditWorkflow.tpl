@@ -7,7 +7,7 @@
 {include file='com_vtiger_workflow/ErrorMessageBox.tpl'}
 <!--Done popups-->
 
-{include file='com_vtiger_workflow/ModuleTitle.tpl'}
+{include file='com_vtiger_workflow/ModuleTitle.tpl' show='wfedit'}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 <div id="view" class="workflows-edit slds-modal__container slds-p-around_none slds-card">
 	<form name="EditView" action="index.php" method="POST" id="edit_workflow_form" onsubmit="VtigerJS_DialogBox.block();">

@@ -23,7 +23,7 @@
 {include file='com_vtiger_workflow/ErrorMessageBox.tpl'}
 <!--Done popups-->
 
-{include file='com_vtiger_workflow/ModuleTitle.tpl'}
+{include file='com_vtiger_workflow/ModuleTitle.tpl' show='tkedit'}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 <div id="view" class="workflows-edit slds-modal__container slds-p-around_none slds-card">
 	<form name="new_task" id="new_task_form" method="post" onsubmit="VtigerJS_DialogBox.block();">
@@ -34,8 +34,6 @@
 					<strong>{$MOD.LBL_SUMMARY}</strong>
 				</td>
 				<td class="small cblds-t-align_right" align="right">
-					<input type="submit" name="{$APP.LBL_SAVE_LABEL}" class="crmButton small save" value="{$APP.LBL_SAVE_BUTTON_LABEL}" id="save">
-					<input type="button" id="edittask_cancel_button" class="crmbutton small cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}">
 				</td>
 			</tr>
 		</table>
