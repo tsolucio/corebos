@@ -202,6 +202,7 @@ if (isset($query_string) && $query_string != '') {
 				$listview_entries = getListViewEntries($focus, $module, $list_result, $navigation_array, '', '', '', '', $oCustomView);
 
 				//Do not display the Header if there are no entries in listview_entries
+				unset($listview_entries['total']);
 				if (count($listview_entries) > 0) {
 					$display_header = 1;
 					if (vtlib_isModuleActive('ListViewColors') && count($listview_entries) == 2) {
