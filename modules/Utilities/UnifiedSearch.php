@@ -90,10 +90,10 @@ if (isset($query_string) && $query_string != '') {
 			if (isPermitted($module, 'index') == 'yes') {
 				$smarty = new vtigerCRM_Smarty;
 
-				if (!file_exists("modules/$module/language/".$current_language.".lang.php")) {
+				if (!file_exists("modules/$module/language/".$current_language.'.lang.php')) {
 					$current_language = 'en_us';
 				}
-				require_once "modules/$module/language/".$current_language.".lang.php";
+				require_once "modules/$module/language/".$current_language.'.lang.php';
 
 				$smarty->assign('MOD', $mod_strings);
 				$smarty->assign('APP', $app_strings);
@@ -201,7 +201,7 @@ if (isset($query_string) && $query_string != '') {
 				$listview_header = getListViewHeader($focus, $module, '', '', '', 'global', $oCustomView);
 				$listview_entries = getListViewEntries($focus, $module, $list_result, $navigation_array, '', '', '', '', $oCustomView);
 
-				//Do not display the Header if there are no entires in listview_entries
+				//Do not display the Header if there are no entries in listview_entries
 				if (count($listview_entries) > 0) {
 					$display_header = 1;
 					if (vtlib_isModuleActive('ListViewColors') && count($listview_entries) == 2) {
