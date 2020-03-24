@@ -8,8 +8,6 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->
-
-TOOLTIPInfo text to show in popup
 *}
 
 <section class="tooltip" role="dialog">
@@ -19,6 +17,6 @@ TOOLTIPInfo text to show in popup
 	</svg>
 </span>
 <span class="tooltiptext slds-popover slds-nubbin_left-top-corner">
-<span class="slds-m-left_small">{$TOOLTIPInfo}</span>
+{block name=TOOLTIPInfo}Nothing to add!{/block}
 </span>
 </section>
