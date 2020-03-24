@@ -31,8 +31,8 @@ function vtDeleteWorkflow($adb, $request) {
 	if ($adb->num_rows($queue_tasks)>0) {
 		$adb->pquery('DELETE FROM com_vtiger_workflowtask_queue WHERE task_id=?', array($request['task_id']));
 	}
-	if (isset($request["return_url"])) {
-		$returnUrl=$request["return_url"];
+	if (isset($request['return_url'])) {
+		$returnUrl=$request['return_url'];
 	} else {
 		$module->setReturnUrl('');
 		$returnUrl=$module->editWorkflowUrl($wfid);
