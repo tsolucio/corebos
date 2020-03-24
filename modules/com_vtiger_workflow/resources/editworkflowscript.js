@@ -743,10 +743,22 @@ function moveWorkflowTaskUpDown(direction, task_id) {
 
 // On Schedule functionality
 function onschedule_preparescreen(radiobutton) {
-	if (jQuery(radiobutton).val()=='ON_SCHEDULE') {
+	const val = jQuery(radiobutton).val();
+	if (val=='ON_SCHEDULE') {
 		jQuery('#scheduleBox').show();
 	} else {
 		jQuery('#scheduleBox').hide();
+	}
+	if (val=='ON_SCHEDULE' || val=='MANUAL') {
+		jQuery('#fsmalaunch').show();
+	} else {
+		jQuery('#fsmalaunch').hide();
+	}
+	//enable button "Launch Now" only if System trigger is selected
+	if (val=='MANUAL') {
+		$('#btnmalaunch').attr('disabled', false);
+	} else {
+		$('#btnmalaunch').attr('disabled', true);
 	}
 }
 
@@ -805,37 +817,3 @@ function onschedule_selectschedule(selbox) {
 		break;
 	}
 }
-
-function setTabToggle(h, s) {
-	//allow switching tabs only if seleted wf trigger is `Schedule` or `System` otherwise `Record Set` tab stays disabled
-	var selectedTrigger = $('input[name="execution_condition"]:checked').val();
-	if (selectedTrigger=='ON_SCHEDULE' || selectedTrigger=='MANUAL') {
-		document.getElementById(h).classList.add('slds-hide');
-		document.getElementById(h).classList.remove('slds-show');
-		document.getElementById(h+'-tab').classList.remove('slds-is-active');
-		document.getElementById(s).classList.add('slds-show');
-		document.getElementById(s).classList.remove('slds-hide');
-		document.getElementById(s+'-tab').classList.add('slds-is-active');
-	}
-}
-
-//switch to conditions tab if tab-records is shown while changing selected trigger
-$('input[name="execution_condition"]').click(function () {
-	if ($(this).val()!='ON_SCHEDULE' && $(this).val()!='MANUAL') {
-		document.getElementById('tab-records').classList.add('slds-hide');
-		document.getElementById('tab-records').classList.remove('slds-show');
-		document.getElementById('tab-records-tab').classList.remove('slds-is-active');
-		document.getElementById('tab-records-tab').classList.add('disabled');
-		document.getElementById('tab-conditions').classList.add('slds-show');
-		document.getElementById('tab-conditions').classList.remove('slds-hide');
-		document.getElementById('tab-conditions-tab').classList.add('slds-is-active');
-	} else {
-		document.getElementById('tab-records-tab').classList.remove('disabled');
-		//enable button "Launch Now" only if System trigger is selected
-		if ($(this).val()!='MANUAL') {
-			$('.btn-launch_now').attr('disabled', true);
-		} else {
-			$('.btn-launch_now').attr('disabled', false);
-		}
-	}
-});

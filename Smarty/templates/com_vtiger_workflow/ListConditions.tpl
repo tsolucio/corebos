@@ -90,7 +90,7 @@
 	</div>
 {if $RecordSetTab}
 	<div class="slds-col slds-size_1-of-2 slds-page-header__meta-text">
-		<fieldset class="slds-form-element">
+		<fieldset class="slds-form-element" id="fsmalaunch">
 			<legend class="slds-form-element__legend slds-form-element__label">{'Select where to get the records from'|@getTranslatedString:$MODULE_NAME}</legend>
 			<div class="slds-form-element__control">
 			<span class="slds-radio slds-p-top_xx-small">
@@ -196,7 +196,7 @@
 			</span>
 			</div>
 			<span class="slds-p-top_small slds-align_absolute-center">
-			<button class="slds-button slds-button_success btn-launch_now">{'Launch Now'|getTranslatedString:'com_vtiger_workflow'}</button>
+			<button class="slds-button slds-button_success" id="btnmalaunch">{'Launch Now'|getTranslatedString:'com_vtiger_workflow'}</button>
 			</span>
 		</fieldset>
 	</div>
