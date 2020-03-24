@@ -1,12 +1,12 @@
 {
   "name": "design-system",
   "description": "Salesforce Lightning Design System",
-  "version": "2.8.3",
+  "version": "2.11.6",
   "author": "Salesforce",
   "license": "SEE LICENSE IN README.md",
   "slds": {
-    "name": "Spring ’19",
-    "id": "216"
+    "name": "Spring ’20",
+    "id": "224"
   },
   "repository": {
     "type": "git",
