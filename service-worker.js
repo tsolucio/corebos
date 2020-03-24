@@ -4580,7 +4580,7 @@ precacheAndRoute([{
   "revision": "8aecdcc4aa68e15aefcb0d1d0e590d81"
 }, {
   "url": "include/LD/assets/fonts/webfonts/SalesforceSans-Bold.woff",
-  "revision": "1a99b4b58efca0b3c1b1ea9c29d981e4"
+  "revision": "034baa2c90687fad501b83e225f3728f"
 }, {
   "url": "include/LD/assets/fonts/webfonts/SalesforceSans-BoldItalic.eot",
   "revision": "430e3065b81b4b2abec9687be9dcecfe"
@@ -4589,7 +4589,7 @@ precacheAndRoute([{
   "revision": "8152c6eb3b7a34653208166c7cb60c2b"
 }, {
   "url": "include/LD/assets/fonts/webfonts/SalesforceSans-BoldItalic.woff",
-  "revision": "41ae6b36a1f81e8c5d2aafe12c409f30"
+  "revision": "7b6ae28b116debe909b3fec84b310468"
 }, {
   "url": "include/LD/assets/fonts/webfonts/SalesforceSans-Italic.eot",
   "revision": "60d1fa1975c08d8c67abd5ea6ee5417d"
@@ -4598,7 +4598,7 @@ precacheAndRoute([{
   "revision": "c944a148692ed1743f976c168fcf1629"
 }, {
   "url": "include/LD/assets/fonts/webfonts/SalesforceSans-Italic.woff",
-  "revision": "882515c44aafee22611dbcbc904a792b"
+  "revision": "490fd008e87efd93f09b27cc298402d3"
 }, {
   "url": "include/LD/assets/fonts/webfonts/SalesforceSans-Light.eot",
   "revision": "db0b0031bf4eeb01aabdb6830a918912"
@@ -4607,7 +4607,7 @@ precacheAndRoute([{
   "revision": "d5a0b582f31fe3e2cb49f85480e9d823"
 }, {
   "url": "include/LD/assets/fonts/webfonts/SalesforceSans-Light.woff",
-  "revision": "2edec8788fdf09212e4fecdfeed96a7e"
+  "revision": "49c5f0d3823d5417274ec49fe9d702d7"
 }, {
   "url": "include/LD/assets/fonts/webfonts/SalesforceSans-LightItalic.eot",
   "revision": "545e3e4d690f6d7d4a89e0783929a0c0"
@@ -4616,7 +4616,7 @@ precacheAndRoute([{
   "revision": "8575578fa11d310d1dd4295ec7e495fa"
 }, {
   "url": "include/LD/assets/fonts/webfonts/SalesforceSans-LightItalic.woff",
-  "revision": "8080e8bc6c523ed5c657931fdd80e032"
+  "revision": "13eed833d3d7ff2ae1b85ac45b13a3d9"
 }, {
   "url": "include/LD/assets/fonts/webfonts/SalesforceSans-Regular.eot",
   "revision": "e49dcb01a490f0e54b047e69cc5ba537"
@@ -4625,7 +4625,7 @@ precacheAndRoute([{
   "revision": "ada994ed9b2acac21ceedf8e5d97484a"
 }, {
   "url": "include/LD/assets/fonts/webfonts/SalesforceSans-Regular.woff",
-  "revision": "401b32ddc80c4c66d0558df1bc202d9b"
+  "revision": "8621cf5a8eb1acfacd002232c95d85ed"
 }, {
   "url": "include/LD/assets/fonts/webfonts/SalesforceSans-Thin.eot",
   "revision": "0f5f0d78694ea287e7f43ff54a0056ad"
@@ -4634,7 +4634,7 @@ precacheAndRoute([{
   "revision": "a564e763588be50117b9624867e4cf8c"
 }, {
   "url": "include/LD/assets/fonts/webfonts/SalesforceSans-Thin.woff",
-  "revision": "179b04066d1d2f2122b410e7194c7044"
+  "revision": "4a20519f44ff88ce58982cdba77baccf"
 }, {
   "url": "include/LD/assets/fonts/webfonts/SalesforceSans-ThinItalic.eot",
   "revision": "78b1ce67f1f64198543dc1b92bd28d47"
@@ -4643,10 +4643,13 @@ precacheAndRoute([{
   "revision": "ee6131f0b7cd6021b2de99f5c7a0dc83"
 }, {
   "url": "include/LD/assets/fonts/webfonts/SalesforceSans-ThinItalic.woff",
-  "revision": "7affc86cb811009ddeda6363ef2605ab"
+  "revision": "e9d217aa6d675425569b853e6c63fee9"
+}, {
+  "url": "include/LD/assets/icons/action-sprite/svg/symbols-rtl.svg",
+  "revision": "d21e4d3fad60f6a89cb2a7ca6e50b67d"
 }, {
   "url": "include/LD/assets/icons/action-sprite/svg/symbols.svg",
-  "revision": "6bd23e6679a8752ec93e0545200fcd84"
+  "revision": "3ab367e03b9d59c947370cc92c1c9e90"
 }, {
   "url": "include/LD/assets/icons/action/add_contact.svg",
   "revision": "8213f8c1af6fc1a5f45b9e68d3370883"
@@ -4671,6 +4674,9 @@ precacheAndRoute([{
 }, {
   "url": "include/LD/assets/icons/action/back.svg",
   "revision": "4480dec54ab9729244271d09f9c45d41"
+}, {
+  "url": "include/LD/assets/icons/action/bug.svg",
+  "revision": "61f848c3e3abde9e33f959312319681a"
 }, {
   "url": "include/LD/assets/icons/action/call.svg",
   "revision": "eb966d0df9365dc826b5aa706820bcc9"
@@ -5197,6 +5203,9 @@ precacheAndRoute([{
   "url": "include/LD/assets/icons/action/web_link.svg",
   "revision": "eb9a74852adcbb338206cd3d9174a5b4"
 }, {
+  "url": "include/LD/assets/icons/custom-sprite/svg/symbols-rtl.svg",
+  "revision": "ec7295690c85ce97b330d4c91c237288"
+}, {
   "url": "include/LD/assets/icons/custom-sprite/svg/symbols.svg",
   "revision": "3eeb1bd682daedabcdc71243ae64099f"
 }, {
@@ -5539,8 +5548,11 @@ precacheAndRoute([{
   "url": "include/LD/assets/icons/custom/custom99.svg",
   "revision": "b0363502d3a25ad3f9f0a07a716a65a0"
 }, {
+  "url": "include/LD/assets/icons/doctype-sprite/svg/symbols-rtl.svg",
+  "revision": "13dabdc82fc9d693f512de42d7c13c8c"
+}, {
   "url": "include/LD/assets/icons/doctype-sprite/svg/symbols.svg",
-  "revision": "56d22387c555429bb26579f512ec0689"
+  "revision": "b2a21821ff68628a87fa121cadfcc983"
 }, {
   "url": "include/LD/assets/icons/doctype/ai.svg",
   "revision": "0ecd8226c7fef2b3ff45be98628a4881"
@@ -5624,10 +5636,13 @@ precacheAndRoute([{
   "revision": "49594ef4509c9e90a85163f134b0ea60"
 }, {
   "url": "include/LD/assets/icons/doctype/quip_doc.svg",
-  "revision": "07b5b63bfc0b568b36b8ea0fc8050429"
+  "revision": "04a0b126d0ddbc91a88b603deaebebf4"
 }, {
   "url": "include/LD/assets/icons/doctype/quip_sheet.svg",
-  "revision": "0c3f6dae3e994d8aa52662266066a5a8"
+  "revision": "47ba836f21922f9bef5b793825ea46bc"
+}, {
+  "url": "include/LD/assets/icons/doctype/quip_slide.svg",
+  "revision": "af912428f73acb363a6d026ad5760048"
 }, {
   "url": "include/LD/assets/icons/doctype/rtf.svg",
   "revision": "77a07e3925b631176ab5e97c916faba9"
@@ -5662,14 +5677,20 @@ precacheAndRoute([{
   "url": "include/LD/assets/icons/doctype/zip.svg",
   "revision": "5c8edbb90bf5f9300e6a04192ca00332"
 }, {
+  "url": "include/LD/assets/icons/standard-sprite/svg/symbols-rtl.svg",
+  "revision": "d95140204e963d2321a3af68efaa8044"
+}, {
   "url": "include/LD/assets/icons/standard-sprite/svg/symbols.svg",
-  "revision": "3c91235df42aae12f89898333bd48a0f"
+  "revision": "54107b52411070ffba28acd41448bb27"
 }, {
   "url": "include/LD/assets/icons/standard/account.svg",
   "revision": "abe646477566bf7244dc34d041686f6d"
 }, {
   "url": "include/LD/assets/icons/standard/action_list_component.svg",
   "revision": "4f29def4c8044062fc1249322252e9c2"
+}, {
+  "url": "include/LD/assets/icons/standard/actions_and_buttons.svg",
+  "revision": "2393245eac36ef617b02fa2ce75e4f2d"
 }, {
   "url": "include/LD/assets/icons/standard/address.svg",
   "revision": "d500b97e3eb64aac8ea82f78b1be2574"
@@ -5697,6 +5718,9 @@ precacheAndRoute([{
 }, {
   "url": "include/LD/assets/icons/standard/apex.svg",
   "revision": "0c2fabda3aacb7482854c84c0d6e9366"
+}, {
+  "url": "include/LD/assets/icons/standard/app.svg",
+  "revision": "73b8799dfcd266bb05d9e8db68ac9b03"
 }, {
   "url": "include/LD/assets/icons/standard/approval.svg",
   "revision": "a06057773e58d10308af47d059fa9d24"
@@ -5740,6 +5764,12 @@ precacheAndRoute([{
   "url": "include/LD/assets/icons/standard/business_hours.svg",
   "revision": "e49e93413d3017df3e84710218bca1cc"
 }, {
+  "url": "include/LD/assets/icons/standard/buyer_account.svg",
+  "revision": "089a9d97b02137421fb0cd408ce1b98f"
+}, {
+  "url": "include/LD/assets/icons/standard/buyer_group.svg",
+  "revision": "97958863e1c2cc6472cabfffd35b2a42"
+}, {
   "url": "include/LD/assets/icons/standard/calibration.svg",
   "revision": "20f6a8d90b7e279a086872e0d43ce1e0"
 }, {
@@ -5782,6 +5812,12 @@ precacheAndRoute([{
   "url": "include/LD/assets/icons/standard/case.svg",
   "revision": "ee400a23a97646a54caab05336c08b30"
 }, {
+  "url": "include/LD/assets/icons/standard/catalog.svg",
+  "revision": "661a25daccf5b5609063c47ae411b05b"
+}, {
+  "url": "include/LD/assets/icons/standard/category.svg",
+  "revision": "27c611420d4d913ad6a9e4e97ed98031"
+}, {
   "url": "include/LD/assets/icons/standard/channel_program_history.svg",
   "revision": "c2e4013086e659784940c288111e45cb"
 }, {
@@ -5793,6 +5829,9 @@ precacheAndRoute([{
 }, {
   "url": "include/LD/assets/icons/standard/channel_programs.svg",
   "revision": "b778b3199c5a54a38e924961cb7584bf"
+}, {
+  "url": "include/LD/assets/icons/standard/chart.svg",
+  "revision": "9bdcdad73ec527592f286594de8538d3"
 }, {
   "url": "include/LD/assets/icons/standard/choice.svg",
   "revision": "84eb74de4e8b2e6b452b6609fe0ccbbd"
@@ -5845,11 +5884,17 @@ precacheAndRoute([{
   "url": "include/LD/assets/icons/standard/custom.svg",
   "revision": "0ed1283494abbe20657992596738a0e0"
 }, {
+  "url": "include/LD/assets/icons/standard/customer_360.svg",
+  "revision": "ca6c5351ccfe7bdcbb151e17ce4cc03e"
+}, {
   "url": "include/LD/assets/icons/standard/customer_portal_users.svg",
   "revision": "3f2c6df261b8a1d70c3ab91f73f6d4df"
 }, {
   "url": "include/LD/assets/icons/standard/customers.svg",
   "revision": "195c842f04310fde226cd83b270f7c73"
+}, {
+  "url": "include/LD/assets/icons/standard/dashboard_ea.svg",
+  "revision": "bb2c6f97196fb659721d3d82f2a8f5ad"
 }, {
   "url": "include/LD/assets/icons/standard/dashboard.svg",
   "revision": "17ca577a6ac8c41d14d3514b6637f1ac"
@@ -5859,6 +5904,9 @@ precacheAndRoute([{
 }, {
   "url": "include/LD/assets/icons/standard/datadotcom.svg",
   "revision": "818268da2835b1ad46dca1771e04b0f2"
+}, {
+  "url": "include/LD/assets/icons/standard/dataset.svg",
+  "revision": "32620ef3f406c7e4a45e3918f3aa667c"
 }, {
   "url": "include/LD/assets/icons/standard/date_input.svg",
   "revision": "4b35fcbea1b8f0d2622de81b69b38a6d"
@@ -5871,6 +5919,9 @@ precacheAndRoute([{
 }, {
   "url": "include/LD/assets/icons/standard/default.svg",
   "revision": "776fa46dafcc71bb1c59702212525dc3"
+}, {
+  "url": "include/LD/assets/icons/standard/delegated_account.svg",
+  "revision": "165a7b5d687d6fed3fb094581b312315"
 }, {
   "url": "include/LD/assets/icons/standard/display_rich_text.svg",
   "revision": "e42df585f83028f9d4f756a9757a1f8f"
@@ -5887,6 +5938,9 @@ precacheAndRoute([{
   "url": "include/LD/assets/icons/standard/dynamic_record_choice.svg",
   "revision": "546d57e1cfba081035b078ae422acf8c"
 }, {
+  "url": "include/LD/assets/icons/standard/education.svg",
+  "revision": "97540a829967845e0664da0d7c3b6da1"
+}, {
   "url": "include/LD/assets/icons/standard/email_chatter.svg",
   "revision": "1823ba0303260e4c3752a3281774087a"
 }, {
@@ -5898,6 +5952,9 @@ precacheAndRoute([{
 }, {
   "url": "include/LD/assets/icons/standard/endorsement.svg",
   "revision": "75119b280368598425a8dd3c17248ee5"
+}, {
+  "url": "include/LD/assets/icons/standard/entitlement_policy.svg",
+  "revision": "8e33911cf1c6b4fa804092a05e43ae34"
 }, {
   "url": "include/LD/assets/icons/standard/entitlement_process.svg",
   "revision": "4c92a9f48361810752fb27af62a477b1"
@@ -5919,6 +5976,9 @@ precacheAndRoute([{
 }, {
   "url": "include/LD/assets/icons/standard/event.svg",
   "revision": "3f0137c043a0d045fd4fb18c3612bec3"
+}, {
+  "url": "include/LD/assets/icons/standard/events.svg",
+  "revision": "43230c90e47dddbd1d193008869d9858"
 }, {
   "url": "include/LD/assets/icons/standard/feed.svg",
   "revision": "d76a498ab2b9db3b713dbf7574b6a3ea"
@@ -5947,6 +6007,9 @@ precacheAndRoute([{
   "url": "include/LD/assets/icons/standard/formula.svg",
   "revision": "7acf5904b54900f7a141025f2de9b023"
 }, {
+  "url": "include/LD/assets/icons/standard/fulfillment_order.svg",
+  "revision": "1684ea3282887646ace55b104100d307"
+}, {
   "url": "include/LD/assets/icons/standard/generic_loading.svg",
   "revision": "782f85a63451e493542e14beb27ced53"
 }, {
@@ -5965,6 +6028,9 @@ precacheAndRoute([{
   "url": "include/LD/assets/icons/standard/hierarchy.svg",
   "revision": "13b9f54d9231c966a2ba8538766b6766"
 }, {
+  "url": "include/LD/assets/icons/standard/high_velocity_sales.svg",
+  "revision": "040de6e200d7922e5ad5498a138a4755"
+}, {
   "url": "include/LD/assets/icons/standard/home.svg",
   "revision": "e836614fc06d1536ec4364cf5047d430"
 }, {
@@ -5977,14 +6043,26 @@ precacheAndRoute([{
   "url": "include/LD/assets/icons/standard/insights.svg",
   "revision": "0ef2d6f5dfb43e87025e05872fa61b17"
 }, {
+  "url": "include/LD/assets/icons/standard/instore_locations.svg",
+  "revision": "8c765666b48dfd58f0f97bd9a14750a1"
+}, {
   "url": "include/LD/assets/icons/standard/investment_account.svg",
   "revision": "e44ac0d159c5a8c79fd01000492aa539"
+}, {
+  "url": "include/LD/assets/icons/standard/invocable_action.svg",
+  "revision": "e83e9b60f82fc5675102a567a804367f"
 }, {
   "url": "include/LD/assets/icons/standard/iot_context.svg",
   "revision": "af0d61b2d58c65efb778d56fbd95e5c3"
 }, {
   "url": "include/LD/assets/icons/standard/iot_orchestrations.svg",
   "revision": "4792c97d2ac6d9c47c2e622f1a23c0aa"
+}, {
+  "url": "include/LD/assets/icons/standard/javascript_button.svg",
+  "revision": "fd6b171c6600de516bb7525bb54d87dc"
+}, {
+  "url": "include/LD/assets/icons/standard/job_profile.svg",
+  "revision": "3de9127f58fc5a392c3aa56cea4117c1"
 }, {
   "url": "include/LD/assets/icons/standard/kanban.svg",
   "revision": "6bc9d2babb79b548d0c4153fd1eb81db"
@@ -6000,6 +6078,9 @@ precacheAndRoute([{
 }, {
   "url": "include/LD/assets/icons/standard/lead.svg",
   "revision": "1554b323d7e66ac451cebe0a9cc5a145"
+}, {
+  "url": "include/LD/assets/icons/standard/letterhead.svg",
+  "revision": "74a4f933f3f46f6acd6b8f1ed50f29fc"
 }, {
   "url": "include/LD/assets/icons/standard/lightning_component.svg",
   "revision": "5fa513243348388b55173ca2794feb33"
@@ -6079,11 +6160,17 @@ precacheAndRoute([{
   "url": "include/LD/assets/icons/standard/operating_hours.svg",
   "revision": "1c08521b2c10c38cd25071e206654090"
 }, {
+  "url": "include/LD/assets/icons/standard/opportunity_contact_role.svg",
+  "revision": "f6275a73e99d5fb33bf71d4ceb6468bb"
+}, {
   "url": "include/LD/assets/icons/standard/opportunity_splits.svg",
   "revision": "08bb2fa7ea28e9cb16dc4727b5cb8305"
 }, {
   "url": "include/LD/assets/icons/standard/opportunity.svg",
   "revision": "007b200cc4e392e078d353ec8f3d1255"
+}, {
+  "url": "include/LD/assets/icons/standard/order_item.svg",
+  "revision": "98948f7361051c5094c4ad59b743b924"
 }, {
   "url": "include/LD/assets/icons/standard/orders.svg",
   "revision": "a0405ccb18e7ddf146c06f6deba46b58"
@@ -6229,6 +6316,9 @@ precacheAndRoute([{
   "url": "include/LD/assets/icons/standard/record.svg",
   "revision": "aa174a30df068300093e61b9bc3125c6"
 }, {
+  "url": "include/LD/assets/icons/standard/recycle_bin.svg",
+  "revision": "fde56d804b01ebfa96812e0ac63db81d"
+}, {
   "url": "include/LD/assets/icons/standard/related_list.svg",
   "revision": "f5d2b7bf4f1e46a40991d9c1eb6b4806"
 }, {
@@ -6262,11 +6352,23 @@ precacheAndRoute([{
   "url": "include/LD/assets/icons/standard/rtc_presence.svg",
   "revision": "ff75633d29de74aae2c79e34e5c09f1a"
 }, {
+  "url": "include/LD/assets/icons/standard/sales_cadence_target.svg",
+  "revision": "fd2920051397fc650d0516742d0fc5ce"
+}, {
   "url": "include/LD/assets/icons/standard/sales_cadence.svg",
   "revision": "5500f6d3298f064c95da8fae7d5f8a14"
 }, {
+  "url": "include/LD/assets/icons/standard/sales_channel.svg",
+  "revision": "989f0493aa2663dfc589fbc78cd0dff5"
+}, {
   "url": "include/LD/assets/icons/standard/sales_path.svg",
   "revision": "dac9b6fcd28dd55a508bf087b2794336"
+}, {
+  "url": "include/LD/assets/icons/standard/sales_value.svg",
+  "revision": "83cb4c640873df996ffd4a0c18fba0fb"
+}, {
+  "url": "include/LD/assets/icons/standard/salesforce_cms.svg",
+  "revision": "62080320fedbf0e1b33b759fab38d926"
 }, {
   "url": "include/LD/assets/icons/standard/scan_card.svg",
   "revision": "0cb7d39eca496d0eb4149bbc2c728ddd"
@@ -6307,6 +6409,15 @@ precacheAndRoute([{
   "url": "include/LD/assets/icons/standard/service_territory.svg",
   "revision": "cd22366c913a7295e151740a78f1cbd3"
 }, {
+  "url": "include/LD/assets/icons/standard/settings.svg",
+  "revision": "662c9c11c39f067b358bced53065b33b"
+}, {
+  "url": "include/LD/assets/icons/standard/shift_type.svg",
+  "revision": "b0ece207eceefdacb8b5ea2eb6b7e679"
+}, {
+  "url": "include/LD/assets/icons/standard/shift.svg",
+  "revision": "581f19d67cba4e5fc07530c5b9440b42"
+}, {
   "url": "include/LD/assets/icons/standard/shipment.svg",
   "revision": "6cb66698ac9761fac1365723006f5009"
 }, {
@@ -6324,6 +6435,9 @@ precacheAndRoute([{
 }, {
   "url": "include/LD/assets/icons/standard/snippet.svg",
   "revision": "90183242c0a4ae0ad8654ef7e2601ad0"
+}, {
+  "url": "include/LD/assets/icons/standard/snippets.svg",
+  "revision": "44170378770406c6986694a423335251"
 }, {
   "url": "include/LD/assets/icons/standard/sobject_collection.svg",
   "revision": "50e49284bb0c7cc821c3727dbb19b840"
@@ -6351,6 +6465,15 @@ precacheAndRoute([{
 }, {
   "url": "include/LD/assets/icons/standard/steps.svg",
   "revision": "e73edf063d74d105c46fa9b9dc3383a1"
+}, {
+  "url": "include/LD/assets/icons/standard/store_group.svg",
+  "revision": "78f9f31c567310547899b9155d4c37b1"
+}, {
+  "url": "include/LD/assets/icons/standard/store.svg",
+  "revision": "b063c9f449b43e9020ad73905a03062b"
+}, {
+  "url": "include/LD/assets/icons/standard/story.svg",
+  "revision": "89dd8bff659106183263323941f0a710"
 }, {
   "url": "include/LD/assets/icons/standard/strategy.svg",
   "revision": "7663b2ac537131297ab94e9cc16bab4a"
@@ -6410,7 +6533,7 @@ precacheAndRoute([{
   "revision": "090ec35abdadc24b61a4d5585fea0f95"
 }, {
   "url": "include/LD/assets/icons/standard/trailhead.svg",
-  "revision": "233bed9baab23fa136898fb2caf31afd"
+  "revision": "0102d5a4d8783a2dffe1e2ddd9bb75ca"
 }, {
   "url": "include/LD/assets/icons/standard/unmatched.svg",
   "revision": "f79cfe0f35c444b79f75eea399c4afbb"
@@ -6424,8 +6547,17 @@ precacheAndRoute([{
   "url": "include/LD/assets/icons/standard/variable.svg",
   "revision": "8290953a64f7908202b2e066865fc220"
 }, {
+  "url": "include/LD/assets/icons/standard/visit_templates.svg",
+  "revision": "168db847a186c252e1f2c22627988c4e"
+}, {
   "url": "include/LD/assets/icons/standard/visits.svg",
   "revision": "b66e49339779adc5c3b3372d1cbc04a6"
+}, {
+  "url": "include/LD/assets/icons/standard/visualforce_page.svg",
+  "revision": "09da74f9ea2fa57278824abee613ace3"
+}, {
+  "url": "include/LD/assets/icons/standard/voice_call.svg",
+  "revision": "80cbae2b313517d2955bd8a0cee82b64"
 }, {
   "url": "include/LD/assets/icons/standard/waits.svg",
   "revision": "17004885025b4b2135543f2a2890438b"
@@ -6451,8 +6583,11 @@ precacheAndRoute([{
   "url": "include/LD/assets/icons/standard/work_type.svg",
   "revision": "ad2bb8b463a2fa19eb0e594d1534b8b7"
 }, {
+  "url": "include/LD/assets/icons/utility-sprite/svg/symbols-rtl.svg",
+  "revision": "97313b9fea49bb32e865e2e62322c05f"
+}, {
   "url": "include/LD/assets/icons/utility-sprite/svg/symbols.svg",
-  "revision": "40951c85ed00738ba67c883ab7b12e6f"
+  "revision": "091d54ce6a4db1d0c0c53341b3d95352"
 }, {
   "url": "include/LD/assets/icons/utility/activity.svg",
   "revision": "01fd42ad941ba0f0908b7238a051de1e"
@@ -6643,6 +6778,9 @@ precacheAndRoute([{
   "url": "include/LD/assets/icons/utility/company.svg",
   "revision": "d868a230712970b06b1335e88997ad41"
 }, {
+  "url": "include/LD/assets/icons/utility/component_customization.svg",
+  "revision": "ce9cf626bac81dcd2afd6ed2b6eb4a5a"
+}, {
   "url": "include/LD/assets/icons/utility/connected_apps.svg",
   "revision": "e7412492cf6f80b951c30696cd31e80b"
 }, {
@@ -6706,6 +6844,9 @@ precacheAndRoute([{
   "url": "include/LD/assets/icons/utility/description.svg",
   "revision": "1784efb133e92dcf6dd4d4f3ff0dbad8"
 }, {
+  "url": "include/LD/assets/icons/utility/desktop_and_phone.svg",
+  "revision": "f02b4089a9285bd615e2483dfe9cd008"
+}, {
   "url": "include/LD/assets/icons/utility/desktop_console.svg",
   "revision": "7d68afed369dcfd326d6e0ed1d5f8d53"
 }, {
@@ -6714,6 +6855,9 @@ precacheAndRoute([{
 }, {
   "url": "include/LD/assets/icons/utility/dialing.svg",
   "revision": "6b4f74f2baab5c62cb9593a39360edd3"
+}, {
+  "url": "include/LD/assets/icons/utility/diamond.svg",
+  "revision": "8d65c736fa08bec2cd044784832736a9"
 }, {
   "url": "include/LD/assets/icons/utility/dislike.svg",
   "revision": "28917b33b0cb403ae048ac554bb0e8da"
@@ -6748,6 +6892,9 @@ precacheAndRoute([{
   "url": "include/LD/assets/icons/utility/edit.svg",
   "revision": "faca53a2140b7efff05a3ff3df2b34b3"
 }, {
+  "url": "include/LD/assets/icons/utility/education.svg",
+  "revision": "0fba13de9767caecc732fdd0757e6c94"
+}, {
   "url": "include/LD/assets/icons/utility/einstein.svg",
   "revision": "815883ea6bfe11f48662022b7ac6725d"
 }, {
@@ -6768,6 +6915,12 @@ precacheAndRoute([{
 }, {
   "url": "include/LD/assets/icons/utility/end_messaging_session.svg",
   "revision": "a2b60d62bff4f193ab50f76a20752ed4"
+}, {
+  "url": "include/LD/assets/icons/utility/engage.svg",
+  "revision": "5b40ff19b917e6c8bc7597bf4f462462"
+}, {
+  "url": "include/LD/assets/icons/utility/enter.svg",
+  "revision": "ad03888652862d60b1b7741298678e96"
 }, {
   "url": "include/LD/assets/icons/utility/erect_window.svg",
   "revision": "9ea3d5cbe59219bbdcf5e316dadd5c92"
@@ -6856,6 +7009,9 @@ precacheAndRoute([{
   "url": "include/LD/assets/icons/utility/hierarchy.svg",
   "revision": "ee646a613606263120aa47d91a96332e"
 }, {
+  "url": "include/LD/assets/icons/utility/high_velocity_sales.svg",
+  "revision": "d86a181c34bbeb2b3f03a7b20b3b1dd4"
+}, {
   "url": "include/LD/assets/icons/utility/home.svg",
   "revision": "6c0e38efba2cae90d2aad50529d8cb9f"
 }, {
@@ -6936,6 +7092,9 @@ precacheAndRoute([{
 }, {
   "url": "include/LD/assets/icons/utility/light_bulb.svg",
   "revision": "607f3c00bdd09e4035c31dcab8432697"
+}, {
+  "url": "include/LD/assets/icons/utility/lightning_extension.svg",
+  "revision": "b154202556ff96ef8415fb24bd17343a"
 }, {
   "url": "include/LD/assets/icons/utility/lightning_inspector.svg",
   "revision": "e1e6d4fbbf787e805545fe5a966473b4"
@@ -7162,6 +7321,12 @@ precacheAndRoute([{
   "url": "include/LD/assets/icons/utility/process.svg",
   "revision": "aa57ee21bc14a08eca42d04fe33b4134"
 }, {
+  "url": "include/LD/assets/icons/utility/prompt_edit.svg",
+  "revision": "df862c34fbac5ec5ca4af65e719af5eb"
+}, {
+  "url": "include/LD/assets/icons/utility/prompt.svg",
+  "revision": "2bbd8e6ca1da6b7469ef40a057557e74"
+}, {
   "url": "include/LD/assets/icons/utility/push.svg",
   "revision": "4e5f10808c0392d7d22939a2f89d33f1"
 }, {
@@ -7179,6 +7344,9 @@ precacheAndRoute([{
 }, {
   "url": "include/LD/assets/icons/utility/quick_text.svg",
   "revision": "86e8c060630aec106d4c47aed4c376ce"
+}, {
+  "url": "include/LD/assets/icons/utility/quip.svg",
+  "revision": "96a40850cb893c3d875662048c96a3ec"
 }, {
   "url": "include/LD/assets/icons/utility/quotation_marks.svg",
   "revision": "b4da577be3e205a1bd36a5c13603c60d"
@@ -7213,6 +7381,12 @@ precacheAndRoute([{
   "url": "include/LD/assets/icons/utility/recurring_exception.svg",
   "revision": "bf751a1ec8dea3c4fa56f2965c385d72"
 }, {
+  "url": "include/LD/assets/icons/utility/recycle_bin_empty.svg",
+  "revision": "f7e1bec9687b35a7416d3291be2bd5e2"
+}, {
+  "url": "include/LD/assets/icons/utility/recycle_bin_full.svg",
+  "revision": "5d37152cabe23ed90c0ebfe58c0e82f7"
+}, {
   "url": "include/LD/assets/icons/utility/redo.svg",
   "revision": "a960ad77e1d3aa48f52689860d02d3f8"
 }, {
@@ -7240,6 +7414,9 @@ precacheAndRoute([{
   "url": "include/LD/assets/icons/utility/reply.svg",
   "revision": "437330bd80e03c4213adf43f694f09b1"
 }, {
+  "url": "include/LD/assets/icons/utility/report_issue.svg",
+  "revision": "bc62f05f5f68ad898299a295ba832f5a"
+}, {
   "url": "include/LD/assets/icons/utility/reset_password.svg",
   "revision": "04628c1ccd425c18f672b25831614415"
 }, {
@@ -7251,6 +7428,9 @@ precacheAndRoute([{
 }, {
   "url": "include/LD/assets/icons/utility/resource_territory.svg",
   "revision": "8f112d7e3e6b97a468689f5cf7d97858"
+}, {
+  "url": "include/LD/assets/icons/utility/retail_execution.svg",
+  "revision": "c7043e119ee2d6d12d1a88aa2695f79e"
 }, {
   "url": "include/LD/assets/icons/utility/retweet.svg",
   "revision": "4bb64acfbc61ee1571809eb229c3e2e0"
@@ -7315,6 +7495,9 @@ precacheAndRoute([{
   "url": "include/LD/assets/icons/utility/setup_assistant_guide.svg",
   "revision": "967e6084d76906152182f604c407b912"
 }, {
+  "url": "include/LD/assets/icons/utility/setup_modal.svg",
+  "revision": "fd456a91bd2adf77be392da48889d705"
+}, {
   "url": "include/LD/assets/icons/utility/setup.svg",
   "revision": "f787cc087b66178371634d4b0e7001f1"
 }, {
@@ -7333,6 +7516,9 @@ precacheAndRoute([{
   "url": "include/LD/assets/icons/utility/shield.svg",
   "revision": "3c976923e3333941445fb7bf58feb0b1"
 }, {
+  "url": "include/LD/assets/icons/utility/shift_ui.svg",
+  "revision": "a395cc26190f5b26998802617561ce19"
+}, {
   "url": "include/LD/assets/icons/utility/shopping_bag.svg",
   "revision": "67d9bdd5016d87bb8bc69f8ae3610cd5"
 }, {
@@ -7344,6 +7530,12 @@ precacheAndRoute([{
 }, {
   "url": "include/LD/assets/icons/utility/signpost.svg",
   "revision": "b3020cc1af210f4052d15d5deb6e0940"
+}, {
+  "url": "include/LD/assets/icons/utility/skip_back.svg",
+  "revision": "aa548c75878812776a85e19a8c7755ca"
+}, {
+  "url": "include/LD/assets/icons/utility/skip_forward.svg",
+  "revision": "c53cb3c1b370acddae54b6c908fb158f"
 }, {
   "url": "include/LD/assets/icons/utility/skip.svg",
   "revision": "74a8a0ae167e19627169992875139e07"
@@ -7386,6 +7578,9 @@ precacheAndRoute([{
 }, {
   "url": "include/LD/assets/icons/utility/stop.svg",
   "revision": "5c675b9b6bf5c87d5efdf6929832f14a"
+}, {
+  "url": "include/LD/assets/icons/utility/store.svg",
+  "revision": "76d3ae6ce636078c66739f3ba9a08345"
 }, {
   "url": "include/LD/assets/icons/utility/strategy.svg",
   "revision": "1044d0ab00d4933d5182d81e18f0b69c"
@@ -7490,7 +7685,7 @@ precacheAndRoute([{
   "revision": "6dd3dece365fdd3abb8302dc2d68599a"
 }, {
   "url": "include/LD/assets/icons/utility/trailhead.svg",
-  "revision": "58a3c8e186194761298e01606ce26b81"
+  "revision": "bf61549df723bd5855c9444053be4147"
 }, {
   "url": "include/LD/assets/icons/utility/travel_and_places.svg",
   "revision": "ba0c42bce439342c80a84d5e3a4dd686"
@@ -7586,25 +7781,25 @@ precacheAndRoute([{
   "revision": "961827106ab42735edb481000074aa1b"
 }, {
   "url": "include/LD/assets/images/einstein-headers/einstein-figure.svg",
-  "revision": "67eb8aa0687137e2ae66c70243c22c5d"
+  "revision": "075cd62c37c61e487575ec7eef5d3c54"
 }, {
   "url": "include/LD/assets/images/einstein-headers/einstein-header-background.svg",
-  "revision": "a2beabec80f992be10c0a89936b43a45"
+  "revision": "d8ab98b9ac6eb29f29634dad79ac247f"
 }, {
   "url": "include/LD/assets/images/illustrations/empty-state-assistant.svg",
-  "revision": "4cc06cc52170075d75eabe04efa2d63d"
+  "revision": "50308afbf7d1f1e6b9a0a50d8099756e"
 }, {
   "url": "include/LD/assets/images/illustrations/empty-state-events.svg",
-  "revision": "d5d9da61dc25ac2d08d1a7ccaa278cdb"
+  "revision": "77c0e0459771e9612b120728ddea77ac"
 }, {
   "url": "include/LD/assets/images/illustrations/empty-state-tasks.svg",
-  "revision": "484bce73174ef30246c9553509be2663"
+  "revision": "fa7b8313f535a6140a0bfad15bc0bfc0"
 }, {
   "url": "include/LD/assets/images/logo-noname.svg",
-  "revision": "5a82e699441ab63b3afb2a7449485375"
+  "revision": "4f89fe7849ce8466563e77b10300658e"
 }, {
   "url": "include/LD/assets/images/logo.svg",
-  "revision": "5a82e699441ab63b3afb2a7449485375"
+  "revision": "4f89fe7849ce8466563e77b10300658e"
 }, {
   "url": "include/LD/assets/styles/mainmenu.css",
   "revision": "60718c9174ed712f0c6a240e34adec1d"
@@ -7612,11 +7807,23 @@ precacheAndRoute([{
   "url": "include/LD/assets/styles/override_lds.css",
   "revision": "acd3370a2580b31984e0c0fae9dc7bbd"
 }, {
+  "url": "include/LD/assets/styles/salesforce-lightning-design-system_touch.css",
+  "revision": "aae0a7ead47c69e71bbd2ae18e509560"
+}, {
+  "url": "include/LD/assets/styles/salesforce-lightning-design-system_touch.min.css",
+  "revision": "46fde5983c0f10a6c20d017c59a429ab"
+}, {
+  "url": "include/LD/assets/styles/salesforce-lightning-design-system-imports.sanitized.css",
+  "revision": "a9ed1dfce257f33386bfda9af44fe433"
+}, {
   "url": "include/LD/assets/styles/salesforce-lightning-design-system.css",
-  "revision": "83801568bc51c09cc4e3a51eab5dceee"
+  "revision": "cbd3a11e6a41230e945013170267f563"
 }, {
   "url": "include/LD/assets/styles/salesforce-lightning-design-system.min.css",
-  "revision": "dba16f862f9581e2df7788845d9e9514"
+  "revision": "889b70380f786163decbb5c1a8a28a5c"
+}, {
+  "url": "include/LD/assets/styles/salesforce-lightning-design-system.sanitized.css",
+  "revision": "a9a370a7638ecb835746227e16b8bbf2"
 }, {
   "url": "include/ckeditor/adapters/jquery.js",
   "revision": "ccef5f71850287b35f32909cae86f96e"
@@ -9272,7 +9479,7 @@ precacheAndRoute([{
   "revision": "79775e4b09927588274d515f5b4f90ec"
 }, {
   "url": "modules/com_vtiger_workflow/resources/editworkflowscript.js",
-  "revision": "3e5fc34e99dac86b7cb9dbb615514075"
+  "revision": "af8d79601aa1c12d8e1a06fdd7f85a50"
 }, {
   "url": "modules/com_vtiger_workflow/resources/emailtaskscript.js",
   "revision": "7b030711073308450f8902923523de06"
