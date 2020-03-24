@@ -39,10 +39,10 @@
 					</div>
 				</div>
 				<input type="hidden" name="module_name" value="{$workflow->moduleName}">
-				<input type="hidden" name="save_type" value="new" id="save_type_new">
-				<input type="hidden" name="module" value="{$module->name}" id="save_module">
-				<input type="hidden" name="action" value="edittask" id="save_action">
-				<input type="hidden" name="return_url" value="{$newTaskReturnUrl}" id="save_return_url">
+				<input type="hidden" name="save_type" value="new">
+				<input type="hidden" name="module" value="{$module->name}">
+				<input type="hidden" name="action" value="edittask">
+				<input type="hidden" name="return_url" value="{$newTaskReturnUrl}">
 				<input type="hidden" name="workflow_id" value="{$workflow->id}">
 			</div>
 		</div>

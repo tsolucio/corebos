@@ -9,32 +9,95 @@
  ********************************************************************************/
 -->*}
 
-<table class="tableHeading" width="100%" border="0" cellspacing="0" cellpadding="5">
-	<tr>
-		<td class="big" nowrap="nowrap">
-			<strong>{$MOD.LBL_SUMMARY}</strong>
-		</td>
-		<td class="cblds-t-align_right" align="right">
-			{if $saveType eq "edit"}
-			<input type="button" class="crmButton create small" value="{$MOD.LBL_NEW_TEMPLATE}" id="new_template"/>
-			{/if}
-			<input type="submit" id="save_submit" value="{$APP.LBL_SAVE_LABEL}" class="crmButton small save" style="display:none;">
-			<input type="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmButton small cancel"
-				onclick="window.location.href='index.php?module=com_vtiger_workflow&action=workflowlist'">
-		</td>
-	</tr>
-</table>
-<table border="0" cellpadding="5" cellspacing="0" width="100%">
-	<tr>
-		<td class="dvtCellLabel" align=right width=20%><b><span style='color:red;'>*</span> {$APP.LBL_UPD_DESC}</b></td>
-		<td class="dvtCellInfo" align="left"><input type="text" class="detailedViewTextBox" name="description" id="save_description" value="{$workflow->description}"{if $workflow->executionConditionAsLabel() eq 'MANUAL'} readonly{/if}></td>
-	</tr>
-	<tr>
-		<td class="dvtCellLabel" align=right width=20%><b>{$APP.LBL_MODULE}</b></td>
-		<td class="dvtCellInfo" align="left">{$workflow->moduleName|@getTranslatedString:$workflow->moduleName}</td>
-	</tr>
-	<tr>
-		<td class="dvtCellLabel" align=right width=20%><b>{'LBL_WFPURPOSE'|@getTranslatedString:'com_vtiger_workflow'}</b></td>
-		<td class="dvtCellInfo" align="left"><textarea id='purpose' name='purpose'>{$workflow->purpose}</textarea></td>
-	</tr>
-</table>
+<div class="slds-page-header">
+<div class="slds-page-header__row">
+	<div class="slds-page-header__col-title">
+	<div class="slds-media">
+		<div class="slds-media__body">
+		<div class="slds-page-header__name">
+			<div class="slds-page-header__name-title">
+			<h1>
+				<span class="slds-page-header__title slds-truncate" title="{$MOD.LBL_SUMMARY}">
+				{$MOD.LBL_SUMMARY}
+				</span>
+			</h1>
+			</div>
+		</div>
+		</div>
+	</div>
+	</div>
+</div>
+</div>
+<div class="slds-grid slds-gutters">
+<div class="slds-col slds-size_1-of-2">
+<fieldset class="slds-form-element slds-form-element_compound">
+	<div class="slds-form-element slds-form-element_horizontal" id="account_block" style="margin-left:0.5rem;" >
+		<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
+		<abbr class="slds-required" title="{'NTC_REQUIRED'|@getTranslatedString}">* </abbr>
+		{$APP.LBL_UPD_DESC}
+		</label>
+		<div class="slds-form-element__control slds-m-top_x-small">
+			<input type="text" name="description" id="save_description" class="slds-input slds-page-header__meta-text" value="{$workflow->description}" {if $workflow->executionConditionAsLabel() eq 'MANUAL'} readonly{/if}>
+		</div>
+		<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small">
+		&nbsp;&nbsp;{$APP.LBL_MODULE}
+		</label>
+		<div class="slds-form-element__control slds-m-top_x-small slds-page-header__meta-text">
+			<input type="text" readonly class="slds-input" value="{$workflow->moduleName|@getTranslatedString:$workflow->moduleName}">
+		</div>
+		<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="purpose">
+		&nbsp;&nbsp;{'LBL_WFPURPOSE'|@getTranslatedString:'com_vtiger_workflow'}
+		</label>
+		<div class="slds-form-element__control slds-m-top_x-small">
+			<textarea id='purpose' name='purpose' class="slds-textarea slds-page-header__meta-text">{$workflow->purpose}</textarea>
+		</div>
+	</div>
+</fieldset>
+</div>
+<div class="slds-col slds-size_1-of-2">
+<fieldset class="slds-form-element slds-form-element_compound">
+	<div class="slds-form-element slds-form-element_horizontal" id="account_block" style="margin-left:0.5rem;" >
+		<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
+		{'LBL_START_DATE'|@getTranslatedString:'com_vtiger_workflow'}&nbsp;
+		{include file='Components/TooltipInfo.tpl' TOOLTIPInfo='Leave empty for ALL date ranges.'|getTranslatedString:'com_vtiger_workflow'}
+		</label>
+		<div class="slds-form-element__control slds-m-top_x-small">
+			<input name="wfstarton" id="jscal_field_wfstarton" type="text" class="slds-input slds-page-header__meta-text" size="16" maxlength="16" value="" style="width:50%">
+			<input name="timefmt_wfstarton" id="inputtimefmt_wfstarton" type="hidden" value="24">
+			{include file='Components/DateButton.tpl' fldname='wfstarton'}
+			<script type="text/javascript">
+				Calendar.setup ({
+					inputField : "jscal_field_wfstarton", ifFormat : "%Y-%m-%d %H:%M", inputTimeFormat : "24",
+					showsTime : true, timeFormat : "24",
+					button : "jscal_trigger_wfstarton", singleClick : true, step : 1
+				});
+			</script>
+		</div>
+		<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small">
+		{'LBL_END_DATE'|@getTranslatedString:'com_vtiger_workflow'}
+		</label>
+		<div class="slds-form-element__control slds-m-top_x-small slds-page-header__meta-text">
+			<input name="wfendon" id="jscal_field_wfendon" type="text" class="slds-input slds-page-header__meta-text" size="16" maxlength="16" value="" style="width:50%">
+			<input name="timefmt_wfendon" id="inputtimefmt_wfendon" type="hidden" value="24">
+			{include file='Components/DateButton.tpl' fldname='wfendon'}
+			<script type="text/javascript">
+				Calendar.setup ({
+					inputField : "jscal_field_wfendon", ifFormat : "%Y-%m-%d %H:%M", inputTimeFormat : "24",
+					showsTime : true, timeFormat : "24",
+					button : "jscal_trigger_wfendon", singleClick : true, step : 1
+				});
+			</script>
+		</div>
+		<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="purpose">
+		{'LBL_STATUS'|@getTranslatedString:'com_vtiger_workflow'}
+		</label>
+		<div class="slds-form-element__control slds-m-top_x-small">
+			<select name="active" class="slds-select slds-page-header__meta-text" style="width:50%">
+				<option value="true">{$MOD.LBL_ACTIVE}</option>
+				<option value="false">{$MOD.LBL_INACTIVE}</option>
+			</select>
+		</div>
+	</div>
+</fieldset>
+</div>
+</div>

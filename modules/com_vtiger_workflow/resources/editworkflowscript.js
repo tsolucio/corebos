@@ -743,10 +743,22 @@ function moveWorkflowTaskUpDown(direction, task_id) {
 
 // On Schedule functionality
 function onschedule_preparescreen(radiobutton) {
-	if (jQuery(radiobutton).val()=='ON_SCHEDULE') {
+	const val = jQuery(radiobutton).val();
+	if (val=='ON_SCHEDULE') {
 		jQuery('#scheduleBox').show();
 	} else {
 		jQuery('#scheduleBox').hide();
+	}
+	if (val=='ON_SCHEDULE' || val=='MANUAL') {
+		jQuery('#fsmalaunch').show();
+	} else {
+		jQuery('#fsmalaunch').hide();
+	}
+	//enable button "Launch Now" only if System trigger is selected
+	if (val=='MANUAL') {
+		$('#btnmalaunch').attr('disabled', false);
+	} else {
+		$('#btnmalaunch').attr('disabled', true);
 	}
 }
 

@@ -62,13 +62,57 @@
 			</div>
 		</div>
 		<div class="slds-page-header__col-actions">
-			{if isset($show) && $show=='wflist'}
-			<div class="slds-grid slds-gutters slds-m-around_xxx-small">
-				<div class="slds-col">
-					<button class="slds-button slds-button_success" id='new_workflow'>{$MOD.LBL_NEW_WORKFLOW}</button>
-					{include file='com_vtiger_workflow/ActionMenu.tpl'}
+			{if isset($show)}
+				{if $show=='wflist'}
+				<div class="slds-grid slds-gutters slds-m-around_xxx-small">
+					<div class="slds-col">
+						<button class="slds-button slds-button_success" id='new_workflow'>{$MOD.LBL_NEW_WORKFLOW}</button>
+						{include file='com_vtiger_workflow/ActionMenu.tpl'}
+					</div>
 				</div>
-			</div>
+				{elseif $show=='wfedit'}
+				<div class="slds-grid slds-gutters slds-m-around_xxx-small">
+					<div class="slds-col">
+						{if $saveType eq "edit"}
+						<button class="slds-button slds-button_success" type="button" id='new_template'>
+							<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
+							</svg>
+							{$MOD.LBL_NEW_TEMPLATE}
+						</button>
+						{/if}
+						<button class="slds-button slds-button_success" type="button" id='save_submit' style="display:none;" onclick="document.forms['EditView'].submit();">
+							<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
+							</svg>
+							{$APP.LBL_SAVE_LABEL}
+						</button>
+						<button class="slds-button slds-button_destructive" type="button" onclick="window.location.href='index.php?module=com_vtiger_workflow&action=workflowlist'">
+							<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use>
+							</svg>
+							{$APP.LBL_CANCEL_BUTTON_LABEL}
+						</button>
+					</div>
+				</div>
+				{elseif $show=='tkedit'}
+				<div class="slds-grid slds-gutters slds-m-around_xxx-small">
+					<div class="slds-col">
+						<button class="slds-button slds-button_success" type="button" id='save' onclick="document.forms['new_task'].submit();">
+							<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
+							</svg>
+							{$APP.LBL_SAVE_BUTTON_LABEL}
+						</button>
+						<button class="slds-button slds-button_destructive" type="button" id='edittask_cancel_button'>
+							<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use>
+							</svg>
+							{$APP.LBL_CANCEL_BUTTON_LABEL}
+						</button>
+					</div>
+				</div>
+				{/if}
 			{/if}
 		</div>
 		<div id="page-header-surplus">

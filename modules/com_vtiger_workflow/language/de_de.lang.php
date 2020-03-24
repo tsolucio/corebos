@@ -54,7 +54,7 @@ $mod_strings = array(
 	'LBL_EXPRESSION'=>'Ausdruck',
 	'LBL_SET_EXPRESSION'=>'setze Ausdruck',
 
-	'LBL_MANUAL'=>'System',
+	'LBL_MANUAL'=>'System. Mass Actions.',
 	'LBL_RECORD_ACCESS_CONTROL' => 'Record Access Control',
 	'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL'=>'Neue Bedingungsgruppe',
 
@@ -206,5 +206,11 @@ $mod_strings = array(
 	'ERR_CannotProcess' => 'Cannot process workflow',
 	'ERR_ExpTypeUndefined' => 'Expression Type Undefined',
 	'ERR_NoCRMIDforEvaluate' => 'No record selected for evaluation context',
+	'EmptyForAllDateRanges' => 'Leave empty for ALL date ranges.',
+	'LBL_SAVEBASED' => 'Save based',
+	'LBL_TIMEBASED' => 'Time or Setting based',
+	'Record Set' => 'Record Set for Mass Actions',
+	'Select where to get the records from' => 'Select where to get the records from',
+	'Launch Now' => 'Launch Now',
 );
 ?>
