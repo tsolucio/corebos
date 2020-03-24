@@ -142,7 +142,7 @@
 									{elseif isset($CANCELGO)}window.location.href='{$CANCELGO}'
 									{else}window.history.back()
 									{/if};"
-								type="submit"
+								type="button"
 								name="button">
 									<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use>
