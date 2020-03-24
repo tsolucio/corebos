@@ -50,7 +50,7 @@ $mod_strings = array(
 'LBL_EXPRESSION'=>'Expresión',
 'LBL_SET_EXPRESSION'=>'Expresión Asignación',
 
-'LBL_MANUAL'=>'Sistema',
+'LBL_MANUAL'=>'Sistema. Acciones Masivas.',
 'LBL_RECORD_ACCESS_CONTROL' => 'Control de Acceso a Registro',
 'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL'=>'Añadir Condición de Grupo',
 
@@ -206,5 +206,11 @@ $mod_strings = array(
 'ERR_CannotProcess' => 'No se ha podido procesar el flujo de trabajo',
 'ERR_ExpTypeUndefined' => 'Tipo Expresión sin definir',
 'ERR_NoCRMIDforEvaluate' => 'No se ha seleccionado un registro de contexto para la evaluación',
+'EmptyForAllDateRanges' => 'Dejar vacío para cualquier fecha.',
+'LBL_SAVEBASED' => 'Basado en Guardar',
+'LBL_TIMEBASED' => 'Basado en Tiempo o Manual',
+'Record Set' => 'Registros para Acciones Masivas',
+'Select where to get the records from' => 'Selecciona de donde obtener los registros',
+'Launch Now' => 'Ejecutar Ahora',
 );
 ?>

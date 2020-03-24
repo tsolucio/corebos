@@ -51,7 +51,7 @@ $mod_strings = array(
 	'LBL_FIELD' => 'Mező',
 	'LBL_EXPRESSION' => 'Kifejezés',
 	'LBL_SET_EXPRESSION' => 'Kifejezést megad',
-	'LBL_MANUAL' => 'Rendszer',
+	'LBL_MANUAL' => 'Rendszer. Mass Actions.',
 	'LBL_RECORD_ACCESS_CONTROL' => 'Record Access Control',
 	'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL' => 'Új Feltétel csoport',
 	'VTUpdateFieldsTask' => 'Mezők frissítése',
@@ -193,5 +193,11 @@ $mod_strings = array(
 	'ERR_CannotProcess' => 'Cannot process workflow',
 	'ERR_ExpTypeUndefined' => 'Expression Type Undefined',
 	'ERR_NoCRMIDforEvaluate' => 'No record selected for evaluation context',
+	'EmptyForAllDateRanges' => 'Leave empty for ALL date ranges.',
+	'LBL_SAVEBASED' => 'Save based',
+	'LBL_TIMEBASED' => 'Time or Setting based',
+	'Record Set' => 'Record Set for Mass Actions',
+	'Select where to get the records from' => 'Select where to get the records from',
+	'Launch Now' => 'Launch Now',
 );
 ?>

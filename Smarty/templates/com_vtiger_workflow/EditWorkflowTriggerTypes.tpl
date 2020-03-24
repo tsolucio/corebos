@@ -35,56 +35,103 @@
 	edittaskscript(jQuery);
 </script>
 {/literal}
-<table class="tableHeading" width="100%" border="0" cellspacing="0" cellpadding="5">
-	<tr>
-		<td class="big" nowrap="nowrap">
-			<strong>{$MOD.LBL_WHEN_TO_RUN_WORKFLOW}</strong>
-		</td>
-	</tr>
-</table>
-<table border="0" >
-	<tr><td><input type="radio" name="execution_condition" value="ON_FIRST_SAVE" onclick="onschedule_preparescreen(this);"
-		{if $workflow->executionConditionAsLabel() eq 'ON_FIRST_SAVE'}checked{/if} /></td>
-		<td>{$MOD.LBL_ONLY_ON_FIRST_SAVE}.</td></tr>
-	<tr><td><input type="radio" name="execution_condition" value="ONCE" onclick="onschedule_preparescreen(this);"
-		{if $workflow->executionConditionAsLabel() eq 'ONCE'}checked{/if} /></td>
-		<td>{$MOD.LBL_UNTIL_FIRST_TIME_CONDITION_TRUE}.</td></tr>
-	<tr><td><input type="radio" name="execution_condition" value="ON_EVERY_SAVE" onclick="onschedule_preparescreen(this);"
-		{if $workflow->executionConditionAsLabel() eq 'ON_EVERY_SAVE'}checked{/if} /></td>
-		<td>{$MOD.LBL_EVERYTIME_RECORD_SAVED}.</td></tr>
-	<tr><td><input type="radio" name="execution_condition" value="ON_MODIFY" onclick="onschedule_preparescreen(this);"
-		{if $workflow->executionConditionAsLabel() eq 'ON_MODIFY'}checked{/if} /></td>
-		<td>{$MOD.LBL_ON_MODIFY}.</td></tr>
-	<tr><td><input type="radio" name="execution_condition" value="ON_DELETE" onclick="onschedule_preparescreen(this);"
-		{if $workflow->executionConditionAsLabel() eq 'ON_DELETE'}checked{/if} /></td>
-		<td>{$MOD.LBL_ON_DELETE}.</td></tr>
-	<tr><td><input type="radio" name="execution_condition" value="ON_RELATE" onclick="onschedule_preparescreen(this);"
-		{if $workflow->executionConditionAsLabel() eq 'ON_RELATE'}checked{/if} /></td>
-		<td>
-			<div class="slds-grid slds-gutters">
-				<div class="slds-col slds-col slds-size_2-of-10 slds-p-top_x-small">{$MOD.LBL_ON_RELATE}</div>
-				<div class="slds-col slds-size_4-of-10">
-				<select id='onrelatemodule' name='onrelatemodule' class="slds-select" onchange="onschedule_selectschedule(this);">
-					{html_options options=$relatedmodules selected=$onrelatedmodule}
-				</select>
-				</div>
+
+<div class="slds-page-header">
+<div class="slds-page-header__row">
+	<div class="slds-page-header__col-title">
+	<div class="slds-media">
+		<div class="slds-media__body">
+		<div class="slds-page-header__name">
+			<div class="slds-page-header__name-title">
+			<h1>
+				<span class="slds-page-header__title slds-truncate" title="{$MOD.LBL_WHEN_TO_RUN_WORKFLOW}">
+				{$MOD.LBL_WHEN_TO_RUN_WORKFLOW}
+				</span>
+			</h1>
 			</div>
-		</td></tr>
-	<tr><td><input type="radio" name="execution_condition" value="ON_UNRELATE" onclick="onschedule_preparescreen(this);"
-		{if $workflow->executionConditionAsLabel() eq 'ON_UNRELATE'}checked{/if} /></td>
-		<td>
-			<div class="slds-grid slds-gutters">
-				<div class="slds-col slds-col slds-size_2-of-10 slds-p-top_x-small">{$MOD.LBL_ON_UNRELATE}</div>
-				<div class="slds-col slds-size_4-of-10">
-				<select id='onunrelatemodule' name='onunrelatemodule' class="slds-select" onchange="onschedule_selectschedule(this);">
-					{html_options options=$relatedmodules selected=$onunrelatedmodule}
-				</select>
-				</div>
-			</div>
-		</td></tr>
-	<tr><td valign="top"><input type="radio" name="execution_condition" value="ON_SCHEDULE" onclick="onschedule_preparescreen(this);"
-		{if $workflow->executionConditionAsLabel() eq 'ON_SCHEDULE'}checked{/if} {if $ScheduledWorkflowsCount>$MaxAllowedScheduledWorkflows}disabled{/if} /></td>
-		<td>{$MOD.LBL_ON_SCHEDULE}.
+		</div>
+		</div>
+	</div>
+	</div>
+</div>
+</div>
+<div class="slds-grid slds-gutters">
+<div class="slds-col slds-size_3-of-8 slds-page-header__meta-text">
+	<fieldset class="slds-form-element slds-m-left_small">
+		<legend class="slds-form-element__legend slds-form-element__label slds-page-header__meta-text">{$MOD.LBL_SAVEBASED}</legend>
+		<div class="slds-form-element__control">
+		<span class="slds-radio">
+		<input type="radio" id="execcondofs" value="ON_FIRST_SAVE" name="execution_condition" {if $workflow->executionConditionAsLabel() eq 'ON_FIRST_SAVE'}checked{/if} onclick="onschedule_preparescreen(this);" />
+		<label class="slds-radio__label" for="execcondofs">
+		<span class="slds-radio_faux"></span>
+		<span class="slds-form-element__label slds-page-header__meta-text">{$MOD.LBL_ONLY_ON_FIRST_SAVE}.</span>
+		</label>
+		</span>
+		<span class="slds-radio">
+		<input type="radio" id="execcondo" value="ONCE" name="execution_condition" {if $workflow->executionConditionAsLabel() eq 'ONCE'}checked{/if} onclick="onschedule_preparescreen(this);" />
+		<label class="slds-radio__label" for="execcondo">
+		<span class="slds-radio_faux"></span>
+		<span class="slds-form-element__label slds-page-header__meta-text">{$MOD.LBL_UNTIL_FIRST_TIME_CONDITION_TRUE}.</span>
+		</label>
+		</span>
+		<span class="slds-radio">
+		<input type="radio" id="execcondoes" value="ON_EVERY_SAVE" name="execution_condition" {if $workflow->executionConditionAsLabel() eq 'ON_EVERY_SAVE'}checked{/if} onclick="onschedule_preparescreen(this);" />
+		<label class="slds-radio__label" for="execcondoes">
+		<span class="slds-radio_faux"></span>
+		<span class="slds-form-element__label slds-page-header__meta-text">{$MOD.LBL_EVERYTIME_RECORD_SAVED}.</span>
+		</label>
+		</span>
+		<span class="slds-radio">
+		<input type="radio" id="execcondom" value="ON_MODIFY" name="execution_condition" {if $workflow->executionConditionAsLabel() eq 'ON_MODIFY'}checked{/if} onclick="onschedule_preparescreen(this);" />
+		<label class="slds-radio__label" for="execcondom">
+		<span class="slds-radio_faux"></span>
+		<span class="slds-form-element__label slds-page-header__meta-text">{$MOD.LBL_ON_MODIFY}.</span>
+		</label>
+		</span>
+		<span class="slds-radio">
+		<input type="radio" id="execcondod" value="ON_DELETE" name="execution_condition" {if $workflow->executionConditionAsLabel() eq 'ON_DELETE'}checked{/if} onclick="onschedule_preparescreen(this);" />
+		<label class="slds-radio__label" for="execcondod">
+		<span class="slds-radio_faux"></span>
+		<span class="slds-form-element__label slds-page-header__meta-text">{$MOD.LBL_ON_DELETE}.</span>
+		</label>
+		</span>
+		<span class="slds-radio">
+		<input type="radio" id="execcondor" value="ON_RELATE" name="execution_condition" {if $workflow->executionConditionAsLabel() eq 'ON_RELATE'}checked{/if} onclick="onschedule_preparescreen(this);" />
+		<label class="slds-radio__label" for="execcondor">
+		<span class="slds-radio_faux"></span>
+		<span class="slds-form-element__label slds-page-header__meta-text">
+			{$MOD.LBL_ON_RELATE}
+			<select id='onrelatemodule' name='onrelatemodule' class="slds-select" style="width:fit-content;" onchange="onschedule_selectschedule(this);">
+				{html_options options=$relatedmodules selected=$onrelatedmodule}
+			</select>
+		</span>
+		</label>
+		</span>
+		<span class="slds-radio">
+		<input type="radio" id="execcondour" value="ON_UNRELATE" name="execution_condition" {if $workflow->executionConditionAsLabel() eq 'ON_UNRELATE'}checked{/if} onclick="onschedule_preparescreen(this);" />
+		<label class="slds-radio__label" for="execcondour">
+		<span class="slds-radio_faux"></span>
+		<span class="slds-form-element__label slds-page-header__meta-text">
+			{$MOD.LBL_ON_UNRELATE}
+			<select id='onunrelatemodule' name='onunrelatemodule' class="slds-select" style="width:fit-content;" onchange="onschedule_selectschedule(this);">
+				{html_options options=$relatedmodules selected=$onunrelatedmodule}
+			</select>
+		</span>
+		</label>
+		</span>
+		</div>
+	</fieldset>
+</div>
+<div class="slds-col slds-size_5-of-8 slds-page-header__meta-text">
+	<fieldset class="slds-form-element slds-m-left_small">
+		<legend class="slds-form-element__legend slds-form-element__label slds-page-header__meta-text">{$MOD.LBL_TIMEBASED}</legend>
+		<div class="slds-form-element__control">
+		<span class="slds-radio">
+		<input type="radio" id="execcondos" value="ON_SCHEDULE" name="execution_condition" {if $workflow->executionConditionAsLabel() eq 'ON_SCHEDULE'}checked{/if} {if $ScheduledWorkflowsCount>$MaxAllowedScheduledWorkflows}disabled{/if} onclick="onschedule_preparescreen(this);" />
+		<label class="slds-radio__label" for="execcondos">
+		<span class="slds-radio_faux"></span>
+		<span class="slds-form-element__label slds-page-header__meta-text">
+		{$MOD.LBL_ON_SCHEDULE}.
 		{if $ScheduledWorkflowsCount>$MaxAllowedScheduledWorkflows}
 		 <span class='errorMessage' style="color:red;margin-left: 10px;">{'EXCEEDS_MAX'|@getTranslatedString} : {$MaxAllowedScheduledWorkflows}</span>
 		{else}
@@ -167,16 +214,29 @@
 				</div>
 				{if $workflow->nexttrigger_time}
 					<div class='wfsclear'>
-						<div class="wfslabel" style="width: 100%;">{'LBL_NEXT_TRIGGER_TIME'|@getTranslatedString:$MODULE_NAME}:&nbsp;{$wfnexttrigger_time}</div>
+						<div class="wfslabel" style="width: 98%;">{'LBL_NEXT_TRIGGER_TIME'|@getTranslatedString:$MODULE_NAME}:&nbsp;{$wfnexttrigger_time}</div>
 					</div>
 				{/if}
 			</div>
 		{/if}
-		</td></tr>
-	<tr><td><input type="radio" name="execution_condition" value="RECORD_ACCESS_CONTROL" onclick="onschedule_preparescreen(this);"
-		{if $workflow->executionConditionAsLabel() eq 'RECORD_ACCESS_CONTROL'}checked{/if} /></td>
-		<td>{$MOD.LBL_RECORD_ACCESS_CONTROL}.</td></tr>
-	<tr><td><input type="radio" name="execution_condition" value="MANUAL" onclick="onschedule_preparescreen(this);"
-		{if $workflow->executionConditionAsLabel() eq 'MANUAL'}checked{/if} /></td>
-		<td>{$MOD.LBL_MANUAL}.</td></tr>
-</table>
+		</span>
+		</label>
+		</span>
+		<span class="slds-radio">
+		<input type="radio" id="execcondrac" value="RECORD_ACCESS_CONTROL" name="execution_condition" {if $workflow->executionConditionAsLabel() eq 'RECORD_ACCESS_CONTROL'}checked{/if} onclick="onschedule_preparescreen(this);" />
+		<label class="slds-radio__label" for="execcondrac">
+		<span class="slds-radio_faux"></span>
+		<span class="slds-form-element__label slds-page-header__meta-text">{$MOD.LBL_RECORD_ACCESS_CONTROL}.</span>
+		</label>
+		</span>
+		<span class="slds-radio">
+		<input type="radio" id="execcondman" value="MANUAL" name="execution_condition" {if $workflow->executionConditionAsLabel() eq 'MANUAL'}checked{/if} onclick="onschedule_preparescreen(this);" />
+		<label class="slds-radio__label" for="execcondman">
+		<span class="slds-radio_faux"></span>
+		<span class="slds-form-element__label slds-page-header__meta-text">{$MOD.LBL_MANUAL}.</span>
+		</label>
+		</span>
+		</div>
+	</fieldset>
+</div>
+</div>

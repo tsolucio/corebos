@@ -9,18 +9,12 @@
  ********************************************************************************/
 -->*}
 
-<table class="listTableTopButtons" width="100%" border="0" cellspacing="0" cellpadding="5">
-	<tr>
-		<td class="small">
-			<input type="hidden" name="module_name" value="{$workflow->moduleName}" id="save_modulename">
-			<input type="hidden" name="save_type" value="{$saveType}" id="save_savetype">
-			{if $saveType eq "edit"}
-			<input type="hidden" name="workflow_id" value="{$workflow->id}">
-			{/if}
-			<input type="hidden" name="conditions" value="" id="save_conditions_json"/>
-			<input type="hidden" name="action" value="saveworkflow">
-			<input type="hidden" name="module" value="{$module->name}">
-			<span id="status_message"></span>
-		</td>
-	</tr>
-</table>
+<input type="hidden" name="module_name" value="{$workflow->moduleName}" id="save_modulename">
+<input type="hidden" name="save_type" value="{$saveType}" id="save_savetype">
+{if $saveType eq "edit"}
+<input type="hidden" name="workflow_id" value="{$workflow->id}">
+{/if}
+<input type="hidden" name="conditions" value="" id="save_conditions_json"/>
+<input type="hidden" name="action" value="saveworkflow">
+<input type="hidden" name="module" value="{$module->name}">
+<span id="status_message"></span>
