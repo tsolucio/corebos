@@ -11,7 +11,11 @@
 
 <div class="slds-page-header">
 <div class="slds-grid slds-gutters">
+{if $RecordSetTab}
 <div class="slds-col slds-size_1-of-2">
+{else}
+<div class="slds-col slds-size_1-of-1">
+{/if}
 	<div class="slds-page-header__col-title">
 	<div class="slds-media">
 		<div class="slds-media__body">
@@ -35,6 +39,7 @@
 	</div>
 	</div>
 </div>
+{if $RecordSetTab}
 <div class="slds-col slds-size_1-of-2">
 	<div class="slds-page-header__col-title">
 	<div class="slds-media">
@@ -59,10 +64,15 @@
 	</div>
 	</div>
 </div>
+{/if}
 </div>
 </div>
 <div class="slds-grid slds-gutters">
+	{if $RecordSetTab}
 	<div class="slds-col slds-size_1-of-2 slds-page-header__meta-text">
+	{else}
+	<div class="slds-col slds-size_1-of-1 slds-page-header__meta-text">
+	{/if}
 		<table class="tableHeading" width="100%" border="0" cellspacing="0" cellpadding="5">
 			<tr>
 				<td class="small cblds-t-align_right" align="right">
@@ -78,6 +88,7 @@
 		<br>
 		{include file="com_vtiger_workflow/FieldExpressions.tpl"}
 	</div>
+{if $RecordSetTab}
 	<div class="slds-col slds-size_1-of-2 slds-page-header__meta-text">
 		<fieldset class="slds-form-element">
 			<legend class="slds-form-element__legend slds-form-element__label">{'Select where to get the records from'|@getTranslatedString:$MODULE_NAME}</legend>
@@ -189,4 +200,5 @@
 			</span>
 		</fieldset>
 	</div>
+{/if}
 </div>
