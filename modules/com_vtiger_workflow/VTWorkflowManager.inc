@@ -33,6 +33,7 @@ class VTWorkflowManager {
 	}
 
 	public function save($workflow) {
+		global $current_user;
 		$adb=$this->adb;
 		if (empty($workflow->schtypeid)) {
 			$workflow->schtypeid = 0;
@@ -69,7 +70,7 @@ class VTWorkflowManager {
 					$wf->description,
 					$wf->test,
 					$wf->executionCondition,
-					(isset($wf->defaultworkflow) ? $wf->defaultworkflow : 0),
+					(isset($wf->defaultworkflow) ? $wf->defaultworkflow : (is_admin($current_user) ? 0 : 2)),
 					$wf->schtypeid,
 					$wf->schtime,
 					$wf->schdayofmonth,
@@ -98,7 +99,7 @@ class VTWorkflowManager {
 						$wf->test,
 						$wf->executionCondition,
 						$wf->type,
-						(isset($wf->defaultworkflow) ? $wf->defaultworkflow : 0),
+						(isset($wf->defaultworkflow) ? $wf->defaultworkflow : (is_admin($current_user) ? 0 : 2)),
 						$wf->schtypeid,
 						$wf->schtime,
 						$wf->schdayofmonth,
@@ -120,7 +121,7 @@ class VTWorkflowManager {
 						$wf->description,
 						$wf->test,
 						$wf->executionCondition,
-						(isset($wf->defaultworkflow) ? $wf->defaultworkflow : 0),
+						(isset($wf->defaultworkflow) ? $wf->defaultworkflow : (is_admin($current_user) ? 0 : 2)),
 						$wf->schtypeid,
 						$wf->schtime,
 						$wf->schdayofmonth,
@@ -137,12 +138,11 @@ class VTWorkflowManager {
 	}
 
 	public function getWorkflows() {
-		$result=$this->adb->getColumnNames('com_vtiger_workflows');
-		if (in_array('defaultworkflow', $result)) {
-			$result = $this->adb->query('select workflow_id, module_name, summary, test, execution_condition,defaultworkflow, type, purpose, relatemodule from com_vtiger_workflows');
-		} else {
-			$result = $this->adb->query('select workflow_id, module_name, summary, test, execution_condition, type, purpose, relatemodule from com_vtiger_workflows');
-		}
+		global $current_user;
+		$where = is_admin($current_user) ? '' : ' where defaultworkflow=2';
+		$result = $this->adb->query(
+			'select workflow_id, module_name, summary, test, execution_condition, defaultworkflow, type, purpose, relatemodule from com_vtiger_workflows'.$where
+		);
 		return $this->getWorkflowsForResult($result);
 	}
 
@@ -180,18 +180,12 @@ class VTWorkflowManager {
 	}
 
 	public function getWorkflowsForModule($moduleName) {
-		$result=$this->adb->getColumnNames('com_vtiger_workflows');
-		if (in_array('defaultworkflow', $result)) {
-			$result = $this->adb->pquery(
-				'select workflow_id, module_name, summary, test, execution_condition, defaultworkflow, type, purpose from com_vtiger_workflows where module_name=?',
-				array($moduleName)
-			);
-		} else {
-			$result = $this->adb->pquery(
-				'select workflow_id, module_name, summary, test, execution_condition, type, purpose from com_vtiger_workflows where module_name=?',
-				array($moduleName)
-			);
-		}
+		global $current_user;
+		$where = is_admin($current_user) ? '' : ' and defaultworkflow=2';
+		$result = $this->adb->pquery(
+			'select workflow_id, module_name, summary, test, execution_condition, defaultworkflow, type, purpose from com_vtiger_workflows where module_name=?'.$where,
+			array($moduleName)
+		);
 		return $this->getWorkflowsForResult($result);
 	}
 
@@ -329,12 +323,14 @@ class VTWorkflowManager {
 	}
 
 	public function delete($id) {
+		global $current_user;
+		$dwf = is_admin($current_user) ? '!=1' : '=2';
 		$this->adb->pquery(
 			'DELETE FROM com_vtiger_workflowtasks WHERE workflow_id IN
-				(SELECT workflow_id FROM com_vtiger_workflows WHERE workflow_id=? AND (defaultworkflow IS NULL OR defaultworkflow != 1))',
+				(SELECT workflow_id FROM com_vtiger_workflows WHERE workflow_id=? AND (defaultworkflow IS NULL OR defaultworkflow'.$dwf.'))',
 			array($id)
 		);
-		$this->adb->pquery('DELETE FROM com_vtiger_workflows WHERE workflow_id=? AND (defaultworkflow IS NULL OR defaultworkflow != 1)', array($id));
+		$this->adb->pquery('DELETE FROM com_vtiger_workflows WHERE workflow_id=? AND (defaultworkflow IS NULL OR defaultworkflow'.$dwf.')', array($id));
 	}
 
 	public function newWorkflow($moduleName) {

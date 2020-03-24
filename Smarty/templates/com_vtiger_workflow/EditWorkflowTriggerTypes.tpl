@@ -56,6 +56,7 @@
 </div>
 </div>
 <div class="slds-grid slds-gutters">
+{if $ISADMIN}
 <div class="slds-col slds-size_3-of-8 slds-page-header__meta-text">
 	<fieldset class="slds-form-element slds-m-left_small">
 		<legend class="slds-form-element__legend slds-form-element__label slds-page-header__meta-text">{$MOD.LBL_SAVEBASED}</legend>
@@ -122,6 +123,7 @@
 		</div>
 	</fieldset>
 </div>
+{/if}
 <div class="slds-col slds-size_5-of-8 slds-page-header__meta-text">
 	<fieldset class="slds-form-element slds-m-left_small">
 		<legend class="slds-form-element__legend slds-form-element__label slds-page-header__meta-text">{$MOD.LBL_TIMEBASED}</legend>
@@ -222,6 +224,7 @@
 		</span>
 		</label>
 		</span>
+		{if $ISADMIN}
 		<span class="slds-radio">
 		<input type="radio" id="execcondrac" value="RECORD_ACCESS_CONTROL" name="execution_condition" {if $workflow->executionConditionAsLabel() eq 'RECORD_ACCESS_CONTROL'}checked{/if} onclick="onschedule_preparescreen(this);" />
 		<label class="slds-radio__label" for="execcondrac">
@@ -229,6 +232,7 @@
 		<span class="slds-form-element__label slds-page-header__meta-text">{$MOD.LBL_RECORD_ACCESS_CONTROL}.</span>
 		</label>
 		</span>
+		{/if}
 		<span class="slds-radio">
 		<input type="radio" id="execcondman" value="MANUAL" name="execution_condition" {if $workflow->executionConditionAsLabel() eq 'MANUAL'}checked{/if} onclick="onschedule_preparescreen(this);" />
 		<label class="slds-radio__label" for="execcondman">
