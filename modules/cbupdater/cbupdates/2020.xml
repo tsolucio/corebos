@@ -63,4 +63,11 @@
 	<classname>addtablevtigersavemenu</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete old Calendar Workflows and Tasks</description>
+	<filename>build/changeSets/2020/delCalendarWorkflowsTasks.php</filename>
+	<classname>delCalendarWorkflowsTasks</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
