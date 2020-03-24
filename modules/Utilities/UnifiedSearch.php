@@ -84,6 +84,7 @@ if (isset($query_string) && $query_string != '') {
 	}
 	$i = 0;
 	$moduleRecordCount = array();
+	echo '<div id="globasearch_results" style="display:none;">';
 	foreach ($object_array as $module => $object_name) {
 		if ($curModule == 'Utilities' || ($curModule == $module && !empty($_REQUEST['ajax']))) {
 			$focus = CRMEntity::getInstance($module);
@@ -234,6 +235,7 @@ if (isset($query_string) && $query_string != '') {
 			}
 		}
 	}
+	echo '</div>';
 	if ($total_record_count == 1) {
 		// we have just one record in one module > we go there directly
 		$modwith1 = array_filter($moduleRecordCount, function ($e) {
@@ -246,6 +248,14 @@ if (isset($query_string) && $query_string != '') {
 		if ($recfound != '') {
 			echo "<script type='text/javascript'>gotourl('index.php?module=$modfound&record=$recfound&action=DetailView');</script>";
 		}
+	}
+	if ($total_record_count == 0) {
+		echo "<script type='text/javascript'>document.getElementById('globasearch_results').style.display='none';</script>";
+		$smarty->assign('DESERTInfo', getTranslatedString('LBL_NO_DATA'));
+		$smarty->display('Components/Desert.tpl');
+	}
+	if ($total_record_count > 1) {
+		echo "<script type='text/javascript'>document.getElementById('globasearch_results').style.display='block';</script>";
 	}
 
 	//Added to display the Total record count
