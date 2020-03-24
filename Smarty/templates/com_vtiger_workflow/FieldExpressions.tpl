@@ -38,41 +38,7 @@
 		<div class="slds-col slds-size_3-of-4 slds-page-header__title slds-m-top_xx-small">
 			<div>
 				&nbsp;{$MOD.LBL_SET_VALUE}&nbsp;
-				<section aria-describedby="dialog-body-id-98" aria-labelledby="dialog-heading-id-103" class="tooltip" role="dialog">
-					<span class="slds-icon_container slds-icon-utility-info">
-						<svg class="slds-icon slds-icon slds-icon_xx-small slds-icon-text-default" aria-hidden="true">
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
-						</svg>
-					</span>
-					<span class="tooltiptext slds-popover slds-nubbin_left-top-corner" style="width:50rem;">
-						<header class="slds-popover__header">
-							<h2 class="slds-text-heading_small" id="dialog-heading-id-103">{$MOD.LBL_RAW_TEXT}</h2>
-						</header>
-						<div class="slds-popover__body slds-page-header__meta-text" id="dialog-body-id-98">
-							<p>2000<br>any text</p>
-						</div>
-						<header class="slds-popover__header">
-							<h2 class="slds-text-heading_small" id="dialog-heading-id-103">{$MOD.LBL_FIELD}</h2>
-						</header>
-						<div class="slds-popover__body slds-page-header__meta-text" id="dialog-body-id-98">
-							<p>annual_revenue<br>accountname</p>
-						</div>
-						<header class="slds-popover__header">
-							<h2 class="slds-text-heading_small" id="dialog-heading-id-103">{$MOD.LBL_EXPRESSION}</h2>
-						</header>
-						<div class="slds-popover__body slds-page-header__meta-text" id="dialog-body-id-98">
-							<p>annual_revenue / 12<br>
-							<span style="color:blue;">if</span> mailingcountry == 'Spain' <span style="color:blue;">then</span> <span style="color:blue;">concat</span>(firstname,' ',lastname) <span style="color:blue;">else</span> <span style="color:blue;">concat</span>(lastname,' ',firstname) <span style="color:blue;">end</span>
-							</p>
-						</div>
-						<header class="slds-popover__header">
-							<h2 class="slds-text-heading_small" id="dialog-heading-id-103">{$APP.LBL_MORE}</h2>
-						</header>
-						<div class="slds-popover__body slds-page-header__meta-text" id="dialog-body-id-98">
-							<p>See the <code>testexpression</code> variable in <a href="https://github.com/tsolucio/coreBOSTests/blob/master/modules/com_vtiger_workflow/expression_engine/VTExpressionEvaluaterTest.php" target="_blank">the unit tests</a>.</p>
-						</div>
-					</span>
-				</section>
+				{include file='com_vtiger_workflow/FieldExpressionsHelp.tpl'}
 			</div>
 		</div>
 		<div class="slds-col slds-size_1-of-4 cblds-t-align_right">
