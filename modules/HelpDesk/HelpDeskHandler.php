@@ -40,6 +40,9 @@ function HelpDesk_nofifyOnPortalTicketCreation($entityData) {
 		$to_email = implode(',', getDefaultAssigneeEmailIds($ownerId));
 	}
 	$wsParentId = $entityData->get('parent_id');
+	if (empty($wsParentId)) {
+		return;
+	}
 	$parentIdParts = explode('x', $wsParentId);
 	$parentId = $parentIdParts[1];
 
@@ -82,6 +85,9 @@ function HelpDesk_notifyOnPortalTicketComment($entityData) {
 		$to_email = implode(',', getDefaultAssigneeEmailIds($ownerId));
 	}
 	$wsParentId = $entityData->get('parent_id');
+	if (empty($wsParentId)) {
+		return;
+	}
 	$parentIdParts = explode('x', $wsParentId);
 	$parentId = $parentIdParts[1];
 
