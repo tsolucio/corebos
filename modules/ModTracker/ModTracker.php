@@ -312,20 +312,13 @@ class ModTracker {
 		$output['updated'] = $updatedRecords;
 		$output['deleted'] = $deletedRecords;
 
-		$moreQuery = 'SELECT * FROM vtiger_modtracker_basic WHERE id > ? AND changedon >= ? AND module IN ('.generateQuestionMarks($accessibleModules).')';
-
+		$moreQuery = 'SELECT count(*) FROM vtiger_modtracker_basic WHERE id>? AND changedon>=? AND module IN ('.generateQuestionMarks($accessibleModules).')';
 		$param = array($maxUniqueId, $maxModifiedTime);
 		foreach ($accessibleModules as $entityModule) {
 			$param[] = $entityModule;
 		}
-
 		$result = $adb->pquery($moreQuery, $param);
-
-		if ($adb->num_rows($result)>0) {
-			$output['more'] = true;
-		} else {
-			$output['more'] = false;
-		}
+		$output['more'] = ($adb->query_result($result, 0, 0)>0);
 
 		$output['uniqueid'] = $maxUniqueId;
 
@@ -356,6 +349,7 @@ class ModTracker {
 			WHERE crmid=? AND changedon>=?',
 			array($crmid, $time)
 		);
+		$fields = array();
 		while ($row=$adb->fetch_array($fieldResult)) {
 			$fieldName = $row['fieldname'];
 			if ($fieldName == 'record_id' || $fieldName == 'record_module' || $fieldName == 'createdtime' || $fieldName == 'cbuuid') {
