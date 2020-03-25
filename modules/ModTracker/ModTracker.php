@@ -235,10 +235,11 @@ class ModTracker {
 	}
 
 	/**
-	 * Get the list of changed record after $mtime
-	 * @param <type> $mtime
-	 * @param <type> $user
-	 * @param <type> $limit
+	 * Get the list of changed records after an internal pointer and a given datetime, optionally limiting the results
+	 * @param int $uniqueId
+	 * @param int $mtime
+	 * @param int $limit
+	 * @return array list of created,updated and deleted records and some additional control information
 	 */
 	public function getChangedRecords($uniqueId, $mtime, $limit = 100) {
 		global $adb;
@@ -341,27 +342,28 @@ class ModTracker {
 		return $output;
 	}
 
+	/** get all the changes that have happened on a record from a given date
+	 * @param int crmid of record that we want the changes for
+	 * @param string ISO formatted date and time from which we want the changes
+	 * @return array of all field changes of the record indexed per date of the change
+	*/
 	public static function getRecordFieldChanges($crmid, $time) {
 		global $adb;
-		$date = date('Y-m-d H:i:s', $time);
-
 		$fieldResult = $adb->pquery(
 			'SELECT *
-				FROM vtiger_modtracker_detail
-				INNER JOIN vtiger_modtracker_basic ON vtiger_modtracker_basic.id = vtiger_modtracker_detail.id
-				WHERE crmid = ? AND changedon >= ?',
-			array($crmid, $date)
+			FROM vtiger_modtracker_detail
+			INNER JOIN vtiger_modtracker_basic ON vtiger_modtracker_basic.id=vtiger_modtracker_detail.id
+			WHERE crmid=? AND changedon>=?',
+			array($crmid, $time)
 		);
-		for ($i=0; $i<$adb->num_rows($fieldResult); $i++) {
-			$fieldName = $adb->query_result($fieldResult, $i, 'fieldname');
-			if ($fieldName == 'record_id' || $fieldName == 'record_module' ||
-				$fieldName == 'createdtime') {
+		while ($row=$adb->fetch_array($fieldResult)) {
+			$fieldName = $row['fieldname'];
+			if ($fieldName == 'record_id' || $fieldName == 'record_module' || $fieldName == 'createdtime' || $fieldName == 'cbuuid') {
 				continue;
 			}
-
-			$field['postvalue'] = $adb->query_result($fieldResult, $i, 'postvalue');
-			$field['prevalue'] = $adb->query_result($fieldResult, $i, 'prevalue');
-			$fields[$fieldName] = $field;
+			$field['postvalue'] = $row['postvalue'];
+			$field['prevalue'] = $row['prevalue'];
+			$fields[$row['changedon']][$fieldName] = $field;
 		}
 		return $fields;
 	}
