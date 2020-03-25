@@ -368,6 +368,26 @@ class ModTracker {
 		return $fields;
 	}
 
+	/** get all the changes that have happened on a field in a record
+	 * @param int crmid of record that we want the changes for
+	 * @param string field name to retrieve history of
+	 * @return array of all field changes of the record indexed per date of the change
+	*/
+	public static function getRecordFieldHistory($crmid, $field) {
+		global $adb;
+		$changes = ModTracker::getRecordFieldChanges($crmid, '1970-01-01 00:00');
+		$ret = array();
+		foreach ($changes as $change) {
+			if (isset($change[$field])) {
+				$ret[] = array(
+					'from' => $change[$field]['prevalue'],
+					'to' => $change[$field]['postvalue'],
+				);
+			}
+		}
+		return $ret;
+	}
+
 	public static function isViewPermitted($linkData) {
 		$moduleName = $linkData->getModule();
 		$recordId = $linkData->getInputParameter('record');
