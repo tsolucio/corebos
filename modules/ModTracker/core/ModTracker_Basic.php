@@ -95,12 +95,12 @@ class ModTracker_Basic {
 	public static function getByCRMId($crmid, $atpoint) {
 		global $adb;
 		$instance = false;
-
+		if ($atpoint<0) {
+			return false;
+		}
 		// Avoid SQL Injection attacks
 		$purifiedAtPoint = $adb->sql_escape_string($atpoint);
-
 		$result = $adb->pquery("SELECT * FROM vtiger_modtracker_basic WHERE crmid=? ORDER BY changedon DESC LIMIT $purifiedAtPoint, 1", array($crmid));
-
 		if ($adb->num_rows($result)) {
 			$rowmap = $adb->fetch_array($result);
 			$instance = new self();
