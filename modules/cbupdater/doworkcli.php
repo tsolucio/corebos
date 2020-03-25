@@ -35,6 +35,7 @@ if (count($argv)!=3) {
 
 	if (!empty($ids) && ($whattodo=='undo' || $whattodo=='apply')) {
 		global $adb, $log, $mod_strings, $app_strings, $currentModule, $current_user;
+		$adb->pquery("ALTER TABLE vtiger_cbupdater ADD COLUMN appcs varchar(3) DEFAULT '1'",array());
 		$currentModule = 'cbupdater';
 		$sql = 'select cbupdaterid,filename,pathfilename,classname, cbupd_no, description, appcs from vtiger_cbupdater
 				inner join vtiger_crmentity on crmid=cbupdaterid
