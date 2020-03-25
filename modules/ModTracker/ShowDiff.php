@@ -22,11 +22,9 @@ $trackrecord = false;
 if (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'history') {
 	// Retrieve the track record at required point
 	$trackrecord = ModTracker_Basic::getByCRMId($reqid, $atpoint);
-	// If there is no more older records, show the last record itself
 	if ($trackrecord === false && $atpoint > 0) {
 		$atpoint = $atpoint - 1;
-		$prevAtPoint = $atpoint; // Singal no more previous
-		$trackrecord = ModTracker_Basic::getByCRMId($reqid, $atpoint);
+		$prevAtPoint = $atpoint; // Signal no more previous
 	}
 } else {
 	$trackrecord = ModTracker_Basic::getById($reqid);
