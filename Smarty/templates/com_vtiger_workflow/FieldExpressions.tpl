@@ -33,7 +33,7 @@
 	height:350px;
 }
 </style>
-<div id='editpopup' class='layerPopup slds-align_absolute-center' style='display:none;'>
+<div id='editpopup' class='layerPopup slds-align_absolute-center' style='display:none;z-index:1;'>
 	<div id='editpopup_draghandle' style='cursor: move;' class="slds-grid slds-badge_lightest">
 		<div class="slds-col slds-size_3-of-4 slds-page-header__title slds-m-top_xx-small">
 			<div>
