@@ -189,12 +189,10 @@ class ModTracker {
 		$module_name = getTabModuleName($tabid);
 
 		$rs=$adb->pquery(
-			"SELECT businessactionsid 
-                                FROM vtiger_businessactions INNER JOIN vtiger_crmentity ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid 
-                               WHERE deleted = 0
-                                 AND elementtype_action='DETAILVIEWBASIC' 
-                                 AND linklabel = 'View History' 
-                                 AND (module_list = ? OR module_list LIKE ? OR module_list LIKE ? OR module_list LIKE ?)",
+			"SELECT businessactionsid
+			FROM vtiger_businessactions INNER JOIN vtiger_crmentity ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid
+			WHERE deleted = 0 AND elementtype_action='DETAILVIEWBASIC' AND linklabel = 'View History'
+				AND (module_list = ? OR module_list LIKE ? OR module_list LIKE ? OR module_list LIKE ?)",
 			array($module_name, $module_name.' %', '% '.$module_name.' %', '% '.$module_name,)
 		);
 
@@ -269,8 +267,10 @@ class ModTracker {
 		$result = $adb->pquery($query, $params);
 
 		$modTime = array();
+		$createdRecords = array();
+		$updatedRecords = array();
+		$deletedRecords = array();
 		$rows = $adb->num_rows($result);
-
 		for ($i=0; $i<$rows; $i++) {
 			$status = $adb->query_result($result, $i, 'status');
 
@@ -303,7 +303,7 @@ class ModTracker {
 		if (!empty($modTime)) {
 			$maxModifiedTime = max($modTime);
 		}
-		if (!$maxModifiedTime) {
+		if (empty($maxModifiedTime)) {
 			$maxModifiedTime = $datetime;
 		}
 
