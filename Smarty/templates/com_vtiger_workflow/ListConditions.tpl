@@ -94,7 +94,15 @@
 			<legend class="slds-form-element__legend slds-form-element__label">{'Select where to get the records from'|@getTranslatedString:$MODULE_NAME}</legend>
 			<div class="slds-form-element__control">
 			<span class="slds-radio slds-p-top_xx-small">
-			<input type="radio" id="radio-5" value="radio-5" name="options" checked="" />
+				<input type="radio" id="radio-4" value="conditions" name="options" checked="" />
+				<label class="slds-radio__label" for="radio-4">
+				<span class="slds-radio_faux"></span>
+				<span class="slds-form-element__label">
+					<span style="width:150px;display:inline-block;">{$MOD.LBL_CONDITIONS}</span>
+				</label>
+			</span>
+			<span class="slds-radio slds-p-top_xx-small">
+			<input type="radio" id="radio-5" value="cbquestion" name="options" />
 			<label class="slds-radio__label" for="radio-5">
 			<span class="slds-radio_faux"></span>
 			<span class="slds-form-element__label">
@@ -127,7 +135,7 @@
 			</label>
 			</span>
 			<span class="slds-radio slds-p-top_xx-small">
-			<input type="radio" id="radio-6" value="radio-6" name="options" />
+			<input type="radio" id="radio-6" value="recordset" name="options" />
 			<label class="slds-radio__label" for="radio-6">
 			<span class="slds-radio_faux"></span>
 			<span class="slds-form-element__label">
@@ -161,7 +169,7 @@
 			</label>
 			</span>
 			<span class="slds-radio slds-p-top_xx-small">
-			<input type="radio" id="radio-7" value="radio-7" name="options" />
+			<input type="radio" id="radio-7" value="onerecord" name="options" />
 			<label class="slds-radio__label" for="radio-7">
 			<span class="slds-radio_faux"></span>
 			<span class="slds-form-element__label">
