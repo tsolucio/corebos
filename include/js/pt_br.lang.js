@@ -386,6 +386,7 @@ var alert_arr = {
 	'ONLY_ONE_MODULE_PERMITTED_FOR_REPORT' : 'Você pode selecionar apenas um módulo relacionado para esse tipo de relatório',
 	'MUST_SELECT_ONE_MODULE_FOR_REPORT' : 'Você deve selecionar um módulo relacionado para esse tipo de relatório',
 	'LBL_NEW_CONDITION' : 'Nova condição',
+	'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL' : 'Novo grupo condição',
 	'WF_UPDATE_MAP_ERROR' : '** ERRO **: Esta tarefa usa um campo que não existe:',
 	'WF_UPDATE_MAP_ERROR_INFO' : 'A tarefa será carregada com as configurações INCORRETAS para permitir que você conserte. Os valores apresentados não são corretos !!',
 	'MoveUp' : 'Subir',

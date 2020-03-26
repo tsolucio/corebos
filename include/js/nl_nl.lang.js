@@ -387,6 +387,7 @@ var alert_arr = {
 	'ONLY_ONE_MODULE_PERMITTED_FOR_REPORT' : 'U kunt maar één module koppelen voor dit type rapport',
 	'MUST_SELECT_ONE_MODULE_FOR_REPORT' : 'U moet één module koppelen voor dit rapport',
 	'LBL_NEW_CONDITION' : 'Nieuwe voorwaarde',
+	'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL' : 'Nieuwe Conditiegroep',
 	'WF_UPDATE_MAP_ERROR' : '**ERROR**: Deze taak gebruikt een veld dat niet bestaat: ',
 	'WF_UPDATE_MAP_ERROR_INFO' : 'De taak zal laden met INCORRECTE instellingen om u toe te staan dat te repareren. De waarden die u zien KLOPPEN NIET!!',
 	'MoveUp' : 'Verplaats omhoog',

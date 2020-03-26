@@ -146,7 +146,7 @@ function editworkflowscript($, conditions) {
 
 	function PageLoadingPopup() {
 		function show() {
-			$('#workflow_loading').css('display', 'block');
+			//$('#workflow_loading').css('display', 'block');
 			//center($('#workflow_loading'));
 		}
 		function close() {
@@ -323,12 +323,12 @@ function editworkflowscript($, conditions) {
 					opType['picklistValues']
 				)
 			);
-			value.replaceWith('<select id="save_condition_'+condno+'_value" class="expressionvalue">'+options+'</select>');
+			value.replaceWith('<select id="save_condition_'+condno+'_value" class="slds-select ceexpressionvalue">'+options+'</select>');
 			$('#save_condition_'+condno+'_value_type').val('rawtext');
 		}
 		function forString(opType, condno) {
 			var value = $(format('#save_condition_%s_value', condno));
-			value.replaceWith(format('<input type="text" id="save_condition_%s_value" value="" class="expressionvalue" readonly />', condno));
+			value.replaceWith(format('<input type="text" id="save_condition_%s_value" value="" class="slds-input ceexpressionvalue" readonly style="border:1px solid #dddbda;width:64%;" />', condno));
 			var fv = $('#save_condition_'+condno+'_value');
 			fv.bind('focus', function () {
 				editFieldExpression($(this), opType);
@@ -361,6 +361,14 @@ function editworkflowscript($, conditions) {
 		$(format('#condition_group_%s', groupno)).remove();
 		$(format('#condition_group_%s_joincondition', groupno)).remove();
 		resetGroupJoinCondition(groupno);
+		let grpbtns = document.querySelectorAll('button[id^="save_conditions_add_"]');
+		let totgrp = grpbtns.length;
+		Array.from(grpbtns).map(x => x.style.visibility='hidden');
+		if (totgrp>0) {
+			grpbtns[totgrp-1].style.visibility = 'visible';
+		} else {
+			document.getElementById('startwhennoconditions').style.display = 'flex';
+		}
 	}
 
 	function resetJoinCondition(groupno, condno) {
@@ -542,22 +550,27 @@ function editworkflowscript($, conditions) {
 							var group_condition_html = '';
 							if ($('.condition_group_block').length > 0) {
 								group_condition_html = '<div class="condition_group_join_block" id="condition_group_'+groupid+'_joincondition" > \
-									<select id="save_condition_group_'+groupid+'_joincondition" class="joincondition"></select></div>';
+									<select id="save_condition_group_'+groupid+'_joincondition" class="slds-select cejoincondition" style="width:fit-content;"></select></div>';
 							}
-							$('#save_conditions').append(
-								group_condition_html
-								+ '<div id="condition_group_'+groupid+'" class="condition_group_block" > \
-									<div style="float:right;"> \
-										<span id="save_condition_group_'+groupid+'_remove" class="link remove-link"> \
-										<img src="themes/images/close.gif"></span> \
-									</div> \
-									<div style="clear:both;"></div> \
-									<div id="save_condition_group_'+groupid+'" class="save_condition_group"> \
-									</div> \
-									<div> \
-										<input type="button" id="add_group_condition_'+groupid+'" value="'+alert_arr.LBL_NEW_CONDITION+'" class="small edit" /> \
-									</div> \
-								</div>'
+							$('#save_conditions').append(`${group_condition_html}
+								<div id="condition_group_${groupid}" class="condition_group_block" >
+									<div id="save_condition_group_${groupid}" class="save_condition_group">
+									</div>
+									<div>
+										<button class="slds-button slds-button_neutral" type="button" id="add_group_condition_${groupid}">
+											<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+												<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
+											</svg>
+											${alert_arr.LBL_NEW_CONDITION}
+										</button>
+										<button class="slds-button slds-button_neutral" type="button" id="save_conditions_add_${groupid}">
+											<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+												<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
+											</svg>
+											${alert_arr.LBL_NEW_CONDITION_GROUP_BUTTON_LABEL}
+										</button>
+									</div>
+								</div>`
 							);
 							if ($('.condition_group_block').length > 0) {
 								var fjgc = $('#save_condition_group_'+groupid+'_joincondition');
@@ -567,6 +580,12 @@ function editworkflowscript($, conditions) {
 							gpcond.bind('click', function () {
 								addCondition(groupid, condno++);
 							});
+
+							$('#save_conditions_add_'+groupid).bind('click', function () {
+								addCondition(groupno, condno++);
+							});
+							Array.from(document.querySelectorAll('button[id^="save_conditions_add_"]')).map(x => x.style.visibility='hidden');
+							document.getElementById('save_conditions_add_'+groupid).style.visibility = 'visible';
 
 							var rem_group_img = $('#save_condition_group_'+groupid+'_remove');
 							rem_group_img.bind('click', function () {
@@ -584,16 +603,28 @@ function editworkflowscript($, conditions) {
 						}
 
 						$('#save_condition_group_'+groupid).append(
-							'<div id="save_condition_'+condid+'" style=\'margin-bottom: 5px\'> \
-								<input type="hidden" id="save_condition_'+condid+'_groupid" class="groupid" value="'+groupid+'" /> \
-								<select id="save_condition_'+condid+'_fieldname" class="fieldname" style="width:300px;"></select> \
-								<select id="save_condition_'+condid+'_operation" class="operation"></select> \
-								<input type="hidden" id="save_condition_'+condid+'_value_type" class="expressiontype" /> \
-								<input type="text" id="save_condition_'+condid+'_value" class="expressionvalue" readonly /> \
-								<select id="save_condition_'+condid+'_joincondition" class="joincondition"></select> \
-								<span id="save_condition_'+condid+'_remove" class="link remove-link"> \
-								<img src="modules/com_vtiger_workflow/resources/remove.png"></span> \
-							</div>'
+							`<div id="save_condition_${condid}" class='slds-grid slds-gutters_x-small slds-m-bottom_large'>
+							<div class="slds-col slds-size_4-of-8">
+								<input type="hidden" id="save_condition_${condid}_groupid" class="groupid" value="${groupid}" />
+								<select id="save_condition_${condid}_fieldname" class="slds-select cefieldname"></select>
+							</div>
+							<div class="slds-col slds-size_1-of-8">
+								<select id="save_condition_${condid}_operation" class="slds-select ceoperation"></select>
+							</div>
+							<div class="slds-col slds-size_3-of-8">
+								<input type="hidden" id="save_condition_${condid}_value_type" class="ceexpressiontype" />
+								<input type="text" id="save_condition_${condid}_value" class="slds-input ceexpressionvalue" readonly style="border:1px solid #dddbda;width:64%;" />
+								<select id="save_condition_${condid}_joincondition" class="slds-select cejoincondition" style="width:fit-content;"></select>
+								<span id="save_condition_${condid}_remove">
+									<button class="slds-button slds-button_icon slds-button_icon-border-filled" title="${alert_arr.JSLBL_Delete}">
+									<svg class="slds-button__icon" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+									</svg>
+									<span class="slds-assistive-text">${alert_arr.JSLBL_Delete}</span>
+									</button>
+								</span>
+							</div>
+							</div>`
 						);
 						resetJoinCondition(groupid, condid);
 
@@ -650,7 +681,7 @@ function editworkflowscript($, conditions) {
 								return;
 							}
 							var groupid = condition['groupid'];
-							if (groupid == '') {
+							if (typeof(groupid)=='undefined' || groupid == '') {
 								groupid = 0;
 							}
 							addCondition(groupid, condno);
@@ -672,11 +703,13 @@ function editworkflowscript($, conditions) {
 							}
 							condno+=1;
 						});
+					} else {
+						document.getElementById('startwhennoconditions').style.display = 'flex';
+						$('#startwhennoconditionsbutton').bind('click', function () {
+							document.getElementById('startwhennoconditions').style.display = 'none';
+							addCondition(groupno, condno++);
+						});
 					}
-
-					$('#save_conditions_add').bind('click', function () {
-						addCondition(groupno, condno++);
-					});
 
 					$('#save_submit').bind('click', function () {
 						var conditions = [];
@@ -684,15 +717,18 @@ function editworkflowscript($, conditions) {
 						$('#save_conditions').children('.condition_group_block').each(function (j, conditiongroupblock) {
 							$(conditiongroupblock).children('.save_condition_group').each(function (k, conditiongroup) {
 								$(conditiongroup).children().each(function (l) {
-									var fieldname = $(this).children('.fieldname').val();
-									var operation = $(this).children('.operation').val();
-									var value = $(this).children('.expressionvalue').val();
-									var valuetype = $(this).children('.expressiontype').val();
-									var joincondition = $(this).children('.joincondition').val();
-									var groupid = $(this).children('.groupid').val();
+									var fieldname = this.querySelector('div > .cefieldname').value;
+									var operation = this.querySelector('div > .ceoperation').value;
+									var value = this.querySelector('div > .ceexpressionvalue').value;
+									var valuetype = this.querySelector('div > .ceexpressiontype').value;
+									var joincondition = this.querySelector('div > .cejoincondition').value;
+									var groupid = this.querySelector('div > .groupid').value;
 									var groupjoin = '';
 									if (groupid != '') {
-										groupjoin = $('#save_condition_group_'+groupid+'_joincondition').val();
+										let scgj = document.getElementById('save_condition_group_'+groupid+'_joincondition');
+										if (scgj != null) {
+											groupjoin = scgj.value;
+										}
 									}
 									var condition = {
 										fieldname:fieldname,
@@ -712,9 +748,9 @@ function editworkflowscript($, conditions) {
 							var out = JSON.stringify(conditions);
 						}
 						$('#save_conditions_json').val(out);
+						document.forms['EditView'].submit();
 					});
 					pageLoadingPopup.close();
-					$('#save_conditions_add').show();
 					$('#new_task').show();
 					$('#save_submit').show();
 				}));
