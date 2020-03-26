@@ -6,39 +6,40 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 24/03/2020 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
  ************************************************************************************/
 
 $mod_strings = array(
-	'cbCVManagement' =>'Permissões de Acesso',
-	'SINGLE_cbCVManagement' => 'Permissões de Acesso',
+	'cbCVManagement' =>'Permissões s/visualizações',
+	'SINGLE_cbCVManagement' => 'Permissão s/visualização',
 	'cbCVManagement ID' => 'ID Permissões',
 
-	'LBL_CUSTOM_INFORMATION' => 'Informação Personalizada',
-	'LBL_OTHER_INFORMATION' => 'Outra Informação',
-	'LBL_CVMGMT_DEFAULTS'=>'Valores pré-definidos',
-	'LBL_CVMGMT_INFORMATION'=>'Permissões de Acesso',
+	'LBL_CUSTOM_INFORMATION' => 'Informação customizada',
+	'LBL_OTHER_INFORMATION' => 'Informação adicional',
+	'LBL_CVMGMT_DEFAULTS'=>'Visualização padrão',
+	'LBL_CVMGMT_INFORMATION'=>'Permissões de acesso',
 	'LBL_DESCRIPTION_INFORMATION'=>'Descrição',
 
 	'Name' => 'Nome',
-	'setpublic' => 'Tornar Público',
+	'setpublic' => 'Tornar público',
 	'cvcreate' => 'Criar',
 	'cvretrieve' => 'Ler',
 	'cvupdate' => 'Atualizar',
 	'cvdelete' => 'Eliminar',
-	'cvdefault' => 'Vista pré-definida',
+	'cvdefault' => 'Visualização padrão',
 	'cvapprove' => 'Aprovar',
 	'cvrole' => 'Função',
-	'User' => 'Utilizador',
+	'User' => 'Usuário',
 	'Mandatory' => 'Obrigatório',
 	'Blocked' => 'Bloqueada',
-	'Module List' => 'Lista de Módulos',
-	'default_setting' => 'Configuração pré-definida',
+	'Module List' => 'Lista de módulos',
+	'default_setting' => 'Definir como padrão',
 	'cbcvmno' => 'Nº Permissão',
 
-	'Default Views' => 'Vista pré-definida',
+	'Default Views' => 'Visualização padrão',
 	'Permissions' => 'Permissões',
 
 	'Test' => 'Validação',
-	'Search Value' => 'Procurar Valor',
+	'Search Value' => 'Procurar valor',
 );
 ?>
