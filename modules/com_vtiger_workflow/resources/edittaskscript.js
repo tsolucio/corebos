@@ -47,7 +47,7 @@ function edittaskscript($) {
 		$('#edittask_cancel_button').click(function () {
 			window.location=returnUrl;
 		});
-		$('#save').bind('click', function () {
+		$('#save').bind('click', function edittasksaveevent() {
 			var conditions = [];
 			var i=0;
 			$('#save_conditions').children('.condition_group_block').each(function (j, conditiongroupblock) {
@@ -84,6 +84,11 @@ function edittaskscript($) {
 				out = JSON.stringify(conditions);
 			}
 			$('#save_conditions_json').prop('value', out);
+			$._data(document.getElementById('save'), 'events').click.map(ev => {
+				if (ev.handler.name!='edittasksaveevent') {
+					ev.handler();
+				}
+			});
 			document.forms['new_task'].submit();
 		});
 	});
