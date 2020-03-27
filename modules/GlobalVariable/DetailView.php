@@ -8,6 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 require_once 'Smarty_setup.php';
+require_once 'include/Webservices/getmaxloadsize.php';
 
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
@@ -23,5 +24,13 @@ uasort($gvnamearray, function ($a, $b) {
 });
 $blocks[$kk['block_label']][$kk['field_key']][$fieldlabel]['options'] = $gvnamearray;
 $smarty->assign('BLOCKS', $blocks);
+if ($focus->column_fields['gvname']=='Application_Upload_MaxSize') {
+	$phpmaxsize = get_maxloadsize();
+	$phpmaxsizeMB = readableBytes($phpmaxsize, 'MB');
+	$warning = '<b>'.getTranslatedString('VTLIB_LBL_WARNING', 'Settings').':</b> '.getTranslatedString('PHP_MAX_UPLOAD', 'GlobalVariable');
+	$warning .= ': <b>'.$phpmaxsizeMB.' ('.$phpmaxsize.')</b>';
+	$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-info');
+	$smarty->assign('ERROR_MESSAGE', $warning);
+}
 $smarty->display('DetailView.tpl');
 ?>

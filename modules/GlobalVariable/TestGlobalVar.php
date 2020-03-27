@@ -16,6 +16,8 @@
  *  Version      : 1.0
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
+require_once 'include/Webservices/getmaxloadsize.php';
+require_once 'include/utils/CommonUtils.php';
 
 function gv_getGVVarNames() {
 	global $current_user, $adb;
@@ -31,6 +33,9 @@ function gv_getGVVarNames() {
 	$options = get_select_options_with_id($options, '--none--');
 	return $options;
 }
+$phpmaxsize = get_maxloadsize();
+$phpmaxsizeMB = readableBytes($phpmaxsize, 'MB');
+$warning = '<b>'.getTranslatedString('VTLIB_LBL_WARNING', 'Settings').':</b> '.getTranslatedString('PHP_MAX_UPLOAD', 'GlobalVariable');
 ?>
 <script type="text/javascript">
 	function gvSearchVariableValue() {
@@ -46,6 +51,9 @@ function gv_getGVVarNames() {
 			jQuery.each(obj.validation, function (i, val) {
 				out = out + val + '<br>';
 			});
+			if (vlist=='Application_Upload_MaxSize') {
+				out = out + '<?php echo $warning; ?>: <b><?php echo $phpmaxsizeMB.' ('.$phpmaxsize.')'; ?></b><br><br>';
+			}
 			out = out + 'Time spent: ' + obj.timespent + ' msec<br>';
 			jQuery('#gvtestresults').html(out);
 		});
