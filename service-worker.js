@@ -9284,7 +9284,7 @@ precacheAndRoute([{
   "revision": "fac2826174b3ef2d807edd9524c029f3"
 }, {
   "url": "include/js/de_de.lang.js",
-  "revision": "21ee31e263d9c4eced154fbc2bb5a513"
+  "revision": "061ac8b34aad03ed6c9ae27c6f7c9534"
 }, {
   "url": "include/js/dedup.js",
   "revision": "3aab10a82c3f05de285ce73b6dc3be35"
@@ -9293,16 +9293,16 @@ precacheAndRoute([{
   "revision": "37d8b802631db59f1d1f817c9ae1f69c"
 }, {
   "url": "include/js/en_gb.lang.js",
-  "revision": "6672db699fb74cedf77ad84499251b17"
+  "revision": "75e10d33658cfd3b64608f2249a5b483"
 }, {
   "url": "include/js/en_us.lang.js",
-  "revision": "a2ecdd7cd82b9ec501c2daa8981ca44a"
+  "revision": "5ab755666b2b8bcf32fbc4e921d5d7e0"
 }, {
   "url": "include/js/es_es.lang.js",
-  "revision": "1bc1854cbbaf049d1d6bf0a28fca1ff8"
+  "revision": "c317b37aba8bebc0c07d714e385824a7"
 }, {
   "url": "include/js/es_mx.lang.js",
-  "revision": "a44c31b4bf7423d8f8b3e61eb5fd1a22"
+  "revision": "0389fcb26737642413956d5dc58071c4"
 }, {
   "url": "include/js/FieldDependencies.js",
   "revision": "e402631525953bc457e64601a1a4f2a2"
@@ -9311,19 +9311,19 @@ precacheAndRoute([{
   "revision": "c87b487b3785ae87d8edfc5e3c8119fe"
 }, {
   "url": "include/js/fr_fr.lang.js",
-  "revision": "d47b54cec20e2a4a4b0c2da1c53e8d47"
+  "revision": "925a0dfbac9855d7edf8f81e406200f9"
 }, {
   "url": "include/js/general.js",
   "revision": "fbffef37d1b7cd477678059eccd878ca"
 }, {
   "url": "include/js/hu_hu.lang.js",
-  "revision": "d16d451c810a2c57a9824b0d3977b7b6"
+  "revision": "36d9653f1e2e44d7634f52ce03ef91f2"
 }, {
   "url": "include/js/Inventory.js",
   "revision": "e170e66509b516a27664bbc82f5c71d6"
 }, {
   "url": "include/js/it_it.lang.js",
-  "revision": "2db5dc0669566bfc4239d463c1e18878"
+  "revision": "9f1fa8c71c09053cf1f1f325133568a8"
 }, {
   "url": "include/js/jslog.js",
   "revision": "31c7a760819a0277d2cdb75b82c2c66f"
@@ -9347,7 +9347,7 @@ precacheAndRoute([{
   "revision": "92db09ac10a555be4bfc0398f2a93379"
 }, {
   "url": "include/js/nl_nl.lang.js",
-  "revision": "ae8105ffebe186a74e286fa67d15a504"
+  "revision": "e0551921faa52b79ff3e27e902244615"
 }, {
   "url": "include/js/notebook.js",
   "revision": "d944ea5145ae45ecbafab41bcbd112f3"
@@ -9365,7 +9365,7 @@ precacheAndRoute([{
   "revision": "9ea67febb4daaa61456e88a625df209b"
 }, {
   "url": "include/js/pt_br.lang.js",
-  "revision": "3aa82542eeed5e76d5ae5fda24a20ead"
+  "revision": "88d34d5fff0276751d8dda28804b1577"
 }, {
   "url": "include/js/QuickCreate.js",
   "revision": "e5029e6a617bfb7f9114191938738069"
@@ -9374,7 +9374,7 @@ precacheAndRoute([{
   "revision": "5bce2a6cf35180a097828b2cde3346ff"
 }, {
   "url": "include/js/ro_ro.lang.js",
-  "revision": "bf3558d7ef41692a0e183fa02523a7fd"
+  "revision": "da0f8a2612a2aa75b8cea3856d375e45"
 }, {
   "url": "include/js/search.js",
   "revision": "d5c8ddcb6451bc0c05aa26f123363e0f"
@@ -9476,10 +9476,10 @@ precacheAndRoute([{
   "revision": "d303f6bc780e5b5367842b29220bbf67"
 }, {
   "url": "modules/com_vtiger_workflow/resources/edittaskscript.js",
-  "revision": "79775e4b09927588274d515f5b4f90ec"
+  "revision": "32c52b41789d581a58222a1487943d3a"
 }, {
   "url": "modules/com_vtiger_workflow/resources/editworkflowscript.js",
-  "revision": "af8d79601aa1c12d8e1a06fdd7f85a50"
+  "revision": "dd436dfb50a74136f2d13273daabacde"
 }, {
   "url": "modules/com_vtiger_workflow/resources/emailtaskscript.js",
   "revision": "7b030711073308450f8902923523de06"
