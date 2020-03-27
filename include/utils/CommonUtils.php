@@ -3608,4 +3608,31 @@ function recordIsAssignedToInactiveUser($crmid) {
 		return ($adb->query_result($urs, 0, 'status')=='Inactive');
 	}
 }
+
+/**
+ * Converts a number of bytes into a readable format e.g KB, MB, GB, TB, YB
+ * @param int num number of bytes
+ * @param string format
+ * @return string that represents the given number in the given format
+ */
+function readableBytes($bytes, $format) {
+	$sizes = array('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
+	$i = array_search($format, $sizes);
+	return sprintf('%.02F', $bytes / pow(1024, $i)) * 1 . $sizes[$i];
+}
+
+/** convert given numeric string with optional byte size magnitud to a number of bytes
+ * @param int byte size string to convert to bytes
+ * @return int number of bytes in given string
+ */
+function numberBytes($size) {
+	$unit = preg_replace('/[^bkmgtpezy]/i', '', $size); // Remove the non-unit characters from the size.
+	$size = preg_replace('/[^0-9\.]/', '', $size); // Remove the non-numeric characters from the size.
+	if ($unit) {
+		// Find the position of the unit in the ordered string which is the power of magnitude to multiply a kilobyte by.
+		return round($size * pow(1024, stripos('bkmgtpezy', $unit[0])));
+	} else {
+		return round($size);
+	}
+}
 ?>
