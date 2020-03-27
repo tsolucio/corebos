@@ -9476,7 +9476,7 @@ precacheAndRoute([{
   "revision": "d303f6bc780e5b5367842b29220bbf67"
 }, {
   "url": "modules/com_vtiger_workflow/resources/edittaskscript.js",
-  "revision": "32c52b41789d581a58222a1487943d3a"
+  "revision": "cde731102f2e03b5b0d732095496dc4c"
 }, {
   "url": "modules/com_vtiger_workflow/resources/editworkflowscript.js",
   "revision": "dd436dfb50a74136f2d13273daabacde"
