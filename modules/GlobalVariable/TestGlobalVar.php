@@ -38,7 +38,7 @@ function gv_getGVVarNames() {
 		var ulist = jQuery('#ulist').val();
 		var mlist = jQuery('#mlist').val();
 		jQuery.ajax({
-			url: "index.php?action=GlobalVariableAjax&file=SearchGlobalVar&module=GlobalVariable&gvname="+vlist+"&gvuserid="+ulist+"&gvmodule="+mlist+"&gvdefault=default&returnvalidation=1",
+			url: 'index.php?action=GlobalVariableAjax&file=SearchGlobalVar&module=GlobalVariable&gvname='+vlist+'&gvuserid='+ulist+'&gvmodule='+mlist+'&gvdefault=default&returnvalidation=1',
 			context: document.body
 		}).done(function (response) {
 			obj = JSON.parse(response);
@@ -47,7 +47,7 @@ function gv_getGVVarNames() {
 				out = out + val + '<br>';
 			});
 			out = out + 'Time spent: ' + obj.timespent + ' msec<br>';
-			jQuery("#gvtestresults").html(out);
+			jQuery('#gvtestresults').html(out);
 		});
 	}
 </script>
@@ -108,19 +108,19 @@ function gv_getGVVarNames() {
 <div class="slds-form-element">
 	<label class="slds-form-element__label gvtestlabeltext" for="vlist"><?php echo getTranslatedString('SINGLE_GlobalVariable', 'GlobalVariable');?></label>
 	<div class="slds-form-element__control">
-		<select name="vlist" id="vlist" class='slds-select slds-m-left_large' style="width:40%;"><?php echo gv_getGVVarNames();?></select>
+		<select name="vlist" id="vlist" class='slds-select slds-m-left_large slds-page-header__meta-text' style="width:40%;"><?php echo gv_getGVVarNames();?></select>
 	</div>
 </div>
 <div class="slds-form-element">
 	<label class="slds-form-element__label gvtestlabeltext" for="ulist"><?php echo getTranslatedString('User', 'GlobalVariable');?></label>
 	<div class="slds-form-element__control">
-		<select name="ulist" id="ulist" class='slds-select slds-m-left_large' style="width:40%;"><?php echo getUserslist();?></select>
+		<select name="ulist" id="ulist" class='slds-select slds-m-left_large slds-page-header__meta-text' style="width:40%;"><?php echo getUserslist();?></select>
 	</div>
 </div>
 <div class="slds-form-element">
 	<label class="slds-form-element__label gvtestlabeltext" for="mlist"><?php echo getTranslatedString('Module', 'GlobalVariable');?></label>
 	<div class="slds-form-element__control">
-		<select name="mlist" id="mlist" class='slds-select slds-m-left_large' style="width:40%;">
+		<select name="mlist" id="mlist" class='slds-select slds-m-left_large slds-page-header__meta-text' style="width:40%;">
 <?php
 $mlist = getAllowedPicklistModules(1);
 $modlist = array();
