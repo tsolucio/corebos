@@ -426,5 +426,6 @@ var alert_arr = {
 	'HAS_THIS_AS_NTH_CHILD' : 'Heeft dit record als Xste kind',
 	'Okay': 'Oké',
 	'Failed': 'Failed',
-	'Warning': 'Warning'
+	'Warning': 'Warning',
+	'Copied': 'Copied'
 };

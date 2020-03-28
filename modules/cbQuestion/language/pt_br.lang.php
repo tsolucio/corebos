@@ -90,5 +90,8 @@ $mod_strings = array(
 	'MVIEWWFAdded' => 'Materialized View Workflow Added',
 	'MVIEWWFDeleted' => 'Materialized View Workflow Deleted',
 	'condfilterformat' => 'Conditions in Filter Format',
+	'Question Builder' => 'Question Builder',
+	'LBL_SYSTEMMODULES' => 'System Modules',
+	'RESULTS' => 'Results',
 );
 ?>

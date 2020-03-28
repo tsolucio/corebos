@@ -409,5 +409,6 @@ var alert_arr = {
 	'HAS_THIS_AS_NTH_CHILD' : 'ha questo record come figlio unico',
 	'Okay': 'Okay',
 	'Failed': 'Failed',
-	'Warning': 'Warning'
+	'Warning': 'Warning',
+	'Copied': 'Copied'
 };

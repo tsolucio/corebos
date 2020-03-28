@@ -424,5 +424,6 @@ var alert_arr = {
 	'HAS_THIS_AS_NTH_CHILD' : 'Tiene este niño como una',
 	'Okay': 'Vale',
 	'Failed': 'Ha fallado',
-	'Warning': 'Aviso'
+	'Warning': 'Aviso',
+	'Copied': 'Copiado'
 };

@@ -404,5 +404,6 @@ var alert_arr = {
 	'HAS_THIS_AS_NTH_CHILD' : 'Ez még egy másik gyermek',
 	'Okay': 'Okay',
 	'Failed': 'Failed',
-	'Warning': 'Warning'
+	'Warning': 'Warning',
+	'Copied': 'Copied'
 };

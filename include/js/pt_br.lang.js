@@ -425,5 +425,6 @@ var alert_arr = {
 	'HAS_THIS_AS_NTH_CHILD' : 'Tem este registro como enésimo filho',
 	'Okay': 'Ok',
 	'Failed': 'Falhou',
-	'Warning': 'Alerta'
+	'Warning': 'Alerta',
+	'Copied': 'Copied'
 };

@@ -424,5 +424,6 @@ var alert_arr = {
 	'HAS_THIS_AS_NTH_CHILD' : 'Hat dieses als ein weiteres Kind',
 	'Okay': 'Okay',
 	'Failed': 'Failed',
-	'Warning': 'Warning'
+	'Warning': 'Warning',
+	'Copied': 'Copied'
 };

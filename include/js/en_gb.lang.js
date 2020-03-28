@@ -390,5 +390,6 @@ var alert_arr = {
 	'HAS_THIS_AS_NTH_CHILD' : 'Has this record as nth child',
 	'Okay': 'Okay',
 	'Failed': 'Failed',
-	'Warning': 'Warning'
+	'Warning': 'Warning',
+	'Copied': 'Copied'
 };
