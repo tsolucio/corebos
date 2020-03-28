@@ -6,7 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor: Ranieri Slemer -- translate Portuguese - pt_br - 25-03-2020 -- Sao Paulo/SP/Brazil/www.slemernet.com.br
+ * Contributor: Ranieri Slemer -- translate Portuguese - pt_br - 28-03-2020 -- Sao Paulo/SP/Brazil/www.slemernet.com.br
  ************************************************************************************/
 
 $mod_strings = array(
@@ -42,6 +42,6 @@ $mod_strings = array(
 	'GVarDefinitions' => 'Definições de variáveis',
 	'cbMap' => 'Business map',
 	'Role' => 'Atribuída a função',
-	'PHP_MAX_UPLOAD' => 'This variable is limited by PHP settings which are set to',
+	'PHP_MAX_UPLOAD' => 'Esta variável é limitada pelas definições do PHP (php.ini)',
 );
 ?>
