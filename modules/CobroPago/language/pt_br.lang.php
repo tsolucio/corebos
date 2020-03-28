@@ -116,8 +116,7 @@ $mod_strings = array(
 'Payment error.' => 'Erro no pagamento.',
 'PreventEdit' => 'Impedir a edição/exclusão se pago',
 'Prevent edit/delete if paid' => 'Impedir a edição/exclusão se pago',
-'SERVER_CONFIGURATION' => 'Configuração do servidor', 
+'SERVER_CONFIGURATION' => 'Configuração do servidor',
 'SERVER_CONFIGURATION_DESCRIPTION' => 'Configuração para o servidor de pagamentos',
-
 );
 ?>
