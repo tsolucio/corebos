@@ -121,7 +121,7 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 	// Related Module List for Relate Event Triggers
 	$relatedMods = getRelatedModulesInfomation($workflow->moduleName, $current_user);
 	$relatedmodules = array(
-		'Any' => getTranslatedString('Any', 'Settings'),
+		'Any' => getTranslatedString('LBL_ANY', 'Settings'),
 	);
 	$relatedmodule = 'Any';
 	foreach ($relatedMods as $modval) {
