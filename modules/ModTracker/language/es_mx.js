@@ -6,7 +6,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  ********************************************************************************/
 
-var mod_alert_arr = {
+var modtrackerarr = {
 	'History for': 'Cambios de',
 	'by': 'por',
 	'Field': 'Campo',

@@ -7,7 +7,7 @@
  * Colaborator: Ranieri Slemer - translate to brazilian portuguese // Sao Paulo / Brazil - 13/03/2020
  ********************************************************************************/
 
-var mod_alert_arr = {
+var modtrackerarr = {
 	'History for': 'Histórico para',
 	'by': 'Por',
 	'Field': 'Campo',

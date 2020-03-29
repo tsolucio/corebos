@@ -47,7 +47,7 @@ var ModTrackerCommon = {
 					trackData = tracker.trackrecord.latest.details;
 				if (!ModTrackerCommon.active) {
 					// First open of the modtracker
-					const modalTitle = mod_alert_arr['History for'] + ' ' + tracker.trackrecord.displayname,
+					const modalTitle = modtrackerarr['History for'] + ' ' + tracker.trackrecord.displayname,
 						modalContent = `<div id="history-tui-grid">
 											<div class="slds-grid slds-m-bottom_x-small">
 												<button class="slds-button slds-button_icon slds-button_icon-brand" title="${alert_arr.JSLBL_PREVIOUS}"
@@ -58,7 +58,7 @@ var ModTrackerCommon = {
 													<span class="slds-assistive-text">${alert_arr.JSLBL_PREVIOUS}</span>
 												</button>
 												<div class="slds-col slds-align_absolute-center" id="history-whodidwhatwhen">
-													${tracker.trackrecord.latest.modifiedon} ${mod_alert_arr.by} ${tracker.trackrecord.latest.modifiedbylabel}
+													${tracker.trackrecord.latest.modifiedon} ${modtrackerarr.by} ${tracker.trackrecord.latest.modifiedbylabel}
 												</div>
 												<button class="slds-button slds-button_icon slds-button_icon-brand" title="${alert_arr.JSLBL_NEXT}"
 													onClick="ModTrackerCommon.showhistory(${record}, (ModTrackerCommon.atpoint - 1));">
@@ -78,21 +78,21 @@ var ModTrackerCommon = {
 						columns: [
 							{
 								name: 'fieldlabel',
-								header: mod_alert_arr.Field,
+								header: modtrackerarr.Field,
 							},
 							{
 								name: 'oldval',
-								header: mod_alert_arr['Previous value'],
+								header: modtrackerarr['Previous value'],
 								whiteSpace: 'normal'
 							},
 							{
 								name: 'newval',
-								header: mod_alert_arr['Value changed to'],
+								header: modtrackerarr['Value changed to'],
 								whiteSpace: 'normal'
 							},
 							{
 								name: 'highlight',
-								header: mod_alert_arr['highlight'],
+								header: modtrackerarr['highlight'],
 								whiteSpace: 'normal'
 							}
 						],
@@ -108,13 +108,13 @@ var ModTrackerCommon = {
 					ModTrackerCommon.active = true;
 				} else {
 					// Tracker was already open and got new data
-					document.getElementById('history-whodidwhatwhen').innerText = `${tracker.trackrecord.latest.modifiedon} ${mod_alert_arr.by} ${tracker.trackrecord.latest.modifiedbylabel}`;
+					document.getElementById('history-whodidwhatwhen').innerText = `${tracker.trackrecord.latest.modifiedon} ${modtrackerarr.by} ${tracker.trackrecord.latest.modifiedbylabel}`;
 				}
 				ModTrackerCommon.gridInstance.clear();
 				ModTrackerCommon.refreshData(trackData);
 			} else if (response == 'NOTRACKRECORD' && ModTrackerCommon.active) {
 				// Tracker modal is open but no further data is available
-				ldsPrompt.show(mod_alert_arr['No further history'], mod_alert_arr['No further history available for this record']);
+				ldsPrompt.show(modtrackerarr['No further history'], modtrackerarr['No further history available for this record']);
 				if (direction == 'back') {
 					ModTrackerCommon.atpoint--;
 				} else {
@@ -122,7 +122,7 @@ var ModTrackerCommon = {
 				}
 			} else {
 				// No history at all for this record
-				ldsPrompt.show(mod_alert_arr['No history'], mod_alert_arr['No history available for this record']);
+				ldsPrompt.show(modtrackerarr['No history'], modtrackerarr['No history available for this record']);
 			}
 		});
 	},
