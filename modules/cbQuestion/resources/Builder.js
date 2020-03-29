@@ -19,6 +19,8 @@ function changecbqModule(newmodule) {
 function showSQLMsg(msg, role) {
 	role = role || 'info';
 	document.getElementById('sqlmsg').innerHTML=msg;
+	document.getElementById('cbqmsgdiv').classList.remove('bldcontainer-hidden');
+	document.getElementById('cbqmsgdiv').classList.add('bldcontainer-visible');
 	let msgdiv = document.getElementById('sqlmsgdiv');
 	msgdiv.classList.remove('slds-theme_info','slds-theme_error','slds-theme_success','slds-theme_warning');
 	msgdiv.classList.add('slds-theme_'+role);
@@ -30,8 +32,9 @@ function hideSQLMsg() {
 	setTimeout(
 		function () {
 			document.getElementById('sqlmsgdiv').classList.add('bld-hidden');
+			document.getElementById('cbqmsgdiv').classList.add('bldcontainer-hidden');
 		},
-		2000
+		4000
 	);
 }
 

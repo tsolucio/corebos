@@ -9,6 +9,14 @@
 	opacity: 0;
 	transition: visibility 0s 2s, opacity 2s linear;
 }
+.bldcontainer-visible {
+	max-height: 350px;
+	transition: max-height 4.25s ease-in;
+}
+.bldcontainer-hidden {
+	max-height: 0px;
+	transition: max-height 2.25s ease-out;
+}
 </style>
 <form name="EditView" action="index.php" method="POST" onsubmit="VtigerJS_DialogBox.block();">
 {assign var="MODULELABEL" value=$MODULE|@getTranslatedString:$MODULE}
@@ -201,7 +209,7 @@
 	</div>
 	<div class="slds-col slds-size_1-of-2 slds-page-header__meta-text">
 		<div class="slds-grid slds-gutters slds-m-around_xxx-small">
-			<div class="slds-col slds-size_2-of-6 slds-page-header__meta-text">
+			<div class="slds-col slds-page-header__meta-text">
 				<button class="slds-button slds-button_neutral" type="button" onclick="copysql();">
 					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#copy"></use>
@@ -215,7 +223,9 @@
 					{'Test SQL'|@getTranslatedString:'cbQuestion'}
 				</button>
 			</div>
-			<div class="slds-col slds-size_4-of-6 slds-page-header__meta-text">
+		</div>
+		<div class="slds-grid slds-gutters slds-m-around_xxx-small bldcontainer-hidden" id="cbqmsgdiv">
+			<div class="slds-col slds-page-header__meta-text">
 				<div class="slds-notify slds-notify_alert slds-theme_info slds-theme_alert-texture bld-visible bld-hidden" role="alert" style="padding:0.1rem;" id="sqlmsgdiv" >
 					<h2>
 						<svg class="slds-icon slds-icon_small slds-m-right_x-small" aria-hidden="true" id="sqlmsgicon">
