@@ -313,6 +313,7 @@ $mod_strings = array(
 'No Time'=>'Geen tijd',
 'Send Reminder'=>'Stuur herinnering',
 'SendReminder'=>'Stuur herinnering',
+'Recommended frequency for SendReminder is 15 mins' => 'Recommended frequency for Send Reminder is 15 mins',
 'LBL_YES'=>'Ja',
 'LBL_NO'=>'Nee',
 'LBL_DAYS'=>'Dagen(s)',

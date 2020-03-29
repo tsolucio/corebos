@@ -108,5 +108,7 @@ $mod_strings = array(
 	'FieldsNotFoundInFilter' => 'Nu sau gasit campuri in Filtrul Selectat',
 	'FilterNotFound' => 'Filtrul Selectat Nu se Gaseste',
 	'Permission Denied' => 'Permisiune Refuzata',
+	'UnblockLoginUsers' => 'Unblock Login for Users',
+	'Unblock login users automatically after a few minutes.' => 'Unblock login users automatically after a few minutes.',
 );
 ?>

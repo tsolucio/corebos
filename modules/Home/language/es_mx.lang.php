@@ -130,5 +130,7 @@ $mod_strings = array(
 'FieldsNotFoundInFilter' => 'No se han encontrado campos en el filtro seleccionado',
 'FilterNotFound' => 'No se ha encontrado el filtro seleccionado',
 'Permission Denied' => 'Permiso Denegado',
+'UnblockLoginUsers' => 'Desbloquear Login de Usuarios',
+'Unblock login users automatically after a few minutes.' => 'Desbloquea el inicio de sesión de los usuarios bloqueados después de unos minutos.',
 );
 ?>

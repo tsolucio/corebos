@@ -310,9 +310,9 @@ $mod_strings = array (
   'Duration Minutes' => 'Durata in Minuti',
   'Location' => 'Locazione',
   'No Time' => 'Nessun orario',
-  
-'Send Reminder' => 'Manda Avviso (minuti)',
-'SendReminder' => 'Manda Avviso',
+  'Send Reminder' => 'Manda Avviso (minuti)',
+  'SendReminder' => 'Manda Avviso',
+  'Recommended frequency for SendReminder is 15 mins' => 'Recommended frequency for Send Reminder is 15 mins',
   'LBL_YES' => 'Si',
   'LBL_NO' => 'No',
   'LBL_DAYS' => 'giorno(i)',

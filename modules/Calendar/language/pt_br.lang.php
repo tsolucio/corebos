@@ -313,6 +313,7 @@ $mod_strings = array(
 'No Time'=>'Sem Hora',
 'Send Reminder'=>'Enviar Lembrete',
 'SendReminder'=>'Enviar Lembrete',
+'Recommended frequency for SendReminder is 15 mins' => 'Frequencia recomendada p/envio notificações é 15 min (>= crontab)',
 'LBL_YES'=>'Sim',
 'LBL_NO'=>'Não',
 'LBL_DAYS'=>'dia(s)',

@@ -43,7 +43,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 		$cron['time'] = 'min';
 	}
 	$cron['status'] = $cron_status;
-	$cron['description'] = $cron_desc;
+	$cron['description'] = getTranslatedString($cron_desc, $cronTask->getModule());
 	$cron['id']=$id;
 	$cron['hourmin']=$hourmin;
 	$smarty->assign('CRON_DETAILS', $cron);
