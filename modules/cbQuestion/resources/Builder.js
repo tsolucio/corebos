@@ -10,6 +10,7 @@ function copysql() {
 function changecbqModule(newmodule) {
 	document.getElementById('save_conditions').innerHTML='';
 	document.getElementById('bqsql').value='';
+	document.getElementById('evalid_type').value = (newmodule=='Workflow' ? 'com_vtiger_workflow' : newmodule);
 	moduleName = newmodule;
 	conditions = null;
 	builderconditions.changeModule();
