@@ -15,6 +15,8 @@
  *************************************************************************************************/
 require_once 'modules/cbQuestion/cbQuestion.php';
 require_once 'Smarty_setup.php';
+require_once 'include/Webservices/DescribeObject.php';
+require_once 'modules/com_vtiger_workflow/expression_functions/cbexpSQL.php';
 
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
@@ -35,6 +37,39 @@ if (empty($_REQUEST['record'])) {
 	$focus->retrieve_entity_info($record, $currentModule);
 	$focus->name=$focus->column_fields[$focus->list_link_field];
 
+	$fields = vtws_describe($focus->column_fields['qmodule'], $current_user);
+	$flds = array(array(
+		'text' => getTranslatedString('Custom', 'Reports'),
+		'value' => 'custom',
+	));
+	foreach ($fields['fields'] as $finfo) {
+		$flds[] = array(
+			'text' => $finfo['label'],
+			'value' => $finfo['name'],
+		);
+	}
+	$valops = array(array(
+		'text' => getTranslatedString('Custom', 'Reports'),
+		'value' => 'custom',
+	));
+	foreach (cbexpsql_supportedFunctions() as $vopk => $vopv) {
+		$valops[] = array(
+			'text' => $vopv,
+			'value' => $vopk,
+		);
+	}
+	$fieldData = array(
+		array(
+			'fieldname' => 'custom',
+			'operators' => 'custom',
+			'alias' => '',
+			'sort' => 'NONE',
+			'instruction' => '',
+		),
+	);
+	$smarty->assign('fieldData', json_encode($fieldData));
+	$smarty->assign('fieldArray', json_encode(array_values($flds)));
+	$smarty->assign('validOperations', json_encode(array_values($valops)));
 	$smarty->assign('APP', $app_strings);
 	$mod_strings = array_merge($mod_strings, return_module_language($current_user->column_fields['language'], 'com_vtiger_workflow'));
 	$smarty->assign('MOD', $mod_strings);

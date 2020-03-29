@@ -34,3 +34,104 @@ function hideSQLMsg() {
 		2000
 	);
 }
+
+function appendEmptyFieldRow() {
+	fieldGridInstance.appendRows([{
+		'fieldname': 'custom',
+		'operators': 'custom',
+		'alias': '',
+		'sort': 'NONE',
+		'instruction': ''
+	}]);
+}
+
+const fieldGrid = tui.Grid;
+const dataGrid = tui.Grid;
+var fieldGridInstance;
+document.addEventListener('DOMContentLoaded', function (event) {
+	loadJS('index.php?module=cbQuestion&action=cbQuestionAjax&file=getjslanguage')
+	.then(() => {
+		fieldGridInstance = new fieldGrid({
+			el: document.getElementById('fieldgrid'),
+			columns: [
+				{
+					name: 'fieldname',
+					header: mod_alert_arr.LBL_FIELD,
+					formatter: 'listItemText',
+					editor: {
+						type: 'select',
+						options: {
+							listItems: arrayOfFields
+						}
+					},
+					sortingType: 'desc',
+					sortable: true
+				},
+				{
+					name: 'operators',
+					header: mod_alert_arr.LBL_OPERATION,
+					formatter: 'listItemText',
+					editor: {
+						type: 'select',
+						options: {
+							listItems: validOperations
+						}
+					},
+					whiteSpace: 'normal',
+					sortable: false
+				},
+				{
+					name: 'alias',
+					header: mod_alert_arr.LBL_ALIAS,
+					editor: 'text',
+					whiteSpace: 'normal',
+					sortable: false
+				},
+				{
+					name: 'sort',
+					header: mod_alert_arr.LBL_SORT,
+					whiteSpace: 'normal',
+					formatter: 'listItemText',
+					editor: {
+						type: 'select',
+						options: {
+							listItems: [
+								{ text: mod_alert_arr.LBL_NONE, value: 'NONE' },
+								{ text: mod_alert_arr.ASC, value: 'ASC' },
+								{ text: mod_alert_arr.DESC, value: 'DESC' }
+							]
+						}
+					},
+					sortable: false
+				},
+				{
+					name: 'instruction',
+					header: mod_alert_arr.LBL_INSTRUCTION,
+					editor: 'text',
+					whiteSpace: 'normal',
+					sortable: false
+				}
+			],
+			data: fieldData,
+			useClientSort: false,
+			rowHeight: 'auto',
+			bodyHeight: 350,
+			scrollX: false,
+			scrollY: true,
+			columnOptions: {
+				resizable: true
+			},
+			header: {
+				align: 'left',
+				valign: 'top'
+			}
+		});
+		tui.Grid.applyTheme('striped');
+		// const pgcontainer = document.getElementById('tui-pagination-container');
+		// const pginstance = new Pagination(pgcontainer, {
+		// 	useClient: true,
+		// 	perPage: 5
+		// });
+		// pginstance.getCurrentPage();
+	});
+});

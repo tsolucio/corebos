@@ -92,7 +92,7 @@
 
 <div class="slds-page-header">
 <div class="slds-grid slds-gutters">
-<div class="slds-col slds-size_1-of-1">
+<div class="slds-col slds-size_1-of-2">
 	<div class="slds-page-header__col-title">
 	<div class="slds-media">
 		<div class="slds-media__body">
@@ -116,12 +116,18 @@
 	</div>
 	</div>
 </div>
+<div class="slds-col slds-size_1-of-2">
+	<button class="slds-button slds-button_neutral slds-float_right" type="button" id='addfield_button' onclick="appendEmptyFieldRow();">
+		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
+		</svg>
+		{'LBL_ADD_FIELD'|getTranslatedString:'com_vtiger_workflow'}
+	</button>
 </div>
 </div>
-<div class="slds-grid slds-gutters slds-m-top_small">
-	<div class="slds-col slds-size_1-of-1 slds-page-header__meta-text">
-	select fields, order, grouping, ....
-	</div>
+</div>
+<div class="slds-grid slds-gutters slds-m-top_small slds-m-bottom_x-small">
+	<div class="slds-col slds-size_1-of-1 slds-page-header__meta-text slds-m-left_x-small" id="fieldgrid" style="width:99%;"></div>
 </div>
 
 <div class="slds-page-header">
@@ -309,4 +315,8 @@
 	var conditions = null;
 	{/if}
 	var builderconditions = editbuilderscript(jQuery, conditions);
+	document.getElementById('evalid_type').value = (moduleName=='Workflow' ? 'com_vtiger_workflow' : moduleName);
+	var fieldData = {$fieldData};
+	var arrayOfFields = {$fieldArray};
+	var validOperations = {$validOperations};
 </script>
