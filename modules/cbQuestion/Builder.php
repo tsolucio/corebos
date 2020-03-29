@@ -64,6 +64,7 @@ if (empty($_REQUEST['record'])) {
 			'operators' => 'custom',
 			'alias' => '',
 			'sort' => 'NONE',
+			'group' => '0',
 			'instruction' => '',
 		),
 	);

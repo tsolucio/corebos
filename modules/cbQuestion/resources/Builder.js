@@ -36,13 +36,100 @@ function hideSQLMsg() {
 }
 
 function appendEmptyFieldRow() {
-	fieldGridInstance.appendRows([{
+	let emptyRow = {
 		'fieldname': 'custom',
 		'operators': 'custom',
 		'alias': '',
 		'sort': 'NONE',
+		'group': '0',
 		'instruction': ''
-	}]);
+	};
+	fieldGridInstance.appendRows([emptyRow]);
+	fieldData.push(emptyRow);
+}
+
+function getInstruction(field, operator, alias) {
+	let fins = '';
+	let fnam = 'expression';
+	if (field!='custom') {
+		fnam = field;
+	}
+	if (operator!='custom') {
+		let op = validOperations.find(x => x.value === operator);
+		switch (operator) {
+			case 'ifelse':
+				fins = 'if '+fnam+' then expression else expression end';
+				break;
+			case 'add':
+			case 'sub':
+			case 'mul':
+			case 'div':
+			case 'distinct':
+			case 'ltequals':
+			case 'gtequals':
+			case 'lt':
+			case 'gt':
+				fins = fnam + ' ' + op.text;
+				break;
+			case 'power':
+			case 'round':
+			case 'ceil':
+			case 'floor':
+			case 'modulo':
+			case 'concat':
+			case 'stringposition':
+			case 'stringlength':
+			case 'stringreplace':
+			case 'substring':
+			case 'uppercase':
+			case 'lowercase':
+			case 'time_diff(a)':
+			case 'time_diff(a,b)':
+			case 'time_diffdays(a)':
+			case 'time_diffdays(a,b)':
+			case 'time_diffyears(a)':
+			case 'time_diffyears(a,b)':
+			case 'add_days':
+			case 'sub_days':
+			case 'add_months':
+			case 'sub_months':
+			case 'add_time':
+			case 'sub_time':
+			case 'sum':
+			case 'min':
+			case 'max':
+			case 'avg':
+			case 'aggregation':
+			case 'aggregation_fields':
+			case 'aggregate_time':
+			case 'isString':
+			case 'isNumeric':
+			case 'coalesce':
+			case 'hash':
+			case 'setype':
+			case 'number_format':
+				if (op.text.indexOf(',')!=-1) {
+					fins = op.text.replace(/\(.+?,/, '('+fnam+',');
+				} else {
+					fins = op.text.replace(/\(.+\)/, '('+fnam+')');
+				}
+				break;
+			case 'today':
+			case 'tomorrow':
+			case 'yesterday':
+			case 'count':
+				fins = op.text;
+				break;
+			default:
+				break;
+		}
+	} else {
+		fins = fnam;
+	}
+	if (alias!='') {
+		fins += ' as '+alias;
+	}
+	return fins;
 }
 
 const fieldGrid = tui.Grid;
@@ -65,7 +152,12 @@ document.addEventListener('DOMContentLoaded', function (event) {
 						}
 					},
 					sortingType: 'desc',
-					sortable: true
+					sortable: true,
+					onAfterChange(ev) {
+						fieldData[ev.rowKey].instruction = getInstruction(ev.value, fieldData[ev.rowKey].operators, fieldData[ev.rowKey].alias);
+						fieldData[ev.rowKey].fieldname = ev.value;
+						fieldGridInstance.resetData(fieldData);
+					}
 				},
 				{
 					name: 'operators',
@@ -78,19 +170,31 @@ document.addEventListener('DOMContentLoaded', function (event) {
 						}
 					},
 					whiteSpace: 'normal',
-					sortable: false
+					sortable: false,
+					onAfterChange(ev) {
+						fieldData[ev.rowKey].instruction = getInstruction(fieldData[ev.rowKey].fieldname, ev.value, fieldData[ev.rowKey].alias);
+						fieldData[ev.rowKey].operators = ev.value;
+						fieldGridInstance.resetData(fieldData);
+					}
 				},
 				{
 					name: 'alias',
 					header: mod_alert_arr.LBL_ALIAS,
 					editor: 'text',
 					whiteSpace: 'normal',
-					sortable: false
+					width: 250,
+					sortable: false,
+					onAfterChange(ev) {
+						fieldData[ev.rowKey].instruction = getInstruction(fieldData[ev.rowKey].fieldname, fieldData[ev.rowKey].operators, ev.value);
+						fieldData[ev.rowKey].alias = ev.value;
+						fieldGridInstance.resetData(fieldData);
+					}
 				},
 				{
 					name: 'sort',
 					header: mod_alert_arr.LBL_SORT,
 					whiteSpace: 'normal',
+					width: 150,
 					formatter: 'listItemText',
 					editor: {
 						type: 'select',
@@ -99,6 +203,23 @@ document.addEventListener('DOMContentLoaded', function (event) {
 								{ text: mod_alert_arr.LBL_NONE, value: 'NONE' },
 								{ text: mod_alert_arr.ASC, value: 'ASC' },
 								{ text: mod_alert_arr.DESC, value: 'DESC' }
+							]
+						}
+					},
+					sortable: false
+				},
+				{
+					name: 'group',
+					header: mod_alert_arr.LBL_GROUP,
+					whiteSpace: 'normal',
+					width: 150,
+					formatter: 'listItemText',
+					editor: {
+						type: 'radio',
+						options: {
+							listItems:[
+							{ text: alert_arr.NO, value: '0' },
+							{ text: alert_arr.YES, value: '1' }
 							]
 						}
 					},
@@ -127,11 +248,5 @@ document.addEventListener('DOMContentLoaded', function (event) {
 			}
 		});
 		tui.Grid.applyTheme('striped');
-		// const pgcontainer = document.getElementById('tui-pagination-container');
-		// const pginstance = new Pagination(pgcontainer, {
-		// 	useClient: true,
-		// 	perPage: 5
-		// });
-		// pginstance.getCurrentPage();
 	});
 });
