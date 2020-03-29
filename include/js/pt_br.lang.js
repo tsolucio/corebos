@@ -5,7 +5,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|01/03/2012|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese|13/03/2020|Sao Paulo/SP/Brasil.|www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese|26/03/2020|Sao Paulo/SP/Brasil.|www.slemernet.com.br
  ********************************************************************************/
 
 var alert_arr = {
@@ -261,7 +261,7 @@ var alert_arr = {
 	/* Webmails */
 	'LBL_PRINT_EMAIL': 'Imprimir',
 	'LBL_DELETE_EMAIL': 'Apagar',
-	'LBL_DOWNLOAD_ATTACHMENTS': 'Baixar Anexos',
+	'LBL_DOWNLOAD_ATTACHMENTS': 'Baixar anexos',
 	'LBL_QUALIFY_EMAIL': 'Qualificar',
 	'LBL_FORWARD_EMAIL': 'Encaminhar',
 	'LBL_REPLY_TO_SENDER': 'Responder remetente',
@@ -275,9 +275,9 @@ var alert_arr = {
 	'MSG_ENABLE_SINGLEPANE_VIEW': 'Habilitar visualização monolítica',
 	'MSG_DISABLE_SINGLEPANE_VIEW': 'Desabilitar visualização monolítica',
 
-	'MSG_FTP_BACKUP_DISABLED': 'Desabilitar Backup FTP',
+	'MSG_FTP_BACKUP_DISABLED': 'Desabilitar backup FTP',
 	'MSG_LOCAL_BACKUP_DISABLED': 'Backup local desabilitado',
-	'MSG_FTP_BACKUP_ENABLED': 'Backup FTP Habilitado',
+	'MSG_FTP_BACKUP_ENABLED': 'Backup FTP habilitado',
 	'MSG_LOCAL_BACKUP_ENABLED': 'Backup local habilitado',
 	'MSG_CONFIRM_PATH': 'confirme com os detalhes do path',
 	'MSG_CONFIRM_FTP_DETAILS': 'confirme com os detalhes do FTP',
@@ -386,6 +386,7 @@ var alert_arr = {
 	'ONLY_ONE_MODULE_PERMITTED_FOR_REPORT' : 'Você pode selecionar apenas um módulo relacionado para esse tipo de relatório',
 	'MUST_SELECT_ONE_MODULE_FOR_REPORT' : 'Você deve selecionar um módulo relacionado para esse tipo de relatório',
 	'LBL_NEW_CONDITION' : 'Nova condição',
+	'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL' : 'Novo grupo condição',
 	'WF_UPDATE_MAP_ERROR' : '** ERRO **: Esta tarefa usa um campo que não existe:',
 	'WF_UPDATE_MAP_ERROR_INFO' : 'A tarefa será carregada com as configurações INCORRETAS para permitir que você conserte. Os valores apresentados não são corretos !!',
 	'MoveUp' : 'Subir',
@@ -419,10 +420,10 @@ var alert_arr = {
 	'SHOWING' : 'Exibindo',
 	'OF' : 'de',
 	'ERR_Massedit' : 'Erro na edição em massa',
-	'ProcessFINISHED' : 'Processo Finalizado',
+	'ProcessFINISHED' : 'Processo finalizado',
 	'duplicatednotallowed' : 'Módulos duplicados não são permitidos',
 	'HAS_THIS_AS_NTH_CHILD' : 'Tem este registro como enésimo filho',
 	'Okay': 'Ok',
-	'Failed': 'Failed',
-	'Warning': 'Warning'
+	'Failed': 'Falhou',
+	'Warning': 'Alerta'
 };

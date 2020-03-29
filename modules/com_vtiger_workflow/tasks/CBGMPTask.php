@@ -21,7 +21,7 @@ require_once 'include/integrations/gmp/gmp.php';
 
 class CBGMPTask extends VTTask {
 	public $executeImmediately = true;
-	private $gmp_url = 'http://www.google-analytics.com/collect?';
+	private $gmp_url = 'https://www.google-analytics.com/collect?';
 
 	public function getFieldNames() {
 		return array('url_query');

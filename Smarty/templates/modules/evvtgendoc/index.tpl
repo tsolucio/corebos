@@ -19,7 +19,7 @@
 </div>
 </td><td>
 <input id="recordval" name="recordval" type="hidden" value="">
-<input type="text" id="recordval_display" name="recordval_display" readonly placeholder="{'LBL_SELECT'|@getTranslatedString}" class="slds-input" style="width:22%;;border:1px solid #dddbda;" />
+<input type="text" id="recordval_display" name="recordval_display" readonly placeholder="{'LBL_SELECT'|@getTranslatedString}" class="slds-input" style="width:22%;border:1px solid #dddbda;" />
 &nbsp;
 <img id="entity"
 	src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{'LBL_SELECT'|@getTranslatedString}" title="{'LBL_SELECT'|@getTranslatedString}" align="absmiddle" style='cursor:hand;cursor:pointer'
@@ -33,7 +33,7 @@
 <tr><td style="padding: 18px;"><label class="slds-form-element__label" for="form-element-01">{'LBL_DOCUMENT_TEMPLATE'|@getTranslatedString:'evvtgendoc'}</label></td>
 <td><input id="gendoctemplate" name="gendoctemplate" type="hidden" value="">
 <input id="gendoctemplate_type" name="gendoctemplate_type" type="hidden" value="Documents">
-<input type="text" id="gendoctemplate_display" name="gendoctemplate_display" readonly placeholder="{'LBL_SELECT'|@getTranslatedString}" class="slds-input" style="width:22%;;border:1px solid #dddbda;" />&nbsp;
+<input type="text" id="gendoctemplate_display" name="gendoctemplate_display" readonly placeholder="{'LBL_SELECT'|@getTranslatedString}" class="slds-input" style="width:22%;border:1px solid #dddbda;" />&nbsp;
 
 <img src="{'select.gif'|@vtiger_imageurl:$THEME}"
 alt="{'LBL_SELECT'|@getTranslatedString}" title="{'LBL_SELECT'|@getTranslatedString}" {literal}onclick='window.open("index.php?module=Documents&action=Popup&html=Popup_picker&forfield=gendoctemplate&srcmodule=evvtgendoc&forrecord=&form=&query=true&search=true&searchtype=advance&advft_criteria=[{\"groupid\":\"1\",\"columnname\":\"vtiger_notes:template:template:Documents_Template:V\",\"comparator\":\"e\",\"value\":\"1\",\"columncondition\":\"and\"},{\"groupid\":\"1\",\"columnname\":\"vtiger_notes:template_for:template_for:Documents_Template_For:V\",\"comparator\":\"e\",\"value\":\""+document.getElementById("recordval_type").value+"\",\"columncondition\":\"\"}]&advft_criteria_groups=[null,{\"groupcondition\":\"\"}]","vtlibui10","width=680,height=602,resizable=0,scrollbars=0,top=150,left=200");'{/literal} align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;

@@ -7,24 +7,24 @@
  * Portions created by JPL TSolucio, S.L are Copyright (C) JPL TSolucio, S.L.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 24/09/2018 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 24/03/2020 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
  ********************************************************************************/
 
 $mod_strings = array(
 'LBL_CAMPAIGN_INFORMATION'=>'Informação da campanha',
 'LBL_CUSTOM_INFORMATION'=>'Informação customizada',
 'LBL_DESCRIPTION_INFORMATION'=>'Descrição da informação',
-'LBL_EXPECTATIONS_AND_ACTUALS'=>'Expectativas & atualidades',
+'LBL_EXPECTATIONS_AND_ACTUALS'=>'Expectativas & atualidade',
 
 'Campaign Name'=>'Nome campanha',
 'Campaign Type'=>'Tipo campanha',
 'Campaign Status'=>'Status campanha',
 'Campaign ID'=>'ID campanha',
-'Expected Close Date'=>'Previsão fechamento',
+'Expected Close Date'=>'Previsão de fechamento',
 'Expected Revenue'=>'Previsão receita',
 'Budget Cost'=>'Custo orçado',
 'Actual Cost'=>'Custo atual',
-'Expected Response'=>'Expectativa resposta',
+'Expected Response'=>'Expectativa de resposta',
 'Assigned To'=>'Responsável',
 'Num Sent'=>'No. envio',
 'Created Time'=>'Data & hora criação',

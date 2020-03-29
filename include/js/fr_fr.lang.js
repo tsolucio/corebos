@@ -373,6 +373,7 @@ var alert_arr = {
 	'ONLY_ONE_MODULE_PERMITTED_FOR_REPORT' : 'You can select only one related module for this type of report',
 	'MUST_SELECT_ONE_MODULE_FOR_REPORT' : 'Vous devez choisir un module lié pour ce type de rapport',
 	'LBL_NEW_CONDITION' : 'Nouvelle condition',
+	'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL' : 'Nouveau groupe de condition',
 	'WF_UPDATE_MAP_ERROR' : '**ERREUR**: Cette tâche utilise un champ qui n\'existe pas: ',
 	'WF_UPDATE_MAP_ERROR_INFO' : 'Cette tâche chargera avec des paramètres erronés afin que vous puissiez la réparer. Les valeurs affichées ne sont pas CORRECTES!!',
 	'MoveUp' : 'Descendre',

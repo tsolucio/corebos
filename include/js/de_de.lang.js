@@ -385,6 +385,7 @@ var alert_arr = {
 	'ONLY_ONE_MODULE_PERMITTED_FOR_REPORT' : 'Sie können für diese Art Bericht nur ein verknüpftes Modul auswählen',
 	'MUST_SELECT_ONE_MODULE_FOR_REPORT' : 'Sie müssen für diese Art Bericht ein verknüpftes Modul auswählen',
 	'LBL_NEW_CONDITION' : 'Neue Bedingung',
+	'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL' : 'Neue Bedingungsgruppe',
 	'WF_UPDATE_MAP_ERROR' : '**Fehler**: Diese Aufgabe verwendet ein nicht existierendes Feld: ',
 	'WF_UPDATE_MAP_ERROR_INFO' : 'Die Aufgabe wird mit FALSCHEN Einstellungen ausgeführt, um Ihnen zu ermöglichen, den Fehler zu beheben. Die gezeigten Werte sind FALSCH!',
 	'MoveUp' : 'Nach oben bewegen',

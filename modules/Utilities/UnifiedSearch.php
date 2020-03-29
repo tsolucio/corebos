@@ -84,16 +84,17 @@ if (isset($query_string) && $query_string != '') {
 	}
 	$i = 0;
 	$moduleRecordCount = array();
+	echo '<div id="globasearch_results" style="display:none;">';
 	foreach ($object_array as $module => $object_name) {
 		if ($curModule == 'Utilities' || ($curModule == $module && !empty($_REQUEST['ajax']))) {
 			$focus = CRMEntity::getInstance($module);
 			if (isPermitted($module, 'index') == 'yes') {
 				$smarty = new vtigerCRM_Smarty;
 
-				if (!file_exists("modules/$module/language/".$current_language.".lang.php")) {
+				if (!file_exists("modules/$module/language/".$current_language.'.lang.php')) {
 					$current_language = 'en_us';
 				}
-				require_once "modules/$module/language/".$current_language.".lang.php";
+				require_once "modules/$module/language/".$current_language.'.lang.php';
 
 				$smarty->assign('MOD', $mod_strings);
 				$smarty->assign('APP', $app_strings);
@@ -201,7 +202,8 @@ if (isset($query_string) && $query_string != '') {
 				$listview_header = getListViewHeader($focus, $module, '', '', '', 'global', $oCustomView);
 				$listview_entries = getListViewEntries($focus, $module, $list_result, $navigation_array, '', '', '', '', $oCustomView);
 
-				//Do not display the Header if there are no entires in listview_entries
+				//Do not display the Header if there are no entries in listview_entries
+				unset($listview_entries['total']);
 				if (count($listview_entries) > 0) {
 					$display_header = 1;
 					if (vtlib_isModuleActive('ListViewColors') && count($listview_entries) == 2) {
@@ -233,6 +235,7 @@ if (isset($query_string) && $query_string != '') {
 			}
 		}
 	}
+	echo '</div>';
 	if ($total_record_count == 1) {
 		// we have just one record in one module > we go there directly
 		$modwith1 = array_filter($moduleRecordCount, function ($e) {
@@ -245,6 +248,14 @@ if (isset($query_string) && $query_string != '') {
 		if ($recfound != '') {
 			echo "<script type='text/javascript'>gotourl('index.php?module=$modfound&record=$recfound&action=DetailView');</script>";
 		}
+	}
+	if ($total_record_count == 0) {
+		echo "<script type='text/javascript'>document.getElementById('globasearch_results').style.display='none';</script>";
+		$smarty->assign('DESERTInfo', getTranslatedString('LBL_NO_DATA'));
+		$smarty->display('Components/Desert.tpl');
+	}
+	if ($total_record_count > 1) {
+		echo "<script type='text/javascript'>document.getElementById('globasearch_results').style.display='block';</script>";
 	}
 
 	//Added to display the Total record count

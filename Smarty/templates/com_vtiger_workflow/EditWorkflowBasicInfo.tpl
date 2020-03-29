@@ -59,7 +59,7 @@
 	<div class="slds-form-element slds-form-element_horizontal" id="account_block" style="margin-left:0.5rem;" >
 		<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
 		{'LBL_START_DATE'|@getTranslatedString:'com_vtiger_workflow'}&nbsp;
-		{include file='Components/TooltipInfo.tpl' TOOLTIPInfo='Leave empty for ALL date ranges.'|getTranslatedString:'com_vtiger_workflow'}
+		{include file='com_vtiger_workflow/WorkflowDateRangeHelp.tpl'}
 		</label>
 		<div class="slds-form-element__control slds-m-top_x-small">
 			<input name="wfstarton" id="jscal_field_wfstarton" type="text" class="slds-input slds-page-header__meta-text" size="16" maxlength="16" value="" style="width:50%">

@@ -6,7 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor: Ranieri Slemer | 19-03-2020 | Translate | www.ecrmweb.com.br | Sao Paulo | SP | Brazil
+ * Contributor: Ranieri Slemer | 28-03-2020 | Translate | www.ecrmweb.com.br | Sao Paulo | SP | Brazil
  ************************************************************************************/
 
 $mod_strings = array(
@@ -33,8 +33,8 @@ $mod_strings = array(
 	'IOMap' => 'IOMap',
 	'Search and Update' => 'Search and Update',
 	'FieldDependency' => 'Field Dependency',
-	'Record Access Control' => 'Record Access Control',
-	'Record Set Mapping' => 'Record Set Mapping',
+	'Record Access Control' => 'RCA - Record Access Control',
+	'Record Set Mapping' => 'Business mapping',
 	'Module Set Mapping' => 'Module Set Mapping',
 	'Field Set Mapping' => 'Field Set Mapping',
 	'ListColumns' => 'List Columns',

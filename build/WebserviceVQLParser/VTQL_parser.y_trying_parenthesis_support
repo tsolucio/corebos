@@ -334,7 +334,7 @@ function updateParenClose() {
 function getHowManyStatesInParenthesis() {
 	$howmany = 0;$counting=false;
 	foreach ($this->yystack as $key => $value) {
-		if ($value->minor==')') break;;
+		if ($value->minor==')') break;
 		if ($counting) {
 			$howmany++;
 		}

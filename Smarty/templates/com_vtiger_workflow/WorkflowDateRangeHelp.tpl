@@ -7,16 +7,9 @@
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
  ********************************************************************************/
--->
-*}
+-->*}
 
-<section class="tooltip" role="dialog">
-<span class="slds-icon_container slds-icon-utility-info">
-	<svg class="slds-icon slds-icon slds-icon_xx-small slds-icon-text-default" aria-hidden="true">
-	<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
-	</svg>
-</span>
-<span class="tooltiptext slds-popover slds-nubbin_left-top-corner">
-{block name=TOOLTIPInfo}Nothing to add!{/block}
-</span>
-</section>
+{extends file='Components/TooltipInfo.tpl'}
+{block name=TOOLTIPInfo}
+<span class="slds-m-left_small">{'Leave empty for ALL date ranges.'|getTranslatedString:'com_vtiger_workflow'}</span>
+{/block}

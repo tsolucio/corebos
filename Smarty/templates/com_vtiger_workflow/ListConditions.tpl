@@ -73,17 +73,17 @@
 	{else}
 	<div class="slds-col slds-size_1-of-1 slds-page-header__meta-text">
 	{/if}
-		<table class="tableHeading" width="100%" border="0" cellspacing="0" cellpadding="5">
-			<tr>
-				<td class="small cblds-t-align_right" align="right">
-					<span id="workflow_loading" style="display:none">
-					<b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0">
-					</span>
-					<input type="button" class="crmButton create small" value="{$MOD.LBL_NEW_CONDITION_GROUP_BUTTON_LABEL}" id="save_conditions_add" style='display: none;'/>
-				</td>
-			</tr>
-		</table>
-		<br>
+		<div id="workflow_loading" class="slds-align_absolute-center" style="height:5rem;">
+		<b>{$MOD.LBL_LOADING}</b>
+		</div>
+		<div id="startwhennoconditions" class="slds-align_absolute-center" style="height:5rem;display:none;">
+			<button class="slds-button slds-button_neutral" type="button" id="startwhennoconditionsbutton">
+				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
+				</svg>
+				{$MOD.LBL_NEW_CONDITION_GROUP_BUTTON_LABEL}
+			</button>
+		</div>
 		<div id="save_conditions"></div>
 		<br>
 		{include file="com_vtiger_workflow/FieldExpressions.tpl"}
@@ -94,7 +94,15 @@
 			<legend class="slds-form-element__legend slds-form-element__label">{'Select where to get the records from'|@getTranslatedString:$MODULE_NAME}</legend>
 			<div class="slds-form-element__control">
 			<span class="slds-radio slds-p-top_xx-small">
-			<input type="radio" id="radio-5" value="radio-5" name="options" checked="" />
+				<input type="radio" id="radio-4" value="conditions" name="options" checked="" />
+				<label class="slds-radio__label" for="radio-4">
+				<span class="slds-radio_faux"></span>
+				<span class="slds-form-element__label">
+					<span style="width:150px;display:inline-block;">{$MOD.LBL_CONDITIONS}</span>
+				</label>
+			</span>
+			<span class="slds-radio slds-p-top_xx-small">
+			<input type="radio" id="radio-5" value="cbquestion" name="options" />
 			<label class="slds-radio__label" for="radio-5">
 			<span class="slds-radio_faux"></span>
 			<span class="slds-form-element__label">
@@ -127,7 +135,7 @@
 			</label>
 			</span>
 			<span class="slds-radio slds-p-top_xx-small">
-			<input type="radio" id="radio-6" value="radio-6" name="options" />
+			<input type="radio" id="radio-6" value="recordset" name="options" />
 			<label class="slds-radio__label" for="radio-6">
 			<span class="slds-radio_faux"></span>
 			<span class="slds-form-element__label">
@@ -161,7 +169,7 @@
 			</label>
 			</span>
 			<span class="slds-radio slds-p-top_xx-small">
-			<input type="radio" id="radio-7" value="radio-7" name="options" />
+			<input type="radio" id="radio-7" value="onerecord" name="options" />
 			<label class="slds-radio__label" for="radio-7">
 			<span class="slds-radio_faux"></span>
 			<span class="slds-form-element__label">

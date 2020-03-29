@@ -189,12 +189,10 @@ class ModTracker {
 		$module_name = getTabModuleName($tabid);
 
 		$rs=$adb->pquery(
-			"SELECT businessactionsid 
-                                FROM vtiger_businessactions INNER JOIN vtiger_crmentity ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid 
-                               WHERE deleted = 0
-                                 AND elementtype_action='DETAILVIEWBASIC' 
-                                 AND linklabel = 'View History' 
-                                 AND (module_list = ? OR module_list LIKE ? OR module_list LIKE ? OR module_list LIKE ?)",
+			"SELECT businessactionsid
+			FROM vtiger_businessactions INNER JOIN vtiger_crmentity ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid
+			WHERE deleted = 0 AND elementtype_action='DETAILVIEWBASIC' AND linklabel = 'View History'
+				AND (module_list = ? OR module_list LIKE ? OR module_list LIKE ? OR module_list LIKE ?)",
 			array($module_name, $module_name.' %', '% '.$module_name.' %', '% '.$module_name,)
 		);
 
@@ -237,10 +235,11 @@ class ModTracker {
 	}
 
 	/**
-	 * Get the list of changed record after $mtime
-	 * @param <type> $mtime
-	 * @param <type> $user
-	 * @param <type> $limit
+	 * Get the list of changed records after an internal pointer and a given datetime, optionally limiting the results
+	 * @param int $uniqueId
+	 * @param int $mtime
+	 * @param int $limit
+	 * @return array list of created,updated and deleted records and some additional control information
 	 */
 	public function getChangedRecords($uniqueId, $mtime, $limit = 100) {
 		global $adb;
@@ -269,8 +268,10 @@ class ModTracker {
 		$result = $adb->pquery($query, $params);
 
 		$modTime = array();
+		$createdRecords = array();
+		$updatedRecords = array();
+		$deletedRecords = array();
 		$rows = $adb->num_rows($result);
-
 		for ($i=0; $i<$rows; $i++) {
 			$status = $adb->query_result($result, $i, 'status');
 
@@ -303,7 +304,7 @@ class ModTracker {
 		if (!empty($modTime)) {
 			$maxModifiedTime = max($modTime);
 		}
-		if (!$maxModifiedTime) {
+		if (empty($maxModifiedTime)) {
 			$maxModifiedTime = $datetime;
 		}
 
@@ -311,20 +312,13 @@ class ModTracker {
 		$output['updated'] = $updatedRecords;
 		$output['deleted'] = $deletedRecords;
 
-		$moreQuery = 'SELECT * FROM vtiger_modtracker_basic WHERE id > ? AND changedon >= ? AND module IN ('.generateQuestionMarks($accessibleModules).')';
-
+		$moreQuery = 'SELECT count(*) FROM vtiger_modtracker_basic WHERE id>? AND changedon>=? AND module IN ('.generateQuestionMarks($accessibleModules).')';
 		$param = array($maxUniqueId, $maxModifiedTime);
 		foreach ($accessibleModules as $entityModule) {
 			$param[] = $entityModule;
 		}
-
 		$result = $adb->pquery($moreQuery, $param);
-
-		if ($adb->num_rows($result)>0) {
-			$output['more'] = true;
-		} else {
-			$output['more'] = false;
-		}
+		$output['more'] = ($adb->query_result($result, 0, 0)>0);
 
 		$output['uniqueid'] = $maxUniqueId;
 
@@ -341,29 +335,51 @@ class ModTracker {
 		return $output;
 	}
 
+	/** get all the changes that have happened on a record from a given date
+	 * @param int crmid of record that we want the changes for
+	 * @param string ISO formatted date and time from which we want the changes
+	 * @return array of all field changes of the record indexed per date of the change
+	*/
 	public static function getRecordFieldChanges($crmid, $time) {
 		global $adb;
-		$date = date('Y-m-d H:i:s', $time);
-
 		$fieldResult = $adb->pquery(
 			'SELECT *
-				FROM vtiger_modtracker_detail
-				INNER JOIN vtiger_modtracker_basic ON vtiger_modtracker_basic.id = vtiger_modtracker_detail.id
-				WHERE crmid = ? AND changedon >= ?',
-			array($crmid, $date)
+			FROM vtiger_modtracker_detail
+			INNER JOIN vtiger_modtracker_basic ON vtiger_modtracker_basic.id=vtiger_modtracker_detail.id
+			WHERE crmid=? AND changedon>=?',
+			array($crmid, $time)
 		);
-		for ($i=0; $i<$adb->num_rows($fieldResult); $i++) {
-			$fieldName = $adb->query_result($fieldResult, $i, 'fieldname');
-			if ($fieldName == 'record_id' || $fieldName == 'record_module' ||
-				$fieldName == 'createdtime') {
+		$fields = array();
+		while ($row=$adb->fetch_array($fieldResult)) {
+			$fieldName = $row['fieldname'];
+			if ($fieldName == 'record_id' || $fieldName == 'record_module' || $fieldName == 'createdtime' || $fieldName == 'cbuuid') {
 				continue;
 			}
-
-			$field['postvalue'] = $adb->query_result($fieldResult, $i, 'postvalue');
-			$field['prevalue'] = $adb->query_result($fieldResult, $i, 'prevalue');
-			$fields[$fieldName] = $field;
+			$field['postvalue'] = $row['postvalue'];
+			$field['prevalue'] = $row['prevalue'];
+			$fields[$row['changedon']][$fieldName] = $field;
 		}
 		return $fields;
+	}
+
+	/** get all the changes that have happened on a field in a record
+	 * @param int crmid of record that we want the changes for
+	 * @param string field name to retrieve history of
+	 * @return array of all field changes of the record indexed per date of the change
+	*/
+	public static function getRecordFieldHistory($crmid, $field) {
+		global $adb;
+		$changes = ModTracker::getRecordFieldChanges($crmid, '1970-01-01 00:00');
+		$ret = array();
+		foreach ($changes as $change) {
+			if (isset($change[$field])) {
+				$ret[] = array(
+					'from' => $change[$field]['prevalue'],
+					'to' => $change[$field]['postvalue'],
+				);
+			}
+		}
+		return $ret;
 	}
 
 	public static function isViewPermitted($linkData) {

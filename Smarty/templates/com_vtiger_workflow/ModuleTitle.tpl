@@ -81,7 +81,7 @@
 							{$MOD.LBL_NEW_TEMPLATE}
 						</button>
 						{/if}
-						<button class="slds-button slds-button_success" type="button" id='save_submit' style="display:none;" onclick="document.forms['EditView'].submit();">
+						<button class="slds-button slds-button_success" type="button" id='save_submit' style="display:none;">
 							<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
 							</svg>
@@ -98,7 +98,7 @@
 				{elseif $show=='tkedit'}
 				<div class="slds-grid slds-gutters slds-m-around_xxx-small">
 					<div class="slds-col">
-						<button class="slds-button slds-button_success" type="button" id='save' onclick="document.forms['new_task'].submit();">
+						<button class="slds-button slds-button_success" type="button" id='save'>
 							<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
 							</svg>
