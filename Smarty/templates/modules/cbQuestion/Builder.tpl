@@ -222,6 +222,17 @@
 					</svg>
 					{'Test SQL'|@getTranslatedString:'cbQuestion'}
 				</button>
+				<div class="slds-form-element" style="display:inline-flex;vertical-align:top;">
+					<label class="slds-checkbox_toggle slds-grid" onclick="toggleSQLView();">
+						<span class="slds-form-element__label slds-m-bottom_none"></span>
+						<input type="checkbox" id="checkboxsqlwsq" aria-describedby="show sql or web service query" />
+						<span id="checkbox-toggle-16" class="slds-checkbox_faux_container" aria-live="assertive">
+						<span class="slds-checkbox_faux"></span>
+						<span class="slds-checkbox_on">SQL</span>
+						<span class="slds-checkbox_off">Web Service</span>
+						</span>
+					</label>
+				</div>
 			</div>
 		</div>
 		<div class="slds-grid slds-gutters slds-m-around_xxx-small bldcontainer-hidden" id="cbqmsgdiv">
@@ -237,7 +248,8 @@
 			</div>
 		</div>
 		<fieldset class="slds-form-element slds-m-around_x-small">
-		<textarea id="bqsql" class="slds-textarea"></textarea>
+		<textarea id="bqsql" class="slds-textarea" style="display:none;">SQL</textarea>
+		<textarea id="bqwsq" class="slds-textarea">WS</textarea>
 		</fieldset>
 	</div>
 </div>

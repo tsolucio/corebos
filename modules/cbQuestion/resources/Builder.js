@@ -1,10 +1,31 @@
 
 function copysql() {
 	showSQLMsg(alert_arr.Copied, 'success');
-	document.getElementById('bqsql').select();
+	let cb = document.getElementById('checkboxsqlwsq');
+	if (cb.checked) {
+		document.getElementById('bqsql').select();
+	} else {
+		document.getElementById('bqwsq').select();
+	}
 	document.execCommand('copy');
 	window.getSelection().removeAllRanges();
 	hideSQLMsg();
+}
+
+function testsql(qid) {
+}
+
+function toggleSQLView() {
+	let cb = document.getElementById('checkboxsqlwsq');
+	if (cb.checked) {
+		document.getElementById('bqsql').style.display = 'flex';
+		document.getElementById('bqwsq').style.display = 'none';
+		cb.value = 1;
+	} else {
+		document.getElementById('bqsql').style.display = 'none';
+		document.getElementById('bqwsq').style.display = 'flex';
+		cb.value = 0;
+	}
 }
 
 function changecbqModule(newmodule) {
