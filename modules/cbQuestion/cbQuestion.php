@@ -263,11 +263,16 @@ class cbQuestion extends CRMEntity {
 
 	public static function getAnswer($qid, $params = array()) {
 		global $current_user, $default_charset;
-		if (isPermitted('cbQuestion', 'DetailView', $qid) != 'yes') {
-			return array('type' => 'ERROR', 'answer' => 'LBL_PERMISSION');
-		}
 		$q = new cbQuestion();
-		$q->retrieve_entity_info($qid, 'cbQuestion');
+		if (empty($qid) && !empty($params['cbQuestionRecord']) && is_array($params['cbQuestionRecord'])) {
+			$q->column_fields = $params['cbQuestionRecord'];
+			unset($params['cbQuestionRecord']);
+		} else {
+			if (isPermitted('cbQuestion', 'DetailView', $qid) != 'yes') {
+				return array('type' => 'ERROR', 'answer' => 'LBL_PERMISSION');
+			}
+			$q->retrieve_entity_info($qid, 'cbQuestion');
+		}
 		if ($q->column_fields['qtype']=='Mermaid') {
 			return array(
 				'columns' => html_entity_decode($q->column_fields['qcolumns'], ENT_QUOTES, $default_charset),
