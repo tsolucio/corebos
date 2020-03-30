@@ -340,6 +340,10 @@ class cbQuestion extends CRMEntity {
 					});
 					mermaid.init();
 				});
+				mermaid.initialize({
+					securityLevel: "loose"
+				});
+				mermaid.init();
 				</script>';
 				break;
 			case 'ERROR':
