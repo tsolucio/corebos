@@ -68,7 +68,126 @@ function hideSQLMsg() {
 	);
 }
 
-function appendEmptyFieldRow() {
+function getSQLSelect() {
+	let slflds = [];
+	fieldData.map(finfo => {
+		if (finfo.instruction != '') {
+			slflds.push({
+				fieldname:(finfo.alias=='' ? finfo.fieldname : finfo.alias),
+				operation:'is',
+				value:finfo.instruction,
+				valuetype:(finfo.fieldname==finfo.instruction ? 'fieldname' : 'expression'),
+				joincondition:'and',
+				groupid:0,
+				groupjoin:''
+			});
+		}
+	});
+	if (slflds.length>0) {
+		slflds = JSON.stringify(slflds);
+	} else {
+		slflds = '';
+	}
+	return slflds;
+}
+
+function getSQLConditions() {
+	var conditions = [];
+	i=0;
+	$('#save_conditions').children('.condition_group_block').each(function (j, conditiongroupblock) {
+		$(conditiongroupblock).children('.save_condition_group').each(function (k, conditiongroup) {
+			$(conditiongroup).children().each(function (l) {
+				var fieldname = this.querySelector('div > .cefieldname').value;
+				var operation = this.querySelector('div > .ceoperation').value;
+				var value = this.querySelector('div > .ceexpressionvalue').value;
+				var valuetype = this.querySelector('div > .ceexpressiontype').value;
+				var joincondition = this.querySelector('div > .cejoincondition').value;
+				var groupid = this.querySelector('div > .groupid').value;
+				var groupjoin = '';
+				if (groupid != '') {
+					let scgj = document.getElementById('save_condition_group_'+groupid+'_joincondition');
+					if (scgj != null) {
+						groupjoin = scgj.value;
+					}
+				}
+				var condition = {
+					fieldname:fieldname,
+					operation:operation,
+					value:value,
+					valuetype:valuetype,
+					joincondition:joincondition,
+					groupid:groupid,
+					groupjoin:groupjoin
+				};
+				conditions[i++]=condition;
+			});
+		});
+	});
+	var cnflds = '';
+	if (conditions.length!=0) {
+		cnflds = JSON.stringify(conditions);
+	}
+	return cnflds;
+}
+
+function getSQLGroupBy() {
+	let gbflds = '';
+	fieldData.map(finfo => {
+		if (finfo.fieldname != 'custom' && finfo.group == '1') {
+			gbflds += finfo.fieldname + ',';
+		}
+	});
+	if (gbflds!='') {
+		gbflds = 'GROUP BY ' + gbflds.slice(0, -1);
+	}
+	return gbflds;
+}
+
+function getSQLOrderBy() {
+	let obflds = '';
+	fieldData.map(finfo => {
+		if (finfo.fieldname != 'custom' && finfo.sort != 'NONE') {
+			obflds += finfo.fieldname + ' ' + finfo.sort + ',';
+		}
+	});
+	if (obflds!='') {
+		obflds = 'ORDER BY ' + obflds.slice(0, -1);
+	}
+	return obflds;
+}
+
+function getSQLFinal() {
+	let sql = 'SELECT '+getSQLSelect();
+	sql += ' FROM '+document.getElementById('bqmodule').value;
+	let cn = getSQLConditions();
+	if (cn!='') {
+		sql += ' WHERE '+cn;
+	}
+	let gb = getSQLGroupBy();
+	if (gb!='') {
+		sql += ' ' + gb;
+	}
+	let ob = getSQLOrderBy();
+	if (ob!='') {
+		sql += ' ' + ob;
+	}
+	let limit = document.getElementById('qpagesize').value;
+	if (limit!=0) {
+		sql += ' LIMIT '+limit;
+	}
+	return sql;
+}
+
+function updateWSSQL() {
+	document.getElementById('bqwsq').value = getSQLFinal();
+}
+
+function updateFieldData(row, field, value) {
+	fieldData[row][field] = value;
+	updateWSSQL();
+}
+
+function appendEmptyFieldRow(ev) {
 	let emptyRow = {
 		'fieldname': 'custom',
 		'operators': 'custom',
@@ -159,9 +278,6 @@ function getInstruction(field, operator, alias) {
 	} else {
 		fins = fnam;
 	}
-	if (alias!='') {
-		fins += ' as '+alias;
-	}
 	return fins;
 }
 
@@ -188,7 +304,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 					sortable: true,
 					onAfterChange(ev) {
 						fieldData[ev.rowKey].instruction = getInstruction(ev.value, fieldData[ev.rowKey].operators, fieldData[ev.rowKey].alias);
-						fieldData[ev.rowKey].fieldname = ev.value;
+						updateFieldData(ev.rowKey, 'fieldname', ev.value);
 						fieldGridInstance.resetData(fieldData);
 					}
 				},
@@ -206,7 +322,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 					sortable: false,
 					onAfterChange(ev) {
 						fieldData[ev.rowKey].instruction = getInstruction(fieldData[ev.rowKey].fieldname, ev.value, fieldData[ev.rowKey].alias);
-						fieldData[ev.rowKey].operators = ev.value;
+						updateFieldData(ev.rowKey, 'operators', ev.value);
 						fieldGridInstance.resetData(fieldData);
 					}
 				},
@@ -218,9 +334,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 					width: 250,
 					sortable: false,
 					onAfterChange(ev) {
-						fieldData[ev.rowKey].instruction = getInstruction(fieldData[ev.rowKey].fieldname, fieldData[ev.rowKey].operators, ev.value);
-						fieldData[ev.rowKey].alias = ev.value;
-						fieldGridInstance.resetData(fieldData);
+						updateFieldData(ev.rowKey, 'alias', ev.value);
 					}
 				},
 				{
@@ -239,7 +353,10 @@ document.addEventListener('DOMContentLoaded', function (event) {
 							]
 						}
 					},
-					sortable: false
+					sortable: false,
+					onAfterChange(ev) {
+						updateFieldData(ev.rowKey, 'sort', ev.value);
+					}
 				},
 				{
 					name: 'group',
@@ -256,14 +373,20 @@ document.addEventListener('DOMContentLoaded', function (event) {
 							]
 						}
 					},
-					sortable: false
+					sortable: false,
+					onAfterChange(ev) {
+						updateFieldData(ev.rowKey, 'group', ev.value);
+					}
 				},
 				{
 					name: 'instruction',
 					header: mod_alert_arr.LBL_INSTRUCTION,
 					editor: 'text',
 					whiteSpace: 'normal',
-					sortable: false
+					sortable: false,
+					onAfterChange(ev) {
+						updateFieldData(ev.rowKey, 'instruction', ev.value);
+					}
 				}
 			],
 			data: fieldData,

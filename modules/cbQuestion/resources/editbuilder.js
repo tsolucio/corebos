@@ -277,12 +277,12 @@ function editbuilderscript($, conditions) {
 					opType['picklistValues']
 				)
 			);
-			value.replaceWith('<select id="save_condition_'+condno+'_value" class="slds-select ceexpressionvalue">'+options+'</select>');
+			value.replaceWith('<select id="save_condition_'+condno+'_value" class="slds-select ceexpressionvalue" onchange="updateWSSQL();">'+options+'</select>');
 			$('#save_condition_'+condno+'_value_type').val('rawtext');
 		}
 		function forString(opType, condno) {
 			var value = $(format('#save_condition_%s_value', condno));
-			value.replaceWith(format('<input type="text" id="save_condition_%s_value" value="" class="slds-input ceexpressionvalue" readonly style="border:1px solid #dddbda;width:64%;" />', condno));
+			value.replaceWith(format('<input type="text" id="save_condition_%s_value" value="" class="slds-input ceexpressionvalue" readonly style="border:1px solid #dddbda;width:64%;" onchange="updateWSSQL();" />', condno));
 			var fv = $('#save_condition_'+condno+'_value');
 			fv.bind('focus', function () {
 				editFieldExpression($(this), opType);
@@ -339,6 +339,7 @@ function editbuilderscript($, conditions) {
 			removeConditionGroup(groupno);
 		}
 		resetGroupJoinCondition(groupno);
+		updateWSSQL();
 	}
 
 	function resetGroupJoinCondition(groupno) {
@@ -511,7 +512,7 @@ function editbuilderscript($, conditions) {
 							var group_condition_html = '';
 							if ($('.condition_group_block').length > 0) {
 								group_condition_html = '<div class="condition_group_join_block" id="condition_group_'+groupid+'_joincondition" > \
-									<select id="save_condition_group_'+groupid+'_joincondition" class="slds-select cejoincondition" style="width:fit-content;"></select></div>';
+									<select id="save_condition_group_'+groupid+'_joincondition" class="slds-select cejoincondition" style="width:fit-content;" onchange="updateWSSQL();"></select></div>';
 							}
 							$('#save_conditions').append(`${group_condition_html}
 								<div id="condition_group_${groupid}" class="condition_group_block" >
@@ -567,15 +568,15 @@ function editbuilderscript($, conditions) {
 							`<div id="save_condition_${condid}" class='slds-grid slds-gutters_x-small slds-m-bottom_large'>
 							<div class="slds-col slds-size_4-of-8">
 								<input type="hidden" id="save_condition_${condid}_groupid" class="groupid" value="${groupid}" />
-								<select id="save_condition_${condid}_fieldname" class="slds-select cefieldname"></select>
+								<select id="save_condition_${condid}_fieldname" class="slds-select cefieldname" onchange="updateWSSQL();"></select>
 							</div>
 							<div class="slds-col slds-size_1-of-8">
-								<select id="save_condition_${condid}_operation" class="slds-select ceoperation"></select>
+								<select id="save_condition_${condid}_operation" class="slds-select ceoperation" onchange="updateWSSQL();"></select>
 							</div>
 							<div class="slds-col slds-size_3-of-8">
 								<input type="hidden" id="save_condition_${condid}_value_type" class="ceexpressiontype" />
-								<input type="text" id="save_condition_${condid}_value" class="slds-input ceexpressionvalue" readonly style="border:1px solid #dddbda;width:64%;" />
-								<select id="save_condition_${condid}_joincondition" class="slds-select cejoincondition" style="width:fit-content;"></select>
+								<input type="text" id="save_condition_${condid}_value" class="slds-input ceexpressionvalue" readonly style="border:1px solid #dddbda;width:64%;" onchange="updateWSSQL();" />
+								<select id="save_condition_${condid}_joincondition" class="slds-select cejoincondition" style="width:fit-content;" onchange="updateWSSQL();"></select>
 								<span id="save_condition_${condid}_remove">
 									<button class="slds-button slds-button_icon slds-button_icon-border-filled" title="${alert_arr.JSLBL_Delete}">
 									<svg class="slds-button__icon" aria-hidden="true">
@@ -696,7 +697,7 @@ function editbuilderscript($, conditions) {
 						});
 						var out = '';
 						if (conditions.length!=0) {
-							var out = JSON.stringify(conditions);
+							out = JSON.stringify(conditions);
 						}
 						$('#save_conditions_json').val(out);
 						document.forms['EditView'].submit();
