@@ -316,11 +316,11 @@ class qactions_Action extends CoreBOS_ActionController {
 		$db_name = $dbconfig['db_name'];
 		$tablename = isset($_REQUEST['tablename']) ? vtlib_purify($_REQUEST['tablename']) : '';
 		$script_path = isset($_REQUEST['script_path']) ? vtlib_purify($_REQUEST['script_path']) : '';
-
+		$smarty = new vtigerCRM_Smarty();
 		$rs = $adb->pquery('select * from authorized_scripts where script_path=?', array($script_path));
 		$rdo = array();
 		if ($rs && $adb->num_rows($rs) > 0) {
-			$command = sprintf("".$script_path." %s %s %s %s %s", $db_username, $db_password, $db_name, $tablename, $record);
+			$command = sprintf($script_path.' %s %s %s %s %s', $db_username, $db_password, $db_name, $tablename, $record);
 			$output = shell_exec($command);
 			$rdo['status'] = 'OK';
 			$rdo['msg'] = $output;
