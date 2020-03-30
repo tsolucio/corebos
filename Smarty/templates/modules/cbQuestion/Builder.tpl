@@ -145,7 +145,7 @@
 	</div>
 </div>
 <div class="slds-col slds-size_1-of-2">
-	<button class="slds-button slds-button_neutral slds-float_right" type="button" id='addfield_button' onclick="appendEmptyFieldRow();">
+	<button class="slds-button slds-button_neutral slds-float_right" type="button" id='addfield_button' onclick="appendEmptyFieldRow(); event.stopPropagation();">
 		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
 		</svg>
@@ -271,8 +271,8 @@
 			</div>
 		</div>
 		<fieldset class="slds-form-element slds-m-around_x-small">
-		<textarea id="bqsql" class="slds-textarea" style="display:none;">SQL</textarea>
-		<textarea id="bqwsq" class="slds-textarea">WS</textarea>
+		<textarea id="bqsql" class="slds-textarea" style="display:none;height:280px;"></textarea>
+		<textarea id="bqwsq" class="slds-textarea" style="height:280px;"></textarea>
 		</fieldset>
 	</div>
 </div>
@@ -367,7 +367,7 @@
 	</div>
 </div>
 <div class="slds-col slds-size_1-of-2">
-	<button class="slds-button slds-button_neutral slds-float_right" type="button" id='launchsearch_button'>
+	<button class="slds-button slds-button_neutral slds-float_right" type="button" id='launchsearch_button' onclick=" event.stopPropagation();">
 		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
 		</svg>
