@@ -94,5 +94,6 @@ $mod_strings = array(
 	'Question Builder' => 'Question Builder',
 	'LBL_SYSTEMMODULES' => 'System Modules',
 	'RESULTS' => 'Results',
+	'Options' => 'Options',
 );
 ?>

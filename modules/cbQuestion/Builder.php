@@ -81,6 +81,12 @@ if (empty($_REQUEST['record'])) {
 	$smarty->assign('MODE', $focus->mode);
 	$smarty->assign('MODULES', getPicklistValuesSpecialUitypes('1613', '', $module));
 	$smarty->assign('targetmodule', $focus->column_fields['qmodule']);
+	$smarty->assign('bqname', $focus->column_fields['qname']);
+	$smarty->assign('bqcollection', $focus->column_fields['qcollection']);
+	$smarty->assign('sqlquery', $focus->column_fields['sqlquery']);
+	$smarty->assign('qpagesize', $focus->column_fields['qpagesize']);
+	$smarty->assign('qtype', $focus->column_fields['qtype']);
+	$smarty->assign('QTYPES', getAssignedPicklistValues('qtype', $current_user->roleid, $adb));
 	$smarty->assign('cancelgo', 'index.php?module=cbQuestion&action=DetailView&record='.$focus->id);
 	$smarty->display('modules/cbQuestion/Builder.tpl');
 }

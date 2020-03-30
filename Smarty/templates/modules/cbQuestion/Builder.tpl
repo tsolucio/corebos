@@ -62,6 +62,12 @@
 						</svg>
 						{$APP.LBL_SAVE_BUTTON_LABEL}
 					</button>
+					<button class="slds-button slds-button_success" type="submit" id='savenew'>
+						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
+						</svg>
+						{$APP.LBL_NEW_BUTTON_TITLE}
+					</button>
 					<button class="slds-button slds-button_destructive" type="button" onclick="gotourl('{$cancelgo}');">
 						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use>
@@ -77,6 +83,20 @@
 </div>
 
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher slds-card slds-m-around_medium">
+<div class="slds-p-around_x-small slds-grid slds-gutters">
+	<div class="slds-col slds-size_1-of-2 slds-form-element slds-text-align_left">
+		<legend class="slds-form-element__legend slds-form-element__label">{'qname'|@getTranslatedString:'cbQuestion'}</legend>
+		<div class="slds-form-element__control">
+			<input id="bqname" required name="bqname" class="slds-input slds-page-header__meta-text" value="{$bqname}" />
+		</div>
+	</div>
+	<div class="slds-col slds-size_1-of-2 slds-form-element slds-text-align_left">
+		<legend class="slds-form-element__legend slds-form-element__label">{'qcollection'|@getTranslatedString:'cbQuestion'}</legend>
+		<div class="slds-form-element__control">
+			<input id="bqcollection" required name="bqcollection" class="slds-input slds-page-header__meta-text" value="{$bqcollection}" />
+		</div>
+	</div>
+</div>
 <div class="slds-p-around_x-small slds-grid slds-gutters">
 	<div class="slds-col slds-size_1-of-2 slds-form-element slds-text-align_left">
 		<legend class="slds-form-element__legend slds-form-element__label">{'LBL_MODULE'|@getTranslatedString:'cbMap'}</legend>
@@ -254,6 +274,65 @@
 	</div>
 </div>
 
+<div class="slds-page-header">
+<div class="slds-grid slds-gutters">
+<div class="slds-col">
+	<div class="slds-page-header__col-title">
+	<div class="slds-media">
+		<div class="slds-media__body">
+		<div class="slds-page-header__name">
+			<div class="slds-page-header__name-title">
+			<h1>
+				<span class="slds-page-header__title slds-truncate" title="{'Options'|@getTranslatedString:'cbQuestion'}">
+					<span class="slds-tabs__left-icon">
+						<span class="slds-icon_container" title="{'Options'|@getTranslatedString:'cbQuestion'}">
+						<svg class="slds-icon slds-icon_small" style="color:green;" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#answer"></use>
+						</svg>
+						</span>
+					</span>
+					{'Options'|@getTranslatedString:'cbQuestion'}
+				</span>
+			</h1>
+			</div>
+		</div>
+		</div>
+	</div>
+	</div>
+</div>
+</div>
+</div>
+<div class="slds-p-around_x-small slds-grid slds-gutters">
+	<div class="slds-col slds-size_1-of-3 slds-form-element slds-text-align_left">
+		<div class="slds-form-element__control">
+			<div class="slds-checkbox slds-m-top_medium">
+			<input type="checkbox" name="sqlquery" id="sqlquery" class="slds-input slds-page-header__meta-text" {if $sqlquery=='1'}checked{/if} />
+			<label class="slds-checkbox__label" for="sqlquery">
+				<span class="slds-checkbox_faux"></span>
+				<span class="slds-form-element__label">{'SQLQuery'|@getTranslatedString:'cbQuestion'}</span>
+			</label>
+			</div>
+		</div>
+	</div>
+	<div class="slds-col slds-size_1-of-3 slds-form-element slds-text-align_left">
+		<legend class="slds-form-element__legend slds-form-element__label">{'qpagesize'|@getTranslatedString:'cbQuestion'}</legend>
+		<div class="slds-form-element__control">
+			<input id="qpagesize" name="qpagesize" type="number" class="slds-input slds-page-header__meta-text" value="{$qpagesize}" />
+		</div>
+	</div>
+	<div class="slds-col slds-size_1-of-3 slds-form-element slds-text-align_left">
+		<legend class="slds-form-element__legend slds-form-element__label">{'qtype'|@getTranslatedString:'cbQuestion'}</legend>
+		<div class="slds-form-element__control">
+			<div class="slds-select_container">
+				<select name="qtype" class="slds-select slds-page-header__meta-text">
+					{foreach item=arr key=val from=$QTYPES}
+						<option value="{$val}" {if $qtype==$val}selected{/if}>{$arr}</option>
+					{/foreach}
+				</select>
+			</div>
+		</div>
+	</div>
+</div>
 
 <div class="slds-page-header">
 <div class="slds-grid slds-gutters">
