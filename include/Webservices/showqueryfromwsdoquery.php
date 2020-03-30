@@ -16,17 +16,20 @@ include_once 'include/Webservices/QueryParser.php';
 include_once 'include/Webservices/VtigerModuleOperation.php';
 include_once 'include/DatabaseUtil.php';
 
-function showqueryfromwsdoquery($query, $module, $user) {
+function showqueryfromwsdoquery($query, $user) {
 	global $adb, $log;
 
+	$webserviceObject = VtigerWebserviceObject::fromQuery($adb, $query);
 	$types = vtws_listtypes(null, $user);
-	if (!in_array($module, $types['types'])) {
+	if (!in_array($webserviceObject->getEntityName(), $types['types'])) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
 	}
 
-	$webserviceObject = VtigerWebserviceObject::fromName($adb, $module);
-	$vtModuleOperation = new VtigerModuleOperation($webserviceObject, $user, $adb, $log);
-	$sql = $vtModuleOperation->wsVTQL2SQL($query, $meta, $queryRelatedModules);
+	$handlerPath = $webserviceObject->getHandlerPath();
+	$handlerClass = $webserviceObject->getHandlerClass();
+	require_once $handlerPath;
+	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+	$sql = $handler->wsVTQL2SQL($query, $meta, $queryRelatedModules);
 	$rdo = array('sql' => $sql);
 	$q = stripTailCommandsFromQuery($sql, false).' limit 1';
 	$rs = $adb->query($q);

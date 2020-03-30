@@ -70,11 +70,4 @@
 	<classname>delCalendarWorkflowsTasks</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
-<changeSet>
-	<author>joebordes</author>
-	<description>Add module parameter to showqueryfromwsdoquery WS method</description>
-	<filename>build/changeSets/2020/showqueryfromwsdoqueryParameter.php</filename>
-	<classname>showqueryfromwsdoqueryParameter</classname>
-	<systemupdate>true</systemupdate>
-</changeSet>
 </updatesChangeLog>
