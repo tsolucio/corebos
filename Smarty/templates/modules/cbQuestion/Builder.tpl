@@ -271,7 +271,7 @@
 			</div>
 		</div>
 		<fieldset class="slds-form-element slds-m-around_x-small">
-		<textarea id="bqsql" class="slds-textarea" style="display:none;height:280px;"></textarea>
+		<textarea id="bqsql" class="slds-textarea" style="display:none;height:280px;">{'Launch a test to get the SQL'|getTranslatedString:'cbQuestion'}</textarea>
 		<textarea id="bqwsq" class="slds-textarea" style="height:280px;"></textarea>
 		</fieldset>
 	</div>

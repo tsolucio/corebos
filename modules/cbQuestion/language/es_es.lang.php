@@ -94,5 +94,6 @@ $mod_strings = array(
 	'LBL_SYSTEMMODULES' => 'Módulos de Sistema',
 	'RESULTS' => 'Resultados',
 	'Options' => 'Opciones',
+	'Launch a test to get the SQL' => 'Ejecuta una verificación para ver el comando SQL',
 );
 ?>

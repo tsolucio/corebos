@@ -591,7 +591,6 @@ function editbuilderscript($, conditions) {
 						resetJoinCondition(groupid, condid);
 
 						var fe = $('#save_condition_'+condid+'_fieldname');
-						var i = 1;
 						fillOptions(fe, fieldLabels);
 
 						var fjc = $('#save_condition_'+condid+'_joincondition');
@@ -703,12 +702,25 @@ function editbuilderscript($, conditions) {
 						document.forms['EditView'].submit();
 					});
 					pageLoadingPopup.close();
+					this.dispatchEvent(new Event('condition_builder_module_changed'));
 				}));
 			}));
 		}));
 	}
+
+	function getMetaInformation() {
+		return {
+			'parentFields': parentFields,
+			'referenceFieldTypes': referenceFieldTypes,
+			'moduleFieldTypes': moduleFieldTypes,
+			'referenceFields': referenceFields,
+			'fieldLabels': fieldLabels
+		};
+	}
+
 	$(document).ready(changeModule());
 	this.changeModule = changeModule;
+	this.getMetaInformation = getMetaInformation;
 	return this;
 }
 
