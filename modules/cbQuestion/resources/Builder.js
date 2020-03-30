@@ -28,6 +28,15 @@ function toggleSQLView() {
 	}
 }
 
+function toggleBlock(block) {
+	let bk = document.getElementById(block);
+	if (bk.style.display=='' || bk.style.display=='block') {
+		bk.style.display='none';
+	} else {
+		bk.style.display='block';
+	}
+}
+
 function changecbqModule(newmodule) {
 	document.getElementById('save_conditions').innerHTML='';
 	document.getElementById('bqsql').value='';

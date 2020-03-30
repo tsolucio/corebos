@@ -118,7 +118,7 @@
 	</div>
 </div>
 
-<div class="slds-page-header">
+<div class="slds-page-header" onclick="toggleBlock('bqfieldgridblock');">
 <div class="slds-grid slds-gutters">
 <div class="slds-col slds-size_1-of-2">
 	<div class="slds-page-header__col-title">
@@ -154,11 +154,13 @@
 </div>
 </div>
 </div>
+<span id="bqfieldgridblock">
 <div class="slds-grid slds-gutters slds-m-top_small slds-m-bottom_x-small">
 	<div class="slds-col slds-size_1-of-1 slds-page-header__meta-text slds-m-left_x-small" id="fieldgrid" style="width:99%;"></div>
 </div>
+</span>
 
-<div class="slds-page-header">
+<div class="slds-page-header" onclick="toggleBlock('condsandsql');">
 <div class="slds-grid slds-gutters">
 <div class="slds-col slds-size_1-of-2">
 	<div class="slds-page-header__col-title">
@@ -210,6 +212,7 @@
 </div>
 </div>
 </div>
+<span id="condsandsql">
 <div class="slds-grid slds-gutters slds-m-top_small">
 	<div class="slds-col slds-size_1-of-2 slds-page-header__meta-text">
 		<div id="workflow_loading" class="slds-align_absolute-center" style="height:5rem;">
@@ -273,8 +276,9 @@
 		</fieldset>
 	</div>
 </div>
+</span>
 
-<div class="slds-page-header">
+<div class="slds-page-header" onclick="toggleBlock('bqoptionsblock');">
 <div class="slds-grid slds-gutters">
 <div class="slds-col">
 	<div class="slds-page-header__col-title">
@@ -302,6 +306,7 @@
 </div>
 </div>
 </div>
+<span id="bqoptionsblock">
 <div class="slds-p-around_x-small slds-grid slds-gutters">
 	<div class="slds-col slds-size_1-of-3 slds-form-element slds-text-align_left">
 		<div class="slds-form-element__control">
@@ -333,8 +338,9 @@
 		</div>
 	</div>
 </div>
+</span>
 
-<div class="slds-page-header">
+<div class="slds-page-header" onclick="toggleBlock('bqresultsblock');">
 <div class="slds-grid slds-gutters">
 <div class="slds-col slds-size_1-of-2">
 	<div class="slds-page-header__col-title">
@@ -370,6 +376,7 @@
 </div>
 </div>
 </div>
+<span id="bqresultsblock">
 <div class="slds-grid slds-gutters slds-m-top_small">
 	<div class="slds-col slds-size_3-of-4 slds-page-header__meta-text">
 	GRID with results
@@ -397,7 +404,7 @@
 		<div id="cqanswer"></div>
 	</div>
 </div>
-
+</span>
 </section>
 </form>
 <script src="modules/com_vtiger_workflow/resources/functional.js" type="text/javascript" charset="utf-8"></script>
