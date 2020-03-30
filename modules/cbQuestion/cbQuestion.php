@@ -278,24 +278,31 @@ class cbQuestion extends CRMEntity {
 			);
 		} else {
 			include_once 'include/Webservices/Query.php';
-			$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.decode_html($q->column_fields['qmodule']);
-			if (!empty($q->column_fields['qcondition'])) {
-				$conds = decode_html($q->column_fields['qcondition']);
-				foreach ($params as $param => $value) {
-					$conds = str_replace($param, $value, $conds);
+			if ($q->column_fields['sqlquery']=='0') {
+				$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.decode_html($q->column_fields['qmodule']);
+				if (!empty($q->column_fields['qcondition'])) {
+					$conds = decode_html($q->column_fields['qcondition']);
+					foreach ($params as $param => $value) {
+						$conds = str_replace($param, $value, $conds);
+					}
+					$query .= ' WHERE '.$conds;
 				}
-				$query .= ' WHERE '.$conds;
+				if (!empty($q->column_fields['groupby'])) {
+					$query .= ' GROUP BY '.$q->column_fields['groupby'];
+				}
+				if (!empty($q->column_fields['orderby'])) {
+					$query .= ' ORDER BY '.$q->column_fields['orderby'];
+				}
+				if (!empty($q->column_fields['qpagesize'])) {
+					$query .= ' LIMIT '.$q->column_fields['qpagesize'];
+				}
+				$query .= ';';
+			} else {
+				$query = $q->column_fields['qcolumns'];
+				if (!empty($q->column_fields['qpagesize'])) {
+					$query = trim($query, ';').' LIMIT '.$q->column_fields['qpagesize'].';';
+				}
 			}
-			if (!empty($q->column_fields['groupby'])) {
-				$query .= ' GROUP BY '.$q->column_fields['groupby'];
-			}
-			if (!empty($q->column_fields['orderby'])) {
-				$query .= ' ORDER BY '.$q->column_fields['orderby'];
-			}
-			if (!empty($q->column_fields['qpagesize'])) {
-				$query .= ' LIMIT '.$q->column_fields['qpagesize'];
-			}
-			$query .= ';';
 			return array(
 				'module' => $q->column_fields['qmodule'],
 				'columns' => $q->column_fields['qcolumns'],
