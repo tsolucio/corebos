@@ -12,7 +12,27 @@ function copysql() {
 	hideSQLMsg();
 }
 
-function testsql(qid) {
+function testBuilderSQL() {
+	builderconditions.cbaccess.doPost(
+		{
+			'operation': 'showqueryfromwsdoquery',
+			'sessionName': builderconditions.cbaccess.sessionId,
+			'query': document.getElementById('bqwsq').value
+		},
+		function (resp) {
+			if (resp.success) {
+				if (resp.result.status=='OK') {
+					showSQLMsg(resp.result.msg, 'success');
+				} else {
+					showSQLMsg(resp.result.msg, 'error');
+				}
+				document.getElementById('bqsql').value = resp.result.sql;
+			} else {
+				showSQLMsg(resp.error.message, 'error');
+			}
+			hideSQLMsg();
+		}
+	);
 }
 
 function toggleSQLView() {

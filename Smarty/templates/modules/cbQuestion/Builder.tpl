@@ -239,7 +239,7 @@
 					</svg>
 					{$APP.LBL_COPY_BUTTON}
 				</button>
-				<button class="slds-button slds-button_neutral" type="button">
+				<button class="slds-button slds-button_neutral" type="button" onclick="testBuilderSQL();">
 					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
 					</svg>

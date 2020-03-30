@@ -721,6 +721,7 @@ function editbuilderscript($, conditions) {
 	$(document).ready(changeModule());
 	this.changeModule = changeModule;
 	this.getMetaInformation = getMetaInformation;
+	this.cbaccess = vtinst;
 	return this;
 }
 
