@@ -106,7 +106,7 @@ function fieldExpressionPopup(moduleName, $) {
 
 		var expressionType = $('#editpopup_expression_type').val();
 		$('#'+fieldElementId+'_type').val(expressionType);
-
+		document.getElementById(fieldElementId).dispatchEvent(new Event('change'));
 		close();
 	});
 
