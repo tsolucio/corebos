@@ -177,13 +177,18 @@ class cbQuestion extends CRMEntity {
 
 	public static function getSQL($qid, $params = array()) {
 		global $current_user, $adb, $log;
-		if (isPermitted('cbQuestion', 'DetailView', $qid) != 'yes') {
-			return array('type' => 'ERROR', 'answer' => 'LBL_PERMISSION');
+		$q = new cbQuestion();
+		if (empty($qid) && !empty($params['cbQuestionRecord']) && is_array($params['cbQuestionRecord'])) {
+			$q->column_fields = $params['cbQuestionRecord'];
+			unset($params['cbQuestionRecord']);
+		} else {
+			if (isPermitted('cbQuestion', 'DetailView', $qid) != 'yes') {
+				return array('type' => 'ERROR', 'answer' => 'LBL_PERMISSION');
+			}
+			$q->retrieve_entity_info($qid, 'cbQuestion');
 		}
 		include_once 'include/Webservices/Query.php';
 		include_once 'include/Webservices/VtigerModuleOperation.php';
-		$q = new cbQuestion();
-		$q->retrieve_entity_info($qid, 'cbQuestion');
 		if ($q->column_fields['sqlquery']=='1') {
 			$mod = CRMEntity::getInstance($q->column_fields['qmodule']);
 			$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.$mod->table_name.' ';
