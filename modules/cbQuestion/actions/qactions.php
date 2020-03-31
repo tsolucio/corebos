@@ -334,5 +334,108 @@ class qactions_Action extends CoreBOS_ActionController {
 		$rdo['notify'] = $smarty->fetch('applicationmessage.tpl');
 		echo json_encode($rdo);
 	}
+
+	public function getBuilderAnswer() {
+		echo cbQuestion::getFormattedAnswer(0, array('cbQuestionRecord' => json_decode($_REQUEST['cbQuestionRecord'], true)));
+	}
+
+	public function getBuilderData() {
+		global $log, $adb, $current_user;
+		$log->debug('> getBuilderData');
+
+		if (empty($_REQUEST['cbQuestionRecord'])) {
+			$entries_list = array(
+				'data' => array(
+					'contents' => array(),
+					'pagination' => array(
+						'page' => 1,
+						'totalCount' => 0,
+					),
+				),
+				'result' => false,
+				'message' => getTranslatedString('ERR_SQL', 'cbAuditTrail'),
+				'debug_query' => '',
+				'debug_params' => print_r($_REQUEST, true),
+			);
+			echo json_encode($entries_list);
+			return;
+		}
+		$params = array('cbQuestionRecord' => json_decode(urldecode($_REQUEST['cbQuestionRecord']), true));
+		if ($params['cbQuestionRecord']['sqlquery']=='1') {
+			include_once 'include/Webservices/showqueryfromwsdoquery.php';
+			$sqlinfo = showqueryfromwsdoquery($params['cbQuestionRecord']['qcolumns'], $current_user);
+			$list_query = $sqlinfo['sql'];
+		} else {
+			$list_query = cbQuestion::getSQL(0, $params);
+		}
+		if (stripos($list_query, ' LIMIT ') > 0) {
+			$list_query = substr($list_query, 0, stripos($list_query, ' LIMIT '));
+		}
+		$list_query = 'SELECT SQL_CALC_FOUND_ROWS '.substr($list_query, 6);
+		unset($_REQUEST['cbQuestionRecord']);
+		if (!empty($_REQUEST['perPage']) && is_numeric($_REQUEST['perPage'])) {
+			$rowsperpage = (int) vtlib_purify($_REQUEST['perPage']);
+		} else {
+			$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize', 40);
+		}
+		if (isset($_REQUEST['page'])) {
+			$page = vtlib_purify($_REQUEST['page']);
+		} else {
+			$page = 1;
+		}
+		$from = ($page-1)*$rowsperpage;
+		$limit = " limit $from,$rowsperpage";
+		$result = $adb->query($list_query.$limit);
+		$count_result = $adb->query('SELECT FOUND_ROWS();');
+		$noofrows = $adb->query_result($count_result, 0, 0);
+		if ($result) {
+			if ($noofrows>0) {
+				$entries_list = array(
+					'data' => array(
+						'contents' => array(),
+						'pagination' => array(
+							'page' => $page,
+							'totalCount' => $noofrows,
+						),
+					),
+					'result' => true,
+				);
+				while ($lgn = $adb->fetch_array($result)) {
+					for ($col=0; $col < count($lgn); $col++) {
+						unset($lgn[$col]);
+					}
+					$entries_list['data']['contents'][] = $lgn;
+				}
+			} else {
+				$entries_list = array(
+					'data' => array(
+						'contents' => array(),
+						'pagination' => array(
+							'page' => 1,
+							'totalCount' => 0,
+						),
+					),
+					'result' => false,
+					'message' => getTranslatedString('NoData', 'cbAuditTrail'),
+				);
+			}
+		} else {
+			$entries_list = array(
+				'data' => array(
+					'contents' => array(),
+					'pagination' => array(
+						'page' => 1,
+						'totalCount' => 0,
+					),
+				),
+				'result' => false,
+				'message' => getTranslatedString('ERR_SQL', 'cbAuditTrail'),
+				'debug_query' => $list_query.$limit,
+				'debug_params' => print_r($_REQUEST, true),
+			);
+		}
+		$log->debug('< getBuilderData');
+		echo json_encode($entries_list);
+	}
 }
 ?>

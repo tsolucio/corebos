@@ -1,3 +1,8 @@
+var Report_ListView_PageSize = 40;
+GlobalVariable_getVariable('Report_ListView_PageSize', 40, 'cbQuestion', '').then(function (response) {
+	var obj = JSON.parse(response);
+	Report_ListView_PageSize = obj.Report_ListView_PageSize;
+});
 
 function copysql() {
 	showSQLMsg(alert_arr.Copied, 'success');
@@ -46,6 +51,61 @@ function toggleSQLView() {
 		document.getElementById('bqwsq').style.display = 'flex';
 		cb.value = 0;
 	}
+}
+
+function getQuestionResults() {
+	const qtype = document.getElementById('qtype').value;
+	const qsqlqry = (document.getElementById('sqlquery').checked ? '1' : '0');
+	let cbq = JSON.stringify({
+		'qname': document.getElementById('bqname').value,
+		'qtype': qtype,
+		'qmodule': document.getElementById('bqmodule').value,
+		'qpagesize': document.getElementById('qpagesize').value,
+		'qcolumns': (qsqlqry=='1' ? document.getElementById('bqsql').value : (qtype=='Mermaid' ? document.getElementById('bqwsq').value : getSQLSelect())),
+		'qcondition': (qtype=='Mermaid' ? '' : getSQLConditions()),
+		'orderby': getSQLOrderBy().substr(9),
+		'groupby': getSQLGroupBy().substr(10),
+		'typeprops': document.getElementById('qprops').value,
+		'sqlquery': qsqlqry,
+		'condfilterformat': '0',
+	});
+	fetch(
+		'index.php?module=cbQuestion&action=cbQuestionAjax&actionname=qactions&method=getBuilderAnswer',
+		{
+			method: 'post',
+			headers: {
+				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+			},
+			credentials: 'same-origin',
+			body: '&'+csrfMagicName+'='+csrfMagicToken+'&cbQuestionRecord='+encodeURIComponent(cbq)
+		}
+	).then(response => response.text()).then(response => {
+		let cbqa = document.getElementById('cqanswer');
+		cbqa.innerHTML = response;
+		vtlib_executeJavascriptInElement(cbqa);
+	});
+	if (qtype=='Mermaid') {
+		dataGridInstance.clear();
+	} else {
+		dataGridInstance.setColumns(getDataColumns());
+		dataGridInstance.setRequestParams({'cbQuestionRecord': encodeURIComponent(cbq)});
+		dataGridInstance.reloadData();
+	}
+}
+
+function getDataColumns() {
+	let slflds = [];
+	fieldData.map(finfo => {
+		if (finfo.instruction != '') {
+			slflds.push({
+				'name': (finfo.alias=='' ? finfo.fieldname : finfo.alias),
+				'header': (finfo.alias=='' ? finfo.fieldname : finfo.alias),
+				'whiteSpace': 'normal',
+				'sortable': false
+			});
+		}
+	});
+	return slflds;
 }
 
 function toggleBlock(block) {
@@ -328,8 +388,8 @@ function getInstruction(field, operator, alias) {
 	return fins;
 }
 
-const fieldGrid = tui.Grid;
-const dataGrid = tui.Grid;
+const tuiGrid = tui.Grid;
+var dataGridInstance;
 var fieldGridInstance;
 var fieldGridColumns = '';
 document.addEventListener('DOMContentLoaded', function (event) {
@@ -435,7 +495,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 				}
 			}
 		];
-		fieldGridInstance = new fieldGrid({
+		fieldGridInstance = new tuiGrid({
 			el: document.getElementById('fieldgrid'),
 			columns: fieldGridColumns,
 			data: fieldData,
@@ -449,7 +509,39 @@ document.addEventListener('DOMContentLoaded', function (event) {
 			},
 			header: {
 				align: 'left',
-				valign: 'top'
+				valign: 'middle'
+			}
+		});
+		dataGridInstance = new tuiGrid({
+			el: document.getElementById('resultsgrid'),
+			columns: [{
+				'name': 'empty',
+				'header': 'empty',
+				'whiteSpace': 'normal',
+				'sortable': false
+			}],
+			data: {
+				api: {
+					readData: {
+						url: 'index.php?module=cbQuestion&action=cbQuestionAjax&actionname=qactions&method=getBuilderData',
+						method: 'GET'
+					}
+				}
+			},
+			pageOptions: {
+				perPage: Report_ListView_PageSize
+			},
+			useClientSort: false,
+			rowHeight: 'auto',
+			bodyHeight: 550,
+			scrollX: true,
+			scrollY: true,
+			columnOptions: {
+				resizable: true
+			},
+			header: {
+				align: 'left',
+				valign: 'middle'
 			}
 		});
 		tui.Grid.applyTheme('striped');

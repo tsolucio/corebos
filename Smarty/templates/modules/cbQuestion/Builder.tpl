@@ -308,33 +308,35 @@
 </div>
 <span id="bqoptionsblock">
 <div class="slds-p-around_x-small slds-grid slds-gutters">
-	<div class="slds-col slds-size_1-of-3 slds-form-element slds-text-align_left">
+	<div class="slds-col slds-size_1-of-2 slds-form-element slds-text-align_left">
 		<div class="slds-form-element__control">
-			<div class="slds-checkbox slds-m-top_medium">
+			<div class="slds-checkbox">
 			<input type="checkbox" name="sqlquery" id="sqlquery" class="slds-input slds-page-header__meta-text" {if $sqlquery=='1'}checked{/if} />
 			<label class="slds-checkbox__label" for="sqlquery">
 				<span class="slds-checkbox_faux"></span>
 				<span class="slds-form-element__label">{'SQLQuery'|@getTranslatedString:'cbQuestion'}</span>
 			</label>
 			</div>
+			<legend class="slds-form-element__legend slds-form-element__label slds-m-top_medium">{'qpagesize'|@getTranslatedString:'cbQuestion'}</legend>
+			<div class="slds-form-element__control">
+				<input id="qpagesize" name="qpagesize" type="number" class="slds-input slds-page-header__meta-text" style="width:fit-content;" value="{$qpagesize}" />
+			</div>
 		</div>
 	</div>
-	<div class="slds-col slds-size_1-of-3 slds-form-element slds-text-align_left">
-		<legend class="slds-form-element__legend slds-form-element__label">{'qpagesize'|@getTranslatedString:'cbQuestion'}</legend>
-		<div class="slds-form-element__control">
-			<input id="qpagesize" name="qpagesize" type="number" class="slds-input slds-page-header__meta-text" value="{$qpagesize}" />
-		</div>
-	</div>
-	<div class="slds-col slds-size_1-of-3 slds-form-element slds-text-align_left">
+	<div class="slds-col slds-size_1-of-2 slds-form-element slds-text-align_left">
 		<legend class="slds-form-element__legend slds-form-element__label">{'qtype'|@getTranslatedString:'cbQuestion'}</legend>
 		<div class="slds-form-element__control">
 			<div class="slds-select_container">
-				<select name="qtype" class="slds-select slds-page-header__meta-text">
+				<select name="qtype" id="qtype" class="slds-select slds-page-header__meta-text">
 					{foreach item=arr key=val from=$QTYPES}
 						<option value="{$val}" {if $qtype==$val}selected{/if}>{$arr}</option>
 					{/foreach}
 				</select>
 			</div>
+		</div>
+		<legend class="slds-form-element__legend slds-form-element__label">{'Type Properties'|@getTranslatedString:'cbQuestion'}</legend>
+		<div class="slds-form-element__control">
+			<textarea id="qprops" class="slds-textarea"></textarea>
 		</div>
 	</div>
 </div>
@@ -367,7 +369,7 @@
 	</div>
 </div>
 <div class="slds-col slds-size_1-of-2">
-	<button class="slds-button slds-button_neutral slds-float_right" type="button" id='launchsearch_button' onclick=" event.stopPropagation();">
+	<button class="slds-button slds-button_neutral slds-float_right" type="button" id='launchsearch_button' onclick="getQuestionResults(); event.stopPropagation();">
 		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
 		</svg>
@@ -378,10 +380,10 @@
 </div>
 <span id="bqresultsblock">
 <div class="slds-grid slds-gutters slds-m-top_small">
-	<div class="slds-col slds-size_3-of-4 slds-page-header__meta-text">
-	GRID with results
+	<div class="slds-col slds-size_4-of-6 slds-page-header__meta-text">
+		<div class="slds-col slds-slds-page-header__meta-text slds-m-left_x-small" id="resultsgrid" style="width:99%;"></div>
 	</div>
-	<div class="slds-col slds-size_1-of-4 slds-page-header__meta-text">
+	<div class="slds-col slds-size_2-of-6 slds-page-header__meta-text">
 		<span class="slds-radio slds-p-top_xx-small">
 			<span class="slds-form-element__label">
 				<input type='hidden' name="evaluatewith_type" id="evaluatewith_type" value="{if $targetmodule=='Workflow'}com_vtiger_workflow{else}{$targetmodule}{/if}">
@@ -401,12 +403,16 @@
 				</span>
 			</span>
 		</span>
-		<div id="cqanswer"></div>
+		<div id="cqanswer" class="slds-m-around_xx-small slds-p-around_xx-small slds-badge_lightest slds-scrollable"></div>
 	</div>
 </div>
 </span>
 </section>
 </form>
+<script src="modules/cbQuestion/resources/mermaid.min.js"></script>
+<script src="include/chart.js/Chart.min.js"></script>
+<link rel="stylesheet" type="text/css" media="all" href="include/chart.js/Chart.min.css">
+<script src="include/chart.js/randomColor.js"></script>
 <script src="modules/com_vtiger_workflow/resources/functional.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/com_vtiger_workflow/resources/vtigerwebservices.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/com_vtiger_workflow/resources/parallelexecuter.js" type="text/javascript" charset="utf-8"></script>
