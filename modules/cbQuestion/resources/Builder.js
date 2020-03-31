@@ -367,7 +367,10 @@ function getInstruction(field, operator, alias) {
 			case 'hash':
 			case 'setype':
 			case 'number_format':
-				if (op.text.indexOf(',')!=-1) {
+			case 'getSetting':
+				if (op.text.indexOf("('")!=-1) {
+					fins = op.text.replace(/\('?.+?'?,/, "('"+fnam+"',");
+				} else if (op.text.indexOf(',')!=-1) {
 					fins = op.text.replace(/\(.+?,/, '('+fnam+',');
 				} else {
 					fins = op.text.replace(/\(.+\)/, '('+fnam+')');
