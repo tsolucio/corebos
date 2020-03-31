@@ -97,9 +97,39 @@ function getDataColumns() {
 	let slflds = [];
 	fieldData.map(finfo => {
 		if (finfo.instruction != '') {
+			/* complex conditioning
+				module_field no_operator no_alias > fieldname
+				module_field operator no_alias > fieldname
+				module_field no_operator alias > fieldname
+				module_field operator alias > alias
+				related_module_field no_operator no_alias > related fieldname
+				related_module_field operator no_alias > we have to create an alias
+				related_module_field no_operator alias > fieldname
+				related_module_field operator alias > alias
+			*/
+			let fnam = finfo.fieldname;
+			let fhdr = finfo.fieldname;
+			if (fnam.indexOf(': (')!=-1) {
+			}
+			if (finfo.fieldname.indexOf(': (')==-1) {
+				if (finfo.operators!='custom' && finfo.alias!='') {
+					fnam = finfo.alias;
+				}
+			} else {
+				if (finfo.operators=='custom') {
+					fnam = fnam.substr(fnam.indexOf(': (')+3).replace(') ', '').toLowerCase();
+				} else {
+					if (finfo.alias=='') {
+						fnam = finfo.fieldname.replace(' : (', '').replace(') ', '').replace(')', '').toLowerCase();
+					} else {
+						fnam = finfo.alias;
+					}
+				}
+			}
+			(finfo.operators=='custom' ? (finfo.fieldname.indexOf(': (')!=-1 ? fnam : finfo.fieldname) : finfo.fieldname),
 			slflds.push({
-				'name': (finfo.alias=='' ? finfo.fieldname : finfo.alias),
-				'header': (finfo.alias=='' ? finfo.fieldname : finfo.alias),
+				'name': fnam,
+				'header': (finfo.alias=='' ? (finfo.fieldname.indexOf(': (')!=-1 ? fhdr : finfo.fieldname) : finfo.alias),
 				'whiteSpace': 'normal',
 				'sortable': false
 			});
@@ -175,11 +205,33 @@ function getSQLSelect() {
 	let slflds = [];
 	fieldData.map(finfo => {
 		if (finfo.instruction != '') {
+			/* complex conditioning
+				module_field no_operator no_alias > fieldname
+				module_field operator no_alias > fieldname
+				module_field no_operator alias > fieldname
+				module_field operator alias > alias
+				related_module_field no_operator no_alias > fieldname
+				related_module_field operator no_alias > we have to create an alias
+				related_module_field no_operator alias > fieldname
+				related_module_field operator alias > alias
+			*/
+			let fnam = finfo.fieldname;
+			if (finfo.fieldname.indexOf(': (')==-1) {
+				if (finfo.operators!='custom' && finfo.alias!='') {
+					fnam = finfo.alias;
+				}
+			} else if (finfo.operators!='custom') {
+				if (finfo.alias=='') {
+					fnam = finfo.fieldname.replace(' : (', '').replace(') ', '').replace(')', '').toLowerCase();
+				} else {
+					fnam = finfo.alias;
+				}
+			}
 			slflds.push({
-				fieldname:(finfo.alias=='' ? finfo.fieldname : finfo.alias),
+				fieldname:fnam,
 				operation:'is',
 				value:finfo.instruction,
-				valuetype:(finfo.fieldname==finfo.instruction ? 'fieldname' : 'expression'),
+				valuetype:(finfo.fieldname==finfo.instruction || finfo.operators=='custom' ? 'fieldname' : 'expression'),
 				joincondition:'and',
 				groupid:0,
 				groupjoin:''
@@ -371,9 +423,17 @@ function getInstruction(field, operator, alias) {
 				if (op.text.indexOf("('")!=-1) {
 					fins = op.text.replace(/\('?.+?'?,/, "('"+fnam+"',");
 				} else if (op.text.indexOf(',')!=-1) {
-					fins = op.text.replace(/\(.+?,/, '('+fnam+',');
+					if (fnam.indexOf(': (')!=-1) {
+						fins = op.text.replace(/\(.+?,/, '($('+fnam+'),');
+					} else {
+						fins = op.text.replace(/\(.+?,/, '('+fnam+',');
+					}
 				} else {
-					fins = op.text.replace(/\(.+\)/, '('+fnam+')');
+					if (fnam.indexOf(': (')!=-1) {
+						fins = op.text.replace(/\(.+\)/, '($('+fnam+'))');
+					} else {
+						fins = op.text.replace(/\(.+\)/, '('+fnam+')');
+					}
 				}
 				break;
 			case 'today':
@@ -386,7 +446,11 @@ function getInstruction(field, operator, alias) {
 				break;
 		}
 	} else {
-		fins = fnam;
+		if (fnam.indexOf(': (')!=-1) {
+			fins = fnam.substr(fnam.indexOf(': (')+3).replace(') ', '.');
+		} else {
+			fins = fnam;
+		}
 	}
 	return fins;
 }
