@@ -97,4 +97,28 @@ function __cb_setfromcontext($arr) {
 	$arr[2]->WorkflowContext[$arr[0]] = $arr[1];
 	return $arr[1];
 }
+
+function __cb_getsetting($arr) {
+	if (empty($arr[0])) {
+		return '';
+	}
+	$default = (empty($arr[1]) ? '' : $arr[1]);
+	return coreBOS_Settings::getSetting($arr[0], $default);
+}
+
+function __cb_setsetting($arr) {
+	if (empty($arr[0]) || !isset($arr[1])) {
+		return '';
+	}
+	coreBOS_Settings::setSetting($arr[0], $arr[1]);
+	return $arr[1];
+}
+
+function __cb_delsetting($arr) {
+	if (empty($arr[0])) {
+		return '';
+	}
+	coreBOS_Settings::delSetting($arr[0]);
+	return '';
+}
 ?>

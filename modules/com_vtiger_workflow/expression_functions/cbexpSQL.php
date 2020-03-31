@@ -101,6 +101,9 @@ function cbexpsql_supportedFunctions() {
 		// 'getGEODistanceFromCoordinates' => 'getGEODistanceFromCoordinates({lat1},{long1},{lat2},{long2})',
 		// 'getFromContext' => 'getFromContext(variablename)',
 		// 'setToContext' => 'setToContext(variablename, value)',
+		'getSetting' => "getSetting('setting_key', 'default')",
+		// 'setSetting' => 'setSetting('setting_key', value)',
+		// 'delSetting' => 'delSetting('setting_key')',
 		// 'getCRUDMode' => 'getCRUDMode()',
 		// 'OR' => 'OR(condition1, condition2)',
 		// 'AND' => 'AND(condition1, condition2)',
@@ -319,6 +322,23 @@ function cbexpsql_setype($arr, $mmodule) {
 			list($void, $crmid) = explode('x', $crmid);
 		}
 		$ret = '(select setype from vtiger_crmentity where vtiger_crmentity.crmid='.$crmid.')';
+	}
+	return $ret;
+}
+
+function cbexpsql_getsetting($arr, $mmodule) {
+	$ret = '';
+	if (!empty($arr[0])) {
+		$skey = __cbexpsql_functionparamsvalue($arr[0], $mmodule);
+		if (isset($arr[1])) {
+			$default = __cbexpsql_functionparamsvalue($arr[1], $mmodule);
+			if (is_string($default) && $default[0] == "'") {
+				$default = trim($default, "'");
+			}
+		} else {
+			$default = '';
+		}
+		$ret = 'coalesce((select setting_value from cb_settings where setting_key='.$skey.'), "'.$default.'")';
 	}
 	return $ret;
 }
