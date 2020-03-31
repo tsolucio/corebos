@@ -365,7 +365,7 @@ function getInstruction(field, operator, alias) {
 			case 'isNumeric':
 			case 'coalesce':
 			case 'hash':
-			case 'setype':
+			case 'getEntityType':
 			case 'number_format':
 			case 'getSetting':
 				if (op.text.indexOf("('")!=-1) {

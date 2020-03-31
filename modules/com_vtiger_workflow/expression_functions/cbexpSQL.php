@@ -71,7 +71,7 @@ function cbexpsql_supportedFunctions() {
 		'ifelse' => 'if else then end',
 		'coalesce' => 'coalesce(a,...,n)',
 		'hash' => 'hash(field, method)',
-		'setype' => 'setype()',
+		'getEntityType' => 'getEntityType(field)',
 		'number_format' => 'number_format(number, format)',
 		// 'add_workdays' => 'add_workdays(date, numofdays, addsaturday, holidays)',
 		// 'format_date' => 'format_date(date,format)',
