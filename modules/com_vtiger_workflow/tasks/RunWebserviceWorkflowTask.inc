@@ -40,6 +40,10 @@ class RunWebserviceWorkflowTask extends VTTask {
 
 		$wsconfig = $target_fields['WSConfig'];
 		$url = $wsconfig['wsurl'];
+		if (strstr($url, 'getSetting(')) {
+			$setkey = str_replace(array('getSetting(', ')'), array('', ''), $url);
+			$url = coreBOS_Settings::getSetting($setkey, '');
+		}
 		$method = $wsconfig['wshttpmethod'];
 		$methodname = $wsconfig['methodname'];
 		$wstype = $wsconfig['wstype'];
@@ -84,6 +88,9 @@ class RunWebserviceWorkflowTask extends VTTask {
 						$context = str_replace(array('getContext(', ')'), array('', ''), $findauth[1]);
 						$token = $entity->getContext();
 						$token = $token[$context];
+					} elseif (strstr($findauth[1], 'getSetting')) {
+						$setkey = str_replace(array('getSetting(', ')'), array('', ''), $findauth[1]);
+						$token = coreBOS_Settings::getSetting($setkey, '');
 					} else {
 						$token = $findauth[1];
 					}
