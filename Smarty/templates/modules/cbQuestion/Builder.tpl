@@ -319,7 +319,7 @@
 			</div>
 			<legend class="slds-form-element__legend slds-form-element__label slds-m-top_medium">{'qpagesize'|@getTranslatedString:'cbQuestion'}</legend>
 			<div class="slds-form-element__control">
-				<input id="qpagesize" name="qpagesize" type="number" class="slds-input slds-page-header__meta-text" style="width:fit-content;" value="{$qpagesize}" />
+				<input id="qpagesize" name="qpagesize" type="number" class="slds-input slds-page-header__meta-text" style="width:fit-content;" value="{$qpagesize}" onclick="updateWSSQL();" />
 			</div>
 		</div>
 	</div>
