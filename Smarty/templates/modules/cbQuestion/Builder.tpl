@@ -433,4 +433,6 @@
 	var fieldData = {$fieldData};
 	var arrayOfFields = {$fieldArray};
 	var validOperations = {$validOperations};
+	var fieldNEcolumn = {$fieldNEcolumn};
+	var fieldTableRelation = {$fieldTableRelation};
 </script>

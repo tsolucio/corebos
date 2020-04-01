@@ -17,7 +17,8 @@ require_once 'modules/cbQuestion/cbQuestion.php';
 require_once 'Smarty_setup.php';
 require_once 'include/Webservices/DescribeObject.php';
 require_once 'modules/com_vtiger_workflow/expression_functions/cbexpSQL.php';
-
+require_once 'vtlib/Vtiger/controllers/ActionController.php';
+require_once 'modules/cbMap/actions/mapactions.php';
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
 $smarty = new vtigerCRM_Smarty();
@@ -71,6 +72,19 @@ if (empty($_REQUEST['record'])) {
 	$smarty->assign('fieldData', json_encode($fieldData));
 	$smarty->assign('fieldArray', json_encode(array_values($flds)));
 	$smarty->assign('validOperations', json_encode(array_values($valops)));
+	$fldnecol = $adb->query(
+		'SELECT concat(vtiger_tab.name,fieldname) as mfld,columnname
+		FROM vtiger_field
+		INNER JOIN vtiger_tab ON vtiger_tab.tabid=vtiger_field.tabid
+		WHERE fieldname!=columnname and fieldname!="assigned_user_id" and fieldname!="created_user_id"'
+	);
+	$fnec = array();
+	while ($r = $fldnecol->FetchRow()) {
+		$fnec[$r['mfld']] = $r['columnname'];
+	}
+	$smarty->assign('fieldNEcolumn', json_encode($fnec));
+	$_REQUEST['fieldsmodule'] = $focus->column_fields['qmodule'];
+	$smarty->assign('fieldTableRelation', json_encode(mapactions_Action::getFieldTablesForModule(true)));
 	$smarty->assign('APP', $app_strings);
 	$mod_strings = array_merge($mod_strings, return_module_language($current_user->column_fields['language'], 'com_vtiger_workflow'));
 	$smarty->assign('MOD', $mod_strings);

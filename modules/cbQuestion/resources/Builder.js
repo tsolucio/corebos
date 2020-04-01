@@ -177,6 +177,19 @@ function changecbqModule(newmodule) {
 		false
 	);
 	builderconditions.changeModule();
+	fetch(
+		'index.php?module=cbMap&action=cbMapAjax&actionname=mapactions&method=getFieldTablesForModule',
+		{
+			method: 'post',
+			headers: {
+				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+			},
+			credentials: 'same-origin',
+			body: '&'+csrfMagicName+'='+csrfMagicToken+'&fieldsmodule='+newmodule
+		}
+	).then(response => response.json()).then(response => {
+		fieldTableRelation = response;
+	});
 }
 
 function showSQLMsg(msg, role) {
