@@ -31,7 +31,11 @@ function showqueryfromwsdoquery($query, $user) {
 	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 	$sql = $handler->wsVTQL2SQL($query, $meta, $queryRelatedModules);
 	$rdo = array('sql' => $sql);
-	$q = stripTailCommandsFromQuery($sql, false).' limit 1';
+	if (stripos($sql, ' LIMIT ') > 0) {
+		$q = substr($sql, 0, stripos($sql, ' LIMIT ')).' limit 1';
+	} else {
+		$q = $sql.' limit 1';
+	}
 	$rs = $adb->query($q);
 	if ($rs) {
 		$rdo['status'] = 'OK';
