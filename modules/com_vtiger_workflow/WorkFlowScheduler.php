@@ -60,7 +60,7 @@ class WorkFlowScheduler {
 				}
 			}
 
-			$selectSql = implode(",", $selectFields);
+			$selectSql = implode(',', $selectFields);
 		} else {
 			if ($addID) {
 				$queryGenerator->setFields(array_merge(array('id'), $fields));
@@ -134,7 +134,7 @@ class WorkFlowScheduler {
 		$admin = Users::getActiveAdminUser();
 		$adminTimeZone = $admin->time_zone;
 		@date_default_timezone_set($adminTimeZone);
-		$currentTimestamp = date("Y-m-d H:i:s");
+		$currentTimestamp = date('Y-m-d H:i:s');
 		@date_default_timezone_set($default_timezone);
 		$errortasks = array();
 		$scheduledWorkflows = $vtWorflowManager->getScheduledWorkflows($currentTimestamp);
@@ -194,6 +194,7 @@ class WorkFlowScheduler {
 			$vtWorflowManager->updateNexTriggerTime($workflow);
 		}
 		if (count($errortasks)>0) {
+			global $logbg;
 			$logbg->fatal('> *** Workflow Scheduled Tasks Errors:');
 			$logbg->fatal($errortasks);
 			$logbg->fatal('> **************************');
