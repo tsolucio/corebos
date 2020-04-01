@@ -1474,8 +1474,8 @@ function getTableNameForField($module, $fieldname) {
 	global $log, $adb;
 	$log->debug('> getTableNameForField '.$module.','.$fieldname);
 	$tabid = getTabid($module);
-	$sql = 'select tablename from vtiger_field where tabid=? and vtiger_field.presence in (0,2) and columnname like ?';
-	$res = $adb->pquery($sql, array($tabid, '%'.$fieldname.'%'));
+	$sql = 'select tablename from vtiger_field where tabid=? and vtiger_field.presence in (0,2) and columnname=?';
+	$res = $adb->pquery($sql, array($tabid, $fieldname));
 
 	$tablename = '';
 	if ($adb->num_rows($res) > 0) {
