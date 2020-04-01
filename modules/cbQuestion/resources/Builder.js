@@ -64,7 +64,7 @@ function getQuestionResults() {
 		'qcolumns': (qsqlqry=='1' ? document.getElementById('bqsql').value : (qtype=='Mermaid' ? document.getElementById('bqwsq').value : getSQLSelect())),
 		'qcondition': (qtype=='Mermaid' ? '' : getSQLConditions()),
 		'orderby': getSQLOrderBy().substr(9),
-		'groupby': getSQLGroupBy().substr(10),
+		'groupby': getSQLGroupBy().substr(9),
 		'typeprops': document.getElementById('qprops').value,
 		'sqlquery': qsqlqry,
 		'condfilterformat': '0',
@@ -289,7 +289,17 @@ function getSQLGroupBy() {
 	let gbflds = '';
 	fieldData.map(finfo => {
 		if (finfo.fieldname != 'custom' && finfo.group == '1') {
-			gbflds += finfo.fieldname + ',';
+			let fnam = finfo.fieldname;
+			if (finfo.operators!='custom' && finfo.alias!='') {
+				fnam = finfo.alias;
+			} else if (finfo.fieldname.indexOf(': (')!=-1) {
+				if (finfo.operators == 'custom') {
+					fnam = finfo.fieldname.substr(finfo.fieldname.indexOf(': (')+3).replace(') ', '').replace(')', '').toLowerCase();
+				} else {
+					fnam = finfo.fieldname.replace(' : (', '').replace(') ', '').replace(')', '').toLowerCase();
+				}
+			}
+			gbflds += fnam + ',';
 		}
 	});
 	if (gbflds!='') {
@@ -302,7 +312,17 @@ function getSQLOrderBy() {
 	let obflds = '';
 	fieldData.map(finfo => {
 		if (finfo.fieldname != 'custom' && finfo.sort != 'NONE') {
-			obflds += finfo.fieldname + ' ' + finfo.sort + ',';
+			let fnam = finfo.fieldname;
+			if (finfo.operators!='custom' && finfo.alias!='') {
+				fnam = finfo.alias;
+			} else if (finfo.fieldname.indexOf(': (')!=-1) {
+				if (finfo.operators == 'custom') {
+					fnam = finfo.fieldname.substr(finfo.fieldname.indexOf(': (')+3).replace(') ', '').replace(')', '').toLowerCase();
+				} else {
+					fnam = finfo.fieldname.replace(' : (', '').replace(') ', '').replace(')', '').toLowerCase();
+				}
+			}
+			obflds += fnam + ' ' + finfo.sort + ',';
 		}
 	});
 	if (obflds!='') {
