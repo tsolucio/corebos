@@ -8,7 +8,7 @@
 * All Rights Reserved.
 ************************************************************************************/
 ?>
-<footer class="slds-grid slds-gutters slds-card__footer" style="width:100%;">
+<footer class="slds-grid slds-card__footer slds-badge" style="width:100%;">
 <div class="slds-col slds-size_1-of-2 slds-p-left_x-large" style='text-align:left;'>
 <span class='small' style='color: rgb(153, 153, 153);'>
 	<?php echo $coreBOS_uiapp_name; ?> <span id='_vtiger_product_version_'><?php echo $coreBOS_uiapp_version; ?></span>
@@ -21,10 +21,7 @@ if ($coreBOS_uiapp_showgitversion || $coreBOS_uiapp_showgitdate) {
 	echo '&nbsp;('.($coreBOS_uiapp_showgitversion ? $gitversion : '').($coreBOS_uiapp_showgitdate ? $gitdate : '').')';
 }
 if ($calculate_response_time) {
-	$startTime = microtime(true);
-	$endTime = microtime(true);
-	$deltaTime = round($endTime - $startTime, 2);
-	echo('&nbsp;Server response time: '.$deltaTime.' seconds.');
+	echo('&nbsp;&nbsp;Server response time: '.round(microtime(true) - $startTime, 2).' seconds.');
 }
 ?>
 	</span>

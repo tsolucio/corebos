@@ -94,8 +94,13 @@ function wfDeleteList() {
 	}
 }
 
+var workflowCreationMode='from_module';
 function wfCreateSubmit() {
 	if (document.getElementById('module_list').value=='') {
+		alert(alert_arr.SELECT);
+		return false;
+	}
+	if (workflowCreationMode=='from_template' && document.getElementById('template_list').value=='') {
 		alert(alert_arr.SELECT);
 		return false;
 	}
@@ -137,17 +142,13 @@ function workflowlistscript($) {
 
 		function show(module) {
 			$('#new_workflow_popup').css('display', 'block');
-			center($('#new_workflow_popup'));
 		}
 
-		$('#new_workflow_popup_close').click(close);
-		$('#new_workflow_popup_cancel').click(close);
 		return {
 			close:close, show:show
 		};
 	}
 
-	var workflowCreationMode='from_module';
 	var templatesForModule = {};
 	function updateTemplateList() {
 		var moduleSelect = $('#module_list');
@@ -193,17 +194,17 @@ function workflowlistscript($) {
 			$('#filter_modules').submit();
 		});
 
-		$('.workflow_creation_mode').click(function () {
-			var el = $(this);
-			workflowCreationMode = el.val();
-			if (workflowCreationMode=='from_template') {
-				updateTemplateList();
-				$('#template_select_field').show();
-			} else {
-				$('#template_select_field').hide();
-			}
-
+		$('#wffrommodule').click(function () {
+			workflowCreationMode='from_module';
+			$('#template_select_field').hide();
 		});
+
+		$('#wffromtpl').click(function () {
+			workflowCreationMode='from_template';
+			updateTemplateList();
+			$('#template_select_field').show();
+		});
+
 		$('#module_list').change(function () {
 			if (workflowCreationMode=='from_template') {
 				updateTemplateList();

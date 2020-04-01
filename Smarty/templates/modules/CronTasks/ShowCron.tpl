@@ -8,30 +8,25 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<div id="EditInv" class="layerPopup">
-	<table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
-		<tr>
-			<td class="layerPopupHeading" align="left">{$CRON_DETAILS.label}</td>
-			<td align="right" class="small"><img onClick="hide('editdiv');" style="cursor: pointer;" src="{'close.gif'|@vtiger_imageurl:$THEME}" align="middle" border="0"></td>
-		</tr>
-	</table>
-	<table border=0 cellspacing=0 cellpadding=5 width=95% align=center>
-		<tr>
-			<td class="small">
-				<table border=0 celspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
-					<tr>
-						<td align="right" class="cellLabel small" width="40%"><b>{$MOD.LBL_STATUS}:</b></td>
-						<td align="left" class="cellText small" width="60%">{if $CRON_DETAILS.status eq 1} {$MOD.LBL_ACTIVE} {else} {$MOD.LBL_INACTIVE} {/if}</td>
-					</tr>
-					<tr>
-						<td align="right" class="cellLabel small"><b>{$MOD.LBL_FREQUENCY}</b></td>
-						<td align="left" class="cellText small" width="104px">{$CRON_DETAILS.frequency} {if $CRON_DETAILS.time eq 'min'} {$MOD.LBL_MINS} {else} {$MOD.LBL_HOURS} {/if}</td>
-					</tr>
-					<tr>
-						<td colspan=2>{$CRON_DETAILS.description|@getTranslatedString:$CRON_MODULE}</td>
-					<tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-</div>
+
+{assign var='MODAL' value=['label'=>$CRON_DETAILS.label, 'ariaDescribe'=>$CRON_DETAILS.label, 'hideID'=>'editdiv']}
+{extends file='Components/Modal.tpl'}
+{block name=ModalContent}
+	<div class="slds-page-header__meta-text">
+		<label class="slds-form-element__label" for="cron_status">{$MOD.LBL_STATUS}</label>
+		{if $CRON_DETAILS.status eq 1} {$MOD.LBL_ACTIVE} {else} {$MOD.LBL_INACTIVE} {/if}
+	</div>
+	<div class="slds-page-header__meta-text">
+		<label class="slds-form-element__label" for="CronTime">{$MOD.LBL_FREQUENCY}</label>
+		{$CRON_DETAILS.frequency} {if $CRON_DETAILS.time eq 'min'} {$MOD.LBL_MINUTES} {elseif $CRON_DETAILS.time eq 'daily'} {$MOD.LBL_DAILY} {else} {$MOD.LBL_HOURS} {/if}
+	</div>
+	<p class="slds-icon_container slds-icon-utility-info slds-m-top_large slds-page-header__meta-text">
+		<svg class="slds-icon slds-icon slds-icon_xx-small slds-icon-text-default" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+		</svg>
+		{$CRON_DETAILS.description|@getTranslatedString:$CRON_MODULE}
+	</p>
+{/block}
+{block name=ModalFooter}
+<button class="slds-button slds-button_neutral" onClick="hide('editdiv');">{$APP.LBL_CLOSE}</button>
+{/block}

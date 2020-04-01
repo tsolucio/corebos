@@ -15,6 +15,7 @@
 
 function executeBusinessAction($businessactionid, $context, $user) {
 	global $currentModule;
+	$businessactionid = vtws_getWSID($businessactionid);
 	$context = json_decode($context, true);
 	if (json_last_error() !== JSON_ERROR_NONE) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid parameter: context');

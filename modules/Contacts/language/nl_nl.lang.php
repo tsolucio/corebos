@@ -221,6 +221,7 @@ $mod_strings = array(
 	'Vendors' => 'Leveranciers',
 	'InventoryDetails' => 'Voorraad Details',
 	'GOOGLE_CONTACTS' => 'Google Contacts',
+	'GOOGLE_CONTACTS_Desc' => 'Synchronize your contacts with Google Contacts',
 	'LBL_UPDATES_CRM'	=>	"Updates in CRM",
 	'LBL_UPDATES_GOOGLE'	=>	"Updates in Google",
 	'LBL_UPDATED'	=>	"Updated",

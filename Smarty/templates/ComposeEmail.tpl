@@ -148,10 +148,15 @@
 		</script>
 		<div id="attach_temp_cont" style="display:none;">
 		<table class="small" width="100% ">
-			{if !empty($smarty.request.attachment)}
+			{if !empty($smarty.request.attachment) && $select_module!='Documents'}
 				<tr>
 				<td width="100%" colspan="2">{$smarty.request.attachment|@vtlib_purify}<input type="hidden" value="{$smarty.request.attachment|@vtlib_purify}" name="pdf_attachment"></td>
 				</tr>
+			{elseif !empty($smarty.request.attachment) && $select_module=='Documents'}
+				<div>
+				<a href='javascript:void(0)' onclick='this.parentNode.parentNode.removeChild(this.parentNode);'><img src='{'no.gif'|@vtiger_imageurl:$THEME}'></a>
+				&nbsp{$DOCNAME}<input type='hidden' name='doc_attachments[]' value='{$DOCID}'>
+				</div>
 			{else}
 				{foreach item="attach_files" key="attach_id" from=$elements.3}
 					<tr id="row_{$attach_id}">

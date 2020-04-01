@@ -19,8 +19,7 @@
 <input type="hidden" name="mode" value="save">
 
 <table border=0 cellspacing=0 cellpadding=0 width="98%" align=center>
-    <tr>
-        <td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
+	<tr>
 		<td class="showPanelBg" valign="top" width="100%" style="padding:10px;">
 		<div class="small" style="width:100%;position:relative;">
 			<table border=0 cellspacing=1 cellpadding=0 width="100%" class="lvtBg">

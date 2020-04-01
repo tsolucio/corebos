@@ -523,10 +523,13 @@ class Homestuff {
 
 	public function getReportChartDetails($stuffId, $skipChart = '') {
 		global $adb;
-		$result=$adb->pquery('select * from vtiger_homereportchart where stuffid=?', array($stuffId));
-		$reportId=$adb->query_result($result, 0, 'reportid');
-		$chartType=$adb->query_result($result, 0, 'reportcharttype');
-		$reportDetails=array('ReportId'=>$reportId, 'Chart'=>$chartType);
+		$result=$adb->pquery(
+			'select * from vtiger_homereportchart inner join vtiger_reportmodules on reportid=reportmodulesid where stuffid=?',
+			array($stuffId)
+		);
+		$reportId = $result->fields['reportid'];
+		$chartType = $result->fields['reportcharttype'];
+		$reportDetails=array('ReportId' => $reportId, 'Chart' => $chartType, 'ReportModule' => $result->fields['primarymodule']);
 		$this->reportdetails[$stuffId] = $reportDetails;
 		if ($skipChart == '') {
 			return $this->getDisplayReportChart($reportId, $chartType);

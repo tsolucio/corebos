@@ -370,6 +370,7 @@ var alert_arr = {
 	'ONLY_ONE_MODULE_PERMITTED_FOR_REPORT' : 'You can select only one related module for this type of report',
 	'MUST_SELECT_ONE_MODULE_FOR_REPORT' : 'You must select one related module for this type of report',
 	'LBL_NEW_CONDITION' : 'New Condition',
+	'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL' : 'Nuovo Gruppo di Condizioni',
 	'WF_UPDATE_MAP_ERROR' : '**ERROR**: This task uses a field that does not exist: ',
 	'WF_UPDATE_MAP_ERROR_INFO' : 'The task will load with INCORRECT settings to permit you to fix it. The values shown are NOT CORRECT!!',
 	'MoveUp' : 'Move Up',
@@ -405,5 +406,9 @@ var alert_arr = {
 	'ERR_Massedit' : 'Errore di Mass Edit',
 	'ProcessFINISHED' : 'Processo Terminato',
 	'duplicatednotallowed' : 'Non sono permessi Moduli Duplicati',
-	'HAS_THIS_AS_NTH_CHILD' : 'ha questo record come figlio unico'
+	'HAS_THIS_AS_NTH_CHILD' : 'ha questo record come figlio unico',
+	'Okay': 'Okay',
+	'Failed': 'Failed',
+	'Warning': 'Warning',
+	'Copied': 'Copied'
 };

@@ -35,6 +35,8 @@ $smarty->assign('PROFILE_NAME', (isset($_REQUEST['profile_name']) ? vtlib_purify
 $smarty->assign('PROFILE_DESCRIPTION', (isset($_REQUEST['profile_description']) ? vtlib_purify($_REQUEST['profile_description']) : ''));
 $smarty->assign('MODE', (isset($_REQUEST['mode']) ? vtlib_purify($_REQUEST['mode']) : ''));
 $smarty->assign('MOD', return_module_language($current_language, 'Settings'));
+$smarty->assign('MODULE', $currentModule);
+$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', $image_path);
 $smarty->assign('APP', $app_strings);

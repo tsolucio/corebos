@@ -48,7 +48,7 @@ require_once 'include/Webservices/Utils.php';
  */
 function getRelatedRecords($id, $module, $relatedModule, $queryParameters, $user) {
 	global $adb, $log;
-
+	$id = vtws_getWSID($id);
 	// pickup meta data of related module
 	$webserviceObject = VtigerWebserviceObject::fromName($adb, $relatedModule);
 	$handlerPath = $webserviceObject->getHandlerPath();
@@ -79,7 +79,7 @@ function getRelatedRecords($id, $module, $relatedModule, $queryParameters, $user
 	$srvwsid = vtws_getEntityID('Services').'x';
 	while ($row = $adb->fetch_array($result)) {
 		if (($module=='HelpDesk' || $module=='Faq') && $relatedModule=='ModComments') {
-			$records[] = $row;
+			$rec = $row;
 		} else {
 			if ($relatedModule=='Products') {
 				if (isset($row['productid']) && isset($row['sequence_no'])) {
@@ -94,14 +94,17 @@ function getRelatedRecords($id, $module, $relatedModule, $queryParameters, $user
 						$rec['id'] = $pdowsid.$row['productid'];
 						$rec['linetype'] = 'Products';
 					}
-					$records[] = $rec;
 				} else {
-					$records[] =  DataTransform::sanitizeData($row, $meta);
+					$rec = DataTransform::sanitizeData($row, $meta);
 				}
 			} else {
-				$records[] =  DataTransform::sanitizeData($row, $meta);
+				$rec = DataTransform::sanitizeData($row, $meta);
 			}
 		}
+		if (isset($row['cbuuid'])) {
+			$rec['cbuuid'] = $row['cbuuid'];
+		}
+		$records[] = $rec;
 	}
 	return array ('records' => $records);
 }
@@ -114,6 +117,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 	}
 
 	// Initialize required globals
+	$holdCM = $currentModule;
 	$currentModule = $module;
 	// END
 	if (empty($queryParameters['productDiscriminator'])) {
@@ -230,11 +234,16 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 						'$id' as related_to,
 						'' as parent_comments,
 						ownertype,
-						case when (ownertype = 'user') then vtiger_users.user_name else vtiger_portalinfo.user_name end as owner_name
-					 from vtiger_ticketcomments
-					 left join vtiger_users on vtiger_users.id = ownerid
-					 left join vtiger_portalinfo on vtiger_portalinfo.id = ownerid
-					 where ticketid=$crmid";
+						case when (ownertype = 'user') then vtiger_users.user_name else vtiger_portalinfo.user_name end as owner_name,
+						case when (ownertype = 'user') then vtiger_users.first_name else '' end as owner_firstname,
+						case when (ownertype = 'user') then vtiger_users.last_name else '' end as owner_lastname,
+						case when (ownertype = 'user') then vtiger_users.user_name else vtiger_portalinfo.user_name end as creator_name,
+						case when (ownertype = 'user') then vtiger_users.first_name else '' end as creator_firstname,
+						case when (ownertype = 'user') then vtiger_users.last_name else '' end as creator_lastname
+					from vtiger_ticketcomments
+					left join vtiger_users on vtiger_users.id = ownerid
+					left join vtiger_portalinfo on vtiger_portalinfo.id = ownerid
+					where ticketid=$crmid";
 					break;
 				case 'Faq':
 					$query="select
@@ -409,12 +418,16 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 		$query .= ' order by '.$queryParameters['orderby'];
 	}
 	// now we add limit and offset if needed
-	if ($query!='' && !empty($queryParameters['limit'])) {
-		$query .= ' limit '.$queryParameters['limit'];
-		if (!empty($queryParameters['offset'])) {
-			$query .= ','.$queryParameters['offset'];
+	if ($query!='') {
+		if (!empty($queryParameters['offset']) && !empty($queryParameters['limit'])) {
+			$query .= ' limit '.$queryParameters['offset'].','.$queryParameters['limit'];
+		} elseif (!empty($queryParameters['offset'])) {
+			$query .= ' offset '.$queryParameters['offset'];
+		} elseif (!empty($queryParameters['limit'])) {
+			$query .= ' limit '.$queryParameters['limit'];
 		}
 	}
+	$currentModule = $holdCM;
 	return $query;
 }
 
@@ -448,7 +461,7 @@ function __getRLQueryFields($meta, $cols = '*') {
 		}
 		$qfields .= $columnTable[$col].".$cl,";
 	}
-	$qfields = trim($qfields, ',');  // eliminate last comma
+	$qfields = $qfields.'vtiger_crmentity.cbuuid';
 	return $qfields;
 }
 

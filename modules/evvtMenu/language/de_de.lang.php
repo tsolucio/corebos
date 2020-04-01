@@ -31,5 +31,15 @@ $mod_strings = array(
 	'AddNewItem' => 'Fügen Sie mit obigem Formular neue Elemente hinzu. Neue Elemente werden zunächst ans Ende des ersten Menüs angehängt. Von dort können Sie es beliebig verschieben.',
 	'MenuItemPermissions' => 'Wenn profilbezogene Rechte einem Navigationspunkt direkt zugeordnet werden, werden dadurch vorhandene allgemeine Rechte-Einstellungen überschrieben.',
 	'MenuParent' => 'Eltern-Element',
+	'LBL_SAVED_Menus'=>'Saved Menus',
+	'LBL_SAVE_CURRENT_BUTTON'=>'Save Current',
+	'LBL_APPLY_BUTTON'=>'Apply',
+	'LBL_RENAME_BUTTON'=>'Rename',
+	'LBL_DOWNLOAD_BUTTON'=>'Download',
+	'LBL_IMPORT_BUTTON'=>'Import',
+	'LBL_DELETE_BUTTON'=>'Delete',
+	'LBL_ACTIONS'=>'Actions',
+	'LBL_MENU_BUTTON'=>'Menu',
+	'LBL_IMPORT_EXPORT_BUTTON'=>'Import/Export',
 );
 ?>

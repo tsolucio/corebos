@@ -351,6 +351,15 @@ class Vtiger_Cron {
 	}
 
 	/**
+	 * order tasks sequencially by current sequence
+	 */
+	public static function orderTasks() {
+		global $adb;
+		$adb->query('SET @iseq=0;');
+		$adb->query('UPDATE vtiger_cron_task SET sequence=(SELECT @iseq:=@iseq+1) ORDER BY sequence ASC;');
+	}
+
+	/**
 	 * Get instances that are active (not disabled)
 	 */
 	public static function listAllActiveInstances($byStatus = 0) {

@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $adb;
+global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $adb, $default_charset;
 require_once 'Smarty_setup.php';
 require_once 'data/Tracker.php';
 
@@ -157,7 +157,7 @@ if (isset($_REQUEST['contact_id'])) {
 		if ($res && $adb->num_rows($res)>0) {
 			$focus->column_fields['folderid'] = $adb->query_result($res, 0, 0);
 		} else {
-			$fid = Documents::createFolder(getContactName($focus->contact_id));
+			$fid = Documents::createFolder(html_entity_decode(getContactName($focus->contact_id), ENT_QUOTES, $default_charset));
 			if ($fid) {
 				$focus->column_fields['folderid'] = $fid;
 			}
@@ -170,7 +170,7 @@ if (isset($_REQUEST['contact_id'])) {
 		if ($res && $adb->num_rows($res)>0) {
 			$focus->column_fields['folderid'] = $adb->query_result($res, 0, 0);
 		} else {
-			$fid = Documents::createFolder(getAccountName($accid));
+			$fid = Documents::createFolder(html_entity_decode(getAccountName($accid, ENT_QUOTES, $default_charset)));
 			if ($fid) {
 				$focus->column_fields['folderid'] = $fid;
 			}
@@ -202,7 +202,7 @@ if (isset($_REQUEST['parent_id'])) {
 		if ($res && $adb->num_rows($res)>0) {
 			$focus->column_fields['folderid'] = $adb->query_result($res, 0, 0);
 		} else {
-			$fid = Documents::createFolder(getContactName($focus->parent_id));
+			$fid = Documents::createFolder(html_entity_decode(getContactName($focus->parent_id), ENT_QUOTES, $default_charset));
 			if ($fid) {
 				$focus->column_fields['folderid'] = $fid;
 			}
@@ -215,7 +215,7 @@ if (isset($_REQUEST['parent_id'])) {
 		if ($res && $adb->num_rows($res)>0) {
 			$focus->column_fields['folderid'] = $adb->query_result($res, 0, 0);
 		} else {
-			$fid = Documents::createFolder(getAccountName($accid));
+			$fid = Documents::createFolder(html_entity_decode(getAccountName($accid), ENT_QUOTES, $default_charset));
 			if ($fid) {
 				$focus->column_fields['folderid'] = $fid;
 			}

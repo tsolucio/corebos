@@ -9,20 +9,38 @@
  ********************************************************************************/
 -->*}
 
-<table class="tableHeading" width="100%" border="0" cellspacing="0" cellpadding="5">
-	<tr>
-		<td class="big" nowrap="nowrap">
-			<strong>{$MOD.LBL_TASKS}</strong>
-		</td>
-		<td class="small cblds-t-align_right" align="right">
-			<a href="{$module->activatedeactivateTaskUrl($workflow->id,1)}">
-				<input type="button" class="crmButton save small" value="{$MOD.LBL_ACTIVATE_ALL_BUTTON_LABEL}" id='approval'/>
-			</a>
-			<a href="{$module->activatedeactivateTaskUrl($workflow->id,0)}">
-				<input type="button" class="crmButton save small" value="{$MOD.LBL_DIACTIVATE_ALL_BUTTON_LABEL}" id='close' />
-			</a>
-			<input type="button" class="crmButton create small" value="{$MOD.LBL_NEW_TASK_BUTTON_LABEL}" id='new_task' style="display:none;" />
-		</td>
-	</tr>
-</table>
+<div class="slds-page-header">
+<div class="slds-page-header__row">
+	<div class="slds-page-header__col-title">
+	<div class="slds-media">
+		<div class="slds-media__body">
+		<div class="slds-page-header__name">
+			<div class="slds-page-header__name-title">
+			<h1>
+				<span class="slds-page-header__title slds-truncate" title="{$MOD.LBL_TASKS}">
+				{$MOD.LBL_TASKS}
+				</span>
+			</h1>
+			</div>
+		</div>
+		</div>
+	</div>
+	</div>
+	<div class="slds-page-header__col-actions">
+		<div class="slds-grid slds-gutters slds-m-around_xxx-small">
+			<div class="slds-col">
+				<button class="slds-button slds-button_success" type="button" onclick="gotourl('{$module->activatedeactivateTaskUrl($workflow->id,1)}')">
+					{$MOD.LBL_ACTIVATE_ALL_BUTTON_LABEL}
+				</button>
+				<button class="slds-button slds-button_success" type="button" onclick="gotourl('{$module->activatedeactivateTaskUrl($workflow->id,0)}')">
+					{$MOD.LBL_DIACTIVATE_ALL_BUTTON_LABEL}
+				</button>
+				<button class="slds-button slds-button_brand" type="button" id='new_task' style="display:none;" >
+					{$MOD.LBL_NEW_TASK_BUTTON_LABEL}
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
 {include file='com_vtiger_workflow/TaskSummaryList.tpl'}

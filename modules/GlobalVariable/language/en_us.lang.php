@@ -41,5 +41,6 @@ $mod_strings = array(
 	'GVarDefinitions' => 'Variable Definitions',
 	'cbMap' => 'Business Map',
 	'Role' => 'Role',
+	'PHP_MAX_UPLOAD' => 'This variable is limited by PHP settings which are set to',
 );
 ?>

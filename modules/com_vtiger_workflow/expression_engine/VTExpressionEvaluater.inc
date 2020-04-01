@@ -88,13 +88,18 @@ class VTFieldExpressionEvaluater {
 			'getGEODistanceFromCoordinates' => '__cb_getGEODistanceFromCoordinates',
 			'getFromContext' => '__cb_getfromcontext',
 			'setToContext' => '__cb_setfromcontext',
+			'getSetting' => '__cb_getSetting',
+			'setSetting' => '__cb_setSetting',
+			'delSetting' => '__cb_delSetting',
 			'getCRUDMode' => '__cb_getcrudmode',
 			'isNumeric' => '__cb_is_numeric',
 			'isString' => '__cb_is_string',
 			'OR' => '__cb_or',
 			'AND' => '__cb_and',
+			'NOT' => '__cb_not',
 			'exists' => '__cb_exists',
 			'existsrelated' => '__cb_existsrelated',
+			'allrelatedare' => '__cb_allrelatedare',
 			'add_workdays' => '__cb_add_workdays',
 			'number_format' => '__cb_number_format',
 		);
@@ -175,7 +180,9 @@ class VTFieldExpressionEvaluater {
 			'isString' => 'cbexpsql_isstring',
 			'OR' => 'cbexpsql_or',
 			'AND' => 'cbexpsql_and',
+			'NOT' => 'cbexpsql_not',
 			'number_format' => 'cbexpsql_number_format',
+			'getSetting' => 'cbexpsql_getsetting',
 		);
 		$this->rawparams = array(
 			'__cb_getGEODistanceFromUser2AccountBilling',
@@ -202,6 +209,7 @@ class VTFieldExpressionEvaluater {
 			'__cb_setfromcontext',
 			'__cb_exists',
 			'__cb_existsrelated',
+			'__cb_allrelatedare',
 		);
 		$wfexpfuncs = $adb->query('select expname,funcname,rawparams,needscontext from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {
@@ -245,7 +253,7 @@ class VTFieldExpressionEvaluater {
 					return $this->exec($params[2]);
 				}
 			} else {
-				$func = $this->operations[$op->value];
+				$func = isset($this->operations[$op->value]) ? $this->operations[$op->value] : '';
 				if (in_array($func, $this->rawparams)) {
 					$relto = $expr->getParams();
 					$params = array();
@@ -272,7 +280,14 @@ class VTFieldExpressionEvaluater {
 				$loginfo = print_r($debugparams, true);
 				$logbg->debug("VTExpressionTreeNode: function $func $loginfo");
 				$this->debug[] = $loginfo;
-				return $func($params);
+				if (empty($func)) {
+					throw new Exception('Unknown function '.$op->value.'<br>'.print_r($params, true));
+				}
+				try {
+					return $func($params);
+				} catch (Exception $e) {
+					throw new Exception('Unknown function '.$op->value.' '.print_r($params, true));
+				}
 			}
 		} else {
 			$loginfo = print_r($expr, true);

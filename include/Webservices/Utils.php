@@ -128,6 +128,27 @@ function vtws_getEntityId($entityName) {
 	return $wsid;
 }
 
+function vtws_getEntityName($entityId) {
+	global $adb;
+	$result = $adb->pquery('select name from vtiger_ws_entity where id=?', array($entityId));
+	if ($result && $adb->num_rows($result)>0) {
+		return $result->fields['name'];
+	}
+	return '';
+}
+
+function vtws_getWSID($id) {
+	if (strlen($id)==40) {
+		return CRMEntity::getWSIDfromUUID($id);
+	} elseif (preg_match('/^[0-9]+x[0-9]+$/', $id)) {
+		return $id;
+	} elseif (is_numeric($id)) {
+		return vtws_getEntityId(getSalesEntityType($id)).'x'.$id;
+	} else {
+		return '0x0';
+	}
+}
+
 function getEmailFieldId($meta, $entityId) {
 	global $adb;
 	//no email field accessible in the module. since its only association pick up the field any way.
@@ -175,7 +196,7 @@ function vtws_getEntityNameFields($moduleName) {
  */
 function vtws_getModuleNameList() {
 	global $adb;
-	$sql = "select name from vtiger_tab where isentitytype=1 and name not in ('Rss','Recyclebin','Events') order by tabsequence";
+	$sql = "select name from vtiger_tab where isentitytype=1 and name not in ('Rss','Recyclebin') order by tabsequence";
 	$res = $adb->pquery($sql, array());
 	$mod_array = array();
 	while ($row = $adb->fetchByAssoc($res)) {

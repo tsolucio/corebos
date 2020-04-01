@@ -1007,7 +1007,7 @@ class Users extends CRMEntity {
 	 * @param $record -- record id:: Type integer
 	 * @param $module -- module:: Type varchar
 	 */
-	public function retrieve_entity_info($record, $module, $deleted = false, $from_wf = false) {
+	public function retrieve_entity_info($record, $module, $deleted = false, $from_wf = false, $throwexception = false) {
 		global $adb, $log;
 		$log->debug("> retrieve_entity_info $record, $module");
 
@@ -1139,9 +1139,11 @@ class Users extends CRMEntity {
 		if ($this->mode == 'edit') {
 			$res_user = $adb->pquery('SELECT status FROM vtiger_users WHERE id=?', array($this->id));
 			$status_prev = $adb->query_result($res_user, 0, 0);
+			$userrs = $adb->pquery('select roleid from vtiger_user2role where userid=?', array($this->id));
+			$oldrole = $adb->query_result($userrs, 0, 0);
+		} else {
+			$status_prev = $oldrole = '';
 		}
-		$userrs = $adb->pquery('select roleid from vtiger_user2role where userid = ?', array($this->id));
-		$oldrole = $adb->query_result($userrs, 0, 0);
 		//Save entity being called with the modulename as parameter
 		$this->saveentity($module_name);
 
@@ -1262,7 +1264,7 @@ class Users extends CRMEntity {
 	public function getDefaultHomeModuleVisibility($home_string, $inVal) {
 		$homeModComptVisibility = 0;
 		if ($inVal == 'postinstall') {
-			if ($_REQUEST[$home_string] != '') {
+			if (isset($_REQUEST[$home_string]) && $_REQUEST[$home_string] != '') {
 				$homeModComptVisibility = 0;
 			} else {
 				$homeModComptVisibility = 1;
@@ -1406,7 +1408,7 @@ class Users extends CRMEntity {
 				set vtiger_homestuff.visible=?
 				where vtiger_homestuff.stuffid=vtiger_homedefault.stuffid and vtiger_homestuff.userid=? and vtiger_homedefault.hometype=?';
 			foreach ($this->homeorder_array as $key => $value) {
-				if ($_REQUEST[$key] != '') {
+				if (isset($_REQUEST[$key]) && $_REQUEST[$key] != '') {
 					$visible = 0; //To show the default Homestuff on the the Home Page
 				} else {
 					$visible = 1; //To hide the default Homestuff on the the Home Page

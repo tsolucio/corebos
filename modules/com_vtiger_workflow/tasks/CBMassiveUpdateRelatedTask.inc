@@ -123,8 +123,11 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 				$relationInfo = $adb->fetch_array($relationResult);
 				$params = array($recordId, $rectabid, $relatedModuleId);
 				$logbg->debug('rel func: '.$relationInfo['name'].', params: '.print_r($params, true));
+				$holdCM = $currentModule;
+				$currentModule = $moduleName;
 				$relationData = call_user_func_array(array($focus, $relationInfo['name']), $params);
 				$GetRelatedList_ReturnOnlyQuery = $holdValue;
+				$currentModule = $holdCM;
 				if (isset($relationData['query'])) {
 					$query = $relationData['query'];
 					preg_match('/[\t ]from /i', $query, $matches, PREG_OFFSET_CAPTURE);

@@ -185,6 +185,14 @@ if (!empty($_REQUEST['forward'])) {
 	}
 }
 
+//Handle document attachment
+if (!empty($_REQUEST['pmodule']) && !empty($_REQUEST['attachment']) && $_REQUEST['pmodule']=='Documents') {
+	list($docid, $docname) = explode('-', vtlib_purify($_REQUEST['attachment']));
+	$fileIdRes = $adb->pquery('select crmid from vtiger_seattachmentsrel where attachmentsid=?', array($docid));
+	$smarty->assign('DOCID', $fileIdRes->fields['crmid']);
+	$smarty->assign('DOCNAME', $docname);
+}
+
 global $theme;
 $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';

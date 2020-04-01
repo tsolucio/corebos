@@ -91,5 +91,10 @@ $mod_strings = array(
 	'MVIEWWFDeleted' => 'Materialized View Workflow Deleted',
 	'EXECUTESCRIPTNOK' => 'Error executing the script',
 	'condfilterformat' => 'Conditions in Filter Format',
+	'Question Builder' => 'Question Builder',
+	'LBL_SYSTEMMODULES' => 'System Modules',
+	'RESULTS' => 'Results',
+	'Options' => 'Options',
+	'Launch a test to get the SQL' => 'Launch a test to get the SQL',
 );
 ?>

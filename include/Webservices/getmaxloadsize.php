@@ -14,9 +14,10 @@
 *************************************************************************************************
 *  Author       : JPL TSolucio, S. L.
 *************************************************************************************************/
+require_once 'include/utils/CommonUtils.php';
 
-/**	function used to get the numeration of entites
- *	return array $entitynum - numertaion of entities
+/** return maximum upload size as per PHP settings
+ * @return int maximum upload size as per PHP settings
  */
 function get_maxloadsize() {
 	require_once 'include/utils/UserInfoUtil.php';
@@ -34,14 +35,11 @@ function get_maxloadsize() {
 	return $max_size;
 }
 
+/** convert given numeric string with optional byte size magnitud to a number of bytes
+ * @param int byte size string to convert to bytes
+ * @return int number of bytes in given string
+ */
 function parse_size($size) {
-	$unit = preg_replace('/[^bkmgtpezy]/i', '', $size); // Remove the non-unit characters from the size.
-	$size = preg_replace('/[^0-9\.]/', '', $size); // Remove the non-numeric characters from the size.
-	if ($unit) {
-		// Find the position of the unit in the ordered string which is the power of magnitude to multiply a kilobyte by.
-		return round($size * pow(1024, stripos('bkmgtpezy', $unit[0])));
-	} else {
-		return round($size);
-	}
+	numberBytes($size);
 }
 ?>

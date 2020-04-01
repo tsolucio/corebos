@@ -102,10 +102,15 @@ $related_module = array(
 		'SalesOrder' => 'related_to',
 		'PurchaseOrder' => 'related_to',
 	),
+	'HelpDesk' => array(
+		'HDRelatedTo' => 'parent_id',
+		'HDProducts' => 'product_id',
+	),
 	'Organization' => array(
 		'Accounts' => 'accid'
 	),
 );
+
 
 //Array de mapeig de moduls especials, p.e. el presciptors son comptes
 //aleshores el tag Prescriptor el mapegem a Accounts
@@ -166,6 +171,14 @@ $special_modules = array(
 		'Potentials',
 		'Project',
 		'ProjectTask'
+	),
+	'HDRelatedTo' => array(
+		'Accounts',
+		'Contacts'
+	),
+	'HDProducts' => array(
+		'Products',
+		'Services'
 	),
 );
 
@@ -1658,8 +1671,8 @@ function get_plantilla($entid) {
 		$doc->retrieve_entity_info($plantillaid, 'Documents');
 		$title = $doc->column_fields['notes_title'];
 		$no = $doc->column_fields['note_no'];
-		$cat = $doc->column_fields['cat_documento'];
-		$fijado = ($doc->column_fields['fijado_portal'] == 1);
+		$cat = isset($doc->column_fields['cat_documento']) ? $doc->column_fields['cat_documento'] : '';
+		$fijado = !empty($doc->column_fields['fijado_portal']);
 	}
 
 	if (!empty($plantillaid)) {
@@ -1684,7 +1697,7 @@ function get_plantilla($entid) {
 		'doc_no' => $no,
 		'fijado' => $fijado,
 		'categoria' => $cat,
-		'entityname' => (empty($entityname) ? $entityname : elimina_puntuacion(elimina_acentos($entityname))),
+		'entityname' => (empty($entityname) ? '' : elimina_puntuacion(elimina_acentos($entityname))),
 	);
 	return $ret;
 }

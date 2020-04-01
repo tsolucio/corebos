@@ -65,11 +65,11 @@ class Mobile {
 				$seq = $seq + 1;
 			}
 		} elseif ($event_type == 'module.disabled') {
-			// TODO Handle actions when this module is disabled.
+			// Handle actions when this module is disabled.
 		} elseif ($event_type == 'module.enabled') {
-			// TODO Handle actions when this module is enabled.
+			// Handle actions when this module is enabled.
 		} elseif ($event_type == 'module.preuninstall') {
-			// TODO Handle actions when this module is about to be deleted.
+			// Handle actions when this module is about to be deleted.
 		} elseif ($event_type == 'module.preupdate') {
 			$db = PearDatabase::getInstance();
 			$db->pquery("CREATE TABLE IF NOT EXISTS `berli_crmtogo_defaults` (

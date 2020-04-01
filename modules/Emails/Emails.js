@@ -173,8 +173,11 @@ function getListViewCount(module, element, parentElement, url) {
 	});
 }
 function searchDocuments() {
-	var emailId = 0;
-	window.open('index.php?module=Documents&return_module=Emails&action=Popup&popuptype=detailview&form=EditView&form_submit=false&parenttab=Marketing&srcmodule=Emails&popupmode=ajax&select=1', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+	let q = '&query=true&search=true&searchtype=BasicSearch&search_field=filelocationtype&search_text=I';
+	window.open(
+		'index.php?module=Documents&return_module=Emails&action=Popup&popuptype=detailview&form=EditView&form_submit=false&srcmodule=Emails&popupmode=ajax&select=1'+q,
+		'emaildocselect',
+		'width=680,height=620,resizable=0,scrollbars=0');
 }
 
 function addOption(id, filename) {
@@ -203,7 +206,7 @@ function email_validate(oform, mode) {
 		alert(no_rcpts_err_msg);
 		return false;
 	}
-	//Changes made to fix tickets #4633, # 5111 to accomodate all possible email formats
+	//accomodate all possible email formats
 	var email_regex = /^[a-zA-Z0-9]+([\_\-\.]*[a-zA-Z0-9]+[\_\-]?)*@[a-zA-Z0-9]+([\_\-]?[a-zA-Z0-9]+)*\.+([\_\-]?[a-zA-Z0-9])+(\.?[a-zA-Z0-9]+)*$/;
 	var arr = new Array();
 	if (document.EditView.ccmail != null) {

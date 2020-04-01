@@ -57,9 +57,8 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 			{include file='Buttons_List.tpl' isDetailView=true}
 
 			<!-- Contents -->
-			<table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
+			<table class="slds-m-around_medium" style="width: 98%;">
 				<tr>
-					<td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 					<td class="showPanelBg" valign=top width=100%>
 						<!-- PUBLIC CONTENTS STARTS-->
 						<div class="small" style="padding:14px" onclick="hndCancelOutsideClick();";>
@@ -69,7 +68,7 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 							<tr>
 								<td>
 									<div class="small detailview_utils_table_top">
-										<div class="detailview_utils_table_tabs">
+										<div class="detailview_utils_table_tabs noprint">
 											<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_top">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</div>
 											{if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
 												{if $HASRELATEDPANES eq 'true'}
@@ -91,15 +90,6 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 										</div>
 										<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_top" id="detailview_utils_table_tabactionsep_top"></div>
 										<div class="detailview_utils_table_actions detailview_utils_table_actions_top" id="detailview_utils_actions_top">
-												{if $EDIT_PERMISSION eq 'yes'}
-													<input title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="crmbutton small edit" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.return_id.value='{$ID}';DetailView.module.value='{$MODULE}';submitFormForAction('DetailView','EditView');" type="button" name="Edit" value="&nbsp;{$APP.LBL_EDIT_BUTTON_LABEL}&nbsp;">&nbsp;
-												{/if}
-												{if ((isset($CREATE_PERMISSION) && $CREATE_PERMISSION eq 'permitted') || (isset($EDIT_PERMISSION) && $EDIT_PERMISSION eq 'yes')) && $MODULE neq 'Documents'}
-													<input title="{$APP.LBL_DUPLICATE_BUTTON_TITLE}" accessKey="{$APP.LBL_DUPLICATE_BUTTON_KEY}" class="crmbutton small create" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.isDuplicate.value='true';DetailView.module.value='{$MODULE}'; submitFormForAction('DetailView','EditView');" type="button" name="Duplicate" value="{$APP.LBL_DUPLICATE_BUTTON_LABEL}">&nbsp;
-												{/if}
-												{if $DELETE eq 'permitted'}
-													<input title="{$APP.LBL_DELETE_BUTTON_TITLE}" accessKey="{$APP.LBL_DELETE_BUTTON_KEY}" class="crmbutton small delete" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='index'; {if $MODULE eq 'Accounts'} var confirmMsg = '{$APP.NTC_ACCOUNT_DELETE_CONFIRMATION}' {else} var confirmMsg = '{$APP.NTC_DELETE_CONFIRMATION}' {/if}; submitFormForActionWithConfirmation('DetailView', 'Delete', confirmMsg);" type="button" name="Delete" value="{$APP.LBL_DELETE_BUTTON_LABEL}">&nbsp;
-												{/if}
 												{if $privrecord neq ''}
 													<span class="detailview_utils_prev" onclick="location.href='index.php?module={$MODULE}&action=DetailView&record={$privrecord}&start={$privrecordstart}'" title="{$APP.LNK_LIST_PREVIOUS}"><img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" accessKey="{$APP.LNK_LIST_PREVIOUS}"  name="privrecord" value="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev.gif'|@vtiger_imageurl:$THEME}"></span>&nbsp;
 												{else}
@@ -437,7 +427,7 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 							</tr>
 							<tr>
 								<td>
-									<div class="small detailview_utils_table_bottom">
+									<div class="small detailview_utils_table_bottom noprint">
 										<div class="detailview_utils_table_tabs">
 											<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_bottom">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</div>
 											{if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
@@ -485,7 +475,6 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 	var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 </script>
 </td>
-	<td align=right valign=top><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
 </tr></table>
 
 {if $MODULE|hasEmailField}

@@ -35,7 +35,6 @@
 {elseif $MODULE eq 'Contacts'}
 	<input type="hidden" name="reports_to_id">
 	<input type="hidden" name="opportunity_id">
-	<input type="hidden" name="contact_id" value="{$ID}">
 	<input type="hidden" name="parent_id" value="{$ID}">
 	<input type="hidden" name="contact_role">
 	<input type="hidden" name="task_id">

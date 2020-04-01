@@ -159,9 +159,7 @@ class Workflow {
 		$this->schdayofweek = isset($row['schdayofweek']) ? $row['schdayofweek'] : '';
 		$this->schannualdates = isset($row['schannualdates']) ? $row['schannualdates'] : '';
 		$this->schminuteinterval = isset($row['schminuteinterval']) ? $row['schminuteinterval'] : '';
-		if ($row['defaultworkflow']) {
-			$this->defaultworkflow=$row['defaultworkflow'];
-		}
+		$this->defaultworkflow=$row['defaultworkflow'];
 		$this->purpose = isset($row['purpose']) ? $row['purpose'] : '';
 		$this->nexttrigger_time = isset($row['nexttrigger_time']) ? $row['nexttrigger_time'] : '';
 		if ($row['execution_condition']==VTWorkflowManager::$ON_RELATE || $row['execution_condition']==VTWorkflowManager::$ON_UNRELATE) {
@@ -567,15 +565,15 @@ class Workflow {
 	}
 
 	public function getWorkFlowJSON($conds, $params, $page, $order_by) {
-		global $log, $adb;
+		global $log, $adb, $current_user;
 		$log->debug('> getWorkFlowJSON');
 
 		$workflow_execution_condtion_list = self::geti18nTriggerLabels();
-
+		$where = is_admin($current_user) ? '' : (empty($conds) ? 'where defaultworkflow=2' : 'and defaultworkflow=2');
 		if ($order_by != '') {
-			$list_query = "Select * from com_vtiger_workflows $conds order by $order_by";
+			$list_query = "Select * from com_vtiger_workflows $conds $where order by $order_by";
 		} else {
-			$list_query = "Select * from com_vtiger_workflows $conds order by ".$this->default_order_by.' '.$this->default_sort_order;
+			$list_query = "Select * from com_vtiger_workflows $conds $where order by ".$this->default_order_by.' '.$this->default_sort_order;
 		}
 		$rowsperpage = GlobalVariable::getVariable('Workflow_ListView_PageSize', 20);
 		$from = ($page-1)*$rowsperpage;

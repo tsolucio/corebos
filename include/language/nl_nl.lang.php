@@ -925,6 +925,7 @@ $app_strings = array(
 	'Due Date' => 'Vervaldatum',
 	'Created Time' => 'Gemaakt',
 	'Modified Time' => 'Gewijzigd',
+	'cbuuid' => 'Unique Identifier',
 	'Last Modified By' => 'Last Modified By',
 	'Created By' => 'Created By',
 	'Lead Status' => 'Lead status',

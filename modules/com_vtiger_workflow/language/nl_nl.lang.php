@@ -35,6 +35,7 @@ $mod_strings = array(
 'LBL_AVAILABLE_WORKLIST_LIST'=>'Beschikbare Werkstromen',
 'LBL_LOADING'=>'Laden...',
 'LBL_REEVALCONDITIONS' => 'Evaluate conditions on delayed execution',
+'evaluate' => 'Evaluate',
 'LBL_VALIDATION_ERROR'=>'Validatie Fout',
 'LBL_SELECT_OPTION_DOTDOTDOT'=>'Selecteer Optie...',
 'LBL_WORKFLOW_NOTE_CRON_CONFIG'=>'NOTE: U moet het Werkstroom cron script geconfigureerd hebben.',
@@ -51,7 +52,7 @@ $mod_strings = array(
 'LBL_EXPRESSION'=>'Formule',
 'LBL_SET_EXPRESSION'=>'Stel Formule in',
 
-'LBL_MANUAL'=>'Systeem',
+'LBL_MANUAL'=>'Systeem. Mass Actions.',
 'LBL_RECORD_ACCESS_CONTROL' => 'Record Access Control',
 'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL'=>'Nieuwe Conditiegroep',
 
@@ -205,5 +206,13 @@ $mod_strings = array(
 'LBL_ROW' => 'Row',
 'ERR_IncorrectFile' => 'Incorrect File or File Content',
 'ERR_CannotProcess' => 'Cannot process workflow',
+'ERR_ExpTypeUndefined' => 'Expression Type Undefined',
+'ERR_NoCRMIDforEvaluate' => 'No record selected for evaluation context',
+'EmptyForAllDateRanges' => 'Leave empty for ALL date ranges.',
+'LBL_SAVEBASED' => 'Save based',
+'LBL_TIMEBASED' => 'Time or Setting based',
+'Record Set' => 'Record Set for Mass Actions',
+'Select where to get the records from' => 'Select where to get the records from',
+'Launch Now' => 'Launch Now',
 );
 ?>

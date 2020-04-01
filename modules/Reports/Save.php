@@ -209,9 +209,11 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 					//<<<<step3 vtiger_reportsortcol>>>>>>>
 
 					//<<<<step5 standarfilder>>>>>>>
-					$ireportmodulesql = "insert into vtiger_reportdatefilter (DATEFILTERID,DATECOLUMNNAME,DATEFILTER,STARTDATE,ENDDATE) values (?,?,?,?,?)";
-					$ireportmoduleresult = $adb->pquery($ireportmodulesql, array($genQueryId, $stdDateFilterField, $stdDateFilter, $startdate, $enddate));
-					$log->debug('Reports :: Save-> saved vtiger_reportdatefilter');
+					if (!empty($stdDateFilterField) && !empty($stdDateFilter)) {
+						$ireportmodulesql = 'insert into vtiger_reportdatefilter (DATEFILTERID,DATECOLUMNNAME,DATEFILTER,STARTDATE,ENDDATE) values (?,?,?,?,?)';
+						$ireportmoduleresult = $adb->pquery($ireportmodulesql, array($genQueryId, $stdDateFilterField, $stdDateFilter, $startdate, $enddate));
+						$log->debug('Reports :: Save-> saved vtiger_reportdatefilter');
+					}
 					//<<<<step5 standarfilder>>>>>>>
 
 					//<<<<step4 columnstototal>>>>>>>

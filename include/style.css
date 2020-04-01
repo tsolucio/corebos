@@ -7,6 +7,42 @@
 * All Rights Reserved.
 ********************************************************************************/
 
+#page-header {
+  z-index: 99;
+  width: 98.5%;
+  margin-left: 0.75%;
+  top: 5.625rem;
+  transition: top 100ms linear, margin 100ms linear, padding 100ms linear;
+}
+
+#page-header.page-header_collapsed {
+  width: 100%; 
+  margin-left: 0;
+  padding: 0.35rem;
+  border-radius: 0;
+}
+
+#page-header.page-header_stickup {
+  top: 2.5rem;
+}
+
+#page-header.page-header_sticky {
+  margin-top: 0;
+}
+
+#page-header.has-no-global-header {
+  top: 0;
+}
+
+#page-header-surplus {
+  overflow: hidden;
+  transition: height 150ms linear;
+}
+
+#page-header-icon {
+  transition: width 180ms linear, height 180ms linear;
+}
+
 /* =========================================================== */
 /* ========================== CBDS =========================== */
 /* =========================================================== */

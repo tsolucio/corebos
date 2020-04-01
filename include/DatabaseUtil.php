@@ -87,15 +87,15 @@ function mkTotQuery($query, $column) {
 }
 
 //Strip tailing commands
-function stripTailCommandsFromQuery($query) {
-	if (stripos($query, ' LIMIT ') > 0) {
-		$query = substr($query, 0, stripos($query, ' LIMIT '));
-	}
-	if (stripos($query, ' GROUP BY ') > 0) {
+function stripTailCommandsFromQuery($query, $stripgroup = true) {
+	if ($stripgroup && stripos($query, ' GROUP BY ') > 0) {
 		$query = substr($query, 0, stripos($query, ' GROUP BY '));
 	}
 	if (stripos($query, ' ORDER BY ') > 0) {
 		$query = substr($query, 0, stripos($query, ' ORDER BY '));
+	}
+	if (stripos($query, ' LIMIT ') > 0) {
+		$query = substr($query, 0, stripos($query, ' LIMIT '));
 	}
 	return $query;
 }

@@ -52,7 +52,7 @@ if (isset($argv) && count($argv)==2) {
 		$cbupdate_files[] = $tcode;
 	}
 }
-
+$adb->pquery("ALTER TABLE vtiger_cbupdater ADD COLUMN appcs varchar(3) DEFAULT '1'", array());
 if (count($cbupdate_files)>0) {
 	libxml_use_internal_errors(true);
 	foreach ($cbupdate_files as $cbupdate_file) {
@@ -91,7 +91,7 @@ if (count($cbupdate_files)>0) {
 								$focus->save('cbupdater');
 								$cbupd['cbupdaterid'] = $focus->id;
 								$cbupdate_ids = $cbupdate_ids . $focus->id . ',';
-								$adb->pquery('update vtiger_cbupdater set pathfilename=? where cbupdaterid=?', array($cbupd['filename'],$focus->id));
+								$adb->pquery('update vtiger_cbupdater set pathfilename=?,appcs="1" where cbupdaterid=?', array($cbupd['filename'],$focus->id));
 								$cbupdatesfound[] = $cbupd;
 							} else {
 								$error = 1;

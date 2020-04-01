@@ -287,6 +287,7 @@ class CustomView extends CRMEntity {
 	 */
 	public function getColumnsListbyBlock($module, $block, $markMandatory = true) {
 		global $adb, $current_user;
+		$module_columnlist = null;
 		$block_ids = explode(',', $block);
 		$tabid = getTabid($module);
 		$userprivs = $current_user->getPrivileges();
@@ -317,7 +318,7 @@ class CustomView extends CRMEntity {
 				from vtiger_field
 				inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid
 				inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid';
-			$sql.= " where $uniqueFieldsRestriction and vtiger_field.block in (" . generateQuestionMarks($block_ids) . ") and";
+			$sql.= " where $uniqueFieldsRestriction and vtiger_field.block in (" . generateQuestionMarks($block_ids) . ') and';
 			$sql.= "$display_type and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
 
 			$params = array($tab_ids, $block_ids);
@@ -343,6 +344,9 @@ class CustomView extends CRMEntity {
 		}
 		if ($module != 'Calendar') {
 			$moduleFieldList = $this->meta->getModuleFields();
+		}
+		if ($noofrows > 0) {
+			$module_columnlist = array();
 		}
 		for ($i = 0; $i < $noofrows; $i++) {
 			$fieldtablename = $adb->query_result($result, $i, 'tablename');
@@ -372,8 +376,7 @@ class CustomView extends CRMEntity {
 				}
 			}
 			$fieldlabel1 = str_replace(' ', '_', $fieldlabel);
-			$optionvalue = $fieldtablename . ':' . $fieldcolname . ':' . $fieldname . ':' . $module . '_' .
-					$fieldlabel1 . ':' . $fieldtypeofdata;
+			$optionvalue = $fieldtablename . ':' . $fieldcolname . ':' . $fieldname . ':' . $module . '_' . $fieldlabel1 . ':' . $fieldtypeofdata;
 			//added to escape attachments fields in customview as we have multiple attachments
 			$fieldlabel = getTranslatedString($fieldlabel, $module); //added to support i18n issue
 			if ($module != 'HelpDesk' || $fieldname != 'filename') {
@@ -1125,10 +1128,6 @@ class CustomView extends CRMEntity {
 		$current_mod_strings = return_specified_module_language($current_language, $module);
 		$block_info = array();
 		$modules_list = explode(',', $module);
-		if ($module == 'Calendar') {
-			$module = "Calendar','Events";
-			$modules_list = array('Calendar', 'Events');
-		}
 
 		// Tabid mapped to the list of block labels to be skipped for that tab.
 		$showUserAdvancedBlock = GlobalVariable::getVariable('Webservice_showUserAdvancedBlock', 0);
@@ -1153,9 +1152,6 @@ class CustomView extends CRMEntity {
 			inner join vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
 			where displaytype != 3 and vtiger_tab.name in (' . generateQuestionMarks($modules_list) . ') and vtiger_field.presence in (0,2) order by block';
 		$result = $adb->pquery($Sql, array($modules_list));
-		if ($module == "Calendar','Events") {
-			$module = 'Calendar';
-		}
 
 		$pre_block_label = '';
 		while ($block_result = $adb->fetch_array($result)) {

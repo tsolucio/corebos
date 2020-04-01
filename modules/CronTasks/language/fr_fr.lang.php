@@ -16,6 +16,8 @@
 ***********************************************************/
 
 $mod_strings = array (
+	'CronTasks' => 'Cron Tasks',
+	'SINGLE_CronTasks' => 'Cron Task',
 	'LBL_ACTIVE' => 'Actif',
 	'LBL_INACTIVE' => 'Inactif',
 	'LBL_STATUS' => 'Statut',

@@ -96,19 +96,43 @@
 let chartDataObject = {
 	labels: [{/literal}{foreach item=LABEL name=chartlabels from=$CHARTDATA.xaxisData}"{$LABEL}"{if not $smarty.foreach.chartlabels.last},{/if}{/foreach}{literal}],
 	datasets: [{
-		data: [{/literal}{foreach item=CVALUE name=chartvalues from=$CHARTDATA.yaxisData}"{$CVALUE}"{if not $smarty.foreach.chartvalues.last},{/if}{/foreach}{literal}],
-		backgroundColor: [{/literal}{foreach item=CVALUE name=chartvalues from=$CHARTDATA.yaxisData}getRandomColor(){if not $smarty.foreach.chartvalues.last},{/if}{/foreach}{literal}]
+		data: [{/literal}{foreach item=CVALUE name=chartvalues from=$CHARTDATA.yaxisData}"{$CVALUE}"{if not $smarty.foreach.chartvalues.last},{/if}{/foreach}{literal}]
 	}]
 };
+const arrSum = chartDataObject.datasets[0].data.reduce((a,b) => Number(a) + Number(b), 0);
 let rptpiechart = document.getElementById('rptpiechart');
 let rptbarchart = document.getElementById('rptbarchart');
 let pchart = new Chart(rptpiechart,{
 	type: 'pie',
 	data: chartDataObject,
 	options: {
+		plugins: {{/literal}
+			colorschemes: {
+				scheme: '{$GRAPHCOLORSCHEME}'
+			},
+			datalabels: {
+				{if $GRAPHSHOW=='None'}
+				display: false,
+				{/if}
+				color: '{$GRAPHSHOWCOLOR}',
+				font: {
+					size: 14,
+					weight: 'bold'
+				},
+				{if $GRAPHSHOW=='Percentage' || $GRAPHSHOW=='ValuePercentage'}
+				formatter: function(value, context) {
+					{if $GRAPHSHOW=='ValuePercentage'}
+					return value + ' (' + Math.round(value*100/arrSum) + '%)';
+					{else}
+					return Math.round(value*100/arrSum) + '%';
+					{/if}
+				}
+				{/if}{literal}
+			}
+		},
 		responsive: false,
 		legend: {
-			position: "right",
+			position: 'right',
 			labels: {
 				fontSize: 11,
 				boxWidth: 18
@@ -120,6 +144,30 @@ let barchar = new Chart(rptbarchart,{
 	type: 'horizontalBar',
 	data: chartDataObject,
 	options: {
+		plugins: {{/literal}
+			colorschemes: {
+				scheme: '{$GRAPHCOLORSCHEME}'
+			},
+			datalabels: {
+				{if $GRAPHSHOW=='None'}
+				display: false,
+				{/if}
+				color: '{$GRAPHSHOWCOLOR}',
+				font: {
+					size: 14,
+					weight: 'bold'
+				},
+				{if $GRAPHSHOW=='Percentage' || $GRAPHSHOW=='ValuePercentage'}
+				formatter: function(value, context) {
+					{if $GRAPHSHOW=='ValuePercentage'}
+					return value + ' (' + Math.round(value*100/arrSum) + '%)';
+					{else}
+					return Math.round(value*100/arrSum) + '%';
+					{/if}
+				}
+				{/if}{literal}
+			}
+		},
 		responsive: false,
 		legend: {
 			display: false,
@@ -129,7 +177,7 @@ let barchar = new Chart(rptbarchart,{
 		}
 	}
 });
-rptpiechart.addEventListener('click',pieclick);
+rptpiechart.addEventListener('click', pieclick);
 function pieclick(evt) {
 	let activePoint = pchart.getElementAtEvent(evt);
 	let clickzone = {

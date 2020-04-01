@@ -162,19 +162,48 @@ class QueryGenerator {
 				}
 			}
 		}
+		if (count($this->ownerFields)>0 && count($this->fields)>0) {
+			foreach ($this->fields as $fld) {
+				if (strtolower(substr($fld, 0, 6))=='users.') {
+					list($fmod, $fname) = explode('.', $fld);
+					$this->referenceFieldNameList[] = 'Users.'.$fname;
+					$this->setReferenceFieldsManually('assigned_user_id', 'Users', $fname);
+				}
+			}
+		}
 	}
 
 	public function setReferenceFieldsManually($referenceField, $refmod, $fname) {
 		global $current_user;
-		$handler = vtws_getModuleHandlerFromName($refmod, $current_user);
-		$meta = $handler->getMeta();
-		$fields = $meta->getModuleFields();
+		if ($refmod=='Users') {
+			$fields = $this->getOpenUserFields();
+		} else {
+			$handler = vtws_getModuleHandlerFromName($refmod, $current_user);
+			$meta = $handler->getMeta();
+			$fields = $meta->getModuleFields();
+		}
 		$this->referenceFields[$referenceField][$refmod][$fname] = $fields[$fname];
 		$this->setaddJoinFields($refmod.'.'.$fname);
 	}
 
 	public function setaddJoinFields($fieldname) {
 		$this->addJoinFields[] = $fieldname;
+	}
+
+	public function getOpenUserFields() {
+		global $adb;
+		$sql = "SELECT vtiger_field.*, '0' as readonly
+			FROM vtiger_field
+			WHERE columnname in ('user_name','first_name','last_name','department')
+			ORDER BY vtiger_field.sequence ASC";
+		$fields = array();
+		$result = $adb->pquery($sql, array());
+		$noofrows = $adb->num_rows($result);
+		for ($i=0; $i<$noofrows; $i++) {
+			$webserviceField = WebserviceField::fromQueryResult($adb, $result, $i);
+			$fields[$webserviceField->getFieldName()] = $webserviceField;
+		}
+		return $fields;
 	}
 
 	public function getCustomViewFields() {
@@ -255,6 +284,15 @@ class QueryGenerator {
 				}
 			}
 		} else {  // FQN
+			if ($fldmod=='Users' && !empty($this->referenceFields['assigned_user_id'])) {
+				if ($returnName) {
+					return 'vtiger_users.'.$fldname;
+				} elseif (isset($this->referenceFields['assigned_user_id'][$fldmod][$fldname])) {
+					return $this->referenceFields['assigned_user_id'][$fldmod][$fldname];
+				} else {
+					return null;
+				}
+			}
 			foreach ($this->referenceFieldInfoList as $fld => $mods) {
 				if ($fld=='modifiedby') {
 					$fld = 'assigned_user_id';
@@ -431,12 +469,12 @@ class QueryGenerator {
 					$moduleList = $this->referenceFieldInfoList[$fieldName];
 					foreach ($moduleList as $module) {
 						if (empty($this->moduleNameFields[$module])) {
-							$meta = $this->getMeta($module);
+							$this->getMeta($module);
 						}
 					}
 				} elseif (in_array($fieldName, $this->ownerFields)) {
-					$meta = $this->getMeta('Users');
-					$meta = $this->getMeta('Groups');
+					$this->getMeta('Users');
+					$this->getMeta('Groups');
 				}
 			}
 
@@ -596,7 +634,7 @@ class QueryGenerator {
 				if ($fieldName == 'parent_id' && $baseTable == 'vtiger_seactivityrel') {
 					$tableJoinMapping[$baseTable] = 'LEFT JOIN';
 				} elseif ($fieldName == 'contact_id' && $baseTable == 'vtiger_cntactivityrel') {
-					$tableJoinMapping[$baseTable] = "LEFT JOIN";
+					$tableJoinMapping[$baseTable] = 'LEFT JOIN';
 				} else {
 					$tableJoinMapping[$baseTable] = 'INNER JOIN';
 				}
@@ -661,24 +699,20 @@ class QueryGenerator {
 		$sql = " FROM $baseTable ";
 		unset($tableList[$baseTable]);
 		foreach ($defaultTableList as $tableName) {
-			$sql .= " $tableJoinMapping[$tableName] $tableName ON $baseTable.".
-					"$baseTableIndex = $tableName.$moduleTableIndexList[$tableName]";
+			$sql .= " $tableJoinMapping[$tableName] $tableName ON $baseTable.$baseTableIndex = $tableName.$moduleTableIndexList[$tableName]";
 			unset($tableList[$tableName]);
 		}
 		$specialTableJoins = array();
 		foreach ($tableList as $tableName) {
 			if ($tableName == 'vtiger_users') {
 				$field = $moduleFields[$ownerField];
-				$sql .= " $tableJoinMapping[$tableName] $tableName ON ".$field->getTableName().".".
-					$field->getColumnName()." = $tableName.id";
+				$sql .= " $tableJoinMapping[$tableName] $tableName ON ".$field->getTableName().'.'.$field->getColumnName()." = $tableName.id";
 			} elseif ($tableName == 'vtiger_groups') {
 				$field = $moduleFields[$ownerField];
-				$sql .= " $tableJoinMapping[$tableName] $tableName ON ".$field->getTableName().".".
-					$field->getColumnName()." = $tableName.groupid";
+				$sql .= " $tableJoinMapping[$tableName] $tableName ON ".$field->getTableName().'.'.$field->getColumnName()." = $tableName.groupid";
 			} else {
-				$sql .= " $tableJoinMapping[$tableName] $tableName ON $baseTable.".
-					"$baseTableIndex = $tableName.$moduleTableIndexList[$tableName]";
-					$specialTableJoins[]=$tableName.$baseTable;
+				$sql .= " $tableJoinMapping[$tableName] $tableName ON $baseTable.$baseTableIndex = $tableName.$moduleTableIndexList[$tableName]";
+				$specialTableJoins[]=$tableName.$baseTable;
 			}
 		}
 
@@ -818,6 +852,13 @@ class QueryGenerator {
 						}
 					}
 				} else {  // FQN
+					if ($fldmod=='Users' && !in_array('vtiger_users', $referenceFieldTableList) && !in_array('vtiger_users', $alreadyinfrom)) {
+						$sql .= ' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid ';
+						$referenceFieldTableList[] = $alreadyinfrom[] = 'vtiger_users';
+						$sql .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid ';
+						$referenceFieldTableList[] = $alreadyinfrom[] = 'vtiger_groups';
+						continue;
+					}
 					foreach ($this->referenceFieldInfoList as $fld => $mods) {
 						if ($fld=='modifiedby' || $fld == 'assigned_user_id') {
 							continue;
@@ -1496,6 +1537,24 @@ class QueryGenerator {
 
 	public function addConditionGlue($glue) {
 		$this->groupInfo .= " $glue ";
+	}
+
+	public static function constructAdvancedSearchURLFromReportCriteria($conditions, $module) {
+		$conds = array();
+		$grpcd = array(null);
+		foreach ($conditions as $grp => $cols) {
+			$grpcd[] = array('groupcondition' => $cols['condition']);
+			foreach ($cols['columns'] as $col) {
+				$col['groupid'] = $grp;
+				$col['columncondition'] = $col['column_condition'];
+				unset($col['column_condition']);
+				$finfo = explode(':', $col['columnname']);
+				$col['columnname'] = $finfo[0].':'.$finfo[1].':'.$finfo[3].':'.$finfo[2].':'.$finfo[4];
+				$conds[] = $col;
+			}
+		}
+		return 'index.php?module=' . $module . '&action=index&query=true&search=true&searchtype=advance&advft_criteria='
+			.urlencode(json_encode($conds)).'&advft_criteria_groups=' . urlencode(json_encode($grpcd));
 	}
 
 	public function constructAdvancedSearchConditions($module, $conditions) {

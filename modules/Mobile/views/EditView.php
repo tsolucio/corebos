@@ -55,7 +55,7 @@ class crmtogo_UI_EditView extends crmtogo_WS_FetchRecordDetails {
 				$moduleObj = $this->cachedModuleLookupWithRecordId($wsResponseResult['record']['id']);
 				$record = crmtogo_UI_ModuleRecordModel::buildModelFromResponse($wsResponseResult['record']);
 				if ($request->getOperation()=='duplicate') {
-					$record->setId();
+					$record->setId('');
 					$wsResponseResult['record']['id'] = '';
 				} else {
 					$record->setId($wsResponseResult['record']['id']);

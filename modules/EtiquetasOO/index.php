@@ -99,9 +99,9 @@ $SQL = "SELECT tabid, name, tablabel FROM vtiger_tab WHERE name='Users' or isent
 $res_tab = $adb->query($SQL);
 $num_tabs = $adb->num_rows($res_tab);
 $arr_options = array();
-echo '<div class="slds-form-element__control">
+echo '<div class="slds-form-element__control slds-card">
 <div class="slds-select_container" style="width:90%;margin: 5px auto;">
-	<select name="oomodule" id="oomodule" onchange="go_tab(this);" class="slds-select">';
+	<select name="oomodule" id="oomodule" onchange="go_tab(this);" class="slds-select slds-page-header__meta-text">';
 while ($tab = $adb->fetch_array($res_tab)) {
 	if ($tab['tablabel'] == 'PBXManager') {
 		continue;
@@ -135,40 +135,41 @@ while ($tab = $adb->fetch_array($res_tab)) {
 	$etiq_tab = (empty($app_strings[$tab['tablabel']]) ? $tab['tablabel'] : $app_strings[$tab['tablabel']] );
 	echo '<li><a name="'.$tab['name'].'"></a>';
 	outputOOModuleHeader($tab['name']);
-	echo '<table class="slds-table slds-table_cell-buffer slds-table_bordered">';
+	echo '<table class="slds-table slds-table_cell-buffer slds-table_bordered slds-card">';
 	$SQL_FIELDS = 'SELECT fieldname,fieldlabel FROM vtiger_field WHERE presence IN (0,2) AND tabid=?';
 	$res_field = $adb->pquery($SQL_FIELDS, array($tab['tabid']));
 	while ($field = $adb->fetch_array($res_field)) {
 		$etiqueta = (empty($mod_strings[$field['fieldlabel']]) ? $field['fieldlabel'] : $mod_strings[$field['fieldlabel']]);
-		echo '<tr class="slds-hint-parent" data-clipboard-text="{'.$tab['name'].'.'.$field['fieldname'].'}"><td style="width:350px;"><b>'.$etiqueta.'</b>:</td><td>{'.$tab['name'].'.'.$field['fieldname'].'}';
+		echo '<tr class="slds-hint-parent slds-page-header__meta-text" data-clipboard-text="{'.$tab['name'].'.'.$field['fieldname'].'}"><td style="width:350px;"><b>'.$etiqueta.'</b>:</td><td>{'.$tab['name'].'.'.$field['fieldname'].'}';
 		echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{'.$tab['name'].'.'.$field['fieldname'].'}">' . $btnclose;
 		echo '</td></tr>';
 	}
 	echo '</table>';
-	echo '<div class="slds-page-header__col-meta">
-		<h3 class="slds-text-heading_small"><u>'.$eoo_strings['RelatedModules'].'</u></h3>
-		</div>';
+	echo '<div class="slds-notify_alert slds-theme_info slds-theme_alert-texture slds-text-heading_small slds-m-bottom_xx-small slds-m-top_xx-small" style="justify-content: unset;">'
+		.$eoo_strings['RelatedModules'].'</div>';
 	echo '<ul>';
 	if (array_key_exists($tab['name'], $related_module)) {
-		echo '<li><p class="slds-page-header__name-meta"><u>'.$eoo_strings['OneEntity'].'</u></p>';
-		echo '<table class="slds-table slds-table_cell-buffer slds-table_bordered">';
+		echo '<li>';
+		echo '<table class="slds-table slds-table_cell-buffer slds-table_bordered slds-card">';
+		echo '<thead><th colspan="2" class="slds-page-header__meta-text">'.$eoo_strings['OneEntity'].'</th></thead><tbody>';
 		foreach ($related_module[$tab['name']] as $rel_key => $rel_value) {
 			$etiq_reltab = (empty($app_strings[$rel_key]) ? $rel_key : $app_strings[$rel_key] );
 			if (!in_array($etiq_reltab, $arr_options)) {
 				continue;
 			}
-			echo '<tr class="slds-hint-parent" data-clipboard-text="{'.$rel_key.'}"><td style="width:350px;"><a href="#'.$rel_key.'"><b>'.$etiq_reltab.':</b></a></<a><td>{'.$rel_key.'}';
+			echo '<tr class="slds-hint-parent slds-page-header__meta-text" data-clipboard-text="{'.$rel_key.'}"><td style="width:350px;"><a href="#'.$rel_key.'"><b>'.$etiq_reltab.':</b></a></<a><td>{'.$rel_key.'}';
 			echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{'.$rel_key.'}">' . $btnclose;
 			echo '</td></tr>';
 		}
-		echo '</table>';
+		echo '</tbody></table>';
 		echo '</li>';
 	}
 	$SQL_REL = 'SELECT related_tabid, label FROM vtiger_relatedlists WHERE tabid=? AND related_tabid<>0 AND name<>\'get_history\'';
 	$res_rel = $adb->pquery($SQL_REL, array($tab['tabid']));
 	if ($adb->num_rows($res_rel) > 0) {
-		echo '<li><p class="slds-page-header__name-meta" title="'.getTranslatedString($eoo_strings['VariosEntity']).'"><u>'.$eoo_strings['VariosEntity'].'</u></p>';
-		echo '<table class="slds-table slds-table_cell-buffer slds-table_bordered">';
+		echo '<li>';
+		echo '<table class="slds-table slds-table_cell-buffer slds-table_bordered slds-card">';
+		echo '<thead><th colspan="2" class="slds-page-header__meta-text">'.getTranslatedString($eoo_strings['VariosEntity']).'</th></thead><tbody>';
 		while ($rel_varios = $adb->fetch_array($res_rel)) {
 			$SQL_RELN = "SELECT name, tablabel FROM vtiger_tab WHERE tabid=?";
 			$res_reln = $adb->pquery($SQL_RELN, array($rel_varios['related_tabid']));
@@ -195,15 +196,16 @@ while ($tab = $adb->fetch_array($res_tab)) {
 					$etiq_reltab = $app_strings[$rel_varios['label']];
 				}
 			}
-			echo '<tr class="slds-hint-parent" data-clipboard-text="{'.$rel_name.'}"><td style="width:350px;"><a href="#'.$rel_name.'"><b>'.$etiq_reltab.':</b></a></td><td>{'.$rel_name.'}';
+			echo '<tr class="slds-hint-parent slds-page-header__meta-text" data-clipboard-text="{'.$rel_name.'}"><td style="width:350px;"><a href="#'.$rel_name.'"><b>'.$etiq_reltab.':</b></a></td><td>{'.$rel_name.'}';
 			echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{'.$rel_name.'}">' . $btnclose;
 			echo '</td></tr>';
 		}
-		echo '</table>';
+		echo '</tbody></table>';
 		echo '</li>';
 	}
 	echo '</ul>';
-	echo '<a onclick="history.go(-1);" class="slds-text-heading_small">'.$eoo_strings['Back'].'</a><span class="slds-text-heading_small">&nbsp;|&nbsp;</span><a href="#top"class="slds-text-heading_small">'.$eoo_strings['Up'].'</a>';
+	echo '<div class="slds-m-around_small"><a onclick="history.go(-1);" class="slds-text-heading_small slds-badge">'.$eoo_strings['Back'].'</a>';
+	echo '<a href="#top"class="slds-text-heading_small slds-badge">'.$eoo_strings['Up'].'</a></div>';
 	echo '</li>';
 }
 foreach ($special_modules as $sp_key => $sp_value) {

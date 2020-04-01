@@ -40,6 +40,10 @@ class RunWebserviceWorkflowTask extends VTTask {
 
 		$wsconfig = $target_fields['WSConfig'];
 		$url = $wsconfig['wsurl'];
+		if (strstr($url, 'getSetting(')) {
+			$setkey = str_replace(array('getSetting(', ')'), array('', ''), $url);
+			$url = coreBOS_Settings::getSetting($setkey, '');
+		}
 		$method = $wsconfig['wshttpmethod'];
 		$methodname = $wsconfig['methodname'];
 		$wstype = $wsconfig['wstype'];
@@ -80,7 +84,17 @@ class RunWebserviceWorkflowTask extends VTTask {
 			foreach ($headers as $head) {
 				$findauth = explode(':', $head);
 				if ($findauth[0] == 'Authorization') {
-					$replace = 'Authorization:Bearer:'.$focus2->column_fields[$findauth[2]];
+					if (strstr($findauth[1], 'getContext')) {
+						$context = str_replace(array('getContext(', ')'), array('', ''), $findauth[1]);
+						$token = $entity->getContext();
+						$token = $token[$context];
+					} elseif (strstr($findauth[1], 'getSetting')) {
+						$setkey = str_replace(array('getSetting(', ')'), array('', ''), $findauth[1]);
+						$token = coreBOS_Settings::getSetting($setkey, '');
+					} else {
+						$token = $findauth[1];
+					}
+					$replace = 'Authorization:Bearer: '.$token;
 					$headers[$nr] = $replace;
 				}
 				$nr++;

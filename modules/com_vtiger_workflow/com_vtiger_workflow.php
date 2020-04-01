@@ -13,6 +13,7 @@ class com_vtiger_workflow extends CRMEntity {
 	public $table_index= 'workflow_id';
 	public $default_order_by = 'summary';
 	public $default_sort_order='ASC';
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-document', 'class' => 'slds-icon', 'icon'=>'process');
 
 	/**
 	 * Track the viewing of a detail record.
@@ -24,7 +25,7 @@ class com_vtiger_workflow extends CRMEntity {
 	public function create_export_query($where) {
 		global $adb;
 		$search_type = vtlib_purify($_REQUEST['search_type']);
-		$filters = vtlib_purify($_REQUEST['filters']);
+		$filters = isset($_REQUEST['filters']) ? vtlib_purify($_REQUEST['filters']) : '';
 		if ($search_type=='includesearch' && $filters!='') {
 			$filters = json_decode($filters, true);
 			$conds = '';

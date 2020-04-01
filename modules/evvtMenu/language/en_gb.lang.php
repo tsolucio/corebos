@@ -31,5 +31,15 @@ $mod_strings = array(
 	'AddNewItem' => 'Add new elements using the form above. New elements will be added to the end of the first menu, you can move and adapt them from there.',
 	'MenuItemPermissions' => 'When profile permissions are applied to a menu element, they will override the existing permissions settings.',
 	'MenuParent' => 'Parent',
+	'LBL_SAVED_Menus'=>'Saved Menus',
+	'LBL_SAVE_CURRENT_BUTTON'=>'Save Current',
+	'LBL_APPLY_BUTTON'=>'Apply',
+	'LBL_RENAME_BUTTON'=>'Rename',
+	'LBL_DOWNLOAD_BUTTON'=>'Download',
+	'LBL_IMPORT_BUTTON'=>'Import',
+	'LBL_DELETE_BUTTON'=>'Delete',
+	'LBL_ACTIONS'=>'Actions',
+	'LBL_MENU_BUTTON'=>'Menu',
+	'LBL_IMPORT_EXPORT_BUTTON'=>'Import/Export',
 );
 ?>

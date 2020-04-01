@@ -244,6 +244,7 @@ $mod_strings = array(
 	'No Time' => 'Nincs idő',
 	'Send Reminder' => 'Emlékeztetőt küld',
 	'SendReminder' => 'Emlékeztetőt küld',
+	'Recommended frequency for SendReminder is 15 mins' => 'Recommended frequency for Send Reminder is 15 mins',
 	'LBL_YES' => 'Igen',
 	'LBL_NO' => 'Nem',
 	'LBL_DAYS' => 'napok',

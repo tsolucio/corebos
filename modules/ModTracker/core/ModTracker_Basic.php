@@ -76,13 +76,8 @@ class ModTracker_Basic {
 		if (isset($current_user) && is_admin($current_user)) {
 			return true;
 		}
-		// Does current user has access to view the record that was tracked?
-		if ($this->module == 'Events') {
-			$moduleName = 'Calendar';
-		} else {
-			$moduleName = $this->module;
-		}
-		return (isPermitted($moduleName, 'DetailView', $this->crmid) == "yes");
+		// Does current user have access to view the record that was tracked?
+		return (isPermitted($this->module, 'DetailView', $this->crmid) == 'yes');
 	}
 
 	public static function getById($id) {
@@ -100,12 +95,12 @@ class ModTracker_Basic {
 	public static function getByCRMId($crmid, $atpoint) {
 		global $adb;
 		$instance = false;
-
+		if ($atpoint<0) {
+			return false;
+		}
 		// Avoid SQL Injection attacks
 		$purifiedAtPoint = $adb->sql_escape_string($atpoint);
-
 		$result = $adb->pquery("SELECT * FROM vtiger_modtracker_basic WHERE crmid=? ORDER BY changedon DESC LIMIT $purifiedAtPoint, 1", array($crmid));
-
 		if ($adb->num_rows($result)) {
 			$rowmap = $adb->fetch_array($result);
 			$instance = new self();

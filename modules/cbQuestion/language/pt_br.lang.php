@@ -85,10 +85,15 @@ $mod_strings = array(
 	'DELMVIEWNOK' => 'Error deleting the materialized view',
 	'MVIEWACTIVATED' => 'Materialized View Cron Activated',
 	'MVIEWDEACTIVATED' => 'Materialized View Cron Deactivated',
-	'MaterializedViewSync' => 'Materialized View Update',
-	'Sync all active materialized views.' => 'Sync all active materialized views.',
+	'MaterializedViewSync' => 'Atualizar visáo Materialized',
+	'Sync all active materialized views.' => 'Sincronizar todas visões tipo Materialized ativas.',
 	'MVIEWWFAdded' => 'Materialized View Workflow Added',
 	'MVIEWWFDeleted' => 'Materialized View Workflow Deleted',
 	'condfilterformat' => 'Conditions in Filter Format',
+	'Question Builder' => 'Question Builder',
+	'LBL_SYSTEMMODULES' => 'System Modules',
+	'RESULTS' => 'Results',
+	'Options' => 'Options',
+	'Launch a test to get the SQL' => 'Launch a test to get the SQL',
 );
 ?>

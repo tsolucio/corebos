@@ -142,15 +142,18 @@ function validateRelatedModuleExists($field, $fieldval, $params, $fields) {
 
 		$relationInfo = $adb->fetch_array($relationResult);
 		$params = array($crmid, $moduleId, $relatedModuleId);
-		global $GetRelatedList_ReturnOnlyQuery;
+		global $GetRelatedList_ReturnOnlyQuery, $currentModule;
 		$holdValue = $GetRelatedList_ReturnOnlyQuery;
 		$GetRelatedList_ReturnOnlyQuery = true;
+		$holdCM = $currentModule;
+		$currentModule = $module;
 		$relationData = call_user_func_array(array($moduleInstance, $relationInfo['name']), $params);
+		$currentModule = $holdCM;
+		$GetRelatedList_ReturnOnlyQuery = $holdValue;
 		if (!isset($relationData['query'])) {
 			// OPERATIONNOTSUPPORTED
 			return false;
 		}
-		$GetRelatedList_ReturnOnlyQuery = $holdValue;
 		$query = mkXQuery($relationData['query'], '1');
 		$query = stripTailCommandsFromQuery($query).' LIMIT 1';
 		$result = $adb->pquery($query, array());

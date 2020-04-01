@@ -123,5 +123,7 @@ $mod_strings = array(
 'FieldsNotFoundInFilter' => 'Campos não encontrados nos filtros selecionados',
 'FilterNotFound' => 'Filtros selecionados não encontrados',
 'Permission Denied' => 'Permissão negada',
+'UnblockLoginUsers' => 'Desbloquear login do usuário',
+'Unblock login users automatically after a few minutes.' => 'Desbloquear automaticamente o login do usuário depois de alguns.',
 );
 ?>

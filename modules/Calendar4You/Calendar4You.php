@@ -535,7 +535,7 @@ class Calendar4You extends CRMEntity {
 				$q="select $fieldname, picklist_valueid
 					from $tablename
 					inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = $tablename.picklist_valueid
-					where roleid in (\"". implode($roleids, "\",\"") ."\") and picklistid in (select picklistid from $tablename)
+					where roleid in (\"". implode('","', $roleids) ."\") and picklistid in (select picklistid from $tablename)
 					order by sortid asc";
 			} else {
 				$q="select $fieldname, picklist_valueid

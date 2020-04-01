@@ -234,6 +234,7 @@ $mod_strings = array(
 	'No Time' => 'Nu E Timp',
 	'Send Reminder' => 'Trimite Memento',
 	'SendReminder' => 'Trimite Memento',
+	'Recommended frequency for SendReminder is 15 mins' => 'Recommended frequency for Send Reminder is 15 mins',
 	'LBL_YES' => 'Da',
 	'LBL_NO' => 'Nu',
 	'LBL_DAYS' => 'zi(le)',

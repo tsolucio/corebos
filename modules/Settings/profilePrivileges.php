@@ -53,6 +53,8 @@ $output1 ='';
 $smarty->assign('PROFILEID', $profileId);
 $smarty->assign('MOD', return_module_language($current_language, 'Settings'));
 $smarty->assign('APP', $app_strings);
+$smarty->assign('MODULE', $currentModule);
+$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
 $smarty->assign('THEME', $theme);
 $smarty->assign('CMOD', $mod_strings);
 $smarty->assign('RETURN_ACTION', (isset($_REQUEST['return_action']) ? vtlib_purify($_REQUEST['return_action']) : ''));

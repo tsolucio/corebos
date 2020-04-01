@@ -59,15 +59,19 @@ class VtigerEmailOperation extends VtigerModuleOperation {
 				$ids = vtws_getIdComponents($rel);
 				$relid = $ids[1];
 				if (!empty($relid)) {
-					$tabname = $adb->query_result($adb->pquery('select name from vtiger_ws_entity where id=?', array($ids[0])), 0, 'name');
+					$tabname = vtws_getEntityName($ids[0]);
 					$tabid = getTabid($tabname);
 					$rs = $adb->pquery('select fieldid from vtiger_field where tabid=? and uitype=13 and vtiger_field.presence in (0,2)', array($tabid));
 					$fieldid = $adb->query_result($rs, 0, 'fieldid');
 					$_REQUEST['parent_id'] .= $relid.'@'.$fieldid.'|';
 				}
 			}
+			$element['parent_id'] = $_REQUEST['parent_id'];
 		} else {
 			$_REQUEST['parent_id'] = isset($element['parent_id']) ? $element['parent_id'] : '';
+		}
+		if ($element['activitytype'] == 'Email') {
+			$element['activitytype'] = 'Emails'; // just in case
 		}
 		$error = $crmObject->create($element);
 		if (!$error) {
@@ -88,7 +92,12 @@ class VtigerEmailOperation extends VtigerModuleOperation {
 			}
 		}
 
-		return DataTransform::filterAndSanitize($crmObject->getFields(), $this->meta);
+		$fields = $crmObject->getFields();
+		$return = DataTransform::filterAndSanitize($fields, $this->meta);
+		if (isset($fields['cbuuid'])) {
+			$return['cbuuid'] = $fields['cbuuid'];
+		}
+		return $return;
 	}
 
 	public function retrieve($id, $deleted = false) {
@@ -110,56 +119,43 @@ class VtigerEmailOperation extends VtigerModuleOperation {
 	}
 
 	/*
-	 * This method accepts the same virtual fields that the create method does (see create)
-	 *
-	 * It will first eliminate the current related attachement and then relate the new attachment
-	 *
-	 * It will first eliminate all the current relations and then establish the new ones being sent in
-	 * so ALL relations that are needed must sent in again each time
-	 *
+	 * We do not permit updating emails in general. You have to create a new record.
+	 * You can only update the status fields:
+	 * modifiedby
+	 * spamreport
+	 * bounce
+	 * clicked
+	 * delivered
+	 * dropped
+	 * open
+	 * unsubscribe
 	 */
 	public function update($element) {
 		global $adb;
-		$ids = vtws_getIdComponents($element["id"]);
-		if (!empty($element['filename'])) {
-			$element['filesize']=$element['filename']['size'];
-			$attachid=SaveAttachmentDB($element);
-			$element['filetype']=$element['filename']['type'];
-			$element['filename']= str_replace(' ', '_', $element['filename']['name']);
+		list($wsid, $crmid) = vtws_getIdComponents($element['id']);
+		$em = new VTEventsManager($adb);
+		// Initialize Event trigger cache
+		$em->initTriggerCache();
+		$entityData = VTEntityData::fromEntityId($adb, $crmid);
+		//Event triggering code
+		$em->triggerEvent('vtiger.entity.beforesave', $entityData);
+		$updfields = $params = array();
+		foreach (array('spamreport', 'bounce', 'clicked', 'delivered', 'dropped', 'open', 'unsubscribe') as $field) {
+			if (isset($element[$field])) {
+				$updfields[] = $field.'=?';
+				$params[] = $element[$field];
+				$entityData->focus->column_fields[$field] = $element[$field];
+			}
 		}
-		// $relations = isset($element['relations']) ? $element['related'] : null;
-		// unset($element['relations']);
-
-		$element = DataTransform::sanitizeForInsert($element, $this->meta);
-
-		$crmObject = new VtigerCRMObject($this->tabId, true);
-		$crmObject->setObjectId($ids[1]);
-		$error = $crmObject->update($element);
-		if (!$error) {
-			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, 'Database error while performing required operation');
-		}
-
-		$id = $crmObject->getObjectId();
-
-		$error = $crmObject->read($id);
-		if (!$error) {
-			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, 'Database error while performing required operation');
-		}
-
-		if (!empty($attachid)) {
-			// Link file attached to document
-			$adb->pquery('DELETE from vtiger_seattachmentsrel where crmid=?', array($id));
-			$adb->pquery('INSERT INTO vtiger_seattachmentsrel(crmid, attachmentsid) VALUES(?,?)', array($id, $attachid));
-		}
-		// Establish relations
-		//$adb->pquery("DELETE from vtiger_senotesrel where crmid=?",Array($id));
-		//foreach ($relations as $rel) {
-		//	$ids = vtws_getIdComponents($rel);
-		//	$relid = $ids[1];
-		//	$adb->pquery("INSERT INTO vtiger_senotesrel(crmid, notesid) VALUES(?,?)",Array($relid, $id));
-		//}
-
-		return DataTransform::filterAndSanitize($crmObject->getFields(), $this->meta);
+		$params[] = $crmid;
+		$sql = 'UPDATE vtiger_emaildetails set '.implode(',', $updfields).' where emailid=?';
+		$rs = $adb->pquery($sql, $params);
+		$modby = (isset($element['modifiedby']) ? ',modifiedby='.substr($element['modifiedby'], strpos($element['modifiedby'], 'x')+1) : '');
+		$adb->pquery('update vtiger_crmentity set modifiedtime=now()'.$modby.' where crmid=?', array($crmid));
+		//Event triggering code
+		$em->triggerEvent('vtiger.entity.aftersave', $entityData);
+		//Event triggering code ends
+		return $this->retrieve($wsid.'x'.$crmid);
 	}
 }
 ?>

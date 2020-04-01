@@ -14,9 +14,8 @@
 <!-- header - level 2 tabs -->
 {include file='Buttons_List.tpl'}
 
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
+<table class="slds-m-around_medium" style="width: 98%; maring: auto;">
 	<tr>
-		<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}" /></td>
 		<td class="showPanelBg" valign="top" width="100%">
 			<table  cellpadding="0" cellspacing="0" width="100%" border=0>
 				<tr>
@@ -113,7 +112,7 @@
 								</tr>
 								<tr>
 									<td align="center" colspan="2" border=0 cellspacing=0 cellpadding=5 width=98% class="layerPopupTransport cblds-p_large cblds-t-align_center">
-										<input type="button" name="{$APP.LBL_EXPORT}" value="{$APP.LBL_EXPORT} {$MODULELABEL} " class="crmbutton small create" onclick="record_export('{$MODULELABEL}','{$CATEGORY}',this.form,'{if isset($smarty.request.idstring)}{$smarty.request.idstring}{/if}')"/>&nbsp;&nbsp;
+										<input type="button" name="{$APP.LBL_EXPORT}" value="{$APP.LBL_EXPORT} {$MODULELABEL} " class="crmbutton small create" onclick="record_export('{$MODULE}','{$CATEGORY}',this.form,'{if isset($smarty.request.idstring)}{$smarty.request.idstring}{/if}')"/>&nbsp;&nbsp;
 										<input type="button" name="{$APP.LBL_CANCEL_BUTTON_LABEL}" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmbutton small cancel" onclick="window.history.back()" />
 									</td>
 								</tr>
@@ -123,7 +122,6 @@
 				</tr>
 			</table>
 		</td>
-		<td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}" /></td>
 	</tr>
 </table>
 

@@ -30,5 +30,6 @@ $mod_strings = array(
 	'Description' => 'Beschrijving',
 	'cbMap' => 'Interne relatie',
 	'Role' => 'Rol',
+	'PHP_MAX_UPLOAD' => 'This variable is limited by PHP settings which are set to',
 );
 ?>

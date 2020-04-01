@@ -2265,6 +2265,7 @@ a.drop_down:Hover{
     padding: 5px;
     border: 2px solid #b69559;
     background-color: #e8e4ee;
+	max-width: 60%;
 }
 
 .thickborder{

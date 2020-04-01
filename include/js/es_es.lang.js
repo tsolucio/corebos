@@ -385,6 +385,7 @@ var alert_arr = {
 	'ONLY_ONE_MODULE_PERMITTED_FOR_REPORT' : 'Solo se permite relacionar con un módulo para este tipo de informe',
 	'MUST_SELECT_ONE_MODULE_FOR_REPORT' : 'Debes seleccionar un módulo relacionado para este tipo de informe',
 	'LBL_NEW_CONDITION' : 'Nueva condición',
+	'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL' : 'Añadir Condición de Grupo',
 	'WF_UPDATE_MAP_ERROR' : '**ERROR**: Esta acción utiliza un campo que no está disponible: ',
 	'WF_UPDATE_MAP_ERROR_INFO' : 'Se cargará la acción con información INCORRECTA para que puedas arreglarla. La información mostrada NO ES CORRECTA!',
 	'MoveUp' : 'Mover Arriba',
@@ -420,5 +421,9 @@ var alert_arr = {
 	'ERR_Massedit' : 'Error en Edición Masiva',
 	'ProcessFINISHED' : 'Proceso Terminado',
 	'duplicatednotallowed' : 'No se permiten módulos duplicados',
-	'HAS_THIS_AS_NTH_CHILD' : 'Tiene este niño como una'
+	'HAS_THIS_AS_NTH_CHILD' : 'Tiene este niño como una',
+	'Okay': 'Vale',
+	'Failed': 'Ha fallado',
+	'Warning': 'Aviso',
+	'Copied': 'Copiado'
 };

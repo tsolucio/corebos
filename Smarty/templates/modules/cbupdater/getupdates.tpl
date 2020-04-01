@@ -22,7 +22,7 @@
 {include file='Buttons_List.tpl'}
 
 {if $ERROR}
-<div id="errorcontainer" style="padding:20px;">
+<div id="errorcontainer" class="slds-card slds-badge slds-m-left_x-large slds-m-right_x-large slds-m-top_small slds-m-bottom_x-large slds-p-around_small">
   <div id="errormsg" style="color: #f85454; font-weight: bold; padding: 10px; border: 1px solid #FF0000; background: #FFFFFF; border-radius: 5px; margin-bottom: 10px;">{$ERRORMSG}</div>
 </div>
 {/if}
@@ -35,6 +35,6 @@
 </div>
 {/foreach}
 <br>
-<div style="padding:20px;text-align:center;font-size:large;">
+<div class="slds-card slds-badge slds-m-left_x-large slds-m-right_x-large slds-m-top_small slds-m-bottom_x-large slds-p-around_small">
 <a href='index.php?module=cbupdater&action=ListView'>{'LBL_GO_BACK'|getTranslatedString:$MODULE}</a>
 </div>

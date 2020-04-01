@@ -20,7 +20,7 @@
 
 $tool_buttons = array(
 'EditView' => 'no',
-'CreateView' => 'no',
+'CreateView' => 'yes',
 'index' => 'yes',
 'Import' => 'no',
 'Export' => 'no',
@@ -29,5 +29,4 @@ $tool_buttons = array(
 'Calendar' => 'no',
 'moduleSettings' => 'no',
 );
-
 ?>

@@ -10,15 +10,14 @@
 -->*}
 
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
-
-<br>
+{include file='SetMenu.tpl'}
+<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
+<div class="slds-modal__container slds-p-around_none">
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody><tr>
-	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
 	<br>
 	<div align=center>
-		{include file='SetMenu.tpl'}
 		<form action="index.php" method="post" name="profileform" id="form" onSubmit="if (rolevalidate()) { VtigerJS_DialogBox.block();return true; } else { return false; }">
 			<input type="hidden" name="module" value="Settings">
 			<input type="hidden" name="mode" value="{$MODE}">
@@ -148,12 +147,13 @@
 				</tr>
 				</table>
 				</div>
-				</td>
-				<td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
 				</form>
+				</td>
 	</tr>
 </tbody>
 </table>
+</div>
+</section>
 <script>
 var profile_err_msg='{$MOD.LBL_ENTER_PROFILE}';
 function rolevalidate()

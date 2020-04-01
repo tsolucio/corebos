@@ -1144,6 +1144,7 @@ function selectReport() {
 	window.open(url, '_blank');
 }
 
+/* @deprecated: use duplicateReport */
 function SaveAsReport(id) {
 	if (!checkAdvancedFilter()) {
 		return false;

@@ -193,4 +193,5 @@ include/cbmqtm/cbmqtm_manager.php
 include/cbmqtm/cbmqtm_memusage.php
 include/cbmqtm/directrun.php
 include/cbmqtm/run.php
+include/MemoryLimitManager/
 build/changeSets

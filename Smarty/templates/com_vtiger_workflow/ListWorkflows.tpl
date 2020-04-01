@@ -1,81 +1,14 @@
-<div class="slds-card slds-m-around--x-small" style="height: 75vh;">
 <script type="module" src="./include/ldswc/vaadingrid/vaadingrid.js"></script>
 <script src="modules/{$module->name}/resources/functional.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/workflowlistscript.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
 	fn.addStylesheet('modules/{$module->name}/resources/style.css');
 </script>
+{include file='com_vtiger_workflow/ModuleTitle.tpl' show='wflist'}
+<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
+<div class="slds-modal__container slds-p-around_none">
 
-<div id="view" class="workflows-list">
-	{include file='com_vtiger_workflow/ModuleTitle.tpl'}
-</div>
-<div class="slds-grid slds-gutters slds-m-around_xxx-small">
-	<div class="slds-col">
-		<button class="slds-button slds-button_success" id='new_workflow'>{$MOD.LBL_NEW_WORKFLOW}</button>
-		{include file='com_vtiger_workflow/ActionMenu.tpl'}
-	</div>
-</div>
-<!--New workflow popup-->
-<div id="new_workflow_popup" class="layerPopup" style="display:none;z-index:10;">
-	<table width="100%" cellspacing="0" cellpadding="5" border="0" class="layerHeadingULine">
-		<tr>
-			<td width="80%" align="left" class="layerPopupHeading">
-				{$MOD.LBL_CREATE_WORKFLOW}
-				</td>
-			<td width="20%" class="cblds-t-align_right" align="right">
-				<a href="javascript:void(0);" id="new_workflow_popup_close">
-					<img border="0" align="middle" src="{'close.gif'|@vtiger_imageurl:$THEME}"/>
-				</a>
-			</td>
-		</tr>
-	</table>
-
-	<form action="index.php" method="post" accept-charset="utf-8" onsubmit="return wfCreateSubmit();">
-		<div class="popup_content">
-			<table width="100%" cellpadding="0" cellspacing="0" border="0">
-				<tr align="left">
-					<td><input type="radio" name="source" value="from_module" checked="true" class="workflow_creation_mode">
-						{$MOD.LBL_FOR_MODULE}</td>
-					<td><input type="radio" name="source" value="from_template" class="workflow_creation_mode">
-						{$MOD.LBL_FROM_TEMPLATE}</td>
-				</tr>
-			</table>
-			<table width="100%" cellpadding="5" cellspacing="0" border="0">
-				<tr align="left">
-					<td width='10%' nowrap="nowrap">{$MOD.LBL_CREATE_WORKFLOW_FOR}</td>
-					<td>
-						<input type="hidden" name="pick_module" value="{$listModule}" id="pick_module">
-						<select name="module_name" id="module_list" class="small">
-							{foreach item=moduleName from=$moduleNames}
-							<option value="{$moduleName}" {if $moduleName eq $listModule}selected{/if}>
-								{$moduleName|@getTranslatedString:$moduleName}
-							</option>
-							{/foreach}
-						</select>
-					</td>
-				</tr>
-				<tr align="left" id="template_select_field" style="display:none;">
-					<td>{$MOD.LBL_CHOOSE_A_TEMPLATE}</td>
-					<td>
-						<span id="template_list_busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
-						<span id="template_list_foundnone" style='display:none;'><b>{$MOD.LBL_NO_TEMPLATES}</b></span>
-						<select id="template_list" name="template_id" class="small"></select>
-					</td>
-				</tr>
-			</table>
-			<input type="hidden" name="save_type" value="new" id="save_type_new">
-			<input type="hidden" name="module" value="{$module->name}" id="save_module">
-			<input type="hidden" name="action" value="editworkflow" id="save_action">
-			<table width="100%" cellspacing="0" cellpadding="5" border="0" class="layerPopupTransport">
-				<tr><td class="cblds-t-align_center" align="center">
-					<input type="submit" class="crmButton small save" value="{$APP.LBL_CREATE_BUTTON_LABEL}" name="save" id='new_workflow_popup_save'/>
-					<input type="button" class="crmButton small cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL} " name="cancel" id='new_workflow_popup_cancel'/>
-				</td></tr>
-			</table>
-		</div>
-	</form>
-</div>
-<!--Done Popups-->
+{include file='com_vtiger_workflow/NewWorkflowPopup.tpl'}
 <!-- Prompt -->
 <div id="confirm-prompt" style="display:none;">
 	<section role="alertdialog" tabindex="0" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
@@ -83,7 +16,7 @@
 			<header class="slds-modal__header slds-theme_error slds-theme_alert-texture">
 				<h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{'LBL_DELETE_WORKFLOW'|@getTranslatedString:'com_vtiger_workflow'}</h2>
 			</header>
-			<div class="slds-modal__content slds-p-around_medium" id="prompt-message-wrapper">
+			<div class="slds-modal__content slds-p-around_medium slds-page-header__title" id="prompt-message-wrapper">
 				<p>{'WORKFLOW_DELETE_CONFIRMATION'|@getTranslatedString:'com_vtiger_workflow'}</p>
 			</div>
 			<footer class="slds-modal__footer" style="width:auto;">
@@ -95,7 +28,7 @@
 	<div class="slds-backdrop slds-backdrop_open"></div>
 </div>
 
-<vaadin-grid id="wfgrid" theme="row-dividers" column-reordering-allowed multi-sort class="slds-table slds-table_cell-buffer slds-table_bordered slds-carousel__panel-action slds-m-around_xx-small" style="height: 60vh;">
+<vaadin-grid id="wfgrid" theme="row-dividers" column-reordering-allowed multi-sort class="slds-table slds-table_cell-buffer slds-table_bordered slds-carousel__panel-action slds-m-around_xx-small" style="height: 70vh;">
 	<vaadin-grid-selection-column auto-select frozen></vaadin-grid-selection-column>
 	{foreach key=dtkey item=dtheader from=$LIST_HEADER}
 		{if $dtheader=='Tools'}
@@ -199,6 +132,8 @@
 		{/if}
 	{/foreach}
 </vaadin-grid>
+</div>
+</section>
 <script>
 	var url = 'index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=getJSON';
 	document.getElementById('wftoolcol').renderer = (root, grid, rowData) => {
@@ -232,4 +167,3 @@
 	});
 {/literal}
 </script>
-</div>

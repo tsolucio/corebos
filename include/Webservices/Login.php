@@ -48,7 +48,7 @@ function vtws_getActiveToken($userId) {
 	$result = $adb->pquery($sql, array($userId,time()));
 	if ($result != null && isset($result)) {
 		if ($adb->num_rows($result)>0) {
-			return $adb->query_result($result, 0, "token");
+			return $adb->query_result($result, 0, 'token');
 		}
 	}
 	return null;
@@ -56,8 +56,7 @@ function vtws_getActiveToken($userId) {
 
 function vtws_getUserAccessKey($userId) {
 	global $adb;
-	$sql = 'select accesskey from vtiger_users where id=?';
-	$result = $adb->pquery($sql, array($userId));
+	$result = $adb->pquery('select accesskey from vtiger_users where id=?', array($userId));
 	if ($result != null && isset($result)) {
 		if ($adb->num_rows($result)>0) {
 			return $adb->query_result($result, 0, 'accesskey');

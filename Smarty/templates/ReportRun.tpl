@@ -14,30 +14,30 @@
 </script>
 <script type="text/javascript" src="modules/Reports/Reports.js"></script>
 <link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
+<link rel="stylesheet" type="text/css" media="all" href="include/chart.js/Chart.min.css">
 <script type="text/javascript" src="jscalendar/calendar.js"></script>
 <script type="text/javascript" src="jscalendar/lang/calendar-en.js"></script>
 <script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
 <script type="text/javascript" src="include/calculator/calc.js"></script>
 <script src="include/chart.js/Chart.min.js"></script>
-<script src="include/chart.js/randomColor.js"></script>
+<script src="include/chart.js/chartjs-plugin-datalabels.min.js"></script>
+<script src="include/chart.js/chartjs-plugin-colorschemes.min.js"></script>
 <a name="rpttop"></a>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody><tr>
-    <td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-<table class="small reportGenHdr mailClient mailClientBg" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
 	<form name="NewReport" action="index.php" method="POST" onsubmit="VtigerJS_DialogBox.block();">
-    <input type="hidden" name="booleanoperator" value="5"/>
-    <input type="hidden" name="record" value="{$REPORTID}"/>
-    <input type="hidden" name="reload" value=""/>    
-    <input type="hidden" name="module" value="Reports"/>
-    <input type="hidden" name="action" value="SaveAndRun"/>
-    <input type="hidden" name="dlgType" value="saveAs"/>
-    <input type="hidden" name="reportName"/>
-    <input type="hidden" name="folderid" value="{$FOLDERID}"/>
-    <input type="hidden" name="reportDesc"/>
-    <input type="hidden" name="folder"/>
-
+	<input type="hidden" name="booleanoperator" value="5"/>
+	<input type="hidden" name="record" value="{$REPORTID}"/>
+	<input type="hidden" name="reload" value=""/>
+	<input type="hidden" name="module" value="Reports"/>
+	<input type="hidden" name="action" value="SaveAndRun"/>
+	<input type="hidden" name="dlgType" value="saveAs"/>
+	<input type="hidden" name="reportName"/>
+	<input type="hidden" name="folderid" value="{$FOLDERID}"/>
+	<input type="hidden" name="reportDesc"/>
+	<input type="hidden" name="folder"/>
+	<table class="small reportGenHdr mailClient mailClientBg" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
 	<tbody>
 	<tr>
 	<td style="padding: 10px; text-align: left;" width="70%">
@@ -58,7 +58,7 @@
 	</td>
 	</tr>
 	</tbody>
-</table>
+	</table>
 
 <!-- Generate Report UI Filter -->
 <table class="small reportGenerateTable" align="center" cellpadding="5" cellspacing="0" width="95%" border=0>
@@ -73,10 +73,11 @@
 			&nbsp;
 			<input type="button" class="small edit" onclick="saveReportAdvFilter({$REPORTID});" value="     {$MOD.LBL_SAVE_REPORT}     " title="{$MOD.LBL_SAVE_REPORT}" />
 			&nbsp;
-			<input type="button" class="small edit" onclick="SaveAsReport({$REPORTID});" value="     {$APP.LBL_SAVE_AS}     " title="{$APP.LBL_SAVE_AS}" />
+			<input type="button" class="small edit" onclick="saveReportAs(this,'duplicateReportLayout');" value="     {$APP.LBL_SAVE_AS}     " title="{$APP.LBL_SAVE_AS}" />
 		</td>
 	</tr>
 </table>
+</form>
 
 <table class="small reportGenHdr mailClient mailClientBg" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
 	<tr>
@@ -108,57 +109,10 @@
 <br>
 
 </td>
-<td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
 </tr>
 </table>
 
-<!-- Save Report As.. UI -->
-<div id="duplicateReportLayout" style="display:none;width:350px;" class="layerPopup">
-	<table border=0 cellspacing=0 cellpadding=5 width=100% class="layerHeadingULine">
-		<tr>
-			<td class="genHeaderSmall" nowrap align="left" width="30%">{$MOD.LBL_SAVE_REPORT_AS}</td>
-			<td align="right"><a href="javascript:;" onClick="fninvsh('duplicateReportLayout');"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0"></a></td>
-		</tr>
-	</table>
-	<table border=0 cellspacing=0 cellpadding=5 width=95% align=center> 
-		<tr>
-			<td class="small">
-				<table border=0 celspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
-					<tr>
-						<td width="30%" align="right" style="padding-right:5px;"><b>{$MOD.LBL_REPORT_NAME} : </b></td>
-						<td width="70%" align="left" style="padding-left:5px;"><input type="text" name="newreportname" id="newreportname" class="txtBox" value=""></td>
-					</tr>
-					<tr>
-						<td width="30%" align="right" style="padding-right:5px;"><b>{$MOD.LBL_REP_FOLDER} : </b></td>
-						<td width="70%" align="left" style="padding-left:5px;">
-							<select name="reportfolder" id="reportfolder" class="txtBox">
-							{foreach item=folder from=$REP_FOLDERS}
-							{if $FOLDERID eq $folder.id}
-								<option value="{$folder.id}" selected>{$folder.name}</option>
-							{else}
-								<option value="{$folder.id}">{$folder.name}</option>
-							{/if}
-							{/foreach}
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td align="right" style="padding-right:5px;" valign="top"><b>{$MOD.LBL_DESCRIPTION}: </b></td>
-						<td align="left" style="padding-left:5px;"><textarea name="newreportdescription" id="newreportdescription" class="txtBox" rows="5">{if isset($REPORTDESC)}{$REPORTDESC}{/if}</textarea></td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-	<table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
-		<tr>
-			<td class="small" align="center">
-			<input name="save" value=" &nbsp;{$APP.LBL_SAVE_BUTTON_LABEL}&nbsp; " class="crmbutton small save" onClick="duplicateReport({$REPORTID});" type="button">&nbsp;&nbsp;
-			<input name="cancel" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmbutton small cancel" onclick="fninvsh('duplicateReportLayout');" type="button">
-			</td>
-		</tr>
-	</table>
-</div>
+{include file='modules/Reports/duplicateReportLayout.tpl'}
 <svg xmlns="http://www.w3.org/2000/svg">
 	<defs id="defs4">
 		<linearGradient id="linearGradient5734">

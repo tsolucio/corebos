@@ -96,7 +96,9 @@ class VTCreateEntityTask extends VTTask {
 						$fieldValue = '0';
 					}
 				}
-
+				if (in_array($fieldName, $ownerFields) && strpos($fieldValue, 'x')) {
+					list($wsid, $fieldValue) = explode('x', $fieldValue);
+				}
 				if (in_array($fieldName, $ownerFields) && !is_numeric($fieldValue)) {
 					$userId = getUserId_Ol($fieldValue);
 					$groupId = getGrpId($fieldValue);

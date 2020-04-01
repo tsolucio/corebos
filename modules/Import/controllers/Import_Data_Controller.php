@@ -181,7 +181,7 @@ class Import_Data_Controller {
 
 		$fieldMapping = $this->fieldMapping;
 		$fieldColumnMapping = $moduleMeta->getFieldColumnMapping();
-
+		$fieldColumnMapping['cbuuid'] = 'cbuuid';
 		for ($i = 0; $i < $numberOfRecords; ++$i) {
 			$row = $adb->raw_query_result_rowdata($result, $i);
 			$rowId = $row['id'];
@@ -330,7 +330,7 @@ class Import_Data_Controller {
 		$moduleFields = $moduleMeta->getModuleFields();
 		$defaultFieldValues = $this->getDefaultFieldValues($moduleMeta);
 		foreach ($fieldData as $fieldName => $fieldValue) {
-			$fieldInstance = $moduleFields[$fieldName];
+			$fieldInstance = isset($moduleFields[$fieldName]) ? $moduleFields[$fieldName] : null;
 			if (!is_object($fieldInstance)) {
 				continue; // specially for Inventory module import which has virtual item line fields
 			}

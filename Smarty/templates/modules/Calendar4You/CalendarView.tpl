@@ -447,7 +447,7 @@ function hideITSEventInfo(){
 {/literal}
 </script>
 {include file='Buttons_List.tpl'}
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
+<table style="width:98%;margin:auto;">
     <tbody>
         <tr>
             <td valign="top">

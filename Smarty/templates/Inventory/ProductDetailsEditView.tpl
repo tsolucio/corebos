@@ -203,7 +203,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 			<tr>
 				<td class="small cblds-p_xx-small">
 					<input type="hidden" value="{$data.$subproduct_ids}" id="{$subproduct_ids}" name="{$subproduct_ids}" />
-					<span id="{$subprod_names}" name="{$subprod_names}"  style="color:#C0C0C0;font-style:italic;">{$data.$subprod_names}</span>
+					<span id="{$subprod_names}" name="{$subprod_names}" style="color:#C0C0C0;font-style:italic;">{$data.$subprod_names}</span>
 				</td>
 			</tr>
 			<tr>
@@ -218,7 +218,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 
 	<!-- column 3 - Quantity in Stock - starts -->
 	<td class="crmTableRow small lineOnTop inv-editview__infocol" valign="top">
-		{if ($MODULE eq 'Quotes' || $MODULE eq 'SalesOrder' || $MODULE eq 'Invoice' || $MODULE eq 'Issuecards' || $MODULE eq 'Receiptcards')  && 'Products'|vtlib_isModuleActive}
+		{if (in_array($MODULE, getInventoryModules()) && $MODULE != 'PurchaseOrder') && 'Products'|vtlib_isModuleActive}
 		{$APP.LBL_QTY_IN_STOCK}:&nbsp;<span id="{$qtyInStock}">{$data.$qtyInStock}</span><br>
 		{/if}
 		{if isset($data.$moreinfo)}

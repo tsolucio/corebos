@@ -34,6 +34,7 @@ switch ($_REQUEST['_op']) {
 		$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 		$smarty->assign('THEME', $theme);
 		include 'modules/cbupdater/forcedButtons.php';
+		$tool_buttons['CreateView'] = 'no';
 		$smarty->assign('CHECK', $tool_buttons);
 		$smarty->display('modules/Utilities/integration.tpl');
 		break;
@@ -51,6 +52,7 @@ switch ($_REQUEST['_op']) {
 		$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 		$smarty->assign('THEME', $theme);
 		include 'modules/cbupdater/forcedButtons.php';
+		$tool_buttons['CreateView'] = 'no';
 		$smarty->assign('CHECK', $tool_buttons);
 		$smarty->display('modules/Utilities/integration.tpl');
 		break;
@@ -90,9 +92,76 @@ switch ($_REQUEST['_op']) {
 	case 'setconfigrecordversioning':
 		include_once 'include/integrations/recordversioning/settings.php';
 		break;
+	case 'getconfigelasticsearch':
+	case 'setconfigelasticsearch':
+		include_once 'include/integrations/elasticsearch/settings.php';
+		break;
 	default:
 		$smarty = new vtigerCRM_Smarty();
 		$titlemessage = getTranslatedString('Available Integrations', $currentModule);
+		$intgr = array(
+			array(
+				'abbr' => '2F',
+				'title' => getTranslatedString('GoTo2FAActivation', 'Utilities'),
+				'desc' => getTranslatedString('GoTo2FAActivation_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfig2fa',
+			),
+			array(
+				'abbr' => 'GC',
+				'title' => getTranslatedString('GOOGLE_CONTACTS', 'Contacts'),
+				'desc' => getTranslatedString('GOOGLE_CONTACTS_Desc', 'Contacts'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfiggcontact',
+			),
+			array(
+				'abbr' => 'HS',
+				'title' => getTranslatedString('HubSpot Activation', 'Utilities'),
+				'desc' => getTranslatedString('HubSpot Activation_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfighubspot',
+			),
+			array(
+				'abbr' => 'EM',
+				'title' => getTranslatedString('SMTP Configuration', 'Utilities'),
+				'desc' => getTranslatedString('SMTP Configuration_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigsmtp&savemode=false',
+			),
+			array(
+				'abbr' => 'RV',
+				'title' => getTranslatedString('Record Versioning', 'Utilities'),
+				'desc' => getTranslatedString('Record Versioning_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigrecordversioning',
+			),
+			array(
+				'abbr' => 'ZD',
+				'title' => getTranslatedString('Zendesk Activation', 'Utilities'),
+				'desc' => getTranslatedString('Zendesk Activation_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigzendesk',
+			),
+			array(
+				'abbr' => 'WA',
+				'title' => getTranslatedString('Whatsapp Activation', 'Utilities'),
+				'desc' => getTranslatedString('Whatsapp Activation_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigwhatsapp',
+			),
+			array(
+				'abbr' => 'SG',
+				'title' => getTranslatedString('SendGrid Activation', 'Utilities'),
+				'desc' => getTranslatedString('SendGrid Activation_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigsendgrid',
+			),
+			array(
+				'abbr' => 'GM',
+				'title' => getTranslatedString('GMP Activation', 'Utilities'),
+				'desc' => getTranslatedString('GMP Activation_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfiggmp',
+			),
+			array(
+				'abbr' => 'ES',
+				'title' => getTranslatedString('ElasticSearch Activation', 'Utilities'),
+				'desc' => getTranslatedString('Elasticsearch_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigelasticsearch',
+			),
+		);
+		$smarty->assign('integrations', $intgr);
 		$smarty->assign('TITLE_MESSAGE', $titlemessage);
 		$smarty->assign('APP', $app_strings);
 		$smarty->assign('MOD', $mod_strings);
@@ -101,6 +170,7 @@ switch ($_REQUEST['_op']) {
 		$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 		$smarty->assign('THEME', $theme);
 		include 'modules/cbupdater/forcedButtons.php';
+		$tool_buttons['CreateView'] = 'no';
 		$smarty->assign('CHECK', $tool_buttons);
 		$smarty->display('modules/Utilities/integrationhelp.tpl');
 		break;

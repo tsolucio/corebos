@@ -237,7 +237,6 @@ x;color: #000000;border:1px solid #bababa;padding-left:5px;background-color:#fff
 	</div>
 
 </td>
-        <td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
    </tr>
 </tbody>
 </table>

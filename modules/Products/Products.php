@@ -1235,16 +1235,16 @@ class Products extends CRMEntity {
 		global $current_user;
 		$matrix = $queryplanner->newDependencyMatrix();
 
-		$matrix->setDependency("vtiger_crmentityProducts", array("vtiger_groupsProducts","vtiger_usersProducts","vtiger_lastModifiedByProducts"));
+		$matrix->setDependency('vtiger_crmentityProducts', array('vtiger_groupsProducts', 'vtiger_usersProducts', 'vtiger_lastModifiedByProducts'));
 
 		if (!$queryplanner->requireTable('vtiger_products', $matrix) && !$queryplanner->requireTable('vtiger_productcf', $matrix)) {
 			return '';
 		}
-		$matrix->setDependency("vtiger_products", array("innerProduct","vtiger_crmentityProducts","vtiger_productcf","vtiger_vendorRelProducts"));
+		$matrix->setDependency('vtiger_products', array('innerProduct','vtiger_crmentityProducts','vtiger_productcf','vtiger_vendorRelProducts'));
 
-		$query = $this->getRelationQuery($module, $secmodule, "vtiger_products", "productid", $queryplanner);
-		if ($queryplanner->requireTable("innerProduct")) {
-			$query .= " LEFT JOIN (
+		$query = $this->getRelationQuery($module, $secmodule, 'vtiger_products', 'productid', $queryplanner);
+		if ($queryplanner->requireTable('innerProduct')) {
+			$query .= ' LEFT JOIN (
 				SELECT vtiger_products.productid,
 					(CASE WHEN (vtiger_products.currency_id = 1 ) THEN vtiger_products.unit_price
 						ELSE (vtiger_products.unit_price / vtiger_currency_info.conversion_rate) END
@@ -1252,29 +1252,29 @@ class Products extends CRMEntity {
 				FROM vtiger_products
 				LEFT JOIN vtiger_currency_info ON vtiger_products.currency_id = vtiger_currency_info.id
 				LEFT JOIN vtiger_productcurrencyrel ON vtiger_products.productid = vtiger_productcurrencyrel.productid
-				AND vtiger_productcurrencyrel.currencyid = ". $current_user->currency_id . "
-			) AS innerProduct ON innerProduct.productid = vtiger_products.productid";
+				AND vtiger_productcurrencyrel.currencyid = '. $current_user->currency_id . '
+			) AS innerProduct ON innerProduct.productid = vtiger_products.productid';
 		}
-		if ($queryplanner->requireTable("vtiger_crmentityProducts")) {
-			$query .= " left join vtiger_crmentity as vtiger_crmentityProducts on vtiger_crmentityProducts.crmid=vtiger_products.productid and vtiger_crmentityProducts.deleted=0";
+		if ($queryplanner->requireTable('vtiger_crmentityProducts')) {
+			$query .= ' left join vtiger_crmentity as vtiger_crmentityProducts on vtiger_crmentityProducts.crmid=vtiger_products.productid and vtiger_crmentityProducts.deleted=0';
 		}
-		if ($queryplanner->requireTable("vtiger_productcf")) {
-			$query .= " left join vtiger_productcf on vtiger_products.productid = vtiger_productcf.productid";
+		if ($queryplanner->requireTable('vtiger_productcf')) {
+			$query .= ' left join vtiger_productcf on vtiger_products.productid = vtiger_productcf.productid';
 		}
-		if ($queryplanner->requireTable("vtiger_groupsProducts")) {
-			$query .= " left join vtiger_groups as vtiger_groupsProducts on vtiger_groupsProducts.groupid = vtiger_crmentityProducts.smownerid";
+		if ($queryplanner->requireTable('vtiger_groupsProducts')) {
+			$query .= ' left join vtiger_groups as vtiger_groupsProducts on vtiger_groupsProducts.groupid = vtiger_crmentityProducts.smownerid';
 		}
-		if ($queryplanner->requireTable("vtiger_usersProducts")) {
-			$query .= " left join vtiger_users as vtiger_usersProducts on vtiger_usersProducts.id = vtiger_crmentityProducts.smownerid";
+		if ($queryplanner->requireTable('vtiger_usersProducts')) {
+			$query .= ' left join vtiger_users as vtiger_usersProducts on vtiger_usersProducts.id = vtiger_crmentityProducts.smownerid';
 		}
-		if ($queryplanner->requireTable("vtiger_vendorRelProducts")) {
-			$query .= " left join vtiger_vendor as vtiger_vendorRelProducts on vtiger_vendorRelProducts.vendorid = vtiger_products.vendor_id";
+		if ($queryplanner->requireTable('vtiger_vendorRelProducts')) {
+			$query .= ' left join vtiger_vendor as vtiger_vendorRelProducts on vtiger_vendorRelProducts.vendorid = vtiger_products.vendor_id';
 		}
-		if ($queryplanner->requireTable("vtiger_lastModifiedByProducts")) {
-			$query .= " left join vtiger_users as vtiger_lastModifiedByProducts on vtiger_lastModifiedByProducts.id = vtiger_crmentityProducts.modifiedby ";
+		if ($queryplanner->requireTable('vtiger_lastModifiedByProducts')) {
+			$query .= ' left join vtiger_users as vtiger_lastModifiedByProducts on vtiger_lastModifiedByProducts.id = vtiger_crmentityProducts.modifiedby ';
 		}
-		if ($queryplanner->requireTable("vtiger_CreatedByProducts")) {
-			$query .= " left join vtiger_users as vtiger_CreatedByProducts on vtiger_CreatedByProducts.id = vtiger_crmentityProducts.smcreatorid ";
+		if ($queryplanner->requireTable('vtiger_CreatedByProducts')) {
+			$query .= ' left join vtiger_users as vtiger_CreatedByProducts on vtiger_CreatedByProducts.id = vtiger_crmentityProducts.smcreatorid ';
 		}
 		return $query;
 	}
@@ -1371,6 +1371,51 @@ class Products extends CRMEntity {
 				parent::save_related_module($module, $crmid, $with_module, $with_crmid);
 			}
 		}
+	}
+
+	public function getvtlib_open_popup_window_function($fieldname, $basemodule) {
+		if ($basemodule=='Movement') {
+			return 'WareHouseProductsOpenCapture';
+		} else {
+			return 'vtlib_open_popup_window';
+		}
+	}
+
+	/**
+	 * Return query to use based on given modulename, fieldname
+	 * Useful to handle specific case handling for Popup
+	 */
+	public function getQueryByModuleField($module, $fieldname, $srcrecord, $query = '') {
+		global $adb;
+		$wherepos = stripos($query, 'where'); // there is always a where
+		$query_body = substr($query, 0, $wherepos-1);
+		$query_cond = substr($query, $wherepos+5);
+		if ($module == 'Movement') {
+			$srcwhID = empty($_REQUEST['srcwhid']) ? 0 : vtlib_purify($_REQUEST['srcwhid']);
+			$whrs = $adb->pquery('SELECT warehno FROM vtiger_warehouse WHERE warehouseid=?', array($srcwhID));
+			if ($whrs && $adb->num_rows($whrs) && $whrs->fields['warehno'] != 'Purchase') {
+				return 'SELECT vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_crmentity.description, vtiger_products.*,
+					vtiger_productcf.*,vtiger_stock.stocknum as qtyinstock
+				FROM vtiger_products INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_products.productid
+				INNER JOIN vtiger_productcf ON vtiger_products.productid = vtiger_productcf.productid
+				INNER JOIN vtiger_stock ON vtiger_stock.pdoid=vtiger_products.productid
+				INNER JOIN vtiger_crmentity crmstock ON vtiger_stock.stockid=crmstock.crmid and crmstock.deleted = 0
+				LEFT JOIN vtiger_vendor ON vtiger_vendor.vendorid = vtiger_products.vendor_id
+				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
+				LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
+				WHERE vtiger_products.productid > 0 AND vtiger_crmentity.deleted = 0 and vtiger_products.discontinued <> 0
+				and vtiger_stock.whid='.$srcwhID;
+			}
+		} elseif (vtlib_isModuleActive('Warehouse') && ($module == 'Invoice' || $module == 'Quotes' || $module == 'SalesOrder' || $module == 'MassiveMovements')) {
+			$query_relation = ' INNER JOIN vtiger_stock ON vtiger_stock.pdoid=vtiger_products.productid
+				INNER JOIN vtiger_crmentity crmstock ON vtiger_stock.stockid=crmstock.crmid and crmstock.deleted=0';
+			$whID = empty($_REQUEST['whid']) ? 0 : vtlib_purify($_REQUEST['whid']);
+			$whrs = $adb->pquery('SELECT warehno FROM vtiger_warehouse WHERE warehouseid=?', array($whID));
+			if ($whrs && $adb->num_rows($whrs) && $whrs->fields['warehno'] != 'Purchase' && $whID != 0) {
+				return $query_body .$query_relation.' WHERE vtiger_stock.whid='.$whID.' and '.$query_cond;
+			}
+		}
+		return $query;
 	}
 }
 ?>

@@ -106,6 +106,19 @@ function getMenuElements() {
 	return $menustructure;
 }
 
+function getsavedMenu() {
+	global $adb;
+	$sql = "SELECT savemenuid,menuname FROM `vtiger_savemenu`";
+	$result = $adb->query($sql);
+	$savedm = array();
+	if ($result && $adb->num_rows($result)>0) {
+		while ($res = $adb->fetch_array($result)) {
+			$savedm[$res['savemenuid']] = $res['menuname'];
+		}
+	}
+	return $savedm;
+}
+
 function getMenuArray($mparent) {
 	global $adb,$current_user;
 	$is_admin = is_admin($current_user);
@@ -203,6 +216,10 @@ function getAdminevvtMenu() {
 
 function checkevvtMenuInstalled() {
 	global $adb, $current_user;
+	$cncrm = $adb->getColumnNames('vtiger_crmentity');
+	if (!in_array('cbuuid', $cncrm)) {
+		$adb->query('ALTER TABLE `vtiger_crmentity` ADD `cbuuid` char(40) default "";');
+	}
 	$cnmsg = $adb->getColumnNames('com_vtiger_workflows');
 	if (!in_array('purpose', $cnmsg)) {
 		$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `purpose` TEXT NULL;');

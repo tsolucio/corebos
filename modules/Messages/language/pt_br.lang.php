@@ -6,29 +6,29 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 27/03/2019 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 16/03/2020 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
  ************************************************************************************/
 
 $mod_strings = array(
 	'Messages' => 'Mensagens',
 	'SINGLE_Messages' => 'Mensagem',
-	'Messages ID' => 'ID Mensagens',
+	'Messages ID' => 'ID Mensagem',
 
-	'LBL_CUSTOM_INFORMATION' => 'Informação personalizada',
+	'LBL_CUSTOM_INFORMATION' => 'Informação customizada',
 	'LBL_MESSAGE_INFORMATION' => 'Informação mensagem',
 	'LBL_MESSAGES_INFORMATION' => 'Informação mensagem',
 	'LBL_DESCRIPTION_INFORMATION' => 'Descrição',
 
-	'Messages No' => 'Número mensagens',
+	'Messages No' => 'Nr mensagens',
 	'Message Name' => 'Nome mensagem',
 	'Messages Name' => 'Nome mensagem',
-	'Status' => 'Estado',
-	'Bounce' => 'Errada',
-	'Clicked' => 'Cliques',
+	'Status' => 'Status',
+	'Bounce' => 'Bounce',
+	'Clicked' => 'Clicada',
 	'Spam' => 'Spam',
 	'Delivered' => 'Entregue',
 	'Dropped' => 'Descartada',
-	'Open' => 'Aberturas',
+	'Open' => 'Aberta',
 	'Unsubscribe' => 'Desinscrição',
 	'Campaign' => 'Campanha',
 	'Account' => 'Contas',
@@ -39,15 +39,16 @@ $mod_strings = array(
 	'--None--' => '--Nenhum--',
 	'Prospective' => 'Expectativa',
 	'Done' => 'Feito',
-	'Messages Type' => 'Tipo de mensagem',
-	'messagetype' => 'Tipo de mensagem',
-	'email' => 'eMail',
+	'Messages Type' => 'Tipo mensagem',
+	'Message Type' => 'Tipo mensagem',
+	'messagetype' => 'Tipo mensagem',
+	'email' => 'E-mail',
 	'document' => 'Documento',
 	'sms' => 'SMS',
-	'email_tplid' => 'Modelo de eMail',
-	'no_mail' => 'eMail vazio',
+	'email_tplid' => 'Modelo de e-mail',
+	'no_mail' => 'E-mail vazio',
 	'lasteventtime' => 'Hora do último evento',
-	'lasturlclicked' => 'Última URL clicado',
-	'messagesuniqueid' => 'Mensagens UniqueId',
+	'lasturlclicked' => 'Último link clicado',
+	'messagesuniqueid' => 'Mensagem uniqueId',
 );
 ?>

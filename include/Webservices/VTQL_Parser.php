@@ -247,8 +247,7 @@ Array (
 					} elseif (strcasecmp($whereOperator, 'in') === 0) {
 						$whereValue = "($whereValue)";
 					}
-					$this->query = $this->query.$columnTable[$fieldcol[$whereField]].'.'.
-									$fieldcol[$whereField].' '.$whereOperator.' '.$whereValue;
+					$this->query = $this->query.$columnTable[$fieldcol[$whereField]].'.'.$fieldcol[$whereField].' '.$whereOperator.' '.$whereValue;
 					if ($i < count($sqlDump['where_condition']['column_values'])-1) {
 						$this->query = $this->query.' ';
 						$this->query = $this->query.$sqlDump['where_condition']['operators'][$i].' ';

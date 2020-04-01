@@ -85,9 +85,6 @@ class VtigerCRMObject {
 	}
 
 	private function getTabName() {
-		if ($this->moduleName == 'Events') {
-			return 'Calendar';
-		}
 		return $this->moduleName;
 	}
 

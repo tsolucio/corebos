@@ -116,14 +116,14 @@ function getSearchListHeaderValues($focus, $module, $sort_qry = '', $sorder = ''
 					$fieldname = $focus->list_fields_name[$name];
 				}
 			}
-			if ($fieldname == "lastname" && $module !="Leads" && $module !="Contacts") {
-				$fieldname = "contact_id";
+			if ($fieldname == 'lastname' && $module !='Leads' && $module !='Contacts') {
+				$fieldname = 'contact_id';
 			}
-			if ($fieldname == "accountname" && $module !="Accounts") {
-				$fieldname = "account_id";
+			if ($fieldname == 'accountname' && $module !='Accounts') {
+				$fieldname = 'account_id';
 			}
-			if ($fieldname == "productname" && $module =="Campaigns") {
-				$fieldname = "product_id";
+			if ($fieldname == 'productname' && $module =='Campaigns') {
+				$fieldname = 'product_id';
 			}
 		} else {
 			if ($focus->list_fields_name[$name] == '') {
@@ -132,16 +132,16 @@ function getSearchListHeaderValues($focus, $module, $sort_qry = '', $sorder = ''
 				$fieldname = $focus->list_fields_name[$name];
 			}
 
-			if ($fieldname == "lastname" && $module !="Leads" && $module !="Contacts") {
-				$fieldname = "contact_id";
+			if ($fieldname == 'lastname' && $module !='Leads' && $module !='Contacts') {
+				$fieldname = 'contact_id';
 			}
 		}
 		if ($userprivs->hasGlobalReadPermission() || in_array($fieldname, $field)) {
 			if ($fieldname!='parent_id') {
 				$fld_name=$fieldname;
-				if ($fieldname == 'contact_id' && $module !="Contacts") {
+				if ($fieldname == 'contact_id' && $module !='Contacts') {
 					$name = $app_strings['LBL_CONTACT_LAST_NAME'];
-				} elseif ($fieldname == 'contact_id' && $module =="Contacts") {
+				} elseif ($fieldname == 'contact_id' && $module =='Contacts') {
 					$name = $mod_strings['Reports To']." - ".$mod_strings['LBL_LIST_LAST_NAME'];
 				}
 				$search_header[$fld_name] = getTranslatedString($name);
@@ -1384,7 +1384,7 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 			$tmp_value = $change_table_field[$tablename.'.'.$fieldname].' IS NULL or ';
 		}
 		$value = $tmp_value.$change_table_field[$tablename.'.'.$fieldname].getAdvancedSearchComparator($comparator, $value, $datatype);
-	} elseif (($fieldname == "crmid" && $tablename != 'vtiger_crmentity') || $fieldname == "parent_id" || $fieldname == 'parentid') {
+	} elseif (($fieldname == 'crmid' && $tablename != 'vtiger_crmentity') || $fieldname == 'parent_id' || $fieldname == 'parentid') {
 		//For crmentity.crmid the control should not come here. This is only to get the related to modules
 		$value = getAdvancedSearchParentEntityValue($comparator, $value, $datatype, $tablename, $fieldname);
 	} else {

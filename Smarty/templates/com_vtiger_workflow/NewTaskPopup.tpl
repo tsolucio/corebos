@@ -9,43 +9,53 @@
  ********************************************************************************/
 -->*}
 
-<!-- A popup to create a new task-->
-<div id="new_task_popup" class='layerPopup' style="display:none;">
-	<table width="100%" cellspacing="0" cellpadding="5" border="0" class="layerHeadingULine">
-		<tr>
-			<td width="60%" align="left" class="layerPopupHeading">
-				{$MOD.LBL_CREATE_TASK}
-				</td>
-			<td width="40%" class="cblds-t-align_right" align="right">
-				<a href="javascript:void(0);" id="new_task_popup_close">
-					<img border="0" align="middle" src="{'close.gif'|@vtiger_imageurl:$THEME}"/>
-				</a>
-			</td>
-		</tr>
-	</table>
-
+<div id="new_task_popup" style="display:none;z-index:10;">
 	<form action="index.php" method="post" accept-charset="utf-8" onsubmit="VtigerJS_DialogBox.block();">
-		<div class="popup_content" align="left">
-			{$MOD.LBL_CREATE_TASK_OF_TYPE}
-			<select name="task_type" class="small">
-		{foreach item=taskType from=$taskTypes}
-				<option value='{$taskType}'>
-					{$taskType|@getTranslatedString:$module->name}
-				</option>
-		{/foreach}
-			</select>
-			<input type="hidden" name="module_name" value="{$workflow->moduleName}">
-			<input type="hidden" name="save_type" value="new" id="save_type_new">
-			<input type="hidden" name="module" value="{$module->name}" id="save_module">
-			<input type="hidden" name="action" value="edittask" id="save_action">
-			<input type="hidden" name="return_url" value="{$newTaskReturnUrl}" id="save_return_url">
-			<input type="hidden" name="workflow_id" value="{$workflow->id}">
+	<section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open" aria-labelledby="EditInvHeading" aria-modal="true" aria-describedby="EditInv">
+	<div class="slds-modal__container">
+		<header class="slds-modal__header">
+			<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="{$APP.LBL_CLOSE}" type="button" onClick="hide('new_task_popup');">
+				<svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+				</svg>
+				<span class="slds-assistive-text">{$APP.LBL_CLOSE}</span>
+			</button>
+			<h2 id="EditInvHeading" class="slds-modal__title slds-hyphenate slds-page-header__title">{$MOD.LBL_CREATE_TASK}</h2>
+		</header>
+		<div class="slds-modal__content slds-p-around_x-small">
+			<div class="popup_content">
+				<div class="slds-form-element">
+					<label class="slds-form-element__label slds-page-header__meta-text" for="module_list">{$MOD.LBL_CREATE_TASK_OF_TYPE}</label>
+					<div class="slds-form-element__control">
+						<div class="slds-select_container">
+							<select class="slds-select slds-page-header__meta-text" name="task_type" id="task_type">
+								{foreach item=taskType from=$taskTypes}
+									<option value='{$taskType}'>
+									{$taskType|@getTranslatedString:$module->name}
+									</option>
+								{/foreach}
+							</select>
+						</div>
+					</div>
+				</div>
+				<input type="hidden" name="module_name" value="{$workflow->moduleName}">
+				<input type="hidden" name="save_type" value="new">
+				<input type="hidden" name="module" value="{$module->name}">
+				<input type="hidden" name="action" value="edittask">
+				<input type="hidden" name="return_url" value="{$newTaskReturnUrl}">
+				<input type="hidden" name="workflow_id" value="{$workflow->id}">
+			</div>
 		</div>
-		<table width="100%" cellspacing="0" cellpadding="5" border="0" class="layerPopupTransport">
-			<tr><td class="cblds-t-align_center" align="center">
-				<input type="submit" class="crmButton small save" value="{$APP.LBL_CREATE_BUTTON_LABEL}" name="save" id='new_task_popup_save'/>
-				<input type="button" class="crmButton small cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL} " name="cancel" id='new_task_popup_cancel'/>
-			</td></tr>
-		</table>
+		<footer class="slds-modal__footer" style="width:100%;">
+			<button class="slds-button slds-button_neutral" type="button" name="cancel" id='new_task_popup_cancel' onClick="hide('new_task_popup');">
+			{$APP.LBL_CANCEL_BUTTON_LABEL}
+			</button>
+			<button class="slds-button slds-button_brand" type="submit" name="save" id='new_task_popup_save'>
+			{$APP.LBL_CREATE_BUTTON_LABEL}
+			</button>
+		</footer>
+	</div>
+	</section>
 	</form>
+	<div class="slds-backdrop slds-backdrop_open"></div>
 </div>

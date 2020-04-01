@@ -385,6 +385,7 @@ var alert_arr = {
 	'ONLY_ONE_MODULE_PERMITTED_FOR_REPORT' : 'Sie können für diese Art Bericht nur ein verknüpftes Modul auswählen',
 	'MUST_SELECT_ONE_MODULE_FOR_REPORT' : 'Sie müssen für diese Art Bericht ein verknüpftes Modul auswählen',
 	'LBL_NEW_CONDITION' : 'Neue Bedingung',
+	'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL' : 'Neue Bedingungsgruppe',
 	'WF_UPDATE_MAP_ERROR' : '**Fehler**: Diese Aufgabe verwendet ein nicht existierendes Feld: ',
 	'WF_UPDATE_MAP_ERROR_INFO' : 'Die Aufgabe wird mit FALSCHEN Einstellungen ausgeführt, um Ihnen zu ermöglichen, den Fehler zu beheben. Die gezeigten Werte sind FALSCH!',
 	'MoveUp' : 'Nach oben bewegen',
@@ -420,5 +421,9 @@ var alert_arr = {
 	'ERR_Massedit' : 'Fehler bei der Massenbearbeitung',
 	'ProcessFINISHED' : 'Prozess beendet',
 	'duplicatednotallowed' : 'Duplizierte Module sind nicht erlaubt',
-	'HAS_THIS_AS_NTH_CHILD' : 'Hat dieses als ein weiteres Kind'
+	'HAS_THIS_AS_NTH_CHILD' : 'Hat dieses als ein weiteres Kind',
+	'Okay': 'Okay',
+	'Failed': 'Failed',
+	'Warning': 'Warning',
+	'Copied': 'Copied'
 };

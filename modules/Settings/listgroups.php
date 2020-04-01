@@ -36,6 +36,8 @@ $smarty->assign('IMAGE_PATH', $image_path);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('CMOD', $mod_strings);
 $smarty->assign('MOD', return_module_language($current_language, 'Settings'));
+$smarty->assign('MODULE', $currentModule);
+$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
 $smarty->assign('GRPCNT', count($return_data));
 
 $smarty->display('ListGroup.tpl');

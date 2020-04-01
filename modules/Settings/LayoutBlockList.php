@@ -699,7 +699,7 @@ function updateFieldProperties() {
 	$dependentmodules = isset($_REQUEST['dependentmoduleselected']) ? vtlib_purify($_REQUEST['dependentmoduleselected']) : null;
 
 	if (!empty($dependentmodules)) {
-		$newdependetmodules = explode(",", $_REQUEST['dependentmoduleselected']);
+		$newdependetmodules = explode(',', $_REQUEST['dependentmoduleselected']);
 		$result = $adb->pquery('SELECT relmodule FROM vtiger_fieldmodulerel WHERE fieldid=? AND module=?', array($fieldid, $fld_module));
 		$olddependetmodules = array();
 		for ($i=0; $i<$adb->num_rows($result); $i++) {
@@ -711,6 +711,8 @@ function updateFieldProperties() {
 				$parentmodule = Vtiger_Module::getInstance($fld_module);
 				$relationfield = Vtiger_Field::getInstance($fieldname, $parentmodule);
 				$relationfield->setRelatedModules($module);
+				$relatedModule = Vtiger_Module::getInstance($module);
+				$relatedModule->setRelatedList($parentmodule, $fld_module, array('ADD'), 'get_dependents_list');
 			}
 		}
 
@@ -719,6 +721,8 @@ function updateFieldProperties() {
 				$parentmodule = Vtiger_Module::getInstance($fld_module);
 				$relationfield = Vtiger_Field::getInstance($fieldname, $parentmodule);
 				$relationfield->unsetRelatedModules($module);
+				$relatedmodule = Vtiger_Module::getInstance($module);
+				$relatedmodule->unsetRelatedList($parentmodule, $fld_module, 'get_dependents_list');
 			}
 		}
 	}

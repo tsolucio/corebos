@@ -6,17 +6,17 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|30/12/2010|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese|20/10/2018|São Paulo/SP/Brasil.|www.ecrmweb.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese|16/03/2020|São Paulo/SP/Brasil.|www.ecrmweb.com.br
  ************************************************************************************/
 
 $mod_strings = array (
-'Service Contracts' => 'Contratos de Serviços',
-'ServiceContracts' => 'Contratos de Serviços',
-'SINGLE_ServiceContracts' => 'Contrato de Serviço',
-'LBL_SERVICE_CONTRACT_INFORMATION' => 'Informação Contrato de Serviço',
-'LBL_CUSTOM_INFORMATION' => 'Informação Personalizada',
+'Service Contracts' => 'Contratos de serviços',
+'ServiceContracts' => 'Contratos de serviços',
+'SINGLE_ServiceContracts' => 'Contrato de serviço',
+'LBL_SERVICE_CONTRACT_INFORMATION' => 'Informação contrato de serviço',
+'LBL_CUSTOM_INFORMATION' => 'Informação customizada',
 
-'Contract No' => 'No. Contrato',
+'Contract No' => 'No. contrato',
 'Assigned To' => 'Responsável',
 'Created Time' => 'Data & hora criação',
 'Modified Time' => 'Data & hora modificação',
@@ -54,9 +54,9 @@ $mod_strings = array (
 'Hours'=>'Horas',
 'Days'=>'Dias',
 'Incidents'=>'Incidentes',
-'LBL_MODULE_NAME'=>'Contratos de Serviços',
-'Service Requests'=>'Solicitação de Serviços',
-'SyncHelpDesk' => 'Synchronize Support Tickets',
-'SyncHelpDeskDescription' => 'Synchronize with Support Tickets Time and Effort',
+'LBL_MODULE_NAME'=>'Contratos de serviços',
+'Service Requests'=>'Solicitação de serviços',
+'SyncHelpDesk' => 'Sincronizar tíquetes de suporte',
+'SyncHelpDeskDescription' => 'Sincronize com tempo e esforço dos tíquetes de suporte',
 );
 ?>

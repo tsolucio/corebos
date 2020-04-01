@@ -136,6 +136,9 @@ class VTExpressionsManager {
 			'getGEODistanceFromCoordinates' => 'getGEODistanceFromCoordinates({lat1},{long1},{lat2},{long2})',
 			'getFromContext' => 'getFromContext(variablename)',
 			'setToContext' => 'setToContext(variablename, value)',
+			'getSetting' => "getSetting('setting_key', 'default')",
+			'setSetting' => "setSetting('setting_key', value)",
+			'delSetting' => "delSetting('setting_key')",
 			'getCRUDMode' => 'getCRUDMode()',
 			'isNumeric' => 'isNumeric(fieldname)',
 			'isString' => 'isString(fieldname)',
@@ -143,6 +146,7 @@ class VTExpressionsManager {
 			'AND' => 'AND(condition1, condition2)',
 			'exists' => 'exists(fieldname, value)',
 			'existsrelated' => 'existsrelated(relatedmodule, fieldname, value)',
+			'allrelatedare' => 'allrelatedare(relatedmodule, fieldname, value)',
 		);
 		$wfexpfuncs = $adb->query('select expname,expinfo from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {

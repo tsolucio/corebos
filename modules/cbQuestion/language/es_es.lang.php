@@ -90,5 +90,10 @@ $mod_strings = array(
 	'MVIEWWFAdded' => 'Flujo Trabajo Vista Materializada Añadido',
 	'MVIEWWFDeleted' => 'Flujo Trabajo Vista Materializada Eliminado',
 	'condfilterformat' => 'Condiciones en Formato de Filtro',
+	'Question Builder' => 'Constructor de Preguntas',
+	'LBL_SYSTEMMODULES' => 'Módulos de Sistema',
+	'RESULTS' => 'Resultados',
+	'Options' => 'Opciones',
+	'Launch a test to get the SQL' => 'Ejecuta una verificación para ver el comando SQL',
 );
 ?>

@@ -28,6 +28,9 @@ function __cb_or($arr) {
 function __cb_and($arr) {
 	return $arr[0] && $arr[1];
 }
+function __cb_not($arr) {
+	return !($arr[0]);
+}
 
 function __cb_exists($arr) {
 	global $current_user, $adb;
@@ -49,8 +52,16 @@ function __cb_exists($arr) {
 }
 
 function __cb_existsrelated($params) {
+	return __cb_relatedevaluations('existsrelated', $params);
+}
+
+function __cb_allrelatedare($params) {
+	return __cb_relatedevaluations('allrelatedare', $params);
+}
+
+function __cb_relatedevaluations($evaluation, $params) {
 	global $adb;
-	$existsrelated = false;
+	$return = false;
 	$relatedmodule = $params[0];
 	$env = $params[3];
 	$data = $env->getData();
@@ -73,15 +84,18 @@ function __cb_existsrelated($params) {
 
 		$relationInfo = $adb->fetch_array($relationResult);
 		$relfunp = array($crmid, $moduleId, $relatedModuleId);
-		global $GetRelatedList_ReturnOnlyQuery;
+		global $GetRelatedList_ReturnOnlyQuery, $currentModule;
 		$holdValue = $GetRelatedList_ReturnOnlyQuery;
 		$GetRelatedList_ReturnOnlyQuery = true;
+		$holdCM = $currentModule;
+		$currentModule = $module;
 		$relationData = call_user_func_array(array($moduleInstance, $relationInfo['name']), $relfunp);
+		$currentModule = $holdCM;
+		$GetRelatedList_ReturnOnlyQuery = $holdValue;
 		if (!isset($relationData['query'])) {
 			// OPERATIONNOTSUPPORTED
 			return false;
 		}
-		$GetRelatedList_ReturnOnlyQuery = $holdValue;
 		$relmod = Vtiger_Module::getInstance($relatedmodule);
 		$fld = Vtiger_Field::getInstance($params[1], $relmod);
 		if (!$fld) {
@@ -89,11 +103,24 @@ function __cb_existsrelated($params) {
 			return false;
 		}
 		$query = mkXQuery($relationData['query'], '1');
-		$query = stripTailCommandsFromQuery($query).' AND '.$fld->table.'.'.$fld->column.'=? LIMIT 1';
-		$result = $adb->pquery($query, array($params[2]));
-		if ($result) {
-			$existsrelated = ($adb->num_rows($result) > 0);
+		switch ($evaluation) {
+			case 'existsrelated':
+				$query = stripTailCommandsFromQuery($query).' AND '.$fld->table.'.'.$fld->column.'=? LIMIT 1';
+				$result = $adb->pquery($query, array($params[2]));
+				if ($result) {
+					$return = ($adb->num_rows($result) > 0);
+				}
+				break;
+			case 'allrelatedare':
+				$query = stripTailCommandsFromQuery($query).' AND '.$fld->table.'.'.$fld->column.'!=? LIMIT 1';
+				$result = $adb->pquery($query, array($params[2]));
+				if ($result) {
+					$return = ($adb->num_rows($result) == 0);
+				}
+				break;
+			default:
+				return false;
 		}
 	}
-	return $existsrelated;
+	return $return;
 }

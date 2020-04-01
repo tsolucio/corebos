@@ -9,6 +9,8 @@
  * Contributor(s): Ranieri/Translate terms eCRM web | 11/03/2017 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
  ************************************************************************************/
 $mod_strings = array (
+	'CronTasks' => 'Cron Tasks',
+	'SINGLE_CronTasks' => 'Cron Task',
 	'LBL_ACTIVE' => 'Ativo',
 	'LBL_INACTIVE' => 'Inativo',
 	'LBL_STATUS' => 'Status',
@@ -38,6 +40,6 @@ $mod_strings = array (
 	'Scheduler' => 'Scheduler',
 	'Cron Job' => 'Tarefa Agendada',
 	'cronWatcherService' => 'Serviço Monitoria do Cron',
-	'Send out warning email for long running cron tasks' => 'Send out warning email for long running cron tasks.',
+	'Send out warning email for long running cron tasks' => 'Envie um e-mail de aviso para tarefas cron de longa execução.',
 );
 ?>

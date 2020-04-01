@@ -20,7 +20,7 @@ class StringDiff {
 		if you use print_r() on the result of a diff on some test data.
 
 		htmlDiff is a wrapper for the diff command, it takes two strings and
-		returns the differences in HTML. The tags used are <ins> and <del>,
+		returns the differences in HTML. The tags used are <mark> and <del>,
 		which can easily be styled with CSS.
 
 		Look at original license: http://en.wikipedia.org/wiki/Zlib_License
@@ -55,8 +55,9 @@ class StringDiff {
 		$diff = self::diff(str_split($old), str_split($new));
 		foreach ($diff as $k) {
 			if (is_array($k)) {
-				$ret .= preg_replace('/\s+/', '', ((!empty($k['d'])?"<del>".implode(' ', $k['d'])."</del> ":'').
-				(!empty($k['i'])?"<ins>".implode(' ', $k['i'])."</ins> ":'')));
+				$ret .= ((!empty($k['d']) ? '<del style="background-color: #910e0a;color: white;">'
+					.preg_replace('/\s+/', '', implode(' ', $k['d'])).'</del>' : '')
+					.(!empty($k['i']) ? '<mark>'.preg_replace('/\s+/', '', implode(' ', $k['i'])).'</mark>' : ''));
 			} else {
 				$ret .= $k.'';
 			}

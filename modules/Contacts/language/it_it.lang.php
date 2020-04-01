@@ -215,6 +215,7 @@ $mod_strings = array (
 'Contacts ID'=>'ID Contatti',
 'LBL_SHOW_CONTACT_HIERARCHY' => 'Mostra la Gerarchia contatto',
 'LBL_CONTACT_HIERARCHY' => 'Gerarchia contatto',
+'GOOGLE_CONTACTS_Desc' => 'Synchronize your contacts with Google Contacts',
 'GOOGLE_CONTACTS' => 'Contatti Google',
 'LBL_UPDATES_CRM'       =>      "Aggiornamenti Applicazione",
 'LBL_UPDATES_GOOGLE'    =>      "Aggiornamenti Google",

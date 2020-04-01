@@ -16,7 +16,7 @@ require_once 'modules/PickList/DependentPickListUtils.php';
 global $app_strings, $current_language, $currentModule, $theme, $current_user;
 
 $smarty = new vtigerCRM_Smarty;
-$smarty->assign("APP", $app_strings);		//the include language files
+$smarty->assign('APP', $app_strings);
 
 if (!is_admin($current_user)) {
 	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');

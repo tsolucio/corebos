@@ -201,6 +201,7 @@ $mod_strings = array(
 	'LBL_SHOW_CONTACT_HIERARCHY' => 'Arata Ierarhia Contactelor',
 	'LBL_CONTACT_HIERARCHY' => 'Ierarhia Contactelor',
 	'GOOGLE_CONTACTS' => 'Contacte Google',
+	'GOOGLE_CONTACTS_Desc' => 'Synchronize your contacts with Google Contacts',
 	'LBL_UPDATES_CRM' => 'Actualizari in CRM',
 	'LBL_UPDATES_GOOGLE' => 'Actualizari in Google',
 	'LBL_UPDATED' => 'Actualizat',

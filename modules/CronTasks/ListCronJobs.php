@@ -12,9 +12,10 @@ require_once 'vtlib/Vtiger/Cron.php';
 require_once 'include/utils/utils.php';
 
 global $theme,$app_strings,$mod_strings,$current_language;
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
 $smarty = new vtigerCRM_Smarty;
+Vtiger_Cron::orderTasks();
 $cronTasks = Vtiger_Cron::listAllActiveInstances(1);
 $output = array();
 

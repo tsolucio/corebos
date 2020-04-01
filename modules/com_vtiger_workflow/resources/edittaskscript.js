@@ -47,21 +47,24 @@ function edittaskscript($) {
 		$('#edittask_cancel_button').click(function () {
 			window.location=returnUrl;
 		});
-		$('#save').bind('click', function () {
+		$('#save').bind('click', function edittasksaveevent() {
 			var conditions = [];
 			var i=0;
 			$('#save_conditions').children('.condition_group_block').each(function (j, conditiongroupblock) {
 				$(conditiongroupblock).children('.save_condition_group').each(function (k, conditiongroup) {
 					$(conditiongroup).children().each(function () {
-						var fieldname = $(this).children('.fieldname').val();
-						var operation = $(this).children('.operation').val();
-						var value = $(this).children('.expressionvalue').val();
-						var valuetype = $(this).children('.expressiontype').val();
-						var joincondition = $(this).children('.joincondition').val();
-						var groupid = $(this).children('.groupid').val();
+						var fieldname = this.querySelector('div > .cefieldname').value;
+						var operation = this.querySelector('div > .ceoperation').value;
+						var value = this.querySelector('div > .ceexpressionvalue').value;
+						var valuetype = this.querySelector('div > .ceexpressiontype').value;
+						var joincondition = this.querySelector('div > .cejoincondition').value;
+						var groupid = this.querySelector('div > .groupid').value;
 						var groupjoin = '';
 						if (groupid != '') {
-							groupjoin = $('#save_condition_group_'+groupid+'_joincondition').val();
+							let scgj = document.getElementById('save_condition_group_'+groupid+'_joincondition');
+							if (scgj != null) {
+								groupjoin = scgj.value;
+							}
 						}
 						var condition = {
 							fieldname:fieldname,
@@ -81,6 +84,12 @@ function edittaskscript($) {
 				out = JSON.stringify(conditions);
 			}
 			$('#save_conditions_json').prop('value', out);
+			$._data(document.getElementById('save'), 'events').click.map(ev => {
+				if (ev.handler.name!='edittasksaveevent') {
+					ev.handler();
+				}
+			});
+			document.forms['new_task'].submit();
 		});
 	});
 }

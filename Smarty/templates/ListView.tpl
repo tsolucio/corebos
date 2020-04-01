@@ -22,9 +22,8 @@
 {include file='Buttons_List.tpl'}
 
 {*<!-- Contents -->*}
-<table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
+<table class="slds-m-around_medium" style="width: 98%;">
 	<tr>
-	<td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 	<td class="showPanelBg" valign="top" width=100% style="padding:10px;">
 	<!-- SIMPLE SEARCH -->
 <div id="searchAcc" style="{$DEFAULT_SEARCH_PANEL_STATUS};position:relative;">
@@ -110,7 +109,6 @@
 	</div>
 
 	</td>
-	<td valign=top><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
 	</tr>
 </table>
 

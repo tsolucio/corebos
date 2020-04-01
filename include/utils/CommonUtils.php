@@ -571,7 +571,7 @@ function getContactName($contact_id) {
 
 /**
  * Function to get the Contact Name when a contact id is given
- * Takes the input as $contact_id - contact id
+ * Takes the input as $lead_id - lead id
  * returns the Contact Name in string format.
  */
 function getLeadName($lead_id) {
@@ -1716,10 +1716,10 @@ function setObjectValuesFromRequest($focus) {
 	$moduleName = get_class($focus);
 	$log->debug("> setObjectValuesFromRequest $moduleName");
 	if (isset($_REQUEST['record']) && (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'edit')) {
-		$focus->id = $_REQUEST['record'];
+		$focus->id = vtlib_purify($_REQUEST['record']);
 	}
 	if (isset($_REQUEST['mode'])) {
-		$focus->mode = $_REQUEST['mode'];
+		$focus->mode = vtlib_purify($_REQUEST['mode']);
 	}
 	foreach ($focus->column_fields as $fieldname => $val) {
 		if (isset($_REQUEST[$fieldname])) {
@@ -1733,6 +1733,9 @@ function setObjectValuesFromRequest($focus) {
 			$value = trim($_REQUEST[$fieldname.'_hidden']);
 			$focus->column_fields[$fieldname] = $value;
 		}
+	}
+	if (!empty($_REQUEST['cbuuid'])) {
+		$focus->column_fields['cbuuid'] = vtlib_purify($_REQUEST['cbuuid']);
 	}
 	if (isset($_REQUEST['action']) && ($_REQUEST['action'] == 'EditView' || $_REQUEST['action'] == 'EventEditView')) {
 		$cbfrommodule = $moduleName;
@@ -2877,7 +2880,7 @@ function getTagCloudView($id = '') {
 function SaveTagCloudView($id = '') {
 	global $log, $adb;
 	$log->debug('> SaveTagCloudView '.$id);
-	$tag_cloud_status = vtlib_purify($_REQUEST['tagcloudview']);
+	$tag_cloud_status = isset($_REQUEST['tagcloudview']) ? vtlib_purify($_REQUEST['tagcloudview']) : '';
 
 	if ($tag_cloud_status == 'true') {
 		$tag_cloud_view = 0;
@@ -2886,14 +2889,13 @@ function SaveTagCloudView($id = '') {
 	}
 
 	if (!empty($id)) {
-		$query = "update vtiger_homestuff set visible = ? where userid=? and stufftype='Tag Cloud'";
+		$query = "update vtiger_homestuff set visible=? where userid=? and stufftype='Tag Cloud'";
 		$adb->pquery($query, array($tag_cloud_view, $id));
 	}
 
 	if (!empty($id) && !empty($_REQUEST['showtagas'])) {
 		$tag_cloud_showas = vtlib_purify($_REQUEST['showtagas']);
-		$query = 'update vtiger_users set showtagas = ? where id=?';
-		$adb->pquery($query, array($tag_cloud_showas, $id));
+		$adb->pquery('update vtiger_users set showtagas=? where id=?', array($tag_cloud_showas, $id));
 	}
 	$log->debug('< SaveTagCloudView');
 }
@@ -3604,6 +3606,33 @@ function recordIsAssignedToInactiveUser($crmid) {
 			array($crmid)
 		);
 		return ($adb->query_result($urs, 0, 'status')=='Inactive');
+	}
+}
+
+/**
+ * Converts a number of bytes into a readable format e.g KB, MB, GB, TB, YB
+ * @param int num number of bytes
+ * @param string format
+ * @return string that represents the given number in the given format
+ */
+function readableBytes($bytes, $format) {
+	$sizes = array('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
+	$i = array_search($format, $sizes);
+	return sprintf('%.02F', $bytes / pow(1024, $i)) * 1 . $sizes[$i];
+}
+
+/** convert given numeric string with optional byte size magnitud to a number of bytes
+ * @param int byte size string to convert to bytes
+ * @return int number of bytes in given string
+ */
+function numberBytes($size) {
+	$unit = preg_replace('/[^bkmgtpezy]/i', '', $size); // Remove the non-unit characters from the size.
+	$size = preg_replace('/[^0-9\.]/', '', $size); // Remove the non-numeric characters from the size.
+	if ($unit) {
+		// Find the position of the unit in the ordered string which is the power of magnitude to multiply a kilobyte by.
+		return round($size * pow(1024, stripos('bkmgtpezy', $unit[0])));
+	} else {
+		return round($size);
 	}
 }
 ?>

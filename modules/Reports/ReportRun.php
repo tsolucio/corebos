@@ -931,9 +931,9 @@ class ReportRun extends CRMEntity {
 	}
 
 	/** Function to get the RunTime Advanced filter conditions
-	 *  @ param $advft_criteria : Type Array
-	 *  @ param $advft_criteria_groups : Type Array
-	 *  This function returns  $advfiltersql
+	 *  @param array $advft_criteria
+	 *  @param array $advft_criteria_groups
+	 *  @return string $advfiltersql
 	 */
 	public function RunTimeAdvFilter($advft_criteria, $advft_criteria_groups) {
 		$adb = PearDatabase::getInstance();
@@ -973,7 +973,7 @@ class ReportRun extends CRMEntity {
 					}
 				}
 
-				$temp_val = explode(",", $adv_filter_value);
+				$temp_val = explode(',', $adv_filter_value);
 				if (($column_info[4] == 'D' || ($column_info[4] == 'T' && $column_info[1] != 'time_start' && $column_info[1] != 'time_end') || ($column_info[4] == 'DT'))
 					&& ($column_info[4] != '' && $adv_filter_value != '' )
 				) {

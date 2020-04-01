@@ -65,6 +65,7 @@ function vtws_create($elementType, $element, $user) {
 	$referenceFields = $meta->getReferenceFieldDetails();
 	foreach ($referenceFields as $fieldName => $details) {
 		if (!empty($element[$fieldName])) {
+			$element[$fieldName] = vtws_getWSID($element[$fieldName]);
 			$ids = vtws_getIdComponents($element[$fieldName]);
 			$elemTypeId = $ids[0];
 			$referenceObject = VtigerWebserviceObject::fromId($adb, $elemTypeId);

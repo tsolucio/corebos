@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <header>
-<title>Login</title> 
+<title>{'LBL_LOGIN'|@getTranslatedString:'Users'}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link REL="SHORTCUT ICON" HREF="resources/images/favicon.ico">
 <script type="text/javascript" src="../../include/sw-precache/service-worker-registration.js"></script>
@@ -16,7 +16,7 @@
 	<div id="loginTop" style="text-align:center;">
 		<img src="../../{$COMPANY_LOGO}" style="width: 15em;height: 4.2em;">
 	</div>
-	<div data-role="header"  data-theme="{$COLOR_HEADER_FOOTER}" >
+	<div data-role="header" data-theme="{$COLOR_HEADER_FOOTER}" >
 		<h4>{$COMPANY_NAME}</h4>
 	</div>
 	<div data-role="fieldcontain" class="ui-hide-label">
@@ -28,7 +28,7 @@
 			<input name="checkbox-mini-0" id="showpw" data-mini="true" data-theme=c type="checkbox">
 			<label for="showpw">{$MOD.LBL_SHOW}</label>
 			<div data-role="button" >
-				<input  type="submit" value="Login" >
+				<input  type="submit" value="{'LBL_LOGIN'|getTranslatedString:'Users'}" >
 			</div>
 		</form>
 	</div>

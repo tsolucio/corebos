@@ -160,6 +160,12 @@ function getInventoryModuleTaxRelatedInformation() {
 	additionalinfo = additionalinfo +'&ship_state=' + encodeURIComponent(ship_state);
 	additionalinfo = additionalinfo +'&ship_code=' + encodeURIComponent(ship_code);
 	additionalinfo = additionalinfo +'&ship_country=' + encodeURIComponent(ship_country);
+	var custompopup = ['ctoid', 'accid', 'vndid', 'ship_state', 'ship_code', 'ship_country'];
+	additionalinfo += '&cbcustompopupinfo='+custompopup.join(';');
+	if (typeof(document.getElementsByName('whid')) != 'undefined' && document.getElementsByName('whid').length != 0) {
+		whid= document.EditView.whid.value;
+		additionalinfo = additionalinfo +'&whid=' + encodeURIComponent(whid);
+	}
 	return trim(additionalinfo);
 }
 
@@ -1425,10 +1431,14 @@ function InventorySelectAll(mod, image_pth) {
 			var accid = 0;
 			if (document.EditView.account_id != undefined) {
 				accid = document.EditView.account_id.value;
+			} else if (document.EditView.accid != undefined) {
+				accid = document.EditView.accid.value;
 			}
 			var ctoid = 0;
 			if (document.EditView.contact_id != undefined) {
 				ctoid = document.EditView.contact_id.value;
+			} else if (document.EditView.ctoid != undefined) {
+				ctoid = document.EditView.ctoid.value;
 			}
 			var _this = this;
 			var r = new XMLHttpRequest();

@@ -486,12 +486,10 @@ class VTJsonCondition {
 					$field = Vtiger_Field::getInstance($cond['fieldname'], $mod);
 
 					$r = $adb->query("SELECT {$field->table}.{$mod->basetableid}
-					                  FROM {$field->table}
-						              INNER JOIN vtiger_crmentity ON
-						              {$field->table}.{$mod->basetableid} = vtiger_crmentity.crmid
-						              WHERE {$field->table}.{$cond['fieldname']} = {$parent_id}
-						              AND vtiger_crmentity.deleted = 0
-						              ORDER BY vtiger_crmentity.createdtime ASC");
+						FROM {$field->table}
+						INNER JOIN vtiger_crmentity ON {$field->table}.{$mod->basetableid} = vtiger_crmentity.crmid
+						WHERE {$field->table}.{$cond['fieldname']}={$parent_id} AND vtiger_crmentity.deleted=0
+						ORDER BY vtiger_crmentity.createdtime ASC");
 					while ($child = $adb->fetch_array($r)) {
 						$children[] = $child[$mod->basetableid];
 					}

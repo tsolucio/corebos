@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese | 13/04/2012 |Curitiba/Paraná/Brasil.| www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 05/04/2019 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 08/03/2020 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
  ********************************************************************************/
 $app_strings = array (
 'LBL_BROWSER_TITLE' => 'coreBOS',
@@ -223,8 +223,8 @@ $app_strings = array (
 'Export' => 'Exportar',
 'Import' => 'Importar',
 'Merge' => 'Mesclar',
-'ConvertLead' => 'Converter lead',
-'Is Converted From Lead' => 'Foi convertido a partir do lead',
+'ConvertLead' => 'Converter o lead',
+'Is Converted From Lead' => 'Convertido a partir do lead',
 'Converted From Lead' => 'Convertido do lead',
 'LBL_SHOW_RESULTS' => 'Mostrar Resultados em',
 'LBL_TOTAL_RECORDS_FOUND' => 'Total Registros encontrados :',
@@ -364,7 +364,7 @@ $app_strings = array (
 'Company' => 'Empresa',
 'Phone' => 'Telefone',
 'Website' => 'Website',
-'Email' => 'Email',
+'Email' => 'E-mail',
 'Assigned To' => 'Responsável',
 'Account Name' => 'Nome Conta',
 'City' => 'Cidade',
@@ -519,10 +519,10 @@ $app_strings = array (
 'LBL_TAX' => 'Imposto',
 'LBL_ADJUSTMENT' => 'Ajuste',
 'LBL_GRAND_TOTAL' => 'Total geral',
-'LBL_PAYMENT_INFORMATION'=> 'Payment Information',
-'Total Amount' => 'Total Amount',
-'Total Pending' => 'Total Pending',
-'Balance' => 'Balance',
+'LBL_PAYMENT_INFORMATION'=> 'Informação pagamento',
+'Total Amount' => 'Valor total',
+'Total Pending' => 'Total pendente',
+'Balance' => 'Balanço',
 'LBL_QUOTE_ID' => 'No. Cotação',
 'LBL_SALES_ORDER_ID' => 'No. pedido vendas',
 'LBL_PURCHASE_ORDER_ID' => 'No. pedido compra',
@@ -680,12 +680,12 @@ $app_strings = array (
 'group'=>'Grupo',
 'individual'=>'individual',
 
-'Revision' => 'Version',
-'Active Revision' => 'Active Version',
-'Revisiones' => 'Version Control',
-'Recover' => 'Recover Version',
-'CRevision' => 'Create Version',
-'CreatingRevision' => 'Saving all your work for future reference. Please be patient...',
+'Revision' => 'Versão',
+'Active Revision' => 'Versão ativa',
+'Revisiones' => 'Versão controle',
+'Recover' => 'Versão recuperada',
+'CRevision' => 'Versão criada',
+'CreatingRevision' => 'Salvando todo o trabalho para referencia futura. Por favor, seja paciente...',
 
 'contains'=>'contém',
 'does_not_contains'=>'não contém',
@@ -909,6 +909,7 @@ $app_strings = array (
 'Activity Type'=>'Tipo atividade',
 'Created Time'=>'Data & hora criação',
 'Modified Time'=>'Data & hora modificação',
+'cbuuid' => 'Unique Identifier',
 'Last Modified By' => 'Modificado por último por',
 'Created By' => 'Criado por',
 'Lead Status'=>'Estágio lead',
@@ -1236,7 +1237,7 @@ $app_strings = array (
 'CANNOT_CONVERT' => 'Não pode ser convertido',
 
 // For note link on the detailview
-'LBL_ADD_NOTE'=>'Adicionar nota',
+'LBL_ADD_NOTE'=>'Adicionar documento',
 
 // For Layout Editor
 'LBL_UNHIDE_FIELDS'=>'Reexibir campos',
@@ -1302,32 +1303,32 @@ $app_strings = array (
 'LBL_DESELECT_ALL' => 'Desmarcar todos',
 'LBL_RECORDS_IN' => 'registros em',
 'LBL_FOLDER' => 'pasta',
-'Add event' => 'Add event',
+'Add Event' => 'Adicionar evento',
 'Create Invoice' => 'Create Invoice',
-'Send Email With PDF' => 'Send Email With PDF',
-'Export To PDF' => 'Export To PDF',
-'Generate Sales Order' => 'Generate Sales Order',
-'Generate Invoice' => 'Generate Invoice',
-'Create Quote' => 'Create Quote',
-'Create Purchase Order' => 'Create Purchase Order',
-'Create Sales Order' => 'Create Sales Order',
-'csrf_warning' => 'CSRF Error. The reason this happens is that the page has been open without any interaction for too
-	long. For security reason, it has expired. Please reload the page by hitting CTRL + R or press reload below.',
-'csrf_reload' => 'Reload the page',
+'Send Email With PDF' => 'Enviar e-mail com PDF',
+'Export To PDF' => 'Exportar para PDF',
+'Generate Sales Order' => 'Gerar pedido vendas',
+'Generate Invoice' => 'Gerar fatura',
+'Create Quote' => 'Gerar cotação',
+'Create Purchase Order' => 'Criar pedido compra',
+'Create Sales Order' => 'Criar pedido vendas',
+'csrf_warning' => 'Erro CSRF. Isso ocorreu porque a página esta aberta a muito tempo, sem nenhuma interação.
+	 Por razões de seguraça, ela expirou. Por favor, recarregue pressionando CTRL + R ou pressione recarregar abaixo.',
+'csrf_reload' => 'Recarregar a página',
 
 //added for creating a custom lead map row in UI
 'LBL_ADD_MAPPING'=> 'Adicionar mapeamento',
 'LBL_FIELD_MAPPING' => 'Mapeamento campo',
 
 'LBL_MANDATORY_FIELD_MISSING'=>'Esta faltando valor para campo obrigatório',
-'ERROR_GETTING_FILTER' => 'ERROR Recuperando informações da visualização. Por favor, exclua a visualização e tente novamente.',
-'Upload Images' => 'Upload Imagens',
+'ERROR_GETTING_FILTER' => 'ERRO Recuperando informações da visualização. Por favor, exclua a visualização e tente novamente.',
+'Upload Images' => 'Suibir imagens',
 'Drag file here or click to upload' => 'Arraste o arquivo aqui ou clique para carregar',
 'Drag attachment here or click to upload' => 'Arraste o anexo aqui ou clique para carregar',
 'SetReturnAddressTitle' => 'Selecione o endereço para usar',
 'SetReturnAddressDescription' => 'Selecione o endereço que deseja substituir, se houver',
-'Mass Tag' => 'Mass Tag',
-'LBL_MASSTAG_FORM_HEADER' => 'Tag Operações em massa',
+'Mass Tag' => 'Editar Tag massa',
+'LBL_MASSTAG_FORM_HEADER' => 'Operações em massa Tag',
 'LBL_REMOVE_TAG' => 'Remover Tag',
 'LBL_EXECUTE_MASSTAG' => 'Executar',
 'Subscribe' => 'Subscrever',
@@ -1349,7 +1350,7 @@ $app_strings = array (
 'Select Related Module' => 'Selecione módulo relacionado',
 'No Module' => 'Sem módulos relacionados',
 'Entity Name' => 'Nome entidade',
-'LBL_NOPRODUCTS' => 'Can\'t convert SalesOrder to Invoice because there aren\'t any remaining products to invoice.',
+'LBL_NOPRODUCTS' => 'Não é possível converter pedido de vendas em Fatura porque não há produtos restantes na fatura.',
 );
 
 // Translation for currency names

@@ -55,7 +55,7 @@ if (isPermitted($_REQUEST['module'], 'Export') == 'no') {
 	$allow_exports='none';
 }
 
-if ($allow_exports=='none' || ( $allow_exports=='admin' && ! is_admin($current_user) )) {
+if ($allow_exports=='none' || ($allow_exports=='admin' && !is_admin($current_user))) {
 	?>
 	<script type='text/javascript'>
 		alert("<?php echo $app_strings['NOT_PERMITTED_TO_EXPORT']?>");
@@ -206,9 +206,7 @@ function export($type) {
 		},
 		$fields_array
 	);
-	$header = implode('"'.$CSV_Separator.'"', $translated_fields_array);
-	$header = "\"" .$header;
-	$header .= "\"\r\n";
+	$header = '"'.implode('"'.$CSV_Separator.'"', $translated_fields_array)."\"\r\n";
 
 	/** Output header information */
 	echo $header;
@@ -234,9 +232,7 @@ function export($type) {
 				$new_arr[] = preg_replace("/\"/", "\"\"", $value);
 			}
 		}
-		$line = implode('"'.$CSV_Separator.'"', $new_arr);
-		$line = "\"" .$line;
-		$line .= "\"\r\n";
+		$line = '"'.implode('"'.$CSV_Separator.'"', $new_arr)."\"\r\n";
 		/** Output each row information */
 		echo $line;
 	}

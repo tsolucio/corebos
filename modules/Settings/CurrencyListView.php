@@ -43,6 +43,8 @@ do {
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', $image_path);
 $smarty->assign('MOD', $mod_strings);
+$smarty->assign('MODULE', $currentModule);
+$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
 $smarty->assign('CURRENCY_LIST', $currency);
 $smarty->assign('CRON_TASK', Vtiger_Cron::getInstance('UpdateExchangeRate'));
 if (!empty($_REQUEST['ajax'])) {

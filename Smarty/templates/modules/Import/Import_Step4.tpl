@@ -60,6 +60,8 @@
 							{assign var="_TRANSLATED_FIELD_LABEL" value=$_FIELD_INFO->getFieldLabelKey()|@getTranslatedString:$FOR_MODULE}
 							<option value="{$_FIELD_NAME}" {if $_HEADER_NAME eq $_TRANSLATED_FIELD_LABEL || $_HEADER_NAME eq $_FIELD_NAME} selected {/if} {if $_FIELD_INFO->isMandatory() eq 'true'}style="color:red;"{/if}>{$_TRANSLATED_FIELD_LABEL}{if $_FIELD_INFO->isMandatory() eq 'true'}&nbsp; (*){/if}</option>
 							{/foreach}
+							{assign var="_TRANSLATED_FIELD_LABEL" value='cbuuid'|@getTranslatedString}
+							<option value="cbuuid" {if $_HEADER_NAME eq $_TRANSLATED_FIELD_LABEL || $_HEADER_NAME eq 'cbuuid'} selected {/if}>{$_TRANSLATED_FIELD_LABEL}</option>
 						</select>
 					</td>
 					<td class="cellLabel" name="default_value_container">&nbsp;</td>

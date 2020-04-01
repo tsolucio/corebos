@@ -323,8 +323,10 @@ $add_to_url = 'view='.$calendar_arr['calendar']->view.$calendar_arr['calendar']-
 
 $smarty->assign('CALENDAR_TO_URL', $add_to_url);
 
-if (getFieldVisibilityPermission('Events', $current_user->id, 'eventstatus', 'readwrite') == '0') {
+if (getFieldVisibilityPermission('cbCalendar', $current_user->id, 'eventstatus', 'readwrite') == '0') {
 	$Events_Status = $Calendar4You->getActStatusFieldValues('eventstatus', 'vtiger_eventstatus');
+} else {
+	$Events_Status = '';
 }
 $smarty->assign('EVENT_STATUS', $Events_Status);
 

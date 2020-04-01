@@ -36,6 +36,7 @@ $mod_strings = array(
 	'LBL_AVAILABLE_WORKLIST_LIST'=>'Verfügbare Workflows',
 	'LBL_LOADING'=>'Lade...',
 	'LBL_REEVALCONDITIONS' => 'Bedingungen bei Ausführung überprüfen',
+	'evaluate' => 'Evaluate',
 	'LBL_VALIDATION_ERROR'=>'Überprüfungsfehler',
 	'LBL_SELECT_OPTION_DOTDOTDOT'=>'Option wählen...',
 	'LBL_WORKFLOW_NOTE_CRON_CONFIG'=>'Hinweis: Sie können die Ersatzfelder verwenden.',
@@ -53,7 +54,7 @@ $mod_strings = array(
 	'LBL_EXPRESSION'=>'Ausdruck',
 	'LBL_SET_EXPRESSION'=>'setze Ausdruck',
 
-	'LBL_MANUAL'=>'System',
+	'LBL_MANUAL'=>'System. Mass Actions.',
 	'LBL_RECORD_ACCESS_CONTROL' => 'Record Access Control',
 	'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL'=>'Neue Bedingungsgruppe',
 
@@ -203,5 +204,13 @@ $mod_strings = array(
 	'LBL_ROW' => 'Row',
 	'ERR_IncorrectFile' => 'Incorrect File or File Content',
 	'ERR_CannotProcess' => 'Cannot process workflow',
+	'ERR_ExpTypeUndefined' => 'Expression Type Undefined',
+	'ERR_NoCRMIDforEvaluate' => 'No record selected for evaluation context',
+	'EmptyForAllDateRanges' => 'Leave empty for ALL date ranges.',
+	'LBL_SAVEBASED' => 'Save based',
+	'LBL_TIMEBASED' => 'Time or Setting based',
+	'Record Set' => 'Record Set for Mass Actions',
+	'Select where to get the records from' => 'Select where to get the records from',
+	'Launch Now' => 'Launch Now',
 );
 ?>

@@ -97,5 +97,6 @@ $mod_strings = array (
 	'LBL_COMMENTS'=>'Opmerkingen',
 	'LBL_SIGNATURE'=>'Handtekening',
 	'LBL_DUPLICATE'=>'Duplicate',
+	'LBL_FORMAT' => 'Format',
 );
 ?>

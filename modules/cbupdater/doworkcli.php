@@ -35,8 +35,9 @@ if (count($argv)!=3) {
 
 	if (!empty($ids) && ($whattodo=='undo' || $whattodo=='apply')) {
 		global $adb, $log, $mod_strings, $app_strings, $currentModule, $current_user;
+		$adb->pquery("ALTER TABLE vtiger_cbupdater ADD COLUMN appcs varchar(3) DEFAULT '1'", array());
 		$currentModule = 'cbupdater';
-		$sql = 'select cbupdaterid,filename,pathfilename,classname, cbupd_no, description from vtiger_cbupdater
+		$sql = 'select cbupdaterid,filename,pathfilename,classname, cbupd_no, description, appcs from vtiger_cbupdater
 				inner join vtiger_crmentity on crmid=cbupdaterid
 				where deleted=0 and ';
 		if (strtolower($ids)=='all') {
@@ -88,8 +89,33 @@ if (count($argv)!=3) {
 					$errmsg = getTranslatedString('err_invalidclass', $currentModule);
 				}
 			} else {
-				$error = 4;
-				$errmsg = getTranslatedString('err_noupdatefile', $currentModule);
+				if ($upd['appcs']==0) {
+					if (empty($upd['description'])) {
+						$error = 6;
+						$errmsg = getTranslatedString('err_noupdatedesc', $currentModule);
+					} else {
+						$ins = json_decode(decode_html($upd['description']), true);
+						if (json_last_error()!= JSON_ERROR_NONE || empty($ins)) {
+							$error = 7;
+							$errmsg = getTranslatedString('err_noupdateformat', $currentModule);
+						} else {
+							$msg = getTranslatedString('ChangeSet', $currentModule).' '.$upd['cbupd_no'];
+							$msg.= empty($ins['name']) ? '' : $ins['name'];
+							if (isset($ins['description'])) {
+								$msg.= '<br>'.$ins['description'];
+							}
+							echo $msg;
+							$cbw = new cbupdaterWorker($upd['cbupdaterid']);
+							$cbw->processManualUpdate($ins);
+							if (!$cbw->updError) {
+								$totalopsok++;
+							}
+						}
+					}
+				} else {
+					$error = 4;
+					$errmsg = getTranslatedString('err_noupdatefile', $currentModule);
+				}
 			}
 		}
 	} else {

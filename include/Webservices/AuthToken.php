@@ -21,7 +21,7 @@ function vtws_getchallenge($username) {
 		throw new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED, 'Given user cannot be found');
 	}
 
-	$get_token = $adb->pquery("SELECT * FROM vtiger_ws_userauthtoken WHERE userid = ?", array($userid));
+	$get_token = $adb->pquery('SELECT * FROM vtiger_ws_userauthtoken WHERE userid=?', array($userid));
 
 	if ($adb->num_rows($get_token) == 1) {
 		$user_data = $adb->fetchByAssoc($get_token, 0);
@@ -32,17 +32,17 @@ function vtws_getchallenge($username) {
 		$diff = $expiretime->diff($now);
 
 		if ($diff->invert == 0) {
-			$sql = "UPDATE vtiger_ws_userauthtoken SET token = ? , expiretime = ? WHERE userid = ?";
+			$sql = 'UPDATE vtiger_ws_userauthtoken SET token=? , expiretime=? WHERE userid=?';
 			$adb->pquery($sql, array($authToken,$new_expire_time,$userid));
 		} else {
 			$authToken = $user_data['token'];
 			$new_expire_time = $expired_time_unix;
 		}
 	} else {
-		$sql = "INSERT INTO vtiger_ws_userauthtoken(userid,token,expiretime) VALUES (?,?,?)";
+		$sql = 'INSERT INTO vtiger_ws_userauthtoken(userid,token,expiretime) VALUES (?,?,?)';
 		$adb->pquery($sql, array($userid,$authToken,$new_expire_time));
 	}
 
-	return array("token"=>$authToken,"serverTime"=>$servertime,"expireTime"=>$new_expire_time);
+	return array('token'=>$authToken, 'serverTime'=>$servertime, 'expireTime'=>$new_expire_time);
 }
 ?>

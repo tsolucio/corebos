@@ -17,7 +17,7 @@ require_once 'VTWorkflow.php';
 require_once 'vtlib/Vtiger/Cron.php';
 
 function vtDisplayWorkflowList($adb, $request, $requestUrl, $app_strings, $current_language) {
-	global $theme, $current_user;
+	global $theme, $current_user, $currentModule;
 	$image_path = "themes/$theme/images/";
 
 	$module = new VTWorkflowApplication('workflowlist');
@@ -59,6 +59,8 @@ function vtDisplayWorkflowList($adb, $request, $requestUrl, $app_strings, $curre
 	$smarty->assign('LIST_HEADER', array_keys($focus->list_fields_name));
 	$smarty->assign('LIST_FIELDS', $focus->list_fields_name);
 	$smarty->assign('CRON_TASK', Vtiger_Cron::getInstance('Workflow'));
+	$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
+	$smarty->assign('CHECK', Button_Check($currentModule));
 	$smarty->display("{$module->name}/ListWorkflows.tpl");
 }
 $returl = 'index.php?'.$_SERVER['QUERY_STRING'];

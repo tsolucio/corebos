@@ -1,4 +1,3 @@
-{include file='com_vtiger_workflow/Header.tpl'}
 <script src="modules/{$module->name}/resources/jquery.timepicker.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/functional.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/fieldvalidator.js" type="text/javascript" charset="utf-8"></script>
@@ -24,14 +23,9 @@
 {include file='com_vtiger_workflow/ErrorMessageBox.tpl'}
 <!--Done popups-->
 
-<table border=0 cellspacing=0 cellpadding=20 width="99%" class="settingsUI">
-<tr>
-<td valign=top>
-<table border=0 cellspacing=0 cellpadding=0 width=100%>
-<tr>
-<td class="small" valign=top align=left>
-<div id="view">
-	{include file='com_vtiger_workflow/ModuleTitle.tpl'}
+{include file='com_vtiger_workflow/ModuleTitle.tpl' show='tkedit'}
+<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
+<div id="view" class="workflows-edit slds-modal__container slds-p-around_none slds-card">
 	<form name="new_task" id="new_task_form" method="post" onsubmit="VtigerJS_DialogBox.block();">
 
 		<table class="tableHeading" width="100%" border="0" cellspacing="0" cellpadding="5">
@@ -40,8 +34,6 @@
 					<strong>{$MOD.LBL_SUMMARY}</strong>
 				</td>
 				<td class="small cblds-t-align_right" align="right">
-					<input type="submit" name="{$APP.LBL_SAVE_LABEL}" class="crmButton small save" value="{$APP.LBL_SAVE_BUTTON_LABEL}" id="save">
-					<input type="button" id="edittask_cancel_button" class="crmbutton small cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}">
 				</td>
 			</tr>
 		</table>
@@ -102,7 +94,7 @@
 		<table border="0" cellpadding="5" cellspacing="0" width="100%" class="small">
 		<tr>
 			<td width='100%' nowrap="nowrap">
-			{include file='com_vtiger_workflow/ListConditions.tpl' }
+			{include file='com_vtiger_workflow/ListConditions.tpl' RecordSetTab=0}
 			</td>
 		</tr>
 		</table>
@@ -120,11 +112,11 @@
 		<input type="hidden" name="task_id" value="{$task->id}" id="save_task_id">
 {/if}
 		<input type="hidden" name="task_type" value="{$taskType}" id="save_task_type">
-		<input type="hidden" name="action" value="savetask" id="save_action">
-		<input type="hidden" name="module" value="{$module->name}" id="save_module">
-		<input type="hidden" name="return_url" value="{$returnUrl}" id="save_return_url">
+		<input type="hidden" name="action" value="savetask">
+		<input type="hidden" name="module" value="{$module->name}">
+		<input type="hidden" name="return_url" value="{$returnUrl}">
 		<input type="hidden" name="conditions" value="" id="save_conditions_json"/>
 	</form>
 </div>
+</section>
 <div id="dump" style="display:None;"></div>
-{include file='com_vtiger_workflow/Footer.tpl'}

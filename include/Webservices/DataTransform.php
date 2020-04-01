@@ -110,19 +110,15 @@ class DataTransform {
 				}
 				$row['contact_id'] = implode(';', $ctowsids);
 			}
-		} elseif (strtolower($meta->getEntityName()) == 'calendar') {
-			if (empty($row['sendnotification']) || strtolower($row['sendnotification'])=='no'
-				|| $row['sendnotification'] == '0' || $row['sendnotification'] == 'false'
-				|| strtolower($row['sendnotification']) == 'n'
-			) {
-				unset($row['sendnotification']);
-			}
 		}
 		$references = $meta->getReferenceFieldDetails();
 		foreach ($references as $field => $typeList) {
-			if (isset($row[$field]) && strpos($row[$field], 'x')!==false) {
-				$row[$field] = vtws_getIdComponents($row[$field]);
-				$row[$field] = $row[$field][1];
+			if (isset($row[$field])) {
+				if (strlen($row[$field])==40) {
+					$row[$field] = CRMEntity::getCRMIDfromUUID($row[$field]);
+				} elseif (strpos($row[$field], 'x')!==false) {
+					list($void, $row[$field]) = vtws_getIdComponents($row[$field]);
+				}
 			}
 		}
 		$ownerFields = $meta->getOwnerFields();
@@ -212,43 +208,62 @@ class DataTransform {
 		return $row;
 	}
 
-	public static function sanitizeReferences($row, $meta) {
+	public static function sanitizeReferences($row, $meta, $uuid = false) {
 		global $adb,$log;
 		$references = $meta->getReferenceFieldDetails();
+		$mname = strtolower($meta->getEntityName());
 		foreach ($references as $field => $typeList) {
-			if (strtolower($meta->getEntityName()) == 'emails') {
-				if (isset($row['parent_id']) && strpos($row['parent_id'], '@')===true) {
-					list($row['parent_id'], $fieldId) = explode('@', $row['parent_id']);
-				}
+			if ($mname == 'emails' && $field=='parent_id' && isset($row['parent_id']) && strpos($row['parent_id'], '@')) {
+				$refs = explode('|', trim($row['parent_id'], '|'));
+				array_walk(
+					$refs,
+					function (&$val, $idx) {
+						list($val, $fieldId) = explode('@', $val);
+					}
+				);
+				$row['parent_id'] = $refs;
 			}
 			if (isset($row[$field])) {
-				$found = false;
-				foreach ($typeList as $entity) {
-					$webserviceObject = VtigerWebserviceObject::fromName($adb, $entity);
-					$handlerPath = $webserviceObject->getHandlerPath();
-					$handlerClass = $webserviceObject->getHandlerClass();
-
-					require_once $handlerPath;
-
-					$handler = new $handlerClass($webserviceObject, $meta->getUser(), $adb, $log);
-					$entityMeta = $handler->getMeta();
-					if ($entityMeta->exists($row[$field])) {
-						$row[$field] = vtws_getId($webserviceObject->getEntityId(), $row[$field]);
-						$found = true;
-						break;
+				$setref = array();
+				foreach ((array) $row[$field] as $refval) {
+					if (strlen($refval)==40) {
+						$refval = CRMEntity::getCRMIDfromUUID($refval);
+					}
+					$found = false;
+					foreach ($typeList as $entity) {
+						$webserviceObject = VtigerWebserviceObject::fromName($adb, $entity);
+						$handlerPath = $webserviceObject->getHandlerPath();
+						$handlerClass = $webserviceObject->getHandlerClass();
+						require_once $handlerPath;
+						$handler = new $handlerClass($webserviceObject, $meta->getUser(), $adb, $log);
+						$entityMeta = $handler->getMeta();
+						if ($entityMeta->exists($refval)) {
+							if ($uuid && $webserviceObject->getEntityName()!='Users' && $webserviceObject->getEntityName()!='Currency') {
+								$setref[] = $webserviceObject->getUUID($refval);
+							} else {
+								$setref[] = vtws_getId($webserviceObject->getEntityId(), $refval);
+							}
+							$found = true;
+							break;
+						}
+					}
+					if ($found !== true) {
+						//This is needed as for query operation of the related record is deleted.
+						$setref[] = null;
 					}
 				}
-				if ($found !== true) {
-					//This is needed as for query operation of the related record is deleted.
-					$row[$field] = null;
-				}
-			//0 is the default for most of the reference fields, so handle the case and return null instead as its the
-			//only valid value, which is not a reference Id.
+				$row[$field] = implode('|', $setref);
 			} elseif (isset($row[$field]) && $row[$field]==0) {
+				//0 is the default for most of the reference fields, so handle the case and return null instead as its the
+				//only valid value, which is not a reference Id.
 				$row[$field] = null;
 			}
 		}
 		return $row;
+	}
+
+	public static function transformReferenceToUUID($row, $meta) {
+		return DataTransform::sanitizeReferences($row, $meta, true);
 	}
 
 	public static function sanitizeOwnerFields($row, $meta, $t = null) {

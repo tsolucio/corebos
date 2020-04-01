@@ -16,6 +16,8 @@ $smarty = new vtigerCRM_Smarty;
 $profDetails=getAllProfileInfo();
 $smarty->assign('MOD', return_module_language($current_language, 'Settings'));
 $smarty->assign('APP', $app_strings);
+$smarty->assign('MODULE', $currentModule);
+$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
 if (isset($_REQUEST['roleid']) && $_REQUEST['roleid'] != '') {
 	$roleid= vtlib_purify($_REQUEST['roleid']);
 	$mode = vtlib_purify($_REQUEST['mode']);

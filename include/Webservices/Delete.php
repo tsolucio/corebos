@@ -10,20 +10,7 @@
 
 function vtws_delete($id, $user) {
 	global $log,$adb;
-	list($wsid,$crmid) = explode('x', $id);
-	if ((vtws_getEntityId('Calendar')==$wsid || vtws_getEntityId('Events')==$wsid) && getSalesEntityType($crmid)=='cbCalendar') {
-		$id = vtws_getEntityId('cbCalendar') . 'x' . $crmid;
-	}
-	if (vtws_getEntityId('cbCalendar')==$wsid && getSalesEntityType($crmid)=='Calendar') {
-		$rs = $adb->pquery('select activitytype from vtiger_activity where activityid=?', array($crmid));
-		if ($rs && $adb->num_rows($rs)==1) {
-			if ($adb->query_result($rs, 0, 0)=='Task') {
-				$id = vtws_getEntityId('Calendar') . 'x' . $crmid;
-			} else {
-				$id = vtws_getEntityId('Events') . 'x' . $crmid;
-			}
-		}
-	}
+	$id = vtws_getWSID($id);
 	$webserviceObject = VtigerWebserviceObject::fromId($adb, $id);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
@@ -33,6 +20,10 @@ function vtws_delete($id, $user) {
 	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 	$meta = $handler->getMeta();
 	$entityName = $meta->getObjectEntityName($id);
+
+	if ($entityName == 'Users') {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Incorrect method: use DeleteUser method to delete users');
+	}
 
 	$types = vtws_listtypes(null, $user);
 	if (!in_array($entityName, $types['types'])) {

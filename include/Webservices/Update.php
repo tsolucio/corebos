@@ -12,20 +12,8 @@ include_once 'include/Webservices/getRecordImages.php';
 
 function vtws_update($element, $user) {
 	global $log,$adb,$root_directory;
+	$element['id'] = vtws_getWSID($element['id']);
 	$idList = vtws_getIdComponents($element['id']);
-	if ((vtws_getEntityId('Calendar')==$idList[0] || vtws_getEntityId('Events')==$idList[0]) && getSalesEntityType($idList[1])=='cbCalendar') {
-		$idList[0] = vtws_getEntityId('cbCalendar') . 'x' . $idList[1];
-	}
-	if (vtws_getEntityId('cbCalendar')==$idList[0] && getSalesEntityType($idList[1])=='Calendar') {
-		$rs = $adb->pquery('select activitytype from vtiger_activity where activityid=?', array($idList[1]));
-		if ($rs && $adb->num_rows($rs)==1) {
-			if ($adb->query_result($rs, 0, 0)=='Task') {
-				$idList[0] = vtws_getEntityId('Calendar') . 'x' . $idList[1];
-			} else {
-				$idList[0] = vtws_getEntityId('Events') . 'x' . $idList[1];
-			}
-		}
-	}
 	$webserviceObject = VtigerWebserviceObject::fromId($adb, $idList[0]);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
@@ -76,6 +64,7 @@ function vtws_update($element, $user) {
 	$referenceFields = $meta->getReferenceFieldDetails();
 	foreach ($referenceFields as $fieldName => $details) {
 		if (isset($element[$fieldName]) && strlen($element[$fieldName]) > 0) {
+			$element[$fieldName] = vtws_getWSID($element[$fieldName]);
 			$ids = vtws_getIdComponents($element[$fieldName]);
 			$elemTypeId = $ids[0];
 			$referenceObject = VtigerWebserviceObject::fromId($adb, $elemTypeId);
@@ -141,11 +130,17 @@ function vtws_update($element, $user) {
 		}
 	}
 	if (count($listofrelfields)>0) {
+		if ($entityName=='Emails' && $entity['parent_id']!='') {
+			unset($listofrelfields['parent_id'], $r['parent_id']);
+		}
 		$deref = unserialize(vtws_getReferenceValue(serialize($listofrelfields), $user));
 		foreach ($r as $relfield => $mods) {
 			if (!empty($entity[$relfield])) {
 				$entity[$relfield.'ename'] = $deref[$entity[$relfield]];
 			}
+		}
+		if ($entityName=='Emails' && $entity['parent_id']!='') {
+			$entity['parent_idename'] = unserialize(vtws_getReferenceValue(serialize(array($entity['parent_id'])), $user));
 		}
 	}
 	// Add attachment information

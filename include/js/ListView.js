@@ -46,7 +46,7 @@ function clearAllField() {
 		LVC.innerHTML = result[2];
 		vtlib_executeJavascriptInElement(LVC);
 		if (result[1] != '') {
-			alert(result[1]);
+			ldsPrompt.show(alert_arr['ERROR'], result[1]);
 		}
 	});
 }
@@ -157,7 +157,7 @@ function activateCustomSearch(module) {
 	}
 
 	if (iterator.length == 0) {
-		alert(alert_arr.SELECTCONDITION);
+		ldsPrompt.show(alert_arr['ERROR'], alert_arr.SELECTCONDITION);
 		return false;
 	}
 
@@ -252,7 +252,7 @@ function activateCustomSearch(module) {
 					};
 					backup_array.push({ 'field' : 'jscal_field_'+p1.value+'_date1,jscal_field_'+p1.value+'_date2', 'value' : d1.value+','+d2.value, 'type' : p4.value });
 				} else {
-					alert(alert_arr.ERR_INVALID_DATE);
+					ldsPrompt.show(alert_arr['ERROR'], alert_arr.ERR_INVALID_DATE);
 					return false;
 				}
 			}
@@ -279,11 +279,11 @@ function activateCustomSearch(module) {
 			LVC.innerHTML = result[2];
 			vtlib_executeJavascriptInElement(LVC);
 			if (result[1] != '') {
-				alert(result[1]);
+				ldsPrompt.show(alert_arr['ERROR'], result[1]);
 			}
 		});
 	} else {
-		alert(alert_arr.SELECTCONDITION);
+		ldsPrompt.show(alert_arr['ERROR'], alert_arr.SELECTCONDITION);
 	}
 	return false;
 }
@@ -333,7 +333,7 @@ function mass_edit1x1(obj) {
 	var select_options = document.getElementById('allselectedboxes').value;
 	var x = select_options.split(';');
 	if (select_options!='all' && x.length<=1) {
-		alert(alert_arr.SELECT);
+		ldsPrompt.show(alert_arr['ERROR'], alert_arr.SELECT);
 	} else {
 		document.getElementById('action').value='EditView';
 		document.getElementById('massedit1x1').value='s';
@@ -390,7 +390,7 @@ function mass_edit(obj, divid, module, parenttab) {
 				mass_edit_formload(idstring, module, parenttab);
 			}
 		} else {
-			alert(alert_arr.SELECT);
+			ldsPrompt.show(alert_arr['ERROR'], alert_arr.SELECT);
 			return false;
 		}
 	}
@@ -494,7 +494,7 @@ function massDelete(module) {
 				document.getElementById('idlist').value = select_options;
 				idstring = select_options;
 			} else {
-				alert(alert_arr.SELECT);
+				ldsPrompt.show(alert_arr['ERROR'], alert_arr.SELECT);
 				return false;
 			}
 			//we have to decrese the count value by 1 because when we split with semicolon we will get one extra count
@@ -538,7 +538,7 @@ function massDelete(module) {
 				document.getElementById('idlist').value = select_options;
 				idstring = select_options;
 			} else {
-				alert(alert_arr.SELECT);
+				ldsPrompt.show(alert_arr['ERROR'], alert_arr.SELECT);
 				return false;
 			}
 			//we have to decrese the count value by 1 because when we split with semicolon we will get one extra count
@@ -581,7 +581,7 @@ function massDelete(module) {
 				var result = response.split('&#&#&#');
 				document.getElementById('ListViewContents').innerHTML= result[2];
 				if (result[1] != '') {
-					alert(result[1]);
+					ldsPrompt.show(alert_arr['ERROR'], result[1]);
 				}
 				document.getElementById('basicsearchcolumns').innerHTML = '';
 				document.getElementById('allselectedboxes').value='';
@@ -607,7 +607,7 @@ function showDefaultCustomView(selectView, module, parenttab) {
 		document.getElementById('ListViewContents').innerHTML = result[2];
 		vtlib_executeJavascriptInElement(document.getElementById('ListViewContents'));
 		if (result[1] != '') {
-			alert(result[1]);
+			ldsPrompt.show(alert_arr['ERROR'], result[1]);
 		}
 		document.getElementById('basicsearchcolumns_real').innerHTML = document.getElementById('basicsearchcolumns').innerHTML;
 		document.getElementById('basicsearchcolumns').innerHTML = '';
@@ -717,7 +717,7 @@ function getListViewEntries_js(module, url) {
 			}
 		}
 		if (result[1] != '') {
-			alert(result[1]);
+			ldsPrompt.show(alert_arr['ERROR'], result[1]);
 		}
 		document.getElementById('basicsearchcolumns').innerHTML = '';
 	});
@@ -831,7 +831,7 @@ function ChangeCustomViewStatus(viewid, now_status, changed_status, module, pare
 	}).done(function (response) {
 		var responseVal = response;
 		if (responseVal.indexOf(':#:FAILURE') > -1) {
-			alert('Failed');
+			ldsPrompt.show(alert_arr['ERROR'], alert_arr.Failed);
 		} else if (responseVal.indexOf(':#:SUCCESS') > -1) {
 			var customview_ele = document.getElementById('viewname');
 			showDefaultCustomView(customview_ele, module, parenttab);
@@ -929,7 +929,7 @@ function updateCampaignRelationStatus(relatedmodule, campaignid, crmid, campaign
 		url: 'index.php?'+data
 	}).done(function (response) {
 		if (response.indexOf(':#:FAILURE')>-1) {
-			alert(alert_arr.ERROR_WHILE_EDITING);
+			ldsPrompt.show(alert_arr['ERROR'], alert_arr.ERROR_WHILE_EDITING);
 		} else if (response.indexOf(':#:SUCCESS')>-1) {
 			document.getElementById('campaignstatus_' + crmid).innerHTML = campaignrelstatus;
 			VtigerJS_DialogBox.hidebusy();
@@ -1030,7 +1030,7 @@ function callSearch(searchtype) {
 		LVC.innerHTML = result[2];
 		vtlib_executeJavascriptInElement(LVC);
 		if (result[1] != '') {
-			alert(result[1]);
+			ldsPrompt.show(alert_arr['ERROR'], result[1]);
 		}
 		document.getElementById('basicsearchcolumns').innerHTML = '';
 	});
@@ -1054,7 +1054,7 @@ function alphabetic(module, url, dataid) {
 		LVC.innerHTML = result[2];
 		vtlib_executeJavascriptInElement(LVC);
 		if (result[1] != '') {
-			alert(result[1]);
+			ldsPrompt.show(alert_arr['ERROR'], result[1]);
 		}
 		document.getElementById('basicsearchcolumns').innerHTML = '';
 	});

@@ -900,6 +900,7 @@ $app_strings = array(
 	'Due Date' => 'Határidő',
 	'Created Time' => 'Létrehozás ideje',
 	'Modified Time' => 'Módosítás ideje',
+	'cbuuid' => 'Unique Identifier',
 	'Last Modified By' => 'Last Modified By',
 	'Created By' => 'Created By',
 	'Lead Status' => 'Jelölt állapot',
