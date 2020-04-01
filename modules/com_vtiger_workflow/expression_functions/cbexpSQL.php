@@ -57,7 +57,7 @@ function cbexpsql_supportedFunctions() {
 		'min' => 'min(fieldname)',
 		'max' => 'max(fieldname)',
 		'avg' => 'avg(fieldname)',
-		'count' => 'count(*)',
+		'count' => 'count(fieldname)',
 		'aggregation'=>'aggregation(operation,RelatedModule,relatedFieldToAggregate,conditions)',
 		'aggregation_fields_operation'=>'aggregation_fields_operation(operation,RelatedModule,relatedFieldsToAggregateWithOperation,conditions)',
 		'aggregate_time' => 'aggregate_time(relatedModuleName, relatedModuleField, conditions)',
