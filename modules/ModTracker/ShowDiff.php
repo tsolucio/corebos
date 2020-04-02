@@ -45,7 +45,7 @@ if (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'complete') {
 
 	// Calculate the paging before hand
 	$prevAtPoint = ($atpoint + 1);
-	$nextAtPoint = ($atpoint - 1); 
+	$nextAtPoint = ($atpoint - 1);
 
 	$trackrecord = false;
 	if (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'history') {
