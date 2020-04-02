@@ -109,7 +109,8 @@ function getDataColumns() {
 			*/
 			let fnam = finfo.fieldname;
 			let fhdr = finfo.fieldname;
-			if (fnam.indexOf(': (')!=-1) {
+			if (typeof fieldNEcolumn[document.getElementById('bqmodule').value+fnam] != 'undefined') {
+				fnam = fieldNEcolumn[document.getElementById('bqmodule').value+fnam]
 			}
 			if (finfo.fieldname.indexOf(': (')==-1) {
 				if (finfo.operators!='custom' && finfo.alias!='') {
@@ -311,6 +312,12 @@ function getSQLGroupBy() {
 				} else {
 					fnam = finfo.fieldname.replace(' : (', '').replace(') ', '').replace(')', '').toLowerCase();
 				}
+			} else if (fnam == 'assigned_user_id') {
+				fnam = 'vtiger_crmentity.smownerid';
+			} else if (fnam == 'created_user_id') {
+				fnam = 'vtiger_crmentity.smcreatorid';
+			} else if (typeof fieldNEcolumn[document.getElementById('bqmodule').value+fnam]!='undefined') {
+				fnam = fieldTableRelation[finfo.fieldname]+'.'+fieldNEcolumn[document.getElementById('bqmodule').value+fnam];
 			}
 			gbflds += fnam + ',';
 		}
@@ -334,6 +341,12 @@ function getSQLOrderBy() {
 				} else {
 					fnam = finfo.fieldname.replace(' : (', '').replace(') ', '').replace(')', '').toLowerCase();
 				}
+			} else if (fnam == 'assigned_user_id') {
+				fnam = 'vtiger_crmentity.smownerid';
+			} else if (fnam == 'created_user_id') {
+				fnam = 'vtiger_crmentity.smcreatorid';
+			} else if (typeof fieldNEcolumn[document.getElementById('bqmodule').value+fnam]!='undefined') {
+				fnam = fieldTableRelation[finfo.fieldname]+'.'+fieldNEcolumn[document.getElementById('bqmodule').value+fnam];
 			}
 			obflds += fnam + ' ' + finfo.sort + ',';
 		}
@@ -453,6 +466,7 @@ function getInstruction(field, operator, alias) {
 			case 'getEntityType':
 			case 'number_format':
 			case 'getSetting':
+			case 'count':
 				if (op.text.indexOf("('")!=-1) {
 					fins = op.text.replace(/\('?.+?'?,/, "('"+fnam+"',");
 				} else if (op.text.indexOf(',')!=-1) {
@@ -472,7 +486,6 @@ function getInstruction(field, operator, alias) {
 			case 'today':
 			case 'tomorrow':
 			case 'yesterday':
-			case 'count':
 				fins = op.text;
 				break;
 			default:
