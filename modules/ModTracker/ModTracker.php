@@ -20,6 +20,17 @@ class ModTracker {
 	public static $CREATED = '2';
 	public static $RESTORED = '3';
 
+	public $default_order_by = 'changedon';
+	public $default_sort_order = 'DESC';
+
+	public $list_fields_name = array(
+		'whodid'=>'whodid',
+		'prevalue'=>'prevalue',
+		'postvalue'=>'postvalue',
+		'fieldname'=>'fieldname',
+		'changedon'=>'changedon',
+	);
+
 	// cache variable
 	private static $__cache_modtracker = array();
 
@@ -386,6 +397,89 @@ class ModTracker {
 		$moduleName = $linkData->getModule();
 		$recordId = $linkData->getInputParameter('record');
 		return isPermitted($moduleName, 'DetailView', $recordId) == 'yes';
+	}
+
+	public function getModTrackerJSON($crmid, $page, $order_by = 'changedon', $sorder = 'DESC') {
+		global $log, $adb, $currentModule;
+		$log->debug('> getModTrackerJSON');
+
+		$where = ' where 1 ';
+		$params = array();
+		if (!empty($crmid)) {
+			$where .= ' and crmid = ? ';
+			array_push($params, $crmid);
+		}
+
+		if ($sorder != '' && $order_by != '') {
+			$list_query = "Select SQL_CALC_FOUND_ROWS * from vtiger_modtracker_basic join vtiger_modtracker_detail on vtiger_modtracker_basic.id=vtiger_modtracker_detail.id $where order by $order_by $sorder";
+		} else {
+			$list_query = "Select SQL_CALC_FOUND_ROWS * from vtiger_modtracker_basic join vtiger_modtracker_detail on vtiger_modtracker_basic.id=vtiger_modtracker_detail.id $where order by ".$this->default_order_by.' '.$this->default_sort_order;
+		}
+		if (!empty($_REQUEST['perPage']) && is_numeric($_REQUEST['perPage'])) {
+			$rowsperpage = (int) vtlib_purify($_REQUEST['perPage']);
+		} else {
+			$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize', 20);
+		}
+		$from = ($page-1)*$rowsperpage;
+		$limit = " limit $from,$rowsperpage";
+		$result = $adb->pquery($list_query.$limit, $params);
+		$count_result = $adb->query('SELECT FOUND_ROWS();');
+		$noofrows = $adb->query_result($count_result, 0, 0);
+		if ($result) {
+			if ($noofrows>0) {
+				$entries_list = array(
+					'data' => array(
+						'contents' => array(),
+						'pagination' => array(
+							'page' => $page,
+							'totalCount' => $noofrows,
+						),
+					),
+					'result' => true,
+				);
+				$unames = array();
+				while ($lgn = $adb->fetch_array($result)) {
+					$entry = array();
+					if (!isset($unames[$lgn['whodid']])) {
+						$unames[$lgn['whodid']] = getUserFullName($lgn['whodid']);
+					}
+					$entry['whodid'] = $unames[$lgn['whodid']];
+					$entry['changedon'] = $lgn['changedon'];
+					$entry['fieldname'] = $lgn['fieldname'];
+					$entry['prevalue'] = $lgn['prevalue'];
+					$entry['postvalue'] = $lgn['postvalue'];
+					$entries_list['data']['contents'][] = $entry;
+				}
+			} else {
+				$entries_list = array(
+					'data' => array(
+						'contents' => array(),
+						'pagination' => array(
+							'page' => 1,
+							'totalCount' => 0,
+						),
+					),
+					'result' => false,
+					'message' => getTranslatedString('NoData', 'ModTracker'),
+				);
+			}
+		} else {
+			$entries_list = array(
+				'data' => array(
+					'contents' => array(),
+					'pagination' => array(
+						'page' => 1,
+						'totalCount' => 0,
+					),
+				),
+				'result' => false,
+				'message' => getTranslatedString('ERR_SQL', 'ModTracker'),
+				'debug_query' => $list_query.$limit,
+				'debug_params' => print_r($params, true),
+			);
+		}
+		$log->debug('< getModTrackerJSON');
+		return json_encode($entries_list);
 	}
 }
 ?>

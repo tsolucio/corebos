@@ -70,6 +70,7 @@
 	<script type="text/javascript" src="modules/Calendar/script.js"></script>
 	<script type="text/javascript" src="include/js/notificationPopup.js"></script>
 	{include file='Components/ComponentsJS.tpl'}
+	{include file='Components/ComponentsCSS.tpl'}
 	<script type="text/javascript" src="modules/Calendar4You/fullcalendar/lib/moment.min.js"></script>
 	{if $Application_JSCalendar_Load neq 0}
 	<script type="text/javascript" src="jscalendar/calendar.js"></script>
