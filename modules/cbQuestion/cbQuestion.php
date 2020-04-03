@@ -181,6 +181,11 @@ class cbQuestion extends CRMEntity {
 		if (empty($qid) && !empty($params['cbQuestionRecord']) && is_array($params['cbQuestionRecord'])) {
 			$q->column_fields = $params['cbQuestionRecord'];
 			unset($params['cbQuestionRecord']);
+			if (isset($params['cbQuestionContext'])) {
+				$qctx = $params['cbQuestionContext'];
+				unset($params['cbQuestionContext']);
+				$params = array_merge($params, $qctx);
+			}
 		} else {
 			if (isPermitted('cbQuestion', 'DetailView', $qid) != 'yes') {
 				return array('type' => 'ERROR', 'answer' => 'LBL_PERMISSION');

@@ -335,9 +335,9 @@ class qactions_Action extends CoreBOS_ActionController {
 		echo json_encode($rdo);
 	}
 
-	public function getBuilderAnswer() {
+	private function getQuestionContext() {
 		global $current_user;
-		$params = array('cbQuestionRecord' => json_decode($_REQUEST['cbQuestionRecord'], true));
+		$params = array();
 		if (!empty($_REQUEST['cbQuestionContext'])) {
 			$ctx = vtlib_purify(json_decode(urldecode($_REQUEST['cbQuestionContext']), true));
 			$recordid = $ctx['RECORDID'];
@@ -345,21 +345,30 @@ class qactions_Action extends CoreBOS_ActionController {
 			if (empty($module) && !empty($recordid)) {
 				$module = getSalesEntityType($recordid);
 			}
-			$params['cbQuestionContext'] = array(
+			$params = array(
 				'$RECORD$' => $recordid,
 				'$MODULE$' => $module,
 				'$USERID$' => $current_user->id,
 			);
 			if (!empty($recordid)) {
 				$ctxtmodule = getSalesEntityType($recordid);
-				$params['cbQuestionContext']['$MODULE$'] = $ctxtmodule;
+				$params['$MODULE$'] = $ctxtmodule;
 				$ent = CRMEntity::getInstance($ctxtmodule);
 				$ent->id = $recordid;
 				$ent->retrieve_entity_info($recordid, $ctxtmodule, false, true);
 				foreach ($ent->column_fields as $fname => $fvalue) {
-					$params['cbQuestionContext']['$'.$fname.'$'] = $fvalue;
+					$params['$'.$fname.'$'] = $fvalue;
 				}
 			}
+		}
+		return $params;
+	}
+	public function getBuilderAnswer() {
+		global $current_user;
+		$params = array('cbQuestionRecord' => json_decode($_REQUEST['cbQuestionRecord'], true));
+		$ctx = $this->getQuestionContext();
+		if (count($ctx)) {
+			$params['cbQuestionContext'] = $ctx;
 		}
 		echo cbQuestion::getFormattedAnswer(0, $params);
 	}
@@ -386,6 +395,10 @@ class qactions_Action extends CoreBOS_ActionController {
 			return;
 		}
 		$params = array('cbQuestionRecord' => json_decode(urldecode($_REQUEST['cbQuestionRecord']), true));
+		$ctx = $this->getQuestionContext();
+		if (count($ctx)) {
+			$params['cbQuestionContext'] = $ctx;
+		}
 		if ($params['cbQuestionRecord']['sqlquery']=='1') {
 			include_once 'include/Webservices/showqueryfromwsdoquery.php';
 			$sqlinfo = showqueryfromwsdoquery($params['cbQuestionRecord']['qcolumns'], $current_user);

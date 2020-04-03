@@ -96,7 +96,7 @@ function getQuestionResults() {
 		dataGridInstance.clear();
 	} else {
 		dataGridInstance.setColumns(getDataColumns());
-		dataGridInstance.setRequestParams({'cbQuestionRecord': encodeURIComponent(cbq)});
+		dataGridInstance.setRequestParams({'cbQuestionRecord': encodeURIComponent(cbq), 'cbQuestionContext': encodeURIComponent(cbqctx)});
 		dataGridInstance.reloadData();
 	}
 }
