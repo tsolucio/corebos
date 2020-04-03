@@ -114,7 +114,7 @@ var ModTrackerCommon = {
 						}
 					}
 				},
-				useClientSort: true,
+				useClientSort: false,
 				pageOptions: {
 					perPage: Report_ListView_PageSize,
 				},
