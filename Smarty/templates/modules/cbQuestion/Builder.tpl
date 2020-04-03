@@ -385,10 +385,19 @@
 	</div>
 	<div class="slds-col slds-size_2-of-6 slds-page-header__meta-text">
 		<div class="slds-p-top_xx-small slds-form-element slds-form-element_horizontal">
+			<label class="slds-form-element__label" for="evaluatewith_type">{'Context Module'|@getTranslatedString:'cbQuestion'}</label>
+			<span>
+				<select name="evaluatewith_type" id="evaluatewith_type" class="slds-select" style="width:70%;">
+				{foreach from=$rel1tom item=item}
+					<option value="{$item['name']}">{$item['label']}</option>
+				{/foreach}
+				</select>
+			</span>
+		</div>
+		<div class="slds-p-top_xx-small slds-form-element slds-form-element_horizontal">
 			<label class="slds-form-element__label" for="evaluatewith_display">{'Query Context'|@getTranslatedString:'cbQuestion'}</label>
 			<span>
-				<input type='hidden' name="evaluatewith_type" id="evaluatewith_type" value="{if $targetmodule=='Workflow'}com_vtiger_workflow{else}{$targetmodule}{/if}">
-				<input id="evaluate" name="evaluatewith" type="hidden" value="">
+				<input id="evaluatewith" name="evaluatewith" type="hidden" value="">
 				<input
 					id="evaluatewith_display"
 					name="evaluatewith_display"

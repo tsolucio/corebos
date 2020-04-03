@@ -174,6 +174,23 @@ function changecbqModule(newmodule) {
 			fieldGridColumns[0].editor.options.listItems = arrayOfFields;
 			fieldGridInstance.setColumns(fieldGridColumns);
 			fieldGridInstance.resetData(fieldData);
+			builderconditions.cbaccess.doGet(
+				{
+					'sessionName': builderconditions.cbaccess.sessionId,
+					'operation':'getRelatedModulesOneToMany',
+					'module':newmodule
+				},
+				(rdo) => {
+					var el = document.getElementById('evaluatewith_type');
+					el.options.length = 0;
+					for (const op in rdo.result) {
+						let option = document.createElement('option');
+						option.text  = rdo.result[op].label;
+						option.value = rdo.result[op].name;
+						el.add(option);
+					}
+				}
+			);
 		},
 		false
 	);

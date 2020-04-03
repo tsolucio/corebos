@@ -19,6 +19,7 @@ require_once 'include/Webservices/DescribeObject.php';
 require_once 'modules/com_vtiger_workflow/expression_functions/cbexpSQL.php';
 require_once 'vtlib/Vtiger/controllers/ActionController.php';
 require_once 'modules/cbMap/actions/mapactions.php';
+require_once 'include/Webservices/GetRelatedModulesOneToMany.php';
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
 $smarty = new vtigerCRM_Smarty();
@@ -85,6 +86,7 @@ if (empty($_REQUEST['record'])) {
 	$smarty->assign('fieldNEcolumn', json_encode($fnec));
 	$_REQUEST['fieldsmodule'] = $focus->column_fields['qmodule'];
 	$smarty->assign('fieldTableRelation', json_encode(mapactions_Action::getFieldTablesForModule(true)));
+	$smarty->assign('rel1tom', GetRelatedModulesOneToMany($focus->column_fields['qmodule'], $current_user));
 	$smarty->assign('APP', $app_strings);
 	$mod_strings = array_merge($mod_strings, return_module_language($current_user->column_fields['language'], 'com_vtiger_workflow'));
 	$smarty->assign('MOD', $mod_strings);
