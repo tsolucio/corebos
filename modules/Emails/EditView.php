@@ -165,7 +165,8 @@ if (isset($_REQUEST['reply']) && $_REQUEST['reply'] == 'true') {
 		$fromadd = $_REQUEST['record'];
 		$result = $adb->pquery('select from_email,idlists,cc_email,bcc_email from vtiger_emaildetails where emailid =?', array($fromadd));
 		$from_mail = $adb->query_result($result, 0, 'from_email');
-		$smarty->assign('TO_MAIL', trim($from_mail, ",").',');
+		$smarty->assign('TO_MAIL', trim($from_mail, ',').',');
+		$smarty->assign('FROM_MAIL', '');
 		$cc_add = implode(',', json_decode($adb->query_result($result, 0, 'cc_email'), true));
 		$smarty->assign('CC_MAIL', $cc_add);
 		$bcc_add = implode(',', json_decode($adb->query_result($result, 0, 'bcc_email'), true));
