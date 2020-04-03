@@ -130,8 +130,11 @@ class OperationManager {
 	}
 
 	public function runOperation($params, $user) {
-		global $API_VERSION;
+		global $API_VERSION, $current_language;
 		try {
+			if (empty($current_language)) {
+				$current_language = $user->column_fields['language'];
+			}
 			if (!$this->preLogin) {
 				$params[] = $user;
 				return call_user_func_array($this->handlerMethod, $params);
