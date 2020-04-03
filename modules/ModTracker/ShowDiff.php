@@ -37,7 +37,7 @@ if (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'complete') {
 	} else {
 		$sorder = 'DESC';
 	}
-	$response = $focus->getModTrackerJSON($reqid, $page, $order_by, $sorder);
+	$response = $focus->getModTrackerJSON($record, $page, $order_by, $sorder);
 	echo $response;
 } else {
 	$reqid = vtlib_purify($_REQUEST['id']);

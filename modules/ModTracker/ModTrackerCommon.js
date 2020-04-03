@@ -102,7 +102,7 @@ var ModTrackerCommon = {
 						sortable: true,
 				        filter: {
 				           	type: 'date',
-				           	format: 'yyyy-mm-dd'
+				           	format: 'yyyy-MM-dd'
 				        }
 					}
 				],
