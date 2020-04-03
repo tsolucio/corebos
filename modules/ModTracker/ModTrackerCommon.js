@@ -100,10 +100,6 @@ var ModTrackerCommon = {
 						whiteSpace: 'normal',
 						sortingType: 'desc',
 						sortable: true,
-				        filter: {
-				           	type: 'date',
-				           	format: 'yyyy-mm-dd'
-				        }
 					}
 				],
 				data: {
