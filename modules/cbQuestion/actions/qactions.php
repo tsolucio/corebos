@@ -336,7 +336,32 @@ class qactions_Action extends CoreBOS_ActionController {
 	}
 
 	public function getBuilderAnswer() {
-		echo cbQuestion::getFormattedAnswer(0, array('cbQuestionRecord' => json_decode($_REQUEST['cbQuestionRecord'], true)));
+		global $current_user;
+		$params = array('cbQuestionRecord' => json_decode($_REQUEST['cbQuestionRecord'], true));
+		if (!empty($_REQUEST['cbQuestionContext'])) {
+			$ctx = vtlib_purify(json_decode(urldecode($_REQUEST['cbQuestionContext']), true));
+			$recordid = $ctx['RECORDID'];
+			$module = $ctx['MODULE'];
+			if (empty($module) && !empty($recordid)) {
+				$module = getSalesEntityType($recordid);
+			}
+			$params['cbQuestionContext'] = array(
+				'$RECORD$' => $recordid,
+				'$MODULE$' => $module,
+				'$USERID$' => $current_user->id,
+			);
+			if (!empty($recordid)) {
+				$ctxtmodule = getSalesEntityType($recordid);
+				$params['cbQuestionContext']['$MODULE$'] = $ctxtmodule;
+				$ent = CRMEntity::getInstance($ctxtmodule);
+				$ent->id = $recordid;
+				$ent->retrieve_entity_info($recordid, $ctxtmodule, false, true);
+				foreach ($ent->column_fields as $fname => $fvalue) {
+					$params['cbQuestionContext']['$'.$fname.'$'] = $fvalue;
+				}
+			}
+		}
+		echo cbQuestion::getFormattedAnswer(0, $params);
 	}
 
 	public function getBuilderData() {

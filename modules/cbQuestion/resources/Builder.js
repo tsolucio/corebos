@@ -67,8 +67,16 @@ function getQuestionResults() {
 		'groupby': getSQLGroupBy().substr(9),
 		'typeprops': document.getElementById('qprops').value,
 		'sqlquery': qsqlqry,
-		'condfilterformat': '0',
+		'condfilterformat': '0'
 	});
+	const evaluatewith = document.getElementById('evaluatewith').value;
+	let cbqctx = '';
+	if (evaluatewith!=0 && evaluatewith!='') {
+		cbqctx = JSON.stringify({
+			'RECORDID': evaluatewith,
+			'MODULE': document.getElementById('evaluatewith_type').value
+		});
+	}
 	fetch(
 		'index.php?module=cbQuestion&action=cbQuestionAjax&actionname=qactions&method=getBuilderAnswer',
 		{
@@ -77,7 +85,7 @@ function getQuestionResults() {
 				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
 			},
 			credentials: 'same-origin',
-			body: '&'+csrfMagicName+'='+csrfMagicToken+'&cbQuestionRecord='+encodeURIComponent(cbq)
+			body: '&'+csrfMagicName+'='+csrfMagicToken+'&cbQuestionRecord='+encodeURIComponent(cbq)+'&cbQuestionContext='+encodeURIComponent(cbqctx)
 		}
 	).then(response => response.text()).then(response => {
 		let cbqa = document.getElementById('cqanswer');
