@@ -95,5 +95,6 @@ $mod_strings = array(
 	'RESULTS' => 'Resultados',
 	'Options' => 'Opciones',
 	'Launch a test to get the SQL' => 'Ejecuta una verificación para ver el comando SQL',
+	'Query Context' => 'Contexto Consulta',
 );
 ?>

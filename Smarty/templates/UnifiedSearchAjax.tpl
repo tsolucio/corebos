@@ -36,7 +36,7 @@
 					<svg class="slds-icon slds-page-header__icon" aria-hidden="true">
 						<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="include/LD/assets/icons/{$MODULEICON.__ICONLibrary}-sprite/svg/symbols.svg#{$MODULEICON.__ICONName}" />
 					</svg>
-					<span class="slds-assistive-text">{$MODULELABEL}</span>
+					<span class="slds-assistive-text">{$MODULE|@getTranslatedString:$MODULE}</span>
 					</span>
 					</a>
 				</div>

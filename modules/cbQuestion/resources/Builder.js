@@ -64,7 +64,7 @@ function getQuestionResults() {
 		'qcolumns': (qsqlqry=='1' ? document.getElementById('bqsql').value : (qtype=='Mermaid' ? document.getElementById('bqwsq').value : getSQLSelect())),
 		'qcondition': (qtype=='Mermaid' ? '' : getSQLConditions()),
 		'orderby': getSQLOrderBy().substr(9),
-		'groupby': getSQLGroupBy().substr(10),
+		'groupby': getSQLGroupBy().substr(9),
 		'typeprops': document.getElementById('qprops').value,
 		'sqlquery': qsqlqry,
 		'condfilterformat': '0',
@@ -109,7 +109,8 @@ function getDataColumns() {
 			*/
 			let fnam = finfo.fieldname;
 			let fhdr = finfo.fieldname;
-			if (fnam.indexOf(': (')!=-1) {
+			if (typeof fieldNEcolumn[document.getElementById('bqmodule').value+fnam] != 'undefined') {
+				fnam = fieldNEcolumn[document.getElementById('bqmodule').value+fnam]
 			}
 			if (finfo.fieldname.indexOf(': (')==-1) {
 				if (finfo.operators!='custom' && finfo.alias!='') {
@@ -177,6 +178,19 @@ function changecbqModule(newmodule) {
 		false
 	);
 	builderconditions.changeModule();
+	fetch(
+		'index.php?module=cbMap&action=cbMapAjax&actionname=mapactions&method=getFieldTablesForModule',
+		{
+			method: 'post',
+			headers: {
+				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+			},
+			credentials: 'same-origin',
+			body: '&'+csrfMagicName+'='+csrfMagicToken+'&fieldsmodule='+newmodule
+		}
+	).then(response => response.json()).then(response => {
+		fieldTableRelation = response;
+	});
 }
 
 function showSQLMsg(msg, role) {
@@ -289,7 +303,23 @@ function getSQLGroupBy() {
 	let gbflds = '';
 	fieldData.map(finfo => {
 		if (finfo.fieldname != 'custom' && finfo.group == '1') {
-			gbflds += finfo.fieldname + ',';
+			let fnam = finfo.fieldname;
+			if (finfo.operators!='custom' && finfo.alias!='') {
+				fnam = finfo.alias;
+			} else if (finfo.fieldname.indexOf(': (')!=-1) {
+				if (finfo.operators == 'custom') {
+					fnam = finfo.fieldname.substr(finfo.fieldname.indexOf(': (')+3).replace(') ', '').replace(')', '').toLowerCase();
+				} else {
+					fnam = finfo.fieldname.replace(' : (', '').replace(') ', '').replace(')', '').toLowerCase();
+				}
+			} else if (fnam == 'assigned_user_id') {
+				fnam = 'vtiger_crmentity.smownerid';
+			} else if (fnam == 'created_user_id') {
+				fnam = 'vtiger_crmentity.smcreatorid';
+			} else if (typeof fieldNEcolumn[document.getElementById('bqmodule').value+fnam]!='undefined') {
+				fnam = fieldTableRelation[finfo.fieldname]+'.'+fieldNEcolumn[document.getElementById('bqmodule').value+fnam];
+			}
+			gbflds += fnam + ',';
 		}
 	});
 	if (gbflds!='') {
@@ -302,7 +332,23 @@ function getSQLOrderBy() {
 	let obflds = '';
 	fieldData.map(finfo => {
 		if (finfo.fieldname != 'custom' && finfo.sort != 'NONE') {
-			obflds += finfo.fieldname + ' ' + finfo.sort + ',';
+			let fnam = finfo.fieldname;
+			if (finfo.operators!='custom' && finfo.alias!='') {
+				fnam = finfo.alias;
+			} else if (finfo.fieldname.indexOf(': (')!=-1) {
+				if (finfo.operators == 'custom') {
+					fnam = finfo.fieldname.substr(finfo.fieldname.indexOf(': (')+3).replace(') ', '').replace(')', '').toLowerCase();
+				} else {
+					fnam = finfo.fieldname.replace(' : (', '').replace(') ', '').replace(')', '').toLowerCase();
+				}
+			} else if (fnam == 'assigned_user_id') {
+				fnam = 'vtiger_crmentity.smownerid';
+			} else if (fnam == 'created_user_id') {
+				fnam = 'vtiger_crmentity.smcreatorid';
+			} else if (typeof fieldNEcolumn[document.getElementById('bqmodule').value+fnam]!='undefined') {
+				fnam = fieldTableRelation[finfo.fieldname]+'.'+fieldNEcolumn[document.getElementById('bqmodule').value+fnam];
+			}
+			obflds += fnam + ' ' + finfo.sort + ',';
 		}
 	});
 	if (obflds!='') {
@@ -420,6 +466,7 @@ function getInstruction(field, operator, alias) {
 			case 'getEntityType':
 			case 'number_format':
 			case 'getSetting':
+			case 'count':
 				if (op.text.indexOf("('")!=-1) {
 					fins = op.text.replace(/\('?.+?'?,/, "('"+fnam+"',");
 				} else if (op.text.indexOf(',')!=-1) {
@@ -439,7 +486,6 @@ function getInstruction(field, operator, alias) {
 			case 'today':
 			case 'tomorrow':
 			case 'yesterday':
-			case 'count':
 				fins = op.text;
 				break;
 			default:

@@ -119,7 +119,6 @@ class OperationManager {
 	}
 
 	public function handleType($type, $value) {
-		$result;
 		$value = stripslashes($value);
 		$type = strtolower($type);
 		if (!empty($this->inParamProcess[$type])) {

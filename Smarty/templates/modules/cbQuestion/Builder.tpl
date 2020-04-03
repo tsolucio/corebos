@@ -384,8 +384,9 @@
 		<div class="slds-col slds-slds-page-header__meta-text slds-m-left_x-small" id="resultsgrid" style="width:99%;"></div>
 	</div>
 	<div class="slds-col slds-size_2-of-6 slds-page-header__meta-text">
-		<span class="slds-radio slds-p-top_xx-small">
-			<span class="slds-form-element__label">
+		<div class="slds-p-top_xx-small slds-form-element slds-form-element_horizontal">
+			<label class="slds-form-element__label" for="evaluatewith_display">{'Query Context'|@getTranslatedString:'cbQuestion'}</label>
+			<span>
 				<input type='hidden' name="evaluatewith_type" id="evaluatewith_type" value="{if $targetmodule=='Workflow'}com_vtiger_workflow{else}{$targetmodule}{/if}">
 				<input id="evaluate" name="evaluatewith" type="hidden" value="">
 				<input
@@ -393,7 +394,8 @@
 					name="evaluatewith_display"
 					readonly
 					type="text"
-					style="border:1px solid #bababa;"
+					class="slds-input"
+					style="width:70%;border:1px solid #bababa;"
 					onclick='return vtlib_open_popup_window("", "evaluatewith", "{if $targetmodule=='Workflow'}com_vtiger_workflow{else}{$targetmodule}{/if}", "");'
 					value="">&nbsp;
 				<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_SELECT'|getTranslatedString}" onclick='return vtlib_open_popup_window("", "evaluatewith", "{$targetmodule}", "");'>
@@ -402,7 +404,7 @@
 				</svg>
 				</span>
 			</span>
-		</span>
+		</div>
 		<div id="cqanswer" class="slds-m-around_xx-small slds-p-around_xx-small slds-badge_lightest slds-scrollable"></div>
 	</div>
 </div>
@@ -433,4 +435,6 @@
 	var fieldData = {$fieldData};
 	var arrayOfFields = {$fieldArray};
 	var validOperations = {$validOperations};
+	var fieldNEcolumn = {$fieldNEcolumn};
+	var fieldTableRelation = {$fieldTableRelation};
 </script>

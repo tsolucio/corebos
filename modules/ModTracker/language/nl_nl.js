@@ -8,9 +8,12 @@
 
 var modtrackerarr = {
 	'History for': 'Geschiedenis voor',
+	'History': 'Geschiedenis',
 	'by': 'door',
 	'Field': 'Veld',
-	'Previous value': 'Voormalige waarde',
+	'User': 'User',
+	'date': 'Date of Change',
+	'Earlier value': 'Earlier value',
 	'Value changed to': 'Huidige waarde',
 	'highlight': 'Difference',
 	'No further history': 'Geen verdere geschiedenis',

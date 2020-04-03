@@ -101,5 +101,30 @@ class mapactions_Action extends CoreBOS_ActionController {
 		);
 		vtws_revise($map, $current_user);
 	}
+
+	public static function getFieldTablesForModule($return = false) {
+		global $log, $adb;
+		if (empty($_REQUEST['fieldsmodule'])) {
+			if ($return) {
+				return array();
+			} else {
+				echo '[]';
+			}
+			return;
+		}
+		$module = vtlib_purify($_REQUEST['fieldsmodule']);
+		$log->debug('> getFieldTablesForModule '.$module);
+		$res = $adb->pquery('select fieldname,tablename from vtiger_field where tabid=?', array(getTabid($module)));
+		$fields = array();
+		while ($row = $res->FetchRow()) {
+			$fields[$row['fieldname']] = $row['tablename'];
+		}
+		$log->debug('< getTableNameForField');
+		if ($return) {
+			return $fields;
+		} else {
+			echo json_encode($fields);
+		}
+	}
 }
 ?>
