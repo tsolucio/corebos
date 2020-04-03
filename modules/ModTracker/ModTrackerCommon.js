@@ -46,10 +46,9 @@ var ModTrackerCommon = {
 		var url = 'index.php?module=ModTracker&action=ModTrackerAjax&file=ShowDiff&mode=history&id=' + encodeURIComponent(record) + '&atpoint=' + encodeURIComponent(atpoint) + '&highlight=' + encodeURIComponent(highlight);
 		if (complete == true) {
 			url = 'index.php?module=ModTracker&action=ModTrackerAjax&file=ShowDiff&mode=complete&record=' + encodeURIComponent(record);
-			
-			const modalTitle = modtrackerarr['History'],
-			modalContent = `<div id="history-tui-grid">
-							</div>`;
+
+			const modalTitle = modtrackerarr['History'];
+			const modalContent = '<div id="history-tui-grid"></div>';
 			ldsModal.show(modalTitle, modalContent, 'medium', false);
 			document.getElementById('global-modal-container').addEventListener('closemodal', ModTrackerCommon.reset);
 
@@ -62,7 +61,7 @@ var ModTrackerCommon = {
 						header: modtrackerarr.Field,
 						sortingType: 'desc',
 						sortable: true,
-						filter: { 
+						filter: {
 							type: 'text'
 						}
 					},
@@ -72,7 +71,7 @@ var ModTrackerCommon = {
 						whiteSpace: 'normal',
 						sortingType: 'desc',
 						sortable: true,
-						filter: { 
+						filter: {
 							type: 'text'
 						}
 					},
@@ -82,7 +81,7 @@ var ModTrackerCommon = {
 						whiteSpace: 'normal',
 						sortingType: 'desc',
 						sortable: true,
-						filter: { 
+						filter: {
 							type: 'text'
 						}
 					},
@@ -100,10 +99,10 @@ var ModTrackerCommon = {
 						whiteSpace: 'normal',
 						sortingType: 'desc',
 						sortable: true,
-				        filter: {
-				           	type: 'date',
-				           	format: 'yyyy-MM-dd'
-				        }
+						filter: {
+							type: 'date',
+							format: 'yyyy-MM-dd'
+						}
 					}
 				],
 				data: {
