@@ -322,6 +322,10 @@ function editbuilderscript($, conditions) {
 			grpbtns[totgrp-1].style.visibility = 'visible';
 		} else {
 			document.getElementById('startwhennoconditions').style.display = 'flex';
+			$('#startwhennoconditionsbutton').unbind('click').bind('click', function () {
+				document.getElementById('startwhennoconditions').style.display = 'none';
+				addConditionFunction(groupno, condno++);
+			});
 		}
 	}
 
@@ -423,6 +427,7 @@ function editbuilderscript($, conditions) {
 		editpopupobj.edit(fieldValueNode.prop('id'), fieldValueNode.val(), fieldType);
 	}
 
+	var addConditionFunction = '';
 	var parentFields = {};
 	var referenceFieldTypes = {};
 	var moduleFieldTypes = {};
@@ -622,7 +627,7 @@ function editbuilderscript($, conditions) {
 							}
 						});
 					}
-
+					addConditionFunction = addCondition;
 					groupno=0;
 					condno=0;
 					if (conditions) {
@@ -703,6 +708,7 @@ function editbuilderscript($, conditions) {
 					});
 					pageLoadingPopup.close();
 					this.dispatchEvent(new Event('condition_builder_module_changed'));
+					updateWSSQL();
 				}));
 			}));
 		}));

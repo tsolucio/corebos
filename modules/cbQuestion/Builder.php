@@ -60,17 +60,7 @@ if (empty($_REQUEST['record'])) {
 			'value' => $vopk,
 		);
 	}
-	$fieldData = array(
-		array(
-			'fieldname' => 'custom',
-			'operators' => 'custom',
-			'alias' => '',
-			'sort' => 'NONE',
-			'group' => '0',
-			'instruction' => '',
-		),
-	);
-	$smarty->assign('fieldData', json_encode($fieldData));
+	$smarty->assign('fieldData', json_encode($focus->convertColumns2DataTable()));
 	$smarty->assign('fieldArray', json_encode(array_values($flds)));
 	$smarty->assign('validOperations', json_encode(array_values($valops)));
 	$fldnecol = $adb->query(
@@ -102,6 +92,8 @@ if (empty($_REQUEST['record'])) {
 	$smarty->assign('sqlquery', $focus->column_fields['sqlquery']);
 	$smarty->assign('qpagesize', $focus->column_fields['qpagesize']);
 	$smarty->assign('qtype', $focus->column_fields['qtype']);
+	$smarty->assign('typeprops', $focus->column_fields['typeprops']);
+	$smarty->assign('cbqconditons', decode_html($focus->column_fields['qcondition']));
 	$smarty->assign('QTYPES', getAssignedPicklistValues('qtype', $current_user->roleid, $adb));
 	$smarty->assign('cancelgo', 'index.php?module=cbQuestion&action=DetailView&record='.$focus->id);
 	$smarty->display('modules/cbQuestion/Builder.tpl');

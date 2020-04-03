@@ -271,9 +271,9 @@ function getSQLSelect() {
 				operation:'is',
 				value:finfo.instruction,
 				valuetype:(finfo.fieldname==finfo.instruction || finfo.operators=='custom' ? 'fieldname' : 'expression'),
-				joincondition:'and',
+				joincondition:finfo.operators,
 				groupid:0,
-				groupjoin:''
+				groupjoin:finfo.fieldname
 			});
 		}
 	});

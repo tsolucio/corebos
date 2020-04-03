@@ -474,5 +474,43 @@ class cbQuestion extends CRMEntity {
 		}
 		return $chart;
 	}
+
+	public function convertColumns2DataTable() {
+		global $adb;
+		$qcols = $this->column_fields;
+		if (empty($qcols['qcolumns'])) {
+			return array(
+				array(
+					'fieldname' => 'custom',
+					'operators' => 'custom',
+					'alias' => '',
+					'sort' => 'NONE',
+					'group' => '0',
+					'instruction' => '',
+				),
+			);
+		}
+		$fldnecol = $adb->pquery('SELECT fieldname,columnname FROM vtiger_field WHERE fieldname!=columnname and tabid=?', array(getTabid($qcols['qmodule'])));
+		$fnec = array();
+		while ($r = $fldnecol->FetchRow()) {
+			$fnec[$r['fieldname']] = $r['columnname'];
+		}
+		$fieldData = array();
+		$columns = json_decode(decode_html($qcols['qcolumns']), true);
+		$orderby = explode(',', strtolower(str_replace(' ', '', decode_html($qcols['orderby']))));
+		$groupby = explode(',', strtolower(str_replace(' ', '', decode_html($qcols['orderby']))));
+		foreach ($columns as $finfo) {
+			$cnam = isset($fnec[$finfo['fieldname']]) ? $fnec[$finfo['fieldname']] : $finfo['fieldname'];
+			$fieldData[] = array(
+				'fieldname' => $finfo['groupjoin'],
+				'operators' => $finfo['joincondition'],
+				'alias' => ($finfo['groupjoin']==$finfo['fieldname'] ? '' : $finfo['fieldname']),
+				'sort' => (in_array($cnam.'asc', $orderby) || in_array($cnam, $orderby) ? 'ASC' : (in_array($cnam.'desc', $orderby) ? 'DESC' : 'NONE')),
+				'group' => (in_array($cnam, $groupby) ? '1' : '0'),
+				'instruction' => $finfo['value'],
+			);
+		}
+		return $fieldData;
+	}
 }
 ?>

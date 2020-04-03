@@ -336,7 +336,7 @@
 		</div>
 		<legend class="slds-form-element__legend slds-form-element__label">{'Type Properties'|@getTranslatedString:'cbQuestion'}</legend>
 		<div class="slds-form-element__control">
-			<textarea id="qprops" class="slds-textarea"></textarea>
+			<textarea id="qprops" class="slds-textarea">{$typeprops}</textarea>
 		</div>
 	</div>
 </div>
@@ -420,6 +420,7 @@
 </span>
 </section>
 </form>
+<span id="dump" style="display:none;"></span>
 <script src="modules/cbQuestion/resources/mermaid.min.js"></script>
 <script src="include/chart.js/Chart.min.js"></script>
 <link rel="stylesheet" type="text/css" media="all" href="include/chart.js/Chart.min.css">
@@ -435,7 +436,7 @@
 <script type="text/javascript" charset="utf-8">
 	var moduleName = '{$targetmodule}';
 	{if isset($cbqconditons)}
-	var conditions = JSON.parse('{$cbqconditons}');
+	var conditions = {$cbqconditons};
 	{else}
 	var conditions = null;
 	{/if}
