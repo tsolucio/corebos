@@ -53,6 +53,73 @@ function toggleSQLView() {
 	}
 }
 
+function saveQuestion(update) {
+	const qname = document.getElementById('bqname').value;
+	const qmodule = document.getElementById('bqmodule').value;
+	if (qname=='') {
+		ldsPrompt.show(alert_arr.ERROR, mod_alert_arr.NameNotEmpty, 'error');
+		document.getElementById('bqname').focus();
+		return false;
+	}
+	if (qmodule=='') {
+		ldsPrompt.show(alert_arr.ERROR, mod_alert_arr.ModuleNotEmpty, 'error');
+		document.getElementById('bqmodule').focus();
+		return false;
+	}
+	const qtype = document.getElementById('qtype').value;
+	const qsqlqry = (document.getElementById('sqlquery').checked ? '1' : '0');
+	let cbq = {
+		'qname': qname,
+		//'cbquestionno': ,
+		'qtype': qtype,
+		'qstatus': 'Active',
+		'sqlquery': qsqlqry,
+		'qcollection': document.getElementById('bqcollection').value,
+		'qmodule': qmodule,
+		'qpagesize': document.getElementById('qpagesize').value=='' ? 0 : document.getElementById('qpagesize').value,
+		// 'uniqueid': ,
+		// 'mviewcron': ,
+		// 'cbmapid': ,
+		// 'mviewwf': ,
+		'assigned_user_id': builderconditions.cbaccess.userId,
+		'condfilterformat': 0,
+		'qcolumns': (qsqlqry=='1' ? document.getElementById('bqsql').value : (qtype=='Mermaid' ? document.getElementById('bqwsq').value : getSQLSelect())),
+		'qcondition': (qtype=='Mermaid' ? '' : getSQLConditions()),
+		'orderby': getSQLOrderBy().substr(9),
+		'groupby': getSQLGroupBy().substr(9),
+		'typeprops': document.getElementById('qprops').value,
+		//'description': ,
+		//'id': document.getElementById('wsrecord').value+document.getElementById('record').value
+	};
+	if (update && document.getElementById('record').value!='') {
+		cbq.id = document.getElementById('wsrecord').value+document.getElementById('record').value;
+		builderconditions.cbaccess.update(cbq, (success, result) => {
+			console.log(result);
+			if (success) {
+				ldsPrompt.show(alert_arr.JSLBL_SAVE, mod_alert_arr.QuestionSaved, 'success');
+			} else {
+				ldsPrompt.show(alert_arr.ERROR, result.message, 'error');
+			}
+		});
+	} else {
+		cbq.uniqueid = '';
+		cbq.mviewcron = '0';
+		cbq.cbmapid = '';
+		cbq.mviewwf = '0';
+		cbq.description = '';
+		builderconditions.cbaccess.create(cbq, 'cbQuestion', (success, result) => {
+			if (success) {
+				let id = result.id.split('x');
+				document.getElementById('record').value = id[1];
+				ldsPrompt.show(alert_arr.JSLBL_SAVE, mod_alert_arr.QuestionSaved, 'success');
+			} else {
+				ldsPrompt.show(alert_arr.ERROR, result.message, 'error');
+			}
+		});
+	}
+	return false;
+}
+
 function getQuestionResults() {
 	const qtype = document.getElementById('qtype').value;
 	const qsqlqry = (document.getElementById('sqlquery').checked ? '1' : '0');
@@ -153,6 +220,16 @@ function toggleBlock(block) {
 		bk.style.display='none';
 	} else {
 		bk.style.display='block';
+	}
+}
+
+function checkNameNotEmpty(val) {
+	if (val=='') {
+		document.getElementById('bqnamecontainer').classList.add('slds-has-error');
+		document.getElementById('bqnamecontainerhelp').style.display = 'flex';
+	} else {
+		document.getElementById('bqnamecontainer').classList.remove('slds-has-error');
+		document.getElementById('bqnamecontainerhelp').style.display = 'none';
 	}
 }
 

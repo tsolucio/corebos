@@ -19,6 +19,8 @@
 }
 </style>
 <form name="EditView" action="index.php" method="POST" onsubmit="VtigerJS_DialogBox.block();">
+<input type="hidden" name="record" id="record" value="{$ID}">
+<input type="hidden" name="wsrecord" id="wsrecord" value="{$WSID}">
 {assign var="MODULELABEL" value=$MODULE|@getTranslatedString:$MODULE}
 {assign var='MODULEICON' value=$MODULE|@getModuleIcon}
 <div id="page-header-placeholder"></div>
@@ -27,7 +29,7 @@
 		<div class="slds-page-header__col-title">
 			<div class="slds-media">
 				<div class="slds-media__figure">
-					<a class="hdrLink" href="index.php?action=DetailView&module={$MODULE}&record={$ID}">
+					<a class="hdrLink" href="{$headerurl}">
 						<span class="{$MODULEICON.__ICONContainerClass}" title="{$MODULE|@getTranslatedString:$MODULE}">
 							<svg class="slds-icon slds-page-header__icon" id="page-header-icon" aria-hidden="true">
 								<use xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -43,7 +45,7 @@
 							<h1>
 								<span>{$MODULELABEL}</span>
 								<span class="slds-page-header__title slds-truncate" title="{$MODULELABEL|@addslashes}">
-									<a class="hdrLink" href="index.php?action=DetailView&module={$MODULE}&record={$ID}">{'Question Builder'|@getTranslatedString:$MODULE}</a>
+									<a class="hdrLink" href="{$headerurl}">{'Question Builder'|@getTranslatedString:$MODULE}</a>
 								</span>
 							</h1>
 							<p class="slds-page-header__row slds-page-header__name-meta">
@@ -56,23 +58,17 @@
 		<div class="slds-page-header__col-actions">
 			<div class="slds-grid slds-gutters slds-m-around_xxx-small">
 				<div class="slds-col">
-					<button class="slds-button slds-button_success" type="submit" id='save'>
+					<button class="slds-button slds-button_success" type="button" id='save' onclick="saveQuestion(true);">
 						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
 						</svg>
 						{$APP.LBL_SAVE_BUTTON_LABEL}
 					</button>
-					<button class="slds-button slds-button_success" type="submit" id='savenew'>
+					<button class="slds-button slds-button_success" type="button" id='savenew' onclick="saveQuestion(false);">
 						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
 						</svg>
 						{$APP.LBL_NEW_BUTTON_TITLE}
-					</button>
-					<button class="slds-button slds-button_destructive" type="button" onclick="gotourl('{$cancelgo}');">
-						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use>
-						</svg>
-						{$APP.LBL_CANCEL_BUTTON_LABEL}
 					</button>
 				</div>
 			</div>
@@ -84,16 +80,19 @@
 
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher slds-card slds-m-around_medium">
 <div class="slds-p-around_x-small slds-grid slds-gutters">
-	<div class="slds-col slds-size_1-of-2 slds-form-element slds-text-align_left">
+	<div class="slds-col slds-size_1-of-2 slds-form-element slds-text-align_left{if empty($bqname)} slds-has-error{/if}" id="bqnamecontainer">
 		<legend class="slds-form-element__legend slds-form-element__label">{'qname'|@getTranslatedString:'cbQuestion'}</legend>
 		<div class="slds-form-element__control">
-			<input id="bqname" required name="bqname" class="slds-input slds-page-header__meta-text" value="{$bqname}" />
+			<input id="bqname" required name="bqname" class="slds-input slds-page-header__meta-text" value="{$bqname}" onchange="checkNameNotEmpty();" />
 		</div>
+		{if empty($bqname)}
+			<div class="slds-form-element__help" id="bqnamecontainerhelp">{'CANNOT_BE_EMPTY'|@getTranslatedString:'cbQuestion'}</div>
+		{/if}
 	</div>
 	<div class="slds-col slds-size_1-of-2 slds-form-element slds-text-align_left">
 		<legend class="slds-form-element__legend slds-form-element__label">{'qcollection'|@getTranslatedString:'cbQuestion'}</legend>
 		<div class="slds-form-element__control">
-			<input id="bqcollection" required name="bqcollection" class="slds-input slds-page-header__meta-text" value="{$bqcollection}" />
+			<input id="bqcollection" name="bqcollection" class="slds-input slds-page-header__meta-text" value="{$bqcollection}" />
 		</div>
 	</div>
 </div>

@@ -82,6 +82,7 @@ $mod_strings = array_merge($mod_strings, return_module_language($current_user->c
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
+$smarty->assign('WSID', vtws_getEntityId('cbQuestion').'x');
 $smarty->assign('ID', $focus->id);
 $smarty->assign('RECORDID', $focus->id);
 $smarty->assign('MODE', $focus->mode);

@@ -9,4 +9,7 @@ var mod_alert_arr = {
 	'LBL_NONE': 'None',
 	'ASC': 'Ascending',
 	'DESC': 'Descending',
+	'NameNotEmpty': 'Question name cannot be empty.',
+	'ModuleNotEmpty': 'You must select a module.',
+	'QuestionSaved': 'Question has been saved correctly.'
 };
