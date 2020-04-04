@@ -157,6 +157,10 @@ function toggleBlock(block) {
 }
 
 function changecbqModule(newmodule) {
+	document.getElementById('bqmodulecontainer').classList.remove('slds-has-error');
+	document.getElementById('bqmodulecontainerhelp').style.display = 'none';
+	document.getElementById('msmodulescontainer').classList.remove('slds-has-error');
+	document.getElementById('msmodulescontainerhelp').style.display = 'none';
 	document.getElementById('save_conditions').innerHTML='';
 	document.getElementById('bqwsq').value='';
 	document.getElementById('bqsql').value='';

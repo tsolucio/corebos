@@ -98,13 +98,16 @@
 	</div>
 </div>
 <div class="slds-p-around_x-small slds-grid slds-gutters">
-	<div class="slds-col slds-size_1-of-2 slds-form-element slds-text-align_left">
+	<div class="slds-col slds-size_1-of-2 slds-form-element slds-text-align_left{if empty($targetmodule)} slds-has-error{/if}" id="bqmodulecontainer">
 		<legend class="slds-form-element__legend slds-form-element__label">{'LBL_MODULE'|@getTranslatedString:'cbMap'}</legend>
 		<div class="slds-form-element__control">
 			<input id="bqmodule" required name="bqmodule" class="slds-input slds-page-header__meta-text" value="{$targetmodule}" onchange="changecbqModule(this.value);"/>
 		</div>
+		{if empty($targetmodule)}
+			<div class="slds-form-element__help" id="bqmodulecontainerhelp">{'SelectModule'|@getTranslatedString:'cbQuestion'}</div>
+		{/if}
 	</div>
-	<div class="slds-col slds-size_1-of-2 slds-form-element slds-text-align_left">
+	<div class="slds-col slds-size_1-of-2 slds-form-element slds-text-align_left{if empty($targetmodule)} slds-has-error{/if}" id="msmodulescontainer">
 		<legend class="slds-form-element__legend slds-form-element__label">{'LBL_SYSTEMMODULES'|@getTranslatedString:'cbQuestion'}</legend>
 		<div class="slds-form-element__control">
 			<div class="slds-select_container">
@@ -115,6 +118,9 @@
 				</select>
 			</div>
 		</div>
+		{if empty($targetmodule)}
+			<div class="slds-form-element__help" id="msmodulescontainerhelp">{'SelectModule'|@getTranslatedString:'cbQuestion'}</div>
+		{/if}
 	</div>
 </div>
 

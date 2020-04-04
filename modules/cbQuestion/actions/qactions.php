@@ -423,7 +423,7 @@ class qactions_Action extends CoreBOS_ActionController {
 		}
 		$from = ($page-1)*$rowsperpage;
 		$limit = " limit $from,$rowsperpage";
-		$result = $adb->query($list_query.$limit);
+		$result = $adb->query(trim($list_query, ';').$limit);
 		$count_result = $adb->query('SELECT FOUND_ROWS();');
 		$noofrows = $adb->query_result($count_result, 0, 0);
 		if ($result) {

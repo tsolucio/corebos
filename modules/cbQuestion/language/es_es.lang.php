@@ -97,5 +97,6 @@ $mod_strings = array(
 	'Launch a test to get the SQL' => 'Ejecuta una verificación para ver el comando SQL',
 	'Context Module' => 'Módulo de Contexto',
 	'Query Context' => 'Contexto Consulta',
+	'SelectModule' => 'Selecciona un módulo',
 );
 ?>

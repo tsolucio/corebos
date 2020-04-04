@@ -436,6 +436,9 @@ function editbuilderscript($, conditions) {
 	var groupno=0;
 	var condno=0;
 	function changeModule() {
+		if (moduleName=='') {
+			return;
+		}
 		fieldValidator = new VTFieldValidator($('#edit_workflow_form'));
 		fieldValidator.mandatoryFields = ['description'];
 		pageLoadingPopup.show();
