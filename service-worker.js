@@ -9365,7 +9365,7 @@ precacheAndRoute([{
   "revision": "9ea67febb4daaa61456e88a625df209b"
 }, {
   "url": "include/js/pt_br.lang.js",
-  "revision": "9eb2596362129128941f934a2ff90dfb"
+  "revision": "caaf18c4efdaee06a9878e2359324c6b"
 }, {
   "url": "include/js/QuickCreate.js",
   "revision": "e5029e6a617bfb7f9114191938738069"
@@ -9548,7 +9548,7 @@ precacheAndRoute([{
   "revision": "efe2ac9da371216aec6fea90f3c2fda5"
 }, {
   "url": "modules/com_vtiger_workflow/resources/vtigerwebservices.js",
-  "revision": "2d675d620dd72cf882fccfc6205fd2c3"
+  "revision": "8acb4cd5b3583547db71a8345e8f667e"
 }, {
   "url": "modules/com_vtiger_workflow/resources/Whatsappckeditor.js",
   "revision": "fab39532561524488d757c60df5fedd7"
@@ -9834,6 +9834,48 @@ precacheAndRoute([{
 }, {
   "url": "modules/cbQuestion/cbQuestion.js",
   "revision": "df1beb66383c404ca19595bfede77a1f"
+}, {
+  "url": "modules/cbQuestion/resources/Builder.js",
+  "revision": "34f17afbe341bc999208288d8b7ad443"
+}, {
+  "url": "modules/cbQuestion/resources/editbuilder.js",
+  "revision": "099b6f9664531783abaa2e11df14d050"
+}, {
+  "url": "modules/cbQuestion/resources/mermaid.min.js",
+  "revision": "2cb9770b79c455efcb81bc3f58e35ef6"
+}, {
+  "url": "modules/cbQuestion/language/de_de.js",
+  "revision": "f53626ff0d323bbef07030875334e696"
+}, {
+  "url": "modules/cbQuestion/language/en_gb.js",
+  "revision": "f53626ff0d323bbef07030875334e696"
+}, {
+  "url": "modules/cbQuestion/language/en_us.js",
+  "revision": "f53626ff0d323bbef07030875334e696"
+}, {
+  "url": "modules/cbQuestion/language/es_es.js",
+  "revision": "386f68d4bf2d71f3aa62ed332d1ebbef"
+}, {
+  "url": "modules/cbQuestion/language/es_mx.js",
+  "revision": "386f68d4bf2d71f3aa62ed332d1ebbef"
+}, {
+  "url": "modules/cbQuestion/language/fr_fr.js",
+  "revision": "f53626ff0d323bbef07030875334e696"
+}, {
+  "url": "modules/cbQuestion/language/hu_hu.js",
+  "revision": "f53626ff0d323bbef07030875334e696"
+}, {
+  "url": "modules/cbQuestion/language/it_it.js",
+  "revision": "f53626ff0d323bbef07030875334e696"
+}, {
+  "url": "modules/cbQuestion/language/nl_nl.js",
+  "revision": "f53626ff0d323bbef07030875334e696"
+}, {
+  "url": "modules/cbQuestion/language/pt_br.js",
+  "revision": "f53626ff0d323bbef07030875334e696"
+}, {
+  "url": "modules/cbQuestion/language/ro_ro.js",
+  "revision": "f53626ff0d323bbef07030875334e696"
 }, {
   "url": "modules/Portal/Portal.js",
   "revision": "01b10c9bbf410ef98cc023a2821412e1"
