@@ -5,7 +5,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|01/03/2012|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese|26/03/2020|Sao Paulo/SP/Brasil.|www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese|03/04/2020|Sao Paulo/SP/Brasil.|www.slemernet.com.br
  ********************************************************************************/
 
 var alert_arr = {
@@ -54,11 +54,11 @@ var alert_arr = {
 	'ENDTIME_GREATER_THAN_STARTTIME':'Hora final deve ser maior que a hora inicial ',
 	'MISSING_EVENT_NAME':'Nome do evento ausente',
 	'EVENT_TYPE_NOT_SELECTED':'Tipo evento não está selecionado',
-	'SITEURL_CANNOT_BE_EMPTY':'URL do site não pode estar vazia',
+	'SITEURL_CANNOT_BE_EMPTY':'Link do site não pode estar vazia',
 	'SITENAME_CANNOT_BE_EMPTY':'Nome do site não pode estar vazio',
 	'LISTPRICE_CANNOT_BE_EMPTY':'Lista de preços não pode estar vazia',
 	'INVALID_LIST_PRICE':'Lista de preços inválida',
-	'PROBLEM_ACCESSSING_URL':'Problema acessando a URL: ',
+	'PROBLEM_ACCESSSING_URL':'Problema acessando o link: ',
 	'CODE':' Código: ',
 	'WISH_TO_QUALIFY_MAIL_AS_CONTACT':'Deseja realmente qualificar esta mensagem como contato?',
 	'SELECT_ATLEAST_ONEMSG_TO_DEL':'Por favor, selecione pelo menos uma mensagem para apagar',
@@ -199,7 +199,7 @@ var alert_arr = {
 	'EMAIL_CHECK_MSG': 'Desabilitar acesso ao portal para salvar o campo de e-mail como em branco',
 	'IS_PARENT': 'Este produto possui sub produtos, você não tem permissão para selecionar um Pai para este produto',
 
-	'PICKLIST_CANNOT_BE_EMPTY': 'A Lista de opções não pode estar vazia',
+	'PICKLIST_CANNOT_BE_EMPTY': 'A lista de opções não pode estar vazia',
 	'DUPLICATE_VALUES_FOUND': 'Valores duplicados encontrados',
 	'LBL_NO_ROLES_SELECTED': 'Nenhuma função foi selecionada, você deseja continuar?',
 	'LBL_DUPLICATE_FOUND': 'Entrada duplicada encontrada para o valor ',
@@ -214,7 +214,7 @@ var alert_arr = {
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE': 'você tem certeza que deseja apagar ?',
 	'PLEASE_MOVE_THE_FIELDS_TO_ANOTHER_BLOCK': 'Por gentileza, mova o campo para outro bloco',
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_BLOCK': 'você tem certeza que deseja apagar o bloco?',
-	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_EXACT_DUPLICATE': 'Are you sure you want to Delete All Exact record duplicates?',
+	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_EXACT_DUPLICATE': 'Você tem certeza que deseja apagar TODOS os registros que tenham  esses valores iguais (incluído campos em branco)?',
 	'LABEL_CANNOT_NOT_EMPTY': 'O rótulo não pode ficar em branco',
 	'LBL_TYPEALERT_1': 'Desculpe, você não pode mapear o',
 	'LBL_WITH': 'com',
@@ -239,7 +239,7 @@ var alert_arr = {
 	'LBL_ARE_YOU_SURE_YOU_WANT_TO_DELETE_FOLDER': 'Tem certeza que deseja apagar a pasta?',
 	'LBL_ERROR_WHILE_DELETING_FOLDER': 'Erro enquanto a pasta era apagada. Por favor, tente novamente.',
 	'LBL_FILE_CAN_BE_DOWNLOAD': 'O arquivo está disponível para Download',
-	'LBL_DOCUMENT_LOST_INTEGRITY':'Estes Documentos não estão disponíveis. Ele será marcado como Inativo',
+	'LBL_DOCUMENT_LOST_INTEGRITY':'Estes Documentos não estão disponíveis. Ele será marcado como inativo',
 	'LBL_DOCUMENT_NOT_AVAILABLE': 'Este Documento não está disponível para Download',
 	'LBL_FOLDER_SHOULD_BE_EMPTY': 'A pasta deve estar limpa para ser removida!',
 
@@ -335,7 +335,7 @@ var alert_arr = {
 	'MAP_DELETED_INFO' : 'Este mapa foi deletado. Você não pode utilizar este mapa novamente',
 
 	//error messages for lead conversion
-	'ERR_SELECT_EITHER':'Selecione uma conta ou contato para converter o Lead',
+	'ERR_SELECT_EITHER':'Selecione uma conta ou contato para converter o lead',
 	'ERR_SELECT_ACCOUNT':'Selecione conta para prosseguir',
 	'ERR_SELECT_CONTACT':'Selecione contato para prosseguir',
 	'ERR_MANDATORY_FIELD_VALUE':'Estão faltando valores para campos obrigatórios',
@@ -426,5 +426,5 @@ var alert_arr = {
 	'Okay': 'Ok',
 	'Failed': 'Falhou',
 	'Warning': 'Alerta',
-	'Copied': 'Copied'
+	'Copied': 'Copiado'
 };
