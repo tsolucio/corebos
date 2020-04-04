@@ -233,6 +233,12 @@ function checkNameNotEmpty(val) {
 }
 
 function changecbqModule(newmodule) {
+	var isActorModule = (actorModules.indexOf(document.getElementById('bqmodule').value)!=-1);
+	if (isActorModule) {
+		document.getElementById('contextfieldcontainer').style.display = 'none';
+	} else {
+		document.getElementById('contextfieldcontainer').style.display = 'block';
+	}
 	conditions = null;
 	builderconditions.conditions = null;
 	Array.from(document.querySelectorAll('.ceremovebutton')).map((e) => e.click());
@@ -324,84 +330,178 @@ function hideSQLMsg() {
 
 function getSQLSelect() {
 	let slflds = [];
+	var isActorModule = (actorModules.indexOf(document.getElementById('bqmodule').value)!=-1);
 	fieldData.map(finfo => {
 		if (finfo.instruction != '') {
-			/* complex conditioning
-				module_field no_operator no_alias > fieldname
-				module_field operator no_alias > fieldname
-				module_field no_operator alias > fieldname
-				module_field operator alias > alias
-				related_module_field no_operator no_alias > fieldname
-				related_module_field operator no_alias > we have to create an alias
-				related_module_field no_operator alias > fieldname
-				related_module_field operator alias > alias
-			*/
-			let fnam = finfo.fieldname;
-			if (finfo.fieldname.indexOf(': (')==-1) {
-				if (finfo.operators!='custom' && finfo.alias!='') {
-					fnam = finfo.alias;
+			if (isActorModule) {
+				if (typeof slflds == 'object') {
+					slflds = '';
 				}
-			} else if (finfo.operators!='custom') {
-				if (finfo.alias=='') {
-					fnam = finfo.fieldname.replace(' : (', '').replace(') ', '').replace(')', '').toLowerCase();
-				} else {
-					fnam = finfo.alias;
+				slflds += (slflds!='' ? ',' : '')+finfo.instruction;
+			} else {
+				/* complex conditioning
+					module_field no_operator no_alias > fieldname
+					module_field operator no_alias > fieldname
+					module_field no_operator alias > fieldname
+					module_field operator alias > alias
+					related_module_field no_operator no_alias > fieldname
+					related_module_field operator no_alias > we have to create an alias
+					related_module_field no_operator alias > fieldname
+					related_module_field operator alias > alias
+				*/
+				let fnam = finfo.fieldname;
+				if (finfo.fieldname.indexOf(': (')==-1) {
+					if (finfo.operators!='custom' && finfo.alias!='') {
+						fnam = finfo.alias;
+					}
+				} else if (finfo.operators!='custom') {
+					if (finfo.alias=='') {
+						fnam = finfo.fieldname.replace(' : (', '').replace(') ', '').replace(')', '').toLowerCase();
+					} else {
+						fnam = finfo.alias;
+					}
 				}
+				slflds.push({
+					fieldname:fnam,
+					operation:'is',
+					value:finfo.instruction,
+					valuetype:(finfo.fieldname==finfo.instruction || finfo.operators=='custom' ? 'fieldname' : 'expression'),
+					joincondition:finfo.operators,
+					groupid:0,
+					groupjoin:finfo.fieldname
+				});
 			}
-			slflds.push({
-				fieldname:fnam,
-				operation:'is',
-				value:finfo.instruction,
-				valuetype:(finfo.fieldname==finfo.instruction || finfo.operators=='custom' ? 'fieldname' : 'expression'),
-				joincondition:finfo.operators,
-				groupid:0,
-				groupjoin:finfo.fieldname
-			});
 		}
 	});
-	if (slflds.length>0) {
+	if (slflds.length>0 && !isActorModule) {
 		slflds = JSON.stringify(slflds);
-	} else {
+	} else if (!isActorModule) {
 		slflds = '';
 	}
 	return slflds;
 }
 
 function getSQLConditions() {
+	var isActorModule = (actorModules.indexOf(document.getElementById('bqmodule').value)!=-1);
+	var cnflds = '';
 	var conditions = [];
-	i=0;
-	$('#save_conditions').children('.condition_group_block').each(function (j, conditiongroupblock) {
-		$(conditiongroupblock).children('.save_condition_group').each(function (k, conditiongroup) {
-			$(conditiongroup).children().each(function (l) {
-				var fieldname = this.querySelector('div > .cefieldname').value;
-				var operation = this.querySelector('div > .ceoperation').value;
-				var value = this.querySelector('div > .ceexpressionvalue').value;
-				var valuetype = this.querySelector('div > .ceexpressiontype').value;
-				var joincondition = this.querySelector('div > .cejoincondition').value;
-				var groupid = this.querySelector('div > .groupid').value;
-				var groupjoin = '';
-				if (groupid != '') {
-					let scgj = document.getElementById('save_condition_group_'+groupid+'_joincondition');
-					if (scgj != null) {
-						groupjoin = scgj.value;
+	if (isActorModule) {
+		let ops = {
+			'after': '>',
+			'before': '<',
+			'between': '',
+			'contains': 'LIKE',
+			'days ago': '<',
+			'days later': '>',
+			'does not contain': 'LIKE',
+			'does not end with': 'LIKE',
+			'does not equal': '!=',
+			'does not start with': 'LIKE',
+			'ends with': 'LIKE',
+			'equal to': '=',
+			'exists': '=',
+			'greater than': '>',
+			'greater than or equal to': '>=',
+			'has changed': '!=',
+			'has changed to': '!=',
+			'has this as nth child': '=',
+			'in less than': '>',
+			'in more than': '<',
+			'is': '=',
+			'is empty': 'is null',
+			'is not': '!=',
+			'is not empty': 'is not null',
+			'is today': '=',
+			'less than': '<',
+			'less than days ago': '<',
+			'less than hours before': '<',
+			'less than hours later': '>',
+			'less than or equal to': '<=',
+			'more than days ago': '>',
+			'more than hours before': '<',
+			'more than hours later': '>',
+			'starts with': 'LIKE',
+			'was': '=',
+		};
+		conditions = '';
+		$('#save_conditions').children('.condition_group_block').each(function (j, conditiongroupblock) {
+			$(conditiongroupblock).children('.save_condition_group').each(function (k, conditiongroup) {
+				$(conditiongroup).children().each(function (l) {
+					var fieldname = this.querySelector('div > .cefieldname').value;
+					var operation = this.querySelector('div > .ceoperation').value;
+					var value = this.querySelector('div > .ceexpressionvalue').value;
+					//var valuetype = this.querySelector('div > .ceexpressiontype').value;
+					var joincondition = this.querySelector('div > .cejoincondition').value;
+					// var groupid = this.querySelector('div > .groupid').value;
+					// var groupjoin = '';
+					// if (groupid != '') {
+					// 	let scgj = document.getElementById('save_condition_group_'+groupid+'_joincondition');
+					// 	if (scgj != null) {
+					// 		groupjoin = scgj.value;
+					// 	}
+					// }
+					switch (operation) {
+						case 'contains':
+							conditions += fieldname+" LIKE '%"+value+"%' "+joincondition;
+							break;
+						case 'does not contain':
+							conditions += fieldname+" NOT LIKE '%"+value+"%' "+joincondition;
+							break;
+						case 'does not end with':
+							conditions += fieldname+" NOT LIKE '%"+value+"' "+joincondition;
+							break;
+						case 'does not start with':
+							conditions += fieldname+" NOT LIKE '"+value+"%' "+joincondition;
+							break;
+						case 'ends with':
+							conditions += fieldname+" LIKE '%"+value+"' "+joincondition;
+							break;
+						case 'starts with':
+							conditions += fieldname+" LIKE '"+value+"%' "+joincondition;
+							break;
+						default:
+							conditions += fieldname+' '+ops[operation]+" '"+value+"' "+joincondition;
+							break;
 					}
-				}
-				var condition = {
-					fieldname:fieldname,
-					operation:operation,
-					value:value,
-					valuetype:valuetype,
-					joincondition:joincondition,
-					groupid:groupid,
-					groupjoin:groupjoin
-				};
-				conditions[i++]=condition;
+				});
 			});
 		});
-	});
-	var cnflds = '';
-	if (conditions.length!=0) {
-		cnflds = JSON.stringify(conditions);
+		cnflds = conditions.substr(0, conditions.lastIndexOf(' '));
+	} else {
+		conditions = [];
+		var i=0;
+		$('#save_conditions').children('.condition_group_block').each(function (j, conditiongroupblock) {
+			$(conditiongroupblock).children('.save_condition_group').each(function (k, conditiongroup) {
+				$(conditiongroup).children().each(function (l) {
+					var fieldname = this.querySelector('div > .cefieldname').value;
+					var operation = this.querySelector('div > .ceoperation').value;
+					var value = this.querySelector('div > .ceexpressionvalue').value;
+					var valuetype = this.querySelector('div > .ceexpressiontype').value;
+					var joincondition = this.querySelector('div > .cejoincondition').value;
+					var groupid = this.querySelector('div > .groupid').value;
+					var groupjoin = '';
+					if (groupid != '') {
+						let scgj = document.getElementById('save_condition_group_'+groupid+'_joincondition');
+						if (scgj != null) {
+							groupjoin = scgj.value;
+						}
+					}
+					var condition = {
+						fieldname:fieldname,
+						operation:operation,
+						value:value,
+						valuetype:valuetype,
+						joincondition:joincondition,
+						groupid:groupid,
+						groupjoin:groupjoin
+					};
+					conditions[i++]=condition;
+				});
+			});
+		});
+		if (conditions.length!=0) {
+			cnflds = JSON.stringify(conditions);
+		}
 	}
 	return cnflds;
 }

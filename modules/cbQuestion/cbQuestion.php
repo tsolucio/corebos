@@ -496,19 +496,41 @@ class cbQuestion extends CRMEntity {
 			$fnec[$r['fieldname']] = $r['columnname'];
 		}
 		$fieldData = array();
-		$columns = json_decode(decode_html($qcols['qcolumns']), true);
 		$orderby = explode(',', strtolower(str_replace(' ', '', decode_html($qcols['orderby']))));
-		$groupby = explode(',', strtolower(str_replace(' ', '', decode_html($qcols['orderby']))));
-		foreach ($columns as $finfo) {
-			$cnam = isset($fnec[$finfo['fieldname']]) ? $fnec[$finfo['fieldname']] : $finfo['fieldname'];
-			$fieldData[] = array(
-				'fieldname' => $finfo['groupjoin'],
-				'operators' => $finfo['joincondition'],
-				'alias' => ($finfo['groupjoin']==$finfo['fieldname'] ? '' : $finfo['fieldname']),
-				'sort' => (in_array($cnam.'asc', $orderby) || in_array($cnam, $orderby) ? 'ASC' : (in_array($cnam.'desc', $orderby) ? 'DESC' : 'NONE')),
-				'group' => (in_array($cnam, $groupby) ? '1' : '0'),
-				'instruction' => $finfo['value'],
-			);
+		$groupby = explode(',', strtolower(str_replace(' ', '', decode_html($qcols['groupby']))));
+		$qcols = decode_html($qcols['qcolumns']);
+		if (strpos($qcols, '[')===false) {
+			$qcols = preg_replace('/\s+,\s+/', ',', $qcols);
+			$qcols = explode(',', $qcols);
+			foreach ($qcols as $finfo) {
+				$alias = '';
+				if (strpos($finfo, ' ')) {
+					$alias = preg_replace('/\s+/', ' ', $finfo);
+					$alias = explode(' ', $alias);
+					$alias = $alias[2];
+				}
+				$fieldData[] = array(
+					'fieldname' => $finfo,
+					'operators' => 'custom',
+					'alias' => $alias,
+					'sort' => (in_array($finfo.'asc', $orderby) || in_array($finfo, $orderby) ? 'ASC' : (in_array($finfo.'desc', $orderby) ? 'DESC' : 'NONE')),
+					'group' => (in_array($finfo, $groupby) ? '1' : '0'),
+					'instruction' => $finfo,
+				);
+			}
+		} else {
+			$columns = json_decode($qcols, true);
+			foreach ($columns as $finfo) {
+				$cnam = isset($fnec[$finfo['fieldname']]) ? $fnec[$finfo['fieldname']] : $finfo['fieldname'];
+				$fieldData[] = array(
+					'fieldname' => $finfo['groupjoin'],
+					'operators' => $finfo['joincondition'],
+					'alias' => ($finfo['groupjoin']==$finfo['fieldname'] ? '' : $finfo['fieldname']),
+					'sort' => (in_array($cnam.'asc', $orderby) || in_array($cnam, $orderby) ? 'ASC' : (in_array($cnam.'desc', $orderby) ? 'DESC' : 'NONE')),
+					'group' => (in_array($cnam, $groupby) ? '1' : '0'),
+					'instruction' => $finfo['value'],
+				);
+			}
 		}
 		return $fieldData;
 	}

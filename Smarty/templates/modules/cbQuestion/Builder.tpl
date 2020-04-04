@@ -383,6 +383,7 @@
 		<div class="slds-col slds-slds-page-header__meta-text slds-m-left_x-small" id="resultsgrid" style="width:99%;"></div>
 	</div>
 	<div class="slds-col slds-size_2-of-6 slds-page-header__meta-text">
+		<span id="contextfieldcontainer" style="display:{if $isActorModule}none{else}block{/if}">
 		<div class="slds-p-top_xx-small slds-form-element slds-form-element_horizontal">
 			<label class="slds-form-element__label" for="evaluatewith_type">{'Context Module'|@getTranslatedString:'cbQuestion'}</label>
 			<span>
@@ -413,6 +414,7 @@
 				</span>
 			</span>
 		</div>
+		</span>
 		<div id="cqanswer" class="slds-m-around_xx-small slds-p-around_xx-small slds-badge_lightest slds-scrollable"></div>
 	</div>
 </div>
@@ -446,4 +448,5 @@
 	var validOperations = {$validOperations};
 	var fieldNEcolumn = {$fieldNEcolumn};
 	var fieldTableRelation = {$fieldTableRelation};
+	var actorModules = {$actorModules};
 </script>
