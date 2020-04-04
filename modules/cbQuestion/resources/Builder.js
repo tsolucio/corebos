@@ -1,7 +1,7 @@
 var Report_ListView_PageSize = 40;
 GlobalVariable_getVariable('Report_ListView_PageSize', 40, 'cbQuestion', '').then(function (response) {
 	var obj = JSON.parse(response);
-	Report_ListView_PageSize = obj.Report_ListView_PageSize;
+	Report_ListView_PageSize = parseInt(obj.Report_ListView_PageSize, 10);
 });
 
 function copysql() {
@@ -748,6 +748,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 				}
 			},
 			pageOptions: {
+				useClient: false,
 				perPage: Report_ListView_PageSize
 			},
 			useClientSort: false,
