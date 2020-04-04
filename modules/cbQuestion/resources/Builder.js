@@ -159,9 +159,8 @@ function getQuestionResults() {
 		cbqa.innerHTML = response;
 		vtlib_executeJavascriptInElement(cbqa);
 	});
-	if (qtype=='Mermaid') {
-		dataGridInstance.clear();
-	} else {
+	dataGridInstance.clear();
+	if (qtype!='Mermaid') {
 		dataGridInstance.setColumns(getDataColumns());
 		dataGridInstance.setRequestParams({'cbQuestionRecord': encodeURIComponent(cbq), 'cbQuestionContext': encodeURIComponent(cbqctx)});
 		dataGridInstance.reloadData();
@@ -234,6 +233,9 @@ function checkNameNotEmpty(val) {
 }
 
 function changecbqModule(newmodule) {
+	conditions = null;
+	builderconditions.conditions = null;
+	Array.from(document.querySelectorAll('.ceremovebutton')).map((e) => e.click());
 	document.getElementById('bqmodulecontainer').classList.remove('slds-has-error');
 	document.getElementById('bqmodulecontainerhelp').style.display = 'none';
 	document.getElementById('msmodulescontainer').classList.remove('slds-has-error');
@@ -243,7 +245,6 @@ function changecbqModule(newmodule) {
 	document.getElementById('bqsql').value='';
 	document.getElementById('evalid_type').value = (newmodule=='Workflow' ? 'com_vtiger_workflow' : newmodule);
 	moduleName = newmodule;
-	conditions = null;
 	fieldData = [];
 	fieldData.push(getEmptyFieldRow());
 	this.addEventListener(
@@ -283,7 +284,7 @@ function changecbqModule(newmodule) {
 		},
 		false
 	);
-	builderconditions.changeModule();
+	builderconditions.changeModule(null);
 	fetch(
 		'index.php?module=cbMap&action=cbMapAjax&actionname=mapactions&method=getFieldTablesForModule',
 		{

@@ -85,9 +85,7 @@
 		<div class="slds-form-element__control">
 			<input id="bqname" required name="bqname" class="slds-input slds-page-header__meta-text" value="{$bqname}" onchange="checkNameNotEmpty();" />
 		</div>
-		{if empty($bqname)}
-			<div class="slds-form-element__help" id="bqnamecontainerhelp">{'CANNOT_BE_EMPTY'|@getTranslatedString:'cbQuestion'}</div>
-		{/if}
+		<div class="slds-form-element__help" id="bqnamecontainerhelp" style="display:{if empty($bqname)}flex{else}none{/if};">{'CANNOT_BE_EMPTY'|@getTranslatedString:'cbQuestion'}</div>
 	</div>
 	<div class="slds-col slds-size_1-of-2 slds-form-element slds-text-align_left">
 		<legend class="slds-form-element__legend slds-form-element__label">{'qcollection'|@getTranslatedString:'cbQuestion'}</legend>
@@ -102,9 +100,7 @@
 		<div class="slds-form-element__control">
 			<input id="bqmodule" required name="bqmodule" class="slds-input slds-page-header__meta-text" value="{$targetmodule}" onchange="changecbqModule(this.value);"/>
 		</div>
-		{if empty($targetmodule)}
-			<div class="slds-form-element__help" id="bqmodulecontainerhelp">{'SelectModule'|@getTranslatedString:'cbQuestion'}</div>
-		{/if}
+		<div class="slds-form-element__help" id="bqmodulecontainerhelp" style="display:{if empty($targetmodule)}flex{else}none{/if};">{'SelectModule'|@getTranslatedString:'cbQuestion'}</div>
 	</div>
 	<div class="slds-col slds-size_1-of-2 slds-form-element slds-text-align_left{if empty($targetmodule)} slds-has-error{/if}" id="msmodulescontainer">
 		<legend class="slds-form-element__legend slds-form-element__label">{'LBL_SYSTEMMODULES'|@getTranslatedString:'cbQuestion'}</legend>
@@ -117,9 +113,7 @@
 				</select>
 			</div>
 		</div>
-		{if empty($targetmodule)}
-			<div class="slds-form-element__help" id="msmodulescontainerhelp">{'SelectModule'|@getTranslatedString:'cbQuestion'}</div>
-		{/if}
+		<div class="slds-form-element__help" id="msmodulescontainerhelp" style="display:{if empty($targetmodule)}flex{else}none{/if};">{'SelectModule'|@getTranslatedString:'cbQuestion'}</div>
 	</div>
 </div>
 
