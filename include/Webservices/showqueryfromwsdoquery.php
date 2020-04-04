@@ -29,6 +29,7 @@ function showqueryfromwsdoquery($query, $user) {
 	$handlerClass = $webserviceObject->getHandlerClass();
 	require_once $handlerPath;
 	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+	$query = trim($query, ';').';';
 	$sql = $handler->wsVTQL2SQL($query, $meta, $queryRelatedModules);
 	$rdo = array('sql' => $sql);
 	if (stripos($sql, ' LIMIT ') > 0) {
