@@ -79,8 +79,8 @@ if ($mailto != '') {
 	$mailto = $mailtoDefined;
 }
 if ($mailto != '' && count($output)>0) {
-	$mailsubject = '[Warning]: cron Task(s) exceed time threshold';
-	$mailcontent = '<br>Some cron tasks in <b>'.$site_URL.'</b> have exceeded the maximum execution time.<br><br>';
+	$mailsubject = getTranslatedString('mailsubject', 'CronTasks');
+	$mailcontent = '<br>'.sprintf(getTranslatedString('mailheader', 'CronTasks'), $site_URL).'<br><br>';
 	$mailcontent.= '<table width="100%" border=1>';
 	$mailcontent.= '<tr>';
 	$mailcontent.= '<th>'.getTranslatedString('Cron Job', 'CronTasks').'</th>';

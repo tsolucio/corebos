@@ -49,5 +49,7 @@ $mod_strings = array (
 	'Cron Job' => 'Tarea Programada',
 	'cronWatcherService' => 'Vigilante Cron',
 	'Send out warning email for long running cron tasks' => 'Enviar correo de advertencia para tareas cron de larga ejecución.',
+	'mailsubject' => '[Aviso]: algunas tareas programadas superan el umbral de tiempo normal',
+	'mailheader' => 'Algunas tareas programadas en <b>%s</b> han excedido el tiempo máximo de ejecución.',
 );
 ?>

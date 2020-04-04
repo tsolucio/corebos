@@ -34,5 +34,7 @@ $mod_strings = array (
 	'LBL_MONTHS'=>'maand(en) geleden',
 	'LBL_YEARS'=>'ja(a)r(en) geleden',
 	'Send out warning email for long running cron tasks' => 'Send out warning email for long running cron tasks.',
+	'mailsubject' => '[Warning]: cron Task(s) exceed time threshold',
+	'mailheader' => 'Some cron tasks in <b>%s</b> have exceeded the maximum execution time.',
 );
 ?>
