@@ -12,6 +12,9 @@ include_once 'include/Webservices/getRecordImages.php';
 
 function vtws_retrieve($id, $user) {
 	global $log, $adb;
+	if (empty($id)) {
+		throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Id specified is incorrect');
+	}
 	$id = vtws_getWSID($id);
 	$webserviceObject = VtigerWebserviceObject::fromId($adb, $id);
 	$handlerPath = $webserviceObject->getHandlerPath();
