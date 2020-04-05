@@ -31,7 +31,9 @@ $auser = Users::getActiveAdminUser();
 $warningMinutes = GlobalVariable::getVariable('CronTasks_cronWatcher_TimeThreshold', 30, 'CronTasks', $auser->id);
 $warningTimeThreshold = $warningMinutes*60; // $warningMinutes minutes.
 ///////////////////////////////////
-
+if (empty($current_language)) {
+	$current_language = $auser->column_fields['language'];
+}
 // i18n
 //$i18nInactive = getTranslatedString('LBL_INACTIVE','CronTasks');
 //$i18nActive = getTranslatedString('LBL_ACTIVE','CronTasks');
