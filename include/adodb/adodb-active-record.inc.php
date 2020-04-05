@@ -1,7 +1,7 @@
 <?php
 /*
 
-@version   v5.20.16  12-Jan-2020
+@version   v5.20.17  31-Mar-2020
 @copyright (c) 2000-2013 John Lim (jlim#natsoft.com). All rights reserved.
 @copyright (c) 2014      Damien Regad, Mark Newnham and the ADOdb community
   Latest version is available at http://adodb.org/
@@ -510,7 +510,7 @@ class ADODB_Active_Record {
 				$attr[$name] = $fldobj;
 			}
 			foreach($pkeys as $k => $name) {
-				$keys[$name] = $cols[$name]->name;
+				$keys[$name] = $cols[strtoupper($name)]->name;
 			}
 			break;
 		}
