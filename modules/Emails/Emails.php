@@ -134,9 +134,16 @@ class Emails extends CRMEntity {
 					$mycrmid = $realid[0];
 					//added to handle the relationship of emails with vtiger_users
 					if (getModuleForField($realid[1]) == 'Users') {
-						$del_q = 'delete from vtiger_salesmanactivityrel where smid=? and activityid=?';
-						$adb->pquery($del_q, array($mycrmid, $actid));
-						$mysql = 'insert into vtiger_salesmanactivityrel values(?,?)';
+						$usrrs = $adb->pquery('select id from vtiger_users where id=?', array($mycrmid));
+						if ($adb->num_rows($usrrs)==0) {
+							$del_q = 'delete from vtiger_seactivityrel where crmid=? and activityid=?';
+							$adb->pquery($del_q, array($mycrmid, $actid));
+							$mysql = 'insert into vtiger_seactivityrel values(?,?)';
+						} else {
+							$del_q = 'delete from vtiger_salesmanactivityrel where smid=? and activityid=?';
+							$adb->pquery($del_q, array($mycrmid, $actid));
+							$mysql = 'insert into vtiger_salesmanactivityrel values(?,?)';
+						}
 					} else {
 						$del_q = 'delete from vtiger_seactivityrel where crmid=? and activityid=?';
 						$adb->pquery($del_q, array($mycrmid, $actid));
@@ -151,12 +158,20 @@ class Emails extends CRMEntity {
 				$realid = explode('@', $this->column_fields['parent_id']);
 				$mycrmid = $realid[0];
 				if ($realid[1]=='-1') { // user
-					$adb->pquery('DELETE FROM vtiger_salesmanactivityrel WHERE smid = ? AND activityid = ?', array($mycrmid, $this->id));
-					//$this->insertIntoEntityTable('vtiger_seactivityrel', $module);
-					$sql = 'insert into vtiger_salesmanactivityrel values (?,?)';
-					$params = array($mycrmid, $this->id);
+					$usrrs = $adb->pquery('select id from vtiger_users where id=?', array($mycrmid));
+					if ($adb->num_rows($usrrs)==0) {
+						$adb->pquery('DELETE FROM vtiger_seactivityrel WHERE crmid=? AND activityid=?', array($this->column_fields['parent_id'], $this->id));
+						//$this->insertIntoEntityTable('vtiger_seactivityrel', $module);
+						$sql = 'insert into vtiger_seactivityrel values(?,?)';
+						$params = array($mycrmid, $this->id);
+					} else {
+						$adb->pquery('DELETE FROM vtiger_salesmanactivityrel WHERE smid=? AND activityid=?', array($mycrmid, $this->id));
+						//$this->insertIntoEntityTable('vtiger_seactivityrel', $module);
+						$sql = 'insert into vtiger_salesmanactivityrel values (?,?)';
+						$params = array($mycrmid, $this->id);
+					}
 				} else {
-					$adb->pquery('DELETE FROM vtiger_seactivityrel WHERE crmid = ? AND activityid = ?', array($this->column_fields['parent_id'], $this->id));
+					$adb->pquery('DELETE FROM vtiger_seactivityrel WHERE crmid=? AND activityid=?', array($this->column_fields['parent_id'], $this->id));
 					//$this->insertIntoEntityTable('vtiger_seactivityrel', $module);
 					$sql = 'insert into vtiger_seactivityrel values(?,?)';
 					$params = array($mycrmid, $this->id);
