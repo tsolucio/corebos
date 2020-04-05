@@ -10,7 +10,7 @@
 
 //check for mail server configuration through ajax
 if (isset($_REQUEST['server_check']) && $_REQUEST['server_check'] == 'true') {
-	list($systemEmailClassName, $systemEmailClassPath) = cbEventHandler::do_filter('corebos.filter.systemEmailClass.getname', array('Emails', 'modules/Emails/Emails.php'));
+	list($systemEmailClassName, $systemEmailClassPath)=cbEventHandler::do_filter('corebos.filter.systemEmailClass.getname', array('Emails', 'modules/Emails/Emails.php'));
 	require_once $systemEmailClassPath;
 	if (call_user_func(array($systemEmailClassName, 'emailServerCheck'))) {
 		$upload_file_path = decideFilePath();
@@ -43,7 +43,7 @@ if (isset($_REQUEST['description']) && $_REQUEST['description'] !='') {
 $all_to_ids = $_REQUEST['hidden_toid'];
 $all_to_ids .= $_REQUEST['saved_toid'];
 $_REQUEST['saved_toid'] = $all_to_ids;
-//we always save the email with "save" status and when it is sent it is marked as SENT
+//we always save the email with 'save' status and when it is sent it is marked as SENT
 $_REQUEST['email_flag'] = 'SAVED';
 setObjectValuesFromRequest($focus);
 //Check if the file is exist or not.
@@ -58,16 +58,16 @@ $errormessage = '';
 if ($file_name != '' && $_FILES['filename']['size'] == 0) {
 	if ($errorCode == 4 || $errorCode == 0) {
 		if ($_FILES['filename']['size'] == 0) {
-			$errormessage = "<B><font color='red'>".$mod_strings['LBL_PLEASE_ATTACH']."</font></B> <br>";
+			$errormessage = '<b><span style="color:red;">'.$mod_strings['LBL_PLEASE_ATTACH'].'</span></b><br>';
 		}
 	} elseif ($errorCode == 2) {
 		$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize', 3000000);
-		$errormessage = "<B><font color='red'>".$mod_strings['LBL_EXCEED_MAX'].$upload_maxsize.$mod_strings['LBL_BYTES']." </font></B> <br>";
+		$errormessage = '<b><span style="color:red;">'.$mod_strings['LBL_EXCEED_MAX'].$upload_maxsize.$mod_strings['LBL_BYTES'].' </span></b><br>';
 	} elseif ($errorCode == 6) {
-		$errormessage = "<B>".$mod_strings['LBL_KINDLY_UPLOAD']."</B> <br>";
+		$errormessage = '<b>'.$mod_strings['LBL_KINDLY_UPLOAD'].'</b> <br>';
 	} elseif ($errorCode == 3) {
 		if ($_FILES['filename']['size'] == 0) {
-			$errormessage = "<b><font color='red'>".$mod_strings['LBL_PLEASE_ATTACH']."</font></b><br>";
+			$errormessage = '<b><span style="color:red;">'.$mod_strings['LBL_PLEASE_ATTACH'].'</span></b><br>';
 		}
 	}
 	if ($errormessage != '') {
@@ -84,7 +84,7 @@ if ($file_name != '' && $_FILES['filename']['size'] == 0) {
 	}
 }
 
-if (isset($_FILES['filename']) && $_FILES["filename"]["size"] == 0 && $_FILES["filename"]["name"] != '') {
+if (isset($_FILES['filename']) && $_FILES['filename']['size'] == 0 && $_FILES['filename']['name'] != '') {
 	$file_upload_error = true;
 	$_FILES = '';
 }
@@ -160,7 +160,7 @@ $focus->retrieve_entity_info($return_id, 'Emails');
 
 $module = empty($_REQUEST['source_module']) ? 'users' : $_REQUEST['source_module'];
 
-if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] != "") {
+if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] != '') {
 	$return_module = vtlib_purify($_REQUEST['return_module']);
 } else {
 	$return_module = 'Emails';
@@ -172,11 +172,11 @@ if (isset($_REQUEST['return_action']) && $_REQUEST['return_action'] != '') {
 	$return_action = 'DetailView';
 }
 
-if (isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != "") {
+if (isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != '') {
 	$return_id = vtlib_purify($_REQUEST['return_id']);
 }
 
-if (isset($_REQUEST['filename']) && $_REQUEST['filename'] != "") {
+if (isset($_REQUEST['filename']) && $_REQUEST['filename'] != '') {
 	$filename = vtlib_purify($_REQUEST['filename']);
 }
 
