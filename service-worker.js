@@ -9836,10 +9836,10 @@ precacheAndRoute([{
   "revision": "df1beb66383c404ca19595bfede77a1f"
 }, {
   "url": "modules/cbQuestion/resources/Builder.js",
-  "revision": "34f17afbe341bc999208288d8b7ad443"
+  "revision": "bf0422197961dd7ef90d84d2225492a0"
 }, {
   "url": "modules/cbQuestion/resources/editbuilder.js",
-  "revision": "099b6f9664531783abaa2e11df14d050"
+  "revision": "882f43f4054b3056e66a674b35112825"
 }, {
   "url": "modules/cbQuestion/resources/mermaid.min.js",
   "revision": "2cb9770b79c455efcb81bc3f58e35ef6"
