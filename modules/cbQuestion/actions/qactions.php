@@ -432,8 +432,8 @@ class qactions_Action extends CoreBOS_ActionController {
 					'data' => array(
 						'contents' => array(),
 						'pagination' => array(
-							'page' => $page,
-							'totalCount' => $noofrows,
+							'page' => (int)$page,
+							'totalCount' => (int)$noofrows,
 						),
 					),
 					'result' => true,
