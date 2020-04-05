@@ -30,6 +30,8 @@ class fixMailScannerEmailparentid extends cbupdaterWorker {
 			$manager->setBufferInMegaBytes(100);
 			$manager->setLimitInMegaBytes($phplimit);
 			$batch = 10000;
+			$query = 'SELECT fieldid FROM vtiger_field WHERE tabid=? and uitype=13 and presence in (0,2)';
+			$querycache = array();
 			$cnt=1;
 			$finished = true;
 			$rs = $adb->query("select emailid,idlists from vtiger_emaildetails where idlists like '%@-1%'");
@@ -45,11 +47,24 @@ class fixMailScannerEmailparentid extends cbupdaterWorker {
 					if ($fieldid=='-1') {
 						$usrrs = $adb->pquery('select id from vtiger_users where id=?', array($crmid));
 						if ($adb->num_rows($usrrs)==0) {
-							$referenceHandler = vtws_getModuleHandlerFromId(vtws_getWSID($crmid), $current_user);
-							$referenceMeta = $referenceHandler->getMeta();
-							$relid = getEmailFieldId($referenceMeta, $crmid);
-							$newref[] = "$crmid@$relid";
-							$changed = true;
+							try {
+								$relid = '';
+								$se = getSalesEntityType($crmid);
+								if (!empty($se) && isset($querycache[$se])) {
+									$relid = $querycache[$se];
+								} elseif (!empty($se)) {
+									$fldrs = $adb->pquery($query, array(getTabId($se)));
+									//pick up the first field.
+									$relid = $adb->query_result($fldrs, 0, 'fieldid');
+									$querycache[$se] = $relid;
+								}
+								if (!empty($relid)) {
+									$newref[] = "$crmid@$relid";
+									$changed = true;
+								}
+							} catch (Exception $e) {
+								$newref[] = $ref; // we leave it as it is
+							}
 						} else {
 							$newref[] = $ref;
 						}
