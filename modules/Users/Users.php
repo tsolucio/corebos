@@ -1166,6 +1166,9 @@ class Users extends CRMEntity {
 		if ($this->mode!='edit' || $oldrole != $this->column_fields['roleid']) {
 			UserPrivilegesWriter::setUserPrivileges($this->id);
 		}
+		if ($this->column_fields['status']=='Inactive') {
+			coreBOS_Settings::delSetting('cbodUserConnection'.$this->id);
+		}
 		// ODController
 		if ($cbodUserLog) {
 			if ($this->mode == 'create') { // creating user, we send to ODController
