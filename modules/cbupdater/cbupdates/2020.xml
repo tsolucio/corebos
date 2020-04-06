@@ -77,4 +77,11 @@
 	<classname>fixMailScannerEmailparentid</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>george1806</author>
+	<description>Add crmentityalias field in cbQuestion</description>
+	<filename>build/changeSets/2020/addcrmentityaliasFieldincbQuestion.php</filename>
+	<classname>addcrmentityaliasFieldincbQuestion</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

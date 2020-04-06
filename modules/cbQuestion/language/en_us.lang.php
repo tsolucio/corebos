@@ -99,5 +99,6 @@ $mod_strings = array(
 	'Context Module' => 'Context Module',
 	'Query Context' => 'Query Context',
 	'SelectModule' => 'Select a module',
+	'CRM Entity Alias' => 'CRM Entity Alias',
 );
 ?>
