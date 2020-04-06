@@ -85,8 +85,8 @@ function saveQuestion(update) {
 		'condfilterformat': 0,
 		'qcolumns': (qsqlqry=='1' ? document.getElementById('bqsql').value : (qtype=='Mermaid' ? document.getElementById('bqwsq').value : getSQLSelect())),
 		'qcondition': (qtype=='Mermaid' ? '' : getSQLConditions()),
-		'orderby': getSQLOrderBy().substr(9),
-		'groupby': getSQLGroupBy().substr(9),
+		'orderby': getSQLOrderBy(false).substr(9),
+		'groupby': getSQLGroupBy(false).substr(9),
 		'typeprops': document.getElementById('qprops').value,
 		//'description': ,
 		//'id': document.getElementById('wsrecord').value+document.getElementById('record').value
@@ -94,7 +94,6 @@ function saveQuestion(update) {
 	if (update && document.getElementById('record').value!='') {
 		cbq.id = document.getElementById('wsrecord').value+document.getElementById('record').value;
 		builderconditions.cbaccess.update(cbq, (success, result) => {
-			console.log(result);
 			if (success) {
 				ldsPrompt.show(alert_arr.JSLBL_SAVE, mod_alert_arr.QuestionSaved, 'success');
 			} else {
@@ -506,7 +505,10 @@ function getSQLConditions() {
 	return cnflds;
 }
 
-function getSQLGroupBy() {
+function getSQLGroupBy(FQN) {
+	if (typeof FQN=='undefined') {
+		FQN = true;
+	}
 	let gbflds = '';
 	fieldData.map(finfo => {
 		if (finfo.fieldname != 'custom' && finfo.group == '1') {
@@ -520,11 +522,23 @@ function getSQLGroupBy() {
 					fnam = finfo.fieldname.replace(' : (', '').replace(') ', '').replace(')', '').toLowerCase();
 				}
 			} else if (fnam == 'assigned_user_id') {
-				fnam = 'vtiger_crmentity.smownerid';
+				if (FQN) {
+					fnam = 'vtiger_crmentity.smownerid';
+				} else {
+					fnam = 'smownerid';
+				}
 			} else if (fnam == 'created_user_id') {
-				fnam = 'vtiger_crmentity.smcreatorid';
+				if (FQN) {
+					fnam = 'vtiger_crmentity.smcreatorid';
+				} else {
+					fnam = 'smcreatorid';
+				}
 			} else if (typeof fieldNEcolumn[document.getElementById('bqmodule').value+fnam]!='undefined') {
-				fnam = fieldTableRelation[finfo.fieldname]+'.'+fieldNEcolumn[document.getElementById('bqmodule').value+fnam];
+				if (FQN) {
+					fnam = fieldTableRelation[finfo.fieldname]+'.'+fieldNEcolumn[document.getElementById('bqmodule').value+fnam];
+				} else {
+					fnam = fieldNEcolumn[document.getElementById('bqmodule').value+fnam];
+				}
 			}
 			gbflds += fnam + ',';
 		}
@@ -535,7 +549,10 @@ function getSQLGroupBy() {
 	return gbflds;
 }
 
-function getSQLOrderBy() {
+function getSQLOrderBy(FQN) {
+	if (typeof FQN=='undefined') {
+		FQN = true;
+	}
 	let obflds = '';
 	fieldData.map(finfo => {
 		if (finfo.fieldname != 'custom' && finfo.sort != 'NONE') {
@@ -549,11 +566,23 @@ function getSQLOrderBy() {
 					fnam = finfo.fieldname.replace(' : (', '').replace(') ', '').replace(')', '').toLowerCase();
 				}
 			} else if (fnam == 'assigned_user_id') {
-				fnam = 'vtiger_crmentity.smownerid';
+				if (FQN) {
+					fnam = 'vtiger_crmentity.smownerid';
+				} else {
+					fnam = 'smownerid';
+				}
 			} else if (fnam == 'created_user_id') {
-				fnam = 'vtiger_crmentity.smcreatorid';
+				if (FQN) {
+					fnam = 'vtiger_crmentity.smcreatorid';
+				} else {
+					fnam = 'smcreatorid';
+				}
 			} else if (typeof fieldNEcolumn[document.getElementById('bqmodule').value+fnam]!='undefined') {
-				fnam = fieldTableRelation[finfo.fieldname]+'.'+fieldNEcolumn[document.getElementById('bqmodule').value+fnam];
+				if (FQN) {
+					fnam = fieldTableRelation[finfo.fieldname]+'.'+fieldNEcolumn[document.getElementById('bqmodule').value+fnam];
+				} else {
+					fnam = fieldNEcolumn[document.getElementById('bqmodule').value+fnam];
+				}
 			}
 			obflds += fnam + ' ' + finfo.sort + ',';
 		}
