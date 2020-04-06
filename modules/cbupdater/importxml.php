@@ -18,6 +18,7 @@
 *  Author       : JPL TSolucio, S. L.
 *************************************************************************************************/
 require_once 'vtlib/Vtiger/Unzip.php';
+require_once 'Smarty_setup.php';
 
 global $adb;
 $cspath = 'build/changeSets/imported';
@@ -26,7 +27,6 @@ if (!is_dir($cspath)) {
 }
 
 if (isOnDemandActive()) {
-	require_once 'Smarty_setup.php';
 	$smarty = new vtigerCRM_Smarty();
 	$smarty->assign('APP', $app_strings);
 	$smarty->assign('OPERATION_MESSAGE', getTranslatedString('LBL_PERMISSION'));
@@ -48,13 +48,15 @@ if (empty($zipfile)) {
 }
 
 function cbupd_getfile() {
-	echo '<div style="padding:10px;"><form name="EditView" method="POST" ENCTYPE="multipart/form-data" action="index.php">';
-	echo '<input type="hidden" name="module" value="cbupdater">';
-	echo '<input type="hidden" name="action" value="importxml">';
-	echo '<input name="zipfile" type="file" value="" tabindex="1"/>';
-	echo '<input name="zipfile_hidden" type="hidden" value=""/>';
-	echo '<br><br><input type="submit" name="import" class="crmButton small save" value="'.getTranslatedString('ImportXML', 'cbupdater').'" id="save">';
-	echo '</form></div>';
+	global $mod_strings, $app_strings, $currentModule;
+	include 'modules/cbupdater/forcedButtons.php';
+	$smarty = new vtigerCRM_Smarty();
+	$smarty->assign('APP', $app_strings);
+	$smarty->assign('MOD', $mod_strings);
+	$smarty->assign('MODULE', $currentModule);
+	$smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
+	$smarty->assign('CHECK', $tool_buttons);
+	$smarty->display('modules/cbupdater/importxml.tpl');
 }
 
 function cbupd_import($zipfile) {
