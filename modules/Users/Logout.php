@@ -16,7 +16,7 @@ global $adb,$current_user;
 
 // Recording Logout Info
 $usip = Vtiger_Request::get_ip();
-$outtime=date("Y/m/d H:i:s");
+$outtime=date('Y/m/d H:i:s');
 $loghistory=new LoginHistory();
 $loghistory->user_logout($current_user->user_name, $usip, $outtime);
 
