@@ -63,6 +63,7 @@ $mod_strings = array(
 	'VIEWNOK' => 'The view creation FAILED with error',
 	'SQLQuery' => 'SQL Query',
 	'SQLError' => 'Error constructing SQL Query',
+	'SQLDELETE' => 'If this SQL is to be used in a Materialized View Workflow it MUST have the condition `deleted=0` as the first condition after the `where`, just like the application does.',
 	'Test SQL' => 'Test SQL',
 	'Create View' => 'Create View',
 	'Create MView' => 'Create Materialized View',
