@@ -72,8 +72,7 @@
 		{assign var="usefldlabel" value=$fldlabel}
 		{assign var="fldhelplink" value=""}
 		{if isset($FIELDHELPINFO) && isset($FIELDHELPINFO.$fldname)}
-			{assign var="fldhelplinkimg" value='help_icon.gif'|@vtiger_imageurl:$THEME}
-			{assign var="fldhelplink" value="<img style='cursor:pointer' onclick='vtlib_field_help_show(this, \"$fldname\");' border=0 src='$fldhelplinkimg'>"}
+			{assign var="fldhelplink" value="<svg class=\"slds-icon slds-icon slds-icon_xx-small slds-icon-text-default\" aria-hidden=\"true\" onclick='vtlib_field_help_show(this, \"$fldname\");'><use xlink:href=\"include/LD/assets/icons/utility-sprite/svg/symbols.svg#info\"></use></svg>"}
 			{if $uitype neq '10'}
 				{assign var="usefldlabel" value="$fldlabel $fldhelplink"}
 			{/if}
