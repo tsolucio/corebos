@@ -1499,7 +1499,7 @@ function getModuleForField($fieldid) {
 	$sql = 'SELECT vtiger_tab.name
 		FROM vtiger_field
 		INNER JOIN vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
-		WHERE fieldid = ?';
+		WHERE fieldid=?';
 	$res = $adb->pquery($sql, array($fieldid));
 
 	$modname = '';

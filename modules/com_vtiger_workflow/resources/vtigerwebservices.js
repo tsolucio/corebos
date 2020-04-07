@@ -100,9 +100,8 @@ function vtigerwebservicesproto() {
 		if (object['assigned_user_id']==null) {
 			object['assigned_user_id'] = this.userId;
 		}
-		var objectJson = JSON.encode(object);
-		this.post('create', {'elementType':objectType,
-			'element':objectJson}, callback);
+		var objectJson = JSON.stringify(object);
+		this.post('create', {'elementType':objectType, 'element':objectJson}, callback);
 	}
 
 	function retrieve(id, callback) {
@@ -110,7 +109,7 @@ function vtigerwebservicesproto() {
 	}
 
 	function update(object, callback) {
-		var objectJson = JSON.encode(object);
+		var objectJson = JSON.stringify(object);
 		this.post('update', {'element':objectJson}, callback);
 	}
 

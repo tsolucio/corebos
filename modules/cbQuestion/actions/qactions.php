@@ -335,8 +335,42 @@ class qactions_Action extends CoreBOS_ActionController {
 		echo json_encode($rdo);
 	}
 
+	private function getQuestionContext() {
+		global $current_user;
+		$params = array();
+		if (!empty($_REQUEST['cbQuestionContext'])) {
+			$ctx = vtlib_purify(json_decode(urldecode($_REQUEST['cbQuestionContext']), true));
+			$recordid = $ctx['RECORDID'];
+			$module = $ctx['MODULE'];
+			if (empty($module) && !empty($recordid)) {
+				$module = getSalesEntityType($recordid);
+			}
+			$params = array(
+				'$RECORD$' => $recordid,
+				'$MODULE$' => $module,
+				'$USERID$' => $current_user->id,
+			);
+			if (!empty($recordid)) {
+				$ctxtmodule = getSalesEntityType($recordid);
+				$params['$MODULE$'] = $ctxtmodule;
+				$ent = CRMEntity::getInstance($ctxtmodule);
+				$ent->id = $recordid;
+				$ent->retrieve_entity_info($recordid, $ctxtmodule, false, true);
+				foreach ($ent->column_fields as $fname => $fvalue) {
+					$params['$'.$fname.'$'] = $fvalue;
+				}
+			}
+		}
+		return $params;
+	}
 	public function getBuilderAnswer() {
-		echo cbQuestion::getFormattedAnswer(0, array('cbQuestionRecord' => json_decode($_REQUEST['cbQuestionRecord'], true)));
+		global $current_user;
+		$params = array('cbQuestionRecord' => json_decode($_REQUEST['cbQuestionRecord'], true));
+		$ctx = $this->getQuestionContext();
+		if (count($ctx)) {
+			$params['cbQuestionContext'] = $ctx;
+		}
+		echo cbQuestion::getFormattedAnswer(0, $params);
 	}
 
 	public function getBuilderData() {
@@ -361,6 +395,10 @@ class qactions_Action extends CoreBOS_ActionController {
 			return;
 		}
 		$params = array('cbQuestionRecord' => json_decode(urldecode($_REQUEST['cbQuestionRecord']), true));
+		$ctx = $this->getQuestionContext();
+		if (count($ctx)) {
+			$params['cbQuestionContext'] = $ctx;
+		}
 		if ($params['cbQuestionRecord']['sqlquery']=='1') {
 			include_once 'include/Webservices/showqueryfromwsdoquery.php';
 			$sqlinfo = showqueryfromwsdoquery($params['cbQuestionRecord']['qcolumns'], $current_user);
@@ -385,7 +423,7 @@ class qactions_Action extends CoreBOS_ActionController {
 		}
 		$from = ($page-1)*$rowsperpage;
 		$limit = " limit $from,$rowsperpage";
-		$result = $adb->query($list_query.$limit);
+		$result = $adb->query(trim($list_query, ';').$limit);
 		$count_result = $adb->query('SELECT FOUND_ROWS();');
 		$noofrows = $adb->query_result($count_result, 0, 0);
 		if ($result) {
@@ -394,8 +432,8 @@ class qactions_Action extends CoreBOS_ActionController {
 					'data' => array(
 						'contents' => array(),
 						'pagination' => array(
-							'page' => $page,
-							'totalCount' => $noofrows,
+							'page' => (int)$page,
+							'totalCount' => (int)$noofrows,
 						),
 					),
 					'result' => true,

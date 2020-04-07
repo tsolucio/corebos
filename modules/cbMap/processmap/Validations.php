@@ -241,6 +241,11 @@ class Validations extends processcbMap {
 						if ($rule=='notin') {
 							$rule = 'notIn';
 						}
+						foreach ($restrictions as $rky => $rest) {
+							if (substr($rest, 0, 2)=='{{' && substr($rest, -2)=='}}' && isset($screen_values[substr($rest, 2, strlen($rest)-4)])) {
+								$restrictions[$rky] = $screen_values[substr($rest, 2, strlen($rest)-4)];
+							}
+						}
 						if (isset($val['msg'])) {
 							$v->rule($rule, $valfield, $restrictions)->message($val['msg'])->label($i18n);
 						} else {

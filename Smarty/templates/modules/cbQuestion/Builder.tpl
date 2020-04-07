@@ -19,6 +19,8 @@
 }
 </style>
 <form name="EditView" action="index.php" method="POST" onsubmit="VtigerJS_DialogBox.block();">
+<input type="hidden" name="record" id="record" value="{$ID}">
+<input type="hidden" name="wsrecord" id="wsrecord" value="{$WSID}">
 {assign var="MODULELABEL" value=$MODULE|@getTranslatedString:$MODULE}
 {assign var='MODULEICON' value=$MODULE|@getModuleIcon}
 <div id="page-header-placeholder"></div>
@@ -27,7 +29,7 @@
 		<div class="slds-page-header__col-title">
 			<div class="slds-media">
 				<div class="slds-media__figure">
-					<a class="hdrLink" href="index.php?action=DetailView&module={$MODULE}&record={$ID}">
+					<a class="hdrLink" href="{$headerurl}">
 						<span class="{$MODULEICON.__ICONContainerClass}" title="{$MODULE|@getTranslatedString:$MODULE}">
 							<svg class="slds-icon slds-page-header__icon" id="page-header-icon" aria-hidden="true">
 								<use xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -43,7 +45,7 @@
 							<h1>
 								<span>{$MODULELABEL}</span>
 								<span class="slds-page-header__title slds-truncate" title="{$MODULELABEL|@addslashes}">
-									<a class="hdrLink" href="index.php?action=DetailView&module={$MODULE}&record={$ID}">{'Question Builder'|@getTranslatedString:$MODULE}</a>
+									<a class="hdrLink" href="{$headerurl}">{'Question Builder'|@getTranslatedString:$MODULE}</a>
 								</span>
 							</h1>
 							<p class="slds-page-header__row slds-page-header__name-meta">
@@ -56,23 +58,17 @@
 		<div class="slds-page-header__col-actions">
 			<div class="slds-grid slds-gutters slds-m-around_xxx-small">
 				<div class="slds-col">
-					<button class="slds-button slds-button_success" type="submit" id='save'>
+					<button class="slds-button slds-button_success" type="button" id='save' onclick="saveQuestion(true);">
 						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
 						</svg>
 						{$APP.LBL_SAVE_BUTTON_LABEL}
 					</button>
-					<button class="slds-button slds-button_success" type="submit" id='savenew'>
+					<button class="slds-button slds-button_success" type="button" id='savenew' onclick="saveQuestion(false);">
 						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
 						</svg>
 						{$APP.LBL_NEW_BUTTON_TITLE}
-					</button>
-					<button class="slds-button slds-button_destructive" type="button" onclick="gotourl('{$cancelgo}');">
-						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use>
-						</svg>
-						{$APP.LBL_CANCEL_BUTTON_LABEL}
 					</button>
 				</div>
 			</div>
@@ -84,27 +80,29 @@
 
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher slds-card slds-m-around_medium">
 <div class="slds-p-around_x-small slds-grid slds-gutters">
-	<div class="slds-col slds-size_1-of-2 slds-form-element slds-text-align_left">
+	<div class="slds-col slds-size_1-of-2 slds-form-element slds-text-align_left{if empty($bqname)} slds-has-error{/if}" id="bqnamecontainer">
 		<legend class="slds-form-element__legend slds-form-element__label">{'qname'|@getTranslatedString:'cbQuestion'}</legend>
 		<div class="slds-form-element__control">
-			<input id="bqname" required name="bqname" class="slds-input slds-page-header__meta-text" value="{$bqname}" />
+			<input id="bqname" required name="bqname" class="slds-input slds-page-header__meta-text" value="{$bqname}" onchange="checkNameNotEmpty();" />
 		</div>
+		<div class="slds-form-element__help" id="bqnamecontainerhelp" style="display:{if empty($bqname)}flex{else}none{/if};">{'CANNOT_BE_EMPTY'|@getTranslatedString:'cbQuestion'}</div>
 	</div>
 	<div class="slds-col slds-size_1-of-2 slds-form-element slds-text-align_left">
 		<legend class="slds-form-element__legend slds-form-element__label">{'qcollection'|@getTranslatedString:'cbQuestion'}</legend>
 		<div class="slds-form-element__control">
-			<input id="bqcollection" required name="bqcollection" class="slds-input slds-page-header__meta-text" value="{$bqcollection}" />
+			<input id="bqcollection" name="bqcollection" class="slds-input slds-page-header__meta-text" value="{$bqcollection}" />
 		</div>
 	</div>
 </div>
 <div class="slds-p-around_x-small slds-grid slds-gutters">
-	<div class="slds-col slds-size_1-of-2 slds-form-element slds-text-align_left">
+	<div class="slds-col slds-size_1-of-2 slds-form-element slds-text-align_left{if empty($targetmodule)} slds-has-error{/if}" id="bqmodulecontainer">
 		<legend class="slds-form-element__legend slds-form-element__label">{'LBL_MODULE'|@getTranslatedString:'cbMap'}</legend>
 		<div class="slds-form-element__control">
 			<input id="bqmodule" required name="bqmodule" class="slds-input slds-page-header__meta-text" value="{$targetmodule}" onchange="changecbqModule(this.value);"/>
 		</div>
+		<div class="slds-form-element__help" id="bqmodulecontainerhelp" style="display:{if empty($targetmodule)}flex{else}none{/if};">{'SelectModule'|@getTranslatedString:'cbQuestion'}</div>
 	</div>
-	<div class="slds-col slds-size_1-of-2 slds-form-element slds-text-align_left">
+	<div class="slds-col slds-size_1-of-2 slds-form-element slds-text-align_left{if empty($targetmodule)} slds-has-error{/if}" id="msmodulescontainer">
 		<legend class="slds-form-element__legend slds-form-element__label">{'LBL_SYSTEMMODULES'|@getTranslatedString:'cbQuestion'}</legend>
 		<div class="slds-form-element__control">
 			<div class="slds-select_container">
@@ -115,6 +113,7 @@
 				</select>
 			</div>
 		</div>
+		<div class="slds-form-element__help" id="msmodulescontainerhelp" style="display:{if empty($targetmodule)}flex{else}none{/if};">{'SelectModule'|@getTranslatedString:'cbQuestion'}</div>
 	</div>
 </div>
 
@@ -336,7 +335,7 @@
 		</div>
 		<legend class="slds-form-element__legend slds-form-element__label">{'Type Properties'|@getTranslatedString:'cbQuestion'}</legend>
 		<div class="slds-form-element__control">
-			<textarea id="qprops" class="slds-textarea"></textarea>
+			<textarea id="qprops" class="slds-textarea">{$typeprops}</textarea>
 		</div>
 	</div>
 </div>
@@ -384,11 +383,21 @@
 		<div class="slds-col slds-slds-page-header__meta-text slds-m-left_x-small" id="resultsgrid" style="width:99%;"></div>
 	</div>
 	<div class="slds-col slds-size_2-of-6 slds-page-header__meta-text">
+		<span id="contextfieldcontainer" style="display:{if $isActorModule}none{else}block{/if}">
+		<div class="slds-p-top_xx-small slds-form-element slds-form-element_horizontal">
+			<label class="slds-form-element__label" for="evaluatewith_type">{'Context Module'|@getTranslatedString:'cbQuestion'}</label>
+			<span>
+				<select name="evaluatewith_type" id="evaluatewith_type" class="slds-select" style="width:70%;">
+				{foreach from=$rel1tom item=item}
+					<option value="{$item['name']}">{$item['label']}</option>
+				{/foreach}
+				</select>
+			</span>
+		</div>
 		<div class="slds-p-top_xx-small slds-form-element slds-form-element_horizontal">
 			<label class="slds-form-element__label" for="evaluatewith_display">{'Query Context'|@getTranslatedString:'cbQuestion'}</label>
 			<span>
-				<input type='hidden' name="evaluatewith_type" id="evaluatewith_type" value="{if $targetmodule=='Workflow'}com_vtiger_workflow{else}{$targetmodule}{/if}">
-				<input id="evaluate" name="evaluatewith" type="hidden" value="">
+				<input id="evaluatewith" name="evaluatewith" type="hidden" value="">
 				<input
 					id="evaluatewith_display"
 					name="evaluatewith_display"
@@ -405,12 +414,14 @@
 				</span>
 			</span>
 		</div>
+		</span>
 		<div id="cqanswer" class="slds-m-around_xx-small slds-p-around_xx-small slds-badge_lightest slds-scrollable"></div>
 	</div>
 </div>
 </span>
 </section>
 </form>
+<span id="dump" style="display:none;"></span>
 <script src="modules/cbQuestion/resources/mermaid.min.js"></script>
 <script src="include/chart.js/Chart.min.js"></script>
 <link rel="stylesheet" type="text/css" media="all" href="include/chart.js/Chart.min.css">
@@ -426,7 +437,7 @@
 <script type="text/javascript" charset="utf-8">
 	var moduleName = '{$targetmodule}';
 	{if isset($cbqconditons)}
-	var conditions = JSON.parse('{$cbqconditons}');
+	var conditions = {$cbqconditons};
 	{else}
 	var conditions = null;
 	{/if}
@@ -437,4 +448,5 @@
 	var validOperations = {$validOperations};
 	var fieldNEcolumn = {$fieldNEcolumn};
 	var fieldTableRelation = {$fieldTableRelation};
+	var actorModules = {$actorModules};
 </script>

@@ -94,6 +94,8 @@ module.exports = {
 		'modules/Calendar/Calendar.js',
 		'modules/cbCalendar/cbCalendar.js',
 		'modules/cbQuestion/cbQuestion.js',
+		'modules/cbQuestion/resources/*.js',
+		'modules/cbQuestion/language/*.js',
 		'modules/Portal/Portal.js',
 		'modules/ProjectMilestone/ProjectMilestone.js',
 		'modules/Leads/Leads.js',

@@ -488,8 +488,7 @@ class Vtiger_MailScanner {
 		if ($checkTicketId) {
 			$crmres = $adb->pquery('SELECT setype, deleted FROM vtiger_crmentity WHERE crmid=?', array($checkTicketId));
 			if ($adb->num_rows($crmres)) {
-				if ($adb->query_result($crmres, 0, 'setype') == 'HelpDesk' &&
-					$adb->query_result($crmres, 0, 'deleted') == '0') {
+				if ($adb->query_result($crmres, 0, 'setype') == 'HelpDesk' && $adb->query_result($crmres, 0, 'deleted') == '0') {
 					$ticketid = $checkTicketId;
 				}
 			}
@@ -537,8 +536,7 @@ class Vtiger_MailScanner {
 		if ($checkProjectId) {
 			$crmres = $adb->pquery('SELECT setype, deleted FROM vtiger_crmentity WHERE crmid=?', array($checkProjectId));
 			if ($adb->num_rows($crmres)) {
-				if ($adb->query_result($crmres, 0, 'setype') == 'Project' &&
-					$adb->query_result($crmres, 0, 'deleted') == '0') {
+				if ($adb->query_result($crmres, 0, 'setype') == 'Project' && $adb->query_result($crmres, 0, 'deleted') == '0') {
 					$projectid = $checkProjectId;
 				}
 			}

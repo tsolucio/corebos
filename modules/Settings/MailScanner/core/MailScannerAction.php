@@ -327,11 +327,17 @@ class Vtiger_MailScannerAction {
 		if (!$current_user) {
 			$current_user = Users::getActiveAdminUser();
 		}
-
+		if ($module=='Users') {
+			$relid = '-1';
+		} else {
+			$referenceHandler = vtws_getModuleHandlerFromId(vtws_getEntityId($module).'x'.$linkfocus->id, $current_user);
+			$referenceMeta = $referenceHandler->getMeta();
+			$relid = getEmailFieldId($referenceMeta, $linkfocus->id);
+		}
 		$focus = new Emails();
 		$focus->column_fields['parent_type'] = $module;
 		$focus->column_fields['activitytype'] = 'Emails';
-		$focus->column_fields['parent_id'] = "$linkfocus->id@-1|";
+		$focus->column_fields['parent_id'] = "$linkfocus->id@$relid|";
 		$focus->column_fields['subject'] = $mailrecord->_subject;
 
 		$focus->column_fields['description'] = $mailrecord->getBodyHTML();

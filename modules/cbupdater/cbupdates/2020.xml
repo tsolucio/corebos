@@ -70,4 +70,18 @@
 	<classname>delCalendarWorkflowsTasks</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Fix Mail Converter Email parentid reference</description>
+	<filename>build/changeSets/2020/fixMailScannerEmailparentid.php</filename>
+	<classname>fixMailScannerEmailparentid</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>george1806</author>
+	<description>Add crmentityalias field in cbQuestion</description>
+	<filename>build/changeSets/2020/addcrmentityaliasFieldincbQuestion.php</filename>
+	<classname>addcrmentityaliasFieldincbQuestion</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

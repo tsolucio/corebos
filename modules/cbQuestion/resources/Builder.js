@@ -1,7 +1,7 @@
 var Report_ListView_PageSize = 40;
 GlobalVariable_getVariable('Report_ListView_PageSize', 40, 'cbQuestion', '').then(function (response) {
 	var obj = JSON.parse(response);
-	Report_ListView_PageSize = obj.Report_ListView_PageSize;
+	Report_ListView_PageSize = parseInt(obj.Report_ListView_PageSize, 10);
 });
 
 function copysql() {
@@ -53,6 +53,72 @@ function toggleSQLView() {
 	}
 }
 
+function saveQuestion(update) {
+	const qname = document.getElementById('bqname').value;
+	const qmodule = document.getElementById('bqmodule').value;
+	if (qname=='') {
+		ldsPrompt.show(alert_arr.ERROR, mod_alert_arr.NameNotEmpty, 'error');
+		document.getElementById('bqname').focus();
+		return false;
+	}
+	if (qmodule=='') {
+		ldsPrompt.show(alert_arr.ERROR, mod_alert_arr.ModuleNotEmpty, 'error');
+		document.getElementById('bqmodule').focus();
+		return false;
+	}
+	const qtype = document.getElementById('qtype').value;
+	const qsqlqry = (document.getElementById('sqlquery').checked ? '1' : '0');
+	let cbq = {
+		'qname': qname,
+		//'cbquestionno': ,
+		'qtype': qtype,
+		'qstatus': 'Active',
+		'sqlquery': qsqlqry,
+		'qcollection': document.getElementById('bqcollection').value,
+		'qmodule': qmodule,
+		'qpagesize': document.getElementById('qpagesize').value=='' ? 0 : document.getElementById('qpagesize').value,
+		// 'uniqueid': ,
+		// 'mviewcron': ,
+		// 'cbmapid': ,
+		// 'mviewwf': ,
+		'assigned_user_id': builderconditions.cbaccess.userId,
+		'condfilterformat': 0,
+		'qcolumns': (qsqlqry=='1' ? document.getElementById('bqsql').value : (qtype=='Mermaid' ? document.getElementById('bqwsq').value : getSQLSelect())),
+		'qcondition': (qtype=='Mermaid' ? '' : getSQLConditions()),
+		'orderby': getSQLOrderBy(false).substr(9),
+		'groupby': getSQLGroupBy(false).substr(9),
+		'typeprops': document.getElementById('qprops').value,
+		//'description': ,
+		//'id': document.getElementById('wsrecord').value+document.getElementById('record').value
+	};
+	if (update && document.getElementById('record').value!='') {
+		cbq.id = document.getElementById('wsrecord').value+document.getElementById('record').value;
+		builderconditions.cbaccess.update(cbq, (success, result) => {
+			if (success) {
+				ldsPrompt.show(alert_arr.JSLBL_SAVE, mod_alert_arr.QuestionSaved, 'success');
+			} else {
+				ldsPrompt.show(alert_arr.ERROR, result.message, 'error');
+			}
+		});
+	} else {
+		cbq.uniqueid = '';
+		cbq.mviewcron = '0';
+		cbq.cbmapid = '';
+		cbq.mviewwf = '0';
+		cbq.description = '';
+		builderconditions.cbaccess.create(cbq, 'cbQuestion', (success, result) => {
+			if (success) {
+				let id = result.id.split('x');
+				document.getElementById('record').value = id[1];
+				ldsPrompt.show(alert_arr.JSLBL_SAVE, mod_alert_arr.QuestionSaved, 'success');
+			} else {
+				ldsPrompt.show(alert_arr.ERROR, result.message, 'error');
+			}
+		});
+	}
+	return false;
+}
+
 function getQuestionResults() {
 	const qtype = document.getElementById('qtype').value;
 	const qsqlqry = (document.getElementById('sqlquery').checked ? '1' : '0');
@@ -67,8 +133,16 @@ function getQuestionResults() {
 		'groupby': getSQLGroupBy().substr(9),
 		'typeprops': document.getElementById('qprops').value,
 		'sqlquery': qsqlqry,
-		'condfilterformat': '0',
+		'condfilterformat': '0'
 	});
+	const evaluatewith = document.getElementById('evaluatewith').value;
+	let cbqctx = '';
+	if (evaluatewith!=0 && evaluatewith!='') {
+		cbqctx = JSON.stringify({
+			'RECORDID': evaluatewith,
+			'MODULE': document.getElementById('evaluatewith_type').value
+		});
+	}
 	fetch(
 		'index.php?module=cbQuestion&action=cbQuestionAjax&actionname=qactions&method=getBuilderAnswer',
 		{
@@ -77,18 +151,17 @@ function getQuestionResults() {
 				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
 			},
 			credentials: 'same-origin',
-			body: '&'+csrfMagicName+'='+csrfMagicToken+'&cbQuestionRecord='+encodeURIComponent(cbq)
+			body: '&'+csrfMagicName+'='+csrfMagicToken+'&cbQuestionRecord='+encodeURIComponent(cbq)+'&cbQuestionContext='+encodeURIComponent(cbqctx)
 		}
 	).then(response => response.text()).then(response => {
 		let cbqa = document.getElementById('cqanswer');
 		cbqa.innerHTML = response;
 		vtlib_executeJavascriptInElement(cbqa);
 	});
-	if (qtype=='Mermaid') {
-		dataGridInstance.clear();
-	} else {
+	dataGridInstance.clear();
+	if (qtype!='Mermaid') {
 		dataGridInstance.setColumns(getDataColumns());
-		dataGridInstance.setRequestParams({'cbQuestionRecord': encodeURIComponent(cbq)});
+		dataGridInstance.setRequestParams({'cbQuestionRecord': encodeURIComponent(cbq), 'cbQuestionContext': encodeURIComponent(cbqctx)});
 		dataGridInstance.reloadData();
 	}
 }
@@ -148,13 +221,35 @@ function toggleBlock(block) {
 	}
 }
 
+function checkNameNotEmpty(val) {
+	if (val=='') {
+		document.getElementById('bqnamecontainer').classList.add('slds-has-error');
+		document.getElementById('bqnamecontainerhelp').style.display = 'flex';
+	} else {
+		document.getElementById('bqnamecontainer').classList.remove('slds-has-error');
+		document.getElementById('bqnamecontainerhelp').style.display = 'none';
+	}
+}
+
 function changecbqModule(newmodule) {
+	var isActorModule = (actorModules.indexOf(document.getElementById('bqmodule').value)!=-1);
+	if (isActorModule) {
+		document.getElementById('contextfieldcontainer').style.display = 'none';
+	} else {
+		document.getElementById('contextfieldcontainer').style.display = 'block';
+	}
+	conditions = null;
+	builderconditions.conditions = null;
+	Array.from(document.querySelectorAll('.ceremovebutton')).map((e) => e.click());
+	document.getElementById('bqmodulecontainer').classList.remove('slds-has-error');
+	document.getElementById('bqmodulecontainerhelp').style.display = 'none';
+	document.getElementById('msmodulescontainer').classList.remove('slds-has-error');
+	document.getElementById('msmodulescontainerhelp').style.display = 'none';
 	document.getElementById('save_conditions').innerHTML='';
 	document.getElementById('bqwsq').value='';
 	document.getElementById('bqsql').value='';
 	document.getElementById('evalid_type').value = (newmodule=='Workflow' ? 'com_vtiger_workflow' : newmodule);
 	moduleName = newmodule;
-	conditions = null;
 	fieldData = [];
 	fieldData.push(getEmptyFieldRow());
 	this.addEventListener(
@@ -174,10 +269,27 @@ function changecbqModule(newmodule) {
 			fieldGridColumns[0].editor.options.listItems = arrayOfFields;
 			fieldGridInstance.setColumns(fieldGridColumns);
 			fieldGridInstance.resetData(fieldData);
+			builderconditions.cbaccess.doGet(
+				{
+					'sessionName': builderconditions.cbaccess.sessionId,
+					'operation':'getRelatedModulesOneToMany',
+					'module':newmodule
+				},
+				(rdo) => {
+					var el = document.getElementById('evaluatewith_type');
+					el.options.length = 0;
+					for (const op in rdo.result) {
+						let option = document.createElement('option');
+						option.text  = rdo.result[op].label;
+						option.value = rdo.result[op].name;
+						el.add(option);
+					}
+				}
+			);
 		},
 		false
 	);
-	builderconditions.changeModule();
+	builderconditions.changeModule(null);
 	fetch(
 		'index.php?module=cbMap&action=cbMapAjax&actionname=mapactions&method=getFieldTablesForModule',
 		{
@@ -217,89 +329,186 @@ function hideSQLMsg() {
 
 function getSQLSelect() {
 	let slflds = [];
+	var isActorModule = (actorModules.indexOf(document.getElementById('bqmodule').value)!=-1);
 	fieldData.map(finfo => {
 		if (finfo.instruction != '') {
-			/* complex conditioning
-				module_field no_operator no_alias > fieldname
-				module_field operator no_alias > fieldname
-				module_field no_operator alias > fieldname
-				module_field operator alias > alias
-				related_module_field no_operator no_alias > fieldname
-				related_module_field operator no_alias > we have to create an alias
-				related_module_field no_operator alias > fieldname
-				related_module_field operator alias > alias
-			*/
-			let fnam = finfo.fieldname;
-			if (finfo.fieldname.indexOf(': (')==-1) {
-				if (finfo.operators!='custom' && finfo.alias!='') {
-					fnam = finfo.alias;
+			if (isActorModule) {
+				if (typeof slflds == 'object') {
+					slflds = '';
 				}
-			} else if (finfo.operators!='custom') {
-				if (finfo.alias=='') {
-					fnam = finfo.fieldname.replace(' : (', '').replace(') ', '').replace(')', '').toLowerCase();
-				} else {
-					fnam = finfo.alias;
+				slflds += (slflds!='' ? ',' : '')+finfo.instruction;
+			} else {
+				/* complex conditioning
+					module_field no_operator no_alias > fieldname
+					module_field operator no_alias > fieldname
+					module_field no_operator alias > fieldname
+					module_field operator alias > alias
+					related_module_field no_operator no_alias > fieldname
+					related_module_field operator no_alias > we have to create an alias
+					related_module_field no_operator alias > fieldname
+					related_module_field operator alias > alias
+				*/
+				let fnam = finfo.fieldname;
+				if (finfo.fieldname.indexOf(': (')==-1) {
+					if (finfo.operators!='custom' && finfo.alias!='') {
+						fnam = finfo.alias;
+					}
+				} else if (finfo.operators!='custom') {
+					if (finfo.alias=='') {
+						fnam = finfo.fieldname.replace(' : (', '').replace(') ', '').replace(')', '').toLowerCase();
+					} else {
+						fnam = finfo.alias;
+					}
 				}
+				slflds.push({
+					fieldname:fnam,
+					operation:'is',
+					value:finfo.instruction,
+					valuetype:(finfo.fieldname==finfo.instruction || finfo.operators=='custom' ? 'fieldname' : 'expression'),
+					joincondition:finfo.operators,
+					groupid:0,
+					groupjoin:finfo.fieldname
+				});
 			}
-			slflds.push({
-				fieldname:fnam,
-				operation:'is',
-				value:finfo.instruction,
-				valuetype:(finfo.fieldname==finfo.instruction || finfo.operators=='custom' ? 'fieldname' : 'expression'),
-				joincondition:'and',
-				groupid:0,
-				groupjoin:''
-			});
 		}
 	});
-	if (slflds.length>0) {
+	if (slflds.length>0 && !isActorModule) {
 		slflds = JSON.stringify(slflds);
-	} else {
+	} else if (!isActorModule) {
 		slflds = '';
 	}
 	return slflds;
 }
 
 function getSQLConditions() {
+	var isActorModule = (actorModules.indexOf(document.getElementById('bqmodule').value)!=-1);
+	var cnflds = '';
 	var conditions = [];
-	i=0;
-	$('#save_conditions').children('.condition_group_block').each(function (j, conditiongroupblock) {
-		$(conditiongroupblock).children('.save_condition_group').each(function (k, conditiongroup) {
-			$(conditiongroup).children().each(function (l) {
-				var fieldname = this.querySelector('div > .cefieldname').value;
-				var operation = this.querySelector('div > .ceoperation').value;
-				var value = this.querySelector('div > .ceexpressionvalue').value;
-				var valuetype = this.querySelector('div > .ceexpressiontype').value;
-				var joincondition = this.querySelector('div > .cejoincondition').value;
-				var groupid = this.querySelector('div > .groupid').value;
-				var groupjoin = '';
-				if (groupid != '') {
-					let scgj = document.getElementById('save_condition_group_'+groupid+'_joincondition');
-					if (scgj != null) {
-						groupjoin = scgj.value;
+	if (isActorModule) {
+		let ops = {
+			'after': '>',
+			'before': '<',
+			'between': '',
+			'contains': 'LIKE',
+			'days ago': '<',
+			'days later': '>',
+			'does not contain': 'LIKE',
+			'does not end with': 'LIKE',
+			'does not equal': '!=',
+			'does not start with': 'LIKE',
+			'ends with': 'LIKE',
+			'equal to': '=',
+			'exists': '=',
+			'greater than': '>',
+			'greater than or equal to': '>=',
+			'has changed': '!=',
+			'has changed to': '!=',
+			'has this as nth child': '=',
+			'in less than': '>',
+			'in more than': '<',
+			'is': '=',
+			'is empty': 'is null',
+			'is not': '!=',
+			'is not empty': 'is not null',
+			'is today': '=',
+			'less than': '<',
+			'less than days ago': '<',
+			'less than hours before': '<',
+			'less than hours later': '>',
+			'less than or equal to': '<=',
+			'more than days ago': '>',
+			'more than hours before': '<',
+			'more than hours later': '>',
+			'starts with': 'LIKE',
+			'was': '=',
+		};
+		conditions = '';
+		$('#save_conditions').children('.condition_group_block').each(function (j, conditiongroupblock) {
+			$(conditiongroupblock).children('.save_condition_group').each(function (k, conditiongroup) {
+				$(conditiongroup).children().each(function (l) {
+					var fieldname = this.querySelector('div > .cefieldname').value;
+					var operation = this.querySelector('div > .ceoperation').value;
+					var value = this.querySelector('div > .ceexpressionvalue').value;
+					//var valuetype = this.querySelector('div > .ceexpressiontype').value;
+					var joincondition = this.querySelector('div > .cejoincondition').value;
+					// var groupid = this.querySelector('div > .groupid').value;
+					// var groupjoin = '';
+					// if (groupid != '') {
+					// 	let scgj = document.getElementById('save_condition_group_'+groupid+'_joincondition');
+					// 	if (scgj != null) {
+					// 		groupjoin = scgj.value;
+					// 	}
+					// }
+					switch (operation) {
+						case 'contains':
+							conditions += fieldname+" LIKE '%"+value+"%' "+joincondition;
+							break;
+						case 'does not contain':
+							conditions += fieldname+" NOT LIKE '%"+value+"%' "+joincondition;
+							break;
+						case 'does not end with':
+							conditions += fieldname+" NOT LIKE '%"+value+"' "+joincondition;
+							break;
+						case 'does not start with':
+							conditions += fieldname+" NOT LIKE '"+value+"%' "+joincondition;
+							break;
+						case 'ends with':
+							conditions += fieldname+" LIKE '%"+value+"' "+joincondition;
+							break;
+						case 'starts with':
+							conditions += fieldname+" LIKE '"+value+"%' "+joincondition;
+							break;
+						default:
+							conditions += fieldname+' '+ops[operation]+" '"+value+"' "+joincondition;
+							break;
 					}
-				}
-				var condition = {
-					fieldname:fieldname,
-					operation:operation,
-					value:value,
-					valuetype:valuetype,
-					joincondition:joincondition,
-					groupid:groupid,
-					groupjoin:groupjoin
-				};
-				conditions[i++]=condition;
+				});
 			});
 		});
-	});
-	var cnflds = '';
-	if (conditions.length!=0) {
-		cnflds = JSON.stringify(conditions);
+		cnflds = conditions.substr(0, conditions.lastIndexOf(' '));
+	} else {
+		conditions = [];
+		var i=0;
+		$('#save_conditions').children('.condition_group_block').each(function (j, conditiongroupblock) {
+			$(conditiongroupblock).children('.save_condition_group').each(function (k, conditiongroup) {
+				$(conditiongroup).children().each(function (l) {
+					var fieldname = this.querySelector('div > .cefieldname').value;
+					var operation = this.querySelector('div > .ceoperation').value;
+					var value = this.querySelector('div > .ceexpressionvalue').value;
+					var valuetype = this.querySelector('div > .ceexpressiontype').value;
+					var joincondition = this.querySelector('div > .cejoincondition').value;
+					var groupid = this.querySelector('div > .groupid').value;
+					var groupjoin = '';
+					if (groupid != '') {
+						let scgj = document.getElementById('save_condition_group_'+groupid+'_joincondition');
+						if (scgj != null) {
+							groupjoin = scgj.value;
+						}
+					}
+					var condition = {
+						fieldname:fieldname,
+						operation:operation,
+						value:value,
+						valuetype:valuetype,
+						joincondition:joincondition,
+						groupid:groupid,
+						groupjoin:groupjoin
+					};
+					conditions[i++]=condition;
+				});
+			});
+		});
+		if (conditions.length!=0) {
+			cnflds = JSON.stringify(conditions);
+		}
 	}
 	return cnflds;
 }
 
-function getSQLGroupBy() {
+function getSQLGroupBy(FQN) {
+	if (typeof FQN=='undefined') {
+		FQN = true;
+	}
 	let gbflds = '';
 	fieldData.map(finfo => {
 		if (finfo.fieldname != 'custom' && finfo.group == '1') {
@@ -313,11 +522,23 @@ function getSQLGroupBy() {
 					fnam = finfo.fieldname.replace(' : (', '').replace(') ', '').replace(')', '').toLowerCase();
 				}
 			} else if (fnam == 'assigned_user_id') {
-				fnam = 'vtiger_crmentity.smownerid';
+				if (FQN) {
+					fnam = 'vtiger_crmentity.smownerid';
+				} else {
+					fnam = 'smownerid';
+				}
 			} else if (fnam == 'created_user_id') {
-				fnam = 'vtiger_crmentity.smcreatorid';
+				if (FQN) {
+					fnam = 'vtiger_crmentity.smcreatorid';
+				} else {
+					fnam = 'smcreatorid';
+				}
 			} else if (typeof fieldNEcolumn[document.getElementById('bqmodule').value+fnam]!='undefined') {
-				fnam = fieldTableRelation[finfo.fieldname]+'.'+fieldNEcolumn[document.getElementById('bqmodule').value+fnam];
+				if (FQN) {
+					fnam = fieldTableRelation[finfo.fieldname]+'.'+fieldNEcolumn[document.getElementById('bqmodule').value+fnam];
+				} else {
+					fnam = fieldNEcolumn[document.getElementById('bqmodule').value+fnam];
+				}
 			}
 			gbflds += fnam + ',';
 		}
@@ -328,7 +549,10 @@ function getSQLGroupBy() {
 	return gbflds;
 }
 
-function getSQLOrderBy() {
+function getSQLOrderBy(FQN) {
+	if (typeof FQN=='undefined') {
+		FQN = true;
+	}
 	let obflds = '';
 	fieldData.map(finfo => {
 		if (finfo.fieldname != 'custom' && finfo.sort != 'NONE') {
@@ -342,11 +566,23 @@ function getSQLOrderBy() {
 					fnam = finfo.fieldname.replace(' : (', '').replace(') ', '').replace(')', '').toLowerCase();
 				}
 			} else if (fnam == 'assigned_user_id') {
-				fnam = 'vtiger_crmentity.smownerid';
+				if (FQN) {
+					fnam = 'vtiger_crmentity.smownerid';
+				} else {
+					fnam = 'smownerid';
+				}
 			} else if (fnam == 'created_user_id') {
-				fnam = 'vtiger_crmentity.smcreatorid';
+				if (FQN) {
+					fnam = 'vtiger_crmentity.smcreatorid';
+				} else {
+					fnam = 'smcreatorid';
+				}
 			} else if (typeof fieldNEcolumn[document.getElementById('bqmodule').value+fnam]!='undefined') {
-				fnam = fieldTableRelation[finfo.fieldname]+'.'+fieldNEcolumn[document.getElementById('bqmodule').value+fnam];
+				if (FQN) {
+					fnam = fieldTableRelation[finfo.fieldname]+'.'+fieldNEcolumn[document.getElementById('bqmodule').value+fnam];
+				} else {
+					fnam = fieldNEcolumn[document.getElementById('bqmodule').value+fnam];
+				}
 			}
 			obflds += fnam + ' ' + finfo.sort + ',';
 		}
@@ -642,6 +878,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 				}
 			},
 			pageOptions: {
+				useClient: false,
 				perPage: Report_ListView_PageSize
 			},
 			useClientSort: false,

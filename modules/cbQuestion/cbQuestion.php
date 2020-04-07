@@ -181,6 +181,11 @@ class cbQuestion extends CRMEntity {
 		if (empty($qid) && !empty($params['cbQuestionRecord']) && is_array($params['cbQuestionRecord'])) {
 			$q->column_fields = $params['cbQuestionRecord'];
 			unset($params['cbQuestionRecord']);
+			if (isset($params['cbQuestionContext'])) {
+				$qctx = $params['cbQuestionContext'];
+				unset($params['cbQuestionContext']);
+				$params = array_merge($params, $qctx);
+			}
 		} else {
 			if (isPermitted('cbQuestion', 'DetailView', $qid) != 'yes') {
 				return array('type' => 'ERROR', 'answer' => 'LBL_PERMISSION');
@@ -272,6 +277,11 @@ class cbQuestion extends CRMEntity {
 		if (empty($qid) && !empty($params['cbQuestionRecord']) && is_array($params['cbQuestionRecord'])) {
 			$q->column_fields = $params['cbQuestionRecord'];
 			unset($params['cbQuestionRecord']);
+			if (isset($params['cbQuestionContext'])) {
+				$qctx = $params['cbQuestionContext'];
+				unset($params['cbQuestionContext']);
+				$params = array_merge($params, $qctx);
+			}
 		} else {
 			if (isPermitted('cbQuestion', 'DetailView', $qid) != 'yes') {
 				return array('type' => 'ERROR', 'answer' => 'LBL_PERMISSION');
@@ -463,6 +473,66 @@ class cbQuestion extends CRMEntity {
 			$chart .= '</div>';
 		}
 		return $chart;
+	}
+
+	public function convertColumns2DataTable() {
+		global $adb;
+		$qcols = $this->column_fields;
+		if (empty($qcols['qcolumns'])) {
+			return array(
+				array(
+					'fieldname' => 'custom',
+					'operators' => 'custom',
+					'alias' => '',
+					'sort' => 'NONE',
+					'group' => '0',
+					'instruction' => '',
+				),
+			);
+		}
+		$fldnecol = $adb->pquery('SELECT fieldname,columnname FROM vtiger_field WHERE fieldname!=columnname and tabid=?', array(getTabid($qcols['qmodule'])));
+		$fnec = array();
+		while ($r = $fldnecol->FetchRow()) {
+			$fnec[$r['fieldname']] = $r['columnname'];
+		}
+		$fieldData = array();
+		$orderby = explode(',', strtolower(str_replace(' ', '', decode_html($qcols['orderby']))));
+		$groupby = explode(',', strtolower(str_replace(' ', '', decode_html($qcols['groupby']))));
+		$qcols = decode_html($qcols['qcolumns']);
+		if (strpos($qcols, '[')===false) {
+			$qcols = preg_replace('/\s+,\s+/', ',', $qcols);
+			$qcols = explode(',', $qcols);
+			foreach ($qcols as $finfo) {
+				$alias = '';
+				if (strpos($finfo, ' ')) {
+					$alias = preg_replace('/\s+/', ' ', $finfo);
+					$alias = explode(' ', $alias);
+					$alias = $alias[2];
+				}
+				$fieldData[] = array(
+					'fieldname' => $finfo,
+					'operators' => 'custom',
+					'alias' => $alias,
+					'sort' => (in_array($finfo.'asc', $orderby) || in_array($finfo, $orderby) ? 'ASC' : (in_array($finfo.'desc', $orderby) ? 'DESC' : 'NONE')),
+					'group' => (in_array($finfo, $groupby) ? '1' : '0'),
+					'instruction' => $finfo,
+				);
+			}
+		} else {
+			$columns = json_decode($qcols, true);
+			foreach ($columns as $finfo) {
+				$cnam = isset($fnec[$finfo['fieldname']]) ? $fnec[$finfo['fieldname']] : $finfo['fieldname'];
+				$fieldData[] = array(
+					'fieldname' => $finfo['groupjoin'],
+					'operators' => $finfo['joincondition'],
+					'alias' => ($finfo['groupjoin']==$finfo['fieldname'] ? '' : $finfo['fieldname']),
+					'sort' => (in_array($cnam.'asc', $orderby) || in_array($cnam, $orderby) ? 'ASC' : (in_array($cnam.'desc', $orderby) ? 'DESC' : 'NONE')),
+					'group' => (in_array($cnam, $groupby) ? '1' : '0'),
+					'instruction' => $finfo['value'],
+				);
+			}
+		}
+		return $fieldData;
 	}
 }
 ?>

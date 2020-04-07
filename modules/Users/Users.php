@@ -119,7 +119,7 @@ class Users extends CRMEntity {
 	public $popup_fields = array('last_name');
 
 	// This is the list of fields that are in the lists.
-	public $default_order_by = "user_name";
+	public $default_order_by = 'user_name';
 	public $default_sort_order = 'ASC';
 
 	public $record_id;
@@ -192,14 +192,14 @@ class Users extends CRMEntity {
 	 */
 	public function setPreference($name, $value) {
 		if (!isset($this->user_preferences)) {
-			if (isset($_SESSION["USER_PREFERENCES"])) {
-				$this->user_preferences = $_SESSION["USER_PREFERENCES"];
+			if (isset($_SESSION['USER_PREFERENCES'])) {
+				$this->user_preferences = $_SESSION['USER_PREFERENCES'];
 			} else {
 				$this->user_preferences = array();
 			}
 		}
 		if (!array_key_exists($name, $this->user_preferences) || $this->user_preferences[$name] != $value) {
-			$this->log->debug("Saving To Preferences:" . $name . "=" . print_r($value, true));
+			$this->log->debug('Saving To Preferences:' . $name . '=' . print_r($value, true));
 			$this->user_preferences[$name] = $value;
 			$this->savePreferecesToDB();
 		}
@@ -213,7 +213,7 @@ class Users extends CRMEntity {
 		$data = base64_encode(serialize($this->user_preferences));
 		$query = "UPDATE $this->table_name SET user_preferences=? where id=?";
 		$result = $this->db->pquery($query, array($data, $this->id));
-		$this->log->debug("SAVING: PREFERENCES SIZE " . strlen($data) . "ROWS AFFECTED WHILE UPDATING USER PREFERENCES:" . $this->db->getAffectedRowCount($result));
+		$this->log->debug('SAVING: PREFERENCES SIZE ' . strlen($data) . 'ROWS AFFECTED WHILE UPDATING USER PREFERENCES:' . $this->db->getAffectedRowCount($result));
 		coreBOS_Session::set('USER_PREFERENCES', $this->user_preferences);
 	}
 
@@ -222,7 +222,7 @@ class Users extends CRMEntity {
 	 */
 	public function loadPreferencesFromDB($value) {
 		if (isset($value) && !empty($value)) {
-			$this->log->debug("LOADING :PREFERENCES SIZE " . strlen($value));
+			$this->log->debug('LOADING :PREFERENCES SIZE ' . strlen($value));
 			$this->user_preferences = unserialize(base64_decode($value));
 			coreBOS_Session::merge($this->user_preferences);
 			coreBOS_Session::set('USER_PREFERENCES', $this->user_preferences);
@@ -238,7 +238,7 @@ class Users extends CRMEntity {
 	 */
 	public function encrypt_password($user_password, $crypt_type = '') {
 		// encrypt the password.
-		$salt = substr($this->column_fields["user_name"], 0, 2);
+		$salt = substr($this->column_fields['user_name'], 0, 2);
 
 		if ($crypt_type == '') {
 			// Try to get the crypt_type which is in database for the user
@@ -311,7 +311,7 @@ class Users extends CRMEntity {
 				break;
 
 			case 'AD':
-				$this->log->debug("Using Active Directory authentication");
+				$this->log->debug('Using Active Directory authentication');
 				require_once 'modules/Users/authTypes/adLDAP.php';
 				$adldap = new adLDAP();
 				if ($adldap->authenticate($usr_name, $user_password)) {
@@ -322,7 +322,7 @@ class Users extends CRMEntity {
 				break;
 
 			default:
-				$this->log->debug("Using integrated/SQL authentication");
+				$this->log->debug('Using integrated/SQL authentication');
 				$query = "SELECT crypt_type FROM $this->table_name WHERE BINARY user_name=?";
 				$result = $this->db->requirePsSingleResult($query, array($usr_name), false);
 				if (empty($result)) {
@@ -388,7 +388,7 @@ class Users extends CRMEntity {
 	 * @return -- this if load was successul and null if load failed.
 	 */
 	public function load_user($user_password) {
-		$usr_name = $this->column_fields["user_name"];
+		$usr_name = $this->column_fields['user_name'];
 		if (!empty($_POST['twofauserauth'])) {
 			$this->authenticated = false;
 			$this->twoFAauthenticated = false;
@@ -419,11 +419,11 @@ class Users extends CRMEntity {
 			coreBOS_Session::set('loginattempts', 1);
 		}
 		if ($_SESSION['loginattempts'] > $maxFailedLoginAttempts) {
-			$this->log->warn("SECURITY: " . $usr_name . " has attempted to login " . $_SESSION['loginattempts'] . " times.");
+			$this->log->warn('SECURITY: ' . $usr_name . ' has attempted to login ' . $_SESSION['loginattempts'] . ' times.');
 		}
 		$this->log->debug("Starting user load for $usr_name");
 
-		if (!isset($this->column_fields["user_name"]) || $this->column_fields["user_name"] == "" || !isset($user_password) || $user_password == "") {
+		if (!isset($this->column_fields['user_name']) || $this->column_fields['user_name'] == '' || !isset($user_password) || $user_password == '') {
 			return null;
 		}
 
@@ -510,8 +510,8 @@ class Users extends CRMEntity {
 
 		// For backward compatability, we need to make sure to handle this case.
 		global $adb;
-		$table_cols = $adb->getColumnNames("vtiger_users");
-		if (!in_array("crypt_type", $table_cols)) {
+		$table_cols = $adb->getColumnNames('vtiger_users');
+		if (!in_array('crypt_type', $table_cols)) {
 			return $crypt_type;
 		}
 
@@ -519,9 +519,9 @@ class Users extends CRMEntity {
 			// Get the type of crypt used on password before actual comparision
 			$qcrypt_sql = "SELECT crypt_type from $this->table_name where id=?";
 			$crypt_res = $this->db->pquery($qcrypt_sql, array($this->id), true);
-		} elseif (isset($this->column_fields["user_name"])) {
+		} elseif (isset($this->column_fields['user_name'])) {
 			$qcrypt_sql = "SELECT crypt_type from $this->table_name where user_name=?";
-			$crypt_res = $this->db->pquery($qcrypt_sql, array($this->column_fields["user_name"]));
+			$crypt_res = $this->db->pquery($qcrypt_sql, array($this->column_fields['user_name']));
 		} else {
 			$crypt_type = $this->DEFAULT_PASSWORD_CRYPT_TYPE;
 		}
@@ -542,7 +542,7 @@ class Users extends CRMEntity {
 	 */
 	public function change_password($user_password, $new_password, $dieOnError = true) {
 		global $mod_strings, $current_user;
-		$usr_name = $this->column_fields["user_name"];
+		$usr_name = $this->column_fields['user_name'];
 		$this->log->debug("Starting password change for $usr_name");
 
 		if (!isset($new_password) || $new_password == '') {
@@ -600,7 +600,7 @@ class Users extends CRMEntity {
 		}
 		$cnuser=$this->db->getColumnNames('vtiger_users');
 		if (!in_array('change_password', $cnuser)) {
-			$this->db->query("ALTER TABLE `vtiger_users` ADD `change_password` boolean NOT NULL DEFAULT 0");
+			$this->db->query('ALTER TABLE `vtiger_users` ADD `change_password` boolean NOT NULL DEFAULT 0');
 		}
 		$cprs = $this->db->pquery('select change_password from vtiger_users where id=?', array($this->id));
 		return $this->db->query_result($cprs, 0, 0);
@@ -1166,6 +1166,9 @@ class Users extends CRMEntity {
 		if ($this->mode!='edit' || $oldrole != $this->column_fields['roleid']) {
 			UserPrivilegesWriter::setUserPrivileges($this->id);
 		}
+		if ($this->column_fields['status']=='Inactive') {
+			coreBOS_Settings::delSetting('cbodUserConnection'.$this->id);
+		}
 		// ODController
 		if ($cbodUserLog) {
 			if ($this->mode == 'create') { // creating user, we send to ODController
@@ -1515,7 +1518,7 @@ class Users extends CRMEntity {
 		//set transform user id
 		$entityData->set('transformtouserid', $transformToUserId);
 
-		$em->triggerEvent("vtiger.entity.beforedelete", $entityData);
+		$em->triggerEvent('vtiger.entity.beforedelete', $entityData);
 
 		vtws_transferOwnership($userId, $transformToUserId);
 		// ODController delete user
@@ -1535,11 +1538,9 @@ class Users extends CRMEntity {
 		}
 
 		//delete from user vtiger_table;
-		$sql = "delete from vtiger_users where id=?";
-		$adb->pquery($sql, array($userId));
+		$adb->pquery('delete from vtiger_users where id=?', array($userId));
 		//Delete user extension in asterisk.
-		$sql = "delete from vtiger_asteriskextensions where userid=?";
-		$adb->pquery($sql, array($userId));
+		$adb->pquery('delete from vtiger_asteriskextensions where userid=?', array($userId));
 	}
 
 	/**
@@ -1549,7 +1550,7 @@ class Users extends CRMEntity {
 	public function mark_deleted($id) {
 		global $current_user, $adb;
 		$date_var = date('Y-m-d H:i:s');
-		$query = "UPDATE vtiger_users set status=?,date_modified=?,modified_user_id=? where id=?";
+		$query = 'UPDATE vtiger_users set status=?,date_modified=?,modified_user_id=? where id=?';
 		$adb->pquery($query, array('Inactive', $adb->formatDate($date_var, true), $current_user->id, $id), true, 'Error marking record deleted: ');
 	}
 
@@ -1716,7 +1717,7 @@ class Users extends CRMEntity {
 				$recordId = $lgn['id'];
 				$module = 'Users';
 				$tabid = getTabid($module);
-				$fieldId = $adb->getone("select fieldid from vtiger_field where tabid=".$tabid." and tablename='vtiger_users' and fieldname='email1'");
+				$fieldId = $adb->getone('select fieldid from vtiger_field where tabid='.$tabid." and tablename='vtiger_users' and fieldname='email1'");
 				$fieldName = 'email1';
 				$entry['sendmail'] = "<a href=\"javascript:InternalMailer($recordId, $fieldId, '$fieldName', '$module', 'record_id');\">".textlength_check($value).'</a>';
 			} else {
@@ -1735,10 +1736,10 @@ class Users extends CRMEntity {
 			if ($lgn['user_name'] == 'admin') {
 				$entry['isblockeduser'] = true;
 			}
-			$entry['duplicateuser'] = "index.php?action=EditView&return_action=ListView&return_module=Users&module=Users&parenttab=Settings&record=".$lgn['id']."&isDuplicate=true";
-			$entry['viewuser'] = "index.php?module=Users&action=DetailView&parenttab=Settings&record=".$lgn['id'];
-			$entry['viewusername'] = "index.php?module=Users&action=DetailView&parenttab=Settings&record=".$lgn['id'];
-			$entry['edituser'] = "index.php?action=EditView&return_action=ListView&return_module=Users&module=Users&parenttab=Settings&record=".$lgn['id'];
+			$entry['duplicateuser'] = 'index.php?action=EditView&return_action=ListView&return_module=Users&module=Users&parenttab=Settings&record='.$lgn['id'].'&isDuplicate=true';
+			$entry['viewuser'] = 'index.php?module=Users&action=DetailView&parenttab=Settings&record='.$lgn['id'];
+			$entry['viewusername'] = 'index.php?module=Users&action=DetailView&parenttab=Settings&record='.$lgn['id'];
+			$entry['edituser'] = 'index.php?action=EditView&return_action=ListView&return_module=Users&module=Users&parenttab=Settings&record='.$lgn['id'];
 			$entry['Admin'] = $lgn['is_admin'];
 			if ($lgn['is_admin'] == 'on') {
 				$entry['Admin'] = getTranslatedString('LBL_ON', 'Users');

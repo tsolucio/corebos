@@ -9,7 +9,6 @@
 
 function editbuilderscript($, conditions) {
 	var vtinst = new VtigerWebservices('webservice.php');
-	var fieldValidator;
 	var editpopupobj;
 
 	function id(v) {
@@ -322,6 +321,10 @@ function editbuilderscript($, conditions) {
 			grpbtns[totgrp-1].style.visibility = 'visible';
 		} else {
 			document.getElementById('startwhennoconditions').style.display = 'flex';
+			$('#startwhennoconditionsbutton').unbind('click').bind('click', function () {
+				document.getElementById('startwhennoconditions').style.display = 'none';
+				addConditionFunction(groupno, condno++);
+			});
 		}
 	}
 
@@ -423,6 +426,7 @@ function editbuilderscript($, conditions) {
 		editpopupobj.edit(fieldValueNode.prop('id'), fieldValueNode.val(), fieldType);
 	}
 
+	var addConditionFunction = '';
 	var parentFields = {};
 	var referenceFieldTypes = {};
 	var moduleFieldTypes = {};
@@ -430,9 +434,13 @@ function editbuilderscript($, conditions) {
 	var fieldLabels = '';
 	var groupno=0;
 	var condno=0;
-	function changeModule() {
-		fieldValidator = new VTFieldValidator($('#edit_workflow_form'));
-		fieldValidator.mandatoryFields = ['description'];
+	function changeModule(newconditions) {
+		if (moduleName=='') {
+			return;
+		}
+		if (typeof newconditions!='undefined') {
+			conditions = newconditions;
+		}
 		pageLoadingPopup.show();
 		jQuery('#editpopup').draggable({ handle: '#editpopup_draghandle' });
 		editpopupobj = fieldExpressionPopup(moduleName, $);
@@ -578,7 +586,7 @@ function editbuilderscript($, conditions) {
 								<input type="text" id="save_condition_${condid}_value" class="slds-input ceexpressionvalue" readonly style="border:1px solid #dddbda;width:64%;" onchange="updateWSSQL();" />
 								<select id="save_condition_${condid}_joincondition" class="slds-select cejoincondition" style="width:fit-content;" onchange="updateWSSQL();"></select>
 								<span id="save_condition_${condid}_remove">
-									<button class="slds-button slds-button_icon slds-button_icon-border-filled" title="${alert_arr.JSLBL_Delete}">
+									<button class="slds-button slds-button_icon slds-button_icon-border-filled ceremovebutton" title="${alert_arr.JSLBL_Delete}">
 									<svg class="slds-button__icon" aria-hidden="true">
 										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
 									</svg>
@@ -622,7 +630,7 @@ function editbuilderscript($, conditions) {
 							}
 						});
 					}
-
+					addConditionFunction = addCondition;
 					groupno=0;
 					condno=0;
 					if (conditions) {
@@ -703,6 +711,7 @@ function editbuilderscript($, conditions) {
 					});
 					pageLoadingPopup.close();
 					this.dispatchEvent(new Event('condition_builder_module_changed'));
+					updateWSSQL();
 				}));
 			}));
 		}));

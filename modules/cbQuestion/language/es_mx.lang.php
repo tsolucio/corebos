@@ -95,6 +95,9 @@ $mod_strings = array(
 	'RESULTS' => 'Resultados',
 	'Options' => 'Opciones',
 	'Launch a test to get the SQL' => 'Ejecuta una verificación para ver el comando SQL',
+	'Context Module' => 'Módulo de Contexto',
 	'Query Context' => 'Contexto Consulta',
+	'SelectModule' => 'Selecciona un módulo',
+	'CRM Entity Alias' => 'Alias Entidad CRM',
 );
 ?>
