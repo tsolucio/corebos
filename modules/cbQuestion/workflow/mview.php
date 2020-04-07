@@ -23,7 +23,7 @@ function CBQuestionMViewFunction($entityData) {
 		$entityData->WorkflowEvent==VTWorkflowManager::$ON_DELETE
 	) {
 		$qs = $adb->pquery(
-			'select cbquestionid, uniqueid, qname, crmentityalias
+			'select cbquestionid, uniqueid, qname, crmentityalias, maintablealias
 				from vtiger_cbquestion
 				inner join vtiger_crmentity on crmid=cbquestionid
 				where deleted=0 and qmodule=? and mviewwf=?',
@@ -32,7 +32,11 @@ function CBQuestionMViewFunction($entityData) {
 		list($void, $eid) = explode('x', $entityData->getId());
 		while ($cbq = $adb->fetch_array($qs)) {
 			$vname = str_replace(' ', '_', $cbq['qname']);
-			$adb->query('delete from '.$vname.' where '.$cbq['uniqueid'].'='.$eid);
+			if (!empty($cbq['maintablealias'])) {
+				$adb->query('delete from '.$vname.' where '.$cbq['maintablealias'].'.'.$cbq['uniqueid'].'='.$eid);
+			} else {
+				$adb->query('delete from '.$vname.' where '.$cbq['uniqueid'].'='.$eid);
+			}
 		}
 		if ($entityData->WorkflowEvent != VTWorkflowManager::$ON_DELETE) {
 			include_once 'modules/cbQuestion/cbQuestion.php';
@@ -41,7 +45,11 @@ function CBQuestionMViewFunction($entityData) {
 				$vname = $vname = str_replace(' ', '_', $cbq['qname']);
 				$sql = cbQuestion::getSQL($cbq['cbquestionid']);
 				$crmentity_table = !empty($cbq['crmentityalias']) ? $cbq['crmentityalias'] : 'vtiger_crmentity';
-				$sql = preg_replace('/where\s+('.$crmentity_table.'\.)?deleted\s*=\s*0/i', 'where '.$cbq['uniqueid'].'='.$eid.' AND vtiger_crmentity.deleted=0', $sql);
+				if (!empty($cbq['maintablealias'])) {
+					$sql = preg_replace('/where\s+('.$crmentity_table.'\.)?deleted\s*=\s*0/i', 'where '.$cbq['maintablealias'].'.'.$cbq['uniqueid'].'='.$eid.' AND '.$crmentity_table.'.deleted=0', $sql);
+				} else {
+					$sql = preg_replace('/where\s+('.$crmentity_table.'\.)?deleted\s*=\s*0/i', 'where '.$cbq['uniqueid'].'='.$eid.' AND '.$crmentity_table.'.deleted=0', $sql);
+				}
 				$adb->query('INSERT INTO '.$vname.' '.$sql);
 			}
 		}
