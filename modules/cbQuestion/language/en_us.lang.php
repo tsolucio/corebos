@@ -100,5 +100,7 @@ $mod_strings = array(
 	'Query Context' => 'Query Context',
 	'SelectModule' => 'Select a module',
 	'CRM Entity Alias' => 'CRM Entity Alias',
+	'LBL_cbQuestion_Advanced_Usage' => 'Advanced Usage',
+	'Main Table Alias' => 'Main Table Alias',
 );
 ?>
