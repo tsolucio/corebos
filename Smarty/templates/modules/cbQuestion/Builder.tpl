@@ -144,6 +144,12 @@
 	</div>
 </div>
 <div class="slds-col slds-size_1-of-2">
+	<button class="slds-button slds-button_text-destructive slds-float_right" type="button" id='delfield_button' onclick="deleteFieldRow(); event.stopPropagation();">
+		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+		</svg>
+		{'LBL_DELETE_FIELD'|getTranslatedString:'com_vtiger_workflow'}
+	</button>
 	<button class="slds-button slds-button_neutral slds-float_right" type="button" id='addfield_button' onclick="appendEmptyFieldRow(); event.stopPropagation();">
 		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>

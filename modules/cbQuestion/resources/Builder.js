@@ -641,6 +641,15 @@ function appendEmptyFieldRow(ev) {
 	fieldData.push(emptyRow);
 }
 
+function deleteFieldRow() {
+	const checkedRows = fieldGridInstance.getCheckedRowKeys();
+	for (var i = 0; i < checkedRows.length; i++) {
+		fieldData.splice(checkedRows[i], 1);
+	}
+	fieldGridInstance.removeCheckedRows();
+	updateWSSQL();
+}
+
 function getInstruction(field, operator, alias) {
 	let fins = '';
 	let fnam = 'expression';
@@ -758,8 +767,9 @@ document.addEventListener('DOMContentLoaded', function (event) {
 				sortingType: 'desc',
 				sortable: true,
 				onAfterChange(ev) {
-					fieldData[ev.rowKey].instruction = getInstruction(ev.value, fieldData[ev.rowKey].operators, fieldData[ev.rowKey].alias);
-					updateFieldData(ev.rowKey, 'fieldname', ev.value);
+					const idx = fieldGridInstance.getIndexOfRow(ev.rowKey);
+					fieldData[idx].instruction = getInstruction(ev.value, fieldData[idx].operators, fieldData[idx].alias);
+					updateFieldData(idx, 'fieldname', ev.value);
 					fieldGridInstance.resetData(fieldData);
 				}
 			},
@@ -776,8 +786,9 @@ document.addEventListener('DOMContentLoaded', function (event) {
 				whiteSpace: 'normal',
 				sortable: false,
 				onAfterChange(ev) {
-					fieldData[ev.rowKey].instruction = getInstruction(fieldData[ev.rowKey].fieldname, ev.value, fieldData[ev.rowKey].alias);
-					updateFieldData(ev.rowKey, 'operators', ev.value);
+					const idx = fieldGridInstance.getIndexOfRow(ev.rowKey);
+					fieldData[idx].instruction = getInstruction(fieldData[idx].fieldname, ev.value, fieldData[idx].alias);
+					updateFieldData(idx, 'operators', ev.value);
 					fieldGridInstance.resetData(fieldData);
 				}
 			},
@@ -789,7 +800,8 @@ document.addEventListener('DOMContentLoaded', function (event) {
 				width: 250,
 				sortable: false,
 				onAfterChange(ev) {
-					updateFieldData(ev.rowKey, 'alias', ev.value);
+					const idx = fieldGridInstance.getIndexOfRow(ev.rowKey);
+					updateFieldData(idx, 'alias', ev.value);
 				}
 			},
 			{
@@ -810,7 +822,8 @@ document.addEventListener('DOMContentLoaded', function (event) {
 				},
 				sortable: false,
 				onAfterChange(ev) {
-					updateFieldData(ev.rowKey, 'sort', ev.value);
+					const idx = fieldGridInstance.getIndexOfRow(ev.rowKey);
+					updateFieldData(idx, 'sort', ev.value);
 				}
 			},
 			{
@@ -830,7 +843,8 @@ document.addEventListener('DOMContentLoaded', function (event) {
 				},
 				sortable: false,
 				onAfterChange(ev) {
-					updateFieldData(ev.rowKey, 'group', ev.value);
+					const idx = fieldGridInstance.getIndexOfRow(ev.rowKey);
+					updateFieldData(idx, 'group', ev.value);
 				}
 			},
 			{
@@ -840,12 +854,26 @@ document.addEventListener('DOMContentLoaded', function (event) {
 				whiteSpace: 'normal',
 				sortable: false,
 				onAfterChange(ev) {
-					updateFieldData(ev.rowKey, 'instruction', ev.value);
+					const idx = fieldGridInstance.getIndexOfRow(ev.rowKey);
+					updateFieldData(idx, 'instruction', ev.value);
 				}
 			}
 		];
 		fieldGridInstance = new tuiGrid({
 			el: document.getElementById('fieldgrid'),
+			rowHeaders: [
+			{
+				type: 'checkbox',
+				header: `
+				<label for="all-checkbox" class="checkbox">
+					<input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
+					<span class="custom-input"></span>
+				</label>`,
+				renderer: {
+					type: CheckboxRenderer
+				}
+			}
+			],
 			columns: fieldGridColumns,
 			data: fieldData,
 			useClientSort: false,
