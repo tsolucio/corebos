@@ -84,4 +84,18 @@
 	<classname>addcrmentityaliasFieldincbQuestion</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>george1806</author>
+	<description>Add maintablealias field in cbQuestion</description>
+	<filename>build/changeSets/2020/addmaintablealiasFieldincbQuestion.php</filename>
+	<classname>addmaintablealiasFieldincbQuestion</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>george1806</author>
+	<description>Move Advanced cbQuestion fields to Advanced Usage Block</description>
+	<filename>build/changeSets/2020/movecbQuestionfieldsToAdvancedUsageBlock.php</filename>
+	<classname>movecbQuestionfieldsToAdvancedUsageBlock</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
