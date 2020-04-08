@@ -43,6 +43,7 @@ $mod_strings = array(
 'LBL_SELECT'=>'Selecteer',
 'LBL_SET_FIELD_VALUES'=>'Stel veldwaarde in',
 'LBL_ADD_FIELD'=>'Voeg veld toe',
+'LBL_DELETE_FIELD' => 'Delete Field',
 
 'LBL_USE_FIELD_VALUE_DASHDASH'=>'-- Gebruik veldwaarde --',
 'LBL_USE_FUNCTION_DASHDASH'=>'-- Gebruik functie --',

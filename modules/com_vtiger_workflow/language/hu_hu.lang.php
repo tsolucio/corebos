@@ -45,6 +45,7 @@ $mod_strings = array(
 	'LBL_MESSAGE' => 'Üzenet',
 	'LBL_SET_FIELD_VALUES' => 'Add meg a mezők értékeit',
 	'LBL_ADD_FIELD' => 'Add meg a mezőt',
+	'LBL_DELETE_FIELD' => 'Delete Field',
 	'LBL_USE_FIELD_VALUE_DASHDASH' => '-- Mező érték használata --',
 	'LBL_USE_FUNCTION_DASHDASH' => '-- Függvény használata --',
 	'LBL_RAW_TEXT' => 'Nyers szöveg',
