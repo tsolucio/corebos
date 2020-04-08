@@ -14,7 +14,7 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 
-class movecrmentityaliasToAdvancedUsageBlock extends cbupdaterWorker {
+class movecbQuestionfieldsToAdvancedUsageBlock extends cbupdaterWorker {
 
 	public function applyChange() {
 		global $adb;
@@ -26,19 +26,31 @@ class movecrmentityaliasToAdvancedUsageBlock extends cbupdaterWorker {
 		} else {
 			global $adb;
 			$moduleInstance = Vtiger_Module::getInstance('cbQuestion');
-			$block = Vtiger_Block::getInstance('LBL_cbQuestion_Advanced_Usage', $moduleInstance);
-			$field = Vtiger_Field::getInstance('crmentityalias', $moduleInstance);
-			if ($field) {
-				if (!$block) {
-					$block = new Vtiger_Block();
-					$block->label = 'LBL_cbQuestion_Advanced_Usage';
-					$block->sequence = 2;
-					$moduleInstance->addBlock($block);
-				}
-				$this->ExecuteQuery('update vtiger_field set block=? where fieldid=?', array($block->id,$field->id));
-				$this->sendMsg('Changeset '.get_class($this).' applied!');
-				$this->markApplied();
+			$queryfield = Vtiger_Field::getInstance('sqlquery', $moduleInstance);
+			if ($queryfield) {
+				$this->ExecuteQuery("UPDATE vtiger_field set vtiger_field.helpinfo = 'SQLDELETE' where fieldid=?", array($queryfield->id));
 			}
+			$newblock = 'LBL_cbQuestion_Advanced_Usage';
+			$block = Vtiger_Block::getInstance($newblock, $moduleInstance);
+			if (!$block) {
+				$block = new Vtiger_Block();
+				$block->label = 'LBL_cbQuestion_Advanced_Usage';
+				$block->sequence = 2;
+				$moduleInstance->addBlock($block);
+			}
+			$fieldsArr = array(
+				'cbQuestion' => array(
+						'crmentityalias',
+						'uniqueid',
+						'cbmapid',
+						'condfilterformat',
+						'mviewcron',
+						'mviewwf',
+				)
+			);
+			$this->massMoveFieldsToBlock($fieldsArr, $newblock);
+			$this->sendMsg('Changeset '.get_class($this).' applied!');
+			$this->markApplied();
 		}
 		$this->finishExecution();
 	}

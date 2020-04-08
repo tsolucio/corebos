@@ -32,11 +32,7 @@ function CBQuestionMViewFunction($entityData) {
 		list($void, $eid) = explode('x', $entityData->getId());
 		while ($cbq = $adb->fetch_array($qs)) {
 			$vname = str_replace(' ', '_', $cbq['qname']);
-			if (!empty($cbq['maintablealias'])) {
-				$adb->query('delete from '.$vname.' where '.$cbq['maintablealias'].'.'.$cbq['uniqueid'].'='.$eid);
-			} else {
-				$adb->query('delete from '.$vname.' where '.$cbq['uniqueid'].'='.$eid);
-			}
+			$adb->query('delete from '.$vname.' where '.$cbq['uniqueid'].'='.$eid);
 		}
 		if ($entityData->WorkflowEvent != VTWorkflowManager::$ON_DELETE) {
 			include_once 'modules/cbQuestion/cbQuestion.php';

@@ -93,9 +93,9 @@
 </changeSet>
 <changeSet>
 	<author>george1806</author>
-	<description>Move crmentityalias into Advanced Usage Block</description>
-	<filename>build/changeSets/2020/movecrmentityaliasToAdvancedUsageBlock.php</filename>
-	<classname>movecrmentityaliasToAdvancedUsageBlock</classname>
+	<description>Move Advanced cbQuestion fields to Advanced Usage Block</description>
+	<filename>build/changeSets/2020/movecbQuestionfieldsToAdvancedUsageBlock.php</filename>
+	<classname>movecbQuestionfieldsToAdvancedUsageBlock</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
 </updatesChangeLog>
