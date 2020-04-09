@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2014 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Copyright 2020 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
 * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
 * file except in compliance with the License. You can redistribute it and/or modify it
 * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
@@ -14,7 +14,7 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 
-class addtablevtigersavemenu extends cbupdaterWorker {
+class systemmaintenancevt710 extends cbupdaterWorker {
 
 	public function applyChange() {
 		global $adb;
@@ -24,13 +24,16 @@ class addtablevtigersavemenu extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->ExecuteQuery('CREATE TABLE IF NOT EXISTS `vtiger_savemenu` (
-				`savemenuid` int(11) NOT NULL AUTO_INCREMENT,
-				`menuname` varchar(250) NOT NULL,
-				`structure` LONGTEXT NOT NULL,
-				PRIMARY KEY (`savemenuid`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;', array());
+			global $adb;
+			$columns = $adb->getColumnNames('vtiger_users');
+			if (in_array('user_hash', $columns)) {
+				// Remove unused column from user table
+				$this->ExecuteQuery('ALTER TABLE vtiger_users DROP COLUMN user_hash', array());
+			}
+			// Resizing column to hold wider string value.
+			$this->ExecuteQuery('ALTER TABLE vtiger_systems MODIFY server_password VARCHAR(255)', array());
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}
