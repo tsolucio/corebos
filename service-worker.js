@@ -9383,7 +9383,10 @@ precacheAndRoute([{
   "revision": "008f3e9768bd2d226e65ea69999c9f14"
 }, {
   "url": "include/js/vtlib.js",
-  "revision": "184b11ec74674cac2fe250b876b724a6"
+  "revision": "601fb00a4200fd6f30b9a0ececdd4716"
+}, {
+  "url": "include/components/checkboxrenderer.js",
+  "revision": "dff2237c054565d7efe12c59bb02e590"
 }, {
   "url": "include/components/ldsmodal.js",
   "revision": "bd7796d82792b933aacc59cb48e0335e"
@@ -9839,7 +9842,7 @@ precacheAndRoute([{
   "revision": "df1beb66383c404ca19595bfede77a1f"
 }, {
   "url": "modules/cbQuestion/resources/Builder.js",
-  "revision": "bf0422197961dd7ef90d84d2225492a0"
+  "revision": "14af8709cc7790001697fc626bcafb0f"
 }, {
   "url": "modules/cbQuestion/resources/editbuilder.js",
   "revision": "882f43f4054b3056e66a674b35112825"
