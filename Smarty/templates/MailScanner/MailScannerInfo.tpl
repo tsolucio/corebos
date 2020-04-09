@@ -14,15 +14,14 @@
 function performScanNow(app_key, scannername) {
 	document.getElementById('status').style.display = 'inline';
 	jQuery.ajax({
-				method: 'POST',
-				url: 'index.php?module=Settings&action=SettingsAjax&file=MailScanner' +
-					'&mode=scannow&service=MailScanner&app_key=' + encodeURIComponent(app_key)+ '&scannername=' + encodeURIComponent(scannername),
-			}).done(function(response) {
-				document.getElementById('status').style.display = 'none';
-				document.getElementById(scannername).innerHTML = response;
-				document.getElementById(scannername).style.display = 'block';
-			}
-			);
+		method: 'POST',
+		url: 'index.php?module=Settings&action=SettingsAjax&file=MailScanner' +
+			'&mode=scannow&service=MailScanner&app_key=' + encodeURIComponent(app_key)+ '&scannername=' + encodeURIComponent(scannername),
+	}).done(function (response) {
+		document.getElementById('status').style.display = 'none';
+		document.getElementById(scannername).innerHTML = response;
+		document.getElementById(scannername).style.display = 'block';
+	});
 }
 {/literal}
 </script>
