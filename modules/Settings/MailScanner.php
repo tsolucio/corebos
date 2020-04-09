@@ -18,7 +18,11 @@ if ($mode == 'Ajax' && !empty($_REQUEST['xmode'])) {
 
 /** Based on the mode include the MailScanner file. */
 if ($mode == 'scannow') {
+	ob_start();
 	include 'vtigercron.php';
+	$rdo = ob_get_contents();
+	ob_end_clean();
+	echo nl2br($rdo);
 } elseif ($mode == 'edit') {
 	include 'modules/Settings/MailScanner/MailScannerEdit.php';
 } elseif ($mode == 'save') {

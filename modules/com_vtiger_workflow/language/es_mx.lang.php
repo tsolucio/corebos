@@ -45,6 +45,7 @@ $mod_strings = array(
 'LBL_SEND_ALL_ATTACHMENT'=>'Enviar todos los adjuntos',
 'LBL_SET_FIELD_VALUES'=>'Establecer valor de campo',
 'LBL_ADD_FIELD'=>'Agregar campo',
+'LBL_DELETE_FIELD' => 'Eliminar Campo',
 
 'LBL_USE_FIELD_VALUE_DASHDASH'=>'-- Utilizar Valor --',
 'LBL_USE_FUNCTION_DASHDASH'=>'-- Utilizar Función --',

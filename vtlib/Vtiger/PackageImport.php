@@ -673,9 +673,8 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 
 	/**
 	 * Import Custom View of the module
-	 * @access private
 	 */
-	private function import_CustomView($modulenode, $moduleInstance, $customviewnode) {
+	public function import_CustomView($modulenode, $moduleInstance, $customviewnode) {
 		$viewname = $customviewnode->viewname;
 		$setdefault=$customviewnode->setdefault;
 		$setmetrics=$customviewnode->setmetrics;
@@ -820,9 +819,8 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 
 	/**
 	 * Import custom links of the module.
-	 * @access private
 	 */
-	private function import_CustomLinks($modulenode, $moduleInstance) {
+	public function import_CustomLinks($modulenode, $moduleInstance) {
 		if (empty($modulenode->customlinks) || empty($modulenode->customlinks->customlink)) {
 			return;
 		}

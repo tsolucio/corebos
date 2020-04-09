@@ -44,6 +44,7 @@ $mod_strings = array(
 'LBL_MESSAGE'=>'Messaggio',
 'LBL_SET_FIELD_VALUES'=>'Imposta Valori Campo',
 'LBL_ADD_FIELD'=>'Aggiungi Campo',
+'LBL_DELETE_FIELD' => 'Delete Field',
 'LBL_USE_FIELD_VALUE_DASHDASH'=>'-- Utilizza Valore Campo --',
 'LBL_USE_FUNCTION_DASHDASH'=>'-- Utilizza Funzione --',
 

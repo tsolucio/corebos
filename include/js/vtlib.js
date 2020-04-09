@@ -101,11 +101,10 @@ function vtlib_field_help_show(basenode, fldname) {
 	if (domnode.length==0) {
 		domnode = document.createElement('div');
 		domnode.id = 'vtlib_fieldhelp_div';
-		domnode.className = 'dvtSelectedCell';
+		domnode.className = 'slds-popover slds-popover_tooltip slds-popover__body';
 		domnode.style.position = 'absolute';
-		domnode.style.width = '150px';
-		domnode.style.padding = '4px';
-		domnode.style.fontWeight = 'normal';
+		domnode.style.color = 'white';
+		domnode.style.fontWeight = 'bold';
 		document.body.appendChild(domnode);
 		domnode = jQuery('#vtlib_fieldhelp_div');
 		domnode.on('mouseenter', function () {

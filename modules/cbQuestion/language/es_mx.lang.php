@@ -62,6 +62,7 @@ $mod_strings = array(
 	'VIEWOK' => 'Se ha creado la vista',
 	'VIEWNOK' => 'Ha fallado la creación de la vista con error',
 	'SQLQuery' => 'Consulta SQL',
+	'SQLDELETE' => 'Si este SQL se va a utilizar en un flujo de trabajo de vista materializada, DEBE tener la condición `deleted=0` como la primera condición después del `where`, al igual que hace la aplicación.',
 	'SQLError' => 'Error construyendo Consulta SQL',
 	'Test SQL' => 'Verificar Consulta',
 	'Create View' => 'Crear Vista',
@@ -99,5 +100,7 @@ $mod_strings = array(
 	'Query Context' => 'Contexto Consulta',
 	'SelectModule' => 'Selecciona un módulo',
 	'CRM Entity Alias' => 'Alias Entidad CRM',
+	'LBL_cbQuestion_Advanced_Usage' => 'Opciones Avanzadas',
+	'Main Table Alias' => 'Alias de la Tabla Principal',
 );
 ?>
