@@ -188,7 +188,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 		if (is_admin($this->user)) {
 			return true;
 		} else {
-			$idComponents = vtws_getIdComponents($webserviceId);
+			$idComponents = vtws_getIdComponents($ownerWebserviceId);
 			$userId=$idComponents[1];
 			return $this->user->id === $userId;
 		}
