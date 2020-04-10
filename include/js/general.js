@@ -1611,7 +1611,7 @@ function doformValidation(edit_type) {
 			case 'DT' :
 				if (getObj(fieldname[i]) != null && getObj(fieldname[i]).value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0) {
 					if (type[1]=='M') {
-						if (!emptyCheck(fieldname[2], fieldlabel[i], (type[2]!=undefined ? getObj(type[2]).type :''))) {
+						if (!emptyCheck(fieldname[i], fieldlabel[i], (type[2]!=undefined ? getObj(type[2]).type :''))) {
 							return false;
 						}
 					}
