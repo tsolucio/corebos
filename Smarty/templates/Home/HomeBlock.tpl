@@ -201,15 +201,20 @@ window.doChart{$HOME_STUFFID} = function(charttype) {ldelim}
 			max: maxgrph,
 			precision: 0
 		}
-	});
-	window.schart{/literal}{$HOME_STUFFID} = new Chart(stuffchart,{
+	});{/literal}
+	{if !empty($GRAPHCOLORSCHEME) && $DASHDETAILS.$HOME_STUFFID.Chart neq 'piechart'}
+	chartDataObject.datasets[0].backgroundColor = Chart['colorschemes'].{$GRAPHCOLORSCHEME};
+	{/if}
+	window.schart{$HOME_STUFFID} = new Chart(stuffchart,{
 		type: charttype,
 		data: chartDataObject,
 		options: {
 			plugins: {
+				{if !empty($GRAPHCOLORSCHEME) && $DASHDETAILS.$HOME_STUFFID.Chart eq 'piechart'}
 				colorschemes: {
 					scheme: '{$GRAPHCOLORSCHEME}'
 				},
+				{/if}
 				datalabels: {
 					{if $GRAPHSHOW=='None'}
 					display: false,

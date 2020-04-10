@@ -140,14 +140,15 @@ let pchart = new Chart(rptpiechart,{
 		}
 	}
 });
-let barchar = new Chart(rptbarchart,{
+{/literal}
+{if !empty($GRAPHCOLORSCHEME)}
+chartDataObject.datasets[0].backgroundColor = Chart['colorschemes'].{$GRAPHCOLORSCHEME};
+{/if}
+let barchar = new Chart(rptbarchart, {
 	type: 'horizontalBar',
 	data: chartDataObject,
 	options: {
-		plugins: {{/literal}
-			colorschemes: {
-				scheme: '{$GRAPHCOLORSCHEME}'
-			},
+		plugins: {
 			datalabels: {
 				{if $GRAPHSHOW=='None'}
 				display: false,

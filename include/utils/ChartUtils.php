@@ -211,6 +211,7 @@ window.doChart{$html_imagename} = function(charttype) {
 		datasets: [{
 			data: [ $vals ],
 			$gtitle
+			backgroundColor: [ $bcolor ]
 		}]
 	};
 	//const arrSum = chartDataObject.datasets[0].data.reduce((a,b) => Number(a) + Number(b), 0);
@@ -220,14 +221,11 @@ window.doChart{$html_imagename} = function(charttype) {
 			max: $maxscale
 		}
 	});
-	window.schart{$html_imagename} = new Chart(stuffchart,{
+	window.schart{$html_imagename} = new Chart(stuffchart, {
 		type: '{$graph_type}',
 		data: chartDataObject,
 		options: {
 			plugins: {
-				colorschemes: {
-					scheme: '{$GRAPHCOLORSCHEME}'
-				},
 				datalabels: {
 					display: false,
 					color: '{$GRAPHSHOWCOLOR}',
