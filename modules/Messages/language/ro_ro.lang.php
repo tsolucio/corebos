@@ -12,6 +12,7 @@ $mod_strings = array(
 	'Messages' => 'Messages',
 	'SINGLE_Messages' => 'Message',
 	'Messages ID' => 'Message ID',
+	'messagesid' => 'Message ID',
 
 	'LBL_CUSTOM_INFORMATION' => 'Custom Information',
 	'LBL_MESSAGE_INFORMATION' => 'Message Information',
@@ -47,6 +48,6 @@ $mod_strings = array(
 	'no_mail' => 'Emails Empty',
 	'lasteventtime' => 'Last Event Time',
 	'lasturlclicked' => 'Last URL Clicked',
-	'messagesuniqueid' => 'Messages UniqueId',
+	'messagesuniqueid' => 'Messages Unique Id',
 );
 ?>

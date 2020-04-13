@@ -11,7 +11,8 @@
 $mod_strings = array(
 	'Messages' => 'Mensajes',
 	'SINGLE_Messages' => 'Mensaje',
-	'Messages ID' => 'Mensaje ID',
+	'Messages ID' => 'ID Mensaje',
+	'messagesid' => 'ID Mensaje',
 
 	'LBL_CUSTOM_INFORMATION' => 'Información Personalizada',
 	'LBL_MESSAGE_INFORMATION' => 'Información Mensaje',
