@@ -29,6 +29,13 @@ $mod_strings = array(
 'LBL_CURRENCY_STATUS'=>'Status',
 'LBL_CURRENCY_TOOL'=>'Tools',
 'LBL_CURRENCY_LIST'=>'Currencies List',
+'currency name'=>'Currency Name',
+'currency code'=>'Currency Code',
+'currency symbol'=>'Symbol',
+'conversion rate'=>'Conversion Rate',
+'currency status'=>'Status',
+'currency position'=>'Currency Position',
+'defaultid' => 'Default ID',
 'NTC_DELETE_CONFIRMATION'=>'Are you sure you want to delete this record?',
 
 'LBL_PICKLIST_FIELD_SETTINGS'=>'Picklist Field Settings:',

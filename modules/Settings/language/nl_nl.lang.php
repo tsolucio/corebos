@@ -34,6 +34,12 @@ $mod_strings = array(
 'LBL_CURRENCY_STATUS'=>'Status',
 'LBL_CURRENCY_TOOL'=>'Gereedschap',
 'LBL_CURRENCY_LIST'=>'Valuta lijst',
+'currency name'=>'Valuta naam',
+'currency code'=>'Valuta code',
+'currency symbol'=>'Symbol',
+'conversion rate'=>'Omreken koers',
+'currency status'=>'Status',
+'currency position'=>'Currency Position',
 
 'NTC_DELETE_CONFIRMATION'=>'Weet u zeker dat u deze informatie wilt verwijderen?',
 

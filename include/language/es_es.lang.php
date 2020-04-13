@@ -631,6 +631,7 @@ $app_strings = array (
 	'LBL_TAX_FOR_SHIPPING_AND_HANDLING' => 'Impuestos de Manipulación y Transporte',
 	'LBL_FINISH' => 'Terminado',
 	'LBL_IMAGE_DELETED' => 'Imagen Borrada',
+	'deleted' => 'Borrado',
 	'LBL_TAX_MODE' => 'Tipo de Impuestos',
 	'LBL_CLEAR_COMMENT' => 'Borrar Comentario',
 	'LBL_ZERO_DISCOUNT' => 'Sin Descuento',

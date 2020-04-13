@@ -645,6 +645,7 @@ $app_strings = array(
 	'LBL_TAX_FOR_SHIPPING_AND_HANDLING' => 'BTW over Handling en Verzendtoeslag',
 	'LBL_FINISH' => 'Afmaken',
 	'LBL_IMAGE_DELETED' => 'Afbeelding verwijderd',
+	'deleted' => 'Deleted',
 	'LBL_TAX_MODE' => 'Belasting modus',
 	'LBL_CLEAR_COMMENT' => 'Leegmaken Commentaar',
 	'LBL_ZERO_DISCOUNT' => 'NUL Korting',

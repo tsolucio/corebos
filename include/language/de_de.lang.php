@@ -614,6 +614,7 @@ $app_strings = array(
 'LBL_TAX_FOR_SHIPPING_AND_HANDLING'=>'Versandkosten MwSt.',
 'LBL_FINISH'=>'Fertigstellen',
 'LBL_IMAGE_DELETED'=>'Bild gelöscht',
+'deleted' => 'Deleted',
 'LBL_TAX_MODE'=>'MwSt.',
 'LBL_CLEAR_COMMENT'=>'Kommentar löschen',
 'LBL_ZERO_DISCOUNT'=>'Kein Rabatt',

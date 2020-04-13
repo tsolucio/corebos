@@ -621,6 +621,7 @@ $app_strings = array(
 'LBL_TAX_FOR_SHIPPING_AND_HANDLING' => 'Taxes For Shipping and Handling',
 'LBL_FINISH' => 'Finish',
 'LBL_IMAGE_DELETED' => 'Image Deleted',
+'deleted' => 'Deleted',
 'LBL_TAX_MODE' => 'Tax Mode',
 'LBL_CLEAR_COMMENT' => 'Clear Comment',
 'LBL_ZERO_DISCOUNT' => 'Zero Discount',

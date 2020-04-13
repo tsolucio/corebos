@@ -30,6 +30,13 @@ $mod_strings = array(
 	'LBL_CURRENCY_STATUS'=>'Status',
 	'LBL_CURRENCY_TOOL'=>'Werkzeuge',
 	'LBL_CURRENCY_LIST'=>'Währungsliste',
+	'currency name'=>'Währungsname',
+	'currency code'=>'Währungscode',
+	'currency symbol'=>'Symbol',
+	'conversion rate'=>'Umrechnungsrate',
+	'currency status'=>'Status',
+	'currency position'=>'Currency Position',
+	'defaultid' => 'Default ID',
 
 	'NTC_DELETE_CONFIRMATION'=>'Möchten Sie diesen Eintrag löschen?',
 

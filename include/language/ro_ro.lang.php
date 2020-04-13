@@ -618,6 +618,7 @@ $app_strings = array(
 	'LBL_TAX_FOR_SHIPPING_AND_HANDLING' => 'Taxe Pentru Manipulare si Livrare',
 	'LBL_FINISH' => 'Terminat',
 	'LBL_IMAGE_DELETED' => 'Imagine Stearsa',
+	'deleted' => 'Deleted',
 	'LBL_TAX_MODE' => 'Mod Taxa',
 	'LBL_CLEAR_COMMENT' => 'Sterge Comentariu',
 	'LBL_ZERO_DISCOUNT' => 'Discount Zero',

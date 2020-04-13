@@ -617,6 +617,7 @@ $app_strings = array (
   'LBL_TAX_FOR_SHIPPING_AND_HANDLING' => 'Tasse sulle Spese di Spedizione',
   'LBL_FINISH' => 'Fine',
   'LBL_IMAGE_DELETED' => 'Immagine Cancellata',
+  'deleted' => 'Deleted',
   'LBL_TAX_MODE' => 'Modalit&agrave; di Tassazione',
   'LBL_CLEAR_COMMENT' => 'Pulisci i Commenti',
   'LBL_ZERO_DISCOUNT' => 'Nessuno Sconto',

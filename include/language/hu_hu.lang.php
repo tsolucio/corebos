@@ -626,6 +626,7 @@ $app_strings = array(
 	'LBL_TAX_FOR_SHIPPING_AND_HANDLING' => 'Szállítási és Kezelési Költség ÁFA-ja',
 	'LBL_FINISH' => 'Befejez',
 	'LBL_IMAGE_DELETED' => 'Kép Törölve',
+	'deleted' => 'Deleted',
 	'LBL_TAX_MODE' => 'Adó mód',
 	'LBL_CLEAR_COMMENT' => 'Megjegyzés Törlése',
 	'LBL_ZERO_DISCOUNT' => 'Nulla Kedvezmény',
