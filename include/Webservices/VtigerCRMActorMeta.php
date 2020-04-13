@@ -16,6 +16,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 	private $hasReadAccess;
 	private $hasWriteAccess;
 	private $hasDeleteAccess;
+	private $PermissionModule = '';
 
 	public function __construct($tableName, $webserviceObject, $adb, $user) {
 		parent::__construct($webserviceObject, $user);
@@ -32,20 +33,55 @@ class VtigerCRMActorMeta extends EntityMeta {
 		$this->tableList = array($this->baseTable);
 		$this->tableIndexList = array($this->baseTable=>$this->idColumn);
 		$this->defaultTableList = array();
+		$this->PermissionModule = $this->computePermissionModule($webserviceObject);
 		$this->computeAccess($webserviceObject, $user);
+	}
+
+	public function getPermissionModule() {
+		return $this->PermissionModule;
+	}
+
+	public function computePermissionModule($webserviceObject) {
+		$moduleName = $webserviceObject->getEntityName();
+		switch ($moduleName) {
+			case 'DocumentFolders':
+				$permModule = 'Documents';
+				break;
+			case 'CompanyDetails':
+				$permModule = 'cbCompany';
+				break;
+			case 'Workflow':
+				$permModule = 'CronTasks';
+				break;
+			case 'AuditTrail':
+				$permModule = 'cbAuditTrail';
+				break;
+			case 'LoginHistory':
+				$permModule = 'cbLoginHistory';
+				break;
+			case 'Groups':
+			case 'Currency':
+			default:
+				$permModule = 'Settings';
+				break;
+		}
+		return $permModule;
 	}
 
 	private function computeAccess($webserviceObject, $user) {
 		global $adb;
 		$moduleName = $webserviceObject->getEntityName();
-		if ($moduleName=='Groups' || $moduleName=='Currency' || $moduleName=='DocumentFolders') {
+		if ($moduleName=='Groups' || $moduleName=='Currency') {
 			$this->hasAccess = true;
 			$this->hasReadAccess = true;
-			$this->hasWriteAccess = ($moduleName=='DocumentFolders');
+			$this->hasWriteAccess = false;
 			$this->hasDeleteAccess = false;
 			return;
 		}
 		switch ($moduleName) {
+			case 'DocumentFolders':
+				$permModule = 'Documents';
+				break;
 			case 'CompanyDetails':
 				$permModule = 'cbCompany';
 				break;
