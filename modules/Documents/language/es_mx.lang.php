@@ -121,7 +121,9 @@ $mod_strings = array(
 'LBL_MAXIMUM_50'=>'Máximo 50',
 
 'Document No'=>'Número Documento',
-'Folder Name'=>"Nombre de carpeta",
+'Folder Name'=>'Nombre de carpeta',
+'foldername'=>'Nombre de carpeta',
+'folderid' => 'Folder ID',
 'Documents' => 'Documentos',
 'Documents ID'=>'Id Documento',
 'LBL_FILEUPLOAD_FAILED'=>'No se ha podido cargar el fichero. Revisa los permisos de los directorios!',
