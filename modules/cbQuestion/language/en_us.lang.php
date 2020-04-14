@@ -105,5 +105,7 @@ $mod_strings = array(
 	'Main Table Alias' => 'Main Table Alias',
 	'Related Module List' => 'Related Module List',
 	'Update View when Related Changes' => 'Update View when Related Changes',
+	'UpdateMViewRelatedInfo' => 'Update Materialized View Related Info',
+	'Update Materialized Views Related Information.' => 'Updates all Materialized Views Related Information.',
 );
 ?>
