@@ -59,12 +59,18 @@ class VTWorkflowManager {
 		if (!isset($workflow->relatemodule)) {
 			$workflow->relatemodule = '';
 		}
+		if (!isset($workflow->wfstarton)) {
+			$workflow->wfstarton = '';
+		}
+		if (!isset($workflow->wfendon)) {
+			$workflow->wfendon = '';
+		}
 		$wf=$workflow;
 		if (!empty($workflow->id)) {
 			$adb->pquery(
 				'update com_vtiger_workflows set
 					module_name=?, summary=?, test=?, execution_condition=?, defaultworkflow=?,
-					schtypeid=?, schtime=?, schdayofmonth=?, schdayofweek=?, schannualdates=?,schminuteinterval=?, purpose=?, relatemodule=? where workflow_id=?',
+					schtypeid=?, schtime=?, schdayofmonth=?, schdayofweek=?, schannualdates=?,schminuteinterval=?, purpose=?, relatemodule=?, wfstarton=?, wfendon=?, active=? where workflow_id=?',
 				array(
 					$wf->moduleName,
 					$wf->description,
@@ -79,6 +85,9 @@ class VTWorkflowManager {
 					$wf->schminuteinterval,
 					$wf->purpose,
 					$wf->relatemodule,
+					$wf->wfstarton,
+					$wf->wfendon,
+					$wf->active,
 					$wf->id,
 				)
 			);
@@ -91,7 +100,7 @@ class VTWorkflowManager {
 				$adb->pquery(
 					'insert into com_vtiger_workflows
 						(workflow_id, module_name, summary, test, execution_condition, type, defaultworkflow, schtypeid, schtime, schdayofmonth,
-						schdayofweek, schannualdates, schminuteinterval, purpose, relatemodule) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+						schdayofweek, schannualdates, schminuteinterval, purpose, relatemodule, wfstarton, wfendon, active) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
 					array(
 						$workflowId,
 						$wf->moduleName,
@@ -108,13 +117,16 @@ class VTWorkflowManager {
 						$wf->schminuteinterval,
 						$wf->purpose,
 						$wf->relatemodule,
+						$wf->wfstarton,
+						$wf->wfendon,
+						$wf->active,
 					)
 				);
 			} else {
 				$adb->pquery(
 					'insert into com_vtiger_workflows
 						(workflow_id, module_name, summary, test, execution_condition, defaultworkflow, schtypeid, schtime, schdayofmonth, schdayofweek,
-						schdayofweek, schannualdates,schminuteinterval, purpose, relatemodule) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+						schdayofweek, schannualdates,schminuteinterval, purpose, relatemodule, wfstarton, wfendon, active) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
 					array(
 						$workflowId,
 						$wf->moduleName,
@@ -130,6 +142,9 @@ class VTWorkflowManager {
 						$wf->schminuteinterval,
 						$wf->purpose,
 						$wf->relatemodule,
+						$wf->wfstarton,
+						$wf->wfendon,
+						$wf->active,
 					)
 				);
 			}
@@ -141,7 +156,7 @@ class VTWorkflowManager {
 		global $current_user;
 		$where = is_admin($current_user) ? '' : ' where defaultworkflow=2';
 		$result = $this->adb->query(
-			'select workflow_id, module_name, summary, test, execution_condition, defaultworkflow, type, purpose, relatemodule from com_vtiger_workflows'.$where
+			'select workflow_id, module_name, summary, test, execution_condition, defaultworkflow, type, purpose, relatemodule, wfstarton, wfendon, active from com_vtiger_workflows'.$where
 		);
 		return $this->getWorkflowsForResult($result);
 	}
@@ -183,7 +198,7 @@ class VTWorkflowManager {
 		global $current_user;
 		$where = is_admin($current_user) ? '' : ' and defaultworkflow=2';
 		$result = $this->adb->pquery(
-			'select workflow_id, module_name, summary, test, execution_condition, defaultworkflow, type, purpose from com_vtiger_workflows where module_name=?'.$where,
+			'select workflow_id, module_name, summary, test, execution_condition, defaultworkflow, type, purpose, wfstarton, wfendon, active from com_vtiger_workflows where module_name=?'.$where,
 			array($moduleName)
 		);
 		return $this->getWorkflowsForResult($result);
@@ -344,6 +359,9 @@ class VTWorkflowManager {
 		$workflow->schtypeid = 0;
 		$workflow->nexttrigger_time = '';
 		$workflow->relatemodule = '';
+		$workflow->wfstarton = '';
+		$workflow->wfendon = '';
+		$workflow->active = '';
 		return $workflow;
 	}
 
@@ -366,6 +384,9 @@ class VTWorkflowManager {
 		$exp['schannualdates'] = $workflow->schannualdates;
 		$exp['schminuteinterval']=$workflow->schminuteinterval;
 		$exp['relatemodule']=$workflow->relatemodule;
+		$exp['wfstarton']=$workflow->wfstarton;
+		$exp['wfendon']=$workflow->wfendon;
+		$exp['active']=$workflow->active;
 		$exp['tasks'] = array();
 		$tm = new VTTaskManager($this->adb);
 		$tasks = $tm->getTasksForWorkflow($workflow->id);
@@ -395,6 +416,9 @@ class VTWorkflowManager {
 		$workflow->schannualdates = $data['schannualdates'];
 		$workflow->schminuteinterval=$data['schminuteinterval'];
 		$workflow->relatemodule = $data['relatemodule'];
+		$workflow->wfstarton = $data['wfstarton'];
+		$workflow->wfendon = $data['wfendon'];
+		$workflow->active = $data['active'];
 		$this->save($workflow);
 		$tm = new VTTaskManager($this->adb);
 		$tasks = $data['tasks'];

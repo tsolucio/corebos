@@ -62,7 +62,7 @@
 		{include file='com_vtiger_workflow/WorkflowDateRangeHelp.tpl'}
 		</label>
 		<div class="slds-form-element__control slds-m-top_x-small">
-			<input name="wfstarton" id="jscal_field_wfstarton" type="text" class="slds-input slds-page-header__meta-text" size="16" maxlength="16" value="" style="width:50%">
+			<input name="wfstarton" id="jscal_field_wfstarton" type="text" class="slds-input slds-page-header__meta-text" size="16" maxlength="16" value="{$workflow->wfstarton}" style="width:50%">
 			<input name="timefmt_wfstarton" id="inputtimefmt_wfstarton" type="hidden" value="24">
 			{include file='Components/DateButton.tpl' fldname='wfstarton'}
 			<script type="text/javascript">
@@ -77,7 +77,7 @@
 		{'LBL_END_DATE'|@getTranslatedString:'com_vtiger_workflow'}
 		</label>
 		<div class="slds-form-element__control slds-m-top_x-small slds-page-header__meta-text">
-			<input name="wfendon" id="jscal_field_wfendon" type="text" class="slds-input slds-page-header__meta-text" size="16" maxlength="16" value="" style="width:50%">
+			<input name="wfendon" id="jscal_field_wfendon" type="text" class="slds-input slds-page-header__meta-text" size="16" maxlength="16" value="{$workflow->wfendon}" style="width:50%">
 			<input name="timefmt_wfendon" id="inputtimefmt_wfendon" type="hidden" value="24">
 			{include file='Components/DateButton.tpl' fldname='wfendon'}
 			<script type="text/javascript">
@@ -93,8 +93,8 @@
 		</label>
 		<div class="slds-form-element__control slds-m-top_x-small">
 			<select name="active" class="slds-select slds-page-header__meta-text" style="width:50%">
-				<option value="true">{$MOD.LBL_ACTIVE}</option>
-				<option value="false">{$MOD.LBL_INACTIVE}</option>
+				<option value="true" {$selected_active}>{$MOD.LBL_ACTIVE}</option>
+				<option value="false" {$selected_inactive}>{$MOD.LBL_INACTIVE}</option>
 			</select>
 		</div>
 	</div>
