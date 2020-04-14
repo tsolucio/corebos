@@ -13,6 +13,7 @@
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
+require_once 'vtlib/Vtiger/Cron.php';
 class addMvScheduledwfcbQuestion extends cbupdaterWorker {
 
 	public function applyChange() {
@@ -22,10 +23,8 @@ class addMvScheduledwfcbQuestion extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			global $adb;
-			$emm = new VTEntityMethodManager($adb);
-			$emm->addEntityMethod("cbQuestion", "Materialized View shedule Wf", "modules/cbQuestion/workflow/mvscheduledWfBasedOnRelatedchange.php", "mvscheduledWfBasedOnRelatedchange");
-			$this->sendMsg('Changeset '.get_class($this).' applied! Add Workflow Custom Function complete!');
+			Vtiger_Cron::register('UpdateMViewRelatedInfo', 'modules/cbQuestion/cron/mvscheduledWfBasedOnRelatedchange.php', 6000, 'cbQuestion', Vtiger_Cron::$STATUS_ENABLED, 0, 'Update Materialized Views Related Information.');
+			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
