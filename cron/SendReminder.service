@@ -144,7 +144,10 @@ if ($adb->num_rows($result) >= 1) {
 					$wsid = vtws_getWebserviceEntityId($setype, $activity_id);
 					$entityData = $entityCache->forId($wsid);
 					if ($workflow->evaluate($entityCache, $entityData->getId())) {
-						$workflow->performTasks($entityData);
+						$wfActive = $workflow->activeWorkflow();
+						if ($wfActive == true) {
+							$workflow->performTasks($entityData);
+						}
 					}
 					$util->revertUser();
 				}
