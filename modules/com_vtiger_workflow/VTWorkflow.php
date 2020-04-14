@@ -276,38 +276,25 @@ class Workflow {
 
 	public function activeWorkflow() {
 		$active = true;
-		$today = strtotime(DateTimeField::convertToUserFormat(date('Y-m-d H:i:s')));
-		$wfstarton = $this->wfstarton == '0000-00-00 00:00:00' ? '' : strtotime($this->wfstarton);
-		$wfendon = $this->wfendon == '0000-00-00 00:00:00' ? '' : strtotime($this->wfendon);
+		$today = time();
+		$wfstarton = $this->wfstarton == "" ? "" : strtotime($this->wfstarton);
+		$wfendon = $this->wfendon == "" ? "" : strtotime($this->wfendon);
 		if ($this->active == 'true') {
 			//check Active status between these days
 			if ($today >= $wfstarton && $today <= $wfendon && $wfendon != "" && $wfstarton != "") {
 				$active = true;
-			} elseif ($today >= $wfstarton && $wfendon == "") {
+			} else if($today >= $wfstarton && $wfendon == "") {
 				$active = true;
-			} elseif ($today <= $wfendon && $wfstarton == "") {
+			} else if($today <= $wfendon && $wfstarton == "") {
 				$active = true;
-			} elseif ($wfendon == "" && $wfstarton == "") {
+			} else if($wfendon == "" && $wfstarton == "") {
 				$active = true;
 			} else {
 				//status is active but is out of date range
 				$active = false;
-			}
+			}		
 		} else {
-			//check Inactive status between these days
-			if ($today >= $wfstarton && $today <= $wfendon && $wfendon != "" && $wfstarton != "") {
-				$active = false;
-			} elseif ($today >= $wfstarton && $wfendon == "") {
-				$active = false;
-			} elseif ($today <= $wfendon && $wfstarton == "") {
-				echo 1;
-				$active = false;
-			} elseif ($wfendon == "" && $wfstarton == "") {
-				$active = false;
-			} else {
-				//status is inactive but is out of date range
-				$active = true;
-			}
+			$active = false;	
 		}
 		return $active;
 	}
