@@ -84,6 +84,13 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 		$smarty->assign('dayOfWeek', json_decode($workflow->schdayofweek));
 	}
 
+	if ($workflow->active == 'true') {
+		$smarty->assign('selected_active', 'selected');
+		$smarty->assign('selected_inactive', '');
+	} else {
+		$smarty->assign('selected_active', '');
+		$smarty->assign('selected_inactive', 'selected');		
+	}
 	if ($workflow==null) {
 		$errorUrl = $module->errorPageUrl($mod['LBL_ERROR_NO_WORKFLOW']);
 		$util->redirectTo($errorUrl, $mod['LBL_ERROR_NO_WORKFLOW']);

@@ -128,6 +128,15 @@ $cnmsg = $adb->getColumnNames('com_vtiger_workflows');
 if (!in_array('purpose', $cnmsg)) {
 	$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `purpose` TEXT NULL;');
 }
+if (!in_array('wfstarton', $cnmsg)) {
+	$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `wfstarton` datetime NULL;');
+}
+if (!in_array('wfendon', $cnmsg)) {
+	$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `wfendon` datetime NULL;');
+}
+if (!in_array('active', $cnmsg)) {
+	$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `active` varchar(10) NULL;');
+}
 if (!in_array('relatemodule', $cnmsg)) {
 	$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `relatemodule` varchar(100) default NULL;');
 }

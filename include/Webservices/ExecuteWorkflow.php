@@ -85,7 +85,10 @@ function cbwsExecuteWorkflowWithContext($workflow, $entities, $context, $user) {
 					$workflow->markAsCompletedForRecord($entity_id);
 				}
 				try {
-					$workflow->performTasks($entityData, $ctx, true);
+					$wfActive = $workflow->activeWorkflow();
+					if ($wfActive == true) {
+						$workflow->performTasks($entityData, $ctx, true);
+					}
 				} catch (WebServiceException $e) {
 					$errortasks[$crmid] = $e->getMessage();
 				}

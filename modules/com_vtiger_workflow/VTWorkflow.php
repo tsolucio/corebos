@@ -161,6 +161,9 @@ class Workflow {
 		$this->schminuteinterval = isset($row['schminuteinterval']) ? $row['schminuteinterval'] : '';
 		$this->defaultworkflow=$row['defaultworkflow'];
 		$this->purpose = isset($row['purpose']) ? $row['purpose'] : '';
+		$this->wfstarton = isset($row['wfstarton']) ? $row['wfstarton'] : '';
+		$this->wfendon = isset($row['wfendon']) ? $row['wfendon'] : '';
+		$this->active = isset($row['active']) ? $row['active'] : '';
 		$this->nexttrigger_time = isset($row['nexttrigger_time']) ? $row['nexttrigger_time'] : '';
 		if ($row['execution_condition']==VTWorkflowManager::$ON_RELATE || $row['execution_condition']==VTWorkflowManager::$ON_UNRELATE) {
 			$this->relatemodule = isset($row['relatemodule']) ? $row['relatemodule'] : '';
@@ -269,6 +272,43 @@ class Workflow {
 				throw new WebServiceException(WebServiceErrorCode::$WORKFLOW_TASK_FAILED, print_r($errortasks, true));
 			}
 		}
+	}
+
+	public function activeWorkflow() {
+		$active = true;
+		$today = strtotime(DateTimeField::convertToUserFormat(date('Y-m-d H:i:s')));
+		$wfstarton = $this->wfstarton == '0000-00-00 00:00:00' ? '' : strtotime($this->wfstarton);
+		$wfendon = $this->wfendon == '0000-00-00 00:00:00' ? '' : strtotime($this->wfendon);
+		if ($this->active == 'true') {
+			//check Active status between these days
+			if ($today >= $wfstarton && $today <= $wfendon && $wfendon != "" && $wfstarton != "") {
+				$active = true;
+			} else if($today >= $wfstarton && $wfendon == "") {
+				$active = true;
+			} else if($today <= $wfendon && $wfstarton == "") {
+				$active = true;
+			} else if($wfendon == "" && $wfstarton == "") {
+				$active = true;
+			} else {
+				//status is active but is out of date range
+				$active = false;
+			}		
+		} else {
+			//check Inactive status between these days
+			if ($today >= $wfstarton && $today <= $wfendon && $wfendon != "" && $wfstarton != "") {
+				$active = false;
+			} else if($today >= $wfstarton && $wfendon == "") {
+				$active = false;
+			} else if($today <= $wfendon && $wfstarton == "") {
+				echo 1;$active = false;
+			} else if($wfendon == "" && $wfstarton == "") {
+				$active = false;
+			} else {
+				//status is inactive but is out of date range
+				$active = true;
+			}		
+		}
+		return $active;
 	}
 
 	public function executionConditionAsLabel($label = null) {
