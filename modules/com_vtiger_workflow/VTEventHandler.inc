@@ -32,7 +32,6 @@ class VTWorkflowEventHandler extends VTEventHandler {
 	 * @param $entityData A VTEntityData object representing the entity.
 	 */
 	public function handleEvent($eventName, $entityData) {
-		echo "<pre>";
 		$util = new VTWorkflowUtils();
 		$user = $util->adminUser();
 		global $adb;
@@ -93,9 +92,6 @@ class VTWorkflowEventHandler extends VTEventHandler {
 					$entity_id = $entity_id[1];
 					$workflow->markAsCompletedForRecord($entity_id);
 				}
-				$today = strtotime(DateTimeField::convertToUserFormat(date('Y-m-d H:i:s')));
-				$wfstarton = strtotime($workflow->wfstarton);
-				$wfendon = strtotime($workflow->wfendon);
 				$wfActive = $workflow->activeWorkflow();
 				if ($wfActive == true) {
 					$workflow->performTasks($entityData);
