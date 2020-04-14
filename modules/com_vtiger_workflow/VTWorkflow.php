@@ -277,24 +277,24 @@ class Workflow {
 	public function activeWorkflow() {
 		$active = true;
 		$today = time();
-		$wfstarton = $this->wfstarton == "" ? "" : strtotime($this->wfstarton);
-		$wfendon = $this->wfendon == "" ? "" : strtotime($this->wfendon);
-		if ($this->active == 'true') {
+		$wfstarton = $this->wfstarton == '' ? '' : strtotime($this->wfstarton);
+		$wfendon = $this->wfendon == '' ? '' : strtotime($this->wfendon);
+		if ($this->active == 'true' || $this->active === true) {
 			//check Active status between these days
-			if ($today >= $wfstarton && $today <= $wfendon && $wfendon != "" && $wfstarton != "") {
+			if ($today >= $wfstarton && $today <= $wfendon && $wfendon != '' && $wfstarton != '') {
 				$active = true;
-			} else if($today >= $wfstarton && $wfendon == "") {
+			} elseif ($today >= $wfstarton && $wfendon == '') {
 				$active = true;
-			} else if($today <= $wfendon && $wfstarton == "") {
+			} elseif ($today <= $wfendon && $wfstarton == '') {
 				$active = true;
-			} else if($wfendon == "" && $wfstarton == "") {
+			} elseif ($wfendon == '' && $wfstarton == '') {
 				$active = true;
 			} else {
 				//status is active but is out of date range
 				$active = false;
-			}		
+			}
 		} else {
-			$active = false;	
+			$active = false;
 		}
 		return $active;
 	}

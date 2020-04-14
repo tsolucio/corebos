@@ -70,7 +70,8 @@ class VTWorkflowManager {
 			$adb->pquery(
 				'update com_vtiger_workflows set
 					module_name=?, summary=?, test=?, execution_condition=?, defaultworkflow=?,
-					schtypeid=?, schtime=?, schdayofmonth=?, schdayofweek=?, schannualdates=?,schminuteinterval=?, purpose=?, relatemodule=?, wfstarton=?, wfendon=?, active=? where workflow_id=?',
+					schtypeid=?, schtime=?, schdayofmonth=?, schdayofweek=?, schannualdates=?,schminuteinterval=?,
+					purpose=?, relatemodule=?, wfstarton=?, wfendon=?, active=? where workflow_id=?',
 				array(
 					$wf->moduleName,
 					$wf->description,
