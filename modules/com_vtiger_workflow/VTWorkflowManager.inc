@@ -86,8 +86,8 @@ class VTWorkflowManager {
 					$wf->schminuteinterval,
 					$wf->purpose,
 					$wf->relatemodule,
-					$wf->wfstarton,
-					$wf->wfendon,
+					empty($wf->wfstarton) ? null : $wf->wfstarton,
+					empty($wf->wfendon) ? null : $wf->wfendon,
 					$wf->active,
 					$wf->id,
 				)
@@ -118,8 +118,8 @@ class VTWorkflowManager {
 						$wf->schminuteinterval,
 						$wf->purpose,
 						$wf->relatemodule,
-						$wf->wfstarton,
-						$wf->wfendon,
+						empty($wf->wfstarton) ? null : $wf->wfstarton,
+						empty($wf->wfendon) ? null : $wf->wfendon,
 						$wf->active,
 					)
 				);
@@ -143,8 +143,8 @@ class VTWorkflowManager {
 						$wf->schminuteinterval,
 						$wf->purpose,
 						$wf->relatemodule,
-						$wf->wfstarton,
-						$wf->wfendon,
+						empty($wf->wfstarton) ? null : $wf->wfstarton,
+						empty($wf->wfendon) ? null : $wf->wfendon,
 						$wf->active,
 					)
 				);

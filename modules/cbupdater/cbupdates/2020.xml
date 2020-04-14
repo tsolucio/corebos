@@ -106,17 +106,24 @@
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
-    <author>george1806</author>
-    <description>Add fields for Mv Schedule Wf in cbQuestion</description>
-    <filename>build/changeSets/2020/addmvScheduleWffieldsincbQuestion.php</filename>
-    <classname>addmvScheduleWffieldsincbQuestion</classname>
-    <systemupdate>true</systemupdate>
+	<author>george1806</author>
+	<description>Add fields for Mv Schedule Wf in cbQuestion</description>
+	<filename>build/changeSets/2020/addmvScheduleWffieldsincbQuestion.php</filename>
+	<classname>addmvScheduleWffieldsincbQuestion</classname>
+	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
-    <author>george1806</author>
-    <description>Add Materialized View shedule Wf in cbQuestion</description>
-    <filename>build/changeSets/2020/addMvScheduledwfcbQuestion.php</filename>
-    <classname>addMvScheduledwfcbQuestion</classname>
-    <systemupdate>true</systemupdate>
+	<author>george1806</author>
+	<description>Add Materialized View shedule Wf in cbQuestion</description>
+	<filename>build/changeSets/2020/addMvScheduledwfcbQuestion.php</filename>
+	<classname>addMvScheduledwfcbQuestion</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Activate all workflows by default</description>
+	<filename>build/changeSets/2020/activateallworkflows.php</filename>
+	<classname>activateallworkflows</classname>
+	<systemupdate>true</systemupdate>
 </changeSet>
 </updatesChangeLog>
