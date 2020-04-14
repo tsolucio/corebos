@@ -103,5 +103,9 @@ $mod_strings = array(
 	'CRM Entity Alias' => 'CRM Entity Alias',
 	'LBL_cbQuestion_Advanced_Usage' => 'Advanced Usage',
 	'Main Table Alias' => 'Main Table Alias',
+	'Related Module List' => 'Related Module List',
+	'Update View when Related Changes' => 'Update View when Related Changes',
+	'UpdateMViewRelatedInfo' => 'Update Materialized View Related Info',
+	'Update Materialized Views Related Information.' => 'Updates all Materialized Views Related Information.',
 );
 ?>

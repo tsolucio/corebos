@@ -102,5 +102,9 @@ $mod_strings = array(
 	'CRM Entity Alias' => 'Alias Entidad CRM',
 	'LBL_cbQuestion_Advanced_Usage' => 'Opciones Avanzadas',
 	'Main Table Alias' => 'Alias de la Tabla Principal',
+	'Related Module List' => 'Lista de Módulos Relacionados',
+	'Update View when Related Changes' => 'Actualizar Vista cuando Cambia Relacionado',
+	'UpdateMViewRelatedInfo' => 'Actualizar Información Relacionada en Vistas Materializadas',
+	'Update Materialized Views Related Information.' => 'Actualiza la información Relacionada de Vistas Materializadas.',
 );
 ?>
