@@ -89,7 +89,7 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 		$smarty->assign('selected_inactive', '');
 	} else {
 		$smarty->assign('selected_active', '');
-		$smarty->assign('selected_inactive', 'selected');		
+		$smarty->assign('selected_inactive', 'selected');
 	}
 	if ($workflow==null) {
 		$errorUrl = $module->errorPageUrl($mod['LBL_ERROR_NO_WORKFLOW']);

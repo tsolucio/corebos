@@ -283,30 +283,31 @@ class Workflow {
 			//check Active status between these days
 			if ($today >= $wfstarton && $today <= $wfendon && $wfendon != "" && $wfstarton != "") {
 				$active = true;
-			} else if($today >= $wfstarton && $wfendon == "") {
+			} elseif ($today >= $wfstarton && $wfendon == "") {
 				$active = true;
-			} else if($today <= $wfendon && $wfstarton == "") {
+			} elseif ($today <= $wfendon && $wfstarton == "") {
 				$active = true;
-			} else if($wfendon == "" && $wfstarton == "") {
+			} elseif ($wfendon == "" && $wfstarton == "") {
 				$active = true;
 			} else {
 				//status is active but is out of date range
 				$active = false;
-			}		
+			}
 		} else {
 			//check Inactive status between these days
 			if ($today >= $wfstarton && $today <= $wfendon && $wfendon != "" && $wfstarton != "") {
 				$active = false;
-			} else if($today >= $wfstarton && $wfendon == "") {
+			} elseif ($today >= $wfstarton && $wfendon == "") {
 				$active = false;
-			} else if($today <= $wfendon && $wfstarton == "") {
-				echo 1;$active = false;
-			} else if($wfendon == "" && $wfstarton == "") {
+			} elseif ($today <= $wfendon && $wfstarton == "") {
+				echo 1;
+				$active = false;
+			} elseif ($wfendon == "" && $wfstarton == "") {
 				$active = false;
 			} else {
 				//status is inactive but is out of date range
 				$active = true;
-			}		
+			}
 		}
 		return $active;
 	}
