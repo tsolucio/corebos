@@ -98,4 +98,11 @@
 	<classname>movecbQuestionfieldsToAdvancedUsageBlock</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete unused column and make password field larger</description>
+	<filename>build/changeSets/2020/systemmaintenancevt710.php</filename>
+	<classname>systemmaintenancevt710</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

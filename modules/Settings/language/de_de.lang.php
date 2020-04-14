@@ -30,6 +30,13 @@ $mod_strings = array(
 	'LBL_CURRENCY_STATUS'=>'Status',
 	'LBL_CURRENCY_TOOL'=>'Werkzeuge',
 	'LBL_CURRENCY_LIST'=>'Währungsliste',
+	'currency name'=>'Währungsname',
+	'currency code'=>'Währungscode',
+	'currency symbol'=>'Symbol',
+	'conversion rate'=>'Umrechnungsrate',
+	'currency status'=>'Status',
+	'currency position'=>'Currency Position',
+	'defaultid' => 'Default ID',
 
 	'NTC_DELETE_CONFIRMATION'=>'Möchten Sie diesen Eintrag löschen?',
 
@@ -526,6 +533,8 @@ $mod_strings = array(
 	'LBL_NEW_GROUP'=>'Neue Gruppe',
 	'LBL_GROUPS'=>'Gruppen',
 	'LBL_GROUP_NAME'=>'Gruppenname',
+	'groupname'=>'Gruppenname',
+	'groupid'=>'Gruppe ID',
 	'LBL_ROLES_SUBORDINATES'=>'Rollen und Unterstellte',
 	'LBL_MEMBER_AVLBL'=>'Verfügbare Mitglieder',
 	'LBL_MEMBER_SELECTED'=>'Ausgewählte Mitglieder',

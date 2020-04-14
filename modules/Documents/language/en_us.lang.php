@@ -113,6 +113,8 @@ $mod_strings = array(
 'LBL_MAXIMUM_50'=>'Maximum 50',
 
 'Folder Name'=>'Folder Name',
+'foldername'=>'Folder Name',
+'folderid' => 'Folder ID',
 'Document No'=>'Document No',
 
 'Documents' => 'Documents',

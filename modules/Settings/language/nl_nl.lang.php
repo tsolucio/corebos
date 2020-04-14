@@ -34,6 +34,12 @@ $mod_strings = array(
 'LBL_CURRENCY_STATUS'=>'Status',
 'LBL_CURRENCY_TOOL'=>'Gereedschap',
 'LBL_CURRENCY_LIST'=>'Valuta lijst',
+'currency name'=>'Valuta naam',
+'currency code'=>'Valuta code',
+'currency symbol'=>'Symbol',
+'conversion rate'=>'Omreken koers',
+'currency status'=>'Status',
+'currency position'=>'Currency Position',
 
 'NTC_DELETE_CONFIRMATION'=>'Weet u zeker dat u deze informatie wilt verwijderen?',
 
@@ -511,6 +517,8 @@ $mod_strings = array(
 'LBL_NEW_GROUP'=>'Nieuwe Groep',
 'LBL_GROUPS'=>'Groepen',
 'LBL_GROUP_NAME'=>'Groepsnaam',
+'groupname'=>'Groepsnaam',
+'groupid'=>'ID Groepsnaam',
 'LBL_ROLES_SUBORDINATES'=>'Rollen en ondergeschikten',
 'LBL_MEMBER_AVLBL'=>'Beschikbare entiteiten en leden',
 'LBL_MEMBER_SELECTED'=>'Geselecteerde leden',

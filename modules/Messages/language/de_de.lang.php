@@ -12,6 +12,7 @@ $mod_strings = array(
 	'Messages' => 'Nachrichten',
 	'SINGLE_Messages' => 'Nachricht',
 	'Messages ID' => 'Nachrichten-ID',
+	'messagesid' => 'Nachrichten-ID',
 
 	'LBL_CUSTOM_INFORMATION' => 'Weitere Information',
 	'LBL_MESSAGE_INFORMATION' => 'Nachrichten-Information',

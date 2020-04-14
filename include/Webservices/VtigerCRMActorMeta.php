@@ -7,10 +7,16 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
+require_once 'include/Webservices/VtigerCRMObjectMeta.php';
 
 class VtigerCRMActorMeta extends EntityMeta {
 	protected $pearDB;
 	protected static $fieldTypeMapping = array();
+	private $hasAccess;
+	private $hasReadAccess;
+	private $hasWriteAccess;
+	private $hasDeleteAccess;
+	private $PermissionModule = '';
 
 	public function __construct($tableName, $webserviceObject, $adb, $user) {
 		parent::__construct($webserviceObject, $user);
@@ -27,6 +33,150 @@ class VtigerCRMActorMeta extends EntityMeta {
 		$this->tableList = array($this->baseTable);
 		$this->tableIndexList = array($this->baseTable=>$this->idColumn);
 		$this->defaultTableList = array();
+		$this->PermissionModule = $this->computePermissionModule($webserviceObject);
+		$this->computeAccess($webserviceObject, $user);
+	}
+
+	public function getPermissionModule() {
+		return $this->PermissionModule;
+	}
+
+	public function computePermissionModule($webserviceObject) {
+		$moduleName = $webserviceObject->getEntityName();
+		switch ($moduleName) {
+			case 'DocumentFolders':
+				$permModule = 'Documents';
+				break;
+			case 'CompanyDetails':
+				$permModule = 'cbCompany';
+				break;
+			case 'Workflow':
+				$permModule = 'CronTasks';
+				break;
+			case 'AuditTrail':
+				$permModule = 'cbAuditTrail';
+				break;
+			case 'LoginHistory':
+				$permModule = 'cbLoginHistory';
+				break;
+			case 'Groups':
+			case 'Currency':
+			default:
+				$permModule = 'Settings';
+				break;
+		}
+		return $permModule;
+	}
+
+	private function computeAccess($webserviceObject, $user) {
+		global $adb;
+		$moduleName = $webserviceObject->getEntityName();
+		if ($moduleName=='Groups' || $moduleName=='Currency') {
+			$this->hasAccess = true;
+			$this->hasReadAccess = true;
+			$this->hasWriteAccess = false;
+			$this->hasDeleteAccess = false;
+			return;
+		}
+		switch ($moduleName) {
+			case 'DocumentFolders':
+				$permModule = 'Documents';
+				break;
+			case 'CompanyDetails':
+				$permModule = 'cbCompany';
+				break;
+			case 'Workflow':
+				$permModule = 'CronTasks';
+				break;
+			case 'AuditTrail':
+				$permModule = 'cbAuditTrail';
+				break;
+			case 'LoginHistory':
+				$permModule = 'cbLoginHistory';
+				break;
+			default:
+				$this->hasAccess = false;
+				$this->hasReadAccess = false;
+				$this->hasWriteAccess = false;
+				$this->hasDeleteAccess = false;
+				return;
+				break;
+		}
+		if (!vtlib_isModuleActive($permModule)) {
+			$this->hasAccess = false;
+			$this->hasReadAccess = false;
+			$this->hasWriteAccess = false;
+			$this->hasDeleteAccess = false;
+			return;
+		}
+
+		$userprivs = $user->getPrivileges();
+		if ($userprivs->hasGlobalReadPermission()) {
+			$this->hasAccess = true;
+			$this->hasReadAccess = true;
+			$this->hasWriteAccess = false;
+			$this->hasDeleteAccess = false;
+		} else {
+			$this->hasAccess = false;
+			$this->hasReadAccess = false;
+			$this->hasWriteAccess = false;
+			$this->hasDeleteAccess = false;
+			$tabid = getTabid($permModule);
+			//TODO get or sort out the preference among profile2tab and profile2globalpermissions.
+			//TODO check whether create/edit seperate controls required for web sevices?
+			$profileList = getCurrentUserProfileList();
+
+			$sql = 'select * from vtiger_profile2globalpermissions where profileid in ('.generateQuestionMarks($profileList).');';
+			$result = $adb->pquery($sql, array($profileList));
+
+			$noofrows = $adb->num_rows($result);
+			//globalactionid=1 is view all action.
+			//globalactionid=2 is edit all action.
+			for ($i=0; $i<$noofrows; $i++) {
+				$permission = $adb->query_result($result, $i, 'globalactionpermission');
+				$globalactionid = $adb->query_result($result, $i, 'globalactionid');
+				if ($permission != 1 || $permission != '1') {
+					$this->hasAccess = true;
+					if ($globalactionid != 2 && $globalactionid != '2') {
+						$this->hasReadAccess = true;
+					}
+				}
+			}
+
+			$sql = 'select 1 from vtiger_profile2tab where profileid in ('.generateQuestionMarks($profileList).') and tabid = ? and permissions=0 limit 1';
+			$result = $adb->pquery($sql, array($profileList, $tabid));
+			$standardDefined = false;
+			if ($result && $adb->num_rows($result) == 1) {
+				$this->hasAccess = true;
+			} else {
+				$this->hasAccess = false;
+				return;
+			}
+
+			//operation=0 is create
+			//operation=1 is edit
+			//operation=2 is delete
+			//operation=3 index or popup. //ignored for websevices.
+			//operation=4 is view
+			$sql = 'select * from vtiger_profile2standardpermissions where profileid in ('.generateQuestionMarks($profileList).') and tabid=?';
+			$result = $adb->pquery($sql, array($profileList, $tabid));
+
+			$noofrows = $adb->num_rows($result);
+			for ($i=0; $i<$noofrows; $i++) {
+				$standardDefined = true;
+				$permission = $adb->query_result($result, $i, 'permissions');
+				$operation = $adb->query_result($result, $i, 'operation');
+				if ($permission != 1 || $permission != '1') {
+					$this->hasAccess = true;
+					if ($operation == 4 || $operation == '4') {
+						$this->hasReadAccess = true;
+					}
+				}
+			}
+			if (!$standardDefined) {
+				$this->hasReadAccess = true;
+			}
+		}
 	}
 
 	protected function getTableFieldList($tableName) {
@@ -177,45 +327,27 @@ class VtigerCRMActorMeta extends EntityMeta {
 	}
 
 	public function hasPermission($operation, $webserviceId) {
-		if (is_admin($this->user)) {
-			return true;
-		} else {
-			return strcmp($operation, EntityMeta::$RETRIEVE)===0;
-		}
+		return $this->hasAccess;
 	}
 
 	public function hasAssignPrivilege($ownerWebserviceId) {
-		if (is_admin($this->user)) {
-			return true;
-		} else {
-			$idComponents = vtws_getIdComponents($webserviceId);
-			$userId=$idComponents[1];
-			return $this->user->id === $userId;
-		}
+		return false;
 	}
 
 	public function hasDeleteAccess() {
-		if (is_admin($this->user)) {
-			return true;
-		} else {
-			return false;
-		}
+		return $this->hasDeleteAccess;
 	}
 
 	public function hasAccess() {
-		return true;
+		return $this->hasAccess;
 	}
 
 	public function hasReadAccess() {
-		return true;
+		return $this->hasReadAccess;
 	}
 
 	public function hasWriteAccess() {
-		if (is_admin($this->user)) {
-			return true;
-		} else {
-			return false;
-		}
+		return $this->hasWriteAccess;
 	}
 
 	public function getEntityName() {

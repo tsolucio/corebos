@@ -112,6 +112,8 @@ $mod_strings = array(
 'LBL_MAXIMUM_50'=>'Massimo 50 caratteri',
 
 'Folder Name'=>'Nome cartella',
+'foldername'=>'Nome cartella',
+'folderid' => 'Folder ID',
 'Document No'=>'Nr. Documento',
 
 'Documents' => 'Documenti',

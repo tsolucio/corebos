@@ -11,6 +11,10 @@
 class VtigerCRMZendeskMeta extends EntityMeta {
 	protected $pearDB;
 	protected static $fieldTypeMapping = array();
+	private $hasAccess = false;
+	private $hasReadAccess = false;
+	private $hasWriteAccess = false;
+	private $hasDeleteAccess = false;
 
 	public function __construct($webserviceObject, $adb, $user) {
 		parent::__construct($webserviceObject, $user);
@@ -165,45 +169,27 @@ class VtigerCRMZendeskMeta extends EntityMeta {
 	}
 
 	public function hasPermission($operation, $webserviceId) {
-		if (is_admin($this->user)) {
-			return true;
-		} else {
-			return strcmp($operation, EntityMeta::$RETRIEVE)===0;
-		}
+		return $this->hasAccess;
 	}
 
 	public function hasAssignPrivilege($ownerWebserviceId) {
-		if (is_admin($this->user)) {
-			return true;
-		} else {
-			$idComponents = vtws_getIdComponents($webserviceId);
-			$userId=$idComponents[1];
-			return $this->user->id === $userId;
-		}
+		return false;
 	}
 
 	public function hasDeleteAccess() {
-		if (is_admin($this->user)) {
-			return true;
-		} else {
-			return false;
-		}
+		return $this->hasDeleteAccess;
 	}
 
 	public function hasAccess() {
-		return true;
+		return $this->hasAccess;
 	}
 
 	public function hasReadAccess() {
-		return true;
+		return $this->hasReadAccess;
 	}
 
 	public function hasWriteAccess() {
-		if (is_admin($this->user)) {
-			return true;
-		} else {
-			return false;
-		}
+		return $this->hasWriteAccess;
 	}
 
 	public function getEntityName() {
