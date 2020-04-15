@@ -88,7 +88,7 @@ class VTWorkflowManager {
 					$wf->relatemodule,
 					empty($wf->wfstarton) ? null : $wf->wfstarton,
 					empty($wf->wfendon) ? null : $wf->wfendon,
-					$wf->active,
+					(empty($wf->active) || $wf->active=='true' ? 'true' : 'false'),
 					$wf->id,
 				)
 			);
@@ -120,7 +120,7 @@ class VTWorkflowManager {
 						$wf->relatemodule,
 						empty($wf->wfstarton) ? null : $wf->wfstarton,
 						empty($wf->wfendon) ? null : $wf->wfendon,
-						$wf->active,
+						(empty($wf->active) || $wf->active=='true' ? 'true' : 'false'),
 					)
 				);
 			} else {
@@ -145,7 +145,7 @@ class VTWorkflowManager {
 						$wf->relatemodule,
 						empty($wf->wfstarton) ? null : $wf->wfstarton,
 						empty($wf->wfendon) ? null : $wf->wfendon,
-						$wf->active,
+						(empty($wf->active) || $wf->active=='true' ? 'true' : 'false'),
 					)
 				);
 			}
