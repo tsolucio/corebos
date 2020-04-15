@@ -317,13 +317,13 @@ class Vtiger_ModuleBasic {
 			if ($adb->num_rows($result) == 0) {
 				$adb->pquery(
 					'INSERT INTO vtiger_entityname(tabid, modulename, tablename, fieldname, entityidfield, entityidcolumn) VALUES(?,?,?,?,?,?)',
-					array($this->id, $this->name, $fieldInstance->table, $fieldInstance->name, $this->entityidfield, $this->entityidcolumn)
+					array($this->id, $this->name, strtolower($fieldInstance->table), strtolower($fieldInstance->name), strtolower($this->entityidfield), strtolower($this->entityidcolumn))
 				);
 				self::log('Setting entity identifier ... DONE');
 			} else {
 				$adb->pquery(
 					'UPDATE vtiger_entityname SET fieldname=?,entityidfield=?,entityidcolumn=? WHERE tablename=? AND tabid=?',
-					array($fieldInstance->name, $this->entityidfield, $this->entityidcolumn, $fieldInstance->table, $this->id)
+					array(strtolower($fieldInstance->name), strtolower($this->entityidfield), strtolower($this->entityidcolumn), strtolower($fieldInstance->table), $this->id)
 				);
 				self::log('Updating entity identifier ... DONE');
 			}
