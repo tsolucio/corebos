@@ -126,4 +126,11 @@
 	<classname>activateallworkflows</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Make workflows active by default</description>
+	<filename>build/changeSets/2020/makeWFactivebydefault.php</filename>
+	<classname>makeWFactivebydefault</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
