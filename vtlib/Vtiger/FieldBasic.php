@@ -248,9 +248,19 @@ class Vtiger_FieldBasic {
 			$query .= ', uitype=?';
 			$params[] = $this->uitype;
 		}
+		if (!empty($this->name)) {
+			$result = $db->pquery('SELECT fieldid FROM vtiger_field WHERE tablename=? AND fieldname=? limit 1', array($this->table, decode_html($this->name)));
+			if ($db->num_rows($result) == 0) {
+				$query .= ', fieldname=?';
+				$params[] = decode_html($this->name);
+			}
+		}
 		if (!empty($this->label)) {
-			$query .= ', fieldlabel=?';
-			$params[] = decode_html($this->label);
+			$result = $db->pquery('SELECT fieldid FROM vtiger_field WHERE tablename=? AND fieldlabel=? limit 1', array($this->table, decode_html($this->label)));
+			if ($db->num_rows($result) == 0) {
+				$query .= ', fieldlabel=?';
+				$params[] = decode_html($this->label);
+			}
 		}
 		$query .= ' WHERE fieldid=?';
 		$params[] = $this->id;
