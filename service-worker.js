@@ -9320,7 +9320,7 @@ precacheAndRoute([{
   "revision": "c121669fa3b0ab4ce7088a82107ca79c"
 }, {
   "url": "include/js/Inventory.js",
-  "revision": "e170e66509b516a27664bbc82f5c71d6"
+  "revision": "28eb8ff901b765bd840d8df408959850"
 }, {
   "url": "include/js/it_it.lang.js",
   "revision": "c3bbfb85c6fed21d25e984c263fa780a"
