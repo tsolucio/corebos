@@ -92,8 +92,10 @@ class VTWorkflowEventHandler extends VTEventHandler {
 					$entity_id = $entity_id[1];
 					$workflow->markAsCompletedForRecord($entity_id);
 				}
-
-				$workflow->performTasks($entityData);
+				$wfActive = $workflow->activeWorkflow();
+				if ($wfActive == true) {
+					$workflow->performTasks($entityData);
+				}
 			}
 		}
 		$util->revertUser();

@@ -31,6 +31,9 @@ function vtWorkflowSave($adb, $request) {
 
 	$description = decode_html($request['description']);
 	$purpose = $request['purpose'];
+	$wfstarton = $request['wfstarton'];
+	$wfendon = $request['wfendon'];
+	$active = $request['active'];
 	$moduleName = $request['module_name'];
 	$conditions = $request['conditions'];
 	$saveType = $request['save_type'];
@@ -77,6 +80,9 @@ function vtWorkflowSave($adb, $request) {
 		$wf = $wm->newWorkflow($moduleName);
 		$wf->description = $description;
 		$wf->purpose = $purpose;
+		$wf->wfstarton = DateTimeField::convertToDBFormat($wfstarton);
+		$wf->wfendon = DateTimeField::convertToDBFormat($wfendon);
+		$wf->active = $active;
 		$wf->test = $conditions;
 		$wf->executionConditionAsLabel($executionCondition);
 		$wf->schtypeid = $request['schtypeid'];
@@ -91,6 +97,9 @@ function vtWorkflowSave($adb, $request) {
 		$wf = $wm->retrieve($request['workflow_id']);
 		$wf->description = $description;
 		$wf->purpose = $purpose;
+		$wf->wfstarton = DateTimeField::convertToDBFormat($wfstarton);
+		$wf->wfendon = DateTimeField::convertToDBFormat($wfendon);
+		$wf->active = $active;
 		$wf->test = $conditions;
 		$wf->executionConditionAsLabel($executionCondition);
 		$wf->schtypeid = $request['schtypeid'];
