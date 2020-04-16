@@ -1882,11 +1882,11 @@ function handleProductAutocompleteSelect(obj) {
 	document.getElementById('productName'+no).value = obj.result.meta.name;
 	document.getElementById('comment'+no).innerHTML = obj.result.meta.comments;
 	var currency = document.getElementById('inventory_currency').value;
-	if (obj.result.pricing.multicurrency[currency] != undefined && gVTModule != 'PurchaseOrder') {
+	if (obj.result.pricing.multicurrency[currency] != undefined && gVTModule != 'PurchaseOrder' && gVTModule != 'Receiptcards') {
 		document.getElementById('listPrice'+no).value = obj.result.pricing.multicurrency[currency].actual_price;
 	} else {
 		var list_price = obj.result.pricing.unit_price;
-		if (gVTModule == 'PurchaseOrder') {
+		if (gVTModule == 'PurchaseOrder' || gVTModule == 'Receiptcards' ) {
 			list_price = obj.result.pricing.unit_cost;
 		}
 		document.getElementById('listPrice'+no).value = list_price;
@@ -1894,7 +1894,7 @@ function handleProductAutocompleteSelect(obj) {
 	document.getElementById('hdnProductId'+no).value = obj.result.meta.id;
 	document.getElementById('lineItemType'+no).value = obj.result.meta.type;
 	document.getElementById('qty'+no).value = qty;
-	if (gVTModule!='PurchaseOrder') {
+	if (gVTModule!='PurchaseOrder' && gVTModule != 'Receiptcards') {
 		document.getElementById('qtyInStock'+no).innerHTML = obj.result.logistics.qtyinstock;
 	}
 	if (obj.result.pricing.discount != undefined && obj.result.pricing.discount != 0) {
