@@ -102,7 +102,7 @@ function productPickList(currObj, module, row_no) {
 	var currencyid = document.getElementById('inventory_currency').value;
 	var additionalinfo = getInventoryModuleTaxRelatedInformation();
 	var popuptype = 'inventory_prod';
-	if (module == 'PurchaseOrder') {
+	if (module == 'PurchaseOrder' || module == 'Receiptcards') {
 		popuptype = 'inventory_prod_po';
 		var module_string = '&parent_module=Vendor';
 		var parent_id = document.EditView.vendor_id.value;
