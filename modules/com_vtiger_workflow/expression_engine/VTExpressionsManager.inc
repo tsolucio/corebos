@@ -144,6 +144,7 @@ class VTExpressionsManager {
 			'isString' => 'isString(fieldname)',
 			'OR' => 'OR(condition1, condition2)',
 			'AND' => 'AND(condition1, condition2)',
+			'NOT' => 'NOT(condition1)',
 			'exists' => 'exists(fieldname, value)',
 			'existsrelated' => 'existsrelated(relatedmodule, fieldname, value)',
 			'allrelatedare' => 'allrelatedare(relatedmodule, fieldname, value)',
