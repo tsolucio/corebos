@@ -11,24 +11,25 @@
 
 {if $WORLD_CLOCK_DISPLAY eq 'true'}
 
-<div id="wclock" style="z-index:10000001;" class="layerPopup">
-	<table class="mailClientBg" align="center" border="0" cellpadding="5" cellspacing="0" width="100%">
-	<tr style="cursor:move;" >
-		<td style="text-align:left;" id="Handle"><b>{$APP.LBL_WORLD_CLOCK}</b></td>
-		<td align="right">
-			<a href="javascript:;">
-				<img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"  onClick="fninvsh('wclock')" hspace="5" align="absmiddle">
-			</a>
-		</td>
-	</tr>
-	</table>
-	<table class="hdrNameBg" align="center" border="0" cellpadding="2" cellspacing="0" width="100%">
-	<tr>
-	<td nowrap="nowrap" colspan="2">
-	<div style="background-image: url({$IMAGEPATH}clock_bg.gif); background-repeat: no-repeat; background-position: 4px 38px;" id="theClockLayer">
-<div id="theCities" class="citystyle">
+<div id="wclock" style="z-index:10000001;" class="slds-grid slds-badge_lightest">
+<div class="slds-grid">
+	<div class="slds-col slds-size_5-of-6 slds-align_absolute-center slds-page-header__title" id="Handle">
+		<b>{$APP.LBL_WORLD_CLOCK}</b>
+	</div>
+	<div class="slds-col slds-size_1-of-6">
+		<button class="slds-button slds-button_icon slds-button_icon-border-filled" style="width:1.8rem;" aria-haspopup="true"
+			onClick="fninvsh('wclock')" title="{$APP.LBL_CLOSE}">
+			<svg class="slds-button__icon" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+			</svg>
+			<span class="slds-assistive-text">{$APP.LBL_CLOSE}</span>
+		</button>
+	</div>
+</div>
+<div class="slds-grid slds-badge_lightest" id="theClockLayer">
+<div id="theCities" class="citystyle slds-col slds-size_1-of-1">
 <form action="" name="frmtimezone">
-<select name="clockcity" size="1" class="importBox small" id="clockcity" style="width:125px;" onchange="lcl(this.selectedIndex,this.options[0].selected)">
+<select name="clockcity" id="clockcity" size="1" class="slds-select slds-page-header__meta-text" style="width:95%;" onchange="lcl(this.selectedIndex,this.options[0].selected)">
 <option value="0" selected="selected">Local time</option>
 <option value="4.30">Afghanistan</option>
 <option value="1">Algeria</option>
@@ -136,6 +137,7 @@
 </select>
 </form>
 </div>
+<div class="slds-col slds-size_1-of-1">
 <script type="text/javascript" src="include/js/clock.js"></script>
 <div id="theDate" class="datestyle">\!</div>
 <div id="amOrPm" class="ampmstyle">\!</div>
@@ -151,67 +153,64 @@
 <div id="theFace9" class="facestyle" style="color: rgb(0, 0, 0); top: 39px; left: 54px;">12</div>
 <div id="theFace10" class="facestyle" style="color: rgb(0, 0, 0); top: 44.6269px; left: 75px;">1</div>
 <div id="theFace11" class="facestyle" style="color: rgb(0, 0, 0); top: 60px; left: 90.3731px;">2</div>
-</div></td>
-</tr>
-</tbody>
-</table>
+</div>
 </div>
 <script>
-	for (i=0; i < n; i++){
-		cf[i]=document.getElementById("theFace"+i).style;
-		cf[i].top=y-6+30*1.4*Math.sin(i*e*Math.PI/180)+"px";
-		cf[i].left=xpos-6+30*1.4*Math.cos(i*e*Math.PI/180)+"px";
+	for (i=0; i < n; i++) {
+		cf[i]=document.getElementById('theFace'+i).style;
+		cf[i].top=y-6+30*1.4*Math.sin(i*e*Math.PI/180)+'px';
+		cf[i].left=xpos+12+30*1.4*Math.cos(i*e*Math.PI/180)+'px';
 	}
-	var theClockLayer = document.getElementById("theClockLayer");
-	for (i=0; i < h; i++){
-		var accdiv = document.createElement("div");
-		accdiv.id = "H"+i;
-		accdiv.className = "handsanddotsstyle";
+	var theClockLayer = document.getElementById('theClockLayer');
+	for (i=0; i < h; i++) {
+		var accdiv = document.createElement('div');
+		accdiv.id = 'H'+i;
+		accdiv.className = 'handsanddotsstyle';
 		accdiv.style.backgroundColor = hCol;
 		theClockLayer.appendChild(accdiv);
-		ch[i]=document.getElementById("H"+i).style;
+		ch[i]=document.getElementById('H'+i).style;
 	}
-	for (i=0; i < m; i++){
-		var accdiv = document.createElement("div");
-		accdiv.id = "M"+i;
-		accdiv.className = "handsanddotsstyle";
+	for (i=0; i < m; i++) {
+		var accdiv = document.createElement('div');
+		accdiv.id = 'M'+i;
+		accdiv.className = 'handsanddotsstyle';
 		accdiv.style.backgroundColor = mCol;
 		theClockLayer.appendChild(accdiv);
-		cm[i]=document.getElementById("M"+i).style;
+		cm[i]=document.getElementById('M'+i).style;
 	}
-	for (i=0; i < s; i++){
-		var accdiv = document.createElement("div");
-		accdiv.id = "S"+i;
-		accdiv.className = "handsanddotsstyle";
+	for (i=0; i < s; i++) {
+		var accdiv = document.createElement('div');
+		accdiv.id = 'S'+i;
+		accdiv.className = 'handsanddotsstyle';
 		accdiv.style.backgroundColor = sCol;
 		theClockLayer.appendChild(accdiv);
-		cs[i]=document.getElementById("S"+i).style;
+		cs[i]=document.getElementById('S'+i).style;
 	}
 
-	var dsp1=document.getElementById("amOrPm").style;
+	var dsp1=document.getElementById('amOrPm').style;
 	dsp1.color = aCol;
-	var dsp2=document.getElementById("theCities").style;
-	var dsp3=document.getElementById("theDate").style;
+	var dsp2=document.getElementById('theCities').style;
+	var dsp3=document.getElementById('theDate').style;
 	dsp3.color = cCol;
-	//var dsp4=document.getElementById("city").style;
-	var dsp5=document.getElementById("theClockLayer").style;
-	dsp1.top=y+"px";
-	dsp1.left=xpos-8+"px";
-	dsp2.top=y-80+"px";
-	dsp2.left=xpos-55+"px";
-	dsp3.top=y+55+"px";
-	dsp3.left=xpos-60+"px";
-	dsp5.backgroundImage="url(themes/images/clock_bg.gif)";
-	dsp5.backgroundRepeat="no-repeat";
-	dsp5.backgroundPosition="4px 38px";
+	//var dsp4=document.getElementById('city').style;
+	var dsp5=document.getElementById('theClockLayer').style;
+	dsp1.top=y+'px';
+	dsp1.left=xpos+10+'px';
+	dsp2.top=y-84+'px';
+	dsp2.left=xpos-55+'px';
+	dsp3.top=y+55+'px';
+	dsp3.left=xpos-60+'px';
+	dsp5.backgroundImage='url(themes/images/clock_bg.gif)';
+	dsp5.backgroundRepeat='no-repeat';
+	dsp5.backgroundPosition='24px 38px';
 	ClockAndAssign();
-	if (get_cookie("timezone")==null || get_cookie("timezone")==false || get_cookie("timezone")<0 || get_cookie("timezone")=="1") {
+	if (get_cookie('timezone')==null || get_cookie('timezone')==false || get_cookie('timezone')<0 || get_cookie('timezone')=='1') {
 		lcl(0,true)
 	} else {
-		lcl(get_cookie("timezone"),false)
-		document.frmtimezone.clockcity.options[get_cookie("timezone")].selected=true
+		lcl(get_cookie('timezone'),false)
+		document.frmtimezone.clockcity.options[get_cookie('timezone')].selected=true
 	}
-	jQuery('#wclock').draggable({ldelim} handle: "#Handle" {rdelim});
+	jQuery('#wclock').draggable({ldelim} handle: '#Handle' {rdelim});
 </script>
 
 {/if}

@@ -629,14 +629,14 @@ a.dash_href{
 }
 
 #theClockLayer{
-    position:relative;
-    height:180px;
-    left:20px;
-    text-align:center;
+	position:relative;
+	height:180px;
+	text-align:center;
 }
 
 .handsanddotsstyle{
     margin-top:10px;
+	margin-left:20px;
     position:absolute;
     top:0px;
     left:0px;
@@ -661,10 +661,10 @@ a.dash_href{
 
 .datestyle{
     margin-top:20px;
+	margin-left:28px;
     position:absolute;
     top:0px;
     left:0px;
-    width:100px;
     text-align:center;
     font-family:arial,sans-serif;
     font-size:10px;
@@ -684,12 +684,11 @@ a.dash_href{
 }
 
 #wclock{
-    position:absolute;
-    left:100px;
-    top:100px;
-    display:none;
-    background-color:#CCCCCC;
-    width:175px;
+	position:absolute;
+	left:100px;
+	top:100px;
+	display:none;
+	width:175px;
 }
 
 .leftFormBorder1 {
