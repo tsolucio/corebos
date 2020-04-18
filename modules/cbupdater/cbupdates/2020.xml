@@ -133,4 +133,11 @@
 	<classname>makeWFactivebydefault</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Make Our Sites URL field larger</description>
+	<filename>build/changeSets/2020/makeoursitesurllarger.php</filename>
+	<classname>makeoursitesurllarger</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
