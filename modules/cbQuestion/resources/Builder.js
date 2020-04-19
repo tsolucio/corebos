@@ -643,7 +643,7 @@ function appendEmptyFieldRow(ev) {
 
 function deleteFieldRow() {
 	const checkedRows = fieldGridInstance.getCheckedRowKeys();
-	for (var i = 0; i < checkedRows.length; i++) {
+	for (var i = checkedRows.length-1; i >= 0; i--) {
 		fieldData.splice(checkedRows[i], 1);
 	}
 	fieldGridInstance.removeCheckedRows();
