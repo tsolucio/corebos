@@ -419,7 +419,7 @@ class cbQuestion extends CRMEntity {
 			$values = array();
 			$rc = array();
 			for ($x = 0; $x < count($answer); $x++) {
-				$labels[] = getTranslatedString($answer[$x][$properties->key_label], $module);
+				$labels[] = isset($answer[$x][$properties->key_label]) ? getTranslatedString($answer[$x][$properties->key_label], $module) : $properties->key_label;
 				$values[] = $answer[$x][$properties->key_value];
 				$rc[] = 'getRandomColor()';
 			}
