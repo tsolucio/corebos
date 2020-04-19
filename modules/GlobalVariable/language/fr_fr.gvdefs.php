@@ -995,10 +995,17 @@ $GlobalVariableDefinitons = array(
 ),
 'Calendar_Show_Only_My_Events' => array(
 	'status' => 'Implemented',
-	'valuetype' => 'Integer',
+	'valuetype' => 'Boolean',
 	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'Show only the events assign to me, shared with me and in which I am invited.',
+),
+'Calendar_goDirectToDetailView' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'When you click on an event you will open the detail view of the record instead of the actions toolbar.',
 ),
 'CronTasks_cronWatcher_mailto' => array(
 	'status' => 'Implémenté',

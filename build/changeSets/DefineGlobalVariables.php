@@ -118,6 +118,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Calendar_Priority_Panel_Visible',
 				'Calendar_Show_Only_My_Events',
 				'Calendar_Show_WeekNumber',
+				'Calendar_goDirectToDetailView',
 
 				'CronTasks_cronWatcher_mailto',
 				'CronTasks_cronWatcher_TimeThreshold',

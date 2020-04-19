@@ -995,11 +995,18 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'Número máximo de días en el pasado para buscar eventos que aparecerán en la ventana emergente del recordatorio. El valor predeterminado es 7 días.',
 ),
 'Calendar_Show_Only_My_Events' => array(
-	'status' => 'Implemented',
-	'valuetype' => 'Integer',
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
 	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'Mostrar solo los eventos asignados a mi, compartidos conmigo y en los que esté invitado.',
+),
+'Calendar_goDirectToDetailView' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Al hacer clic en un evento, abrirá la vista detallada del registro en lugar de la barra de herramientas de acciones.',
 ),
 'CronTasks_cronWatcher_mailto' => array(
 	'status' => 'Implementada',
