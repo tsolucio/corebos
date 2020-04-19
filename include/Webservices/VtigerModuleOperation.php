@@ -267,6 +267,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		}
 
 		$isDocModule = ($meta->getEntityName()=='Documents');
+		$isRelatedQuery = __FQNExtendedQueryIsFQNQuery($q);
 		$noofrows = $this->pearDB->num_rows($result);
 		$output = array();
 		for ($i=0; $i<$noofrows; $i++) {
@@ -276,7 +277,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 				continue;
 			}
 			$newrow = DataTransform::sanitizeDataWithColumn($row, $meta);
-			if (__FQNExtendedQueryIsFQNQuery($q)) { // related query
+			if ($isRelatedQuery) {
 				if ($invlines) {
 					$newrow = $row;
 					$newrow['id'] = (getSalesEntityType($newrow['id']) == 'Products' ? $pdowsid : $srvwsid) . 'x' . $newrow['id'];
