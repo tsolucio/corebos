@@ -511,7 +511,7 @@ class cbQuestion extends CRMEntity {
 		$groupby = explode(',', strtolower(str_replace(' ', '', decode_html($qcols['groupby']))));
 		$qcols = decode_html($qcols['qcolumns']);
 		if (strpos($qcols, '[')===false) {
-			$qcols = preg_replace('/\s+,\s+/', ',', $qcols);
+			$qcols = preg_replace('/\s*,\s*/', ',', $qcols);
 			$qcols = explode(',', $qcols);
 			foreach ($qcols as $finfo) {
 				$alias = '';
