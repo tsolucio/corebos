@@ -272,7 +272,7 @@ class cbQuestion extends CRMEntity {
 	}
 
 	public static function getAnswer($qid, $params = array()) {
-		global $current_user, $default_charset;
+		global $current_user, $default_charset, $adb, $log;
 		$q = new cbQuestion();
 		if (empty($qid) && !empty($params['cbQuestionRecord']) && is_array($params['cbQuestionRecord'])) {
 			$q->column_fields = $params['cbQuestionRecord'];
@@ -317,20 +317,31 @@ class cbQuestion extends CRMEntity {
 					$query .= ' LIMIT '.$q->column_fields['qpagesize'];
 				}
 				$query .= ';';
+				return array(
+					'module' => $q->column_fields['qmodule'],
+					'columns' => $q->column_fields['qcolumns'],
+					'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
+					'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
+					'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),
+					'answer' => vtws_query($query, $current_user)
+				);
 			} else {
-				$query = $q->column_fields['qcolumns'];
-				if (!empty($q->column_fields['qpagesize'])) {
-					$query = trim($query, ';').' LIMIT '.$q->column_fields['qpagesize'].';';
-				}
+				require_once 'include/Webservices/GetExtendedQuery.php';
+				$handler = vtws_getModuleHandlerFromName($q->column_fields['qmodule'], $current_user);
+				$meta = $handler->getMeta();
+				$queryRelatedModules = array(); // this has to be filled in with all the related modules in the query
+				$webserviceObject = VtigerWebserviceObject::fromName($adb, $q->column_fields['qmodule']);
+				$modOp = new VtigerModuleOperation($webserviceObject, $current_user, $adb, $log);
+				$answer = $modOp->querySQLResults(cbQuestion::getSQL($qid, $params), ' not in ', $meta, $queryRelatedModules);
+				return array(
+					'module' => $q->column_fields['qmodule'],
+					'columns' => $q->column_fields['qcolumns'],
+					'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
+					'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
+					'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),
+					'answer' => $answer
+				);
 			}
-			return array(
-				'module' => $q->column_fields['qmodule'],
-				'columns' => $q->column_fields['qcolumns'],
-				'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
-				'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
-				'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),
-				'answer' => vtws_query($query, $current_user)
-			);
 		}
 	}
 
