@@ -114,8 +114,8 @@
 						<li>
 							<button
 								class="slds-button slds-button_success"
-								title="{$APP.LBL_SAVE_BUTTON_TITLE}"
-								accessKey="{$APP.LBL_SAVE_BUTTON_KEY}"
+								title="{'LBL_SAVE_BUTTON_TITLE'|@getTranslatedString:$MODULE}"
+								accessKey="{'LBL_SAVE_BUTTON_KEY'|@getTranslatedString:$MODULE}"
 								onclick="
 									document.forms.EditView.action.value='Save';
 									displaydeleted();
@@ -129,14 +129,14 @@
 									<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
 									</svg>
-									{$APP.LBL_SAVE_BUTTON_LABEL}
+									{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}
 							</button>
 						</li>
 						<li>
 							<button
 								class="slds-button slds-button_destructive"
-								title="{$APP.LBL_CANCEL_BUTTON_TITLE}"
-								accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}"
+								title="{'LBL_CANCEL_BUTTON_TITLE'|@getTranslatedString:$MODULE}"
+								accessKey="{'LBL_CANCEL_BUTTON_KEY'|@getTranslatedString:$MODULE}"
 								onclick="
 									{if isset($smarty.request.Module_Popup_Edit)}window.close()
 									{elseif isset($CANCELGO)}window.location.href='{$CANCELGO}'
@@ -147,7 +147,7 @@
 									<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use>
 									</svg>
-									{$APP.LBL_CANCEL_BUTTON_LABEL}
+									{'LBL_CANCEL_BUTTON_LABEL'|@getTranslatedString:$MODULE}
 							</button>
 						</li>
 					{/if}
