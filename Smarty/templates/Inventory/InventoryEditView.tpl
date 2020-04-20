@@ -60,19 +60,6 @@
 								<td style="padding:10px">
 									<!-- General details -->
 									<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small createview_table">
-										<tr>
-										<td colspan=4 style="padding:5px">
-											<div align="center">
-												{if isset($SandRActive) && $SandRActive!=0 && (!isset($MED1x1MODE) || $MED1x1MODE==0)}
-												<input title="{$APP.LBL_SAVEREPEAT_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVEREPEAT_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.saverepeat.value='1';this.form.action.value='Save'; displaydeleted(); return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVEREPEAT_BUTTON_LABEL}  ">
-												{/if}
-												{if isset($MED1x1MODE) && $MED1x1MODE!=0}
-												<input title="{$APP.LBL_SKIP_BUTTON_TITLE}" accessKey="{$APP.LBL_SKIP_BUTTON_KEY}" class="crmbutton small cancel" onclick="this.form.saverepeat.value='skip';this.form.action.value='Save'; displaydeleted();" type="submit" name="button" value="  {$APP.LBL_SKIP_BUTTON_LABEL}  ">
-												{/if}
-											</div>
-										</td>
-										</tr>
-
 										<!-- included to handle the edit fields based on ui types -->
 										{foreach key=header item=data from=$BLOCKS}
 										<tr id="tbl{$header|replace:' ':''}Head">
@@ -117,19 +104,6 @@
 										</td>
 										</tr>
 										{/if}
-
-										<tr>
-										<td colspan=4 style="padding:5px">
-											<div align="center">
-												{if isset($SandRActive) && $SandRActive!=0 && (!isset($MED1x1MODE) || $MED1x1MODE==0)}
-												<input title="{$APP.LBL_SAVEREPEAT_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVEREPEAT_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.saverepeat.value='1';this.form.action.value='Save'; displaydeleted(); return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVEREPEAT_BUTTON_LABEL}  ">
-												{/if}
-												{if isset($MED1x1MODE) && $MED1x1MODE!=0}
-												<input title="{$APP.LBL_SKIP_BUTTON_TITLE}" accessKey="{$APP.LBL_SKIP_BUTTON_KEY}" class="crmbutton small cancel" onclick="this.form.saverepeat.value='skip';this.form.action.value='Save'; displaydeleted();" type="submit" name="button" value="  {$APP.LBL_SKIP_BUTTON_LABEL}  ">
-												{/if}
-											</div>
-										</td>
-										</tr>
 									</table>
 								</td>
 							</tr>

@@ -97,7 +97,7 @@
 						<li>
 							<button class="slds-button slds-button_neutral" {$ADD_ONMOUSEOVER}>{$MOD.LBL_ADD_EVENT}</button>
 						</li>
-					{elseif $CHECK.CreateView eq 'yes' && $MODULE neq 'Emails' && (empty($OP_MODE) || $OP_MODE != 'create_view')}
+					{elseif $CHECK.CreateView eq 'yes' && $MODULE neq 'Emails' && (empty($OP_MODE) || $OP_MODE != 'create_view') && !(isset($MED1x1MODE) && $MED1x1MODE!=0)}
 						<li>
 							<a
 							class="slds-button slds-button_neutral"
@@ -132,6 +132,54 @@
 									{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}
 							</button>
 						</li>
+						{if isset($SandRActive) && $SandRActive!=0 && (!isset($MED1x1MODE) || $MED1x1MODE==0)}
+							<li>
+								<button
+									class="slds-button slds-button_success"
+									title="{'LBL_SAVEREPEAT_BUTTON_TITLE'|@getTranslatedString:$MODULE}"
+									accessKey="{'LBL_SAVEREPEAT_BUTTON_KEY'|@getTranslatedString:$MODULE}"
+									onclick="document.EditView.saverepeat.value='1';document.EditView.action.value='Save'; displaydeleted(); return formValidate();"
+									type="submit"
+									name="button">
+									<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#refresh"></use>
+									</svg>
+									{'LBL_SAVEREPEAT_BUTTON_LABEL'|@getTranslatedString:$MODULE}
+								</button>
+							</li>
+						{/if}
+						{if isset($MED1x1MODE) && $MED1x1MODE!=0}
+							<li>
+								<button
+									class="slds-button slds-button_neutral"
+									title="{'LBL_SKIP_BUTTON_TITLE'|@getTranslatedString:$MODULE}"
+									accessKey="{'LBL_SKIP_BUTTON_KEY'|@getTranslatedString:$MODULE}"
+									onclick="document.EditView.saverepeat.value='skip';document.EditView.action.value='Save'; displaydeleted();document.EditView.submit();"
+									type="button"
+									name="button">
+									<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#skip_forward"></use>
+									</svg>
+									{'LBL_SKIP_BUTTON_LABEL'|@getTranslatedString:$MODULE}
+								</button>
+							</li>
+						{/if}
+						{if isset($gobackBTN) && !$gobackBTN}
+							<li>
+								<button
+									class="slds-button slds-button_neutral"
+									title="{'LBL_GOBACK_BUTTON_TITLE'|@getTranslatedString:$MODULE}"
+									accessKey="{'LBL_GOBACK_BUTTON_KEY'|@getTranslatedString:$MODULE}"
+									onclick="document.EditView.saverepeat.value='goback';document.EditView.action.value='Save'; displaydeleted();document.EditView.submit();"
+									type="submit"
+									name="button">
+									<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#skip_back"></use>
+									</svg>
+									{'LBL_GOBACK_BUTTON_LABEL'|@getTranslatedString:$MODULE}
+								</button>
+							</li>
+						{/if}
 						<li>
 							<button
 								class="slds-button slds-button_destructive"
