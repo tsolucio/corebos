@@ -140,4 +140,11 @@
 	<classname>makeoursitesurllarger</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Business Action types for Buttons</description>
+	<filename>build/changeSets/2020/addBAtypesForButtons.php</filename>
+	<classname>addBAtypesForButtons</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
