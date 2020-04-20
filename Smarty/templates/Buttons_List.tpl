@@ -174,7 +174,6 @@
 					{/if}
 					{if ((isset($CREATE_PERMISSION) && $CREATE_PERMISSION eq 'permitted')
 						|| (isset($EDIT_PERMISSION) && $EDIT_PERMISSION eq 'yes'))
-						&& $MODULE neq 'Documents'
 						&& !empty($isDetailView)}
 						<li>
 							<button
