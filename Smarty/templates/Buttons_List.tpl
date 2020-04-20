@@ -93,7 +93,7 @@
 						</li>
 					</ul>
 					<ul class="slds-button-group-list">
-					{if $CHECK.CreateView eq 'yes' && ($MODULE eq 'Calendar' || $MODULE eq 'Calendar4You')}
+					{if $CHECK.CreateView eq 'yes' && $MODULE eq 'Calendar4You'}
 						<li>
 							<button class="slds-button slds-button_neutral" {$ADD_ONMOUSEOVER}>{$MOD.LBL_ADD_EVENT}</button>
 						</li>
