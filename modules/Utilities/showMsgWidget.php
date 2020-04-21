@@ -35,8 +35,12 @@ class showmsgwidget_DetailViewBlock extends DeveloperBlock {
 		if (empty($msg)) {
 			$eval = $this->getFromContext('msgcondition');
 			$recid = $this->getFromContext('ID');
-			$ruleinfo = coreBOS_Rule::evaluate($eval, $recid);
-			if (strpos($ruleinfo, '::')>0) {
+			try {
+				$ruleinfo = coreBOS_Rule::evaluate($eval, $recid);
+			} catch (Exception $e) {
+				$ruleinfo = '';
+			}
+			if (strpos($ruleinfo, '::')!==false) {
 				list($msg, $level) = explode('::', $ruleinfo);
 			} else {
 				$msg = $ruleinfo;
