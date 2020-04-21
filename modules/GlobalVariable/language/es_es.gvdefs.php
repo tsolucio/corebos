@@ -371,6 +371,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Mantiene el estado abierto/cerrado de cada bloque de vista detaille durante la sesión del usuario. Por defecto no se mantiene (0).',
 ),
+'Application_DetailView_PageHeader_Message' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'OFF | {Business Map ID} | UPDATE',
+	'definition' => 'Qué mostrar en el subtítulo del encabezado de página. Nada (OFF), el resultado de un mapa de negocio o el texto "Actualizado" predeterminado.',
+),
 'Application_Upload_MaxSize' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Entero',

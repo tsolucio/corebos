@@ -370,6 +370,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Keep the open/closed status of each Detail View block during the user session. By default it is not kept (0).',
 ),
+'Application_DetailView_PageHeader_Message' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'OFF | {Business Map ID} | UPDATE',
+	'definition' => 'What to show in page header sub title. Nothing (OFF), the result of a Business Map or the default Updated text.',
+),
 'Application_Upload_MaxSize' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',
