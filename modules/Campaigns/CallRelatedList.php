@@ -106,6 +106,13 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	}
 	$open_related_modules = RelatedListViewSession::getRelatedModulesFromSession();
 	$smarty->assign('SELECTEDHEADERS', $open_related_modules);
+	// Gather the custom link information to display
+	include_once 'vtlib/Vtiger/Link.php';
+	$customlink_params = array('MODULE'=>$currentModule, 'RECORD'=>$focus->id, 'ACTION'=>vtlib_purify($_REQUEST['action']));
+	$smarty->assign(
+		'CUSTOM_LINKS',
+		Vtiger_Link::getAllByType(getTabid($currentModule), array('DETAILVIEWBUTTON','DETAILVIEWBUTTONMENU'), $customlink_params, null, $focus->id)
+	);
 
 	if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
 		$smarty->display('RelatedListContents.tpl');
