@@ -84,7 +84,6 @@ if ($isduplicate == 'true') {
 	$focus->id = '';
 	$focus->mode = '';
 	$focus->column_fields['isduplicatedfromrecordid'] = $record; // in order to support duplicate workflows
-	$focus->column_fields['isduplicatedfromrecordid'] = $record; // in order to support duplicate workflows
 	$focus->column_fields['fileversion'] = '1';
 	$focus->column_fields['filedownloadcount'] = '0';
 	$smarty->assign('__cbisduplicatedfromrecordid', $record);
@@ -356,6 +355,13 @@ if ($focus->mode != 'edit' && $mod_seq_field != null) {
 	}
 }
 
+// Gather the custom link information to display
+include_once 'vtlib/Vtiger/Link.php';
+$customlink_params = array('MODULE'=>$currentModule, 'RECORD'=>$focus->id, 'ACTION'=>vtlib_purify($_REQUEST['action']));
+$smarty->assign(
+	'CUSTOM_LINKS',
+	Vtiger_Link::getAllByType($tabid, array('EDITVIEWBUTTON','EDITVIEWBUTTONMENU','EDITVIEWWIDGET'), $customlink_params, null, $focus->id)
+);
 // Gather the help information associated with fields
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 $smarty->assign('Module_Popup_Edit', isset($_REQUEST['Module_Popup_Edit']) ? vtlib_purify($_REQUEST['Module_Popup_Edit']) : 0);

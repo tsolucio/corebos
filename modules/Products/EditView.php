@@ -10,7 +10,9 @@
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $adb;
 require_once 'Smarty_setup.php';
 
+$focus = CRMEntity::getInstance($currentModule);
 $smarty = new vtigerCRM_Smarty();
+
 $massedit1x1 = isset($_REQUEST['massedit1x1']) ? vtlib_purify($_REQUEST['massedit1x1']) : '0';
 if ($massedit1x1=='s') { // mass edit 1x1 start
 	$idstring = getSelectedRecords(
@@ -46,8 +48,6 @@ if (!empty($_REQUEST['saverepeat'])) {
 } else {
 	coreBOS_Session::set('saverepeatRequest', $_REQUEST);
 }
-$focus = CRMEntity::getInstance($currentModule);
-
 $saveimage=isset($_REQUEST['saveimage'])?vtlib_purify($_REQUEST['saveimage']):'false';
 $errormessage=isset($_REQUEST['error_msg'])?vtlib_purify($_REQUEST['error_msg']):'false';
 $image_error=isset($_REQUEST['image_error'])?vtlib_purify($_REQUEST['image_error']):'false';
@@ -99,7 +99,7 @@ if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == 'true') {
 		$explode_decode_val = explode('&', trim($decode_val, '&'));
 		$tabid = getTabid($currentModule);
 		foreach ($explode_decode_val as $fieldvalue) {
-			$value = explode("=", $fieldvalue);
+			$value = explode('=', $fieldvalue);
 			$field_name_val = $value[0];
 			$field_value =urldecode($value[1]);
 			$finfo = VTCacheUtils::lookupFieldInfo($tabid, $field_name_val);
@@ -162,7 +162,7 @@ $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('CATEGORY', $category);
-$smarty->assign("THEME", $theme);
+$smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('ID', $focus->id);
 $smarty->assign('MODE', $focus->mode);
@@ -173,7 +173,7 @@ $smarty->assign('DUPLICATE', $isduplicate);
 
 if ($focus->mode == 'edit' || $isduplicate == 'true') {
 	$recordName = array_values(getEntityName($currentModule, $record));
-	$recordName = $recordName[0];
+	$recordName = isset($recordName[0]) ? $recordName[0] : '';
 	$smarty->assign('NAME', $recordName);
 	$smarty->assign('UPDATEINFO', updateInfo($record));
 }
@@ -213,24 +213,25 @@ if ($focus->mode != 'edit' && $mod_seq_field != null) {
 	$autostr = getTranslatedString('MSG_AUTO_GEN_ON_SAVE');
 	list($mod_seq_string, $mod_seq_prefix, $mod_seq_no, $doNative) = cbEventHandler::do_filter('corebos.filter.ModuleSeqNumber.get', array('', '', '', true));
 	if ($doNative) {
-		$mod_seq_string = $adb->pquery("SELECT prefix, cur_id from vtiger_modentity_num where semodule = ? and active=1", array($currentModule));
+		$mod_seq_string = $adb->pquery('SELECT prefix, cur_id from vtiger_modentity_num where semodule = ? and active=1', array($currentModule));
 		$mod_seq_prefix = $adb->query_result($mod_seq_string, 0, 'prefix');
 		$mod_seq_no = $adb->query_result($mod_seq_string, 0, 'cur_id');
 	}
 	if ($adb->num_rows($mod_seq_string) == 0 || $focus->checkModuleSeqNumber($focus->table_name, $mod_seq_field['column'], $mod_seq_prefix.$mod_seq_no)) {
 		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
 		$smarty->assign('ERROR_MESSAGE', '<b>'. getTranslatedString($mod_seq_field['label']). ' '. getTranslatedString('LBL_NOT_CONFIGURED')
-			.' - '. getTranslatedString('LBL_PLEASE_CLICK') .' <a href="index.php?module=Settings&action=CustomModEntityNo&parenttab=Settings&selmodule='.$currentModule
-			.'">'.getTranslatedString('LBL_HERE').'</a> '. getTranslatedString('LBL_TO_CONFIGURE'). ' '. getTranslatedString($mod_seq_field['label']) .'</b>');
+			.' - '. getTranslatedString('LBL_PLEASE_CLICK') .' <a href="index.php?module=Settings&action=CustomModEntityNo&parenttab=Settings&selmodule='
+			.$currentModule.'">'.getTranslatedString('LBL_HERE').'</a> '.getTranslatedString('LBL_TO_CONFIGURE').' '.getTranslatedString($mod_seq_field['label']).'</b>');
 	} else {
 		$smarty->assign('MOD_SEQ_ID', $autostr);
 	}
 } else {
-	$smarty->assign('MOD_SEQ_ID', isset($focus->column_fields[$mod_seq_field['name']]) ? $focus->column_fields[$mod_seq_field['name']] : '');
+	if (!empty($mod_seq_field) && !empty($mod_seq_field['name']) && !empty($focus->column_fields[$mod_seq_field['name']])) {
+		$smarty->assign('MOD_SEQ_ID', $focus->column_fields[$mod_seq_field['name']]);
+	} else {
+		$smarty->assign('MOD_SEQ_ID', '');
+	}
 }
-
-// Gather the help information associated with fields
-$smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 
 if ($focus->id != '') {
 	$smarty->assign('ROWCOUNT', getImageCount($focus->id));
@@ -313,8 +314,16 @@ if ($errormessage!='') {
 
 $smarty->assign('Product_Maximum_Number_Images', GlobalVariable::getVariable('Product_Maximum_Number_Images', 6));
 
+// Gather the custom link information to display
+include_once 'vtlib/Vtiger/Link.php';
+$customlink_params = array('MODULE'=>$currentModule, 'RECORD'=>$focus->id, 'ACTION'=>vtlib_purify($_REQUEST['action']));
+$smarty->assign(
+	'CUSTOM_LINKS',
+	Vtiger_Link::getAllByType($tabid, array('EDITVIEWBUTTON','EDITVIEWBUTTONMENU','EDITVIEWWIDGET'), $customlink_params, null, $focus->id)
+);
 // Gather the help information associated with fields
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
+$smarty->assign('Module_Popup_Edit', isset($_REQUEST['Module_Popup_Edit']) ? vtlib_purify($_REQUEST['Module_Popup_Edit']) : 0);
 $smarty->assign('SandRActive', GlobalVariable::getVariable('Application_SaveAndRepeatActive', 0, $currentModule));
 $cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule);
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
