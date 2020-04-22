@@ -29,7 +29,7 @@
 {/if}
 {/if}
 <div id="appnotifydiv" class="slds-m-top_x-small slds-m-bottom_x-small" {if empty($ERROR_MESSAGE)}style="display:none"{/if}>
-	<div class="slds-notify slds-notify_alert slds-theme_{$slds_role} slds-theme_alert-texture" role="alert" style="padding:0.1rem">
+	<div class="slds-notify slds-notify_alert slds-theme_{$slds_role} slds-theme_alert-texture slds-p-around_xx-small" role="alert">
 	<h2>
 		<svg class="slds-icon slds-icon_small slds-m-right_x-small" aria-hidden="true">
 		<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#{$slds_role}"></use>

@@ -244,8 +244,12 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 	}
 
 	public function query($q) {
-		global $site_URL, $adb, $default_charset;
 		$mysql_query = $this->wsVTQL2SQL($q, $meta, $queryRelatedModules);
+		return $this->querySQLResults($mysql_query, $q, $meta, $queryRelatedModules);
+	}
+
+	public function querySQLResults($mysql_query, $q, $meta, $queryRelatedModules) {
+		global $site_URL, $adb, $default_charset;
 		if (strpos($mysql_query, 'vtiger_inventoryproductrel')) {
 			$invlines = true;
 			$pdowsid = vtws_getEntityId('Products');
@@ -263,6 +267,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		}
 
 		$isDocModule = ($meta->getEntityName()=='Documents');
+		$isRelatedQuery = __FQNExtendedQueryIsFQNQuery($q);
 		$noofrows = $this->pearDB->num_rows($result);
 		$output = array();
 		for ($i=0; $i<$noofrows; $i++) {
@@ -272,7 +277,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 				continue;
 			}
 			$newrow = DataTransform::sanitizeDataWithColumn($row, $meta);
-			if (__FQNExtendedQueryIsFQNQuery($q)) { // related query
+			if ($isRelatedQuery) {
 				if ($invlines) {
 					$newrow = $row;
 					$newrow['id'] = (getSalesEntityType($newrow['id']) == 'Products' ? $pdowsid : $srvwsid) . 'x' . $newrow['id'];

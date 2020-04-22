@@ -370,6 +370,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Keep the open/closed status of each Detail View block during the user session. By default it is not kept (0).',
 ),
+'Application_DetailView_PageHeader_Message' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'OFF | {Business Map ID} | UPDATE',
+	'definition' => 'What to show in page header sub title. Nothing (OFF), the result of a Business Map or the default Updated text.',
+),
 'Application_Upload_MaxSize' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',
@@ -995,10 +1002,17 @@ $GlobalVariableDefinitons = array(
 ),
 'Calendar_Show_Only_My_Events' => array(
 	'status' => 'Implemented',
-	'valuetype' => 'Integer',
+	'valuetype' => 'Boolean',
 	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'Show only the events assign to me, shared with me and in which I am invited.',
+),
+'Calendar_goDirectToDetailView' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'When you click on an event you will open the detail view of the record instead of the actions toolbar.',
 ),
 'CronTasks_cronWatcher_mailto' => array(
 	'status' => 'Implemented',

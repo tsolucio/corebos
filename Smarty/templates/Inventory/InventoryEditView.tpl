@@ -60,21 +60,8 @@
 								<td style="padding:10px">
 									<!-- General details -->
 									<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small createview_table">
-										<tr>
-										<td colspan=4 style="padding:5px">
-											<div align="center">
-												{if isset($SandRActive) && $SandRActive!=0 && (!isset($MED1x1MODE) || $MED1x1MODE==0)}
-												<input title="{$APP.LBL_SAVEREPEAT_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVEREPEAT_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.saverepeat.value='1';this.form.action.value='Save'; displaydeleted(); return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVEREPEAT_BUTTON_LABEL}  ">
-												{/if}
-												{if isset($MED1x1MODE) && $MED1x1MODE!=0}
-												<input title="{$APP.LBL_SKIP_BUTTON_TITLE}" accessKey="{$APP.LBL_SKIP_BUTTON_KEY}" class="crmbutton small cancel" onclick="this.form.saverepeat.value='skip';this.form.action.value='Save'; displaydeleted();" type="submit" name="button" value="  {$APP.LBL_SKIP_BUTTON_LABEL}  ">
-												{/if}
-											</div>
-										</td>
-										</tr>
-
 										<!-- included to handle the edit fields based on ui types -->
-										{foreach key=header item=data from=$BLOCKS}
+										{foreach key=header item=data from=$BLOCKS name=BLOCKS}
 										<tr id="tbl{$header|replace:' ':''}Head">
 										{if isset($MOD.LBL_ADDRESS_INFORMATION) && $header==$MOD.LBL_ADDRESS_INFORMATION && ($MODULE == 'Accounts' || $MODULE == 'Contacts' || $MODULE == 'Quotes' || $MODULE == 'PurchaseOrder' || $MODULE == 'SalesOrder'|| $MODULE == 'Invoice') && $SHOW_COPY_ADDRESS eq 1}
 											<td colspan=2 class="detailedViewHeader">
@@ -95,6 +82,20 @@
 										{else}
 											<!-- Handle the ui types display -->
 											{include file="DisplayFields.tpl"}
+											{if $CUSTOM_LINKS && !empty($CUSTOM_LINKS.EDITVIEWWIDGET)}
+												{* Embed EditViewWidget block:// type if any *}
+												{foreach item=CUSTOM_LINK_EDITVIEWWIDGET from=$CUSTOM_LINKS.EDITVIEWWIDGET}
+													{if preg_match("/^block:\/\/.*/", $CUSTOM_LINK_EDITVIEWWIDGET->linkurl)}
+													{if ($smarty.foreach.BLOCKS.first && $CUSTOM_LINK_EDITVIEWWIDGET->sequence <= 1)
+														|| ($CUSTOM_LINK_EDITVIEWWIDGET->sequence == $smarty.foreach.BLOCKS.iteration + 1)
+														|| ($smarty.foreach.BLOCKS.last && $CUSTOM_LINK_EDITVIEWWIDGET->sequence >= $smarty.foreach.BLOCKS.iteration + 1)}
+														<tr name="tbl{$CUSTOM_LINK_EDITVIEWWIDGET->linklabel|replace:' ':''}Content" class="createview_field_row">
+															<td colspan="4" style="padding:5px;">{process_widget widgetLinkInfo=$CUSTOM_LINK_EDITVIEWWIDGET}</td>
+														</tr>
+													{/if}
+													{/if}
+												{/foreach}
+											{/if}
 										{/if}
 
 										<tr style="height:25px"><td>&nbsp;</td></tr>
@@ -117,19 +118,6 @@
 										</td>
 										</tr>
 										{/if}
-
-										<tr>
-										<td colspan=4 style="padding:5px">
-											<div align="center">
-												{if isset($SandRActive) && $SandRActive!=0 && (!isset($MED1x1MODE) || $MED1x1MODE==0)}
-												<input title="{$APP.LBL_SAVEREPEAT_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVEREPEAT_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.saverepeat.value='1';this.form.action.value='Save'; displaydeleted(); return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVEREPEAT_BUTTON_LABEL}  ">
-												{/if}
-												{if isset($MED1x1MODE) && $MED1x1MODE!=0}
-												<input title="{$APP.LBL_SKIP_BUTTON_TITLE}" accessKey="{$APP.LBL_SKIP_BUTTON_KEY}" class="crmbutton small cancel" onclick="this.form.saverepeat.value='skip';this.form.action.value='Save'; displaydeleted();" type="submit" name="button" value="  {$APP.LBL_SKIP_BUTTON_LABEL}  ">
-												{/if}
-											</div>
-										</td>
-										</tr>
 									</table>
 								</td>
 							</tr>

@@ -50,7 +50,6 @@
 				<td valign=top align=left >
 					<table border=0 cellspacing=0 cellpadding=3 width=100% class="dvtContentSpace">
 					   <tr>
-
 						<td align=left>
 							{*<!-- content cache -->*}
 							<table border=0 cellspacing=0 cellpadding=0 width=100%>
@@ -58,24 +57,8 @@
 								<td style="padding:10px">
 									<!-- General details -->
 									<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small createview_table">
-									   <tr>
-										<td colspan=4 style="padding:5px">
-											<div align="center">
-												{if isset($SandRActive) && $SandRActive!=0 && (!isset($MED1x1MODE) || $MED1x1MODE==0)}
-												<input title="{$APP.LBL_SAVEREPEAT_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVEREPEAT_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.saverepeat.value='1';this.form.action.value='Save'; displaydeleted(); return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVEREPEAT_BUTTON_LABEL}  ">
-												{/if}
-												{if isset($MED1x1MODE) && $MED1x1MODE!=0}
-												<input title="{$APP.LBL_SKIP_BUTTON_TITLE}" accessKey="{$APP.LBL_SKIP_BUTTON_KEY}" class="crmbutton small cancel" onclick="this.form.saverepeat.value='skip';this.form.action.value='Save'; displaydeleted();" type="submit" name="button" value="  {$APP.LBL_SKIP_BUTTON_LABEL}  ">
-												{/if}
-												{if isset($gobackBTN) && !$gobackBTN}
-												<input title="{$APP.LBL_GOBACK_BUTTON_TITLE}" accessKey="{$APP.LBL_GOBACK_BUTTON_KEY}" class="crmbutton small cancel" onclick="this.form.saverepeat.value='goback';this.form.action.value='Save'; displaydeleted();" type="submit" name="button" value="  {$APP.LBL_GOBACK_BUTTON_LABEL}  ">
-												{/if}
-											</div>
-										</td>
-									   </tr>
-
 									   <!-- included to handle the edit fields based on ui types -->
-									   {foreach key=header item=data from=$BLOCKS}
+									   {foreach key=header item=data from=$BLOCKS name=BLOCKS}
 
 							<!-- This is added to display the existing comments -->
 							{if $header eq $APP.LBL_COMMENTS || (isset($MOD.LBL_COMMENT_INFORMATION) && $header eq $MOD.LBL_COMMENT_INFORMATION)}
@@ -118,6 +101,20 @@
 										{else}
 											<!-- Handle the ui types display -->
 											{include file="DisplayFields.tpl"}
+											{if $CUSTOM_LINKS && !empty($CUSTOM_LINKS.EDITVIEWWIDGET)}
+												{* Embed EditViewWidget block:// type if any *}
+												{foreach item=CUSTOM_LINK_EDITVIEWWIDGET from=$CUSTOM_LINKS.EDITVIEWWIDGET}
+													{if preg_match("/^block:\/\/.*/", $CUSTOM_LINK_EDITVIEWWIDGET->linkurl)}
+													{if ($smarty.foreach.BLOCKS.first && $CUSTOM_LINK_EDITVIEWWIDGET->sequence <= 1)
+														|| ($CUSTOM_LINK_EDITVIEWWIDGET->sequence == $smarty.foreach.BLOCKS.iteration + 1)
+														|| ($smarty.foreach.BLOCKS.last && $CUSTOM_LINK_EDITVIEWWIDGET->sequence >= $smarty.foreach.BLOCKS.iteration + 1)}
+														<tr name="tbl{$CUSTOM_LINK_EDITVIEWWIDGET->linklabel|replace:' ':''}Content" class="createview_field_row">
+															<td colspan="4" style="padding:5px;">{process_widget widgetLinkInfo=$CUSTOM_LINK_EDITVIEWWIDGET}</td>
+														</tr>
+													{/if}
+													{/if}
+												{/foreach}
+											{/if}
 										{/if}
 
 									   {/foreach}
@@ -137,26 +134,6 @@
 										</td>
 									   </tr>
 									   {/if}
-
-									   <tr>
-										<td  colspan=4 style="padding:5px">
-											<div align="center">
-										{if $MODULE eq 'Emails'}
-										<input title="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_TITLE}" accessKey="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_KEY}" class="crmbutton small create" onclick="window.open('index.php?module=Users&action=lookupemailtemplates&entityid={$ENTITY_ID}&entity={$ENTITY_TYPE}','emailtemplate','top=100,left=200,height=400,width=300,menubar=no,addressbar=no,status=yes')" type="button" name="button" value="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_LABEL}">
-										<input title="{$MOD.LBL_SEND}" accessKey="{$MOD.LBL_SEND}" class="crmbutton small save" onclick="this.form.action.value='Save';this.form.send_mail.value='true'; return formValidate()" type="submit" name="button" value="  {$MOD.LBL_SEND}  " >
-										{/if}
-												{if isset($SandRActive) && $SandRActive!=0 && (!isset($MED1x1MODE) || $MED1x1MODE==0)}
-												<input title="{$APP.LBL_SAVEREPEAT_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVEREPEAT_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.saverepeat.value='1';this.form.action.value='Save'; displaydeleted(); return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVEREPEAT_BUTTON_LABEL}  ">
-												{/if}
-												{if isset($MED1x1MODE) && $MED1x1MODE!=0}
-												<input title="{$APP.LBL_SKIP_BUTTON_TITLE}" accessKey="{$APP.LBL_SKIP_BUTTON_KEY}" class="crmbutton small cancel" onclick="this.form.saverepeat.value='skip';this.form.action.value='Save'; displaydeleted();" type="submit" name="button" value="  {$APP.LBL_SKIP_BUTTON_LABEL}  ">
-												{/if}
-												{if isset($gobackBTN) && !$gobackBTN}
-												<input title="{$APP.LBL_GOBACK_BUTTON_TITLE}" accessKey="{$APP.LBL_GOBACK_BUTTON_KEY}" class="crmbutton small cancel" onclick="this.form.saverepeat.value='goback';this.form.action.value='Save'; displaydeleted();" type="submit" name="button" value="  {$APP.LBL_GOBACK_BUTTON_LABEL}  ">
-												{/if}
-											</div>
-										</td>
-									   </tr>
 									</table>
 								</td>
 							   </tr>

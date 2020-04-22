@@ -47,7 +47,7 @@ class ModComments extends ModCommentsCore {
 	 * Get widget instance by name
 	 */
 	public static function getWidget($name) {
-		if ($name == 'DetailViewBlockCommentWidget' && isPermitted('ModComments', 'DetailView') == 'yes') {
+		if (($name == 'DetailViewBlockCommentWidget' || $name == 'EditViewBlockCommentWidget') && isPermitted('ModComments', 'DetailView') == 'yes') {
 			require_once __DIR__ . '/widgets/DetailViewBlockComment.php';
 			return (new ModComments_DetailViewBlockCommentWidget());
 		}

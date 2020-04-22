@@ -358,6 +358,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		if ($module != null) {
 			// If data is not yet available
 			if (empty($this->_modulexml)) {
+				$unzip = new Vtiger_Unzip($zipfile);
 				$this->__parseManifestFile($unzip);
 			}
 
@@ -596,10 +597,10 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	 */
 	public function import_Field($blocknode, $blockInstance, $moduleInstance, $fieldnode) {
 		$fieldInstance = new Vtiger_Field();
-		$fieldInstance->name         = $fieldnode->fieldname;
+		$fieldInstance->name         = strtolower($fieldnode->fieldname);
 		$fieldInstance->label        = $fieldnode->fieldlabel;
-		$fieldInstance->table        = $fieldnode->tablename;
-		$fieldInstance->column       = $fieldnode->columnname;
+		$fieldInstance->table        = strtolower($fieldnode->tablename);
+		$fieldInstance->column       = strtolower($fieldnode->columnname);
 		$fieldInstance->uitype       = $fieldnode->uitype;
 		$fieldInstance->generatedtype= $fieldnode->generatedtype;
 		$fieldInstance->readonly     = $fieldnode->readonly;
@@ -687,7 +688,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		$moduleInstance->addFilter($filterInstance);
 
 		foreach ($customviewnode->fields->field as $fieldnode) {
-			$fieldInstance = $this->__GetModuleFieldFromCache($moduleInstance, $fieldnode->fieldname);
+			$fieldInstance = $this->__GetModuleFieldFromCache($moduleInstance, strtolower($fieldnode->fieldname));
 			$filterInstance->addField($fieldInstance, $fieldnode->columnindex);
 		}
 		if (!empty($customviewnode->rules->rule)) {

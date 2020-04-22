@@ -1332,7 +1332,11 @@ class QueryGenerator {
 					$value = getValidDBInsertDateTimeValue($value);
 				}
 				if (empty($value)) {
-					$sql[] = 'IS NULL or '.$field->getTableName().'.'.$field->getColumnName()." = ''";
+					if ($operator == 'n') {
+						$sql[] = 'IS NOT NULL and '.$field->getTableName().'.'.$field->getColumnName()." <> ''";
+					} else {
+						$sql[] = 'IS NULL or '.$field->getTableName().'.'.$field->getColumnName()." = ''";
+					}
 					return $sql;
 				}
 			} elseif ($field->getFieldDataType() === 'currency') {

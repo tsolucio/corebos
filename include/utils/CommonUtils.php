@@ -1470,17 +1470,32 @@ function getParentTab() {
 	return 'ptab';
 }
 
-/**
- * This function is used to get the days in between the current time and the modified time of an entity .
- * Takes the input parameter as $id - crmid  it will calculate the number of days in between the
- * the current time and the modified time from the vtiger_crmentity table and return the result as a string.
- * The return format is updated <No of Days> day ago <(date when updated)>
- */
 function updateInfo($id) {
-	global $log, $adb, $app_strings;
+	global $log;
 	$log->debug('> updateInfo ' . $id);
-	$query = 'SELECT modifiedtime, modifiedby, smcreatorid FROM vtiger_crmentity WHERE crmid = ?';
-	$result = $adb->pquery($query, array($id));
+	$DETAILVIEW_PAGEHEADER_MESSAGE = GlobalVariable::getVariable('Application_DetailView_PageHeader_Message', 'UPDATE');
+	if ($DETAILVIEW_PAGEHEADER_MESSAGE=='OFF') {
+		$update_info = '';
+	} elseif (is_numeric($DETAILVIEW_PAGEHEADER_MESSAGE) && getSalesEntityType($DETAILVIEW_PAGEHEADER_MESSAGE)=='cbMap') {
+		include_once 'modules/Utilities/showMsgWidget.php';
+		$msg = new showmsgwidget_DetailViewBlock();
+		$update_info = $msg->process(array('msgcondition'=>$DETAILVIEW_PAGEHEADER_MESSAGE, 'ID'=>$id));
+	} else {
+		$update_info = updateInfoSinceMessage($id);
+	}
+	$log->debug('< updateInfo');
+	return $update_info;
+}
+
+/**
+ * This function is used to calculate the number of days in between the current time and the modified time of an entity.
+ * @param integer $id - crmid
+ * @return string "updated <No of Days> day ago <(date when updated)>"
+ */
+function updateInfoSinceMessage($id) {
+	global $log, $adb, $app_strings;
+	$log->debug('> updateInfoSinceMessage ' . $id);
+	$result = $adb->pquery('SELECT modifiedtime, modifiedby, smcreatorid FROM vtiger_crmentity WHERE crmid=?', array($id));
 	$modifiedtime = $adb->query_result($result, 0, 'modifiedtime');
 	$modifiedby_id = $adb->query_result($result, 0, 'modifiedby');
 	if (empty($modifiedby_id)) {
@@ -1504,7 +1519,7 @@ function updateInfo($id) {
 	} else {
 		$update_info = $app_strings['LBL_UPDATED'] . ' ' . $days_diff . ' ' . $app_strings['LBL_DAYS_AGO'] . ' (' . $date . ') ' . $modifiedby;
 	}
-	$log->debug('< updateInfo');
+	$log->debug('< updateInfoSinceMessage');
 	return $update_info;
 }
 

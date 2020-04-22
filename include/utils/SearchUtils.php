@@ -650,14 +650,14 @@ function getSearch_criteria($criteria, $searchstring, $searchfield) {
 	if (($searchfield != 'vtiger_troubletickets.update_log')
 		&& ($searchfield == 'vtiger_crmentity.modifiedtime' || $searchfield == 'vtiger_crmentity.createdtime' || false !== stripos($searchfield, 'date'))
 	) {
-		if ($search_string != '' && $search_string != '0000-00-00') {
-			$date = new DateTimeField($search_string);
+		if ($searchstring != '' && $searchstring != '0000-00-00') {
+			$date = new DateTimeField($searchstring);
 			$value = $date->getDisplayDate();
-			if (strpos($search_string, ' ') > -1) {
+			if (strpos($searchstring, ' ') > -1) {
 				$value .= (' ' . $date->getDisplayTime());
 			}
 		} else {
-			$value = $search_string;
+			$value = $searchstring;
 		}
 	}
 	if ($searchfield == 'vtiger_account.parentid') {

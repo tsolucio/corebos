@@ -297,14 +297,17 @@ foreach ($Users_Ids as $userid) {
 				}
 			}
 			$activity_mode = 'Events';
+			$actionDetail = '';
 			if ($record != '') {
 				$Actions = array();
 				if ($visibility == 'public') {
 					if (in_array($activitytypeid, $tasklabel)) {
 						$Actions[] = "<a target='_new' href='index.php?action=DetailView&module=".$activitytypeid."&record=".$record."'>".$mod['LBL_DETAIL']."</a>";
+						$actionDetail = 'index.php?action=DetailView&module='.$activitytypeid.'&record='.$record;
 					} else {
 						$Actions[] = "<a target='_new' href='index.php?action=DetailView&module=cbCalendar&record=".$record."&activity_mode=$activity_mode'>"
 							.$mod['LBL_DETAIL'].'</a>';
+						$actionDetail = 'index.php?action=DetailView&module=cbCalendar&record='.$record."&activity_mode=$activity_mode";
 					}
 				}
 				if ($Calendar4You->CheckPermissions('EDIT', $record)) {
@@ -408,7 +411,9 @@ foreach ($Users_Ids as $userid) {
 				'start' => $user_date_start,
 				'end' => $user_due_date,
 				'allDay' => $allDay,
-				'url' => '');
+				'url' => '',
+				'actionDetail' => $actionDetail,
+			);
 		}
 	}
 }

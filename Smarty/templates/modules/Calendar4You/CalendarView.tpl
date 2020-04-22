@@ -357,7 +357,13 @@ jQuery(document).ready(function(){
                                     },
                                     success: function(data) {
                                         object = data[0];
+                                        {/literal}
+                                        {if $goDirectToDetailView}
+                                        window.open(object['actionDetail'], '_new'+object['id']);
+                                        {else}
                                         jQuery('#event_info_content').html(object['title']);
+                                        {/if}
+                                        {literal}
                                     }
                                 });
                 }

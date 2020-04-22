@@ -54,24 +54,26 @@ if ($activitytype == 'Emails') {
 	$finaldata = $fldlabel = array();
 	foreach ($act_data as $block => $entry) {
 		foreach ($entry as $key => $value) {
-			foreach ($value as $label => $field) {
-				$fldlabel[$field['fldname']] = $label;
-				if ($field['ui'] == 15 || $field['ui'] == 16) {
-					foreach ($field['options'] as $index => $arr_val) {
-						if ($arr_val[2] == 'selected') {
-							$finaldata[$field['fldname']] = $arr_val[0];
+			if (is_array($value)) {
+				foreach ($value as $label => $field) {
+					$fldlabel[$field['fldname']] = $label;
+					if ($field['ui'] == 15 || $field['ui'] == 16) {
+						foreach ($field['options'] as $index => $arr_val) {
+							if ($arr_val[2] == 'selected') {
+								$finaldata[$field['fldname']] = $arr_val[0];
+							}
 						}
+					} else {
+						$fldvalue = $field['value'];
+						if ($field['fldname'] == 'description') {
+							$fldvalue = nl2br($fldvalue);
+						}
+						$finaldata[$field['fldname']] = $fldvalue;
 					}
-				} else {
-					$fldvalue = $field['value'];
-					if ($field['fldname'] == 'description') {
-						$fldvalue = nl2br($fldvalue);
+					$finaldata[$field['fldname'].'link'] = $field['link'];
+					if (isset($field['secid'])) {
+						$finaldata[$field['fldname'].'secid'] = $field['secid'];
 					}
-					$finaldata[$field['fldname']] = $fldvalue;
-				}
-				$finaldata[$field['fldname'].'link'] = $field['link'];
-				if (isset($field['secid'])) {
-					$finaldata[$field['fldname'].'secid'] = $field['secid'];
 				}
 			}
 		}
