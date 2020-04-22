@@ -89,6 +89,11 @@
 													{if ($smarty.foreach.BLOCKS.first && $CUSTOM_LINK_EDITVIEWWIDGET->sequence <= 1)
 														|| ($CUSTOM_LINK_EDITVIEWWIDGET->sequence == $smarty.foreach.BLOCKS.iteration + 1)
 														|| ($smarty.foreach.BLOCKS.last && $CUSTOM_LINK_EDITVIEWWIDGET->sequence >= $smarty.foreach.BLOCKS.iteration + 1)}
+														<tr>
+															<td colspan=4 class="dvInnerHeader">
+																<b>{$CUSTOM_LINK_EDITVIEWWIDGET->linklabel|@getTranslatedString:$MODULE}</b>
+															</td>
+														</tr>
 														<tr name="tbl{$CUSTOM_LINK_EDITVIEWWIDGET->linklabel|replace:' ':''}Content" class="createview_field_row">
 															<td colspan="4" style="padding:5px;">{process_widget widgetLinkInfo=$CUSTOM_LINK_EDITVIEWWIDGET}</td>
 														</tr>
