@@ -1,6 +1,9 @@
 <?php
 include_once 'include/Webservices/GetRelatedRecords.php';
 global $adb, $current_user;
+if (empty($current_user)) {
+	$current_user = Users::getActiveAdminUser();
+}
 $lastExecution = coreBOS_Settings::getSetting('mvLastScheduleWf', '');
 if (empty($lastExecution)) {
 	$lastExecution = '1970-01-01 00:00:00';
@@ -42,8 +45,8 @@ if ($result && $adb->num_rows($result) > 0) {
 							$rec_id = $rel_recordsArr[$y][0];
 							array_push($rec_ids, $rec_id);
 						}
-						$rec_ids = implode('","', $rec_ids);
 						if (count($rec_ids) > 0) {
+							$rec_ids = implode('","', $rec_ids);
 							$adb->query('delete from '.$qvname.' where '.$uniqueid.' IN ("' . $rec_ids . '")');
 							if (!empty($maintablealias)) {
 								$sql = preg_replace('/where\s+('.$crmentity_table.'\.)?deleted\s*=\s*0/i', 'where '.$maintablealias.'.'.$uniqueid.' IN ("' . $rec_ids . '") AND '.$crmentity_table.'.deleted=0', $sql);
