@@ -150,14 +150,14 @@ $smarty->assign('IS_REL_LIST', isPresentRelatedLists($currentModule));
 $singlepane_view = 'true';
 if ($singlepane_view == 'true') {
 	$related_array = getRelatedLists($currentModule, $focus);
-	$smarty->assign("RELATEDLISTS", $related_array);
+	$smarty->assign('RELATEDLISTS', $related_array);
 
 	require_once 'include/ListView/RelatedListViewSession.php';
 	if (!empty($_REQUEST['selected_header']) && !empty($_REQUEST['relation_id'])) {
 		RelatedListViewSession::addRelatedModuleToSession(vtlib_purify($_REQUEST['relation_id']), vtlib_purify($_REQUEST['selected_header']));
 	}
 	$open_related_modules = RelatedListViewSession::getRelatedModulesFromSession();
-	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
+	$smarty->assign('SELECTEDHEADERS', $open_related_modules);
 }
 $smarty->assign('SinglePane_View', $singlepane_view);
 
@@ -175,8 +175,10 @@ $smarty->assign('BLOCKINITIALSTATUS', $_SESSION['BLOCKINITIALSTATUS']);
 // Gather the custom link information to display
 include_once 'vtlib/Vtiger/Link.php';
 $customlink_params = array('MODULE'=>$currentModule, 'RECORD'=>$focus->id, 'ACTION'=>vtlib_purify($_REQUEST['action']));
-$document_links = Vtiger_Link::getAllByType(getTabid($currentModule), array('DETAILVIEWBASIC', 'DETAILVIEW', 'DETAILVIEWWIDGET'), $customlink_params, null, $focus->id);
-$smarty->assign('CUSTOM_LINKS', $document_links);
+$smarty->assign(
+	'CUSTOM_LINKS',
+	Vtiger_Link::getAllByType($tabid, array('DETAILVIEWBASIC','DETAILVIEW','DETAILVIEWWIDGET','DETAILVIEWBUTTON','DETAILVIEWBUTTONMENU'), $customlink_params, null, $focus->id)
+);
 
 // Hide Action Panel
 $DEFAULT_ACTION_PANEL_STATUS = GlobalVariable::getVariable('Application_DetailView_ActionPanel_Open', 1);
