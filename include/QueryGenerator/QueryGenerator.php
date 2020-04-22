@@ -1018,7 +1018,11 @@ class QueryGenerator {
 					}
 				} elseif (in_array($fieldName, $this->ownerFields)) {
 					$concatSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name'=>'vtiger_users.last_name'), 'Users');
-					$fieldSql .= "$fieldGlue (trim($concatSql) $valueSql or vtiger_groups.groupname $valueSql)";
+					$cond = 'or';
+					if ($conditionInfo['operator'] == 'e' && ($conditionInfo['value'] == '' || $conditionInfo['value'] == null || $conditionInfo['value'] == 'null')) {
+						$cond = 'and';
+					}
+					$fieldSql .= "$fieldGlue (trim($concatSql) $valueSql $cond vtiger_groups.groupname $valueSql)";
 				} else {
 					if ($fieldName == 'birthday' && !$this->isRelativeSearchOperators($conditionInfo['operator'])) {
 						$fieldSql .= "$fieldGlue DATE_FORMAT(".$field->getTableName().'.'.$field->getColumnName().",'%m%d') ".$valueSql;
