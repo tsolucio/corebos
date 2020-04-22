@@ -147,4 +147,11 @@
 	<classname>addBAtypesForButtons</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Edit View Widget Business Action type</description>
+	<filename>build/changeSets/2020/addBAEditViewWidgetType.php</filename>
+	<classname>addBAEditViewWidgetType</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

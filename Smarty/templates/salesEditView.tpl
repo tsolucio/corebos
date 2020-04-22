@@ -58,7 +58,7 @@
 									<!-- General details -->
 									<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small createview_table">
 									   <!-- included to handle the edit fields based on ui types -->
-									   {foreach key=header item=data from=$BLOCKS}
+									   {foreach key=header item=data from=$BLOCKS name=BLOCKS}
 
 							<!-- This is added to display the existing comments -->
 							{if $header eq $APP.LBL_COMMENTS || (isset($MOD.LBL_COMMENT_INFORMATION) && $header eq $MOD.LBL_COMMENT_INFORMATION)}
@@ -101,6 +101,20 @@
 										{else}
 											<!-- Handle the ui types display -->
 											{include file="DisplayFields.tpl"}
+											{if $CUSTOM_LINKS && !empty($CUSTOM_LINKS.EDITVIEWWIDGET)}
+												{* Embed EditViewWidget block:// type if any *}
+												{foreach item=CUSTOM_LINK_EDITVIEWWIDGET from=$CUSTOM_LINKS.EDITVIEWWIDGET}
+													{if preg_match("/^block:\/\/.*/", $CUSTOM_LINK_EDITVIEWWIDGET->linkurl)}
+													{if ($smarty.foreach.BLOCKS.first && $CUSTOM_LINK_EDITVIEWWIDGET->sequence <= 1)
+														|| ($CUSTOM_LINK_EDITVIEWWIDGET->sequence == $smarty.foreach.BLOCKS.iteration + 1)
+														|| ($smarty.foreach.BLOCKS.last && $CUSTOM_LINK_EDITVIEWWIDGET->sequence >= $smarty.foreach.BLOCKS.iteration + 1)}
+														<tr name="tbl{$CUSTOM_LINK_EDITVIEWWIDGET->linklabel|replace:' ':''}Content" class="createview_field_row">
+															<td colspan="4" style="padding:5px;">{process_widget widgetLinkInfo=$CUSTOM_LINK_EDITVIEWWIDGET}</td>
+														</tr>
+													{/if}
+													{/if}
+												{/foreach}
+											{/if}
 										{/if}
 
 									   {/foreach}
