@@ -158,12 +158,7 @@ if ($mode != "user" && $id != "invite") {
 			$Event_Fields = array();
 			$Fields_Label = array();
 
-			if ($id == 'task') {
-				$for_module = 'Calendar';
-			} else {
-				$for_module = 'Events';
-			}
-
+			$for_module = 'cbCalendar';
 			$tabid = getTabId($for_module);
 
 			$sql_field = "SELECT fieldid, uitype, fieldname, fieldlabel
@@ -171,7 +166,7 @@ if ($mode != "user" && $id != "invite") {
 				WHERE tabid=? and (displaytype != 3 OR uitype = 55) and vtiger_field.fieldname not in ('notime') ORDER BY sequence ASC";
 			$res_field = $adb->pquery($sql_field, array($tabid));
 			$num_field = $adb->num_rows($res_field);
-
+			$Fields_Array = array();
 			if ($num_field > 0) {
 				while ($row_field = $adb->fetch_array($res_field)) {
 					$fieldid = $row_field['fieldid'];
