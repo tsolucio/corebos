@@ -23,7 +23,11 @@ class addWFPurpose extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `purpose` TEXT NULL;');
+			global $adb;
+			$cnmsg = $adb->getColumnNames('com_vtiger_workflows');
+			if (!in_array('purpose', $cnmsg)) {
+				$this->ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `purpose` TEXT NULL;');
+			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
 		}

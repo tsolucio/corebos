@@ -421,9 +421,7 @@ function transferForAddIntoTitle($type, $row, $CD) {
 	global $current_user, $adb;
 	list($CD['fieldname'],$void) = explode(':', $CD['fieldname']);
 	$Col_Field = array();
-	if ($CD['uitype'] == '66' && !empty($row['parent_id'])) {
-		$Col_Field = array($CD['fieldname']=> $row['parent_id']);
-	} elseif (!empty($row[$CD['columnname']])) {
+	if (!empty($row[$CD['columnname']])) {
 		$Col_Field = array($CD['fieldname']=> $row[$CD['columnname']]);
 	}
 
@@ -431,11 +429,11 @@ function transferForAddIntoTitle($type, $row, $CD) {
 		$Col_Field['duration_minutes'] = $row['duration_minutes'];
 	}
 
-	if ($CD['fieldname'] == 'contact_id') {
-		$Col_Field['contact_id'] = getAssignedContactsForEvent($row['crmid']);
+	if ($CD['fieldname'] == 'contact_id' || $CD['fieldname'] == 'cto_id') {
+		$Col_Field['contact_id'] = $Col_Field['cto_id'] = getAssignedContactsForEvent($row['crmid']);
 		$CD['uitype'] = '1';
 	}
-	if ($CD['module']=='Calendar' || $CD['module']=='Events') {
+	if ($CD['module']=='Calendar') {
 		$Cal_Data = getDetailViewOutputHtml($CD['uitype'], $CD['fieldname'], $CD['fieldlabel'], $Col_Field, '2', getTabid('cbCalendar'), 'cbCalendar');
 		if ($CD['fieldname'] == 'subject' && strpos($Cal_Data[1], 'a href') === false) {
 			$Cal_Data[1] = '<a target=_blank href="index.php?module=cbCalendar&action=DetailView&record=' . $row['crmid'] . '">' . $Cal_Data[1] . '</a>';

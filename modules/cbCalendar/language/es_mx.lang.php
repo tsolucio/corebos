@@ -88,6 +88,7 @@ $mod_strings = array(
 	'Crear Seguimiento' => 'Crear Seguimiento',
 	'Tipo Seguimiento' => 'Tipo Seguimiento',
 	'Fecha Seguimiento' => 'Fecha Seguimiento',
+	'LBL_FOLLOWUP' => 'Seguimiento',
 	'INVITATION'=>' Invitación ',
 	'LBL_REPEATEVENT'=>'Repetir cada ',
 	'Daily'=>'Días',

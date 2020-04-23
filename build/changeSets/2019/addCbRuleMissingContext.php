@@ -24,11 +24,14 @@ class addCbRuleMissingContext extends cbupdaterWorker {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			global $adb;
-			$result = $adb->pquery('SELECT operationid FROM vtiger_ws_operation WHERE name = ?', array('cbRule'));
+			$result = $adb->pquery('SELECT operationid FROM vtiger_ws_operation WHERE name=?', array('cbRule'));
 			if ($result) {
 				$operationid = $adb->query_result($result, 0, 'operationid');
 				if (isset($operationid)) {
-					$this->ExecuteQuery("INSERT INTO vtiger_ws_operation_parameters (operationid, name, type, sequence) VALUES ($operationid, 'context', 'String', 2);");
+					$chkrs = $adb->pquery('SELECT 1 FROM vtiger_ws_operation_parameters WHERE operationid=? and name=?', array($operationid, 'context'));
+					if ($chkrs && $adb->num_rows($chkrs)==0) {
+						$this->ExecuteQuery("INSERT INTO vtiger_ws_operation_parameters (operationid, name, type, sequence) VALUES ($operationid, 'context', 'String', 2);");
+					}
 				}
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');

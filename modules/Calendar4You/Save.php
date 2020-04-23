@@ -151,7 +151,7 @@ if ((isset($_REQUEST['change_status']) && $_REQUEST['change_status']) && ($_REQU
 	/* For Followup START */
 	if (isset($_REQUEST['followup']) && $_REQUEST['followup']=='on' && $activity_mode=='Events' && isset($_REQUEST['followup_time_start']) &&  $_REQUEST['followup_time_start']!='') {
 		$heldevent_id = $focus->id;
-		$focus->column_fields['subject'] = '['.getTranslatedString('LBL_FOLLOWUP', 'Calendar').'] '.$focus->column_fields['subject'];
+		$focus->column_fields['subject'] = '['.getTranslatedString('LBL_FOLLOWUP', 'cbCalendar').'] '.$focus->column_fields['subject'];
 		$startDate = new DateTimeField($_REQUEST['followup_date'].' '.$_REQUEST['followup_time_start']);
 		$endDate = new DateTimeField($_REQUEST['followup_due_date'].' '.$_REQUEST['followup_time_end']);
 		$focus->column_fields['date_start'] = $startDate->getDBInsertDateValue();

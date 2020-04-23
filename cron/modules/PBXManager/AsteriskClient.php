@@ -196,12 +196,12 @@ function asterisk_handleResponse3($mainresponse, $adb, $asterisk) {
 			array($uid)
 		);
 		if ($adb->num_rows($checkres) > 0) {
+			$checkresrow = $adb->fetch_array($checkres);
 			$unknownCaller = GlobalVariable::getVariable('PBX_Unknown_CallerID', 'Unknown', 'PBXManager', Users::getActiveAdminId());
 			if (empty($checkresrow['from_name'])) {
 				$checkresrow['from_name'] = $unknownCaller;
 			}
 
-			$checkresrow = $adb->fetch_array($checkres);
 			$sql = 'UPDATE vtiger_asteriskincomingevents SET from_number=?, to_number=?, timer=?, flag=? WHERE uid=?';
 			$adb->pquery($sql, array($callerNumber, $extensionCalled, time(), 0, $uid));
 
