@@ -91,6 +91,7 @@ $mod_strings = array(
 	'Crear Seguimiento' => 'Créer le relance',
 	'Tipo Seguimiento' => 'Type de relance',
 	'Fecha Seguimiento' => 'Date de relance',
+	'LBL_FOLLOWUP' => 'Relance',
 	'INVITATION'=>' Invitation ',
 	'LBL_REPEATEVENT'=>'Répéter tous les',
 	'Daily' => 'Jour(s)',

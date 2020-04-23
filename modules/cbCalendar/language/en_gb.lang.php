@@ -88,6 +88,7 @@ $mod_strings = array(
 	'Crear Seguimiento' => 'Create Follow up',
 	'Tipo Seguimiento' => 'Follow up Type',
 	'Fecha Seguimiento' => 'Follow up Date',
+	'LBL_FOLLOWUP' => 'Follow up',
 	'INVITATION'=>' Invitation ',
 	'LBL_REPEATEVENT'=>'Repeat once in every',
 	'Daily'=>'Day(s)',
@@ -97,5 +98,4 @@ $mod_strings = array(
 	'DATE_SHOULDNOT_PAST' => 'Current date & time for Activities with status as Planned',
 	'TIME_SHOULDNOT_PAST' => 'Current Time for Activities with status as Planned',
 );
-
 ?>

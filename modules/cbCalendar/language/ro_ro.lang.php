@@ -92,6 +92,7 @@ $mod_strings = array(
 	'Crear Seguimiento' => 'Creeaza Urmarire Evolutie',
 	'Tipo Seguimiento' => 'Tip Urmarire Evolutie',
 	'Fecha Seguimiento' => 'Data Urmarire Evolutie',
+	'LBL_FOLLOWUP' => 'Urmare',
 	'INVITATION' => 'Invitatie',
 	'LBL_REPEATEVENT' => 'Recurenta o data pe zi',
 	'Daily' => 'Zi (le)',

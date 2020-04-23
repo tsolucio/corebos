@@ -86,6 +86,7 @@ $mod_strings = array(
 	'Crear Seguimiento' => 'Follow-Up anlegen',
 	'Tipo Seguimiento' => 'FollowUp Typ',
 	'Fecha Seguimiento' => 'FollowUp Datum',
+	'LBL_FOLLOWUP' => 'Follow up',
 	'INVITATION' => ' Einladung ',
 	'LBL_REPEATEVENT' => 'Wiederhole alle ',
 	'Daily' => 'Tag(e)',

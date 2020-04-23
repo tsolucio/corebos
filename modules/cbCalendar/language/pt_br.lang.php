@@ -90,6 +90,7 @@ $mod_strings = array(
 	'Crear Seguimiento' => 'Criar follow up',
 	'Tipo Seguimiento' => 'Tipo de follow up',
 	'Fecha Seguimiento' => 'Data de follow up',
+	'LBL_FOLLOWUP' => 'Acompanhamento',
 	'INVITATION'=>' Convite ',
 	'LBL_REPEATEVENT'=>'Repita uma vez a cada',
 	'Daily'=>'Dias(s)',
@@ -104,5 +105,4 @@ $mod_strings = array(
 	'DATE_SHOULDNOT_PAST' => 'Data e hora atuais para atividades com status planejadas',
 	'TIME_SHOULDNOT_PAST' => 'Hora atual das atividades com status planejadas',
 );
-
 ?>
