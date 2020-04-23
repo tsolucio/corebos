@@ -1419,6 +1419,9 @@ class QueryGenerator {
 					$sqlOperator = '<';
 					break;
 			}
+			if ($field->getFieldDataType() == 'reference' && $operator == 'e' && empty($value)) {
+				$sql[] = " IS NULL";
+			}
 			if ($this->requiresQuoteSearchOperators($operator) || (!$this->isNumericType($field->getFieldDataType()) &&
 					($field->getFieldName() != 'birthday' || ($field->getFieldName() == 'birthday' && $this->isRelativeSearchOperators($operator))))) {
 				$value = "'$value'";
