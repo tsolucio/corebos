@@ -44,27 +44,6 @@ class PreparedQMark2SqlValue {
 }
 
 /**
- * Performance perference API
- * @deprecated use Global Variables
- */
-class PerformancePrefs {
-	/**
-	 * Get performance parameter configured value or default one
-	 */
-	public static function get($key, $defvalue = false) {
-		return $defvalue;
-	}
-	/** Get boolean value */
-	public static function getBoolean($key, $defvalue = false) {
-		return self::get($key, $defvalue);
-	}
-	/** Get Integer value */
-	public static function getInteger($key, $defvalue = false) {
-		return (int)self::get($key, $defvalue);
-	}
-}
-
-/**
  * Cache Class for PearDatabase
  */
 class PearDatabaseCache {
@@ -72,14 +51,13 @@ class PearDatabaseCache {
 	public $_parent;
 
 	// Cache the result if rows is less than this
-	public $_CACHE_RESULT_ROW_LIMIT;
+	public $_CACHE_RESULT_ROW_LIMIT = 100;
 
 	/**
 	 * Constructor
 	 */
 	public function __construct($parent) {
 		$this->_parent = $parent;
-		$this->_CACHE_RESULT_ROW_LIMIT = PerformancePrefs::getInteger('CACHE_RESULT_ROW_LIMIT', 100);
 	}
 
 	/**
@@ -163,6 +141,7 @@ class PearDatabase {
 	 */
 	public $isdb_default_utf8_charset = true;
 	public $enableCache = false;
+	public $ALLOW_SQL_QUERY_BATCH = false;
 
 	public $_cacheinstance = false; // Will be auto-matically initialized if $enableCache is true
 	/**
@@ -385,7 +364,7 @@ class PearDatabase {
 	 * like: INSERT INTO TABLE1 VALUES (a,b), (c,d)
 	 */
 	public function query_batch($prefixsql, $valuearray) {
-		if (PerformancePrefs::getBoolean('ALLOW_SQL_QUERY_BATCH')) {
+		if ($this->ALLOW_SQL_QUERY_BATCH) {
 			$sql = $prefixsql;
 			$suffixsql = $valuearray;
 			if (!is_array($valuearray)) {
@@ -986,9 +965,6 @@ class PearDatabase {
 		global $currentModule;
 		$this->log = LoggerManager::getLogger('PearDatabase_'. $currentModule);
 		$this->resetSettings($dbtype, $host, $dbname, $username, $passwd);
-
-		// Initialize performance parameters
-		$this->enableCache = PerformancePrefs::getBoolean('CACHE_QUERY_RESULT', false);
 
 		if (!isset($this->dbType)) {
 			$this->println("ADODB Connect : DBType not specified");
