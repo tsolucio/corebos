@@ -32,8 +32,23 @@ class migrateLinksIntoBusinessActionEntities extends cbupdaterWorker {
 				$this->sendMsgError('<H2>Please install Company module before applying this change.</H2>');
 				return;
 			}
-			$this->ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `purpose` TEXT NULL;');
-			$this->ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `relatemodule` varchar(100) default NULL;');
+			global $adb;
+			$cnmsg = $adb->getColumnNames('com_vtiger_workflows');
+			if (!in_array('purpose', $cnmsg)) {
+				$this->ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `purpose` TEXT NULL;');
+			}
+			if (!in_array('relatemodule', $cnmsg)) {
+				$this->ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `relatemodule` varchar(100) default NULL;');
+			}
+			if (!in_array('wfstarton', $cnmsg)) {
+				$this->ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `wfstarton` datetime NULL;');
+			}
+			if (!in_array('wfendon', $cnmsg)) {
+				$this->ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `wfendon` datetime NULL;');
+			}
+			if (!in_array('active', $cnmsg)) {
+				$this->ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `active` varchar(10) NULL;');
+			}
 			if ($this->isModuleInstalled('BusinessActions')) {
 				vtlib_toggleModuleAccess('BusinessActions', true);
 				global $adb, $current_user;

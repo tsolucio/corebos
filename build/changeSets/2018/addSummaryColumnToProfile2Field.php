@@ -24,8 +24,11 @@ class addSummaryColumnToProfile2Field extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset ' . get_class($this) . ' already applied!');
 		} else {
-			$this->ExecuteQuery("ALTER TABLE vtiger_profile2field ADD summary enum('T', 'H','B', 'N') DEFAULT 'B' NOT NULL");
-
+			global $adb;
+			$cnmsg = $adb->getColumnNames('vtiger_profile2field');
+			if (!in_array('summary', $cnmsg)) {
+				$this->ExecuteQuery("ALTER TABLE vtiger_profile2field ADD summary enum('T', 'H','B', 'N') DEFAULT 'B' NOT NULL");
+			}
 			$this->sendMsg('Changeset ' . get_class($this) . ' applied!');
 			$this->markApplied(false);
 		}
