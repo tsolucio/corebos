@@ -85,6 +85,21 @@ function vtws_create($elementType, $element, $user) {
 		}
 	}
 
+	$picklistFields = array();
+	foreach ($meta->getModuleFields() as $fieldName => $webserviceField) {
+		if ($webserviceField->getUIType() == 15) {
+			$picklistFields[] = $fieldName;
+		}
+	}
+	if ($picklistFields) {
+		foreach ($picklistFields as $field) {
+			if (empty($element[$field])) {
+				$referenceField = $meta->getFieldByColumnName($field);
+				$element[$field] = $referenceField->getDefault();
+			}
+		}
+	}
+
 	if ($meta->hasMandatoryFields($element)) {
 		$ownerFields = $meta->getOwnerFields();
 		if (is_array($ownerFields)) {
