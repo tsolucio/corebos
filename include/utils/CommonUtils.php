@@ -2550,9 +2550,9 @@ function getMergedDescriptionForURL($url, $id, $parent_type) {
 function getSingleFieldValue($tablename, $fieldname, $idname, $id) {
 	global $log, $adb;
 	$log->debug("> getSingleFieldValue $tablename, $fieldname, $idname, $id");
-	$rs = $adb->pquery("select $fieldname from $tablename where $idname = ?", array($id));
+	$rs = $adb->pquery("select $fieldname from $tablename where $idname=?", array($id));
 	$fieldval = $adb->query_result($rs, 0, $fieldname);
-	$log->debug("< getSingleFieldValue return value => $fieldval");
+	$log->debug("< getSingleFieldValue: $fieldval");
 	return $fieldval;
 }
 
