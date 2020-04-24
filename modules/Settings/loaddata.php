@@ -28,13 +28,21 @@ function checkFieldUsage($fldname, $modname) {
 	global $adb, $mod_strings;
 	$mod = Vtiger_Module::getInstance($modname);
 	$field = Vtiger_Field::getInstance($fldname, $mod);
+	$found = false;
 	$ret = '';
+	$rdo = array(
+		'found' => $found,
+		'where' => array(),
+		'message' => $ret,
+	);
 	// Workflow Conditions
 	$crs = $adb->pquery('SELECT workflow_id,summary FROM `com_vtiger_workflows` WHERE test like ?', array('%'.$fldname.'%'));
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
 			$ret .= '<span style="color:red">'.$mod_strings['wf_conditions_found'].$fnd['workflow_id']. ' / ' .$fnd['summary'].'</span><br>';
 		}
+		$found = true;
+		$rdo['where'][] = 'workflow';
 	} else {
 		$ret .= $mod_strings['wf conditions'].'<br>';
 	}
@@ -46,6 +54,8 @@ function checkFieldUsage($fldname, $modname) {
 			$ret .= '<span style="color:red">'.$mod_strings['wf_tasks_found'].'('.$fnd['workflow_id'].') '.$mod_strings['LBL_TASK'].' ('.$fnd['task_id'].'): ';
 			$ret .= $fnd['summary'].'</span><br>';
 		}
+		$found = true;
+		$rdo['where'][] = 'workflowtasks';
 	} else {
 		$ret .= $mod_strings['wf_tasks'].'<br>';
 	}
@@ -59,6 +69,8 @@ function checkFieldUsage($fldname, $modname) {
 		while ($fnd=$adb->fetch_array($crs)) {
 			$ret .= '<span style="color:red">'.$mod_strings['cv_column'].$fnd['viewname'].'</span><br>';
 		}
+		$found = true;
+		$rdo['where'][] = 'CustomView';
 	} else {
 		$ret .= $mod_strings['cv_column_nf'].'<br>';
 	}
@@ -72,6 +84,8 @@ function checkFieldUsage($fldname, $modname) {
 		while ($fnd=$adb->fetch_array($crs)) {
 			$ret .= '<span style="color:red">'.$mod_strings['cv_advfilter'].$fnd['viewname'].'</span><br>';
 		}
+		$found = true;
+		$rdo['where'][] = 'CustomViewConditions';
 	} else {
 		$ret .= $mod_strings['cv_advfilter_nf'].'<br>';
 	}
@@ -85,6 +99,8 @@ function checkFieldUsage($fldname, $modname) {
 		while ($fnd=$adb->fetch_array($crs)) {
 			$ret .= '<span style="color:red">'.$mod_strings['cv_stdfilter'].$fnd['viewname'].'</span><br>';
 		}
+		$found = true;
+		$rdo['where'][] = 'CustomViewDateFilters';
 	} else {
 		$ret .= $mod_strings['cv_stdfilter_nf'].'<br>';
 	}
@@ -95,6 +111,8 @@ function checkFieldUsage($fldname, $modname) {
 		while ($fnd=$adb->fetch_array($crs)) {
 			$ret .= '<span style="color:red">'.$mod_strings['email_templates'].$fnd['templateid'].' :: '.$fnd['templatename'].'</span><br>';
 		}
+		$found = true;
+		$rdo['where'][] = 'Emails';
 	} else {
 		$ret .= $mod_strings['email_templates_nf'].'<br>';
 	}
@@ -111,6 +129,8 @@ function checkFieldUsage($fldname, $modname) {
 		while ($fnd=$adb->fetch_array($crs)) {
 			$ret .= '<span style="color:red">'.$mod_strings['select_column'].$fnd['reportid'].' :: '.$fnd['reportname'].'</span><br>';
 		}
+		$found = true;
+		$rdo['where'][] = 'Reports';
 	} else {
 		$ret .= $mod_strings['select_column_nf'].'<br>';
 	}
@@ -127,6 +147,8 @@ function checkFieldUsage($fldname, $modname) {
 		while ($fnd=$adb->fetch_array($crs)) {
 			$ret .= '<span style="color:red">'.$mod_strings['report_dtfilter'].$fnd['reportid'].' :: '.$fnd['reportname'].'</span><br>';
 		}
+		$found = true;
+		$rdo['where'][] = 'ReportsDateFilters';
 	} else {
 		$ret .= $mod_strings['report_dtfilter_nf'].'<br>';
 	}
@@ -143,6 +165,8 @@ function checkFieldUsage($fldname, $modname) {
 		while ($fnd=$adb->fetch_array($crs)) {
 			$ret .= '<span style="color:red">'.$mod_strings['report'].$fnd['reportid'].' :: '.$fnd['reportname'].'</span><br>';
 		}
+		$found = true;
+		$rdo['where'][] = 'ReportsGroupBy';
 	} else {
 		$ret .= $mod_strings['report_nf'].'<br>';
 	}
@@ -159,6 +183,8 @@ function checkFieldUsage($fldname, $modname) {
 		while ($fnd=$adb->fetch_array($crs)) {
 			$ret .= '<span style="color:red">'.$mod_strings['report_sort'].$fnd['reportid'].' :: '.$fnd['reportname'].'</span><br>';
 		}
+		$found = true;
+		$rdo['where'][] = 'ReportsSort';
 	} else {
 		$ret .= $mod_strings['report_sort_nf'].'<br>';
 	}
@@ -175,6 +201,8 @@ function checkFieldUsage($fldname, $modname) {
 		while ($fnd=$adb->fetch_array($crs)) {
 			$ret .= '<span style="color:red">'.$mod_strings['report_summary'].$fnd['reportid'].' :: '.$fnd['reportname'].'</span><br>';
 		}
+		$found = true;
+		$rdo['where'][] = 'ReportsSummary';
 	} else {
 		$ret .= $mod_strings['report_summary_nf'].'<br>';
 	}
@@ -198,14 +226,18 @@ function checkFieldUsage($fldname, $modname) {
 		$crs = $adb->pquery("SELECT 1 FROM `vtiger_convertleadmapping` WHERE $searchon = ?", array($field->id));
 		if ($crs && $adb->num_rows($crs)>0) {
 			$ret .= '<span style="color:red">'.$mod_strings['cl_mapping'].'</span><br>';
+			$found = true;
+			$rdo['where'][] = 'Leads';
 		} else {
 			$ret .= $mod_strings['cl_mapping_nf'].'<br>';
 		}
 	}
-	return $ret;
+	$rdo['message'] = $ret;
+	return $rdo;
 }
 
 if (empty($nooutput)) {
-	echo checkFieldUsage($fldname, $modname);
+	$rdo = checkFieldUsage($fldname, $modname);
+	echo $rdo['message'];
 }
 ?>
