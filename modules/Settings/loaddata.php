@@ -207,6 +207,86 @@ function checkFieldUsage($fldname, $modname) {
 		$ret .= $mod_strings['report_summary_nf'].'<br>';
 	}
 
+	// Picklist Dependency
+	$crs = $adb->pquery(
+		'SELECT sourcefield,targetfield FROM vtiger_picklist_dependency WHERE sourcefield=? or targetfield=?',
+		array($fldname, $fldname)
+	);
+	if ($crs && $adb->num_rows($crs)>0) {
+		while ($fnd=$adb->fetch_array($crs)) {
+			$ret .= '<span style="color:red">'.getTranslatedString('LBL_PICKLIST_DEPENDENCY_SETUP', 'PickList').' :: '.$fnd['sourcefield'].' - '.$fnd['targetfield'].'</span><br>';
+		}
+		$found = true;
+		$rdo['where'][] = 'PickList';
+	} else {
+		$ret .= $mod_strings['picklist_dep_nf'].'<br>';
+	}
+
+	// Business Question
+	$crs = $adb->pquery(
+		'SELECT qname,cbquestionno FROM vtiger_cbquestion WHERE qcolumns LIKE ? OR qcondition LIKE ? OR orderby LIKE ? OR groupby LIKE ?',
+		array('%'.$fldname.'%', '%'.$fldname.'%', '%'.$fldname.'%', '%'.$fldname.'%')
+	);
+	if ($crs && $adb->num_rows($crs)>0) {
+		while ($fnd=$adb->fetch_array($crs)) {
+			$ret .= '<span style="color:red">'.getTranslatedString('cbQuestion', 'cbQuestion').' :: '.$fnd['cbquestionno'].' - '.$fnd['qname'].'</span><br>';
+		}
+		$found = true;
+		$rdo['where'][] = 'cbQuestion';
+	} else {
+		$ret .= $mod_strings['bquestion_nf'].'<br>';
+	}
+
+	// Business Map
+	$crs = $adb->pquery(
+		'SELECT mapname,mapnumber FROM vtiger_cbmap WHERE content LIKE ?',
+		array('%'.$fldname.'%')
+	);
+	if ($crs && $adb->num_rows($crs)>0) {
+		while ($fnd=$adb->fetch_array($crs)) {
+			$ret .= '<span style="color:red">'.getTranslatedString('cbMap', 'cbMap').' :: '.$fnd['mapnumber'].' - '.$fnd['mapname'].'</span><br>';
+		}
+		$found = true;
+		$rdo['where'][] = 'cbMap';
+	} else {
+		$ret .= $mod_strings['bmap_nf'].'<br>';
+	}
+
+	// Tooltip: we skip this one because there is a DELETE CASCADE restriction that will eliminate the records
+
+	// Calendar
+	$crs = $adb->pquery(
+		'SELECT userid,view FROM its4you_calendar4you_event_fields WHERE fieldname LIKE ?',
+		array($fldname.':%')
+	);
+	if ($crs && $adb->num_rows($crs)>0) {
+		while ($fnd=$adb->fetch_array($crs)) {
+			$ret .= '<span style="color:red">'.getTranslatedString('cbCalendar', 'cbCalendar').' :: '.$fnd['view'].' - '.getUserFullName($fnd['userid']).'</span><br>';
+		}
+		$found = true;
+		$rdo['where'][] = 'cbCalendar';
+	} else {
+		$ret .= $mod_strings['calendar_nf'].'<br>';
+	}
+
+	// Webforms
+	$crs = $adb->pquery(
+		'SELECT name
+		FROM vtiger_webforms_field
+		INNER JOIN vtiger_webforms on vtiger_webforms.id=vtiger_webforms_field.webformid
+		WHERE fieldname LIKE ?',
+		array($fldname.':%')
+	);
+	if ($crs && $adb->num_rows($crs)>0) {
+		while ($fnd=$adb->fetch_array($crs)) {
+			$ret .= '<span style="color:red">'.getTranslatedString('Webforms', 'Webforms').' :: '.$fnd['name'].'</span><br>';
+		}
+		$found = true;
+		$rdo['where'][] = 'Webforms';
+	} else {
+		$ret .= $mod_strings['webforms_nf'].'<br>';
+	}
+
 	// Lead Mapping
 	if (in_array($modname, array('Contacts','Accounts','Potentials','Leads'))) {
 		switch ($modname) {
