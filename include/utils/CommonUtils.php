@@ -2502,6 +2502,43 @@ function getMergedDescriptionCustomVars($fields, $description) {
 	return $description;
 }
 
+/**
+ * This function is used to merge a URL Template with the fields from a record
+ *  @param string $url  -body of the URL
+ *  @param integer $id - Id of the entity
+ *  @param string $parent_type - module of the entity
+ *  @return string URL template merged with the field values from the record.
+ */
+function getMergedDescriptionForURL($url, $id, $parent_type) {
+	global $log;
+	$log->debug('> getMergedDescriptionForURL');
+	$url = getMergedDescription($url, $id, $parent_type);
+	$searchModule = (1 == GlobalVariable::getVariable('Application_B2B', '1')) ? 'Accounts' : 'Contacts';
+	$relid = getRelatedAccountContact($id, $searchModule);
+	if (!empty($relid)) {
+		$url = getMergedDescription($url, $relid, $searchModule);
+	}
+	$pieces = parse_url($url);
+	$params = array();
+	if (!empty($pieces['query'])) {
+		$sub = chr(7).' ';
+		$q = preg_replace('/&\s/', $sub, $pieces['query']);
+		$pairs = explode('&', $q);
+		foreach ($pairs as $pair) {
+			if (empty($pair)) {
+				continue;
+			}
+			list($k, $v) = explode('=', $pair);
+			$params[$k] = str_replace(chr(7), '&', $v);
+		}
+	}
+	$log->debug('< getMergedDescriptionForURL');
+	return (isset($pieces['scheme']) ? $pieces['scheme'].'://' : (substr($url, 0, 2)=='//' ? '//' : ''))
+		.(isset($pieces['host']) ? $pieces['host'] : '')
+		.(isset($pieces['path']) ? $pieces['path'].(count($params)>0 ? '?' : '') : '')
+		.http_build_query($params);
+}
+
 /** 	Function used to retrieve a single field value from database
  * 	@param string $tablename - tablename from which we will retrieve the field value
  * 	@param string $fieldname - fieldname to which we want to get the value from database
