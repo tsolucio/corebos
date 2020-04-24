@@ -106,13 +106,13 @@ function checkFieldUsage($fldname, $modname) {
 	}
 
 	// Email Templates
-	$crs = $adb->pquery('SELECT templateid,templatename FROM `vtiger_emailtemplates` WHERE subject like ? or body like ?', array('%'.$fldname.'%', '%'.$fldname.'%'));
+	$crs = $adb->pquery('SELECT msgtemplateid,reference FROM `vtiger_msgtemplate` WHERE subject like ? or template like ?', array('%'.$fldname.'%', '%'.$fldname.'%'));
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
-			$ret .= '<span style="color:red">'.$mod_strings['email_templates'].$fnd['templateid'].' :: '.$fnd['templatename'].'</span><br>';
+			$ret .= '<span style="color:red">'.$mod_strings['email_templates'].$fnd['msgtemplateid'].' :: '.$fnd['reference'].'</span><br>';
 		}
 		$found = true;
-		$rdo['where'][] = 'Emails';
+		$rdo['where'][] = 'MsgTemplate';
 	} else {
 		$ret .= $mod_strings['email_templates_nf'].'<br>';
 	}
