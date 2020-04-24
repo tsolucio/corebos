@@ -2523,13 +2523,14 @@ function getMergedDescriptionForURL($url, $id, $parent_type) {
 	if (!empty($pieces['query'])) {
 		$sub = chr(7).' ';
 		$q = preg_replace('/&\s/', $sub, $pieces['query']);
+		// we don't use parse_str because we want to perserve spaces and dots
 		$pairs = explode('&', $q);
 		foreach ($pairs as $pair) {
 			if (empty($pair)) {
 				continue;
 			}
-			list($k, $v) = explode('=', $pair);
-			$params[$k] = str_replace(chr(7), '&', $v);
+			$pos = strpos($pair, '=');
+			$params[substr($pair, 0, $pos)] = str_replace(chr(7), '&', substr($pair, $pos+1));
 		}
 	}
 	$log->debug('< getMergedDescriptionForURL');
