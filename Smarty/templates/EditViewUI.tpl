@@ -131,10 +131,19 @@
 						onclick='return {$vtui10func}("{$fromlink}","{$fldname}","{$MODULE}","{if isset($ID)}{$ID}{/if}");'
 						value="{$fldvalue.displayvalue}">&nbsp;
 				{/if}
-				<img src="{'select.gif'|@vtiger_imageurl:$THEME}" tabindex="{$vt_tab}"
-alt="{'LBL_SELECT'|@getTranslatedString}" title="{'LBL_SELECT'|@getTranslatedString}" onclick='return {$vtui10func}("{$fromlink}","{$fldname}","{$MODULE}","{if isset($ID)}{$ID}{/if}");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
-				<img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}"
-alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedString}" onClick="this.form.{$fldname}.value=''; this.form.{$fldname}_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
+				<button class="slds-button slds-button_icon" title="{'LBL_SELECT'|getTranslatedString}" type="button" onclick='return {$vtui10func}("{$fromlink}","{$fldname}","{$MODULE}","{if isset($ID)}{$ID}{/if}");'>
+				<svg class="slds-button__icon" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
+				</svg>
+				<span class="slds-assistive-text">{'LBL_SELECT'|getTranslatedString}</span>
+				</button>
+				<button class="slds-button slds-button_icon" title="{'LBL_CLEAR'|getTranslatedString}" type="button" onclick="this.form.{$fldname}.value=''; this.form.{$fldname}_display.value='';">
+				<svg class="slds-button__icon" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
+				</svg>
+				<span class="slds-assistive-text">{'LBL_CLEAR'|getTranslatedString}</span>
+				</button>
+
 				{if ( isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['searchfields']) )}
 					<div id="listbox-unique-id" role="listbox" class="">
 						<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; width: 100%; list-style-type: none; width: 90%; left: 0; transform: translateX(0); max-width: none;" role="presentation"></ul>
