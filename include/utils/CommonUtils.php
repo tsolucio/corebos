@@ -2407,11 +2407,11 @@ function getTemplateDetails($templateid, $crmid = null) {
 }
 
 /**
- * 	This function is used to merge the Template Details with the email description
- *  @param string $description  -body of the mail(ie template)
- * 	@param integer $tid  - Id of the entity
- *  @param string $parent_type - module of the entity
- * 	return string $description - Returns description, merged with the input template.
+ * This function is used to merge the template with the given record fields
+ * @param string $description - body of the template
+ * @param integer $id - id of the entity
+ * @param string $parent_type - module of the entity
+ * @return string template merged with the record values of the given crmid
  */
 function getMergedDescription($description, $id, $parent_type) {
 	global $adb, $log, $current_user;
@@ -2539,12 +2539,12 @@ function getMergedDescriptionForURL($url, $id, $parent_type) {
 		.http_build_query($params);
 }
 
-/** 	Function used to retrieve a single field value from database
- * 	@param string $tablename - tablename from which we will retrieve the field value
- * 	@param string $fieldname - fieldname to which we want to get the value from database
- * 	@param string $idname	 - idname which is the name of the entity id in the table like, inoviceid, quoteid, etc.,
- * 	@param int    $id	 - entity id
- * 	return string $fieldval  - field value of the needed fieldname from database will be returned
+/** Function used to retrieve a single field value from database
+ * @param string $tablename - tablename from which we will retrieve the field value
+ * @param string $fieldname - fieldname of which we want to get the value from database
+ * @param string $idname	 - the name of the primary key field in the table like, inoviceid, quoteid, etc.,
+ * @param int    $id	 - entity id crmid of the record we want to get the value from
+ * @return string $fieldval  - field value of the fieldname from database
  */
 function getSingleFieldValue($tablename, $fieldname, $idname, $id) {
 	global $log, $adb;
