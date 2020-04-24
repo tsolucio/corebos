@@ -2402,7 +2402,7 @@ function getTemplateDetails($templateid, $crmid = null) {
 			}
 		}
 	}
-	$log->debug('< from getTemplateDetails');
+	$log->debug('< getTemplateDetails');
 	return $returndata;
 }
 
@@ -2420,7 +2420,7 @@ function getMergedDescription($description, $id, $parent_type) {
 		$parent_type = getSalesEntityType($id);
 	}
 	if (empty($parent_type) || empty($id)) {
-		$log->debug('< from getMergedDescription: no record information');
+		$log->debug('< getMergedDescription: no record information');
 		return $description;
 	}
 	if (strpos($id, 'x')>0) {
@@ -2471,7 +2471,7 @@ function getMergedDescription($description, $id, $parent_type) {
 		$ct = new VTSimpleTemplate($description, true);
 		$description = $ct->render($entityCache, vtws_getEntityId('cbCompany').'x'.$adb->query_result($cmprs, 0, 0));
 	}
-	$log->debug('< from getMergedDescription');
+	$log->debug('< getMergedDescription');
 	return $description;
 }
 

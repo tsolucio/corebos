@@ -126,8 +126,7 @@ class EmailTemplate {
 				}
 				$moduleFields = $meta->getModuleFields();
 				foreach ($moduleFields as $fieldName => $webserviceField) {
-					if (isset($values[$fieldColumnMapping[$fieldName]]) &&
-						$values[$fieldColumnMapping[$fieldName]] !== null) {
+					if (isset($values[$fieldColumnMapping[$fieldName]]) && $values[$fieldColumnMapping[$fieldName]] !== null) {
 						$fieldtype = $webserviceField->getFieldDataType();
 						if (strcasecmp($fieldtype, 'reference') === 0) {
 							$details = $webserviceField->getReferenceList();
@@ -154,11 +153,11 @@ class EmailTemplate {
 							$values[$fieldColumnMapping[$fieldName]] = $currencyField->getDisplayValue(null, true);
 						} elseif ($webserviceField->getUIType() == 69) {
 							$query = 'select vtiger_attachments.name, vtiger_attachments.type, vtiger_attachments.attachmentsid, vtiger_attachments.path
-									from vtiger_attachments
-									inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
-									inner join vtiger_seattachmentsrel on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
-									where (vtiger_crmentity.setype LIKE "%Image" or vtiger_crmentity.setype LIKE "%Attachment")
-									  and deleted=0 and vtiger_seattachmentsrel.crmid=?';
+								from vtiger_attachments
+								inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
+								inner join vtiger_seattachmentsrel on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
+								where (vtiger_crmentity.setype LIKE "%Image" or vtiger_crmentity.setype LIKE "%Attachment")
+									and deleted=0 and vtiger_seattachmentsrel.crmid=?';
 							$params = array($this->recordId);
 							if (!empty($values[$fieldColumnMapping[$fieldName]])) {
 								$query .= ' and vtiger_attachments.name = ?';
