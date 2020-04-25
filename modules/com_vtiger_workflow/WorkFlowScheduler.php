@@ -146,12 +146,7 @@ class WorkFlowScheduler {
 				$noOfRecords = count($records);
 				for ($j = 0; $j < $noOfRecords; ++$j) {
 					$recordId = $records[$j];
-					// We need to pass proper module name to get the webservice
-					if ($workflow->moduleName == 'Calendar') {
-						$moduleName = vtws_getCalendarEntityType($recordId);
-					} else {
-						$moduleName = $workflow->moduleName;
-					}
+					$moduleName = $workflow->moduleName;
 					$wsEntityId = vtws_getWebserviceEntityId($moduleName, $recordId);
 					$entityData = $entityCache->forId($wsEntityId);
 					$data = $entityData->getData();

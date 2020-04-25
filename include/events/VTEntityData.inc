@@ -27,11 +27,6 @@ class VTEntityData {
 		$obj->entityId = $entityId;
 		$result = $adb->pquery('select setype from vtiger_crmentity where crmid=?', array($entityId));
 		$setype = $adb->query_result($result, 0, 'setype');
-
-		if ($setype == 'Calendar') {
-			$setype = vtws_getCalendarEntityType($entityId);
-		}
-
 		$obj->moduleName = $setype;
 
 		require_once 'data/CRMEntity.php';
@@ -111,18 +106,12 @@ class VTEntityData {
 			'ImportOpportunity'=>'Potentials',
 			'ImportProduct'=>'Products',
 			'ImportTicket'=>'HelpDesk',
-			'ImportVendors'=>'Vendors'
+			'ImportVendors'=>'Vendors',
+			'Activity'=>'cbCalendar',
 		);
 		$moduleName = $className;
 		if (array_key_exists($className, $importModuleMapping)) {
 			$moduleName = $importModuleMapping[$className];
-		}
-
-		if ($className == 'Activity') {
-			$id = $this->getId();
-			if ($id != null || $id != '') {
-				$moduleName = vtws_getCalendarEntityType($id);
-			}
 		}
 		return $moduleName;
 	}

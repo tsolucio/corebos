@@ -282,19 +282,11 @@ function vtws_runQueryAsTransaction($query, $params, &$result) {
 	return !$error;
 }
 
+/**
+ * @deprecated
+ */
 function vtws_getCalendarEntityType($id) {
-	global $adb;
-	$result = $adb->pquery('select activitytype from vtiger_activity where activityid=?', array($id));
-	$seType = 'Calendar';
-	if ($result != null && isset($result)) {
-		if ($adb->num_rows($result)>0) {
-			$activityType = $adb->query_result($result, 0, 'activitytype');
-			if ($activityType !== 'Task') {
-				$seType = 'Events';
-			}
-		}
-	}
-	return $seType;
+	return 'cbCalendar';
 }
 
 /***
