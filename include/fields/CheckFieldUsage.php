@@ -300,6 +300,36 @@ function checkFieldUsage($fldname, $modname) {
 		$ret .= $i18n['calendar_nf'].'<br>';
 	}
 
+	// Calendar Modules Status
+	$crs = $adb->pquery(
+		'SELECT distinct module,field FROM its4you_calendar_modulestatus WHERE field=? and module=?',
+		array($fldname, $modname)
+	);
+	if ($crs && $adb->num_rows($crs)>0) {
+		while ($fnd=$adb->fetch_array($crs)) {
+			$ret .= '<span style="color:red">'.getTranslatedString('cbCalendar', 'cbCalendar').' Module Status</span><br>';
+		}
+		$rdo['found'] = true;
+		$rdo['where'][] = 'Calendar Modules Status';
+	} else {
+		$ret .= $i18n['calendar_nf'].'<br>';
+	}
+
+	// Calendar Modules Fields
+	$crs = $adb->pquery(
+		'SELECT module,userid FROM its4you_calendar_modulefields WHERE module=? and (start_field=? or end_field=? or subject_fields like ?)',
+		array($modname, $fldname, $fldname, '%'.$fldname.'%')
+	);
+	if ($crs && $adb->num_rows($crs)>0) {
+		while ($fnd=$adb->fetch_array($crs)) {
+			$ret .= '<span style="color:red">'.getTranslatedString('cbCalendar', 'cbCalendar').' Module Fields</span><br>';
+		}
+		$rdo['found'] = true;
+		$rdo['where'][] = 'Calendar Modules Fields';
+	} else {
+		$ret .= $i18n['calendar_nf'].'<br>';
+	}
+
 	// Webforms
 	$crs = $adb->pquery(
 		'SELECT name
