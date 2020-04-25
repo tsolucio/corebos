@@ -6,7 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): Ranieri/Translate terms eCRM web | 11/03/2017 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
+ * Contributor(s): Ranieri/Translate terms eCRM web | 25/04/2020 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
  ************************************************************************************/
 $mod_strings = array (
 	'CronTasks' => 'Cron Tasks',
@@ -43,6 +43,6 @@ $mod_strings = array (
 	'Send out warning email for long running cron tasks' => 'Envie um e-mail de aviso para tarefas cron de longa execução.',
 	'mailsubject' => '[aviso]: Tarefas(s) do cron excedendo o limite de tempo',
 	'mailheader' => 'Algumas tarefas do cron em <b>%s</b> excederam o tempo máximo de execução.',
-	'LBL_CRONALERT' => 'Alert After',
+	'LBL_CRONALERT' => 'Alerta depois de',
 );
 ?>
