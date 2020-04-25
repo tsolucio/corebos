@@ -13,20 +13,26 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
-////////////////////////
-// NOTE: this code only works correctly for fields whose name is not repeated in any module, for example custom fields.
-//   if you have a field called name or something similar that can be on a lot of modules you will get false positives
-////////////////////////
-
 $Vtiger_Utils_Log = false;
 include_once 'vtlib/Vtiger/Module.php';
 global $current_user, $adb;
 $fldname = vtlib_purify($_REQUEST['fieldname']);
 $modname = vtlib_purify($_REQUEST['modulename']);
 
+/**
+ * Check if a field is being used in various parts of the application
+ * false positives may be returned if the fieldname is present in various modules as we inform if we can't be sure the fieldname found belongs to the module or not
+ * @param string $fldname name of the field to search for
+ * @param string $modname module name the field is in
+ * @return array with the elements:
+ *   'found' => boolean if found or not,
+ *   'where' => array of places the field was found,
+ *   'message' => a formatted string with the result of the process
+ */
 function checkFieldUsage($fldname, $modname) {
 	global $adb, $mod_strings;
 	$mod = Vtiger_Module::getInstance($modname);
+	$tabid = $mod->getId();
 	$field = Vtiger_Field::getInstance($fldname, $mod);
 	$found = false;
 	$ret = '';
@@ -36,7 +42,7 @@ function checkFieldUsage($fldname, $modname) {
 		'message' => $ret,
 	);
 	// Workflow Conditions
-	$crs = $adb->pquery('SELECT workflow_id,summary FROM `com_vtiger_workflows` WHERE test like ?', array('%'.$fldname.'%'));
+	$crs = $adb->pquery('SELECT workflow_id,summary FROM `com_vtiger_workflows` WHERE test like ? and module_name=?', array('%'.$fldname.'%', $modname));
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
 			$ret .= '<span style="color:red">'.$mod_strings['wf_conditions_found'].$fnd['workflow_id']. ' / ' .$fnd['summary'].'</span><br>';
@@ -48,7 +54,13 @@ function checkFieldUsage($fldname, $modname) {
 	}
 
 	// Workflow Tasks
-	$crs = $adb->pquery('SELECT workflow_id,task_id,summary FROM `com_vtiger_workflowtasks` WHERE task like ?', array('%'.$fldname.'%'));
+	$crs = $adb->pquery(
+		'SELECT com_vtiger_workflowtasks.workflow_id,com_vtiger_workflowtasks.task_id,com_vtiger_workflowtasks.summary
+		FROM com_vtiger_workflowtasks
+		INNER JOIN com_vtiger_workflows ON com_vtiger_workflowtasks.workflow_id=com_vtiger_workflows.workflow_id
+		WHERE com_vtiger_workflowtasks.task like ? and com_vtiger_workflows.module_name=?',
+		array('%'.$fldname.'%', $modname)
+	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
 			$ret .= '<span style="color:red">'.$mod_strings['wf_tasks_found'].'('.$fnd['workflow_id'].') '.$mod_strings['LBL_TASK'].' ('.$fnd['task_id'].'): ';
@@ -62,8 +74,11 @@ function checkFieldUsage($fldname, $modname) {
 
 	// Custom View Columns
 	$crs = $adb->pquery(
-		'SELECT vtiger_customview.viewname FROM vtiger_cvcolumnlist INNER JOIN vtiger_customview on vtiger_customview.cvid=vtiger_cvcolumnlist.cvid WHERE columnname like ?',
-		array('%'.$fldname.'%')
+		'SELECT vtiger_customview.viewname
+		FROM vtiger_cvcolumnlist
+		INNER JOIN vtiger_customview on vtiger_customview.cvid=vtiger_cvcolumnlist.cvid
+		WHERE vtiger_cvcolumnlist.columnname like ? and vtiger_customview.entitytype=?',
+		array('%'.$fldname.'%', $modname)
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
@@ -77,8 +92,11 @@ function checkFieldUsage($fldname, $modname) {
 
 	// Custom View Conditions
 	$crs = $adb->pquery(
-		'SELECT vtiger_customview.viewname FROM `vtiger_cvadvfilter` INNER JOIN vtiger_customview on vtiger_customview.cvid=vtiger_cvadvfilter.cvid WHERE columnname like ?',
-		array('%'.$fldname.'%')
+		'SELECT vtiger_customview.viewname
+		FROM vtiger_cvadvfilter
+		INNER JOIN vtiger_customview on vtiger_customview.cvid=vtiger_cvadvfilter.cvid
+		WHERE vtiger_cvadvfilter.columnname like ? and vtiger_customview.entitytype=?',
+		array('%'.$fldname.'%', $modname)
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
@@ -92,8 +110,11 @@ function checkFieldUsage($fldname, $modname) {
 
 	// Custom View Date Filters
 	$crs = $adb->pquery(
-		'SELECT vtiger_customview.viewname FROM `vtiger_cvstdfilter` INNER JOIN vtiger_customview on vtiger_customview.cvid=vtiger_cvstdfilter.cvid WHERE columnname like ?',
-		array('%'.$fldname.'%')
+		'SELECT vtiger_customview.viewname
+		FROM vtiger_cvstdfilter
+		INNER JOIN vtiger_customview on vtiger_customview.cvid=vtiger_cvstdfilter.cvid
+		WHERE vtiger_cvstdfilter.columnname like ? and vtiger_customview.entitytype=?',
+		array('%'.$fldname.'%', $modname)
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
@@ -106,7 +127,12 @@ function checkFieldUsage($fldname, $modname) {
 	}
 
 	// Email Templates
-	$crs = $adb->pquery('SELECT msgtemplateid,reference FROM `vtiger_msgtemplate` WHERE subject like ? or template like ?', array('%'.$fldname.'%', '%'.$fldname.'%'));
+	$crs = $adb->pquery(
+		'SELECT msgtemplateid,reference
+		FROM vtiger_msgtemplate
+		WHERE (subject like ? or template like ?) and (msgt_module=? or msgt_module="" or msgt_module is null)',
+		array('%'.$fldname.'%', '%'.$fldname.'%', $modname)
+	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
 			$ret .= '<span style="color:red">'.$mod_strings['email_templates'].$fnd['msgtemplateid'].' :: '.$fnd['reference'].'</span><br>';
@@ -122,8 +148,9 @@ function checkFieldUsage($fldname, $modname) {
 		'SELECT vtiger_report.reportid,vtiger_report.reportname
 			FROM vtiger_selectcolumn
 			INNER JOIN vtiger_report on vtiger_report.queryid=vtiger_selectcolumn.queryid
-			WHERE columnname like ?',
-		array('%'.$fldname.'%')
+			INNER JOIN vtiger_reportmodules on vtiger_report.queryid=vtiger_reportmodules.reportmodulesid
+			WHERE columnname like ? and (primarymodule=? or secondarymodules like ?)',
+		array('%'.$fldname.'%', $modname, '%'.$modname.'%')
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
@@ -140,8 +167,9 @@ function checkFieldUsage($fldname, $modname) {
 		'SELECT vtiger_report.reportid,vtiger_report.reportname
 			FROM `vtiger_reportdatefilter`
 			INNER JOIN vtiger_report on vtiger_report.reportid=vtiger_reportdatefilter.datefilterid
-			WHERE datecolumnname like ?',
-		array('%'.$fldname.'%')
+			INNER JOIN vtiger_reportmodules on vtiger_report.queryid=vtiger_reportmodules.reportmodulesid
+			WHERE datecolumnname like ? and (primarymodule=? or secondarymodules like ?)',
+		array('%'.$fldname.'%', $modname, '%'.$modname.'%')
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
@@ -158,8 +186,9 @@ function checkFieldUsage($fldname, $modname) {
 		'SELECT vtiger_report.reportid,vtiger_report.reportname
 			FROM `vtiger_reportgroupbycolumn`
 			INNER JOIN vtiger_report on vtiger_report.reportid=vtiger_reportgroupbycolumn.reportid
-			WHERE sortcolname like ?',
-		array('%'.$fldname.'%')
+			INNER JOIN vtiger_reportmodules on vtiger_report.queryid=vtiger_reportmodules.reportmodulesid
+			WHERE sortcolname like ? and (primarymodule=? or secondarymodules like ?)',
+		array('%'.$fldname.'%', $modname, '%'.$modname.'%')
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
@@ -176,8 +205,9 @@ function checkFieldUsage($fldname, $modname) {
 		'SELECT vtiger_report.reportid,vtiger_report.reportname
 			FROM `vtiger_reportsortcol`
 			INNER JOIN vtiger_report on vtiger_report.reportid=vtiger_reportsortcol.reportid
-			WHERE columnname like ?',
-		array('%'.$fldname.'%')
+			INNER JOIN vtiger_reportmodules on vtiger_report.queryid=vtiger_reportmodules.reportmodulesid
+			WHERE columnname like ? and (primarymodule=? or secondarymodules like ?)',
+		array('%'.$fldname.'%', $modname, '%'.$modname.'%')
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
@@ -194,8 +224,9 @@ function checkFieldUsage($fldname, $modname) {
 		'SELECT vtiger_report.reportid,vtiger_report.reportname
 			FROM `vtiger_reportsummary`
 			INNER JOIN vtiger_report on vtiger_report.reportid=vtiger_reportsummary.reportsummaryid
-			WHERE columnname like ?',
-		array('%'.$fldname.'%')
+			INNER JOIN vtiger_reportmodules on vtiger_report.queryid=vtiger_reportmodules.reportmodulesid
+			WHERE columnname like ? and (primarymodule=? or secondarymodules like ?)',
+		array('%'.$fldname.'%', $modname, '%'.$modname.'%')
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
@@ -209,8 +240,8 @@ function checkFieldUsage($fldname, $modname) {
 
 	// Picklist Dependency
 	$crs = $adb->pquery(
-		'SELECT sourcefield,targetfield FROM vtiger_picklist_dependency WHERE sourcefield=? or targetfield=?',
-		array($fldname, $fldname)
+		'SELECT sourcefield,targetfield FROM vtiger_picklist_dependency WHERE (sourcefield=? or targetfield=?) and tabid=?',
+		array($fldname, $fldname, $tabid)
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
@@ -224,8 +255,10 @@ function checkFieldUsage($fldname, $modname) {
 
 	// Business Question
 	$crs = $adb->pquery(
-		'SELECT qname,cbquestionno FROM vtiger_cbquestion WHERE qcolumns LIKE ? OR qcondition LIKE ? OR orderby LIKE ? OR groupby LIKE ?',
-		array('%'.$fldname.'%', '%'.$fldname.'%', '%'.$fldname.'%', '%'.$fldname.'%')
+		'SELECT qname,cbquestionno
+		FROM vtiger_cbquestion
+		WHERE (qcolumns LIKE ? OR qcondition LIKE ? OR orderby LIKE ? OR groupby LIKE ?) and (qmodule=? or qmodule="" or qmodule is null)',
+		array('%'.$fldname.'%', '%'.$fldname.'%', '%'.$fldname.'%', '%'.$fldname.'%', $modname)
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
@@ -239,8 +272,8 @@ function checkFieldUsage($fldname, $modname) {
 
 	// Business Map
 	$crs = $adb->pquery(
-		'SELECT mapname,mapnumber FROM vtiger_cbmap WHERE content LIKE ?',
-		array('%'.$fldname.'%')
+		'SELECT mapname,mapnumber FROM vtiger_cbmap WHERE content LIKE ? and (targetname=? or targetname="" or targetname is null or content like ?)',
+		array('%'.$fldname.'%', $modname, '%'.$modname.'%')
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
@@ -256,8 +289,11 @@ function checkFieldUsage($fldname, $modname) {
 
 	// Calendar
 	$crs = $adb->pquery(
-		'SELECT userid,view FROM its4you_calendar4you_event_fields WHERE fieldname LIKE ?',
-		array($fldname.':%')
+		'SELECT userid,view
+		FROM its4you_calendar4you_event_fields
+		INNER JOIN vtiger_field ON vtiger_field.fieldid=SUBSTRING_INDEX(its4you_calendar4you_event_fields.fieldname, ":", -1)
+		WHERE its4you_calendar4you_event_fields.fieldname LIKE ? and tabid=?',
+		array($fldname.':%', $tabid)
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
@@ -274,8 +310,8 @@ function checkFieldUsage($fldname, $modname) {
 		'SELECT name
 		FROM vtiger_webforms_field
 		INNER JOIN vtiger_webforms on vtiger_webforms.id=vtiger_webforms_field.webformid
-		WHERE fieldname LIKE ?',
-		array($fldname.':%')
+		WHERE fieldname LIKE ? and targetmodule=?',
+		array($fldname.':%', $modname)
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
