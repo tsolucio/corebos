@@ -95,6 +95,19 @@ switch ($functiontocall) {
 			}
 		}
 		break;
+	case 'getMergedDescription':
+		$tpl = vtlib_purify($_REQUEST['template']);
+		$crmid = vtlib_purify($_REQUEST['crmid']);
+		$ret = '';
+		if (!empty($tpl) && !empty($crmid)) {
+			$ret = getMergedDescription(urldecode($tpl), $crmid, 0);
+			$searchModule = (1 == GlobalVariable::getVariable('Application_B2B', '1')) ? 'Accounts' : 'Contacts';
+			$relid = getRelatedAccountContact($crmid, $searchModule);
+			if (!empty($relid)) {
+				$ret = getMergedDescription($ret, $relid, $searchModule);
+			}
+		}
+		break;
 	case 'getEmailTemplateDetails':
 		$emltplid = vtlib_purify($_REQUEST['templateid']);
 		$emltpl = getTemplateDetails($emltplid);

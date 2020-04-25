@@ -82,7 +82,7 @@
 		<div class="slds-col slds-size_2-of-4 slds-p-around_small">
 			<input id="evalid" name="evalid" type="hidden" value="">
 			<input id="evalid_type" name="evalid_type" type="hidden" value="{if isset($workflow)}{$workflow->moduleName}{/if}">
-			<input id="evalid_display" name="evalid_display" readonly type="text" style="border:1px solid #bababa;background-color:white;width:200px;" class="slds-input" value="">
+			<input id="evalid_display" name="evalid_display" readonly type="text" style="border:1px solid #bababa;background-color:white;width:200px;" class="slds-input" value="" onClick='return vtlib_open_popup_window("","evalid","com_vtiger_workflow","");'>
 			<span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-p-left_x-small slds-p-right_small" onClick='return vtlib_open_popup_window("","evalid","com_vtiger_workflow","");'>
 				<svg class="slds-icon slds-icon slds-icon_small slds-icon-text-default" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>

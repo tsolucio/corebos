@@ -29,15 +29,7 @@ class CBPushNotificationTask extends VTTask {
 		global $logbg;
 		if (!empty($this->url_query)) {
 			list($ent, $ent_id) = explode('x', $entity->getId());
-			$entype = getSalesEntityType($ent_id);
-			$url = getMergedDescription($this->url_query, $ent_id, $entype);
-			$searchModule = (1 == GlobalVariable::getVariable('Application_B2B', '1')) ? 'Accounts' : 'Contacts';
-			$relid = getRelatedAccountContact($entity->getId(), $searchModule);
-			if (!empty($relid)) {
-				$url = getMergedDescription($url, $relid, $searchModule);
-			}
-			$url = vtlib_purify($url);
-
+			$url = getMergedDescriptionForURL(vtlib_purify($this->url_query), $ent_id, 0);
 			$curl = curl_init($url);
 			curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);

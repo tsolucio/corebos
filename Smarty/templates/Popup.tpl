@@ -61,6 +61,7 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 {* END *}
 <script type="text/javascript" src="include/js/{$LANGUAGE}.lang.js"></script>
 <script type="text/javascript" src="include/js/meld.js"></script>
+<script type="text/javascript" src="include/js/corebosjshooks.js"></script>
 <script type='text/javascript' src='include/jquery/jquery.js'></script>
 <script type="text/javascript" src="include/js/ListView.js"></script>
 <script type="text/javascript" src="include/js/general.js"></script>

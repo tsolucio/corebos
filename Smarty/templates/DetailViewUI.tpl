@@ -402,10 +402,18 @@
 							{/if}
 							<input id="txtbox_{$keyfldname}" name="{$keyfldname}" id="{$keyfldname}" type="hidden" value="{$data.extendedfieldinfo.entityid}">
 							<input id="{$keyfldname}_display" name="{$keyfldname}_display" readonly type="text" style="border:1px solid #bababa;" value="{$data.extendedfieldinfo.displayvalue}" onclick='return {$vtui10func}("DetailView","{$keyfldname}","{$MODULE}","{$ID}");'>&nbsp;
-							<img src="{'select.gif'|@vtiger_imageurl:$THEME}"
-								alt="{'LBL_SELECT'|@getTranslatedString}" title="{'LBL_SELECT'|@getTranslatedString}" onclick='return {$vtui10func}("DetailView","{$keyfldname}","{$MODULE}","{$ID}");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
-							<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}"
-								alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedString}" onClick="document.getElementById('txtbox_{$keyfldname}').value='0'; document.getElementById('{$keyfldname}_display').value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
+							<button class="slds-button slds-button_icon" title="{'LBL_SELECT'|getTranslatedString}" type="button" onclick='return {$vtui10func}("DetailView","{$keyfldname}","{$MODULE}","{if isset($ID)}{$ID}{/if}");'>
+							<svg class="slds-button__icon" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
+							</svg>
+							<span class="slds-assistive-text">{'LBL_SELECT'|getTranslatedString}</span>
+							</button>
+							<button class="slds-button slds-button_icon" title="{'LBL_CLEAR'|getTranslatedString}" type="button" onclick="document.getElementById('txtbox_{$keyfldname}').value='0'; document.getElementById('{$keyfldname}_display').value='';">
+							<svg class="slds-button__icon" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
+							</svg>
+							<span class="slds-assistive-text">{'LBL_CLEAR'|getTranslatedString}</span>
+							</button>
 							<br><a class="detailview_ajaxbutton ajax_save_detailview" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
 							<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
 						</div>

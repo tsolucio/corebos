@@ -135,8 +135,7 @@ function getListViewCount(module, element, parentElement, url) {
 		if (element.value.length > 0) {
 			searchURL = '&query=true&searchtype=BasicSearch&search_field=' + encodeURIComponent(searchField.value)+'&search_text='+encodeURIComponent(element.value);
 		}
-	} else if (document.getElementById('globalSearchText') != null &&
-		typeof document.getElementById('globalSearchText') != 'undefined') {
+	} else if (document.getElementById('globalSearchText') != null && typeof document.getElementById('globalSearchText') != 'undefined') {
 		var searchText = document.getElementById('globalSearchText').value;
 		searchURL = '&query=true&globalSearch=true&globalSearchText='+encodeURIComponent(searchText);
 		if (document.getElementById('tagSearchText') != null && typeof document.getElementById('tagSearchText') != 'undefined') {

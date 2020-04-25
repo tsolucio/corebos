@@ -21,7 +21,7 @@
 <div class="slds-form-element">
 	<label class="slds-form-element__label" for="url_query">{'pushnoturl'|@getTranslatedString:'com_vtiger_workflow'}</label>
 	<div class="slds-form-element__control">
-		<input type="text" class="slds-input" name="url_query" id="url_query" value="{$task->url_query}" />
+		<input type="text" class="slds-input" name="url_query" id="url_query" value="{$task->url_query}" onchange="pushurlchange()" />
 	</div>
 </div>
 <div class="slds-grid slds-gutters slds-m-around_x-small">
@@ -29,13 +29,26 @@
 		<div class="slds-form-element">
 			<div class="slds-form-element__control">
 				<div class="slds-combobox_container">
-					<select id="modulefields" onchange="gmpaddVar(this);">
+					<select id="modulefields" onchange="gmpaddVar(this);" class="slds-select">
 						<option value="">{'Select Meta Variables'|@getTranslatedString:$MODULE_NAME}</option>
 					</select>
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
+<div class="slds-grid">
+	<div class="slds-col slds-size_1-of-4 slds-p-around_small">
+		<input id="evalurlid" name="evalurlid" type="hidden" value="" onchange="pushurlchange()">
+		<input id="evalurlid_type" name="evalurlid_type" type="hidden" value="{if isset($workflow)}{$workflow->moduleName}{/if}">
+		<input id="evalurlid_display" name="evalurlid_display" readonly type="text" style="border:1px solid #bababa;background-color:white;width:200px;" class="slds-input" value=""  onClick='return vtlib_open_popup_window("new_task","evalurlid","com_vtiger_workflow","");'>
+		<span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-p-left_x-small slds-p-right_small" onClick='return vtlib_open_popup_window("new_task","evalurlid","com_vtiger_workflow","");'>
+			<svg class="slds-icon slds-icon slds-icon_small slds-icon-text-default" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+			</svg>
+		</span>
+	</div>
+	<div class="slds-col slds-size_3-of-4 slds-p-around_small" id="evaluateurlresult"></div>
 </div>
 <script>
 var moduleName = '{$entityName}';
@@ -44,6 +57,29 @@ function gmpaddVar(obj) {
 	let mf = document.getElementById('modulefields').value;
 	let pieces = mf.split('-');
 	urlf.value = urlf.value+'&'+pieces[1].substring(0, pieces[1].length-1)+'='+mf;
+	urlf.dispatchEvent(new Event('change'));
+}
+function pushurlchange() {
+	let ev = document.getElementById('evalurlid').value;
+	if (ev != '' && ev != 0) {
+		let urlf = document.getElementById('url_query').value;
+		{literal}
+		params = `&template=${encodeURIComponent(urlf)}&${csrfMagicName}=${csrfMagicToken}`;
+		{/literal}
+		fetch(
+			'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getMergedDescription&crmid='+ev,
+			{
+				method: 'post',
+				headers: {
+					'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+				},
+				credentials: 'same-origin',
+				body: params
+			}
+		).then(response => response.json().then(url => {
+			document.getElementById('evaluateurlresult').innerHTML = url.replace(/\s+/g, '+');
+		}));
+	}
 }
 jQuery.ajax({
 	method:'POST',

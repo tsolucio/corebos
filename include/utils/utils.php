@@ -3489,7 +3489,7 @@ function getValidDBInsertDateValue($value) {
 	global $log;
 	$log->debug('> getValidDBInsertDateValue '.$value);
 	$value = trim($value);
-	if (empty($value)) {
+	if (empty($value) || $value=='$') {
 		return '';
 	}
 	$delim = array('/','.');
