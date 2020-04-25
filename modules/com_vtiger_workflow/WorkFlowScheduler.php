@@ -71,18 +71,12 @@ class WorkFlowScheduler {
 
 		$substExps = $this->addWorkflowConditionsToQueryGenerator($queryGenerator, $conditions);
 
-		if ($moduleName == 'Calendar' || $moduleName == 'Events') {
+		// No emails for cbCalendar in scheduled workflows
+		if ($moduleName == 'cbCalendar') {
 			if ($conditions) {
 				$queryGenerator->addConditionGlue('AND');
 			}
-			// We should only get the records related to proper activity type
-			if ($moduleName == 'Calendar') {
-				$queryGenerator->addCondition('activitytype', 'Emails', 'n');
-				$queryGenerator->addCondition('activitytype', 'Task', 'e', 'AND');
-			} elseif ($moduleName == "Events") {
-				$queryGenerator->addCondition('activitytype', 'Emails', 'n');
-				$queryGenerator->addCondition('activitytype', 'Task', 'n', 'AND');
-			}
+			$queryGenerator->addCondition('activitytype', 'Emails', 'n');
 		}
 
 		if ($selectExpressions) {
