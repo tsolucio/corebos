@@ -1640,17 +1640,17 @@ function deleteRole($roleId, $transferRoleId) {
 	foreach ($roleInfo as $roleid => $roleDetArr) {
 		$sql1 = 'update vtiger_user2role set roleid=? where roleid=?';
 		$adb->pquery($sql1, array($transferRoleId, $roleid));
-		//Deleteing from vtiger_role2profile vtiger_table
+		//delete from vtiger_role2profile table
 		$sql2 = 'delete from vtiger_role2profile where roleid=?';
 		$adb->pquery($sql2, array($roleid));
-		//delete handling for vtiger_groups
+		//delete handling for groups
 		$sql10 = 'delete from vtiger_group2role where roleid=?';
 		$adb->pquery($sql10, array($roleid));
 		$sql11 = 'delete from vtiger_group2rs where roleandsubid=?';
 		$adb->pquery($sql11, array($roleid));
 		//delete handling for sharing rules
 		deleteRoleRelatedSharingRules($roleid);
-		//delete from vtiger_role vtiger_table;
+		//delete from vtiger_role table;
 		$sql9 = 'delete from vtiger_role where roleid=?';
 		$adb->pquery($sql9, array($roleid));
 	}
