@@ -43,5 +43,6 @@ $mod_strings = array (
 	'Send out warning email for long running cron tasks' => 'Envie um e-mail de aviso para tarefas cron de longa execução.',
 	'mailsubject' => '[aviso]: Tarefas(s) do cron excedendo o limite de tempo',
 	'mailheader' => 'Algumas tarefas do cron em <b>%s</b> excederam o tempo máximo de execução.',
+	'LBL_CRONALERT' => 'Alert After',
 );
 ?>

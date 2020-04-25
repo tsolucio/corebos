@@ -161,6 +161,13 @@ class Vtiger_Cron {
 	}
 
 	/**
+	 * get the alerttime of cron
+	 */
+	public function getAlert() {
+		return $this->data['alerttime'];
+	}
+
+	/**
 	 * Check if task is right state for running.
 	 */
 	public function isRunnable() {
@@ -241,6 +248,16 @@ class Vtiger_Cron {
 	}
 
 	/**
+	 * update alert time
+	 */
+	public function updateAlertTime($at) {
+		if (empty($at) || !is_numeric($at)) {
+			$at = 0;
+		}
+		self::querySilent('UPDATE vtiger_cron_task SET alerttime=? WHERE id=?', array($at, $this->getId()));
+	}
+
+	/**
 	 * Mark this instance as running.
 	 */
 	public function markRunning() {
@@ -305,7 +322,7 @@ class Vtiger_Cron {
 					'(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 					name VARCHAR(100) UNIQUE KEY, handler_file VARCHAR(100) UNIQUE KEY,
 					frequency int, laststart long, lastend long, status int,module VARCHAR(100),
-					sequence int,description TEXT)',
+					sequence int,description TEXT, alerttime int)',
 					true
 				);
 			}
@@ -328,15 +345,15 @@ class Vtiger_Cron {
 	/**
 	 * Register cron task.
 	 */
-	public static function register($name, $handler_file, $frequency, $module = 'Home', $status = 1, $sequence = 0, $description = '') {
+	public static function register($name, $handler_file, $frequency, $module = 'Home', $status = 1, $sequence = 0, $description = '', $alerttime = 0) {
 		self::initializeSchema();
 		self::getInstance($name);
 		if ($sequence == 0) {
 			$sequence = self::nextSequence();
 		}
 		self::querySilent(
-			'INSERT INTO vtiger_cron_task (name, handler_file, frequency, status, sequence,module, description) VALUES(?,?,?,?,?,?,?)',
-			array($name, $handler_file, $frequency, $status, $sequence, $module, $description)
+			'INSERT INTO vtiger_cron_task (name, handler_file, frequency, status, sequence,module, description, alerttime) VALUES(?,?,?,?,?,?,?,?)',
+			array($name, $handler_file, $frequency, $status, $sequence, $module, $description, $alerttime)
 		);
 	}
 

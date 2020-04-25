@@ -39,6 +39,15 @@
 			</div>
 		</div>
 	</div>
+	<div class="slds-form-element">
+		<label class="slds-form-element__label" for="CronAlertTime">{$MOD.LBL_CRONALERT} ({$MOD.LBL_MINUTES})</label>
+		<div class="slds-form-element__control slds-grid slds-gutters">
+			<div class="slds-col slds-size_1-of-2">
+			<input class="slds-input slds-page-header__meta-text" id="CronAlertTime" name="CronAlertTime" value="{$CRON_DETAILS.alerttime}" type="number" min=-1>
+			</div>
+			<div class="slds-col slds-size_1-of-2"></div>
+		</div>
+	</div>
 	<p class="slds-icon_container slds-icon-utility-info slds-m-top_large slds-page-header__meta-text">
 		<svg class="slds-icon slds-icon slds-icon_xx-small slds-icon-text-default" aria-hidden="true">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>

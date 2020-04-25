@@ -154,4 +154,11 @@
 	<classname>addBAEditViewWidgetType</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Alert Time for cron watcher</description>
+	<filename>build/changeSets/2020/addalerttimecronfield.php</filename>
+	<classname>addalerttimecronfield</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

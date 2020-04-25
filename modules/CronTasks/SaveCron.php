@@ -22,6 +22,7 @@ if (isPermitted('CronTask', '', '') && isset($_REQUEST['record']) && $_REQUEST['
 				$time = $_REQUEST['timevalue']*60*60;
 			}
 			$cronTask->updateFrequency($time);
+			$cronTask->updateAlertTime(vtlib_purify($_REQUEST['alerttime']));
 			if ($_REQUEST['time']=='daily') {
 				$cronTask->updateDaily(1);
 				$yestdate=strtotime(date('Y-m-d', strtotime('yesterday')).' '.$_REQUEST['dailytime'].':00');
