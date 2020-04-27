@@ -348,6 +348,13 @@ switch ($functiontocall) {
 		}
 		$ret = true;
 		break;
+	case 'ispermitted':
+		$mod = vtlib_purify($_REQUEST['checkmodule']);
+		$act = vtlib_purify($_REQUEST['checkaction']);
+		$rec = isset($_REQUEST['checkrecord']) ? vtlib_purify($_REQUEST['checkrecord']) : '';
+		$rdo = isPermitted($mod, $act, $rec)=='yes';
+		$ret = array('isPermitted'=>$rdo);
+		break;
 	case 'ismoduleactive':
 	default:
 		$mod = vtlib_purify($_REQUEST['checkmodule']);
