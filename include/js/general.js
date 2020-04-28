@@ -1373,7 +1373,6 @@ function runBAScript(scripturi) {
 }
 
 function runBAWorkflow(workflowid, crmids) {
-	VtigerJS_DialogBox.block();
 	if (typeof workflowid == undefined || workflowid == '') {
 		return false;
 	}
@@ -1386,6 +1385,7 @@ function runBAWorkflow(workflowid, crmids) {
 	if (typeof crmids == undefined || crmids == '') {
 		return false;
 	}
+	VtigerJS_DialogBox.block();
 	ExecuteFunctions('execwf', 'wfid='+workflowid+'&ids='+crmids).then(function (data) {
 		if (data) {
 			ldsPrompt.show(alert_arr.Okay, alert_arr.Okay, 'success');
