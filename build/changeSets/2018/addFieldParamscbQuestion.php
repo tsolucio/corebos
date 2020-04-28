@@ -23,30 +23,34 @@ class addFieldParamscbQuestion extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->sendMsg('This changeset add new blocks and fields to cbQuestion module');
-			// Fields preparations
-			$fieldLayout = array(
-				'cbQuestion' => array(
-					'Type Information' => array(
-						'typeprops' => array(
-							'columntype'=>'TEXT',
-							'typeofdata'=>'V~O',
-							'uitype'=>19,
-							'label' => 'Type Properties',
-							'displaytype'=>'1',
+			$moduleInstance = Vtiger_Module::getInstance('cbQuestion');
+			if ($moduleInstance) {
+				$this->sendMsg('This changeset add new blocks and fields to cbQuestion module');
+				// Fields preparations
+				$fieldLayout = array(
+					'cbQuestion' => array(
+						'Type Information' => array(
+							'typeprops' => array(
+								'columntype'=>'TEXT',
+								'typeofdata'=>'V~O',
+								'uitype'=>19,
+								'label' => 'Type Properties',
+								'displaytype'=>'1',
+							),
 						),
 					),
-				),
-			);
-			$this->massCreateFields($fieldLayout);
-			$this->ExecuteQuery('update vtiger_blocks set sequence=12 where tabid=? and blocklabel=?', array(getTabId('cbQuestion'), 'LBL_DESCRIPTION_INFORMATION'));
-			$moduleInstance = Vtiger_Module::getInstance('cbQuestion');
-			$field = Vtiger_Field::getInstance('qtype', $moduleInstance);
-			if ($field) {
-				$field->delPicklistValues(array('BusinessMap' => 'Table'));
+				);
+				$this->massCreateFields($fieldLayout);
+				$this->ExecuteQuery('update vtiger_blocks set sequence=12 where tabid=? and blocklabel=?', array(getTabId('cbQuestion'), 'LBL_DESCRIPTION_INFORMATION'));
+				$field = Vtiger_Field::getInstance('qtype', $moduleInstance);
+				if ($field) {
+					$field->delPicklistValues(array('BusinessMap' => 'Table'));
+				}
+				$this->sendMsg('Changeset '.get_class($this).' applied!');
+				$this->markApplied(false);
+			} else {
+				$this->sendMsgError('Changeset '.get_class($this).' could not be applied yet. Please launch again.');
 			}
-			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}
