@@ -33,8 +33,7 @@ switch ($_REQUEST['_op']) {
 		$smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 		$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 		$smarty->assign('THEME', $theme);
-		include 'modules/cbupdater/forcedButtons.php';
-		$tool_buttons['CreateView'] = 'no';
+		include 'include/integrations/forcedButtons.php';
 		$smarty->assign('CHECK', $tool_buttons);
 		$smarty->display('modules/Utilities/integration.tpl');
 		break;
@@ -51,8 +50,7 @@ switch ($_REQUEST['_op']) {
 		$smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 		$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 		$smarty->assign('THEME', $theme);
-		include 'modules/cbupdater/forcedButtons.php';
-		$tool_buttons['CreateView'] = 'no';
+		include 'include/integrations/forcedButtons.php';
 		$smarty->assign('CHECK', $tool_buttons);
 		$smarty->display('modules/Utilities/integration.tpl');
 		break;
@@ -169,8 +167,7 @@ switch ($_REQUEST['_op']) {
 		$smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 		$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 		$smarty->assign('THEME', $theme);
-		include 'modules/cbupdater/forcedButtons.php';
-		$tool_buttons['CreateView'] = 'no';
+		include 'include/integrations/forcedButtons.php';
 		$smarty->assign('CHECK', $tool_buttons);
 		$smarty->display('modules/Utilities/integrationhelp.tpl');
 		break;

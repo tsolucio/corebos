@@ -42,7 +42,7 @@ $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('THEME', $theme);
-include 'modules/cbupdater/forcedButtons.php';
+include 'include/integrations/forcedButtons.php';
 $smarty->assign('CHECK', $tool_buttons);
 $smarty->assign('ISADMIN', is_admin($current_user));
 $smarty->display('modules/Utilities/recordversioning.tpl');
