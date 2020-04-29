@@ -126,16 +126,16 @@ function __cb_relatedevaluations($evaluation, $params) {
 }
 
 function __cb_min($values) {
-	$min = min($values);
-	if (is_numeric($min)) {
+	if (count($values) != 0) {
+		$min = min($values);
 		return $min;
 	}
 	return false;
 }
 
 function __cb_max($values) {
-	$max = max($values);
-	if (is_numeric($max)) {
+	if (count($values) != 0) {
+		$max = max($values);
 		return $max;
 	}
 	return false;
