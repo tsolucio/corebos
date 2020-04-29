@@ -34,32 +34,40 @@ class addcbuuid extends cbupdaterWorker {
 			$manager->setBufferInMegaBytes(100);
 			$manager->setLimitInMegaBytes($phplimit);
 			$batch = 10000;
-			$f = CRMEntity::getInstance('Accounts');
 			$rs = $adb->query('select count(*) as cnt from vtiger_crmentity inner join vtiger_tab on setype=name and isentitytype=1 where cbuuid=""');
 			$cnt = $rs->fields['cnt'];
 			$finished = true;
 			for ($loop=0; $loop<=($cnt/$batch); $loop++) {
 				$rs=$adb->query('select crmid,setype,smcreatorid,smownerid,createdtime from vtiger_crmentity inner join vtiger_tab on setype=name and isentitytype=1 where cbuuid="" limit '.$batch);
+				$lastuuid = '';
 				while ($row = $adb->fetch_array($rs)) {
-					$f->column_fields['record_module'] = $row['setype'];
-					$f->column_fields['record_id'] = $row['crmid'];
-					$f->column_fields['created_user_id'] = $row['smcreatorid'];
-					$f->column_fields['assigned_user_id'] = $row['smownerid'];
-					//$f->column_fields['description'] = $row['description'];
-					$f->column_fields['createdtime'] = $row['createdtime'];
-					$adb->query('UPDATE vtiger_crmentity SET cbuuid="'.$f->getUUID().'" WHERE crmid='.$row['crmid']);
+					$hcols = array();
+					$hcols['moduletype'] = $row['setype'];
+					$hcols['record_id'] = $row['crmid'];
+					$em = getUserEmail($row['smcreatorid']);
+					$hcols['creator'] = (empty($em) ? 'email@lost.tld' : $em);
+					$em = getUserEmail($row['smownerid']);
+					$hcols['owner'] = empty($em) ? 'nouser@module.tld' : $em;
+					$hcols['createdtime'] = $row['createdtime'];
+					$cbuuid =  sha1(json_encode($hcols));
+					if ($cbuuid!=$lastuuid) {
+						$lastuuid = $cbuuid;
+						$adb->query('UPDATE vtiger_crmentity SET cbuuid="'.$cbuuid.'" WHERE crmid='.$row['crmid']);
+					}
 				}
 				unset($rs);
 				$this->sendMsg('CBUUID BATCH PROCESSED '.($loop+1).'x'.$batch);
 				if ($manager->isLimitReached()) {
-					$this->sendMsgError('This changeset HAS NOT FINISHED. You must launch it again!');
 					$finished = false;
 					break;
 				}
 			}
-			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			if ($finished) {
+			$rs = $adb->query('select count(*) as cnt from vtiger_crmentity inner join vtiger_tab on setype=name and isentitytype=1 where cbuuid=""');
+			if ($finished && $rs->fields['cnt']==0) {
+				$this->sendMsg('Changeset '.get_class($this).' applied!');
 				$this->markApplied(false);
+			} else {
+				$this->sendMsgError('This changeset HAS NOT FINISHED. You must launch it again!');
 			}
 		}
 		$this->finishExecution();

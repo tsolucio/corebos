@@ -120,8 +120,10 @@ class corebos_smtp {
 			);
 		} else {
 			$account_id = $adb->getUniqueID('vtiger_mail_accounts');
-			$sql='insert into vtiger_mail_accounts(account_id, user_id, display_name, mail_id, mail_protocol, mail_username, mail_password, mail_servername,
-				box_refresh, mails_per_page, ssltype, sslmeth, int_mailer, status, set_default, og_server_status)values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+			$sql='insert into vtiger_mail_accounts(
+				account_id, user_id, display_name, mail_id, mail_protocol, mail_username, mail_password, mail_servername,
+				box_refresh, mails_per_page, ssltype, sslmeth, int_mailer, status, set_default, og_server_status
+			) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
 			$params = array(
 				$account_id,
 				$current_user->id,
@@ -179,8 +181,10 @@ class corebos_smtp {
 			);
 		} else {
 			$account_id = $adb->getUniqueID('vtiger_mail_accounts');
-			$sql='insert into vtiger_mail_accounts(account_id, user_id, og_server_name, og_server_username, og_server_password, og_smtp_auth,
-				og_server_port, og_server_status,status)values(?,?,?,?,?,?,?,?,?,?,?)';
+			$sql='insert into vtiger_mail_accounts(
+				account_id, user_id, og_server_name, og_server_username, og_server_password, og_smtp_auth,
+				og_server_port, og_server_status, status
+			) values (?,?,?,?,?,?,?,?,?)';
 			$params = array(
 				$account_id,
 				$current_user->id,

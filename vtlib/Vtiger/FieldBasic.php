@@ -7,6 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
+include_once 'include/fields/CheckFieldUsage.php';
 
 /**
  * Provides basic API to work with vtiger CRM Fields
@@ -237,9 +238,10 @@ class Vtiger_FieldBasic {
 	/**
 	 * Update this field instance
 	 * @access private
-	 * @internal TODO
+	 * @internal
+	 * @param boolean force to indicate if we should update the field name even if it is being used
 	 */
-	private function __update() {
+	private function __update($force = false) {
 		$db = PearDatabase::getInstance();
 		$query = 'UPDATE vtiger_field SET typeofdata=?,presence=?,quickcreate=?,masseditable=?,defaultvalue=?';
 		$params = array($this->typeofdata, $this->presence, $this->quickcreate, $this->masseditable, $this->defaultvalue);
@@ -251,8 +253,24 @@ class Vtiger_FieldBasic {
 		if (!empty($this->name)) {
 			$result = $db->pquery('SELECT fieldid FROM vtiger_field WHERE tablename=? AND fieldname=? limit 1', array($this->table, decode_html($this->name)));
 			if ($db->num_rows($result) == 0) {
-				$query .= ', fieldname=?';
-				$params[] = decode_html($this->name);
+				// this is a very delicate operation that can break many parts of the application
+				// so we check if the fieldname is being used, if it is we do not update the field name
+				$oldname = getSingleFieldValue('vtiger_field', 'fieldname', 'fieldid', $this->id);
+				$isused = checkFieldUsage($oldname, $this->getModuleName());
+				if ($isused['found'] && !$force) {
+					self::log('<span style="color:red">Field '.$oldname.' name COULD NOT BE UPDATED. It is being used.</span>');
+					self::log($isused['message']);
+				} else {
+					$query .= ', fieldname=?';
+					$params[] = decode_html($this->name);
+					self::log('Changing field name from '.$oldname.' to '.$this->name);
+					self::log('<span style="color:red">**Remember to search the module code for the previous field name ('.$oldname.'). Make sure the code does not use this field.</span>');
+					if ($this->uitype==15 || $this->uitype==16) {
+						self::log('<span style="color:red">**This field is a picklist, you MUST change the associated tables or add new ones.</span>');
+					}
+				}
+			} else {
+				self::log('<span style="color:red">Field '.$this->name.' name COULD NOT BE CHANGED. There is another field with this name.</span>');
 			}
 		}
 		if (!empty($this->label)) {
@@ -272,12 +290,23 @@ class Vtiger_FieldBasic {
 	/**
 	 * Delete this field instance
 	 * @access private
+	 * @param boolean force to indicate if we should delete the field even if it is being used
+	 * @return boolean true if the field has been deleted or false if not
 	 */
-	private function __delete() {
+	private function __delete($force = false) {
 		global $adb;
-		Vtiger_Profile::deleteForField($this);
-		$adb->pquery('DELETE FROM vtiger_field WHERE fieldid=?', array($this->id));
-		self::log("Deleteing Field $this->name ... DONE");
+		$isused = checkFieldUsage($this->name, $this->getModuleName());
+		if ($isused['found'] && !$force) {
+			self::log('<span style="color:red">Field '.$this->name.' COULD NOT BE DELETED. It is being used.</span>');
+			self::log($isused['message']);
+			return false;
+		} else {
+			// Vtiger_Profile::deleteForField($this);
+			// $adb->pquery('DELETE FROM vtiger_field WHERE fieldid=?', array($this->id));
+			self::log("Deleting Field $this->name ... DONE");
+			self::log('<span style="color:red">**Remember to search the code for this field. Make sure the code does not use this field.</span>');
+			return true;
+		}
 	}
 
 	/**
@@ -311,10 +340,12 @@ class Vtiger_FieldBasic {
 	/**
 	 * Save this field instance
 	 * @param Vtiger_Block Instance of block to which this field should be added.
+	 * @param boolean force to indicate if we should update the field name even if it is being used
+	 * @return integer ID of the newly created or the updated field
 	 */
-	public function save($blockInstance = false) {
+	public function save($blockInstance = false, $force = false) {
 		if ($this->id) {
-			$this->__update();
+			$this->__update($force);
 		} else {
 			$this->__create($blockInstance);
 		}
@@ -323,9 +354,11 @@ class Vtiger_FieldBasic {
 
 	/**
 	 * Delete this field instance
+	 * @param boolean force to indicate if we should delete the field even if it is being used
+	 * @return boolean true if the field has been deleted or false if not
 	 */
-	public function delete() {
-		$this->__delete();
+	public function delete($force = false) {
+		return $this->__delete($force);
 	}
 
 	/**

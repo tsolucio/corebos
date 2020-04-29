@@ -29,6 +29,7 @@ function fetchSaveCron(id) {
 		alert(alert_arr.ERR_INVALID_TIME);
 		return false;
 	}
+	var alerttime =parseInt(document.getElementById('CronAlertTime').value, 10);
 	if ((timeValue < min_freq && time == 'min') || timeValue <= 0 || timeValue == '' ) {
 		alert(document.getElementById('desc').value);
 	} else {
@@ -36,7 +37,7 @@ function fetchSaveCron(id) {
 		document.getElementById('status').style.display='inline';
 		jQuery.ajax({
 			method: 'POST',
-			url: 'index.php?action=CronTasksAjax&module=CronTasks&file=SaveCron&record='+id+'&status='+status+'&timevalue='+timeValue+'&time='+time+'&dailytime='+dailyTime
+			url: 'index.php?action=CronTasksAjax&module=CronTasks&file=SaveCron&record='+id+'&status='+status+'&timevalue='+timeValue+'&time='+time+'&dailytime='+dailyTime+'&alerttime='+alerttime
 		}).done(function (response) {
 			document.getElementById('status').style.display='none';
 			document.getElementById('notifycontents').innerHTML=response;

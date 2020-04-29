@@ -14,7 +14,8 @@
  *************************************************************************************************
  *  Module       : cron Watcher Service
  *               : will send email to admin user if any active cron task is running for more than
- *               : $warningTimeThreshold seconds.
+ *               : alerttime or warningTimeThreshold seconds.
+ *               : -1 deactivates the alert and 0 uses the global variable time
  *  Version      : 1.0
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
@@ -45,7 +46,8 @@ $holdCM = $currentModule;
 $currentModule = 'CronTasks';
 foreach ($wcronTasks as $wcronTask) {
 	$cron_st = $wcronTask->getStatus();
-	if ($cron_st!=Vtiger_Cron::$STATUS_RUNNING) {
+	$alerttime = $wcronTask->getAlert();
+	if ($cron_st!=Vtiger_Cron::$STATUS_RUNNING || $alerttime==-1) {
 		continue;
 	}
 	if ($wcronTask->getLastStart() != 0) {
@@ -57,7 +59,12 @@ foreach ($wcronTasks as $wcronTask) {
 		$elapsed = 86400000; // 1000 days
 		$cron_started = 'Never started!?!';
 	}
-	if ($elapsed<$warningTimeThreshold) {
+	if ($alerttime>0) {
+		$thisAlertTime = $alerttime*60;
+	} else {
+		$thisAlertTime = $warningTimeThreshold;
+	}
+	if ($elapsed<$thisAlertTime) {
 		continue;
 	}
 	$out = array();

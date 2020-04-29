@@ -1014,7 +1014,11 @@ class QueryGenerator {
 						}
 
 						$fieldSql .= "$fieldGlue trim($columnSql) $valueSql";
-						$fieldGlue = ' OR';
+						if ($conditionInfo['operator'] == 'e' && (empty($conditionInfo['value']) || $conditionInfo['value'] == 'null') && $field->getFieldDataType() == 'reference') {
+							$fieldGlue = ' AND';
+						} else {
+							$fieldGlue = ' OR';
+						}
 					}
 				} elseif (in_array($fieldName, $this->ownerFields)) {
 					$concatSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name'=>'vtiger_users.last_name'), 'Users');

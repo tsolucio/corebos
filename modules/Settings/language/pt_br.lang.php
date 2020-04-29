@@ -6,7 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contribuitor: Ranieri Slemer | 28-03-2020 | Translate Brazilian Portuguese | www.ecrmweb.com.br
+ * Contribuitor: Ranieri Slemer | 25-04-2020 | Translate Brazilian Portuguese | www.ecrmweb.com.br
  ********************************************************************************/
 
 $mod_strings = array(
@@ -974,6 +974,11 @@ $mod_strings = array(
 'report_summary_nf' => 'Campo não é utilizado em nehuma totalização de relatório',
 'cl_mapping' => 'Campo encontrado em mapeamento na conversão do lead',
 'cl_mapping_nf' => 'Campo não foi encontrado em nenhum mapeamento de conversão de lead',
+'picklist_dep_nf' => 'Campo não encontrado em nenhuma dependência da lista de opções',
+'bmap_nf' => 'Campo não encontrado em nenhum Business Map',
+'bquestion_nf' => 'Campo não encontrado em nenhum Business Question',
+'calendar_nf' => 'Campo não encontrado nos campos de exibição do calendário',
+'webforms_nf' => 'Campo não encontrado em nenhum Webform',
 'Site Maintenance' => 'CRM em manutenção',
 'SM_BeBackSoon' => 'Estaremos de volta em breve!',
 'SM_SorryInconvenience' => 'Estamos fazendo uma manutenção no momento. Estaremos de volta on-line o mais breve possível!',

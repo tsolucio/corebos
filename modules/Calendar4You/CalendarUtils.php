@@ -421,7 +421,7 @@ function transferForAddIntoTitle($type, $row, $CD) {
 	global $current_user, $adb;
 	list($CD['fieldname'],$void) = explode(':', $CD['fieldname']);
 	$Col_Field = array();
-	if (!empty($row[$CD['columnname']])) {
+	if (isset($row[$CD['columnname']])) {
 		$Col_Field = array($CD['fieldname']=> $row[$CD['columnname']]);
 	}
 
@@ -433,7 +433,7 @@ function transferForAddIntoTitle($type, $row, $CD) {
 		$Col_Field['contact_id'] = $Col_Field['cto_id'] = getAssignedContactsForEvent($row['crmid']);
 		$CD['uitype'] = '1';
 	}
-	if ($CD['module']=='Calendar') {
+	if ($CD['module']=='cbCalendar') {
 		$Cal_Data = getDetailViewOutputHtml($CD['uitype'], $CD['fieldname'], $CD['fieldlabel'], $Col_Field, '2', getTabid('cbCalendar'), 'cbCalendar');
 		if ($CD['fieldname'] == 'subject' && strpos($Cal_Data[1], 'a href') === false) {
 			$Cal_Data[1] = '<a target=_blank href="index.php?module=cbCalendar&action=DetailView&record=' . $row['crmid'] . '">' . $Cal_Data[1] . '</a>';
@@ -442,7 +442,6 @@ function transferForAddIntoTitle($type, $row, $CD) {
 			$Cal_Data[1] .= "<span type='vtlib_metainfo' vtrecordid='".$row['crmid']."' vtfieldname='".$CD['fieldname']
 				."' vtmodule='cbCalendar' style='display:none;'></span>";
 		}
-		$trmodule = 'Calendar';
 	} else {
 		$queryGenerator = new QueryGenerator($CD['module'], $current_user);
 		$queryGenerator->setFields(array($CD['fieldname']));
@@ -460,14 +459,13 @@ function transferForAddIntoTitle($type, $row, $CD) {
 		$Cal_Data = array();
 		$Cal_Data[0] = getTranslatedString($CD['fieldlabel'], $CD['module']);
 		$Cal_Data[1] = $adb->query_result($recinfo, 0, $CD['columnname']);
-		$trmodule = $CD['module'];
 	}
 
 	if ($CD['uitype'] == '10') {
 		$value = getEntityName(getSalesEntityType($Cal_Data[1]), $Cal_Data[1]);
 		$value = $value[$Cal_Data[1]];
 	} elseif ($CD['uitype'] == '15') {
-		$value = getTranslatedString($Cal_Data[1], $trmodule);
+		$value = getTranslatedString($Cal_Data[1], $CD['module']);
 	} else {
 		$value = $Cal_Data[1];
 	}
@@ -623,7 +621,7 @@ function getAllModulesWithDateFields() {
 			$params = array($profileList);
 		}
 	}
-	$sqlmods .= " and vtiger_tab.name not in ('cbCalendar','Calendar','Events')";
+	$sqlmods .= " and vtiger_tab.name not in ('cbCalendar','Calendar')";
 	$rsmwd = $adb->pquery($sqlmods, $params);
 	$modswithdates = array();
 	while ($mod = $adb->fetch_array($rsmwd)) {

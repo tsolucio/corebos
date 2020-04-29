@@ -154,4 +154,18 @@
 	<classname>addBAEditViewWidgetType</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Alert Time for cron watcher</description>
+	<filename>build/changeSets/2020/addalerttimecronfield.php</filename>
+	<classname>addalerttimecronfield</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>Kiko Jover</author>
+	<description>Fix mail_password default value, when only set Outgoing mail server</description>
+	<filename>build/changeSets/2020/fix_db_smtpperuser.php</filename>
+	<classname>fix_db_smtpperuser</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

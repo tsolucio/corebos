@@ -440,7 +440,7 @@ class Calendar4You extends CRMEntity {
 			//$profileid = fetchUserProfileId($current_user->id);
 			if (isset($this->profilesActions[$actionKey])) {
 				//$actionid = getActionid($this->profilesActions[$actionKey]);
-				$permissions = isPermitted('Calendar', $this->profilesActions[$actionKey]);
+				$permissions = isPermitted('cbCalendar', $this->profilesActions[$actionKey]);
 
 				if ($permissions == 'yes') {
 					if (($this->edit_all && ($actionKey == 'DETAIL' || $actionKey == 'EDIT' || $actionKey == 'CREATE')) || ($this->delete_all && $actionKey=='DELETE')) {

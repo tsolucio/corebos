@@ -66,7 +66,7 @@
 									{if !empty($isDetailView) || !empty($isEditView)}
 									<span class="slds-page-header__title slds-truncate" title="{$MODULELABEL|@addslashes}">
 										<span class="slds-page-header__name-meta">[ {$TITLEPREFIX} ]</span>
-										{$MODULELABEL|textlength_check:30}
+										{$MODULELABEL|textlength_check}
 									</span>
 									{else}
 									<a class="hdrLink"

@@ -24,6 +24,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 	$cron_freq =  $cronTask->getFrequency();
 	$cron_daily =  $cronTask->getdaily();
 	$cron_desc = $cronTask->getDescription();
+	$cron_alert = $cronTask->getAlert();
 	$lastend = explode(' ', $cronTask->getLastEndDateTime());
 	if (!isset($lastend[1])) {
 		$lastend[1] = '00:00';
@@ -46,6 +47,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 	$cron['description'] = getTranslatedString($cron_desc, $cronTask->getModule());
 	$cron['id']=$id;
 	$cron['hourmin']=$hourmin;
+	$cron['alerttime']=$cron_alert;
 	$smarty->assign('CRON_DETAILS', $cron);
 	$smarty->assign('CRON_MODULE', $cronTask->getModule());
 	$smarty->assign('MOD', return_module_language($current_language, 'CronTasks'));

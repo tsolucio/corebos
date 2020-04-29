@@ -92,10 +92,10 @@ class Vtiger_Role {
 		$db->dieOnError = true;
 		$db->pquery('update vtiger_user2role set roleid=? where roleid=?', array($role->getId(), $this->getId()));
 
-		//Deleteing from vtiger_role2profile vtiger_table
+		//delete from vtiger_role2profile table
 		$db->pquery('delete from vtiger_role2profile where roleid=?', array($this->getId()));
 
-		//delete handling for vtiger_groups
+		//delete handling for groups
 		$db->pquery('delete from vtiger_group2role where roleid=?', array($this->getId()));
 
 		$db->pquery('delete from vtiger_group2rs where roleandsubid=?', array($this->getId()));
@@ -103,7 +103,7 @@ class Vtiger_Role {
 		//delete handling for sharing rules
 		deleteRoleRelatedSharingRules($this->getId());
 
-		//delete from vtiger_role vtiger_table;
+		//delete from vtiger_role table;
 		$db->pquery('delete from vtiger_role where roleid=?', array($this->getId()));
 
 		$targetParentRoleSequence = $role->getParentRole();

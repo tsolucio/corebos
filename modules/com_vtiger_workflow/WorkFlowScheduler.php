@@ -71,18 +71,12 @@ class WorkFlowScheduler {
 
 		$substExps = $this->addWorkflowConditionsToQueryGenerator($queryGenerator, $conditions);
 
-		if ($moduleName == 'Calendar' || $moduleName == 'Events') {
+		// No emails for cbCalendar in scheduled workflows
+		if ($moduleName == 'cbCalendar') {
 			if ($conditions) {
 				$queryGenerator->addConditionGlue('AND');
 			}
-			// We should only get the records related to proper activity type
-			if ($moduleName == 'Calendar') {
-				$queryGenerator->addCondition('activitytype', 'Emails', 'n');
-				$queryGenerator->addCondition('activitytype', 'Task', 'e', 'AND');
-			} elseif ($moduleName == "Events") {
-				$queryGenerator->addCondition('activitytype', 'Emails', 'n');
-				$queryGenerator->addCondition('activitytype', 'Task', 'n', 'AND');
-			}
+			$queryGenerator->addCondition('activitytype', 'Emails', 'n');
 		}
 
 		if ($selectExpressions) {
@@ -146,12 +140,7 @@ class WorkFlowScheduler {
 				$noOfRecords = count($records);
 				for ($j = 0; $j < $noOfRecords; ++$j) {
 					$recordId = $records[$j];
-					// We need to pass proper module name to get the webservice
-					if ($workflow->moduleName == 'Calendar') {
-						$moduleName = vtws_getCalendarEntityType($recordId);
-					} else {
-						$moduleName = $workflow->moduleName;
-					}
+					$moduleName = $workflow->moduleName;
 					$wsEntityId = vtws_getWebserviceEntityId($moduleName, $recordId);
 					$entityData = $entityCache->forId($wsEntityId);
 					$data = $entityData->getData();
