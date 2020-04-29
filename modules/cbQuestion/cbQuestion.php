@@ -289,12 +289,105 @@ class cbQuestion extends CRMEntity {
 			$q->retrieve_entity_info($qid, 'cbQuestion');
 		}
 		if ($q->column_fields['qtype']=='Mermaid') {
+			$graph = 'LR'; // default graph
+			$propertyody = json_decode(html_entity_decode($q->column_fields['typeprops']));
+			$nodeStyle = '';
+			$linkStyle = '';
+			if ($propertyody != null) {
+				$graph = $propertyody->graph;
+				if (count($params)> 0 && isset($params['states'])) {
+					include_once 'modules/cbMap/cbRule.php';
+					$record_id = $params['recordid'];
+					$states = $params['states'];
+					// style nodes
+					$defaultstyleaccepted = $defaultstylerejected = '';
+					if (isset($propertyody->defaults) && !empty($propertyody->defaults->nodestyleaccepted)) {
+						$defaultstyleaccepted = $propertyody->defaults->nodestyleaccepted;
+					}
+					if (isset($propertyody->defaults) && !empty($propertyody->defaults->nodestylerejected)) {
+						$defaultstylerejected = $propertyody->defaults->nodestylerejected;
+					}
+					foreach ($propertyody->nodes as $nodeob) {
+						for ($x = 0; $x < count($states); $x++) {
+							$fromstate = $states[$x]['from'];
+							$tostate = $states[$x]['to'];
+							if ($fromstate == $nodeob->nodestate) {
+								try {
+									if (!empty($nodeob->condition)
+										&& coreBOS_Rule::evaluate($nodeob->condition, array('record_id'=>$record_id, 'fromnode'=>$fromstate, 'tonode'=>$tostate))
+									) {
+										$style2apply = empty($nodeob->nodestyleaccepted) ? $defaultstyleaccepted : $nodeob->nodestyleaccepted;
+									} else {
+										$style2apply = empty($nodeob->nodestylerejected) ? $defaultstylerejected : $nodeob->nodestylerejected;
+									}
+								} catch (Exception $e) {
+									$style2apply = empty($nodeob->nodestylerejected) ? $defaultstylerejected : $nodeob->nodestylerejected;
+								}
+								if (!empty($style2apply)) {
+									$nodeStyle .= ' style '.$nodeob->nodename .' '.$style2apply."\n";
+								}
+							}
+						}
+					}
+					// style TO only states
+					$fromarray = array_map(
+						function ($e) {
+							return $e['from'];
+						},
+						$states
+					);
+					$toarray = array_map(
+						function ($e) {
+							return $e['to'];
+						},
+						$states
+					);
+					$toarray = array_diff($toarray, $fromarray);
+					foreach ($toarray as $endstate) {
+						foreach ($propertyody->nodes as $nodeob) {
+							if ($endstate == $nodeob->nodestate) {
+								$nodeStyle .= ' style '.$nodeob->nodename .' '.$defaultstyleaccepted."\n";
+							}
+						}
+					}
+					// style Links
+					$defaultstyleaccepted = $defaultstylerejected = '';
+					if (isset($propertyody->defaults) && !empty($propertyody->defaults->linkstyleaccepted)) {
+						$defaultstyleaccepted = $propertyody->defaults->linkstyleaccepted;
+					}
+					if (isset($propertyody->defaults) && !empty($propertyody->defaults->linkstylerejected)) {
+						$defaultstylerejected = $propertyody->defaults->linkstylerejected;
+					}
+					foreach ($propertyody->links as $linksob) {
+						for ($x = 0; $x < count($states); $x++) {
+							$link_fromstate = $states[$x]['from'];
+							$link_tostate = $states[$x]['to'];
+							if ($linksob->from == $link_fromstate && $linksob->to == $link_tostate) {
+								try {
+									if (!empty($linksob->condition)
+										&& coreBOS_Rule::evaluate($linksob->condition, array('record_id'=>$record_id,'fromnode'=>$link_fromstate,'tonode'=>$link_tostate))
+									) {
+										$style2apply = empty($linksob->linkstyleaccepted) ? $defaultstyleaccepted : $linksob->linkstyleaccepted;
+									} else {
+										$style2apply = empty($linksob->linkstylerejected) ? $defaultstylerejected : $linksob->linkstylerejected;
+									}
+								} catch (Exception $e) {
+									$style2apply = empty($linksob->linkstylerejected) ? $defaultstylerejected : $linksob->linkstylerejected;
+								}
+								if (!empty($style2apply)) {
+									$linkStyle .= ' linkStyle '.$linksob->position .' '.$style2apply."\n";
+								}
+							}
+						}
+					}
+				}
+			}
 			return array(
 				'columns' => html_entity_decode($q->column_fields['qcolumns'], ENT_QUOTES, $default_charset),
 				'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
 				'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
-				'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),
-				'answer' => 'graph '.$q->column_fields['typeprops']."\n\n".html_entity_decode($q->column_fields['qcolumns'], ENT_QUOTES, $default_charset),
+				'properties' => $graph,
+				'answer' => 'graph '.$graph."\n\n".html_entity_decode($q->column_fields['qcolumns'], ENT_QUOTES, $default_charset)."\n".$nodeStyle. "\n".$linkStyle,
 			);
 		} else {
 			include_once 'include/Webservices/Query.php';
