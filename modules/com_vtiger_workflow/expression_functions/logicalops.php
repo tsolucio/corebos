@@ -124,3 +124,19 @@ function __cb_relatedevaluations($evaluation, $params) {
 	}
 	return $return;
 }
+
+function __cb_min($values) {
+	$min = min($values);
+	if (is_numeric($min)) {
+		return $min;
+	}
+	return false;
+}
+
+function __cb_max($values) {
+	$max = max($values);
+	if (is_numeric($max)) {
+		return $max;
+	}
+	return false;
+}
