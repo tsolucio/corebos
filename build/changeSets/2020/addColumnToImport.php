@@ -24,7 +24,7 @@ class addColumnToImport extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->ExecuteQuery("ALTER TABLE vtiger_import_maps ADD defaultvalues VARCHAR(50) AFTER is_published;");
+			$this->ExecuteQuery("ALTER TABLE vtiger_import_maps ADD defaultvalues TEXT AFTER is_published;");
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
