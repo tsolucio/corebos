@@ -124,6 +124,7 @@ class Import_Controller {
 		$mapName = $this->userInputObject->get('save_map_as');
 		if ($saveMap && !empty($mapName)) {
 			$fieldMapping = $this->userInputObject->get('field_mapping');
+			$defaultValues = $this->userInputObject->get('default_values');
 			$fileReader = Import_Utils::getFileReader($this->userInputObject, $this->user);
 			if ($fileReader == null) {
 				return false;
@@ -138,6 +139,9 @@ class Import_Controller {
 			} else {
 				$saveMapping = array_flip($fieldMapping);
 			}
+			foreach ($defaultValues as $field => $value) {
+				$saveDefaultValue[$field] = $value;
+			}
 
 			$map = array();
 			$map['name'] = $mapName;
@@ -145,6 +149,7 @@ class Import_Controller {
 			$map['module'] = $this->userInputObject->get('module');
 			$map['has_header'] = ($hasHeader)?1:0;
 			$map['assigned_user_id'] = $this->user->id;
+			$map['defaultvalues'] = json_encode($saveDefaultValue);
 
 			$importMap = new Import_Map($map, $this->user);
 			$importMap->save();

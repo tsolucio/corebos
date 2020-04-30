@@ -76,6 +76,14 @@ class Import_Map {
 		return implode('&', $keyValueStrings);
 	}
 
+	public function getDefaultValues() {
+		if (empty($this->map['defaultvalues'])) {
+			return;
+		}
+		$defaultvalues = $this->map['defaultvalues'];
+		return $defaultvalues;
+	}
+
 	public function save() {
 		$adb = PearDatabase::getInstance();
 

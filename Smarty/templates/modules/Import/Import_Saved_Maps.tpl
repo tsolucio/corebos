@@ -19,3 +19,6 @@
 	<img valign="absmiddle" src="{'delete.gif'|@vtiger_imageurl:$THEME}" style="cursor:pointer;"
 		 onclick="ImportJs.deleteMap('{$FOR_MODULE}');" alt="{'LBL_DELETE'|@getTranslatedString:$FOR_MODULE}" />
 </span>
+{foreach key=_MAP_ID item=_MAP from=$SAVED_MAPS}
+	<input type="hidden" value="{$_MAP->getDefaultValues()}" id="defaultvalue-{$_MAP_ID}">
+{/foreach}
