@@ -275,7 +275,7 @@ if (typeof(ImportJs) == 'undefined') {
 			var defaultValueContainer = jQuery(jQuery('[name=default_value_container]', affectedRow).get(0));
 			var allDefaultValuesContainer = jQuery('#defaultValuesElementsContainer');
 			if (defaultValueContainer.children.length > 0) {
-				if(defaultString != '' && defaultString != null) {
+				if (defaultString != '' && defaultString != null) {
 					var parseValue = JSON.parse(defaultString);
 					jQuery('#'+selectedFieldName+'_defaultvalue').val(parseValue[selectedFieldName]);
 				} else {
