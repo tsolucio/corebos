@@ -67,7 +67,7 @@ class Import_File_Reader {
 	}
 
 	public function convertCharacterEncoding($value, $fromCharset, $toCharset) {
-		if (function_exists("mb_convert_encoding")) {
+		if (function_exists('mb_convert_encoding')) {
 			$value = mb_convert_encoding($value, $toCharset, $fromCharset);
 		} else {
 			$value = iconv($toCharset, $fromCharset, $value);
@@ -111,7 +111,7 @@ class Import_File_Reader {
 		$adb = PearDatabase::getInstance();
 
 		$tableName = Import_Utils::getDbTableName($this->user).'_fullcsv_index';
-		$tableNameData = Import_Utils::getDbTableName($this->user)."_fullcsv";
+		$tableNameData = Import_Utils::getDbTableName($this->user).'_fullcsv';
 
 		//Drop Table
 		$dropTableCSV = 'DROP TABLE '.$tableName;

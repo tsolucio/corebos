@@ -45,14 +45,16 @@ class Import_Queue_Controller {
 
 		$adb->pquery(
 			'INSERT INTO vtiger_import_queue VALUES(?,?,?,?,?,?,?,?)',
-			array($adb->getUniqueID('vtiger_import_queue'),
-						$user->id,
-						getTabid($userInputObject->get('module')),
-						json_encode($userInputObject->get('field_mapping')),
-						json_encode($userInputObject->get('default_values')),
-						$userInputObject->get('merge_type'),
-						json_encode($userInputObject->get('merge_fields')),
-			$status)
+			array(
+				$adb->getUniqueID('vtiger_import_queue'),
+				$user->id,
+				getTabid($userInputObject->get('module')),
+				json_encode($userInputObject->get('field_mapping')),
+				json_encode($userInputObject->get('default_values')),
+				$userInputObject->get('merge_type'),
+				json_encode($userInputObject->get('merge_fields')),
+				$status
+			)
 		);
 	}
 

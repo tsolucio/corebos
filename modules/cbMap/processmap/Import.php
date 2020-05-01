@@ -128,7 +128,7 @@ class Import extends processcbMap {
 					}
 					$allmergeFields[]=$allRelValues;
 				}
-				$fieldinfo[$fieldname] = array('value'=>$value,'predefined'=>$predefined,"relatedFields" => $allmergeFields);
+				$fieldinfo[$fieldname] = array('value'=>$value,'predefined'=>$predefined,'relatedFields' => $allmergeFields);
 			}
 		}
 		foreach ($xml->matches[0] as $key => $value) {
@@ -156,8 +156,8 @@ class Import extends processcbMap {
 		$filename = "import/$csvfile";
 		$table = pathinfo($filename);
 
-		$tb=explode("=", $table['filename']);
-		$table = "massivelauncher_" . $tb[0];
+		$tb=explode('=', $table['filename']);
+		$table = 'massivelauncher_' . $tb[0];
 		$drop = "drop table if exists $table;";
 		$adb->query($drop);
 		$delimiter = ',';
@@ -165,8 +165,8 @@ class Import extends processcbMap {
 		$fp = fopen($filename, 'r');
 		$frow = fgetcsv($fp, 1000, $delimiter);
 
-		$allHeaders = implode(",", $frow);
-		$columns = "`id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, `selected` varchar(3) ";
+		$allHeaders = implode(',', $frow);
+		$columns = '`id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, `selected` varchar(3) ';
 		foreach ($frow as $column) {
 			if ($column=='') {
 				$column='lastvalue';
@@ -299,7 +299,7 @@ class Import extends processcbMap {
 						$focus1->column_fields[$upkey] = $predefined;
 					}
 				}
-				$focus1->column_fields["assigned_user_id"]=$current_user->id;
+				$focus1->column_fields['assigned_user_id']=$current_user->id;
 				$focus1->saveentity($module);
 				$r++;
 				if (!empty($focus1->id)) {
