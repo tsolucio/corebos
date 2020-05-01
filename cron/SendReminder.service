@@ -127,8 +127,7 @@ if ($adb->num_rows($result) >= 1) {
 				}
 			} else {
 				// coreBOS workflow based notification template
-				$wfsetype = ($result_set['calendarsetype'] == 'cbCalendar' ? 'cbCalendar' : 'Events');
-				$result = $adb->pquery("select * from com_vtiger_workflows where summary='Send Reminder Template' and module_name=? limit 1", array($wfsetype));
+				$result = $adb->pquery("select * from com_vtiger_workflows where summary='Send Reminder Template' and module_name=? limit 1", array('cbCalendar'));
 				if ($result && $adb->num_rows($result)>0) {
 					$util = new VTWorkflowUtils();
 					$adminUser = $util->adminUser();
@@ -136,12 +135,7 @@ if ($adb->num_rows($result) >= 1) {
 					$wfs = new VTWorkflowManager($adb);
 					$workflows = $wfs->getWorkflowsForResult($result);
 					$workflow = reset($workflows);
-					if ($result_set['calendarsetype'] == 'cbCalendar') {
-						$setype = 'cbCalendar';
-					} else {
-						$setype = ($result_set['activitytype'] == 'Task') ? 'Calendar' : 'Events';
-					}
-					$wsid = vtws_getWebserviceEntityId($setype, $activity_id);
+					$wsid = vtws_getWebserviceEntityId('cbCalendar', $activity_id);
 					$entityData = $entityCache->forId($wsid);
 					if ($workflow->evaluate($entityCache, $entityData->getId())) {
 						$wfActive = $workflow->activeWorkflow();
