@@ -6,4 +6,11 @@
 		<classname>addColumnToImport</classname>
 		<systemupdate>true</systemupdate>
 	</changeSet>
+	<changeSet>
+		<author>joebordes</author>
+		<description>Add field_mapping column to import maps</description>
+		<filename>build/changeSets/2020/addFMColumnToImport.php</filename>
+		<classname>addFMColumnToImport</classname>
+		<systemupdate>true</systemupdate>
+	</changeSet>
 </updatesChangeLog>

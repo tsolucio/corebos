@@ -59,18 +59,22 @@ require_once 'modules/cbMap/processmap/processMap.php';
 
 class Import extends processcbMap {
 	private $mapping = array();
-	private $input = array();
-	private $output = array();
+	private $importtype = '';
 
 	public function processMap($arguments) {
-		$this->convertMap2Array();
-		$contentok = processcbMap::isXML(htmlspecialchars_decode($this->Map->column_fields['content']));
+		global $argv;
+		$map = $this->getMap();
+		$contentok = $this->isXML(htmlspecialchars_decode($map->column_fields['content']));
 		if ($contentok !== true) {
 			echo '<b>Incorrect Content</b>';
-			die();
+			return;
 		}
-		$table=$this->initializeImport($arguments[1]);
-		$this->doImport($table);
+		$this->convertMap2Array();
+		if ($this->importtype == 'error') {
+			echo '<b>Incorrect Map Content</b>';
+			return;
+		}
+		$this->doImport($argv);
 		return $this;
 	}
 
@@ -107,8 +111,51 @@ class Import extends processcbMap {
 	}
 
 	private function convertMap2Array() {
+		$map = $this->getMap();
+		$xmlcontent = html_entity_decode($map->column_fields['content'], ENT_QUOTES, 'UTF-8');
+		if (strpos($xmlcontent, 'targetmodule')>0 && strpos($xmlcontent, 'mapname')===false) {
+			$this->convertMap2ArrayDirect();
+			$this->importtype = 'direct';
+		} elseif (strpos($xmlcontent, 'targetmodule')===false && strpos($xmlcontent, 'mapname')>0) {
+			$this->convertMap2ArraycoreBOS();
+			$this->importtype = 'corebos';
+		} else {
+			$this->mapping = array();
+			$this->importtype = 'error';
+		}
+	}
+
+	private function convertMap2ArraycoreBOS() {
+		global $adb;
 		$xml = $this->getXMLContent();
-		foreach ($xml->fields->field as $k => $v) {
+		$mapname = (String)$xml->mapname;
+		$rs = $adb->pquery('select id from vtiger_import_maps where name=? limit 1', array($mapname));
+		if (!$rs || $adb->num_rows($rs)==0) {
+			$this->mapping = array();
+			$this->importtype = 'error';
+			return;
+		}
+		$mapping= array(
+			'mapname' => $mapname,
+			'mapid' => $rs->fields['id'],
+			'delimiter' => (empty($xml->delimiter)) ? ',' : (String)$xml->delimiter,
+			'duphandling' => 'none',
+			'dupmatches' => array(),
+		);
+		if (isset($xml->duplicates)) {
+			$mapping['duphandling'] = isset($xml->duplicates->handling) ? (String)$xml->duplicates->handling : 'none';
+			foreach ($xml->duplicates->fields->name as $v) {
+				if (!empty($v)) {
+					$mapping['dupmatches'][] = (String)$v;
+				}
+			}
+		}
+		$this->mapping = $mapping;
+	}
+
+	private function convertMap2ArrayDirect() {
+		$xml = $this->getXMLContent();
+		foreach ($xml->fields->field as $v) {
 			$fieldname= isset($v->fieldname) ? (String)$v->fieldname : '';
 			$value= isset($v->value) ? (String)$v->value : '';
 			$predefined= isset($v->predefined) ? (String)$v->predefined : '';
@@ -151,7 +198,15 @@ class Import extends processcbMap {
 		$this->mapping = $mapping;
 	}
 
-	private function initializeImport($csvfile) {
+	private function doImport($arguments) {
+		if ($this->importtype == 'corebos') {
+			$this->doImportcoreBOS($arguments);
+		} elseif ($this->importtype == 'direct') {
+			$this->doImportDirect($arguments[1]);
+		}
+	}
+
+	private function initializeImportDirect($csvfile) {
 		global $adb;
 		$filename = "import/$csvfile";
 		$table = pathinfo($filename);
@@ -165,7 +220,7 @@ class Import extends processcbMap {
 		$fp = fopen($filename, 'r');
 		$frow = fgetcsv($fp, 1000, $delimiter);
 
-		$allHeaders = implode(',', $frow);
+		//$allHeaders = implode(',', $frow);
 		$columns = '`id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, `selected` varchar(3) ';
 		foreach ($frow as $column) {
 			if ($column=='') {
@@ -187,9 +242,14 @@ class Import extends processcbMap {
 		return $table;
 	}
 
-	private function doImport($table) {
+	private function doImportDirect($csvfile) {
 		include_once 'modules/Users/Users.php';
 		global $adb,$current_user;
+		$table = $this->initializeImportDirect($csvfile);
+		if ($table == 'error' || $table == '') {
+			echo '<b>Incorrect Import Table</b>';
+			return;
+		}
 		$adminUser = Users::getActiveAdminUser();
 		$dataQuery = $adb->query("SELECT * FROM $table");
 		$module = $this->getMapTargetModule();
@@ -301,12 +361,51 @@ class Import extends processcbMap {
 				}
 				$focus1->column_fields['assigned_user_id']=$current_user->id;
 				$focus1->saveentity($module);
-				$r++;
 				if (!empty($focus1->id)) {
 					$adb->pquery("UPDATE $table SET selected=1 WHERE id=?", array($id));
 				}
 			}
 		}
+	}
+
+	private function doImportcoreBOS($arguments) {
+		global $current_user, $VTIGER_BULK_SAVE_MODE, $adb;
+		$previousBulkSaveMode = isset($VTIGER_BULK_SAVE_MODE) ? $VTIGER_BULK_SAVE_MODE : false;
+		$VTIGER_BULK_SAVE_MODE = true;
+		require_once 'modules/Import/api/Request.php';
+		include_once 'modules/Import/controllers/Import_Controller.php';
+		$rs = $adb->pquery('select module,field_mapping,defaultvalues from vtiger_import_maps where id=?', array($this->mapping['mapid']));
+		$requestArray = array(
+			'module' => $rs->fields['module'],
+			'action' => 'Import',
+			'mode' => 'import',
+			'import' => 'Import',
+			'type' => 'csv',
+			'has_header' => '1',
+			'file_encoding' => 'UTF-8',
+			'delimiter' => $this->mapping['delimiter'],
+			'field_mapping' => $rs->fields['field_mapping'],
+			'default_values' => $rs->fields['defaultvalues'],
+			'merge_type' => Import_Utils::$AUTO_MERGE_NONE,
+			'merge_fields' => '',
+		);
+		if ($this->mapping['duphandling']!='none') {
+			$requestObject['merge_type'] = ($this->mapping['duphandling'] == 'overwrite' ?
+				Import_Utils::$AUTO_MERGE_OVERWRITE :
+				($this->mapping['duphandling'] == 'merge' ? Import_Utils::$AUTO_MERGE_MERGEFIELDS : Import_Utils::$AUTO_MERGE_IGNORE));
+			$requestObject['merge_fields'] = json_encode($this->mapping['dupmatches']);
+		}
+		$requestObject = new Import_API_Request($requestArray);
+		$importController = new Import_Controller($requestObject, $current_user);
+		@copy($arguments[1], Import_Utils::getImportDirectory().'IMPORT_'.$current_user->id);
+		$fileReadStatus = $importController->copyFromFileToDB();
+		if ($fileReadStatus) {
+			$importController->queueDataImport(true);
+			$importController->triggerImport();
+		} else {
+			echo '<b>Incorrect Import Table</b>';
+		}
+		$VTIGER_BULK_SAVE_MODE = $previousBulkSaveMode;
 	}
 }
 ?>
