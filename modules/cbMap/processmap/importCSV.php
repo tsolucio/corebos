@@ -24,9 +24,12 @@ include_once 'modules/cbMap/cbMap.php';
 require_once 'modules/cbMap/processmap/processMap.php';
 require_once 'modules/cbMap/processmap/Import.php';
 
-global $adb, $log, $current_user;
+global $adb, $log, $current_user, $current_language;
 
 $current_user = Users::getActiveAdminUser();
+if (empty($current_language)) {
+	$current_language = $current_user->column_fields['language'];
+}
 
 if (isset($argv) && !empty($argv)) {
 	$csvfile = $argv[1];
