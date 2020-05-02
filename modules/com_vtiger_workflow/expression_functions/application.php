@@ -121,4 +121,22 @@ function __cb_delsetting($arr) {
 	coreBOS_Settings::delSetting($arr[0]);
 	return '';
 }
+
+function __cb_sendMessage($arr) {
+	if (empty($arr[0])) {
+		return '';
+	}
+	$channel = (empty($arr[1]) ? 'workflowMessageChannel' : $arr[1]);
+	$time = (empty($arr[2]) ? 30 : $arr[2]);
+	$cbmq = coreBOS_MQTM::getInstance();
+	$cbmq->sendMessage($channel, 'workflow', 'wfmessagereader', 'Message', '1:M', 1, $time, 0, 0, $arr[0]);
+	return '';
+}
+
+function __cb_readMessage($arr) {
+	$channel = (empty($arr[0]) ? 'workflowMessageChannel' : $arr[0]);
+	$cbmq = coreBOS_MQTM::getInstance();
+	$msg = $cbmq->getMessage($channel, 'wfmessagereader', 'workflow');
+	return $msg['information'];
+}
 ?>

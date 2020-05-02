@@ -91,6 +91,8 @@ class VTFieldExpressionEvaluater {
 			'getSetting' => '__cb_getSetting',
 			'setSetting' => '__cb_setSetting',
 			'delSetting' => '__cb_delSetting',
+			'sendMessage' => '__cb_sendMessage',
+			'readMessage' => '__cb_readMessage',
 			'getCRUDMode' => '__cb_getcrudmode',
 			'isNumeric' => '__cb_is_numeric',
 			'isString' => '__cb_is_string',

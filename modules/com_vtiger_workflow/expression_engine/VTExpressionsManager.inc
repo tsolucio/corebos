@@ -136,6 +136,8 @@ class VTExpressionsManager {
 			'getGEODistanceFromCoordinates' => 'getGEODistanceFromCoordinates({lat1},{long1},{lat2},{long2})',
 			'getFromContext' => 'getFromContext(variablename)',
 			'setToContext' => 'setToContext(variablename, value)',
+			'sendMessage' => 'sendMessage(message, channel, time)',
+			'readMessage' => 'readMessage(channel)',
 			'getSetting' => "getSetting('setting_key', 'default')",
 			'setSetting' => "setSetting('setting_key', value)",
 			'delSetting' => "delSetting('setting_key')",
