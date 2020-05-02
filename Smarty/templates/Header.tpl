@@ -23,6 +23,7 @@
 	<link rel="stylesheet" href="include/LD/assets/styles/mainmenu.css" type="text/css" />
 	<link rel="stylesheet" href="include/LD/assets/styles/override_lds.css" type="text/css" />
 	<link rel="stylesheet" href="include/style.css" type="text/css" />
+        <script src="socketlockit/socket.io.js"></script>
 	<style type="text/css">
 		html {
 			background: url({$coreBOS_app_coverimage}) no-repeat center center fixed;
@@ -485,6 +486,14 @@
 <div class="lvtCol fixedLay1" id="notificationDiv" style="float: right; padding-right: 5px; overflow: hidden; border-style: solid; right: 0px; border-color: rgb(141, 141, 141); bottom: 0px; display: none; padding: 2px; z-index: 10; font-weight: normal;" align="left">
 </div>
 
+<div id="Socketblockit" class="lvtCol fixedLay1" style="border: 0; right: 0px; bottom: 2px; display:none; padding: 2px; z-index: 10; font-weight: normal;" align="left">
+	<table border='0' cellpadding='0' cellspacing='0' width='100%' class='hdrNameBg'>
+		</tr>
+		<tr><td style='padding:10px;color:red;font-size:15px' colspan='2'>
+			{$APP.Socketblockit}
+		</td></tr>
+	</table>
+</div>
 <div id="OutgoingCall" style="display: none;position: absolute;z-index:200;" class="layerPopup">
 	<table border='0' cellpadding='5' cellspacing='0' width='100%'>
 		<tr style='cursor:move;' >

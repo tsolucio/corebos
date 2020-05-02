@@ -206,4 +206,6 @@
 {/foreach}
 </script>
 {/if}
+<input type="hidden" name="sockethost" id="sockethost" value="{$SOCKETHOST}">
+<script src="include/js/socket.js" type="text/javascript"></script>
 <!-- END -->

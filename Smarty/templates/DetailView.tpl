@@ -28,7 +28,6 @@ clipcopyobject.on('success', function(e) { clipcopyclicked = false; });
 clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 {/literal}
 </script>
-
 <div id="lstRecordLayout" class="layerPopup" style="display:none;width:325px;height:300px;"></div>
 
 {if $MODULE eq 'Accounts' || $MODULE eq 'Contacts'}
@@ -476,7 +475,8 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 </script>
 </td>
 </tr></table>
-
+<input type="hidden" name="sockethost" id="sockethost" value="{$SOCKETHOST}">
+<script src="include/js/socket.js" type="text/javascript"></script>
 {if $MODULE|hasEmailField}
 	<form name="SendMail" method="post"><div id="sendmail_cont" style="z-index:100001;position:absolute;"></div></form>
 {/if}
