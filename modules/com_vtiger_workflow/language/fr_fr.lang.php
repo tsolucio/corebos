@@ -207,5 +207,9 @@ $mod_strings = array(
 	'Record Set' => 'Record Set for Mass Actions',
 	'Select where to get the records from' => 'Select where to get the records from',
 	'Launch Now' => 'Launch Now',
+	'Execute Expression' => 'Execute Expression',
+	'wfExecExpression' => 'Execute Expression',
+	'wdexeexpVariableHelp' => 'The value will be saved in the context with this name if given. If not only the expression will be executed.',
+	'LBL_EXPRESSIONS' => 'Expressions',
 );
 ?>

@@ -168,4 +168,11 @@
 	<classname>fix_db_smtpperuser</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Execute Expression workflow task</description>
+	<filename>build/changeSets/2020/addExeWFExpTask.php</filename>
+	<classname>addExeWFExpTask</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
