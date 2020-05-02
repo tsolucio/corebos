@@ -1,0 +1,22 @@
+{
+  "name": "Revealer.js",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "~3.3.4",
+    "express-session": "^1.15.6",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "replace": "^1.0.0",
+    "requests": "^0.2.2",
+    "socket.io": "~0.9.16"
+  },
+  "devDependencies": {
+    "request": "^2.22.0"
+  }
+}
