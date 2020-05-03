@@ -209,5 +209,6 @@ $smarty->assign('Module_Popup_Edit', isset($_REQUEST['Module_Popup_Edit']) ? vtl
 $smarty->assign('SandRActive', GlobalVariable::getVariable('Application_SaveAndRepeatActive', 0, $currentModule));
 $cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule);
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
-$smarty->assign('SOCKETHOST','http://localhost:7000');
+$smarty->assign('SOCKETHOST', GlobalVariable::getVariable('sockethost', '', $currentModule));
+$smarty->assign('SOCKETBLOCKCHECK', GlobalVariable::getVariable('socketblockedit', '', $currentModule));
 ?>

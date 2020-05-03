@@ -1398,6 +1398,9 @@ function runBAWorkflow(workflowid, crmids) {
 }
 
 function doModuleValidation(edit_type, editForm, callback) {
+        if (getObj('socketblockcheck').value=='1' && getObj('socketblock').value=='1'){
+            return false;
+        }
 	if (editForm == undefined) {
 		var formName = 'EditView';
 	} else {

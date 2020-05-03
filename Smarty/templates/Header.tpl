@@ -23,7 +23,6 @@
 	<link rel="stylesheet" href="include/LD/assets/styles/mainmenu.css" type="text/css" />
 	<link rel="stylesheet" href="include/LD/assets/styles/override_lds.css" type="text/css" />
 	<link rel="stylesheet" href="include/style.css" type="text/css" />
-        <script src="socketlockit/socket.io.js"></script>
 	<style type="text/css">
 		html {
 			background: url({$coreBOS_app_coverimage}) no-repeat center center fixed;

@@ -86,5 +86,10 @@ $mod_strings = array(
 	'sel_fields_es' => 'Selecionar campos para o mapeamento do Elasticsearch',
 	'Analyzed' => 'Analisado',
 	'Missing_GlobalVar' => 'Variável Global ElasticSearch IP está faltando',
+	'Socket Block It Activation' => 'Socket Block It Activation',
+	'SocketBlockIt_Desc' => 'Use socket.io to block records',
+	'SocketHost' => 'Socket Host',
+	'BlockIt' => 'Block editing',
+	'choosesocket' => 'Choose Socket Host',
 );
 ?>

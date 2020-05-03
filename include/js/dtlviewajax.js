@@ -364,6 +364,9 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 
 function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldName, crmId) {
 	var formName = 'DetailView';
+        if (getObj('socketblockcheck').value=='1' && getObj('socketblock').value=='1'){
+            return false;
+        }
 	if (doformValidation('')) { //base function which validates form data
 		//Testing if a Validation file exists
 		jQuery.ajax({

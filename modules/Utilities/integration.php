@@ -96,6 +96,10 @@ switch ($_REQUEST['_op']) {
 	case 'setconfigelasticsearch':
 		include_once 'include/integrations/elasticsearch/settings.php';
 		break;
+	case 'getconfigsocketblockit':
+	case 'setconfigsocketblockit':
+		include_once 'include/integrations/socketblockit/settings.php';
+		break;
 	default:
 		$smarty = new vtigerCRM_Smarty();
 		$titlemessage = getTranslatedString('Available Integrations', $currentModule);
@@ -159,6 +163,12 @@ switch ($_REQUEST['_op']) {
 				'title' => getTranslatedString('ElasticSearch Activation', 'Utilities'),
 				'desc' => getTranslatedString('Elasticsearch_Desc', 'Utilities'),
 				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigelasticsearch',
+			),
+			array(
+				'abbr' => 'SB',
+				'title' => getTranslatedString('Socket Block It Activation', 'Utilities'),
+				'desc' => getTranslatedString('SocketBlockIt_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigsocketblockit',
 			),
 		);
 		$smarty->assign('integrations', $intgr);

@@ -85,5 +85,10 @@ $mod_strings = array(
 	'sel_fields_es' => 'Select Fields for Elasticsearch Mapping',
 	'Analyzed' => 'Analyzed',
 	'Missing_GlobalVar' => 'Global Variables ElasticSearch IP missing',
+	'Socket Block It Activation' => 'Socket Block It Activation',
+	'SocketBlockIt_Desc' => 'Use socket.io to block records',
+	'SocketHost' => 'Socket Host',
+	'BlockIt' => 'Block editing',
+	'choosesocket' => 'Choose Socket Host',
 );
 ?>
