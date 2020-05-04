@@ -765,8 +765,11 @@ class CRMEntity {
 				} elseif ($uitype == 50) {
 					$timefmt = '';
 					if (!empty($this->column_fields[$fieldname]) && strlen($this->column_fields[$fieldname])>16) {
-						$timefmt = substr($this->column_fields[$fieldname], -2);
-						$this->column_fields[$fieldname] = substr($this->column_fields[$fieldname], 0, 16);
+						$seconds = substr($this->column_fields[$fieldname], -2);
+						if (!is_numeric($seconds)) {
+							$timefmt = $seconds;
+							$this->column_fields[$fieldname] = substr($this->column_fields[$fieldname], 0, 16);
+						}
 					}
 					if (isset($current_user->date_format) && !$ajaxSave) {
 						$fldvalue = getValidDBInsertDateTimeValue($this->column_fields[$fieldname]);

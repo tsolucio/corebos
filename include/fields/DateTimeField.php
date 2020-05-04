@@ -169,10 +169,15 @@ class DateTimeField {
 			$dt = '';
 			$tm = $datetime;
 		}
-		list($hr,$min) = explode(':', $tm);
+		if (substr_count($tm, ':')==1) {
+			list($hr,$min) = explode(':', $tm);
+			$sec = 0;
+		} else {
+			list($hr,$min,$sec) = explode(':', $tm);
+		}
 		$fmt = strtolower(trim($fmt));
 		if (empty($fmt) || $fmt == '24' || ($fmt != 'am' && $fmt != 'pm')) {
-			return trim($dt . ' ' . self::twoDigit($hr) . ':' . self::twoDigit($min));
+			return trim($dt . ' ' . self::twoDigit($hr) . ':' . self::twoDigit($min) . ':' . self::twoDigit($sec));
 		}
 		if ($fmt == 'am') {
 			if ($hr == '12') {
@@ -190,7 +195,7 @@ class DateTimeField {
 				$hour = self::twoDigit((int)$hr);
 			}
 		}
-		return trim($dt . ' ' . $hour . ':' . self::twoDigit($min));
+		return trim($dt . ' ' . $hour . ':' . self::twoDigit($min) . ':' . self::twoDigit($sec));
 	}
 
 	/**
