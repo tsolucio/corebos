@@ -1,5 +1,5 @@
 <script src="modules/Settings/ModuleBuilder/ModuleBuilder.js"></script>
-{include file="Smarty/templates/Settings/ModuleBuilder/ErrorSave.tpl"}
+{include file="Smarty/templates/Settings/ModuleBuilder/Save.tpl"}
 {include file="Smarty/templates/Settings/ModuleBuilder/ErrorMessage.tpl"}
 <div id="vtlib_modulebuilder" style="display:block;position:absolute;width:500px;"></div>
 {include file='SetMenu.tpl'}
