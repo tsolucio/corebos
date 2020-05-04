@@ -552,7 +552,7 @@ class QueryGenerator {
 					//In calendar list view, Status value = Planned is not displaying
 					$sql = "CASE WHEN (vtiger_activity.status not like '') THEN vtiger_activity.status ELSE vtiger_activity.eventstatus END AS ";
 					if ($field == 'taskstatus') {
-						$sql .= "status";
+						$sql .= 'status';
 					} else {
 						$sql .= $field;
 					}
@@ -592,9 +592,9 @@ class QueryGenerator {
 				foreach ($moduleList as $module) {
 					if ($module == 'Users' && $baseModule != 'Users') {
 						$tableJoinCondition[$fieldName]['vtiger_users'.$fieldName] = $baseTable.
-							".".$fldcolname." = vtiger_users".$fieldName.".id";
+							'.'.$fldcolname.' = vtiger_users'.$fieldName.'.id';
 						$tableJoinCondition[$fieldName]['vtiger_groups'.$fieldName] = $baseTable.
-							".".$fldcolname." = vtiger_groups".$fieldName.".groupid";
+							'.'.$fldcolname.' = vtiger_groups'.$fieldName.'.groupid';
 						$tableJoinMapping['vtiger_users'.$fieldName] = 'LEFT JOIN vtiger_users AS';
 						$tableJoinMapping['vtiger_groups'.$fieldName] = 'LEFT JOIN vtiger_groups AS';
 					}
@@ -744,7 +744,7 @@ class QueryGenerator {
 			);
 			$relationInfo = $relatedModuleMeta->getRelationMeta();
 			$relatedModule = $this->meta->getTabName();
-			$sql .= ' INNER JOIN '.$relationInfo['relationTable']." ON ".
+			$sql .= ' INNER JOIN '.$relationInfo['relationTable'].' ON '.
 			$relationInfo['relationTable'].".$relationInfo[$relatedModule]=$baseTable.$baseTableIndex";
 		}
 
@@ -843,7 +843,7 @@ class QueryGenerator {
 											$sql .= " $joinclause ";
 										}
 									}
-									$sql .= " LEFT JOIN ".$tableName.' AS '.$tableName.$fld.' ON '.
+									$sql .= ' LEFT JOIN '.$tableName.' AS '.$tableName.$fld.' ON '.
 										$tableName.$fld.'.'.$reltableList[$tableName].'='.$moduleFields[$fld]->getTableName().'.'.$moduleFields[$fld]->getColumnName();
 									$referenceFieldTableList[] = $tableName;
 								}
@@ -887,7 +887,7 @@ class QueryGenerator {
 										$sql .= " $joinclause ";
 									}
 								}
-								$sql .= " LEFT JOIN ".$tableName.' AS '.$tableName.$fld.' ON '.
+								$sql .= ' LEFT JOIN '.$tableName.' AS '.$tableName.$fld.' ON '.
 									$tableName.$fld.'.'.$reltableList[$tableName].'='.$moduleFields[$fld]->getTableName().'.'.$moduleFields[$fld]->getColumnName();
 								$referenceFieldTableList[] = $tableName;
 							}
@@ -942,22 +942,22 @@ class QueryGenerator {
 				}
 				switch ($conditionInfo['operator']) {
 					case 'e':
-						$sqlOperator = "=";
+						$sqlOperator = '=';
 						break;
 					case 'n':
-						$sqlOperator = "<>";
+						$sqlOperator = '<>';
 						break;
 					case 'l':
-						$sqlOperator = "<";
+						$sqlOperator = '<';
 						break;
 					case 'g':
-						$sqlOperator = ">";
+						$sqlOperator = '>';
 						break;
 					case 'm':
-						$sqlOperator = "<=";
+						$sqlOperator = '<=';
 						break;
 					case 'h':
-						$sqlOperator = ">=";
+						$sqlOperator = '>=';
 						break;
 					case 'i':
 					case 'ni':
@@ -967,7 +967,7 @@ class QueryGenerator {
 						$value = (($conditionInfo['operator']=='ni' || $conditionInfo['operator']=='nin') ? 'NOT ':'').'IN ('.implode(',', $vals).')';
 						break;
 					default:
-						$sqlOperator = "=";
+						$sqlOperator = '=';
 				}
 				$fieldSqlList[$index] = "($baseTable.$baseTableIndex $sqlOperator $value)";
 				continue;
@@ -994,7 +994,7 @@ class QueryGenerator {
 						$columnList = array();
 						foreach ($nameFieldList as $column) {
 							if ($module == 'Users') {
-								$referenceTable = "vtiger_users".$fieldName;
+								$referenceTable = 'vtiger_users'.$fieldName;
 							} else {
 								$referenceField = $meta->getFieldByColumnName($column);
 								if (!$referenceField) {
@@ -1070,22 +1070,22 @@ class QueryGenerator {
 					}
 					switch ($conditionInfo['SQLOperator']) {
 						case 'e':
-							$sqlOperator = "=";
+							$sqlOperator = '=';
 							break;
 						case 'n':
-							$sqlOperator = "<>";
+							$sqlOperator = '<>';
 							break;
 						case 'l':
-							$sqlOperator = "<";
+							$sqlOperator = '<';
 							break;
 						case 'g':
-							$sqlOperator = ">";
+							$sqlOperator = '>';
 							break;
 						case 'm':
-							$sqlOperator = "<=";
+							$sqlOperator = '<=';
 							break;
 						case 'h':
-							$sqlOperator = ">=";
+							$sqlOperator = '>=';
 							break;
 						case 'i':
 						case 'ni':
@@ -1095,7 +1095,7 @@ class QueryGenerator {
 							$value = (($conditionInfo['SQLOperator']=='ni' || $conditionInfo['SQLOperator']=='nin') ? 'NOT ':'').'IN ('.implode(',', $vals).')';
 							break;
 						default:
-							$sqlOperator = "=";
+							$sqlOperator = '=';
 					}
 					if (!empty($value)) {
 						$fname = $meta->getObectIndexColumn();
@@ -1122,12 +1122,12 @@ class QueryGenerator {
 				if ($tableName=='vtiger_users') {
 					$reffield = $moduleFieldList[$conditionInfo['referenceField']];
 					if ($reffield->getUIType() == '101') {
-						$fieldSql = "(".$tableName.$conditionInfo['referenceField'].'.'.$columnName.' '.$valueSQL[0].")";
+						$fieldSql = '('.$tableName.$conditionInfo['referenceField'].'.'.$columnName.' '.$valueSQL[0].')';
 					} else {
-						$fieldSql = "(".$tableName.'.'.$columnName.' '.$valueSQL[0].")";
+						$fieldSql = '('.$tableName.'.'.$columnName.' '.$valueSQL[0].')';
 					}
 				} else {
-					$fieldSql = "(".$tableName.$conditionInfo['referenceField'].'.'.$columnName.' '.$valueSQL[0].")";
+					$fieldSql = '('.$tableName.$conditionInfo['referenceField'].'.'.$columnName.' '.$valueSQL[0].')';
 				}
 				$fieldSqlList[$index] = $fieldSql;
 			}
@@ -1355,7 +1355,7 @@ class QueryGenerator {
 			}
 
 			if ($field->getFieldName() == 'birthday' && !$this->isRelativeSearchOperators($operator)) {
-				$value = "DATE_FORMAT(".$db->quote($value).", '%m%d')";
+				$value = 'DATE_FORMAT('.$db->quote($value).", '%m%d')";
 			} else {
 				$value = $db->sql_escape_string($value);
 			}
@@ -1424,7 +1424,7 @@ class QueryGenerator {
 					break;
 			}
 			if ($field->getFieldDataType() == 'reference' && $operator == 'e' && empty($value)) {
-				$sql[] = " IS NULL";
+				$sql[] = ' IS NULL';
 			}
 			if ($this->requiresQuoteSearchOperators($operator) || (!$this->isNumericType($field->getFieldDataType()) &&
 					($field->getFieldName() != 'birthday' || ($field->getFieldName() == 'birthday' && $this->isRelativeSearchOperators($operator))))) {
@@ -1689,7 +1689,7 @@ class QueryGenerator {
 			}
 			$this->endGroup();
 		} else {
-			if (isset($input['search_field']) && $input['search_field'] !="") {
+			if (isset($input['search_field']) && $input['search_field'] !='') {
 				$fieldName=vtlib_purify($input['search_field']);
 			} else {
 				return ;
@@ -1702,7 +1702,7 @@ class QueryGenerator {
 			$moduleFields = $this->getModuleFields();
 			$field = $moduleFields[$fieldName];
 			$type = $field->getFieldDataType();
-			if (isset($input['search_text']) && $input['search_text']!="") {
+			if (isset($input['search_text']) && $input['search_text']!='') {
 				// search other characters like "|, ?, ?" by jagi
 				$value = $input['search_text'];
 				$stringConvert = function_exists('iconv') ? @iconv('UTF-8', $default_charset, $value) : $value;
