@@ -1843,10 +1843,7 @@ class CRMEntity {
 		$exclude_uitypes = array();
 
 		$tabid = getTabId($module);
-		if ($module == 'Calendar') {
-			$tabid = array('9', '16');
-		}
-		$sql = 'SELECT columnname FROM vtiger_field WHERE tabid in (' . generateQuestionMarks($tabid) . ') and vtiger_field.presence in (0,2)';
+		$sql = 'SELECT columnname FROM vtiger_field WHERE tabid=? and vtiger_field.presence in (0,2)';
 		$params = array($tabid);
 		if (count($exclude_columns) > 0) {
 			$sql .= ' AND columnname NOT IN (' . generateQuestionMarks($exclude_columns) . ')';
