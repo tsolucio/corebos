@@ -1155,6 +1155,7 @@ class CRMEntity {
 							if (!isset($this->fetched_records[$tempid]['record_id'])) {
 									$this->fetched_records[$tempid]['record_id'] = $tempid;
 									$this->fetched_records[$tempid]['record_module'] = $module;
+									$this->fetched_records[$tempid]['cbuuid'] = $adb->query_result($result['vtiger_crmentity'], $cn, 'cbuuid');
 							}
 						}
 					}
