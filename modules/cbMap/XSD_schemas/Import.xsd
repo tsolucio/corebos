@@ -1,16 +1,32 @@
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:element name="map">
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:sequence>
-        <xs:element name="targetmodule">
+        <xs:element type="xs:string" name="mapname" minOccurs="0" maxOccurs="1"/>
+        <xs:element type="xs:string" name="delimiter" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="duplicates" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="handling"/>
+              <xs:element name="fields">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="name"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="targetmodule" minOccurs="0" maxOccurs="1">
           <xs:complexType>
             <xs:sequence>
               <xs:element type="xs:string" name="targetname"/>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="fields">
-          <xs:complexType>
+        <xs:element name="fields" minOccurs="0" maxOccurs="1">
+          <xs:complexType mixed="true">
             <xs:sequence>
               <xs:element name="field" maxOccurs="unbounded" minOccurs="1">
                 <xs:complexType>
@@ -40,10 +56,10 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="matches">
-          <xs:complexType>
+        <xs:element name="matches" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType mixed="true">
             <xs:sequence>
-              <xs:element name="match" maxOccurs="unbounded" minOccurs="1">
+              <xs:element name="match">
                 <xs:complexType>
                   <xs:sequence>
                     <xs:element type="xs:string" name="fieldname"/>
@@ -56,7 +72,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="options">
+        <xs:element name="options" minOccurs="0" maxOccurs="1">
           <xs:complexType>
             <xs:sequence>
               <xs:element type="xs:string" name="update"/>
