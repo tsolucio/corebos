@@ -56,10 +56,10 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="matches" minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="matches" minOccurs="0">
           <xs:complexType mixed="true">
             <xs:sequence>
-              <xs:element name="match">
+              <xs:element name="match" maxOccurs="unbounded" minOccurs="1">
                 <xs:complexType>
                   <xs:sequence>
                     <xs:element type="xs:string" name="fieldname"/>
