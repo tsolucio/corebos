@@ -1088,7 +1088,7 @@ class CRMEntity {
 		}
 
 		if (isset($this->table_name)) {
-			$mod_index_col = $this->tab_name_index[$this->table_name];
+			$this->tab_name_index[$this->table_name];
 		}
 
 		// Lookup in cache for information
