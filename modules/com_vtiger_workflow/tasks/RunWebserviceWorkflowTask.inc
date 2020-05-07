@@ -39,11 +39,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 		$target_fields = $cbMap->WebserviceMapping($focus2->column_fields);
 
 		$wsconfig = $target_fields['WSConfig'];
-		$url = $wsconfig['wsurl'];
-		if (strstr($url, 'getSetting(')) {
-			$setkey = str_replace(array('getSetting(', ')'), array('', ''), $url);
-			$url = coreBOS_Settings::getSetting($setkey, '');
-		}
+		$url = $this->substituteSetting($wsconfig['wsurl']);
 		$method = $wsconfig['wshttpmethod'];
 		$methodname = $wsconfig['methodname'];
 		$wstype = $wsconfig['wstype'];
@@ -88,11 +84,8 @@ class RunWebserviceWorkflowTask extends VTTask {
 						$context = str_replace(array('getContext(', ')'), array('', ''), $findauth[1]);
 						$token = $entity->getContext();
 						$token = $token[$context];
-					} elseif (strstr($findauth[1], 'getSetting')) {
-						$setkey = str_replace(array('getSetting(', ')'), array('', ''), $findauth[1]);
-						$token = coreBOS_Settings::getSetting($setkey, '');
 					} else {
-						$token = $findauth[1];
+						$token = $this->substituteSetting($findauth[1]);
 					}
 					if ($findauth[0] == 'Token') {
 						$replace = 'Token: '.$token;
@@ -323,6 +316,20 @@ class RunWebserviceWorkflowTask extends VTTask {
 
 		$util->revertUser();
 		$logbg->debug('< RunWebservice');
+	}
+
+	public function substituteSetting($url) {
+		$start = strpos($url, 'getSetting(');
+		if ($start!==false) {
+			$end = strpos($url, ')', $start);
+			$first = substr($url, 0, $start);
+			$setting = substr($url, $start, $end-$start);
+			$last =  substr($url, $end+1);
+			$setkey = str_replace('getSetting(', '', $setting);
+			$value = coreBOS_Settings::getSetting($setkey, '');
+			$url = $first.$value.$last;
+		}
+		return $url;
 	}
 }
 ?>
