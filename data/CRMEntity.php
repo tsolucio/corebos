@@ -1140,9 +1140,17 @@ class CRMEntity {
 				// To avoid ADODB execption pick the entries that are in $tablename
 				if (isset($result[$tablename]) && !$setittoempty) {
 					for ($cn = 0; $cn < $adb->num_rows($result[$tablename]); $cn++) {
-						$isRecordDeleted = $adb->query_result($result['vtiger_crmentity'], $cn, 'deleted');
+						if ($module=='Users') {
+							$isRecordDeleted = $adb->query_result($result['vtiger_users'], $cn, 'deleted');
+						} else {
+							$isRecordDeleted = $adb->query_result($result['vtiger_crmentity'], $cn, 'deleted');
+						}
 						if ($isRecordDeleted==0) {
-							$tempid = $adb->query_result($result['vtiger_crmentity'], $cn, 'crmid');
+							if ($module=='Users') {
+								$tempid = $adb->query_result($result['vtiger_users'], $cn, 'id');
+							} else {
+								$tempid = $adb->query_result($result['vtiger_crmentity'], $cn, 'crmid');
+							}
 							if (!$from_wf && !isset($cachedIDPermissions[$tempid])) {
 								$cachedIDPermissions[$tempid] = isPermitted($module, 'DetailView', $tempid);
 							}
@@ -1155,11 +1163,15 @@ class CRMEntity {
 							if (!isset($this->fetched_records[$tempid]['record_id'])) {
 									$this->fetched_records[$tempid]['record_id'] = $tempid;
 									$this->fetched_records[$tempid]['record_module'] = $module;
-									$this->fetched_records[$tempid]['cbuuid'] = $adb->query_result($result['vtiger_crmentity'], $cn, 'cbuuid');
+									if ($module=='Users') {
+										$this->fetched_records[$tempid]['cbuuid'] = '';
+									} else {
+										$this->fetched_records[$tempid]['cbuuid'] = $adb->query_result($result['vtiger_crmentity'], $cn, 'cbuuid');
+									}
 							}
 						}
 					}
-				} else {
+				} elseif (!empty($result['vtiger_crmentity'])) {
 					for ($cn = 0; $cn < $adb->num_rows($result['vtiger_crmentity']); $cn++) {
 						$isRecordDeleted = $adb->query_result($result['vtiger_crmentity'], $cn, 'deleted');
 						if ($isRecordDeleted==0) {
