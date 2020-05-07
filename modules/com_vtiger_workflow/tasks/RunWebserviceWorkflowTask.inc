@@ -83,7 +83,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 			$nr = 0;
 			foreach ($headers as $head) {
 				$findauth = explode(':', $head);
-				if ($findauth[0] == 'Authorization') {
+				if ($findauth[0] == 'Authorization' || $findauth[0] == 'Token') {
 					if (strstr($findauth[1], 'getContext')) {
 						$context = str_replace(array('getContext(', ')'), array('', ''), $findauth[1]);
 						$token = $entity->getContext();
@@ -94,7 +94,11 @@ class RunWebserviceWorkflowTask extends VTTask {
 					} else {
 						$token = $findauth[1];
 					}
-					$replace = 'Authorization:Bearer: '.$token;
+					if ($findauth[0] == 'Token') {
+						$replace = 'Token: '.$token;
+					} else {
+						$replace = 'Authorization:Bearer: '.$token;
+					}
 					$headers[$nr] = $replace;
 				}
 				$nr++;
