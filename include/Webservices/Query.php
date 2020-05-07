@@ -59,7 +59,12 @@ function vtws_query($q, $user) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read is denied');
 	}
 
-	$result = $handler->query($q);
+	$result = array(
+		'wsresult' => $handler->query($q),
+		'wsmoreinfo' => array(
+			'totalrows' => $handler->getQueryTotalRows()
+		),
+	);
 	VTWS_PreserveGlobal::flush();
 	return $result;
 }
