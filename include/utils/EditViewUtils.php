@@ -1029,7 +1029,7 @@ function getConvertQuoteToInvoice($focus, $quote_focus, $quoteid) {
 	$focus->column_fields['currency_id'] = isset($quote_focus->column_fields['currency_id']) ? $quote_focus->column_fields['currency_id'] : '';
 	$focus->column_fields['conversion_rate'] = isset($quote_focus->column_fields['conversion_rate']) ? $quote_focus->column_fields['conversion_rate'] : '';
 	if (vtlib_isModuleActive('Warehouse')) {
-		$focus->column_fields['whid'] = $so_focus->column_fields['whid'];
+		$focus->column_fields['whid'] = $quote_focus->column_fields['whid'];
 	}
 	$cbMapid = GlobalVariable::getVariable('BusinessMapping_Quotes2Invoice', cbMap::getMapIdByName('Quotes2Invoice'));
 	if ($cbMapid) {
@@ -1083,7 +1083,7 @@ function getConvertQuoteToSoObject($focus, $quote_focus, $quoteid) {
 	$focus->column_fields['currency_id'] = isset($quote_focus->column_fields['currency_id']) ? $quote_focus->column_fields['currency_id'] : '';
 	$focus->column_fields['conversion_rate'] = isset($quote_focus->column_fields['conversion_rate']) ? $quote_focus->column_fields['conversion_rate'] : '';
 	if (vtlib_isModuleActive('Warehouse')) {
-		$focus->column_fields['whid'] = $so_focus->column_fields['whid'];
+		$focus->column_fields['whid'] = $quote_focus->column_fields['whid'];
 	}
 	$cbMapid = GlobalVariable::getVariable('BusinessMapping_Quotes2SalesOrder', cbMap::getMapIdByName('Quotes2SalesOrder'));
 	if ($cbMapid) {
