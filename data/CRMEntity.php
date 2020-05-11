@@ -3351,19 +3351,16 @@ class CRMEntity {
 	 * @param <type> $parentRole
 	 * @param <type> $userGroups
 	 */
-	protected function setupTemporaryTable($tableName, $tabId, $user, $parentRole, $userGroups) {
+	protected function setupTemporaryTable($tableName, $sharedmodule, $user, $parentRole, $userGroups) {
 		$module = null;
-		if (!empty($tabId)) {
-			$module = getTabModuleName($tabId);
+		if (!empty($sharedmodule)) {
+			$module = $sharedmodule;
 		}
 		$query = $this->getNonAdminAccessQuery($module, $user, $parentRole, $userGroups);
 		$query = "create temporary table IF NOT EXISTS $tableName(id int(11) primary key) ignore " . $query;
 		$db = PearDatabase::getInstance();
 		$result = $db->pquery($query, array());
-		if (is_object($result)) {
-			return true;
-		}
-		return false;
+		return is_object($result);
 	}
 
 	/**
@@ -3379,11 +3376,11 @@ class CRMEntity {
 		if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing($tabId)) {
 			$tableName = 'vt_tmp_u' . $user->id;
 			$sharingRuleInfo = $userprivs->getModuleSharingRules($module, 'read');
-			$sharedTabId = null;
+			$sharedModule = null;
 			if (!empty($sharingRuleInfo) && (count($sharingRuleInfo['ROLE']) > 0 || count($sharingRuleInfo['GROUP']) > 0)) {
 				$tableName = $tableName . '_t' . $tabId;
-				$sharedTabId = $tabId;
-			} elseif ($module == 'Calendar' || !empty($scope)) {
+				$sharedModule = $module;
+			} elseif (!empty($scope)) {
 				$tableName .= '_t' . $tabId;
 			}
 			list($tsSpecialAccessQuery, $typeOfPermissionOverride, $unused1, $unused2, $SpecialPermissionMayHaveDuplicateRows) = cbEventHandler::do_filter(
@@ -3392,12 +3389,12 @@ class CRMEntity {
 			);
 			if ($typeOfPermissionOverride=='fullOverride') {
 				// create the default temporary table in case it is needed
-				$this->setupTemporaryTable($tableName, $sharedTabId, $user, $userprivs->getParentRoleSequence(), $userprivs->getGroups());
+				$this->setupTemporaryTable($tableName, $sharedModule, $user, $userprivs->getParentRoleSequence(), $userprivs->getGroups());
 				VTCacheUtils::updateCachedInformation('SpecialPermissionWithDuplicateRows', $SpecialPermissionMayHaveDuplicateRows);
 				return $tsSpecialAccessQuery;
 			}
 			if ($typeOfPermissionOverride=='none' || trim($tsSpecialAccessQuery)=='') {
-				$this->setupTemporaryTable($tableName, $sharedTabId, $user, $userprivs->getParentRoleSequence(), $userprivs->getGroups());
+				$this->setupTemporaryTable($tableName, $sharedModule, $user, $userprivs->getParentRoleSequence(), $userprivs->getGroups());
 				$query = " INNER JOIN $tableName $tableName$scope ON $tableName$scope.id = vtiger_crmentity$scope.smownerid ";
 			} else {
 				global $adb;
@@ -3414,7 +3411,7 @@ class CRMEntity {
 				} elseif ($typeOfPermissionOverride=='showTheseRecords') {
 					$query = " INNER JOIN {$tsTableName} on {$tsTableName}.id=vtiger_crmentity.crmid ";
 				} elseif ($typeOfPermissionOverride=='SubstractFromUserPermission') {
-					$this->setupTemporaryTable($tableName, $sharedTabId, $user, $userprivs->getParentRoleSequence(), $userprivs->getGroups());
+					$this->setupTemporaryTable($tableName, $sharedModule, $user, $userprivs->getParentRoleSequence(), $userprivs->getGroups());
 					$query = " INNER JOIN $tableName $tableName$scope ON $tableName$scope.id = vtiger_crmentity$scope.smownerid ";
 					$query .= " INNER JOIN {$tsTableName} on {$tsTableName}.id=vtiger_crmentity.crmid ";
 				}
