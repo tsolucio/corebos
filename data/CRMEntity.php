@@ -1161,13 +1161,13 @@ class CRMEntity {
 							$fld_value = $adb->query_result($result[$tablename], $cn, $fieldcolname);
 							$this->fetched_records[$tempid][$fieldname] = $fld_value;
 							if (!isset($this->fetched_records[$tempid]['record_id'])) {
-									$this->fetched_records[$tempid]['record_id'] = $tempid;
-									$this->fetched_records[$tempid]['record_module'] = $module;
-									if ($module=='Users') {
-										$this->fetched_records[$tempid]['cbuuid'] = '';
-									} else {
-										$this->fetched_records[$tempid]['cbuuid'] = $adb->query_result($result['vtiger_crmentity'], $cn, 'cbuuid');
-									}
+								$this->fetched_records[$tempid]['record_id'] = $tempid;
+								$this->fetched_records[$tempid]['record_module'] = $module;
+								if ($module=='Users') {
+									$this->fetched_records[$tempid]['cbuuid'] = '';
+								} else {
+									$this->fetched_records[$tempid]['cbuuid'] = $adb->query_result($result['vtiger_crmentity'], $cn, 'cbuuid');
+								}
 							}
 						}
 					}
