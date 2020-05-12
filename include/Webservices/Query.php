@@ -9,11 +9,11 @@
  *************************************************************************************/
 require_once 'include/Webservices/QueryParser.php';
 
+$vtwsQueryHandler = '';
+
 function vtws_query($q, $user) {
-
+	global $log, $adb, $vtwsQueryHandler;
 	static $vtws_query_cache = array();
-
-	global $log,$adb;
 
 	// Cache the instance for re-use
 	$moduleRegex = "/[fF][rR][Oo][Mm]\s+([^\s;]+)/";
@@ -59,13 +59,18 @@ function vtws_query($q, $user) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read is denied');
 	}
 
-	$result = array(
-		'wsresult' => $handler->query($q),
+	VTWS_PreserveGlobal::flush();
+	$vtwsQueryHandler = $handler;
+	return $handler->query($q);
+}
+
+function vtwsQueryWithTotal($q, $user) {
+	global $vtwsQueryHandler;
+	return array(
+		'wsresult' => vtws_query($q, $user),
 		'wsmoreinfo' => array(
-			'totalrows' => $handler->getQueryTotalRows()
+			'totalrows' => $vtwsQueryHandler->getQueryTotalRows()
 		),
 	);
-	VTWS_PreserveGlobal::flush();
-	return $result;
 }
 ?>

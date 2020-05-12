@@ -175,4 +175,11 @@
 	<classname>addExeWFExpTask</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Change web service Query method to return total number of rows</description>
+	<filename>build/changeSets/2020/changeWSQueryMethod.php</filename>
+	<classname>changeWSQueryMethod</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
