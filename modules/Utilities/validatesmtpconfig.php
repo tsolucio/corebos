@@ -35,7 +35,7 @@ function verifyOutGoingMailServer() {
 		$mail_status_str = "'".$to_email."'=0&&&";
 	}
 	$error_str = getMailErrorString($mail_status_str);
-	$error_code = str_replace("mail_error=", "", $error_str);
+	$error_code = str_replace('mail_error=', '', $error_str);
 	$error_msg = strip_tags(parseEmailErrorString($error_code));
 	return array(
 		'og_server_status' => $mail_status,
@@ -46,7 +46,7 @@ function verifyOutGoingMailServer() {
 // Incoming Mail Server Configuration Verification
 function verifyIncomingMailServer() {
 	$controllers = array(
-		'settings'=>array( 'file' => 'src/controllers/SettingsController.php','class'=> 'MailManager_SettingsController')
+		'settings'=>array('file' => 'src/controllers/SettingsController.php', 'class'=> 'MailManager_SettingsController')
 	);
 	$request = new MailManager_Request($_REQUEST);
 	$request->set('_operation', 'settings');
@@ -74,7 +74,7 @@ function verifyIncomingMailServer() {
 		$array_result = $response->getResult();
 		return array(
 			'ic_server_status' => $array_result['status'],
-			'ic_server_message' => "Success"
+			'ic_server_message' => 'Success'
 		);
 	}
 }
