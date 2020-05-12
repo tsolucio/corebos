@@ -81,12 +81,12 @@ function verifyIncomingMailServer() {
 
 // Check Which Server Configuration to Validate
 if (isset($_REQUEST['og_mail_server_active']) && $_REQUEST['og_mail_server_active'] == 'on') {
-	$og_verification_status_object[] = verifyOutGoingMailServer();
-	if ($og_verification_status_object[0]['og_server_status'] == 1) {
+	$og_verification_status_object = verifyOutGoingMailServer();
+	if ($og_verification_status_object['og_server_status'] == 1) {
 		$og_config_validation_error_message = 'success';
 		$og_config_has_error = false;
 	} else {
-		$og_config_validation_error_message = $og_verification_status_object[0]['og_server_message'];
+		$og_config_validation_error_message = $og_verification_status_object['og_server_message'];
 		$og_config_has_error = true;
 	}
 
@@ -108,12 +108,12 @@ if (isset($_REQUEST['og_mail_server_active']) && $_REQUEST['og_mail_server_activ
 }
 
 if (isset($_REQUEST['ic_mail_server_active']) && $_REQUEST['ic_mail_server_active'] == 'on') {
-	$ic_verification_status_object[] = verifyIncomingMailServer();
-	if (($ic_verification_status_object[0]['ic_server_message'] == 'Success')) {
+	$ic_verification_status_object = verifyIncomingMailServer();
+	if (($ic_verification_status_object['ic_server_message'] == 'Success')) {
 		$ic_config_validation_error_message = 'success';
 		$ic_config_has_error = false;
 	} else {
-		$ic_config_validation_error_message = $ic_verification_status_object[0]['ic_server_message'];
+		$ic_config_validation_error_message = $ic_verification_status_object['ic_server_message'];
 		$ic_config_has_error = true;
 	}
 
