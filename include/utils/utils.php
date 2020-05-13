@@ -2672,7 +2672,7 @@ function get_special_on_clause($field_list) {
 			$tbl_alias = 'crm';
 		} elseif ($tbl_name == 'vtiger_customerdetails') {
 			$tbl_alias = 'custd';
-		} elseif ($tbl_name == 'vtiger_contactdetails' && spl_chk == 'HelpDesk') {
+		} elseif ($tbl_name == 'vtiger_contactdetails' && $spl_chk == 'HelpDesk') {
 			$tbl_alias = 'contd';
 		} elseif (stripos($tbl_name, 'cf') === (strlen($tbl_name) - strlen('cf'))) {
 			$tbl_alias = 'tcf'; // Custom Field Table Prefix to use in subqueries
@@ -2933,9 +2933,9 @@ function getCallerName($from) {
 		$callerModule = " (<a href='index.php?module=$module&action=index'>$module</a>)";
 		$callerID = $callerInfo['id'];
 
-		$caller =$caller."<a href='index.php?module=$module&action=DetailView&record=$callerID'>$callerName</a>$callerModule";
+		$caller = "<a href='index.php?module=$module&action=DetailView&record=$callerID'>$callerName</a>$callerModule";
 	} else {
-		$caller = $caller."<br>
+		$caller = "<br>
 			<a target='_blank' href='index.php?module=Leads&action=EditView&phone=$from'>".getTranslatedString('LBL_CREATE_LEAD')."</a><br>
 			<a target='_blank' href='index.php?module=Contacts&phone=$from'>".getTranslatedString('LBL_CREATE_CONTACT')."</a><br>
 			<a target='_blank' href='index.php?module=Accounts&action=EditView&phone=$from'>".getTranslatedString('LBL_CREATE_ACCOUNT').'</a>';
