@@ -1178,18 +1178,18 @@ function upload_product_image_file($mode, $id) {
 }
 
 /** Function to upload product image file
- * @param $id -- id :: Type integer
- * @param $deleted_array -- images to be deleted :: Type array
- * @returns $imagename -- imagelist:: Type array
+ * @param integer $id product crmid
+ * @param array $deleted_array images to be deleted
+ * @return array $imagename imagelist
  */
-function getProductImageName($id, $deleted_array = '') {
+function getProductImageName($id, $deleted_array = array()) {
 	global $log, $adb;
 	$log->debug('> getProductImageName '.$id);
 	$image_array=array();
 	$result = $adb->pquery('select imagename from vtiger_products where productid=?', array($id));
 	$image_name = $adb->query_result($result, 0, 'imagename');
 	$image_array=explode('###', $image_name);
-	if ($deleted_array!='') {
+	if (count($deleted_array)>0) {
 		$resultant_image = array();
 		$resultant_image=array_merge(array_diff($image_array, $deleted_array));
 		$imagelists=implode('###', $resultant_image);
