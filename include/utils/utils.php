@@ -2835,7 +2835,7 @@ function getSecParameterforMerge($module) {
 				$sec_parameter .= ' vtiger_groups.groupname IN (
 					SELECT groupname
 					FROM vtiger_groups
-					WHERE groupid IN ('. implode(',', getCurrentUserGroupList()) .')) OR ';
+					WHERE groupid IN ('. implode(',', $userprivs->getGroups()) .')) OR ';
 			}
 			$sec_parameter .= ' vtiger_groups.groupname IN (
 				SELECT vtiger_groups.groupname
