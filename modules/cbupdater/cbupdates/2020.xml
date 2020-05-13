@@ -182,4 +182,11 @@
 	<classname>changeWSQueryMethod</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>fatjola</author>
+	<description>Add Clickatell Notification Driver</description>
+	<filename>build/changeSets/2020/notificationdriversClickatell.php</filename>
+	<classname>notificationdriversClickatell</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
