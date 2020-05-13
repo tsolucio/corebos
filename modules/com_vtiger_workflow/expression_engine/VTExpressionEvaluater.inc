@@ -180,6 +180,7 @@ class VTFieldExpressionEvaluater {
 			'max' => 'cbexpsql_max',
 			'avg' => 'cbexpsql_avg',
 			'count' => 'cbexpsql_count',
+			'group_concat' => 'cbexpsql_groupconcat',
 			'isNumeric' => 'cbexpsql_isnumber',
 			'isString' => 'cbexpsql_isstring',
 			'OR' => 'cbexpsql_or',
