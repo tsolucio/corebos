@@ -32,7 +32,8 @@ function clickatellsync($input) {
 	error_log($LogContent.' \n', 3, $logFile);
 	$messageid = $request->messageId;
 	if ($request->status == 'RECEIVED_BY_RECIPIENT') {
-		$unique = $adb->pquery("SELECT smsnotifierid FROM `vtiger_smsnotifier_status` WHERE smsmessageid =? and status = 'Dispatched'",
+		$unique = $adb->pquery(
+			"SELECT smsnotifierid FROM `vtiger_smsnotifier_status` WHERE smsmessageid =? and status = 'Dispatched'",
 			array($messageid)
 		);
 		$smsnotifierid = $adb->query_result($unique, 0, 0);
