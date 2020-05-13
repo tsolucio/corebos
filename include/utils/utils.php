@@ -2145,7 +2145,7 @@ function getAccessPickListValues($module) {
 			$mulsel="select distinct $fieldname,sortid
 				from vtiger_$fieldname
 				inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$fieldname.picklist_valueid
-				where roleid in (\"". implode($roleids, "\",\"") ."\") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc";
+				where roleid in (\"". implode("\",\"", $roleids) ."\") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc";
 		} else {
 			$mulsel="select distinct $fieldname,sortid
 				from vtiger_$fieldname
