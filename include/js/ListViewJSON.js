@@ -144,18 +144,18 @@ const ListView = {
 		});
 	},
 	/**
-	 * Get the new headers in a onchange filter
+	 * Get the new headers in a onchange search
 	 */
 	 ListViewSearch: (url, urlstring, searchtype) => {
 		dataGridInstance.clear();
 	 	dataGridInstance.setRequestParams({'search': urlstring, 'searchtype': searchtype});
 	 	dataGridInstance.reloadData();
+		//update pagination onchange
 		dataGridInstance.setPerPage(parseInt(PageSize));
 	 	ListView.updateData();
-		//update pagination onchange
 	},
 	/**
-	 * Get the new headers in a onchange filter
+	 * Get the new headers in a onchange data
 	 */
 	 ListViewReloadData: () => {
 		dataGridInstance.clear();
