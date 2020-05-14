@@ -60,5 +60,5 @@ function getBusinessActions($view, $module, $id, $linktype, $user) {
 	}
 
 	$businessActions = Vtiger_Link::getAllByType($tabid, $type, $parameters, $user->id, $recordId);
-	return json_encode($businessActions);
+	return $businessActions;
 }
