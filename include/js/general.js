@@ -1292,7 +1292,7 @@ function run_massedit() {
 							ListView.ListViewJSON('massedit');
 							var result = response.split('&#&#&#');
 							if (result[1] != '') {
-							 	ldsPrompt.show(alert_arr['ERROR'], result[1]);
+								ldsPrompt.show(alert_arr['ERROR'], result[1]);
 							}
 						});
 					}

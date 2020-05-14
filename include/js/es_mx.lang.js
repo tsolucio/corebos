@@ -423,5 +423,11 @@ var alert_arr = {
 	'Okay': 'Vale',
 	'Failed': 'Ha fallado',
 	'Warning': 'Aviso',
-	'Copied': 'Copiado'
+	'Copied': 'Copiado',
+	'LBL_SHOWING': 'Mostrando Registros ',
+	'LBL_RECORDS': ' de ',
+	'LNK_DELETE': 'borrar',
+	'LNK_EDIT': 'editar',
+	'LNK_EDIT_ACTION': 'Editar',
+	'LNK_DELETE_ACTION': 'Borrar',
 };
