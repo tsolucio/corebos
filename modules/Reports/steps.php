@@ -167,8 +167,14 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 
 			$BLOCK1 = getPrimaryStdFilterHTML($oReport->primodule, $oReport->stdselectedcolumn);
 			$BLOCK1 =array_merge((array)$BLOCK1, (array)getSecondaryStdFilterHTML($oReport->secmodule, $oReport->stdselectedcolumn));
-			$selectedcolumnvalue = '"'. $oReport->stdselectedcolumn . '"';
-			if (!is_admin($current_user) && isset($oReport->stdselectedcolumn) && strpos($BLOCK1, $selectedcolumnvalue) === false) {
+			$found = false;
+			foreach ($BLOCK1 as $block_field) {
+				$found = ($block_field['value']==$oReport->stdselectedcolumn);
+				if ($found) {
+					break;
+				}
+			}
+			if (!is_admin($current_user) && isset($oReport->stdselectedcolumn) && !$found) {
 				$BLOCK1 = array_merge((array)$BLOCK1, array('selected'=>true,'value'=>'Not Accessible','label'=>$app_strings['LBL_NOT_ACCESSIBLE']));
 			}
 
