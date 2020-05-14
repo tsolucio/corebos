@@ -5166,6 +5166,29 @@ var throttle = function (func, limit) {
 	};
 };
 
+/*
+ * Scrollthrottle
+ * ==============
+ * In addition to a regular throttle, that only pays
+ * attention to time, we also watch the travelled distance here
+ *
+*/
+function scrollThrottle(fn, wait, dist) {
+	var time = Date.now(),
+		sy = window.scrollY,
+		di = null;
+
+	return function() {
+		di = window.scrollY > sy ? 'down' : 'up';
+		var delta = di === 'down' ? window.scrollY - sy : sy - window.scrollY;
+		if (((time + wait - Date.now()) < 0) && (delta > dist)) {
+			fn();
+			time = Date.now();
+			sy = window.scrollY;
+		}
+	}
+}
+
 document.addEventListener('DOMContentLoaded', function (event) {
 	/* ======= Auto complete part relations ====== */
 	AutocompleteSetup();
@@ -6193,7 +6216,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 	window.cbOnDownScrollers = [];
 	window.cbOnUpScrollers = [];
 
-	window.addEventListener('scroll', throttle(cbOnScroll, 10));
+	window.addEventListener('scroll', scrollThrottle(cbOnScroll, 30, 10));
 
 	function cbOnScroll(e) {
 		window.requestAnimationFrame(function () {
@@ -6267,7 +6290,7 @@ const pageHeader = {
 	},
 	'OnDownScroll' : () => {
 		if (pageHeader.node() !== null) {
-			if (window.scrollY > pageHeader.stickPoint && !pageHeader.isSticky) {
+			if (window.scrollY > (pageHeader.stickPoint + 2) && !pageHeader.isSticky) {
 				pageHeader.isSticky = true;
 				pageHeader.node().classList.add('page-header_sticky');
 				pageHeader.node().classList.add('slds-is-fixed');
@@ -6282,11 +6305,13 @@ const pageHeader = {
 	'OnUpScroll' : () => {
 		if (pageHeader.node() !== null) {
 			pageHeader.expand();
-			if (window.scrollY < pageHeader.stickPoint && pageHeader.isSticky) {
+			if (window.scrollY < (pageHeader.stickPoint - 2) && pageHeader.isSticky) {
 				pageHeader.isSticky = false;
-				pageHeader.node().classList.remove('page-header_sticky');
-				pageHeader.node().classList.remove('slds-is-fixed');
-				pageHeader.placeholder().style.height = '0px';
+				window.setTimeout(function(){
+					pageHeader.node().classList.remove('page-header_sticky');
+					pageHeader.node().classList.remove('slds-is-fixed');
+					pageHeader.placeholder().style.height = '0px';
+				}, 80)
 				pageHeader.node().style.transform = 'translateY(0px)';
 			}
 		}
@@ -6340,13 +6365,8 @@ function headerOnUpScroll() {
 		csy = window.scrollY;
 
 	if (h !== null) {
-		window.setTimeout(checkHeaderScroll, 50);
-		function checkHeaderScroll() {
-			if (csy <= window.scrollY) {
-				h.classList.remove('header-scrolling');
-				h.dispatchEvent(headerExpand);
-			}
-		}
+		h.classList.remove('header-scrolling');
+		h.dispatchEvent(headerExpand);
 	}
 }
 
