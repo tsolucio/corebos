@@ -1289,10 +1289,10 @@ function run_massedit() {
 							method: 'POST',
 							url: 'index.php?module='+gVTModule+'&action='+gVTModule+'Ajax&file=ListView&ajax=meditupdate'
 						}).done(function (response) {
+							ListView.ListViewJSON('massedit');
 							var result = response.split('&#&#&#');
-							document.getElementById('ListViewContents').innerHTML= result[2];
 							if (result[1] != '') {
-								ldsPrompt.show(alert_arr['ERROR'], result[1]);
+							 	ldsPrompt.show(alert_arr['ERROR'], result[1]);
 							}
 						});
 					}
