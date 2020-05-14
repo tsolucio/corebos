@@ -264,9 +264,29 @@ function vtws_getReferenceValue($strids, $user) {
 	return serialize($result);
 }
 
-// $query string contains the search term we are looking for
-// $search_onlyin is a comma separated list of modules to search in
-// $restrictionids is an array which contains the user we are to search as and the account and contact restrictions
+/**
+ * launch a global search in the application
+ * @param string $query contains the search term we are looking for
+ * @param string $search_onlyin comma separated list of modules to search in
+ * @param array $restrictionids contains the user we are to search as and the account and contact restrictions
+ * @return array with the results
+ * @example {'query':'che', 'search_onlyin':'Accounts,Contacts', 'restrictionids': JSON.stringify({'userId': '19x1', 'accountId':'11x74', 'contactId':'12x1084'}) })
+ * @example {'query':'che', 'search_onlyin':'Accounts,Contacts', 'restrictionids': JSON.stringify({'userId': '19x1', 'accountId':'11x0', 'contactId':'12x0'}) })
+ */
+function cbwsgetSearchResults($query, $search_onlyin, $restrictionids, $user) {
+	return unserialize(vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user));
+}
+
+/**
+ * launch a global search in the application. use cbwsgetSearchResults instead of this function
+ * @see cbwsgetSearchResults
+ * @param string $query contains the search term we are looking for
+ * @param string $search_onlyin comma separated list of modules to search in
+ * @param array $restrictionids contains the user we are to search as and the account and contact restrictions
+ * @return string php serialized array with the results
+ * @example {'query':'che', 'search_onlyin':'Accounts,Contacts', 'restrictionids': JSON.stringify({'userId': '19x1', 'accountId':'11x74', 'contactId':'12x1084'}) })
+ * @example {'query':'che', 'search_onlyin':'Accounts,Contacts', 'restrictionids': JSON.stringify({'userId': '19x1', 'accountId':'11x0', 'contactId':'12x0'}) })
+ */
 function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 	global $adb,$current_user;
 	$res=array();

@@ -1,6 +1,6 @@
 <?php
 /*********************************************************************************
- * Copyright 2012-2014 JPL TSolucio, S.L.  --  This file is a part of coreBOSCP.
+ * Copyright 2012-2020 JPL TSolucio, S.L.  --  This file is a part of coreBOSCP.
  * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
  * Vizsage Public License (the "License"). You may not use this file except in compliance with the
  * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
@@ -14,9 +14,9 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	'name'    => 'getSearchResults',
+	'name'    => 'getSearchResultsArray',
 	'include' => 'include/Webservices/CustomerPortalWS.php',
-	'handler' => 'vtws_getSearchResults',
+	'handler' => 'cbwsgetSearchResults',
 	'prelogin'=> 0,
 	'type'    => 'POST',
 	'parameters' => array(
