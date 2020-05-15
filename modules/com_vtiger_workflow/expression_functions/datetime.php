@@ -78,11 +78,11 @@ function __cb_holidaydifference($arr) {
 	//add holidays dates
 	$mapData = getmapType($mapname);
 	print_r($mapData);
-    foreach ($mapData as $key => $dateVal) {
-        $holidayDate = new DateTime($dateVal);
-        if (strtotime($dateVal) >= strtotime($date1) && strtotime($dateVal) <= strtotime($date2)) {
-            $days -= $holidayDate->format('N') < 6 ? 1 : 0;
-        }
+	foreach ($mapData as $key => $dateVal) {
+		$holidayDate = new DateTime($dateVal);
+		if (strtotime($dateVal) >= strtotime($date1) && strtotime($dateVal) <= strtotime($date2)) {
+			$days -= $holidayDate->format('N') < 6 ? 1 : 0;
+		}
 	}
 	return $days;
 }
