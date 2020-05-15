@@ -42,6 +42,51 @@ function __vt_time_diff($arr) {
 	return (strtotime($time_operand1) - strtotime($time_operand2));
 }
 
+/* Holidays dates difference between (input dates)
+ *
+ * @return holidays
+ */
+
+function __cb_holidaydifference($arr) {
+	if (count($arr) > 1) {
+		$date1 = $arr[0];
+		$date2 = $arr[1];
+		$mapname = $arr[2];
+	} else {
+		$date1 = date('Y-m-d'); // Current date
+		$date2 = $arr[0];
+	}
+
+	if (empty($date1) || empty($date2)) {
+		return 0;
+	}
+	$firstDate = new DateTime($date1);
+	$lastDate = new DateTime($date2);
+	if ($firstDate>$lastDate) {
+		$h = $firstDate;
+		$firstDate = $lastDate;
+		$lastDate = $h;
+	}
+	$days = 0;
+	$oneDay = new DateInterval('P1D');
+	while ($firstDate->diff($lastDate)->days > 0) {
+		$days += $firstDate->format('N') < 6 ? 1 : 0; // get all weekdays from specified dates
+		$firstDate = $firstDate->add($oneDay);
+	}
+	print_r($days);
+
+	//add holidays dates
+	$mapData = getmapType($mapname);
+	print_r($mapData);
+    foreach ($mapData as $key => $dateVal) {
+        $holidayDate = new DateTime($dateVal);
+        if (strtotime($dateVal) >= strtotime($date1) && strtotime($dateVal) <= strtotime($date2)) {
+            $days -= $holidayDate->format('N') < 6 ? 1 : 0;
+        }
+	}
+	return $days;
+}
+
 /**
  * Calculate the time difference (input times) or (current time and input time) and
  * convert it into number of days.
@@ -109,17 +154,13 @@ function __cb_getWeekdayDifference($arr) {
 function __vt_add_days($arr) {
 	if (count($arr) > 1) {
 		$baseDate = $arr[0];
-		if (empty($baseDate)) {
-			$baseDate = date('Y-m-d'); // Current date
-		} else {
-			$baseDate = DateTimeField::convertToDBFormat($baseDate);
-		}
 		$noOfDays = $arr[1];
 	} else {
 		$noOfDays = $arr[0];
 		$baseDate = date('Y-m-d'); // Current date
 	}
-	$baseDate = strtotime($baseDate);
+	preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);
+	$baseDate = strtotime($match[0]);
 	$date = strftime('%Y-%m-%d', $baseDate + ($noOfDays * 24 * 60 * 60));
 	return $date;
 }
@@ -127,17 +168,13 @@ function __vt_add_days($arr) {
 function __vt_sub_days($arr) {
 	if (count($arr) > 1) {
 		$baseDate = $arr[0];
-		if (empty($baseDate)) {
-			$baseDate = date('Y-m-d'); // Current date
-		} else {
-			$baseDate = DateTimeField::convertToDBFormat($baseDate);
-		}
 		$noOfDays = $arr[1];
 	} else {
 		$noOfDays = $arr[0];
 		$baseDate = date('Y-m-d'); // Current date
 	}
-	$baseDate = strtotime($baseDate);
+	preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);
+	$baseDate = strtotime($match[0]);
 	$date = strftime('%Y-%m-%d', $baseDate - ($noOfDays * 24 * 60 * 60));
 	return $date;
 }
@@ -145,17 +182,13 @@ function __vt_sub_days($arr) {
 function __vt_add_months($arr) {
 	if (count($arr) > 1) {
 		$baseDate = $arr[0];
-		if (empty($baseDate)) {
-			$baseDate = date('Y-m-d'); // Current date
-		} else {
-			$baseDate = DateTimeField::convertToDBFormat($baseDate);
-		}
 		$noOfMonths = $arr[1];
 	} else {
 		$noOfMonths = $arr[0];
 		$baseDate = date('Y-m-d'); // Current date
 	}
-	$baseDate = strtotime("+$noOfMonths months", strtotime($baseDate));
+	preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);
+	$baseDate = strtotime("+$noOfMonths months", strtotime($match[0]));
 	$date = strftime('%Y-%m-%d', $baseDate);
 	return $date;
 }
@@ -163,26 +196,19 @@ function __vt_add_months($arr) {
 function __vt_sub_months($arr) {
 	if (count($arr) > 1) {
 		$baseDate = $arr[0];
-		if (empty($baseDate)) {
-			$baseDate = date('Y-m-d'); // Current date
-		} else {
-			$baseDate = DateTimeField::convertToDBFormat($baseDate);
-		}
 		$noOfMonths = $arr[1];
 	} else {
 		$noOfMonths = $arr[0];
 		$baseDate = date('Y-m-d'); // Current date
 	}
-	$baseDate = strtotime("-$noOfMonths months", strtotime($baseDate));
+	preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);
+	$baseDate = strtotime("-$noOfMonths months", strtotime($match[0]));
 	$date = strftime('%Y-%m-%d', $baseDate);
 	return $date;
 }
 
 function __vt_get_date($arr) {
 	switch (strtolower($arr[0])) {
-		case 'now':
-			return date('Y-m-d H:i:s');
-			break;
 		case 'today':
 			return date('Y-m-d');
 			break;
