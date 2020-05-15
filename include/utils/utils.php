@@ -153,18 +153,18 @@ function get_languages() {
  * @param string $mapname - mapname
  */
 function getmapType($mapname) {
-    global $adb, $log;
-    $log->debug('>< getmapType'.$mapname);
-    $sql = "SELECT contentjson FROM vtiger_cbmap LEFT JOIN vtiger_crmentity ON crmid=cbmapid WHERE deleted=0 AND maptype= 'Information Map' AND mapname = ?";
-    $result = $adb->pquery($sql, array($mapname));
-    if ($result) {
-        $contentjson = $adb->query_result($result, 0, 'contentjson');
-        $contentEntity = html_entity_decode($contentjson);
-        $res = json_decode($contentEntity, true);
-        $values = $res['information']['value'];
-        return $values;
-    }
-    return false;
+	global $adb, $log;
+	$log->debug('>< getmapType'.$mapname);
+	$sql = "SELECT contentjson FROM vtiger_cbmap LEFT JOIN vtiger_crmentity ON crmid=cbmapid WHERE deleted=0 AND maptype= 'Information Map' AND mapname = ?";
+	$result = $adb->pquery($sql, array($mapname));
+	if ($result) {
+		$contentjson = $adb->query_result($result, 0, 'contentjson');
+		$contentEntity = html_entity_decode($contentjson);
+		$res = json_decode($contentEntity, true);
+		$values = $res['information']['value'];
+		return $values;
+	}
+	return false;
 }
 
 /** Function to return language
@@ -390,7 +390,7 @@ function clean($string, $maxLength) {
  * Copy the specified request variable to the member variable of the specified object.
  * Do no copy if the member variable is already set.
  */
-function safe_map($request_var, & $focus, $always_copy = false) {
+function safe_map($request_var, &$focus, $always_copy = false) {
 	global $log;
 	$log->debug('> safe_map '.$request_var.','.get_class($focus).','.$always_copy);
 	safe_map_named($request_var, $focus, $request_var, $always_copy);
@@ -401,7 +401,7 @@ function safe_map($request_var, & $focus, $always_copy = false) {
  * Copy the specified request variable to the member variable of the specified object.
  * Do no copy if the member variable is already set.
  */
-function safe_map_named($request_var, & $focus, $member_var, $always_copy) {
+function safe_map_named($request_var, &$focus, $member_var, $always_copy) {
 	global $log;
 	$log->debug('> safe_map_named '.$request_var.','.get_class($focus).','.$member_var.','.$always_copy);
 	if (isset($_REQUEST[$request_var]) && ($always_copy || is_null($focus->$member_var))) {
