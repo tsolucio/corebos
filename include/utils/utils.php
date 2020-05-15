@@ -148,6 +148,25 @@ function get_languages() {
 	return $languages;
 }
 
+/**
+ * Function to get values for Information Map type
+ * @param string $mapname - mapname
+ */
+function getmapType($mapname) {
+    global $adb, $log;
+    $log->debug('>< getmapType'.$mapname);
+    $sql = "SELECT contentjson FROM vtiger_cbmap LEFT JOIN vtiger_crmentity ON crmid=cbmapid WHERE deleted=0 AND maptype= 'Information Map' AND mapname = ?";
+    $result = $adb->pquery($sql, array($mapname));
+    if ($result) {
+        $contentjson = $adb->query_result($result, 0, 'contentjson');
+        $contentEntity = html_entity_decode($contentjson);
+        $res = json_decode($contentEntity, true);
+        $values = $res['information']['value'];
+        return $values;
+    }
+    return false;
+}
+
 /** Function to return language
   * @param $key -- key:: Type string
   * @returns $languages -- languages:: Type string
