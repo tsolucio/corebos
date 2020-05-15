@@ -196,4 +196,11 @@
 	<classname>incFieldColumnMetadatasize</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>add new maptype picklist value in cbMap module</description>
+	<filename>build/changeSets/2020/addnewmaptype2cbMap.php</filename>
+	<classname>addnewmaptype2cbMap</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
