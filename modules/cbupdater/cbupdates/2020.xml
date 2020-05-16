@@ -196,4 +196,11 @@
 	<classname>incFieldColumnMetadatasize</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Make picklist_translations an Application change set</description>
+	<filename>build/changeSets/2020/makepicklist_translationsApp.php</filename>
+	<classname>makepicklist_translationsApp</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
