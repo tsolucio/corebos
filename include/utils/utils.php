@@ -371,7 +371,7 @@ function clean($string, $maxLength) {
  * Copy the specified request variable to the member variable of the specified object.
  * Do no copy if the member variable is already set.
  */
-function safe_map($request_var, & $focus, $always_copy = false) {
+function safe_map($request_var, &$focus, $always_copy = false) {
 	global $log;
 	$log->debug('> safe_map '.$request_var.','.get_class($focus).','.$always_copy);
 	safe_map_named($request_var, $focus, $request_var, $always_copy);
@@ -382,7 +382,7 @@ function safe_map($request_var, & $focus, $always_copy = false) {
  * Copy the specified request variable to the member variable of the specified object.
  * Do no copy if the member variable is already set.
  */
-function safe_map_named($request_var, & $focus, $member_var, $always_copy) {
+function safe_map_named($request_var, &$focus, $member_var, $always_copy) {
 	global $log;
 	$log->debug('> safe_map_named '.$request_var.','.get_class($focus).','.$member_var.','.$always_copy);
 	if (isset($_REQUEST[$request_var]) && ($always_copy || is_null($focus->$member_var))) {
