@@ -134,14 +134,14 @@ array_multisort($labels_length, $field_label, $querycolumns);
 $field_label=array_reverse($field_label);
 $querycolumns=array_reverse($querycolumns);
 $labels_length=array_reverse($labels_length);
-$csvheader = implode(",", $field_label);
+$csvheader = implode(',', $field_label);
 //<<<<<<<<<<<<<<<<End>>>>>>>>>>>>>>>>>>>>>>>>
 
 // check if custom field CONTACT_MAILINGADDRESS exists and is not empty
 // if not empty remove all other relevant address fields fom $csvheader & query
 
 if (count($querycolumns) > 0) {
-	$selectcolumns = implode($querycolumns, ",");
+	$selectcolumns = implode(',', $querycolumns);
 
 	$query = "select $selectcolumns from vtiger_contactdetails
 		inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
@@ -201,9 +201,9 @@ if (count($querycolumns) > 0) {
 			}
 			$actual_values[$x] = decode_html(str_replace(',', ' ', $actual_values[$x]));
 		}
-		$mergevalue[] = implode($actual_values, ',');
+		$mergevalue[] = implode(',', $actual_values);
 	}
-	$csvdata = implode($mergevalue, '###');
+	$csvdata = implode('###', $mergevalue);
 } else {
 	die('No fields to do Merge');
 }
