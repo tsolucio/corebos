@@ -13,7 +13,7 @@ global $app_strings, $default_charset;
 
 $randomfilename = 'vt_' . str_replace(array('.',' '), '', microtime());
 
-// $mergeTemplatePath and $mergeTemplateName are set in module/evvtgendoc/odt.php
+// $mergeTemplatePath and $mergeTemplateName are set in module/evvtgendoc/gendocAction.php
 $fileContent = base64_encode(file_get_contents($mergeTemplatePath));
 $extension=GetFileExtension($mergeTemplateName);
 $filename= $randomfilename . "_mmrg.$extension";

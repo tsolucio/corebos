@@ -42,7 +42,7 @@ $orgfile=$adb->pquery(
 	array($fileid)
 );
 $mergeTemplatePath=$adb->query_result($orgfile, 0, 'filepath');
-$mergeTemplateName=basename($adb->query_result($orgfile, 0, 'name'), '.odt');
+$mergeTemplateName=$adb->query_result($orgfile, 0, 'name');
 $mergetemplate = $adb->query_result($orgfile, 0, 'mergetemplate');
 if ($mergetemplate=='1') {
 	$mergetemplatefor = $adb->query_result($orgfile, 0, 'template_for');
@@ -128,7 +128,7 @@ if ($mergetemplate=='1') {
 				rename(($format=='doc'?$filename:$pdfname), $sname);
 				break;
 			case 'save':
-				OpenDocument::saveAsDocument($record, $module, $format, $mergeTemplateName, ($format=='pdf' ? $fullpdfname : $fullfilename), $name);
+				OpenDocument::saveAsDocument($record, $module, $format, basename($mergeTemplateName, '.odt'), ($format=='pdf' ? $fullpdfname : $fullfilename), $name);
 				break;
 		}
 		$out.= '<a href="' . OpenDocument::GENDOCCACHE . '/' . $module . '/odtout' . $record . '.odt">' . $app_strings['DownloadMergeFile'] . '</a></td></tr></table><br/>';
