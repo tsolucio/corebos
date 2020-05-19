@@ -337,6 +337,7 @@ function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 					break;
 			}
 		}
+		$listquery = 'select * '.substr($listquery, stripos($listquery, ' from '));
 		$where = getUnifiedWhere($listquery, $module, $query);
 		if ($where != '') {
 			$listquery .= ' and ('.$where.')';
@@ -428,7 +429,18 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 	$list_block = array();
 	//getting the field table entries from database
 	$tabid = getTabid($module);
-
+	$bmapname = $module.'_ListColumns';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapLC = $cbMap->ListColumns();
+		$parentmodule = 'Home';
+		$focus->list_fields = $cbMapLC->getListFieldsFor($parentmodule);
+		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor($parentmodule);
+		$focus->list_link_field = $cbMapLC->getListLinkFor($parentmodule);
+		$oCv->list_fields = $focus->list_fields;
+		$oCv->list_fields_name = $focus->list_fields_name;
+	}
 	if ($oCv) {
 		if (isset($oCv->list_fields)) {
 			$focus->list_fields = $oCv->list_fields;
@@ -491,7 +503,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 	//constructing the uitype and columnname array
 	$ui_col_array=array();
 
-	$query = 'SELECT uitype, columnname, fieldname
+	$query = 'SELECT uitype, columnname, fieldname, typeofdata
 		FROM vtiger_field
 		WHERE vtiger_field.tabid=? and vtiger_field.presence in (0,2) AND fieldname IN ('. generateQuestionMarks($field_list).') ';
 	$params = array($tabid, $field_list);
@@ -502,7 +514,9 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 		$uitype=$adb->query_result($result, $i, 'uitype');
 		$columnname=$adb->query_result($result, $i, 'columnname');
 		$field_name=$adb->query_result($result, $i, 'fieldname');
+		$typeofdata = $adb->query_result($result, $i, 'typeofdata');
 		$tempArr[$uitype]=$columnname;
+		$tempArr['typeofdata'] = $typeofdata;
 		$ui_col_array[$field_name]=$tempArr;
 	}
 
