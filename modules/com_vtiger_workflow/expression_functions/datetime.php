@@ -75,10 +75,14 @@ function __cb_holidaydifference($arr) {
 		$firstDate = $firstDate->add($oneDay);
 	}
 
-	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$mapname, cbMap::getMapIdByName($mapname));
-	if ($cbMapid) {
-		$cbMap = cbMap::getMapByID($cbMapid);
-		$holidays = $cbMap->InformationMap()->readInformationValue();
+	if($mapname != '') {
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$mapname, cbMap::getMapIdByName($mapname));
+		if ($cbMapid != 0) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$holidays = $cbMap->InformationMap()->readInformationValue();
+		} else {
+			$holidays = explode(',', $arr[3]);
+		}
 		//add holidays dates
 		foreach ($holidays as $key => $dateVal) {
 			$holidayDate = new DateTime($dateVal);
