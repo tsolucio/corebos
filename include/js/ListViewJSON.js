@@ -189,8 +189,8 @@ const ListView = {
 			let filters = response[1];
 			//update options for basic search
 			document.getElementById('bas_searchfield').innerHTML = '';
-			for(let h in headers) {
-				if(headers[h]['name'] != 'action') { 
+			for (let h in headers) {
+				if (headers[h]['name'] != 'action') {
 					let option = document.createElement('option');
 					option.innerHTML = headers[h]['header'];
 					option.value = headers[h]['name'];
@@ -199,7 +199,7 @@ const ListView = {
 			}
 			ListView.setFilters(filters, true);
 		 	dataGridInstance.setColumns(headers);
-		 	dataGridInstance.reloadData();			
+		 	dataGridInstance.reloadData();
 		});
 		ListView.updateData();
 		//update pagination onchange
