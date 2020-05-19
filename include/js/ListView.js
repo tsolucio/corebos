@@ -1033,20 +1033,7 @@ function alphabetic(module, url, dataid) {
 	}
 	getObj(dataid).className = 'searchAlphselected';
 	document.getElementById('status').style.display = 'inline';
-	jQuery.ajax({
-		method: 'POST',
-		url: 'index.php?module=' + module + '&action=' + module + 'Ajax&file=index&ajax=true&search=true&' + url
-	}).done(function (response) {
-		document.getElementById('status').style.display = 'none';
-		var result = response.split('&#&#&#');
-		var LVC = document.getElementById('ListViewContents');
-		LVC.innerHTML = result[2];
-		vtlib_executeJavascriptInElement(LVC);
-		if (result[1] != '') {
-			ldsPrompt.show(alert_arr['ERROR'], result[1]);
-		}
-		document.getElementById('basicsearchcolumns').innerHTML = '';
-	});
+	ListView.ListViewJSON('alphabetic', url);
 }
 
 function PositionDialogToCenter(ID) {

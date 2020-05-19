@@ -41,6 +41,9 @@ const ListView = {
 		} else if (actionType == 'search') {
 			ListView.ListViewSearch(url, urlstring, searchtype);
 			document.getElementById('status').style.display = 'none';
+		} else if (actionType == 'alphabetic') {
+			ListView.ListViewAlpha(urlstring);
+			document.getElementById('status').style.display = 'none';
 		} else if (actionType == 'massedit') {
 			//use this function to reload data in every change
 			ListView.ListViewReloadData();
@@ -158,6 +161,17 @@ const ListView = {
 		//update pagination onchange
 		dataGridInstance.setPerPage(parseInt(PageSize));
 	 	ListView.updateData();
+	},
+	/**
+	 * Get results for alphabetic search
+	 */
+	 ListViewAlpha: (url) => {
+		dataGridInstance.clear();
+	 	dataGridInstance.setRequestParams({'search': url, 'searchtype': 'Basic'});
+	 	dataGridInstance.reloadData();
+		//update pagination onchange
+		dataGridInstance.setPerPage(parseInt(PageSize));
+		ListView.updateData();
 	},
 	/**
 	 * Get the new headers in a onchange data

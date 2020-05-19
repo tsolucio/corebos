@@ -63,12 +63,15 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'desc', $sort
 
 	if ($searchtype == 'Basic' && $searchUrl != '') {
 		$search = explode('&', $searchUrl);
-		$_search['search_field'] = explode('=', $search[0])[1];
-		$_search['searchtype'] = explode('=', $search[1])[1];
-		$_search['search_text'] = explode('=', $search[2])[1];
+		foreach ($search as $key => $value) {
+			if($value != '') {
+				$arg = explode('=', $value)[0];
+				$val = explode('=', $value)[1];
+				$_search[$arg] = $val;
+			}
+		}
 		$_search['action'] = $currentModule.'Ajax';
 		$_search['module'] = $currentModule;
-		$_search['query'] = 'true';
 		$_search['search'] = 'true';
 	} elseif ($searchtype == 'Advanced' && $searchUrl != '') {
 		$search = explode('&', $searchUrl);
