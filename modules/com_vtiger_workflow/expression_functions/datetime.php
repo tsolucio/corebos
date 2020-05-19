@@ -77,7 +77,6 @@ function __cb_holidaydifference($arr) {
 		$days += $firstDate->format('N') < $lastdow ? 1 : 0;
 		$firstDate = $firstDate->add($oneDay);
 	}
-	print_r('days one         '.$days);
 
 	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$mapname, cbMap::getMapIdByName($mapname));
 	if ($cbMapid) {
@@ -92,7 +91,6 @@ function __cb_holidaydifference($arr) {
 			}
 		}
 	}
-	print_r('days two           '.$days);
 	return $days;
 }
 
