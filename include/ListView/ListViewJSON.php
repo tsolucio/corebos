@@ -146,7 +146,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'desc', $sort
 				}
 			}
 			$rows['action'] = '';
-			$rows['assigned_user_id'] = getUserFullName($row['smownerid']);
+			$rows['assigned_user_id'] = isset($row['smownerid']) ? getUserFullName($row['smownerid']) : '';
 			$rows['recordid'] = $row[$entityidfield];
 			$rows['reference'] = $fieldname;
 			$rows['relatedRows'] = $linkRow;

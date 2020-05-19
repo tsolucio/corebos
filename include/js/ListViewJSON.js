@@ -12,10 +12,10 @@
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
-var module = '';
-var PageSize = 20;
+let module = '';
+let PageSize = 20;
 const tuiGrid = tui.Grid;
-var dataGridInstance;
+let dataGridInstance;
 document.addEventListener('DOMContentLoaded', function () {
 	ListView.ListViewJSON();
 }, false);
@@ -29,10 +29,10 @@ const ListView = {
 			module = document.getElementById('curmodule').value;
 		}
 		GlobalVariable_getVariable('Application_ListView_PageSize', 20, module, '').then(function (response) {
-			var obj = JSON.parse(response);
+			let obj = JSON.parse(response);
 			PageSize = obj.Application_ListView_PageSize;
 		});
-		var url = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=listViewJSON&formodule='+module;
+		let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=listViewJSON&formodule='+module;
 		if (actionType == 'filter') {
 			document.getElementById('basicsearchcolumns').innerHTML = '';
 			document.basicSearch.search_text.value = '';
@@ -55,10 +55,10 @@ const ListView = {
 	 * Get all headers for table
 	 */
 	getColumnHeaders: (headerObj) => {
-		var res = [];
-		var header = {};
-		var filter = {};
-		for (var key in headerObj) {
+		let res = [];
+		let header = {};
+		let filter = {};
+		for (let key in headerObj) {
 			if (key == 'action') {
 				header = {
 					name: key,
@@ -91,13 +91,18 @@ const ListView = {
 	 * Load the default view in the first time
 	 */
 	ListViewDefault: (module, url) => {
-		jQuery.ajax({
-			method: 'GET',
-			url: url+'&columns=true'
-		}).then(function (response) {
-			var headerRes = JSON.parse(response);
-			var headers = ListView.getColumnHeaders(headerRes[0]);
-			var filters = headerRes[1];
+		fetch(
+			url+'&columns=true',
+			{
+				method: 'get',
+				headers: {
+					'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+				},
+				credentials: 'same-origin',
+			}
+		).then(response => response.json()).then(response => {
+			let headers = ListView.getColumnHeaders(response[0]);
+			let filters = response[1];
 			ListView.setFilters(filters);
 			dataGridInstance = new tuiGrid({
 				el: document.getElementById('listview-tui-grid'),
@@ -170,16 +175,31 @@ const ListView = {
 		dataGridInstance.setRequestParams({'search': '', 'searchtype': ''});
 		dataGridInstance.clear();
 		dataGridInstance.reloadData();
-		jQuery.ajax({
-			method: 'GET',
-			url: url+'&columns=true'
-		}).then(function (response) {
-			var headerRes = JSON.parse(response);
-			var headers = ListView.getColumnHeaders(headerRes[0]);
-			var filters = headerRes[1];
+		fetch(
+			url+'&columns=true',
+			{
+				method: 'get',
+				headers: {
+					'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+				},
+				credentials: 'same-origin',
+			}
+		).then(response => response.json()).then(response => {
+			let headers = ListView.getColumnHeaders(response[0]);
+			let filters = response[1];
+			//update options for basic search
+			document.getElementById('bas_searchfield').innerHTML = '';
+			for(let h in headers) {
+				if(headers[h]['name'] != 'action') { 
+					let option = document.createElement('option');
+					option.innerHTML = headers[h]['header'];
+					option.value = headers[h]['name'];
+					document.getElementById('bas_searchfield').appendChild(option);
+				}
+			}
 			ListView.setFilters(filters, true);
 		 	dataGridInstance.setColumns(headers);
-		 	dataGridInstance.reloadData();
+		 	dataGridInstance.reloadData();			
 		});
 		ListView.updateData();
 		//update pagination onchange
@@ -189,10 +209,10 @@ const ListView = {
 	 * Get all checked rows
 	 */
 	getAllCheckedRows: (type, el) => {
-		var checkboxes = document.getElementsByName('selected_id[]');
-		var checkboxesChecked = [];
+		let checkboxes = document.getElementsByName('selected_id[]');
+		let checkboxesChecked = [];
 		if (type == 'currentPage') {
-			for (var i = 0; i < checkboxes.length; i++) {
+			for (let i = 0; i < checkboxes.length; i++) {
 				if (el != '' && el.checked == true) {
 					checkboxesChecked.push(checkboxes[i].id);
 				} else {
@@ -200,7 +220,7 @@ const ListView = {
 				}
 			}
 		} else {
-			for (var i = 0; i < checkboxes.length; i++) {
+			for (let i = 0; i < checkboxes.length; i++) {
 				if (checkboxes[i].checked) {
 					checkboxesChecked.push(checkboxes[i].id);
 				}
@@ -212,15 +232,15 @@ const ListView = {
 	 * Get all checked rows to delete them
 	 */
 	getCheckedRows: (type, el = '') => {
-		var checkedRows = ListView.getAllCheckedRows(type, el);
+		let checkedRows = ListView.getAllCheckedRows(type, el);
 		let ids = [];
 		let rowKeys = [];
-		for (var id in checkedRows) {
-			var recordId = dataGridInstance.getValue(parseInt(checkedRows[id]), 'recordid');
+		for (let id in checkedRows) {
+			let recordId = dataGridInstance.getValue(parseInt(checkedRows[id]), 'recordid');
 			ids.push(recordId);
 			rowKeys.push(checkedRows[id]);
 		}
-		var	select_options = ids.join(';');
+		let	select_options = ids.join(';');
 		if (!select_options.endsWith(';') && select_options != '') {
 			select_options += ';';
 		}
@@ -257,12 +277,12 @@ const ListView = {
 		const limit_start_rec = (page-1) * PageSize;
 		const currentPage = (limit_start_rec + 1) + ' - ' + (limit_start_rec + currentPageSize);
 
-		for (var i = 0; i < currentPageSize; i++) {
-			var recordid = dataGridInstance.getValue(i, 'recordid');
-			var referenceField = dataGridInstance.getValue(i, 'reference');
-			var referenceValue = dataGridInstance.getValue(i, referenceField);
-			var relatedRows = dataGridInstance.getValue(i, 'relatedRows');
-			for (var fName in relatedRows) {
+		for (let i = 0; i < currentPageSize; i++) {
+			let recordid = dataGridInstance.getValue(i, 'recordid');
+			let referenceField = dataGridInstance.getValue(i, 'reference');
+			let referenceValue = dataGridInstance.getValue(i, referenceField);
+			let relatedRows = dataGridInstance.getValue(i, 'relatedRows');
+			for (let fName in relatedRows) {
 				let moduleName = relatedRows[fName][0];
 				let fieldId = relatedRows[fName][1];
 				let fieldValue = `<a href="index.php?module=${moduleName}&action=DetailView&record=${fieldId}">${relatedRows[fName][2]}<a>`;
@@ -272,10 +292,10 @@ const ListView = {
 					dataGridInstance.setValue(i, fName, '', false);
 				}
 			}
-			var aAction = `
+			let aAction = `
 				<a href="index.php?module=${module}&action=EditView&record=${recordid}&return_module=${module}&return_action=index">${alert_arr['LNK_EDIT']}</a> | 
 				<a href="javascript:confirmdelete('index.php?module=${module}&action=Delete&record=${recordid}&return_module=${module}&return_action=index&parenttab=ptab');">${alert_arr['LNK_DELETE']}</a>`;
-			var aVal = '<a href="index.php?module='+module+'&action=DetailView&record='+recordid+'">'+referenceValue+'<a>';
+			let aVal = '<a href="index.php?module='+module+'&action=DetailView&record='+recordid+'">'+referenceValue+'<a>';
 			dataGridInstance.setValue(i, referenceField, aVal, false);
 			dataGridInstance.setValue(i, 'action', aAction, false);
 		}
