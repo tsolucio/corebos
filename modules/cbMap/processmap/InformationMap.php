@@ -1,0 +1,70 @@
+<?php
+/*************************************************************************************************
+ * Copyright 2020 Spike, JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
+ * file except in compliance with the License. You can redistribute it and/or modify it
+ * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
+ * granted by the License. coreBOS distributed by JPL TSolucio S.L. is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Unless required by
+ * applicable law or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT ANY WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License. You may obtain a copy of the License
+ * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
+ *************************************************************************************************
+ *  Module       : Business Mappings:: Module to Module Mapping
+ *  Version      : 1.0
+ *  Author       : JPL TSolucio, S. L.
+ *************************************************************************************************
+ * The accepted format is:
+<map>
+	<information>
+		<infotype>Italy Holidays</infotype>
+		<value>2020-04-01</value>
+		<value>2020-04-11</value>
+		<value>2020-05-11</value>
+		<value>2020-05-16</value>
+		<value>2020-05-18</value>
+	</information>
+</map>
+ *************************************************************************************************/
+
+require_once 'modules/cbMap/cbMap.php';
+require_once 'modules/cbMap/processmap/processMap.php';
+
+class InformationMap extends processcbMap {
+	private $mapping = array();
+
+	public function processMap($arguments) {
+		$this->convertMap2Array();
+		return $this;
+	}
+
+	public function readInformationValue() {
+		if (isset($this->mapping['information']['value'])) {
+			return $this->mapping['information']['value'];
+		}
+		return array();
+	}
+
+	private function convertMap2Array() {
+		$xml = $this->getXMLContent();
+		$mapping=array();
+		$mapping['information'] = array();
+		$mapping['information']['infotype']=array();
+		$mapping['information']['value']=array();
+		foreach ($xml->information->value as $k => $v) {
+			$date = (Array)$v[0];
+			$value[]= isset($date[0]) ? (String)$date[0] : '';
+		}
+		foreach ($xml->information->infotype as $k => $v) {
+			$info = (Array)$v[0];
+			$infotypeinfotype[] = isset($info[0]) ? (String)$info[0] : '';
+		}
+		$mapping['information']['infotype']=$infotypeinfotype;
+		$mapping['information']['value']=$value;
+		$this->mapping = $mapping;
+	}
+}
+?>
