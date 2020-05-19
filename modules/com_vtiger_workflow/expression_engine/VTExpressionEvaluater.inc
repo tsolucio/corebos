@@ -106,6 +106,7 @@ class VTFieldExpressionEvaluater {
 			'number_format' => '__cb_number_format',
 			'min' => '__cb_min',
 			'max' => '__cb_max',
+			'holidaydifference' => '__cb_holidaydifference',
 		);
 		$this->operationsSQL = array(
 			'+'  => 'cbexpsql_add',
@@ -204,6 +205,7 @@ class VTFieldExpressionEvaluater {
 			'__cb_setfromcontext',
 			'__cb_min',
 			'__cb_max',
+			'__cb_holidaydifference',
 		);
 		$this->needscontext = array(
 			'__cb_aggregation',

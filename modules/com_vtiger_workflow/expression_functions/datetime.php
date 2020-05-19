@@ -42,6 +42,58 @@ function __vt_time_diff($arr) {
 	return (strtotime($time_operand1) - strtotime($time_operand2));
 }
 
+function __cb_holidaydifference($arr) {
+	if (count($arr) > 2) {
+		$date1 = $arr[0];
+		$date2 = $arr[1];
+		$mapname = $arr[2];
+		$addsaturday = isset($arr[3]) ? $arr[3] : 1;
+	} else {
+		$date1 = date('Y-m-d'); // Current date
+		$date2 = $arr[0];
+		$mapname = $arr[1];
+		$addsaturday = isset($arr[2]) ? $arr[2] : 1;
+	}
+
+	if ($addsaturday == 0) {
+		$lastdow = 6;
+	} else {
+		$lastdow = 7;
+	}
+
+	if (empty($date1) || empty($date2)) {
+		return 0;
+	}
+	$firstDate = new DateTime($date1);
+	$lastDate = new DateTime($date2);
+	if ($firstDate>$lastDate) {
+		$h = $firstDate;
+		$firstDate = $lastDate;
+		$lastDate = $h;
+	}
+	$days = 0;
+	$oneDay = new DateInterval('P1D');
+	while ($firstDate->diff($lastDate)->days > 0) {
+		$days += $firstDate->format('N') < $lastdow ? 1 : 0;
+		$firstDate = $firstDate->add($oneDay);
+	}
+
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$mapname, cbMap::getMapIdByName($mapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$holidays = $cbMap->InformationMap()->readInformationValue();
+		print_r('dates         '.$holidays);
+		//add holidays dates
+		foreach ($holidays as $key => $dateVal) {
+			$holidayDate = new DateTime($dateVal);
+			if (strtotime($dateVal) >= strtotime($date1) && strtotime($dateVal) <= strtotime($date2)) {
+				$days -= $holidayDate->format('N') < $lastdow ? 1 : 0;
+			}
+		}
+	}
+	return $days;
+}
+
 /**
  * Calculate the time difference (input times) or (current time and input time) and
  * convert it into number of days.
