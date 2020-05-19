@@ -376,7 +376,7 @@ function __cb_add_workdays($arr) {
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$arr[3], cbMap::getMapIdByName($arr[3]));
 		if ($cbMapid != 0) {
 			$cbMap = cbMap::getMapByID($cbMapid);
-	    	$holidays = $cbMap->InformationMap()->readInformationValue();
+			$holidays = $cbMap->InformationMap()->readInformationValue();
 		} else {
 			$holidays = explode(',', $arr[3]);
 		}
