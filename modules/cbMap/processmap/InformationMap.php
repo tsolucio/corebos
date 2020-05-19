@@ -13,14 +13,14 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************
- *  Module       : Business Mappings:: Module to Module Mapping
+ *  Module       : Business Mappings:: Generic Information Map
  *  Version      : 1.0
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************
  * The accepted format is:
 <map>
 	<information>
-		<infotype>Italy Holidays</infotype>
+		<infotype>Holidays</infotype>
 		<value>2020-04-01</value>
 		<value>2020-04-11</value>
 		<value>2020-05-11</value>

@@ -152,7 +152,7 @@ class VTExpressionsManager {
 			'allrelatedare' => 'allrelatedare(relatedmodule, fieldname, value)',
 			'min' => 'min(fieldname)',
 			'max' => 'max(fieldname)',
-			'holidaydifference' => 'holidaydifference(startDate, endDate,mapname, include_saturdays)',
+			'holidaydifference' => 'holidaydifference(startDate, endDate, include_saturdays, mapname)',
 		);
 		$wfexpfuncs = $adb->query('select expname,expinfo from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {
