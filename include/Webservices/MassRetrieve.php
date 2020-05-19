@@ -52,8 +52,12 @@ function vtws_massretrieve($ids, $user) {
 		}
 		$wsIds[] = $idComponents[1];
 	}
+	$actors = vtws_getActorModules();
 	$rdo = array();
-	if (count($wsIds)>0) {
+	if (in_array($mname, $actors) && count($wsIds)>0) {
+		$rdo = $handler->massRetrieve($wsIds);
+	}
+	if (!in_array($mname, $actors) && count($wsIds)>0) {
 		$r = $meta->getReferenceFieldDetails();
 		$imgs = $meta->getImageFields();
 		$crmentity = CRMEntity::getInstance($mname);
