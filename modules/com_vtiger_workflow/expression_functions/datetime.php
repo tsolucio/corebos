@@ -75,7 +75,7 @@ function __cb_holidaydifference($arr) {
 		$firstDate = $firstDate->add($oneDay);
 	}
 
-	if($mapname != '') {
+	if ($mapname != '') {
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$mapname, cbMap::getMapIdByName($mapname));
 		if ($cbMapid != 0) {
 			$cbMap = cbMap::getMapByID($cbMapid);
