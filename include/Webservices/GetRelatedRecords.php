@@ -452,6 +452,9 @@ function __getRLQueryFields($meta, $cols = '*') {
 	$columnTable = $meta->getColumnTableMapping();
 	$qfields = '';
 	foreach ($fieldcol as $col) {
+		if ($columnTable[$col]=='vtiger_attachments') {
+			continue;
+		}
 		$cl = $col;
 		if ($col=='smownerid') {
 			$cl = 'smownerid as assigned_user_id,vtiger_crmentity.smownerid,vtiger_users.first_name as owner_firstname, vtiger_users.last_name as owner_lastname';
