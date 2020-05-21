@@ -27,7 +27,7 @@
                                     <abbr class="slds-required" title="required">* </abbr>{$MOD.LBL_MB_MODULENAME}
                                 </label>
                                 <div class="slds-form-element__control">
-                                    <input type="text" id="modulename" placeholder="{$MOD.LBL_MB_MODULENAME}" onchange="ModuleBuilder.updateProgress(this.id, 1)" required="" class="slds-input" />
+                                    <input type="text" id="modulename" placeholder="{$MOD.LBL_MB_MODULENAME}" onchange="ModuleBuilder.checkForModule(this.id);ModuleBuilder.updateProgress(this.id, 1)" required="" class="slds-input" />
                                 </div>
                             </div>
                             <div class="slds-form-element">
@@ -136,7 +136,7 @@
                                                 <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
                                             </svg>
                                             </button>
-                                            <input type="text" id="number_field" value="0">
+                                            <input type="hidden" id="number_field" value="0">
                                         </div>
                                         <div class="slds-form-element">
                                             <table id="Table"></table>
@@ -177,7 +177,7 @@
                                                 <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
                                             </svg>
                                             </button>
-                                            <input type="text" id="number_customview" value="0">
+                                            <input type="hidden" id="number_customview" value="0">
                                         </div>
                                         <div class="slds-form-element">
                                             <table id="CustomView"></table>

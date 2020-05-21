@@ -48,27 +48,7 @@ if (isset($_REQUEST['module_settings']) && $_REQUEST['module_settings'] == 'true
 			array_push($arrmenu, $value['mlabel']);
 		}
 	}
-	//get all modules
-	$modules = $adb->pquery('SELECT vtiger_modulebuilder.modulebuilder_name as modulebuilder_name, vtiger_modulebuilder_name.date as date, vtiger_modulebuilder_name.completed as completed FROM vtiger_modulebuilder_name JOIN vtiger_modulebuilder ON vtiger_modulebuilder_name.modulebuilderid=vtiger_modulebuilder.modulebuilderid WHERE userid=?', array(
-		$current_user->id
-	));
-	$moduleLists = array();
-	for ($i=0; $i < $adb->num_rows($modules); $i++) {
-		$_MODULES = array();
-		$modulebuilder_name = $adb->query_result($modules, $i, 'modulebuilder_name');
-		$date = $adb->query_result($modules, $i, 'date');
-		$completed = $adb->query_result($modules, $i, 'completed');
-		$_MODULES['modulebuilder_name'] = $modulebuilder_name;
-		$_MODULES['date'] = $date;
-		if ($completed == 'Completed') {
-			$_MODULES['completed'] = $mod_strings['LBL_MB_COMPLETED'];
-		} else {
-			$_MODULES['completed'] = $completed;
-		}
-		array_push($moduleLists, $_MODULES);
-	}
 
-	$smarty->assign('MODULELISTS', $moduleLists);
 	$smarty->assign('ICONS', $_ICONS);
 	$smarty->assign('MENU', $arrmenu);
 	$smarty->display('Settings/ModuleBuilder/ModuleBuilder.tpl');

@@ -1,6 +1,9 @@
 const imported = document.createElement('script');
 imported.src = './modules/Settings/ModuleBuilder/fieldconfigs.js';
 document.head.appendChild(imported);
+const tuiGrid = tui.Grid;
+let url = 'index.php?module=Settings&action=SettingsAjax&file=builderUtils';
+let dataGridInstance;
 
 const ModuleBuilder = {
 	SaveModule: (step, forward = true, buttonid = '') => {
@@ -228,16 +231,64 @@ const ModuleBuilder = {
 		cell.appendChild(saveBtn);
 	},
 	openModal: () => {
+		dataGridInstance = new tuiGrid({
+			el: document.getElementById('moduleListView'),
+			columns: [
+				{
+					name: 'modulebuilder_name',
+					header: 'Module Name',
+				},
+				{
+					name: 'date',
+					header: 'Date created',
+				},
+				{
+					name: 'completed',
+					header: 'Status',
+				},
+				{
+					name: 'export',
+					header: 'Export',
+				}
+			],
+			data: {
+				api: {
+					readData: {
+						url: url+'&methodName=loadModules',
+						method: 'GET'
+					}
+				}
+			},
+			useClientSort: false,
+			pageOptions: {
+				perPage: '5'
+			},
+			rowHeight: 'auto',
+			bodyHeight: 'auto',
+			scrollX: false,
+			scrollY: true,
+			columnOptions: {
+				resizable: true
+			},
+			header: {
+				align: 'left',
+				valign: 'top'
+			},
+			onGridUpdated: (ev) => {
+				ModuleBuilder.updateData();
+			}
+		});
+		tui.Grid.applyTheme('striped');
 		document.getElementById('moduleListsModal').style.display = '';
 	},
 	closeModal: () => {
 		document.getElementById('moduleListsModal').style.display = 'none';
+		document.getElementById('moduleListView').innerHTML = '';
 	},
 	loadBlocks: (tableInstance, number_field) => {
-		const url = 'index.php?module=Settings&action=SettingsAjax&file=loadBlocks';
 		jQuery.ajax({
 			method: 'GET',
-			url: url,
+			url: url+'&methodName=loadBlocks',
 		}).done(function (response) {
 			const res = JSON.parse(response);
 			const row = tableInstance.insertRow(0);
@@ -299,10 +350,9 @@ const ModuleBuilder = {
 		const p = document.createElement('p');
 		p.innerHTML = 'Choose fields for custom view:';
 		cell.appendChild(p);
-		const url = 'index.php?module=Settings&action=SettingsAjax&file=loadFields';
 		jQuery.ajax({
 			method: 'GET',
-			url: url,
+			url: url+'&methodName=loadFields',
 		}).done(function (response) {
 			const res = JSON.parse(response);
 			for (var f in res) {
@@ -368,5 +418,42 @@ const ModuleBuilder = {
 	loadValue: (id) => {
 		let value = document.getElementById(id).value;
 		return value;
+	},
+	updateData: () => {
+		let btn = '';
+		for (var i = 0; i < 5; i++) {
+			let completed = dataGridInstance.getValue(i, 'completed');
+			if (completed == 'Completed') {
+				btn = `<button class="slds-button slds-button_brand" aria-live="assertive">
+                        <span class="slds-text-not-pressed">
+                        <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
+                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#download"></use>
+                        </svg>Export</span>
+                    </button>`;
+			} else {
+				btn = `<button class="slds-button slds-button_neutral slds-button_dual-stateful" aria-live="assertive">
+                        <span class="slds-text-not-pressed">
+                        <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
+                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
+                        </svg>Start editing</span>
+                    </button>`;
+			}
+			dataGridInstance.setValue(i, 'export', btn, false);
+		}
+	},
+	checkForModule: (id) => {
+		const moduleName = ModuleBuilder.loadValue(id);
+		jQuery.ajax({
+			method: 'POST',
+			url: url,
+			data: 'modulename='+moduleName+'&methodName=checkForModule'
+		}).done(function (response) {
+			if (response == 1) {
+				const msg = moduleName+' already exsists';
+				ModuleBuilder.loadMessage(msg, true, 'error');
+			} else {
+				ModuleBuilder.loadMessage('', false);
+			}
+		});
 	},
 };

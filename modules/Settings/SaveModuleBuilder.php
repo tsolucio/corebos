@@ -44,12 +44,12 @@ switch ($step) {
 		foreach ($_REQUEST['blocks'] as $key => $value) {
 			if ($value != "") {
 				$adb->pquery('INSERT INTO vtiger_modulebuilder_blocks (blocks_label, moduleid) VALUES (?,?)', array(
-				$value,
-				$moduleid
+					$value,
+					$moduleid
 				));
 				$adb->pquery('UPDATE vtiger_modulebuilder_name SET completed="40" WHERE userid=? AND modulebuilderid=?', array(
-				$userid,
-				$moduleid,
+					$userid,
+					$moduleid,
 				));
 			}
 		}
@@ -84,8 +84,8 @@ switch ($step) {
 				$fields[0]['relatedmodules'],
 			));
 			$adb->pquery('UPDATE vtiger_modulebuilder_name SET completed="60" WHERE userid=? AND modulebuilderid=?', array(
-			$userid,
-			$moduleid,
+				$userid,
+				$moduleid,
 			));
 		}
 		break;
@@ -105,6 +105,10 @@ switch ($step) {
 				$moduleid
 			));
 		}
+		$adb->pquery('UPDATE vtiger_modulebuilder_name SET completed="80" WHERE userid=? AND modulebuilderid=?', array(
+			$userid,
+			$moduleid,
+		));
 		break;
 	default:
 		echo json_encode();
