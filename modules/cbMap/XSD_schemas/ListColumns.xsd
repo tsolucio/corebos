@@ -40,7 +40,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="popup">
+        <xs:element name="popup" maxOccurs="1" minOccurs="0">
           <xs:complexType>
             <xs:sequence>
               <xs:element type="xs:string" name="linkfield"/>
