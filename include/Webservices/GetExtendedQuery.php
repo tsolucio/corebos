@@ -130,6 +130,11 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 		while ($posand>0 || $posor>0 || strlen($qc)) {
 			$endgroup = false;
 			if ($posand==0 && $posor==0) {
+				$inparenthesis = (substr($qc, 0, 1)=='(' && substr($qc, strlen($qc)-1)==')');
+				if ($inparenthesis) {
+					$qc = substr($qc, 1, strlen($qc)-2);
+					$queryGenerator->startGroup();
+				}
 				preg_match($inopRegex, $qc, $qcop);
 				$inop = (count($qcop)>0);
 				$lasttwo = '';
@@ -142,8 +147,16 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 				}
 				__FQNExtendedQueryAddCondition($queryGenerator, $qc, $glue, $mainModule, $fieldcolumn, $user);
 				$qc = '';
+				if ($inparenthesis) {
+					$queryGenerator->endGroup();
+				}
 			} elseif ($posand==0 || ($posand>$posor && $posor!=0)) {
 				$qcond = trim(substr($qc, 0, $posor));
+				$inparenthesis = (substr($qcond, 0, 1)=='(' && substr($qcond, strlen($qcond)-1)==')');
+				if ($inparenthesis) {
+					$qcond = substr($qcond, 1, strlen($qcond)-2);
+					$queryGenerator->startGroup();
+				}
 				preg_match($inopRegex, $qcond, $qcop);
 				$inop = (count($qcop)>0);
 				$lasttwo = '';
@@ -157,8 +170,16 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 				__FQNExtendedQueryAddCondition($queryGenerator, $qcond, $glue, $mainModule, $fieldcolumn, $user);
 				$glue = $queryGenerator::$OR;
 				$qc = trim(substr($qc, $posor+4));
+				if ($inparenthesis) {
+					$queryGenerator->endGroup();
+				}
 			} else {
 				$qcond = trim(substr($qc, 0, $posand));
+				$inparenthesis = (substr($qcond, 0, 1)=='(' && substr($qcond, strlen($qcond)-1)==')');
+				if ($inparenthesis) {
+					$qcond = substr($qcond, 1, strlen($qcond)-2);
+					$queryGenerator->startGroup();
+				}
 				preg_match($inopRegex, $qcond, $qcop);
 				$inop = (count($qcop)>0);
 				$lasttwo = '';
@@ -172,6 +193,9 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 				__FQNExtendedQueryAddCondition($queryGenerator, $qcond, $glue, $mainModule, $fieldcolumn, $user);
 				$glue = $queryGenerator::$AND;
 				$qc = trim(substr($qc, $posand+5));
+				if ($inparenthesis) {
+					$queryGenerator->endGroup();
+				}
 			}
 			if ($endgroup) {
 				$queryGenerator->endGroup();
