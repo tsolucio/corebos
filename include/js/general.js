@@ -5178,7 +5178,7 @@ function scrollThrottle(fn, wait, dist) {
 		sy = window.scrollY,
 		di = null;
 
-	return function() {
+	return function () {
 		di = window.scrollY > sy ? 'down' : 'up';
 		var delta = di === 'down' ? window.scrollY - sy : sy - window.scrollY;
 		if (((time + wait - Date.now()) < 0) && (delta > dist)) {
@@ -5186,7 +5186,7 @@ function scrollThrottle(fn, wait, dist) {
 			time = Date.now();
 			sy = window.scrollY;
 		}
-	}
+	};
 }
 
 document.addEventListener('DOMContentLoaded', function (event) {
@@ -6307,11 +6307,11 @@ const pageHeader = {
 			pageHeader.expand();
 			if (window.scrollY < (pageHeader.stickPoint - 2) && pageHeader.isSticky) {
 				pageHeader.isSticky = false;
-				window.setTimeout(function(){
+				window.setTimeout(function () {
 					pageHeader.node().classList.remove('page-header_sticky');
 					pageHeader.node().classList.remove('slds-is-fixed');
 					pageHeader.placeholder().style.height = '0px';
-				}, 80)
+				}, 80);
 				pageHeader.node().style.transform = 'translateY(0px)';
 			}
 		}
