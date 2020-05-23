@@ -78,6 +78,7 @@ class VTExpressionsManager {
 			'time_diffyears(a)' => 'time_diffyears(a)',
 			'time_diffweekdays(a,b)' => 'time_diffweekdays(a,b)',
 			'time_diffweekdays(a)' => 'time_diffweekdays(a)',
+			'holidaydifference' => 'holidaydifference(startDate, endDate, include_saturdays, holidays)',
 			'time_diff(a,b)' => 'time_diff(a,b)',
 			'time_diff(a)' => 'time_diff(a)',
 			'aggregate_time' => 'aggregate_time(relatedModuleName, relatedModuleField, conditions)',
@@ -152,7 +153,6 @@ class VTExpressionsManager {
 			'allrelatedare' => 'allrelatedare(relatedmodule, fieldname, value)',
 			'min' => 'min(fieldname)',
 			'max' => 'max(fieldname)',
-			'holidaydifference' => 'holidaydifference(startDate, endDate, include_saturdays, mapname)',
 		);
 		$wfexpfuncs = $adb->query('select expname,expinfo from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {
