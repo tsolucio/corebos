@@ -94,6 +94,7 @@ class VTFieldExpressionEvaluater {
 			'delSetting' => '__cb_delSetting',
 			'sendMessage' => '__cb_sendMessage',
 			'readMessage' => '__cb_readMessage',
+			'evaluateRule' => '__cb_evaluateRule',
 			'getCRUDMode' => '__cb_getcrudmode',
 			'isNumeric' => '__cb_is_numeric',
 			'isString' => '__cb_is_string',
@@ -219,6 +220,7 @@ class VTFieldExpressionEvaluater {
 			'__cb_exists',
 			'__cb_existsrelated',
 			'__cb_allrelatedare',
+			'__cb_evaluateRule',
 		);
 		$wfexpfuncs = $adb->query('select expname,funcname,rawparams,needscontext from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {

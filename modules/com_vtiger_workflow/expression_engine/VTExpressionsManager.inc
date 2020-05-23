@@ -142,6 +142,7 @@ class VTExpressionsManager {
 			'getSetting' => "getSetting('setting_key', 'default')",
 			'setSetting' => "setSetting('setting_key', value)",
 			'delSetting' => "delSetting('setting_key')",
+			'evaluateRule' => 'evaluateRule(ruleID)',
 			'getCRUDMode' => 'getCRUDMode()',
 			'isNumeric' => 'isNumeric(fieldname)',
 			'isString' => 'isString(fieldname)',
