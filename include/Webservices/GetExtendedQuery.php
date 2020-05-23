@@ -129,14 +129,13 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 		$glue = '';
 		while ($posand>0 || $posor>0 || strlen($qc)) {
 			$endgroup = false;
-			preg_match($inopRegex, $qc, $qcop);
-			$inop = (count($qcop)>0);
-			$lasttwo = '';
-			if ($inop) {
-				$lasttwo = str_replace(' ', '', $qc);
-				$lasttwo = substr($lasttwo, -2);
-			}
 			if ($posand==0 && $posor==0) {
+				preg_match($inopRegex, $qc, $qcop);
+				$inop = (count($qcop)>0);
+				$lasttwo = '';
+				if ($inop) {
+					$lasttwo = substr(str_replace(' ', '', $qc), -2);
+				}
 				if ((!$inop && substr($qc, -1)==')') || ($inop && $lasttwo=='))')) {
 					$qc = substr($qc, 0, strlen($qc)-1);
 					$endgroup = true;
@@ -145,6 +144,12 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 				$qc = '';
 			} elseif ($posand==0 || ($posand>$posor && $posor!=0)) {
 				$qcond = trim(substr($qc, 0, $posor));
+				preg_match($inopRegex, $qcond, $qcop);
+				$inop = (count($qcop)>0);
+				$lasttwo = '';
+				if ($inop) {
+					$lasttwo = substr(str_replace(' ', '', $qcond), -2);
+				}
 				if ((!$inop && substr($qcond, -1)==')') || ($inop && $lasttwo=='))')) {
 					$qcond = substr($qcond, 0, strlen($qcond)-1);
 					$endgroup = true;
@@ -154,6 +159,12 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 				$qc = trim(substr($qc, $posor+4));
 			} else {
 				$qcond = trim(substr($qc, 0, $posand));
+				preg_match($inopRegex, $qcond, $qcop);
+				$inop = (count($qcop)>0);
+				$lasttwo = '';
+				if ($inop) {
+					$lasttwo = substr(str_replace(' ', '', $qcond), -2);
+				}
 				if ((!$inop && substr($qcond, -1)==')') || ($inop && $lasttwo=='))')) {
 					$qcond = substr($qcond, 0, strlen($qcond)-1);
 					$endgroup = true;
