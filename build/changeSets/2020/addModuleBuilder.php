@@ -24,10 +24,101 @@ class addModuleBuilder extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->ExecuteQuery('INSERT INTO vtiger_settings_field (blockid, name, iconpath, description, linkto, active) VALUES (?, ?, ?, ?, ?, ?)', array(3, 'LBL_MODULE_BUILDER', 'vtlib_modmng.gif', 'LBL_MODULE_BUILDER_DESCRIPTION', 'index.php?module=Settings&action=ModuleBuilder&parenttab=Settings', 0));
-
+			$fieldid = $adb->getUniqueID('vtiger_settings_field');
+			$this->ExecuteQuery(
+				'INSERT INTO vtiger_settings_field (fieldid, blockid, name, iconpath, description, linkto, active, sequence) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+				array($fieldid, 3, 'LBL_MODULE_BUILDER', 'vtlib_modmng.gif', 'LBL_MODULE_BUILDER_DESCRIPTION', 'index.php?module=Settings&action=ModuleBuilder', 0, 1)
+			);
+			$this->ExecuteQuery(
+				'CREATE TABLE `vtiger_modulebuilder_name` (
+					`moduleid` int(20) NOT NULL AUTO_INCREMENT,
+					`modulebuilderid` int(20) NOT NULL,
+					`date` date NOT NULL,
+					`completed` varchar(10) NOT NULL,
+					`userid` int(20) NOT NULL,
+					PRIMARY KEY (`moduleid`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
+			);
+			$this->ExecuteQuery(
+				'CREATE TABLE `vtiger_modulebuilder` (
+					`modulebuilderid` int(20) NOT NULL AUTO_INCREMENT,
+					`modulebuilder_name` varchar(50) NOT NULL,
+					`modulebuilder_label` varchar(50) NOT NULL,
+					`modulebuilder_parent` varchar(50) NOT NULL,
+					`status` varchar(10) NOT NULL DEFAULT "active",
+					PRIMARY KEY (`modulebuilderid`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
+			);
+			$this->ExecuteQuery(
+				'CREATE TABLE `vtiger_modulebuilder_actions` (
+					`actionsid` int(20) NOT NULL AUTO_INCREMENT,
+					`actionname` varchar(50) NOT NULL,
+					`status` varchar(50) NOT NULL,
+					`moduleid` int(20) NOT NULL,
+					PRIMARY KEY (`actionsid`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
+			);
+			$this->ExecuteQuery(
+				'CREATE TABLE `vtiger_modulebuilder_blocks` (
+					`blocksid` int(20) NOT NULL AUTO_INCREMENT,
+					`blocks_label` varchar(100) NOT NULL,
+					`moduleid` int(20) NOT NULL,
+					PRIMARY KEY (`blocksid`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
+			);
+			$this->ExecuteQuery(
+				'CREATE TABLE `vtiger_modulebuilder_customview` (
+					`customviewid` int(20) NOT NULL AUTO_INCREMENT,
+					`viewname` varchar(100) NOT NULL,
+					`setdefault` varchar(10) NOT NULL DEFAULT "false",
+					`setmetrics` varchar(10) NOT NULL DEFAULT "false",
+					`fields` text NOT NULL,
+					`moduleid` int(20) NOT NULL,
+					PRIMARY KEY (`customviewid`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
+			);
+			$this->ExecuteQuery(
+				'CREATE TABLE `vtiger_modulebuilder_fields` (
+					`fieldsid` int(20) NOT NULL AUTO_INCREMENT,
+					`blockid` int(20) NOT NULL,
+					`fieldname` varchar(100) NOT NULL,
+					`uitype` int(11) NOT NULL,
+					`columnname` varchar(100) NOT NULL,
+					`tablename` varchar(100) NOT NULL,
+					`generatedtype` int(11) NOT NULL,
+					`fieldlabel` varchar(100) NOT NULL,
+					`readonly` int(11) NOT NULL,
+					`presence` int(11) NOT NULL,
+					`selected` int(11) NOT NULL,
+					`sequence` int(11) NOT NULL,
+					`maximumlength` int(11) NOT NULL,
+					`typeofdata` varchar(100) NOT NULL,
+					`quickcreate` int(11) NOT NULL,
+					`quickcreatesequence` int(11) NOT NULL,
+					`displaytype` int(11) NOT NULL,
+					`info_type` varchar(10) NOT NULL,
+					`helpinfo` text NOT NULL,
+					`masseditable` int(11) NOT NULL,
+					`entityidentifier` varchar(10) NOT NULL DEFAULT "no",
+					`entityidfield` varchar(100) NOT NULL,
+					`entityidcolumn` varchar(100) NOT NULL,
+					`relatedmodules` varchar(100) NOT NULL,
+					PRIMARY KEY (`fieldsid`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
+			);
+			$this->ExecuteQuery(
+				'CREATE TABLE `vtiger_modulebuilder_relatedlists` (
+					`relatedlistid` int(20) NOT NULL AUTO_INCREMENT,
+					`function` varchar(100) NOT NULL,
+					`label` varchar(100) NOT NULL,
+					`actions` text NOT NULL,
+					`relatedmodule` varchar(100) NOT NULL,
+					`moduleid` int(20) NOT NULL,
+					PRIMARY KEY (`relatedlistid`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
+			);
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}
