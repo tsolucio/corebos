@@ -1,7 +1,5 @@
 loadJS('index.php?module=Settings&action=SettingsAjax&file=getjslanguage');
-const imported = document.createElement('script');
-imported.src = './modules/Settings/ModuleBuilder/fieldconfigs.js';
-document.head.appendChild(imported);
+loadJS('modules/Settings/ModuleBuilder/fieldconfigs.js');
 const tuiGrid = tui.Grid;
 let url = 'index.php?module=Settings&action=SettingsAjax&file=builderUtils';
 let dataGridInstance;
