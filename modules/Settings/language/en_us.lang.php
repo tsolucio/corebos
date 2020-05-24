@@ -1011,7 +1011,7 @@ $mod_strings = array(
 'LBL_MB_STARTEDITING' => 'Start editing',
 'LBL_MB_CLOSE' => 'Close',
 'LBL_MB_LISTMODULES' => 'List of modules',
-'LBL_MB_GENERAL' => 'General Informations',
+'LBL_MB_GENERAL' => 'General Information',
 'LBL_MB_LISTICONS' => 'List of icons',
 'LBL_MB_BLOCKLABEL' => 'Block label',
 'LBL_MB_NEWBLOCK' => 'New Block',
@@ -1019,6 +1019,8 @@ $mod_strings = array(
 'LBL_MB_ALLMODULES' => 'All modules',
 'LBL_MB_PROGRESS' => 'Progress',
 'LBL_MB_STATUS' => 'Status',
+'LBL_MB_CVS' => 'Custom Views',
+'LBL_MB_ADDCV' => 'Add Custom View',
 'LBL_MODULE_BUILDER' => 'Module Builder',
 'LBL_MODULE_BUILDER_DESCRIPTION' => 'Create new module',
 );

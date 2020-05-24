@@ -1,3 +1,4 @@
+loadJS('index.php?module=Settings&action=SettingsAjax&file=getjslanguage');
 const imported = document.createElement('script');
 imported.src = './modules/Settings/ModuleBuilder/fieldconfigs.js';
 document.head.appendChild(imported);
@@ -126,10 +127,10 @@ const ModuleBuilder = {
 			url: 'index.php?module=Settings&action=SettingsAjax&file=SaveModuleBuilder',
 			data: data
 		}).done(function (response) {
-			const msg = 'The record was successfully dropped';
+			const msg = mod_alert_arr.RecordDeleted;
 			ModuleBuilder.loadMessage(msg, true);
 			if (forward == false && step == 3) {
-				const message = `<p class="slds-section__title" style="float: right">${btnid}: Field &nbsp;<span style="color: blue">${fieldname}</span>&nbsp; is successfully saved!</p>`;
+				const message = `<p class="slds-section__title" style="float: right">${btnid}: ${mod_alert_arr.Field} &nbsp;<span style="color: blue">${fieldname}</span>&nbsp; ${mod_alert_arr.WasSaved}!</p>`;
 				document.getElementById('for-field-' + btnid).innerHTML = '';
 				document.getElementById('for-field-inputs-' + btnid).innerHTML = message;
 			}
@@ -138,7 +139,7 @@ const ModuleBuilder = {
 				var nextstep = step + 1;
 				var progress = parseInt(nextstep) * 20 - 20;
 				document.getElementById('progress').style.width = progress + '%';
-				document.getElementById('progresstext').innerHTML = 'Progress: ' + progress + '%';
+				document.getElementById('progresstext').innerHTML = mod_alert_arr.LBL_MB_PROGRESS+': ' + progress + '%';
 				document.getElementById('step-' + nextstep).style.display = 'block';
 			}
 			setTimeout(function () {
@@ -163,7 +164,7 @@ const ModuleBuilder = {
 			var size = Object.keys(NULL).length;
 			var progress = (20 - (parseInt(size) * 5));
 			document.getElementById('progress').style.width = progress + '%';
-			document.getElementById('progresstext').innerHTML = 'Progress: ' + progress + '%';
+			document.getElementById('progresstext').innerHTML = mod_alert_arr.LBL_MB_PROGRESS+': ' + progress + '%';
 			if (progress == 20) {
 				document.getElementById('btn-step-1').removeAttribute('disabled');
 			} else {
@@ -239,7 +240,7 @@ const ModuleBuilder = {
 		saveBtn.id ='save-btn-for-field-' + number_field;
 		saveBtn.className = 'slds-button slds-button_brand';
 		saveBtn.setAttribute('onclick', 'ModuleBuilder.SaveModule(3, false, this.id)');
-		saveBtn.innerHTML = 'Save field';
+		saveBtn.innerHTML = mod_alert_arr.LBL_MB_SAVEFIELD;
 		cell.appendChild(saveBtn);
 	},
 	openModal: () => {
@@ -248,19 +249,19 @@ const ModuleBuilder = {
 			columns: [
 				{
 					name: 'modulebuilder_name',
-					header: 'Module Name',
+					header: mod_alert_arr.ModuleName,
 				},
 				{
 					name: 'date',
-					header: 'Date created',
+					header: mod_alert_arr.DateCreated,
 				},
 				{
 					name: 'completed',
-					header: 'Status',
+					header: mod_alert_arr.Status,
 				},
 				{
 					name: 'export',
-					header: 'Export',
+					header: mod_alert_arr.Export,
 				}
 			],
 			data: {
@@ -316,8 +317,8 @@ const ModuleBuilder = {
 			defaultOption.setAttribute('selected', '');
 			defaultOption.setAttribute('disabled', '');
 			defaultOption.value = '';
-			defaultOption.innerHTML = 'Choose block for field ' + number_field;
 			select.appendChild(defaultOption);
+			defaultOption.innerHTML = mod_alert_arr.LBL_CHOOSEFIELDBLOCK + ' ' + number_field;
 
 			for (var i = 0; i < res.length; i++) {
 				const options = document.createElement('option');
@@ -360,7 +361,7 @@ const ModuleBuilder = {
 
 		//get all fields
 		const p = document.createElement('p');
-		p.innerHTML = 'Choose fields for custom view:';
+		p.innerHTML = mod_alert_arr.LBL_CHOOSEFIELDFILTER+':';
 		cell.appendChild(p);
 		jQuery.ajax({
 			method: 'GET',
@@ -440,14 +441,14 @@ const ModuleBuilder = {
                         <span class="slds-text-not-pressed">
                         <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
                             <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#download"></use>
-                        </svg>Export</span>
+                        </svg>${mod_alert_arr.Export}</span>
                     </button>`;
 			} else {
 				btn = `<button class="slds-button slds-button_neutral slds-button_dual-stateful" aria-live="assertive">
                         <span class="slds-text-not-pressed">
                         <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
                             <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
-                        </svg>Start editing</span>
+                        </svg>${mod_alert_arr.StartEditing}</span>
                     </button>`;
 			}
 			dataGridInstance.setValue(i, 'export', btn, false);
@@ -461,7 +462,7 @@ const ModuleBuilder = {
 			data: 'modulename='+moduleName+'&methodName=checkForModule'
 		}).done(function (response) {
 			if (response == 1) {
-				const msg = moduleName+' already exsists';
+				const msg = moduleName+' '+mod_alert_arr.AlreadyExists;
 				ModuleBuilder.loadMessage(msg, true, 'error');
 			} else {
 				ModuleBuilder.loadMessage('', false);

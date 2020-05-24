@@ -177,11 +177,11 @@
                     <div class="slds-media__body slds-m-top_x-small">
                         <div class="slds-media">
                             <div class="slds-setup-assistant__step-summary-content slds-media__body">
-                                <h3 class="slds-setup-assistant__step-summary-title slds-text-heading_small">Custom Views</h3>
+                                <h3 class="slds-setup-assistant__step-summary-title slds-text-heading_small">{$MOD.LBL_MB_CVS}</h3>
                                 <div class="slds-form-element">
                                     <div class="slds-form-element__control">
                                         <div class="slds-media__figure slds-media__figure_reverse">
-                                            <button class="slds-button slds-button_brand" onclick="ModuleBuilder.generateCustomView()">Add custom view&nbsp;
+                                            <button class="slds-button slds-button_brand" onclick="ModuleBuilder.generateCustomView()">{$MOD.LBL_MB_ADDCV}&nbsp;
                                             <svg class="slds-icon slds-icon--small" aria-hidden="true">
                                                 <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
                                             </svg>
