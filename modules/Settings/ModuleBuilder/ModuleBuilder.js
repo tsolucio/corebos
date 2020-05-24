@@ -171,6 +171,18 @@ const ModuleBuilder = {
 			}
 		}
 	},
+	showModuleIcon: (iconReference) => {
+		let newicon = iconReference.split('-');
+		let spn = document.getElementById('moduleiconshow');
+		let svg = document.getElementById('moduleiconshowsvg');
+		let curicon = svg.getAttribute('xlink:href');
+		let category = curicon.substr(24);
+		category = category.substr(0, category.indexOf('-'));
+		let icon = curicon.substr(curicon.indexOf('#')+1);
+		spn.classList.remove('slds-icon-'+category+'-'+icon);
+		spn.classList.add('slds-icon-'+newicon[0]+'-'+newicon[1]);
+		svg.setAttribute('xlink:href','include/LD/assets/icons/'+newicon[0]+'-sprite/svg/symbols.svg#'+newicon[1]);
+	},
 	generateInput: () => {
 		const number_block = ModuleBuilder.autoIncrementIds('number_block');
 		const input = document.createElement('input');

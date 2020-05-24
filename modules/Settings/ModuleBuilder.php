@@ -38,8 +38,14 @@ if (isset($_REQUEST['module_settings']) && $_REQUEST['module_settings'] == 'true
 	$smarty->assign('MODE', $mode);
 
 	//ICONS
-	$_ICONS = array('account','action_list_component','actions_and_buttons', 'address','agent_session', 'all', 'announcement', 'answer_best', 'answer_private', 'answer_public'
-	);
+	$iconCategories = array('action', 'custom', 'doctype', 'standard', 'utility');
+	$_ICONS = array();
+	foreach ($iconCategories as $cat) {
+		$icons = glob('include/LD/assets/icons/'.$cat.'/*.svg');
+		foreach ($icons as $icon) {
+			$_ICONS[] = $cat.'-'.basename($icon, '.svg');
+		}
+	}
 	//get parent Tabs
 	$_MENU = getMenuArray(0);
 	$arrmenu = array();
