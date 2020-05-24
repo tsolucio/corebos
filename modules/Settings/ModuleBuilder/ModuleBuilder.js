@@ -210,6 +210,12 @@ const ModuleBuilder = {
 			input.placeholder = textfields[i];
 			input.className = 'slds-input';
 			input.style = 'width: 15%; margin: 5px';
+			if (textfields[i]=='fieldname') {
+				input.onchange = (elem) => {
+					document.getElementById('columnname' + '_' + number_field).value = elem.target.value;
+					document.getElementById('fieldlabel' + '_' + number_field).value = elem.target.value;
+				}
+			}
 			cell.appendChild(input);
 		}
 		for (var i = 0; i < fieldtypes.length; i++) {
