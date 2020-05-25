@@ -13,7 +13,7 @@ global $app_strings, $default_charset;
 
 $randomfilename = 'vt_' . str_replace(array('.',' '), '', microtime());
 
-// $mergeTemplatePath and $mergeTemplateName are set in module/evvtgendoc/odt.php
+// $mergeTemplatePath and $mergeTemplateName are set in module/evvtgendoc/gendocAction.php
 $fileContent = base64_encode(file_get_contents($mergeTemplatePath));
 $extension=GetFileExtension($mergeTemplateName);
 $filename= $randomfilename . "_mmrg.$extension";
@@ -37,7 +37,7 @@ if ($mass_merge != '') {
 	if (array_pop($temp_mass_merge)=='') {
 		array_pop($mass_merge);
 	}
-	//$mass_merge = implode(",",$mass_merge);
+	//$mass_merge = implode(',',$mass_merge);
 } elseif ($single_record != '') {
 	$mass_merge = $single_record;
 } else {
@@ -57,13 +57,13 @@ if ($userprivs->hasGlobalReadPermission() || $module == 'Users' || $module == 'E
 	$params1 = array();
 } else {
 	$profileList = getCurrentUserProfileList();
-	$query1="select vtiger_tab.name,vtiger_field.tablename,vtiger_field.columnname,vtiger_field.fieldlabel
+	$query1='select vtiger_tab.name,vtiger_field.tablename,vtiger_field.columnname,vtiger_field.fieldlabel
 		from vtiger_field
 		inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid
 		INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid
 		INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid
 		where vtiger_field.tabid in (13,4,6) and vtiger_field.uitype <> 61 and block <> 75 and block <> 30 AND vtiger_profile2field.visible=0
-			AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN (". generateQuestionMarks($profileList).
+			AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN ('. generateQuestionMarks($profileList).
 			") and vtiger_field.presence in (0,2) and vtiger_field.tablename <> 'vtiger_campaignrelstatus'
 		GROUP BY vtiger_field.fieldid
 		order by vtiger_field.tablename";
@@ -86,28 +86,28 @@ for ($x=0; $x<$y; $x++) {
 		$column_name = "case crmentityRelHelpDesk.setype when 'Accounts' then accountRelHelpDesk.accountname when 'Contacts' ".
 			"then concat(contactdetailsRelHelpDesk.firstname,' ',contactdetailsRelHelpDesk.lastname) end";
 	}
-	if ($columnname == "product_id") {
-		$column_name = "productsRel.productname";
+	if ($columnname == 'product_id') {
+		$column_name = 'productsRel.productname';
 	}
-	if ($tablename == "vtiger_crmentity") {
-		if ($modulename == "Contacts") {
-			$tablename = "crmentityContacts";
-			$column_name = $tablename.".".$columnname;
+	if ($tablename == 'vtiger_crmentity') {
+		if ($modulename == 'Contacts') {
+			$tablename = 'crmentityContacts';
+			$column_name = $tablename.'.'.$columnname;
 		}
-		if ($modulename == "Accounts") {
-			$tablename = "crmentityAccounts";
-			$column_name = $tablename.".".$columnname;
+		if ($modulename == 'Accounts') {
+			$tablename = 'crmentityAccounts';
+			$column_name = $tablename.'.'.$columnname;
 		}
 	}
 
-	if ($columnname == "smownerid") {
-		if ($modulename == "Accounts") {
+	if ($columnname == 'smownerid') {
+		if ($modulename == 'Accounts') {
 			$column_name = "case when (usersAccounts.user_name not like '') then $accountUserNameSql else groupsAccounts.groupname end as username";
 		}
-		if ($modulename == "Contacts") {
+		if ($modulename == 'Contacts') {
 			$column_name = "case when (usersContacts.user_name not like '') then $contactUserNameSql else groupsContacts.groupname end as username";
 		}
-		if ($modulename == "HelpDesk") {
+		if ($modulename == 'HelpDesk') {
 			$column_name = "case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as userhelpname,".
 				'vtiger_users.first_name,vtiger_users.last_name,vtiger_users.user_name,vtiger_users.secondaryemail,vtiger_users.title,vtiger_users.phone_work,'.
 				'vtiger_users.department,vtiger_users.phone_mobile,vtiger_users.phone_other,vtiger_users.phone_fax,vtiger_users.email1,vtiger_users.phone_home,'.
@@ -154,11 +154,11 @@ array_multisort($labels_length, $field_label, $querycolumns);
 $field_label=array_reverse($field_label);
 $querycolumns=array_reverse($querycolumns);
 $labels_length=array_reverse($labels_length);
-$csvheader = implode(",", $field_label);
+$csvheader = implode(',', $field_label);
 //<<<<<<<<<<<<<<<<End>>>>>>>>>>>>>>>>>>>>>>>>
 
 if (count($querycolumns) > 0) {
-	$selectcolumns = implode($querycolumns, ',');
+	$selectcolumns = implode(',', $querycolumns);
 
 	$query ='select '.$selectcolumns.' from vtiger_troubletickets
 		inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_troubletickets.ticketid
@@ -201,18 +201,18 @@ if (count($querycolumns) > 0) {
 				if ($val == $value && $value != '') {
 					if (array_key_exists($key, $avail_pick_arr)) {
 						if (!in_array($val, $avail_pick_arr[$key])) {
-							$value = "Not Accessible";
+							$value = 'Not Accessible';
 						}
 					}
 				}
 			}
 			//<<<<<<<<<<<<<<< For blank Fields >>>>>>>>>>>>>>>>>>>>>>>>>>>>
-			if (trim($value) == "--None--" || trim($value) == "--none--") {
-				$value = "";
+			if (trim($value) == '--None--' || trim($value) == '--none--') {
+				$value = '';
 			}
 			//<<<<<<<<<<<<<<< End >>>>>>>>>>>>>>>>>>>>>>>>>>>>
 			$actual_values[$x] = $value;
-			$actual_values[$x] = str_replace('"', " ", $actual_values[$x]);
+			$actual_values[$x] = str_replace('"', ' ', $actual_values[$x]);
 			//if value contains any line feed or carriage return replace the value with ".value."
 			if (preg_match("/(\r?\n)/", $actual_values[$x])) {
 				// <<< pag 21-Sep-2011 >>>
@@ -229,9 +229,9 @@ if (count($querycolumns) > 0) {
 			}
 			$actual_values[$x] = decode_html(str_replace(',', ' ', $actual_values[$x]));
 		}
-		$mergevalue[] = implode($actual_values, ',');
+		$mergevalue[] = implode(',', $actual_values);
 	}
-	$csvdata = implode($mergevalue, '###');
+	$csvdata = implode('###', $mergevalue);
 } else {
 	die('No fields to do Merge');
 }
@@ -240,7 +240,7 @@ if ($extension == 'doc') {
 	$datafilename = $randomfilename . '_data.csv';
 	$handle = fopen($wordtemplatedownloadpath.$datafilename, 'wb');
 	fwrite($handle, $csvheader."\r\n");
-	fwrite($handle, str_replace("###", "\r\n", $csvdata));
+	fwrite($handle, str_replace('###', "\r\n", $csvdata));
 	fclose($handle);
 } elseif ($extension == 'odt') {
 	//delete old .odt files in the wordtemplatedownload directory
@@ -262,7 +262,7 @@ if ($extension == 'doc') {
 		//header("Content-Disposition: attachment; filename=$filename");
 		//echo file_get_contents($wordtemplatedownloadpath .$filename);
 		//readfile($root_directory .$wordtemplatedownloadpath .$filename);
-		echo "&nbsp;&nbsp;<font size=+1><b><a href=cache/wordtemplatedownload/$entityid$filename>".$app_strings['DownloadMergeFile']."</a></b></font><br>";
+		echo "&nbsp;&nbsp;<font size=+1><b><a href=cache/wordtemplatedownload/$entityid$filename>".$app_strings['DownloadMergeFile'].'</a></b></font><br>';
 		remove_dir($wordtemplatedownloadpath.$temp_dir);
 	}
 } elseif ($extension == 'rtf') {
@@ -276,7 +276,7 @@ if ($extension == 'doc') {
 		$new_filecontent = crmmerge($csvheader, $filecontent, $idx, 'utf8Unicode');
 		fwrite($handle, $new_filecontent);
 		fclose($handle);
-		echo "&nbsp;&nbsp;<font size=+1><b><a href=cache/wordtemplatedownload/$entityid$filename>".$app_strings['DownloadMergeFile']."</a></b></font><br>";
+		echo "&nbsp;&nbsp;<font size=+1><b><a href=cache/wordtemplatedownload/$entityid$filename>".$app_strings['DownloadMergeFile'].'</a></b></font><br>';
 	}
 } else {
 	die('unknown file format');

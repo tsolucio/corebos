@@ -107,7 +107,11 @@ class Import_Controller {
 		$viewer->assign('OWNER_ID', $ownerId);
 		$viewer->assign('IMPORT_RESULT', $importStatusCount);
 		$viewer->assign('MERGE_ENABLED', $importInfo['merge_type']);
-		$viewer->display('ImportResult.tpl');
+		if (strpos(PHP_SAPI, 'apache')!==false) {
+			$viewer->display('ImportResult.tpl');
+		} else {
+			$viewer->display('ImportResultCLI.tpl');
+		}
 	}
 
 	public static function showScheduledStatus($importInfo) {
@@ -124,6 +128,7 @@ class Import_Controller {
 		$mapName = $this->userInputObject->get('save_map_as');
 		if ($saveMap && !empty($mapName)) {
 			$fieldMapping = $this->userInputObject->get('field_mapping');
+			$defaultValues = $this->userInputObject->get('default_values');
 			$fileReader = Import_Utils::getFileReader($this->userInputObject, $this->user);
 			if ($fileReader == null) {
 				return false;
@@ -138,6 +143,9 @@ class Import_Controller {
 			} else {
 				$saveMapping = array_flip($fieldMapping);
 			}
+			foreach ($defaultValues as $field => $value) {
+				$saveDefaultValue[$field] = $value;
+			}
 
 			$map = array();
 			$map['name'] = $mapName;
@@ -145,6 +153,8 @@ class Import_Controller {
 			$map['module'] = $this->userInputObject->get('module');
 			$map['has_header'] = ($hasHeader)?1:0;
 			$map['assigned_user_id'] = $this->user->id;
+			$map['defaultvalues'] = json_encode($saveDefaultValue);
+			$map['field_mapping'] = json_encode($this->userInputObject->get('field_mapping'));
 
 			$importMap = new Import_Map($map, $this->user);
 			$importMap->save();
@@ -164,11 +174,11 @@ class Import_Controller {
 		}
 	}
 
-	public function queueDataImport() {
+	public function queueDataImport($forceSchedule = false) {
 		$configReader = new ConfigReader('modules/Import/config.inc', 'ImportConfig');
 		$immediateImportRecordLimit = $configReader->getConfig('immediateImportLimit');
 		$numberOfRecordsToImport = $this->numberOfRecords;
-		if ($numberOfRecordsToImport > $immediateImportRecordLimit) {
+		if ($forceSchedule || $numberOfRecordsToImport > $immediateImportRecordLimit) {
 			$this->userInputObject->set('is_scheduled', true);
 		}
 		Import_Queue_Controller::add($this->userInputObject, $this->user);

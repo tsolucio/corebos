@@ -135,7 +135,6 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 	}
 
 	public function retrieve($id) {
-
 		$ids = vtws_getIdComponents($id);
 		$elemId = $ids[1];
 		$success = $this->__retrieve($elemId);
@@ -148,6 +147,22 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 			unset($element['folderid']);
 		}
 		return DataTransform::filterAndSanitize($element, $this->meta);
+	}
+
+	public function massRetrieve($wsIds) {
+		global $adb;
+		$rdo = array();
+		$query = "select * from {$this->entityTableName} where {$this->meta->getObectIndexColumn()} in (" . generateQuestionMarks($wsIds) . ')';
+		$rs = $adb->pquery($query, $wsIds);
+		while (!$rs->EOF) {
+			$element = $rs->FetchRow();
+			if (isset($element['folderid']) && !isset($element['id'])) {
+				$element['id'] = $element['folderid'];
+				unset($element['folderid']);
+			}
+			$rdo[] = DataTransform::filterAndSanitize($element, $this->meta);
+		}
+		return $rdo;
 	}
 
 	public function __update($element, $id) {

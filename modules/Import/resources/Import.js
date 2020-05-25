@@ -264,6 +264,9 @@ if (typeof(ImportJs) == 'undefined') {
 
 		loadDefaultValueWidget: function (rowIdentifierId) {
 			var affectedRow = jQuery('#'+rowIdentifierId);
+			var selectedMapElement = jQuery('#saved_maps option:selected');
+			var mapId = selectedMapElement.prop('id');
+			var defaultString = jQuery('#defaultvalue-'+mapId).val();
 			if (typeof affectedRow == 'undefined' || affectedRow == null) {
 				return;
 			}
@@ -272,6 +275,12 @@ if (typeof(ImportJs) == 'undefined') {
 			var defaultValueContainer = jQuery(jQuery('[name=default_value_container]', affectedRow).get(0));
 			var allDefaultValuesContainer = jQuery('#defaultValuesElementsContainer');
 			if (defaultValueContainer.children.length > 0) {
+				if (defaultString != '' && defaultString != null) {
+					var parseValue = JSON.parse(defaultString);
+					jQuery('#'+selectedFieldName+'_defaultvalue').val(parseValue[selectedFieldName]);
+				} else {
+					jQuery('#'+selectedFieldName+'_defaultvalue').val('');
+				}
 				var copyOfDefaultValueWidget = jQuery(':first', defaultValueContainer).detach();
 				copyOfDefaultValueWidget.appendTo(allDefaultValuesContainer);
 			}

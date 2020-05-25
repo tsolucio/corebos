@@ -42,7 +42,7 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 		global $adb, $default_charset;
 		$crmObject = new VtigerCRMObject($elementType, false);
 
-		if ($element['filelocationtype']=='I' && !empty($element['filename'])) {
+		if ($element['filelocationtype']=='I' && !empty($element['filename']) && is_array($element['filename'])) {
 			$file = $element['filename'];
 			$file['assigned_user_id'] = $element['assigned_user_id'];
 			$file['setype'] = 'Documents Attachment';
@@ -132,7 +132,7 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 	public function update($element) {
 		global $adb;
 		$ids = vtws_getIdComponents($element['id']);
-		if ($element['filelocationtype']=='I' && !empty($element['filename'])) {
+		if ($element['filelocationtype']=='I' && !empty($element['filename']) && is_array($element['filename'])) {
 			$file = $element['filename'];
 			$element['filesize']=$file['size'];
 			$file['assigned_user_id'] = $element['assigned_user_id'];

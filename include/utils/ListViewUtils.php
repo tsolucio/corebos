@@ -490,10 +490,9 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 		if ($fieldname == 'accountname' && $module != 'Accounts') {
 			$fieldname = 'account_id';
 		}
-		if ($fieldname == 'lastname' && ($module == 'SalesOrder' || $module == 'PurchaseOrder' || $module == 'Invoice' || $module == 'Quotes' || $module == 'Calendar')) {
+		if ($fieldname == 'lastname' && ($module == 'SalesOrder' || $module == 'PurchaseOrder' || $module == 'Invoice' || $module == 'Quotes')) {
 			$fieldname = 'contact_id';
 		}
-
 		if ($fieldname == 'productname' && $module != 'Products') {
 			$fieldname = 'product_id';
 		}
@@ -545,23 +544,19 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 	$params = array();
 	$query = 'SELECT uitype, columnname, fieldname, typeofdata FROM vtiger_field ';
 
-	if ($module == 'Calendar') {
-		$query .=' WHERE vtiger_field.tabid in (9,16) and vtiger_field.presence in (0,2)';
-	} else {
-		$tabids = array($tabid);
-		if (isset($focus->related_tables)) {
-			foreach ($focus->related_tables as $reltable => $reltableinfo) {
-				if (isset($reltableinfo[3]) && is_string($reltableinfo[3])) {
-					$tid = getTabid($reltableinfo[3]);
-					if (is_numeric($tid) && $tid>0) {
-						$tabids[] = $tid;
-					}
+	$tabids = array($tabid);
+	if (isset($focus->related_tables)) {
+		foreach ($focus->related_tables as $reltable => $reltableinfo) {
+			if (isset($reltableinfo[3]) && is_string($reltableinfo[3])) {
+				$tid = getTabid($reltableinfo[3]);
+				if (is_numeric($tid) && $tid>0) {
+					$tabids[] = $tid;
 				}
 			}
 		}
-		$query .= ' WHERE vtiger_field.tabid in (' . generateQuestionMarks($tabids) . ') and vtiger_field.presence in (0,2)';
-		$params = $tabids;
 	}
+	$query .= ' WHERE vtiger_field.tabid in (' . generateQuestionMarks($tabids) . ') and vtiger_field.presence in (0,2)';
+	$params = $tabids;
 	$query .= ' AND fieldname IN (' . generateQuestionMarks($field_list) . ') ';
 	$params[] = $field_list;
 
@@ -577,7 +572,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 		$tempArr['typeofdata'] = $typeofdata;
 		$ui_col_array[$field_name] = $tempArr;
 	}
-	//end
+
 	if (is_array($navigation_array) && isset($navigation_array['start']) && $navigation_array['start'] > 1 && $module != 'Emails') {
 		$linkstart = '&start=' . $navigation_array['start'];
 	} elseif (isset($_REQUEST['start']) && $_REQUEST['start'] > 1 && $module != 'Emails') {
@@ -609,7 +604,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 						if ($fieldname == 'accountname' && $module != 'Accounts') {
 							$fieldname = 'account_id';
 						}
-						if ($fieldname == 'lastname' && ($module == 'SalesOrder' || $module == 'PurchaseOrder' || $module == 'Invoice' || $module == 'Quotes' || $module == 'Calendar' )) {
+						if ($fieldname=='lastname' && ($module=='SalesOrder' || $module=='PurchaseOrder' || $module=='Invoice' || $module=='Quotes')) {
 							$fieldname = 'contact_id';
 						}
 						if ($fieldname == 'productname' && $module != 'Products') {
@@ -623,7 +618,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 					if ($fieldname == 'accountname' && $module != 'Accounts') {
 						$fieldname = 'account_id';
 					}
-					if ($fieldname == 'lastname' && ($module == 'SalesOrder' || $module == 'PurchaseOrder' || $module == 'Invoice' || $module == 'Quotes' || $module == 'Calendar')) {
+					if ($fieldname == 'lastname' && ($module == 'SalesOrder' || $module == 'PurchaseOrder' || $module == 'Invoice' || $module == 'Quotes')) {
 						$fieldname = 'contact_id';
 					}
 					if ($fieldname == 'productname' && $module != 'Products') {
@@ -651,8 +646,8 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 								}
 							}
 						}
-						if (($module == 'Calendar' || $module == 'Emails' || $module == 'HelpDesk' || $module == 'Invoice' || $module == 'Leads' || $module == 'Contacts')
-							&& (($fieldname == 'parent_id') || ($name == 'Contact Name') || ($fieldname == 'firstname'))
+						if (($module=='Emails' || $module=='HelpDesk' || $module=='Invoice' || $module=='Leads' || $module=='Contacts')
+							&& (($fieldname=='parent_id') || ($name=='Contact Name') || ($fieldname == 'firstname'))
 						) {
 							if ($module == 'Calendar') {
 								if ($fieldname == 'status') {
@@ -704,8 +699,10 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							} else {
 								$value = '';
 							}
-						} elseif ($module == 'Documents' && ($fieldname == 'filelocationtype' || $fieldname == 'filename' || $fieldname == 'filesize' || $fieldname == 'filestatus' || $fieldname == 'filetype')) {
-							$value = $adb->query_result($list_result, $i - 1, $fieldname);
+						} elseif ($module=='Documents'
+							&& ($fieldname=='filelocationtype' || $fieldname=='filename' || $fieldname=='filesize' || $fieldname=='filestatus' || $fieldname=='filetype')
+						) {
+							$value = $adb->query_result($list_result, $i-1, $fieldname);
 							if ($fieldname == 'filelocationtype') {
 								if ($value == 'I') {
 									$value = getTranslatedString('LBL_INTERNAL', $module);
@@ -841,19 +838,17 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							}
 							$acc_name = textlength_check($account_name);
 							$value = '<a href="index.php?module=Accounts&action=DetailView&record=' . $account_id . '&parenttab=' . $tabname . '">' . htmlspecialchars($acc_name, ENT_QUOTES, $default_charset) . '</a>';
-						} elseif (( $module == 'HelpDesk' || $module == 'PriceBook' || $module == 'Quotes' || $module == 'PurchaseOrder' || $module == 'Faq') && $name == 'Product Name') {
+						} elseif (($module == 'HelpDesk' || $module == 'PriceBook' || $module == 'Quotes' || $module == 'PurchaseOrder' || $module == 'Faq') && $name == 'Product Name') {
 							if ($module == 'HelpDesk' || $module == 'Faq') {
 								$product_id = $adb->query_result($list_result, $i - 1, 'product_id');
 							} else {
 								$product_id = $adb->query_result($list_result, $i - 1, 'productid');
 							}
-
 							if ($product_id != '') {
 								$product_name = getProductName($product_id);
 							} else {
 								$product_name = '';
 							}
-
 							$value = '<a href="index.php?module=Products&action=DetailView&record=' . $product_id . '">' . textlength_check($product_name) . '</a>';
 						} elseif (($module == 'Quotes' && $name == 'Potential Name') || ($module == 'SalesOrder' && $name == 'Potential Name')) {
 							$potential_id = $adb->query_result($list_result, $i - 1, 'potentialid');

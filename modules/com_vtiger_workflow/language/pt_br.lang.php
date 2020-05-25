@@ -6,7 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 28/03/2020 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 03/05/2020 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
   ************************************************************************************/
 $mod_strings = array(
 'com_vtiger_workflow' => 'Workflows',
@@ -217,5 +217,9 @@ $mod_strings = array(
 'Record Set' => 'Conjunto de registros para ações em massa',
 'Select where to get the records from' => 'Selecione de onde obter os registros',
 'Launch Now' => 'Executar agora',
+'Execute Expression' => 'Executar expressão',
+'wfExecExpression' => 'Executar expressão',
+'wdexeexpVariableHelp' => 'O valor será salvo no contexto com esse nome, se fornecido. Senão apenas a expressão será executada.',
+'LBL_EXPRESSIONS' => 'Expressões',
 );
 ?>

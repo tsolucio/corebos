@@ -16,7 +16,13 @@ $smarty = new vtigerCRM_Smarty();
 require_once 'modules/Vtiger/DetailView.php';
 
 if ($focus->column_fields['qtype']=='Mermaid') {
-	$smarty->assign('QSQL', 'graph '.$focus->column_fields['typeprops']."\n".$focus->column_fields['qcolumns']);
+	$recordid = $focus->column_fields['record_id'];
+	$propertyody = json_decode(html_entity_decode($focus->column_fields['typeprops']));
+	if ($propertyody != null) {
+		$smarty->assign('QSQL', 'graph '.$propertyody->graph."\n".$focus->column_fields['qcolumns']);
+	} else {
+		$smarty->assign('QSQL', 'graph '.$focus->column_fields['typeprops']."\n".$focus->column_fields['qcolumns']);
+	}
 } else {
 	$smarty->assign('QSQL', cbQuestion::getSQL($record));
 }

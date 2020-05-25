@@ -371,7 +371,7 @@ function clean($string, $maxLength) {
  * Copy the specified request variable to the member variable of the specified object.
  * Do no copy if the member variable is already set.
  */
-function safe_map($request_var, & $focus, $always_copy = false) {
+function safe_map($request_var, &$focus, $always_copy = false) {
 	global $log;
 	$log->debug('> safe_map '.$request_var.','.get_class($focus).','.$always_copy);
 	safe_map_named($request_var, $focus, $request_var, $always_copy);
@@ -382,7 +382,7 @@ function safe_map($request_var, & $focus, $always_copy = false) {
  * Copy the specified request variable to the member variable of the specified object.
  * Do no copy if the member variable is already set.
  */
-function safe_map_named($request_var, & $focus, $member_var, $always_copy) {
+function safe_map_named($request_var, &$focus, $member_var, $always_copy) {
 	global $log;
 	$log->debug('> safe_map_named '.$request_var.','.get_class($focus).','.$member_var.','.$always_copy);
 	if (isset($_REQUEST[$request_var]) && ($always_copy || is_null($focus->$member_var))) {
@@ -1178,18 +1178,18 @@ function upload_product_image_file($mode, $id) {
 }
 
 /** Function to upload product image file
- * @param $id -- id :: Type integer
- * @param $deleted_array -- images to be deleted :: Type array
- * @returns $imagename -- imagelist:: Type array
+ * @param integer $id product crmid
+ * @param array $deleted_array images to be deleted
+ * @return array $imagename imagelist
  */
-function getProductImageName($id, $deleted_array = '') {
+function getProductImageName($id, $deleted_array = array()) {
 	global $log, $adb;
 	$log->debug('> getProductImageName '.$id);
 	$image_array=array();
 	$result = $adb->pquery('select imagename from vtiger_products where productid=?', array($id));
 	$image_name = $adb->query_result($result, 0, 'imagename');
 	$image_array=explode('###', $image_name);
-	if ($deleted_array!='') {
+	if (count($deleted_array)>0) {
 		$resultant_image = array();
 		$resultant_image=array_merge(array_diff($image_array, $deleted_array));
 		$imagelists=implode('###', $resultant_image);
@@ -2145,7 +2145,7 @@ function getAccessPickListValues($module) {
 			$mulsel="select distinct $fieldname,sortid
 				from vtiger_$fieldname
 				inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$fieldname.picklist_valueid
-				where roleid in (\"". implode($roleids, "\",\"") ."\") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc";
+				where roleid in (\"". implode("\",\"", $roleids) ."\") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc";
 		} else {
 			$mulsel="select distinct $fieldname,sortid
 				from vtiger_$fieldname
@@ -2672,7 +2672,7 @@ function get_special_on_clause($field_list) {
 			$tbl_alias = 'crm';
 		} elseif ($tbl_name == 'vtiger_customerdetails') {
 			$tbl_alias = 'custd';
-		} elseif ($tbl_name == 'vtiger_contactdetails' && spl_chk == 'HelpDesk') {
+		} elseif ($tbl_name == 'vtiger_contactdetails' && $spl_chk == 'HelpDesk') {
 			$tbl_alias = 'contd';
 		} elseif (stripos($tbl_name, 'cf') === (strlen($tbl_name) - strlen('cf'))) {
 			$tbl_alias = 'tcf'; // Custom Field Table Prefix to use in subqueries
@@ -2835,7 +2835,7 @@ function getSecParameterforMerge($module) {
 				$sec_parameter .= ' vtiger_groups.groupname IN (
 					SELECT groupname
 					FROM vtiger_groups
-					WHERE groupid IN ('. implode(',', getCurrentUserGroupList()) .')) OR ';
+					WHERE groupid IN ('. implode(',', $userprivs->getGroups()) .')) OR ';
 			}
 			$sec_parameter .= ' vtiger_groups.groupname IN (
 				SELECT vtiger_groups.groupname
@@ -2933,9 +2933,9 @@ function getCallerName($from) {
 		$callerModule = " (<a href='index.php?module=$module&action=index'>$module</a>)";
 		$callerID = $callerInfo['id'];
 
-		$caller =$caller."<a href='index.php?module=$module&action=DetailView&record=$callerID'>$callerName</a>$callerModule";
+		$caller = "<a href='index.php?module=$module&action=DetailView&record=$callerID'>$callerName</a>$callerModule";
 	} else {
-		$caller = $caller."<br>
+		$caller = "<br>
 			<a target='_blank' href='index.php?module=Leads&action=EditView&phone=$from'>".getTranslatedString('LBL_CREATE_LEAD')."</a><br>
 			<a target='_blank' href='index.php?module=Contacts&phone=$from'>".getTranslatedString('LBL_CREATE_CONTACT')."</a><br>
 			<a target='_blank' href='index.php?module=Accounts&action=EditView&phone=$from'>".getTranslatedString('LBL_CREATE_ACCOUNT').'</a>';
@@ -3068,8 +3068,8 @@ function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $us
 	$crmID = $adb->getUniqueID('vtiger_crmentity');
 	$timeOfCall = date('Y-m-d H:i:s');
 
-	$sql = 'insert into vtiger_crmentity values (?,?,?,?,?,?,?,?,?,?,?,?,?)';
-	$params = array($crmID, $userID, $userID, 0, 'PBXManager', '', $timeOfCall, $timeOfCall, null, null, 0, 1, 0);
+	$sql = 'insert into vtiger_crmentity values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+	$params = array($crmID, $userID, $userID, 0, 'PBXManager', '', $timeOfCall, $timeOfCall, null, null, 0, 1, 0, $pbxuuid);
 	$adb->pquery($sql, $params);
 	$unknownCaller = GlobalVariable::getVariable('PBX_Unknown_CallerID', 'Unknown', 'PBXManager');
 	if (empty($callfrom)) {

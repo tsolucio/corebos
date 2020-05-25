@@ -121,4 +121,49 @@ function __cb_delsetting($arr) {
 	coreBOS_Settings::delSetting($arr[0]);
 	return '';
 }
+
+function __cb_sendMessage($arr) {
+	if (empty($arr[0])) {
+		return '';
+	}
+	$channel = (empty($arr[1]) ? 'workflowMessageChannel' : $arr[1]);
+	$time = (empty($arr[2]) ? 30 : $arr[2]);
+	$cbmq = coreBOS_MQTM::getInstance();
+	$cbmq->sendMessage($channel, 'workflow', 'wfmessagereader', 'Message', '1:M', 1, $time, 0, 0, $arr[0]);
+	return '';
+}
+
+function __cb_readMessage($arr) {
+	$channel = (empty($arr[0]) ? 'workflowMessageChannel' : $arr[0]);
+	$cbmq = coreBOS_MQTM::getInstance();
+	$msg = $cbmq->getMessage($channel, 'wfmessagereader', 'workflow');
+	return $msg['information'];
+}
+
+function __cb_evaluateRule($arr) {
+	global $logbg;
+	if (count($arr)<2 || empty($arr[0])) {
+		return 0;
+	}
+	if (!is_object($arr[1])) {
+		return 0;
+	}
+	$env = $arr[1];
+	$data = $env->getData();
+	list($wsid,$crmid) = explode('x', $data['id']);
+	$context = $env->WorkflowContext;
+	$context['record_id'] = $crmid;
+	$result = 0;
+	try {
+		$result = coreBOS_Rule::evaluate($arr[0], $context);
+	} catch (\Exception $e) {
+		$logbg->debug(array(
+			'Rule: '.$arr[0],
+			$e->getCode(),
+			$e->getMessage(),
+			$context
+		));
+	}
+	return $result;
+}
 ?>

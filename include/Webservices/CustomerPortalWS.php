@@ -264,9 +264,29 @@ function vtws_getReferenceValue($strids, $user) {
 	return serialize($result);
 }
 
-// $query string contains the search term we are looking for
-// $search_onlyin is a comma separated list of modules to search in
-// $restrictionids is an array which contains the user we are to search as and the account and contact restrictions
+/**
+ * launch a global search in the application
+ * @param string $query contains the search term we are looking for
+ * @param string $search_onlyin comma separated list of modules to search in
+ * @param array $restrictionids contains the user we are to search as and the account and contact restrictions
+ * @return array with the results
+ * @example {'query':'che', 'search_onlyin':'Accounts,Contacts', 'restrictionids': JSON.stringify({'userId': '19x1', 'accountId':'11x74', 'contactId':'12x1084'}) })
+ * @example {'query':'che', 'search_onlyin':'Accounts,Contacts', 'restrictionids': JSON.stringify({'userId': '19x1', 'accountId':'11x0', 'contactId':'12x0'}) })
+ */
+function cbwsgetSearchResults($query, $search_onlyin, $restrictionids, $user) {
+	return unserialize(vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user));
+}
+
+/**
+ * launch a global search in the application. use cbwsgetSearchResults instead of this function
+ * @see cbwsgetSearchResults
+ * @param string $query contains the search term we are looking for
+ * @param string $search_onlyin comma separated list of modules to search in
+ * @param array $restrictionids contains the user we are to search as and the account and contact restrictions
+ * @return string php serialized array with the results
+ * @example {'query':'che', 'search_onlyin':'Accounts,Contacts', 'restrictionids': JSON.stringify({'userId': '19x1', 'accountId':'11x74', 'contactId':'12x1084'}) })
+ * @example {'query':'che', 'search_onlyin':'Accounts,Contacts', 'restrictionids': JSON.stringify({'userId': '19x1', 'accountId':'11x0', 'contactId':'12x0'}) })
+ */
 function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 	global $adb,$current_user;
 	$res=array();
@@ -317,6 +337,7 @@ function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 					break;
 			}
 		}
+		$listquery = 'select * '.substr($listquery, stripos($listquery, ' from '));
 		$where = getUnifiedWhere($listquery, $module, $query);
 		if ($where != '') {
 			$listquery .= ' and ('.$where.')';
@@ -408,7 +429,18 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 	$list_block = array();
 	//getting the field table entries from database
 	$tabid = getTabid($module);
-
+	$bmapname = $module.'_ListColumns';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapLC = $cbMap->ListColumns();
+		$parentmodule = 'Home';
+		$focus->list_fields = $cbMapLC->getListFieldsFor($parentmodule);
+		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor($parentmodule);
+		$focus->list_link_field = $cbMapLC->getListLinkFor($parentmodule);
+		$oCv->list_fields = $focus->list_fields;
+		$oCv->list_fields_name = $focus->list_fields_name;
+	}
 	if ($oCv) {
 		if (isset($oCv->list_fields)) {
 			$focus->list_fields = $oCv->list_fields;
@@ -425,12 +457,11 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 	$field_list = array();
 	$userprivs = $current_user->getPrivileges();
 	foreach ($focus->list_fields as $name => $tableinfo) {
-		if ($oCv && isset($oCv->list_fields_name)) {
-			$fieldname = $oCv->list_fields_name[$name];
-		} elseif (isset($focus->list_fields_name[$name])) {
-			$fieldname = $focus->list_fields_name[$name];
-		} else {
-			continue;
+		$fieldname = $focus->list_fields_name[$name];
+		if ($oCv) {
+			if (isset($oCv->list_fields_name)) {
+				$fieldname = $oCv->list_fields_name[$name];
+			}
 		}
 		if ($fieldname == 'accountname' && $module != 'Accounts') {
 			$fieldname = 'account_id';
@@ -443,14 +474,14 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 		}
 		$field_list[] = $fieldname;
 	}
-	$field=array();
+	$field = array();
 	if (!is_admin($current_user)) {
 		if ($module == 'Emails') {
-			$query  = 'SELECT fieldname FROM vtiger_field WHERE tabid = ? and vtiger_field.presence in (0,2)';
+			$query = 'SELECT fieldname FROM vtiger_field WHERE tabid = ? and vtiger_field.presence in (0,2)';
 			$params = array($tabid);
 		} else {
 			$profileList = getCurrentUserProfileList();
-			$query  = 'SELECT DISTINCT vtiger_field.fieldname
+			$query = 'SELECT DISTINCT vtiger_field.fieldname
 				FROM vtiger_field
 				INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid
 				INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
@@ -464,39 +495,42 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 		}
 
 		$result = $adb->pquery($query, $params);
-		for ($k=0; $k < $adb->num_rows($result); $k++) {
-			$field[]=$adb->query_result($result, $k, 'fieldname');
+		for ($k = 0; $k < $adb->num_rows($result); $k++) {
+			$field[] = $adb->query_result($result, $k, 'fieldname');
 		}
 	}
 	//constructing the uitype and columnname array
-	$ui_col_array=array();
+	$ui_col_array = array();
 
-	$query = 'SELECT uitype, columnname, fieldname
+	$query = 'SELECT uitype, columnname, fieldname, typeofdata
 		FROM vtiger_field
 		WHERE vtiger_field.tabid=? and vtiger_field.presence in (0,2) AND fieldname IN ('. generateQuestionMarks($field_list).') ';
 	$params = array($tabid, $field_list);
 	$result = $adb->pquery($query, $params);
-	$num_rows=$adb->num_rows($result);
-	for ($i=0; $i<$num_rows; $i++) {
-		$tempArr=array();
-		$uitype=$adb->query_result($result, $i, 'uitype');
-		$columnname=$adb->query_result($result, $i, 'columnname');
-		$field_name=$adb->query_result($result, $i, 'fieldname');
-		$tempArr[$uitype]=$columnname;
-		$ui_col_array[$field_name]=$tempArr;
+	$num_rows = $adb->num_rows($result);
+	for ($i = 0; $i < $num_rows; $i++) {
+		$tempArr = array();
+		$uitype = $adb->query_result($result, $i, 'uitype');
+		$columnname = $adb->query_result($result, $i, 'columnname');
+		$field_name = $adb->query_result($result, $i, 'fieldname');
+		$typeofdata = $adb->query_result($result, $i, 'typeofdata');
+		$tempArr[$uitype] = $columnname;
+		$tempArr['typeofdata'] = $typeofdata;
+		$ui_col_array[$field_name] = $tempArr;
 	}
 
 	if ($navigation_array['start'] !=0) {
-		for ($i=1; $i<=$noofrows; $i++) {
-			$list_header =array();
+		for ($i = 1; $i <= $noofrows; $i++) {
+			$list_header = array();
 			//Getting the entityid
 			if ($module != 'Users') {
-				$entity_id = $adb->query_result($list_result, $i-1, 'crmid');
-				//$owner_id = $adb->query_result($list_result, $i-1, 'smownerid');
+				$entity_id = $adb->query_result($list_result, $i - 1, 'crmid');
+				//$owner_id = $adb->query_result($list_result, $i - 1, 'smownerid');
 			} else {
-				$entity_id = $adb->query_result($list_result, $i-1, 'id');
+				$entity_id = $adb->query_result($list_result, $i - 1, 'id');
 			}
 			foreach ($focus->list_fields as $name => $tableinfo) {
+				$fieldname = $focus->list_fields_name[$name];
 				if ($oCv) {
 					if (isset($oCv->list_fields_name)) {
 						$fieldname = $oCv->list_fields_name[$name];
@@ -531,10 +565,10 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 						$table_name = '';
 						$column_name = '';
 						foreach ($tableinfo as $tablename => $colname) {
-							$table_name=$tablename;
+							$table_name = $tablename;
 							$column_name = $colname;
 						}
-						$value = $adb->query_result($list_result, $i-1, $colname);
+						$value = $adb->query_result($list_result, $i - 1, $colname);
 					} else {
 						if ($module == 'Calendar') {
 							$act_id = $adb->query_result($list_result, $i-1, 'activityid');
@@ -549,11 +583,11 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 							&& (($fieldname=='parent_id') || ($name=='Contact Name') || ($fieldname == 'firstname'))
 						) {
 							if ($module == 'Calendar') {
-								if ($fieldname=='status') {
+								if ($fieldname == 'status') {
 									if ($activitytype == 'Task') {
-										$fieldname='taskstatus';
+										$fieldname = 'taskstatus';
 									} else {
-										$fieldname='eventstatus';
+										$fieldname = 'eventstatus';
 									}
 								}
 								if ($activitytype == 'Task') {
@@ -571,13 +605,13 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 								}
 							}
 							if ($module != 'Calendar' || ($module == 'Calendar' && $has_permission == 'yes')) {
-								if ($fieldname=='parent_id') {
-									$value=getRelatedTo($module, $list_result, $i-1);
+								if ($fieldname == 'parent_id') {
+									$value = getRelatedTo($module, $list_result, $i - 1);
 								}
-								if ($name=='Contact Name') {
-									$contact_id = $adb->query_result($list_result, $i-1, 'contactid');
-									$contact_name = getFullNameFromQResult($list_result, $i-1, 'Contacts');
-									$value='';
+								if ($name == 'Contact Name') {
+									$contact_id = $adb->query_result($list_result, $i - 1, 'contactid');
+									$contact_name = getFullNameFromQResult($list_result, $i - 1, 'Contacts');
+									$value = '';
 									//Added to get the contactname for activities custom view - t=2190
 									if ($contact_id != '' && !empty($contact_name)) {
 										$contact_name = getContactName($contact_id);
@@ -587,8 +621,8 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 									}
 								}
 								if ($fieldname == 'firstname') {
-									$first_name = textlength_check($adb->query_result($list_result, $i-1, 'firstname'));
-									$value =$first_name;
+									$first_name = textlength_check($adb->query_result($list_result, $i - 1, 'firstname'));
+									$value = $first_name;
 								}
 							} else {
 								$value = '';
@@ -607,30 +641,30 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 								}
 							}
 							if ($fieldname == 'filename') {
-								$downloadtype = $adb->query_result($list_result, $i-1, 'filelocationtype');
+								$downloadtype = $adb->query_result($list_result, $i - 1, 'filelocationtype');
 								if ($downloadtype == 'I') {
 									$fld_value = $value;
 									$ext_pos = strrpos($fld_value, '.');
-									$ext =substr($fld_value, $ext_pos + 1);
+									$ext = substr($fld_value, $ext_pos + 1);
 									$ext = strtolower($ext);
 									if ($value != '') {
 										if ($ext == 'bin' || $ext == 'exe' || $ext == 'rpm') {
-											$fileicon="<img src='" . vtiger_imageurl('fExeBin.gif', $theme) . "' hspace='3' align='absmiddle' border='0'>";
+											$fileicon = "<img src='" . vtiger_imageurl('fExeBin.gif', $theme) . "' hspace='3' align='absmiddle' border='0'>";
 										} elseif ($ext == 'jpg' || $ext == 'gif' || $ext == 'bmp') {
-											$fileicon="<img src='" . vtiger_imageurl('fbImageFile.gif', $theme) . "' hspace='3' align='absmiddle' border='0'>";
+											$fileicon = "<img src='" . vtiger_imageurl('fbImageFile.gif', $theme) . "' hspace='3' align='absmiddle' border='0'>";
 										} elseif ($ext == 'txt' || $ext == 'doc' || $ext == 'xls') {
-											$fileicon="<img src='" . vtiger_imageurl('fbTextFile.gif', $theme) . "' hspace='3' align='absmiddle' border='0'>";
+											$fileicon = "<img src='" . vtiger_imageurl('fbTextFile.gif', $theme) . "' hspace='3' align='absmiddle' border='0'>";
 										} elseif ($ext == 'zip' || $ext == 'gz' || $ext == 'rar') {
-											$fileicon="<img src='" . vtiger_imageurl('fbZipFile.gif', $theme) . "' hspace='3' align='absmiddle'	border='0'>";
+											$fileicon = "<img src='" . vtiger_imageurl('fbZipFile.gif', $theme) . "' hspace='3' align='absmiddle'	border='0'>";
 										} else {
-											$fileicon="<img src='" . vtiger_imageurl('fbUnknownFile.gif', $theme) . "' hspace='3' align='absmiddle' border='0'>";
+											$fileicon = "<img src='" . vtiger_imageurl('fbUnknownFile.gif', $theme) . "' hspace='3' align='absmiddle' border='0'>";
 										}
 									}
 								} elseif ($downloadtype == 'E') {
 									if (trim($value) != '') {
 										$fld_value = $value;
-										$fileicon = "<img src='" . vtiger_imageurl('fbLink.gif', $theme) . "' alt='".getTranslatedString('LBL_EXTERNAL_LNK', $module).
-											"' title='".getTranslatedString('LBL_EXTERNAL_LNK', $module)."' hspace='3' align='absmiddle' border='0'>";
+										$fileicon = "<img src='" . vtiger_imageurl('fbLink.gif', $theme) . "' alt='" . getTranslatedString('LBL_EXTERNAL_LNK', $module)
+											."' title='" . getTranslatedString('LBL_EXTERNAL_LNK', $module) . "' hspace='3' align='absmiddle' border='0'>";
 									} else {
 										$fld_value = '--';
 										$fileicon = '';
@@ -640,37 +674,38 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 									$fileicon = '';
 								}
 
-								$file_name = $adb->query_result($list_result, $i-1, 'filename');
-								$notes_id = $adb->query_result($list_result, $i-1, 'crmid');
-								//$folder_id = $adb->query_result($list_result, $i-1, 'folderid');
-								$download_type = $adb->query_result($list_result, $i-1, 'filelocationtype');
-								$file_status = $adb->query_result($list_result, $i-1, 'filestatus');
+								$file_name = $adb->query_result($list_result, $i - 1, 'filename');
+								$notes_id = $adb->query_result($list_result, $i - 1, 'crmid');
+								//$folder_id = $adb->query_result($list_result, $i - 1, 'folderid');
+								$download_type = $adb->query_result($list_result, $i - 1, 'filelocationtype');
+								$file_status = $adb->query_result($list_result, $i - 1, 'filestatus');
 								$fileidQuery = 'select attachmentsid from vtiger_seattachmentsrel where crmid=?';
 								$fileidres = $adb->pquery($fileidQuery, array($notes_id));
 								$fileid = $adb->query_result($fileidres, 0, 'attachmentsid');
 								if ($file_name != '' && $file_status == 1) {
 									if ($download_type == 'I') {
-										$fld_value = "<a href='index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=downloadfile&entityid=$notes_id&fileid=$fileid' title='".
-											getTranslatedString("LBL_DOWNLOAD_FILE", $module)."' onclick='javascript:dldCntIncrease($notes_id);'>".$fld_value."</a>";
+										$fld_value = "<a href='index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=downloadfile&entityid=$notes_id&fileid=$fileid' title='"
+											.getTranslatedString('LBL_DOWNLOAD_FILE', $module) . "' onclick='javascript:dldCntIncrease($notes_id);'>"
+											.textlength_check($fld_value) . '</a>';
 									} elseif ($download_type == 'E') {
-										$fld_value = "<a target='_blank' href='$file_name' onclick='javascript:dldCntIncrease($notes_id);' title='".
-											getTranslatedString("LBL_DOWNLOAD_FILE", $module)."'>".$fld_value."</a>";
+										$fld_value = "<a target='_blank' href='$file_name' onclick='javascript:dldCntIncrease($notes_id);' title='"
+											.getTranslatedString('LBL_DOWNLOAD_FILE', $module) . "'>" . textlength_check($fld_value) . '</a>';
 									} else {
 										$fld_value = ' --';
 									}
 								}
-								$value = $fileicon.$fld_value;
+								$value = $fileicon . $fld_value;
 							}
 							if ($fieldname == 'filesize') {
-								$downloadtype = $adb->query_result($list_result, $i-1, 'filelocationtype');
+								$downloadtype = $adb->query_result($list_result, $i - 1, 'filelocationtype');
 								if ($downloadtype == 'I') {
 									$filesize = $value;
 									if ($filesize < 1024) {
-										$value=$filesize.' B';
+										$value = $filesize . ' B';
 									} elseif ($filesize > 1024 && $filesize < 1048576) {
-										$value=round($filesize/1024, 2).' KB';
+										$value = round($filesize / 1024, 2) . ' KB';
 									} elseif ($filesize > 1048576) {
-										$value=round($filesize/(1024*1024), 2).' MB';
+										$value = round($filesize / (1024 * 1024), 2) . ' MB';
 									}
 								} else {
 									$value = ' --';
@@ -679,16 +714,16 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 							if ($fieldname == 'filestatus') {
 								$filestatus = $value;
 								if ($filestatus == 1) {
-									$value=getTranslatedString('yes', $module);
+									$value = getTranslatedString('yes', $module);
 								} elseif ($filestatus == 0) {
-									$value=getTranslatedString('no', $module);
+									$value = getTranslatedString('no', $module);
 								} else {
-									$value=' --';
+									$value = ' --';
 								}
 							}
 							if ($fieldname == 'filetype') {
-								$downloadtype = $adb->query_result($list_result, $i-1, 'filelocationtype');
-								$filetype = $adb->query_result($list_result, $i-1, 'filetype');
+								$downloadtype = $adb->query_result($list_result, $i - 1, 'filelocationtype');
+								$filetype = $adb->query_result($list_result, $i - 1, 'filetype');
 								if ($downloadtype == 'E' || $downloadtype != 'I') {
 									$value = ' --';
 								} else {
@@ -700,43 +735,42 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 								$value = textlength_check($value);
 							}
 						} elseif ($module == 'Products' && $name == 'Related to') {
-							$value=getRelatedTo($module, $list_result, $i-1);
-						} elseif ($name=='Contact Name' && ($module =='SalesOrder' || $module == 'Quotes' || $module == 'PurchaseOrder')) {
+							$value = getRelatedTo($module, $list_result, $i - 1);
+						} elseif ($name == 'Contact Name' && ($module == 'SalesOrder' || $module == 'Quotes' || $module == 'PurchaseOrder')) {
 							if ($name == 'Contact Name') {
-								$contact_id = $adb->query_result($list_result, $i-1, 'contactid');
-								$contact_name = getFullNameFromQResult($list_result, $i-1, 'Contacts');
-								$value='';
-								if (($contact_name != '') && ($contact_id !='NULL')) {
-									$value =$contact_name;
+								$contact_id = $adb->query_result($list_result, $i - 1, 'contactid');
+								$contact_name = getFullNameFromQResult($list_result, $i - 1, 'Contacts');
+								$value = '';
+								if (($contact_name != '') && ($contact_id != 'NULL')) {
+									$value = $contact_name;
 								}
 							}
 						} elseif ($name == 'Product') {
-							$product_id = textlength_check($adb->query_result($list_result, $i-1, 'productname'));
+							$product_id = textlength_check($adb->query_result($list_result, $i - 1, 'productname'));
 							$value = $product_id;
-						} elseif ($name=='Account Name') {
-							//modified for vtiger_customview 27/5
+						} elseif ($name == 'Account Name') {
 							if ($module == 'Accounts') {
-								$account_id = $adb->query_result($list_result, $i-1, 'crmid');
+								$account_id = $adb->query_result($list_result, $i - 1, 'crmid');
 								//$account_name = getAccountName($account_id);
-								$account_name = textlength_check($adb->query_result($list_result, $i-1, 'accountname'));
+								$account_name = textlength_check($adb->query_result($list_result, $i - 1, 'accountname'));
 								$value = $account_name;
 							} elseif ($module == 'Potentials' || $module == 'Contacts' || $module == 'Invoice' || $module == 'SalesOrder' || $module == 'Quotes') {
 								//Potential,Contacts,Invoice,SalesOrder & Quotes records sort by Account Name
 								//$accountname = textlength_check($adb->query_result($list_result,$i-1,'accountname'));
-								$accountid = $adb->query_result($list_result, $i-1, 'accountid');
+								$accountid = $adb->query_result($list_result, $i - 1, 'accountid');
 								$accountname = textlength_check(getAccountName($accountid));
 								$value = $accountname;
 							} else {
-								$account_id = $adb->query_result($list_result, $i-1, 'accountid');
+								$account_id = $adb->query_result($list_result, $i - 1, 'accountid');
 								$account_name = getAccountName($account_id);
 								$acc_name = textlength_check($account_name);
 								$value = $acc_name;
 							}
-						} elseif (($module=='HelpDesk' || $module=='PriceBook' || $module=='Quotes' || $module=='PurchaseOrder' || $module=='Faq') && $name=='Product Name') {
+						} elseif (($module == 'HelpDesk' || $module == 'PriceBook' || $module == 'Quotes' || $module == 'PurchaseOrder' || $module == 'Faq') && $name == 'Product Name') {
 							if ($module == 'HelpDesk' || $module == 'Faq') {
-								$product_id = $adb->query_result($list_result, $i-1, 'product_id');
+								$product_id = $adb->query_result($list_result, $i - 1, 'product_id');
 							} else {
-								$product_id = $adb->query_result($list_result, $i-1, 'productid');
+								$product_id = $adb->query_result($list_result, $i - 1, 'productid');
 							}
 							if ($product_id != '') {
 								$product_name = getProductName($product_id);
@@ -745,11 +779,11 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 							}
 							$value = textlength_check($product_name);
 						} elseif (($module == 'Quotes' && $name == 'Potential Name') || ($module == 'SalesOrder' && $name == 'Potential Name')) {
-							$potential_id = $adb->query_result($list_result, $i-1, 'potentialid');
+							$potential_id = $adb->query_result($list_result, $i - 1, 'potentialid');
 							$potential_name = getPotentialName($potential_id);
 							$value = textlength_check($potential_name);
-						} elseif ($module =='Emails' && $relatedlist != '' && ($name=='Subject' || $name=='Date Sent' || $name == 'To')) {
-							$list_result_count = $i-1;
+						} elseif ($module == 'Emails' && $relatedlist != '' && ($name == 'Subject' || $name == 'Date Sent' || $name == 'To')) {
+							$list_result_count = $i - 1;
 							$tmp_value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
 							$tmp_value = evvt_strip_html_links($tmp_value);
 							$value = textlength_check($tmp_value);
@@ -765,7 +799,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 								}
 							}
 						} else {
-							$list_result_count = $i-1;
+							$list_result_count = $i - 1;
 							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
 							$value = evvt_strip_html_links($value);
 						}

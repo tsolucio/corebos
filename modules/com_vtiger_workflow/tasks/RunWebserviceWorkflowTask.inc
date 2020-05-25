@@ -39,11 +39,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 		$target_fields = $cbMap->WebserviceMapping($focus2->column_fields);
 
 		$wsconfig = $target_fields['WSConfig'];
-		$url = $wsconfig['wsurl'];
-		if (strstr($url, 'getSetting(')) {
-			$setkey = str_replace(array('getSetting(', ')'), array('', ''), $url);
-			$url = coreBOS_Settings::getSetting($setkey, '');
-		}
+		$url = $this->substituteSetting($wsconfig['wsurl']);
 		$method = $wsconfig['wshttpmethod'];
 		$methodname = $wsconfig['methodname'];
 		$wstype = $wsconfig['wstype'];
@@ -83,18 +79,19 @@ class RunWebserviceWorkflowTask extends VTTask {
 			$nr = 0;
 			foreach ($headers as $head) {
 				$findauth = explode(':', $head);
-				if ($findauth[0] == 'Authorization') {
+				if ($findauth[0] == 'Authorization' || $findauth[0] == 'Token') {
 					if (strstr($findauth[1], 'getContext')) {
 						$context = str_replace(array('getContext(', ')'), array('', ''), $findauth[1]);
 						$token = $entity->getContext();
 						$token = $token[$context];
-					} elseif (strstr($findauth[1], 'getSetting')) {
-						$setkey = str_replace(array('getSetting(', ')'), array('', ''), $findauth[1]);
-						$token = coreBOS_Settings::getSetting($setkey, '');
 					} else {
-						$token = $findauth[1];
+						$token = $this->substituteSetting($findauth[1]);
 					}
-					$replace = 'Authorization:Bearer: '.$token;
+					if ($findauth[0] == 'Token') {
+						$replace = 'Token: '.$token;
+					} else {
+						$replace = 'Authorization:Bearer: '.$token;
+					}
 					$headers[$nr] = $replace;
 				}
 				$nr++;
@@ -140,19 +137,28 @@ class RunWebserviceWorkflowTask extends VTTask {
 				$conds = array();
 				if ($outputtype == 'JSON') {
 					foreach ($target_fields['Response'] as $fld => $v) {
+						$r2 = '';
 						if (is_array($response2)) {
 							if (strpos($fld, '.')) {
 								list ($elemresponse, $elemfield) = explode('.', $fld);
-								$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2[0]->$elemresponse->$elemfield));
+								if (isset($response2[0]->$elemresponse) && isset($response2[0]->$elemresponse->$elemfield)) {
+									$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2[0]->$elemresponse->$elemfield));
+								}
 							} else {
-								$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2[0]->$fld));
+								if (isset($response2[0]->$fld)) {
+									$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2[0]->$fld));
+								}
 							}
 						} else {
 							if (strpos($fld, '.')) {
 								list ($elemresponse, $elemfield) = explode('.', $fld);
-								$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2->$elemresponse->$elemfield));
+								if (isset($response2->$elemresponse) && isset($response2->$elemresponse->$elemfield)) {
+									$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2->$elemresponse->$elemfield));
+								}
 							} else {
-								$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2->$fld));
+								if (isset($response2->$fld)) {
+									$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2->$fld));
+								}
 							}
 						}
 						if ((string)$r2 == 'null' || is_null($r2)) {
@@ -319,6 +325,20 @@ class RunWebserviceWorkflowTask extends VTTask {
 
 		$util->revertUser();
 		$logbg->debug('< RunWebservice');
+	}
+
+	public function substituteSetting($url) {
+		$start = strpos($url, 'getSetting(');
+		if ($start!==false) {
+			$end = strpos($url, ')', $start);
+			$first = substr($url, 0, $start);
+			$setting = substr($url, $start, $end-$start);
+			$last =  substr($url, $end+1);
+			$setkey = str_replace('getSetting(', '', $setting);
+			$value = coreBOS_Settings::getSetting($setkey, '');
+			$url = $first.$value.$last;
+		}
+		return $url;
 	}
 }
 ?>

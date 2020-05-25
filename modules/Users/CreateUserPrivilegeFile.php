@@ -382,7 +382,7 @@ function getUserModuleSharingObjects($module, $userid, $def_org_share, $current_
 
 	$mod_tabid=getTabid($module);
 
-	$mod_share_permission;
+	$mod_share_permission=array();
 	$mod_share_read_permission=array();
 	$mod_share_write_permission=array();
 	$mod_share_read_permission['ROLE']=array();

@@ -87,6 +87,12 @@ function vtws_retrieve($id, $user) {
 	}
 	//return product lines
 	if ($entityName == 'Quotes' || $entityName == 'PurchaseOrder' || $entityName == 'SalesOrder' || $entityName == 'Invoice') {
+		$cbMap = cbMap::getMapByName($entityName.'InventoryDetails', 'MasterDetailLayout');
+		$MDMapFound = ($cbMap!=null && isPermitted('InventoryDetails', 'index')=='yes');
+		if ($MDMapFound) {
+			$cbMapFields = $cbMap->MasterDetailLayout();
+		}
+		$invdTabid = getTabid('InventoryDetails');
 		$pdowsid = vtws_getEntityId('Products').'x';
 		$srvwsid = vtws_getEntityId('Services').'x';
 		list($wsid, $recordid) = explode('x', $id);
@@ -123,6 +129,32 @@ function vtws_retrieve($id, $user) {
 				'discount_percentage'=>$discount_percent,
 				'discount_amount'=>$discount_amount,
 			);
+			if ($MDMapFound) {
+				foreach ($cbMapFields['detailview']['fields'] as $mdfield) {
+					if ($mdfield['fieldinfo']['name']=='id') {
+						continue;
+					}
+					$mdrs = $adb->pquery(
+						'select '.$mdfield['fieldinfo']['name'].',vtiger_inventorydetails.inventorydetailsid from vtiger_inventorydetails
+							inner join vtiger_crmentity on crmid=vtiger_inventorydetails.inventorydetailsid
+							inner join vtiger_inventorydetailscf on vtiger_inventorydetailscf.inventorydetailsid=vtiger_inventorydetails.inventorydetailsid
+							where deleted=0 and related_to=? and lineitem_id=?',
+						array($recordid, $row['lineitem_id'])
+					);
+					if ($mdrs) {
+						$col_fields = array();
+						$col_fields[$mdfield['fieldinfo']['name']] = $adb->query_result($mdrs, 0, $mdfield['fieldinfo']['name']);
+						$col_fields['record_id'] = $adb->query_result($mdrs, 0, 'inventorydetailsid');
+						$foutput = getDetailViewOutputHtml($mdfield['fieldinfo']['uitype'], $mdfield['fieldinfo']['name'], $mdfield['fieldinfo']['label'], $col_fields, 0, $invdTabid, $entityName);
+						if ($foutput[2]==69) { // image
+							$foutput = str_replace('style="max-width: 500px;"', 'style="max-width: 100px;"', $foutput[1]);
+						} else {
+							$foutput = $foutput[1];
+						}
+						$onlyPrd[$mdfield['fieldinfo']['name']] = $foutput;
+					}
+				}
+			}
 			$entity['pdoInformation'][] = $onlyPrd;
 		}
 	}

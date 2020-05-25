@@ -17,22 +17,42 @@
  *  Version      : 5.4.0
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
-require_once 'config.inc.php';
-include_once 'data/CRMEntity.php';
+$Vtiger_Utils_Log = true;
+include_once 'vtlib/Vtiger/Module.php';
 include_once 'modules/Users/Users.php';
 include_once 'modules/cbMap/cbMap.php';
 require_once 'modules/cbMap/processmap/processMap.php';
 require_once 'modules/cbMap/processmap/Import.php';
-require_once 'include/utils/utils.php';
-require_once 'include/database/PearDatabase.php';
 
-global $adb, $log, $current_user;
+global $adb, $log, $current_user, $current_language;
+
 $current_user = Users::getActiveAdminUser();
+if (empty($current_language)) {
+	$current_language = $current_user->column_fields['language'];
+}
+
 if (isset($argv) && !empty($argv)) {
 	$csvfile = $argv[1];
 	$mapid = $argv[2];
 }
-$mapfocus = CRMEntity::getInstance('cbMap');
-$mapfocus->retrieve_entity_info($mapid, 'cbMap');
-$mapinfo = $mapfocus->Import()->processMap($argv);
+if (!file_exists($csvfile) || !is_readable($csvfile)) {
+	echo 'No suitable file specified' . PHP_EOL;
+	die;
+}
+
+// check that map is correct and load it
+if (preg_match('/^[0-9]+x[0-9]+$/', $mapid)) {
+	list($cbmapws, $mapid) = explode('x', $mapid);
+}
+if (is_numeric($mapid)) {
+	$cbmap = cbMap::getMapByID($mapid);
+} else {
+	$cbmapid = GlobalVariable::getVariable('BusinessMapping_'.$mapid, cbMap::getMapIdByName($mapid));
+	$cbmap = cbMap::getMapByID($cbmapid);
+}
+if (empty($cbmap) || $cbmap->column_fields['maptype'] != 'Import') {
+	echo 'Invalid Business Map identifier: '. $mapid . PHP_EOL;
+}
+
+$cbmap->Import($argv);
 ?>

@@ -78,6 +78,7 @@ class VTExpressionsManager {
 			'time_diffyears(a)' => 'time_diffyears(a)',
 			'time_diffweekdays(a,b)' => 'time_diffweekdays(a,b)',
 			'time_diffweekdays(a)' => 'time_diffweekdays(a)',
+			'holidaydifference' => 'holidaydifference(startDate, endDate, include_saturdays, holidays)',
 			'time_diff(a,b)' => 'time_diff(a,b)',
 			'time_diff(a)' => 'time_diff(a)',
 			'aggregate_time' => 'aggregate_time(relatedModuleName, relatedModuleField, conditions)',
@@ -136,9 +137,12 @@ class VTExpressionsManager {
 			'getGEODistanceFromCoordinates' => 'getGEODistanceFromCoordinates({lat1},{long1},{lat2},{long2})',
 			'getFromContext' => 'getFromContext(variablename)',
 			'setToContext' => 'setToContext(variablename, value)',
+			'sendMessage' => 'sendMessage(message, channel, time)',
+			'readMessage' => 'readMessage(channel)',
 			'getSetting' => "getSetting('setting_key', 'default')",
 			'setSetting' => "setSetting('setting_key', value)",
 			'delSetting' => "delSetting('setting_key')",
+			'evaluateRule' => 'evaluateRule(ruleID)',
 			'getCRUDMode' => 'getCRUDMode()',
 			'isNumeric' => 'isNumeric(fieldname)',
 			'isString' => 'isString(fieldname)',
@@ -148,6 +152,8 @@ class VTExpressionsManager {
 			'exists' => 'exists(fieldname, value)',
 			'existsrelated' => 'existsrelated(relatedmodule, fieldname, value)',
 			'allrelatedare' => 'allrelatedare(relatedmodule, fieldname, value)',
+			'min' => 'min(fieldname)',
+			'max' => 'max(fieldname)',
 		);
 		$wfexpfuncs = $adb->query('select expname,expinfo from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {

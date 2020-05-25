@@ -726,27 +726,29 @@ function get_to_emailids($module) {
 
 	$idlists = $mailids = '';
 	if ($adb->num_rows($result)>0) {
+		$tabid = getTabid($module);
 		while ($entityvalue = $adb->fetchByAssoc($result)) {
 			$vtwsid = $entityvalue['id'];
 			foreach ($emailFields as $emailFieldName) {
-				if ($entityvalue[$emailFieldName] != null || $entityvalue[$emailFieldName] != '') {
+				$emailColName = getColumnnameByFieldname($tabid, $emailFieldName);
+				if ($entityvalue[$emailColName] != null || $entityvalue[$emailColName] != '') {
 					$idlists .= $vtwsid . '@' . $vtwsCRMObjectMeta->getFieldIdFromFieldName($emailFieldName) . '|';
 					if ($module == 'Leads' || $module == 'Contacts') {
-						$mailids .= $entityvalue['lastname'] . ' ' . $entityvalue['firstname'] . '<' . $entityvalue[$emailFieldName] . '>,';
+						$mailids .= $entityvalue['lastname'] . ' ' . $entityvalue['firstname'] . '<' . $entityvalue[$emailColName] . '>,';
 					} elseif ($module == 'Project') {
-						$mailids .= $entityvalue['projectname'] . '<' . $entityvalue[$emailFieldName] . '>,';
+						$mailids .= $entityvalue['projectname'] . '<' . $entityvalue[$emailColName] . '>,';
 					} elseif ($module == 'ProjectTask') {
-						$mailids .= $entityvalue['projecttaskname'] . '<' . $entityvalue[$emailFieldName] . '>,';
+						$mailids .= $entityvalue['projecttaskname'] . '<' . $entityvalue[$emailColName] . '>,';
 					} elseif ($module == 'Potentials') {
-						$mailids .= $entityvalue['potentialname'] . '<' . $entityvalue[$emailFieldName] . '>,';
+						$mailids .= $entityvalue['potentialname'] . '<' . $entityvalue[$emailColName] . '>,';
 					} elseif ($module == 'HelpDesk') {
-						$mailids .= $entityvalue['title'] . '<' . $entityvalue[$emailFieldName] . '>,';
+						$mailids .= $entityvalue['title'] . '<' . $entityvalue[$emailColName] . '>,';
 					} elseif ($module == 'Vendors') {
-						$mailids .= $entityvalue['vendorname'] . '<' . $entityvalue[$emailFieldName] . '>,';
+						$mailids .= $entityvalue['vendorname'] . '<' . $entityvalue[$emailColName] . '>,';
 					} elseif ($module == 'Accounts') {
-						$mailids .= $entityvalue['accountname'] . '<' . $entityvalue[$emailFieldName] . '>,';
+						$mailids .= $entityvalue['accountname'] . '<' . $entityvalue[$emailColName] . '>,';
 					} else {
-						$mailids .= $entityvalue[$minfo['columnname']] . '<' . $entityvalue[$emailFieldName] . '>,';
+						$mailids .= $entityvalue[$minfo['columnname']] . '<' . $entityvalue[$emailColName] . '>,';
 					}
 				}
 			}

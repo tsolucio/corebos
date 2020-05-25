@@ -27,7 +27,7 @@ do
 		rm -rf $f
 	fi
 done
-
+chmod 444 config.inc.php
 echo
 echo "Deactivate all modules you are not using. Besides being more secure the application will be faster."
 echo "Optionally you can"

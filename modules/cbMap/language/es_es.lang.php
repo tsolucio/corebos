@@ -56,5 +56,6 @@ $mod_strings = array(
 	'FunctionParams' => 'Parámetros Función',
 	'Relations' => 'Relaciones',
 	'DuplicateDirectRelations' => 'Duplicar Relaciones Directas',
+	'InformationMap' => 'Información Genérica',
 );
 ?>

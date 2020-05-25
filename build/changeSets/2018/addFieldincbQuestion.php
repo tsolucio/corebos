@@ -23,34 +23,39 @@ class addBlockFieldincbQuestion extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->sendMsg('This changeset add new blocks and fields to cbQuestion module');
-			// Fields preparations
-			$fieldLayout = array(
-				'cbQuestion' => array(
-					'Order Information' => array(
-						'orderby' => array(
-							'columntype'=>'TEXT',
-							'typeofdata'=>'V~O',
-							'uitype'=>19,
-							'label' => 'Order by Column',
-							'displaytype'=>'1',
+			$moduleInstance = Vtiger_Module::getInstance('cbQuestion');
+			if ($moduleInstance) {
+				$this->sendMsg('This changeset add new blocks and fields to cbQuestion module');
+				// Fields preparations
+				$fieldLayout = array(
+					'cbQuestion' => array(
+						'Order Information' => array(
+							'orderby' => array(
+								'columntype'=>'TEXT',
+								'typeofdata'=>'V~O',
+								'uitype'=>19,
+								'label' => 'Order by Column',
+								'displaytype'=>'1',
+							),
+						),
+						'Grouping Information' => array(
+							'groupby' => array(
+								'columntype'=>'TEXT',
+								'typeofdata'=>'V~O',
+								'uitype'=>19,
+								'label' => 'Group by Column',
+								'displaytype'=>'1',
+							),
 						),
 					),
-					'Grouping Information' => array(
-						'groupby' => array(
-							'columntype'=>'TEXT',
-							'typeofdata'=>'V~O',
-							'uitype'=>19,
-							'label' => 'Group by Column',
-							'displaytype'=>'1',
-						),
-					),
-				),
-			);
-			$this->massCreateFields($fieldLayout);
-			$this->ExecuteQuery('update vtiger_blocks set sequence=9 where tabid=? and blocklabel=?', array(getTabId('cbQuestion'), 'LBL_DESCRIPTION_INFORMATION'));
-			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied(false);
+				);
+				$this->massCreateFields($fieldLayout);
+				$this->ExecuteQuery('update vtiger_blocks set sequence=9 where tabid=? and blocklabel=?', array(getTabId('cbQuestion'), 'LBL_DESCRIPTION_INFORMATION'));
+				$this->sendMsg('Changeset '.get_class($this).' applied!');
+				$this->markApplied(false);
+			} else {
+				$this->sendMsgError('Changeset '.get_class($this).' could not be applied yet. Please launch again.');
+			}
 		}
 		$this->finishExecution();
 	}

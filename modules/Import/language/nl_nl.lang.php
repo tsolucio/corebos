@@ -46,7 +46,6 @@ $mod_strings = array(
 	'LBL_NUMBER_OF_RECORDS_CREATED' => 'Number of records created',
 	'LBL_NUMBER_OF_RECORDS_UPDATED' => 'Number of records overwritten',
 	'LBL_NUMBER_OF_RECORDS_SKIPPED' => 'Number of records skipped',
-	'LBL_UNDO_LAST_IMPORT' => 'Undo Last Import',
 	'LBL_VIEW_LAST_IMPORTED_RECORDS' => 'Last Imported Records',
 	'LBL_IMPORT_MORE'=>'Importeer meer',
 	'LBL_FINISH_BUTTON_LABEL' => 'Finish',

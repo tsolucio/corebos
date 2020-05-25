@@ -11,6 +11,7 @@
 class VtigerModuleOperation extends WebserviceEntityOperation {
 	protected $tabId;
 	protected $isEntity = true;
+	private $queryTotalRows = 0;
 
 	public function __construct($webserviceObject, $user, $adb, $log) {
 		parent::__construct($webserviceObject, $user, $adb, $log);
@@ -318,7 +319,18 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			}
 			$output[] = $newrow;
 		}
+		$mysql_query = mkXQuery(stripTailCommandsFromQuery($mysql_query, false), 'count(*) AS cnt');
+		$result = $this->pearDB->pquery($mysql_query, array());
+		if ($result) {
+			$this->queryTotalRows = $result->fields['cnt'];
+		} else {
+			$this->queryTotalRows = 0;
+		}
 		return $output;
+	}
+
+	public function getQueryTotalRows() {
+		return $this->queryTotalRows;
 	}
 
 	public function describe($elementType) {

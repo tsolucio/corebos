@@ -542,6 +542,17 @@ function vtws_CreateCompanyLogoFile($fieldname) {
 	throw new WebServiceException(WebServiceErrorCode::$INVALIDTOKEN, "$fieldname file upload failed");
 }
 
+function vtws_getActorModules() {
+	global $adb;
+	$actorrs = $adb->query("SELECT name FROM vtiger_ws_entity WHERE handler_class='VtigerActorOperation'");
+	$actors = array();
+	while (!$actorrs->EOF) {
+		$row = $actorrs->FetchRow();
+		$actors[] = $row['name'];
+	}
+	return $actors;
+}
+
 function vtws_getActorEntityName($name, $idList) {
 	$db = PearDatabase::getInstance();
 	if (!is_array($idList) && count($idList) == 0) {

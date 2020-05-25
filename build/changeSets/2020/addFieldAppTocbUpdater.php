@@ -23,7 +23,7 @@ class addFieldAppTocbUpdater extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->sendMsg('This changeset add new blocks and fields to cbQuestion module');
+			$this->sendMsg('This changeset add new blocks and fields to cbUpdater module');
 			// Fields preparations
 			$fieldLayout = array(
 				'cbupdater' => array(

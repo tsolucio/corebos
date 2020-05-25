@@ -765,8 +765,11 @@ class CRMEntity {
 				} elseif ($uitype == 50) {
 					$timefmt = '';
 					if (!empty($this->column_fields[$fieldname]) && strlen($this->column_fields[$fieldname])>16) {
-						$timefmt = substr($this->column_fields[$fieldname], -2);
-						$this->column_fields[$fieldname] = substr($this->column_fields[$fieldname], 0, 16);
+						$seconds = substr($this->column_fields[$fieldname], -2);
+						if (!is_numeric($seconds)) {
+							$timefmt = $seconds;
+							$this->column_fields[$fieldname] = substr($this->column_fields[$fieldname], 0, 16);
+						}
 					}
 					if (isset($current_user->date_format) && !$ajaxSave) {
 						$fldvalue = getValidDBInsertDateTimeValue($this->column_fields[$fieldname]);
@@ -1085,7 +1088,7 @@ class CRMEntity {
 		}
 
 		if (isset($this->table_name)) {
-			$mod_index_col = $this->tab_name_index[$this->table_name];
+			$this->tab_name_index[$this->table_name];
 		}
 
 		// Lookup in cache for information
@@ -1137,9 +1140,17 @@ class CRMEntity {
 				// To avoid ADODB execption pick the entries that are in $tablename
 				if (isset($result[$tablename]) && !$setittoempty) {
 					for ($cn = 0; $cn < $adb->num_rows($result[$tablename]); $cn++) {
-						$isRecordDeleted = $adb->query_result($result['vtiger_crmentity'], $cn, 'deleted');
+						if ($module=='Users') {
+							$isRecordDeleted = $adb->query_result($result['vtiger_users'], $cn, 'deleted');
+						} else {
+							$isRecordDeleted = $adb->query_result($result['vtiger_crmentity'], $cn, 'deleted');
+						}
 						if ($isRecordDeleted==0) {
-							$tempid = $adb->query_result($result['vtiger_crmentity'], $cn, 'crmid');
+							if ($module=='Users') {
+								$tempid = $adb->query_result($result['vtiger_users'], $cn, 'id');
+							} else {
+								$tempid = $adb->query_result($result['vtiger_crmentity'], $cn, 'crmid');
+							}
 							if (!$from_wf && !isset($cachedIDPermissions[$tempid])) {
 								$cachedIDPermissions[$tempid] = isPermitted($module, 'DetailView', $tempid);
 							}
@@ -1150,12 +1161,17 @@ class CRMEntity {
 							$fld_value = $adb->query_result($result[$tablename], $cn, $fieldcolname);
 							$this->fetched_records[$tempid][$fieldname] = $fld_value;
 							if (!isset($this->fetched_records[$tempid]['record_id'])) {
-									$this->fetched_records[$tempid]['record_id'] = $tempid;
-									$this->fetched_records[$tempid]['record_module'] = $module;
+								$this->fetched_records[$tempid]['record_id'] = $tempid;
+								$this->fetched_records[$tempid]['record_module'] = $module;
+								if ($module=='Users') {
+									$this->fetched_records[$tempid]['cbuuid'] = '';
+								} else {
+									$this->fetched_records[$tempid]['cbuuid'] = $adb->query_result($result['vtiger_crmentity'], $cn, 'cbuuid');
+								}
 							}
 						}
 					}
-				} else {
+				} elseif (!empty($result['vtiger_crmentity'])) {
 					for ($cn = 0; $cn < $adb->num_rows($result['vtiger_crmentity']); $cn++) {
 						$isRecordDeleted = $adb->query_result($result['vtiger_crmentity'], $cn, 'deleted');
 						if ($isRecordDeleted==0) {
@@ -1843,10 +1859,7 @@ class CRMEntity {
 		$exclude_uitypes = array();
 
 		$tabid = getTabId($module);
-		if ($module == 'Calendar') {
-			$tabid = array('9', '16');
-		}
-		$sql = 'SELECT columnname FROM vtiger_field WHERE tabid in (' . generateQuestionMarks($tabid) . ') and vtiger_field.presence in (0,2)';
+		$sql = 'SELECT columnname FROM vtiger_field WHERE tabid=? and vtiger_field.presence in (0,2)';
 		$params = array($tabid);
 		if (count($exclude_columns) > 0) {
 			$sql .= ' AND columnname NOT IN (' . generateQuestionMarks($exclude_columns) . ')';
@@ -3338,19 +3351,16 @@ class CRMEntity {
 	 * @param <type> $parentRole
 	 * @param <type> $userGroups
 	 */
-	protected function setupTemporaryTable($tableName, $tabId, $user, $parentRole, $userGroups) {
+	protected function setupTemporaryTable($tableName, $sharedmodule, $user, $parentRole, $userGroups) {
 		$module = null;
-		if (!empty($tabId)) {
-			$module = getTabModuleName($tabId);
+		if (!empty($sharedmodule)) {
+			$module = $sharedmodule;
 		}
 		$query = $this->getNonAdminAccessQuery($module, $user, $parentRole, $userGroups);
 		$query = "create temporary table IF NOT EXISTS $tableName(id int(11) primary key) ignore " . $query;
 		$db = PearDatabase::getInstance();
 		$result = $db->pquery($query, array());
-		if (is_object($result)) {
-			return true;
-		}
-		return false;
+		return is_object($result);
 	}
 
 	/**
@@ -3366,11 +3376,11 @@ class CRMEntity {
 		if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing($tabId)) {
 			$tableName = 'vt_tmp_u' . $user->id;
 			$sharingRuleInfo = $userprivs->getModuleSharingRules($module, 'read');
-			$sharedTabId = null;
+			$sharedModule = null;
 			if (!empty($sharingRuleInfo) && (count($sharingRuleInfo['ROLE']) > 0 || count($sharingRuleInfo['GROUP']) > 0)) {
 				$tableName = $tableName . '_t' . $tabId;
-				$sharedTabId = $tabId;
-			} elseif ($module == 'Calendar' || !empty($scope)) {
+				$sharedModule = $module;
+			} elseif (!empty($scope)) {
 				$tableName .= '_t' . $tabId;
 			}
 			list($tsSpecialAccessQuery, $typeOfPermissionOverride, $unused1, $unused2, $SpecialPermissionMayHaveDuplicateRows) = cbEventHandler::do_filter(
@@ -3379,12 +3389,12 @@ class CRMEntity {
 			);
 			if ($typeOfPermissionOverride=='fullOverride') {
 				// create the default temporary table in case it is needed
-				$this->setupTemporaryTable($tableName, $sharedTabId, $user, $userprivs->getParentRoleSequence(), $userprivs->getGroups());
+				$this->setupTemporaryTable($tableName, $sharedModule, $user, $userprivs->getParentRoleSequence(), $userprivs->getGroups());
 				VTCacheUtils::updateCachedInformation('SpecialPermissionWithDuplicateRows', $SpecialPermissionMayHaveDuplicateRows);
 				return $tsSpecialAccessQuery;
 			}
 			if ($typeOfPermissionOverride=='none' || trim($tsSpecialAccessQuery)=='') {
-				$this->setupTemporaryTable($tableName, $sharedTabId, $user, $userprivs->getParentRoleSequence(), $userprivs->getGroups());
+				$this->setupTemporaryTable($tableName, $sharedModule, $user, $userprivs->getParentRoleSequence(), $userprivs->getGroups());
 				$query = " INNER JOIN $tableName $tableName$scope ON $tableName$scope.id = vtiger_crmentity$scope.smownerid ";
 			} else {
 				global $adb;
@@ -3401,7 +3411,7 @@ class CRMEntity {
 				} elseif ($typeOfPermissionOverride=='showTheseRecords') {
 					$query = " INNER JOIN {$tsTableName} on {$tsTableName}.id=vtiger_crmentity.crmid ";
 				} elseif ($typeOfPermissionOverride=='SubstractFromUserPermission') {
-					$this->setupTemporaryTable($tableName, $sharedTabId, $user, $userprivs->getParentRoleSequence(), $userprivs->getGroups());
+					$this->setupTemporaryTable($tableName, $sharedModule, $user, $userprivs->getParentRoleSequence(), $userprivs->getGroups());
 					$query = " INNER JOIN $tableName $tableName$scope ON $tableName$scope.id = vtiger_crmentity$scope.smownerid ";
 					$query .= " INNER JOIN {$tsTableName} on {$tsTableName}.id=vtiger_crmentity.crmid ";
 				}

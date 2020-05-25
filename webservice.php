@@ -88,6 +88,13 @@ function writeErrorOutput($operationManager, $error) {
 function writeOutput($operationManager, $data) {
 	setResponseHeaders();
 	$state = new State();
+	if (isset($data['wsmoreinfo'])) {
+		$state->moreinfo = $data['wsmoreinfo'];
+		unset($data['wsmoreinfo']);
+		if (!isset($data['wssuccess'])) {
+			$data = $data['wsresult'];
+		}
+	}
 	if (isset($data['wsresult']) && isset($data['wssuccess'])) {
 		$state->success = $data['wssuccess'];
 		$state->result = $data['wsresult'];

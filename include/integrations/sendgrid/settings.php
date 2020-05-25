@@ -63,7 +63,7 @@ $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('THEME', $theme);
-include 'modules/cbupdater/forcedButtons.php';
+include 'include/integrations/forcedButtons.php';
 $smarty->assign('CHECK', $tool_buttons);
 $smarty->assign('ISADMIN', $isadmin);
 $smarty->display('modules/Utilities/sendgrid.tpl');
