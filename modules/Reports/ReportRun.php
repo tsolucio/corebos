@@ -2491,6 +2491,9 @@ class ReportRun extends CRMEntity {
 							} else {
 								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
 							}
+							if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' || substr($arraykey, 0, 18)=='TCTotals_TotalTime') {
+								$conv_value=$keyhdr[$arraykey];
+							}
 								$totalpdf[$rowcount][$arraykey] = $conv_value;
 						} else {
 								$totalpdf[$rowcount][$arraykey] = '';
@@ -2851,6 +2854,9 @@ class ReportRun extends CRMEntity {
 								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
 							} else {
 								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
+							}
+							if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' || substr($arraykey, 0, 18)=='TCTotals_TotalTime') {
+								$conv_value=$keyhdr[$arraykey];
 							}
 							$coltotalhtml .= "<td class='rptTotal'>".$conv_value.'</td>';
 						} else {
@@ -3399,6 +3405,29 @@ class ReportRun extends CRMEntity {
 						if ($current_user->currency_decimal_separator!='.') {
 							$value = str_replace($current_user->currency_decimal_separator, '.', $value);
 						}
+						// FIXME - When we are adding only hours, fills DateTime return exception on more than 24 hours
+						// if (substr($hdr, 0, 21)=='Timecontrol_TotalTime' || substr($hdr, 0, 18)=='TCTotals_TotalTime') {
+						// 		if ($value!='-') {
+						// 			if (strpos($value, ':')>0 && (strpos($value, '-')===false)) {
+						// 				// only time, no date
+						// 				$value = '25:00:00';
+						// 				$dt = new DateTime("1970-01-01 $value");
+						// 			} elseif (strpos($value, ':')>0 && (strpos($value, '-')>0)) {
+						// 				// date and time
+						// 				$dt = new DateTime($value);
+						// 				$datetime = true;
+						// 			} else {
+						// 				$value = DateTimeField::__convertToDBFormat($value, $current_user->date_format);
+						// 				$dt = new DateTime($value);
+						// 			}
+						// 			$value = \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel($value);
+						// 		}
+						// 	$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_NUMERIC);
+						// 	$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_TIME4);
+						// }else{
+						// 	$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_NUMERIC);
+						// }
+						//REPLACE THIS LINE BY ABOVE WHEN FIXED
 						$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_NUMERIC);
 						$count = $count + 1;
 					}
