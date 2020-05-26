@@ -154,6 +154,7 @@ class VTExpressionsManager {
 			'allrelatedare' => 'allrelatedare(relatedmodule, fieldname, value)',
 			'min' => 'min(fieldname)',
 			'max' => 'max(fieldname)',
+			'networkdays' => 'networkdays(startDate, endDate, holidays)',
 		);
 		$wfexpfuncs = $adb->query('select expname,expinfo from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {
