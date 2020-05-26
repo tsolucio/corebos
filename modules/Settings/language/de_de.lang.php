@@ -1046,5 +1046,8 @@ $mod_strings = array(
 	'LBL_MB_STATUS' => 'Status',
 	'LBL_MODULE_BUILDER' => 'Module Builder',
 	'LBL_MODULE_BUILDER_DESCRIPTION' => 'Create new module',
+	'LBL_MB_RELATEDLISTS' => 'Related Lists',
+	'LBL_MB_NEWRL' => 'Add related list',
+	'LBL_MB_FINISH' => 'Finish',
 );
 ?>

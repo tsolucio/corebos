@@ -1,4 +1,4 @@
-<?php
+<?php 
 /*************************************************************************************************
  * Copyright 2020 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
 * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
@@ -18,14 +18,22 @@ $methodName = vtlib_purify($_REQUEST['methodName']);
 if ($methodName == 'checkForModule') {
 	$modulename = vtlib_purify($_REQUEST['modulename']);
 	echo json_encode(checkForModule($modulename));
-} elseif ($methodName == 'loadModules') {
+} else if($methodName == 'loadModules') {
 	$page = vtlib_purify($_REQUEST['page']);
 	$perPage = vtlib_purify($_REQUEST['perPage']);
 	echo json_encode(loadModules($page, $perPage));
-} elseif ($methodName == 'loadBlocks') {
+} else if($methodName == 'loadBlocks') {
 	echo json_encode(loadBlocks());
-} elseif ($methodName == 'loadFields') {
+} else if($methodName == 'loadFields') {
 	echo json_encode(loadFields());
+} else if($methodName == 'autocomplete') {
+	$query = vtlib_purify($_REQUEST['query']);
+	$method = vtlib_purify($_REQUEST['method']);
+	if ($method == 'name') {
+		echo json_encode(autocompleteName($query));
+	} else if ($method == 'module') {
+		echo json_encode(autocompleteModule($query));
+	}
 }
 
 function checkForModule($modulename) {
@@ -78,7 +86,7 @@ function loadModules($page, $perPage) {
 				),
 			),
 			'result' => true,
-		);
+		);	
 	} else {
 		$entries_list = array(
 			'data' => array(
@@ -129,5 +137,36 @@ function loadFields() {
 		array_push($fields, $fldArr);
 	}
 	return $fields;
+}
+
+function autocompleteName($query) {
+	global $adb, $current_user;
+	if ($query == '' || strlen($query) < 2) {
+		return array();
+	}
+	$functionSql = $adb->pquery('SELECT DISTINCT name FROM vtiger_relatedlists WHERE name LIKE "%'.$query.'%" LIMIT 5', array());
+	$name = array();
+	for ($i=0; $i < $adb->num_rows($functionSql); $i++) {
+		$nameArr = array();
+		$nameVal = $adb->query_result($functionSql, $i, 'name');
+		$nameArr['name'] = $nameVal;
+		array_push($name, $nameArr);
+	}
+	return $name;
+}
+function autocompleteModule($query) {
+	global $adb, $current_user;
+	if ($query == '' || strlen($query) < 2) {
+		return array();
+	}
+	$functionSql = $adb->pquery('SELECT DISTINCT name FROM vtiger_tab WHERE name LIKE "%'.$query.'%" LIMIT 5', array());
+	$module = array();
+	for ($i=0; $i < $adb->num_rows($functionSql); $i++) {
+		$moduleArr = array();
+		$moduleVal = $adb->query_result($functionSql, $i, 'name');
+		$moduleArr['name'] = $moduleVal;
+		array_push($module, $moduleArr);
+	}
+	return $module;
 }
 ?>

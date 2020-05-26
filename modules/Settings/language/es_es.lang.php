@@ -967,5 +967,8 @@ $mod_strings = array (
 	'LBL_MB_ADDCV' => 'Añadir Filtro',
 	'LBL_MODULE_BUILDER' => 'Constructor de Módulos',
 	'LBL_MODULE_BUILDER_DESCRIPTION' => 'Crea un nuevo módulo',
+	'LBL_MB_RELATEDLISTS' => 'Related Lists',
+	'LBL_MB_NEWRL' => 'Add related list',
+	'LBL_MB_FINISH' => 'Finish',
 );
 ?>

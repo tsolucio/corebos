@@ -110,6 +110,25 @@ switch ($step) {
 			$moduleid,
 		));
 		break;
+	case '5':
+		$moduleid = $_COOKIE['moduleid'];
+		$relatedlists = vtlib_purify($_REQUEST['relatedlists']);
+		foreach ($relatedlists as $key => $value) {
+			if($key != '') {
+				$adb->pquery('INSERT INTO vtiger_modulebuilder_relatedlists (function, label, actions, relatedmodule, moduleid) VALUES(?,?,?,?,?)', array(
+					$value['name'],
+					$value['label'],
+					$value['actions'],
+					$value['relatedmodule'],
+					$moduleid
+				));			
+			}
+		}
+		$adb->pquery('UPDATE vtiger_modulebuilder_name SET completed="Completed" WHERE userid=? AND modulebuilderid=?', array(
+			$userid,
+			$moduleid,
+		));
+		break;
 	default:
 		echo json_encode();
 		break;

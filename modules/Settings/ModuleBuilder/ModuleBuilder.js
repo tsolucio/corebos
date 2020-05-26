@@ -4,12 +4,18 @@ const tuiGrid = tui.Grid;
 let url = 'index.php?module=Settings&action=SettingsAjax&file=builderUtils';
 let dataGridInstance;
 
-const ModuleBuilder = {
+const mb = {
+    /**
+     * Save values for each step
+     * @param {number} step 
+     * @param {boolean} forward
+     * @param {string} buttonid
+     */
 	SaveModule: (step, forward = true, buttonid = '') => {
 		if (step == 1) {
-			const modulename = ModuleBuilder.loadValue('modulename');
-			const modulelabel = ModuleBuilder.loadValue('modulelabel');
-			const parentmenu = ModuleBuilder.loadValue('parentmenu');
+			const modulename = mb.loadValue('modulename');
+			const modulelabel = mb.loadValue('modulelabel');
+			const parentmenu = mb.loadValue('parentmenu');
 			if (modulename == '' || modulelabel == '') {
 				document.getElementById('ErrorMessage').style.display = 'block';
 				setTimeout(function () {
@@ -27,9 +33,9 @@ const ModuleBuilder = {
 		}
 		if (step == 2) {
 			var blocks_label = [];
-			const number_block = ModuleBuilder.loadValue('number_block');
+			const number_block = mb.loadValue('number_block');
 			for (var i = 1; i <= number_block; i++) {
-				blocks_label[i] = ModuleBuilder.loadValue('blocks_label_' + i);
+				blocks_label[i] = mb.loadValue('blocks_label_' + i);
 			}
 			var data = {
 				blocks: blocks_label,
@@ -39,27 +45,27 @@ const ModuleBuilder = {
 
 		if (step == 3) {
 			var fields = [];
-			const number_field = ModuleBuilder.loadValue('number_field');
+			const number_field = mb.loadValue('number_field');
 			var btnid = buttonid.split('-')[4];
 			if (forward == false) {
 				var fieldValues = {};
-				var blockid = ModuleBuilder.loadValue('select-for-field-' + btnid);
-				var fieldname = ModuleBuilder.loadValue('fieldname_' + btnid);
-				const columnname =ModuleBuilder.loadValue('columnname_' + btnid);
-				const generatedtype = ModuleBuilder.loadValue('generatedtype_' + btnid);
-				const fieldlabel = ModuleBuilder.loadValue('fieldlabel_' + btnid);
-				const maximumlength = ModuleBuilder.loadValue('maximumlength_' + btnid);
-				const entityidentifier = ModuleBuilder.loadValue('entityidentifier_' + btnid);
-				const entityidfield = ModuleBuilder.loadValue('entityidfield_' + btnid);
-				const entityidcolumn = ModuleBuilder.loadValue('entityidcolumn_' + btnid);
-				const relatedmodules = ModuleBuilder.loadValue('relatedmodules_' + btnid);
-				const masseditable = ModuleBuilder.loadValue('Masseditable_' + btnid);
-				const displaytype = ModuleBuilder.loadValue('Displaytype_' + btnid);
-				const quickcreate = ModuleBuilder.loadValue('Quickcreate_' + btnid);
-				const typeofdata = ModuleBuilder.loadValue('Typeofdata_' + btnid);
-				const presence = ModuleBuilder.loadValue('Presence_' + btnid);
-				const readonly = ModuleBuilder.loadValue('Readonly_' + btnid);
-				var uitype = ModuleBuilder.loadValue('Uitype_' + btnid);
+				var blockid = mb.loadValue('select-for-field-' + btnid);
+				var fieldname = mb.loadValue('fieldname_' + btnid);
+				const columnname =mb.loadValue('columnname_' + btnid);
+				const generatedtype = mb.loadValue('generatedtype_' + btnid);
+				const fieldlabel = mb.loadValue('fieldlabel_' + btnid);
+				const maximumlength = mb.loadValue('maximumlength_' + btnid);
+				const entityidentifier = mb.loadValue('entityidentifier_' + btnid);
+				const entityidfield = mb.loadValue('entityidfield_' + btnid);
+				const entityidcolumn = mb.loadValue('entityidcolumn_' + btnid);
+				const relatedmodules = mb.loadValue('relatedmodules_' + btnid);
+				const masseditable = mb.loadValue('Masseditable_' + btnid);
+				const displaytype = mb.loadValue('Displaytype_' + btnid);
+				const quickcreate = mb.loadValue('Quickcreate_' + btnid);
+				const typeofdata = mb.loadValue('Typeofdata_' + btnid);
+				const presence = mb.loadValue('Presence_' + btnid);
+				const readonly = mb.loadValue('Readonly_' + btnid);
+				var uitype = mb.loadValue('Uitype_' + btnid);
 				fieldValues = {
 					blockid: blockid,
 					fieldname: fieldname,
@@ -95,11 +101,11 @@ const ModuleBuilder = {
 
 		if (step == 4) {
 			let customViews = [];
-			const number_customview = ModuleBuilder.loadValue('number_customview');
+			const number_customview = mb.loadValue('number_customview');
 			for (var i = 1; i <= number_customview; i++) {
 				var customObj = {
-					viewname: ModuleBuilder.loadValue('viewname-'+i),
-					setdefault: ModuleBuilder.loadValue('setdefault-'+i),
+					viewname: mb.loadValue('viewname-'+i),
+					setdefault: mb.loadValue('setdefault-'+i),
 				};
 				const checkSize = document.getElementsByName('checkbox-options-'+i).length;
 				var fieldObj = [];
@@ -120,13 +126,32 @@ const ModuleBuilder = {
 			};
 		}
 
+        if (step == 5) {
+            let relatedLists = [];
+            const number_related = mb.loadValue('number_related');
+            for (var i = 1; i <= number_related; i++) {
+                let lists = {
+                    relatedmodule: mb.loadValue('autocomplete-module-'+i),
+                    actions: mb.loadValue('related-action-'+i),
+                    name: mb.loadValue('autocomplete-related-'+i),
+                    label: mb.loadValue('related-label-'+i),
+                };
+                relatedLists[i] = lists;
+            }
+            var data = {
+                relatedlists: relatedLists,
+                step: step
+            };
+            console.log(data);
+        }
+
 		jQuery.ajax({
 			method: 'POST',
 			url: 'index.php?module=Settings&action=SettingsAjax&file=SaveModuleBuilder',
 			data: data
 		}).done(function (response) {
 			const msg = mod_alert_arr.RecordDeleted;
-			ModuleBuilder.loadMessage(msg, true);
+			mb.loadMessage(msg, true);
 			if (forward == false && step == 3) {
 				const message = `<p class="slds-section__title" style="float: right">${btnid}: ${mod_alert_arr.Field} &nbsp;<span style="color: blue">${fieldname}</span>&nbsp; ${mod_alert_arr.WasSaved}!</p>`;
 				document.getElementById('for-field-' + btnid).innerHTML = '';
@@ -141,17 +166,22 @@ const ModuleBuilder = {
 				document.getElementById('step-' + nextstep).style.display = 'block';
 			}
 			setTimeout(function () {
-				ModuleBuilder.loadMessage('', false);
+				mb.loadMessage('', false);
 			}, 3000);
 		});
 	},
+    /**
+     * Update progress bar in real time for step 1
+     * @param {number} id
+     * @param {number} step
+     */
 	updateProgress: (id, step) => {
 		if (step == 1) {
 			const data = {
-				modulename: document.getElementById('modulename').value,
-				modulelabel: document.getElementById('modulelabel').value,
-				parentmenu: document.getElementById('parentmenu').value,
-				moduleicon: document.getElementById('moduleicon').value,
+				modulename: mb.loadValue('modulename'),
+				modulelabel: mb.loadValue('modulelabel'),
+				parentmenu: mb.loadValue('parentmenu'),
+				moduleicon: mb.loadValue('moduleicon'),
 			};
 			var NULL = [];
 			for (var i in data) {
@@ -170,6 +200,10 @@ const ModuleBuilder = {
 			}
 		}
 	},
+    /**
+     * Show module icons in step 1
+     * @param {string} iconReference
+     */
 	showModuleIcon: (iconReference) => {
 		let newicon = iconReference.split('-');
 		let spn = document.getElementById('moduleiconshow');
@@ -182,8 +216,11 @@ const ModuleBuilder = {
 		spn.classList.add('slds-icon-'+newicon[0]+'-'+newicon[1]);
 		svg.setAttribute('xlink:href','include/LD/assets/icons/'+newicon[0]+'-sprite/svg/symbols.svg#'+newicon[1]);
 	},
+    /**
+     * Generate block input for step 2
+     */
 	generateInput: () => {
-		const number_block = ModuleBuilder.autoIncrementIds('number_block');
+		const number_block = mb.autoIncrementIds('number_block');
 		const input = document.createElement('input');
 		input.type = 'text';
 		input.id = 'blocks_label_' + number_block;
@@ -191,32 +228,28 @@ const ModuleBuilder = {
 		input.className ='slds-input';
 		document.getElementById('blocks_inputs').appendChild(input);
 	},
+    /**
+     * Generate field input for step 3
+     */
 	generateFields: () => {
-		const number_field = ModuleBuilder.autoIncrementIds('number_field');
-		var table = document.getElementById('Table');
-		var row = table.insertRow(0);
-		row.style = 'border: 1px solid #e4e4e4;';
-		row.id = 'for-field-inputs-' + number_field;
-		var cell = row.insertCell(0);
-		cell.id = 'fields_inputs_' + number_field;
-		cell.style = 'padding: 20px';
+		const number_field = mb.autoIncrementIds('number_field');
+        const table = mb.getTable('Table');
+        const row = mb.createRow(table, 0, 'for-field-inputs-', number_field);
+        const cell = mb.createCell(row, 0, 'fields_inputs_', number_field);
 
-		ModuleBuilder.loadBlocks(table, number_field);
+		mb.loadBlocks(table, number_field);
 
 		for (var i = 0; i < textfields.length; i++) {
-			const input = document.createElement('input');
-			input.type = 'text';
-			input.id = textfields[i] + '_' + number_field;
-			input.placeholder = textfields[i];
-			input.className = 'slds-input';
-			input.style = 'width: 15%; margin: 5px';
+            const func = {
+                'style': 'width: 15%; margin: 5px'
+            };
+            const input = mb.createInput(cell, func, textfields[i], textfields[i]+'_', textfields[i]+'_', number_field);
 			if (textfields[i]=='fieldname') {
 				input.onchange = (elem) => {
 					document.getElementById('columnname' + '_' + number_field).value = elem.target.value;
 					document.getElementById('fieldlabel' + '_' + number_field).value = elem.target.value;
 				}
 			}
-			cell.appendChild(input);
 		}
 		for (var i = 0; i < fieldtypes.length; i++) {
 			const type = fieldtypes[i].type;
@@ -243,10 +276,13 @@ const ModuleBuilder = {
 		var saveBtn = document.createElement('button');
 		saveBtn.id ='save-btn-for-field-' + number_field;
 		saveBtn.className = 'slds-button slds-button_brand';
-		saveBtn.setAttribute('onclick', 'ModuleBuilder.SaveModule(3, false, this.id)');
+		saveBtn.setAttribute('onclick', 'mb.SaveModule(3, false, this.id)');
 		saveBtn.innerHTML = mod_alert_arr.LBL_MB_SAVEFIELD;
 		cell.appendChild(saveBtn);
 	},
+    /**
+     * Open tui grid to list all modules
+     */
 	openModal: () => {
 		dataGridInstance = new tuiGrid({
 			el: document.getElementById('moduleListView'),
@@ -283,7 +319,7 @@ const ModuleBuilder = {
 			rowHeight: 'auto',
 			bodyHeight: 'auto',
 			scrollX: false,
-			scrollY: true,
+			scrollY: false,
 			columnOptions: {
 				resizable: true
 			},
@@ -292,16 +328,24 @@ const ModuleBuilder = {
 				valign: 'top'
 			},
 			onGridUpdated: (ev) => {
-				ModuleBuilder.updateData();
+				mb.updateData();
 			}
 		});
 		tui.Grid.applyTheme('striped');
 		document.getElementById('moduleListsModal').style.display = '';
 	},
+    /**
+     * Close modal
+     */
 	closeModal: () => {
 		document.getElementById('moduleListsModal').style.display = 'none';
 		document.getElementById('moduleListView').innerHTML = '';
 	},
+    /**
+     * Load all blocks for specific module in step 3
+     * @param {object} tableInstance
+     * @param {number} number_field
+     */
 	loadBlocks: (tableInstance, number_field) => {
 		jQuery.ajax({
 			method: 'GET',
@@ -332,49 +376,45 @@ const ModuleBuilder = {
 			}
 		});
 	},
-	generateCustomView: () => {
-		const number_customview = ModuleBuilder.autoIncrementIds('number_customview');
-		var table = document.getElementById('CustomView');
-		var row = table.insertRow(0);
-		row.style = 'border: 1px solid #e4e4e4;';
-		row.id = 'for-customview-' + number_customview;
-		var cell = row.insertCell(0);
-		cell.id = 'customview_inputs_' + number_customview;
-		cell.style = 'padding: 20px';
-		//create viewname
-		const viewname = document.createElement('input');
-		viewname.placeholder = 'Viewname';
-		viewname.name = 'viewname-'+number_customview;
-		viewname.id = 'viewname-'+number_customview;
-		viewname.className = 'slds-input';
-		viewname.setAttribute('style', 'width: 25%');
-		cell.appendChild(viewname);
-		//create setdefault
-		const setdefault = document.createElement('select');
-		setdefault.name = 'setdefault-' + number_customview;
-		setdefault.id = 'setdefault-' + number_customview;
-		setdefault.className = 'slds-input';
-		setdefault.setAttribute('style', 'width: 25%');
-		for (var val in setdefaultOption[0]) {
-			const createOption = document.createElement('option');
-			createOption.innerHTML =  setdefaultOption[0][val];
-			createOption.value =  val;
-			setdefault.appendChild(createOption);
-		}
-		cell.appendChild(setdefault);
+    /**
+     * Generate inputs for custom views in step 4
+     */
+    generateCustomView: () => {
+        const number_customview = mb.autoIncrementIds('number_customview');
+        const table = mb.getTable('CustomView');
+        const row = mb.createRow(table, 0, 'for-customview-', number_customview);
+        const cell = mb.createCell(row, 0, 'customview_inputs', number_customview);
+        //create viewname
+        const func = {
+            'style': 'width: 25%'
+        };
+        mb.createInput(cell, func, 'Viewname', 'viewname-', 'viewname-', number_customview);
+        //create setdefault
+        const setdefault = document.createElement('select');
+        setdefault.name = 'setdefault-' + number_customview;
+        setdefault.id = 'setdefault-' + number_customview;
+        setdefault.className = 'slds-input';
+        setdefault.setAttribute('style', 'width: 25%');
+        for(var val in setdefaultOption[0]) {
+            const createOption = document.createElement('option');
+            createOption.innerHTML =  setdefaultOption[0][val];
+            createOption.value =  val;
+            setdefault.appendChild(createOption);
+        }
+        cell.appendChild(setdefault);
 
-		//get all fields
-		const p = document.createElement('p');
-		p.innerHTML = mod_alert_arr.LBL_CHOOSEFIELDFILTER+':';
-		cell.appendChild(p);
-		jQuery.ajax({
-			method: 'GET',
-			url: url+'&methodName=loadFields',
-		}).done(function (response) {
-			const res = JSON.parse(response);
-			for (var f in res) {
-				const div = document.createElement('div');
-				const checkbox = `
+        //get all fields
+        const p = document.createElement('p');
+        p.innerHTML = 'Choose fields for custom view:';
+        cell.appendChild(p);
+        jQuery.ajax({
+            method: 'GET',
+            url: url+'&methodName=loadFields',
+        }).done(function(response) {
+            const res = JSON.parse(response);
+            for(var f in res) {
+                const div = document.createElement('div');
+                const checkbox = `
                     <div class="slds-form-element">
                       <div class="slds-form-element__control">
                         <div class="slds-checkbox">
@@ -387,11 +427,17 @@ const ModuleBuilder = {
                       </div>
                     </div>
                 `;
-				div.innerHTML = checkbox;
-				cell.appendChild(div);
-			}
-		});
-	},
+                div.innerHTML = checkbox;
+                cell.appendChild(div);
+            }
+        });
+    },
+    /**
+     * Function that load an alert message for success or error
+     * @param {text} msg
+     * @param {boolean} show
+     * @param {text} type [success/error]
+     */
 	loadMessage: (msg, show = true, type = 'success') => {
 		var icon = 'task';
 		if (type == 'error') {
@@ -426,16 +472,27 @@ const ModuleBuilder = {
 			document.getElementById('showMsg').innerHTML = '';
 		}
 	},
+    /**
+     * Increment id from each step when generate fields
+     * @param {string} id
+     */
 	autoIncrementIds: (id) => {
-		let number = ModuleBuilder.loadValue(id);
+		let number = mb.loadValue(id);
 		number = parseInt(number) + 1;
 		document.getElementById(id).value = number;
 		return number;
 	},
+    /**
+     * Get values for inputs
+     * @param {string} id
+     */
 	loadValue: (id) => {
 		let value = document.getElementById(id).value;
 		return value;
 	},
+    /**
+     * Update grid in every change
+     */
 	updateData: () => {
 		let btn = '';
 		for (var i = 0; i < 5; i++) {
@@ -458,8 +515,12 @@ const ModuleBuilder = {
 			dataGridInstance.setValue(i, 'export', btn, false);
 		}
 	},
+    /**
+     * Check for module if exists in first step
+     * @param {string} id
+     */
 	checkForModule: (id) => {
-		const moduleName = ModuleBuilder.loadValue(id);
+		const moduleName = mb.loadValue(id);
 		jQuery.ajax({
 			method: 'POST',
 			url: url,
@@ -467,10 +528,171 @@ const ModuleBuilder = {
 		}).done(function (response) {
 			if (response == 1) {
 				const msg = moduleName+' '+mod_alert_arr.AlreadyExists;
-				ModuleBuilder.loadMessage(msg, true, 'error');
+				mb.loadMessage(msg, true, 'error');
 			} else {
-				ModuleBuilder.loadMessage('', false);
+				mb.loadMessage('', false);
 			}
 		});
 	},
+    /**
+     * Autocomplete inputs for modules and function names
+     * @param {string} el
+     * @param {string} type [module/name]
+     */
+    autocomplete: (el, type) => {
+        const forId = el.id.split('-')[2];
+        const val = mb.loadValue(el.id);
+        let method = 'name';
+        if (type == 'module') {
+            method = type;
+        }
+        jQuery.ajax({
+            method: 'POST',
+            url: url,
+            data: 'query='+val+'&methodName=autocomplete&method='+method
+        }).done(function(response) {
+            document.getElementById('autocomplete-span-'+forId).innerHTML = '';
+            document.getElementById('autocomplete-modulespan-'+forId).innerHTML = '';
+            let res = JSON.parse(response);
+            if (response.length < 3) {
+                document.getElementById('autocomplete-span-'+forId).innerHTML = '';
+                document.getElementById('autocomplete-modulespan-'+forId).innerHTML = '';
+            } else {
+                let span = document.createElement('span');
+                let ul = `<ul class="slds-dropdown__list" style="background: white; width: 25%; border: 1px solid #d1d1d1; position: absolute; z-index: 1000">`;
+                for (let i = 0; i < res.length; i++) {
+                    ul += `<li class="slds-dropdown__item">
+                            <a onclick="mb.setValueToInput(this.id, ${forId}, '${method}')" tabindex="${i}" id="${res[i].name}">
+                                <span class="slds-truncate" title="${res[i].name}">${res[i].name}</span>
+                            </a>
+                        </li>`;
+                }
+                ul += '</ul>';
+                span.innerHTML = ul;
+                if (type == 'module') {
+                    document.getElementById('autocomplete-modulespan-'+forId).appendChild(span);
+                } else if (type == 'name') { 
+                    document.getElementById('autocomplete-span-'+forId).appendChild(span);
+                }
+            }
+        });
+    },
+    /**
+     * Set values for each input on autocomplete
+     * @param {string} name [function name]
+     * @param {string} forId
+     * @param {string} type [module/name]
+     */
+    setValueToInput: (name, forId, type) => {
+        if (type == 'module') {
+            document.getElementById('autocomplete-modulespan-'+forId).innerHTML = '';
+            document.getElementById('autocomplete-module-'+forId).value = name;
+        } else if (type == 'name') {
+            document.getElementById('autocomplete-span-'+forId).innerHTML = '';
+            document.getElementById('autocomplete-related-'+forId).value = name;
+        }
+    },
+    /**
+     * Generate related lists for step 5
+     */
+    generateRelatedList: () => {
+        const number_related = mb.autoIncrementIds('number_related');
+        const table = mb.getTable('RelatedLists');
+        const row = mb.createRow(table, 0, 'for-related-', number_related);
+        const cell = mb.createCell(row, 0, 'related_inputs_', number_related);
+
+        const span = document.createElement('span');
+        span.id = 'autocomplete-span-'+number_related
+
+        var func = {
+            'onkeyup': 'mb.autocomplete(this, "name")',
+        }
+        mb.createLabel(cell, 'Function name');
+        mb.createInput(cell, func, 'Function name', 'related-function-', 'autocomplete-related-', number_related);
+        cell.appendChild(span);
+
+        const cell2 = mb.createCell(row, 1, 'related_inputs_', number_related);
+        mb.createLabel(cell2, 'Label');
+        mb.createInput(cell2, '', 'Label', 'related-label-', 'related-label-', number_related);
+
+        const cell3 = mb.createCell(row, 0, 'related_inputs_', number_related);
+        mb.createLabel(cell3, 'Actions');
+        mb.createInput(cell3, '', 'Actions', 'related-action-', 'related-action-', number_related);
+
+        const cell4 = mb.createCell(row, 0, 'related_inputs_', number_related);
+        func = {
+            'onkeyup': 'mb.autocomplete(this, "module")',
+        }
+        mb.createLabel(cell4, 'Related module');
+        mb.createInput(cell4, func, 'Related module', 'related-module-', 'autocomplete-module-', number_related);
+
+        const spanModule = document.createElement('span');
+        spanModule.id = 'autocomplete-modulespan-'+number_related
+        cell4.appendChild(spanModule);
+    },
+    /**
+     * Create html labels
+     * @param {object} instance
+     * @param {text} value
+     */
+    createLabel: (instance, value) => {
+        const label = document.createElement('label');
+        label.innerHTML = value;
+        return instance.appendChild(label);
+    },
+    /**
+     * Create html inputs
+     * @param {object} instance
+     * @param {object} fn
+     * @param {string} placeholder
+     * @param {string} name
+     * @param {string} id
+     * @param {number} inc
+     */
+    createInput: (instance, fn, placeholder, name, id, inc) => {
+        const input = document.createElement('input');
+        input.className = 'slds-input';
+        input.placeholder = placeholder;
+        input.id = id+inc;
+        input.name = name+inc;
+        if (fn != '') {
+            for(let f in fn) {
+                input.setAttribute(f, fn[f]);
+            }
+        }
+        return instance.appendChild(input);
+    },
+    /**
+     * Get table instance
+     * @param {string} id
+     */
+    getTable: (id) => {
+        const table = document.getElementById(id);
+        return table;
+    },
+    /**
+     * Create table row
+     * @param {object} instance
+     * @param {number} index
+     * @param {string} id
+     * @param {number} inc
+     */
+    createRow: (instance, index, id, inc) => {
+        const row = instance.insertRow(index);
+        row.id = id + inc;
+        return row;
+    },
+    /**
+     * Create table data
+     * @param {object} instance
+     * @param {number} index
+     * @param {string} id
+     * @param {number} inc
+     */
+    createCell: (instance, index, id, inc) => {
+        const cell = instance.insertCell(index);
+        cell.id = id + inc;
+        cell.style = 'padding: 20px';
+        return cell;
+    },
 };

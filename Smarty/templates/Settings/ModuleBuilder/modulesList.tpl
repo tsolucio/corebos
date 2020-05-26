@@ -1,7 +1,7 @@
 <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_medium" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
     <div class="slds-modal__container">
         <header class="slds-modal__header">
-            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick="ModuleBuilder.closeModal()">
+            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick="mb.closeModal()">
                 <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
                     <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
                 </svg>
