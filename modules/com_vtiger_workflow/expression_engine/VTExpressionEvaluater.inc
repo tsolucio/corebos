@@ -37,6 +37,7 @@ class VTFieldExpressionEvaluater {
 			'time_diffyears' => '__cb_time_diffyears',
 			'time_diffweekdays' => '__cb_getWeekdayDifference',
 			'holidaydifference' => '__cb_holidaydifference',
+			'networkdays' => '__cb_networkdays',
 			'aggregate_time' => '__cb_aggregate_time',
 			'add_days' => '__vt_add_days',
 			'sub_days' => '__vt_sub_days',
@@ -108,7 +109,6 @@ class VTFieldExpressionEvaluater {
 			'number_format' => '__cb_number_format',
 			'min' => '__cb_min',
 			'max' => '__cb_max',
-			'networkdays' => '__cb_networkdays',
 		);
 		$this->operationsSQL = array(
 			'+'  => 'cbexpsql_add',
