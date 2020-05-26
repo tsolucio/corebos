@@ -79,6 +79,7 @@ class VTExpressionsManager {
 			'time_diffweekdays(a,b)' => 'time_diffweekdays(a,b)',
 			'time_diffweekdays(a)' => 'time_diffweekdays(a)',
 			'holidaydifference' => 'holidaydifference(startDate, endDate, include_saturdays, holidays)',
+			'networkdays' => 'networkdays(startDate, endDate, holidays)',
 			'time_diff(a,b)' => 'time_diff(a,b)',
 			'time_diff(a)' => 'time_diff(a)',
 			'aggregate_time' => 'aggregate_time(relatedModuleName, relatedModuleField, conditions)',
