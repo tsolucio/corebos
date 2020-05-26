@@ -16,6 +16,15 @@ let module = '';
 let PageSize = 20;
 const tuiGrid = tui.Grid;
 let dataGridInstance;
+let SearchColumns = 0;
+GlobalVariable_getVariable('Application_ListView_PageSize', 20, module, '').then(function (response) {
+	let obj = JSON.parse(response);
+	PageSize = obj.Application_ListView_PageSize;
+});
+GlobalVariable_getVariable('Application_ListView_SearchColumns', 0).then(function (response) {
+	let obj = JSON.parse(response);
+	SearchColumns = obj.Application_ListView_SearchColumns;
+});
 document.addEventListener('DOMContentLoaded', function () {
 	ListView.ListViewJSON();
 }, false);
@@ -28,10 +37,6 @@ const ListView = {
 		if (document.getElementById('curmodule') != undefined) {
 			module = document.getElementById('curmodule').value;
 		}
-		GlobalVariable_getVariable('Application_ListView_PageSize', 20, module, '').then(function (response) {
-			let obj = JSON.parse(response);
-			PageSize = obj.Application_ListView_PageSize;
-		});
 		let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=listViewJSON&formodule='+module;
 		if (actionType == 'filter') {
 			document.getElementById('basicsearchcolumns').innerHTML = '';
@@ -43,7 +48,6 @@ const ListView = {
 			document.getElementById('status').style.display = 'none';
 		} else if (actionType == 'alphabetic') {
 			ListView.ListViewAlpha(urlstring);
-			document.getElementById('status').style.display = 'none';
 		} else if (actionType == 'massedit') {
 			//use this function to reload data in every change
 			ListView.ListViewReloadData();
@@ -61,30 +65,58 @@ const ListView = {
 		let res = [];
 		let header = {};
 		let filter = {};
-		for (let key in headerObj) {
-			if (key == 'action') {
+		for (let index in headerObj) {
+			const fieldname = headerObj[index].fieldname;
+			const fieldvalue = headerObj[index].fieldvalue;
+			const uitype = headerObj[index].uitype;
+			if (fieldname == 'action') {
 				header = {
-					name: key,
-					header: headerObj[key],
+					name: fieldname,
+					header: fieldvalue,
 					sortable: false,
 	      		};
 	      	} else {
-	      		if (key == 'assigned_user_id') {
-	      			filter = {
-						type: 'select',
-	      			};
+	      		if (SearchColumns == 0) {
+		      		if (uitype == '53' || uitype == '56' || uitype == '77') {
+		      			filter = {
+							type: 'select'
+		      			};
+		      		} else if (uitype == '7' || uitype == '9' || uitype == '71' || uitype == '72') {
+		      			filter = {
+							type: 'number',
+							operator: 'OR'
+		      			};
+		      		} else if (uitype == '5' || uitype == '50' || uitype == '70') {
+		      			filter = {
+							type: 'date'
+		      			};
+		      		} else {
+		      			filter = {
+							type: 'text',
+							operator: 'OR'
+		      			};
+		      		}
+					header = {
+						name: fieldname,
+						header: fieldvalue,
+						sortingType: 'desc',
+						sortable: true,
+						filter: filter,
+						copyOptions: {
+							useListItemText: true
+						}
+					};
 	      		} else {
-	      			filter = {
-						type: 'text',
-	      			};
+					header = {
+						name: fieldname,
+						header: fieldvalue,
+						sortingType: 'desc',
+						sortable: true,
+						copyOptions: {
+							useListItemText: true
+						}
+					};
 	      		}
-				header = {
-					name: key,
-					header: headerObj[key],
-					sortingType: 'desc',
-					sortable: true,
-					filter: filter
-				};
 			}
 			res.push(header);
 		}
@@ -136,13 +168,16 @@ const ListView = {
 				rowHeight: 'auto',
 				bodyHeight: 'auto',
 				scrollX: false,
-				scrollY: true,
+				scrollY: false,
 				columnOptions: {
 					resizable: true
 				},
 				header: {
 					align: 'left',
 					valign: 'top'
+				},
+				copyOptions: {
+					useListItemText: true
 				},
 				onGridUpdated: (ev) => {
 					ListView.updateData();
@@ -180,6 +215,8 @@ const ListView = {
 		dataGridInstance.clear();
 	 	dataGridInstance.setRequestParams({'search': '', 'searchtype': ''});
 	 	dataGridInstance.reloadData();
+	 	//update pagination onchange
+	 	dataGridInstance.setPerPage(parseInt(PageSize));
 	 	ListView.updateData();
 	},
 	/**
@@ -188,7 +225,6 @@ const ListView = {
 	ListViewFilter: (url) => {
 		dataGridInstance.setRequestParams({'search': '', 'searchtype': ''});
 		dataGridInstance.clear();
-		dataGridInstance.reloadData();
 		fetch(
 			url+'&columns=true',
 			{

@@ -60,11 +60,10 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'desc', $sort
 	} catch (Exception $e) {
 		$sql_error = true;
 	}
-
 	if ($searchtype == 'Basic' && $searchUrl != '') {
 		$search = explode('&', $searchUrl);
 		foreach ($search as $key => $value) {
-			if($value != '') {
+			if ($value != '') {
 				$arg = explode('=', $value)[0];
 				$val = explode('=', $value)[1];
 				$_search[$arg] = $val;
@@ -121,10 +120,19 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'desc', $sort
 	$listview_header_search = $controller->getBasicSearchFieldInfoList();
 	//add action in header
 	$listview_header_search['action'] = $app_strings['LBL_ACTION'];
+	$listview_header_arr = array();
+	foreach ($listview_header_search as $l => $h) {
+		$fieldType = getUItypeByFieldName($currentModule, $l);
+		$lv_arr = array(
+			'fieldname' => $l,
+			'fieldvalue' => $h,
+			'uitype' => $fieldType
+		);
+		array_push($listview_header_arr, $lv_arr);
+	}
 	$data = array();
 	$linkfield = array();
 	$result = $adb->pquery($list_query, array());
-
 	while ($result && $row = $adb->fetch_array($result)) {
 		$rows = array();
 		$linkRow = array();
@@ -144,6 +152,26 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'desc', $sort
 					}
 					$rows[$key] = $field10Value;
 					$linkRow[$key] = array($parent_module, $fieldValue, $field10Value);
+				} elseif ($fieldType == '14' || ($fieldType == '2' && ($key == 'time_start' || $key == 'time_end'))) {
+					$date = new DateTimeField($fieldValue);
+					$rows[$key] = $date->getDisplayTime($current_user);
+				} elseif ($fieldType == '5' || $fieldType == '6' || $fieldType == '23') {
+					$date = new DateTimeField($fieldValue);
+					$rows[$key] = $date->getDisplayDate($current_user);
+				} elseif ($fieldType == '50') {
+					$date = new DateTimeField($fieldValue);
+					$rows[$key] = $date->getDisplayDateTimeValue($current_user);
+				} elseif ($fieldType == '56') {
+					if ($fieldValue == 1) {
+						$rows[$key] = getTranslatedString('yes', $currentModule);
+					} elseif ($fieldValue == 0) {
+						$rows[$key] = getTranslatedString('no', $currentModule);
+					} else {
+						$rows[$key] = '--';
+					}
+				} elseif ($fieldType == '71' || $fieldType == '72' || $fieldType == '7' || $fieldType == '9') {
+					$currencyField = new CurrencyField($fieldValue);
+					$rows[$key] = $currencyField->getDisplayValue($current_user, true);
 				} else {
 					$rows[$key] = $fieldValue;
 				}
@@ -167,7 +195,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'desc', $sort
 					),
 				),
 				'entityfield' => $entityidfield,
-				'headers' => $listview_header_search,
+				'headers' => $listview_header_arr,
 				'customview' => $customViewarr,
 				'result' => true,
 				'message' => '',
@@ -182,7 +210,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'desc', $sort
 					),
 				),
 				'entityfield' => $entityidfield,
-				'headers' => $listview_header_search,
+				'headers' => $listview_header_arr,
 				'customview' => $customViewarr,
 				'result' => false,
 				'message' => getTranslatedString('NoData', $currentModule),
@@ -198,13 +226,13 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'desc', $sort
 				),
 			),
 			'entityfield' => $entityidfield,
-			'headers' => $listview_header_search,
+			'headers' => $listview_header_arr,
 			'customview' => $customViewarr,
 			'result' => false,
 			'message' => getTranslatedString('NoData', $currentModule),
 		);
 	}
 
-	return array('data'=>$res, 'headers'=>$listview_header_search);
+	return array('data'=>$res, 'headers'=>$listview_header_arr);
 }
 ?>
