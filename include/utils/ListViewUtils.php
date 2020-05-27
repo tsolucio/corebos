@@ -468,6 +468,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 	if ($oCv) {
 		if (isset($oCv->list_fields)) {
 			$focus->list_fields = $oCv->list_fields;
+			$focus->list_fields_name = $oCv->list_fields_name;
 		}
 	}
 	if (is_array($selectedfields) && $selectedfields != '') {

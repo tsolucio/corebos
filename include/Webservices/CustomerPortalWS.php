@@ -444,6 +444,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 	if ($oCv) {
 		if (isset($oCv->list_fields)) {
 			$focus->list_fields = $oCv->list_fields;
+			$focus->list_fields_name = $oCv->list_fields_name;
 		}
 	}
 	if (is_array($selectedfields) && $selectedfields != '') {
