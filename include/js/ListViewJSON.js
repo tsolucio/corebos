@@ -51,6 +51,7 @@ const ListView = {
 			document.getElementById('status').style.display = 'none';
 		} else if (actionType == 'alphabetic') {
 			ListView.ListViewAlpha(urlstring);
+			document.getElementById('status').style.display = 'none';
 		} else if (actionType == 'massedit') {
 			//use this function to reload data in every change
 			ListView.ListViewReloadData();
@@ -203,6 +204,15 @@ const ListView = {
 	 * @param {String} searchtype
 	 */
 	 ListViewSearch: (url, urlstring, searchtype) => {
+	 	if (searchtype == 'Basic') {
+			const parseUrl = urlstring.split('&');
+			let urlArr = [];
+			for (arg in parseUrl) {
+				const URI = parseUrl[arg].split('=');
+				urlArr[URI[0]] = URI[1];
+			}
+			document.getElementById('search_url').value = `&query=true&search_field=${urlArr['search_field']}&search_text=${urlArr['search_text']}&searchtype=BasicSearch`;
+	 	}
 		dataGridInstance.clear();
 	 	dataGridInstance.setRequestParams({'search': urlstring, 'searchtype': searchtype});
 	 	dataGridInstance.reloadData();
@@ -215,12 +225,21 @@ const ListView = {
 	 * @param {String} url
 	 */
 	 ListViewAlpha: (url) => {
+		const parseUrl = url.split('&');
+		let urlArr = [];
+		for (arg in parseUrl) {
+			const URI = parseUrl[arg].split('=');
+			urlArr[URI[0]] = URI[1];
+		}
+		document.getElementById('search_url').value = `&query=true&search_field=${urlArr['search_field']}&search_text=${urlArr['search_text']}&searchtype=BasicSearch&type=alpbt&operator=${urlArr['operator']}`;
 		dataGridInstance.clear();
 	 	dataGridInstance.setRequestParams({'search': url, 'searchtype': 'Basic'});
 	 	dataGridInstance.reloadData();
 		//update pagination onchange
 		dataGridInstance.setPerPage(parseInt(PageSize));
-		ListView.updateData();
+		const total = ListView.updateData();
+		document.getElementById('numOfRows').value = total;
+		document.getElementById('count').innerHTML = total;
 	},
 	/**
 	 * Get the new headers in a onchange data
