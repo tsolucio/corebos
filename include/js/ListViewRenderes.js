@@ -15,36 +15,36 @@
 
 class CheckboxRender {
 
-	constructor(props) {
-		const { grid, rowKey } = props;
-		const label = document.createElement('label');
-		label.className = 'checkbox';
-		label.setAttribute('for', String(rowKey));
-		const Input = document.createElement('input');
-		Input.name = 'selected_id[]';
-		Input.setAttribute('onclick', 'ListView.getCheckedRows();');
-		Input.className = 'hidden-input';
-		Input.id = String(rowKey);
-		label.appendChild(Input);
-		Input.type = 'checkbox';
-		Input.addEventListener('change', () => {
-			if (Input.checked) {
-				grid.check(rowKey);
-			} else {
-				grid.uncheck(rowKey);
-			}
-		});
-		this.el = label;
-		this.render(props);
-	}
+  	constructor(props) {
+    	const { grid, rowKey } = props;
+    	const label = document.createElement('label');
+    	label.className = 'checkbox';
+    	label.setAttribute('for', String(rowKey));
+    	const Input = document.createElement('input');
+    	Input.name = 'selected_id[]';
+    	Input.setAttribute('onclick', 'ListView.getCheckedRows("", this);');
+    	Input.className = 'hidden-input';
+   	 	Input.id = String(rowKey);
+    	label.appendChild(Input);
+    	Input.type = 'checkbox';
+    	Input.addEventListener('change', () => {
+	      	if (Input.checked) {
+	        	grid.check(rowKey);
+	      	} else {
+	        	grid.uncheck(rowKey);
+	      	}
+    	});
+    	this.el = label;
+    	this.render(props);
+  	}
 
-	getElement() {
-		return this.el;
-	}
+  	getElement() {
+    	return this.el;
+  	}
 
-	render(props) {
-		const Input = this.el.querySelector('.hidden-input');
-		const checked = Boolean(props.value);
-		Input.checked = checked;
-	}
+  	render(props) {
+    	const Input = this.el.querySelector('.hidden-input');
+    	const checked = Boolean(props.value);
+    	Input.checked = checked;
+  	}
 }

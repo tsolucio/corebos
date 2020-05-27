@@ -32,6 +32,9 @@ document.addEventListener('DOMContentLoaded', function () {
 const ListView = {
 	/**
 	 * Load the grid in default view
+	 * @param {Boolean} actionType
+	 * @param {String} urlstring
+	 * @param {String} searchtype
 	 */
 	ListViewJSON: (actionType = false, urlstring = '', searchtype = '') => {
 		if (document.getElementById('curmodule') != undefined) {
@@ -60,6 +63,7 @@ const ListView = {
 	},
 	/**
 	 * Get all headers for table
+	 * @param {Object} headerObj
 	 */
 	getColumnHeaders: (headerObj) => {
 		let res = [];
@@ -124,6 +128,8 @@ const ListView = {
 	},
 	/**
 	 * Load the default view in the first time
+	 * @param {String} module
+	 * @param {String} url
 	 */
 	ListViewDefault: (module, url) => {
 		fetch(
@@ -162,6 +168,7 @@ const ListView = {
 					}
 				},
 				useClientSort: false,
+				useClientFilter: false,
 				pageOptions: {
 					perPage: PageSize
 				},
@@ -181,6 +188,10 @@ const ListView = {
 				},
 				onGridUpdated: (ev) => {
 					ListView.updateData();
+					const rows = document.getElementById('allselectedboxes').value;
+					if (rows != '') {
+						ListView.checkRows();
+					}
 				}
 			});
 			tui.Grid.applyTheme('striped');
@@ -188,6 +199,9 @@ const ListView = {
 	},
 	/**
 	 * Get the new headers in a onchange search
+	 * @param {String} url
+	 * @param {String} urlstring
+	 * @param {String} searchtype
 	 */
 	 ListViewSearch: (url, urlstring, searchtype) => {
 		dataGridInstance.clear();
@@ -199,6 +213,7 @@ const ListView = {
 	},
 	/**
 	 * Get results for alphabetic search
+	 * @param {String} url
 	 */
 	 ListViewAlpha: (url) => {
 		dataGridInstance.clear();
@@ -221,6 +236,7 @@ const ListView = {
 	},
 	/**
 	 * Get the new headers in a onchange filter
+	 * @param {String} url
 	 */
 	ListViewFilter: (url) => {
 		dataGridInstance.setRequestParams({'search': '', 'searchtype': ''});
@@ -257,6 +273,8 @@ const ListView = {
 	},
 	/**
 	 * Get all checked rows
+	 * @param {Object} type
+	 * @param {String} el
 	 */
 	getAllCheckedRows: (type, el) => {
 		let checkboxes = document.getElementsByName('selected_id[]');
@@ -280,25 +298,57 @@ const ListView = {
 	},
 	/**
 	 * Get all checked rows to delete them
+	 * @param {Object} type
+	 * @param {String} el
 	 */
 	getCheckedRows: (type, el = '') => {
 		let checkedRows = ListView.getAllCheckedRows(type, el);
+		let currentPage = dataGridInstance.getPagination()._currentPage;
 		let ids = [];
 		let rowKeys = [];
+		//add checked rows for current page
 		for (let id in checkedRows) {
 			let recordId = dataGridInstance.getValue(parseInt(checkedRows[id]), 'recordid');
 			ids.push(recordId);
 			rowKeys.push(checkedRows[id]);
 		}
+		let actualVal = document.getElementById('allselectedboxes');
 		let	select_options = ids.join(';');
+		//get checked rows and add new rows from other pages
 		if (!select_options.endsWith(';') && select_options != '') {
 			select_options += ';';
+		}
+		select_options += actualVal.value;
+		let actualArr = select_options.split(';');
+		let newIds = [];
+		for (index in actualArr) {
+			if (!newIds.includes(actualArr[index])) {
+				newIds.push(actualArr[index]);
+			}
+		}
+		select_options = newIds.join(';');
+		if (!select_options.endsWith(';') && select_options != '') {
+			select_options += ';';
+		}
+		//remove id for current unchecked row
+		if (el.checked == false) {
+			let removeId = el.id;
+			let recordId = dataGridInstance.getValue(parseInt(removeId), 'recordid');
+			select_options = select_options.replace(recordId+';', '');
+		}
+		//remove all ids for current page if header checkbox is unchecked
+		if (checkedRows.length == 0) {
+		 	for (let i = 0; i < PageSize; i++) {
+		 		let recordId = dataGridInstance.getValue(parseInt(i), 'recordid');
+		 		select_options = select_options.replace(recordId+';', '');
+		 	}
 		}
 		document.getElementById('allselectedboxes').value = select_options;
 		return rowKeys;
 	},
 	/**
 	 * Remove all checked rows
+	 * @param {String} selectedType
 	 */
 	removeRows: (selectedType = '') => {
 		dataGridInstance.reloadData();
@@ -360,6 +410,8 @@ const ListView = {
 	},
 	/**
 	 * Update filter action in every change
+	 * @param {Object} filters
+	 * @param {Boolean} reload
 	 */
 	setFilters: (filters, reload = false) => {
 		if (reload == true) {
@@ -390,5 +442,18 @@ const ListView = {
 			fdelete.innerHTML = `${alert_arr['LNK_DELETE_ACTION']}`;
 		}
 		document.getElementById('filterDeleteActions').appendChild(fdelete);
+	},
+	/**
+	 * Check rows in grid
+	 */
+	checkRows: () => {
+		let actualVal = document.getElementById('allselectedboxes');
+		let idsArr = actualVal.value.split(';');
+		for (let i = 0; i <= PageSize; i++) {
+			let recordId = dataGridInstance.getValue(parseInt(i), 'recordid');
+			if (idsArr.includes(recordId)) {
+				document.getElementById(i).checked = true;
+			}
+		}
 	},
 };
