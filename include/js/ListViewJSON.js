@@ -168,7 +168,6 @@ const ListView = {
 					}
 				},
 				useClientSort: false,
-				useClientFilter: false,
 				pageOptions: {
 					perPage: PageSize
 				},
