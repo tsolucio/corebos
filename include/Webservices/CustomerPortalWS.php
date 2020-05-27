@@ -802,7 +802,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 						} else {
 							$list_result_count = $i - 1;
 							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
-							$value = evvt_strip_html_links($value);
+							$value = evvt_strip_html_links(strip_tags($value));
 						}
 					}
 					$list_header[$name] = $value;
