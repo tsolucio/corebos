@@ -767,7 +767,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 								$acc_name = textlength_check($account_name);
 								$value = $acc_name;
 							}
-						} elseif (($module == 'HelpDesk' || $module == 'PriceBook' || $module == 'Quotes' || $module == 'PurchaseOrder' || $module == 'Faq') && $name == 'Product Name') {
+						} elseif (($module=='HelpDesk' || $module=='PriceBook' || $module=='Quotes' || $module=='PurchaseOrder' || $module=='Faq') && $name=='Product Name') {
 							if ($module == 'HelpDesk' || $module == 'Faq') {
 								$product_id = $adb->query_result($list_result, $i - 1, 'product_id');
 							} else {
