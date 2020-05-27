@@ -207,12 +207,12 @@ $mod_strings = array(
   'Designation' => 'Designazione',
 'Lead No' => 'Nr. Lead',
 'LBL_TRANSFER_RELATED_RECORDS_TO' => 'Trasferisci entit&agrave; collegate a',
-'LBL_FOLLOWING_ARE_POSSIBLE_REASONS' => 'Following could be one of the possible reasons',
-'LBL_LEADS_FIELD_MAPPING_INCOMPLETE' => 'All the mandatory fields are not mapped',
-'LBL_MANDATORY_FIELDS_ARE_EMPTY' => 'Some of the mandatory field value are empty',
+'LBL_FOLLOWING_ARE_POSSIBLE_REASONS' => 'Di seguito potrebbe essere uno dei possibili motivi',
+'LBL_LEADS_FIELD_MAPPING_INCOMPLETE' => 'Non sono mappati tutti i campi obbligatori',
+'LBL_MANDATORY_FIELDS_ARE_EMPTY' => 'Alcuni campi obbligatori sono vuoti',
 'LBL_LEADS_FIELD_MAPPING' => 'Leads Custom Field Mapping',
 'LBL_FIELD_SETTINGS' => 'Field Settings',
 'Leads ID' => 'Leads ID',
-'LeadAlreadyConverted' => 'Lead cannot be converted. Either it has already been converted or you lack permission on one or more of the destination modules.',
+'LeadAlreadyConverted' => 'Lead non pu&ograve; essere convertito. O &egrave; gi&agrave; stato convertito o non si dispone dell&apos;autorizzazione per uno o pi&ugrave; moduli di destinazione.',
 );
 ?>
