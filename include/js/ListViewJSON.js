@@ -204,6 +204,7 @@ const ListView = {
 	 * @param {String} searchtype
 	 */
 	 ListViewSearch: (url, urlstring, searchtype) => {
+	 	//set search_url value to input
 	 	if (searchtype == 'Basic') {
 			const parseUrl = urlstring.split('&');
 			let urlArr = [];
@@ -212,6 +213,8 @@ const ListView = {
 				urlArr[URI[0]] = URI[1];
 			}
 			document.getElementById('search_url').value = `&query=true&search_field=${urlArr['search_field']}&search_text=${urlArr['search_text']}&searchtype=BasicSearch`;
+	 	} else {
+	 		document.getElementById('search_url').value = urlstring + '&query=true';
 	 	}
 		dataGridInstance.clear();
 	 	dataGridInstance.setRequestParams({'search': urlstring, 'searchtype': searchtype});
@@ -225,6 +228,7 @@ const ListView = {
 	 * @param {String} url
 	 */
 	 ListViewAlpha: (url) => {
+	 	//set search_url value to input
 		const parseUrl = url.split('&');
 		let urlArr = [];
 		for (arg in parseUrl) {
@@ -235,6 +239,13 @@ const ListView = {
 		dataGridInstance.clear();
 	 	dataGridInstance.setRequestParams({'search': url, 'searchtype': 'Basic'});
 	 	dataGridInstance.reloadData();
+		dataGridInstance.on('successResponse', function (data) {
+			const res = JSON.parse(data.xhr.response);
+			const export_where = res.export_where;
+			if (export_where) {
+				document.getElementsByName('where_export')[0].value = export_where;
+			}
+	 	});
 		//update pagination onchange
 		dataGridInstance.setPerPage(parseInt(PageSize));
 		const total = ListView.updateData();

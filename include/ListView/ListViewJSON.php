@@ -14,7 +14,7 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 
-function getListViewJSON($currentModule, $entries = 20, $orderBy = 'desc', $sortColumn = '', $currenPage = 1, $searchUrl = '', $searchtype = 'Basic') {
+function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sortColumn = '', $currentPage = 1, $searchUrl = '', $searchtype = 'Basic') {
 	global $app_strings, $mod_strings, $current_user, $adb;
 	include_once 'include/utils/utils.php';
 	require_once "modules/$currentModule/$currentModule.php";
@@ -31,6 +31,10 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'desc', $sort
 	} else {
 		$order_by = $focus->getOrderBy();
 	}
+
+	coreBOS_Session::set($currentModule.'_Order_By', $order_by);
+	coreBOS_Session::set($currentModule.'_Sort_Order', $sorder);
+
 	$customViewarr = array();
 	$customView = new CustomView($currentModule);
 	$viewid = $customView->getViewId($currentModule);
@@ -96,6 +100,13 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'desc', $sort
 	$queryGenerator = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.after', $queryGenerator);
 	$list_query = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.query', $list_query);
 	$where = $queryGenerator->getConditionalWhere();
+
+	if (isset($where) && $where != '') {
+		coreBOS_Session::set('export_where', $where);
+	} else {
+		coreBOS_Session::delete('export_where');
+	}
+
 	// Sorting
 	if (!empty($order_by)) {
 		$list_query .= ' ORDER BY '.$queryGenerator->getOrderByColumn($order_by).' '.$sorder;
@@ -104,7 +115,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'desc', $sort
 	$count_result = $adb->query('SELECT FOUND_ROWS();');
 	$noofrows = $adb->query_result($count_result, 0, 0);
 
-	$limit = ($currenPage-1) * $entries;
+	$limit = ($currentPage-1) * $entries;
 	$list_query .= ' LIMIT '.$limit.','.$entries;
 	//get entityfieldid
 	$entityField = getEntityField($currentModule);
@@ -145,6 +156,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'desc', $sort
 					$parent_module = getSalesEntityType($fieldValue);
 					$valueTitle = getTranslatedString($parent_module, $parent_module);
 					$displayValueArray = getEntityName($parent_module, $fieldValue);
+					$field10Value = '';
 					if (!empty($displayValueArray)) {
 						foreach ($displayValueArray as $k => $value) {
 							$field10Value = $value;
@@ -190,13 +202,14 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'desc', $sort
 				'data' => array(
 					'contents' => $data,
 					'pagination' => array(
-						'page' => (int)$currenPage,
+						'page' => (int)$currentPage,
 						'totalCount' => (int)$noofrows,
 					),
 				),
 				'entityfield' => $entityidfield,
 				'headers' => $listview_header_arr,
 				'customview' => $customViewarr,
+				'export_where' => $where,
 				'result' => true,
 				'message' => '',
 			);
@@ -212,6 +225,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'desc', $sort
 				'entityfield' => $entityidfield,
 				'headers' => $listview_header_arr,
 				'customview' => $customViewarr,
+				'export_where' => $where,
 				'result' => false,
 				'message' => getTranslatedString('NoData', $currentModule),
 			);
@@ -228,6 +242,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'desc', $sort
 			'entityfield' => $entityidfield,
 			'headers' => $listview_header_arr,
 			'customview' => $customViewarr,
+			'export_where' => $where,
 			'result' => false,
 			'message' => getTranslatedString('NoData', $currentModule),
 		);
