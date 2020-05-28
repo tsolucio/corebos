@@ -142,7 +142,16 @@ class DecisionTable extends processcbMap {
 					foreach ($value->decisionTable->searches->search as $k => $v) {
 						foreach ($v->condition as $k => $v) {
 							if (isset($context[(String)$v->input]) && $context[(String)$v->input]!='__IGNORE__') {
-								$queryGenerator->addCondition((String)$v->field, $context[(String)$v->input], (String)$v->operation, $queryGenerator::$AND);
+								$uitype = getUItypeByFieldName($module, (String)$v->field);
+								if ($uitype==10) {
+									if (!empty($context[(String)$v->input])) {
+										list($wsid, $crmid) = explode('x', $context[(String)$v->input]);
+										$relmod = getSalesEntityType($crmid);
+										$queryGenerator->addReferenceModuleFieldCondition($relmod, (String)$v->input, 'id', $crmid, (String)$v->operation, $queryGenerator::$AND);
+									}
+								} else {
+									$queryGenerator->addCondition((String)$v->field, $context[(String)$v->input], (String)$v->operation, $queryGenerator::$AND);
+								}
 							}
 						}
 					}
@@ -165,6 +174,10 @@ class DecisionTable extends processcbMap {
 				$result = $adb->pquery($query, array());
 				$seqcnt = 1;
 				$numfields = $adb->num_fields($result);
+				if ($field=='id') {
+					$finfo = getEntityField($module);
+					$field = $finfo['entityid'];
+				}
 				while ($row = $adb->fetch_array($result)) {
 					if ($ruleOutput == 'Row') {
 						$seqidx = $sequence.'_'.sprintf("%'.04d", $seqcnt++);
