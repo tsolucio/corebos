@@ -179,6 +179,7 @@ class Import_Data_Controller {
 			return;
 		}
 
+		$afterImportRecordExists = method_exists($focus, 'afterImportRecord');
 		$fieldMapping = $this->fieldMapping;
 		$fieldColumnMapping = $moduleMeta->getFieldColumnMapping();
 		$fieldColumnMapping['cbuuid'] = 'cbuuid';
@@ -321,6 +322,9 @@ class Import_Data_Controller {
 
 			$this->importedRecordInfo[$rowId] = $entityInfo;
 			$this->updateImportStatus($rowId, $entityInfo);
+			if ($afterImportRecordExists) {
+				$focus->afterImportRecord($rowId, $entityInfo);
+			}
 		}
 		unset($result);
 		return true;
