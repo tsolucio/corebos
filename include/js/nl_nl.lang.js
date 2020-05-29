@@ -427,5 +427,11 @@ var alert_arr = {
 	'Okay': 'Oké',
 	'Failed': 'Failed',
 	'Warning': 'Warning',
-	'Copied': 'Copied'
+	'Copied': 'Copied',
+	'LBL_SHOWING': 'Selectie Records ',
+	'LBL_RECORDS': ' van ',
+	'LNK_DELETE': 'Verwijder',
+	'LNK_EDIT': 'Bewerk',
+	'LNK_EDIT_ACTION': 'Bewerk',
+	'LNK_DELETE_ACTION': 'Verwijder',
 };

@@ -427,5 +427,11 @@ var alert_arr = {
 	'Okay': 'Okay',
 	'Failed': 'Failed',
 	'Warning': 'Warning',
-	'Copied': 'Copied'
+	'Copied': 'Copied',
+	'LBL_SHOWING': 'Showing Records ',
+	'LBL_RECORDS': ' of ',
+	'LNK_DELETE': 'del',
+	'LNK_EDIT': 'edit',
+	'LNK_EDIT_ACTION': 'Edit',
+	'LNK_DELETE_ACTION': 'Delete',
 };

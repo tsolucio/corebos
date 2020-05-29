@@ -389,5 +389,11 @@ var alert_arr = {
 	'Okay': 'Okay',
 	'Failed': 'Failed',
 	'Warning': 'Warning',
-	'Copied': 'Copied'
+	'Copied': 'Copied',
+	'LBL_SHOWING': 'Afisare Inregistrari ',
+	'LBL_RECORDS': ' din ',
+	'LNK_DELETE': 'sterge',
+	'LNK_EDIT': 'edit',
+	'LNK_EDIT_ACTION': 'Editare',
+	'LNK_DELETE_ACTION': 'Stergere',
 };

@@ -425,5 +425,11 @@ var alert_arr = {
 	'Okay': 'Okay',
 	'Failed': 'Failed',
 	'Warning': 'Warning',
-	'Copied': 'Copied'
+	'Copied': 'Copied',
+	'LBL_SHOWING': 'Zeige Datensätze ',
+	'LBL_RECORDS': ' von ',
+	'LNK_DELETE': 'löschen',
+	'LNK_EDIT': 'bearbeiten',
+	'LNK_EDIT_ACTION': 'Bearbeiten',
+	'LNK_DELETE_ACTION': 'Löschen',
 };
