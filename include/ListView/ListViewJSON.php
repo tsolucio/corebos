@@ -19,6 +19,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	include_once 'include/utils/utils.php';
 	require_once "modules/$currentModule/$currentModule.php";
 	$category = getParentTab();
+	$lastPage = vtlib_purify($_REQUEST['lastPage']);
 	if ($currentModule == 'Utilities') {
 		$currentModule = vtlib_purify($_REQUEST['formodule']);
 	}
@@ -115,6 +116,21 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	$count_result = $adb->query('SELECT FOUND_ROWS();');
 	$noofrows = $adb->query_result($count_result, 0, 0);
 
+	$start = coreBOS_Session::get('lvs^'.$currentModule.'^'.$viewid.'^start', 1);
+	if ($currentPage == 1) {
+		if ($lastPage == 1) {
+			coreBOS_Session::set('lvs^'.$currentModule.'^'.$viewid.'^start', (int)$lastPage);
+		} else {
+			if ($start > 1) {
+				coreBOS_Session::set('lvs^'.$currentModule.'^'.$viewid.'^start', (int)$start);
+			} else {
+				coreBOS_Session::set('lvs^'.$currentModule.'^'.$viewid.'^start', 1);
+			}
+		}
+	} else {
+		coreBOS_Session::set('lvs^'.$currentModule.'^'.$viewid.'^start', (int)$currentPage);
+	}
+	$currentPage = coreBOS_Session::get('lvs^'.$currentModule.'^'.$viewid.'^start');
 	$limit = ($currentPage-1) * $entries;
 	$list_query .= ' LIMIT '.$limit.','.$entries;
 	//get entityfieldid
