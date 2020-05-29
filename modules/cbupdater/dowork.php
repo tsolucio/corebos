@@ -31,7 +31,7 @@ $smarty->assign('CUSTOM_MODULE', true);
 $smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('THEME', $theme);
-include 'modules/cbupdater/forcedButtons.php';
+include 'modules/cbupdater/cbupdButtons.php';
 $smarty->assign('CHECK', $tool_buttons);
 echo $smarty->fetch('Buttons_List.tpl');
 
