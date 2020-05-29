@@ -1216,7 +1216,7 @@ class CustomView extends CRMEntity {
 
 				if ($status == CV_STATUS_DEFAULT) {
 					$log->debug('status=0');
-					if ($action == 'ListView' || $action == $module . 'Ajax' || $action == 'index' || $action == 'DetailView') {
+					if ($action == 'ListView' || $action == $module . 'Ajax' || $action == 'index' || $action == 'DetailView' || $action == 'Export') {
 						$permission = 'yes';
 					} else {
 						$permission = 'no';
@@ -1229,7 +1229,7 @@ class CustomView extends CRMEntity {
 						$permission = 'yes';
 					} elseif ($status == CV_STATUS_PUBLIC) {
 						$log->debug('status=3');
-						if ($action == 'ListView' || $action == $module . 'Ajax' || $action == 'index' || $action == 'DetailView') {
+						if ($action == 'ListView' || $action == $module . 'Ajax' || $action == 'index' || $action == 'DetailView' || $action == 'Export') {
 							$permission = 'yes';
 						} else {
 							$user_array = getRoleAndSubordinateUserIds($current_user->column_fields['roleid']);
