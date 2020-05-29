@@ -124,7 +124,11 @@ if (!empty($ids)) {
 						}
 						cbupdater_show_message($msg);
 						$cbw = new cbupdaterWorker($upd['cbupdaterid']);
-						$cbw->processManualUpdate($ins);
+						if ($whattodo == 'undo') {
+							$cbw->undoChange();
+						} else {
+							$cbw->processManualUpdate($ins);
+						}
 						if (!$cbw->updError) {
 							$totalopsok++;
 						}
