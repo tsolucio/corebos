@@ -151,6 +151,14 @@ class cbupdater extends CRMEntity {
 		}
 	}
 
+	public function afterImportRecord($rowId, $entityInfo) {
+		global $adb;
+		if (!empty($entityInfo['id'])) {
+			list($wsid, $crmid) = explode('x', $entityInfo['id']);
+			$adb->pquery('update vtiger_cbupdater set filename=?,appcs=? where cbupdaterid=?', array(uniqid(), '0', $crmid));
+		}
+	}
+
 	/**
 	 * Invoked when special actions are performed on the module.
 	 * @param String Module name
