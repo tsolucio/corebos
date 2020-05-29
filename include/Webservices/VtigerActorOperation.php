@@ -15,6 +15,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 	protected $isEntity = false;
 	protected $element;
 	protected $id;
+	private $queryTotalRows = 0;
 
 	public function __construct($webserviceObject, $user, $adb, $log) {
 		parent::__construct($webserviceObject, $user, $adb, $log);
@@ -362,9 +363,14 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 				continue;
 			}
 			$output[] = DataTransform::sanitizeDataWithColumn($row, $meta);
+			$this->queryTotalRows++;
 		}
 
 		return $output;
+	}
+
+	public function getQueryTotalRows() {
+		return $this->queryTotalRows;
 	}
 
 	protected function getElement() {
