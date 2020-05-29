@@ -157,7 +157,7 @@ const ListView = {
 					type: 'checkbox',
 			        header: `
 			          <label for="all-checkbox" class="checkbox">
-			            <input type="checkbox" id="selectCurrentPageRec" onclick="toggleSelect_ListView(this.checked,'selected_id[]');ListView.getCheckedRows('currentPage', this);" name="_checked" />
+			            <input type="checkbox" id="selectCurrentPageRec" class="listview-checkbox" onclick="toggleSelect_ListView(this.checked,'selected_id[]');ListView.getCheckedRows('currentPage', this);" name="_checked" />
 			          </label>
 			        `,
 					renderer: {

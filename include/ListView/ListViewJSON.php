@@ -148,11 +148,11 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	//add action in header
 	$listview_header_search['action'] = $app_strings['LBL_ACTION'];
 	$listview_header_arr = array();
-	foreach ($listview_header_search as $l => $h) {
-		$fieldType = getUItypeByFieldName($currentModule, $l);
+	foreach ($listview_header_search as $fName => $fValue) {
+		$fieldType = getUItypeByFieldName($currentModule, $fName);
 		$lv_arr = array(
-			'fieldname' => $l,
-			'fieldvalue' => $h,
+			'fieldname' => $fName,
+			'fieldvalue' => $fValue,
 			'uitype' => $fieldType
 		);
 		array_push($listview_header_arr, $lv_arr);
@@ -163,10 +163,16 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	while ($result && $row = $adb->fetch_array($result)) {
 		$rows = array();
 		$linkRow = array();
-		foreach ($row as $key => $fieldValue) {
-			if (!is_numeric($key)) {
+		foreach ($row as $fieldName => $fieldValue) {
+			if (!is_numeric($fieldName)) {
+				$tabid = getTabid($currentModule);
+				$fieldnameSql = $adb->pquery('SELECT fieldname FROM vtiger_field WHERE columnname=? AND tabid=?', array(
+					$fieldName,
+					$tabid
+				));
+				$fieldName = $adb->query_result($fieldnameSql, 0, 0);
 				//check field uitypes
-				$fieldType = getUItypeByFieldName($currentModule, $key);
+				$fieldType = getUItypeByFieldName($currentModule, $fieldName);
 				if ($fieldType == '10') {
 					//get value
 					$parent_module = getSalesEntityType($fieldValue);
@@ -178,30 +184,30 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 							$field10Value = $value;
 						}
 					}
-					$rows[$key] = $field10Value;
-					$linkRow[$key] = array($parent_module, $fieldValue, $field10Value);
-				} elseif ($fieldType == '14' || ($fieldType == '2' && ($key == 'time_start' || $key == 'time_end'))) {
+					$rows[$fieldName] = $field10Value;
+					$linkRow[$fieldName] = array($parent_module, $fieldValue, $field10Value);
+				} elseif ($fieldType == '14' || ($fieldType == '2' && ($fieldName == 'time_start' || $fieldName == 'time_end'))) {
 					$date = new DateTimeField($fieldValue);
-					$rows[$key] = $date->getDisplayTime($current_user);
+					$rows[$fieldName] = $date->getDisplayTime($current_user);
 				} elseif ($fieldType == '5' || $fieldType == '6' || $fieldType == '23') {
 					$date = new DateTimeField($fieldValue);
-					$rows[$key] = $date->getDisplayDate($current_user);
+					$rows[$fieldName] = $date->getDisplayDate($current_user);
 				} elseif ($fieldType == '50') {
 					$date = new DateTimeField($fieldValue);
-					$rows[$key] = $date->getDisplayDateTimeValue($current_user);
+					$rows[$fieldName] = $date->getDisplayDateTimeValue($current_user);
 				} elseif ($fieldType == '56') {
 					if ($fieldValue == 1) {
-						$rows[$key] = getTranslatedString('yes', $currentModule);
+						$rows[$fieldName] = getTranslatedString('yes', $currentModule);
 					} elseif ($fieldValue == 0) {
-						$rows[$key] = getTranslatedString('no', $currentModule);
+						$rows[$fieldName] = getTranslatedString('no', $currentModule);
 					} else {
-						$rows[$key] = '--';
+						$rows[$fieldName] = '--';
 					}
 				} elseif ($fieldType == '71' || $fieldType == '72' || $fieldType == '7' || $fieldType == '9') {
 					$currencyField = new CurrencyField($fieldValue);
-					$rows[$key] = $currencyField->getDisplayValue($current_user, true);
+					$rows[$fieldName] = $currencyField->getDisplayValue($current_user, true);
 				} else {
-					$rows[$key] = $fieldValue;
+					$rows[$fieldName] = $fieldValue;
 				}
 			}
 			$rows['action'] = '';

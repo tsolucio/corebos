@@ -23,7 +23,7 @@ class CheckboxRender {
     	const Input = document.createElement('input');
     	Input.name = 'selected_id[]';
     	Input.setAttribute('onclick', 'ListView.getCheckedRows("", this);');
-    	Input.className = 'hidden-input';
+    	Input.className = 'hidden-input listview-checkbox';
    	 	Input.id = String(rowKey);
     	label.appendChild(Input);
     	Input.type = 'checkbox';
