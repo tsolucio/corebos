@@ -222,7 +222,7 @@ if (isset($_REQUEST['potential_id']) && $_REQUEST['potential_id'] != '') {
 		$_REQUEST['contact_id'] = $relID;
 	}
 	$associated_prod = getAssociatedProducts('Potentials', $focus, $focus->column_fields['potential_id']);
-	if (count($associated_prod)==1 && count($associated_prod[1])==1) { // no products so we empty array to avoid warning
+	if (empty($associated_prod) || (count($associated_prod)==1 && count($associated_prod[1])==1)) { // no products so we empty array to avoid warning
 		$smarty->assign('AVAILABLE_PRODUCTS', 'false');
 		$associated_prod = array();
 	} else {
