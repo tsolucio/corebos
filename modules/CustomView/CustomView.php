@@ -1006,7 +1006,7 @@ class CustomView extends CRMEntity {
 				$advcvsql .= $advfiltergroupsql;
 			}
 		}
-		if (trim($advcvsql) != '') {
+		if (trim($advcvsql) != '' && !$webserviceQL) {
 			$advcvsql = '(' . $advcvsql . ')';
 		}
 		return $advcvsql;
