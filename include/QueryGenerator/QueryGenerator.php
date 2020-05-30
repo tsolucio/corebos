@@ -328,15 +328,7 @@ class QueryGenerator {
 	}
 
 	public function getModuleFields() {
-		$moduleFields = $this->meta->getModuleFields();
-
-		$module = $this->getModule();
-		if ($module == 'Calendar') {
-			$eventmoduleMeta = $this->getMeta('Events');
-			$eventModuleFieldList = $eventmoduleMeta->getModuleFields();
-			$moduleFields = array_merge($moduleFields, $eventModuleFieldList);
-		}
-		return $moduleFields;
+		return $this->meta->getModuleFields();
 	}
 
 	public function getConditionalWhere() {
