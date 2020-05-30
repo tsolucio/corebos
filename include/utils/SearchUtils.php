@@ -697,9 +697,9 @@ function getSearch_criteria($criteria, $searchstring, $searchfield) {
 
 		case 'isn':
 			if ($searchfield == "vtiger_users.user_name" || $searchfield =="vtiger_groups.groupname") {
-				$where_string = "(".$searchfield." <> '".$searchstring."')";
+				$where_string = "(".$searchfield." != '".$searchstring."')";
 			} else {
-				$where_string = "(".$searchfield." <> '".$searchstring."' or ".$searchfield." is null)";
+				$where_string = "(".$searchfield." != '".$searchstring."' or ".$searchfield." is null)";
 			}
 			if ($searchstring == null) {
 				$where_string = "(".$searchfield." not like '' and ".$searchfield." is not NULL)";
@@ -1245,11 +1245,11 @@ function getAdvancedSearchComparator($comparator, $value, $datatype = '') {
 		if (trim($value) == "NULL") {
 			$rtvalue = " is NOT NULL";
 		} elseif (trim($value) != "") {
-			$rtvalue = " <> ".$adb->quote($value);
+			$rtvalue = " != ".$adb->quote($value);
 		} elseif (trim($value) == "" && $datatype == "V") {
-			$rtvalue = " <> ".$adb->quote($value);
+			$rtvalue = " != ".$adb->quote($value);
 		} elseif (trim($value) == "" && $datatype == "E") {
-			$rtvalue = " <> ".$adb->quote($value);
+			$rtvalue = " != ".$adb->quote($value);
 		} else {
 			$rtvalue = " is NOT NULL";
 		}
