@@ -1342,6 +1342,13 @@ Array (
 					$columns[] = $fieldcol[$field];
 				}
 			}
+			if (!empty($this->out['orderby'])) {
+				foreach ($this->out['orderby'] as $field) {
+					if (!empty($fieldcol[$field])) {
+						$columns[] = $fieldcol[$field];
+					}
+				}
+			}
 			$tables = $this->getTables($this->out, $columns);
 			if (!in_array($objectMeta->getEntityBaseTable(), $tables)) {
 				$tables[] = $objectMeta->getEntityBaseTable();
