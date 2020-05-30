@@ -277,17 +277,23 @@ Array (
 
 		if (!empty($sqlDump['orderby'])) {
 			$i=0;
-			$this->query = $this->query.' ORDER BY ';
+			$orderby = '';
 			foreach ($sqlDump['orderby'] as $field) {
+				if (empty($fieldcol[$field])) {
+					continue;
+				}
 				if ($i===0) {
-					$this->query = $this->query.$columnTable[$fieldcol[$field]].'.'.$fieldcol[$field];
+					$orderby .= $columnTable[$fieldcol[$field]].'.'.$fieldcol[$field];
 					$i++;
 				} else {
-					$this->query = $this->query.','.$columnTable[$fieldcol[$field]].'.'.$fieldcol[$field];
+					$orderby .= ','.$columnTable[$fieldcol[$field]].'.'.$fieldcol[$field];
 				}
 			}
 			if (!empty($sqlDump['sortOrder'])) {
-				$this->query .= ' '.$sqlDump['sortOrder'];
+				$orderby .= ' '.$sqlDump['sortOrder'];
+			}
+			if ($orderby!='') {
+				$this->query = $this->query.' ORDER BY '.$orderby;
 			}
 		}
 		if (!empty($sqlDump['limit'])) {
