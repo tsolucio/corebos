@@ -273,7 +273,7 @@ class WorkFlowScheduler {
 				}
 
 				if (empty($columnCondition) || $index > 0) {
-					$columnCondition = $previous_condition['joincondition'];
+					$columnCondition = isset($previous_condition['joincondition']) ? $previous_condition['joincondition'] : '';
 				}
 				if ($index > 0 && $groupId != $previous_condition['groupid']) {	//if first condition in new group, send empty condition to append
 					$columnCondition = null;
