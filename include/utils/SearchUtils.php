@@ -195,17 +195,17 @@ function Search($module, $input = '') {
 	}
 }
 
-/**This function is used to get user_id's for a given user_name during search
-*Param $table_name - tablename
-*Param $column_name - columnname
-*Param $search_string - searchstring value (username)
-*Returns the where conditions for list query in string format
+/** get SQL condition to retrieve a user id given a user_name: used during search
+* @param string $table_name - tablename
+* @param string $column_name - columnname
+* @param string $search_string - searchstring value (user name)
+* @return string the where conditions for list query
 */
 function get_usersid($table_name, $column_name, $search_string) {
 	global $log;
 	$log->debug('> get_usersid '.$table_name.','.$column_name.','.$search_string);
 	$concatSql = getSqlForNameInDisplayFormat(array('last_name'=>'vtiger_users.last_name', 'first_name'=>'vtiger_users.first_name'), 'Users');
-	$where.="(trim($concatSql) like '". formatForSqlLike($search_string)  . "' or vtiger_groups.groupname like '". formatForSqlLike($search_string) ."')";
+	$where = "(trim($concatSql) like '". formatForSqlLike($search_string)  . "' or vtiger_groups.groupname like '". formatForSqlLike($search_string) ."')";
 	$log->debug('< get_usersid');
 	return $where;
 }
