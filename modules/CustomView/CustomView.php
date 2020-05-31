@@ -1045,7 +1045,7 @@ class CustomView extends CRMEntity {
 			'fieldname' => $fspec[2],
 			'operation' => 'between',
 			'value' => $conds['startdate'].','.$conds['enddate'],
-			'valuetype' => 'raw',
+			'valuetype' => 'rawtext',
 			'joincondition' => 'and',
 			'groupid' => rand(),
 		));
@@ -1070,7 +1070,7 @@ class CustomView extends CRMEntity {
 					'fieldname' => $fspec[2],
 					'operation' => $this->getOperatorFromComparator($column['comparator']),
 					'value' => $column['value'],
-					'valuetype' => 'raw',
+					'valuetype' => 'rawtext',
 					'joincondition' => empty($column['column_condition']) ? $cols['condition'] : $column['column_condition'],
 					'groupid' => $grp,
 					'groupjoin' => $groupjoin,
