@@ -102,6 +102,7 @@ function cbws_getViewsInformation($viewids, $module) {
 		}
 		$filter['advcriteria'] = json_encode($advft);
 		$filter['advcriteriaWQL'] = $customView->getCVAdvFilterSQL($cvrow['cvid'], true);
+		$filter['advcriteriaEVQL'] = $customView->getCVAdvFilterEVQL($cvrow['cvid']);
 		$stdfilter = $customView->getStdFilterByCvid($cvrow['cvid']);
 		if (empty($stdfilter['columnname'])) {
 			$filter['stdcriteria'] = '[]';
@@ -117,6 +118,7 @@ function cbws_getViewsInformation($viewids, $module) {
 			));
 		}
 		$filter['stdcriteriaWQL'] = $customView->getCVStdFilterSQL($cvrow['cvid'], true);
+		$filter['stdcriteriaEVQL'] = $customView->getCVStdFilterEVQL($cvrow['cvid']);
 		$viewinfo = $customView->getColumnsListByCvid($cvrow['cvid']);
 		$fields = array();
 		foreach ($viewinfo as $fld) {
