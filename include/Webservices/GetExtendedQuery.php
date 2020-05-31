@@ -564,7 +564,7 @@ function __ExtendedQueryConditionQuery($q) {
 }
 
 function __ExtendedQueryConditionGetQuery($q, $fromModule, $user) {
-	global $adb;
+	global $adb, $log;
 	$workflowScheduler = new WorkFlowScheduler($adb);
 	$workflow = new Workflow();
 	$wfvals = array(
@@ -625,7 +625,58 @@ function __ExtendedQueryConditionGetQuery($q, $fromModule, $user) {
 		$cond = trim($cond, ';');
 		$ol_by = substr($q, $endcond);
 		$ol_by = trim($ol_by);
-		$ol_by = ' '.trim($ol_by, ';');
+		$groupbyCond = "/([gG][rR][oO][uU][pP]\s+[bB][yY]\s+)+(.*)/";
+		preg_match($groupbyCond, $ol_by, $gb);
+		$gbflds = (isset($gb[2]) ? $gb[2] : '');
+		if (stripos($gbflds, ' order ')>0) {
+			$gbflds = substr($gbflds, 0, stripos($gbflds, ' order '));
+		}
+		if (stripos($gbflds, ' limit ')>0) {
+			$gbflds = substr($gbflds, 0, stripos($gbflds, ' limit '));
+		}
+		// limit and order
+		$orderbyCond = "/([oO][rR][dD][eE][rR]\s+[bB][yY]\s+)+(.*)/";
+		preg_match($orderbyCond, $ol_by, $ob);
+		$obflds = (isset($ob[2]) ? $ob[2] : '');
+		if (stripos($obflds, ' limit ')>0) {
+			$obflds = substr($obflds, 0, stripos($obflds, ' limit '));
+		}
+		$limitCond = "/([lL][iI][mM][iI][tT]\s+)+(.*)/";
+		preg_match($limitCond, $ol_by, $lm);
+		$lmoc = (isset($lm[2]) ? $lm[2] : '');
+		if (stripos($lmoc, ' order ')>0) {
+			$lmoc = substr($lmoc, 0, stripos($lmoc, ' order '));
+		}
+		$orderby = '';
+		if (!empty($obflds)) {
+			$webserviceObject = VtigerWebserviceObject::fromName($adb, $fromModule);
+			$handlerPath = $webserviceObject->getHandlerPath();
+			$handlerClass = $webserviceObject->getHandlerClass();
+			require_once $handlerPath;
+			$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+			$meta = $handler->getMeta();
+			$fieldcolumn = $meta->getFieldColumnMapping();
+			$fieldtable = $meta->getColumnTableMapping();
+			$obflds = trim($obflds);
+			if (strtolower(substr($obflds, -3))=='asc') {
+				$dir = ' asc ';
+				$obflds = trim(substr($obflds, 0, strlen($obflds)-3));
+			} elseif (strtolower(substr($obflds, -4))=='desc') {
+				$dir = ' desc ';
+				$obflds = trim(substr($obflds, 0, strlen($obflds)-4));
+			} else {
+				$dir = '';
+			}
+			$obflds = explode(',', $obflds);
+			foreach ($obflds as $k => $field) {
+				$obflds[$k] = __FQNExtendedQueryField2Column($field, $fromModule, $fieldcolumn, $fieldtable, $user);
+			}
+			$orderby = ' order by '.implode(',', $obflds).$dir;
+		}
+		if (!empty($lmoc)) {
+			$orderby .= " limit $lmoc ";
+		}
+		$ol_by = ($gbflds=='' ? '' : ' group by '.$gbflds).trim($orderby, ';');
 		$wfvals['test'] = $cond;
 	} else {
 		$wfvals['test'] = '';
