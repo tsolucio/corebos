@@ -224,10 +224,11 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 			$dir = '';
 		}
 		$obflds = explode(',', $obflds);
+		$fieldtable = $meta->getColumnTableMapping();
 		foreach ($obflds as $k => $field) {
 			// we have to make sure we have all the join conditions for these fields as Query Generator doesn't do that by default
 			__FQNExtendedQuerySetQGRefField($field, $mainModule, $queryGenerator, $user);
-			$obflds[$k] = __FQNExtendedQueryField2Column($field, $mainModule, $fieldcolumn, $user);
+			$obflds[$k] = __FQNExtendedQueryField2Column($field, $mainModule, $fieldcolumn, $fieldtable, $user);
 		}
 		$orderby = ' order by '.implode(',', $obflds).$dir.' ';
 	}
@@ -440,11 +441,11 @@ function __FQNExtendedQuerySetQGRefField($field, $mainModule, $queryGenerator, $
 	}
 }
 
-function __FQNExtendedQueryField2Column($field, $mainModule, $maincolumnTable, $user) {
+function __FQNExtendedQueryField2Column($field, $mainModule, $maincolumnTable, $mainfieldtable, $user) {
 	global $adb,$log;
 	$field = trim($field);
 	if (isset($maincolumnTable[$field])) {
-		return $maincolumnTable[$field];
+		return $mainfieldtable[$maincolumnTable[$field]].'.'.$maincolumnTable[$field];
 	}
 	if (strpos($field, '.')>0) {  // FQN
 		list($fmod,$fname) = explode('.', $field);
@@ -474,6 +475,9 @@ function __FQNExtendedQueryField2Column($field, $mainModule, $maincolumnTable, $
 				return $fieldtable[$fname].$fmodreffld.'.'.$fieldcolumn[$fname];
 			}
 		}
+	} elseif ($field=='id') {
+		$crmobj = CRMEntity::getInstance($mainModule);
+		$field = $crmobj->table_name.'.'.$crmobj->table_index;
 	}
 	return $field;
 }
