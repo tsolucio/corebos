@@ -188,6 +188,12 @@
   transform: translateY(-3.125rem);
 }
 
+.slds-dropdown_length-3, .slds-dropdown--length-3 {
+  -webkit-overflow-scrolling:touch;
+  max-height:calc(((1rem * 1.5) + 1rem) * 3);
+  overflow-y:auto;
+}
+
 /* ---- CBDS animations ---- */
 /* -- Source: animate.css */
 

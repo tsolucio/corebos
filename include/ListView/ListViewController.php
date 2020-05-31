@@ -914,5 +914,51 @@ class ListViewController {
 		}
 		return $shtml;
 	}
+
+	public function getAdvancedSearchOptionArray() {
+		$module = $this->queryGenerator->getModule();
+		$meta = $this->queryGenerator->getMeta($module);
+
+		$moduleFields = $meta->getModuleFields();
+		$i =0;
+		$OPTION_SET = array();
+		foreach ($moduleFields as $fieldName => $field) {
+			if ($field->getFieldDataType() == 'reference') {
+				$typeOfData = 'V';
+			} elseif ($field->getFieldDataType() == 'boolean') {
+				$typeOfData = 'C';
+			} else {
+				$typeOfData = $field->getTypeOfData();
+				$typeOfData = explode("~", $typeOfData);
+				$typeOfData = $typeOfData[0];
+			}
+			$label = getTranslatedString($field->getFieldLabelKey(), $module);
+			$label = str_replace(array("\n","\r"), '', $label);
+			if (empty($label)) {
+				$label = $field->getFieldLabelKey();
+			}
+
+			$selected = '';
+			if ($i++ == 0) {
+				$selected = true;
+			}
+
+			// place option in array for sorting later
+			$blockName = getTranslatedString($field->getBlockName(), $module);
+
+			$fieldLabelEscaped = str_replace(" ", "_", $field->getFieldLabelKey());
+			$optionvalue = $field->getTableName().":".$field->getColumnName().":".$fieldName.":".$module."_".$fieldLabelEscaped.":".$typeOfData;
+
+			$OPTION_SET[$blockName][$label] = array('label' => $label, 'value' => $optionvalue, 'selected' => $selected, 'typeofdata' => $typeOfData);
+		}
+		// sort array on block label
+		ksort($OPTION_SET, SORT_STRING);
+		$OPTIONS = array();
+		foreach ($OPTION_SET as $key => $value) {
+			$OPTIONS[$key] = $value;
+			ksort($OPTIONS[$key], SORT_STRING);
+		}
+		return $OPTIONS;
+	}
 }
 ?>
