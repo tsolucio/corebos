@@ -212,7 +212,9 @@ function export($type) {
 	if ($filtercolumns) {
 		$visiblecolumns_array = $oCustomView->getColumnsListByCvid($viewid);
 		array_walk($visiblecolumns_array, 'obtainVisibleColumnNames');
-		$fields_array = $visiblecolumns_array;
+		$fields_array = array_filter($fields_array, function ($efield) use ($visiblecolumns_array) {
+			return in_array($efield, $visiblecolumns_array);
+		});
 		$fields_array[] = 'cbuuid';
 	}
 	$columnsToExport = array_map(
