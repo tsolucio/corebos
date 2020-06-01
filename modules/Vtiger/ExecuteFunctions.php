@@ -152,12 +152,10 @@ switch ($functiontocall) {
 			echo getTranslatedString('RecordIsAssignedToInactiveUser');
 			die();
 		}
-		if (Validations::ValidationsExist($valmod)) {
-			$validation = Validations::processAllValidationsFor($valmod);
-			if ($validation!==true) {
-				echo Validations::formatValidationErrors($validation, $valmod);
-				die();
-			}
+		$validation = Validations::processAllValidationsFor($valmod);
+		if ($validation!==true) {
+			echo Validations::formatValidationErrors($validation, $valmod);
+			die();
 		}
 		if (file_exists("modules/{$valmod}/{$valmod}Validation.php")) {
 			include "modules/{$valmod}/{$valmod}Validation.php";
