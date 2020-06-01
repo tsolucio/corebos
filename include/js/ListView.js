@@ -1126,6 +1126,8 @@ function runBAScriptFromListView(scriptname, module, callback) {
 
 		if (confirm_status) {
 			if (idstring) {
+				VtigerJS_DialogBox.block();
+				VtigerJS_DialogBox.showbusy();
 				let url = 'module='+module+'&action='+module+'Ajax&file='+scriptname;
 				url += '&ids=' + encodeURIComponent(idstring);
 				url += '&excludedRecords=' + encodeURIComponent(excludedRecords);
@@ -1135,6 +1137,8 @@ function runBAScriptFromListView(scriptname, module, callback) {
 					method: 'POST',
 					url: 'index.php?'+url
 				}).done(function (response) {
+					VtigerJS_DialogBox.unblock();
+					VtigerJS_DialogBox.hidebusy();
 					if (typeof callback == 'function') {
 						callback(response);
 					}
