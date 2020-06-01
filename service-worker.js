@@ -9290,7 +9290,7 @@ precacheAndRoute([{
   "revision": "3aab10a82c3f05de285ce73b6dc3be35"
 }, {
   "url": "include/js/dtlviewajax.js",
-  "revision": "37d8b802631db59f1d1f817c9ae1f69c"
+  "revision": "6059341b114976dd92665c122b2e7410"
 }, {
   "url": "include/js/en_gb.lang.js",
   "revision": "503ce3743e2f245efaf25513ef32293f"
@@ -9314,7 +9314,7 @@ precacheAndRoute([{
   "revision": "c5247a4c8b5ebf37d5cd55c6621f38c5"
 }, {
   "url": "include/js/general.js",
-  "revision": "26bb9dd7ba3136f36b00e5632833163d"
+  "revision": "bfc8d053fccf571020423a572ed44d95"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "c121669fa3b0ab4ce7088a82107ca79c"
@@ -9329,7 +9329,7 @@ precacheAndRoute([{
   "revision": "31c7a760819a0277d2cdb75b82c2c66f"
 }, {
   "url": "include/js/ListView.js",
-  "revision": "bbac8957a142cc048d8ab558a6f59915"
+  "revision": "86a81fa30a7fbf8bc6d16f1833ef31fa"
 }, {
   "url": "include/js/loadjslog.js",
   "revision": "d5317a375aa85d10e53f5989b1be0524"
