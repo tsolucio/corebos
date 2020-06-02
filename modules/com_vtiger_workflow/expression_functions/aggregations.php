@@ -18,7 +18,7 @@
 
 /*
  * function to aggregate a set of records related to a main record
- * @param array[0] aggregation operation: sum, min, max, avg, count, std, variance
+ * @param array[0] aggregation operation: sum, min, max, avg, count, std, variance, group_concat, time_to_sec
  * @param array[1] RelatedModule
  * @param array[2] relatedFieldToAggregate
  * @param array[3] conditions: [field,op,value,glue],[...]
@@ -49,7 +49,7 @@ function __cb_aggregation($arr) {
 
 /*
  * function to aggregate a set of records related to a main record
- * @param array[0] aggregation operation: sum, min, max, avg, count, std, variance
+ * @param array[0] aggregation operation: sum, min, max, avg, count, std, variance, group_concat, time_to_sec
  * @param array[1] RelatedModule
  * @param array[2] relatedFieldsToAggregate with operations too
  * @param array[3] conditions: [field,op,value,glue],[...]
@@ -80,10 +80,20 @@ function __cb_aggregation_operation($arr) {
 
 function __cb_aggregation_getQuery($arr, $userdefinedoperation = true) {
 	global $adb, $GetRelatedList_ReturnOnlyQuery, $logbg, $currentModule;
-	$validoperations = array('sum', 'min', 'max', 'avg', 'count', 'std', 'variance', 'time_to_sec');
+	$validoperations = array('sum', 'min', 'max', 'avg', 'count', 'std', 'variance', 'time_to_sec', 'group_concat');
 	$operation = strtolower($arr[0]);
 	if (!in_array($operation, $validoperations)) {
 		return 0;
+	}
+	$sep = '';
+	if ($operation=='group_concat') { // to support 'separator'
+		if (stripos($arr[2], 'separator')!==false) {
+			$sep = ' '.trim(substr($arr[2], strpos($arr[2], ' ')));
+			$arr[2] = trim(substr($arr[2], 0, strpos($arr[2], ' ')));
+		} else {
+			$arr[2] = trim($arr[2]);
+		}
+		$userdefinedoperation = false;
 	}
 	$env = $arr[4];
 	if (isset($env->moduleName)) {
@@ -137,7 +147,7 @@ function __cb_aggregation_getQuery($arr, $userdefinedoperation = true) {
 	if ($userdefinedoperation) {
 		$query = 'select '.$operation.'('.$relfields_operation.') as aggop '.$qfrom;
 	} else {
-		$query = 'select '.$operation.'('.$rfield->table.'.'.$rfield->column.') as aggop '.$qfrom;
+		$query = 'select '.$operation.'('.$rfield->table.'.'.$rfield->column.$sep.') as aggop '.$qfrom;
 	}
 	$logbg->debug("Agg query: $query");
 	return $query;
@@ -204,5 +214,4 @@ function __cb_aggregate_time($arr) {
 	$seconds = (($total_seconds - ($hours * 3600)) % 60);
 	return sprintf('%03d', $hours) . ':' . sprintf('%02d', $minutes) . ':' . sprintf('%02d', $seconds);
 }
-
 ?>

@@ -31,7 +31,7 @@
 <table width="100%" cellpadding="5" cellspacing="0" class="searchUIBasic small" align="center" border=0>
 	<tr>
 		<td class="searchUIName small" nowrap align="left">
-		<span class="moduleName">{$APP.LBL_SEARCH}</span><br><span class="small"><a href="#" onClick="fnhide('searchAcc');show('advSearch');document.basicSearch.searchtype.value='advance';document.basicSearch.searchtype.searchlaunched='';">{$APP.LBL_GO_TO} {$APP.LNK_ADVANCED_SEARCH}</a></span>
+		<span class="moduleName">{$APP.LBL_SEARCH}</span><br><span class="small"><a href="#" onClick="fnhide('searchAcc');show('advSearch');document.basicSearch.searchtype.value='advance';document.basicSearch.searchtype.searchlaunched='';document.getElementById('cbds-advanced-search').classList.add('cbds-advanced-search--active')">{$APP.LBL_GO_TO} {$APP.LNK_ADVANCED_SEARCH}</a></span>
 		<!-- <img src="themes/images/basicSearchLens.gif" align="absmiddle" alt="{$APP.LNK_BASIC_SEARCH}" title="{$APP.LNK_BASIC_SEARCH}" border=0>&nbsp;&nbsp;-->
 		</td>
 		<td class="small" nowrap align=right><b>{$APP.LBL_SEARCH_FOR}</b></td>
@@ -69,30 +69,36 @@
 </form><br class="searchbreak">
 </div>
 <!-- ADVANCED SEARCH -->
-<div id="advSearch" style="display:none;">
-<form name="advSearch" method="post" action="index.php" onSubmit="document.basicSearch.searchtype.searchlaunched='advance';return callSearch('Advanced');">
-	<table cellspacing=0 cellpadding=5 width=100% class="searchUIAdv1 small" align="center" border=0>
-		<tr>
-			<td class="searchUIName small" nowrap align="left"><span class="moduleName">{$APP.LBL_SEARCH}</span><br><span class="small"><a href="#" onClick="show('searchAcc');fnhide('advSearch');document.basicSearch.searchtype.searchlaunched='';">{$APP.LBL_GO_TO} {$APP.LNK_BASIC_SEARCH}</a></span></td>
-			<td class="small closeX" align="right" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="searchshowhide('searchAcc','advSearch');document.basicSearch.searchtype.searchlaunched='';">[x]</td>
-		</tr>
-	</table>
-	<table cellpadding="2" cellspacing="0" width="100%" align="center" class="searchUIAdv2 small" border=0>
-		<tr>
-			<td align="center" class="small" width=90%>
-				{include file='AdvanceFilter.tpl' SOURCE='customview' COLUMNS_BLOCK=$FIELDNAMES}
-			</td>
-		</tr>
-	</table>
-
-	<table border=0 cellspacing=0 cellpadding=5 width=100% class="searchUIAdv3 small" align="center">
-		<tr>
-			<td align="center" class="small"><input type="button" class="crmbutton small create" value=" {$APP.LBL_SEARCH_NOW_BUTTON} " onClick="callSearch('Advanced');document.basicSearch.searchtype.searchlaunched='advance';">
-			</td>
-		</tr>
-	</table>
-</form><br>
+<!-- Advanced search row -->
+<div id="advSearch">
+	<form name="advSearch" method="post" action="index.php" onSubmit="document.basicSearch.searchtype.searchlaunched='advance';return callSearch('Advanced');">
+		<input type="hidden" name="advft_criteria" id="advft_criteria" value="">
+		<input type="hidden" name="advft_criteria_groups" id="advft_criteria_groups" value="">
+		<div class="slds-grid slds-m-top--large cbds-advanced-search--inactive" id="cbds-advanced-search">
+			<div class="slds-col">
+				<div class="slds-expression slds-p-bottom_xx-large">
+					<div class="slds-grid">
+						<div class="slds-col slds-size_11-of-12">
+							<div class="slds-text-title_caps slds-align_absolute-center">{$APP.LBL_SEARCH}</div>
+						</div>
+						<div class="slds-col slds-size_1-of-12 slds-clearfix">
+							<button type="button" 
+									class="slds-button slds-button_icon slds-button_icon-border slds-float_right"
+									onClick="show('searchAcc');fnhide('advSearch');document.basicSearch.searchtype.value='basic';document.basicSearch.searchtype.searchlaunched='';document.getElementById('cbds-advanced-search').classList.remove('cbds-advanced-search--active')">
+								<svg class="slds-button__icon" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+								</svg>
+								<span class="slds-assistive-text">{$APP.LBL_DELETE_GROUP}</span>
+							</button>
+						</div>
+					</div>
+					{include file='AdvanceFilter.tpl' SOURCE='listview' MODULES_BLOCK=$FIELDNAMES_ARRAY}
+				</div>
+			</div>
+		</div>
+	</form>
 </div>
+<!-- // Advanced search row -->
 {include file='masstag.tpl'}
 {*<!-- Searching UI -->*}
 

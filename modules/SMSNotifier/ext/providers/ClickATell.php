@@ -177,7 +177,7 @@ class ClickATell implements ISMSProvider {
 				if (!empty($statusMessage)) {
 					$result['error'] = true;
 					$result['needlookup'] = $needlookup;
-					$result['statusmessage'] = $statusmessage;
+					$result['statusmessage'] = $statusMessage;
 				}
 			}
 		}

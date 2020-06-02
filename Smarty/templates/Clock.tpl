@@ -155,6 +155,7 @@
 <div id="theFace11" class="facestyle" style="color: rgb(0, 0, 0); top: 60px; left: 90.3731px;">2</div>
 </div>
 </div>
+</div>
 <script>
 	for (i=0; i < n; i++) {
 		cf[i]=document.getElementById('theFace'+i).style;

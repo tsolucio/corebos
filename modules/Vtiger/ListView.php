@@ -246,8 +246,10 @@ if ($sql_error) {
 	// Module Search
 		$alphabetical = AlphabeticalSearch($currentModule, 'index', $focus->def_basicsearch_col, 'true', 'basic', '', '', '', '', $viewid);
 		$fieldnames = $controller->getAdvancedSearchOptionString();
+		$fieldnames_array = $controller->getAdvancedSearchOptionArray();
 		$smarty->assign('ALPHABETICAL', $alphabetical);
 		$smarty->assign('FIELDNAMES', $fieldnames);
+		$smarty->assign('FIELDNAMES_ARRAY', $fieldnames_array);
 
 		$smarty->assign('AVALABLE_FIELDS', getMergeFields($currentModule, 'available_fields'));
 		$smarty->assign('FIELDS_TO_MERGE', getMergeFields($currentModule, 'fields_to_merge'));
