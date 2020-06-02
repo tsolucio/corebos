@@ -61,7 +61,86 @@
 			*
 			*/
 		init: function() {
-			Group.add(this);
+			if (this.hasPreExisting()) {
+				this.getPreExisting().forEach((group) => {
+					Group.add(this, group);
+				});
+			} else {
+				Group.add(this, undefined);
+			}
+		},
+
+		/*
+			* Method: 'hasPreExisting'
+			* Checks if there were pre-existing conditions
+			* (only applicable when used in filter or report context)
+			*/
+		hasPreExisting: function() {
+			const input = document.getElementById('cbds-advfilt_existing-conditions');
+			return input.value == 'null' || input.value == '[]' ? false : true;
+		},
+
+		/*
+			* Method: 'getPreExisting'
+			* Checks if there were pre-existing conditions
+			* (only applicable when used in filter or report context)
+			*/
+		getPreExisting: function() {
+			const input = document.getElementById('cbds-advfilt_existing-conditions'),
+				  existing = JSON.parse(input.value),
+				  groups = [];
+
+			for (group in existing) {
+				groups.push({
+					"groupNo": group,
+					"conds": this.getCondsFromExisting(existing[group].columns),
+					"glue": parseInt(group) > 1 ? existing[parseInt(group) - 1].condition : ''
+				});
+			}
+			return groups;
+		},
+
+		/*
+			* Method: 'getCondsFromExisting'
+			* Get conditions from the existing output of the database
+			* (only applicable when used in filter or report context)
+			*/
+		getCondsFromExisting: function(conds) {
+			const toReturn = [];
+			conds = this.enforceExistingConditionFormat(conds);
+
+			for (var i = 0; i < conds.length; i++) {
+				toReturn.push({
+					"glue": i > 0 ? conds[i - 1].column_condition : '',
+					"op": conds[i].comparator,
+					"value": conds[i].value,
+					"field": {
+						"typeofdata": Field.getType(conds[i].columnname),
+						"value": conds[i].columnname
+					}
+				})
+			}
+			return toReturn;
+		},
+
+		/*
+			* Method: 'enforceExistingConditionFormat'
+			* The existing conditions from the database don't
+			* come in a uniform format (sometimes array, sometimes
+			* a single object). We need to enforce a uniform format
+			*
+			* @param  : condition array or object
+			* @return : array of condition objects
+			*/
+		enforceExistingConditionFormat: function(conds) {
+			if (!Array.isArray(conds)) {
+				tmpConds = conds,
+				conds = [];
+				for (cond in tmpConds) {
+					conds.push(tmpConds[cond])
+				}
+			}
+			return conds;
 		},
 
 		/*
@@ -77,7 +156,7 @@
 					this.getByButton("groups", e.target).addCond();
 					break;
 				case "add-group":
-					Group.add(this);
+					Group.add(this, undefined);
 					break;
 				case "delete-group":
 					this.getByButton("groups", e.target).delete();
@@ -100,15 +179,27 @@
 			*/
 		submit: function() {
 			if (this.validate()) {
-				var criteria = this.getCriteria(),
-					groups   = this.getGroups();
-
-				this.searchForm.advft_criteria.value = JSON.stringify(criteria);
-				this.searchForm.advft_criteria_groups.value = JSON.stringify(groups);
-
+				this.updateHiddenFields();
 				document.basicSearch.searchtype.searchlaunched='advance';
 				callSearch('Advanced');
 			}
+		},
+
+		/*
+			* Method: 'updateHiddenFields'
+			*
+			* Updates the hidden input fields with the criteria and
+			* groups. Returns boolean to integrate in existing code
+			* structure.
+			*/
+		updateHiddenFields: function() {
+			var criteria = this.getCriteria(),
+			groups   = this.getGroups();
+
+			this.searchForm.advft_criteria.value = JSON.stringify(criteria);
+			this.searchForm.advft_criteria_groups.value = JSON.stringify(groups);
+
+			return true;
 		},
 
 		/*
@@ -120,18 +211,20 @@
 		getCriteria: function() {
 			var crits = [];
 			for (var i = 0; i < this.conds.length; i++) {
-				crits.push({
-					"groupid"         : this.conds[i].group.no.toString(),
-					"columnname"      : this.conds[i].fieldCombo.getVal(),
-					"comparator"      : this.conds[i].op.combo.getVal(),
-					"value"           : this.conds[i].getVals("string"),
-					"columncondition" : (
-							this.conds[i + 1] != undefined &&
-							this.conds[i + 1].glueCombo != undefined
-						) ? this.conds[i + 1].glueCombo.getVal() : ""
-				});
+				if (this.conds[i].isComplete()) {
+					crits.push({
+						"groupid"         : this.conds[i].group.no.toString(),
+						"columnname"      : this.conds[i].fieldCombo.getVal(),
+						"comparator"      : this.conds[i].op.combo.getVal(),
+						"value"           : this.conds[i].getVals("string"),
+						"columncondition" : (
+								this.conds[i + 1] != undefined &&
+								this.conds[i + 1].glueCombo != undefined
+							) ? this.conds[i + 1].glueCombo.getVal() : ""
+					});
+				}
 			}
-			return crits;
+			return crits.length == 0 ? '' : crits;
 		},
 
 		/*
@@ -143,9 +236,15 @@
 		getGroups: function() {
 			var groups = [null];
 			for (var i = 0; i < this.groups.length; i++) {
-				groups.push({"groupcondition": this.groups[i].glueCombo.getVal()});
+				if (this.groups[i].isComplete()) {
+					groups.push({"groupcondition": (
+							this.groups[i + 1] != undefined &&
+							this.groups[i + 1].glueCombo != undefined
+						) ? this.groups[i + 1].glueCombo.getVal() : ""
+					});
+				}
 			}
-			return groups;
+			return groups.length == 0 ? '' : groups;
 		},
 
 		/*
@@ -268,13 +367,14 @@
 	/* ==== Submodules ==== */
 
 	/* Group submodule */
-	function Group(node, advfilt) {
+	function Group(node, advfilt, existing) {
 		this.parent    = advfilt,
 		this.el        = node,
 		this.no        = null,
 		this.condWrap  = this.el.getElementsByClassName("cbds-advfilt-condwrapper")[0],
 		this.condCount = null,
-		this.glueCombo = null;
+		this.glueCombo = null
+		this.preExist  = existing;
 
 	}
 
@@ -285,16 +385,21 @@
 		* Adds a new group to the block
 		*
 		* @param : parent block object
+		* @param : Pre-existing group or undefined if there was no pre-existing
 		*/
-	Group.add = function(parent) {
+	Group.add = function(parent, existing) {
 		var grpTempl = document.getElementById("cbds-advfilt-template__group").children[0],
 			newGroup = grpTempl.cloneNode(true),
-			grp      = new Group(newGroup, parent);
+			grp      = new Group(newGroup, parent, existing);
 
 		grp.parent.groups.push(grp);
 		grp.insert();
 		grp.init();
-	};		
+
+		if (existing !== undefined && grp.glueCombo !== null) {
+			grp.glueCombo.setByVal(grp.preExist.glue)
+		}
+	};
 
 	Group.prototype = {
 		constructor: Group,
@@ -370,11 +475,20 @@
 			*
 			*/
 		init: function() {
-			if (!this.isFirst())
+			if (!this.isFirst()) {
 				this.setCap("controls", true);
 				this.glueCombo = new ldsCombobox(this.el.getElementsByClassName(this.glueClass)[0], {"onSelect" : false});
+			}
 			this.setNo(this.getNoFrom("screen"));
-			this.addCond();
+			
+			if (this.preExist !== undefined) {
+				this.preExist.conds.forEach((existingCond) => {
+					let newCond = this.addCond();
+					newCond.fillWithPreExist(existingCond);
+				})
+			} else {
+				this.addCond();
+			}
 		},
 
 		/*
@@ -431,6 +545,7 @@
 
 			this.insertCond(cond);
 			cond.init(); // Initialize the condition AFTER inserting it, otherwise it won't know if it's the first in the group
+			return cond;
 		},
 
 		/*
@@ -501,7 +616,22 @@
 				return this.no == cond.group.no
 			})
 			return conds;
-		}
+		},
+
+		/*
+			* method: isComplete
+			* Is this group completely filled out?
+			* Mainly used to prevent empty 'start' conditions
+			* to be saved when creating customviews / filters
+			* that don't use an advanced filter.
+			*
+			*/
+			isComplete: function() {
+				const conds = this.getConds().filter((cond) => {
+					return cond.isComplete()
+				});
+				return conds.length > 0;
+			}
 
 	};
 
@@ -612,7 +742,7 @@
 				case "obj":
 					var values = [];
 					for (var i = 0; i < this.parent.vals.length; i++) {
-						if(this.parent.vals[i].cond === this) {
+						if (this.parent.vals[i].cond === this) {
 							values.push(this.parent.vals[i]);
 						}
 					}
@@ -645,6 +775,31 @@
 				if (this.parent.vals[i].cond === this) {
 					this.parent.vals[i].setup(curType, curOp);
 				}
+			}
+		},
+
+		/*
+			* method: fillWithPreExist
+			* If there was a pre-existing condition (e.g. existing
+			* advanced filter in customview/filter or report), fill
+			* it with the existing data
+			*/
+		fillWithPreExist: function(existingCond) {
+			if (this.glueCombo !== null) {
+				this.glueCombo.setByVal(existingCond.glue)
+			}
+			this.fieldCombo.setByVal(existingCond.field.value)
+			this.op.combo.setByVal(existingCond.op)
+
+			if (this.op.needsTwoVals(existingCond.op)) {
+				const values = existingCond.value.split(','),
+					  condVals = this.getVals('obj');
+				condVals[0].input.value = values[0]
+				condVals[1].input.value = values[1]
+				condVals.forEach((val) => {val.validate()})
+			} else {
+				this.getVals('obj')[0].input.value = existingCond.value;
+				this.getVals('obj')[0].validate();
 			}
 		},
 
@@ -785,6 +940,21 @@
 			this.group.setCondCount(this.group.countConds("screen"));
 			this.parent.condCnt = this.parent.countConds("screen");
 		},
+
+		/*
+			* method: isComplete
+			* Is this condition completely filled out?
+			* Mainly used to prevent empty 'start' conditions
+			* to be saved when creating customviews / filters
+			* that don't use an advanced filter
+			*
+			*/
+		isComplete: function() {
+			return (
+				this.fieldCombo.getValueHolder().value != '' &&
+				this.op.combo.getValueHolder().value != ''
+			)
+		}
 
 	};
 

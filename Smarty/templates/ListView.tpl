@@ -92,7 +92,7 @@
 							</button>
 						</div>
 					</div>
-					{include file='AdvanceFilter.tpl' SOURCE='customview' COLUMNS_BLOCK=$FIELDNAMES_ARRAY}
+					{include file='AdvanceFilter.tpl' SOURCE='listview' MODULES_BLOCK=$FIELDNAMES_ARRAY}
 				</div>
 			</div>
 		</div>

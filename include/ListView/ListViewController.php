@@ -958,7 +958,7 @@ class ListViewController {
 			$OPTIONS[$key] = $value;
 			ksort($OPTIONS[$key], SORT_STRING);
 		}
-		return $OPTIONS;
+		return array($module => $OPTIONS);
 	}
 }
 ?>

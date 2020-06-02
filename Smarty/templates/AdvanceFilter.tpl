@@ -9,11 +9,13 @@
 -->
 <script type="text/javascript" src="include/js/advancefilter.js"></script>
 {* Get selected value to start out the dropdown with *}
-{foreach from=$COLUMNS_BLOCK item=BLOCK}
-	{foreach from=$BLOCK item=FIELD}
-		{if $FIELD.selected}
-			{$SELECTEDFIELD = $FIELD}
-		{/if}
+{foreach from=$MODULES_BLOCK item=COLUMNS_BLOCK}
+	{foreach from=$COLUMNS_BLOCK item=BLOCK}
+		{foreach from=$BLOCK item=FIELD}
+			{if $FIELD.selected}
+				{$SELECTEDFIELD = $FIELD}
+			{/if}
+		{/foreach}
 	{/foreach}
 {/foreach}
 <ul id="cbds-advfilt-groups"></ul>
@@ -24,11 +26,13 @@
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
 		</svg>{'LBL_NEW_GROUP'|@getTranslatedString:$MODULE}
 	</button>
+	{if $SOURCE != 'customview'}
 	<button type="button" class="slds-button slds-button_brand" data-onclick="submit-adv-cond-form">
 		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
 		</svg>{'LBL_SEARCH'|@getTranslatedString:$MODULE}
 	</button>
+	{/if}
 </div>
 
 <div id="cbds-advfilt-template__operation-box" style="display: none;">
@@ -188,24 +192,31 @@
 										</span>
 									</div>
 									<div class="slds-dropdown slds-dropdown_length-3 slds-dropdown_fluid" role="listbox">
-										{foreach from=$COLUMNS_BLOCK item='BLOCK' key='BLOCKLABEL'}
-										<ul class="slds-listbox slds-listbox_vertical" role="group">
-											<li role="presentation" class="slds-listbox__item">
+										{foreach from=$MODULES_BLOCK item='COLUMNS_BLOCK' key='MODLABEL'}
+											<ul class="slds-listbox slds-listbox_vertical" role="group">
+											<li role="presentation" class="slds-listbox__item cbds-bg-blue--dark">
 												<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="presentation">
-													<h3 class="slds-text-title_caps" role="presentation">{$BLOCKLABEL}</h3>
+													<h3 class="slds-text-title_caps slds-text-color_inverse" role="presentation">{$MODLABEL|@getTranslatedString:$MODULE}</h3>
 												</div>
 											</li>
-											{foreach from=$BLOCK item='FIELD' key='FIELDLABEL'}
-											<li role="presentation" class="slds-listbox__item" data-value="{$FIELD.value}">
-												<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
-													<span class="slds-media__figure slds-listbox__option-icon"></span>
-													<span class="slds-media__body">
-														<span class="slds-truncate" title="{$FIELD.label}">{$FIELD.label}</span>
-													</span>
-												</div>
-											</li>
+											{foreach from=$COLUMNS_BLOCK item='BLOCK' key='BLOCKLABEL'}
+												<li role="presentation" class="slds-listbox__item">
+													<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="presentation">
+														<h3 class="slds-text-title_caps" role="presentation">{$BLOCKLABEL}</h3>
+													</div>
+												</li>
+												{foreach from=$BLOCK item='FIELD' key='FIELDLABEL'}
+												<li role="presentation" class="slds-listbox__item" data-value="{$FIELD.value}">
+													<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+														<span class="slds-media__figure slds-listbox__option-icon"></span>
+														<span class="slds-media__body">
+															<span class="slds-truncate" title="{$FIELD.label}">{$FIELD.label}</span>
+														</span>
+													</div>
+												</li>
+												{/foreach}
 											{/foreach}
-										</ul> 
+											</ul>
 										{/foreach}
 									</div>
 								</div>
@@ -276,7 +287,7 @@
 		</fieldset>
 	</li>
 </div>
-
+<input type="hidden" id="cbds-advfilt_existing-conditions" value='{$CRITERIA_GROUPS|json_encode}' />
 <script>
 	window.addEventListener("load", function(){
 		var advancedFilter = document.getElementById("cbds-advanced-search");
