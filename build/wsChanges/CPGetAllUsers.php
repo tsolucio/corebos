@@ -14,10 +14,10 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'getAllUsers',
-	 'include' => 'include/Webservices/CustomerPortalWS.php',
-	 'handler' => 'vtws_getAllUsers',
-	 'prelogin'=> 0,
-	 'type'    => 'GET',
-	 'parameters' => array()
+	'name'    => 'getAllUsers',
+	'include' => 'include/Webservices/CustomerPortalWS.php',
+	'handler' => 'vtws_getAllUsers',
+	'prelogin'=> 0,
+	'type'    => 'GET',
+	'parameters' => array()
 );

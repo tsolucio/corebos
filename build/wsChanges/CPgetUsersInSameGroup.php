@@ -14,12 +14,12 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'getUsersInSameGroup',
-	 'include' => 'include/Webservices/CustomerPortalWS.php',
-	 'handler' => 'vtws_getUsersInTheSameGroup',
-	 'prelogin'=> 0,
-	 'type'    => 'POST',
-	 'parameters' => array(
-		 array('name' => 'id','type' => 'string')
-	 )
+	'name'    => 'getUsersInSameGroup',
+	'include' => 'include/Webservices/Utils.php',
+	'handler' => 'vtws_getUsersInTheSameGroup',
+	'prelogin'=> 0,
+	'type'    => 'POST',
+	'parameters' => array(
+		array('name' => 'id','type' => 'string')
+	)
 );
