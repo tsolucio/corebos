@@ -131,6 +131,10 @@ if ($numOfRows > 0) {
 		$COLUMNS_BLOCK .= getSecondaryColumns_AdvFilter_HTML($ogReport->secmodule, $ogReport);
 		$list_report_form->assign('COLUMNS_BLOCK', $COLUMNS_BLOCK);
 
+		$COLUMNS_BLOCK_ARRAY = getPrimaryColumns_AdvFilter_HTML($ogReport->primodule, $ogReport, '', true);
+		$SEC_COLUMNS_BLOCK_ARRAY = getSecondaryColumns_AdvFilter_HTML($ogReport->secmodule, $ogReport, '', true);
+		$list_report_form->assign('COLUMNS_BLOCK_ARRAY', array_merge($COLUMNS_BLOCK_ARRAY, $SEC_COLUMNS_BLOCK_ARRAY));
+
 		$FILTER_OPTION = Reports::getAdvCriteriaHTML();
 		$list_report_form->assign('FOPTION', $FILTER_OPTION);
 
@@ -286,16 +290,26 @@ function getSecondaryStdFilterHTML($module, $selected = '') {
 	return $shtml;
 }
 
-function getPrimaryColumns_AdvFilter_HTML($module, $ogReport, $selected = '') {
+function getPrimaryColumns_AdvFilter_HTML($module, $ogReport, $selected = '', $array = false) {
 	global $current_language;
 	$mod_strings = return_module_language($current_language, $module);
 	$block_listed = array();
 	$shtml = '';
+	$return_array = array();
 	foreach ($ogReport->module_list[$module] as $value) {
 		if (isset($ogReport->pri_module_columnslist[$module][$value]) && empty($block_listed[$value])) {
 			$block_listed[$value] = true;
+			$fields_array = array();
 			$shtml .= '<optgroup label="'.getTranslatedString($module, $module).' '.getTranslatedString($value).'" class="select" style="border:none">';
 			foreach ($ogReport->pri_module_columnslist[$module][$value] as $field => $fieldlabel) {
+				list($table, $column, $mod_fldlbl, $fldname, $tod) = explode(':', $field);
+				$field_array = array(
+					'label' => isset($mod_strings[$fieldlabel]) ? $mod_strings[$fieldlabel] : $fieldlabel,
+					'value' => $field,
+					'selected' => $selected == $field ? '1' : '',
+					'typeofdata' => $tod
+				);
+				$fields_array[$fldname] = $field_array;
 				if (isset($mod_strings[$fieldlabel])) {
 					//fix for ticket 5191
 					$selected = decode_html($selected);
@@ -314,14 +328,19 @@ function getPrimaryColumns_AdvFilter_HTML($module, $ogReport, $selected = '') {
 					}
 				}
 			}
+			if (count($fields_array) > 0) {
+				$blockname = getTranslatedString($value);
+				$return_array[$module][$blockname] = $fields_array;
+			}
 		}
 	}
-	return $shtml;
+	return $array == true ? $return_array : $shtml;
 }
 
-function getSecondaryColumns_AdvFilter_HTML($module, $ogReport, $selected = "") {
+function getSecondaryColumns_AdvFilter_HTML($module, $ogReport, $selected = "", $array = false) {
 	global $current_language;
 	$shtml = '';
+	$return_array = array();
 	if ($module != '') {
 		$secmodule = explode(":", $module);
 		for ($i=0; $i < count($secmodule); $i++) {
@@ -331,8 +350,17 @@ function getSecondaryColumns_AdvFilter_HTML($module, $ogReport, $selected = "") 
 				foreach ($ogReport->module_list[$secmodule[$i]] as $value) {
 					if (isset($ogReport->sec_module_columnslist[$secmodule[$i]][$value]) && empty($block_listed[$value])) {
 						$block_listed[$value] = true;
+						$fields_array = array();
 						$shtml .= '<optgroup label="'.getTranslatedString($secmodule[$i], $secmodule[$i]).' '.getTranslatedString($value).'" class="select" style="border:none">';
 						foreach ($ogReport->sec_module_columnslist[$secmodule[$i]][$value] as $field => $fieldlabel) {
+							list($table, $column, $mod_fldlbl, $fldname, $tod) = explode(':', $field);
+							$field_array = array(
+								'label' => isset($mod_strings[$fieldlabel]) ? $mod_strings[$fieldlabel] : $fieldlabel,
+								'value' => $field,
+								'selected' => $selected == $field ? '1' : '',
+								'typeofdata' => $tod
+							);
+							$fields_array[$fldname] = $field_array;
 							if (isset($mod_strings[$fieldlabel])) {
 								if ($selected == $field) {
 									$shtml .= "<option selected value=\"".$field."\">".$mod_strings[$fieldlabel]."</option>";
@@ -348,11 +376,15 @@ function getSecondaryColumns_AdvFilter_HTML($module, $ogReport, $selected = "") 
 							}
 						}
 					}
+					if (count($fields_array) > 0) {
+						$blockname = getTranslatedString($value);
+						$return_array[$secmodule[$i]][$blockname] = $fields_array;
+					}
 				}
 			}
 		}
 	}
-	return $shtml;
+	return $array == true ? $return_array : $shtml;
 }
 
 function getAdvCriteria_HTML($adv_filter_options, $selected = "") {

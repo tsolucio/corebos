@@ -211,6 +211,7 @@ wizard.steps({
 			if (!validateDate()) {
 				return can_pass;
 			}
+			AdvancedFilter.updateHiddenFields();
 
 			jQuery.ajax({
 				method: 'POST',
