@@ -981,7 +981,7 @@ function fillFilterInfo(response) {
 	fillList(response.BLOCKCRITERIA, 'stdDateFilter');
 	if (Object.prototype.hasOwnProperty.call(response, 'CRITERIA_GROUPS') && !updated_grouping_criteria ) {
 		cbAdvancedFilter.fillFieldTemplate(response.COLUMNS_BLOCK);
-		cbAdvancedFilter.comparisonFields = JSON.parse(response.REL_FIELDS);
+		cbAdvancedFilter.comparisonFields = flattenComparisonFields(response.REL_FIELDS);
 		document.getElementById('cbds-advfilt_existing-conditions').value = JSON.stringify(response.CRITERIA_GROUPS);
 		var advancedFilter = document.getElementById("cbds-advanced-search");
 		window.AdvancedFilter = new cbAdvancedFilter(advancedFilter);
@@ -994,6 +994,18 @@ function fillFilterInfo(response) {
 		$('#jscal_trigger_date_end').css('visibility', 'visible');
 	}
 	return true;
+}
+
+function flattenComparisonFields(fields) {
+	var retFields = [],
+		fields = JSON.parse(fields);
+	for (tod in fields) {
+		fields[tod].forEach((field) => {
+			let fieldComponents = field.split('::');
+			retFields.push({'value': fieldComponents[0], 'label': fieldComponents[1]});
+		})
+	}
+	return retFields;
 }
 
 /**

@@ -421,8 +421,9 @@
 			<div class="slds-combobox_container" id="cbds-advfilt__fieldcomp-combo">
 				<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click cbds-advfilt-cond__field" aria-expanded="false" aria-haspopup="listbox" role="combobox">
 					<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
-						<input class="slds-input slds-combobox__input slds-combobox__input-value" autocomplete="off" role="textbox" type="text" placeholder="" readonly="" value="" data-valueholder="nextsibling" />
-						<input type="hidden" value="" />
+						<input class="slds-input slds-combobox__input slds-combobox__input-value" autocomplete="off" role="textbox" type="text"
+						placeholder="" readonly="" value="${cbAdvancedFilter.comparisonFields[0].label}" data-valueholder="nextsibling" />
+						<input type="hidden" value="${cbAdvancedFilter.comparisonFields[0].value}" />
 						<span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
 							<svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
@@ -431,20 +432,17 @@
 					</div>
 					<div class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid" role="listbox">
 						<ul class="slds-listbox slds-listbox_vertical" role="group">`;
-			for (tod in cbAdvancedFilter.comparisonFields) {
-				cbAdvancedFilter.comparisonFields[tod].forEach((field) => {
-					let fieldComponents = field.split('::');
+				cbAdvancedFilter.comparisonFields.forEach((field) => {
 					content += `
-							<li role="presentation" class="slds-listbox__item" data-value="${fieldComponents[0]}">
+							<li role="presentation" class="slds-listbox__item" data-value="${field.value}">
 								<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
 									<span class="slds-media__figure slds-listbox__option-icon"></span>
 									<span class="slds-media__body">
-										<span class="slds-truncate" title="${fieldComponents[1]}">${fieldComponents[1]}</span>
+										<span class="slds-truncate" title="${field.label}">${field.label}</span>
 									</span>
 								</div>
 							</li>`;
 				})
-			}
 			content += `
 						</ul>
 					</div>
