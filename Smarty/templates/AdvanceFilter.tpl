@@ -18,7 +18,7 @@
 		{/foreach}
 	{/foreach}
 {/foreach}
-<ul id="cbds-advfilt-groups"></ul>
+<ul id="cbds-advfilt-groups" style="list-style: none !important;"></ul>
 
 <div class="slds-expression__buttons">
 	<button type="button" class="slds-button slds-button_neutral" data-onclick="add-group">
@@ -26,7 +26,7 @@
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
 		</svg>{'LBL_NEW_GROUP'|@getTranslatedString:$MODULE}
 	</button>
-	{if $SOURCE != 'customview'}
+{if $SOURCE == 'listview'}
 	<button type="button" class="slds-button slds-button_brand" data-onclick="submit-adv-cond-form">
 		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
@@ -69,7 +69,7 @@
 </div>
 
 <div id="cbds-advfilt-template__group" style="display: none;">
-	<li class="slds-expression__group" data-group-no="" data-condcount="">
+	<li class="slds-expression__group" data-group-no="" data-condcount="" style="display: block !important;">
 		<div class="slds-grid slds-gutters_xx-small cbds-advfilt-group__controls slds-hide">
 			<div class="slds-col slds-grid slds-grid_align-end">
 				<div class="col">
@@ -85,8 +85,8 @@
 								</span>
 							</div>
 							<div class="slds-dropdown slds-dropdown_length-2 slds-dropdown_fluid" role="listbox" style="min-width: 0">
-								<ul class="slds-listbox slds-listbox_vertical" role="group">
-									<li role="presentation" class="slds-listbox__item" data-value="{$APP.LBL_CRITERIA_AND}">
+								<ul class="slds-listbox slds-listbox_vertical" role="group" style="list-style: none !important;">
+									<li role="presentation" class="slds-listbox__item" data-value="{$APP.LBL_CRITERIA_AND}" style="display: block !important;">
 										<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
 											<span class="slds-media__figure slds-listbox__option-icon"></span>
 											<span class="slds-media__body">
@@ -94,7 +94,7 @@
 											</span>
 										</div>
 									</li>
-									<li role="presentation" class="slds-listbox__item" data-value="{$APP.LBL_CRITERIA_OR}">
+									<li role="presentation" class="slds-listbox__item" data-value="{$APP.LBL_CRITERIA_OR}" style="display: block !important;">
 										<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
 											<span class="slds-media__figure slds-listbox__option-icon"></span>
 											<span class="slds-media__body">
@@ -118,7 +118,7 @@
 			</div>
 		</div>
 		<fieldset>
-			<ul class="cbds-advfilt-condwrapper">
+			<ul class="cbds-advfilt-condwrapper" style="list-style: none !important;">
 			</ul>
 			<div class="slds-expression__buttons">
 				<button type="button" class="slds-button slds-button_neutral" data-onclick="add-condition">
@@ -133,7 +133,7 @@
 </div>
 
 <div id="cbds-advfilt-template__condition" style="display: none;">
-	<li class="slds-expression__row slds-expression__row_group slds-p-horizontal_none" data-cond-no="">
+	<li class="slds-expression__row slds-expression__row_group slds-p-horizontal_none" data-cond-no="" style="display: block !important;">
 		<fieldset>
 			<div class="slds-grid slds-gutters_xx-small">
 				<div class="slds-col slds-size_1-of-12">
@@ -152,18 +152,16 @@
 										</span>
 									</div>
 									<div class="slds-dropdown slds-dropdown_length-2 slds-dropdown_fluid" role="listbox" style="min-width: 0">
-										<ul class="slds-listbox slds-listbox_vertical" role="group">
-											<li role="presentation" class="slds-listbox__item" data-value="{$APP.LBL_CRITERIA_AND}">
+										<ul class="slds-listbox slds-listbox_vertical" role="group" style="list-style: none !important;">
+											<li role="presentation" class="slds-listbox__item" data-value="{$APP.LBL_CRITERIA_AND}" style="display: block !important;">
 												<div id="option1" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
-													<span class="slds-media__figure slds-listbox__option-icon"></span>
 													<span class="slds-media__body">
 														<span class="slds-truncate" title="{$APP.LBL_CRITERIA_AND}">{$APP.LBL_CRITERIA_AND}</span>
 													</span>
 												</div>
 											</li>
-											<li role="presentation" class="slds-listbox__item" data-value="{$APP.LBL_CRITERIA_OR}">
+											<li role="presentation" class="slds-listbox__item" data-value="{$APP.LBL_CRITERIA_OR}" style="display: block !important;">
 												<div id="option1" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
-													<span class="slds-media__figure slds-listbox__option-icon"></span>
 													<span class="slds-media__body">
 														<span class="slds-truncate" title="{$APP.LBL_CRITERIA_OR}">{$APP.LBL_CRITERIA_OR}</span>
 													</span>
@@ -192,32 +190,38 @@
 										</span>
 									</div>
 									<div class="slds-dropdown slds-dropdown_length-3 slds-dropdown_fluid" role="listbox">
-										{foreach from=$MODULES_BLOCK item='COLUMNS_BLOCK' key='MODLABEL'}
-											<ul class="slds-listbox slds-listbox_vertical" role="group">
-											<li role="presentation" class="slds-listbox__item cbds-bg-blue--dark">
-												<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="presentation">
-													<h3 class="slds-text-title_caps slds-text-color_inverse" role="presentation">{$MODLABEL|@getTranslatedString:$MODULE}</h3>
-												</div>
-											</li>
-											{foreach from=$COLUMNS_BLOCK item='BLOCK' key='BLOCKLABEL'}
-												<li role="presentation" class="slds-listbox__item">
+										{if $SOURCE != 'reports-modal'}
+											{foreach from=$MODULES_BLOCK item='COLUMNS_BLOCK' key='MODLABEL'}
+												<ul class="slds-listbox slds-listbox_vertical" role="group">
+												<li role="presentation" class="slds-listbox__item cbds-bg-blue--dark">
 													<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="presentation">
-														<h3 class="slds-text-title_caps" role="presentation">{$BLOCKLABEL}</h3>
+														<h3 class="slds-text-title_caps slds-text-color_inverse" role="presentation">{$MODLABEL|@getTranslatedString:$MODULE}</h3>
 													</div>
 												</li>
-												{foreach from=$BLOCK item='FIELD' key='FIELDLABEL'}
-												<li role="presentation" class="slds-listbox__item" data-value="{$FIELD.value}">
-													<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
-														<span class="slds-media__figure slds-listbox__option-icon"></span>
-														<span class="slds-media__body">
-															<span class="slds-truncate" title="{$FIELD.label}">{$FIELD.label}</span>
-														</span>
-													</div>
-												</li>
+												{foreach from=$COLUMNS_BLOCK item='BLOCK' key='BLOCKLABEL'}
+													<li role="presentation" class="slds-listbox__item">
+														<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="presentation">
+															<h3 class="slds-text-title_caps" role="presentation">{$BLOCKLABEL}</h3>
+														</div>
+													</li>
+													{foreach from=$BLOCK item='FIELD' key='FIELDLABEL'}
+													<li role="presentation" class="slds-listbox__item" data-value="{$FIELD.value}">
+														<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+															<span class="slds-media__figure slds-listbox__option-icon"></span>
+															<span class="slds-media__body">
+																<span class="slds-truncate" title="{$FIELD.label}">{$FIELD.label}</span>
+															</span>
+														</div>
+													</li>
+													{/foreach}
 												{/foreach}
+												</ul>
 											{/foreach}
+										{else}
+										{* Reports fills the dropdowns through javascript and don't provide a Smarty array *}
+											<ul class="slds-listbox slds-listbox_vertical cbds-advfilt__fieldcombo-list" role="group">
 											</ul>
-										{/foreach}
+										{/if}
 									</div>
 								</div>
 							</div>
@@ -239,14 +243,26 @@
 								<input class="slds-input cbds-advfilt-cond__value--input cbds-advfilt-cond__value--validate" type="text" value="">
 							</div>
 							<div class="slds-col">
-								<button type="button" disabled="disabled" class="cbds-advfilt-cond__value--datebutt slds-button slds-button_icon slds-button_icon-border-filled" title="{$APP.LBL_ACTION_DATE}" data-onclick="pick-date">
-									<svg class="slds-button__icon" aria-hidden="true">
-										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#event"></use>
-									</svg>
-									<span class="slds-assistive-text">
-									   {$APP.LBL_ACTION_DATE} 
-									</span>
-								</button>
+								<div class="slds-button-group">
+									{if $SOURCE == 'reports-modal'}
+									<button type="button" class="cbds-advfilt-cond__value--compfield slds-button slds-button_icon slds-button_icon-border-filled" title="{$APP.LBL_FIELD_FOR_COMPARISION}" data-onclick="pick-comparison-field">
+										<svg class="slds-button__icon" aria-hidden="true">
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#replace"></use>
+										</svg>
+										<span class="slds-assistive-text">
+											{$APP.LBL_FIELD_FOR_COMPARISION}
+										</span>
+									</button>
+									{/if}
+									<button type="button" disabled="disabled" class="cbds-advfilt-cond__value--datebutt slds-button slds-button_icon slds-button_icon-border-filled" title="{$APP.LBL_ACTION_DATE}" data-onclick="pick-date">
+										<svg class="slds-button__icon" aria-hidden="true">
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#event"></use>
+										</svg>
+										<span class="slds-assistive-text">
+											{$APP.LBL_ACTION_DATE}
+										</span>
+									</button>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -287,10 +303,15 @@
 		</fieldset>
 	</li>
 </div>
+<input type="hidden" id="cbds-advfilt__context" value="{$SOURCE}" />
+{if $SOURCE == 'customview' || $SOURCE == 'reports' || $SOURCE == 'reports-modal'}
 <input type="hidden" id="cbds-advfilt_existing-conditions" value='{$CRITERIA_GROUPS|json_encode}' />
+{/if}
+{if $SOURCE != 'reports-modal'}
 <script>
 	window.addEventListener("load", function(){
 		var advancedFilter = document.getElementById("cbds-advanced-search");
 		window.AdvancedFilter = new cbAdvancedFilter(advancedFilter);
 	});
 </script>
+{/if}

@@ -115,6 +115,15 @@ function showSelect() {
 	}
 }
 
+function showHideDivs(showdiv, hidediv) {
+	if (document.getElementById(showdiv)) {
+		document.getElementById(showdiv).style.display = 'block';
+	}
+	if (document.getElementById(hidediv)) {
+		document.getElementById(hidediv).style.display = 'none';
+	}
+}
+
 function getObj(n, d) {
 	var p, i, x;
 

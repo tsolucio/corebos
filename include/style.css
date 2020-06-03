@@ -336,3 +336,24 @@
     transform: translate3d(100%, 0, 0);
   }
 }
+
+/* =========================================================== */
+/* ===================== SOME OVERRIDES ====================== */
+/* =========================================================== */
+
+#report-steps > .steps {
+  width: 20%;
+}
+#report-steps > .content {
+  box-sizing: border-box;
+  width: 80%;
+  margin: 0;
+  padding: 1.5%;
+}
+#report-steps > .content > .body {
+  width: 100%;
+  padding: 2% 0.5rem;
+}
+#cbds-advfilt-groups > .slds-expression__group {
+  padding: 0.75rem !important;
+}

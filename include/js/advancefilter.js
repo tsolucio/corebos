@@ -37,7 +37,8 @@
 		this.conds      = [],
 		this.vals       = [],
 		this.grpCont    = document.getElementById("cbds-advfilt-groups"),
-		this.searchForm = _findUp(el, "$FORM");
+		this.searchForm = _findUp(el, "$FORM")
+		this.context    = document.getElementById('cbds-advfilt__context').value;
 
 		/* Startup */
 		this.init();
@@ -47,6 +48,47 @@
 		/* Global listeners */
 		_on(window, "click", this.handleClicks, this); // Please don't bind clicks to elements
 		_on(window, "keyup", this.handleKeyUp, this); // Please don't bind keyup to elements
+	}
+
+	/*
+	* STATIC method: fillFieldTemplate
+	* Reports does not provide an array of possible fields
+	* to Smarty but expects the list to be populated by JS
+	* when needed. We need to provide a method to do this
+	* before initializing the advancedfilter block
+	*
+	*/
+	cbAdvancedFilter.fillFieldTemplate = function(blocks) {
+		const ul = document.getElementById('cbds-advfilt-template__condition')
+			.getElementsByClassName('cbds-advfilt__fieldcombo-list')[0];
+		var html = '';
+
+		blocks.forEach((block) => {
+			// Block label
+			html += `
+			<li role="presentation" class="slds-listbox__item">
+				<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="presentation">
+					<h3 class="slds-text-title_caps" role="presentation">${block.label}</h3>
+				</div>
+			</li>
+			`
+			// Fields
+			if (block.options !== undefined) {
+				block.options.forEach((field) => {
+					html += `
+					<li role="presentation" class="slds-listbox__item" data-value="${field.value}">
+						<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+							<span class="slds-media__figure slds-listbox__option-icon"></span>
+							<span class="slds-media__body">
+								<span class="slds-truncate" title="${field.label}">${field.label}</span>
+							</span>
+						</div>
+					</li>
+					`
+				})
+			}
+		})
+		ul.innerHTML = html;
 	}
 
 	cbAdvancedFilter.prototype = {
@@ -76,8 +118,12 @@
 			* (only applicable when used in filter or report context)
 			*/
 		hasPreExisting: function() {
-			const input = document.getElementById('cbds-advfilt_existing-conditions');
-			return input.value == 'null' || input.value == '[]' ? false : true;
+			if (this.context != 'listview') {
+				const input = document.getElementById('cbds-advfilt_existing-conditions');
+				return input.value == 'null' || input.value == '[]' || input.value == '' ? false : true;
+			} else {
+				return false;
+			}
 		},
 
 		/*
@@ -167,6 +213,9 @@
 				case "submit-adv-cond-form":
 					this.submit();
 					break;
+				case "pick-comparison-field":
+					this.openComparisonModal(e.target);
+					break;
 				default:
 					return false;
 			}
@@ -194,7 +243,7 @@
 			*/
 		updateHiddenFields: function() {
 			var criteria = this.getCriteria(),
-			groups   = this.getGroups();
+			groups = this.getGroups();
 
 			this.searchForm.advft_criteria.value = JSON.stringify(criteria);
 			this.searchForm.advft_criteria_groups.value = JSON.stringify(groups);
@@ -362,6 +411,58 @@
 			return parseInt(count);
 		},
 
+		/*
+			* method: openComparisonModal
+			* In reports we can open a special modal that lets you select
+			* fields to compare with. This function provides that
+			*/
+		openComparisonModal: function(button) {
+			var content = `
+			<div class="slds-combobox_container" id="cbds-advfilt__fieldcomp-combo">
+				<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click cbds-advfilt-cond__field" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+					<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+						<input class="slds-input slds-combobox__input slds-combobox__input-value" autocomplete="off" role="textbox" type="text" placeholder="" readonly="" value="" data-valueholder="nextsibling" />
+						<input type="hidden" value="" />
+						<span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
+							<svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+							</svg>
+						</span>
+					</div>
+					<div class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid" role="listbox">
+						<ul class="slds-listbox slds-listbox_vertical" role="group">`;
+			for (tod in cbAdvancedFilter.comparisonFields) {
+				cbAdvancedFilter.comparisonFields[tod].forEach((field) => {
+					let fieldComponents = field.split('::');
+					content += `
+							<li role="presentation" class="slds-listbox__item" data-value="${fieldComponents[0]}">
+								<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+									<span class="slds-media__figure slds-listbox__option-icon"></span>
+									<span class="slds-media__body">
+										<span class="slds-truncate" title="${fieldComponents[1]}">${fieldComponents[1]}</span>
+									</span>
+								</div>
+							</li>`;
+				})
+			}
+			content += `
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div style="height: 13rem;"></div>`;
+
+			ldsModal.show('Select field', content);
+			let box = new ldsCombobox(document.getElementById('cbds-advfilt__fieldcomp-combo'),
+				{
+					"onSelect" : function(selectedVal) {
+						let row = _findUp(button, '.slds-expression__row'),
+							valInput = row.getElementsByClassName('cbds-advfilt-cond__value--input')[0];
+						valInput.value = valInput.value == '' ? selectedVal : valInput.value + ',' + selectedVal;
+						ldsModal.close();
+					}
+				});
+		}
 	}
 
 	/* ==== Submodules ==== */
