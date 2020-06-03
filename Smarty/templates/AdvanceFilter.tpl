@@ -262,6 +262,16 @@
 											{$APP.LBL_ACTION_DATE}
 										</span>
 									</button>
+									{if $SOURCE != 'listview'}
+									<button type="button" class="cbds-advfilt-cond__value--clearbutt slds-button slds-button_icon slds-button_icon-border-filled" title="{$APP.LBL_CLEAR}" data-onclick="clear-cond">
+										<svg class="slds-button__icon" aria-hidden="true">
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#spinner"></use>
+										</svg>
+										<span class="slds-assistive-text">
+											{$APP.LBL_CLEAR}
+										</span>
+									</button>
+									{/if}
 								</div>
 							</div>
 						</div>
