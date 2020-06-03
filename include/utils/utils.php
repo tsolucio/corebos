@@ -1988,8 +1988,8 @@ function generateQuestionMarks($items_list) {
 function is_uitype($uitype, $reqtype) {
 	$ui_type_arr = array(
 		'_date_' => array(5, 6, 23, 70),
-		'_picklist_' => array(15, 16, 52, 53, 54, 55, 62, 63, 77, 98, 101, 115, 357),
-		'_users_list_' => array(52),
+		'_picklist_' => array(15, 16, 55, 63, 115, 357),
+		'_users_list_' => array(52, 53, 77, 98, 101,),
 	);
 
 	if ($ui_type_arr[$reqtype] != null) {
