@@ -379,12 +379,10 @@ function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 				$listquery .= ' and ('.$cond.')';
 			}
 		}
-		$count_result = $adb->query($listquery);
-		$noofrows = $adb->num_rows($count_result);
+		$list_result = $adb->query($listquery);
+		$noofrows = $adb->num_rows($list_result);
 		$moduleRecordCount[$module]['count'] = $noofrows;
 		$navigation_array = VT_getSimpleNavigationValues(1, 100, $noofrows);
-		$list_result = $adb->query($listquery);
-		$focus = CRMEntity::getInstance($module);
 		$listview_entries = getSearchingListViewEntries($focus, $module, $list_result, $navigation_array, '', '', '', '', $oCustomView, '', '', '', true);
 		$total_record_count = $total_record_count + $noofrows;
 		if (!empty($listview_entries)) {
@@ -570,13 +568,13 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 				}
 				if ($userprivs->hasGlobalReadPermission() || in_array($fieldname, $field) || $fieldname == '') {
 					if ($fieldname == '') {
-						$table_name = '';
+						//$table_name = '';
 						$column_name = '';
 						foreach ($tableinfo as $tablename => $colname) {
-							$table_name = $tablename;
+							//$table_name = $tablename;
 							$column_name = $colname;
 						}
-						$value = $adb->query_result($list_result, $i - 1, $colname);
+						$value = $adb->query_result($list_result, $i - 1, $column_name);
 					} else {
 						if ($module == 'Calendar') {
 							$act_id = $adb->query_result($list_result, $i-1, 'activityid');
