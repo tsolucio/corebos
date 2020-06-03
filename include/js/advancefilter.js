@@ -1274,7 +1274,7 @@
 		setDTPick : function(name, state) {
 			var needsTime  = name == "datetime" ? true : false,
 				dateFormat = this.getDateFormat(needsTime),
-				me         = this;
+				timeFormat = window.userHourFormat != '24' ? window.userHourFormat.substring(0, 2) : '24';
 
 			Calendar.setup ({
 				inputField : this.input,
@@ -1283,6 +1283,7 @@
 				button : this.dateButt,
 				singleClick : true,
 				step : 1,
+				timeFormat: timeFormat
 			});
 
 			_sldsEnable(this.dateButt, state);
