@@ -172,7 +172,8 @@
 .cbds-advanced-search--active {
 	opacity: 1;
 	height: auto;
-	transition: opacity 100ms linear 50ms, height 0ms linear 0ms;
+  transition: opacity 100ms linear 50ms, height 0ms linear 0ms;
+  overflow: visible;
 }
 
 /* ---- CBDS expansion on LDS components ---- */
@@ -356,4 +357,7 @@
 }
 #cbds-advfilt-groups > .slds-expression__group {
   padding: 0.75rem !important;
+}
+#mnuTab2.cv-advfilt-tab {
+  overflow: visible;
 }
