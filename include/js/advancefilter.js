@@ -437,9 +437,15 @@
 						<ul class="slds-listbox slds-listbox_vertical" role="group">`;
 				cbAdvancedFilter.comparisonFields.forEach((field) => {
 					content += `
-							<li role="presentation" class="slds-listbox__item" data-value="${field.value}">
+							<li role="presentation" class="slds-listbox__item" data-value="${field.value}" data-selected="false">
 								<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
-									<span class="slds-media__figure slds-listbox__option-icon"></span>
+									<span class="slds-media__figure slds-listbox__option-icon">
+										<span class="slds-icon_container slds-icon-utility-check slds-current-color slds-hide">
+											<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+												<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
+											</svg>
+										</span>
+									</span>
 									<span class="slds-media__body">
 										<span class="slds-truncate" title="${field.label}">${field.label}</span>
 									</span>
@@ -453,16 +459,29 @@
 			</div>
 			<div style="height: 13rem;"></div>`;
 
-			ldsModal.show('Select field', content);
-			let box = new ldsCombobox(document.getElementById('cbds-advfilt__fieldcomp-combo'),
+			ldsModal.show('Select field', content, 'medium', 'AdvancedFilter.onComparisonModalClose()');
+			this.comparisonModalCombo = new ldsCombobox(document.getElementById('cbds-advfilt__fieldcomp-combo'),
 				{
-					"onSelect" : function(selectedVal) {
-						let row = _findUp(button, '.slds-expression__row'),
-							valInput = row.getElementsByClassName('cbds-advfilt-cond__value--input')[0];
-						valInput.value = valInput.value == '' ? selectedVal : valInput.value + ',' + selectedVal;
-						ldsModal.close();
-					}
+					"isMulti": true
 				});
+			
+			this.currentComparisonInput =  function() {
+				let valueCol = _findUp(button, '.' + this.vals[0].class);
+				return valueCol.getElementsByClassName(this.vals[0].inputClass)[0]
+			}
+		},
+
+		/*
+			* method: onComparisonModalClose
+			* Callback provided to the field comparison modal
+			* (only in reports modal). When the modal closes, the
+			* selected values in the combo should be written to
+			* the value field, comma separated
+			*/
+		onComparisonModalClose: function() {
+			let stringValues = AdvancedFilter.comparisonModalCombo._val.toString();
+			this.currentComparisonInput().value = stringValues;
+			ldsModal.close();
 		}
 	}
 
@@ -1218,6 +1237,7 @@
 
 		inputClass : "cbds-advfilt-cond__value--input",
 		dateButtClass : "cbds-advfilt-cond__value--datebutt",
+		class: 'cbds-advfilt-cond__value',
 
 		/*
 			* method : setup
