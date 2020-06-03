@@ -77,7 +77,7 @@
 						<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click cbds-advfilt-group__gluecombo" aria-expanded="false" aria-haspopup="listbox" role="combobox">
 							<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
 								<input class="slds-input slds-combobox__input slds-combobox__input-value adv-filt-group__glue" autocomplete="off" role="textbox" type="text" readonly="" value="{$APP.LBL_CRITERIA_AND}" data-valueholder="nextsibling" />
-								<input type="hidden" value="{$APP.LBL_CRITERIA_AND}" />
+								<input type="hidden" value="and" />
 								<span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
 									<svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
 										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
@@ -86,7 +86,7 @@
 							</div>
 							<div class="slds-dropdown slds-dropdown_length-2 slds-dropdown_fluid" role="listbox" style="min-width: 0">
 								<ul class="slds-listbox slds-listbox_vertical" role="group" style="list-style: none !important;">
-									<li role="presentation" class="slds-listbox__item" data-value="{$APP.LBL_CRITERIA_AND}" style="display: block !important;">
+									<li role="presentation" class="slds-listbox__item" data-value="and" style="display: block !important;">
 										<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
 											<span class="slds-media__figure slds-listbox__option-icon"></span>
 											<span class="slds-media__body">
@@ -94,7 +94,7 @@
 											</span>
 										</div>
 									</li>
-									<li role="presentation" class="slds-listbox__item" data-value="{$APP.LBL_CRITERIA_OR}" style="display: block !important;">
+									<li role="presentation" class="slds-listbox__item" data-value="or" style="display: block !important;">
 										<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
 											<span class="slds-media__figure slds-listbox__option-icon"></span>
 											<span class="slds-media__body">
@@ -144,7 +144,7 @@
 								<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click cbds-advfilt-cond__glue" aria-expanded="false" aria-haspopup="listbox" role="combobox">
 									<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
 										<input class="slds-input slds-combobox__input slds-combobox__input-value cbds-advfilt-cond__glue--input" autocomplete="off" role="textbox" type="text" readonly="" disabled="" value="{$APP.LBL_CRITERIA_AND}" data-valueholder="nextsibling" />
-										<input type="hidden" value="{$APP.LBL_CRITERIA_AND}" />
+										<input type="hidden" value="and" />
 										<span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
 											<svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
 												<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
@@ -153,14 +153,14 @@
 									</div>
 									<div class="slds-dropdown slds-dropdown_length-2 slds-dropdown_fluid" role="listbox" style="min-width: 0">
 										<ul class="slds-listbox slds-listbox_vertical" role="group" style="list-style: none !important;">
-											<li role="presentation" class="slds-listbox__item" data-value="{$APP.LBL_CRITERIA_AND}" style="display: block !important;">
+											<li role="presentation" class="slds-listbox__item" data-value="and" style="display: block !important;">
 												<div id="option1" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
 													<span class="slds-media__body">
 														<span class="slds-truncate" title="{$APP.LBL_CRITERIA_AND}">{$APP.LBL_CRITERIA_AND}</span>
 													</span>
 												</div>
 											</li>
-											<li role="presentation" class="slds-listbox__item" data-value="{$APP.LBL_CRITERIA_OR}" style="display: block !important;">
+											<li role="presentation" class="slds-listbox__item" data-value="or" style="display: block !important;">
 												<div id="option1" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
 													<span class="slds-media__body">
 														<span class="slds-truncate" title="{$APP.LBL_CRITERIA_OR}">{$APP.LBL_CRITERIA_OR}</span>
