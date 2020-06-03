@@ -300,6 +300,7 @@ function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 	list($void,$accountId) = explode('x', $restrictionids['accountId']);
 	list($void,$contactId) = explode('x', $restrictionids['contactId']);
 	list($void,$userId) = explode('x', $restrictionids['userId']);
+	$limit = (isset($restrictionids['limit']) ? $restrictionids['limit'] : 0);
 	$current_user->retrieveCurrentUserInfoFromFile($userId);
 	// if connected user does not have admin privileges > user must be the connected user
 	if ($user->is_admin!='on' && $user->id!=$userId) {
@@ -392,6 +393,10 @@ function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 			}
 		}
 		$i++;
+	}
+	if ($limit > 0 && count($res)>$limit) {
+		shuffle($res);
+		$res = array_slice($res, 0, $limit);
 	}
 	return serialize($res);
 }
