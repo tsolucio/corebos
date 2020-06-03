@@ -317,12 +317,12 @@ function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 	$j=0;
 	$moduleRecordCount = array();
 	foreach ($object_array as $module => $object_name) {
+		$focus = CRMEntity::getInstance($module);
 		$listquery = getListQuery($module);
 		$oCustomView = new CustomView($module);
 		//Instead of getting current customview id, use cvid of All so that all entities will be found
 		$cv_res = $adb->pquery("select cvid from vtiger_customview where viewname='All' and entitytype=?", array($module));
 		$viewid = $adb->query_result($cv_res, 0, 'cvid');
-
 		$listquery = $oCustomView->getModifiedCvListQuery($viewid, $listquery, $module);
 		if (!empty($accountId) && !empty($contactId)) {
 			switch ($module) {
@@ -337,7 +337,38 @@ function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 					break;
 			}
 		}
-		$listquery = 'select * '.substr($listquery, stripos($listquery, ' from '));
+		$bmapname = $module.'_ListColumns';
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+		if ($cbMapid) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$cbMapLC = $cbMap->ListColumns();
+			$parentmodule = 'Home';
+			$focus->list_fields = $cbMapLC->getListFieldsFor($parentmodule);
+			$focus->list_fields_name = $cbMapLC->getListFieldsNameFor($parentmodule);
+			$focus->list_link_field = $cbMapLC->getListLinkFor($parentmodule);
+			$oCustomView->list_fields = $focus->list_fields;
+			$oCustomView->list_fields_name = $focus->list_fields_name;
+		}
+		if ($oCustomView) {
+			if (isset($oCustomView->list_fields)) {
+				$focus->list_fields = $oCustomView->list_fields;
+				$focus->list_fields_name = $oCustomView->list_fields_name;
+			}
+		}
+
+		// Remove fields which are made inactive
+		$focus->filterInactiveFields($module);
+
+		$field_list = '';
+		foreach ($focus->list_fields as $name => $tableinfo) {
+			foreach ($tableinfo as $tbl => $col) {
+				$field_list .= $tbl.'.'.$col.',';
+			}
+		}
+		$field_list .= 'vtiger_crmentity.crmid';
+
+		$listquery = 'select '.$field_list.substr($listquery, stripos($listquery, ' from '));
+
 		$where = getUnifiedWhere($listquery, $module, $query);
 		if ($where != '') {
 			$listquery .= ' and ('.$where.')';
@@ -429,30 +460,6 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 	$list_block = array();
 	//getting the field table entries from database
 	$tabid = getTabid($module);
-	$bmapname = $module.'_ListColumns';
-	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
-	if ($cbMapid) {
-		$cbMap = cbMap::getMapByID($cbMapid);
-		$cbMapLC = $cbMap->ListColumns();
-		$parentmodule = 'Home';
-		$focus->list_fields = $cbMapLC->getListFieldsFor($parentmodule);
-		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor($parentmodule);
-		$focus->list_link_field = $cbMapLC->getListLinkFor($parentmodule);
-		$oCv->list_fields = $focus->list_fields;
-		$oCv->list_fields_name = $focus->list_fields_name;
-	}
-	if ($oCv) {
-		if (isset($oCv->list_fields)) {
-			$focus->list_fields = $oCv->list_fields;
-			$focus->list_fields_name = $oCv->list_fields_name;
-		}
-	}
-	if (is_array($selectedfields) && $selectedfields != '') {
-		$focus->list_fields = $selectedfields;
-	}
-
-	// Remove fields which are made inactive
-	$focus->filterInactiveFields($module);
 
 	//Added to reduce the no. of queries logging for non-admin user
 	$field_list = array();
