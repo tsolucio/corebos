@@ -262,7 +262,7 @@ function mandatoryCheck()
 			<tr><td>&nbsp;</td></tr>
 		</table>
 	</div>
-	<div id="mnuTab2" {$advdiv} >
+	<div id="mnuTab2" class="cv-advfilt-tab" {$advdiv}>
 		<table width="100%" cellspacing="0" cellpadding="5" class="dvtContentSpace">
 			<tr><td><br>
 			<table width="75%" border="0" cellpadding="5" cellspacing="0" align="center">

@@ -47,7 +47,7 @@
 					</svg>
 				</span>
 			</div>
-			<div class="slds-dropdown slds-dropdown_length-3 slds-dropdown_fluid" role="listbox">
+			<div class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid" role="listbox">
 				<ul class="slds-listbox slds-listbox_vertical" role="presentation">
 				</ul>
 			</div>
@@ -189,7 +189,7 @@
 											</svg>
 										</span>
 									</div>
-									<div class="slds-dropdown slds-dropdown_length-3 slds-dropdown_fluid" role="listbox">
+									<div class="slds-dropdown slds-dropdown_length-7 slds-dropdown_fluid" role="listbox">
 										{if $SOURCE != 'reports-modal'}
 											{foreach from=$MODULES_BLOCK item='COLUMNS_BLOCK' key='MODLABEL'}
 												<ul class="slds-listbox slds-listbox_vertical" role="group">
