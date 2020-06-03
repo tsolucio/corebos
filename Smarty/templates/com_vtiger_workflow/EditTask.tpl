@@ -212,7 +212,6 @@
 			</div>
 		</div>
 
-
 {include file="$taskTemplate"}
 		<input type="hidden" name="save_type" value="{$saveType}" id="save_save_type">
 {if $edit}

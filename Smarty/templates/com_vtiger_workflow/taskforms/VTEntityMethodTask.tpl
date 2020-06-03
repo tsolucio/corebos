@@ -8,7 +8,6 @@
  * All Rights Reserved.
  ************************************************************************************/
 -->*}
-
 <script src="modules/com_vtiger_workflow/resources/entitymethodtask.js" ></script>
 
 <!-- Task Operations -->
