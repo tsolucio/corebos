@@ -52,7 +52,7 @@
 
 	/*
 	* STATIC method: fillFieldTemplate
-	* Reports does not provide an array of possible fields
+	* Reportmodals do not provide an array of possible fields
 	* to Smarty but expects the list to be populated by JS
 	* when needed. We need to provide a method to do this
 	* before initializing the advancedfilter block
@@ -215,6 +215,9 @@
 					break;
 				case "pick-comparison-field":
 					this.openComparisonModal(e.target);
+					break;
+				case "clear-cond":
+					this.getByButton('conds', e.target).clear();
 					break;
 				default:
 					return false;
@@ -1053,6 +1056,27 @@
 				this.fieldCombo.getValueHolder().value != '' &&
 				this.op.combo.getValueHolder().value != ''
 			)
+		},
+
+		/*
+			* method: clear
+			* Mainly responding to the clear button. Clears
+			* both the field and operator visible and hidden
+			* inputs and the value input
+			*
+			*/
+		clear: function() {
+			this.fieldCombo._val = '';
+			this.fieldCombo.input.value = '';
+			this.fieldCombo.valueHolder.value = '';
+
+			this.op.combo._val = '';
+			this.op.combo.input.value = '';
+			this.op.combo.valueHolder.value = '';
+
+			[...this.el.getElementsByClassName(this.valueInputClass)].forEach((valInput) => {
+				valInput.value = '';
+			})
 		}
 
 	};
