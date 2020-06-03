@@ -239,10 +239,10 @@
 				<div class="slds-col">
 					<div class="slds-form-element cbds-advfilt-cond__value">
 						<div class="slds-form-element__control slds-grid slds-p-horizontal_none">
-							<div class="slds-col">
+							<div class="slds-col slds-size_8-of-12">
 								<input class="slds-input cbds-advfilt-cond__value--input cbds-advfilt-cond__value--validate" type="text" value="">
 							</div>
-							<div class="slds-col">
+							<div class="slds-col slds-size_4-of-12">
 								<div class="slds-button-group">
 									{if $SOURCE == 'reports-modal'}
 									<button type="button" class="cbds-advfilt-cond__value--compfield slds-button slds-button_icon slds-button_icon-border-filled" title="{$APP.LBL_FIELD_FOR_COMPARISION}" data-onclick="pick-comparison-field">
@@ -276,12 +276,12 @@
 							</div>
 						</div>
 					</div>
-					<div class="slds-form-element slds-hide cbds-advfilt-cond__value">
+					<div class="slds-form-element slds-hide cbds-advfilt-cond__value slds-m-top_xx-small">
 						<div class="slds-form-element__control slds-grid slds-p-horizontal_none">
-							<div class="slds-col">
+							<div class="slds-col slds-size_8-of-12">
 								<input class="slds-input cbds-advfilt-cond__value--input" type="text" value="">
 							</div>
-							<div class="slds-col">
+							<div class="slds-col slds-size_4-of-12">
 								<button type="button" disabled="disabled" class="cbds-advfilt-cond__value--datebutt slds-button slds-button_icon slds-button_icon-border-filled" title="{$APP.LBL_ACTION_DATE}" data-onclick="pick-date">
 									<svg class="slds-button__icon" aria-hidden="true">
 										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#event"></use>
@@ -298,7 +298,7 @@
 					<div class="slds-form-element">
 						{*<span class="slds-form-element__label">&nbsp;</span>*}
 						<div class="slds-form-element__control">
-							<button type="button" disabled="disabled" class="slds-button slds-button_icon slds-button_icon-border-filled cbds-advfilt-cond__delete" title="{$APP.LBL_DELETE_BUTTON}" data-onclick="delete-cond">
+							<button type="button" disabled="disabled" class="slds-float_right slds-button slds-button_icon slds-button_icon-border-filled cbds-advfilt-cond__delete" title="{$APP.LBL_DELETE_BUTTON}" data-onclick="delete-cond">
 								<svg class="slds-button__icon" aria-hidden="true">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
 								</svg>
