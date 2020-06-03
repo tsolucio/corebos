@@ -40,7 +40,11 @@ const ListView = {
 		if (document.getElementById('curmodule') != undefined) {
 			module = document.getElementById('curmodule').value;
 		}
-		let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=listViewJSON&formodule='+module;
+		let lastPage = sessionStorage.getItem(module+'_lastPage');
+		if (!lastPage) {
+			lastPage = 1;
+		}
+		let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=listViewJSON&formodule='+module+'&lastPage='+lastPage;
 		if (actionType == 'filter') {
 			document.getElementById('basicsearchcolumns').innerHTML = '';
 			document.basicSearch.search_text.value = '';
@@ -153,7 +157,7 @@ const ListView = {
 					type: 'checkbox',
 			        header: `
 			          <label for="all-checkbox" class="checkbox">
-			            <input type="checkbox" id="selectCurrentPageRec" onclick="toggleSelect_ListView(this.checked,'selected_id[]');ListView.getCheckedRows('currentPage', this);" name="_checked" />
+			            <input type="checkbox" id="selectCurrentPageRec" class="listview-checkbox" onclick="toggleSelect_ListView(this.checked,'selected_id[]');ListView.getCheckedRows('currentPage', this);" name="_checked" />
 			          </label>
 			        `,
 					renderer: {
@@ -176,6 +180,7 @@ const ListView = {
 				bodyHeight: 'auto',
 				scrollX: false,
 				scrollY: false,
+				editingEvent: 'click',
 				columnOptions: {
 					resizable: true
 				},
@@ -187,6 +192,8 @@ const ListView = {
 					useListItemText: true
 				},
 				onGridUpdated: (ev) => {
+					const lastPage = dataGridInstance.getPagination()._currentPage;
+					sessionStorage.setItem(module+'_lastPage', lastPage);
 					ListView.updateData();
 					const rows = document.getElementById('allselectedboxes').value;
 					if (rows != '') {
