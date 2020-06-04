@@ -7,7 +7,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-.popup_content{
+ .popup_content{
 	padding: 0.5em;
 	margin:0.5em;
 	background-color: white;
@@ -52,7 +52,7 @@
 }
 
 #select_date_days{
-	width:50px;
+	width:100%;
 }
 
 .box{
