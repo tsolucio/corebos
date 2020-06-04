@@ -41,7 +41,7 @@
 										</svg>
 									</span>
 								</span>
-								{$MOD.LBL_SUMMARY}	
+								{$MOD.LBL_SUMMARY}
 							</span>
 						</h1>
 					</div>
@@ -50,11 +50,11 @@
 		</div>
 		<!-- Task Title -->
 		<div class="slds-grid slds-grid_vertical-align-center">
-			<div class="slds-col slds-size_2-of-12 slds-text-align_right slds-p-around_small">
+			<div class="slds-col slds-size_2-of-12 slds-text-align_right slds-p-around_x-small">
 				<span> <b> <abbr class="slds-required" title="required">* </abbr> {$MOD.LBL_TASK_TITLE} </b> </span>
 			</div>
 
-			<div class="slds-col slds-size_9-of-12 slds-p-around_small">
+			<div class="slds-col slds-size_9-of-12 slds-p-around_x-small">
 				<div class="slds-form-element">
 					<div class="slds-form-element__control">
 						<input type="text" class="slds-input" name="summary" value="{$task->summary}" id="save_summary" />
@@ -64,10 +64,10 @@
 		</div>
 		<!-- Parent Workflow -->
 		<div class="slds-grid slds-grid_vertical-align-center">
-			<div class="slds-col slds-size_2-of-12 slds-text-align_right slds-p-around_small">
+			<div class="slds-col slds-size_2-of-12 slds-text-align_right slds-p-around_x-small">
 				<span> <b> {$MOD.LBL_PARENT_WORKFLOW} </b> </span>
 			</div>
-			<div class="slds-col slds-size_9-of-12 slds-p-around_small">
+			<div class="slds-col slds-size_9-of-12 slds-p-around_x-small">
 				<div class="slds-form-element">
 					<div class="slds-form-element__control">
 						{$workflow->description}
@@ -78,14 +78,14 @@
 		</div>
 		<!-- Label Status -->
 		<div class="slds-grid slds-grid_vertical-align-center">
-			<div class="slds-col slds-size_2-of-12 slds-text-align_right slds-p-around_small">
+			<div class="slds-col slds-size_2-of-12 slds-text-align_right slds-p-around_x-small">
 				<span> <b> {$MOD.LBL_STATUS} </b> </span>
 			</div>
-			<div class="slds-col slds-size_3-of-12 slds-p-around_small">
+			<div class="slds-col slds-size_3-of-12 slds-p-around_x-small">
 				<div class="slds-form-element">
 					<div class="slds-form-element__control">
 						<div class="slds-select_container">
-								<select name="active" class="slds-select">
+								<select name="active" class="slds-select slds-page-header__meta-text">
 									<option value="true">{$MOD.LBL_ACTIVE}</option>
 									<option value="false" {if not $task->active}selected{/if}>{$MOD.LBL_INACTIVE}</option>
 								</select>
@@ -96,7 +96,7 @@
 		</div>
 		<div class="slds-grid slds-grid_vertical-align-center slds-p-horizontal_xx-large slds-border_top slds-border_bottom">
 			<!-- Execute the task after some delay -->
-			<div class="slds-col slds-2-of-3 slds-text-align_center slds-p-around_small">
+			<div class="slds-col slds-2-of-3 slds-text-align_center slds-p-around_x-small">
 				<div class="slds-grid slds-gutters slds-grid_vertical-align-center">
 					<div class="slds-col slds-size_1-of-3 slds-text-align_center">
 						<div class="slds-form-element">
@@ -109,15 +109,15 @@
 									</label>
 								</div>
 							</div>
-						</div>		
+						</div>
 					</div>
-					<div  class="slds-col slds-size_2-of-3 slds-text-align_center" id="select_date" {if empty($trigger)}style="display:none;"{/if}>
+					<div class="slds-col slds-size_2-of-3 slds-text-align_center" id="select_date" {if empty($trigger)}style="display:none;"{/if}>
 						<div class="slds-grid slds-gutters slds-grid_vertical-align-center">
 							<!-- Date/Days -->
 							<div class="slds-col slds-size_1-of-3 slds-text-align_center">
 								<div class="slds-form-element">
 									<div class="slds-form-element__control slds-input-has-fixed-addon">
-										<input type="text" name="select_date_days" value="{if isset($trigger.days)}{$trigger.days}{/if}" id="select_date_days" class="slds-input"> 
+										<input type="text" name="select_date_days" value="{if isset($trigger.days)}{$trigger.days}{/if}" id="select_date_days" class="slds-input">
 										<span class="slds-form-element__addon" id="fixed-text-addon-post"> {$MOD.LBL_DAYS} </span>
 									</div>
 								</div>
@@ -127,7 +127,7 @@
 								<div class="slds-form-element">
 									<div class="slds-form-element__control">
 										<div class="slds-select_container">
-											<select class="slds-select" name="select_date_direction">
+											<select class="slds-select slds-page-header__meta-text" name="select_date_direction">
 												<option {if isset($trigger.direction) && $trigger.direction eq 'after'}selected{/if} value='after'>{$MOD.LBL_AFTER}</option>
 												<option {if isset($trigger.direction) && $trigger.direction eq 'before'}selected{/if} value='before'>{$MOD.LBL_BEFORE}</option>
 											</select>
@@ -140,7 +140,7 @@
 								<div class="slds-form-element">
 									<div class="slds-form-element__control">
 										<div class="slds-select_container">
-											<select class="slds-select" name="select_date_field">
+											<select class="slds-select slds-page-header__meta-text" name="select_date_field">
 												{foreach key=name item=label from=$dateFields}
 													<option value='{$name}' {if isset($trigger.field) && $trigger.field eq $name}selected{/if}>
 														{$label}
@@ -156,7 +156,7 @@
 				</div>
 			</div>
 			<!-- Evaluate conditions on delayed execution -->
-			<div class="slds-col slds-size_1-of-3 slds-text-align_center slds-p-around_small">
+			<div class="slds-col slds-size_1-of-3 slds-text-align_center slds-p-around_x-small">
 					<div class="slds-form-element">
 						<div class="slds-form-element__control">
 							<div class="slds-checkbox">
@@ -167,7 +167,7 @@
 								</label>
 							</div>
 						</div>
-					</div>			
+					</div>
 			</div>
 		</div>
 		<!-- Conditions -->
