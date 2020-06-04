@@ -27,85 +27,174 @@
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 <div id="view" class="workflows-edit slds-modal__container slds-p-around_none slds-card">
 	<form name="new_task" id="new_task_form" method="post" onsubmit="VtigerJS_DialogBox.block();">
-
-		<table class="tableHeading" width="100%" border="0" cellspacing="0" cellpadding="5">
-			<tr>
-				<td class="big" nowrap="nowrap">
-					<strong>{$MOD.LBL_SUMMARY}</strong>
-				</td>
-				<td class="small cblds-t-align_right" align="right">
-				</td>
-			</tr>
-		</table>
-
-		<table border="0" cellpadding="5" cellspacing="0" width="100%">
-			<tr>
-				<td class="dvtCellLabel" align=right width=15% nowrap="nowrap"><b><font color="red">*</font> {$MOD.LBL_TASK_TITLE}</b></td>
-				<td class="dvtCellInfo" align="left" ><input type="text" class="detailedViewTextBox" name="summary" value="{$task->summary}" id="save_summary"></td>
-			</tr>
-			<tr>
-				<td class="dvtCellLabel" align=right width=15% nowrap="nowrap"><b>{$MOD.LBL_PARENT_WORKFLOW}</b></td>
-				<td class="dvtCellInfo" align="left">
-					{$workflow->description}
-					<input type="hidden" name="workflow_id" value="{$workflow->id}" id="save_workflow_id">
-				</td>
-			</tr>
-			<tr>
-				<td class="dvtCellLabel" align=right width=15% nowrap="nowrap"><b>{$MOD.LBL_STATUS}</b></td>
-				<td class="dvtCellInfo" align="left">
-					<select name="active" class="small">
-						<option value="true">{$MOD.LBL_ACTIVE}</option>
-						<option value="false" {if not $task->active}selected{/if}>{$MOD.LBL_INACTIVE}</option>
-					</select>
-				</td>
-			</tr>
-		</table>
-
-		<table border="0" cellpadding="5" cellspacing="0" width="100%" class="small">
-		<tr>
-			<td width='15%' nowrap="nowrap"><input type="checkbox" name="check_select_date" value="" id="check_select_date" {if !empty($trigger)}checked{/if}>
-			<b>{$MOD.MSG_EXECUTE_TASK_DELAY}</b></td>
-			<td>
-			<div class="slds-grid slds-gutters">
-				<div  class="slds-col slds-size_2-of-3">
-				<div id="select_date" {if empty($trigger)}style="display:none;"{/if}>
-					<input type="text" name="select_date_days" value="{if isset($trigger.days)}{$trigger.days}{/if}" id="select_date_days" class="small"> {$MOD.LBL_DAYS}
-					<select name="select_date_direction" class="small">
-						<option {if isset($trigger.direction) && $trigger.direction eq 'after'}selected{/if} value='after'>{$MOD.LBL_AFTER}</option>
-						<option {if isset($trigger.direction) && $trigger.direction eq 'before'}selected{/if} value='before'>{$MOD.LBL_BEFORE}</option>
-					</select>
-					<select name="select_date_field" class="small">
-					{foreach key=name item=label from=$dateFields}
-						<option value='{$name}' {if isset($trigger.field) && $trigger.field eq $name}selected{/if}>
-							{$label}
-						</option>
-					{/foreach}
-					</select>
-				</div>
-				</div>
-				<div class="slds-col slds-size_1-of-3">
-				<input type="checkbox" name="reevaluate" id="reevaluate" {if isset($task->reevaluate) && $task->reevaluate eq 1}checked{/if}>&nbsp;{$MOD.LBL_REEVALCONDITIONS}
+		<!-- Heading *Summary -->
+		<div class="slds-page-header">
+			<div class="slds-page-header__row">
+				<div class="slds-grid slds-gutters">
+					<div class="slds-col slds-size_1-of-1">
+						<h1>
+							<span class="slds-page-header__title slds-truncate" title="{$MOD.LBL_SUMMARY}">
+								<span class="slds-tabs__left-icon">
+									<span class="slds-icon_container" title="{$MOD.LBL_SUMMARY}">
+										<svg class="slds-icon slds-icon_small" style="color:green;" aria-hidden="true">
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#summary"></use>
+										</svg>
+									</span>
+								</span>
+								{$MOD.LBL_SUMMARY}	
+							</span>
+						</h1>
+					</div>
 				</div>
 			</div>
-			</td>
-		</tr>
-		</table>
+		</div>
+		<!-- Task Title -->
+		<div class="slds-grid slds-grid_vertical-align-center">
+			<div class="slds-col slds-size_2-of-12 slds-text-align_right slds-p-around_small">
+				<span> <b> <abbr class="slds-required" title="required">* </abbr> {$MOD.LBL_TASK_TITLE} </b> </span>
+			</div>
 
-		<table border="0" cellpadding="5" cellspacing="0" width="100%" class="small">
-		<tr>
-			<td width='100%' nowrap="nowrap">
-			{include file='com_vtiger_workflow/ListConditions.tpl' RecordSetTab=0}
-			</td>
-		</tr>
-		</table>
+			<div class="slds-col slds-size_9-of-12 slds-p-around_small">
+				<div class="slds-form-element">
+					<div class="slds-form-element__control">
+						<input type="text" class="slds-input" name="summary" value="{$task->summary}" id="save_summary" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Parent Workflow -->
+		<div class="slds-grid slds-grid_vertical-align-center">
+			<div class="slds-col slds-size_2-of-12 slds-text-align_right slds-p-around_small">
+				<span> <b> {$MOD.LBL_PARENT_WORKFLOW} </b> </span>
+			</div>
+			<div class="slds-col slds-size_9-of-12 slds-p-around_small">
+				<div class="slds-form-element">
+					<div class="slds-form-element__control">
+						{$workflow->description}
+						<input type="hidden" name="workflow_id" value="{$workflow->id}" id="save_workflow_id" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Label Status -->
+		<div class="slds-grid slds-grid_vertical-align-center">
+			<div class="slds-col slds-size_2-of-12 slds-text-align_right slds-p-around_small">
+				<span> <b> {$MOD.LBL_STATUS} </b> </span>
+			</div>
+			<div class="slds-col slds-size_3-of-12 slds-p-around_small">
+				<div class="slds-form-element">
+					<div class="slds-form-element__control">
+						<div class="slds-select_container">
+								<select name="active" class="slds-select">
+									<option value="true">{$MOD.LBL_ACTIVE}</option>
+									<option value="false" {if not $task->active}selected{/if}>{$MOD.LBL_INACTIVE}</option>
+								</select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="slds-grid slds-grid_vertical-align-center slds-p-horizontal_xx-large slds-border_top slds-border_bottom">
+			<!-- Execute the task after some delay -->
+			<div class="slds-col slds-2-of-3 slds-text-align_center slds-p-around_small">
+				<div class="slds-grid slds-gutters slds-grid_vertical-align-center">
+					<div class="slds-col slds-size_1-of-3 slds-text-align_center">
+						<div class="slds-form-element">
+							<div class="slds-form-element__control">
+								<div class="slds-checkbox">
+									<input type="checkbox" name="check_select_date" value="" id="check_select_date" {if !empty($trigger)}checked{/if} />
+									<label class="slds-checkbox__label" for="check_select_date">
+										<span class="slds-checkbox_faux"></span>
+										<span class="slds-form-element__label"> {$MOD.MSG_EXECUTE_TASK_DELAY} </span>
+									</label>
+								</div>
+							</div>
+						</div>		
+					</div>
+					<div  class="slds-col slds-size_2-of-3 slds-text-align_center" id="select_date" {if empty($trigger)}style="display:none;"{/if}>
+						<div class="slds-grid slds-gutters slds-grid_vertical-align-center">
+							<!-- Date/Days -->
+							<div class="slds-col slds-size_1-of-3 slds-text-align_center">
+								<div class="slds-form-element">
+									<div class="slds-form-element__control slds-input-has-fixed-addon">
+										<input type="text" name="select_date_days" value="{if isset($trigger.days)}{$trigger.days}{/if}" id="select_date_days" class="slds-input"> 
+										<span class="slds-form-element__addon" id="fixed-text-addon-post"> {$MOD.LBL_DAYS} </span>
+									</div>
+								</div>
+							</div>
+							<!-- After/Before -->
+							<div class="slds-col slds-size_1-of-3 slds-text-align_center">
+								<div class="slds-form-element">
+									<div class="slds-form-element__control">
+										<div class="slds-select_container">
+											<select class="slds-select" name="select_date_direction">
+												<option {if isset($trigger.direction) && $trigger.direction eq 'after'}selected{/if} value='after'>{$MOD.LBL_AFTER}</option>
+												<option {if isset($trigger.direction) && $trigger.direction eq 'before'}selected{/if} value='before'>{$MOD.LBL_BEFORE}</option>
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- Created/Modified Time -->
+							<div class="slds-col slds-size_1-of-3 slds-text-align_center">
+								<div class="slds-form-element">
+									<div class="slds-form-element__control">
+										<div class="slds-select_container">
+											<select class="slds-select" name="select_date_field">
+												{foreach key=name item=label from=$dateFields}
+													<option value='{$name}' {if isset($trigger.field) && $trigger.field eq $name}selected{/if}>
+														{$label}
+													</option>
+												{/foreach}
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Evaluate conditions on delayed execution -->
+			<div class="slds-col slds-size_1-of-3 slds-text-align_center slds-p-around_small">
+					<div class="slds-form-element">
+						<div class="slds-form-element__control">
+							<div class="slds-checkbox">
+								<input type="checkbox" name="reevaluate" id="reevaluate" {if isset($task->reevaluate) && $task->reevaluate eq 1}checked{/if}>
+								<label class="slds-checkbox__label" for="reevaluate">
+									<span class="slds-checkbox_faux"></span>
+									<span class="slds-form-element__label"> {$MOD.LBL_REEVALCONDITIONS} </span>
+								</label>
+							</div>
+						</div>
+					</div>			
+			</div>
+		</div>
+		<!-- Conditions -->
+		<div class="slds-grid slds-gutters">
+			<div class="slds-col">
+				{include file='com_vtiger_workflow/ListConditions.tpl' RecordSetTab=0}
+			</div>
+		</div>
+		<div class="slds-page-header">
+			<div class="slds-grid slds-gutters">
+				<div class="slds-col slds-size_1-of-1">
+					<h1>
+						<span class="slds-page-header__title slds-truncate" title="{$MOD.LBL_TASK_OPERATIONS}">
+							<span class="slds-tabs__left-icon">
+								<span class="slds-icon_container" title="{$MOD.LBL_TASK_OPERATIONS}">
+									<svg class="slds-icon slds-icon_small" style="color:green;" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#task"></use>
+									</svg>
+								</span>
+							</span>
+							{$MOD.LBL_TASK_OPERATIONS}
+						</span>
+					</h1>
+				</div>
+			</div>
+		</div>
 
-		<table class="tableHeading" border="0"  width="100%" cellspacing="0" cellpadding="5">
-			<tr>
-				<td class="big" nowrap="nowrap">
-					<strong>{$MOD.LBL_TASK_OPERATIONS}</strong>
-				</td>
-			</tr>
-		</table>
 {include file="$taskTemplate"}
 		<input type="hidden" name="save_type" value="{$saveType}" id="save_save_type">
 {if $edit}
