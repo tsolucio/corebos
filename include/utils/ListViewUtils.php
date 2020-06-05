@@ -715,6 +715,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							}
 							if ($fieldname == 'filename') {
 								$downloadtype = $adb->query_result($list_result, $i, 'filelocationtype');
+								$fileicon = '';
 								if ($downloadtype == 'I') {
 									$fld_value = $value;
 									$ext_pos = strrpos($fld_value, '.');
