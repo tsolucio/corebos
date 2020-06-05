@@ -145,9 +145,13 @@ class DecisionTable extends processcbMap {
 								$uitype = getUItypeByFieldName($module, (String)$v->field);
 								if ($uitype==10) {
 									if (!empty($context[(String)$v->input])) {
-										list($wsid, $crmid) = explode('x', $context[(String)$v->input]);
+										if (strpos($context[(String)$v->input], 'x') > 0) {
+											list($wsid, $crmid) = explode('x', $context[(String)$v->input]);
+										} else {
+											$crmid = $context[(String)$v->input];
+										}
 										$relmod = getSalesEntityType($crmid);
-										$queryGenerator->addReferenceModuleFieldCondition($relmod, (String)$v->input, 'id', $crmid, (String)$v->operation, $queryGenerator::$AND);
+										$queryGenerator->addReferenceModuleFieldCondition($relmod, (String)$v->field, 'id', $crmid, (String)$v->operation, $queryGenerator::$AND);
 									}
 								} else {
 									$queryGenerator->addCondition((String)$v->field, $context[(String)$v->input], (String)$v->operation, $queryGenerator::$AND);
@@ -173,12 +177,12 @@ class DecisionTable extends processcbMap {
 				}
 				$result = $adb->pquery($query, array());
 				$seqcnt = 1;
-				$numfields = $adb->num_fields($result);
+				$numfields = $result ? $adb->num_fields($result) : 0;
 				if ($field=='id') {
 					$finfo = getEntityField($module);
 					$field = $finfo['entityid'];
 				}
-				while ($row = $adb->fetch_array($result)) {
+				while ($result && $row = $adb->fetch_array($result)) {
 					if ($ruleOutput == 'Row') {
 						$seqidx = $sequence.'_'.sprintf("%'.04d", $seqcnt++);
 						$ret = $row;
