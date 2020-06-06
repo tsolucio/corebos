@@ -2384,6 +2384,9 @@ function getTemplateDetails($templateid, $crmid = null) {
 		}
 	}
 	if (!empty($crmid)) {
+		if (strpos($crmid, 'x')>0) {
+			list($wsid, $crmid) = explode('x', $crmid);
+		}
 		require_once 'include/Webservices/DescribeObject.php';
 		$type = getSalesEntityType($crmid);
 		$obj = vtws_describe($type, $current_user);
