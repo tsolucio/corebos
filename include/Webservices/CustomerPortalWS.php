@@ -361,9 +361,11 @@ function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 		$focus->filterInactiveFields($module);
 
 		$field_list = '';
-		foreach ($focus->list_fields as $name => $tableinfo) {
+		foreach ($focus->list_fields as $tableinfo) {
 			foreach ($tableinfo as $tbl => $col) {
-				$field_list .= $tbl.'.'.$col.',';
+				if (!empty($tbl) && !empty($col)) {
+					$field_list .= 'vtiger_'.$tbl.'.'.$col.',';
+				}
 			}
 		}
 		$field_list .= 'vtiger_crmentity.crmid';
