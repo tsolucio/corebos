@@ -87,7 +87,7 @@ switch ($focus->column_fields['maptype']) {
 			$testrecord = 74;
 		}
 		$currentModule = getSalesEntityType($testrecord);
-		$mapinfo = (array) $focus->ConditionQuery(74);
+		$mapinfo = (array) $focus->ConditionQuery($testrecord);
 		$currentModule = 'cbMap';
 		$mapinfo['TEST RECORD'] = "<h3>Testing with $testrecord</h3>";
 		break;
@@ -102,7 +102,7 @@ switch ($focus->column_fields['maptype']) {
 		}
 		list($wsid, $crmid) = explode('x', $testrecord);
 		$currentModule = getSalesEntityType($crmid);
-		$mapinfo = (array) $focus->ConditionExpression('11x74');
+		$mapinfo = (array) $focus->ConditionExpression($testrecord);
 		$currentModule = 'cbMap';
 		$mapinfo['TEST RECORD'] = "<h3>Testing with $testrecord</h3>";
 		break;
