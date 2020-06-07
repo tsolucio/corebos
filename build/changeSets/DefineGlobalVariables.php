@@ -160,6 +160,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Import_Full_CSV',
 				'Import_Batch_Limit',
 				'Import_Scheduled_Limit',
+				'Import_Launch_EventsAndWorkflows',
 				'Export_Field_Separator_Symbol',
 				'Export_RelatedField_GetValueFrom',
 				'Export_RelatedField_NameForSearch',

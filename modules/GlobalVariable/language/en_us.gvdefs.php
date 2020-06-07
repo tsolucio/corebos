@@ -475,6 +475,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Threshold import record limit for immediate import. If record count is more than this, then the import is scheduled through cron job. Default value is 1000',
 ),
+'Import_Launch_EventsAndWorkflows' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'yes | no',
+	'definition' => 'Launch events and workflows when importing records. Default value is no',
+),
 'Export_Field_Separator_Symbol' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'character',

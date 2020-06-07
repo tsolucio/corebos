@@ -476,6 +476,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Límite de registros que se pueden importar en línea. Si el número de registros a importar es mayor a este número, entonces la importación se realizará de manera desatendida por la tarea de programación correspondiente. El valor predeterminado es 1000',
 ),
+'Import_Launch_EventsAndWorkflows' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'yes | no',
+	'definition' => 'Ejecutar eventos y flujos de trabajo al importar registros. El valor por defecto es no',
+),
 'Export_Field_Separator_Symbol' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'carácter',

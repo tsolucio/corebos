@@ -475,6 +475,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Seuil limite du nombre d\'enregistrements à importer d\'un coup. Si le nombre d\'enregistrements est supéieur à ce seuil alors l\'importation est programmée sous forme de cron job. La valeur par défaut est (1000) enregistrements',
 ),
+'Import_Launch_EventsAndWorkflows' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'yes | no',
+	'definition' => 'Launch events and workflows when importing records. Default value is no',
+),
 'Export_Field_Separator_Symbol' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'character',

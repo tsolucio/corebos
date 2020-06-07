@@ -593,6 +593,7 @@ class Import_Data_Controller {
 	}
 
 	public static function runScheduledImport() {
+		global $VTIGER_BULK_SAVE_MODE;
 		require_once 'modules/Emails/mail.php';
 		require_once 'modules/Emails/Emails.php';
 		global $current_user,$coreBOS_app_name;
@@ -604,6 +605,7 @@ class Import_Data_Controller {
 		foreach ($scheduledImports as $importDataController) {
 			$current_user = $importDataController->user;
 			$importDataController->batchImport = false;
+			$VTIGER_BULK_SAVE_MODE = (GlobalVariable::getVariable('Import_Launch_EventsAndWorkflows', 'no', $importDataController->module)=='no'); //true;
 
 			if (!$importDataController->initializeImport()) {
 				continue;
