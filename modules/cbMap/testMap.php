@@ -195,7 +195,10 @@ switch ($focus->column_fields['maptype']) {
 	case 'Webservice Mapping':
 		$focus2 = CRMEntity::getInstance('Accounts');
 		$focus2->retrieve_entity_info(74, 'Accounts');
-		$mapinfo = $focus->WebserviceMapping($focus2->column_fields);
+		$context = array(
+			'myvariable' => 'my var',
+		);
+		$mapinfo = $focus->WebserviceMapping($focus2->column_fields, $context);
 		break;
 	case 'DecisionTable':
 		$context = array(
