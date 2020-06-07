@@ -108,6 +108,7 @@ class VTExpressionsManager {
 			'uppercasefirst'=>'uppercasefirst(stringfield)',
 			'uppercasewords'=>'uppercasewords(stringfield)',
 			'num2str' => 'num2str(number|field, language)',
+			'number_format' => 'number_format(number, decimals, decimal_separator, thousands_separator)',
 			'translate' => 'translate(string|field)',
 			'round' => 'round(numericfield,decimals)',
 			'ceil' => 'ceil(numericfield)',
