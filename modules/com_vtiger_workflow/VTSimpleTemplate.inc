@@ -36,7 +36,7 @@ class VTSimpleTemplate {
 				$field_focus = Vtiger_Field::getInstance($fieldname, $module_focus);
 				$uitype = $field_focus->uitype;
 				if ($uitype == '15' || $uitype == '33' || ($uitype == '55' && $fieldname == 'salutationtype')) {
-					$result = getTranslatedString($data[$fieldname], ($moduleName == 'Events') ? 'Calendar' : $moduleName);
+					$result = getTranslatedString($data[$fieldname], $moduleName);
 				} elseif ($uitype == '5' || $uitype == '6' || $uitype == '23') {  // date
 					$date = new DateTimeField($data[$fieldname]);
 					$result = $date->getDisplayDate($current_user);
@@ -525,7 +525,7 @@ class VTSimpleTemplate {
 				$parts = explode('x', $wsId);
 				$recordId = $parts[1];
 				$moduleName = $this->parent->getModuleName();
-				if ($moduleName == 'Events' || $moduleName == 'Calendar') {
+				if ($moduleName == 'Calendar') {
 					return $site_URL.'/index.php?action=DetailView&module=cbCalendar&record='.$recordId;
 				} else {
 					return $site_URL.'/index.php?action=DetailView&module='.$moduleName.'&record='.$recordId;
