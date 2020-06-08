@@ -9314,7 +9314,7 @@ precacheAndRoute([{
   "revision": "c5247a4c8b5ebf37d5cd55c6621f38c5"
 }, {
   "url": "include/js/general.js",
-  "revision": "bfc8d053fccf571020423a572ed44d95"
+  "revision": "833360342e7c9faf407745fc6867d3e9"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "c121669fa3b0ab4ce7088a82107ca79c"
@@ -9506,7 +9506,7 @@ precacheAndRoute([{
   "revision": "d303f6bc780e5b5367842b29220bbf67"
 }, {
   "url": "modules/com_vtiger_workflow/resources/edittaskscript.js",
-  "revision": "cde731102f2e03b5b0d732095496dc4c"
+  "revision": "bb671622a8efbcf219e188c6c9c4411f"
 }, {
   "url": "modules/com_vtiger_workflow/resources/editworkflowscript.js",
   "revision": "dd436dfb50a74136f2d13273daabacde"
@@ -9545,7 +9545,7 @@ precacheAndRoute([{
   "revision": "c00f6462ceeb5ab01f6cdf297e0e8735"
 }, {
   "url": "modules/com_vtiger_workflow/resources/style.css",
-  "revision": "8dbebc4f9a6404f68569281b684f3707"
+  "revision": "247940cbbe65343a4f33e2e6a7e4e550"
 }, {
   "url": "modules/com_vtiger_workflow/resources/updatefieldstaskscript.js",
   "revision": "75a9576a9821cbeff3fa8085288ff41d"
