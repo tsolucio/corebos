@@ -1369,7 +1369,7 @@ function runBAScript(scripturi) {
 			VtigerJS_DialogBox.unblock();
 		}
 	});
-	return false;
+	return void(0);
 }
 
 function runBAWorkflow(workflowid, crmids) {
@@ -1394,7 +1394,7 @@ function runBAWorkflow(workflowid, crmids) {
 		}
 		VtigerJS_DialogBox.unblock();
 	});
-	return false;
+	return void(0);
 }
 
 function doModuleValidation(edit_type, editForm, callback) {
