@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*************************************************************************************************
  * Copyright 2020 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
 * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
@@ -13,29 +13,10 @@
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
-require_once 'include/utils/utils.php';
-$methodName = vtlib_purify($_REQUEST['methodName']);
-if ($methodName == 'checkForModule') {
-	$modulename = vtlib_purify($_REQUEST['modulename']);
-	echo json_encode(checkForModule($modulename));
-} else if($methodName == 'loadModules') {
-	$page = vtlib_purify($_REQUEST['page']);
-	$perPage = vtlib_purify($_REQUEST['perPage']);
-	echo json_encode(loadModules($page, $perPage));
-} else if($methodName == 'loadBlocks') {
-	echo json_encode(loadBlocks());
-} else if($methodName == 'loadFields') {
-	echo json_encode(loadFields());
-} else if($methodName == 'autocomplete') {
-	$query = vtlib_purify($_REQUEST['query']);
-	$method = vtlib_purify($_REQUEST['method']);
-	if ($method == 'name') {
-		echo json_encode(autocompleteName($query));
-	} else if ($method == 'module') {
-		echo json_encode(autocompleteModule($query));
-	}
-}
-
+/**
+ * Check if module exists in crm
+ * @param {string} modulename
+ */
 function checkForModule($modulename) {
 	global $adb, $current_user;
 	$sql = 'SELECT * FROM vtiger_tab WHERE name=?';
@@ -45,7 +26,11 @@ function checkForModule($modulename) {
 	}
 	return 0;
 }
-
+/**
+ * Load all created/on progress modules
+ * @param {number} page
+ * @param {number} perPage
+ */
 function loadModules($page, $perPage) {
 	global $adb, $current_user, $mod_strings;
 	$limit = ($page-1) * $perPage;
@@ -101,10 +86,12 @@ function loadModules($page, $perPage) {
 	}
 	return $entries_list;
 }
-
+/**
+ * Load all blocks in step 3
+ */
 function loadBlocks() {
 	global $adb, $current_user;
-	$moduleid = $_COOKIE['moduleid'];
+	$moduleid = $_COOKIE['ModuleBuilderID'];
 	$blocks = $adb->pquery('SELECT blocksid, blocks_label FROM vtiger_modulebuilder LEFT JOIN vtiger_modulebuilder_blocks ON modulebuilderid=moduleid WHERE status=? AND modulebuilderid=?', array(
 		'active',
 		$moduleid
@@ -120,10 +107,12 @@ function loadBlocks() {
 	}
 	return $blockname;
 }
-
+/**
+ * Load all fields in step 4
+ */
 function loadFields() {
 	global $adb, $current_user;
-	$moduleid = $_COOKIE['moduleid'];
+	$moduleid = $_COOKIE['ModuleBuilderID'];
 	$fieldSql = $adb->pquery('SELECT fieldsid, fieldname FROM vtiger_modulebuilder_fields WHERE moduleid=?', array(
 		$moduleid
 	));
@@ -138,7 +127,10 @@ function loadFields() {
 	}
 	return $fields;
 }
-
+/**
+ * Get values to autocomplete inputs
+ * @param {string} query
+ */
 function autocompleteName($query) {
 	global $adb, $current_user;
 	if ($query == '' || strlen($query) < 2) {
@@ -154,6 +146,10 @@ function autocompleteName($query) {
 	}
 	return $name;
 }
+/**
+ * Get values to autocomplete inputs
+ * @param {string} query
+ */
 function autocompleteModule($query) {
 	global $adb, $current_user;
 	if ($query == '' || strlen($query) < 2) {
@@ -168,5 +164,54 @@ function autocompleteModule($query) {
 		array_push($module, $moduleArr);
 	}
 	return $module;
+}
+/**
+ * Load all saved values on back step
+ * @param {number} step
+ */
+function loadValues($step, $moduleId) {
+	global $adb;
+	$moduleid = $moduleId == 0 ? vtlib_purify($_COOKIE['ModuleBuilderID']) : $moduleId;
+	$cookie_name = "ModuleBuilderID";
+	$cookie_value = $moduleid;
+	setcookie($cookie_name, $cookie_value, time() + ((86400 * 30) * 7), "/");
+	if ($step == 1) {
+		$modSql = $adb->pquery('SELECT * FROM vtiger_modulebuilder WHERE modulebuilderid=? AND status=?', array(
+			$moduleid, 
+			'active'
+		));
+		$module = array();
+		$module['name'] = $adb->query_result($modSql, 0, 'modulebuilder_name');
+		$module['label'] = $adb->query_result($modSql, 0, 'modulebuilder_label');
+		$module['parent'] = $adb->query_result($modSql, 0, 'modulebuilder_parent');
+		$module['icon'] = $adb->query_result($modSql, 0, 'icon');
+		return $module;
+	} elseif ($step == 2) {
+		$blockSql = $adb->pquery('SELECT * FROM vtiger_modulebuilder_blocks WHERE moduleid=?', array(
+			$moduleid
+		));
+		$block = array();
+		for ($i=0; $i < $adb->num_rows($blockSql); $i++) {
+			$blockArr = array();
+			$blocksid = $adb->query_result($blockSql, $i, 'blocksid');
+			$blocks_label = $adb->query_result($blockSql, $i, 'blocks_label');
+			$blockArr['blocksid'] = $blocksid;
+			$blockArr['blocks_label'] = $blocks_label;
+			array_push($block, $blockArr);
+		}
+		return $block;
+	}
+}
+/**
+ * Remove an existing block
+ * @param {number} blockid
+ */
+function removeBlock($blockid) {
+	global $adb;
+	$delete = $adb->pquery('delete from vtiger_modulebuilder_blocks where blocksid=?', array($blockid));
+	if ($delete) {
+		return true;
+	}
+	return false;
 }
 ?>

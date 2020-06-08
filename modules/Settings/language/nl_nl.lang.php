@@ -1026,5 +1026,6 @@ $mod_strings = array(
 'LBL_MB_RELATEDLISTS' => 'Related Lists',
 'LBL_MB_NEWRL' => 'Add related list',
 'LBL_MB_FINISH' => 'Finish',
+'LBL_MB_BACK' => 'BACK',
 );
 ?>

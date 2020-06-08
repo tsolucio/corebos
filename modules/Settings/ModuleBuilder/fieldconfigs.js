@@ -29,25 +29,11 @@ const fieldtypes = [{
 	}
 },
 {
-	type: 'Readonly',
-	values: {
-		0: alert_arr.NO,
-		1: alert_arr.YES,
-	}
-},
-{
 	type: 'Presence',
 	values: {
 		0: mod_alert_arr.AlwaysActive,
 		1: mod_alert_arr.InactiveActive,
 		2: mod_alert_arr.ActiveActive,
-	}
-},
-{
-	type: 'Typeofdata',
-	values: {
-		'M': alert_arr.FIELD_IS_MANDATORY,
-		'O': mod_alert_arr.FIELD_IS_OPTIONAL,
 	}
 },
 {
@@ -78,15 +64,16 @@ const fieldtypes = [{
 	}
 }];
 
+const checkboxFields = [{
+	type: 'Typeofdata',
+	value: 'Mandatory',
+}];
+
 const textfields = [
 	'fieldname',
 	'columnname',
-	'generatedtype',
 	'fieldlabel',
-	'maximumlength',
 	'entityidentifier',
-	'entityidfield',
-	'entityidcolumn',
 	'relatedmodules',
 	'sequence'
 ];

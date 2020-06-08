@@ -1,5 +1,6 @@
 var mod_alert_arr = {
-	'LBL_CHOOSEFIELD': 'Choose block for field ',
+	'LBL_CHOOSEFIELDBLOCK': 'Choose block for field',
+	'LBL_CHOOSECUSTOMVIEW': 'Choose fields for custom view',
 	'LBL_MB_PROGRESS': 'Progress',
 	'RecordDeleted': 'The record was successfully dropped',
 	'Field': 'Field',
@@ -52,4 +53,5 @@ var mod_alert_arr = {
 	'NoMassEditNoActivate': 'Non editable, cannot be activated',
 	'MassEditable': 'Is mass editable',
 	'NoMassEditActivate': 'Non editable but can be activated',
+	'Module': 'module',
 };

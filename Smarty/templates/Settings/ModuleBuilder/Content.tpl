@@ -27,7 +27,7 @@
                                     <abbr class="slds-required" title="required">* </abbr>{$MOD.LBL_MB_MODULENAME}
                                 </label>
                                 <div class="slds-form-element__control">
-                                    <input type="text" id="modulename" placeholder="{$MOD.LBL_MB_MODULENAME}" onchange="mb.checkForModule(this.id);mb.updateProgress(this.id, 1)" required="" class="slds-input" />
+                                    <input type="text" id="modulename" placeholder="{$MOD.LBL_MB_MODULENAME}" onchange="mb.checkForModule(this.id);mb.updateProgress(1)" required="" class="slds-input" />
                                 </div>
                             </div>
                             <div class="slds-form-element">
@@ -35,14 +35,14 @@
                                     <abbr class="slds-required" title="required">* </abbr>{$MOD.LBL_MB_MODULELABEL}
                                 </label>
                                 <div class="slds-form-element__control">
-                                    <input type="text" id="modulelabel" placeholder="{$MOD.LBL_MB_MODULELABEL}" onchange="mb.updateProgress(this.id, 1)" required="" class="slds-input" />
+                                    <input type="text" id="modulelabel" placeholder="{$MOD.LBL_MB_MODULELABEL}" onchange="mb.updateProgress(1)" required="" class="slds-input" />
                                 </div>
                                 </div>
                                 <div class="slds-form-element">
                                     <label class="slds-form-element__label" for="parentmenu">{$MOD.LBL_MB_PARENTMENU}</label>
                                     <div class="slds-form-element__control">
                                         <div class="slds-select_container">
-                                            <select class="slds-select" id="parentmenu" onchange="mb.updateProgress(this.id, 1)">
+                                            <select class="slds-select" id="parentmenu" onchange="mb.updateProgress(1)">
                                                 <option value="" disabled="" selected=""></option>
                                                 {foreach from=$MENU item=m key=k}
                                                 <option value="{$m}">{$m}</option>
@@ -64,7 +64,7 @@
                                         </span>
                                     </div>
                                     <div class="slds-col slds-size_11-of-12">
-                                        <select class="slds-select" id="moduleicon" onchange="mb.updateProgress(this.id, 1);mb.showModuleIcon(this.value);">
+                                        <select class="slds-select" id="moduleicon" onchange="mb.updateProgress(1);mb.showModuleIcon(this.value);">
                                             <option value="" disabled="" selected=""></option>
                                             {foreach from=$ICONS item=i key=k}
                                                 <option value="{$i}">{$i}</option>
@@ -88,7 +88,7 @@
             </div>
         </article>
 
-        <article class="slds-setup-assistant__step" id="step-2" style="display: none;">
+        <article class="slds-setup-assistant__step" id="step-2" style="display: none">
             <div class="slds-setup-assistant__step-summary">
                 <div class="slds-media">
                     <div class="slds-media__figure">
@@ -111,8 +111,16 @@
                                         <input type="text" id="blocks_label_1" placeholder="LBL_BLOCKNAME_INFORMATION" required="" class="slds-input" />
                                     </div>
                                 </div>
+                                <br>
+                                <div id="loadBlocks"></div>
                             </div>
                             <div class="slds-media__figure slds-media__figure_reverse">
+                                <button class="slds-button slds-button_text-destructive" onclick="mb.backTo(1)" style="color: white; background: #ce4949">
+                                    <svg class="slds-icon slds-icon--small" aria-hidden="true">
+                                        <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#back"></use>
+                                    </svg>
+                                    &nbsp;{$MOD.LBL_MB_BACK}
+                                </button>
                                 <button class="slds-button slds-button_success" onclick="mb.SaveModule(2);" style="color: white">{$MOD.LBL_MB_NEXT}&nbsp;
                                     <svg class="slds-icon slds-icon--small" aria-hidden="true">
                                         <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#forward"></use>
@@ -154,6 +162,12 @@
                                 </div>
                             </div>
                             <div class="slds-media__figure slds-media__figure_reverse">
+                                <button class="slds-button slds-button_text-destructive" onclick="mb.backTo(2)" style="color: white; background: #ce4949">
+                                    <svg class="slds-icon slds-icon--small" aria-hidden="true">
+                                        <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#back"></use>
+                                    </svg>
+                                    &nbsp;{$MOD.LBL_MB_BACK}
+                                </button>
                                 <button class="slds-button slds-button_success" onclick="mb.SaveModule(3);" style="color: white">{$MOD.LBL_MB_NEXT}&nbsp;
                                     <svg class="slds-icon slds-icon--small" aria-hidden="true">
                                         <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#forward"></use>

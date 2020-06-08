@@ -52,4 +52,5 @@ var mod_alert_arr = {
 	'NoMassEditNoActivate': 'No editable, no se puede activar',
 	'MassEditable': 'Es editable en masa',
 	'NoMassEditActivate': 'No editable pero se puede activar',
+	'Module': 'módulo',
 };
