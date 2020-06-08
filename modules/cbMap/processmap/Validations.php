@@ -410,11 +410,12 @@ class Validations extends processcbMap {
 			}
 		}
 		// add mysql strict varchar size checks
-		$checkboxrs = $adb->pquery('select columnname from vtiger_field where uitype=? and tabid=?', array('56', $tabid));
-		$checkboxes = array();
-		while (!$checkboxrs->EOF) {
-			$cl = $checkboxrs->FetchRow();
-			$checkboxes[] = strtoupper($cl['columnname']);
+		// we don't validate checkboxes nor autonumber fields
+		$novalrs = $adb->pquery('select columnname from vtiger_field where uitype in (?,?) and tabid=?', array('56', '4', $tabid));
+		$novalfields = array();
+		while (!$novalrs->EOF) {
+			$cl = $novalrs->FetchRow();
+			$novalfields[] = strtoupper($cl['columnname']);
 		}
 		$module = getTabModuleName($tabid);
 		$crme = CRMEntity::getInstance($module);
@@ -423,7 +424,7 @@ class Validations extends processcbMap {
 				continue;
 			}
 			foreach ($adb->database->MetaColumns($tablename) as $fname => $finfo) {
-				if ($finfo->type == 'varchar' && !in_array($fname, $checkboxes)) {
+				if ($finfo->type == 'varchar' && !in_array($fname, $novalfields)) {
 					$fname = strtolower($fname);
 					if (isset($mapping['fields'][$fname])) {
 						$mapping['fields'][$fname][] = array('rule'=>'lengthMax', 'rst'=>array($finfo->max_length));
