@@ -90,7 +90,7 @@ if ((isset($_REQUEST['type']) && $_REQUEST['type'] !='') || (isset($_REQUEST['n_
 			die('view:'.$calendar_arr['calendar']->view.' is not defined');
 		}
 
-		if ($type == 'change_owner' || $type == 'activity_delete' || $type == 'activity_postpone' || $n_type == 'nav') {
+		if ($type == 'activity_delete' || $type == 'activity_postpone' || $n_type == 'nav') {
 			if ($current_user->hour_format != '') {
 				$calendar_arr['calendar']->hour_format=$current_user->hour_format;
 			}

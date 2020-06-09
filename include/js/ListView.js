@@ -989,16 +989,6 @@ function mailer_export() {
 	return false;
 }
 
-function checkgroup() {
-	if (document.getElementById('group_checkbox').checked) {
-		document.change_ownerform_name.lead_group_owner.style.display = 'block';
-		document.change_ownerform_name.lead_owner.style.display = 'none';
-	} else {
-		document.change_ownerform_name.lead_owner.style.display = 'block';
-		document.change_ownerform_name.lead_group_owner.style.display = 'none';
-	}
-}
-
 function callSearch(searchtype) {
 	for (var i = 1; i <= 26; i++) {
 		var data_td_id = 'alpha_' + eval(i);
