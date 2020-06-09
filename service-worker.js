@@ -9314,7 +9314,7 @@ precacheAndRoute([{
   "revision": "c5247a4c8b5ebf37d5cd55c6621f38c5"
 }, {
   "url": "include/js/general.js",
-  "revision": "833360342e7c9faf407745fc6867d3e9"
+  "revision": "65e63897f30663b2a2b871756dc766fa"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "c121669fa3b0ab4ce7088a82107ca79c"
@@ -9329,7 +9329,7 @@ precacheAndRoute([{
   "revision": "31c7a760819a0277d2cdb75b82c2c66f"
 }, {
   "url": "include/js/ListView.js",
-  "revision": "86a81fa30a7fbf8bc6d16f1833ef31fa"
+  "revision": "08dd3299658cdde918af30bbc2d6c2c1"
 }, {
   "url": "include/js/loadjslog.js",
   "revision": "d5317a375aa85d10e53f5989b1be0524"
@@ -9833,7 +9833,7 @@ precacheAndRoute([{
   "revision": "c663d6d8dfeba2b51a542382c8623087"
 }, {
   "url": "modules/Calendar/script.js",
-  "revision": "9f872b7749fd4ed1dfbded728fe8cfd1"
+  "revision": "72f944c5928692ba7107b1a9b04a37bc"
 }, {
   "url": "modules/Calendar/Calendar.js",
   "revision": "c36c43d8af1b7bdc134c6b5ab8ca3aa3"
