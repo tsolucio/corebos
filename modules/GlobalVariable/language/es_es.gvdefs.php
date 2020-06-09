@@ -305,7 +305,6 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Texto',
 	'category' => 'Aplicación',
 	'values' => 'ASC | DESC',
-	'definition' => 'Sort order for records of a module. If not defined the internal default value of each module will be used.',
 	'definition' => 'Dirección de ordenación de los registros de un módulo. Si no es definido se utilizará el valor interno de cada módulo.',
 ),
 'Application_ListView_Default_OrderField' => array(

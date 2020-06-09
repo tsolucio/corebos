@@ -1187,7 +1187,6 @@ class Products extends CRMEntity {
 		);
 		$tbl_field_arr = array(
 			'vtiger_productcomponent'=>'productcomponentid',
-			'vtiger_seproductsrel'=>'crmid',
 			'vtiger_seattachmentsrel'=>'attachmentsid',
 			'vtiger_inventoryproductrel'=>'id',
 			'vtiger_pricebookproductrel'=>'pricebookid',
@@ -1195,7 +1194,6 @@ class Products extends CRMEntity {
 		);
 		$entity_tbl_field_arr = array(
 			'vtiger_productcomponent'=>'topdo',
-			'vtiger_seproductsrel'=>'crmid',
 			'vtiger_seattachmentsrel'=>'crmid',
 			'vtiger_inventoryproductrel'=>'productid',
 			'vtiger_pricebookproductrel'=>'productid',

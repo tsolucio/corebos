@@ -3018,10 +3018,7 @@ function ChangeTypeOfData_Filter($table_name, $column_name, $type_of_data) {
 		//Lead Related Fields
 		'vtiger_leaddetails:email' => 'V',
 		'vtiger_leaddetails:secondaryemail' => 'V',
-		//Documents Related Fields
-		'vtiger_senotesrel:crmid' => 'V',
 		//Calendar Related Fields
-		'vtiger_seactivityrel:crmid' => 'V',
 		'vtiger_seactivityrel:contactid' => 'V',
 		'vtiger_recurringevents:recurringtype' => 'V',
 		//HelpDesk Related Fields
