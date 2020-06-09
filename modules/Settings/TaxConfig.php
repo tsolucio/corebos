@@ -278,8 +278,8 @@ function addTaxType($taxlabel, $taxvalue, $sh = '', $retention = 0) {
 		$Vtiger_Utils_Log = false;
 		include_once 'vtlib/Vtiger/Module.php';
 		foreach ($modules as $mod) {
-			$mod_ent = VTiger_Module::getInstance($mod['name']);
-			$block_ent = VTiger_Block::getInstance('LBL_'.$mod['name'].'_FINANCIALINFO', $mod_ent);
+			$mod_ent = Vtiger_Module::getInstance($mod['name']);
+			$block_ent = Vtiger_Block::getInstance('LBL_'.$mod['name'].'_FINANCIALINFO', $mod_ent);
 			$field1 = new Vtiger_Field();
 			$field1->name = "sum_$taxname";
 			$field1->label= $taxlabel;
