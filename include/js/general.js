@@ -3427,12 +3427,14 @@ function ActivityReminderRegisterCallback(timeout) {
 	}
 }
 
-function ajaxChangeCalendarStatus(statusname, activityid) {
+function ajaxChangeCalendarStatus(statusname, activityid, from) {
 	document.getElementById('status').style.display = 'inline';
+	from = from || '';
 	var viewid = document.getElementById('viewname') ? document.getElementById('viewname').options[document.getElementById('viewname').options.selectedIndex].value : '';
 	var idstring = document.getElementById('idlist') ? document.getElementById('idlist').value : '';
 	var searchurl = document.getElementById('search_url') ? document.getElementById('search_url').value : '';
-	var urlstring = 'module=cbCalendar&action=cbCalendarAjax&file=calendarops&op=changestatus&ajax=true&newstatus=' + statusname + '&activityid=' + activityid + '&viewname=' + viewid + '&idlist=' + idstring + searchurl;
+	var urlstring = 'module=cbCalendar&action=cbCalendarAjax&file=calendarops&op=changestatus&ajax=true&newstatus=' + statusname + '&activityid=' + activityid;
+	urlstring = urlstring + '&frommodule=' + from +'&viewname=' + viewid + '&idlist=' + idstring + searchurl;
 	jQuery.ajax({
 		method: 'POST',
 		url: 'index.php?' + urlstring
@@ -3443,8 +3445,11 @@ function ajaxChangeCalendarStatus(statusname, activityid) {
 			document.getElementById('ListViewContents').innerHTML = result[2];
 			document.getElementById('basicsearchcolumns').innerHTML = '';
 		}
-		if (result[1] != '') {
+		if (result[1] && result[1] != '') {
 			ldsPrompt.show(alert_arr['ERROR'], result[1]);
+		}
+		if (from=='calgui') {
+			changeCalendarEvents();
 		}
 	});
 	return false;
