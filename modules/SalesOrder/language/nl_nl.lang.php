@@ -46,7 +46,6 @@ $mod_strings = array(
 'LBL_ANNUAL_REVENUE'=>'Jaaromzet:',
 'LBL_ADDRESS_INFORMATION'=>'Adresinformatie',
 'LBL_Quote_INFORMATION'=>'Accountinformatie',
-'LBL_SalesOrder_FINANCIALINFO' => 'Financial Information',
 'LBL_CUSTOM_INFORMATION'=>'Informatie',
 'LBL_BILLING_ADDRESS'=>'Postadres:',
 'LBL_SHIPPING_ADDRESS'=>'Afleveradres:',
