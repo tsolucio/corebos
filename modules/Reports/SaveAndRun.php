@@ -43,7 +43,7 @@ if (empty($folderid)) {
 $numOfRows = $adb->num_rows($res);
 
 if ($numOfRows > 0) {
-	global $primarymodule,$secondarymodule,$orderbylistsql,$orderbylistcolumns,$ogReport, $current_user;
+	global $primarymodule,$secondarymodule,$orderbylistcolumns,$ogReport, $current_user;
 
 	$ogReport = new Reports($reportid);
 	$primarymodule = $ogReport->primodule;
