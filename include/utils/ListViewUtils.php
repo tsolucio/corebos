@@ -2811,7 +2811,7 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 			$output .= '<a href="javascript:;" onClick="cal_navigation(\'' . $tab_type . '\',\'' . $url_string . '\',\'&start=1\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 			//$output .= '<a href="index.php?module=Calendar&action=index&start='.$navigation_array['prev'].$url_string.'" alt="'.$app_strings['LNK_LIST_PREVIOUS'].'"title="'.$app_strings['LNK_LIST_PREVIOUS'].'"><img src="themes/images/previous.gif" border="0" align="absmiddle"></a>&nbsp;';
 			$output .= '<a href="javascript:;" onClick="cal_navigation(\'' . $tab_type . '\',\'' . $url_string . '\',\'&start=' . $navigation_array['prev'] . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-		} elseif ($action_val == "FindDuplicate") {
+		} elseif ($action_val == 'FindDuplicate') {
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=1' . $url_string . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['prev'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_PREVIOUS'] . '"title="' . $app_strings['LNK_LIST_PREVIOUS'] . '"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		} elseif ($action_val == 'UnifiedSearch') {
@@ -2831,7 +2831,7 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 
 	if ($module == 'Calendar' && $action_val == 'index') {
 		$jsNavigate = "cal_navigation('$tab_type','$url_string','&start='+this.value);";
-	} elseif ($action_val == "FindDuplicate") {
+	} elseif ($action_val == 'FindDuplicate') {
 		$jsNavigate = "getDuplicateListViewEntries_js('$module','parenttab=$tabname&start='+this.value+'$url_string');";
 	} elseif ($action_val == 'UnifiedSearch') {
 		$jsNavigate = "getUnifiedSearchEntries_js('$module','parenttab=$tabname&start='+this.value+'$url_string');";
@@ -2845,7 +2845,7 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 	} else {
 		$url = '';
 	}
-	$jsHandler = "return VT_disableFormSubmit(event);";
+	$jsHandler = 'return VT_disableFormSubmit(event);';
 	$output .= "<input class='small' name='pagenum' type='text' value='{$navigation_array['current']}'
 		style='width: 3em;margin-right: 0.7em;' onchange=\"$jsNavigate\"
 		onkeypress=\"$jsHandler\">";

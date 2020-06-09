@@ -27,11 +27,11 @@ PE|PH|PN|PL|PT|PR|QA|MK|RE|RO|RW|RU|GS|ST|BL|MF|AS|SM|SA|SN|RS|SC|SL|SG|SK|SI|SB
 VC|PM|SD|SR|SJ|SZ|SE|CH|SY|TW|TJ|TZ|TH|TG|TK|TO|TT|TN|TR|TM|TC|TV|UG|UA|AE|GB|UY|US|UZ|VU|VA|VE|VN|WF|EH|\
 WS|YE|ZM|ZW)[A-Za-z0-9_]*$/';
 
-	if (!empty($piva) && ($type == "Societa" || $type == "Ditta Individuale") && preg_match($pattern1, $piva)) {
+	if (!empty($piva) && ($type == 'Societa' || $type == 'Ditta Individuale') && preg_match($pattern1, $piva)) {
 		return true;
-	} elseif (empty($piva) && $type == "Persona Fisica") {
+	} elseif (empty($piva) && $type == 'Persona Fisica') {
 		return true;
-	} elseif (!empty($piva) && $type == "Soggetto Estero" && preg_match($pattern2, $piva)) {
+	} elseif (!empty($piva) && $type == 'Soggetto Estero' && preg_match($pattern2, $piva)) {
 		return true;
 	} else {
 		return false;
