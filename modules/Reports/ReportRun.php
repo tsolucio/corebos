@@ -373,19 +373,19 @@ class ReportRun extends CRMEntity {
 	public function getSelectedColumnsList($reportid) {
 		global $adb, $log;
 
-		$ssql = "select vtiger_selectcolumn.* from vtiger_report inner join vtiger_selectquery on vtiger_selectquery.queryid = vtiger_report.queryid";
-		$ssql .= " left join vtiger_selectcolumn on vtiger_selectcolumn.queryid = vtiger_selectquery.queryid where vtiger_report.reportid = ? ";
-		$ssql .= " order by vtiger_selectcolumn.columnindex";
+		$ssql = 'select vtiger_selectcolumn.* from vtiger_report inner join vtiger_selectquery on vtiger_selectquery.queryid = vtiger_report.queryid';
+		$ssql .= ' left join vtiger_selectcolumn on vtiger_selectcolumn.queryid = vtiger_selectquery.queryid where vtiger_report.reportid=?';
+		$ssql .= ' order by vtiger_selectcolumn.columnindex';
 
 		$result = $adb->pquery($ssql, array($reportid));
 		$noofrows = $adb->num_rows($result);
 
-		if ($this->orderbylistsql != "") {
-			$sSQL .= $this->orderbylistsql.", ";
+		if ($this->orderbylistsql != '') {
+			$sSQL .= $this->orderbylistsql.', ';
 		}
 
 		for ($i=0; $i<$noofrows; $i++) {
-			$fieldcolname = $adb->query_result($result, $i, "columnname");
+			$fieldcolname = $adb->query_result($result, $i, 'columnname');
 			$ordercolumnsequal = true;
 			if ($fieldcolname != "") {
 				for ($j=0; $j<count($this->orderbylistcolumns); $j++) {
@@ -397,15 +397,15 @@ class ReportRun extends CRMEntity {
 					}
 				}
 				if ($ordercolumnsequal) {
-					$selectedfields = explode(":", $fieldcolname);
-					if ($selectedfields[0] == "vtiger_crmentity".$this->primarymodule) {
-						$selectedfields[0] = "vtiger_crmentity";
+					$selectedfields = explode(':', $fieldcolname);
+					if ($selectedfields[0] == 'vtiger_crmentity'.$this->primarymodule) {
+						$selectedfields[0] = 'vtiger_crmentity';
 					}
-					$sSQLList[] = $selectedfields[0].".".$selectedfields[1]." '".$selectedfields[2]."'";
+					$sSQLList[] = $selectedfields[0].'.'.$selectedfields[1]." '".$selectedfields[2]."'";
 				}
 			}
 		}
-		$sSQL .= implode(",", $sSQLList);
+		$sSQL .= implode(',', $sSQLList);
 
 		$log->debug('ReportRun :: getSelectedColumnsList'.$reportid);
 		return $sSQL;

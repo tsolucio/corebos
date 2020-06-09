@@ -52,7 +52,7 @@ if (isset($_REQUEST['edit_tax']) && $_REQUEST['edit_tax'] == 'true') {
 	$smarty->assign('SH_EDIT_MODE', 'false');
 } elseif (isset($_REQUEST['sh_edit_tax']) && $_REQUEST['sh_edit_tax'] == 'true') {
 	$smarty->assign('EDIT_MODE', 'false');
-	$smarty->assign("SH_EDIT_MODE", 'true');
+	$smarty->assign('SH_EDIT_MODE', 'true');
 } else {
 	$smarty->assign('EDIT_MODE', 'false');
 	$smarty->assign('SH_EDIT_MODE', 'false');
@@ -173,9 +173,9 @@ function updateTaxLabels($new_labels, $sh = '') {
 		if ($new_val != '') {
 			//First we will check whether the tax is already available or not
 			if ($sh != '' && $sh == 'sh') {
-				$check_query = "select taxlabel from vtiger_shippingtaxinfo where taxlabel = ? and taxid != ?";
+				$check_query = 'select taxlabel from vtiger_shippingtaxinfo where taxlabel = ? and taxid != ?';
 			} else {
-				$check_query = "select taxlabel from vtiger_inventorytaxinfo where taxlabel = ? and taxid != ?";
+				$check_query = 'select taxlabel from vtiger_inventorytaxinfo where taxlabel = ? and taxid != ?';
 			}
 			$check_res = $adb->pquery($check_query, array($new_val, $taxid));
 
@@ -185,9 +185,9 @@ function updateTaxLabels($new_labels, $sh = '') {
 			}
 
 			if ($sh != '' && $sh == 'sh') {
-				$query = "update vtiger_shippingtaxinfo set taxlabel= ? where taxid=?";
+				$query = 'update vtiger_shippingtaxinfo set taxlabel= ? where taxid=?';
 			} else {
-				$query = "update vtiger_inventorytaxinfo set taxlabel = ? where taxid=?";
+				$query = 'update vtiger_inventorytaxinfo set taxlabel = ? where taxid=?';
 			}
 			$adb->pquery($query, array($new_val, $taxid));
 
@@ -217,14 +217,14 @@ function addTaxType($taxlabel, $taxvalue, $sh = '', $retention = 0) {
 
 	//First we will check whether the tax is already available or not
 	if ($sh != '' && $sh == 'sh') {
-		$check_query = "select taxlabel from vtiger_shippingtaxinfo where taxlabel=?";
+		$check_query = 'select taxlabel from vtiger_shippingtaxinfo where taxlabel=?';
 	} else {
-		$check_query = "select taxlabel from vtiger_inventorytaxinfo where taxlabel=?";
+		$check_query = 'select taxlabel from vtiger_inventorytaxinfo where taxlabel=?';
 	}
 	$check_res = $adb->pquery($check_query, array($taxlabel));
 
 	if ($adb->num_rows($check_res) > 0) {
-		return "<font color='red'>".getTranslatedString('LBL_ERR_TAX_LABEL_ALREADY_EXISTS', $currentModule)."</font>";
+		return "<font color='red'>".getTranslatedString('LBL_ERR_TAX_LABEL_ALREADY_EXISTS', $currentModule).'</font>';
 	}
 
 	//if the tax is not available then add this tax.
@@ -298,7 +298,7 @@ function addTaxType($taxlabel, $taxvalue, $sh = '', $retention = 0) {
 	//if the tax is added as a column then we should add this tax in the list of taxes
 	if ($res) {
 		if ($sh != '' && $sh == 'sh') {
-			$query1 = "insert into vtiger_shippingtaxinfo (taxid,taxname,taxlabel,percentage,deleted) values(?,?,?,?,?)";
+			$query1 = 'insert into vtiger_shippingtaxinfo (taxid,taxname,taxlabel,percentage,deleted) values(?,?,?,?,?)';
 			$params1 = array($taxid, $taxname, $taxlabel, $taxvalue, 0);
 		} else {
 			$query1 = 'insert into vtiger_inventorytaxinfo (taxid,taxname,taxlabel,percentage,retention,tdefault,qcreate,deleted) values(?,?,?,?,?,?,?,?)';
