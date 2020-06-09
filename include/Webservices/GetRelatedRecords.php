@@ -139,7 +139,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 	$meta = $handler->getMeta();
 	$relatedModule = $meta->getEntityName();
 	if (!$meta->isModuleEntity()) {
-		throw new WebserviceException('INVALID_MODULE', "Given related module ($relatedModule) cannot be found");
+		throw new WebServiceException('INVALID_MODULE', "Given related module ($relatedModule) cannot be found");
 	}
 	$relatedModuleId = getTabid($relatedModule);
 
@@ -153,7 +153,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 	$meta = $handler->getMeta();
 	$module = $meta->getEntityName();
 	if (!$meta->isModuleEntity()) {
-		throw new WebserviceException('INVALID_MODULE', "Given module ($module) cannot be found");
+		throw new WebServiceException('INVALID_MODULE', "Given module ($module) cannot be found");
 	}
 	$moduleId = getTabid($module);
 
@@ -307,11 +307,11 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 				);
 
 				if (!$relationResult || !$adb->num_rows($relationResult)) {
-					throw new WebserviceException('MODULES_NOT_RELATED', "Cannot find relation between $module and $relatedModule");
+					throw new WebServiceException('MODULES_NOT_RELATED', "Cannot find relation between $module and $relatedModule");
 				}
 
 				if ($adb->num_rows($relationResult) > 1) {
-					throw new WebserviceException('MANY_RELATIONS', "More than one relation exists between $module and $relatedModule");
+					throw new WebServiceException('MANY_RELATIONS', "More than one relation exists between $module and $relatedModule");
 				}
 
 				$relationInfo = $adb->fetch_array($relationResult);

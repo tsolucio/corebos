@@ -43,7 +43,7 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 	$mainModule = $meta->getTabName();  // normalize module name
 	// check modules
 	if (!$meta->isModuleEntity()) {
-		throw new WebserviceException('INVALID_MODULE', "Given main module ($mainModule) cannot be found");
+		throw new WebServiceException('INVALID_MODULE', "Given main module ($mainModule) cannot be found");
 	}
 
 	// check permission on module

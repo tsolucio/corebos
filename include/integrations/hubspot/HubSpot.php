@@ -1045,9 +1045,9 @@ class corebos_hubspot {
 	public function activateFields() {
 		global $adb;
 		foreach (self::$supportedModules as $modulename) {
-			$module = VTiger_Module::getInstance($modulename);
+			$module = Vtiger_Module::getInstance($modulename);
 
-			$blockInstance = VTiger_Block::getInstance('LBL_HUBSPOT_INFORMATION', $module);
+			$blockInstance = Vtiger_Block::getInstance('LBL_HUBSPOT_INFORMATION', $module);
 			if (!$blockInstance) {
 				$blockInstance = new Vtiger_Block();
 				$blockInstance->label = 'LBL_HUBSPOT_INFORMATION';
@@ -1172,7 +1172,7 @@ class corebos_hubspot {
 		global $adb;
 		$fields = array('hubspotid','hubspotcreated','hubspotrecord','hubspotdeleted','hubspotlastsync','hubspotdeletedon', 'hubspotsyncwith');
 		foreach (self::$supportedModules as $modulename) {
-			$module = VTiger_Module::getInstance($modulename);
+			$module = Vtiger_Module::getInstance($modulename);
 			foreach ($fields as $fieldname) {
 				$field = Vtiger_Field::getInstance($fieldname, $module);
 				if ($field) {
