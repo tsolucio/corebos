@@ -67,19 +67,20 @@ function getPrimaryColumnsHTML($module) {
 	$id_added=false;
 	$mod_strings = return_module_language($current_language, $module);
 	$block_listed = array();
+	$shtml = '';
 	foreach ($ogReport->module_list[$module] as $value) {
 		if (isset($ogReport->pri_module_columnslist[$module][$value]) && !$block_listed[$value]) {
 			$block_listed[$value] = true;
-			$shtml .= "<optgroup label=\"".getTranslatedString($module, $module)." ".getTranslatedString($value)."\" class=\"select\" style=\"border:none\">";
+			$shtml .= '<optgroup label="'.getTranslatedString($module, $module).' '.getTranslatedString($value).'" class="select" style="border:none">';
 			if ($id_added==false) {
-				$shtml .= "<option value=\"vtiger_crmentity:crmid:".$module."_ID:crmid:I\">".getTranslatedString($module.' ID', $module)."</option>";
+				$shtml .= "<option value=\"vtiger_crmentity:crmid:".$module."_ID:crmid:I\">".getTranslatedString($module.' ID', $module).'</option>';
 				$id_added=true;
 			}
 			foreach ($ogReport->pri_module_columnslist[$module][$value] as $field => $fieldlabel) {
 				if (isset($mod_strings[$fieldlabel])) {
-					$shtml .= "<option value=\"".$field."\">".$mod_strings[$fieldlabel]."</option>";
+					$shtml .= '<option value="'.$field.'">'.$mod_strings[$fieldlabel].'</option>';
 				} else {
-					$shtml .= "<option value=\"".$field."\">".$fieldlabel."</option>";
+					$shtml .= '<option value="'.$field.'">'.$fieldlabel.'</option>';
 				}
 			}
 		}
@@ -94,9 +95,9 @@ function getPrimaryColumnsHTML($module) {
  */
 function getSecondaryColumnsHTML($module) {
 	global $ogReport, $current_language;
-
-	if ($module != "") {
-		$secmodule = explode(":", $module);
+	$shtml = '';
+	if ($module != '') {
+		$secmodule = explode(':', $module);
 		for ($i=0; $i < count($secmodule); $i++) {
 			$mod_strings = return_module_language($current_language, $secmodule[$i]);
 			if (vtlib_isModuleActive($secmodule[$i])) {

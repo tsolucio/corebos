@@ -142,7 +142,7 @@ class OpenDocument_DrawObject extends OpenDocument_StyledElement {
 		} else {
 			throw new OpenDocument_Exception(OpenDocument_Exception::ELEM_OR_DOC_EXPECTED);
 		}
-
+		$text = $href = $type = $show = $actuate = $draw_notifyonupdateofranges = '';
 		$element = new OpenDocument_FrameImage($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $text, $href, $type, $show, $actuate, $draw_notifyonupdateofranges);
 		$node->appendChild($element->node);
 		return $element;
