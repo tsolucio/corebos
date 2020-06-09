@@ -204,7 +204,9 @@ function updateTaxLabels($new_labels, $sh = '') {
 	}
 
 	$log->debug('< updateTaxPercentages');
+	return '';
 }
+
 /**	Function used to add the tax type which will do database alterations
  *	@param string $taxlabel - tax label name to be added
  *	@param string $taxvalue - tax value to be added

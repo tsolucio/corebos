@@ -400,6 +400,7 @@ class cbCVManagement extends CRMEntity {
 	}
 
 	public static function getApprovers($cvid) {
+		global $adb;
 		if (empty($cvid)) {
 			return false;
 		}

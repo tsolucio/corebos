@@ -129,7 +129,7 @@ class OpenDocument_Footnote extends OpenDocument_StyledElement {
 		switch ($name) {
 			case 'id':
 				if (empty($value)) {
-					$value=$id_counter++;
+					$value = self::$id_counter++;
 				}
 				$this->node->setAttributeNS(OpenDocument::NS_TEXT, 'id', $value);
 				break;
