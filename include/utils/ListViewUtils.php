@@ -2753,6 +2753,7 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 		$output = '<td align="right" style="padding: 5px;">';
 	}
 	$tabname = getParentTab();
+	$search_tag = isset($_REQUEST['search_tag']) ? $_REQUEST['search_tag'] : '';
 
 	$url_string = '';
 
