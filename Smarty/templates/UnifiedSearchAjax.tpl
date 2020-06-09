@@ -20,7 +20,6 @@
 <form name="massdelete" method="POST">
 	<input name="idlist" type="hidden">
 	<input name="change_owner" type="hidden">
-	<input name="change_status" type="hidden">
 	<input name="search_tag" type="hidden" value="{$TAG_SEARCH}" >
 	<input name="search_criteria" type="hidden" value="{$SEARCH_STRING}">
 	<input name="module" type="hidden" value="{$MODULE}" />

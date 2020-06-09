@@ -63,7 +63,6 @@
 	<input name='search_url' id="search_url" type='hidden' value='{$SEARCH_URL}'>
 	<input name="idlist" id="idlist" type="hidden">
 	<input name="change_owner" type="hidden">
-	<input name="change_status" type="hidden">
 	<input name="action" type="hidden">
 	<input name="where_export" type="hidden" value="{$export_where}">
 	<input name="step" type="hidden">
