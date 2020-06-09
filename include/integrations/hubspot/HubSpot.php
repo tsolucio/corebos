@@ -518,19 +518,20 @@ class corebos_hubspot {
 	}
 
 	public function deleteRecordIncoreBOS($module, $crmid) {
+		global $adb;
 		$now = date('Y-m-d H:i:s', time());
 		switch ($module) {
 			case 'Accounts':
-				$rs = $adb->pquery('update vtiger_account set hubspotsyncwith=0, hubspotdeleted=1, hubspotdeletedon=? where accountid=?', array($now,$crmid));
+				$adb->pquery('update vtiger_account set hubspotsyncwith=0, hubspotdeleted=1, hubspotdeletedon=? where accountid=?', array($now,$crmid));
 				break;
 			case 'Contacts':
-				$rs = $adb->pquery('update vtiger_contactdetails set hubspotsyncwith=0, hubspotdeleted=1, hubspotdeletedon=? where contactid=?', array($now,$crmid));
+				$adb->pquery('update vtiger_contactdetails set hubspotsyncwith=0, hubspotdeleted=1, hubspotdeletedon=? where contactid=?', array($now,$crmid));
 				break;
 			case 'Leads':
-				$rs = $adb->pquery('update vtiger_leaddetails set hubspotsyncwith=0, hubspotdeleted=1, hubspotdeletedon=? where leadid=?', array($now,$crmid));
+				$adb->pquery('update vtiger_leaddetails set hubspotsyncwith=0, hubspotdeleted=1, hubspotdeletedon=? where leadid=?', array($now,$crmid));
 				break;
 			case 'Potentials':
-				$rs = $adb->pquery('update vtiger_potential set hubspotsyncwith=0, hubspotdeleted=1, hubspotdeletedon=? where potentialid=?', array($now,$crmid));
+				$adb->pquery('update vtiger_potential set hubspotsyncwith=0, hubspotdeleted=1, hubspotdeletedon=? where potentialid=?', array($now,$crmid));
 				break;
 			default:
 		}
@@ -909,7 +910,7 @@ class corebos_hubspot {
 		global $adb, $current_user;
 		$rscto = $adb->pquery(
 			'select '.self::LASTSYNCFIELD.','.self::SYNCWITHFIELD.',potentialid from vtiger_potential where '.self::IDFIELD.'=?',
-			array($cmp['dealId'])
+			array($dal['dealId'])
 		);
 		if ($adb->num_rows($rscto)==0) { // does not exist > we cannot update
 			return false;
@@ -1200,7 +1201,7 @@ class corebos_hubspot {
 		if (is_null($this->getAPIURL())) {
 			return self::$ERROR_NOTCONFIGURED;
 		}
-		$fields = 'grant_type=authorization_code&client_id='.$this->oauthclientId.'&client_secret='.$this->clientSecret.'&redirect_uri='.$this->getcoreBOSAuthorizationURL();
+		$fields='grant_type=authorization_code&client_id='.$this->oauthclientId.'&client_secret='.$this->clientSecret.'&redirect_uri='.$this->getcoreBOSAuthorizationURL();
 		$fields.= '&code='.$accessCode;
 		return $this->getAccessToken($fields);
 	}
