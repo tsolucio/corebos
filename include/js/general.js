@@ -5647,14 +5647,16 @@ AutocompleteRelation.prototype.MaxResults = function () {
 };
 
 AutocompleteRelation.prototype.MinCharsToSearch = function () {
-	if (typeof Number(this.data.mincharstosearch) === 'number') {
-		return this.data.mincharstosearch;
-	} else if (typeof this.data.mincharstosearch === undefined) {
+	if (typeof this.data.mincharstosearch !== 'undefined') {
+		if (typeof this.data.mincharstosearch === 'number') {
+			return this.data.mincharstosearch;
+		}
 		var ref_module = this.getReferenceModule();
 		if (ref_module !== '' && this.data.mincharstosearch[ref_module] !== undefined) {
 			return this.data.mincharstosearch[ref_module];
 		}
 	}
+	this.data.mincharstosearch = 3;
 	return 3;
 };
 
