@@ -301,17 +301,21 @@ class Import_Data_Controller {
 					if ($fieldData == null) {
 						$entityInfo = null;
 					} else {
-						$entityInfo = vtws_create($moduleName, $fieldData, $this->user);
-						$entityInfo['status'] = self::$IMPORT_RECORD_CREATED;
-						//Prepare data for event handler
-						$entityData= array();
-						$entityData['rowId'] = $rowId;
-						$entityData['tableName'] = $tableName;
-						$entityData['entityInfo'] = $entityInfo;
-						$entityData['fieldData'] = $fieldData;
-						$entityData['moduleName'] = $moduleName;
-						$entityData['user'] = $this->user;
-						cbEventHandler::do_action('corebos.entity.import.create', $entityData);
+						try {
+							$entityInfo = vtws_create($moduleName, $fieldData, $this->user);
+							$entityInfo['status'] = self::$IMPORT_RECORD_CREATED;
+							//Prepare data for event handler
+							$entityData= array();
+							$entityData['rowId'] = $rowId;
+							$entityData['tableName'] = $tableName;
+							$entityData['entityInfo'] = $entityInfo;
+							$entityData['fieldData'] = $fieldData;
+							$entityData['moduleName'] = $moduleName;
+							$entityData['user'] = $this->user;
+							cbEventHandler::do_action('corebos.entity.import.create', $entityData);
+						} catch (\Throwable $th) {
+							$entityInfo = null;
+						}
 					}
 				}
 			}
