@@ -194,7 +194,7 @@ class ClickATell implements ISMSProvider {
 		for ($i = 0; $i < strlen($data); $i ++) {
 			$c = mb_substr($data, $i, 1, 'UTF-8');
 			$o = unpack('N', mb_convert_encoding($c, 'UCS-4BE', 'UTF-8'));
-			$hx = sprintf('%04X', $o [1]);
+			$hx = sprintf('%04X', $o[1]);
 			$utf += intval(substr($hx, 0, 2));
 			$mb_hex .= $hx;
 		}

@@ -1013,11 +1013,11 @@ class Reports extends CRMEntity {
 	 */
 	public function sgetColumntoTotal($primarymodule, $secondarymodule) {
 		$options = array();
-		$options []= $this->sgetColumnstoTotalHTML($primarymodule, 0);
+		$options[]= $this->sgetColumnstoTotalHTML($primarymodule, 0);
 		if (!empty($secondarymodule)) {
 			//$secondarymodule = explode(':',$secondarymodule);
 			for ($i=0; $i < count($secondarymodule); $i++) {
-				$options []= $this->sgetColumnstoTotalHTML($secondarymodule[$i], ($i+1));
+				$options[]= $this->sgetColumnstoTotalHTML($secondarymodule[$i], ($i+1));
 			}
 		}
 		return $options;
@@ -1043,11 +1043,11 @@ class Reports extends CRMEntity {
 				}
 			}
 		}
-		$options []= $this->sgetColumnstoTotalHTML($primarymodule, 0);
+		$options[]= $this->sgetColumnstoTotalHTML($primarymodule, 0);
 		if ($secondarymodule != '') {
 			$secondarymodule = explode(':', $secondarymodule);
 			for ($i=0; $i < count($secondarymodule); $i++) {
-				$options []= $this->sgetColumnstoTotalHTML($secondarymodule[$i], ($i+1));
+				$options[]= $this->sgetColumnstoTotalHTML($secondarymodule[$i], ($i+1));
 			}
 		}
 		$log->debug('Reports :: returned sgetColumntoTotalSelected');
@@ -1181,7 +1181,7 @@ class Reports extends CRMEntity {
 					$filters['checkboxes'][] = array('name'=>$baseColName.'_MIN:4');
 					$filters['checkboxes'][] = array('name' => $baseColName.'_MAX:5');
 				}
-				$options_list [] = $filters;
+				$options_list[] = $filters;
 			}
 		}
 
@@ -1233,7 +1233,7 @@ function getReportRelatedModules($module, $focus) {
 		if (!empty($focus->related_modules[$module])) {
 			foreach ($focus->related_modules[$module] as $rel_modules) {
 				if (isPermitted($rel_modules, 'index') == 'yes') {
-					$optionhtml []= $rel_modules;
+					$optionhtml[]= $rel_modules;
 				}
 			}
 		}

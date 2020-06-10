@@ -31,8 +31,8 @@ class crmtogo_WS_Login extends crmtogo_WS_Controller {
 		//get default language for Mobile from DB
 		if ($this->hasActiveUser()) {
 			$current_user = $this->getActiveUser();
-			$username = $_SESSION ['username'];
-			$password = $_SESSION ['password'];
+			$username = $_SESSION['username'];
+			$password = $_SESSION['password'];
 		}
 		$current_user->column_fields['user_name'] = $username;
 		if (!$current_user->doLogin($password)) {

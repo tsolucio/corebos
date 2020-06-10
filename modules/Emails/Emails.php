@@ -449,10 +449,10 @@ class Emails extends CRMEntity {
 			inner join vtiger_salesmanactivityrel on vtiger_salesmanactivityrel.smid=vtiger_users.id and vtiger_salesmanactivityrel.activityid=?';
 		$result = $adb->pquery($query, array($id));
 
-		$header [] = $app_strings['LBL_LIST_NAME'];
-		$header [] = $app_strings['LBL_LIST_USER_NAME'];
-		$header [] = $app_strings['LBL_EMAIL'];
-		$header [] = $app_strings['LBL_PHONE'];
+		$header[] = $app_strings['LBL_LIST_NAME'];
+		$header[] = $app_strings['LBL_LIST_USER_NAME'];
+		$header[] = $app_strings['LBL_EMAIL'];
+		$header[] = $app_strings['LBL_PHONE'];
 		while ($row = $adb->fetch_array($result)) {
 			$entries = array();
 
