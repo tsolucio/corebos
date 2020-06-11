@@ -77,7 +77,7 @@ class Import_CSV_Reader extends Import_File_Reader {
 				if ($fullcsv == 'true') {
 					$rowHeader = $data;
 
-					$columnsListQuery = '';
+					$columnsListQuery = $columnNamesFullCSV = '';
 					$columnIndexes = array_keys($rowHeader);
 					$RealCSVcolumnNames = array_values($rowHeader);
 
