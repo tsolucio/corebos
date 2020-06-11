@@ -83,26 +83,31 @@ const ListView = {
 					name: fieldname,
 					header: fieldvalue,
 					sortable: false,
+					width: 100,
 	      		};
 	      	} else {
 	      		if (SearchColumns == 0) {
 		      		if (uitype == '53' || uitype == '56' || uitype == '77') {
 		      			filter = {
-							type: 'select'
+							type: 'select',
 		      			};
 		      		} else if (uitype == '7' || uitype == '9' || uitype == '71' || uitype == '72') {
 		      			filter = {
 							type: 'number',
-							operator: 'OR'
+							showApplyBtn: true,
+							showClearBtn: true
 		      			};
 		      		} else if (uitype == '5' || uitype == '50' || uitype == '70') {
 		      			filter = {
-							type: 'date'
+							type: 'date',
+							showApplyBtn: true,
+							showClearBtn: true
 		      			};
 		      		} else {
 		      			filter = {
 							type: 'text',
-							operator: 'OR'
+							showApplyBtn: true,
+							showClearBtn: true
 		      			};
 		      		}
 					header = {
@@ -180,7 +185,6 @@ const ListView = {
 				bodyHeight: 'auto',
 				scrollX: false,
 				scrollY: false,
-				editingEvent: 'click',
 				columnOptions: {
 					resizable: true
 				},
@@ -200,6 +204,19 @@ const ListView = {
 						ListView.checkRows();
 					}
 				}
+			});
+			dataGridInstance.on('afterFilter', (ev) => {
+				const operatorData = {
+					eq: 'e',
+					contain: 'c',
+					ne: 'n',
+					start: 's',
+					end: 'ew',
+				};
+				const operator = operatorData[ev.filterState[0].state[0]['code']];
+				const urlstring = `&query=true&search_field=${ev.columnName}&search_text=${ev.filterState[0].state[0]['value']}&searchtype=BasicSearch&operator=${operator}`;
+				const searchtype = 'Basic';
+				ListView.ListViewSearch(url, urlstring, searchtype);
 			});
 			tui.Grid.applyTheme('striped');
 		});
