@@ -169,7 +169,7 @@ function getByModule_ColumnsList($mod, $columnslist, $selected = '') {
 						$advfilter_option['text'] = getTranslatedString($fieldlabel, $module);
 						$advfilter_option['selected'] = ($selected == $field ? 'selected' : '');
 						$advfilter[] = $advfilter_option;
-						$check_dup [] = $module.$fieldlabel;
+						$check_dup[] = $module.$fieldlabel;
 					}
 				}
 				if (count($advfilter)>0) {

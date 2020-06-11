@@ -48,7 +48,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	 * Parse the manifest file
 	 * @access private
 	 */
-	private function __parseManifestFile($unzip) {
+	public function __parseManifestFile($unzip) {
 		$manifestfile = $this->__getManifestFilePath();
 		$unzip->unzip('manifest.xml', $manifestfile);
 		$this->_modulexml = simplexml_load_file($manifestfile);
@@ -569,7 +569,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	 * Import Block of the module
 	 * @access private
 	 */
-	private function import_Block($modulenode, $moduleInstance, $blocknode) {
+	public function import_Block($modulenode, $moduleInstance, $blocknode) {
 		$blocklabel = $blocknode->label;
 		$blockInstance = new Vtiger_Block();
 		$blockInstance->label = $blocklabel;

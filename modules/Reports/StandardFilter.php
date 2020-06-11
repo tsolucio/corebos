@@ -37,7 +37,7 @@ if (isset($_REQUEST['record']) == false || $_REQUEST['record']=='') {
 	if (!empty($oRep->related_modules[$oReport->primodule])) {
 		foreach ($oRep->related_modules[$oReport->primodule] as $key => $value) {
 			if (isset($_REQUEST['secondarymodule_'.$value])) {
-				$secondarymodules []= $_REQUEST['secondarymodule_'.$value];
+				$secondarymodules[]= $_REQUEST['secondarymodule_'.$value];
 			}
 		}
 	}
@@ -68,24 +68,25 @@ if (isset($_REQUEST['record']) == false || $_REQUEST['record']=='') {
 }
 
 /** Function to get the HTML strings for the primarymodule standard filters
- * @ param $module : Type String
- * @ param $selected : Type String(optional)
- *  This Returns a HTML combo srings
+ * @param $module : Type String
+ * @param $selected : Type String(optional)
+ * @return HTML combo srings
  */
-function getPrimaryStdFilterHTML($module, $selected = "") {
+function getPrimaryStdFilterHTML($module, $selected = '') {
 	global $ogReport;
 	$ogReport->oCustomView=new CustomView();
 	$result = $ogReport->oCustomView->getStdCriteriaByModule($module);
+	$shtml = '';
 	if (isset($result)) {
 		$i18nModule = getTranslatedString($module, $module);
 		foreach ($result as $key => $value) {
-			if ($module == 'Calendar' || $module == 'Events') {
+			if ($module == 'Calendar') {
 				$key = str_replace('&amp;', 'and', $key);
 			}
 			if ($key == $selected) {
-				$shtml .= '<option selected value="'.$key.'">'.$i18nModule.' - '.getTranslatedString($value, $secmodule[$i]).'</option>';
+				$shtml .= '<option selected value="'.$key.'">'.$i18nModule.' - '.getTranslatedString($value, $module).'</option>';
 			} else {
-				$shtml .= '<option value="'.$key.'">'.$i18nModule.' - '.getTranslatedString($value, $secmodule[$i]).'</option>';
+				$shtml .= '<option value="'.$key.'">'.$i18nModule.' - '.getTranslatedString($value, $module).'</option>';
 			}
 		}
 	}
@@ -95,11 +96,12 @@ function getPrimaryStdFilterHTML($module, $selected = "") {
 /** Function to get the HTML strings for the secondary  standard filters
  * @param $module : Type String
  * @param $selected : Type String(optional)
- *  This Returns a HTML combo srings for the secondary modules
+ * @return HTML combo srings for the secondary modules
  */
-function getSecondaryStdFilterHTML($module, $selected = "") {
+function getSecondaryStdFilterHTML($module, $selected = '') {
 	global $ogReport;
 	$ogReport->oCustomView=new CustomView();
+	$shtml = '';
 	if ($module != '') {
 		$secmodule = explode(':', $module);
 		for ($i=0; $i < count($secmodule); $i++) {

@@ -1369,7 +1369,7 @@ function runBAScript(scripturi) {
 			VtigerJS_DialogBox.unblock();
 		}
 	});
-	return false;
+	return void(0);
 }
 
 function runBAWorkflow(workflowid, crmids) {
@@ -1394,7 +1394,7 @@ function runBAWorkflow(workflowid, crmids) {
 		}
 		VtigerJS_DialogBox.unblock();
 	});
-	return false;
+	return void(0);
 }
 
 function doModuleValidation(edit_type, editForm, callback) {
@@ -1418,106 +1418,80 @@ function doModuleValidation(edit_type, editForm, callback) {
 
 function doServerValidation(edit_type, formName, callback) {
 	VtigerJS_DialogBox.block();
-	if (edit_type=='mass_edit') {
-		var action = 'MassEditSave';
-	} else {
-		var action = 'Save';
-	}
+	var action = (edit_type=='mass_edit' ? 'MassEditSave' : 'Save');
 	let SVModule = document.forms[formName].module.value;
-	let SVRecord = document.forms[formName].record.value;
-	//Testing if a Validation file exists
-	jQuery.ajax({
-		url: 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule='+SVModule+'&crmid='+SVRecord,
-		type:'get'
-	}).fail(function (jqXHR, textStatus) {
-		//Validation file does not exist
-		if (typeof callback == 'function') {
-			callback('submit');
-		} else {
-			submitFormForAction(formName, action);
+	//let SVRecord = document.forms[formName].record.value;
+	// Create object which gets the values of all input, textarea, select and button elements from the form
+	var myFields = document.forms[formName].elements;
+	var sentForm = new Object();
+	for (var f=0; f<myFields.length; f++) {
+		if (myFields[f].type=='checkbox') {
+			sentForm[myFields[f].name] = myFields[f].checked;
+		} else if (myFields[f].type=='radio' && myFields[f].checked) {
+			sentForm[myFields[f].name] = myFields[f].value;
+		} else if (myFields[f].type!='radio') {
+			sentForm[myFields[f].name] = myFields[f].value;
 		}
-	}).done(function (data) {
-		//Validation file exists
-		if (data == 'yes') {
-			// Create object which gets the values of all input, textarea, select and button elements from the form
-			var myFields = document.forms[formName].elements;
-			var sentForm = new Object();
-			for (var f=0; f<myFields.length; f++) {
-				if (myFields[f].type=='checkbox') {
-					sentForm[myFields[f].name] = myFields[f].checked;
-				} else if (myFields[f].type=='radio' && myFields[f].checked) {
-					sentForm[myFields[f].name] = myFields[f].value;
-				} else if (myFields[f].type!='radio') {
-					sentForm[myFields[f].name] = myFields[f].value;
+	}
+	//JSONize form data
+	sentForm = JSON.stringify(sentForm);
+	jQuery.ajax({
+		type : 'post',
+		data : {structure: sentForm},
+		url : 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule='+SVModule
+	}).done(function (msg) {
+		//Validation file answers
+		if (msg.search('%%%CONFIRM%%%') > -1) { //Allow to use confirm alert
+			//message to display
+			var display = msg.split('%%%CONFIRM%%%');
+			if (confirm(display[1])) { //If you click on OK
+				if (typeof callback == 'function') {
+					callback('submit');
+				} else {
+					submitFormForAction(formName, action);
 				}
-			}
-			//JSONize form data
-			sentForm = JSON.stringify(sentForm);
-			jQuery.ajax({
-				type : 'post',
-				data : {structure: sentForm},
-				url : 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule='+SVModule
-			}).done(function (msg) {
-				//Validation file answers
-				if (msg.search('%%%CONFIRM%%%') > -1) { //Allow to use confirm alert
-					//message to display
-					var display = msg.split('%%%CONFIRM%%%');
-					if (confirm(display[1])) { //If you click on OK
-						if (typeof callback == 'function') {
-							callback('submit');
-						} else {
-							submitFormForAction(formName, action);
-						}
-					} else {
-						VtigerJS_DialogBox.unblock();
-					}
-				} else if (msg.search('%%%OK%%%') > -1) { //No error
-					if (typeof callback == 'function') {
-						callback('submit');
-					} else {
-						submitFormForAction(formName, action);
-					}
-				} else if (msg.search('%%%FUNCTION%%%') > -1) { //call user function
-					var callfunc = msg.split('%%%FUNCTION%%%');
-					var params = '';
-					if (callfunc[1].search('%%%PARAMS%%%') > -1) { //function has params string
-						var cfp = callfunc[1].split('%%%PARAMS%%%');
-						callfunc = cfp[0];
-						params = cfp[1];
-					} else {
-						callfunc = callfunc[1];
-					}
-					if (typeof window[callfunc] == 'function') {
-						if (window[callfunc](edit_type, formName, action, callback, params)) {
-							if (typeof callback == 'function') {
-								callback('submit');
-							} else {
-								submitFormForAction(formName, action);
-							}
-						}
-					} else {
-						if (typeof callback == 'function') {
-							callback('submit');
-						} else {
-							submitFormForAction(formName, action);
-						}
-					}
-				} else { //Error
-					ldsPrompt.show(alert_arr['ERROR'], msg);
-					VtigerJS_DialogBox.unblock();
-				}
-			}).fail(function () {
-				//Error while asking file
-				ldsPrompt.show(alert_arr['ERROR'], 'Error with AJAX');
+			} else {
 				VtigerJS_DialogBox.unblock();
-			});
-		} else { // no validation we send form
+			}
+		} else if (msg.search('%%%OK%%%') > -1) { //No error
 			if (typeof callback == 'function') {
 				callback('submit');
 			} else {
 				submitFormForAction(formName, action);
 			}
+		} else if (msg.search('%%%FUNCTION%%%') > -1) { //call user function
+			var callfunc = msg.split('%%%FUNCTION%%%');
+			var params = '';
+			if (callfunc[1].search('%%%PARAMS%%%') > -1) { //function has params string
+				var cfp = callfunc[1].split('%%%PARAMS%%%');
+				callfunc = cfp[0];
+				params = cfp[1];
+			} else {
+				callfunc = callfunc[1];
+			}
+			if (typeof window[callfunc] == 'function') {
+				if (window[callfunc](edit_type, formName, action, callback, params)) {
+					if (typeof callback == 'function') {
+						callback('submit');
+					} else {
+						submitFormForAction(formName, action);
+					}
+				}
+			} else {
+				if (typeof callback == 'function') {
+					callback('submit');
+				} else {
+					submitFormForAction(formName, action);
+				}
+			}
+		} else { //Error
+			ldsPrompt.show(alert_arr['ERROR'], msg);
+			VtigerJS_DialogBox.unblock();
 		}
+	}).fail(function () {
+		//Error while asking file
+		ldsPrompt.show(alert_arr['ERROR'], 'Error with AJAX');
+		VtigerJS_DialogBox.unblock();
 	});
 	return false;
 }
@@ -3453,12 +3427,14 @@ function ActivityReminderRegisterCallback(timeout) {
 	}
 }
 
-function ajaxChangeCalendarStatus(statusname, activityid) {
+function ajaxChangeCalendarStatus(statusname, activityid, from) {
 	document.getElementById('status').style.display = 'inline';
+	from = from || '';
 	var viewid = document.getElementById('viewname') ? document.getElementById('viewname').options[document.getElementById('viewname').options.selectedIndex].value : '';
 	var idstring = document.getElementById('idlist') ? document.getElementById('idlist').value : '';
 	var searchurl = document.getElementById('search_url') ? document.getElementById('search_url').value : '';
-	var urlstring = 'module=cbCalendar&action=cbCalendarAjax&file=calendarops&op=changestatus&ajax=true&newstatus=' + statusname + '&activityid=' + activityid + '&viewname=' + viewid + '&idlist=' + idstring + searchurl;
+	var urlstring = 'module=cbCalendar&action=cbCalendarAjax&file=calendarops&op=changestatus&ajax=true&newstatus=' + statusname + '&activityid=' + activityid;
+	urlstring = urlstring + '&frommodule=' + from +'&viewname=' + viewid + '&idlist=' + idstring + searchurl;
 	jQuery.ajax({
 		method: 'POST',
 		url: 'index.php?' + urlstring
@@ -3469,8 +3445,11 @@ function ajaxChangeCalendarStatus(statusname, activityid) {
 			document.getElementById('ListViewContents').innerHTML = result[2];
 			document.getElementById('basicsearchcolumns').innerHTML = '';
 		}
-		if (result[1] != '') {
+		if (result[1] && result[1] != '') {
 			ldsPrompt.show(alert_arr['ERROR'], result[1]);
+		}
+		if (from=='calgui') {
+			changeCalendarEvents();
 		}
 	});
 	return false;
@@ -5668,14 +5647,16 @@ AutocompleteRelation.prototype.MaxResults = function () {
 };
 
 AutocompleteRelation.prototype.MinCharsToSearch = function () {
-	if (typeof Number(this.data.mincharstosearch) === 'number') {
-		return this.data.mincharstosearch;
-	} else if (typeof this.data.mincharstosearch === undefined) {
+	if (typeof this.data.mincharstosearch !== 'undefined') {
+		if (typeof this.data.mincharstosearch === 'number') {
+			return this.data.mincharstosearch;
+		}
 		var ref_module = this.getReferenceModule();
 		if (ref_module !== '' && this.data.mincharstosearch[ref_module] !== undefined) {
 			return this.data.mincharstosearch[ref_module];
 		}
 	}
+	this.data.mincharstosearch = 3;
 	return 3;
 };
 

@@ -305,7 +305,6 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Texto',
 	'category' => 'Aplicación',
 	'values' => 'ASC | DESC',
-	'definition' => 'Sort order for records of a module. If not defined the internal default value of each module will be used.',
 	'definition' => 'Dirección de ordenación de los registros de un módulo. Si no es definido se utilizará el valor interno de cada módulo.',
 ),
 'Application_ListView_Default_OrderField' => array(
@@ -475,6 +474,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => '',
 	'definition' => 'Límite de registros que se pueden importar en línea. Si el número de registros a importar es mayor a este número, entonces la importación se realizará de manera desatendida por la tarea de programación correspondiente. El valor predeterminado es 1000',
+),
+'Import_Launch_EventsAndWorkflows' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'yes | no',
+	'definition' => 'Ejecutar eventos y flujos de trabajo al importar registros. El valor por defecto es no',
 ),
 'Export_Field_Separator_Symbol' => array(
 	'status' => 'Implementada',

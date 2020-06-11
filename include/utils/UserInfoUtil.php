@@ -3450,7 +3450,7 @@ function getPermittedModuleNames() {
  * @return Array Array of accessible tabids.
  */
 function getPermittedModuleIdList() {
-	global $current_user;
+	global $current_user, $adb;
 	$permittedModules=array();
 	$userprivs = $current_user->getPrivileges();
 	$profileTabsPermission = $userprivs->getprofileTabsPermission();

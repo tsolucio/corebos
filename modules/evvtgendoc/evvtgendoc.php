@@ -41,8 +41,8 @@ class evvtgendoc extends CRMEntity {
 				$field->setPicklistValues($global_variables);
 			}
 
-			$mod_pr = VTiger_Module::getInstance('Documents');
-			$block_pr = VTiger_Block::getInstance('LBL_NOTE_INFORMATION', $mod_pr);
+			$mod_pr = Vtiger_Module::getInstance('Documents');
+			$block_pr = Vtiger_Block::getInstance('LBL_NOTE_INFORMATION', $mod_pr);
 			$field8 = new Vtiger_Field();
 			$field8->name = 'template';
 			$field8->label= 'Template';

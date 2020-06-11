@@ -490,15 +490,23 @@ class VtigerCRMObjectMeta extends EntityMeta {
 
 	public function getNameFields() {
 		global $adb;
-		$result = $adb->pquery('select fieldname,tablename,entityidfield from vtiger_entityname where tabid = ?', array($this->getEffectiveTabId()));
-		$fieldNames = '';
-		if ($result) {
-			$rowCount = $adb->num_rows($result);
-			if ($rowCount > 0) {
-				$fieldNames = $adb->query_result($result, 0, 'fieldname');
+		$tabid = $this->getEffectiveTabId();
+		$result = $adb->pquery('select fieldname from vtiger_entityname where tabid=?', array($tabid));
+		$fieldNames = array();
+		if ($result && $adb->num_rows($result) > 0) {
+			$labelFields = $adb->query_result($result, 0, 'fieldname');
+			$lfields = explode(',', $labelFields);
+			foreach ($lfields as $key => $columnname) {
+				$fieldinfo = VTCacheUtils::lookupFieldInfoByColumn($tabid, $columnname);
+				if ($fieldinfo === false) {
+					getColumnFields(getTabModuleName($tabid));
+					$fieldinfo = VTCacheUtils::lookupFieldInfo($tabid, $columnname);
+				}
+				$lfields[$key] = $fieldinfo['fieldname'];
 			}
+			$fieldNames = $lfields;
 		}
-		return $fieldNames;
+		return implode(',', $fieldNames);
 	}
 
 	public function getName($webserviceId) {

@@ -101,18 +101,18 @@ class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
 			//without paging per month
 			$datetimeevent=$request->get('datetime');
 			if (empty($datetimeevent)) {
-				$datestoconsider ['start'] = date('Y-m').'-01';
-				$datestoconsider ['end'] =date('Y-m-t');
+				$datestoconsider['start'] = date('Y-m').'-01';
+				$datestoconsider['end'] =date('Y-m-t');
 			} else {
 				$strDate = substr($datetimeevent, 4, 11);
 				if ($request->get('inweek')== true) {
 					$tsDate = strtotime($strDate);
 					$daysAfterWeekStart = (date('w', $tsDate)+6)%7; // +6%7 is for monday as first day of week
-					$datestoconsider ['start'] = date('Y-m-d', strtotime('-'.$daysAfterWeekStart.' days', $tsDate));
-					$datestoconsider ['end'] = date('Y-m-d', strtotime('+'.(6-$daysAfterWeekStart).' days', $tsDate));
+					$datestoconsider['start'] = date('Y-m-d', strtotime('-'.$daysAfterWeekStart.' days', $tsDate));
+					$datestoconsider['end'] = date('Y-m-d', strtotime('+'.(6-$daysAfterWeekStart).' days', $tsDate));
 				} else {
-					$datestoconsider ['start'] = date('Y-m', strtotime($strDate)).'-01';
-					$datestoconsider ['end'] =date('Y-m-t', strtotime($strDate));
+					$datestoconsider['start'] = date('Y-m', strtotime($strDate)).'-01';
+					$datestoconsider['end'] =date('Y-m-t', strtotime($strDate));
 				}
 			}
 

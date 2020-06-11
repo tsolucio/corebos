@@ -502,49 +502,49 @@ class OpenDocument {
 						$element = new OpenDocument_TextSoftPageBreak($child, $this);
 						break;
 					case 'text:reference-mark':
-						$element = new OpenDocument_ReferenceMark($child, $this);
+						$element = new OpenDocument_ReferenceMark($child, $this, '');
 						break;
 					case 'text:reference-ref':
-						$element = new OpenDocument_ReferenceRef($child, $this);
+						$element = new OpenDocument_ReferenceRef($child, $this, '');
 						break;
 					case 'text:section':
 						$element = new OpenDocument_Section($child, $this);
 						break;
 					case 'text:note':
-						$element = new OpenDocument_Footnote($child, $this);
+						$element = new OpenDocument_Footnote($child, $this, '');
 						break;
 					case 'text:note-citation':
-						$element = new OpenDocument_NoteCitation($child, $this);
+						$element = new OpenDocument_NoteCitation($child, $this, '');
 						break;
 					case 'text:note-body':
 						$element = new OpenDocument_NoteBody($child, $this);
 						break;
 					case 'text:bookmark-start':
-						$element = new OpenDocument_BookmarkStart($child, $this);
+						$element = new OpenDocument_BookmarkStart($child, $this, '');
 						break;
 					case 'text:bookmark-end':
-						$element = new OpenDocument_BookmarkEnd($child, $this);
+						$element = new OpenDocument_BookmarkEnd($child, $this, '');
 						break;
 					case 'text:date':
-						$element = new OpenDocument_TextDate($child, $this);
+						$element = new OpenDocument_TextDate($child, $this, '');
 						break;
 					case 'text:time':
-						$element = new OpenDocument_TextTime($child, $this);
+						$element = new OpenDocument_TextTime($child, $this, '');
 						break;
 					case 'text:page-number':
-						$element = new OpenDocument_PageNumber($child, $this);
+						$element = new OpenDocument_PageNumber($child, $this, '');
 						break;
 					case 'text:page-count':
-						$element = new OpenDocument_PageCount($child, $this);
+						$element = new OpenDocument_PageCount($child, $this, '');
 						break;
 					case 'text:subject':
-						$element = new OpenDocument_InfoSubject($child, $this);
+						$element = new OpenDocument_InfoSubject($child, $this, '');
 						break;
 					case 'text:title':
-						$element = new OpenDocument_InfoTitle($child, $this);
+						$element = new OpenDocument_InfoTitle($child, $this, '');
 						break;
 					case 'text:initial-creator':
-						$element = new OpenDocument_InfoAuthor($child, $this);
+						$element = new OpenDocument_InfoAuthor($child, $this, '');
 						break;
 					case 'draw:g':
 						$element = new OpenDocument_DrawGraph($child, $this);

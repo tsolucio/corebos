@@ -192,8 +192,8 @@ function setVAT($entity) {
 	$upd = "update {$modules[$mod]['table']} set ";
 	foreach ($taxsum as $idx => $val) {
 		if (!in_array($taxinfo[$idx]['field'], $inv_cols)) {
-			$mod_ent = VTiger_Module::getInstance($mod);
-			$block_ent = VTiger_Block::getInstance('LBL_'.$mod.'_FINANCIALINFO', $mod_ent);
+			$mod_ent = Vtiger_Module::getInstance($mod);
+			$block_ent = Vtiger_Block::getInstance('LBL_'.$mod.'_FINANCIALINFO', $mod_ent);
 			$field1 = new Vtiger_Field();
 			$field1->name = $taxinfo[$idx]['field'];
 			$field1->label= $taxinfo[$idx]['label'];

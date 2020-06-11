@@ -142,7 +142,20 @@ class DecisionTable extends processcbMap {
 					foreach ($value->decisionTable->searches->search as $k => $v) {
 						foreach ($v->condition as $k => $v) {
 							if (isset($context[(String)$v->input]) && $context[(String)$v->input]!='__IGNORE__') {
-								$queryGenerator->addCondition((String)$v->field, $context[(String)$v->input], (String)$v->operation, $queryGenerator::$AND);
+								$uitype = getUItypeByFieldName($module, (String)$v->field);
+								if ($uitype==10) {
+									if (!empty($context[(String)$v->input])) {
+										if (strpos($context[(String)$v->input], 'x') > 0) {
+											list($wsid, $crmid) = explode('x', $context[(String)$v->input]);
+										} else {
+											$crmid = $context[(String)$v->input];
+										}
+										$relmod = getSalesEntityType($crmid);
+										$queryGenerator->addReferenceModuleFieldCondition($relmod, (String)$v->field, 'id', $crmid, (String)$v->operation, $queryGenerator::$AND);
+									}
+								} else {
+									$queryGenerator->addCondition((String)$v->field, $context[(String)$v->input], (String)$v->operation, $queryGenerator::$AND);
+								}
 							}
 						}
 					}
@@ -164,8 +177,12 @@ class DecisionTable extends processcbMap {
 				}
 				$result = $adb->pquery($query, array());
 				$seqcnt = 1;
-				$numfields = $adb->num_fields($result);
-				while ($row = $adb->fetch_array($result)) {
+				$numfields = $result ? $adb->num_fields($result) : 0;
+				if ($field=='id') {
+					$finfo = getEntityField($module);
+					$field = $finfo['entityid'];
+				}
+				while ($result && $row = $adb->fetch_array($result)) {
 					if ($ruleOutput == 'Row') {
 						$seqidx = $sequence.'_'.sprintf("%'.04d", $seqcnt++);
 						$ret = $row;

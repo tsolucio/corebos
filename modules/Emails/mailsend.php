@@ -96,7 +96,7 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 		$pmodule = 'Users';
 		$description = getMergedDescription($_REQUEST['description'], $mycrmid, $pmodule);
 		$mail_status = send_mail('Emails', $emailadd, $from_name, $from_address, $_REQUEST['subject'], $description, '', '', 'all', $focus->id);
-		$all_to_emailids []= $emailadd;
+		$all_to_emailids[]= $emailadd;
 		$mail_status_str .= $emailadd.'='.$mail_status.'&&&';
 	} else {
 		//Send mail to account, lead or contact based on their ids
@@ -146,7 +146,7 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 					$mail_status = send_mail('Emails', $emailadd, $from_name, $from_address, $subject, $description, '', '', 'all', $focus->id, $logo);
 				}
 
-				$all_to_emailids []= $emailadd;
+				$all_to_emailids[]= $emailadd;
 				$mail_status_str .= $emailadd.'='.$mail_status.'&&&';
 				//added to get remain the EditView page if an error occurs in mail sending
 				if ($mail_status != 1) {

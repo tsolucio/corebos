@@ -42,7 +42,6 @@ $dfltcomp = vtlib_purify($screen_values['defaultcompany']);
 
 if (!empty($dfltcomp) && $dfltcomp==true && $query && $cnt>0) {
 	echo getTranslatedString('LBL_COMPANY_EXISTS', 'cbCompany');
-	die;
+} else {
+	echo '%%%OK%%%';
 }
-
-echo '%%%OK%%%';

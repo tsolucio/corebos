@@ -47,125 +47,82 @@ if ($record) {
 	$focus->id  = $record;
 }
 
-if ((isset($_REQUEST['change_status']) && $_REQUEST['change_status']) && ($_REQUEST['status']!='' || $_REQUEST['eventstatus']!='')) {
-	$status ='';
-	$activity_type='';
-	$return_id = $focus->id;
-	if (isset($_REQUEST['status'])) {
-		$status = $_REQUEST['status'];
-		$activity_type = 'Task';
-	} elseif (isset($_REQUEST['eventstatus'])) {
-		$status = $_REQUEST['eventstatus'];
-		$activity_type = 'Events';
-	}
-	if (isPermitted('Calendar', 'EditView', $_REQUEST['record']) == 'yes') {
-		ChangeStatus($status, $return_id, $activity_type);
-	} else {
-		echo "<link rel='stylesheet' type='text/css' href='themes/$theme/style.css'>";
-		echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
-		echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-			<table border='0' cellpadding='5' cellspacing='0' width='98%'>
-			<tbody><tr>
-			<td rowspan='2' width='11%'><img src='".vtiger_imageurl('denied.gif', $theme)."'></td>
-			<td style='border-bottom: 1px solid rgb(204,204,204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>".$app_strings['LBL_PERMISSION']."</span></td>
-			</tr>
-			<tr>
-			<td class='small' align='right' nowrap='nowrap'>
-			<a href='javascript:window.history.back();'>".$app_strings['LBL_GO_BACK']."</a><br></td>
-			</tr>
-			</tbody></table>
-		</div>
-		</td></tr></table>";
-		die;
-	}
-	$invitee_qry = 'select inviteeid from vtiger_invitees where activityid=?';
-	$invitee_res = $adb->pquery($invitee_qry, array($return_id));
-	$count = $adb->num_rows($invitee_res);
-	if ($count != 0) {
-		for ($j = 0; $j < $count; $j++) {
-			$invitees_ids[]= $adb->query_result($invitee_res, $j, 'inviteeid');
+$timeFields = array('time_start', 'time_end');
+$tabId = getTabid($tab_type);
+foreach ($focus->column_fields as $fieldname => $val) {
+	$fieldInfo = getFieldRelatedInfo($tabId, $fieldname);
+	$uitype = $fieldInfo['uitype'];
+	$typeofdata = $fieldInfo['typeofdata'];
+	if (isset($_REQUEST[$fieldname])) {
+		if (is_array($_REQUEST[$fieldname])) {
+			$value = $_REQUEST[$fieldname];
+		} else {
+			$value = trim($_REQUEST[$fieldname]);
 		}
-		$invitees_ids_string = implode(';', $invitees_ids);
-		sendInvitation($invitees_ids_string, $activity_type, $mail_data['subject'], $mail_data);
-	}
-} else {
-	$timeFields = array('time_start', 'time_end');
-	$tabId = getTabid($tab_type);
-	foreach ($focus->column_fields as $fieldname => $val) {
-		$fieldInfo = getFieldRelatedInfo($tabId, $fieldname);
-		$uitype = $fieldInfo['uitype'];
-		$typeofdata = $fieldInfo['typeofdata'];
-		if (isset($_REQUEST[$fieldname])) {
-			if (is_array($_REQUEST[$fieldname])) {
-				$value = $_REQUEST[$fieldname];
-			} else {
-				$value = trim($_REQUEST[$fieldname]);
-			}
 
-			if ((($typeofdata == 'T~M') || ($typeofdata == 'T~O')) && ($uitype == 2 || $uitype == 70 )) {
-				if (!in_array($fieldname, $timeFields)) {
-					$date = DateTimeField::convertToDBTimeZone($value);
-					$value = $date->format('H:i');
-				}
-				$focus->column_fields[$fieldname] = $value;
-			} else {
-				$focus->column_fields[$fieldname] = $value;
+		if ((($typeofdata == 'T~M') || ($typeofdata == 'T~O')) && ($uitype == 2 || $uitype == 70 )) {
+			if (!in_array($fieldname, $timeFields)) {
+				$date = DateTimeField::convertToDBTimeZone($value);
+				$value = $date->format('H:i');
 			}
-			if (($fieldname == 'notime') && ($focus->column_fields[$fieldname])) {
-				$focus->column_fields['time_start'] = '';
-				$focus->column_fields['duration_hours'] = '';
-				$focus->column_fields['duration_minutes'] = '';
-			}
-			if (($fieldname == 'recurringtype') && ! isset($_REQUEST['recurringcheck'])) {
-				$focus->column_fields['recurringtype'] = '--None--';
-			}
+			$focus->column_fields[$fieldname] = $value;
+		} else {
+			$focus->column_fields[$fieldname] = $value;
+		}
+		if (($fieldname == 'notime') && ($focus->column_fields[$fieldname])) {
+			$focus->column_fields['time_start'] = '';
+			$focus->column_fields['duration_hours'] = '';
+			$focus->column_fields['duration_minutes'] = '';
+		}
+		if (($fieldname == 'recurringtype') && ! isset($_REQUEST['recurringcheck'])) {
+			$focus->column_fields['recurringtype'] = '--None--';
 		}
 	}
-	if (isset($_REQUEST['visibility']) && $_REQUEST['visibility']!= '') {
-			$focus->column_fields['visibility'] = $_REQUEST['visibility'];
-	} else {
-		$focus->column_fields['visibility'] = 'Private';
-	}
-
-	if ($_REQUEST['assigntype'] == 'U') {
-		$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_user_id'];
-	} elseif ($_REQUEST['assigntype'] == 'T') {
-		$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_group_id'];
-	}
-
-	$dateField = 'date_start';
-	$fieldname = 'time_start';
-	$date = new DateTimeField($_REQUEST[$dateField]. ' ' . $_REQUEST[$fieldname]);
-	$focus->column_fields[$dateField] = $date->getDBInsertDateValue();
-	$focus->column_fields[$fieldname] = $date->getDBInsertTimeValue();
-	if (empty($_REQUEST['time_end'])) {
-		$_REQUEST['time_end'] = date('H:i', strtotime('+10 minutes', strtotime($focus->column_fields['date_start'].' '.$_REQUEST['time_start'])));
-	}
-	$dateField = 'due_date';
-	$fieldname = 'time_end';
-	$date = new DateTimeField($_REQUEST[$dateField]. ' ' . $_REQUEST[$fieldname]);
-	$focus->column_fields[$dateField] = $date->getDBInsertDateValue();
-	$focus->column_fields[$fieldname] = $date->getDBInsertTimeValue();
-
-	$focus->save($tab_type);
-	/* For Followup START */
-	if (isset($_REQUEST['followup']) && $_REQUEST['followup']=='on' && $activity_mode=='Events' && isset($_REQUEST['followup_time_start']) &&  $_REQUEST['followup_time_start']!='') {
-		$heldevent_id = $focus->id;
-		$focus->column_fields['subject'] = '['.getTranslatedString('LBL_FOLLOWUP', 'cbCalendar').'] '.$focus->column_fields['subject'];
-		$startDate = new DateTimeField($_REQUEST['followup_date'].' '.$_REQUEST['followup_time_start']);
-		$endDate = new DateTimeField($_REQUEST['followup_due_date'].' '.$_REQUEST['followup_time_end']);
-		$focus->column_fields['date_start'] = $startDate->getDBInsertDateValue();
-		$focus->column_fields['due_date'] = $endDate->getDBInsertDateValue();
-		$focus->column_fields['time_start'] = $startDate->getDBInsertTimeValue();
-		$focus->column_fields['time_end'] = $endDate->getDBInsertTimeValue();
-		$focus->column_fields['eventstatus'] = 'Planned';
-		$focus->column_fields['activitytype'] = $_REQUEST['follow_activitytype'];
-		$focus->mode = 'create';
-		$focus->save($tab_type);
-	}
-	/* For Followup END */
-	$return_id = $focus->id;
 }
+if (isset($_REQUEST['visibility']) && $_REQUEST['visibility']!= '') {
+		$focus->column_fields['visibility'] = $_REQUEST['visibility'];
+} else {
+	$focus->column_fields['visibility'] = 'Private';
+}
+
+if ($_REQUEST['assigntype'] == 'U') {
+	$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_user_id'];
+} elseif ($_REQUEST['assigntype'] == 'T') {
+	$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_group_id'];
+}
+
+$dateField = 'date_start';
+$fieldname = 'time_start';
+$date = new DateTimeField($_REQUEST[$dateField]. ' ' . $_REQUEST[$fieldname]);
+$focus->column_fields[$dateField] = $date->getDBInsertDateValue();
+$focus->column_fields[$fieldname] = $date->getDBInsertTimeValue();
+if (empty($_REQUEST['time_end'])) {
+	$_REQUEST['time_end'] = date('H:i', strtotime('+10 minutes', strtotime($focus->column_fields['date_start'].' '.$_REQUEST['time_start'])));
+}
+$dateField = 'due_date';
+$fieldname = 'time_end';
+$date = new DateTimeField($_REQUEST[$dateField]. ' ' . $_REQUEST[$fieldname]);
+$focus->column_fields[$dateField] = $date->getDBInsertDateValue();
+$focus->column_fields[$fieldname] = $date->getDBInsertTimeValue();
+
+$focus->save($tab_type);
+/* For Followup START */
+if (isset($_REQUEST['followup']) && $_REQUEST['followup']=='on' && $activity_mode=='Events' && isset($_REQUEST['followup_time_start']) &&  $_REQUEST['followup_time_start']!='') {
+	$heldevent_id = $focus->id;
+	$focus->column_fields['subject'] = '['.getTranslatedString('LBL_FOLLOWUP', 'cbCalendar').'] '.$focus->column_fields['subject'];
+	$startDate = new DateTimeField($_REQUEST['followup_date'].' '.$_REQUEST['followup_time_start']);
+	$endDate = new DateTimeField($_REQUEST['followup_due_date'].' '.$_REQUEST['followup_time_end']);
+	$focus->column_fields['date_start'] = $startDate->getDBInsertDateValue();
+	$focus->column_fields['due_date'] = $endDate->getDBInsertDateValue();
+	$focus->column_fields['time_start'] = $startDate->getDBInsertTimeValue();
+	$focus->column_fields['time_end'] = $endDate->getDBInsertTimeValue();
+	$focus->column_fields['eventstatus'] = 'Planned';
+	$focus->column_fields['activitytype'] = $_REQUEST['follow_activitytype'];
+	$focus->mode = 'create';
+	$focus->save($tab_type);
+}
+/* For Followup END */
+$return_id = $focus->id;
 
 if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] != '') {
 	$return_module = vtlib_purify($_REQUEST['return_module']);

@@ -128,13 +128,16 @@ class Validations extends processcbMap {
 	 * $arguments[1] crmid of the record being validated
 	 */
 	public function processMap($arguments) {
-		global $adb;
 		$mapping=$this->convertMap2Array();
 		$tabid = getTabid($mapping['origin']);
 		if (isset($arguments[2]) && $arguments[2]==true) {
-			$mapping=$this->addFieldValidations($mapping, $tabid);
+			$mapping = self::addFieldValidations($mapping, $tabid);
 		}
-		$screen_values = $arguments[0];
+		return self::doValidations($mapping, $arguments[0], $arguments[1], $tabid);
+	}
+
+	public static function doValidations($mapping, $screen_values, $record, $tabid) {
+		global $adb;
 		foreach ($mapping['fields'] as $valfield => $vals) {
 			if (isset($screen_values['action']) && $screen_values['action']=='DetailViewEdit' && $screen_values['dtlview_edit_fieldcheck']!=$valfield
 			&& !isset($screen_values[$valfield]) && isset($screen_values['current_'.$valfield])
@@ -284,16 +287,16 @@ class Validations extends processcbMap {
 						break;
 					case 'notDuplicate':
 						if (isset($val['msg'])) {
-							$v->rule($rule, $valfield, $mapping['origin'], $arguments[1], $restrictions)->message($val['msg'])->label($i18n);
+							$v->rule($rule, $valfield, $mapping['origin'], $record, $restrictions)->message($val['msg'])->label($i18n);
 						} else {
-							$v->rule($rule, $valfield, $mapping['origin'], $arguments[1], $restrictions)->label($i18n);
+							$v->rule($rule, $valfield, $mapping['origin'], $record, $restrictions)->label($i18n);
 						}
 						break;
 					case 'expression':
 						if (isset($val['msg'])) {
-							$v->rule($rule, $valfield, $arguments[1], $restrictions[0])->message($val['msg'])->label($i18n);
+							$v->rule($rule, $valfield, $record, $restrictions[0])->message($val['msg'])->label($i18n);
 						} else {
-							$v->rule($rule, $valfield, $arguments[1], $restrictions[0])->label($i18n);
+							$v->rule($rule, $valfield, $record, $restrictions[0])->label($i18n);
 						}
 						break;
 					case 'custom':
@@ -378,10 +381,12 @@ class Validations extends processcbMap {
 		return $mapping;
 	}
 
-	private function addFieldValidations($mapping, $tabid) {
+	private static function addFieldValidations($mapping, $tabid) {
+		global $adb;
+		// add typeofdata validations to repeat them here in case someone hijacks them in the browser
 		$validationData = getDBValidationData(array(), $tabid);
 		foreach ($validationData as $fname => $finfo) {
-			foreach ($finfo as $flabel => $fvalidation) {
+			foreach ($finfo as $fvalidation) {
 				if (strpos($fvalidation, '~M')) {
 					if ($fname=='taxclass') {
 						unset($mapping['fields'][$fname]);
@@ -400,6 +405,31 @@ class Validations extends processcbMap {
 						$mapping['fields'][$fname][] = array('rule'=>'dateAfter', 'rst'=>array('{{'.$val[4].'}}'));
 					} else {
 						$mapping['fields'][$fname] = array(array('rule'=>'dateAfter', 'rst'=>array('{{'.$val[4].'}}')));
+					}
+				}
+			}
+		}
+		// add mysql strict varchar size checks
+		// we don't validate checkboxes nor autonumber fields
+		$novalrs = $adb->pquery('select columnname from vtiger_field where uitype in (?,?) and tabid=?', array('56', '4', $tabid));
+		$novalfields = array();
+		while (!$novalrs->EOF) {
+			$cl = $novalrs->FetchRow();
+			$novalfields[] = strtoupper($cl['columnname']);
+		}
+		$module = getTabModuleName($tabid);
+		$crme = CRMEntity::getInstance($module);
+		foreach ($crme->tab_name as $tablename) {
+			if ($tablename=='vtiger_crmentity') {
+				continue;
+			}
+			foreach ($adb->database->MetaColumns($tablename) as $fname => $finfo) {
+				if ($finfo->type == 'varchar' && !in_array($fname, $novalfields)) {
+					$fname = strtolower($fname);
+					if (isset($mapping['fields'][$fname])) {
+						$mapping['fields'][$fname][] = array('rule'=>'lengthMax', 'rst'=>array($finfo->max_length));
+					} else {
+						$mapping['fields'][$fname] = array(array('rule'=>'lengthMax', 'rst'=>array($finfo->max_length)));
 					}
 				}
 			}
@@ -514,18 +544,25 @@ class Validations extends processcbMap {
 			}
 		}
 		$valmaps = array_unique($valmaps);
-		$focus = new cbMap();
-		$focus->mode = '';
 		$validation = true;
-		$addFieldValidations = true;
-		foreach ($valmaps as $val) {
-			$focus->id = $val;
-			$focus->retrieve_entity_info($val, 'cbMap');
-			$validation = $focus->Validations($screen_values, $record, $addFieldValidations);
-			$addFieldValidations = false;
-			if ($validation!==true) {
-				break;
+		if (count($valmaps)>0) {
+			$focus = new cbMap();
+			$focus->mode = '';
+			$addFieldValidations = true;
+			foreach ($valmaps as $val) {
+				$focus->id = $val;
+				$focus->retrieve_entity_info($val, 'cbMap');
+				$validation = $focus->Validations($screen_values, $record, $addFieldValidations);
+				$addFieldValidations = false;
+				if ($validation!==true) {
+					break;
+				}
 			}
+		} else {
+			$tabid = getTabid($module);
+			$mapping = self::addFieldValidations(array(), $tabid);
+			$mapping['origin'] = $module;
+			$validation = self::doValidations($mapping, $screen_values, $record, $tabid);
 		}
 		return $validation;
 	}

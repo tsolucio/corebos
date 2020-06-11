@@ -43,7 +43,7 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 	$mainModule = $meta->getTabName();  // normalize module name
 	// check modules
 	if (!$meta->isModuleEntity()) {
-		throw new WebserviceException('INVALID_MODULE', "Given main module ($mainModule) cannot be found");
+		throw new WebServiceException('INVALID_MODULE', "Given main module ($mainModule) cannot be found");
 	}
 
 	// check permission on module
@@ -210,15 +210,8 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 		}
 		$queryGenerator->endGroup();
 	}
-	$query = 'select ';
-	if ($countSelect) {
-		$query .= 'count(*) ';
-	} else {
-		$query .= $queryGenerator->getSelectClauseColumnSQL().' ';
-	}
-	$query .= $queryGenerator->getFromClause().' ';
-	$query .= $queryGenerator->getWhereClause().' ';
 	// limit and order
+	$orderby = '';
 	if (!empty($obflds)) {
 		$obflds = trim($obflds);
 		if (strtolower(substr($obflds, -3))=='asc') {
@@ -231,11 +224,23 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 			$dir = '';
 		}
 		$obflds = explode(',', $obflds);
+		$fieldtable = $meta->getColumnTableMapping();
 		foreach ($obflds as $k => $field) {
-			$obflds[$k] = __FQNExtendedQueryField2Column($field, $mainModule, $fieldcolumn, $user);
+			// we have to make sure we have all the join conditions for these fields as Query Generator doesn't do that by default
+			__FQNExtendedQuerySetQGRefField($field, $mainModule, $queryGenerator, $user);
+			$obflds[$k] = __FQNExtendedQueryField2Column($field, $mainModule, $fieldcolumn, $fieldtable, $user);
 		}
-		$query .= ' order by '.implode(',', $obflds).$dir.' ';
+		$orderby = ' order by '.implode(',', $obflds).$dir.' ';
 	}
+	$query = 'select ';
+	if ($countSelect) {
+		$query .= 'count(*) ';
+	} else {
+		$query .= $queryGenerator->getSelectClauseColumnSQL().' ';
+	}
+	$query .= $queryGenerator->getFromClause().' ';
+	$query .= $queryGenerator->getWhereClause().' ';
+	$query .= $orderby;
 	if (!empty($lmoc)) {
 		$query .= " limit $lmoc ";
 	}
@@ -404,11 +409,43 @@ function __FQNExtendedQueryGetRefFieldForModule($fromrfs, $module, $reffld) {
 	return $reffld;
 }
 
-function __FQNExtendedQueryField2Column($field, $mainModule, $maincolumnTable, $user) {
+function __FQNExtendedQuerySetQGRefField($field, $mainModule, $queryGenerator, $user) {
+	global $adb,$log;
+	$field = trim($field);
+	if (strpos($field, '.')>0) {  // FQN
+		list($fmod,$fname) = explode('.', $field);
+		$fromwebserviceObject = VtigerWebserviceObject::fromName($adb, $mainModule);
+		$fromhandlerPath = $fromwebserviceObject->getHandlerPath();
+		$fromhandlerClass = $fromwebserviceObject->getHandlerClass();
+		require_once $fromhandlerPath;
+		$fromhandler = new $fromhandlerClass($fromwebserviceObject, $user, $adb, $log);
+		$fromrelmeta = $fromhandler->getMeta();
+		$fromrfs = $fromrelmeta->getReferenceFieldDetails();
+		$webserviceObject = VtigerWebserviceObject::fromName($adb, $fmod);
+		$handlerPath = $webserviceObject->getHandlerPath();
+		$handlerClass = $webserviceObject->getHandlerClass();
+		require_once $handlerPath;
+		$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+		$relmeta = $handler->getMeta();
+		$fmod = $relmeta->getTabName();  // normalize module name
+		if ($fmod!=$mainModule) {
+			if ($fmod=='Users') {
+				$fmodreffld = 'assigned_user_id';
+			} else {
+				$fmodreffld = __FQNExtendedQueryGetRefFieldForModule($fromrfs, $fmod, $fname);
+			}
+			$queryGenerator->setReferenceFieldsManually($fmodreffld, $fmod, $fname);
+		}
+	} else {
+		$queryGenerator->addWhereField($field);
+	}
+}
+
+function __FQNExtendedQueryField2Column($field, $mainModule, $maincolumnTable, $mainfieldtable, $user) {
 	global $adb,$log;
 	$field = trim($field);
 	if (isset($maincolumnTable[$field])) {
-		return $maincolumnTable[$field];
+		return $mainfieldtable[$maincolumnTable[$field]].'.'.$maincolumnTable[$field];
 	}
 	if (strpos($field, '.')>0) {  // FQN
 		list($fmod,$fname) = explode('.', $field);
@@ -431,9 +468,16 @@ function __FQNExtendedQueryField2Column($field, $mainModule, $maincolumnTable, $
 		if ($fmod==$mainModule) {
 			return $fieldtable[$fname].'.'.$maincolumnTable[$fname];
 		} else {
-			$fmodreffld = __FQNExtendedQueryGetRefFieldForModule($fromrfs, $fmod, $fname);
-			return $fieldtable[$fname].$fmodreffld.'.'.$fieldcolumn[$fname];
+			if ($fmod=='Users') {
+				return 'vtiger_users.'.$fieldcolumn[$fname];
+			} else {
+				$fmodreffld = __FQNExtendedQueryGetRefFieldForModule($fromrfs, $fmod, $fname);
+				return $fieldtable[$fname].$fmodreffld.'.'.$fieldcolumn[$fname];
+			}
 		}
+	} elseif ($field=='id') {
+		$crmobj = CRMEntity::getInstance($mainModule);
+		$field = $crmobj->table_name.'.'.$crmobj->table_index;
 	}
 	return $field;
 }
@@ -520,7 +564,7 @@ function __ExtendedQueryConditionQuery($q) {
 }
 
 function __ExtendedQueryConditionGetQuery($q, $fromModule, $user) {
-	global $adb;
+	global $adb, $log;
 	$workflowScheduler = new WorkFlowScheduler($adb);
 	$workflow = new Workflow();
 	$wfvals = array(
@@ -581,7 +625,58 @@ function __ExtendedQueryConditionGetQuery($q, $fromModule, $user) {
 		$cond = trim($cond, ';');
 		$ol_by = substr($q, $endcond);
 		$ol_by = trim($ol_by);
-		$ol_by = ' '.trim($ol_by, ';');
+		$groupbyCond = "/([gG][rR][oO][uU][pP]\s+[bB][yY]\s+)+(.*)/";
+		preg_match($groupbyCond, $ol_by, $gb);
+		$gbflds = (isset($gb[2]) ? $gb[2] : '');
+		if (stripos($gbflds, ' order ')>0) {
+			$gbflds = substr($gbflds, 0, stripos($gbflds, ' order '));
+		}
+		if (stripos($gbflds, ' limit ')>0) {
+			$gbflds = substr($gbflds, 0, stripos($gbflds, ' limit '));
+		}
+		// limit and order
+		$orderbyCond = "/([oO][rR][dD][eE][rR]\s+[bB][yY]\s+)+(.*)/";
+		preg_match($orderbyCond, $ol_by, $ob);
+		$obflds = (isset($ob[2]) ? $ob[2] : '');
+		if (stripos($obflds, ' limit ')>0) {
+			$obflds = substr($obflds, 0, stripos($obflds, ' limit '));
+		}
+		$limitCond = "/([lL][iI][mM][iI][tT]\s+)+(.*)/";
+		preg_match($limitCond, $ol_by, $lm);
+		$lmoc = (isset($lm[2]) ? $lm[2] : '');
+		if (stripos($lmoc, ' order ')>0) {
+			$lmoc = substr($lmoc, 0, stripos($lmoc, ' order '));
+		}
+		$orderby = '';
+		if (!empty($obflds)) {
+			$webserviceObject = VtigerWebserviceObject::fromName($adb, $fromModule);
+			$handlerPath = $webserviceObject->getHandlerPath();
+			$handlerClass = $webserviceObject->getHandlerClass();
+			require_once $handlerPath;
+			$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+			$meta = $handler->getMeta();
+			$fieldcolumn = $meta->getFieldColumnMapping();
+			$fieldtable = $meta->getColumnTableMapping();
+			$obflds = trim($obflds);
+			if (strtolower(substr($obflds, -3))=='asc') {
+				$dir = ' asc ';
+				$obflds = trim(substr($obflds, 0, strlen($obflds)-3));
+			} elseif (strtolower(substr($obflds, -4))=='desc') {
+				$dir = ' desc ';
+				$obflds = trim(substr($obflds, 0, strlen($obflds)-4));
+			} else {
+				$dir = '';
+			}
+			$obflds = explode(',', $obflds);
+			foreach ($obflds as $k => $field) {
+				$obflds[$k] = __FQNExtendedQueryField2Column($field, $fromModule, $fieldcolumn, $fieldtable, $user);
+			}
+			$orderby = ' order by '.implode(',', $obflds).$dir;
+		}
+		if (!empty($lmoc)) {
+			$orderby .= " limit $lmoc ";
+		}
+		$ol_by = ($gbflds=='' ? '' : ' group by '.$gbflds).trim($orderby, ';');
 		$wfvals['test'] = $cond;
 	} else {
 		$wfvals['test'] = '';

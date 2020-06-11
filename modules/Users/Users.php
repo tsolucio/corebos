@@ -1425,22 +1425,6 @@ class Users extends CRMEntity {
 	}
 
 	/**
-	 * Function to get the column value of a field
-	 * @param $column_name -- Column name
-	 * @param $input_value -- Input value for the column taken from the User
-	 * @return Column value of the field.
-	 */
-	public function get_column_value($columname, $fldvalue, $fieldname, $uitype, $datatype = '') {
-		if (is_uitype($uitype, "_date_") && $fldvalue == '') {
-			return null;
-		}
-		if ($datatype == 'I' || $datatype == 'N' || $datatype == 'NN') {
-			return 0;
-		}
-		return $fldvalue;
-	}
-
-	/**
 	 * Function to reset the Reminder Interval setup and update the time for next reminder interval
 	 * @param $prev_reminder_interval -- Last Reminder Interval on which the reminder popup's were triggered.
 	 */

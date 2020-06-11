@@ -594,9 +594,6 @@ class CRMEntity {
 		$selectFields = 'fieldname, columnname, uitype, typeofdata';
 
 		$tabid = getTabid($module);
-		if ($module == 'Calendar' && $this->column_fields["activitytype"] != null && $this->column_fields["activitytype"] != 'Task') {
-			$tabid = getTabid('Events');
-		}
 		$uniqueFieldsRestriction = 'vtiger_field.fieldid IN (select min(vtiger_field.fieldid) from vtiger_field where vtiger_field.tabid=? GROUP BY vtiger_field.columnname)';
 		if ($insertion_mode == 'edit') {
 			$update = array();
@@ -863,11 +860,14 @@ class CRMEntity {
 			if (count($update) > 0) {
 				$sql1 = "update $table_name set " . implode(',', $update) . ' where ' . $this->tab_name_index[$table_name] . '=?';
 				$update_params[] = $this->id;
-				$adb->pquery($sql1, $update_params);
+				$rdo = $adb->pquery($sql1, $update_params);
 			}
 		} else {
 			$sql1 = "insert into $table_name(" . implode(',', $column) . ') values(' . generateQuestionMarks($value) . ')';
-			$adb->pquery($sql1, $value);
+			$rdo = $adb->pquery($sql1, $value);
+		}
+		if (!$rdo) {
+			$log->fatal($adb->getErrorMsg());
 		}
 	}
 
@@ -3065,7 +3065,7 @@ class CRMEntity {
 		if ($current_user) {
 			$userprivs = $current_user->getPrivileges();
 		}
-		$sec_query .= " and (vtiger_crmentity$module.smownerid in($current_user->id) or vtiger_crmentity$module.smownerid in ".
+		$sec_query = " and (vtiger_crmentity$module.smownerid in($current_user->id) or vtiger_crmentity$module.smownerid in ".
 			"(select vtiger_user2role.userid
 				from vtiger_user2role
 				inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid

@@ -36,7 +36,7 @@ function getfiltersbymodule($module, $user) {
  * $viewid will make the corresponding selected
  * @returns  $customviewCombo :: Type String
  */
-function cbws_getCustomViewCombo($viewid, $module, $customView, $markselected = true) {
+function cbws_getCustomViewCombo($viewid, $module, $customView) {
 	global $adb, $current_user, $app_strings;
 	$tabid = getTabid($module);
 	$_REQUEST['action'] = '';
@@ -48,11 +48,6 @@ function cbws_getCustomViewCombo($viewid, $module, $customView, $markselected = 
 	$shtml_others = '';
 	$filters = array();
 
-	$selected = 'selected';
-	if ($markselected == false) {
-		$selected = '';
-	}
-
 	$ssql = 'select vtiger_customview.*, vtiger_users.first_name,vtiger_users.last_name
 		from vtiger_customview
 		inner join vtiger_tab on vtiger_tab.name = vtiger_customview.entitytype
@@ -60,7 +55,7 @@ function cbws_getCustomViewCombo($viewid, $module, $customView, $markselected = 
 	$ssql .= ' where vtiger_tab.tabid=?';
 	$sparams = array($tabid);
 
-	if ($is_admin == false) {
+	if (is_admin($current_user) == false) {
 		$ssql .= " and (vtiger_customview.status=0 or vtiger_customview.userid = ? or vtiger_customview.status = 3 or vtiger_customview.userid in (
 			select vtiger_user2role.userid
 			from vtiger_user2role

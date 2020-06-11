@@ -357,7 +357,7 @@ function get_Secondmodules($oReport, $primarymodule) {
 	if (!empty($oReport->related_modules[$primarymodule])) {
 		foreach ($oReport->related_modules[$primarymodule] as $value) {
 			if (isset($_REQUEST['secondarymodule_'.$value])) {
-				$secondarymodules []= $_REQUEST['secondarymodule_'.$value];
+				$secondarymodules[]= $_REQUEST['secondarymodule_'.$value];
 				$oReport->getSecModuleColumnsList($_REQUEST['secondarymodule_'.$value]);
 				if (!isPermitted($_REQUEST['secondarymodule_'.$value], 'index')== 'yes' && !empty($_REQUEST['secondarymodule_'.$value])) {
 					$permission = false;

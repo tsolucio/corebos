@@ -300,6 +300,7 @@ function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 	list($void,$accountId) = explode('x', $restrictionids['accountId']);
 	list($void,$contactId) = explode('x', $restrictionids['contactId']);
 	list($void,$userId) = explode('x', $restrictionids['userId']);
+	$limit = (isset($restrictionids['limit']) ? $restrictionids['limit'] : 0);
 	$current_user->retrieveCurrentUserInfoFromFile($userId);
 	// if connected user does not have admin privileges > user must be the connected user
 	if ($user->is_admin!='on' && $user->id!=$userId) {
@@ -317,12 +318,12 @@ function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 	$j=0;
 	$moduleRecordCount = array();
 	foreach ($object_array as $module => $object_name) {
+		$focus = CRMEntity::getInstance($module);
 		$listquery = getListQuery($module);
 		$oCustomView = new CustomView($module);
 		//Instead of getting current customview id, use cvid of All so that all entities will be found
 		$cv_res = $adb->pquery("select cvid from vtiger_customview where viewname='All' and entitytype=?", array($module));
 		$viewid = $adb->query_result($cv_res, 0, 'cvid');
-
 		$listquery = $oCustomView->getModifiedCvListQuery($viewid, $listquery, $module);
 		if (!empty($accountId) && !empty($contactId)) {
 			switch ($module) {
@@ -337,7 +338,40 @@ function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 					break;
 			}
 		}
-		$listquery = 'select * '.substr($listquery, stripos($listquery, ' from '));
+		$bmapname = $module.'_ListColumns';
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+		if ($cbMapid) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$cbMapLC = $cbMap->ListColumns();
+			$parentmodule = 'Home';
+			$focus->list_fields = $cbMapLC->getListFieldsFor($parentmodule);
+			$focus->list_fields_name = $cbMapLC->getListFieldsNameFor($parentmodule);
+			$focus->list_link_field = $cbMapLC->getListLinkFor($parentmodule);
+			$oCustomView->list_fields = $focus->list_fields;
+			$oCustomView->list_fields_name = $focus->list_fields_name;
+		}
+		if ($oCustomView) {
+			if (isset($oCustomView->list_fields)) {
+				$focus->list_fields = $oCustomView->list_fields;
+				$focus->list_fields_name = $oCustomView->list_fields_name;
+			}
+		}
+
+		// Remove fields which are made inactive
+		$focus->filterInactiveFields($module);
+
+		$field_list = '';
+		foreach ($focus->list_fields as $tableinfo) {
+			foreach ($tableinfo as $tbl => $col) {
+				if (!empty($tbl) && !empty($col)) {
+					$field_list .= 'vtiger_'.$tbl.'.'.$col.',';
+				}
+			}
+		}
+		$field_list .= 'vtiger_crmentity.crmid';
+
+		$listquery = 'select '.$field_list.substr($listquery, stripos($listquery, ' from '));
+
 		$where = getUnifiedWhere($listquery, $module, $query);
 		if ($where != '') {
 			$listquery .= ' and ('.$where.')';
@@ -348,12 +382,10 @@ function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 				$listquery .= ' and ('.$cond.')';
 			}
 		}
-		$count_result = $adb->query($listquery);
-		$noofrows = $adb->num_rows($count_result);
+		$list_result = $adb->query($listquery);
+		$noofrows = $adb->num_rows($list_result);
 		$moduleRecordCount[$module]['count'] = $noofrows;
 		$navigation_array = VT_getSimpleNavigationValues(1, 100, $noofrows);
-		$list_result = $adb->query($listquery);
-		$focus = CRMEntity::getInstance($module);
 		$listview_entries = getSearchingListViewEntries($focus, $module, $list_result, $navigation_array, '', '', '', '', $oCustomView, '', '', '', true);
 		$total_record_count = $total_record_count + $noofrows;
 		if (!empty($listview_entries)) {
@@ -363,6 +395,10 @@ function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 			}
 		}
 		$i++;
+	}
+	if ($limit > 0 && count($res)>$limit) {
+		shuffle($res);
+		$res = array_slice($res, 0, $limit);
 	}
 	return serialize($res);
 }
@@ -429,29 +465,6 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 	$list_block = array();
 	//getting the field table entries from database
 	$tabid = getTabid($module);
-	$bmapname = $module.'_ListColumns';
-	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
-	if ($cbMapid) {
-		$cbMap = cbMap::getMapByID($cbMapid);
-		$cbMapLC = $cbMap->ListColumns();
-		$parentmodule = 'Home';
-		$focus->list_fields = $cbMapLC->getListFieldsFor($parentmodule);
-		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor($parentmodule);
-		$focus->list_link_field = $cbMapLC->getListLinkFor($parentmodule);
-		$oCv->list_fields = $focus->list_fields;
-		$oCv->list_fields_name = $focus->list_fields_name;
-	}
-	if ($oCv) {
-		if (isset($oCv->list_fields)) {
-			$focus->list_fields = $oCv->list_fields;
-		}
-	}
-	if (is_array($selectedfields) && $selectedfields != '') {
-		$focus->list_fields = $selectedfields;
-	}
-
-	// Remove fields which are made inactive
-	$focus->filterInactiveFields($module);
 
 	//Added to reduce the no. of queries logging for non-admin user
 	$field_list = array();
@@ -520,14 +533,14 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 	}
 
 	if ($navigation_array['start'] !=0) {
-		for ($i = 1; $i <= $noofrows; $i++) {
+		for ($i = 0; $i < $noofrows; $i++) {
 			$list_header = array();
 			//Getting the entityid
 			if ($module != 'Users') {
-				$entity_id = $adb->query_result($list_result, $i - 1, 'crmid');
-				//$owner_id = $adb->query_result($list_result, $i - 1, 'smownerid');
+				$entity_id = $adb->query_result($list_result, $i, 'crmid');
+				//$owner_id = $adb->query_result($list_result, $i, 'smownerid');
 			} else {
-				$entity_id = $adb->query_result($list_result, $i - 1, 'id');
+				$entity_id = $adb->query_result($list_result, $i, 'id');
 			}
 			foreach ($focus->list_fields as $name => $tableinfo) {
 				$fieldname = $focus->list_fields_name[$name];
@@ -562,13 +575,13 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 				}
 				if ($userprivs->hasGlobalReadPermission() || in_array($fieldname, $field) || $fieldname == '') {
 					if ($fieldname == '') {
-						$table_name = '';
+						//$table_name = '';
 						$column_name = '';
-						foreach ($tableinfo as $tablename => $colname) {
-							$table_name = $tablename;
+						foreach ($tableinfo as $colname) {
+							//$table_name = $tablename;
 							$column_name = $colname;
 						}
-						$value = $adb->query_result($list_result, $i - 1, $colname);
+						$value = $adb->query_result($list_result, $i, $column_name);
 					} else {
 						if ($module == 'Calendar') {
 							$act_id = $adb->query_result($list_result, $i-1, 'activityid');
@@ -606,11 +619,11 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 							}
 							if ($module != 'Calendar' || ($module == 'Calendar' && $has_permission == 'yes')) {
 								if ($fieldname == 'parent_id') {
-									$value = getRelatedTo($module, $list_result, $i - 1);
+									$value = getRelatedTo($module, $list_result, $i);
 								}
 								if ($name == 'Contact Name') {
-									$contact_id = $adb->query_result($list_result, $i - 1, 'contactid');
-									$contact_name = getFullNameFromQResult($list_result, $i - 1, 'Contacts');
+									$contact_id = $adb->query_result($list_result, $i, 'contactid');
+									$contact_name = getFullNameFromQResult($list_result, $i, 'Contacts');
 									$value = '';
 									//Added to get the contactname for activities custom view - t=2190
 									if ($contact_id != '' && !empty($contact_name)) {
@@ -621,7 +634,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 									}
 								}
 								if ($fieldname == 'firstname') {
-									$first_name = textlength_check($adb->query_result($list_result, $i - 1, 'firstname'));
+									$first_name = textlength_check($adb->query_result($list_result, $i, 'firstname'));
 									$value = $first_name;
 								}
 							} else {
@@ -641,7 +654,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 								}
 							}
 							if ($fieldname == 'filename') {
-								$downloadtype = $adb->query_result($list_result, $i - 1, 'filelocationtype');
+								$downloadtype = $adb->query_result($list_result, $i, 'filelocationtype');
 								if ($downloadtype == 'I') {
 									$fld_value = $value;
 									$ext_pos = strrpos($fld_value, '.');
@@ -674,11 +687,11 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 									$fileicon = '';
 								}
 
-								$file_name = $adb->query_result($list_result, $i - 1, 'filename');
-								$notes_id = $adb->query_result($list_result, $i - 1, 'crmid');
-								//$folder_id = $adb->query_result($list_result, $i - 1, 'folderid');
-								$download_type = $adb->query_result($list_result, $i - 1, 'filelocationtype');
-								$file_status = $adb->query_result($list_result, $i - 1, 'filestatus');
+								$file_name = $adb->query_result($list_result, $i, 'filename');
+								$notes_id = $adb->query_result($list_result, $i, 'crmid');
+								//$folder_id = $adb->query_result($list_result, $i, 'folderid');
+								$download_type = $adb->query_result($list_result, $i, 'filelocationtype');
+								$file_status = $adb->query_result($list_result, $i, 'filestatus');
 								$fileidQuery = 'select attachmentsid from vtiger_seattachmentsrel where crmid=?';
 								$fileidres = $adb->pquery($fileidQuery, array($notes_id));
 								$fileid = $adb->query_result($fileidres, 0, 'attachmentsid');
@@ -697,7 +710,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 								$value = $fileicon . $fld_value;
 							}
 							if ($fieldname == 'filesize') {
-								$downloadtype = $adb->query_result($list_result, $i - 1, 'filelocationtype');
+								$downloadtype = $adb->query_result($list_result, $i, 'filelocationtype');
 								if ($downloadtype == 'I') {
 									$filesize = $value;
 									if ($filesize < 1024) {
@@ -722,8 +735,8 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 								}
 							}
 							if ($fieldname == 'filetype') {
-								$downloadtype = $adb->query_result($list_result, $i - 1, 'filelocationtype');
-								$filetype = $adb->query_result($list_result, $i - 1, 'filetype');
+								$downloadtype = $adb->query_result($list_result, $i, 'filelocationtype');
+								$filetype = $adb->query_result($list_result, $i, 'filetype');
 								if ($downloadtype == 'E' || $downloadtype != 'I') {
 									$value = ' --';
 								} else {
@@ -735,42 +748,42 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 								$value = textlength_check($value);
 							}
 						} elseif ($module == 'Products' && $name == 'Related to') {
-							$value = getRelatedTo($module, $list_result, $i - 1);
+							$value = getRelatedTo($module, $list_result, $i);
 						} elseif ($name == 'Contact Name' && ($module == 'SalesOrder' || $module == 'Quotes' || $module == 'PurchaseOrder')) {
 							if ($name == 'Contact Name') {
-								$contact_id = $adb->query_result($list_result, $i - 1, 'contactid');
-								$contact_name = getFullNameFromQResult($list_result, $i - 1, 'Contacts');
+								$contact_id = $adb->query_result($list_result, $i, 'contactid');
+								$contact_name = getFullNameFromQResult($list_result, $i, 'Contacts');
 								$value = '';
 								if (($contact_name != '') && ($contact_id != 'NULL')) {
 									$value = $contact_name;
 								}
 							}
 						} elseif ($name == 'Product') {
-							$product_id = textlength_check($adb->query_result($list_result, $i - 1, 'productname'));
+							$product_id = textlength_check($adb->query_result($list_result, $i, 'productname'));
 							$value = $product_id;
 						} elseif ($name == 'Account Name') {
 							if ($module == 'Accounts') {
-								$account_id = $adb->query_result($list_result, $i - 1, 'crmid');
+								$account_id = $adb->query_result($list_result, $i, 'crmid');
 								//$account_name = getAccountName($account_id);
-								$account_name = textlength_check($adb->query_result($list_result, $i - 1, 'accountname'));
+								$account_name = textlength_check($adb->query_result($list_result, $i, 'accountname'));
 								$value = $account_name;
 							} elseif ($module == 'Potentials' || $module == 'Contacts' || $module == 'Invoice' || $module == 'SalesOrder' || $module == 'Quotes') {
 								//Potential,Contacts,Invoice,SalesOrder & Quotes records sort by Account Name
 								//$accountname = textlength_check($adb->query_result($list_result,$i-1,'accountname'));
-								$accountid = $adb->query_result($list_result, $i - 1, 'accountid');
+								$accountid = $adb->query_result($list_result, $i, 'accountid');
 								$accountname = textlength_check(getAccountName($accountid));
 								$value = $accountname;
 							} else {
-								$account_id = $adb->query_result($list_result, $i - 1, 'accountid');
+								$account_id = $adb->query_result($list_result, $i, 'accountid');
 								$account_name = getAccountName($account_id);
 								$acc_name = textlength_check($account_name);
 								$value = $acc_name;
 							}
-						} elseif (($module == 'HelpDesk' || $module == 'PriceBook' || $module == 'Quotes' || $module == 'PurchaseOrder' || $module == 'Faq') && $name == 'Product Name') {
+						} elseif (($module=='HelpDesk' || $module=='PriceBook' || $module=='Quotes' || $module=='PurchaseOrder' || $module=='Faq') && $name=='Product Name') {
 							if ($module == 'HelpDesk' || $module == 'Faq') {
-								$product_id = $adb->query_result($list_result, $i - 1, 'product_id');
+								$product_id = $adb->query_result($list_result, $i, 'product_id');
 							} else {
-								$product_id = $adb->query_result($list_result, $i - 1, 'productid');
+								$product_id = $adb->query_result($list_result, $i, 'productid');
 							}
 							if ($product_id != '') {
 								$product_name = getProductName($product_id);
@@ -779,12 +792,11 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 							}
 							$value = textlength_check($product_name);
 						} elseif (($module == 'Quotes' && $name == 'Potential Name') || ($module == 'SalesOrder' && $name == 'Potential Name')) {
-							$potential_id = $adb->query_result($list_result, $i - 1, 'potentialid');
+							$potential_id = $adb->query_result($list_result, $i, 'potentialid');
 							$potential_name = getPotentialName($potential_id);
 							$value = textlength_check($potential_name);
 						} elseif ($module == 'Emails' && $relatedlist != '' && ($name == 'Subject' || $name == 'Date Sent' || $name == 'To')) {
-							$list_result_count = $i - 1;
-							$tmp_value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
+							$tmp_value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $i, 'list', '');
 							$tmp_value = evvt_strip_html_links($tmp_value);
 							$value = textlength_check($tmp_value);
 							if ($name == 'Date Sent') {
@@ -792,16 +804,15 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 								$result=$adb->pquery($sql, array($entity_id));
 								$email_flag=$adb->query_result($result, 0, 'email_flag');
 								if ($email_flag != 'SAVED') {
-									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
+									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $i, 'list', '');
 									$value = evvt_strip_html_links($value);
 								} else {
 									$value = '';
 								}
 							}
 						} else {
-							$list_result_count = $i - 1;
-							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '');
-							$value = evvt_strip_html_links($value);
+							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $i, 'list', '');
+							$value = evvt_strip_html_links(strip_tags($value));
 						}
 					}
 					$list_header[$name] = $value;

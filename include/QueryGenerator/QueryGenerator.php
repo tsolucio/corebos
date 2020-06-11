@@ -328,15 +328,7 @@ class QueryGenerator {
 	}
 
 	public function getModuleFields() {
-		$moduleFields = $this->meta->getModuleFields();
-
-		$module = $this->getModule();
-		if ($module == 'Calendar') {
-			$eventmoduleMeta = $this->getMeta('Events');
-			$eventModuleFieldList = $eventmoduleMeta->getModuleFields();
-			$moduleFields = array_merge($moduleFields, $eventModuleFieldList);
-		}
-		return $moduleFields;
+		return $this->meta->getModuleFields();
 	}
 
 	public function getConditionalWhere() {
@@ -1441,11 +1433,16 @@ class QueryGenerator {
 	private function makeGroupSqlReplacements($fieldSqlList, $groupSql) {
 		$pos = 0;
 		$nextOffset = 0;
-		foreach ($fieldSqlList as $index => $fieldSql) {
+		for ($index = 0; $index < $this->conditionInstanceCount; $index++) {
 			$pos = strpos($groupSql, $index.'', $nextOffset);
 			if ($pos !== false) {
 				$beforeStr = substr($groupSql, 0, $pos);
 				$afterStr = substr($groupSql, $pos + strlen($index));
+				if (isset($fieldSqlList[$index])) {
+					$fieldSql = $fieldSqlList[$index];
+				} else {
+					$fieldSql = 'false';
+				}
 				$nextOffset = strlen($beforeStr.$fieldSql);
 				$groupSql = $beforeStr.$fieldSql.$afterStr;
 			}

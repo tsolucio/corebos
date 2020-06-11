@@ -301,8 +301,8 @@ class Vtiger_FieldBasic {
 			self::log($isused['message']);
 			return false;
 		} else {
-			// Vtiger_Profile::deleteForField($this);
-			// $adb->pquery('DELETE FROM vtiger_field WHERE fieldid=?', array($this->id));
+			Vtiger_Profile::deleteForField($this);
+			$adb->pquery('DELETE FROM vtiger_field WHERE fieldid=?', array($this->id));
 			self::log("Deleting Field $this->name ... DONE");
 			self::log('<span style="color:red">**Remember to search the code for this field. Make sure the code does not use this field.</span>');
 			return true;

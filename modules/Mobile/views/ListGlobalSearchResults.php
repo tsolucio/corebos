@@ -42,11 +42,11 @@ class crmtogo_UI_GlobalSearch extends crmtogo_WS_ListModuleRecords {
 
 	public function process(crmtogo_API_Request $request) {
 		$db = PearDatabase::getInstance();
-		$displayed_modules=  $this->getUserConfigModuleSettings();
+		$displayed_modules= $this->getUserConfigModuleSettings();
 		$searchmodule = array ();
 		foreach ($displayed_modules as $modulename => $moduleconfig) {
-			if ($moduleconfig ['active'] == 1) {
-				$searchmodule [] = $modulename;
+			if ($moduleconfig['active'] == 1) {
+				$searchmodule[] = $modulename;
 			}
 		}
 		$wsResponse = parent::process($request);

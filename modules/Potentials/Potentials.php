@@ -638,13 +638,13 @@ class Potentials extends CRMEntity {
 		$list_buttons = array ();
 
 		if (isPermitted('Potentials', 'Delete', '') == 'yes') {
-			$list_buttons ['del'] = $app_strings ['LBL_MASS_DELETE'];
+			$list_buttons['del'] = $app_strings['LBL_MASS_DELETE'];
 		}
 		if (isPermitted('Potentials', 'EditView', '') == 'yes') {
-			$list_buttons ['mass_edit'] = $app_strings ['LBL_MASS_EDIT'];
+			$list_buttons['mass_edit'] = $app_strings['LBL_MASS_EDIT'];
 		}
 		if (isPermitted('Emails', 'CreateView', '') == 'yes') {
-			$list_buttons ['s_mail'] = $app_strings ['LBL_SEND_MAIL_BUTTON'];
+			$list_buttons['s_mail'] = $app_strings['LBL_SEND_MAIL_BUTTON'];
 		}
 		return $list_buttons;
 	}

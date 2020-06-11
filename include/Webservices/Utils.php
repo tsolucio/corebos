@@ -23,9 +23,9 @@ require_once 'include/utils/VtlibUtils.php';
 require_once 'include/Webservices/WebserviceEntityOperation.php';
 require_once 'include/Webservices/PreserveGlobal.php';
 
-/* Function to return all the users in the groups that this user is part of.
- * @param $id - id of the user
- * returns Array:UserIds userid of all the users in the groups that this user is part of.
+/** return all the users in the groups that the given user is part of.
+ * @param integer id of the user
+ * @return array user names of all the users in the groups that this user is part of indexed by their ID
  */
 function vtws_getUsersInTheSameGroup($id) {
 	require_once 'include/utils/GetGroupUsers.php';

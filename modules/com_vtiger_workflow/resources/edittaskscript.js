@@ -15,6 +15,8 @@ function edittaskscript($) {
 			var pos = element.position();
 			$(boxId).css('display', 'block');
 			$(boxId).css({
+				width: '200px',
+				'z-index': '1',
 				position: 'absolute',
 				top: (pos.top+25)+'px'
 			});

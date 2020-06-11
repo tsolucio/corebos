@@ -365,128 +365,114 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldName, crmId) {
 	var formName = 'DetailView';
 	if (doformValidation('')) { //base function which validates form data
-		//Testing if a Validation file exists
-		jQuery.ajax({
-			url: 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule='+gVTModule+'&crmid='+crmId,
-			type:'get'
-		}).fail(function () {
-			//Validation file does not exist
-			dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName, crmId);
-		}).done(function (data) {
-			//Validation file exists
-			if (data == 'yes') {
-				// Create object which gets the values of all input, textarea, select and button elements from the form
-				// var myFields = document.forms[formName].parentElement.querySelectorAll('input,select,textarea'); // this would send in all elements on screen
-				var myFields = document.forms[formName].elements; // elements in form
-				var sentForm = new Object();
-				for (var f=0; f<myFields.length; f++) {
-					sentForm[myFields[f].name] = myFields[f].value;
+		// Create object which gets the values of all input, textarea, select and button elements from the form
+		// var myFields = document.forms[formName].parentElement.querySelectorAll('input,select,textarea'); // this would send in all elements on screen
+		var myFields = document.forms[formName].elements; // elements in form
+		var sentForm = new Object();
+		for (var f=0; f<myFields.length; f++) {
+			sentForm[myFields[f].name] = myFields[f].value;
+		}
+		// field being edited
+		switch (uitype) {
+		case '33':
+		case 33:
+		case '3313':
+		case 3313:
+		case '3314':
+		case 3314:
+			var txtBox= 'txtbox_'+ fieldLabel;
+			var oMulSelect = document.getElementById(txtBox);
+			var r = new Array();
+			var notaccess_label = new Array();
+			for (var iter=0; iter < oMulSelect.options.length; iter++) {
+				if (oMulSelect.options[iter].selected) {
+					r[r.length] = oMulSelect.options[iter].value;
+					notaccess_label[notaccess_label.length] = oMulSelect.options[iter].text;
 				}
-				// field being edited
-				switch (uitype) {
-				case '33':
-				case 33:
-				case '3313':
-				case 3313:
-				case '3314':
-				case 3314:
-					var txtBox= 'txtbox_'+ fieldLabel;
-					var oMulSelect = document.getElementById(txtBox);
-					var r = new Array();
-					var notaccess_label = new Array();
-					for (var iter=0; iter < oMulSelect.options.length; iter++) {
-						if (oMulSelect.options[iter].selected) {
-							r[r.length] = oMulSelect.options[iter].value;
-							notaccess_label[notaccess_label.length] = oMulSelect.options[iter].text;
-						}
-					}
-					sentForm[fieldName] = r;
-					break;
-				case '56':
-				case 56:
-					if (document.getElementById('txtbox_'+fieldName).checked == true) {
-						sentForm[fieldName] = 1;
-					} else {
-						sentForm[fieldName] = 0;
-					}
-					break;
-				case '50':
-				case 50:
-					sentForm[fieldName] = document.getElementById('txtbox_' + fieldName).value;
-					sentForm['timefmt_' + fieldName] = document.getElementById('inputtimefmt_' + fieldName).value;
-					break;
-				case '53':
-				case 53:
-					var assigntype = document.getElementsByName('assigntype');
-					if (assigntype.length > 0) {
-						var assign_type_U = assigntype[0].checked;
-						var assign_type_G = false;
-						if (assigntype[1]!=undefined) {
-							assign_type_G = assigntype[1].checked;
-						}
-					} else {
-						var assign_type_U = assigntype[0].checked;
-					}
-					if (assign_type_U == true) {
-						var txtBox= 'txtbox_U'+fieldLabel;
-						sentForm['assign_type'] = 'U';
-					} else if (assign_type_G == true) {
-						var txtBox= 'txtbox_G'+fieldLabel;
-						sentForm['assign_type'] = 'T';
-					}
-					sentForm[fieldName] = document.getElementById(txtBox).value;
-					break;
-				default:
-					sentForm[fieldName] = document.getElementById('txtbox_'+fieldName).value;
-					break;
-				}
-				sentForm['action'] = 'DetailViewEdit';
-				sentForm['dtlview_edit_fieldcheck'] = fieldName;
-				//JSONize form data
-				sentForm = JSON.stringify(sentForm);
-				jQuery.ajax({
-					type : 'post',
-					data : {structure: sentForm},
-					url : 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule='+gVTModule
-				}).done(function (msg) {
-					//Validation file answers
-					VtigerJS_DialogBox.unblock();
-					if (msg.search('%%%CONFIRM%%%') > -1) { //Allow to use confirm alert
-						//message to display
-						var display = msg.split('%%%CONFIRM%%%');
-						if (confirm(display[1])) { //If you click on OK
-							dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName, crmId);
-						}
-					} else if (msg.search('%%%OK%%%') > -1) { //No error
-						dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName, crmId);
-					} else if (msg.search('%%%FUNCTION%%%') > -1) { //call user function
-						var callfunc = msg.split('%%%FUNCTION%%%');
-						var params = '';
-						if (callfunc[1].search('%%%PARAMS%%%') > -1) { //function has params string
-							var cfp = callfunc[1].split('%%%PARAMS%%%');
-							callfunc = cfp[0];
-							params = cfp[1];
-						} else {
-							callfunc = callfunc[1];
-						}
-						if (typeof window[callfunc] == 'function') {
-							if (window[callfunc]('', '', 'Save', dtlViewAjaxFinishSave, params)) {
-								dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName, crmId);
-							}
-						} else {
-							dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName, crmId);
-						}
-					} else { //Error
-						alert(msg);
-					}
-				}).fail(function () {
-					//Error while asking file
-					VtigerJS_DialogBox.unblock();
-					alert('Error with AJAX');
-				});
-			} else { // no validation we send form
-				dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName, crmId);
 			}
+			sentForm[fieldName] = r;
+			break;
+		case '56':
+		case 56:
+			if (document.getElementById('txtbox_'+fieldName).checked == true) {
+				sentForm[fieldName] = 1;
+			} else {
+				sentForm[fieldName] = 0;
+			}
+			break;
+		case '50':
+		case 50:
+			sentForm[fieldName] = document.getElementById('txtbox_' + fieldName).value;
+			sentForm['timefmt_' + fieldName] = document.getElementById('inputtimefmt_' + fieldName).value;
+			break;
+		case '53':
+		case 53:
+			var assigntype = document.getElementsByName('assigntype');
+			if (assigntype.length > 0) {
+				var assign_type_U = assigntype[0].checked;
+				var assign_type_G = false;
+				if (assigntype[1]!=undefined) {
+					assign_type_G = assigntype[1].checked;
+				}
+			} else {
+				var assign_type_U = assigntype[0].checked;
+			}
+			if (assign_type_U == true) {
+				var txtBox= 'txtbox_U'+fieldLabel;
+				sentForm['assign_type'] = 'U';
+			} else if (assign_type_G == true) {
+				var txtBox= 'txtbox_G'+fieldLabel;
+				sentForm['assign_type'] = 'T';
+			}
+			sentForm[fieldName] = document.getElementById(txtBox).value;
+			break;
+		default:
+			sentForm[fieldName] = document.getElementById('txtbox_'+fieldName).value;
+			break;
+		}
+		sentForm['action'] = 'DetailViewEdit';
+		sentForm['dtlview_edit_fieldcheck'] = fieldName;
+		//JSONize form data
+		sentForm = JSON.stringify(sentForm);
+		jQuery.ajax({
+			type : 'post',
+			data : {structure: sentForm},
+			url : 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule='+gVTModule
+		}).done(function (msg) {
+			//Validation file answers
+			VtigerJS_DialogBox.unblock();
+			if (msg.search('%%%CONFIRM%%%') > -1) { //Allow to use confirm alert
+				//message to display
+				var display = msg.split('%%%CONFIRM%%%');
+				if (confirm(display[1])) { //If you click on OK
+					dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName, crmId);
+				}
+			} else if (msg.search('%%%OK%%%') > -1) { //No error
+				dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName, crmId);
+			} else if (msg.search('%%%FUNCTION%%%') > -1) { //call user function
+				var callfunc = msg.split('%%%FUNCTION%%%');
+				var params = '';
+				if (callfunc[1].search('%%%PARAMS%%%') > -1) { //function has params string
+					var cfp = callfunc[1].split('%%%PARAMS%%%');
+					callfunc = cfp[0];
+					params = cfp[1];
+				} else {
+					callfunc = callfunc[1];
+				}
+				if (typeof window[callfunc] == 'function') {
+					if (window[callfunc]('', '', 'Save', dtlViewAjaxFinishSave, params)) {
+						dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName, crmId);
+					}
+				} else {
+					dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName, crmId);
+				}
+			} else { //Error
+				alert(msg);
+			}
+		}).fail(function () {
+			//Error while asking file
+			VtigerJS_DialogBox.unblock();
+			alert('Error with AJAX');
 		});
 	}
 	return false;

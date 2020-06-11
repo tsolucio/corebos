@@ -323,12 +323,12 @@ class cbupdaterWorker {
 	*/
 	public function setQuickCreateFields($moduleName, $qcfields) {
 		global $adb;
-		$module = VTiger_Module::getInstance($moduleName);
+		$module = Vtiger_Module::getInstance($moduleName);
 		$adb->pquery('UPDATE vtiger_field SET quickcreate=1 WHERE quickcreate=2 and tabid=?', array($module->id));
 		$order = 1;
 		$upd = 'UPDATE vtiger_field SET quickcreate=2, quickcreatesequence=? WHERE fieldid=?';
 		foreach ($qcfields as $fldname) {
-			$field = VTiger_Field::getInstance($fldname, $module);
+			$field = Vtiger_Field::getInstance($fldname, $module);
 			if ($field) {
 				$adb->pquery($upd, array($order, $field->id));
 				$order++;
@@ -364,7 +364,7 @@ class cbupdaterWorker {
 				foreach ($blocks as $blockname => $fields) {
 					$block = Vtiger_Block::getInstance($blockname, $moduleInstance);
 					if (!$block) {
-						$block = new VTiger_Block();
+						$block = new Vtiger_Block();
 						$block->label = $blockname;
 						$moduleInstance->addBlock($block);
 					}
@@ -604,11 +604,11 @@ class cbupdaterWorker {
 		foreach ($tooltips as $ttflds) {
 			$mname = $ttflds['module'];
 			if (vtlib_isModuleActive($mname)) {
-				$modttip = VTiger_Module::getInstance($mname);
-				$fldttiph = VTiger_Field::getInstance($ttflds['hoverfield'], $modttip);
+				$modttip = Vtiger_Module::getInstance($mname);
+				$fldttiph = Vtiger_Field::getInstance($ttflds['hoverfield'], $modttip);
 				$sort = 1;
 				foreach ($ttflds['fields2show'] as $fldtt) {
-					$fldttips = VTiger_Field::getInstance($fldtt, $modttip);
+					$fldttips = Vtiger_Field::getInstance($fldtt, $modttip);
 					$this->ExecuteQuery($inssql, array($fldttiph->id, $fldttips->id, $sort));
 					$sort++;
 				}

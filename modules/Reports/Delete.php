@@ -37,7 +37,7 @@ if (isset($_REQUEST['idlist']) && $_REQUEST['idlist']!= '') {
 		if (is_admin($current_user) || in_array($owner, $subordinate_users) || $owner==$current_user->id) {
 			DeleteReport($id_array[$i]);
 		} else {
-			$del_failed []= $adb->query_result($own_query, 0, "reportname");
+			$del_failed[]= $adb->query_result($own_query, 0, "reportname");
 		}
 	}
 

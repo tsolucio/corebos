@@ -17,7 +17,7 @@
 <table class="slds-m-around_medium" style="width: 98%; maring: auto;">
 	<tr>
 		<td class="showPanelBg" valign="top" width="100%">
-			<table  cellpadding="0" cellspacing="0" width="100%" border=0>
+			<table cellpadding="0" cellspacing="0" width="100%" border=0>
 				<tr>
 					<td width="50%" valign=top>
 						<form  name="Export_Records"  method="POST" onsubmit="VtigerJS_DialogBox.block();">
@@ -99,6 +99,17 @@
 													<input type="radio" name="export_data" value="selecteddata" {if $MODULE eq 'Users'}disabled{/if}>
 												</td>
 												{/if}
+											</tr>
+											<tr>
+												<td colspan="2" align="left" valign="top" style="padding-left:40px;">
+													<span class="genHeaderSmall">{$APP.LBL_SEARCH_CRITERIA_COLUMNS}:</span>
+												</td>
+											</tr>
+											<tr>
+												<td width="50%" class="small cblds-p_large cblds-t-align_right">{$APP.LBL_VISIBLE_COLUMNS}</td>
+												<td width="5%" class="small cblds-p_large">
+													<input type="checkbox" name="visiblecolumns">
+												</td>
 											</tr>
 										</table>
 									</td>

@@ -35,7 +35,7 @@ class crmtogo_WS_FetchModuleFilters extends crmtogo_WS_Controller {
 	}
 
 	protected function getModuleFilters($moduleName, $user) {
-		global $adb;
+		global $adb, $current_user;
 		$filters = array();
 		$sql = 'SELECT vtiger_customview.*, vtiger_users.user_name
 			FROM vtiger_customview 
