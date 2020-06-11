@@ -24,7 +24,7 @@
                           <xs:element name="field" maxOccurs="unbounded" minOccurs="1">
                             <xs:complexType mixed="true">
                               <xs:sequence>
-                                <xs:element type="xs:string" name="label"/>
+                                <xs:element type="xs:string" name="label" minOccurs="0"/>
                                 <xs:element type="xs:string" name="name"/>
                                 <xs:element type="xs:string" name="table" minOccurs="0"/>
                                 <xs:element type="xs:string" name="columnname" minOccurs="0"/>
@@ -50,7 +50,7 @@
                     <xs:element name="field" maxOccurs="unbounded" minOccurs="1">
                       <xs:complexType mixed="true">
                         <xs:sequence>
-                          <xs:element type="xs:string" name="label"/>
+                          <xs:element type="xs:string" name="label" minOccurs="0"/>
                           <xs:element type="xs:string" name="name"/>
                           <xs:element type="xs:string" name="table" minOccurs="0"/>
                           <xs:element type="xs:string" name="columnname" minOccurs="0"/>
