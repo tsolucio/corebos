@@ -1124,6 +1124,10 @@ class QueryGenerator {
 						if ($bTable=='vtiger_users') {
 							$fieldSqlList[$index] = "(vtiger_users.id $sqlOperator $value or vtiger_groups.groupid $sqlOperator $value)";
 						} else {
+							if (($conditionInfo['SQLOperator'] == 'empty' || $conditionInfo['SQLOperator'] == 'y')) {
+								$fieldSqlList[$index] = "($bTable".$conditionInfo['referenceField'].".$fname IS NULL OR $bTable".$conditionInfo['referenceField'].".$fname = '' OR $bTable".$conditionInfo['referenceField'].".$fname = '0')";
+								continue;
+							}
 							$fieldSqlList[$index] = "($bTable".$conditionInfo['referenceField'].".$fname $sqlOperator $value)";
 						}
 					}
