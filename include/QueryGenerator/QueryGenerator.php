@@ -631,6 +631,7 @@ class QueryGenerator {
 					$tableJoinMapping[$baseTable] = 'INNER JOIN';
 				}
 				foreach ($moduleList as $module) {
+					$tabid = getTabid($module);
 					$meta = $this->getMeta($module);
 					$nameFields = $this->moduleNameFields[$module];
 					$nameFieldList = explode(',', $nameFields);
@@ -643,6 +644,7 @@ class QueryGenerator {
 							$referenceTableIndex = 'id';
 							$joinas = 'LEFT JOIN vtiger_users AS';
 						} else {
+							$column = getColumnnameByFieldname($tabid, $column);
 							$referenceField = $meta->getFieldByColumnName($column);
 							if (!$referenceField) {
 								continue;
@@ -980,6 +982,7 @@ class QueryGenerator {
 				if (in_array($fieldName, $this->referenceFieldList)) {
 					$moduleList = $this->referenceFieldInfoList[$fieldName];
 					foreach ($moduleList as $module) {
+						$tabid = getTabid($module);
 						$nameFields = $this->moduleNameFields[$module];
 						$nameFieldList = explode(',', $nameFields);
 						$meta = $this->getMeta($module);
@@ -988,6 +991,7 @@ class QueryGenerator {
 							if ($module == 'Users') {
 								$referenceTable = 'vtiger_users'.$fieldName;
 							} else {
+								$column = getColumnnameByFieldname($tabid, $column);
 								$referenceField = $meta->getFieldByColumnName($column);
 								if (!$referenceField) {
 									continue;
