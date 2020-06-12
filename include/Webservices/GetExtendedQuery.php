@@ -68,6 +68,9 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 	foreach ($queryColumns as $k => $field) {
 		if (strpos($field, '.')>0) {
 			list($m,$f) = explode('.', $field);
+			if ($m=='UsersSec') {
+				$m = 'Users';
+			}
 			if (!isset($queryRelatedModules[$m])) {
 				$relhandler = vtws_getModuleHandlerFromName($m, $user);
 				$relmeta = $relhandler->getMeta();
