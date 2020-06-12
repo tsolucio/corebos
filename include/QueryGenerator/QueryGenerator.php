@@ -154,10 +154,15 @@ class QueryGenerator {
 							continue;
 						}
 						if ($module=='Users') {
+							if ($fld=='created_user_id') {
+								$usermod = 'UsersCreator';
+							} else {
+								$usermod = 'UsersSec';
+							}
 							foreach (array_keys($this->getOpenUserFields()) as $fn) {
 								$this->referenceFieldNameList[] = $fn;
-								$this->referenceFieldNameList[] = 'UsersSec.'.$fn;
-								$this->referenceFields[$fld]['UsersSec'][$fn] = $finfo;
+								$this->referenceFieldNameList[] = $usermod.'.'.$fn;
+								$this->referenceFields[$fld][$usermod][$fn] = $finfo;
 							}
 						} else {
 							$this->referenceFieldNameList[] = $fname;
@@ -272,6 +277,9 @@ class QueryGenerator {
 					if ($mname=='Users' && empty($this->referenceFields[$fld][$mname][$fldname]) && !empty($this->referenceFields[$fld]['UsersSec'][$fldname])) {
 						$mname = 'UsersSec';
 					}
+					if ($mname=='Users' && empty($this->referenceFields[$fld][$mname][$fldname]) && !empty($this->referenceFields[$fld]['UsersCreator'][$fldname])) {
+						$mname = 'UsersCreator';
+					}
 					if (!empty($this->referenceFields[$fld][$mname][$fldname])) {
 						$field = $this->referenceFields[$fld][$mname][$fldname];
 						if ($returnName) {
@@ -283,6 +291,12 @@ class QueryGenerator {
 								} elseif ($mname=='UsersSec') {
 									if ($alias) {
 										$fldname=$fldname.' as userssec'.$fldname;
+									} else {
+										$fldname=$fldname;
+									}
+								} elseif ($mname=='UsersCreator') {
+									if ($alias) {
+										$fldname=$fldname.' as userscreator'.$fldname;
 									} else {
 										$fldname=$fldname;
 									}
@@ -326,6 +340,12 @@ class QueryGenerator {
 							} elseif ($fldmod=='UsersSec') {
 								if ($alias) {
 									$fldname=$fldname.' as userssec'.$fldname;
+								} else {
+									$fldname=$fldname;
+								}
+							} elseif ($fldmod=='UsersCreator') {
+								if ($alias) {
+									$fldname=$fldname.' as userscreator'.$fldname;
 								} else {
 									$fldname=$fldname;
 								}
@@ -882,7 +902,7 @@ class QueryGenerator {
 							continue;
 						}
 						if (!empty($this->referenceFields[$fld][$fldmod][$fldname])) {
-							$hmod = ($fldmod=='UsersSec' ? 'Users' : $fldmod);
+							$hmod = ($fldmod=='UsersSec' || $fldmod=='UsersCreator' ? 'Users' : $fldmod);
 							$handler = vtws_getModuleHandlerFromName($hmod, $current_user);
 							$meta = $handler->getMeta();
 							$reltableList = $meta->getEntityTableIndexList();

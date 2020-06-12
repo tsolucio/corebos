@@ -68,7 +68,7 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 	foreach ($queryColumns as $k => $field) {
 		if (strpos($field, '.')>0) {
 			list($m,$f) = explode('.', $field);
-			if ($m=='UsersSec') {
+			if ($m=='UsersSec' || $m=='UsersCreator') {
 				$m = 'Users';
 			}
 			if (!isset($queryRelatedModules[$m])) {
