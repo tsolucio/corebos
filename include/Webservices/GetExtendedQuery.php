@@ -15,6 +15,9 @@
 require_once 'include/Webservices/Utils.php';
 require_once 'modules/com_vtiger_workflow/include.inc';
 require_once 'modules/com_vtiger_workflow/WorkFlowScheduler.php';
+require_once 'include/QueryGenerator/PHPSQLParserInclude.php';
+use \PHPSQLParser\PHPSQLParser;
+use \PHPSQLParser\utils\ExpressionType;
 
 /*
  * Given a webservice formatted query with optional extended FQN syntax return a valid SQL statement
@@ -27,6 +30,148 @@ require_once 'modules/com_vtiger_workflow/WorkFlowScheduler.php';
  *
  */
 function __FQNExtendedQueryGetQuery($q, $user) {
+	global $adb, $log;
+	$parser = new PHPSQLParser();
+	$parsed = $parser->parse($q);
+
+	if (isset($parsed['FROM'])) {
+		$mainModule = $parsed['FROM'][0]['no_quotes']['parts'][0];
+	} else {
+		throw new WebServiceException(WebServiceErrorCode::$QUERYSYNTAX, 'Given query is missing or has incorrect FROM clause');
+	}
+
+	// pickup meta data of module
+	$webserviceObject = VtigerWebserviceObject::fromName($adb, $mainModule);
+	$handlerPath = $webserviceObject->getHandlerPath();
+	$handlerClass = $webserviceObject->getHandlerClass();
+	require_once $handlerPath;
+	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+	$meta = $handler->getMeta();
+	$mainModule = $meta->getTabName();  // normalize module name
+	// check modules
+	if (!$meta->isModuleEntity()) {
+		throw new WebServiceException('INVALID_MODULE', "Given main module ($mainModule) cannot be found");
+	}
+
+	// check permission on module
+	$entityName = $meta->getEntityName();
+	$types = vtws_listtypes(null, $user);
+	if (!in_array($entityName, $types['types'])) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to perform the operation on module ($mainModule) is denied");
+	}
+
+	if (!$meta->hasReadAccess()) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read module is denied');
+	}
+
+	// user has enough permission to start process
+	$fieldcolumn = $meta->getFieldColumnMapping();
+	$queryGenerator = new QueryGenerator($mainModule, $user);
+	$queryColumns = trim(substr($q, 6, stripos($q, ' from ')-5));
+	$queryColumns = explode(',', $queryColumns);
+	$queryColumns = array_map('trim', $queryColumns);
+	$countSelect = ($queryColumns == array('count(*)'));
+	$queryRelatedModules = array();
+	foreach ($queryColumns as $k => $field) {
+		if (strpos($field, '.')>0) {
+			list($m,$f) = explode('.', $field);
+			if ($m=='UsersSec' || $m=='UsersCreator') {
+				$m = 'Users';
+			}
+			if (!isset($queryRelatedModules[$m])) {
+				$relhandler = vtws_getModuleHandlerFromName($m, $user);
+				$relmeta = $relhandler->getMeta();
+				$mn = $relmeta->getTabName();  // normalize module name
+				$queryRelatedModules[$mn] = $relmeta;
+				if ($m!=$mn) {
+					$queryColumns[$k] = $mn.'.'.$f;
+				}
+			}
+		}
+	}
+	$queryColumns[] = 'id';  // add ID column to follow REST interface behaviour
+	$queryGenerator->setFields($queryColumns);
+
+	// where
+	if (isset($parsed['WHERE'])) {
+		$queryGenerator->startGroup($queryGenerator::$AND);
+		fqneqProcessConditions($parsed['WHERE'], $queryGenerator, $mainModule, $user);
+		$queryGenerator->endGroup();
+	}
+
+	// limit and order
+	$orderby = '';
+	if (isset($parsed['ORDER'])) {
+		$fieldtable = $meta->getColumnTableMapping();
+		foreach ($parsed['ORDER'] as $fieldspec) {
+			// we have to make sure we have all the join conditions for these fields as Query Generator doesn't do that by default
+			__FQNExtendedQuerySetQGRefField($fieldspec['base_expr'], $mainModule, $queryGenerator, $user);
+			$orderby .= __FQNExtendedQueryField2Column($fieldspec['base_expr'], $mainModule, $fieldcolumn, $fieldtable, $user).' '.$fieldspec['direction'];
+		}
+		$orderby = ' order by '.$orderby;
+	}
+	$query = 'select ';
+	if ($countSelect) {
+		$query .= 'count(*) ';
+	} else {
+		$query .= $queryGenerator->getSelectClauseColumnSQL().' ';
+	}
+	$query .= $queryGenerator->getFromClause().' ';
+	$query .= $queryGenerator->getWhereClause().' ';
+	$query .= $orderby;
+	if (isset($parsed['LIMIT'])) {
+		$query .= ' limit '.(!empty($parsed['LIMIT']['offset']) ? $parsed['LIMIT']['offset'] : '0').','.$parsed['LIMIT']['rowcount'];
+	}
+	return array($query, $queryRelatedModules);
+}
+
+function fqneqProcessConditions($conditions, $queryGenerator, $mainModule, $user) {
+	$glue = $col = $op = $val = '';
+	$havecol = $haveop = $haveval = false;
+	//var_dump($conditions);
+	foreach ($conditions as $condition) {
+		switch ($condition['expr_type']) {
+			case ExpressionType::BRACKET_EXPRESSION:
+				$queryGenerator->startGroup($glue);
+				fqneqProcessConditions($condition['sub_tree'], $queryGenerator, $mainModule, $user);
+				$queryGenerator->endGroup();
+				break;
+			case ExpressionType::OPERATOR:
+				switch (strtolower($condition['base_expr'])) {
+					case 'and':
+						$glue = $queryGenerator::$AND;
+						break;
+					case 'or':
+						$glue = $queryGenerator::$OR;
+						break;
+					default:
+						$op .= ' '.$condition['base_expr'];
+						$haveop = true;
+						break;
+				}
+				break;
+			case ExpressionType::COLREF:
+				$col = $condition['base_expr'];
+				$havecol = true;
+				break;
+			case ExpressionType::CONSTANT:
+			case ExpressionType::IN_LIST:
+				$val = $condition['base_expr'];
+				$haveval = true;
+				break;
+			default:
+				break;
+		}
+		if ($havecol && $haveop && $haveval) {
+			//var_dump($col.' '.$op.' '.$val);
+			__FQNExtendedQueryAddCondition($queryGenerator, $col.' '.$op.' '.$val, $glue, $mainModule, $col, $user);
+			$col = $op = $val = '';
+			$havecol = $haveop = $haveval = false;
+		}
+	}
+}
+
+function deprecated__FQNExtendedQueryGetQuery($q, $user) {
 	global $adb, $log;
 
 	$moduleRegex = "/[fF][rR][Oo][Mm]\s+([^\s;]+)(.*)/";
@@ -288,7 +433,7 @@ function __FQNExtendedQueryAddCondition($queryGenerator, $condition, $glue, $mai
 	}
 	$val = trim($val);
 	$val = trim($val, "'");
-	$val = str_replace("''", "'", $val);
+	$val = str_replace("\\'", "'", $val); //$val = str_replace("''", "\\'", $val);
 	// TODO  add query generator operators for 'bw' = BETWEEN value1 and value2  (between two dates)
 	switch ($op) {
 		case '<':
