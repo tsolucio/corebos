@@ -854,7 +854,7 @@ class CRMEntity {
 				$value[] = $fldvalue;
 			}
 		}
-
+		$rdo = true;
 		if ($insertion_mode == 'edit') {
 			// If update is empty the query fails
 			if (count($update) > 0) {
