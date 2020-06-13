@@ -143,6 +143,7 @@ class Import_Controller {
 			} else {
 				$saveMapping = array_flip($fieldMapping);
 			}
+			$saveDefaultValue = array();
 			foreach ($defaultValues as $field => $value) {
 				$saveDefaultValue[$field] = $value;
 			}
