@@ -866,7 +866,7 @@ class CRMEntity {
 			$sql1 = "insert into $table_name(" . implode(',', $column) . ') values(' . generateQuestionMarks($value) . ')';
 			$rdo = $adb->pquery($sql1, $value);
 		}
-		if (!$rdo) {
+		if ($rdo===false) {
 			$log->fatal($adb->getErrorMsg());
 		}
 	}
