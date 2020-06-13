@@ -499,8 +499,8 @@ class VtigerCRMObjectMeta extends EntityMeta {
 			foreach ($lfields as $key => $columnname) {
 				$fieldinfo = VTCacheUtils::lookupFieldInfoByColumn($tabid, $columnname);
 				if ($fieldinfo === false) {
-					getColumnFields(getTabModuleName($tabid));
-					$fieldinfo = VTCacheUtils::lookupFieldInfo($tabid, $columnname);
+					getColumnFields($this->getTabName());
+					$fieldinfo = VTCacheUtils::lookupFieldInfoByColumn($tabid, $columnname);
 				}
 				$lfields[$key] = $fieldinfo['fieldname'];
 			}
