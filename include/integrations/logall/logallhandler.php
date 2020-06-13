@@ -26,7 +26,7 @@ class cbLogAllHandler extends VTEventHandler {
 	private $expire = 30;
 
 	public function handleEvent($eventName, $entityData) {
-		global $log, $current_user;
+		global $log, $adb, $current_user;
 		$cbmq = coreBOS_MQTM::getInstance();
 		switch ($eventName) {
 			case 'vtiger.entity.aftersave.final':
@@ -50,7 +50,15 @@ class cbLogAllHandler extends VTEventHandler {
 						$apptags[] = $tag['tag'];
 					}
 				}
+				$webserviceObject = VtigerWebserviceObject::fromName($adb, $moduleName);
+				$handlerPath = $webserviceObject->getHandlerPath();
+				$handlerClass = $webserviceObject->getHandlerClass();
+				require_once $handlerPath;
+				$handler = new $handlerClass($webserviceObject, $current_user, $adb, $log);
+				$meta = $handler->getMeta();
 				$data = $entityData->getData();
+				unset($data['createdtime'], $data['modifiedtime'], $data['modifiedby'], $data['created_user_id']);
+				$data = DataTransform::sanitizeReferences($data, $meta, true);
 				$data['apptags'] = $apptags;
 				$msg['data'] = $data;
 				$cbmq->sendMessage($this->ladataindex, 'logall', 'logalldata', 'Message', '1:M', 1, $this->expire, 0, $current_user->id, json_encode($msg));
@@ -60,6 +68,17 @@ class cbLogAllHandler extends VTEventHandler {
 					if (is_array($delta)) {
 						unset($delta['modifiedtime']);
 						if (count($delta)) {
+							$do = $dn = array();
+							foreach ($delta as $field => $values) {
+								$do[$field] = $values['oldValue'];
+								$dn[$field] = $values['currentValue'];
+							}
+							$do = DataTransform::sanitizeReferences($do, $meta, true);
+							$dn = DataTransform::sanitizeReferences($dn, $meta, true);
+							foreach ($delta as $field => $values) {
+								$delta[$field]['oldValue'] = $do[$field];
+								$delta[$field]['currentValue'] = $dn[$field];
+							}
 							$msg['operation'] = 'Change';
 							$msg['data'] = $delta;
 							$cbmq->sendMessage($this->lachangeindex, 'logall', 'logalldata', 'Message', '1:M', 1, $this->expire, 0, $current_user->id, json_encode($msg));
