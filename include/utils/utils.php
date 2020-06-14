@@ -3465,11 +3465,15 @@ function isRecordExists($recordId) {
 		$users = ($userWS==$moduleWS);
 		$groupWS = vtws_getEntityId('Groups');
 		$groups = ($groupWS==$moduleWS);
+		$currencyWS = vtws_getEntityId('Currency');
+		$currency = ($currencyWS==$moduleWS);
 	}
 	if ($users) {
 		$query = 'SELECT id FROM vtiger_users where id=? AND deleted=0';
 	} elseif ($groups) {
 		$query = 'SELECT groupid FROM vtiger_groups where groupid=?';
+	} elseif ($currency) {
+		$query = 'SELECT id FROM vtiger_currency_info where id=? AND deleted=0';
 	} else {
 		$query = 'SELECT crmid FROM vtiger_crmentity where crmid=? AND deleted=0';
 	}
