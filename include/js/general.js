@@ -5194,6 +5194,14 @@ function AutocompleteSetup() {
 	}
 }
 
+var appSubmitFormWithEnter = 0;
+GlobalVariable_getVariable('Application_EditView_Submit_Form_WithEnter', 1, gVTModule, '').then(function (response) {
+	var obj = JSON.parse(response);
+	appSubmitFormWithEnter = Number(obj.Application_Submit_Form_WithEnter);
+}, function (error) {
+	appSubmitFormWithEnter = 0;
+});
+
 function handleAcKeys(e) {
 	if (window.currentAc !== false) {
 		switch (e.keyCode) {
@@ -5216,6 +5224,10 @@ function handleAcKeys(e) {
 			highlightAcItemDown();
 			break;
 		}
+	} else if (e.keyCode==13 && appSubmitFormWithEnter && document.forms.EditView) {
+		document.forms.EditView.action.value='Save';
+		displaydeleted();
+		formValidate();
 	}
 }
 

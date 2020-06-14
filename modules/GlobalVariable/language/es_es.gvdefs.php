@@ -377,6 +377,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'OFF | {Business Map ID} | UPDATE',
 	'definition' => 'Qué mostrar en el subtítulo del encabezado de página. Nada (OFF), el resultado de un mapa de negocio o el texto "Actualizado" predeterminado.',
 ),
+'Application_EditView_Submit_Form_WithEnter' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Si se debe enviar el formulario de edición (1) o no (0) cuando se presiona la tecla ENTRAR. Por defecto no se envía.',
+),
 'Application_Upload_MaxSize' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Entero',

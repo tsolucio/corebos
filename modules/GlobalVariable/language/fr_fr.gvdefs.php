@@ -377,6 +377,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'OFF | {Business Map ID} | UPDATE',
 	'definition' => 'What to show in page header sub title. Nothing (OFF), the result of a Business Map or the default Updated text.',
 ),
+'Application_EditView_Submit_Form_WithEnter' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Whether to submit edit form (1) or not (0) when the ENTER key is pressed. By default it does not submit.',
+),
 'Application_Upload_MaxSize' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Entier',
