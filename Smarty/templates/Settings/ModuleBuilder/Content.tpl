@@ -106,9 +106,8 @@
                                 <div class="slds-form-element">
                                     <label class="slds-form-element__label" for="blocks_label">
                                         <abbr class="slds-required" title="required">* </abbr>{$MOD.LBL_MB_BLOCKLABEL}</label>
+                                        <input type="hidden" id="number_block" value="0">
                                     <div class="slds-form-element__control" id="blocks_inputs">
-                                        <input type="hidden" id="number_block" value="1">
-                                        <input type="text" id="blocks_label_1" placeholder="LBL_BLOCKNAME_INFORMATION" required="" class="slds-input" />
                                     </div>
                                 </div>
                                 <br>

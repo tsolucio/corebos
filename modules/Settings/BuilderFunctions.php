@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*************************************************************************************************
  * Copyright 2020 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
 * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
@@ -31,30 +31,33 @@ switch ($methodName) {
 		$page = vtlib_purify($_REQUEST['page']);
 		$perPage = vtlib_purify($_REQUEST['perPage']);
 		$ret = loadModules($page, $perPage);
-		break;	
+		break;
 	case 'loadBlocks':
 		$ret = loadBlocks();
 		break;
 	case 'loadFields':
 		$ret = loadFields();
-		break;	
+		break;
 	case 'autocomplete':
 		$query = vtlib_purify($_REQUEST['query']);
 		$method = vtlib_purify($_REQUEST['method']);
 		if ($method == 'name') {
 			$ret = autocompleteName($query);
-		} else if ($method == 'module') {
+		} elseif ($method == 'module') {
 			$ret = autocompleteModule($query);
-		}	
+		}
 		break;
 	case 'loadValues':
 		$step = vtlib_purify($_REQUEST['step']);
 		$moduleid = vtlib_purify($_REQUEST['moduleid']);
-		$ret = loadValues($step, $moduleid);	
+		$ret = loadValues($step, $moduleid);
 		break;
 	case 'removeBlock':
 		$blockid = vtlib_purify($_REQUEST['blockid']);
-		$ret = removeBlock($blockid);	
+		$ret = removeBlock($blockid);
+		break;
+	case 'loadDefaultBlocks':
+		$ret = loadDefaultBlocks();
 		break;
 	default:
 		$ret = array();

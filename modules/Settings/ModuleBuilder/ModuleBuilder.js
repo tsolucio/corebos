@@ -148,6 +148,9 @@ const mb = {
 				mb.loadElement('progresstext', true).innerHTML = mod_alert_arr.LBL_MB_PROGRESS+': ' + progress + '%';
 				mb.loadElement('step-' + nextstep, true).style.display = 'block';
 			}
+			if (step == 1) {
+				mb.generateDefaultBlocks();
+			}
 		});
 	},
 	/**
@@ -158,17 +161,17 @@ const mb = {
      */
 	backTo: (step, mod = false, moduleid = 0) => {
 		let thisStep = step + 1;
-        if (mod == true) {
-            for (let i = 1; i <=5; i++) {
-                if (i != step) {
-                    mb.loadElement('step-' + i, true).style.display = 'none';
-                }
-            }
-            mb.loadElement('step-' + step, true).style.display = '';
-        } else {
+		if (mod == true) {
+			for (let i = 1; i <=5; i++) {
+				if (i != step) {
+					mb.loadElement('step-' + i, true).style.display = 'none';
+				}
+			}
+			mb.loadElement('step-' + step, true).style.display = '';
+		} else {
 		    mb.loadElement('step-' + thisStep, true).style.display = 'none';
 		    mb.loadElement('step-' + step, true).style.display = '';
-        }
+		}
 		if (step == 1) {
 			//load active module
 			jQuery.ajax({
@@ -185,11 +188,12 @@ const mb = {
 		}
 
 		if (step == 2) {
-            const getUl = mb.loadElement('ul-block-mb', true);
-            if (getUl != null) {
-                mb.removeElement('ul-block-mb');
-            }
-            //load blocks
+			mb.generateDefaultBlocks();
+			const getUl = mb.loadElement('ul-block-mb', true);
+			if (getUl != null) {
+				mb.removeElement('ul-block-mb');
+			}
+			//load blocks
 			jQuery.ajax({
 				method: 'GET',
 				url: url+'&methodName=loadValues&step='+step+'&moduleid='+moduleid,
@@ -203,7 +207,10 @@ const mb = {
 				for (let i = 0; i < res.length; i++) {
 					const li = document.createElement('li');
 					const id = res[i].blocksid+'-block';
-					const removeBtn = `<button class='slds-button slds-button_outline-brand' onclick='mb.removeBlock("${id}")' style='margin-left: 10px'>Remove</button>`;
+					let removeBtn = `<button class='slds-button slds-button_outline-brand' onclick='mb.removeBlock("${id}")' style='margin-left: 10px'>Remove</button>`;
+					if (res[i].blocks_label.toUpperCase() == 'LBL_MODULEBLOCK_INFORMATION' || res[i].blocks_label.toUpperCase() == 'LBL_CUSTOM_INFORMATION' || res[i].blocks_label.toUpperCase() == 'LBL_DESCRIPTION_INFORMATION') {
+						removeBtn = '';
+					}
 					li.innerHTML = res[i].blocks_label.toUpperCase()+removeBtn;
 					li.className = 'slds-item';
 					li.id = 'li-block-mb-'+res[i].blocksid;
@@ -263,16 +270,57 @@ const mb = {
 		svg.setAttribute('xlink:href', 'include/LD/assets/icons/'+newicon[0]+'-sprite/svg/symbols.svg#'+newicon[1]);
 	},
 	/**
+     * generate Default Blocks
+     */
+	generateDefaultBlocks: () => {
+		mb.removeElement('blocks_inputs', true);
+		mb.loadElement('number_block').value = '1';
+		jQuery.ajax({
+			method: 'GET',
+			url: url+'&methodName=loadDefaultBlocks',
+		}).done(function (response) {
+			const res = JSON.parse(response);
+			if (res == 'load') {
+				mb.generateInput('default');
+			} else {
+				mb.loadElement('number_block', true).value = '0';
+				mb.generateInput();
+			}
+		});
+	},
+	/**
      * Generate block input for step 2
      */
-	generateInput: () => {
-		const number_block = mb.autoIncrementIds('number_block');
-		const input = document.createElement('input');
-		input.type = 'text';
-		input.id = 'blocks_label_' + number_block;
-		input.placeholder = 'LBL_BLOCKNAME_INFORMATION';
-		input.className ='slds-input';
-		mb.loadElement('blocks_inputs', true).appendChild(input);
+	generateInput: (type = '') => {
+		if (type == 'default') {
+			const MODULEBLOCK = document.createElement('input');
+			MODULEBLOCK.type = 'text';
+			MODULEBLOCK.id = 'blocks_label_1';
+			MODULEBLOCK.value = 'LBL_MODULEBLOCK_INFORMATION';
+			MODULEBLOCK.className ='slds-input';
+			mb.loadElement('blocks_inputs', true).appendChild(MODULEBLOCK);
+			const CUSTOM = document.createElement('input');
+			CUSTOM.type = 'text';
+			CUSTOM.id = 'blocks_label_2';
+			CUSTOM.value = 'LBL_CUSTOM_INFORMATION';
+			CUSTOM.className ='slds-input';
+			mb.loadElement('blocks_inputs', true).appendChild(CUSTOM);
+			const DESCRIPTION = document.createElement('input');
+			DESCRIPTION.type = 'text';
+			DESCRIPTION.id = 'blocks_label_3';
+			DESCRIPTION.value = 'LBL_DESCRIPTION_INFORMATION';
+			DESCRIPTION.className ='slds-input';
+			mb.loadElement('blocks_inputs', true).appendChild(DESCRIPTION);
+			mb.loadElement('number_block', true).value = '3';
+		} else {
+			const number_block = mb.autoIncrementIds('number_block');
+			const input = document.createElement('input');
+			input.type = 'text';
+			input.id = 'blocks_label_' + number_block;
+			input.placeholder = 'LBL_BLOCKNAME_INFORMATION';
+			input.className ='slds-input';
+			mb.loadElement('blocks_inputs', true).appendChild(input);
+		}
 	},
 	/**
      * Generate field input for step 3
@@ -289,14 +337,14 @@ const mb = {
 			'style': 'width: 15%; margin: 5px'
 		};
 		for (var i = 0; i < textfields.length; i++) {
-            const fnObj = {
-                instance: cell,
-                placeholder: textfields[i],
-                name: textfields[i]+'_',
-                id: textfields[i]+'_',
-                inc: number_field,
-                attr: func,
-            }
+			const fnObj = {
+				instance: cell,
+				placeholder: textfields[i],
+				name: textfields[i]+'_',
+				id: textfields[i]+'_',
+				inc: number_field,
+				attr: func,
+			};
 			const input = mb.createInput(fnObj);
 			if (textfields[i]=='fieldname') {
 				input.onchange = (elem) => {
@@ -326,28 +374,28 @@ const mb = {
 				selecttype.appendChild(option);
 			}
 		}
-        for (let i = 0; i < checkboxFields.length; i++) {
-            const fnObj = {
-                instance: cell,
-                placeholder: checkboxFields[i].type,
-                name: checkboxFields[i].type+'_',
-                id: checkboxFields[i].type+'_',
-                inc: number_field,
-                attr: '',
-                type: 'checkbox',
-            }
-            const chBox = mb.createInput(fnObj);
-            cell.appendChild(chBox);
-            mb.createLabel(cell, checkboxFields[i].value);
-        }
+		for (let i = 0; i < checkboxFields.length; i++) {
+			const fnObj = {
+				instance: cell,
+				placeholder: checkboxFields[i].type,
+				name: checkboxFields[i].type+'_',
+				id: checkboxFields[i].type+'_',
+				inc: number_field,
+				attr: '',
+				type: 'checkbox',
+			};
+			const chBox = mb.createInput(fnObj);
+			cell.appendChild(chBox);
+			mb.createLabel(cell, checkboxFields[i].value);
+		}
 		//create save button for each field
 		const saveBtn = document.createElement('button');
 		saveBtn.id ='save-btn-for-field-' + number_field;
 		saveBtn.className = 'slds-button slds-button_brand';
 		saveBtn.setAttribute('onclick', 'mb.SaveModule(3, false, this.id)');
 		saveBtn.innerHTML = mod_alert_arr.LBL_MB_SAVEFIELD;
-        const p = document.createElement('p');
-        p.appendChild(saveBtn);
+		const p = document.createElement('p');
+		p.appendChild(saveBtn);
 		cell.appendChild(p);
 	},
 	/**
@@ -458,14 +506,14 @@ const mb = {
 		const func = {
 			'style': 'width: 25%'
 		};
-        const fnObj = {
-            instance: cell,
-            placeholder: 'Viewname',
-            name: 'viewname-',
-            id: 'viewname-',
-            inc: number_customview,
-            attr: func,
-        }
+		const fnObj = {
+			instance: cell,
+			placeholder: 'Viewname',
+			name: 'viewname-',
+			id: 'viewname-',
+			inc: number_customview,
+			attr: func,
+		};
 		mb.createInput(fnObj);
 		//create setdefault
 		const setdefault = document.createElement('select');
@@ -542,7 +590,7 @@ const mb = {
 		let btn = '';
 		for (var i = 0; i < 5; i++) {
 			let completed = dataGridInstance.getValue(i, 'completed');
-            let moduleid = dataGridInstance.getValue(i, 'moduleid');
+			let moduleid = dataGridInstance.getValue(i, 'moduleid');
 			if (completed == 'Completed') {
 				btn = `<button class="slds-button slds-button_brand" aria-live="assertive">
                         <span class="slds-text-not-pressed">
@@ -551,12 +599,12 @@ const mb = {
                         </svg>${mod_alert_arr.Export}</span>
                     </button>`;
 			} else {
-                let step = 0;
-                if (completed == '20%') {
-                    step = 1;
-                } else if (completed == '40%') {
-                    step = 2;
-                }
+				let step = 0;
+				if (completed == '20%') {
+					step = 1;
+				} else if (completed == '40%') {
+					step = 2;
+				}
 				btn = `<button class="slds-button slds-button_neutral slds-button_dual-stateful" onclick="mb.backTo(${step}, true, ${moduleid}); mb.closeModal()" aria-live="assertive">
                         <span class="slds-text-not-pressed">
                         <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
@@ -660,39 +708,39 @@ const mb = {
 			'onkeyup': 'mb.autocomplete(this, "name")',
 		};
 		mb.createLabel(cell, 'Function name');
-        var fnObj = {
-            instance: cell,
-            placeholder: 'Function name',
-            name: 'related-function-',
-            id: 'autocomplete-related-',
-            inc: number_related,
-            attr: func,
-        }
+		var fnObj = {
+			instance: cell,
+			placeholder: 'Function name',
+			name: 'related-function-',
+			id: 'autocomplete-related-',
+			inc: number_related,
+			attr: func,
+		};
 		mb.createInput(fnObj);
 		cell.appendChild(span);
 
 		const cell2 = mb.createCell(row, 1, 'related_inputs_', number_related);
 		mb.createLabel(cell2, 'Label');
-        fnObj = {
-            instance: cell2,
-            placeholder: 'Label',
-            name: 'related-label-',
-            id: 'related-label-',
-            inc: number_related,
-            attr: '',
-        }
+		fnObj = {
+			instance: cell2,
+			placeholder: 'Label',
+			name: 'related-label-',
+			id: 'related-label-',
+			inc: number_related,
+			attr: '',
+		};
 		mb.createInput(fnObj);
 
 		const cell3 = mb.createCell(row, 0, 'related_inputs_', number_related);
 		mb.createLabel(cell3, 'Actions');
-        fnObj = {
-            instance: cell3,
-            placeholder: 'Actions',
-            name: 'related-action-',
-            id: 'related-action-',
-            inc: number_related,
-            attr: '',
-        }
+		fnObj = {
+			instance: cell3,
+			placeholder: 'Actions',
+			name: 'related-action-',
+			id: 'related-action-',
+			inc: number_related,
+			attr: '',
+		};
 		mb.createInput(fnObj);
 
 		const cell4 = mb.createCell(row, 0, 'related_inputs_', number_related);
@@ -700,14 +748,14 @@ const mb = {
 			'onkeyup': 'mb.autocomplete(this, "module")',
 		};
 		mb.createLabel(cell4, 'Related module');
-        fnObj = {
-            instance: cell4,
-            placeholder: 'Related module',
-            name: 'related-module-',
-            id: 'autocomplete-module-',
-            inc: number_related,
-            attr: func,
-        }
+		fnObj = {
+			instance: cell4,
+			placeholder: 'Related module',
+			name: 'related-module-',
+			id: 'autocomplete-module-',
+			inc: number_related,
+			attr: func,
+		};
 		mb.createInput(fnObj);
 
 		const spanModule = document.createElement('span');
@@ -732,7 +780,7 @@ const mb = {
         name: {string},
         id: {string},
         inc: {number},
-        attr: {object},       
+        attr: {object},
      }
      */
 	createInput: (scope) => {
@@ -740,11 +788,11 @@ const mb = {
 		input.placeholder = scope.placeholder;
 		input.id = scope.id+scope.inc;
 		input.name = scope.name+scope.inc;
-        if(scope.type != '' && scope.type != undefined) {
-            input.setAttribute('type', scope.type);
-        } else {
-            input.className = 'slds-input';
-        }
+		if (scope.type != '' && scope.type != undefined) {
+			input.setAttribute('type', scope.type);
+		} else {
+			input.className = 'slds-input';
+		}
 		if (scope.attr != '') {
 			for (let f in scope.attr) {
 				input.setAttribute(f, scope.attr[f]);
@@ -802,7 +850,7 @@ const mb = {
 			}
 		});
 	},
-    /**
+	/**
      * Remove elements
      * @param {string} elementId
      * @param {boolean} type
@@ -815,18 +863,18 @@ const mb = {
 			element.parentNode.removeChild(element);
 		}
 	},
-    /**
+	/**
      * Get values for inputs
      * @param {string} id
      * @param {boolean} type
      */
-    loadElement: (id, type = false) => {
-        let value = '';
-        if (type == true) {
-            value = document.getElementById(id);
-        } else {
-            value = document.getElementById(id).value;
-        }
-        return value;
-    },
+	loadElement: (id, type = false) => {
+		let value = '';
+		if (type == true) {
+			value = document.getElementById(id);
+		} else {
+			value = document.getElementById(id).value;
+		}
+		return value;
+	},
 };

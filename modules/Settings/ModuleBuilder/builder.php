@@ -35,7 +35,7 @@ function loadModules($page, $perPage) {
 	global $adb, $current_user, $mod_strings;
 	$limit = ($page-1) * $perPage;
 	$limitSql = ' LIMIT '.$limit.','.$perPage;
-	$list_query = 'SELECT vtiger_modulebuilder.modulebuilder_name as modulebuilder_name, mb.date as date, mb.completed as completed, mb.moduleid as moduleid
+	$list_query = 'SELECT vtiger_modulebuilder.modulebuilder_name as modulebuilder_name, mb.date as date, mb.completed as completed, vtiger_modulebuilder.modulebuilderid as moduleid
 		FROM vtiger_modulebuilder_name as mb
 		JOIN vtiger_modulebuilder ON mb.modulebuilderid=vtiger_modulebuilder.modulebuilderid 
 		WHERE userid=?';
@@ -71,7 +71,7 @@ function loadModules($page, $perPage) {
 				),
 			),
 			'result' => true,
-		);	
+		);
 	} else {
 		$entries_list = array(
 			'data' => array(
@@ -177,7 +177,7 @@ function loadValues($step, $moduleId) {
 	setcookie($cookie_name, $cookie_value, time() + ((86400 * 30) * 7), "/");
 	if ($step == 1) {
 		$modSql = $adb->pquery('SELECT * FROM vtiger_modulebuilder WHERE modulebuilderid=? AND status=?', array(
-			$moduleid, 
+			$moduleid,
 			'active'
 		));
 		$module = array();
@@ -211,6 +211,21 @@ function removeBlock($blockid) {
 	$delete = $adb->pquery('delete from vtiger_modulebuilder_blocks where blocksid=?', array($blockid));
 	if ($delete) {
 		return true;
+	}
+	return false;
+}
+/**
+ * Load default blocks in step 2
+ */
+function loadDefaultBlocks() {
+	global $adb;
+	$moduleid = vtlib_purify($_COOKIE['ModuleBuilderID']);
+	$blockSql = $adb->pquery('SELECT * FROM vtiger_modulebuilder_blocks WHERE moduleid=? AND blocks_label=?', array(
+		$moduleid,
+		'LBL_DESCRIPTION_INFORMATION'
+	));
+	if ($adb->num_rows($blockSql) == 0) {
+		return 'load';
 	}
 	return false;
 }

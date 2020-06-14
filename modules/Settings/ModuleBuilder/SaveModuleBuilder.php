@@ -24,7 +24,11 @@ function SaveModuleBuilder($step) {
 			$parentmenu = vtlib_purify($_REQUEST['parentmenu']);
 			$moduleicon = vtlib_purify($_REQUEST['moduleicon']);
 			//check if module exists
-			if (isset($_COOKIE['ModuleBuilderID']) && $_COOKIE['ModuleBuilderID'] != '') {
+			$modSql = $adb->pquery('SELECT * FROM vtiger_modulebuilder WHERE modulebuilder_name=?', array(
+				$modulename
+			));
+			$modExsists = $adb->num_rows($modSql);
+			if (isset($_COOKIE['ModuleBuilderID']) && $_COOKIE['ModuleBuilderID'] != '' && $modExsists > 0) {
 				$adb->pquery('UPDATE vtiger_modulebuilder SET modulebuilder_name=?, modulebuilder_label=?, modulebuilder_parent=?, icon=? WHERE modulebuilderid=?', array(
 					$modulename,
 					$modulelabel,
@@ -127,14 +131,14 @@ function SaveModuleBuilder($step) {
 			$moduleid = $_COOKIE['ModuleBuilderID'];
 			$relatedlists = vtlib_purify($_REQUEST['relatedlists']);
 			foreach ($relatedlists as $key => $value) {
-				if($key != '') {
+				if ($key != '') {
 					$adb->pquery('INSERT INTO vtiger_modulebuilder_relatedlists (function, label, actions, relatedmodule, moduleid) VALUES(?,?,?,?,?)', array(
 						$value['name'],
 						$value['label'],
 						$value['actions'],
 						$value['relatedmodule'],
 						$moduleid
-					));			
+					));
 				}
 			}
 			$adb->pquery('UPDATE vtiger_modulebuilder_name SET completed="Completed" WHERE userid=? AND modulebuilderid=?', array(
