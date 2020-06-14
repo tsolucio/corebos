@@ -68,7 +68,7 @@ class VTSimpleTemplate {
 			} else {
 				$referenceId = $this->parent->get($referenceField);
 				if ($referenceId==null) {
-					$result="";
+					$result = '';
 				} else {
 					try {
 						$entity = $this->cache->forId($referenceId);
@@ -415,7 +415,7 @@ class VTSimpleTemplate {
 				$parts[] = $data[$fieldname];
 			}
 		}
-		$result = implode(",", $parts);
+		$result = implode(',', $parts);
 		return $result;
 	}
 
