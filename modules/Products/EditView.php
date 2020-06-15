@@ -318,6 +318,7 @@ $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 $smarty->assign('SandRActive', GlobalVariable::getVariable('Application_SaveAndRepeatActive', 0, $currentModule));
 $cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule);
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
-
+$smarty->assign('SOCKETHOST', GlobalVariable::getVariable('sockethost', '', $currentModule));
+$smarty->assign('SOCKETBLOCKCHECK', GlobalVariable::getVariable('socketblockedit', '', $currentModule));
 $smarty->display('Inventory/InventoryEditView.tpl');
 ?>

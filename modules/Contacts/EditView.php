@@ -268,6 +268,7 @@ $smarty->assign('SandRActive', GlobalVariable::getVariable('Application_SaveAndR
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
 //Show or not the Header to copy address to left or right
 $smarty->assign('SHOW_COPY_ADDRESS', GlobalVariable::getVariable('Application_Show_Copy_Address', 1, $currentModule, $current_user->id));
-
+$smarty->assign('SOCKETHOST', GlobalVariable::getVariable('sockethost', '', $currentModule));
+$smarty->assign('SOCKETBLOCKCHECK', GlobalVariable::getVariable('socketblockedit', '', $currentModule));
 $smarty->display('salesEditView.tpl');
 ?>
