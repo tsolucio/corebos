@@ -1357,6 +1357,7 @@ $app_strings = array (
 'No Module' => 'Sem módulos relacionados',
 'Entity Name' => 'Nome entidade',
 'LBL_NOPRODUCTS' => 'Não é possível converter pedido de vendas em Fatura porque não há produtos restantes na fatura.',
+'Socketblockit' => 'Be careful! Another User is using this record',
 );
 
 // Translation for currency names

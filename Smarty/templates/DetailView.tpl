@@ -476,7 +476,10 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 </script>
 </td>
 </tr></table>
-
+<input type="hidden" name="sockethost" id="sockethost" value="{$SOCKETHOST}">
+<input type="hidden" name="socketblockcheck" id="socketblockcheck" value="{$SOCKETBLOCKCHECK}">
+<input type="hidden" name="socketblock" id="socketblock" value="0">
+<script src="include/js/socket.js" type="text/javascript"></script>
 {if $MODULE|hasEmailField}
 	<form name="SendMail" method="post"><div id="sendmail_cont" style="z-index:100001;position:absolute;"></div></form>
 {/if}
