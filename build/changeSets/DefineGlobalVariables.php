@@ -244,6 +244,9 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'ip_elastic_indexprefix',
 				'esusername',
 				'espassword',
+                            
+                                'sockethost',
+                                'socketblockedit',
 
 			);
 			$delete_these = array(

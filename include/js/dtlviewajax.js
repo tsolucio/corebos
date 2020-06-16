@@ -364,6 +364,9 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 
 function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldName, crmId) {
 	var formName = 'DetailView';
+        if (getObj('socketblockcheck').value=='1' && getObj('socketblock').value=='1'){
+            return false;
+        }
 	if (doformValidation('')) { //base function which validates form data
 		// Create object which gets the values of all input, textarea, select and button elements from the form
 		// var myFields = document.forms[formName].parentElement.querySelectorAll('input,select,textarea'); // this would send in all elements on screen

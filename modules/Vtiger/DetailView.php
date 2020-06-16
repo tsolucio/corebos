@@ -180,6 +180,8 @@ if ($cbMapid) {
 	$cbMapFDEP = $cbMapFDEP['fields'];
 }
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
+$smarty->assign('SOCKETHOST', GlobalVariable::getVariable('sockethost', '', $currentModule));
+$smarty->assign('SOCKETBLOCKCHECK', GlobalVariable::getVariable('socketblockedit', '', $currentModule));
 
 $smarty->assign('DETAILVIEW_AJAX_EDIT', GlobalVariable::getVariable('Application_DetailView_Inline_Edit', 1));
 ?>
