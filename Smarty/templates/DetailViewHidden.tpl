@@ -112,5 +112,9 @@
 
 <input type="hidden" name="cbcustominfo1" id="cbcustominfo1" value="{if isset($smarty.request.cbcustominfo1)}{$smarty.request.cbcustominfo1|@urlencode}{/if}" />
 <input type="hidden" name="cbcustominfo2" id="cbcustominfo2" value="{if isset($smarty.request.cbcustominfo2)}{$smarty.request.cbcustominfo2|@urlencode}{/if}" />
-
+{if $CUSTOM_LINKS && !empty($CUSTOM_LINKS.DETAILVIEWHTML)}
+{foreach from=$CUSTOM_LINKS.DETAILVIEWHTML item=dvhtml}
+	{eval var=$dvhtml->linkurl}
+{/foreach}
+{/if}
 </form>

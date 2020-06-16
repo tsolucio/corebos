@@ -210,4 +210,11 @@
 	<classname>setSODates2Empty</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Business Action types for Hidden HTML</description>
+	<filename>build/changeSets/2020/addBAtypesForHiddenHTML.php</filename>
+	<classname>addBAtypesForHiddenHTML</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
