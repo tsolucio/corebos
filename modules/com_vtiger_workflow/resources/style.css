@@ -86,7 +86,7 @@
 	font-size: 11px;
 	color: #000000;
 	background-color: #EEEEEE;
-	width: 200px;
+	/*width: 200px;*/
 }
 
 .condition_group_block {
@@ -99,4 +99,9 @@
 	padding : 5px;
 	margin : 5px;
 	text-align : center;
+}
+
+/* Overriding the SLDS .slds-input[readonly] { border-color: transparent} because the field needs to be visible */
+.fieldborder {
+	border-color: #dddbda !important;
 }
