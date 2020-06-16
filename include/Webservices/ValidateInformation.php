@@ -30,9 +30,13 @@ function cbwsValidateInformation($context, $user) {
 	if (json_last_error() !== JSON_ERROR_NONE) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid parameter');
 	}
+	if (empty($screen_values['module']) && !empty($screen_values['record'])) {
+		$screen_values['module'] = getSalesEntityType($screen_values['record']);
+	}
 	if (empty($screen_values['module']) || !isset($screen_values['record'])) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid parameter');
 	}
+
 	$types = vtws_listtypes(null, $user);
 	if (!in_array($screen_values['module'], $types['types'])) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
