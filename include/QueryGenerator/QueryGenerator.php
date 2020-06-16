@@ -468,7 +468,7 @@ class QueryGenerator {
 									break;
 								}
 							}
-							$this->addReferenceModuleFieldCondition($mname, $rfld, $name, $filter['value'], $filter['comparator']);
+							$this->addReferenceModuleFieldCondition($mname, $reffld, $name, $filter['value'], $filter['comparator']);
 						}
 						$columncondition = $filter['column_condition'];
 						if (!empty($columncondition)) {
