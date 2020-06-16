@@ -445,6 +445,7 @@ class QueryGenerator {
 			$this->addConditionGlue(self::$AND);
 		}
 		if (is_array($this->advFilterList) && count($this->advFilterList) > 0) {
+			$this->startGroup('');
 			foreach ($this->advFilterList as $groupcolumns) {
 				$filtercolumns = $groupcolumns['columns'];
 				if (count($filtercolumns) > 0) {
@@ -482,6 +483,7 @@ class QueryGenerator {
 					}
 				}
 			}
+			$this->endGroup();
 		}
 		if ($this->conditionInstanceCount > 0) {
 			$this->endGroup();
