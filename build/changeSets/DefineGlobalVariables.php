@@ -244,10 +244,6 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'ip_elastic_indexprefix',
 				'esusername',
 				'espassword',
-                            
-                                'sockethost',
-                                'socketblockedit',
-
 			);
 			$delete_these = array(
 				'preload_prototype',
@@ -283,6 +279,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'SOAP_Thunderbird_Enabled',
 				'Home_Display_Empty_Blocks',
 				'Gantt_Type',
+				'sockethost',
+				'socketblockedit',
 			);
 			$rename_these = array(
 				'Show_Copy_Adress_Header' => array(
