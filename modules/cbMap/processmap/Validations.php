@@ -137,13 +137,22 @@ class Validations extends processcbMap {
 	}
 
 	public static function doValidations($mapping, $screen_values, $record, $tabid) {
-		global $adb;
+		global $adb, $current_user, $log;
 		foreach ($mapping['fields'] as $valfield => $vals) {
 			if (isset($screen_values['action']) && $screen_values['action']=='DetailViewEdit' && $screen_values['dtlview_edit_fieldcheck']!=$valfield
 			&& !isset($screen_values[$valfield]) && isset($screen_values['current_'.$valfield])
 			) {
 				$screen_values[$valfield] = $screen_values['current_'.$valfield];
 			}
+		}
+		if (!empty($screen_values['module'])) {
+			$webserviceObject = VtigerWebserviceObject::fromName($adb, $screen_values['module']);
+			$handlerPath = $webserviceObject->getHandlerPath();
+			$handlerClass = $webserviceObject->getHandlerClass();
+			require_once $handlerPath;
+			$handler = new $handlerClass($webserviceObject, $current_user, $adb, $log);
+			$meta = $handler->getMeta();
+			$screen_values = DataTransform::sanitizeDateFieldsForDB($screen_values, $meta);
 		}
 		$v = new cbValidator($screen_values);
 		$validations = array();
