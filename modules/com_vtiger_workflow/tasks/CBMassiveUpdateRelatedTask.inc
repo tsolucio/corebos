@@ -147,7 +147,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 							$focusrel[$fldmod]->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel[$fldmod]->column_fields, $handlerMetarel[$fldmod]);
 							$logbg->debug("Saving: $relmodule, info: ".print_r($focusrel[$fldmod]->column_fields, true));
 							if ($this->launchrelwf) {
-								$focusrel[$fldmod]->save($mod);
+								$focusrel[$fldmod]->save($relmodule);
 							} else {
 								// Initialize Event trigger cache
 								$em = new VTEventsManager($adb);
