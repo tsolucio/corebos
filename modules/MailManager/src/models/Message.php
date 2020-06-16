@@ -121,9 +121,9 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 				$this->_attachments = array();
 			}
 			$this->_attachments[$filename] = $data;  // TODO: this is a problem if two files have same name
-		} elseif ($p->ifdisposition && $p->disposition == "INLINE" && $p->bytes > 0 && $p->subtype != 'PLAIN' && $p->subtype != 'HTML') {
+		} elseif ($p->ifdisposition && $p->disposition == 'INLINE' && $p->bytes > 0 && $p->subtype != 'PLAIN' && $p->subtype != 'HTML') {
 			// embedded images right now are treated as attachments
-			$this->_attachments["noname".$partno. "." .$p->subtype] = $data;
+			$this->_attachments['noname'.$partno. '.' .$p->subtype] = $data;
 		} elseif ($p->type==0 && $data) {
 			// TEXT
 			$this->_charset = $params['charset'];  // assume all parts are same charset
@@ -134,7 +134,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 			if (strtolower($p->subtype)=='plain') {
 				$this->_plainmessage .= trim($data) ."\n\n";
 			} else {
-				$this->_htmlmessage .= $data ."<br><br>";
+				$this->_htmlmessage .= $data .'<br><br>';
 			}
 		} elseif ($p->type==2 && $data) {
 			// EMBEDDED MESSAGE
@@ -215,7 +215,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 			$this->_bcc  = json_decode(decode_html($resultrow['mbcc']));
 
 			$this->_date	= decode_html($resultrow['mdate']);
-			$this->_subject = str_replace("_", " ", decode_html($resultrow['msubject']));
+			$this->_subject = str_replace('_', ' ', decode_html($resultrow['msubject']));
 			$this->_body    = decode_html($resultrow['mbody']);
 			$this->_charset = decode_html($resultrow['mcharset']);
 
@@ -365,14 +365,12 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 		$mimetype = MailAttachmentMIME::detect($saveasfile);
 
 		$adb->pquery(
-			"INSERT INTO vtiger_crmentity(crmid, smcreatorid, smownerid,
-				modifiedby, setype, description, createdtime, modifiedtime, presence, deleted)
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-			array($attachid, $current_user->id, $current_user->id, $current_user->id, "MailManager Attachment", $binFile, $usetime, $usetime, 1, 0)
+			'INSERT INTO vtiger_crmentity(crmid,smcreatorid,smownerid,modifiedby,setype,description,createdtime,modifiedtime,presence,deleted) VALUES (?,?,?,?,?,?,?,?,?,?)',
+			array($attachid, $current_user->id, $current_user->id, $current_user->id, 'MailManager Attachment', $binFile, $usetime, $usetime, 1, 0)
 		);
 
 		$adb->pquery(
-			"INSERT INTO vtiger_attachments SET attachmentsid=?, name=?, description=?, type=?, path=?",
+			'INSERT INTO vtiger_attachments SET attachmentsid=?, name=?, description=?, type=?, path=?',
 			array($attachid, $binFile, $binFile, $mimetype, $dirname)
 		);
 
@@ -453,7 +451,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 	 * @param Email $from
 	 */
 	public function setFrom($from) {
-		$mailFrom = str_replace("_", " ", $from);
+		$mailFrom = str_replace('_', ' ', $from);
 		$this->_from = @self::__mime_decode($mailFrom);
 	}
 
@@ -510,9 +508,9 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 			$date = date('Y-m-d', strtotime($date));
 		}
 		if ($format) {
-			if (preg_match(sprintf("/%s ([^ ]+)/", date('D, d M Y')), $date, $m)) {
+			if (preg_match(sprintf('/%s ([^ ]+)/', date('D, d M Y')), $date, $m)) {
 				$date = $m[1]; // Pick only time part for today
-			} elseif (preg_match("/[a-zA-Z]{3}, ([0-9]{1,2} [a-zA-Z]{3} [0-9]{4})/", $date, $m)) {
+			} elseif (preg_match('/[a-zA-Z]{3}, ([0-9]{1,2} [a-zA-Z]{3} [0-9]{4})/', $date, $m)) {
 				$date = $m[1]; // Pick only date part
 			}
 			return str_replace('--', '', getValidDisplayDate($date));
