@@ -78,6 +78,12 @@ const ListView = {
 			const fieldname = headerObj[index].fieldname;
 			const fieldvalue = headerObj[index].fieldvalue;
 			const uitype = headerObj[index].uitype;
+			let editor;
+			let values = {};
+			if (uitype == '15' || uitype == '52' || uitype == '53') {
+				values = headerObj[index].picklist;
+			}
+			editor = ListView.getEditorType(uitype, values);
 			if (fieldname == 'action') {
 				header = {
 					name: fieldname,
@@ -115,10 +121,21 @@ const ListView = {
 						header: fieldvalue,
 						sortingType: 'desc',
 						sortable: true,
+						renderer: {
+        					type: LinkRender,
+        				},
 						filter: filter,
+						editor: editor,
 						copyOptions: {
 							useListItemText: true
-						}
+						},
+				        onAfterChange(ev) {
+				        	const idx = dataGridInstance.getIndexOfRow(ev.rowKey);
+				        	const referenceField = dataGridInstance.getValue(idx, 'reference');
+				        	if (fieldname != referenceField) {
+				            	ListView.updateFieldData(ev, idx);
+				        	}
+				        },
 					};
 	      		} else {
 					header = {
@@ -126,15 +143,85 @@ const ListView = {
 						header: fieldvalue,
 						sortingType: 'desc',
 						sortable: true,
+						renderer: {
+        					type: LinkRender,
+        				},
+						editor: editor,
 						copyOptions: {
 							useListItemText: true
-						}
+						},
+				        onAfterChange(ev) {
+				        	const idx = dataGridInstance.getIndexOfRow(ev.rowKey);
+				        	const referenceField = dataGridInstance.getValue(idx, 'reference');
+				        	if (fieldname != referenceField) {
+				            	ListView.updateFieldData(ev, idx);
+				        	}
+				        },
 					};
 	      		}
 			}
 			res.push(header);
 		}
 		return res;
+	},
+	/**
+	 * Enable editor in listview
+	 * @param {Number} uitype
+	 * @param {Object} values
+	 */
+	getEditorType: (uitype, values) => {
+		if (uitype == '56') {
+			editor =  {
+				type: 'radio',
+	            options: {
+	              listItems: [
+	                { text: 'Yes', value: '1' },
+	                { text: 'No', value: '0' },
+	              ]
+	            }
+	        };
+		} else if (uitype == '10') {
+			editor = false;
+		} else if (uitype == '15') {
+			let listItems = [];
+			for (let f in values) {
+				let listValues = {};
+				listValues = {
+					text: values[f],
+					value: values[f]
+				};
+				listItems.push(listValues);
+			}
+       	 	editor = {
+            	type: 'select',
+	            options: {
+	            	listItems: listItems
+	            }
+	        };
+		} else if (uitype == '50' || uitype == '5' || uitype == '70') {
+			editor = {
+	            type: 'datePicker'
+	        };
+		} else if (uitype == '52' || uitype == '53') {
+			let listItems = [];
+			for (let f in values) {
+				let listValues = {};
+				listValues = {
+					text: values[f],
+					value: f,
+				};
+				listItems.push(listValues);
+			}
+       	 	editor = {
+            	type: 'select',
+	            options: {
+	            	listItems: listItems
+	            }
+	        };
+		} else {
+			editor = 'text';
+		}
+		return editor;
 	},
 	/**
 	 * Load the default view in the first time
@@ -435,16 +522,6 @@ const ListView = {
 			let referenceField = dataGridInstance.getValue(i, 'reference');
 			let referenceValue = dataGridInstance.getValue(i, referenceField);
 			let relatedRows = dataGridInstance.getValue(i, 'relatedRows');
-			for (let fName in relatedRows) {
-				let moduleName = relatedRows[fName][0];
-				let fieldId = relatedRows[fName][1];
-				let fieldValue = `<a href="index.php?module=${moduleName}&action=DetailView&record=${fieldId}">${relatedRows[fName][2]}<a>`;
-				if (moduleName != '') {
-					dataGridInstance.setValue(i, fName, fieldValue, false);
-				} else {
-					dataGridInstance.setValue(i, fName, '', false);
-				}
-			}
 			let aAction = `
 				<a href="index.php?module=${module}&action=EditView&record=${recordid}&return_module=${module}&return_action=index">${alert_arr['LNK_EDIT']}</a> | 
 				<a href="javascript:confirmdelete('index.php?module=${module}&action=Delete&record=${recordid}&return_module=${module}&return_action=index&parenttab=ptab');">${alert_arr['LNK_DELETE']}</a>`;
@@ -507,6 +584,31 @@ const ListView = {
 			if (idsArr.includes(recordId)) {
 				document.getElementById(i).checked = true;
 			}
+		}
+	},
+	/**
+	 * Update values in listview
+	 * @param {Object} ev
+	 * @param {String|Number} idx
+	 */
+	updateFieldData: (ev, idx) => {
+		console.log(idx);
+		const recordid = dataGridInstance.getValue(idx, 'recordid');
+		const rowKey = ev.rowKey;
+		const columnName = ev.columnName;
+		const value = ev.value;
+		const preValue = ev.preValue;
+		if (value != preValue) {
+			jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=listViewJSON&method=updateDataListView',
+				data: {
+					modulename: module,
+					value: value,
+					columnName: columnName,
+					recordid: recordid,
+				}
+			});
 		}
 	},
 };

@@ -14,7 +14,7 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 
-function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sortColumn = '', $currentPage = 1, $searchUrl = '', $searchtype = 'Basic') {
+function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sortColumn = '', $currentPage = 1, $searchUrl = '', $searchtype = 'Basic', $filterData = array()) {
 	global $app_strings, $mod_strings, $current_user, $adb;
 	include_once 'include/utils/utils.php';
 	require_once "modules/$currentModule/$currentModule.php";
@@ -65,6 +65,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	} catch (Exception $e) {
 		$sql_error = true;
 	}
+
 	if ($searchtype == 'Basic' && $searchUrl != '') {
 		$search = explode('&', $searchUrl);
 		foreach ($search as $key => $value) {
@@ -89,7 +90,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 		$_search['search'] = 'true';
 	}
 
-	if (isset($searchUrl) && $searchUrl != '') {
+	if ((isset($searchUrl) && $searchUrl != '')) {
 		$queryGenerator->addUserSearchConditions($_search);
 	}
 
@@ -150,16 +151,35 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	$listview_header_arr = array();
 	foreach ($listview_header_search as $fName => $fValue) {
 		$fieldType = getUItypeByFieldName($currentModule, $fName);
-		$lv_arr = array(
-			'fieldname' => $fName,
-			'fieldvalue' => $fValue,
-			'uitype' => $fieldType
-		);
+		if ($fieldType == '15') {
+			$picklistValues = vtlib_getPicklistValues($fName);
+			$lv_arr = array(
+				'fieldname' => $fName,
+				'fieldvalue' => $fValue,
+				'uitype' => $fieldType,
+				'picklist' => $picklistValues
+			);
+		} elseif ($fieldType == '52' || $fieldType == '53') {
+			$users = get_user_array();
+			$lv_arr = array(
+				'fieldname' => $fName,
+				'fieldvalue' => $fValue,
+				'uitype' => $fieldType,
+				'picklist' => $users
+			);
+		} else {
+			$lv_arr = array(
+				'fieldname' => $fName,
+				'fieldvalue' => $fValue,
+				'uitype' => $fieldType
+			);
+		}
 		array_push($listview_header_arr, $lv_arr);
 	}
 	$data = array();
 	$linkfield = array();
 	$result = $adb->pquery($list_query, array());
+	$picklistValues = array();
 	while ($result && $row = $adb->fetch_array($result)) {
 		$rows = array();
 		$linkRow = array();
@@ -271,5 +291,19 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	}
 
 	return array('data'=>$res, 'headers'=>$listview_header_arr);
+}
+
+function updateDataListView() {
+	$modulename = vtlib_purify($_REQUEST['modulename']);
+	$value = vtlib_purify($_REQUEST['value']);
+	$columnName = vtlib_purify($_REQUEST['columnName']);
+	$recordid = vtlib_purify($_REQUEST['recordid']);
+	$tablename = getTableNameForField($modulename, $columnName);
+	$focus = new $modulename;
+	$focus->id = $recordid;
+	$focus->mode = 'edit';
+	$focus->retrieve_entity_info($recordid, $modulename);
+	$focus->column_fields[$columnName] = $value;
+	$focus->saveentity($modulename);
 }
 ?>
