@@ -584,7 +584,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 						$value = $adb->query_result($list_result, $i, $column_name);
 					} else {
 						if ($module == 'Calendar') {
-							$act_id = $adb->query_result($list_result, $i-1, 'activityid');
+							$act_id = $adb->query_result($list_result, $i, 'activityid');
 
 							$cal_sql = 'select activitytype from vtiger_activity where activityid=?';
 							$cal_res = $adb->pquery($cal_sql, array($act_id));
@@ -643,7 +643,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 						} elseif ($module=='Documents'
 							&& ($fieldname=='filelocationtype' || $fieldname=='filename' || $fieldname=='filesize' || $fieldname=='filestatus' || $fieldname=='filetype')
 						) {
-							$value = $adb->query_result($list_result, $i-1, $fieldname);
+							$value = $adb->query_result($list_result, $i, $fieldname);
 							if ($fieldname == 'filelocationtype') {
 								if ($value == 'I') {
 									$value = getTranslatedString('LBL_INTERNAL', $module);
@@ -769,7 +769,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 								$value = $account_name;
 							} elseif ($module == 'Potentials' || $module == 'Contacts' || $module == 'Invoice' || $module == 'SalesOrder' || $module == 'Quotes') {
 								//Potential,Contacts,Invoice,SalesOrder & Quotes records sort by Account Name
-								//$accountname = textlength_check($adb->query_result($list_result,$i-1,'accountname'));
+								//$accountname = textlength_check($adb->query_result($list_result,$i,'accountname'));
 								$accountid = $adb->query_result($list_result, $i, 'accountid');
 								$accountname = textlength_check(getAccountName($accountid));
 								$value = $accountname;

@@ -703,7 +703,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 						} elseif ($module=='Documents'
 							&& ($fieldname=='filelocationtype' || $fieldname=='filename' || $fieldname=='filesize' || $fieldname=='filestatus' || $fieldname=='filetype')
 						) {
-							$value = $adb->query_result($list_result, $i-1, $fieldname);
+							$value = $adb->query_result($list_result, $i, $fieldname);
 							if ($fieldname == 'filelocationtype') {
 								if ($value == 'I') {
 									$value = getTranslatedString('LBL_INTERNAL', $module);
