@@ -1137,3 +1137,61 @@ function runBAScriptFromListView(scriptname, module, callback) {
 		}
 	}
 }
+
+function runBAScriptFromListViewSSE(scriptname, module, callback) {
+	if (document.getElementById('allids').value=='' && document.getElementById('allselectedboxes').value=='') {
+		alert(alert_arr.SELECT);
+	} else {
+		var excludedRecords = document.getElementById('excludedRecords').value;
+		var select_options = document.getElementById('allselectedboxes').value;
+		var searchurl = document.getElementById('search_url').value;
+		var numOfRows = document.getElementById('numOfRows').value;
+		var idstring = '';
+		var viewid = getviewId();
+		if (select_options != 'all') {
+			var x = select_options.split(';');
+			var count = x.length;
+			if (count > 1) {
+				idstring = select_options;
+			} else {
+				alert(alert_arr.SELECT);
+				return false;
+			}
+		} else {
+			idstring = select_options;
+			count = numOfRows;
+		}
+		if (count > getMaxMassOperationLimit()) {
+			var confirm_str = alert_arr.MORE_THAN_500;
+			if (confirm(confirm_str)) {
+				var confirm_status = true;
+			} else {
+				return false;
+			}
+		} else {
+			confirm_status = true;
+		}
+
+		if (confirm_status) {
+			if (idstring) {
+				VtigerJS_DialogBox.block();
+				VtigerJS_DialogBox.showbusy();
+				let url = 'module='+module+'&action='+module+'Ajax&file='+scriptname;
+				url += '&ids=' + encodeURIComponent(idstring);
+				url += '&excludedRecords=' + encodeURIComponent(excludedRecords);
+				url += '&viewname=' +encodeURIComponent(viewid);
+				url += '&searchurl=' +encodeURIComponent(searchurl);
+				jQuery.ajax({
+					method: 'POST',
+					url: 'index.php?'+url
+				}).done(function (response) {
+					VtigerJS_DialogBox.unblock();
+					VtigerJS_DialogBox.hidebusy();
+					if (typeof callback == 'function') {
+						callback(response);
+					}
+				});
+			}
+		}
+	}
+}
