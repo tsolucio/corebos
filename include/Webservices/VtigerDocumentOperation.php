@@ -89,14 +89,19 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 		if (isset($fields['cbuuid'])) {
 			$return['cbuuid'] = $fields['cbuuid'];
 		}
+		$this->addMoreInformation($id, $return);
 		return $return;
 	}
 
 	public function retrieve($id, $deleted = false) {
-		global $adb,$default_charset,$site_URL;
 		$ids = vtws_getIdComponents($id);
-		$elemid = $ids[1];
 		$doc = parent::retrieve($id, $deleted);
+		$this->addMoreInformation($ids[1], $doc);
+		return $doc;
+	}
+
+	private function addMoreInformation($elemid, &$doc) {
+		global $adb,$default_charset,$site_URL;
 		// Add relations
 		$relsrs=$adb->pquery('SELECT crmid FROM vtiger_senotesrel where notesid=?', array($elemid));
 		$rels=array();
@@ -118,7 +123,6 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 				}
 			}
 		}
-		return $doc;
 	}
 
 	/*
