@@ -14,7 +14,7 @@
 *************************************************************************************************/
 let module = '';
 let PageSize = 20;
-const tuiGrid = tui.Grid;
+let tuiGrid = tui.Grid;
 let dataGridInstance;
 let SearchColumns = 0;
 GlobalVariable_getVariable('Application_ListView_PageSize', 20, module, '').then(function (response) {
@@ -90,6 +90,9 @@ const ListView = {
 					header: fieldvalue,
 					sortable: false,
 					width: 100,
+					renderer: {
+    					type: LinkRender,
+    				},
 	      		};
 	      	} else {
 	      		if (SearchColumns == 0) {
@@ -121,21 +124,19 @@ const ListView = {
 						header: fieldvalue,
 						sortingType: 'desc',
 						sortable: true,
-						renderer: {
-        					type: LinkRender,
-        				},
-						filter: filter,
 						editor: editor,
+						filter: filter,
 						copyOptions: {
 							useListItemText: true
 						},
 				        onAfterChange(ev) {
 				        	const idx = dataGridInstance.getIndexOfRow(ev.rowKey);
 				        	const referenceField = dataGridInstance.getValue(idx, 'reference');
-				        	if (fieldname != referenceField) {
-				            	ListView.updateFieldData(ev, idx);
-				        	}
+				            ListView.updateFieldData(ev, idx);
 				        },
+						renderer: {
+        					type: LinkRender,
+        				},
 					};
 	      		} else {
 					header = {
@@ -143,9 +144,6 @@ const ListView = {
 						header: fieldvalue,
 						sortingType: 'desc',
 						sortable: true,
-						renderer: {
-        					type: LinkRender,
-        				},
 						editor: editor,
 						copyOptions: {
 							useListItemText: true
@@ -153,10 +151,11 @@ const ListView = {
 				        onAfterChange(ev) {
 				        	const idx = dataGridInstance.getIndexOfRow(ev.rowKey);
 				        	const referenceField = dataGridInstance.getValue(idx, 'reference');
-				        	if (fieldname != referenceField) {
-				            	ListView.updateFieldData(ev, idx);
-				        	}
+				            ListView.updateFieldData(ev, idx);
 				        },
+						renderer: {
+        					type: LinkRender,
+        				},
 					};
 	      		}
 			}
@@ -299,6 +298,10 @@ const ListView = {
 					ne: 'n',
 					start: 's',
 					end: 'ew',
+					ls: 'l',
+					gt: 'g',
+					lte: 'm',
+					gte: 'h',
 				};
 				const operator = operatorData[ev.filterState[0].state[0]['code']];
 				const urlstring = `&query=true&search_field=${ev.columnName}&search_text=${ev.filterState[0].state[0]['value']}&searchtype=BasicSearch&operator=${operator}`;
@@ -516,19 +519,6 @@ const ListView = {
 		const currentPageSize = dataGridInstance.getRowCount();
 		const limit_start_rec = (page-1) * PageSize;
 		const currentPage = (limit_start_rec + 1) + ' - ' + (limit_start_rec + currentPageSize);
-
-		for (let i = 0; i < currentPageSize; i++) {
-			let recordid = dataGridInstance.getValue(i, 'recordid');
-			let referenceField = dataGridInstance.getValue(i, 'reference');
-			let referenceValue = dataGridInstance.getValue(i, referenceField);
-			let relatedRows = dataGridInstance.getValue(i, 'relatedRows');
-			let aAction = `
-				<a href="index.php?module=${module}&action=EditView&record=${recordid}&return_module=${module}&return_action=index">${alert_arr['LNK_EDIT']}</a> | 
-				<a href="javascript:confirmdelete('index.php?module=${module}&action=Delete&record=${recordid}&return_module=${module}&return_action=index&parenttab=ptab');">${alert_arr['LNK_DELETE']}</a>`;
-			let aVal = '<a href="index.php?module='+module+'&action=DetailView&record='+recordid+'">'+referenceValue+'<a>';
-			dataGridInstance.setValue(i, referenceField, aVal, false);
-			dataGridInstance.setValue(i, 'action', aAction, false);
-		}
 		if (totalCount > 0) {
 			document.getElementById('gridRecordCountHeader').innerHTML = alert_arr['LBL_SHOWING'] + currentPage + alert_arr['LBL_RECORDS'] + totalCount;
 			document.getElementById('gridRecordCountFooter').innerHTML = alert_arr['LBL_SHOWING'] + currentPage + alert_arr['LBL_RECORDS'] + totalCount;
@@ -592,7 +582,6 @@ const ListView = {
 	 * @param {String|Number} idx
 	 */
 	updateFieldData: (ev, idx) => {
-		console.log(idx);
 		const recordid = dataGridInstance.getValue(idx, 'recordid');
 		const rowKey = ev.rowKey;
 		const columnName = ev.columnName;

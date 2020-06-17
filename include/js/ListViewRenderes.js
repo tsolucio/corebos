@@ -75,10 +75,20 @@ class LinkRender {
 			this.el = el;
 			this.render(props);
 		} else {
-			const el = document.createElement('span');
-			el.innerHTML = String(props.value);
-			this.el = el;
-			this.render(props);
+			if (columnName == 'action') {
+				const el = document.createElement('span');
+				const actions = `
+					<a href="index.php?module=${module}&action=EditView&record=${recordid}&return_module=${module}&return_action=index">${alert_arr['LNK_EDIT']}</a> | 
+					<a href="javascript:confirmdelete('index.php?module=${module}&action=Delete&record=${recordid}&return_module=${module}&return_action=index&parenttab=ptab');">${alert_arr['LNK_DELETE']}</a>`;
+				el.innerHTML = actions;
+				this.el = el;
+				this.render(props);
+			} else {
+				const el = document.createElement('span');
+				el.innerHTML = String(props.value);
+				this.el = el;
+				this.render(props);
+			}
 		}
 	}
 

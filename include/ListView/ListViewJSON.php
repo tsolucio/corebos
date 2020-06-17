@@ -14,7 +14,7 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 
-function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sortColumn = '', $currentPage = 1, $searchUrl = '', $searchtype = 'Basic', $filterData = array()) {
+function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sortColumn = '', $currentPage = 1, $searchUrl = '', $searchtype = 'Basic') {
 	global $app_strings, $mod_strings, $current_user, $adb;
 	include_once 'include/utils/utils.php';
 	require_once "modules/$currentModule/$currentModule.php";
@@ -179,7 +179,6 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	$data = array();
 	$linkfield = array();
 	$result = $adb->pquery($list_query, array());
-	$picklistValues = array();
 	while ($result && $row = $adb->fetch_array($result)) {
 		$rows = array();
 		$linkRow = array();
