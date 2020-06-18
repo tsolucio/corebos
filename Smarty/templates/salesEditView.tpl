@@ -188,8 +188,4 @@
 {/foreach}
 </script>
 {/if}
-<input type="hidden" name="sockethost" id="sockethost" value="{$SOCKETHOST}">
-<input type="hidden" name="socketblockcheck" id="socketblockcheck" value="{$SOCKETBLOCKCHECK}">
-<input type="hidden" name="socketblock" id="socketblock" value="0">
-<script src="include/js/socket.js" type="text/javascript"></script>
 <!-- END -->

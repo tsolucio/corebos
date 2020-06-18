@@ -98,10 +98,6 @@ switch ($_REQUEST['_op']) {
 	case 'setconfiglogall':
 		include_once 'include/integrations/logall/settings.php';
 		break;
-	case 'getconfigsocketblockit':
-	case 'setconfigsocketblockit':
-		include_once 'include/integrations/socketblockit/settings.php';
-		break;
 	default:
 		$smarty = new vtigerCRM_Smarty();
 		$titlemessage = getTranslatedString('Available Integrations', $currentModule);
@@ -171,12 +167,6 @@ switch ($_REQUEST['_op']) {
 				'title' => getTranslatedString('LogAll Activation', 'Utilities'),
 				'desc' => getTranslatedString('LogAll_Desc', 'Utilities'),
 				'url' => 'index.php?action=integration&module=Utilities&_op=getconfiglogall',
-			),
-			array(
-				'abbr' => 'SB',
-				'title' => getTranslatedString('Socket Block It Activation', 'Utilities'),
-				'desc' => getTranslatedString('SocketBlockIt_Desc', 'Utilities'),
-				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigsocketblockit',
 			),
 		);
 		$smarty->assign('integrations', $intgr);
