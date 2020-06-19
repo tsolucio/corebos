@@ -256,7 +256,8 @@ function csrf_get_tokens() {
     }
     if ($GLOBALS['csrf']['cookie']) {
         $val = csrf_generate_secret();
-        setcookie($GLOBALS['csrf']['cookie'], $val);
+        header('Set-Cookie: '.$GLOBALS['csrf']['cookie'].'='.$val.'; SameSite=Strict', false);
+        //setcookie($GLOBALS['csrf']['cookie'], $val);
         return 'cookie:' . csrf_hash($val) . $ip;
     }
     if ($GLOBALS['csrf']['key']) return 'key:' . csrf_hash($GLOBALS['csrf']['key']) . $ip;
