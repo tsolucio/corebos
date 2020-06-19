@@ -3433,8 +3433,10 @@ function resetData(store, inputData, options) {
     summary_1.updateAllSummaryValues(store);
     setLoadingState(store, data_2.getLoadingState(rawData));
     setCheckedAllRows(store);
-    instance_1.getDataManager(id).setOriginData(inputData);
-    instance_1.getDataManager(id).clearAll();
+    if (instance_1.getDataManager(id)) {
+        instance_1.getDataManager(id).setOriginData(inputData);
+        instance_1.getDataManager(id).clearAll();
+    }
     setTimeout(function () {
         /**
          * Occurs when the grid data is updated and the grid is rendered onto the DOM

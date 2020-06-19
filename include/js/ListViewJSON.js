@@ -12,6 +12,7 @@
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
+loadJS('index.php?module=cbQuestion&action=cbQuestionAjax&file=getjslanguage');
 let module = '';
 let PageSize = 20;
 let tuiGrid = tui.Grid;
@@ -83,12 +84,13 @@ const ListView = {
 			if (uitype == '15' || uitype == '52' || uitype == '53') {
 				values = headerObj[index].picklist;
 			}
-			editor = ListView.getEditorType(uitype, values);
+			editor = ListView.getEditorType(uitype, values, fieldname);
 			if (fieldname == 'action') {
 				header = {
 					name: fieldname,
 					header: fieldvalue,
 					sortable: false,
+					whiteSpace: 'normal',
 					width: 100,
 					renderer: {
     					type: LinkRender,
@@ -126,6 +128,7 @@ const ListView = {
 						sortable: true,
 						editor: editor,
 						filter: filter,
+						whiteSpace: 'normal',
 						copyOptions: {
 							useListItemText: true
 						},
@@ -145,6 +148,7 @@ const ListView = {
 						sortingType: 'desc',
 						sortable: true,
 						editor: editor,
+						whiteSpace: 'normal',
 						copyOptions: {
 							useListItemText: true
 						},
@@ -168,18 +172,18 @@ const ListView = {
 	 * @param {Number} uitype
 	 * @param {Object} values
 	 */
-	getEditorType: (uitype, values) => {
+	getEditorType: (uitype, values, fieldname) => {
 		if (uitype == '56') {
 			editor =  {
 				type: 'radio',
 	            options: {
 	              listItems: [
-	                { text: 'Yes', value: '1' },
-	                { text: 'No', value: '0' },
+	                { text: alert_arr.YES, value: '1' },
+	                { text: alert_arr.NO, value: '0' },
 	              ]
 	            }
 	        };
-		} else if (uitype == '10') {
+		} else if (uitype == '10' || fieldname == 'createdtime' || fieldname == 'modifiedtime') {
 			editor = false;
 		} else if (uitype == '15') {
 			let listItems = [];
@@ -197,9 +201,20 @@ const ListView = {
 	            	listItems: listItems
 	            }
 	        };
-		} else if (uitype == '50' || uitype == '5' || uitype == '70') {
+		} else if (uitype == '50' || uitype == '70') {
 			editor = {
-	            type: 'datePicker'
+	            type: 'datePicker',
+	            options: {
+	              format: 'yyyy-MM-dd HH:mm A',
+	              timepicker: true
+	            }
+	        };
+		} else if (uitype == '5') {
+			editor = {
+	            type: 'datePicker',
+	            options: {
+	              format: 'yyyy-MM-dd'
+	            }
 	        };
 		} else if (uitype == '52' || uitype == '53') {
 			let listItems = [];
@@ -291,6 +306,12 @@ const ListView = {
 					}
 				}
 			});
+
+			dataGridInstance.on('editingFinish', (ev) => {
+				dataGridInstance.reloadData();
+				dataGridInstance.refreshLayout();
+			});
+
 			dataGridInstance.on('afterFilter', (ev) => {
 				const operatorData = {
 					eq: 'e',
@@ -302,6 +323,10 @@ const ListView = {
 					gt: 'g',
 					lte: 'm',
 					gte: 'h',
+					after: 'a',
+					afterEq: 'a',
+					before: 'b',
+					beforeEq: 'b',
 				};
 				const operator = operatorData[ev.filterState[0].state[0]['code']];
 				const urlstring = `&query=true&search_field=${ev.columnName}&search_text=${ev.filterState[0].state[0]['value']}&searchtype=BasicSearch&operator=${operator}`;

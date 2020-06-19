@@ -226,7 +226,9 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 					$currencyField = new CurrencyField($fieldValue);
 					$rows[$fieldName] = $currencyField->getDisplayValue($current_user, true);
 				} else {
-					$rows[$fieldName] = $fieldValue;
+					if ($fieldName) {
+						$rows[$fieldName] = $fieldValue;
+					}
 				}
 			}
 			$rows['action'] = '';

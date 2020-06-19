@@ -52,6 +52,7 @@ class CheckboxRender {
 class LinkRender {
 
 	constructor(props) {
+		let el;
 		let module = document.getElementById('curmodule').value;
 		let rowKey = props.rowKey;
 		let columnName = props.columnInfo.name;
@@ -59,9 +60,10 @@ class LinkRender {
 		let referenceField = props.grid.getValue(rowKey, 'reference');
 		let referenceValue = props.grid.getValue(rowKey, referenceField);
 		let relatedRows = props.grid.getValue(rowKey, 'relatedRows');
+		let uitype = props.grid.getValue(rowKey, 'uitype');
 
 		if (columnName == referenceField) {
-			const el = document.createElement('a');
+			el = document.createElement('a');
 			el.href = `index.php?module=${module}&action=DetailView&record=`+recordid;
 			el.innerHTML = String(props.value);
 			this.el = el;
@@ -69,14 +71,14 @@ class LinkRender {
 		} else if (relatedRows[columnName] != undefined) {
 			let moduleName = relatedRows[columnName][0];
 			let fieldId = relatedRows[columnName][1];
-			const el = document.createElement('a');
+			el = document.createElement('a');
 			el.href = `index.php?module=${moduleName}&action=DetailView&record=`+fieldId;
 			el.innerHTML = String(props.value);
 			this.el = el;
 			this.render(props);
 		} else {
 			if (columnName == 'action') {
-				const el = document.createElement('span');
+				el = document.createElement('span');
 				const actions = `
 					<a href="index.php?module=${module}&action=EditView&record=${recordid}&return_module=${module}&return_action=index">${alert_arr['LNK_EDIT']}</a> | 
 					<a href="javascript:confirmdelete('index.php?module=${module}&action=Delete&record=${recordid}&return_module=${module}&return_action=index&parenttab=ptab');">${alert_arr['LNK_DELETE']}</a>`;
@@ -84,7 +86,7 @@ class LinkRender {
 				this.el = el;
 				this.render(props);
 			} else {
-				const el = document.createElement('span');
+				el = document.createElement('span');
 				el.innerHTML = String(props.value);
 				this.el = el;
 				this.render(props);
