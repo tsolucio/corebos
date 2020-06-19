@@ -3458,7 +3458,7 @@ function getMailFields($tabid) {
  */
 function isRecordExists($recordId) {
 	global $adb;
-	$users = $groups = false;
+	$users = $groups = $currency = false;
 	if (strpos($recordId, 'x')) {
 		list($moduleWS,$recordId) = explode('x', $recordId);
 		$userWS = vtws_getEntityId('Users');
@@ -3498,7 +3498,13 @@ function getValidDBInsertDateValue($value) {
 	$delim = array('/','.');
 	$value = str_replace($delim, '-', $value);
 
-	list($y,$m,$d) = explode('-', $value);
+	$dparts = explode('-', $value);
+	if (count($dparts)!=3) {
+		return '';
+	}
+	$y = $dparts[0];
+	$m = $dparts[1];
+	$d = $dparts[2];
 	if (strlen($y) == 1) {
 		$y = '0'.$y;
 	}
