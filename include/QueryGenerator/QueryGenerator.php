@@ -1651,19 +1651,19 @@ class QueryGenerator {
 	public function addUserSearchConditions($input) {
 		global $default_charset;
 		if (isset($input['searchtype']) && $input['searchtype']=='advance') {
-			$advft_criteria = (empty($input['advft_criteria']) ? $_REQUEST['advft_criteria'] : $input['advft_criteria']);
+			$advft_criteria = (empty($input['advft_criteria']) ? (empty($_REQUEST['advft_criteria']) ? '' : $_REQUEST['advft_criteria']) : $input['advft_criteria']);
 			if (!empty($advft_criteria)) {
 				$advft_criteria = json_decode($advft_criteria, true);
 			}
+			if (empty($advft_criteria) || count($advft_criteria) <= 0) {
+				return ;
+			}
+
 			$advft_criteria_groups = (empty($input['advft_criteria_groups']) ?
 				(isset($_REQUEST['advft_criteria_groups']) ? $_REQUEST['advft_criteria_groups'] : null) :
 				$input['advft_criteria_groups']);
 			if (!empty($advft_criteria_groups)) {
 				$advft_criteria_groups = json_decode($advft_criteria_groups, true);
-			}
-
-			if (empty($advft_criteria) || count($advft_criteria) <= 0) {
-				return ;
 			}
 
 			$advfilterlist = getAdvancedSearchCriteriaList($advft_criteria, $advft_criteria_groups, $this->getModule());
