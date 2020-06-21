@@ -17,6 +17,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 	private $hasWriteAccess;
 	private $hasDeleteAccess;
 	private $PermissionModule = '';
+	protected $objectName;
 
 	public function __construct($tableName, $webserviceObject, $adb, $user) {
 		parent::__construct($webserviceObject, $user);
@@ -33,8 +34,13 @@ class VtigerCRMActorMeta extends EntityMeta {
 		$this->tableList = array($this->baseTable);
 		$this->tableIndexList = array($this->baseTable=>$this->idColumn);
 		$this->defaultTableList = array();
+		$this->objectName = $webserviceObject->getEntityName();
 		$this->PermissionModule = $this->computePermissionModule($webserviceObject);
 		$this->computeAccess($webserviceObject, $user);
+	}
+
+	public function getTabName() {
+		return $this->objectName;
 	}
 
 	public function getPermissionModule() {
