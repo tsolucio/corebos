@@ -16,46 +16,55 @@
 function getBusinessActions($view, $module, $id, $linktype, $user) {
 	global $adb, $log;
 
+	// pickup meta data of module
+	$webserviceObject = VtigerWebserviceObject::fromName($adb, $module);
+	$handlerPath = $webserviceObject->getHandlerPath();
+	$handlerClass = $webserviceObject->getHandlerClass();
+	require_once $handlerPath;
+	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+	$meta = $handler->getMeta();
+	$mainModule = $meta->getTabName();  // normalize module name
+	// check modules
+	if (!$meta->isModuleEntity()) {
+		throw new WebServiceException('INVALID_MODULE', "Given module ($module) cannot be found");
+	}
+
+	// check permission on module
+	$entityName = $meta->getEntityName();
+	$types = vtws_listtypes(null, $user);
+	if (!in_array($entityName, $types['types'])) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to perform the operation on module ($mainModule) is denied");
+	}
 	$tabid = getTabid($module);
 	$type = explode(',', $linktype);
 	$action = vtlib_purify($view);
 	$parameters = ['MODULE' => $module, 'ACTION' => $action];
 	$recordId = null;
 
-	//check if the user has access to the specified module
-	$types = vtws_listtypes(null, $user);
-	if (!in_array($module, $types['types'])) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
-	}
+	if ($view != 'ListView' && !empty($id)) {
+		$id = vtws_getWSID($id);
+		$idComponents = vtws_getIdComponents($id);
 
-	if ($view == 'ListView') {
-		$parameters['CATEGORY'] = getParentTab();
-	} else {
-		if (!empty($id)) {
-			$id = vtws_getWSID($id);
-			$idComponents = vtws_getIdComponents($id);
+		$parameters['RECORD'] = $idComponents[1];
 
-			$parameters['RECORD'] = $idComponents[1];
+		$webserviceObject = VtigerWebserviceObject::fromId($adb, $id);
+		$handlerPath = $webserviceObject->getHandlerPath();
+		$handlerClass = $webserviceObject->getHandlerClass();
+		require_once $handlerPath;
+		$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+		$meta = $handler->getMeta();
 
-			$webserviceObject = VtigerWebserviceObject::fromId($adb, $id);
-			$handlerPath = $webserviceObject->getHandlerPath();
-			$handlerClass = $webserviceObject->getHandlerClass();
-			require_once $handlerPath;
-			$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
-			$meta = $handler->getMeta();
-
-			if ($meta->hasReadAccess()!==true) {
-				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to write is denied');
-			}
-			if ($module !== $webserviceObject->getEntityName()) {
-				throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Id specified is incorrect');
-			}
-			if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $id)) {
-				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
-			}
-			if (!$meta->exists($idComponents[1])) {
-				throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record you are trying to access is not found');
-			}
+		if ($meta->hasReadAccess()!==true) {
+			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to write is denied');
+		}
+		if ($module !== $webserviceObject->getEntityName()) {
+			throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Id specified is incorrect');
+		}
+		if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $id)) {
+			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
+		}
+		if (!$meta->exists($idComponents[1])) {
+			throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record you are trying to access is not found');
 		}
 	}
 
