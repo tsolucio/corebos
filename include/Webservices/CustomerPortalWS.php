@@ -164,27 +164,26 @@ function vtws_AuthenticateContact($email, $password) {
 	}
 }
 
-function vtws_getPicklistValues($fld_module) {
+function vtws_getPicklistValues($fld_module, $user = '') {
 	global $adb,$log;
 	include_once 'modules/PickList/PickListUtils.php';
 	$log->debug('> getPicklistValues '.$fld_module);
 	$res=array();
-	$all=array();
+	$allpicklists=getUserFldArray($fld_module, 'H1');
+	foreach ($allpicklists as $picklist) {
+		$res[$picklist['fieldname']]=$picklist['value'];
+	}
 	if ($fld_module == 'Documents') {
+		$folders=array();
 		$result=$adb->query('select folderid,foldername from vtiger_attachmentsfolder');
 		$number=$adb->num_rows($result);
 		$DocumentFoldersWSID=vtyiicpng_getWSEntityId('DocumentFolders');
 		for ($i=0; $i<$number; $i++) {
 			$folderid=$DocumentFoldersWSID.$adb->query_result($result, $i, 0);
 			$foldername=$adb->query_result($result, $i, 1);
-			$all[$folderid]=$foldername;
+			$folders[$folderid]=$foldername;
 		}
-		$res['folderid']=$all;
-	} else {
-		$allpicklists=getUserFldArray($fld_module, 'H1');
-		foreach ($allpicklists as $picklist) {
-			$res[$picklist['fieldname']]=$picklist['value'];
-		}
+		$res['folderid']=$folders;
 	}
 	return serialize($res);
 }
