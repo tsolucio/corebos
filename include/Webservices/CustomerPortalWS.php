@@ -85,7 +85,7 @@ function vtws_getPortalUserInfo($user) {
 	$usrinfo = array();
 	$retfields = array('date_format','first_name','last_name','email1');
 	foreach ($retfields as $fld) {
-		if (isset($user->column_fields[$fld]) && !empty($user->column_fields[$fld])) {
+		if (isset($user->column_fields[$fld])) {
 			$usrinfo[$fld] = $user->column_fields[$fld];
 		}
 	}
