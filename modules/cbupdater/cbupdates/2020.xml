@@ -217,4 +217,11 @@
 	<classname>addBAtypesForHiddenHTML</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete old mobile webserivice API</description>
+	<filename>build/changeSets/2020/deloldwsmobileapi.php</filename>
+	<classname>deloldwsmobileapi</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
