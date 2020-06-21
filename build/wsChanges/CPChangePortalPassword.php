@@ -14,13 +14,13 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'changePortalUserPassword',
-	 'include' => 'include/Webservices/CustomerPortalWS.php',
-	 'handler' => 'vtws_changePortalUserPassword',
-	 'prelogin'=> 0,
-	 'type'    => 'POST',
-	 'parameters' => array(
-		 array('name' => 'email','type' => 'String'),
-		 array('name' => 'password','type' => 'String')
-	 )
+	'name'    => 'changePortalUserPassword',
+	'include' => 'include/Webservices/CustomerPortalWS.php',
+	'handler' => 'vtws_changePortalUserPassword',
+	'prelogin'=> 0,
+	'type'    => 'POST',
+	'parameters' => array(
+		array('name' => 'email','type' => 'String'),
+		array('name' => 'password','type' => 'String')
+	)
 );

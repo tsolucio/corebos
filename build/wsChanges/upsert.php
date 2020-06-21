@@ -19,8 +19,8 @@ $operationInfo = array(
 	'prelogin'=> 0,
 	'type'    => 'POST',
 	'parameters' => array(
-		array("name" => "elementType","type" => "String"),
-		array("name" => "element","type" => "Encoded"),
-		array("name" => "searchOn","type" => "String")
+		array('name' => 'elementType','type' => 'String'),
+		array('name' => 'element','type' => 'Encoded'),
+		array('name' => 'searchOn','type' => 'String')
 	)
 );

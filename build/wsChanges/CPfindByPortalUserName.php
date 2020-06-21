@@ -14,13 +14,13 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'findByPortalUserName',
-	 'include' => 'include/Webservices/CustomerPortalWS.php',
-	 'handler' => 'vtws_findByPortalUserName',
-	 'prelogin'=> 0,
-	 'type'    => 'POST',
-	 'parameters' => array(
-		 array('name' => 'username','type' => 'string'),
-	 )
+	'name'    => 'findByPortalUserName',
+	'include' => 'include/Webservices/CustomerPortalWS.php',
+	'handler' => 'vtws_findByPortalUserName',
+	'prelogin'=> 0,
+	'type'    => 'POST',
+	'parameters' => array(
+		array('name' => 'username','type' => 'string'),
+	)
 );
 

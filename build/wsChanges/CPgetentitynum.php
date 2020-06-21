@@ -15,10 +15,10 @@
 
 // used to get the numeration of entities:: autonumeric field
 $operationInfo = array(
-	 'name'    => 'getEntityNum',
-	 'include' => 'include/Webservices/getentitynum.php',
-	 'handler' => 'vtws_get_entitynum',
-	 'prelogin'=> 0,
-	 'type'    => 'POST',
-	 'parameters' => array()
+	'name'    => 'getEntityNum',
+	'include' => 'include/Webservices/getentitynum.php',
+	'handler' => 'vtws_get_entitynum',
+	'prelogin'=> 0,
+	'type'    => 'POST',
+	'parameters' => array()
 );
