@@ -29,8 +29,8 @@ function getUserFldArray($fld_module, $roleid) {
 	$result = $adb->pquery($query, array($tabid, $tabid));
 	$noofrows = $adb->num_rows($result);
 
+	$fieldlist = array();
 	if ($noofrows > 0) {
-		$fieldlist = array();
 		for ($i=0; $i<$noofrows; $i++) {
 			$user_fld = array();
 			$user_fld['fieldlabel'] = $adb->query_result($result, $i, 'fieldlabel');

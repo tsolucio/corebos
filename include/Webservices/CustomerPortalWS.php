@@ -191,8 +191,7 @@ function vtws_getPicklistValues($fld_module, $user = '') {
 function vtws_getUItype($module, $user) {
 	global $adb,$log;
 	$log->debug('> getUItype '.$module);
-	$tabid=getTabid($module);
-	$res=$adb->pquery('select uitype,fieldname from vtiger_field where tabid=? and presence in (0,2) ', array($tabid));
+	$res=$adb->pquery('select uitype,fieldname from vtiger_field where tabid=? and presence in (0,2)', array(getTabid($module)));
 	$nr=$adb->num_rows($res);
 	$resp=array();
 	for ($i=0; $i<$nr; $i++) {
@@ -204,8 +203,12 @@ function vtws_getUItype($module, $user) {
 
 function vtws_getReferenceValue($strids, $user) {
 	global $log, $adb, $default_charset;
-	$ids=unserialize($strids);
 	$log->debug('> vtws_getReferenceValue '.$strids);
+	$ids=unserialize($strids);
+	if ($ids===false) {
+		$ids = array();
+	}
+	$result = array();
 	foreach ($ids as $idref) {
 		if (strpos($idref, '|')>0) {
 			$idref = explode('|', trim($idref, '|'));
