@@ -23,3 +23,7 @@ $operationInfo = array(
 		array('name' => 'id','type' => 'string')
 	)
 );
+
+global $adb;
+$adb->query("UPDATE `vtiger_ws_operation` SET `handler_path` = 'include/Webservices/Utils.php'
+	WHERE `handler_method` = 'vtws_getUsersInTheSameGroup' and name = 'getUsersInSameGroup'");
