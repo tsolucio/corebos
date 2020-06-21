@@ -40,6 +40,6 @@ function get_maxloadsize() {
  * @return int number of bytes in given string
  */
 function parse_size($size) {
-	numberBytes($size);
+	return numberBytes($size);
 }
 ?>
