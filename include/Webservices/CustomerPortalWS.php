@@ -109,11 +109,9 @@ function vtws_getAllUsers() {
 }
 
 function vtws_getAssignedUserList($module, $user) {
-	global $log,$current_user,$default_charset;
+	global $log, $default_charset;
 	$log->debug('> getAssignedUserList '.$module);
-	$hcuser = $current_user;
-	$current_user = $user;
-	$userprivs = $current_user->getPrivileges();
+	$userprivs = $user->getPrivileges();
 	$tabid=getTabid($module);
 	if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing($tabid)) {
 		$users = get_user_array(false, 'Active', $user->id, 'private');
@@ -125,16 +123,12 @@ function vtws_getAssignedUserList($module, $user) {
 	foreach ($users as $id => $usr) {
 		$usrinfo[] = array('userid' => $usrwsid.$id,'username'=> trim(html_entity_decode($usr, ENT_QUOTES, $default_charset)));
 	}
-	$current_user = $hcuser;
 	return json_encode($usrinfo);
 }
 
 function vtws_getAssignedGroupList($module, $user) {
-	global $log,$current_user,$default_charset;
+	global $log, $default_charset;
 	$log->debug('> vtws_getAssignedGroupList '.$module);
-	$hcuser = $current_user;
-	$current_user = $user;
-
 	$userPrivs = $user->getPrivileges();
 
 	$tabid=getTabid($module);
@@ -148,7 +142,6 @@ function vtws_getAssignedGroupList($module, $user) {
 	foreach ($users as $id => $usr) {
 		$usrinfo[] = array('groupid' => $usrwsid.$id,'groupname'=> trim(html_entity_decode($usr, ENT_QUOTES, $default_charset)));
 	}
-	$current_user = $hcuser;
 	return json_encode($usrinfo);
 }
 
