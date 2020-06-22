@@ -5197,7 +5197,7 @@ function AutocompleteSetup() {
 var appSubmitFormWithEnter = 0;
 GlobalVariable_getVariable('Application_EditView_Submit_Form_WithEnter', 1, gVTModule, '').then(function (response) {
 	var obj = JSON.parse(response);
-	appSubmitFormWithEnter = Number(obj.Application_Submit_Form_WithEnter);
+	appSubmitFormWithEnter = Number(obj.Application_EditView_Submit_Form_WithEnter);
 }, function (error) {
 	appSubmitFormWithEnter = 0;
 });
