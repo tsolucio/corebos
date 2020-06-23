@@ -98,11 +98,7 @@ const ListView = {
 	      		};
 	      	} else {
 	      		if (SearchColumns == 0) {
-		      		if (uitype == '53' || uitype == '56' || uitype == '77') {
-		      			filter = {
-							type: 'select',
-		      			};
-		      		} else if (uitype == '7' || uitype == '9' || uitype == '71' || uitype == '72') {
+					if (uitype == '7' || uitype == '9' || uitype == '71' || uitype == '72') {
 		      			filter = {
 							type: 'number',
 							showApplyBtn: true,
@@ -322,7 +318,7 @@ const ListView = {
 		});
 		dataGridInstance.on('afterFilter', (ev) => {
 			const operatorData = {
-				eq: 'e', contain: 'c', ne: 'n', start: 's', ls: 'l', gt: 'g', lte: 'm', gte: 'h', after: 'a', afterEq: 'a', before: 'b', beforeEq: 'b',
+				eq: 'e', contain: 'c', ne: 'n', start: 's', ls: 'l', gt: 'g', lte: 'm', gte: 'h', after: 'a', afterEq: 'h', before: 'b', beforeEq: 'm',
 			};
 			const operator = operatorData[ev.filterState[0].state[0]['code']];
 			const urlstring = `&query=true&search_field=${ev.columnName}&search_text=${ev.filterState[0].state[0]['value']}&searchtype=BasicSearch&operator=${operator}`;
