@@ -307,33 +307,32 @@ const ListView = {
 				}
 			});
 
-			dataGridInstance.on('editingFinish', (ev) => {
-				dataGridInstance.reloadData();
-				dataGridInstance.refreshLayout();
-			});
-
-			dataGridInstance.on('afterFilter', (ev) => {
-				const operatorData = {
-					eq: 'e',
-					contain: 'c',
-					ne: 'n',
-					start: 's',
-					end: 'ew',
-					ls: 'l',
-					gt: 'g',
-					lte: 'm',
-					gte: 'h',
-					after: 'a',
-					afterEq: 'a',
-					before: 'b',
-					beforeEq: 'b',
-				};
-				const operator = operatorData[ev.filterState[0].state[0]['code']];
-				const urlstring = `&query=true&search_field=${ev.columnName}&search_text=${ev.filterState[0].state[0]['value']}&searchtype=BasicSearch&operator=${operator}`;
-				const searchtype = 'Basic';
-				ListView.ListViewSearch(url, urlstring, searchtype);
-			});
+			ListView.registerEvent(url);
 			tui.Grid.applyTheme('striped');
+		});
+	},
+	/**
+	 * Register a grid event
+	 * @param {String} url
+	 */
+	registerEvent: (url) => {
+		dataGridInstance.on('editingFinish', (ev) => {
+			dataGridInstance.reloadData();
+			dataGridInstance.refreshLayout();
+		});
+		dataGridInstance.on('afterFilter', (ev) => {
+			const operatorData = {
+				eq: 'e', contain: 'c', ne: 'n', start: 's', ls: 'l', gt: 'g', lte: 'm', gte: 'h', after: 'a', afterEq: 'a', before: 'b', beforeEq: 'b',
+			};
+			const operator = operatorData[ev.filterState[0].state[0]['code']];
+			const urlstring = `&query=true&search_field=${ev.columnName}&search_text=${ev.filterState[0].state[0]['value']}&searchtype=BasicSearch&operator=${operator}`;
+			const searchtype = 'Basic';
+			ListView.ListViewSearch(url, urlstring, searchtype);
+		});
+		dataGridInstance.on('click', (ev) => {
+			if (ev.nativeEvent.target.innerText == 'Clear') {
+				ListView.ListViewReloadData();
+			}
 		});
 	},
 	/**
@@ -512,6 +511,9 @@ const ListView = {
 		 	}
 		}
 		document.getElementById('allselectedboxes').value = select_options;
+		if (select_options.indexOf('on;') !== -1) {
+			document.getElementById('allselectedboxes').value = select_options.slice(0, -3);
+		}
 		return rowKeys;
 	},
 	/**
