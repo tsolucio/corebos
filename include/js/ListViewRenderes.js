@@ -15,36 +15,90 @@
 
 class CheckboxRender {
 
-  	constructor(props) {
-    	const { grid, rowKey } = props;
-    	const label = document.createElement('label');
-    	label.className = 'checkbox';
-    	label.setAttribute('for', String(rowKey));
-    	const Input = document.createElement('input');
-    	Input.name = 'selected_id[]';
-    	Input.setAttribute('onclick', 'ListView.getCheckedRows("", this);');
-    	Input.className = 'hidden-input listview-checkbox';
-   	 	Input.id = String(rowKey);
-    	label.appendChild(Input);
-    	Input.type = 'checkbox';
-    	Input.addEventListener('change', () => {
-	      	if (Input.checked) {
-	        	grid.check(rowKey);
-	      	} else {
-	        	grid.uncheck(rowKey);
-	      	}
-    	});
-    	this.el = label;
-    	this.render(props);
-  	}
+	constructor(props) {
+		const { grid, rowKey } = props;
+		const label = document.createElement('label');
+		label.className = 'checkbox';
+		label.setAttribute('for', String(rowKey));
+		const Input = document.createElement('input');
+		Input.name = 'selected_id[]';
+		Input.setAttribute('onclick', 'ListView.getCheckedRows("", this);');
+		Input.className = 'hidden-input listview-checkbox';
+		Input.id = String(rowKey);
+		label.appendChild(Input);
+		Input.type = 'checkbox';
+		Input.addEventListener('change', () => {
+			if (Input.checked) {
+				grid.check(rowKey);
+			} else {
+				grid.uncheck(rowKey);
+			}
+		});
+		this.el = label;
+		this.render(props);
+	}
 
-  	getElement() {
-    	return this.el;
-  	}
+	getElement() {
+		return this.el;
+	}
 
-  	render(props) {
-    	const Input = this.el.querySelector('.hidden-input');
-    	const checked = Boolean(props.value);
-    	Input.checked = checked;
-  	}
+	render(props) {
+		const Input = this.el.querySelector('.hidden-input');
+		const checked = Boolean(props.value);
+		Input.checked = checked;
+	}
+}
+
+class LinkRender {
+
+	constructor(props) {
+		let el;
+		let module = document.getElementById('curmodule').value;
+		let rowKey = props.rowKey;
+		let columnName = props.columnInfo.name;
+		let recordid = props.grid.getValue(rowKey, 'recordid');
+		let referenceField = props.grid.getValue(rowKey, 'reference');
+		let referenceValue = props.grid.getValue(rowKey, referenceField);
+		let relatedRows = props.grid.getValue(rowKey, 'relatedRows');
+		let uitype = props.grid.getValue(rowKey, 'uitype');
+
+		if (columnName == referenceField) {
+			el = document.createElement('a');
+			el.href = `index.php?module=${module}&action=DetailView&record=`+recordid;
+			el.innerHTML = String(props.value);
+			this.el = el;
+			this.render(props);
+		} else if (relatedRows[columnName] != undefined) {
+			let moduleName = relatedRows[columnName][0];
+			let fieldId = relatedRows[columnName][1];
+			el = document.createElement('a');
+			el.href = `index.php?module=${moduleName}&action=DetailView&record=`+fieldId;
+			el.innerHTML = String(props.value);
+			this.el = el;
+			this.render(props);
+		} else {
+			if (columnName == 'action') {
+				el = document.createElement('span');
+				const actions = `
+					<a href="index.php?module=${module}&action=EditView&record=${recordid}&return_module=${module}&return_action=index">${alert_arr['LNK_EDIT']}</a> | 
+					<a href="javascript:confirmdelete('index.php?module=${module}&action=Delete&record=${recordid}&return_module=${module}&return_action=index&parenttab=ptab');">${alert_arr['LNK_DELETE']}</a>`;
+				el.innerHTML = actions;
+				this.el = el;
+				this.render(props);
+			} else {
+				el = document.createElement('span');
+				el.innerHTML = String(props.value);
+				this.el = el;
+				this.render(props);
+			}
+		}
+	}
+
+	getElement() {
+		return this.el;
+	}
+
+	render(props) {
+		this.el.value = String(props.value);
+	}
 }

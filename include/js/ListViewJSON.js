@@ -12,9 +12,10 @@
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
+loadJS('index.php?module=cbQuestion&action=cbQuestionAjax&file=getjslanguage');
 let module = '';
 let PageSize = 20;
-const tuiGrid = tui.Grid;
+let tuiGrid = tui.Grid;
 let dataGridInstance;
 let SearchColumns = 0;
 GlobalVariable_getVariable('Application_ListView_PageSize', 20, module, '').then(function (response) {
@@ -78,31 +79,42 @@ const ListView = {
 			const fieldname = headerObj[index].fieldname;
 			const fieldvalue = headerObj[index].fieldvalue;
 			const uitype = headerObj[index].uitype;
+			let editor;
+			let values = {};
+			if (uitype == '15' || uitype == '52' || uitype == '53') {
+				values = headerObj[index].picklist;
+			}
+			editor = ListView.getEditorType(uitype, values, fieldname);
 			if (fieldname == 'action') {
 				header = {
 					name: fieldname,
 					header: fieldvalue,
 					sortable: false,
+					whiteSpace: 'normal',
+					width: 100,
+					renderer: {
+    					type: LinkRender,
+    				},
 	      		};
 	      	} else {
 	      		if (SearchColumns == 0) {
-		      		if (uitype == '53' || uitype == '56' || uitype == '77') {
-		      			filter = {
-							type: 'select'
-		      			};
-		      		} else if (uitype == '7' || uitype == '9' || uitype == '71' || uitype == '72') {
+					if (uitype == '7' || uitype == '9' || uitype == '71' || uitype == '72') {
 		      			filter = {
 							type: 'number',
-							operator: 'OR'
+							showApplyBtn: true,
+							showClearBtn: true
 		      			};
 		      		} else if (uitype == '5' || uitype == '50' || uitype == '70') {
 		      			filter = {
-							type: 'date'
+							type: 'date',
+							showApplyBtn: true,
+							showClearBtn: true
 		      			};
 		      		} else {
 		      			filter = {
 							type: 'text',
-							operator: 'OR'
+							showApplyBtn: true,
+							showClearBtn: true
 		      			};
 		      		}
 					header = {
@@ -110,10 +122,20 @@ const ListView = {
 						header: fieldvalue,
 						sortingType: 'desc',
 						sortable: true,
+						editor: editor,
 						filter: filter,
+						whiteSpace: 'normal',
 						copyOptions: {
 							useListItemText: true
-						}
+						},
+				        onAfterChange(ev) {
+				        	const idx = dataGridInstance.getIndexOfRow(ev.rowKey);
+				        	const referenceField = dataGridInstance.getValue(idx, 'reference');
+				            ListView.updateFieldData(ev, idx);
+				        },
+						renderer: {
+        					type: LinkRender,
+        				},
 					};
 	      		} else {
 					header = {
@@ -121,15 +143,95 @@ const ListView = {
 						header: fieldvalue,
 						sortingType: 'desc',
 						sortable: true,
+						editor: editor,
+						whiteSpace: 'normal',
 						copyOptions: {
 							useListItemText: true
-						}
+						},
+				        onAfterChange(ev) {
+				        	const idx = dataGridInstance.getIndexOfRow(ev.rowKey);
+				        	const referenceField = dataGridInstance.getValue(idx, 'reference');
+				            ListView.updateFieldData(ev, idx);
+				        },
+						renderer: {
+        					type: LinkRender,
+        				},
 					};
 	      		}
 			}
 			res.push(header);
 		}
 		return res;
+	},
+	/**
+	 * Enable editor in listview
+	 * @param {Number} uitype
+	 * @param {Object} values
+	 */
+	getEditorType: (uitype, values, fieldname) => {
+		if (uitype == '56') {
+			editor =  {
+				type: 'radio',
+	            options: {
+	              listItems: [
+	                { text: alert_arr.YES, value: '1' },
+	                { text: alert_arr.NO, value: '0' },
+	              ]
+	            }
+	        };
+		} else if (uitype == '10' || fieldname == 'createdtime' || fieldname == 'modifiedtime') {
+			editor = false;
+		} else if (uitype == '15') {
+			let listItems = [];
+			for (let f in values) {
+				let listValues = {};
+				listValues = {
+					text: values[f],
+					value: values[f]
+				};
+				listItems.push(listValues);
+			}
+       	 	editor = {
+            	type: 'select',
+	            options: {
+	            	listItems: listItems
+	            }
+	        };
+		} else if (uitype == '50' || uitype == '70') {
+			editor = {
+	            type: 'datePicker',
+	            options: {
+	              format: 'yyyy-MM-dd HH:mm A',
+	              timepicker: true
+	            }
+	        };
+		} else if (uitype == '5') {
+			editor = {
+	            type: 'datePicker',
+	            options: {
+	              format: 'yyyy-MM-dd'
+	            }
+	        };
+		} else if (uitype == '52' || uitype == '53') {
+			let listItems = [];
+			for (let f in values) {
+				let listValues = {};
+				listValues = {
+					text: values[f],
+					value: f,
+				};
+				listItems.push(listValues);
+			}
+       	 	editor = {
+            	type: 'select',
+	            options: {
+	            	listItems: listItems
+	            }
+	        };
+		} else {
+			editor = 'text';
+		}
+		return editor;
 	},
 	/**
 	 * Load the default view in the first time
@@ -180,7 +282,6 @@ const ListView = {
 				bodyHeight: 'auto',
 				scrollX: false,
 				scrollY: false,
-				editingEvent: 'click',
 				columnOptions: {
 					resizable: true
 				},
@@ -201,7 +302,33 @@ const ListView = {
 					}
 				}
 			});
+
+			ListView.registerEvent(url);
 			tui.Grid.applyTheme('striped');
+		});
+	},
+	/**
+	 * Register a grid event
+	 * @param {String} url
+	 */
+	registerEvent: (url) => {
+		dataGridInstance.on('editingFinish', (ev) => {
+			dataGridInstance.reloadData();
+			dataGridInstance.refreshLayout();
+		});
+		dataGridInstance.on('afterFilter', (ev) => {
+			const operatorData = {
+				eq: 'e', contain: 'c', ne: 'n', start: 's', ls: 'l', gt: 'g', lte: 'm', gte: 'h', after: 'a', afterEq: 'h', before: 'b', beforeEq: 'm',
+			};
+			const operator = operatorData[ev.filterState[0].state[0]['code']];
+			const urlstring = `&query=true&search_field=${ev.columnName}&search_text=${ev.filterState[0].state[0]['value']}&searchtype=BasicSearch&operator=${operator}`;
+			const searchtype = 'Basic';
+			ListView.ListViewSearch(url, urlstring, searchtype);
+		});
+		dataGridInstance.on('click', (ev) => {
+			if (ev.nativeEvent.target.innerText == 'Clear') {
+				ListView.ListViewReloadData();
+			}
 		});
 	},
 	/**
@@ -380,6 +507,9 @@ const ListView = {
 		 	}
 		}
 		document.getElementById('allselectedboxes').value = select_options;
+		if (select_options.indexOf('on;') !== -1) {
+			document.getElementById('allselectedboxes').value = select_options.slice(0, -3);
+		}
 		return rowKeys;
 	},
 	/**
@@ -412,29 +542,6 @@ const ListView = {
 		const currentPageSize = dataGridInstance.getRowCount();
 		const limit_start_rec = (page-1) * PageSize;
 		const currentPage = (limit_start_rec + 1) + ' - ' + (limit_start_rec + currentPageSize);
-
-		for (let i = 0; i < currentPageSize; i++) {
-			let recordid = dataGridInstance.getValue(i, 'recordid');
-			let referenceField = dataGridInstance.getValue(i, 'reference');
-			let referenceValue = dataGridInstance.getValue(i, referenceField);
-			let relatedRows = dataGridInstance.getValue(i, 'relatedRows');
-			for (let fName in relatedRows) {
-				let moduleName = relatedRows[fName][0];
-				let fieldId = relatedRows[fName][1];
-				let fieldValue = `<a href="index.php?module=${moduleName}&action=DetailView&record=${fieldId}">${relatedRows[fName][2]}<a>`;
-				if (moduleName != '') {
-					dataGridInstance.setValue(i, fName, fieldValue, false);
-				} else {
-					dataGridInstance.setValue(i, fName, '', false);
-				}
-			}
-			let aAction = `
-				<a href="index.php?module=${module}&action=EditView&record=${recordid}&return_module=${module}&return_action=index">${alert_arr['LNK_EDIT']}</a> | 
-				<a href="javascript:confirmdelete('index.php?module=${module}&action=Delete&record=${recordid}&return_module=${module}&return_action=index&parenttab=ptab');">${alert_arr['LNK_DELETE']}</a>`;
-			let aVal = '<a href="index.php?module='+module+'&action=DetailView&record='+recordid+'">'+referenceValue+'<a>';
-			dataGridInstance.setValue(i, referenceField, aVal, false);
-			dataGridInstance.setValue(i, 'action', aAction, false);
-		}
 		if (totalCount > 0) {
 			document.getElementById('gridRecordCountHeader').innerHTML = alert_arr['LBL_SHOWING'] + currentPage + alert_arr['LBL_RECORDS'] + totalCount;
 			document.getElementById('gridRecordCountFooter').innerHTML = alert_arr['LBL_SHOWING'] + currentPage + alert_arr['LBL_RECORDS'] + totalCount;
@@ -490,6 +597,30 @@ const ListView = {
 			if (idsArr.includes(recordId)) {
 				document.getElementById(i).checked = true;
 			}
+		}
+	},
+	/**
+	 * Update values in listview
+	 * @param {Object} ev
+	 * @param {String|Number} idx
+	 */
+	updateFieldData: (ev, idx) => {
+		const recordid = dataGridInstance.getValue(idx, 'recordid');
+		const rowKey = ev.rowKey;
+		const columnName = ev.columnName;
+		const value = ev.value;
+		const preValue = ev.preValue;
+		if (value != preValue) {
+			jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=listViewJSON&method=updateDataListView',
+				data: {
+					modulename: module,
+					value: value,
+					columnName: columnName,
+					recordid: recordid,
+				}
+			});
 		}
 	},
 };
