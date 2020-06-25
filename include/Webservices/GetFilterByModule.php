@@ -53,6 +53,7 @@ function getfiltersbymodule($module, $user) {
 		'html'=>$customview_html,
 		'filters'=>$customviews,
 		'linkfields'=>$linkfields,
+		'pagesize' => intval(GlobalVariable::getVariable('Application_ListView_PageSize', 20, $module)),
 	);
 }
 
@@ -141,7 +142,11 @@ function cbws_getCustomViewCombo($viewid, $module, $customView) {
 		}
 		$advft_criteria = json_encode($advft);
 		$filter['advcriteria'] = $advft_criteria;
+		$filter['advcriteriaWQL'] = $customView->getCVAdvFilterSQL($cvrow['cvid'], true);
+		$filter['advcriteriaEVQL'] = $customView->getCVAdvFilterEVQL($cvrow['cvid']);
 		$filter['stdcriteria'] = $customView->getCVStdFilterSQL($cvrow['cvid']);
+		$filter['stdcriteriaWQL'] = $customView->getCVStdFilterSQL($cvrow['cvid'], true);
+		$filter['stdcriteriaEVQL'] = $customView->getCVStdFilterEVQL($cvrow['cvid']);
 		$option = "<option value='".$cvrow['cvid']."'>" . $disp_viewname . '</option>';
 		// Add the option to combo box at appropriate section
 		if ($option != '') {
