@@ -30,7 +30,7 @@ function vtws_retrieve($id, $user) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
 	}
 	if ($meta->hasReadAccess()!==true) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to write is denied');
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read is denied');
 	}
 
 	if ($entityName !== $webserviceObject->getEntityName()) {
