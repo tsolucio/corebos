@@ -11,10 +11,17 @@ require_once 'include/Webservices/QueryParser.php';
 
 $vtwsQueryHandler = '';
 
-function vtws_query($q, $user) {
+function vtws_query($q, $user, $emptyCache = false) {
 	global $log, $adb, $vtwsQueryHandler;
 	static $vtws_query_cache = array();
-
+	if ($emptyCache) {
+		foreach ($vtws_query_cache as $cacheinfo) {
+			$cacheinfo['handler']->emptyCache();
+		}
+		$vtws_query_cache = array();
+		VtigerWebserviceObject::emptyCache();
+		return;
+	}
 	// Cache the instance for re-use
 	$moduleRegex = "/[fF][rR][Oo][Mm]\s+([^\s;]+)/";
 	$moduleName = '';

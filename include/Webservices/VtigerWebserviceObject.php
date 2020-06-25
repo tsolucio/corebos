@@ -104,5 +104,10 @@ class VtigerWebserviceObject {
 	public function getUUID($crmid) {
 		return CRMEntity::getUUIDfromCRMID($crmid);
 	}
+
+	public static function emptyCache() {
+		self::$_fromNameCache = array();
+		self::$_fromIdCache = array();
+	}
 }
 ?>
