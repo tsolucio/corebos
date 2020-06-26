@@ -320,3 +320,12 @@ function delAttachments(id) {
 		jQuery('#row_'+id).fadeOut();
 	});
 }
+
+function toggleCheckbox(id) {
+	var element = document.getElementById(id);
+	var value = 1;
+	if (element.value == 1) {
+		value = 0;
+	}
+	element.value = value;
+}
