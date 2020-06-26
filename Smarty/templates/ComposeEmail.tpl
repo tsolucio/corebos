@@ -58,7 +58,9 @@
 	<td class="cellText" style="padding: 5px;">
 		<input name="from_email" id="from_email" class="txtBox" type="text" value="{if isset($FROM_MAIL)}{$FROM_MAIL}{/if}" style="width: 525px;" placeholder="{'LeaveEmptyForUserEmail'|@getTranslatedString:'Settings'}">
 	</td>
-	<td class="cellText" style="padding: 5px;" align="left" nowrap></td>
+	<td class="cellText" style="padding: 5px;" align="left" nowrap>
+		<input type="checkbox" name="individual_emails" {if $SEND_INDIVIDUAL_EMAILS eq 1}checked{/if}/>{$MOD.LBL_SEND_INDIVIDUAL_EMAILS}
+	</td>
 	</tr>
 {foreach item=row from=$BLOCKS}
 {foreach item=elements from=$row}
@@ -180,7 +182,6 @@
 	</tr>
 	<tr>
 	<td colspan="3" class="mailSubHeader" style="padding: 5px;" align="center">
-		<input type="checkbox" name="individual_emails" {if $SEND_INDIVIDUAL_EMAILS eq 1}checked{/if}/>{$MOD.LBL_SEND_INDIVIDUAL_EMAILS}
 		<input type='hidden' class='small' name="msgtpopup_type" id="msgtpopup_type" value="MsgTemplate">
 		<input title="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_TITLE}" accessKey="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_KEY}" class="crmbutton small edit" onclick='return vtlib_open_popup_window("","msgtpopup","MsgTemplate","");' type="button" name="button" value=" {$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_LABEL} ">
 		<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="return email_validate(this.form,'save');" type="button" name="button" value=" {$APP.LBL_SAVE_BUTTON_LABEL} " >&nbsp;
