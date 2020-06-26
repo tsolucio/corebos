@@ -4063,15 +4063,27 @@ function ToolTipManager() {
 		var div = document.getElementById(divName);
 		if (typeof div != 'undefined' && div != null ) {
 			if (typeof nodelay != 'undefined' && nodelay != null) {
-				setTimeout(function () {
-					div.style.display = 'none';
-				}, secondshowTimeout);
+				if(state){
+				div.addEventListener("mouseenter", function() {
+					div.style.display = "block";
+				  });
+				} else {
+					div.addEventListener("mouseleave", function() {
+				  		setTimeout(function() {
+							div.style.display = "none";
+				  }, secondshowTimer);
+				});
+				}
+				
 			} else {
-				setTimeout(function () {
-					if (!state) {
-						div.style.display = 'none';
-					}
-				}, secondshowTimeout);
+				div.addEventListener("mouseleave", function() {
+					setTimeout(function () {
+						if (!state) {
+							div.style.display = 'none';
+						}
+				}, secondshowTimer);
+				  });
+			
 			}
 		}
 	}
