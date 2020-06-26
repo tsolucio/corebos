@@ -86,14 +86,14 @@ if (!empty($_REQUEST['from_email'])) {
 }
 
 // Group emails
-if (isset($_REQUEST['individual_emails']) && $_REQUEST['individual_emails'] == "on") {
+if (isset($_REQUEST['individual_emails']) && $_REQUEST['individual_emails'] == 'on') {
 	$individual_emails = 1;
 } else {
 	$individual_emails = 0;
 }
-$logo = "";
-$subject = "";
-$description = "";
+$logo = '';
+$subject = '';
+$description = '';
 
 for ($i=0; $i<(count($myids)-1); $i++) {
 	$realid=explode('@', $myids[$i]);
@@ -174,7 +174,7 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 
 // Sending group emails
 if (!$individual_emails) {
-	$mail_status = send_mail('Emails', $all_to_emailids, $from_name, $from_address, $subject, $description, '', '', 'all', $focus->id, $logo);
+	$mail_status = send_mail('Emails', implode(',', $all_to_emailids), $from_name, $from_address, $subject, $description, '', '', 'all', $focus->id, $logo);
 	$mail_status_str .= $mail_status.'&&&';
 	//added to get remain the EditView page if an error occurs in mail sending
 	if ($mail_status != 1) {
