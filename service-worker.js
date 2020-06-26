@@ -9314,7 +9314,7 @@ precacheAndRoute([{
   "revision": "c5247a4c8b5ebf37d5cd55c6621f38c5"
 }, {
   "url": "include/js/general.js",
-  "revision": "c80222a20027935da40782f1eb225c22"
+  "revision": "7efabc132aba80f7bd0943f261fc7a89"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "c121669fa3b0ab4ce7088a82107ca79c"
@@ -9329,13 +9329,13 @@ precacheAndRoute([{
   "revision": "31c7a760819a0277d2cdb75b82c2c66f"
 }, {
   "url": "include/js/ListView.js",
-  "revision": "08dd3299658cdde918af30bbc2d6c2c1"
+  "revision": "587b77407e8f7d96e0cbc1baa4e0ab86"
 }, {
   "url": "include/js/loadjslog.js",
   "revision": "d5317a375aa85d10e53f5989b1be0524"
 }, {
   "url": "include/js/Mail.js",
-  "revision": "d80319931dbb8f169c19c78b561f5b82"
+  "revision": "d18e82ce1218134b2cb61291aae4159c"
 }, {
   "url": "include/js/massive.js",
   "revision": "88c141893042950229a9ac13a5a8afc7"
@@ -9893,7 +9893,7 @@ precacheAndRoute([{
   "revision": "c240060c1b952bba5d36d4a506fa0e6e"
 }, {
   "url": "modules/Leads/Leads.js",
-  "revision": "9bee4aaacc8b53773857c8fa7388f270"
+  "revision": "b2e3521002881fd060f5435d35228e73"
 }, {
   "url": "modules/WSAPP/WSAPP.js",
   "revision": "36b3093ded85fbdb78336ed100dae8ac"
