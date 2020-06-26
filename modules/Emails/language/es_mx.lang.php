@@ -165,5 +165,6 @@ $mod_strings = array(
 'Dropped' => 'Descartado',
 'Open' => 'Abierto',
 'Unsubscribe' => 'Baja',
+'LBL_SEND_INDIVIDUAL_EMAILS' => 'Enviar Correos Individuales',
 );
 ?>

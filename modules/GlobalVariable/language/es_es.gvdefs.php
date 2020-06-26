@@ -1175,6 +1175,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Aplicar o no una limpieza estricta del HTML que recibimos del cuerpo del correo electrónico redactado. El valor predeterminado es aplicar una limpieza menos estricta (1).',
 ),
+'EMail_Send_Individual' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Envía correos electrónicos individuales por separado a cada destinatario en lugar de un correo electrónico a todos. Este es el comportamiento predeterminado de la aplicación.',
+),
 'Workflow_Send_Email_ToCCBCC' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Email CSV',
