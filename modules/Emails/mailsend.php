@@ -86,7 +86,7 @@ if (!empty($_REQUEST['from_email'])) {
 }
 
 // Group emails
-$individual_emails = isset($_REQUEST['individual_emails']) ? $_REQUEST['individual_emails'] : 0;
+$individual_emails = isset($_REQUEST['individual_emails']) ? $_REQUEST['individual_emails'] : 1;
 $logo = "";
 $subject = "";
 $description = "";
