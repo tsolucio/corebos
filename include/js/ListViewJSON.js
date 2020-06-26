@@ -80,6 +80,7 @@ const ListView = {
 			const fieldvalue = headerObj[index].fieldvalue;
 			const uitype = headerObj[index].uitype;
 			let editor;
+			let formatter;
 			let values = {};
 			if (uitype == '15' || uitype == '52' || uitype == '53') {
 				values = headerObj[index].picklist;
@@ -93,7 +94,7 @@ const ListView = {
 					whiteSpace: 'normal',
 					width: 100,
 					renderer: {
-    					type: LinkRender,
+    					type: ActionRender,
     				},
 	      		};
 	      	} else {
@@ -117,11 +118,17 @@ const ListView = {
 							showClearBtn: true
 		      			};
 		      		}
+					if (uitype == '15' || uitype == '52' || uitype == '53' || uitype == '56') {
+						formatter = 'listItemText';
+					} else {
+						formatter = false;						
+					}
 					header = {
 						name: fieldname,
 						header: fieldvalue,
 						sortingType: 'desc',
 						sortable: true,
+						formatter: formatter,
 						editor: editor,
 						filter: filter,
 						whiteSpace: 'normal',
@@ -143,6 +150,7 @@ const ListView = {
 						header: fieldvalue,
 						sortingType: 'desc',
 						sortable: true,
+						formatter: formatter,
 						editor: editor,
 						whiteSpace: 'normal',
 						copyOptions: {
@@ -312,10 +320,6 @@ const ListView = {
 	 * @param {String} url
 	 */
 	registerEvent: (url) => {
-		dataGridInstance.on('editingFinish', (ev) => {
-			dataGridInstance.reloadData();
-			dataGridInstance.refreshLayout();
-		});
 		dataGridInstance.on('afterFilter', (ev) => {
 			const operatorData = {
 				eq: 'e', contain: 'c', ne: 'n', start: 's', ls: 'l', gt: 'g', lte: 'm', gte: 'h', after: 'a', afterEq: 'h', before: 'b', beforeEq: 'm',

@@ -60,7 +60,6 @@ class LinkRender {
 		let referenceField = props.grid.getValue(rowKey, 'reference');
 		let referenceValue = props.grid.getValue(rowKey, referenceField);
 		let relatedRows = props.grid.getValue(rowKey, 'relatedRows');
-		let uitype = props.grid.getValue(rowKey, 'uitype');
 
 		if (columnName == referenceField) {
 			el = document.createElement('a');
@@ -77,20 +76,10 @@ class LinkRender {
 			this.el = el;
 			this.render(props);
 		} else {
-			if (columnName == 'action') {
-				el = document.createElement('span');
-				const actions = `
-					<a href="index.php?module=${module}&action=EditView&record=${recordid}&return_module=${module}&return_action=index">${alert_arr['LNK_EDIT']}</a> | 
-					<a href="javascript:confirmdelete('index.php?module=${module}&action=Delete&record=${recordid}&return_module=${module}&return_action=index&parenttab=ptab');">${alert_arr['LNK_DELETE']}</a>`;
-				el.innerHTML = actions;
-				this.el = el;
-				this.render(props);
-			} else {
-				el = document.createElement('span');
-				el.innerHTML = String(props.value);
-				this.el = el;
-				this.render(props);
-			}
+			el = document.createElement('span');
+			el.innerHTML = String(props.value);
+			this.el = el;
+			this.render(props);
 		}
 	}
 
@@ -99,6 +88,35 @@ class LinkRender {
 	}
 
 	render(props) {
-		this.el.value = String(props.value);
+		if (props.formattedValue != '') {
+			this.el.textContent = String(props.formattedValue);
+		} else {
+			this.el.textContent = String(props.value);
+		}
 	}
+}
+
+class ActionRender {
+
+	constructor(props) {
+		let el;
+		let module = document.getElementById('curmodule').value;
+		let rowKey = props.rowKey;
+		let recordid = props.grid.getValue(rowKey, 'recordid');
+		el = document.createElement('span');
+		const actions = `
+			<a href="index.php?module=${module}&action=EditView&record=${recordid}&return_module=${module}&return_action=index">${alert_arr['LNK_EDIT']}</a> | 
+			<a href="javascript:confirmdelete('index.php?module=${module}&action=Delete&record=${recordid}&return_module=${module}&return_action=index&parenttab=ptab');">${alert_arr['LNK_DELETE']}</a>`;
+		el.innerHTML = actions;
+		this.el = el;
+		this.render(props);
+	}
+
+	getElement() {
+		return this.el;
+	}
+
+	render(props) {
+		this.el.value = String(props.value);
+	}	
 }
