@@ -4011,7 +4011,7 @@ function startCall(number, recordid) {
 function ToolTipManager() {
 	var state = false;
 	var secondshowTimer = 0;
-	var secondshowTimeout = 1800;
+	// var secondshowTimeout = 1800;
 	/**
 	 * this function creates the tooltip div and adds the information to it
 	 * @param string text - the text to be added to the tooltip
@@ -4063,27 +4063,25 @@ function ToolTipManager() {
 		var div = document.getElementById(divName);
 		if (typeof div != 'undefined' && div != null ) {
 			if (typeof nodelay != 'undefined' && nodelay != null) {
-				if(state){
-				div.addEventListener("mouseenter", function() {
-					div.style.display = "block";
-				  });
+				if (state) {
+					div.addEventListener('mouseenter', function	() {
+						div.style.display = 'block';
+					});
 				} else {
-					div.addEventListener("mouseleave", function() {
-				  		setTimeout(function() {
-							div.style.display = "none";
-				  }, secondshowTimer);
-				});
+					div.addEventListener('mouseleave', function	() {
+						setTimeout(function () {
+							div.style.display = 'none';
+						}, secondshowTimer);
+					});
 				}
-				
 			} else {
-				div.addEventListener("mouseleave", function() {
+				div.addEventListener('mouseleave', function	() {
 					setTimeout(function () {
 						if (!state) {
 							div.style.display = 'none';
 						}
-				}, secondshowTimer);
-				  });
-			
+					}, secondshowTimer);
+				});
 			}
 		}
 	}
