@@ -4010,8 +4010,9 @@ function startCall(number, recordid) {
 //added for tooltip manager
 function ToolTipManager() {
 	var state = false;
-	var secondshowTimer = 0;
-	// var secondshowTimeout = 1800;
+	var secondshowTimer = 600;
+	var secondshowTimeout = 1800;
+	var autohideTimer = '';
 	/**
 	 * this function creates the tooltip div and adds the information to it
 	 * @param string text - the text to be added to the tooltip
@@ -4035,6 +4036,17 @@ function ToolTipManager() {
 		div.style.display = 'block';
 		div.style.zIndex = '1000000';
 		positionTooltip(node, divName);
+		autohideTimer = setTimeout(
+			function () {
+				div.style.display = 'none';
+				clearTimeout(autohideTimer);
+			},
+			secondshowTimeout
+		);
+		div.addEventListener('mouseenter', function () {
+			clearTimeout(autohideTimer);
+			div.style.display = 'block';
+		});
 	}
 
 	function getDivId(id, fieldname) {
@@ -4063,12 +4075,8 @@ function ToolTipManager() {
 		var div = document.getElementById(divName);
 		if (typeof div != 'undefined' && div != null ) {
 			if (typeof nodelay != 'undefined' && nodelay != null) {
-				if (state) {
-					div.addEventListener('mouseenter', function	() {
-						div.style.display = 'block';
-					});
-				} else {
-					div.addEventListener('mouseleave', function	() {
+				if (!state) {
+					div.addEventListener('mouseleave', function () {
 						setTimeout(function () {
 							div.style.display = 'none';
 						}, secondshowTimer);
