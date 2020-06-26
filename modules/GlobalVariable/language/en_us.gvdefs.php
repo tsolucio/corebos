@@ -1532,6 +1532,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'https://nagix.github.io/chartjs-plugin-colorschemes/colorchart.html',
 	'definition' => 'Defines the color scheme to use when drawing graphs. By default tableau.Tableau10 is set.',
 ),
+'EMail_Send_Individual' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Sending emails individually.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php', GLOB_BRACE) as $tcode) {
