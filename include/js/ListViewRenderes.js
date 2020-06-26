@@ -118,5 +118,5 @@ class ActionRender {
 
 	render(props) {
 		this.el.value = String(props.value);
-	}	
+	}
 }

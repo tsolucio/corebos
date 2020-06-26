@@ -121,7 +121,7 @@ const ListView = {
 					if (uitype == '15' || uitype == '52' || uitype == '53' || uitype == '56') {
 						formatter = 'listItemText';
 					} else {
-						formatter = false;						
+						formatter = false;
 					}
 					header = {
 						name: fieldname,
