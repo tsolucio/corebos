@@ -85,6 +85,12 @@ if (!empty($_REQUEST['from_email'])) {
 	$from_address = 'FROM:::>'.$from_address;
 }
 
+// Group emails
+$individual_emails = isset($_REQUEST['individual_emails']) ? $_REQUEST['individual_emails'] : 0;
+$logo = "";
+$subject = "";
+$description = "";
+
 for ($i=0; $i<(count($myids)-1); $i++) {
 	$realid=explode('@', $myids[$i]);
 	$nemail=count($realid);
@@ -95,9 +101,11 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 		$emailadd = $adb->query_result($rs, 0, 'email1');
 		$pmodule = 'Users';
 		$description = getMergedDescription($_REQUEST['description'], $mycrmid, $pmodule);
-		$mail_status = send_mail('Emails', $emailadd, $from_name, $from_address, $_REQUEST['subject'], $description, '', '', 'all', $focus->id);
 		$all_to_emailids[]= $emailadd;
-		$mail_status_str .= $emailadd.'='.$mail_status.'&&&';
+		if ($individual_emails) {
+			$mail_status = send_mail('Emails', $emailadd, $from_name, $from_address, $_REQUEST['subject'], $description, '', '', 'all', $focus->id);
+			$mail_status_str .= $emailadd.'='.$mail_status.'&&&';
+		}
 	} else {
 		//Send mail to account, lead or contact based on their ids
 		$pmodule=getSalesEntityType($mycrmid);
@@ -142,20 +150,34 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 				} else {
 					$logo = 0;
 				}
-				if (isPermitted($pmodule, 'DetailView', $mycrmid) == 'yes') {
-					$mail_status = send_mail('Emails', $emailadd, $from_name, $from_address, $subject, $description, '', '', 'all', $focus->id, $logo);
-				}
 
 				$all_to_emailids[]= $emailadd;
-				$mail_status_str .= $emailadd.'='.$mail_status.'&&&';
-				//added to get remain the EditView page if an error occurs in mail sending
-				if ($mail_status != 1) {
-					$errorheader2 = 1;
+
+				if ($individual_emails) {
+					if (isPermitted($pmodule, 'DetailView', $mycrmid) == 'yes') {
+						$mail_status = send_mail('Emails', $emailadd, $from_name, $from_address, $subject, $description, '', '', 'all', $focus->id, $logo);
+					}
+					$mail_status_str .= $emailadd.'='.$mail_status.'&&&';
+					//added to get remain the EditView page if an error occurs in mail sending
+					if ($mail_status != 1) {
+						$errorheader2 = 1;
+					}
 				}
 			}
 		}
 	}
 }
+
+// Sending group emails
+if (!$individual_emails) {
+	$mail_status = send_mail('Emails', $all_to_emailids, $from_name, $from_address, $subject, $description, '', '', 'all', $focus->id, $logo);
+	$mail_status_str .= $mail_status.'&&&';
+	//added to get remain the EditView page if an error occurs in mail sending
+	if ($mail_status != 1) {
+		$errorheader2 = 1;
+	}
+}
+
 //Added to redirect the page to Emails/EditView if there is an error in mail sending
 if ($errorheader1 == 1 || $errorheader2 == 1) {
 	$returnmodule = 'Emails';
