@@ -17,7 +17,7 @@ include_once 'include/Webservices/Create.php';
 include_once 'include/Webservices/Revise.php';
 
 function vtws_upsert($elementType, $element, $searchOn, $updatedfields, $user) {
-	global $adb;
+	global $adb, $log;
 	$searchFields = explode(',', $searchOn);
 	array_walk(
 		$searchFields,
@@ -45,9 +45,23 @@ function vtws_upsert($elementType, $element, $searchOn, $updatedfields, $user) {
 	$queryGenerator = new QueryGenerator($elementType, $user);
 	$queryGenerator->setFields(['id']);
 
+	$webserviceObject = VtigerWebserviceObject::fromName($adb, $elementType);
+	$handlerPath = $webserviceObject->getHandlerPath();
+	$handlerClass = $webserviceObject->getHandlerClass();
+
+	require_once $handlerPath;
+
+	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+	$meta = $handler->getMeta();
+	$r = $meta->getReferenceFieldDetails();
 	//add condition to check for the record
 	foreach ($searchWithValues as $fieldName => $fieldValue) {
-		$queryGenerator->addCondition($fieldName, $fieldValue, 'e');
+		if (isset($r[$fieldName])) { // reference field
+			list($wsid, $crmid) = explode('x', $fieldValue);
+			$queryGenerator->addReferenceModuleFieldCondition($r[$fieldName][0], $fieldName, 'id', $crmid, 'e', QueryGenerator::$AND);
+		} else {
+			$queryGenerator->addCondition($fieldName, $fieldValue, 'e', QueryGenerator::$AND);
+		}
 	}
 
 	//get only one record of many possible records
