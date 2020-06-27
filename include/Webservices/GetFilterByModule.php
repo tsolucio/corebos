@@ -67,7 +67,6 @@ function cbws_getCustomViewCombo($viewid, $module, $customView) {
 	$tabid = getTabid($module);
 	$_REQUEST['action'] = '';
 	$userprivs = $current_user->getPrivileges();
-
 	$shtml_user = '';
 	$shtml_pending = '';
 	$shtml_public = '';
@@ -147,6 +146,14 @@ function cbws_getCustomViewCombo($viewid, $module, $customView) {
 		$filter['stdcriteria'] = $customView->getCVStdFilterSQL($cvrow['cvid']);
 		$filter['stdcriteriaWQL'] = $customView->getCVStdFilterSQL($cvrow['cvid'], true);
 		$filter['stdcriteriaEVQL'] = $customView->getCVStdFilterEVQL($cvrow['cvid']);
+		$viewinfo = $customView->getColumnsListByCvid($cvrow['cvid']);
+		$fields = array();
+		foreach ($viewinfo as $fld) {
+			$finfo=explode(':', $fld);
+			$fields[]=($finfo[1]=='smownerid' ? 'assigned_user_id' : $finfo[2]);
+		}
+		$filter['fields'] = $fields;
+		$filter['default'] = ($cvrow['setdefault']==1);
 		$option = "<option value='".$cvrow['cvid']."'>" . $disp_viewname . '</option>';
 		// Add the option to combo box at appropriate section
 		if ($option != '') {
