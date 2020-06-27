@@ -81,21 +81,19 @@ function getRelatedRecords($id, $module, $relatedModule, $queryParameters, $user
 		if (($module=='HelpDesk' || $module=='Faq') && $relatedModule=='ModComments') {
 			$rec = $row;
 		} else {
-			if ($relatedModule=='Products') {
-				if (isset($row['productid']) && isset($row['sequence_no'])) {
-					if (isset($row['productid']) && getSalesEntityType($row['productid'])=='Services') {
-						$rec = DataTransform::sanitizeData($row, $srvmeta);
-						$rec['id'] = $srvwsid.$row['productid'];
-						$rec['productid'] = $srvwsid.$row['productid'];
-						$rec['linetype'] = 'Services';
-					} else {
-						$rec = DataTransform::sanitizeData($row, $meta);
-						$rec['productid'] = $pdowsid.$row['productid'];
-						$rec['id'] = $pdowsid.$row['productid'];
-						$rec['linetype'] = 'Products';
-					}
+			if ($relatedModule=='Products' && isset($row['id']) && isset($row['sequence_no'])) {
+				if (getSalesEntityType($row['id'])=='Services') {
+					$rec = DataTransform::sanitizeData($row, $srvmeta);
+					$rec['id'] = $srvwsid.$row['id'];
+					$rec['cbuuid'] = CRMEntity::getUUIDfromCRMID($row['id']);
+					$rec['productid'] = $srvwsid.$row['id'];
+					$rec['linetype'] = 'Services';
 				} else {
 					$rec = DataTransform::sanitizeData($row, $meta);
+					$rec['id'] = $pdowsid.$row['id'];
+					$rec['cbuuid'] = CRMEntity::getUUIDfromCRMID($row['id']);
+					$rec['productid'] = $pdowsid.$row['id'];
+					$rec['linetype'] = 'Products';
 				}
 			} else {
 				$rec = DataTransform::sanitizeData($row, $meta);
@@ -295,11 +293,13 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 			// special product relation with Q/SO/I/PO
 			if ($relatedModule == 'Products' && in_array($module, array('Invoice','Quotes','SalesOrder','PurchaseOrder'))) {
 				$qparams = ' ' . $queryParameters['columns'] . ' ';
-				$qparams = str_replace(' id ', ' productid as id ', $qparams);
-				$qparams = str_replace(',id ', ',productid as id ', $qparams);
-				$qparams = str_replace(' id,', ' productid as id,', $qparams);
-				$qparams = str_replace(',id,', ',productid as id,', $qparams);
-				$query = 'select ' . $qparams . ' FROM vtiger_inventoryproductrel where id=' . $crmid;
+				$qparams = str_replace(' id ', ' vtiger_inventoryproductrel.productid as id ', $qparams);
+				$qparams = str_replace(',id ', ',vtiger_inventoryproductrel.productid as id ', $qparams);
+				$qparams = str_replace(' id,', ' vtiger_inventoryproductrel.productid as id,', $qparams);
+				$qparams = str_replace(',id,', ',vtiger_inventoryproductrel.productid as id,', $qparams);
+				$query = 'select ' . $qparams . ',sequence_no FROM vtiger_inventoryproductrel
+					left join vtiger_service on serviceid=vtiger_inventoryproductrel.productid
+					left join vtiger_products on vtiger_products.productid=vtiger_inventoryproductrel.productid where id=' . $crmid;
 			} else {
 				$relationResult = $adb->pquery(
 					"SELECT * FROM vtiger_relatedlists WHERE tabid=? AND related_tabid=? $relation_criteria",
@@ -335,10 +335,15 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 					require_once $handlerPath;
 					$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 					$meta = $handler->getMeta();
+					$onelinequery = preg_replace("/[\n\r\s]+/", ' ', $query);
 					if (!empty($productDiscriminator) && $productDiscriminator == 'productparent') {
-						$query = appendFromClauseToQuery($query, ' inner join vtiger_products on vtiger_products.productid=vtiger_productcomponent.frompdo');
+						if (stripos($onelinequery, ' inner join vtiger_products on vtiger_products.productid=vtiger_productcomponent.frompdo')===false) {
+							$query = appendFromClauseToQuery($query, ' inner join vtiger_products on vtiger_products.productid=vtiger_productcomponent.frompdo');
+						}
 					} else {
-						$query = appendFromClauseToQuery($query, ' inner join vtiger_products on vtiger_products.productid=vtiger_productcomponent.topdo');
+						if (stripos($onelinequery, ' inner join vtiger_products on vtiger_products.productid=vtiger_productcomponent.topdo')===false) {
+							$query = appendFromClauseToQuery($query, ' inner join vtiger_products on vtiger_products.productid=vtiger_productcomponent.topdo');
+						}
 					}
 				}
 				// select the fields the user has access to and prepare query
@@ -422,7 +427,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 		if (!empty($queryParameters['offset']) && !empty($queryParameters['limit'])) {
 			$query .= ' limit '.$queryParameters['offset'].','.$queryParameters['limit'];
 		} elseif (!empty($queryParameters['offset'])) {
-			$query .= ' offset '.$queryParameters['offset'];
+			$query .= ' LIMIT '.$queryParameters['offset'].', 18446744073709551614';
 		} elseif (!empty($queryParameters['limit'])) {
 			$query .= ' limit '.$queryParameters['limit'];
 		}
