@@ -21,7 +21,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		parent::__construct($webserviceObject, $user, $adb, $log);
 		$this->entityTableName = $this->getActorTables();
 		if ($this->entityTableName === null) {
-			throw new WebServiceException(WebServiceErrorCode::$UNKOWNENTITY, 'Entity is not associated with any tables');
+			throw new WebServiceException(WebServiceErrorCode::$UNKNOWNENTITY, 'Entity is not associated with any tables');
 		}
 		$this->meta = $this->getMetaInstance();
 		$this->moduleFields = null;

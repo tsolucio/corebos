@@ -139,7 +139,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 	$meta = $handler->getMeta();
 	$relatedModule = $meta->getEntityName();
 	if (!$meta->isModuleEntity()) {
-		throw new WebServiceException('INVALID_MODULE', "Given related module ($relatedModule) cannot be found");
+		throw new WebServiceException(WebServiceErrorCode::$UNKNOWNENTITY, "Given related module ($relatedModule) cannot be found");
 	}
 	$relatedModuleId = getTabid($relatedModule);
 
@@ -153,7 +153,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 	$meta = $handler->getMeta();
 	$module = $meta->getEntityName();
 	if (!$meta->isModuleEntity()) {
-		throw new WebServiceException('INVALID_MODULE', "Given module ($module) cannot be found");
+		throw new WebServiceException(WebServiceErrorCode::$UNKNOWNENTITY, "Given module ($module) cannot be found");
 	}
 	$moduleId = getTabid($module);
 
