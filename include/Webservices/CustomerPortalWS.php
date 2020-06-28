@@ -262,12 +262,30 @@ function vtws_getReferenceValue($strids, $user) {
  * @param string $query contains the search term we are looking for
  * @param string $search_onlyin comma separated list of modules to search in
  * @param array $restrictionids contains the user we are to search as and the account and contact restrictions
+ * @return array with the results and total number of records per module
+ * @example {'query':'che', 'search_onlyin':'Accounts,Contacts', 'restrictionids': JSON.stringify({'userId': '19x1', 'accountId':'11x74', 'contactId':'12x1084'}) })
+ * @example {'query':'che', 'search_onlyin':'Accounts,Contacts', 'restrictionids': JSON.stringify({'userId': '19x1', 'accountId':'11x0', 'contactId':'12x0'}) })
+ */
+$cbwsgetSearchResultsTotals = array();
+function cbwsgetSearchResultsWithTotals($query, $search_onlyin, $restrictionids, $user) {
+	global $cbwsgetSearchResultsTotals;
+	return array(
+		'records' => cbwsgetSearchResults($query, $search_onlyin, $restrictionids, $user),
+		'totals' => $cbwsgetSearchResultsTotals,
+	);
+}
+
+/**
+ * launch a global search in the application
+ * @param string $query contains the search term we are looking for
+ * @param string $search_onlyin comma separated list of modules to search in
+ * @param array $restrictionids contains the user we are to search as and the account and contact restrictions
  * @return array with the results
  * @example {'query':'che', 'search_onlyin':'Accounts,Contacts', 'restrictionids': JSON.stringify({'userId': '19x1', 'accountId':'11x74', 'contactId':'12x1084'}) })
  * @example {'query':'che', 'search_onlyin':'Accounts,Contacts', 'restrictionids': JSON.stringify({'userId': '19x1', 'accountId':'11x0', 'contactId':'12x0'}) })
  */
 function cbwsgetSearchResults($query, $search_onlyin, $restrictionids, $user) {
-	global $adb,$current_user;
+	global $adb,$current_user, $cbwsgetSearchResultsTotals;
 	$res=array();
 	// security restrictions
 	if (empty($query) || empty($restrictionids) || !is_array($restrictionids)) {
@@ -297,6 +315,7 @@ function cbwsgetSearchResults($query, $search_onlyin, $restrictionids, $user) {
 	$total_record_count = 0;
 	$i = 0;
 	$j=0;
+	$cbwsgetSearchResultsTotals = array();
 	$moduleRecordCount = array();
 	foreach ($object_array as $module => $object_name) {
 		$focus = CRMEntity::getInstance($module);
@@ -368,6 +387,12 @@ function cbwsgetSearchResults($query, $search_onlyin, $restrictionids, $user) {
 		}
 		$list_result = $adb->query($listquery);
 		$noofrows = $adb->num_rows($list_result);
+		if ($noofrows>0) {
+			$count_result = $adb->query(mkCountQuery($listquery));
+			$cbwsgetSearchResultsTotals[$module] = (int) $count_result->fields['count'];
+		} else {
+			$cbwsgetSearchResultsTotals[$module] = 0;
+		}
 		$moduleRecordCount[$module]['count'] = $noofrows;
 		$navigation_array = VT_getSimpleNavigationValues(1, ($limit>0 ? $limit : 100), $noofrows);
 		$listview_entries = getSearchingListViewEntries($focus, $module, $list_result, $navigation_array, '', '', '', '', $oCustomView, '', '', '', true);
