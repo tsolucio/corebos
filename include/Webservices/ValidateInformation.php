@@ -31,7 +31,13 @@ function cbwsValidateInformation($context, $user) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid parameter');
 	}
 	if (empty($screen_values['module']) && !empty($screen_values['record'])) {
-		$screen_values['module'] = getSalesEntityType($screen_values['record']);
+		if (strpos($screen_values['record'], 'x')===false) {
+			$crmid = $screen_values['record'];
+		} else {
+			list($wsid, $crmid) = explode('x', $screen_values['record']);
+		}
+		$screen_values['module'] = getSalesEntityType($crmid);
+		$context = json_encode($screen_values);
 	}
 	if (empty($screen_values['module']) || !isset($screen_values['record'])) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid parameter');
