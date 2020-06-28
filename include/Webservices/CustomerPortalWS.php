@@ -30,18 +30,14 @@ function evvt_strip_html_links($text) {
 	return $text;
 }
 
-function vtws_changePortalUserPassword($email, $newPass) {
+function vtws_changePortalUserPassword($email, $newPass, $user = '') {
 	global $adb,$log;
 	$log->debug('>< changePortalUserPassword');
 	$nra = $adb->pquery('update vtiger_portalinfo set user_password=? where user_name=?', array($newPass,$email));
-	if ($nra) {
-		return true;
-	} else {
-		return false;
-	}
+	return ($nra && $adb->num_rows($nra)>0);
 }
 
-function vtws_findByPortalUserName($username) {
+function vtws_findByPortalUserName($username, $user = '') {
 	global $adb,$log;
 	$log->debug('>< vtws_findByPortalUserName');
 	$rs = $adb->pquery('select count(*) from vtiger_portalinfo where isactive=1 and user_name=?', array($username));
@@ -49,7 +45,7 @@ function vtws_findByPortalUserName($username) {
 	return !empty($nra);
 }
 
-function vtws_sendRecoverPassword($username) {
+function vtws_sendRecoverPassword($username, $user = '') {
 	global $adb,$log,$current_user;
 	$log->debug('> vtws_sendRecoverPassword');
 
@@ -93,7 +89,7 @@ function vtws_getPortalUserInfo($user) {
 	return $usrinfo;
 }
 
-function vtws_getAllUsers() {
+function vtws_getAllUsers($user = '') {
 	global $log;
 	$log->debug('> vtws_getAllUsers');
 
@@ -145,7 +141,7 @@ function vtws_getAssignedGroupList($module, $user) {
 	return json_encode($usrinfo);
 }
 
-function vtws_AuthenticateContact($email, $password) {
+function vtws_AuthenticateContact($email, $password, $user = '') {
 	global $adb,$log;
 	$log->debug('> AuthenticateContact '.$email.','.$password);
 

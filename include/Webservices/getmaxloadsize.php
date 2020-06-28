@@ -19,7 +19,7 @@ require_once 'include/utils/CommonUtils.php';
 /** return maximum upload size as per PHP settings
  * @return int maximum upload size as per PHP settings
  */
-function get_maxloadsize() {
+function get_maxloadsize($user = '') {
 	require_once 'include/utils/UserInfoUtil.php';
 	require_once 'modules/Users/Users.php';
 

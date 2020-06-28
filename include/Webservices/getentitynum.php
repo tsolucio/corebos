@@ -16,7 +16,7 @@
 /* function used to get the numeration of entities:: autonumeric field
  * return array $entitynum - numeration of entities
  */
-function vtws_get_entitynum() {
+function vtws_get_entitynum($user = '') {
 	require_once 'include/utils/UserInfoUtil.php';
 	require_once 'modules/Users/Users.php';
 	global $adb;
