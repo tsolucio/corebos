@@ -38,7 +38,7 @@ function vtws_setrelation($relateThisId, $withTheseIds, $user) {
 	}
 
 	if (!$meta->hasPermission(EntityMeta::$UPDATE, $relateThisId)) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to write given object is denied');
 	}
 
 	if (!$meta->exists($elementId)) {
@@ -66,4 +66,3 @@ function vtws_internal_setrelation($elementId, $moduleName, $withTheseIds) {
 		relateEntities($focus, $moduleName, $elementId, $withModuleName, $withElementId);
 	}
 }
-

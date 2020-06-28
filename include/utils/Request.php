@@ -232,6 +232,9 @@ class Vtiger_Request {
 		}
 
 		// return unreliable ip since all else failed
+		if (empty($headers['REMOTE_ADDR'])) {
+			return ''; // no IP at all!
+		}
 		$iplist = explode(',', $headers['REMOTE_ADDR']);
 		foreach ($iplist as $ip) {
 			if (self::validate_ip($ip)) {

@@ -200,7 +200,7 @@ function csrf_ob_handler($buffer, $flags) {
  * @return True if check passes or is not necessary, false if failure.
  */
 function csrf_check($fatal = true) {
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') return true;
+    if (empty($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] !== 'POST') return true;
     csrf_start();
     $name = $GLOBALS['csrf']['input-name'];
     $ok = false;
