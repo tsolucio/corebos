@@ -294,11 +294,13 @@ function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 	list($void,$contactId) = explode('x', $restrictionids['contactId']);
 	list($void,$userId) = explode('x', $restrictionids['userId']);
 	$limit = (isset($restrictionids['limit']) ? $restrictionids['limit'] : 0);
-	$current_user->retrieveCurrentUserInfoFromFile($userId);
 	// if connected user does not have admin privileges > user must be the connected user
 	if ($user->is_admin!='on' && $user->id!=$userId) {
 		return serialize($res);
 	}
+	$newUser = new Users();
+	$newUser->retrieveCurrentUserInfoFromFile($userId);
+	$current_user = $newUser;
 	// connected user must have access to account and contact > this will be restricted by the coreBOS system and the rest of the code
 	// start work
 	require_once 'modules/CustomView/CustomView.php';
@@ -357,7 +359,7 @@ function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 		foreach ($focus->list_fields as $tableinfo) {
 			foreach ($tableinfo as $tbl => $col) {
 				if (!empty($tbl) && !empty($col)) {
-					$field_list .= 'vtiger_'.$tbl.'.'.$col.',';
+					$field_list .= (substr($tbl, 0, 7)=='vtiger_' ? '' : 'vtiger_').$tbl.'.'.$col.',';
 				}
 			}
 		}
@@ -375,10 +377,13 @@ function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 				$listquery .= ' and ('.$cond.')';
 			}
 		}
+		if ($limit > 0) {
+			$listquery = $listquery.' limit '.$limit;
+		}
 		$list_result = $adb->query($listquery);
 		$noofrows = $adb->num_rows($list_result);
 		$moduleRecordCount[$module]['count'] = $noofrows;
-		$navigation_array = VT_getSimpleNavigationValues(1, 100, $noofrows);
+		$navigation_array = VT_getSimpleNavigationValues(1, ($limit>0 ? $limit : 100), $noofrows);
 		$listview_entries = getSearchingListViewEntries($focus, $module, $list_result, $navigation_array, '', '', '', '', $oCustomView, '', '', '', true);
 		$total_record_count = $total_record_count + $noofrows;
 		if (!empty($listview_entries)) {
@@ -393,6 +398,7 @@ function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 		shuffle($res);
 		$res = array_slice($res, 0, $limit);
 	}
+	$current_user = $user;
 	return serialize($res);
 }
 
