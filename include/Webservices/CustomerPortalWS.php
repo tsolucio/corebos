@@ -267,28 +267,14 @@ function vtws_getReferenceValue($strids, $user) {
  * @example {'query':'che', 'search_onlyin':'Accounts,Contacts', 'restrictionids': JSON.stringify({'userId': '19x1', 'accountId':'11x0', 'contactId':'12x0'}) })
  */
 function cbwsgetSearchResults($query, $search_onlyin, $restrictionids, $user) {
-	return unserialize(vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user));
-}
-
-/**
- * launch a global search in the application. use cbwsgetSearchResults instead of this function
- * @see cbwsgetSearchResults
- * @param string $query contains the search term we are looking for
- * @param string $search_onlyin comma separated list of modules to search in
- * @param array $restrictionids contains the user we are to search as and the account and contact restrictions
- * @return string php serialized array with the results
- * @example {'query':'che', 'search_onlyin':'Accounts,Contacts', 'restrictionids': JSON.stringify({'userId': '19x1', 'accountId':'11x74', 'contactId':'12x1084'}) })
- * @example {'query':'che', 'search_onlyin':'Accounts,Contacts', 'restrictionids': JSON.stringify({'userId': '19x1', 'accountId':'11x0', 'contactId':'12x0'}) })
- */
-function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 	global $adb,$current_user;
 	$res=array();
 	// security restrictions
 	if (empty($query) || empty($restrictionids) || !is_array($restrictionids)) {
-		return serialize($res);
+		return $res;
 	}
 	if (empty($restrictionids['userId']) || empty($restrictionids['accountId']) || empty($restrictionids['contactId'])) {
-		return serialize($res);
+		return $res;
 	}
 	list($void,$accountId) = explode('x', $restrictionids['accountId']);
 	list($void,$contactId) = explode('x', $restrictionids['contactId']);
@@ -296,7 +282,7 @@ function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 	$limit = (isset($restrictionids['limit']) ? $restrictionids['limit'] : 0);
 	// if connected user does not have admin privileges > user must be the connected user
 	if ($user->is_admin!='on' && $user->id!=$userId) {
-		return serialize($res);
+		return $res;
 	}
 	$newUser = new Users();
 	$newUser->retrieveCurrentUserInfoFromFile($userId);
@@ -399,7 +385,21 @@ function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 		$res = array_slice($res, 0, $limit);
 	}
 	$current_user = $user;
-	return serialize($res);
+	return $res;
+}
+
+/**
+ * launch a global search in the application. use cbwsgetSearchResults instead of this function
+ * @see cbwsgetSearchResults
+ * @param string $query contains the search term we are looking for
+ * @param string $search_onlyin comma separated list of modules to search in
+ * @param array $restrictionids contains the user we are to search as and the account and contact restrictions
+ * @return string php serialized array with the results
+ * @example {'query':'che', 'search_onlyin':'Accounts,Contacts', 'restrictionids': JSON.stringify({'userId': '19x1', 'accountId':'11x74', 'contactId':'12x1084'}) })
+ * @example {'query':'che', 'search_onlyin':'Accounts,Contacts', 'restrictionids': JSON.stringify({'userId': '19x1', 'accountId':'11x0', 'contactId':'12x0'}) })
+ */
+function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
+	return serialize(cbwsgetSearchResults($query, $search_onlyin, $restrictionids, $user));
 }
 
 function evvt_PortalModuleRestrictions($module, $accountId, $contactId) {
