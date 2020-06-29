@@ -76,11 +76,6 @@ function cbwsValidateInformation($context, $user) {
 			throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record you are trying to access is not found');
 		}
 	}
-	// Product line support
-	$elementType = $_REQUEST['module'];
-	if (in_array($elementType, getInventoryModules()) && isset($element['pdoInformation']) && (is_array($element['pdoInformation']))) {
-		include 'include/Webservices/ProductLines.php';
-	}
 	include_once 'modules/cbMap/processmap/Validations.php';
 	$validation = Validations::processAllValidationsFor($_REQUEST['module']);
 	if (is_array($validation)) {
@@ -89,6 +84,5 @@ function cbwsValidateInformation($context, $user) {
 			'wsresult' => $validation,
 		);
 	}
-	VTWS_PreserveGlobal::flush();
 	return $validation;
 }
