@@ -224,4 +224,11 @@
 	<classname>deloldwsmobileapi</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add web service support for ModTracker as an actor module</description>
+	<filename>build/changeSets/2020/addWSModTrackerActor.php</filename>
+	<classname>addWSModTrackerActor</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

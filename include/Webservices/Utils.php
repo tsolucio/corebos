@@ -544,7 +544,7 @@ function vtws_CreateCompanyLogoFile($fieldname) {
 
 function vtws_getActorModules() {
 	global $adb;
-	$actorrs = $adb->query("SELECT name FROM vtiger_ws_entity WHERE handler_class='VtigerActorOperation'");
+	$actorrs = $adb->query("SELECT name FROM vtiger_ws_entity WHERE handler_class='VtigerActorOperation' or handler_class='ModTrackerOperation'");
 	$actors = array();
 	while (!$actorrs->EOF) {
 		$row = $actorrs->FetchRow();

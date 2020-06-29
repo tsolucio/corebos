@@ -100,6 +100,9 @@ class VtigerCRMActorMeta extends EntityMeta {
 			case 'LoginHistory':
 				$permModule = 'cbLoginHistory';
 				break;
+			case 'ModTracker':
+				$permModule = 'ModTracker';
+				break;
 			case 'Groups':
 			case 'Currency':
 			default:
@@ -134,6 +137,9 @@ class VtigerCRMActorMeta extends EntityMeta {
 				break;
 			case 'LoginHistory':
 				$permModule = 'cbLoginHistory';
+				break;
+			case 'ModTracker':
+				$permModule = 'ModTracker';
 				break;
 			default:
 				$this->hasAccess = false;
