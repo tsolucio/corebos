@@ -115,6 +115,20 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 		$pmodule=getSalesEntityType($mycrmid);
 		$subject = $_REQUEST['subject'];
 		$description = $_REQUEST['description'];
+
+		// Merge template
+		$ids = array();
+		if (isset($_REQUEST['merge_template_with']) && $_REQUEST['merge_template_with'] != '') {
+			$ids = explode(",", $_REQUEST['merge_template_with']);
+		}
+		if (count($ids) > 0) {
+			foreach ($ids as $id) {
+				$module = getSalesEntityType($id);
+				$subject = getMergedDescription($subject, $id, $module);
+				$description = getMergedDescription($description, $id, $module);
+			}
+		}
+
 		for ($j=1; $j<$nemail; $j++) {
 			$temp=$realid[$j];
 			$myquery='Select columnname from vtiger_field where fieldid = ? and vtiger_field.presence in (0,2)';
