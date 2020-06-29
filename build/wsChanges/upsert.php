@@ -21,6 +21,7 @@ $operationInfo = array(
 	'parameters' => array(
 		array('name' => 'elementType','type' => 'String'),
 		array('name' => 'element','type' => 'Encoded'),
-		array('name' => 'searchOn','type' => 'String')
+		array('name' => 'searchOn','type' => 'String'),
+		array('name' => 'updatedfields','type' => 'String'),
 	)
 );
