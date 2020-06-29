@@ -39,6 +39,41 @@ class VtigerCRMActorMeta extends EntityMeta {
 		$this->computeAccess($webserviceObject, $user);
 	}
 
+	public function addAnotherTable($tableName, $tableIDColumn) {
+		$fieldList = $this->getTableFieldList($tableName);
+		foreach ($fieldList as $field) {
+			$this->moduleFields[$field->getFieldName()] = $field;
+		}
+		$this->tableList[] = $tableName;
+		$this->tableIndexList[$tableName] = $tableIDColumn;
+	}
+
+	public function getmoduleFields() {
+		return $this->moduleFields;
+	}
+
+	public function setmoduleField($field, $property, $value) {
+		switch ($property) {
+			// case 'nullable':
+			// 	$this->moduleFields[$field]->setNullable($value); // private
+			// 	break;
+			case 'default':
+				$this->moduleFields[$field]->setDefault($value);
+				break;
+			case 'fieldDataType':
+				$this->moduleFields[$field]->setFieldDataType($value);
+				break;
+			case 'referenceList':
+				$this->moduleFields[$field]->setReferenceList($value);
+				break;
+			case 'uitype':
+				$this->moduleFields[$field]->setUIType($value);
+				break;
+			default:
+				break;
+		}
+	}
+
 	public function getTabName() {
 		return $this->objectName;
 	}
