@@ -185,6 +185,44 @@ class VtigerCRMActorMeta extends EntityMeta {
 		}
 	}
 
+	public function getFilterFields($elementType) {
+		switch ($elementType) {
+			case 'DocumentFolders':
+				$fields = array('id','foldername','description');
+				$linkfd = array('id');
+				break;
+			case 'Currency':
+				$fields = array('id','currency_name','currency_code','currency_symbol','conversion_rate','currency_position','currency_status');
+				$linkfd = array('id');
+				break;
+			case 'CompanyDetails':
+				$fields = array('id','organizationname','address','city');
+				$linkfd = array('id');
+				break;
+			case 'Workflow':
+				$fields = array('id','module_name','summary','purpose','type','active');
+				$linkfd = array('id');
+				break;
+			case 'AuditTrail':
+				$fields = array('id','userid','module','action','recordid','actiondate');
+				$linkfd = array('id');
+				break;
+			case 'LoginHistory':
+				$fields = array('id','user_name','login_time','logout_time','user_ip');
+				$linkfd = array('id');
+				break;
+			default:
+				$fields = '';
+				$linkfd = '';
+				break;
+		}
+		return array(
+			'fields'=>$fields,
+			'linkfields'=>$linkfd,
+			'pagesize' => intval(GlobalVariable::getVariable('Application_ListView_PageSize', 20, $elementType)),
+		);
+	}
+
 	protected function getTableFieldList($tableName) {
 		$tableFieldList = array();
 

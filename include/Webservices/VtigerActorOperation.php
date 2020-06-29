@@ -269,6 +269,10 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		);
 	}
 
+	public function getFilterFields($elementType) {
+		return $this->meta->getFilterFields($elementType);
+	}
+
 	public function getModuleFields() {
 		if ($this->moduleFields === null) {
 			$fields = array();
