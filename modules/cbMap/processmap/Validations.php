@@ -326,6 +326,10 @@ class Validations extends processcbMap {
 									$params = $restrictions[4];
 								}
 								$v->addRule($restrictions[1], $restrictions[2], $lbl);
+								$customValidationMessageFunction = $restrictions[1].'GetMessage';
+								if (function_exists($customValidationMessageFunction)) {
+									$val['msg'] = $customValidationMessageFunction($valfield, $screen_values[$valfield], $params, $screen_values, $val['msg']);
+								}
 								if (isset($val['msg'])) {
 									$v->rule($restrictions[1], $valfield, $params)->message($val['msg'])->label($i18n);
 								} else {
