@@ -157,6 +157,8 @@
                                         <div class="slds-form-element">
                                             <table id="Table"></table>
                                         </div>
+                                        <br>
+                                        <div id="loadFields"></div>
                                     </div>
                                 </div>
                             </div>
@@ -208,6 +210,12 @@
                                 </div>
                             </div>
                             <div class="slds-media__figure slds-media__figure_reverse">
+                                <button class="slds-button slds-button_text-destructive" onclick="mb.backTo(3)" style="color: white; background: #ce4949">
+                                    <svg class="slds-icon slds-icon--small" aria-hidden="true">
+                                        <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#back"></use>
+                                    </svg>
+                                    &nbsp;{$MOD.LBL_MB_BACK}
+                                </button>
                                 <button class="slds-button slds-button_success" onclick="mb.SaveModule(4);" style="color: white">{$MOD.LBL_MB_NEXT}&nbsp;
                                     <svg class="slds-icon slds-icon--small" aria-hidden="true">
                                         <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#forward"></use>
@@ -249,6 +257,12 @@
                                 </div>
                             </div>
                             <div class="slds-media__figure slds-media__figure_reverse">
+                                <button class="slds-button slds-button_text-destructive" onclick="mb.backTo(3)" style="color: white; background: #ce4949">
+                                    <svg class="slds-icon slds-icon--small" aria-hidden="true">
+                                        <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#back"></use>
+                                    </svg>
+                                    &nbsp;{$MOD.LBL_MB_BACK}
+                                </button>
                                 <button class="slds-button slds-button_success" onclick="mb.SaveModule(5);" style="color: white">{$MOD.LBL_MB_FINISH}&nbsp;
                                     <svg class="slds-icon slds-icon--small" aria-hidden="true">
                                         <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#forward"></use>
