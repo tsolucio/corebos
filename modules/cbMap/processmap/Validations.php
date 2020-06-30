@@ -208,6 +208,7 @@ class Validations extends processcbMap {
 					case 'dateFormat':
 					case 'dateBefore':
 					case 'dateAfter':
+					case 'dateEqualOrAfter':
 					case 'contains':
 					case 'RelatedModuleExists':
 						if ($rule=='greater' || $rule=='bigger') {
@@ -410,10 +411,18 @@ class Validations extends processcbMap {
 				}
 				if (strpos($fvalidation, '~OTH~')) { //D~O~OTH~GE~support_start_date~Support Start Date
 					$val = explode('~', $fvalidation);
+					switch($val[3]){
+						case 'GE':
+							$comparison = 'dateEqualOrAfter';
+							break;
+						default:
+							$comparison = 'dateAfter';
+							break;
+					}
 					if (isset($mapping['fields'][$fname])) {
-						$mapping['fields'][$fname][] = array('rule'=>'dateAfter', 'rst'=>array('{{'.$val[4].'}}'));
+						$mapping['fields'][$fname][] = array('rule'=>$comparison, 'rst'=>array('{{'.$val[4].'}}'));
 					} else {
-						$mapping['fields'][$fname] = array(array('rule'=>'dateAfter', 'rst'=>array('{{'.$val[4].'}}')));
+						$mapping['fields'][$fname] = array(array('rule'=>$comparison, 'rst'=>array('{{'.$val[4].'}}')));
 					}
 				}
 			}
