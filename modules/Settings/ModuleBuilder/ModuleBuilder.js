@@ -43,6 +43,7 @@ const mb = {
 			var btnid = buttonid.split('-')[4];
 			if (forward == false) {
 				var fieldValues = {};
+				var fieldsid = mb.loadElement('fieldsid_' + btnid);
 				var blockid = mb.loadElement('select-for-field-' + btnid);
 				var fieldname = mb.loadElement('fieldname_' + btnid);
 				const columnname =mb.loadElement('columnname_' + btnid);
@@ -56,6 +57,7 @@ const mb = {
 				const presence = mb.loadElement('Presence_' + btnid);
 				var uitype = mb.loadElement('Uitype_' + btnid);
 				fieldValues = {
+					fieldsid: fieldsid,
 					blockid: blockid,
 					fieldname: fieldname,
 					columnname: columnname,
@@ -219,6 +221,43 @@ const mb = {
 				mb.updateProgress(2);
 			});
 		}
+		if (step == 3) {
+			//load module fields
+			jQuery.ajax({
+				method: 'GET',
+				url: url+'&methodName=loadValues&step='+step+'&moduleid='+moduleid,
+			}).done(function (response) {
+				const res = JSON.parse(response);
+				console.log(res);
+				const getT = mb.loadElement('loadFields', true);
+				const ul = document.createElement('ul');
+				ul.className = 'slds-list_ordered';
+				ul.id = 'ul-field-mb';
+				getT.appendChild(ul);
+				for (let i = 0; i < res.length; i++) {
+					const li = document.createElement('li');
+					const id = res[i].fieldsid+'-field';
+					let fieldname = res[i].fieldname;
+					let fieldlabel = res[i].fieldlabel;
+					let entityidentifier = res[i].entityidentifier;
+					let relatedmodules = res[i].relatedmodules;
+					let sequence = res[i].sequence;
+					let uitype = res[i].uitype;
+					let presence = res[i].presence;
+					let quickcreate = res[i].quickcreate;
+					let displaytype = res[i].displaytype;
+					let mandatory = res[i].typeofdata;
+					let masseditable = res[i].masseditable;
+					let removeBtn = `<button class='slds-button slds-button_outline-brand' onclick='mb.removeField("${id}")' style='margin-left: 10px'>Remove</button>`;
+					let editBtn = `<button class='slds-button slds-button_outline-brand' onclick='mb.editField("${id}","${fieldname}","${fieldlabel}","${entityidentifier}","${relatedmodules}","${sequence}","${uitype}","${presence}","${quickcreate}",${displaytype},"${masseditable}","${mandatory}")' style='margin-left: 10px'>Edit</button>`;
+					li.innerHTML = res[i].fieldname+removeBtn+editBtn;
+					li.className = 'slds-item';
+					li.id = 'li-field-mb-'+res[i].fieldsid;
+					ul.appendChild(li);
+				}
+				mb.updateProgress(3);
+			});
+		}
 	},
 	/**
      * Update progress bar in real time for step 1
@@ -352,6 +391,18 @@ const mb = {
 					mb.loadElement('fieldlabel' + '_' + number_field, true).value = elem.target.value;
 				};
 			}
+			// add input field for fieldsid to hold value of id will help on editing
+			const hidd = {
+				instance: cell,
+				placeholder: 'fieldsid',
+				name: 'fieldsid_',
+				id: 'fieldsid_',
+				inc: number_field,
+				attr: func,
+				type: 'hidden'
+			};
+			const input2 = mb.createInput(hidd);
+			cell.appendChild(input2);
 		}
 		for (var i = 0; i < fieldtypes.length; i++) {
 			const type = fieldtypes[i].type;
@@ -451,6 +502,131 @@ const mb = {
 		});
 		tui.Grid.applyTheme('striped');
 		mb.loadElement('moduleListsModal', true).style.display = '';
+	},
+	/**
+     * Generate field input for step 3 at edit mode
+     */
+	generateEditFields: (id,fieldname,fieldlabel,entityidentifier,relatedmodules,sequence,uitype,presence,quickcreate,displaytype,masseditable,mandatory) => {
+		const number_field = sequence;
+		const table = mb.getTable('Table');
+		const row = mb.createRow(table, 0, 'for-field-inputs-', number_field);
+		const cell = mb.createCell(row, 0, 'fields_inputs_', number_field);
+
+		mb.loadBlocks(table, number_field);
+
+		let func = {
+			'style': 'width: 15%; margin: 5px'
+		};
+		for (var i = 0; i < textfields.length; i++) {
+			const fnObj = {
+				instance: cell,
+				placeholder: textfields[i],
+				name: textfields[i]+'_',
+				id: textfields[i]+'_',
+				inc: number_field,
+				attr: func,
+			};
+			const input = mb.createInput(fnObj);
+			if (textfields[i]=='fieldname') {
+				mb.loadElement('fieldname' + '_' + number_field, true).value = fieldname;
+			}
+			if (textfields[i]=='columnname') {
+				mb.loadElement('columnname' + '_' + number_field, true).value = fieldname;
+			}
+			if (textfields[i]=='fieldlabel') {
+				mb.loadElement('fieldlabel' + '_' + number_field, true).value = fieldlabel;
+			}
+			if (textfields[i]=='sequence') {
+				mb.loadElement('sequence' + '_' + number_field, true).value = sequence;
+			}
+			if (textfields[i]=='entityidentifier') {
+				mb.loadElement('entityidentifier' + '_' + number_field, true).value = entityidentifier;
+			}
+			if (textfields[i]=='relatedmodules') {
+				mb.loadElement('relatedmodules' + '_' + number_field, true).value = relatedmodules;
+			}
+			// add input field for fieldsid to hold value of id
+			const hidd = {
+				instance: cell,
+				placeholder: 'fieldsid',
+				name: 'fieldsid_',
+				id: 'fieldsid_',
+				inc: number_field,
+				attr: func,
+				type: 'hidden'
+			};
+			const input2 = mb.createInput(hidd);
+			cell.appendChild(input2);
+			mb.loadElement('fieldsid' + '_' + number_field, true).value = id;
+
+
+		}
+		for (var i = 0; i < fieldtypes.length; i++) {
+			const type = fieldtypes[i].type;
+			const values = fieldtypes[i].values;
+			const selecttype = document.createElement('select');
+			selecttype.id = type + '_' + number_field;
+			selecttype.className = 'slds-input';
+			selecttype.style = 'width: 15%; margin: 5px';
+			cell.appendChild(selecttype);
+
+			const defaultOption = document.createElement('option');
+			defaultOption.text = type;
+			defaultOption.setAttribute('disabled', '');
+			defaultOption.setAttribute('selected', '');
+			selecttype.appendChild(defaultOption);
+			for (var j in values) {
+				const option = document.createElement('option');
+				option.value = j;
+				option.text = values[j];
+				selecttype.appendChild(option);
+			}
+			if (type=='Uitype') {
+				mb.loadElement(selecttype.id, true).value = uitype;
+			}
+			if (type=='Presence') {
+				mb.loadElement(selecttype.id, true).value = presence;
+			}
+			if (type=='Quickcreate') {
+				mb.loadElement(selecttype.id, true).value = quickcreate;
+			}
+			if (type=='Displaytype') {
+				mb.loadElement(selecttype.id, true).value = displaytype;
+			}
+			if (type=='Masseditable') {
+				mb.loadElement(selecttype.id, true).value = masseditable;
+			}
+		}
+		for (let i = 0; i < checkboxFields.length; i++) {
+			const fnObj = {
+				instance: cell,
+				placeholder: checkboxFields[i].type,
+				name: checkboxFields[i].type+'_',
+				id: checkboxFields[i].type+'_',
+				inc: number_field,
+				attr: '',
+				type: 'checkbox',
+			};
+			const chBox = mb.createInput(fnObj);
+			cell.appendChild(chBox);
+			mb.createLabel(cell, checkboxFields[i].value);
+			if (mandatory == 'on') {
+				mb.loadElement(checkboxFields[i].type+'_'+ number_field, true).value = mandatory;
+				document.getElementById('Typeofdata_'+number_field).checked = true;
+			} else {
+				mb.loadElement(checkboxFields[i].type+'_'+ number_field, true).value = mandatory;
+				document.getElementById('Typeofdata_'+number_field).checked = false;
+			}
+		}
+		//create save button for each field
+		const saveBtn = document.createElement('button');
+		saveBtn.id ='save-btn-for-field-' + number_field;
+		saveBtn.className = 'slds-button slds-button_brand';
+		saveBtn.setAttribute('onclick', 'mb.SaveModule(3, false, this.id)');
+		saveBtn.innerHTML = mod_alert_arr.LBL_MB_SAVEFIELD;
+		const p = document.createElement('p');
+		p.appendChild(saveBtn);
+		cell.appendChild(p);
 	},
 	/**
      * Close modal
@@ -604,6 +780,11 @@ const mb = {
 					step = 1;
 				} else if (completed == '40%') {
 					step = 2;
+				} else if (completed == '60%') {
+					step = 3;
+				}
+				else if (completed == '80%') {
+					step = 4;
 				}
 				btn = `<button class="slds-button slds-button_neutral slds-button_dual-stateful" onclick="mb.backTo(${step}, true, ${moduleid}); mb.closeModal()" aria-live="assertive">
                         <span class="slds-text-not-pressed">
@@ -849,6 +1030,33 @@ const mb = {
 				mb.removeElement('li-block-mb-'+id);
 			}
 		});
+	},
+	/**
+     * Remove Field on step 3
+     * @param {string} fieldsid - Current cell instance
+     */
+	removeField: (fieldsid) => {
+		const id = fieldsid.split('-')[0];
+		console.log(id);
+		jQuery.ajax({
+			method: 'POST',
+			url: url+'&methodName=removeField',
+			data: 'fieldsid='+id
+		}).done(function (response) {
+			const res = JSON.parse(response);
+			console.log(response);
+			if (res == true) {
+				mb.removeElement('li-field-mb-'+id);
+			}
+		});
+	},
+	/**
+     * Edit Field on step 3
+     * @param {string} fieldsid - Current cell instance
+     */
+	editField: (fieldsid,fieldname,fieldlabel,entityidentifier,relatedmodules,sequence,uitype,presence,quickcreate,displaytype,masseditable,mandatory) => {
+		const id = fieldsid.split('-')[0];
+		mb.generateEditFields(id,fieldname,fieldlabel,entityidentifier,relatedmodules,sequence,uitype,presence,quickcreate,displaytype,masseditable,mandatory);
 	},
 	/**
      * Remove elements
