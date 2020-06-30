@@ -128,7 +128,7 @@ function SaveModuleBuilder($step) {
 			foreach ($customview as $key => $value) {
 				$viewname = $value['viewname'];
 				$setdefault = (String)$value['setdefault'];
-				$fields = json_encode($value['fields']['fieldObj']);
+				$fields = (String)$value['fields']['field'];
 				$setmetrics = 'false';
 				$adb->pquery('INSERT INTO vtiger_modulebuilder_customview (viewname, setdefault, setmetrics, fields, moduleid) VALUES(?,?,?,?,?)', array(
 					$viewname,

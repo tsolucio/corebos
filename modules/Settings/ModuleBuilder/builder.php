@@ -201,7 +201,6 @@ function loadValues($step, $moduleId) {
 		}
 		return $block;
 	} elseif ($step == 3) {
-
 		$fieldsdb = $adb->pquery('SELECT * FROM `vtiger_modulebuilder_fields` WHERE moduleid=?', array(
 			$moduleid
 		));
@@ -237,6 +236,28 @@ function loadValues($step, $moduleId) {
 			array_push($fieldlst, $fieldsArr);
 		}
 		return $fieldlst;
+	} elseif ($step == 4) {
+		$viewSql = $adb->pquery('SELECT * FROM vtiger_modulebuilder_customview WHERE moduleid=?', array(
+			$moduleid
+		));
+		$view = array();
+		for ($i=0; $i < $adb->num_rows($viewSql); $i++) {
+			$viewArr = array();
+			$viewname = $adb->query_result($viewSql, $i, 'viewname');
+			$fields = $adb->query_result($viewSql, $i, 'fields');
+			$fields = explode(',', $fields);
+			//get fields
+			$fieldArr = array();
+			foreach ($fields as $key => $value) {
+				$fieldSql = $adb->pquery('SELECT fieldname FROM vtiger_modulebuilder_fields WHERE fieldsid=?', array($value));
+				$fieldname = $adb->query_result($fieldSql, 0, 'fieldname');
+				array_push($fieldArr, $fieldname);
+			}
+			$viewArr['viewname'] = $viewname;
+			$viewArr['fields'] = $fieldArr;
+			array_push($view, $viewArr);
+		}
+		return $view;
 	}
 }
 /**
@@ -277,5 +298,20 @@ function loadDefaultBlocks() {
 		return 'load';
 	}
 	return false;
+}
+
+function loadTemplate() {
+	global $adb;
+	$moduleid = vtlib_purify($_COOKIE['ModuleBuilderID']);
+	$moduleInfo = loadValues(1, $moduleid);
+	$blockInfo = loadValues(2, $moduleid);
+	$viewsInfo = loadValues(4, $moduleid);
+	return array(
+		'info' => $moduleInfo,
+		'blocks' => $blockInfo,
+		'fields' => array(),
+		'views' => $viewsInfo,
+		'lists' => array()
+	);
 }
 ?>

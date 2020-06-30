@@ -87,6 +87,7 @@ const mb = {
 
 		if (step == 4) {
 			let customViews = [];
+			let field;
 			const number_customview = mb.loadElement('number_customview');
 			for (var i = 1; i <= number_customview; i++) {
 				var customObj = {
@@ -101,8 +102,9 @@ const mb = {
 						fieldObj.push(checkedValue.value);
 					}
 				}
+				field = fieldObj.join(',');
 				customObj.fields = {
-					fieldObj
+					field
 				};
 				customViews.push(customObj);
 			}
@@ -152,6 +154,8 @@ const mb = {
 			}
 			if (step == 1) {
 				mb.generateDefaultBlocks();
+			} else if (step == 5) {
+				mb.loadTemplate();
 			}
 		});
 	},
@@ -163,6 +167,10 @@ const mb = {
      */
 	backTo: (step, mod = false, moduleid = 0) => {
 		let thisStep = step + 1;
+		//remove `finish module` step
+		mb.removeElement('info', true);
+		mb.removeElement('blocks', true);
+		mb.loadElement('step-6', true).style.display = 'none';
 		if (mod == true) {
 			for (let i = 1; i <=5; i++) {
 				if (i != step) {
@@ -506,7 +514,7 @@ const mb = {
 	/**
      * Generate field input for step 3 at edit mode
      */
-	generateEditFields: (id,fieldname,fieldlabel,entityidentifier,relatedmodules,sequence,uitype,presence,quickcreate,displaytype,masseditable,mandatory) => {
+	generateEditFields: (id, fieldname, fieldlabel, entityidentifier, relatedmodules, sequence, uitype, presence, quickcreate, displaytype, masseditable, mandatory) => {
 		const number_field = sequence;
 		const table = mb.getTable('Table');
 		const row = mb.createRow(table, 0, 'for-field-inputs-', number_field);
@@ -782,8 +790,7 @@ const mb = {
 					step = 2;
 				} else if (completed == '60%') {
 					step = 3;
-				}
-				else if (completed == '80%') {
+				} else if (completed == '80%') {
 					step = 4;
 				}
 				btn = `<button class="slds-button slds-button_neutral slds-button_dual-stateful" onclick="mb.backTo(${step}, true, ${moduleid}); mb.closeModal()" aria-live="assertive">
@@ -855,6 +862,96 @@ const mb = {
 				} else if (type == 'name') {
 					mb.loadElement('autocomplete-span-'+forId, true).appendChild(span);
 				}
+			}
+		});
+	},
+	loadTemplate: () => {
+		jQuery.ajax({
+			method: 'POST',
+			url: url,
+			data: 'methodName=loadTemplate'
+		}).then(function (response) {
+			let res = JSON.parse(response);
+			let label;
+			//load info block
+			const info = mb.loadElement('info', true);
+			const infoList = document.createElement('ol');
+			info.appendChild(infoList);
+			for (let i in res.info) {
+				const elList = document.createElement('li');
+				if (i == 'name') {
+					label = mod_alert_arr.name;
+				} else if (i == 'parent') {
+					label = mod_alert_arr.parent;
+				} else if (i == 'icon') {
+					label = mod_alert_arr.icon;
+				} else if (i == 'label') {
+					label = mod_alert_arr.label;
+				}
+				elList.innerHTML = `
+				<div class="slds-tree__item">
+					<span class="slds-has-flexi-truncate">
+						<span class="slds-tree__item-label slds-truncate" title="${res.info[i]}">
+							<strong>${label}:</strong> ${res.info[i]}
+						</span>
+					</span>
+				</div>`;
+				infoList.appendChild(elList);
+			}
+			//load blocks
+			const blocks = mb.loadElement('blocks', true);
+			const blockList = document.createElement('ol');
+			blocks.appendChild(blockList);
+			for (let i in res.blocks) {
+				const elList = document.createElement('li');
+				const index = parseInt(i) + 1;
+				elList.innerHTML = `
+					<div class="slds-tree__item">
+						<span class="slds-has-flexi-truncate">
+							<span class="slds-tree__item-label slds-truncate" title="Blockname: ${res.blocks[i].blocks_label}">
+								${index}. ${res.blocks[i].blocks_label}
+							</span>
+						</span>
+					</div>`;
+				blockList.appendChild(elList);
+			}
+			//load views
+			const views = mb.loadElement('views', true);
+			const viewList = document.createElement('ul');
+			viewList.className = 'slds-tree';
+			views.appendChild(viewList);
+			for (let i in res.views) {
+				const elList = document.createElement('li');
+				let tree = `
+				      <div class="slds-tree__item">
+				        <button class="slds-button slds-button_icon slds-m-right_x-small" aria-hidden="true" tabindex="-1" title="Expand Tree Branch">
+				          <svg class="slds-button__icon slds-button__icon_small" aria-hidden="true">
+				            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+				          </svg>
+				        </button>
+				        <span class="slds-has-flexi-truncate">
+				          <span class="slds-tree__item-label slds-truncate" title="Viewname: ${res.views[i].viewname}">${res.views[i].viewname}</span>
+				        </span>
+				      </div>
+				      <ul role="group">`;
+				      for (let j in res.views[i].fields) {
+				        tree += `
+					        <li aria-level="2" role="treeitem">
+					          <div class="slds-tree__item">
+					            <button class="slds-button slds-button_icon slds-m-right_x-small slds-is-disabled" aria-hidden="true" tabindex="-1" title="Expand Tree Item">
+					              <svg class="slds-button__icon slds-button__icon_small" aria-hidden="true">
+					                <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+					              </svg>
+					            </button>
+					            <span class="slds-has-flexi-truncate">
+					              <span class="slds-tree__item-label slds-truncate" title="Fieldname: ${res.views[i].fields[j]}">${res.views[i].fields[j]}</span>
+					            </span>
+					          </div>
+					        </li>`;
+				    	}
+				tree += '</ul>';
+				elList.innerHTML = tree;
+				viewList.appendChild(elList);
 			}
 		});
 	},
@@ -1037,14 +1134,12 @@ const mb = {
      */
 	removeField: (fieldsid) => {
 		const id = fieldsid.split('-')[0];
-		console.log(id);
 		jQuery.ajax({
 			method: 'POST',
 			url: url+'&methodName=removeField',
 			data: 'fieldsid='+id
 		}).done(function (response) {
 			const res = JSON.parse(response);
-			console.log(response);
 			if (res == true) {
 				mb.removeElement('li-field-mb-'+id);
 			}
@@ -1054,9 +1149,9 @@ const mb = {
      * Edit Field on step 3
      * @param {string} fieldsid - Current cell instance
      */
-	editField: (fieldsid,fieldname,fieldlabel,entityidentifier,relatedmodules,sequence,uitype,presence,quickcreate,displaytype,masseditable,mandatory) => {
+	editField: (fieldsid, fieldname, fieldlabel, entityidentifier, relatedmodules, sequence, uitype, presence, quickcreate, displaytype, masseditable, mandatory) => {
 		const id = fieldsid.split('-')[0];
-		mb.generateEditFields(id,fieldname,fieldlabel,entityidentifier,relatedmodules,sequence,uitype,presence,quickcreate,displaytype,masseditable,mandatory);
+		mb.generateEditFields(id, fieldname, fieldlabel, entityidentifier, relatedmodules, sequence, uitype, presence, quickcreate, displaytype, masseditable, mandatory);
 	},
 	/**
      * Remove elements

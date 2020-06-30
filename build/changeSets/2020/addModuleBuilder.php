@@ -46,6 +46,7 @@ class addModuleBuilder extends cbupdaterWorker {
 					`modulebuilder_label` varchar(50) NOT NULL,
 					`modulebuilder_parent` varchar(50) NOT NULL,
 					`status` varchar(10) NOT NULL DEFAULT "active",
+					`icon` varchar(50) NOT NULL,
 					PRIMARY KEY (`modulebuilderid`)
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
 			);

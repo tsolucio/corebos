@@ -53,4 +53,8 @@ var mod_alert_arr = {
 	'MassEditable': 'Es editable en masa',
 	'NoMassEditActivate': 'No editable pero se puede activar',
 	'Module': 'módulo',
+	'name': 'Module name',
+	'parent': 'Parent menu',
+	'icon': 'Module icon',
+	'label': 'Module label',
 };
