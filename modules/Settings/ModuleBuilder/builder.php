@@ -200,6 +200,43 @@ function loadValues($step, $moduleId) {
 			array_push($block, $blockArr);
 		}
 		return $block;
+	} elseif ($step == 3) {
+
+		$fieldsdb = $adb->pquery('SELECT * FROM `vtiger_modulebuilder_fields` WHERE moduleid=?', array(
+			$moduleid
+		));
+		$fieldlst = array();
+		for ($i=0; $i < $adb->num_rows($fieldsdb); $i++) {
+			$fieldsArr = array();
+			$fieldsid = $adb->query_result($fieldsdb, $i, 'fieldsid');
+			$fieldname = $adb->query_result($fieldsdb, $i, 'fieldname');
+			$columnname = $adb->query_result($fieldsdb, $i, 'columnname');
+			$fieldlabel = $adb->query_result($fieldsdb, $i, 'fieldlabel');
+			$uitype = $adb->query_result($fieldsdb, $i, 'uitype');
+			$entityidentifier = $adb->query_result($fieldsdb, $i, 'entityidentifier');
+			$relatedmodules = $adb->query_result($fieldsdb, $i, 'relatedmodules');
+			$sequence = $adb->query_result($fieldsdb, $i, 'sequence');
+			$presence = $adb->query_result($fieldsdb, $i, 'presence');
+			$typeofdata = $adb->query_result($fieldsdb, $i, 'typeofdata');
+			$displaytype = $adb->query_result($fieldsdb, $i, 'displaytype');
+			$masseditable = $adb->query_result($fieldsdb, $i, 'masseditable');
+			$quickcreate = $adb->query_result($fieldsdb, $i, 'quickcreate');
+			$fieldsArr['fieldsid'] = $fieldsid;
+			$fieldsArr['fieldname'] = $fieldname;
+			$fieldsArr['columnname'] = $columnname;
+			$fieldsArr['fieldlabel'] = $fieldlabel;
+			$fieldsArr['entityidentifier'] = $entityidentifier;
+			$fieldsArr['relatedmodules'] = $relatedmodules;
+			$fieldsArr['sequence'] = $sequence;
+			$fieldsArr['uitype'] = $uitype;
+			$fieldsArr['presence'] = $presence;
+			$fieldsArr['typeofdata'] = $typeofdata;
+			$fieldsArr['displaytype'] = $displaytype;
+			$fieldsArr['masseditable'] = $masseditable;
+			$fieldsArr['quickcreate'] = $quickcreate;
+			array_push($fieldlst, $fieldsArr);
+		}
+		return $fieldlst;
 	}
 }
 /**
@@ -209,6 +246,18 @@ function loadValues($step, $moduleId) {
 function removeBlock($blockid) {
 	global $adb;
 	$delete = $adb->pquery('delete from vtiger_modulebuilder_blocks where blocksid=?', array($blockid));
+	if ($delete) {
+		return true;
+	}
+	return false;
+}
+/**
+ * Remove an existing field
+ * @param {number} fieldsid
+ */
+function removeField($fieldsid) {
+	global $adb;
+	$delete = $adb->pquery('delete from vtiger_modulebuilder_fields where fieldsid=?', array($fieldsid));
 	if ($delete) {
 		return true;
 	}
