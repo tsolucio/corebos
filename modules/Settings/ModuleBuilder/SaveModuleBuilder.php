@@ -78,32 +78,48 @@ function SaveModuleBuilder($step) {
 				$moduleSql = $adb->pquery('SELECT modulebuilder_name FROM vtiger_modulebuilder WHERE modulebuilderid=?', array($moduleid));
 				$moduleName = $adb->query_result($moduleSql, 0, 0);
 				$fields = vtlib_purify($_REQUEST['fields']);
-				$adb->pquery('INSERT INTO vtiger_modulebuilder_fields (blockid, moduleid,fieldname,uitype,columnname,tablename,generatedtype,fieldlabel,readonly,presence,sequence,maximumlength,typeofdata,quickcreate,displaytype,masseditable,entityidentifier,entityidfield,entityidcolumn,relatedmodules) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', array(
-					$fields[0]['blockid'],
-					$moduleid,
-					$fields[0]['fieldname'],
-					$fields[0]['uitype'],
-					$fields[0]['columnname'],
-					strtolower('vtiger_'.$moduleName),
-					$fields[0]['generatedtype'],
-					$fields[0]['fieldlabel'],
-					$fields[0]['readonly'],
-					$fields[0]['presence'],
-					$fields[0]['sequence'],
-					$fields[0]['maximumlength'],
-					$fields[0]['typeofdata'],
-					$fields[0]['quickcreate'],
-					$fields[0]['displaytype'],
-					$fields[0]['masseditable'],
-					$fields[0]['entityidentifier'],
-					$fields[0]['entityidfield'],
-					$fields[0]['entityidcolumn'],
-					$fields[0]['relatedmodules'],
-				));
-				$adb->pquery('UPDATE vtiger_modulebuilder_name SET completed="60" WHERE userid=? AND modulebuilderid=?', array(
-					$userid,
-					$moduleid,
-				));
+				if ($fields[0]['fieldsid'] == '') {
+					$adb->pquery('INSERT INTO vtiger_modulebuilder_fields (blockid, moduleid,fieldname,uitype,columnname,tablename,fieldlabel,presence,sequence,typeofdata,quickcreate,displaytype,masseditable,entityidentifier,relatedmodules) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', array(
+						$fields[0]['blockid'],
+						$moduleid,
+						$fields[0]['fieldname'],
+						$fields[0]['uitype'],
+						$fields[0]['columnname'],
+						strtolower('vtiger_'.$moduleName),
+						$fields[0]['fieldlabel'],
+						$fields[0]['presence'],
+						$fields[0]['sequence'],
+						$fields[0]['typeofdata'],
+						$fields[0]['quickcreate'],
+						$fields[0]['displaytype'],
+						$fields[0]['masseditable'],
+						$fields[0]['entityidentifier'],
+						$fields[0]['relatedmodules'],
+					));
+					$adb->pquery('UPDATE vtiger_modulebuilder_name SET completed="60" WHERE userid=? AND modulebuilderid=?', array(
+						$userid,
+						$moduleid,
+					));
+				} else {
+					$adb->pquery('UPDATE vtiger_modulebuilder_fields SET fieldname=?,columnname=?,fieldlabel=?,uitype=?,tablename=?,presence=?,sequence=?,typeofdata=?,quickcreate=?,displaytype=?,masseditable=?,entityidentifier=?,relatedmodules=? WHERE fieldsid=? AND blockid=? AND moduleid=?', array(
+						$fields[0]['fieldname'],
+						$fields[0]['columnname'],
+						$fields[0]['fieldlabel'],
+						$fields[0]['uitype'],
+						strtolower('vtiger_'.$moduleName),
+						$fields[0]['presence'],
+						$fields[0]['sequence'],
+						$fields[0]['typeofdata'],
+						$fields[0]['quickcreate'],
+						$fields[0]['displaytype'],
+						$fields[0]['masseditable'],
+						$fields[0]['entityidentifier'],
+						$fields[0]['relatedmodules'],
+						$fields[0]['fieldsid'],
+						$fields[0]['blockid'],
+						$moduleid,
+					));
+				}
 			}
 			break;
 		case '4':
