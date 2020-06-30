@@ -56,6 +56,10 @@ switch ($methodName) {
 		$blockid = vtlib_purify($_REQUEST['blockid']);
 		$ret = removeBlock($blockid);
 		break;
+	case 'removeField':
+		$fieldsid = vtlib_purify($_REQUEST['fieldsid']);
+		$ret = removeField($fieldsid);
+		break;
 	case 'loadDefaultBlocks':
 		$ret = loadDefaultBlocks();
 		break;
