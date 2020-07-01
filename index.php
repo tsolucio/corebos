@@ -410,7 +410,8 @@ if ($action == 'DetailView') {
 $siteURLParts = parse_url($site_URL);
 $cookieDomain = $siteURLParts['host'];
 if (isset($_SESSION['authenticated_user_id'])) {
-	header('Set-Cookie: ck_login_id_vtiger='.$_SESSION['authenticated_user_id'].'; SameSite=Lax; expires=0; path='.$siteURLParts['path'].'; domain='.$cookieDomain, false);
+	$sitepath = empty($siteURLParts['path']) ? '' : ' path='.$siteURLParts['path'].';';
+	header('Set-Cookie: ck_login_id_vtiger='.$_SESSION['authenticated_user_id'].'; SameSite=Lax; expires=0;'.$sitepath.' domain='.$cookieDomain, false);
 	//setcookie('ck_login_id_vtiger', $_SESSION['authenticated_user_id'], 0, null, $cookieDomain, false, true);
 }
 
