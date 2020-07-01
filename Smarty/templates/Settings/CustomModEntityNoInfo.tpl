@@ -7,46 +7,42 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/ *}
-
 <table width="100%" class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered" border="0" cellspacing="0" cellpadding="5">
-
 <tr>
-	<td nowrap class="">
+	<td nowrap >
 		<strong>{$SELMODULE|@getTranslatedString:$SELMODULE} {$MOD.LBL_MODULE_NUMBERING}</strong>
 	</td>
-	<td width="100%" class="">
-	<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description"> 
-	{$STATUSMSG}
-	</label>
+	<td width="100%" >
+		<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description"> 
+		{$STATUSMSG}
+		</label>
 	</td>
 	<td width="80%" nowrap class="cblds-t-align_right" align=right>
 		<b>{$MOD.LBL_MODULE_NUMBERING_FIX_MISSING}</b>
 		<input type="button" class="slds-button slds-button_brand create" value="{$APP.LBL_APPLY_BUTTON_LABEL}" onclick="updateModEntityExisting(this, this.form);"/>
 	</td>
 </tr>
-
 <tr>
-	<td width="20%" nowrap class="">
-	<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description"> 
-	{$MOD.LBL_USE_PREFIX}
-	</label>
-	</td>
-	<td width="40%" colspan=2 class="">
-	<input type="text" name="recprefix" class="slds-input" style="width:40%" value="{$MODNUM_PREFIX}" />
+	<td width="20%" nowrap >
+		<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description"> 
+		{$MOD.LBL_USE_PREFIX}
+		</label>
+		</td>
+		<td width="40%" colspan=2 >
+		<input type="text" name="recprefix" class="slds-input" style="width:40%" value="{$MODNUM_PREFIX}" />
 	</td>
 </tr>
 <tr>
-	<td width="20%" nowrap class="">
-	<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description"> 
-	<abbr class="slds-required" title="Indica un campo obbligatorio">* </abbr>
-	{$MOD.LBL_START_SEQ}
-	</label>
+	<td width="20%" nowrap >
+		<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description"> 
+		<abbr class="slds-required" title="Indica un campo obbligatorio">* </abbr>
+		{$MOD.LBL_START_SEQ}
+		</label>
 	</td>
-	<td width="80%" colspan=2 class="">
-	<input type="text" name="recnumber" class="slds-input" style="width:40%" value="{$MODNUM}" />
+	<td width="80%" colspan=2 >
+		<input type="text" name="recnumber" class="slds-input" style="width:40%" value="{$MODNUM}" />
 	</td>
 </tr>
-
 <tr>
 	<td width="20%" nowrap colspan="3" align ="center" class="cblds-t-align_right">
 		<button type="button" name="Button" class="slds-button slds-button_success save" onclick="updateModEntityNoSetting(this, this.form);">

@@ -10,21 +10,18 @@
 -->*}
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script type="text/javascript" src="include/js/Inventory.js"></script>
-
 {literal}
 <style>
 	.tax_delete{
 		text-decoration:none;
 	}
 	.tax_delete td{
-
 	}
 </style>
 {/literal}
 {include file='SetMenu.tpl'}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 <div class="slds-modal__container slds-p-around_none slds-card">
-
 <div class="slds-page-header"> 
 	<div class="slds-page-header__row"> 
 		<div class="slds-page-header__col-title"> 
@@ -55,7 +52,6 @@
 		{assign var=formname value='ListTax'}
 		{assign var=shformname value='SHListTax'}
 	{/if}
-
 	<br>
 	<div width=100% class="slds-form-element">
 		<!-- if EDIT_MODE is true then Textbox will be displayed else the value will be displayed-->
@@ -69,37 +65,35 @@
 			<!-- Table to display the Product Tax Add and Edit Buttons - Starts -->
 		<div class="slds-grid slds-gutters">
 			<div class="slds-col slds-size_2-of-12">
-			<p class="big" colspan="3"><strong>{$MOD.LBL_PRODUCT_TAX_SETTINGS} </strong></p>
+				<p class="big" colspan="3"><strong>{$MOD.LBL_PRODUCT_TAX_SETTINGS} </strong></p>
 			</div>
 			<div class="slds-col slds-size_10-of-12 slds-p-vertical_medium slds-p-right_xx-large"  width="80%">
-			<div id="td_add_tax" align="right">
-				{if $EDIT_MODE neq 'true'}
+				<div id="td_add_tax" align="right">
+					{if $EDIT_MODE neq 'true'}
 						<button title="{$MOD.LBL_ADD_TAX_BUTTON}" accessKey="{$MOD.LBL_ADD_TAX_BUTTON}" onclick="fnAddTaxConfigRow('');" type="button" name="button" class="slds-button slds-button_success">
 						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use> </svg>
 						&nbsp;{$MOD.LBL_ADD_TAX_BUTTON}
 						</button>
-				{/if}
-
-			{if $EDIT_MODE eq 'true'}
-				<button class="slds-button slds-button_success save" title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.save_tax.value='true'; this.form.parenttab.value='Settings'; return validateTaxes('tax_count');" type="submit" name="button2">
-				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use> </svg>
-				&nbsp;{$APP.LBL_SAVE_BUTTON_LABEL}
-				</button>
-				<button class="slds-button slds-button_destructive cancel" title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.module.value='Settings'; this.form.save_tax.value='false'; this.form.parenttab.value='Settings';" type="submit" name="button22">
-				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use> </svg>
-				{$APP.LBL_CANCEL_BUTTON_LABEL}
-				</button>&nbsp;&nbsp;&nbsp;&nbsp;
-			{elseif $TAX_COUNT > 0}
-				<button title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.add_tax_type.value=''; this.form.edit_tax.value='true'; this.form.parenttab.value='Settings';" type="submit" name="button" class="slds-button slds-button_success edit">
-				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use> </svg>
-				{$APP.LBL_EDIT_BUTTON_LABEL}
-				</button>&nbsp;&nbsp;&nbsp;&nbsp;
-			{/if}
-			</div>
+					{/if}
+					{if $EDIT_MODE eq 'true'}
+						<button class="slds-button slds-button_success save" title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.save_tax.value='true'; this.form.parenttab.value='Settings'; return validateTaxes('tax_count');" type="submit" name="button2">
+						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use> </svg>
+						&nbsp;{$APP.LBL_SAVE_BUTTON_LABEL}
+						</button>
+						<button class="slds-button slds-button_destructive cancel" title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.module.value='Settings'; this.form.save_tax.value='false'; this.form.parenttab.value='Settings';" type="submit" name="button22">
+						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use> </svg>
+						{$APP.LBL_CANCEL_BUTTON_LABEL}
+						</button>&nbsp;&nbsp;&nbsp;&nbsp;
+					{elseif $TAX_COUNT > 0}
+						<button title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.add_tax_type.value=''; this.form.edit_tax.value='true'; this.form.parenttab.value='Settings';" type="submit" name="button" class="slds-button slds-button_success edit">
+						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use> </svg>
+						{$APP.LBL_EDIT_BUTTON_LABEL}
+						</button>&nbsp;&nbsp;&nbsp;&nbsp;
+					{/if}
+				</div>
 			</div>
 		</div>
 			<!-- Table to display the Product Tax Add and Edit Buttons - Ends -->
-
 			<!-- Table to display the List of Product Tax values - Starts -->
 		<table id="add_tax" border=0 cellspacing=0 cellpadding=5 width=100% class="slds-table slds-table_cell-buffer slds-table_bordered">
 		{if $TAX_COUNT eq 0}
@@ -122,7 +116,6 @@
 				{else}
 					<tr><!-- set color to taxes which are disabled now-->
 				{/if}
-
 				<!--assinging tax label name for javascript validation-->
 				{assign var=tax_label value="taxlabel_"|cat:$tax.taxname}
 				<td>
@@ -177,7 +170,6 @@
 		</table>
 		<!-- Table to display the List of Product Tax values - Ends -->
 		</form>
-
 		<!-- Shipping Tax Config Table Starts Here -->
 		<form name="{$shformname}" method="POST" action="index.php">
 		<input type="hidden" name="module" value="Settings">
@@ -186,55 +178,50 @@
 		<input type="hidden" name="sh_save_tax" value="">
 		<input type="hidden" name="sh_edit_tax" value="">
 		<input type="hidden" name="sh_add_tax_type" value="">
-
 		<!-- Table to display the S&H Tax Add and Edit Buttons - Starts -->
 		<div class="slds-grid slds-gutters">
 			<div class="slds-col slds-size_2-of-12">
 				<p class="big" colspan="3"><strong>{$MOD.LBL_SHIPPING_HANDLING_TAX_SETTINGS}</strong></p>
 			</div>
 			<div class="slds-col slds-size_10-of-12 slds-p-vertical_medium slds-p-right_xx-large"  width="80%">
-			<div id="td_sh_add_tax" align="right">
-				{if $SH_EDIT_MODE neq 'true'}
-					<button title="{$MOD.LBL_ADD_TAX_BUTTON}" accessKey="{$MOD.LBL_ADD_TAX_BUTTON}" onclick="fnAddTaxConfigRow('sh');" type="button" name="button"  class="slds-button slds-button_success ">
-					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use> </svg>
-					{$MOD.LBL_ADD_TAX_BUTTON}
-					</button>
-				{/if}
-				{if $SH_EDIT_MODE eq 'true'}
-					<button class="slds-button slds-button_success save" title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.sh_save_tax.value='true'; this.form.parenttab.value='Settings'; return validateTaxes('sh_tax_count');" type="submit" name="button2" >
-					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use> </svg>					
-					{$APP.LBL_SAVE_BUTTON_LABEL}
-					</button>
-					<button class="slds-button slds-button_destructive cancel" title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.module.value='Settings'; this.form.sh_save_tax.value='false'; this.form.parenttab.value='Settings';" type="submit" name="button22">
-					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use> </svg>														
-					{$APP.LBL_CANCEL_BUTTON_LABEL}
-					</button>&nbsp;&nbsp;&nbsp;
-				{elseif $SH_TAX_COUNT > 0}
-					<button title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.sh_add_tax_type.value=''; this.form.sh_edit_tax.value='true'; this.form.parenttab.value='Settings';" type="submit" name="button" class="slds-button slds-button_success edit">
-					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use> </svg>																			
-						{$APP.LBL_EDIT_BUTTON_LABEL}
-					</button>&nbsp;&nbsp;&nbsp;
-				{/if}
-			</div>
+				<div id="td_sh_add_tax" align="right">
+					{if $SH_EDIT_MODE neq 'true'}
+						<button title="{$MOD.LBL_ADD_TAX_BUTTON}" accessKey="{$MOD.LBL_ADD_TAX_BUTTON}" onclick="fnAddTaxConfigRow('sh');" type="button" name="button"  class="slds-button slds-button_success ">
+						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use> </svg>
+						{$MOD.LBL_ADD_TAX_BUTTON}
+						</button>
+					{/if}
+					{if $SH_EDIT_MODE eq 'true'}
+						<button class="slds-button slds-button_success save" title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.sh_save_tax.value='true'; this.form.parenttab.value='Settings'; return validateTaxes('sh_tax_count');" type="submit" name="button2" >
+						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use> </svg>					
+						{$APP.LBL_SAVE_BUTTON_LABEL}
+						</button>
+						<button class="slds-button slds-button_destructive cancel" title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.module.value='Settings'; this.form.sh_save_tax.value='false'; this.form.parenttab.value='Settings';" type="submit" name="button22">
+						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use> </svg>														
+						{$APP.LBL_CANCEL_BUTTON_LABEL}
+						</button>&nbsp;&nbsp;&nbsp;
+					{elseif $SH_TAX_COUNT > 0}
+						<button title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.sh_add_tax_type.value=''; this.form.sh_edit_tax.value='true'; this.form.parenttab.value='Settings';" type="submit" name="button" class="slds-button slds-button_success edit">
+						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use> </svg>																			
+							{$APP.LBL_EDIT_BUTTON_LABEL}
+						</button>&nbsp;&nbsp;&nbsp;
+					{/if}
+				</div>
 			</div>
 		</div>
-
 			<!-- Table to display the S&H Tax Add and Edit Buttons - Ends -->
-
 			<!-- Table to display the List of S&H Tax Values - Starts -->
 		<table id="sh_add_tax" border=0 cellspacing=0 cellpadding=5 width=100% class="slds-table slds-table_cell-buffer slds-table_bordered">
 		{if $SH_TAX_COUNT eq 0}
 			<tr><td>{$MOD.LBL_NO_TAXES_AVAILABLE}. {$MOD.LBL_PLEASE} {$MOD.LBL_ADD_TAX_BUTTON}.</td></tr>
 		{else}
 			{foreach item=tax key=count from=$SH_TAX_VALUES}
-
 			<!-- To set the color coding for the taxes which are active and inactive-->
 			{if $tax.deleted eq 0}
 				<tr><!-- set color to taxes which are active now-->
 			{else}
 				<tr><!-- set color to taxes which are disabled now-->
 			{/if}
-
 			{assign var=tax_label value="taxlabel_"|cat:$tax.taxname}
 			<td width=33% >
 				{if $SH_EDIT_MODE eq 'true'}
@@ -270,11 +257,9 @@
 	</form>
 		<!-- Shipping Tax Ends Here -->
 </div>
-
 <div class="slds-col">
 	<p class="slds-p-right_small" nowrap align="right"><a href="#top">{$MOD.LBL_SCROLL}</a></p>
-</div>
-			
+</div>			
 </div>
 </div>
 </section>

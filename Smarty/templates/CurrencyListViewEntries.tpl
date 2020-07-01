@@ -9,7 +9,6 @@
 ********************************************************************************/
 -->
 *}
-
 <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-p-around_small slds-card">
 <thead>
 	<tr class="slds-line-height_reset">

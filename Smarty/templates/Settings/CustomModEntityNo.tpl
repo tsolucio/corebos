@@ -85,7 +85,6 @@ function updateModEntityExisting(button, form) {
 {include file='SetMenu.tpl'}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 <div class="slds-modal__container slds-p-around_none slds-card">
-
 <div class="slds-page-header"> 
 	<div class="slds-page-header__row"> 
 		<div class="slds-page-header__col-title"> 
@@ -107,39 +106,35 @@ function updateModEntityExisting(button, form) {
 		</div> 
 	</div> 
 </div>
-
 <div align=center>
 	<br>
 	<form method="POST" action="javascript:;" onsubmit="VtigerJS_DialogBox.block();">
 		<table class="slds-table slds-table_cell-buffer slds-table-no_bordered " border="0" cellpadding="5" cellspacing="0">
 			<tr>
-				<td class="" width="30%" align="left">
-				{$MOD.LBL_SELECT_CF_TEXT}
-				<select name="selmodule" class="slds-select" width="30%" onChange="getModuleEntityNoInfo(this.form)">
-				{foreach key=sel_value item=value from=$MODULES}
-					{if $SELMODULE eq $sel_value}
-						{assign var = "selected_val" value="selected"}
-					{else}
-						{assign var = "selected_val" value=""}
-					{/if}
-					{assign var="MODULE_LABEL" value=$value}
-					{assign var="MODULE_LABEL" value=$value|getTranslatedString:$value}
-					<option value="{$sel_value}" {$selected_val}>{$MODULE_LABEL}</option>
-				{/foreach}
-				</select>
+				<td  width="30%" align="left">
+					{$MOD.LBL_SELECT_CF_TEXT}
+					<select name="selmodule" class="slds-select" width="30%" onChange="getModuleEntityNoInfo(this.form)">
+					{foreach key=sel_value item=value from=$MODULES}
+						{if $SELMODULE eq $sel_value}
+							{assign var = "selected_val" value="selected"}
+						{else}
+							{assign var = "selected_val" value=""}
+						{/if}
+						{assign var="MODULE_LABEL" value=$value}
+						{assign var="MODULE_LABEL" value=$value|getTranslatedString:$value}
+						<option value="{$sel_value}" {$selected_val}>{$MODULE_LABEL}</option>
+					{/foreach}
+					</select>
 				</td>
-				<td class="" width="70%" align="left"></td>
+				<td  width="70%" align="left"></td>
 			</tr>
 		</table>
-
 		<div id='customentity_infodiv' class="listRow">
 			{include file='Settings/CustomModEntityNoInfo.tpl'}
 		</div>
-
 		<div class="slds-col">
 			<p class="slds-p-right_small" nowrap align="right"><a href="#top">{$MOD.LBL_SCROLL}</a></p>
-		</div>
-		
+		</div>		
 	</form>
 </div>
 </div>

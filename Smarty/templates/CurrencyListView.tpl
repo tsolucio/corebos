@@ -12,7 +12,6 @@
 {include file='SetMenu.tpl'}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 <div class="slds-modal__container slds-p-around_none slds-card">
-
 <div class="slds-page-header"> 
 	<div class="slds-page-header__row"> 
 		<div class="slds-page-header__col-title"> 
@@ -34,26 +33,24 @@
 		</div> 
 	</div> 
 </div>
-
 <div align=center>
 	<form action="index.php" onsubmit="VtigerJS_DialogBox.block();">
-	<input type="hidden" name="module" value="Settings">
-	<input type="hidden" name="action" value="CurrencyEditView">
-	<div align="right" class="slds-col slds-p-right_xx-large slds-p-top_large">
-	<button type="submit" class="slds-button slds-button_brand">
-	<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use> </svg>
-	&nbsp;{$MOD.LBL_NEW_CURRENCY}
-	</button>
-	</div>
-	<div>
-		{include file="CurrencyListViewEntries.tpl"}
-	</div>
-	<div class="slds-col">
-	<p align="right" class="slds-line-height_reset"><a href="#top">{$MOD.LBL_SCROLL}</a></p>
-	</div>
+		<input type="hidden" name="module" value="Settings">
+		<input type="hidden" name="action" value="CurrencyEditView">
+		<div align="right" class="slds-col slds-p-right_xx-large slds-p-top_large">
+			<button type="submit" class="slds-button slds-button_brand">
+			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use> </svg>
+			&nbsp;{$MOD.LBL_NEW_CURRENCY}
+			</button>
+		</div>
+		<div>
+			{include file="CurrencyListViewEntries.tpl"}
+		</div>
+		<div class="slds-col">
+			<p align="right" class="slds-line-height_reset"><a href="#top">{$MOD.LBL_SCROLL}</a></p>
+		</div>
 	</form>
 </div>
-
 	<div id="currencydiv" style="display:block;position:absolute;width:250px;"></div>
 </div>
 </section>
