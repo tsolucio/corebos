@@ -9,31 +9,36 @@
 ********************************************************************************/
 -->
 *}
-<table width="100%" cellpadding="5" cellspacing="0" class="listTable" >
-	<tr>
-		<td class="colHeader small cblds-p-v_mediumsmall" width="3%">#</td>
-		<td class="colHeader small cblds-p-v_mediumsmall" width="9%">{$MOD.LBL_CURRENCY_TOOL}</td>
-		<td class="colHeader small cblds-p-v_mediumsmall" width="23%">{$MOD.LBL_CURRENCY_NAME}</td>
-		<td class="colHeader small cblds-p-v_mediumsmall" width="15%">{$MOD.LBL_CURRENCY_CODE}</td>
-		<td class="colHeader small cblds-p-v_mediumsmall" width="10%">{$MOD.LBL_CURRENCY_SYMBOL}</td>
-		<td class="colHeader small cblds-p-v_mediumsmall" width="16%">{'Symbol Placement'|@getTranslatedString:'Users'}</td>
-		<td class="colHeader small cblds-p-v_mediumsmall" width="16%">{$MOD.LBL_CURRENCY_CRATE}</td>
-		<td class="colHeader small cblds-p-v_mediumsmall" width="8%">{$MOD.LBL_CURRENCY_STATUS}</td>
+
+<table class="slds-table slds-table_cell-buffer slds-table_bordered slds-p-around_small slds-card">
+<thead>
+	<tr class="slds-line-height_reset">
+		<th scope="col"  width="3%"><div class="slds-truncate">#</div></th>
+		<th scope="col"  width="9%"><div class="slds-truncate">{$MOD.LBL_CURRENCY_TOOL}</div></th>
+		<th scope="col"  width="23%"><div class="slds-truncate">{$MOD.LBL_CURRENCY_NAME}</div></th>
+		<th scope="col"  width="15%"><div class="slds-truncate">{$MOD.LBL_CURRENCY_CODE}</div></th>
+		<th scope="col"  width="10%"><div class="slds-truncate">{$MOD.LBL_CURRENCY_SYMBOL}</div></th>
+		<th scope="col"  width="16%"><div class="slds-truncate">{'Symbol Placement'|@getTranslatedString:'Users'}</div></th>
+		<th scope="col"  width="16%"><div class="slds-truncate">{$MOD.LBL_CURRENCY_CRATE}</div></th>
+		<th scope="col"  width="8%"><div class="slds-truncate">{$MOD.LBL_CURRENCY_STATUS}</div></th>
 	</tr>
+</thead>
+<tbody>
 	{foreach item=currencyvalues name=currlist key=id from=$CURRENCY_LIST}
-	<tr>
-		<td nowrap class="listTableRow small" valign="top">{$smarty.foreach.currlist.iteration}</td>
-		<td nowrap class="listTableRow small" valign="top">{$currencyvalues.tool}</td>
-		<td nowrap class="listTableRow small" valign="top"><b>{$currencyvalues.name|@getTranslatedCurrencyString}</b></td>
-		<td nowrap class="listTableRow small" valign="top">{$currencyvalues.code}</td>
-		<td nowrap class="listTableRow small" valign="top">{$currencyvalues.symbol}</td>
-		<td nowrap class="listTableRow small" valign="top">{$currencyvalues.position}</td>
-		<td nowrap class="listTableRow small" valign="top">{$currencyvalues.crate}</td>
+    <tr class="slds-hint-parent">
+		<td><div class="slds-truncate">{$smarty.foreach.currlist.iteration}</div></td>
+		<td><div style="height:30px;" class="slds-truncate">{$currencyvalues.tool}</div></td>
+		<td><div class="slds-truncate"><b>{$currencyvalues.name|@getTranslatedCurrencyString}</b></div></td>
+		<td><div class="slds-truncate">{$currencyvalues.code}</div></td>
+		<td><div class="slds-truncate">{$currencyvalues.symbol}</div></td>
+		<td><div class="slds-truncate">{$currencyvalues.position}</div></td>
+		<td><div class="slds-truncate">{$currencyvalues.crate}</div></td>
 		{if $currencyvalues.status eq 'Active'}
-			<td nowrap class="listTableRow small active" valign="top">{$currencyvalues.status|@getTranslatedString}</td>
+			<td><div class="slds-truncate">{$currencyvalues.status|@getTranslatedString}</div></td>
 		{else}
-			<td nowrap class="listTableRow small inactive" valign="top">{$currencyvalues.status|@getTranslatedString}</td>
+			<td><div class="slds-truncate">{$currencyvalues.status|@getTranslatedString}</div></td>
 		{/if}
 	</tr>
 	{/foreach}
+</tbody>
 </table>

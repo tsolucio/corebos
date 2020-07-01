@@ -84,75 +84,63 @@ function updateModEntityExisting(button, form) {
 {/literal}
 {include file='SetMenu.tpl'}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
-<div class="slds-modal__container slds-p-around_none">
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
-<tbody>
-<tr>
-	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
+<div class="slds-modal__container slds-p-around_none slds-card">
+
+<div class="slds-page-header"> 
+	<div class="slds-page-header__row"> 
+		<div class="slds-page-header__col-title"> 
+			<div class="slds-media"> 
+				<div class="slds-media__body"> 
+					<div class="slds-page-header__name"> 
+						<div class="slds-page-header__name-title"> 
+							<h1> 
+							<span class="slds-page-header__title slds-truncate" title="{$MOD.LBL_NEW_CURRENCY}">
+								<svg class="slds-button__icon slds-icon-text-success slds-icon_large slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#richtextnumberedlist"></use> </svg>
+								&nbsp;{$MOD.LBL_CUSTOMIZE_MODENT_NUMBER}
+								<p valign=top class="small cblds-p-v_none">&nbsp;&nbsp;&nbsp;&nbsp;{$MOD.LBL_CUSTOMIZE_MODENT_NUMBER_DESCRIPTION}</p>
+							</h1>
+							</span>
+						</div> 
+					</div> 
+				</div> 
+			</div> 
+		</div> 
+	</div> 
+</div>
+
+<div align=center>
 	<br>
-
-	<div align=center>
-		<!-- DISPLAY -->
-		<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
-		<tr>
-			<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'settingsInvNumber.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_CUSTOMIZE_MODENT_NUMBER}" width="48" height="48" border=0 title="{$MOD.LBL_CUSTOMIZE_MODENT_NUMBER}"></td>
-			<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_CUSTOMIZE_MODENT_NUMBER}</b></td>
-		</tr>
-		<tr>
-			<td valign=top class="small cblds-p-v_none">{$MOD.LBL_CUSTOMIZE_MODENT_NUMBER_DESCRIPTION}</td>
-		</tr>
-		</table>
-		<br>
-		<form method="POST" action="javascript:;" onsubmit="VtigerJS_DialogBox.block();">
-		<table border="0" cellpadding="10" cellspacing="0" width="100%">
-		<tr>
-			<td>
-				<table class="tableHeading" border="0" cellpadding="5" cellspacing="0" width="100%">
-				<tr>
-					<td class="small" align="right">
-					{$MOD.LBL_SELECT_CF_TEXT}
-					<select name="selmodule" class="small" onChange="getModuleEntityNoInfo(this.form)">
-					{foreach key=sel_value item=value from=$MODULES}
-						{if $SELMODULE eq $sel_value}
-							{assign var = "selected_val" value="selected"}
-						{else}
-							{assign var = "selected_val" value=""}
-						{/if}
-						{assign var="MODULE_LABEL" value=$value}
-						{assign var="MODULE_LABEL" value=$value|getTranslatedString:$value}
-						<option value="{$sel_value}" {$selected_val}>{$MODULE_LABEL}</option>
-					{/foreach}
-					</select>
-					</td>
-				</tr>
-				</table>
-
-				<div id='customentity_infodiv' class="listRow">
-					{include file='Settings/CustomModEntityNoInfo.tpl'}
-				</div>
-
-			<table border="0" cellpadding="5" cellspacing="0" width="100%">
+	<form method="POST" action="javascript:;" onsubmit="VtigerJS_DialogBox.block();">
+		<table class="slds-table slds-table_cell-buffer slds-table-no_bordered " border="0" cellpadding="5" cellspacing="0">
 			<tr>
-				<td class="small cblds-t-align_right" align="right" nowrap="nowrap"><a href="#top">{$MOD.LBL_SCROLL}</a></td>
+				<td class="" width="30%" align="left">
+				{$MOD.LBL_SELECT_CF_TEXT}
+				<select name="selmodule" class="slds-select" width="30%" onChange="getModuleEntityNoInfo(this.form)">
+				{foreach key=sel_value item=value from=$MODULES}
+					{if $SELMODULE eq $sel_value}
+						{assign var = "selected_val" value="selected"}
+					{else}
+						{assign var = "selected_val" value=""}
+					{/if}
+					{assign var="MODULE_LABEL" value=$value}
+					{assign var="MODULE_LABEL" value=$value|getTranslatedString:$value}
+					<option value="{$sel_value}" {$selected_val}>{$MODULE_LABEL}</option>
+				{/foreach}
+				</select>
+				</td>
+				<td class="" width="70%" align="left"></td>
 			</tr>
-			</table>
-			</td>
-		</tr>
-		</table>
-		</form>
-
-		</td>
-		</tr>
 		</table>
 
-		</td>
-		</tr>
-		</table>
+		<div id='customentity_infodiv' class="listRow">
+			{include file='Settings/CustomModEntityNoInfo.tpl'}
 		</div>
 
-		</td>
-		</tr>
-</tbody>
-</table>
+		<div class="slds-col">
+			<p class="slds-p-right_small" nowrap align="right"><a href="#top">{$MOD.LBL_SCROLL}</a></p>
+		</div>
+		
+	</form>
+</div>
 </div>
 </section>

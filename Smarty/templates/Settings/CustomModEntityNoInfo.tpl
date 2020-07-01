@@ -8,39 +8,56 @@
  * All Rights Reserved.
  ********************************************************************************/ *}
 
-<table width="100%"  border="0" cellspacing="0" cellpadding="5">
+<table width="100%" class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered" border="0" cellspacing="0" cellpadding="5">
 
 <tr>
-	<td nowrap class="small cellLabel">
+	<td nowrap class="">
 		<strong>{$SELMODULE|@getTranslatedString:$SELMODULE} {$MOD.LBL_MODULE_NUMBERING}</strong>
 	</td>
-	<td width="100%" class="small cellText">
-		 <b>{$STATUSMSG}</b>
+	<td width="100%" class="">
+	<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description"> 
+	{$STATUSMSG}
+	</label>
 	</td>
-	<td width="80%" nowrap class="small cellText cblds-t-align_right" align=right>
+	<td width="80%" nowrap class="cblds-t-align_right" align=right>
 		<b>{$MOD.LBL_MODULE_NUMBERING_FIX_MISSING}</b>
-		<input type="button" class="crmbutton small create" value="{$APP.LBL_APPLY_BUTTON_LABEL}" onclick="updateModEntityExisting(this, this.form);"/>
+		<input type="button" class="slds-button slds-button_brand create" value="{$APP.LBL_APPLY_BUTTON_LABEL}" onclick="updateModEntityExisting(this, this.form);"/>
 	</td>
 </tr>
 
 <tr>
-	<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_USE_PREFIX}</strong></td>
-	<td width="80%" colspan=2 class="small cellText">
-	<input type="text" name="recprefix" class="small" style="width:30%" value="{$MODNUM_PREFIX}" />
+	<td width="20%" nowrap class="">
+	<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description"> 
+	{$MOD.LBL_USE_PREFIX}
+	</label>
+	</td>
+	<td width="40%" colspan=2 class="">
+	<input type="text" name="recprefix" class="slds-input" style="width:40%" value="{$MODNUM_PREFIX}" />
 	</td>
 </tr>
 <tr>
-	<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_START_SEQ}<font color='red'>*</font></strong></td>
-	<td width="80%" colspan=2 class="small cellText">
-	<input type="text" name="recnumber" class="small" style="width:30%" value="{$MODNUM}" />
+	<td width="20%" nowrap class="">
+	<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description"> 
+	<abbr class="slds-required" title="Indica un campo obbligatorio">* </abbr>
+	{$MOD.LBL_START_SEQ}
+	</label>
+	</td>
+	<td width="80%" colspan=2 class="">
+	<input type="text" name="recnumber" class="slds-input" style="width:40%" value="{$MODNUM}" />
 	</td>
 </tr>
 
 <tr>
 	<td width="20%" nowrap colspan="3" align ="center" class="cblds-t-align_right">
-		<input type="button" name="Button" class="crmbutton small save" value="{$APP.LBL_SAVE_BUTTON_LABEL}" onclick="updateModEntityNoSetting(this, this.form);" />
-		<input type="button" name="Button" class="crmbutton small cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" onclick="history.back(-1);" /></td>
+		<button type="button" name="Button" class="slds-button slds-button_success save" onclick="updateModEntityNoSetting(this, this.form);">
+		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use> </svg>											
+		{$APP.LBL_SAVE_BUTTON_LABEL}
+		</button>
+		<button type="button" name="Button" class="slds-button slds-button_destructive cancel" onclick="history.back(-1);" />
+		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use> </svg>													
+		{$APP.LBL_CANCEL_BUTTON_LABEL}
+		</button>
+		</td>
 	</td>
 </tr>
 </table>
-
