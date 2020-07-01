@@ -128,10 +128,10 @@ class Versatile implements ISMSProvider {
 			$result = array( 'error' => false, 'statusmessage' => '' );
 			if (preg_match("/ERR:(.*)/", trim($responseLine), $matches)) {
 				$result['error'] = true;
-				if (count($tonumbers) > 1) {
-					$result['to'] = $tonumbers[0].'...';
+				if (count($toNumbers) > 1) {
+					$result['to'] = $toNumbers[0].'...';
 				} else {
-					$result['to'] = $tonumbers[0];
+					$result['to'] = $toNumbers[0];
 				}
 				$result['statusmessage'] = $matches[0]; // Complete error message
 			} elseif (preg_match("/ID: ([^ ]+)TO:(.*)/", $responseLine, $matches)) {

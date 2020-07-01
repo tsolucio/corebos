@@ -28,7 +28,7 @@ class Vtiger_LanguageExport extends Vtiger_Package {
 	 * Generate unique id for insertion
 	 * @access public
 	 */
-	public function __getUniqueId() {
+	public static function __getUniqueId() {
 		global $adb;
 		return $adb->getUniqueID(self::TABLENAME);
 	}

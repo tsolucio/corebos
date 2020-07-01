@@ -25,7 +25,11 @@ function vtws_describe($elementType, $user) {
 		}
 		$rdo[$elementType] = $handler->describe($elementType);
 		$rdo[$elementType]['filterFields']=vtws_getfilterfields($elementType, $user);
-		$rdo[$elementType]['relatedModules']=getRelatedModulesInfomation($elementType, $user);
+		try {
+			$rdo[$elementType]['relatedModules']=getRelatedModulesInfomation($elementType, $user);
+		} catch (\Throwable $th) {
+			$rdo[$elementType]['relatedModules']=array();
+		}
 	}
 	VTWS_PreserveGlobal::flush();
 	if (count($rdo)==1) {

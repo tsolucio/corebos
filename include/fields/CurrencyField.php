@@ -317,7 +317,7 @@ class CurrencyField {
 			}
 			return $number;
 		}
-		return $number;
+		return 0;
 	}
 
 	/**

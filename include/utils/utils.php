@@ -371,7 +371,7 @@ function clean($string, $maxLength) {
  * Copy the specified request variable to the member variable of the specified object.
  * Do no copy if the member variable is already set.
  */
-function safe_map($request_var, & $focus, $always_copy = false) {
+function safe_map($request_var, &$focus, $always_copy = false) {
 	global $log;
 	$log->debug('> safe_map '.$request_var.','.get_class($focus).','.$always_copy);
 	safe_map_named($request_var, $focus, $request_var, $always_copy);
@@ -382,7 +382,7 @@ function safe_map($request_var, & $focus, $always_copy = false) {
  * Copy the specified request variable to the member variable of the specified object.
  * Do no copy if the member variable is already set.
  */
-function safe_map_named($request_var, & $focus, $member_var, $always_copy) {
+function safe_map_named($request_var, &$focus, $member_var, $always_copy) {
 	global $log;
 	$log->debug('> safe_map_named '.$request_var.','.get_class($focus).','.$member_var.','.$always_copy);
 	if (isset($_REQUEST[$request_var]) && ($always_copy || is_null($focus->$member_var))) {
@@ -1178,18 +1178,18 @@ function upload_product_image_file($mode, $id) {
 }
 
 /** Function to upload product image file
- * @param $id -- id :: Type integer
- * @param $deleted_array -- images to be deleted :: Type array
- * @returns $imagename -- imagelist:: Type array
+ * @param integer $id product crmid
+ * @param array $deleted_array images to be deleted
+ * @return array $imagename imagelist
  */
-function getProductImageName($id, $deleted_array = '') {
+function getProductImageName($id, $deleted_array = array()) {
 	global $log, $adb;
 	$log->debug('> getProductImageName '.$id);
 	$image_array=array();
 	$result = $adb->pquery('select imagename from vtiger_products where productid=?', array($id));
 	$image_name = $adb->query_result($result, 0, 'imagename');
 	$image_array=explode('###', $image_name);
-	if ($deleted_array!='') {
+	if (count($deleted_array)>0) {
 		$resultant_image = array();
 		$resultant_image=array_merge(array_diff($image_array, $deleted_array));
 		$imagelists=implode('###', $resultant_image);
@@ -1988,8 +1988,8 @@ function generateQuestionMarks($items_list) {
 function is_uitype($uitype, $reqtype) {
 	$ui_type_arr = array(
 		'_date_' => array(5, 6, 23, 70),
-		'_picklist_' => array(15, 16, 52, 53, 54, 55, 62, 63, 77, 98, 101, 115, 357),
-		'_users_list_' => array(52),
+		'_picklist_' => array(15, 16, 55, 63, 115, 357),
+		'_users_list_' => array(52, 53, 77, 98, 101,),
 	);
 
 	if ($ui_type_arr[$reqtype] != null) {
@@ -2145,7 +2145,7 @@ function getAccessPickListValues($module) {
 			$mulsel="select distinct $fieldname,sortid
 				from vtiger_$fieldname
 				inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$fieldname.picklist_valueid
-				where roleid in (\"". implode($roleids, "\",\"") ."\") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc";
+				where roleid in (\"". implode("\",\"", $roleids) ."\") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc";
 		} else {
 			$mulsel="select distinct $fieldname,sortid
 				from vtiger_$fieldname
@@ -2219,9 +2219,9 @@ function getRecordValues($id_array, $module) {
 
 	$focus = new $module();
 	if (isset($id_array) && $id_array !='') {
-		foreach ($id_array as $value_pair['disp_value']) {
-			$focus->id=$value_pair['disp_value'];
-			$focus->retrieve_entity_info($value_pair['disp_value'], $module);
+		foreach ($id_array as $crmid) {
+			$focus->id=$crmid;
+			$focus->retrieve_entity_info($crmid, $module);
 			$field_values[]=$focus->column_fields;
 		}
 	}
@@ -2255,8 +2255,7 @@ function getRecordValues($id_array, $module) {
 				} elseif ($ui_type == 10) {
 					$value_pair['disp_value'] = getRecordInfoFromID($field_values[$j][$fld_name]);
 				} elseif ($ui_type == 5 || $ui_type == 6 || $ui_type == 23) {
-					if ($field_values[$j][$fld_name] != '' && $field_values[$j][$fld_name]
-							!= '0000-00-00') {
+					if ($field_values[$j][$fld_name] != '' && $field_values[$j][$fld_name] != '0000-00-00') {
 						$date = new DateTimeField($field_values[$j][$fld_name]);
 						$value_pair['disp_value'] = $date->getDisplayDate();
 						if (strpos($field_values[$j][$fld_name], ' ') > -1) {
@@ -2672,7 +2671,7 @@ function get_special_on_clause($field_list) {
 			$tbl_alias = 'crm';
 		} elseif ($tbl_name == 'vtiger_customerdetails') {
 			$tbl_alias = 'custd';
-		} elseif ($tbl_name == 'vtiger_contactdetails' && spl_chk == 'HelpDesk') {
+		} elseif ($tbl_name == 'vtiger_contactdetails' && $spl_chk == 'HelpDesk') {
 			$tbl_alias = 'contd';
 		} elseif (stripos($tbl_name, 'cf') === (strlen($tbl_name) - strlen('cf'))) {
 			$tbl_alias = 'tcf'; // Custom Field Table Prefix to use in subqueries
@@ -2835,7 +2834,7 @@ function getSecParameterforMerge($module) {
 				$sec_parameter .= ' vtiger_groups.groupname IN (
 					SELECT groupname
 					FROM vtiger_groups
-					WHERE groupid IN ('. implode(',', getCurrentUserGroupList()) .')) OR ';
+					WHERE groupid IN ('. implode(',', $userprivs->getGroups()) .')) OR ';
 			}
 			$sec_parameter .= ' vtiger_groups.groupname IN (
 				SELECT vtiger_groups.groupname
@@ -2933,9 +2932,9 @@ function getCallerName($from) {
 		$callerModule = " (<a href='index.php?module=$module&action=index'>$module</a>)";
 		$callerID = $callerInfo['id'];
 
-		$caller =$caller."<a href='index.php?module=$module&action=DetailView&record=$callerID'>$callerName</a>$callerModule";
+		$caller = "<a href='index.php?module=$module&action=DetailView&record=$callerID'>$callerName</a>$callerModule";
 	} else {
-		$caller = $caller."<br>
+		$caller = "<br>
 			<a target='_blank' href='index.php?module=Leads&action=EditView&phone=$from'>".getTranslatedString('LBL_CREATE_LEAD')."</a><br>
 			<a target='_blank' href='index.php?module=Contacts&phone=$from'>".getTranslatedString('LBL_CREATE_CONTACT')."</a><br>
 			<a target='_blank' href='index.php?module=Accounts&action=EditView&phone=$from'>".getTranslatedString('LBL_CREATE_ACCOUNT').'</a>';
@@ -3068,8 +3067,8 @@ function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $us
 	$crmID = $adb->getUniqueID('vtiger_crmentity');
 	$timeOfCall = date('Y-m-d H:i:s');
 
-	$sql = 'insert into vtiger_crmentity values (?,?,?,?,?,?,?,?,?,?,?,?,?)';
-	$params = array($crmID, $userID, $userID, 0, 'PBXManager', '', $timeOfCall, $timeOfCall, null, null, 0, 1, 0);
+	$sql = 'insert into vtiger_crmentity values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+	$params = array($crmID, $userID, $userID, 0, 'PBXManager', '', $timeOfCall, $timeOfCall, null, null, 0, 1, 0, $pbxuuid);
 	$adb->pquery($sql, $params);
 	$unknownCaller = GlobalVariable::getVariable('PBX_Unknown_CallerID', 'Unknown', 'PBXManager');
 	if (empty($callfrom)) {
@@ -3459,18 +3458,22 @@ function getMailFields($tabid) {
  */
 function isRecordExists($recordId) {
 	global $adb;
-	$users = $groups = false;
+	$users = $groups = $currency = false;
 	if (strpos($recordId, 'x')) {
 		list($moduleWS,$recordId) = explode('x', $recordId);
 		$userWS = vtws_getEntityId('Users');
 		$users = ($userWS==$moduleWS);
 		$groupWS = vtws_getEntityId('Groups');
 		$groups = ($groupWS==$moduleWS);
+		$currencyWS = vtws_getEntityId('Currency');
+		$currency = ($currencyWS==$moduleWS);
 	}
 	if ($users) {
 		$query = 'SELECT id FROM vtiger_users where id=? AND deleted=0';
 	} elseif ($groups) {
 		$query = 'SELECT groupid FROM vtiger_groups where groupid=?';
+	} elseif ($currency) {
+		$query = 'SELECT id FROM vtiger_currency_info where id=? AND deleted=0';
 	} else {
 		$query = 'SELECT crmid FROM vtiger_crmentity where crmid=? AND deleted=0';
 	}
@@ -3495,7 +3498,13 @@ function getValidDBInsertDateValue($value) {
 	$delim = array('/','.');
 	$value = str_replace($delim, '-', $value);
 
-	list($y,$m,$d) = explode('-', $value);
+	$dparts = explode('-', $value);
+	if (count($dparts)!=3) {
+		return '';
+	}
+	$y = $dparts[0];
+	$m = $dparts[1];
+	$d = $dparts[2];
 	if (strlen($y) == 1) {
 		$y = '0'.$y;
 	}

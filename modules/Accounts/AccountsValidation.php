@@ -41,7 +41,9 @@ if ($blockDuplicateAccounts && isset($screen_values['accountname'])) {
 	$result = $adb->pquery($query, $params);
 	if ($adb->num_rows($result) > 0) {
 		echo getTranslatedString('LBL_ACCOUNT_EXIST', 'Accounts');
-		die;
+	} else {
+		echo '%%%OK%%%';
 	}
+} else {
+	echo '%%%OK%%%';
 }
-echo '%%%OK%%%';

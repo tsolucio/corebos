@@ -90,30 +90,9 @@ if ((isset($_REQUEST['type']) && $_REQUEST['type'] !='') || (isset($_REQUEST['n_
 			die('view:'.$calendar_arr['calendar']->view.' is not defined');
 		}
 
-		if ($type == 'change_owner' || $type == 'activity_delete' || $type == 'change_status' || $type == 'activity_postpone' || $n_type == 'nav') {
+		if ($type == 'activity_delete' || $type == 'activity_postpone' || $n_type == 'nav') {
 			if ($current_user->hour_format != '') {
 				$calendar_arr['calendar']->hour_format=$current_user->hour_format;
-			}
-			if ($type == 'change_status') {
-				$return_id = vtlib_purify($_REQUEST['record']);
-				if (isset($_REQUEST['status'])) {
-					$status = $_REQUEST['status'];
-					$activity_type = 'Task';
-				} elseif (isset($_REQUEST['eventstatus'])) {
-					$status = $_REQUEST['eventstatus'];
-					$activity_type = 'Events';
-				}
-				ChangeStatus($status, $return_id, $activity_type);
-				$mail_data = getActivityMailInfo($return_id, $status, $activity_type);
-				$invitee_res = $adb->pquery('select inviteeid from vtiger_invitees where activityid=?', array($return_id));
-				$count = $adb->num_rows($invitee_res);
-				if ($count != 0) {
-					for ($j = 0; $j < $count; $j++) {
-						$invitees_ids[]= $adb->query_result($invitee_res, $j, 'inviteeid');
-					}
-					$invitees_ids_string = implode(';', $invitees_ids);
-					sendInvitation($invitees_ids_string, $activity_type, $mail_data['subject'], $mail_data);
-				}
 			}
 
 			if ($_REQUEST['viewOption'] == 'hourview' && ($mysel == 'day' || $mysel == 'week' || $mysel == 'month' || $mysel == 'year')) {

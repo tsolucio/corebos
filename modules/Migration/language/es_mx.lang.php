@@ -6,11 +6,10 @@
 *  Created Date : 2008-01-18 17:46:07 Last change : 2008-01-20 00:48:29
 
 *  Author       : rasomu
-*  License      : 
+*  License      :
 
 *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
 ***********************************************************/
-
 
 $mod_strings = array (
       'LBL_MIGRATE_INFO' => 'Introduzca los Valores para Migrar los Datos desde la versión<b><i> Anterior </i></b> a la <b><i> Actual (Última) de vtigerCRM </i></b>',

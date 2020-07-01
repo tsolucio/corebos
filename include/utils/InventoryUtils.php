@@ -588,7 +588,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock = 'fal
 		$updateparams[] = (float)$discount_amount_final;
 	}
 
-	$shipping_handling_charge = vtlib_purify($_REQUEST['shipping_handling_charge']);
+	$shipping_handling_charge = (isset($_REQUEST['shipping_handling_charge']) ? vtlib_purify($_REQUEST['shipping_handling_charge']) : 0);
 	$updatequery .= ' s_h_amount=?,';
 	$updateparams[] = (float)$shipping_handling_charge;
 

@@ -222,7 +222,7 @@ if (isset($_REQUEST['potential_id']) && $_REQUEST['potential_id'] != '') {
 		$_REQUEST['contact_id'] = $relID;
 	}
 	$associated_prod = getAssociatedProducts('Potentials', $focus, $focus->column_fields['potential_id']);
-	if (count($associated_prod)==1 && count($associated_prod[1])==1) { // no products so we empty array to avoid warning
+	if (empty($associated_prod) || (count($associated_prod)==1 && count($associated_prod[1])==1)) { // no products so we empty array to avoid warning
 		$smarty->assign('AVAILABLE_PRODUCTS', 'false');
 		$associated_prod = array();
 	} else {
@@ -469,7 +469,6 @@ $smarty->assign('Module_Popup_Edit', isset($_REQUEST['Module_Popup_Edit']) ? vtl
 $smarty->assign('SandRActive', GlobalVariable::getVariable('Application_SaveAndRepeatActive', 0, $currentModule));
 $cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule);
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
-
 //Get Service or Product by default when create
 $smarty->assign('PRODUCT_OR_SERVICE', GlobalVariable::getVariable('Inventory_ProductService_Default', 'Products', $currentModule, $current_user->id));
 $smarty->assign('Inventory_ListPrice_ReadOnly', GlobalVariable::getVariable('Inventory_ListPrice_ReadOnly', '0', $currentModule, $current_user->id));

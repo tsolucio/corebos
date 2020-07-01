@@ -14,12 +14,12 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'getAssignedUserList',
-	 'include' => 'include/Webservices/CustomerPortalWS.php',
-	 'handler' => 'vtws_getAssignedUserList',
-	 'prelogin'=> 0,
-	 'type'    => 'GET',
-	 'parameters' => array(
+	'name'    => 'getAssignedUserList',
+	'include' => 'include/Webservices/CustomerPortalWS.php',
+	'handler' => 'vtws_getAssignedUserList',
+	'prelogin'=> 0,
+	'type'    => 'GET',
+	'parameters' => array(
 		array('name' => 'module','type' => 'string'),
-	 )
+	)
 );

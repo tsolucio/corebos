@@ -38,9 +38,9 @@ class addcrmentityaliasFieldincbQuestion extends cbupdaterWorker {
 				$field->displaytype = 1;
 				$field->presence = 0;
 				$block->addField($field);
-				$this->sendMsg('Changeset '.get_class($this).' applied!');
-				$this->markApplied();
 			}
+			$this->sendMsg('Changeset '.get_class($this).' applied!');
+			$this->markApplied();
 		}
 		$this->finishExecution();
 	}

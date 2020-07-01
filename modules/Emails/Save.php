@@ -190,15 +190,13 @@ if (isset($_REQUEST['send_mail']) && $_REQUEST['send_mail'] && $_REQUEST['parent
 if (isset($_REQUEST['return_action']) && $_REQUEST['return_action'] == 'mailbox') {
 	header('Location: index.php?action=index&module='.urlencode($return_module));
 } elseif (isset($_REQUEST['return_action'])) {
-	header('Location: index.php?action='.urlencode($return_action).'&module='.urlencode($return_module).'&record='.urlencode($return_id));
-} else {
-	if (empty($_REQUEST['return_viewname'])) {
-		$return_viewname = '0';
-	}
-	if (!empty($_REQUEST['return_viewname'])) {
-		$return_viewname = vtlib_purify($_REQUEST['return_viewname']);
-	}
-	echo '<script>window.opener.location.href=window.opener.location.href;window.self.close();</script>';
+	$url = 'index.php?action='.urlencode($return_action).'&module='.urlencode($return_module).'&record='.urlencode($return_id);
+	echo '<script>if (window.opener) {
+		window.opener.location.href=window.opener.location.href;
+		window.self.close();
+	} else {
+		window.location.href="'.$url.'";
+	}</script>';
 	die(); // to avoid unnecessay output to closing screen
 }
 ?>

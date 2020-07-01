@@ -134,7 +134,13 @@ include_once 'vtlib/Vtiger/Link.php';
 $customlink_params = array('MODULE'=>$currentModule, 'RECORD'=>$focus->id, 'ACTION'=>vtlib_purify($_REQUEST['action']));
 $smarty->assign(
 	'CUSTOM_LINKS',
-	Vtiger_Link::getAllByType($tabid, array('DETAILVIEWBASIC','DETAILVIEW','DETAILVIEWWIDGET','DETAILVIEWBUTTON','DETAILVIEWBUTTONMENU'), $customlink_params, null, $focus->id)
+	Vtiger_Link::getAllByType(
+		$tabid,
+		array('DETAILVIEWBASIC','DETAILVIEW','DETAILVIEWWIDGET','DETAILVIEWBUTTON','DETAILVIEWBUTTONMENU','DETAILVIEWHTML'),
+		$customlink_params,
+		null,
+		$focus->id
+	)
 );
 if ($isPresentRelatedListBlock) {
 	$related_list_block = array();

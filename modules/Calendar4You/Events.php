@@ -323,7 +323,7 @@ foreach ($Users_Ids as $userid) {
 							} else {
 								$evt_status = 'Held';
 							}
-							$Actions[] = '<a href="javascript:void(0);" onclick="ajaxChangeCalendarStatus(\''.$evt_status."',".$record.');">'.$app['LBL_CLOSE'].'</a>';
+							$Actions[] = '<a href="javascript:void(0);" onclick="ajaxChangeCalendarStatus(\''.$evt_status."',".$record.',\'calgui\');">'.$app['LBL_CLOSE'].'</a>';
 						}
 					}
 				}

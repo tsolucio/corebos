@@ -161,5 +161,6 @@ $mod_strings = array(
 	'Contacts' => 'Contacte',
 	'Users' => 'Utilizatori',
 	'Documents' => 'Documente',
+	'LBL_SEND_INDIVIDUAL_EMAILS' => 'Send Individual Emails',
 );
 ?>

@@ -18,53 +18,13 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
 
-class Mapping extends generatecbMap {
+class genMapping extends generatecbMap {
 
-	public function generateMap($arguments) {
-		global $adb, $current_user;
-		$mapping=$this->convertMap2Array();
-		$ofields = $arguments[0];
-		$tfields = $arguments[1];
-		foreach ($mapping['fields'] as $targetfield => $sourcefields) {
-			$value = '';
-			$delim = (isset($sourcefields['delimiter']) ? $sourcefields['delimiter'] : '');
-			foreach ($sourcefields['merge'] as $pos => $fieldinfo) {
-				$idx = array_keys($fieldinfo);
-				if (strtoupper($idx[0])=='CONST') {
-					$const = array_pop($fieldinfo);
-					$value.= $const.$delim;
-				} else {
-					$fieldname = array_pop($fieldinfo);
-					$value.= $ofields[$fieldname].$delim;
-				}
-			}
-			$value = rtrim($value, $delim);
-			$tfields[$targetfield] = $value;
-		}
-		var_dump($tfields);
-	}
-
-	private function convertMap2Array() {
-		$xml = $this->getXMLContent();
-		$mapping=$target_fields=array();
-		$mapping['origin'] = (String)$xml->originmodule->originname;
-		$mapping['target'] = (String)$xml->targetmodule->targetname;
-		foreach ($xml->fields->field as $k => $v) {
-			$fieldname = (String)$v->fieldname;
-			if (!empty($v->value)) {
-				$target_fields[$fieldname]['value'] = (String)$v->value;
-			}
-			$allmergeFields=array();
-			foreach ($v->Orgfields->Orgfield as $key => $value) {
-				$allmergeFields[]=array((String)$value->OrgfieldID=>(String)$value->OrgfieldName);
-			}
-			if (isset($v->Orgfields->delimiter)) {
-				$target_fields[$fieldname]['delimiter']=(String)$v->Orgfields->delimiter;
-			}
-			$target_fields[$fieldname]['merge']=$allmergeFields;
-		}
-		$mapping['fields'] = $target_fields;
-		return $mapping;
+	public function generateMap() {
+		$Map = $this->getMap();
+		include 'modules/cbMap/generatemap/GenMapHeader.php';
+		echo "not implemented";
+		$smarty->display('modules/cbMap/GenMapFooter.tpl');
 	}
 }
 ?>

@@ -23,9 +23,11 @@ function vtws_changePassword($id, $oldPassword, $newPassword, $confirmPassword, 
 		$newUser->retrieveCurrentUserInfoFromFile($idComponents[1]);
 		if (!is_admin($user)) {
 			if (empty($oldPassword)) {
+				VTWS_PreserveGlobal::flush();
 				throw new WebServiceException(WebServiceErrorCode::$INVALIDOLDPASSWORD, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$INVALIDOLDPASSWORD));
 			}
 			if (!$user->verifyPassword($oldPassword)) {
+				VTWS_PreserveGlobal::flush();
 				throw new WebServiceException(WebServiceErrorCode::$INVALIDOLDPASSWORD, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$INVALIDOLDPASSWORD));
 			}
 		}
@@ -36,6 +38,7 @@ function vtws_changePassword($id, $oldPassword, $newPassword, $confirmPassword, 
 			$success = $newUser->change_password($oldPassword, $newPassword, false);
 			$error = $db->hasFailedTransaction();
 			$db->completeTransaction();
+			VTWS_PreserveGlobal::flush();
 			if ($error) {
 				throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 			}
@@ -43,10 +46,13 @@ function vtws_changePassword($id, $oldPassword, $newPassword, $confirmPassword, 
 				throw new WebServiceException(WebServiceErrorCode::$CHANGEPASSWORDFAILURE, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$CHANGEPASSWORDFAILURE));
 			}
 		} else {
+			VTWS_PreserveGlobal::flush();
 			throw new WebServiceException(WebServiceErrorCode::$CHANGEPASSWORDFAILURE, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$CHANGEPASSWORDFAILURE));
 		}
-		VTWS_PreserveGlobal::flush();
 		return array('message' => 'Changed password successfully');
+	} else {
+		VTWS_PreserveGlobal::flush();
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'You do not have permission to change the password.');
 	}
 }
 ?>

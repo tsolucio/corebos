@@ -18,13 +18,13 @@
 		<input type="hidden" name="action" value="integration">
 		<input type="hidden" name="_op" value="setconfigsendgrid">
 		<div class="slds-form-element">
-			<label class="slds-checkbox--toggle slds-grid">
-			<span class="slds-form-element__label slds-m-bottom--none">{'_active'|@getTranslatedString:$MODULE}</span>
+			<label class="slds-checkbox_toggle slds-grid">
+			<span class="slds-form-element__label slds-m-bottom_none">{'_active'|@getTranslatedString:$MODULE}</span>
 			<input type="checkbox" name="sendgrid_active" aria-describedby="toggle-desc" {if $isActive}checked{/if} />
-			<span id="toggle-desc" class="slds-checkbox--faux_container" aria-live="assertive">
-				<span class="slds-checkbox--faux"></span>
-				<span class="slds-checkbox--on">{'LBL_ENABLED'|@getTranslatedString:'Settings'}</span>
-				<span class="slds-checkbox--off">{'LBL_DISABLED'|@getTranslatedString:'Settings'}</span>
+			<span id="toggle-desc" class="slds-checkbox_faux_container" aria-live="assertive">
+				<span class="slds-checkbox_faux"></span>
+				<span class="slds-checkbox_on">{'LBL_ENABLED'|@getTranslatedString:'Settings'}</span>
+				<span class="slds-checkbox_off">{'LBL_DISABLED'|@getTranslatedString:'Settings'}</span>
 			</span>
 			</label>
 		</div>
@@ -47,20 +47,20 @@
 						</div>
 					</div>
 				</div>
-				<div class="slds-form-element slds-m-top--small">
+				<div class="slds-form-element slds-m-top_small">
 					<font color="red">*</font>&nbsp;
 					<label class="slds-form-element__label" for="srv_transactional">{'LBL_OUTGOING_MAIL_SERVER'|@getTranslatedString:'Settings'}</label>
 					<div class="slds-form-element__control">
 						<input type="text" id="srv_transactional" name="srv_transactional" class="slds-input" value="{$srv_transactional}" />
 					</div>
 				</div>
-				<div class="slds-form-element slds-m-top--small">
+				<div class="slds-form-element slds-m-top_small">
 					<label class="slds-form-element__label" for="user_transactional">{'LBL_USERNAME'|@getTranslatedString:'Settings'}</label>
 					<div class="slds-form-element__control">
 						<input type="text" id="user_transactional" name="user_transactional" class="slds-input" value="{$user_transactional}" />
 					</div>
 				</div>
-				<div class="slds-form-element slds-m-top--small">
+				<div class="slds-form-element slds-m-top_small">
 					<label class="slds-form-element__label" for="pass_transactional">{'LBL_PASWRD'|@getTranslatedString:'Settings'}</label>
 					<div class="slds-form-element__control">
 						<input type="password" id="pass_transactional" name="pass_transactional" class="slds-input" value="{$pass_transactional}" />
@@ -83,20 +83,20 @@
 						</div>
 					</div>
 				</div>
-				<div class="slds-form-element slds-m-top--small">
+				<div class="slds-form-element slds-m-top_small">
 					<font color="red">*</font>&nbsp;
 					<label class="slds-form-element__label" for="srv_marketing">{'LBL_OUTGOING_MAIL_SERVER'|@getTranslatedString:'Settings'}</label>
 					<div class="slds-form-element__control">
 						<input type="text" id="srv_marketing" name="srv_marketing" class="slds-input" value="{$srv_marketing}" />
 					</div>
 				</div>
-				<div class="slds-form-element slds-m-top--small">
+				<div class="slds-form-element slds-m-top_small">
 					<label class="slds-form-element__label" for="user_marketing">{'LBL_USERNAME'|@getTranslatedString:'Settings'}</label>
 					<div class="slds-form-element__control">
 						<input type="text" id="user_marketing" name="user_marketing" class="slds-input" value="{$user_marketing}" />
 					</div>
 				</div>
-				<div class="slds-form-element slds-m-top--small">
+				<div class="slds-form-element slds-m-top_small">
 					<label class="slds-form-element__label" for="pass_marketing">{'LBL_PASWRD'|@getTranslatedString:'Settings'}</label>
 					<div class="slds-form-element__control">
 						<input type="password" id="pass_marketing" name="pass_marketing" class="slds-input" value="{$pass_marketing}" />
@@ -105,8 +105,8 @@
 			</div>
 		</div>
 		<br />
-		<div class="slds-m-top--large">
-			<button type="submit" class="slds-button slds-button--brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
+		<div class="slds-m-top_large">
+			<button type="submit" class="slds-button slds-button_brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
 		</div>
 		</form>
 	{/if}

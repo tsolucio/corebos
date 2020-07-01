@@ -32,7 +32,7 @@ class VTEntityData {
 		require_once 'data/CRMEntity.php';
 		$focus = CRMEntity::getInstance($setype);
 
-		$focus->retrieve_entity_info($entityId, $setype);
+		$focus->retrieve_entity_info($entityId, $setype, false, false, true);
 		$focus->id = $entityId;
 		$obj->isNew = false;
 		$obj->focus = $focus;

@@ -18,7 +18,6 @@ function gd_info() {
 	$array = array (
 		'GD Version' => '',
 		'FreeType Support' => 0,
-		'FreeType Support' => 0,
 		'FreeType Linkage' => '',
 		'T1Lib Support' => 0,
 		'GIF Read Support' => 0,

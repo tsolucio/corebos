@@ -14,12 +14,12 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'sendRecoverPassword',
-	 'include' => 'include/Webservices/CustomerPortalWS.php',
-	 'handler' => 'vtws_sendRecoverPassword',
-	 'prelogin'=> 0,
-	 'type'    => 'POST',
-	 'parameters' => array(
-		 array('name' => 'username','type' => 'string'),
-	 )
+	'name'    => 'sendRecoverPassword',
+	'include' => 'include/Webservices/CustomerPortalWS.php',
+	'handler' => 'vtws_sendRecoverPassword',
+	'prelogin'=> 0,
+	'type'    => 'POST',
+	'parameters' => array(
+		array('name' => 'username','type' => 'string'),
+	)
 );

@@ -481,8 +481,7 @@ class Leads extends CRMEntity {
 			$query .= " AND vtiger_users.user_name='".$username."'";
 		}
 
-		$tab_id = getTabid('Leads');
-		if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing($tabid)) {
+		if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing(getTabid('Leads'))) {
 			$sec_parameter=getListViewSecurityParameter('Leads');
 			$query .= $sec_parameter;
 		}

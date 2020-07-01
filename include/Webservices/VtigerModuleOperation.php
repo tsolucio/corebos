@@ -26,6 +26,22 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		return WebserviceEntityOperation::$metaCache[$this->webserviceObject->getEntityName()][$this->user->id];
 	}
 
+	public function getCache($module = '') {
+		if (empty($module)) {
+			return WebserviceEntityOperation::$metaCache;
+		} else {
+			return WebserviceEntityOperation::$metaCache[$module][$this->user->id];
+		}
+	}
+
+	public function emptyCache($module = '') {
+		if (empty($module)) {
+			WebserviceEntityOperation::$metaCache = array();
+		} else {
+			unset(WebserviceEntityOperation::$metaCache[$module]);
+		}
+	}
+
 	public function create($elementType, $element) {
 		$crmObject = new VtigerCRMObject($elementType, false);
 
@@ -321,7 +337,11 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		}
 		$mysql_query = mkXQuery(stripTailCommandsFromQuery($mysql_query, false), 'count(*) AS cnt');
 		$result = $this->pearDB->pquery($mysql_query, array());
-		$this->queryTotalRows = $result->fields['cnt'];
+		if ($result) {
+			$this->queryTotalRows = $result->fields['cnt'];
+		} else {
+			$this->queryTotalRows = 0;
+		}
 		return $output;
 	}
 
@@ -408,6 +428,10 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 
 	public function getMeta() {
 		return $this->meta;
+	}
+
+	public function getTabId() {
+		return $this->tabId;
 	}
 
 	public function getField($fieldName) {

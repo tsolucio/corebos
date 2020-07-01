@@ -29,6 +29,25 @@ class CustomView extends CRMEntity {
 	protected $_userid = false;
 	protected $meta;
 	protected $moduleMetaInfo;
+	public static $conditionMapping = array(
+		'e' => 'equal to',
+		'n' => 'does not equal',
+		'c' => 'contains',
+		'k' => 'does not contain',
+		's' => 'starts with',
+		'dnsw' => 'does not start with',
+		'ew' => 'ends with',
+		'dnew' => 'does not end with',
+		'l' => 'less than',
+		'g' => 'greater than',
+		'm' => 'less than or equal to',
+		'h' => 'greater than or equal to',
+		'b' => 'before',
+		'a' => 'after',
+		'y' => 'is empty',
+		'ny' => 'is not empty',
+		'bw' => 'between',
+	);
 
 	/** This function sets the currentuser id to the class variable smownerid,
 	 * modulename to the class variable customviewmodule
@@ -1006,10 +1025,68 @@ class CustomView extends CRMEntity {
 				$advcvsql .= $advfiltergroupsql;
 			}
 		}
-		if (trim($advcvsql) != '') {
+		if (trim($advcvsql) != '' && !$webserviceQL) {
 			$advcvsql = '(' . $advcvsql . ')';
 		}
 		return $advcvsql;
+	}
+
+	/** get the customview stdFilter Extended VQL Query conditions
+	 * @param integer $cvid custom view ID
+	 * @return string standard filter criteria for the given customfield
+	 */
+	public function getCVStdFilterEVQL($cvid) {
+		$conds = $this->getStdFilterByCvid($cvid);
+		if (empty($conds)) {
+			return '';
+		}
+		$fspec = explode(':', $conds['columnname']);
+		return json_encode(array(
+			'fieldname' => $fspec[2],
+			'operation' => 'between',
+			'value' => $conds['startdate'].','.$conds['enddate'],
+			'valuetype' => 'rawtext',
+			'joincondition' => 'and',
+			'groupid' => rand(),
+		));
+	}
+
+	/** get the customview AdvancedFilter Extended VQL Query conditions
+	 * @param integer $cvid custom view ID
+	 * @return string standard filter criteria for the given customfield
+	 */
+	public function getCVAdvFilterEVQL($cvid) {
+		$conds = $this->getAdvFilterByCvid($cvid);
+		if (empty($conds)) {
+			return '';
+		}
+		$evql = array();
+		$groupjoin = '';
+		foreach ($conds as $group => $cols) {
+			$grp = $group.rand();
+			foreach ($cols['columns'] as $column) {
+				$fspec = explode(':', $column['columnname']);
+				$evql[] = array(
+					'fieldname' => $fspec[2],
+					'operation' => $this->getOperatorFromComparator($column['comparator']),
+					'value' => $column['value'],
+					'valuetype' => 'rawtext',
+					'joincondition' => empty($column['column_condition']) ? $cols['condition'] : $column['column_condition'],
+					'groupid' => $grp,
+					'groupjoin' => $groupjoin,
+				);
+			}
+			$groupjoin = $cols['condition'];
+		}
+		return json_encode($evql);
+	}
+
+	/** get workflow operator from a query generator comparator
+	 * @param string $comparator query generator comparator
+	 * @return string workflow operator for the given comparator
+	 */
+	public function getOperatorFromComparator($comparator) {
+		return self::$conditionMapping[$comparator];
 	}
 
 	/** to get the realvalues for the given value
@@ -1216,7 +1293,7 @@ class CustomView extends CRMEntity {
 
 				if ($status == CV_STATUS_DEFAULT) {
 					$log->debug('status=0');
-					if ($action == 'ListView' || $action == $module . 'Ajax' || $action == 'index' || $action == 'DetailView') {
+					if ($action == 'ListView' || $action == $module . 'Ajax' || $action == 'index' || $action == 'DetailView' || $action == 'Export') {
 						$permission = 'yes';
 					} else {
 						$permission = 'no';
@@ -1229,7 +1306,7 @@ class CustomView extends CRMEntity {
 						$permission = 'yes';
 					} elseif ($status == CV_STATUS_PUBLIC) {
 						$log->debug('status=3');
-						if ($action == 'ListView' || $action == $module . 'Ajax' || $action == 'index' || $action == 'DetailView') {
+						if ($action == 'ListView' || $action == $module . 'Ajax' || $action == 'index' || $action == 'DetailView' || $action == 'Export') {
 							$permission = 'yes';
 						} else {
 							$user_array = getRoleAndSubordinateUserIds($current_user->column_fields['roleid']);

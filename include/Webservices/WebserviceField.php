@@ -290,6 +290,10 @@ class WebserviceField {
 		$this->referenceList = $referenceList;
 	}
 
+	public function setUIType($uitype) {
+		$this->uitype = $uitype;
+	}
+
 	public function getTableFields() {
 		$tableFields = null;
 		if (isset(WebserviceField::$tableMeta[$this->getTableName()])) {

@@ -52,7 +52,7 @@ class corebos_smtp {
 	public function initGlobalScope() {
 		global $adb, $current_user;
 
-		$result = $adb->pquery("SELECT * FROM vtiger_mail_accounts WHERE user_id=?", array($current_user->id));
+		$result = $adb->pquery('SELECT * FROM vtiger_mail_accounts WHERE user_id=?', array($current_user->id));
 		if ($adb->num_rows($result)) {
 			// for Incoming Mail Server
 			$this->ic_mail_server_name = trim($adb->query_result($result, 0, 'mail_servername'));
@@ -100,10 +100,10 @@ class corebos_smtp {
 			$focus = new Users();
 			$ic_server_encrypted_password=$focus->changepassword($server_password);
 
-			$result = $adb->pquery('select * from vtiger_mail_accounts where user_id = ?', array($current_user->id));
+			$result = $adb->pquery('select 1 from vtiger_mail_accounts where user_id=?', array($current_user->id));
 		if ($adb->num_rows($result) > 0) {
 			$sql='update vtiger_mail_accounts set display_name=?, mail_id=?, mail_protocol=?, mail_username=?, mail_password=?, mail_servername=?,
-				box_refresh=?, mails_per_page=?, ssltype=? , sslmeth=?, status =?, og_server_status=? where user_id='.$current_user->id;
+				box_refresh=?, mails_per_page=?, ssltype=? , sslmeth=?, status=?, og_server_status=? where user_id='.$current_user->id;
 			$params = array(
 				$displayname,
 				$server_username,
@@ -166,7 +166,7 @@ class corebos_smtp {
 		$focus = new Users();
 		$og_server_encrypted_password=$focus->changepassword($og_server_password);
 
-		$result = $adb->pquery('select * from vtiger_mail_accounts where user_id = ?', array($current_user->id));
+		$result = $adb->pquery('select 1 from vtiger_mail_accounts where user_id=?', array($current_user->id));
 		if ($adb->num_rows($result) > 0) {
 			$sql='update vtiger_mail_accounts set og_server_name=?, og_server_username=?, og_server_password=?, og_smtp_auth=?, og_server_port=?,
 				og_server_status=?, status=? where user_id ='.$current_user->id;

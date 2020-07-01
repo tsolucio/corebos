@@ -139,4 +139,31 @@ function __cb_readMessage($arr) {
 	$msg = $cbmq->getMessage($channel, 'wfmessagereader', 'workflow');
 	return $msg['information'];
 }
+
+function __cb_evaluateRule($arr) {
+	global $logbg;
+	if (count($arr)<2 || empty($arr[0])) {
+		return 0;
+	}
+	if (!is_object($arr[1])) {
+		return 0;
+	}
+	$env = $arr[1];
+	$data = $env->getData();
+	list($wsid,$crmid) = explode('x', $data['id']);
+	$context = $env->WorkflowContext;
+	$context['record_id'] = $crmid;
+	$result = 0;
+	try {
+		$result = coreBOS_Rule::evaluate($arr[0], $context);
+	} catch (\Exception $e) {
+		$logbg->debug(array(
+			'Rule: '.$arr[0],
+			$e->getCode(),
+			$e->getMessage(),
+			$context
+		));
+	}
+	return $result;
+}
 ?>

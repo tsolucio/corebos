@@ -327,6 +327,8 @@ $smarty->assign('CHECK', $check_button);
 $smarty->assign('LISTID', (isset($_REQUEST['idlist']) ? vtlib_purify($_REQUEST['idlist']) : ''));
 
 $smarty->assign('EMail_Maximum_Number_Attachments', GlobalVariable::getVariable('EMail_Maximum_Number_Attachments', 6));
+$smarty->assign('SEND_INDIVIDUAL_EMAILS', GlobalVariable::getVariable('EMail_Send_Individual', 1));
+$smarty->assign('MERGE_TEMPLATE_WITH', (isset($_REQUEST['mergewith']) ? vtlib_purify($_REQUEST['mergewith']) : ''));
 
 $smarty->display('ComposeEmail.tpl');
 ?>

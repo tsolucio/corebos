@@ -1187,7 +1187,6 @@ class Products extends CRMEntity {
 		);
 		$tbl_field_arr = array(
 			'vtiger_productcomponent'=>'productcomponentid',
-			'vtiger_seproductsrel'=>'crmid',
 			'vtiger_seattachmentsrel'=>'attachmentsid',
 			'vtiger_inventoryproductrel'=>'id',
 			'vtiger_pricebookproductrel'=>'pricebookid',
@@ -1195,7 +1194,6 @@ class Products extends CRMEntity {
 		);
 		$entity_tbl_field_arr = array(
 			'vtiger_productcomponent'=>'topdo',
-			'vtiger_seproductsrel'=>'crmid',
 			'vtiger_seattachmentsrel'=>'crmid',
 			'vtiger_inventoryproductrel'=>'productid',
 			'vtiger_pricebookproductrel'=>'productid',
@@ -1279,10 +1277,10 @@ class Products extends CRMEntity {
 		return $query;
 	}
 
-	/*
+	/**
 	 * Function to get the relation tables for related modules
-	 * @param - $secmodule secondary module name
-	 * returns the array with table names and fieldnames storing relations between module and this module
+	 * @param string secondary module name
+	 * @return array with table and field names storing relations between secondary module and this module
 	 */
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
@@ -1295,12 +1293,12 @@ class Products extends CRMEntity {
 			'Accounts' => array('vtiger_seproductsrel'=>array('productid','crmid'),'vtiger_products'=>'productid'),
 			'Contacts' => array('vtiger_seproductsrel'=>array('productid','crmid'),'vtiger_products'=>'productid'),
 			'Potentials' => array('vtiger_seproductsrel'=>array('productid','crmid'),'vtiger_products'=>'productid'),
-			'Products' => array('vtiger_products'=>array('productid','product_id'),'vtiger_products'=>'productid'),
 			'PriceBooks' => array('vtiger_pricebookproductrel'=>array('productid','pricebookid'),'vtiger_products'=>'productid'),
 			'Documents' => array('vtiger_senotesrel'=>array('crmid','notesid'),'vtiger_products'=>'productid'),
 		);
 		return isset($rel_tables[$secmodule]) ? $rel_tables[$secmodule] : '';
 	}
+
 	// Function to unlink all the dependent entities of the given Entity by Id
 	public function unlinkDependencies($module, $id) {
 		//Backup Campaigns-Product Relation

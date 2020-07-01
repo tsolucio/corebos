@@ -163,12 +163,21 @@ class HelpDesk extends CRMEntity {
 		$log->debug('> insertIntoTicketCommentTable');
 
 		$current_time = $adb->formatDate(date('Y-m-d H:i:s'), true);
-		if ($this->column_fields['from_portal'] != 1) {
+		$isFromPortal = ((isset($_REQUEST['__WS_FROM_PORTAL']) && $_REQUEST['__WS_FROM_PORTAL']==1) || $this->column_fields['from_portal'] == 1);
+		if (!$isFromPortal) {
 			$ownertype = 'user';
 			$ownerId = $current_user->id;
 		} else {
 			$ownertype = 'customer';
-			$ownerId = (!empty($this->column_fields['__portal_contact']) ? $this->column_fields['__portal_contact'] : $this->column_fields['parent_id']);
+			if (empty($this->column_fields['__portal_contact'])) {
+				if (empty($_REQUEST['__WS_PORTAL_CONTACT'])) {
+					$ownerId = $this->column_fields['parent_id'];
+				} else {
+					$ownerId = $_REQUEST['__WS_PORTAL_CONTACT'];
+				}
+			} else {
+				$ownerId = $this->column_fields['__portal_contact'];
+			}
 		}
 
 		$comment = $this->column_fields['comments'];

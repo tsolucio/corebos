@@ -19,7 +19,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 	if (!empty($oRep->related_modules[$oReport->primodule])) {
 		foreach ($oRep->related_modules[$oReport->primodule] as $value) {
 			if (isset($_REQUEST['secondarymodule_'.$value])) {
-				$secondarymodules []= $_REQUEST['secondarymodule_'.$value];
+				$secondarymodules[]= $_REQUEST['secondarymodule_'.$value];
 			}
 		}
 	}

@@ -220,7 +220,7 @@ class Calendar4You extends CRMEntity {
 				'status' => $status,
 				'checked'=>$user_checked
 			);
-			$return_data [$userid]= $user_array;
+			$return_data[$userid]= $user_array;
 			unset($User_Colors, $User_Colors_Palette);
 		}
 		return $return_data;

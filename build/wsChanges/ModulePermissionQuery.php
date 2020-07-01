@@ -18,7 +18,7 @@ $operationInfo = array(
 	'include' => 'include/Webservices/ModulePermissionQuery.php',
 	'handler' => 'cbwsModulePermissionQuery',
 	'prelogin'=> 0,
-	'type'    => 'GETT',
+	'type'    => 'GET',
 	'parameters' => array(
 		array('name' => 'module', 'type' => 'String'),
 	)

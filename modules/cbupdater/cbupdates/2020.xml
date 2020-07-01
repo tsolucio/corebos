@@ -175,4 +175,60 @@
 	<classname>addExeWFExpTask</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Change web service Query method to return total number of rows</description>
+	<filename>build/changeSets/2020/changeWSQueryMethod.php</filename>
+	<classname>changeWSQueryMethod</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>fatjola</author>
+	<description>Add Clickatell Notification Driver</description>
+	<filename>build/changeSets/2020/notificationdriversClickatell.php</filename>
+	<classname>notificationdriversClickatell</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Increment field columnname metadata size</description>
+	<filename>build/changeSets/2020/incFieldColumnMetadatasize.php</filename>
+	<classname>incFieldColumnMetadatasize</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Make picklist_translations an Application change set</description>
+	<filename>build/changeSets/2020/makepicklist_translationsApp.php</filename>
+	<classname>makepicklist_translationsApp</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Set Sales Order recurring dates to empty on create</description>
+	<filename>build/changeSets/2020/setSODates2Empty.php</filename>
+	<classname>setSODates2Empty</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Business Action types for Hidden HTML</description>
+	<filename>build/changeSets/2020/addBAtypesForHiddenHTML.php</filename>
+	<classname>addBAtypesForHiddenHTML</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete old mobile webserivice API</description>
+	<filename>build/changeSets/2020/deloldwsmobileapi.php</filename>
+	<classname>deloldwsmobileapi</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add web service support for ModTracker as an actor module</description>
+	<filename>build/changeSets/2020/addWSModTrackerActor.php</filename>
+	<classname>addWSModTrackerActor</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

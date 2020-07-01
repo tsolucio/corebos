@@ -320,8 +320,8 @@ class crmtogo_WS_Utils {
 					$datetimeevent=$_REQUEST['datetime'];
 				if (empty($datetimeevent)) {
 					$stdate = new DateTimeField(date('Y-m-d').' '.date('H:i'));
-					$datestoconsider ['start'] = date('Y-m-d');
-					$datestoconsider ['tstart'] = $stdate->getDisplayTime();
+					$datestoconsider['start'] = date('Y-m-d');
+					$datestoconsider['tstart'] = $stdate->getDisplayTime();
 					$duration = GlobalVariable::getVariable('Calendar_other_default_duration', 1, 'cbCalendar') * 60;
 					$startparts = $stdate->getDisplayDateTimeValueComponents();
 					$datetime_end = date(
@@ -329,14 +329,14 @@ class crmtogo_WS_Utils {
 						mktime($startparts['hour'], $startparts['minute']+$duration, $startparts['second'], $startparts['month'], $startparts['day'], $startparts['year'])
 					);
 					list($dend,$tend) = explode(' ', $datetime_end);
-					$datestoconsider ['end'] = $dend;
-					$datestoconsider ['tend'] = $tend;
+					$datestoconsider['end'] = $dend;
+					$datestoconsider['tend'] = $tend;
 				} else {
 					$strDate = substr($datetimeevent, 4, 11);
 					$dstart = date('Y-m-d', strtotime($strDate));
 					$stdate = new DateTimeField($dstart.' '.date('H:i'));
-					$datestoconsider ['start'] = date('Y-m-d', strtotime($strDate));
-					$datestoconsider ['tstart'] = $stdate->getDisplayTime();
+					$datestoconsider['start'] = date('Y-m-d', strtotime($strDate));
+					$datestoconsider['tstart'] = $stdate->getDisplayTime();
 					$duration = GlobalVariable::getVariable('Calendar_other_default_duration', 1, 'cbCalendar') * 60;
 					$startparts = $stdate->getDisplayDateTimeValueComponents();
 					$datetime_end = date(
@@ -344,8 +344,8 @@ class crmtogo_WS_Utils {
 						mktime($startparts['hour'], $startparts['minute']+$duration, $startparts['second'], $startparts['month'], $startparts['day'], $startparts['year'])
 					);
 					list($dend,$tend) = explode(' ', $datetime_end);
-					$datestoconsider ['end'] = $dend;
-					$datestoconsider ['tend'] = $tend;
+					$datestoconsider['end'] = $dend;
+					$datestoconsider['tend'] = $tend;
 				}
 			}
 			foreach ($describeInfo['fields'] as $index => $fieldInfo) {
@@ -358,21 +358,21 @@ class crmtogo_WS_Utils {
 						$fieldInfo['type']['defaultValue'] = $fieldInfo['type']['picklistValues'][0]['value'];
 					}
 				} elseif ($fieldInfo['name'] == 'date_start') {
-					$fieldInfo['default'] = $datestoconsider ['start'];
+					$fieldInfo['default'] = $datestoconsider['start'];
 				} elseif ($fieldInfo['name'] == 'time_start') {
-					$fieldInfo['default'] = $datestoconsider ['tstart'];
+					$fieldInfo['default'] = $datestoconsider['tstart'];
 				} elseif ($fieldInfo['name'] == 'due_date') {
-					$fieldInfo['default'] = $datestoconsider ['end'];
+					$fieldInfo['default'] = $datestoconsider['end'];
 				} elseif ($fieldInfo['name'] == 'time_end') {
-					$fieldInfo['default'] = $datestoconsider ['tend'];
+					$fieldInfo['default'] = $datestoconsider['tend'];
 				}
 				$describeInfo['fields'][$index] = $fieldInfo;
 			}
 		} elseif ($module == 'Timecontrol') {
 			if (isset($_REQUEST['_operation']) && $_REQUEST['_operation']=='create') {
 				$stdate = new DateTimeField(date('Y-m-d').' '.date('H:i'));
-				$datestoconsider ['start'] = date('Y-m-d');
-				$datestoconsider ['tstart'] = $stdate->getDisplayTime();
+				$datestoconsider['start'] = date('Y-m-d');
+				$datestoconsider['tstart'] = $stdate->getDisplayTime();
 			}
 			foreach ($describeInfo['fields'] as $index => $fieldInfo) {
 				if (isset($fieldInfo['uitype'])) {
@@ -384,9 +384,9 @@ class crmtogo_WS_Utils {
 						$fieldInfo['type']['defaultValue'] = $fieldInfo['type']['picklistValues'][0]['value'];
 					}
 				} elseif ($fieldInfo['name'] == 'date_start') {
-					$fieldInfo['default'] = $datestoconsider ['start'];
+					$fieldInfo['default'] = $datestoconsider['start'];
 				} elseif ($fieldInfo['name'] == 'time_start') {
-					$fieldInfo['default'] = $datestoconsider ['tstart'];
+					$fieldInfo['default'] = $datestoconsider['tstart'];
 				}
 				$describeInfo['fields'][$index] = $fieldInfo;
 			}
@@ -637,15 +637,15 @@ class crmtogo_WS_Utils {
 		$result = $db->pquery($sql, array($documentid[1]));
 		$noofrows = $db->num_rows($result);
 		if ($noofrows >0) {
-			$documentrecord ['filename'] = $db->query_result($result, 0, 'filename');
-			$documentrecord ['filetype'] = $db->query_result($result, 0, 'filetype');
-			$documentrecord ['fileversion'] = $db->query_result($result, 0, 'fileversion');
-			$documentrecord ['filedownloadcount'] = $db->query_result($result, 0, 'filedownloadcount');
-			$documentrecord ['notecontent'] = $db->query_result($result, 0, 'notecontent');
-			$documentrecord ['filesize'] = $db->query_result($result, 0, 'filesize');
-			$documentrecord ['attachmentinfo']['path'] = $db->query_result($result, 0, 'path');
-			$documentrecord ['attachmentinfo']['attachmentsid'] = $db->query_result($result, 0, 'attachmentsid');
-			$documentrecord ['attachmentinfo']['attachmentname'] = $documentrecord ['filename'];
+			$documentrecord['filename'] = $db->query_result($result, 0, 'filename');
+			$documentrecord['filetype'] = $db->query_result($result, 0, 'filetype');
+			$documentrecord['fileversion'] = $db->query_result($result, 0, 'fileversion');
+			$documentrecord['filedownloadcount'] = $db->query_result($result, 0, 'filedownloadcount');
+			$documentrecord['notecontent'] = $db->query_result($result, 0, 'notecontent');
+			$documentrecord['filesize'] = $db->query_result($result, 0, 'filesize');
+			$documentrecord['attachmentinfo']['path'] = $db->query_result($result, 0, 'path');
+			$documentrecord['attachmentinfo']['attachmentsid'] = $db->query_result($result, 0, 'attachmentsid');
+			$documentrecord['attachmentinfo']['attachmentname'] = $documentrecord['filename'];
 		}
 		return $documentrecord;
 	}
@@ -656,9 +656,9 @@ class crmtogo_WS_Utils {
 		$db = PearDatabase::getInstance();
 		$result = $db->pquery('SELECT * FROM berli_crmtogo_defaults', array());
 		$config = array ();
-		$config ['language'] = $default_language;
-		$config ['fetch_limit'] = $db->query_result($result, 0, 'fetch_limit');
-		$config ['theme'] = $db->query_result($result, 0, 'defaulttheme');
+		$config['language'] = $default_language;
+		$config['fetch_limit'] = $db->query_result($result, 0, 'fetch_limit');
+		$config['theme'] = $db->query_result($result, 0, 'defaulttheme');
 		//Get organizations details
 		$companyDetails = retrieveCompanyDetails();
 		$config['company_name'] = $companyDetails['companyname'];
@@ -672,9 +672,9 @@ class crmtogo_WS_Utils {
 		$result = $db->pquery('SELECT * FROM berli_crmtogo_config  where crmtogouser = ?', array($userid));
 		if ($db->num_rows($result) >0) {
 			$config = array ();
-			$config ['NavigationLimit'] = $db->query_result($result, 0, 'navi_limit');
-			$config ['theme'] = $db->query_result($result, 0, 'theme_color');
-			$config ['compactcalendar'] = $db->query_result($result, 0, 'compact_cal');
+			$config['NavigationLimit'] = $db->query_result($result, 0, 'navi_limit');
+			$config['theme'] = $db->query_result($result, 0, 'theme_color');
+			$config['compactcalendar'] = $db->query_result($result, 0, 'compact_cal');
 		} else {
 			//initialize config for new user by taking admin config
 			$result = $db->pquery('SELECT * FROM berli_crmtogo_config where crmtogouser = 1', array());
@@ -685,9 +685,9 @@ class crmtogo_WS_Utils {
 				$navi_limit = $db->query_result($result, $i, 'navi_limit');
 				$theme = $db->query_result($result, $i, 'theme_color');
 				$compact_cal = $db->query_result($result, $i, 'compact_cal');
-				$config ['NavigationLimit'] = $navi_limit;
-				$config ['theme'] = $theme;
-				$config ['compactcalendar'] = $compact_cal;
+				$config['NavigationLimit'] = $navi_limit;
+				$config['theme'] = $theme;
+				$config['compactcalendar'] = $compact_cal;
 				$db->pquery($incl_sql, array($userid,$navi_limit, $theme,$compact_cal));
 			}
 		}

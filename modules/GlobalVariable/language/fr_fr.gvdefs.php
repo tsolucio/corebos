@@ -377,6 +377,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'OFF | {Business Map ID} | UPDATE',
 	'definition' => 'What to show in page header sub title. Nothing (OFF), the result of a Business Map or the default Updated text.',
 ),
+'Application_EditView_Submit_Form_WithEnter' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Whether to submit edit form (1) or not (0) when the ENTER key is pressed. By default it does not submit.',
+),
 'Application_Upload_MaxSize' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Entier',
@@ -474,6 +481,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '',
 	'definition' => 'Seuil limite du nombre d\'enregistrements à importer d\'un coup. Si le nombre d\'enregistrements est supéieur à ce seuil alors l\'importation est programmée sous forme de cron job. La valeur par défaut est (1000) enregistrements',
+),
+'Import_Launch_EventsAndWorkflows' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'yes | no',
+	'definition' => 'Launch events and workflows when importing records. Default value is no',
 ),
 'Export_Field_Separator_Symbol' => array(
 	'status' => 'Implemented',
@@ -1160,6 +1174,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'Apply or not a strict clean of the HTML we receive from the compose email body. The default is to apply a less strict clean (1).',
+),
+'EMail_Send_Individual' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Send separate, individual emails to each recipient instead of one email to all. This is the default behavior of the application.',
 ),
 'Workflow_Send_Email_ToCCBCC' => array(
 	'status' => 'Implémenté',

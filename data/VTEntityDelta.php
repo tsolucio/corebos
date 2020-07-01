@@ -142,7 +142,7 @@ class VTEntityDelta extends VTEventHandler {
 	}
 
 	public function getOldEntity($moduleName, $recordId) {
-		return (isset(self::$oldEntity[$moduleName]) ? self::$oldEntity[$moduleName][$recordId] : '');
+		return (isset(self::$oldEntity[$moduleName]) && isset(self::$oldEntity[$moduleName][$recordId]) ? self::$oldEntity[$moduleName][$recordId] : '');
 	}
 
 	public function getNewEntity($moduleName, $recordId) {

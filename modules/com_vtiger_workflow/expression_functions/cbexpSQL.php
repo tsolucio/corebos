@@ -58,6 +58,7 @@ function cbexpsql_supportedFunctions() {
 		'max' => 'max(fieldname)',
 		'avg' => 'avg(fieldname)',
 		'count' => 'count(fieldname)',
+		'group_concat' => 'group_concat(fieldname)',
 		'aggregation'=>'aggregation(operation,RelatedModule,relatedFieldToAggregate,conditions)',
 		'aggregation_fields_operation'=>'aggregation_fields_operation(operation,RelatedModule,relatedFieldsToAggregateWithOperation,conditions)',
 		'aggregate_time' => 'aggregate_time(relatedModuleName, relatedModuleField, conditions)',
@@ -435,6 +436,11 @@ function cbexpsql_avg($arr, $mmodule) {
 function cbexpsql_count($arr, $mmodule) {
 	return __cbexpsql_functionparams('COUNT', $arr, $mmodule);
 }
+
+function cbexpsql_groupconcat($arr, $mmodule) {
+	return __cbexpsql_functionparams('GROUP_CONCAT', $arr, $mmodule);
+}
+
 function cbexpsql_number_format($arr, $mmodule) {
 	if (count($arr)>0) {
 		$number = $arr[0];

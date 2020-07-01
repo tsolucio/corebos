@@ -366,28 +366,28 @@ class ReportRun extends CRMEntity {
 		return $queryColumn;
 	}
 
-	/** Function to get selectedcolumns for the given reportid
-	 *  @ param $reportid : Type Integer
-	 *  returns the query of columnlist for the selected columns
+	/** Function to get selected columns for the given report
+	 *  @param integer report id
+	 *  @return string query of columnlist for the selected columns
 	 */
 	public function getSelectedColumnsList($reportid) {
 		global $adb, $log;
 
-		$ssql = "select vtiger_selectcolumn.* from vtiger_report inner join vtiger_selectquery on vtiger_selectquery.queryid = vtiger_report.queryid";
-		$ssql .= " left join vtiger_selectcolumn on vtiger_selectcolumn.queryid = vtiger_selectquery.queryid where vtiger_report.reportid = ? ";
-		$ssql .= " order by vtiger_selectcolumn.columnindex";
+		$scsql = 'select vtiger_selectcolumn.* from vtiger_report inner join vtiger_selectquery on vtiger_selectquery.queryid = vtiger_report.queryid';
+		$scsql .= ' left join vtiger_selectcolumn on vtiger_selectcolumn.queryid = vtiger_selectquery.queryid where vtiger_report.reportid=?';
+		$scsql .= ' order by vtiger_selectcolumn.columnindex';
 
-		$result = $adb->pquery($ssql, array($reportid));
+		$result = $adb->pquery($scsql, array($reportid));
 		$noofrows = $adb->num_rows($result);
-
-		if ($this->orderbylistsql != "") {
-			$sSQL .= $this->orderbylistsql.", ";
+		$sSQL = '';
+		if ($this->orderbylistsql != '') {
+			$sSQL .= $this->orderbylistsql.', ';
 		}
-
+		$sSQLList = array();
 		for ($i=0; $i<$noofrows; $i++) {
-			$fieldcolname = $adb->query_result($result, $i, "columnname");
+			$fieldcolname = $adb->query_result($result, $i, 'columnname');
 			$ordercolumnsequal = true;
-			if ($fieldcolname != "") {
+			if ($fieldcolname != '') {
 				for ($j=0; $j<count($this->orderbylistcolumns); $j++) {
 					if ($this->orderbylistcolumns[$j] == $fieldcolname) {
 						$ordercolumnsequal = false;
@@ -397,15 +397,15 @@ class ReportRun extends CRMEntity {
 					}
 				}
 				if ($ordercolumnsequal) {
-					$selectedfields = explode(":", $fieldcolname);
-					if ($selectedfields[0] == "vtiger_crmentity".$this->primarymodule) {
-						$selectedfields[0] = "vtiger_crmentity";
+					$selectedfields = explode(':', $fieldcolname);
+					if ($selectedfields[0] == 'vtiger_crmentity'.$this->primarymodule) {
+						$selectedfields[0] = 'vtiger_crmentity';
 					}
-					$sSQLList[] = $selectedfields[0].".".$selectedfields[1]." '".$selectedfields[2]."'";
+					$sSQLList[] = $selectedfields[0].'.'.$selectedfields[1]." '".$selectedfields[2]."'";
 				}
 			}
 		}
-		$sSQL .= implode(",", $sSQLList);
+		$sSQL .= implode(',', $sSQLList);
 
 		$log->debug('ReportRun :: getSelectedColumnsList'.$reportid);
 		return $sSQL;
@@ -1040,7 +1040,7 @@ class ReportRun extends CRMEntity {
 
 		$result = $adb->pquery($sreportstdfiltersql, array($reportid));
 		$noofrows = $adb->num_rows($result);
-
+		$sSQL = '';
 		for ($i=0; $i<$noofrows; $i++) {
 			$fieldcolname = $adb->query_result($result, $i, 'datecolumnname');
 			$datefilter = $adb->query_result($result, $i, 'datefilter');
@@ -1182,10 +1182,10 @@ class ReportRun extends CRMEntity {
 		return $selectedfield;
 	}
 
-	/** function to get the selectedorderbylist for the given reportid
-	 *  @ param $reportid : type integer
-	 *  this returns the columns query for the sortorder columns
-	 *  this function also sets the return value in the class variable $this->orderbylistsql
+	/** function to get the selected orderby list for the given reportid
+	 *  @param integer report id
+	 *  @return string orderby clause for the sort order columns
+	 *  @sideeffect this function also sets the return value in the class variable $this->orderbylistsql
 	 */
 	public function getSelectedOrderbyList($reportid) {
 		global $adb, $log;
@@ -1196,7 +1196,8 @@ class ReportRun extends CRMEntity {
 
 		$result = $adb->pquery($sreportsortsql, array($reportid));
 		$noofrows = $adb->num_rows($result);
-
+		$sSQL = '';
+		$n = 0;
 		for ($i=0; $i<$noofrows; $i++) {
 			$fieldcolname = $adb->query_result($result, $i, 'columnname');
 			$sortorder = $adb->query_result($result, $i, 'sortorder');
@@ -1210,7 +1211,7 @@ class ReportRun extends CRMEntity {
 			if ($fieldcolname != 'none') {
 				$this->orderbylistcolumns[] = $fieldcolname;
 				$n = $n + 1;
-				$selectedfields = explode(":", $fieldcolname);
+				$selectedfields = explode(':', $fieldcolname);
 				if ($n > 1) {
 					$sSQL .= ', ';
 					$this->orderbylistsql .= ', ';
@@ -2491,6 +2492,9 @@ class ReportRun extends CRMEntity {
 							} else {
 								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
 							}
+							if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' || substr($arraykey, 0, 18)=='TCTotals_TotalTime') {
+								$conv_value=$keyhdr[$arraykey];
+							}
 								$totalpdf[$rowcount][$arraykey] = $conv_value;
 						} else {
 								$totalpdf[$rowcount][$arraykey] = '';
@@ -2851,6 +2855,9 @@ class ReportRun extends CRMEntity {
 								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
 							} else {
 								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
+							}
+							if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' || substr($arraykey, 0, 18)=='TCTotals_TotalTime') {
+								$conv_value=$keyhdr[$arraykey];
 							}
 							$coltotalhtml .= "<td class='rptTotal'>".$conv_value.'</td>';
 						} else {
@@ -3399,6 +3406,29 @@ class ReportRun extends CRMEntity {
 						if ($current_user->currency_decimal_separator!='.') {
 							$value = str_replace($current_user->currency_decimal_separator, '.', $value);
 						}
+						// FIXME - When we are adding only hours, fills DateTime return exception on more than 24 hours
+						// if (substr($hdr, 0, 21)=='Timecontrol_TotalTime' || substr($hdr, 0, 18)=='TCTotals_TotalTime') {
+						// 		if ($value!='-') {
+						// 			if (strpos($value, ':')>0 && (strpos($value, '-')===false)) {
+						// 				// only time, no date
+						// 				$value = '25:00:00';
+						// 				$dt = new DateTime("1970-01-01 $value");
+						// 			} elseif (strpos($value, ':')>0 && (strpos($value, '-')>0)) {
+						// 				// date and time
+						// 				$dt = new DateTime($value);
+						// 				$datetime = true;
+						// 			} else {
+						// 				$value = DateTimeField::__convertToDBFormat($value, $current_user->date_format);
+						// 				$dt = new DateTime($value);
+						// 			}
+						// 			$value = \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel($value);
+						// 		}
+						// 	$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_NUMERIC);
+						// 	$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_TIME4);
+						// }else{
+						// 	$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_NUMERIC);
+						// }
+						//REPLACE THIS LINE BY ABOVE WHEN FIXED
 						$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_NUMERIC);
 						$count = $count + 1;
 					}

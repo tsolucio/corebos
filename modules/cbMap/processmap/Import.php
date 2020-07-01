@@ -371,10 +371,10 @@ class Import extends processcbMap {
 	private function doImportcoreBOS($arguments) {
 		global $current_user, $VTIGER_BULK_SAVE_MODE, $adb;
 		$previousBulkSaveMode = isset($VTIGER_BULK_SAVE_MODE) ? $VTIGER_BULK_SAVE_MODE : false;
-		$VTIGER_BULK_SAVE_MODE = true;
 		require_once 'modules/Import/api/Request.php';
 		include_once 'modules/Import/controllers/Import_Controller.php';
 		$rs = $adb->pquery('select module,field_mapping,defaultvalues from vtiger_import_maps where id=?', array($this->mapping['mapid']));
+		$VTIGER_BULK_SAVE_MODE = (GlobalVariable::getVariable('Import_Launch_EventsAndWorkflows', 'no', $rs->fields['module'])=='no'); //true;
 		$requestArray = array(
 			'module' => $rs->fields['module'],
 			'action' => 'Import',

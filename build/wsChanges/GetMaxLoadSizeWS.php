@@ -14,10 +14,10 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'getMaxLoadSize',
-	 'include' => 'include/Webservices/getmaxloadsize.php',
-	 'handler' => 'get_maxloadsize',
-	 'prelogin'=> 0,
-	 'type'    => 'POST',
-	 'parameters' => array()
+	'name'    => 'getMaxLoadSize',
+	'include' => 'include/Webservices/getmaxloadsize.php',
+	'handler' => 'get_maxloadsize',
+	'prelogin'=> 0,
+	'type'    => 'POST',
+	'parameters' => array()
 );

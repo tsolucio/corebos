@@ -44,12 +44,12 @@ class SmsHosting implements ISMSProvider {
 	}
 
 	public function setParameter($key, $value) {
-		$this->_parameters [ $key ] = $value;
+		$this->_parameters[$key] = $value;
 	}
 
 	public function getParameter($key, $defvalue = false) {
-		if (isset($this->_parameters [ $key ])) {
-			return $this->_parameters [ $key ] ;
+		if (isset($this->_parameters[$key])) {
+			return $this->_parameters[$key] ;
 		}
 		return $defvalue;
 	}
@@ -73,75 +73,75 @@ class SmsHosting implements ISMSProvider {
 	}
 
 	protected function prepareParameters() {
-		$params = array ( 'username' => $this->_username, 'password' => $this->_password );
+		$params = array('username' => $this->_username, 'password' => $this->_password);
 		foreach (self::$REQUIRED_PARAMETERS as $key) {
-			$params [ $key ] = $this->getParameter($key);
+			$params[$key] = $this->getParameter($key);
 		}
 		return $params;
 	}
 
 	public function send($message, $tonumbers) {
 		if (!is_array($tonumbers)) {
-			$tonumbers = array ( $tonumbers );
+			$tonumbers = array($tonumbers);
 		}
 
 		$params = $this->prepareParameters();
 
 		# format prefix
-		if ($params [ 'prefix' ]) {
-			$params [ 'prefix' ] = preg_replace('/[^0-9]/', '', $params [ 'prefix' ]);		// prefix has to be numeric (not alphanumeric)...
-			$params [ 'prefix' ] = intval($params [ 'prefix' ]);		//... and integer (without initial 0)
+		if ($params['prefix']) {
+			$params['prefix'] = preg_replace('/[^0-9]/', '', $params['prefix']);		// prefix has to be numeric (not alphanumeric)...
+			$params['prefix'] = intval($params['prefix']);		//... and integer (without initial 0)
 		}
 
 		# add prefix to recipient numbers
 		foreach ($tonumbers as $num) {
-			$key = ( array_keys($tonumbers, $num) );	// $tonumbers array keys extraction
-			$key = $key [ 0 ];		// the key of every different value
+			$key = (array_keys($tonumbers, $num));	// $tonumbers array keys extraction
+			$key = $key[0];		// the key of every different value
 			$num = trim($num);		// delete spaces
 			$num = preg_replace("/[^0-9]/ ", '', $num);		// delete from recipient all chars but numbers ...
-			$num = $params [ 'prefix' ].$num;		// ... add the prefix ...
-			$tonumbers [ $key ] = $num;		// ... recreate recipients array with 'formatted' numbers
+			$num = $params['prefix'].$num;		// ... add the prefix ...
+			$tonumbers[$key] = $num;		// ... recreate recipients array with 'formatted' numbers
 		}
-		$from = $params [ 'from' ] ;	// sender alphanumeric string or number
+		$from = $params['from'] ;	// sender alphanumeric string or number
 
 		$to = implode(',', $tonumbers);
 
 		$response = $this->SmsHosting_SEND($from, $to, $message, null, null);
 		$response = json_decode($response);
 
-		$results = array ( ) ;
+		$results = array() ;
 
 		# response without errors
 		if ($response && !$response->errorCode) {
 			foreach ($response->sms as $sms) {
 				if ($sms->status == "INSERTED") {
-					$result [ 'id' ] = $sms->id;
-					$result [ 'to' ] = $sms->to;
-					$result [ 'error' ] = false;
-					$result [ 'status' ] = self::MSG_STATUS_DISPATCHED;
-					$result ['statusmessage'] = 'sent';
+					$result['id'] = $sms->id;
+					$result['to'] = $sms->to;
+					$result['error'] = false;
+					$result['status'] = self::MSG_STATUS_DISPATCHED;
+					$result['statusmessage'] = 'sent';
 				} else {
-					$result [ 'to' ] = $sms->to;
-					$result [ 'error' ] = true;
-					$result [ 'status' ] = self::MSG_STATUS_FAILED;
-					$result [ 'statusmessage' ] = 'not sent'; // Complete error message
+					$result['to'] = $sms->to;
+					$result['error'] = true;
+					$result['status'] = self::MSG_STATUS_FAILED;
+					$result['statusmessage'] = 'not sent'; // Complete error message
 				}
-				$results [] = $result;
+				$results[] = $result;
 			}
 		} elseif ($response->errorCode != null) {
 			foreach ($tonumbers as $recipient) {
-				$result [ 'to' ] = $recipient;
-				$result [ 'error' ] = true;
-				$result [ 'status' ] = self::MSG_STATUS_FAILED;
-				$result [ 'statusmessage' ] = 'not sent'; // Complete error message
-				$results [] = $result;
+				$result['to'] = $recipient;
+				$result['error'] = true;
+				$result['status'] = self::MSG_STATUS_FAILED;
+				$result['statusmessage'] = 'not sent'; // Complete error message
+				$results[] = $result;
 			}
 		}
 		return $results;
 	}
 
 	public function query($messageid) {
-		$result = array ( 'error' => false, 'needlookup' => 1 );
+		$result = array('error' => false, 'needlookup' => 1);
 		$result['status'] = self::MSG_STATUS_DISPATCHED;
 		$result['needlookup'] = 0;
 		return $result;
@@ -157,16 +157,16 @@ class SmsHosting implements ISMSProvider {
 		// URL Encode
 		$from				= urlencode($from);
 		$to					= urlencode($to);
-		$text					= urlencode($text);
+		$text				= urlencode($text);
 		$statusCallback	= urlencode($statusCallback);
 
 		// Send away!
 		$post = array (
-				'from'				=> $from,
-				'to'					=> $to,
-				'text'					=> $text,
-				'statusCallback'	=> $statusCallback,
-				'type'					=> $containsUnicode ? 'unicode' : 'text'
+			'from'				=> $from,
+			'to'					=> $to,
+			'text'					=> $text,
+			'statusCallback'	=> $statusCallback,
+			'type'					=> $containsUnicode ? 'unicode' : 'text'
 		);
 
 		$complete_uri = $this->getServiceURL(self::SERVICE_SEND);

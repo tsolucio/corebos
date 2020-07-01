@@ -9,7 +9,7 @@
  ********************************************************************************/
 require_once "modules/Faq/Faq.php";
 
-$focus = new FAQ();
+$focus = new Faq();
 //Map the vtiger_fields like ticket column => vtiger_faq column where ticket column is the troubletikcets vtiger_field name & vtiger_faq - column_fields
 $ticket_faq_mapping_fields = array(
 	'title'=>'question',

@@ -38,7 +38,7 @@ $skipCurDBConv = !empty($element['__cbws_skipcurdbconv_pdo']);
 foreach ($pdoInformation as $pdoline) {
 	$i++;
 	$_REQUEST['deleted'.$i]=(isset($pdoline['deleted']) ? $pdoline['deleted'] : 0);
-	$_REQUEST['comment'.$i]=$pdoline['comment'];
+	$_REQUEST['comment'.$i]=(isset($pdoline['comment']) ? $pdoline['comment'] : '');
 	if (strpos($pdoline['productid'], 'x')>0) { // product is in webservice ID format
 		list($void,$pdoline['productid']) = explode('x', $pdoline['productid']);
 	}

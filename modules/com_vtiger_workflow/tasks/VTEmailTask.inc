@@ -149,6 +149,39 @@ class VTEmailTask extends VTTask {
 		if (strlen(trim($to_email, " \t\n,")) == 0 && strlen(trim($cc, " \t\n,")) == 0 && strlen(trim($bcc, " \t\n,")) == 0) {
 			return ;
 		}
+		if (!empty($entity->WorkflowContext['SendThisMsgTemplate'])) {
+			if (strpos($entity->WorkflowContext['SendThisMsgTemplate'], 'x')>0) {
+				list($wsid, $entity->WorkflowContext['SendThisMsgTemplate']) = explode('x', $entity->WorkflowContext['SendThisMsgTemplate']);
+			}
+			$mtrs = $adb->pquery(
+				'select subject,template,templateonlytext
+				from vtiger_msgtemplate
+				inner join vtiger_crmentity on msgtemplateid=crmid
+				where deleted=0 and msgtemplateid=?',
+				array($entity->WorkflowContext['SendThisMsgTemplate'])
+			);
+			if ($mtrs && $adb->num_rows($mtrs)>0) {
+				if (!empty($mtrs->fields['subject'])) {
+					$this->subject = $mtrs->fields['subject'];
+				}
+				if (!empty($mtrs->fields['template'])) {
+					$this->content = $mtrs->fields['template'];
+				}
+				$docrs = $adb->pquery(
+					'select notesid
+					from vtiger_senotesrel
+					inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_senotesrel.notesid
+					where vtiger_crmentity.deleted=0 and vtiger_senotesrel.crmid=?',
+					array($entity->WorkflowContext['SendThisMsgTemplate'])
+				);
+				while (!$docrs->EOF) {
+					$doc = $docrs->FetchRow();
+					if (strpos($this->attachmentids, $doc['notesid'])===false) {
+						$this->attachmentids .= ($this->attachmentids=='' ? $doc['notesid'] : ','.$doc['notesid']);
+					}
+				}
+			}
+		}
 		$this->after_retrieve();
 		if (!empty($this->attfieldnames)) {
 			if (substr($this->attfieldnames, -24) == ' : (Documents) filename)') {

@@ -57,8 +57,6 @@ $smarty->assign('CHECK', $tool_buttons);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 
-$smarty->assign('CHANGE_OWNER', getUserslist());
-$smarty->assign('CHANGE_GROUP_OWNER', getGroupslist());
 if (empty($ERROR_MESSAGE) && !empty($_REQUEST['error_msg'])) {
 	if (isset($_REQUEST['error_msgclass'])) {
 		$ERROR_MESSAGE_CLASS = vtlib_purify($_REQUEST['error_msgclass']);

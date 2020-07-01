@@ -14,7 +14,7 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 
-if (version_compare(phpversion(), '5.4.0') < 0 || version_compare(phpversion(), '7.4.0') >= 0) {
+if (version_compare(phpversion(), '5.4.0') < 0 || version_compare(phpversion(), '7.5.0') >= 0) {
 	header('Content-Type: text/html; charset=UTF-8');
 	$serverPhpVersion = phpversion();
 	require_once 'phpversionfail.php';
@@ -410,7 +410,8 @@ if ($action == 'DetailView') {
 $siteURLParts = parse_url($site_URL);
 $cookieDomain = $siteURLParts['host'];
 if (isset($_SESSION['authenticated_user_id'])) {
-	setcookie('ck_login_id_vtiger', $_SESSION['authenticated_user_id'], 0, null, $cookieDomain, false, true);
+	header('Set-Cookie: ck_login_id_vtiger='.$_SESSION['authenticated_user_id'].'; SameSite=Lax; expires=0; path='.$siteURLParts['path'].'; domain='.$cookieDomain, false);
+	//setcookie('ck_login_id_vtiger', $_SESSION['authenticated_user_id'], 0, null, $cookieDomain, false, true);
 }
 
 if ($_REQUEST['module'] == 'Documents' && $action == 'DownloadFile') {

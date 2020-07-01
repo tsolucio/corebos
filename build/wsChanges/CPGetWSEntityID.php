@@ -14,12 +14,12 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'vtyiicpng_getWSEntityId',
-	 'include' => 'include/Webservices/CustomerPortalWS.php',
-	 'handler' => 'vtyiicpng_getWSEntityId',
-	 'prelogin'=> 0,
-	 'type'    => 'POST',
-	 'parameters' => array(
-		 array('name' => 'entityName','type' => 'String')
-	 )
+	'name'    => 'vtyiicpng_getWSEntityId',
+	'include' => 'include/Webservices/CustomerPortalWS.php',
+	'handler' => 'vtyiicpng_getWSEntityId',
+	'prelogin'=> 0,
+	'type'    => 'POST',
+	'parameters' => array(
+		array('name' => 'entityName','type' => 'String')
+	)
 );

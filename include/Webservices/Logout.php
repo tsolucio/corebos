@@ -8,12 +8,16 @@
  * All Rights Reserved.
  *************************************************************************************/
 
-function vtws_logout($sessionId, $user) {
-	$sessionManager = new SessionManager();
+function vtws_logout($sessionId, $user, $SessionManagerClass = 'SessionManager') {
+	if (gettype($SessionManagerClass)=='string') {
+		$sessionManager = new $SessionManagerClass();
+	} else {
+		$sessionManager = $SessionManagerClass;
+	}
 	if (!coreBOS_Session::isSessionStarted()) {
 		$sessionManager->startSession($sessionId);
 	}
-	if (!isset($sessionId) || !$sessionManager->isValid()) {
+	if (!isset($sessionId) || $sessionId=='' || !$sessionManager->isValid()) {
 		return $sessionManager->getError();
 	}
 

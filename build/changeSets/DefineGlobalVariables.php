@@ -54,6 +54,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_DetailView_Record_Navigation',
 				'Application_DetailView_Sticky_BlockStatus',
 				'Application_DetailView_PageHeader_Message',
+				'Application_EditView_Submit_Form_WithEnter',
 				'Application_TrackerMaxHistory',
 				'Application_Announcement',
 				'Application_Display_World_Clock',
@@ -100,6 +101,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_SendUserPasswordByEmail',
 				'Application_Pagination_Limit',
 				'Application_Popup_Address_Selection',
+				'Application_Unique_Identifier',
 
 				'Graph_DataLabels',
 				'Graph_DataLabels_Color',
@@ -160,6 +162,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Import_Full_CSV',
 				'Import_Batch_Limit',
 				'Import_Scheduled_Limit',
+				'Import_Launch_EventsAndWorkflows',
 				'Export_Field_Separator_Symbol',
 				'Export_RelatedField_GetValueFrom',
 				'Export_RelatedField_NameForSearch',
@@ -193,6 +196,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'EMail_Maximum_Number_Attachments',
 				'EMail_CustomCurrentDate_Format',
 				'EMail_Less_Strict_ContentClean',
+				'EMail_Send_Individual',
 				'MailManager_Show_SentTo_Links',
 				'ToolTip_MaxFieldValueLength',
 				'ToolTip_NumberOfComments',
@@ -242,7 +246,6 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'ip_elastic_indexprefix',
 				'esusername',
 				'espassword',
-
 			);
 			$delete_these = array(
 				'preload_prototype',
@@ -278,6 +281,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'SOAP_Thunderbird_Enabled',
 				'Home_Display_Empty_Blocks',
 				'Gantt_Type',
+				'sockethost',
+				'socketblockedit',
 			);
 			$rename_these = array(
 				'Show_Copy_Adress_Header' => array(

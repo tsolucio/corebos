@@ -36,7 +36,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 
 		$focus2 = CRMEntity::getInstance($origin_module);
 		$focus2->retrieve_entity_info($therecid, $origin_module);
-		$target_fields = $cbMap->WebserviceMapping($focus2->column_fields);
+		$target_fields = $cbMap->WebserviceMapping($focus2->column_fields, $entity->WorkflowContext);
 
 		$wsconfig = $target_fields['WSConfig'];
 		$url = $this->substituteSetting($wsconfig['wsurl']);
@@ -137,19 +137,28 @@ class RunWebserviceWorkflowTask extends VTTask {
 				$conds = array();
 				if ($outputtype == 'JSON') {
 					foreach ($target_fields['Response'] as $fld => $v) {
+						$r2 = '';
 						if (is_array($response2)) {
 							if (strpos($fld, '.')) {
 								list ($elemresponse, $elemfield) = explode('.', $fld);
-								$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2[0]->$elemresponse->$elemfield));
+								if (isset($response2[0]->$elemresponse) && isset($response2[0]->$elemresponse->$elemfield)) {
+									$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2[0]->$elemresponse->$elemfield));
+								}
 							} else {
-								$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2[0]->$fld));
+								if (isset($response2[0]->$fld)) {
+									$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2[0]->$fld));
+								}
 							}
 						} else {
 							if (strpos($fld, '.')) {
 								list ($elemresponse, $elemfield) = explode('.', $fld);
-								$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2->$elemresponse->$elemfield));
+								if (isset($response2->$elemresponse) && isset($response2->$elemresponse->$elemfield)) {
+									$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2->$elemresponse->$elemfield));
+								}
 							} else {
-								$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2->$fld));
+								if (isset($response2->$fld)) {
+									$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2->$fld));
+								}
 							}
 						}
 						if ((string)$r2 == 'null' || is_null($r2)) {

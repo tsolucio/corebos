@@ -774,8 +774,14 @@ class Validator
     {
         $vtime = ($value instanceof \DateTime) ? $value->getTimestamp() : strtotime($value);
         $ptime = ($params[0] instanceof \DateTime) ? $params[0]->getTimestamp() : strtotime($params[0]);
-
         return $vtime > $ptime;
+    }
+
+    protected function validateDateEqualorAfter($field, $value, $params)
+    {
+        $vtime = ($value instanceof \DateTime) ? $value->getTimestamp() : strtotime($value);
+        $ptime = ($params[0] instanceof \DateTime) ? $params[0]->getTimestamp() : strtotime($params[0]);
+        return $vtime >= $ptime;
     }
 
     /**

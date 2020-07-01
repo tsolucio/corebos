@@ -27,6 +27,7 @@
 {literal}
 <form name="EditView" method="POST" ENCTYPE="multipart/form-data" action="index.php" onSubmit="if(email_validate(this.form,'')) { VtigerJS_DialogBox.block();} else { return false; }">
 {/literal}
+<input type="hidden" name="merge_template_with" value="{$MERGE_TEMPLATE_WITH}">
 <input type="hidden" name="send_mail" >
 <input type="hidden" name="contact_id" value="{if isset($CONTACT_ID)}{$CONTACT_ID}{/if}">
 <input type="hidden" name="user_id" value="{if isset($USER_ID)}{$USER_ID}{/if}">
@@ -39,6 +40,8 @@
 <input type="hidden" name="return_module" value="{if isset($RETURN_MODULE)}{$RETURN_MODULE}{/if}">
 <input type="hidden" name="popupaction" value="create">
 <input type="hidden" name="hidden_toid" id="hidden_toid">
+<input type="hidden" name="cbcustominfo1" id="cbcustominfo1" value="{if isset($smarty.request.cbcustominfo1)}{$smarty.request.cbcustominfo1|@urlencode}{/if}" />
+<input type="hidden" name="cbcustominfo2" id="cbcustominfo2" value="{if isset($smarty.request.cbcustominfo2)}{$smarty.request.cbcustominfo2|@urlencode}{/if}" />
 <table class="small mailClient" border="0" cellpadding="0" cellspacing="0" width="100%">
 <tbody>
 	<tr>
@@ -56,7 +59,9 @@
 	<td class="cellText" style="padding: 5px;">
 		<input name="from_email" id="from_email" class="txtBox" type="text" value="{if isset($FROM_MAIL)}{$FROM_MAIL}{/if}" style="width: 525px;" placeholder="{'LeaveEmptyForUserEmail'|@getTranslatedString:'Settings'}">
 	</td>
-	<td class="cellText" style="padding: 5px;" align="left" nowrap></td>
+	<td class="cellText" style="padding: 5px;" align="left" nowrap>
+		<input type="checkbox" name="individual_emails" {if $SEND_INDIVIDUAL_EMAILS eq 1}checked{/if}/>{$MOD.LBL_SEND_INDIVIDUAL_EMAILS}
+	</td>
 	</tr>
 {foreach item=row from=$BLOCKS}
 {foreach item=elements from=$row}

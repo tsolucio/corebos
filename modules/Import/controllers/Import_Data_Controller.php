@@ -179,6 +179,7 @@ class Import_Data_Controller {
 			return;
 		}
 
+		$afterImportRecordExists = method_exists($focus, 'afterImportRecord');
 		$fieldMapping = $this->fieldMapping;
 		$fieldColumnMapping = $moduleMeta->getFieldColumnMapping();
 		$fieldColumnMapping['cbuuid'] = 'cbuuid';
@@ -300,17 +301,21 @@ class Import_Data_Controller {
 					if ($fieldData == null) {
 						$entityInfo = null;
 					} else {
-						$entityInfo = vtws_create($moduleName, $fieldData, $this->user);
-						$entityInfo['status'] = self::$IMPORT_RECORD_CREATED;
-						//Prepare data for event handler
-						$entityData= array();
-						$entityData['rowId'] = $rowId;
-						$entityData['tableName'] = $tableName;
-						$entityData['entityInfo'] = $entityInfo;
-						$entityData['fieldData'] = $fieldData;
-						$entityData['moduleName'] = $moduleName;
-						$entityData['user'] = $this->user;
-						cbEventHandler::do_action('corebos.entity.import.create', $entityData);
+						try {
+							$entityInfo = vtws_create($moduleName, $fieldData, $this->user);
+							$entityInfo['status'] = self::$IMPORT_RECORD_CREATED;
+							//Prepare data for event handler
+							$entityData= array();
+							$entityData['rowId'] = $rowId;
+							$entityData['tableName'] = $tableName;
+							$entityData['entityInfo'] = $entityInfo;
+							$entityData['fieldData'] = $fieldData;
+							$entityData['moduleName'] = $moduleName;
+							$entityData['user'] = $this->user;
+							cbEventHandler::do_action('corebos.entity.import.create', $entityData);
+						} catch (\Throwable $th) {
+							$entityInfo = null;
+						}
 					}
 				}
 			}
@@ -321,6 +326,9 @@ class Import_Data_Controller {
 
 			$this->importedRecordInfo[$rowId] = $entityInfo;
 			$this->updateImportStatus($rowId, $entityInfo);
+			if ($afterImportRecordExists) {
+				$focus->afterImportRecord($rowId, $entityInfo);
+			}
 		}
 		unset($result);
 		return true;
@@ -589,6 +597,7 @@ class Import_Data_Controller {
 	}
 
 	public static function runScheduledImport() {
+		global $VTIGER_BULK_SAVE_MODE;
 		require_once 'modules/Emails/mail.php';
 		require_once 'modules/Emails/Emails.php';
 		global $current_user,$coreBOS_app_name;
@@ -600,6 +609,7 @@ class Import_Data_Controller {
 		foreach ($scheduledImports as $importDataController) {
 			$current_user = $importDataController->user;
 			$importDataController->batchImport = false;
+			$VTIGER_BULK_SAVE_MODE = (GlobalVariable::getVariable('Import_Launch_EventsAndWorkflows', 'no', $importDataController->module)=='no'); //true;
 
 			if (!$importDataController->initializeImport()) {
 				continue;

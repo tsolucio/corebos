@@ -53,9 +53,6 @@ $smarty->assign('CHECK', $tool_buttons);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 
-$smarty->assign('CHANGE_OWNER', getUserslist());
-$smarty->assign('CHANGE_GROUP_OWNER', getGroupslist());
-
 // Custom View
 $customView = new CustomView($currentModule);
 $viewid = $customView->getViewId($currentModule);

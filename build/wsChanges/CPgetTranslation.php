@@ -14,15 +14,15 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'gettranslation',
-	 'include' => 'include/Webservices/GetTranslation.php',
-	 'handler' => 'vtws_gettranslation',
-	 'prelogin'=> 0,
-	 'type'    => 'POST',
-	 'parameters' => array(
-		 array('name' => 'totranslate','type' => 'encoded'),
-		 array('name' => 'language','type' => 'string'),
-		 array('name' => 'module','type' => 'string'),
-	 )
+	'name'    => 'gettranslation',
+	'include' => 'include/Webservices/GetTranslation.php',
+	'handler' => 'vtws_gettranslation',
+	'prelogin'=> 0,
+	'type'    => 'POST',
+	'parameters' => array(
+		array('name' => 'totranslate','type' => 'encoded'),
+		array('name' => 'language','type' => 'string'),
+		array('name' => 'module','type' => 'string'),
+	)
 );
 

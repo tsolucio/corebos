@@ -62,7 +62,6 @@ if ($savemode == 'true') {
 		$og_mail_server_smtp_auth = (empty($_REQUEST['og_mail_server_smtp_auth']) ? '' : vtlib_purify($_REQUEST['og_mail_server_smtp_auth']));
 		$og_mail_server_name = vtlib_purify($_REQUEST['og_mail_server_name']);
 		$og_mail_server_port= (empty($_REQUEST['port']) ? 0 : vtlib_purify($_REQUEST['port']));
-		$og_mail_server_type = '';
 		$og_mail_server_path = '';
 		$ic_mail_server_active = ((empty($_REQUEST['ic_mail_server_active']) || $_REQUEST['ic_mail_server_active']!='on') ? '0' : '1');
 		$smtpconfig->saveOutgoingMailServerConfiguration(
@@ -72,7 +71,6 @@ if ($savemode == 'true') {
 			$og_mail_server_smtp_auth,
 			$og_mail_server_name,
 			$og_mail_server_port,
-			$og_mail_server_type,
 			$og_mail_server_path,
 			$ic_mail_server_active
 		);

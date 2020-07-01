@@ -87,7 +87,7 @@ switch ($focus->column_fields['maptype']) {
 			$testrecord = 74;
 		}
 		$currentModule = getSalesEntityType($testrecord);
-		$mapinfo = (array) $focus->ConditionQuery(74);
+		$mapinfo = (array) $focus->ConditionQuery($testrecord);
 		$currentModule = 'cbMap';
 		$mapinfo['TEST RECORD'] = "<h3>Testing with $testrecord</h3>";
 		break;
@@ -102,7 +102,7 @@ switch ($focus->column_fields['maptype']) {
 		}
 		list($wsid, $crmid) = explode('x', $testrecord);
 		$currentModule = getSalesEntityType($crmid);
-		$mapinfo = (array) $focus->ConditionExpression('11x74');
+		$mapinfo = (array) $focus->ConditionExpression($testrecord);
 		$currentModule = 'cbMap';
 		$mapinfo['TEST RECORD'] = "<h3>Testing with $testrecord</h3>";
 		break;
@@ -195,7 +195,10 @@ switch ($focus->column_fields['maptype']) {
 	case 'Webservice Mapping':
 		$focus2 = CRMEntity::getInstance('Accounts');
 		$focus2->retrieve_entity_info(74, 'Accounts');
-		$mapinfo = $focus->WebserviceMapping($focus2->column_fields);
+		$context = array(
+			'myvariable' => 'my var',
+		);
+		$mapinfo = $focus->WebserviceMapping($focus2->column_fields, $context);
 		break;
 	case 'DecisionTable':
 		$context = array(

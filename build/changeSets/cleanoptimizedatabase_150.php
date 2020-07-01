@@ -31,7 +31,7 @@ class cleanoptimizedatabase_150 extends cbupdaterWorker {
 			$this->ExecuteQuery('ALTER TABLE vtiger_troubletickets CHANGE parent_id parent_id INT(19) NULL', array());
 			$this->ExecuteQuery('ALTER TABLE vtiger_troubletickets CHANGE product_id product_id INT(19) NULL', array());
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}

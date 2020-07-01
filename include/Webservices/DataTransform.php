@@ -279,6 +279,26 @@ class DataTransform {
 		return $row;
 	}
 
+	public static function sanitizeDateFieldsForDB($row, $meta) {
+		global $current_user;
+		$moduleFields = $meta->getModuleFields();
+		foreach ($moduleFields as $fieldName => $fieldObj) {
+			if ($fieldObj->getFieldDataType()=='date') {
+				if (!empty($row[$fieldName])) {
+					$dateFieldObj = new DateTimeField($row[$fieldName]);
+					$row[$fieldName] = $dateFieldObj->getDBInsertDateValue($current_user);
+				}
+			}
+			if ($fieldObj->getFieldDataType()=='datetime') {
+				if (!empty($row[$fieldName])) {
+					$dateFieldObj = new DateTimeField($row[$fieldName]);
+					$row[$fieldName] = substr($dateFieldObj->getDBInsertDateTimeValue(), 0, 16);
+				}
+			}
+		}
+		return $row;
+	}
+
 	public static function sanitizeDateFieldsForInsert($row, $meta) {
 		global $current_user;
 		$moduleFields = $meta->getModuleFields();

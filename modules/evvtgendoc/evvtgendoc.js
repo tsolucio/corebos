@@ -12,7 +12,7 @@
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  */
 function showgendoctemplates(module) {
-	if (jQuery('#allids').val()=='' && jQuery('#allselectedboxes').val()=='') {
+	if (document.getElementById('allids').value=='' && document.getElementById('allselectedboxes').value=='') {
 		alert(alert_arr.SELECT);
 	} else {
 		jQuery.ajax({

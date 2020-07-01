@@ -24,7 +24,9 @@ switch ($op) {
 			include_once 'modules/cbCalendar/cbCalendar.php';
 			cbCalendar::changeStatus($status, $activityid);
 		}
-		include_once 'modules/Vtiger/ListView.php';
+		if (empty($_REQUEST['frommodule']) || $_REQUEST['frommodule']!='calgui') {
+			include_once 'modules/Vtiger/ListView.php';
+		}
 		break;
 	default:
 		break;

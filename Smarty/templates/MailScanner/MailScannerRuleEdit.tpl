@@ -137,6 +137,51 @@
 								<input type="radio" class="small" name="rule_matchusing" value="OR" {$rule_match_or}> {$MOD.LBL_ANY} {$MOD.LBL_CONDITION}
 							</td>
 						</tr>
+						<tr>
+							<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_ACTION}</strong></td>
+							<td width="70%" colspan=2>
+								{assign var="RULEACTIONTEXT" value=""}
+								{if $SCANNERRULE->useaction}
+									{assign var="RULEACTIONTEXT" value=$SCANNERRULE->useaction->actiontext}
+									<input type="hidden" class="small" name="actionid" value="{$SCANNERRULE->useaction->actionid}">
+								{else}
+									<input type="hidden" class="small" name="actionid" value="">
+								{/if}
+
+								<select name="rule_actiontext" id="rule_actiontext" class="small">
+									{* <option value="">-- None --</option> *}{* EMPTY ACTION NOT SUPPORTED *}
+									<option value="CREATE,HelpDesk,FROM" {if $RULEACTIONTEXT eq 'CREATE,HelpDesk,FROM'}selected=true{/if}
+									>{$MOD.LBL_CREATE} {$MOD.LBL_TICKET}</option>
+									<option value="UPDATE,HelpDesk,SUBJECT" {if $RULEACTIONTEXT eq 'UPDATE,HelpDesk,SUBJECT'}selected=true{/if}
+									>{$MOD.LBL_UPDATE} {$MOD.LBL_TICKET}</option>
+									<option value="UPDATE,Project,SUBJECT" {if $RULEACTIONTEXT eq 'UPDATE,Project,SUBJECT'}selected=true{/if}
+									>{$MOD.LBL_UPDATE} {$MOD.LBL_PROJECT}</option>
+									<option value="LINK,Contacts,FROM" {if $RULEACTIONTEXT eq 'LINK,Contacts,FROM'}selected=true{/if}
+									>{$MOD.LBL_ADD} {$MOD.LBL_TO_SMALL} {$MOD.LBL_CONTACT} [{$MOD.LBL_FROM_CAPS}]</option>
+									<option value="LINK,Contacts,TO" {if $RULEACTIONTEXT eq 'LINK,Contacts,TO'}selected=true{/if}
+									>{$MOD.LBL_ADD} {$MOD.LBL_TO_SMALL} {$MOD.LBL_CONTACT} [{$MOD.LBL_TO_CAPS}]</option>
+									<option value="LINK,Contacts,CC" {if $RULEACTIONTEXT eq 'LINK,Contacts,CC'}selected=true{/if}
+									>{$MOD.LBL_ADD} {$MOD.LBL_TO_SMALL} {$MOD.LBL_CONTACT} [{$MOD.LBL_CC}]</option>
+									<option value="LINK,Accounts,FROM" {if $RULEACTIONTEXT eq 'LINK,Accounts,FROM'}selected=true{/if}
+									>{$MOD.LBL_ADD} {$MOD.LBL_TO_SMALL} {$MOD.LBL_ACCOUNT} [{$MOD.LBL_FROM_CAPS}]</option>
+									<option value="LINK,Accounts,TO" {if $RULEACTIONTEXT eq 'LINK,Accounts,TO'}selected=true{/if}
+									>{$MOD.LBL_ADD} {$MOD.LBL_TO_SMALL} {$MOD.LBL_ACCOUNT} [{$MOD.LBL_TO_CAPS}]</option>
+									<option value="LINK,Accounts,CC" {if $RULEACTIONTEXT eq 'LINK,Accounts,CC'}selected=true{/if}
+									>{$MOD.LBL_ADD} {$MOD.LBL_TO_SMALL} {$MOD.LBL_ACCOUNT} [{$MOD.LBL_CC}]</option>
+								</select>
+								<script>{literal}
+									function checkAction() {
+										if (jQuery('#rule_actiontext').val() == 'CREATE,HelpDesk,FROM') {
+											jQuery('#assign_to_row').show();
+										} else {
+											jQuery('#assign_to_row').hide();
+										}
+									}
+									jQuery('#rule_actiontext').on('change',checkAction);
+									checkAction();
+								{/literal}</script>
+							</td>
+						</tr>
 						<tr id="assign_to_row">
 							<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_ASSIGN}</strong></td>
 							<td width="70%" colspan=2>
@@ -191,51 +236,7 @@
 
 							</td>
 						</tr>
-						<tr>
-							<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_ACTION}</strong></td>
-							<td width="70%" colspan=2>
-								{assign var="RULEACTIONTEXT" value=""}
-								{if $SCANNERRULE->useaction}
-									{assign var="RULEACTIONTEXT" value=$SCANNERRULE->useaction->actiontext}
-									<input type="hidden" class="small" name="actionid" value="{$SCANNERRULE->useaction->actionid}">
-								{else}
-									<input type="hidden" class="small" name="actionid" value="">
-								{/if}
 
-								<select name="rule_actiontext" id="rule_actiontext" class="small">
-									{* <option value="">-- None --</option> *}{* EMPTY ACTION NOT SUPPORTED *}
-									<option value="CREATE,HelpDesk,FROM" {if $RULEACTIONTEXT eq 'CREATE,HelpDesk,FROM'}selected=true{/if}
-									>{$MOD.LBL_CREATE} {$MOD.LBL_TICKET}</option>
-									<option value="UPDATE,HelpDesk,SUBJECT" {if $RULEACTIONTEXT eq 'UPDATE,HelpDesk,SUBJECT'}selected=true{/if}
-									>{$MOD.LBL_UPDATE} {$MOD.LBL_TICKET}</option>
-									<option value="UPDATE,Project,SUBJECT" {if $RULEACTIONTEXT eq 'UPDATE,Project,SUBJECT'}selected=true{/if}
-									>{$MOD.LBL_UPDATE} {$MOD.LBL_PROJECT}</option>
-									<option value="LINK,Contacts,FROM" {if $RULEACTIONTEXT eq 'LINK,Contacts,FROM'}selected=true{/if}
-									>{$MOD.LBL_ADD} {$MOD.LBL_TO_SMALL} {$MOD.LBL_CONTACT} [{$MOD.LBL_FROM_CAPS}]</option>
-									<option value="LINK,Contacts,TO" {if $RULEACTIONTEXT eq 'LINK,Contacts,TO'}selected=true{/if}
-									>{$MOD.LBL_ADD} {$MOD.LBL_TO_SMALL} {$MOD.LBL_CONTACT} [{$MOD.LBL_TO_CAPS}]</option>
-									<option value="LINK,Contacts,CC" {if $RULEACTIONTEXT eq 'LINK,Contacts,CC'}selected=true{/if}
-									>{$MOD.LBL_ADD} {$MOD.LBL_TO_SMALL} {$MOD.LBL_CONTACT} [{$MOD.LBL_CC}]</option>
-									<option value="LINK,Accounts,FROM" {if $RULEACTIONTEXT eq 'LINK,Accounts,FROM'}selected=true{/if}
-									>{$MOD.LBL_ADD} {$MOD.LBL_TO_SMALL} {$MOD.LBL_ACCOUNT} [{$MOD.LBL_FROM_CAPS}]</option>
-									<option value="LINK,Accounts,TO" {if $RULEACTIONTEXT eq 'LINK,Accounts,TO'}selected=true{/if}
-									>{$MOD.LBL_ADD} {$MOD.LBL_TO_SMALL} {$MOD.LBL_ACCOUNT} [{$MOD.LBL_TO_CAPS}]</option>
-									<option value="LINK,Accounts,CC" {if $RULEACTIONTEXT eq 'LINK,Accounts,CC'}selected=true{/if}
-									>{$MOD.LBL_ADD} {$MOD.LBL_TO_SMALL} {$MOD.LBL_ACCOUNT} [{$MOD.LBL_CC}]</option>
-								</select>
-								<script>{literal}
-									function checkAction() {
-										if (jQuery('#rule_actiontext').val() == 'CREATE,HelpDesk,FROM') {
-											jQuery('#assign_to_row').show();
-										} else {
-											jQuery('#assign_to_row').hide();
-										}
-									}
-									jQuery('#rule_actiontext').on('change',checkAction);
-									checkAction();
-								{/literal}</script>
-							</td>
-						</tr>
 					</td>
 				</tr>
 				<tr>

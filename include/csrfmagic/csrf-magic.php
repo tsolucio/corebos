@@ -200,7 +200,7 @@ function csrf_ob_handler($buffer, $flags) {
  * @return True if check passes or is not necessary, false if failure.
  */
 function csrf_check($fatal = true) {
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') return true;
+    if (empty($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] !== 'POST') return true;
     csrf_start();
     $name = $GLOBALS['csrf']['input-name'];
     $ok = false;
@@ -256,7 +256,8 @@ function csrf_get_tokens() {
     }
     if ($GLOBALS['csrf']['cookie']) {
         $val = csrf_generate_secret();
-        setcookie($GLOBALS['csrf']['cookie'], $val);
+        header('Set-Cookie: '.$GLOBALS['csrf']['cookie'].'='.$val.'; SameSite=Strict', false);
+        //setcookie($GLOBALS['csrf']['cookie'], $val);
         return 'cookie:' . csrf_hash($val) . $ip;
     }
     if ($GLOBALS['csrf']['key']) return 'key:' . csrf_hash($GLOBALS['csrf']['key']) . $ip;

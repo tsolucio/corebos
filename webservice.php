@@ -172,6 +172,9 @@ try {
 	if (!empty($userid)) {
 		$seed_user = new Users();
 		$current_user = $seed_user->retrieveCurrentUserInfoFromFile($userid);
+		if (!empty($current_user->language)) {
+			$app_strings = return_application_language($current_user->language);
+		}
 	} else {
 		$current_user = null;
 	}
