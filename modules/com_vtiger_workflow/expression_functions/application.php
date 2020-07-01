@@ -151,7 +151,7 @@ function __cb_evaluateRule($arr) {
 	$env = $arr[1];
 	$data = $env->getData();
 	list($wsid,$crmid) = explode('x', $data['id']);
-	$context = $env->WorkflowContext;
+	$context = array_merge($env->WorkflowContext, $data);
 	$context['record_id'] = $crmid;
 	$result = 0;
 	try {
