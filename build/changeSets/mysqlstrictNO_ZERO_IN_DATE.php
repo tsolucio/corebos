@@ -38,6 +38,11 @@ class mysqlstrictNO_ZERO_IN_DATE extends cbupdaterWorker {
 			$this->ExecuteQuery("UPDATE `vtiger_import_maps` set date_modified=date_entered");
 			$this->ExecuteQuery("UPDATE `vtiger_loginhistory` set login_time=null where login_time='0000-00-00 00:00:00'");
 			$this->ExecuteQuery("UPDATE `vtiger_loginhistory` set logout_time=null where logout_time='0000-00-00 00:00:00'");
+			$this->ExecuteQuery("UPDATE `vtiger_crmentity` set modifiedtime=createdtime where modifiedtime='0000-00-00 00:00:00'");
+			$this->ExecuteQuery("UPDATE `vtiger_salesorder` set duedate=null where duedate='0000-00-00 00:00:00'");
+			$this->ExecuteQuery("UPDATE `vtiger_portalinfo` set login_time=null where login_time='0000-00-00 00:00:00'");
+			$this->ExecuteQuery("UPDATE `vtiger_portalinfo` set last_login_time=null where last_login_time='0000-00-00 00:00:00'");
+			$this->ExecuteQuery("UPDATE `vtiger_portalinfo` set logout_time=null where logout_time='0000-00-00 00:00:00'");
 			$adb->query("SET SESSION sql_mode = '$sm'");
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);

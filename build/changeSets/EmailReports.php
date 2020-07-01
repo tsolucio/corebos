@@ -26,7 +26,7 @@ class EmailReports extends cbupdaterWorker {
 		} else {
 			// Email Reporting - added default email reports.
 
-			$sql = "INSERT INTO vtiger_reportfolder (FOLDERNAME,DESCRIPTION,STATE) VALUES(?,?,?)";
+			$sql = 'INSERT INTO vtiger_reportfolder (foldername,description,state) VALUES(?,?,?)';
 			$params = array('Email Reports', 'Email Reports', 'SAVED');
 			$this->ExecuteQuery($sql, $params);
 
@@ -112,21 +112,22 @@ class EmailReports extends cbupdaterWorker {
 	}
 
 	public function undoChange() {
+		global $adb;
 		if ($this->hasError()) {
 			$this->sendError();
 		}
 		if ($this->isApplied()) {
 			// undo your magic here
-			$emrpts = $adb->query("SELECT REPORTID FROM vtiger_report WHERE REPORTNAME in ('Contacts Email Report','Accounts Email Report','Leads Email Report','Vendors Email Report')");
+			$emrpts = $adb->query("SELECT reportid FROM vtiger_report WHERE reportname in ('Contacts Email Report','Accounts Email Report','Leads Email Report','Vendors Email Report')");
 			while ($rpt = $adb->fetch_array($emrpts)) {
-				$this->ExecuteQuery('delete from vtiger_relcriteria_grouping where QUERYID=?', array($rpt['REPORTID']));
-				$this->ExecuteQuery('delete from vtiger_relcriteria where QUERYID=?', array($rpt['REPORTID']));
-				$this->ExecuteQuery('delete from vtiger_reportmodules where REPORTMODULESID=?', array($rpt['REPORTID']));
-				$this->ExecuteQuery('delete from vtiger_selectcolumn where QUERYID=?', array($rpt['REPORTID']));
-				$this->ExecuteQuery('delete from vtiger_report where REPORTID=?', array($rpt['REPORTID']));
-				$this->ExecuteQuery('delete from vtiger_selectquery where QUERYID=?', array($rpt['REPORTID']));
+				$this->ExecuteQuery('delete from vtiger_relcriteria_grouping where queryid=?', array($rpt['reportid']));
+				$this->ExecuteQuery('delete from vtiger_relcriteria where queryid=?', array($rpt['reportid']));
+				$this->ExecuteQuery('delete from vtiger_reportmodules where reportmodulesid=?', array($rpt['reportid']));
+				$this->ExecuteQuery('delete from vtiger_selectcolumn where queryid=?', array($rpt['reportid']));
+				$this->ExecuteQuery('delete from vtiger_report where reportid=?', array($rpt['reportid']));
+				$this->ExecuteQuery('delete from vtiger_selectquery where queryid=?', array($rpt['reportid']));
 			}
-			$this->ExecuteQuery("delete from vtiger_reportfolder where FOLDERNAME='Email Reports'");
+			$this->ExecuteQuery("delete from vtiger_reportfolder where foldername='Email Reports'");
 			$this->sendMsg('Changeset '.get_class($this).' undone!');
 			$this->markUndone();
 		} else {
@@ -140,12 +141,12 @@ class EmailReports extends cbupdaterWorker {
 			return true;
 		}
 		global $adb;
-		$rse = $adb->query("SELECT count(*) FROM vtiger_reportfolder WHERE FOLDERNAME='Email Reports'");
+		$rse = $adb->query("SELECT count(*) FROM vtiger_reportfolder WHERE foldername='Email Reports'");
 		$emfld = $adb->query_result($rse, 0, 0);
 		if ($emfld>0) {
 			return true;
 		}
-		$rse = $adb->query("SELECT count(*) FROM vtiger_report WHERE REPORTNAME in ('Contacts Email Report','Accounts Email Report','Leads Email Report','Vendors Email Report')");
+		$rse = $adb->query("SELECT count(*) FROM vtiger_report WHERE reportname in ('Contacts Email Report','Accounts Email Report','Leads Email Report','Vendors Email Report')");
 		$emrpt = $adb->query_result($rse, 0, 0);
 		if ($emrpt>0) {
 			return true;
@@ -155,39 +156,39 @@ class EmailReports extends cbupdaterWorker {
 
 	public function insertSelectQuery() {
 		global $adb;
-		$genQueryId = $adb->getUniqueID("vtiger_selectquery");
-		if ($genQueryId != "") {
-			$iquerysql = "insert into vtiger_selectquery (QUERYID,STARTINDEX,NUMOFOBJECTS) values (?,?,?)";
+		$genQueryId = $adb->getUniqueID('vtiger_selectquery');
+		if ($genQueryId != '') {
+			$iquerysql = 'insert into vtiger_selectquery (queryid,startindex,numofobjects) values (?,?,?)';
 			$this->ExecuteQuery($iquerysql, array($genQueryId, 0, 0));
 		}
 		return $genQueryId;
 	}
 	public function insertReports($queryid, $folderid, $reportname, $description, $reporttype) {
-		if ($queryid != "") {
-			$ireportsql = "insert into vtiger_report (REPORTID,FOLDERID,REPORTNAME,DESCRIPTION,REPORTTYPE,QUERYID,STATE) values (?,?,?,?,?,?,?)";
-			$ireportparams = array($queryid, $folderid, $reportname, $description, $reporttype, $queryid, 'SAVED');
+		if ($queryid != '') {
+			$ireportsql = 'insert into vtiger_report (reportid,folderid,reportname,description,reporttype,queryid,state,owner) values (?,?,?,?,?,?,?,?)';
+			$ireportparams = array($queryid, $folderid, $reportname, $description, $reporttype, $queryid, 'SAVED',Users::getActiveAdminId());
 			$this->ExecuteQuery($ireportsql, $ireportparams);
 		}
 	}
 	public function insertSelectColumns($queryid, $columnname) {
-		if ($queryid != "") {
+		if ($queryid != '') {
 			for ($i = 0; $i < count($columnname); $i++) {
-				$icolumnsql = "insert into vtiger_selectcolumn (QUERYID,COLUMNINDEX,COLUMNNAME) values (?,?,?)";
+				$icolumnsql = 'insert into vtiger_selectcolumn (queryid,columnindex,columnname) values (?,?,?)';
 				$this->ExecuteQuery($icolumnsql, array($queryid, $i, $columnname[$i]));
 			}
 		}
 	}
 	public function insertReportModules($queryid, $primarymodule, $secondarymodule) {
-		if ($queryid != "") {
-			$ireportmodulesql = "insert into vtiger_reportmodules (REPORTMODULESID,PRIMARYMODULE,SECONDARYMODULES) values (?,?,?)";
+		if ($queryid != '') {
+			$ireportmodulesql = 'insert into vtiger_reportmodules (reportmodulesid,primarymodule,secondarymodules) values (?,?,?)';
 			$this->ExecuteQuery($ireportmodulesql, array($queryid, $primarymodule, $secondarymodule));
 		}
 	}
 	public function insertAdvFilter($queryid, $filters) {
-		if ($queryid != "") {
+		if ($queryid != '') {
 			$columnIndexArray = array();
 			foreach ($filters as $i => $filter) {
-				$irelcriteriasql = "insert into vtiger_relcriteria(QUERYID,COLUMNINDEX,COLUMNNAME,COMPARATOR,VALUE) values (?,?,?,?,?)";
+				$irelcriteriasql = 'insert into vtiger_relcriteria(queryid,columnindex,columnname,comparator,value) values (?,?,?,?,?)';
 				$this->ExecuteQuery($irelcriteriasql, array($queryid, $i, $filter['columnname'], $filter['comparator'], $filter['value']));
 				$columnIndexArray[] = $i;
 			}

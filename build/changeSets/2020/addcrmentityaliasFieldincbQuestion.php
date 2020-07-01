@@ -25,22 +25,26 @@ class addcrmentityaliasFieldincbQuestion extends cbupdaterWorker {
 		} else {
 			$modname = 'cbQuestion';
 			$module = Vtiger_Module::getInstance($modname);
-			$block = Vtiger_Block::getInstance('LBL_cbQuestion_INFORMATION', $module);
-			$field = Vtiger_Field::getInstance('crmentityalias', $module);
-			if (!$field) {
-				$field = new Vtiger_Field();
-				$field->name = 'crmentityalias';
-				$field->label= 'CRM Entity Alias';
-				$field->column = 'crmentityalias';
-				$field->columntype = 'VARCHAR(100)';
-				$field->uitype = 1;
-				$field->typeofdata = 'V~O';
-				$field->displaytype = 1;
-				$field->presence = 0;
-				$block->addField($field);
+			if ($module) {
+				$block = Vtiger_Block::getInstance('LBL_cbQuestion_INFORMATION', $module);
+				$field = Vtiger_Field::getInstance('crmentityalias', $module);
+				if (!$field) {
+					$field = new Vtiger_Field();
+					$field->name = 'crmentityalias';
+					$field->label= 'CRM Entity Alias';
+					$field->column = 'crmentityalias';
+					$field->columntype = 'VARCHAR(100)';
+					$field->uitype = 1;
+					$field->typeofdata = 'V~O';
+					$field->displaytype = 1;
+					$field->presence = 0;
+					$block->addField($field);
+				}
+				$this->sendMsg('Changeset '.get_class($this).' applied!');
+				$this->markApplied();
+			} else {
+				$this->sendMsgError('Changeset '.get_class($this).' NOT applied! cbQuestion module not found');
 			}
-			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
 		}
 		$this->finishExecution();
 	}

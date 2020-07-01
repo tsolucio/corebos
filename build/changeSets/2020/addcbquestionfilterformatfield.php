@@ -24,30 +24,35 @@ class addcbquestionfilterformatfield extends cbupdaterWorker {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$module = 'cbQuestion';
-			$wasActive = vtlib_isModuleActive($module);
-			if (!$wasActive) {
-				vtlib_toggleModuleAccess($module, true);
+			$moduleInstance = Vtiger_Module::getInstance($module);
+			if ($moduleInstance) {
+				$wasActive = vtlib_isModuleActive($module);
+				if (!$wasActive) {
+					vtlib_toggleModuleAccess($module, true);
+				}
+				$fields = array(
+					'cbQuestion' => array(
+						'LBL_cbQuestion_INFORMATION' => array(
+							'condfilterformat' => array(
+								'columntype'=>'varchar(3)',
+								'typeofdata'=>'C~O',
+								'uitype'=>'56',
+								'displaytype'=>'1',
+								'label'=>'condfilterformat',
+								'massedit' => 1,
+							),
+						)
+					),
+				);
+				$this->massCreateFields($fields);
+				if (!$wasActive) {
+					vtlib_toggleModuleAccess($module, false);
+				}
+				$this->sendMsg('Changeset '.get_class($this).' applied!');
+				$this->markApplied();
+			} else {
+				$this->sendMsgError('Changeset '.get_class($this).' could not be applied yet. Please launch again.');
 			}
-			$fields = array(
-				'cbQuestion' => array(
-					'LBL_cbQuestion_INFORMATION' => array(
-						'condfilterformat' => array(
-							'columntype'=>'varchar(3)',
-							'typeofdata'=>'C~O',
-							'uitype'=>'56',
-							'displaytype'=>'1',
-							'label'=>'condfilterformat',
-							'massedit' => 1,
-						),
-					)
-				),
-			);
-			$this->massCreateFields($fields);
-			if (!$wasActive) {
-				vtlib_toggleModuleAccess($module, false);
-			}
-			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
 		}
 		$this->finishExecution();
 	}

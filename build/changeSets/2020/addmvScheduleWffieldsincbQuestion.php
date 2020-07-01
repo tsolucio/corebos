@@ -24,33 +24,38 @@ class addmvScheduleWffieldsincbQuestion extends cbupdaterWorker {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$module = 'cbQuestion';
-			$isModuleActive = vtlib_isModuleActive($module);
-			if (!$isModuleActive) {
-				vtlib_toggleModuleAccess($module, true);
+			$moduleInstance = Vtiger_Module::getInstance($module);
+			if ($moduleInstance) {
+				$isModuleActive = vtlib_isModuleActive($module);
+				if (!$isModuleActive) {
+					vtlib_toggleModuleAccess($module, true);
+				}
+				$fieldLayout = array(
+					'cbQuestion' => array(
+						'LBL_cbQuestion_Advanced_Usage' => array(
+							'run_updateview' => array(
+								'columntype'=>'varchar(3)',
+								'typeofdata'=>'C~O',
+								'uitype'=>56,
+								'label' => 'Update View when Related Changes',
+								'displaytype'=>'1',
+								'massedit' => 1,
+							),
+							'mvrelated_modulelist' => array(
+								'columntype'=>'varchar(100)',
+								'typeofdata'=>'V~O',
+								'uitype'=>3314,
+								'label' => 'Related Module List',
+								'displaytype'=>'1',
+							),
+						)),
+				);
+				$this->massCreateFields($fieldLayout);
+				$this->sendMsg('Changeset '.get_class($this).' applied!');
+				$this->markApplied();
+			} else {
+				$this->sendMsgError('Changeset '.get_class($this).' could not be applied yet. Please launch again.');
 			}
-			$fieldLayout = array(
-				'cbQuestion' => array(
-					'LBL_cbQuestion_Advanced_Usage' => array(
-						'run_updateview' => array(
-							'columntype'=>'varchar(3)',
-							'typeofdata'=>'C~O',
-							'uitype'=>56,
-							'label' => 'Update View when Related Changes',
-							'displaytype'=>'1',
-							'massedit' => 1,
-						),
-						'mvrelated_modulelist' => array(
-							'columntype'=>'varchar(100)',
-							'typeofdata'=>'V~O',
-							'uitype'=>3314,
-							'label' => 'Related Module List',
-							'displaytype'=>'1',
-						),
-					)),
-			);
-			$this->massCreateFields($fieldLayout);
-			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
