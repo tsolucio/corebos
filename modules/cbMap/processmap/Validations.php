@@ -415,7 +415,7 @@ class Validations extends processcbMap {
 				}
 				if (strpos($fvalidation, '~OTH~')) { //D~O~OTH~GE~support_start_date~Support Start Date
 					$val = explode('~', $fvalidation);
-					switch($val[3]){
+					switch ($val[3]) {
 						case 'GE':
 							$comparison = 'dateEqualOrAfter';
 							break;
