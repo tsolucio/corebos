@@ -24,7 +24,7 @@
 </thead>
 <tbody>
 	{foreach item=currencyvalues name=currlist key=id from=$CURRENCY_LIST}
-    <tr class="slds-hint-parent">
+    <tr class="slds-hint-parent" id="currency-{$currencyvalues.id}">
 		<td><div class="slds-truncate">{$smarty.foreach.currlist.iteration}</div></td>
 		<td><div style="height:30px;" class="slds-truncate">{$currencyvalues.tool}</div></td>
 		<td><div class="slds-truncate"><b>{$currencyvalues.name|@getTranslatedCurrencyString}</b></div></td>

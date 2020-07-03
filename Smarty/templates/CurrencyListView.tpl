@@ -46,9 +46,6 @@
 		<div>
 			{include file="CurrencyListViewEntries.tpl"}
 		</div>
-		<div class="slds-col">
-			<p align="right" class="slds-line-height_reset"><a href="#top">{$MOD.LBL_SCROLL}</a></p>
-		</div>
 	</form>
 </div>
 	<div id="currencydiv" style="display:block;position:absolute;width:250px;"></div>
@@ -77,6 +74,7 @@
 		}).done(function(response) {
 			jQuery('#status').hide();
 			jQuery('#CurrencyListViewContents').html(response);
+			document.getElementById(`currency-${del_currencyid}`).remove();
 		});
 	}
 </script>

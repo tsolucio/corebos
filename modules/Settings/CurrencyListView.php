@@ -20,6 +20,7 @@ $cnt=1;
 $currency = array();
 do {
 	$currency_element = array();
+	$currency_element['id'] = $temprow['id'];
 	$currency_element['name'] = $temprow['currency_name'];
 	$currency_element['code'] = $temprow['currency_code'];
 	$currency_element['symbol'] = $temprow['currency_symbol'];
