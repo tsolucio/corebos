@@ -657,7 +657,7 @@ class Vtiger_MailScanner {
 		$projectid = $this->LookupProject($subjectOrId);
 		$project_focus = false;
 		if ($projectid) {
-			if ($this->_cachedProjects[$projectid]) {
+			if (isset($this->_cachedProjects[$projectid])) {
 				$project_focus = $this->_cachedProjects[$projectid];
 				$usrlist = $this->getUserlist($project_focus);
 				$employeelist = $this->getEmployeeList($project_focus);
@@ -668,7 +668,7 @@ class Vtiger_MailScanner {
 					$project_focus = false;
 				}
 				if ($project_focus) {
-					$this->log('Reusing Cached Project [' . $project_focus->column_fields['project_name'] .']');
+					$this->log('Reusing Cached Project [' . $project_focus->column_fields['projectname'] .']');
 				}
 			} else {
 				$project_focus = CRMEntity::getInstance('Project');
@@ -683,7 +683,7 @@ class Vtiger_MailScanner {
 					$project_focus = false;
 				}
 				if ($project_focus) {
-					$this->log('Caching Project [' . $project_focus->column_fields['project_name'] . ']');
+					$this->log('Caching Project [' . $project_focus->column_fields['projectname'] . ']');
 					$this->_cachedProject[$projectid] = $project_focus;
 				}
 			}
