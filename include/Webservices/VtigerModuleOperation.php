@@ -146,7 +146,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			$moduleRegex = "/[fF][rR][Oo][Mm]\s+([^\s;]+)/";
 			preg_match($moduleRegex, $q, $m);
 			$relatedModule = trim($m[1]);
-			$moduleRegex = "/[rR][eE][lL][aA][tT][eE][dD]\.([^\s;]+)\s*=\s*([^\s;]+)/";
+			$moduleRegex = "/\s+\(*\s*[rR][eE][lL][aA][tT][eE][dD]\.([^\s;]+)\s*=\s*([^\s;]+)/";
 			preg_match($moduleRegex, $q, $m);
 			$moduleName = trim($m[1]);
 			$id = trim($m[2], "(')");
@@ -161,7 +161,8 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 				$docrelcond = substr($mysql_query, stripos($mysql_query, 'where')+6);
 				$addDocGlue = (stripos($docrelcond, ' and ') > 0 || stripos($docrelcond, ' or ') > 0);
 				$mysql_query = substr($mysql_query, 0, stripos($mysql_query, 'where')+6);
-				$relatedCond = "/[rR][eE][lL][aA][tT][eE][dD]\.([^\s;]+)\s*=\s*([^\s;]+)/";
+				$relatedCond = '/related.'.$moduleName.'\s*=\s*'.trim($m[2], ')').'/i';
+				// $relatedCond = "/[rR][eE][lL][aA][tT][eE][dD]\.([^\s;]+)\s*=\s*([^\s;]+)/";
 				$afterwhere=trim(preg_replace($relatedCond, $docrelcond, $afterwhere), ' ;');
 			} else {
 				$addDocGlue = true;
