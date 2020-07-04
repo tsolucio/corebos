@@ -34,7 +34,7 @@ function vtws_changePortalUserPassword($email, $newPass, $user = '') {
 	global $adb,$log;
 	$log->debug('>< changePortalUserPassword');
 	$nra = $adb->pquery('update vtiger_portalinfo set user_password=? where user_name=?', array($newPass,$email));
-	return ($nra && $adb->num_rows($nra)>0);
+	return ($nra && $adb->getAffectedRowCount($nra) == 1);
 }
 
 function vtws_findByPortalUserName($username, $user = '') {
