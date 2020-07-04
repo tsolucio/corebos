@@ -198,6 +198,7 @@ class Vtiger_MailScannerAction {
 	 * Update Project action.
 	 */
 	public function __UpdateProject($mailscanner, $mailrecord, $regexMatchInfo) {
+		global $current_user;
 		$returnid = false;
 		$usesubject = false;
 		if ($this->lookup == 'SUBJECT') {
@@ -212,13 +213,11 @@ class Vtiger_MailScannerAction {
 			// Get the ticket record that was created by SENDER earlier
 			$fromemail = $mailrecord->_from[0];
 			$linkfocus = $mailscanner->GetProjectRecord($usesubject, $fromemail);
-//			$relatedid = $linkfocus->column_fields['parent_id'];
-			$relatedid = (!empty($mailscanner->linkedid) ? $mailscanner->linkedid : 1);
 
 			// If matching ticket is found, update comment, attach email
 			if ($linkfocus) {
 				$comment = CRMEntity::getInstance('ModComments');
-				$comment->column_fields['assigned_user_id'] = $relatedid;
+				$comment->column_fields['assigned_user_id'] = $current_user->id;
 				$comment->column_fields['commentcontent'] = $mailrecord->getBodyText();
 				$comment->column_fields['related_to'] = $linkfocus->id;
 				$comment->save('ModComments');
