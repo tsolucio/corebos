@@ -142,13 +142,13 @@ class DecisionTable extends processcbMap {
 					foreach ($value->decisionTable->searches->search as $s) {
 						foreach ($s->condition as $v) {
 							if (isset($context[(String)$v->input]) && $context[(String)$v->input]!='__IGNORE__') {
-								if (isset($v->preprocess)) {
-									$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($context[(String)$v->input])));
+								if (empty($v->preprocess)) {
+									$conditionvalue = $context[(String)$v->input];
+								} else {
+									$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer((String)$v->preprocess)));
 									$expression = $parser->expression();
 									$exprEvaluater = new VTFieldExpressionEvaluater($expression);
 									$conditionvalue = $exprEvaluater->evaluate($entity);
-								} else {
-									$conditionvalue = $context[(String)$v->input];
 								}
 								$uitype = getUItypeByFieldName($module, (String)$v->field);
 								if ($uitype==10) {
