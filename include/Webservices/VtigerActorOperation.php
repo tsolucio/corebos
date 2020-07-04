@@ -152,6 +152,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 
 	public function massRetrieve($wsIds) {
 		global $adb;
+		$wid = $this->meta->getEntityId();
 		$rdo = array();
 		$query = "select * from {$this->entityTableName} where {$this->meta->getObectIndexColumn()} in (" . generateQuestionMarks($wsIds) . ')';
 		$rs = $adb->pquery($query, $wsIds);
@@ -161,7 +162,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 				$element['id'] = $element['folderid'];
 				unset($element['folderid']);
 			}
-			$rdo[] = DataTransform::filterAndSanitize($element, $this->meta);
+			$rdo[$wid.'x'.$element['id']] = DataTransform::filterAndSanitize($element, $this->meta);
 		}
 		return $rdo;
 	}
