@@ -175,7 +175,7 @@ function vtws_massretrieve($ids, $user) {
 					$entity['pdoInformation'][] = $onlyPrd;
 				}
 			}
-			$rdo[$idComponents[0].'x'.$crmid] = $entity;
+			$rdo[vtws_getWSID($crmid)] = $entity;
 		}
 	}
 	VTWS_PreserveGlobal::flush();
