@@ -33,10 +33,8 @@ function MassDelete($ids, $user) {
 		}
 	}
 
-	$result = [
+	return [
 		'success_deletes' => $successDeletes,
 		'failed_deletes' => $failedDeletes
 	];
-
-	return $result;
 }
