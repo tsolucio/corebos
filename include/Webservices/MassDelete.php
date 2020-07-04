@@ -20,6 +20,9 @@ function MassDelete($ids, $user) {
 	$successDeletes = [];
 
 	foreach ($wsIds as $wsId) {
+		if (empty($wsId)) {
+			continue;
+		}
 		try {
 			$wsId = vtws_getWSID(trim($wsId));
 			vtws_delete($wsId, $user);

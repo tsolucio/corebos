@@ -13,7 +13,7 @@ function vtws_massupdate($elements, $user) {
 	$failedUpdates = [];
 	$successUpdates = [];
 
-	foreach ($elements as $element) {
+	foreach ((array)$elements as $element) {
 		try {
 			$successUpdates[] = vtws_revise($element, $user);
 		} catch (Exception $e) {
