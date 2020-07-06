@@ -20,25 +20,30 @@
 <script type="text/javascript" charset="utf-8">
 var moduleName = '{$entityName}';
 </script>
-<br>
-<table border="0" cellpadding="5" cellspacing="0" width="100%" class="small">
-	<tr>
-		<td style='padding-top: 10px;' colspan="2">
-			<select name="convertto">
-			<option value='Quotes'{if isset($task->convertto) && $task->convertto eq 'Quotes'} selected{/if}{if $entityName eq 'Quotes'} disabled{/if}>{'Quotes'|@getTranslatedString:'Quotes'}</option>
-			<option value='SalesOrder'{if isset($task->convertto) && $task->convertto eq 'SalesOrder'} selected{/if}{if $entityName eq 'SalesOrder'} disabled{/if}>{'SalesOrder'|@getTranslatedString:'SalesOrder'}</option>
-			<option value='Invoice'{if isset($task->convertto) && $task->convertto eq 'Invoice'} selected{/if}{if $entityName eq 'Invoice'} disabled{/if}>{'Invoice'|@getTranslatedString:'Invoice'}</option>
-			<option value='PurchaseOrder'{if isset($task->convertto) && $task->convertto eq 'PurchaseOrder'} selected{/if}{if $entityName eq 'PurchaseOrder'} disabled{/if}>{'PurchaseOrder'|@getTranslatedString:'PurchaseOrder'}</option>
-			</select>
-		</td>
-	</tr>
-</table>
-<br>
-<table border="0" cellpadding="5" cellspacing="0" width="100%" class="small">
-	<tr>
-		<td style='padding-top: 10px;' colspan="2">
-			<span class="helpmessagebox">{'ConvertInventoryModuleMessage'|@getTranslatedString:'com_vtiger_workflow'}</span>
-		</td>
-	</tr>
-</table>
-<br>
+
+<div class="slds-grid slds-p-horizontal_x-large">
+	<div class="slds-col slds-size_3-of-12 slds-p-around_x-small">
+		<div class="slds-form">
+			<div class="slds-form-element">
+					<div class="slds-form-element__control">
+						<div class="slds-select_container">
+							<select class="slds-select slds-page-header__meta-text" name="convertto">
+								<option value='Quotes'{if isset($task->convertto) && $task->convertto eq 'Quotes'} selected{/if}{if $entityName eq 'Quotes'} disabled{/if}>{'Quotes'|@getTranslatedString:'Quotes'}</option>
+								<option value='SalesOrder'{if isset($task->convertto) && $task->convertto eq 'SalesOrder'} selected{/if}{if $entityName eq 'SalesOrder'} disabled{/if}>{'SalesOrder'|@getTranslatedString:'SalesOrder'}</option>
+								<option value='Invoice'{if isset($task->convertto) && $task->convertto eq 'Invoice'} selected{/if}{if $entityName eq 'Invoice'} disabled{/if}>{'Invoice'|@getTranslatedString:'Invoice'}</option>
+								<option value='PurchaseOrder'{if isset($task->convertto) && $task->convertto eq 'PurchaseOrder'} selected{/if}{if $entityName eq 'PurchaseOrder'} disabled{/if}>{'PurchaseOrder'|@getTranslatedString:'PurchaseOrder'}</option>
+							</select>
+						</div>
+					</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="slds-grid slds-p-horizontal_x-large">
+	<div class="slds-col slds-size_1-of-1 slds-p-around_x-small">
+		<div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_warning" role="alert">
+			<span>{'ConvertInventoryModuleMessage'|@getTranslatedString:'com_vtiger_workflow'}</span>
+		</div>
+	</div>
+</div>
