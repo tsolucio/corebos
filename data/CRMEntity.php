@@ -3370,6 +3370,7 @@ class CRMEntity {
 	 * @return String Access control Query for the user.
 	 */
 	public function getNonAdminAccessControlQuery($module, $user, $scope = '') {
+		global $currentModule;
 		$userprivs = $user->getPrivileges();
 		$query = ' ';
 		$tabId = getTabid($module);
@@ -3400,6 +3401,9 @@ class CRMEntity {
 				global $adb;
 				VTCacheUtils::updateCachedInformation('SpecialPermissionWithDuplicateRows', $SpecialPermissionMayHaveDuplicateRows);
 				$tsTableName = "tsolucio_tmp_u{$user->id}";
+				if ($currentModule == 'Reports') {
+					$tsTableName = "tsolucio_tmp_u{$user->id}".str_replace('.', '', uniqid($user->id, true));
+				}
 				$adb->query("drop table if exists {$tsTableName}");
 				if ($typeOfPermissionOverride=='addToUserPermission') {
 					$query = $this->getNonAdminAccessQuery($module, $user, $userprivs->getParentRoleSequence(), $userprivs->getGroups());
