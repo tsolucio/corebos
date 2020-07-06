@@ -84,7 +84,7 @@
   </aggregations>
 </map>
  *************************************************************************************************/
-include 'include/Webservices/DescribeObject.php';
+include_once 'include/Webservices/DescribeObject.php';
 
 class MasterDetailLayout extends processcbMap {
 

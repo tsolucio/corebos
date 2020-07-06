@@ -159,7 +159,6 @@ if ($single_record && count($columnlists) > 0) {
 			$minfo = VTCacheUtils::lookupFieldInfoByColumn($tabid, $minfo['fieldname']);
 			$qg = new QueryGenerator($pmodule, $current_user);
 			$fields = $fieldlists;
-
 			$fields[] = $minfo['fieldname'];
 			$qg->setFields($fields);
 			$qg->addCondition('id', $idlist, 'e');
