@@ -102,4 +102,3 @@ var moduleName = '{$entityName}';
 		</div>
 	</div>
 </div>
-
