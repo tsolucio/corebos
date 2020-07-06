@@ -133,6 +133,10 @@ class VTEntityCache {
 		$this->cache = array();
 	}
 
+	public function emptyCache($id) {
+		unset($this->cache[$id]);
+	}
+
 	public function forId($id) {
 		if (!isset($this->cache[$id]) || $this->cache[$id]==null) {
 			$deleted=!isRecordExists($id);

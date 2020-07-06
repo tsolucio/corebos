@@ -243,6 +243,7 @@ class Workflow {
 					if ($delay!=0 && get_class($task) == 'VTUpdateFieldsTask') {
 						$taskQueue->queueTask($task->id, $entityData->getId(), $delay);
 					} else {
+						$entityCache->emptyCache($entityData->getId());
 						if (empty($task->test) || $task->evaluate($entityCache, $entityData->getId())) {
 							try {
 								$task->startTask($entityData);
