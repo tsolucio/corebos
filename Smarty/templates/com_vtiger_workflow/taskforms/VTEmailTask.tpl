@@ -119,7 +119,7 @@ var __attinfo = {$task->dzattinfo|json_encode};
 	<div class="slds-col slds-size_3-of-12 slds-p-around_x-small">
 		<div class="slds-form-element">
 			<div class="slds-form-element__control">
-				<input type="text" class="slds-input" name="recepient" value="{if isset($task->emailcc)}{$task->emailcc}{/if}" id="save_emailcc" />
+				<input type="text" class="slds-input" name="emailcc" value="{if isset($task->emailcc)}{$task->emailcc}{/if}" id="save_emailcc" />
 			</div>
 		</div>
 	</div>
