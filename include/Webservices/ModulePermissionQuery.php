@@ -9,7 +9,6 @@
  *************************************************************************************/
 
 function cbwsModulePermissionQuery($module, $user) {
-	global $currentModule;
 	$types = vtws_listtypes(null, $user);
 	if (!in_array($module, $types['types'])) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to access module is denied');
@@ -42,9 +41,6 @@ function cbwsModulePermissionQuery($module, $user) {
 				$join = " INNER JOIN $tableName $tableName$scope ON $tableName$scope.id = vtiger_crmentity$scope.smownerid ";
 			} else {
 				$tableName = "tsolucio_tmp_u{$user->id}";
-				if ($currentModule == 'Reports') {
-					$tsTableName = "tsolucio_tmp_u{$user->id}".str_replace('.', '', uniqid($user->id, true));
-				}
 				if ($typeOfPermissionOverride=='addToUserPermission') {
 					$query = $crmentity->getNonAdminAccessQuery($module, $user, $userprivs->getParentRoleSequence(), $userprivs->getGroups());
 					$join = "$query UNION ($tsSpecialAccessQuery) ";
