@@ -68,14 +68,14 @@ function updateModEntityExisting(button, form) {
 		return;
 	}
 
-	VtigerJS_DialogBox.progress();
+	VtigerJS_DialogBox.block();
 	button.disabled = true;
 
 	jQuery.ajax({
-		method:"POST",
+		method:'POST',
 		url:'index.php?module=Settings&action=SettingsAjax&file=CustomModEntityNo&ajax=true' + '&selmodule=' + encodeURIComponent(module) + '&mode=' + encodeURIComponent(mode)
 	}).done(function(response) {
-		VtigerJS_DialogBox.hideprogress();
+		VtigerJS_DialogBox.unblock();
 		var restext = response;
 		document.getElementById('customentity_infodiv').innerHTML = restext;
 	});
