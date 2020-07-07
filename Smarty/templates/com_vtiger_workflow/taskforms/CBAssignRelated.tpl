@@ -102,16 +102,35 @@
 	});
 </script>
 {/literal}
-<div style="float: left;">
-	<h2>{'LBL_SELECT_MODULE'|@getTranslatedString:'Settings'}</h2>
-	<span id="entity_type-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
-	<select id="relmodule" name="relmodule" style="display:none;">
-		<option value=''>{'LBL_SELECT_ENTITY_TYPE'|@getTranslatedString:$module->name}</option>
-	</select>
-</div>
-<div style="float: left;margin-left:10px;">
-	<h2>{'LBL_SELECT_USER_BUTTON_LABEL'|@getTranslatedString:$module->name}</h2>
-	<select id="username" name="username" style="display:none;">
-		<option value=''>-- {'LBL_SELECT_USER_BUTTON_LABEL'|@getTranslatedString:$module->name} --</option>
-	</select>
+
+<div class="slds-grid slds-p-horizontal_x-large">
+	<div class="slds-col slds-size_3-of-12 slds-p-around_x-small">
+		<div class="slds-form">
+			<div class="slds-form-element">
+				<label class="slds-form-element__label" for="select-01"> {'LBL_SELECT_MODULE'|@getTranslatedString:'Settings'} </label>
+					<div class="slds-form-element__control">
+						<span id="entity_type-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
+						<div class="slds-select_container">
+							<select class="slds-select slds-page-header__meta-text" id="relmodule" name="relmodule" style="display:none;">
+								<option value=''>{'LBL_SELECT_ENTITY_TYPE'|@getTranslatedString:$module->name}</option>
+							</select>
+						</div>
+					</div>
+			</div>
+		</div>
+	</div>
+	<div class="slds-col slds-size_3-of-12 slds-p-around_x-small">
+		<div class="slds-form">
+			<div class="slds-form-element">
+				<label class="slds-form-element__label" > {'LBL_SELECT_USER_BUTTON_LABEL'|@getTranslatedString:$module->name} </label>
+					<div class="slds-form-element__control">
+						<div class="slds-select_container">
+							<select class="slds-select slds-page-header__meta-text" id="username" name="username" style="display:none;">
+								<option value=''>-- {'LBL_SELECT_USER_BUTTON_LABEL'|@getTranslatedString:$module->name} --</option>
+							</select>
+						</div>
+					</div>
+			</div>
+		</div>
+	</div>
 </div>

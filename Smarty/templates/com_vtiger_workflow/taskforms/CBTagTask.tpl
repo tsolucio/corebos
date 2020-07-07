@@ -21,11 +21,84 @@
 <script type="text/javascript" charset="utf-8">
 var moduleName = '{$entityName}';
 </script>
-<h2>{'LBL_ACTION'|@getTranslatedString:'com_vtiger_workflow'}</h2>
-&nbsp;&nbsp;<input type="radio" name="addrel" value="1" {if isset($task->addrel) && $task->addrel eq 1}checked{/if}> {'Add Tag'|@getTranslatedString:'com_vtiger_workflow'}<br>
-&nbsp;&nbsp;<input type="radio" name="addrel" value="0" {if isset($task->addrel) && $task->addrel eq 0}checked{/if}> {'Delete Tag'|@getTranslatedString:'com_vtiger_workflow'}<br><br>
-&nbsp;&nbsp;<input type="radio" name="forallusers" value="1" {if isset($task->forallusers) && $task->forallusers eq 1}checked{/if}> {'ForAllUsers'|@getTranslatedString:'com_vtiger_workflow'}
-&nbsp;&nbsp;{'LBL_OR'|@getTranslatedString}
-&nbsp;&nbsp;<input type="radio" name="forallusers" value="0" {if isset($task->forallusers) && $task->forallusers eq 0}checked{/if}> {'ForCurrentUser'|@getTranslatedString:'com_vtiger_workflow'}<br>
-<h2>{'Tags'|@getTranslatedString:'com_vtiger_workflow'}</h2>
-<input id="listoftags" name="listoftags" type="text" value="{if isset($task->listoftags)}{$task->listoftags}{/if}">
+
+<div class="slds-grid slds-p-horizontal_x-large">
+	<div class="slds-col slds-p-around_x-small">
+		<h2 class="slds-text-title_bold">{'LBL_ACTION'|@getTranslatedString:'com_vtiger_workflow'}</h2>
+	</div>
+</div>
+
+<div class="slds-grid slds-p-horizontal_x-large">
+	<div class="slds-col slds-p-around_x-small">
+		<fieldset class="slds-form-element">
+				<div class="slds-form-element__control">
+					<span class="slds-radio">
+						<input type="radio" id="eq1" name="addrel" value="1" {if isset($task->addrel) && $task->addrel eq 1}checked{/if} />
+							<label class="slds-radio__label" for="eq1">
+								<span class="slds-radio_faux"></span>
+									<span class="slds-form-element__label"> {'Add Tag'|@getTranslatedString:'com_vtiger_workflow'} </span>
+							</label>
+					</span>
+					<span class="slds-radio">
+						<input type="radio" id="eq0" name="addrel" value="0" {if isset($task->addrel) && $task->addrel eq 0}checked{/if} />
+							<label class="slds-radio__label" for="eq0">
+								<span class="slds-radio_faux"></span>
+									<span class="slds-form-element__label"> {'Delete Tag'|@getTranslatedString:'com_vtiger_workflow'} </span>
+							</label>
+					</span>
+				</div>
+		</fieldset>
+	</div>
+</div>
+
+<div class="slds-grid slds-p-horizontal_x-large">
+	<div class="slds-col slds-p-around_x-small">
+		<fieldset class="slds-form-element slds-form-element_compound">
+			<div class="slds-form-element__control">
+				<div class="slds-form__row">
+					<div class="slds-size_2-of-12">
+						<div class="slds-form__item" role="listitem">
+							<span class="slds-radio">
+								<input type="radio" id="eq_1" name="forallusers" value="1" {if isset($task->forallusers) && $task->forallusers eq 1}checked{/if} />
+									<label class="slds-radio__label" for="eq_1">
+										<span class="slds-radio_faux"></span>
+											<span class="slds-form-element__label"> {'ForAllUsers'|@getTranslatedString:'com_vtiger_workflow'} </span>
+									</label>
+							</span>
+						</div>
+					</div>
+					<div class="slds-size_1-of-12">
+						<h2 class="slds-text-title"> {'LBL_OR'|@getTranslatedString} </h2>
+					</div>
+					<div class="slds-size_2-of-12">
+						<div class="slds-form__item" role="listitem">
+							<span class="slds-radio">
+								<input type="radio" id="eq_0" name="forallusers" value="0" {if isset($task->forallusers) && $task->forallusers eq 0}checked{/if} />
+									<label class="slds-radio__label" for="eq_0">
+										<span class="slds-radio_faux"></span>
+											<span class="slds-form-element__label"> {'ForCurrentUser'|@getTranslatedString:'com_vtiger_workflow'} </span>
+									</label>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+</div>
+
+<div class="slds-grid slds-p-horizontal_x-large">
+	<div class="slds-col slds-p-around_x-small">
+		<h2 class="slds-text-title_bold">{'Tags'|@getTranslatedString:'com_vtiger_workflow'}</h2>
+	</div>
+</div>
+
+<div class="slds-grid slds-p-horizontal_x-large">
+	<div class="slds-col slds-size_6-of-12 slds-p-around_x-small">
+		<div class="slds-form-element">
+			<div class="slds-form-element__control">
+				<input type="text" id="listoftags" name="listoftags" class="slds-input" value="{if isset($task->listoftags)}{$task->listoftags}{/if}"/>
+			</div>
+		</div>
+	</div>
+</div>
