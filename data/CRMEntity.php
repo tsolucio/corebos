@@ -3411,7 +3411,7 @@ class CRMEntity {
 				}
 				$adb->query("create temporary table {$tsTableName} (id int primary key) as {$tsSpecialAccessQuery}");
 				if ($typeOfPermissionOverride=='addToUserPermission') {
-					$query = " INNER JOIN {$tsTableName} on ({$tsTableName}.id=vtiger_crmentity.crmid or {$tsTableName}.id = vtiger_crmentity$scope.smownerid) ";
+					$query = " INNER JOIN {$tsTableName} on ({$tsTableName}.id=vtiger_crmentity$scope.crmid or {$tsTableName}.id = vtiger_crmentity$scope.smownerid) ";
 				} elseif ($typeOfPermissionOverride=='showTheseRecords') {
 					$query = " INNER JOIN {$tsTableName} on {$tsTableName}.id=vtiger_crmentity.crmid ";
 				} elseif ($typeOfPermissionOverride=='SubstractFromUserPermission') {
