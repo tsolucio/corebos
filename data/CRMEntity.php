@@ -1397,15 +1397,44 @@ class CRMEntity {
 	 * Function which will give the basic query to find duplicates
 	 */
 	public function getDuplicatesQuery($module, $table_cols, $field_values, $ui_type_arr, $select_cols = '') {
+		global $current_user;
+		$customView = new CustomView($module);
+		$viewid = $customView->getViewId($module);
+		$queryGenerator = new QueryGenerator($module, $current_user);
+		try {
+			if ($viewid != '0') {
+				$queryGenerator->initForCustomViewById($viewid);
+			} else {
+				$queryGenerator->initForDefaultCustomView();
+			}
+			$list_query = $queryGenerator->getQuery();
+		} catch (Exception $e) {
+			$list_query = '';
+		}
+		$fromclause = explode("FROM", $list_query);
+		$list_query = "SELECT $this->table_name"."."."$this->table_index as id FROM ".$fromclause[1];
+		$tableName = strtolower("temp".$module.$current_user->id);
+		$this->db->pquery("create temporary table IF NOT EXISTS $tableName (id int primary key) AS " . $list_query, array());
+		$this->db->pquery("create temporary table IF NOT EXISTS $tableName"."2 (id int primary key) AS " . $list_query, array());
+
 		$select_clause = 'SELECT '. $this->table_name .'.'.$this->table_index .' AS recordid, vtiger_users_last_import.deleted,'.$table_cols;
 		$from_clause = " FROM $this->table_name";
+		$from_clausesub = " FROM $this->table_name";
+
 		$from_clause .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
+		$from_clausesub .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
 
 		// Consider custom table join as well.
 		if (isset($this->customFieldTable)) {
 			$from_clause.=' INNER JOIN '.$this->customFieldTable[0].' ON '.$this->customFieldTable[0].'.'.$this->customFieldTable[1]."=$this->table_name.$this->table_index";
+			$from_clausesub.=' INNER JOIN '.$this->customFieldTable[0].' ON '.$this->customFieldTable[0].'.'.$this->customFieldTable[1]."=$this->table_name.$this->table_index";
 		}
+		$from_clause.=' INNER JOIN '.$tableName.' temptab ON temptab.id='.$this->table_name .'.'.$this->table_index;
+		$from_clausesub.=' INNER JOIN '.$tableName.'2 temptab2 ON temptab2.id='.$this->table_name .'.'.$this->table_index;
+
 		$from_clause .= ' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
+						LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
+		$from_clausesub .= ' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
 						LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
 
 		$where_clause = ' WHERE vtiger_crmentity.deleted = 0';
@@ -1417,9 +1446,9 @@ class CRMEntity {
 			if (isset($this->customFieldTable)) {
 				$sub_query .= ' LEFT JOIN '.$this->customFieldTable[0].' tcf ON tcf.'.$this->customFieldTable[1]." = t.$this->table_index";
 			}
-			$sub_query .= " WHERE crm.deleted=0 GROUP BY $select_cols HAVING COUNT(*)>1";
+			$sub_query .= " WHERE crm.deleted=0  GROUP BY $select_cols HAVING COUNT(*)>1";
 		} else {
-			$sub_query = "SELECT $table_cols $from_clause $where_clause GROUP BY $table_cols HAVING COUNT(*)>1";
+			$sub_query = "SELECT $table_cols $from_clausesub $where_clause GROUP BY $table_cols HAVING COUNT(*)>1";
 		}
 
 		$query = $select_clause . $from_clause .
@@ -1427,7 +1456,6 @@ class CRMEntity {
 			' INNER JOIN (' . $sub_query . ') AS temp ON '.get_on_clause($field_values, $ui_type_arr, $module) .
 			$where_clause .
 			" ORDER BY $table_cols,". $this->table_name .'.'.$this->table_index .' ASC';
-
 		return $query;
 	}
 
