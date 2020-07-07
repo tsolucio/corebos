@@ -35,7 +35,7 @@
 	padding:20px;
 	border:1px solid #919195;
 	border-bottom:1px solid #666;
-	
+
 	-webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -215,7 +215,7 @@ button.close {
                                                     {if $hasToken eq true}
 							<div style="height:50px;overflow-y:auto;overflow-x:hidden;" align="center">
                                                             <img src="themes/softed/images/vtbusy.gif" height="15" width="15" id="syncimage" style="vertical-align: middle;display:none"/>
-                                                            <button name="SYNCH{$APP.SYNCH_NOW}" id="synchronize" value=" {$APP.SYNCH_NOW} " class="crmbutton small create" onClick="googleContactsSynch('{$MODULE}',this,'sync');" title="{$MOD.SYNC_NOW_TITLE}" style="vertical-align: middle;"> 
+                                                            <button name="SYNCH{$APP.SYNCH_NOW}" id="synchronize" value=" {$APP.SYNCH_NOW} " class="crmbutton small create" onClick="googleContactsSynch('{$MODULE}',this,'sync');" title="{$MOD.SYNC_NOW_TITLE}" style="vertical-align: middle;">
                                                                 <span id="synchronizespan" style="display: inline-block;vertical-align: middle;">{$APP.SYNCH_NOW}</span>
                                                             </button>
 							</div>
@@ -229,7 +229,7 @@ button.close {
                                         <tr>
 						<td align="left">
                                                     <div style="height:30px;overflow-y:auto;overflow-x:hidden;" align="center" >
-                                                        <button type="button" name="{$MOD.SYNC_SETTINGS}" class="crmbutton small" onClick="googleContactsSettings('{$MODULE}',this);" title="{$MOD.SYNC_SETT_TITLE}" style="vertical-align: middle;"> 
+                                                        <button type="button" name="{$MOD.SYNC_SETTINGS}" class="crmbutton small" onClick="googleContactsSettings('{$MODULE}',this);" title="{$MOD.SYNC_SETT_TITLE}" style="vertical-align: middle;">
                                                             <img src="themes/softed/images/mainSettings.PNG" height="15" width="15" style="vertical-align: middle;"/><span style="display: inline-block;vertical-align: middle;">{$MOD.SYNC_SETTINGS}</span>
                                                         </button>
                                                     </div>

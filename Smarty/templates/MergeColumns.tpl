@@ -52,7 +52,7 @@
 						{$FIELDS_TO_MERGE}
 						</select>
 					</td>
-				</tr> 
+				</tr>
 				<tr>
 					<td colspan="3" align="center" class="cblds-t-align_center cblds-p_medium">
 					<input type="submit" name="save&merge" value="{$APP.LBL_SAVE_MERGE_BUTTON_TITLE}" class="crmbutton small edit" onClick="return formSelectColumnString()"/>

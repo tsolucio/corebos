@@ -15,7 +15,7 @@
 	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
 <br>
 	<div align=center>
-	
+
 			{include file='SetMenu.tpl'}
 
 				<!-- DISPLAY -->
@@ -79,7 +79,6 @@
                                 <td class="cellText small">{$BODY}</td>
                               </tr>
                           </table></td>
-                          
                         </tr>
                       </table></td>
 					  </tr>

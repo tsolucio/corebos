@@ -35,7 +35,7 @@ var taskPriority = '{$task->priority}';
 			<span id="task_status_busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
 			<select id="task_status" value="{$task->status}" name="status" class="small" style="display: none;"></select>
 		</td>
-	</tr> 
+	</tr>
 	<tr valign="top">
 		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap"><b>{$MOD.Priority}</b></td>
 		<td class='dvtCellLabel'>
@@ -71,7 +71,7 @@ var taskPriority = '{$task->priority}';
 	<tr><td colspan="2"><hr size="1" noshade="noshade" /></td></tr>
 	<tr>
 		<td align="right"><b>{$MOD.LBL_TIME}</b></td>
-		{if $task->time neq ''} 
+		{if $task->time neq ''}
 			{assign var=now value=$task->time}
 		{else}
 			{assign var=now value=$USER_TIME}
@@ -81,7 +81,7 @@ var taskPriority = '{$task->priority}';
 	<tr>
 		<td align="right"><b>{$MOD.LBL_START_DATE}<br>{$MOD.LBL_DUE_DATE}</b></td>
 		<td>
-			<input type="text" name="days" value="{$task->days}" id="days" style="width:30px" class="small"> {$MOD.LBL_DAYS} 
+			<input type="text" name="days" value="{$task->days}" id="days" style="width:30px" class="small"> {$MOD.LBL_DAYS}
 			<select name="direction" class="small">
 				<option {if $task->direction eq 'After'}selected{/if} value="After">{$MOD.LBL_AFTER}</option>
 				<option {if $task->direction eq 'Before'}selected{/if} value="Before">{$MOD.LBL_BEFORE}</option>

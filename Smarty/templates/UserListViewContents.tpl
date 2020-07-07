@@ -170,7 +170,7 @@
 			{elseif $dtheader eq 'user_name'}
 			<td class="rptData">
 				<a av="href:viewusername"><span v="username"></span></a>
-				<table> 
+				<table>
 					<tr>
 						<td style="padding:0; margin:0;">
 							<a av="href:viewuser"><span v="firstname"></span>&nbsp;<span v="lastname"></span></a>&nbsp;&#10088;&nbsp;<a av="href:viewrole"><span v="rolename"></span></a>&nbsp;&#10089;

@@ -84,12 +84,12 @@
 							{assign var=reminstyle value='style="display:block;width:100%"'}
 							<input type="radio" name="set_reminder" value="Yes" {$check} onClick="showBlock('reminderOptions')">&nbsp;{$yes_val}&nbsp;
 							<input type="radio" name="set_reminder" value="No" onClick="fnhide('reminderOptions')">&nbsp;{$no_val}&nbsp;
-	
+
 						{else}
 							{assign var=reminstyle value='style="display:none;width:100%"'}
 							<input type="radio" name="set_reminder" value="Yes" onClick="showBlock('reminderOptions')">&nbsp;{$yes_val}&nbsp;
 							<input type="radio" name="set_reminder" value="No" checked onClick="fnhide('reminderOptions')">&nbsp;{$no_val}&nbsp;
-	
+
 						{/if}
 						</td></tr>
 					</table>

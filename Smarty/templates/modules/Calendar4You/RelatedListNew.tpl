@@ -46,13 +46,11 @@ function gotoUpdateListPrice(id,pbid,proid)
 
 <!-- Contents -->
 <div id="editlistprice" style="position:absolute;width:300px;"></div>
-		<!-- PUBLIC CONTENTS STARTS-->
-		
 			<!-- Account details tabs -->
 			<tr>
 				<td valign=top align=left >
 					<div class="small" style="padding:5px">
-		                	<table border=0 cellspacing=0 cellpadding=3 width=100% >
+						<table border=0 cellspacing=0 cellpadding=3 width=100% >
 						<tr>
 							<td valign=top align=left>
 							<!-- content cache -->
@@ -62,10 +60,10 @@ function gotoUpdateListPrice(id,pbid,proid)
 										   <!-- General details -->
 												{include file='modules/Calendar4You/RelatedListsHidden.tpl'}
 												<div id="RLContents">
-					                                                        {include file='RelatedListContents.tpl'}
-                                        						        </div>
+													{include file='RelatedListContents.tpl'}
+												</div>
 												</form>
-										  {*-- End of Blocks--*} 
+										  {*-- End of Blocks--*}
 										</td>
 									</tr>
 								</table>
@@ -75,10 +73,10 @@ function gotoUpdateListPrice(id,pbid,proid)
 					</div>
 				</td>
 			</tr>
-	<!-- PUBLIC CONTENTS STOPS-->   
+	<!-- PUBLIC CONTENTS STOPS-->
 <script>
 function OpenWindow(url)
 {ldelim}
-	openPopUp('xAttachFile',this,url,'attachfileWin',380,375,'menubar=no,toolbar=no,location=no,status=no,resizable=no');	
+	openPopUp('xAttachFile',this,url,'attachfileWin',380,375,'menubar=no,toolbar=no,location=no,status=no,resizable=no');
 {rdelim}
-</script>    
+</script>

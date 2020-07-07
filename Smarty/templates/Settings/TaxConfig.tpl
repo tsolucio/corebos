@@ -22,26 +22,26 @@
 {include file='SetMenu.tpl'}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 <div class="slds-modal__container slds-p-around_none slds-card">
-<div class="slds-page-header"> 
-	<div class="slds-page-header__row"> 
-		<div class="slds-page-header__col-title"> 
-			<div class="slds-media"> 
-				<div class="slds-media__body"> 
-					<div class="slds-page-header__name"> 
-						<div class="slds-page-header__name-title"> 
-							<h1> 
+<div class="slds-page-header">
+	<div class="slds-page-header__row">
+		<div class="slds-page-header__col-title">
+			<div class="slds-media">
+				<div class="slds-media__body">
+					<div class="slds-page-header__name">
+						<div class="slds-page-header__name-title">
+							<h1>
 							<span class="slds-page-header__title slds-truncate" title="{$MOD.LBL_NEW_CURRENCY}">
 								<svg class="slds-button__icon slds-icon-text-success slds-icon_large slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#money"></use> </svg>
 								&nbsp;{$MOD.LBL_TAX_SETTINGS}
 								<p valign=top class="small cblds-p-v_none">&nbsp;&nbsp;&nbsp;&nbsp;{$MOD.LBL_TAX_DESC}</p>
 							</h1>
 							</span>
-						</div> 
-					</div> 
-				</div> 
-			</div> 
-		</div> 
-	</div> 
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 <div align=center>
 <!-- DISPLAY -->
@@ -193,16 +193,16 @@
 					{/if}
 					{if $SH_EDIT_MODE eq 'true'}
 						<button class="slds-button slds-button_success save" title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.sh_save_tax.value='true'; this.form.parenttab.value='Settings'; return validateTaxes('sh_tax_count');" type="submit" name="button2" >
-						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use> </svg>					
+						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use> </svg>
 						{$APP.LBL_SAVE_BUTTON_LABEL}
 						</button>
 						<button class="slds-button slds-button_destructive cancel" title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.module.value='Settings'; this.form.sh_save_tax.value='false'; this.form.parenttab.value='Settings';" type="submit" name="button22">
-						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use> </svg>														
+						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use> </svg>
 						{$APP.LBL_CANCEL_BUTTON_LABEL}
 						</button>&nbsp;&nbsp;&nbsp;
 					{elseif $SH_TAX_COUNT > 0}
 						<button title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.sh_add_tax_type.value=''; this.form.sh_edit_tax.value='true'; this.form.parenttab.value='Settings';" type="submit" name="button" class="slds-button slds-button_success edit">
-						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use> </svg>																			
+						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use> </svg>
 							{$APP.LBL_EDIT_BUTTON_LABEL}
 						</button>&nbsp;&nbsp;&nbsp;
 					{/if}
@@ -259,7 +259,7 @@
 </div>
 <div class="slds-col">
 	<p class="slds-p-right_small" nowrap align="right"><a href="#top">{$MOD.LBL_SCROLL}</a></p>
-</div>			
+</div>
 </div>
 </div>
 </section>

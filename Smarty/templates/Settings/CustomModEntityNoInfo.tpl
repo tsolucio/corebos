@@ -13,7 +13,7 @@
 		<strong>{$SELMODULE|@getTranslatedString:$SELMODULE} {$MOD.LBL_MODULE_NUMBERING}</strong>
 	</td>
 	<td width="100%" >
-		<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description"> 
+		<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
 		{$STATUSMSG}
 		</label>
 	</td>
@@ -24,7 +24,7 @@
 </tr>
 <tr>
 	<td width="20%" nowrap >
-		<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description"> 
+		<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
 		{$MOD.LBL_USE_PREFIX}
 		</label>
 		</td>
@@ -34,7 +34,7 @@
 </tr>
 <tr>
 	<td width="20%" nowrap >
-		<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description"> 
+		<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
 		<abbr class="slds-required" title="Indica un campo obbligatorio">* </abbr>
 		{$MOD.LBL_START_SEQ}
 		</label>
@@ -46,11 +46,11 @@
 <tr>
 	<td width="20%" nowrap colspan="3" align ="center" class="cblds-t-align_right">
 		<button type="button" name="Button" class="slds-button slds-button_success save" onclick="updateModEntityNoSetting(this, this.form);">
-		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use> </svg>											
+		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use> </svg>
 		{$APP.LBL_SAVE_BUTTON_LABEL}
 		</button>
 		<button type="button" name="Button" class="slds-button slds-button_destructive cancel" onclick="history.back(-1);" />
-		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use> </svg>													
+		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use> </svg>
 		{$APP.LBL_CANCEL_BUTTON_LABEL}
 		</button>
 		</td>

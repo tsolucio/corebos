@@ -18,7 +18,7 @@
 	<td align="right" class="small"><a href="javascript:hide('editdiv');"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" align="middle" border="0"></a></td>
 </tr>
 </table>
-<table border=0 cellspacing=0 cellpadding=5 width=95% align=center> 
+<table border=0 cellspacing=0 cellpadding=5 width=95% align=center>
 <tr>
 	<td class="small">
 	<table border=0 celspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
@@ -74,7 +74,7 @@
 	<td align="right" class="small"><a href="javascript:hide('editdiv');"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" align="middle" border="0"></a></td>
 </tr>
 </table>
-<table border=0 cellspacing=0 cellpadding=5 width=95% align=center> 
+<table border=0 cellspacing=0 cellpadding=5 width=95% align=center>
 <tr>
 	<td class="small">
 	<table border=0 celspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
@@ -83,7 +83,7 @@
 	<td align="left"  class="cellText small" width="60%">
 	{if $NOTIFY_DETAILS.id neq 7}
 		<select class="small" id="notify_status">
-	{else}	
+	{else}
 		<select class="small" disabled id="notify_status">
 	{/if}
 	{if $NOTIFY_DETAILS.active eq 1}

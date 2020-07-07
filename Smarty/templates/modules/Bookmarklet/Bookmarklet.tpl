@@ -102,7 +102,7 @@ ul.searchResult li a:hover {
 			<td class="big" align="right"><input id="__saveVtigerEmail__" value="Save" type="button" class="button save"></td>
 		</tr>
 		</table>
-	
+
 		<table border="0" cellpadding="5" cellspacing="0" width="99%" class="small">
 			<tbody>
 				<tr>

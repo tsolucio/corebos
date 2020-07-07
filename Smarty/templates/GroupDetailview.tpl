@@ -34,12 +34,12 @@
 					<td valign=top class="small cblds-p-v_none">{$CMOD.LBL_VIEWING} {$CMOD.LBL_PROPERTIES} &quot;{$GROUPINFO.0.groupname}`&quot; {$CMOD.LBL_GROUP_NAME} </td>
 				</tr>
 				</table>
-				
+
 				<br>
 				<table border=0 cellspacing=0 cellpadding=10 width=100% >
 				<tr>
 				<td valign=top>
-					
+
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 					<tr>
 						<td class="big"><strong>{$CMOD.LBL_PROPERTIES} &quot;{$GROUPINFO.0.groupname}&quot; </strong></td>
@@ -62,28 +62,28 @@
                         <td class="cellText">
 						<table width="70%"  border="0" cellspacing="0" cellpadding="5">
                           <tr class="small">
-                  		{foreach key=type item=details from=$GROUPINFO.1} 
-				{if $details.0 neq ''}		
+				{foreach key=type item=details from=$GROUPINFO.1}
+				{if $details.0 neq ''}
 					{if $type == "User"}
                             		<td colspan="2" class="cellBottomDotLine">
 						<div align="left"><strong>{$MOD.LBL_USERS}</strong></div>
 					</td>
-					{/if}	
+					{/if}
 					{if $type == "Role"}
                             		<td colspan="2" class="cellBottomDotLine">
 						<div align="left"><strong>{$MOD.LBL_ROLES}</strong></div>
 					</td>
-					{/if}	
+					{/if}
 					{if $type == "Role and Subordinates"}
                             		<td colspan="2" class="cellBottomDotLine">
 						<div align="left"><strong>{$type}</strong></div>
 					</td>
-					{/if}	
+					{/if}
 					{if $type == "Group"}
                             		<td colspan="2" class="cellBottomDotLine">
 						<div align="left"><strong>{$CMOD.LBL_GROUPS}</strong></div>
 					</td>
-					{/if}	
+					{/if}
                             </tr>
                           <tr class="small">
 
@@ -93,14 +93,14 @@
 						{if $element.memberaction == "GroupDetailView"}
 						<a href="index.php?module=Settings&action={$element.memberaction}&{$element.actionparameter}={$element.memberid}">{$element.membername}</a><br />
 						{/if}
-						{if $element.memberaction == "RoleDetailView"}	
+						{if $element.memberaction == "RoleDetailView"}
 						<a href="index.php?module=Settings&action={$element.memberaction}&{$element.actionparameter}={$element.memberid}">{$element.membername}</a><br />
 						{/if}
-						{if $element.memberaction == "DetailView"}	
+						{if $element.memberaction == "DetailView"}
 						<a href="index.php?module=Users&action={$element.memberaction}&{$element.actionparameter}={$element.memberid}">{$element.membername}</a><br />
 						{/if}
 					{/foreach}
-			    </td>  	 
+			    </td>
                           </tr>
 				{/if}
 				{/foreach}
@@ -111,14 +111,9 @@
 					<table border=0 cellspacing=0 cellpadding=5 width=100% >
 					<tr><td class="small cblds-t-align_right" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
 					</table>
-					
-					
 				</td>
 				</tr>
 				</table>
-			
-			
-			
 			</td>
 			</tr>
 			</table>
@@ -126,7 +121,6 @@
 	</tr>
 	</form>
 	</table>
-		
 	</div>
 </td>
    </tr>

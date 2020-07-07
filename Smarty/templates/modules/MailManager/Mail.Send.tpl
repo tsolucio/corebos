@@ -75,7 +75,7 @@
 			<tr><td colspan="3"><br></td></tr>
 			<input type='hidden' class='small' name="calltype" id="calltype" value="mailManager">
 			<tr>
-				<td colspan="3" align="center">	
+				<td colspan="3" align="center">
 					<input type='hidden' class='small' name="msgtpopup_type" id="msgtpopup_type" value="MsgTemplate">
 					<button class="crmbutton small edit" onclick="MailManager.mail_reply_send(this.form);">{'LBL_Send'|@getTranslatedString}</button>&nbsp;
 					<button class="crmbutton small edit" onclick="MailManager.save_draft(this.form)">{'LBL_SAVE_NOW'|@getTranslatedString}</button>&nbsp;

@@ -23,7 +23,7 @@
 		padding:5px;
 		font-weight:bold;
 	{rdelim}
-	
+
 	a.x:hover {ldelim}
 		color:#333333;
 		text-decoration:underline;
