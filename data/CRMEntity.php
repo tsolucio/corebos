@@ -481,9 +481,6 @@ class CRMEntity {
 			}
 		}
 
-		if ($module == 'Events') {
-			$module = 'Calendar';
-		}
 		$description_val = (empty($this->column_fields['description']) ? '' : $this->column_fields['description']);
 		if ($this->mode == 'edit') {
 			$userprivs = $current_user->getPrivileges();
