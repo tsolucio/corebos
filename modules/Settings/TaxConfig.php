@@ -70,14 +70,14 @@ if (isset($_REQUEST['add_tax_type']) && $_REQUEST['add_tax_type'] == 'true') {
 
 //To Disable ie., delete or enable
 if (((isset($_REQUEST['disable']) && $_REQUEST['disable'] == 'true') || (isset($_REQUEST['enable']) && $_REQUEST['enable'] == 'true')) && !empty($_REQUEST['taxname'])) {
-	if ($_REQUEST['disable'] == 'true') {
+	if (isset($_REQUEST['disable']) && $_REQUEST['disable'] == 'true') {
 		changeDeleted(vtlib_purify($_REQUEST['taxname']), 1);
 	} else {
 		changeDeleted(vtlib_purify($_REQUEST['taxname']), 0);
 	}
 	$getlist = true;
 } elseif (((isset($_REQUEST['sh_disable']) && $_REQUEST['sh_disable']=='true') || (isset($_REQUEST['sh_enable']) && $_REQUEST['sh_enable']=='true')) && !empty($_REQUEST['sh_taxname'])) {
-	if ($_REQUEST['sh_disable'] == 'true') {
+	if (isset($_REQUEST['sh_disable']) && $_REQUEST['sh_disable'] == 'true') {
 		changeDeleted(vtlib_purify($_REQUEST['sh_taxname']), 1, 'sh');
 	} else {
 		changeDeleted(vtlib_purify($_REQUEST['sh_taxname']), 0, 'sh');
@@ -304,10 +304,9 @@ function addTaxType($taxlabel, $taxvalue, $sh = '', $retention = 0) {
 			$params1 = array($taxid, $taxname, $taxlabel, $taxvalue, 0);
 		} else {
 			$query1 = 'insert into vtiger_inventorytaxinfo (taxid,taxname,taxlabel,percentage,retention,tdefault,qcreate,deleted) values(?,?,?,?,?,?,?,?)';
-			$retention = ($_REQUEST['addTaxLabelretention']=='on' ? 1 : 0);
-			$taxdefault = ($_REQUEST['addTaxLabeldefault']=='on' ? 1 : 0);
-			$taxqcreate = ($_REQUEST['addTaxLabelqcreate']=='on' ? 1 : 0);
-			$log->fatal($_REQUEST);
+			$retention = (isset($_REQUEST['addTaxLabelretention']) && $_REQUEST['addTaxLabelretention']=='on' ? 1 : 0);
+			$taxdefault = (isset($_REQUEST['addTaxLabeldefault']) && $_REQUEST['addTaxLabeldefault']=='on' ? 1 : 0);
+			$taxqcreate = (isset($_REQUEST['addTaxLabelqcreate']) && $_REQUEST['addTaxLabelqcreate']=='on' ? 1 : 0);
 			$params1 = array($taxid, $taxname, $taxlabel, $taxvalue, $retention, $taxdefault, $taxqcreate, 0);
 		}
 		$res1 = $adb->pquery($query1, $params1);
