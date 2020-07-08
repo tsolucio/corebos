@@ -394,7 +394,7 @@ class ListViewController {
 					}
 				} elseif ($field->getFieldDataType() == 'double') {
 					if ($value != '') {
-						$value = CurrencyField::convertToUserFormat($value);
+						$value = CurrencyField::convertToUserFormat($value, $current_user, true);
 					}
 				} elseif ($field->getFieldDataType() == 'url') {
 					$matchPattern = "^[\w]+:\/\/^";
