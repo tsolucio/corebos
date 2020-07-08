@@ -79,6 +79,7 @@ const ListView = {
 			const fieldname = headerObj[index].fieldname;
 			const fieldvalue = headerObj[index].fieldvalue;
 			const uitype = headerObj[index].uitype;
+			const tooltip = headerObj[index].tooltip;
 			let editor;
 			let formatter;
 			let values = {};
@@ -142,6 +143,9 @@ const ListView = {
 				        },
 						renderer: {
         					type: LinkRender,
+        					options: {
+        						tooltip: tooltip
+        					}
         				},
 					};
 	      		} else {
@@ -310,7 +314,15 @@ const ListView = {
 					}
 				}
 			});
-
+			//change style in grid
+			const getBodyArea = document.getElementsByClassName('tui-grid-body-area');
+			for (let i = 0; i < getBodyArea.length; i++) {
+			  getBodyArea[i].style.overflow = 'visible';
+			}
+			const getRside = document.getElementsByClassName('tui-grid-rside-area');
+			for (let i = 0; i < getRside.length; i++) {
+			  getRside[i].style.overflow = 'visible';
+			}
 			ListView.registerEvent(url);
 			tui.Grid.applyTheme('striped');
 		});
@@ -625,6 +637,104 @@ const ListView = {
 					recordid: recordid,
 				}
 			});
+		}
+	},
+	/**
+	 * Show tooltip in Listview
+	 * @param {String} recordid
+	 * @param {String} fieldname
+	 * @param {String} modulename
+	 */
+	addTooltip: (recordid, fieldname, modulename) => {
+		const tooltipUrl = `index.php?module=Tooltip&action=TooltipAjax&file=ComputeTooltip&fieldname=${fieldname}&id=${recordid}&modname=${modulename}&ajax=true&submode=getTooltip`;
+		let getId = document.getElementById(`tooltip-${recordid}-${fieldname}`);
+		if (getId != null) {
+			document.getElementById(`tooltip-${recordid}-${fieldname}`).style.display = 'block';
+		} else {
+			fetch(
+				tooltipUrl+'&returnarray=true',
+				{
+					method: 'get',
+					headers: {
+						'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+					},
+					credentials: 'same-origin',
+				}
+			).then(response => response.json()).then(response => {
+				if (getId != null) {
+					getId.remove();
+				}
+				let body = '';
+				let width = '';
+				for (let label in response) {
+					if (label == 'ModComments') {
+						width = 'width:700px';
+					} else {
+						body += `
+							<dl class="slds-list_horizontal">
+								<dt class="slds-item_label slds-text-color_weak slds-truncate">
+									<strong>${label}:</strong>
+								</dt>
+								<dd class="slds-item_detail slds-truncate">${response[label]}</dd>
+							</dl>				
+						`;
+					}
+				}
+				const getEl = document.getElementById(`tooltip-el-${recordid}-${fieldname}`);
+				const parent = getEl.parentNode;
+				const el = `
+					<div style="padding-left:2rem;padding-top:5rem;position:absolute;">
+					    <section class="slds-popover" onmouseleave="ListView.removeTooltip('${recordid}', '${fieldname}')" role="dialog" style="position:absolute;top:-20px;left: 0px;${width};">
+					      <button onclick="ListView.removeTooltip(${recordid}, '${fieldname}', true)" class="slds-button slds-button_icon slds-button_icon-small slds-float_right slds-popover__close slds-button_icon-inverse">
+					        <svg class="slds-button__icon" aria-hidden="true">
+					          <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+					        </svg>
+					        <span class="slds-assistive-text">Close dialog</span>
+					      </button>
+					      <header class="slds-popover__header" style="background: #031d73;color: white">
+					        <div class="slds-media slds-media_center slds-has-flexi-truncate">
+					          <div class="slds-media__figure">
+					            <span class="slds-icon_container slds-icon-utility-error">
+					              <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+					                <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#preview"></use>
+					              </svg>
+					            </span>
+					          </div>
+					          <div class="slds-media__body">
+					            <h2 class="slds-truncate slds-text-heading_medium" title="Quick view">Quick view</h2>
+					          </div>
+					        </div>
+					      </header>
+					      <div class="slds-popover__body">
+					        ${body}
+					      </div>
+					    </section>
+					</div>
+				`;
+				const createEl = document.createElement('div');
+				createEl.id = `tooltip-${recordid}-${fieldname}`;
+				createEl.innerHTML = el;
+				parent.appendChild(createEl);
+			});
+		}
+	},
+	/**
+	 * Remove tooltip in Listview
+	 * @param {String} recordid
+	 * @param {String} fieldname
+	 */
+	removeTooltip: (recordid, fieldname, state = false) => {
+		const el = `tooltip-${recordid}-${fieldname}`;
+		if (state) {
+			document.getElementById(`tooltip-${recordid}-${fieldname}`).remove();
+		} else {
+			if (document.getElementById(`tooltip-${recordid}-${fieldname}`)) {
+				document.getElementById(`tooltip-${recordid}-${fieldname}`).style.display = 'none';
+			} else {
+				setTimeout(function () {
+					document.getElementById(`tooltip-${recordid}-${fieldname}`).style.display = 'none';
+				}, 1000);
+			}
 		}
 	},
 };

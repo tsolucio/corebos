@@ -51,6 +51,10 @@ if ($fieldname=='invoice_product') {
 		}
 		$result = vttooltip_processResult($result, $descObject);
 		$text = getToolTipText($viewid, $fieldname, $modname, $result);
+		if (isset($_REQUEST['returnarray'])) {
+			echo json_encode($text);
+			return;
+		}
 		$tip = getToolTip($text);
 		echo $tip;
 	} else {

@@ -17,6 +17,7 @@
 function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sortColumn = '', $currentPage = 1, $searchUrl = '', $searchtype = 'Basic') {
 	global $app_strings, $mod_strings, $current_user, $adb;
 	include_once 'include/utils/utils.php';
+	include_once 'modules/Tooltip/TooltipUtils.php';
 	require_once "modules/$currentModule/$currentModule.php";
 	$category = getParentTab();
 	$lastPage = vtlib_purify($_REQUEST['lastPage']);
@@ -151,13 +152,16 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	$listview_header_arr = array();
 	foreach ($listview_header_search as $fName => $fValue) {
 		$fieldType = getUItypeByFieldName($currentModule, $fName);
+		$tabid = getTabid($currentModule);
+		$tooltip = ToolTipExists($fName, $tabid);
 		if ($fieldType == '15') {
 			$picklistValues = vtlib_getPicklistValues($fName);
 			$lv_arr = array(
 				'fieldname' => $fName,
 				'fieldvalue' => $fValue,
 				'uitype' => $fieldType,
-				'picklist' => $picklistValues
+				'picklist' => $picklistValues,
+				'tooltip' => $tooltip,
 			);
 		} elseif ($fieldType == '52' || $fieldType == '53') {
 			$users = get_user_array();
@@ -165,13 +169,15 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 				'fieldname' => $fName,
 				'fieldvalue' => $fValue,
 				'uitype' => $fieldType,
-				'picklist' => $users
+				'picklist' => $users,
+				'tooltip' => $tooltip,
 			);
 		} else {
 			$lv_arr = array(
 				'fieldname' => $fName,
 				'fieldvalue' => $fValue,
-				'uitype' => $fieldType
+				'uitype' => $fieldType,
+				'tooltip' => $tooltip,
 			);
 		}
 		array_push($listview_header_arr, $lv_arr);
@@ -295,16 +301,32 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 }
 
 function updateDataListView() {
+	global $current_user;
 	$modulename = vtlib_purify($_REQUEST['modulename']);
 	$value = vtlib_purify($_REQUEST['value']);
 	$columnName = vtlib_purify($_REQUEST['columnName']);
 	$recordid = vtlib_purify($_REQUEST['recordid']);
+	$moduleHandler = vtws_getModuleHandlerFromName($modulename, $current_user);
+	$handlerMeta = $moduleHandler->getMeta();
 	$tablename = getTableNameForField($modulename, $columnName);
 	$focus = new $modulename;
 	$focus->id = $recordid;
 	$focus->mode = 'edit';
 	$focus->retrieve_entity_info($recordid, $modulename);
 	$focus->column_fields[$columnName] = $value;
+	$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $handlerMeta);
 	$focus->saveentity($modulename);
+}
+
+function getUserIdFromUsername($username) {
+	global $adb;
+	$result = $adb->pquery('select id from vtiger_users where user_name=?', array($username));
+	$num_rows = $adb->num_rows($result);
+	if ($num_rows > 0) {
+		$user_id = $adb->query_result($result, 0, 'id');
+	} else {
+		$user_id = 0;
+	}
+	return $user_id;
 }
 ?>
