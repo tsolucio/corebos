@@ -317,16 +317,4 @@ function updateDataListView() {
 	$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $handlerMeta);
 	$focus->saveentity($modulename);
 }
-
-function getUserIdFromUsername($username) {
-	global $adb;
-	$result = $adb->pquery('select id from vtiger_users where user_name=?', array($username));
-	$num_rows = $adb->num_rows($result);
-	if ($num_rows > 0) {
-		$user_id = $adb->query_result($result, 0, 'id');
-	} else {
-		$user_id = 0;
-	}
-	return $user_id;
-}
 ?>
