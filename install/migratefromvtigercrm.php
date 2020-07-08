@@ -121,6 +121,7 @@ $adb->query("UPDATE `vtiger_users` set date_modified=date_entered");
 $adb->query("UPDATE `vtiger_import_maps` set date_modified=date_entered");
 $adb->query("UPDATE `vtiger_loginhistory` set login_time=null where login_time='0000-00-00 00:00:00'");
 $adb->query("UPDATE `vtiger_loginhistory` set logout_time=null where logout_time='0000-00-00 00:00:00'");
+$adb->query("UPDATE `vtiger_crmentity` set modifiedtime=createdtime where modifiedtime='0000-00-00 00:00:00'");
 //
 
 $the_file = 'CheckSystem.php';

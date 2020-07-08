@@ -26,9 +26,7 @@ class fixAsteriskLabelOnUsersModule extends cbupdaterWorker {
 		} else {
 			$fieldId = getFieldid(getTabid('Users'), 'use_asterisk');
 			if ($fieldId) {
-				$fieldModel = Vtiger_Field::getInstance($fieldId);
-				$fieldModel->label = 'Receive Incoming Calls';
-				$fieldModel->save();
+				$this->ExecuteQuery('UPDATE vtiger_field SET fieldlabel=? where fieldid=?', array('Receive Incoming Calls', $fieldId));
 			}
 
 			$this->sendMsg('Changeset '.get_class($this).' applied!');

@@ -71,6 +71,9 @@ class coreBOS_Rule {
 		// merge fixed context array values
 		if (is_array($mergeContextVariables)) {
 			foreach ($mergeContextVariables as $key => $value) {
+				if (is_array($value)) {
+					continue;
+				}
 				$cbmap->column_fields['content'] = str_ireplace('$['.$key.']', $value, $cbmap->column_fields['content']);
 			}
 		}

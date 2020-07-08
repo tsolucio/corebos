@@ -29,12 +29,16 @@ class BActionContextParameter extends cbupdaterWorker {
 				$operationid = $adb->query_result($result, 0, 'operationid');
 				if (isset($operationid)) {
 					$this->ExecuteQuery(
-						"INSERT INTO `vtiger_ws_operation_parameters` (`operationid`, `name`, `type`, `sequence`) VALUES ($operationid, 'context', 'String', 2);"
+						"INSERT IGNORE INTO `vtiger_ws_operation_parameters` (`operationid`, `name`, `type`, `sequence`) VALUES ($operationid, 'context', 'String', 2);"
 					);
+					$this->sendMsg('Changeset '.get_class($this).' applied!');
+					$this->markApplied();
+				} else {
+					$this->sendMsgError('Changeset '.get_class($this).' NOT applied! Operation executeBusinessAction not found');
 				}
+			} else {
+				$this->sendMsgError('Changeset '.get_class($this).' NOT applied! Operation executeBusinessAction not found');
 			}
-			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
 		}
 		$this->finishExecution();
 	}

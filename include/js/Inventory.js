@@ -253,11 +253,11 @@ function calcTotal() {
 function calcProductTotal(rowId) {
 	if (document.getElementById('deleted'+rowId) && document.getElementById('deleted'+rowId).value == 0) {
 		var chknum = getObj('listPrice'+rowId).value;
-		if (chknum.indexOf(',')!=-1 || chknum.indexOf("'")!=-1) {
+		if (chknum.indexOf(',')!=-1 || chknum.indexOf('\'')!=-1) {
 			document.getElementById('listPrice'+rowId).value = standarizeFormatCurrencyValue(chknum);
 		}
 		chknum = getObj('qty'+rowId).value;
-		if (chknum.indexOf(',')!=-1 || chknum.indexOf("'")!=-1) {
+		if (chknum.indexOf(',')!=-1 || chknum.indexOf('\'')!=-1) {
 			document.getElementById('qty'+rowId).value = standarizeFormatCurrencyValue(chknum);
 		}
 		var total=getObj('qty'+rowId).value * getObj('listPrice'+rowId).value;
@@ -330,7 +330,7 @@ function calcGrandTotal() {
 		grandTotal = grandTotal + parseFloat(sh_amount) + sh_tax;
 	}
 	if (adjustment != '') {
-		if (adjustment.indexOf(',')!=-1 || adjustment.indexOf("'")!=-1) {
+		if (adjustment.indexOf(',')!=-1 || adjustment.indexOf('\'')!=-1) {
 			adjustment = standarizeFormatCurrencyValue(adjustment);
 			document.getElementById('adjustment').value = adjustment;
 		}
@@ -584,19 +584,19 @@ function fnAddTaxConfigRow(sh) {
 	var col4 = row.insertCell(3);
 	var col5 = row.insertCell(4);
 
-	colone.className = 'cellLabel small';
-	coltwo.className = 'cellText small';
-	col3.className = 'cellText small';
-	col4.className = 'cellText small';
-	col5.className = 'cellText small';
+	colone.className = 'slds-form-element';
+	coltwo.className = 'slds-form-element';
+	col3.className = 'slds-form-element';
+	col4.className = 'slds-form-element';
+	col5.className = 'slds-form-element';
 
-	colone.innerHTML='<input type=\'text\' id=\''+label_name+'\' name=\''+label_name+'\' value=\''+tax_labelarr.TAX_NAME+'\' class=\'txtBox\' onclick="this.form.'+label_name+'.value=\'\'";/>';
-	coltwo.innerHTML='<input type=\'text\' id=\''+label_val+'\' name=\''+label_val+'\' value=\''+tax_labelarr.TAX_VALUE+'\' class=\'txtBox\' onclick="this.form.'+label_val+'.value=\'\'";/>';
-	col3.innerHTML='<input type=\'checkbox\' id=\''+label_name+'retention\' name=\''+label_name+'retention\' class=\'txtBox\' />';
-	col4.innerHTML='<input type=\'checkbox\' id=\''+label_name+'default\' name=\''+label_name+'default\' class=\'txtBox\' />';
-	col5.innerHTML='<input type=\'checkbox\' id=\''+label_name+'qcreate\' name=\''+label_name+'qcreate\' class=\'txtBox\' />';
+	colone.innerHTML='<input type=\'text\' id=\''+label_name+'\' name=\''+label_name+'\' value=\''+tax_labelarr.TAX_NAME+'\' class=\'slds-input\' onclick="this.form.'+label_name+'.value=\'\'";/>';
+	coltwo.innerHTML='<input type=\'text\' id=\''+label_val+'\' name=\''+label_val+'\' value=\''+tax_labelarr.TAX_VALUE+'\' class=\'slds-input\' onclick="this.form.'+label_val+'.value=\'\'";/>';
+	col3.innerHTML='<input type=\'checkbox\' id=\''+label_name+'retention\' name=\''+label_name+'retention\' class=\'slds-checkbox\' />';
+	col4.innerHTML='<input type=\'checkbox\' id=\''+label_name+'default\' name=\''+label_name+'default\' class=\'slds-checkbox\' />';
+	col5.innerHTML='<input type=\'checkbox\' id=\''+label_name+'qcreate\' name=\''+label_name+'qcreate\' class=\'slds-checkbox\' />';
 
-	document.getElementById(td_id).innerHTML='<input type=\'submit\' name=\'Save\' value=\' '+tax_labelarr.SAVE_BUTTON+' \' class=\'crmButton small save\' onclick="this.form.action.value=\'TaxConfig\'; this.form.'+add_tax_flag+'.value=\'true\'; return validateNewTaxType(\''+label_name+'\',\''+label_val+'\');">&nbsp;<input type=\'submit\' name=\'Cancel\' value=\' '+tax_labelarr.CANCEL_BUTTON+' \' class=\'crmButton small cancel\' onclick="this.form.action.value=\'TaxConfig\'; this.form.module.value=\'Settings\'; this.form.'+add_tax_flag+'.value=\'false\'; this.form.parenttab.value=\'Settings\';">';
+	document.getElementById(td_id).innerHTML='<input type=\'submit\' name=\'Save\' value=\' '+tax_labelarr.SAVE_BUTTON+' \' class=\'slds-button slds-button_success save\' onclick="this.form.action.value=\'TaxConfig\'; this.form.'+add_tax_flag+'.value=\'true\'; return validateNewTaxType(\''+label_name+'\',\''+label_val+'\');">&nbsp;<input type=\'submit\' name=\'Cancel\' value=\' '+tax_labelarr.CANCEL_BUTTON+' \' class=\'slds-button slds-button_destructive cancel\' onclick="this.form.action.value=\'TaxConfig\'; this.form.module.value=\'Settings\'; this.form.'+add_tax_flag+'.value=\'false\'; this.form.parenttab.value=\'Settings\';">';
 }
 
 function validateNewTaxType(fieldname, fieldvalue) {
@@ -838,7 +838,7 @@ function setDiscount(currObj, curr_row) {
 		//This is to calculate the final discount
 		if (curr_row == '_final') {
 			var discount_percentage_final_value = document.getElementById('discount_percentage'+curr_row).value;
-			if (discount_percentage_final_value.indexOf(',')!=-1 || discount_percentage_final_value.indexOf("'")!=-1) {
+			if (discount_percentage_final_value.indexOf(',')!=-1 || discount_percentage_final_value.indexOf('\'')!=-1) {
 				discount_percentage_final_value = standarizeFormatCurrencyValue(discount_percentage_final_value);
 				document.getElementById('discount_percentage'+curr_row).value = discount_percentage_final_value;
 			}
@@ -849,7 +849,7 @@ function setDiscount(currObj, curr_row) {
 		} else {
 			// This is to calculate the product discount
 			var discount_percentage_value = document.getElementById('discount_percentage'+curr_row).value;
-			if (discount_percentage_value.indexOf(',')!=-1 || discount_percentage_value.indexOf("'")!=-1) {
+			if (discount_percentage_value.indexOf(',')!=-1 || discount_percentage_value.indexOf('\'')!=-1) {
 				discount_percentage_value = standarizeFormatCurrencyValue(discount_percentage_value);
 				document.getElementById('discount_percentage'+curr_row).value = discount_percentage_value;
 			}
@@ -867,7 +867,7 @@ function setDiscount(currObj, curr_row) {
 		document.getElementById('discount_amount'+curr_row).style.visibility = 'visible';
 		//Rounded the decimal part of discount amount to two digits
 		var discount_amount_value = document.getElementById('discount_amount'+curr_row).value.toString();
-		if (discount_amount_value.indexOf(',')!=-1 || discount_amount_value.indexOf("'")!=-1) {
+		if (discount_amount_value.indexOf(',')!=-1 || discount_amount_value.indexOf('\'')!=-1) {
 			discount_amount_value = standarizeFormatCurrencyValue(discount_amount_value);
 			document.getElementById('discount_amount'+curr_row).value = discount_amount_value;
 		}
@@ -957,7 +957,7 @@ function calcSHTax() {
 	}
 	var sh_tax_count = document.getElementById('sh_tax_count').value;
 	var sh_charge = document.getElementById('shipping_handling_charge').value;
-	if (sh_charge.indexOf(',')!=-1 || sh_charge.indexOf("'")!=-1) {
+	if (sh_charge.indexOf(',')!=-1 || sh_charge.indexOf('\'')!=-1) {
 		sh_charge = standarizeFormatCurrencyValue(sh_charge);
 		document.getElementById('shipping_handling_charge').value = sh_charge;
 	}
@@ -1906,11 +1906,11 @@ function handleProductAutocompleteSelect(obj) {
 	switch (type) {
 	case 'Products':
 		searchIcon.src = 'themes/images/products.gif';
-		searchIcon.setAttribute('onclick', "productPickList(this,'"+gVTModule+"','"+no+"')");
+		searchIcon.setAttribute('onclick', 'productPickList(this,\''+gVTModule+'\',\''+no+'\')');
 		break;
 	case 'Services':
 		searchIcon.src = 'themes/images/services.gif';
-		searchIcon.setAttribute('onclick', "servicePickList(this,'"+gVTModule+"','"+no+"')");
+		searchIcon.setAttribute('onclick', 'servicePickList(this,\''+gVTModule+'\',\''+no+'\')');
 		break;
 	}
 	var func = gVTModule + 'setValueFromCapture';

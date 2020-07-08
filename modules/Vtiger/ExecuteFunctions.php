@@ -353,6 +353,9 @@ switch ($functiontocall) {
 		$rdo = isPermitted($mod, $act, $rec)=='yes';
 		$ret = array('isPermitted'=>$rdo);
 		break;
+	case 'getUserName':
+		$ret = getUserName(vtlib_purify($_REQUEST['userid']));
+		break;
 	case 'ismoduleactive':
 	default:
 		$mod = vtlib_purify($_REQUEST['checkmodule']);

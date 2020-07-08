@@ -35,9 +35,14 @@ class addmaintablealiasFieldincbQuestion extends cbupdaterWorker {
 					)
 				),
 			);
-			$this->massCreateFields($field);
-			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$moduleInstance = Vtiger_Module::getInstance('cbQuestion');
+			if ($moduleInstance) {
+				$this->massCreateFields($field);
+				$this->sendMsg('Changeset '.get_class($this).' applied!');
+				$this->markApplied();
+			} else {
+				$this->sendMsgError('Changeset '.get_class($this).' could not be applied yet. Please launch again.');
+			}
 		}
 		$this->finishExecution();
 	}

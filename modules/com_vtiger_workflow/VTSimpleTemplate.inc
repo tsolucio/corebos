@@ -314,8 +314,6 @@ class VTSimpleTemplate {
 		// Checking if field present in the table.
 		// To Do.
 
-		$moduleName = $this->parent->getModuleName();
-		$wsUsersId = vtws_getEntityId('Users');
 		$wsid = $this->parent->getId();
 		list($wsid,$crmid) = explode('x', $wsid);
 		$cmsqlws = 'SELECT '.$field.'
@@ -328,12 +326,18 @@ class VTSimpleTemplate {
 		$wsid = $this->parent->getId();
 		$cmrs = $adb->pquery($cmsqlws, array($crmid));
 		if ($html) {
-			$retcm .= '<div class="inventorydetails"><ul class="inventorydetailsfields">';
+			$retcm .= '<div class="inventorydetailslist">';
 		}
 		if ($table) {
-			$retcm .= '<table class="inventorydetails"><tr class="inventorydetailsfields">';
+			$retcm .= '<table class="inventorydetails">';
 		}
 		while ($inv = $adb->fetch_array($cmrs)) {
+			if ($html) {
+				$retcm .= '<div class="inventorydetails"><ul class="inventorydetailsfields">';
+			}
+			if ($table) {
+				$retcm .= '<tr class="inventorydetailsfields">';
+			}
 			foreach ($fields as $fname) {
 				if ($html) {
 					$retcm .= '<li class="inventorydetailsfield">';
@@ -356,12 +360,18 @@ class VTSimpleTemplate {
 					$retcm .= '</td>';
 				}
 			}
+			if ($html) {
+				$retcm .= '</ul></div>';
+			}
+			if ($table) {
+				$retcm .= '</tr>';
+			}
 		}
 		if ($html) {
-			$retcm .= '</ul></div>';
+			$retcm .= '</div>';
 		}
 		if ($table) {
-			$retcm .= '</tr></table>';
+			$retcm .= '</table>';
 		}
 		return $retcm;
 	}

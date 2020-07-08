@@ -22,13 +22,17 @@ class addPLValueOnQuestion extends cbupdaterWorker {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$module = Vtiger_Module::getInstance('cbQuestion');
-			$field = Vtiger_Field::getInstance('qtype', $module);
-			if ($field) {
-				// Adding picklist value to Question Types
-				$field->setPicklistValues(array('Mermaid'));
+			if ($module) {
+				$field = Vtiger_Field::getInstance('qtype', $module);
+				if ($field) {
+					// Adding picklist value to Question Types
+					$field->setPicklistValues(array('Mermaid'));
+				}
+				$this->sendMsg('Changeset '.get_class($this).' applied!');
+				$this->markApplied(false);
+			} else {
+				$this->sendMsgError('Changeset '.get_class($this).' could not be applied yet. Please launch again.');
 			}
-			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}

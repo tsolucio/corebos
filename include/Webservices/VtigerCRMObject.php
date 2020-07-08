@@ -197,17 +197,12 @@ class VtigerCRMObject {
 	}
 
 	public function getSEType($id) {
-		global $adb;
-
-		$seType = null;
-		$sql = 'select setype from vtiger_crmentity where crmid=? and deleted=0';
-		$result = $adb->pquery($sql, array($id));
-		if ($result != null && isset($result)) {
-			if ($adb->num_rows($result)>0) {
-				$seType = $adb->query_result($result, 0, 'setype');
-			}
+		$seType = getSalesEntityType($id);
+		if (empty($seType)) {
+			return null;
+		} else {
+			return $seType;
 		}
-		return $seType;
 	}
 }
 ?>

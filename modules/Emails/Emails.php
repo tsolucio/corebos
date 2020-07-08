@@ -34,8 +34,14 @@ class Emails extends CRMEntity {
 	public $rel_contacts_table = 'vtiger_cntactivityrel';
 	public $rel_serel_table = 'vtiger_seactivityrel';
 	public $tab_name = array('vtiger_crmentity', 'vtiger_activity', 'vtiger_emaildetails');
-	public $tab_name_index = array('vtiger_crmentity' => 'crmid', 'vtiger_activity' => 'activityid',
-		'vtiger_seactivityrel' => 'activityid', 'vtiger_cntactivityrel' => 'activityid', 'vtiger_email_track' => 'mailid', 'vtiger_emaildetails' => 'emailid');
+	public $tab_name_index = array(
+		'vtiger_crmentity' => 'crmid',
+		'vtiger_activity' => 'activityid',
+		'vtiger_seactivityrel' => 'activityid',
+		'vtiger_cntactivityrel' => 'activityid',
+		'vtiger_email_track' => 'mailid',
+		'vtiger_emaildetails' => 'emailid',
+	);
 	public $list_fields = array(
 		'Subject' => array('activity' => 'subject'),
 		'Related to' => array('seactivityrel' => 'parent_id'),

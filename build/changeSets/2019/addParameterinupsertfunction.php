@@ -22,17 +22,21 @@ class addParameterinupsertfunction extends cbupdaterWorker {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			global $adb;
-			$result = $adb->pquery('SELECT operationid FROM vtiger_ws_operation WHERE name = ?', array('upsert'));
+			$result = $adb->pquery('SELECT operationid FROM vtiger_ws_operation WHERE name=?', array('upsert'));
 			if ($result) {
 				$operationid = $adb->query_result($result, 0, 'operationid');
-				if (isset($operationid)) {
-					$this->ExecuteQuery("INSERT INTO `vtiger_ws_operation_parameters`
-                        (`operationid`, `name`, `type`, `sequence`) VALUES
-                        ($operationid, 'updatedfields', 'String', 4);");
+				if (!empty($operationid)) {
+					$this->ExecuteQuery(
+						"INSERT IGNORE INTO `vtiger_ws_operation_parameters` (`operationid`,`name`,`type`,`sequence`) VALUES ($operationid,'updatedfields','String',4)"
+					);
+					$this->sendMsg('Changeset '.get_class($this).' applied!');
+					$this->markApplied();
+				} else {
+					$this->sendMsg('Changeset '.get_class($this).' NOT applied! Operation Upsert not found');
 				}
+			} else {
+				$this->sendMsg('Changeset '.get_class($this).' NOT applied! Operation Upsert not found');
 			}
-			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
 		}
 		$this->finishExecution();
 	}

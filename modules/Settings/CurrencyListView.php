@@ -20,6 +20,7 @@ $cnt=1;
 $currency = array();
 do {
 	$currency_element = array();
+	$currency_element['id'] = $temprow['id'];
 	$currency_element['name'] = $temprow['currency_name'];
 	$currency_element['code'] = $temprow['currency_code'];
 	$currency_element['symbol'] = $temprow['currency_symbol'];
@@ -29,11 +30,9 @@ do {
 	if ($temprow["defaultid"] != '-11') {
 		$currency_element['name']  = '<a href=index.php?module=Settings&action=CurrencyEditView&record='.$temprow['id'].'&detailview=detail_view>';
 		$currency_element['name'] .= getTranslatedCurrencyString($temprow['currency_name']).'</a>';
-		$currency_element['tool']  = '<a href=index.php?module=Settings&action=CurrencyEditView&record='.$temprow['id'].'><img src="';
-		$currency_element['tool'] .= vtiger_imageurl('editfield.gif', $theme) .'" border="0" alt="'.$app_strings['LBL_EDIT_BUTTON_LABEL'].'" title="';
-		$currency_element['tool'] .= $app_strings['LBL_EDIT_BUTTON_LABEL'].'"/></a>&nbsp;|&nbsp;<img style="cursor:pointer;" onClick="fnvshobj(this,\'currencydiv\');';
-		$currency_element['tool'] .= 'deleteCurrency(\''.$temprow['id'].'\');" src="'. vtiger_imageurl('delete.gif', $theme).'" border="0" alt="';
-		$currency_element['tool'] .= $app_strings['LBL_DELETE_BUTTON_LABEL'].'" title="'.$app_strings['LBL_DELETE_BUTTON_LABEL'].'"/>';
+		$currency_element['tool']  = '<a href=index.php?module=Settings&action=CurrencyEditView&record='.$temprow['id'].'><span class="slds-icon_container slds-icon_container_circle slds-icon-action-edit" title="Edit"><svg class="slds-icon slds-icon_xx-small" aria-hidden="true"><use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#edit"></use></svg><span class="slds-assistive-text">Edit</span></span></a>';
+		$currency_element['tool'] .= '&nbsp;&nbsp;<a style="cursor:pointer;" onClick="fnvshobj(this,\'currencydiv\');';
+		$currency_element['tool'] .= 'deleteCurrency(\''.$temprow['id'].'\');"<span class="slds-icon_container slds-icon_container_circle slds-icon-action-delete" title="Edit"><svg class="slds-icon  slds-icon_xx-small" aria-hidden="true"><use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#delete"></use></svg><span class="slds-assistive-text">Delete</span></span></a>';
 	} else {
 		$currency_element['tool']= '';
 	}

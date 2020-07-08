@@ -72,7 +72,7 @@ class cleandatabase_610 extends cbupdaterWorker {
 				);
 			}
 
-			$sql = "ALTER TABLE vtiger_products MODIFY productname VARCHAR( 100 )";
+			$sql = 'ALTER TABLE vtiger_products MODIFY productname VARCHAR( 260 )';
 			$this->ExecuteQuery($sql, array());
 
 			$query = "ALTER table vtiger_relcriteria modify comparator varchar(20)";
