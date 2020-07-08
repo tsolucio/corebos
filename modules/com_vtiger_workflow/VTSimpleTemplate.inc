@@ -301,7 +301,7 @@ class VTSimpleTemplate {
 		$field = $fieldsql;
 		$fields = explode(',', $field);
 		for ($fidx = 0; $fidx<count($fields); $fidx++) {
-			$fields[$fidx] = trim(str_replace('vtiger_inventorydetails.', '', $fields[$fidx]));
+			$fields[$fidx] = trim($fields[$fidx]);
 			if ($fields[$fidx]=='productname' || $fields[$fidx]=='servicename') {
 				$fields[$fidx]='pdoname';
 			}
@@ -321,7 +321,7 @@ class VTSimpleTemplate {
 			INNER JOIN vtiger_crmentity ON vtiger_inventorydetails.inventorydetailsid=vtiger_crmentity.crmid
 			LEFT JOIN vtiger_products ON vtiger_inventorydetails.productid=vtiger_products.productid
 			LEFT JOIN vtiger_service ON vtiger_inventorydetails.productid=vtiger_service.serviceid
-			WHERE related_to=?';
+			WHERE related_to=? order by sequence_no';
 		$retcm = '';
 		$wsid = $this->parent->getId();
 		$cmrs = $adb->pquery($cmsqlws, array($crmid));
@@ -515,9 +515,20 @@ class VTSimpleTemplate {
 			list($fieldname, $field) = explode('->', decode_html($fieldname));
 		}
 		if (substr($fieldname, 0, 16)=='inventorydetails') {
-			$inventoryspec = explode('_', $fieldname);
-			$format = isset($inventoryspec[1]) ? $inventoryspec[1] : 'html';
-			$field = isset($inventoryspec[2]) ? $inventoryspec[2] : '*';
+			$inventoryspec = substr($fieldname, 17);
+			if (strlen($inventoryspec)>0) {
+				$underscore = strpos($inventoryspec, '_');
+				if ($underscore!==false) {
+					$format = substr($inventoryspec, 0, $underscore);
+					$field = substr($inventoryspec, $underscore+1);
+				} else {
+					$format = $inventoryspec;
+					$field = '*';
+				}
+			} else {
+				$format = 'html';
+				$field = '*';
+			}
 			$fieldname = 'inventorydetails';
 		}
 		if (substr($fieldname, 0, 11) == 'scanBarCode') {
