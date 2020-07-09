@@ -179,17 +179,23 @@ class Vtiger_MailScannerAction {
 
 			// If matching ticket is found, update comment, attach email
 			if ($linkfocus) {
+				$returnid = $this->__CreateNewEmail($mailrecord, $this->module, $linkfocus);
 				$timestamp = $adb->formatDate(date('YmdHis'), true);
-//				$adb->pquery("INSERT INTO vtiger_ticketcomments(ticketid, comments, ownerid, ownertype, createdtime) VALUES(?,?,?,?,?)",
-//					Array($linkfocus->id, $mailrecord->getBodyText(), $relatedid, 'customer', $timestamp));
-				$adb->pquery(
-					'INSERT INTO vtiger_ticketcomments(ticketid, comments, ownerid, ownertype, createdtime) VALUES(?,?,?,?,?)',
-					array($linkfocus->id, $mailrecord->getBodyText(), $relatedid,$mailscanner->linkedtype, $timestamp)
-				);
+				if ($mailscannerrule->add_email_as == 'CommentAndEmail') {
+					$adb->pquery(
+						'INSERT INTO vtiger_ticketcomments(ticketid, comments, ownerid, ownertype, createdtime) VALUES(?,?,?,?,?)',
+						array($linkfocus->id, $mailrecord->getBodyText(), $relatedid, $mailscanner->linkedtype, $timestamp)
+					);
+				} elseif ($mailscannerrule->add_email_as == 'LinkAndEmail') {
+					$comment = '<a href="index.php?action=DetailView&module=Emails&record='.$returnid.'" target=_blank>'.getTranslatedString('SINGLE_Emails', 'Emails').'</a>';
+					$adb->pquery(
+						'INSERT INTO vtiger_ticketcomments(ticketid, comments, ownerid, ownertype, createdtime) VALUES(?,?,?,?,?)',
+						array($linkfocus->id, $comment, $relatedid, $mailscanner->linkedtype, $timestamp)
+					);
+				}
 				// Set the ticket status to Open if its Closed
 				$adb->pquery("UPDATE vtiger_troubletickets set status=? WHERE ticketid=? AND status='Closed'", array('Open', $linkfocus->id));
 
-				$returnid = $this->__CreateNewEmail($mailrecord, $this->module, $linkfocus);
 			} else {
 				// TODO If matching ticket was not found, create ticket?
 				// $returnid = $this->__CreateTicket($mailscanner, $mailrecord);
@@ -221,13 +227,20 @@ class Vtiger_MailScannerAction {
 
 			// If matching ticket is found, update comment, attach email
 			if ($linkfocus) {
-				$comment = CRMEntity::getInstance('ModComments');
-				$comment->column_fields['assigned_user_id'] = $current_user->id;
-				$comment->column_fields['commentcontent'] = $mailrecord->getBodyText();
-				$comment->column_fields['related_to'] = $linkfocus->id;
-				$comment->save('ModComments');
-
 				$returnid = $this->__CreateNewEmail($mailrecord, $this->module, $linkfocus);
+				if ($mailscannerrule->add_email_as == 'CommentAndEmail') {
+					$comment = CRMEntity::getInstance('ModComments');
+					$comment->column_fields['assigned_user_id'] = $current_user->id;
+					$comment->column_fields['commentcontent'] = $mailrecord->getBodyText();
+					$comment->column_fields['related_to'] = $linkfocus->id;
+					$comment->save('ModComments');
+				} elseif ($mailscannerrule->add_email_as == 'LinkAndEmail') {
+					$comment = CRMEntity::getInstance('ModComments');
+					$comment->column_fields['assigned_user_id'] = $current_user->id;
+					$comment->column_fields['commentcontent'] = '<a href="index.php?action=DetailView&module=Emails&record='.$returnid.'" target=_blank>'.getTranslatedString('SINGLE_Emails', 'Emails').'</a>';
+					$comment->column_fields['related_to'] = $linkfocus->id;
+					$comment->save('ModComments');
+				}
 			} else {
 				// TODO If matching ticket was not found, create ticket?
 				// $returnid = $this->__CreateTicket($mailscanner, $mailrecord);
