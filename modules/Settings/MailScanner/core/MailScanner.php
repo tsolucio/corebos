@@ -20,6 +20,8 @@ class Vtiger_MailScanner {
 	private $_scannerinfo = false;
 	// Reference mailbox to use
 	private $_mailbox = false;
+	// other CRMIDs we have to relate the email with
+	public $otherEmailRelations = array();
 
 	// Ignore scanning the folders always
 	private $_generalIgnoreFolders = array(
@@ -176,6 +178,7 @@ class Vtiger_MailScanner {
 		$crmid = false;
 		if ($matchresult) {
 			$mailrecord->fetchBody($mailbox->_imap, $messageid);
+			$this->otherEmailRelations = array();
 			$crmid = $mailscannerrule->takeAction($this, $mailrecord, $matchresult);
 		}
 		// Return the CRMID
@@ -393,8 +396,9 @@ class Vtiger_MailScanner {
 			'SELECT contactid FROM vtiger_contactdetails inner join vtiger_crmentity on crmid=contactid WHERE deleted=0 and (email=? or secondaryemail=?)',
 			array($email,$email)
 		);
-		if ($adb->num_rows($contactres)) {
-			$contactid = $adb->query_result($contactres, 0, 'contactid');
+		while ($cto = $adb->fetch_array($contactres)) {
+			$contactid = $cto['contactid'];
+			$this->otherEmailRelations[] = $contactid;
 		}
 		if ($contactid) {
 			$this->log("Caching Contact Id found for email: $email");
@@ -424,8 +428,9 @@ class Vtiger_MailScanner {
 			'SELECT accountid FROM vtiger_account inner join vtiger_crmentity on crmid=accountid WHERE deleted=0 and (email1=? OR email2=?)',
 			array($email, $email)
 		);
-		if ($adb->num_rows($accountres)) {
-			$accountid = $adb->query_result($accountres, 0, 'accountid');
+		while ($acc = $adb->fetch_array($accountres)) {
+			$accountid = $acc['accountid'];
+			$this->otherEmailRelations[] = $accountid;
 		}
 		if ($accountid) {
 			$this->log("Caching Account Id found for email: $email");

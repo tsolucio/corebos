@@ -28,6 +28,8 @@ class Vtiger_MailScannerAction {
 	public $module    = false;
 	// lookup information while taking action
 	public $lookup    = false;
+	// other CRMIDs we have to relate the email with
+	private $otherEmailRelations = array();
 
 	// Storage folder to use
 	private $STORAGE_FOLDER = 'storage/mailscanner/';
@@ -132,6 +134,7 @@ class Vtiger_MailScannerAction {
 	 */
 	public function apply($mailscanner, $mailrecord, $mailscannerrule, $matchresult) {
 		$returnid = false;
+		$this->otherEmailRelations = array();
 		if ($this->actiontype == 'CREATE') {
 			if ($this->module == 'HelpDesk') {
 				$returnid = $this->__CreateTicket($mailscanner, $mailrecord);
@@ -172,6 +175,7 @@ class Vtiger_MailScannerAction {
 			$linkfocus = $mailscanner->GetTicketRecord($usesubject, $fromemail, $mailscannerrule->must_be_related);
 //			$relatedid = $linkfocus->column_fields['parent_id'];
 			$relatedid = $mailscanner->linkedid;
+			$this->otherEmailRelations = $mailscanner->otherEmailRelations;
 
 			// If matching ticket is found, update comment, attach email
 			if ($linkfocus) {
@@ -213,6 +217,7 @@ class Vtiger_MailScannerAction {
 			// Get the ticket record that was created by SENDER earlier
 			$fromemail = $mailrecord->_from[0];
 			$linkfocus = $mailscanner->GetProjectRecord($usesubject, $fromemail, $mailscannerrule->must_be_related);
+			$this->otherEmailRelations = $mailscanner->otherEmailRelations;
 
 			// If matching ticket is found, update comment, attach email
 			if ($linkfocus) {
@@ -323,6 +328,7 @@ class Vtiger_MailScannerAction {
 	 */
 	public function __CreateNewEmail($mailrecord, $module, $linkfocus) {
 		global $current_user;
+		$reqModule = $_REQUEST['module'];
 		if (!$current_user) {
 			$current_user = Users::getActiveAdminUser();
 		}
@@ -337,6 +343,15 @@ class Vtiger_MailScannerAction {
 		$focus->column_fields['parent_type'] = $module;
 		$focus->column_fields['activitytype'] = 'Emails';
 		$focus->column_fields['parent_id'] = "$linkfocus->id@$relid|";
+		foreach ((array)$this->otherEmailRelations as $crmid) {
+			$relmod = getSalesEntityType($crmid);
+			$referenceHandler = vtws_getModuleHandlerFromId(vtws_getEntityId($relmod).'x'.$crmid, $current_user);
+			$referenceMeta = $referenceHandler->getMeta();
+			$relid = getEmailFieldId($referenceMeta, $crmid);
+			$focus->column_fields['parent_id'] .= "$crmid@$relid|";
+		}
+		$_REQUEST['parent_id'] = $focus->column_fields['parent_id'];
+		$_REQUEST['module'] = 'Emails';
 		$focus->column_fields['subject'] = $mailrecord->_subject;
 
 		$focus->column_fields['description'] = $mailrecord->getBodyHTML();
@@ -360,7 +375,7 @@ class Vtiger_MailScannerAction {
 
 		// TODO: Handle attachments of the mail (inline/file)
 		$this->__SaveAttachements($mailrecord, 'Emails', $focus);
-
+		$_REQUEST['module'] = $reqModule;
 		return $emailid;
 	}
 
