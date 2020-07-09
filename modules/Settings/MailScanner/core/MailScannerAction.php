@@ -140,10 +140,10 @@ class Vtiger_MailScannerAction {
 			$returnid = $this->__LinkToRecord($mailscanner, $mailrecord);
 		} elseif ($this->actiontype == 'UPDATE') {
 			if ($this->module == 'HelpDesk') {
-				$returnid = $this->__UpdateTicket($mailscanner, $mailrecord, $mailscannerrule->hasRegexMatch($matchresult));
+				$returnid = $this->__UpdateTicket($mailscanner, $mailrecord, $mailscannerrule->hasRegexMatch($matchresult), $mailscannerrule);
 			}
 			if ($this->module == 'Project') {
-				$returnid = $this->__UpdateProject($mailscanner, $mailrecord, $mailscannerrule->hasRegexMatch($matchresult));
+				$returnid = $this->__UpdateProject($mailscanner, $mailrecord, $mailscannerrule->hasRegexMatch($matchresult), $mailscannerrule);
 			}
 		}
 		return $returnid;
@@ -152,7 +152,7 @@ class Vtiger_MailScannerAction {
 	/**
 	 * Update ticket action.
 	 */
-	public function __UpdateTicket($mailscanner, $mailrecord, $regexMatchInfo) {
+	public function __UpdateTicket($mailscanner, $mailrecord, $regexMatchInfo, $mailscannerrule) {
 		global $adb;
 		$returnid = false;
 
@@ -169,7 +169,7 @@ class Vtiger_MailScannerAction {
 			// Get the ticket record that was created by SENDER earlier
 			$fromemail = $mailrecord->_from[0];
 
-			$linkfocus = $mailscanner->GetTicketRecord($usesubject, $fromemail);
+			$linkfocus = $mailscanner->GetTicketRecord($usesubject, $fromemail, $mailscannerrule->must_be_related);
 //			$relatedid = $linkfocus->column_fields['parent_id'];
 			$relatedid = $mailscanner->linkedid;
 
@@ -197,7 +197,7 @@ class Vtiger_MailScannerAction {
 	/**
 	 * Update Project action.
 	 */
-	public function __UpdateProject($mailscanner, $mailrecord, $regexMatchInfo) {
+	public function __UpdateProject($mailscanner, $mailrecord, $regexMatchInfo, $mailscannerrule) {
 		global $current_user;
 		$returnid = false;
 		$usesubject = false;
@@ -212,7 +212,7 @@ class Vtiger_MailScannerAction {
 
 			// Get the ticket record that was created by SENDER earlier
 			$fromemail = $mailrecord->_from[0];
-			$linkfocus = $mailscanner->GetProjectRecord($usesubject, $fromemail);
+			$linkfocus = $mailscanner->GetProjectRecord($usesubject, $fromemail, $mailscannerrule->must_be_related);
 
 			// If matching ticket is found, update comment, attach email
 			if ($linkfocus) {

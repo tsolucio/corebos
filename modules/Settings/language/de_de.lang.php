@@ -794,6 +794,11 @@ $mod_strings = array(
 	'LBL_MESSAGES_FROM_LASTSCAN'=>'Nachrichten vom letzten Scan',
 	'LBL_MARK_MESSAGE_AS'=>'markiere die Nachricht als',
 	'LBL_ASSIGN' => 'Zuordnung an',
+	'LBL_MUSTBERELATED' => 'Must be related with record',
+	'LBL_ADDEMAILAS' => 'Add Email as',
+	'LBL_ADDCOMMENTEMAIL' => 'As comment and email',
+	'LBL_ADDLINKEMAIL' => 'As link in comment and email',
+	'LBL_ADDONLYEMAIL' => 'Only email',
 	//Added for the workflow module
 	'LBL_LIST_WORKFLOWS'=>'Liste der Workflows',
 	'LBL_LIST_WORKFLOWS_DESCRIPTION' => 'Anzeige und Gestaltung von Workflows für das CRM',
