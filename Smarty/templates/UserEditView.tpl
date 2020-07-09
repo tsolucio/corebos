@@ -282,7 +282,6 @@ function check_duplicate() {ldelim}
 				</table>
 				<br>
 				</td></tr>
-				<tr><td class="small cblds-t-align_right"><div align="right"><a href="#top">{$MOD.LBL_SCROLL}</a></div></td></tr>
 				</table>
 			</td>
 			</tr>

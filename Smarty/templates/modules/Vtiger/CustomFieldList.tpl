@@ -121,11 +121,6 @@ var gselected_fieldtype = '';
 				{include file='Vtiger'|@vtlib_getModuleTemplate:'CustomFieldEntries.tpl'}
 				</div>
 				{/if}
-			<table border="0" cellpadding="5" cellspacing="0" width="100%">
-			<tr>
-			<td class="small cblds-t-align_right" align="right" nowrap="nowrap"><a href="#top">{$MOD.LBL_SCROLL}</a></td>
-			</tr>
-			</table>
 			</td>
 			</tr>
 			</table>

@@ -257,9 +257,6 @@
 	</form>
 		<!-- Shipping Tax Ends Here -->
 </div>
-<div class="slds-col">
-	<p class="slds-p-right_small" nowrap align="right"><a href="#top">{$MOD.LBL_SCROLL}</a></p>
-</div>
 </div>
 </div>
 </section>

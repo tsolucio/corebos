@@ -56,10 +56,6 @@
 				</table>
 	</form>
 	</table>
-
-				<table border=0 cellspacing=0 cellpadding=5 width=100% >
-				<tr><td class="small" ><div align=right><a href="#top">{$MOD.LBL_SCROLL}</a></div></td></tr>
-				</table>
 		</td>
 	</tr>
 </table>

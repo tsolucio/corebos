@@ -27,11 +27,6 @@
 				<div id="vtlib_modulemanager_list">
 					{include file="Settings/ModuleManager/ModuleManagerAjax.tpl"}
 				</div>
-				<table border="0" cellpadding="5" cellspacing="0" width="100%">
-				<tr>
-					<td class="small" align="right" nowrap="nowrap"><a href="#top">{$MOD.LBL_SCROLL}</a></td>
-				</tr>
-				</table>
 			</td>
 		</tr>
 		</table>
