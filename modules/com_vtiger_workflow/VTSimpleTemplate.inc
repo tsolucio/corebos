@@ -345,6 +345,9 @@ class VTSimpleTemplate {
 				if ($table) {
 					$retcm .= '<td class="inventorydetailsfield">';
 				}
+				if (strpos($fname, '.')) { // FQN
+					list($void, $fname) = explode('.', $fname);
+				}
 				$fval = vtlib_purify($inv[$fname]);
 				if (is_numeric($fval)) {
 					$fval = CurrencyField::convertToUserFormat($fval, null, true);
