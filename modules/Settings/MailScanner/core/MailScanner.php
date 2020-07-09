@@ -292,7 +292,7 @@ class Vtiger_MailScanner {
 			$modtab = getTabid($module);
 			$emptab = getTabid('cbEmployee');
 			$fldres = $adb->pquery(
-				'SELECT * FROM vtiger_field fld LEFT JOIN vtiger_fieldmodulerel fr ON fld.fieldid=fr.fieldid WHERE fld.tabid=? AND fld.uitype=10 AND fr.relmodule=?',
+				'SELECT fld.fieldname FROM vtiger_field fld LEFT JOIN vtiger_fieldmodulerel fr ON fld.fieldid=fr.fieldid WHERE fld.tabid=? AND fld.uitype=10 AND fr.relmodule=?',
 				array($modtab, 'cbEmployee')
 			);
 			while ($row = $adb->fetch_array($fldres)) {
@@ -324,10 +324,7 @@ class Vtiger_MailScanner {
 			$userid = $adb->query_result($userres, 0, 'id');
 		}
 		if ($userid) {
-			if ($checkWithId !== false && !is_array($checkWithId)) {
-				$checkWithId = array($checkWithId);
-			}
-			if ($checkWithId && !in_array($userid, $checkWithId)) {
+			if ($checkWithId && !in_array($userid, (array)$checkWithId)) {
 				$userid = false;
 				$this->log("Matching User found for email: $email, but not implied.");
 			} else {
@@ -364,10 +361,7 @@ class Vtiger_MailScanner {
 				$userid = $adb->query_result($empres, 0, 'userid');
 			}
 			if ($empid) {
-				if ($checkWithId !== false && !is_array($checkWithId)) {
-					$checkWithId = array($checkWithId);
-				}
-				if ($checkWithId && !in_array($empid, $checkWithId)) {
+				if ($checkWithId && !in_array($empid, (array)$checkWithId)) {
 					$empid = false;
 					$this->log("Matching Employee found for email: $email, but not implied");
 				} else {
@@ -401,10 +395,6 @@ class Vtiger_MailScanner {
 		);
 		if ($adb->num_rows($contactres)) {
 			$contactid = $adb->query_result($contactres, 0, 'contactid');
-			$crmres = $adb->pquery('SELECT deleted FROM vtiger_crmentity WHERE crmid=?', array($contactid));
-			if ($adb->num_rows($crmres) && $adb->query_result($crmres, 0, 'deleted')) {
-				$contactid = false;
-			}
 		}
 		if ($contactid) {
 			$this->log("Caching Contact Id found for email: $email");
@@ -436,10 +426,6 @@ class Vtiger_MailScanner {
 		);
 		if ($adb->num_rows($accountres)) {
 			$accountid = $adb->query_result($accountres, 0, 'accountid');
-			$crmres = $adb->pquery('SELECT deleted FROM vtiger_crmentity WHERE crmid=?', array($accountid));
-			if ($adb->num_rows($crmres) && $adb->query_result($crmres, 0, 'deleted')) {
-				$accountid = false;
-			}
 		}
 		if ($accountid) {
 			$this->log("Caching Account Id found for email: $email");
