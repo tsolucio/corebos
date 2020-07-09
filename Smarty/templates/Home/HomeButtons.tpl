@@ -187,7 +187,7 @@
 				{$MOD.LBL_HOME_RSS}
 			</a>
 		</li>
-{/if}	
+{/if}
 {if $ALLOW_DASH eq "yes"}
 		<li class="slds-dropdown__item" role="presentation">
 			<a href='javascript:;' role="menuitem" id="adddash">

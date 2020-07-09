@@ -23,9 +23,9 @@
 
 <table border=0 cellspacing=0 cellpadding=0 width=100% class="small" style="border-bottom:1px solid #999999;padding:5px;">
 	<tr>
-		<td  valign=bottom><b>{$HEADERLABEL}</b> 
+		<td  valign=bottom><b>{$HEADERLABEL}</b>
 			{if $MODULE eq 'Campaigns' && ($rel_mod eq 'Contacts' || $rel_mod eq 'Leads')}
-					<br><br>{$APP.LBL_SELECT_BUTTON_LABEL}: <a href="javascript:;" onclick="clear_checked_all('{$rel_mod}');">{$APP.LBL_NONE_NO_LINE}</a>
+				<br><br>{$APP.LBL_SELECT_BUTTON_LABEL}: <a href="javascript:;" onclick="clear_checked_all('{$rel_mod}');">{$APP.LBL_NONE_NO_LINE}</a>
 			{/if}
 		</td>
 		{if $detail ne ''}
@@ -43,12 +43,12 @@
 					<input title="{$APP.LBL_ADD_NEW} {$APP.Contact}" accessyKey="F" class="crmbutton small create" onclick="this.form.action.value='EditView';this.form.module.value='Contacts'" type="submit" name="button" value="{$APP.LBL_ADD_NEW} {$APP.Contact}"></td>
 				{/if}
 			{elseif $header eq 'Users'}
-                    {if $MODULE eq 'Calendar'}
-						<input title="Change" accessKey="" tabindex="2" type="button" class="crmbutton small edit" value="{$APP.LBL_SELECT_USER_BUTTON_LABEL}" name="button" onclick='return window.open("index.php?module=Users&return_module=Calendar&return_action={$return_modname}&activity_mode=Events&action=Popup&popuptype=detailview&form=EditView&form_submit=true&select=enable&return_id={$ID}&recordid={$ID}","test","width=640,height=525,resizable=0,scrollbars=0")';>
-                    {/if}
-            {elseif $header eq 'Activity History'}
-                    &nbsp;</td>
-            {/if}
+				{if $MODULE eq 'Calendar'}
+					<input title="Change" accessKey="" tabindex="2" type="button" class="crmbutton small edit" value="{$APP.LBL_SELECT_USER_BUTTON_LABEL}" name="button" onclick='return window.open("index.php?module=Users&return_module=Calendar&return_action={$return_modname}&activity_mode=Events&action=Popup&popuptype=detailview&form=EditView&form_submit=true&select=enable&return_id={$ID}&recordid={$ID}","test","width=640,height=525,resizable=0,scrollbars=0")';>
+				{/if}
+			{elseif $header eq 'Activity History'}
+				&nbsp;</td>
+			{/if}
 	</tr>
 </table>
 {assign var=check_status value=$detail}

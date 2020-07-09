@@ -90,8 +90,8 @@ if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] == 'SalesOrd
 	$so_focus->retrieve_entity_info($_REQUEST['salesorderid'], 'SalesOrder');
 
 	$associated_prod = getAssociatedProducts('SalesOrder', $so_focus);
-	$txtTax = (($so_focus->column_fields['txtTax'] != '') ? $so_focus->column_fields['txtTax'] : '0.000');
-	$txtAdj = (($so_focus->column_fields['txtAdjustment'] != '') ? $so_focus->column_fields['txtAdjustment'] : '0.000');
+	$txtTax = ((!empty($so_focus->column_fields['txtTax'])) ? $so_focus->column_fields['txtTax'] : '0.000');
+	$txtAdj = ((!empty($so_focus->column_fields['txtAdjustment'])) ? $so_focus->column_fields['txtAdjustment'] : '0.000');
 	$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
 	$smarty->assign('MODE', $so_focus->mode);
 	$smarty->assign('AVAILABLE_PRODUCTS', 'true');
@@ -173,8 +173,10 @@ if (!empty($_REQUEST['parent_id']) && !empty($_REQUEST['return_module'])) {
 }
 
 if (!empty($_REQUEST['vendor_id']) && $_REQUEST['record']=='') {
+	$vendid = vtlib_purify($_REQUEST['vendor_id']);
 	$vend_focus = CRMEntity::getInstance('Vendors');
-	$vend_focus->retrieve_entity_info($_REQUEST['vendor_id'], 'Vendors');
+	$vend_focus->retrieve_entity_info($vendid, 'Vendors');
+	$focus->column_fields['vendor_id']=$vendid;
 	$focus->column_fields['bill_city']=$vend_focus->column_fields['city'];
 	$focus->column_fields['ship_city']=$vend_focus->column_fields['city'];
 	$focus->column_fields['bill_street']=$vend_focus->column_fields['street'];

@@ -12,26 +12,26 @@
 {include file="SetMenu.tpl"}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 <div class="slds-modal__container slds-p-around_none slds-card">
-	<div class="slds-page-header"> 
-		<div class="slds-page-header__row"> 
-			<div class="slds-page-header__col-title"> 
-				<div class="slds-media"> 
-					<div class="slds-media__body"> 
-						<div class="slds-page-header__name"> 
-							<div class="slds-page-header__name-title"> 
-								<h1> 
+	<div class="slds-page-header">
+		<div class="slds-page-header__row">
+			<div class="slds-page-header__col-title">
+				<div class="slds-media">
+					<div class="slds-media__body">
+						<div class="slds-page-header__name">
+							<div class="slds-page-header__name-title">
+								<h1>
 								<span class="slds-page-header__title slds-truncate" title="{$MOD.LBL_NEW_CURRENCY}">
 								<svg class="slds-button__icon slds-icon-text-success slds-icon_large slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#outcome"></use> </svg>
 								&nbsp;{$MOD.LBL_MAIL_SERVER_SETTINGS}
 								<p valign=top class="small cblds-p-v_none">&nbsp;&nbsp;&nbsp;&nbsp;{$MOD.LBL_MAIL_SERVER_DESC}</p>
 								</h1>
 								</span>
-							</div> 
-						</div> 
-					</div> 
-				</div> 
-			</div> 
-		</div> 
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	{if $EMAILCONFIG_MODE neq 'edit'}
 		<form action="index.php" method="post" name="MailServer" id="form" onsubmit="VtigerJS_DialogBox.block();">
@@ -50,7 +50,6 @@
 			<input type="hidden" name="confirmMsg" value="{$MOD.LBL_CONFIRM_DEFAULT_SETTINGS}" id="confirmMsg">
 			<input type="hidden" name="defaultMsg" value="{$MOD.EXISTING_DEFAULT_VALUES}" id="defaultMsg">
 			<input type="hidden" name="mode">
-	
 <div align=center>
 	<br>
 	<table border=0 cellspacing=0 cellpadding=10 width=100%  class="slds-table slds-table_cell-buffer slds-table_header-hidden">
@@ -70,12 +69,12 @@
 						</button>
 					{else}
 						<button title="{$APP.LBL_SAVE_BUTTON_LABEL}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="slds-button slds-button_success save" onclick="this.form.action.value='Save';" type="submit" name="button">
-						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use> </svg>											
-						{$APP.LBL_SAVE_BUTTON_LABEL}	
+						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use> </svg>
+						{$APP.LBL_SAVE_BUTTON_LABEL}
 						&nbsp;&nbsp;
 						</button>
 						<button title="{$APP.LBL_CANCEL_BUTTON_LABEL}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="slds-button slds-button_destructive cancel" onclick="window.location.href = 'index.php?module=Settings&action=EmailConfig&parenttab=Settings';" type="button" name="button" >
-						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use> </svg>											
+						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use> </svg>
 						{$APP.LBL_CANCEL_BUTTON_LABEL}
 						</button>
 					{/if}
@@ -94,7 +93,7 @@
 				<table width="100%"  border="0" cellspacing="0" cellpadding="5" class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
 					<tr class="slds-line-height_reset">
 						<td width="20%" height="40px" nowrap >
-							<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description"> 
+							<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
 							<abbr class="slds-required" title="Indica un campo obbligatorio">* </abbr>
 							{$MOD.LBL_OUTGOING_MAIL_SERVER}
 							</label>
@@ -104,7 +103,7 @@
 					</tr>
 					<tr>
 						<td nowrap height="40px" >
-							<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description"> 
+							<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
 							<abbr class="slds-required" title="Indica un campo obbligatorio">* </abbr>
 							{$MOD.LBL_USERNAME}
 							</label>
@@ -114,7 +113,7 @@
 					</tr>
 					<tr>
 						<td nowrap  height="40px">
-							<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description"> 
+							<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
 							<abbr class="slds-required" title="Indica un campo obbligatorio">* </abbr>
 							{$MOD.LBL_PASWRD}
 							</label>
@@ -128,7 +127,7 @@
 					</tr>
 					<tr>
 						<td nowrap  height="40px">
-							<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description"> 
+							<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
 							<abbr class="slds-required" title="Indica un campo obbligatorio">* </abbr>
 							{$MOD.LBL_FROM_EMAIL_FIELD}
 							</label>
@@ -139,7 +138,7 @@
 					</tr>
 					<tr>
 						<td nowrap  height="40px">
-							<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description"> 
+							<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
 							<abbr class="slds-required" title="Indica un campo obbligatorio">* </abbr>
 							{$MOD.LBL_REQUIRES_AUTHENT}
 							</label>
@@ -153,9 +152,9 @@
 				<tr>
 					<td class="small" valign=top >
 						<table width="100%"  border="0" cellspacing="0" cellpadding="5" class="slds-table slds-table_cell-buffer slds-table_bordered ">
-							<tr class="slds-line-height_reset">	
+							<tr class="slds-line-height_reset">
 								<td width="20%" height="40px" nowrap ><font color="red">
-								<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description"> 
+								<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
 								<abbr class="slds-required" title="Indica un campo obbligatorio">* </abbr>
 								{$MOD.LBL_OUTGOING_MAIL_SERVER}
 								</label>
@@ -167,7 +166,7 @@
 							</tr>
 							<tr valign="top">
 								<td nowrap >
-								<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description"> 									
+								<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
 								{$MOD.LBL_USERNAME}
 								</label>
 								</td>
@@ -178,7 +177,7 @@
 							</tr>
 							<tr>
 								<td nowrap >
-								<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description"> 									
+								<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
 								{$MOD.LBL_PASWRD}
 								</label>
 								</td>
@@ -189,7 +188,7 @@
 							</tr>
 							<tr>
 								<td nowrap >
-								<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description"> 									
+								<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
 								{$MOD.LBL_FROM_EMAIL_FIELD}
 								</label>
 								</td>
@@ -200,7 +199,7 @@
 							</tr>
 							<tr>
 								<td nowrap >
-								<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description"> 									
+								<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
 								{$MOD.LBL_REQUIRES_AUTHENT}
 								</label>
 								</td>
@@ -212,12 +211,12 @@
 						</table>
 					<td>
 				<tr>
-			</table>		
+			</table>
 			{/if}
 			<td>
-		</tr>		
+		</tr>
 	</table>
-</div>		
+</div>
 		</form>
 		<div class="slds-col">
 			<p class="slds-p-right_small" nowrap align="right"><a href="#top">{$MOD.LBL_SCROLL}</a></p>

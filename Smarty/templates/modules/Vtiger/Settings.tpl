@@ -26,7 +26,7 @@
 					<td class="small" valign="top">{$MOD.VTLIB_LBL_MODULE_MANAGER_DESCRIPTION}</td>
 				</tr>
 				</table>
-				
+
 				<br>
 				<table border="0" cellspacing="0" cellpadding="20" width="100%" class="settingsUI">
 					<tr>
@@ -69,7 +69,7 @@
 						</td>
 					</tr>
 				</table>
-				
+
 					</td>
 				</tr>
 			</table>

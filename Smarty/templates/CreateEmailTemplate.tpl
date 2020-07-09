@@ -13,25 +13,21 @@
 <script type="text/javascript">
     var allOptions = null;
 
-    function setAllOptions(inputOptions) 
-    {ldelim}
+    function setAllOptions(inputOptions) {ldelim}
         allOptions = inputOptions;
     {rdelim}
 
-    function modifyMergeFieldSelect(cause, effect) 
-    {ldelim}
+    function modifyMergeFieldSelect(cause, effect) {ldelim}
         var selected = cause.options[cause.selectedIndex].value;  id="mergeFieldValue"
         var s = allOptions[cause.selectedIndex];
         effect.length = s;
-        for (var i = 0; i < s; i++) 
-	{ldelim}
+        for (var i = 0; i < s; i++) {ldelim}
             effect.options[i] = s[i];
         {rdelim}
         document.getElementById('mergeFieldValue').value = '';
     {rdelim}
 {literal}
-    function init() 
-    {
+    function init() {
         var blankOption = new Option('--None--', '--None--');
         var options = null;
 {/literal}
@@ -45,7 +41,7 @@
             {foreach key=header item=detail from=$module}
              {assign var="optioncount" value=$optioncount+1}
 				options[{$optioncount}] = new Option('{$detail.0}', '{$detail.1}');
-			{/foreach}      
+			{/foreach}
 			 {assign var="alloptioncount" value=$alloptioncount+1}
              allOpts[{$alloptioncount}] = options;
 	    {/foreach}
@@ -65,11 +61,11 @@
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody><tr>
-        <td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-        <td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
+	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
+	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
 <br>
 	<div align=center>
-	
+
 			{include file='SetMenu.tpl'}
 				<!-- DISPLAY -->
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
@@ -88,18 +84,18 @@
 				{else}
 					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=listemailtemplates&parenttab=Settings">{$UMOD.LBL_EMAIL_TEMPLATES}</a> &gt; {$MOD.LBL_CREATE_EMAIL_TEMPLATES} </b></td>
 				{/if}
-					
+
 				</tr>
 				<tr>
 					<td valign=top class="small cblds-p-v_none">{$UMOD.LBL_EMAIL_TEMPLATE_DESC}</td>
 				</tr>
 				</table>
-				
+
 				<br>
 				<table border=0 cellspacing=0 cellpadding=10 width=100% >
 				<tr>
 				<td>
-				
+
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 					<tr>
 						{if $EMODE eq 'edit'}
@@ -117,7 +113,7 @@
 						</td>
 					</tr>
 					</table>
-					
+
 					<table border=0 cellspacing=0 cellpadding=5 width=100% >
 					<tr>
 						<td width=20% class="small cellLabel"><font color="red">*</font><strong>{$UMOD.LBL_NAME}</strong></td>
@@ -134,20 +130,20 @@
 						<td class="cellText small" valign=top>
 						{if $EMODE eq 'edit'}
 						<select name="foldername" class="small" tabindex="" style="width:100%" tabindex="3">
-                                                    {foreach item=arr from=$FOLDERNAME}
-                                                     <option value="{$FOLDERNAME}" {$arr}>{$FOLDERNAME}</option>
-                                                        {if $FOLDERNAME == 'Public'}
-                                                          <option value="Personal">{$UMOD.LBL_PERSONAL}</option>
-                                                        {else}
-                                                          <option value="Public">{$UMOD.LBL_PUBLIC}</option>
-                                                         {/if}
-                                                   {/foreach}
-                                                 </select>
+							{foreach item=arr from=$FOLDERNAME}
+								<option value="{$FOLDERNAME}" {$arr}>{$FOLDERNAME}</option>
+								{if $FOLDERNAME == 'Public'}
+									<option value="Personal">{$UMOD.LBL_PERSONAL}</option>
+								{else}
+									<option value="Public">{$UMOD.LBL_PUBLIC}</option>
+								{/if}
+							{/foreach}
+							</select>
 						{else}
 						<select name="foldername" class="small" tabindex="" value="{$FOLDERNAME}" style="width:100%" tabindex="3">
-                                                    <option value="Personal">{$UMOD.LBL_PERSONAL}</option>
-                                                    <option value="Public" selected>{$UMOD.LBL_PUBLIC}</option>
-        	                                </select>
+							<option value="Personal">{$UMOD.LBL_PERSONAL}</option>
+							<option value="Public" selected>{$UMOD.LBL_PUBLIC}</option>
+						</select>
 						{/if}
 						</td>
 					  </tr>
@@ -163,13 +159,13 @@
                                 <td width="85%" colspan="2" class="cellText small"><span class="small cellText">
                                   <input name="emailfrom" type="text" value="{$EMAILFROM}" class="detailedViewTextBox" tabindex="3">
                                 </span></td>
-                              </tr> 
+                              </tr>
                               <tr>
                                 <td width="15%" valign="top" class="cellLabel small"><font color='red'>*</font>{$UMOD.LBL_SUBJECT}</td>
                                 <td width="85%" colspan="2" class="cellText small"><span class="small cellText">
                                   <input name="subject" type="text" value="{$SUBJECT}" class="detailedViewTextBox" tabindex="4">
                                 </span></td>
-                              </tr> 
+                              </tr>
                              <tr>
                                 <td width="15%"  class="cellLabel small" valign="center">{$UMOD.LBL_SELECT_FIELD_TYPE}</td>
                                 <td width="85%" colspan="2" class="cellText small">
@@ -185,18 +181,18 @@
 			<tr>
 				<td>
 					<select style="font-family: Arial, Helvetica, sans-serif;font-size: 11px;color: #000000;border:1px solid #bababa;padding-left:5px;background-color:#ffffff;" id="entityType" ONCHANGE="modifyMergeFieldSelect(this, document.getElementById('mergeFieldSelect'));" tabindex="6">
-                                        <OPTION VALUE="0" selected>{$APP.LBL_NONE}
-                                        <OPTION VALUE="1">{$UMOD.LBL_ACCOUNT_FIELDS}
-                                        <OPTION VALUE="2">{$UMOD.LBL_CONTACT_FIELDS}
-                                        <OPTION VALUE="3" >{$UMOD.LBL_LEAD_FIELDS}
-                                        <OPTION VALUE="4" >{$UMOD.LBL_USER_FIELDS}
-										<OPTION VALUE="5" >{$UMOD.LBL_HELPDESK_FIELDS}
-                                        <OPTION VALUE="6" >{$UMOD.LBL_GENERAL_FIELDS}
-                                        </select>
+						<OPTION VALUE="0" selected>{$APP.LBL_NONE}
+						<OPTION VALUE="1">{$UMOD.LBL_ACCOUNT_FIELDS}
+						<OPTION VALUE="2">{$UMOD.LBL_CONTACT_FIELDS}
+						<OPTION VALUE="3" >{$UMOD.LBL_LEAD_FIELDS}
+						<OPTION VALUE="4" >{$UMOD.LBL_USER_FIELDS}
+						<OPTION VALUE="5" >{$UMOD.LBL_HELPDESK_FIELDS}
+						<OPTION VALUE="6" >{$UMOD.LBL_GENERAL_FIELDS}
+					</select>
 				<td>
 				<td style="border-left:2px dotted #cccccc;">
 					<select style="font-family: Arial, Helvetica, sans-serif;font-size: 11p
-x;color: #000000;border:1px solid #bababa;padding-left:5px;background-color:#ffffff;" id="mergeFieldSelect" onchange="document.getElementById('mergeFieldValue').value=this.options[this.selectedIndex].value;" tabindex="7"><option value="0" selected>{$APP.LBL_NONE}</select>	
+x;color: #000000;border:1px solid #bababa;padding-left:5px;background-color:#ffffff;" id="mergeFieldSelect" onchange="document.getElementById('mergeFieldValue').value=this.options[this.selectedIndex].value;" tabindex="7"><option value="0" selected>{$APP.LBL_NONE}</select>
 				<td>
 
 				<td style="border-left:2px dotted #cccccc;">
@@ -212,7 +208,6 @@ x;color: #000000;border:1px solid #bababa;padding-left:5px;background-color:#fff
                                  <td valign="top" colspan="2" width=60% class="cellText small"><p><textarea name="body" style="width:90%;height:200px" class=small tabindex="5">{$BODY}</textarea></p>
                               </tr>
                           </table></td>
-                          
                         </tr>
                       </table></td>
 					  </tr>
@@ -233,7 +228,6 @@ x;color: #000000;border:1px solid #bababa;padding-left:5px;background-color:#fff
 	</tr>
 	</form>
 	</table>
-		
 	</div>
 
 </td>

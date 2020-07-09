@@ -8,7 +8,7 @@
 	<br>
 
 	<div align=center>
-		
+
 		<table class="settingsSelUITopLine" border="0" cellpadding="5" cellspacing="0" width="100%">
 		<tr>
 			<td rowspan="2" valign="top" width="50" class="cblds-p_none"><img src="{'vtlib_modmng.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" title="{$MOD.LBL_USERS}" border="0" height="48" width="48"></td>
@@ -137,7 +137,7 @@
 		</tr>
 		</table>
 		<!-- End of Display -->
-		
+
 		</td>
 		</tr>
 		</table>

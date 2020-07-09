@@ -67,7 +67,7 @@
 					entitytypes.show();
 				}
 			);
-			
+
 			jQuery.get('index.php', {
 					module:'com_vtiger_workflow',
 					action:'com_vtiger_workflowAjax',

@@ -15,7 +15,7 @@ if(typeof(e) != 'undefined')
 
 //  window.onmousemove= displayCoords;
 //  window.onclick = fnRevert;
-function displayCoords(currObj,obj,mode,curr_row) 
+function displayCoords(currObj,obj,mode,curr_row)
 {ldelim}
 	if(mode != 'discount_final' && mode != 'sh_tax_div_title' && mode != 'group_tax_div_title')
 	{ldelim}
@@ -238,7 +238,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 				</div>
 			</td>
 		   </tr>
-		</table> 
+		</table>
 	</td>
 	<!-- column 5 - List Price with Discount, Total After Discount and Tax as table - ends -->
 
@@ -421,4 +421,4 @@ calcGroupTax();
 calcTotal();
 calcSHTax();
 </script>
-<!-- This above div is added to display the tax informations --> 
+<!-- This above div is added to display the tax informations -->

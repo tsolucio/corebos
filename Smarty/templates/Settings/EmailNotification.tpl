@@ -39,9 +39,9 @@ DIV.fixedLay {
         <td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
 <br>
 	<div align=center>
-	
+
 			{include file='SetMenu.tpl'}
-		
+
 			<!-- DISPLAY -->
 			<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 			<tr>
@@ -65,8 +65,6 @@ DIV.fixedLay {
                   </tr>
 			  </table>
 
-
-	
 	<div id="notifycontents">
 	{include file='Settings/EmailNotificationContents.tpl'}
 	</div>
@@ -77,16 +75,12 @@ DIV.fixedLay {
 	</td>
 	</tr>
 	</table>
-			
-			
-			
 			</td>
 			</tr>
 			</table>
 		</td>
 	</tr>
 	</table>
-		
 	</div>
 
 </td>

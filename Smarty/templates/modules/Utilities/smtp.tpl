@@ -220,7 +220,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 				</svg>
 				</span>
 					<div class="slds-notify__content">
-						<h2 class="slds-text-heading_small">{'LBL_OG_SUCCESS_CONFIG_VALIDATION'|@getTranslatedString:'Utilities'}</h2> 
+						<h2 class="slds-text-heading_small">{'LBL_OG_SUCCESS_CONFIG_VALIDATION'|@getTranslatedString:'Utilities'}</h2>
 					</div>
 					<div class="slds-notify__close">
 						<button type="button" class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse" title="Close" onClick="Utilities.close_og_success_toast()">
@@ -241,7 +241,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 				</svg>
 				</span>
 					<div class="slds-notify__content">
-						<h2 class="slds-text-heading_small">{'LBL_OG_CONFIG_VALIDATION_FAIL'|@getTranslatedString:'Utilities'}</h2> 
+						<h2 class="slds-text-heading_small">{'LBL_OG_CONFIG_VALIDATION_FAIL'|@getTranslatedString:'Utilities'}</h2>
 						<p id="og-message-error"></p>
 					</div>
 					<div class="slds-notify__close">

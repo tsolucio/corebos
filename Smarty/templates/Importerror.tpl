@@ -41,7 +41,7 @@
 						<span class="genHeaderSmall">{$MOD.LBL_MODULE_NAME} {$MOD.LBL_ERROR}</span>
 					</td>
 				   </tr>
-	
+
 				   <tr><td align="left" valign="top" colspan="2">&nbsp;</td></tr>
 				   <tr>
 					<td align="left" valign="top" colspan="2" style="padding-left:80px;"><font color="red" size="2px">{$MESSAGE}</font></td>

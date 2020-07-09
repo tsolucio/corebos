@@ -50,7 +50,7 @@
 			<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 			<tr>
 				<td class="big" rowspan="2">
-				<div id="picklist_datas">	
+				<div id="picklist_datas">
 					{include file='modules/PickList/PickListContents.tpl'}
 				</div>
 				</td>

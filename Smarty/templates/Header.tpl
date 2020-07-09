@@ -56,7 +56,7 @@
 	{include file='BrowserVariables.tpl'}
 	{include file='Components/Components.tpl'}
 </head>
-<body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small style="min-width:1100px; width: 100%"> 
+<body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small style="min-width:1100px; width: 100%">
 	<!-- header -->
 	<script type="text/javascript" src="include/sw-precache/service-worker-registration.js"></script>
 	<script type="text/javascript" src="include/jquery/jquery.js"></script>
@@ -228,7 +228,7 @@
 								{/foreach}
 							</ul>
 						</div>
-					</div> 
+					</div>
 				</li>
 				{/if}
 				{if !empty($ADMIN_LINK)}
@@ -435,7 +435,7 @@
 					<div class="slds-media__figure">
 						<span class="{$trackelements.__ICONContainerClass}" title="{$trackelements.module_name}">
 							<svg class="{$trackelements.__ICONClass}" aria-hidden="true">
-								<use xlink:href="include/LD/assets/icons/{$trackelements.__ICONLibrary}-sprite/svg/symbols.svg#{$trackelements.__ICONName}"></use> 
+								<use xlink:href="include/LD/assets/icons/{$trackelements.__ICONLibrary}-sprite/svg/symbols.svg#{$trackelements.__ICONName}"></use>
 							</svg>
 						<span class="slds-assistive-text">{$trackelements.module_name}</span>
 					</span>

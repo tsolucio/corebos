@@ -1210,7 +1210,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 					}
 					$sub_products .= $str_sep . $id;
 					$sub_prod .= $str_sep . ' - ('
-						.CurrencyField::convertToUserFormat($adb->query_result($sub_prod_query, $k, 'quantity')).') '
+						.CurrencyField::convertToUserFormat($adb->query_result($sub_prod_query, $k, 'quantity'), $current_user, true).') '
 						.$adb->query_result($sub_prod_query, $k, 'productname');
 				}
 
@@ -1552,7 +1552,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		if (substr($field_result[$fieldname]['typeofdata'], 0, 2)=='I~') {
 			$value = empty($field_valHTML) ? 0 : $field_valHTML;
 		} else {
-			$value = CurrencyField::convertToUserFormat($field_valEncoded);
+			$value = CurrencyField::convertToUserFormat($field_valEncoded, $current_user, true);
 		}
 	} else {
 		if ($fieldname == $focus->list_link_field) {
@@ -1674,7 +1674,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						}
 						$sub_products .= $str_sep . $id;
 						$sub_prod .= $str_sep . ' - ('
-							.CurrencyField::convertToUserFormat($adb->query_result($sub_prod_query, $i, 'quantity')) . ') '
+							.CurrencyField::convertToUserFormat($adb->query_result($sub_prod_query, $i, 'quantity'), $current_user, true) . ') '
 							.htmlspecialchars($adb->query_result($sub_prod_query, $i, 'productname'), ENT_QUOTES, $default_charset);
 					}
 
@@ -1727,7 +1727,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						}
 						$sub_products .= $str_sep . $id;
 						$sub_prod .= $str_sep . ' - ('
-							.CurrencyField::convertToUserFormat($adb->query_result($sub_prod_query, $i, 'quantity')) . ') '
+							.CurrencyField::convertToUserFormat($adb->query_result($sub_prod_query, $i, 'quantity'), $current_user, true) . ') '
 							.$adb->query_result($sub_prod_query, $i, 'productname');
 					}
 

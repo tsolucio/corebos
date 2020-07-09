@@ -44,7 +44,6 @@ function mandatoryCheck()
                         alert("{$MOD.Missing_required_fields}:" + errorMessage);
                         return false;
                 {rdelim}
-		
 		for(i=1;i<=9;i++)
                 {ldelim}
                         var columnvalue = document.getElementById("column"+i).value;
@@ -74,7 +73,6 @@ function mandatoryCheck()
         {ldelim}
                 alert("{$APP.MUSTHAVE_ONE_REQUIREDFIELD}"+showvalues);
         {rdelim}
-        
         return false;
 {rdelim}
 </script>
@@ -175,7 +173,7 @@ function mandatoryCheck()
 		  <table class="small cvt-tabheaders" border="0" cellpadding="3" cellspacing="0" width="100%">
 		   <tbody><tr>
 		    <td class="dvtTabCache" style="width: 10px;" nowrap>&nbsp;</td>
-		     {if $STDCOLUMNSCOUNT neq 0}	
+		     {if $STDCOLUMNSCOUNT neq 0}
 		    <td style="width: 100px;" nowrap class="dvtSelectedCell" id="pi" onclick="fnLoadCvValues('pi','mi','mnuTab','mnuTab2')">
 		     <b>{$MOD.LBL_STEP_3_TITLE}</b>
 		    </td>

@@ -71,7 +71,7 @@ function massDelete()
         <td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
 <br>
 	<div align=center>
-	
+
 			{include file='SetMenu.tpl'}
 
 				<!-- DISPLAY -->
@@ -89,12 +89,12 @@ function massDelete()
 					<td valign=top class="small cblds-p-v_none">{$MOD.LBL_MAIL_MERGE_DESC}</td>
 				</tr>
 				</table>
-				
+
 				<br>
 				<table border=0 cellspacing=0 cellpadding=10 width=100% >
 				<tr>
 				<td>
-				
+
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 					<tr>
 						<td class="big"><strong>{$UMOD.LBL_WORD_TEMPLATES}</strong></td>
@@ -102,14 +102,14 @@ function massDelete()
 						</td>
 					</tr>
 					</table>
-					
+
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="listTableTopButtons">
 					<tr>
 						<td class=small><input type="submit" value="{$UMOD.LBL_DELETE}" onclick="return massDelete();" class="crmButton delete small"></td>
 						<td class="small cblds-t-align_right" align=right><input class="crmButton create small" type="submit" value="{$UMOD.LBL_ADD_TEMPLATE}" name="profile"  onclick="this.form.action.value='upload'; this.form.parenttab.value='Settings'">&nbsp;&nbsp;</td>
 					</tr>
 					</table>
-						
+
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="listTable">
 					<tr>
 						<td width=2% class="colHeader small cblds-p-v_mediumsmall">#</td>
@@ -138,9 +138,6 @@ function massDelete()
 				</td>
 				</tr>
 				</table>
-			
-			
-			
 			</td>
 			</tr>
 			</table>
@@ -148,7 +145,6 @@ function massDelete()
 	</tr>
 	</form>
 	</table>
-		
 	</div>
 </td>
    </tr>

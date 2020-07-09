@@ -38,7 +38,7 @@
 				<tr>
 
 				<td>
-				
+
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 					<tr>
 						<td class="big"><strong>{$MOD.LBL_GROUP_LIST}</strong></td>
@@ -48,12 +48,12 @@
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="listTableTopButtons">
 
 					<tr>
-					     <td class="small cblds-t-align_right" align=right>
+						<td class="small cblds-t-align_right" align=right>
 						<input title="{$CMOD.LBL_NEW_GROUP}" class="crmButton create small" type="submit" name="New" value="{$CMOD.LBL_NEW_GROUP}"/>
-					     </td>
+						</td>
 					</tr>
 					</table>
-						
+
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="listTable">
 					<tr>
 						<td class="colHeader small cblds-p-v_mediumsmall" valign=top width=2%>#</td>

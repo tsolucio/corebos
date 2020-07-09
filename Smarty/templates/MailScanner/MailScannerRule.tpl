@@ -48,13 +48,13 @@
 				<tr>
 				<td class="big" width="70%"><strong>{$MOD.LBL_RULES} {$MOD.LBL_FOR} {$MOD.LBL_MAIL_SCANNER} [{$SCANNERINFO.scannername}]</strong></td>
 				<td width="30%" nowrap align="right">
-					<input type="button" class="crmbutton small cancel" value="{$APP.LBL_BACK}" 
+					<input type="button" class="crmbutton small cancel" value="{$APP.LBL_BACK}"
 						onclick="location.href='index.php?module=Settings&action=MailScanner&parenttab=Settings'" />
 					<input type="submit" class="crmbutton small create" onclick="this.form.mode.value='ruleedit'" value="{$APP.LBL_ADD_NEW} {$MOD.LBL_RULE}" />
 				</td>
 				</tr>
 				</table>
-				
+
 				<table border=0 cellspacing=0 cellpadding=0 width=100% class="listRow">
 				<tr>
 					<td class="small" valign=top ><table width="100%"  border="0" cellspacing="0" cellpadding="5">

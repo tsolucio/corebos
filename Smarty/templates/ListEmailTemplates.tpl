@@ -16,13 +16,11 @@ function ifselected()
      var returnval=false;
      for(i=0; i < sel; i++)
      {ldelim}
-     
       if(document.massdelete.selected_id[i].checked == true)
         {ldelim}
             returnval=true;
             break;
         {rdelim}
-        
       {rdelim}
           if(returnval==true)
            {ldelim}
@@ -32,12 +30,10 @@ function ifselected()
            {ldelim}
               document.getElementById("myProfile").style.display="block";
           {rdelim}
-    	
 {rdelim}
 
 function massDelete()
 {ldelim}
-        
         x = document.massdelete.selected_id.length;
         idstring = "";
 
@@ -94,7 +90,7 @@ function massDelete()
 	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
 <br>
 	<div align=center>
-	
+
 			{include file='SetMenu.tpl'}
 
 				<!-- DISPLAY -->

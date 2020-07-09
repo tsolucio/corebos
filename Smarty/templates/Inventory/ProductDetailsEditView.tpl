@@ -15,8 +15,7 @@ if(typeof(e) != 'undefined')
 
 //  window.onmousemove= displayCoords;
 //  window.onclick = fnRevert;
-function displayCoords(currObj,obj,mode,curr_row) 
-{ldelim}
+function displayCoords(currObj,obj,mode,curr_row) {ldelim}
 	if(mode != 'discount_final' && mode != 'sh_tax_div_title' && mode != 'group_tax_div_title')
 	{ldelim}
 		var curr_productid = document.getElementById("hdnProductId"+curr_row).value;
@@ -368,7 +367,7 @@ function displayCoords(currObj,obj,mode,curr_row)
    </tr>
 
 <!--
-All these details are stored in the first element in the array with the index name as final_details 
+All these details are stored in the first element in the array with the index name as final_details
 so we will get that array, parse that array and fill the details
 -->
 {assign var="FINAL" value=$ASSOCIATEDPRODUCTS.1.final_details}
@@ -524,4 +523,4 @@ calcGroupTax();
 calcTotal();
 calcSHTax();
 </script>
-<!-- This above div is added to display the tax informations --> 
+<!-- This above div is added to display the tax informations -->
