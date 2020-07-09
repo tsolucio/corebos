@@ -17,15 +17,16 @@
 class addColumnsToMailConverter extends cbupdaterWorker {
 
 	public function applyChange() {
-		global $adb;
 		if ($this->hasError()) {
 			$this->sendError();
 		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->ExecuteQuery("ALTER TABLE vtiger_mailscanner_rules ADD add_email_as varchar(20);");
-			$this->ExecuteQuery("ALTER TABLE vtiger_mailscanner_rules ADD must_be_related tinyint(1);");
+			$this->ExecuteQuery('ALTER TABLE vtiger_mailscanner_rules ADD add_email_as varchar(20);');
+			$this->ExecuteQuery('ALTER TABLE vtiger_mailscanner_rules ADD must_be_related tinyint(1);');
+			$this->ExecuteQuery('UPDATE vtiger_mailscanner_rules SET add_email_as=?;', array('CommentAndEmail'));
+			$this->ExecuteQuery('UPDATE vtiger_mailscanner_rules SET must_be_related=?;', array(1));
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
