@@ -454,7 +454,7 @@ class Vtiger_MailScanner {
 		}
 		// Try with ticket_no before CRMID (case where ticket_no is also just number)
 		if (!$checkTicketId) {
-			$ticketres = $adb->pquery('SELECT ticketid FROM vtiger_troubletickets WHERE ticket_no=?', array($subjectOrId));
+			$ticketres = $adb->pquery('SELECT ticketid FROM vtiger_troubletickets WHERE ticketid=?', array($subjectOrId));
 			if ($adb->num_rows($ticketres)) {
 				$checkTicketId = $adb->query_result($ticketres, 0, 'ticketid');
 			}
@@ -502,7 +502,7 @@ class Vtiger_MailScanner {
 		}
 		// Try with ticket_no before CRMID (case where ticket_no is also just number)
 		if (!$checkProjectId) {
-			$projectres = $adb->pquery('SELECT projectid FROM vtiger_project WHERE project_no=?', array($subjectOrId));
+			$projectres = $adb->pquery('SELECT projectid FROM vtiger_project WHERE projectid=?', array($subjectOrId));
 			if ($adb->num_rows($projectres)) {
 				$checkProjectId = $adb->query_result($projectres, 0, 'projectid');
 			}
