@@ -90,8 +90,8 @@ if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] == 'SalesOrd
 	$so_focus->retrieve_entity_info($_REQUEST['salesorderid'], 'SalesOrder');
 
 	$associated_prod = getAssociatedProducts('SalesOrder', $so_focus);
-	$txtTax = (($so_focus->column_fields['txtTax'] != '') ? $so_focus->column_fields['txtTax'] : '0.000');
-	$txtAdj = (($so_focus->column_fields['txtAdjustment'] != '') ? $so_focus->column_fields['txtAdjustment'] : '0.000');
+	$txtTax = ((!empty($so_focus->column_fields['txtTax'])) ? $so_focus->column_fields['txtTax'] : '0.000');
+	$txtAdj = ((!empty($so_focus->column_fields['txtAdjustment'])) ? $so_focus->column_fields['txtAdjustment'] : '0.000');
 	$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
 	$smarty->assign('MODE', $so_focus->mode);
 	$smarty->assign('AVAILABLE_PRODUCTS', 'true');
