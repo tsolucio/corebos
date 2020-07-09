@@ -192,9 +192,6 @@
 						</td>
 					</tr>
 				</table>
-				<div class="slds-col">
-					<p  nowrap align="right"><a href="#top">{$MOD.LBL_SCROLL}</a></p>
-				</div>
 			</div>
 			</td>
 		</tr>

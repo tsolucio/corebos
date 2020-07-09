@@ -171,10 +171,6 @@ DIV.fixedLay {
 		   </td></tr></table>
 				<br>
 		   </div>
-				<!-- Edit Button -->
-				<table border=0 cellspacing=0 cellpadding=5 width=100% >
-				<tr><td class="small" ><div align=right class="cblds-t-align_right"><a href="#top">{$MOD.LBL_SCROLL}</a></div></td></tr>
-				</table>
 		</td>
 		</tr>
 		</table>

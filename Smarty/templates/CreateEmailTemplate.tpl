@@ -211,13 +211,7 @@ x;color: #000000;border:1px solid #bababa;padding-left:5px;background-color:#fff
                         </tr>
                       </table></td>
 					  </tr>
-					</table>
-					<br>
-					<table border=0 cellspacing=0 cellpadding=5 width=100% >
-					<tr>
-					  <td class="small cblds-t-align_right" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td>
-					</tr>
-					</table>
+					</table>					
 				</td>
 				</tr>
 				</table>
