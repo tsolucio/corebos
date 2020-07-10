@@ -195,7 +195,6 @@ class Vtiger_MailScannerAction {
 				}
 				// Set the ticket status to Open if its Closed
 				$adb->pquery("UPDATE vtiger_troubletickets set status=? WHERE ticketid=? AND status='Closed'", array('Open', $linkfocus->id));
-
 			} else {
 				// TODO If matching ticket was not found, create ticket?
 				// $returnid = $this->__CreateTicket($mailscanner, $mailrecord);
