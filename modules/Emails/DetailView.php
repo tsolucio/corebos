@@ -105,8 +105,6 @@ if (isset($_REQUEST['return_id'])) {
 }
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', 'themes/'.$theme.'/images/');
-$category = getParentTab();
-$smarty->assign('CATEGORY', $category);
 
 if (isset($focus->name)) {
 	$smarty->assign('NAME', $focus->name);
@@ -135,5 +133,13 @@ $smarty->assign('MODULE', $currentModule);
 if ($_REQUEST['module']=='cbCalendar') {
 	$smarty->assign('FROMCALENDAR', 'true');
 }
-$smarty->display('EmailDetailView.tpl');
+$smarty->assign('CUSTOM_LINKS', '');
+include 'include/integrations/forcedButtons.php';
+$smarty->assign('CHECK', $tool_buttons);
+$smarty->assign('MOD_SEQ_ID', '');
+if ($_REQUEST['action']=='EmailsAjax') {
+	$smarty->display('EmailDetailView.tpl');
+} else {
+	$smarty->display('EmailDetailViewInside.tpl');
+}
 ?>
