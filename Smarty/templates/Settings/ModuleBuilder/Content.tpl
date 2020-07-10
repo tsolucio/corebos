@@ -206,6 +206,7 @@
                                         <div class="slds-form-element">
                                             <table id="CustomView"></table>
                                         </div>
+                                        <div id="loadViews"></div>
                                     </div>
                                 </div>
                             </div>
@@ -257,7 +258,7 @@
                                 </div>
                             </div>
                             <div class="slds-media__figure slds-media__figure_reverse">
-                                <button class="slds-button slds-button_text-destructive" onclick="mb.backTo(3)" style="color: white; background: #ce4949">
+                                <button class="slds-button slds-button_text-destructive" onclick="mb.backTo(4)" style="color: white; background: #ce4949">
                                     <svg class="slds-icon slds-icon--small" aria-hidden="true">
                                         <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#back"></use>
                                     </svg>
