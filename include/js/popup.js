@@ -29,7 +29,7 @@ function showAllRecords() {
 			}
 		}
 	}
-	return 'index.php?'+emp_url.join('&');
+	return 'index.php?'+emp_url.join('&')+'&restriction=false';
 }
 
 //function added to get all the records when parent record doesn't relate with the selection module records while opening/loading popup.
