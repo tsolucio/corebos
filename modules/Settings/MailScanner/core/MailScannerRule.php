@@ -405,7 +405,7 @@ class Vtiger_MailScannerRule {
 			$adb->pquery(
 				'INSERT INTO vtiger_mailscanner_rules
 					(scannerid,fromaddress,toaddress,subjectop,subject,bodyop,body,matchusing,sequence,assign_to,cc,add_email_as,must_be_related)
-					VALUES(?,?,?,?,?,?,?,?,?,?,?)',
+					VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)',
 				array(
 					$this->scannerid,
 					$this->fromaddress,
