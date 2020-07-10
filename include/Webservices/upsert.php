@@ -56,16 +56,27 @@ function vtws_upsert($elementType, $element, $searchOn, $updatedfields, $user) {
 	$r = $meta->getReferenceFieldDetails();
 	//add condition to check for the record
 	foreach ($searchWithValues as $fieldName => $fieldValue) {
+		if ($fieldName=='cbuuid') {
+			continue;
+		}
 		if (isset($r[$fieldName])) { // reference field
 			list($wsid, $crmid) = explode('x', $fieldValue);
 			$queryGenerator->addReferenceModuleFieldCondition($r[$fieldName][0], $fieldName, 'id', $crmid, 'e', QueryGenerator::$AND);
 		} else {
+			if ($fieldName=='id' && strpos($fieldValue, 'x')>0) {
+				list($wsid, $fieldValue) = explode('x', $fieldValue);
+			}
 			$queryGenerator->addCondition($fieldName, $fieldValue, 'e', QueryGenerator::$AND);
 		}
 	}
 
 	//get only one record of many possible records
-	$query = $queryGenerator->getQuery(false, 1);
+	$query = $queryGenerator->getQuery();
+	// special case for cbuuid
+	if (in_array('cbuuid', array_keys($searchWithValues))) {
+		$query .= " and cbuuid='".$searchWithValues['cbuuid']."'";
+	}
+	$query .= ' limit 0,1';
 	$result = $adb->pquery($query, []);
 	if ($adb->num_rows($result) == 0) {
 		//remove id field if exists from input
