@@ -128,7 +128,11 @@ class MsgTemplate extends CRMEntity {
 		$query_module_cond = "";
 		if ($srcrecord != "") {
 			$records = explode(":", $srcrecord);
-			$module = getSalesEntityType($records[0]);
+			if (preg_match("/^[a-zA-Z]+$/", $records[0])) {
+				$module = $records[0];
+			} else {
+				$module = getSalesEntityType($records[0]);
+			}
 			$query_module_cond = "vtiger_msgtemplate.msgt_module='".$module."' and ";
 		}
 		return $query_body." vtiger_msgtemplate.msgt_status='Active' and ".$query_module_cond.$query_cond;
