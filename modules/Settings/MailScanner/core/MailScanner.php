@@ -20,6 +20,8 @@ class Vtiger_MailScanner {
 	private $_scannerinfo = false;
 	// Reference mailbox to use
 	private $_mailbox = false;
+	// other CRMIDs we have to relate the email with
+	public $otherEmailRelations = array();
 
 	// Ignore scanning the folders always
 	private $_generalIgnoreFolders = array(
@@ -176,6 +178,7 @@ class Vtiger_MailScanner {
 		$crmid = false;
 		if ($matchresult) {
 			$mailrecord->fetchBody($mailbox->_imap, $messageid);
+			$this->otherEmailRelations = array();
 			$crmid = $mailscannerrule->takeAction($this, $mailrecord, $matchresult);
 		}
 		// Return the CRMID
@@ -292,7 +295,7 @@ class Vtiger_MailScanner {
 			$modtab = getTabid($module);
 			$emptab = getTabid('cbEmployee');
 			$fldres = $adb->pquery(
-				'SELECT * FROM vtiger_field fld LEFT JOIN vtiger_fieldmodulerel fr ON fld.fieldid=fr.fieldid WHERE fld.tabid=? AND fld.uitype=10 AND fr.relmodule=?',
+				'SELECT fld.fieldname FROM vtiger_field fld LEFT JOIN vtiger_fieldmodulerel fr ON fld.fieldid=fr.fieldid WHERE fld.tabid=? AND fld.uitype=10 AND fr.relmodule=?',
 				array($modtab, 'cbEmployee')
 			);
 			while ($row = $adb->fetch_array($fldres)) {
@@ -324,10 +327,7 @@ class Vtiger_MailScanner {
 			$userid = $adb->query_result($userres, 0, 'id');
 		}
 		if ($userid) {
-			if ($checkWithId !== false && !is_array($checkWithId)) {
-				$checkWithId = array($checkWithId);
-			}
-			if ($checkWithId && !in_array($userid, $checkWithId)) {
+			if ($checkWithId && !in_array($userid, (array)$checkWithId)) {
 				$userid = false;
 				$this->log("Matching User found for email: $email, but not implied.");
 			} else {
@@ -364,10 +364,7 @@ class Vtiger_MailScanner {
 				$userid = $adb->query_result($empres, 0, 'userid');
 			}
 			if ($empid) {
-				if ($checkWithId !== false && !is_array($checkWithId)) {
-					$checkWithId = array($checkWithId);
-				}
-				if ($checkWithId && !in_array($empid, $checkWithId)) {
+				if ($checkWithId && !in_array($empid, (array)$checkWithId)) {
 					$empid = false;
 					$this->log("Matching Employee found for email: $email, but not implied");
 				} else {
@@ -399,12 +396,9 @@ class Vtiger_MailScanner {
 			'SELECT contactid FROM vtiger_contactdetails inner join vtiger_crmentity on crmid=contactid WHERE deleted=0 and (email=? or secondaryemail=?)',
 			array($email,$email)
 		);
-		if ($adb->num_rows($contactres)) {
-			$contactid = $adb->query_result($contactres, 0, 'contactid');
-			$crmres = $adb->pquery('SELECT deleted FROM vtiger_crmentity WHERE crmid=?', array($contactid));
-			if ($adb->num_rows($crmres) && $adb->query_result($crmres, 0, 'deleted')) {
-				$contactid = false;
-			}
+		while ($cto = $adb->fetch_array($contactres)) {
+			$contactid = $cto['contactid'];
+			$this->otherEmailRelations[] = $contactid;
 		}
 		if ($contactid) {
 			$this->log("Caching Contact Id found for email: $email");
@@ -434,12 +428,9 @@ class Vtiger_MailScanner {
 			'SELECT accountid FROM vtiger_account inner join vtiger_crmentity on crmid=accountid WHERE deleted=0 and (email1=? OR email2=?)',
 			array($email, $email)
 		);
-		if ($adb->num_rows($accountres)) {
-			$accountid = $adb->query_result($accountres, 0, 'accountid');
-			$crmres = $adb->pquery('SELECT deleted FROM vtiger_crmentity WHERE crmid=?', array($accountid));
-			if ($adb->num_rows($crmres) && $adb->query_result($crmres, 0, 'deleted')) {
-				$accountid = false;
-			}
+		while ($acc = $adb->fetch_array($accountres)) {
+			$accountid = $acc['accountid'];
+			$this->otherEmailRelations[] = $accountid;
 		}
 		if ($accountid) {
 			$this->log("Caching Account Id found for email: $email");
@@ -468,7 +459,7 @@ class Vtiger_MailScanner {
 		}
 		// Try with ticket_no before CRMID (case where ticket_no is also just number)
 		if (!$checkTicketId) {
-			$ticketres = $adb->pquery('SELECT ticketid FROM vtiger_troubletickets WHERE ticket_no=?', array($subjectOrId));
+			$ticketres = $adb->pquery('SELECT ticketid FROM vtiger_troubletickets WHERE ticketid=?', array($subjectOrId));
 			if ($adb->num_rows($ticketres)) {
 				$checkTicketId = $adb->query_result($ticketres, 0, 'ticketid');
 			}
@@ -516,7 +507,7 @@ class Vtiger_MailScanner {
 		}
 		// Try with ticket_no before CRMID (case where ticket_no is also just number)
 		if (!$checkProjectId) {
-			$projectres = $adb->pquery('SELECT projectid FROM vtiger_project WHERE project_no=?', array($subjectOrId));
+			$projectres = $adb->pquery('SELECT projectid FROM vtiger_project WHERE projectid=?', array($subjectOrId));
 			if ($adb->num_rows($projectres)) {
 				$checkProjectId = $adb->query_result($projectres, 0, 'projectid');
 			}
@@ -611,7 +602,7 @@ class Vtiger_MailScanner {
 	/**
 	 * Get Ticket record information based on subject or id.
 	 */
-	public function GetTicketRecord($subjectOrId, $fromemail = false) {
+	public function GetTicketRecord($subjectOrId, $fromemail = false, $must_be_related = true) {
 		require_once 'modules/HelpDesk/HelpDesk.php';
 		$ticketid = $this->LookupTicket($subjectOrId);
 		$ticket_focus = false;
@@ -621,9 +612,9 @@ class Vtiger_MailScanner {
 				$usrlist = $this->getUserlist($ticket_focus);
 				$employeelist = $this->getEmployeeList($ticket_focus);
 				// Check the parentid association if specified.
-				if ($fromemail && !$this->LookupContactOrAccount($fromemail, $ticket_focus->column_fields['parent_id']) &&
-					!$this->LookupUser($fromemail, $usrlist) &&
-					!$this->LookupEmployee($fromemail, $employeelist)) {
+				if ($fromemail && !$this->LookupContactOrAccount($fromemail, ($must_be_related ? $ticket_focus->column_fields['parent_id'] : false)) &&
+					!$this->LookupUser($fromemail, ($must_be_related ? $usrlist : false)) &&
+					!$this->LookupEmployee($fromemail, ($must_be_related ? $employeelist : false))) {
 					$ticket_focus = false;
 				}
 				if ($ticket_focus) {
@@ -636,9 +627,9 @@ class Vtiger_MailScanner {
 				$usrlist = $this->getUserlist($ticket_focus);
 				$employeelist = $this->getEmployeeList($ticket_focus);
 				// Check the parentid association if specified.
-				if ($fromemail && !$this->LookupContactOrAccount($fromemail, $ticket_focus->column_fields['parent_id']) &&
-					!$this->LookupUser($fromemail, $usrlist) &&
-					!$this->LookupEmployee($fromemail, $employeelist)) {
+				if ($fromemail && !$this->LookupContactOrAccount($fromemail, ($must_be_related ? $ticket_focus->column_fields['parent_id'] : false)) &&
+					!$this->LookupUser($fromemail, ($must_be_related ? $usrlist : false)) &&
+					!$this->LookupEmployee($fromemail, ($must_be_related ? $employeelist : false))) {
 					$ticket_focus = false;
 				}
 				if ($ticket_focus) {
@@ -653,7 +644,7 @@ class Vtiger_MailScanner {
 	/**
 	 * Get Project record information based on subject or id.
 	 */
-	public function GetProjectRecord($subjectOrId, $fromemail = false) {
+	public function GetProjectRecord($subjectOrId, $fromemail = false, $must_be_related = true) {
 		$projectid = $this->LookupProject($subjectOrId);
 		$project_focus = false;
 		if ($projectid) {
@@ -662,9 +653,9 @@ class Vtiger_MailScanner {
 				$usrlist = $this->getUserlist($project_focus);
 				$employeelist = $this->getEmployeeList($project_focus);
 				// Check the parentid association if specified.
-				if ($fromemail && !$this->LookupContactOrAccount($fromemail, $project_focus->column_fields['linktoaccountscontacts']) &&
-					!$this->LookupUser($fromemail, $usrlist) &&
-					!$this->LookupEmployee($fromemail, $employeelist)) {
+				if ($fromemail && !$this->LookupContactOrAccount($fromemail, ($must_be_related ? $project_focus->column_fields['linktoaccountscontacts'] : false)) &&
+					!$this->LookupUser($fromemail, ($must_be_related ? $usrlist : false)) &&
+					!$this->LookupEmployee($fromemail, ($must_be_related ? $employeelist : false))) {
 					$project_focus = false;
 				}
 				if ($project_focus) {
@@ -677,9 +668,9 @@ class Vtiger_MailScanner {
 				$usrlist = $this->getUserlist($project_focus);
 				$employeelist = $this->getEmployeeList($project_focus);
 				// Check the parentid association if specified.
-				if ($fromemail && !$this->LookupContactOrAccount($fromemail, $project_focus->column_fields['linktoaccountscontacts']) &&
-					!$this->LookupUser($fromemail, $usrlist) &&
-					!$this->LookupEmployee($fromemail, $employeelist)) {
+				if ($fromemail && !$this->LookupContactOrAccount($fromemail, ($must_be_related ? $project_focus->column_fields['linktoaccountscontacts'] : false)) &&
+					!$this->LookupUser($fromemail, ($must_be_related ? $usrlist : false)) &&
+					!$this->LookupEmployee($fromemail, ($must_be_related ? $employeelist : false))) {
 					$project_focus = false;
 				}
 				if ($project_focus) {

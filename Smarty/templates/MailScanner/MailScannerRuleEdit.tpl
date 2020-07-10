@@ -169,17 +169,22 @@
 									<option value="LINK,Accounts,CC" {if $RULEACTIONTEXT eq 'LINK,Accounts,CC'}selected=true{/if}
 									>{$MOD.LBL_ADD} {$MOD.LBL_TO_SMALL} {$MOD.LBL_ACCOUNT} [{$MOD.LBL_CC}]</option>
 								</select>
-								<script>{literal}
-									function checkAction() {
-										if (jQuery('#rule_actiontext').val() == 'CREATE,HelpDesk,FROM') {
-											jQuery('#assign_to_row').show();
-										} else {
-											jQuery('#assign_to_row').hide();
-										}
-									}
-									jQuery('#rule_actiontext').on('change',checkAction);
-									checkAction();
-								{/literal}</script>
+							</td>
+						</tr>
+						<tr id="updatemustberelated">
+							<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_MUSTBERELATED}</strong></td>
+							<td width="70%" colspan=2>
+								<input type="checkbox" name="must_be_related" {if $SCANNERRULE->must_be_related eq '1'}checked{/if} >
+							</td>
+						</tr>
+						<tr id="updateattachemail">
+							<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_ADDEMAILAS}</strong></td>
+							<td width="70%" colspan=2>
+								<select name="add_email_as" class="small">
+									<option value="CommentAndEmail" {if $SCANNERRULE->add_email_as eq 'CommentAndEmail'}selected{/if}>{$MOD.LBL_ADDCOMMENTEMAIL}</option>
+									<option value="LinkAndEmail" {if $SCANNERRULE->add_email_as eq 'LinkAndEmail'}selected{/if}>{$MOD.LBL_ADDLINKEMAIL}</option>
+									<option value="OnlyEmail" {if $SCANNERRULE->add_email_as eq 'OnlyEmail'}selected{/if}>{$MOD.LBL_ADDONLYEMAIL}</option>
+								</select>
 							</td>
 						</tr>
 						<tr id="assign_to_row">
@@ -272,3 +277,21 @@
 </table>
 </div>
 </section>
+<script>
+function checkAction() {
+	if (jQuery('#rule_actiontext').val() == 'CREATE,HelpDesk,FROM') {
+		jQuery('#assign_to_row').show();
+	} else {
+		jQuery('#assign_to_row').hide();
+	}
+	if (jQuery('#rule_actiontext').val() == 'UPDATE,HelpDesk,SUBJECT' || jQuery('#rule_actiontext').val() == 'UPDATE,Project,SUBJECT') {
+		jQuery('#updatemustberelated').show();
+		jQuery('#updateattachemail').show();
+	} else {
+		jQuery('#updatemustberelated').hide();
+		jQuery('#updateattachemail').hide();
+	}
+}
+jQuery('#rule_actiontext').on('change',checkAction);
+checkAction();
+</script>

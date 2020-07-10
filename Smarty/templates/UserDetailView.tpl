@@ -222,9 +222,6 @@
 
 								</td>
 							</tr>
-							<tr>
-								<td colspan=2 class="small"><div class="cblds-t-align_right" align="right"><a href="#top">{$MOD.LBL_SCROLL}</a></div></td>
-							</tr>
 							</table>
 
 						</form>

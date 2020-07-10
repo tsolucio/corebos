@@ -132,9 +132,6 @@ function updateModEntityExisting(button, form) {
 		<div id='customentity_infodiv' class="listRow">
 			{include file='Settings/CustomModEntityNoInfo.tpl'}
 		</div>
-		<div class="slds-col">
-			<p class="slds-p-right_small" nowrap align="right"><a href="#top">{$MOD.LBL_SCROLL}</a></p>
-		</div>
 	</form>
 </div>
 </div>

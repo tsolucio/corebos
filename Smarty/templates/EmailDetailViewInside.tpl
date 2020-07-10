@@ -8,30 +8,19 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-{if $smarty.request.action eq 'EmailsAjax'}
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
-<title>{$MOD.TITLE_VTIGERCRM_MAIL}</title>
-<link REL="SHORTCUT ICON" HREF="themes/images/favicon.ico">
-<link rel="stylesheet" type="text/css" media="all" href="themes/{$THEME}/style.css">
-<script type="text/javascript" src="include/jquery/jquery.js"></script>
-<script type="text/javascript" src="include/js/general.js"></script>
-<body marginheight="0" marginwidth="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
-{/if}
-<table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
+<style>
+#adv_filter_div > table:first-child td, 
+#adv_filter_div > div:nth-child(3) > table:first-child tr:first-child td,
+.dvtCellLabel {
+  text-align: unset;
+}
+</style>
+{assign var=CREATE_PERMISSION value='no'}
+{assign var=DELETE value='no'}
+{assign var=EDIT_PERMISSION value='no'}
+{include file='Buttons_List.tpl' isDetailView=true}
+<table class="slds-card" style="width:96%; margin:auto;">
 <tbody>
-	<tr>
-	<td colspan="3">
-		<table border=0 cellspacing=0 cellpadding=0 width=100% class="mailClientWriteEmailHeader">
-		<tr>
-		<td >{$MOD.LBL_DETAILVIEW_EMAIL}</td>
-		</tr>
-		</table>
-	</td>
-	</tr>
 	{foreach item=row from=$BLOCKS}
 	{foreach item=elements key=title from=$row}
 	{if $elements.fldname eq 'subject'}
@@ -41,7 +30,7 @@
 	<td class="dvtCellLabel" width="20%" rowspan="5"><div id="attach_cont" class="addEventInnerBox" style="overflow:auto;height:140px;width:100%;position:relative;left:0px;top:0px;"></td>
 	</tr>
 	<tr>
-	<td class="lvtCol" width="15%" height="70px" style="padding: 5px;" align="right"><b>{$MOD.LBL_TO}</b></td>
+	<td class="lvtCol" width="15%" height="50px" style="padding: 5px;" align="right"><b>{$MOD.LBL_TO}</b></td>
 	<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$TO_MAIL}</td>
 	</tr>
 		{if 'ccmail'|@emails_checkFieldVisiblityPermission eq '0'}
@@ -89,13 +78,51 @@
 	</table>
 	</tr>
 	<tr>
-	<td colspan="3" class="dvtCellLabel" style="padding: 10px;" align="center">
-	<input type="button" name="Send" value=" {$MOD.LBL_REPLY_BUTTON} " class="crmbutton small edit" onClick="OpenCompose('{$ID}','reply')">&nbsp;
-	<input type="button" name="forward" value=" {$MOD.LBL_FORWARD_BUTTON} " alt="{$MOD.LBL_FORWARD_BUTTON}" title="{$MOD.LBL_FORWARD_BUTTON}" class="crmbutton small edit" onClick="OpenCompose('{$ID}','forward')">&nbsp;
-	<input type="button" title="{$APP.LBL_EDIT}" alt="{$APP.LBL_EDIT}" name="edit" value=" {$APP.LBL_EDIT} " class="crmbutton small edit" onClick="OpenCompose('{$ID}','edit')">&nbsp;
-	<input name="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " title="{$APP.LBL_CANCEL_BUTTON_LABEL}" alt="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmbutton small cancel" type="button" onClick="{if isset($FROMCALENDAR)}cancelForm(){else}window.close(){/if}">
-	&nbsp;
-	<input type="button" title="{$MOD.LBL_PRINT_EMAIL}" name="{$MOD.LBL_PRINT_EMAIL}" value="{$MOD.LBL_PRINT_EMAIL}" class="crmbutton small edit" onClick="OpenCompose('{$ID}', 'print')">&nbsp;
+	<td colspan="3" class="dvtCellLabel" style="padding: 10px;text-align:center;">
+	{assign var='BUTTONWITHICON' value=[
+		'variation' => 'outline-brand',
+		'title' => $MOD.LBL_REPLY_BUTTON,
+		'id' => 'Send',
+		'size' => 'small',
+		'position' => 'left',
+		'library' => 'utility',
+		'icon' => 'reply',
+		'onclick' => "OpenCompose('{$ID}','reply')"
+	]}
+	{include file='Components/ButtonWithIcon.tpl'}
+	{assign var='BUTTONWITHICON' value=[
+		'variation' => 'outline-brand',
+		'title' => $MOD.LBL_FORWARD_BUTTON,
+		'id' => 'forward',
+		'size' => 'small',
+		'position' => 'left',
+		'library' => 'utility',
+		'icon' => 'forward',
+		'onclick' => "OpenCompose('{$ID}','forward')"
+	]}
+	{include file='Components/ButtonWithIcon.tpl'}
+	{assign var='BUTTONWITHICON' value=[
+		'variation' => 'outline-brand',
+		'title' => $APP.LBL_EDIT,
+		'id' => 'edit',
+		'size' => 'small',
+		'position' => 'left',
+		'library' => 'utility',
+		'icon' => 'edit',
+		'onclick' => "OpenCompose('{$ID}','edit')"
+	]}
+	{include file='Components/ButtonWithIcon.tpl'}
+	{assign var='BUTTONWITHICON' value=[
+		'variation' => 'outline-brand',
+		'title' => $MOD.LBL_PRINT_EMAIL,
+		'id' => 'print',
+		'size' => 'small',
+		'position' => 'left',
+		'library' => 'utility',
+		'icon' => 'print',
+		'onclick' => "OpenCompose('{$ID}', 'print')"
+	]}
+	{include file='Components/ButtonWithIcon.tpl'}
 	</td>
 	</tr>
 	{elseif $elements.fldname eq 'description'}
