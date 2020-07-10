@@ -91,6 +91,7 @@ const mb = {
 			const number_customview = mb.loadElement('number_customview');
 			for (var i = 1; i <= number_customview; i++) {
 				var customObj = {
+					customviewid: mb.loadElement('customviewid-'+i),
 					viewname: mb.loadElement('viewname-'+i),
 					setdefault: mb.loadElement('setdefault-'+i),
 				};
@@ -236,7 +237,6 @@ const mb = {
 				url: url+'&methodName=loadValues&step='+step+'&moduleid='+moduleid,
 			}).done(function (response) {
 				const res = JSON.parse(response);
-				console.log(res);
 				const getT = mb.loadElement('loadFields', true);
 				const ul = document.createElement('ul');
 				ul.className = 'slds-list_ordered';
@@ -264,6 +264,37 @@ const mb = {
 					ul.appendChild(li);
 				}
 				mb.updateProgress(3);
+			});
+		}
+		if (step == 4) {
+			jQuery.ajax({
+				method: 'GET',
+				url: url+'&methodName=loadValues&step='+step+'&moduleid='+moduleid,
+			}).done(function (response) {
+				const res = JSON.parse(response);
+				const CustomView = document.getElementById('CustomView');
+				if (CustomView != null) {
+					mb.removeElement('CustomView', true);
+				}
+				const editview = document.getElementById('loadViews');
+				if (editview != null) {
+					mb.removeElement('loadViews', true);
+				}
+				const getView = mb.loadElement('loadViews', true);
+				const ul = document.createElement('ul');
+				ul.className = 'slds-list_ordered';
+				ul.id = 'ul-view-mb';
+				ul.style.marginTop = "20px";
+				getView.appendChild(ul);
+				for (let i = 0; i < res.length; i++) {
+					const li = document.createElement('li');
+					let editBtn = `<button class='slds-button slds-button_outline-brand' onclick='mb.editView("${res[i].customviewid}","${res[i].viewname}","${res[i].fields}","${res[i].setdefault}")' style='margin-left: 10px'>Edit View</button>`;
+					li.innerHTML = res[i].viewname+editBtn;
+					li.className = 'slds-item';
+					li.id = 'li-view-mb-'+res[i].customviewid;
+					ul.appendChild(li);
+				}
+				mb.updateProgress(4);
 			});
 		}
 	},
@@ -699,6 +730,17 @@ const mb = {
 			attr: func,
 		};
 		mb.createInput(fnObj);
+		// create hidden customviewid
+		const inputid = {
+			instance: cell,
+			placeholder: 'Customviewid',
+			name: 'customviewid-',
+			id: 'customviewid-',
+			inc: number_customview,
+			attr: func,
+			type: 'hidden'
+		};
+		mb.createInput(inputid);
 		//create setdefault
 		const setdefault = document.createElement('select');
 		setdefault.name = 'setdefault-' + number_customview;
@@ -739,6 +781,99 @@ const mb = {
                 `;
 				div.innerHTML = checkbox;
 				cell.appendChild(div);
+			}
+		});
+	},
+	generateEditCustomView: (viewnameid, viewname, fields, setdefault, customviewno) => {
+		document.getElementById('number_customview').value = 0;
+		const number_customview = mb.autoIncrementIds('number_customview');
+		const table = mb.getTable('CustomView');
+		const row = mb.createRow(table, 0, 'for-customview-', number_customview);
+		const cell = mb.createCell(row, 0, 'customview_inputs', number_customview);
+		//create viewname
+		const func = {
+			'style': 'width: 25%'
+		};
+		const fnObj = {
+			instance: cell,
+			placeholder: 'Viewname',
+			name: 'viewname-',
+			id: 'viewname-',
+			inc: number_customview,
+			attr: func,
+		};
+		mb.createInput(fnObj);
+		mb.loadElement('viewname-'+number_customview, true).value = viewname;
+		// create hidden customviewid
+		const inputid = {
+			instance: cell,
+			placeholder: 'Customviewid',
+			name: 'customviewid-',
+			id: 'customviewid-',
+			inc: number_customview,
+			attr: func,
+			type: 'hidden'
+		};
+		mb.createInput(inputid);
+		mb.loadElement('customviewid-'+number_customview, true).value = viewnameid;
+
+		const customN = {
+			instance: cell,
+			placeholder: 'Customview_No',
+			name: 'customview_no-',
+			id: 'customview_no-',
+			inc: number_customview,
+			attr: func,
+			type: 'hidden'
+		};
+		mb.createInput(customN);
+		mb.loadElement('customview_no-'+number_customview, true).value = customviewno;
+		//create setdefault2
+		const setdefault2 = document.createElement('select');
+		setdefault2.name = 'setdefault-' + number_customview;
+		setdefault2.id = 'setdefault-' + number_customview;
+		setdefault2.className = 'slds-input';
+		setdefault2.setAttribute('style', 'width: 25%');
+		for (var val in setdefaultOption[0]) {
+			const createOption = document.createElement('option');
+			createOption.innerHTML =  setdefaultOption[0][val];
+			createOption.value =  val;
+			setdefault2.appendChild(createOption);
+		}
+		cell.appendChild(setdefault2);
+		mb.loadElement('setdefault-'+number_customview, true).value = setdefault;
+
+		//get all fields
+		const p = document.createElement('p');
+		p.innerHTML = mod_alert_arr.LBL_CHOOSECUSTOMVIEW;
+		cell.appendChild(p);
+		jQuery.ajax({
+			method: 'GET',
+			url: url+'&methodName=loadFields',
+		}).done(function (response) {
+			const res = JSON.parse(response);
+			for (var f in res) {
+				const div = document.createElement('div');
+				const checkbox = `
+                    <div class="slds-form-element">
+                      <div class="slds-form-element__control">
+                        <div class="slds-checkbox">
+                          <input type="checkbox" class="for-checkbox-${number_customview}" name="checkbox-options-${number_customview}" id="checkbox-${f}-id-${number_customview}" value="${res[f]['fieldsid']}"/>
+                          <label class="slds-checkbox__label" for="checkbox-${f}-id-${number_customview}">
+                            <span class="slds-checkbox_faux"></span>
+                            <span class="slds-form-element__label">${res[f]['fieldname']}</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                `;
+				div.innerHTML = checkbox;
+				cell.appendChild(div);
+				if (res[f]['fieldname'] == fields) {
+					document.querySelector('#checkbox-'+f+'-id-'+number_customview).checked = true;
+				} else {
+					document.querySelector('#checkbox-'+f+'-id-'+number_customview).checked = false;
+				}
 			}
 		});
 	},
@@ -1152,6 +1287,9 @@ const mb = {
 	editField: (fieldsid, fieldname, fieldlabel, entityidentifier, relatedmodules, sequence, uitype, presence, quickcreate, displaytype, masseditable, mandatory) => {
 		const id = fieldsid.split('-')[0];
 		mb.generateEditFields(id, fieldname, fieldlabel, entityidentifier, relatedmodules, sequence, uitype, presence, quickcreate, displaytype, masseditable, mandatory);
+	},
+	editView: (viewnameid, viewname, fields, setdefault) => {
+		mb.generateEditCustomView(viewnameid, viewname, fields, setdefault);
 	},
 	/**
      * Remove elements

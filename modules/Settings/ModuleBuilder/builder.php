@@ -243,7 +243,9 @@ function loadValues($step, $moduleId) {
 		$view = array();
 		for ($i=0; $i < $adb->num_rows($viewSql); $i++) {
 			$viewArr = array();
+			$customviewid = $adb->query_result($viewSql, $i, 'customviewid');
 			$viewname = $adb->query_result($viewSql, $i, 'viewname');
+			$setdefault = $adb->query_result($viewSql, $i, 'setdefault');
 			$fields = $adb->query_result($viewSql, $i, 'fields');
 			$fields = explode(',', $fields);
 			//get fields
@@ -253,7 +255,9 @@ function loadValues($step, $moduleId) {
 				$fieldname = $adb->query_result($fieldSql, 0, 'fieldname');
 				array_push($fieldArr, $fieldname);
 			}
+			$viewArr['customviewid'] = $customviewid;
 			$viewArr['viewname'] = $viewname;
+			$viewArr['setdefault'] = $setdefault;
 			$viewArr['fields'] = $fieldArr;
 			array_push($view, $viewArr);
 		}

@@ -125,18 +125,31 @@ function SaveModuleBuilder($step) {
 		case '4':
 			$moduleid = $_COOKIE['ModuleBuilderID'];
 			$customview = vtlib_purify($_REQUEST['customview']);
+			print_r($customview);
 			foreach ($customview as $key => $value) {
+				$customviewid = $value['customviewid'];
 				$viewname = $value['viewname'];
 				$setdefault = (String)$value['setdefault'];
 				$fields = (String)$value['fields']['field'];
 				$setmetrics = 'false';
-				$adb->pquery('INSERT INTO vtiger_modulebuilder_customview (viewname, setdefault, setmetrics, fields, moduleid) VALUES(?,?,?,?,?)', array(
-					$viewname,
-					$setdefault,
-					$setmetrics,
-					$fields,
-					$moduleid
-				));
+				if ($customviewid == '') {
+					$adb->pquery('INSERT INTO vtiger_modulebuilder_customview (viewname, setdefault, setmetrics, fields, moduleid) VALUES(?,?,?,?,?)', array(
+						$viewname,
+						$setdefault,
+						$setmetrics,
+						$fields,
+						$moduleid
+					));
+				} else {
+					$adb->pquery('UPDATE vtiger_modulebuilder_customview SET viewname=?, setdefault=?, setmetrics=?, fields=?, moduleid=? WHERE customviewid=?', array(
+						$viewname,
+						$setdefault,
+						$setmetrics,
+						$fields,
+						$moduleid,
+						$customviewid
+					));
+				}
 			}
 			$adb->pquery('UPDATE vtiger_modulebuilder_name SET completed="80" WHERE userid=? AND modulebuilderid=?', array(
 				$userid,
