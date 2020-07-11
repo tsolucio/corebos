@@ -1138,7 +1138,7 @@ function runBAScriptFromListView(scriptname, module, callback) {
 	}
 }
 
-function runBAScriptFromListViewSSE(scriptname, module, callback) {
+function runBAScriptFromListViewSSE(scriptname, module, eventsink) {
 	if (document.getElementById('allids').value=='' && document.getElementById('allselectedboxes').value=='') {
 		alert(alert_arr.SELECT);
 	} else {
@@ -1172,26 +1172,30 @@ function runBAScriptFromListViewSSE(scriptname, module, callback) {
 			confirm_status = true;
 		}
 
-		if (confirm_status) {
-			if (idstring) {
-				VtigerJS_DialogBox.block();
-				VtigerJS_DialogBox.showbusy();
-				let url = 'module='+module+'&action='+module+'Ajax&file='+scriptname;
-				url += '&ids=' + encodeURIComponent(idstring);
-				url += '&excludedRecords=' + encodeURIComponent(excludedRecords);
-				url += '&viewname=' +encodeURIComponent(viewid);
-				url += '&searchurl=' +encodeURIComponent(searchurl);
-				jQuery.ajax({
-					method: 'POST',
-					url: 'index.php?'+url
-				}).done(function (response) {
-					VtigerJS_DialogBox.unblock();
-					VtigerJS_DialogBox.hidebusy();
-					if (typeof callback == 'function') {
-						callback(response);
-					}
-				});
-			}
+		if (confirm_status && idstring) {
+			var sentForm = new Object();
+			sentForm['module'] = module;
+			sentForm.SSE_SOURCE_ACTION = scriptname;
+			sentForm.SSE_SOURCE_KEY = 'runBAScript'+corebos_browsertabID;
+			var selectedinfo = {
+				'ids': encodeURIComponent(idstring),
+				'excludedRecords': encodeURIComponent(excludedRecords),
+				'viewname': encodeURIComponent(viewid),
+				'searchurl': encodeURIComponent(searchurl),
+			};
+			ExecuteFunctions('setSetting', 'skey='+sentForm.SSE_SOURCE_KEY+'&svalue='+JSON.stringify(selectedinfo)).then(function (response) {
+			}, function (error) {
+				console.log('error', error);
+			});
+			var worker = new Worker('massedit-worker.js');
+			//a message is received
+			worker.postMessage(sentForm);
+			worker.addEventListener('message', eventsink, false);
+			worker.postMessage(true);
+			var rdo = document.getElementById('relresultssection');
+			rdo.style.visibility = 'visible';
+			rdo.style.display = 'block';
+			document.getElementById('massedit').style.display = 'none';
 		}
 	}
 }
