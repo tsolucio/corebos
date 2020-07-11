@@ -1235,8 +1235,7 @@ function massEditFormValidate() {
 }
 
 function run_massedit() {
-	var me = massEditFormValidate();
-	if (me==true) {
+	if (massEditFormValidate()) {
 		var myFields = document.forms['massedit_form'];
 		var sentForm = new Object();
 		for (var f=0; f<myFields.length; f++) {

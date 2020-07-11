@@ -34,8 +34,7 @@ function showAllRecords() {
 
 //function added to get all the records when parent record doesn't relate with the selection module records while opening/loading popup.
 function redirectWhenNoRelatedRecordsFound() {
-	var loadUrl = showAllRecords();
-	window.location.href = loadUrl;
+	window.location.href = showAllRecords();
 }
 
 function add_data_to_relatedlist(entity_id, recordid, mod, popupmode, callback) {
