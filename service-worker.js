@@ -9314,13 +9314,13 @@ precacheAndRoute([{
   "revision": "c5247a4c8b5ebf37d5cd55c6621f38c5"
 }, {
   "url": "include/js/general.js",
-  "revision": "7efabc132aba80f7bd0943f261fc7a89"
+  "revision": "f51e590730a967ea54c5c0b036f95667"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "c121669fa3b0ab4ce7088a82107ca79c"
 }, {
   "url": "include/js/Inventory.js",
-  "revision": "58df33fa0cfe152a56d739a8c538d171"
+  "revision": "a1c10895692bdf292a1e7af41ff5747a"
 }, {
   "url": "include/js/it_it.lang.js",
   "revision": "c3bbfb85c6fed21d25e984c263fa780a"
@@ -9329,7 +9329,7 @@ precacheAndRoute([{
   "revision": "31c7a760819a0277d2cdb75b82c2c66f"
 }, {
   "url": "include/js/ListView.js",
-  "revision": "587b77407e8f7d96e0cbc1baa4e0ab86"
+  "revision": "e04ea61c72d7dc8843475492bd84f9bb"
 }, {
   "url": "include/js/loadjslog.js",
   "revision": "d5317a375aa85d10e53f5989b1be0524"
@@ -9362,7 +9362,7 @@ precacheAndRoute([{
   "revision": "2b72e46b2012116ecbb8c7cfb872d98a"
 }, {
   "url": "include/js/popup.js",
-  "revision": "9ea67febb4daaa61456e88a625df209b"
+  "revision": "9dcdc285def88f01bd2f4308acdf8755"
 }, {
   "url": "include/js/pt_br.lang.js",
   "revision": "caaf18c4efdaee06a9878e2359324c6b"
@@ -9497,7 +9497,7 @@ precacheAndRoute([{
   "revision": "15a73d14b6e91db79ae7847c2c0de1a1"
 }, {
   "url": "modules/com_vtiger_workflow/resources/createentitytaskscript.js",
-  "revision": "570fca99d6a15a9a601d21663a0f5f3a"
+  "revision": "91f6d47038ee5aeb16f633d6e131e224"
 }, {
   "url": "modules/com_vtiger_workflow/resources/createeventtaskscript.js",
   "revision": "0a5bfde4da94aac9acaa17c70276988d"
@@ -9545,7 +9545,7 @@ precacheAndRoute([{
   "revision": "c00f6462ceeb5ab01f6cdf297e0e8735"
 }, {
   "url": "modules/com_vtiger_workflow/resources/style.css",
-  "revision": "247940cbbe65343a4f33e2e6a7e4e550"
+  "revision": "a6908ffdc9deeea0e21e461a8bcde6cf"
 }, {
   "url": "modules/com_vtiger_workflow/resources/updatefieldstaskscript.js",
   "revision": "75a9576a9821cbeff3fa8085288ff41d"
