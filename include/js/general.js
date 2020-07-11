@@ -1274,6 +1274,7 @@ function run_massedit() {
 
 		var worker  = new Worker('massedit-worker.js');
 		//a message is received
+		sentForm.SSE_SOURCE_ACTION = 'MassEditSave';
 		worker.postMessage(sentForm);
 		worker.addEventListener('message', function (e) {
 			var message = e.data;
