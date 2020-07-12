@@ -97,7 +97,7 @@ class VTCacheUtils {
 	}
 
 	/** Block information caching */
-	private static $_blocklabel_cache = array();
+	public static $_blocklabel_cache = array();
 	public static function updateBlockLabelWithId($label, $id) {
 		self::$_blocklabel_cache[$id] = $label;
 	}
