@@ -38,7 +38,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		if (empty($module)) {
 			WebserviceEntityOperation::$metaCache = array();
 		} else {
-			unset(WebserviceEntityOperation::$metaCache[$module]);
+			WebserviceEntityOperation::$metaCache[$module] = null;
 		}
 	}
 
