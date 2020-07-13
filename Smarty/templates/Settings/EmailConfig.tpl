@@ -9,30 +9,12 @@
  ********************************************************************************/
 -->*}
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
+{assign var="MODULEICON" value='outcome'}
+{assign var="MODULESECTION" value=$MOD.LBL_MAIL_SERVER_SETTINGS}
+{assign var="MODULESECTIONDESC" value=$MOD.LBL_MAIL_SERVER_DESC}
 {include file="SetMenu.tpl"}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 <div class="slds-modal__container slds-p-around_none slds-card">
-	<div class="slds-page-header">
-		<div class="slds-page-header__row">
-			<div class="slds-page-header__col-title">
-				<div class="slds-media">
-					<div class="slds-media__body">
-						<div class="slds-page-header__name">
-							<div class="slds-page-header__name-title">
-								<h1>
-								<span class="slds-page-header__title slds-truncate" title="{$MOD.LBL_NEW_CURRENCY}">
-								<svg class="slds-button__icon slds-icon-text-success slds-icon_large slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#outcome"></use> </svg>
-								&nbsp;{$MOD.LBL_MAIL_SERVER_SETTINGS}
-								<p valign=top class="small cblds-p-v_none">&nbsp;&nbsp;&nbsp;&nbsp;{$MOD.LBL_MAIL_SERVER_DESC}</p>
-								</h1>
-								</span>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 	{if $EMAILCONFIG_MODE neq 'edit'}
 		<form action="index.php" method="post" name="MailServer" id="form" onsubmit="VtigerJS_DialogBox.block();">
 			<input type="hidden" name="emailconfig_mode">
@@ -54,9 +36,11 @@
 	<br>
 	<table border=0 cellspacing=0 cellpadding=10 width=100%  class="slds-table slds-table_cell-buffer slds-table_header-hidden">
 		<tr class="slds-line-height_reset">
+			<td width="20%">
+			{include file='Components/PageSubTitle.tpl' PAGESUBTITLE=$MOD.LBL_MAIL_SERVER_SMTP}
+			</td>
 			<td scope="col" >
 				<div class="slds-truncate">
-					<strong>{$MOD.LBL_MAIL_SERVER_SMTP}</strong>
 					<div style="float: right">
 					{if $EMAILCONFIG_MODE neq 'edit'}
 						<button class="slds-button slds-button_success edit" title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" onclick="this.form.action.value='EmailConfig';this.form.emailconfig_mode.value='edit'" type="submit" name="Edit" >

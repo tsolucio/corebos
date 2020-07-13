@@ -9,8 +9,8 @@
  ********************************************************************************/ *}
 <table width="100%" class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered" border="0" cellspacing="0" cellpadding="5">
 <tr>
-	<td nowrap >
-		<strong>{$SELMODULE|@getTranslatedString:$SELMODULE} {$MOD.LBL_MODULE_NUMBERING}</strong>
+	<td>
+	{include file='Components/PageSubTitle.tpl' PAGESUBTITLE=$SELMODULE|@getTranslatedString:$SELMODULE|cat:" "|cat: $MOD.LBL_MODULE_NUMBERING}
 	</td>
 	<td width="100%" >
 		<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
