@@ -40,13 +40,13 @@ class SessionManager {
 		if (HTTP_Session2::isExpired()) {
 			$valid = false;
 			HTTP_Session2::destroy();
-			throw new WebServiceException(WebServiceErrorCode::$SESSLIFEOVER, 'Session has life span over please login again');
+			throw new WebServiceException(WebServiceErrorCode::$SESSLIFEOVER, 'Session life span over, please login again');
 		}
 		// idled
 		if (HTTP_Session2::isIdle()) {
 			$valid = false;
 			HTTP_Session2::destroy();
-			throw new WebServiceException(WebServiceErrorCode::$SESSIONIDLE, 'Session has been invalidated to due lack activity');
+			throw new WebServiceException(WebServiceErrorCode::$SESSIONIDLE, 'Session has been invalidated due to lack of activity');
 		}
 		//echo '<br>is new: ', HTTP_Session2::isNew();
 		//invalid sessionId provided.
@@ -54,7 +54,7 @@ class SessionManager {
 		if (!$this->get($this->sessionVar) && !HTTP_Session2::isNew()) {
 			$valid = false;
 			HTTP_Session2::destroy();
-			throw new WebServiceException(WebServiceErrorCode::$SESSIONIDINVALID, 'Session Identifier provided is Invalid');
+			throw new WebServiceException(WebServiceErrorCode::$SESSIONIDINVALID, 'Session Identifier provided is invalid');
 		}
 		return $valid;
 	}
@@ -78,7 +78,7 @@ class SessionManager {
 		} else {
 			if (!$this->get($this->sessionVar)) {
 				HTTP_Session2::destroy();
-				throw new WebServiceException(WebServiceErrorCode::$SESSIONIDINVALID, 'Session Identifier provided is Invalid');
+				throw new WebServiceException(WebServiceErrorCode::$SESSIONIDINVALID, 'Session Identifier provided is invalid');
 				$newSID = null;
 			}
 		}
@@ -86,8 +86,7 @@ class SessionManager {
 		if (!$this->isValid()) {
 			$newSID = null;
 		}
-		$sid = $newSID;
-		return $sid;
+		return $newSID;
 	}
 
 	public function getSessionId() {

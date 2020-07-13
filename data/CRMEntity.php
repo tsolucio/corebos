@@ -453,7 +453,7 @@ class CRMEntity {
 
 		$date_var = date('Y-m-d H:i:s');
 
-		$ownerid = $this->column_fields['assigned_user_id'];
+		$ownerid = empty($this->column_fields['assigned_user_id']) ? $current_user->id : $this->column_fields['assigned_user_id'];
 		if (strpos($ownerid, 'x')>0) { // we have a WSid
 			$usrWSid = vtws_getEntityId('Users');
 			$grpWSid = vtws_getEntityId('Groups');

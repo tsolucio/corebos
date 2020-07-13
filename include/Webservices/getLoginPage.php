@@ -24,6 +24,9 @@ function get_loginpage($template, $language, $csrf, $user) {
 	$originalCurrentLanguage = $current_language;
 	$current_language = $language;
 	$currentModule = 'Users';
+	if (!file_exists('include/language/'.$current_language.'.lang.php')) {
+		$current_language = 'en_us';
+	}
 	$app_strings = return_application_language($current_language);
 	$mod_strings = return_module_language($current_language, $currentModule);
 	$current_module_strings = return_module_language($current_language, $currentModule);

@@ -229,7 +229,7 @@ var __attinfo = {$task->dzattinfo|json_encode};
 		<input class="slds-input" type="hidden" id="attachmentids"  name="attachmentids" value="{if isset($task->attachmentids)}{$task->attachmentids}{/if}"/>
 		<div class="slds-grid">
 			<div class="slds-col">
-				<input class="slds-button slds-button_success" title="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_TITLE}" accessKey="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_KEY}" onclick="jQuery('#file-uploader').show();return vtlib_open_popup_window('','msgtpopup','MsgTemplate','');" type="button" name="button" value=" {$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_LABEL}"/>
+				<input class="slds-button slds-button_success" title="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_TITLE}" accessKey="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_KEY}" onclick="jQuery('#file-uploader').show();return vtlib_open_popup_window('','msgtpopup','MsgTemplate','{$workflow->moduleName}&relmod_id=0&parent_module={$workflow->moduleName}');" type="button" name="button" value=" {$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_LABEL}"/>
 			</div>
 			<div class="slds-col">
 				<button onclick="jQuery('#file-uploader').show();attachmentManager.getDocuments();return false;" class="slds-button slds-button_success">{'LBL_SELECT_DOCUMENTS'|@getTranslatedString:'MailManager'}</button>

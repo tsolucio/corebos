@@ -24,6 +24,14 @@ abstract class WebserviceEntityOperation {
 		$this->pearDB = $adb;
 	}
 
+	public function emptyCache($module = '') {
+		if (empty($module)) {
+			self::$metaCache = array();
+		} else {
+			self::$metaCache[$module] = null;
+		}
+	}
+
 	public function create($elementType, $element) {
 		throw new WebServiceException(
 			WebServiceErrorCode::$OPERATIONNOTSUPPORTED,

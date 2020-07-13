@@ -109,6 +109,7 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 		$dayrange[$d] = $d;
 	}
 	for ($interval=5; $interval<=50; $interval+=5) {
+		$intervalrange[$interval-2]=$interval-2;
 		$intervalrange[$interval]=$interval;
 	}
 	$smarty->assign('days1_31', $dayrange);

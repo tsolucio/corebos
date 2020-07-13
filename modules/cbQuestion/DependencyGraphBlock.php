@@ -51,7 +51,7 @@ class DependencyGraphBlock_DetailViewBlock extends DeveloperBlock {
 			$smarty->assign('DEPENDENCYGRAPHDEVBLOCK', $graph);
 			return $smarty->fetch('modules/cbQuestion/dependencyGraphBlock.tpl');
 		}
-		return getTranslatedString('LBL_PERMISSION');
+		return '';
 	}
 }
 

@@ -18,7 +18,7 @@ function vtws_getchallenge($username) {
 	$user = new Users();
 	$userid = $user->retrieve_user_id($username);
 	if (empty($userid)) {
-		throw new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED, 'Given user cannot be found');
+		throw new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED, 'Given user cannot be found: '.$username);
 	}
 
 	$get_token = $adb->pquery('SELECT * FROM vtiger_ws_userauthtoken WHERE userid=?', array($userid));

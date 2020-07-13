@@ -125,7 +125,16 @@ class MsgTemplate extends CRMEntity {
 		$wherepos = stripos($query, 'where'); // there is always a where
 		$query_body = substr($query, 0, $wherepos+5);
 		$query_cond = substr($query, $wherepos+5);
-		return $query_body." vtiger_msgtemplate.msgt_status='Active' and ".$query_cond;
+		$query_module_cond = '';
+		if (isset($_REQUEST['relmod_id']) && !empty($srcrecord)) {
+			if (preg_match('/^[a-zA-Z]+$/', $srcrecord)) {
+				$module = vtlib_purify($srcrecord);
+			} else {
+				$module = getSalesEntityType($srcrecord);
+			}
+			$query_module_cond = "vtiger_msgtemplate.msgt_module='".$module."' and ";
+		}
+		return $query_body." vtiger_msgtemplate.msgt_status='Active' and ".$query_module_cond.$query_cond;
 	}
 
 	/**

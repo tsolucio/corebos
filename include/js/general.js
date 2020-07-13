@@ -1235,8 +1235,7 @@ function massEditFormValidate() {
 }
 
 function run_massedit() {
-	var me = massEditFormValidate();
-	if (me==true) {
+	if (massEditFormValidate()) {
 		var myFields = document.forms['massedit_form'];
 		var sentForm = new Object();
 		for (var f=0; f<myFields.length; f++) {
@@ -1274,6 +1273,7 @@ function run_massedit() {
 
 		var worker  = new Worker('massedit-worker.js');
 		//a message is received
+		sentForm.SSE_SOURCE_ACTION = 'MassEditSave';
 		worker.postMessage(sentForm);
 		worker.addEventListener('message', function (e) {
 			var message = e.data;

@@ -61,14 +61,14 @@ function sendgridsync($input) {
 
 		$recipient=trim($request->email);
 		$event=$request->event;
-		$combid=explode('-', $request->category);
-		$category=$combid[0];
-		$crmid=$request->crmid;
+		$crmid = isset($request->crmid) ? $request->crmid : 0;
 		$crmtype=getSalesEntityType($crmid);
 		if ($crmtype!='Messages' && $crmtype!='Emails') {
 			evvtWrite2Log("Error CRM Type: $crmtype - $crmid");
 			continue;
 		}
+		$combid=explode('-', $request->category);
+		$category=$combid[0];
 		evvtWrite2Log("CRM Type: $crmtype - $crmid");
 		$current_user = Users::getActiveAdminUser();
 		$em = new VTEventsManager($adb);

@@ -21,9 +21,6 @@ class ModTrackerOperation extends WebserviceEntityOperation {
 
 	public function __construct($webserviceObject, $user, $adb, $log) {
 		parent::__construct($webserviceObject, $user, $adb, $log);
-		if (!vtlib_isModuleActive($this->actorModule)) {
-			throw new WebServiceException(WebServiceErrorCode::$UNKNOWNENTITY, $this->actorModule.' is not active');
-		}
 		$this->meta = $this->getMetaInstance();
 		$this->moduleFields = null;
 		$this->element = null;
