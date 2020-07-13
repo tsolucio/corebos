@@ -20,6 +20,8 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	include_once 'modules/Tooltip/TooltipUtils.php';
 	require_once "modules/$currentModule/$currentModule.php";
 	$category = getParentTab();
+	$profileid = fetchUserProfileId($current_user->id);
+	//$profileId = (isset($_REQUEST['profileid']) ? vtlib_purify($_REQUEST['profileid']) : 0);
 	$lastPage = vtlib_purify($_REQUEST['lastPage']);
 	if ($currentModule == 'Utilities') {
 		$currentModule = vtlib_purify($_REQUEST['formodule']);
@@ -182,6 +184,21 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 		}
 		array_push($listview_header_arr, $lv_arr);
 	}
+	$tabid = getTabid($currentModule);
+	$actionPermission = getTabsActionPermission($profileid)[$tabid];
+	$delete = true;
+	$edit = true;
+	if ($actionPermission[1]) {
+		$edit = false;
+	}
+	if ($actionPermission[2]) {
+		$delete = false;
+	}
+	if ($currentModule == 'cbCalendar') {
+		require_once 'modules/Calendar4You/Calendar4You.php';
+		$focus = new Calendar4You();
+		$focus->GetDefPermission($current_user);
+	}
 	$data = array();
 	$linkfield = array();
 	$result = $adb->pquery($list_query, array());
@@ -190,7 +207,6 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 		$linkRow = array();
 		foreach ($row as $fieldName => $fieldValue) {
 			if (!is_numeric($fieldName)) {
-				$tabid = getTabid($currentModule);
 				$fieldnameSql = $adb->pquery('SELECT fieldname FROM vtiger_field WHERE columnname=? AND tabid=?', array(
 					$fieldName,
 					$tabid
@@ -237,7 +253,32 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 					}
 				}
 			}
-			$rows['action'] = '';
+			if (GlobalVariable::getVariable('Application_ListView_Record_Change_Indicator', 1, $currentModule)) {
+				$isModified = false;
+				if (!$focus->isViewed($row[$entityidfield])) {
+					$isModified = true;
+				}
+			}
+			$Actions = array();
+			if ($currentModule == 'cbCalendar' && $focus->CheckPermissions('EDIT', $row[$entityidfield])) {
+				$evstatus = $row['eventstatus'];
+				if (!($evstatus == 'Deferred' || $evstatus == 'Completed' || $evstatus == 'Held' || $evstatus == '')) {
+					if ($row['activitytype'] == 'Task') {
+						$evt_status = 'Completed';
+					} else {
+						$evt_status = 'Held';
+					}
+					$Actions = array(
+						'status' => $evt_status,
+					);
+				}
+			}
+			$rows['action'] = array(
+				'edit' => $edit,
+				'delete' => $delete,
+				'isModified' => $isModified,
+				'cbCalendar' => $Actions,
+			);
 			$rows['assigned_user_id'] = isset($row['smownerid']) ? getUserFullName($row['smownerid']) : '';
 			$rows['recordid'] = $row[$entityidfield];
 			$rows['reference'] = $fieldname;

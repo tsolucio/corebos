@@ -115,10 +115,31 @@ class ActionRender {
 		let module = document.getElementById('curmodule').value;
 		let rowKey = props.rowKey;
 		let recordid = props.grid.getValue(rowKey, 'recordid');
+		let actionPermission = props.grid.getValue(rowKey, 'action');
 		el = document.createElement('span');
-		const actions = `
-			<a href="index.php?module=${module}&action=EditView&record=${recordid}&return_module=${module}&return_action=index">${alert_arr['LNK_EDIT']}</a> | 
-			<a href="javascript:confirmdelete('index.php?module=${module}&action=Delete&record=${recordid}&return_module=${module}&return_action=index&parenttab=ptab');">${alert_arr['LNK_DELETE']}</a>`;
+		let actions = '';
+		const str = '|';
+		const editUrl = `index.php?module=${module}&action=EditView&record=${recordid}&return_module=${module}&return_action=index`;
+		const deleteUrl = `javascript:confirmdelete('index.php?module=${module}&action=Delete&record=${recordid}&return_module=${module}&return_action=index&parenttab=ptab');`;
+		if (actionPermission.cbCalendar.status != undefined) {
+			actions += `
+				<a onclick="ajaxChangeCalendarStatus('${actionPermission.cbCalendar.status}',${recordid});">
+					Close
+				</a> ${str}`;
+		}
+		if (actionPermission.edit && actionPermission.delete) {
+			actions += `<a href="${editUrl}">${alert_arr['LNK_EDIT']}</a> ${str} <a href="${deleteUrl}">${alert_arr['LNK_DELETE']}</a>`;
+		} else if (!actionPermission.edit && actionPermission.delete) {
+			actions += `<a href="${deleteUrl}">${alert_arr['LNK_DELETE']}</a>`;
+		} else if (actionPermission.edit && !actionPermission.delete) {
+			actions += `<a href="${editUrl}">${alert_arr['LNK_EDIT']}</a>`;
+		}
+		if (actionPermission.isModified) {
+			if (!actionPermission.edit && !actionPermission.delete) {
+				str = '';
+			}
+			actions += ` ${str} <img src='themes/images/important1.gif'>`;
+		}
 		el.innerHTML = actions;
 		this.el = el;
 		this.render(props);

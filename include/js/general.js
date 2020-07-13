@@ -3465,10 +3465,7 @@ function ajaxChangeCalendarStatus(statusname, activityid) {
 	}).done(function (response) {
 		document.getElementById('status').style.display = 'none';
 		var result = response.split('&#&#&#');
-		if (document.getElementById('ListViewContents')) {
-			document.getElementById('ListViewContents').innerHTML = result[2];
-			document.getElementById('basicsearchcolumns').innerHTML = '';
-		}
+		ListView.ListViewJSON('massedit');
 		if (result[1] != '') {
 			ldsPrompt.show(alert_arr['ERROR'], result[1]);
 		}

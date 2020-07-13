@@ -59,7 +59,7 @@ const ListView = {
 			document.getElementById('status').style.display = 'none';
 		} else if (actionType == 'massedit') {
 			//use this function to reload data in every change
-			ListView.ListViewReloadData();
+			ListView.ListViewReloadData(lastPage, true);
 			document.getElementById('status').style.display = 'none';
 		} else {
 			if (module != '' && module != undefined) {
@@ -93,7 +93,7 @@ const ListView = {
 					header: fieldvalue,
 					sortable: false,
 					whiteSpace: 'normal',
-					width: 100,
+					width: 120,
 					renderer: {
     					type: ActionRender,
     				},
@@ -405,12 +405,18 @@ const ListView = {
 	/**
 	 * Get the new headers in a onchange data
 	 */
-	 ListViewReloadData: () => {
+	 ListViewReloadData: (lastPage = 1, reload = true) => {
 		dataGridInstance.clear();
-	 	dataGridInstance.setRequestParams({'search': '', 'searchtype': ''});
+		if (reload) {
+	 		dataGridInstance.setRequestParams({'search': '', 'searchtype': '', 'page': lastPage});
+	 	} else {
+	 		dataGridInstance.setRequestParams({'search': '', 'searchtype': ''});
+	 	}
 	 	dataGridInstance.reloadData();
 	 	//update pagination onchange
-	 	dataGridInstance.setPerPage(parseInt(PageSize));
+	 	if (reload) {
+	 		dataGridInstance.setPerPage(parseInt(PageSize));
+	 	}
 	 	ListView.updateData();
 	},
 	/**
@@ -684,7 +690,7 @@ const ListView = {
 				const parent = getEl.parentNode;
 				const el = `
 					<div style="padding-left:2rem;padding-top:5rem;position:absolute;">
-					    <section class="slds-popover" onmouseleave="ListView.removeTooltip('${recordid}', '${fieldname}')" role="dialog" style="position:absolute;top:-20px;left: 0px;${width};">
+					    <section class="slds-popover" onmouseleave="ListView.removeTooltip('${recordid}', '${fieldname}')" role="dialog" style="position:absolute;top:10px;left: 0px;${width};">
 					      <button onclick="ListView.removeTooltip(${recordid}, '${fieldname}', true)" class="slds-button slds-button_icon slds-button_icon-small slds-float_right slds-popover__close slds-button_icon-inverse">
 					        <svg class="slds-button__icon" aria-hidden="true">
 					          <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
