@@ -9,31 +9,12 @@
  ********************************************************************************/
 -->*}
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
+{assign var="MODULEICON" value='currency'}
+{assign var="MODULESECTION" value=$MOD.LBL_VIEWING|cat:" "|cat:$CURRENCY_NAME}
+{assign var="MODULESECTIONDESC" value=$MOD.LBL_CURRENCY_DESCRIPTION}
 {include file='SetMenu.tpl'}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 <div class="slds-modal__container slds-p-around_none slds-card">
-<div class="slds-page-header">
-	<div class="slds-page-header__row">
-		<div class="slds-page-header__col-title">
-			<div class="slds-media">
-				<div class="slds-media__body">
-					<div class="slds-page-header__name">
-						<div class="slds-page-header__name-title">
-							<h1>
-							<span class="slds-page-header__title slds-truncate" title="{$MOD.LBL_NEW_CURRENCY}">
-							<h1>
-							<svg class="slds-button__icon slds-icon-text-success slds-icon_large slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#currency"></use> </svg>
-							&nbsp;{$MOD.LBL_VIEWING} &quot;{$CURRENCY_NAME}&quot;
-							<p valign=top class="small cblds-p-v_none">&nbsp;&nbsp;&nbsp;&nbsp;{$MOD.LBL_CURRENCY_DESCRIPTION}</p>
-							</h1>
-							</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
 <div align=center>
 	<form action="index.php" method="post" name="index" id="form" onsubmit="VtigerJS_DialogBox.block();">
 	<input type="hidden" name="module" value="Settings">
@@ -42,12 +23,13 @@
 	<input type="hidden" name="record" value="{$ID}">
 
 	<div class="slds-grid slds-gutters">
-		<div class="slds-col slds-size_5-of-6">
+		<div class="slds-col slds-size_2-of-12">
 			<br>
-			<h2 align="left" class="slds-p-left_x-small"><strong>{'LBL_SETTINGS'|@getTranslatedString} {$APP.LBL_FOR} &quot;{$CURRENCY_NAME|@getTranslatedCurrencyString}&quot;  </strong></h2>
+			{include file='Components/PageSubTitle.tpl' PAGESUBTITLE='LBL_SETTINGS'|@getTranslatedString|cat:" "|cat:$APP.LBL_FOR|cat:" "|cat:$CURRENCY_NAME|@getTranslatedCurrencyString}
 			<br>
 		</div>
-		<div class="slds-col slds-size_1-of-6 slds-p-bottom_large">
+		<div class="slds-col slds-size_4-of-12 slds-p-bottom_large"></div>
+		<div class="slds-col slds-size_11-of-12 slds-p-bottom_large">
 			<br>
 			<button type="submit" class="slds-button slds-button_success edit" onclick="this.form.action.value='CurrencyEditView'; this.form.parenttab.value='Settings'; this.form.record.value='{$ID}'">
 			<svg class="slds-button__icon slds-icon-text-success slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use> </svg>

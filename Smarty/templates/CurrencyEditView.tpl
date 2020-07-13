@@ -9,35 +9,17 @@
  ********************************************************************************/
 -->*}
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
+{assign var="MODULEICON" value='currency'}
+{if $ID neq ''}
+	{assign var="MODULESECTION" value='LBL_SETTINGS'|@getTranslatedString|cat:" "|cat:$APP.LBL_FOR|cat:" "|cat:$CURRENCY_NAME|@getTranslatedCurrencyString}
+	{assign var="MODULESECTIONDESC" value=$MOD.LBL_CURRENCY_DESCRIPTION}
+{else}
+	{assign var="MODULESECTION" value=$MOD.LBL_NEW_CURRENCY}
+	{assign var="MODULESECTIONDESC" value=$MOD.LBL_CURRENCY_DESCRIPTION}
+{/if}
 {include file='SetMenu.tpl'}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 <div class="slds-modal__container slds-p-around_none slds-card">
-<div class="slds-page-header">
-	<div class="slds-page-header__row">
-		<div class="slds-page-header__col-title">
-			<div class="slds-media">
-				<div class="slds-media__body">
-					<div class="slds-page-header__name">
-						<div class="slds-page-header__name-title">
-							<h1>
-							<span class="slds-page-header__title slds-truncate" title="{$MOD.LBL_NEW_CURRENCY}">
-							<svg class="slds-button__icon slds-icon-text-success slds-icon_large slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#currency"></use> </svg>
-							{if $ID neq ''}
-								&nbsp;{'LBL_SETTINGS'|@getTranslatedString} {$APP.LBL_FOR} &quot;{$CURRENCY_NAME|@getTranslatedCurrencyString}&quot;
-								<p valign=top class="small cblds-p-v_none">&nbsp;&nbsp;&nbsp;&nbsp;{$MOD.LBL_CURRENCY_DESCRIPTION}</p>
-							{else}
-								&nbsp;{$MOD.LBL_NEW_CURRENCY}
-								<p valign=top class="small cblds-p-v_none">&nbsp;&nbsp;&nbsp;&nbsp;{$MOD.LBL_CURRENCY_DESCRIPTION}</p>
-							{/if}
-							</h1>
-							</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
 <div align=center>
 			<!-- DISPLAY -->
 	<form action="index.php" method="post" name="index" id="form" onsubmit="VtigerJS_DialogBox.block();">
@@ -47,6 +29,7 @@
 	<input type="hidden" name="record" value="{$ID}">
 	<div class="slds-grid slds-gutters slds-p-right_small">
 		<div align="right" class="slds-col slds-size_11-of-12 slds-p-right_none">
+			<br>
 			<button title="{$APP.LBL_SAVE_BUTTON_LABEL}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="slds-button slds-button_success" onclick="this.form.action.value='SaveCurrencyInfo'; return validate()" type="submit" name="button">
 			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use> </svg>
 			{$APP.LBL_SAVE_BUTTON_LABEL}</button>
@@ -67,9 +50,11 @@
 				<option value="{$cur_id}">{$cur_name|@getTranslatedCurrencyString}</option>
 			{/foreach}
 			</p>
+			<br>
 			<input type="button" onclick="form.submit();" name="Update" value="{$APP.LBL_SAVE_BUTTON_LABEL}" class="crmbutton small save">
 		</div>
 		<div class="slds-col slds-size_1-of-12 slds-p-left_none">
+			<br>
 			<button title="{$APP.LBL_CANCEL_BUTTON_LABEL}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="slds-button slds-button_destructive" onclick="window.history.back()" type="button" name="button">
 			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use> </svg>
 			{$APP.LBL_CANCEL_BUTTON_LABEL}</button>
@@ -117,7 +102,7 @@
 						<td >
 							<div class="slds-form-element">
 								<div class="slds-form-element__control">
-									<input type="text" disabled=""  class="slds-input" value="{$CURRENCY_CODE}" name="currency_code" id="currency_code">
+									<input type="text" readonly class="slds-input" value="{$CURRENCY_CODE}" name="currency_code" id="currency_code">
 								</div>
 							</div>
 						</td>
@@ -132,7 +117,7 @@
 					<td >
 						<div class="slds-form-element">
 							<div class="slds-form-element__control">
-								<input type="text" disabled=""  class="slds-input" value="{$CURRENCY_SYMBOL}" name="currency_symbol" id="currency_symbol" />
+								<input type="text" readonly class="slds-input" value="{$CURRENCY_SYMBOL}" name="currency_symbol" id="currency_symbol" />
 							</div>
 						</div>
 					</td>
