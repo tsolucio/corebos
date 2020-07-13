@@ -441,7 +441,11 @@ class VTSimpleTemplate {
 		$backCurrentUser = $current_user;
 		$data = $this->parent->getData();
 		if (!empty($data['assigned_user_id'])) {
-			list($wsId,$assigned_user_id) = explode('x', $data['assigned_user_id']);
+			if (strpos($data['assigned_user_id'], 'x')>0) {
+				list($wsId,$assigned_user_id) = explode('x', $data['assigned_user_id']);
+			} else {
+				$assigned_user_id = $data['assigned_user_id'];
+			}
 			if (vtws_getOwnerType($assigned_user_id) == 'Groups') {
 				require_once 'include/utils/GetGroupUsers.php';
 				$ggu = new GetGroupUsers();
