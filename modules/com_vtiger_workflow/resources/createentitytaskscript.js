@@ -309,44 +309,16 @@ function VTCreateEntityTask($, fieldvaluemapping) {
 			var fieldLabels = dict(entityFields);
 
 			function addFieldValueMapping(mappingno) {
-				const el = `
-					<div id="save_fieldvalues_${mappingno}" style='margin-bottom: 5px'>
-						<div class="slds-grid slds-grid_vertical-align-center">
-							<div class="slds-col slds-size_2-of-12 slds-p-around_x-small">
-								<div class="slds-form-element">
-									<div class="slds-form-element__control">
-										<div class="slds-select_container">
-											<select id="save_fieldvalues_${mappingno}_fieldname" class="slds-select slds-page-header__meta-text"></select>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="slds-col slds-size_2-of-12 slds-p-around_x-small">
-								<div class="slds-form-element">
-									<div class="slds-form-element__control">
-										<div class="slds-select_container">
-											<select id="save_fieldvalues_${mappingno}_modulename" class="slds-select slds-page-header__meta-text"></select>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="slds-col slds-size_3-of-12 slds-p-around_x-small">
-								<div class="slds-form-element">
-									<div class="slds-form-element__control">
-										<input type="hidden" id="save_fieldvalues_${mappingno}_value_type" class="type slds-input">
-										<input type="text" id="save_fieldvalues_${mappingno}_value" class="expressionvalue slds-input fieldborder" readonly >
-									</div>
-								</div>
-							</div>
-							<div class="slds-col slds-size_2-of-12 slds-p-around_x-small">
-								<span id="save_fieldvalues_${mappingno}_remove" class="link remove-link">
-									<img src="modules/com_vtiger_workflow/resources/remove.png">
-								</span>
-							</div>
-					</div></div>`;
-
-				$('#save_fieldvaluemapping').append(el);
-
+				$('#save_fieldvaluemapping').append(
+					'<div id="save_fieldvalues_'+mappingno+'" style=\'margin-bottom: 5px\'> \
+						<select id="save_fieldvalues_'+mappingno+'_fieldname" class="fieldname"></select> \
+						<select id="save_fieldvalues_'+mappingno+'_modulename" class="modulename"></select> \
+						<input type="hidden" id="save_fieldvalues_'+mappingno+'_value_type" class="type"> \
+						<input type="text" id="save_fieldvalues_'+mappingno+'_value" class="expressionvalue" readonly > \
+						<span id="save_fieldvalues_'+mappingno+'_remove" class="link remove-link"> \
+						<img src="modules/com_vtiger_workflow/resources/remove.png"></span> \
+					</div>'
+				);
 				var fe = $('#save_fieldvalues_'+mappingno+'_fieldname');
 				var i = 1;
 				fillOptions(fe, fieldLabels);
