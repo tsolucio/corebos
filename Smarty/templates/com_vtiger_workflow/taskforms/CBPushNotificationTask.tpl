@@ -18,38 +18,47 @@
 -->*}
 <script src='modules/com_vtiger_workflow/resources/vtigerwebservices.js' charset="utf-8"></script>
 
-<div class="slds-form-element">
-	<label class="slds-form-element__label" for="url_query">{'pushnoturl'|@getTranslatedString:'com_vtiger_workflow'}</label>
-	<div class="slds-form-element__control">
-		<input type="text" class="slds-input" name="url_query" id="url_query" value="{$task->url_query}" onchange="pushurlchange()" />
+<div class="slds-grid slds-p-horizontal_x-large">
+	<div class="slds-col slds-size_8-of-12 slds-p-around_x-small">
+		<div class="slds-form-element">
+			<label class="slds-form-element__label" for="url_query">{'pushnoturl'|@getTranslatedString:'com_vtiger_workflow'}</label>
+			<div class="slds-form-element__control">
+				<input type="text" class="slds-input slds-page-header__meta-text" name="url_query" id="url_query" value="{$task->url_query}" onchange="pushurlchange()" />
+			</div>
+		</div>
 	</div>
 </div>
-<div class="slds-grid slds-gutters slds-m-around_x-small">
-	<div class="slds-col slds-size_3-of-12">
+
+<div class="slds-grid slds-p-horizontal_x-large">
+	<div class="slds-col slds-size_4-of-12 slds-p-around_x-small">
 		<div class="slds-form-element">
 			<div class="slds-form-element__control">
 				<div class="slds-combobox_container">
-					<select id="modulefields" onchange="gmpaddVar(this);" class="slds-select">
+					<select id="modulefields" onchange="gmpaddVar(this);" class="slds-select slds-page-header__meta-text">
 						<option value="">{'Select Meta Variables'|@getTranslatedString:$MODULE_NAME}</option>
 					</select>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
-<div class="slds-grid">
-	<div class="slds-col slds-size_1-of-4 slds-p-around_small">
-		<input id="evalurlid" name="evalurlid" type="hidden" value="" onchange="pushurlchange()">
-		<input id="evalurlid_type" name="evalurlid_type" type="hidden" value="{if isset($workflow)}{$workflow->moduleName}{/if}">
-		<input id="evalurlid_display" name="evalurlid_display" readonly type="text" style="border:1px solid #bababa;background-color:white;width:200px;" class="slds-input" value=""  onClick='return vtlib_open_popup_window("new_task","evalurlid","com_vtiger_workflow","");'>
-		<span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-p-left_x-small slds-p-right_small" onClick='return vtlib_open_popup_window("new_task","evalurlid","com_vtiger_workflow","");'>
-			<svg class="slds-icon slds-icon slds-icon_small slds-icon-text-default" aria-hidden="true">
-				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
-			</svg>
-		</span>
+	<div class="slds-col slds-size_4-of-12 slds-p-around_x-small">
+		<div class="slds-form-element__control slds-input-has-fixed-addon">
+			<input id="evalurlid" name="evalurlid" type="hidden" value="" onchange="pushurlchange()">
+			<input id="evalurlid_type" name="evalurlid_type" type="hidden" value="{if isset($workflow)}{$workflow->moduleName}{/if}">
+			<input id="evalurlid_display" name="evalurlid_display" readonly type="text" style="border:1px solid #bababa;background-color:white;" class="slds-input" value=""  onClick='return vtlib_open_popup_window("new_task","evalurlid","com_vtiger_workflow","");'>
+				<span class="slds-form-element__addon" onClick='return vtlib_open_popup_window("new_task","evalurlid","com_vtiger_workflow","");'>
+					<svg class="slds-icon slds-icon slds-icon_small slds-icon-text-default" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+					</svg>
+				</span>
+		</div>
 	</div>
-	<div class="slds-col slds-size_3-of-4 slds-p-around_small" id="evaluateurlresult"></div>
 </div>
+
+<div class="slds-grid slds-p-horizontal_x-large">
+	<div class="slds-col slds-size_1-of-1 slds-p-around_small" id="evaluateurlresult"></div>
+</div>
+
 <script>
 var moduleName = '{$entityName}';
 function gmpaddVar(obj) {
