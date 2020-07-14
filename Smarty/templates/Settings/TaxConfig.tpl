@@ -19,30 +19,12 @@
 	}
 </style>
 {/literal}
+{assign var="MODULEICON" value='money'}
+{assign var="MODULESECTION" value=$MOD.LBL_TAX_SETTINGS}
+{assign var="MODULESECTIONDESC" value=$MOD.LBL_TAX_DESC}
 {include file='SetMenu.tpl'}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 <div class="slds-modal__container slds-p-around_none slds-card">
-<div class="slds-page-header">
-	<div class="slds-page-header__row">
-		<div class="slds-page-header__col-title">
-			<div class="slds-media">
-				<div class="slds-media__body">
-					<div class="slds-page-header__name">
-						<div class="slds-page-header__name-title">
-							<h1>
-							<span class="slds-page-header__title slds-truncate" title="{$MOD.LBL_NEW_CURRENCY}">
-								<svg class="slds-button__icon slds-icon-text-success slds-icon_large slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#money"></use> </svg>
-								&nbsp;{$MOD.LBL_TAX_SETTINGS}
-								<p valign=top class="small cblds-p-v_none">&nbsp;&nbsp;&nbsp;&nbsp;{$MOD.LBL_TAX_DESC}</p>
-							</h1>
-							</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
 <div align=center>
 <!-- DISPLAY -->
 	{if $EDIT_MODE eq 'true'}
