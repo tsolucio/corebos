@@ -312,6 +312,12 @@ const ListView = {
 					if (rows != '') {
 						ListView.checkRows();
 					}
+					const getGridCell = document.getElementsByClassName('tui-grid-cell');
+					for (let i = 0; i < getGridCell.length; i++) {
+						if (getGridCell[i].dataset.columnName == 'action') {
+					  		getGridCell[i].style.overflow = 'visible';
+						}
+					}
 				}
 			});
 			//change style in grid
