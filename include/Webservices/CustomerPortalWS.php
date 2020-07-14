@@ -79,7 +79,10 @@ function vtws_getPortalUserDateFormat($user) {
 
 function vtws_getPortalUserInfo($user) {
 	$usrinfo = array();
-	$retfields = array('date_format','first_name','last_name','email1');
+	$retfields = array(
+		'date_format','first_name','last_name','email1','is_admin','language',
+		'currency_grouping_pattern','currency_decimal_separator','currency_grouping_separator','currency_symbol_placement',
+	);
 	foreach ($retfields as $fld) {
 		if (isset($user->column_fields[$fld])) {
 			$usrinfo[$fld] = $user->column_fields[$fld];
