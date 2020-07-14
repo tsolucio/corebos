@@ -16,6 +16,7 @@
 <link REL="SHORTCUT ICON" HREF="themes/images/favicon.ico">
 <link rel="stylesheet" type="text/css" media="all" href="themes/{$THEME}/style.css">
 <script type="text/javascript" src="include/jquery/jquery.js"></script>
+{include file='BrowserVariables.tpl'}
 <script type="text/javascript" src="include/js/general.js"></script>
 <script type="text/javascript" src="include/js/{$LANGUAGE}.lang.js"></script>
 <script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
