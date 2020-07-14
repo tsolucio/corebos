@@ -14,6 +14,7 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 include_once 'modules/com_vtiger_workflow/WorkFlowScheduler.php';
+include_once 'modules/com_vtiger_workflow/VTSimpleTemplateOnData.inc';
 
 function cbexpsql_supportedFunctions() {
 	return array(
@@ -571,6 +572,13 @@ class cbexpsql_environmentstub {
 	}
 
 	public function get($fieldName) {
+		preg_match('/\((\w+) : \(([_\w]+)\) (\w+)\)/', $fieldName, $matches);
+		if (count($matches)>0) {
+			global $current_user;
+			$ct = new VTSimpleTemplateOnData($fieldName);
+			$entityCache = new VTEntityCache($current_user);
+			return $ct->render($entityCache, $this->module, $this->data);
+		}
 		return (isset($this->data[$fieldName]) ? $this->data[$fieldName] : $fieldName);
 	}
 

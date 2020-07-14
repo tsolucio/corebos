@@ -124,7 +124,8 @@ $sessionManager = new SessionManager();
 try {
 	$operationManager = new OperationManager($adb, $operation, $format, $sessionManager);
 } catch (WebServiceException $e) {
-	echo $e->message;
+	$operationManager = new OperationManager($adb, 'getchallenge', 'json', null);
+	writeErrorOutput($operationManager, $e);
 	die();
 }
 
