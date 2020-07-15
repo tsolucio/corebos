@@ -1138,7 +1138,7 @@ function runBAScriptFromListView(scriptname, module, callback) {
 	}
 }
 
-function runBAScriptFromListViewSSE(scriptname, module, eventsink) {
+function runBAScriptFromListViewSSE(scriptname, module, eventsink, parameters2send) {
 	if (document.getElementById('allids').value=='' && document.getElementById('allselectedboxes').value=='') {
 		alert(alert_arr.SELECT);
 	} else {
@@ -1183,6 +1183,13 @@ function runBAScriptFromListViewSSE(scriptname, module, eventsink) {
 				'viewname': encodeURIComponent(viewid),
 				'searchurl': encodeURIComponent(searchurl),
 			};
+			parameters2send = parameters2send || [];
+			parameters2send.forEach(element => {
+				let e = document.getElementById(element);
+				if (e) {
+					selectedinfo[element] = e.value;
+				}
+			});
 			ExecuteFunctions('setSetting', 'skey='+sentForm.SSE_SOURCE_KEY+'&svalue='+JSON.stringify(selectedinfo)).then(function (response) {
 			}, function (error) {
 				console.log('error', error);
