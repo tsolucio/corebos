@@ -23,10 +23,24 @@ function __cb_is_string($arr) {
 }
 
 function __cb_or($arr) {
-	return $arr[0] || $arr[1];
+	$res = false;
+	for ($x=0; $x < count($arr); $x++) {
+		$res = $res || $arr[$x];
+		if ($res) {
+			break;
+		}
+	}
+	return $res;
 }
 function __cb_and($arr) {
-	return $arr[0] && $arr[1];
+	$res = true;
+	for ($x=0; $x < count($arr); $x++) {
+		$res = $res && $arr[$x];
+		if (!$res) {
+			break;
+		}
+	}
+	return $res;
 }
 function __cb_not($arr) {
 	return !($arr[0]);
