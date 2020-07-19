@@ -238,4 +238,11 @@
 	<classname>addColumnsToMailConverter</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add index on NAME column in attachments</description>
+	<filename>build/changeSets/2020/optimizeattachmentaccess.php</filename>
+	<classname>optimizeattachmentaccess</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
