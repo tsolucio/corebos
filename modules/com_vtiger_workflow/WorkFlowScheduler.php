@@ -295,6 +295,7 @@ class WorkFlowScheduler {
 						}
 					}
 					$wfscenv = new cbexpsql_environmentstub($queryGenerator->getModule(), '0x0');
+					$wfscenv->returnReferenceValue = false;
 					$substExpressions['::#'.$substExpressionsIndex] = $exprEvaluater->evaluate($wfscenv, true);
 					if (is_object($substExpressions['::#'.$substExpressionsIndex])) {
 						$substExpressions['::#'.$substExpressionsIndex] = $substExpressions['::#'.$substExpressionsIndex]->value;
