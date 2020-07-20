@@ -1149,8 +1149,7 @@ function getProfileActionPermission($profileid) {
 	$log->debug('> getProfileActionPermission '.$profileid);
 	$check = array();
 	$temp_tabid = array();
-	$sql1 = "select * from vtiger_profile2standardpermissions where profileid=?";
-	$result1 = $adb->pquery($sql1, array($profileid));
+	$result1 = $adb->pquery('select * from vtiger_profile2standardpermissions where profileid=?', array($profileid));
 	$num_rows1 = $adb->num_rows($result1);
 	for ($i=0; $i<$num_rows1; $i++) {
 		$tab_id = $adb->query_result($result1, $i, 'tabid');
@@ -1202,70 +1201,64 @@ function createProfile($profilename, $parentProfileId, $description) {
 	$adb->pquery('insert into vtiger_profile values(?,?,?)', array('', $profilename, $description));
 
 	//Retreiving the vtiger_profileid
-	$sql2 = "select max(profileid) as current_id from vtiger_profile";
-	$result2 = $adb->pquery($sql2, array());
+	$result2 = $adb->pquery('select max(profileid) as current_id from vtiger_profile', array());
 	$current_profile_id = $adb->query_result($result2, 0, 'current_id');
 
 	//Inserting values into vtiger_profile2globalpermissions
-	$sql3 = "select * from vtiger_profile2globalpermissions where profileid=?";
 	$params3 = array($parentProfileId);
-	$result3= $adb->pquery($sql3, $params3);
+	$result3= $adb->pquery('select * from vtiger_profile2globalpermissions where profileid=?', $params3);
 	$p2tab_rows = $adb->num_rows($result3);
+	$sql4 = 'insert into vtiger_profile2globalpermissions values(?,?,?)';
 	for ($i=0; $i<$p2tab_rows; $i++) {
 		$act_id=$adb->query_result($result3, $i, 'globalactionid');
 		$permissions=$adb->query_result($result3, $i, 'globalactionpermission');
-		$sql4="insert into vtiger_profile2globalpermissions values(?,?,?)";
 		$params4 = array($current_profile_id, $act_id, $permissions);
 		$adb->pquery($sql4, $params4);
 	}
 
 	//Inserting values into Profile2tab vtiger_table
-	$sql3 = "select * from vtiger_profile2tab where profileid=?";
 	$params3 = array($parentProfileId);
-	$result3= $adb->pquery($sql3, $params3);
+	$result3= $adb->pquery('select * from vtiger_profile2tab where profileid=?', $params3);
 	$p2tab_rows = $adb->num_rows($result3);
+	$sql4 = 'insert into vtiger_profile2tab values(?,?,?)';
 	for ($i=0; $i<$p2tab_rows; $i++) {
 		$tab_id=$adb->query_result($result3, $i, 'tabid');
 		$permissions=$adb->query_result($result3, $i, 'permissions');
-		$sql4="insert into vtiger_profile2tab values(?,?,?)";
 		$params4 = array($current_profile_id, $tab_id, $permissions);
 		$adb->pquery($sql4, $params4);
 	}
 
 	//Inserting values into Profile2standard vtiger_table
-	$sql6 = "select * from vtiger_profile2standardpermissions where profileid=?";
 	$params6 = array($parentProfileId);
-	$result6= $adb->pquery($sql6, $params6);
+	$result6 = $adb->pquery('select * from vtiger_profile2standardpermissions where profileid=?', $params6);
 	$p2per_rows = $adb->num_rows($result6);
+	$sql7 = 'insert into vtiger_profile2standardpermissions values(?,?,?,?)';
 	for ($i=0; $i<$p2per_rows; $i++) {
 		$tab_id=$adb->query_result($result6, $i, 'tabid');
 		$action_id=$adb->query_result($result6, $i, 'operation');
 		$permissions=$adb->query_result($result6, $i, 'permissions');
-		$sql7="insert into vtiger_profile2standardpermissions values(?,?,?,?)";
 		$params7 = array($current_profile_id, $tab_id, $action_id, $permissions);
 		$adb->pquery($sql7, $params7);
 	}
 
 	//Inserting values into Profile2Utility vtiger_table
-	$sql8 = "select * from vtiger_profile2utility where profileid=?";
 	$params8 = array($parentProfileId);
-	$result8= $adb->pquery($sql8, $params8);
+	$result8= $adb->pquery('select * from vtiger_profile2utility where profileid=?', $params8);
 	$p2util_rows = $adb->num_rows($result8);
+	$sql9 = 'insert into vtiger_profile2utility values(?,?,?,?)';
 	for ($i=0; $i<$p2util_rows; $i++) {
 		$tab_id=$adb->query_result($result8, $i, 'tabid');
 		$action_id=$adb->query_result($result8, $i, 'activityid');
 		$permissions=$adb->query_result($result8, $i, 'permission');
-		$sql9="insert into vtiger_profile2utility values(?,?,?,?)";
 		$params9 = array($current_profile_id, $tab_id, $action_id, $permissions);
 		$adb->pquery($sql9, $params9);
 	}
 
 	//Inserting values into Profile2field vtiger_table
-	$sql10 = "select tabid, fieldid, visible, readonly from vtiger_profile2field where profileid=?";
 	$params10 = array($parentProfileId);
-	$result10= $adb->pquery($sql10, $params10);
+	$result10= $adb->pquery('select tabid, fieldid, visible, readonly from vtiger_profile2field where profileid=?', $params10);
 	$p2field_rows = $adb->num_rows($result10);
-	$sql11='insert into vtiger_profile2field values(?,?,?,?,?,?)';
+	$sql11 = 'insert into vtiger_profile2field values(?,?,?,?,?,?)';
 	for ($i=0; $i<$p2field_rows; $i++) {
 		$tab_id=$adb->query_result($result10, $i, 'tabid');
 		$fieldid=$adb->query_result($result10, $i, 'fieldid');
