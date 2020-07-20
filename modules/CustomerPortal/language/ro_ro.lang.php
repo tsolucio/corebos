@@ -16,6 +16,7 @@
 
 $mod_strings = array(
 	'CustomerPortal' => 'CustomerPortal',
+	'SINGLE_CustomerPortal' => 'CustomerPortal',
 	'LBL_BASIC_SETTINGS' => 'Setari de Baza',
 	'LBL_CUSTOMERPORTAL_SETTINGS' => 'CustomerPortal Settings',
 	'LBL_ADVANCED_SETTINGS' => 'Advanced Settings',
