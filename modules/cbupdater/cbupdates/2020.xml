@@ -245,4 +245,11 @@
 	<classname>optimizeattachmentaccess</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Change profile column capitalization</description>
+	<filename>build/changeSets/2020/changeprofilecolumncapitalization.php</filename>
+	<classname>changeprofilecolumncapitalization</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

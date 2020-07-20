@@ -86,12 +86,10 @@ for ($i=0; $i<$num_act_per; $i++) {
 		} else {
 			$permission_value = 1;
 		}
-		$update_query = 'update vtiger_profile2standardpermissions set permissions=? where tabid=? and Operation=? and profileid=?';
-		$adb->pquery($update_query, array($permission_value, $tab_id, $action_id, $profileid));
-		if ($tab_id ==9) {
-			$update_query = 'update vtiger_profile2standardpermissions set permissions=? where tabid=16 and Operation=? and profileid=?';
-			$adb->pquery($update_query, array($permission_value, $action_id, $profileid));
-		}
+		$adb->pquery(
+			'update vtiger_profile2standardpermissions set permissions=? where tabid=? and operation=? and profileid=?',
+			array($permission_value, $tab_id, $action_id, $profileid)
+		);
 	}
 }
 

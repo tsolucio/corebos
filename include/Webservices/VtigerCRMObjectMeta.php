@@ -133,10 +133,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 			for ($i=0; $i<$noofrows; $i++) {
 				$standardDefined = true;
 				$permission = $adb->query_result($result, $i, 'permissions');
-				$operation = $adb->query_result($result, $i, 'Operation');
-				if (!$operation) {
-					$operation = $adb->query_result($result, $i, 'operation');
-				}
+				$operation = $adb->query_result($result, $i, 'operation');
 
 				if ($permission != 1 || $permission != '1') {
 					$this->hasAccess = true;
