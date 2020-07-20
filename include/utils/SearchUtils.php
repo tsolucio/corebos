@@ -979,10 +979,10 @@ function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 	$search_val = $adb->sql_escape_string($search_val);
 	if ($userprivs->hasGlobalReadPermission()) {
 		if ($fieldtype=='') {
-			$query = 'SELECT columnname, tablename, fieldname FROM vtiger_field WHERE tabid = ? and vtiger_field.presence in (0,2)';
+			$query = 'SELECT columnname, tablename, fieldname, uitype FROM vtiger_field WHERE tabid=? and vtiger_field.presence in (0,2)';
 			$qparams = array(getTabid($module));
 		} else {
-			$query = 'SELECT columnname, tablename, fieldname
+			$query = 'SELECT columnname, tablename, fieldname, uitype
 				FROM vtiger_field
 				LEFT JOIN vtiger_ws_fieldtype ON vtiger_field.uitype=vtiger_ws_fieldtype.uitype
 				WHERE tabid = ? and vtiger_field.presence in (0,2) and fieldtype=?';
@@ -991,7 +991,7 @@ function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 	} else {
 		$profileList = getCurrentUserProfileList();
 		if ($fieldtype=='') {
-			$query = 'SELECT columnname, tablename, fieldname
+			$query = 'SELECT columnname, tablename, fieldname, uitype
 				FROM vtiger_field
 				INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid
 				INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
@@ -999,7 +999,7 @@ function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 					.') AND vtiger_def_org_field.visible = 0 and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid';
 			$qparams = array(getTabid($module), $profileList);
 		} else {
-			$query = 'SELECT columnname, tablename, fieldname
+			$query = 'SELECT columnname, tablename, fieldname, uitype
 				FROM vtiger_field
 				INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid
 				INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
@@ -1020,7 +1020,7 @@ function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 		$columnname = $adb->query_result($result, $i, 'columnname');
 		$tablename = $adb->query_result($result, $i, 'tablename');
 		$fieldname = $adb->query_result($result, $i, 'fieldname');
-		$field_uitype = getUItype($module, $columnname);
+		$field_uitype = $adb->query_result($result, $i, 'uitype');
 
 		// Search / Lookup customization
 		if ($module == 'Contacts' && $columnname == 'accountid') {
