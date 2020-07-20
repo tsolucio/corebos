@@ -21,7 +21,6 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	require_once "modules/$currentModule/$currentModule.php";
 	$category = getParentTab();
 	$profileid = fetchUserProfileId($current_user->id);
-	//$profileId = (isset($_REQUEST['profileid']) ? vtlib_purify($_REQUEST['profileid']) : 0);
 	$lastPage = vtlib_purify($_REQUEST['lastPage']);
 	if ($currentModule == 'Utilities') {
 		$currentModule = vtlib_purify($_REQUEST['formodule']);
@@ -199,6 +198,10 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 		$focus = new Calendar4You();
 		$focus->GetDefPermission($current_user);
 	}
+	$Colorizer = false;
+	if (vtlib_isModuleActive('Colorizer')) {
+		$Colorizer = true;
+	}
 	$data = array();
 	$linkfield = array();
 	$result = $adb->pquery($list_query, array());
@@ -284,6 +287,10 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 			$rows['reference'] = $fieldname;
 			$rows['relatedRows'] = $linkRow;
 		}
+		if ($Colorizer) {
+			$className = enableColorizer($row, $tabid);
+			$rows['_attributes'] = $className;
+		}
 		array_push($data, $rows);
 	}
 	if ($result && $sql_error != true) {
@@ -357,5 +364,112 @@ function updateDataListView() {
 	$focus->column_fields[$columnName] = $value;
 	$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $handlerMeta);
 	$focus->saveentity($modulename);
+}
+
+function enableColorizer($row, $tabid) {
+	require_once 'modules/Colorizer/functions/processConditions.php';
+	global $adb, $currentModule;
+	if ($currentModule == 'Utilities') {
+		$currentModule = vtlib_purify($_REQUEST['formodule']);
+	}
+	$classNames = array();
+	foreach ($row as $fieldName => $fieldValue) {
+		if (!is_numeric($fieldName)) {
+			if ($fieldName == 'smownerid') {
+				$fieldName = 'assigned_user_id';
+			}
+			$sql = $adb->pquery('SELECT * FROM vtiger_colorizer WHERE field=? AND tabid=?', array(
+				$fieldName,
+				$tabid
+			));
+			$numOfRows = $adb->num_rows($sql);
+			if ($numOfRows > 0) {
+				$condition = $adb->query_result($sql, 0, 'condition');
+				$additional = $adb->query_result($sql, 0, 'additional');
+				$className = $adb->query_result($sql, 0, 'classname');
+				$additional = json_decode($additional, true);
+				$condition = json_decode($condition, true);
+				if (!empty($condition)) {
+					$conditionRes = array();
+					foreach ($condition as $key => $value) {
+						$field = $value['field'];
+						$not = $value['not'] == 1 ? true : false;
+						$condition = $value['condition'];
+						$parameter = isset($value['parameter']) ? $value['parameter'][0] : '';
+						$fieldType = getUItypeByFieldName($currentModule, $field);
+						if ($fieldType == '10' && ($row[$field] != 0 || $row[$field] != null)) {
+							$parent_module = getSalesEntityType($row[$field]);
+							if ($parent_module != '') {
+								$displayValueArray = getEntityName($parent_module, $row[$field]);
+								$field10Value = '';
+								if (!empty($displayValueArray)) {
+									$field10Value = $displayValueArray[$row[$field]];
+									if ($field != $fieldName) {
+										$row[$field] = $field10Value;
+									} else {
+										$fieldValue = $field10Value;
+									}
+								}
+							}
+						}
+						if ($field != $fieldName) {
+							if ($field == 'assigned_user_id') {
+								$row[$field] = getUserFullName($row[$field]);
+							}
+							if (!isset($row[$field])) {
+								$field = getColumnnameByFieldname($tabid, $field);
+							}
+							$res = processConditions($condition, $field, $not, $parameter, $row[$field]);
+							array_push($conditionRes, $res);
+						} else {
+							if ($field == 'assigned_user_id') {
+								$fieldValue = getUserFullName($fieldValue);
+							}
+							$res = processConditions($condition, $field, $not, $parameter, $fieldValue);
+							array_push($conditionRes, $res);
+						}
+					}
+					if ($additional['listviewrow'] == 0) {
+						if (!in_array(false, $conditionRes)) {
+							$fields = $fieldName.'::'.$className;
+							array_push($classNames, $fields);
+						}
+					} else {
+						if (!in_array(false, $conditionRes)) {
+							$fields = array(
+								'row' => array($className)
+							);
+							array_push($classNames, $fields);
+						}
+					}
+				} else {
+					if ($additional['listviewrow'] == 0) {
+						$fields = $fieldName.'::'.$className;
+						array_push($classNames, $fields);
+					} else {
+						$fields = array(
+							'row' => array($className)
+						);
+						array_push($classNames, $fields);
+					}
+				}
+			}
+		}
+	}
+	$rows = array(
+		'className'=> array(
+			'row' => array()
+		)
+	);
+	$columns = array();
+	foreach ($classNames as $c => $name) {
+		if (isset($name['row'])) {
+			$columns['className']['row'] = $name['row'];
+		} else {
+			list($fName, $class) = explode('::', $name);
+			$columns['className']['column'][$fName] = array($class);
+		}
+	}
+	return $columns;
 }
 ?>

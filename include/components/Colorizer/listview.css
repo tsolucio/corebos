@@ -1,0 +1,18 @@
+/*keyframe for TextBLink and BackgroundBlink*/
+@keyframes opacity {
+  	0% {
+    	opacity: 1;
+  	}
+  	25% {
+    	opacity: 0.7;
+  	}
+  	50% {
+    	opacity: 0.5;
+  	}
+  	75% {
+    	opacity: 0.2;
+  	}
+  	100% {
+    	opacity: 0;
+  	}
+}

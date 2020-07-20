@@ -302,6 +302,7 @@ const ListView = {
 					valign: 'top'
 				},
 				copyOptions: {
+					useFormattedValue: true,
 					useListItemText: true
 				},
 				onGridUpdated: (ev) => {
@@ -695,7 +696,7 @@ const ListView = {
 				const getEl = document.getElementById(`tooltip-el-${recordid}-${fieldname}`);
 				const parent = getEl.parentNode;
 				const el = `
-					<div style="padding-left:2rem;padding-top:5rem;position:absolute;">
+					<div style="padding-left:2rem;padding-top:5rem;position:absolute;color: black !important">
 					    <section class="slds-popover" onmouseleave="ListView.removeTooltip('${recordid}', '${fieldname}')" role="dialog" style="position:absolute;top:10px;left: 0px;${width};">
 					      <button onclick="ListView.removeTooltip(${recordid}, '${fieldname}', true)" class="slds-button slds-button_icon slds-button_icon-small slds-float_right slds-popover__close slds-button_icon-inverse">
 					        <svg class="slds-button__icon" aria-hidden="true">
@@ -703,7 +704,7 @@ const ListView = {
 					        </svg>
 					        <span class="slds-assistive-text">Close dialog</span>
 					      </button>
-					      <header class="slds-popover__header" style="background: #031d73;color: white">
+					      <header class="slds-popover__header" style="background: #0590fb;color: white">
 					        <div class="slds-media slds-media_center slds-has-flexi-truncate">
 					          <div class="slds-media__figure">
 					            <span class="slds-icon_container slds-icon-utility-error">
