@@ -1268,6 +1268,7 @@ class QueryGenerator {
 		$operator = strtolower($operator);
 		$db = PearDatabase::getInstance();
 		$noncommaSeparatedFieldTypes = array('currency','percentage','double','number');
+		$likeOperators = array('s','ew','c','k','dnsw','dnew');
 
 		// if ($field->getFieldDataType() == 'multipicklist' && in_array($operator, array('e', 'n'))) {
 			// $valueArray = getCombinations($valueArray);
@@ -1357,9 +1358,7 @@ class QueryGenerator {
 				);
 				continue;
 			}
-			if ((strtolower(trim($value)) == 'null') ||
-					(trim($value) == '' && !$this->isStringType($field->getFieldDataType())) &&
-							($operator == 'e' || $operator == 'n')) {
+			if ((strtolower(trim($value))=='null') || (trim($value)=='' && !$this->isStringType($field->getFieldDataType())) && ($operator=='e' || $operator=='n')) {
 				if ($operator == 'e') {
 					$sql[] = 'IS NULL';
 					continue;
@@ -1374,7 +1373,7 @@ class QueryGenerator {
 					$value = 0;
 				}
 			} elseif ($this->isDateType($field->getFieldDataType())) {
-				if (substr($value, 0, 3)!='::#') {
+				if (substr($value, 0, 3)!='::#' && !in_array($operator, $likeOperators)) {
 					$value = getValidDBInsertDateTimeValue($value);
 				}
 				if (empty($value)) {
