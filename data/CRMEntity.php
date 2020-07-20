@@ -35,12 +35,8 @@ class CRMEntity {
 		$this->column_fields = getColumnFields($this_module);
 		$this->db = PearDatabase::getInstance();
 		$this->log = $log;
-		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ? limit 1';
-		$tabid = getTabid($this_module);
-		$result = $this->db->pquery($sql, array($tabid));
-		if ($result && $this->db->num_rows($result)==1) {
-			$this->HasDirectImageField = true;
-		}
+		$result = $this->db->pquery('SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid=? limit 1', array(getTabid($this_module)));
+		$this->HasDirectImageField = ($result && $this->db->num_rows($result)==1);
 	}
 
 	public static function registerMethod($method) {
