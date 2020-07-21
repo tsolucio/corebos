@@ -64,7 +64,7 @@ class LoginHistory {
 		'Signout Time'=>'logout_time',
 		'Status'=>'status'
 		);
-	public $default_order_by = "login_time";
+	public $default_order_by = 'login_time';
 	public $default_sort_order = 'DESC';
 
 	/**
@@ -97,9 +97,9 @@ class LoginHistory {
 		$log->debug('> getHistoryListViewEntries');
 
 		if ($sorder != '' && $order_by != '') {
-			$list_query = "Select * from vtiger_loginhistory where user_name=? order by ".$order_by." ".$sorder;
+			$list_query = 'Select * from vtiger_loginhistory where user_name=? order by '.$order_by.' '.$sorder;
 		} else {
-			$list_query = "Select * from vtiger_loginhistory where user_name=? order by ".$this->default_order_by." ".$this->default_sort_order;
+			$list_query = 'Select * from vtiger_loginhistory where user_name=? order by '.$this->default_order_by.' '.$this->default_sort_order;
 		}
 
 		$result = $adb->pquery($list_query, array($username));
@@ -138,7 +138,7 @@ class LoginHistory {
 		if ($sorder != '' && $order_by != '') {
 			$list_query = "Select * from vtiger_loginhistory $where order by $order_by $sorder";
 		} else {
-			$list_query = "Select * from vtiger_loginhistory $where order by ".$this->default_order_by." ".$this->default_sort_order;
+			$list_query = "Select * from vtiger_loginhistory $where order by ".$this->default_order_by.' '.$this->default_sort_order;
 		}
 		$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize', 40);
 		$from = ($page-1)*$rowsperpage;
@@ -212,7 +212,7 @@ class LoginHistory {
 		cbEventHandler::do_action('corebos.audit.logout', array($usname, 'Users', 'Logout', $usname, date('Y-m-d H:i:s')));
 		$logid_qry = 'SELECT max(login_id) AS login_id from vtiger_loginhistory where user_name=? and user_ip=?';
 		$result = $adb->pquery($logid_qry, array($usname, $usip));
-		$loginid = $adb->query_result($result, 0, "login_id");
+		$loginid = $adb->query_result($result, 0, 'login_id');
 		if ($loginid == '') {
 			return;
 		}
@@ -237,7 +237,7 @@ class LoginHistory {
 
 		if ($recordCount === 0) {
 			$firstTimeLoginStatus = true;
-			cbEventHandler::do_action('corebos.audit.firsttime.login', array($user_name, 'Users', 'FirstTimeLogin', $user_name, date("Y-m-d H:i:s")));
+			cbEventHandler::do_action('corebos.audit.firsttime.login', array($user_name, 'Users', 'FirstTimeLogin', $user_name, date('Y-m-d H:i:s')));
 		} else {
 			if ($recordCount == 1) { // Only first time?
 				$row = $adb->fetch_array($result);
