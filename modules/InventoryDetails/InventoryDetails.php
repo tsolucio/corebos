@@ -12,7 +12,6 @@ require_once 'data/Tracker.php';
 
 class InventoryDetails extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_inventorydetails';
 	public $table_index= 'inventorydetailsid';

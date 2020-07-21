@@ -15,7 +15,6 @@ require_once 'modules/InventoryDetails/InventoryDetails.php';
 
 class Quotes extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_quotes';
 	public $table_index= 'quoteid';

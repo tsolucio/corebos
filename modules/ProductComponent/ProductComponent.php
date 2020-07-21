@@ -12,7 +12,6 @@ require_once 'data/Tracker.php';
 
 class ProductComponent extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_productcomponent';
 	public $table_index= 'productcomponentid';

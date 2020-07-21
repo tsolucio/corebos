@@ -24,7 +24,6 @@ use \RobThree\Auth\TwoFactorAuth;
 
 class Users extends CRMEntity {
 	public $db;
-	public $log;
 
 	// Stored fields
 	public $id;
@@ -136,8 +135,8 @@ class Users extends CRMEntity {
 	 instantiates the Logger class and PearDatabase Class
 	 */
 	public function __construct() {
-		$this->log = LoggerManager::getLogger('user');
-		$this->log->debug('> Users');
+		global $log;
+		$log->debug('> Users');
 		$this->db = PearDatabase::getInstance();
 		$this->DEFAULT_PASSWORD_CRYPT_TYPE = (version_compare(PHP_VERSION, '5.3.0') >= 0) ? 'PHP5.3MD5' : 'MD5';
 		$this->column_fields = getColumnFields('Users');
@@ -145,7 +144,7 @@ class Users extends CRMEntity {
 		$this->column_fields['currency_code'] = '';
 		$this->column_fields['currency_symbol'] = '';
 		$this->column_fields['conv_rate'] = '';
-		$this->log->debug('< Users');
+		$log->debug('< Users');
 	}
 
 	/**
@@ -199,7 +198,8 @@ class Users extends CRMEntity {
 			}
 		}
 		if (!array_key_exists($name, $this->user_preferences) || $this->user_preferences[$name] != $value) {
-			$this->log->debug('Saving To Preferences:' . $name . '=' . print_r($value, true));
+			global $log;
+			$log->debug('Saving To Preferences:' . $name . '=' . print_r($value, true));
 			$this->user_preferences[$name] = $value;
 			$this->savePreferecesToDB();
 		}
@@ -210,10 +210,11 @@ class Users extends CRMEntity {
 	 *
 	 */
 	public function savePreferecesToDB() {
+		global $log;
 		$data = base64_encode(serialize($this->user_preferences));
 		$query = "UPDATE $this->table_name SET user_preferences=? where id=?";
 		$result = $this->db->pquery($query, array($data, $this->id));
-		$this->log->debug('SAVING: PREFERENCES SIZE ' . strlen($data) . 'ROWS AFFECTED WHILE UPDATING USER PREFERENCES:' . $this->db->getAffectedRowCount($result));
+		$log->debug('SAVING: PREFERENCES SIZE ' . strlen($data) . 'ROWS AFFECTED WHILE UPDATING USER PREFERENCES:' . $this->db->getAffectedRowCount($result));
 		coreBOS_Session::set('USER_PREFERENCES', $this->user_preferences);
 	}
 
@@ -222,11 +223,12 @@ class Users extends CRMEntity {
 	 */
 	public function loadPreferencesFromDB($value) {
 		if (isset($value) && !empty($value)) {
-			$this->log->debug('LOADING :PREFERENCES SIZE ' . strlen($value));
+			global $log;
+			$log->debug('LOADING :PREFERENCES SIZE ' . strlen($value));
 			$this->user_preferences = unserialize(base64_decode($value));
 			coreBOS_Session::merge($this->user_preferences);
 			coreBOS_Session::set('USER_PREFERENCES', $this->user_preferences);
-			$this->log->debug('Finished Loading');
+			$log->debug('Finished Loading');
 		}
 	}
 
@@ -280,6 +282,7 @@ class Users extends CRMEntity {
 	 * @return true if the user is authenticated, false otherwise
 	 */
 	public function doLogin($user_password) {
+		global $log;
 		$usr_name = $this->column_fields['user_name'];
 		$result = $this->db->pquery('select id from vtiger_users where user_name=?', array($usr_name));
 		if ($result && $this->db->num_rows($result)==1) {
@@ -294,13 +297,13 @@ class Users extends CRMEntity {
 		$sql_auth_users = explode(',', $sql_auth_users);
 
 		if (in_array($usr_name, $sql_auth_users)) {
-			$this->log->debug("$usr_name exists in sql_auth_users, so using SQL Authentication");
+			$log->debug("$usr_name exists in sql_auth_users, so using SQL Authentication");
 			$authType = 'SQL';
 		}
 
 		switch (strtoupper($authType)) {
 			case 'LDAP':
-				$this->log->debug('Using LDAP authentication');
+				$log->debug('Using LDAP authentication');
 				require_once 'modules/Users/authTypes/LDAP.php';
 				$result = ldapAuthenticate($usr_name, $user_password);
 				if ($result == null) {
@@ -311,7 +314,7 @@ class Users extends CRMEntity {
 				break;
 
 			case 'AD':
-				$this->log->debug('Using Active Directory authentication');
+				$log->debug('Using Active Directory authentication');
 				require_once 'modules/Users/authTypes/adLDAP.php';
 				$adldap = new adLDAP();
 				if ($adldap->authenticate($usr_name, $user_password)) {
@@ -322,7 +325,7 @@ class Users extends CRMEntity {
 				break;
 
 			default:
-				$this->log->debug('Using integrated/SQL authentication');
+				$log->debug('Using integrated/SQL authentication');
 				$query = "SELECT crypt_type FROM $this->table_name WHERE BINARY user_name=?";
 				$result = $this->db->requirePsSingleResult($query, array($usr_name), false);
 				if (empty($result)) {
@@ -388,6 +391,7 @@ class Users extends CRMEntity {
 	 * @return -- this if load was successul and null if load failed.
 	 */
 	public function load_user($user_password) {
+		global $log;
 		$usr_name = $this->column_fields['user_name'];
 		if (!empty($_POST['twofauserauth'])) {
 			$this->authenticated = false;
@@ -419,9 +423,9 @@ class Users extends CRMEntity {
 			coreBOS_Session::set('loginattempts', 1);
 		}
 		if ($_SESSION['loginattempts'] > $maxFailedLoginAttempts) {
-			$this->log->warn('SECURITY: ' . $usr_name . ' has attempted to login ' . $_SESSION['loginattempts'] . ' times.');
+			$log->warn('SECURITY: ' . $usr_name . ' has attempted to login ' . $_SESSION['loginattempts'] . ' times.');
 		}
-		$this->log->debug("Starting user load for $usr_name");
+		$log->debug("Starting user load for $usr_name");
 
 		if (!isset($this->column_fields['user_name']) || $this->column_fields['user_name'] == '' || !isset($user_password) || $user_password == '') {
 			return null;
@@ -431,7 +435,7 @@ class Users extends CRMEntity {
 		$authCheck = $this->doLogin($user_password);
 
 		if (!$authCheck) {
-			$this->log->warn("User authentication for $usr_name failed");
+			$log->warn("User authentication for $usr_name failed");
 			return null;
 		}
 
@@ -455,7 +459,7 @@ class Users extends CRMEntity {
 				$this->authenticated = false;
 				coreBOS_Session::set('login_error', getTranslatedString('ERR_INVALID_USERIPLOGIN', 'Users'));
 				$mailsubject = "[Security Alert]: User login attempt rejected for login: $usr_name from external IP: $the_ip";
-				$this->log->warn($mailsubject);
+				$log->warn($mailsubject);
 				// Send email with authentification error.
 				$mailto = GlobalVariable::getVariable('Debug_Send_UserLoginIPAuth_Error', '', 'Users');
 				if ($mailto != '') {
@@ -479,7 +483,7 @@ class Users extends CRMEntity {
 					$this->authenticated = false;
 					coreBOS_Session::set('login_error', getTranslatedString('ERR_INVALID_ADMINIPLOGIN', 'Users'));
 					$mailsubject = "[Security Alert]: Admin login attempt rejected for login: $usr_name from external IP: $the_ip";
-					$this->log->warn($mailsubject);
+					$log->warn($mailsubject);
 					// Send email with authentification error.
 					$mailto = GlobalVariable::getVariable('Debug_Send_AdminLoginIPAuth_Error', '', 'Users');
 					if ($mailto != '') {
@@ -541,9 +545,9 @@ class Users extends CRMEntity {
 	 * @desc Verify that the current password is correct and write the new password to the DB.
 	 */
 	public function change_password($user_password, $new_password, $dieOnError = true) {
-		global $mod_strings, $current_user;
+		global $mod_strings, $current_user, $log;
 		$usr_name = $this->column_fields['user_name'];
-		$this->log->debug("Starting password change for $usr_name");
+		$log->debug("Starting password change for $usr_name");
 
 		if (!isset($new_password) || $new_password == '') {
 			$this->error_string = $mod_strings['ERR_PASSWORD_CHANGE_FAILED_1'] . $usr_name . $mod_strings['ERR_PASSWORD_CHANGE_FAILED_2'];
@@ -551,7 +555,7 @@ class Users extends CRMEntity {
 		}
 
 		if (!$this->verifyPassword($user_password) && !is_admin($current_user)) {
-			$this->log->warn("Incorrect old password for $usr_name");
+			$log->warn("Incorrect old password for $usr_name");
 			$this->error_string = $mod_strings['ERR_PASSWORD_INCORRECT_OLD'];
 			return false;
 		}
@@ -680,8 +684,8 @@ class Users extends CRMEntity {
 	 * @return -- returns a list of all users in the system.
 	 */
 	public function verify_data() {
+		global $mod_strings, $log;
 		$usr_name = $this->column_fields["user_name"];
-		global $mod_strings;
 
 		$query = 'SELECT user_name from vtiger_users where user_name=? AND id<>? AND deleted=0';
 		$result = $this->db->pquery($query, array($usr_name, $this->id), true, 'Error selecting possible duplicate users: ');
@@ -691,8 +695,8 @@ class Users extends CRMEntity {
 		$result = $this->db->pquery($query, array(), true, "Error selecting possible duplicate vtiger_users: ");
 		$last_admin = $this->db->fetchByAssoc($result);
 
-		$this->log->debug("last admin length: " . count($last_admin));
-		$this->log->debug($last_admin['user_name'] . " == " . $usr_name);
+		$log->debug("last admin length: " . count($last_admin));
+		$log->debug($last_admin['user_name'] . " == " . $usr_name);
 
 		$verified = true;
 		if ($dup_users != null) {
@@ -700,7 +704,7 @@ class Users extends CRMEntity {
 			$verified = false;
 		}
 		if (!isset($_REQUEST['is_admin']) && count($last_admin) == 1 && $last_admin['user_name'] == $usr_name) {
-			$this->log->debug("last admin length: " . count($last_admin));
+			$log->debug("last admin length: " . count($last_admin));
 
 			$this->error_string .= $mod_strings['ERR_LAST_ADMIN_1'] . $usr_name . $mod_strings['ERR_LAST_ADMIN_2'];
 			$verified = false;
@@ -721,11 +725,12 @@ class Users extends CRMEntity {
 	}
 
 	public function fill_in_additional_detail_fields() {
+		global $log;
 		$query = "SELECT u1.first_name, u1.last_name from vtiger_users u1, vtiger_users u2 where u1.id = u2.reports_to_id AND u2.id = ? and u1.deleted=0";
 		$result = $this->db->pquery($query, array($this->id), true, "Error filling in additional detail vtiger_fields");
 
 		$row = $this->db->fetchByAssoc($result);
-		$this->log->debug('< fill_in_additional_detail_fields '.$row);
+		$log->debug('< fill_in_additional_detail_fields '.$row);
 
 		if ($row != null) {
 			$this->reports_to_name = stripslashes(getFullNameFromArray('Users', $row));
@@ -813,9 +818,8 @@ class Users extends CRMEntity {
 
 	public function createAccessKey() {
 		global $log;
-		$log->debug('> createAccessKey');
+		$log->debug('>< createAccessKey');
 		$this->db->pquery('update vtiger_users set accesskey=? where id=?', array(vtws_generateRandomAccessKey(16), $this->id));
-		$log->debug('< createAccessKey');
 	}
 
 	/** Function to insert values in the specifed table for the specified module
@@ -1581,7 +1585,7 @@ class Users extends CRMEntity {
 	* @param string where condition is passed when the query is executed
 	* @return string Users SQL Query.
 	*/
-	public function create_export_query($where = '') {
+	public function create_export_query($where) {
 		global $log, $current_user;
 		$log->debug('> create_export_query '.$where);
 		$query = '';

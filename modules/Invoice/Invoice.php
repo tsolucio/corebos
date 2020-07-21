@@ -13,7 +13,6 @@ require_once 'modules/InventoryDetails/InventoryDetails.php';
 
 class Invoice extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_invoice';
 	public $table_index= 'invoiceid';

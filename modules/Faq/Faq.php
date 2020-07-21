@@ -12,7 +12,6 @@ require_once 'data/Tracker.php';
 
 class Faq extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_faq';
 	public $table_index= 'id';

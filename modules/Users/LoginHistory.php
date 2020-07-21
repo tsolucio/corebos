@@ -17,7 +17,6 @@ require_once 'include/database/PearDatabase.php';
   * StandardUser is allowed to view only his login history details.
 **/
 class LoginHistory {
-	private $log;
 	private $db;
 
 	// Stored fields
@@ -42,7 +41,6 @@ class LoginHistory {
 	);
 
 	public function __construct() {
-		$this->log = LoggerManager::getLogger('loginhistory');
 		$this->db = PearDatabase::getInstance();
 	}
 

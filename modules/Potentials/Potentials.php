@@ -19,7 +19,6 @@ require 'modules/Vtiger/default_module_view.php';
 
 class Potentials extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_potential';
 	public $table_index= 'potentialid';
