@@ -18,6 +18,7 @@ let PageSize = 20;
 let tuiGrid = tui.Grid;
 let dataGridInstance;
 let SearchColumns = 0;
+let ListViewCopy = 0;
 GlobalVariable_getVariable('Application_ListView_PageSize', 20, module, '').then(function (response) {
 	let obj = JSON.parse(response);
 	PageSize = obj.Application_ListView_PageSize;
@@ -133,9 +134,6 @@ const ListView = {
 						editor: editor,
 						filter: filter,
 						whiteSpace: 'normal',
-						copyOptions: {
-							useListItemText: true
-						},
 				        onAfterChange(ev) {
 				        	const idx = dataGridInstance.getIndexOfRow(ev.rowKey);
 				        	const referenceField = dataGridInstance.getValue(idx, 'reference');
@@ -157,9 +155,6 @@ const ListView = {
 						formatter: formatter,
 						editor: editor,
 						whiteSpace: 'normal',
-						copyOptions: {
-							useListItemText: true
-						},
 				        onAfterChange(ev) {
 				        	const idx = dataGridInstance.getIndexOfRow(ev.rowKey);
 				        	const referenceField = dataGridInstance.getValue(idx, 'reference');
@@ -300,10 +295,6 @@ const ListView = {
 				header: {
 					align: 'left',
 					valign: 'top'
-				},
-				copyOptions: {
-					useFormattedValue: true,
-					useListItemText: true
 				},
 				onGridUpdated: (ev) => {
 					const lastPage = dataGridInstance.getPagination()._currentPage;
