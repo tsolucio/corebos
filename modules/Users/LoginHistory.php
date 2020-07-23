@@ -186,12 +186,12 @@ class LoginHistory {
 	}
 
 	/** Function that Records the Login info of the User
-	 *  @param ref variable $usname :: Type varchar
-	 *  @param ref variable $usip :: Type varchar
-	 *  @param ref variable $intime :: Type timestamp
+	 *  @param string $usname user name logging in
+	 *  @param string $usip IP from which user is logging in
+	 *  @param datetime $intime login time
 	 *  Returns the query result which contains the details of User Login Info
 	*/
-	public function user_login(&$usname, &$usip, &$intime) {
+	public function user_login(&$usname, $usip, $intime) {
 		global $adb;
 		cbEventHandler::do_action('corebos.audit.login', array($usname, 'Users', 'Login', $usname, date('Y-m-d H:i:s')));
 		$query = 'Insert into vtiger_loginhistory (user_name, user_ip, logout_time, login_time, status) values (?,?,?,?,?)';
