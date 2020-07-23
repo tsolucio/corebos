@@ -20,6 +20,7 @@ function vtws_logout($sessionId, $user, $SessionManagerClass = 'SessionManager')
 	if (!isset($sessionId) || $sessionId=='' || !$sessionManager->isValid()) {
 		return $sessionManager->getError();
 	}
+	cbEventHandler::do_action('corebos.logout', array($user, $sessionManager, 'webservice'));
 
 	$sessionManager->destroy();
 //	$sessionManager->setExpire(1);

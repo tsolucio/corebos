@@ -89,6 +89,7 @@ if ($focus->is_authenticated() && $focus->is_twofaauthenticated()) {
 
 	coreBOS_Session::set('vtiger_authenticated_user_theme', $authenticated_user_theme);
 	coreBOS_Session::set('authenticated_user_language', $authenticated_user_language);
+	cbEventHandler::do_action('corebos.login', array($focus));
 
 	$log->debug("authenticated_user_theme is $authenticated_user_theme");
 	$log->debug("authenticated_user_language is $authenticated_user_language");
