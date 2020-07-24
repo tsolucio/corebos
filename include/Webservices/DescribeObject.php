@@ -20,7 +20,7 @@ function vtws_describe($elementType, $user) {
 		$handlerClass = $webserviceObject->getHandlerClass();
 		require_once $handlerPath;
 		$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
-		if (!in_array($elementType, $types['types'])) {
+		if (!in_array($elementType, $types['types']) && $elementType!='Users') {
 			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
 		}
 		$rdo[$elementType] = $handler->describe($elementType);
