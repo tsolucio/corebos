@@ -133,10 +133,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 			for ($i=0; $i<$noofrows; $i++) {
 				$standardDefined = true;
 				$permission = $adb->query_result($result, $i, 'permissions');
-				$operation = $adb->query_result($result, $i, 'Operation');
-				if (!$operation) {
-					$operation = $adb->query_result($result, $i, 'operation');
-				}
+				$operation = $adb->query_result($result, $i, 'operation');
 
 				if ($permission != 1 || $permission != '1') {
 					$this->hasAccess = true;
@@ -377,7 +374,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		$tabid = $this->getTabId();
 		$condition = 'vtiger_field.fieldid IN (select min(vtiger_field.fieldid) from vtiger_field where vtiger_field.tabid=? GROUP BY vtiger_field.columnname)';
 		$userprivs = $this->user->getPrivileges();
-		if ($userprivs->hasGlobalReadPermission()) {
+		if ($userprivs->hasGlobalReadPermission() || $this->objectName == 'Users') {
 			$sql = "SELECT vtiger_field.*, '0' as readonly, vtiger_blocks.sequence as blkseq
 				FROM vtiger_field
 				LEFT JOIN vtiger_blocks ON vtiger_field.block=vtiger_blocks.blockid

@@ -432,7 +432,11 @@ jQuery(document).ready(function(){
             element.bind('dblclick', function(){
                 if (event.visibility == "public" && event.id.substr(0,1) != "g"){
                     fnHideDrop('event_info');
-                    window.location.href = "index.php?action=DetailView&module=cbCalendar&record="+ event.id + "&activity_mode="+ event.activity_mode + "&parenttab={/literal}{$CATEGORY}{literal}";
+                    let module = event.typeid;
+                    if (!isNaN(event.typeid)) {
+                        module = 'cbCalendar';
+                    }
+                    window.location.href = 'index.php?action=DetailView&module='+module+'&record='+event.id+'&activity_mode='+event.activity_mode;
                 }
             });
         },

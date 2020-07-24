@@ -49,10 +49,6 @@
 		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use> </svg>
 		{$APP.LBL_SAVE_BUTTON_LABEL}
 		</button>
-		<button type="button" name="Button" class="slds-button slds-button_destructive cancel" onclick="history.back(-1);" />
-		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use> </svg>
-		{$APP.LBL_CANCEL_BUTTON_LABEL}
-		</button>
 		</td>
 	</td>
 </tr>

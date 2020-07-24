@@ -348,6 +348,7 @@ function cbexpsql_getsetting($arr, $mmodule) {
 // Aggregations
 function cbexpsql_aggregation($arr, $mmodule) {
 	$arr[4] = new cbexpsql_environmentstub($mmodule, '0x::#');
+	$arr[4]->returnReferenceValue = false;
 	$return = __cb_aggregation_getQuery($arr, true);
 	$mmod = CRMEntity::getInstance($mmodule);
 	$return = str_replace($mmod->table_name.'.', $mmod->table_name.'aggop.', $return);
@@ -552,6 +553,7 @@ class cbexpsql_environmentstub {
 	private $crmid;
 	private $module;
 	private $data;
+	public $returnReferenceValue = true;
 
 	public function __construct($module, $crmid) {
 		$this->crmid = $crmid;
@@ -573,7 +575,7 @@ class cbexpsql_environmentstub {
 
 	public function get($fieldName) {
 		preg_match('/\((\w+) : \(([_\w]+)\) (\w+)\)/', $fieldName, $matches);
-		if (count($matches)>0) {
+		if ($this->returnReferenceValue && count($matches)>0) {
 			global $current_user;
 			$ct = new VTSimpleTemplateOnData($fieldName);
 			$entityCache = new VTEntityCache($current_user);

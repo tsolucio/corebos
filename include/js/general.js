@@ -1427,6 +1427,9 @@ function doServerValidation(edit_type, formName, callback) {
 	for (var f=0; f<myFields.length; f++) {
 		if (myFields[f].type=='checkbox') {
 			sentForm[myFields[f].name] = myFields[f].checked;
+		} else if (myFields[f].type=='textarea' && typeof CKEDITOR != 'undefined' && typeof CKEDITOR.instances[myFields[f].name]!= 'undefined') {
+			CKEDITOR.instances[myFields[f].name].updateElement();
+			sentForm[myFields[f].name] = myFields[f].value;
 		} else if (myFields[f].type=='radio' && myFields[f].checked) {
 			sentForm[myFields[f].name] = myFields[f].value;
 		} else if (myFields[f].type!='radio') {

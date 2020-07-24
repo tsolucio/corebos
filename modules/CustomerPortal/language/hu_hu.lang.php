@@ -15,6 +15,7 @@
  ********************************************************************************/
 $mod_strings = array(
 	'CustomerPortal' => 'Ügyfél Portál',
+	'SINGLE_CustomerPortal' => 'Ügyfél Portál',
 	'LBL_BASIC_SETTINGS' => 'Alap Beállítások',
 	'LBL_CUSTOMERPORTAL_SETTINGS' => 'Ügyfél Portál Beállítások',
 	'LBL_ADVANCED_SETTINGS' => 'Haladó Beállítások',

@@ -71,6 +71,9 @@ class VTSimpleTemplate {
 					$result = '';
 				} else {
 					try {
+						if (strpos($referenceId, 'x')===false) {
+							$referenceId = vtws_getEntityId($referenceModule.'x'.$referenceId);
+						}
 						$entity = $this->cache->forId($referenceId);
 						if ($referenceModule==='Users' && $entity->getModuleName()=='Groups') {
 							$result = $this->getGroupFieldList($referenceId, $fieldname);
