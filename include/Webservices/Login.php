@@ -27,7 +27,7 @@ function vtws_login($username, $pwd) {
 	}
 
 	$accessCrypt = md5($token.$accessKey);
-	if (strcmp($accessCrypt, $pwd)!==0) {
+	if (!hash_equals($accessCrypt, $pwd)) {
 		$userpass = vtws_getUserPasswordFromInput($token, $pwd);
 		$user->column_fields['user_name']=$username;
 		if ($userpass['token']!=$token || !$user->doLogin($userpass['password'])) {
