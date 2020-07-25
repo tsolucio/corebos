@@ -453,38 +453,8 @@ class CRMEntity {
 			$this->id = $fileid;
 			$this->mode = 'edit';
 		}
-
-		$date_var = date('Y-m-d H:i:s');
-
-		$ownerid = empty($this->column_fields['assigned_user_id']) ? $current_user->id : $this->column_fields['assigned_user_id'];
-		if (strpos($ownerid, 'x')>0) { // we have a WSid
-			$usrWSid = vtws_getEntityId('Users');
-			$grpWSid = vtws_getEntityId('Groups');
-			list($inputWSid,$inputCRMid) = explode('x', $ownerid);
-			if ($usrWSid==$inputWSid || $grpWSid==$inputWSid) {
-				$ownerid = $inputCRMid;
-			} else {
-				die('Invalid user id!');
-			}
-		}
-
-		$sql = 'select ownedby from vtiger_tab where name=?';
-		$res = $adb->pquery($sql, array($module));
-		$this->ownedby = $adb->query_result($res, 0, 'ownedby');
-
-		if ($this->ownedby == 1) {
-			$ownerid = $current_user->id;
-		}
-		if (empty($ownerid)) {
-			if ($this->mode != 'edit') {
-				$ownerid = $current_user->id;
-			} else {
-				$ownerrs = $adb->pquery('select smownerid from '.self::$crmentityTable.' where crmid=?', array($this->id));
-				$ownerid = $adb->query_result($ownerrs, 0, 0);
-			}
-		}
-
-		$description_val = (empty($this->column_fields['description']) ? '' : $this->column_fields['description']);
+		$crmvalues = $this->getCrmEntityValues($module);
+		$ownerid = $crmvalues['ownerid'];
 		if ($this->mode == 'edit') {
 			$userprivs = $current_user->getPrivileges();
 			$tabid = getTabid($module);
@@ -494,7 +464,7 @@ class CRMEntity {
 			}
 			if ($userprivs->hasGlobalReadPermission()) {
 				$sql = "update vtiger_crmentity set smownerid=?,modifiedby=?,description=?,modifiedtime=? $cbuuidupdate where crmid=?";
-				$params = array($ownerid, $current_user->id, $description_val, $adb->formatDate($date_var, true), $this->id);
+				$params = array($ownerid, $current_user->id, $crmvalues['description'], $crmvalues['date'], $this->id);
 			} else {
 				$profileList = getCurrentUserProfileList();
 				$perm_qry = 'SELECT 1
@@ -508,10 +478,10 @@ class CRMEntity {
 				$perm_result = $adb->pquery($perm_qry, array('description', $tabid, $profileList));
 				if ($adb->num_rows($perm_result)>0) {
 					$sql = "update vtiger_crmentity set smownerid=?,modifiedby=?,description=?,modifiedtime=? $cbuuidupdate where crmid=?";
-					$params = array($ownerid, $current_user->id, $description_val, $adb->formatDate($date_var, true), $this->id);
+					$params = array($ownerid, $current_user->id, $crmvalues['description'], $crmvalues['date'], $this->id);
 				} else {
 					$sql = "update vtiger_crmentity set smownerid=?,modifiedby=?,modifiedtime=? $cbuuidupdate where crmid=?";
-					$params = array($ownerid, $current_user->id, $adb->formatDate($date_var, true), $this->id);
+					$params = array($ownerid, $current_user->id, $crmvalues['date'], $this->id);
 				}
 			}
 			$adb->pquery($sql, $params);
@@ -530,29 +500,73 @@ class CRMEntity {
 			if ($current_user->id == '') {
 				$current_user->id = 0;
 			}
-
-			// Customization
-			$created_date_var = $adb->formatDate($date_var, true);
-			$modified_date_var = $adb->formatDate($date_var, true);
-			$createdbyuser = $current_user->id;
-			// Preserve the timestamp
-			if (self::isBulkSaveMode()) {
-				if (!empty($this->column_fields['createdtime'])) {
-					$created_date_var = $adb->formatDate($this->column_fields['createdtime'], true);
-				}
-				if (!empty($this->column_fields['creator'])) {
-					$createdbyuser = $this->column_fields['creator'];
-				}
-				//NOTE : modifiedtime ignored to support vtws_sync API track changes.
-			}
 			$this->column_fields['record_id'] = $current_id;
 			$this->column_fields['record_module'] = $module;
 			$cbuuid = (empty($this->column_fields['cbuuid']) ? $this->getUUID() : $this->column_fields['cbuuid']);
 			$sql = 'insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,modifiedby,createdtime,modifiedtime,cbuuid) values(?,?,?,?,?,?,?,?,?)';
-			$params = array($current_id, $createdbyuser, $ownerid, $module, $description_val, $current_user->id, $created_date_var, $modified_date_var, $cbuuid);
+			$params = array($current_id, $crmvalues['createdbyuser'], $ownerid, $module, $crmvalues['description'], $current_user->id, $crmvalues['created_date'], $crmvalues['modified_date'], $cbuuid);
 			$adb->pquery($sql, $params);
 			$this->id = $current_id;
 		}
+	}
+
+	private function getCrmEntityValues($module) {
+		global $adb, $current_user;
+		$crmvalues = array();
+		$crmvalues['module'] = $module;
+		$crmvalues['date'] = $adb->formatDate(date('Y-m-d H:i:s'), true);
+		$crmvalues['created_date'] = $crmvalues['date'];
+		$crmvalues['createdbyuser'] = $current_user->id;
+		if (self::isBulkSaveMode()) {
+			if (!empty($this->column_fields['createdtime'])) {
+				$crmvalues['created_date'] = $adb->formatDate($this->column_fields['createdtime'], true);
+			}
+			if (!empty($this->column_fields['creator'])) {
+				$crmvalues['createdbyuser'] = $this->column_fields['creator'];
+			}
+			//NOTE : modifiedtime ignored to support vtws_sync API track changes.
+		}
+		$crmvalues['modified_date'] = $crmvalues['date'];
+
+		$ownerid = empty($this->column_fields['assigned_user_id']) ? $current_user->id : $this->column_fields['assigned_user_id'];
+		if (strpos($ownerid, 'x')>0) { // we have a WSid
+			$usrWSid = vtws_getEntityId('Users');
+			$grpWSid = vtws_getEntityId('Groups');
+			list($inputWSid,$inputCRMid) = explode('x', $ownerid);
+			if ($usrWSid==$inputWSid || $grpWSid==$inputWSid) {
+				$ownerid = $inputCRMid;
+			} else {
+				die('Invalid user id!');
+			}
+		}
+
+		$res = $adb->pquery('select ownedby from vtiger_tab where name=?', array($module));
+		$this->ownedby = $adb->query_result($res, 0, 'ownedby');
+
+		if ($this->ownedby == 1) {
+			$ownerid = $current_user->id;
+		}
+		if (empty($ownerid)) {
+			if ($this->mode != 'edit') {
+				$ownerid = $current_user->id;
+			} else {
+				$ownerrs = $adb->pquery('select smownerid from '.self::$crmentityTable.' where crmid=?', array($this->id));
+				$ownerid = $adb->query_result($ownerrs, 0, 0);
+			}
+		}
+		$crmvalues['ownerid'] = $ownerid;
+		$crmvalues['description'] = (empty($this->column_fields['description']) ? '' : $this->column_fields['description']);
+		return $crmvalues;
+	}
+
+	private function setCrmEntityValues($values) {
+		global $current_user;
+		$this->column_fields['created_user_id'] = $values['createdbyuser'];
+		$this->column_fields['assigned_user_id'] = $values['ownerid'];
+		$this->column_fields['modifiedby'] = $current_user->id;
+		$this->column_fields['createdtime'] = $values['created_date'];
+		$this->column_fields['modifiedtime'] = $values['modified_date'];
+		$this->column_fields['description'] = $values['description'];
 	}
 
 	// Function which returns the value based on result type (array / ADODB ResultSet)
@@ -635,8 +649,11 @@ class CRMEntity {
 		} else {
 			$table_index_column = $this->tab_name_index[$table_name];
 			if ($table_index_column == 'id' && $table_name == 'vtiger_users') {
-				$currentuser_id = $adb->getUniqueID('vtiger_users');
-				$this->id = $currentuser_id;
+				$this->id = $adb->getUniqueID('vtiger_users');
+			}
+			if (self::$denormalized && $table_name == self::$crmentityTable) {
+				$this->id = $adb->getUniqueID('vtiger_crmentity');
+				$this->setCrmEntityValues($this->getCrmEntityValues($module));
 			}
 			$column = array($table_index_column);
 			$value = array($this->id);
@@ -854,6 +871,36 @@ class CRMEntity {
 			} else {
 				$column[] = $columname;
 				$value[] = $fldvalue;
+			}
+		}
+		if (self::$denormalized && $table_name == self::$crmentityTable) {
+			if ($insertion_mode == 'edit') {
+				if (!empty($this->column_fields['cbuuid'])) {
+					$update[] = 'cbuuid=?';
+					$update_params[] = $this->column_fields['cbuuid'];
+				}
+				$update[] = 'modifiedtime=?';
+				$update_params[] = $adb->formatDate(date('Y-m-d H:i:s'), true);
+				$update[] = 'modifiedby=?';
+				$update_params[] = $current_user->id;
+			} else {
+				$_REQUEST['currentid'] = $this->id;
+				$this->column_fields['record_id'] = $this->id;
+				$this->column_fields['record_module'] = $module;
+				$column[] = 'crmid';
+				$column[] = 'setype';
+				$column[] = 'cbuuid';
+				$column[] = 'createdtime';
+				$column[] = 'modifiedtime';
+				$column[] = 'smcreatorid';
+				$column[] = 'modifiedby';
+				$value[] = $this->id;
+				$value[] = $module;
+				$value[] = (empty($this->column_fields['cbuuid']) ? $this->getUUID() : $this->column_fields['cbuuid']);
+				$value[] =$this->column_fields['createdtime'];
+				$value[] =$this->column_fields['modifiedtime'];
+				$value[] =$this->column_fields['created_user_id'];
+				$value[] =$current_user->id;
 			}
 		}
 		$rdo = true;
