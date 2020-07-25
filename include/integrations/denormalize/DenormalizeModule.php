@@ -18,13 +18,13 @@ $Vtiger_Utils_Log = true;
 
 include_once 'vtlib/Vtiger/Module.php';
 global $adb;
-$module='Accounts';
+$module='Messages';
 $query='SELECT tablename,entityidfield FROM vtiger_entityname WHERE modulename=?';
 $result=$adb->pquery($query, array($module));
 $tablename=$adb->query_result($result, 0, 'tablename');
 $entityidname=$adb->query_result($result, 0, 'entityidfield');
 $join=$tablename.'.'.$entityidname;
-$query2= "ALTER TABLE  $tablename
+$query2= "ALTER TABLE $tablename
 	ADD  `crmid` INT( 19 ) NOT NULL DEFAULT 0 ,
 	ADD  `cbuuid` char(40) NULL DEFAULT NULL,
 	ADD  `smcreatorid` INT( 19 ) NOT NULL DEFAULT 0 ,
@@ -42,9 +42,14 @@ $query2= "ALTER TABLE  $tablename
 	ADD INDEX (`modifiedby`),
 	ADD INDEX (`deleted`),
 	ADD INDEX (`smownerid`, `deleted`)";
-$result2=$adb->query($query2);
-if ($result2) {
+$result1=$adb->query($query2);
+if ($result1) {
 	echo "Table ".$tablename." altered with the new crmentity fields.<br>";
+}
+$updfields = 'update vtiger_field set tablename=? where tabid=? and tablename=?';
+$result2=$adb->pquery($updfields, array($tablename, getTabid($module), 'vtiger_crmentity'));
+if ($result2) {
+	echo "Field meta-data updated.<br>";
 }
 $query3="UPDATE $tablename inner join vtiger_crmentity on vtiger_crmentity.crmid=$join
 	set
@@ -65,3 +70,13 @@ $res=$adb->query($que);
 if ($result3) {
 	echo "Table ".$tablename." filled with the crmentity data.";
 }
+?>
+<br>
+Now you have to eliminate the reference to vtiger_crmentity in $tab_name and $tab_name_index and add this code to the main module class:
+
+<pre>
+public function __construct() {
+	self::$crmentityTable = 'vtiger_messages';
+	parent::__construct();
+}
+</pre>
