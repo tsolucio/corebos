@@ -242,12 +242,14 @@ abstract class EntityMeta {
 	}
 
 	public function getEntityDeletedQuery() {
-		if ($this->getEntityName() == 'Leads') {
+		$module = $this->getEntityName();
+		$mod = CRMEntity::getInstance($module);
+		if ($module == 'Leads') {
 			$val_conv = ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') ? 1 : 0);
-			return "vtiger_crmentity.deleted=0 and vtiger_leaddetails.converted=$val_conv";
+			return $mod::$crmentityTable.".deleted=0 and vtiger_leaddetails.converted=$val_conv";
 		}
-		if ($this->getEntityName() != 'Users') {
-			return 'vtiger_crmentity.deleted=0';
+		if ($module != 'Users') {
+			return $mod::$crmentityTable.'.deleted=0';
 		}
 		// not sure whether inactive users should be considered deleted or not.
 		return (GlobalVariable::getVariable('Webservice_PermitQueryOnInactiveUsers', 0) ? '' : "vtiger_users.status='Active'");
