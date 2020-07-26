@@ -27,8 +27,9 @@ class UtilitiesEventsHandler extends VTEventHandler {
 	public function handleFilter($handlerType, $parameter) {
 		if ($handlerType=='corebos.filter.listview.querygenerator.before' && GlobalVariable::getVariable('RecordVersioningModules', '')==1) {
 			global $adb;
+			$mod = CRMEntity::getInstance('GlobalVariable');
 			$recexists = $adb->pquery(
-				'select module_list from vtiger_globalvariable inner join vtiger_crmentity on crmid=globalvariableid where deleted=0 and gvname=?',
+				'select module_list from vtiger_globalvariable inner join '.$mod::$crmentityTable.' as ce on ce.crmid=globalvariableid where ce.deleted=0 and gvname=?',
 				array('RecordVersioningModules')
 			);
 			if ($adb->num_rows($recexists) > 0) {

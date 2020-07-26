@@ -101,11 +101,12 @@ class ModCommentsCore extends CRMEntity {
 		}
 		$relto = $this->column_fields['related_to'];
 		if (!empty($relto)) {
+			$mod = CRMEntity::getInstance(getSalesEntityType($relto));
 			// update related assigned to email read only field
 			$relemailrs = $adb->pquery(
 				'SELECT email1
 					FROM vtiger_modcomments
-					INNER JOIN vtiger_crmentity on crmid=related_to
+					INNER JOIN '.$mod::$crmentityTable.' on crmid=related_to
 					INNER JOIN vtiger_users on id = smownerid
 					WHERE modcommentsid=?',
 				array($this->id)

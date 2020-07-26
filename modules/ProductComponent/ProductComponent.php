@@ -179,9 +179,7 @@ class ProductComponent extends CRMEntity {
 
 	public static function getRelation($fromProduct = '*', $toProduct = '*', $fromDate = '*', $toDate = '*', $relationType = '*') {
 		global $adb;
-		$sql = 'select * from vtiger_productcomponent
-			inner join vtiger_crmentity on crmid=productcomponentid
-			where deleted=0';
+		$sql = 'select * from vtiger_productcomponent inner join '.self::$crmentityTable.' on crmid=productcomponentid where deleted=0';
 		if ($fromProduct!='*') {
 			$sql.=' and frompdo=? ';
 			$params[] = $fromProduct;

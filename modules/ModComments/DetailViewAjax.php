@@ -28,7 +28,7 @@ if ($ajaxaction == 'WIDGETADDCOMMENT') {
 
 		//update modifiedtime related module with modcomments modifiedtime
 		global $adb;
-		$adb->query("update vtiger_crmentity set modifiedtime ='".$modObj->column_fields['modifiedtime']."' where crmid =".$modObj->column_fields['related_to']);
+		$adb->query('update '.$modObj::$crmentityTable." set modifiedtime ='".$modObj->column_fields['modifiedtime']."' where crmid =".$modObj->column_fields['related_to']);
 		//end update
 		$widgetInstance = $modObj->getWidget('DetailViewBlockCommentWidget');
 		$modObj->column_fields['commentcontent'] = htmlentities($modObj->column_fields['commentcontent'], ENT_QUOTES, $default_charset);

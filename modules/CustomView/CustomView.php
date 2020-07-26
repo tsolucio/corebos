@@ -1137,9 +1137,10 @@ class CustomView extends CRMEntity {
 	 */
 	//CHANGE : TO IMPROVE PERFORMANCE
 	public function getModifiedCvListQuery($viewid, $listquery, $module) {
+		$mod = CRMEntity::getInstance($module);
 		$query = '';
 		if ($viewid != '' && $listquery != '') {
-			$query = 'select ' . $this->getCvColumnListSQL($viewid) . ' ,vtiger_crmentity.crmid ';
+			$query = 'select ' . $this->getCvColumnListSQL($viewid) . ' ,'.$mod::$crmentityTable.'.crmid ';
 			$listviewquery = substr($listquery, strpos($listquery, 'FROM'), strlen($listquery));
 			if ($module == 'Calendar' || $module == 'Emails') {
 				$query.= ", vtiger_activity.activityid, vtiger_activity.activitytype as type, vtiger_activity.priority,
