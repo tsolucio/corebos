@@ -492,7 +492,7 @@ function getTabOwnedBy($module) {
 function getSalesEntityType($crmid) {
 	global $log, $adb;
 	$log->debug('> getSalesEntityType '.$crmid);
-	$result = $adb->pquery('select setype from vtiger_crmentity where crmid=?', array($crmid));
+	$result = $adb->pquery('select setype from vtiger_crmobject where crmid=?', array($crmid));
 	$parent_module = $adb->query_result($result, 0, 'setype');
 	$log->debug('< getSalesEntityType');
 	return $parent_module;
