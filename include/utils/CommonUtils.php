@@ -2869,11 +2869,7 @@ function is_emailId($entity_id) {
 
 	$module = getSalesEntityType($entity_id);
 	if ($module == 'Contacts') {
-		$sql = 'select email,secondaryemail
-			from vtiger_contactdetails
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
-			where contactid=?';
-		$result = $adb->pquery($sql, array($entity_id));
+		$result = $adb->pquery('select email,secondaryemail from vtiger_contactdetails where contactid=?', array($entity_id));
 		$email1 = $adb->query_result($result, 0, 'email');
 		$email2 = $adb->query_result($result, 0, 'secondaryemail');
 		if ($email1 != '' || $email2 != '') {
@@ -2882,11 +2878,7 @@ function is_emailId($entity_id) {
 			$check_mailids = 'false';
 		}
 	} elseif ($module == 'Leads') {
-		$sql = 'select email,secondaryemail
-			from vtiger_leaddetails
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_leaddetails.leadid
-			where leadid=?';
-		$result = $adb->pquery($sql, array($entity_id));
+		$result = $adb->pquery('select email,secondaryemail from vtiger_leaddetails where leadid=?', array($entity_id));
 		$email1 = $adb->query_result($result, 0, 'email');
 		$email2 = $adb->query_result($result, 0, 'secondaryemail');
 		if ($email1 != '' || $email2 != '') {
