@@ -15,7 +15,6 @@ include_once 'vtlib/Vtiger/Module.php';
 class cbPulse extends CRMEntity {
 
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_cbpulse';
 	public $table_index= 'cbpulseid';

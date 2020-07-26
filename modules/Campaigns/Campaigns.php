@@ -15,7 +15,6 @@ require 'modules/Vtiger/default_module_view.php';
 
 class Campaigns extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_campaign';
 	public $table_index= 'campaignid';

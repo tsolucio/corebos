@@ -12,7 +12,6 @@ require_once 'data/Tracker.php';
 
 class cbCalendar extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_activity';
 	public $table_index= 'activityid';

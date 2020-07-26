@@ -18,7 +18,6 @@ require_once 'modules/CustomView/CustomView.php';
 
 class cbCVManagement extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_cbcvmanagement';
 	public $table_index= 'cbcvmanagementid';

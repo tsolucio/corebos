@@ -21,7 +21,6 @@ require_once 'data/Tracker.php';
 
 class GlobalVariable extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_globalvariable';
 	public $table_index= 'globalvariableid';

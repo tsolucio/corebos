@@ -101,11 +101,8 @@ function wsapp_checkIfRecordsAssignToUser($recordsIds, $userIds) {
 	}
 	$userIds = (array)$userIds;
 	$db = PearDatabase::getInstance();
-	$query = 'SELECT * FROM vtiger_crmentity where crmid IN ('.generateQuestionMarks($recordsIds).") and smownerid in (".generateQuestionMarks($userIds).")";
-	$params = array();
-	foreach ($recordsIds as $id) {
-		$params[] = $id;
-	}
+	$query = 'SELECT crmid FROM vtiger_crmentity where crmid IN ('.generateQuestionMarks($recordsIds).") and smownerid in (".generateQuestionMarks($userIds).")";
+	$params = $recordsIds;
 	foreach ($userIds as $userId) {
 		$params[] = $userId;
 	}

@@ -82,11 +82,13 @@ function getFieldsListFromQuery($query) {
 	$result = $adb->query($query);
 	$num_rows = $adb->num_rows($result);
 	$fields = '';
+	$isUsers = false;
 	for ($i=0; $i < $num_rows; $i++) {
 		$columnName = $adb->query_result($result, $i, 'columnname');
 		$fieldlabel = $adb->query_result($result, $i, 'fieldlabel');
 		$fieldlabel = str_replace('?', '', $fieldlabel);
 		$tablename = $adb->query_result($result, $i, 'tablename');
+		$isUsers = ($isUsers || $tablename=='vtiger_users');
 
 		//HANDLE HERE - Mismatch fieldname-tablename in field table, in future we have to avoid these if elses
 		if ($columnName == 'smownerid') {//for all assigned to user name
@@ -142,11 +144,13 @@ function getFieldsListFromQuery($query) {
 		} elseif ($tablename == 'vtiger_users' && ($columnName == 'user_password' || $columnName == 'confirm_password' || $columnName == 'accesskey')) {
 			continue;
 		} else {
-			$fields .= $tablename.".".$columnName. " as '" .$fieldlabel."',";
+			$fields .= $tablename.'.'.$columnName. " as '" .$fieldlabel."',";
 		}
 	}
 	$fields = trim($fields, ',');
-	$fields .= ',vtiger_crmentity.cbuuid';
+	if (!$isUsers) {
+		$fields .= ',vtiger_crmentity.cbuuid';
+	}
 	$log->debug('< getFieldsListFromQuery '.$fields);
 	return $fields;
 }

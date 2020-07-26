@@ -18,7 +18,6 @@ require 'modules/Vtiger/default_module_view.php';
 
 class Accounts extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_account';
 	public $table_index= 'accountid';

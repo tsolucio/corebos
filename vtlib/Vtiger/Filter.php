@@ -156,7 +156,7 @@ class Vtiger_Filter {
 		);
 		$adb->pquery("INSERT INTO vtiger_cvcolumnlist(cvid,columnindex,columnname) VALUES(?,?,?)", array($this->id, $index, $cvcolvalue));
 
-		$this->log("Adding $fieldInstance->name to $this->name filter ... DONE");
+		self::log("Adding $fieldInstance->name to $this->name filter ... DONE");
 		return $this;
 	}
 
