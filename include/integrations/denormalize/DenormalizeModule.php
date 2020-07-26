@@ -70,6 +70,13 @@ $res=$adb->query($que);
 if ($result3) {
 	echo "Table ".$tablename." filled with the crmentity data.";
 }
+/*********************************************************************************
+PENDING!!!
+
+Find all places where the vtiger_crmentity fields are used and change them: filters, reports, ....
+
+PENDING!!!
+*********************************************************************************/
 ?>
 <br>
 Now you have to eliminate the reference to vtiger_crmentity in $tab_name and $tab_name_index and add this code to the main module class:
