@@ -499,7 +499,10 @@ class CRMEntity {
 			$cbuuid = (empty($this->column_fields['cbuuid']) ? $this->getUUID() : $this->column_fields['cbuuid']);
 			$sql = 'insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,modifiedby,createdtime,modifiedtime,cbuuid) values(?,?,?,?,?,?,?,?,?)';
 			$params = array($current_id, $crmvalues['createdbyuser'], $ownerid, $module, $crmvalues['description'], $current_user->id, $crmvalues['created_date'], $crmvalues['modified_date'], $cbuuid);
-			$adb->pquery($sql, $params);
+			$rdo = $adb->pquery($sql, $params);
+			if ($rdo) {
+				$adb->pquery('INSERT INTO vtiger_crmobject (crmid,deleted,setype) values (?,0,?)', array($current_id, $module));
+			}
 			$this->id = $current_id;
 		}
 	}
@@ -908,6 +911,9 @@ class CRMEntity {
 		} else {
 			$sql1 = "insert into $table_name(" . implode(',', $column) . ') values(' . generateQuestionMarks($value) . ')';
 			$rdo = $adb->pquery($sql1, $value);
+			if ($rdo) {
+				$adb->pquery('INSERT INTO vtiger_crmobject (crmid,deleted,setype) values (?,0,?)', array($this->id, $module));
+			}
 		}
 		if ($rdo===false) {
 			$log->fatal($adb->getErrorMsg());
@@ -1326,6 +1332,7 @@ class CRMEntity {
 		$date_var = date('Y-m-d H:i:s');
 		$query = 'UPDATE '.self::$crmentityTable.' set deleted=1,modifiedtime=?,modifiedby=? where crmid=?';
 		$this->db->pquery($query, array($this->db->formatDate($date_var, true), $current_user->id, $id), true, 'Error marking record deleted: ');
+		$this->db->pquery('UPDATE vtiger_crmobject set deleted=1 WHERE crmid=?', array($id));
 	}
 
 	// this method is called during an import before inserting a bean
