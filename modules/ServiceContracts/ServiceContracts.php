@@ -73,7 +73,7 @@ class ServiceContracts extends CRMEntity {
 		// tablename should not have prefix 'vtiger_'
 		'Subject' => array('servicecontracts' => 'subject'),
 		'Contract No' => array('servicecontracts' => 'contract_no'),
-		'Assigned To' => array('vtiger_crmentity' => 'assigned_user_id'),
+		'Assigned To' => array('crmentity' => 'smownerid'),
 		'Used Units' => array('servicecontracts' => 'used_units'),
 		'Total Units' => array('servicecontracts' => 'total_units')
 	);
