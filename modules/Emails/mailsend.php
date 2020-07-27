@@ -119,7 +119,7 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 		// Merge template
 		$ids = array();
 		if (isset($_REQUEST['merge_template_with']) && $_REQUEST['merge_template_with'] != '') {
-			$ids = explode(",", $_REQUEST['merge_template_with']);
+			$ids = explode(',', $_REQUEST['merge_template_with']);
 		}
 		if (count($ids) > 0) {
 			foreach ($ids as $id) {
@@ -131,7 +131,7 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 
 		for ($j=1; $j<$nemail; $j++) {
 			$temp=$realid[$j];
-			$myquery='Select columnname from vtiger_field where fieldid = ? and vtiger_field.presence in (0,2)';
+			$myquery='select fieldname from vtiger_field where fieldid=? and vtiger_field.presence in (0,2)';
 			$fresult=$adb->pquery($myquery, array($temp));
 			// vtlib customization: Enabling mail send from other modules
 			$myfocus = CRMEntity::getInstance($pmodule);
@@ -148,7 +148,7 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 				$subject=getMergedDescription($subject, $accid, 'Accounts');
 				$description=getMergedDescription($description, $accid, 'Accounts');
 			}
-			$fldname=$adb->query_result($fresult, 0, 'columnname');
+			$fldname=$adb->query_result($fresult, 0, 'fieldname');
 			$emailadd=br2nl($myfocus->column_fields[$fldname]);
 
 			if ($emailadd != '') {
