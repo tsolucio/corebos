@@ -1387,6 +1387,7 @@ function InventorySelectAll(mod, image_pth) {
 		this.callback = typeof callback === 'function' ? callback : false;
 
 		/* Instance listeners */
+		this.utils.on(this.input, 'keydown', this.preventSubmit, this);
 		this.utils.on(this.input, 'keyup', this.throttle, this);
 		this.utils.on(this.input, 'blur', this.delayedClear, this);
 	}
@@ -1416,6 +1417,13 @@ function InventorySelectAll(mod, image_pth) {
 
 		throttle: function (e) {
 			window.setTimeout(this.trigger(e), 100);
+		},
+
+		preventSubmit: function(e) {
+			if (e.keyCode === 13) {
+				e.preventDefault()
+				e.stopPropagation()
+			}
 		},
 
 		getResults: function (term) {
