@@ -913,9 +913,8 @@ class CRMEntity {
 			$sql1 = "insert into $table_name(" . implode(',', $column) . ') values(' . generateQuestionMarks($value) . ')';
 			$rdo = $adb->pquery($sql1, $value);
 			$checkTable = getCrmObject(true);
-			//ADODB error  Query Failed:INSERT INTO vtiger_crmobject (crmid,deleted,setype) values (?,0,?)::->[1062]Duplicate entry '8386' for key 'PRIMARY'
-			if ($rdo && $checkTable) {
-				//$adb->pquery('INSERT INTO vtiger_crmobject (crmid,deleted,setype) values (?,0,?)', array($this->id, $module));
+			if ($rdo && $checkTable && $table_name == 'vtiger_crmentity') {
+				$adb->pquery('INSERT INTO vtiger_crmobject (crmid,deleted,setype) values (?,0,?)', array($this->id, $module));
 			}
 		}
 		if ($rdo===false) {
