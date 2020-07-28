@@ -310,6 +310,9 @@ function cbwsgetSearchResults($query, $search_onlyin, $restrictionids, $user) {
 	require_once 'include/utils/utils.php';
 	// Was the search limited by user for specific modules?
 	$search_onlyin = (empty($search_onlyin) ? array() : explode(',', $search_onlyin));
+	$search_onlyin = array_filter(array_unique($search_onlyin), function ($var) {
+		return !empty(trim($var));
+	});
 	$object_array = getSearchModules($search_onlyin);
 	$total_record_count = 0;
 	$i = 0;
