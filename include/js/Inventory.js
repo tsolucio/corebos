@@ -1419,24 +1419,32 @@ function InventorySelectAll(mod, image_pth) {
 		},
 
 		getResults: function (term) {
-			var accid = 0;
-			if (document.EditView.account_id != undefined) {
-				accid = document.EditView.account_id.value;
-			}
-			var ctoid = 0;
-			if (document.EditView.contact_id != undefined) {
-				ctoid = document.EditView.contact_id.value;
-			}
-			var _this = this;
-			var r = new XMLHttpRequest();
+			var h = getAccConFieldnames,
+				dE = document.EditView,
+				accid = h().acc === '' ? 0 : h().acc,
+				ctoid = h().con === '' ? 0 : h().con,
+				recid = dE === undefined ? 0 : dE.record.value
+				_this = this,
+				r = new XMLHttpRequest();
+
 			r.onreadystatechange = function () {
 				if (this.readyState == 4 && this.status == 200) {
 					var res = JSON.parse(this.responseText);
 					_this.processResult(res);
 				}
 			};
-			r.open('GET', this.source + this.input.value + '&accid='+accid+ '&ctoid='+ctoid+'&modid='+document.EditView.record.value, true);
+			r.open('GET', this.source + this.input.value + '&accid='+accid+ '&ctoid='+ctoid+'&modid='+recid, true);
 			r.send();
+
+			// Helper to keep organized
+			function getAccConFieldnames() {
+				let fldNames = {'acc': '', 'con': ''};
+				if (document.EditView !== undefined) {
+					fldNames.acc = document.EditView.account_id !== undefined ? 'account_id' : 'accid';
+					fldNames.con = document.EditView.contact_id !== undefined ? 'contact_id' : 'ctoid';
+				}
+				return fldNames;
+			}
 		},
 
 		processResult: function (res) {
