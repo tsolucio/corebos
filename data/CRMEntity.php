@@ -2245,9 +2245,9 @@ class CRMEntity {
 			from vtiger_activity
 			inner join vtiger_seactivityrel on vtiger_seactivityrel.activityid=vtiger_activity.activityid'
 			.(self::$denormalized ?
-				'inner join '.self::$crmentityTable.' as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid' :
-				'inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid')
-			.'inner join vtiger_emaildetails on vtiger_emaildetails.emailid = vtiger_activity.activityid
+				' inner join '.self::$crmentityTable.' as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid' :
+				' inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid')
+			.' inner join vtiger_emaildetails on vtiger_emaildetails.emailid = vtiger_activity.activityid
 			left join vtiger_email_track on (vtiger_email_track.crmid=vtiger_seactivityrel.crmid AND vtiger_email_track.mailid=vtiger_activity.activityid)
 			left join vtiger_groups on vtiger_groups.groupid='.self::$crmentityTable.'.smownerid
 			left join vtiger_users on vtiger_users.id='.self::$crmentityTable.".smownerid
