@@ -202,18 +202,6 @@
 	text-align: center;
 	overflow: hidden;
 }
-.cbds-image-container--small {
-	height: 80px;
-	width: 80px;
-}
-.cbds-image-container--medium {
-	height: 140px;
-	width: 140px;
-}
-.cbds-image-container--large {
-	height: 200px;
-	width: 200px;
-}
 .cbds-image-container img {
 	height: 100%;
 	width: auto;
@@ -253,12 +241,6 @@
 	color: #ffffff;
 	fill: #ffffff;
 }
-
-.cbds-panelheader {
-	background-color: #3f5a82;
-	padding: 0.5rem;
-	border-radius: 0.25rem 0.25rem 0 0;
-}
 .cbds-detail-line-extratool svg {
 	transition: transform 100ms linear;
 }
@@ -266,12 +248,6 @@
 	-webkit-transform: rotate(180deg);
 	-moz-transform: rotate(180deg);
 	transform: rotate(180deg);
-}
-
-.slds-form--compound .cbds-m-bottom_none,
-.slds-form_compound .cbds-m-bottom_none,
-.cbds-m-bottom_none {
-	margin-bottom: 0;
 }
 
 /* Aggregations */

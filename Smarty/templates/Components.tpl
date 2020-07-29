@@ -188,11 +188,11 @@
 	{$data.custom = $custom}
 {/if}
 <!-- LDS Detail line for inventorydetails -->
-<div class="{$productline_classprefix} slds-card slds-m-vertical_small slds-p-vertical_small slds-p-horizontal_x-small{if $template} {$productline_classprefix}--template{/if}">
+<div class="{$productline_classprefix} slds-card slds-m-vertical_x-small slds-p-top_small slds-p-bottom_none slds-p-horizontal_x-small{if $template} {$productline_classprefix}--template{/if}">
 	<!-- Main LDS inventory details line -->
 	<div class="slds-grid slds-gutters cbds-detail-line__main">
 		<div class="slds-col slds-size_1-of-12">
-			<div class="cbds-image-container cbds-image-container--small">
+			<div class="cbds-image-container">
 				<img src="{if !$template && isset($data.meta.image) && $data.meta.image != ''}{$data.meta.image}{/if}" class="cbds-image cbds-product-line-image" />
 			</div>
 		</div>
@@ -243,7 +243,7 @@
 		<!-- // Nested column with input fields -->
 		<!-- LDS Line tools column -->
 		<div class="slds-col slds-size_2-of-12 slds-align-middle">
-			<div class="slds-button-group">
+			<div class="slds-button-group slds-float_right">
 				{call name=LDSButton el='div' iconlib='utility' icon='move' iconsize='x-small' extraclass='cbds-detail-line-dragtool' title='Drag this line'}
 				{call name=LDSButton el='button' iconlib='utility' icon='copy' iconsize='x-small' extraclass='cbds-detail-line-copytool' title='Copy this line'}
 				{call name=LDSButton el='button' iconlib='utility' icon='delete' iconsize='x-small' extraclass='cbds-button--delete cbds-detail-line-deletetool' title='Delete this line'}
@@ -258,23 +258,23 @@
 		<!-- LDS extra inventoryline column -->
 		<div class="slds-col slds-size_3-of-12">
 			<div class="slds-panel">
-				<div class="cbds-panelheader">
-					<div class="slds-text-color_inverse slds-align_absolute-center">Pricing</div>
+				<div class="slds-panel__header">
+					<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Pricing">Pricing</h2>
 				</div>
 				<div class="slds-form slds-form_compound slds-grow">
-					<div class="slds-panel__section slds-border_bottom slds-p-horizontal_none">
+					<div class="slds-panel__section slds-p-bottom_none">
 						<div class="slds-form-element__row cbds-m-bottom_none">
 						{call name=ProductInputFormElement size='1-of-2' label='Unit cost price' fieldname='cost_price' value=$data.pricing.cost_price iconlib='corebos' icon='euro' istemplate=$template type='currency' error='Please enter a valid currency amount' readonly=false}
 						{call name=ProductInputFormElement size='1-of-2' label='Line cost price' fieldname='cost_gross' value=$data.pricing.cost_gross iconlib='corebos' icon='euro' istemplate=$template type='currency' error='Please enter a valid currency amount' readonly=true}
 						</div>
 					</div>
-					<div class="slds-panel__section slds-border_bottom slds-p-horizontal_none">
+					<div class="slds-panel__section slds-p-bottom_none">
 						<div class="slds-form-element__row cbds-m-bottom_none">
 						{call name=ProductInputFormElement size='1-of-2' label='Gross line price' fieldname='extgross' value=$data.pricing.extgross iconlib='corebos' icon='euro' istemplate=$template type='currency' error='Please enter a valid currency amount' readonly=true}
 						{call name=ProductInputFormElement size='1-of-2' label='Net line price' fieldname='extnet' value=$data.pricing.extnet iconlib='corebos' icon='euro' istemplate=$template type='currency' error='Please enter a valid currency amount' readonly=true}
 						</div>
 					</div>
-					<div class="slds-panel__section slds-p-horizontal_none">
+					<div class="slds-panel__section slds-p-bottom_none">
 						<div class="slds-form-element__row cbds-m-bottom_none">
 						{call name=ProductInputFormElement size='1-of-2' label='Unit price' fieldname='unit_price' value=$data.pricing.unit_price iconlib='corebos' icon='euro' istemplate=$template type='currency' error='Please enter a valid currency amount' readonly=false}
 						</div>
@@ -286,19 +286,23 @@
 		<!-- LDS extra inventoryline column -->
 		<div class="slds-col slds-size_3-of-12">
 			<div class="slds-panel">
-				<div class="cbds-panelheader">
-					<div class="slds-text-color_inverse slds-align_absolute-center">Logistics</div>
+				<div class="slds-panel__header">
+					<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Logistics">Logistics</h2>
 				</div>
 				<div class="slds-form slds-form_stacked slds-grow">
 					{$usageunitspan = ' (<span class="'|cat:$productline_classprefix|cat:'--usageunit">'|cat:$data.logistics.usageunit|cat:'</span>)'}
-					<div class="slds-panel__section slds-border_bottom slds-p-horizontal_none">
+					<div class="slds-panel__section slds-p-bottom_none">
 					{call name=ProductInputFormElement size='1-of-1' label='Units del. / rec. '|cat:$usageunitspan fieldname='units_delivered_received' value=$data.logistics.units_delivered_received iconlib='corebos' icon='none' istemplate=$template type='currency' error='Please enter a valid number' readonly=false}
 					</div>
-					<div class="slds-panel__section slds-border_bottom slds-p-horizontal_none">
-					{call name=ProductInputFormElement size='1-of-1' label='Qty in stock'|cat:$usageunitspan fieldname='qtyinstock' value=$data.logistics.qtyinstock iconlib='corebos' icon='none' istemplate=$template type='currency' error='Please enter a valid number' readonly=true}
-					</div>
-					<div class="slds-panel__section slds-p-horizontal_none">
-					{call name=ProductInputFormElement size='1-of-1' label='Currently ordered'|cat:$usageunitspan fieldname='qtyindemand' value=$data.logistics.qtyindemand iconlib='corebos' icon='none' istemplate=$template type='currency' error='Please enter a valid number' readonly=true}
+					<div class="slds-panel__section slds-p-bottom_none">
+						<div class="slds-grid">
+							<div class="slds-col">
+								{call name=ProductInputFormElement size='1-of-1' label='Qty in stock'|cat:$usageunitspan fieldname='qtyinstock' value=$data.logistics.qtyinstock iconlib='corebos' icon='none' istemplate=$template type='currency' error='Please enter a valid number' readonly=true}
+							</div>
+							<div class="slds-col">
+							{call name=ProductInputFormElement size='1-of-1' label='Currently ordered'|cat:$usageunitspan fieldname='qtyindemand' value=$data.logistics.qtyindemand iconlib='corebos' icon='none' istemplate=$template type='currency' error='Please enter a valid number' readonly=true}
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -307,8 +311,8 @@
 		<!-- LDS extra inventoryline column -->
 		<div class="slds-col slds-size_3-of-12 {$productline_classprefix}--taxcol{if $inventoryblock.taxtype == 'group'} {$productline_classprefix}--taxcol-hidden{/if}">
 			<div class="slds-panel">
-				<div class="cbds-panelheader">
-					<div class="slds-text-color_inverse slds-align_absolute-center">Taxes</div>
+				<div class="slds-panel__header">
+					<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Taxes">Taxes</h2>
 				</div>
 				<div class="slds-form slds-form_compound slds-grow">
 					{foreach from=$data.taxes item=tax key=key}
@@ -321,11 +325,11 @@
 		<!-- LDS extra inventoryline column -->
 		<div class="slds-col slds-size_3-of-12 {$productline_classprefix}--commentcol{if $inventoryblock.taxtype == 'group'} slds-size_6-of-12{/if}">
 			<div class="slds-panel">
-				<div class="cbds-panelheader">
-					<div class="slds-text-color_inverse slds-align_absolute-center">Comments</div>
+				<div class="slds-panel__header">
+					<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Comments">Comments</h2>
 				</div>
 				<div class="slds-form slds-form_stacked slds-grow">
-					<div class="slds-panel__section slds-border_bottom slds-p-horizontal_none">
+					<div class="slds-panel__section slds-p-horizontal_none">
 						<div class="slds-form-element">
 							<div class="slds-form-element__control">
 								<textarea rows="10" class="slds-textarea {$productline_classprefix}--comments" placeholder="Type a comment">{if $data.meta.description != ''}{$data.meta.description}{/if}</textarea>
@@ -378,7 +382,7 @@
  * @param: The symbol, should be the currency symbol for the current user.
 *}
 {function name=ProductTaxPanelSection fieldname='' label='' amount='' percent='' symbol='euro'}
-<div class="slds-panel__section slds-border_bottom slds-p-horizontal_none">
+<div class="slds-panel__section slds-panel__section slds-p-bottom_none">
 	<span class="slds-form-element__label">{$label}</span>
 	<div class="slds-form-element__row cbds-m-bottom_none">
 		<div class="slds-form-element slds-size_5-of-12">
