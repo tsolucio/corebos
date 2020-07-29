@@ -1691,15 +1691,10 @@ function InventorySelectAll(mod, image_pth) {
 					usageunits = this.root.el.getElementsByClassName(this.root.lineClass + '--usageunit');
 
 				this.utils.getFirstClass(lineNode, 'cbds-product-line-image').src = result.obj.meta.image;
-				var currency = document.getElementById('inventory_currency').value;
-				if (result.obj.pricing.multicurrency[currency] != undefined) {
-					this.parent.setField('unit_price', result.obj.pricing.multicurrency[currency].actual_price);
-				} else {
-					this.parent.setField('unit_price', result.obj.pricing.unit_price);
-				}
+				this.parent.setField('unit_price', result.obj.pricing.unit_price);
 				this.parent.setField('cost_price', result.obj.pricing.unit_cost);
-				this.parent.setField('qtyinstock', result.obj.logistics.qty_in_stock);
-				this.parent.setField('qtyindemand', result.obj.logistics.curr_ordered);
+				this.parent.setField('qtyinstock', result.obj.logistics.qtyinstock);
+				this.parent.setField('qtyindemand', result.obj.logistics.qtyindemand);
 
 				this.utils.getFirstClass(lineNode, this.root.linePrefix + '--comments').innerHTML = result.obj.meta.comments;
 				this.input.value = result.obj.meta.name;
@@ -1712,12 +1707,29 @@ function InventorySelectAll(mod, image_pth) {
 				this.parent.calcLine();
 
 				this.utils.getFirstClass(this.utils.findUp(this.el, '.' + this.root.lineClass), this.root.inputPrefix + '--quantity').focus();
+				this.retrieveProductTaxes(result.obj.meta.id);
 			} else {
 				this.callback({
 					'result': result.obj,
 					'source': this.el
 				});
 			}
+		},
+
+		retrieveProductTaxes: function(id) {
+			fetch(`index.php?
+					module=Products
+					&action=ProductsAjax
+					&file=InventoryTaxAjax
+					&productid=${id}
+					&ctoid=0
+					&accid=0
+					&vndid=0
+					&returnarray=1`)
+			.then((r) => {return r.json()})
+			.then((data) => {
+				this.parent.actualizeLineTaxes(data);
+			})
 		},
 
 		/*
