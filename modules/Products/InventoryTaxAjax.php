@@ -32,6 +32,10 @@ if (isset($_REQUEST['invmod'])) {
 	}
 }
 $tax_details = getTaxDetailsForProduct($productid, 'all', $acvid);//we should pass available instead of all if we want to display only the available taxes.
+if (isset($_REQUEST['returnarray'])) {
+	echo json_encode($tax_details, true);
+	die();
+}
 $associated_tax_count = count($tax_details);
 
 $tax_div = '<table class="slds-table slds-table_cell-buffer slds-table_bordered" id="tax_table'.$rowid.'"><thead>
