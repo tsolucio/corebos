@@ -2214,13 +2214,18 @@ window.addEventListener('load', function () {
 		},
 
 		handleComboSelects: function(lineObj) {
+			lineObj.findFieldByCombo(this)._val = this._val;
 			if (this.input.classList.contains(`${lineObj.root.inputPrefix}--discount_type`)) {
 				lineObj.discType = this._val;
 				lineObj.setDiscType(this._val);
-			} else {
-				// Handle all other combo's
-				// this: the combo object
-				// lineObj: the InventoryLine object
+			}
+		},
+
+		findFieldByCombo: function(combo) {
+			for (field in this.fields) {
+				if (this.fields[field].el.isSameNode(combo.input)) {
+					return this.fields[field];
+				}
 			}
 		}
 	}
@@ -2322,8 +2327,6 @@ window.addEventListener('load', function () {
 		getValue : function() {
 			if (this.getType() != "text") {
 				return cbNumber.isCurr(this.el.value) ? cbNumber.curToNum(this.el.value) : this.el.value;
-			} else if (this.getType() == 'combobox') {
-				console.log(this)
 			} else {
 				return this.el.value;
 			}
