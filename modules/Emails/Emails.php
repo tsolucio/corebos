@@ -18,7 +18,6 @@ require_once 'modules/Emails/mail.php';
 
 class Emails extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_activity';
 	public $table_index = 'activityid';
@@ -110,11 +109,9 @@ class Emails extends CRMEntity {
 	public $mandatory_fields = array('subject', 'assigned_user_id');
 
 	public function __construct() {
-		global $log;
 		$this_module = get_class($this);
 		$this->column_fields = getColumnFields($this_module);
 		$this->db = PearDatabase::getInstance();
-		$this->log = $log;
 	}
 
 	public function save_module($module) {

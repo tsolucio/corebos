@@ -25,7 +25,6 @@ class ListView {
 	public $query_orderby = null;
 	public $header_title = '';
 	public $header_text = '';
-	public $log = null;
 	public $initialized = false;
 	public $querey_where_has_changed = false;
 	public $display_header_and_footer = true;
@@ -46,7 +45,6 @@ class ListView {
 			if (empty($this->local_image_path)) {
 				$this->local_image_path = 'themes/'.$theme.'/images';
 			}
-			$this->log = LoggerManager::getLogger('listView_'.$this->local_current_module);
 			$log->debug('< ListView');
 		}
 	}
@@ -180,7 +178,6 @@ class ListView {
 		$log->debug('> setCurrentModule '.$currentModule);
 		unset($this->local_current_module);
 		$this->local_current_module = $currentModule;
-		$this->log = LoggerManager::getLogger('listView_'.$this->local_current_module);
 		if (isset($this->xTemplate)) {
 			$this->xTemplate->assign('MODULE_NAME', $this->local_current_module);
 		}

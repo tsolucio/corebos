@@ -30,11 +30,9 @@ class CRMEntity {
 	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-recent', 'class' => 'slds-icon', 'icon'=>'entity');
 
 	public function __construct() {
-		global $log;
 		$this_module = get_class($this);
 		$this->column_fields = getColumnFields($this_module);
 		$this->db = PearDatabase::getInstance();
-		$this->log = $log;
 		$result = $this->db->pquery('SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid=? limit 1', array(getTabid($this_module)));
 		$this->HasDirectImageField = ($result && $this->db->num_rows($result)==1);
 	}
@@ -1342,7 +1340,6 @@ class CRMEntity {
 	 * params $user_id - The user that is viewing the record.
 	 */
 	public function track_view($user_id, $current_module, $id = '') {
-		$this->log->debug("About to call tracker (user_id, module_name, item_id)($user_id, $current_module, $this->id)");
 		$tracker = new Tracker();
 		$tracker->track_view($user_id, $current_module, $id, '');
 	}

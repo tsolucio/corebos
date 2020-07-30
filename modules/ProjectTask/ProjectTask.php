@@ -12,7 +12,6 @@ require_once 'data/Tracker.php';
 
 class ProjectTask extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_projecttask';
 	public $table_index= 'projecttaskid';

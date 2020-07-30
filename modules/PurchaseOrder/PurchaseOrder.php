@@ -15,7 +15,6 @@ require_once 'modules/InventoryDetails/InventoryDetails.php';
 
 class PurchaseOrder extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_purchaseorder';
 	public $table_index= 'purchaseorderid';

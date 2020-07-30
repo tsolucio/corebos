@@ -12,7 +12,6 @@ require_once 'data/Tracker.php';
 
 class MsgTemplate extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_msgtemplate';
 	public $table_index= 'msgtemplateid';

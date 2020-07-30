@@ -17,7 +17,6 @@ require 'modules/Vtiger/default_module_view.php';
 
 class Leads extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_leaddetails';
 	public $table_index= 'leadid';

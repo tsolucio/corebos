@@ -15,11 +15,9 @@ require_once 'include/utils/Session.php';
 global $adb,$current_user;
 
 // Recording Logout Info
-$usip = Vtiger_Request::get_ip();
-$outtime=date('Y/m/d H:i:s');
 $loghistory=new LoginHistory();
-$loghistory->user_logout($current_user->user_name, $usip, $outtime);
-
+$loghistory->user_logout($current_user->user_name, Vtiger_Request::get_ip(), date('Y/m/d H:i:s'));
+cbEventHandler::do_action('corebos.logout', array($current_user));
 coreBOS_Settings::delSetting('cbodUserConnection'.$current_user->id);
 
 $local_log = LoggerManager::getLogger('Logout');

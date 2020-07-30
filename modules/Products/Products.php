@@ -13,7 +13,6 @@ require 'modules/Vtiger/default_module_view.php';
 
 class Products extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_products';
 	public $table_index= 'productid';
@@ -110,11 +109,9 @@ class Products extends CRMEntity {
 	public $unit_price; // for importing/exporting
 
 	public function __construct() {
-		global $log;
 		$this_module = get_class($this);
 		$this->column_fields = getColumnFields($this_module);
 		$this->db = PearDatabase::getInstance();
-		$this->log = $log;
 	}
 
 	public function save_module($module) {

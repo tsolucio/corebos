@@ -13,7 +13,6 @@ require 'modules/Vtiger/default_module_view.php';
 
 class HelpDesk extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_troubletickets';
 	public $table_index= 'ticketid';

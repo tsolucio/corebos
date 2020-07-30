@@ -13,7 +13,6 @@ require_once 'modules/Invoice/Invoice.php';
 
 class CobroPago extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_cobropago';
 	public $table_index= 'cobropagoid';

@@ -14,7 +14,6 @@ include_once 'modules/cbMap/cbRule.php';
 
 class cbMap extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_cbmap';
 	public $table_index= 'cbmapid';
