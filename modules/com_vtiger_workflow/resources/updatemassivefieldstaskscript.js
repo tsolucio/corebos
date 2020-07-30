@@ -306,13 +306,39 @@ function CBMassiveUpdateRelatedTask($, fieldvaluemapping) {
 				}
 				function addFieldValueMapping(mappingno) {
 					$('#save_fieldvaluemapping').append(
-						'<div id="save_fieldvalues_'+mappingno+'" style=\'margin-bottom: 5px\'> \
-							<select id="save_fieldvalues_'+mappingno+'_fieldmodule" class="fieldmodule"></select><select id="save_fieldvalues_'+mappingno+'_fieldname" class="fieldname"></select>  \
-							<input type="hidden" id="save_fieldvalues_'+mappingno+'_value_type" class="type"> \
-							<input type="hidden" id="save_fieldvalues_'+mappingno+'_valuemodule" readonly ><input type="text" id="save_fieldvalues_'+mappingno+'_value" class="expressionvalue" readonly > \
-							<span id="save_fieldvalues_'+mappingno+'_remove" class="link remove-link"> \
-							<img src="modules/com_vtiger_workflow/resources/remove.png"><input type="hidden" id="modtypes"></span> \
-						</div>'
+						`<div id="save_fieldvalues_${mappingno}" style="margin-bottom: 5px" class="slds-grid slds-gutters slds-p-horizontal_x-large slds-grid_vertical-align-center">
+							<div class="slds-col slds-size_3-of-12 slds-p-around_x-small">
+								<div class="slds-form-element">
+									<div class="slds-form-element__control">
+										<div class="slds-select_container">
+											<select id="save_fieldvalues_${mappingno}_fieldmodule" class="slds-page-header__meta-text slds-select"></select>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="slds-col slds-size_3-of-12 slds-p-around_x-small">
+								<div class="slds-form-element">
+									<div class="slds-form-element__control">
+										<div class="slds-select_container">
+											<select id="save_fieldvalues_${mappingno}_fieldname" class="slds-page-header__meta-text slds-select"></select>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="slds-col slds-size_3-of-12 slds-p-around_x-small">
+								<div class="slds-form-element">
+									<div class="slds-form-element__control">
+										<input type="hidden" id="save_fieldvalues_${mappingno}_value_type" class="type slds-input">
+											<input type="hidden" id="save_fieldvalues_${mappingno}_valuemodule" class="slds-input fieldborder" readonly ><input type="text" id="save_fieldvalues_${mappingno}_value" class="expressionvalue slds-input fieldborder" readonly >
+									</div>
+								</div>
+							</div>
+							<div class="slds-col slds-size_1-of-12 slds-p-around_x-small">
+								<span id="save_fieldvalues_${mappingno}_remove" class="link remove-link">
+									<img src="modules/com_vtiger_workflow/resources/remove.png"><input type="hidden" id="modtypes"></span>
+							</div>
+						</div>
+						`
 					);
 					var fe = $('#save_fieldvalues_'+mappingno+'_fieldmodule');
 					var i = 1;
