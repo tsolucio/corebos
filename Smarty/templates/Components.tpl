@@ -256,7 +256,15 @@
 							{if $data.meta.discount_type == 'p'}{$curval = 'Percentage'}{else}{$curval = 'Direct'}{/if}
 							{$options[] = ['val' => 'p', 'label' => 'Percentage']}
 							{$options[] = ['val' => 'd', 'label' => 'Direct']}
-							{call name=ProductDropdownFormElement size='5-of-12' fieldname='discount_type' value=$curval placeholder='Discount type' options=$options istemplate=$template}
+							{call
+								name=ProductDropdownFormElement
+								size='5-of-12'
+								fieldname='discount_type'
+								value=$data.meta.discount_type
+								placeholder='Discount type'
+								options=$options
+								istemplate=$template
+								valuelabel=$curval}
 							<!-- // Discount type form element -->
 							<!-- Discount number (percent/direct) form element -->
 							{if $data.meta.discount_type == 'p'}{$icon = 'percent'}{else}{$icon = 'euro'}{/if}
@@ -495,7 +503,7 @@
  * @param: String to optionally provide a label to the field
  * @param: String to optionally override the prefix
 *}
-{function name=ProductDropdownFormElement size='1-of-1' fieldname='' value='' placeholder='' options=[] istemplate=false label='' prefix=''}
+{function name=ProductDropdownFormElement size='1-of-1' fieldname='' value='' placeholder='' options=[] istemplate=false label='' prefix='' valuelabel=''}
 {if $prefix == ''}{$prefix = $productline_inputprefix}{else}{/if}
 <div class="slds-form-element slds-size_{$size}">
 	{if $label != ''}<label class="slds-form-element__label">{$label}</label>{/if}
@@ -503,7 +511,17 @@
 		<div class="slds-combobox_container">
 			<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-combobox-picklist" aria-expanded="false" aria-haspopup="listbox" role="combobox">
 				<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
-					<input class="slds-input slds-combobox__input {$prefix}--{$fieldname}" aria-controls="" autocomplete="off" data-type="combobox" role="textbox" placeholder="{$placeholder}" readonly="readonly" type="text" value="{$value}"/>
+					<input class="slds-input slds-combobox__input"
+						   aria-controls=""
+						   autocomplete="off"
+						   data-valueholder="nextsibling"
+						   role="textbox"
+						   placeholder="{$placeholder}"
+						   readonly="readonly"
+						   type="text"
+						   value="{$valuelabel}"
+						/>
+					<input class="{$prefix}--{$fieldname}" type="hidden" value="{$value}" />
 					{call name=LDSIcon lib='utility' icon='down' align='right' size='x-small'}
 				</div>
 				<div role="listbox">

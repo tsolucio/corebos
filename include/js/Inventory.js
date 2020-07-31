@@ -1986,7 +1986,9 @@ window.addEventListener('load', function () {
 					"decSep" : window.userDecimalSeparator,
 					"curSep" : window.userCurrencySeparator
 				});
-				me.fields[field.getFieldName()] = field;
+				if (field.getFieldName() !== undefined) {
+					me.fields[field.getFieldName()] = field;
+				}
 			}
 			
 			ldsCheckbox.setUnique();
@@ -2044,7 +2046,6 @@ window.addEventListener('load', function () {
 			let headingsWrapper = this.el.getElementsByClassName(`${this.root.lineClass}__headingswrapper`)[0];
 			headingsWrapper.classList.remove(`${this.root.lineClass}__headingswrapper--show`);
 		},
-
 
 		handleInput: function(e) {
 			var input = this.getInputObj(e.target);
@@ -2203,7 +2204,7 @@ window.addEventListener('load', function () {
 				if (this.fields[field].active === true) {
 					let input = _getHiddenInputForField(seq, field);
 					cont.appendChild(input);
-					input.value = this.fields[field]._val;
+					input.value = this.fields[field].getValue();
 				}
 			}
 			let input = _getHiddenInputForField(seq, 'productid');
@@ -2224,7 +2225,7 @@ window.addEventListener('load', function () {
 
 		handleComboSelects: function(lineObj) {
 			lineObj.findFieldByCombo(this)._val = this._val;
-			if (this.input.classList.contains(`${lineObj.root.inputPrefix}--discount_type`)) {
+			if (this.valueHolder.classList.contains(`${lineObj.root.inputPrefix}--discount_type`)) {
 				lineObj.discType = this._val;
 				lineObj.setDiscType(this._val);
 			}
@@ -2236,6 +2237,7 @@ window.addEventListener('load', function () {
 					return this.fields[field];
 				}
 			}
+			return {};
 		}
 	}
 
