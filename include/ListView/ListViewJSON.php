@@ -149,6 +149,16 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	$controller = new ListViewController($adb, $current_user, $queryGenerator);
 	$listview_header_search = $controller->getBasicSearchFieldInfoList();
 	//add action in header
+	$tabid = getTabid($currentModule);
+	$actionPermission = getTabsActionPermission($profileid)[$tabid];
+	$delete = true;
+	$edit = true;
+	if ($actionPermission[1]) {
+		$edit = false;
+	}
+	if ($actionPermission[2]) {
+		$delete = false;
+	}
 	$listview_header_search['action'] = $app_strings['LBL_ACTION'];
 	$listview_header_arr = array();
 	foreach ($listview_header_search as $fName => $fValue) {
@@ -163,6 +173,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 				'uitype' => $fieldType,
 				'picklist' => $picklistValues,
 				'tooltip' => $tooltip,
+				'edit' => $edit,
 			);
 		} elseif ($fieldType == '52' || $fieldType == '53') {
 			$users = get_user_array();
@@ -172,6 +183,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 				'uitype' => $fieldType,
 				'picklist' => $users,
 				'tooltip' => $tooltip,
+				'edit' => $edit,
 			);
 		} else {
 			$lv_arr = array(
@@ -179,19 +191,10 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 				'fieldvalue' => $fValue,
 				'uitype' => $fieldType,
 				'tooltip' => $tooltip,
+				'edit' => $edit,
 			);
 		}
 		array_push($listview_header_arr, $lv_arr);
-	}
-	$tabid = getTabid($currentModule);
-	$actionPermission = getTabsActionPermission($profileid)[$tabid];
-	$delete = true;
-	$edit = true;
-	if ($actionPermission[1]) {
-		$edit = false;
-	}
-	if ($actionPermission[2]) {
-		$delete = false;
 	}
 	if ($currentModule == 'cbCalendar') {
 		require_once 'modules/Calendar4You/Calendar4You.php';

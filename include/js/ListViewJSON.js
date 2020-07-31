@@ -81,13 +81,18 @@ const ListView = {
 			const fieldvalue = headerObj[index].fieldvalue;
 			const uitype = headerObj[index].uitype;
 			const tooltip = headerObj[index].tooltip;
+			let edit = headerObj[index].edit;
 			let editor;
 			let formatter;
 			let values = {};
 			if (uitype == '15' || uitype == '52' || uitype == '53') {
 				values = headerObj[index].picklist;
 			}
-			editor = ListView.getEditorType(uitype, values, fieldname);
+			if (edit) {
+				editor = ListView.getEditorType(uitype, values, fieldname);
+			} else {
+				editor = false;
+			}
 			if (fieldname == 'action') {
 				header = {
 					name: fieldname,
@@ -121,7 +126,11 @@ const ListView = {
 		      			};
 		      		}
 					if (uitype == '15' || uitype == '52' || uitype == '53' || uitype == '56') {
-						formatter = 'listItemText';
+						if (edit) {
+							formatter = 'listItemText';
+						} else {
+							formatter = false;
+						}
 					} else {
 						formatter = false;
 					}
