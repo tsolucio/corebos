@@ -1955,7 +1955,9 @@ window.addEventListener('load', function () {
 		this.discType 	= 'p',
 		this.comboBoxes	= [],
 		this.discCombo 	= {},
-		this.fields 	= {};
+		this.fields 	= {},
+		this.productId	= 0,
+		this.divisible	= true;
 
 		/* Private properties */
 		var copyTool 	= _getTool(el, "copy"),
