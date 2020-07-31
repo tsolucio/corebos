@@ -98,7 +98,7 @@ function UpdateProfile() {
 													<tbody><tr>
 													  <td valign="top"><img src="{'prvPrfHdrArrow.gif'|@vtiger_imageurl:$THEME}"> </td>
 													  <td class="prvPrfBigText"><b> {$CMOD.LBL_DEFINE_PRIV_FOR} &lt;{$PROFILE_NAME}&gt; </b><br>
-													  <font class="small">{$CMOD.LBL_USE_OPTION_TO_SET_PRIV}</font> </td>
+													  <div class="small">{$CMOD.LBL_USE_OPTION_TO_SET_PRIV}</div> </td>
 													  <td class="small" style="padding-left: 10px;" align="right"></td>
 
 													</tr>
@@ -290,10 +290,10 @@ function UpdateProfile() {
 		</tr>
 		<table border="0" cellpadding="2" cellspacing="0">
 			<tr>
-				<td align="left" class="cblds-p-v_none"><font color="red" size=5>*</font>&nbsp;{$CMOD.LBL_MANDATORY_MSG}</td>
+				<td align="left" class="cblds-p-v_none"><div style="color: red; size: 5;">*</div>&nbsp;{$CMOD.LBL_MANDATORY_MSG}</td>
 			</tr>
 			<tr>
-				<td align="left" class="cblds-p-v_none"><font color="blue" size=5>*</font>&nbsp;{$CMOD.LBL_DISABLE_FIELD_MSG}</td>
+				<td align="left" class="cblds-p-v_none"><div style="color: blue; size: 5px">*</div>&nbsp;{$CMOD.LBL_DISABLE_FIELD_MSG}</td>
 			</tr>
 			<tr>
 				<td align="left"><img src="{'locked.png'|@vtiger_imageurl:$THEME}" />&nbsp;{$CMOD.LBL_READ_ONLY_ACCESS_MSG}</td>

@@ -11,7 +11,7 @@
 <!-- Customized Reports Table Starts Here  -->
 	<form>
 	{if $DEL_DENIED neq ""}
-	<span id="action_msg_status" class="small" align="left"><font color=red><b>{$MOD.LBL_PERM_DENIED} {$DEL_DENIED}</b> </font></span>
+	<span id="action_msg_status" class="small" align="left"><div style="color: red;"><b>{$MOD.LBL_PERM_DENIED} {$DEL_DENIED}</b> </div></span>
 	{/if}
 	<input id="folder_ids" name="folderId" type="hidden" value='{$FOLDE_IDS}'>
 	{assign var=poscount value=0}
@@ -21,11 +21,11 @@
 		<tr>
 		<td class="mailSubHeader" align="left" colspan="3" style="font-weight:bold;">
 		<span id='folder{$reportfolder.id}'> {$reportfolder.name}</span>
-		<i><font color='#C0C0C0'>
+		<i><div style="color: #C0C0C0; font-style: italic;">
 			{if $reportfolder.description neq ''}
 				 - {$reportfolder.description}
 			{/if}
-		</font></i>
+		</div></i>
 		</td>
 		</tr>
 		<tr>

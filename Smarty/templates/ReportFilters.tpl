@@ -60,7 +60,7 @@
 						<td class="dvtCellInfo">
 							<input name="startdate" id="jscal_field_date_start" style="border: 1px solid rgb(186, 186, 186);" size="10" maxlength="10" value="{if isset($STARTDATE_STD)}{$STARTDATE_STD}{/if}" type="text"><br>
 							<img src="{$IMAGE_PATH}btnL3Calendar.gif" id="jscal_trigger_date_start" >
-							<font size="1"><em old="(yyyy-mm-dd)">({$DATEFORMAT})</em></font>
+							<div size="1"><em old="(yyyy-mm-dd)">({$DATEFORMAT})</em></div>
 							<script type="text/javascript">
 								Calendar.setup ({ldelim}
 									inputField : "jscal_field_date_start", ifFormat : "{$JS_DATEFORMAT}", showsTime : false, button : "jscal_trigger_date_start", singleClick : true, step : 1
@@ -70,7 +70,7 @@
 						<td class="dvtCellInfo">
 							<input name="enddate" id="jscal_field_date_end" style="border: 1px solid rgb(186, 186, 186);" size="10" maxlength="10" value="{if isset($ENDDATE_STD)}{$ENDDATE_STD}{/if}" type="text"><br>
 							<img src="{$IMAGE_PATH}btnL3Calendar.gif" id="jscal_trigger_date_end" >
-							<font size="1"><em old="(yyyy-mm-dd)">({$DATEFORMAT})</em></font>
+							<div size="1"><em old="(yyyy-mm-dd)">({$DATEFORMAT})</em></div>
 							<script type="text/javascript">
 								Calendar.setup ({ldelim}
 								inputField : "jscal_field_date_end", ifFormat : "{$JS_DATEFORMAT}", showsTime : false, button : "jscal_trigger_date_end", singleClick : true, step : 1

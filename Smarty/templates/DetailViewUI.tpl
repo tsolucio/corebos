@@ -357,7 +357,7 @@
 					{/foreach}
 					<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>
 						&nbsp;&nbsp;<span id="dtlview_{$keyfldname}">
-							{$keyval}&nbsp;<font size=1><em old="(yyyy-mm-dd)">&nbsp;<span id="timefmt_{$keyfldname}">{if $userFormat neq "24" && !empty($keyval)}{$fieldFormat}{/if}</span></em></font>
+							{$keyval}&nbsp;<div size=1><em old="(yyyy-mm-dd)">&nbsp;<span id="timefmt_{$keyfldname}">{if $userFormat neq "24" && !empty($keyval)}{$fieldFormat}{/if}</span></em></div>
 						</span>
 						<div id="editarea_{$keyfldname}" style="display:none;">
 							<input style="border:1px solid #bababa;" size="16" maxlength="16" type="text" id="txtbox_{$keyfldname}" name="{$keyfldname}" value="{$keyval|regex_replace:'/[^-]*(--)[^-]*$/':''}"></input>

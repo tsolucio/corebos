@@ -48,7 +48,7 @@
 					</div>
 				</div>
 				<div class="slds-form-element slds-m-top_small">
-					<font color="red">*</font>&nbsp;
+					<div  style="color: red;">*</div>&nbsp;
 					<label class="slds-form-element__label" for="srv_transactional">{'LBL_OUTGOING_MAIL_SERVER'|@getTranslatedString:'Settings'}</label>
 					<div class="slds-form-element__control">
 						<input type="text" id="srv_transactional" name="srv_transactional" class="slds-input" value="{$srv_transactional}" />
@@ -84,7 +84,7 @@
 					</div>
 				</div>
 				<div class="slds-form-element slds-m-top_small">
-					<font color="red">*</font>&nbsp;
+					<div style="color: red;">*</div>&nbsp;
 					<label class="slds-form-element__label" for="srv_marketing">{'LBL_OUTGOING_MAIL_SERVER'|@getTranslatedString:'Settings'}</label>
 					<div class="slds-form-element__control">
 						<input type="text" id="srv_marketing" name="srv_marketing" class="slds-input" value="{$srv_marketing}" />

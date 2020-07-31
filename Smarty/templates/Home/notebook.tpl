@@ -12,12 +12,12 @@
 </div>
 <textarea id='notebook_textarea_{$NOTEBOOKID}' onfocus='this.className="detailedViewTextBoxOn"' rows="18" onblur='saveContents(this, {$NOTEBOOKID})' style='display:none;width: 100%; overflow: auto; min-height: 250px; padding-left: 2%; padding-right: 3%;' title="{$MOD.LBL_NOTEBOOK_SAVE_TITLE}"></textarea>
 <span class="small" style="padding-left: 10px;display: block;" id="notebook_dbl_click_message">
-	<font color="grey">
+	<div style="color: grey;">
 		{$MOD.LBL_NOTEBOOK_TITLE}
-	</font>
+	</div>
 </span>
 <span class="small" style="padding-left: 10px;display: none;" id="notebook_save_message">
-	<font color="grey">
+	<div style="color: grey;">
 		{$MOD.LBL_NOTEBOOK_SAVE_TITLE}
-	</font>
+	</div>
 </span>

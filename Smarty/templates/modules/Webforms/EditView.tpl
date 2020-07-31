@@ -89,13 +89,13 @@
 												<!-- Cell information -->
 												<tr style="height:25px">
 													<td class="dvtCellLabel" align="right" width="10%" nowrap="nowrap">
-														<font color="red">*</font>{'LBL_WEBFORM_NAME'|@getTranslatedString:$MODULE}
+														<div style="color: red;">*</div>{'LBL_WEBFORM_NAME'|@getTranslatedString:$MODULE}
 													</td>
 													<td class="dvtCellInfo" align="left" width="40%">
 														<input type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="name" name="name" value="{$WEBFORM->getName()}" {if $WEBFORM->hasId()}readonly="readonly"{/if}>
 													</td>
 													<td class="dvtCellLabel" align="right" width="10%" nowrap="nowrap">
-														<font color="red">*</font>{'LBL_MODULE'|@getTranslatedString:$MODULE} :
+														<div style="color: red;">*</div>{'LBL_MODULE'|@getTranslatedString:$MODULE} :
 													</td>
 													<td class="dvtCellInfo" align="left" width="40%">
 														{if $WEBFORM->hasId()}
@@ -113,7 +113,7 @@
 												</tr>
 												<tr style="height:25px">
 													<td class="dvtCellLabel" align="right" >
-														<font color="red">*</font>{'LBL_ASSIGNED_TO'|@getTranslatedString:$MODULE}
+														<div style="color: red;">*</div>{'LBL_ASSIGNED_TO'|@getTranslatedString:$MODULE}
 													</td>
 													<td class="dvtCellInfo" align="left" >
 														{if $usr_selected eq 1}
@@ -170,7 +170,7 @@
 												{/if}
 												<tr style="height:25px">
 													<td class="dvtCellLabel" align="right" >
-														<font color="red">*</font>{'LBL_WEB_DOMAIN'|@getTranslatedString:$MODULE}
+														<div style="color: red;">*</div>{'LBL_WEB_DOMAIN'|@getTranslatedString:$MODULE}
 													</td>
 													<td class="dvtCellInfo" align="left" >
 														<input type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="web_domain" name="web_domain" value="{$WEBFORM->getWebDomain()}">

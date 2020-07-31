@@ -157,7 +157,7 @@
 	</tr>
 </table>
 <br><br>
-		<center><input class="crmbutton small save" type="Submit" style="width:70px" title="{$APP.LBL_SAVE_LABEL}" value="{$APP.LBL_SAVE_LABEL}" alt="{$APP.LBL_SAVE_LABEL}" onclick=VtigerJS_DialogBox.block();></center>
+		<div style="float: center; text-align: center;"><input class="crmbutton small save" type="Submit" style="width:70px" title="{$APP.LBL_SAVE_LABEL}" value="{$APP.LBL_SAVE_LABEL}" alt="{$APP.LBL_SAVE_LABEL}" onclick=VtigerJS_DialogBox.block();></div>
 <script>
 	window.onload=function(){ldelim}
 		initialModuleSettings();

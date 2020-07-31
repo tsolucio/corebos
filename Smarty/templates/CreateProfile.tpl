@@ -57,7 +57,7 @@
 								<tbody><tr>
 									<td valign="top"><img src="{'prvPrfHdrArrow.gif'|@vtiger_imageurl:$THEME}"> </td>
 									<td class="prvPrfBigText"><b> {$CMOD.LBL_STEP_1_2} : {$CMOD.LBL_WELCOME_PROFILE_CREATE} </b><br>
-										<font class="small"> {$CMOD.LBL_SELECT_CHOICE_NEW_PROFILE} </font> </td>
+										<div class="small"> {$CMOD.LBL_SELECT_CHOICE_NEW_PROFILE} </div> </td>
 									<td class="small" style="padding-left: 10px;" align="right"></td>
 								</tr>
 								</tbody></table></td>

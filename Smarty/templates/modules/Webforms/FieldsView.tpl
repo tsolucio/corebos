@@ -39,7 +39,7 @@
 		</td>
 		<td class="dvtCellLabel" align="left" colspan="1">
 		{if $field.mandatory eq 1}
-			<font color="red">*</font>
+			<div style="color: red;">*</div>
 		{/if}
 			{$field.label|@getTranslatedString:$MODULE}
 		</td>
@@ -57,7 +57,7 @@
 			{elseif $field.type.name eq 'date'}
 				<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="value[{$field.name}]" name="value[{$field.name}]" value="{$defaultvalue[0]}">
 				<img src="{'miniCalendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$field.name}">
-				<font size=1 id="mincal_{$field.name}"><em old="(yyyy-mm-dd)">({$DATE_FORMAT})</em></font>
+				<div style="size: 2;" id="mincal_{$field.name}"><em old="(yyyy-mm-dd)">({$DATE_FORMAT})</em></div>
 				<script id="date_{$CNT}">
 					getCalendarPopup('jscal_trigger_{$field.name}','value[{$field.name}]','{$CAL_DATE_FORMAT}')
 				</script>
@@ -96,7 +96,7 @@
 				{elseif $field.type.name eq 'date'}
 					<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="value[{$field.name}]" name="value[{$field.name}]" value="{$field.default}">
 					<img src="{'miniCalendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$field.name}" >
-					<font size=1 id="mincal_{$field.name}"><em old="(yyyy-mm-dd)">({$DATE_FORMAT})</em></font>
+					<div style="size: 2;" id="mincal_{$field.name}"><em old="(yyyy-mm-dd)">({$DATE_FORMAT})</em></div>
 					<script id="date_{$CNT}">
 						getCalendarPopup('jscal_trigger_{$field.name}','value[{$field.name}]','{$CAL_DATE_FORMAT}')
 					</script>
@@ -134,7 +134,7 @@
 				{elseif $field.type.name eq 'date'}
 					<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="value[{$field.name}]" name="value[{$field.name}]" value="{$field.default}" style="display:none;">
 					<img src="{'miniCalendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$field.name}" style="display:none;">
-					<font size=1 id="mincal_{$field.name}" style="display:none;"><em old="(yyyy-mm-dd)">({$DATE_FORMAT})</em></font>
+					<div style="size: 2;" id="mincal_{$field.name}" style="display:none;"><em old="(yyyy-mm-dd)">({$DATE_FORMAT})</em></div>
 					<script id="date_{$CNT}">
 						getCalendarPopup('jscal_trigger_{$field.name}','value[{$field.name}]','{$CAL_DATE_FORMAT}')
 					</script>

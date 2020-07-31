@@ -38,7 +38,7 @@
 									</tr>
 									<tr>
 										<td>
-											<font color="green" >{'LBL_EMBED_MSG'|@getTranslatedString:$MODULE }</font>
+											<div style="color: green;" >{'LBL_EMBED_MSG'|@getTranslatedString:$MODULE }</div>
 										</td>
 									</tr>
 									<tr>

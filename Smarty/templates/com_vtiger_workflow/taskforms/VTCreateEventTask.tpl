@@ -22,7 +22,7 @@ var eventType = '{$task->eventType}';
 <div id="view">
 	<table border="0" cellpadding="5" cellspacing="0" width="100%" class="small">
 	<tr valign="top">
-		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap"><b><font color=red>*</font>{$MOD.LBL_EVENTNAME}</b></td>
+		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap" style="font-weight: bold;"><div style="color: red;">*</div>{$MOD.LBL_EVENTNAME}</td>
 		<td class='dvtCellInfo'><input type="text" name="eventName" value="{$task->eventName}" id="workflow_eventname" class="form_input"></td>
 	</tr>
 	<tr valign="top">

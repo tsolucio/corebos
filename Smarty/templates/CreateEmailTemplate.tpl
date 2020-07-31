@@ -116,7 +116,7 @@
 
 					<table border=0 cellspacing=0 cellpadding=5 width=100% >
 					<tr>
-						<td width=20% class="small cellLabel"><font color="red">*</font><strong>{$UMOD.LBL_NAME}</strong></td>
+						<td width=20% class="small cellLabel"><div color="red">*</div><strong>{$UMOD.LBL_NAME}</strong></td>
 						<td width=80% class="small cellText"><input name="templatename" type="text" value="{$TEMPLATENAME}" class="detailedViewTextBox" tabindex="1">&nbsp;</td>
 					  </tr>
 					<tr>
@@ -161,7 +161,7 @@
                                 </span></td>
                               </tr>
                               <tr>
-                                <td width="15%" valign="top" class="cellLabel small"><font color='red'>*</font>{$UMOD.LBL_SUBJECT}</td>
+                                <td width="15%" valign="top" class="cellLabel small"><div style="color: red;">*</div>{$UMOD.LBL_SUBJECT}</td>
                                 <td width="85%" colspan="2" class="cellText small"><span class="small cellText">
                                   <input name="subject" type="text" value="{$SUBJECT}" class="detailedViewTextBox" tabindex="4">
                                 </span></td>

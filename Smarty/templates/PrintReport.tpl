@@ -51,7 +51,7 @@ body table tr td{
 	<tr>
 		<td align="left" valign="top" style="border:0px solid #000000;">
 		<h2>{$MOD.$REPORT_NAME}</h2>
-		<font  color="#666666"><div id="report_info"></div></font>
+		<div  style="color: #666666;"><div id="report_info"></div></div>
 		</td>
 		<td align="right" style="border:0px solid #000000;" valign="top"><h3 style="color:#CCCCCC">{$COUNT} {$APP.LBL_RECORDS}</h3></td>
 	</tr>

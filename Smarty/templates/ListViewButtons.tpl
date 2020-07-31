@@ -48,7 +48,7 @@
 					<td class="small">
 						<table border=0 cellspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
 						<tr>
-							<td align="right" nowrap class="cellLabel small"><font color='red'>*</font>&nbsp;<b>{$MOD.LBL_FOLDER_NAME}</b></td>
+							<td align="right" nowrap class="cellLabel small"><div style="color: red;">*</div>&nbsp;<b>{$MOD.LBL_FOLDER_NAME}</b></td>
 							<td align="left" class="cellText small">
 							<input id="folder_id" name="folderId" type="hidden" value=''>
 							<input id="fldrsave_mode" name="folderId" type="hidden" value='save'>

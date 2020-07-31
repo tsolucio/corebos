@@ -46,7 +46,7 @@ function gotoUpdateListPrice(id,pbid,proid){
 		<!-- PUBLIC CONTENTS STARTS-->
 		<div class="small" style="padding:20px">
 			{* Module Record numbering, used MOD_SEQ_ID instead of ID *}
-			<span class="lvtHeaderText"><font color="purple">[ {$MOD_SEQ_ID} ] </font>{$NAME} -  {$SINGLE_MOD} {$APP.LBL_MORE} {$APP.LBL_INFORMATION}</span> <br>
+			<span class="lvtHeaderText"><div style="color: purple;">[ {$MOD_SEQ_ID} ] </div>{$NAME} -  {$SINGLE_MOD} {$APP.LBL_MORE} {$APP.LBL_INFORMATION}</span> <br>
 			{$UPDATEINFO}
 			</span>&nbsp;&nbsp;
 			<span id="vtbusy_info" style="display:none;" valign="bottom">

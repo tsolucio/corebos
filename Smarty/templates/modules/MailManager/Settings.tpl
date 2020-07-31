@@ -26,7 +26,7 @@
     <div id="settings_details" {if $SERVERNAME neq ''} style="display:block;" {else} style="display:none;"{/if}>
         <table width="100%" cellpadding=5 cellspacing=0 border=0 class="small" style='clear: both;'>
             <tr>
-                <td width="15%" nowrap="nowrap" class="cblds-p-v_medium"><font color="red">*</font>{'LBL_Mail_Server'|@getTranslatedString}</td>
+                <td width="15%" nowrap="nowrap" class="cblds-p-v_medium"><div style="color: red">*</div>{'LBL_Mail_Server'|@getTranslatedString}</td>
                 <td class="cblds-p-v_medium">
                     <input name="_mbox_server" value="{$MAILBOX->server()}" type="text" style="width: 60%" class="detailedViewTextBox" onblur="this.className='detailedViewTextBox'" onfocus="this.className='detailedViewTextBoxOn'">
                     <span class="mm_blur">{'LBL_Like'|@getTranslatedString}, mail.company.com or 192.168.10.20</span>
@@ -34,7 +34,7 @@
             </tr>
 
             <tr>
-                <td width="15%" nowrap="nowrap" class="cblds-p-v_medium"><font color="red">*</font>{'LBL_Username'|@getTranslatedString}</td>
+                <td width="15%" nowrap="nowrap" class="cblds-p-v_medium"><div  style="color: red">*</div>{'LBL_Username'|@getTranslatedString}</td>
                 <td class="cblds-p-v_medium">
                     <input name="_mbox_user" id="_mbox_user" value="{$MAILBOX->username()}" type="text" style="width: 60%" class="detailedViewTextBox" onblur="this.className='detailedViewTextBox'" onfocus="this.className='detailedViewTextBoxOn'">
                     <span class="mm_blur">{'LBL_Your_Mailbox_Account'|@getTranslatedString}</span>
@@ -42,7 +42,7 @@
             </tr>
 
             <tr>
-                <td width="15%" nowrap="nowrap" class="cblds-p-v_medium"><font color="red">*</font>{'LBL_Password'|@getTranslatedString}</td>
+                <td width="15%" nowrap="nowrap" class="cblds-p-v_medium"><div c style="color: red">*</div>{'LBL_Password'|@getTranslatedString}</td>
                 <td class="cblds-p-v_medium">
                     <input name="_mbox_pwd" id="_mbox_pwd" value="{$MAILBOX->password()}" type="password" style="width: 60%" class="detailedViewTextBox" onblur="this.className='detailedViewTextBox'" onfocus="this.className='detailedViewTextBoxOn'">
                     <span class="mm_blur">{'LBL_Account_Password'|@getTranslatedString}</span>

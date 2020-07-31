@@ -241,7 +241,7 @@
 			<tr id="StuffTitleId" style="display:block;">
 				<td class="dvtCellLabel" width="110" align="right">
 					{$MOD.LBL_HOME_STUFFTITLE}
-					<font color='red'>*</font>
+					<div style="color: red;">*</div>
 				</td>
 				<td class="dvtCellInfo" colspan="2" width="300">
 					<input type="text" name="stufftitle" id="stufftitle_id" class="detailedViewTextBox" onfocus="this.className='detailedViewTextBoxOn'" onblur="this.className='detailedViewTextBox'" style="width:57%">
@@ -251,7 +251,7 @@
 			<tr id="homeURLField" style="display:block;">
 				<td class="dvtCellLabel" width="110" align="right">
 					{$MOD.LBL_URL}
-					<font color='red'>*</font>
+					<div style="color: red;">*</div>
 				</td>
 				<td class="dvtCellInfo" colspan="2" width="300">
 					<input type="text" name="url" id="url_id" class="detailedViewTextBox" onfocus="this.className='detailedViewTextBoxOn'" onblur="this.className='detailedViewTextBox'" style="width:57%">
@@ -304,7 +304,7 @@
 				<td id="selModPrime_id" width="300" colspan="2" class="dvtCellInfo"></td>
 			</tr>
 			<tr id="rssRow" style="display:none">
-				<td class="dvtCellLabel" width="110" align="right">{$MOD.LBL_HOME_RSSURL}<font color='red'>*</font></td>
+				<td class="dvtCellLabel" width="110" align="right">{$MOD.LBL_HOME_RSSURL}<div style="color: red;">*</div></td>
 				<td width="300" colspan="2" class="dvtCellInfo"><input type="text" name="txtRss" id="txtRss_id" class="detailedViewTextBox" onfocus="this.className='detailedViewTextBoxOn'" onblur="this.className='detailedViewTextBox'" style="width:58%"></td>
 			</tr>
 			<tr id="dashNameRow" style="display:none">

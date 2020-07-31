@@ -22,7 +22,7 @@ var taskPriority = '{$task->priority}';
 <div id="view">
 	<table border="0" cellpadding="5" cellspacing="0" width="100%" class="small">
 	<tr valign="top">
-		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap"><b><font color=red>*</font> {$MOD.LBL_TODO}</b></td>
+		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap" style="font-weight: bold;"><div style="color: red;">*</div>{$MOD.LBL_TODO}</td>
 		<td class='dvtCellInfo'><input type="text" name="todo" value="{$task->todo}" id="workflow_todo" class="form_input"></td>
 	</tr>
 	<tr valign="top">

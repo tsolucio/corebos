@@ -234,7 +234,7 @@ function barclick(evt) {
     <td class="small">
         <table border="0" cellspacing="0" cellpadding="3" width="100%" align="center" bgcolor="white">
             <tr>
-                <td class="dvtCellLabel" width="110" align="right">{'LBL_HOME_WINDOW_TITLE'|@getTranslatedString:$MODULE}<font color='red'>*</font></td>
+                <td class="dvtCellLabel" width="110" align="right">{'LBL_HOME_WINDOW_TITLE'|@getTranslatedString:$MODULE}<div style="color: red;">*</div></td>
                 <td class="dvtCellInfo" colspan="2" width="300" align="left"><input type="text" name="windowtitle" id="windowtitle_id" class="detailedViewTextBox" onfocus="this.className='detailedViewTextBoxOn'" onblur="this.className='detailedViewTextBox'" style="width:57%"></td>
             </tr>
             <tr>

@@ -151,8 +151,8 @@ function performScanNow(app_key, scannername) {
 						<tr>
 							<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_STATUS}</strong></td>
 							<td width="80%" class="small cellText">
-								{if $SCANNERINFO.isvalid eq true}<font color=green><b>{$MOD.LBL_ENABLED}</b></font>
-								{elseif $SCANNERINFO.isvalid eq false}<font color=red><b>{$MOD.LBL_DISABLED}</b></font>{/if}
+								{if $SCANNERINFO.isvalid eq true}<div style="color: red; font-weight: bold;">{$MOD.LBL_ENABLED}</div>
+								{elseif $SCANNERINFO.isvalid eq false}<div style="color: red; font-weight: bold;">{$MOD.LBL_DISABLED}</div>{/if}
 							</td>
 						</tr></table>
 					</td>

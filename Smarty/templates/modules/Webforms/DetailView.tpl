@@ -37,7 +37,7 @@
 									</tr>
 									<tr>
 										<td>
-											<font color="green" >{'LBL_EMBED_MSG'|@getTranslatedString:$MODULE }</font>
+											<div style="color: green;" >{'LBL_EMBED_MSG'|@getTranslatedString:$MODULE }</div>
 										</td>
 									</tr>
 									<tr>
@@ -115,13 +115,13 @@
 												<!-- Cell information -->
 												<tr style="height:25px">
 													<td class="dvtCellLabel" align="right" width="10%">
-														<font color="red">*</font>{'LBL_WEBFORM_NAME'|@getTranslatedString:$MODULE}
+														<div style="color: red;">*</div>{'LBL_WEBFORM_NAME'|@getTranslatedString:$MODULE}
 													</td>
 													<td class="dvtCellInfo" align="left" width="40%">
 														{$WEBFORMMODEL->getName()}
 													</td>
 													<td class="dvtCellLabel" align="right" width="10%">
-														<font color="red">*</font>{'LBL_MODULE'|@getTranslatedString:$MODULE} :
+														<div style="color: red;">*</div>{'LBL_MODULE'|@getTranslatedString:$MODULE} :
 													</td>
 													<td class="dvtCellInfo" align="left" width="40%">
 														{$WEBFORMMODEL->getTargetModule()|@getTranslatedString:$WEBFORMMODEL->getTargetModule()}
@@ -129,7 +129,7 @@
 												</tr>
 												<tr style="height:25px">
 													<td class="dvtCellLabel" align="right" >
-														<font color="red">*</font>{'LBL_ASSIGNED_TO'|@getTranslatedString:$MODULE}
+														<div style="color: red;">*</div>{'LBL_ASSIGNED_TO'|@getTranslatedString:$MODULE}
 													</td>
 													<td class="dvtCellInfo" align="left" >
 														{$OWNER}
@@ -157,7 +157,7 @@
 												</tr>
 												<tr style="height:25px">
 													<td class="dvtCellLabel" align="right" >
-														<font color="red">*</font>{'LBL_WEB_DOMAIN'|@getTranslatedString:$MODULE}
+														<div style="color: red;">*</div>{'LBL_WEB_DOMAIN'|@getTranslatedString:$MODULE}
 													</td>
 													<td class="dvtCellInfo" align="left" >
 														{$WEBFORMMODEL->getWebDomain()}
@@ -208,7 +208,7 @@
 																<tr style="height:25px" id="field_row">
 																	<td class="dvtCellLabel" align="left" colspan="1">
 																	{if $fieldinfo.mandatory eq 1}
-																		<font color="red">*</font>
+																		<div style="color: red;">*</div>
 																	{/if}
 																		{$fieldinfo.label}
 																	</td>

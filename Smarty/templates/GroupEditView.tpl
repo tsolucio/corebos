@@ -213,7 +213,7 @@ function validate()
 					</table>
 					<table width="100%" border="0" cellspacing="0" cellpadding="5">
 						<tr class="small">
-							<td width="15%" class="small cellLabel"><font color="red">*</font><strong>{$CMOD.LBL_GROUP_NAME}</strong></td>
+							<td width="15%" class="small cellLabel"><div style="color: red;">*</div><strong>{$CMOD.LBL_GROUP_NAME}</strong></td>
 							<td width="85%" class="cellText" ><input id="groupName" name="groupName" type="text" value="{$GROUPNAME}" class="detailedViewTextBox"></td>
 						</tr>
 						<tr class="small">

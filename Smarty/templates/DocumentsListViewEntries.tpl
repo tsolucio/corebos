@@ -20,7 +20,7 @@
 				<table border=0 cellspacing=0 cellpadding=0 class="small" align="center">
 					<tr>
 						<td align="center" style="padding-left:5px;padding-right:5px">
-							<b><font size=2>{$APP.LBL_VIEW}</font></b> <SELECT NAME="viewname" id="viewname" class="small" onchange="showDefaultCustomView(this,'{$MODULE}','{$CATEGORY}')">{$CUSTOMVIEW_OPTION}</SELECT>
+							<b><div style="size:2" >{$APP.LBL_VIEW}</div></b> <SELECT NAME="viewname" id="viewname" class="small" onchange="showDefaultCustomView(this,'{$MODULE}','{$CATEGORY}')">{$CUSTOMVIEW_OPTION}</SELECT>
 						</td>
 						{if isset($ALL) && $ALL eq 'All'}
 							<td align="center" style="padding-left:5px;padding-right:5px">
@@ -118,7 +118,7 @@
 													<b>{$folder.foldername}</b>
 													&nbsp;&nbsp;
 													{if $folder.description neq ''}
-														<font class="copy">[<i>{$folder.description}</i>]</font>
+														<div class="copy">[<i>{$folder.description}</i>]</div>
 													{/if}
 												</td>
 												<td class="mailSubHeader small" align="center" nowrap>{$folder.recordListRange}</td>

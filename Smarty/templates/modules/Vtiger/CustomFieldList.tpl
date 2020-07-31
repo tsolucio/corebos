@@ -98,7 +98,7 @@ var gselected_fieldtype = '';
 	<div align=center>
 			<!-- DISPLAY -->
 			{if $MODE neq 'edit'}
-			<b><font color=red>{$DUPLICATE_ERROR} </font></b>
+			<div style="color: red; font-weight: bold;">{$DUPLICATE_ERROR} </div>
 			{/if}
 				<table class="settingsSelUITopLine" border="0" cellpadding="5" cellspacing="0" width="100%" >
 					<tbody>

@@ -47,7 +47,7 @@
 				{if !empty($CONNECTFAIL)}
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 					<tr>
-						<td align="center" width="100%"><font color='red'><b>{$CONNECTFAIL}</b></font></td>
+						<td align="center" width="100%"><div style="color: red; font-weight: bold;">{$CONNECTFAIL}</div></td>
 					</tr>
 					</table>
 				{/if}
@@ -62,18 +62,18 @@
 				<tr>
 					<td class="small" valign=top ><table width="100%" border="0" cellspacing="0" cellpadding="5">
 						<tr>
-							<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_SCANNER} {$MOD.LBL_NAME}</strong> <font color="red">*</font></td>
+							<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_SCANNER} {$MOD.LBL_NAME}</strong> <div style="color: red;">*</div></td>
 							<td width="80%">
 								<input type="hidden" name="hidden_scannername" class="small" value="{$SCANNERINFO.scannername}" readonly>
 								<input type="text" name="mailboxinfo_scannername" class="small" value="{$SCANNERINFO.scannername}" size=50>
 							</td>
 						</tr>
 						<tr>
-							<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_SERVER} {$MOD.LBL_NAME}</strong> <font color="red">*</font></td>
+							<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_SERVER} {$MOD.LBL_NAME}</strong> <div style="color: red;">*</div></td>
 							<td width="80%"><input type="text" name="mailboxinfo_server" class="small" value="{$SCANNERINFO.server}" size=50></td>
 						</tr>
 						<tr>
-							<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_PROTOCOL}</strong> <font color="red">*</font></td>
+							<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_PROTOCOL}</strong> <div style="color: red;">*</div></td>
 							<td width="80%">
 								{assign var="imapused" value=""}
 								{assign var="imap4used" value=""}
@@ -89,11 +89,11 @@
 							</td>
 						</tr>
 						<tr>
-							<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_USERNAME}</strong> <font color="red">*</font></td>
+							<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_USERNAME}</strong> <div style="color: red;">*</div></td>
 							<td width="80%"><input type="text" name="mailboxinfo_username" class="small" value="{$SCANNERINFO.username}" size=50></td>
 						</tr>
 						<tr>
-							<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_PASSWORD}</strong> <font color="red">*</font></td>
+							<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_PASSWORD}</strong> <div style="color: red;">*</div></td>
 							<td width="80%"><input type="password" name="mailboxinfo_password" class="small" value="{$SCANNERINFO.password}" size=50></td>
 						</tr>
 						<tr>

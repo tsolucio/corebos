@@ -20,7 +20,7 @@
 		<td class="mailSubHeader"><b>
 		<span id='folder{$reportfolder.id}'>{$reportfolder.name|@getTranslatedString:$MODULE}</span>
 		</b>
-		<i><font color='#C0C0C0'> - {$reportfolder.description|@getTranslatedString:$MODULE}</font></i>
+		<div style="color: #C0C0C0; font-style: italic;"> - {$reportfolder.description|@getTranslatedString:$MODULE}</div>
 		</td>
 		</tr>
 		<tr>

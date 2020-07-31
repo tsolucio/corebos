@@ -102,7 +102,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 			</div>
 			<div id="settings_details" {if $ic_mail_server_displayname neq ''} style="display:block;" {else} style="display:none;"{/if}>
 				<div class="slds-form-element slds-m-top--small" id="ic-div-servername">
-					<font color="red">*</font>&nbsp;
+					<div style="color: red;">*</div>&nbsp;
 					<label class="slds-form-element__label" for="ic_mail_server_name">{'LBL_OUTGOING_MAIL_SERVER'|@getTranslatedString:'Settings'}</label>
 					<div class="slds-form-element__control">
 						<input type="text" id="ic_mail_server_name" name="ic_mail_server_name" class="slds-input" value="{$ic_mail_server_name}" />
@@ -110,7 +110,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 					<div class="slds-form-element__help" id="form-error-ic-server-name"></div>
 				</div>
 				<div class="slds-form-element slds-m-top--small" id="ic-div-username">
-					<font color="red">*</font>&nbsp;
+					<div style="color: red;">*</div>&nbsp;
 					<label class="slds-form-element__label" for="ic_mail_server_username">{'LBL_USERNAME'|@getTranslatedString:'Settings'}</label>
 					<div class="slds-form-element__control">
 						<input type="text" id="ic_mail_server_username" name="ic_mail_server_username" aria-describedby="form-error-02" class="slds-input" value="{$ic_mail_server_username}" />
@@ -118,7 +118,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 					<div class="slds-form-element__help" id="form-error-ic-server-username"></div>
 				</div>
 				<div class="slds-form-element slds-m-top--small" id="ic-div-password">
-					<font color="red">*</font>&nbsp;
+					<div style="color: red;">*</div>&nbsp;
 					<label class="slds-form-element__label" for="ic_mail_server_password">{'LBL_PASWRD'|@getTranslatedString:'Settings'}</label>
 					<div class="slds-form-element__control">
 						<input type="password" id="ic_mail_server_password" name="ic_mail_server_password" aria-describedby="form-error-01" class="slds-input" value="{$ic_mail_server_password}" />
@@ -267,7 +267,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 				</div>
 			</div>
 			<div class="slds-form-element slds-m-top--small" id="og-div-server-name">
-				<font color="red">*</font>&nbsp;
+				<div style="color: red;">*</div>&nbsp;
 				<label class="slds-form-element__label" for="og_mail_server_name">{'LBL_OUTGOING_MAIL_SERVER'|@getTranslatedString:'Settings'}</label>
 				<div class="slds-form-element__control">
 					<input type="text" id="og_mail_server_name" name="og_mail_server_name" class="slds-input" value="{$og_mail_server_name}" />
@@ -275,7 +275,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 				<div class="slds-form-element__help" id="form-error-og-server-name"></div>
 			</div>
 			<div class="slds-form-element slds-m-top--small" id="og-div-server-username">
-				<font color="red">*</font>&nbsp;
+				<div style="color: red;">*</div>&nbsp;
 				<label class="slds-form-element__label" for="og_mail_server_username">{'LBL_USERNAME'|@getTranslatedString:'Settings'}</label>
 				<div class="slds-form-element__control">
 					<input type="text" id="og_mail_server_username" name="og_mail_server_username" class="slds-input" value="{$og_mail_server_username}" />
@@ -283,7 +283,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 				<div class="slds-form-element__help" id="form-error-og-server-username"></div>
 			</div>
 			<div class="slds-form-element slds-m-top--small" id="og-div-server-password">
-				<font color="red">*</font>&nbsp;
+				<div style="color: red;">*</div>&nbsp;
 				<label class="slds-form-element__label" for="og_mail_server_password">{'LBL_PASWRD'|@getTranslatedString:'Settings'}</label>
 				<div class="slds-form-element__control">
 					<input type="password" id="og_mail_server_password" name="og_mail_server_password" class="slds-input" value="{$og_mail_server_password}" />

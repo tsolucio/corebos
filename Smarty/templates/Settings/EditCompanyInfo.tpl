@@ -53,7 +53,7 @@
 					<tr>
 						<td class="small" valign=top ><table width="100%"  border="0" cellspacing="0" cellpadding="5">
                           <tr>
-                            <td width="20%" class="small cellLabel"><font color="red">*</font><strong>{$MOD.LBL_ORGANIZATION_NAME}</strong></td>
+                            <td width="20%" class="small cellLabel"><div style="color: red;">*</div><strong>{$MOD.LBL_ORGANIZATION_NAME}</strong></td>
                             <td width="80%" class="small cellText">
 				<input type="text" name="organization_name" class="detailedViewTextBox small" value="{$ORGANIZATIONNAME}">
 				<input type="hidden" name="org_name" value="{$ORGANIZATIONNAME}">

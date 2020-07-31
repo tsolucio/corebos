@@ -162,7 +162,7 @@
 						</tr>
 						{if $RESTRICTEDMODULES neq ''}
 						<tr class='small' height='5%'>
-							<td colspan="2"><div class='dvtCellInfo' style='margin-left: 10px;'>{$MOD.LBL_NOT_ACTIVE}<font color="red"><b> {$RESTRICTEDMODULES} </b></font></div></td>
+							<td colspan="2"><div class='dvtCellInfo' style='margin-left: 10px;'>{$MOD.LBL_NOT_ACTIVE}<div style="color: red; font-weight: bold;"> {$RESTRICTEDMODULES}</div></div></td>
 						</tr>
 						{/if}
 						<tr valign=top height="70%">

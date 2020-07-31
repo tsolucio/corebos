@@ -51,7 +51,7 @@
 
 					<table border=0 cellspacing=0 cellpadding=5 width=100% >
 					<tr valign="top">
-						<td nowrap class="cellLabel small"><font color="red">*</font><strong>{$APP.LBL_NEW} {$UMOD.LBL_TEMPLATE_FILE}</strong></td>
+						<td nowrap class="cellLabel small"><div style="color: red;">*</div><strong>{$APP.LBL_NEW} {$UMOD.LBL_TEMPLATE_FILE}</strong></td>
 						<td class="cellText small"><strong>
 							<input type="file" name="binFile" class="small" onchange="validateFilename(this);" />
 							<input type="hidden" name="binFile_hidden" value="" />

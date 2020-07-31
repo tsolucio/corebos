@@ -36,9 +36,9 @@
 							<tr valign=top>
 								<td class='cellText small'>
 									{if $MODULEIMPORT_FILE_INVALID eq "true"}
-										<font color=red><b>{$MOD.VTLIB_LBL_INVALID_FILE}</b></font> {$MOD.VTLIB_LBL_INVALID_IMPORT_TRY_AGAIN}
+										<div style="color: red;"><b>{$MOD.VTLIB_LBL_INVALID_FILE}</b></div> {$MOD.VTLIB_LBL_INVALID_IMPORT_TRY_AGAIN}
 									{else}
-										<font color=red>{$MOD.VTLIB_LBL_UNABLE_TO_UPLOAD}</font> {$MOD.VTLIB_LBL_UNABLE_TO_UPLOAD2}
+										<div style="color: red;">{$MOD.VTLIB_LBL_UNABLE_TO_UPLOAD}</div> {$MOD.VTLIB_LBL_UNABLE_TO_UPLOAD2}
 									{/if}
 								</td>
 							</tr>
@@ -66,7 +66,7 @@
 								</td>
 								<td class='cellText small'>
 									{$MODULEIMPORT_NAME}
-									{if $MODULEIMPORT_EXISTS eq 'true'} <font color=red><b>{$MOD.VTLIB_LBL_EXISTS}</b></font> {/if}
+									{if $MODULEIMPORT_EXISTS eq 'true'} <div style="color: red;"><b>{$MOD.VTLIB_LBL_EXISTS}</b></div> {/if}
 								</td>
 							</tr>
 							{if $MODULEIMPORT_DIR}
@@ -76,7 +76,7 @@
 								</td>
 								<td class='cellText small'>
 									{$MODULEIMPORT_DIR}
-									{if $MODULEIMPORT_DIR_EXISTS eq 'true'} <font color=red><b>{$MOD.VTLIB_LBL_EXISTS}</b></font>
+									{if $MODULEIMPORT_DIR_EXISTS eq 'true'} <div style="color: red;"><b>{$MOD.VTLIB_LBL_EXISTS}</b></div>
 										{* -- Avoiding File Overwrite
 										 <br> Overwrite existing files? <input type="checkbox" name="module_dir_overwrite" value="true">
 										-- *}

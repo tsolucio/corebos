@@ -47,7 +47,7 @@
 </tr>
 <tr>
 	<td class="small">
-		<font color="red">* {$MOD_PICKLIST.LBL_DISPLAYED_VALUES}</font>
+		<div  style="color: red">* {$MOD_PICKLIST.LBL_DISPLAYED_VALUES}</div>
 	</td>
 </tr>
 </table>

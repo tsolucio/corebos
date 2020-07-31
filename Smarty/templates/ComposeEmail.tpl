@@ -56,7 +56,7 @@
 	</td>
 </tr>
 	<tr>
-	<td class="mailSubHeader" align="right"><font color="red">*</font><b>{$MOD.LBL_FROM}</b></td>
+	<td class="mailSubHeader" align="right"><div style="color: red;">*</div><b>{$MOD.LBL_FROM}</b></td>
 	<td class="cellText" style="padding: 5px;">
 		<input name="from_email" id="from_email" class="txtBox" type="text" value="{if isset($FROM_MAIL)}{$FROM_MAIL}{/if}" style="width: 525px;" placeholder="{'LeaveEmptyForUserEmail'|@getTranslatedString:'Settings'}">
 	</td>
@@ -68,7 +68,7 @@
 {foreach item=elements from=$row}
 	{if isset($elements.2) && isset($elements.2.0) && $elements.2.0 eq 'parent_id'}
 	<tr>
-	<td class="mailSubHeader" align="right"><font color="red">*</font><b>{$MOD.LBL_TO}</b></td>
+	<td class="mailSubHeader" align="right"><div style="color: red;">*</div><b>{$MOD.LBL_TO}</b></td>
 	<td class="cellText" style="padding: 5px;">
 		<input name="listofids" id="listofids" type="hidden" value="{if isset($LISTID)}{$LISTID}{/if}">
 		<input name="{$elements.2.0}" id="{$elements.2.0}" type="hidden" value="{if isset($IDLISTS)}{$IDLISTS}{/if}">
@@ -129,7 +129,7 @@
 	{/if}
 	{elseif isset($elements.2) && isset($elements.2.0) && $elements.2.0 eq 'subject'}
 	<tr>
-	<td class="mailSubHeader" style="padding: 5px;" align="right" nowrap><font color="red">*</font>{$elements.1.0} :</td>
+	<td class="mailSubHeader" style="padding: 5px;" align="right" nowrap><div style="color: red;">*</div>{$elements.1.0} :</td>
 		{if (isset($WEBMAIL) && $WEBMAIL eq 'true') or (isset($RET_ERROR) && $RET_ERROR eq 1)}
 			<td class="cellText" style="padding: 5px;"><input type="text" class="txtBox" name="{$elements.2.0}" value="{$SUBJECT}" id="{$elements.2.0}" style="width:99%"></td>
 		{else}

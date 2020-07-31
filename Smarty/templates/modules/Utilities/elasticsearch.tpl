@@ -82,7 +82,7 @@
 </div>
 </div>
 <br>
-<center><b>{'sel_fields_es'|@getTranslatedString:'sel_fields_es'}</b></center>
+<div style="font-weight: bold;">{'sel_fields_es'|@getTranslatedString:'sel_fields_es'}</div>
 <br>
 <div class="slds-form-element">
 <table><th></th><th>{'Name'|@getTranslatedString}</th><th>{'LBL_TYPE'|@getTranslatedString}</th><th>{'Analyzed'|@getTranslatedString:'Analyzed'}</th>

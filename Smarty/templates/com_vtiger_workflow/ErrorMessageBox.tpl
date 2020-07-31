@@ -13,17 +13,17 @@
 	</table>
 	<div class="popup_content" style='text-align: left;'>
 		<ol style="list-style-type: none;">
-			<li id="empty_fields_message" style="display:none">
-				<b><font color="red">*</font> {$MOD.LBL_VALIDATION_MISSING_MANDATORY_FIELDS}</b>
+			<li id="empty_fields_message" style="display:none; font-weight: bold;">
+				<div style="color: red;">*</div> {$MOD.LBL_VALIDATION_MISSING_MANDATORY_FIELDS}
 			</li>
-			<li id="invalid_date_range_message" style="display:none">
-				<b><font color="red">*</font> {$MOD.LBL_VALIDATION_INVALID_DATE_RANGE}</b>
+			<li id="invalid_date_range_message" style="display:none; font-weight: bold;">
+				<div style="color: red;">*</div> {$MOD.LBL_VALIDATION_INVALID_DATE_RANGE}
 			</li>
-			<li id="duplicate_fields_selected_message" style="display:none">
-				<b><font color="red">*</font> {$MOD.LBL_VALIDATION_DUPLICATE_FIELDNAMES}</b>
+			<li id="duplicate_fields_selected_message" style="display:none; font-weight: bold;">
+				<div style="color: red;">*</div> {$MOD.LBL_VALIDATION_DUPLICATE_FIELDNAMES}</b>
 			</li>
-			<li id="invalid_field_values_message" style="display:none">
-				<b><font color="red">*</font> {$MOD.LBL_VALIDATION_INVALID_FIELD_VALUES}</b>
+			<li id="invalid_field_values_message" style="display:none; font-weight: bold;">
+				<div style="color: red;">*</div> {$MOD.LBL_VALIDATION_INVALID_FIELD_VALUES}
 				<ul id="invalid_field_values_fieldlist"></ul>
 			</li>
 		</ol>

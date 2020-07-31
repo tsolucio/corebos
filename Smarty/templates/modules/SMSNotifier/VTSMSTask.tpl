@@ -15,7 +15,7 @@
 
 <table border="0" cellpadding="5" cellspacing="0" width="100%" class="small">
 	<tr>
-		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap"><b><font color=red>*</font> {'LBL_RECEPIENTS'|@getTranslatedString:'SMSNotifier'}</b></td>
+		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap" style="font-weight: bold;"><div  style="color: red">*</div> {'LBL_RECEPIENTS'|@getTranslatedString:'SMSNotifier'}</td>
 		<td class='dvtCellInfo'>
 		<input type="text" name="sms_recepient" value="{$task->sms_recepient}" id="save_recepient" class="form_input" style='width: 250px;'>
 		<span id="task-phonefields-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>

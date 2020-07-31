@@ -36,13 +36,13 @@
 							<tr valign=top>
 								<td class='cellText small'>
 									{if $MODULEUPDATE_FILE_INVALID eq "true"}
-										<font color=red><b>{$MOD.VTLIB_LBL_INVALID_FILE}</b></font> {$MOD.VTLIB_LBL_INVALID_IMPORT_TRY_AGAIN}
+										<div style="color: red;"><b>{$MOD.VTLIB_LBL_INVALID_FILE}</b></div> {$MOD.VTLIB_LBL_INVALID_IMPORT_TRY_AGAIN}
 									{elseif $MODULEUPDATE_NAME_MISMATCH eq "true"}
-										<font color=red><b>{$MOD.VTLIB_LBL_MODULENAME_MISMATCH}!</b></font> {$MOD.VTLIB_LBL_TRY_AGAIN}
+										<div style="color: red;"><b>{$MOD.VTLIB_LBL_MODULENAME_MISMATCH}!</b></div> {$MOD.VTLIB_LBL_TRY_AGAIN}
 									{elseif $MODULEUPDATE_SAME_VERSION eq "true"}
-										<font color=red><b>{$MOD.VTLIB_LBL_CANNOT_UPGRADE}</b></font> {$MOD.VTLIB_LBL_INST_VERSION} <font color=red><b>{$MODULEUPDATE_CUR_VERSION}</b></font> {$MOD.VTLIB_LBL_MATCHES_PACKAGE_VERSION}
+										<div style="color: red;"><b>{$MOD.VTLIB_LBL_CANNOT_UPGRADE}</b></div> {$MOD.VTLIB_LBL_INST_VERSION} <div style="color: red;"><b>{$MODULEUPDATE_CUR_VERSION}</b></div> {$MOD.VTLIB_LBL_MATCHES_PACKAGE_VERSION}
 									{else}
-										<font color=red>{$MOD.VTLIB_LBL_UNABLE_TO_UPLOAD}</font> {$MOD.VTLIB_LBL_UNABLE_TO_UPLOAD2}
+										<div style="color: red;">{$MOD.VTLIB_LBL_UNABLE_TO_UPLOAD}</div> {$MOD.VTLIB_LBL_UNABLE_TO_UPLOAD2}
 									{/if}
 								</td>
 							</tr>
@@ -70,7 +70,7 @@
 								</td>
 								<td class='cellText small'>
 									{$MODULEUPDATE_NAME}
-									{if $MODULEUPDATE_NOT_EXISTS eq 'true'} <font color=red><b>{$MOD.VTLIB_LBL_NOT_PRESENT}</b></font> {/if}
+									{if $MODULEUPDATE_NOT_EXISTS eq 'true'} <div style="color: red;"><b>{$MOD.VTLIB_LBL_NOT_PRESENT}</b></div> {/if}
 								</td>
 							</tr>
 							{if $MODULEUPDATE_DIR}
@@ -80,7 +80,7 @@
 								</td>
 								<td class='cellText small'>
 									{$MODULEUPDATE_DIR}
-									{if $MODULEUPDATE_DIR_NOT_EXISTS eq 'true'} <font color=red><b>{$MOD.VTLIB_LBL_NOT_PRESENT}</b></font>
+									{if $MODULEUPDATE_DIR_NOT_EXISTS eq 'true'} <div style="color: red;"><b>{$MOD.VTLIB_LBL_NOT_PRESENT}</b></div>
 										{* -- Avoiding File Overwrite
 										 <br> Overwrite existing files? <input type="checkbox" name="module_dir_overwrite" value="true">
 										-- *}

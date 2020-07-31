@@ -137,7 +137,7 @@
 					<td class="small" valign=top >
 						<table width="100%"  border="0" cellspacing="0" cellpadding="5" class="slds-table slds-table_cell-buffer slds-table_bordered ">
 							<tr class="slds-line-height_reset">
-								<td width="20%" height="40px" nowrap ><font color="red">
+								<td width="20%" height="40px" nowrap ><div style="color: red;">
 								<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
 								<abbr class="slds-required" title="Indica un campo obbligatorio">* </abbr>
 								{$MOD.LBL_OUTGOING_MAIL_SERVER}
