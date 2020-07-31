@@ -2199,7 +2199,12 @@ window.addEventListener('load', function () {
 		},
 
 		updateDomContainer: function(cont) {
-			let seq = this.getSeq();
+			let seq = this.getSeq()
+				extraFields = {
+					'productid': this.productId,
+					'linetax': 0,
+					'tax_percent': 0
+				};
 			for (field in this.fields) {
 				if (this.fields[field].active === true) {
 					let input = _getHiddenInputForField(seq, field);
@@ -2207,9 +2212,22 @@ window.addEventListener('load', function () {
 					input.value = this.fields[field].getValue();
 				}
 			}
-			let input = _getHiddenInputForField(seq, 'productid');
-			cont.appendChild(input);
-			input.value = this.productId;
+			if (this.root.taxTypeCombo._val === 'individual') {
+				for (var i = 1; i <= this.noOfLineTaxes(); i++) {
+					let input = _getHiddenInputForField(seq, `id_tax${i}_percent`),
+						p_val = this.fields[`tax${i}`].active ? this.fields[`tax${i}`].getValue() : 0,
+						a_val = this.fields[`tax${i}`].active ? this.fields[`tax${i}_amount`].getValue() : 0;
+
+					cont.appendChild(input);
+					extraFields.tax_percent += input.value = p_val;
+					extraFields.linetax += a_val;
+				}
+			}
+			for (field in extraFields) {
+					let input = _getHiddenInputForField(seq, field);
+					cont.appendChild(input);
+					input.value = extraFields[field];
+			}
 		},
 
 		actualizeLineTaxes: function(productTaxes) {
