@@ -204,9 +204,8 @@ function csrf_check($fatal = true) {
 		return true;
 	}
 	$valid_ips = explode(',', GlobalVariable::getVariable('Application_CSRF_Valid_IP', '', '', Users::getActiveAdminId()));
-	// var_dump($ips);exit;
-	if (array_key_exists('REMOTE_ADDR', $_SERVER)) {
-		$rem_ip = $_SERVER['REMOTE_ADDR'];
+	if (array_key_exists('HTTP_REFERER', $_SERVER)) {
+		$rem_ip = gethostbyname(parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST));
 		if (in_array($rem_ip, $valid_ips)) {
 			return true;
 		}
