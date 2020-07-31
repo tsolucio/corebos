@@ -390,14 +390,15 @@ class Import extends processcbMap {
 			'merge_fields' => '',
 		);
 		if ($this->mapping['duphandling']!='none') {
-			$requestObject['merge_type'] = ($this->mapping['duphandling'] == 'overwrite' ?
+			$requestArray['merge_type'] = ($this->mapping['duphandling'] == 'overwrite' ?
 				Import_Utils::$AUTO_MERGE_OVERWRITE :
 				($this->mapping['duphandling'] == 'merge' ? Import_Utils::$AUTO_MERGE_MERGEFIELDS : Import_Utils::$AUTO_MERGE_IGNORE));
-			$requestObject['merge_fields'] = json_encode($this->mapping['dupmatches']);
+			$requestArray['merge_fields'] = json_encode($this->mapping['dupmatches']);
 		}
 		$requestObject = new Import_API_Request($requestArray);
 		$importController = new Import_Controller($requestObject, $current_user);
 		@copy($arguments[1], Import_Utils::getImportDirectory().'IMPORT_'.$current_user->id);
+		$adb->query('DROP TABLE IF EXISTS '.Import_Utils::getDbTableName($current_user));
 		$fileReadStatus = $importController->copyFromFileToDB();
 		if ($fileReadStatus) {
 			$importController->queueDataImport(true);
