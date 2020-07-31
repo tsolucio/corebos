@@ -153,6 +153,7 @@ webservice.php
 include/Ajax
 include/ComboUtil.php
 include/CustomFieldUtil.php
+include/csrfmagic/csrf-magic.php
 include/database
 include/DatabaseUtil.php
 include/db_backup
