@@ -2201,14 +2201,14 @@ window.addEventListener('load', function () {
 			let seq = this.getSeq();
 			for (field in this.fields) {
 				if (this.fields[field].active === true) {
-					let input = document.createElement('INPUT');
-					
-					input.name = `idline[${seq}][${field}]`,
-					input.type = 'hidden';
+					let input = _getHiddenInputForField(seq, field);
 					cont.appendChild(input);
 					input.value = this.fields[field]._val;
 				}
 			}
+			let input = _getHiddenInputForField(seq, 'productid');
+			cont.appendChild(input);
+			input.value = this.productId;
 		},
 
 		actualizeLineTaxes: function(productTaxes) {
@@ -2254,6 +2254,13 @@ window.addEventListener('load', function () {
 
 	function _getPerc(base, percentage) {
 		return base * (percentage / 100);
+	}
+
+	function _getHiddenInputForField(seq, fieldName) {
+		let input = document.createElement('INPUT');
+		input.name = `idline[${seq}][${fieldName}]`,
+		input.type = 'hidden';
+		return input;
 	}
 
 	/*
