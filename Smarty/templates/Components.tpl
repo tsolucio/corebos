@@ -188,8 +188,42 @@
 	{$data.custom = $custom}
 {/if}
 <!-- LDS Detail line for inventorydetails -->
-<div class="{$productline_classprefix} slds-card slds-m-vertical_x-small slds-p-top_small slds-p-bottom_none slds-p-horizontal_x-small{if $template} {$productline_classprefix}--template{/if}">
+<div class="{$productline_classprefix} slds-card slds-m-vertical_x-small slds-p-around_none{if $template} {$productline_classprefix}--template{/if}">
 	<!-- Main LDS inventory details line -->
+	<div class="slds-is-relative slds-p-vertical_none slds-m-bottom_x-small cbds-inventoryline__headingswrapper">
+		<div class="slds-grid slds-border_bottom slds-p-vertical_x-small slds-theme_info slds-theme_alert-texture slds-is-absolute cbds-inventoryline__headings">
+			<div class="slds-col slds-size_1-of-12 slds-p-left_x-small">
+				<div class="slds-text-title slds-text-color_inverse">Image</div>
+			</div>
+			<div class="slds-col slds-size-9-of-12">
+				<div class="slds-grid">
+					<div class="slds-col slds-size_3-of-12">
+						<div class="slds-text-title slds-text-color_inverse">Product name</div>
+					</div>
+					<div class="slds-col slds-size_1-of-12 slds-p-left_xx-small">
+						<div class="slds-text-title slds-text-color_inverse">Quantity</div>
+					</div>
+					<div class="slds-grid slds-size_3-of-12">
+						<div class="slds-col slds-size_5-of-12">
+							<div class="slds-text-title slds-text-color_inverse">Discount type</div>
+						</div>
+						<div class="slds-col slds-size_6-of-12 slds-p-left_small">
+							<div class="slds-text-title slds-text-color_inverse">Discount</div>
+						</div>
+					</div>
+					<div class="slds-col slds-size_2-of-12">
+						<div class="slds-text-title slds-text-color_inverse">Discount amount</div>
+					</div>
+					<div class="slds-col slds-size_2-of-12">
+						<div class="slds-text-title slds-text-color_inverse">Line total</div>
+					</div>
+				</div>
+			</div>
+			<div class="slds-col slds-size_2-of-12">
+				<div class="sslds-text-title slds-p-right_small slds-text-align_right">Line tools</div>
+			</div>
+		</div>
+	</div>
 	<div class="slds-grid slds-gutters cbds-detail-line__main">
 		<div class="slds-col slds-size_1-of-12">
 			<div class="cbds-image-container">

@@ -160,16 +160,26 @@
 .cbds-inventoryline--template {
 	display: none;
 }
-.cbds-detail-line-preheader {
-	background-color: rgb(6,28,63);
-}
-.cbds-detail-line-header {
-	background-color: rgb(22, 50, 92);
-}
 .cbds-inventoryline {
 	background-color: #ffffff;
 	position: relative;
-	border-top: 3px solid #9eacc1;
+	border-top: 3px solid #32435c;
+}
+.cbds-inventoryline__headingswrapper {
+  transition: padding 100ms ease;
+  overflow: hidden;
+}
+.cbds-inventoryline__headingswrapper--show {
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+}
+.cbds-inventoryline__headings {
+  top: -100%;
+  width: 100%;
+  transition: top 100ms ease;
+}
+.cbds-inventoryline__headingswrapper--show .cbds-inventoryline__headings {
+  top: 0;
 }
 .cbds-inventoryline__extra {
 	transform: scaleY(0);

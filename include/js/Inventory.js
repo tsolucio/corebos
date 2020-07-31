@@ -2025,17 +2025,24 @@ window.addEventListener('load', function () {
 		toggleExtra: function(e) {
 			this.extraLine.classList.toggle(this.root.lineClass + "__extra--expanded");
 			this.extraTool.children[0].classList.toggle("cbds-exp-coll-icon--expanded");
+			let headingsWrapper = this.el.getElementsByClassName(`${this.root.lineClass}__headingswrapper`)[0];
+			headingsWrapper.classList.toggle(`${this.root.lineClass}__headingswrapper--show`);
 		},
 
 		expandExtra: function() {
 			this.extraLine.classList.add(this.root.lineClass + "__extra--expanded");
 			this.extraTool.children[0].classList.add("cbds-exp-coll-icon--expanded");
+			let headingsWrapper = this.el.getElementsByClassName(`${this.root.lineClass}__headingswrapper`)[0];
+			headingsWrapper.classList.add(`${this.root.lineClass}__headingswrapper--show`);
 		},
 
 		collExtra: function() {
 			this.extraLine.classList.remove(this.root.lineClass + "__extra--expanded");
 			this.extraTool.children[0].classList.remove("cbds-exp-coll-icon--expanded");
+			let headingsWrapper = this.el.getElementsByClassName(`${this.root.lineClass}__headingswrapper`)[0];
+			headingsWrapper.classList.remove(`${this.root.lineClass}__headingswrapper--show`);
 		},
+
 
 		handleInput: function(e) {
 			var input = this.getInputObj(e.target);
