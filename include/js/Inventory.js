@@ -1708,6 +1708,9 @@ function InventorySelectAll(mod, image_pth) {
 					usageunits[i].innerHTML = result.obj.logistics.usageunit;
 				}
 
+				this.parent.productId = result.obj.meta.id;
+				this.parent.divisible = result.obj.meta.divisible == 0 ? false : true;
+
 				this.parent.expandExtra();
 				this.parent.calcLine();
 
