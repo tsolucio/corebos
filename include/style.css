@@ -131,20 +131,6 @@
     z-index: 199;
 }
 
-.cbds-tooltip--listview .slds-popover {
-	position: absolute;
-	top: -50%;
-	right: 0;
-	transform: translateY(-100%);
-	opacity: 0;
-	text-align: left;
-	transition: opacity 100ms linear;
-}
-
-.cbds-tooltip-parent:hover .slds-popover {
-	opacity: 1;
-}
-
 .cbds-massedit {
 	position: absolute;
 	opacity: 0;
@@ -186,6 +172,29 @@
   -webkit-transform: translateY(-3.125rem);
   -moz-transform: translateY(-3.125rem);
   transform: translateY(-3.125rem);
+}
+
+/* ---- CBDS tooltip ---- */
+.cbds-tooltip__trigger .cbds-tooltip__wrapper {
+  z-index: -1;
+  position: absolute;
+  opacity: 0;
+  transform: translateY(1rem);
+}
+.cbds-tooltip__trigger:hover .cbds-tooltip__wrapper {
+  z-index: 100000;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 100ms linear 100ms, transform 100ms linear 100ms;
+}
+
+.cbds-tooltip__wrapper--inner {
+  position:absolute;
+  color: #080707 !important;
+  padding-bottom: 1rem;
+  -webkit-transform: translateY(-100%) translateY(-1rem) translateX(-50%) translateX(0.5rem);
+  -moz-transform: translateY(-100%) translateY(-1rem) translateX(-50%) translateX(0.5rem);
+  transform: translateY(-100%) translateY(-1rem) translateX(-50%) translateX(0.5rem);
 }
 
 /* ---- CBDS animations ---- */

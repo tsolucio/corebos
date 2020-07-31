@@ -61,11 +61,23 @@ class LinkRender {
 		let referenceValue = props.grid.getValue(rowKey, referenceField);
 		let relatedRows = props.grid.getValue(rowKey, 'relatedRows');
 		const { tooltip } = props.columnInfo.renderer.options;
+		if (tooltip) {
+			props.formattedValue = `
+			<span>${props.value}</span>
+			<span class="slds-icon_container slds-icon__svg--default slds-float_right slds-m-right_small cbds-tooltip__trigger slds-p-left_xx-small"
+				id="cbds-tooltip__trigger-${recordid}-${columnName}"
+				onmouseover="ListView.addTooltip('${recordid}', '${columnName}', '${relatedRows[columnName] != undefined ? moduleName : module}')"
+				onclick="(function(e){e.stopPropagation(); e.preventDefault()})(event)">
+				<svg class="slds-icon slds-icon-text-default slds-icon_x-small" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+				</svg>
+			</span>
+			`;
+		}
 		if (columnName == referenceField) {
 			el = document.createElement('a');
 			if (tooltip) {
 				el.id = `tooltip-el-${recordid}-${columnName}`;
-				el.setAttribute('onmouseover', `ListView.addTooltip("${recordid}", "${columnName}", "${module}")`);
 			}
 			el.href = `index.php?module=${module}&action=DetailView&record=`+recordid;
 			el.innerHTML = String(props.value);
@@ -77,7 +89,6 @@ class LinkRender {
 			el = document.createElement('a');
 			if (tooltip) {
 				el.id = `tooltip-el-${recordid}-${columnName}`;
-				el.setAttribute('onmouseover', `ListView.addTooltip("${recordid}", "${columnName}", "${moduleName}")`);
 			}
 			el.href = `index.php?module=${moduleName}&action=DetailView&record=`+fieldId;
 			el.innerHTML = String(props.value);
@@ -87,7 +98,6 @@ class LinkRender {
 			el = document.createElement('span');
 			if (tooltip) {
 				el.id = `tooltip-el-${recordid}-${columnName}`;
-				el.setAttribute('onmouseover', `ListView.addTooltip("${recordid}", "${columnName}", "${module}")`);
 			}
 			el.innerHTML = String(props.value);
 			this.el = el;
@@ -101,7 +111,7 @@ class LinkRender {
 
 	render(props) {
 		if (props.formattedValue != '') {
-			this.el.textContent = String(props.formattedValue);
+			this.el.innerHTML = String(props.formattedValue);
 		} else {
 			this.el.textContent = String(props.value);
 		}
