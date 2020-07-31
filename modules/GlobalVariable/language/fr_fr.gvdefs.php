@@ -1539,6 +1539,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'https://nagix.github.io/chartjs-plugin-colorschemes/colorchart.html',
 	'definition' => 'Defines the color scheme to use when drawing graphs. By default tableau.Tableau10 is set.',
 ),
+'Application_CSRF_Valid_IP' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'CSV IPs',
+	'category' => 'Security',
+	'values' => 'Example: 127.0.0.1,192.168.0.100',
+	'definition' => 'Comma separated list of IP addresses from which could bypass CSRF control.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/fr_fr.gvdefs.*.php', GLOB_BRACE) as $tcode) {
