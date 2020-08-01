@@ -104,6 +104,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'If set to 1 the Activity Reminder will be deactivated, if set to 0 the Activity Reminder will be activated. The default is 0. This avoids a lot of noise in the application debug log.',
 ),
+'Debug_Access_Restricted_File' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Debug',
+	'values' => '0 | 1',
+	'definition' => 'If set to 1 a call stack will be output before the "Sorry! Attempt to access restricted file." error message.',
+),
 'Accounts_BlockDuplicateName' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',

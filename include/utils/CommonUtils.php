@@ -3205,6 +3205,9 @@ function checkFileAccessForInclusion($filepath) {
 
 	if (stripos($realfilepath, $rootdirpath) !== 0 || in_array($filePathParts[0], $unsafeDirectories)) {
 		global $default_charset;
+		if (GlobalVariable::getVariable('Debug_Access_Restricted_File', 0)) {
+			debug_print_backtrace();
+		}
 		echo 'Sorry! Attempt to access restricted file.<br>';
 		echo 'We are looking for this file path: '.htmlspecialchars($filepath, ENT_QUOTES, $default_charset).'<br>';
 		echo 'We are looking here:<br> Real file path: '.htmlspecialchars($realfilepath, ENT_QUOTES, $default_charset).'<br>';
