@@ -2857,6 +2857,7 @@ window.addEventListener('load', function () {
 			}
 
 			this.updateAggr();
+			this.updateHiddenDomFields();
 		},
 
 		/*
