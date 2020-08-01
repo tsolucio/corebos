@@ -2695,8 +2695,9 @@ window.addEventListener('load', function () {
 				}
 			}
 
-			if (validated)
+			if (validated) {
 				this.updateAggr();
+			}
 		},
 
 		startSortable: function() {
@@ -2704,7 +2705,7 @@ window.addEventListener('load', function () {
 				draggable: "." + this.lineClass,
 				handle: ".cbds-detail-line-dragtool",
 				animation: 100,
-				onEnd: this.updateHiddenDomFields.bind(this)
+				onEnd: this.updateAggr.bind(this)
 			});
 		},
 
@@ -2762,6 +2763,7 @@ window.addEventListener('load', function () {
 			this.calcTotalTax();
 			this.calcTotal();
 			this.calcGrandTotal();
+			this.updateHiddenDomFields();
 		},
 
 		updateHiddenDomFields: function() {
@@ -2873,7 +2875,6 @@ window.addEventListener('load', function () {
 			}
 
 			this.updateAggr();
-			this.updateHiddenDomFields();
 		},
 
 		/*
