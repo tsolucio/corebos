@@ -470,13 +470,26 @@
            minimum, otherwise the field will not validate
  * @param: Max, only useful when type is 'number'. Indicates the
            maximum, otherwise the field will not validate
+ * @param: Savefield name. This is the fieldname that will be
+           used when saving, should resemble a columnname of
+		   the field you're saving on, like 'pl_gross_total'
 *}
-{function name=ProductInputFormElement size='1-of-1' label='' fieldname='' value='' iconlib='utility' icon='' istemplate=false type='text' error='' readonly=false min='' max=''}
+{function name=ProductInputFormElement size='1-of-1' label='' fieldname='' value='' iconlib='utility' icon='' istemplate=false type='text' error='' readonly=false min='' max='' savefield=''}
 <div class="slds-form-element slds-size_{$size}">
 	{if $label != '' && $type != 'checkbox'}<label class="slds-form-element__label">{$label}</label>{/if}
 	<div class="slds-form-element__control{if $icon != 'none'} slds-input-has-icon slds-input-has-icon_left{/if}">
 		{if $type != 'checkbox'}
-			<input type="text" data-type="{$type}"{if $min != ''} data-min="{$min}"{/if}{if $max != ''} data-max="{$max}"{/if}{if $readonly} readonly="readonly"{/if}data-error-mess="{$error}" class="slds-input {$productline_inputprefix}--{$fieldname}" value="{$value}"/>
+			<input 
+				type="text" 
+				data-type="{$type}"
+				{if $min != ''} data-min="{$min}"{/if}
+				{if $max != ''} data-max="{$max}"{/if}
+				{if $readonly} readonly="readonly"{/if}
+				data-error-mess="{$error}"
+				class="slds-input {$productline_inputprefix}--{$fieldname}"
+				value="{$value}"
+				data-savefield=""{$savefield"
+			/>
 			{if $icon != 'none'}
 			{call name=LDSIcon lib=$iconlib icon=$icon align='left' size='x-small' extraclass=$productline_classprefix|cat:'__symbol--'|cat:$fieldname}
 			{/if}
