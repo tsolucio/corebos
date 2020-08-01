@@ -488,7 +488,7 @@
 				data-error-mess="{$error}"
 				class="slds-input {$productline_inputprefix}--{$fieldname}"
 				value="{$value}"
-				data-savefield=""{$savefield"
+				data-savefield="{$savefield}"
 			/>
 			{if $icon != 'none'}
 			{call name=LDSIcon lib=$iconlib icon=$icon align='left' size='x-small' extraclass=$productline_classprefix|cat:'__symbol--'|cat:$fieldname}
