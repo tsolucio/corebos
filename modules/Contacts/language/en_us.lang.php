@@ -167,12 +167,15 @@ $mod_strings = array(
 'LBL_START_DATE'=>'Start Date:',
 'LBL_START_TIME'=>'Start Time:',
 
-//Added vtiger_field after 4_0_1
 'Portal User'=>'Portal User',
 'LBL_CUSTOMER_PORTAL_INFORMATION'=>'Customer Portal Information',
 'Support Start Date'=>'Support Start Date',
 'Support End Date'=>'Support End Date',
-//Added for 4.2 Release -- CustomView
+'portalpasswordtype' => 'Password Encoding',
+'portalloginuser' => 'Portal Login User',
+'PortalUserPasswordManagement' => 'Portal Password',
+'ppset' => 'Password set',
+'ppnotset' => 'Password not set',
 'Name'=>'Name',
 'LBL_ALL'=>'All',
 'LBL_MAXIMUM_LIMIT_ERROR'=>'Sorry, the uploaded file exceeds the maximum file size limit. Please try a file smaller than 800000 bytes',
@@ -180,7 +183,6 @@ $mod_strings = array(
 'LBL_IMAGE_ERROR'=>'The given file is not of type image(.gif/.jpg/.png)',
 'LBL_INVALID_IMAGE'=>'Invalid file OR File has no data',
 
-//Added after 5Alpha5
 'Notify Owner'=>'Notify Owner',
 
 //Added for Picklist Values

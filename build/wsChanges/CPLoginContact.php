@@ -22,5 +22,6 @@ $operationInfo = array(
 	'parameters' => array(
 		array('name' => 'username','type' => 'string'),
 		array('name' => 'password','type' => 'string'),
+		array('name' => 'entity','type' => 'string'),
 	)
 );

@@ -1357,6 +1357,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'ID or name of template to use',
 	'definition' => 'When the CustomerPortal_PDF variable is set to PDFMaker or GenDoc, this variable indicates which template should be used to generate Purchase Order PDF. If it is empty the first template found will be used.',
 ),
+'CustomerPortal_Default_User' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Integration',
+	'values' => 'user name of the default user to access as',
+	'definition' => 'When accessing an external portal application as a contact or employee, you must use a real coreBOS user to get the permissions. This variable defines that user. The application will look for the selected user on the contact/employee record. If there is none, then the value in this variable will be used.',
+),
 'Application_Permit_Assign_Up' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',

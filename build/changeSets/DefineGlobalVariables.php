@@ -240,6 +240,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'CustomerPortal_PDFTemplate_SalesOrder',
 				'CustomerPortal_PDFTemplate_Invoice',
 				'CustomerPortal_PDFTemplate_PurchaseOrder',
+				'CustomerPortal_Default_User',
 				'Project_Gantt_Type',
 				'RecordVersioningModules',
 
