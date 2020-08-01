@@ -2352,6 +2352,14 @@ window.addEventListener('load', function () {
 			}
 		},
 
+		getSaveName: function() {
+			if (this.el.hasAttribute('data-savefield')) {
+				return this.el.getAttribute('data-savefield');
+			} else {
+				return this.getFieldName();
+			}
+		},
+
 		isReadOnly : function() {
 			return this.el.hasAttribute("readonly");
 		},
@@ -2757,13 +2765,21 @@ window.addEventListener('load', function () {
 		},
 
 		updateHiddenDomFields: function() {
-			let domFieldsContainer = this.utils.getFirstClass(this.el, `${this.linesContClass}__domfields`);
+			let domFieldsContainer = this.utils.getFirstClass(this.el, `${this.linesContClass}__domfields`),
+				aggrFieldsContainer = this.utils.getFirstClass(this.el, `${this.aggrPrefix}__domfields`);
 			domFieldsContainer.innerHTML = '';
+			aggrFieldsContainer.innerHTML = '';
 
 			for (line in this.inventoryLines) {
 				if (typeof this.inventoryLines[line].updateDomContainer === 'function') {
 					this.inventoryLines[line].updateDomContainer(domFieldsContainer);
 				}
+			}
+			for (field in this.fields) {
+				let fldName = this.fields[field].getSaveName(),
+					input = _getHiddenInputForField(fldName);
+				aggrFieldsContainer.appendChild(input);
+				input.value = this.fields[field].getValue();
 			}
 		},
 
@@ -2954,6 +2970,12 @@ window.addEventListener('load', function () {
 	/*
 		* Factory tools
 		*/
+	function _getHiddenInputForField(fieldName) {
+		let input = document.createElement('INPUT');
+		input.name = fieldName,
+		input.type = 'hidden';
+		return input;
+	}
 
 	/*
 		* Export
