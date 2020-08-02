@@ -339,6 +339,7 @@ function changeDeleted($taxname, $deleted, $sh = '') {
 	$event_data = array(
 		'tax_type' => $sh == 'sh' ? 'sh' : 'tax',
 		'tax_name' => $taxname,
+		'tax_id' => vtlib_purify(($_REQUEST['taxid'])),
 		'status' => $deleted == 1 ? 'disabled' : 'enabled'
 	);
 	cbEventHandler::do_action('corebos.changestatus.tax', $event_data);
