@@ -9314,13 +9314,13 @@ precacheAndRoute([{
   "revision": "c5247a4c8b5ebf37d5cd55c6621f38c5"
 }, {
   "url": "include/js/general.js",
-  "revision": "f51e590730a967ea54c5c0b036f95667"
+  "revision": "34e37b3328f538fb690323157e41ac92"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "c121669fa3b0ab4ce7088a82107ca79c"
 }, {
   "url": "include/js/Inventory.js",
-  "revision": "a1c10895692bdf292a1e7af41ff5747a"
+  "revision": "b6085d025f23d2f0a1e5d28efbae2206"
 }, {
   "url": "include/js/it_it.lang.js",
   "revision": "c3bbfb85c6fed21d25e984c263fa780a"
@@ -9329,7 +9329,7 @@ precacheAndRoute([{
   "revision": "31c7a760819a0277d2cdb75b82c2c66f"
 }, {
   "url": "include/js/ListView.js",
-  "revision": "e04ea61c72d7dc8843475492bd84f9bb"
+  "revision": "4f6a56365bb644d4651e29b64fe08f36"
 }, {
   "url": "include/js/loadjslog.js",
   "revision": "d5317a375aa85d10e53f5989b1be0524"
@@ -9497,7 +9497,7 @@ precacheAndRoute([{
   "revision": "15a73d14b6e91db79ae7847c2c0de1a1"
 }, {
   "url": "modules/com_vtiger_workflow/resources/createentitytaskscript.js",
-  "revision": "91f6d47038ee5aeb16f633d6e131e224"
+  "revision": "1470e8fd77b86796fe66786c44413d9d"
 }, {
   "url": "modules/com_vtiger_workflow/resources/createeventtaskscript.js",
   "revision": "0a5bfde4da94aac9acaa17c70276988d"
@@ -9800,7 +9800,7 @@ precacheAndRoute([{
   "revision": "90cb31321c92bc6d3f1e73e5ecd0255a"
 }, {
   "url": "modules/MsgTemplate/MsgTemplate.js",
-  "revision": "54e5bf71a38236d6b12e84c41c1931af"
+  "revision": "e2c3b8930517372b04d89059ad3fcaac"
 }, {
   "url": "modules/ProjectTask/ProjectTask.js",
   "revision": "c240060c1b952bba5d36d4a506fa0e6e"
@@ -9989,7 +9989,7 @@ precacheAndRoute([{
   "revision": "8ab2b632de69afd4fefcd5daccab5af6"
 }, {
   "url": "modules/Services/Services.js",
-  "revision": "d34e13ea0f282e64fa4b8483157228d0"
+  "revision": "6593d0d3ae257fcfcda5fe7281bfbdfd"
 }, {
   "url": "modules/Vendors/Vendors.js",
   "revision": "29077a91b5317da8237274d0436bbc73"
