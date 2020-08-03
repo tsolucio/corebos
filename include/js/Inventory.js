@@ -2758,9 +2758,10 @@ window.addEventListener('load', function () {
 
 		updateAggr : function() {
 			this.calcGross();
+			this.calcTotalLineDiscount();
 			this.calcTotalDiscount();
 			this.calcGroupTaxes();
-			this.calcTotalTax();
+			this.setTotalTax();
 			this.calcTotal();
 			this.calcGrandTotal();
 			this.updateHiddenDomFields();
@@ -2789,8 +2790,12 @@ window.addEventListener('load', function () {
 			this.fields.grosstotal.update(this.getLinesSum("extgross"));
 		},
 
-		calcTotalDiscount : function() {
-			this.fields.totaldiscount.update(this.getLinesSum("discount_total"));
+		calcTotalLineDiscount : function() {
+			this.fields.pl_dto_line.update(this.getLinesSum("discount_total"));
+		},
+
+		calcTotalDiscount: function() {
+			this.fields.totaldiscount.update(this.fields.pl_dto_line.getValue() + this.fields.pl_dto_global.getValue());
 		},
 
 		calcGroupTaxes : function() {
@@ -2801,24 +2806,36 @@ window.addEventListener('load', function () {
 			}
 		},
 
-		calcTotalTax : function() {
-			this.fields.taxtotal.update(this.getTaxes() + this.getSHTaxes());
+		setTotalTax : function() {
+			this.fields.taxtotal.update(this.getTaxes());
+			this.fields.shtaxtotal.update(this.getSHTaxes());
 		},
 
 		calcTotal : function() {
-			this.fields.subtotal.update(this.getLinesSum("linetotal"));
+			this.fields.sum_nettotal.update(this.getLinesSum("linetotal")); // bGD
+			this.fields.subtotal.update(
+				this.fields.sum_nettotal.getValue() - this.fields.pl_dto_global.getValue() // aGD
+			);
 		},
 
 		calcGrandTotal : function() {
 			if (this.taxTypeCombo._val == "group")
-				this.fields.total.update(this.fields.subtotal.getValue() + this.fields.taxtotal.getValue());
+				this.fields.total.update(
+					this.fields.subtotal.getValue() +
+					this.fields.taxtotal.getValue() +
+					this.fields.pl_adjustment.getValue()
+				);
 			else if (this.taxTypeCombo._val == "individual")
-				this.fields.total.update(this.fields.subtotal.getValue());
+				this.fields.total.update(
+					this.fields.subtotal.getValue() +
+					this.fields.pl_adjustment.getValue()
+				);
 		},
 
 		calcTax: function(name) {
-			var taxAmount = this.utils.getPerc(this.fields.grosstotal.getValue() - this.fields.totaldiscount.getValue(), this.fields[name].getValue());
-			this.fields[name + "-amount"].update(taxAmount);
+			var base = name.indexOf('sh') === 0 ? this.fields.pl_sh_total.getValue() : this.fields.grosstotal.getValue() - this.fields.totaldiscount.getValue();
+			var taxAmount = this.utils.getPerc(base, this.fields[name].getValue());
+			this.fields[name + "_amount"].update(taxAmount);
 		},
 
 		getLinesSum : function(fieldname) {
@@ -2831,14 +2848,15 @@ window.addEventListener('load', function () {
 
 		getTaxes : function() {
 			var sum = 0,
-				r = new RegExp("^tax[\\d]{1,2}-amount", ""),
+				r = new RegExp("^tax[\\d]{1,2}_amount", ""),
 				type = this.taxTypeCombo._val;
 
 			if (type == "individual") {
 				for (line in this.inventoryLines) {
 					for (field in this.inventoryLines[line].fields) {
-						if ((field.match(r) || []).length > 0)
+						if ((field.match(r) || []).length > 0) {
 							sum = sum + Number(this.inventoryLines[line].fields[field]._val);
+						}
 					}
 				}
 			} else if (type == "group") {
@@ -2852,7 +2870,7 @@ window.addEventListener('load', function () {
 
 		getSHTaxes : function() {
 			var sum = 0,
-				r = new RegExp("^shtax[\\d]{1,2}-amount", "");
+				r = new RegExp("^shtax[\\d]{1,2}_amount", "");
 			for (field in this.fields) {
 				if ((field.match(r) || []).length > 0)
 					sum = sum + Number(this.fields[field].getValue());
