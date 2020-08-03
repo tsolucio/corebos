@@ -2823,12 +2823,16 @@ window.addEventListener('load', function () {
 				this.fields.total.update(
 					this.fields.subtotal.getValue() +
 					this.fields.taxtotal.getValue() +
-					this.fields.pl_adjustment.getValue()
+					this.fields.pl_adjustment.getValue() +
+					this.fields.pl_sh_total.getValue() +
+					this.fields.shtaxtotal.getValue()
 				);
 			else if (this.taxTypeCombo._val == "individual")
 				this.fields.total.update(
 					this.fields.subtotal.getValue() +
-					this.fields.pl_adjustment.getValue()
+					this.fields.pl_adjustment.getValue() +
+					this.fields.pl_sh_total.getValue() +
+					this.fields.shtaxtotal.getValue()
 				);
 		},
 
