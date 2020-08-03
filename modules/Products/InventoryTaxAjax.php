@@ -57,7 +57,7 @@ for ($i=0,$j=$i+1; $i<count($tax_details); $i++,$j++) {
 		.$tax_name_percentage.'\','.$rowid.','.$i.');calcTotal();">&nbsp;%
 			<input type="hidden" id="'.$tax_id_name.'" value="'.$tax_name_percentage.'">
 		</td>
-		<td>'.$tax_label.'</td>
+		<td style="padding-left: 2px;padding-right: 2px;">'.$tax_label.'</td>
 		<td class="cblds-t-align_right slds-p-right_none">
 			<input type="text" class="small" size="6" name="'.$tax_name_total.'" id="'.$tax_name_total.$i.'" style="cursor:pointer;" value="'.$tax_total.'" readonly>
 		</td>

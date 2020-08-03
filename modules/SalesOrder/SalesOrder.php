@@ -98,7 +98,7 @@ class SalesOrder extends CRMEntity {
 	public $def_detailview_recname = 'subject';
 
 	// This is the list of vtiger_fields that are required.
-	public $required_fields = array("accountname"=>1);
+	public $required_fields = array('accountname'=>1);
 
 	//Added these variables which are used as default order by and sortorder in ListView
 	public $default_order_by = 'subject';
@@ -138,7 +138,7 @@ class SalesOrder extends CRMEntity {
 		if (inventoryCanSaveProductLines($_REQUEST, 'SalesOrder')) {
 			//Based on the total Number of rows we will save the product relationship with this entity
 			saveInventoryProductDetails($this, 'SalesOrder');
-			if (vtlib_isModuleActive("InventoryDetails")) {
+			if (vtlib_isModuleActive('InventoryDetails')) {
 				InventoryDetails::createInventoryDetails($this, 'SalesOrder');
 			}
 		} elseif ($_REQUEST['action'] == 'SalesOrderAjax' || $_REQUEST['action'] == 'MassEditSave') {
@@ -305,51 +305,51 @@ class SalesOrder extends CRMEntity {
 				'vtiger_inventoryproductrelSalesOrder', 'vtiger_contactdetailsSalesOrder', 'vtiger_accountSalesOrder',
 				'vtiger_invoice_recurring_info','vtiger_quotesSalesOrder'));
 		$query = parent::generateReportsSecQuery($module, $secmodule, $queryPlanner, $type, $where_condition);
-		if ($queryPlanner->requireTable("vtiger_sobillads")) {
-			$query .= " left join vtiger_sobillads on vtiger_salesorder.salesorderid=vtiger_sobillads.sobilladdressid";
+		if ($queryPlanner->requireTable('vtiger_sobillads')) {
+			$query .= ' left join vtiger_sobillads on vtiger_salesorder.salesorderid=vtiger_sobillads.sobilladdressid';
 		}
-		if ($queryPlanner->requireTable("vtiger_soshipads")) {
-			$query .= " left join vtiger_soshipads on vtiger_salesorder.salesorderid=vtiger_soshipads.soshipaddressid";
+		if ($queryPlanner->requireTable('vtiger_soshipads')) {
+			$query .= ' left join vtiger_soshipads on vtiger_salesorder.salesorderid=vtiger_soshipads.soshipaddressid';
 		}
 		if ($queryPlanner->requireTable("vtiger_currency_info$secmodule")) {
 			$query .= " left join vtiger_currency_info as vtiger_currency_info$secmodule on vtiger_currency_info$secmodule.id = vtiger_salesorder.currency_id";
 		}
 		if (($type !== 'COLUMNSTOTOTAL') || ($type == 'COLUMNSTOTOTAL' && $where_condition == 'add')) {
-			if ($queryPlanner->requireTable("vtiger_inventoryproductrelSalesOrder", $matrix)) {
+			if ($queryPlanner->requireTable('vtiger_inventoryproductrelSalesOrder', $matrix)) {
 				if ($module == 'Products') {
 					$query .= ' left join vtiger_inventoryproductrel as vtiger_inventoryproductrelSalesOrder on '.
 						'vtiger_salesorder.salesorderid = vtiger_inventoryproductrelSalesOrder.id '.
 						'and vtiger_inventoryproductrelSalesOrder.productid=vtiger_products.productid ';
 				} elseif ($module == 'Services') {
-					$query .= " left join vtiger_inventoryproductrel as vtiger_inventoryproductrelSalesOrder on '.
+					$query .= ' left join vtiger_inventoryproductrel as vtiger_inventoryproductrelSalesOrder on '.
 						'vtiger_salesorder.salesorderid = vtiger_inventoryproductrelSalesOrder.id '.
-						'and vtiger_inventoryproductrelSalesOrder.productid=vtiger_service.serviceid ";
+						'and vtiger_inventoryproductrelSalesOrder.productid=vtiger_service.serviceid ';
 				} else {
-					$query .= " left join vtiger_inventoryproductrel as vtiger_inventoryproductrelSalesOrder on '.
-						'vtiger_salesorder.salesorderid = vtiger_inventoryproductrelSalesOrder.id ";
+					$query .= ' left join vtiger_inventoryproductrel as vtiger_inventoryproductrelSalesOrder on '.
+						'vtiger_salesorder.salesorderid = vtiger_inventoryproductrelSalesOrder.id ';
 				}
 			}
-			if ($queryPlanner->requireTable("vtiger_productsSalesOrder")) {
+			if ($queryPlanner->requireTable('vtiger_productsSalesOrder')) {
 				$query.=' left join vtiger_products as vtiger_productsSalesOrder on vtiger_productsSalesOrder.productid = vtiger_inventoryproductrelSalesOrder.productid';
 			}
-			if ($queryPlanner->requireTable("vtiger_serviceSalesOrder")) {
-				$query .= " left join vtiger_service as vtiger_serviceSalesOrder on vtiger_serviceSalesOrder.serviceid = vtiger_inventoryproductrelSalesOrder.productid";
+			if ($queryPlanner->requireTable('vtiger_serviceSalesOrder')) {
+				$query .= ' left join vtiger_service as vtiger_serviceSalesOrder on vtiger_serviceSalesOrder.serviceid = vtiger_inventoryproductrelSalesOrder.productid';
 			}
 		}
-		if ($queryPlanner->requireTable("vtiger_potentialRelSalesOrder")) {
-			$query .= " left join vtiger_potential as vtiger_potentialRelSalesOrder on vtiger_potentialRelSalesOrder.potentialid = vtiger_salesorder.potentialid";
+		if ($queryPlanner->requireTable('vtiger_potentialRelSalesOrder')) {
+			$query .= ' left join vtiger_potential as vtiger_potentialRelSalesOrder on vtiger_potentialRelSalesOrder.potentialid = vtiger_salesorder.potentialid';
 		}
-		if ($queryPlanner->requireTable("vtiger_contactdetailsSalesOrder")) {
-			$query .= " left join vtiger_contactdetails as vtiger_contactdetailsSalesOrder on vtiger_salesorder.contactid = vtiger_contactdetailsSalesOrder.contactid";
+		if ($queryPlanner->requireTable('vtiger_contactdetailsSalesOrder')) {
+			$query .= ' left join vtiger_contactdetails as vtiger_contactdetailsSalesOrder on vtiger_salesorder.contactid = vtiger_contactdetailsSalesOrder.contactid';
 		}
-		if ($queryPlanner->requireTable("vtiger_invoice_recurring_info")) {
-			$query .= " left join vtiger_invoice_recurring_info on vtiger_salesorder.salesorderid = vtiger_invoice_recurring_info.salesorderid";
+		if ($queryPlanner->requireTable('vtiger_invoice_recurring_info')) {
+			$query .= ' left join vtiger_invoice_recurring_info on vtiger_salesorder.salesorderid = vtiger_invoice_recurring_info.salesorderid';
 		}
-		if ($queryPlanner->requireTable("vtiger_quotesSalesOrder")) {
-			$query .= " left join vtiger_quotes as vtiger_quotesSalesOrder on vtiger_salesorder.quoteid = vtiger_quotesSalesOrder.quoteid";
+		if ($queryPlanner->requireTable('vtiger_quotesSalesOrder')) {
+			$query .= ' left join vtiger_quotes as vtiger_quotesSalesOrder on vtiger_salesorder.quoteid = vtiger_quotesSalesOrder.quoteid';
 		}
-		if ($queryPlanner->requireTable("vtiger_accountSalesOrder")) {
-			$query .= " left join vtiger_account as vtiger_accountSalesOrder on vtiger_accountSalesOrder.accountid = vtiger_salesorder.accountid";
+		if ($queryPlanner->requireTable('vtiger_accountSalesOrder')) {
+			$query .= ' left join vtiger_account as vtiger_accountSalesOrder on vtiger_accountSalesOrder.accountid = vtiger_salesorder.accountid';
 		}
 		return $query;
 	}

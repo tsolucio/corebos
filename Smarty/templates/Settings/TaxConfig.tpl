@@ -8,7 +8,6 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script type="text/javascript" src="include/js/Inventory.js"></script>
 {literal}
 <style>
@@ -138,9 +137,23 @@
 				</td>
 				<td >
 					{if $tax.deleted eq 0}
-						<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&disable=true&taxname={$tax.taxname}">	<span class="slds-icon_container slds-icon_container_circle slds-icon-action-approval" title="Enabled"><svg class="slds-icon slds-icon_xx-small" aria-hidden="true"><use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#approval"></use></svg><span class="slds-assistive-text">Enabled</span></span> </a>
+						<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&disable=true&taxname={$tax.taxname}&taxid={$tax.taxid}">
+							<span class="slds-icon_container slds-icon_container_circle slds-icon-action-approval" title="{$MOD.LBL_ENABLED}">
+								<svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#approval"></use>
+								</svg>
+								<span class="slds-assistive-text">{$MOD.LBL_ENABLED}</span>
+							</span>
+						</a>
 					{else}
-						<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&enable=true&taxname={$tax.taxname}"> <span class="slds-icon_container slds-icon_container_circle slds-icon-action-close" title="Disabled"><svg class="slds-icon slds-icon_xx-small" aria-hidden="true"><use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#close"></use></svg><span class="slds-assistive-text">Disabled</span></span> </a>
+						<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&enable=true&taxname={$tax.taxname}&taxid={$tax.taxid}">
+							<span class="slds-icon_container slds-icon_container_circle slds-icon-action-close" title="{$MOD.LBL_DISABLED}">
+								<svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#close"></use>
+								</svg>
+								<span class="slds-assistive-text">{$MOD.LBL_DISABLED}</span>
+							</span>
+						</a>
 					{/if}
 				</td>
 				</tr>
@@ -223,10 +236,24 @@
 			</td>
 			<td width=17% >
 				{if $tax.deleted eq 0}
-						<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&sh_disable=true&sh_taxname={$tax.taxname}"><span class="slds-icon_container slds-icon_container_circle slds-icon-action-approval" title="Enabled"><svg class="slds-icon slds-icon_xx-small" aria-hidden="true"><use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#approval"></use></svg><span class="slds-assistive-text">Enabled</span></span> </a>
-					{else}
-						<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&sh_enable=true&sh_taxname={$tax.taxname}"><span class="slds-icon_container slds-icon_container_circle slds-icon-action-close" title="Disabled"><svg class="slds-icon slds-icon_xx-small" aria-hidden="true"><use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#close"></use></svg><span class="slds-assistive-text">Disabled</span></span> </a>
-					{/if}
+					<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&sh_disable=true&sh_taxname={$tax.taxname}">
+						<span class="slds-icon_container slds-icon_container_circle slds-icon-action-approval" title="{$MOD.LBL_ENABLED}">
+							<svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#approval"></use>
+							</svg>
+							<span class="slds-assistive-text">{$MOD.LBL_ENABLED}</span>
+						</span>
+					</a>
+				{else}
+					<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&sh_enable=true&sh_taxname={$tax.taxname}">
+						<span class="slds-icon_container slds-icon_container_circle slds-icon-action-close" title="{$MOD.LBL_DISABLED}">
+							<svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#close"></use>
+							</svg>
+							<span class="slds-assistive-text">{$MOD.LBL_DISABLED}</span>
+						</span>
+					</a>
+				{/if}
 			</td>
 			</tr>
 			{/foreach}

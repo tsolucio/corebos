@@ -9,7 +9,6 @@
  ********************************************************************************/
 -->*}
 
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <style type="text/css">
 a.x {ldelim}
 		color:black;

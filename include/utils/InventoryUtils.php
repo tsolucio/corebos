@@ -441,10 +441,6 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock = 'fal
 		if ($_REQUEST['taxtype'] == 'group') {
 			$all_available_taxes = getAllTaxes('available', '', 'edit', $id);
 		}
-		$return_old_values = '';
-		if ($module != 'PurchaseOrder') {
-			$return_old_values = 'return_old_values';
-		}
 		deleteInventoryProductDetails($focus);
 	} else {
 		if ($_REQUEST['taxtype'] == 'group') {
