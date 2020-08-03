@@ -8,7 +8,6 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 {assign var="MODULEICON" value='outcome'}
 {assign var="MODULESECTION" value=$MOD.LBL_MAIL_SERVER_SETTINGS}
 {assign var="MODULESECTIONDESC" value=$MOD.LBL_MAIL_SERVER_DESC}

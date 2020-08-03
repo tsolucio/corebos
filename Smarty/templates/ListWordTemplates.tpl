@@ -9,7 +9,6 @@
   *
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script>
 function massDelete()
 {ldelim}

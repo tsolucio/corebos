@@ -8,7 +8,6 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 {assign var="MODULEICON" value='currency'}
 {assign var="MODULESECTION" value=$MOD.LBL_CURRENCY_LIST}
 {assign var="MODULESECTIONDESC" value=$MOD.LBL_CURRENCY_DESCRIPTION}
