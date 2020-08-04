@@ -2210,7 +2210,8 @@ window.addEventListener('load', function () {
 				};
 			for (field in this.fields) {
 				if (this.fields[field].active === true) {
-					let input = _getHiddenInputForField(seq, field);
+					let saveName = this.fields[field].getSaveName(),
+						input = _getHiddenInputForField(seq, saveName);
 					cont.appendChild(input);
 					input.value = this.fields[field].getValue();
 				}

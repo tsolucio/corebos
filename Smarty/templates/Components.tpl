@@ -319,7 +319,7 @@
 					</div>
 					<div class="slds-panel__section slds-p-bottom_none">
 						<div class="slds-form-element__row cbds-m-bottom_none">
-						{call name=ProductInputFormElement size='1-of-2' label='Unit price' fieldname='unit_price' value=$data.pricing.unit_price iconlib='corebos' icon='euro' istemplate=$template type='currency' error='Please enter a valid currency amount' readonly=false}
+						{call name=ProductInputFormElement size='1-of-2' label='Unit price' fieldname='unit_price' value=$data.pricing.unit_price iconlib='corebos' icon='euro' istemplate=$template type='currency' error='Please enter a valid currency amount' readonly=false savefield='listprice'}
 						</div>
 					</div>
 				</div>
