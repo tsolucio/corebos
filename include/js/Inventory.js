@@ -1371,9 +1371,11 @@ function InventorySelectAll(mod, image_pth) {
 	 * @param {element}:	Root 'InventoryBlock' Object
 	 * @param {function}: 	Callback for custom implementations. Will receive an object with
 	 *						the root autocomplete node and all the result data
+	 * @param {object}		The root inventoryblock object
 	 */
-	function ProductAutocomplete(el, parent, callback) {
+	function ProductAutocomplete(el, parent, callback, rootObj) {
 		this.el = el,
+		this.root = rootObj,
 		this.parent = parent,
 		this.specialKeys = ['up', 'down', 'esc', 'enter'],
 		this.threshold = 3,
