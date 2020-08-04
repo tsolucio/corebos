@@ -2826,7 +2826,7 @@ window.addEventListener('load', function () {
 			}
 			for (field in this.fields) {
 				let fldName = this.fields[field].getSaveName(),
-					input = _getHiddenInputForField(fldName);
+				input = _getHiddenInputForField(`aggr_fields[${fldName}]`);
 				aggrFieldsContainer.appendChild(input);
 				input.value = this.fields[field].getValue();
 			}
