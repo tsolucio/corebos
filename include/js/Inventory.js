@@ -2402,7 +2402,7 @@ window.addEventListener('load', function () {
 		},
 
 		getSaveName: function() {
-			if (this.el.hasAttribute('data-savefield')) {
+			if (this.el.hasAttribute('data-savefield') && this.el.getAttribute('data-savefield') != '') {
 				return this.el.getAttribute('data-savefield');
 			} else {
 				return this.getFieldName();
