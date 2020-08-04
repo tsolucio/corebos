@@ -2278,7 +2278,7 @@ window.addEventListener('load', function () {
 
 	function _getHiddenInputForField(seq, fieldName) {
 		let input = document.createElement('INPUT');
-		input.name = `idline[${seq}][${fieldName}]`,
+		input.name = `idlines[${seq}][${fieldName}]`,
 		input.type = 'hidden';
 		return input;
 	}
