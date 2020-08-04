@@ -157,6 +157,7 @@
 	{$data.meta.linetotal = 0}
 	{$data.meta.quantity = 1}
 	{$data.meta.description = ''}
+	{$data.meta.crmid = '0'}
 
 	{$data.pricing = []}
 	{$data.pricing.cost_price = 0}
@@ -171,7 +172,7 @@
 	{$data.logistics.qtyindemand = 0}
 
 	{$data.taxes = []}
-	
+
 	{$data.taxes.1 = []}
 	{$data.taxes.1.percent = 0}
 	{$data.taxes.1.amount = 0}
@@ -188,7 +189,7 @@
 	{$data.custom = $custom}
 {/if}
 <!-- LDS Detail line for inventorydetails -->
-<div class="{$productline_classprefix} slds-card slds-m-vertical_x-small slds-p-around_none{if $template} {$productline_classprefix}--template{/if}">
+<div class="{$productline_classprefix} slds-card slds-m-vertical_x-small slds-p-around_none{if $template} {$productline_classprefix}--template{/if}" data-crmid="{$data.meta.crmid}">
 	<!-- Main LDS inventory details line -->
 	<div class="slds-is-relative slds-p-vertical_none slds-m-bottom_x-small cbds-inventoryline__headingswrapper">
 		<div class="slds-grid slds-border_bottom slds-p-vertical_x-small slds-theme_info slds-theme_alert-texture slds-is-absolute cbds-inventoryline__headings">

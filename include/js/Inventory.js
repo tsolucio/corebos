@@ -1957,6 +1957,7 @@ window.addEventListener('load', function () {
 		this.discCombo 	= {},
 		this.fields 	= {},
 		this.productId	= 0,
+		this.crmid			= 0,
 		this.divisible	= true;
 
 		/* Private properties */
@@ -1970,7 +1971,8 @@ window.addEventListener('load', function () {
 		var construct 	= function(me) {
 			me.id = me.root.inventoryLines.seq + 1,
 			me.root.inventoryLines.seq++,
-			me.root.inventoryLines[me.id] = me;
+			me.root.inventoryLines[me.id] = me,
+			me.crmid = me.el.getAttribute('data-crmid');
 
 			new ProductAutocomplete(me.u.getFirstClass(me.el, "cbds-product-search--hasroot"), me, false, rootObj);
 
@@ -2202,6 +2204,7 @@ window.addEventListener('load', function () {
 			let seq = this.getSeq()
 				extraFields = {
 					'productid': this.productId,
+					'crmid': this.crmid,
 					'linetax': 0,
 					'tax_percent': 0
 				};
