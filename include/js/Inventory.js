@@ -1691,12 +1691,7 @@ function InventorySelectAll(mod, image_pth) {
 					usageunits = this.root.el.getElementsByClassName(this.root.lineClass + '--usageunit');
 
 				this.utils.getFirstClass(lineNode, 'cbds-product-line-image').src = result.obj.meta.image;
-				var currency = document.getElementById('inventory_currency').value;
-				if (result.obj.pricing.multicurrency[currency] != undefined) {
-					this.parent.setField('unit_price', result.obj.pricing.multicurrency[currency].actual_price);
-				} else {
-					this.parent.setField('unit_price', result.obj.pricing.unit_price);
-				}
+				this.parent.setField('listprice', result.obj.pricing.unit_price);
 				this.parent.setField('cost_price', result.obj.pricing.unit_cost);
 				this.parent.setField('qtyinstock', result.obj.logistics.qty_in_stock);
 				this.parent.setField('qtyindemand', result.obj.logistics.curr_ordered);
