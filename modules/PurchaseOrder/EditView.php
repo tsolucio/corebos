@@ -171,22 +171,6 @@ if (!empty($_REQUEST['parent_id']) && !empty($_REQUEST['return_module'])) {
 	}
 }
 
-if (!empty($_REQUEST['vendor_id']) && $_REQUEST['record']=='') {
-	$vend_focus = CRMEntity::getInstance('Vendors');
-	$vend_focus->retrieve_entity_info($_REQUEST['vendor_id'], 'Vendors');
-	$focus->column_fields['bill_city']=$vend_focus->column_fields['city'];
-	$focus->column_fields['ship_city']=$vend_focus->column_fields['city'];
-	$focus->column_fields['bill_street']=$vend_focus->column_fields['street'];
-	$focus->column_fields['ship_street']=$vend_focus->column_fields['street'];
-	$focus->column_fields['bill_state']=$vend_focus->column_fields['state'];
-	$focus->column_fields['ship_state']=$vend_focus->column_fields['state'];
-	$focus->column_fields['bill_code']=$vend_focus->column_fields['postalcode'];
-	$focus->column_fields['ship_code']=$vend_focus->column_fields['postalcode'];
-	$focus->column_fields['bill_country']=$vend_focus->column_fields['country'];
-	$focus->column_fields['ship_country']=$vend_focus->column_fields['country'];
-	$focus->column_fields['bill_pobox']=$vend_focus->column_fields['pobox'];
-	$focus->column_fields['ship_pobox']=$vend_focus->column_fields['pobox'];
-}
 $smarty->assign('MASS_EDIT', '0');
 $disp_view = getView($focus->mode);
 $blocks = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields);
