@@ -211,6 +211,17 @@ function csrf_check($fatal = true) {
 			return true;
 		}
 	}
+	$exceptions = array(
+		array('action'=>'Import', 'module'=>'*', 'mode'=>'upload_and_parse'),
+	);
+	$ra = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+	$rm = isset($_REQUEST['module']) ? $_REQUEST['module'] : '';
+	$rd = isset($_REQUEST['mode']) ? $_REQUEST['mode'] : '';
+	foreach ($exceptions as $ex) {
+		if (($ra==$ex['action'] || $ex['action']=='*') && ($rm==$ex['module'] || $ex['module']=='*') && ($rd==$ex['mode'] || $ex['mode']=='*')) {
+			return true;
+		}
+	}
 	csrf_start();
 	$name = $GLOBALS['csrf']['input-name'];
 	$ok = false;
