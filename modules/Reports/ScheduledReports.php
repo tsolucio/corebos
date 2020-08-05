@@ -147,15 +147,28 @@ class VTScheduledReport extends Reports {
 			$emails_to .= $email.',';
 		}
 		$emails_to = trim($emails_to, ',');
-
-		$currentTime = date('Y-m-d H:i:s');
-		$subject = getTranslatedString($this->reportname, $currentModule) .' - '. $currentTime .' ('. DateTimeField::getDBTimeZone() .')';
+		$now = date('YmdHis');
+		$printfReportName = getTranslatedString($this->reportname, $currentModule);
+		if (strpos($printfReportName, '%s')>=0) {
+			$spos = strpos($printfReportName, '%s');
+			$printfReportName = substr($printfReportName, 0, $spos+2).str_replace('%s', '', substr($printfReportName, $spos+2));
+			$printfReportName = sprintf($printfReportName, $now);
+		}
+		$subject = $printfReportName .' - '. date('Y-m-d H:i:s') .' ('. DateTimeField::getDBTimeZone() .')';
 
 		$contents = getTranslatedString('LBL_AUTO_GENERATED_REPORT_EMAIL', $currentModule) .'<br/><br/>';
-		$contents .='<b>'.getTranslatedString('LBL_REPORT_NAME', $currentModule) .' :</b> '. getTranslatedString($this->reportname, $currentModule) .'<br/>';
+		$contents .='<b>'.getTranslatedString('LBL_REPORT_NAME', $currentModule) .' :</b> '. $printfReportName .'<br/>';
 		$contents .='<b>'.getTranslatedString('LBL_DESCRIPTION', $currentModule).' :</b><br/>'.getTranslatedString($this->reportdescription, $currentModule).'<br/><br/>';
 
-		$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_\s]/', '', $this->reportname).'_'. preg_replace('/[^a-zA-Z0-9_\s]/', '', date('YmdHis')));
+		$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_\.\%\s]/', '', $this->reportname));
+		if (strpos($baseFileName, '%s')===false) {
+			$baseFileName .= '_%s'; // add date at end if not positioned explicitly
+		} else {
+			// make sure there is only one
+			$spos = strpos($baseFileName, '%s');
+			$baseFileName = substr($baseFileName, 0, $spos+2).str_replace('%s', '', substr($baseFileName, $spos+2));
+		}
+		$baseFileName = sprintf($baseFileName, $now);
 
 		$oReportRun = new ReportRun($this->id);
 		$reportFormat = $this->scheduledFormat;
