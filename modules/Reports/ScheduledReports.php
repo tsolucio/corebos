@@ -178,6 +178,12 @@ class VTScheduledReport extends Reports {
 			$contents .= '<a href="'.$site_URL.'/index.php?module=Reports&action=SaveAndRun&record='.$this->id.'&folderid='.$this->folderid.'">';
 			$contents .= getTranslatedString('LBL_CLICK_HERE', $currentModule) .'</a>';
 		}
+		if ($reportFormat == 'csv') {
+			$fileName = 'cache/'.$baseFileName.'.csv';
+			$filePath = $root_directory.$fileName;
+			$attachments[] = array('fname'=>$fileName, 'fpath'=>$filePath);
+			$oReportRun->writeReportToCSVFile($filePath, null);
+		}
 		if ($reportFormat == 'pdf' || $reportFormat == 'both') {
 			$fileName = 'cache/'.$baseFileName.'.pdf';
 			$filePath = $root_directory.$fileName;
