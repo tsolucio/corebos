@@ -377,13 +377,29 @@ class QueryGenerator {
 
 	public function getDefaultCustomViewQuery() {
 		$customView = new CustomView($this->module);
+		$unsetit = false;
+		if (empty($_REQUEST['action'])) {
+			$unsetit = true;
+			$_REQUEST['action'] = 'ListView';
+		}
 		$viewId = $customView->getViewId($this->module);
+		if ($unsetit) {
+			$_REQUEST['action']='';
+		}
 		return $this->getCustomViewQueryById($viewId);
 	}
 
 	public function initForDefaultCustomView() {
 		$customView = new CustomView($this->module);
+		$unsetit = false;
+		if (empty($_REQUEST['action'])) {
+			$unsetit = true;
+			$_REQUEST['action'] = 'ListView';
+		}
 		$viewId = $customView->getViewId($this->module);
+		if ($unsetit) {
+			$_REQUEST['action']='';
+		}
 		$this->initForCustomViewById($viewId);
 	}
 
