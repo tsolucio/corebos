@@ -63,6 +63,20 @@ switch ($methodName) {
 	case 'loadDefaultBlocks':
 		$ret = loadDefaultBlocks();
 		break;
+	case 'removeCustomView':
+		$viewid = vtlib_purify($_REQUEST['viewid']);
+		$ret = removeCustomView($viewid);
+		break;
+	case 'removeRelatedLists':
+		$listid = vtlib_purify($_REQUEST['listid']);
+		$ret = removeRelatedLists($listid);
+		break;
+	case 'generateManifest':
+		$ret = generateManifest();
+		break;
+	case 'loadTemplate':
+		$ret = loadTemplate();
+		break;
 	default:
 		$ret = array();
 		break;

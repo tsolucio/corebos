@@ -204,42 +204,56 @@ function loadValues($step, $moduleId) {
 		$fieldsdb = $adb->pquery('SELECT * FROM `vtiger_modulebuilder_fields` WHERE moduleid=?', array(
 			$moduleid
 		));
+		$numOfRows = $adb->num_rows($fieldsdb);
 		$fieldlst = array();
-		for ($i=0; $i < $adb->num_rows($fieldsdb); $i++) {
+		for ($i=0; $i < $numOfRows; $i++) {
 			$fieldsArr = array();
-			$fieldsid = $adb->query_result($fieldsdb, $i, 'fieldsid');
-			$fieldname = $adb->query_result($fieldsdb, $i, 'fieldname');
-			$columnname = $adb->query_result($fieldsdb, $i, 'columnname');
-			$fieldlabel = $adb->query_result($fieldsdb, $i, 'fieldlabel');
-			$uitype = $adb->query_result($fieldsdb, $i, 'uitype');
-			$entityidentifier = $adb->query_result($fieldsdb, $i, 'entityidentifier');
-			$relatedmodules = $adb->query_result($fieldsdb, $i, 'relatedmodules');
-			$sequence = $adb->query_result($fieldsdb, $i, 'sequence');
-			$presence = $adb->query_result($fieldsdb, $i, 'presence');
-			$typeofdata = $adb->query_result($fieldsdb, $i, 'typeofdata');
-			$displaytype = $adb->query_result($fieldsdb, $i, 'displaytype');
-			$masseditable = $adb->query_result($fieldsdb, $i, 'masseditable');
-			$quickcreate = $adb->query_result($fieldsdb, $i, 'quickcreate');
-			$fieldsArr['fieldsid'] = $fieldsid;
-			$fieldsArr['fieldname'] = $fieldname;
-			$fieldsArr['columnname'] = $columnname;
-			$fieldsArr['fieldlabel'] = $fieldlabel;
-			$fieldsArr['entityidentifier'] = $entityidentifier;
-			$fieldsArr['relatedmodules'] = $relatedmodules;
-			$fieldsArr['sequence'] = $sequence;
-			$fieldsArr['uitype'] = $uitype;
-			$fieldsArr['presence'] = $presence;
-			$fieldsArr['typeofdata'] = $typeofdata;
-			$fieldsArr['displaytype'] = $displaytype;
-			$fieldsArr['masseditable'] = $masseditable;
-			$fieldsArr['quickcreate'] = $quickcreate;
+			$blockid = $adb->query_result($fieldsdb, $i, 'blockid');
+			$blocksql = $adb->pquery('SELECT * FROM vtiger_modulebuilder_blocks WHERE blocksid=?', array($blockid));
+			$blockname = $adb->query_result($blocksql, 0, 'blocks_label');
+			$fieldsArr['fieldsid'] = $adb->query_result($fieldsdb, $i, 'fieldsid');
+			$fieldsArr['fieldname'] = $adb->query_result($fieldsdb, $i, 'fieldname');
+			$fieldsArr['columnname'] = $adb->query_result($fieldsdb, $i, 'columnname');
+			$fieldsArr['fieldlabel'] = $adb->query_result($fieldsdb, $i, 'fieldlabel');
+			$fieldsArr['entityidentifier'] = $adb->query_result($fieldsdb, $i, 'entityidentifier');
+			$fieldsArr['relatedmodules'] = $adb->query_result($fieldsdb, $i, 'relatedmodules');
+			$fieldsArr['uitype'] = $adb->query_result($fieldsdb, $i, 'uitype');
+			$fieldsArr['presence'] = $adb->query_result($fieldsdb, $i, 'presence');
+			$fieldsArr['typeofdata'] = $adb->query_result($fieldsdb, $i, 'typeofdata');
+			$fieldsArr['masseditable'] = $adb->query_result($fieldsdb, $i, 'masseditable');
+			$fieldsArr['quickcreate'] = $adb->query_result($fieldsdb, $i, 'quickcreate');
+			$fieldsArr['blockname'] = $blockname;
 			array_push($fieldlst, $fieldsArr);
 		}
-		return $fieldlst;
+		if ($numOfRows > 0) {
+			$entries_list = array(
+				'data' => array(
+					'contents' => $fieldlst,
+					'pagination' => array(
+						'page' => 1,
+						'totalCount' => (int)$numOfRows,
+					),
+				),
+				'result' => true,
+			);
+		} else {
+			$entries_list = array(
+				'data' => array(
+					'contents' => array(),
+					'pagination' => array(
+						'page' => 1,
+						'totalCount' => 0,
+					),
+				),
+				'result' => false,
+			);
+		}
+		return $entries_list;
 	} elseif ($step == 4) {
 		$viewSql = $adb->pquery('SELECT * FROM vtiger_modulebuilder_customview WHERE moduleid=?', array(
 			$moduleid
 		));
+		$numOfRows = $adb->num_rows($viewSql);
 		$view = array();
 		for ($i=0; $i < $adb->num_rows($viewSql); $i++) {
 			$viewArr = array();
@@ -261,7 +275,74 @@ function loadValues($step, $moduleId) {
 			$viewArr['fields'] = $fieldArr;
 			array_push($view, $viewArr);
 		}
-		return $view;
+		if ($numOfRows > 0) {
+			$entries_list = array(
+				'data' => array(
+					'contents' => $view,
+					'pagination' => array(
+						'page' => 1,
+						'totalCount' => (int)$numOfRows,
+					),
+				),
+				'result' => true,
+			);
+		} else {
+			$entries_list = array(
+				'data' => array(
+					'contents' => array(),
+					'pagination' => array(
+						'page' => 1,
+						'totalCount' => 0,
+					),
+				),
+				'result' => false,
+			);
+		}
+		return $entries_list;
+	} elseif ($step == 5) {
+		$listSql = $adb->pquery('SELECT * FROM vtiger_modulebuilder_relatedlists WHERE moduleid=?', array(
+			$moduleid
+		));
+		$numOfRows = $adb->num_rows($listSql);
+		$list = array();
+		for ($i=0; $i < $adb->num_rows($listSql); $i++) {
+			$listArr = array();
+			$relatedlistid = $adb->query_result($listSql, $i, 'relatedlistid');
+			$function = $adb->query_result($listSql, $i, 'function');
+			$label = $adb->query_result($listSql, $i, 'label');
+			$actions = $adb->query_result($listSql, $i, 'actions');
+			$relatedmodule = $adb->query_result($listSql, $i, 'relatedmodule');
+			$listArr['relatedlistid'] = $relatedlistid;
+			$listArr['relatedmodule'] = $relatedmodule;
+			$listArr['actions'] = $actions;
+			$listArr['functionname'] = $function;
+			$listArr['label'] = $label;
+			array_push($list, $listArr);
+		}
+		if ($numOfRows > 0) {
+			$entries_list = array(
+				'data' => array(
+					'contents' => $list,
+					'pagination' => array(
+						'page' => 1,
+						'totalCount' => (int)$numOfRows,
+					),
+				),
+				'result' => true,
+			);
+		} else {
+			$entries_list = array(
+				'data' => array(
+					'contents' => array(),
+					'pagination' => array(
+						'page' => 1,
+						'totalCount' => 0,
+					),
+				),
+				'result' => false,
+			);
+		}
+		return $entries_list;
 	}
 }
 /**
@@ -289,6 +370,30 @@ function removeField($fieldsid) {
 	return false;
 }
 /**
+ * Remove an existing filter
+ * @param {number} viewid
+ */
+function removeCustomView($viewid) {
+	global $adb;
+	$delete = $adb->pquery('delete from vtiger_modulebuilder_customview where customviewid=?', array($viewid));
+	if ($delete) {
+		return true;
+	}
+	return false;
+}
+/**
+ * Remove an existing list
+ * @param {number} listid
+ */
+function removeRelatedLists($listid) {
+	global $adb;
+	$delete = $adb->pquery('delete from vtiger_modulebuilder_relatedlists where relatedlistid=?', array($listid));
+	if ($delete) {
+		return true;
+	}
+	return false;
+}
+/**
  * Load default blocks in step 2
  */
 function loadDefaultBlocks() {
@@ -309,13 +414,29 @@ function loadTemplate() {
 	$moduleid = vtlib_purify($_COOKIE['ModuleBuilderID']);
 	$moduleInfo = loadValues(1, $moduleid);
 	$blockInfo = loadValues(2, $moduleid);
+	$fieldInfo = loadValues(3, $moduleid);
 	$viewsInfo = loadValues(4, $moduleid);
+	$listsInfo = loadValues(5, $moduleid);
 	return array(
 		'info' => $moduleInfo,
 		'blocks' => $blockInfo,
-		'fields' => array(),
+		'fields' => $fieldInfo,
 		'views' => $viewsInfo,
-		'lists' => array()
+		'lists' => $listsInfo
 	);
+}
+
+function generateManifest() {
+	global $adb;
+	$template = loadTemplate();
+	$doc = new DOMDocument();
+	$doc->formatOutput = true;
+	$module = $doc->createElement("module");
+	foreach ($template['info'] as $key => $value) {
+	}
+	$doc->appendChild($module);
+	echo $doc->saveXML();
+	$doc->save("manifest.xml");
+	return $template;
 }
 ?>

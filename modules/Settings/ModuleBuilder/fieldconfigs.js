@@ -1,4 +1,4 @@
-const fieldtypes = [{
+let fieldtypes = [{
 	type: 'Uitype',
 	values: {
 		1: mod_alert_arr.LineText,
@@ -25,7 +25,7 @@ const fieldtypes = [{
 		1024: mod_alert_arr.SelectRoles,
 		33: mod_alert_arr.SelectMultiple,
 		3313: mod_alert_arr.SelectModulesMultiple,
-	
+
 	}
 },
 {
@@ -64,21 +64,21 @@ const fieldtypes = [{
 	}
 }];
 
-const checkboxFields = [{
+let checkboxFields = [{
 	type: 'Typeofdata',
-	value: 'Mandatory',
+	value: 'Is mandatory?',
 }];
 
-const textfields = [
+let textfields = [
 	'fieldname',
-	'columnname',
+	//'columnname',
 	'fieldlabel',
-	'entityidentifier',
+	//'entityidentifier',
 	'relatedmodules',
-	'sequence'
+	//'sequence'
 ];
 
-const setdefaultOption = [{
+let setdefaultOption = [{
 	false: alert_arr.NO,
 	true:  alert_arr.YES,
 }];

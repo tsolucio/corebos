@@ -78,8 +78,8 @@ function SaveModuleBuilder($step) {
 				$moduleSql = $adb->pquery('SELECT modulebuilder_name FROM vtiger_modulebuilder WHERE modulebuilderid=?', array($moduleid));
 				$moduleName = $adb->query_result($moduleSql, 0, 0);
 				$fields = vtlib_purify($_REQUEST['fields']);
-				if ($fields[0]['fieldsid'] == '') {
-					$adb->pquery('INSERT INTO vtiger_modulebuilder_fields (blockid, moduleid,fieldname,uitype,columnname,tablename,fieldlabel,presence,sequence,typeofdata,quickcreate,displaytype,masseditable,entityidentifier,relatedmodules) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', array(
+				if (!isset($fields[0]['fieldsid'])) {
+					$adb->pquery('INSERT INTO vtiger_modulebuilder_fields (blockid, moduleid,fieldname,uitype,columnname,tablename,fieldlabel,presence,sequence,typeofdata,quickcreate,displaytype,masseditable,relatedmodules) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)', array(
 						$fields[0]['blockid'],
 						$moduleid,
 						$fields[0]['fieldname'],
@@ -93,7 +93,6 @@ function SaveModuleBuilder($step) {
 						$fields[0]['quickcreate'],
 						$fields[0]['displaytype'],
 						$fields[0]['masseditable'],
-						$fields[0]['entityidentifier'],
 						$fields[0]['relatedmodules'],
 					));
 					$adb->pquery('UPDATE vtiger_modulebuilder_name SET completed="60" WHERE userid=? AND modulebuilderid=?', array(
@@ -101,7 +100,7 @@ function SaveModuleBuilder($step) {
 						$moduleid,
 					));
 				} else {
-					$adb->pquery('UPDATE vtiger_modulebuilder_fields SET fieldname=?,columnname=?,fieldlabel=?,uitype=?,tablename=?,presence=?,sequence=?,typeofdata=?,quickcreate=?,displaytype=?,masseditable=?,entityidentifier=?,relatedmodules=? WHERE fieldsid=? AND blockid=? AND moduleid=?', array(
+					$adb->pquery('UPDATE vtiger_modulebuilder_fields SET fieldname=?,columnname=?,fieldlabel=?,uitype=?,tablename=?,presence=?,sequence=?,typeofdata=?,quickcreate=?,displaytype=?,masseditable=?,relatedmodules=? WHERE fieldsid=? AND blockid=? AND moduleid=?', array(
 						$fields[0]['fieldname'],
 						$fields[0]['columnname'],
 						$fields[0]['fieldlabel'],
@@ -113,7 +112,6 @@ function SaveModuleBuilder($step) {
 						$fields[0]['quickcreate'],
 						$fields[0]['displaytype'],
 						$fields[0]['masseditable'],
-						$fields[0]['entityidentifier'],
 						$fields[0]['relatedmodules'],
 						$fields[0]['fieldsid'],
 						$fields[0]['blockid'],

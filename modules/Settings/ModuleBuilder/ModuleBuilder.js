@@ -3,6 +3,9 @@ loadJS('modules/Settings/ModuleBuilder/fieldconfigs.js');
 const tuiGrid = tui.Grid;
 let url = 'index.php?module=Settings&action=SettingsAjax&file=BuilderFunctions';
 let dataGridInstance;
+let fieldGridInstance;
+let viewGridInstance;
+let listGridInstance;
 
 const mb = {
 	/**
@@ -29,7 +32,7 @@ const mb = {
 			var blocks_label = [];
 			const number_block = mb.loadElement('number_block');
 			for (var i = 1; i <= number_block; i++) {
-				blocks_label[i] = mb.loadElement('blocks_label_' + i);
+				blocks_label[i] = mb.loadElement(`blocks_label_${i}`);
 			}
 			var data = {
 				blocks: blocks_label,
@@ -43,26 +46,23 @@ const mb = {
 			var btnid = buttonid.split('-')[4];
 			if (forward == false) {
 				var fieldValues = {};
-				var fieldsid = mb.loadElement('fieldsid_' + btnid);
-				var blockid = mb.loadElement('select-for-field-' + btnid);
-				var fieldname = mb.loadElement('fieldname_' + btnid);
-				const columnname =mb.loadElement('columnname_' + btnid);
-				const fieldlabel = mb.loadElement('fieldlabel_' + btnid);
-				const entityidentifier = mb.loadElement('entityidentifier_' + btnid);
-				const relatedmodules = mb.loadElement('relatedmodules_' + btnid);
-				const masseditable = mb.loadElement('Masseditable_' + btnid);
-				const displaytype = mb.loadElement('Displaytype_' + btnid);
-				const quickcreate = mb.loadElement('Quickcreate_' + btnid);
-				const typeofdata = mb.loadElement('Typeofdata_' + btnid);
-				const presence = mb.loadElement('Presence_' + btnid);
-				var uitype = mb.loadElement('Uitype_' + btnid);
+				var blockid = document.getElementsByName(`select-for-field-${btnid}`);
+				blockid = mb.getRadioValue(`select-for-field-${btnid}`);
+				var fieldname = mb.loadElement(`fieldname_${btnid}`);
+				const columnname = mb.loadElement(`fieldname_${btnid}`);
+				const fieldlabel = mb.loadElement(`fieldlabel_${btnid}`);
+				const relatedmodules = mb.loadElement(`relatedmodules_${btnid}`);
+				const masseditable = mb.loadElement(`Masseditable_${btnid}`);
+				const displaytype = mb.loadElement(`Displaytype_${btnid}`);
+				const quickcreate = mb.loadElement(`Quickcreate_${btnid}`);
+				const typeofdata = mb.loadElement(`Typeofdata_${btnid}`);
+				const presence = mb.loadElement(`Presence_${btnid}`);
+				var uitype = mb.loadElement(`Uitype_${btnid}`);
 				fieldValues = {
-					fieldsid: fieldsid,
 					blockid: blockid,
 					fieldname: fieldname,
 					columnname: columnname,
 					fieldlabel: fieldlabel,
-					entityidentifier: entityidentifier,
 					relatedmodules: relatedmodules,
 					masseditable: masseditable,
 					displaytype: displaytype,
@@ -91,7 +91,7 @@ const mb = {
 			const number_customview = mb.loadElement('number_customview');
 			for (var i = 1; i <= number_customview; i++) {
 				var customObj = {
-					customviewid: mb.loadElement('customviewid-'+i),
+					//customviewid: mb.loadElement('customviewid-'+i),
 					viewname: mb.loadElement('viewname-'+i),
 					setdefault: mb.loadElement('setdefault-'+i),
 				};
@@ -139,11 +139,14 @@ const mb = {
 			data: data
 		}).done(function (response) {
 			const msg = mod_alert_arr.RecordDeleted;
-			mb.loadMessage(msg, true);
+			if (forward != false && step != 3) {
+				mb.loadMessage(msg, true);
+			}
 			if (forward == false && step == 3) {
-				const message = `<p class="slds-section__title" style="float: right">${btnid}: ${mod_alert_arr.Field} &nbsp;<span style="color: blue">${fieldname}</span>&nbsp; ${mod_alert_arr.WasSaved}!</p>`;
+				fieldGridInstance.clear();
+				fieldGridInstance.reloadData();
 				mb.removeElement('for-field-' + btnid, true);
-				mb.loadElement('for-field-inputs-' + btnid, true).innerHTML = message;
+				mb.loadElement('for-field-inputs-' + btnid, true).innerHTML = '';
 			}
 			if (forward == true) {
 				mb.loadElement('step-' + step, true).style.display = 'none';
@@ -153,12 +156,40 @@ const mb = {
 				mb.loadElement('progresstext', true).innerHTML = mod_alert_arr.LBL_MB_PROGRESS+': ' + progress + '%';
 				mb.loadElement('step-' + nextstep, true).style.display = 'block';
 			}
+			if (step == 3) {
+				document.getElementById('number_customview').value = 0;
+				mb.removeElement('CustomView', true);
+				mb.removeElement('loadViews', true);
+			}
 			if (step == 1) {
 				mb.generateDefaultBlocks();
+			} else if (step == 2) {
+				mb.backTo(3);
+			} else if (step == 3 && forward != false) {
+				mb.removeElement('loadFields', true);
+				mb.backTo(4);
+			} else if (step == 4) {
+				document.getElementById('number_customview').value = 0;
+				document.getElementById('number_related').value = 0;
+				mb.removeElement('CustomView', true);
+				mb.removeElement('loadViews', true);
+				mb.backTo(5);
 			} else if (step == 5) {
+				document.getElementById('number_related').value = 0;
+				mb.removeElement('RelatedLists', true);
 				mb.loadTemplate();
 			}
 		});
+	},
+
+	getRadioValue: (name) => {
+		var ele = document.getElementsByName(name);
+		for (i = 0; i < ele.length; i++) {
+			if (ele[i].checked) {
+				return ele[i].value;
+			}
+		}
+		return '';
 	},
 	/**
      * Go to back step
@@ -172,6 +203,12 @@ const mb = {
 		mb.removeElement('info', true);
 		mb.removeElement('blocks', true);
 		mb.loadElement('step-6', true).style.display = 'none';
+		if (mod && step == 3) {
+			mb.removeElement('loadFields', true);
+		}
+		if (mod && step == 4) {
+			mb.removeElement('loadViews', true);
+		}
 		if (mod == true) {
 			for (let i = 1; i <=5; i++) {
 				if (i != step) {
@@ -184,6 +221,9 @@ const mb = {
 		    mb.loadElement('step-' + step, true).style.display = '';
 		}
 		if (step == 1) {
+			mb.removeElement('loadFields', true);
+			mb.removeElement('loadViews', true);
+			mb.removeElement('loadLists', true);
 			//load active module
 			jQuery.ajax({
 				method: 'GET',
@@ -199,6 +239,9 @@ const mb = {
 		}
 
 		if (step == 2) {
+			mb.removeElement('loadFields', true);
+			mb.removeElement('loadViews', true);
+			mb.removeElement('loadLists', true);
 			mb.generateDefaultBlocks();
 			const getUl = mb.loadElement('ul-block-mb', true);
 			if (getUl != null) {
@@ -218,7 +261,14 @@ const mb = {
 				for (let i = 0; i < res.length; i++) {
 					const li = document.createElement('li');
 					const id = res[i].blocksid+'-block';
-					let removeBtn = `<button class='slds-button slds-button_outline-brand' onclick='mb.removeBlock("${id}")' style='margin-left: 10px'>Remove</button>`;
+					let removeBtn = `
+						<div class="slds-button-group" role="group">
+						  	<button onclick='mb.removeBlock("${id}")' class="slds-button slds-button_icon slds-button_icon-border-filled" aria-pressed="false">
+						    	<svg class="slds-button__icon" aria-hidden="true">
+						      		<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+						    	</svg>
+						  	</button>
+						</div>`;
 					if (res[i].blocks_label.toUpperCase() == 'LBL_MODULEBLOCK_INFORMATION' || res[i].blocks_label.toUpperCase() == 'LBL_CUSTOM_INFORMATION' || res[i].blocks_label.toUpperCase() == 'LBL_DESCRIPTION_INFORMATION') {
 						removeBtn = '';
 					}
@@ -231,71 +281,184 @@ const mb = {
 			});
 		}
 		if (step == 3) {
-			//load module fields
-			jQuery.ajax({
-				method: 'GET',
-				url: url+'&methodName=loadValues&step='+step+'&moduleid='+moduleid,
-			}).done(function (response) {
-				const res = JSON.parse(response);
-				const getT = mb.loadElement('loadFields', true);
-				const ul = document.createElement('ul');
-				ul.className = 'slds-list_ordered';
-				ul.id = 'ul-field-mb';
-				getT.appendChild(ul);
-				for (let i = 0; i < res.length; i++) {
-					const li = document.createElement('li');
-					const id = res[i].fieldsid+'-field';
-					let fieldname = res[i].fieldname;
-					let fieldlabel = res[i].fieldlabel;
-					let entityidentifier = res[i].entityidentifier;
-					let relatedmodules = res[i].relatedmodules;
-					let sequence = res[i].sequence;
-					let uitype = res[i].uitype;
-					let presence = res[i].presence;
-					let quickcreate = res[i].quickcreate;
-					let displaytype = res[i].displaytype;
-					let mandatory = res[i].typeofdata;
-					let masseditable = res[i].masseditable;
-					let removeBtn = `<button class='slds-button slds-button_outline-brand' onclick='mb.removeField("${id}")' style='margin-left: 10px'>Remove</button>`;
-					let editBtn = `<button class='slds-button slds-button_outline-brand' onclick='mb.editField("${id}","${fieldname}","${fieldlabel}","${entityidentifier}","${relatedmodules}","${sequence}","${uitype}","${presence}","${quickcreate}",${displaytype},"${masseditable}","${mandatory}")' style='margin-left: 10px'>Edit</button>`;
-					li.innerHTML = res[i].fieldname+removeBtn+editBtn;
-					li.className = 'slds-item';
-					li.id = 'li-field-mb-'+res[i].fieldsid;
-					ul.appendChild(li);
+			mb.removeElement('loadFields', true);
+			mb.removeElement('loadViews', true);
+			mb.removeElement('loadLists', true);
+			fieldGridInstance = new tuiGrid({
+				el: document.getElementById('loadFields'),
+				columns: [
+					{
+						name: 'blockname',
+						header: 'blockname',
+					},
+					{
+						name: 'fieldname',
+						header: 'fieldname',
+					},
+					{
+						name: 'fieldlabel',
+						header: 'fieldlabel',
+					},
+					{
+						name: 'uitype',
+						header: 'uitype',
+					},
+					{
+						name: 'typeofdata',
+						header: 'mandatory',
+					},
+					{
+						name: 'action',
+						header: 'action',
+						renderer: {
+        					type: ActionRender,
+        					options: {
+        						type: 'Fields'
+        					}
+        				},
+        				width: 50
+					}
+				],
+				data: {
+					api: {
+						readData: {
+							url: url+'&methodName=loadValues&step='+step+'&moduleid='+moduleid,
+							method: 'GET'
+						}
+					}
+				},
+				useClientSort: false,
+				pageOptions: false,
+				rowHeight: 'auto',
+				bodyHeight: 'auto',
+				scrollX: false,
+				scrollY: false,
+				columnOptions: {
+					resizable: true
+				},
+				header: {
+					align: 'left',
+					valign: 'top'
 				}
-				mb.updateProgress(3);
 			});
+			tui.Grid.applyTheme('striped');
+			mb.updateProgress(3);
 		}
 		if (step == 4) {
-			jQuery.ajax({
-				method: 'GET',
-				url: url+'&methodName=loadValues&step='+step+'&moduleid='+moduleid,
-			}).done(function (response) {
-				const res = JSON.parse(response);
-				const CustomView = document.getElementById('CustomView');
-				if (CustomView != null) {
-					mb.removeElement('CustomView', true);
+			mb.removeElement('loadFields', true);
+			mb.removeElement('loadViews', true);
+			mb.removeElement('loadLists', true);
+			viewGridInstance = new tuiGrid({
+				el: document.getElementById('loadViews'),
+				columns: [
+					{
+						name: 'viewname',
+						header: 'viewname',
+					},
+					{
+						name: 'setdefault',
+						header: 'setdefault',
+					},
+					{
+						name: 'fields',
+						header: 'fields',
+					},
+					{
+						name: 'action',
+						header: 'action',
+						renderer: {
+        					type: ActionRender,
+        					options: {
+        						type: 'CustomView'
+        					}
+        				},
+        				width: 50
+					}
+				],
+				data: {
+					api: {
+						readData: {
+							url: url+'&methodName=loadValues&step='+step+'&moduleid='+moduleid,
+							method: 'GET'
+						}
+					}
+				},
+				useClientSort: false,
+				pageOptions: false,
+				rowHeight: 'auto',
+				bodyHeight: 'auto',
+				scrollX: false,
+				scrollY: false,
+				columnOptions: {
+					resizable: true
+				},
+				header: {
+					align: 'left',
+					valign: 'top'
 				}
-				const editview = document.getElementById('loadViews');
-				if (editview != null) {
-					mb.removeElement('loadViews', true);
-				}
-				const getView = mb.loadElement('loadViews', true);
-				const ul = document.createElement('ul');
-				ul.className = 'slds-list_ordered';
-				ul.id = 'ul-view-mb';
-				ul.style.marginTop = "20px";
-				getView.appendChild(ul);
-				for (let i = 0; i < res.length; i++) {
-					const li = document.createElement('li');
-					let editBtn = `<button class='slds-button slds-button_outline-brand' onclick='mb.editView("${res[i].customviewid}","${res[i].viewname}","${res[i].fields}","${res[i].setdefault}")' style='margin-left: 10px'>Edit View</button>`;
-					li.innerHTML = res[i].viewname+editBtn;
-					li.className = 'slds-item';
-					li.id = 'li-view-mb-'+res[i].customviewid;
-					ul.appendChild(li);
-				}
-				mb.updateProgress(4);
 			});
+			tui.Grid.applyTheme('striped');
+			mb.updateProgress(4);
+		}
+		if (step == 5) {
+			mb.removeElement('loadFields', true);
+			mb.removeElement('loadViews', true);
+			mb.removeElement('loadLists', true);
+			listGridInstance = new tuiGrid({
+				el: document.getElementById('loadLists'),
+				columns: [
+					{
+						name: 'relatedmodule',
+						header: 'Related module',
+					},
+					{
+						name: 'actions',
+						header: 'Actions',
+					},
+					{
+						name: 'functionname',
+						header: 'Function name',
+					},
+					{
+						name: 'label',
+						header: 'Label',
+					},
+					{
+						name: 'action',
+						header: 'action',
+						renderer: {
+        					type: ActionRender,
+        					options: {
+        						type: 'RelatedLists'
+        					}
+        				},
+        				width: 50
+					}
+				],
+				data: {
+					api: {
+						readData: {
+							url: url+'&methodName=loadValues&step='+step+'&moduleid='+moduleid,
+							method: 'GET'
+						}
+					}
+				},
+				useClientSort: false,
+				pageOptions: false,
+				rowHeight: 'auto',
+				bodyHeight: 'auto',
+				scrollX: false,
+				scrollY: false,
+				columnOptions: {
+					resizable: true
+				},
+				header: {
+					align: 'left',
+					valign: 'top'
+				}
+			});
+			tui.Grid.applyTheme('striped');
+			mb.updateProgress(4);
 		}
 	},
 	/**
@@ -374,7 +537,7 @@ const mb = {
 			const MODULEBLOCK = document.createElement('input');
 			MODULEBLOCK.type = 'text';
 			MODULEBLOCK.id = 'blocks_label_1';
-			MODULEBLOCK.value = 'LBL_MODULEBLOCK_INFORMATION';
+			MODULEBLOCK.value = 'LBL_MODULEBLOCK_INFORMATION'; //change this to modulename
 			MODULEBLOCK.className ='slds-input';
 			mb.loadElement('blocks_inputs', true).appendChild(MODULEBLOCK);
 			const CUSTOM = document.createElement('input');
@@ -411,82 +574,92 @@ const mb = {
 
 		mb.loadBlocks(table, number_field);
 
-		let func = {
-			'style': 'width: 15%; margin: 5px'
+		let inStyle = {
+			'style': 'margin: 5px',
+			'id': '',
+			'onchange': '',
 		};
+		let fieldTemplate = '<div class="slds-grid slds-gutters">';
 		for (var i = 0; i < textfields.length; i++) {
-			const fnObj = {
-				instance: cell,
-				placeholder: textfields[i],
-				name: textfields[i]+'_',
-				id: textfields[i]+'_',
-				inc: number_field,
-				attr: func,
-			};
-			const input = mb.createInput(fnObj);
-			if (textfields[i]=='fieldname') {
-				input.onchange = (elem) => {
-					mb.loadElement('columnname' + '_' + number_field, true).value = elem.target.value;
-					mb.loadElement('fieldlabel' + '_' + number_field, true).value = elem.target.value;
-				};
+			if (textfields[i] == 'relatedmodules') {
+				inStyle.style = 'margin: 5px; display: none';
+				inStyle.id = `show-field-${number_field}`;
 			}
-			// add input field for fieldsid to hold value of id will help on editing
-			const hidd = {
-				instance: cell,
-				placeholder: 'fieldsid',
-				name: 'fieldsid_',
-				id: 'fieldsid_',
-				inc: number_field,
-				attr: func,
-				type: 'hidden'
-			};
-			const input2 = mb.createInput(hidd);
-			cell.appendChild(input2);
+			fieldTemplate += `
+			<div class="slds-col" style="${inStyle.style}" id="${inStyle.id}">
+				<div class="slds-form-element">
+				  <label class="slds-form-element__label" for="${textfields[i]}_${number_field}">
+				  	<abbr class="slds-required" title="required">* </abbr> ${textfields[i]}
+				  </label>
+				  <div class="slds-form-element__control">
+				    <input type="text" name="${textfields[i]}_${number_field}" id="${textfields[i]}_${number_field}" class="slds-input" />
+				  </div>
+				</div>
+			</div>`;
 		}
+		fieldTemplate += '</div><div class="slds-grid slds-gutters">';
+
 		for (var i = 0; i < fieldtypes.length; i++) {
 			const type = fieldtypes[i].type;
 			const values = fieldtypes[i].values;
 			const selecttype = document.createElement('select');
-			selecttype.id = type + '_' + number_field;
-			selecttype.className = 'slds-input';
-			selecttype.style = 'width: 15%; margin: 5px';
-			cell.appendChild(selecttype);
-
-			const defaultOption = document.createElement('option');
-			defaultOption.text = type;
-			defaultOption.setAttribute('disabled', '');
-			defaultOption.setAttribute('selected', '');
-			selecttype.appendChild(defaultOption);
-			for (var j in values) {
-				const option = document.createElement('option');
-				option.value = j;
-				option.text = values[j];
-				selecttype.appendChild(option);
+			if (type == 'Uitype') {
+				inStyle.onchange = 'mb.showRelationModule(this, number_field)';
 			}
+			fieldTemplate += `
+			<div class="slds-col">
+				<div class="slds-form-element">
+				  	<label class="slds-form-element__label" for="${type}_${number_field}">${type}</label>
+				  	<div class="slds-form-element__control">
+				    	<div class="slds-select_container">
+				      		<select class="slds-select" id="${type}_${number_field}" onchange="${inStyle.onchange}">`;
+			for (let j in values) {
+				fieldTemplate += `<option value="${j}">${values[j]}</option>`;
+			}
+			fieldTemplate += `
+							</select>
+				    	</div>
+				  	</div>
+				</div>
+			</div>
+			`;
 		}
+		fieldTemplate += '</div><div class="slds-grid slds-gutters">';
+
 		for (let i = 0; i < checkboxFields.length; i++) {
-			const fnObj = {
-				instance: cell,
-				placeholder: checkboxFields[i].type,
-				name: checkboxFields[i].type+'_',
-				id: checkboxFields[i].type+'_',
-				inc: number_field,
-				attr: '',
-				type: 'checkbox',
-			};
-			const chBox = mb.createInput(fnObj);
-			cell.appendChild(chBox);
-			mb.createLabel(cell, checkboxFields[i].value);
+			fieldTemplate += `
+			<div class="slds-col"><br>
+				<div class="slds-form-element">
+				  	<div class="slds-form-element__control">
+				   	 	<div class="slds-checkbox">
+				      		<input type="checkbox" name="${checkboxFields[i].type}_${number_field}" id="${checkboxFields[i].type}_${number_field}"/>
+				      		<label class="slds-checkbox__label" for="${checkboxFields[i].type}_${number_field}">
+				        		<span class="slds-checkbox_faux"></span>
+				        		<span class="slds-form-element__label">${checkboxFields[i].value}</span>
+				      		</label>
+				    	</div>
+				  	</div>
+				</div><br>
+			</div>
+			`;
 		}
 		//create save button for each field
-		const saveBtn = document.createElement('button');
-		saveBtn.id ='save-btn-for-field-' + number_field;
-		saveBtn.className = 'slds-button slds-button_brand';
-		saveBtn.setAttribute('onclick', 'mb.SaveModule(3, false, this.id)');
-		saveBtn.innerHTML = mod_alert_arr.LBL_MB_SAVEFIELD;
-		const p = document.createElement('p');
-		p.appendChild(saveBtn);
-		cell.appendChild(p);
+		fieldTemplate += `</div>
+			<button class="slds-button slds-button_neutral slds-button_dual-stateful" id="save-btn-for-field-${number_field}" onclick="mb.SaveModule(3, false, this.id)">
+			    <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
+			      <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
+			    </svg>${mod_alert_arr.LBL_MB_SAVEFIELD}
+			</button>
+		`;
+		mb.loadElement(`fields_inputs_${number_field}`, true).innerHTML = fieldTemplate;
+	},
+
+	showRelationModule: (e, id) => {
+		if (e.value == 10) {
+			document.getElementById(`show-field-${id.value}`).style.display = '';
+		} else {
+			document.getElementById(`show-field-${id.value}`).style.display = 'none';
+		}
 	},
 	/**
      * Open tui grid to list all modules
@@ -543,131 +716,6 @@ const mb = {
 		mb.loadElement('moduleListsModal', true).style.display = '';
 	},
 	/**
-     * Generate field input for step 3 at edit mode
-     */
-	generateEditFields: (id, fieldname, fieldlabel, entityidentifier, relatedmodules, sequence, uitype, presence, quickcreate, displaytype, masseditable, mandatory) => {
-		const number_field = sequence;
-		const table = mb.getTable('Table');
-		const row = mb.createRow(table, 0, 'for-field-inputs-', number_field);
-		const cell = mb.createCell(row, 0, 'fields_inputs_', number_field);
-
-		mb.loadBlocks(table, number_field);
-
-		let func = {
-			'style': 'width: 15%; margin: 5px'
-		};
-		for (var i = 0; i < textfields.length; i++) {
-			const fnObj = {
-				instance: cell,
-				placeholder: textfields[i],
-				name: textfields[i]+'_',
-				id: textfields[i]+'_',
-				inc: number_field,
-				attr: func,
-			};
-			const input = mb.createInput(fnObj);
-			if (textfields[i]=='fieldname') {
-				mb.loadElement('fieldname' + '_' + number_field, true).value = fieldname;
-			}
-			if (textfields[i]=='columnname') {
-				mb.loadElement('columnname' + '_' + number_field, true).value = fieldname;
-			}
-			if (textfields[i]=='fieldlabel') {
-				mb.loadElement('fieldlabel' + '_' + number_field, true).value = fieldlabel;
-			}
-			if (textfields[i]=='sequence') {
-				mb.loadElement('sequence' + '_' + number_field, true).value = sequence;
-			}
-			if (textfields[i]=='entityidentifier') {
-				mb.loadElement('entityidentifier' + '_' + number_field, true).value = entityidentifier;
-			}
-			if (textfields[i]=='relatedmodules') {
-				mb.loadElement('relatedmodules' + '_' + number_field, true).value = relatedmodules;
-			}
-			// add input field for fieldsid to hold value of id
-			const hidd = {
-				instance: cell,
-				placeholder: 'fieldsid',
-				name: 'fieldsid_',
-				id: 'fieldsid_',
-				inc: number_field,
-				attr: func,
-				type: 'hidden'
-			};
-			const input2 = mb.createInput(hidd);
-			cell.appendChild(input2);
-			mb.loadElement('fieldsid' + '_' + number_field, true).value = id;
-
-
-		}
-		for (var i = 0; i < fieldtypes.length; i++) {
-			const type = fieldtypes[i].type;
-			const values = fieldtypes[i].values;
-			const selecttype = document.createElement('select');
-			selecttype.id = type + '_' + number_field;
-			selecttype.className = 'slds-input';
-			selecttype.style = 'width: 15%; margin: 5px';
-			cell.appendChild(selecttype);
-
-			const defaultOption = document.createElement('option');
-			defaultOption.text = type;
-			defaultOption.setAttribute('disabled', '');
-			defaultOption.setAttribute('selected', '');
-			selecttype.appendChild(defaultOption);
-			for (var j in values) {
-				const option = document.createElement('option');
-				option.value = j;
-				option.text = values[j];
-				selecttype.appendChild(option);
-			}
-			if (type=='Uitype') {
-				mb.loadElement(selecttype.id, true).value = uitype;
-			}
-			if (type=='Presence') {
-				mb.loadElement(selecttype.id, true).value = presence;
-			}
-			if (type=='Quickcreate') {
-				mb.loadElement(selecttype.id, true).value = quickcreate;
-			}
-			if (type=='Displaytype') {
-				mb.loadElement(selecttype.id, true).value = displaytype;
-			}
-			if (type=='Masseditable') {
-				mb.loadElement(selecttype.id, true).value = masseditable;
-			}
-		}
-		for (let i = 0; i < checkboxFields.length; i++) {
-			const fnObj = {
-				instance: cell,
-				placeholder: checkboxFields[i].type,
-				name: checkboxFields[i].type+'_',
-				id: checkboxFields[i].type+'_',
-				inc: number_field,
-				attr: '',
-				type: 'checkbox',
-			};
-			const chBox = mb.createInput(fnObj);
-			cell.appendChild(chBox);
-			mb.createLabel(cell, checkboxFields[i].value);
-			if (mandatory == 'on') {
-				mb.loadElement(checkboxFields[i].type+'_'+ number_field, true).value = mandatory;
-				document.getElementById('Typeofdata_'+number_field).checked = true;
-			} else {
-				mb.loadElement(checkboxFields[i].type+'_'+ number_field, true).value = mandatory;
-				document.getElementById('Typeofdata_'+number_field).checked = false;
-			}
-		}
-		//create save button for each field
-		const saveBtn = document.createElement('button');
-		saveBtn.id ='save-btn-for-field-' + number_field;
-		saveBtn.className = 'slds-button slds-button_brand';
-		saveBtn.setAttribute('onclick', 'mb.SaveModule(3, false, this.id)');
-		saveBtn.innerHTML = mod_alert_arr.LBL_MB_SAVEFIELD;
-		const p = document.createElement('p');
-		p.appendChild(saveBtn);
-		cell.appendChild(p);
-	},
-	/**
      * Close modal
      */
 	closeModal: () => {
@@ -686,27 +734,38 @@ const mb = {
 		}).done(function (response) {
 			const res = JSON.parse(response);
 			const row = tableInstance.insertRow(0);
-			row.setAttribute('id', 'for-field-' + number_field);
-			//create select
-			const select = document.createElement('select');
-			select.id = 'select-for-field-' + number_field;
-			select.className = 'slds-input';
-			select.style = 'width: 25%; margin: 5px';
-			row.appendChild(select);
-			//create default option
-			const defaultOption = document.createElement('option');
-			defaultOption.setAttribute('selected', '');
-			defaultOption.setAttribute('disabled', '');
-			defaultOption.value = '';
-			select.appendChild(defaultOption);
-			defaultOption.innerHTML = mod_alert_arr.LBL_CHOOSEFIELDBLOCK + ' ' + number_field;
-
+			row.setAttribute('id', `for-field-${number_field}`);
+			let template = `
+				<fieldset class="slds-form-element">
+				  <legend class="slds-form-element__legend slds-form-element__label">${mod_alert_arr.LBL_CHOOSEFIELDBLOCK} ${number_field}</legend>
+				  <div class="slds-form-element__control">
+				    <div class="slds-radio_button-group">`;
+			let checked = '';
 			for (var i = 0; i < res.length; i++) {
-				const options = document.createElement('option');
-				options.value = res[i].blocksid;
-				options.innerHTML = res[i].blocks_label;
-				select.appendChild(options);
+				if (i === 0) {
+					checked = 'checked';
+					template += `
+				      <span class="slds-button slds-radio_button">
+				        <input type="radio" ${checked} name="select-for-field-${number_field}" id="radio-${res[i].blocksid}${number_field}" value="${res[i].blocksid}" />
+				        <label class="slds-radio_button__label" for="radio-${res[i].blocksid}${number_field}">
+				          <span class="slds-radio_faux">${res[i].blocks_label}</span>
+				        </label>
+				      </span>`;
+				} else {
+					template += `
+				      <span class="slds-button slds-radio_button">
+				        <input type="radio" name="select-for-field-${number_field}" id="radio-${res[i].blocksid}${number_field}" value="${res[i].blocksid}" />
+				        <label class="slds-radio_button__label" for="radio-${res[i].blocksid}${number_field}">
+				          <span class="slds-radio_faux">${res[i].blocks_label}</span>
+				        </label>
+				      </span>`;
+				}
 			}
+			template += `
+			    </div>
+			  </div>
+			</fieldset>`;
+			document.getElementById(`for-field-${number_field}`).innerHTML = template;
 		});
 	},
 	/**
@@ -718,55 +777,56 @@ const mb = {
 		const row = mb.createRow(table, 0, 'for-customview-', number_customview);
 		const cell = mb.createCell(row, 0, 'customview_inputs', number_customview);
 		//create viewname
-		const func = {
+		const inStyle = {
 			'style': 'width: 25%'
 		};
-		const fnObj = {
-			instance: cell,
-			placeholder: 'Viewname',
-			name: 'viewname-',
-			id: 'viewname-',
-			inc: number_customview,
-			attr: func,
-		};
-		mb.createInput(fnObj);
-		// create hidden customviewid
-		const inputid = {
-			instance: cell,
-			placeholder: 'Customviewid',
-			name: 'customviewid-',
-			id: 'customviewid-',
-			inc: number_customview,
-			attr: func,
-			type: 'hidden'
-		};
-		mb.createInput(inputid);
-		//create setdefault
-		const setdefault = document.createElement('select');
-		setdefault.name = 'setdefault-' + number_customview;
-		setdefault.id = 'setdefault-' + number_customview;
-		setdefault.className = 'slds-input';
-		setdefault.setAttribute('style', 'width: 25%');
-		for (var val in setdefaultOption[0]) {
-			const createOption = document.createElement('option');
-			createOption.innerHTML =  setdefaultOption[0][val];
-			createOption.value =  val;
-			setdefault.appendChild(createOption);
+		let viewTemplate = `
+		<div class="slds-grid slds-gutters">
+			<div class="slds-col">
+				<div class="slds-form-element">
+				  <label class="slds-form-element__label" for="viewname-${number_customview}">
+				  	<abbr class="slds-required" title="required">* </abbr> Viewname
+				  </label>
+				  <div class="slds-form-element__control">
+				    <input type="text" name="viewname-${number_customview}" id="viewname-${number_customview}" class="slds-input"/>
+				  </div>
+				</div>
+			</div>
+			<div class="slds-col">
+				<div class="slds-form-element">
+				  	<label class="slds-form-element__label" for="setdefault-${number_customview}">Set as default</label>
+				  	<div class="slds-form-element__control">
+				    	<div class="slds-select_container">
+				      		<select class="slds-select" name="setdefault-${number_customview}" id="setdefault-${number_customview}">`;
+		for (let val in setdefaultOption[0]) {
+			viewTemplate += `<option value="${val}">${setdefaultOption[0][val]}</option>`;
 		}
-		cell.appendChild(setdefault);
+		viewTemplate += `
+							</select>
+				    	</div>
+				  	</div>
+				</div>
+			</div>
+		</div>`;
 
 		//get all fields
-		const p = document.createElement('p');
-		p.innerHTML = mod_alert_arr.LBL_CHOOSECUSTOMVIEW;
-		cell.appendChild(p);
+		viewTemplate += `
+			<div class="slds-grid slds-gutters">
+				<div class="slds-col"><br>
+					<label class="slds-form-element__label">
+				  		<abbr class="slds-required" title="required">* </abbr> ${mod_alert_arr.LBL_CHOOSECUSTOMVIEW}
+				  	</label>
+				</div>
+			</div>`;
 		jQuery.ajax({
 			method: 'GET',
 			url: url+'&methodName=loadFields',
 		}).done(function (response) {
-			const res = JSON.parse(response);
-			for (var f in res) {
-				const div = document.createElement('div');
-				const checkbox = `
+			let res = JSON.parse(response);
+			viewTemplate += '<div class="slds-grid slds-gutters">';
+			for (let f in res) {
+				viewTemplate += `
+				<div class="slds-col">
                     <div class="slds-form-element">
                       <div class="slds-form-element__control">
                         <div class="slds-checkbox">
@@ -778,104 +838,12 @@ const mb = {
                         </div>
                       </div>
                     </div>
-                `;
-				div.innerHTML = checkbox;
-				cell.appendChild(div);
+                </div>`;
+				mb.loadElement(`customview_inputs${number_customview}`, true).innerHTML = viewTemplate;
 			}
+			viewTemplate += '</div>';
 		});
-	},
-	generateEditCustomView: (viewnameid, viewname, fields, setdefault, customviewno) => {
-		document.getElementById('number_customview').value = 0;
-		const number_customview = mb.autoIncrementIds('number_customview');
-		const table = mb.getTable('CustomView');
-		const row = mb.createRow(table, 0, 'for-customview-', number_customview);
-		const cell = mb.createCell(row, 0, 'customview_inputs', number_customview);
-		//create viewname
-		const func = {
-			'style': 'width: 25%'
-		};
-		const fnObj = {
-			instance: cell,
-			placeholder: 'Viewname',
-			name: 'viewname-',
-			id: 'viewname-',
-			inc: number_customview,
-			attr: func,
-		};
-		mb.createInput(fnObj);
-		mb.loadElement('viewname-'+number_customview, true).value = viewname;
-		// create hidden customviewid
-		const inputid = {
-			instance: cell,
-			placeholder: 'Customviewid',
-			name: 'customviewid-',
-			id: 'customviewid-',
-			inc: number_customview,
-			attr: func,
-			type: 'hidden'
-		};
-		mb.createInput(inputid);
-		mb.loadElement('customviewid-'+number_customview, true).value = viewnameid;
-
-		const customN = {
-			instance: cell,
-			placeholder: 'Customview_No',
-			name: 'customview_no-',
-			id: 'customview_no-',
-			inc: number_customview,
-			attr: func,
-			type: 'hidden'
-		};
-		mb.createInput(customN);
-		mb.loadElement('customview_no-'+number_customview, true).value = customviewno;
-		//create setdefault2
-		const setdefault2 = document.createElement('select');
-		setdefault2.name = 'setdefault-' + number_customview;
-		setdefault2.id = 'setdefault-' + number_customview;
-		setdefault2.className = 'slds-input';
-		setdefault2.setAttribute('style', 'width: 25%');
-		for (var val in setdefaultOption[0]) {
-			const createOption = document.createElement('option');
-			createOption.innerHTML =  setdefaultOption[0][val];
-			createOption.value =  val;
-			setdefault2.appendChild(createOption);
-		}
-		cell.appendChild(setdefault2);
-		mb.loadElement('setdefault-'+number_customview, true).value = setdefault;
-
-		//get all fields
-		const p = document.createElement('p');
-		p.innerHTML = mod_alert_arr.LBL_CHOOSECUSTOMVIEW;
-		cell.appendChild(p);
-		jQuery.ajax({
-			method: 'GET',
-			url: url+'&methodName=loadFields',
-		}).done(function (response) {
-			const res = JSON.parse(response);
-			for (var f in res) {
-				const div = document.createElement('div');
-				const checkbox = `
-                    <div class="slds-form-element">
-                      <div class="slds-form-element__control">
-                        <div class="slds-checkbox">
-                          <input type="checkbox" class="for-checkbox-${number_customview}" name="checkbox-options-${number_customview}" id="checkbox-${f}-id-${number_customview}" value="${res[f]['fieldsid']}"/>
-                          <label class="slds-checkbox__label" for="checkbox-${f}-id-${number_customview}">
-                            <span class="slds-checkbox_faux"></span>
-                            <span class="slds-form-element__label">${res[f]['fieldname']}</span>
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                `;
-				div.innerHTML = checkbox;
-				cell.appendChild(div);
-				if (res[f]['fieldname'] == fields) {
-					document.querySelector('#checkbox-'+f+'-id-'+number_customview).checked = true;
-				} else {
-					document.querySelector('#checkbox-'+f+'-id-'+number_customview).checked = false;
-				}
-			}
-		});
+		mb.loadElement(`customview_inputs${number_customview}`, true).innerHTML = viewTemplate;
 	},
 	/**
      * Function that load an alert message for success or error
@@ -911,12 +879,21 @@ const mb = {
 			let completed = dataGridInstance.getValue(i, 'completed');
 			let moduleid = dataGridInstance.getValue(i, 'moduleid');
 			if (completed == 'Completed') {
-				btn = `<button class="slds-button slds-button_brand" aria-live="assertive">
-                        <span class="slds-text-not-pressed">
+				btn = `
+				<button class="slds-button slds-button_brand" aria-live="assertive">
+                    <span class="slds-text-not-pressed">
                         <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
                             <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#download"></use>
-                        </svg>${mod_alert_arr.Export}</span>
-                    </button>`;
+                        </svg>${mod_alert_arr.Export}
+                    </span>
+                </button>
+				<button class="slds-button slds-button_neutral slds-button_dual-stateful" onclick="mb.backTo(5, true, ${moduleid}); mb.closeModal()" aria-live="assertive">
+                    <span class="slds-text-not-pressed">
+                        <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
+                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
+                        </svg>${mod_alert_arr.StartEditing}
+                    </span>
+                </button>`;
 			} else {
 				let step = 0;
 				if (completed == '20%') {
@@ -928,12 +905,14 @@ const mb = {
 				} else if (completed == '80%') {
 					step = 4;
 				}
-				btn = `<button class="slds-button slds-button_neutral slds-button_dual-stateful" onclick="mb.backTo(${step}, true, ${moduleid}); mb.closeModal()" aria-live="assertive">
-                        <span class="slds-text-not-pressed">
+				btn = `
+				<button class="slds-button slds-button_neutral slds-button_dual-stateful" onclick="mb.backTo(${step}, true, ${moduleid}); mb.closeModal()" aria-live="assertive">
+                    <span class="slds-text-not-pressed">
                         <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
                             <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
-                        </svg>${mod_alert_arr.StartEditing}</span>
-                    </button>`;
+                        </svg>${mod_alert_arr.StartEditing}
+                    </span>
+                </button>`;
 			}
 			dataGridInstance.setValue(i, 'export', btn, false);
 		}
@@ -981,8 +960,14 @@ const mb = {
 				mb.removeElement('autocomplete-span-'+forId, true);
 				mb.removeElement('autocomplete-modulespan-'+forId, true);
 			} else {
+				const inStyle = {
+					style: `background: white;
+					border: 1px solid #d1d1d1;
+					position: absolute;
+					z-index: 1000`
+				};
 				let span = document.createElement('span');
-				let ul = '<ul class="slds-dropdown__list" style="background: white; width: 25%; border: 1px solid #d1d1d1; position: absolute; z-index: 1000">';
+				let ul = `<ul class="slds-dropdown__list" style="${inStyle.style}">`;
 				for (let i = 0; i < res.length; i++) {
 					ul += `<li class="slds-dropdown__item">
                             <a onclick="mb.setValueToInput(this.id, ${forId}, '${method}')" tabindex="${i}" id="${res[i].name}">
@@ -1055,35 +1040,41 @@ const mb = {
 			const viewList = document.createElement('ul');
 			viewList.className = 'slds-tree';
 			views.appendChild(viewList);
-			for (let i in res.views) {
+			console.log(res.views['data'].contents.length);
+			for (let i = 0; i < res.views['data'].contents.length; i++) {
 				const elList = document.createElement('li');
 				let tree = `
-				      <div class="slds-tree__item">
-				        <button class="slds-button slds-button_icon slds-m-right_x-small" aria-hidden="true" tabindex="-1" title="Expand Tree Branch">
-				          <svg class="slds-button__icon slds-button__icon_small" aria-hidden="true">
-				            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
-				          </svg>
-				        </button>
-				        <span class="slds-has-flexi-truncate">
-				          <span class="slds-tree__item-label slds-truncate" title="Viewname: ${res.views[i].viewname}">${res.views[i].viewname}</span>
-				        </span>
-				      </div>
-				      <ul role="group">`;
-				      for (let j in res.views[i].fields) {
-				        tree += `
-					        <li aria-level="2" role="treeitem">
-					          <div class="slds-tree__item">
-					            <button class="slds-button slds-button_icon slds-m-right_x-small slds-is-disabled" aria-hidden="true" tabindex="-1" title="Expand Tree Item">
-					              <svg class="slds-button__icon slds-button__icon_small" aria-hidden="true">
+				<div class="slds-tree__item">
+				    <button class="slds-button slds-button_icon slds-m-right_x-small" aria-hidden="true" tabindex="-1" title="Expand Tree Branch">
+				        <svg class="slds-button__icon slds-button__icon_small" aria-hidden="true">
+					        <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+				        </svg>
+				    </button>
+				    <span class="slds-has-flexi-truncate">
+				        <span class="slds-tree__item-label slds-truncate">
+				        ${res.views['data'].contents[i].viewname}
+				    </span>
+				    </span>
+				</div>
+				<ul role="group">`;
+				for (let j in res.views['data'].contents[i].fields) {
+					const fields = res.views['data'].contents[i].fields;
+				    tree += `
+					<li aria-level="2" role="treeitem">
+					    <div class="slds-tree__item">
+					        <button class="slds-button slds-button_icon slds-m-right_x-small slds-is-disabled" aria-hidden="true" tabindex="-1" title="Expand Tree Item">
+					            <svg class="slds-button__icon slds-button__icon_small" aria-hidden="true">
 					                <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
-					              </svg>
-					            </button>
-					            <span class="slds-has-flexi-truncate">
-					              <span class="slds-tree__item-label slds-truncate" title="Fieldname: ${res.views[i].fields[j]}">${res.views[i].fields[j]}</span>
+					            </svg>
+					        </button>
+					        <span class="slds-has-flexi-truncate">
+					            <span class="slds-tree__item-label slds-truncate" title="Fieldname: ${fields[j]}">
+					            	${fields[j]}
 					            </span>
-					          </div>
-					        </li>`;
-				    	}
+					        </span>
+					    </div>
+					</li>`;
+				}
 				tree += '</ul>';
 				elList.innerHTML = tree;
 				viewList.appendChild(elList);
@@ -1114,66 +1105,52 @@ const mb = {
 		const row = mb.createRow(table, 0, 'for-related-', number_related);
 		const cell = mb.createCell(row, 0, 'related_inputs_', number_related);
 
-		const span = document.createElement('span');
-		span.id = 'autocomplete-span-'+number_related;
-
-		var func = {
-			'onkeyup': 'mb.autocomplete(this, "name")',
-		};
-		mb.createLabel(cell, 'Function name');
-		var fnObj = {
-			instance: cell,
-			placeholder: 'Function name',
-			name: 'related-function-',
-			id: 'autocomplete-related-',
-			inc: number_related,
-			attr: func,
-		};
-		mb.createInput(fnObj);
-		cell.appendChild(span);
-
-		const cell2 = mb.createCell(row, 1, 'related_inputs_', number_related);
-		mb.createLabel(cell2, 'Label');
-		fnObj = {
-			instance: cell2,
-			placeholder: 'Label',
-			name: 'related-label-',
-			id: 'related-label-',
-			inc: number_related,
-			attr: '',
-		};
-		mb.createInput(fnObj);
-
-		const cell3 = mb.createCell(row, 0, 'related_inputs_', number_related);
-		mb.createLabel(cell3, 'Actions');
-		fnObj = {
-			instance: cell3,
-			placeholder: 'Actions',
-			name: 'related-action-',
-			id: 'related-action-',
-			inc: number_related,
-			attr: '',
-		};
-		mb.createInput(fnObj);
-
-		const cell4 = mb.createCell(row, 0, 'related_inputs_', number_related);
-		func = {
-			'onkeyup': 'mb.autocomplete(this, "module")',
-		};
-		mb.createLabel(cell4, 'Related module');
-		fnObj = {
-			instance: cell4,
-			placeholder: 'Related module',
-			name: 'related-module-',
-			id: 'autocomplete-module-',
-			inc: number_related,
-			attr: func,
-		};
-		mb.createInput(fnObj);
-
-		const spanModule = document.createElement('span');
-		spanModule.id = 'autocomplete-modulespan-'+number_related;
-		cell4.appendChild(spanModule);
+		let listTemplate = `
+		<div class="slds-grid slds-gutters">
+			<div class="slds-col">
+				<div class="slds-form-element">
+				  	<label class="slds-form-element__label" for="autocomplete-related-${number_related}">
+				  		<abbr class="slds-required" title="required">* </abbr> Function name
+				  	</label>
+				  	<div class="slds-form-element__control">
+				    	<input type="text" onkeyup="mb.autocomplete(this, 'name')" name="related-function-${number_related}" id="autocomplete-related-${number_related}" class="slds-input" />
+				  		<span id="autocomplete-span-${number_related}"></span>
+				  	</div>
+				</div>
+			</div>
+			<div class="slds-col">
+				<div class="slds-form-element">
+				  	<label class="slds-form-element__label" for="related-label-${number_related}">
+				  		<abbr class="slds-required" title="required">* </abbr> Label
+				  	</label>
+				  	<div class="slds-form-element__control">
+				    	<input type="text" name="related-label-${number_related}" id="related-label-${number_related}" class="slds-input" />
+				  	</div>
+				</div>
+			</div>
+			<div class="slds-col">
+				<div class="slds-form-element">
+				  	<label class="slds-form-element__label" for="related-action-${number_related}">
+				  		<abbr class="slds-required" title="required">* </abbr> Actions
+				  	</label>
+				  	<div class="slds-form-element__control">
+				    	<input type="text" name="related-action-${number_related}" id="related-action-${number_related}" class="slds-input" />
+				  	</div>
+				</div>
+			</div>
+			<div class="slds-col">
+				<div class="slds-form-element">
+				  	<label class="slds-form-element__label" for="related-action-${number_related}">
+				  		<abbr class="slds-required" title="required">* </abbr> Related module
+				  	</label>
+				  	<div class="slds-form-element__control">
+				    	<input type="text" onkeyup="mb.autocomplete(this, 'module')" name="related-module-${number_related}" id="autocomplete-module-${number_related}" class="slds-input" />
+				  	</div>
+				  	<span id="autocomplete-modulespan-${number_related}"></span>
+				</div>
+			</div>
+		</div>`;
+		mb.loadElement(`related_inputs_${number_related}`, true).innerHTML = listTemplate;
 	},
 	/**
      * Create html labels
@@ -1265,31 +1242,54 @@ const mb = {
 	},
 	/**
      * Remove Field on step 3
-     * @param {string} fieldsid - Current cell instance
+     * @param {string} fieldsid
      */
 	removeField: (fieldsid) => {
-		const id = fieldsid.split('-')[0];
 		jQuery.ajax({
 			method: 'POST',
 			url: url+'&methodName=removeField',
-			data: 'fieldsid='+id
+			data: 'fieldsid='+fieldsid
 		}).done(function (response) {
 			const res = JSON.parse(response);
 			if (res == true) {
-				mb.removeElement('li-field-mb-'+id);
+				fieldGridInstance.clear();
+				fieldGridInstance.reloadData();
 			}
 		});
 	},
 	/**
-     * Edit Field on step 3
-     * @param {string} fieldsid - Current cell instance
+     * Remove View on step 4
+     * @param {string} viewid
      */
-	editField: (fieldsid, fieldname, fieldlabel, entityidentifier, relatedmodules, sequence, uitype, presence, quickcreate, displaytype, masseditable, mandatory) => {
-		const id = fieldsid.split('-')[0];
-		mb.generateEditFields(id, fieldname, fieldlabel, entityidentifier, relatedmodules, sequence, uitype, presence, quickcreate, displaytype, masseditable, mandatory);
+	removeCustomView: (viewid) => {
+		jQuery.ajax({
+			method: 'POST',
+			url: url+'&methodName=removeCustomView',
+			data: 'viewid='+viewid
+		}).done(function (response) {
+			const res = JSON.parse(response);
+			if (res == true) {
+				viewGridInstance.clear();
+				viewGridInstance.reloadData();
+			}
+		});
 	},
-	editView: (viewnameid, viewname, fields, setdefault) => {
-		mb.generateEditCustomView(viewnameid, viewname, fields, setdefault);
+	/**
+     * Remove Lists on step 5
+     * @param {string} listid
+     */
+	removeRelatedLists: (list) => {
+		jQuery.ajax({
+			method: 'POST',
+			url: url+'&methodName=removeRelatedLists',
+			data: 'listid='+list
+		}).done(function (response) {
+			const res = JSON.parse(response);
+			if (res == true) {
+				listGridInstance.clear();
+				listGridInstance.reloadData();
+			}
+		});
 	},
 	/**
      * Remove elements
@@ -1318,4 +1318,55 @@ const mb = {
 		}
 		return value;
 	},
+
+	generateManifest: () => {
+		jQuery.ajax({
+			method: 'POST',
+			url: url+'&methodName=generateManifest',
+		}).done(function (response) {
+
+		});
+	},
 };
+
+class ActionRender {
+
+	constructor(props) {
+		let el;
+		let id;
+		let functionName = '';
+		let rowKey = props.rowKey;
+		const { type } = props.columnInfo.renderer.options;
+		if (type == 'Fields') {
+			id = props.grid.getValue(rowKey, 'fieldsid');
+			functionName = 'removeField';
+		} else if (type == 'CustomView') {
+			id = props.grid.getValue(rowKey, 'customviewid');
+			functionName = 'removeCustomView';
+		} else if (type == 'RelatedLists') {
+			id = props.grid.getValue(rowKey, 'relatedlistid');
+			functionName = 'removeRelatedLists';
+		}
+		el = document.createElement('span');
+		let actions = `
+			<div class="slds-button-group" role="group">
+			  	<button onclick='mb.${functionName}(${id})' class="slds-button slds-button_icon slds-button_icon-border-filled" aria-pressed="false">
+			    	<svg class="slds-button__icon" aria-hidden="true">
+			      	<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+			    	</svg>
+			  	</button>
+			</div>		
+		`;
+		el.innerHTML = actions;
+		this.el = el;
+		this.render(props);
+	}
+
+	getElement() {
+		return this.el;
+	}
+
+	render(props) {
+		this.el.value = String(props.value);
+	}
+}
