@@ -1957,7 +1957,7 @@ window.addEventListener('load', function () {
 		this.discCombo 	= {},
 		this.fields 	= {},
 		this.productId	= 0,
-		this.crmid			= 0,
+		this.crmid		= 0,
 		this.divisible	= true;
 
 		/* Private properties */
@@ -1973,6 +1973,7 @@ window.addEventListener('load', function () {
 			me.root.inventoryLines.seq++,
 			me.root.inventoryLines[me.id] = me,
 			me.crmid = me.el.getAttribute('data-crmid');
+			me.productId = me.el.getAttribute('data-productid');
 
 			new ProductAutocomplete(me.u.getFirstClass(me.el, "cbds-product-search--hasroot"), me, false, rootObj);
 
@@ -2121,11 +2122,13 @@ window.addEventListener('load', function () {
 		},
 
 		calcCostPrice: function() {
-			this.setField("cost_gross", this.fields.cost_price.getValue() * this.fields.quantity.getValue());
+			if (this.fields.cost_price != undefined && this.fields.cost_gross != undefined) {
+				this.setField("cost_gross", this.fields.cost_price.getValue() * this.fields.quantity.getValue());
+			}
 		},
 
 		calcLineGross: function() {
-			this.setField("extgross", this.fields.quantity.getValue() * this.fields.unit_price.getValue());
+			this.setField("extgross", this.fields.quantity.getValue() * this.fields.listprice.getValue());
 		},
 
 		calcDiscount: function() {
@@ -2708,6 +2711,7 @@ window.addEventListener('load', function () {
 		this.taxTypeCombo = new ldsCombobox(this.utils.findUp(taxtypeInput, ".slds-combobox-picklist"), {
 			"onSelect" : this.changeTaxType.bind(this)
 		});
+		this.updateAggr();
 	}
 
 	InventoryBlock.prototype = {
@@ -2830,7 +2834,7 @@ window.addEventListener('load', function () {
 			}
 			for (field in this.fields) {
 				let fldName = this.fields[field].getSaveName(),
-				input = _getHiddenInputForField(`aggr_fields[${fldName}]`);
+					input = _getHiddenInputForField(`aggr_fields[${fldName}]`);
 				aggrFieldsContainer.appendChild(input);
 				input.value = this.fields[field].getValue();
 			}
