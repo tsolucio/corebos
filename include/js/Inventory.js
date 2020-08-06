@@ -1353,512 +1353,546 @@ function InventorySelectAll(mod, image_pth) {
 	* @author: MajorLabel <info@majorlabel.nl>
 	* @license VPL
 	*/
-(function productautocompleteModule(factory) {
+	(function productautocompleteModule(factory) {
 
-	if (typeof define === 'function' && define.amd) {
-		define(factory);
-	} else if (typeof module != 'undefined' && typeof module.exports != 'undefined') {
-		module.exports = factory();
-	} else {
-		window['ProductAutocomplete'] = factory();
-	}
-
-})(function productautocompleteFactory() {
-
-	/**
-	 * @class ProductAutocomplete
-	 * @param {element}
-	 * @param {element}:	Root 'InventoryBlock' Object
-	 * @param {function}: 	Callback for custom implementations. Will receive an object with
-	 *						the root autocomplete node and all the result data
-	 */
-	function ProductAutocomplete(el, parent, callback) {
-		this.el = el,
-		this.parent = parent,
-		this.specialKeys = ['up', 'down', 'esc', 'enter'],
-		this.threshold = 3,
-		this.input = el.getElementsByTagName('input')[0],
-		this.source = 'index.php?module=Utilities&sourceModule='+gVTModule+'&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getProductServiceAutocomplete&limit=10&term=',
-		this.active = false,
-		this.resultContainer,
-		this.resultBox,
-		this.lookupContainer = this.utils.getFirstClass(el, 'slds-combobox-lookup'),
-		this.currentResults = [],
-		this.callback = typeof callback === 'function' ? callback : false;
-
-		/* Instance listeners */
-		this.utils.on(this.input, 'keyup', this.throttle, this);
-		this.utils.on(this.input, 'blur', this.delayedClear, this);
-	}
-
-	ProductAutocomplete.prototype = {
-		constructor : ProductAutocomplete,
-
-		trigger: function (e) {
-			var isSpecialKey = this.isSpecialKey(e.keyCode);
-			var term = this.input.value;
-			if (!isSpecialKey && term.length > this.threshold) {
-				this.getResults(term);
-			} else if (term.length < this.threshold) {
-				this.clear();
-			} else if (isSpecialKey) {
-				this.handleKeyInput(e);
-			}
-		},
-
-		isSpecialKey: function (code) {
-			if (window.keycodeMap[code] !== undefined) {
-				return this.specialKeys.indexOf(window.keycodeMap[code]) == -1 ? false : true;
-			} else {
-				return false;
-			}
-		},
-
-		throttle: function (e) {
-			window.setTimeout(this.trigger(e), 100);
-		},
-
-		getResults: function (term) {
-			var accid = 0;
-			if (document.EditView.account_id != undefined) {
-				accid = document.EditView.account_id.value;
-			}
-			var ctoid = 0;
-			if (document.EditView.contact_id != undefined) {
-				ctoid = document.EditView.contact_id.value;
-			}
-			var _this = this;
-			var r = new XMLHttpRequest();
-			r.onreadystatechange = function () {
-				if (this.readyState == 4 && this.status == 200) {
-					var res = JSON.parse(this.responseText);
-					_this.processResult(res);
-				}
-			};
-			r.open('GET', this.source + this.input.value + '&accid='+accid+ '&ctoid='+ctoid+'&modid='+document.EditView.record.value, true);
-			r.send();
-		},
-
-		processResult: function (res) {
-			if (res.length > 0) {
-				// Build and attach container
-				if (!this.active) {
-					this.resultBox = this.buildResultBox();
-					this.attachResultBox(this.resultBox);
-					this.resultContainer = this.buildResultContainer();
-					this.resultBox.appendChild(this.resultContainer);
-					this.active = true;
-					window.preventFormSubmitOnEnter = true;
-				}
-
-				// Build results
-				this.buildResults(res);
-			}
-		},
-
-		buildResultBox: function () {
-			var div = _createEl('div', '');
-			div.setAttribute('role', 'listbox');
-			// Only temp until full LDS is implemented
-			div.style.position = 'relative';
-			// END only temp
-			return div;
-		},
-
-		buildResultContainer: function () {
-			var ul 	= _createEl('ul', 'slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid');
-			ul.setAttribute('role', 'presentation');
-			// Only temp until full LDS is implemented
-			ul.style.visibility = 1;
-			ul.style.opacity = 1;
-			ul.style.transform = 'none';
-			ul.style.left = 0;
-			ul.style.maxWidth = '100%';
-			ul.style.width = '100%';
-			ul.style.visibility = 'visible';
-			// END only temp
-			return ul;
-		},
-
-		attachResultBox: function (containerDiv) {
-			this.lookupContainer.appendChild(containerDiv);
-			this.lookupContainer.classList.add('slds-is-open');
-			this.lookupContainer.setAttribute('aria-expanded', 'true');
-		},
-
-		removeResultBox: function () {
-			this.lookupContainer.classList.remove('slds-is-open');
-			this.lookupContainer.removeAttribute('aria-expanded', 'true');
-			this.lookupContainer.removeChild(this.resultBox);
-		},
-
-		buildResults: function (results) {
-			// Empty all first
-			this.resultContainer.innerHTML = '';
-			this.currentResults = [];
-
-			for (var i = 0; i < results.length; i++) {
-				this.attachResultToContainer(this.buildResult(results[i]));
-			}
-
-			// Pre-select the first result
-			this.utils.getFirstClass(this.currentResults[0].node, 'slds-listbox__option').classList.add('slds-has-focus');
-			this.currentResults[0].selected = true;
-		},
-
-		buildResult: function (result) {
-			var media = this.buildResultMedia(result.meta.name, [
-				{'label' : result.translations.ven_no, 'value' : result.meta.mfr_no},
-				{'label' : result.translations.mfr_no, 'value' : result.meta.ven_no}
-			]);
-
-			var li = _createEl('li', 'slds-listbox__item slds-border_bottom');
-			li.setAttribute('role', 'presentation');
-			li.appendChild(media);
-			this.currentResults.push({
-				'obj' 		: result,
-				'node'		: li,
-				'selected'	: false
-			});
-
-			this.utils.on(li, 'click', this.click, this);
-			this.utils.on(li, 'mouseover', this.onResultHover, this);
-
-			return li;
-		},
-
-		buildResultMedia: function (name, lines) {
-			var mediaBody = _createEl('div', 'slds-media__body');
-			var listboxText = _createEl('span', 'slds-listbox__option-text slds-listbox__option-text_entity slds-text-title_caps cbds-product-search-title', name);
-			var listboxMetas = this.buildListboxMetas(lines);
-
-			mediaBody.appendChild(listboxText);
-			for (var i = 0; i < listboxMetas.length; i++) {
-				mediaBody.appendChild(listboxMetas[i]);
-			}
-
-			var media = _createEl('div', 'slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta');
-			media.setAttribute('role', 'option');
-			media.appendChild(mediaBody);
-			return media;
-		},
-
-		buildListboxMetas: function (lines) {
-			var returnLines = [];
-			for (var i = 0; i < lines.length; i++) {
-				returnLines.push(this.buildListboxMeta(lines[i]));
-			}
-			return returnLines;
-		},
-
-		buildListboxMeta: function (line) {
-			var grid = _createEl('div', 'slds-grid slds-has-flexi-truncate slds-p-top_xx-small');
-			var title = _createEl('div', 'slds-col slds-size_1-of-2 slds-p-left_none slds-text-title slds-truncate', line.label);
-			var value = _createEl('div', 'slds-col slds-size_1-of-2 slds-p-left_none', line.value);
-			grid.appendChild(title);
-			grid.appendChild(value);
-			var meta = _createEl('span', 'slds-listbox__option-meta slds-listbox__option-meta_entity');
-			meta.appendChild(grid);
-			return meta;
-		},
-
-		attachResultToContainer: function (resultLi) {
-			this.resultContainer.appendChild(resultLi);
-		},
-
-		onResultHover : function (e) {
-			var result = this.utils.findUp(e.target, '.slds-listbox__item');
-			for (var i = 0; i < this.currentResults.length; i++) {
-				this.setResultState(i, '');
-			}
-			this.setResultState(this.getResultIndexByNode(result), 'selected');
-		},
-
-		clear: function () {
-			if (this.active) {
-				this.removeResultBox();
-				this.destroyResultListeners();
-				this.currentResults = [];
-				this.active = false;
-				window.preventFormSubmitOnEnter = false;
-			}
-		},
-
-		delayedClear : function () {
-			var _this = this;
-			window.setTimeout(
-				function () {
-					_this.clear();
-				},
-				150
-			);
-		},
-
-		destroyResultListeners: function () {
-			for (var i = 0; i < this.currentResults.length; i++) {
-				this.utils.off(this.currentResults[i].node, 'click', this.click, this);
-				this.utils.on(this.currentResults[i].node, 'mouseover', this.onResultHover, this);
-			}
-		},
-
-		handleKeyInput : function (e) {
-			if (this.active) {
-				var key = _getKey(e.keyCode);
-				switch (key) {
-				case 'up':
-					this.selectPrev();
-					break;
-				case 'down':
-					this.selectNext();
-					break;
-				case 'enter':
-					var current = this.getCurrentSelectedResult();
-					this.select(this.currentResults[current]);
-					break;
-				case 'esc':
-					this.clear();
-					break;
-				}
-			}
-		},
-
-		selectPrev: function () {
-			var current = this.getCurrentSelectedResult();
-			if (current != 0) {
-				this.setResultState(current, '');
-				this.setResultState((current - 1), 'selected');
-			}
-		},
-
-		selectNext: function () {
-			var current = this.getCurrentSelectedResult();
-			if (current != this.currentResults.length -1) {
-				this.setResultState(current, '');
-				this.setResultState((current + 1), 'selected');
-			}
-		},
-
-		setResultState: function (index, state) {
-			if (state == 'selected') {
-				this.utils.getFirstClass(this.currentResults[index].node, 'slds-listbox__option').classList.add('slds-has-focus');
-				this.currentResults[index].selected = true;
-			} else {
-				this.utils.getFirstClass(this.currentResults[index].node, 'slds-listbox__option').classList.remove('slds-has-focus');
-				this.currentResults[index].selected = false;
-			}
-		},
-
-		getCurrentSelectedResult: function () {
-			for (var i = 0; i < this.currentResults.length; i++) {
-				if (this.currentResults[i].selected) {
-					return i;
-				}
-			}
-		},
-
-		click: function (e) {
-			var el = this.utils.findUp(e.target, '.slds-listbox__item'); // Click event could fire on child
-			if (el) {
-				var result = this.getMatchingResultByNode(el);
-				this.select(result);
-			}
-		},
-
-		getMatchingResultByNode: function (node) {
-			for (var i = 0; i < this.currentResults.length; i++) {
-				if (node.isSameNode(this.currentResults[i].node)) {
-					return this.currentResults[i];
-				}
-			}
-		},
-
-		getResultIndexByNode: function (node) {
-			for (var i = 0; i < this.currentResults.length; i++) {
-				if (node.isSameNode(this.currentResults[i].node)) {
-					return i;
-				}
-			}
-		},
-
-		select: function (result) {
-			this.fillLine(result);
-			this.clear(); // Clear autocomplete
-		},
-
-		fillLine: function (result) {
-			if (!this.callback) {
-				var lineNode = this.utils.findUp(result.node, '.' + this.root.lineClass),
-					usageunits = this.root.el.getElementsByClassName(this.root.lineClass + '--usageunit');
-
-				this.utils.getFirstClass(lineNode, 'cbds-product-line-image').src = result.obj.meta.image;
-				var currency = document.getElementById('inventory_currency').value;
-				if (result.obj.pricing.multicurrency[currency] != undefined) {
-					this.parent.setField('unit_price', result.obj.pricing.multicurrency[currency].actual_price);
-				} else {
-					this.parent.setField('unit_price', result.obj.pricing.unit_price);
-				}
-				this.parent.setField('cost_price', result.obj.pricing.unit_cost);
-				this.parent.setField('qtyinstock', result.obj.logistics.qty_in_stock);
-				this.parent.setField('qtyindemand', result.obj.logistics.curr_ordered);
-
-				this.utils.getFirstClass(lineNode, this.root.linePrefix + '--comments').innerHTML = result.obj.meta.comments;
-				this.input.value = result.obj.meta.name;
-
-				for (var i = usageunits.length - 1; i >= 0; i--) {
-					usageunits[i].innerHTML = result.obj.logistics.usageunit;
-				}
-
-				this.parent.expandExtra();
-				this.parent.calcLine();
-
-				this.utils.getFirstClass(this.utils.findUp(this.el, '.' + this.root.lineClass), this.root.inputPrefix + '--quantity').focus();
-			} else {
-				this.callback({
-					'result': result.obj,
-					'source': this.el
-				});
-			}
-		},
-
-		/*
-		 * Class utilities
+		if (typeof define === 'function' && define.amd) {
+			define(factory);
+		} else if (typeof module != 'undefined' && typeof module.exports != 'undefined') {
+			module.exports = factory();
+		} else {
+			window['ProductAutocomplete'] = factory();
+		}
+	
+	})(function productautocompleteFactory() {
+	
+		/**
+		 * @class ProductAutocomplete
+		 * @param {element}
+		 * @param {element}:	Root 'InventoryBlock' Object
+		 * @param {function}: 	Callback for custom implementations. Will receive an object with
+		 *						the root autocomplete node and all the result data
+		 * @param {object}		The root inventoryblock object
 		 */
-		utils : {
-			/*
-			 * Util: 'findUp'
-			 * Returns the first element up the DOM that matches the search
-			 *
-			 * @param: element: 	the node to start from
-			 * @param: searchterm: 	Can be a class (prefix with '.'), ID (prefix with '#')
-			 *						or an attribute (default when no prefix)
-			 */
-			findUp : function (element, searchterm) {
-				element = element.children[0] != undefined ? element.children[0] : element; // Include the current element
-				while (element = element.parentElement) {
-					if ( (searchterm.charAt(0) === '#' && element.id === searchterm.slice(1))
-						|| ( searchterm.charAt(0) === '.' && element.classList.contains(searchterm.slice(1))
-						|| ( element.hasAttribute(searchterm)))
-					) {
-						return element;
-					} else if (element == document.body) {
+		function ProductAutocomplete(el, parent, callback, rootObj) {
+			this.el = el,
+			this.root = rootObj,
+			this.parent = parent,
+			this.specialKeys = ['up', 'down', 'esc', 'enter'],
+			this.threshold = 3,
+			this.input = el.getElementsByTagName('input')[0],
+			this.source = 'index.php?module=Utilities&sourceModule='+gVTModule+'&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getProductServiceAutocomplete&limit=10&term=',
+			this.active = false,
+			this.resultContainer,
+			this.resultBox,
+			this.lookupContainer = this.utils.getFirstClass(el, 'slds-combobox-lookup'),
+			this.currentResults = [],
+			this.callback = typeof callback === 'function' ? callback : false;
+	
+			/* Instance listeners */
+			this.utils.on(this.input, 'keydown', this.preventSubmit, this);
+			this.utils.on(this.input, 'keyup', this.throttle, this);
+			this.utils.on(this.input, 'blur', this.delayedClear, this);
+		}
+	
+		ProductAutocomplete.prototype = {
+			constructor : ProductAutocomplete,
+	
+			trigger: function (e) {
+				var isSpecialKey = this.isSpecialKey(e.keyCode);
+				var term = this.input.value;
+				if (!isSpecialKey && term.length > this.threshold) {
+					this.getResults(term);
+				} else if (term.length < this.threshold) {
+					this.clear();
+				} else if (isSpecialKey) {
+					this.handleKeyInput(e);
+				}
+			},
+	
+			isSpecialKey: function (code) {
+				if (window.keycodeMap[code] !== undefined) {
+					return this.specialKeys.indexOf(window.keycodeMap[code]) == -1 ? false : true;
+				} else {
+					return false;
+				}
+			},
+	
+			throttle: function (e) {
+				window.setTimeout(this.trigger(e), 100);
+			},
+	
+	
+			preventSubmit: function(e) {
+				if (e.keyCode === 13) {
+					e.preventDefault()
+					e.stopPropagation()
+				}
+			},
+	
+			getResults: function (term) {
+				var h = getAccConFieldnames,
+					dE = document.EditView,
+					accid = h().acc === '' ? 0 : h().acc,
+					ctoid = h().con === '' ? 0 : h().con,
+					recid = dE === undefined ? 0 : dE.record.value
+					_this = this,
+					r = new XMLHttpRequest();
+	
+				r.onreadystatechange = function () {
+					if (this.readyState == 4 && this.status == 200) {
+						var res = JSON.parse(this.responseText);
+						_this.processResult(res);
+					}
+				};
+				r.open('GET', this.source + this.input.value + '&accid='+accid+ '&ctoid='+ctoid+'&modid='+recid, true);
+				r.send();
+	
+				// Helper to keep organized
+				function getAccConFieldnames() {
+					let fldNames = {'acc': '', 'con': ''};
+					if (document.EditView !== undefined) {
+						fldNames.acc = document.EditView.account_id !== undefined ? 'account_id' : 'accid';
+						fldNames.con = document.EditView.contact_id !== undefined ? 'contact_id' : 'ctoid';
+					}
+					return fldNames;
+				}
+			},
+	
+			processResult: function (res) {
+				if (res.length > 0) {
+					// Build and attach container
+					if (!this.active) {
+						this.resultBox = this.buildResultBox();
+						this.attachResultBox(this.resultBox);
+						this.resultContainer = this.buildResultContainer();
+						this.resultBox.appendChild(this.resultContainer);
+						this.active = true;
+						window.preventFormSubmitOnEnter = true;
+					}
+	
+					// Build results
+					this.buildResults(res);
+				}
+			},
+	
+			buildResultBox: function () {
+				var div = _createEl('div', '');
+				div.setAttribute('role', 'listbox');
+				// Only temp until full LDS is implemented
+				div.style.position = 'relative';
+				// END only temp
+				return div;
+			},
+	
+			buildResultContainer: function () {
+				var ul 	= _createEl('ul', 'slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid');
+				ul.setAttribute('role', 'presentation');
+				// Only temp until full LDS is implemented
+				ul.style.visibility = 1;
+				ul.style.opacity = 1;
+				ul.style.transform = 'none';
+				ul.style.left = 0;
+				ul.style.maxWidth = '100%';
+				ul.style.width = '100%';
+				ul.style.visibility = 'visible';
+				// END only temp
+				return ul;
+			},
+	
+			attachResultBox: function (containerDiv) {
+				this.lookupContainer.appendChild(containerDiv);
+				this.lookupContainer.classList.add('slds-is-open');
+				this.lookupContainer.setAttribute('aria-expanded', 'true');
+			},
+	
+			removeResultBox: function () {
+				this.lookupContainer.classList.remove('slds-is-open');
+				this.lookupContainer.removeAttribute('aria-expanded', 'true');
+				this.lookupContainer.removeChild(this.resultBox);
+			},
+	
+			buildResults: function (results) {
+				// Empty all first
+				this.resultContainer.innerHTML = '';
+				this.currentResults = [];
+	
+				for (var i = 0; i < results.length; i++) {
+					this.attachResultToContainer(this.buildResult(results[i]));
+				}
+	
+				// Pre-select the first result
+				this.utils.getFirstClass(this.currentResults[0].node, 'slds-listbox__option').classList.add('slds-has-focus');
+				this.currentResults[0].selected = true;
+			},
+	
+			buildResult: function (result) {
+				var media = this.buildResultMedia(result.meta.name, [
+					{'label' : result.translations.ven_no, 'value' : result.meta.mfr_no},
+					{'label' : result.translations.mfr_no, 'value' : result.meta.ven_no}
+				]);
+	
+				var li = _createEl('li', 'slds-listbox__item slds-border_bottom');
+				li.setAttribute('role', 'presentation');
+				li.appendChild(media);
+				this.currentResults.push({
+					'obj' 		: result,
+					'node'		: li,
+					'selected'	: false
+				});
+	
+				this.utils.on(li, 'click', this.click, this);
+				this.utils.on(li, 'mouseover', this.onResultHover, this);
+	
+				return li;
+			},
+	
+			buildResultMedia: function (name, lines) {
+				var mediaBody = _createEl('div', 'slds-media__body');
+				var listboxText = _createEl('span', 'slds-listbox__option-text slds-listbox__option-text_entity slds-text-title_caps cbds-product-search-title', name);
+				var listboxMetas = this.buildListboxMetas(lines);
+	
+				mediaBody.appendChild(listboxText);
+				for (var i = 0; i < listboxMetas.length; i++) {
+					mediaBody.appendChild(listboxMetas[i]);
+				}
+	
+				var media = _createEl('div', 'slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta');
+				media.setAttribute('role', 'option');
+				media.appendChild(mediaBody);
+				return media;
+			},
+	
+			buildListboxMetas: function (lines) {
+				var returnLines = [];
+				for (var i = 0; i < lines.length; i++) {
+					returnLines.push(this.buildListboxMeta(lines[i]));
+				}
+				return returnLines;
+			},
+	
+			buildListboxMeta: function (line) {
+				var grid = _createEl('div', 'slds-grid slds-has-flexi-truncate slds-p-top_xx-small');
+				var title = _createEl('div', 'slds-col slds-size_1-of-2 slds-p-left_none slds-text-title slds-truncate', line.label);
+				var value = _createEl('div', 'slds-col slds-size_1-of-2 slds-p-left_none', line.value);
+				grid.appendChild(title);
+				grid.appendChild(value);
+				var meta = _createEl('span', 'slds-listbox__option-meta slds-listbox__option-meta_entity');
+				meta.appendChild(grid);
+				return meta;
+			},
+	
+			attachResultToContainer: function (resultLi) {
+				this.resultContainer.appendChild(resultLi);
+			},
+	
+			onResultHover : function (e) {
+				var result = this.utils.findUp(e.target, '.slds-listbox__item');
+				for (var i = 0; i < this.currentResults.length; i++) {
+					this.setResultState(i, '');
+				}
+				this.setResultState(this.getResultIndexByNode(result), 'selected');
+			},
+	
+			clear: function () {
+				if (this.active) {
+					this.removeResultBox();
+					this.destroyResultListeners();
+					this.currentResults = [];
+					this.active = false;
+					window.preventFormSubmitOnEnter = false;
+				}
+			},
+	
+			delayedClear : function () {
+				var _this = this;
+				window.setTimeout(
+					function () {
+						_this.clear();
+					},
+					150
+				);
+			},
+	
+			destroyResultListeners: function () {
+				for (var i = 0; i < this.currentResults.length; i++) {
+					this.utils.off(this.currentResults[i].node, 'click', this.click, this);
+					this.utils.on(this.currentResults[i].node, 'mouseover', this.onResultHover, this);
+				}
+			},
+	
+			handleKeyInput : function (e) {
+				if (this.active) {
+					var key = _getKey(e.keyCode);
+					switch (key) {
+					case 'up':
+						this.selectPrev();
+						break;
+					case 'down':
+						this.selectNext();
+						break;
+					case 'enter':
+						var current = this.getCurrentSelectedResult();
+						this.select(this.currentResults[current]);
+						break;
+					case 'esc':
+						this.clear();
 						break;
 					}
 				}
 			},
-			/*
-			 * Util: 'getFirstClass'
-			 * Returns the first element from the root that matches
-			 * the classname
-			 *
-			 * @param: root: 		the node to start from
-			 * @param: className: 	The classname to search for
-			 */
-			getFirstClass: function (root, className) {
-				return root.getElementsByClassName(className)[0] != undefined ? root.getElementsByClassName(className)[0] : {};
-			},
-			/*
-			 * Util: 'on'
-			 * Adds an event listener
-			 *
-			 * @param: el: 			The node to attach the listener to
-			 * @param: type: 		The type of event
-			 * @param: func: 		The function to perform
-			 * @param: context: 	The context to bind the listener to
-			 */
-			on: function (el, type, func, context) {
-				try {
-					el.addEventListener(type, func.bind(context));
-				} catch (e) {
-					throw e + '. Called by ' + this.on.caller;
+	
+			selectPrev: function () {
+				var current = this.getCurrentSelectedResult();
+				if (current != 0) {
+					this.setResultState(current, '');
+					this.setResultState((current - 1), 'selected');
 				}
 			},
-			/*
-			 * Util: 'off'
-			 * Removes an event listener
-			 *
-			 * @param: el: 			The node to remove the listener from
-			 * @param: type: 		The type of event
-			 * @param: func: 		The function to remove
-			 */
-			off: function (el, type, func) {
-				el.removeEventListener(type, func);
+	
+			selectNext: function () {
+				var current = this.getCurrentSelectedResult();
+				if (current != this.currentResults.length -1) {
+					this.setResultState(current, '');
+					this.setResultState((current + 1), 'selected');
+				}
 			},
-			/*
-			 * Util: 'insertAfter'
-			 * Inserts a new node after the given
-			 *
-			 * @param: referenceNode: 	The node to insert after
-			 * @param: newNode: 		The node to insert
-			 */
-			insertAfter: function (referenceNode, newNode) {
-				referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+	
+			setResultState: function (index, state) {
+				if (state == 'selected') {
+					this.utils.getFirstClass(this.currentResults[index].node, 'slds-listbox__option').classList.add('slds-has-focus');
+					this.currentResults[index].selected = true;
+				} else {
+					this.utils.getFirstClass(this.currentResults[index].node, 'slds-listbox__option').classList.remove('slds-has-focus');
+					this.currentResults[index].selected = false;
+				}
 			},
-			/*
-			 * Util: 'deductPerc'
-			 * deducts a percentage from a number
-			 *
-			 * @param: base: 		The base '100%' number
-			 * @param: percentage: 	The percentage to deduct
-			 */
-			deductPerc: function (base, percentage) {
-				return (base * (1 - (percentage / 100)));
+	
+			getCurrentSelectedResult: function () {
+				for (var i = 0; i < this.currentResults.length; i++) {
+					if (this.currentResults[i].selected) {
+						return i;
+					}
+				}
 			},
+	
+			click: function (e) {
+				var el = this.utils.findUp(e.target, '.slds-listbox__item'); // Click event could fire on child
+				if (el) {
+					var result = this.getMatchingResultByNode(el);
+					this.select(result);
+				}
+			},
+	
+			getMatchingResultByNode: function (node) {
+				for (var i = 0; i < this.currentResults.length; i++) {
+					if (node.isSameNode(this.currentResults[i].node)) {
+						return this.currentResults[i];
+					}
+				}
+			},
+	
+			getResultIndexByNode: function (node) {
+				for (var i = 0; i < this.currentResults.length; i++) {
+					if (node.isSameNode(this.currentResults[i].node)) {
+						return i;
+					}
+				}
+			},
+	
+			select: function (result) {
+				this.fillLine(result);
+				this.clear(); // Clear autocomplete
+			},
+	
+			fillLine: function (result) {
+				if (!this.callback) {
+					var lineNode = this.utils.findUp(result.node, '.' + this.root.lineClass),
+						usageunits = this.root.el.getElementsByClassName(this.root.lineClass + '--usageunit');
+	
+					this.utils.getFirstClass(lineNode, 'cbds-product-line-image').src = result.obj.meta.image;
+					this.parent.setField('listprice', result.obj.pricing.unit_price);
+					this.parent.setField('cost_price', result.obj.pricing.unit_cost);
+					this.parent.setField('qtyinstock', result.obj.logistics.qtyinstock);
+					this.parent.setField('qtyindemand', result.obj.logistics.qtyindemand);
+	
+					this.utils.getFirstClass(lineNode, this.root.inputPrefix + '--description').innerHTML = result.obj.meta.comments;
+					this.input.value = result.obj.meta.name;
+	
+					for (var i = usageunits.length - 1; i >= 0; i--) {
+						usageunits[i].innerHTML = result.obj.logistics.usageunit;
+					}
+	
+					this.parent.productId = result.obj.meta.id;
+					this.parent.divisible = result.obj.meta.divisible == 0 ? false : true;
+	
+					this.parent.expandExtra();
+					this.parent.calcLine();
+	
+					this.utils.getFirstClass(this.utils.findUp(this.el, '.' + this.root.lineClass), this.root.inputPrefix + '--quantity').focus();
+					this.retrieveProductTaxes(result.obj.meta.id);
+				} else {
+					this.callback({
+						'result': result.obj,
+						'source': this.el
+					});
+				}
+			},
+	
+			retrieveProductTaxes: function(id) {
+				fetch(`index.php?
+						module=Products
+						&action=ProductsAjax
+						&file=InventoryTaxAjax
+						&productid=${id}
+						&ctoid=0
+						&accid=0
+						&vndid=0
+						&returnarray=1`)
+				.then((r) => {return r.json()})
+				.then((data) => {
+					this.parent.actualizeLineTaxes(data);
+				})
+			},
+	
 			/*
-			 * Util: 'getPerc'
-			 * Returns a percentage of a base no.
-			 *
-			 * @param: base: 		The base '100%' number
-			 * @param: percentage: 	The percentage to return
+			 * Class utilities
 			 */
-			getPerc: function (base, percentage) {
-				return base * (percentage / 100);
-			}
-		}
-	};
-
-	/**
-	  * Section with factory tools
-	  */
-	function _createEl(elType, className, inner) {
-		var el = document.createElement(elType);
-		if (className.indexOf(' ') == -1 && className != undefined && className != '') {
-			el.classList.add(className);
-		} else {
-			var classes = className.split(' ');
-			for (var i = 0; i < classes.length; i++) {
-				if (classes[i] != '') {
-					el.classList.add(classes[i]);
+			utils : {
+				/*
+				 * Util: 'findUp'
+				 * Returns the first element up the DOM that matches the search
+				 *
+				 * @param: element: 	the node to start from
+				 * @param: searchterm: 	Can be a class (prefix with '.'), ID (prefix with '#')
+				 *						or an attribute (default when no prefix)
+				 */
+				findUp : function (element, searchterm) {
+					element = element.children[0] != undefined ? element.children[0] : element; // Include the current element
+					while (element = element.parentElement) {
+						if ( (searchterm.charAt(0) === '#' && element.id === searchterm.slice(1))
+							|| ( searchterm.charAt(0) === '.' && element.classList.contains(searchterm.slice(1))
+							|| ( element.hasAttribute(searchterm)))
+						) {
+							return element;
+						} else if (element == document.body) {
+							break;
+						}
+					}
+				},
+				/*
+				 * Util: 'getFirstClass'
+				 * Returns the first element from the root that matches
+				 * the classname
+				 *
+				 * @param: root: 		the node to start from
+				 * @param: className: 	The classname to search for
+				 */
+				getFirstClass: function (root, className) {
+					return root.getElementsByClassName(className)[0] != undefined ? root.getElementsByClassName(className)[0] : {};
+				},
+				/*
+				 * Util: 'on'
+				 * Adds an event listener
+				 *
+				 * @param: el: 			The node to attach the listener to
+				 * @param: type: 		The type of event
+				 * @param: func: 		The function to perform
+				 * @param: context: 	The context to bind the listener to
+				 */
+				on: function (el, type, func, context) {
+					try {
+						el.addEventListener(type, func.bind(context));
+					} catch (e) {
+						throw e + '. Called by ' + this.on.caller;
+					}
+				},
+				/*
+				 * Util: 'off'
+				 * Removes an event listener
+				 *
+				 * @param: el: 			The node to remove the listener from
+				 * @param: type: 		The type of event
+				 * @param: func: 		The function to remove
+				 */
+				off: function (el, type, func) {
+					el.removeEventListener(type, func);
+				},
+				/*
+				 * Util: 'insertAfter'
+				 * Inserts a new node after the given
+				 *
+				 * @param: referenceNode: 	The node to insert after
+				 * @param: newNode: 		The node to insert
+				 */
+				insertAfter: function (referenceNode, newNode) {
+					referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+				},
+				/*
+				 * Util: 'deductPerc'
+				 * deducts a percentage from a number
+				 *
+				 * @param: base: 		The base '100%' number
+				 * @param: percentage: 	The percentage to deduct
+				 */
+				deductPerc: function (base, percentage) {
+					return (base * (1 - (percentage / 100)));
+				},
+				/*
+				 * Util: 'getPerc'
+				 * Returns a percentage of a base no.
+				 *
+				 * @param: base: 		The base '100%' number
+				 * @param: percentage: 	The percentage to return
+				 */
+				getPerc: function (base, percentage) {
+					return base * (percentage / 100);
 				}
 			}
+		};
+	
+		/**
+		  * Section with factory tools
+		  */
+		function _createEl(elType, className, inner) {
+			var el = document.createElement(elType);
+			if (className.indexOf(' ') == -1 && className != undefined && className != '') {
+				el.classList.add(className);
+			} else {
+				var classes = className.split(' ');
+				for (var i = 0; i < classes.length; i++) {
+					if (classes[i] != '') {
+						el.classList.add(classes[i]);
+					}
+				}
+			}
+			if (inner != undefined) {
+				el.innerHTML = inner;
+			}
+			return el;
 		}
-		if (inner != undefined) {
-			el.innerHTML = inner;
+	
+		function _getKey(code) {
+			return window.keycodeMap[code];
 		}
-		return el;
-	}
-
-	function _getKey(code) {
-		return window.keycodeMap[code];
-	}
-
-	/*
-	 * Globals
-	 */
-	window.keycodeMap = {
-		38: 'up',
-		40: 'down',
-		37: 'left',
-		39: 'right',
-		27: 'esc',
-		9:  'tab',
-		13: 'enter'
-	};
-
-	/*
-	 * Export
-	 */
-	return ProductAutocomplete;
-});
+	
+		/*
+		 * Globals
+		 */
+		window.keycodeMap = {
+			38: 'up',
+			40: 'down',
+			37: 'left',
+			39: 'right',
+			27: 'esc',
+			9:  'tab',
+			13: 'enter'
+		};
+	
+		/*
+		 * Export
+		 */
+		return ProductAutocomplete;
+	});
 
 function handleProductAutocompleteSelect(obj) {
 	var no = obj.source.getElementsByClassName('slds-input')[0].id.replace('productName', ''),
