@@ -1701,7 +1701,7 @@ function InventorySelectAll(mod, image_pth) {
 				this.parent.setField('qtyinstock', result.obj.logistics.qty_in_stock);
 				this.parent.setField('qtyindemand', result.obj.logistics.curr_ordered);
 
-				this.utils.getFirstClass(lineNode, this.root.linePrefix + '--comments').innerHTML = result.obj.meta.comments;
+				this.utils.getFirstClass(lineNode, this.root.inputPrefix + '--description').innerHTML = result.obj.meta.comments;
 				this.input.value = result.obj.meta.name;
 
 				for (var i = usageunits.length - 1; i >= 0; i--) {
