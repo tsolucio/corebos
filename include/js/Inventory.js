@@ -2182,8 +2182,10 @@ window.addEventListener('load', function () {
 		},
 
 		setField: function(fieldname, newVal) {
-			this.fields[fieldname].el.value = newVal;
-			this.fireJsInput(fieldname);
+			if (this.fields[fieldname] !== undefined) {
+				this.fields[fieldname].el.value = newVal;
+				this.fireJsInput(fieldname);
+			}
 		},
 
 		fireJsInput	: function(fieldname) {
