@@ -21,17 +21,21 @@ function updateContactAssignedTo($entity) {
 
 	list($acc,$acc_id) = explode('x', $entity->data['id']);  // separate webservice ID
 	if (getSalesEntityType($acc_id)=='Accounts') {
+		$module = 'Accounts';
+		$mod = CRMEntity::getInstance($module);
 		list($usr,$usr_id) = explode('x', $entity->data['assigned_user_id']);
-		$query = 'update vtiger_crmentity set smownerid=? where crmid in (select contactid from vtiger_contactdetails where accountid=?)';
+		$query = 'update '.$mod::$crmentityTable.' set smownerid=? where crmid in (select contactid from vtiger_contactdetails where accountid=?)';
 		$params = array($usr_id, $acc_id);
 		$adb->pquery($query, $params);
 	}
 	if (getSalesEntityType($acc_id)=='Contacts') {
 		list($void,$accountid) = explode('x', $entity->data['account_id']);
 		if (!empty($accountid)) {
+			$module = 'Contacts';
+			$mod = CRMEntity::getInstance($module);
 			$accassigrs = $adb->pquery('select smownerid from vtiger_crmentity where crmid=?', array($accountid));
 			$usr_id = $adb->query_result($accassigrs, 0, 0);
-			$query = 'update vtiger_crmentity set smownerid=? where crmid=?';
+			$query = 'update '.$mod::$crmentityTable.' set smownerid=? where crmid=?';
 			$params = array($usr_id, $acc_id);
 			$adb->pquery($query, $params);
 		}

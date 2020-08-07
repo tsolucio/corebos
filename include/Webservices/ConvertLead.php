@@ -85,11 +85,12 @@ function vtws_convertlead($entityvalues, $user) {
 			}
 
 			try {
+				$mod = CRMEntity::getInstance($entityvalue['name']);
 				$create = true;
 				if ($entityvalue['name'] == 'Accounts' && empty($entityvalue['forcecreate'])) {
 					$sql = 'SELECT vtiger_account.accountid
-						FROM vtiger_account, vtiger_crmentity
-						WHERE vtiger_crmentity.crmid=vtiger_account.accountid AND vtiger_account.accountname=? AND vtiger_crmentity.deleted=0';
+						FROM vtiger_account, '.$mod::$crmentityTable.'
+						WHERE '.$mod::$crmentityTable.'.crmid=vtiger_account.accountid AND vtiger_account.accountname=? AND '.$mod::$crmentityTable.'.deleted=0';
 					$result = $adb->pquery($sql, array($entityvalue['accountname']));
 					if ($adb->num_rows($result) > 0) {
 						$entityIds[$entityName] = vtws_getWebserviceEntityId('Accounts', $adb->query_result($result, 0, 'accountid'));

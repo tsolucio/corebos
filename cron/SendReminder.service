@@ -38,26 +38,27 @@ if (vtlib_isModuleActive('cbCalendar')) {
 	if (empty($current_language)) {
 		$current_language = 'en_us';
 	}
-
+	$mod = CRMEntity::getInstance('cbCalendar');
+	$crmTable = $mod::$crmentityTable;
 	//modified query for recurring events -Jag
 	$query="select vtiger_activity.activityid,vtiger_recurringevents.recurringid
 		from vtiger_activity
-		inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
+		inner join ".$crmTable." on ".$crmTable.".crmid=vtiger_activity.activityid
 		inner join vtiger_activity_reminder on vtiger_activity.activityid=vtiger_activity_reminder.activity_id
 		left outer join vtiger_recurringevents on vtiger_activity.activityid=vtiger_recurringevents.activityid
 		left outer join vtiger_seactivityrel on vtiger_seactivityrel.activityid = vtiger_activity.activityid
 		where vtiger_activity.date_start >= '".date('Y-m-d')."'
-		and vtiger_crmentity.crmid != 0 and vtiger_activity.eventstatus = 'Planned'
+		and ".$crmTable.".crmid != 0 and vtiger_activity.eventstatus = 'Planned'
 		and vtiger_activity_reminder.reminder_sent = 0
-		and vtiger_crmentity.deleted = 0
+		and ".$crmTable.".deleted = 0
 		group by vtiger_activity.activityid,vtiger_recurringevents.recurringid";
 	$result = $adb->pquery($query, array());
 
 	if ($adb->num_rows($result) >= 1) {
-		$query='select vtiger_crmentity.crmid,vtiger_seactivityrel.crmid as setype,vtiger_activity.*,vtiger_crmentity.setype as calendarsetype,
+		$query='select '.$crmTable.'.crmid,vtiger_seactivityrel.crmid as setype,vtiger_activity.*,'.$crmTable.'.setype as calendarsetype,
 			vtiger_activity_reminder.reminder_time,vtiger_activity_reminder.recurringid,vtiger_recurringevents.recurringdate
 			from vtiger_activity
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
+			inner join '.$crmTable.' on '.$crmTable.'.crmid=vtiger_activity.activityid
 			inner join vtiger_activity_reminder on vtiger_activity.activityid=vtiger_activity_reminder.activity_id
 			left outer join vtiger_recurringevents on vtiger_activity.activityid=vtiger_recurringevents.activityid
 			left outer join vtiger_seactivityrel on vtiger_seactivityrel.activityid = vtiger_activity.activityid

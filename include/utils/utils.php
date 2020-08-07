@@ -885,9 +885,10 @@ function getActionname($actionid) {
  * @returns $user_id -- user id :: Type integer
 */
 function getUserId($record) {
-	global $log, $adb;
+	global $log, $adb, $currentModule;
 	$log->debug('> getUserId '.$record);
-	$userrs = $adb->pquery('select smownerid from vtiger_crmentity where crmid = ?', array($record));
+	$mod = CRMEntity::getInstance($currentModule);
+	$userrs = $adb->pquery('select smownerid from '.$mod::$crmentityTable.' where crmid = ?', array($record));
 	$user_id = $adb->query_result($userrs, 0, 'smownerid');
 	$log->debug('< getUserId');
 	return $user_id;
@@ -898,10 +899,11 @@ function getUserId($record) {
  * @returns $ownerArr -- owner id :: Type array
 */
 function getRecordOwnerId($record) {
-	global $log, $adb;
+	global $log, $adb, $currentModule;
 	$log->debug('> getRecordOwnerId '.$record);
+	$mod = CRMEntity::getInstance($currentModule);
 	$ownerArr=array();
-	$result=$adb->pquery('select smownerid from vtiger_crmentity where crmid = ?', array($record));
+	$result=$adb->pquery('select smownerid from '.$mod::$crmentityTable.' where crmid = ?', array($record));
 	if ($adb->num_rows($result) > 0) {
 		$ownerId=$adb->query_result($result, 0, 'smownerid');
 		$sql_result = $adb->pquery('select count(*) as count from vtiger_users where id = ?', array($ownerId));
@@ -1256,10 +1258,11 @@ function getInventoryTotal($return_module, $id) {
 			inner join vtiger_seproductsrel on vtiger_seproductsrel.productid=vtiger_products.productid
 			where crmid=?';
 	} elseif ($return_module == 'Products') {
-		$query='select vtiger_products.productid,vtiger_products.productname,vtiger_products.unit_price,vtiger_products.qtyinstock,vtiger_crmentity.*
+		$mod = CRMEntity::getInstance($return_module);
+		$query='select vtiger_products.productid,vtiger_products.productname,vtiger_products.unit_price,vtiger_products.qtyinstock,'.$mod::$crmentityTable.'.*
 			from vtiger_products
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_products.productid
-			where vtiger_crmentity.deleted=0 and productid=?';
+			inner join '.$mod::$crmentityTable.' on '.$mod::$crmentityTable.'.crmid=vtiger_products.productid
+			where '.$mod::$crmentityTable.'.deleted=0 and productid=?';
 	}
 	$result = $adb->pquery($query, array($id));
 	$num_rows=$adb->num_rows($result);
@@ -1585,10 +1588,11 @@ function getEmailsRelatedLeads($record_id) {
 function getHelpDeskRelatedAccounts($record_id) {
 	global $log, $adb;
 	$log->debug('> getHelpDeskRelatedAccounts '.$record_id);
+	$mod = CRMEntity::getInstance('HelpDesk');
 	$query="select parent_id
 		from vtiger_troubletickets
-		inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_troubletickets.parent_id
-		where ticketid=? and vtiger_crmentity.setype='Accounts'";
+		inner join ".$mod::$crmentityTable." on ".$mod::$crmentityTable.".crmid=vtiger_troubletickets.parent_id
+		where ticketid=? and ".$mod::$crmentityTable.".setype='Accounts'";
 	$result=$adb->pquery($query, array($record_id));
 	$accountid=$adb->query_result($result, 0, 'parent_id');
 	$log->debug('< getHelpDeskRelatedAccounts');
@@ -3311,7 +3315,7 @@ function getMailFields($tabid) {
  * @param integer $recordId - record id
  */
 function isRecordExists($recordId) {
-	global $adb;
+	global $adb, $currentModule;
 	$users = $groups = $currency = false;
 	if (strpos($recordId, 'x')) {
 		list($moduleWS,$recordId) = explode('x', $recordId);
@@ -3329,7 +3333,8 @@ function isRecordExists($recordId) {
 	} elseif ($currency) {
 		$query = 'SELECT id FROM vtiger_currency_info where id=? AND deleted=0';
 	} else {
-		$query = 'SELECT crmid FROM vtiger_crmentity where crmid=? AND deleted=0';
+		$mod = CRMEntity::getInstance($currentModule);
+		$query = 'SELECT crmid FROM '.$mod::$crmentityTable.' where crmid=? AND deleted=0';
 	}
 	$result = $adb->pquery($query, array($recordId));
 	if ($adb->num_rows($result)) {
@@ -3682,28 +3687,31 @@ function getSelectAllQuery($input, $module) {
 
 function getCampaignAccountIds($id) {
 	global $adb;
+	$mod = CRMEntity::getInstance('Accounts');
 	$sql = 'SELECT vtiger_account.accountid as id FROM vtiger_account
 		INNER JOIN vtiger_campaignaccountrel ON vtiger_campaignaccountrel.accountid = vtiger_account.accountid
-		LEFT JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_account.accountid
-		WHERE vtiger_campaignaccountrel.campaignid = ? AND vtiger_crmentity.deleted=0';
+		LEFT JOIN '.$mod::$crmentityTable.' ON '.$mod::$crmentityTable.'.crmid = vtiger_account.accountid
+		WHERE vtiger_campaignaccountrel.campaignid = ? AND '.$mod::$crmentityTable.'.deleted=0';
 	return $adb->pquery($sql, array($id));
 }
 
 function getCampaignContactIds($id) {
 	global $adb;
+	$mod = CRMEntity::getInstance('Contacts');
 	$sql = 'SELECT vtiger_contactdetails.contactid as id FROM vtiger_contactdetails
 		INNER JOIN vtiger_campaigncontrel ON vtiger_campaigncontrel.contactid = vtiger_contactdetails.contactid
-		LEFT JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid
-		WHERE vtiger_campaigncontrel.campaignid = ? AND vtiger_crmentity.deleted=0';
+		LEFT JOIN '.$mod::$crmentityTable.' ON '.$mod::$crmentityTable.'.crmid = vtiger_contactdetails.contactid
+		WHERE vtiger_campaigncontrel.campaignid = ? AND '.$mod::$crmentityTable.'.deleted=0';
 	return $adb->pquery($sql, array($id));
 }
 
 function getCampaignLeadIds($id) {
 	global $adb;
+	$mod = CRMEntity::getInstance('Leads');
 	$sql = 'SELECT vtiger_leaddetails.leadid as id FROM vtiger_leaddetails
 		INNER JOIN vtiger_campaignleadrel ON vtiger_campaignleadrel.leadid = vtiger_leaddetails.leadid
-		LEFT JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_leaddetails.leadid
-		WHERE vtiger_campaignleadrel.campaignid = ? AND vtiger_crmentity.deleted=0';
+		LEFT JOIN '.$mod::$crmentityTable.' ON '.$mod::$crmentityTable.'.crmid = vtiger_leaddetails.leadid
+		WHERE vtiger_campaignleadrel.campaignid = ? AND '.$mod::$crmentityTable.'.deleted=0';
 	return $adb->pquery($sql, array($id));
 }
 
@@ -3771,13 +3779,14 @@ function getMinimumCronFrequency() {
 function retrieveCompanyDetails() {
 	global $adb;
 	$companyDetails = array();
+	$mod = CRMEntity::getInstance('cbCompany');
 	$query = $adb->pquery(
 		'SELECT c.*,a.*
 			FROM vtiger_cbcompany c
-			JOIN vtiger_crmentity on vtiger_crmentity.crmid = c.cbcompanyid
+			JOIN '.$mod::$crmentityTable.' on '.$mod::$crmentityTable.'.crmid = c.cbcompanyid
 			LEFT JOIN vtiger_seattachmentsrel s ON c.cbcompanyid = s.crmid
 			LEFT JOIN vtiger_attachments a ON s.attachmentsid = a.attachmentsid
-			WHERE c.defaultcompany = 1 and vtiger_crmentity.deleted = 0',
+			WHERE c.defaultcompany = 1 and '.$mod::$crmentityTable.'.deleted = 0',
 		array()
 	);
 	if ($query && $adb->num_rows($query) > 0) {

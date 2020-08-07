@@ -910,9 +910,11 @@ function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $use
 			$fieldsname = $fieldsname . ')';
 			$wherefield = implode(" $op '$term' or ", $fieldlists)." $op '$term' ";
 		}
+		$mod = CRMEntity::getInstance($srchmod);
+		$crmTable = $mod::$crmentityTable;
 		$qry = "select crmid,$fieldsname as crmname
 				from {$ei['tablename']}
-				inner join vtiger_crmentity on crmid = {$ei['entityidfield']}
+				inner join {$crmTable} on crmid = {$ei['entityidfield']}
 				where deleted = 0 and ($wherefield)";
 		$rsemp=$adb->query($qry);
 		$trmod = getTranslatedString($srchmod, $srchmod);
@@ -1018,9 +1020,13 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 	}
 	$servcondquery .= count($servconds) > 0 ? ')' : '';
 	$prod_aliasquery = '';
+	$modProducts = CRMEntity::getInstance('Products');
+	$crmTableProducts = $modProducts::$crmentityTable;
+	$modServices = CRMEntity::getInstance('Services');
+	$crmTableServices = $modServices::$crmentityTable;
 	foreach ($prodffs as $prodff) {
 		list($palias, $pcolumn) = explode('=', $prodff);
-		$table = in_array($pcolumn, $entitytablemap) ? 'vtiger_crmentity' : 'vtiger_products';
+		$table = in_array($pcolumn, $entitytablemap) ? $modProducts::$crmentityTable : 'vtiger_products';
 		$table = substr($pcolumn, 0, 3) == 'cf_' ? 'vtiger_productcf' : $table;
 		$selector = $pcolumn == '\'\'' ? $pcolumn : $table . '.' . $pcolumn;
 		$prod_aliasquery .= $selector . ' AS ' . $palias . ',';
@@ -1028,7 +1034,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 	$serv_aliasquery = '';
 	foreach ($servffs as $servff) {
 		list($salias, $scolumn) = explode('=', $servff);
-		$table = in_array($scolumn, $entitytablemap) ? 'vtiger_crmentity' : 'vtiger_service';
+		$table = in_array($scolumn, $entitytablemap) ? $modServices::$crmentityTable : 'vtiger_service';
 		$table = substr($scolumn, 0, 3) == 'cf_' ? 'vtiger_servicecf' : $table;
 		$selector = $scolumn == '\'\'' ? $scolumn : $table . '.' . $scolumn;
 		$serv_aliasquery .= $selector . ' AS ' . $salias . ',';
@@ -1044,16 +1050,16 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 			vtiger_products.mfr_part_no AS mfr_no,
 			vtiger_products.qtyinstock AS qtyinstock,
 			{$prod_aliasquery}
-			vtiger_crmentity.deleted AS deleted,
-			vtiger_crmentity.crmid AS id,
+			{$crmTableProducts}.deleted AS deleted,
+			{$crmTableProducts}.crmid AS id,
 			vtiger_products.unit_price AS unit_price
 			FROM vtiger_products
-			INNER JOIN vtiger_crmentity ON vtiger_products.productid = vtiger_crmentity.crmid
+			INNER JOIN {$crmTableProducts} ON vtiger_products.productid = {$crmTableProducts}.crmid
 			INNER JOIN vtiger_productcf ON vtiger_products.productid = vtiger_productcf.productid
 			".getNonAdminAccessControlQuery('Products', $current_user)."
 			WHERE ({$productsearchquery}) 
 			{$prodcondquery} 
-			AND vtiger_products.discontinued = 1 AND vtiger_crmentity.deleted = 0
+			AND vtiger_products.discontinued = 1 AND {$crmTableProducts}.deleted = 0
 		UNION
 		SELECT
 			vtiger_service.servicename AS name,
@@ -1064,16 +1070,16 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 			0 AS qtyinstock,
 			'' AS cost_price,
 			{$serv_aliasquery}
-			vtiger_crmentity.deleted AS deleted,
-			vtiger_crmentity.crmid AS id,
+			{$crmTableServices}.deleted AS deleted,
+			{$crmTableServices}.crmid AS id,
 			vtiger_service.unit_price AS unit_price
 			FROM vtiger_service
-			INNER JOIN vtiger_crmentity ON vtiger_service.serviceid = vtiger_crmentity.crmid
+			INNER JOIN {$crmTableServices} ON vtiger_service.serviceid = {$crmTableServices}.crmid
 			INNER JOIN vtiger_servicecf ON vtiger_service.serviceid = vtiger_servicecf.serviceid
 			".getNonAdminAccessControlQuery('Services', $current_user)."
 			WHERE ({$servicesearchquery}) 
 			{$servcondquery} 
-			AND vtiger_service.discontinued = 1 AND vtiger_crmentity.deleted = 0
+			AND vtiger_service.discontinued = 1 AND {$crmTableServices}.deleted = 0
 		LIMIT $limit");
 	$ret = array();
 

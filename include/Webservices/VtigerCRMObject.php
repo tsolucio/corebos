@@ -192,7 +192,9 @@ class VtigerCRMObject {
 	/* this method just checks if a record exists and is not deleted, it does not obligate that it be the same entity type of the object instantiation */
 	public function exists($id) {
 		global $adb;
-		$result = $adb->pquery('select 1 from vtiger_crmentity where crmid=? and deleted=0 limit 1', array($id));
+		$module = $this->getModuleName();
+		$mod = CRMEntity::getInstance($module);
+		$result = $adb->pquery('select 1 from '.$mod::$crmentityTable.' where crmid=? and deleted=0 limit 1', array($id));
 		return ($result && $adb->num_rows($result)>0);
 	}
 

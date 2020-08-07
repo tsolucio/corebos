@@ -84,7 +84,8 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 			$baseCRMTable = getSyncQueryBaseTable($elementType);
 		}
 	} else {
-		$baseCRMTable = ' vtiger_crmentity ';
+		$mod = CRMEntity::getInstance($elementType);
+		$baseCRMTable = ' '.$mod::$crmentityTable.' ';
 	}
 
 	//modifiedtime - next token

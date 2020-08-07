@@ -1173,6 +1173,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 			if ($module == 'Products' && ($focus->popup_type == 'inventory_prod' || $focus->popup_type == 'inventory_prod_po')) {
 				global $default_charset;
 				$row_id = $_REQUEST['curr_row'];
+				$mod = CRMEntity::getInstance($module);
 
 				//To get all the tax types and values and pass it to product details
 				$tax_str = '';
@@ -1195,9 +1196,9 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 				$sub_prod_query = $adb->pquery(
 					'SELECT vtiger_products.productid,vtiger_products.productname,vtiger_productcomponent.quantity
 						from vtiger_products
-						INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
+						INNER JOIN '.$mod::$crmentityTable.' ON '.$mod::$crmentityTable.'.crmid=vtiger_products.productid
 						INNER JOIN vtiger_productcomponent on vtiger_productcomponent.topdo=vtiger_products.productid
-						INNER JOIN vtiger_crmentity crmpc ON crmpc.crmid=vtiger_productcomponent.productcomponentid
+						INNER JOIN '.$mod::$crmentityTable.' crmpc ON crmpc.crmid=vtiger_productcomponent.productcomponentid
 						WHERE crmpc.deleted=0 AND vtiger_productcomponent.frompdo=?',
 					array($entity_id)
 				);
@@ -1230,8 +1231,8 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 					$sub_products_query = $adb->pquery(
 						'SELECT 1
 							FROM vtiger_productcomponent
-							INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
-							WHERE vtiger_crmentity.deleted=0 AND frompdo=? limit 1',
+							INNER JOIN '.$mod::$crmentityTable.' ON '.$mod::$crmentityTable.'.crmid=vtiger_productcomponent.productcomponentid
+							WHERE '.$mod::$crmentityTable.'.deleted=0 AND frompdo=? limit 1',
 						array($entity_id)
 					);
 					if ($adb->num_rows($sub_products_query) > 0) {
@@ -1627,7 +1628,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					}
 				} elseif ($popuptype == 'inventory_prod') {
 					$row_id = $_REQUEST['curr_row'];
-
+					$mod = CRMEntity::getInstance($module);
 					//To get all the tax types and values and pass it to product details
 					$tax_str = '';
 					foreach (getAllTaxes() as $tax_detail) {
@@ -1657,11 +1658,11 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$sub_prod = '';
 					$sub_prod_query = $adb->pquery(
 						'SELECT vtiger_products.productid,vtiger_products.productname,vtiger_products.qtyinstock,
-								vtiger_crmentity.description,vtiger_productcomponent.quantity
+								'.$mod::$crmentityTable.'.description,vtiger_productcomponent.quantity
 							FROM vtiger_products
-							INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
+							INNER JOIN '.$mod::$crmentityTable.' ON '.$mod::$crmentityTable.'.crmid=vtiger_products.productid
 							INNER JOIN vtiger_productcomponent on vtiger_productcomponent.topdo=vtiger_products.productid
-							INNER JOIN vtiger_crmentity crmpc ON crmpc.crmid=vtiger_productcomponent.productcomponentid
+							INNER JOIN '.$mod::$crmentityTable.' crmpc ON crmpc.crmid=vtiger_productcomponent.productcomponentid
 							WHERE crmpc.deleted=0 AND vtiger_productcomponent.frompdo=?',
 						array($entity_id)
 					);
@@ -1692,6 +1693,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $qty_stock . '","' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '","' . $sub_det . '",'.$dtopdo.');\' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($field_valEncoded) . '</a>';
 				} elseif ($popuptype == 'inventory_prod_po') {
 					$row_id = $_REQUEST['curr_row'];
+					$mod = CRMEntity::getInstance($module);
 
 					//To get all the tax types and values and pass it to product details
 					$tax_str = '';
@@ -1710,11 +1712,11 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$sub_prod = '';
 					$sub_prod_query = $adb->pquery(
 						'SELECT vtiger_products.productid,vtiger_products.productname,vtiger_products.qtyinstock,
-								vtiger_crmentity.description,vtiger_productcomponent.quantity
+								'.$mod::$crmentityTable.'.description,vtiger_productcomponent.quantity
 							FROM vtiger_products
-							INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
+							INNER JOIN '.$mod::$crmentityTable.' ON '.$mod::$crmentityTable.'.crmid=vtiger_products.productid
 							INNER JOIN vtiger_productcomponent on vtiger_productcomponent.topdo=vtiger_products.productid
-							INNER JOIN vtiger_crmentity crmpc ON crmpc.crmid=vtiger_productcomponent.productcomponentid
+							INNER JOIN '.$mod::$crmentityTable.' crmpc ON crmpc.crmid=vtiger_productcomponent.productcomponentid
 							WHERE crmpc.deleted=0 AND vtiger_productcomponent.frompdo=?',
 						array($entity_id)
 					);
@@ -2193,113 +2195,114 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 function getListQuery($module, $where = '') {
 	global $log, $current_user;
 	$log->debug('> getListQuery ' . $module . ',' . $where);
-
+	$mod = CRMEntity::getInstance($module);
+	$crmTable = $mod::$crmentityTable;
 	$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 	switch ($module) {
 		case 'HelpDesk':
-			$query = 'SELECT vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_troubletickets.title, vtiger_troubletickets.status,vtiger_troubletickets.priority,
+			$query = 'SELECT '.$crmTable.'.crmid, '.$crmTable.'.smownerid, vtiger_troubletickets.title, vtiger_troubletickets.status,vtiger_troubletickets.priority,
 					vtiger_troubletickets.parent_id, vtiger_contactdetails.contactid, vtiger_contactdetails.firstname, vtiger_contactdetails.lastname,
 					vtiger_account.accountid, vtiger_troubletickets.email, vtiger_account.accountname, vtiger_ticketcf.*, vtiger_troubletickets.ticket_no
 				FROM vtiger_troubletickets
 				INNER JOIN vtiger_ticketcf ON vtiger_ticketcf.ticketid = vtiger_troubletickets.ticketid
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_troubletickets.ticketid
-				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
+				INNER JOIN '.$crmTable.' ON '.$crmTable.'.crmid = vtiger_troubletickets.ticketid
+				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$crmTable.'.smownerid
 				LEFT JOIN vtiger_contactdetails ON vtiger_troubletickets.parent_id = vtiger_contactdetails.contactid
 				LEFT JOIN vtiger_account ON vtiger_account.accountid = vtiger_troubletickets.parent_id
-				LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id
+				LEFT JOIN vtiger_users ON '.$crmTable.'.smownerid = vtiger_users.id
 				LEFT JOIN vtiger_products ON vtiger_products.productid = vtiger_troubletickets.product_id';
 			$query .= ' ' . getNonAdminAccessControlQuery($module, $current_user);
-			$query .= 'WHERE vtiger_crmentity.deleted = 0 ' . $where;
+			$query .= 'WHERE '.$crmTable.'.deleted = 0 ' . $where;
 			break;
 		case 'Accounts':
-			$query = 'SELECT vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_account.*, vtiger_accountbillads.bill_city, vtiger_accountscf.*
+			$query = 'SELECT '.$crmTable.'.crmid, '.$crmTable.'.smownerid, vtiger_account.*, vtiger_accountbillads.bill_city, vtiger_accountscf.*
 				FROM vtiger_account
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_account.accountid
+				INNER JOIN '.$crmTable.' ON '.$crmTable.'.crmid = vtiger_account.accountid
 				INNER JOIN vtiger_accountbillads ON vtiger_account.accountid = vtiger_accountbillads.accountaddressid
 				INNER JOIN vtiger_accountshipads ON vtiger_account.accountid = vtiger_accountshipads.accountaddressid
 				INNER JOIN vtiger_accountscf ON vtiger_account.accountid = vtiger_accountscf.accountid
-				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-				LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
+				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$crmTable.'.smownerid
+				LEFT JOIN vtiger_users ON vtiger_users.id = '.$crmTable.'.smownerid
 				LEFT JOIN vtiger_account vtiger_account2 ON vtiger_account.parentid = vtiger_account2.accountid';
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
-			$query .= 'WHERE vtiger_crmentity.deleted = 0 ' . $where;
+			$query .= 'WHERE '.$crmTable.'.deleted = 0 ' . $where;
 			break;
 		case 'Potentials':
-			$query = 'SELECT vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_account.accountname, vtiger_potential.related_to, vtiger_potential.potentialname,
+			$query = 'SELECT '.$crmTable.'.crmid, '.$crmTable.'.smownerid, vtiger_account.accountname, vtiger_potential.related_to, vtiger_potential.potentialname,
 					vtiger_potential.sales_stage, vtiger_potential.amount, vtiger_potential.currency, vtiger_potential.closingdate, vtiger_potential.typeofrevenue,
 					vtiger_potential.email, vtiger_potentialscf.*
 				FROM vtiger_potential
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_potential.potentialid
+				INNER JOIN '.$crmTable.' ON '.$crmTable.'.crmid = vtiger_potential.potentialid
 				INNER JOIN vtiger_potentialscf ON vtiger_potentialscf.potentialid = vtiger_potential.potentialid
 				LEFT JOIN vtiger_account ON vtiger_potential.related_to = vtiger_account.accountid
 				LEFT JOIN vtiger_contactdetails ON vtiger_potential.related_to = vtiger_contactdetails.contactid
 				LEFT JOIN vtiger_campaign ON vtiger_campaign.campaignid = vtiger_potential.campaignid
-				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-				LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid';
+				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$crmTable.'.smownerid
+				LEFT JOIN vtiger_users ON vtiger_users.id = '.$crmTable.'.smownerid';
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
-			$query .= 'WHERE vtiger_crmentity.deleted = 0 ' . $where;
+			$query .= 'WHERE '.$crmTable.'.deleted = 0 ' . $where;
 			break;
 		case 'Leads':
 			$val_conv = ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') ? 1 : 0);
-			$query = 'SELECT vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_leaddetails.firstname, vtiger_leaddetails.lastname,
+			$query = 'SELECT '.$crmTable.'.crmid, '.$crmTable.'.smownerid, vtiger_leaddetails.firstname, vtiger_leaddetails.lastname,
 					vtiger_leaddetails.company, vtiger_leadaddress.phone, vtiger_leadsubdetails.website, vtiger_leaddetails.email, vtiger_leadscf.*
 				FROM vtiger_leaddetails
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_leaddetails.leadid
+				INNER JOIN '.$crmTable.' ON '.$crmTable.'.crmid = vtiger_leaddetails.leadid
 				INNER JOIN vtiger_leadsubdetails ON vtiger_leadsubdetails.leadsubscriptionid = vtiger_leaddetails.leadid
 				INNER JOIN vtiger_leadaddress ON vtiger_leadaddress.leadaddressid = vtiger_leadsubdetails.leadsubscriptionid
 				INNER JOIN vtiger_leadscf ON vtiger_leaddetails.leadid = vtiger_leadscf.leadid
-				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-				LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid';
+				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$crmTable.'.smownerid
+				LEFT JOIN vtiger_users ON vtiger_users.id = '.$crmTable.'.smownerid';
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
-			$query .= 'WHERE vtiger_crmentity.deleted = 0 AND vtiger_leaddetails.converted = ' . $val_conv . ' ' . $where;
+			$query .= 'WHERE '.$crmTable.'.deleted = 0 AND vtiger_leaddetails.converted = ' . $val_conv . ' ' . $where;
 			break;
 		case 'Products':
-			$query = 'SELECT vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_crmentity.description, vtiger_products.*, vtiger_productcf.*
+			$query = 'SELECT '.$crmTable.'.crmid, '.$crmTable.'.smownerid, '.$crmTable.'.description, vtiger_products.*, vtiger_productcf.*
 				FROM vtiger_products
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_products.productid
+				INNER JOIN '.$crmTable.' ON '.$crmTable.'.crmid = vtiger_products.productid
 				INNER JOIN vtiger_productcf ON vtiger_products.productid = vtiger_productcf.productid
 				LEFT JOIN vtiger_vendor ON vtiger_vendor.vendorid = vtiger_products.vendor_id
-				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-				LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid';
+				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$crmTable.'.smownerid
+				LEFT JOIN vtiger_users ON vtiger_users.id = '.$crmTable.'.smownerid';
 			if ((isset($_REQUEST['from_dashboard']) && $_REQUEST['from_dashboard'] == true) && (isset($_REQUEST['type']) && $_REQUEST['type'] == 'dbrd')) {
 				$query .= ' INNER JOIN vtiger_inventoryproductrel on vtiger_inventoryproductrel.productid = vtiger_products.productid';
 			}
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
-			$query .= ' WHERE vtiger_crmentity.deleted = 0 ' . $where;
+			$query .= ' WHERE '.$crmTable.'.deleted = 0 ' . $where;
 			break;
 		case 'Documents':
-			$query = "SELECT case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,vtiger_crmentity.crmid,
-					vtiger_crmentity.modifiedtime,vtiger_crmentity.smownerid,vtiger_attachmentsfolder.*,vtiger_notes.*
+			$query = "SELECT case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,".$crmTable.".crmid,
+					".$crmTable.".modifiedtime,".$crmTable.".smownerid,vtiger_attachmentsfolder.*,vtiger_notes.*
 				FROM vtiger_notes
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_notes.notesid
-				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-				LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
+				INNER JOIN ".$crmTable." ON ".$crmTable.".crmid = vtiger_notes.notesid
+				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = ".$crmTable.".smownerid
+				LEFT JOIN vtiger_users ON vtiger_users.id = ".$crmTable.".smownerid
 				LEFT JOIN vtiger_attachmentsfolder ON vtiger_notes.folderid = vtiger_attachmentsfolder.folderid";
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
-			$query .= 'WHERE vtiger_crmentity.deleted = 0 ' . $where;
+			$query .= 'WHERE ".$crmTable.".deleted = 0 ' . $where;
 			break;
 		case 'Contacts':
 			$query = 'SELECT vtiger_contactdetails.*, vtiger_contactaddress.*, vtiger_contactsubdetails.*, vtiger_contactscf.*, vtiger_customerdetails.*,
-					vtiger_crmentity.smownerid, vtiger_crmentity.crmid
+					'.$crmTable.'.smownerid, '.$crmTable.'.crmid
 				FROM vtiger_contactdetails
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid
+				INNER JOIN '.$crmTable.' ON '.$crmTable.'.crmid = vtiger_contactdetails.contactid
 				INNER JOIN vtiger_contactaddress ON vtiger_contactaddress.contactaddressid = vtiger_contactdetails.contactid
 				INNER JOIN vtiger_contactsubdetails ON vtiger_contactsubdetails.contactsubscriptionid = vtiger_contactdetails.contactid
 				INNER JOIN vtiger_contactscf ON vtiger_contactscf.contactid = vtiger_contactdetails.contactid
 				LEFT JOIN vtiger_account ON vtiger_account.accountid = vtiger_contactdetails.accountid
-				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-				LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
+				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$crmTable.'.smownerid
+				LEFT JOIN vtiger_users ON vtiger_users.id = '.$crmTable.'.smownerid
 				LEFT JOIN vtiger_contactdetails vtiger_contactdetails2 ON vtiger_contactdetails.reportsto = vtiger_contactdetails2.contactid
 				LEFT JOIN vtiger_customerdetails ON vtiger_customerdetails.customerid = vtiger_contactdetails.contactid';
 			if ((isset($_REQUEST['from_dashboard']) && $_REQUEST['from_dashboard'] == true) && (isset($_REQUEST['type']) && $_REQUEST['type'] == 'dbrd')) {
 				$query .= ' INNER JOIN vtiger_campaigncontrel on vtiger_campaigncontrel.contactid = vtiger_contactdetails.contactid';
 			}
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
-			$query .= 'WHERE vtiger_crmentity.deleted = 0 ' . $where;
+			$query .= 'WHERE '.$crmTable.'.deleted = 0 ' . $where;
 			break;
 		case 'Calendar':
 			// only one row per event no matter how many contacts are related
-			$query = "SELECT vtiger_activity.activityid as act_id,vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_crmentity.setype,
+			$query = "SELECT vtiger_activity.activityid as act_id,".$crmTable.".crmid, ".$crmTable.".smownerid, ".$crmTable.".setype,
 		vtiger_activity.*,
 		vtiger_contactdetails.lastname, vtiger_contactdetails.firstname,
 		vtiger_contactdetails.contactid,
@@ -2309,7 +2312,7 @@ function getListQuery($module, $where = '') {
 			ON vtiger_activitycf.activityid = vtiger_activity.activityid
 		LEFT JOIN (SELECT min(vtiger_cntactivityrel.contactid) as contactid,vtiger_cntactivityrel.activityid
 					from vtiger_cntactivityrel
-					inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_cntactivityrel.contactid and deleted=0
+					inner join ".$crmTable." on ".$crmTable.".crmid=vtiger_cntactivityrel.contactid and deleted=0
 					GROUP BY vtiger_cntactivityrel.activityid
 					) ctorel ON ctorel.activityid = vtiger_activity.activityid
 		LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid = ctorel.contactid
@@ -2317,16 +2320,16 @@ function getListQuery($module, $where = '') {
 			ON vtiger_seactivityrel.activityid = vtiger_activity.activityid
 		LEFT OUTER JOIN vtiger_activity_reminder
 			ON vtiger_activity_reminder.activity_id = vtiger_activity.activityid
-		LEFT JOIN vtiger_crmentity
-			ON vtiger_crmentity.crmid = vtiger_activity.activityid
+		LEFT JOIN ".$crmTable."
+			ON ".$crmTable.".crmid = vtiger_activity.activityid
 		LEFT JOIN vtiger_users
-			ON vtiger_users.id = vtiger_crmentity.smownerid
+			ON vtiger_users.id = ".$crmTable.".smownerid
 		LEFT JOIN vtiger_groups
-			ON vtiger_groups.groupid = vtiger_crmentity.smownerid
+			ON vtiger_groups.groupid = ".$crmTable.".smownerid
 		LEFT JOIN vtiger_users vtiger_users2
-			ON vtiger_crmentity.modifiedby = vtiger_users2.id
+			ON ".$crmTable.".modifiedby = vtiger_users2.id
 		LEFT JOIN vtiger_groups vtiger_groups2
-			ON vtiger_crmentity.modifiedby = vtiger_groups2.groupid
+			ON ".$crmTable.".modifiedby = vtiger_groups2.groupid
 		LEFT OUTER JOIN vtiger_account
 			ON vtiger_account.accountid = vtiger_contactdetails.accountid
 		LEFT OUTER JOIN vtiger_leaddetails
@@ -2356,52 +2359,52 @@ function getListQuery($module, $where = '') {
 			//end
 
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
-			$query.=" WHERE vtiger_crmentity.deleted = 0 AND activitytype != 'Emails' " . $where;
+			$query.=" WHERE ".$crmTable.".deleted = 0 AND activitytype != 'Emails' " . $where;
 			break;
 		case 'Emails':
-			$query = 'SELECT DISTINCT vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_activity.activityid, vtiger_activity.subject, vtiger_activity.date_start,
+			$query = 'SELECT DISTINCT '.$crmTable.'.crmid, '.$crmTable.'.smownerid, vtiger_activity.activityid, vtiger_activity.subject, vtiger_activity.date_start,
 					vtiger_contactdetails.lastname, vtiger_contactdetails.firstname, vtiger_contactdetails.contactid
 				FROM vtiger_activity
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_activity.activityid
-				LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
+				INNER JOIN '.$crmTable.' ON '.$crmTable.'.crmid = vtiger_activity.activityid
+				LEFT JOIN vtiger_users ON vtiger_users.id = '.$crmTable.'.smownerid
 				LEFT JOIN vtiger_seactivityrel ON vtiger_seactivityrel.activityid = vtiger_activity.activityid
 				LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid = vtiger_seactivityrel.crmid
 				LEFT JOIN vtiger_cntactivityrel ON vtiger_cntactivityrel.activityid = vtiger_activity.activityid AND vtiger_cntactivityrel.contactid = vtiger_cntactivityrel.contactid
-				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
+				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$crmTable.'.smownerid
 				LEFT JOIN vtiger_salesmanactivityrel ON vtiger_salesmanactivityrel.activityid = vtiger_activity.activityid
 				LEFT JOIN vtiger_emaildetails ON vtiger_emaildetails.emailid = vtiger_activity.activityid';
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
-			$query .= "WHERE vtiger_activity.activitytype = 'Emails' AND vtiger_crmentity.deleted = 0 " . $where;
+			$query .= "WHERE vtiger_activity.activitytype = 'Emails' AND ".$crmTable.".deleted = 0 " . $where;
 			break;
 		case 'Faq':
-			$query = 'SELECT vtiger_crmentity.crmid, vtiger_crmentity.createdtime, vtiger_crmentity.modifiedtime, vtiger_faq.*
+			$query = 'SELECT '.$crmTable.'.crmid, '.$crmTable.'.createdtime, '.$crmTable.'.modifiedtime, vtiger_faq.*
 				FROM vtiger_faq
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_faq.id
+				INNER JOIN '.$crmTable.' ON '.$crmTable.'.crmid = vtiger_faq.id
 				LEFT JOIN vtiger_products ON vtiger_faq.product_id = vtiger_products.productid';
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
-			$query .= 'WHERE vtiger_crmentity.deleted = 0 ' . $where;
+			$query .= 'WHERE '.$crmTable.'.deleted = 0 ' . $where;
 			break;
 		case 'Vendors':
-			$query = 'SELECT vtiger_crmentity.crmid, vtiger_vendor.*
+			$query = 'SELECT '.$crmTable.'.crmid, vtiger_vendor.*
 				FROM vtiger_vendor
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_vendor.vendorid
+				INNER JOIN '.$crmTable.' ON '.$crmTable.'.crmid = vtiger_vendor.vendorid
 				INNER JOIN vtiger_vendorcf ON vtiger_vendor.vendorid = vtiger_vendorcf.vendorid';
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
-			$query .= 'WHERE vtiger_crmentity.deleted = 0 ' . $where;
+			$query .= 'WHERE '.$crmTable.'.deleted = 0 ' . $where;
 			break;
 		case 'PriceBooks':
-			$query = 'SELECT vtiger_crmentity.crmid, vtiger_pricebook.*, vtiger_currency_info.currency_name
+			$query = 'SELECT '.$crmTable.'.crmid, vtiger_pricebook.*, vtiger_currency_info.currency_name
 				FROM vtiger_pricebook
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_pricebook.pricebookid
+				INNER JOIN '.$crmTable.' ON '.$crmTable.'.crmid = vtiger_pricebook.pricebookid
 				INNER JOIN vtiger_pricebookcf ON vtiger_pricebook.pricebookid = vtiger_pricebookcf.pricebookid
 				LEFT JOIN vtiger_currency_info ON vtiger_pricebook.currency_id = vtiger_currency_info.id
-				WHERE vtiger_crmentity.deleted = 0 ' . $where;
+				WHERE '.$crmTable.'.deleted = 0 ' . $where;
 			break;
 		case 'Quotes':
-			$query = 'SELECT vtiger_crmentity.*, vtiger_quotes.*, vtiger_quotesbillads.*, vtiger_quotesshipads.*, vtiger_potential.potentialname,
+			$query = 'SELECT '.$crmTable.'.*, vtiger_quotes.*, vtiger_quotesbillads.*, vtiger_quotesshipads.*, vtiger_potential.potentialname,
 					vtiger_account.accountname, vtiger_currency_info.currency_name
 				FROM vtiger_quotes
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_quotes.quoteid
+				INNER JOIN '.$crmTable.' ON '.$crmTable.'.crmid = vtiger_quotes.quoteid
 				INNER JOIN vtiger_quotesbillads ON vtiger_quotes.quoteid = vtiger_quotesbillads.quotebilladdressid
 				INNER JOIN vtiger_quotesshipads ON vtiger_quotes.quoteid = vtiger_quotesshipads.quoteshipaddressid
 				LEFT JOIN vtiger_quotescf ON vtiger_quotes.quoteid = vtiger_quotescf.quoteid
@@ -2409,33 +2412,33 @@ function getListQuery($module, $where = '') {
 				LEFT OUTER JOIN vtiger_account ON vtiger_account.accountid = vtiger_quotes.accountid
 				LEFT OUTER JOIN vtiger_potential ON vtiger_potential.potentialid = vtiger_quotes.potentialid
 				LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid = vtiger_quotes.contactid
-				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-				LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
+				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$crmTable.'.smownerid
+				LEFT JOIN vtiger_users ON vtiger_users.id = '.$crmTable.'.smownerid
 				LEFT JOIN vtiger_users as vtiger_usersQuotes ON vtiger_usersQuotes.id = vtiger_quotes.inventorymanager';
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
-			$query .= 'WHERE vtiger_crmentity.deleted = 0 ' . $where;
+			$query .= 'WHERE '.$crmTable.'.deleted = 0 ' . $where;
 			break;
 		case 'PurchaseOrder':
-			$query = 'SELECT vtiger_crmentity.*, vtiger_purchaseorder.*, vtiger_pobillads.*, vtiger_poshipads.*, vtiger_vendor.vendorname,
+			$query = 'SELECT '.$crmTable.'.*, vtiger_purchaseorder.*, vtiger_pobillads.*, vtiger_poshipads.*, vtiger_vendor.vendorname,
 					vtiger_currency_info.currency_name
 				FROM vtiger_purchaseorder
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_purchaseorder.purchaseorderid
+				INNER JOIN '.$crmTable.' ON '.$crmTable.'.crmid = vtiger_purchaseorder.purchaseorderid
 				LEFT OUTER JOIN vtiger_vendor ON vtiger_purchaseorder.vendorid = vtiger_vendor.vendorid
 				LEFT JOIN vtiger_contactdetails ON vtiger_purchaseorder.contactid = vtiger_contactdetails.contactid
 				INNER JOIN vtiger_pobillads ON vtiger_purchaseorder.purchaseorderid = vtiger_pobillads.pobilladdressid
 				INNER JOIN vtiger_poshipads ON vtiger_purchaseorder.purchaseorderid = vtiger_poshipads.poshipaddressid
 				LEFT JOIN vtiger_purchaseordercf ON vtiger_purchaseordercf.purchaseorderid = vtiger_purchaseorder.purchaseorderid
 				LEFT JOIN vtiger_currency_info ON vtiger_purchaseorder.currency_id = vtiger_currency_info.id
-				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-				LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid';
+				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$crmTable.'.smownerid
+				LEFT JOIN vtiger_users ON vtiger_users.id = '.$crmTable.'.smownerid';
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
-			$query .= 'WHERE vtiger_crmentity.deleted = 0 ' . $where;
+			$query .= 'WHERE '.$crmTable.'.deleted = 0 ' . $where;
 			break;
 		case 'SalesOrder':
-			$query = 'SELECT vtiger_crmentity.*, vtiger_salesorder.*, vtiger_sobillads.*, vtiger_soshipads.*, vtiger_quotes.subject AS quotename,
+			$query = 'SELECT '.$crmTable.'.*, vtiger_salesorder.*, vtiger_sobillads.*, vtiger_soshipads.*, vtiger_quotes.subject AS quotename,
 					vtiger_account.accountname, vtiger_currency_info.currency_name
 				FROM vtiger_salesorder
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_salesorder.salesorderid
+				INNER JOIN '.$crmTable.' ON '.$crmTable.'.crmid = vtiger_salesorder.salesorderid
 				INNER JOIN vtiger_sobillads ON vtiger_salesorder.salesorderid = vtiger_sobillads.sobilladdressid
 				INNER JOIN vtiger_soshipads ON vtiger_salesorder.salesorderid = vtiger_soshipads.soshipaddressid
 				LEFT JOIN vtiger_salesordercf ON vtiger_salesordercf.salesorderid = vtiger_salesorder.salesorderid
@@ -2445,16 +2448,16 @@ function getListQuery($module, $where = '') {
 				LEFT JOIN vtiger_contactdetails ON vtiger_salesorder.contactid = vtiger_contactdetails.contactid
 				LEFT JOIN vtiger_potential ON vtiger_potential.potentialid = vtiger_salesorder.potentialid
 				LEFT JOIN vtiger_invoice_recurring_info ON vtiger_invoice_recurring_info.salesorderid = vtiger_salesorder.salesorderid
-				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-				LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid';
+				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$crmTable.'.smownerid
+				LEFT JOIN vtiger_users ON vtiger_users.id = '.$crmTable.'.smownerid';
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
-			$query .= 'WHERE vtiger_crmentity.deleted = 0 ' . $where;
+			$query .= 'WHERE '.$crmTable.'.deleted = 0 ' . $where;
 			break;
 		case 'Invoice':
-			$query = 'SELECT vtiger_crmentity.*, vtiger_invoice.*, vtiger_invoicebillads.*, vtiger_invoiceshipads.*, vtiger_salesorder.subject AS salessubject,
+			$query = 'SELECT '.$crmTable.'.*, vtiger_invoice.*, vtiger_invoicebillads.*, vtiger_invoiceshipads.*, vtiger_salesorder.subject AS salessubject,
 					vtiger_account.accountname, vtiger_currency_info.currency_name
 				FROM vtiger_invoice
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_invoice.invoiceid
+				INNER JOIN '.$crmTable.' ON '.$crmTable.'.crmid = vtiger_invoice.invoiceid
 				INNER JOIN vtiger_invoicebillads ON vtiger_invoice.invoiceid = vtiger_invoicebillads.invoicebilladdressid
 				INNER JOIN vtiger_invoiceshipads ON vtiger_invoice.invoiceid = vtiger_invoiceshipads.invoiceshipaddressid
 				LEFT JOIN vtiger_currency_info ON vtiger_invoice.currency_id = vtiger_currency_info.id
@@ -2462,21 +2465,21 @@ function getListQuery($module, $where = '') {
 				LEFT OUTER JOIN vtiger_account ON vtiger_account.accountid = vtiger_invoice.accountid
 				LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid = vtiger_invoice.contactid
 				INNER JOIN vtiger_invoicecf ON vtiger_invoice.invoiceid = vtiger_invoicecf.invoiceid
-				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-				LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid';
+				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$crmTable.'.smownerid
+				LEFT JOIN vtiger_users ON vtiger_users.id = '.$crmTable.'.smownerid';
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
-			$query .= 'WHERE vtiger_crmentity.deleted = 0 ' . $where;
+			$query .= 'WHERE '.$crmTable.'.deleted = 0 ' . $where;
 			break;
 		case 'Campaigns':
-			$query = 'SELECT vtiger_crmentity.*, vtiger_campaign.*
+			$query = 'SELECT '.$crmTable.'.*, vtiger_campaign.*
 				FROM vtiger_campaign
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_campaign.campaignid
+				INNER JOIN '.$crmTable.' ON '.$crmTable.'.crmid = vtiger_campaign.campaignid
 				INNER JOIN vtiger_campaignscf ON vtiger_campaign.campaignid = vtiger_campaignscf.campaignid
-				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-				LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
+				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$crmTable.'.smownerid
+				LEFT JOIN vtiger_users ON vtiger_users.id = '.$crmTable.'.smownerid
 				LEFT JOIN vtiger_products ON vtiger_products.productid = vtiger_campaign.product_id';
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
-			$query .= 'WHERE vtiger_crmentity.deleted = 0 ' . $where;
+			$query .= 'WHERE '.$crmTable.'.deleted = 0 ' . $where;
 			break;
 		case 'Users':
 			$query = 'SELECT id,user_name,first_name,last_name,email1,phone_mobile,phone_work,is_admin,status,email2,
@@ -2509,45 +2512,46 @@ function getListQuery($module, $where = '') {
 function getReadEntityIds($module) {
 	global $log, $current_user;
 	$log->debug('> getReadEntityIds ' . $module);
-
+	$mod = CRMEntity::getInstance($module);
+	$crmTable = $mod::$crmentityTable;
 	if ($module == 'Leads') {
 		$val_conv = ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') ? 1 : 0);
-		$query = 'SELECT vtiger_crmentity.crmid
+		$query = 'SELECT '.$crmTable.'.crmid
 			FROM vtiger_leaddetails
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_leaddetails.leadid
-			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
+			INNER JOIN '.$crmTable.' ON '.$crmTable.'.crmid = vtiger_leaddetails.leadid
+			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$crmTable.'.smownerid';
 		$query .= getNonAdminAccessControlQuery($module, $current_user);
-		$query .= "WHERE vtiger_crmentity.deleted = 0 AND vtiger_leaddetails.converted = $val_conv ";
+		$query .= "WHERE ".$crmTable.".deleted = 0 AND vtiger_leaddetails.converted = $val_conv ";
 	} elseif ($module == 'Accounts') {
 		//Query modified to sort by assigned to
-		$query = 'SELECT vtiger_crmentity.crmid
+		$query = 'SELECT '.$crmTable.'.crmid
 			FROM vtiger_account
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_account.accountid
-			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
+			INNER JOIN '.$crmTable.' ON '.$crmTable.'.crmid = vtiger_account.accountid
+			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$crmTable.'.smownerid';
 		$query .= getNonAdminAccessControlQuery($module, $current_user);
-		$query .= 'WHERE vtiger_crmentity.deleted = 0 ';
+		$query .= 'WHERE '.$crmTable.'.deleted = 0 ';
 	} elseif ($module == 'Potentials') {
 		//Query modified to sort by assigned to
-		$query = 'SELECT vtiger_crmentity.crmid
+		$query = 'SELECT '.$crmTable.'.crmid
 			FROM vtiger_potential
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_potential.potentialid
-			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
+			INNER JOIN '.$crmTable.' ON '.$crmTable.'.crmid = vtiger_potential.potentialid
+			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$crmTable.'.smownerid';
 		$query .= getNonAdminAccessControlQuery($module, $current_user);
-		$query .= 'WHERE vtiger_crmentity.deleted = 0 ';
+		$query .= 'WHERE '.$crmTable.'.deleted = 0 ';
 	} elseif ($module == 'Contacts') {
 		//Query modified to sort by assigned to
-		$query = 'SELECT vtiger_crmentity.crmid
+		$query = 'SELECT '.$crmTable.'.crmid
 			FROM vtiger_contactdetails
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid
-			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
+			INNER JOIN '.$crmTable.' ON '.$crmTable.'.crmid = vtiger_contactdetails.contactid
+			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$crmTable.'.smownerid';
 		$query .= getNonAdminAccessControlQuery($module, $current_user);
-		$query .= 'WHERE vtiger_crmentity.deleted = 0 ';
+		$query .= 'WHERE '.$crmTable.'.deleted = 0 ';
 	} elseif ($module == 'Products') {
-		$query = 'SELECT DISTINCT vtiger_crmentity.crmid
+		$query = 'SELECT DISTINCT '.$crmTable.'.crmid
 			FROM vtiger_products
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_products.productid
+			INNER JOIN '.$crmTable.' ON '.$crmTable.'.crmid = vtiger_products.productid
 			LEFT JOIN vtiger_seproductsrel ON vtiger_seproductsrel.productid = vtiger_products.productid
-			WHERE vtiger_crmentity.deleted = 0
+			WHERE '.$crmTable.'.deleted = 0
 			AND (vtiger_seproductsrel.crmid IS NULL
 				OR vtiger_seproductsrel.crmid IN (' . getReadEntityIds('Leads') . ')
 				OR vtiger_seproductsrel.crmid IN (' . getReadEntityIds('Accounts') . ')
@@ -2555,41 +2559,41 @@ function getReadEntityIds($module) {
 				OR vtiger_seproductsrel.crmid IN (' . getReadEntityIds('Contacts') . ')) ';
 	} elseif ($module == 'PurchaseOrder') {
 		//Query modified to sort by assigned to
-		$query = 'SELECT vtiger_crmentity.crmid
+		$query = 'SELECT '.$crmTable.'.crmid
 			FROM vtiger_purchaseorder
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_purchaseorder.purchaseorderid
-			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
+			INNER JOIN '.$crmTable.' ON '.$crmTable.'.crmid = vtiger_purchaseorder.purchaseorderid
+			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$crmTable.'.smownerid';
 		$query .= getNonAdminAccessControlQuery($module, $current_user);
-		$query .= 'WHERE vtiger_crmentity.deleted = 0 ';
+		$query .= 'WHERE '.$crmTable.'.deleted = 0 ';
 	} elseif ($module == 'SalesOrder') {
 		//Query modified to sort by assigned to
-		$query = 'SELECT vtiger_crmentity.crmid
+		$query = 'SELECT '.$crmTable.'.crmid
 			FROM vtiger_salesorder
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_salesorder.salesorderid
-			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
+			INNER JOIN '.$crmTable.' ON '.$crmTable.'.crmid = vtiger_salesorder.salesorderid
+			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$crmTable.'.smownerid';
 		$query .= getNonAdminAccessControlQuery($module, $current_user);
-		$query .= 'WHERE vtiger_crmentity.deleted = 0 ';
+		$query .= 'WHERE '.$crmTable.'.deleted = 0 ';
 	} elseif ($module == 'Invoice') {
-		$query = 'SELECT vtiger_crmentity.crmid
+		$query = 'SELECT '.$crmTable.'.crmid
 			FROM vtiger_invoice
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_invoice.invoiceid
-			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
+			INNER JOIN '.$crmTable.' ON '.$crmTable.'.crmid = vtiger_invoice.invoiceid
+			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$crmTable.'.smownerid';
 		$query .= getNonAdminAccessControlQuery($module, $current_user);
-		$query .= 'WHERE vtiger_crmentity.deleted = 0 ';
+		$query .= 'WHERE '.$crmTable.'.deleted = 0 ';
 	} elseif ($module == 'Quotes') {
-		$query = 'SELECT vtiger_crmentity.crmid
+		$query = 'SELECT '.$crmTable.'.crmid
 			FROM vtiger_quotes
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_quotes.quoteid
-			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
+			INNER JOIN '.$crmTable.' ON '.$crmTable.'.crmid = vtiger_quotes.quoteid
+			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$crmTable.'.smownerid';
 		$query .= getNonAdminAccessControlQuery($module, $current_user);
-		$query .= 'WHERE vtiger_crmentity.deleted = 0 ';
+		$query .= 'WHERE '.$crmTable.'.deleted = 0 ';
 	} elseif ($module == 'HelpDesk') {
-		$query = 'SELECT vtiger_crmentity.crmid
+		$query = 'SELECT '.$crmTable.'.crmid
 			FROM vtiger_troubletickets
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_troubletickets.ticketid
-			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
+			INNER JOIN '.$crmTable.' ON '.$crmTable.'.crmid = vtiger_troubletickets.ticketid
+			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$crmTable.'.smownerid';
 		$query .= getNonAdminAccessControlQuery($module, $current_user);
-		$query .= 'WHERE vtiger_crmentity.deleted = 0 ';
+		$query .= 'WHERE '.$crmTable.'.deleted = 0 ';
 	}
 
 	$log->debug('< getReadEntityIds');
@@ -2674,32 +2678,34 @@ function getRelatedToEntity($module, $list_result, $rset) {
 //used in home page listTop files
 function getRelatedTo($module, $list_result, $rset) {
 	global $adb, $log, $app_strings;
+	$mod = CRMEntity::getInstance($module);
+	$crmTable = $mod::$crmentityTable;
 	if ($module == 'Documents') {
 		$notesid = $adb->query_result($list_result, $rset, 'notesid');
-		$evt_query = 'SELECT vtiger_senotesrel.crmid, vtiger_crmentity.setype
+		$evt_query = 'SELECT vtiger_senotesrel.crmid, '.$crmTable.'.setype
 			FROM vtiger_senotesrel
-			INNER JOIN vtiger_crmentity ON vtiger_senotesrel.crmid = vtiger_crmentity.crmid
+			INNER JOIN '.$crmTable.' ON vtiger_senotesrel.crmid = '.$crmTable.'.crmid
 			WHERE vtiger_senotesrel.notesid = ?';
 		$params = array($notesid);
 	} elseif ($module == 'Products') {
 		$productid = $adb->query_result($list_result, $rset, 'productid');
-		$evt_query = 'SELECT vtiger_seproductsrel.crmid, vtiger_crmentity.setype
+		$evt_query = 'SELECT vtiger_seproductsrel.crmid, '.$crmTable.'.setype
 			FROM vtiger_seproductsrel
-			INNER JOIN vtiger_crmentity ON vtiger_seproductsrel.crmid = vtiger_crmentity.crmid
+			INNER JOIN '.$crmTable.' ON vtiger_seproductsrel.crmid = '.$crmTable.'.crmid
 			WHERE vtiger_seproductsrel.productid =?';
 		$params = array($productid);
 	} else {
 		$activity_id = $adb->query_result($list_result, $rset, 'activityid');
-		$evt_query = 'SELECT vtiger_seactivityrel.crmid, vtiger_crmentity.setype
+		$evt_query = 'SELECT vtiger_seactivityrel.crmid, '.$crmTable.'.setype
 			FROM vtiger_seactivityrel
-			INNER JOIN vtiger_crmentity ON vtiger_seactivityrel.crmid = vtiger_crmentity.crmid
+			INNER JOIN '.$crmTable.' ON vtiger_seactivityrel.crmid = '.$crmTable.'.crmid
 			WHERE vtiger_seactivityrel.activityid=?';
 		$params = array($activity_id);
 
 		if ($module == 'HelpDesk') {
 			$activity_id = $adb->query_result($list_result, $rset, 'parent_id');
 			if ($activity_id != '') {
-				$evt_query = 'SELECT crmid, setype FROM vtiger_crmentity WHERE crmid=?';
+				$evt_query = 'SELECT crmid, setype FROM '.$crmTable.' WHERE crmid=?';
 				$params = array($activity_id);
 			}
 		}
@@ -2928,11 +2934,12 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 				$condition = 'and vtiger_contactdetails.contactid= 0';
 			}
 		} elseif ($relmodule == 'Vendors') {
+			$mod = CRMEntity::getInstance('Contacts');
 			$vcquery = "SELECT vtiger_contactdetails.contactid
 				from vtiger_contactdetails
-				inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
+				inner join ".$mod::$crmentityTable." on ".$mod::$crmentityTable.".crmid = vtiger_contactdetails.contactid
 				inner join vtiger_vendorcontactrel on vtiger_vendorcontactrel.contactid=vtiger_contactdetails.contactid
-				where vtiger_crmentity.deleted=0 and vtiger_vendorcontactrel.vendorid = $relmod_recordid";
+				where ".$mod::$crmentityTable.".deleted=0 and vtiger_vendorcontactrel.vendorid = $relmod_recordid";
 			$condition = "and vtiger_contactdetails.contactid in ($vcquery)";
 		} elseif ($relmodule == 'SalesOrder') {
 			$query = 'select accountid,contactid from vtiger_salesorder where salesorderid=?';
@@ -3016,18 +3023,19 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 		}
 	} elseif ($current_module == 'Potentials') {
 		if ($relmodule == 'Accounts' || $relmodule == 'Contacts') {
+			$mod = CRMEntity::getInstance($relmodule);
 			if ($relmodule == 'Contacts') {
-				$pot_query = 'select vtiger_crmentity.crmid,vtiger_contactdetails.contactid,vtiger_potential.potentialid
+				$pot_query = 'select '.$mod::$crmentityTable.'.crmid,vtiger_contactdetails.contactid,vtiger_potential.potentialid
 					from vtiger_potential
 					inner join vtiger_contactdetails on vtiger_contactdetails.contactid=vtiger_potential.related_to
-					inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_contactdetails.contactid
-					where vtiger_crmentity.deleted=0 and vtiger_potential.related_to=?';
+					inner join '.$mod::$crmentityTable.' on '.$mod::$crmentityTable.'.crmid=vtiger_contactdetails.contactid
+					where '.$mod::$crmentityTable.'.deleted=0 and vtiger_potential.related_to=?';
 			} else {
-				$pot_query = 'select vtiger_crmentity.crmid,vtiger_account.accountid,vtiger_potential.potentialid
+				$pot_query = 'select '.$mod::$crmentityTable.'.crmid,vtiger_account.accountid,vtiger_potential.potentialid
 					from vtiger_potential
 					inner join vtiger_account on vtiger_account.accountid=vtiger_potential.related_to
-					inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_account.accountid
-					where vtiger_crmentity.deleted=0 and vtiger_potential.related_to=?';
+					inner join '.$mod::$crmentityTable.' on '.$mod::$crmentityTable.'.crmid=vtiger_account.accountid
+					where '.$mod::$crmentityTable.'.deleted=0 and vtiger_potential.related_to=?';
 			}
 			$pot_result = $result = $adb->pquery($pot_query, array($relmod_recordid));
 			$rows = $adb->num_rows($pot_result);
@@ -3501,8 +3509,9 @@ function getEntityId($module, $entityName, $searchonfield = '') {
 		if ($module=='Users') {
 			$sql = 'select vtiger_users.id from vtiger_users where deleted = 0 and '.$fieldsname.' = ?';
 		} else {
-			$sql = "select $tablename.$entityidfield from $tablename INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $tablename.$entityidfield " .
-				" $cfquery WHERE vtiger_crmentity.deleted = 0 and $fieldsname=?";
+			$mod = CRMEntity::getInstance($module);
+			$sql = "select $tablename.$entityidfield from $tablename INNER JOIN ".$mod::$crmentityTable." ON ".$mod::$crmentityTable.".crmid = $tablename.$entityidfield " .
+				" $cfquery WHERE ".$mod::$crmentityTable.".deleted = 0 and $fieldsname=?";
 		}
 		$result = $adb->pquery($sql, array($entityName));
 		if ($adb->num_rows($result) > 0) {
@@ -3530,16 +3539,17 @@ function getParentId($parent_name) {
 	$parent_name = $relatedTo[3];
 	$parent_name = trim($parent_name, ' ');
 	$num_rows = 0;
+	$mod = CRMEntity::getInstance($parent_module);
 	if ($parent_module == 'Contacts') {
 		$query = "select crmid
-			from vtiger_contactdetails, vtiger_crmentity
-			WHERE concat(lastname,' ',firstname)=? and vtiger_crmentity.crmid =vtiger_contactdetails.contactid and vtiger_crmentity.deleted=0";
+			from vtiger_contactdetails, ".$mod::$crmentityTable."
+			WHERE concat(lastname,' ',firstname)=? and ".$mod::$crmentityTable.".crmid =vtiger_contactdetails.contactid and ".$mod::$crmentityTable.".deleted=0";
 		$result = $adb->pquery($query, array($parent_name));
 		$num_rows = $adb->num_rows($result);
 	} elseif ($parent_module == 'Accounts') {
 		$query = 'select crmid
-			from vtiger_account, vtiger_crmentity
-			WHERE accountname=? and vtiger_crmentity.crmid =vtiger_account.accountid and vtiger_crmentity.deleted=0';
+			from vtiger_account, '.$mod::$crmentityTable.'
+			WHERE accountname=? and '.$mod::$crmentityTable.'.crmid =vtiger_account.accountid and '.$mod::$crmentityTable.'.deleted=0';
 		$result = $adb->pquery($query, array($parent_name));
 		$num_rows = $adb->num_rows($result);
 	} else {

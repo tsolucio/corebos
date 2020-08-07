@@ -1261,9 +1261,10 @@ function getDetailAssociatedProducts($module, $focus) {
 				}
 				$output .= '<br>';
 				$output .= '<b>'.$mdfield['fieldinfo']['label'].'</b>:&nbsp;';
+				$mod = CRMEntity::getInstance('InventoryDetails');
 				$mdrs = $adb->pquery(
 					'select '.$mdfield['fieldinfo']['name'].',vtiger_inventorydetails.inventorydetailsid from vtiger_inventorydetails
-						inner join vtiger_crmentity on crmid=vtiger_inventorydetails.inventorydetailsid
+						inner join '.$mod::$crmentityTable.' on crmid=vtiger_inventorydetails.inventorydetailsid
 						inner join vtiger_inventorydetailscf on vtiger_inventorydetailscf.inventorydetailsid=vtiger_inventorydetails.inventorydetailsid
 						where deleted=0 and related_to=? and lineitem_id=?',
 					array($focus->id,$adb->query_result($result, $i - 1, 'lineitem_id'))

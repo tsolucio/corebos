@@ -2481,11 +2481,13 @@ function getMergedDescription($description, $id, $parent_type) {
 		$ct = new VTSimpleTemplate($description, true);
 		$description = $ct->render($entityCache, vtws_getEntityId($parent_type).'x'.$id);
 	}
+	$mod = CRMEntity::getInstance('cbCompany');
+	$crmTable = $mod::$crmentityTable;
 	$cmprs = $adb->pquery(
 		'SELECT c.cbcompanyid
 			FROM vtiger_cbcompany c
-			JOIN vtiger_crmentity on vtiger_crmentity.crmid = c.cbcompanyid
-			WHERE c.defaultcompany=1 and vtiger_crmentity.deleted=0',
+			JOIN '.$crmTable.' on '.$crmTable.'.crmid = c.cbcompanyid
+			WHERE c.defaultcompany=1 and '.$crmTable.'.deleted=0',
 		array()
 	);
 	if ($cmprs && $adb->num_rows($cmprs)>0 && isPermitted('cbCompany', 'DetailView', $adb->query_result($cmprs, 0, 0))=='yes') {
