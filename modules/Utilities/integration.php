@@ -132,12 +132,12 @@ switch ($_REQUEST['_op']) {
 				'desc' => getTranslatedString('Record Versioning_Desc', 'Utilities'),
 				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigrecordversioning',
 			),
-			array(
-				'abbr' => 'ZD',
-				'title' => getTranslatedString('Zendesk Activation', 'Utilities'),
-				'desc' => getTranslatedString('Zendesk Activation_Desc', 'Utilities'),
-				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigzendesk',
-			),
+			// array(
+			// 	'abbr' => 'ZD',
+			// 	'title' => getTranslatedString('Zendesk Activation', 'Utilities'),
+			// 	'desc' => getTranslatedString('Zendesk Activation_Desc', 'Utilities'),
+			// 	'url' => 'index.php?action=integration&module=Utilities&_op=getconfigzendesk',
+			// ),
 			array(
 				'abbr' => 'WA',
 				'title' => getTranslatedString('Whatsapp Activation', 'Utilities'),
