@@ -438,6 +438,33 @@ class Vtiger_WSClient {
 	}
 
 	/**
+	* Do Upsert Operation
+	*/
+	public function doUpsert($modulename, $createFields, $searchOn, $updateFields) {
+		// Perform re-login if required.
+		$this->__checkLogin();
+
+		// Assign record to logged in user if not specified
+		if (!isset($createFields['assigned_user_id'])) {
+			$createFields['assigned_user_id'] = $this->_userid;
+		}
+
+		$postdata = array(
+			'operation'   => 'upsert',
+			'sessionName' => $this->_sessionid,
+			'elementType' => $modulename,
+			'element' => json_encode($createFields),
+			'searchOn' => $searchOn,
+			'updatedfields' => implode(',',$updatedfields),
+		);
+		$resultdata = $this->_client->doPost($postdata, true);
+		if ($this->hasError($resultdata)) {
+			return false;
+		}
+		return $resultdata['result'];
+	}
+
+	/**
 	 * Invoke custom operation
 	 *
 	 * @param String $method Name of the webservice to invoke
