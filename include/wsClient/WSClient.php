@@ -166,13 +166,31 @@ class Vtiger_WSClient {
 	}
 
 	/**
+	 * Do Login Session Operation
+	 */
+	public function doLoginSession($username, $loggedinat, $pkey, $sessionid) {
+		if ($this->__doChallenge($username) === false) {
+			return false;
+		}
+		$getdata = array(
+			'operation' => 'loginSession',
+			'username' => $username,
+			'loggedinat' => $loggedinat,
+			'hashaccess' => hash('sha512', $this->_servicetoken.$pkey),
+			'sessionid' => $sessionid
+		);
+		$resultdata = $this->_client->doGet($getdata, true);
+		return !$this->hasError($resultdata);
+	}
+
+	/**
 	* Do Logout Operation.
 	*/
 	public function doLogout() {
 		$this->__checkLogin();
 		$postdata = array(
 			'operation' => 'logout',
-			'sessionName'  => $this->_sessionid
+			'sessionName' => $this->_sessionid
 		);
 		$resultdata = $this->_client->doPost($postdata, true);
 		if ($this->hasError($resultdata)) {
