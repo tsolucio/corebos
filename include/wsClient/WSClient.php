@@ -19,7 +19,7 @@ require_once 'include/wsClient/Net/HTTP_Client.php';
  * Vtiger Webservice Client
  */
 class Vtiger_WSClient {
-	// Webserice file
+	// Webservice file
 	private $_servicebase = 'webservice.php';
 
 	// HTTP Client instance
@@ -39,6 +39,8 @@ class Vtiger_WSClient {
 	// Webservice login credentials
 	public $_sessionid  = false;
 	public $_userid     = false;
+	public $entityid    = '';
+	public $language    = 'en';
 
 	// Last operation error information
 	public $_lasterror  = false;
@@ -162,6 +164,48 @@ class Vtiger_WSClient {
 
 		$this->_sessionid = $resultdata['result']['sessionName'];
 		$this->_userid    = $resultdata['result']['userId'];
+		return true;
+	}
+
+	/**
+	 * Do Login Portal Operation
+	 */
+	public function doLoginPortal($username, $password, $passwordhash = 'md5', $entity = 'Contacts') {
+		if ($this->__doChallenge($username) === false) {
+			return false;
+		}
+		switch ($passwordhash) {
+			case 'sha256':
+				$accessCrypt = hash('sha256', $this->_servicetoken.$password);
+				break;
+			case 'sha512':
+				$accessCrypt = hash('sha512', $this->_servicetoken.$password);
+				break;
+			case 'plaintext':
+				$accessCrypt = $this->_servicetoken.$password;
+				break;
+			case 'md5':
+			default:
+				$accessCrypt = md5($this->_servicetoken.$password);
+				break;
+		}
+		$getdata = array(
+			'operation' => 'loginPortal',
+			'username' => $username,
+			'password' => $accessCrypt,
+			'entity' => $entity,
+		);
+		$resultdata = $this->_client->doGet($getdata, true);
+
+		if ($this->hasError($resultdata)) {
+			return false;
+		}
+		$this->_serviceuser = $resultdata['result']['user']['user_name'];
+		$this->_servicekey = $resultdata['result']['user']['accesskey'];
+		$this->_sessionid = $resultdata['result']['sessionName'];
+		$this->_userid = $resultdata['result']['user']['id'];
+		$this->entityid = $resultdata['result']['user']['contactid'];
+		$this->language = $resultdata['result']['user']['language'];
 		return true;
 	}
 
