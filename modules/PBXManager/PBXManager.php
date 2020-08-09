@@ -83,18 +83,20 @@ class PBXManager extends CRMEntity {
 	 * Get list view query.
 	 */
 	public function getListQuery($module, $usewhere = '') {
-		$query = "SELECT $this->table_name.*, vtiger_crmentity.*";
+		$query = "SELECT $this->table_name.*".(self::$crmentityTable!=$this->table_name ? ', '.self::$crmentityTable.'.*' : '');
 		$query .= " FROM $this->table_name";
-
-		$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index
-					LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
-
+		if (self::$denormalized) {
+			$query .= ' INNER JOIN '.self::$crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
+		} else {
+			$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
+		}
 		// Consider custom table join as well.
 		if (!empty($this->customFieldTable)) {
 			$query .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
 				" = $this->table_name.$this->table_index";
 		}
 		$query .= ' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid ';
+		$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
 
 		$query .= ' WHERE vtiger_crmentity.deleted = 0';
 		$query .= $this->getListViewSecurityParameter($module);
@@ -156,9 +158,13 @@ class PBXManager extends CRMEntity {
 		$fields_list = getFieldsListFromQuery($sql);
 
 		$query = "SELECT $fields_list, 'vtiger_groups_groupname as Assigned To Group',
-				CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN vtiger_users.user_name ELSE vtiger_groups.groupname END
-				AS user_name FROM vtiger_crmentity INNER JOIN $this->table_name ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
-
+			CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN vtiger_users.user_name ELSE vtiger_groups.groupname END AS user_name
+			FROM $this->table_name ";
+		if (self::$denormalized) {
+			$query.= 'INNER JOIN '.self::$crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
+		} else {
+			$query.= "INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
+		}
 		if (!empty($this->customFieldTable)) {
 			$query.=" INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1]." = $this->table_name.$this->table_index";
 		}

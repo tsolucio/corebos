@@ -36,7 +36,7 @@ if ($mode == 'mergesave') {
 		exit;
 	}
 
-	$result = $adb->pquery('SELECT count(*) AS count FROM vtiger_crmentity WHERE crmid=? and deleted=0', array($merge_id));
+	$result = $adb->pquery('SELECT count(*) AS count FROM vtiger_crmobject WHERE crmid=? and deleted=0', array($merge_id));
 	$count = $adb->query_result($result, 0, 'count');
 
 	if ($count > 0) {

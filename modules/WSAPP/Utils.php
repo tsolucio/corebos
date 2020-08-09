@@ -55,16 +55,16 @@ function wsapp_getRecordEntityNameIds($entityNames, $modules, $user) {
 			$entityMetaList[$moduleName] = $meta;
 		}
 		$meta = $entityMetaList[$moduleName];
-		$nameFieldsArray = explode(",", $meta->getNameFields());
+		$nameFieldsArray = explode(',', $meta->getNameFields());
 		if (count($nameFieldsArray)>1) {
 			$nameFields = 'concat('.implode(",' ',", $nameFieldsArray).')';
 		} else {
 			$nameFields = $nameFieldsArray[0];
 		}
-
+		$mod = CRMEntity::getInstance($moduleName);
 		$query = 'SELECT '.$meta->getObectIndexColumn()." as id,$nameFields as entityname
-			FROM ".$meta->getEntityBaseTable()." as moduleentity
-			INNER JOIN vtiger_crmentity as crmentity
+			FROM ".$meta->getEntityBaseTable().' as moduleentity
+			INNER JOIN '.$mod::$crmentityTable." as crmentity
 			WHERE $nameFields IN(".generateQuestionMarks($entityNames).') AND crmentity.deleted=0 AND crmentity.crmid = moduleentity.'.$meta->getObectIndexColumn();
 		$result = $db->pquery($query, $entityNames);
 		$num_rows = $db->num_rows($result);

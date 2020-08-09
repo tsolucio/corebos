@@ -179,7 +179,8 @@ class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
 		$columnByFieldNames = crmtogo_WS_Utils::getModuleColumnTableByFieldNames($module, $fieldnames);
 
 		// Build select clause similar to Webservice query
-		$selectColumnClause = "CONCAT('{$moduleWSId}','x',vtiger_crmentity.crmid) as id,";
+		$mod = CRMEntity::getInstance($module);
+		$selectColumnClause = "CONCAT('{$moduleWSId}','x',".$mod::$crmentityTable.'.crmid) as id,';
 		foreach ($columnByFieldNames as $fieldname => $fieldinfo) {
 			$selectColumnClause .= sprintf('%s.%s as %s,', $fieldinfo['table'], $fieldinfo['column'], $fieldname);
 		}

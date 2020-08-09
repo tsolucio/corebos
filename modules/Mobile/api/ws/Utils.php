@@ -628,12 +628,18 @@ class crmtogo_WS_Utils {
 	public static function getDetailedDocumentInformation($documentrecord) {
 		$documentid = explode('x', $documentrecord['id']);
 		$db = PearDatabase::getInstance();
+		$mod = CRMEntity::getInstance('Documents');
+		if ($mod::$denormalized) {
+			$crmjoin = ' INNER JOIN '.$mod::$crmentityTable.' as vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_notes.notesid';
+		} else {
+			$crmjoin = ' INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_notes.notesid';
+		}
 		$sql = 'SELECT filename,filetype,fileversion, filedownloadcount,notecontent,filesize, path, vtiger_attachments.attachmentsid
-			FROM vtiger_notes
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_notes.notesid
-			INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.crmid = vtiger_notes.notesid
+			FROM vtiger_notes '
+			.$crmjoin
+			.' INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.crmid = vtiger_notes.notesid
 			INNER JOIN vtiger_attachments ON vtiger_attachments.attachmentsid = vtiger_seattachmentsrel.attachmentsid
-			WHERE vtiger_notes.notesid = ? and vtiger_crmentity.deleted = 0';
+			WHERE vtiger_notes.notesid=? and vtiger_crmentity.deleted=0';
 		$result = $db->pquery($sql, array($documentid[1]));
 		$noofrows = $db->num_rows($result);
 		if ($noofrows >0) {

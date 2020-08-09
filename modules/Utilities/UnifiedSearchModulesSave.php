@@ -38,11 +38,14 @@ if (isset($_REQUEST['search_onlyin'])) {
 		// we save this users preferences in a global variable
 		global $current_user, $adb;
 		include_once 'include/Webservices/Create.php';
+		$mod = CRMEntity::getInstance('GlobalVariable');
+		if ($mod::$denormalized) {
+			$dnjoin = 'INNER JOIN '.$mod::$crmentityTable.' as vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_globalvariable.globalvariableid';
+		} else {
+			$dnjoin = 'INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_globalvariable.globalvariableid';
+		}
 		$checkrs = $adb->pquery(
-			'select crmid
-			from vtiger_globalvariable
-			inner join vtiger_crmentity on crmid=globalvariableid
-			where deleted=0 and gvname=? and smownerid=?',
+			'select globalvariableid from vtiger_globalvariable '.$dnjoin.' where vtiger_crmentity.deleted=0 and gvname=? and vtiger_crmentity.smownerid=?',
 			array('Application_Global_Search_SelectedModules',$current_user->id)
 		);
 		if ($adb->num_rows($checkrs)>0) {
