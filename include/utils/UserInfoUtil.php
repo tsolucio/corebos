@@ -73,20 +73,17 @@ function fetchUserProfileId($userid) {
 	return $profileid;
 }
 
-/** Function to get the lists of groupids releated with an user
- * This function accepts the user id as arguments and
- * returns the groupids related with the user id
- * as a comma seperated string
+/** Function to get the lists of groupids related with a user
+ * @param integer user id of the user we want to get the groups of
+ * @return string comma-separated string of the groupids related with the user
 */
 function fetchUserGroupids($userid) {
 	global $log;
 	$log->debug('> fetchUserGroupids '.$userid);
 	$focus = new GetUserGroups();
 	$focus->getAllUserGroups($userid);
-	//Asha: Remove implode if not required and if so, also remove explode functions used at the recieving end of this function
-	$groupidlists = implode(',', $focus->user_groups);
 	$log->debug('< fetchUserGroupids');
-	return $groupidlists;
+	return implode(',', $focus->user_groups);
 }
 
 /** Function to get all the vtiger_tab permission for the specified vtiger_profile
