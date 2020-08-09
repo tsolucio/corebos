@@ -35,8 +35,7 @@ class WSAPPAssignToTracker extends VTEventHandler {
 		if (!$isAssignToModified) {
 			return;
 		}
-		$wsModuleName = $this->getWsModuleName($moduleName);
-		$handler = vtws_getModuleHandlerFromName($wsModuleName, $current_user);
+		$handler = vtws_getModuleHandlerFromName($moduleName, $current_user);
 		$meta = $handler->getMeta();
 		$recordWsValues = DataTransform::sanitizeData($recordValues, $meta);
 		$syncServer = new SyncServer();
@@ -44,8 +43,7 @@ class WSAPPAssignToTracker extends VTEventHandler {
 	}
 
 	public function isAssignToChanged($moduleName, $recordId, $user) {
-		$wsModuleName = $this->getWsModuleName($moduleName);
-		$handler = vtws_getModuleHandlerFromName($wsModuleName, $user);
+		$handler = vtws_getModuleHandlerFromName($moduleName, $user);
 		$meta = $handler->getMeta();
 		$moduleOwnerFields = $meta->getOwnerFields();
 		$assignToChanged = false;
@@ -57,15 +55,6 @@ class WSAPPAssignToTracker extends VTEventHandler {
 			}
 		}
 		return $assignToChanged;
-	}
-
-	public function getWsModuleName($workFlowModuleName) {
-		//TODO: Handle getting the webservice modulename in a better way
-		$wsModuleName = $workFlowModuleName;
-		if ($workFlowModuleName == "Activity") {
-			$wsModuleName = "Calendar";
-		}
-		return $wsModuleName;
 	}
 }
 ?>

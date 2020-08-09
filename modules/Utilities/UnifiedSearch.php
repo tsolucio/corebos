@@ -106,22 +106,7 @@ if (isset($query_string) && $query_string != '') {
 				$smarty->assign('SINGLE_MOD', $module);
 				$smarty->assign('SEARCH_STRING', htmlentities($search_val, ENT_QUOTES, $default_charset));
 
-				if ($module=='Calendar') {
-					$listquery = 'SELECT vtiger_activity.activityid as act_id,vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_crmentity.setype,
-						vtiger_activity.*
-						FROM vtiger_activity
-						LEFT JOIN vtiger_activitycf ON vtiger_activitycf.activityid = vtiger_activity.activityid
-						LEFT JOIN vtiger_cntactivityrel ON vtiger_cntactivityrel.activityid = vtiger_activity.activityid
-						LEFT JOIN vtiger_seactivityrel ON vtiger_seactivityrel.activityid = vtiger_activity.activityid
-						LEFT OUTER JOIN vtiger_activity_reminder ON vtiger_activity_reminder.activity_id = vtiger_activity.activityid
-						LEFT JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_activity.activityid
-						LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
-						LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
-					$listquery .= getNonAdminAccessControlQuery($module, $current_user);
-					$listquery .= ' where vtiger_crmentity.deleted=0 ';
-				} else {
-					$listquery = getListQuery($module);
-				}
+				$listquery = getListQuery($module);
 				$oCustomView = '';
 
 				$oCustomView = new CustomView($module);
