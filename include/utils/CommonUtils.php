@@ -500,7 +500,7 @@ function getSalesEntityType($crmid) {
 }
 
 /**
- * Function to check if vtiger_crmobject exsists
+ * Function to check if vtiger_crmobject exists
  * @param boolean $name
  * @return tablename
  */
@@ -508,9 +508,12 @@ function getCrmObject($name = false) {
 	global $log, $adb;
 	$log->debug('> getCrmObject');
 	$tablename = $name ? false : 'vtiger_crmentity';
-	$tables = $adb->get_tables();
-	if (in_array('vtiger_crmobject', $tables)) {
-		$tablename = $name ? true : 'vtiger_crmobject';
+	$tables = $adb->query("show tables like 'vtiger_crmobject'");
+	if ($adb->num_rows($tables)>0) {
+		$rows = $adb->query('select count(*) as cnt from vtiger_crmobject');
+		if ($rows->fields['cnt']>0) {
+			$tablename = $name ? true : 'vtiger_crmobject';
+		}
 	}
 	$log->debug('< getCrmObject');
 	return $tablename;
