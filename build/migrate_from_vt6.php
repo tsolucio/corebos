@@ -118,6 +118,14 @@ ExecuteQuery(
 		where modifiedby not in (select id from vtiger_users union select groupid from vtiger_groups);',
 	array($current_user->id)
 );
+ExecuteQuery('CREATE TABLE IF NOT EXISTS vtiger_crmobject (
+	crmid int(19),
+	deleted tinyint(1),
+	setype varchar(100),
+	PRIMARY KEY (crmid),
+	INDEX (deleted),
+	INDEX (setype)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8');
 
 $result = $adb->pquery('show columns from com_vtiger_workflowtasks like ?', array('executionorder'));
 if (!($adb->num_rows($result))) {

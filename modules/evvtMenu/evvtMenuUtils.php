@@ -216,6 +216,14 @@ function getAdminevvtMenu() {
 
 function checkevvtMenuInstalled() {
 	global $adb, $current_user;
+	$adb->query('CREATE TABLE IF NOT EXISTS vtiger_crmobject (
+		crmid int(19),
+		deleted tinyint(1),
+		setype varchar(100),
+		PRIMARY KEY (crmid),
+		INDEX (deleted),
+		INDEX (setype)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8');
 	$cncrm = $adb->getColumnNames('vtiger_crmentity');
 	if (!in_array('cbuuid', $cncrm)) {
 		$adb->query('ALTER TABLE `vtiger_crmentity` ADD `cbuuid` char(40) default "";');

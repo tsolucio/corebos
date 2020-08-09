@@ -96,6 +96,15 @@ ExecuteQuery("update vtiger_cron_task set laststart=null where laststart=''");
 ExecuteQuery("update vtiger_cron_task set lastend=null where lastend=''");
 
 global $adb;
+ExecuteQuery('CREATE TABLE IF NOT EXISTS vtiger_crmobject (
+	crmid int(19),
+	deleted tinyint(1),
+	setype varchar(100),
+	PRIMARY KEY (crmid),
+	INDEX (deleted),
+	INDEX (setype)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8');
+
 $result = $adb->pquery('show columns from com_vtiger_workflowtasks like ?', array('executionorder'));
 if (!($adb->num_rows($result))) {
 	ExecuteQuery('ALTER TABLE com_vtiger_workflowtasks ADD executionorder INT(10)', array());
