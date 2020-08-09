@@ -14,8 +14,6 @@ require_once 'modules/Invoice/Invoice.php';
 require_once 'modules/InventoryDetails/InventoryDetails.php';
 
 class PurchaseOrder extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_purchaseorder';
 	public $table_index= 'purchaseorderid';
 	public $column_fields = array();
@@ -293,19 +291,20 @@ class PurchaseOrder extends CRMEntity {
 
 	// Function to unlink an entity with given Id from another entity
 	public function unlinkRelationship($id, $return_module, $return_id) {
+		global $adb;
 		if (empty($return_module) || empty($return_id)) {
 			return;
 		}
 
 		if ($return_module == 'Vendors') {
 			$sql_req ='UPDATE vtiger_crmentity SET deleted = 1 WHERE crmid= ?';
-			$this->db->pquery($sql_req, array($id));
+			$adb->pquery($sql_req, array($id));
 		} elseif ($return_module == 'Contacts') {
 			$sql_req ='UPDATE vtiger_purchaseorder SET contactid=? WHERE purchaseorderid = ?';
-			$this->db->pquery($sql_req, array(null, $id));
+			$adb->pquery($sql_req, array(null, $id));
 		} elseif ($return_module == 'Documents') {
 			$sql = 'DELETE FROM vtiger_senotesrel WHERE crmid=? AND notesid=?';
-			$this->db->pquery($sql, array($id, $return_id));
+			$adb->pquery($sql, array($id, $return_id));
 		} else {
 			parent::unlinkRelationship($id, $return_module, $return_id);
 		}

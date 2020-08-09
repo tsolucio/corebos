@@ -14,8 +14,6 @@ require 'modules/Vtiger/default_module_view.php';
 require_once 'modules/InventoryDetails/InventoryDetails.php';
 
 class Quotes extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_quotes';
 	public $table_index= 'quoteid';
 	public $column_fields = array();
@@ -332,6 +330,7 @@ class Quotes extends CRMEntity {
 
 	// Function to unlink an entity with given Id from another entity
 	public function unlinkRelationship($id, $return_module, $return_id) {
+		global $adb;
 		if (empty($return_module) || empty($return_id)) {
 			return;
 		}
@@ -340,13 +339,13 @@ class Quotes extends CRMEntity {
 			$this->trash('Quotes', $id);
 		} elseif ($return_module == 'Potentials') {
 			$relation_query = 'UPDATE vtiger_quotes SET potentialid=? WHERE quoteid=?';
-			$this->db->pquery($relation_query, array(null, $id));
+			$adb->pquery($relation_query, array(null, $id));
 		} elseif ($return_module == 'Contacts') {
 			$relation_query = 'UPDATE vtiger_quotes SET contactid=? WHERE quoteid=?';
-			$this->db->pquery($relation_query, array(null, $id));
+			$adb->pquery($relation_query, array(null, $id));
 		} elseif ($return_module == 'Documents') {
 			$sql = 'DELETE FROM vtiger_senotesrel WHERE crmid=? AND notesid=?';
-			$this->db->pquery($sql, array($id, $return_id));
+			$adb->pquery($sql, array($id, $return_id));
 		} else {
 			parent::unlinkRelationship($id, $return_module, $return_id);
 		}

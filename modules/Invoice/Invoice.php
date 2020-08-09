@@ -12,8 +12,6 @@ require_once 'data/Tracker.php';
 require_once 'modules/InventoryDetails/InventoryDetails.php';
 
 class Invoice extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_invoice';
 	public $table_index= 'invoiceid';
 	public $column_fields = array();
@@ -102,7 +100,7 @@ class Invoice extends CRMEntity {
 	}
 
 	public function save_module($module) {
-		global $updateInventoryProductRel_deduct_stock;
+		global $updateInventoryProductRel_deduct_stock, $adb;
 		$updateInventoryProductRel_deduct_stock = true;
 		if ($this->mode=='edit' && !empty($this->record_status) && $this->record_status!=$this->column_fields['invoicestatus'] && $this->column_fields['invoicestatus']!='') {
 			$this->registerInventoryHistory();
@@ -113,7 +111,7 @@ class Invoice extends CRMEntity {
 			if ($newStatus!='DoNotChange') {
 				$so_id = $this->column_fields['salesorder_id'];
 				$query1 = 'update vtiger_salesorder set sostatus=? where salesorderid=?';
-				$this->db->pquery($query1, array($newStatus, $so_id));
+				$adb->pquery($query1, array($newStatus, $so_id));
 			}
 		}
 
@@ -331,6 +329,7 @@ class Invoice extends CRMEntity {
 
 	// Function to unlink an entity with given Id from another entity
 	public function unlinkRelationship($id, $return_module, $return_id) {
+		global $adb;
 		if (empty($return_module) || empty($return_id)) {
 			return;
 		}
@@ -339,10 +338,10 @@ class Invoice extends CRMEntity {
 			$this->trash('Invoice', $id);
 		} elseif ($return_module=='SalesOrder') {
 			$relation_query = 'UPDATE vtiger_invoice set salesorderid=? where invoiceid=?';
-			$this->db->pquery($relation_query, array(null,$id));
+			$adb->pquery($relation_query, array(null,$id));
 		} elseif ($return_module == 'Documents') {
 			$sql = 'DELETE FROM vtiger_senotesrel WHERE crmid=? AND notesid=?';
-			$this->db->pquery($sql, array($id, $return_id));
+			$adb->pquery($sql, array($id, $return_id));
 		} else {
 			parent::unlinkRelationship($id, $return_module, $return_id);
 		}

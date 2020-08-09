@@ -116,7 +116,7 @@ class SalesOrder extends CRMEntity {
 	}
 
 	public function save_module($module) {
-		global $updateInventoryProductRel_deduct_stock;
+		global $updateInventoryProductRel_deduct_stock, $adb;
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
 		}
@@ -130,7 +130,7 @@ class SalesOrder extends CRMEntity {
 			if ($newStatus!='DoNotChange') {
 				$qt_id = $this->column_fields['quote_id'];
 				$query1 = 'update vtiger_quotes set quotestage=? where quoteid=?';
-				$this->db->pquery($query1, array($newStatus, $qt_id));
+				$adb->pquery($query1, array($newStatus, $qt_id));
 			}
 		}
 
@@ -375,6 +375,7 @@ class SalesOrder extends CRMEntity {
 
 	// Function to unlink an entity with given Id from another entity
 	public function unlinkRelationship($id, $return_module, $return_id) {
+		global $adb;
 		if (empty($return_module) || empty($return_id)) {
 			return;
 		}
@@ -383,16 +384,16 @@ class SalesOrder extends CRMEntity {
 			$this->trash('SalesOrder', $id);
 		} elseif ($return_module == 'Quotes') {
 			$relation_query = 'UPDATE vtiger_salesorder SET quoteid=? WHERE salesorderid=?';
-			$this->db->pquery($relation_query, array(null, $id));
+			$adb->pquery($relation_query, array(null, $id));
 		} elseif ($return_module == 'Potentials') {
 			$relation_query = 'UPDATE vtiger_salesorder SET potentialid=? WHERE salesorderid=?';
-			$this->db->pquery($relation_query, array(null, $id));
+			$adb->pquery($relation_query, array(null, $id));
 		} elseif ($return_module == 'Contacts') {
 			$relation_query = 'UPDATE vtiger_salesorder SET contactid=? WHERE salesorderid=?';
-			$this->db->pquery($relation_query, array(null, $id));
+			$adb->pquery($relation_query, array(null, $id));
 		} elseif ($return_module == 'Documents') {
 			$sql = 'DELETE FROM vtiger_senotesrel WHERE crmid=? AND notesid=?';
-			$this->db->pquery($sql, array($id, $return_id));
+			$adb->pquery($sql, array($id, $return_id));
 		} else {
 			parent::unlinkRelationship($id, $return_module, $return_id);
 		}

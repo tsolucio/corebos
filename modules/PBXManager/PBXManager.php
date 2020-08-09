@@ -11,8 +11,6 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class PBXManager extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_pbxmanager';
 	public $table_index= 'pbxmanagerid';
 	public $column_fields = array();
@@ -76,7 +74,6 @@ class PBXManager extends CRMEntity {
 	public function __construct() {
 		global $currentModule;
 		$this->column_fields = getColumnFields($currentModule);
-		$this->db = PearDatabase::getInstance();
 	}
 
 	public function save_module($module) {

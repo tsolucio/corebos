@@ -24,6 +24,7 @@ class CRMEntity {
 	public $linkmodemodule = '';
 	public $DirectImageFieldValues = array();
 	public $HasDirectImageField = false;
+	private $db;
 	protected static $methods = array();
 	protected static $dbvalues = array();
 	protected static $todvalues = array();
