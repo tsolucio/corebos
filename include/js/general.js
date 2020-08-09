@@ -1491,9 +1491,13 @@ function doServerValidation(edit_type, formName, callback) {
 			ldsPrompt.show(alert_arr['ERROR'], msg);
 			VtigerJS_DialogBox.unblock();
 		}
-	}).fail(function () {
+	}).fail(function (ev) {
 		//Error while asking file
-		ldsPrompt.show(alert_arr['ERROR'], 'Error with AJAX');
+		let errmsg = 'Error with AJAX';
+		if (ev.responseText != undefined && ev.responseText.indexOf('CSRF Error')!=-1) {
+			errmsg = 'CSRF Error. Reload page.';
+		}
+		ldsPrompt.show(alert_arr['ERROR'], errmsg);
 		VtigerJS_DialogBox.unblock();
 	});
 	return false;
@@ -5245,7 +5249,7 @@ function handleAcKeys(e) {
 			highlightAcItemDown();
 			break;
 		}
-	} else if (e.keyCode==13 && appSubmitFormWithEnter && document.forms.EditView) {
+	} else if (e.keyCode==13 && appSubmitFormWithEnter && document.forms.EditView && e.srcElement.nodeName!='TEXTAREA') {
 		document.forms.EditView.action.value='Save';
 		displaydeleted();
 		formValidate();

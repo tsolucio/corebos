@@ -31,7 +31,7 @@ function cbexpsql_supportedFunctions() {
 		'stringposition' => 'stringposition(haystack,needle)',
 		'stringlength' => 'stringlength(string)',
 		'stringreplace' => 'stringreplace(search,replace,subject)',
-		'substring' => 'substring(stringfield,start,end)',
+		'substring' => 'substring(stringfield,start,length)',
 		'uppercase'=>'uppercase(stringfield)',
 		'lowercase'=>'lowercase(stringfield)',
 		//'uppercasefirst'=>'uppercasefirst(stringfield)',

@@ -18,7 +18,6 @@
 }
 </style>
 {/literal}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script type="text/javascript">
 {literal}
 function UpdateProfile() {

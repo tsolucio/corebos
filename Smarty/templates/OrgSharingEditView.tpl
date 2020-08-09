@@ -8,7 +8,6 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 {include file="SetMenu.tpl"}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 <div class="slds-modal__container slds-p-around_none">

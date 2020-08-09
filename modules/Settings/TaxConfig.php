@@ -25,7 +25,7 @@ if (isset($_REQUEST['save_tax']) && $_REQUEST['save_tax'] == 'true') {
 		$retention = isset($_REQUEST[$tax_details[$i]['taxname'].'retention']) ? vtlib_purify($_REQUEST[$tax_details[$i]['taxname'].'retention']) : '';
 		$retention = ($retention=='on' ? 1 : 0);
 		$new_retentions[$tax_details[$i]['taxid']] = $retention;
-		$new_percentages[$tax_details[$i]['taxid']] = vtlib_purify($_REQUEST[$tax_details[$i]['taxname']]);
+		$new_percentages[$tax_details[$i]['taxid']] = isset($_REQUEST[$tax_details[$i]['taxname']]) ? vtlib_purify($_REQUEST[$tax_details[$i]['taxname']]) : 0;
 		$new_cfields[$tax_details[$i]['taxid']] = array(
 			isset($_REQUEST[$tax_details[$i]['taxname'].'default']) ? ($_REQUEST[$tax_details[$i]['taxname'].'default']=='on' ? 1 : 0) : 0,
 			isset($_REQUEST[$tax_details[$i]['taxname'].'qcreate']) ? ($_REQUEST[$tax_details[$i]['taxname'].'qcreate']=='on' ? 1 : 0) : '0',
@@ -339,6 +339,7 @@ function changeDeleted($taxname, $deleted, $sh = '') {
 	$event_data = array(
 		'tax_type' => $sh == 'sh' ? 'sh' : 'tax',
 		'tax_name' => $taxname,
+		'tax_id' => vtlib_purify(($_REQUEST['taxid'])),
 		'status' => $deleted == 1 ? 'disabled' : 'enabled'
 	);
 	cbEventHandler::do_action('corebos.changestatus.tax', $event_data);

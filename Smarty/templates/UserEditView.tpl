@@ -9,7 +9,6 @@
  ********************************************************************************/
 -->*}
 <script type="text/javascript" src="include/js/ColorPicker2.js"></script>
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
 var cp2 = new ColorPicker('window');

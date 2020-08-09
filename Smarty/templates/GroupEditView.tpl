@@ -8,7 +8,6 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script>
 function dup_validation()
 {ldelim}

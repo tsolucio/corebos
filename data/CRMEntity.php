@@ -24,6 +24,7 @@ class CRMEntity {
 	public $linkmodemodule = '';
 	public $DirectImageFieldValues = array();
 	public $HasDirectImageField = false;
+	private $db;
 	public static $crmentityTable = 'vtiger_crmentity';
 	public static $denormalized = false;
 	protected static $methods = array();

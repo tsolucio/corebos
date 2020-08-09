@@ -105,7 +105,7 @@ if ($activitytype == 'Emails') {
 	$data['assigned_user_id'] = $focus->column_fields['assigned_user_id'];
 	$data['visibility'] = (isset($finaldata['visibility']) ? $finaldata['visibility'] : '');
 	$data['activitytype'] = (isset($finaldata['activitytype']) ? $finaldata['activitytype'] : $activitytype);
-	$data['location'] = $focus->column_fields['location'];
+	$data['location'] = isset($focus->column_fields['location']) ? $focus->column_fields['location'] : '';
 //Calculating reminder time
 	$rem_days = 0;
 	$rem_hrs = 0;

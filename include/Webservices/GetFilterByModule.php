@@ -46,7 +46,10 @@ function getfiltersbymodule($module, $user) {
 	}
 
 	$customView = new CustomView($module);
+	$saveAction = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+	$_REQUEST['action'] = 'ListView';
 	$viewid = $customView->getViewId($module);
+	$_REQUEST['action'] = $saveAction;
 	list($customviews, $customview_html) = cbws_getCustomViewCombo($viewid, $module, $customView);
 
 	return array(

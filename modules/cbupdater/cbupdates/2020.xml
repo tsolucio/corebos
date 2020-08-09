@@ -252,4 +252,12 @@
 	<classname>changeprofilecolumncapitalization</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Activate Portal Fields for Contacts</description>
+	<filename>build/changeSets/2020/activatePortalFieldsContacts.php</filename>
+	<classname>activatePortalFieldsContacts</classname>
+	<systemupdate>false</systemupdate>
+	<blocked>true</blocked>
+</changeSet>
 </updatesChangeLog>

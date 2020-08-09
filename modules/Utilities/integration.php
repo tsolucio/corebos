@@ -98,6 +98,10 @@ switch ($_REQUEST['_op']) {
 	case 'setconfiglogall':
 		include_once 'include/integrations/logall/settings.php';
 		break;
+	case 'getconfigloginsync':
+	case 'setconfigloginsync':
+		include_once 'include/integrations/loginsync/settings.php';
+		break;
 	default:
 		$smarty = new vtigerCRM_Smarty();
 		$titlemessage = getTranslatedString('Available Integrations', $currentModule);
@@ -132,12 +136,12 @@ switch ($_REQUEST['_op']) {
 				'desc' => getTranslatedString('Record Versioning_Desc', 'Utilities'),
 				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigrecordversioning',
 			),
-			array(
-				'abbr' => 'ZD',
-				'title' => getTranslatedString('Zendesk Activation', 'Utilities'),
-				'desc' => getTranslatedString('Zendesk Activation_Desc', 'Utilities'),
-				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigzendesk',
-			),
+			// array(
+			// 	'abbr' => 'ZD',
+			// 	'title' => getTranslatedString('Zendesk Activation', 'Utilities'),
+			// 	'desc' => getTranslatedString('Zendesk Activation_Desc', 'Utilities'),
+			// 	'url' => 'index.php?action=integration&module=Utilities&_op=getconfigzendesk',
+			// ),
 			array(
 				'abbr' => 'WA',
 				'title' => getTranslatedString('Whatsapp Activation', 'Utilities'),
@@ -169,6 +173,14 @@ switch ($_REQUEST['_op']) {
 				'url' => 'index.php?action=integration&module=Utilities&_op=getconfiglogall',
 			),
 		);
+		if (file_exists('build/wsChanges/LoginSession.php')) {
+			$intgr[] = array(
+				'abbr' => 'LS',
+				'title' => getTranslatedString('Login Sync Activation', 'Utilities'),
+				'desc' => getTranslatedString('Login_Synic Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigloginsync',
+			);
+		}
 		$smarty->assign('integrations', $intgr);
 		$smarty->assign('TITLE_MESSAGE', $titlemessage);
 		$smarty->assign('APP', $app_strings);

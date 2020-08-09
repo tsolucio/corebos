@@ -11,7 +11,7 @@
 abstract class EntityMeta {
 
 	public static $RETRIEVE = 'DetailView';
-	public static $CREATE = 'Save';
+	public static $CREATE = 'CreateView';
 	public static $UPDATE = 'EditView';
 	public static $DELETE = 'Delete';
 

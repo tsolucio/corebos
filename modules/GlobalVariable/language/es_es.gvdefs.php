@@ -104,6 +104,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Si se establece en 1, el Recordatorio de actividad se desactivará, si se establece en 0, se activará el Recordatorio de actividad. El valor predeterminado es 0. Esto evita mucho ruido en el registro de depuración de la aplicación.',
 ),
+'Debug_Access_Restricted_File' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Depuración',
+	'values' => '0 | 1',
+	'definition' => 'Si se establece en 1, se mostrará una pila de llamadas antes del mensaje de error "Sorry! Attempt to access restricted file."',
+),
 'Accounts_BlockDuplicateName' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
@@ -1357,6 +1364,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'ID o nombre de la plantilla a utilizar',
 	'definition' => 'Cuando la variable CustomerPortal_PDF se establece en PDFMaker o GenDoc, esta variable indica qué plantilla se debe utilizar para generar el PDF de ordenes de compra. Si está vacía, se utilizará la primera plantilla encontrada.',
 ),
+'CustomerPortal_Default_User' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Integración',
+	'values' => 'user name of the default user to access as',
+	'definition' => 'Al acceder a una aplicación de portal externo como contacto o empleado, debe utilizar un usuario real de coreBOS para obtener los permisos. Esta variable define a ese usuario. La aplicación buscará al usuario seleccionado en el registro de contacto/empleado. Si no hay ninguno, se utilizará el valor en esta variable.',
+),
 'Application_Permit_Assign_Up' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
@@ -1538,6 +1552,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => 'https://nagix.github.io/chartjs-plugin-colorschemes/colorchart.html',
 	'definition' => 'Define el esquema de color a utilizar cuando se dibujan gráficos. Por defecto, se utiliza el esquema tableau.Tableau10.',
+),
+'Application_CSRF_Valid_IP' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'CSV IPs',
+	'category' => 'Seguridad',
+	'values' => 'Ejemplo: 127.0.0.1,192.168.0.100',
+	'definition' => 'Lista separada por comas de direcciones IP desde las que se pasa el control de CSRF.',
 ),
 );
 

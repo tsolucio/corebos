@@ -14,8 +14,6 @@ require_once 'modules/Invoice/Invoice.php';
 require_once 'modules/InventoryDetails/InventoryDetails.php';
 
 class PurchaseOrder extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_purchaseorder';
 	public $table_index= 'purchaseorderid';
 	public $column_fields = array();
@@ -82,7 +80,7 @@ class PurchaseOrder extends CRMEntity {
 	public $mandatory_fields = array('subject', 'vendor_id','createdtime' ,'modifiedtime');
 
 	// This is the list of vtiger_fields that are required.
-	public $required_fields = array("accountname"=>1);
+	public $required_fields = array('accountname'=>1);
 
 	//Added these variables which are used as default order by and sortorder in ListView
 	public $default_order_by = 'subject';
@@ -113,7 +111,7 @@ class PurchaseOrder extends CRMEntity {
 		if (inventoryCanSaveProductLines($_REQUEST, 'PurchaseOrder')) {
 			//Based on the total Number of rows we will save the product relationship with this entity
 			saveInventoryProductDetails($this, 'PurchaseOrder');
-			if (vtlib_isModuleActive("InventoryDetails")) {
+			if (vtlib_isModuleActive('InventoryDetails')) {
 				InventoryDetails::createInventoryDetails($this, 'PurchaseOrder');
 			}
 		}
@@ -125,7 +123,7 @@ class PurchaseOrder extends CRMEntity {
 			$relatedname = getVendorName($this->column_fields['vendor_id']);
 			$total = $this->column_fields['hdnGrandTotal'];
 		} else { //using edit button and save
-			$relatedname = $_REQUEST["vendor_name"];
+			$relatedname = $_REQUEST['vendor_name'];
 			$total = $_REQUEST['total'];
 		}
 		if ($this->column_fields['postatus'] == $app_strings['LBL_NOT_ACCESSIBLE']) {
@@ -155,7 +153,7 @@ class PurchaseOrder extends CRMEntity {
 	 */
 	public function trash($module, $recordId) {
 		global $adb;
-		$result = $adb->pquery("SELECT postatus FROM vtiger_purchaseorder where purchaseorderid=?", array($recordId));
+		$result = $adb->pquery('SELECT postatus FROM vtiger_purchaseorder where purchaseorderid=?', array($recordId));
 		$poStatus = $adb->query_result($result, 0, 'postatus');
 		if ($poStatus == 'Received Shipment') {
 			deductProductsFromStock($recordId);
@@ -234,11 +232,11 @@ class PurchaseOrder extends CRMEntity {
 				'vtiger_purchaseordercf', 'vtiger_vendorRelPurchaseOrder', 'vtiger_pobillads',
 				'vtiger_poshipads', 'vtiger_inventoryproductrelPurchaseOrder', 'vtiger_contactdetailsPurchaseOrder'));
 		$query = parent::generateReportsSecQuery($module, $secmodule, $queryPlanner, $type, $where_condition);
-		if ($queryPlanner->requireTable("vtiger_pobillads")) {
-			$query .= " left join vtiger_pobillads on vtiger_purchaseorder.purchaseorderid=vtiger_pobillads.pobilladdressid";
+		if ($queryPlanner->requireTable('vtiger_pobillads')) {
+			$query .= ' left join vtiger_pobillads on vtiger_purchaseorder.purchaseorderid=vtiger_pobillads.pobilladdressid';
 		}
-		if ($queryPlanner->requireTable("vtiger_poshipads")) {
-			$query .= " left join vtiger_poshipads on vtiger_purchaseorder.purchaseorderid=vtiger_poshipads.poshipaddressid";
+		if ($queryPlanner->requireTable('vtiger_poshipads')) {
+			$query .= ' left join vtiger_poshipads on vtiger_purchaseorder.purchaseorderid=vtiger_poshipads.poshipaddressid';
 		}
 		if ($queryPlanner->requireTable("vtiger_currency_info$secmodule")) {
 			$query .= " left join vtiger_currency_info as vtiger_currency_info$secmodule on vtiger_currency_info$secmodule.id = vtiger_purchaseorder.currency_id";
@@ -293,19 +291,20 @@ class PurchaseOrder extends CRMEntity {
 
 	// Function to unlink an entity with given Id from another entity
 	public function unlinkRelationship($id, $return_module, $return_id) {
+		global $adb;
 		if (empty($return_module) || empty($return_id)) {
 			return;
 		}
 
 		if ($return_module == 'Vendors') {
 			$sql_req ='UPDATE vtiger_crmentity SET deleted = 1 WHERE crmid= ?';
-			$this->db->pquery($sql_req, array($id));
+			$adb->pquery($sql_req, array($id));
 		} elseif ($return_module == 'Contacts') {
 			$sql_req ='UPDATE vtiger_purchaseorder SET contactid=? WHERE purchaseorderid = ?';
-			$this->db->pquery($sql_req, array(null, $id));
+			$adb->pquery($sql_req, array(null, $id));
 		} elseif ($return_module == 'Documents') {
 			$sql = 'DELETE FROM vtiger_senotesrel WHERE crmid=? AND notesid=?';
-			$this->db->pquery($sql, array($id, $return_id));
+			$adb->pquery($sql, array($id, $return_id));
 		} else {
 			parent::unlinkRelationship($id, $return_module, $return_id);
 		}

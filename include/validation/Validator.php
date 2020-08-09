@@ -1102,8 +1102,11 @@ class Validator
             }
             $values[] = $param;
         }
-
-        $this->_errors[$field][] = vsprintf($message, $values);
+        if (substr($message, 0, 13)=='%%%CONFIRM%%%' || substr($message, 0, 14)=='%%%FUNCTION%%%') {
+            $this->_errors[$field][] = $message;
+        } else {
+            $this->_errors[$field][] = vsprintf($message, $values);
+        }
     }
 
     /**

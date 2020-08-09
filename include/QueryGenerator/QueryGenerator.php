@@ -379,13 +379,29 @@ class QueryGenerator {
 
 	public function getDefaultCustomViewQuery() {
 		$customView = new CustomView($this->module);
+		$unsetit = false;
+		if (empty($_REQUEST['action'])) {
+			$unsetit = true;
+			$_REQUEST['action'] = 'ListView';
+		}
 		$viewId = $customView->getViewId($this->module);
+		if ($unsetit) {
+			$_REQUEST['action']='';
+		}
 		return $this->getCustomViewQueryById($viewId);
 	}
 
 	public function initForDefaultCustomView() {
 		$customView = new CustomView($this->module);
+		$unsetit = false;
+		if (empty($_REQUEST['action'])) {
+			$unsetit = true;
+			$_REQUEST['action'] = 'ListView';
+		}
 		$viewId = $customView->getViewId($this->module);
+		if ($unsetit) {
+			$_REQUEST['action']='';
+		}
 		$this->initForCustomViewById($viewId);
 	}
 
@@ -897,7 +913,7 @@ class QueryGenerator {
 						continue;
 					}
 					foreach ($this->referenceFieldInfoList as $fld => $mods) {
-						if ($fld=='modifiedby' || $fld == 'assigned_user_id') {
+						if ($fld=='modifiedby' || $fld == 'assigned_user_id' || $moduleFields[$fld]->getUIType()=='77') { // we should add support for uitype 77
 							continue;
 						}
 						if (!empty($this->referenceFields[$fld][$fldmod][$fldname])) {
