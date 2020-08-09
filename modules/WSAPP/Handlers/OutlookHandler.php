@@ -68,8 +68,8 @@ class OutlookHandler extends SyncHandler {
 		if ($module == 'Events' || $module =='Calendar') {
 			$startTime = $record['start_time'];
 			$endTime = $record['end_time'];
-			$dateFormat = "Y-m-d";
-			$timeFormat = "H:i:s";
+			$dateFormat = 'Y-m-d';
+			$timeFormat = 'H:i:s';
 
 			$record['date_start'] = date($dateFormat, strtotime($startTime));
 			$record['time_start'] = date($timeFormat, strtotime($startTime));
@@ -89,10 +89,10 @@ class OutlookHandler extends SyncHandler {
 
 	private function convertRecordToNativeFormat($module, $record) {
 		if ($module == 'Events') {
-			$record['start_time'] = $record['date_start']." ".$record['time_start'];
-			$record['end_time'] = $record['due_date']." ".$record['time_end'];
+			$record['start_time'] = $record['date_start'].' '.$record['time_start'];
+			$record['end_time'] = $record['due_date'].' '.$record['time_end'];
 		} elseif ($module == 'Calendar') {
-				$dformat = "Y-m-d H:i:s";
+				$dformat = 'Y-m-d H:i:s';
 
 			$record['start_time'] = date($dformat, strtotime($record['date_start']));
 			$record['end_time'] = date($dformat, strtotime($record['due_date']));
@@ -117,11 +117,11 @@ class OutlookHandler extends SyncHandler {
 		$syncMapFormatElements['update'] = array();
 
 		foreach ($elements as $olElement) {
-			if ($olElement['mode']=="create") {
+			if ($olElement['mode']=='create') {
 				$syncMapFormatElements['create'][$olElement['clientid']] = $olElement['values'];
-			} elseif ($olElement['mode']=="update") {
+			} elseif ($olElement['mode']=='update') {
 				$syncMapFormatElements['update'][$olElement['clientid']] = $olElement['values'];
-			} elseif ($olElement['mode']=="delete") {
+			} elseif ($olElement['mode']=='delete') {
 				$syncMapFormatElements['delete'][] = $olElement['clientid'];
 			}
 		}

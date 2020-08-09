@@ -84,9 +84,9 @@ function wsapp_convertDateTimeToTimeZone($dateTime, $toTimeZone) {
 	global $default_timezone;
 	$time_zone = $default_timezone;
 	$source_time = date_default_timezone_set($time_zone);
-	$sourceDate = date("Y-m-d H:i:s");
+	$sourceDate = date('Y-m-d H:i:s');
 	$dest_time = date_default_timezone_set($toTimeZone);
-	$destinationDate = date("Y-m-d H:i:s");
+	$destinationDate = date('Y-m-d H:i:s');
 	$diff = (strtotime($destinationDate)-strtotime($sourceDate));
 	$givenTimeInSec = strtotime($dateTime);
 	$modifiedTimeSec = $givenTimeInSec+$diff;
@@ -101,7 +101,7 @@ function wsapp_checkIfRecordsAssignToUser($recordsIds, $userIds) {
 	}
 	$userIds = (array)$userIds;
 	$db = PearDatabase::getInstance();
-	$query = 'SELECT crmid FROM vtiger_crmentity where crmid IN ('.generateQuestionMarks($recordsIds).") and smownerid in (".generateQuestionMarks($userIds).")";
+	$query = 'SELECT crmid FROM vtiger_crmentity where crmid IN ('.generateQuestionMarks($recordsIds).') and smownerid in ('.generateQuestionMarks($userIds).')';
 	$params = $recordsIds;
 	foreach ($userIds as $userId) {
 		$params[] = $userId;
@@ -128,7 +128,7 @@ function wsapp_getAppKey($appName) {
 function wsapp_getAppSyncType($appKey) {
 	$db = PearDatabase::getInstance();
 	$result = $db->pquery('SELECT type FROM vtiger_wsapp WHERE appkey=?', array($appKey));
-	$syncType="";
+	$syncType='';
 	if ($db->num_rows($result)>0) {
 		$syncType = $db->query_result($result, 0, 'type');
 	}

@@ -10,20 +10,8 @@
  * Vicus are Copyright (C) Vicus. All Rights Reserved.
  * *******************************************************************************/
 
-/*******************************************************************************
- * Vicus eBusiness Solutions Version Control
- * @package 	NL-Dutch
- * Description	Dutch language pack for vtiger CRM version 5.3.x
- * @author	$Author: luuk $
- * @version 	$Revision: 1.1 $ $Date: 2011/11/13 14:09:29 $
- * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/WSAPP/language/nl_nl.lang.php,v $
- * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
- * @license	vtiger CRM Public License Version 1.0 (by definition)
- ********************************************************************************/
-
 $mod_strings = array (
 'WSAPP' => 'WSAPP',
 'WSAPPInfo' => 'This extension enhances the application with a set of internal functions to sync with Outlook. It has no visible functionality so you can eliminate it from the menu.',
 );
-
 ?>

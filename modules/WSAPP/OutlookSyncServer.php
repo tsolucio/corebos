@@ -144,7 +144,7 @@ class OutlookSyncServer extends SyncServer {
 			$response['updated'][] = $responseRecord;
 		}
 		foreach ($result['deleted'] as $clientRecordId => $record) {
-			parent::idmap_put($appid, $record, $clientRecordId, "", "", $serverAppId, $this->delete);
+			parent::idmap_put($appid, $record, $clientRecordId, '', '', $serverAppId, $this->delete);
 			$response['deleted'][] = $clientRecordId;
 		}
 		$queueRecordIds = array();

@@ -260,7 +260,7 @@ class SyncServer {
 		$appid = $this->appid_with_key($key);
 
 		if (empty($appid)) {
-			throw new WebServiceException('WSAPP04', "Access restricted to app");
+			throw new WebServiceException('WSAPP04', 'Access restricted to app');
 		}
 
 		$records = (array)$element;
@@ -345,7 +345,7 @@ class SyncServer {
 			$response['updated'][] = $responseRecord;
 		}
 		foreach ($result['deleted'] as $clientRecordId => $record) {
-			$this->idmap_put($appid, $record, $clientRecordId, "", "", $serverAppId, $this->delete);
+			$this->idmap_put($appid, $record, $clientRecordId, '', '', $serverAppId, $this->delete);
 			$response['deleted'][] = $clientRecordId;
 		}
 		$queueRecordIds = array();

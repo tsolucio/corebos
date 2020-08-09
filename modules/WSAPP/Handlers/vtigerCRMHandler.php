@@ -67,7 +67,7 @@ class vtigerCRMHandler extends SyncHandler {
 		$crmIds = array();
 
 		foreach ($updatedRecords as $index => $record) {
-			$webserviceRecordId = $record["id"];
+			$webserviceRecordId = $record['id'];
 			$recordIdComp = vtws_getIdComponents($webserviceRecordId);
 			$crmIds[] = $recordIdComp[1];
 		}
@@ -84,7 +84,7 @@ class vtigerCRMHandler extends SyncHandler {
 			}
 		}
 		foreach ($updatedRecords as $index => $record) {
-			$webserviceRecordId = $record["id"];
+			$webserviceRecordId = $record['id'];
 			$recordIdComp = vtws_getIdComponents($webserviceRecordId);
 			try {
 				if (in_array($recordIdComp[1], $assignedRecordIds)) {
@@ -148,7 +148,7 @@ class vtigerCRMHandler extends SyncHandler {
 		$nativeCreatedRecords = array();
 		foreach ($syncCreatedRecords as $index => $createRecord) {
 			if (empty($createRecord['assigned_user_id'])) {
-				$createRecord['assigned_user_id'] = vtws_getWebserviceEntityId("Users", $this->user->id);
+				$createRecord['assigned_user_id'] = vtws_getWebserviceEntityId('Users', $this->user->id);
 			}
 			$nativeCreatedRecords[$index] = $createRecord;
 		}
