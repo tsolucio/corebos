@@ -240,11 +240,112 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				</div>
 			</td>
 		{elseif $uitype eq 3 || $uitype eq 4}<!-- Non Editable field, only configured value will be loaded -->
-			<td id="td_{$fldname}" width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right><font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small">{/if}</td>
-			<td id="td_val_{$fldname}" width=30% align=left class="dvtCellInfo"><span style='display:none;' id='{$fldname}_hidden'></span><input readonly type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" {if $MODE eq 'edit'} value="{$fldvalue}" {else} value="{$MOD_SEQ_ID}" {/if} class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></td>
-		{elseif $uitype eq 11 || $uitype eq 1 || $uitype eq 13 || $uitype eq 7}
+				<td id="td_{$fldname}" width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right><font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small">{/if}</td>
+				<td id="td_val_{$fldname}" width=30% align=left class="dvtCellInfo"><span style='display:none;' id='{$fldname}_hidden'></span><input readonly type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" {if $MODE eq 'edit'} value="{$fldvalue}" {else} value="{$MOD_SEQ_ID}" {/if} class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></td>
+		{elseif $uitype eq 11 || $uitype eq 13 || $uitype eq 7}
 			<td id="td_{$fldname}" width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right><font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}</td>
 			<td id="td_val_{$fldname}" width=30% align=left class="dvtCellInfo"><span style='display:none;' id='{$fldname}_hidden'></span><input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></td>
+		{elseif $uitype eq 1}
+			<td id="td_{$fldname}" width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right><font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}</td>
+			<td id="td_val_{$fldname}" width=30% align=left class="dvtCellInfo">
+			<span style='display:none;' id='{$fldname}_hidden'></span>
+			<div style="position: relative;">
+			<input 
+				type="text" 
+				tabindex="{$vt_tab}"
+				name="{$fldname}"
+				id ="{$fldname}" 
+				value="{$fldvalue}" 
+				class='slds-input slds-combobox__input' 
+				onFocus="this.className='slds-input slds-combobox__input slds-has-focus'" 
+				onBlur="this.className='slds-input slds-combobox__input'"
+				autocomplete="off"
+				role="textbox"
+				style="margin-top: 3px; margin-bottom: 3px;"
+				data-autocomp='{$maindata["extendedfieldinfo"]["combobox"]|@json_encode}'>&nbsp;
+
+				{if ( isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['combobox']) )}
+					{assign var="combo_values" value=$maindata['extendedfieldinfo']['combobox'] }
+					<script>
+						function combobox(inpval, arr) {ldelim}
+							var focus;
+							inpval.addEventListener("input", function(e) {ldelim}
+								var first, second, i, val = this.value;
+								closeAllLists();
+								if (!val) {ldelim} return false;{rdelim}
+								focusing = -1;
+								first = document.createElement("div");
+								first.setAttribute("listbox-unique-id", this.id + "");
+								first.setAttribute("class", "autocomplete-items");
+								first.setAttribute("role", "listbox");
+								this.parentNode.appendChild(first);
+								for (i = 0; i < arr.length; i++) {ldelim}
+									if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {ldelim}
+									second = document.createElement("ul");
+									second.setAttribute("class", "slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target");
+									second.setAttribute("role", "presentation");
+									second.style.width="100%";
+									second.style.cursor="pointer";
+									second.innerHTML = "<p style='color: #4ea62b;'>" + arr[i].substr(0, val.length) + "</p>";
+									second.innerHTML += arr[i].substr(val.length);
+									second.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+									second.addEventListener("click", function(e) {ldelim}
+										inpval.value = this.getElementsByTagName("input")[0].value;
+										closeAllLists();
+									{rdelim});
+									first.appendChild(second);
+									{rdelim}
+								{rdelim}
+							{rdelim});
+							inpval.addEventListener("keydown", function(e) {ldelim}
+								var x = document.getElementById(this.id + "");
+								if (x) x = x.getElementsByTagName("div");
+								if (e.keyCode == 50) {ldelim}
+									focusing++;
+									addActive(x);
+								{rdelim} else if (e.keyCode == 48) {ldelim}
+									focusing--;
+									addActive(x);
+								{rdelim} else if (e.keyCode == 23) {ldelim}
+									e.preventDefault();
+									if (focusing > -1) {ldelim}
+									if (x) x[focusing].click();
+									{rdelim}
+								{rdelim}
+							{rdelim});
+							function addActive(x) {ldelim}
+								if (!x) return false;
+								removeActive(x);
+								if (focusing >= x.length) focusing = 0;
+								if (focusing < 0) focusing = (x.length - 1);
+								x[focusing].classList.add("autocomplete-active");
+							{rdelim}
+							function removeActive(x) {ldelim}
+								for (var i = 0; i < x.length; i++) {ldelim}
+								x[i].classList.remove("autocomplete-active");
+								{rdelim}
+							{rdelim}
+							function closeAllLists(elmnt) {ldelim}
+								var x = document.getElementsByClassName("autocomplete-items");
+								for (var i = 0; i < x.length; i++) {ldelim}
+								if (elmnt != x[i] && elmnt != inpval) {ldelim}
+									x[i].parentNode.removeChild(x[i]);
+								{rdelim}
+								{rdelim}
+							{rdelim}
+							document.addEventListener("click", function (e) {ldelim}
+								closeAllLists(e.target);
+							{rdelim});
+						{rdelim}
+							{foreach from=$combo_values key=k item=v}
+								var valLists = ["{$v}"];
+								combobox(document.getElementById("{$fldname}"), valLists);
+							{/foreach}
+
+					</script>									
+				{/if}
+				</div>
+			</td>
 		{elseif $uitype eq 9}
 			<td id="td_{$fldname}" width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right><font color="red">{$mandatory_field}</font>{$usefldlabel} {$APP.COVERED_PERCENTAGE} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}</td>
 			<td id="td_val_{$fldname}" width=30% align=left class="dvtCellInfo"><span style='display:none;' id='{$fldname}_hidden'></span><input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></td>
