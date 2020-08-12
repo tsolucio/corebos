@@ -2188,8 +2188,7 @@ function decideFilePath() {
 		$filepath.='/';
 	}
 
-	$saveStrategy = GlobalVariable::getVariable('Application_Storage_SaveStrategy', 'dates');
-	switch (strtolower($saveStrategy)) {
+	switch (strtolower(GlobalVariable::getVariable('Application_Storage_SaveStrategy', 'dates'))) {
 		case 'crmid':
 			// CRMID in folder
 			if (isset($_REQUEST['return_id'])) {
@@ -2203,7 +2202,7 @@ function decideFilePath() {
 				//create new folder
 				mkdir($filepath);
 			}
-			$log->debug("Strategy CRMID filepath=\"$filepath\"");
+			$log->debug('Strategy CRMID filepath: '.$filepath);
 			break;
 		case 'dates':
 		default:
