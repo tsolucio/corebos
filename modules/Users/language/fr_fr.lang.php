@@ -710,6 +710,7 @@ $mod_strings = array (
 		'vcylinder'=>'Cylindre Vertical',
 		'LBL_SEND_EMAIL_TO_SENDER' => 'Envoyer copie de l\'email',
 		'PASSWORD REQUIREMENTS' => 'CRITÈRES DE MOT DE PASSE',
+		'PASSWORD REQUIREMENTS NOT MET' => 'PASSWORD REQUIREMENTS NOT MET',
 		'REQUIRED' => 'OBLIGATOIRE',
 		'Min. 8 characters' => 'Min. 8 caractères',
 		'Contains3of4' => 'LE MOT DE PASSE DOIT RESPECTER AU MOINS 3 DES 4 CONDITIONS SUIVANTES',
