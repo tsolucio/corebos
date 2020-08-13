@@ -826,10 +826,10 @@ function cloneMoreInfoNode(newRowId) {
 		domflddisp.innerHTML = '';
 	}
 	for (i=0; i<moreInfoFields.length; i++) {
-		var domfld = document.getElementById(moreInfoFields[i]+ newRowId);
+		domfld = document.getElementById(moreInfoFields[i]+ newRowId);
 		if (domfld) {
 			domfld.value = '';
-			var domflddisp = document.getElementById(moreInfoFields[i]+ newRowId+ '_display');
+			domflddisp = document.getElementById(moreInfoFields[i]+ newRowId+ '_display');
 			if (domflddisp) {
 				domflddisp.value = '';
 			}
@@ -1493,10 +1493,10 @@ function InventorySelectAll(mod, image_pth) {
 		},
 
 
-		preventSubmit: function(e) {
+		preventSubmit: function (e) {
 			if (e.keyCode === 13) {
-				e.preventDefault()
-				e.stopPropagation()
+				e.preventDefault();
+				e.stopPropagation();
 			}
 		},
 
@@ -1505,7 +1505,7 @@ function InventorySelectAll(mod, image_pth) {
 				dE = document.EditView,
 				accid = h().acc === '' ? 0 : h().acc,
 				ctoid = h().con === '' ? 0 : h().con,
-				recid = dE === undefined ? 0 : dE.record.value
+				recid = dE === undefined ? 0 : dE.record.value,
 				_this = this,
 				r = new XMLHttpRequest();
 
@@ -1809,20 +1809,12 @@ function InventorySelectAll(mod, image_pth) {
 			}
 		},
 
-		retrieveProductTaxes: function(id) {
-			fetch(`index.php?
-					module=Products
-					&action=ProductsAjax
-					&file=InventoryTaxAjax
-					&productid=${id}
-					&ctoid=0
-					&accid=0
-					&vndid=0
-					&returnarray=1`)
-			.then((r) => {return r.json()})
-			.then((data) => {
-				this.parent.actualizeLineTaxes(data);
-			})
+		retrieveProductTaxes: function (id) {
+			fetch(`index.php?module=Products&action=ProductsAjax&file=InventoryTaxAjax&productid=${id}&ctoid=0&accid=0&vndid=0&returnarray=1`)
+				.then(r => r.json())
+				.then((data) => {
+					this.parent.actualizeLineTaxes(data);
+				});
 		},
 
 		/*
