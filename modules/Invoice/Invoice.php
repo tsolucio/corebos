@@ -101,6 +101,9 @@ class Invoice extends CRMEntity {
 
 	public function save_module($module) {
 		global $updateInventoryProductRel_deduct_stock, $adb;
+		if ($this->HasDirectImageField) {
+			$this->insertIntoAttachment($this->id, $module);
+		}
 		$updateInventoryProductRel_deduct_stock = true;
 		if ($this->mode=='edit' && !empty($this->record_status) && $this->record_status!=$this->column_fields['invoicestatus'] && $this->column_fields['invoicestatus']!='') {
 			$this->registerInventoryHistory();
