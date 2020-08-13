@@ -321,6 +321,10 @@ table {
   border-collapse: initial;
 }
 
+symbol#search {
+  border: none;
+}
+
 /* Override general classes */
 .cblds-width_auto {
   width: auto !important;
