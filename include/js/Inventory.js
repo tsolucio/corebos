@@ -1442,9 +1442,11 @@ function InventorySelectAll(mod, image_pth) {
 	 * @param {element}:	Root 'InventoryBlock' Object
 	 * @param {function}: 	Callback for custom implementations. Will receive an object with
 	 *						the root autocomplete node and all the result data
-	 */
-	function ProductAutocomplete(el, parent, callback) {
+		* @param {object}		The root inventoryblock object
+		*/
+	function ProductAutocomplete(el, parent, callback, rootObj) {
 		this.el = el,
+		this.root = rootObj,
 		this.parent = parent,
 		this.specialKeys = ['up', 'down', 'esc', 'enter'],
 		this.threshold = 3,
@@ -1458,6 +1460,7 @@ function InventorySelectAll(mod, image_pth) {
 		this.callback = typeof callback === 'function' ? callback : false;
 
 		/* Instance listeners */
+		this.utils.on(this.input, 'keydown', this.preventSubmit, this);
 		this.utils.on(this.input, 'keyup', this.throttle, this);
 		this.utils.on(this.input, 'blur', this.delayedClear, this);
 	}
@@ -1489,29 +1492,41 @@ function InventorySelectAll(mod, image_pth) {
 			window.setTimeout(this.trigger(e), 100);
 		},
 
+
+		preventSubmit: function(e) {
+			if (e.keyCode === 13) {
+				e.preventDefault()
+				e.stopPropagation()
+			}
+		},
+
 		getResults: function (term) {
-			var accid = 0;
-			if (document.EditView.account_id != undefined) {
-				accid = document.EditView.account_id.value;
-			} else if (document.EditView.accid != undefined) {
-				accid = document.EditView.accid.value;
-			}
-			var ctoid = 0;
-			if (document.EditView.contact_id != undefined) {
-				ctoid = document.EditView.contact_id.value;
-			} else if (document.EditView.ctoid != undefined) {
-				ctoid = document.EditView.ctoid.value;
-			}
-			var _this = this;
-			var r = new XMLHttpRequest();
+			var h = getAccConFieldnames,
+				dE = document.EditView,
+				accid = h().acc === '' ? 0 : h().acc,
+				ctoid = h().con === '' ? 0 : h().con,
+				recid = dE === undefined ? 0 : dE.record.value
+				_this = this,
+				r = new XMLHttpRequest();
+
 			r.onreadystatechange = function () {
 				if (this.readyState == 4 && this.status == 200) {
 					var res = JSON.parse(this.responseText);
 					_this.processResult(res);
 				}
 			};
-			r.open('GET', this.source + this.input.value + '&accid='+accid+ '&ctoid='+ctoid+'&modid='+document.EditView.record.value, true);
+			r.open('GET', this.source + this.input.value + '&accid='+accid+ '&ctoid='+ctoid+'&modid='+recid, true);
 			r.send();
+
+			// Helper to keep organized
+			function getAccConFieldnames() {
+				let fldNames = {'acc': '', 'con': ''};
+				if (document.EditView !== undefined) {
+					fldNames.acc = document.EditView.account_id !== undefined ? 'account_id' : 'accid';
+					fldNames.con = document.EditView.contact_id !== undefined ? 'contact_id' : 'ctoid';
+				}
+				return fldNames;
+			}
 		},
 
 		processResult: function (res) {
@@ -1766,33 +1781,48 @@ function InventorySelectAll(mod, image_pth) {
 					usageunits = this.root.el.getElementsByClassName(this.root.lineClass + '--usageunit');
 
 				this.utils.getFirstClass(lineNode, 'cbds-product-line-image').src = result.obj.meta.image;
-				var currency = document.getElementById('inventory_currency').value;
-				if (result.obj.pricing.multicurrency[currency] != undefined) {
-					this.parent.setField('unit_price', result.obj.pricing.multicurrency[currency].actual_price);
-				} else {
-					this.parent.setField('unit_price', result.obj.pricing.unit_price);
-				}
+				this.parent.setField('listprice', result.obj.pricing.unit_price);
 				this.parent.setField('cost_price', result.obj.pricing.unit_cost);
-				this.parent.setField('qtyinstock', result.obj.logistics.qty_in_stock);
-				this.parent.setField('qtyindemand', result.obj.logistics.curr_ordered);
+				this.parent.setField('qtyinstock', result.obj.logistics.qtyinstock);
+				this.parent.setField('qtyindemand', result.obj.logistics.qtyindemand);
 
-				this.utils.getFirstClass(lineNode, this.root.linePrefix + '--comments').innerHTML = result.obj.meta.comments;
+				this.utils.getFirstClass(lineNode, this.root.inputPrefix + '--description').innerHTML = result.obj.meta.comments;
 				this.input.value = result.obj.meta.name;
 
 				for (var i = usageunits.length - 1; i >= 0; i--) {
 					usageunits[i].innerHTML = result.obj.logistics.usageunit;
 				}
 
+				this.parent.productId = result.obj.meta.id;
+				this.parent.divisible = result.obj.meta.divisible == 0 ? false : true;
+
 				this.parent.expandExtra();
 				this.parent.calcLine();
 
 				this.utils.getFirstClass(this.utils.findUp(this.el, '.' + this.root.lineClass), this.root.inputPrefix + '--quantity').focus();
+				this.retrieveProductTaxes(result.obj.meta.id);
 			} else {
 				this.callback({
 					'result': result.obj,
 					'source': this.el
 				});
 			}
+		},
+
+		retrieveProductTaxes: function(id) {
+			fetch(`index.php?
+					module=Products
+					&action=ProductsAjax
+					&file=InventoryTaxAjax
+					&productid=${id}
+					&ctoid=0
+					&accid=0
+					&vndid=0
+					&returnarray=1`)
+			.then((r) => {return r.json()})
+			.then((data) => {
+				this.parent.actualizeLineTaxes(data);
+			})
 		},
 
 		/*
