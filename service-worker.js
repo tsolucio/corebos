@@ -7805,7 +7805,7 @@ precacheAndRoute([{
   "revision": "60718c9174ed712f0c6a240e34adec1d"
 }, {
   "url": "include/LD/assets/styles/override_lds.css",
-  "revision": "acd3370a2580b31984e0c0fae9dc7bbd"
+  "revision": "b3967bf88098b3f6df34bb1dee951a60"
 }, {
   "url": "include/LD/assets/styles/salesforce-lightning-design-system_touch.css",
   "revision": "aae0a7ead47c69e71bbd2ae18e509560"
@@ -9314,13 +9314,13 @@ precacheAndRoute([{
   "revision": "c5247a4c8b5ebf37d5cd55c6621f38c5"
 }, {
   "url": "include/js/general.js",
-  "revision": "9ac0648c40f8db7235041bfeb991c793"
+  "revision": "1bc16d93ec51a16988f9e28818e21b5c"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "c121669fa3b0ab4ce7088a82107ca79c"
 }, {
   "url": "include/js/Inventory.js",
-  "revision": "b6085d025f23d2f0a1e5d28efbae2206"
+  "revision": "bdeeae848ea75e4bc7ef388bf7493fce"
 }, {
   "url": "include/js/it_it.lang.js",
   "revision": "c3bbfb85c6fed21d25e984c263fa780a"
