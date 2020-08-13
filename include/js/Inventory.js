@@ -1420,10 +1420,10 @@ function InventorySelectAll(mod, image_pth) {
 }
 
 /****
-* ProductAutocomplete
-* @author: MajorLabel <info@majorlabel.nl>
-* @license VPL
-*/
+	* ProductAutocomplete
+	* @author: MajorLabel <info@majorlabel.nl>
+	* @license VPL
+	*/
 (function productautocompleteModule(factory) {
 
 	if (typeof define === 'function' && define.amd) {
@@ -1826,17 +1826,17 @@ function InventorySelectAll(mod, image_pth) {
 		},
 
 		/*
-			* Class utilities
-			*/
+		 * Class utilities
+		 */
 		utils : {
 			/*
-				* Util: 'findUp'
-				* Returns the first element up the DOM that matches the search
-				*
-				* @param: element: 	the node to start from
-				* @param: searchterm: 	Can be a class (prefix with '.'), ID (prefix with '#')
-				*						or an attribute (default when no prefix)
-				*/
+			 * Util: 'findUp'
+			 * Returns the first element up the DOM that matches the search
+			 *
+			 * @param: element: 	the node to start from
+			 * @param: searchterm: 	Can be a class (prefix with '.'), ID (prefix with '#')
+			 *						or an attribute (default when no prefix)
+			 */
 			findUp : function (element, searchterm) {
 				element = element.children[0] != undefined ? element.children[0] : element; // Include the current element
 				while (element = element.parentElement) {
@@ -1851,25 +1851,25 @@ function InventorySelectAll(mod, image_pth) {
 				}
 			},
 			/*
-				* Util: 'getFirstClass'
-				* Returns the first element from the root that matches
-				* the classname
-				*
-				* @param: root: 		the node to start from
-				* @param: className: 	The classname to search for
-				*/
+			 * Util: 'getFirstClass'
+			 * Returns the first element from the root that matches
+			 * the classname
+			 *
+			 * @param: root: 		the node to start from
+			 * @param: className: 	The classname to search for
+			 */
 			getFirstClass: function (root, className) {
 				return root.getElementsByClassName(className)[0] != undefined ? root.getElementsByClassName(className)[0] : {};
 			},
 			/*
-				* Util: 'on'
-				* Adds an event listener
-				*
-				* @param: el: 			The node to attach the listener to
-				* @param: type: 		The type of event
-				* @param: func: 		The function to perform
-				* @param: context: 	The context to bind the listener to
-				*/
+			 * Util: 'on'
+			 * Adds an event listener
+			 *
+			 * @param: el: 			The node to attach the listener to
+			 * @param: type: 		The type of event
+			 * @param: func: 		The function to perform
+			 * @param: context: 	The context to bind the listener to
+			 */
 			on: function (el, type, func, context) {
 				try {
 					el.addEventListener(type, func.bind(context));
@@ -1878,43 +1878,43 @@ function InventorySelectAll(mod, image_pth) {
 				}
 			},
 			/*
-				* Util: 'off'
-				* Removes an event listener
-				*
-				* @param: el: 			The node to remove the listener from
-				* @param: type: 		The type of event
-				* @param: func: 		The function to remove
-				*/
+			 * Util: 'off'
+			 * Removes an event listener
+			 *
+			 * @param: el: 			The node to remove the listener from
+			 * @param: type: 		The type of event
+			 * @param: func: 		The function to remove
+			 */
 			off: function (el, type, func) {
 				el.removeEventListener(type, func);
 			},
 			/*
-				* Util: 'insertAfter'
-				* Inserts a new node after the given
-				*
-				* @param: referenceNode: 	The node to insert after
-				* @param: newNode: 		The node to insert
-				*/
+			 * Util: 'insertAfter'
+			 * Inserts a new node after the given
+			 *
+			 * @param: referenceNode: 	The node to insert after
+			 * @param: newNode: 		The node to insert
+			 */
 			insertAfter: function (referenceNode, newNode) {
 				referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 			},
 			/*
-				* Util: 'deductPerc'
-				* deducts a percentage from a number
-				*
-				* @param: base: 		The base '100%' number
-				* @param: percentage: 	The percentage to deduct
-				*/
+			 * Util: 'deductPerc'
+			 * deducts a percentage from a number
+			 *
+			 * @param: base: 		The base '100%' number
+			 * @param: percentage: 	The percentage to deduct
+			 */
 			deductPerc: function (base, percentage) {
 				return (base * (1 - (percentage / 100)));
 			},
 			/*
-				* Util: 'getPerc'
-				* Returns a percentage of a base no.
-				*
-				* @param: base: 		The base '100%' number
-				* @param: percentage: 	The percentage to return
-				*/
+			 * Util: 'getPerc'
+			 * Returns a percentage of a base no.
+			 *
+			 * @param: base: 		The base '100%' number
+			 * @param: percentage: 	The percentage to return
+			 */
 			getPerc: function (base, percentage) {
 				return base * (percentage / 100);
 			}
@@ -1922,8 +1922,8 @@ function InventorySelectAll(mod, image_pth) {
 	};
 
 	/**
-		 * Section with factory tools
-		 */
+	  * Section with factory tools
+	  */
 	function _createEl(elType, className, inner) {
 		var el = document.createElement(elType);
 		if (className.indexOf(' ') == -1 && className != undefined && className != '') {
@@ -1947,8 +1947,8 @@ function InventorySelectAll(mod, image_pth) {
 	}
 
 	/*
-		* Globals
-		*/
+	 * Globals
+	 */
 	window.keycodeMap = {
 		38: 'up',
 		40: 'down',
@@ -1960,8 +1960,8 @@ function InventorySelectAll(mod, image_pth) {
 	};
 
 	/*
-		* Export
-		*/
+	 * Export
+	 */
 	return ProductAutocomplete;
 });
 
