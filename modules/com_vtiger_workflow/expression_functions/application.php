@@ -86,10 +86,18 @@ function __cb_getcrudmode($arr) {
 }
 
 function __cb_getfromcontext($arr) {
-	if (empty($arr[1]->WorkflowContext[$arr[0]])) {
-		return '';
+	$str_arr = explode(',', $arr[0]);
+	foreach ($str_arr as $vname) {
+		if (empty($arr[1]->WorkflowContext[$vname])) {
+			$variableArr[$vname] = '';
+		} else {
+			$variableArr[$vname] = $arr[1]->WorkflowContext[$vname];
+		}
+	}
+	if (count($variableArr)==1) {
+		return $variableArr[$arr[0]];
 	} else {
-		return $arr[1]->WorkflowContext[$arr[0]];
+		return json_encode($variableArr);
 	}
 }
 
