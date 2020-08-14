@@ -1460,7 +1460,7 @@ function InventorySelectAll(mod, image_pth) {
 		this.callback = typeof callback === 'function' ? callback : false;
 
 		/* Instance listeners */
-		this.utils.on(this.input, 'keydown', this.preventSubmit, this);
+		window.addEventListener('keyup', this.preventSubmit.bind(this), true);
 		this.utils.on(this.input, 'keyup', this.throttle, this);
 		this.utils.on(this.input, 'blur', this.delayedClear, this);
 	}
@@ -1494,9 +1494,12 @@ function InventorySelectAll(mod, image_pth) {
 
 
 		preventSubmit: function (e) {
-			if (e.keyCode === 13) {
+			if (e.keyCode == 13 && this.active) {
 				e.preventDefault();
+				e.stopImmediatePropagation();
 				e.stopPropagation();
+				this.selectCurrentlyHighlighted();
+				return false;
 			}
 		},
 
@@ -1702,8 +1705,7 @@ function InventorySelectAll(mod, image_pth) {
 					this.selectNext();
 					break;
 				case 'enter':
-					var current = this.getCurrentSelectedResult();
-					this.select(this.currentResults[current]);
+					this.selectCurrentlyHighlighted();
 					break;
 				case 'esc':
 					this.clear();
@@ -1768,6 +1770,11 @@ function InventorySelectAll(mod, image_pth) {
 					return i;
 				}
 			}
+		},
+
+		selectCurrentlyHighlighted() {
+			var current = this.getCurrentSelectedResult();
+			this.select(this.currentResults[current]);
 		},
 
 		select: function (result) {
