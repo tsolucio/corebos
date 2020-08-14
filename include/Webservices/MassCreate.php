@@ -20,34 +20,45 @@ function MassCreate($elements, $user) {
     $failedCreates = [];
     $successCreates = [];
     
-    $recordsWithReference = [];
-    $recordsWithoutReference = [];
-    foreach ($elements as $element) {
-        if ($element['referenceId'] != "") {
-            $recordsWithReference[] = $element;
-        } else {
-            $recordsWithoutReference[] = $element;
-        }
-    }
-    $records = array_merge($recordsWithReference,$recordsWithoutReference);
-
-    foreach ($records as $record) {
-        foreach ($record['element'] as $key => $value) {
-            if (strpos($value, '@{ref') !== false) {
+    $records = array();
+    foreach ($elements as &$element) {
+        foreach ($element['element'] as $key => $value) {
+            if (strpos($value, '@{') !== false) {
                 $start = '@{';
                 $end = '.';
                 preg_match_all("/$start([a-zA-Z0-9_]*)$end/", $value, $match);
-                $reference = $match[1];
-                $id = getRecordId($records, $reference);
-                $record['element'][$key] = $id;
+                if (isset($match[1][0])) {
+                    $reference = $match[1][0];
+                    list($index, $array) = mcGetReferenceRecord($elements, $reference);
+                    if ($index && $array) {
+                        // Process Inner Reference
+                        // mcGetReferenceRecord($array);
+                        $records[] = $array;
+                        unset($elements[$index]);
+                    }
+                }
+            }
+        }
+        $records[] = $element;
+    }
+
+    foreach ($records as &$record) {
+        foreach ($record['element'] as $key => $value) {
+            if (strpos($value, '@{') !== false) {
+                $start = '@{';
+                $end = '.';
+                preg_match_all("/$start([a-zA-Z0-9_]*)$end/", $value, $match);
+                if (isset($match[1][0])) {
+                    $reference = $match[1][0];
+                    $id = mcGetRecordId($records, $reference);
+                    $record['element'][$key] = $id;
+                }
             }
         }
         try {
             $rec = vtws_create($record['elementType'],$record['element'], $user);
             $record['id'] = $rec['id'];
-            //unset($record);
             $successCreates[] = $rec;
-        break;
         } catch (Exception $e) {
 			$failedCreates[] = [
 				'record' => $record,
@@ -63,15 +74,35 @@ function MassCreate($elements, $user) {
 	];
 }
 
-function getRecordId($arr, $reference) {
+function mcGetRecordId($arr, $reference) {
     $id = "";
     foreach ($arr as $ar) {
         if ($ar['referenceId'] == $reference) {
-            if (isset($ar[id])) {
+            if (isset($ar['id'])) {
                 $id = $ar['id'];
             }
             break;
         }
     }
     return $id;
+}
+
+function mcGetReferenceRecord($arr, $reference) {
+    $array = array();
+    $index = null;
+    for ($x = 0; $x < count($arr); $x++) {
+        if (isset($arr[$x])) {
+            if ($arr[$x]['referenceId'] == $reference) {
+                $array = $arr[$x];
+                $index = $x;
+                break;
+            }
+        }
+    }
+    return array($index, $array);
+}
+
+function mcProcessInnerReference($arr) {
+    // To do
+    // Process inner references
 }
