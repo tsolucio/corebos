@@ -330,10 +330,11 @@ class InventoryDetails extends CRMEntity {
 				break;
 		}
 		// Delete all InventoryDetails where related with $related_to
+		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$res_to_del = $adb->pquery(
 			'SELECT inventorydetailsid
 				FROM vtiger_inventorydetails
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_inventorydetails.inventorydetailsid
+				INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_inventorydetails.inventorydetailsid
 				WHERE deleted = 0 AND related_to = ? and lineitem_id not in (select lineitem_id from vtiger_inventoryproductrel where id=?)',
 			array($related_to,$related_to)
 		);
@@ -359,7 +360,7 @@ class InventoryDetails extends CRMEntity {
 			$rec_exists = $adb->pquery(
 				'SELECT inventorydetailsid
 					FROM vtiger_inventorydetails
-					INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_inventorydetails.inventorydetailsid
+					INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_inventorydetails.inventorydetailsid
 					WHERE deleted = 0 AND lineitem_id = ?',
 				array($row['lineitem_id'])
 			);
@@ -385,7 +386,7 @@ class InventoryDetails extends CRMEntity {
 					case 'Invoice':
 						if (array_key_exists('rel_lineitem_id'.$requestindex, $_REQUEST)) {
 							$rel_invdet = $_REQUEST['rel_lineitem_id'.$requestindex];
-							$sel_rel_rec_exists = 'SELECT inventorydetailsid FROM vtiger_inventorydetails INNER JOIN vtiger_crmentity 
+							$sel_rel_rec_exists = 'SELECT inventorydetailsid FROM vtiger_inventorydetails INNER JOIN '.$crmEntityTable.' 
 							ON vtiger_crmentity.crmid = vtiger_inventorydetails.inventorydetailsid WHERE deleted = 0 AND lineitem_id = ?';
 							$rel_rec_exists = $adb->pquery($sel_rel_rec_exists, array($rel_invdet));
 							if ($adb->num_rows($rel_rec_exists)>0) {
@@ -464,7 +465,7 @@ class InventoryDetails extends CRMEntity {
 					}
 			}
 			if ($check_invoiced) {
-				$sel_invoiced = 'SELECT COUNT(*) as remaining FROM vtiger_inventorydetails INNER JOIN vtiger_crmentity 
+				$sel_invoiced = 'SELECT COUNT(*) as remaining FROM vtiger_inventorydetails INNER JOIN '.$crmEntityTable.' 
 					ON vtiger_crmentity.crmid = vtiger_inventorydetails.inventorydetailsid WHERE deleted = 0 AND related_to = ? AND remaining_units > 0';
 				$rel_invoiced = $adb->pquery($sel_invoiced, array($soid));
 				$remaining = $adb->query_result($rel_invoiced, 0, 'remaining');

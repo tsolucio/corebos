@@ -160,8 +160,9 @@ class GlobalVariable extends CRMEntity {
 				$modulelist = array_map('trim', explode('|##|', $this->column_fields['module_list']));
 			}
 			$inmodule = $this->column_fields['in_module_list'];
+			$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 			$existmod = $adb->pquery('select module_list,in_module_list from vtiger_globalvariable
-				left join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_globalvariable.globalvariableid
+				left join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_globalvariable.globalvariableid
 				where gvname=? and deleted=0 and mandatory=1 and globalvariableid!=?', array($this->column_fields['gvname'],$recordid));
 			$num = $adb->num_rows($existmod);
 			$all_modules=vtws_getModuleNameList();
@@ -339,8 +340,9 @@ class GlobalVariable extends CRMEntity {
 			self::$validationinfo[] = 'variable found in cache';
 			return $value;
 		}
+		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$value='';
-		$join = ' FROM vtiger_globalvariable INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid ';
+		$join = ' FROM vtiger_globalvariable INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid ';
 		$select = 'select * '.$join;
 		$where = ' where vtiger_crmentity.deleted=0 and gvname=? ';
 
@@ -436,9 +438,10 @@ class GlobalVariable extends CRMEntity {
 		if (empty($module)) {
 			$module = $currentModule;
 		}
+		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$sql = 'SELECT default_check,mandatory,module_list,in_module_list,smownerid
 			FROM vtiger_globalvariable
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid
+			INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid
 			WHERE vtiger_crmentity.deleted=0 and globalvariableid=?';
 		$rs = $adb->pquery($sql, array($var));
 		if (!$rs || $adb->num_rows($rs)==0) {
@@ -454,7 +457,7 @@ class GlobalVariable extends CRMEntity {
 
 		$sql = 'SELECT 1
 			FROM vtiger_globalvariable
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid
+			INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid
 			INNER JOIN vtiger_user2role ON vtiger_user2role.userid=?
 			WHERE globalvariableid=? and '."concat(rolegv, ' ') like concat('%', vtiger_user2role.roleid, ' %')";
 		$rs = $adb->pquery($sql, array($gvuserid, $var));

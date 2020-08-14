@@ -320,12 +320,12 @@ class Documents extends CRMEntity {
 		//To get the Permitted fields query and the permitted fields list
 		$sql = getPermittedFieldsQuery("Documents", "detail_view");
 		$fields_list = getFieldsListFromQuery($sql);
-
+		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$query = "SELECT $fields_list, foldername, filename,
 					concat(path,vtiger_attachments.attachmentsid,'_',filename) as storagename,
 					concat(account_no,' ',accountname) as account, concat(contact_no,' ',firstname,' ',lastname) as contact,vtiger_senotesrel.crmid as relatedid
 				FROM vtiger_notes
-				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_notes.notesid
+				inner join ".$crmEntityTable." on vtiger_crmentity.crmid=vtiger_notes.notesid
 				left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_notes.notesid
 				left join vtiger_attachments on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
 				LEFT JOIN vtiger_attachmentsfolder on vtiger_notes.folderid=vtiger_attachmentsfolder.folderid
@@ -568,11 +568,12 @@ class Documents extends CRMEntity {
 				"&select=enable&form=EditView&form_submit=false&recordid=$id','test','width=640,height=602,resizable=0,scrollbars=0');\"" .
 				" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 		}
+		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$query = "select case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name,
 				crm2.crmid, crm2.setype
 				from vtiger_notes
 				inner join vtiger_senotesrel on vtiger_senotesrel.notesid= vtiger_notes.notesid
-				inner join vtiger_crmentity on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
+				inner join ".$crmEntityTable." on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
 				inner join vtiger_crmentity crm2 on crm2.crmid=vtiger_senotesrel.crmid and crm2.deleted=0
 				left join vtiger_groups on vtiger_groups.groupid = crm2.smownerid
 				left join vtiger_users on vtiger_users.id = crm2.smownerid
@@ -582,7 +583,7 @@ class Documents extends CRMEntity {
 				crm2.crmid, crm2.setype
 				from vtiger_notes
 				inner join vtiger_senotesrel on vtiger_senotesrel.crmid= vtiger_notes.notesid
-				inner join vtiger_crmentity on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
+				inner join ".$crmEntityTable." on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
 				inner join vtiger_crmentity crm2 on crm2.crmid=vtiger_senotesrel.notesid and crm2.deleted=0
 				left join vtiger_groups on vtiger_groups.groupid = crm2.smownerid
 				left join vtiger_users on vtiger_users.id = crm2.smownerid

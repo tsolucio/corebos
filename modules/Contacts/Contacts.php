@@ -127,9 +127,10 @@ class Contacts extends CRMEntity {
 	public function getCount($user_name) {
 		global $log;
 		$log->debug('> getCount '.$user_name);
+		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$query = 'select count(*)
 			from vtiger_contactdetails
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_contactdetails.contactid
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_contactdetails.contactid
 			inner join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
 			where user_name=? and vtiger_crmentity.deleted=0';
 		$result = $this->db->pquery($query, array($user_name), true, 'Error retrieving contacts count');
@@ -753,11 +754,11 @@ class Contacts extends CRMEntity {
 		//To get the Permitted fields query and the permitted fields list
 		$sql = getPermittedFieldsQuery('Contacts', 'detail_view');
 		$fields_list = getFieldsListFromQuery($sql);
-
+		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$query = "SELECT vtiger_contactdetails.salutation as 'Salutation',$fields_list,
 				case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name
 			FROM vtiger_contactdetails
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_contactdetails.contactid
+			inner join ".$crmEntityTable." on vtiger_crmentity.crmid=vtiger_contactdetails.contactid
 			LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid=vtiger_users.id and vtiger_users.status='Active'
 			LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'
 			LEFT JOIN vtiger_account on vtiger_contactdetails.accountid=vtiger_account.accountid
@@ -837,11 +838,12 @@ class Contacts extends CRMEntity {
 			$groupidlist .= ','.$adb->query_result($gresult, $j, 'groupid');
 		}
 		//crm-now changed query to search in groups too and make only owned contacts available
+		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$query = 'select vtiger_contactdetails.lastname,vtiger_contactdetails.firstname, vtiger_contactdetails.contactid, vtiger_contactdetails.salutation,
 				vtiger_contactdetails.email,vtiger_contactdetails.title, vtiger_contactdetails.mobile,vtiger_account.accountname,
 				vtiger_account.accountid as accountid
 			from vtiger_contactdetails
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_contactdetails.contactid
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_contactdetails.contactid
 			inner join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
 			left join vtiger_account on vtiger_account.accountid=vtiger_contactdetails.accountid
 			left join vtiger_contactaddress on vtiger_contactaddress.contactaddressid=vtiger_contactdetails.contactid
@@ -910,9 +912,10 @@ class Contacts extends CRMEntity {
 		}
 
 		$log->debug('> get_contactsforol '.$user_name);
+		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$query = 'select vtiger_contactdetails.contactid as id, '.implode(',', $column_table_lists)
 			." from vtiger_contactdetails
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_contactdetails.contactid
+			inner join ".$crmEntityTable." on vtiger_crmentity.crmid=vtiger_contactdetails.contactid
 			inner join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
 			left join vtiger_customerdetails on vtiger_customerdetails.customerid=vtiger_contactdetails.contactid
 			left join vtiger_account on vtiger_account.accountid=vtiger_contactdetails.accountid
@@ -1343,8 +1346,9 @@ class Contacts extends CRMEntity {
 	public function __getParentContacts($id, &$parent_contacts, &$encountered_contacts) {
 		global $log, $adb;
 		$log->debug('> __getParentContacts '.$id.','.print_r($parent_contacts, true));
+		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$query = 'SELECT reportsto FROM vtiger_contactdetails '
-			.' INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid'
+			.' INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid'
 			.' WHERE vtiger_crmentity.deleted = 0 and vtiger_contactdetails.contactid = ?';
 		$params = array($id);
 		$res = $adb->pquery($query, $params);
@@ -1359,7 +1363,7 @@ class Contacts extends CRMEntity {
 		$query = 'SELECT vtiger_contactdetails.*, ' .
 			" CASE when (vtiger_users.user_name not like '') THEN vtiger_users.user_name ELSE vtiger_groups.groupname END as user_name " .
 			' FROM vtiger_contactdetails' .
-			' INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid' .
+			' INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid' .
 			' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid' .
 			' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid' .
 			' WHERE vtiger_crmentity.deleted = 0 and vtiger_contactdetails.contactid = ?';
@@ -1400,10 +1404,11 @@ class Contacts extends CRMEntity {
 	public function __getChildContacts($id, &$child_contacts, $depth) {
 		global $log, $adb;
 		$log->debug('> __getChildContacts '.$id.','.print_r($child_contacts, true).",$depth");
+		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$query = 'SELECT vtiger_contactdetails.*, '
 			." CASE when (vtiger_users.user_name not like '') THEN vtiger_users.user_name ELSE vtiger_groups.groupname END as user_name "
 			.' FROM vtiger_contactdetails'
-			.' INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid'
+			.' INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid'
 			.' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid'
 			.' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid'
 			.' WHERE vtiger_crmentity.deleted = 0 and reportsto = ?';
