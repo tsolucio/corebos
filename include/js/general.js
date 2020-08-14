@@ -2621,6 +2621,7 @@ function set_return_account_details(fromlink, fldname, MODULE, ID) {
 function open_contact_account_details(fromlink, fldname, MODULE, ID) {
 	if (fldname == 'account_id') {
 		var baseURL = 'index.php?module=Accounts&action=Popup&popuptype=specific_contact_account_address&form=TasksEditView&form_submit=false&fromlink=';
+		baseURL += (fromlink=='qcreate') ? 'qcreate' : '';
 		var WindowSettings = 'width=680,height=602,resizable=0,scrollbars=0,top=150,left=200';
 		let winname = (fromlink=='qcreate') ? 'vtlibui10qc' : 'vtlibui10';
 		window.open(baseURL, winname, WindowSettings);
