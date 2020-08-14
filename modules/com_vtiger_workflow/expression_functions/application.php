@@ -87,6 +87,7 @@ function __cb_getcrudmode($arr) {
 
 function __cb_getfromcontext($arr) {
 	$str_arr = explode(',', $arr[0]);
+	$variableArr = array();
 	foreach ($str_arr as $vname) {
 		if (empty($arr[1]->WorkflowContext[$vname])) {
 			$variableArr[$vname] = '';
