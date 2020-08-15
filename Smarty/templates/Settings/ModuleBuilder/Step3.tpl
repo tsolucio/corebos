@@ -46,7 +46,7 @@
                                                                         </svg>
                                                                     </span>
                                                                 </span>
-                                                                LIST OF FIELDS
+                                                                {$MOD.LBL_MB_LISTFIELDS}
                                                             </span>
                                                         </h1>
                                                     </div>

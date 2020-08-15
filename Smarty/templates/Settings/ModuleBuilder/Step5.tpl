@@ -37,15 +37,15 @@
                                                 <div class="slds-page-header__name">
                                                     <div class="slds-page-header__name-title">
                                                         <h1>
-                                                            <span class="slds-page-header__title slds-truncate" title="Conditions">
+                                                            <span class="slds-page-header__title slds-truncate" title="{$MOD.LBL_CONDITIONS}">
                                                                 <span class="slds-tabs__left-icon">
-                                                                    <span class="slds-icon_container" title="Conditions">
+                                                                    <span class="slds-icon_container" title="{$MOD.LBL_CONDITIONS}">
                                                                         <svg class="slds-icon slds-icon_small" style="color:green;" aria-hidden="true">
                                                                             <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#list"></use>
                                                                         </svg>
                                                                     </span>
                                                                 </span>
-                                                                LIST OF RELATED LISTS
+                                                                {$MOD.LBL_MB_LISTRLISTS}
                                                             </span>
                                                         </h1>
                                                     </div>

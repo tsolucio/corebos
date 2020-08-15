@@ -45,7 +45,7 @@
                                                                         </svg>
                                                                     </span>
                                                                 </span>
-                                                                LIST OF VIEWS
+                                                                {$MOD.LBL_MB_LISTVIEWS}
                                                             </span>
                                                         </h1>
                                                     </div>

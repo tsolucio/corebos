@@ -14,7 +14,7 @@
             <div class="slds-media__body slds-m-top_x-small">
                 <div class="slds-media">
                     <div class="slds-setup-assistant__step-summary-content slds-media__body">
-                        <h3 class="slds-setup-assistant__step-summary-title slds-text-heading_small">Finish Module</h3>
+                        <h3 class="slds-setup-assistant__step-summary-title slds-text-heading_small">{$MOD.LBL_MB_FINISHMODULE}</h3>
                         <div class="slds-form-element">
                             <ol class="slds-setup-assistant">
                               <li class="slds-setup-assistant__item">
@@ -29,11 +29,11 @@
                                             </svg>
                                           </div>
                                           <div class="slds-progress-ring__content">
-                                            <span class="slds-icon_container slds-icon-utility-check" title="Complete">
+                                            <span class="slds-icon_container slds-icon-utility-check" title="{$MOD.LBL_MB_COMPLETE}">
                                               <svg class="slds-icon" aria-hidden="true">
                                                 <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
                                               </svg>
-                                              <span class="slds-assistive-text">Complete</span>
+                                              <span class="slds-assistive-text">{$MOD.LBL_MB_COMPLETE}</span>
                                             </span>
                                           </div>
                                         </div>
@@ -41,7 +41,7 @@
                                       <div class="slds-media__body slds-m-top_x-small">
                                         <div class="slds-media">
                                           <div class="slds-setup-assistant__step-summary-content slds-media__body">
-                                            <h3 class="slds-setup-assistant__step-summary-title slds-text-heading_small">Module Info</h3>
+                                            <h3 class="slds-setup-assistant__step-summary-title slds-text-heading_small">{$MOD.LBL_MB_MODULEINFO}</h3>
                                             <div id="info"></div>
                                           </div>
                                           <div class="slds-media__figure slds-media__figure_reverse">
@@ -49,7 +49,7 @@
                                                 <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
                                                     <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
                                                 </svg>
-                                                Edit Info
+                                                {$MOD.LBL_MB_EDITINFO}
                                             </button>
                                           </div>
                                         </div>
@@ -70,11 +70,11 @@
                                             </svg>
                                           </div>
                                           <div class="slds-progress-ring__content">
-                                            <span class="slds-icon_container slds-icon-utility-check" title="Complete">
+                                            <span class="slds-icon_container slds-icon-utility-check" title="{$MOD.LBL_MB_COMPLETE}">
                                               <svg class="slds-icon" aria-hidden="true">
                                                 <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
                                               </svg>
-                                              <span class="slds-assistive-text">Complete</span>
+                                              <span class="slds-assistive-text">{$MOD.LBL_MB_COMPLETE}</span>
                                             </span>
                                           </div>
                                         </div>
@@ -82,7 +82,7 @@
                                       <div class="slds-media__body slds-m-top_x-small">
                                         <div class="slds-media">
                                           <div class="slds-setup-assistant__step-summary-content slds-media__body">
-                                            <h3 class="slds-setup-assistant__step-summary-title slds-text-heading_small">Module Blocks</h3>
+                                            <h3 class="slds-setup-assistant__step-summary-title slds-text-heading_small">{$MOD.LBL_MB_MODULEBLOCKS}</h3>
                                             <div id="blocks"></div>
                                           </div>
                                           <div class="slds-media__figure slds-media__figure_reverse">
@@ -90,7 +90,7 @@
                                                 <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
                                                     <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
                                                 </svg>
-                                                Edit Blocks
+                                                {$MOD.LBL_MB_EDITBLOCKS}
                                             </button>
                                           </div>
                                         </div>
@@ -111,11 +111,11 @@
                                             </svg>
                                           </div>
                                           <div class="slds-progress-ring__content">
-                                            <span class="slds-icon_container slds-icon-utility-check" title="Complete">
+                                            <span class="slds-icon_container slds-icon-utility-check" title="{$MOD.LBL_MB_COMPLETE}">
                                               <svg class="slds-icon" aria-hidden="true">
                                                 <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
                                               </svg>
-                                              <span class="slds-assistive-text">Complete</span>
+                                              <span class="slds-assistive-text">{$MOD.LBL_MB_COMPLETE}</span>
                                             </span>
                                           </div>
                                         </div>
@@ -123,7 +123,7 @@
                                       <div class="slds-media__body slds-m-top_x-small">
                                         <div class="slds-media">
                                           <div class="slds-setup-assistant__step-summary-content slds-media__body">
-                                            <h3 class="slds-setup-assistant__step-summary-title slds-text-heading_small">Module Fields</h3>
+                                            <h3 class="slds-setup-assistant__step-summary-title slds-text-heading_small">{$MOD.LBL_MB_MODULEFIELDS}</h3>
                                             <div id="fields"></div>
                                           </div>
                                           <div class="slds-media__figure slds-media__figure_reverse">
@@ -131,7 +131,7 @@
                                                 <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
                                                     <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
                                                 </svg>
-                                                Edit Fields
+                                                {$MOD.LBL_MB_EDITFIELDS}
                                             </button>
                                           </div>
                                         </div>
@@ -152,11 +152,11 @@
                                             </svg>
                                           </div>
                                           <div class="slds-progress-ring__content">
-                                            <span class="slds-icon_container slds-icon-utility-check" title="Complete">
+                                            <span class="slds-icon_container slds-icon-utility-check" title="{$MOD.LBL_MB_COMPLETE}">
                                               <svg class="slds-icon" aria-hidden="true">
                                                 <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
                                               </svg>
-                                              <span class="slds-assistive-text">Complete</span>
+                                              <span class="slds-assistive-text">{$MOD.LBL_MB_COMPLETE}</span>
                                             </span>
                                           </div>
                                         </div>
@@ -164,7 +164,7 @@
                                       <div class="slds-media__body slds-m-top_x-small">
                                         <div class="slds-media">
                                           <div class="slds-setup-assistant__step-summary-content slds-media__body">
-                                            <h3 class="slds-setup-assistant__step-summary-title slds-text-heading_small">Module Custom Views</h3>
+                                            <h3 class="slds-setup-assistant__step-summary-title slds-text-heading_small">{$MOD.LBL_MB_MODULECVS}</h3>
                                             <div id="views"></div>
                                           </div>
                                           <div class="slds-media__figure slds-media__figure_reverse">
@@ -172,7 +172,7 @@
                                                 <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
                                                     <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
                                                 </svg>
-                                                Edit Custom Views
+                                                {$MOD.LBL_MB_EDITCVS}
                                             </button>
                                           </div>
                                         </div>
@@ -193,11 +193,11 @@
                                             </svg>
                                           </div>
                                           <div class="slds-progress-ring__content">
-                                            <span class="slds-icon_container slds-icon-utility-check" title="Complete">
+                                            <span class="slds-icon_container slds-icon-utility-check" title="{$MOD.LBL_MB_COMPLETE}">
                                               <svg class="slds-icon" aria-hidden="true">
                                                 <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
                                               </svg>
-                                              <span class="slds-assistive-text">Complete</span>
+                                              <span class="slds-assistive-text">{$MOD.LBL_MB_COMPLETE}</span>
                                             </span>
                                           </div>
                                         </div>
@@ -205,7 +205,7 @@
                                       <div class="slds-media__body slds-m-top_x-small">
                                         <div class="slds-media">
                                           <div class="slds-setup-assistant__step-summary-content slds-media__body">
-                                            <h3 class="slds-setup-assistant__step-summary-title slds-text-heading_small">Module Related Lists</h3>
+                                            <h3 class="slds-setup-assistant__step-summary-title slds-text-heading_small">{$MOD.LBL_MB_MODULERELATEDLISTS}</h3>
                                             <div id="lists"></div>
                                           </div>
                                           <div class="slds-media__figure slds-media__figure_reverse">
@@ -213,7 +213,7 @@
                                                 <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
                                                     <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
                                                 </svg>
-                                                Edit Related Lists
+                                                {$MOD.LBL_MB_EDITRLS}
                                             </button>
                                           </div>
                                         </div>
@@ -230,7 +230,7 @@
                             <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
                                 <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
                             </svg>
-                            Generate Module
+                            {$MOD.LBL_MB_GENERATEMODULE}
                         </button>
                     </div>
                 </div>
