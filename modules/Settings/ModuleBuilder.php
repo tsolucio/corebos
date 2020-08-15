@@ -25,8 +25,9 @@ if (isset($_REQUEST['module_settings']) && $_REQUEST['module_settings'] == 'true
 	}
 } else {
 	require_once 'Smarty_setup.php';
-	global $mod_strings,$app_strings,$theme, $current_user;
+	global $mod_strings, $app_strings, $theme, $current_user, $current_language;
 	$smarty = new vtigerCRM_Smarty;
+	$smarty->assign('LANGUAGE', $current_language);
 	$smarty->assign('MOD', $mod_strings);
 	$smarty->assign('APP', $app_strings);
 	$smarty->assign('MODULE', $currentModule);
