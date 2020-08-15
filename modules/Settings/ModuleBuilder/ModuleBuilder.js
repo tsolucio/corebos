@@ -9,18 +9,19 @@ let listGridInstance;
 
 const mb = {
 	/**
-     * Save values for each step
-     * @param {number} step
-     * @param {boolean} forward
-     * @param {string} buttonid
-     */
+	 * Save values for each step
+	 * @param {number} step
+	 * @param {boolean} forward
+	 * @param {string} buttonid
+	 */
 	SaveModule: (step, forward = true, buttonid = '') => {
+		var data = {};
 		if (step == 1) {
 			const modulename = mb.loadElement('modulename');
 			const modulelabel = mb.loadElement('modulelabel');
 			const parentmenu = mb.loadElement('parentmenu');
 			const moduleicon = mb.loadElement('moduleicon');
-			var data = {
+			data = {
 				modulename: modulename,
 				modulelabel: modulelabel,
 				parentmenu: parentmenu,
@@ -34,7 +35,7 @@ const mb = {
 			for (var i = 1; i <= number_block; i++) {
 				blocks_label[i] = mb.loadElement(`blocks_label_${i}`);
 			}
-			var data = {
+			data = {
 				blocks: blocks_label,
 				step: step
 			};
@@ -73,12 +74,12 @@ const mb = {
 					sequence: number_field,
 				};
 				fields.push(fieldValues);
-				var data = {
+				data = {
 					fields: fields,
 					step: step
 				};
 			} else {
-				var data = {
+				data = {
 					fields: [],
 					step: step
 				};
@@ -109,7 +110,7 @@ const mb = {
 				};
 				customViews.push(customObj);
 			}
-			var data = {
+			data = {
 				customview: customViews,
 				step: step
 			};
@@ -127,7 +128,7 @@ const mb = {
 				};
 				relatedLists[i] = lists;
 			}
-			var data = {
+			data = {
 				relatedlists: relatedLists,
 				step: step
 			};
@@ -184,7 +185,7 @@ const mb = {
 
 	getRadioValue: (name) => {
 		var ele = document.getElementsByName(name);
-		for (i = 0; i < ele.length; i++) {
+		for (var i = 0; i < ele.length; i++) {
 			if (ele[i].checked) {
 				return ele[i].value;
 			}
@@ -192,11 +193,11 @@ const mb = {
 		return '';
 	},
 	/**
-     * Go to back step
-     * @param {number} step
-     * @param {boolean} mod
-     * @param {number} moduleid
-     */
+	 * Go to back step
+	 * @param {number} step
+	 * @param {boolean} mod
+	 * @param {number} moduleid
+	 */
 	backTo: (step, mod = false, moduleid = 0) => {
 		let thisStep = step + 1;
 		//remove `finish module` step
@@ -217,8 +218,8 @@ const mb = {
 			}
 			mb.loadElement('step-' + step, true).style.display = '';
 		} else {
-		    mb.loadElement('step-' + thisStep, true).style.display = 'none';
-		    mb.loadElement('step-' + step, true).style.display = '';
+			mb.loadElement('step-' + thisStep, true).style.display = 'none';
+			mb.loadElement('step-' + step, true).style.display = '';
 		}
 		if (step == 1) {
 			mb.removeElement('loadFields', true);
@@ -263,11 +264,11 @@ const mb = {
 					const id = res[i].blocksid+'-block';
 					let removeBtn = `
 						<div class="slds-button-group" role="group">
-						  	<button onclick='mb.removeBlock("${id}")' class="slds-button slds-button_icon slds-button_icon-border-filled" aria-pressed="false">
-						    	<svg class="slds-button__icon" aria-hidden="true">
-						      		<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
-						    	</svg>
-						  	</button>
+							<button onclick='mb.removeBlock("${id}")' class="slds-button slds-button_icon slds-button_icon-border-filled" aria-pressed="false">
+								<svg class="slds-button__icon" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+								</svg>
+							</button>
 						</div>`;
 					if (res[i].blocks_label.toUpperCase() == 'LBL_MODULEBLOCK_INFORMATION' || res[i].blocks_label.toUpperCase() == 'LBL_CUSTOM_INFORMATION' || res[i].blocks_label.toUpperCase() == 'LBL_DESCRIPTION_INFORMATION') {
 						removeBtn = '';
@@ -311,12 +312,12 @@ const mb = {
 						name: 'action',
 						header: 'action',
 						renderer: {
-        					type: ActionRender,
-        					options: {
-        						type: 'Fields'
-        					}
-        				},
-        				width: 50
+							type: ActionRender,
+							options: {
+								type: 'Fields'
+							}
+						},
+						width: 50
 					}
 				],
 				data: {
@@ -367,12 +368,12 @@ const mb = {
 						name: 'action',
 						header: 'action',
 						renderer: {
-        					type: ActionRender,
-        					options: {
-        						type: 'CustomView'
-        					}
-        				},
-        				width: 50
+							type: ActionRender,
+							options: {
+								type: 'CustomView'
+							}
+						},
+						width: 50
 					}
 				],
 				data: {
@@ -427,12 +428,12 @@ const mb = {
 						name: 'action',
 						header: 'action',
 						renderer: {
-        					type: ActionRender,
-        					options: {
-        						type: 'RelatedLists'
-        					}
-        				},
-        				width: 50
+							type: ActionRender,
+							options: {
+								type: 'RelatedLists'
+							}
+						},
+						width: 50
 					}
 				],
 				data: {
@@ -462,9 +463,9 @@ const mb = {
 		}
 	},
 	/**
-     * Update progress bar in real time for step 1
-     * @param {number} step
-     */
+	 * Update progress bar in real time for step 1
+	 * @param {number} step
+	 */
 	updateProgress: (step) => {
 		if (step == 1) {
 			const data = {
@@ -495,9 +496,9 @@ const mb = {
 		}
 	},
 	/**
-     * Show module icons in step 1
-     * @param {string} iconReference
-     */
+	 * Show module icons in step 1
+	 * @param {string} iconReference
+	 */
 	showModuleIcon: (iconReference) => {
 		let newicon = iconReference.split('-');
 		let spn = mb.loadElement('moduleiconshow', true);
@@ -511,8 +512,8 @@ const mb = {
 		svg.setAttribute('xlink:href', 'include/LD/assets/icons/'+newicon[0]+'-sprite/svg/symbols.svg#'+newicon[1]);
 	},
 	/**
-     * generate Default Blocks
-     */
+	 * generate Default Blocks
+	 */
 	generateDefaultBlocks: () => {
 		mb.removeElement('blocks_inputs', true);
 		mb.loadElement('number_block').value = '1';
@@ -530,8 +531,8 @@ const mb = {
 		});
 	},
 	/**
-     * Generate block input for step 2
-     */
+	 * Generate block input for step 2
+	 */
 	generateInput: (type = '') => {
 		if (type == 'default') {
 			const MODULEBLOCK = document.createElement('input');
@@ -564,8 +565,8 @@ const mb = {
 		}
 	},
 	/**
-     * Generate field input for step 3
-     */
+	 * Generate field input for step 3
+	 */
 	generateFields: () => {
 		const number_field = mb.autoIncrementIds('number_field');
 		const table = mb.getTable('Table');
@@ -588,18 +589,18 @@ const mb = {
 			fieldTemplate += `
 			<div class="slds-col" style="${inStyle.style}" id="${inStyle.id}">
 				<div class="slds-form-element">
-				  <label class="slds-form-element__label" for="${textfields[i]}_${number_field}">
-				  	<abbr class="slds-required" title="required">* </abbr> ${textfields[i]}
-				  </label>
-				  <div class="slds-form-element__control">
-				    <input type="text" name="${textfields[i]}_${number_field}" id="${textfields[i]}_${number_field}" class="slds-input" />
-				  </div>
+				<label class="slds-form-element__label" for="${textfields[i]}_${number_field}">
+					<abbr class="slds-required" title="required">* </abbr> ${textfields[i]}
+				</label>
+				<div class="slds-form-element__control">
+					<input type="text" name="${textfields[i]}_${number_field}" id="${textfields[i]}_${number_field}" class="slds-input" />
+				</div>
 				</div>
 			</div>`;
 		}
 		fieldTemplate += '</div><div class="slds-grid slds-gutters">';
 
-		for (var i = 0; i < fieldtypes.length; i++) {
+		for (i = 0; i < fieldtypes.length; i++) {
 			const type = fieldtypes[i].type;
 			const values = fieldtypes[i].values;
 			const selecttype = document.createElement('select');
@@ -609,17 +610,17 @@ const mb = {
 			fieldTemplate += `
 			<div class="slds-col">
 				<div class="slds-form-element">
-				  	<label class="slds-form-element__label" for="${type}_${number_field}">${type}</label>
-				  	<div class="slds-form-element__control">
-				    	<div class="slds-select_container">
-				      		<select class="slds-select" id="${type}_${number_field}" onchange="${inStyle.onchange}">`;
+					<label class="slds-form-element__label" for="${type}_${number_field}">${type}</label>
+					<div class="slds-form-element__control">
+						<div class="slds-select_container">
+							<select class="slds-select" id="${type}_${number_field}" onchange="${inStyle.onchange}">`;
 			for (let j in values) {
 				fieldTemplate += `<option value="${j}">${values[j]}</option>`;
 			}
 			fieldTemplate += `
 							</select>
-				    	</div>
-				  	</div>
+						</div>
+					</div>
 				</div>
 			</div>
 			`;
@@ -630,15 +631,15 @@ const mb = {
 			fieldTemplate += `
 			<div class="slds-col"><br>
 				<div class="slds-form-element">
-				  	<div class="slds-form-element__control">
-				   	 	<div class="slds-checkbox">
-				      		<input type="checkbox" name="${checkboxFields[i].type}_${number_field}" id="${checkboxFields[i].type}_${number_field}"/>
-				      		<label class="slds-checkbox__label" for="${checkboxFields[i].type}_${number_field}">
-				        		<span class="slds-checkbox_faux"></span>
-				        		<span class="slds-form-element__label">${checkboxFields[i].value}</span>
-				      		</label>
-				    	</div>
-				  	</div>
+					<div class="slds-form-element__control">
+						<div class="slds-checkbox">
+							<input type="checkbox" name="${checkboxFields[i].type}_${number_field}" id="${checkboxFields[i].type}_${number_field}"/>
+							<label class="slds-checkbox__label" for="${checkboxFields[i].type}_${number_field}">
+								<span class="slds-checkbox_faux"></span>
+								<span class="slds-form-element__label">${checkboxFields[i].value}</span>
+							</label>
+						</div>
+					</div>
 				</div><br>
 			</div>
 			`;
@@ -646,9 +647,9 @@ const mb = {
 		//create save button for each field
 		fieldTemplate += `</div>
 			<button class="slds-button slds-button_neutral slds-button_dual-stateful" id="save-btn-for-field-${number_field}" onclick="mb.SaveModule(3, false, this.id)">
-			    <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
-			      <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
-			    </svg>${mod_alert_arr.LBL_MB_SAVEFIELD}
+				<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
+				</svg>${mod_alert_arr.LBL_MB_SAVEFIELD}
 			</button>
 		`;
 		mb.loadElement(`fields_inputs_${number_field}`, true).innerHTML = fieldTemplate;
@@ -662,8 +663,8 @@ const mb = {
 		}
 	},
 	/**
-     * Open tui grid to list all modules
-     */
+	 * Open tui grid to list all modules
+	 */
 	openModal: () => {
 		dataGridInstance = new tuiGrid({
 			el: document.getElementById('moduleListView'),
@@ -716,17 +717,17 @@ const mb = {
 		mb.loadElement('moduleListsModal', true).style.display = '';
 	},
 	/**
-     * Close modal
-     */
+	 * Close modal
+	 */
 	closeModal: () => {
 		mb.loadElement('moduleListsModal', true).style.display = 'none';
 		document.getElementById('moduleListView').innerHTML = '';
 	},
 	/**
-     * Load all blocks for specific module in step 3
-     * @param {Table} tableInstance - Current table instance
-     * @param {number} number_field
-     */
+	 * Load all blocks for specific module in step 3
+	 * @param {Table} tableInstance - Current table instance
+	 * @param {number} number_field
+	 */
 	loadBlocks: (tableInstance, number_field) => {
 		jQuery.ajax({
 			method: 'GET',
@@ -737,40 +738,40 @@ const mb = {
 			row.setAttribute('id', `for-field-${number_field}`);
 			let template = `
 				<fieldset class="slds-form-element">
-				  <legend class="slds-form-element__legend slds-form-element__label">${mod_alert_arr.LBL_CHOOSEFIELDBLOCK} ${number_field}</legend>
-				  <div class="slds-form-element__control">
-				    <div class="slds-radio_button-group">`;
+				<legend class="slds-form-element__legend slds-form-element__label">${mod_alert_arr.LBL_CHOOSEFIELDBLOCK} ${number_field}</legend>
+				<div class="slds-form-element__control">
+					<div class="slds-radio_button-group">`;
 			let checked = '';
 			for (var i = 0; i < res.length; i++) {
 				if (i === 0) {
 					checked = 'checked';
 					template += `
-				      <span class="slds-button slds-radio_button">
-				        <input type="radio" ${checked} name="select-for-field-${number_field}" id="radio-${res[i].blocksid}${number_field}" value="${res[i].blocksid}" />
-				        <label class="slds-radio_button__label" for="radio-${res[i].blocksid}${number_field}">
-				          <span class="slds-radio_faux">${res[i].blocks_label}</span>
-				        </label>
-				      </span>`;
+					<span class="slds-button slds-radio_button">
+						<input type="radio" ${checked} name="select-for-field-${number_field}" id="radio-${res[i].blocksid}${number_field}" value="${res[i].blocksid}" />
+						<label class="slds-radio_button__label" for="radio-${res[i].blocksid}${number_field}">
+						<span class="slds-radio_faux">${res[i].blocks_label}</span>
+						</label>
+					</span>`;
 				} else {
 					template += `
-				      <span class="slds-button slds-radio_button">
-				        <input type="radio" name="select-for-field-${number_field}" id="radio-${res[i].blocksid}${number_field}" value="${res[i].blocksid}" />
-				        <label class="slds-radio_button__label" for="radio-${res[i].blocksid}${number_field}">
-				          <span class="slds-radio_faux">${res[i].blocks_label}</span>
-				        </label>
-				      </span>`;
+					<span class="slds-button slds-radio_button">
+						<input type="radio" name="select-for-field-${number_field}" id="radio-${res[i].blocksid}${number_field}" value="${res[i].blocksid}" />
+						<label class="slds-radio_button__label" for="radio-${res[i].blocksid}${number_field}">
+						<span class="slds-radio_faux">${res[i].blocks_label}</span>
+						</label>
+					</span>`;
 				}
 			}
 			template += `
-			    </div>
-			  </div>
+				</div>
+			</div>
 			</fieldset>`;
 			document.getElementById(`for-field-${number_field}`).innerHTML = template;
 		});
 	},
 	/**
-     * Generate inputs for custom views in step 4
-     */
+	 * Generate inputs for custom views in step 4
+	 */
 	generateCustomView: () => {
 		const number_customview = mb.autoIncrementIds('number_customview');
 		const table = mb.getTable('CustomView');
@@ -784,27 +785,27 @@ const mb = {
 		<div class="slds-grid slds-gutters">
 			<div class="slds-col">
 				<div class="slds-form-element">
-				  <label class="slds-form-element__label" for="viewname-${number_customview}">
-				  	<abbr class="slds-required" title="required">* </abbr> Viewname
-				  </label>
-				  <div class="slds-form-element__control">
-				    <input type="text" name="viewname-${number_customview}" id="viewname-${number_customview}" class="slds-input"/>
-				  </div>
+				<label class="slds-form-element__label" for="viewname-${number_customview}">
+					<abbr class="slds-required" title="required">* </abbr> Viewname
+				</label>
+				<div class="slds-form-element__control">
+					<input type="text" name="viewname-${number_customview}" id="viewname-${number_customview}" class="slds-input"/>
+				</div>
 				</div>
 			</div>
 			<div class="slds-col">
 				<div class="slds-form-element">
-				  	<label class="slds-form-element__label" for="setdefault-${number_customview}">Set as default</label>
-				  	<div class="slds-form-element__control">
-				    	<div class="slds-select_container">
-				      		<select class="slds-select" name="setdefault-${number_customview}" id="setdefault-${number_customview}">`;
+					<label class="slds-form-element__label" for="setdefault-${number_customview}">Set as default</label>
+					<div class="slds-form-element__control">
+						<div class="slds-select_container">
+							<select class="slds-select" name="setdefault-${number_customview}" id="setdefault-${number_customview}">`;
 		for (let val in setdefaultOption[0]) {
 			viewTemplate += `<option value="${val}">${setdefaultOption[0][val]}</option>`;
 		}
 		viewTemplate += `
 							</select>
-				    	</div>
-				  	</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>`;
@@ -814,8 +815,8 @@ const mb = {
 			<div class="slds-grid slds-gutters">
 				<div class="slds-col"><br>
 					<label class="slds-form-element__label">
-				  		<abbr class="slds-required" title="required">* </abbr> ${mod_alert_arr.LBL_CHOOSECUSTOMVIEW}
-				  	</label>
+						<abbr class="slds-required" title="required">* </abbr> ${mod_alert_arr.LBL_CHOOSECUSTOMVIEW}
+					</label>
 				</div>
 			</div>`;
 		jQuery.ajax({
@@ -827,18 +828,18 @@ const mb = {
 			for (let f in res) {
 				viewTemplate += `
 				<div class="slds-col">
-                    <div class="slds-form-element">
-                      <div class="slds-form-element__control">
-                        <div class="slds-checkbox">
-                          <input type="checkbox" class="for-checkbox-${number_customview}" name="checkbox-options-${number_customview}" id="checkbox-${f}-id-${number_customview}" value="${res[f]['fieldsid']}"/>
-                          <label class="slds-checkbox__label" for="checkbox-${f}-id-${number_customview}">
-                            <span class="slds-checkbox_faux"></span>
-                            <span class="slds-form-element__label">${res[f]['fieldname']}</span>
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                </div>`;
+					<div class="slds-form-element">
+					<div class="slds-form-element__control">
+						<div class="slds-checkbox">
+						<input type="checkbox" class="for-checkbox-${number_customview}" name="checkbox-options-${number_customview}" id="checkbox-${f}-id-${number_customview}" value="${res[f]['fieldsid']}"/>
+						<label class="slds-checkbox__label" for="checkbox-${f}-id-${number_customview}">
+							<span class="slds-checkbox_faux"></span>
+							<span class="slds-form-element__label">${res[f]['fieldname']}</span>
+						</label>
+						</div>
+					</div>
+					</div>
+				</div>`;
 				mb.loadElement(`customview_inputs${number_customview}`, true).innerHTML = viewTemplate;
 			}
 			viewTemplate += '</div>';
@@ -846,11 +847,11 @@ const mb = {
 		mb.loadElement(`customview_inputs${number_customview}`, true).innerHTML = viewTemplate;
 	},
 	/**
-     * Function that load an alert message for success or error
-     * @param {text} msg
-     * @param {boolean} show
-     * @param {text} type - success/error
-     */
+	 * Function that load an alert message for success or error
+	 * @param {text} msg
+	 * @param {boolean} show
+	 * @param {text} type - success/error
+	 */
 	loadMessage: (msg, show = true, type = 'success') => {
 		var icon = 'task';
 		if (type == 'error') {
@@ -861,9 +862,9 @@ const mb = {
 		}
 	},
 	/**
-     * Increment id from each step when generate fields
-     * @param {string} id
-     */
+	 * Increment id from each step when generate fields
+	 * @param {string} id
+	 */
 	autoIncrementIds: (id) => {
 		let number = mb.loadElement(id);
 		number = parseInt(number) + 1;
@@ -871,8 +872,8 @@ const mb = {
 		return number;
 	},
 	/**
-     * Update grid in every change
-     */
+	 * Update grid in every change
+	 */
 	updateData: () => {
 		let btn = '';
 		for (var i = 0; i < 5; i++) {
@@ -881,19 +882,19 @@ const mb = {
 			if (completed == 'Completed') {
 				btn = `
 				<button class="slds-button slds-button_brand" aria-live="assertive">
-                    <span class="slds-text-not-pressed">
-                        <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
-                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#download"></use>
-                        </svg>${mod_alert_arr.Export}
-                    </span>
-                </button>
+					<span class="slds-text-not-pressed">
+						<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#download"></use>
+						</svg>${mod_alert_arr.Export}
+					</span>
+				</button>
 				<button class="slds-button slds-button_neutral slds-button_dual-stateful" onclick="mb.backTo(5, true, ${moduleid}); mb.closeModal()" aria-live="assertive">
-                    <span class="slds-text-not-pressed">
-                        <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
-                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
-                        </svg>${mod_alert_arr.StartEditing}
-                    </span>
-                </button>`;
+					<span class="slds-text-not-pressed">
+						<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
+						</svg>${mod_alert_arr.StartEditing}
+					</span>
+				</button>`;
 			} else {
 				let step = 0;
 				if (completed == '20%') {
@@ -907,20 +908,20 @@ const mb = {
 				}
 				btn = `
 				<button class="slds-button slds-button_neutral slds-button_dual-stateful" onclick="mb.backTo(${step}, true, ${moduleid}); mb.closeModal()" aria-live="assertive">
-                    <span class="slds-text-not-pressed">
-                        <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
-                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
-                        </svg>${mod_alert_arr.StartEditing}
-                    </span>
-                </button>`;
+					<span class="slds-text-not-pressed">
+						<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
+						</svg>${mod_alert_arr.StartEditing}
+					</span>
+				</button>`;
 			}
 			dataGridInstance.setValue(i, 'export', btn, false);
 		}
 	},
 	/**
-     * Check for module if exists in first step
-     * @param {string} id
-     */
+	 * Check for module if exists in first step
+	 * @param {string} id
+	 */
 	checkForModule: (id) => {
 		const moduleName = mb.loadElement(id);
 		jQuery.ajax({
@@ -937,10 +938,10 @@ const mb = {
 		});
 	},
 	/**
-     * Autocomplete inputs for modules and function names
-     * @param {string} el
-     * @param {string} type - module/name
-     */
+	 * Autocomplete inputs for modules and function names
+	 * @param {string} el
+	 * @param {string} type - module/name
+	 */
 	autocomplete: (el, type) => {
 		const forId = el.id.split('-')[2];
 		const val = mb.loadElement(el.id);
@@ -970,10 +971,10 @@ const mb = {
 				let ul = `<ul class="slds-dropdown__list" style="${inStyle.style}">`;
 				for (let i = 0; i < res.length; i++) {
 					ul += `<li class="slds-dropdown__item">
-                            <a onclick="mb.setValueToInput(this.id, ${forId}, '${method}')" tabindex="${i}" id="${res[i].name}">
-                                <span class="slds-truncate" title="${res[i].name}">${res[i].name}</span>
-                            </a>
-                        </li>`;
+							<a onclick="mb.setValueToInput(this.id, ${forId}, '${method}')" tabindex="${i}" id="${res[i].name}">
+								<span class="slds-truncate" title="${res[i].name}">${res[i].name}</span>
+							</a>
+						</li>`;
 				}
 				ul += '</ul>';
 				span.innerHTML = ul;
@@ -1045,34 +1046,34 @@ const mb = {
 				const elList = document.createElement('li');
 				let tree = `
 				<div class="slds-tree__item">
-				    <button class="slds-button slds-button_icon slds-m-right_x-small" aria-hidden="true" tabindex="-1" title="Expand Tree Branch">
-				        <svg class="slds-button__icon slds-button__icon_small" aria-hidden="true">
-					        <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
-				        </svg>
-				    </button>
-				    <span class="slds-has-flexi-truncate">
-				        <span class="slds-tree__item-label slds-truncate">
-				        ${res.views['data'].contents[i].viewname}
-				    </span>
-				    </span>
+					<button class="slds-button slds-button_icon slds-m-right_x-small" aria-hidden="true" tabindex="-1" title="Expand Tree Branch">
+						<svg class="slds-button__icon slds-button__icon_small" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+						</svg>
+					</button>
+					<span class="slds-has-flexi-truncate">
+						<span class="slds-tree__item-label slds-truncate">
+						${res.views['data'].contents[i].viewname}
+					</span>
+					</span>
 				</div>
 				<ul role="group">`;
 				for (let j in res.views['data'].contents[i].fields) {
 					const fields = res.views['data'].contents[i].fields;
-				    tree += `
+					tree += `
 					<li aria-level="2" role="treeitem">
-					    <div class="slds-tree__item">
-					        <button class="slds-button slds-button_icon slds-m-right_x-small slds-is-disabled" aria-hidden="true" tabindex="-1" title="Expand Tree Item">
-					            <svg class="slds-button__icon slds-button__icon_small" aria-hidden="true">
-					                <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
-					            </svg>
-					        </button>
-					        <span class="slds-has-flexi-truncate">
-					            <span class="slds-tree__item-label slds-truncate" title="Fieldname: ${fields[j]}">
-					            	${fields[j]}
-					            </span>
-					        </span>
-					    </div>
+						<div class="slds-tree__item">
+							<button class="slds-button slds-button_icon slds-m-right_x-small slds-is-disabled" aria-hidden="true" tabindex="-1" title="Expand Tree Item">
+								<svg class="slds-button__icon slds-button__icon_small" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+								</svg>
+							</button>
+							<span class="slds-has-flexi-truncate">
+								<span class="slds-tree__item-label slds-truncate" title="Fieldname: ${fields[j]}">
+									${fields[j]}
+								</span>
+							</span>
+						</div>
 					</li>`;
 				}
 				tree += '</ul>';
@@ -1082,11 +1083,11 @@ const mb = {
 		});
 	},
 	/**
-     * Set values for each input on autocomplete
-     * @param {string} name - function name
-     * @param {string} forId
-     * @param {string} type - module/name
-     */
+	 * Set values for each input on autocomplete
+	 * @param {string} name - function name
+	 * @param {string} forId
+	 * @param {string} type - module/name
+	 */
 	setValueToInput: (name, forId, type) => {
 		if (type == 'module') {
 			mb.removeElement('autocomplete-modulespan-'+forId, true);
@@ -1097,8 +1098,8 @@ const mb = {
 		}
 	},
 	/**
-     * Generate related lists for step 5
-     */
+	 * Generate related lists for step 5
+	 */
 	generateRelatedList: () => {
 		const number_related = mb.autoIncrementIds('number_related');
 		const table = mb.getTable('RelatedLists');
@@ -1109,70 +1110,70 @@ const mb = {
 		<div class="slds-grid slds-gutters">
 			<div class="slds-col">
 				<div class="slds-form-element">
-				  	<label class="slds-form-element__label" for="autocomplete-related-${number_related}">
-				  		<abbr class="slds-required" title="required">* </abbr> Function name
-				  	</label>
-				  	<div class="slds-form-element__control">
-				    	<input type="text" onkeyup="mb.autocomplete(this, 'name')" name="related-function-${number_related}" id="autocomplete-related-${number_related}" class="slds-input" />
-				  		<span id="autocomplete-span-${number_related}"></span>
-				  	</div>
+					<label class="slds-form-element__label" for="autocomplete-related-${number_related}">
+						<abbr class="slds-required" title="required">* </abbr> Function name
+					</label>
+					<div class="slds-form-element__control">
+					<input type="text" onkeyup="mb.autocomplete(this, 'name')" name="related-function-${number_related}" id="autocomplete-related-${number_related}" class="slds-input" />
+						<span id="autocomplete-span-${number_related}"></span>
+					</div>
 				</div>
 			</div>
 			<div class="slds-col">
 				<div class="slds-form-element">
-				  	<label class="slds-form-element__label" for="related-label-${number_related}">
-				  		<abbr class="slds-required" title="required">* </abbr> Label
-				  	</label>
-				  	<div class="slds-form-element__control">
-				    	<input type="text" name="related-label-${number_related}" id="related-label-${number_related}" class="slds-input" />
-				  	</div>
+					<label class="slds-form-element__label" for="related-label-${number_related}">
+						<abbr class="slds-required" title="required">* </abbr> Label
+					</label>
+					<div class="slds-form-element__control">
+					<input type="text" name="related-label-${number_related}" id="related-label-${number_related}" class="slds-input" />
+					</div>
 				</div>
 			</div>
 			<div class="slds-col">
 				<div class="slds-form-element">
-				  	<label class="slds-form-element__label" for="related-action-${number_related}">
-				  		<abbr class="slds-required" title="required">* </abbr> Actions
-				  	</label>
-				  	<div class="slds-form-element__control">
-				    	<input type="text" name="related-action-${number_related}" id="related-action-${number_related}" class="slds-input" />
-				  	</div>
+					<label class="slds-form-element__label" for="related-action-${number_related}">
+						<abbr class="slds-required" title="required">* </abbr> Actions
+					</label>
+					<div class="slds-form-element__control">
+					<input type="text" name="related-action-${number_related}" id="related-action-${number_related}" class="slds-input" />
+					</div>
 				</div>
 			</div>
 			<div class="slds-col">
 				<div class="slds-form-element">
-				  	<label class="slds-form-element__label" for="related-action-${number_related}">
-				  		<abbr class="slds-required" title="required">* </abbr> Related module
-				  	</label>
-				  	<div class="slds-form-element__control">
-				    	<input type="text" onkeyup="mb.autocomplete(this, 'module')" name="related-module-${number_related}" id="autocomplete-module-${number_related}" class="slds-input" />
-				  	</div>
-				  	<span id="autocomplete-modulespan-${number_related}"></span>
+					<label class="slds-form-element__label" for="related-action-${number_related}">
+						<abbr class="slds-required" title="required">* </abbr> Related module
+					</label>
+					<div class="slds-form-element__control">
+					<input type="text" onkeyup="mb.autocomplete(this, 'module')" name="related-module-${number_related}" id="autocomplete-module-${number_related}" class="slds-input" />
+					</div>
+					<span id="autocomplete-modulespan-${number_related}"></span>
 				</div>
 			</div>
 		</div>`;
 		mb.loadElement(`related_inputs_${number_related}`, true).innerHTML = listTemplate;
 	},
 	/**
-     * Create html labels
-     * @param {Label} instance - Current label instance
-     * @param {text} value
-     */
+	 * Create html labels
+	 * @param {Label} instance - Current label instance
+	 * @param {text} value
+	 */
 	createLabel: (instance, value) => {
 		const label = document.createElement('label');
 		label.innerHTML = value;
 		return instance.appendChild(label);
 	},
 	/**
-     * Create html inputs
-     * @param {object} scope = {
-        instance: {Input},
-        placeholder: {string},
-        name: {string},
-        id: {string},
-        inc: {number},
-        attr: {object},
-     }
-     */
+	 * Create html inputs
+	 * @param {object} scope = {
+		instance: {Input},
+		placeholder: {string},
+		name: {string},
+		id: {string},
+		inc: {number},
+		attr: {object},
+	 }
+	 */
 	createInput: (scope) => {
 		const input = document.createElement('input');
 		input.placeholder = scope.placeholder;
@@ -1191,32 +1192,32 @@ const mb = {
 		return scope.instance.appendChild(input);
 	},
 	/**
-     * Get table instance
-     * @param {string} id
-     */
+	 * Get table instance
+	 * @param {string} id
+	 */
 	getTable: (id) => {
 		const table = mb.loadElement(id, true);
 		return table;
 	},
 	/**
-     * Create table row
-     * @param {Row} instance  - Current row instance
-     * @param {number} index
-     * @param {string} id
-     * @param {number} inc
-     */
+	 * Create table row
+	 * @param {Row} instance  - Current row instance
+	 * @param {number} index
+	 * @param {string} id
+	 * @param {number} inc
+	 */
 	createRow: (instance, index, id, inc) => {
 		const row = instance.insertRow(index);
 		row.id = id + inc;
 		return row;
 	},
 	/**
-     * Create table data
-     * @param {Cell} instance - Current cell instance
-     * @param {number} index
-     * @param {string} id
-     * @param {number} inc
-     */
+	 * Create table data
+	 * @param {Cell} instance - Current cell instance
+	 * @param {number} index
+	 * @param {string} id
+	 * @param {number} inc
+	 */
 	createCell: (instance, index, id, inc) => {
 		const cell = instance.insertCell(index);
 		cell.id = id + inc;
@@ -1224,9 +1225,9 @@ const mb = {
 		return cell;
 	},
 	/**
-     * Remove block on step 2
-     * @param {string} blockid - Current cell instance
-     */
+	 * Remove block on step 2
+	 * @param {string} blockid - Current cell instance
+	 */
 	removeBlock: (blockid) => {
 		const id = blockid.split('-')[0];
 		jQuery.ajax({
@@ -1241,9 +1242,9 @@ const mb = {
 		});
 	},
 	/**
-     * Remove Field on step 3
-     * @param {string} fieldsid
-     */
+	 * Remove Field on step 3
+	 * @param {string} fieldsid
+	 */
 	removeField: (fieldsid) => {
 		jQuery.ajax({
 			method: 'POST',
@@ -1258,9 +1259,9 @@ const mb = {
 		});
 	},
 	/**
-     * Remove View on step 4
-     * @param {string} viewid
-     */
+	 * Remove View on step 4
+	 * @param {string} viewid
+	 */
 	removeCustomView: (viewid) => {
 		jQuery.ajax({
 			method: 'POST',
@@ -1275,9 +1276,9 @@ const mb = {
 		});
 	},
 	/**
-     * Remove Lists on step 5
-     * @param {string} listid
-     */
+	 * Remove Lists on step 5
+	 * @param {string} listid
+	 */
 	removeRelatedLists: (list) => {
 		jQuery.ajax({
 			method: 'POST',
@@ -1292,10 +1293,10 @@ const mb = {
 		});
 	},
 	/**
-     * Remove elements
-     * @param {string} elementId
-     * @param {boolean} type
-     */
+	 * Remove elements
+	 * @param {string} elementId
+	 * @param {boolean} type
+	 */
 	removeElement: (elementId, type = false) => {
 		var element = mb.loadElement(elementId, true);
 		if (type == true) {
@@ -1305,10 +1306,10 @@ const mb = {
 		}
 	},
 	/**
-     * Get values for inputs
-     * @param {string} id
-     * @param {boolean} type
-     */
+	 * Get values for inputs
+	 * @param {string} id
+	 * @param {boolean} type
+	 */
 	loadElement: (id, type = false) => {
 		let value = '';
 		if (type == true) {
@@ -1350,13 +1351,12 @@ class ActionRender {
 		el = document.createElement('span');
 		let actions = `
 			<div class="slds-button-group" role="group">
-			  	<button onclick='mb.${functionName}(${id})' class="slds-button slds-button_icon slds-button_icon-border-filled" aria-pressed="false">
-			    	<svg class="slds-button__icon" aria-hidden="true">
-			      	<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
-			    	</svg>
-			  	</button>
-			</div>		
-		`;
+				<button onclick='mb.${functionName}(${id})' class="slds-button slds-button_icon slds-button_icon-border-filled" aria-pressed="false">
+				<svg class="slds-button__icon" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+				</svg>
+				</button>
+			</div>`;
 		el.innerHTML = actions;
 		this.el = el;
 		this.render(props);

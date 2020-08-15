@@ -34,27 +34,27 @@
                                     <div class="slds-page-header__col-title">
                                         <div class="slds-media">
                                             <div class="slds-media__body">
-                                                <div class="slds-page-header__name"> 
+                                                <div class="slds-page-header__name">
                                                     <div class="slds-page-header__name-title">
-                                                        <h1> 
-                                                            <span class="slds-page-header__title slds-truncate" title="Conditions"> 
-                                                                <span class="slds-tabs__left-icon"> 
-                                                                    <span class="slds-icon_container" title="Conditions"> 
-                                                                        <svg class="slds-icon slds-icon_small" style="color:green;" aria-hidden="true"> 
-                                                                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#list"></use> 
-                                                                        </svg> 
-                                                                    </span> 
+                                                        <h1>
+                                                            <span class="slds-page-header__title slds-truncate" title="Conditions">
+                                                                <span class="slds-tabs__left-icon">
+                                                                    <span class="slds-icon_container" title="Conditions">
+                                                                        <svg class="slds-icon slds-icon_small" style="color:green;" aria-hidden="true">
+                                                                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#list"></use>
+                                                                        </svg>
+                                                                    </span>
                                                                 </span>
                                                                 LIST OF VIEWS
-                                                            </span> 
+                                                            </span>
                                                         </h1>
-                                                    </div> 
-                                                </div> 
-                                            </div> 
-                                        </div> 
-                                    </div> 
-                                </div> 
-                            </div> 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div><br>
                         <div id="loadViews"></div>
                     </div>

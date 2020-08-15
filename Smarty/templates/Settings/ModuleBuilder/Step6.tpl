@@ -1,3 +1,8 @@
+{if isset($smarty.cookies.ModuleBuilderID)}
+  {assign var=ModuleBuilderID value=$smarty.cookies.ModuleBuilderID}
+{else}
+  {assign var=ModuleBuilderID value=''}
+{/if}
 <article class="slds-setup-assistant__step" id="step-6" style="display: none">
     <div class="slds-setup-assistant__step-summary">
         <div class="slds-media">
@@ -40,7 +45,7 @@
                                             <div id="info"></div>
                                           </div>
                                           <div class="slds-media__figure slds-media__figure_reverse">
-                                            <button class="slds-button slds-button_neutral slds-button_dual-stateful" onclick="mb.backTo(1, true, {$smarty.cookies.ModuleBuilderID});">
+                                            <button class="slds-button slds-button_neutral slds-button_dual-stateful" onclick="mb.backTo(1, true, {$ModuleBuilderID});">
                                                 <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
                                                     <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
                                                 </svg>
@@ -81,7 +86,7 @@
                                             <div id="blocks"></div>
                                           </div>
                                           <div class="slds-media__figure slds-media__figure_reverse">
-                                            <button class="slds-button slds-button_neutral slds-button_dual-stateful" onclick="mb.backTo(2, true, {$smarty.cookies.ModuleBuilderID});">
+                                            <button class="slds-button slds-button_neutral slds-button_dual-stateful" onclick="mb.backTo(2, true, {$ModuleBuilderID});">
                                                 <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
                                                     <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
                                                 </svg>
@@ -122,7 +127,7 @@
                                             <div id="fields"></div>
                                           </div>
                                           <div class="slds-media__figure slds-media__figure_reverse">
-                                            <button class="slds-button slds-button_neutral slds-button_dual-stateful" onclick="mb.backTo(3, true, {$smarty.cookies.ModuleBuilderID});">
+                                            <button class="slds-button slds-button_neutral slds-button_dual-stateful" onclick="mb.backTo(3, true, {$ModuleBuilderID});">
                                                 <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
                                                     <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
                                                 </svg>
@@ -163,7 +168,7 @@
                                             <div id="views"></div>
                                           </div>
                                           <div class="slds-media__figure slds-media__figure_reverse">
-                                            <button class="slds-button slds-button_neutral slds-button_dual-stateful" onclick="mb.backTo(4, true, {$smarty.cookies.ModuleBuilderID});">
+                                            <button class="slds-button slds-button_neutral slds-button_dual-stateful" onclick="mb.backTo(4, true, {$ModuleBuilderID});">
                                                 <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
                                                     <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
                                                 </svg>
@@ -204,7 +209,7 @@
                                             <div id="lists"></div>
                                           </div>
                                           <div class="slds-media__figure slds-media__figure_reverse">
-                                            <button class="slds-button slds-button_neutral slds-button_dual-stateful" onclick="mb.backTo(5, true, {$smarty.cookies.ModuleBuilderID});">
+                                            <button class="slds-button slds-button_neutral slds-button_dual-stateful" onclick="mb.backTo(5, true, {$ModuleBuilderID});">
                                                 <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
                                                     <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
                                                 </svg>
