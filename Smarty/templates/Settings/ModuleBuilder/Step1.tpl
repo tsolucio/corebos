@@ -74,7 +74,7 @@
     <div class="slds-docked-form-footer">
         <button class="slds-button slds-button_success" disabled="true" onclick="mb.SaveModule(1);" id="btn-step-1" style="color: white">
             {$MOD.LBL_MB_NEXT}&nbsp;
-            <svg class="slds-icon slds-icon--small" aria-hidden="true">
+            <svg class="slds-icon slds-icon_small" aria-hidden="true">
                 <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#forward"></use>
             </svg>
         </button>

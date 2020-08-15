@@ -21,7 +21,7 @@
 							</div>
 							<button class="slds-button slds-button_brand" onclick="mb.openModal()" style="float: right;margin-bottom: 15px; text-transform: uppercase;">
 								{$MOD.LBL_MB_ALLMODULES}&nbsp;
-								<svg class="slds-icon slds-icon--small" aria-hidden="true" style="color: blue">
+								<svg class="slds-icon slds-icon_small" aria-hidden="true" style="color: blue">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#all"></use>
 								</svg>
 							</button>
