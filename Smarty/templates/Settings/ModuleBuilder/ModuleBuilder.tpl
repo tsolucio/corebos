@@ -1,4 +1,5 @@
 <div id="showMsg"></div>
+<script type="text/javascript" src="include/js/{$LANGUAGE}.lang.js"></script>
 <script src="modules/Settings/ModuleBuilder/ModuleBuilder.js"></script>
 <div id="vtlib_modulebuilder" style="display:block;position:absolute;width:500px;"></div>
 {assign var="MODULEICON" value='builder'}
