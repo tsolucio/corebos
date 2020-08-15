@@ -33,7 +33,11 @@ if (PHP_SAPI === 'cli' || PHP_SAPI === 'cgi-fcgi' || PHP_SAPI === 'apache2handle
 		// Run all service
 		$cronTasks = Vtiger_Cron::listAllActiveInstances();
 	}
-	$app_strings = return_application_language($default_language);
+	global $current_language;
+	if (empty($current_language)) {
+		$current_language = $default_language;
+	}
+	$app_strings = return_application_language($current_language);
 	foreach ($cronTasks as $cronTask) {
 		try {
 			$cronTask->setBulkMode(true);

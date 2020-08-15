@@ -516,7 +516,7 @@
 								aria-haspopup="true"
 								title="{$APP.LBL_IMPORT} {$MODULE|getTranslatedString:$MODULE}"
 								href="index.php?module={$MODULE}&action=Import&step=1&return_module={$MODULE}&return_action=index&parenttab={$CATEGORY}">
-									<svg class="slds-button__icon slds-m-top_x-small" aria-hidden="true">
+									<svg class="slds-button__icon" aria-hidden="true">
 										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#download"></use>
 									</svg>
 									<span class="slds-assistive-text">
@@ -596,7 +596,7 @@
 									aria-haspopup="true"
 									title="{'Tasks'|getTranslatedString:$MODULE}"
 									href="index.php?module=cbCalendar&action=index">
-										<svg class="slds-button__icon slds-m-top_x-small" aria-hidden="true">
+										<svg class="slds-button__icon" aria-hidden="true">
 											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#task"></use>
 										</svg>
 										<span class="slds-assistive-text">
@@ -611,7 +611,7 @@
 								aria-haspopup="true"
 								title="{$MODULE|getTranslatedString:$MODULE} {$APP.LBL_SETTINGS}"
 								href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$MODULE}&parenttab=Settings">
-									<svg class="slds-button__icon slds-m-top_x-small" aria-hidden="true">
+									<svg class="slds-button__icon" aria-hidden="true">
 										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#settings"></use>
 									</svg>
 									<span class="slds-assistive-text">

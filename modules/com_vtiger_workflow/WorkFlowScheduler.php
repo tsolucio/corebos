@@ -14,6 +14,39 @@ require_once 'modules/Users/Users.php';
 class WorkFlowScheduler {
 	private $user;
 	private $db;
+	public static $conditionMapping = array(
+		'equal to' => 'e',
+		'less than' => 'l',
+		'greater than' => 'g',
+		'does not equal' => 'n',
+		'less than or equal to' => 'm',
+		'greater than or equal to' => 'h',
+		'is' => 'e',
+		'contains' => 'c',
+		'does not contain' => 'k',
+		'starts with' => 's',
+		'ends with' => 'ew',
+		'is not' => 'n',
+		'is empty' => 'y',
+		'is not empty' => 'ny',
+		'before' => 'l',
+		'after' => 'g',
+		'between' => 'bw',
+		'less than days ago' => 'bw',
+		'more than days ago' => 'l',
+		'in less than' => 'bw',
+		'in more than' => 'g',
+		'days ago' => 'e',
+		'days later' => 'e',
+		'less than hours before' => 'bw',
+		'less than hours later' => 'bw',
+		'more than hours before' => 'l',
+		'more than hours later' => 'g',
+		'is today' => 'e',
+		'exists' => 'exists',
+		'does not start with' => 'dnsw',
+		'does not end with' => 'dnew',
+	);
 
 	public function __construct($adb) {
 		$util = new VTWorkflowUtils();
@@ -192,39 +225,6 @@ class WorkFlowScheduler {
 	}
 
 	public function addWorkflowConditionsToQueryGenerator($queryGenerator, $conditions) {
-		$conditionMapping = array(
-			'equal to' => 'e',
-			'less than' => 'l',
-			'greater than' => 'g',
-			'does not equal' => 'n',
-			'less than or equal to' => 'm',
-			'greater than or equal to' => 'h',
-			'is' => 'e',
-			'contains' => 'c',
-			'does not contain' => 'k',
-			'starts with' => 's',
-			'ends with' => 'ew',
-			'is not' => 'n',
-			'is empty' => 'y',
-			'is not empty' => 'ny',
-			'before' => 'l',
-			'after' => 'g',
-			'between' => 'bw',
-			'less than days ago' => 'bw',
-			'more than days ago' => 'l',
-			'in less than' => 'bw',
-			'in more than' => 'g',
-			'days ago' => 'e',
-			'days later' => 'e',
-			'less than hours before' => 'bw',
-			'less than hours later' => 'bw',
-			'more than hours before' => 'l',
-			'more than hours later' => 'g',
-			'is today' => 'e',
-			'exists' => 'exists',
-			'does not start with' => 'dnsw',
-			'does not end with' => 'dnew',
-		);
 		$noOfConditions = is_array($conditions) ? count($conditions) : 0;
 		//Algorithm :
 		//1. If the query has already where condition then start a new group with and condition, else start a group
@@ -260,7 +260,7 @@ class WorkFlowScheduler {
 				$columnCondition = $condition['joincondition'];
 				$groupId = $condition['groupid'];
 				$groupJoin = (isset($condition['groupjoin']) ? $condition['groupjoin'] : '');
-				$operator = $conditionMapping[$operation];
+				$operator = self::$conditionMapping[$operation];
 				$fieldname = $condition['fieldname'];
 
 				if ($index > 0 && $groupId != $previous_condition['groupid']) { // if new group, end older group and start new
@@ -273,7 +273,7 @@ class WorkFlowScheduler {
 				}
 
 				if (empty($columnCondition) || $index > 0) {
-					$columnCondition = $previous_condition['joincondition'];
+					$columnCondition = isset($previous_condition['joincondition']) ? $previous_condition['joincondition'] : '';
 				}
 				if ($index > 0 && $groupId != $previous_condition['groupid']) {	//if first condition in new group, send empty condition to append
 					$columnCondition = null;
@@ -295,6 +295,7 @@ class WorkFlowScheduler {
 						}
 					}
 					$wfscenv = new cbexpsql_environmentstub($queryGenerator->getModule(), '0x0');
+					$wfscenv->returnReferenceValue = false;
 					$substExpressions['::#'.$substExpressionsIndex] = $exprEvaluater->evaluate($wfscenv, true);
 					if (is_object($substExpressions['::#'.$substExpressionsIndex])) {
 						$substExpressions['::#'.$substExpressionsIndex] = $substExpressions['::#'.$substExpressionsIndex]->value;

@@ -8,7 +8,6 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 {include file='SetMenu.tpl'}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 <div class="slds-modal__container slds-p-around_none">
@@ -101,11 +100,6 @@
 		{/foreach}
 	</td>
 	</tr>
-	</table>
-	<br>
-	<br>
-	<table border=0 cellspacing=0 cellpadding=5 width=100% >
-		<tr><td class="small" ><div align=right><a href="#top">{$MOD.LBL_SCROLL}</a></div></td></tr>
 	</table>
 </td>
 </tr>

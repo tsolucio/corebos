@@ -1235,8 +1235,7 @@ function massEditFormValidate() {
 }
 
 function run_massedit() {
-	var me = massEditFormValidate();
-	if (me==true) {
+	if (massEditFormValidate()) {
 		var myFields = document.forms['massedit_form'];
 		var sentForm = new Object();
 		for (var f=0; f<myFields.length; f++) {
@@ -1274,6 +1273,7 @@ function run_massedit() {
 
 		var worker  = new Worker('massedit-worker.js');
 		//a message is received
+		sentForm.SSE_SOURCE_ACTION = 'MassEditSave';
 		worker.postMessage(sentForm);
 		worker.addEventListener('message', function (e) {
 			var message = e.data;
@@ -1369,7 +1369,7 @@ function runBAScript(scripturi) {
 			VtigerJS_DialogBox.unblock();
 		}
 	});
-	return false;
+	return void(0);
 }
 
 function runBAWorkflow(workflowid, crmids) {
@@ -1394,7 +1394,7 @@ function runBAWorkflow(workflowid, crmids) {
 		}
 		VtigerJS_DialogBox.unblock();
 	});
-	return false;
+	return void(0);
 }
 
 function doModuleValidation(edit_type, editForm, callback) {
@@ -1418,106 +1418,87 @@ function doModuleValidation(edit_type, editForm, callback) {
 
 function doServerValidation(edit_type, formName, callback) {
 	VtigerJS_DialogBox.block();
-	if (edit_type=='mass_edit') {
-		var action = 'MassEditSave';
-	} else {
-		var action = 'Save';
-	}
+	var action = (edit_type=='mass_edit' ? 'MassEditSave' : 'Save');
 	let SVModule = document.forms[formName].module.value;
-	let SVRecord = document.forms[formName].record.value;
-	//Testing if a Validation file exists
-	jQuery.ajax({
-		url: 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule='+SVModule+'&crmid='+SVRecord,
-		type:'get'
-	}).fail(function (jqXHR, textStatus) {
-		//Validation file does not exist
-		if (typeof callback == 'function') {
-			callback('submit');
-		} else {
-			submitFormForAction(formName, action);
+	//let SVRecord = document.forms[formName].record.value;
+	// Create object which gets the values of all input, textarea, select and button elements from the form
+	var myFields = document.forms[formName].elements;
+	var sentForm = new Object();
+	for (var f=0; f<myFields.length; f++) {
+		if (myFields[f].type=='checkbox') {
+			sentForm[myFields[f].name] = myFields[f].checked;
+		} else if (myFields[f].type=='textarea' && typeof CKEDITOR != 'undefined' && typeof CKEDITOR.instances[myFields[f].name]!= 'undefined') {
+			CKEDITOR.instances[myFields[f].name].updateElement();
+			sentForm[myFields[f].name] = myFields[f].value;
+		} else if (myFields[f].type=='radio' && myFields[f].checked) {
+			sentForm[myFields[f].name] = myFields[f].value;
+		} else if (myFields[f].type!='radio') {
+			sentForm[myFields[f].name] = myFields[f].value;
 		}
-	}).done(function (data) {
-		//Validation file exists
-		if (data == 'yes') {
-			// Create object which gets the values of all input, textarea, select and button elements from the form
-			var myFields = document.forms[formName].elements;
-			var sentForm = new Object();
-			for (var f=0; f<myFields.length; f++) {
-				if (myFields[f].type=='checkbox') {
-					sentForm[myFields[f].name] = myFields[f].checked;
-				} else if (myFields[f].type=='radio' && myFields[f].checked) {
-					sentForm[myFields[f].name] = myFields[f].value;
-				} else if (myFields[f].type!='radio') {
-					sentForm[myFields[f].name] = myFields[f].value;
+	}
+	//JSONize form data
+	sentForm = JSON.stringify(sentForm);
+	jQuery.ajax({
+		type : 'post',
+		data : {structure: sentForm},
+		url : 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule='+SVModule
+	}).done(function (msg) {
+		//Validation file answers
+		if (msg.search('%%%CONFIRM%%%') > -1) { //Allow to use confirm alert
+			//message to display
+			var display = msg.split('%%%CONFIRM%%%');
+			if (confirm(display[1])) { //If you click on OK
+				if (typeof callback == 'function') {
+					callback('submit');
+				} else {
+					submitFormForAction(formName, action);
 				}
-			}
-			//JSONize form data
-			sentForm = JSON.stringify(sentForm);
-			jQuery.ajax({
-				type : 'post',
-				data : {structure: sentForm},
-				url : 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule='+SVModule
-			}).done(function (msg) {
-				//Validation file answers
-				if (msg.search('%%%CONFIRM%%%') > -1) { //Allow to use confirm alert
-					//message to display
-					var display = msg.split('%%%CONFIRM%%%');
-					if (confirm(display[1])) { //If you click on OK
-						if (typeof callback == 'function') {
-							callback('submit');
-						} else {
-							submitFormForAction(formName, action);
-						}
-					} else {
-						VtigerJS_DialogBox.unblock();
-					}
-				} else if (msg.search('%%%OK%%%') > -1) { //No error
-					if (typeof callback == 'function') {
-						callback('submit');
-					} else {
-						submitFormForAction(formName, action);
-					}
-				} else if (msg.search('%%%FUNCTION%%%') > -1) { //call user function
-					var callfunc = msg.split('%%%FUNCTION%%%');
-					var params = '';
-					if (callfunc[1].search('%%%PARAMS%%%') > -1) { //function has params string
-						var cfp = callfunc[1].split('%%%PARAMS%%%');
-						callfunc = cfp[0];
-						params = cfp[1];
-					} else {
-						callfunc = callfunc[1];
-					}
-					if (typeof window[callfunc] == 'function') {
-						if (window[callfunc](edit_type, formName, action, callback, params)) {
-							if (typeof callback == 'function') {
-								callback('submit');
-							} else {
-								submitFormForAction(formName, action);
-							}
-						}
-					} else {
-						if (typeof callback == 'function') {
-							callback('submit');
-						} else {
-							submitFormForAction(formName, action);
-						}
-					}
-				} else { //Error
-					ldsPrompt.show(alert_arr['ERROR'], msg);
-					VtigerJS_DialogBox.unblock();
-				}
-			}).fail(function () {
-				//Error while asking file
-				ldsPrompt.show(alert_arr['ERROR'], 'Error with AJAX');
+			} else {
 				VtigerJS_DialogBox.unblock();
-			});
-		} else { // no validation we send form
+			}
+		} else if (msg.search('%%%OK%%%') > -1) { //No error
 			if (typeof callback == 'function') {
 				callback('submit');
 			} else {
 				submitFormForAction(formName, action);
 			}
+		} else if (msg.search('%%%FUNCTION%%%') > -1) { //call user function
+			var callfunc = msg.split('%%%FUNCTION%%%');
+			var params = '';
+			if (callfunc[1].search('%%%PARAMS%%%') > -1) { //function has params string
+				var cfp = callfunc[1].split('%%%PARAMS%%%');
+				callfunc = cfp[0];
+				params = cfp[1];
+			} else {
+				callfunc = callfunc[1];
+			}
+			if (typeof window[callfunc] == 'function') {
+				if (window[callfunc](edit_type, formName, action, callback, params)) {
+					if (typeof callback == 'function') {
+						callback('submit');
+					} else {
+						submitFormForAction(formName, action);
+					}
+				}
+			} else {
+				if (typeof callback == 'function') {
+					callback('submit');
+				} else {
+					submitFormForAction(formName, action);
+				}
+			}
+		} else { //Error
+			ldsPrompt.show(alert_arr['ERROR'], msg);
+			VtigerJS_DialogBox.unblock();
 		}
+	}).fail(function (ev) {
+		//Error while asking file
+		let errmsg = 'Error with AJAX';
+		if (ev.responseText != undefined && ev.responseText.indexOf('CSRF Error')!=-1) {
+			errmsg = 'CSRF Error. Reload page.';
+		}
+		ldsPrompt.show(alert_arr['ERROR'], errmsg);
+		VtigerJS_DialogBox.unblock();
 	});
 	return false;
 }
@@ -2308,7 +2289,7 @@ function OpenCompose(id, mode, crmid) {
 	case 'print':
 		url = 'index.php?module=Emails&action=EmailsAjax&file=PrintEmail&print=true&record='+id;
 	}
-	openPopUp('xComposeEmail', this, url, 'createemailWin', 920, 700, 'menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes');
+	openPopUp('xComposeEmail', this, url, 'createemailWin', 1200, 900, 'menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes');
 }
 
 // Mass select in Popup
@@ -2632,6 +2613,18 @@ function set_return_account_details(fromlink, fldname, MODULE, ID) {
 		var baseURL = 'index.php?module=Accounts&action=Popup&popuptype=specific_account_address&form=TasksEditView&form_submit=false&fromlink=';
 		var WindowSettings = 'width=680,height=602,resizable=0,scrollbars=0,top=150,left=200';
 		window.open(baseURL, 'vtlibui10', WindowSettings);
+	} else {
+		vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
+	}
+}
+
+function open_contact_account_details(fromlink, fldname, MODULE, ID) {
+	if (fldname == 'account_id') {
+		var baseURL = 'index.php?module=Accounts&action=Popup&popuptype=specific_contact_account_address&form=TasksEditView&form_submit=false&fromlink=';
+		baseURL += (fromlink=='qcreate') ? 'qcreate' : '';
+		var WindowSettings = 'width=680,height=602,resizable=0,scrollbars=0,top=150,left=200';
+		let winname = (fromlink=='qcreate') ? 'vtlibui10qc' : 'vtlibui10';
+		window.open(baseURL, winname, WindowSettings);
 	} else {
 		vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
 	}
@@ -3453,12 +3446,14 @@ function ActivityReminderRegisterCallback(timeout) {
 	}
 }
 
-function ajaxChangeCalendarStatus(statusname, activityid) {
+function ajaxChangeCalendarStatus(statusname, activityid, from) {
 	document.getElementById('status').style.display = 'inline';
+	from = from || '';
 	var viewid = document.getElementById('viewname') ? document.getElementById('viewname').options[document.getElementById('viewname').options.selectedIndex].value : '';
 	var idstring = document.getElementById('idlist') ? document.getElementById('idlist').value : '';
 	var searchurl = document.getElementById('search_url') ? document.getElementById('search_url').value : '';
-	var urlstring = 'module=cbCalendar&action=cbCalendarAjax&file=calendarops&op=changestatus&ajax=true&newstatus=' + statusname + '&activityid=' + activityid + '&viewname=' + viewid + '&idlist=' + idstring + searchurl;
+	var urlstring = 'module=cbCalendar&action=cbCalendarAjax&file=calendarops&op=changestatus&ajax=true&newstatus=' + statusname + '&activityid=' + activityid;
+	urlstring = urlstring + '&frommodule=' + from +'&viewname=' + viewid + '&idlist=' + idstring + searchurl;
 	jQuery.ajax({
 		method: 'POST',
 		url: 'index.php?' + urlstring
@@ -3469,8 +3464,11 @@ function ajaxChangeCalendarStatus(statusname, activityid) {
 			document.getElementById('ListViewContents').innerHTML = result[2];
 			document.getElementById('basicsearchcolumns').innerHTML = '';
 		}
-		if (result[1] != '') {
+		if (result[1] && result[1] != '') {
 			ldsPrompt.show(alert_arr['ERROR'], result[1]);
+		}
+		if (from=='calgui') {
+			changeCalendarEvents();
 		}
 	});
 	return false;
@@ -4031,8 +4029,9 @@ function startCall(number, recordid) {
 //added for tooltip manager
 function ToolTipManager() {
 	var state = false;
-	var secondshowTimer = 0;
+	var secondshowTimer = 600;
 	var secondshowTimeout = 1800;
+	var autohideTimer = '';
 	/**
 	 * this function creates the tooltip div and adds the information to it
 	 * @param string text - the text to be added to the tooltip
@@ -4056,6 +4055,17 @@ function ToolTipManager() {
 		div.style.display = 'block';
 		div.style.zIndex = '1000000';
 		positionTooltip(node, divName);
+		autohideTimer = setTimeout(
+			function () {
+				div.style.display = 'none';
+				clearTimeout(autohideTimer);
+			},
+			secondshowTimeout
+		);
+		div.addEventListener('mouseenter', function () {
+			clearTimeout(autohideTimer);
+			div.style.display = 'block';
+		});
 	}
 
 	function getDivId(id, fieldname) {
@@ -4084,15 +4094,21 @@ function ToolTipManager() {
 		var div = document.getElementById(divName);
 		if (typeof div != 'undefined' && div != null ) {
 			if (typeof nodelay != 'undefined' && nodelay != null) {
-				setTimeout(function () {
-					div.style.display = 'none';
-				}, secondshowTimeout);
+				if (!state) {
+					div.addEventListener('mouseleave', function () {
+						setTimeout(function () {
+							div.style.display = 'none';
+						}, secondshowTimer);
+					});
+				}
 			} else {
-				setTimeout(function () {
-					if (!state) {
-						div.style.display = 'none';
-					}
-				}, secondshowTimeout);
+				div.addEventListener('mouseleave', function	() {
+					setTimeout(function () {
+						if (!state) {
+							div.style.display = 'none';
+						}
+					}, secondshowTimer);
+				});
 			}
 		}
 	}
@@ -5166,6 +5182,29 @@ var throttle = function (func, limit) {
 	};
 };
 
+/*
+ * Scrollthrottle
+ * ==============
+ * In addition to a regular throttle, that only pays
+ * attention to time, we also watch the travelled distance here
+ *
+*/
+function scrollThrottle(fn, wait, dist) {
+	var time = Date.now(),
+		sy = window.scrollY,
+		di = null;
+
+	return function () {
+		di = window.scrollY > sy ? 'down' : 'up';
+		var delta = di === 'down' ? window.scrollY - sy : sy - window.scrollY;
+		if (((time + wait - Date.now()) < 0) && (delta > dist)) {
+			fn();
+			time = Date.now();
+			sy = window.scrollY;
+		}
+	};
+}
+
 document.addEventListener('DOMContentLoaded', function (event) {
 	/* ======= Auto complete part relations ====== */
 	AutocompleteSetup();
@@ -5192,6 +5231,14 @@ function AutocompleteSetup() {
 	}
 }
 
+var appSubmitFormWithEnter = 0;
+GlobalVariable_getVariable('Application_EditView_Submit_Form_WithEnter', 1, gVTModule, '').then(function (response) {
+	var obj = JSON.parse(response);
+	appSubmitFormWithEnter = Number(obj.Application_EditView_Submit_Form_WithEnter);
+}, function (error) {
+	appSubmitFormWithEnter = 0;
+});
+
 function handleAcKeys(e) {
 	if (window.currentAc !== false) {
 		switch (e.keyCode) {
@@ -5214,6 +5261,10 @@ function handleAcKeys(e) {
 			highlightAcItemDown();
 			break;
 		}
+	} else if (e.keyCode==13 && appSubmitFormWithEnter && document.forms.EditView && e.srcElement.nodeName!='TEXTAREA') {
+		document.forms.EditView.action.value='Save';
+		displaydeleted();
+		formValidate();
 	}
 }
 
@@ -5645,14 +5696,16 @@ AutocompleteRelation.prototype.MaxResults = function () {
 };
 
 AutocompleteRelation.prototype.MinCharsToSearch = function () {
-	if (typeof Number(this.data.mincharstosearch) === 'number') {
-		return this.data.mincharstosearch;
-	} else if (typeof this.data.mincharstosearch === undefined) {
+	if (typeof this.data.mincharstosearch !== 'undefined') {
+		if (typeof this.data.mincharstosearch === 'number') {
+			return this.data.mincharstosearch;
+		}
 		var ref_module = this.getReferenceModule();
 		if (ref_module !== '' && this.data.mincharstosearch[ref_module] !== undefined) {
 			return this.data.mincharstosearch[ref_module];
 		}
 	}
+	this.data.mincharstosearch = 3;
 	return 3;
 };
 
@@ -6193,7 +6246,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 	window.cbOnDownScrollers = [];
 	window.cbOnUpScrollers = [];
 
-	window.addEventListener('scroll', throttle(cbOnScroll, 10));
+	window.addEventListener('scroll', scrollThrottle(cbOnScroll, 30, 10));
 
 	function cbOnScroll(e) {
 		window.requestAnimationFrame(function () {
@@ -6230,12 +6283,17 @@ window.addEventListener('load', function () {
 		gh.addEventListener('expand', pageHeader.movedown);
 	} else if (gh === null) {
 		pageHeader.initialize();
-		pageHeader.node().classList.add('has-no-global-header');
+		if (pageHeader.node()) {
+			pageHeader.node().classList.add('has-no-global-header');
+		}
 	}
 });
 
 const pageHeader = {
 	'initialize' : () => {
+		if (pageHeader.node() == null) {
+			return;
+		}
 		var h = pageHeader.node().getBoundingClientRect().height;
 
 		if (pageHeader.isCollapsed) {
@@ -6267,7 +6325,7 @@ const pageHeader = {
 	},
 	'OnDownScroll' : () => {
 		if (pageHeader.node() !== null) {
-			if (window.scrollY > pageHeader.stickPoint && !pageHeader.isSticky) {
+			if (window.scrollY > (pageHeader.stickPoint + 2) && !pageHeader.isSticky) {
 				pageHeader.isSticky = true;
 				pageHeader.node().classList.add('page-header_sticky');
 				pageHeader.node().classList.add('slds-is-fixed');
@@ -6282,11 +6340,13 @@ const pageHeader = {
 	'OnUpScroll' : () => {
 		if (pageHeader.node() !== null) {
 			pageHeader.expand();
-			if (window.scrollY < pageHeader.stickPoint && pageHeader.isSticky) {
+			if (window.scrollY < (pageHeader.stickPoint - 2) && pageHeader.isSticky) {
 				pageHeader.isSticky = false;
-				pageHeader.node().classList.remove('page-header_sticky');
-				pageHeader.node().classList.remove('slds-is-fixed');
-				pageHeader.placeholder().style.height = '0px';
+				window.setTimeout(function () {
+					pageHeader.node().classList.remove('page-header_sticky');
+					pageHeader.node().classList.remove('slds-is-fixed');
+					pageHeader.placeholder().style.height = '0px';
+				}, 80);
 				pageHeader.node().style.transform = 'translateY(0px)';
 			}
 		}
@@ -6340,13 +6400,8 @@ function headerOnUpScroll() {
 		csy = window.scrollY;
 
 	if (h !== null) {
-		window.setTimeout(checkHeaderScroll, 50);
-		function checkHeaderScroll() {
-			if (csy <= window.scrollY) {
-				h.classList.remove('header-scrolling');
-				h.dispatchEvent(headerExpand);
-			}
-		}
+		h.classList.remove('header-scrolling');
+		h.dispatchEvent(headerExpand);
 	}
 }
 

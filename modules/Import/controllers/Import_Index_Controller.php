@@ -63,7 +63,7 @@ class Import_Index_Controller {
 			// TODO - Cleanup this once Query Generator support is corrected
 			if ($fieldInstance->getFieldDataType() == 'reference') {
 				$referencedModules = $fieldInstance->getReferenceList();
-				if ($referencedModules[0] == 'Users') {
+				if (isset($referencedModules[0]) && $referencedModules[0] == 'Users') {
 					continue;
 				}
 			}

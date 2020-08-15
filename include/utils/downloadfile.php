@@ -26,20 +26,24 @@ if (!empty($deletecheck) && $adb->query_result($deletecheck, 0, 'deleted') == 1)
 		$filepath = @$adb->query_result($result, 0, 'path');
 		$name = html_entity_decode($name, ENT_QUOTES, $default_charset);
 		$saved_filename = $attachmentsid.'_'.$name;
-		$disk_file_size = filesize($filepath.$saved_filename);
-		$filesize = $disk_file_size + ($disk_file_size % 1024);
-		$fileContent = fread(fopen($filepath.$saved_filename, 'r'), $filesize);
-		header('Content-type: '.$fileType);
-		header('Pragma: public');
-		header('Expires: '.gmdate('D, d M Y H:i:s').' GMT');
-		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-		header('Cache-Control: private');
-		header('Content-Description: File Transfer');
-		header('Content-length: '.$disk_file_size);
-		header('Content-Transfer-Encoding: binary');
-		header('Content-Disposition: attachment; filename="'.$name.'"');
-		echo $fileContent;
-		die();
+		if (file_exists($filepath.$saved_filename)) {
+			$disk_file_size = filesize($filepath.$saved_filename);
+			$filesize = $disk_file_size + ($disk_file_size % 1024);
+			$fileContent = fread(fopen($filepath.$saved_filename, 'r'), $filesize);
+			header('Content-type: '.$fileType);
+			header('Pragma: public');
+			header('Expires: '.gmdate('D, d M Y H:i:s').' GMT');
+			header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+			header('Cache-Control: private');
+			header('Content-Description: File Transfer');
+			header('Content-length: '.$disk_file_size);
+			header('Content-Transfer-Encoding: binary');
+			header('Content-Disposition: attachment; filename="'.$name.'"');
+			echo $fileContent;
+			die();
+		} else {
+			echo getTranslatedString('FILE_HAS_NO_DATA', 'Documents');
+		}
 	} else {
 		echo $app_strings['LBL_RECORD_NOT_FOUND'];
 	}

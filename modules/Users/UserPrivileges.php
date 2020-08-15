@@ -37,6 +37,7 @@ class UserPrivileges {
 	private $parent_roles = null;
 	private $subordinate_roles_users = null;
 	private $defaultOrgSharingPermission = null;
+	private $nosharingarray = array('ROLE'=>array(),'GROUP'=>array());
 
 	public function __construct($userid) {
 		global $cbodUserPrivilegesStorage;
@@ -155,7 +156,7 @@ class UserPrivileges {
 	}
 
 	/**
-	 * @return array(int)
+	 * @return array of integer group IDs
 	 */
 	public function getGroups() {
 		return $this->groups;
@@ -187,7 +188,7 @@ class UserPrivileges {
 	 */
 	public function getModuleSharingRules($tabname, $permission) {
 		$varname = $tabname . '_share_' . $permission . '_permission';
-		return $this->$varname;
+		return (empty($this->$varname) ? $this->nosharingarray : $this->$varname);
 	}
 
 	/**

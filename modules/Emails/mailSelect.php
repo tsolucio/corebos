@@ -23,7 +23,7 @@ if (!strpos($idlist, ':')) {
 $smarty = new vtigerCRM_Smarty;
 
 $userid =  $current_user->id;
-
+$columnlists = $fieldlists = array();
 $querystr = 'select fieldid, fieldname, fieldlabel, columnname from vtiger_field where tabid=? and uitype=13 and vtiger_field.presence in (0,2)';
 $res=$adb->pquery($querystr, array(getTabid($pmodule)));
 $numrows = $adb->num_rows($res);
@@ -33,8 +33,8 @@ for ($i = 0; $i < $numrows; $i++) {
 	$fieldname = $adb->query_result($res, $i, 'fieldname');
 	$permit = getFieldVisibilityPermission($pmodule, $userid, $fieldname);
 	if ($permit == '0') {
-		$temp = $adb->query_result($res, $i, 'columnname');
-		$columnlists[] = $temp;
+		$fieldlists[] = $adb->query_result($res, $i, 'fieldname');
+		$columnlists[] = $adb->query_result($res, $i, 'columnname');
 		$fieldid = $adb->query_result($res, $i, 'fieldid');
 		$fieldlabel = $adb->query_result($res, $i, 'fieldlabel');
 		$value[] = getTranslatedString($fieldlabel, $pmodule);
@@ -154,8 +154,11 @@ if ($single_record && count($columnlists) > 0) {
 			break;
 		default:
 			$minfo = getEntityField($pmodule);
+			$tabid = getTabid($pmodule);
+			getColumnFields($pmodule);
+			$minfo = VTCacheUtils::lookupFieldInfoByColumn($tabid, $minfo['fieldname']);
 			$qg = new QueryGenerator($pmodule, $current_user);
-			$fields = $columnlists;
+			$fields = $fieldlists;
 			$fields[] = $minfo['fieldname'];
 			$qg->setFields($fields);
 			$qg->addCondition('id', $idlist, 'e');
@@ -164,7 +167,7 @@ if ($single_record && count($columnlists) > 0) {
 			foreach ($columnlists as $columnname) {
 				$con_eval = $adb->query_result($result, 0, $columnname);
 				$field_value[$count++] = $con_eval;
-				if ($con_eval != "") {
+				if ($con_eval != '') {
 					$val_cnt++;
 				}
 			}

@@ -10,6 +10,7 @@
  ********************************************************************************/
 $mod_strings = array (
 'CustomerPortal' => 'Portal do Cliente',
+'SINGLE_CustomerPortal' => 'Portal do Cliente',
 'LBL_BASIC_SETTINGS'=>'Configurações Básicas',
 'LBL_ADVANCED_SETTINGS'=>'Configurações Avançadas',
 'LBL_VIEW_ALL_RECORD'=>'Visualizar Todos os Registros Relacionados?',

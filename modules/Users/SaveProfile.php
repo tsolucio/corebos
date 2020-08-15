@@ -97,12 +97,7 @@ for ($i=0; $i<$num_act_per; $i++) {
 			$permission_value = 1;
 		}
 
-		$sql7='insert into vtiger_profile2standardpermissions values(?,?,?,?)';
-		$adb->pquery($sql7, array($profileid, $tab_id, $action_id, $permission_value));
-
-		if ($tab_id ==9) {
-			$adb->pquery($sql7, array($profileid, 16, $action_id, $permission_value));
-		}
+		$adb->pquery('insert into vtiger_profile2standardpermissions values(?,?,?,?)', array($profileid, $tab_id, $action_id, $permission_value));
 	}
 }
 

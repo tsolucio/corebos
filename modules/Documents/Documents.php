@@ -13,7 +13,6 @@ require_once 'include/upload_file.php';
 
 class Documents extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_notes';
 	public $table_index= 'notesid';

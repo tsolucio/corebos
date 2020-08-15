@@ -14,14 +14,14 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'getSearchResults',
-	 'include' => 'include/Webservices/CustomerPortalWS.php',
-	 'handler' => 'vtws_getSearchResults',
-	 'prelogin'=> 0,
-	 'type'    => 'POST',
-	 'parameters' => array(
-		 array('name' => 'query','type' => 'string'),
-		 array('name' => 'search_onlyin','type' => 'string'),
-		 array('name' => 'restrictionids','type' => 'encoded'),
-	 )
+	'name'    => 'getSearchResults',
+	'include' => 'include/Webservices/CustomerPortalWS.php',
+	'handler' => 'vtws_getSearchResults',
+	'prelogin'=> 0,
+	'type'    => 'POST',
+	'parameters' => array(
+		array('name' => 'query','type' => 'string'),
+		array('name' => 'search_onlyin','type' => 'string'),
+		array('name' => 'restrictionids','type' => 'encoded'),
+	)
 );

@@ -23,9 +23,9 @@ require_once 'include/utils/VtlibUtils.php';
 require_once 'include/Webservices/WebserviceEntityOperation.php';
 require_once 'include/Webservices/PreserveGlobal.php';
 
-/* Function to return all the users in the groups that this user is part of.
- * @param $id - id of the user
- * returns Array:UserIds userid of all the users in the groups that this user is part of.
+/** return all the users in the groups that the given user is part of.
+ * @param integer id of the user
+ * @return array user names of all the users in the groups that this user is part of indexed by their ID
  */
 function vtws_getUsersInTheSameGroup($id) {
 	require_once 'include/utils/GetGroupUsers.php';
@@ -542,6 +542,17 @@ function vtws_CreateCompanyLogoFile($fieldname) {
 	throw new WebServiceException(WebServiceErrorCode::$INVALIDTOKEN, "$fieldname file upload failed");
 }
 
+function vtws_getActorModules() {
+	global $adb;
+	$actorrs = $adb->query("SELECT name FROM vtiger_ws_entity WHERE handler_class='VtigerActorOperation' or handler_class='ModTrackerOperation'");
+	$actors = array();
+	while (!$actorrs->EOF) {
+		$row = $actorrs->FetchRow();
+		$actors[] = $row['name'];
+	}
+	return $actors;
+}
+
 function vtws_getActorEntityName($name, $idList) {
 	$db = PearDatabase::getInstance();
 	if (!is_array($idList) && count($idList) == 0) {
@@ -690,7 +701,7 @@ function vtws_saveLeadRelations($leadId, $relatedId, $setype) {
 	for ($i = 0; $i < $rowCount; ++$i) {
 		$recordId = $adb->query_result($result, $i, 'relcrmid');
 		$recordModule = $adb->query_result($result, $i, 'relmodule');
-		$adb->pquery('insert into vtiger_crmentityrel values(?,?,?,?)', array($relatedId, $setype, $recordId, $recordModule));
+		$resultNew = $adb->pquery('insert into vtiger_crmentityrel values(?,?,?,?)', array($relatedId, $setype, $recordId, $recordModule));
 		if ($resultNew === false) {
 			return false;
 		}
@@ -703,7 +714,7 @@ function vtws_saveLeadRelations($leadId, $relatedId, $setype) {
 	for ($i = 0; $i < $rowCount; ++$i) {
 		$recordId = $adb->query_result($result, $i, 'crmid');
 		$recordModule = $adb->query_result($result, $i, 'module');
-		$adb->pquery(
+		$resultNew = $adb->pquery(
 			'insert into vtiger_crmentityrel values(?,?,?,?)',
 			array($relatedId, $setype, $recordId, $recordModule)
 		);

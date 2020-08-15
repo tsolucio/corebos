@@ -12,7 +12,6 @@ require_once 'data/Tracker.php';
 
 class SMSNotifierBase extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_smsnotifier';
 	public $table_index= 'smsnotifierid';

@@ -12,7 +12,6 @@ require_once 'data/Tracker.php';
 
 class cbupdater extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_cbupdater';
 	public $table_index= 'cbupdaterid';
@@ -148,6 +147,14 @@ class cbupdater extends CRMEntity {
 	public function save_module($module) {
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
+		}
+	}
+
+	public function afterImportRecord($rowId, $entityInfo) {
+		global $adb;
+		if (!empty($entityInfo['id'])) {
+			list($wsid, $crmid) = explode('x', $entityInfo['id']);
+			$adb->pquery('update vtiger_cbupdater set filename=?,appcs=? where cbupdaterid=?', array(uniqid(), '0', $crmid));
 		}
 	}
 

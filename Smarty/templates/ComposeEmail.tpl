@@ -16,6 +16,7 @@
 <link REL="SHORTCUT ICON" HREF="themes/images/favicon.ico">
 <link rel="stylesheet" type="text/css" media="all" href="themes/{$THEME}/style.css">
 <script type="text/javascript" src="include/jquery/jquery.js"></script>
+{include file='BrowserVariables.tpl'}
 <script type="text/javascript" src="include/js/general.js"></script>
 <script type="text/javascript" src="include/js/{$LANGUAGE}.lang.js"></script>
 <script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
@@ -27,6 +28,7 @@
 {literal}
 <form name="EditView" method="POST" ENCTYPE="multipart/form-data" action="index.php" onSubmit="if(email_validate(this.form,'')) { VtigerJS_DialogBox.block();} else { return false; }">
 {/literal}
+<input type="hidden" name="merge_template_with" value="{$MERGE_TEMPLATE_WITH}">
 <input type="hidden" name="send_mail" >
 <input type="hidden" name="contact_id" value="{if isset($CONTACT_ID)}{$CONTACT_ID}{/if}">
 <input type="hidden" name="user_id" value="{if isset($USER_ID)}{$USER_ID}{/if}">
@@ -39,6 +41,8 @@
 <input type="hidden" name="return_module" value="{if isset($RETURN_MODULE)}{$RETURN_MODULE}{/if}">
 <input type="hidden" name="popupaction" value="create">
 <input type="hidden" name="hidden_toid" id="hidden_toid">
+<input type="hidden" name="cbcustominfo1" id="cbcustominfo1" value="{if isset($smarty.request.cbcustominfo1)}{$smarty.request.cbcustominfo1|@urlencode}{/if}" />
+<input type="hidden" name="cbcustominfo2" id="cbcustominfo2" value="{if isset($smarty.request.cbcustominfo2)}{$smarty.request.cbcustominfo2|@urlencode}{/if}" />
 <table class="small mailClient" border="0" cellpadding="0" cellspacing="0" width="100%">
 <tbody>
 	<tr>
@@ -56,7 +60,9 @@
 	<td class="cellText" style="padding: 5px;">
 		<input name="from_email" id="from_email" class="txtBox" type="text" value="{if isset($FROM_MAIL)}{$FROM_MAIL}{/if}" style="width: 525px;" placeholder="{'LeaveEmptyForUserEmail'|@getTranslatedString:'Settings'}">
 	</td>
-	<td class="cellText" style="padding: 5px;" align="left" nowrap></td>
+	<td class="cellText" style="padding: 5px;" align="left" nowrap>
+		<input type="checkbox" name="individual_emails" {if $SEND_INDIVIDUAL_EMAILS eq 1}checked{/if}/>{$MOD.LBL_SEND_INDIVIDUAL_EMAILS}
+	</td>
 	</tr>
 {foreach item=row from=$BLOCKS}
 {foreach item=elements from=$row}
@@ -179,7 +185,7 @@
 	<tr>
 	<td colspan="3" class="mailSubHeader" style="padding: 5px;" align="center">
 		<input type='hidden' class='small' name="msgtpopup_type" id="msgtpopup_type" value="MsgTemplate">
-		<input title="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_TITLE}" accessKey="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_KEY}" class="crmbutton small edit" onclick='return vtlib_open_popup_window("","msgtpopup","MsgTemplate","");' type="button" name="button" value=" {$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_LABEL} ">
+		<input title="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_TITLE}" accessKey="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_KEY}" class="crmbutton small edit" onclick='return vtlib_open_popup_window("","msgtpopup","MsgTemplate",document.EditView.parent_type.value+"&relmod_id=0&parent_module="+document.EditView.parent_type.value);' type="button" name="button" value=" {$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_LABEL} ">
 		<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="return email_validate(this.form,'save');" type="button" name="button" value=" {$APP.LBL_SAVE_BUTTON_LABEL} " >&nbsp;
 		<input name="{$MOD.LBL_SEND}" value=" {$APP.LBL_SEND} " class="crmbutton small save" type="button" onclick="return email_validate(this.form,'send');">&nbsp;
 		<input value="{$MOD.LBL_ATTACH_DOCUMENTS}" class="crmbutton small edit" type="button" onclick="searchDocuments()">

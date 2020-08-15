@@ -12,7 +12,6 @@ require_once 'data/Tracker.php';
 
 class cbQuestion extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_cbquestion';
 	public $table_index= 'cbquestionid';
@@ -395,7 +394,7 @@ class cbQuestion extends CRMEntity {
 				$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.decode_html($q->column_fields['qmodule']);
 				if (!empty($q->column_fields['qcondition'])) {
 					$conds = decode_html($q->column_fields['qcondition']);
-					foreach ($params as $param => $value) {
+					foreach ((array)$params as $param => $value) {
 						$conds = str_replace($param, $value, $conds);
 					}
 					$query .= ' WHERE '.$conds;
@@ -412,7 +411,7 @@ class cbQuestion extends CRMEntity {
 				$query .= ';';
 				return array(
 					'module' => $q->column_fields['qmodule'],
-					'columns' => $q->column_fields['qcolumns'],
+					'columns' =>  html_entity_decode($q->column_fields['qcolumns'], ENT_QUOTES, $default_charset),
 					'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
 					'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
 					'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),

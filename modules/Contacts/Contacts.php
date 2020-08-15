@@ -19,7 +19,6 @@ require 'modules/Vtiger/default_module_view.php';
 
 class Contacts extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_contactdetails';
 	public $table_index= 'contactid';

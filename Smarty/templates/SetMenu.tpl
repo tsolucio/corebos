@@ -12,6 +12,15 @@
 {assign var='BLOCKS' value=getSettingsBlocks()}
 {assign var='FIELDS' value=getSettingsFields()}
 {assign var="MODULELABEL" value=$MODULE|@getTranslatedString:$MODULE}
+{if !isset($MODULEICON)}
+	{assign var="MODULEICON" value='settings'}
+{/if}
+{if !isset($MODULESECTION)}
+	{assign var="MODULESECTION" value=$MODULELABEL}
+{/if}
+{if !isset($MODULESECTIONDESC)}
+	{assign var="MODULESECTIONDESC" value=''}
+{/if}
 <div id="page-header-placeholder"></div>
 <div id="page-header" class="slds-page-header slds-m-vertical_medium">
 	<div class="slds-page-header__row">
@@ -22,7 +31,7 @@
 						<span class="slds-icon_container slds-icon-standard-account" title="{$MODULELABEL}">
 							<svg class="slds-icon slds-page-header__icon" id="page-header-icon" aria-hidden="true">
 								<use xmlns:xlink="http://www.w3.org/1999/xlink"
-									xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#settings" />
+									xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#{$MODULEICON}" />
 							</svg>
 							<span class="slds-assistive-text">{$MODULELABEL}</span>
 						</span>
@@ -32,15 +41,16 @@
 					<div class="slds-page-header__name">
 						<div class="slds-page-header__name-title">
 							<h1>
-								<span>{$MODULELABEL}</span>
-								<span class="slds-page-header__title slds-truncate" title="{$MODULELABEL|@addslashes}">
+								<span><a href="index.php?action=index&module=Settings">{$MODULELABEL}</a></span>
+								<span class="slds-page-header__title slds-truncate" title="{$MODULESECTION|@addslashes}">
 									{if !empty($isDetailView) || !empty($isEditView)}
-									<span class="slds-page-header__title slds-truncate" title="{$MODULELABEL|@addslashes}">
+									<span class="slds-page-header__title slds-truncate" title="{$MODULESECTION|@addslashes}">
 										<span class="slds-page-header__name-meta">[ {$TITLEPREFIX} ]</span>
-										{$MODULELABEL|textlength_check:30}
+										{$MODULESECTION|textlength_check:30}
 									</span>
 									{else}
-									<a class="hdrLink" href="index.php?action=index&module=Settings">{$MODULELABEL}</a>
+									<a class="hdrLink" href="index.php?action=index&module=Settings">{$MODULESECTION}</a>
+									<p valign=top class="small cblds-p-v_none">&nbsp;&nbsp;&nbsp;&nbsp;{$MODULESECTIONDESC}</p>
 									{/if}
 								</span>
 							</h1>

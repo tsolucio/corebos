@@ -92,8 +92,13 @@ class VtigerCRMObject {
 		global $adb;
 		$error = false;
 		$adb->startTransaction();
-		$this->instance->retrieve_entity_info($id, $this->moduleName, $deleted);
-		$error = $adb->hasFailedTransaction();
+		try {
+			$this->instance->retrieve_entity_info($id, $this->moduleName, $deleted);
+			$error = $adb->hasFailedTransaction();
+		} catch (\Throwable $th) {
+			//throw $th;
+			$error = true;
+		}
 		$adb->completeTransaction();
 		return !$error;
 	}
@@ -107,8 +112,13 @@ class VtigerCRMObject {
 		}
 
 		$adb->startTransaction();
-		$this->instance->Save($this->getTabName());
-		$error = $adb->hasFailedTransaction();
+		try {
+			$this->instance->save($this->getTabName());
+			$error = $adb->hasFailedTransaction();
+		} catch (\Throwable $th) {
+			//throw $th;
+			$error = true;
+		}
 		$adb->completeTransaction();
 		return !$error;
 	}
@@ -123,8 +133,13 @@ class VtigerCRMObject {
 
 		$adb->startTransaction();
 		$this->instance->mode = 'edit';
-		$this->instance->save($this->getTabName());
-		$error = $adb->hasFailedTransaction();
+		try {
+			$this->instance->save($this->getTabName());
+			$error = $adb->hasFailedTransaction();
+		} catch (\Throwable $th) {
+			//throw $th;
+			$error = true;
+		}
 		$adb->completeTransaction();
 		return !$error;
 	}
@@ -159,8 +174,13 @@ class VtigerCRMObject {
 		global $adb;
 		$error = false;
 		$adb->startTransaction();
-		DeleteEntity($this->getTabName(), $this->getTabName(), $this->instance, $id, 0);
-		$error = $adb->hasFailedTransaction();
+		try {
+			DeleteEntity($this->getTabName(), $this->getTabName(), $this->instance, $id, 0);
+			$error = $adb->hasFailedTransaction();
+		} catch (\Throwable $th) {
+			//throw $th;
+			$error = true;
+		}
 		$adb->completeTransaction();
 		return !$error;
 	}
@@ -177,17 +197,12 @@ class VtigerCRMObject {
 	}
 
 	public function getSEType($id) {
-		global $adb;
-
-		$seType = null;
-		$sql = 'select setype from vtiger_crmentity where crmid=? and deleted=0';
-		$result = $adb->pquery($sql, array($id));
-		if ($result != null && isset($result)) {
-			if ($adb->num_rows($result)>0) {
-				$seType = $adb->query_result($result, 0, 'setype');
-			}
+		$seType = getSalesEntityType($id);
+		if (empty($seType)) {
+			return null;
+		} else {
+			return $seType;
 		}
-		return $seType;
 	}
 }
 ?>

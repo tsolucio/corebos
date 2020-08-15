@@ -104,6 +104,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'If set to 1 the Activity Reminder will be deactivated, if set to 0 the Activity Reminder will be activated. The default is 0. This avoids a lot of noise in the application debug log.',
 ),
+'Debug_Access_Restricted_File' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Debug',
+	'values' => '0 | 1',
+	'definition' => 'If set to 1 a call stack will be output before the "Sorry! Attempt to access restricted file." error message.',
+),
 'Accounts_BlockDuplicateName' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
@@ -377,6 +384,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'OFF | {Business Map ID} | UPDATE',
 	'definition' => 'What to show in page header sub title. Nothing (OFF), the result of a Business Map or the default Updated text.',
 ),
+'Application_EditView_Submit_Form_WithEnter' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Whether to submit edit form (1) or not (0) when the ENTER key is pressed. By default it does not submit.',
+),
 'Application_Upload_MaxSize' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',
@@ -474,6 +488,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '',
 	'definition' => 'Threshold import record limit for immediate import. If record count is more than this, then the import is scheduled through cron job. Default value is 1000',
+),
+'Import_Launch_EventsAndWorkflows' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'yes | no',
+	'definition' => 'Launch events and workflows when importing records. Default value is no',
 ),
 'Export_Field_Separator_Symbol' => array(
 	'status' => 'Implemented',
@@ -1161,6 +1182,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Apply or not a strict clean of the HTML we receive from the compose email body. The default is to apply a less strict clean (1).',
 ),
+'EMail_Send_Individual' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Send separate, individual emails to each recipient instead of one email to all. This is the default behavior of the application.',
+),
 'Workflow_Send_Email_ToCCBCC' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Email CSV',
@@ -1335,6 +1363,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Integration',
 	'values' => 'ID or name of template to use',
 	'definition' => 'When the CustomerPortal_PDF variable is set to PDFMaker or GenDoc, this variable indicates which template should be used to generate Purchase Order PDF. If it is empty the first template found will be used.',
+),
+'CustomerPortal_Default_User' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Integration',
+	'values' => 'user name of the default user to access as',
+	'definition' => 'When accessing an external portal application as a contact or employee, you must use a real coreBOS user to get the permissions. This variable defines that user. The application will look for the selected user on the contact/employee record. If there is none, then the value in this variable will be used.',
 ),
 'Application_Permit_Assign_Up' => array(
 	'status' => 'Implemented',
@@ -1517,6 +1552,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'https://nagix.github.io/chartjs-plugin-colorschemes/colorchart.html',
 	'definition' => 'Defines the color scheme to use when drawing graphs. By default tableau.Tableau10 is set.',
+),
+'Application_CSRF_Valid_IP' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'CSV IPs',
+	'category' => 'Security',
+	'values' => 'Example: 127.0.0.1,192.168.0.100',
+	'definition' => 'Comma separated list of IP addresses from which could bypass CSRF control.',
 ),
 );
 

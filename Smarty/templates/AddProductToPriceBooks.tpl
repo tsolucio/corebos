@@ -20,7 +20,6 @@ function addtopricebook() {
 			var elem = document.addToPB.elements;
 			var ele_len =elem.length;
 			var i=0,j=0;
-	
 			for (i=0; i<ele_len; i++) {
 				if (elem[i].name == yy) {
 					var val = elem[i].value.replace(/^\s+/g, '').replace(/\s+$/g, '');

@@ -133,10 +133,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 			for ($i=0; $i<$noofrows; $i++) {
 				$standardDefined = true;
 				$permission = $adb->query_result($result, $i, 'permissions');
-				$operation = $adb->query_result($result, $i, 'Operation');
-				if (!$operation) {
-					$operation = $adb->query_result($result, $i, 'operation');
-				}
+				$operation = $adb->query_result($result, $i, 'operation');
 
 				if ($permission != 1 || $permission != '1') {
 					$this->hasAccess = true;
@@ -270,9 +267,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		if ($this->fieldColumnMapping === null) {
 			$this->fieldColumnMapping = array();
 			foreach ($this->moduleFields as $fieldName => $webserviceField) {
-				if (strcasecmp($webserviceField->getFieldDataType(), 'file') !== 0) {
-					$this->fieldColumnMapping[$fieldName] = $webserviceField->getColumnName();
-				}
+				$this->fieldColumnMapping[$fieldName] = $webserviceField->getColumnName();
 			}
 			$this->fieldColumnMapping['id'] = $this->idColumn;
 		}
@@ -379,7 +374,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		$tabid = $this->getTabId();
 		$condition = 'vtiger_field.fieldid IN (select min(vtiger_field.fieldid) from vtiger_field where vtiger_field.tabid=? GROUP BY vtiger_field.columnname)';
 		$userprivs = $this->user->getPrivileges();
-		if ($userprivs->hasGlobalReadPermission()) {
+		if ($userprivs->hasGlobalReadPermission() || $this->objectName == 'Users') {
 			$sql = "SELECT vtiger_field.*, '0' as readonly, vtiger_blocks.sequence as blkseq
 				FROM vtiger_field
 				LEFT JOIN vtiger_blocks ON vtiger_field.block=vtiger_blocks.blockid
@@ -492,15 +487,23 @@ class VtigerCRMObjectMeta extends EntityMeta {
 
 	public function getNameFields() {
 		global $adb;
-		$result = $adb->pquery('select fieldname,tablename,entityidfield from vtiger_entityname where tabid = ?', array($this->getEffectiveTabId()));
-		$fieldNames = '';
-		if ($result) {
-			$rowCount = $adb->num_rows($result);
-			if ($rowCount > 0) {
-				$fieldNames = $adb->query_result($result, 0, 'fieldname');
+		$tabid = $this->getEffectiveTabId();
+		$result = $adb->pquery('select fieldname from vtiger_entityname where tabid=?', array($tabid));
+		$fieldNames = array();
+		if ($result && $adb->num_rows($result) > 0) {
+			$labelFields = $adb->query_result($result, 0, 'fieldname');
+			$lfields = explode(',', $labelFields);
+			foreach ($lfields as $key => $columnname) {
+				$fieldinfo = VTCacheUtils::lookupFieldInfoByColumn($tabid, $columnname);
+				if ($fieldinfo === false) {
+					getColumnFields($this->getTabName());
+					$fieldinfo = VTCacheUtils::lookupFieldInfoByColumn($tabid, $columnname);
+				}
+				$lfields[$key] = $fieldinfo['fieldname'];
 			}
+			$fieldNames = $lfields;
 		}
-		return $fieldNames;
+		return implode(',', $fieldNames);
 	}
 
 	public function getName($webserviceId) {

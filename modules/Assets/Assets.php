@@ -12,7 +12,6 @@ require_once 'data/Tracker.php';
 
 class Assets extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_assets';
 	public $table_index= 'assetsid';

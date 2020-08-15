@@ -14,12 +14,21 @@
 *************************************************************************************************/
 
 function vtws_getfilterfields($module, $user) {
+	global $adb, $log;
 	if ($module=='Users') {
 		return array(
 			'fields'=>array('first_name', 'last_name', 'email1'),
 			'linkfields'=>array('first_name', 'last_name'),
 			'pagesize' => intval(GlobalVariable::getVariable('Application_ListView_PageSize', 20, $module)),
 		);
+	}
+	if (in_array($module, vtws_getActorModules())) {
+		$webserviceObject = VtigerWebserviceObject::fromName($adb, $module);
+		$handlerPath = $webserviceObject->getHandlerPath();
+		$handlerClass = $webserviceObject->getHandlerClass();
+		require_once $handlerPath;
+		$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+		return $handler->getFilterFields($module);
 	}
 	if (!vtlib_isEntityModule($module)) {
 		return array(
@@ -35,7 +44,10 @@ function vtws_getfilterfields($module, $user) {
 		$linkfields=array('firstname', 'lastname');
 	}
 	$customView = new CustomView($module);
+	$saveAction = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+	$_REQUEST['action'] = 'ListView';
 	$viewid = $customView->getViewId($module);
+	$_REQUEST['action'] = $saveAction;
 	$viewinfo = $customView->getColumnsListByCvid($viewid);
 	$fields = array();
 	foreach ($viewinfo as $fld) {

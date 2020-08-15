@@ -88,6 +88,13 @@ function writeErrorOutput($operationManager, $error) {
 function writeOutput($operationManager, $data) {
 	setResponseHeaders();
 	$state = new State();
+	if (isset($data['wsmoreinfo'])) {
+		$state->moreinfo = $data['wsmoreinfo'];
+		unset($data['wsmoreinfo']);
+		if (!isset($data['wssuccess'])) {
+			$data = $data['wsresult'];
+		}
+	}
 	if (isset($data['wsresult']) && isset($data['wssuccess'])) {
 		$state->success = $data['wssuccess'];
 		$state->result = $data['wsresult'];
@@ -117,7 +124,8 @@ $sessionManager = new SessionManager();
 try {
 	$operationManager = new OperationManager($adb, $operation, $format, $sessionManager);
 } catch (WebServiceException $e) {
-	echo $e->message;
+	$operationManager = new OperationManager($adb, 'getchallenge', 'json', null);
+	writeErrorOutput($operationManager, $e);
 	die();
 }
 
@@ -165,6 +173,9 @@ try {
 	if (!empty($userid)) {
 		$seed_user = new Users();
 		$current_user = $seed_user->retrieveCurrentUserInfoFromFile($userid);
+		if (!empty($current_user->language)) {
+			$app_strings = return_application_language($current_user->language);
+		}
 	} else {
 		$current_user = null;
 	}

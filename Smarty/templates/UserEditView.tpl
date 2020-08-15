@@ -9,7 +9,6 @@
  ********************************************************************************/
 -->*}
 <script type="text/javascript" src="include/js/ColorPicker2.js"></script>
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
 var cp2 = new ColorPicker('window');
@@ -282,12 +281,11 @@ function check_duplicate() {ldelim}
 				</table>
 				<br>
 				</td></tr>
-				<tr><td class="small cblds-t-align_right"><div align="right"><a href="#top">{$MOD.LBL_SCROLL}</a></div></td></tr>
 				</table>
 			</td>
 			</tr>
 			</table>
-			</form>	
+		</form>
 </td>
 </tr>
 </table>

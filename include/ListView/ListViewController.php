@@ -277,6 +277,7 @@ class ListViewController {
 					$fileIdQuery = 'select attachmentsid from vtiger_seattachmentsrel where crmid=?';
 					$fileIdRes = $db->pquery($fileIdQuery, array($docid));
 					$fileId = $db->query_result($fileIdRes, 0, 'attachmentsid');
+					$fileicon = '';
 					if ($downloadtype == 'I') {
 						$ext =substr($value, strrpos($value, '.') + 1);
 						$ext = strtolower($ext);
@@ -299,20 +300,18 @@ class ListViewController {
 								"' title='".getTranslatedString('LBL_EXTERNAL_LNK', $module)."' hspace='3' align='absmiddle' border='0'>";
 						} else {
 							$value = '--';
-							$fileicon = '';
 						}
 					} else {
 						$value = ' --';
-						$fileicon = '';
 					}
 					if ($fileName != '' && $status == 1) {
 						if ($downloadtype == 'I') {
 							$value = "<a href='index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=downloadfile".
-									"&entityid=$docid&fileid=$fileId' title='".getTranslatedString('LBL_DOWNLOAD_FILE', $module).
-									"' onclick='javascript:dldCntIncrease($docid);'>".textlength_check($value).'</a>';
+								"&entityid=$docid&fileid=$fileId' title='".getTranslatedString('LBL_DOWNLOAD_FILE', $module).
+								"' onclick='javascript:dldCntIncrease($docid);'>".textlength_check($value).'</a>';
 						} elseif ($downloadtype == 'E') {
 							$value = "<a target='_blank' href='$fileName' onclick='javascript:".
-									"dldCntIncrease($docid);' title='".getTranslatedString('LBL_DOWNLOAD_FILE', $module)."'>".textlength_check($value).'</a>';
+								"dldCntIncrease($docid);' title='".getTranslatedString('LBL_DOWNLOAD_FILE', $module)."'>".textlength_check($value).'</a>';
 						} else {
 							$value = ' --';
 						}
@@ -395,7 +394,7 @@ class ListViewController {
 					}
 				} elseif ($field->getFieldDataType() == 'double') {
 					if ($value != '') {
-						$value = CurrencyField::convertToUserFormat($value);
+						$value = CurrencyField::convertToUserFormat($value, $current_user, true);
 					}
 				} elseif ($field->getFieldDataType() == 'url') {
 					$matchPattern = "^[\w]+:\/\/^";
@@ -591,7 +590,7 @@ class ListViewController {
 					}
 				} elseif ($field->getFieldDataType() == 'owner') {
 					if ($fieldName!='assigned_user_id' && false !== strpos($fieldName, '.assigned_user_id')) {
-						$value = textlength_check($this->ownerNameListrel[$fieldName][$value]);
+						$value = empty($this->ownerNameListrel[$fieldName][$value]) ? '' : textlength_check($this->ownerNameListrel[$fieldName][$value]);
 					} else {
 						$value = textlength_check($this->ownerNameList[$fieldName][$value]);
 					}

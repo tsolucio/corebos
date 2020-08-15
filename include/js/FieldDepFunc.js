@@ -72,9 +72,31 @@ function fieldDep_AssignNewValue(change_field, action_field, new_value, old_valu
 	document.getElementsByName(action_field).item(0).value = new_value;
 }
 
+function fieldDep_AssignUser(change_field, action_field, new_value, old_value, parameters) {
+	document.querySelector('input[name="assigntype"][value="U"]').checked=true;
+	document.querySelector('input[name="assigntype"][value="T"]').checked=false;
+	toggleAssignType('U');
+	document.getElementById('assigned_user_id').value = (parameters[0]=='gVTUserID' ? gVTUserID : parameters[0]);
+}
+
+function fieldDep_AssignGroup(change_field, action_field, new_value, old_value, parameters) {
+	document.querySelector('input[name="assigntype"][value="U"]').checked=false;
+	document.querySelector('input[name="assigntype"][value="T"]').checked=true;
+	toggleAssignType('T');
+	document.getElementById('assigned_group_id').value = parameters[0];
+}
+
+function fieldDep_AssignUserSelect(change_field, action_field, new_value, old_value, parameters) {
+	let newuser = (parameters[0]=='gVTUserID' ? gVTUserID : parameters[0]);
+	ExecuteFunctions('getUserName', 'userid='+newuser).then(function (data) {
+		let rdo = JSON.parse(data);
+		document.getElementById(action_field+'_display').value = rdo;
+	});
+	document.getElementById(action_field).value = newuser;
+}
+
 function fieldDep_Format(change_field, action_field, new_value, old_value, parameters) {
 }
 
 function fieldDep_ChangeLabel(change_field, action_field, new_value, old_value, parameters) {
 }
-

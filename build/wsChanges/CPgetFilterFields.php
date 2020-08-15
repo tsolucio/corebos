@@ -14,13 +14,13 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'getfilterfields',
-	 'include' => 'include/Webservices/GetFilterFields.php',
-	 'handler' => 'vtws_getfilterfields',
-	 'prelogin'=> 0,
-	 'type'    => 'POST',
-	 'parameters' => array(
-		 array('name' => 'module','type' => 'string'),
-	 )
+	'name'    => 'getfilterfields',
+	'include' => 'include/Webservices/GetFilterFields.php',
+	'handler' => 'vtws_getfilterfields',
+	'prelogin'=> 0,
+	'type'    => 'POST',
+	'parameters' => array(
+		array('name' => 'module','type' => 'string'),
+	)
 );
 

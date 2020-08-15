@@ -194,7 +194,7 @@ function VTCreateEntityTask($, fieldvaluemapping) {
 		}
 		function forString(opType, mappingno) {
 			var value = $(format('#save_fieldvalues_%s_value', mappingno));
-			value.replaceWith(format('<input type="text" id="save_fieldvalues_%s_value" value="" class="expressionvalue" readonly />', mappingno));
+			value.replaceWith(format('<input type="text" id="save_fieldvalues_%s_value" value="" class="expressionvalue slds-input fieldborder" readonly />', mappingno));
 
 			$('#save_fieldvalues_'+mappingno+'_modulename').prop('disabled', '');
 			var fv = $(format('#save_fieldvalues_%s_value', mappingno));

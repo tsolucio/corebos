@@ -28,4 +28,4 @@
 
 <script>
 	jQuery("#calc").draggable({ldelim} handle: "#calc_Handle" {rdelim});
-</script>	
+</script>

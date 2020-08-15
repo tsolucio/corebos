@@ -18,7 +18,6 @@
 }
 </style>
 {/literal}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script type="text/javascript">
 {literal}
 function UpdateProfile() {
@@ -334,10 +333,6 @@ function UpdateProfile() {
 	  </table></td>
 	  </tr>
 	  </tbody></table>
-	<p>&nbsp;</p>
-	<table border="0" cellpadding="5" cellspacing="0" width="100%">
-	<tbody><tr><td class="small cblds-t-align_right" align="right" nowrap="nowrap"><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
-	</tbody></table>
 	</td>
 	</tr>
 	</tbody></table>

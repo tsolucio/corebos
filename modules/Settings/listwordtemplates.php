@@ -30,7 +30,7 @@ for ($i=0; $i < $num_rows; $i++) {
 	$wordtemplatearray['filename'] = $adb->query_result($result, $i, 'filename');
 	$wordtemplatearray['filetype'] = $adb->query_result($result, $i, 'filetype');
 	$wordtemplatearray['filesize'] = $adb->query_result($result, $i, 'filesize');
-	$return_data []= $wordtemplatearray;
+	$return_data[]= $wordtemplatearray;
 }
 require_once 'include/utils/UserInfoUtil.php';
 global $app_strings, $mod_strings, $theme,$default_charset;

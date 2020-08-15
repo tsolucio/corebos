@@ -17,10 +17,6 @@ require_once 'include/database/PearDatabase.php';
  *  It is intended to be called when the check for audit trail is enabled.
  **/
 class AuditTrail {
-
-	public $log;
-	public $db;
-
 	public $auditid;
 	public $userid;
 	public $module;
@@ -32,8 +28,6 @@ class AuditTrail {
 	public $table_name = 'vtiger_audit_trial';
 
 	public function __construct() {
-		$this->log = LoggerManager::getLogger('audit_trial');
-		$this->db = PearDatabase::getInstance();
 	}
 
 	public $sortby_fields = array('module', 'action', 'actiondate', 'recordid');

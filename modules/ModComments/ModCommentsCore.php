@@ -13,7 +13,6 @@ require_once 'vtlib/Vtiger/Module.php';
 
 class ModCommentsCore extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_modcomments';
 	public $table_index= 'modcommentsid';

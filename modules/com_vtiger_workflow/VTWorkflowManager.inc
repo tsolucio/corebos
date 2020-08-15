@@ -362,7 +362,7 @@ class VTWorkflowManager {
 		$workflow->relatemodule = '';
 		$workflow->wfstarton = '';
 		$workflow->wfendon = '';
-		$workflow->active = '';
+		$workflow->active = 'true';
 		return $workflow;
 	}
 

@@ -438,12 +438,6 @@ function getcalAction(obj, Lay, id, view, hour, dateVal, type) {
 		var OptionData = '';
 	}
 	document.getElementById('idlist').value = id;
-	document.change_owner.hour.value = hour;
-	document.change_owner.day.value = day;
-	document.change_owner.view.value = view;
-	document.change_owner.month.value = month;
-	document.change_owner.year.value = year;
-	document.change_owner.subtab.value = type;
 	if (complete) {
 		complete.href='javascript:updateStatus('+id+',\''+heldstatus+'\',\''+view+'\','+hour+','+day+','+month+','+year+',\''+type+'\')';
 	}
@@ -464,17 +458,6 @@ function dispLayer(lay) {
 	var tagName = document.getElementById(lay);
 	tagName.style.visibility = 'visible';
 	tagName.style.display = 'block';
-}
-
-//check whether user form selected or group form selected
-function checkgroup() {
-	if (document.getElementById('group_checkbox').checked) {
-		document.change_owner.lead_group_owner.style.display = 'block';
-		document.change_owner.lead_owner.style.display = 'none';
-	} else {
-		document.change_owner.lead_group_owner.style.display = 'none';
-		document.change_owner.lead_owner.style.display = 'block';
-	}
 }
 
 function delActivity(id, view, hour, day, month, year, subtab) {

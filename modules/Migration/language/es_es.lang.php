@@ -5,10 +5,8 @@
 *  Version      : vt5.0.4
 *  Created Date : 2008-01-18 17:46:07 Last change : 2008-01-20 00:48:29
 *  Author       : JPL TSolucio, S.L.  -  rasomu
-*  License      : 
-
+*  License      :
 ***********************************************************/
-
 
 $mod_strings = array (
       'LBL_MIGRATE_INFO' => 'Introduzca los Valores para Migrar los Datos desde la versión<b><i> Anterior </i></b> a la <b><i> Actual (Última) de vtigerCRM </i></b>',

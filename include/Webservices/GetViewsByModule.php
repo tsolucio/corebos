@@ -15,9 +15,47 @@
 require_once 'modules/cbCVManagement/cbCVManagement.php';
 
 function getViewsByModule($module, $user) {
+	global $adb, $log;
+	// pickup meta data of module
+	$webserviceObject = VtigerWebserviceObject::fromName($adb, $module);
+	$handlerPath = $webserviceObject->getHandlerPath();
+	$handlerClass = $webserviceObject->getHandlerClass();
+	require_once $handlerPath;
+	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+	$meta = $handler->getMeta();
+	$mainModule = $meta->getTabName();  // normalize module name
+	// check modules
+	if (!$meta->isModuleEntity()) {
+		throw new WebServiceException('INVALID_MODULE', "Given module ($module) cannot be found");
+	}
+	if ($module=='Users') {
+		return array(
+			'filters'=>array(array(
+				'name' => 'All',
+				'status' => '1',
+				'advcriteria' => '[]',
+				'advcriteriaWQL' => '',
+				'advcriteriaEVQL' => '',
+				'stdcriteria' => '[]',
+				'stdcriteriaWQL' => '',
+				'stdcriteriaEVQL' => '',
+				'fields' => array('first_name', 'last_name', 'email1'),
+				'default' => true,
+			)),
+			'linkfields'=>array('first_name', 'last_name'),
+			'pagesize' => intval(GlobalVariable::getVariable('Application_ListView_PageSize', 20, $module)),
+		);
+	}
+
+	// check permission on module
+	$entityName = $meta->getEntityName();
 	$types = vtws_listtypes(null, $user);
-	if (!in_array($module, $types['types'])) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
+	if (!in_array($entityName, $types['types'])) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to perform the operation on module ($mainModule) is denied");
+	}
+
+	if (!$meta->hasReadAccess()) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read module is denied');
 	}
 	$focus = CRMEntity::getInstance($module);
 	$linkfields=array($focus->list_link_field);
@@ -29,6 +67,7 @@ function getViewsByModule($module, $user) {
 	return array(
 		'filters' => $viewinfo,
 		'linkfields' => $linkfields,
+		'pagesize' => intval(GlobalVariable::getVariable('Application_ListView_PageSize', 20, $module)),
 	);
 }
 
@@ -37,7 +76,7 @@ function getViewsByModule($module, $user) {
  * @return array view information
  */
 function cbws_getViewsInformation($viewids, $module) {
-	global $adb, $current_user, $app_strings, $currentModule;
+	global $adb, $app_strings, $currentModule;
 	$currentModule = $module;
 	$dft = cbCVManagement::getDefaultView($module);
 	$customView = new CustomView($module);
@@ -53,7 +92,6 @@ function cbws_getViewsInformation($viewids, $module) {
 			'name' => $cvrow['viewname'],
 			'status' => $cvrow['status'],
 		);
-		$viewname = $cvrow['viewname'];
 		//$advft_criteria = json_encode($customView->getAdvFilterByCvid($cvrow['cvid']));
 		$advft_criteria = $customView->getAdvFilterByCvid($cvrow['cvid']);
 		$advft = array();
@@ -86,8 +124,9 @@ function cbws_getViewsInformation($viewids, $module) {
 		}
 		$filter['advcriteria'] = json_encode($advft);
 		$filter['advcriteriaWQL'] = $customView->getCVAdvFilterSQL($cvrow['cvid'], true);
+		$filter['advcriteriaEVQL'] = $customView->getCVAdvFilterEVQL($cvrow['cvid']);
 		$stdfilter = $customView->getStdFilterByCvid($cvrow['cvid']);
-		if (is_null($stdfilter['columnname'])) {
+		if (empty($stdfilter['columnname'])) {
 			$filter['stdcriteria'] = '[]';
 		} else {
 			$stdfltcol = explode(':', $stdfilter['columnname']);
@@ -101,6 +140,14 @@ function cbws_getViewsInformation($viewids, $module) {
 			));
 		}
 		$filter['stdcriteriaWQL'] = $customView->getCVStdFilterSQL($cvrow['cvid'], true);
+		$filter['stdcriteriaEVQL'] = $customView->getCVStdFilterEVQL($cvrow['cvid']);
+		$viewinfo = $customView->getColumnsListByCvid($cvrow['cvid']);
+		$fields = array();
+		foreach ($viewinfo as $fld) {
+			$finfo=explode(':', $fld);
+			$fields[]=($finfo[1]=='smownerid' ? 'assigned_user_id' : $finfo[2]);
+		}
+		$filter['fields'] = $fields;
 		$filter['default'] = ($dft==$cvrow['cvid']);
 		$filters[$cvrow['cvid']] = $filter;
 	}

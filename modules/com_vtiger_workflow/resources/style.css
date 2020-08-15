@@ -52,7 +52,7 @@
 }
 
 #select_date_days{
-	width:50px;
+	width:100%;
 }
 
 .box{
@@ -81,14 +81,6 @@
 	margin-bottom: 10px;
 }
 
-.expressionvalue {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 11px;
-	color: #000000;
-	background-color: #EEEEEE;
-	width: 200px;
-}
-
 .condition_group_block {
 	border : 1px solid #DADADA;
 	padding : 5px;
@@ -99,4 +91,9 @@
 	padding : 5px;
 	margin : 5px;
 	text-align : center;
+}
+
+/* Overriding the LDS .slds-input[readonly] { border-color: transparent} this adds a border color similar to LDS */
+.fieldborder {
+	border-color: #dddbda !important;
 }

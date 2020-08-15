@@ -127,7 +127,7 @@ $smarty->assign('THEME', $theme);
 $smarty->assign('ERROR', $error);
 $smarty->assign('ERRORMSG', $errmsg);
 $smarty->assign('CBUPDATES', $cbupdatesfound);
-include 'modules/cbupdater/forcedButtons.php';
+include 'modules/cbupdater/cbupdButtons.php';
 $smarty->assign('CHECK', $tool_buttons);
 $smarty->display('modules/cbupdater/getupdates.tpl');
 ?>

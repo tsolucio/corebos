@@ -46,7 +46,7 @@ function executeBusinessAction($businessactionid, $context, $user) {
 		$context['module'] = getSalesEntityType($crmid);
 	}
 	$currentModule = $context['module'];
-	if (empty($context['MODE'])) {
+	if (!isset($context['MODE'])) {
 		$context['MODE'] = 'edit';
 		$context['mode'] = 'edit';
 	}
@@ -67,5 +67,4 @@ function executeBusinessAction($businessactionid, $context, $user) {
 	} else {
 		throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid parameter: business action (only block detail view widgets supported)');
 	}
-	return $return;
 }

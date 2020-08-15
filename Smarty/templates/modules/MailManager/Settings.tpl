@@ -22,7 +22,7 @@
                 </select></td>
         </tr>
     </table>
-    
+
     <div id="settings_details" {if $SERVERNAME neq ''} style="display:block;" {else} style="display:none;"{/if}>
         <table width="100%" cellpadding=5 cellspacing=0 border=0 class="small" style='clear: both;'>
             <tr>
@@ -49,7 +49,7 @@
                 </td>
             </tr>
         </table>
-        
+
         <div id="additional_settings" {if $SERVERNAME eq 'other'} style="display:block;"{else} style="display:none;" {/if}>
         <table width="100%" cellpadding=5 cellspacing=0 border=0 class="small" style='clear: both;'>
             <tr>

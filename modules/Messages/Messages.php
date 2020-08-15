@@ -12,7 +12,6 @@ require_once 'data/Tracker.php';
 
 class Messages extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_messages';
 	public $table_index= 'messagesid';
@@ -255,7 +254,7 @@ class Messages extends CRMEntity {
 			$mod->setRelatedList($module, 'Messages', array('ADD'), 'get_dependents_list');
 			// Add followup fields on CRM emails
 			$mod = Vtiger_Module::getInstance('Emails');
-			$blockInstance = VTiger_Block::getInstance('LBL_EMAIL_INFORMATION', $mod);
+			$blockInstance = Vtiger_Block::getInstance('LBL_EMAIL_INFORMATION', $mod);
 			$field = new Vtiger_Field();
 			$field->name = 'bounce';
 			$field->label= 'Bounce';

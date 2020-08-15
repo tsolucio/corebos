@@ -274,7 +274,12 @@ FieldDependencies.prototype.fieldValueChange = function (targetFields) {
 		field=targetFields[i]['field'];
 		value=targetFields[i]['value'];
 		if (document.getElementsByName(field).item(0) !== undefined && document.getElementsByName(field).item(0) !== null) {
-			document.getElementsByName(field).item(0).value=value;
+			let inputfld = document.getElementsByName(field).item(0);
+			if (inputfld.type == 'checkbox') {
+				inputfld.checked = !(value=='0' || value=='false' || value=='' || value=='null' || value=='yes');
+			} else {
+				inputfld.value = value;
+			}
 		}
 	}
 

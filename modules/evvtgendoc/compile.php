@@ -1426,7 +1426,7 @@ if (!function_exists('elimina_puntuacion')) {
 		'&Ecirc;' => 'E',
 		'&Icirc;' => 'I',
 		'&Ocirc;' => 'O',
-		'&ucirc;' => 'U',
+		'&Ucirc;' => 'U',
 
 		'&atilde;' => 'a',
 		'&etilde;' => 'e',
@@ -1435,7 +1435,7 @@ if (!function_exists('elimina_puntuacion')) {
 		'&utilde;' => 'u',
 
 		'&Atilde;' => 'A',
-		'&etilde;' => 'E',
+		'&Etilde;' => 'E',
 		'&Itilde;' => 'I',
 		'&Otilde;' => 'O',
 		'&Utilde;' => 'U',
@@ -1470,7 +1470,7 @@ if (!function_exists('elimina_puntuacion')) {
 		'&Egrave' => 'e',
 		'&Igrave' => 'i',
 		'&Ograve' => 'o',
-		'&Igrave' => 'u',
+		'&Ugrave' => 'u',
 
 		'&aacute' => 'a',
 		'&eacute' => 'e',

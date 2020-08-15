@@ -14,10 +14,10 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'getPortalUserDateFormat',
-	 'include' => 'include/Webservices/CustomerPortalWS.php',
-	 'handler' => 'vtws_getPortalUserDateFormat',
-	 'prelogin'=> 0,
-	 'type'    => 'POST',
-	 'parameters' => array()
+	'name'    => 'getPortalUserDateFormat',
+	'include' => 'include/Webservices/CustomerPortalWS.php',
+	'handler' => 'vtws_getPortalUserDateFormat',
+	'prelogin'=> 0,
+	'type'    => 'POST',
+	'parameters' => array()
 );

@@ -49,7 +49,7 @@ if (empty($zipfile)) {
 
 function cbupd_getfile() {
 	global $mod_strings, $app_strings, $currentModule;
-	include 'modules/cbupdater/forcedButtons.php';
+	include 'modules/cbupdater/cbupdButtons.php';
 	$smarty = new vtigerCRM_Smarty();
 	$smarty->assign('APP', $app_strings);
 	$smarty->assign('MOD', $mod_strings);

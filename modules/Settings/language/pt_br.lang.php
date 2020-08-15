@@ -763,6 +763,11 @@ $mod_strings = array(
 'LBL_MESSAGES_FROM_LASTSCAN'=>'Mensagens do último rastreamento',
 'LBL_MARK_MESSAGE_AS'=>'Marcar mensagem como',
 'LBL_ASSIGN' => 'Atribuir a',
+'LBL_MUSTBERELATED' => 'Must be related with record',
+'LBL_ADDEMAILAS' => 'Add Email as',
+'LBL_ADDCOMMENTEMAIL' => 'As comment and email',
+'LBL_ADDLINKEMAIL' => 'As link in comment and email',
+'LBL_ADDONLYEMAIL' => 'Only email',
 //Added for the workflow module
 'LBL_LIST_WORKFLOWS'=>'Workflows',
 'LBL_LIST_WORKFLOWS_DESCRIPTION' => 'Criar e editar workflows',

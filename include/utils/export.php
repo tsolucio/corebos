@@ -75,6 +75,20 @@ function br2nl_vt($str) {
 	$log->debug('< br2nl_vt');
 	return $str;
 }
+// Function to obtain the visible columns from filter
+function obtainVisibleColumnNames(&$l, $k) {
+	//vtiger_contactaddress:mailingcountry:mailingcountry:Contacts_Mailing_Country:V
+	$filter=explode(':', $l);
+	$module_columnname=explode('_', $filter[3]);
+	$l='';
+	for ($i = 1; $i<count($module_columnname); $i++) {
+		if ($i != 1) {
+			$l .= ' '.$module_columnname[$i];
+		} else {
+			$l .=$module_columnname[$i];
+		}
+	}
+}
 
 /**
  * This function exports all the data for a given module
@@ -94,13 +108,14 @@ function export($type) {
 	}
 	$log = LoggerManager::getLogger('export_'.$type);
 
-	$oCustomView = new CustomView("$type");
-	$viewid = $oCustomView->getViewId("$type");
+	$oCustomView = new CustomView($type);
+	$viewid = $oCustomView->getViewId($type);
 	$sorder = $focus->getSortOrder();
 	$order_by = $focus->getOrderBy();
 
 	$search_type = vtlib_purify($_REQUEST['search_type']);
 	$export_data = vtlib_purify($_REQUEST['export_data']);
+	$filtercolumns = (isset($_REQUEST['visiblecolumns']) && $_REQUEST['visiblecolumns']=='on');
 
 	if (isset($_SESSION['export_where']) && $_SESSION['export_where']!='' && $search_type == 'includesearch') {
 		$where =$_SESSION['export_where'];
@@ -194,7 +209,20 @@ function export($type) {
 	$result = $adb->pquery($query, $params, true, "Error exporting $type: <BR>$query");
 	$fields_array = $adb->getFieldsArray($result);
 	$fields_array = array_diff($fields_array, array('user_name'));
-
+	if ($filtercolumns) {
+		$visiblecolumns_array = $oCustomView->getColumnsListByCvid($viewid);
+		array_walk($visiblecolumns_array, 'obtainVisibleColumnNames');
+		$fields_array = array_filter($fields_array, function ($efield) use ($visiblecolumns_array) {
+			return in_array($efield, $visiblecolumns_array);
+		});
+		$fields_array[] = 'cbuuid';
+	}
+	$columnsToExport = array_map(
+		function ($field) {
+			return strtolower($field);
+		},
+		$fields_array
+	);
 	$__processor = new ExportUtils($type, $fields_array);
 
 	$CSV_Separator = GlobalVariable::getVariable('Export_Field_Separator_Symbol', ',', $type);
@@ -217,6 +245,9 @@ function export($type) {
 		$new_arr = array();
 		$val = $__processor->sanitizeValues($val);
 		foreach ($val as $key => $value) {
+			if ($key != 'cbuuid' && !in_array($key, $columnsToExport)) {
+				continue;
+			}
 			if ($type == 'Documents' && $key == 'description') {
 				$value = strip_tags($value);
 				$value = str_replace('&nbsp;', '', $value);

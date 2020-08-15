@@ -989,16 +989,6 @@ function mailer_export() {
 	return false;
 }
 
-function checkgroup() {
-	if (document.getElementById('group_checkbox').checked) {
-		document.change_ownerform_name.lead_group_owner.style.display = 'block';
-		document.change_ownerform_name.lead_owner.style.display = 'none';
-	} else {
-		document.change_ownerform_name.lead_owner.style.display = 'block';
-		document.change_ownerform_name.lead_group_owner.style.display = 'none';
-	}
-}
-
 function callSearch(searchtype) {
 	for (var i = 1; i <= 26; i++) {
 		var data_td_id = 'alpha_' + eval(i);
@@ -1087,5 +1077,132 @@ function removeDiv(ID) {
 	var node2Rmv = getObj(ID);
 	if (node2Rmv) {
 		node2Rmv.parentNode.removeChild(node2Rmv);
+	}
+}
+
+function runBAScriptFromListView(scriptname, module, callback) {
+	if (document.getElementById('allids').value=='' && document.getElementById('allselectedboxes').value=='') {
+		alert(alert_arr.SELECT);
+	} else {
+		var excludedRecords = document.getElementById('excludedRecords').value;
+		var select_options = document.getElementById('allselectedboxes').value;
+		var searchurl = document.getElementById('search_url').value;
+		var numOfRows = document.getElementById('numOfRows').value;
+		var idstring = '';
+		var viewid = getviewId();
+		if (select_options != 'all') {
+			var x = select_options.split(';');
+			var count = x.length;
+			if (count > 1) {
+				idstring = select_options;
+			} else {
+				alert(alert_arr.SELECT);
+				return false;
+			}
+		} else {
+			idstring = select_options;
+			count = numOfRows;
+		}
+		if (count > getMaxMassOperationLimit()) {
+			var confirm_str = alert_arr.MORE_THAN_500;
+			if (confirm(confirm_str)) {
+				var confirm_status = true;
+			} else {
+				return false;
+			}
+		} else {
+			confirm_status = true;
+		}
+
+		if (confirm_status) {
+			if (idstring) {
+				VtigerJS_DialogBox.block();
+				VtigerJS_DialogBox.showbusy();
+				let url = 'module='+module+'&action='+module+'Ajax&file='+scriptname;
+				url += '&ids=' + encodeURIComponent(idstring);
+				url += '&excludedRecords=' + encodeURIComponent(excludedRecords);
+				url += '&viewname=' +encodeURIComponent(viewid);
+				url += '&searchurl=' +encodeURIComponent(searchurl);
+				jQuery.ajax({
+					method: 'POST',
+					url: 'index.php?'+url
+				}).done(function (response) {
+					VtigerJS_DialogBox.unblock();
+					VtigerJS_DialogBox.hidebusy();
+					if (typeof callback == 'function') {
+						callback(response);
+					}
+				});
+			}
+		}
+	}
+}
+
+function runBAScriptFromListViewSSE(scriptname, module, eventsink, parameters2send) {
+	if (document.getElementById('allids').value=='' && document.getElementById('allselectedboxes').value=='') {
+		alert(alert_arr.SELECT);
+	} else {
+		var excludedRecords = document.getElementById('excludedRecords').value;
+		var select_options = document.getElementById('allselectedboxes').value;
+		var searchurl = document.getElementById('search_url').value;
+		var numOfRows = document.getElementById('numOfRows').value;
+		var idstring = '';
+		var viewid = getviewId();
+		if (select_options != 'all') {
+			var x = select_options.split(';');
+			var count = x.length;
+			if (count > 1) {
+				idstring = select_options;
+			} else {
+				alert(alert_arr.SELECT);
+				return false;
+			}
+		} else {
+			idstring = select_options;
+			count = numOfRows;
+		}
+		if (count > getMaxMassOperationLimit()) {
+			var confirm_str = alert_arr.MORE_THAN_500;
+			if (confirm(confirm_str)) {
+				var confirm_status = true;
+			} else {
+				return false;
+			}
+		} else {
+			confirm_status = true;
+		}
+
+		if (confirm_status && idstring) {
+			var sentForm = new Object();
+			sentForm['module'] = module;
+			sentForm.SSE_SOURCE_ACTION = scriptname;
+			sentForm.SSE_SOURCE_KEY = 'runBAScript'+corebos_browsertabID;
+			var selectedinfo = {
+				'ids': encodeURIComponent(idstring),
+				'excludedRecords': encodeURIComponent(excludedRecords),
+				'viewname': encodeURIComponent(viewid),
+				'searchurl': encodeURIComponent(searchurl),
+			};
+			parameters2send = parameters2send || [];
+			parameters2send.forEach(element => {
+				let e = document.getElementById(element);
+				if (e) {
+					selectedinfo[element] = e.value;
+				}
+			});
+			ExecuteFunctions('setSetting', 'skey='+sentForm.SSE_SOURCE_KEY+'&svalue='+JSON.stringify(selectedinfo)).then(function (response) {
+			}, function (error) {
+				console.log('error', error);
+			});
+			var worker = new Worker('massedit-worker.js');
+			//a message is received
+			worker.postMessage(sentForm);
+			worker.addEventListener('message', eventsink, false);
+			worker.postMessage(true);
+			var rdo = document.getElementById('relresultssection');
+			rdo.style.visibility = 'visible';
+			rdo.style.display = 'block';
+			document.getElementById('massedit').style.display = 'none';
+		}
 	}
 }

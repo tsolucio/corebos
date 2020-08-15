@@ -15,14 +15,15 @@
 	<table align="center" cellpadding="5" cellspacing="0" width="95%" class="mailClient importLeadUI small">
 	   <tr>
 		<td height="50" valign="middle" align="left" class="mailClientBg genHeaderSmall">
-			{$MODULE|getTranslatedString:$MODULE} 
+			{$MODULE|getTranslatedString:$MODULE}
 		</td>
 	   </tr>
 	   <tr><td>&nbsp;</td></tr>
 	   <tr>
 		<td style="padding-left:140px;">
-		{$MESSAGE} 
-		 <br><br><br>		 </td>
+		{$MESSAGE}
+		<br><br><br>
+		</td>
        </tr>
 	   <tr>
 	     <td class="reportCreateBottom" >
@@ -38,9 +39,6 @@
                  <input type="hidden" name="parenttab" id="parenttab" value="{$PARENTTAB}">
                  <input title="LBL_FINISHED'" accessKey="" class="crmbutton small save" type="submit" name="button" value="  {$MOD.LBL_FINISHED}  "  onclick="this.form.action.value=this.form.return_action.value;this.form.return_module.value=this.form.return_module.value;return true;">
 	     </form></td>
-		
-		
-		
 		<td align="left"  width='50%'>
 			{if $UNDO neq 'yes'}
 			 <form name="Import" method="POST" action="index.php">

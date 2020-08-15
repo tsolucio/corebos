@@ -21,9 +21,9 @@
     	<tr>
     		<td rowspan="2" valign="top" width="50"><img src="{'vtlib_modmng.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" title="{$MOD.LBL_USERS}" border="0" height="48" width="48"></td>
     		<td class="heading2" valign="bottom">
-    		
-    		<b><a href="index.php?module=Settings&action=ModuleManager&parenttab=Settings">{'VTLIB_LBL_MODULE_MANAGER'|@getTranslatedString:'Settings'}</a> > 
-    	<a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule=Calendar4You&parenttab=Settings">{'Calendar4You'|@getTranslatedString:'Calendar4You'}</a> > 
+
+		<b><a href="index.php?module=Settings&action=ModuleManager&parenttab=Settings">{'VTLIB_LBL_MODULE_MANAGER'|@getTranslatedString:'Settings'}</a> >
+		<a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule=Calendar4You&parenttab=Settings">{'Calendar4You'|@getTranslatedString:'Calendar4You'}</a> >
 			{$MOD.LBL_PROFILES}
     	</tr>
     	<tr>
@@ -32,7 +32,6 @@
     </tbody>
     </table>
     <br />
-    
     <div style="padding:10px;">
         <table border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr class="small">
@@ -41,7 +40,7 @@
                 <td><img src="{'prvPrfTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
             </tr>
         </table>
-        
+
         <form name="profiles_privilegies" action="index.php" method="post" >
         <input type="hidden" name="module" value="Calendar4You" />
         <input type="hidden" name="action" value="ProfilesPrivilegies" />
@@ -67,7 +66,6 @@
                         <td class="colHeader" width="20%" align="center">{$MOD.LBL_VIEW}</td>
                         <td class="colHeader" width="20%" align="center">{$MOD.LBL_DELETE}</td>
                     </tr>
-                    
                     {foreach item=arr from=$PERMISSIONS}
                         {foreach key=profile_name item=profile_arr from=$arr}
                             <tr>
@@ -75,10 +73,10 @@
                                     {$profile_name}
                                 </td>
                                 <td class="cellText" align="center">
-                                    <input type="checkbox" {$profile_arr.EDIT.checked} id="{$profile_arr.EDIT.name}" name="{$profile_arr.EDIT.name}" onclick="other_chk_clicked(this, '{$profile_arr.DETAIL.name}')"/>                                    
+                                    <input type="checkbox" {$profile_arr.EDIT.checked} id="{$profile_arr.EDIT.name}" name="{$profile_arr.EDIT.name}" onclick="other_chk_clicked(this, '{$profile_arr.DETAIL.name}')"/>
                                 </td>
                                 <td class="cellText" align="center">
-                                    <input type="checkbox" {$profile_arr.DETAIL.checked} id="{$profile_arr.DETAIL.name}" name="{$profile_arr.DETAIL.name}" onclick="view_chk_clicked(this, '{$profile_arr.EDIT.name}', '{$profile_arr.DELETE.name}');"/>                                    
+                                    <input type="checkbox" {$profile_arr.DETAIL.checked} id="{$profile_arr.DETAIL.name}" name="{$profile_arr.DETAIL.name}" onclick="view_chk_clicked(this, '{$profile_arr.EDIT.name}', '{$profile_arr.DELETE.name}');"/>
                                 </td>
                                 <td class="cellText" align="center">
                                     <input type="checkbox" {$profile_arr.DELETE.checked} id="{$profile_arr.DELETE.name}" name="{$profile_arr.DELETE.name}" onclick="other_chk_clicked(this, '{$profile_arr.DETAIL.name}')"/>
@@ -91,7 +89,6 @@
         </table>
         </form>
     </div>
-    
     </div>
 	</td>
     </tr>
@@ -108,7 +105,7 @@ function view_chk_clicked(source_chk, edit_chk_id, delete_chk_id){
     }
 }
 
-function other_chk_clicked(source_chk, detail_chk){   
+function other_chk_clicked(source_chk, detail_chk) {
     if(source_chk.checked == true){
         document.getElementById(detail_chk).checked = true;
     }

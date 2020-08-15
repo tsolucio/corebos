@@ -2188,8 +2188,7 @@ function decideFilePath() {
 		$filepath.='/';
 	}
 
-	$saveStrategy = GlobalVariable::getVariable('Application_Storage_SaveStrategy', 'dates');
-	switch (strtolower($saveStrategy)) {
+	switch (strtolower(GlobalVariable::getVariable('Application_Storage_SaveStrategy', 'dates'))) {
 		case 'crmid':
 			// CRMID in folder
 			if (isset($_REQUEST['return_id'])) {
@@ -2203,7 +2202,7 @@ function decideFilePath() {
 				//create new folder
 				mkdir($filepath);
 			}
-			$log->debug("Strategy CRMID filepath=\"$filepath\"");
+			$log->debug('Strategy CRMID filepath: '.$filepath);
 			break;
 		case 'dates':
 		default:
@@ -2384,6 +2383,9 @@ function getTemplateDetails($templateid, $crmid = null) {
 		}
 	}
 	if (!empty($crmid)) {
+		if (strpos($crmid, 'x')>0) {
+			list($wsid, $crmid) = explode('x', $crmid);
+		}
 		require_once 'include/Webservices/DescribeObject.php';
 		$type = getSalesEntityType($crmid);
 		$obj = vtws_describe($type, $current_user);
@@ -3015,10 +3017,7 @@ function ChangeTypeOfData_Filter($table_name, $column_name, $type_of_data) {
 		//Lead Related Fields
 		'vtiger_leaddetails:email' => 'V',
 		'vtiger_leaddetails:secondaryemail' => 'V',
-		//Documents Related Fields
-		'vtiger_senotesrel:crmid' => 'V',
 		//Calendar Related Fields
-		'vtiger_seactivityrel:crmid' => 'V',
 		'vtiger_seactivityrel:contactid' => 'V',
 		'vtiger_recurringevents:recurringtype' => 'V',
 		//HelpDesk Related Fields
@@ -3205,6 +3204,9 @@ function checkFileAccessForInclusion($filepath) {
 
 	if (stripos($realfilepath, $rootdirpath) !== 0 || in_array($filePathParts[0], $unsafeDirectories)) {
 		global $default_charset;
+		if (GlobalVariable::getVariable('Debug_Access_Restricted_File', 0)) {
+			debug_print_backtrace();
+		}
 		echo 'Sorry! Attempt to access restricted file.<br>';
 		echo 'We are looking for this file path: '.htmlspecialchars($filepath, ENT_QUOTES, $default_charset).'<br>';
 		echo 'We are looking here:<br> Real file path: '.htmlspecialchars($realfilepath, ENT_QUOTES, $default_charset).'<br>';

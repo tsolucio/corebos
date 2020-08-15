@@ -83,6 +83,7 @@ class installcbgendoc extends cbupdaterWorker {
 					'template_for'=>$mm['module'],
 					'mergetemplate'=>1,
 					'description'=>$mm['description'],
+					'notecontent' => (empty($mm['description']) ? $mm['filename'] : $mm['description']),
 					'folderid' => vtws_getEntityId('DocumentFolders').'x'.$fid,
 				);
 				$response = vtws_create('Documents', $docData, $current_user);

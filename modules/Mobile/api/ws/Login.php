@@ -15,23 +15,24 @@ class crmtogo_WS_Login extends crmtogo_WS_Controller {
 	}
 
 	public function process(crmtogo_API_Request $request) {
+		$response = new crmtogo_API_Response();
+		$default_config = $this->getConfigDefaults();
+		$default_lang_strings = return_module_language($default_config['language'], 'Mobile');
+
 		if (vtlib_isModuleActive('Mobile') === false) {
 			$response->setError(1501, $default_lang_strings['LBL_NO_SERVICE']);
 			return $response;
 		}
 
-		$response = new crmtogo_API_Response();
 		$username = $request->get('username');
 		$password = $request->get('password');
 
 		$current_user = CRMEntity::getInstance('Users');
 		//get default language for Mobile from DB
-		$default_config = $this->getConfigDefaults();
-		$default_lang_strings = return_module_language($default_config['language'], 'Mobile');
 		if ($this->hasActiveUser()) {
 			$current_user = $this->getActiveUser();
-			$username = $_SESSION ['username'];
-			$password = $_SESSION ['password'];
+			$username = $_SESSION['username'];
+			$password = $_SESSION['password'];
 		}
 		$current_user->column_fields['user_name'] = $username;
 		if (!$current_user->doLogin($password)) {

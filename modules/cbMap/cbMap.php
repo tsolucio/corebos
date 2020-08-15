@@ -14,7 +14,6 @@ include_once 'modules/cbMap/cbRule.php';
 
 class cbMap extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_cbmap';
 	public $table_index= 'cbmapid';
@@ -136,7 +135,7 @@ class cbMap extends CRMEntity {
 			$modGV=Vtiger_Module::getInstance('GlobalVariable');
 			$modMap=Vtiger_Module::getInstance('cbMap');
 			if ($modGV) {
-				$blockInstance = VTiger_Block::getInstance('LBL_GLOBAL_VARIABLE_INFORMATION', $modGV);
+				$blockInstance = Vtiger_Block::getInstance('LBL_GLOBAL_VARIABLE_INFORMATION', $modGV);
 				$field = new Vtiger_Field();
 				$field->name = 'bmapid';
 				$field->label= 'cbMap';

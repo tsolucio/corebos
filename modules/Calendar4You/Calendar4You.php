@@ -28,12 +28,10 @@ class Calendar4You extends CRMEntity {
 	private $service='GoogleCalendar';
 
 	public $db;
-	public $log;
 	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-event', 'class' => 'slds-icon', 'icon'=>'event');
 
 	// constructor of Calendar4You class
 	public function __construct() {
-		$this->log =LoggerManager::getLogger('account');
 		$this->db = PearDatabase::getInstance();
 
 		// array of modules that are allowed for basic version type
@@ -220,7 +218,7 @@ class Calendar4You extends CRMEntity {
 				'status' => $status,
 				'checked'=>$user_checked
 			);
-			$return_data [$userid]= $user_array;
+			$return_data[$userid]= $user_array;
 			unset($User_Colors, $User_Colors_Palette);
 		}
 		return $return_data;

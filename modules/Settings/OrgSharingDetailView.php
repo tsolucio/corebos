@@ -143,10 +143,10 @@ function getSharingRuleList($module) {
 				$perr_out = $mod_strings['Read/Write'];
 			}
 
-			$access_permission [] = $shareid;
-			$access_permission [] = $share_ent_disp;
-			$access_permission [] = $to_ent_disp;
-			$access_permission [] = $perr_out;
+			$access_permission[] = $shareid;
+			$access_permission[] = $share_ent_disp;
+			$access_permission[] = $to_ent_disp;
+			$access_permission[] = $perr_out;
 
 			$i++;
 		}

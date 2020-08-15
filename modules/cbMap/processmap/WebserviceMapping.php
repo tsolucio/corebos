@@ -196,7 +196,13 @@ class WebserviceMapping extends cbMapcore {
 	public function processMap($arguments) {
 		global $current_user;
 		$mapping=$this->convertMap2Array();
-		$ofields = $arguments[0];
+		if (isset($arguments[1]) && is_array($arguments[1])) {
+			$ofields = array_merge($arguments[1], $arguments[0]);
+			$ctx = $arguments[1];
+		} else {
+			$ofields = $arguments[0];
+			$ctx = array();
+		}
 		if (!empty($ofields['record_id'])) {
 			$setype = getSalesEntityType($ofields['record_id']);
 			$entityId = vtws_getId(vtws_getEntityId($setype), $ofields['record_id']);
@@ -252,6 +258,7 @@ class WebserviceMapping extends cbMapcore {
 							$exprEvaluation = $exprEvaluater->evaluate(false);
 						} else {
 							$entity = new VTWorkflowEntity($current_user, $entityId);
+							$entity->setContext($ctx);
 							$exprEvaluation = $exprEvaluater->evaluate($entity);
 						}
 						$value.= $exprEvaluation.$delim;

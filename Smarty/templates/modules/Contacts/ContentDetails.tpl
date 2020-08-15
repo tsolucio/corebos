@@ -38,7 +38,7 @@
             </div>
          {else}
             <br>
-            <div class='row-fluid'> 
+            <div class='row-fluid'>
                 <span class="span12"><b>{$MOD.LBL_UPDATES_GOOGLE}</b></span>
                 <div class="row-fluid"><span class="span7 "> {$MOD.LBL_ADDED} :</span><span class='span5 '>{$RECORD['create']} </span></div>
                 <div class="row-fluid"><span class="span7 "> {$MOD.LBL_UPDATED} :</span> <span class='span5 '>{$RECORD['update']} </span></div>
@@ -54,7 +54,7 @@
     </div>*}
 {if $NORECORDS}
         <input type="hidden" value='yes' id ='norefresh'/>
-{/if} 
+{/if}
     <table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
             <tr>
                 <td align=center class="small">

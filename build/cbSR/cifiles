@@ -1,4 +1,4 @@
---ignore=modules/cbMap/libs/crXml.php,*css,*.js,modules/Project/BURAK_Gantt.class.php,authTypes/*,include/integrations/zendesk/vendor,include/integrations/sendgrid/vendor,include/integrations/sendgrid/lib,include/integrations/hubspot/vendor
+--ignore=modules/cbMap/libs/crXml.php,*css,*.js,modules/Project/BURAK_Gantt.class.php,authTypes/*,include/integrations/zendesk/vendor,include/integrations/sendgrid/vendor,include/integrations/sendgrid/lib,include/integrations/hubspot/vendor,include/QueryGenerator/builders,include/QueryGenerator/exceptions,include/QueryGenerator/lexer,include/QueryGenerator/Options.php,include/QueryGenerator/PHPSQL*,include/QueryGenerator/positions,include/QueryGenerator/processors,include/QueryGenerator/utils
 modules/Accounts
 modules/Assets
 modules/BusinessActions
@@ -153,6 +153,7 @@ webservice.php
 include/Ajax
 include/ComboUtil.php
 include/CustomFieldUtil.php
+include/csrfmagic/csrf-magic.php
 include/database
 include/DatabaseUtil.php
 include/db_backup

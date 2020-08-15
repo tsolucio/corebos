@@ -17,7 +17,6 @@ require 'modules/Vtiger/default_module_view.php';
 
 class Leads extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_leaddetails';
 	public $table_index= 'leadid';
@@ -481,8 +480,7 @@ class Leads extends CRMEntity {
 			$query .= " AND vtiger_users.user_name='".$username."'";
 		}
 
-		$tab_id = getTabid('Leads');
-		if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing($tabid)) {
+		if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing(getTabid('Leads'))) {
 			$sec_parameter=getListViewSecurityParameter('Leads');
 			$query .= $sec_parameter;
 		}

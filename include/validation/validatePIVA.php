@@ -17,21 +17,21 @@
 function checkAccountPIVA($fieldname, $fieldvalue, $params, $entity) {
 	$type = $entity[$params[0]];
 	$piva = $entity[$fieldname];
-	$pattern1 = '^IT\d{11}$';
-	$pattern2 = '^(AF|AX|AL|DZ|VI|AD|AO|AI|AQ|AG|AR|AM|AW|AU|AT|AZ|BS|BH|BD|BB|BY|BE|BZ|BJ|BM|BT|BO|BA|BW|BV|BR|IO|VG|\
-        BN|BG|BF|BI|KH|CM|CA|CV|KY|CF|TD|CL|CN|CX|CC|CO|KM|CG|CD|CK|CR|HR|CU|CY|CZ|DK|DJ|DM|DO|AN|TL|EC|EG|SV|GQ|\
-        ER|EE|ET|FK|FO|FJ|FI|FR|GF|PF|TF|GA|GM|GE|DE|GH|GI|GR|EL|GL|GD|GP|GU|GT|GG|GN|GW|GY|HT|HM|HN|HK|HU|IS|IN|\
-        ID|IR|IQ|IE|IM|IL|CI|JM|JP|JE|JO|KZ|KE|KI|KW|KG|LA|LV|LB|LS|LR|LY|LI|LT|LU|MO|MG|MW|MY|MV|ML|MT|MH|MQ|MR|\
-        MU|YT|MX|FM|UM|MD|MC|MN|ME|MS|MA|MZ|MM|MP|NA|NR|NP|NL|NC|NZ|NI|NE|NG|NU|XX|NF|KP|NO|OM|PK|PW|PS|PA|PG|PY|\
-        PE|PH|PN|PL|PT|PR|QA|MK|RE|RO|RW|RU|GS|ST|BL|MF|AS|SM|SA|SN|RS|SC|SL|SG|SK|SI|SB|SO|ZA|KR|ES|LK|KN|SH|LC|\
-        VC|PM|SD|SR|SJ|SZ|SE|CH|SY|TW|TJ|TZ|TH|TG|TK|TO|TT|TN|TR|TM|TC|TV|UG|UA|AE|GB|UY|US|UZ|VU|VA|VE|VN|WF|EH|\
-        WS|YE|ZM|ZW)[A-Za-z0-9_]*$';
+	$pattern1 = '/^IT\d{11}$/';
+	$pattern2 = '/^(AF|AX|AL|DZ|VI|AD|AO|AI|AQ|AG|AR|AM|AW|AU|AT|AZ|BS|BH|BD|BB|BY|BE|BZ|BJ|BM|BT|BO|BA|BW|BV|BR|IO|VG|\
+BN|BG|BF|BI|KH|CM|CA|CV|KY|CF|TD|CL|CN|CX|CC|CO|KM|CG|CD|CK|CR|HR|CU|CY|CZ|DK|DJ|DM|DO|AN|TL|EC|EG|SV|GQ|\
+ER|EE|ET|FK|FO|FJ|FI|FR|GF|PF|TF|GA|GM|GE|DE|GH|GI|GR|EL|GL|GD|GP|GU|GT|GG|GN|GW|GY|HT|HM|HN|HK|HU|IS|IN|\
+ID|IR|IQ|IE|IM|IL|CI|JM|JP|JE|JO|KZ|KE|KI|KW|KG|LA|LV|LB|LS|LR|LY|LI|LT|LU|MO|MG|MW|MY|MV|ML|MT|MH|MQ|MR|\
+MU|YT|MX|FM|UM|MD|MC|MN|ME|MS|MA|MZ|MM|MP|NA|NR|NP|NL|NC|NZ|NI|NE|NG|NU|XX|NF|KP|NO|OM|PK|PW|PS|PA|PG|PY|\
+PE|PH|PN|PL|PT|PR|QA|MK|RE|RO|RW|RU|GS|ST|BL|MF|AS|SM|SA|SN|RS|SC|SL|SG|SK|SI|SB|SO|ZA|KR|ES|LK|KN|SH|LC|\
+VC|PM|SD|SR|SJ|SZ|SE|CH|SY|TW|TJ|TZ|TH|TG|TK|TO|TT|TN|TR|TM|TC|TV|UG|UA|AE|GB|UY|US|UZ|VU|VA|VE|VN|WF|EH|\
+WS|YE|ZM|ZW)[A-Za-z0-9_]*$/';
 
-	if (!empty($piva) && ($type == "Societa" || $type == "Ditta Individuale") && preg_match($pattern1, $piva)) {
+	if (!empty($piva) && ($type == 'Societa' || $type == 'Ditta Individuale') && preg_match($pattern1, $piva)) {
 		return true;
-	} elseif (empty($piva) && $type == "Persona Fisica") {
+	} elseif (empty($piva) && $type == 'Persona Fisica') {
 		return true;
-	} elseif (!empty($piva) && $type == "Soggetto Estero" && preg_match($pattern2, $piva)) {
+	} elseif (!empty($piva) && $type == 'Soggetto Estero' && preg_match($pattern2, $piva)) {
 		return true;
 	} else {
 		return false;

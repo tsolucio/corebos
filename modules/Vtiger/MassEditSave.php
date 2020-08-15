@@ -39,7 +39,6 @@ $url = getBasic_Advance_SearchURL();
 if (isset($params['start']) && $params['start']!='') {
 	$rstart = '&start=' . urlencode(vtlib_purify($params['start']));
 }
-$exists = executefunctionsvalidate('ValidationExists', $currentModule);
 if (isset($idlist)) {
 	$_REQUEST['action'] = 'MassEditSave';
 
@@ -87,17 +86,12 @@ if (isset($idlist)) {
 			}
 			list($saveerror,$errormessage,$error_action,$returnvalues) = $focus->preSaveCheck($params);
 			if (!$saveerror) { // if there is an error we ignore this record
-				if ($exists == 'yes') {
-					$validation = executefunctionsvalidate('ValidationLoad', $currentModule, vtlib_purify($_REQUEST['params']));
-					if ($validation == '%%%OK%%%') {
-						$msg = $app_strings['record'].' '.$recordid.' '.$app_strings['saved'];
-						$focus->save($currentModule);
-					} else {
-						$msg = $app_strings['record'].' '.$recordid.' '.$validation;
-					}
-				} else {
+				$validation = executefunctionsvalidate('ValidationLoad', $currentModule, vtlib_purify($_REQUEST['params']));
+				if ($validation == '%%%OK%%%') {
 					$msg = $app_strings['record'].' '.$recordid.' '.$app_strings['saved'];
 					$focus->save($currentModule);
+				} else {
+					$msg = $app_strings['record'].' '.$recordid.' '.$validation;
 				}
 			} else {
 				$msg = $app_strings['record'].' '.$recordid.' '.$app_strings['notsaved'].$errormessage;

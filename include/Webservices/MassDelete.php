@@ -20,6 +20,9 @@ function MassDelete($ids, $user) {
 	$successDeletes = [];
 
 	foreach ($wsIds as $wsId) {
+		if (empty($wsId)) {
+			continue;
+		}
 		try {
 			$wsId = vtws_getWSID(trim($wsId));
 			vtws_delete($wsId, $user);
@@ -33,10 +36,8 @@ function MassDelete($ids, $user) {
 		}
 	}
 
-	$result = [
+	return [
 		'success_deletes' => $successDeletes,
 		'failed_deletes' => $failedDeletes
 	];
-
-	return $result;
 }

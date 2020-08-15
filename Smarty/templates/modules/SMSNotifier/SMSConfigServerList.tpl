@@ -9,7 +9,6 @@
 ********************************************************************************/
 -->
 *}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script type="text/javascript" src="modules/SMSNotifier/SMSConfigServer.js"></script>
 {literal}
 <style>
@@ -59,12 +58,6 @@
 			<div id="_smsservers_">
 				{include file='modules/SMSNotifier/SMSConfigServerListContents.tpl'}
 			</div>
-
-			<table border=0 cellspacing=0 cellpadding=5 width=100% >
-				<tr>
-					<td class="small cblds-t-align_right" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td>
-				</tr>
-			</table>
 		</td>
 	</tr>
 </table>

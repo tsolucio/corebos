@@ -24,6 +24,13 @@ class VTCacheUtils {
 	public static function updateCachedInformation($key, $value) {
 		self::$_cbcacheinfo_cache[$key] = $value;
 	}
+	public static function emptyCachedInformation($key = '') {
+		if (empty($key)) {
+			self::$_cbcacheinfo_cache = array();
+		} else {
+			unset(self::$_cbcacheinfo_cache[$key]);
+		}
+	}
 
 	/** Tab information caching */
 	public static $_tabidinfo_cache = array();
@@ -90,7 +97,7 @@ class VTCacheUtils {
 	}
 
 	/** Block information caching */
-	private static $_blocklabel_cache = array();
+	public static $_blocklabel_cache = array();
 	public static function updateBlockLabelWithId($label, $id) {
 		self::$_blocklabel_cache[$id] = $label;
 	}

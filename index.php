@@ -14,7 +14,7 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 
-if (version_compare(phpversion(), '5.4.0') < 0 || version_compare(phpversion(), '7.4.0') >= 0) {
+if (version_compare(phpversion(), '5.4.0') < 0 || version_compare(phpversion(), '7.5.0') >= 0) {
 	header('Content-Type: text/html; charset=UTF-8');
 	$serverPhpVersion = phpversion();
 	require_once 'phpversionfail.php';
@@ -197,19 +197,15 @@ if (isset($action) && isset($module)) {
 		preg_match("/^populatetemplate/", $action) ||
 		preg_match("/^TemplateMerge/", $action) ||
 		preg_match("/^testemailtemplateusage/", $action) ||
-		preg_match("/^saveemailtemplate/", $action) ||
 		preg_match("/^ProcessDuplicates/", $action) ||
 		preg_match("/^deleteattachments/", $action) ||
 		preg_match("/^CreateXL/", $action) ||
 		preg_match("/^lastImport/", $action) ||
-		preg_match("/^lookupemailtemplate/", $action) ||
-		preg_match("/^deleteemailtemplate/", $action) ||
 		preg_match("/^CurrencyDelete/", $action) ||
 		preg_match("/^UpdateFieldLevelAccess/", $action) ||
 		preg_match("/^UpdateDefaultFieldLevelAccess/", $action) ||
 		preg_match("/^UpdateProfile/", $action) ||
 		preg_match("/^updateRelations/", $action) ||
-		preg_match("/^updateNotificationSchedulers/", $action) ||
 		preg_match("/^Star/", $action) ||
 		preg_match("/^addPbProductRelToDB/", $action) ||
 		preg_match("/^UpdateListPrice/", $action) ||
@@ -225,19 +221,16 @@ if (isset($action) && isset($module)) {
 		preg_match("/^updateCalendarSharing/", $action) ||
 		preg_match("/^disable_sharing/", $action) ||
 		preg_match("/^RecalculateSharingRules/", $action) ||
-		preg_match("/^savewordtemplate/", $action) ||
-		preg_match("/^deletewordtemplate/", $action) ||
 		preg_match("/^mailmergedownloadfile/", $action) ||
 		preg_match("/^getListOfRecords/", $action) ||
 		preg_match("/^iCalExport/", $action)
-		) {
+	) {
 		$skipHeaders=true;
 		//skip headers for all these invocations
 		if (preg_match("/^Popup/", $action) ||
 			preg_match("/^".$module."Ajax/", $action) ||
 			preg_match("/^MassEditSave/", $action) ||
 			preg_match("/^ChangePassword/", $action) ||
-			preg_match("/^lookupemailtemplate/", $action) ||
 			preg_match("/^home_rss/", $action) ||
 			preg_match("/^massdelete/", $action) ||
 			preg_match("/^mailmergedownloadfile/", $action) ||
@@ -410,7 +403,9 @@ if ($action == 'DetailView') {
 $siteURLParts = parse_url($site_URL);
 $cookieDomain = $siteURLParts['host'];
 if (isset($_SESSION['authenticated_user_id'])) {
-	setcookie('ck_login_id_vtiger', $_SESSION['authenticated_user_id'], 0, null, $cookieDomain, false, true);
+	$sitepath = empty($siteURLParts['path']) ? '' : ' path='.$siteURLParts['path'].';';
+	header('Set-Cookie: ck_login_id_vtiger='.$_SESSION['authenticated_user_id'].'; SameSite=Lax; expires=0;'.$sitepath.' domain='.$cookieDomain, false);
+	//setcookie('ck_login_id_vtiger', $_SESSION['authenticated_user_id'], 0, null, $cookieDomain, false, true);
 }
 
 if ($_REQUEST['module'] == 'Documents' && $action == 'DownloadFile') {

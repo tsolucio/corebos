@@ -90,8 +90,8 @@ if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] == 'SalesOrd
 	$so_focus->retrieve_entity_info($_REQUEST['salesorderid'], 'SalesOrder');
 
 	$associated_prod = getAssociatedProducts('SalesOrder', $so_focus);
-	$txtTax = (($so_focus->column_fields['txtTax'] != '') ? $so_focus->column_fields['txtTax'] : '0.000');
-	$txtAdj = (($so_focus->column_fields['txtAdjustment'] != '') ? $so_focus->column_fields['txtAdjustment'] : '0.000');
+	$txtTax = ((!empty($so_focus->column_fields['txtTax'])) ? $so_focus->column_fields['txtTax'] : '0.000');
+	$txtAdj = ((!empty($so_focus->column_fields['txtAdjustment'])) ? $so_focus->column_fields['txtAdjustment'] : '0.000');
 	$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
 	$smarty->assign('MODE', $so_focus->mode);
 	$smarty->assign('AVAILABLE_PRODUCTS', 'true');
@@ -173,20 +173,7 @@ if (!empty($_REQUEST['parent_id']) && !empty($_REQUEST['return_module'])) {
 }
 
 if (!empty($_REQUEST['vendor_id']) && $_REQUEST['record']=='') {
-	$vend_focus = CRMEntity::getInstance('Vendors');
-	$vend_focus->retrieve_entity_info($_REQUEST['vendor_id'], 'Vendors');
-	$focus->column_fields['bill_city']=$vend_focus->column_fields['city'];
-	$focus->column_fields['ship_city']=$vend_focus->column_fields['city'];
-	$focus->column_fields['bill_street']=$vend_focus->column_fields['street'];
-	$focus->column_fields['ship_street']=$vend_focus->column_fields['street'];
-	$focus->column_fields['bill_state']=$vend_focus->column_fields['state'];
-	$focus->column_fields['ship_state']=$vend_focus->column_fields['state'];
-	$focus->column_fields['bill_code']=$vend_focus->column_fields['postalcode'];
-	$focus->column_fields['ship_code']=$vend_focus->column_fields['postalcode'];
-	$focus->column_fields['bill_country']=$vend_focus->column_fields['country'];
-	$focus->column_fields['ship_country']=$vend_focus->column_fields['country'];
-	$focus->column_fields['bill_pobox']=$vend_focus->column_fields['pobox'];
-	$focus->column_fields['ship_pobox']=$vend_focus->column_fields['pobox'];
+	$focus->column_fields['vendor_id'] = vtlib_purify($_REQUEST['vendor_id']);
 }
 $smarty->assign('MASS_EDIT', '0');
 $disp_view = getView($focus->mode);
@@ -358,7 +345,6 @@ $smarty->assign('Module_Popup_Edit', isset($_REQUEST['Module_Popup_Edit']) ? vtl
 $smarty->assign('SandRActive', GlobalVariable::getVariable('Application_SaveAndRepeatActive', 0, $currentModule));
 $cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule);
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
-
 //Get Service or Product by default when create
 $smarty->assign('PRODUCT_OR_SERVICE', GlobalVariable::getVariable('Inventory_ProductService_Default', 'Products', $currentModule, $current_user->id));
 $smarty->assign('Inventory_ListPrice_ReadOnly', GlobalVariable::getVariable('Inventory_ListPrice_ReadOnly', '0', $currentModule, $current_user->id));

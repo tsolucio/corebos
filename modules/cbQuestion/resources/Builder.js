@@ -711,6 +711,7 @@ function getInstruction(field, operator, alias) {
 			case 'getEntityType':
 			case 'number_format':
 			case 'getSetting':
+			case 'group_concat':
 			case 'count':
 				if (op.text.indexOf("('")!=-1) {
 					fins = op.text.replace(/\('?.+?'?,/, "('"+fnam+"',");

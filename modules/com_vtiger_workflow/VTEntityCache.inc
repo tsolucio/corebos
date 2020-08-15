@@ -90,6 +90,7 @@ class VTWorkflowEntity {
 			global $current_user;
 			$ct = new VTSimpleTemplate($fieldName);
 			$entityCache = new VTEntityCache($current_user);
+			$entityCache->setCache($this->getId(), $this);
 			$info = $ct->render($entityCache, $this->getId());
 			return $info;
 		}
@@ -131,6 +132,14 @@ class VTEntityCache {
 	public function __construct($user) {
 		$this->user = $user;
 		$this->cache = array();
+	}
+
+	public function setCache($id, $wfEntity) {
+		$this->cache[$id] = $wfEntity;
+	}
+
+	public function emptyCache($id) {
+		unset($this->cache[$id]);
 	}
 
 	public function forId($id) {

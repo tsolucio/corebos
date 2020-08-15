@@ -26,31 +26,35 @@ class movecbQuestionfieldsToAdvancedUsageBlock extends cbupdaterWorker {
 		} else {
 			global $adb;
 			$moduleInstance = Vtiger_Module::getInstance('cbQuestion');
-			$queryfield = Vtiger_Field::getInstance('sqlquery', $moduleInstance);
-			if ($queryfield) {
-				$this->ExecuteQuery("UPDATE vtiger_field set vtiger_field.helpinfo = 'SQLDELETE' where fieldid=?", array($queryfield->id));
-			}
-			$newblock = 'LBL_cbQuestion_Advanced_Usage';
-			$block = Vtiger_Block::getInstance($newblock, $moduleInstance);
-			if (!$block) {
-				$block = new Vtiger_Block();
-				$block->label = 'LBL_cbQuestion_Advanced_Usage';
-				$block->sequence = 2;
-				$moduleInstance->addBlock($block);
-			}
-			$fieldsArr = array(
-				'cbQuestion' => array(
+			if ($moduleInstance) {
+				$queryfield = Vtiger_Field::getInstance('sqlquery', $moduleInstance);
+				if ($queryfield) {
+					$this->ExecuteQuery("UPDATE vtiger_field set vtiger_field.helpinfo = 'SQLDELETE' where fieldid=?", array($queryfield->id));
+				}
+				$newblock = 'LBL_cbQuestion_Advanced_Usage';
+				$block = Vtiger_Block::getInstance($newblock, $moduleInstance);
+				if (!$block) {
+					$block = new Vtiger_Block();
+					$block->label = 'LBL_cbQuestion_Advanced_Usage';
+					$block->sequence = 2;
+					$moduleInstance->addBlock($block);
+				}
+				$fieldsArr = array(
+					'cbQuestion' => array(
 						'crmentityalias',
 						'uniqueid',
 						'cbmapid',
 						'condfilterformat',
 						'mviewcron',
 						'mviewwf',
-				)
-			);
-			$this->massMoveFieldsToBlock($fieldsArr, $newblock);
-			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+					)
+				);
+				$this->massMoveFieldsToBlock($fieldsArr, $newblock);
+				$this->sendMsg('Changeset '.get_class($this).' applied!');
+				$this->markApplied();
+			} else {
+				$this->sendMsgError('Changeset '.get_class($this).' NOT applied! Question module not found.');
+			}
 		}
 		$this->finishExecution();
 	}

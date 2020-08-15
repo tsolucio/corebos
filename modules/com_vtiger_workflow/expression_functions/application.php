@@ -86,10 +86,19 @@ function __cb_getcrudmode($arr) {
 }
 
 function __cb_getfromcontext($arr) {
-	if (empty($arr[1]->WorkflowContext[$arr[0]])) {
-		return '';
+	$str_arr = explode(',', $arr[0]);
+	$variableArr = array();
+	foreach ($str_arr as $vname) {
+		if (empty($arr[1]->WorkflowContext[$vname])) {
+			$variableArr[$vname] = '';
+		} else {
+			$variableArr[$vname] = $arr[1]->WorkflowContext[$vname];
+		}
+	}
+	if (count($variableArr)==1) {
+		return $variableArr[$arr[0]];
 	} else {
-		return $arr[1]->WorkflowContext[$arr[0]];
+		return json_encode($variableArr);
 	}
 }
 
@@ -138,5 +147,32 @@ function __cb_readMessage($arr) {
 	$cbmq = coreBOS_MQTM::getInstance();
 	$msg = $cbmq->getMessage($channel, 'wfmessagereader', 'workflow');
 	return $msg['information'];
+}
+
+function __cb_evaluateRule($arr) {
+	global $logbg;
+	if (count($arr)<2 || empty($arr[0])) {
+		return 0;
+	}
+	if (!is_object($arr[1])) {
+		return 0;
+	}
+	$env = $arr[1];
+	$data = $env->getData();
+	list($wsid,$crmid) = explode('x', $data['id']);
+	$context = array_merge($env->WorkflowContext, $data);
+	$context['record_id'] = $crmid;
+	$result = 0;
+	try {
+		$result = coreBOS_Rule::evaluate($arr[0], $context);
+	} catch (\Exception $e) {
+		$logbg->debug(array(
+			'Rule: '.$arr[0],
+			$e->getCode(),
+			$e->getMessage(),
+			$context
+		));
+	}
+	return $result;
 }
 ?>

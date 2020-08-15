@@ -18,7 +18,6 @@ require_once 'modules/Emails/mail.php';
 
 class Emails extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_activity';
 	public $table_index = 'activityid';
@@ -34,8 +33,14 @@ class Emails extends CRMEntity {
 	public $rel_contacts_table = 'vtiger_cntactivityrel';
 	public $rel_serel_table = 'vtiger_seactivityrel';
 	public $tab_name = array('vtiger_crmentity', 'vtiger_activity', 'vtiger_emaildetails');
-	public $tab_name_index = array('vtiger_crmentity' => 'crmid', 'vtiger_activity' => 'activityid',
-		'vtiger_seactivityrel' => 'activityid', 'vtiger_cntactivityrel' => 'activityid', 'vtiger_email_track' => 'mailid', 'vtiger_emaildetails' => 'emailid');
+	public $tab_name_index = array(
+		'vtiger_crmentity' => 'crmid',
+		'vtiger_activity' => 'activityid',
+		'vtiger_seactivityrel' => 'activityid',
+		'vtiger_cntactivityrel' => 'activityid',
+		'vtiger_email_track' => 'mailid',
+		'vtiger_emaildetails' => 'emailid',
+	);
 	public $list_fields = array(
 		'Subject' => array('activity' => 'subject'),
 		'Related to' => array('seactivityrel' => 'parent_id'),
@@ -104,11 +109,9 @@ class Emails extends CRMEntity {
 	public $mandatory_fields = array('subject', 'assigned_user_id');
 
 	public function __construct() {
-		global $log;
 		$this_module = get_class($this);
 		$this->column_fields = getColumnFields($this_module);
 		$this->db = PearDatabase::getInstance();
-		$this->log = $log;
 	}
 
 	public function save_module($module) {
@@ -426,75 +429,6 @@ class Emails extends CRMEntity {
 		return $return_value;
 	}
 
-
-	/** Returns a list of the associated users */
-	public function get_users($id) {
-		global $log, $adb, $app_strings;
-		$log->debug('> get_users '.$id);
-
-		$id = $_REQUEST['record'];
-
-		$button = '<input title="' . getTranslatedString('LBL_BULK_MAILS') . '" accessykey="F" class="crmbutton small create"
-			onclick="this.form.action.value=\"sendmail\";this.form.return_action.value=\"DetailView\";this.form.module.value=\"Emails\";
-			this.form.return_module.value=\"Emails\";"
-			name="button" value="' . getTranslatedString('LBL_BULK_MAILS') . '" type="submit">&nbsp;
-			<input title="' . getTranslatedString('LBL_BULK_MAILS') . '" accesskey="" tabindex="2" class="crmbutton small edit"
-			value="' . getTranslatedString('LBL_SELECT_USER_BUTTON_LABEL') . '" name="Button"
-			onclick=\"return window.open("index.php?module=Users&return_module=Emails&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=
-			true&return_id='.$id . '&recordid=' . $id . '","test","width=640,height=520,resizable=0,scrollbars=0");\"type="button">';
-
-		$query = 'SELECT vtiger_users.id, vtiger_users.first_name, vtiger_users.last_name, vtiger_users.user_name, vtiger_users.email1, vtiger_users.email2,
-			vtiger_users.secondaryemail, vtiger_users.phone_home, vtiger_users.phone_work, vtiger_users.phone_mobile, vtiger_users.phone_other, vtiger_users.phone_fax
-			from vtiger_users
-			inner join vtiger_salesmanactivityrel on vtiger_salesmanactivityrel.smid=vtiger_users.id and vtiger_salesmanactivityrel.activityid=?';
-		$result = $adb->pquery($query, array($id));
-
-		$header [] = $app_strings['LBL_LIST_NAME'];
-		$header [] = $app_strings['LBL_LIST_USER_NAME'];
-		$header [] = $app_strings['LBL_EMAIL'];
-		$header [] = $app_strings['LBL_PHONE'];
-		while ($row = $adb->fetch_array($result)) {
-			$entries = array();
-
-			$entries[] = getFullNameFromArray('Users', $row);
-
-			$entries[] = $row['user_name'];
-			$entries[] = $row['email1'];
-			if ($email == '') {
-				$email = $row['email2'];
-			}
-			if ($email == '') {
-				$email = $row['secondaryemail'];
-			}
-			$entries[] = $row['phone_home'];
-			if ($phone == '') {
-				$phone = $row['phone_work'];
-			}
-			if ($phone == '') {
-				$phone = $row['phone_mobile'];
-			}
-			if ($phone == '') {
-				$phone = $row['phone_other'];
-			}
-			if ($phone == '') {
-				$phone = $row['phone_fax'];
-			}
-			$entries_list[] = $entries;
-		}
-
-		if ($entries_list != '') {
-			$return_data = array('header' => $header, 'entries' => $entries);
-		}
-
-		if ($return_data == null) {
-			$return_data = array();
-		}
-		$return_data['CUSTOM_BUTTON'] = $button;
-
-		$log->debug('< get_users');
-		return $return_data;
-	}
-
 	/**
 	 * Returns a list of the Emails to be exported
 	 */
@@ -726,27 +660,29 @@ function get_to_emailids($module) {
 
 	$idlists = $mailids = '';
 	if ($adb->num_rows($result)>0) {
+		$tabid = getTabid($module);
 		while ($entityvalue = $adb->fetchByAssoc($result)) {
 			$vtwsid = $entityvalue['id'];
 			foreach ($emailFields as $emailFieldName) {
-				if ($entityvalue[$emailFieldName] != null || $entityvalue[$emailFieldName] != '') {
+				$emailColName = getColumnnameByFieldname($tabid, $emailFieldName);
+				if ($entityvalue[$emailColName] != null || $entityvalue[$emailColName] != '') {
 					$idlists .= $vtwsid . '@' . $vtwsCRMObjectMeta->getFieldIdFromFieldName($emailFieldName) . '|';
 					if ($module == 'Leads' || $module == 'Contacts') {
-						$mailids .= $entityvalue['lastname'] . ' ' . $entityvalue['firstname'] . '<' . $entityvalue[$emailFieldName] . '>,';
+						$mailids .= $entityvalue['lastname'] . ' ' . $entityvalue['firstname'] . '<' . $entityvalue[$emailColName] . '>,';
 					} elseif ($module == 'Project') {
-						$mailids .= $entityvalue['projectname'] . '<' . $entityvalue[$emailFieldName] . '>,';
+						$mailids .= $entityvalue['projectname'] . '<' . $entityvalue[$emailColName] . '>,';
 					} elseif ($module == 'ProjectTask') {
-						$mailids .= $entityvalue['projecttaskname'] . '<' . $entityvalue[$emailFieldName] . '>,';
+						$mailids .= $entityvalue['projecttaskname'] . '<' . $entityvalue[$emailColName] . '>,';
 					} elseif ($module == 'Potentials') {
-						$mailids .= $entityvalue['potentialname'] . '<' . $entityvalue[$emailFieldName] . '>,';
+						$mailids .= $entityvalue['potentialname'] . '<' . $entityvalue[$emailColName] . '>,';
 					} elseif ($module == 'HelpDesk') {
-						$mailids .= $entityvalue['title'] . '<' . $entityvalue[$emailFieldName] . '>,';
+						$mailids .= $entityvalue['title'] . '<' . $entityvalue[$emailColName] . '>,';
 					} elseif ($module == 'Vendors') {
-						$mailids .= $entityvalue['vendorname'] . '<' . $entityvalue[$emailFieldName] . '>,';
+						$mailids .= $entityvalue['vendorname'] . '<' . $entityvalue[$emailColName] . '>,';
 					} elseif ($module == 'Accounts') {
-						$mailids .= $entityvalue['accountname'] . '<' . $entityvalue[$emailFieldName] . '>,';
+						$mailids .= $entityvalue['accountname'] . '<' . $entityvalue[$emailColName] . '>,';
 					} else {
-						$mailids .= $entityvalue[$minfo['columnname']] . '<' . $entityvalue[$emailFieldName] . '>,';
+						$mailids .= $entityvalue[$minfo['columnname']] . '<' . $entityvalue[$emailColName] . '>,';
 					}
 				}
 			}

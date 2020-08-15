@@ -72,6 +72,7 @@ function setVAT($entity) {
 	$netTotal = $adb->query_result($ent, 0, 'subtotal');
 	$hdnDiscountPercent = $adb->query_result($ent, 0, 'discount_percent');
 	$hdnDiscountAmount = $adb->query_result($ent, 0, 'discount_amount');
+	$hdnDiscountAmount = (empty($hdnDiscountAmount) ? 0 : $hdnDiscountAmount);
 	$finalDiscount = 0;
 	if ($hdnDiscountPercent != 0) {
 		$finalDiscount = $hdnDiscountAmount = ($netTotal*$hdnDiscountPercent/100);
@@ -95,8 +96,10 @@ function setVAT($entity) {
 	$igrs = $adb->pquery($query, array($entid));
 	$taxinfo['pl_gross_total'] = array('label'=>'Gross Total', 'field' => 'pl_gross_total');
 	$taxsum['pl_gross_total'] = $adb->query_result($igrs, 0, 'extgross');
+	$taxsum['pl_gross_total'] = (empty($taxsum['pl_gross_total']) ? 0 : $taxsum['pl_gross_total']);
 	$taxinfo['pl_dto_line'] = array('label'=>'Line Discount', 'field' => 'pl_dto_line');
 	$taxsum['pl_dto_line'] = $adb->query_result($igrs, 0, 'dtoamount');
+	$taxsum['pl_dto_line'] = (empty($taxsum['pl_dto_line']) ? 0 : $taxsum['pl_dto_line']);
 	$taxinfo['pl_dto_total'] = array('label'=>'Total Discount', 'field' => 'pl_dto_total');
 	$taxsum['pl_dto_total'] = $taxsum['pl_dto_line']+$hdnDiscountAmount;
 	$taxinfo['pl_net_total'] = array('label'=>'Net Total (aGD)', 'field' => 'pl_net_total');
@@ -192,8 +195,8 @@ function setVAT($entity) {
 	$upd = "update {$modules[$mod]['table']} set ";
 	foreach ($taxsum as $idx => $val) {
 		if (!in_array($taxinfo[$idx]['field'], $inv_cols)) {
-			$mod_ent = VTiger_Module::getInstance($mod);
-			$block_ent = VTiger_Block::getInstance('LBL_'.$mod.'_FINANCIALINFO', $mod_ent);
+			$mod_ent = Vtiger_Module::getInstance($mod);
+			$block_ent = Vtiger_Block::getInstance('LBL_'.$mod.'_FINANCIALINFO', $mod_ent);
 			$field1 = new Vtiger_Field();
 			$field1->name = $taxinfo[$idx]['field'];
 			$field1->label= $taxinfo[$idx]['label'];

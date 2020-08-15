@@ -63,9 +63,12 @@ function vtws_addTicketFaqComment($id, $values, $user) {
 	if (empty($comment)) {
 		throw new WebServiceException(WebServiceErrorCode::$MANDFIELDSMISSING, 'Comment empty.');
 	}
-
-	vtws_revise(array('id'=>$id, 'comments'=>$comment, 'from_portal'=>vtlib_purify($values['from_portal'])), $current_user);
+	$_REQUEST['__WS_FROM_PORTAL'] = !isset($values['from_portal']) ? 1 : vtlib_purify($values['from_portal']);
+	$_REQUEST['__WS_PORTAL_CONTACT'] = empty($values['parent_id']) ? 0 : vtlib_purify($values['parent_id']);
+	if (strpos($_REQUEST['__WS_PORTAL_CONTACT'], 'x')>0) {
+		list($wsid, $_REQUEST['__WS_PORTAL_CONTACT']) = explode('x', $_REQUEST['__WS_PORTAL_CONTACT']);
+	}
 	VTWS_PreserveGlobal::flush();
-	return array('success'=>true);
+	return vtws_revise(array('id'=>$id, 'comments'=>$comment, 'from_portal'=>$_REQUEST['__WS_FROM_PORTAL']), $current_user);
 }
 ?>

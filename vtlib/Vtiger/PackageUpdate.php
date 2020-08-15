@@ -75,7 +75,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 		if ($module != null) {
 			// If data is not yet available
 			if (empty($this->_modulexml)) {
-				$this->__parseManifestFile($unzip);
+				$this->__parseManifestFile($zipfile);
 			}
 
 			$buildModuleArray = array();

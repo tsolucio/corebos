@@ -33,7 +33,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 	if (!empty($oRep->related_modules[$oReport->primodule])) {
 		foreach ($oRep->related_modules[$oReport->primodule] as $key => $value) {
 			if (isset($_REQUEST['secondarymodule_'.$value])) {
-				$secondarymodules []= vtlib_purify($_REQUEST['secondarymodule_'.$value]);
+				$secondarymodules[]= vtlib_purify($_REQUEST['secondarymodule_'.$value]);
 			}
 		}
 	}

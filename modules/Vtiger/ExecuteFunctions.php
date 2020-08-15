@@ -152,12 +152,10 @@ switch ($functiontocall) {
 			echo getTranslatedString('RecordIsAssignedToInactiveUser');
 			die();
 		}
-		if (Validations::ValidationsExist($valmod)) {
-			$validation = Validations::processAllValidationsFor($valmod);
-			if ($validation!==true) {
-				echo Validations::formatValidationErrors($validation, $valmod);
-				die();
-			}
+		$validation = Validations::processAllValidationsFor($valmod);
+		if ($validation!==true) {
+			echo Validations::formatValidationErrors($validation, $valmod);
+			die();
 		}
 		if (file_exists("modules/{$valmod}/{$valmod}Validation.php")) {
 			include "modules/{$valmod}/{$valmod}Validation.php";
@@ -354,6 +352,9 @@ switch ($functiontocall) {
 		$rec = isset($_REQUEST['checkrecord']) ? vtlib_purify($_REQUEST['checkrecord']) : '';
 		$rdo = isPermitted($mod, $act, $rec)=='yes';
 		$ret = array('isPermitted'=>$rdo);
+		break;
+	case 'getUserName':
+		$ret = getUserName(vtlib_purify($_REQUEST['userid']));
 		break;
 	case 'ismoduleactive':
 	default:

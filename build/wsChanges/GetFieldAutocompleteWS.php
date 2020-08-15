@@ -14,17 +14,17 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'getFieldAutocomplete',
-	 'include' => 'include/Webservices/CustomerPortalWS.php',
-	 'handler' => 'getFieldAutocomplete',
-	 'prelogin'=> 0,
-	 'type'    => 'GET',
-	 'parameters' => array(
-		 array('name' => 'term','type' => 'String'),
-		 array('name' => 'filter','type' => 'String'),
-		 array('name' => 'searchinmodule','type' => 'String'),
-		 array('name' => 'fields','type' => 'String'),
-		 array('name' => 'returnfields','type' => 'String'),
-		 array('name' => 'limit','type' => 'String')
-	 )
+	'name'    => 'getFieldAutocomplete',
+	'include' => 'include/Webservices/CustomerPortalWS.php',
+	'handler' => 'getFieldAutocomplete',
+	'prelogin'=> 0,
+	'type'    => 'GET',
+	'parameters' => array(
+		array('name' => 'term','type' => 'String'),
+		array('name' => 'filter','type' => 'String'),
+		array('name' => 'searchinmodule','type' => 'String'),
+		array('name' => 'fields','type' => 'String'),
+		array('name' => 'returnfields','type' => 'String'),
+		array('name' => 'limit','type' => 'String')
+	)
 );

@@ -16,7 +16,7 @@
 /* function used to get the numeration of entities:: autonumeric field
  * return array $entitynum - numeration of entities
  */
-function vtws_get_entitynum() {
+function vtws_get_entitynum($user = '') {
 	require_once 'include/utils/UserInfoUtil.php';
 	require_once 'modules/Users/Users.php';
 	global $adb;
@@ -27,7 +27,7 @@ function vtws_get_entitynum() {
 	for ($i=0; $i<$no_of_cont; $i++) {
 		$module = $adb->query_result($enumres, $i, 'semodule');
 		$prefix = $adb->query_result($enumres, $i, 'prefix');
-		if (is_null($entitynum[$module])) {
+		if (empty($entitynum[$module])) {
 			$entitynum[$module] = array($prefix);
 		} else {
 			$entitynum[$module][] = $prefix;

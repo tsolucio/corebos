@@ -441,10 +441,6 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock = 'fal
 		if ($_REQUEST['taxtype'] == 'group') {
 			$all_available_taxes = getAllTaxes('available', '', 'edit', $id);
 		}
-		$return_old_values = '';
-		if ($module != 'PurchaseOrder') {
-			$return_old_values = 'return_old_values';
-		}
 		deleteInventoryProductDetails($focus);
 	} else {
 		if ($_REQUEST['taxtype'] == 'group') {
@@ -588,7 +584,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock = 'fal
 		$updateparams[] = (float)$discount_amount_final;
 	}
 
-	$shipping_handling_charge = vtlib_purify($_REQUEST['shipping_handling_charge']);
+	$shipping_handling_charge = (isset($_REQUEST['shipping_handling_charge']) ? vtlib_purify($_REQUEST['shipping_handling_charge']) : 0);
 	$updatequery .= ' s_h_amount=?,';
 	$updateparams[] = (float)$shipping_handling_charge;
 

@@ -18,7 +18,7 @@ if (!empty($_REQUEST['record'])) {
 	$cbu = $adb->pquery('select appcs from vtiger_cbupdater where cbupdaterid=?', array($record));
 	if ($cbu && $adb->num_rows($cbu)>0) {
 		if ($cbu->fields['appcs']=='1') {
-			include 'modules/cbupdater/forcedButtons.php';
+			include 'modules/cbupdater/cbupdButtons.php';
 
 			require_once 'modules/Vtiger/DetailView.php';
 

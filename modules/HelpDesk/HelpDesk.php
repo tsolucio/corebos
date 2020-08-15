@@ -12,9 +12,6 @@ require_once 'data/Tracker.php';
 require 'modules/Vtiger/default_module_view.php';
 
 class HelpDesk extends CRMEntity {
-	public $db;
-	public $log;
-
 	public $table_name = 'vtiger_troubletickets';
 	public $table_index= 'ticketid';
 	public $column_fields = array();
@@ -163,12 +160,21 @@ class HelpDesk extends CRMEntity {
 		$log->debug('> insertIntoTicketCommentTable');
 
 		$current_time = $adb->formatDate(date('Y-m-d H:i:s'), true);
-		if ($this->column_fields['from_portal'] != 1) {
+		$isFromPortal = ((isset($_REQUEST['__WS_FROM_PORTAL']) && $_REQUEST['__WS_FROM_PORTAL']==1) || $this->column_fields['from_portal'] == 1);
+		if (!$isFromPortal) {
 			$ownertype = 'user';
 			$ownerId = $current_user->id;
 		} else {
 			$ownertype = 'customer';
-			$ownerId = (!empty($this->column_fields['__portal_contact']) ? $this->column_fields['__portal_contact'] : $this->column_fields['parent_id']);
+			if (empty($this->column_fields['__portal_contact'])) {
+				if (empty($_REQUEST['__WS_PORTAL_CONTACT'])) {
+					$ownerId = $this->column_fields['parent_id'];
+				} else {
+					$ownerId = $_REQUEST['__WS_PORTAL_CONTACT'];
+				}
+			} else {
+				$ownerId = $this->column_fields['__portal_contact'];
+			}
 		}
 
 		$comment = $this->column_fields['comments'];
@@ -217,35 +223,35 @@ class HelpDesk extends CRMEntity {
 				where $i = 0,1,..n which are all made for the ticket
 	**/
 	public function get_ticket_comments_list($ticketid) {
-		global $log;
+		global $log, $adb;
 		$log->debug('> get_ticket_comments_list '.$ticketid);
-		$result = $this->db->pquery('select * from vtiger_ticketcomments where ticketid=? order by createdtime DESC', array($ticketid));
-		$noofrows = $this->db->num_rows($result);
+		$result = $adb->pquery('select * from vtiger_ticketcomments where ticketid=? order by createdtime DESC', array($ticketid));
+		$noofrows = $adb->num_rows($result);
 		for ($i=0; $i<$noofrows; $i++) {
-			$ownerid = $this->db->query_result($result, $i, 'ownerid');
-			$ownertype = $this->db->query_result($result, $i, 'ownertype');
+			$ownerid = $adb->query_result($result, $i, 'ownerid');
+			$ownertype = $adb->query_result($result, $i, 'ownertype');
 			$name = '';
 			if ($ownertype == 'user') {
 				$name = getUserFullName($ownerid);
 			} elseif ($ownertype == 'customer') {
-				$rs = $this->db->pquery('select user_name from vtiger_portalinfo where id=?', array($ownerid));
-				if ($rs && $this->db->num_rows($rs)>0) {
-					$name = $this->db->query_result($rs, 0, 'user_name');
+				$rs = $adb->pquery('select user_name from vtiger_portalinfo where id=?', array($ownerid));
+				if ($rs && $adb->num_rows($rs)>0) {
+					$name = $adb->query_result($rs, 0, 'user_name');
 				} else {
-					$rs = $this->db->pquery('select email from vtiger_contactdetails where contactid=?', array($ownerid));
-					if ($rs && $this->db->num_rows($rs)>0) {
-						$name = $this->db->query_result($rs, 0, 'email');
+					$rs = $adb->pquery('select email from vtiger_contactdetails where contactid=?', array($ownerid));
+					if ($rs && $adb->num_rows($rs)>0) {
+						$name = $adb->query_result($rs, 0, 'email');
 					} else {
-						$rs = $this->db->pquery('select accountname from vtiger_account where accountid=?', array($ownerid));
-						if ($rs && $this->db->num_rows($rs)>0) {
-							$name = $this->db->query_result($rs, 0, 'accountname');
+						$rs = $adb->pquery('select accountname from vtiger_account where accountid=?', array($ownerid));
+						if ($rs && $adb->num_rows($rs)>0) {
+							$name = $adb->query_result($rs, 0, 'accountname');
 						}
 					}
 				}
 			}
-			$output[$i]['comments'] = nl2br($this->db->query_result($result, $i, 'comments'));
+			$output[$i]['comments'] = nl2br($adb->query_result($result, $i, 'comments'));
 			$output[$i]['owner'] = $name;
-			$output[$i]['createdtime'] = $this->db->query_result($result, $i, 'createdtime');
+			$output[$i]['createdtime'] = $adb->query_result($result, $i, 'createdtime');
 		}
 		$log->debug('< get_ticket_comments_list');
 		return $output;
@@ -255,7 +261,7 @@ class HelpDesk extends CRMEntity {
 	 *	@return array $mergeflds - array(	key => val	)    where   key=0,1,2..n & val = ASSIGNEDTO,RELATEDTO, .,etc
 	**/
 	public function getColumnNames_Hd() {
-		global $log,$current_user;
+		global $log, $current_user, $adb;
 		$log->debug('> getColumnNames_Hd');
 		$userprivs = $current_user->getPrivileges();
 		if ($userprivs->hasGlobalReadPermission()) {
@@ -275,11 +281,11 @@ class HelpDesk extends CRMEntity {
 				$params1[] = $profileList;
 			}
 		}
-		$result = $this->db->pquery($sql1, $params1);
-		$numRows = $this->db->num_rows($result);
+		$result = $adb->pquery($sql1, $params1);
+		$numRows = $adb->num_rows($result);
 		$custom_fields = array();
 		for ($i=0; $i < $numRows; $i++) {
-			$custom_fields[$i] = $this->db->query_result($result, $i, 'fieldlabel');
+			$custom_fields[$i] = $adb->query_result($result, $i, 'fieldlabel');
 			$custom_fields[$i] = preg_replace("/\s+/", "", $custom_fields[$i]);
 			$custom_fields[$i] = strtoupper($custom_fields[$i]);
 		}
@@ -594,21 +600,22 @@ class HelpDesk extends CRMEntity {
 
 	// Function to unlink an entity with given Id from another entity
 	public function unlinkRelationship($id, $return_module, $return_id) {
+		global $adb;
 		if (empty($return_module) || empty($return_id)) {
 			return;
 		}
 
 		if ($return_module == 'Contacts' || $return_module == 'Accounts') {
 			$sql = 'UPDATE vtiger_troubletickets SET parent_id=? WHERE ticketid=?';
-			$this->db->pquery($sql, array(null, $id));
+			$adb->pquery($sql, array(null, $id));
 			$se_sql= 'DELETE FROM vtiger_seticketsrel WHERE ticketid=?';
-			$this->db->pquery($se_sql, array($id));
+			$adb->pquery($se_sql, array($id));
 		} elseif ($return_module == 'Products') {
 			$sql = 'UPDATE vtiger_troubletickets SET product_id=? WHERE ticketid=?';
-			$this->db->pquery($sql, array(null, $id));
+			$adb->pquery($sql, array(null, $id));
 		} elseif ($return_module == 'Documents') {
 			$sql = 'DELETE FROM vtiger_senotesrel WHERE crmid=? AND notesid=?';
-			$this->db->pquery($sql, array($id, $return_id));
+			$adb->pquery($sql, array($id, $return_id));
 		} else {
 			parent::unlinkRelationship($id, $return_module, $return_id);
 		}

@@ -138,38 +138,42 @@ class ListColumns extends processcbMap {
 			if (!empty($xml->popup->linkfield)) {
 				$this->mapping['cbmapPOPUP']['LINKFIELD'] = (String)$xml->popup->linkfield;
 			}
-			foreach ($xml->popup->columns->field as $k => $v) {
+			foreach ($xml->popup->columns->field as $v) {
+				$label = empty($v->label) ? '' : (String)$v->label;
 				$table = empty($v->table) ? '' : (String)$v->table;
 				$columnname = empty($v->columnname) ? '' : (String)$v->columnname;
-				if ($table=='' || $columnname=='') {
-					$res = $adb->pquery('SELECT columnname,tablename FROM vtiger_field WHERE fieldname=? AND tabid=?', array((String)$v->name, $tabid));
+				if ($table=='' || $columnname=='' || $label=='') {
+					$res = $adb->pquery('SELECT columnname,tablename,fieldlabel FROM vtiger_field WHERE fieldname=? AND tabid=?', array((String)$v->name, $tabid));
 					if ($res && $adb->num_rows($res)>0) {
 						$table = str_replace('vtiger_', '', $adb->query_result($res, 0, 'tablename'));
 						$columnname = $adb->query_result($res, 0, 'columnname');
+						$label = ($label=='' ? $adb->query_result($res, 0, 'fieldlabel') : $label);
 					}
 				}
-				$this->mapping['cbmapPOPUP']['SearchFields'][(String)$v->label] = array($table => $columnname);
-				$this->mapping['cbmapPOPUP']['SearchFieldsName'][(String)$v->label] = (String)$v->name;
+				$this->mapping['cbmapPOPUP']['SearchFields'][$label] = array($table => $columnname);
+				$this->mapping['cbmapPOPUP']['SearchFieldsName'][$label] = (String)$v->name;
 			}
 		}
 		if (isset($xml->relatedlists)) {
-			foreach ($xml->relatedlists->relatedlist as $k => $v) {
+			foreach ($xml->relatedlists->relatedlist as $v) {
 				$modulename = (String)$v->module;
 				$this->mapping[$modulename]['ListFields'] = array();
 				$this->mapping[$modulename]['ListFieldsName'] = array();
 				$this->mapping[$modulename]['LINKFIELD'] = (!empty($v->linkfield) ? (String)$v->linkfield : $f->list_link_field);
 				foreach ($v->columns->field as $vl) {
+					$label = empty($vl->label) ? '' : (String)$vl->label;
 					$table = empty($vl->table) ? '' : (String)$vl->table;
 					$columnname = empty($vl->columnname) ? '' : (String)$vl->columnname;
-					if ($table=='' || $columnname=='') {
-						$res = $adb->pquery('SELECT columnname,tablename FROM vtiger_field WHERE fieldname=? AND tabid=?', array((String)$vl->name, $tabid));
+					if ($table=='' || $columnname=='' || $label=='') {
+						$res = $adb->pquery('SELECT columnname,tablename,fieldlabel FROM vtiger_field WHERE fieldname=? AND tabid=?', array((String)$vl->name, $tabid));
 						if ($res && $adb->num_rows($res)>0) {
 							$table = str_replace('vtiger_', '', $adb->query_result($res, 0, 'tablename'));
 							$columnname = $adb->query_result($res, 0, 'columnname');
+							$label = ($label=='' ? $adb->query_result($res, 0, 'fieldlabel') : $label);
 						}
 					}
-					$this->mapping[$modulename]['ListFields'][(String)$vl->label] = array($table => $columnname);
-					$this->mapping[$modulename]['ListFieldsName'][(String)$vl->label] = (String)$vl->name;
+					$this->mapping[$modulename]['ListFields'][$label] = array($table => $columnname);
+					$this->mapping[$modulename]['ListFieldsName'][$label] = (String)$vl->name;
 				}
 			}
 		}

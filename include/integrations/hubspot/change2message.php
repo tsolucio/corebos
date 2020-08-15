@@ -28,7 +28,7 @@ class hubspotchange2message extends VTEventHandler {
 	}
 
 	public function handleEvent($eventName, $entityData) {
-		global $log, $current_user;
+		global $log, $current_user, $default_charset;
 		$moduleName = $entityData->getModuleName();
 		$recordId = $entityData->getId();
 		$modssupported = array('Accounts','Contacts','Leads','Potentials');
@@ -42,10 +42,9 @@ class hubspotchange2message extends VTEventHandler {
 						$columnFields = array();
 						foreach ($delta as $fieldName => $values) {
 							if ($fieldName != 'modifiedtime') {
-								$currentValue = html_entity_decode($values['currentValue'], ENT_QUOTES, $default_charset);
 								$columnFields[$fieldName] = array(
 									'prevalue' => $values['oldValue'],
-									'postvalue' => $values['currentValue'],
+									'postvalue' => html_entity_decode($values['currentValue'], ENT_QUOTES, $default_charset),
 								);
 							}
 						}

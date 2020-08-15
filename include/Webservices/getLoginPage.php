@@ -21,9 +21,12 @@ function get_loginpage($template, $language, $csrf, $user) {
 	require 'modules/Settings/configod.php';
 	global $currentModule, $adb, $current_language, $default_charset;
 	$image_path='include/images/';
-
+	$originalCurrentLanguage = $current_language;
 	$current_language = $language;
 	$currentModule = 'Users';
+	if (!file_exists('include/language/'.$current_language.'.lang.php')) {
+		$current_language = 'en_us';
+	}
 	$app_strings = return_application_language($current_language);
 	$mod_strings = return_module_language($current_language, $currentModule);
 	$current_module_strings = return_module_language($current_language, $currentModule);
@@ -52,6 +55,8 @@ function get_loginpage($template, $language, $csrf, $user) {
 		//Initialise CSRFGuard library
 		include_once 'include/csrfmagic/csrf-magic.php';
 	}
-	return $smarty->fetch('Login.tpl');
+	$loginPage = $smarty->fetch('Login.tpl');
+	$current_language = $originalCurrentLanguage;
+	return $loginPage;
 }
 ?>

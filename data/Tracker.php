@@ -15,7 +15,6 @@ require_once 'include/database/PearDatabase.php';
  * It is intended to be called by each module when rendering the detail form.
  */
 class Tracker {
-	public $log;
 	public $db;
 	public $table_name = 'vtiger_tracker';
 	public $history_max_viewed = 10;
@@ -30,7 +29,6 @@ class Tracker {
 	);
 
 	public function __construct() {
-		$this->log = LoggerManager::getLogger('Tracker');
 		global $adb;
 		$this->db = $adb;
 		$this->history_max_viewed = GlobalVariable::getVariable('Application_TrackerMaxHistory', 10);

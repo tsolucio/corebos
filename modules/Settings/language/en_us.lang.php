@@ -768,6 +768,11 @@ $mod_strings = array(
 'LBL_MESSAGES_FROM_LASTSCAN'=>'Messages from last scan',
 'LBL_MARK_MESSAGE_AS'=>'Mark message as',
 'LBL_ASSIGN' => 'Assign to',
+'LBL_MUSTBERELATED' => 'Must be related with record',
+'LBL_ADDEMAILAS' => 'Add Email as',
+'LBL_ADDCOMMENTEMAIL' => 'As comment and email',
+'LBL_ADDLINKEMAIL' => 'As link in comment and email',
+'LBL_ADDONLYEMAIL' => 'Only email',
 
 //Added for the workflow module
 'LBL_LIST_WORKFLOWS'=>'Workflows',

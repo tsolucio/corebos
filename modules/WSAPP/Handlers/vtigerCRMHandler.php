@@ -19,7 +19,7 @@ require_once 'modules/WSAPP/Handlers/SyncHandler.php';
 
 class vtigerCRMHandler extends SyncHandler {
 
-	private $assignToChangedRecords;
+	public $assignToChangedRecords;
 	protected $clientSyncType = 'user';
 
 	public function __construct($appkey) {

@@ -774,8 +774,14 @@ class Validator
     {
         $vtime = ($value instanceof \DateTime) ? $value->getTimestamp() : strtotime($value);
         $ptime = ($params[0] instanceof \DateTime) ? $params[0]->getTimestamp() : strtotime($params[0]);
-
         return $vtime > $ptime;
+    }
+
+    protected function validateDateEqualorAfter($field, $value, $params)
+    {
+        $vtime = ($value instanceof \DateTime) ? $value->getTimestamp() : strtotime($value);
+        $ptime = ($params[0] instanceof \DateTime) ? $params[0]->getTimestamp() : strtotime($params[0]);
+        return $vtime >= $ptime;
     }
 
     /**
@@ -1096,8 +1102,11 @@ class Validator
             }
             $values[] = $param;
         }
-
-        $this->_errors[$field][] = vsprintf($message, $values);
+        if (substr($message, 0, 13)=='%%%CONFIRM%%%' || substr($message, 0, 14)=='%%%FUNCTION%%%') {
+            $this->_errors[$field][] = $message;
+        } else {
+            $this->_errors[$field][] = vsprintf($message, $values);
+        }
     }
 
     /**

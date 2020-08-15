@@ -14,6 +14,31 @@
 *************************************************************************************************/
 
 function getfiltersbymodule($module, $user) {
+	global $adb, $log;
+	// pickup meta data of module
+	$webserviceObject = VtigerWebserviceObject::fromName($adb, $module);
+	$handlerPath = $webserviceObject->getHandlerPath();
+	$handlerClass = $webserviceObject->getHandlerClass();
+	require_once $handlerPath;
+	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+	$meta = $handler->getMeta();
+	$mainModule = $meta->getTabName();  // normalize module name
+	// check modules
+	if (!$meta->isModuleEntity()) {
+		throw new WebServiceException('INVALID_MODULE', "Given module ($module) cannot be found");
+	}
+
+	// check permission on module
+	$entityName = $meta->getEntityName();
+	$types = vtws_listtypes(null, $user);
+	if (!in_array($entityName, $types['types'])) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to perform the operation on module ($mainModule) is denied");
+	}
+
+	if (!$meta->hasReadAccess()) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read module is denied');
+	}
+
 	$focus = CRMEntity::getInstance($module);
 	$linkfields=array($focus->list_link_field);
 	if ($module=='Contacts' || $module=='Leads') {
@@ -21,13 +46,17 @@ function getfiltersbymodule($module, $user) {
 	}
 
 	$customView = new CustomView($module);
+	$saveAction = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+	$_REQUEST['action'] = 'ListView';
 	$viewid = $customView->getViewId($module);
+	$_REQUEST['action'] = $saveAction;
 	list($customviews, $customview_html) = cbws_getCustomViewCombo($viewid, $module, $customView);
 
 	return array(
 		'html'=>$customview_html,
 		'filters'=>$customviews,
 		'linkfields'=>$linkfields,
+		'pagesize' => intval(GlobalVariable::getVariable('Application_ListView_PageSize', 20, $module)),
 	);
 }
 
@@ -36,22 +65,16 @@ function getfiltersbymodule($module, $user) {
  * $viewid will make the corresponding selected
  * @returns  $customviewCombo :: Type String
  */
-function cbws_getCustomViewCombo($viewid, $module, $customView, $markselected = true) {
+function cbws_getCustomViewCombo($viewid, $module, $customView) {
 	global $adb, $current_user, $app_strings;
 	$tabid = getTabid($module);
 	$_REQUEST['action'] = '';
 	$userprivs = $current_user->getPrivileges();
-
 	$shtml_user = '';
 	$shtml_pending = '';
 	$shtml_public = '';
 	$shtml_others = '';
 	$filters = array();
-
-	$selected = 'selected';
-	if ($markselected == false) {
-		$selected = '';
-	}
 
 	$ssql = 'select vtiger_customview.*, vtiger_users.first_name,vtiger_users.last_name
 		from vtiger_customview
@@ -60,7 +83,7 @@ function cbws_getCustomViewCombo($viewid, $module, $customView, $markselected = 
 	$ssql .= ' where vtiger_tab.tabid=?';
 	$sparams = array($tabid);
 
-	if ($is_admin == false) {
+	if (is_admin($current_user) == false) {
 		$ssql .= " and (vtiger_customview.status=0 or vtiger_customview.userid = ? or vtiger_customview.status = 3 or vtiger_customview.userid in (
 			select vtiger_user2role.userid
 			from vtiger_user2role
@@ -121,7 +144,19 @@ function cbws_getCustomViewCombo($viewid, $module, $customView, $markselected = 
 		}
 		$advft_criteria = json_encode($advft);
 		$filter['advcriteria'] = $advft_criteria;
+		$filter['advcriteriaWQL'] = $customView->getCVAdvFilterSQL($cvrow['cvid'], true);
+		$filter['advcriteriaEVQL'] = $customView->getCVAdvFilterEVQL($cvrow['cvid']);
 		$filter['stdcriteria'] = $customView->getCVStdFilterSQL($cvrow['cvid']);
+		$filter['stdcriteriaWQL'] = $customView->getCVStdFilterSQL($cvrow['cvid'], true);
+		$filter['stdcriteriaEVQL'] = $customView->getCVStdFilterEVQL($cvrow['cvid']);
+		$viewinfo = $customView->getColumnsListByCvid($cvrow['cvid']);
+		$fields = array();
+		foreach ($viewinfo as $fld) {
+			$finfo=explode(':', $fld);
+			$fields[]=($finfo[1]=='smownerid' ? 'assigned_user_id' : $finfo[2]);
+		}
+		$filter['fields'] = $fields;
+		$filter['default'] = ($cvrow['setdefault']==1);
 		$option = "<option value='".$cvrow['cvid']."'>" . $disp_viewname . '</option>';
 		// Add the option to combo box at appropriate section
 		if ($option != '') {

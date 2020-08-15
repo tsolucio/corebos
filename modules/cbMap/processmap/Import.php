@@ -57,6 +57,8 @@
 require_once 'modules/cbMap/cbMap.php';
 require_once 'modules/cbMap/processmap/processMap.php';
 
+$IMPORT_TABLE_THREAD = '';
+
 class Import extends processcbMap {
 	private $mapping = array();
 	private $importtype = '';
@@ -369,12 +371,13 @@ class Import extends processcbMap {
 	}
 
 	private function doImportcoreBOS($arguments) {
-		global $current_user, $VTIGER_BULK_SAVE_MODE, $adb;
+		global $current_user, $VTIGER_BULK_SAVE_MODE, $adb, $IMPORT_TABLE_THREAD;
 		$previousBulkSaveMode = isset($VTIGER_BULK_SAVE_MODE) ? $VTIGER_BULK_SAVE_MODE : false;
-		$VTIGER_BULK_SAVE_MODE = true;
+		$IMPORT_TABLE_THREAD = isset($arguments[3]) ? vtlib_purify($arguments[3]) : '';
 		require_once 'modules/Import/api/Request.php';
 		include_once 'modules/Import/controllers/Import_Controller.php';
 		$rs = $adb->pquery('select module,field_mapping,defaultvalues from vtiger_import_maps where id=?', array($this->mapping['mapid']));
+		$VTIGER_BULK_SAVE_MODE = (GlobalVariable::getVariable('Import_Launch_EventsAndWorkflows', 'no', $rs->fields['module'])=='no'); //true;
 		$requestArray = array(
 			'module' => $rs->fields['module'],
 			'action' => 'Import',
@@ -390,14 +393,15 @@ class Import extends processcbMap {
 			'merge_fields' => '',
 		);
 		if ($this->mapping['duphandling']!='none') {
-			$requestObject['merge_type'] = ($this->mapping['duphandling'] == 'overwrite' ?
+			$requestArray['merge_type'] = ($this->mapping['duphandling'] == 'overwrite' ?
 				Import_Utils::$AUTO_MERGE_OVERWRITE :
 				($this->mapping['duphandling'] == 'merge' ? Import_Utils::$AUTO_MERGE_MERGEFIELDS : Import_Utils::$AUTO_MERGE_IGNORE));
-			$requestObject['merge_fields'] = json_encode($this->mapping['dupmatches']);
+			$requestArray['merge_fields'] = json_encode($this->mapping['dupmatches']);
 		}
 		$requestObject = new Import_API_Request($requestArray);
 		$importController = new Import_Controller($requestObject, $current_user);
 		@copy($arguments[1], Import_Utils::getImportDirectory().'IMPORT_'.$current_user->id);
+		$adb->query('DROP TABLE IF EXISTS '.Import_Utils::getDbTableName($current_user));
 		$fileReadStatus = $importController->copyFromFileToDB();
 		if ($fileReadStatus) {
 			$importController->queueDataImport(true);
@@ -405,6 +409,7 @@ class Import extends processcbMap {
 		} else {
 			echo '<b>Incorrect Import Table</b>';
 		}
+		$adb->query('DROP TABLE IF EXISTS '.Import_Utils::getDbTableName($current_user));
 		$VTIGER_BULK_SAVE_MODE = $previousBulkSaveMode;
 	}
 }

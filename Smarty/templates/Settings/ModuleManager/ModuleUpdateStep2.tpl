@@ -8,7 +8,7 @@
 	<br>
 
 	<div align=center>
-		
+
 		<table class="settingsSelUITopLine" border="0" cellpadding="5" cellspacing="0" width="100%">
 		<tr>
 			<td rowspan="2" valign="top" width="50" class="cblds-p_none"><img src="{'vtlib_modmng.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" title="{$MOD.LBL_USERS}" border="0" height="48" width="48"></td>
@@ -19,7 +19,7 @@
 			<td class="small cblds-p-v_none" valign="top">{$MOD.VTLIB_LBL_MODULE_MANAGER_DESCRIPTION}</td>
 		</tr>
 		</table>
-				
+
 		<br>
 		<table border="0" cellpadding="10" cellspacing="0" width="100%">
 		<tr>
@@ -52,7 +52,7 @@
 								<td class='cellText small cblds-t-align_right' colspan=2 align=right>
 									<input type="hidden" name="module" value="Settings">
 									<input type="hidden" name="action" value="ModuleManager">
-									<input type="hidden" name="parenttab" value="Settings">						
+									<input type="hidden" name="parenttab" value="Settings">
 									<input type="submit" class="crmbutton small delete" value="{$APP.LBL_FINISH}">
 								</td>
 							</tr>
@@ -80,9 +80,9 @@
 								</td>
 								<td class='cellText small'>
 									{$MODULEUPDATE_DIR}
-									{if $MODULEUPDATE_DIR_NOT_EXISTS eq 'true'} <font color=red><b>{$MOD.VTLIB_LBL_NOT_PRESENT}</b></font> 
+									{if $MODULEUPDATE_DIR_NOT_EXISTS eq 'true'} <font color=red><b>{$MOD.VTLIB_LBL_NOT_PRESENT}</b></font>
 										{* -- Avoiding File Overwrite
-										 <br> Overwrite existing files? <input type="checkbox" name="module_dir_overwrite" value="true"> 
+										 <br> Overwrite existing files? <input type="checkbox" name="module_dir_overwrite" value="true">
 										-- *}
 									{/if}
 								</td>
@@ -116,7 +116,7 @@
 								<td class='cellText small'>
 									<textarea readonly class='small' style="background-color: #F5F5F5; border: 0; height: 150px; font: 10px 'Lucida Console', 'Courier New', Arial, sans-serif;">{$MODULEUPDATE_LICENSE}</textarea><br>
 									{literal}
-									<input type="checkbox" onclick="if(this.form.yesbutton){if(this.checked){this.form.yesbutton.disabled=false;}else{this.form.yesbutton.disabled=true;}}"> {/literal} {$MOD.VTLIB_LBL_LICENSE_ACCEPT_AGREEMENT}	
+									<input type="checkbox" onclick="if(this.form.yesbutton){if(this.checked){this.form.yesbutton.disabled=false;}else{this.form.yesbutton.disabled=true;}}"> {/literal} {$MOD.VTLIB_LBL_LICENSE_ACCEPT_AGREEMENT}
 								</td>
 							</tr>
 							{/if}
@@ -133,15 +133,15 @@
 									<input type="hidden" name="target_modulename" value="{$smarty.request.target_modulename|@vtlib_purify}">
 									<input type="hidden" name="module_import_cancel" value="false">
 
-									{if $MODULEUPDATE_NOT_EXISTS eq 'true' || $MODULEUPDATE_DIR_NOT_EXISTS eq 'true'}										
-										<input type="submit" class="crmbutton small delete" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" 
-												onclick="this.form.module_update.value=''; this.form.module_import_cancel.value='true';">
+									{if $MODULEUPDATE_NOT_EXISTS eq 'true' || $MODULEUPDATE_DIR_NOT_EXISTS eq 'true'}
+										<input type="submit" class="crmbutton small delete" value="{$APP.LBL_CANCEL_BUTTON_LABEL}"
+											onclick="this.form.module_update.value=''; this.form.module_import_cancel.value='true';">
 									{else}
 										{$MOD.VTLIB_LBL_PROCEED_WITH_UPDATE}
-										<input type="submit" class="crmbutton small edit" value="{$MOD.LBL_YES}" 
-											{if $need_license_agreement eq 'true'} disabled=true {/if}	name="yesbutton">
-										<input type="submit" class="crmbutton small delete" value="{$MOD.LBL_NO}" 
-												onclick="this.form.module_update.value=''; this.form.module_import_cancel.value='true';">
+										<input type="submit" class="crmbutton small edit" value="{$MOD.LBL_YES}"
+									{if $need_license_agreement eq 'true'} disabled=true {/if}	name="yesbutton">
+										<input type="submit" class="crmbutton small delete" value="{$MOD.LBL_NO}"
+											onclick="this.form.module_update.value=''; this.form.module_import_cancel.value='true';">
 									{/if}
 								</td>
 							</tr>
@@ -153,7 +153,7 @@
 		</tr>
 		</table>
 		<!-- End of Display -->
-		
+
 		</td>
         </tr>
         </table>

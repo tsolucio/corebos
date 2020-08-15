@@ -36,6 +36,8 @@ class VTFieldExpressionEvaluater {
 			'time_diffdays' => '__vt_time_diffdays',
 			'time_diffyears' => '__cb_time_diffyears',
 			'time_diffweekdays' => '__cb_getWeekdayDifference',
+			'holidaydifference' => '__cb_holidaydifference',
+			'networkdays' => '__cb_networkdays',
 			'aggregate_time' => '__cb_aggregate_time',
 			'add_days' => '__vt_add_days',
 			'sub_days' => '__vt_sub_days',
@@ -93,6 +95,7 @@ class VTFieldExpressionEvaluater {
 			'delSetting' => '__cb_delSetting',
 			'sendMessage' => '__cb_sendMessage',
 			'readMessage' => '__cb_readMessage',
+			'evaluateRule' => '__cb_evaluateRule',
 			'getCRUDMode' => '__cb_getcrudmode',
 			'isNumeric' => '__cb_is_numeric',
 			'isString' => '__cb_is_string',
@@ -180,6 +183,7 @@ class VTFieldExpressionEvaluater {
 			'max' => 'cbexpsql_max',
 			'avg' => 'cbexpsql_avg',
 			'count' => 'cbexpsql_count',
+			'group_concat' => 'cbexpsql_groupconcat',
 			'isNumeric' => 'cbexpsql_isnumber',
 			'isString' => 'cbexpsql_isstring',
 			'OR' => 'cbexpsql_or',
@@ -203,6 +207,8 @@ class VTFieldExpressionEvaluater {
 			'__cb_setfromcontext',
 			'__cb_min',
 			'__cb_max',
+			'__cb_holidaydifference',
+			'__cb_networkdays',
 		);
 		$this->needscontext = array(
 			'__cb_aggregation',
@@ -216,6 +222,7 @@ class VTFieldExpressionEvaluater {
 			'__cb_exists',
 			'__cb_existsrelated',
 			'__cb_allrelatedare',
+			'__cb_evaluateRule',
 		);
 		$wfexpfuncs = $adb->query('select expname,funcname,rawparams,needscontext from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {

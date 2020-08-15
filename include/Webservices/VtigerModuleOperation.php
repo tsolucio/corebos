@@ -11,6 +11,7 @@
 class VtigerModuleOperation extends WebserviceEntityOperation {
 	protected $tabId;
 	protected $isEntity = true;
+	private $queryTotalRows = 0;
 
 	public function __construct($webserviceObject, $user, $adb, $log) {
 		parent::__construct($webserviceObject, $user, $adb, $log);
@@ -23,6 +24,22 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			WebserviceEntityOperation::$metaCache[$this->webserviceObject->getEntityName()][$this->user->id]=new VtigerCRMObjectMeta($this->webserviceObject, $this->user);
 		}
 		return WebserviceEntityOperation::$metaCache[$this->webserviceObject->getEntityName()][$this->user->id];
+	}
+
+	public function getCache($module = '') {
+		if (empty($module)) {
+			return WebserviceEntityOperation::$metaCache;
+		} else {
+			return WebserviceEntityOperation::$metaCache[$module][$this->user->id];
+		}
+	}
+
+	public function emptyCache($module = '') {
+		if (empty($module)) {
+			WebserviceEntityOperation::$metaCache = array();
+		} else {
+			unset(WebserviceEntityOperation::$metaCache[$module]);
+		}
 	}
 
 	public function create($elementType, $element) {
@@ -129,7 +146,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			$moduleRegex = "/[fF][rR][Oo][Mm]\s+([^\s;]+)/";
 			preg_match($moduleRegex, $q, $m);
 			$relatedModule = trim($m[1]);
-			$moduleRegex = "/[rR][eE][lL][aA][tT][eE][dD]\.([^\s;]+)\s*=\s*([^\s;]+)/";
+			$moduleRegex = "/\s+\(*\s*[rR][eE][lL][aA][tT][eE][dD]\.([^\s;]+)\s*=\s*([^\s;]+)/";
 			preg_match($moduleRegex, $q, $m);
 			$moduleName = trim($m[1]);
 			$id = trim($m[2], "(')");
@@ -144,7 +161,8 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 				$docrelcond = substr($mysql_query, stripos($mysql_query, 'where')+6);
 				$addDocGlue = (stripos($docrelcond, ' and ') > 0 || stripos($docrelcond, ' or ') > 0);
 				$mysql_query = substr($mysql_query, 0, stripos($mysql_query, 'where')+6);
-				$relatedCond = "/[rR][eE][lL][aA][tT][eE][dD]\.([^\s;]+)\s*=\s*([^\s;]+)/";
+				$relatedCond = '/related.'.$moduleName.'\s*=\s*'.trim($m[2], ')').'/i';
+				// $relatedCond = "/[rR][eE][lL][aA][tT][eE][dD]\.([^\s;]+)\s*=\s*([^\s;]+)/";
 				$afterwhere=trim(preg_replace($relatedCond, $docrelcond, $afterwhere), ' ;');
 			} else {
 				$addDocGlue = true;
@@ -318,7 +336,18 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			}
 			$output[] = $newrow;
 		}
+		$mysql_query = mkXQuery(stripTailCommandsFromQuery($mysql_query, false), 'count(*) AS cnt');
+		$result = $this->pearDB->pquery($mysql_query, array());
+		if ($result) {
+			$this->queryTotalRows = $result->fields['cnt'];
+		} else {
+			$this->queryTotalRows = 0;
+		}
 		return $output;
+	}
+
+	public function getQueryTotalRows() {
+		return $this->queryTotalRows;
 	}
 
 	public function describe($elementType) {
@@ -400,6 +429,10 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 
 	public function getMeta() {
 		return $this->meta;
+	}
+
+	public function getTabId() {
+		return $this->tabId;
 	}
 
 	public function getField($fieldName) {

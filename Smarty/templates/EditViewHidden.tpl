@@ -75,4 +75,8 @@
 {/if}
 <input type="hidden" name="Module_Popup_Edit" value="{if isset($smarty.request.Module_Popup_Edit)}{$smarty.request.Module_Popup_Edit|@urlencode}{/if}" />
 <input name='search_url' id="search_url" type='hidden' value='{if isset($SEARCH)}{$SEARCH}{/if}'>
-
+{if isset($CUSTOM_LINKS) && !empty($CUSTOM_LINKS.EDITVIEWHTML)}
+{foreach from=$CUSTOM_LINKS.EDITVIEWHTML item=evhtml}
+	{eval var=$evhtml->linkurl}
+{/foreach}
+{/if}

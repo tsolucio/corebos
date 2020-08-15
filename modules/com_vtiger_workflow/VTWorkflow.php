@@ -101,14 +101,14 @@ class Workflow {
 	 * return string $sorder    - sortorder string either 'ASC' or 'DESC'
 	 */
 	public function getSortOrder() {
-		global $log;
+		global $log, $adb;
 		$cmodule = get_class($this);
 		$log->debug('> getSortOrder');
 		$sorder = strtoupper(GlobalVariable::getVariable('Application_ListView_Default_OrderDirection', $this->default_sort_order, $cmodule));
 		if (isset($_REQUEST['sorder'])) {
-			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
+			$sorder = $adb->sql_escape_string($_REQUEST['sorder']);
 		} elseif (!empty($_SESSION[$cmodule.'_Sort_Order'])) {
-			$sorder = $this->db->sql_escape_string($_SESSION[$cmodule.'_Sort_Order']);
+			$sorder = $adb->sql_escape_string($_SESSION[$cmodule.'_Sort_Order']);
 		}
 		$log->debug('< getSortOrder');
 		return $sorder;
@@ -119,7 +119,7 @@ class Workflow {
 	 * return string $order_by    - fieldname(eg: 'accountname')
 	 */
 	public function getOrderBy() {
-		global $log;
+		global $log, $adb;
 		$log->debug('> getOrderBy');
 		$cmodule = get_class($this);
 		$order_by = '';
@@ -128,9 +128,9 @@ class Workflow {
 		}
 
 		if (isset($_REQUEST['order_by'])) {
-			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
+			$order_by = $adb->sql_escape_string($_REQUEST['order_by']);
 		} elseif (!empty($_SESSION[$cmodule.'_Order_By'])) {
-			$order_by = $this->db->sql_escape_string($_SESSION[$cmodule.'_Order_By']);
+			$order_by = $adb->sql_escape_string($_SESSION[$cmodule.'_Order_By']);
 		}
 		$log->debug('< getOrderBy');
 		return $order_by;
@@ -243,6 +243,7 @@ class Workflow {
 					if ($delay!=0 && get_class($task) == 'VTUpdateFieldsTask') {
 						$taskQueue->queueTask($task->id, $entityData->getId(), $delay);
 					} else {
+						$entityCache->emptyCache($entityData->getId());
 						if (empty($task->test) || $task->evaluate($entityCache, $entityData->getId())) {
 							try {
 								$task->startTask($entityData);

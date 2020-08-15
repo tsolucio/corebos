@@ -263,10 +263,8 @@ Array (
 				$nextToken = ' WHERE ';
 			}
 		}
-		if (strcasecmp('calendar', $this->out['moduleName'])===0) {
-			$this->query = $this->query." $nextToken activitytype='Task' AND ";
-		} elseif (strcasecmp('events', $this->out['moduleName'])===0) {
-			$this->query = $this->query."$nextToken activitytype!='Emails' AND activitytype!='Task' AND ";
+		if (strcasecmp('cbcalendar', $this->out['moduleName'])===0) {
+			$this->query = $this->query."$nextToken activitytype!='Emails' AND ";
 		} elseif (strcasecmp('emails', $this->out['moduleName'])===0) {
 			$this->query = $this->query."$nextToken activitytype='Emails' AND ";
 		} elseif (!empty($deletedQuery)) {
@@ -277,17 +275,23 @@ Array (
 
 		if (!empty($sqlDump['orderby'])) {
 			$i=0;
-			$this->query = $this->query.' ORDER BY ';
+			$orderby = '';
 			foreach ($sqlDump['orderby'] as $field) {
+				if (empty($fieldcol[$field])) {
+					continue;
+				}
 				if ($i===0) {
-					$this->query = $this->query.$columnTable[$fieldcol[$field]].'.'.$fieldcol[$field];
+					$orderby .= $columnTable[$fieldcol[$field]].'.'.$fieldcol[$field];
 					$i++;
 				} else {
-					$this->query = $this->query.','.$columnTable[$fieldcol[$field]].'.'.$fieldcol[$field];
+					$orderby .= ','.$columnTable[$fieldcol[$field]].'.'.$fieldcol[$field];
 				}
 			}
 			if (!empty($sqlDump['sortOrder'])) {
-				$this->query .= ' '.$sqlDump['sortOrder'];
+				$orderby .= ' '.$sqlDump['sortOrder'];
+			}
+			if ($orderby!='') {
+				$this->query = $this->query.' ORDER BY '.$orderby;
 			}
 		}
 		if (!empty($sqlDump['limit'])) {
@@ -1336,6 +1340,13 @@ Array (
 					$columns[] = $fieldcol[$field];
 				}
 			}
+			if (!empty($this->out['orderby'])) {
+				foreach ($this->out['orderby'] as $field) {
+					if (!empty($fieldcol[$field])) {
+						$columns[] = $fieldcol[$field];
+					}
+				}
+			}
 			$tables = $this->getTables($this->out, $columns);
 			if (!in_array($objectMeta->getEntityBaseTable(), $tables)) {
 				$tables[] = $objectMeta->getEntityBaseTable();
@@ -1354,6 +1365,9 @@ Array (
 				if ($firstTable!=$table) {
 					if (!isset($tabNameIndex[$table]) && $table == 'vtiger_crmentity') {
 						$this->out['defaultJoinConditions']=$this->out['defaultJoinConditions']." LEFT JOIN $table ON $firstTable.$firstIndex=$table.crmid";
+					} elseif (!isset($tabNameIndex[$table]) && $table == 'vtiger_attachments') {
+						$this->out['defaultJoinConditions'] .= " LEFT JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.crmid=vtiger_activity.activityid";
+						$this->out['defaultJoinConditions'] .= " LEFT JOIN vtiger_attachments ON vtiger_seattachmentsrel.attachmentsid=vtiger_attachments.attachmentsid";
 					} else {
 						$this->out['defaultJoinConditions']=$this->out['defaultJoinConditions']." LEFT JOIN $table ON $firstTable.$firstIndex=$table.".$tabNameIndex[$table];
 					}

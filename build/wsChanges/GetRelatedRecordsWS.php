@@ -14,15 +14,15 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'getRelatedRecords',
-	 'include' => 'include/Webservices/GetRelatedRecords.php',
-	 'handler' => 'getRelatedRecords',
-	 'prelogin'=> 0,
-	 'type'    => 'POST',
-	 'parameters' => array(
-		 array('name' => 'id','type' => 'String'),
-		 array('name' => 'module','type' => 'String'),
-		 array('name' => 'relatedModule','type' => 'String'),
-		 array('name' => 'queryParameters','type' => 'encoded')
-	 )
+	'name'    => 'getRelatedRecords',
+	'include' => 'include/Webservices/GetRelatedRecords.php',
+	'handler' => 'getRelatedRecords',
+	'prelogin'=> 0,
+	'type'    => 'POST',
+	'parameters' => array(
+		array('name' => 'id','type' => 'String'),
+		array('name' => 'module','type' => 'String'),
+		array('name' => 'relatedModule','type' => 'String'),
+		array('name' => 'queryParameters','type' => 'encoded')
+	)
 );

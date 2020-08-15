@@ -22,6 +22,12 @@ function submittemplate(recordid, value, target_fieldname, formname) {
 		var url = 'index.php?module=MailManager&action=MailManagerAjax&file=TemplateMergeMailManager&templateid='+recordid+'&subject='+sub+'&textbody='+tbody;
 		window.document.location.href = url;
 	}
+	if (calltype.substring(0, 10)=='function::') {
+		let func = calltype.substring(10);
+		if (typeof (window[func])=='function') {
+			window[func](recordid);
+		}
+	}
 }
 
 function msgtFillInModuleFields() {

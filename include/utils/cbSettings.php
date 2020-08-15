@@ -23,9 +23,9 @@ class coreBOS_Settings {
 	/*
 	 * @return $default if not found
 	 */
-	public static function getSetting($skey, $default) {
+	public static function getSetting($skey, $default, $cache = true) {
 		global $adb;
-		if (isset(self::$cached_values[$skey])) {
+		if ($cache && isset(self::$cached_values[$skey])) {
 			return self::$cached_values[$skey];
 		} else {
 			$cbstrs = $adb->pquery('select setting_value from cb_settings where setting_key=?', array($skey));

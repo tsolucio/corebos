@@ -8,7 +8,6 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 {include file='SetMenu.tpl'}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 <div class="slds-modal__container slds-p-around_none">
@@ -38,7 +37,7 @@
 				<tr>
 
 				<td>
-				
+
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 					<tr>
 						<td class="big"><strong>{$MOD.LBL_GROUP_LIST}</strong></td>
@@ -48,12 +47,12 @@
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="listTableTopButtons">
 
 					<tr>
-					     <td class="small cblds-t-align_right" align=right>
+						<td class="small cblds-t-align_right" align=right>
 						<input title="{$CMOD.LBL_NEW_GROUP}" class="crmButton create small" type="submit" name="New" value="{$CMOD.LBL_NEW_GROUP}"/>
-					     </td>
+						</td>
 					</tr>
 					</table>
-						
+
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="listTable">
 					<tr>
 						<td class="colHeader small cblds-p-v_mediumsmall" valign=top width=2%>#</td>
@@ -74,9 +73,6 @@
 						<td class="listTableRow small" valign=top>{$groupvalues.description}</td>
 					  </tr>
 					{/foreach}
-					</table>
-					<table border=0 cellspacing=0 cellpadding=5 width=100% >
-					<tr><td class="small cblds-t-align_right" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
 					</table>
 				</td>
 				</tr>

@@ -42,6 +42,103 @@ function __vt_time_diff($arr) {
 	return (strtotime($time_operand1) - strtotime($time_operand2));
 }
 
+function __cb_holidaydifference($arr) {
+	if (count($arr) == 4) {
+		$date1 = $arr[0];
+		$date2 = $arr[1];
+		$addsaturday = isset($arr[2]) ? $arr[2] : 1;
+		$mapname = $arr[3];
+	} else {
+		return 0; // one or more parameter is missing
+	}
+
+	if ($addsaturday == 0) {
+		$lastdow = 6;
+	} else {
+		$lastdow = 7;
+	}
+
+	if (empty($date1) || empty($date2)) {
+		return 0;
+	}
+	$firstDate = new DateTime($date1);
+	$lastDate = new DateTime($date2);
+	if ($firstDate>$lastDate) {
+		$h = $firstDate;
+		$firstDate = $lastDate;
+		$lastDate = $h;
+	}
+	$days = 0;
+	$oneDay = new DateInterval('P1D');
+	while ($firstDate->diff($lastDate)->days > 0) {
+		$days += $firstDate->format('N') < $lastdow ? 1 : 0;
+		$firstDate = $firstDate->add($oneDay);
+	}
+
+	if ($mapname != '') {
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$mapname, cbMap::getMapIdByName($mapname));
+		if ($cbMapid != 0) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$holidays = $cbMap->InformationMap()->readInformationValue();
+		} else {
+			$holidays = explode(',', $arr[3]);
+		}
+		//add holidays dates
+		foreach ($holidays as $key => $dateVal) {
+			$holidayDate = new DateTime($dateVal);
+			if (strtotime($dateVal) >= strtotime($date1) && strtotime($dateVal) <= strtotime($date2)) {
+				$days -= $holidayDate->format('N') < $lastdow ? 1 : 0;
+			}
+		}
+	}
+	return $days;
+}
+
+function __cb_networkdays($arr) {
+	$net_date1 = $arr[0];
+	$net_date2 = $arr[1];
+	$mapname = isset($arr[2]) ? $arr[2] : '';
+
+	if (empty($net_date1) || empty($net_date2)) {
+		return 0;
+	}
+	$firstDate = new DateTime($net_date1);
+	$lastDate = new DateTime($net_date2);
+	if ($firstDate>$lastDate) {
+		$h = $firstDate;
+		$firstDate = $lastDate;
+		$lastDate = $h;
+	}
+	$days = 0;
+	$oneDay = new DateInterval('P1D');
+	while ($firstDate->diff($lastDate)->days >= 0) {
+		if ($firstDate->diff($lastDate)->days == 0) {
+			$days += $firstDate->format('N') < 6 ? 1 : 0;
+			break;
+		}
+		$days += $firstDate->format('N') < 6 ? 1 : 0;
+		$firstDate = $firstDate->add($oneDay);
+	}
+
+	if ($mapname != '') {
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$mapname, cbMap::getMapIdByName($mapname));
+		if ($cbMapid != 0) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$holidays = $cbMap->InformationMap()->readInformationValue();
+		} else {
+			$holidays = explode(',', $arr[2]);
+		}
+		//add holidays dates
+		foreach ($holidays as $key => $dateVal) {
+			$holidayDate = new DateTime($dateVal);
+			if (strtotime($dateVal) >= strtotime($net_date1) && strtotime($dateVal) <= strtotime($net_date2)) {
+				$days -= $holidayDate->format('N') < 6 ? 1 : 0;
+			}
+		}
+	}
+	return $days;
+}
+
 /**
  * Calculate the time difference (input times) or (current time and input time) and
  * convert it into number of days.
@@ -325,7 +422,13 @@ function __cb_add_workdays($arr) {
 		$lastdow = 7;
 	}
 	if (isset($arr[3]) && trim($arr[3])!='') {
-		$holidays = explode(',', $arr[3]);
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$arr[3], cbMap::getMapIdByName($arr[3]));
+		if ($cbMapid != 0) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$holidays = $cbMap->InformationMap()->readInformationValue();
+		} else {
+			$holidays = explode(',', $arr[3]);
+		}
 	} else {
 		$holidays = array();
 	}

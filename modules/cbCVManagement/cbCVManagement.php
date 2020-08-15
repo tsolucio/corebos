@@ -18,7 +18,6 @@ require_once 'modules/CustomView/CustomView.php';
 
 class cbCVManagement extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_cbcvmanagement';
 	public $table_index= 'cbcvmanagementid';
@@ -200,7 +199,7 @@ class cbCVManagement extends CRMEntity {
 			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
 			inner join vtiger_customview on vtiger_customview.cvid=vtiger_cbcvmanagement.cvid
 			left join vtiger_user2role on vtiger_user2role.userid=?
-			where vtiger_crmentity.deleted=0 and cvdefault='1' and cvrole like concat('%', vtiger_user2role.roleid, '%')) and entitytype=? and cvretrieve='1' limit 1";
+			where vtiger_crmentity.deleted=0 and cvdefault='1' and cvrole like concat('%', vtiger_user2role.roleid, '%') and entitytype=? and cvretrieve='1' limit 1";
 		self::$validationinfo[] = '---';
 		self::$validationinfo[] = 'search for role records';
 		$cvrs = $adb->pquery($cvsql, array($cvuserid, $module));
@@ -400,6 +399,7 @@ class cbCVManagement extends CRMEntity {
 	}
 
 	public static function getApprovers($cvid) {
+		global $adb;
 		if (empty($cvid)) {
 			return false;
 		}

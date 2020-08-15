@@ -25,25 +25,26 @@ function vtws_retrieve($id, $user) {
 	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 	$meta = $handler->getMeta();
 	$entityName = $meta->getObjectEntityName($id);
-	$types = vtws_listtypes(null, $user);
-	if (!in_array($entityName, $types['types'])) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
-	}
-	if ($meta->hasReadAccess()!==true) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to write is denied');
-	}
 
 	if ($entityName !== $webserviceObject->getEntityName()) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Id specified is incorrect');
 	}
 
-	if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $id)) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
-	}
-
 	$idComponents = vtws_getIdComponents($id);
 	if (!$meta->exists($idComponents[1])) {
 		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record you are trying to access is not found');
+	}
+	if (!($entityName == 'Users' && $user->id == $idComponents[1])) {
+		$types = vtws_listtypes(null, $user);
+		if (!in_array($entityName, $types['types']) && !($entityName == 'Users' && $user->id==$idComponents[1])) {
+			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
+		}
+		if ($meta->hasReadAccess()!==true) {
+			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read is denied');
+		}
+		if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $id)) {
+			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
+		}
 	}
 
 	$entity = $handler->retrieve($id);
@@ -87,6 +88,12 @@ function vtws_retrieve($id, $user) {
 	}
 	//return product lines
 	if ($entityName == 'Quotes' || $entityName == 'PurchaseOrder' || $entityName == 'SalesOrder' || $entityName == 'Invoice') {
+		$cbMap = cbMap::getMapByName($entityName.'InventoryDetails', 'MasterDetailLayout');
+		$MDMapFound = ($cbMap!=null && isPermitted('InventoryDetails', 'index')=='yes');
+		if ($MDMapFound) {
+			$cbMapFields = $cbMap->MasterDetailLayout();
+		}
+		$invdTabid = getTabid('InventoryDetails');
 		$pdowsid = vtws_getEntityId('Products').'x';
 		$srvwsid = vtws_getEntityId('Services').'x';
 		list($wsid, $recordid) = explode('x', $id);
@@ -123,6 +130,32 @@ function vtws_retrieve($id, $user) {
 				'discount_percentage'=>$discount_percent,
 				'discount_amount'=>$discount_amount,
 			);
+			if ($MDMapFound) {
+				foreach ($cbMapFields['detailview']['fields'] as $mdfield) {
+					if ($mdfield['fieldinfo']['name']=='id') {
+						continue;
+					}
+					$mdrs = $adb->pquery(
+						'select '.$mdfield['fieldinfo']['name'].',vtiger_inventorydetails.inventorydetailsid from vtiger_inventorydetails
+							inner join vtiger_crmentity on crmid=vtiger_inventorydetails.inventorydetailsid
+							inner join vtiger_inventorydetailscf on vtiger_inventorydetailscf.inventorydetailsid=vtiger_inventorydetails.inventorydetailsid
+							where deleted=0 and related_to=? and lineitem_id=?',
+						array($recordid, $row['lineitem_id'])
+					);
+					if ($mdrs) {
+						$col_fields = array();
+						$col_fields[$mdfield['fieldinfo']['name']] = $adb->query_result($mdrs, 0, $mdfield['fieldinfo']['name']);
+						$col_fields['record_id'] = $adb->query_result($mdrs, 0, 'inventorydetailsid');
+						$foutput = getDetailViewOutputHtml($mdfield['fieldinfo']['uitype'], $mdfield['fieldinfo']['name'], $mdfield['fieldinfo']['label'], $col_fields, 0, $invdTabid, $entityName);
+						if ($foutput[2]==69) { // image
+							$foutput = str_replace('style="max-width: 500px;"', 'style="max-width: 100px;"', $foutput[1]);
+						} else {
+							$foutput = $foutput[1];
+						}
+						$onlyPrd[$mdfield['fieldinfo']['name']] = $foutput;
+					}
+				}
+			}
 			$entity['pdoInformation'][] = $onlyPrd;
 		}
 	}

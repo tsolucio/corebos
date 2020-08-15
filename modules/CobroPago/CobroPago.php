@@ -13,7 +13,6 @@ require_once 'modules/Invoice/Invoice.php';
 
 class CobroPago extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_cobropago';
 	public $table_index= 'cobropagoid';
@@ -440,60 +439,6 @@ class CobroPago extends CRMEntity {
 	 * You can override the behavior by re-defining it here.
 	 */
 	//function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
-	/**	Function used to get the Payments Stage history of the CobroPago
-	 *	@param $id - cobropagoid
-	 *	return $return_data - array with header and the entries in format
-	 *		array('header'=>$header,'entries'=>$entries_list) where as $header and $entries_list are array which contains all the column values of an row
-	 */
-	public function get_payment_history($id) {
-		global $log, $adb, $app_strings;
-		$log->debug('> get_stage_history '.$id);
-
-		$query = 'select vtiger_potstagehistory.*, vtiger_cobropago.reference
-			from vtiger_potstagehistory
-			inner join vtiger_cobropago on vtiger_cobropago.cobropagoid = vtiger_potstagehistory.cobropagoid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cobropago.cobropagoid
-			where vtiger_crmentity.deleted = 0 and vtiger_cobropago.cobropagoid = ?';
-		$result=$adb->pquery($query, array($id));
-
-		$header[] = $app_strings['LBL_AMOUNT'];
-		$header[] = $app_strings['LBL_SALES_STAGE'];
-		$header[] = $app_strings['LBL_PROBABILITY'];
-		$header[] = $app_strings['LBL_CLOSE_DATE'];
-		$header[] = $app_strings['LBL_LAST_MODIFIED'];
-
-		//Getting the field permission for the current user. 1 - Not Accessible, 0 - Accessible
-		//Sales Stage, Expected Close Dates are mandatory fields. So no need to do security check to these fields.
-		global $current_user;
-
-		//If field is accessible then getFieldVisibilityPermission function will return 0 else return 1
-		$amount_access = (getFieldVisibilityPermission('CobroPago', $current_user->id, 'amount') != '0')? 1 : 0;
-		$probability_access = (getFieldVisibilityPermission('CobroPago', $current_user->id, 'probability') != '0')? 1 : 0;
-		$picklistarray = getAccessPickListValues('CobroPago');
-
-		$potential_stage_array = $picklistarray['sales_stage'];
-		//- ==> picklist field is not permitted in profile
-		//Not Accessible - picklist is permitted in profile but picklist value is not permitted
-		$error_msg = 'Not Accessible';
-
-		while ($row = $adb->fetch_array($result)) {
-			$entries = array();
-
-			$entries[] = ($amount_access != 1)? $row['amount'] : 0;
-			$entries[] = (in_array($row['stage'], $potential_stage_array))? $row['stage']: $error_msg;
-			$entries[] = ($probability_access != 1) ? $row['probability'] : 0;
-			$entries[] = getDisplayDate($row['closedate']);
-			$entries[] = getDisplayDate($row['lastmodified']);
-
-			$entries_list[] = $entries;
-		}
-
-		$return_data = array('header'=>$header,'entries'=>$entries_list,'navigation'=>array('',''));
-
-		$log->debug('< get_stage_history');
-		return $return_data;
-	}
 
 	public function get_history_cobropago($cobropagoid) {
 		global $log, $adb;

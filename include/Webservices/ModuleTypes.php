@@ -65,10 +65,9 @@ function vtws_listtypes($fieldTypeList, $user) {
 		}
 
 		$accessibleModules = array_values(array_intersect($webserviceEntities['module'], $allModuleNames));
-		$entities = $webserviceEntities['entity'];
 		$accessibleEntities = array();
 		if (empty($fieldTypeList)) {
-			foreach ($entities as $entity) {
+			foreach ($webserviceEntities['entity'] as $entity) {
 				$webserviceObject = VtigerWebserviceObject::fromName($db, $entity);
 				$handlerPath = $webserviceObject->getHandlerPath();
 				$handlerClass = $webserviceObject->getHandlerClass();

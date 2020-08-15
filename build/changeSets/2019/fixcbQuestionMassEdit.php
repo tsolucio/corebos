@@ -24,19 +24,22 @@ class fixcbQuestionMassEdit extends cbupdaterWorker {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$module = Vtiger_Module::getInstance('cbQuestion');
-
-			$fields = array('qname','qtype','qstatus','qcollection','qmodule','cbmapid','qpagesize');
-			foreach ($fields as $fieldname) {
-				$field = Vtiger_Field::getInstance($fieldname, $module);
-				if ($field) {
-					$this->ExecuteQuery(
-						"UPDATE vtiger_field SET masseditable = 1 WHERE fieldid=?",
-						array($field->id)
-					);
+			if ($module) {
+				$fields = array('qname','qtype','qstatus','qcollection','qmodule','cbmapid','qpagesize');
+				foreach ($fields as $fieldname) {
+					$field = Vtiger_Field::getInstance($fieldname, $module);
+					if ($field) {
+						$this->ExecuteQuery(
+							'UPDATE vtiger_field SET masseditable = 1 WHERE fieldid=?',
+							array($field->id)
+						);
+					}
 				}
+				$this->sendMsg('Changeset '.get_class($this).' applied!');
+				$this->markApplied();
+			} else {
+				$this->sendMsgError('Changeset '.get_class($this).' could not be applied yet. Please launch again.');
 			}
-			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
 		}
 		$this->finishExecution();
 	}

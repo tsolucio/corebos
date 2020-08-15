@@ -14,6 +14,7 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 include_once 'modules/com_vtiger_workflow/WorkFlowScheduler.php';
+include_once 'modules/com_vtiger_workflow/VTSimpleTemplateOnData.inc';
 
 function cbexpsql_supportedFunctions() {
 	return array(
@@ -30,7 +31,7 @@ function cbexpsql_supportedFunctions() {
 		'stringposition' => 'stringposition(haystack,needle)',
 		'stringlength' => 'stringlength(string)',
 		'stringreplace' => 'stringreplace(search,replace,subject)',
-		'substring' => 'substring(stringfield,start,end)',
+		'substring' => 'substring(stringfield,start,length)',
 		'uppercase'=>'uppercase(stringfield)',
 		'lowercase'=>'lowercase(stringfield)',
 		//'uppercasefirst'=>'uppercasefirst(stringfield)',
@@ -58,6 +59,7 @@ function cbexpsql_supportedFunctions() {
 		'max' => 'max(fieldname)',
 		'avg' => 'avg(fieldname)',
 		'count' => 'count(fieldname)',
+		'group_concat' => 'group_concat(fieldname)',
 		'aggregation'=>'aggregation(operation,RelatedModule,relatedFieldToAggregate,conditions)',
 		'aggregation_fields_operation'=>'aggregation_fields_operation(operation,RelatedModule,relatedFieldsToAggregateWithOperation,conditions)',
 		'aggregate_time' => 'aggregate_time(relatedModuleName, relatedModuleField, conditions)',
@@ -346,6 +348,7 @@ function cbexpsql_getsetting($arr, $mmodule) {
 // Aggregations
 function cbexpsql_aggregation($arr, $mmodule) {
 	$arr[4] = new cbexpsql_environmentstub($mmodule, '0x::#');
+	$arr[4]->returnReferenceValue = false;
 	$return = __cb_aggregation_getQuery($arr, true);
 	$mmod = CRMEntity::getInstance($mmodule);
 	$return = str_replace($mmod->table_name.'.', $mmod->table_name.'aggop.', $return);
@@ -435,6 +438,11 @@ function cbexpsql_avg($arr, $mmodule) {
 function cbexpsql_count($arr, $mmodule) {
 	return __cbexpsql_functionparams('COUNT', $arr, $mmodule);
 }
+
+function cbexpsql_groupconcat($arr, $mmodule) {
+	return __cbexpsql_functionparams('GROUP_CONCAT', $arr, $mmodule);
+}
+
 function cbexpsql_number_format($arr, $mmodule) {
 	if (count($arr)>0) {
 		$number = $arr[0];
@@ -545,6 +553,7 @@ class cbexpsql_environmentstub {
 	private $crmid;
 	private $module;
 	private $data;
+	public $returnReferenceValue = true;
 
 	public function __construct($module, $crmid) {
 		$this->crmid = $crmid;
@@ -565,6 +574,13 @@ class cbexpsql_environmentstub {
 	}
 
 	public function get($fieldName) {
+		preg_match('/\((\w+) : \(([_\w]+)\) (\w+)\)/', $fieldName, $matches);
+		if ($this->returnReferenceValue && count($matches)>0) {
+			global $current_user;
+			$ct = new VTSimpleTemplateOnData($fieldName);
+			$entityCache = new VTEntityCache($current_user);
+			return $ct->render($entityCache, $this->module, $this->data);
+		}
 		return (isset($this->data[$fieldName]) ? $this->data[$fieldName] : $fieldName);
 	}
 

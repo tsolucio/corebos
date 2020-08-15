@@ -58,11 +58,11 @@
 									{/if}
 										<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr height='30px'>
 											{if $LOCAL_SERVER_MODE eq 'edit'}
-												<td width="10%" align='right' class="small cellText" colspan=2> 
+												<td width="10%" align='right' class="small cellText" colspan=2>
 													<input title="{$APP.LBL_SAVE_BUTTON_LABEL}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmButton small save" type="submit" name="button" value="{$APP.LBL_SAVE_BUTTON_LABEL}" onclick="this.form.action.value='Save'; return validate('Local')">&nbsp;&nbsp;
 												</td>
 											{else}
-												<td width="20%" align='right' class="small cellText"> 
+												<td width="20%" align='right' class="small cellText">
 													<input title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="crmButton small edit" onclick="this.form.action.value='BackupServerConfig';this.form.local_server_mode.value='edit'" type="submit" name="Edit" value="{$APP.LBL_EDIT_BUTTON_LABEL}">&nbsp;
 													{if $LOCAL_SERVER_MODE neq 'edit'}
 														<input title="{$APP.LBL_SAVE_BUTTON_LABEL}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmButton small save" type="submit" name="backupnow" value="{$MOD.LBL_BACKUP} {$APP.LBL_NOW}" onclick="this.form.action.value='BackupServerConfig';" >&nbsp;&nbsp;

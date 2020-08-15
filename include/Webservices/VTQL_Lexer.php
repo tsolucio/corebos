@@ -249,10 +249,10 @@ class VTQL_Lexer {
 					);
 					// yymore is needed
 					do {
-						if (! strlen($yy_yymore_patterns [$this->token])) {
+						if (! strlen($yy_yymore_patterns[$this->token])) {
 							throw new Exception('cannot do yymore for the last token');
 						}
-						if (preg_match($yy_yymore_patterns [$this->token], substr($this->data, $this->index), $yymatches)) {
+						if (preg_match($yy_yymore_patterns[$this->token], substr($this->data, $this->index), $yymatches)) {
 							$yymatches = array_filter($yymatches, 'strlen'); // remove empty sub-patterns
 							next($yymatches); // skip global match
 							$this->token = key($yymatches); // token number

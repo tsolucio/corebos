@@ -104,6 +104,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Si se establece en 1, el Recordatorio de actividad se desactivará, si se establece en 0, se activará el Recordatorio de actividad. El valor predeterminado es 0. Esto evita mucho ruido en el registro de depuración de la aplicación.',
 ),
+'Debug_Access_Restricted_File' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Depuración',
+	'values' => '0 | 1',
+	'definition' => 'Si se establece en 1, se mostrará una pila de llamadas antes del mensaje de error "Sorry! Attempt to access restricted file."',
+),
 'Accounts_BlockDuplicateName' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
@@ -305,7 +312,6 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Texto',
 	'category' => 'Aplicación',
 	'values' => 'ASC | DESC',
-	'definition' => 'Sort order for records of a module. If not defined the internal default value of each module will be used.',
 	'definition' => 'Dirección de ordenación de los registros de un módulo. Si no es definido se utilizará el valor interno de cada módulo.',
 ),
 'Application_ListView_Default_OrderField' => array(
@@ -377,6 +383,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => 'OFF | {Business Map ID} | UPDATE',
 	'definition' => 'Qué mostrar en el subtítulo del encabezado de página. Nada (OFF), el resultado de un mapa de negocio o el texto "Actualizado" predeterminado.',
+),
+'Application_EditView_Submit_Form_WithEnter' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Si se debe enviar el formulario de edición (1) o no (0) cuando se presiona la tecla ENTRAR. Por defecto no se envía.',
 ),
 'Application_Upload_MaxSize' => array(
 	'status' => 'Implementada',
@@ -475,6 +488,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => '',
 	'definition' => 'Límite de registros que se pueden importar en línea. Si el número de registros a importar es mayor a este número, entonces la importación se realizará de manera desatendida por la tarea de programación correspondiente. El valor predeterminado es 1000',
+),
+'Import_Launch_EventsAndWorkflows' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'yes | no',
+	'definition' => 'Ejecutar eventos y flujos de trabajo al importar registros. El valor por defecto es no',
 ),
 'Export_Field_Separator_Symbol' => array(
 	'status' => 'Implementada',
@@ -1162,6 +1182,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Aplicar o no una limpieza estricta del HTML que recibimos del cuerpo del correo electrónico redactado. El valor predeterminado es aplicar una limpieza menos estricta (1).',
 ),
+'EMail_Send_Individual' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Envía correos electrónicos individuales por separado a cada destinatario en lugar de un correo electrónico a todos. Este es el comportamiento predeterminado de la aplicación.',
+),
 'Workflow_Send_Email_ToCCBCC' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Email CSV',
@@ -1336,6 +1363,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Integración',
 	'values' => 'ID o nombre de la plantilla a utilizar',
 	'definition' => 'Cuando la variable CustomerPortal_PDF se establece en PDFMaker o GenDoc, esta variable indica qué plantilla se debe utilizar para generar el PDF de ordenes de compra. Si está vacía, se utilizará la primera plantilla encontrada.',
+),
+'CustomerPortal_Default_User' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Integración',
+	'values' => 'user name of the default user to access as',
+	'definition' => 'Al acceder a una aplicación de portal externo como contacto o empleado, debe utilizar un usuario real de coreBOS para obtener los permisos. Esta variable define a ese usuario. La aplicación buscará al usuario seleccionado en el registro de contacto/empleado. Si no hay ninguno, se utilizará el valor en esta variable.',
 ),
 'Application_Permit_Assign_Up' => array(
 	'status' => 'Implementada',
@@ -1518,6 +1552,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => 'https://nagix.github.io/chartjs-plugin-colorschemes/colorchart.html',
 	'definition' => 'Define el esquema de color a utilizar cuando se dibujan gráficos. Por defecto, se utiliza el esquema tableau.Tableau10.',
+),
+'Application_CSRF_Valid_IP' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'CSV IPs',
+	'category' => 'Seguridad',
+	'values' => 'Ejemplo: 127.0.0.1,192.168.0.100',
+	'definition' => 'Lista separada por comas de direcciones IP desde las que se pasa el control de CSRF.',
 ),
 );
 

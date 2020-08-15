@@ -8,7 +8,6 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody><tr>
@@ -31,12 +30,12 @@
 					<td valign=top class="small">{$MOD.LBL_COMPANY_DESC} </td>
 				</tr>
 				</table>
-				
+
 				<br>
 				<table border=0 cellspacing=0 cellpadding=10 width=100% >
 				<tr>
 				<td>
-				
+
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 					<tr>
 						<td class="big"><strong>{$MOD.LBL_COMPANY_DETAILS} </strong></td>
@@ -45,7 +44,7 @@
 						</td>
 					</tr>
 					</table>
-					
+
 					<table border=0 cellspacing=0 cellpadding=0 width=100% class="listRow">
 					<tr>
 						<td class="small" valign=top ><table width="100%"  border="0" cellspacing="0" cellpadding="5">
@@ -69,7 +68,7 @@
                             <td class="small cellLabel"><strong>{$MOD.LBL_ORGANIZATION_ADDRESS}</strong></td>
                             <td class="small cellText">{$ORGANIZATIONADDRESS}</td>
                           </tr>
-                          <tr> 
+                          <tr>
                             <td class="small cellLabel"><strong>{$MOD.LBL_ORGANIZATION_CITY}</strong></td>
                             <td class="small cellText">{$ORGANIZATIONCITY}</td>
                           </tr>
@@ -98,28 +97,20 @@
                             <td class="small cellText">{$ORGANIZATIONWEBSITE}</td>
                           </tr>
                         </table>
-						
+
 						</td>
 					  </tr>
 					</table>
-					<!--table border=0 cellspacing=0 cellpadding=5 width=100% >
-					<tr>
-					  <td class="small" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td>
-					</tr>
-					</table-->
 				</td>
 				</tr>
 				</table>
-			
-			
-			
 			</td>
 			</tr>
 			</table>
 		</td>
 	</tr>
 	</table>
-	</form>	
+	</form>
 	</div>
 </td>
    </tr>

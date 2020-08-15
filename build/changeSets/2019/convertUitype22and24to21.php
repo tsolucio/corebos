@@ -26,13 +26,17 @@ class convertUitype22and24to21 extends cbupdaterWorker {
 		} else {
 			$this->ExecuteQuery("UPDATE vtiger_field SET uitype =21 WHERE (uitype=? OR uitype=?)", array('22','24'));
 			$rsws22 = $adb->pquery('select fieldtypeid from vtiger_ws_fieldtype where uitype=?', array('22'));
-			$fldtid22 = $adb->query_result($rsws22, 0, 0);
+			if ($rsws22 && $adb->num_rows($rsws22)>0) {
+				$fldtid22 = $adb->query_result($rsws22, 0, 0);
+				$this->ExecuteQuery("DELETE FROM `vtiger_ws_referencetype` WHERE `vtiger_ws_referencetype`.`fieldtypeid`=?", array($fldtid22));
+			}
 			$rsws24 = $adb->pquery('select fieldtypeid from vtiger_ws_fieldtype where uitype=?', array('24'));
-			$fldtid24 = $adb->query_result($rsws24, 0, 0);
+			if ($rsws24 && $adb->num_rows($rsws24)>0) {
+				$fldtid24 = $adb->query_result($rsws24, 0, 0);
+				$this->ExecuteQuery("DELETE FROM `vtiger_ws_referencetype` WHERE `vtiger_ws_referencetype`.`fieldtypeid`=?", array($fldtid24));
+			}
 			$this->ExecuteQuery("DELETE FROM `vtiger_ws_fieldtype` WHERE vtiger_ws_fieldtype.uitype=?;", array('22'));
 			$this->ExecuteQuery("DELETE FROM `vtiger_ws_fieldtype` WHERE vtiger_ws_fieldtype.uitype=?;", array('24'));
-			$this->ExecuteQuery("DELETE FROM `vtiger_ws_referencetype` WHERE `vtiger_ws_referencetype`.`fieldtypeid` = ?", array($fldtid22));
-			$this->ExecuteQuery("DELETE FROM `vtiger_ws_referencetype` WHERE `vtiger_ws_referencetype`.`fieldtypeid` = ?", array($fldtid24));
 
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
