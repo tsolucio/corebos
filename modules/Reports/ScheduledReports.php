@@ -12,7 +12,6 @@ require_once 'modules/Reports/ReportRun.php';
 
 class VTScheduledReport extends Reports {
 
-	private $db;
 	private $user;
 
 	public $isScheduled = false;
