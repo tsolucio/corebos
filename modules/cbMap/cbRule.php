@@ -24,12 +24,32 @@ class coreBOS_Rule {
 
 	public static function evaluate($conditionid, $context) {
 		global $log,$adb,$current_user;
+
+		// check that cbmapid is correct and load it
+		if (preg_match('/^[0-9]+x[0-9]+$/', $conditionid)) {
+			list($cbmapws, $conditionid) = explode('x', $conditionid);
+		}
+		if (is_numeric($conditionid)) {
+			$cbmap = cbMap::getMapByID($conditionid);
+		} else {
+			$cbmapid = GlobalVariable::getVariable('BusinessMapping_'.$conditionid, cbMap::getMapIdByName($conditionid));
+			$cbmap = cbMap::getMapByID($cbmapid);
+		}
+		if (empty($cbmap) || !in_array($cbmap->column_fields['maptype'], self::$supportedBusinessMaps)) {
+			throw new WebServiceException(WebServiceErrorCode::$INVALID_BUSINESSMAP, 'Invalid Business Map identifier: '.$conditionid);
+		}
+
 		if (is_array($context)) {
-			if (empty($context['record_id'])) {
+			if (empty($context['record_id']) && $cbmap->column_fields['maptype'] != 'DecisionTable') {
 				throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'No record_id value given in context array.');
 			}
-			$mergeContextVariables = $context;
-			$contextid = $mergeContextVariables['record_id'];
+			if (empty($context['record_id'])) {
+				$mergeContextVariables = false;
+				$contextid = 0;
+			} else {
+				$mergeContextVariables = $context;
+				$contextid = $mergeContextVariables['record_id'];
+			}
 		} else {
 			$mergeContextVariables = false;
 			$contextid = $context;
@@ -52,20 +72,6 @@ class coreBOS_Rule {
 			if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $contextid)) {
 				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
 			}
-		}
-
-		// check that cbmapid is correct and load it
-		if (preg_match('/^[0-9]+x[0-9]+$/', $conditionid)) {
-			list($cbmapws, $conditionid) = explode('x', $conditionid);
-		}
-		if (is_numeric($conditionid)) {
-			$cbmap = cbMap::getMapByID($conditionid);
-		} else {
-			$cbmapid = GlobalVariable::getVariable('BusinessMapping_'.$conditionid, cbMap::getMapIdByName($conditionid));
-			$cbmap = cbMap::getMapByID($cbmapid);
-		}
-		if (empty($cbmap) || !in_array($cbmap->column_fields['maptype'], self::$supportedBusinessMaps)) {
-			throw new WebServiceException(WebServiceErrorCode::$INVALID_BUSINESSMAP, 'Invalid Business Map identifier: '.$conditionid);
 		}
 
 		// merge fixed context array values
