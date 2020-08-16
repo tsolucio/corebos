@@ -24,6 +24,10 @@ class coreBOS_Rule {
 
 	public static function evaluate($conditionid, $context) {
 		global $log,$adb,$current_user;
+		$params = array(
+			'conditionid' => $conditionid,
+			'context' => $context,
+		);
 
 		// check that cbmapid is correct and load it
 		if (preg_match('/^[0-9]+x[0-9]+$/', $conditionid)) {
@@ -35,12 +39,19 @@ class coreBOS_Rule {
 			$cbmapid = GlobalVariable::getVariable('BusinessMapping_'.$conditionid, cbMap::getMapIdByName($conditionid));
 			$cbmap = cbMap::getMapByID($cbmapid);
 		}
+		if (empty($cbmap)) {
+			$mapvalues = array();
+		} else {
+			$mapvalues = $cbmap->column_fields;
+		}
 		if (empty($cbmap) || !in_array($cbmap->column_fields['maptype'], self::$supportedBusinessMaps)) {
+			cbEventHandler::do_action('corebos.audit.rule', array($current_user->id, $params, WebServiceErrorCode::$INVALID_BUSINESSMAP, $mapvalues, false, date('Y-m-d H:i:s')));
 			throw new WebServiceException(WebServiceErrorCode::$INVALID_BUSINESSMAP, 'Invalid Business Map identifier: '.$conditionid);
 		}
 
 		if (is_array($context)) {
 			if (empty($context['record_id']) && $cbmap->column_fields['maptype'] != 'DecisionTable') {
+				cbEventHandler::do_action('corebos.audit.rule', array($current_user->id, $params, WebServiceErrorCode::$INVALIDID, $mapvalues, false, date('Y-m-d H:i:s')));
 				throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'No record_id value given in context array.');
 			}
 			if (empty($context['record_id'])) {
@@ -70,6 +81,7 @@ class coreBOS_Rule {
 			$meta = $handler->getMeta();
 			$entityName = $meta->getObjectEntityName($contextid);
 			if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $contextid)) {
+				cbEventHandler::do_action('corebos.audit.rule', array($current_user->id, $params, WebServiceErrorCode::$ACCESSDENIED, $mapvalues, false, date('Y-m-d H:i:s')));
 				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
 			}
 		}
@@ -98,6 +110,7 @@ class coreBOS_Rule {
 				$ruleinfo = $cbmap->ConditionExpression($context);
 				break;
 		}
+		cbEventHandler::do_action('corebos.audit.rule', array($current_user->id, $params, false, $mapvalues, $ruleinfo, date('Y-m-d H:i:s')));
 		return $ruleinfo;
 	}
 }
