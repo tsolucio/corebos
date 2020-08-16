@@ -89,15 +89,26 @@ class DecisionTable extends processcbMap {
 		$current_user = $holduser;
 		$outputs = array();
 		$hitpolicy = (String)$xml->hitPolicy;
+		$mapvalues = array(
+			'context' => $context,
+			'hitpolicy' => $hitpolicy,
+		);
 		if ($hitpolicy == 'G') {
 			$aggregate = (String)$xml->aggregate;
 		}
+		$rules = array();
 		foreach ($xml->rules->rule as $key => $value) {
 			$sequence = (String)$value->sequence;
 			$ruleOutput = (String)$value->output;
+			$rule = array(
+				'sequence' => $sequence,
+				'ruleOutput' => $ruleOutput,
+			);
 			$eval = '';
 			if (isset($value->expression)) {
 				$testexpression = (String)$value->expression;
+				$rule['type'] = 'expression';
+				$rule['valueraw'] = $testexpression;
 				if (is_array($context)) {
 					foreach ($context as $key => $value) {
 						$testexpression = str_ireplace('$['.$key.']', $value, $testexpression);
@@ -106,8 +117,9 @@ class DecisionTable extends processcbMap {
 				$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($testexpression)));
 				$expression = $parser->expression();
 				$exprEvaluater = new VTFieldExpressionEvaluater($expression);
-				$exprEvaluation = $exprEvaluater->evaluate($entity);
-				$eval = $exprEvaluation;
+				$eval = $exprEvaluater->evaluate($entity);
+				$rule['valueevaluate'] = $testexpression;
+				$rule['valueresult'] = $eval;
 				if ($ruleOutput == 'ExpressionResult' || $ruleOutput == 'FieldValue') {
 					$outputs[$sequence] = $eval;
 				} elseif ($ruleOutput == 'crmObject') {
@@ -120,6 +132,9 @@ class DecisionTable extends processcbMap {
 			} elseif (isset($value->mapid)) {
 				$mapid = (String)$value->mapid;
 				$eval = coreBOS_Rule::evaluate($mapid, $context);
+				$rule['type'] = 'map';
+				$rule['valueraw'] = $mapid;
+				$rule['valueresult'] = $eval;
 				if ($ruleOutput == 'ExpressionResult' || $ruleOutput == 'FieldValue') {
 					$outputs[$sequence] = $eval;
 				} elseif ($ruleOutput == 'crmObject') {
@@ -184,6 +199,10 @@ class DecisionTable extends processcbMap {
 					$query .= ' ORDER BY '.$queryGenerator->getOrderByColumn($orderby);
 				}
 				$result = $adb->pquery($query, array());
+				$rule['type'] = 'module';
+				$rule['valueraw'] = $module;
+				$rule['valueevaluate'] = $query;
+				$rule['valueresult'] = $adb->num_rows($result);
 				$seqcnt = 1;
 				$numfields = $result ? $adb->num_fields($result) : 0;
 				if ($field=='id') {
@@ -213,7 +232,10 @@ class DecisionTable extends processcbMap {
 					}
 				}
 			}
+			$rules[] = $rule;
 		}
+		$mapvalues['rules'] = $rules;
+
 		// Checking hitpolicy
 		$output = null;
 		if ($hitpolicy == 'U') {
@@ -323,6 +345,7 @@ class DecisionTable extends processcbMap {
 		if (!$output) {
 			$output = '__DoesNotPass__';
 		}
+		cbEventHandler::do_action('corebos.audit.decision', array($current_user->id, $ctx, $mapvalues, $output, date('Y-m-d H:i:s')));
 		return $output;
 	}
 }
