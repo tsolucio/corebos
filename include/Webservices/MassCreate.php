@@ -17,89 +17,89 @@
 require_once 'include/Webservices/Create.php';
 
 function MassCreate($elements, $user) {
-    $failedCreates = [];
-    $successCreates = [];
-    
-    $records = array();
-    foreach ($elements as &$element) {
-        mcProcessReference($element, $elements, $records);
-    }
+	$failedCreates = [];
+	$successCreates = [];
 
-    foreach ($records as &$record) {
-        foreach ($record['element'] as $key => $value) {
-            if (strpos($value, '@{') !== false) {
-                $start = '@{';
-                $end = '.';
-                preg_match_all("/$start([a-zA-Z0-9_]*)$end/", $value, $match);
-                if (isset($match[1][0])) {
-                    $reference = $match[1][0];
-                    $id = mcGetRecordId($records, $reference);
-                    $record['element'][$key] = $id;
-                }
-            }
-        }
-        try {
-            $rec = vtws_create($record['elementType'],$record['element'], $user);
-            $record['id'] = $rec['id'];
-            $successCreates[] = $rec;
-        } catch (Exception $e) {
+	$records = array();
+	foreach ($elements as &$element) {
+		mcProcessReference($element, $elements, $records);
+	}
+
+	foreach ($records as &$record) {
+		foreach ($record['element'] as $key => $value) {
+			if (strpos($value, '@{') !== false) {
+				$start = '@{';
+				$end = '.';
+				preg_match_all("/$start([a-zA-Z0-9_]*)$end/", $value, $match);
+				if (isset($match[1][0])) {
+					$reference = $match[1][0];
+					$id = mcGetRecordId($records, $reference);
+					$record['element'][$key] = $id;
+				}
+			}
+		}
+		try {
+			$rec = vtws_create($record['elementType'], $record['element'], $user);
+			$record['id'] = $rec['id'];
+			$successCreates[] = $rec;
+		} catch (Exception $e) {
 			$failedCreates[] = [
 				'record' => $record,
 				'code' => $e->getCode(),
 				'message' => $e->getMessage()
 			];
 		}
-    }
+	}
 
-    return [
+	return [
 		'success_creates' => $successCreates,
 		'failed_creates' => $failedCreates
 	];
 }
 
 function mcGetRecordId($arr, $reference) {
-    $id = "";
-    foreach ($arr as $ar) {
-        if ($ar['referenceId'] == $reference) {
-            if (isset($ar['id'])) {
-                $id = $ar['id'];
-            }
-            break;
-        }
-    }
-    return $id;
+	$id = "";
+	foreach ($arr as $ar) {
+		if ($ar['referenceId'] == $reference) {
+			if (isset($ar['id'])) {
+				$id = $ar['id'];
+			}
+			break;
+		}
+	}
+	return $id;
 }
 
 function mcGetReferenceRecord($arr, $reference) {
-    $array = array();
-    $index = null;
-    for ($x = 0; $x < count($arr); $x++) {
-        if (isset($arr[$x])) {
-            if ($arr[$x]['referenceId'] == $reference) {
-                $array = $arr[$x];
-                $index = $x;
-                break;
-            }
-        }
-    }
-    return array($index, $array);
+	$array = array();
+	$index = null;
+	for ($x = 0; $x < count($arr); $x++) {
+		if (isset($arr[$x])) {
+			if ($arr[$x]['referenceId'] == $reference) {
+				$array = $arr[$x];
+				$index = $x;
+				break;
+			}
+		}
+	}
+	return array($index, $array);
 }
 
 function mcProcessReference($element, &$elements, &$records) {
-    foreach ($element['element'] as $key => $value) {
-        if (strpos($value, '@{') !== false) {
-            $start = '@{';
-            $end = '.';
-            preg_match_all("/$start([a-zA-Z0-9_]*)$end/", $value, $match);
-            if (isset($match[1][0])) {
-                $reference = $match[1][0];
-                list($index, $array) = mcGetReferenceRecord($elements, $reference);
-                if ($index && $array) {
-                    mcProcessReference($array, $elements, $records);
-                    unset($elements[$index]);
-                }
-            }
-        }
-    }
-    $records[] = $element;
+	foreach ($element['element'] as $key => $value) {
+		if (strpos($value, '@{') !== false) {
+			$start = '@{';
+			$end = '.';
+			preg_match_all("/$start([a-zA-Z0-9_]*)$end/", $value, $match);
+			if (isset($match[1][0])) {
+				$reference = $match[1][0];
+				list($index, $array) = mcGetReferenceRecord($elements, $reference);
+				if ($index && $array) {
+					mcProcessReference($array, $elements, $records);
+					unset($elements[$index]);
+				}
+			}
+		}
+	}
+	$records[] = $element;
 }
