@@ -22,24 +22,7 @@ function MassCreate($elements, $user) {
     
     $records = array();
     foreach ($elements as &$element) {
-        foreach ($element['element'] as $key => $value) {
-            if (strpos($value, '@{') !== false) {
-                $start = '@{';
-                $end = '.';
-                preg_match_all("/$start([a-zA-Z0-9_]*)$end/", $value, $match);
-                if (isset($match[1][0])) {
-                    $reference = $match[1][0];
-                    list($index, $array) = mcGetReferenceRecord($elements, $reference);
-                    if ($index && $array) {
-                        // Process Inner Reference
-                        // mcGetReferenceRecord($array);
-                        $records[] = $array;
-                        unset($elements[$index]);
-                    }
-                }
-            }
-        }
-        $records[] = $element;
+        mcProcessReference($element, $elements, $records);
     }
 
     foreach ($records as &$record) {
@@ -102,7 +85,21 @@ function mcGetReferenceRecord($arr, $reference) {
     return array($index, $array);
 }
 
-function mcProcessInnerReference($arr) {
-    // To do
-    // Process inner references
+function mcProcessReference($element, &$elements, &$records) {
+    foreach ($element['element'] as $key => $value) {
+        if (strpos($value, '@{') !== false) {
+            $start = '@{';
+            $end = '.';
+            preg_match_all("/$start([a-zA-Z0-9_]*)$end/", $value, $match);
+            if (isset($match[1][0])) {
+                $reference = $match[1][0];
+                list($index, $array) = mcGetReferenceRecord($elements, $reference);
+                if ($index && $array) {
+                    mcProcessReference($array, $elements, $records);
+                    unset($elements[$index]);
+                }
+            }
+        }
+    }
+    $records[] = $element;
 }
