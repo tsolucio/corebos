@@ -192,7 +192,12 @@ class VTEmailTask extends VTTask {
 		}
 		if (count($ids) > 0) {
 			foreach ($ids as $id) {
-				$module = getSalesEntityType($id);
+				if (strpos($id, 'x')>0) {
+					list($wsid, $id) = explode('x', $id);
+					$module = vtws_getEntityName($wsid);
+				} else {
+					$module = getSalesEntityType($id);
+				}
 				$this->subject = getMergedDescription($this->subject, $id, $module);
 				$this->content = getMergedDescription($this->content, $id, $module);
 			}
