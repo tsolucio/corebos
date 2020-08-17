@@ -112,14 +112,14 @@ class VTSimpleTemplate {
 								}
 							} else {
 								if ($this->keepvariable) {
-									$result = '$'.$fieldname;
+									$result = '$'.$full;
 								} else {
 									$result = '';
 								}
 							}
 						} else {
 							if ($this->keepvariable) {
-								$result = '$'.$fieldname;
+								$result = '$'.$full;
 							} else {
 								$result = '';
 							}
