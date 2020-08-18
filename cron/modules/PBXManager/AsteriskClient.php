@@ -97,7 +97,8 @@ function asterisk_handleEvents($asterisk, $adb, $version = '1.4') {
 }
 
 function asterisk_handleResponse1($mainresponse, $state, $adb) {
-	if ((($mainresponse['Event'] == 'Newstate' || $mainresponse['Event'] == 'Newchannel') && ($mainresponse[$state] == 'Ring')
+	if (!empty($mainresponse['Event']) &&
+		(($mainresponse['Event'] == 'Newstate' || $mainresponse['Event'] == 'Newchannel') && ($mainresponse[$state] == 'Ring')
 		|| ($mainresponse['Event'] == 'Newstate' && $mainresponse[$state] == 'Ringing'))
 	) {
 		$uniqueid = $mainresponse['Uniqueid'];

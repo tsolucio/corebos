@@ -18,6 +18,7 @@ class Asterisk {
 	public $sock;
 	public $db;
 	public $queue;
+	public $strData;
 
 	/**
 	 * this is the constructor of the class, it initializes the parameters of the class
