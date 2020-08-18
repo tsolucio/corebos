@@ -26,6 +26,7 @@ class CRMEntity {
 	public $HasDirectImageField = false;
 	private $db;
 	public static $crmentityTable = 'vtiger_crmentity';
+	public static $crmEntityTableAlias;
 	public static $denormalized = false;
 	protected static $methods = array();
 	protected static $dbvalues = array();
@@ -34,6 +35,7 @@ class CRMEntity {
 
 	public function __construct() {
 		self::$denormalized = (self::$crmentityTable!='vtiger_crmentity');
+		self::$crmEntityTableAlias = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$this_module = get_class($this);
 		$this->column_fields = getColumnFields($this_module);
 		$this->db = PearDatabase::getInstance();
