@@ -14,7 +14,7 @@ require_once 'modules/Reports/ReportUtils.php';
 require_once 'modules/Reports/CustomReportUtils.php';
 
 global $adb, $log,$current_user;
-$reportid = vtlib_purify($_REQUEST["record"]);
+$reportid = vtlib_purify($_REQUEST['record']);
 
 //<<<<<<<selectcolumn>>>>>>>>>
 $selectedcolumnstring = (isset($_REQUEST['selectedColumnsString']) ? $_REQUEST['selectedColumnsString'] : '');
@@ -35,7 +35,7 @@ $groupTime3 = isset($_REQUEST['groupbytime3']) ? vtlib_purify($_REQUEST['groupby
 //<<<<<<<reportgrouptime>>>>>>>
 
 //<<<<<<<reportsortcol>>>>>>>>>
-$selectedcolumns = explode(";", $selectedcolumnstring);
+$selectedcolumns = explode(';', $selectedcolumnstring);
 if (!in_array($sort_by1, $selectedcolumns)) {
 	$selectedcolumns[] = $sort_by1;
 }
@@ -129,7 +129,7 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 		}
 	}
 	$pivotcolumns = '';
-	$genQueryId = $adb->getUniqueID("vtiger_selectquery");
+	$genQueryId = $adb->getUniqueID('vtiger_selectquery');
 	if ($genQueryId != '') {
 		$iquerysql = 'insert into vtiger_selectquery (QUERYID,STARTINDEX,NUMOFOBJECTS) values (?,?,?)';
 		$iquerysqlresult = $adb->pquery($iquerysql, array($genQueryId,0,0));
@@ -148,12 +148,12 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 				}
 				$pivotcolumns = implode(',', $pcols);
 			}
-			if ($shared_entities != "") {
-				if ($sharetype == "Shared") {
-					$selectedcolumn = explode(";", $shared_entities);
+			if ($shared_entities != '') {
+				if ($sharetype == 'Shared') {
+					$selectedcolumn = explode(';', $shared_entities);
 					for ($i=0; $i< count($selectedcolumn) -1; $i++) {
-						$temp = explode("::", $selectedcolumn[$i]);
-						$icolumnsql = "insert into vtiger_reportsharing (reportid,shareid,setype) values (?,?,?)";
+						$temp = explode('::', $selectedcolumn[$i]);
+						$icolumnsql = 'insert into vtiger_reportsharing (reportid,shareid,setype) values (?,?,?)';
 						$icolumnsqlresult = $adb->pquery($icolumnsql, array($genQueryId,$temp[1],$temp[0]));
 					}
 				}
@@ -161,7 +161,7 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 			$log->debug('Reports :: Save-> saved vtiger_selectcolumn');
 			//<<<<step2 vtiger_selectcolumn>>>>>>>>
 
-			if ($genQueryId != "") {
+			if ($genQueryId != '') {
 				if ($reportid!='') {
 					$reportname=$newreportname;
 				}
@@ -255,10 +255,10 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 			</script>';
 	}
 } else {
-	if ($reportid != "") {
+	if ($reportid != '') {
 		$pivotcolumns = '';
 		if (!empty($selectedcolumns)) {
-			$idelcolumnsql = "delete from vtiger_selectcolumn where queryid=?";
+			$idelcolumnsql = 'delete from vtiger_selectcolumn where queryid=?';
 			$idelcolumnsqlresult = $adb->pquery($idelcolumnsql, array($reportid));
 			if ($idelcolumnsqlresult != false) {
 				$pcols = array();
@@ -273,18 +273,18 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 				$pivotcolumns = implode(',', $pcols);
 			}
 		}
-		$delsharesqlresult = $adb->pquery("DELETE FROM vtiger_reportsharing WHERE reportid=?", array($reportid));
-		if ($delsharesqlresult != false && $sharetype=="Shared" && $shared_entities!='') {
-			$selectedcolumn = explode(";", $shared_entities);
+		$delsharesqlresult = $adb->pquery('DELETE FROM vtiger_reportsharing WHERE reportid=?', array($reportid));
+		if ($delsharesqlresult != false && $sharetype=='Shared' && $shared_entities!='') {
+			$selectedcolumn = explode(';', $shared_entities);
 			for ($i=0; $i< count($selectedcolumn) -1; $i++) {
-				$temp = explode("::", $selectedcolumn[$i]);
-				$icolumnsql = "INSERT INTO vtiger_reportsharing (reportid,shareid,setype) VALUES (?,?,?)";
+				$temp = explode('::', $selectedcolumn[$i]);
+				$icolumnsql = 'INSERT INTO vtiger_reportsharing (reportid,shareid,setype) VALUES (?,?,?)';
 				$icolumnsqlresult = $adb->pquery($icolumnsql, array($reportid,$temp[1],$temp[0]));
 			}
 		}
 
 		//<<<<reportmodules>>>>>>>
-		$ireportmodulesql = "UPDATE vtiger_reportmodules SET primarymodule=?,secondarymodules=? WHERE reportmodulesid=?";
+		$ireportmodulesql = 'UPDATE vtiger_reportmodules SET primarymodule=?,secondarymodules=? WHERE reportmodulesid=?';
 		$ireportmoduleresult = $adb->pquery($ireportmodulesql, array($pmodule, $smodule,$reportid));
 		$log->debug('Reports :: Save-> saved vtiger_reportmodules');
 		//<<<<reportmodules>>>>>>>
@@ -300,9 +300,9 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 		$ireportresult = $adb->pquery($ireportsql, $ireportparams);
 		$log->debug('Reports :: Save-> saved vtiger_report');
 
-		$idelreportsortcolsql = "delete from vtiger_reportsortcol where reportid=?";
+		$idelreportsortcolsql = 'delete from vtiger_reportsortcol where reportid=?';
 		$idelreportsortcolsqlresult = $adb->pquery($idelreportsortcolsql, array($reportid));
-		$delReportGroupTimeSQL = "DELETE FROM vtiger_reportgroupbycolumn WHERE reportid=?";
+		$delReportGroupTimeSQL = 'DELETE FROM vtiger_reportgroupbycolumn WHERE reportid=?';
 		$delReportGroupTimeRES = $adb->pquery($delReportGroupTimeSQL, array($reportid));
 
 		$log->debug('Reports :: Save-> deleted vtiger_reportsortcol');
@@ -336,7 +336,7 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 			$log->debug('Reports :: Save-> saved vtiger_reportsortcol');
 			//<<<<step3 vtiger_reportsortcol>>>>>>>
 
-			$idelreportdatefiltersql = "delete from vtiger_reportdatefilter where datefilterid=?";
+			$idelreportdatefiltersql = 'delete from vtiger_reportdatefilter where datefilterid=?';
 			$idelreportdatefiltersqlresult = $adb->pquery($idelreportdatefiltersql, array($reportid));
 
 			//<<<<step5 standarfilder>>>>>>>
