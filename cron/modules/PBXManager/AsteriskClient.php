@@ -124,7 +124,7 @@ function asterisk_handleResponse1($mainresponse, $state, $adb) {
 }
 
 function asterisk_handleResponse2($mainresponse, $adb, $asterisk, $state) {
-	$appdata = $mainresponse['AppData'];
+	$appdata = isset($mainresponse['AppData']) ? $mainresponse['AppData'] : '';
 	$uniqueid = $channel = $callerType = $extension = null;
 	$parseSuccess = false;
 	if ($mainresponse['Event'] == 'Newexten' && (strstr($appdata, '__DIALED_NUMBER') || strstr($appdata, 'EXTTOCALL'))) {
