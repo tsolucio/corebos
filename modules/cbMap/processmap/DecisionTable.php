@@ -84,6 +84,7 @@ class DecisionTable extends processcbMap {
 			$entity = new VTWorkflowEntity($current_user, $context['record_id'], true);
 			if (is_array($entity->data)) { // valid context
 				$context = array_merge($entity->data, $context);
+				$entity->setData($context);
 			}
 		}
 		$current_user = $holduser;
