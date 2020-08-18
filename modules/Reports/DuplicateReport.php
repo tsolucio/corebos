@@ -18,8 +18,7 @@ $newreportname = vtlib_purify($_REQUEST['newreportname']);
 $newreportdescription = vtlib_purify($_REQUEST['newreportdescription']);
 $newreportfolder = vtlib_purify($_REQUEST['newreportfolder']);
 
-$sql = 'select * from vtiger_report where reportid=?';
-$res = $adb->pquery($sql, array($reportid));
+$res = $adb->pquery('select * from vtiger_report where reportid=?', array($reportid));
 $Report_ID = $adb->query_result($res, 0, 'reportid');
 $numOfRows = $adb->num_rows($res);
 
@@ -53,7 +52,7 @@ if ($numOfRows > 0) {
 			$response_array['folderid'] = $newreportfolder;
 			$response_array['errormessage'] = '';
 
-			$iquerysql = "insert into vtiger_selectquery (QUERYID,STARTINDEX,NUMOFOBJECTS) values (?,?,?)";
+			$iquerysql = 'insert into vtiger_selectquery (queryid,startindex,numofobjects) values (?,?,?)';
 			$iquerysqlresult = $adb->pquery($iquerysql, array($genQueryId,0,0));
 			$log->debug('Reports :: Save->Successfully saved vtiger_selectquery');
 
