@@ -159,9 +159,13 @@ function __cb_evaluateRule($arr) {
 	}
 	$env = $arr[1];
 	$data = $env->getData();
-	list($wsid,$crmid) = explode('x', $data['id']);
-	$context = array_merge($env->WorkflowContext, $data);
-	$context['record_id'] = $crmid;
+	$context = array_merge((array)$env->WorkflowContext, $data);
+	if (!empty($data['id'])) {
+		list($wsid,$crmid) = explode('x', $data['id']);
+		if (!empty($crmid)) {
+			$context['record_id'] = $crmid;
+		}
+	}
 	$result = 0;
 	try {
 		$result = coreBOS_Rule::evaluate($arr[0], $context);
