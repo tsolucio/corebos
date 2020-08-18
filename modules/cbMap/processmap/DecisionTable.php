@@ -86,6 +86,9 @@ class DecisionTable extends processcbMap {
 				$context = array_merge($entity->data, $context);
 				$entity->setData($context);
 			}
+		} else {
+			$entity = new cbexpsql_environmentstub($context['module'], 0);
+			$entity->setData($context);
 		}
 		$current_user = $holduser;
 		$outputs = array();
