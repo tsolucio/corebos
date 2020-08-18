@@ -169,24 +169,34 @@ function validateRelatedModuleExists($field, $fieldval, $params, $fields) {
  */
 function validate_expression($field, $fieldval, $params, $fields) {
 	$bmap = $params[1];
+	// check that cbmapid is correct and load it
+	if (preg_match('/^[0-9]+x[0-9]+$/', $bmap)) {
+		list($cbmapws, $bmap) = explode('x', $bmap);
+	}
+	if (is_numeric($bmap)) {
+		$cbmap = cbMap::getMapByID($bmap);
+	} else {
+		$cbmapid = GlobalVariable::getVariable('BusinessMapping_'.$bmap, cbMap::getMapIdByName($bmap));
+		$cbmap = cbMap::getMapByID($cbmapid);
+	}
 	if (empty($params[0])) { // isNew
-		// check that cbmapid is correct and load it
-		if (preg_match('/^[0-9]+x[0-9]+$/', $bmap)) {
-			list($cbmapws, $bmap) = explode('x', $bmap);
-		}
-		if (is_numeric($bmap)) {
-			$cbmap = cbMap::getMapByID($bmap);
-		} else {
-			$cbmapid = GlobalVariable::getVariable('BusinessMapping_'.$bmap, cbMap::getMapIdByName($bmap));
-			$cbmap = cbMap::getMapByID($cbmapid);
-		}
-		if (empty($cbmap) || $cbmap->column_fields['maptype'] != 'Condition Expression') {
+		if (empty($cbmap) || ($cbmap->column_fields['maptype'] != 'Condition Expression' && $cbmap->column_fields['maptype'] != 'DecisionTable')) {
 			return false;
 		}
-		return $cbmap->ConditionExpression($fields);
+		if ($cbmap->column_fields['maptype'] == 'Condition Expression') {
+			return $cbmap->ConditionExpression($fields);
+		} else {
+			$dt = $cbmap->DecisionTable($fields);
+			return ($dt!='__DoesNotPass__');
+		}
 	} else { // editing
 		$fields['record_id'] = $params[0];
-		return coreBOS_Rule::evaluate($bmap, $fields);
+		$return = coreBOS_Rule::evaluate($bmap, $fields);
+		if ($cbmap->column_fields['maptype'] == 'DecisionTable') {
+			return ($return!='__DoesNotPass__');
+		} else {
+			return $return;
+		}
 	}
 }
 
