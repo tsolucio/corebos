@@ -1273,10 +1273,13 @@ class CRMEntity {
 
 	/** Mark an item as deleted */
 	public function mark_deleted($id) {
-		global $current_user;
-		$date_var = date('Y-m-d H:i:s');
-		$query = 'UPDATE vtiger_crmentity set deleted=1,modifiedtime=?,modifiedby=? where crmid=?';
-		$this->db->pquery($query, array($this->db->formatDate($date_var, true), $current_user->id, $id), true, 'Error marking record deleted: ');
+		global $current_user, $adb;
+		$adb->pquery(
+			'UPDATE vtiger_crmentity set deleted=1,modifiedtime=?,modifiedby=? where crmid=?',
+			array($adb->formatDate(date('Y-m-d H:i:s'), true), $current_user->id, $id),
+			true,
+			'Error marking record deleted: '
+		);
 	}
 
 	// this method is called during an import before inserting a bean
