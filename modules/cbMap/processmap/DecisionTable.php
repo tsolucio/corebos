@@ -164,6 +164,15 @@ class DecisionTable extends processcbMap {
 								if (empty($v->preprocess)) {
 									$conditionvalue = $context[(String)$v->input];
 								} else {
+									if (is_array($context)) {
+										$v->preprocess = (String)$v->preprocess;
+										foreach ($context as $ckey => $cval) {
+											if (is_array($cval)) {
+												continue;
+											}
+											$v->preprocess = str_ireplace('$['.$ckey.']', $cval, $v->preprocess);
+										}
+									}
 									$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer((String)$v->preprocess)));
 									$expression = $parser->expression();
 									$exprEvaluater = new VTFieldExpressionEvaluater($expression);
