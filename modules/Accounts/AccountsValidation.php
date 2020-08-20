@@ -27,10 +27,7 @@
 ************************************************************************************/
 require_once 'data/CRMEntity.php';
 global $log,$currentModule,$adb;
-
-$modObj = CRMEntity::getInstance('Accounts');
-$crmEntityTable = $modObj::$crmentityTable;
-$crmEntityTable = ($crmEntityTable != 'vtiger_crmentity') ? $crmEntityTable. ' as vtiger_crmentity':$crmEntityTable;
+$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Accounts');
 $screen_values = json_decode($_REQUEST['structure'], true);
 $blockDuplicateAccounts = GlobalVariable::getVariable('Accounts_BlockDuplicateName', 1, 'Accounts');
 if ($blockDuplicateAccounts && isset($screen_values['accountname'])) {
