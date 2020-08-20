@@ -179,6 +179,7 @@ class DecisionTable extends processcbMap {
 									$conditionvalue = $exprEvaluater->evaluate($entity);
 								}
 								$uitype = getUItypeByFieldName($module, (String)$v->field);
+								$queryGenerator->startGroup($queryGenerator::$AND);
 								if ($uitype==10) {
 									if (!empty($conditionvalue)) {
 										if (strpos($conditionvalue, 'x') > 0) {
@@ -187,11 +188,13 @@ class DecisionTable extends processcbMap {
 											$crmid = $conditionvalue;
 										}
 										$relmod = getSalesEntityType($crmid);
-										$queryGenerator->addReferenceModuleFieldCondition($relmod, (String)$v->field, 'id', $crmid, (String)$v->operation, $queryGenerator::$AND);
+										$queryGenerator->addReferenceModuleFieldCondition($relmod, (String)$v->field, 'id', $crmid, (String)$v->operation);
 									}
 								} else {
-									$queryGenerator->addCondition((String)$v->field, $conditionvalue, (String)$v->operation, $queryGenerator::$AND);
+									$queryGenerator->addCondition((String)$v->field, $conditionvalue, (String)$v->operation);
 								}
+								$queryGenerator->addCondition((String)$v->field, '__IGNORE__', 'e', $queryGenerator::$OR);
+								$queryGenerator->endGroup();
 							}
 						}
 					}
