@@ -7,6 +7,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 include_once 'modules/Reports/ReportUtils.php';
+require_once 'data/CRMEntity.php';
 
 function getaddITSEventPopupTime($starttime, $endtime, $format) {
 	if (empty($format)) {
@@ -282,6 +283,7 @@ function NOPermissionDiv() {
 function getCalendar4YouListQuery($userid, $invites, $where = '', $type = '1') {
 	global $log, $adb;
 	$log->debug('> getCalendar4YouListQuery '.$userid.','.$where);
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Calendar4You');
 	//$tab_id = getTabid('Calendar4You');
 	//$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' =>'vtiger_users.last_name'), 'Users');
 
@@ -292,7 +294,7 @@ function getCalendar4YouListQuery($userid, $invites, $where = '', $type = '1') {
 	LEFT JOIN vtiger_activitycf ON vtiger_activitycf.activityid = vtiger_activity.activityid
 	LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid = vtiger_activity.cto_id
 	LEFT OUTER JOIN vtiger_activity_reminder ON vtiger_activity_reminder.activity_id = vtiger_activity.activityid
-	LEFT JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_activity.activityid
+	LEFT JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_activity.activityid
 	LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
 	LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 	LEFT JOIN vtiger_users vtiger_users2 ON vtiger_crmentity.modifiedby = vtiger_users2.id
