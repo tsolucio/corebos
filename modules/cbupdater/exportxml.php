@@ -18,7 +18,8 @@
 *  Author       : JPL TSolucio, S. L.
 *************************************************************************************************/
 include_once 'vtlib/Vtiger/Zip.php';
-
+require_once 'data/CRMEntity.php';
+$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbupdater');
 global $adb;
 
 if (isOnDemandActive()) {
@@ -50,7 +51,7 @@ if (!empty($ids)) {
 	$zip = new Vtiger_Zip($zipfilename);
 
 	$sql = 'select * from vtiger_cbupdater
-			inner join vtiger_crmentity on crmid=cbupdaterid
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=cbupdaterid
 			where deleted=0 ';
 	if ($ids!='all') {
 		$ids = str_replace(';', ',', $ids);
