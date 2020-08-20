@@ -16,16 +16,30 @@
 
 require_once 'include/Webservices/Create.php';
 
+$mcProcessedReferences = array();
+$mcRecords = array();
+$mcModules = array();
+
 function MassCreate($elements, $user) {
+	global $mcProcessedReferences, $mcRecords, $mcModules;
+
 	$failedCreates = [];
 	$successCreates = [];
 
-	$records = array();
 	foreach ($elements as &$element) {
-		mcProcessReference($element, $elements, $records);
+		mcProcessReference($element, $elements);
 	}
 
-	foreach ($records as &$record) {
+	$types = vtws_listtypes(null, $user);
+	if ($mcModules && count($mcModules) > 0) {
+		foreach ($mcModules as $module) {
+			if (!in_array($module, $types['types'])) {
+				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
+			}
+		}
+	}
+
+	foreach ($mcRecords as &$record) {
 		foreach ($record['element'] as $key => $value) {
 			if (strpos($value, '@{') !== false) {
 				$start = '@{';
@@ -33,7 +47,7 @@ function MassCreate($elements, $user) {
 				preg_match_all("/$start([a-zA-Z0-9_]*)$end/", $value, $match);
 				if (isset($match[1][0])) {
 					$reference = $match[1][0];
-					$id = mcGetRecordId($records, $reference);
+					$id = mcGetRecordId($mcRecords, $reference);
 					$record['element'][$key] = $id;
 				}
 			}
@@ -70,10 +84,10 @@ function mcGetRecordId($arr, $reference) {
 	return $id;
 }
 
-function mcGetReferenceRecord($arr, $reference) {
+function mcGetReferenceRecord(&$arr, $reference) {
 	$array = array();
 	$index = null;
-	for ($x = 0; $x < count($arr); $x++) {
+	for ($x = 0; $x <= count($arr); $x++) {
 		if (isset($arr[$x])) {
 			if ($arr[$x]['referenceId'] == $reference) {
 				$array = $arr[$x];
@@ -85,7 +99,8 @@ function mcGetReferenceRecord($arr, $reference) {
 	return array($index, $array);
 }
 
-function mcProcessReference($element, &$elements, &$records) {
+function mcProcessReference($element, &$elements) {
+	global $mcProcessedReferences, $mcRecords, $mcModules;
 	foreach ($element['element'] as $key => $value) {
 		if (strpos($value, '@{') !== false) {
 			$start = '@{';
@@ -93,13 +108,21 @@ function mcProcessReference($element, &$elements, &$records) {
 			preg_match_all("/$start([a-zA-Z0-9_]*)$end/", $value, $match);
 			if (isset($match[1][0])) {
 				$reference = $match[1][0];
-				list($index, $array) = mcGetReferenceRecord($elements, $reference);
-				if ($index && $array) {
-					mcProcessReference($array, $elements, $records);
-					unset($elements[$index]);
+				if (!in_array($reference, $mcProcessedReferences)) {
+					list($index, $array) = mcGetReferenceRecord($elements, $reference);
+					if ($index && $array) {
+						mcProcessReference($array, $elements);
+						unset($elements[$index]);
+						$mcProcessedReferences[] = $reference;
+					} else {
+						throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid parameter specified');
+					}
 				}
 			}
 		}
 	}
-	$records[] = $element;
+	if (!in_array($element['elementType'], $mcModules)) {
+		$mcModules[] = $element['elementType'];
+	}
+	$mcRecords[] = $element;
 }
