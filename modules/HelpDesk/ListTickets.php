@@ -9,14 +9,16 @@
  ********************************************************************************/
 
 /**	Function to get the list of tickets for the currently loggedin user */
+require_once 'data/CRMEntity.php';
 function getMyTickets($maxval, $calCnt) {
 	global $log, $current_user, $current_language, $adb;
 	$log->debug('> getMyTickets');
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('HelpDesk');
 	$current_module_strings = return_module_language($current_language, 'HelpDesk');
 
 	$search_query = 'SELECT vtiger_troubletickets.*, vtiger_crmentity.*
 		FROM vtiger_troubletickets
-		INNER JOIN vtiger_crmentity on vtiger_crmentity.crmid = vtiger_troubletickets.ticketid
+		INNER JOIN '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_troubletickets.ticketid
 		INNER JOIN vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
 		where vtiger_crmentity.smownerid = ? and vtiger_crmentity.deleted = 0 and '.
 		"vtiger_troubletickets.ticketid > 0 and vtiger_troubletickets.status <> 'Closed' ".
