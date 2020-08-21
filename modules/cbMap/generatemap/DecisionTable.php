@@ -15,10 +15,12 @@
  *************************************************************************************************/
 require_once 'Smarty_setup.php';
 require_once 'modules/PickList/PickListUtils.php';
+require_once 'modules/com_vtiger_workflow/expression_engine/VTExpressionsManager.inc';
 
 class genDecisionTable extends generatecbMap {
 
 	public function generateMap() {
+		global $adb;
 		$Map = $this->getMap();
 		include 'modules/cbMap/generatemap/GenMapHeader.php';
 		$xml = $this->getXMLContent();
@@ -42,6 +44,9 @@ class genDecisionTable extends generatecbMap {
 			$maptype='expression';
 			$mapcontent = '';
 		}
+		$emgr = new VTExpressionsManager($adb);
+		$smarty->assign('FNDEFS', json_encode($emgr->expressionFunctionDetails()));
+		$smarty->assign('FNCATS', $emgr->expressionFunctionCategories());
 		$module = $Map->column_fields['targetname'];
 		$smarty->assign('MODULES', getPicklistValuesSpecialUitypes('1613', '', $module));
 		$smarty->assign('targetmodule', $hitpolicy);

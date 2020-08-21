@@ -32,6 +32,7 @@
 	</tbody>
 </table>
 
+<div id="selectfunction"></div>
 <div class="slds-p-around_x-small slds-grid slds-gutters">
 <div class="slds-col slds-size_1-of-2 slds-form-element slds-text-align_left">
 	<legend class="slds-form-element__legend slds-form-element__label">{'HitPolicy'|@getTranslatedString:'cbMap'}</legend>
@@ -106,7 +107,7 @@
 				<h2 class="slds-expression__title">{'Expression'|@getTranslatedString:'cbMap'}</h2>
 			</div>
 			<div class="slds-col slds-size_1-of-2 slds-text-align_right">
-				<button class="slds-button slds-button_neutral">
+				<button class="slds-button slds-button_neutral" onclick="openFunctionSelection('exptextarea');">
 					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
 					</svg>
@@ -243,6 +244,10 @@
 </div>
 </div>
 <script>
+/// Function selection
+var wfexpfndefs = {$FNDEFS};
+var wfexpselectionDIV = 'selectfunction';
+///
 var editpopupobj = '';
 
 function setParamInputs() {
@@ -293,6 +298,7 @@ jQuery(document).ready(function () {
 {include file='Components/ComponentsCSS.tpl'}
 {include file='Components/ComponentsJS.tpl'}
 <script src="modules/com_vtiger_workflow/resources/functional.js" type="text/javascript" charset="utf-8"></script>
+<script src="modules/com_vtiger_workflow/resources/functionselect.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/com_vtiger_workflow/resources/vtigerwebservices.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/com_vtiger_workflow/resources/parallelexecuter.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/com_vtiger_workflow/resources/fieldvalidator.js" type="text/javascript" charset="utf-8"></script>
