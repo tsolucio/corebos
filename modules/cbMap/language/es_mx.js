@@ -1,0 +1,15 @@
+var mod_alert_arr = {
+	'LBL_SEQUENCE': 'Secuencia',
+	'LBL_RULETYPE': 'Tipo Regla',
+	'LBL_INPUT': 'Entrada',
+	'LBL_OUTPUT': 'Salida',
+	'LBL_OPERATION': 'Operación',
+	'LBL_DELETE': 'Eliminar',
+	'LBL_EXPRESSION': 'Expresión',
+	'LBL_MAP': 'Mapa de Negocio',
+	'LBL_TABLE': 'Tabla de Decisión',
+	'LBL_EXPRESSIONRESULT': 'Resultado Expresión',
+	'LBL_FIELDVALUE': 'Valor Campo',
+	'LBL_OBJECT': 'Objeto',
+	'LBL_ROW': 'Fila',
+};
