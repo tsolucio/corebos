@@ -71,5 +71,6 @@ $mod_strings = array(
 	'LBL_RULEDEF' => 'Rule Definition',
 	'RETURN_FIELDS' => 'Field(s) to return',
 	'Expression' => 'Expression',
+	'Examples' => 'Examples',
 );
 ?>

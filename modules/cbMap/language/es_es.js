@@ -12,4 +12,8 @@ var mod_alert_arr = {
 	'LBL_FIELDVALUE': 'Valor Campo',
 	'LBL_OBJECT': 'Objeto',
 	'LBL_ROW': 'Fila',
+	'PName': 'Nombre',
+	'PType': 'Tipo',
+	'POptional': 'Opcional',
+	'Description': 'Descripción',
 };

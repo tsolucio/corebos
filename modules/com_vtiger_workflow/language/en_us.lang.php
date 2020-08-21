@@ -47,6 +47,15 @@ $mod_strings = array(
 
 'LBL_USE_FIELD_VALUE_DASHDASH'=>'-- Use Field Value --',
 'LBL_USE_FUNCTION_DASHDASH'=>'-- Use Function --',
+'LBL_FUNCTIONS'=>'Expression Functions',
+'Math' => 'Math',
+'Date and Time' => 'Date and Time',
+'Text' => 'Text',
+'Information' => 'Information',
+'Logical' => 'Logical',
+'Finance' => 'Finance',
+'Application' => 'Application',
+'Statistics' => 'Statistics',
 
 'LBL_RAW_TEXT'=>'Raw Text',
 'LBL_FIELD'=>'Field',
