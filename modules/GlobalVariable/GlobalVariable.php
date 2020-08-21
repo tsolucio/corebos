@@ -160,9 +160,8 @@ class GlobalVariable extends CRMEntity {
 				$modulelist = array_map('trim', explode('|##|', $this->column_fields['module_list']));
 			}
 			$inmodule = $this->column_fields['in_module_list'];
-			$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 			$existmod = $adb->pquery('select module_list,in_module_list from vtiger_globalvariable
-				left join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_globalvariable.globalvariableid
+				left join '.self::$crmEntityTableAlias.' on vtiger_crmentity.crmid=vtiger_globalvariable.globalvariableid
 				where gvname=? and deleted=0 and mandatory=1 and globalvariableid!=?', array($this->column_fields['gvname'],$recordid));
 			$num = $adb->num_rows($existmod);
 			$all_modules=vtws_getModuleNameList();
