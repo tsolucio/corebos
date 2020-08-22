@@ -21,7 +21,7 @@ $mcRecords = array();
 $mcModules = array();
 
 function MassCreate($elements, $user) {
-	global $mcProcessedReferences, $mcRecords, $mcModules;
+	global $mcRecords, $mcModules, $adb, $log;
 
 	$failedCreates = [];
 	$successCreates = [];
@@ -34,7 +34,16 @@ function MassCreate($elements, $user) {
 	if ($mcModules && count($mcModules) > 0) {
 		foreach ($mcModules as $module) {
 			if (!in_array($module, $types['types'])) {
-				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
+				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied on module'.$module);
+			}
+			$webserviceObject = VtigerWebserviceObject::fromName($adb, $module);
+			$handlerPath = $webserviceObject->getHandlerPath();
+			$handlerClass = $webserviceObject->getHandlerClass();
+			require_once $handlerPath;
+			$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+			$meta = $handler->getMeta();
+			if ($meta->hasWriteAccess() !== true) {
+				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to write is denied on module '.$module);
 			}
 		}
 	}
@@ -72,7 +81,7 @@ function MassCreate($elements, $user) {
 }
 
 function mcGetRecordId($arr, $reference) {
-	$id = "";
+	$id = '';
 	foreach ($arr as $ar) {
 		if ($ar['referenceId'] == $reference) {
 			if (isset($ar['id'])) {
@@ -101,7 +110,7 @@ function mcGetReferenceRecord(&$arr, $reference) {
 
 function mcProcessReference($element, &$elements) {
 	global $mcProcessedReferences, $mcRecords, $mcModules;
-	foreach ($element['element'] as $key => $value) {
+	foreach ($element['element'] as $value) {
 		if (strpos($value, '@{') !== false) {
 			$start = '@{';
 			$end = '.';
