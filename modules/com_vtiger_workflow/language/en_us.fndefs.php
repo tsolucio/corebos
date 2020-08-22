@@ -170,6 +170,71 @@ $WFExpressionFunctionDefinitons = array(
 		'time_diff(duedate)',
 	),
 ),
+'holidaydifference' => array(
+	'name' => 'holidaydifference(startDate, endDate, include_saturdays, holidays)',
+	'desc' => 'Calculates the difference of time (in days) between two specific date fields, excluding Saturdays and Holidays if given. Unlike networkdays it does not include the enddate so, usually, there is a one day difference',
+	'params' => array(
+		array(
+			'name' => 'startDate',
+			'type' => 'Date',
+			'optional' => false,
+			'desc' => 'any valid date or date type field name',
+		),
+		array(
+			'name' => 'endDate',
+			'type' => 'Date',
+			'optional' => false,
+			'desc' => 'any valid date or date type field name',
+		),
+		array(
+			'name' => 'include_saturdays',
+			'type' => 'Integer',
+			'optional' => false,
+			'desc' => 'if set to 0 saturdays will not be added, if set to any other value, they will be added',
+		),
+		array(
+			'name' => 'holidays',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'name of an InformationMap that contains the holiday dates to exclude<br>'.nl2br(htmlentities("<map>\n<information>\n<infotype>Holidays in France 2020</infotype>\n<value>date1</value>\n<value>date2</value>\n</information>\n</map>")).'</pre>',
+		),
+	),
+	'categories' => array('Date and Time'),
+	'examples' => array(
+		"holidaydifference('2020-01-01', '2020-06-30', 0, 'holidays in Spain 2020')",
+		"holidaydifference('2020-01-01', '2020-06-30', 1, 'holidays in Spain 2020')",
+		"holidaydifference('2020-01-01', '2020-06-30', 0, 'holidays in France 2020')",
+	),
+),
+'networkdays' => array(
+	'name' => 'networkdays(startDate, endDate, holidays)',
+	'desc' => 'Returns the number of whole working days between start_date and end_date. Working days exclude weekends and any dates identified in holidays. Unlike holidaydifference it includes the enddate so, usually, there is a one day difference',
+	'params' => array(
+		array(
+			'name' => 'startDate',
+			'type' => 'Date',
+			'optional' => false,
+			'desc' => 'any valid date or date type field name',
+		),
+		array(
+			'name' => 'endDate',
+			'type' => 'Date',
+			'optional' => false,
+			'desc' => 'any valid date or date type field name',
+		),
+		array(
+			'name' => 'holidays',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'name of an InformationMap that contains the holiday dates to exclude<br>'.nl2br(htmlentities("<map>\n<information>\n<infotype>Holidays in France 2020</infotype>\n<value>date1</value>\n<value>date2</value>\n</information>\n</map>")).'</pre>',
+		),
+	),
+	'categories' => array('Date and Time'),
+	'examples' => array(
+		"networkdays('2020-01-01', '2020-06-30', 'holidays in Spain 2020')",
+		"networkdays('2020-01-01', '2020-06-30', 'holidays in France 2020')",
+	),
+),
 
 );
 
