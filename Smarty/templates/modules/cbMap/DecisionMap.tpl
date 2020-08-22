@@ -144,7 +144,7 @@
 			<legend class="slds-form-element__legend slds-form-element__label">{'LBL_MODULE'|@getTranslatedString}</legend>
 			<div class="slds-form-element__control">
 				<div class="slds-select_container">
-					<select id="dtmodule" required name="dtmodule" class="slds-select" onchange="editpopupobj.setModule(this.value)">
+					<select id="dtmodule" required name="dtmodule" class="slds-select" onchange="getDTModuleFields(this.value);">
 						{foreach item=arr from=$MODULES}
 							<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
 						{/foreach}
@@ -248,59 +248,13 @@
 var wfexpfndefs = {$FNDEFS};
 var wfexpselectionDIV = 'selectfunction';
 ///
-var editpopupobj = '';
-
-function setParamInputs() {
-	const prms = document.querySelectorAll('input[name="paraminput"]');
-	var n = document.getElementById('fparamsdiv');
-	for (var cnt=0; cnt<prms.length; cnt++) {
-		if (prms[cnt].value=='') {
-			n.removeChild(prms[cnt]);
-		}
-	}
-	var inp = document.createElement('input');
-	inp.type='text';
-	inp.name='paraminput';
-	inp.classList.add('slds-m-top_xx-small');
-	inp.classList.add('slds-input');
-	inp.onchange=setParamInputs;
-	inp.value='';
-	n.appendChild(inp);
-	inp.focus();
-}
-
-function showexpinputs(mtype) {
-	document.getElementById('exptpldiv').style.display=(mtype=='function' ? 'none' : 'block');
-	document.getElementById('funcdiv').style.display=(mtype=='function' ? 'block' : 'none');
-}
+var DecisionTableMap = {$mapcontent};
 
 function saveModuleMapAction() {
-	let params = 'mapid={$MapID}&tmodule='+document.getElementById('msmodules').value+'&mtype=';
-	const maptype = document.querySelectorAll('input[name="cemapt"]:checked')[0].value;
-	params = params + maptype;
-	if (maptype=='function') {
-		const prms = document.querySelectorAll('input[name="paraminput"]');
-		let vals = Array.from(prms).map(el => el.value);
-		vals.filter(v => v!='');
-		vals = vals.join().slice(0, -1);
-		params += '&fname=' + document.getElementById('functionname').value + '&params=' + encodeURI(vals);
-	} else {
-		params += '&content='+encodeURI(document.getElementById('editpopup_expression').value);
-	}
-	saveMapAction(params);
+	saveMapAction('mapid={$MapID}&tmodule={$targetmodule}&content='+encodeURI(JSON.stringify(DecisionTableMap)));
 }
-
-jQuery(document).ready(function () {
-//	editpopupobj = fieldExpressionPopup('{$targetmodule}', jQuery);
-//	editpopupobj.setModule('{$targetmodule}');
-});
 </script>
 {include file='Components/ComponentsCSS.tpl'}
 {include file='Components/ComponentsJS.tpl'}
-<script src="modules/com_vtiger_workflow/resources/functional.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/com_vtiger_workflow/resources/functionselect.js" type="text/javascript" charset="utf-8"></script>
-<script src="modules/com_vtiger_workflow/resources/vtigerwebservices.js" type="text/javascript" charset="utf-8"></script>
-<script src="modules/com_vtiger_workflow/resources/parallelexecuter.js" type="text/javascript" charset="utf-8"></script>
-<script src="modules/com_vtiger_workflow/resources/fieldvalidator.js" type="text/javascript" charset="utf-8"></script>
-<script src="modules/com_vtiger_workflow/resources/fieldexpressionpopup.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/cbMap/generatemap/DecisionTable.js" type="text/javascript" charset="utf-8"></script>

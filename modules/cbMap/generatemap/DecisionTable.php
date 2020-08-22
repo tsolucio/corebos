@@ -26,36 +26,16 @@ class genDecisionTable extends generatecbMap {
 		$xml = $this->getXMLContent();
 		$hitpolicy = isset($xml->hitpolicy) ? $xml->hitpolicy : '';
 		$aggregate = isset($xml->aggregate) ? $xml->aggregate : '';
-		$mapcontent = $fname = '';
-		$fparams = array();
-		if (isset($xml->expression)) {
-			$maptype='expression';
-			$mapcontent = $xml->expression;
-		} elseif (isset($xml->function)) {
-			$maptype='function';
-			$fname = $xml->function->name;
-			foreach ($xml->function->parameters->parameter as $prm) {
-				$fparams[] = $prm;
-			}
-		} elseif (isset($xml->template)) {
-			$maptype='template';
-			$mapcontent = $xml->template;
-		} else {
-			$maptype='expression';
-			$mapcontent = '';
-		}
 		$emgr = new VTExpressionsManager($adb);
 		$smarty->assign('FNDEFS', json_encode($emgr->expressionFunctionDetails()));
 		$smarty->assign('FNCATS', $emgr->expressionFunctionCategories());
 		$module = $Map->column_fields['targetname'];
+		$smarty->assign('targetmodule', $module);
 		$smarty->assign('MODULES', getPicklistValuesSpecialUitypes('1613', '', $module));
-		$smarty->assign('targetmodule', $hitpolicy);
-		$smarty->assign('hitpolicy', $module);
+		$smarty->assign('hitpolicy', $hitpolicy);
 		$smarty->assign('aggregate', $aggregate);
-		$smarty->assign('maptype', $maptype);
-		$smarty->assign('mapcontent', $mapcontent);
-		$smarty->assign('fname', $fname);
-		$smarty->assign('fparams', $fparams);
+		$smarty->assign('maptype', 'DecisionTable');
+		$smarty->assign('mapcontent', json_encode($xml));
 		$smarty->assign('MapID', $Map->id);
 		$smarty->assign('MapFields', $Map->column_fields);
 		$smarty->assign('NameOFMap', $Map->column_fields['mapname']);
@@ -71,19 +51,58 @@ class genDecisionTable extends generatecbMap {
 			$adb->pquery('update vtiger_cbmap set targetname=? where cbmapid=?', array(vtlib_purify($_REQUEST['tmodule']), $Map->id));
 		}
 		$xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><map/>');
-		$content=urldecode($_REQUEST['content']);
-		if ($_REQUEST['mtype']=='template') {
-			$m = $xml->addChild('template', $content);
-		} elseif ($_REQUEST['mtype']=='function') {
-			$m = $xml->addChild('function');
-			$m->addChild('name', vtlib_purify($_REQUEST['fname']));
-			$p = $m->addChild('parameters');
-			$params=explode(',', urldecode($_REQUEST['params']));
-			foreach ($params as $param) {
-				$p->addChild('parameter', $param);
-			}
+		$map = json_decode(urldecode($_REQUEST['content']), true);
+		$decision = $xml->addChild('decision');
+		$decision->addChild('hitPolicy', $map['hitpolicy']);
+		if ($map['hitpolicy']=='G') {
+			$decision->addChild('aggregate', $map['aggregate']);
 		} else {
-			$m = $xml->addChild('expression', $content);
+			$decision->addChild('aggregate');
+		}
+		$rules = $decision->addChild('rules');
+		foreach ($map['rules'] as $rule) {
+			$r = $rules->addChild('rule');
+			$r->addChild('sequence', $rule['sequence']);
+			if ($rule['ruletype']=='expression') {
+				$r->addChild('expression', $rule['expression']);
+			} elseif ($rule['ruletype']=='businessmap') {
+				$r->addChild('mapid', $rule['mapid']);
+			} elseif ($rule['ruletype']=='decisiontable') {
+				$dt = $r->addChild('decisionTable');
+				$dtr = $rule['decisiontable'];
+				$dt->addChild('module', $dtr['module']);
+				if (!empty($dtr['conditions'])) {
+					$dtcs = $dt->addChild('conditions');
+					foreach ($dtr['conditions'] as $cond) {
+						$dtc = $dtcs->addChild('condition');
+						$dtc->addChild('input', $cond['input']);
+						$dtc->addChild('operation', $cond['operation']);
+						$dtc->addChild('field', $cond['field']);
+					}
+				}
+				if (empty($dtr['orderby'])) {
+					$dt->addChild('orderby');
+				} else {
+					$dt->addChild('orderby', $dtr['orderby']);
+				}
+				if (!empty($dtr['searches'])) {
+					$dtss = $dt->addChild('searches');
+					foreach ($dtr['searches'] as $search) {
+						$dts = $dtss->addChild('search');
+						foreach ($search as $cond) {
+							$dtc = $dts->addChild('condition');
+							$dtc->addChild('input', $cond['input']);
+							if (!empty($cond['preprocess'])) {
+								$dtc->addChild('preprocess', $cond['preprocess']);
+							}
+							$dtc->addChild('operation', $cond['operation']);
+							$dtc->addChild('field', $cond['field']);
+						}
+					}
+				}
+				$dt->addChild('output', $dtr['output']);
+			}
+			$r->addChild('output', $rule['output']);
 		}
 		return str_replace('<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL, '', $xml->asXML());
 	}

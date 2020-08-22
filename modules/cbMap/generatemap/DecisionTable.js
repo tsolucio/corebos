@@ -65,6 +65,35 @@ function setRuleDefinition(ev) {
 	}
 }
 
+async function getDTModuleFields(module) {
+	DTModuleFields = await getFieldsForModule(module);
+	document.getElementById('returnfields').value = '';
+	document.getElementById('orderbyrule').value = '';
+}
+
+async function getFieldsForModule(module) {
+	return await fetch(
+		'index.php?module=cbMap&action=cbMapAjax&actionname=mapactions&method=getFieldTablesForModule',
+		{
+			method: 'post',
+			headers: {
+				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+			},
+			credentials: 'same-origin',
+			body: '&'+csrfMagicName+'='+csrfMagicToken+'&fieldsmodule='+module
+		}
+	).then(response => response.json()).then(response => {
+		var fields = [];
+		Object.keys(response)
+			.map(fd => {
+				fields.push(fd);
+			});
+		return fields;
+	});
+}
+
+var DTModuleFields = {};
+
 const ruleData = [
 	{
 		'sequence': '1',
