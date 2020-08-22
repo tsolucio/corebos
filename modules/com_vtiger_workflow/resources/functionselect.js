@@ -87,7 +87,7 @@ function setFilteredFunctions(fns) {
 	var lis = '';
 	Object.keys(fns)
 		.map(fn => {
-			lis += `<li aria-selected="false" class="slds-p-around_xx-small" draggable="false" role="option" tabindex="-1" onClick="setFunctionInformation(this);" onDblClick="dblClickFunctionSelect(this);" data-value="${fn}">${fns[fn].name}</li>`;
+			lis += `<li aria-selected="false" class="slds-p-around_xx-small" draggable="false" role="option" tabindex="-1" onClick="setFunctionInformation(this);" onDblClick="dblClickFunctionSelect(this);" data-value="${fn}">${fn}</li>`;
 		});
 	fnlist.innerHTML = lis;
 }

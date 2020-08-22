@@ -38,7 +38,7 @@
 			<div>
 				<ul aria-label="single select listbox" class="slds-border_top slds-border_right slds-border_bottom slds-border_left slds-m-top_small" role="listbox" id="wffnlist" style="height:350px;overflow-y:scroll;">
 				{foreach from=$FNDEFS item=item key=key}
-					<li aria-selected="false" class="slds-p-around_xx-small" draggable="false" role="option" tabindex="-1" onclick="setFunctionInformation(this);" ondblclick="dblClickFunctionSelect(this);" data-value="{$key}">{$item.name}</li>
+					<li aria-selected="false" class="slds-p-around_xx-small" draggable="false" role="option" tabindex="-1" onclick="setFunctionInformation(this);" ondblclick="dblClickFunctionSelect(this);" data-value="{$key}">{$key}</li>
 				{/foreach}
 				</ul>
 			</div>
