@@ -72,5 +72,6 @@ $mod_strings = array(
 	'RETURN_FIELDS' => 'Campo(s) a devolver',
 	'Expression' => 'Expresión',
 	'Examples' => 'Ejemplos',
+	'Example' => 'Ejemplo',
 );
 ?>

@@ -74,5 +74,6 @@ $mod_strings = array(
 	'RETURN_FIELDS' => 'Field(s) to return',
 	'Expression' => 'Expression',
 	'Examples' => 'Examples',
+	'Example' => 'Example',
 );
 ?>

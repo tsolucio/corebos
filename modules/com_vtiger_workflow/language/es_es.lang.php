@@ -226,5 +226,12 @@ $mod_strings = array(
 'wfExecExpression' => 'Ejecutar Expresión',
 'wdexeexpVariableHelp' => 'El valor se guardará en el contexto con este nombre si se proporciona. Si no, solo se ejecutará la expresión.',
 'LBL_EXPRESSIONS' => 'Expresiones',
+'EXP_RULES' => 'Reglas a seguir al usar expresiones',
+'EXP_RULE1' => "Definir valores de campo de texto entre comillas simples (' ').",
+'EXP_RULE2' => 'Utiliza operadores aritméticos para realizar Suma (+), Resta (-), Multiplicación (*) y División (/). Puedes realizar estas operaciones entre dos o más campos, valores o una combinación de campos y valores.',
+'EXP_RULE3' => 'Utiliza operadores relacionales en las expresiones',
+'equal to' => 'igual a',
+'not equal to' => 'no es igual a',
+'EXP_RULE4' => 'Utiliza valores binarios para los campos de casilla de verificación: 0 para falso/no, 1 para verdadero/sí.',
 );
 ?>

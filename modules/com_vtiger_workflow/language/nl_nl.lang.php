@@ -228,5 +228,12 @@ $mod_strings = array(
 'wfExecExpression' => 'Execute Expression',
 'wdexeexpVariableHelp' => 'The value will be saved in the context with this name if given. If not only the expression will be executed.',
 'LBL_EXPRESSIONS' => 'Expressions',
+'EXP_RULES' => 'Rules to follow while using expressions',
+'EXP_RULE1' => "Define text field values inside single quotes (' ').",
+'EXP_RULE2' => 'Use arithmetic operators to perform Addition(+), Subtraction(-), Multiplication(*), and Division(/). You can perform these operations between two or more fields, values, or combination of both fields and values.',
+'EXP_RULE3' => 'Use relational operators in the expressions',
+'equal to' => 'equal to',
+'not equal to' => 'not equal to',
+'EXP_RULE4' => 'Use binary values for the checkbox fields: 0 for false/no, 1 for true/yes.',
 );
 ?>
