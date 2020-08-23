@@ -1436,12 +1436,16 @@ function doServerValidation(edit_type, formName, callback) {
 			sentForm[myFields[f].name] = myFields[f].value;
 		}
 	}
+	return executeServerValidation(edit_type, action, formName, callback, SVModule, sentForm);
+}
+
+function executeServerValidation(edit_type, action, formName, callback, forModule, sentForm) {
 	//JSONize form data
 	sentForm = JSON.stringify(sentForm);
 	jQuery.ajax({
 		type : 'post',
 		data : {structure: sentForm},
-		url : 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule='+SVModule
+		url : 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule='+forModule
 	}).done(function (msg) {
 		//Validation file answers
 		if (msg.search('%%%CONFIRM%%%') > -1) { //Allow to use confirm alert
