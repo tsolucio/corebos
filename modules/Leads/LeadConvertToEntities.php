@@ -12,19 +12,19 @@ global $current_user, $currentModule, $theme, $app_strings,$log;
 require_once 'include/Webservices/ConvertLead.php';
 require_once 'include/utils/VtlibUtils.php';
 //Getting the Parameters from the ConvertLead Form
-$recordId = vtlib_purify($_REQUEST["record"]);
+$recordId = vtlib_purify($_REQUEST['record']);
 $leadId = vtws_getWebserviceEntityId('Leads', $recordId);
 $entityValues=array();
 //make sure that either contacts or accounts is selected
 if (!empty($_REQUEST['entities'])) {
-	$entities=vtlib_purify($_REQUEST['entities']);
+	$entities=(array)vtlib_purify($_REQUEST['entities']);
 
-	$assigned_to = vtlib_purify($_REQUEST["c_assigntype"]);
-	if ($assigned_to == "U") {
-		$assigned_user_id = vtlib_purify($_REQUEST["c_assigned_user_id"]);
+	$assigned_to = vtlib_purify($_REQUEST['c_assigntype']);
+	if ($assigned_to == 'U') {
+		$assigned_user_id = vtlib_purify($_REQUEST['c_assigned_user_id']);
 		$assignedTo = vtws_getWebserviceEntityId('Users', $assigned_user_id);
 	} else {
-		$assigned_user_id = vtlib_purify($_REQUEST["c_assigned_group_id"]);
+		$assigned_user_id = vtlib_purify($_REQUEST['c_assigned_group_id']);
 		$assignedTo = vtws_getWebserviceEntityId('Groups', $assigned_user_id);
 	}
 
@@ -63,8 +63,7 @@ if (!empty($_REQUEST['entities'])) {
 	try {
 		$result = vtws_convertlead($entityValues, $current_user);
 	} catch (Exception $e) {
-		echo "<br><div style='margin:auto;text-align:center;font-weight:bold;'>".$e->message.'</div><br>';
-		showError($entityValues);
+		showError($entityValues, $e->message);
 		die();
 	}
 
@@ -90,52 +89,61 @@ if (!empty($accountId)) {
 	showError($entityValues);
 }
 
-function showError($entityValues) {
+function showError($entityValues, $errmsg = '') {
 	require_once 'include/utils/VtlibUtils.php';
-	global $current_user, $currentModule, $theme;
+	global $current_user, $currentModule, $theme, $default_charset;
 	$theme = vtlib_purify($theme);
-	echo "<link rel='stylesheet' type='text/css' href='themes/$theme/style.css'>";
-	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
-	echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
-		<tbody><tr>
-		<td rowspan='2' width='11%'><img src='" . vtiger_imageurl('denied.gif', $theme) . "' ></td>
-		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'>
-			<span class='genHeaderSmall'>". getTranslatedString('SINGLE_'.$currentModule, $currentModule)." ".
-			getTranslatedString('CANNOT_CONVERT', $currentModule) ."
-		<br>
-		<ul> ". getTranslatedString('LBL_FOLLOWING_ARE_POSSIBLE_REASONS', $currentModule) .":
-			<li>". getTranslatedString('LBL_LEADS_FIELD_MAPPING_INCOMPLETE', $currentModule) ."</li>
-			<li>". getTranslatedString('LBL_MANDATORY_FIELDS_ARE_EMPTY', $currentModule) ."</li>
-		</ul>
-		</span>
-		</td>
-		</tr>
-		<tr>
-		<td class='small' align='right' nowrap='nowrap'>";
+	$convlead = getTranslatedString('CANNOT_CONVERT', $currentModule);
+	$companyDetails = retrieveCompanyDetails();
+	$favicon = $companyDetails['favicon'];
+	echo <<< EOT
+		<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+		<html>
+		<head>
+			<meta http-equiv="Content-Type" content="text/html; charset={$default_charset}">
+			<meta name="robots" content="noindex">
+			<title>{$convlead} Error</title>
+			<link REL="SHORTCUT ICON" HREF="{$favicon}">
+			<link rel="stylesheet" href="include/LD/assets/styles/salesforce-lightning-design-system.css" type="text/css" />';
+			<script type="text/javascript" src="include/js/general.js"></script>
+		</head>
+		<body>
+		<div class="slds-card" style="width: 55%;margin:auto;">
+		<div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+		  <header class="slds-expression__title">
+			<span class="slds-icon_container slds-icon-utility-error slds-m-right_x-small">
+			<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#error"></use>
+			</svg>
+			</span>
+EOT;
+		echo '<h2 class="slds-modal__title">'.getTranslatedString('SINGLE_'.$currentModule, $currentModule).' '.$convlead.'</h2>
+		  </header>
+		  <div class="slds-expression__title slds-p-around_medium">'
+			.getTranslatedString('LBL_FOLLOWING_ARE_POSSIBLE_REASONS', $currentModule) .':'
+			.'<ul class="slds-list_dotted slds-text-align_left">'
+			.(empty($errmsg) ? '' : '<li>'.$errmsg.'</li>')
+			.'<li>'. getTranslatedString('LBL_LEADS_FIELD_MAPPING_INCOMPLETE', $currentModule) .'</li>
+			<li>'. getTranslatedString('LBL_MANDATORY_FIELDS_ARE_EMPTY', $currentModule) .'</li>
+			</ul>
+		  </div>
+		</div>';
 	showMandatoryFieldsAndValues($entityValues);
-	echo "</td>
-		</tr>
-		<tr>
-		<td class='small' align='right' nowrap='nowrap'>";
+	echo '<div class="slds-align_absolute-center slds-p-around_large">';
 	if (is_admin($current_user)) {
-		echo "<a href='index.php?module=Settings&action=CustomFieldList&parenttab=Settings&formodule=Leads'>".
-			getTranslatedString('LBL_LEADS_FIELD_MAPPING', $currentModule) . '</a><br>';
+		echo "<button class='slds-button slds-button_outline-brand' type='button' onclick='gotourl(\"index.php?module=Settings&action=CustomFieldList&parenttab=Settings&formodule=Leads\")'>"
+			.getTranslatedString('LBL_LEADS_FIELD_MAPPING', $currentModule) . '</button>';
 	}
-	echo "<a href='javascript:window.history.back();'>". getTranslatedString('LBL_GO_BACK', $currentModule) ."</a><br>";
-	echo "</td>
-		</tr>
-		</tbody></table>
-		</div>
-		</td></tr></table>";
+	echo "<button class='slds-button slds-button_outline-brand' type='button' onclick='window.history.back();'>". getTranslatedString('LBL_GO_BACK', $currentModule) .'</button><br>';
+	echo '</div></div></body></html>';
 }
 
 function showMandatoryFieldsAndValues($entityValues) {
 	global $log,$adb,$current_user;
 	$yes = getTranslatedString('LBL_YES');
 	$no = getTranslatedString('LBL_NO');
-	echo '<table width=100% border=0>';
-	echo '<tr><td>'.getTranslatedString('LBL_MANDATORY_FIELDS', 'Settings').'</td></tr>';
+	echo '<h2 class="slds-modal__title slds-p-around_small">'.getTranslatedString('LBL_MANDATORY_FIELDS', 'Settings').'</h2>';
+	echo '<table class="slds-table slds-table_cell-buffer slds-table_bordered">';
 	$availableModules = array('Accounts','Contacts','Potentials');
 	$leadObject = VtigerWebserviceObject::fromName($adb, 'Leads');
 	$handlerPath = $leadObject->getHandlerPath();
@@ -158,10 +166,10 @@ function showMandatoryFieldsAndValues($entityValues) {
 		$entityObjectValues['assigned_user_id'] = $entityValues['assignedTo'];
 		$entityObjectValues = vtws_populateConvertLeadEntities($entityvalue, $entityObjectValues, $entityHandler, $leadHandler, $leadInfo);
 
-		echo "<tr><td colspan=3><b>".getTranslatedString($entityvalue['name'], $entityvalue['name'])."</b></td></tr>";
-		echo "<tr><td><b>".getTranslatedString('FieldName', 'Settings').
-			"</b></td><td><b>".getTranslatedString('LBL_MANDATORY_FIELD', 'Settings').
-			"</b></td><td><b>".getTranslatedString('Values', 'Settings')."</b></td></tr>";
+		echo '<tr><td colspan=3><b>'.getTranslatedString($entityvalue['name'], $entityvalue['name']).'</b></td></tr>';
+		echo '<tr><td><b>'.getTranslatedString('FieldName', 'Settings').
+			'</b></td><td><b>'.getTranslatedString('LBL_MANDATORY_FIELD', 'Settings').
+			'</b></td><td><b>'.getTranslatedString('Values', 'Settings').'</b></td></tr>';
 		foreach ($entityObjectValues as $fname => $value) {
 			if ($fname == 'create' || $fname == 'name') {
 				continue;
