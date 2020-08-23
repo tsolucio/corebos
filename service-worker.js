@@ -9518,13 +9518,16 @@ precacheAndRoute([{
   "revision": "43155535cd6da302c6ad1c34c077c642"
 }, {
   "url": "modules/com_vtiger_workflow/resources/fieldexpressionpopup.js",
-  "revision": "0dc9ce2ca8e71fcbfbe3cc142e52b94a"
+  "revision": "c400069175af86491f79a6a96e3570ad"
 }, {
   "url": "modules/com_vtiger_workflow/resources/fieldvalidator.js",
   "revision": "cde6fec9119f368a5eb21d4e506209db"
 }, {
   "url": "modules/com_vtiger_workflow/resources/functional.js",
   "revision": "507e0618da87701f11b973970362e3cf"
+}, {
+  "url": "modules/com_vtiger_workflow/resources/functionselect.js",
+  "revision": "2d09e7539415ffd8cc219d89871264c5"
 }, {
   "url": "modules/com_vtiger_workflow/resources/generateimagecode.js",
   "revision": "bc1627f9b46bae11f03fde6958ff5809"
@@ -9548,7 +9551,7 @@ precacheAndRoute([{
   "revision": "a6908ffdc9deeea0e21e461a8bcde6cf"
 }, {
   "url": "modules/com_vtiger_workflow/resources/updatefieldstaskscript.js",
-  "revision": "75a9576a9821cbeff3fa8085288ff41d"
+  "revision": "98b52fb0bdc8a6decb396ad4a031ba30"
 }, {
   "url": "modules/com_vtiger_workflow/resources/updatemassivefieldstaskscript.js",
   "revision": "efe2ac9da371216aec6fea90f3c2fda5"
@@ -9881,7 +9884,7 @@ precacheAndRoute([{
   "revision": "f53626ff0d323bbef07030875334e696"
 }, {
   "url": "modules/cbQuestion/language/pt_br.js",
-  "revision": "f53626ff0d323bbef07030875334e696"
+  "revision": "e5713f1e7a706e7ab5d59831368f8fb6"
 }, {
   "url": "modules/cbQuestion/language/ro_ro.js",
   "revision": "f53626ff0d323bbef07030875334e696"
