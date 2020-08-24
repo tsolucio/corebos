@@ -21,7 +21,11 @@ function vtws_describe($elementType, $user) {
 		require_once $handlerPath;
 		$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 		if (!in_array($elementType, $types['types']) && $elementType!='Users') {
-			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
+			if (count($modules)==1) {
+				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
+			} else {
+				continue;
+			}
 		}
 		$rdo[$elementType] = $handler->describe($elementType);
 		$rdo[$elementType]['filterFields']=vtws_getfilterfields($elementType, $user);
@@ -32,7 +36,7 @@ function vtws_describe($elementType, $user) {
 		}
 	}
 	VTWS_PreserveGlobal::flush();
-	if (count($rdo)==1) {
+	if (count($modules)==1) {
 		return $rdo[$elementType];
 	} else {
 		return $rdo;

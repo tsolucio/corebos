@@ -168,6 +168,9 @@ class Validations extends processcbMap {
 				if (isset($screen_values['action']) && $screen_values['action']=='MassEditSave' && empty($screen_values[$valfield.'_mass_edit_check'])) {
 					continue; // we are not saving this field in mass edit save so we don't have to check it
 				}
+				if (isset($val['msg'])) {
+					$val['msg'] = getTranslatedString($val['msg'], $mapping['origin']);
+				}
 				$rule = $val['rule'];
 				$restrictions = $val['rst'];
 				switch ($rule) {

@@ -49,6 +49,15 @@ $mod_strings = array(
 
 'LBL_USE_FIELD_VALUE_DASHDASH'=>'-- Utilizar valor campo --',
 'LBL_USE_FUNCTION_DASHDASH'=>'-- Utilizar função --',
+'LBL_FUNCTIONS'=>'Expression Functions',
+'Math' => 'Math',
+'Date and Time' => 'Date and Time',
+'Text' => 'Text',
+'Information' => 'Information',
+'Logical' => 'Logical',
+'Finance' => 'Finance',
+'Application' => 'Application',
+'Statistics' => 'Statistics',
 
 'LBL_RAW_TEXT'=>'Texto puro',
 'LBL_FIELD'=>'Campo',
@@ -221,5 +230,12 @@ $mod_strings = array(
 'wfExecExpression' => 'Executar expressão',
 'wdexeexpVariableHelp' => 'O valor será salvo no contexto com esse nome, se fornecido. Senão apenas a expressão será executada.',
 'LBL_EXPRESSIONS' => 'Expressões',
+'EXP_RULES' => 'Rules to follow while using expressions',
+'EXP_RULE1' => "Define text field values inside single quotes (' ').",
+'EXP_RULE2' => 'Use arithmetic operators to perform Addition(+), Subtraction(-), Multiplication(*), and Division(/). You can perform these operations between two or more fields, values, or combination of both fields and values.',
+'EXP_RULE3' => 'Use relational operators in the expressions',
+'equal to' => 'equal to',
+'not equal to' => 'not equal to',
+'EXP_RULE4' => 'Use binary values for the checkbox fields: 0 for false/no, 1 for true/yes.',
 );
 ?>

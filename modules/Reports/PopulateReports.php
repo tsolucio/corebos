@@ -439,7 +439,7 @@ $adb->pquery("UPDATE vtiger_report SET sharingtype='Public'", array());
 function PopulateReportFolder($fldrname, $fldrdescription) {
 	global $adb;
 	$params = array($fldrname, $fldrdescription, 'SAVED');
-	$adb->pquery('INSERT INTO vtiger_reportfolder (FOLDERNAME,DESCRIPTION,STATE) VALUES(?,?,?)', $params);
+	$adb->pquery('INSERT INTO vtiger_reportfolder (foldername,description,state) VALUES(?,?,?)', $params);
 }
 
 /** Function to add an entry in selestquery vtiger_table */
@@ -447,7 +447,7 @@ function insertSelectQuery() {
 	global $adb;
 	$genQueryId = $adb->getUniqueID('vtiger_selectquery');
 	if ($genQueryId != '') {
-		$iquerysql = 'insert into vtiger_selectquery (QUERYID,STARTINDEX,NUMOFOBJECTS) values (?,?,?)';
+		$iquerysql = 'insert into vtiger_selectquery (queryid,startindex,numofobjects) values (?,?,?)';
 		$adb->pquery($iquerysql, array($genQueryId,0,0));
 	}
 	return $genQueryId;
@@ -458,7 +458,7 @@ function insertSelectColumns($queryid, $columnname) {
 	global $adb;
 	if ($queryid != '') {
 		for ($i=0; $i < count($columnname); $i++) {
-			$icolumnsql = 'insert into vtiger_selectcolumn (QUERYID,COLUMNINDEX,COLUMNNAME) values (?,?,?)';
+			$icolumnsql = 'insert into vtiger_selectcolumn (queryid,columnindex,columnname) values (?,?,?)';
 			$adb->pquery($icolumnsql, array($queryid, $i, $columnname[$i]));
 		}
 	}
@@ -471,7 +471,7 @@ function insertSelectColumns($queryid, $columnname) {
 function insertReports($queryid, $folderid, $reportname, $description, $reporttype) {
 	global $adb;
 	if ($queryid != '') {
-		$ireportsql = 'insert into vtiger_report (REPORTID,FOLDERID,REPORTNAME,DESCRIPTION,REPORTTYPE,QUERYID,STATE) values (?,?,?,?,?,?,?)';
+		$ireportsql = 'insert into vtiger_report (reportid,folderid,reportname,description,reporttype,queryid,state) values (?,?,?,?,?,?,?)';
 		$ireportparams = array($queryid, $folderid, $reportname, $description, $reporttype, $queryid, 'SAVED');
 		$adb->pquery($ireportsql, $ireportparams);
 	}
@@ -484,7 +484,7 @@ function insertReports($queryid, $folderid, $reportname, $description, $reportty
 function insertReportModules($queryid, $primarymodule, $secondarymodule) {
 	global $adb;
 	if ($queryid != '') {
-		$ireportmodulesql = 'insert into vtiger_reportmodules (REPORTMODULESID,PRIMARYMODULE,SECONDARYMODULES) values (?,?,?)';
+		$ireportmodulesql = 'insert into vtiger_reportmodules (reportmodulesid,primarymodule,secondarymodules) values (?,?,?)';
 		$adb->pquery($ireportmodulesql, array($queryid, $primarymodule, $secondarymodule));
 	}
 }
@@ -498,7 +498,7 @@ function insertSortColumns($queryid, $sortlists) {
 	global $adb;
 	if ($queryid != '') {
 		foreach ($sortlists as $i => $sort) {
-			$sort_bysql = 'insert into vtiger_reportsortcol (SORTCOLID,REPORTID,COLUMNNAME,SORTORDER) values (?,?,?,?)';
+			$sort_bysql = 'insert into vtiger_reportsortcol (sortcolid,reportid,columnname,sortorder) values (?,?,?,?)';
 			$adb->pquery($sort_bysql, array(($i+1), $queryid, $sort['columnname'], $sort['sortorder']));
 		}
 	}
@@ -511,7 +511,7 @@ function insertSortColumns($queryid, $sortlists) {
 function insertStdFilter($queryid, $filtercolumn, $datefilter, $startdate, $enddate) {
 	global $adb;
 	if ($queryid != '') {
-		$ireportmodulesql = 'insert into vtiger_reportdatefilter (DATEFILTERID,DATECOLUMNNAME,DATEFILTER,STARTDATE,ENDDATE) values (?,?,?,?,?)';
+		$ireportmodulesql = 'insert into vtiger_reportdatefilter (datefilterid,datecolumnname,datefilter,startdate,enddate) values (?,?,?,?,?)';
 		$adb->pquery($ireportmodulesql, array($queryid, $filtercolumn, $datefilter, $startdate, $enddate));
 	}
 }
@@ -525,7 +525,7 @@ function insertAdvFilter($queryid, $filters) {
 	if ($queryid != '') {
 		$columnIndexArray = array();
 		foreach ($filters as $i => $filter) {
-			$irelcriteriasql = 'insert into vtiger_relcriteria(QUERYID,COLUMNINDEX,COLUMNNAME,COMPARATOR,VALUE) values (?,?,?,?,?)';
+			$irelcriteriasql = 'insert into vtiger_relcriteria(queryid,columnindex,columnname,comparator,value) values (?,?,?,?,?)';
 			$adb->pquery($irelcriteriasql, array($queryid, $i, $filter['columnname'], $filter['comparator'], $filter['value']));
 			$columnIndexArray[] = $i;
 		}

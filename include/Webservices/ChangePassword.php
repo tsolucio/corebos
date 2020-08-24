@@ -17,8 +17,16 @@
  */
 function vtws_changePassword($id, $oldPassword, $newPassword, $confirmPassword, $user) {
 	vtws_preserveGlobal('current_user', $user);
-	$idComponents = vtws_getIdComponents($id);
+	if (strpos($id, 'x')>0) {
+		$idComponents = vtws_getIdComponents($id);
+	} else {
+		$idComponents = array(vtws_getEntityId('Users'), $id);
+	}
 	if ($idComponents[1] == $user->id || is_admin($user)) {
+		if (!Users::is_ActiveUserID($idComponents[1])) {
+			VTWS_PreserveGlobal::flush();
+			throw new WebServiceException(WebServiceErrorCode::$INVALIDUSER, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$INVALIDUSER));
+		}
 		$newUser = new Users();
 		$newUser->retrieveCurrentUserInfoFromFile($idComponents[1]);
 		if (!is_admin($user)) {
@@ -33,7 +41,7 @@ function vtws_changePassword($id, $oldPassword, $newPassword, $confirmPassword, 
 		}
 		if (strcmp($newPassword, $confirmPassword) === 0) {
 			$db = PearDatabase::getInstance();
-			$db->dieOnError = true;
+			$db->dieOnError = false;
 			$db->startTransaction();
 			$success = $newUser->change_password($oldPassword, $newPassword, false);
 			$error = $db->hasFailedTransaction();

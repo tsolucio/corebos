@@ -133,7 +133,7 @@ for ($i=0; $i<$num_rows; $i++) {
 		$pk_currency_name = $adb->query_result($list_result, $i, 'currency_name');
 		$unit_price = $prod_cur_price[$pk_currency_id];
 		$field_name = $entity_id.'_listprice';
-		$unit_price_array[]='"'.CurrencyField::convertToUserFormat($unit_price, null, true).'"';
+		$unit_price_array[]='"'.$unit_price.'"';
 		$field_name_array[]="'".$field_name."'";
 
 		$list_body .= '<tr class="lvtColData" onmouseover="this.className=\'lvtColDataHover\'" onmouseout="this.className=\'lvtColData\'" bgcolor="white">';
@@ -141,7 +141,7 @@ for ($i=0; $i<$num_rows; $i++) {
 		$list_body .= ' onClick=\'toggleSelectAll(this.name,"selectall");updateListPriceForField("'.$field_name.'",this)\'></td>';
 		$list_body .= '<td>'.$adb->query_result($list_result, $i, "bookname").'</td>';
 		$list_body .= '<td>'.$pk_currency_name.'</td>';
-		$list_body .= '<td>'.CurrencyField::convertToUserFormat($unit_price, null, true).'</td>';
+		$list_body .= '<td>'.$unit_price.'</td>';
 
 		$list_body .='<td>';
 		if (isPermitted('PriceBooks', 'EditView', "") == 'yes') {

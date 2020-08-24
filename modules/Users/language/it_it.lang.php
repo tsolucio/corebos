@@ -763,6 +763,7 @@ $mod_strings = array(
 'Day starts at' => 'Giorno inizia alle',
 'Number Of Currency Decimals'  =>  'Numero di decimali in Valuta',
 'PASSWORD REQUIREMENTS' => 'Requisiti Password',
+'PASSWORD REQUIREMENTS NOT MET' => 'PASSWORD REQUIREMENTS NOT MET',
 'REQUIRED' => 'Obbligatori',
 'Min. 8 characters' => 'Minimo 8 caratteri',
 'Contains3of4' => 'LA PASSWORD CONTIENE ALMENO UNO DI QUESTI 3 GRUPPI DI CARATTERI',

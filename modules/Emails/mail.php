@@ -414,7 +414,7 @@ function addAttachment($mail, $filename, $record) {
 		if (count($parts)>0 && is_numeric($parts[0])) {
 			$name = substr($bn, strlen($parts[0])+1);
 		} else {
-			$name = $filename;
+			$name = $bn;
 		}
 		$mail->AddAttachment($root_directory.$filename, $name);
 	} elseif (is_numeric($filename)) {

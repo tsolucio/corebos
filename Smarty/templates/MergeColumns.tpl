@@ -10,7 +10,6 @@
 -->*}
 <script type="text/javascript" src="include/jquery/jquery.js"></script>
 <script type="text/javascript" src="include/jquery/jquery-ui.js"></script>
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script type="text/javaScript" src="include/js/dedup.js"></script>
 
 <form enctype="multipart/form-data" name="mergeDuplicates" method="post" action="index.php?module={$MODULE}&action=FindDuplicateRecords" onsubmit="VtigerJS_DialogBox.block();">

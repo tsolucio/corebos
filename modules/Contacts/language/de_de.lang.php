@@ -169,12 +169,15 @@ $mod_strings = array(
 	'LBL_START_DATE'=>'Startdatum:',
 	'LBL_START_TIME'=>'Startzeit:',
 
-	//Added field after 4_0_1
 	'Portal User'=>'Portal Nutzer',
 	'LBL_CUSTOMER_PORTAL_INFORMATION'=>'Kundenportal',
 	'Support Start Date'=>'Support Startdatum',
 	'Support End Date'=>'Support Enddatum',
-	//Added for 4.2 Release -- CustomView
+	'portalpasswordtype' => 'Password Encoding',
+	'portalloginuser' => 'Portal Login User',
+	'PortalUserPasswordManagement' => 'Portal Password',
+	'ppset' => 'Password set',
+	'ppnotset' => 'Password not set',
 	'Name'=>'Name',
 	'LBL_ALL'=>'Alle',
 	'LBL_MAXIMUM_LIMIT_ERROR'=>'Leider ist Ihrer Datei zu groß. Bitte reduzieren Sie Ihre Dateigröße auf 800000 Bytes',
@@ -182,7 +185,6 @@ $mod_strings = array(
 	'LBL_IMAGE_ERROR'=>'Die Datei hat nicht das richtige Format. Verwenden Sie Dateien mit der Endung .gif, .jpg oder .png',
 	'LBL_INVALID_IMAGE'=>'Ungültige Datei ODER die Datei ist leer.',
 
-	//Added after 5Alpha5
 	'Notify Owner'=>'Besitzer benachrichtigen',
 
 	//Added for Picklist Values

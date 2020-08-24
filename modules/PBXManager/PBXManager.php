@@ -11,12 +11,10 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class PBXManager extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_pbxmanager';
 	public $table_index= 'pbxmanagerid';
 	public $column_fields = array();
-
+	public $db;
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = false;
 	public $HasDirectImageField = false;

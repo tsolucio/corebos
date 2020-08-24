@@ -24,6 +24,7 @@ class CRMEntity {
 	public $linkmodemodule = '';
 	public $DirectImageFieldValues = array();
 	public $HasDirectImageField = false;
+	public $db;
 	protected static $methods = array();
 	protected static $dbvalues = array();
 	protected static $todvalues = array();
@@ -1272,10 +1273,13 @@ class CRMEntity {
 
 	/** Mark an item as deleted */
 	public function mark_deleted($id) {
-		global $current_user;
-		$date_var = date('Y-m-d H:i:s');
-		$query = 'UPDATE vtiger_crmentity set deleted=1,modifiedtime=?,modifiedby=? where crmid=?';
-		$this->db->pquery($query, array($this->db->formatDate($date_var, true), $current_user->id, $id), true, 'Error marking record deleted: ');
+		global $current_user, $adb;
+		$adb->pquery(
+			'UPDATE vtiger_crmentity set deleted=1,modifiedtime=?,modifiedby=? where crmid=?',
+			array($adb->formatDate(date('Y-m-d H:i:s'), true), $current_user->id, $id),
+			true,
+			'Error marking record deleted: '
+		);
 	}
 
 	// this method is called during an import before inserting a bean
@@ -2425,7 +2429,8 @@ class CRMEntity {
 		$query = 'SELECT vtiger_crmentity.* ';
 
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-		$query .= ", CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN $userNameSql ELSE vtiger_groups.groupname END AS user_name";
+		$q_elsegroupname = $related_module != 'Users' ? 'ELSE vtiger_groups.groupname ' : '';
+		$query .= ", CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN $userNameSql {$q_elsegroupname}END AS user_name";
 
 		$more_relation = '';
 		// Select Custom Field Table Columns if present
@@ -2453,9 +2458,14 @@ class CRMEntity {
 		$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
 		$query .= ' INNER JOIN vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid = vtiger_crmentity.crmid OR vtiger_crmentityrel.crmid = vtiger_crmentity.crmid)';
 		$query .= $more_relation;
-		$query .= ' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid';
-		$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
-		$query .= " WHERE vtiger_crmentity.deleted = 0 AND (vtiger_crmentityrel.crmid = $id OR vtiger_crmentityrel.relcrmid = $id)";
+		if ($related_module != 'Users') {
+			$query .= ' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid';
+			$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
+			$del_table = 'vtiger_crmentity';
+		} else {
+			$del_table = 'vtiger_users';
+		}
+		$query .= " WHERE {$del_table}.deleted = 0 AND (vtiger_crmentityrel.crmid = $id OR vtiger_crmentityrel.relcrmid = $id)";
 
 		$return_value = GetRelatedList($currentModule, $related_module, $other, $query, $button, $returnset);
 
@@ -3490,14 +3500,14 @@ class CRMEntity {
 	 * return string $sorder    - sortorder string either 'ASC' or 'DESC'
 	 */
 	public function getSortOrder() {
-		global $log;
+		global $log, $adb;
 		$cmodule = get_class($this);
 		$log->debug('> getSortOrder');
 		$sorder = strtoupper(GlobalVariable::getVariable('Application_ListView_Default_OrderDirection', $this->default_sort_order, $cmodule));
 		if (isset($_REQUEST['sorder'])) {
-			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
+			$sorder = $adb->sql_escape_string($_REQUEST['sorder']);
 		} elseif (!empty($_SESSION[$cmodule.'_Sort_Order'])) {
-			$sorder = $this->db->sql_escape_string($_SESSION[$cmodule.'_Sort_Order']);
+			$sorder = $adb->sql_escape_string($_SESSION[$cmodule.'_Sort_Order']);
 		}
 		$log->debug('< getSortOrder');
 		return $sorder;
@@ -3508,7 +3518,7 @@ class CRMEntity {
 	 * return string $order_by    - fieldname(eg: 'accountname')
 	 */
 	public function getOrderBy() {
-		global $log;
+		global $log, $adb;
 		$log->debug('> getOrderBy');
 		$cmodule = get_class($this);
 		$order_by = '';
@@ -3517,9 +3527,9 @@ class CRMEntity {
 		}
 
 		if (isset($_REQUEST['order_by'])) {
-			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
+			$order_by = $adb->sql_escape_string($_REQUEST['order_by']);
 		} elseif (!empty($_SESSION[$cmodule.'_Order_By'])) {
-			$order_by = $this->db->sql_escape_string($_SESSION[$cmodule.'_Order_By']);
+			$order_by = $adb->sql_escape_string($_SESSION[$cmodule.'_Order_By']);
 		}
 		$log->debug('< getOrderBy');
 		return $order_by;

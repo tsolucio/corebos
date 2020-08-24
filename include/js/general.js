@@ -1436,12 +1436,16 @@ function doServerValidation(edit_type, formName, callback) {
 			sentForm[myFields[f].name] = myFields[f].value;
 		}
 	}
+	return executeServerValidation(edit_type, action, formName, callback, SVModule, sentForm);
+}
+
+function executeServerValidation(edit_type, action, formName, callback, forModule, sentForm) {
 	//JSONize form data
 	sentForm = JSON.stringify(sentForm);
 	jQuery.ajax({
 		type : 'post',
 		data : {structure: sentForm},
-		url : 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule='+SVModule
+		url : 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule='+forModule
 	}).done(function (msg) {
 		//Validation file answers
 		if (msg.search('%%%CONFIRM%%%') > -1) { //Allow to use confirm alert
@@ -1491,9 +1495,13 @@ function doServerValidation(edit_type, formName, callback) {
 			ldsPrompt.show(alert_arr['ERROR'], msg);
 			VtigerJS_DialogBox.unblock();
 		}
-	}).fail(function () {
+	}).fail(function (ev) {
 		//Error while asking file
-		ldsPrompt.show(alert_arr['ERROR'], 'Error with AJAX');
+		let errmsg = 'Error with AJAX';
+		if (ev.responseText != undefined && ev.responseText.indexOf('CSRF Error')!=-1) {
+			errmsg = 'CSRF Error. Reload page.';
+		}
+		ldsPrompt.show(alert_arr['ERROR'], errmsg);
 		VtigerJS_DialogBox.unblock();
 	});
 	return false;
@@ -2609,6 +2617,18 @@ function set_return_account_details(fromlink, fldname, MODULE, ID) {
 		var baseURL = 'index.php?module=Accounts&action=Popup&popuptype=specific_account_address&form=TasksEditView&form_submit=false&fromlink=';
 		var WindowSettings = 'width=680,height=602,resizable=0,scrollbars=0,top=150,left=200';
 		window.open(baseURL, 'vtlibui10', WindowSettings);
+	} else {
+		vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
+	}
+}
+
+function open_contact_account_details(fromlink, fldname, MODULE, ID) {
+	if (fldname == 'account_id') {
+		var baseURL = 'index.php?module=Accounts&action=Popup&popuptype=specific_contact_account_address&form=TasksEditView&form_submit=false&fromlink=';
+		baseURL += (fromlink=='qcreate') ? 'qcreate' : '';
+		var WindowSettings = 'width=680,height=602,resizable=0,scrollbars=0,top=150,left=200';
+		let winname = (fromlink=='qcreate') ? 'vtlibui10qc' : 'vtlibui10';
+		window.open(baseURL, winname, WindowSettings);
 	} else {
 		vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
 	}
@@ -5245,7 +5265,7 @@ function handleAcKeys(e) {
 			highlightAcItemDown();
 			break;
 		}
-	} else if (e.keyCode==13 && appSubmitFormWithEnter && document.forms.EditView) {
+	} else if (e.keyCode==13 && appSubmitFormWithEnter && document.forms.EditView && e.srcElement.nodeName!='TEXTAREA') {
 		document.forms.EditView.action.value='Save';
 		displaydeleted();
 		formValidate();
@@ -6267,12 +6287,17 @@ window.addEventListener('load', function () {
 		gh.addEventListener('expand', pageHeader.movedown);
 	} else if (gh === null) {
 		pageHeader.initialize();
-		pageHeader.node().classList.add('has-no-global-header');
+		if (pageHeader.node()) {
+			pageHeader.node().classList.add('has-no-global-header');
+		}
 	}
 });
 
 const pageHeader = {
 	'initialize' : () => {
+		if (pageHeader.node() == null) {
+			return;
+		}
 		var h = pageHeader.node().getBoundingClientRect().height;
 
 		if (pageHeader.isCollapsed) {

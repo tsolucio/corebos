@@ -57,6 +57,8 @@
 require_once 'modules/cbMap/cbMap.php';
 require_once 'modules/cbMap/processmap/processMap.php';
 
+$IMPORT_TABLE_THREAD = '';
+
 class Import extends processcbMap {
 	private $mapping = array();
 	private $importtype = '';
@@ -369,8 +371,9 @@ class Import extends processcbMap {
 	}
 
 	private function doImportcoreBOS($arguments) {
-		global $current_user, $VTIGER_BULK_SAVE_MODE, $adb;
+		global $current_user, $VTIGER_BULK_SAVE_MODE, $adb, $IMPORT_TABLE_THREAD;
 		$previousBulkSaveMode = isset($VTIGER_BULK_SAVE_MODE) ? $VTIGER_BULK_SAVE_MODE : false;
+		$IMPORT_TABLE_THREAD = isset($arguments[3]) ? vtlib_purify($arguments[3]) : '';
 		require_once 'modules/Import/api/Request.php';
 		include_once 'modules/Import/controllers/Import_Controller.php';
 		$rs = $adb->pquery('select module,field_mapping,defaultvalues from vtiger_import_maps where id=?', array($this->mapping['mapid']));
@@ -406,6 +409,7 @@ class Import extends processcbMap {
 		} else {
 			echo '<b>Incorrect Import Table</b>';
 		}
+		$adb->query('DROP TABLE IF EXISTS '.Import_Utils::getDbTableName($current_user));
 		$VTIGER_BULK_SAVE_MODE = $previousBulkSaveMode;
 	}
 }

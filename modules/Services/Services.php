@@ -11,8 +11,6 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class Services extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_service';
 	public $table_index= 'serviceid';
 	public $column_fields = array();
@@ -220,12 +218,13 @@ class Services extends CRMEntity {
 	}
 
 	public function updateUnitPrice() {
-		$prod_res = $this->db->pquery('select unit_price, currency_id from vtiger_service where serviceid=?', array($this->id));
-		$prod_unit_price = $this->db->query_result($prod_res, 0, 'unit_price');
-		$prod_base_currency = $this->db->query_result($prod_res, 0, 'currency_id');
+		global $adb;
+		$prod_res = $adb->pquery('select unit_price, currency_id from vtiger_service where serviceid=?', array($this->id));
+		$prod_unit_price = $adb->query_result($prod_res, 0, 'unit_price');
+		$prod_base_currency = $adb->query_result($prod_res, 0, 'currency_id');
 		$query = 'update vtiger_productcurrencyrel set actual_price=? where productid=? and currencyid=?';
 		$params = array($prod_unit_price, $this->id, $prod_base_currency);
-		$this->db->pquery($query, $params);
+		$adb->pquery($query, $params);
 	}
 
 	/**
@@ -817,7 +816,8 @@ class Services extends CRMEntity {
 
 	// Function to unlink all the dependent entities of the given Entity by Id
 	public function unlinkDependencies($module, $id) {
-		$this->db->pquery('DELETE from vtiger_seproductsrel WHERE productid=? or crmid=?', array($id, $id));
+		global $adb;
+		$adb->pquery('DELETE from vtiger_seproductsrel WHERE productid=? or crmid=?', array($id, $id));
 		parent::unlinkDependencies($module, $id);
 	}
 

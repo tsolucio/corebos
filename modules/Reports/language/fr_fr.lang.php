@@ -235,6 +235,7 @@ $mod_strings = array (
 	'LBL_USERS_AVAILABEL'=> 'Destinataires',
 	'LBL_REPORT_FORMAT_PDF'=> 'PDF',
 	'LBL_REPORT_FORMAT_URL'=> 'URL',
+	'LBL_REPORT_FORMAT_CSV'=> 'CSV',
 	'LBL_REPORT_FORMAT_EXCEL'=> 'EXCEL',
 	'LBL_REPORT_FORMAT_BOTH'=> 'Les deux',
 	'LBL_REPORT_FORMAT'=> 'Format du rapport',

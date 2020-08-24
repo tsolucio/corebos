@@ -44,7 +44,10 @@ function vtws_getfilterfields($module, $user) {
 		$linkfields=array('firstname', 'lastname');
 	}
 	$customView = new CustomView($module);
+	$saveAction = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+	$_REQUEST['action'] = 'ListView';
 	$viewid = $customView->getViewId($module);
+	$_REQUEST['action'] = $saveAction;
 	$viewinfo = $customView->getColumnsListByCvid($viewid);
 	$fields = array();
 	foreach ($viewinfo as $fld) {

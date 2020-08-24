@@ -74,9 +74,12 @@ while ($r = $fldnecol->FetchRow()) {
 	$fnec[$r['mfld']] = $r['columnname'];
 }
 $smarty->assign('fieldNEcolumn', json_encode($fnec));
+
 $_REQUEST['fieldsmodule'] = $focus->column_fields['qmodule'];
 $smarty->assign('fieldTableRelation', json_encode(mapactions_Action::getFieldTablesForModule(true)));
-$smarty->assign('rel1tom', GetRelatedModulesOneToMany($focus->column_fields['qmodule'], $current_user));
+if (!empty($_REQUEST['record'])) {
+	$smarty->assign('rel1tom', GetRelatedModulesOneToMany($focus->column_fields['qmodule'], $current_user));
+}
 $actormodules = $adb->query('SELECT name FROM vtiger_ws_entity WHERE handler_path="include/Webservices/VtigerActorOperation.php"');
 $amods = $amodsi18n = array();
 while ($r = $actormodules->FetchRow()) {

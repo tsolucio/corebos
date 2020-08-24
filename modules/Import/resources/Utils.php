@@ -76,9 +76,11 @@ class Import_Utils {
 	}
 
 	public static function getDbTableName($user) {
+		global $IMPORT_TABLE_THREAD;
+		$IMPORT_TABLE_THREAD = isset($IMPORT_TABLE_THREAD) ? $IMPORT_TABLE_THREAD : '';
 		$configReader = new ConfigReader('modules/Import/config.inc', 'ImportConfig');
 		$userImportTablePrefix = $configReader->getConfig('userImportTablePrefix');
-		return $userImportTablePrefix . $user->id;
+		return $userImportTablePrefix . $IMPORT_TABLE_THREAD . $user->id;
 	}
 
 	public static function showErrorPage($errorMessage, $errorDetails = false, $customActions = false, $moduleName = '') {

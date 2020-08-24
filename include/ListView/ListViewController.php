@@ -590,7 +590,7 @@ class ListViewController {
 					}
 				} elseif ($field->getFieldDataType() == 'owner') {
 					if ($fieldName!='assigned_user_id' && false !== strpos($fieldName, '.assigned_user_id')) {
-						$value = textlength_check($this->ownerNameListrel[$fieldName][$value]);
+						$value = empty($this->ownerNameListrel[$fieldName][$value]) ? '' : textlength_check($this->ownerNameListrel[$fieldName][$value]);
 					} else {
 						$value = textlength_check($this->ownerNameList[$fieldName][$value]);
 					}

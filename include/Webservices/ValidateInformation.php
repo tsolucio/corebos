@@ -69,7 +69,7 @@ function cbwsValidateInformation($context, $user) {
 		if ($_REQUEST['module'] !== $webserviceObject->getEntityName()) {
 			throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Id specified is incorrect');
 		}
-		if (!$meta->hasPermission(EntityMeta::$UPDATE, $wsrecord)) {
+		if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $wsrecord)) {
 			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
 		}
 		if (!$meta->exists($elementId)) {

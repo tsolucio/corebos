@@ -84,20 +84,35 @@ class DecisionTable extends processcbMap {
 			$entity = new VTWorkflowEntity($current_user, $context['record_id'], true);
 			if (is_array($entity->data)) { // valid context
 				$context = array_merge($entity->data, $context);
+				$entity->setData($context);
 			}
+		} else {
+			$entity = new cbexpsql_environmentstub($context['module'], 0);
+			$entity->setData($context);
 		}
 		$current_user = $holduser;
 		$outputs = array();
 		$hitpolicy = (String)$xml->hitPolicy;
+		$mapvalues = array(
+			'context' => $context,
+			'hitpolicy' => $hitpolicy,
+		);
 		if ($hitpolicy == 'G') {
 			$aggregate = (String)$xml->aggregate;
 		}
+		$rules = array();
 		foreach ($xml->rules->rule as $key => $value) {
 			$sequence = (String)$value->sequence;
 			$ruleOutput = (String)$value->output;
+			$rule = array(
+				'sequence' => $sequence,
+				'ruleOutput' => $ruleOutput,
+			);
 			$eval = '';
 			if (isset($value->expression)) {
 				$testexpression = (String)$value->expression;
+				$rule['type'] = 'expression';
+				$rule['valueraw'] = $testexpression;
 				if (is_array($context)) {
 					foreach ($context as $key => $value) {
 						$testexpression = str_ireplace('$['.$key.']', $value, $testexpression);
@@ -106,8 +121,9 @@ class DecisionTable extends processcbMap {
 				$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($testexpression)));
 				$expression = $parser->expression();
 				$exprEvaluater = new VTFieldExpressionEvaluater($expression);
-				$exprEvaluation = $exprEvaluater->evaluate($entity);
-				$eval = $exprEvaluation;
+				$eval = $exprEvaluater->evaluate($entity);
+				$rule['valueevaluate'] = $testexpression;
+				$rule['valueresult'] = $eval;
 				if ($ruleOutput == 'ExpressionResult' || $ruleOutput == 'FieldValue') {
 					$outputs[$sequence] = $eval;
 				} elseif ($ruleOutput == 'crmObject') {
@@ -120,6 +136,9 @@ class DecisionTable extends processcbMap {
 			} elseif (isset($value->mapid)) {
 				$mapid = (String)$value->mapid;
 				$eval = coreBOS_Rule::evaluate($mapid, $context);
+				$rule['type'] = 'map';
+				$rule['valueraw'] = $mapid;
+				$rule['valueresult'] = $eval;
 				if ($ruleOutput == 'ExpressionResult' || $ruleOutput == 'FieldValue') {
 					$outputs[$sequence] = $eval;
 				} elseif ($ruleOutput == 'crmObject') {
@@ -145,12 +164,22 @@ class DecisionTable extends processcbMap {
 								if (empty($v->preprocess)) {
 									$conditionvalue = $context[(String)$v->input];
 								} else {
+									if (is_array($context)) {
+										$v->preprocess = (String)$v->preprocess;
+										foreach ($context as $ckey => $cval) {
+											if (is_array($cval)) {
+												continue;
+											}
+											$v->preprocess = str_ireplace('$['.$ckey.']', $cval, $v->preprocess);
+										}
+									}
 									$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer((String)$v->preprocess)));
 									$expression = $parser->expression();
 									$exprEvaluater = new VTFieldExpressionEvaluater($expression);
 									$conditionvalue = $exprEvaluater->evaluate($entity);
 								}
 								$uitype = getUItypeByFieldName($module, (String)$v->field);
+								$queryGenerator->startGroup($queryGenerator::$AND);
 								if ($uitype==10) {
 									if (!empty($conditionvalue)) {
 										if (strpos($conditionvalue, 'x') > 0) {
@@ -159,11 +188,13 @@ class DecisionTable extends processcbMap {
 											$crmid = $conditionvalue;
 										}
 										$relmod = getSalesEntityType($crmid);
-										$queryGenerator->addReferenceModuleFieldCondition($relmod, (String)$v->field, 'id', $crmid, (String)$v->operation, $queryGenerator::$AND);
+										$queryGenerator->addReferenceModuleFieldCondition($relmod, (String)$v->field, 'id', $crmid, (String)$v->operation);
 									}
 								} else {
-									$queryGenerator->addCondition((String)$v->field, $conditionvalue, (String)$v->operation, $queryGenerator::$AND);
+									$queryGenerator->addCondition((String)$v->field, $conditionvalue, (String)$v->operation);
 								}
+								$queryGenerator->addCondition((String)$v->field, '__IGNORE__', 'e', $queryGenerator::$OR);
+								$queryGenerator->endGroup();
 							}
 						}
 					}
@@ -184,6 +215,10 @@ class DecisionTable extends processcbMap {
 					$query .= ' ORDER BY '.$queryGenerator->getOrderByColumn($orderby);
 				}
 				$result = $adb->pquery($query, array());
+				$rule['type'] = 'module';
+				$rule['valueraw'] = $module;
+				$rule['valueevaluate'] = $query;
+				$rule['valueresult'] = $adb->num_rows($result);
 				$seqcnt = 1;
 				$numfields = $result ? $adb->num_fields($result) : 0;
 				if ($field=='id') {
@@ -213,7 +248,10 @@ class DecisionTable extends processcbMap {
 					}
 				}
 			}
+			$rules[] = $rule;
 		}
+		$mapvalues['rules'] = $rules;
+
 		// Checking hitpolicy
 		$output = null;
 		if ($hitpolicy == 'U') {
@@ -323,6 +361,7 @@ class DecisionTable extends processcbMap {
 		if (!$output) {
 			$output = '__DoesNotPass__';
 		}
+		cbEventHandler::do_action('corebos.audit.decision', array($current_user->id, $ctx, $mapvalues, $output, date('Y-m-d H:i:s')));
 		return $output;
 	}
 }

@@ -18,6 +18,7 @@ class Asterisk {
 	public $sock;
 	public $db;
 	public $queue;
+	public $strData;
 
 	/**
 	 * this is the constructor of the class, it initializes the parameters of the class
@@ -50,8 +51,8 @@ class Asterisk {
 	public function authenticateUser() {
 		global $log;
 		$request = "Action: Login\r\n".
-					"Username: ".$this->userName."\r\n".
-					"Secret: ".$this->password.
+					'Username: '.$this->userName."\r\n".
+					'Secret: '.$this->password.
 					"\r\n\r\n";
 		if (!fwrite($this->sock, $request)) {
 			echo getTranslatedString('ERR_Authenticate', 'PBXManager');
@@ -86,11 +87,12 @@ class Asterisk {
 		}
 
 		//the caller would always be a SIP phone in our case
-		if (!strstr($from, "SIP")) {
+		if (!strstr($from, 'SIP')) {
 			$from = "SIP/$from";
 		}
+		$typeCalled = '';
 		if (strpos($to, ':')!==false) {
-			$arr = explode(":", $to);
+			$arr = explode(':', $to);
 			if (is_array($arr)) {
 				$typeCalled = $arr[0];
 				$to = trim($arr[1]);
@@ -121,7 +123,7 @@ class Asterisk {
 		$arr = explode('/', $from);
 		$request = "Action: Originate\r\n".
 					"Channel: $from\r\n".
-					"Exten: ".preg_replace('~[^0-9]~', "", $to)."\r\n".
+					'Exten: '.preg_replace('~[^0-9]~', '', $to)."\r\n".
 					"Context: $context\r\n".
 					"Priority: 1\r\n".
 					"Callerid: $arr[1]\r\n".
@@ -161,7 +163,7 @@ class Asterisk {
 				$lines = explode("\r\n", $resp);
 				$obj = array();
 				foreach ($lines as $line) {
-					list($key, $value) = explode(":", $line);
+					list($key, $value) = explode(':', $line);
 					$obj[$key] = trim($value);
 				}
 				$this->queue[] = $obj;

@@ -150,7 +150,7 @@ class OperationManager {
 					return $userDetails;
 				} else {
 					$this->sessionManager->set('authenticatedUserId', $userDetails->id);
-					cbEventHandler::do_action('corebos.login', array($user, $this->sessionManager, 'webservice'));
+					cbEventHandler::do_action('corebos.login', array($userDetails, $this->sessionManager, 'webservice'));
 					global $adb;
 					$webserviceObject = VtigerWebserviceObject::fromName($adb, 'Users');
 					$userId = vtws_getId($webserviceObject->getEntityId(), $userDetails->id);

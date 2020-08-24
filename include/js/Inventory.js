@@ -719,16 +719,78 @@ function fnAddProductRow(module, image_path) {
 	temp+='" onChange="setDiscount(this,'+count+')" value=""/><br><span id="stock_alert'+count+'"></span>';
 	colfour.innerHTML=temp;
 	//List Price with Discount, Total after Discount and Tax labels
-	colfive.className = 'crmTableRow small';
-	colfive.innerHTML='<table width="100%" cellpadding="0" cellspacing="0"><tr><td align="right"><input id="listPrice'+count+'" name="listPrice'+count+'" value="0.00" type="text" class="small" style="width:70px" onBlur="calcTotal();setDiscount(this,'+count+');callTaxCalc('+count+'); calcTotal();"'+(Inventory_ListPrice_ReadOnly==1 ? ' readonly ' : '')+'/>&nbsp;<img src="themes/images/pricebook.gif" onclick="priceBookPickList(this,'+count+')"></td></tr><tr><td align="right" style="padding:5px;" nowrap>		(-)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,\'discount_div'+count+'\',\'discount\','+count+')" >'+product_labelarr.DISCOUNT+'</a> : </b><div class="discountUI" id="discount_div'+count+'"><input type="hidden" id="discount_type'+count+'" name="discount_type'+count+'" value=""><table width="100%" border="0" cellpadding="5" cellspacing="0" class="small"><tr><td id="discount_div_title'+count+'" nowrap align="left" ></td><td align="right"><img src="themes/images/close.gif" border="0" onClick="fnhide(\'discount_div'+count+'\')" style="cursor:pointer;"></td></tr><tr><td align="left" class="lineOnTop"><input type="radio" name="discount'+count+'" checked onclick="setDiscount(this,'+count+'); callTaxCalc('+count+');calcTotal();">&nbsp; '+product_labelarr.ZERO_DISCOUNT+'</td><td class="lineOnTop">&nbsp;</td></tr><tr><td align="left"><input type="radio" name="discount'+count+'" onclick="setDiscount(this,'+count+'); callTaxCalc('+count+');calcTotal();">&nbsp; % '+product_labelarr.PERCENT_OF_PRICE+' </td><td align="right"><input type="text" class="small" size="2" id="discount_percentage'+count+'" name="discount_percentage'+count+'" value="0" style="visibility:hidden" onBlur="setDiscount(this,'+count+'); callTaxCalc('+count+');calcTotal();">&nbsp;%</td></tr><tr><td align="left" nowrap><input type="radio" name="discount'+count+'" onclick="setDiscount(this,'+count+'); callTaxCalc('+count+');calcTotal();">&nbsp; '+product_labelarr.DIRECT_PRICE_REDUCTION+'</td><td align="right"><input type="text" id="discount_amount'+count+'" name="discount_amount'+count+'" size="5" value="0" style="visibility:hidden" onBlur="setDiscount(this,'+count+'); callTaxCalc('+count+');calcTotal();"></td></tr></table></div></td></tr><tr> <td align="right" style="padding:5px;" nowrap><b>'+product_labelarr.TOTAL_AFTER_DISCOUNT+' :</b></td></tr><tr id="individual_tax_row'+count+'" class="TaxShow"><td align="right" style="padding:5px;" nowrap>(+)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,\'tax_div'+count+'\',\'tax\','+count+')" >'+product_labelarr.TAX+' </a> : </b><div class="discountUI" id="tax_div'+count+'"></div></td></tr></table>';
+	colfive.className = 'crmTableRow small inv-editview__pricecol';
+	colfive.innerHTML = `<table class="slds-table slds-table_cell-buffer"><tbody>
+		<tr>
+			<td style="padding:5px;">
+				<input id="listPrice${count}" name="listPrice${count}" value="0.00" type="text" class="small" style="width:70px" onBlur="calcTotal();setDiscount(this,${count});callTaxCalc(${count}); calcTotal();"${(Inventory_ListPrice_ReadOnly==1 ? ' readonly ' : '')}/>&nbsp;<img src="themes/images/pricebook.gif" onclick="priceBookPickList(this,${count})">
+			</td>
+		</tr>
+		<tr>
+			<td style="padding:5px;" nowrap>
+				(-)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,'discount_div${count}','discount',${count})" >'${product_labelarr.DISCOUNT}</a> : </b>
+				<div class="discountUI" id="discount_div${count}">
+					<input type="hidden" id="discount_type${count}" name="discount_type${count}" value="">
+					<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
+					<table class="slds-table slds-table_cell-buffer slds-table_bordered">
+					<thead>
+						<tr class="slds-line-height_reset">
+						<th id="discount_div_title${count}" class="slds-p-left_none" scope="col"></th>
+						<th class="cblds-t-align_right slds-p-right_none" scope="col"><img src="themes/images/close.gif" border="0" onClick="fnhide('discount_div${count}')" style="cursor:pointer;"></th>
+						</tr>
+					</thead>
+					<tbody>
+					<tr>
+						<td class="lineOnTop" style="padding-left: 4px; text-align: left !important;">
+							<input type="radio" name="discount${count}" checked onclick="setDiscount(this,${count}); callTaxCalc(${count});calcTotal();">&nbsp; ${product_labelarr.ZERO_DISCOUNT}
+						</td>
+						<td class="lineOnTop">&nbsp;</td>
+					</tr>
+					<tr>
+						<td style="padding-left: 4px; text-align: left !important;">
+							<input type="radio" name="discount${count}" onclick="setDiscount(this,${count}); callTaxCalc(${count});calcTotal();">&nbsp; % ${product_labelarr.PERCENT_OF_PRICE}
+						</td>
+						<td style="padding-left: 2px; padding-right: 4px;">
+							<input type="text" class="small" size="2" id="discount_percentage${count}" name="discount_percentage${count}" value="0" style="visibility:hidden" onBlur="setDiscount(this,${count}); callTaxCalc(${count});calcTotal();">&nbsp;%
+						</td>
+					</tr>
+					<tr>
+						<td nowrap style="padding-left: 4px; text-align: left !important;">
+							<input type="radio" name="discount${count}" onclick="setDiscount(this,${count}); callTaxCalc(${count});calcTotal();">&nbsp; ${product_labelarr.DIRECT_PRICE_REDUCTION}
+						</td>
+						<td style="padding-left: 2px; padding-right: 4px;">
+							<input type="text" id="discount_amount${count}" name="discount_amount${count}" size="5" value="0" style="visibility:hidden" onBlur="setDiscount(this,${count}); callTaxCalc(${count});calcTotal();">
+						</td>
+					</tr>
+					</tbody>
+					</table>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td style="padding:5px;" nowrap>
+				<b>${product_labelarr.TOTAL_AFTER_DISCOUNT} :</b>
+			</td>
+		</tr>
+		<tr id="individual_tax_row${count}" class="TaxShow">
+			<td style="padding:5px;" nowrap>
+				(+)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,'tax_div${count}','tax',${count})" >${product_labelarr.TAX} </a> : </b>
+				<div class="discountUI" id="tax_div${count}"></div>
+			</td>
+		</tr>
+		</tbody></table>`;
 
 	//Total and Discount, Total after Discount and Tax details
-	colsix.className = 'crmTableRow small';
-	colsix.innerHTML = '<table width="100%" cellpadding="5" cellspacing="0"><tr><td id="productTotal'+count+'" align="right">&nbsp;</td></tr><tr><td id="discountTotal'+count+'" align="right">0.00</td></tr><tr><td id="totalAfterDiscount'+count+'" align="right">&nbsp;</td></tr><tr><td id="taxTotal'+count+'" align="right">0.00</td></tr></table>';
+	colsix.className = 'crmTableRow small inv-editview__totalscol';
+	colsix.innerHTML = `<table class="slds-table slds-table_cell-buffer"><tbody>
+		<tr><td id="productTotal${count}" style="padding-top:6px;">&nbsp;</td></tr>
+		<tr><td id="discountTotal${count}" style="padding-top:6px;">0.00</td></tr>
+		<tr><td id="totalAfterDiscount${count}" style="padding-top:6px;">&nbsp;</td></tr>
+		<tr><td id="taxTotal${count}" style="padding-top:6px;">0.00</td></tr>
+		</tbody></table>`;
 
 	//Net Price
-	colseven.className = 'crmTableRow small';
-	colseven.align = 'right';
+	colseven.className = 'crmTableRow small inv-editview__netpricecol';
 	colseven.style.verticalAlign = 'bottom';
 	colseven.innerHTML = '<span id="netPrice'+count+'"><b>&nbsp;</b></span>';
 
@@ -764,10 +826,10 @@ function cloneMoreInfoNode(newRowId) {
 		domflddisp.innerHTML = '';
 	}
 	for (i=0; i<moreInfoFields.length; i++) {
-		var domfld = document.getElementById(moreInfoFields[i]+ newRowId);
+		domfld = document.getElementById(moreInfoFields[i]+ newRowId);
 		if (domfld) {
 			domfld.value = '';
-			var domflddisp = document.getElementById(moreInfoFields[i]+ newRowId+ '_display');
+			domflddisp = document.getElementById(moreInfoFields[i]+ newRowId+ '_display');
 			if (domflddisp) {
 				domflddisp.value = '';
 			}
@@ -1380,9 +1442,11 @@ function InventorySelectAll(mod, image_pth) {
 	 * @param {element}:	Root 'InventoryBlock' Object
 	 * @param {function}: 	Callback for custom implementations. Will receive an object with
 	 *						the root autocomplete node and all the result data
-	 */
-	function ProductAutocomplete(el, parent, callback) {
+		* @param {object}		The root inventoryblock object
+		*/
+	function ProductAutocomplete(el, parent, callback, rootObj) {
 		this.el = el,
+		this.root = rootObj,
 		this.parent = parent,
 		this.specialKeys = ['up', 'down', 'esc', 'enter'],
 		this.threshold = 3,
@@ -1396,6 +1460,7 @@ function InventorySelectAll(mod, image_pth) {
 		this.callback = typeof callback === 'function' ? callback : false;
 
 		/* Instance listeners */
+		window.addEventListener('keyup', this.preventSubmit.bind(this), true);
 		this.utils.on(this.input, 'keyup', this.throttle, this);
 		this.utils.on(this.input, 'blur', this.delayedClear, this);
 	}
@@ -1427,29 +1492,44 @@ function InventorySelectAll(mod, image_pth) {
 			window.setTimeout(this.trigger(e), 100);
 		},
 
+
+		preventSubmit: function (e) {
+			if (e.keyCode == 13 && this.active) {
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				e.stopPropagation();
+				this.selectCurrentlyHighlighted();
+				return false;
+			}
+		},
+
 		getResults: function (term) {
-			var accid = 0;
-			if (document.EditView.account_id != undefined) {
-				accid = document.EditView.account_id.value;
-			} else if (document.EditView.accid != undefined) {
-				accid = document.EditView.accid.value;
-			}
-			var ctoid = 0;
-			if (document.EditView.contact_id != undefined) {
-				ctoid = document.EditView.contact_id.value;
-			} else if (document.EditView.ctoid != undefined) {
-				ctoid = document.EditView.ctoid.value;
-			}
-			var _this = this;
-			var r = new XMLHttpRequest();
+			var h = getAccConFieldnames,
+				dE = document.EditView,
+				accid = h().acc === '' ? 0 : h().acc,
+				ctoid = h().con === '' ? 0 : h().con,
+				recid = dE === undefined ? 0 : dE.record.value,
+				_this = this,
+				r = new XMLHttpRequest();
+
 			r.onreadystatechange = function () {
 				if (this.readyState == 4 && this.status == 200) {
 					var res = JSON.parse(this.responseText);
 					_this.processResult(res);
 				}
 			};
-			r.open('GET', this.source + this.input.value + '&accid='+accid+ '&ctoid='+ctoid+'&modid='+document.EditView.record.value, true);
+			r.open('GET', this.source + this.input.value + '&accid='+accid+ '&ctoid='+ctoid+'&modid='+recid, true);
 			r.send();
+
+			// Helper to keep organized
+			function getAccConFieldnames() {
+				let fldNames = {'acc': '', 'con': ''};
+				if (document.EditView !== undefined) {
+					fldNames.acc = document.EditView.account_id !== undefined ? 'account_id' : 'accid';
+					fldNames.con = document.EditView.contact_id !== undefined ? 'contact_id' : 'ctoid';
+				}
+				return fldNames;
+			}
 		},
 
 		processResult: function (res) {
@@ -1625,8 +1705,7 @@ function InventorySelectAll(mod, image_pth) {
 					this.selectNext();
 					break;
 				case 'enter':
-					var current = this.getCurrentSelectedResult();
-					this.select(this.currentResults[current]);
+					this.selectCurrentlyHighlighted();
 					break;
 				case 'esc':
 					this.clear();
@@ -1693,6 +1772,11 @@ function InventorySelectAll(mod, image_pth) {
 			}
 		},
 
+		selectCurrentlyHighlighted() {
+			var current = this.getCurrentSelectedResult();
+			this.select(this.currentResults[current]);
+		},
+
 		select: function (result) {
 			this.fillLine(result);
 			this.clear(); // Clear autocomplete
@@ -1704,33 +1788,40 @@ function InventorySelectAll(mod, image_pth) {
 					usageunits = this.root.el.getElementsByClassName(this.root.lineClass + '--usageunit');
 
 				this.utils.getFirstClass(lineNode, 'cbds-product-line-image').src = result.obj.meta.image;
-				var currency = document.getElementById('inventory_currency').value;
-				if (result.obj.pricing.multicurrency[currency] != undefined) {
-					this.parent.setField('unit_price', result.obj.pricing.multicurrency[currency].actual_price);
-				} else {
-					this.parent.setField('unit_price', result.obj.pricing.unit_price);
-				}
+				this.parent.setField('listprice', result.obj.pricing.unit_price);
 				this.parent.setField('cost_price', result.obj.pricing.unit_cost);
-				this.parent.setField('qtyinstock', result.obj.logistics.qty_in_stock);
-				this.parent.setField('qtyindemand', result.obj.logistics.curr_ordered);
+				this.parent.setField('qtyinstock', result.obj.logistics.qtyinstock);
+				this.parent.setField('qtyindemand', result.obj.logistics.qtyindemand);
 
-				this.utils.getFirstClass(lineNode, this.root.linePrefix + '--comments').innerHTML = result.obj.meta.comments;
+				this.utils.getFirstClass(lineNode, this.root.inputPrefix + '--description').innerHTML = result.obj.meta.comments;
 				this.input.value = result.obj.meta.name;
 
 				for (var i = usageunits.length - 1; i >= 0; i--) {
 					usageunits[i].innerHTML = result.obj.logistics.usageunit;
 				}
 
+				this.parent.productId = result.obj.meta.id;
+				this.parent.divisible = result.obj.meta.divisible == 0 ? false : true;
+
 				this.parent.expandExtra();
 				this.parent.calcLine();
 
 				this.utils.getFirstClass(this.utils.findUp(this.el, '.' + this.root.lineClass), this.root.inputPrefix + '--quantity').focus();
+				this.retrieveProductTaxes(result.obj.meta.id);
 			} else {
 				this.callback({
 					'result': result.obj,
 					'source': this.el
 				});
 			}
+		},
+
+		retrieveProductTaxes: function (id) {
+			fetch(`index.php?module=Products&action=ProductsAjax&file=InventoryTaxAjax&productid=${id}&ctoid=0&accid=0&vndid=0&returnarray=1`)
+				.then(r => r.json())
+				.then((data) => {
+					this.parent.actualizeLineTaxes(data);
+				});
 		},
 
 		/*
@@ -1883,7 +1974,7 @@ function handleProductAutocompleteSelect(obj) {
 	document.getElementById('comment'+no).innerHTML = obj.result.meta.comments;
 	var currency = document.getElementById('inventory_currency').value;
 	if (obj.result.pricing.multicurrency[currency] != undefined && gVTModule != 'PurchaseOrder' && gVTModule != 'Receiptcards') {
-		document.getElementById('listPrice'+no).value = obj.result.pricing.multicurrency[currency].actual_price;
+		document.getElementById('listPrice'+no).value = obj.result.pricing.multicurrency[currency].converted_price;
 	} else {
 		var list_price = obj.result.pricing.unit_price;
 		if (gVTModule == 'PurchaseOrder' || gVTModule == 'Receiptcards' ) {

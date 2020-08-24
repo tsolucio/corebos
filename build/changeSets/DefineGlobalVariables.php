@@ -36,6 +36,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Debug_Send_UserLoginIPAuth_Error',
 				'Debug_Calculate_Response_Time',
 				'Debug_ActivityReminder_Deactivated',
+				'Debug_Access_Restricted_File',
 
 				'Application_Global_Search_SelectedModules',
 				'Application_Global_Search_Binary',
@@ -240,6 +241,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'CustomerPortal_PDFTemplate_SalesOrder',
 				'CustomerPortal_PDFTemplate_Invoice',
 				'CustomerPortal_PDFTemplate_PurchaseOrder',
+				'CustomerPortal_Default_User',
 				'Project_Gantt_Type',
 				'RecordVersioningModules',
 

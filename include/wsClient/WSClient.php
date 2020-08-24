@@ -19,7 +19,7 @@ require_once 'include/wsClient/Net/HTTP_Client.php';
  * Vtiger Webservice Client
  */
 class Vtiger_WSClient {
-	// Webserice file
+	// Webservice file
 	private $_servicebase = 'webservice.php';
 
 	// HTTP Client instance
@@ -39,6 +39,8 @@ class Vtiger_WSClient {
 	// Webservice login credentials
 	public $_sessionid  = false;
 	public $_userid     = false;
+	public $entityid    = '';
+	public $language    = 'en';
 
 	// Last operation error information
 	public $_lasterror  = false;
@@ -166,13 +168,73 @@ class Vtiger_WSClient {
 	}
 
 	/**
+	 * Do Login Portal Operation
+	 */
+	public function doLoginPortal($username, $password, $passwordhash = 'md5', $entity = 'Contacts') {
+		if ($this->__doChallenge($username) === false) {
+			return false;
+		}
+		switch ($passwordhash) {
+			case 'sha256':
+				$accessCrypt = hash('sha256', $this->_servicetoken.$password);
+				break;
+			case 'sha512':
+				$accessCrypt = hash('sha512', $this->_servicetoken.$password);
+				break;
+			case 'plaintext':
+				$accessCrypt = $this->_servicetoken.$password;
+				break;
+			case 'md5':
+			default:
+				$accessCrypt = md5($this->_servicetoken.$password);
+				break;
+		}
+		$getdata = array(
+			'operation' => 'loginPortal',
+			'username' => $username,
+			'password' => $accessCrypt,
+			'entity' => $entity,
+		);
+		$resultdata = $this->_client->doGet($getdata, true);
+
+		if ($this->hasError($resultdata)) {
+			return false;
+		}
+		$this->_serviceuser = $resultdata['result']['user']['user_name'];
+		$this->_servicekey = $resultdata['result']['user']['accesskey'];
+		$this->_sessionid = $resultdata['result']['sessionName'];
+		$this->_userid = $resultdata['result']['user']['id'];
+		$this->entityid = $resultdata['result']['user']['contactid'];
+		$this->language = $resultdata['result']['user']['language'];
+		return true;
+	}
+
+	/**
+	 * Do Login Session Operation
+	 */
+	public function doLoginSession($username, $loggedinat, $pkey, $sessionid) {
+		if ($this->__doChallenge($username) === false) {
+			return false;
+		}
+		$getdata = array(
+			'operation' => 'loginSession',
+			'username' => $username,
+			'loggedinat' => $loggedinat,
+			'hashaccess' => hash('sha512', $this->_servicetoken.$pkey),
+			'sessionid' => $sessionid
+		);
+		$resultdata = $this->_client->doGet($getdata, true);
+		return !$this->hasError($resultdata);
+	}
+
+	/**
 	* Do Logout Operation.
 	*/
 	public function doLogout() {
 		$this->__checkLogin();
 		$postdata = array(
 			'operation' => 'logout',
-			'sessionName'  => $this->_sessionid
+			'sessionName' => $this->_sessionid
 		);
 		$resultdata = $this->_client->doPost($postdata, true);
 		if ($this->hasError($resultdata)) {
@@ -367,6 +429,33 @@ class Vtiger_WSClient {
 			'operation'   => 'delete',
 			'sessionName' => $this->_sessionid,
 			'id'          => $record
+		);
+		$resultdata = $this->_client->doPost($postdata, true);
+		if ($this->hasError($resultdata)) {
+			return false;
+		}
+		return $resultdata['result'];
+	}
+
+	/**
+	* Do Upsert Operation
+	*/
+	public function doUpsert($modulename, $createFields, $searchOn, $updateFields) {
+		// Perform re-login if required.
+		$this->__checkLogin();
+
+		// Assign record to logged in user if not specified
+		if (!isset($createFields['assigned_user_id'])) {
+			$createFields['assigned_user_id'] = $this->_userid;
+		}
+
+		$postdata = array(
+			'operation'   => 'upsert',
+			'sessionName' => $this->_sessionid,
+			'elementType' => $modulename,
+			'element' => json_encode($createFields),
+			'searchOn' => $searchOn,
+			'updatedfields' => implode(',', $updateFields),
 		);
 		$resultdata = $this->_client->doPost($postdata, true);
 		if ($this->hasError($resultdata)) {

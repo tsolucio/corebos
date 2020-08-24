@@ -7805,7 +7805,7 @@ precacheAndRoute([{
   "revision": "60718c9174ed712f0c6a240e34adec1d"
 }, {
   "url": "include/LD/assets/styles/override_lds.css",
-  "revision": "acd3370a2580b31984e0c0fae9dc7bbd"
+  "revision": "b3967bf88098b3f6df34bb1dee951a60"
 }, {
   "url": "include/LD/assets/styles/salesforce-lightning-design-system_touch.css",
   "revision": "aae0a7ead47c69e71bbd2ae18e509560"
@@ -9314,13 +9314,13 @@ precacheAndRoute([{
   "revision": "c5247a4c8b5ebf37d5cd55c6621f38c5"
 }, {
   "url": "include/js/general.js",
-  "revision": "f51e590730a967ea54c5c0b036f95667"
+  "revision": "8a120b000d6203ea7b1f635889ab052f"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "c121669fa3b0ab4ce7088a82107ca79c"
 }, {
   "url": "include/js/Inventory.js",
-  "revision": "a1c10895692bdf292a1e7af41ff5747a"
+  "revision": "f2f82a9fcdc5f683978e97bbd1bc2a51"
 }, {
   "url": "include/js/it_it.lang.js",
   "revision": "c3bbfb85c6fed21d25e984c263fa780a"
@@ -9329,7 +9329,7 @@ precacheAndRoute([{
   "revision": "31c7a760819a0277d2cdb75b82c2c66f"
 }, {
   "url": "include/js/ListView.js",
-  "revision": "e04ea61c72d7dc8843475492bd84f9bb"
+  "revision": "4f6a56365bb644d4651e29b64fe08f36"
 }, {
   "url": "include/js/loadjslog.js",
   "revision": "d5317a375aa85d10e53f5989b1be0524"
@@ -9497,7 +9497,7 @@ precacheAndRoute([{
   "revision": "15a73d14b6e91db79ae7847c2c0de1a1"
 }, {
   "url": "modules/com_vtiger_workflow/resources/createentitytaskscript.js",
-  "revision": "91f6d47038ee5aeb16f633d6e131e224"
+  "revision": "1470e8fd77b86796fe66786c44413d9d"
 }, {
   "url": "modules/com_vtiger_workflow/resources/createeventtaskscript.js",
   "revision": "0a5bfde4da94aac9acaa17c70276988d"
@@ -9518,13 +9518,16 @@ precacheAndRoute([{
   "revision": "43155535cd6da302c6ad1c34c077c642"
 }, {
   "url": "modules/com_vtiger_workflow/resources/fieldexpressionpopup.js",
-  "revision": "0dc9ce2ca8e71fcbfbe3cc142e52b94a"
+  "revision": "c400069175af86491f79a6a96e3570ad"
 }, {
   "url": "modules/com_vtiger_workflow/resources/fieldvalidator.js",
   "revision": "cde6fec9119f368a5eb21d4e506209db"
 }, {
   "url": "modules/com_vtiger_workflow/resources/functional.js",
   "revision": "507e0618da87701f11b973970362e3cf"
+}, {
+  "url": "modules/com_vtiger_workflow/resources/functionselect.js",
+  "revision": "2d09e7539415ffd8cc219d89871264c5"
 }, {
   "url": "modules/com_vtiger_workflow/resources/generateimagecode.js",
   "revision": "bc1627f9b46bae11f03fde6958ff5809"
@@ -9548,7 +9551,7 @@ precacheAndRoute([{
   "revision": "a6908ffdc9deeea0e21e461a8bcde6cf"
 }, {
   "url": "modules/com_vtiger_workflow/resources/updatefieldstaskscript.js",
-  "revision": "75a9576a9821cbeff3fa8085288ff41d"
+  "revision": "98b52fb0bdc8a6decb396ad4a031ba30"
 }, {
   "url": "modules/com_vtiger_workflow/resources/updatemassivefieldstaskscript.js",
   "revision": "efe2ac9da371216aec6fea90f3c2fda5"
@@ -9800,7 +9803,7 @@ precacheAndRoute([{
   "revision": "90cb31321c92bc6d3f1e73e5ecd0255a"
 }, {
   "url": "modules/MsgTemplate/MsgTemplate.js",
-  "revision": "54e5bf71a38236d6b12e84c41c1931af"
+  "revision": "e2c3b8930517372b04d89059ad3fcaac"
 }, {
   "url": "modules/ProjectTask/ProjectTask.js",
   "revision": "c240060c1b952bba5d36d4a506fa0e6e"
@@ -9881,7 +9884,7 @@ precacheAndRoute([{
   "revision": "f53626ff0d323bbef07030875334e696"
 }, {
   "url": "modules/cbQuestion/language/pt_br.js",
-  "revision": "f53626ff0d323bbef07030875334e696"
+  "revision": "e5713f1e7a706e7ab5d59831368f8fb6"
 }, {
   "url": "modules/cbQuestion/language/ro_ro.js",
   "revision": "f53626ff0d323bbef07030875334e696"
@@ -9983,13 +9986,13 @@ precacheAndRoute([{
   "revision": "2bc5785bbc8662d43972828563d8e11a"
 }, {
   "url": "modules/Contacts/Contacts.js",
-  "revision": "62781c173528c53e1f72e74e5fd6fb9c"
+  "revision": "654a202f48a017f0ee0f64283c3e38ca"
 }, {
   "url": "modules/Dashboard/Dashboard.js",
   "revision": "8ab2b632de69afd4fefcd5daccab5af6"
 }, {
   "url": "modules/Services/Services.js",
-  "revision": "d34e13ea0f282e64fa4b8483157228d0"
+  "revision": "6593d0d3ae257fcfcda5fe7281bfbdfd"
 }, {
   "url": "modules/Vendors/Vendors.js",
   "revision": "29077a91b5317da8237274d0436bbc73"
@@ -10019,7 +10022,7 @@ precacheAndRoute([{
   "revision": "d1fc2fc832501008bf2e3f9afab8313a"
 }, {
   "url": "modules/Reports/ReportsSteps.js",
-  "revision": "32b3904edbb237ace0cdd9422a778f9e"
+  "revision": "dac7c3f4b013798df0875b1450e27bc1"
 }, {
   "url": "modules/PriceBooks/PriceBooks.js",
   "revision": "1975335374a344be4e3f98dbfe6756b4"

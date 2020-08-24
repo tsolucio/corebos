@@ -42,10 +42,10 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 	{/if}
 	<div class="slds-card" id="locateMap" onMouseOut="fninvsh('locateMap')" onMouseOver="fnvshNrm('locateMap')">
 		<div class="slds-card__body slds-card__body_inner">
-			<a href="javascript:;" onClick="fninvsh('locateMap'); searchMapLocation( 'Main' );" class="calMnu">{$address1}</a>
+			<a href="javascript:;" onClick="fninvsh('locateMap'); searchMapLocation('Main');" class="calMnu">{$address1}</a>
 		</div>
 		<div class="slds-card__body slds-card__body_inner">
-			<a href="javascript:;" onClick="fninvsh('locateMap'); searchMapLocation( 'Main' );" class="calMnu">{$address2}</a>
+			<a href="javascript:;" onClick="fninvsh('locateMap'); searchMapLocation('Other');" class="calMnu">{$address2}</a>
 		</div>
 	</div>
 {/if}
@@ -135,7 +135,7 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																						<td class="cblds-t-align_right" align=right>
 																							{if isset($MOD.LBL_ADDRESS_INFORMATION) && $header eq $MOD.LBL_ADDRESS_INFORMATION && ($MODULE eq 'Accounts' || $MODULE eq 'Contacts' || $MODULE eq 'Leads') }
 																								{if $MODULE eq 'Leads'}
-																									<input name="mapbutton" value="{$APP.LBL_LOCATE_MAP}" class="crmbutton small create" type="button" onClick="searchMapLocation( 'Main' )" title="{$APP.LBL_LOCATE_MAP}">
+																									<input name="mapbutton" value="{$APP.LBL_LOCATE_MAP}" class="crmbutton small create" type="button" onClick="searchMapLocation('Main')" title="{$APP.LBL_LOCATE_MAP}">
 																								{else}
 																									<input name="mapbutton" value="{$APP.LBL_LOCATE_MAP}" class="crmbutton small create" type="button" onClick="fnvshobj(this,'locateMap');" onMouseOut="fninvsh('locateMap');" title="{$APP.LBL_LOCATE_MAP}">
 																								{/if}

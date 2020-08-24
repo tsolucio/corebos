@@ -11,8 +11,6 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class cbCalendar extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_activity';
 	public $table_index= 'activityid';
 	public $reminder_table = 'vtiger_activity_reminder';
@@ -359,29 +357,29 @@ class cbCalendar extends CRMEntity {
 	 * @param  string    $remindermode    - string like 'edit'
 	 */
 	public function activity_reminder($activity_id, $reminder_time, $reminder_sent = 0, $recurid = 0, $remindermode = '') {
-		global $log;
+		global $log, $adb;
 		$log->debug('> activity_reminder '.$activity_id.','.$reminder_time.','.$reminder_sent.','.$recurid.','.$remindermode);
 		// Check for activityid already present in the reminder_table
 		$query_exist = "SELECT activity_id FROM ".$this->reminder_table." WHERE activity_id = ?";
-		$result_exist = $this->db->pquery($query_exist, array($activity_id));
+		$result_exist = $adb->pquery($query_exist, array($activity_id));
 
 		if ($remindermode == 'edit') {
-			if ($this->db->num_rows($result_exist) > 0) {
+			if ($adb->num_rows($result_exist) > 0) {
 				$query = 'UPDATE '.$this->reminder_table.' SET reminder_sent = ?, reminder_time = ? WHERE activity_id =?';
 				$params = array($reminder_sent, $reminder_time, $activity_id);
 			} else {
 				$query = "INSERT INTO ".$this->reminder_table." VALUES (?,?,?,?)";
 				$params = array($activity_id, $reminder_time, 0, $recurid);
 			}
-			$this->db->pquery($query, $params, true, "Error in processing table $this->reminder_table");
-		} elseif (($remindermode == 'delete') && ($this->db->num_rows($result_exist) > 0)) {
+			$adb->pquery($query, $params, true, "Error in processing table $this->reminder_table");
+		} elseif (($remindermode == 'delete') && ($adb->num_rows($result_exist) > 0)) {
 			$query = "DELETE FROM ".$this->reminder_table." WHERE activity_id = ?";
 			$params = array($activity_id);
-			$this->db->pquery($query, $params, true, "Error in processing table $this->reminder_table");
-		} elseif ($this->db->num_rows($result_exist) == 0) {
+			$adb->pquery($query, $params, true, "Error in processing table $this->reminder_table");
+		} elseif ($adb->num_rows($result_exist) == 0) {
 			$query = "INSERT INTO ".$this->reminder_table." VALUES (?,?,?,?)";
 			$params = array($activity_id, $reminder_time, 0, $recurid);
-			$this->db->pquery($query, $params, true, "Error in processing table $this->reminder_table");
+			$adb->pquery($query, $params, true, "Error in processing table $this->reminder_table");
 		}
 		$log->debug('< vtiger_activity_reminder');
 	}

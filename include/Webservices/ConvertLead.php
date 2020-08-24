@@ -11,6 +11,7 @@ require_once 'include/Webservices/Retrieve.php';
 require_once 'include/Webservices/Create.php';
 require_once 'include/Webservices/Delete.php';
 require_once 'include/Webservices/DescribeObject.php';
+require_once 'modules/Vtiger/ExecuteFunctionsfromphp.php';
 
 function vtws_convertlead($entityvalues, $user) {
 
@@ -84,24 +85,37 @@ function vtws_convertlead($entityvalues, $user) {
 				}
 			}
 
-			try {
-				$create = true;
-				if ($entityvalue['name'] == 'Accounts' && empty($entityvalue['forcecreate'])) {
-					$sql = 'SELECT vtiger_account.accountid
-						FROM vtiger_account, vtiger_crmentity
-						WHERE vtiger_crmentity.crmid=vtiger_account.accountid AND vtiger_account.accountname=? AND vtiger_crmentity.deleted=0';
-					$result = $adb->pquery($sql, array($entityvalue['accountname']));
-					if ($adb->num_rows($result) > 0) {
-						$entityIds[$entityName] = vtws_getWebserviceEntityId('Accounts', $adb->query_result($result, 0, 'accountid'));
-						$create = false;
+			$create = true;
+			if ($entityvalue['name'] == 'Accounts' && empty($entityvalue['forcecreate'])) {
+				$sql = 'SELECT vtiger_account.accountid
+					FROM vtiger_account, vtiger_crmentity
+					WHERE vtiger_crmentity.crmid=vtiger_account.accountid AND vtiger_account.accountname=? AND vtiger_crmentity.deleted=0';
+				$result = $adb->pquery($sql, array($entityvalue['accountname']));
+				if ($adb->num_rows($result) > 0) {
+					$entityIds[$entityName] = vtws_getWebserviceEntityId('Accounts', $adb->query_result($result, 0, 'accountid'));
+					$create = false;
+				}
+			}
+			if ($create) {
+				$screen_values = $entityObjectValues;
+				$screen_values['module'] = $entityvalue['name'];
+				$holdRecord = $_REQUEST['record'];
+				unset($screen_values['name'], $_REQUEST['record']);
+				$vals = executefunctionsvalidate('ValidationLoad', $entityvalue['name'], json_encode($screen_values));
+				$_REQUEST['record'] = $holdRecord;
+				if ($vals=='%%%OK%%%' || strpos($vals, '%%%CONFIRM%%%')!==false || strpos($vals, '%%%FUNCTION%%%')!==false) {
+					try {
+						$entityRecord = vtws_create($entityvalue['name'], $entityObjectValues, $user);
+						$entityIds[$entityName] = $entityRecord['id'];
+					} catch (Exception $e) {
+						throw new WebServiceException(WebServiceErrorCode::$UNKNOWNOPERATION, $e->getMessage().' : '.$entityvalue['name']);
 					}
+				} else {
+					throw new WebServiceException(
+						WebServiceErrorCode::$VALIDATION_FAILED,
+						getTranslatedString('VALIDATION_FAILED').' ('.getTranslatedString($entityvalue['name'], $entityvalue['name']).') '.$vals
+					);
 				}
-				if ($create) {
-					$entityRecord = vtws_create($entityvalue['name'], $entityObjectValues, $user);
-					$entityIds[$entityName] = $entityRecord['id'];
-				}
-			} catch (Exception $e) {
-				throw new WebServiceException(WebServiceErrorCode::$UNKNOWNOPERATION, $e->getMessage().' : '.$entityvalue['name']);
 			}
 		}
 	}

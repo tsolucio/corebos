@@ -10,7 +10,6 @@
 -->*}
 <script type="text/javascript" src="include/js/ColorPicker2.js"></script>
 <script type="text/javascript" src="include/js/dtlviewajax.js"></script>
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <span id="crmspanid" style="display:none;position:absolute;"  onmouseover="show('crmspanid');">
 	<a class="link"  align="right" href="javascript:;">{$APP.LBL_EDIT_BUTTON}</a>
 </span>
