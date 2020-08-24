@@ -289,6 +289,7 @@ class VTSimpleTemplate {
 
 	private function getInventoryDetails($format, $field) {
 		global $adb, $current_user;
+		require_once 'data/CRMEntity.php';
 		$format = strtolower($format);
 		if ($format!='html' && $format!='text'&& $format!='table') {
 			$format = 'html';
@@ -316,12 +317,12 @@ class VTSimpleTemplate {
 		$singlefield = (count($fields)==1);
 		// Checking if field present in the table.
 		// To Do.
-
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('InventoryDetails');
 		$wsid = $this->parent->getId();
 		list($wsid,$crmid) = explode('x', $wsid);
 		$cmsqlws = 'SELECT '.$field.'
 			FROM vtiger_inventorydetails
-			INNER JOIN vtiger_crmentity ON vtiger_inventorydetails.inventorydetailsid=vtiger_crmentity.crmid
+			INNER JOIN '.$crmEntityTable.' ON vtiger_inventorydetails.inventorydetailsid=vtiger_crmentity.crmid
 			LEFT JOIN vtiger_products ON vtiger_inventorydetails.productid=vtiger_products.productid
 			LEFT JOIN vtiger_service ON vtiger_inventorydetails.productid=vtiger_service.serviceid
 			WHERE related_to=? order by sequence_no';
