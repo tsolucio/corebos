@@ -9314,13 +9314,13 @@ precacheAndRoute([{
   "revision": "c5247a4c8b5ebf37d5cd55c6621f38c5"
 }, {
   "url": "include/js/general.js",
-  "revision": "8a120b000d6203ea7b1f635889ab052f"
+  "revision": "79b7163e3923add684fe4a0776030f57"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "c121669fa3b0ab4ce7088a82107ca79c"
 }, {
   "url": "include/js/Inventory.js",
-  "revision": "f2f82a9fcdc5f683978e97bbd1bc2a51"
+  "revision": "f2288bfb1a05a8474ceca78d53baca12"
 }, {
   "url": "include/js/it_it.lang.js",
   "revision": "c3bbfb85c6fed21d25e984c263fa780a"
@@ -9906,6 +9906,39 @@ precacheAndRoute([{
 }, {
   "url": "modules/cbMap/cbMap.js",
   "revision": "ede7f6180a6de61909d602b3cd3ba5a0"
+}, {
+  "url": "modules/cbMap/language/de_de.js",
+  "revision": "c85fe98de300acfd1ccc177a24b06ae7"
+}, {
+  "url": "modules/cbMap/language/en_gb.js",
+  "revision": "c85fe98de300acfd1ccc177a24b06ae7"
+}, {
+  "url": "modules/cbMap/language/en_us.js",
+  "revision": "c85fe98de300acfd1ccc177a24b06ae7"
+}, {
+  "url": "modules/cbMap/language/es_es.js",
+  "revision": "8926c73b6f5e870304c2bb77ef1e27a5"
+}, {
+  "url": "modules/cbMap/language/es_mx.js",
+  "revision": "8926c73b6f5e870304c2bb77ef1e27a5"
+}, {
+  "url": "modules/cbMap/language/fr_fr.js",
+  "revision": "c85fe98de300acfd1ccc177a24b06ae7"
+}, {
+  "url": "modules/cbMap/language/hu_hu.js",
+  "revision": "c85fe98de300acfd1ccc177a24b06ae7"
+}, {
+  "url": "modules/cbMap/language/it_it.js",
+  "revision": "c85fe98de300acfd1ccc177a24b06ae7"
+}, {
+  "url": "modules/cbMap/language/nl_nl.js",
+  "revision": "c85fe98de300acfd1ccc177a24b06ae7"
+}, {
+  "url": "modules/cbMap/language/pt_br.js",
+  "revision": "92a17cb7feb92fcb6779487fb33d657e"
+}, {
+  "url": "modules/cbMap/language/ro_ro.js",
+  "revision": "c85fe98de300acfd1ccc177a24b06ae7"
 }, {
   "url": "modules/cbTermConditions/cbTermConditions.js",
   "revision": "c240060c1b952bba5d36d4a506fa0e6e"
