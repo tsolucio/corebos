@@ -99,13 +99,37 @@ function validate_notDuplicate($field, $fieldval, $params, $fields) {
 	$otherfields = $params[2];
 	$queryGenerator = new QueryGenerator($module, $current_user);
 	$queryGenerator->setFields(array('id'));
-	$queryGenerator->addCondition($field, $fieldval, 'e');
+	if (getUItypeByFieldName($module, $field)==10) {
+		if (!empty($fieldval)) {
+			if (strpos($fieldval, 'x') > 0) {
+				list($wsid, $relcrmid) = explode('x', $fieldval);
+			} else {
+				$relcrmid = $fieldval;
+			}
+			$relmod = getSalesEntityType($relcrmid);
+			$queryGenerator->addReferenceModuleFieldCondition($relmod, $field, 'id', $relcrmid, 'e');
+		}
+	} else {
+		$queryGenerator->addCondition($field, $fieldval, 'e');
+	}
 	if (isset($crmid) && $crmid !='') {
 		$queryGenerator->addCondition('id', $crmid, 'n', 'and');
 	}
 	if (isset($otherfields)) {
 		foreach ($otherfields as $field) {
-			$queryGenerator->addCondition($field, $fields[$field], 'e', 'and');
+			if (getUItypeByFieldName($module, $field)==10) {
+				if (!empty($fields[$field])) {
+					if (strpos($fields[$field], 'x') > 0) {
+						list($wsid, $relcrmid) = explode('x', $fields[$field]);
+					} else {
+						$relcrmid = $fields[$field];
+					}
+					$relmod = getSalesEntityType($relcrmid);
+					$queryGenerator->addReferenceModuleFieldCondition($relmod, $field, 'id', $relcrmid, 'e', 'and');
+				}
+			} else {
+				$queryGenerator->addCondition($field, $fields[$field], 'e', 'and');
+			}
 		}
 	}
 	$query = $queryGenerator->getQuery();
