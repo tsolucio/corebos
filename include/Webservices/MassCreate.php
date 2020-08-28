@@ -129,7 +129,7 @@ function mcProcessReference($element, &$elements) {
 						unset($elements[$index]);
 						$mcProcessedReferences[] = $reference;
 					} else {
-						throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid parameter specified');
+						throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, 'Invalid reference specified');
 					}
 				}
 			}
