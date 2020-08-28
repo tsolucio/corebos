@@ -119,7 +119,7 @@ function mcProcessReference($element, &$elements) {
 				$reference = $match[1][0];
 				if (!in_array($reference, $mcProcessedReferences)) {
 					list($index, $array) = mcGetReferenceRecord($elements, $reference);
-					if ($index && $array) {
+					if ($index !== null && $array) {
 						mcProcessReference($array, $elements);
 						unset($elements[$index]);
 						$mcProcessedReferences[] = $reference;
@@ -133,5 +133,19 @@ function mcProcessReference($element, &$elements) {
 	if (!in_array($element['elementType'], $mcModules)) {
 		$mcModules[] = $element['elementType'];
 	}
-	$mcRecords[] = $element;
+	if (!mcInArray($element, $mcRecords)) {
+		$mcRecords[] = $element;
+	}
+}
+
+function mcInArray($needle, $arrays) {
+	if ($arrays) {
+		foreach ($arrays as $array) {
+			if ($array === $needle) {
+				return true;
+				break;
+			}
+		}
+	}
+	return false;
 }
