@@ -283,7 +283,12 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		if ($error) {
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
-
+		$imageFields = $meta->getImageFields();
+		$imgquery = 'select vtiger_attachments.name, vtiger_attachments.attachmentsid, vtiger_attachments.path
+			from vtiger_attachments
+			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
+			inner join vtiger_seattachmentsrel on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
+			where (vtiger_crmentity.setype LIKE "%Image" or vtiger_crmentity.setype LIKE "%Attachment") and deleted=0 and vtiger_seattachmentsrel.crmid=?';
 		$isDocModule = ($meta->getEntityName()=='Documents');
 		$isRelatedQuery = __FQNExtendedQueryIsFQNQuery($q);
 		$noofrows = $this->pearDB->num_rows($result);
@@ -331,6 +336,19 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 						$name = html_entity_decode($name, ENT_QUOTES, $default_charset);
 						$newrow['_downloadurl'] = $site_URL.'/'.$filepath.$fileid.'_'.$name;
 						$newrow['filename'] = $name;
+					}
+				}
+			} elseif (!empty($imageFields)) {
+				foreach ($imageFields as $imgvalue) {
+					$newrow[$imgvalue.'fullpath'] = ''; // initialize so we have same number of columns in all rows
+				}
+				$result_image = $adb->pquery($imgquery, array($rowcrmid));
+				while ($img = $adb->fetch_array($result_image)) {
+					foreach ($imageFields as $imgvalue) {
+						if ($img['name'] == $row[$imgvalue]) {
+							$newrow[$imgvalue.'fullpath'] = $site_URL.'/'.$img['path'].$img['attachmentsid'].'_'.$img['name'];
+							break;
+						}
 					}
 				}
 			}
