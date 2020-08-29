@@ -93,15 +93,19 @@ function mcGetRecordId($arr, $reference) {
 	return $id;
 }
 
-function mcGetReferenceRecord(&$arr, $reference) {
+function mcGetReferenceRecord(&$arr, $reference, $lastReferenceId) {
 	$array = array();
 	$index = null;
 	for ($x = 0; $x <= count($arr); $x++) {
 		if (isset($arr[$x])) {
 			if ($arr[$x]['referenceId'] == $reference) {
-				$array = $arr[$x];
-				$index = $x;
-				break;
+				if (!mcIsCyclicReference($arr[$x], $lastReferenceId)) {
+					$array = $arr[$x];
+					$index = $x;
+					break;
+				} else {
+					throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, 'Invalid reference specified');
+				}
 			}
 		}
 	}
@@ -118,13 +122,14 @@ function mcProcessReference($element, &$elements) {
 			if (isset($match[1][0])) {
 				$reference = $match[1][0];
 				if (!in_array($reference, $mcProcessedReferences)) {
-					list($index, $array) = mcGetReferenceRecord($elements, $reference);
-					if ($index && $array) {
+					$lastReferenceId = $element['referenceId'];
+					list($index, $array) = mcGetReferenceRecord($elements, $reference, $lastReferenceId);
+					if ($index !== null && $array) {
 						mcProcessReference($array, $elements);
 						unset($elements[$index]);
 						$mcProcessedReferences[] = $reference;
 					} else {
-						throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid parameter specified');
+						throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, 'Invalid reference specified');
 					}
 				}
 			}
@@ -133,5 +138,36 @@ function mcProcessReference($element, &$elements) {
 	if (!in_array($element['elementType'], $mcModules)) {
 		$mcModules[] = $element['elementType'];
 	}
-	$mcRecords[] = $element;
+	if (!mcInArray($element, $mcRecords)) {
+		$mcRecords[] = $element;
+	}
+}
+
+function mcInArray($needle, $arrays) {
+	if ($arrays) {
+		foreach ($arrays as $array) {
+			if ($array === $needle) {
+				return true;
+				break;
+			}
+		}
+	}
+	return false;
+}
+
+function mcIsCyclicReference($array, $reference) {
+	foreach ($array['element'] as $value) {
+		if (strpos($value, '@{') !== false) {
+			$start = '@{';
+			$end = '.';
+			preg_match_all("/$start([a-zA-Z0-9_]*)$end/", $value, $match);
+			if (isset($match[1][0])) {
+				if ($reference = $match[1][0]) {
+					return true;
+					break;
+				}
+			}
+		}
+	}
+	return false;
 }
