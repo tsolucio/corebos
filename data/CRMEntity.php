@@ -897,7 +897,7 @@ class CRMEntity {
 		}
 		$typeofdata = self::$todvalues[$fieldname];
 		$decimals = CurrencyField::getDecimalsFromTypeOfData($typeofdata);
-		if (round($dbvalue, min($decimals, $current_user->no_of_currency_decimals))==$fldvalue) {
+		if (round((float)$dbvalue, min($decimals, $current_user->no_of_currency_decimals))==$fldvalue) {
 			$fldvalue = $dbvalue;
 		}
 		$log->debug('< adjustCurrencyField '.$fldvalue);
