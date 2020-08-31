@@ -553,7 +553,8 @@ class HelpDesk extends CRMEntity {
 		$query = $this->getRelationQuery($module, $secmodule, "vtiger_troubletickets", "ticketid", $queryplanner);
 
 		if ($queryplanner->requireTable("vtiger_crmentityHelpDesk", $matrix)) {
-			$query .=" left join vtiger_crmentity as vtiger_crmentityHelpDesk on vtiger_crmentityHelpDesk.crmid=vtiger_troubletickets.ticketid and vtiger_crmentityHelpDesk.deleted=0";
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('HelpDesk', true);
+			$query .=" left join ".$crmEntityTable." as vtiger_crmentityHelpDesk on vtiger_crmentityHelpDesk.crmid=vtiger_troubletickets.ticketid and vtiger_crmentityHelpDesk.deleted=0";
 		}
 		if ($queryplanner->requireTable("vtiger_ticketcf")) {
 			$query .=" left join vtiger_ticketcf on vtiger_ticketcf.ticketid = vtiger_troubletickets.ticketid";
