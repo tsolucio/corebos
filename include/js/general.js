@@ -5081,6 +5081,51 @@ function UnifiedSearch_OnComboSelect(value) {
 	});
 }
 
+function Uitype1FieldsAutocomplete (fldName) {
+	$("#"+fldName).keypress(function(){
+		var input = document.getElementById(fldName);
+		var inputVal = input.value;
+		input.addEventListener("input", function(e) {
+			if (inputVal.length==3) {
+				jQuery.ajax({
+					method:'POST',
+					url:'index.php?module=Utilities&fieldname='+fldName+'&inputVal='+inputVal+'&sourceModule='+gVTModule+'&action=UtilitiesAjax&file=getfieldsvaluesfromMap&ajax=true'
+				}).done(function (response) {
+					if (response != '') {
+						var res = response.includes(inputVal);
+						if (res) {
+							divo = document.getElementById("listbox-unique-id-"+fldName);
+							ul = document.createElement("ul");
+							ul.setAttribute("class", "slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid");
+							ul.setAttribute("role", "presentation");
+							ul.setAttribute("id", "ul-list-"+response);
+							ul.style.visibility = 1;
+							ul.style.opacity = 1;
+							ul.style.transform = 'none';
+							ul.style.left = 0;
+							ul.style.marginTop = '5px';
+							ul.style.maxWidth = '100%';
+							ul.style.width = '100%';
+							ul.style.visibility = 'visible';
+							ul.style.cursor="pointer";
+							ul.innerHTML = "<p style='color: #4ea62b;'>" + response + "</p>";
+							divo.addEventListener("click", function(e) {
+								input.value = response;
+								closeDiv();
+							});
+							divo.appendChild(ul);
+						}
+					}
+					function closeDiv() {
+						ul1 = document.getElementById("ul-list-"+response);
+						divo.removeChild(ul1);
+					}
+				});
+			}
+		});
+	});
+}
+
 /**
  * image pasting into canvas
  * @param {string} canvas_id - canvas id
