@@ -54,7 +54,7 @@ function MassCreate($elements, $user) {
 		foreach ($record['element'] as $key => $value) {
 			if (strpos($value, '@{') !== false) {
 				$start = '@{';
-				$end = '.';
+				$end = '}';
 				preg_match_all("/$start([a-zA-Z0-9_]*)$end/", $value, $match);
 				if (isset($match[1][0])) {
 					$reference = $match[1][0];
@@ -119,7 +119,7 @@ function mcProcessReference($element, &$elements) {
 	foreach ($element['element'] as $value) {
 		if (strpos($value, '@{') !== false) {
 			$start = '@{';
-			$end = '.';
+			$end = '}';
 			preg_match_all("/$start([a-zA-Z0-9_]*)$end/", $value, $match);
 			if (isset($match[1][0])) {
 				$reference = $match[1][0];
@@ -161,7 +161,7 @@ function mcIsCyclicReference($array, $lastReferenceId) {
 	foreach ($array['element'] as $value) {
 		if (strpos($value, '@{') !== false) {
 			$start = '@{';
-			$end = '.';
+			$end = '}';
 			preg_match_all("/$start([a-zA-Z0-9_]*)$end/", $value, $match);
 			if (isset($match[1][0])) {
 				if ($match[1][0] == $lastReferenceId) {
