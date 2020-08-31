@@ -208,7 +208,7 @@ class cbMap extends CRMEntity {
 
 	public static function getMapByID($cbmapid) {
 		global $adb;
-		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap', true);
 		$query = 'SELECT crmid,setype FROM '.$crmEntityTable.' where crmid=? AND deleted=0';
 		$result = $adb->pquery($query, array($cbmapid));
 		if ($result && $adb->num_rows($result)>0 && $adb->query_result($result, 0, 'setype') == 'cbMap') {
@@ -222,11 +222,11 @@ class cbMap extends CRMEntity {
 
 	public static function getMapByName($name, $type = '') {
 		global $adb;
-		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap');
 		$sql = 'select cbmapid
 			from vtiger_cbmap
-			inner join '.$crmEntityTable.' on crmid=cbmapid
-			where deleted=0 and mapname=?';
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=cbmapid
+			where vtiger_crmentity.deleted=0 and mapname=?';
 		$prm = array($name);
 		if ($type!='') {
 			$sql .= ' and maptype=?';
@@ -245,12 +245,12 @@ class cbMap extends CRMEntity {
 
 	public static function getMapIdByName($name) {
 		global $adb;
-		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap');
 		$mrs = $adb->pquery(
 			'select cbmapid
 			from vtiger_cbmap
-			inner join '.$crmEntityTable.' on crmid=cbmapid
-			where deleted=0 and mapname=?',
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=cbmapid
+			where vtiger_crmentity.deleted=0 and mapname=?',
 			array($name)
 		);
 		if ($mrs && $adb->num_rows($mrs)>0) {
