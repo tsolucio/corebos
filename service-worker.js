@@ -9314,7 +9314,7 @@ precacheAndRoute([{
   "revision": "c5247a4c8b5ebf37d5cd55c6621f38c5"
 }, {
   "url": "include/js/general.js",
-  "revision": "79b7163e3923add684fe4a0776030f57"
+  "revision": "1668a4338ffe36c98641e1a98ab4332e"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "c121669fa3b0ab4ce7088a82107ca79c"
@@ -9383,7 +9383,7 @@ precacheAndRoute([{
   "revision": "008f3e9768bd2d226e65ea69999c9f14"
 }, {
   "url": "include/js/vtlib.js",
-  "revision": "601fb00a4200fd6f30b9a0ececdd4716"
+  "revision": "c888ad53fc3f2e63e773fb00e3fa5cdd"
 }, {
   "url": "include/components/checkboxrenderer.js",
   "revision": "dff2237c054565d7efe12c59bb02e590"
