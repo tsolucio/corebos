@@ -178,13 +178,14 @@ class Leads extends CRMEntity {
 			}
 		}
 
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Campaigns');
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = "SELECT case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name ,
 			vtiger_campaign.campaignid, vtiger_campaign.campaignname, vtiger_campaign.campaigntype, vtiger_campaign.campaignstatus,
 			vtiger_campaign.expectedrevenue, vtiger_campaign.closingdate, vtiger_crmentity.crmid, vtiger_crmentity.smownerid,
 			vtiger_crmentity.modifiedtime from vtiger_campaign
 			inner join vtiger_campaignleadrel on vtiger_campaignleadrel.campaignid=vtiger_campaign.campaignid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_campaign.campaignid
+			inner join ".$crmEntityTable." on vtiger_crmentity.crmid = vtiger_campaign.campaignid
 			left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
 			left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
 			where vtiger_campaignleadrel.leadid=".$id." and vtiger_crmentity.deleted=0";
@@ -243,11 +244,12 @@ class Leads extends CRMEntity {
 			}
 		}
 
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Products');
 		$query = "SELECT vtiger_products.*,vtiger_productcf.*,
 				vtiger_crmentity.crmid, vtiger_crmentity.smownerid
 				FROM vtiger_products
 				INNER JOIN vtiger_seproductsrel ON vtiger_products.productid = vtiger_seproductsrel.productid and vtiger_seproductsrel.setype = 'Leads'
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_products.productid
+				INNER JOIN ".$crmEntityTable." ON vtiger_crmentity.crmid = vtiger_products.productid
 				INNER JOIN vtiger_productcf ON vtiger_productcf.productid = vtiger_products.productid
 				INNER JOIN vtiger_leaddetails ON vtiger_leaddetails.leadid = vtiger_seproductsrel.crmid
 				LEFT JOIN vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
