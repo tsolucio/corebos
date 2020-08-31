@@ -110,6 +110,7 @@ if ($step == 'ask') {
 	$smarty->display('MailerExport.tpl');
 } else {
 	$crmAccEntityTable = CRMEntity::getcrmEntityTableAlias('Accounts');
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts', true);
 	$exquery = array();
 	$content = '';
 	$fields = explode(",", $_POST['fieldlist']);
@@ -127,7 +128,7 @@ if ($step == 'ask') {
 			INNER JOIN vtiger_accountshipads ON vtiger_account.accountid=vtiger_accountshipads.accountaddressid
 			INNER JOIN vtiger_accountscf ON vtiger_account.accountid = vtiger_accountscf.accountid
 			INNER JOIN vtiger_contactdetails contactdetails ON vtiger_account.accountid = contactdetails.accountid
-			INNER JOIN vtiger_crmentity contactdetails_crmentity ON contactdetails.contactid = contactdetails_crmentity.crmid
+			INNER JOIN ".$crmEntityTable." contactdetails_crmentity ON contactdetails.contactid = contactdetails_crmentity.crmid
 			INNER JOIN vtiger_contactscf contactscf ON contactscf.contactid = contactdetails.contactid
 			LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid=vtiger_users.id
 			LEFT JOIN vtiger_groups ON vtiger_crmentity.smownerid=vtiger_groups.groupid
@@ -146,7 +147,7 @@ if ($step == 'ask') {
 			INNER JOIN vtiger_accountshipads ON vtiger_account.accountid=vtiger_accountshipads.accountaddressid
 			INNER JOIN vtiger_accountscf ON vtiger_account.accountid = vtiger_accountscf.accountid
 			INNER JOIN vtiger_contactdetails contactdetails ON vtiger_account.accountid = contactdetails.accountid
-			INNER JOIN vtiger_crmentity contactdetails_crmentity ON contactdetails.contactid = contactdetails_crmentity.crmid
+			INNER JOIN ".$crmEntityTable." contactdetails_crmentity ON contactdetails.contactid = contactdetails_crmentity.crmid
 			INNER JOIN vtiger_contactscf contactscf ON contactscf.contactid = contactdetails.contactid
 			LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid=vtiger_users.id
 			LEFT JOIN vtiger_groups ON vtiger_crmentity.smownerid=vtiger_groups.groupid
@@ -174,7 +175,7 @@ if ($step == 'ask') {
 			LEFT JOIN vtiger_accountshipads ON vtiger_account.accountid=vtiger_accountshipads.accountaddressid
 			INNER JOIN vtiger_accountscf ON vtiger_account.accountid = vtiger_accountscf.accountid
 			INNER JOIN vtiger_contactdetails contactdetails ON vtiger_account.accountid = contactdetails.accountid
-			INNER JOIN vtiger_crmentity contactdetails_crmentity ON contactdetails.contactid = contactdetails_crmentity.crmid
+			INNER JOIN '.$crmEntityTable.' contactdetails_crmentity ON contactdetails.contactid = contactdetails_crmentity.crmid
 			INNER JOIN vtiger_contactscf contactscf ON contactscf.contactid = contactdetails.contactid
 			LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid=vtiger_users.id
 			LEFT JOIN vtiger_groups ON vtiger_crmentity.smownerid=vtiger_groups.groupid
