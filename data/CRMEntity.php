@@ -3656,7 +3656,7 @@ class CRMEntity {
 		cbEventHandler::do_action('corebos.entity.link.delete.final', $data);
 		$adb->pquery('UPDATE '.self::$crmentityTable.' SET modifiedtime=?, modifiedby=? WHERE crmid=?', array($currentTime, $current_user->id, $crmid));
 	}
-	public static function getcrmEntityTableAlias($modulename, $isaliasset=false) {
+	public static function getcrmEntityTableAlias($modulename, $isaliasset = false) {
 		$modObj = self::getInstance($modulename);
 		if ($isaliasset) {
 			return $modObj::$crmentityTable;
