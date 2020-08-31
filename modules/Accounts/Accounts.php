@@ -15,6 +15,7 @@ require_once 'modules/Documents/Documents.php';
 require_once 'modules/Emails/Emails.php';
 require_once 'include/utils/utils.php';
 require 'modules/Vtiger/default_module_view.php';
+require_once 'data/CRMEntity.php';
 
 class Accounts extends CRMEntity {
 	public $db;
@@ -1019,7 +1020,9 @@ class Accounts extends CRMEntity {
 	// Function to unlink the dependent records of the given record by id
 	public function unlinkDependencies($module, $id) {
 		//Deleting Account related Potentials.
-		$pot_q = 'SELECT vtiger_crmentity.crmid FROM vtiger_crmentity
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Potentials');
+		$crmEntityTable1 = CRMEntity::getcrmEntityTableAlias('Potentials', true);
+		$pot_q = 'SELECT vtiger_crmentity.crmid FROM '.$crmEntityTable.' 
 			INNER JOIN vtiger_potential ON vtiger_crmentity.crmid=vtiger_potential.potentialid
 			LEFT JOIN vtiger_account ON vtiger_account.accountid=vtiger_potential.related_to
 			WHERE vtiger_crmentity.deleted=0 AND vtiger_potential.related_to=?';
@@ -1028,15 +1031,17 @@ class Accounts extends CRMEntity {
 		for ($k=0; $k < $this->db->num_rows($pot_res); $k++) {
 			$pot_id = $this->db->query_result($pot_res, $k, "crmid");
 			$pot_ids_list[] = $pot_id;
-			$sql = 'UPDATE vtiger_crmentity SET deleted = 1 WHERE crmid = ?';
+			$sql = 'UPDATE '.$crmEntityTable1.' SET deleted = 1 WHERE crmid = ?';
 			$this->db->pquery($sql, array($pot_id));
 		}
 		//Backup deleted Account related Potentials.
-		$params = array($id, RB_RECORD_UPDATED, 'vtiger_crmentity', 'deleted', 'crmid', implode(",", $pot_ids_list));
+		$params = array($id, RB_RECORD_UPDATED, $crmEntityTable1, 'deleted', 'crmid', implode(",", $pot_ids_list));
 		$this->db->pquery('INSERT INTO vtiger_relatedlists_rb VALUES(?,?,?,?,?,?)', $params);
 
 		//Deleting Account related Quotes.
-		$quo_q = 'SELECT vtiger_crmentity.crmid FROM vtiger_crmentity
+		$crmEntityTable2 = CRMEntity::getcrmEntityTableAlias('Quotes');
+		$crmEntityTable3 = CRMEntity::getcrmEntityTableAlias('Quotes', true);
+		$quo_q = 'SELECT vtiger_crmentity.crmid FROM '.$crmEntityTable2.' 
 			INNER JOIN vtiger_quotes ON vtiger_crmentity.crmid=vtiger_quotes.quoteid
 			INNER JOIN vtiger_account ON vtiger_account.accountid=vtiger_quotes.accountid
 			WHERE vtiger_crmentity.deleted=0 AND vtiger_quotes.accountid=?';
@@ -1045,11 +1050,11 @@ class Accounts extends CRMEntity {
 		for ($k=0; $k < $this->db->num_rows($quo_res); $k++) {
 			$quo_id = $this->db->query_result($quo_res, $k, "crmid");
 			$quo_ids_list[] = $quo_id;
-			$sql = 'UPDATE vtiger_crmentity SET deleted = 1 WHERE crmid = ?';
+			$sql = 'UPDATE '.$crmEntityTable3.' SET deleted = 1 WHERE crmid = ?';
 			$this->db->pquery($sql, array($quo_id));
 		}
 		//Backup deleted Account related Quotes.
-		$params = array($id, RB_RECORD_UPDATED, 'vtiger_crmentity', 'deleted', 'crmid', implode(",", $quo_ids_list));
+		$params = array($id, RB_RECORD_UPDATED, $crmEntityTable3, 'deleted', 'crmid', implode(",", $quo_ids_list));
 		$this->db->pquery('INSERT INTO vtiger_relatedlists_rb VALUES(?,?,?,?,?,?)', $params);
 
 		//Backup Contact-Account Relation

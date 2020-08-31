@@ -473,11 +473,12 @@ class Invoice extends CRMEntity {
 			$em->triggerEvent('vtiger.entity.beforesave', $entityData);
 		}
 		$type = getSalesEntityType($invoiceId);
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('CobroPago', true);
 		if ($type=='Invoice' && self::invoice_control_installed()) {
 			//Sum Credit = 1
 			$query = "select sum(amount)
 			from vtiger_cobropago cp
-			join vtiger_crmentity crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
+			join ".$crmEntityTable." crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
 			where cp.related_id={$invoiceId} and paid=1 and credit=1";
 			$res = $adb->query($query);
 			$totalCredit = $adb->query_result($res, 0, 0);
@@ -487,7 +488,7 @@ class Invoice extends CRMEntity {
 			//Sum Credit = 0
 			$query = "select sum(amount)
 			from vtiger_cobropago cp
-			join vtiger_crmentity crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
+			join ".$crmEntityTable." crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
 			where cp.related_id={$invoiceId} and paid=1 and credit=0";
 			$res = $adb->query($query);
 			$totalNoCredit = $adb->query_result($res, 0, 0);
@@ -527,7 +528,7 @@ class Invoice extends CRMEntity {
 			//Sum Credit = 0
 			$query = "select sum(amount) as am
 			from vtiger_cobropago cp
-			join vtiger_crmentity crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
+			join ".$crmEntityTable." crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
 			where cp.related_id={$invoiceId} and paid=1 and credit=0";
 			$res = $adb->query($query);
 			$totalNoCredit = $adb->query_result($res, 0, 0);
@@ -537,7 +538,7 @@ class Invoice extends CRMEntity {
 			//Sum Credit = 1
 			$query = "select sum(amount)
 			from vtiger_cobropago cp
-			join vtiger_crmentity crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
+			join ".$crmEntityTable." crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
 			where cp.related_id={$invoiceId} and paid=1 and credit=1";
 			$res = $adb->query($query);
 			$totalCredit = $adb->query_result($res, 0, 0);
@@ -575,7 +576,7 @@ class Invoice extends CRMEntity {
 			//Sum Credit = 1
 			$query = "select sum(amount)
 			from vtiger_cobropago cp
-			join vtiger_crmentity crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
+			join ".$crmEntityTable." crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
 			where cp.related_id={$invoiceId} and paid=1 and credit=1";
 			$res = $adb->query($query);
 			$totalCredit = $adb->query_result($res, 0, 0);
@@ -585,7 +586,7 @@ class Invoice extends CRMEntity {
 			//Sum Credit = 0
 			$query = "select sum(amount)
 			from vtiger_cobropago cp
-			join vtiger_crmentity crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
+			join ".$crmEntityTable." crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
 			where cp.related_id={$invoiceId} and paid=1 and credit=0";
 			$res = $adb->query($query);
 			$totalNoCredit = $adb->query_result($res, 0, 0);
