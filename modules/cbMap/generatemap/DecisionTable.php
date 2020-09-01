@@ -53,8 +53,8 @@ class genDecisionTable extends generatecbMap {
 		$xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><map/>');
 		$map = json_decode(urldecode($_REQUEST['content']), true);
 		$decision = $xml->addChild('decision');
-		$decision->addChild('hitPolicy', $map['hitpolicy']);
-		if ($map['hitpolicy']=='G') {
+		$decision->addChild('hitPolicy', $map['hitPolicy']);
+		if ($map['hitPolicy']=='G') {
 			$decision->addChild('aggregate', $map['aggregate']);
 		} else {
 			$decision->addChild('aggregate');
@@ -63,21 +63,21 @@ class genDecisionTable extends generatecbMap {
 		foreach ($map['rules'] as $rule) {
 			$r = $rules->addChild('rule');
 			$r->addChild('sequence', $rule['sequence']);
-			if ($rule['ruletype']=='expression') {
+			if ($rule['expression']) {
 				$r->addChild('expression', $rule['expression']);
-			} elseif ($rule['ruletype']=='businessmap') {
+			} elseif ($rule['mapid']) {
 				$r->addChild('mapid', $rule['mapid']);
-			} elseif ($rule['ruletype']=='decisiontable') {
+			} elseif ($rule['decisionTable']) {
 				$dt = $r->addChild('decisionTable');
-				$dtr = $rule['decisiontable'];
+				$dtr = $rule['decisionTable'];
 				$dt->addChild('module', $dtr['module']);
 				if (!empty($dtr['conditions'])) {
 					$dtcs = $dt->addChild('conditions');
-					foreach ($dtr['conditions'] as $cond) {
+					foreach ($dtr['conditions']['condition'] as $cond => $condValue) {
 						$dtc = $dtcs->addChild('condition');
-						$dtc->addChild('input', $cond['input']);
-						$dtc->addChild('operation', $cond['operation']);
-						$dtc->addChild('field', $cond['field']);
+						$dtc->addChild('input', $condValue['input']);
+						$dtc->addChild('operation', $condValue['operation']);
+						$dtc->addChild('field', $condValue['field']);
 					}
 				}
 				if (empty($dtr['orderby'])) {
@@ -87,9 +87,9 @@ class genDecisionTable extends generatecbMap {
 				}
 				if (!empty($dtr['searches'])) {
 					$dtss = $dt->addChild('searches');
-					foreach ($dtr['searches'] as $search) {
+					foreach ($dtr['searches']['search'] as $search => $searchValue) {
 						$dts = $dtss->addChild('search');
-						foreach ($search as $cond) {
+						foreach ($searchValue as $cond) {
 							$dtc = $dts->addChild('condition');
 							$dtc->addChild('input', $cond['input']);
 							if (!empty($cond['preprocess'])) {
