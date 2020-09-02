@@ -193,6 +193,11 @@ class ModTracker_Field {
 			$result = $adb->pquery($sql, array());
 			$webserviceField = WebserviceField::fromQueryResult($adb, $result, 0);
 			$this->fieldInfo = $webserviceField;
+		} elseif ($this->parent->getModuleName()=='HelpDesk' && $this->parent->getFieldName()=='comments') {
+			$sql = "select *, '0' as readonly from vtiger_field where vtiger_field.tabid=13 and fieldname='comments'";
+			$result = $adb->pquery($sql, array());
+			$webserviceField = WebserviceField::fromQueryResult($adb, $result, 0);
+			$this->fieldInfo = $webserviceField;
 		} else {
 			$moduleFields = $this->moduleMeta->getModuleFields();
 			$this->fieldInfo = (isset($moduleFields[$this->parent->getFieldName()]) ? $moduleFields[$this->parent->getFieldName()] : '');
