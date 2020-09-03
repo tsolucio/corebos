@@ -260,4 +260,11 @@
 	<systemupdate>false</systemupdate>
 	<blocked>true</blocked>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add generate map action to business maps</description>
+	<filename>build/changeSets/2020/addGenerateAction2cbMap.php</filename>
+	<classname>addGenerateAction2cbMap</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
