@@ -1108,10 +1108,11 @@ function getTermsandConditions($module = '') {
 	}
 	$log->debug('> getTermsandConditions '.$module);
 	if (vtlib_isModuleActive('cbTermConditions')) {
+		$mod = CRMEntity::getInstance('cbTermConditions');
 		$result = $adb->pquery(
 			'select tandc
 			from vtiger_cbtandc
-			inner join vtiger_crmentity on crmid=cbtandcid
+			inner join '.$mod::$crmentityTable.' as vtiger_crmentity on crmid=cbtandcid
 			where deleted=0 and formodule=? and isdefault=?
 			limit 1',
 			array($module,'1')
@@ -1514,9 +1515,10 @@ function updateInfo($id) {
  * @return string "updated <No of Days> day ago <(date when updated)>"
  */
 function updateInfoSinceMessage($id) {
-	global $log, $adb, $app_strings;
+	global $log, $adb, $app_strings, $currentModule;
 	$log->debug('> updateInfoSinceMessage ' . $id);
-	$result = $adb->pquery('SELECT modifiedtime, modifiedby, smcreatorid FROM vtiger_crmentity WHERE crmid=?', array($id));
+	$mod = CRMEntity::getInstance($currentModule);
+	$result = $adb->pquery('SELECT modifiedtime, modifiedby, smcreatorid FROM '.$mod::$crmentityTable.' WHERE crmid=?', array($id));
 	$modifiedtime = $adb->query_result($result, 0, 'modifiedtime');
 	$modifiedby_id = $adb->query_result($result, 0, 'modifiedby');
 	if (empty($modifiedby_id)) {
@@ -2489,8 +2491,8 @@ function getMergedDescription($description, $id, $parent_type) {
 	$cmprs = $adb->pquery(
 		'SELECT c.cbcompanyid
 			FROM vtiger_cbcompany c
-			JOIN '.$crmTable.' on '.$crmTable.'.crmid = c.cbcompanyid
-			WHERE c.defaultcompany=1 and '.$crmTable.'.deleted=0',
+			JOIN '.$crmTable.' as vtiger_crmentity on vtiger_crmentity.crmid = c.cbcompanyid
+			WHERE c.defaultcompany=1 and vtiger_crmentity.deleted=0',
 		array()
 	);
 	if ($cmprs && $adb->num_rows($cmprs)>0 && isPermitted('cbCompany', 'DetailView', $adb->query_result($cmprs, 0, 0))=='yes') {

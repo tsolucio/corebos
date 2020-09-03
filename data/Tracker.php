@@ -93,7 +93,7 @@ class Tracker {
 		}
 		$query = "SELECT *
 			from {$this->table_name}
-			inner join {$crmTable} on {$crmTable}.crmid=vtiger_tracker.item_id WHERE user_id=? and {$crmTable}.deleted=0 ORDER BY id DESC";
+			inner join {$crmTable} as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_tracker.item_id WHERE user_id=? and vtiger_crmentity.deleted=0 ORDER BY id DESC";
 		$result = $this->db->pquery($query, array($user_id), true);
 		$list = array();
 		while ($row = $this->db->fetchByAssoc($result, -1, false)) {

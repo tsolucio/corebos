@@ -917,7 +917,7 @@ function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $use
 		$crmTable = $mod::$crmentityTable;
 		$qry = "select crmid,$fieldsname as crmname
 				from {$ei['tablename']}
-				inner join {$crmTable} on crmid = {$ei['entityidfield']}
+				inner join {$crmTable} as vtiger_crmentity on crmid = {$ei['entityidfield']}
 				where deleted = 0 and ($wherefield)";
 		$rsemp=$adb->query($qry);
 		$trmod = getTranslatedString($srchmod, $srchmod);
@@ -1053,16 +1053,16 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 			vtiger_products.mfr_part_no AS mfr_no,
 			vtiger_products.qtyinstock AS qtyinstock,
 			{$prod_aliasquery}
-			{$crmTableProducts}.deleted AS deleted,
-			{$crmTableProducts}.crmid AS id,
+			vtiger_crmentity.deleted AS deleted,
+			vtiger_crmentity.crmid AS id,
 			vtiger_products.unit_price AS unit_price
 			FROM vtiger_products
-			INNER JOIN {$crmTableProducts} ON vtiger_products.productid = {$crmTableProducts}.crmid
+			INNER JOIN {$crmTableProducts} as vtiger_crmentity ON vtiger_products.productid = vtiger_crmentity.crmid
 			INNER JOIN vtiger_productcf ON vtiger_products.productid = vtiger_productcf.productid
 			".getNonAdminAccessControlQuery('Products', $current_user)."
 			WHERE ({$productsearchquery}) 
 			{$prodcondquery} 
-			AND vtiger_products.discontinued = 1 AND {$crmTableProducts}.deleted = 0
+			AND vtiger_products.discontinued = 1 AND vtiger_crmentity.deleted = 0
 		UNION
 		SELECT
 			vtiger_service.servicename AS name,
@@ -1073,16 +1073,16 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 			0 AS qtyinstock,
 			'' AS cost_price,
 			{$serv_aliasquery}
-			{$crmTableServices}.deleted AS deleted,
-			{$crmTableServices}.crmid AS id,
+			vtiger_crmentity.deleted AS deleted,
+			vtiger_crmentity.crmid AS id,
 			vtiger_service.unit_price AS unit_price
 			FROM vtiger_service
-			INNER JOIN {$crmTableServices} ON vtiger_service.serviceid = {$crmTableServices}.crmid
+			INNER JOIN {$crmTableServices} as vtiger_crmentity ON vtiger_service.serviceid = vtiger_crmentity.crmid
 			INNER JOIN vtiger_servicecf ON vtiger_service.serviceid = vtiger_servicecf.serviceid
 			".getNonAdminAccessControlQuery('Services', $current_user)."
 			WHERE ({$servicesearchquery}) 
 			{$servcondquery} 
-			AND vtiger_service.discontinued = 1 AND {$crmTableServices}.deleted = 0
+			AND vtiger_service.discontinued = 1 AND vtiger_crmentity.deleted = 0
 		LIMIT $limit");
 	$ret = array();
 

@@ -686,9 +686,9 @@ function getGroupTaskLists($maxval) {
 			$mod = CRMEntity::getInstance('Leads');
 			$query = "(select vtiger_leaddetails.leadid as id,vtiger_leaddetails.lastname as name,vtiger_groups.groupname as groupname, 'Leads     ' as Type
 				from vtiger_leaddetails
-				inner join ".$mod::$crmentityTable." on ".$mod::$crmentityTable.".crmid = vtiger_leaddetails.leadid
-				inner join vtiger_groups on ".$mod::$crmentityTable.".smownerid=vtiger_groups.groupid
-				where ".$mod::$crmentityTable.".deleted=0 and vtiger_leaddetails.leadid > 0";
+				inner join ".$mod::$crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid = vtiger_leaddetails.leadid
+				inner join vtiger_groups on vtiger_crmentity.smownerid=vtiger_groups.groupid
+				where vtiger_crmentity.deleted=0 and vtiger_leaddetails.leadid > 0";
 			if (count($groupids) > 0) {
 				$query .= ' and vtiger_groups.groupid in ('. generateQuestionMarks($groupids). ')';
 				$params[] = $groupids;
@@ -704,9 +704,9 @@ function getGroupTaskLists($maxval) {
 			//Get the activities assigned to group
 			$query .= "(select vtiger_activity.activityid as id,vtiger_activity.subject as name,vtiger_groups.groupname as groupname,'Activities' as Type
 				from vtiger_activity
-				inner join ".$mod::$crmentityTable." on ".$mod::$crmentityTable.".crmid = vtiger_activity.activityid
-				inner join vtiger_groups on ".$mod::$crmentityTable.".smownerid=vtiger_groups.groupid
-				where ".$mod::$crmentityTable.".deleted=0 and ((vtiger_activity.eventstatus != 'held' and (vtiger_activity.status is null or vtiger_activity.status = '')) or
+				inner join ".$mod::$crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid = vtiger_activity.activityid
+				inner join vtiger_groups on vtiger_crmentity.smownerid=vtiger_groups.groupid
+				where vtiger_crmentity.deleted=0 and ((vtiger_activity.eventstatus != 'held' and (vtiger_activity.status is null or vtiger_activity.status = '')) or
 					(vtiger_activity.status!='completed' and (vtiger_activity.eventstatus is null or vtiger_activity.eventstatus=''))) and vtiger_activity.activityid>0";
 			if (count($groupids) > 0) {
 				$query .= ' and vtiger_groups.groupid in ('. generateQuestionMarks($groupids). ')';
@@ -723,9 +723,9 @@ function getGroupTaskLists($maxval) {
 			//Get the tickets assigned to group (status not Closed -- hardcoded value)
 			$query .= "(select vtiger_troubletickets.ticketid,vtiger_troubletickets.title as name,vtiger_groups.groupname,'Tickets   ' as Type
 				from vtiger_troubletickets
-				inner join ".$mod::$crmentityTable." on ".$mod::$crmentityTable.".crmid = vtiger_troubletickets.ticketid
-				inner join vtiger_groups on ".$mod::$crmentityTable.".smownerid=vtiger_groups.groupid
-				where ".$mod::$crmentityTable.".deleted=0 and vtiger_troubletickets.status != 'Closed' and vtiger_troubletickets.ticketid > 0";
+				inner join ".$mod::$crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid = vtiger_troubletickets.ticketid
+				inner join vtiger_groups on vtiger_crmentity.smownerid=vtiger_groups.groupid
+				where vtiger_crmentity.deleted=0 and vtiger_troubletickets.status != 'Closed' and vtiger_troubletickets.ticketid > 0";
 			if (count($groupids) > 0) {
 				$query .= ' and vtiger_groups.groupid in ('. generateQuestionMarks($groupids). ')';
 				$params[] = $groupids;
@@ -741,9 +741,9 @@ function getGroupTaskLists($maxval) {
 			//Get the potentials assigned to group(sales stage not Closed Lost or Closed Won-- hardcoded value)
 			$query .= "(select vtiger_potential.potentialid,vtiger_potential.potentialname as name,vtiger_groups.groupname as groupname,'Potentials ' as Type
 				from vtiger_potential
-				inner join ".$mod::$crmentityTable." on ".$mod::$crmentityTable.".crmid = vtiger_potential.potentialid
-				inner join vtiger_groups on ".$mod::$crmentityTable.".smownerid = vtiger_groups.groupid
-				where ".$mod::$crmentityTable.".deleted=0 and ((vtiger_potential.sales_stage !='Closed Lost') or (vtiger_potential.sales_stage != 'Closed Won')) and
+				inner join ".$mod::$crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid = vtiger_potential.potentialid
+				inner join vtiger_groups on vtiger_crmentity.smownerid = vtiger_groups.groupid
+				where vtiger_crmentity.deleted=0 and ((vtiger_potential.sales_stage !='Closed Lost') or (vtiger_potential.sales_stage != 'Closed Won')) and
 					vtiger_potential.potentialid > 0";
 			if (count($groupids) > 0) {
 				$query .= ' and vtiger_groups.groupid in ('. generateQuestionMarks($groupids). ')';
@@ -760,9 +760,9 @@ function getGroupTaskLists($maxval) {
 			//Get the Accounts assigned to group
 			$query .= "(select vtiger_account.accountid as id,vtiger_account.accountname as name,vtiger_groups.groupname as groupname, 'Accounts ' as Type
 				from vtiger_account
-				inner join ".$mod::$crmentityTable." on ".$mod::$crmentityTable.".crmid=vtiger_account.accountid
-				inner join vtiger_groups on ".$mod::$crmentityTable.".smownerid=vtiger_groups.groupid
-				where ".$mod::$crmentityTable.".deleted=0 and vtiger_account.accountid > 0";
+				inner join ".$mod::$crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_account.accountid
+				inner join vtiger_groups on vtiger_crmentity.smownerid=vtiger_groups.groupid
+				where vtiger_crmentity.deleted=0 and vtiger_account.accountid > 0";
 			if (count($groupids) > 0) {
 				$query .= ' and vtiger_groups.groupid in ('. generateQuestionMarks($groupids). ')';
 				$params[] = $groupids;
@@ -778,9 +778,9 @@ function getGroupTaskLists($maxval) {
 			//Get the Contacts assigned to group
 			$query .= "(select vtiger_contactdetails.contactid as id, vtiger_contactdetails.lastname as name ,vtiger_groups.groupname as groupname, 'Contacts ' as Type
 				from vtiger_contactdetails
-				inner join ".$mod::$crmentityTable." on ".$mod::$crmentityTable.".crmid=vtiger_contactdetails.contactid
-				inner join vtiger_groups on ".$mod::$crmentityTable.".smownerid = vtiger_groups.groupid
-				where ".$mod::$crmentityTable.".deleted=0 and vtiger_contactdetails.contactid > 0";
+				inner join ".$mod::$crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_contactdetails.contactid
+				inner join vtiger_groups on vtiger_crmentity.smownerid = vtiger_groups.groupid
+				where vtiger_crmentity.deleted=0 and vtiger_contactdetails.contactid > 0";
 			if (count($groupids) > 0) {
 				$query .= ' and vtiger_groups.groupid in ('. generateQuestionMarks($groupids). ')';
 				$params[] = $groupids;
@@ -796,9 +796,9 @@ function getGroupTaskLists($maxval) {
 			//Get the Campaigns assigned to group(Campaign status not Complete -- hardcoded value)
 			$query .= "(select vtiger_campaign.campaignid as id, vtiger_campaign.campaignname as name, vtiger_groups.groupname as groupname,'Campaigns ' as Type
 				from vtiger_campaign inner
-				join ".$mod::$crmentityTable." on ".$mod::$crmentityTable.".crmid = vtiger_campaign.campaignid
-				inner join vtiger_groups on ".$mod::$crmentityTable.".smownerid = vtiger_groups.groupid
-				where ".$mod::$crmentityTable.".deleted=0 and (vtiger_campaign.campaignstatus != 'Complete') and vtiger_campaign.campaignid > 0";
+				join ".$mod::$crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid = vtiger_campaign.campaignid
+				inner join vtiger_groups on vtiger_crmentity.smownerid = vtiger_groups.groupid
+				where vtiger_crmentity.deleted=0 and (vtiger_campaign.campaignstatus != 'Complete') and vtiger_campaign.campaignid > 0";
 			if (count($groupids) > 0) {
 				$query .= ' and vtiger_groups.groupid in ('. generateQuestionMarks($groupids). ')';
 				$params[] = $groupids;
@@ -814,9 +814,9 @@ function getGroupTaskLists($maxval) {
 			//Get the Quotes assigned to group(Quotes stage not Rejected -- hardcoded value)
 			$query .="(select vtiger_quotes.quoteid as id,vtiger_quotes.subject as name, vtiger_groups.groupname as groupname ,'Quotes 'as Type
 				from vtiger_quotes
-				inner join ".$mod::$crmentityTable." on ".$mod::$crmentityTable.".crmid = vtiger_quotes.quoteid
-				inner join vtiger_groups on ".$mod::$crmentityTable.".smownerid = vtiger_groups.groupid
-				where ".$mod::$crmentityTable.".deleted=0 and (vtiger_quotes.quotestage != 'Rejected') and vtiger_quotes.quoteid > 0";
+				inner join ".$mod::$crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid = vtiger_quotes.quoteid
+				inner join vtiger_groups on vtiger_crmentity.smownerid = vtiger_groups.groupid
+				where vtiger_crmentity.deleted=0 and (vtiger_quotes.quotestage != 'Rejected') and vtiger_quotes.quoteid > 0";
 			if (count($groupids) > 0) {
 				$query .= ' and vtiger_groups.groupid in ('. generateQuestionMarks($groupids). ')';
 				$params[] = $groupids;
@@ -832,9 +832,9 @@ function getGroupTaskLists($maxval) {
 			//Get the Sales Order assigned to group
 			$query .="(select vtiger_salesorder.salesorderid as id, vtiger_salesorder.subject as name,vtiger_groups.groupname as groupname,'SalesOrder ' as Type
 				from vtiger_salesorder
-				inner join ".$mod::$crmentityTable." on ".$mod::$crmentityTable.".crmid = vtiger_salesorder.salesorderid
-				inner join vtiger_groups on ".$mod::$crmentityTable.".smownerid = vtiger_groups.groupid
-				where ".$mod::$crmentityTable.".deleted=0 and vtiger_salesorder.salesorderid > 0";
+				inner join ".$mod::$crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid = vtiger_salesorder.salesorderid
+				inner join vtiger_groups on vtiger_crmentity.smownerid = vtiger_groups.groupid
+				where vtiger_crmentity.deleted=0 and vtiger_salesorder.salesorderid > 0";
 			if (count($groupids) > 0) {
 				$query .= ' and vtiger_groups.groupid in ('. generateQuestionMarks($groupids). ')';
 				$params[] = $groupids;
@@ -850,9 +850,9 @@ function getGroupTaskLists($maxval) {
 			//Get the Sales Order assigned to group(Invoice status not Paid -- hardcoded value)
 			$query .="(select vtiger_invoice.invoiceid as Id , vtiger_invoice.subject as Name, vtiger_groups.groupname as groupname,'Invoice ' as Type
 				from vtiger_invoice
-				inner join ".$mod::$crmentityTable." on ".$mod::$crmentityTable.".crmid = vtiger_invoice.invoiceid
-				inner join vtiger_groups on ".$mod::$crmentityTable.".smownerid = vtiger_groups.groupid
-				where ".$mod::$crmentityTable.".deleted=0 and(vtiger_invoice.invoicestatus != 'Paid') and vtiger_invoice.invoiceid > 0";
+				inner join ".$mod::$crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid = vtiger_invoice.invoiceid
+				inner join vtiger_groups on vtiger_crmentity.smownerid = vtiger_groups.groupid
+				where vtiger_crmentity.deleted=0 and(vtiger_invoice.invoicestatus != 'Paid') and vtiger_invoice.invoiceid > 0";
 			if (count($groupids) > 0) {
 				$query .= ' and vtiger_groups.groupid in ('. generateQuestionMarks($groupids). ')';
 				$params[] = $groupids;
@@ -868,9 +868,9 @@ function getGroupTaskLists($maxval) {
 			//Get the Purchase Order assigned to group
 			$query.="(select vtiger_purchaseorder.purchaseorderid as id,vtiger_purchaseorder.subject as name,vtiger_groups.groupname as groupname,'PurchaseOrder ' as Type
 				from vtiger_purchaseorder
-				inner join ".$mod::$crmentityTable." on ".$mod::$crmentityTable.".crmid = vtiger_purchaseorder.purchaseorderid
-				inner join vtiger_groups on ".$mod::$crmentityTable.".smownerid =vtiger_groups.groupid
-				where ".$mod::$crmentityTable.".deleted=0 and vtiger_purchaseorder.purchaseorderid >0";
+				inner join ".$mod::$crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid = vtiger_purchaseorder.purchaseorderid
+				inner join vtiger_groups on vtiger_crmentity.smownerid =vtiger_groups.groupid
+				where vtiger_crmentity.deleted=0 and vtiger_purchaseorder.purchaseorderid >0";
 			if (count($groupids) > 0) {
 				$query .= ' and vtiger_groups.groupid in ('. generateQuestionMarks($groupids). ')';
 				$params[] = $groupids;
