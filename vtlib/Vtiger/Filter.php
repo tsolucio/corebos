@@ -227,6 +227,8 @@ class Vtiger_Filter {
 				$comparator = 'DOES_NOT_START_WITH';
 			} elseif ($comparator == 'dnew') {
 				$comparator = 'DOES_NOT_END_WITH';
+			} elseif ($comparator == 'sx') {
+				$comparator = 'SOUNDEX';
 			} elseif ($comparator == 'c') {
 				$comparator = 'CONTAINS';
 			} elseif ($comparator == 'k') {
@@ -254,6 +256,8 @@ class Vtiger_Filter {
 				$comparator = 'dnsw';
 			} elseif ($comparator == 'DOES_NOT_END_WITH') {
 				$comparator = 'dnew';
+			} elseif ($comparator == 'SOUNDEX') {
+				$comparator = 'sx';
 			} elseif ($comparator == 'CONTAINS') {
 				$comparator = 'c';
 			} elseif ($comparator == 'DOES_NOT_CONTAINS') {
