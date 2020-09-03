@@ -95,6 +95,29 @@ switch ($functiontocall) {
 			}
 		}
 		break;
+	case 'getFieldValuesFromMap':
+		$sourceModule = $adb->sql_escape_string(vtlib_purify($_REQUEST['sourceModule']));
+		$inputVal = $adb->sql_escape_string(vtlib_purify($_REQUEST['inputVal']));
+		$fieldname = $adb->sql_escape_string(vtlib_purify($_REQUEST['fieldname']));
+		if (!empty($inputVal)) {
+			$bmapname = $sourceModule . '_FieldInfo';
+			$cbMapid = GlobalVariable::getVariable('BusinessMapping_FieldInfo', cbMap::getMapIdByName($bmapname), $sourceModule, $current_user->id);
+			if (strlen($inputVal) > 0) {
+				if ($cbMapid) {
+					$cbMap = cbMap::getMapByID($cbMapid);
+					$cbMapFI = $cbMap->FieldInfo();
+					$cbMapFI = $cbMapFI['fields'];
+					if (in_array($cbMapFI[$fieldname], $cbMapFI)) {
+						$values = $cbMapFI[$fieldname]['combobox'][$sourceModule];
+						echo $values;
+					} else {
+						echo '';
+					}
+				}
+			}
+		}
+		die();
+		break;
 	case 'getMergedDescription':
 		$tpl = vtlib_purify($_REQUEST['template']);
 		$crmid = vtlib_purify($_REQUEST['crmid']);
