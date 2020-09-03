@@ -50,7 +50,7 @@ class genDecisionTable extends generatecbMap {
 		if ($module!=$_REQUEST['tmodule']) {
 			$adb->pquery('update vtiger_cbmap set targetname=? where cbmapid=?', array(vtlib_purify($_REQUEST['tmodule']), $Map->id));
 		}
-		$xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><map/>');
+		$xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><deletethis/>');
 		$map = json_decode(urldecode($_REQUEST['content']), true);
 		$decision = $xml->addChild('decision');
 		$decision->addChild('hitPolicy', $map['hitPolicy']);
@@ -63,11 +63,13 @@ class genDecisionTable extends generatecbMap {
 		foreach ($map['rules'] as $rule) {
 			$r = $rules->addChild('rule');
 			$r->addChild('sequence', $rule['sequence']);
-			if ($rule['expression']) {
-				$r->addChild('expression', $rule['expression']);
-			} elseif ($rule['mapid']) {
+			if (!empty($rule['expression'])) {
+				$exp = $r->addChild('expression');
+				$node = dom_import_simplexml($exp);
+				$node->appendChild($node->ownerDocument->createCDATASection($rule['expression']));
+			} elseif (!empty($rule['mapid'])) {
 				$r->addChild('mapid', $rule['mapid']);
-			} elseif ($rule['decisionTable']) {
+			} elseif (!empty($rule['decisionTable'])) {
 				$dt = $r->addChild('decisionTable');
 				$dtr = $rule['decisionTable'];
 				$dt->addChild('module', $dtr['module']);
@@ -87,7 +89,7 @@ class genDecisionTable extends generatecbMap {
 				}
 				if (!empty($dtr['searches'])) {
 					$dtss = $dt->addChild('searches');
-					foreach ($dtr['searches']['search'] as $search => $searchValue) {
+					foreach ($dtr['searches']['search'] as $searchValue) {
 						$dts = $dtss->addChild('search');
 						foreach ($searchValue as $cond) {
 							$dtc = $dts->addChild('condition');
@@ -104,7 +106,14 @@ class genDecisionTable extends generatecbMap {
 			}
 			$r->addChild('output', $rule['output']);
 		}
-		return str_replace('<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL, '', $xml->asXML());
+		return str_replace(
+			array(
+				'<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL.'<deletethis>',
+				'</deletethis>',
+			),
+			'',
+			$xml->asXML()
+		);
 	}
 }
 ?>
