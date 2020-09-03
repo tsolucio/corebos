@@ -19,7 +19,7 @@ require_once 'include/utils/utils.php';
 
 class decisiontable_Action extends CoreBOS_ActionController {
 
-	public function getModuleValues() {
+	public static function getModuleValues() {
 		global $log;
 		$log->debug('> getModuleValues');
 		$mapid = vtlib_purify($_REQUEST['MapID']);
@@ -31,7 +31,7 @@ class decisiontable_Action extends CoreBOS_ActionController {
 		return getPicklistValuesSpecialUitypes('1613', '', $module);
 	}
 
-	public function getEntityName() {
+	public static function getEntityName() {
 		global $log;
 		$log->debug('> getEntityName');
 		$MapID = vtlib_purify($_REQUEST['MapID']);
