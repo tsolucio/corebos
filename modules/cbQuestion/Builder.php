@@ -87,7 +87,7 @@ while ($r = $actormodules->FetchRow()) {
 	$amodsi18n[] = array(
 		getTranslatedString($r['name'], $r['name']),
 		$r['name'],
-		''
+		($focus->column_fields['qmodule'] == $r['name'] ? 'selected' : '')
 	);
 }
 $smarty->assign('actorModules', json_encode($amods));
@@ -101,7 +101,7 @@ $smarty->assign('WSID', vtws_getEntityId('cbQuestion').'x');
 $smarty->assign('ID', $focus->id);
 $smarty->assign('RECORDID', $focus->id);
 $smarty->assign('MODE', $focus->mode);
-$smarty->assign('MODULES', array_merge(getPicklistValuesSpecialUitypes('1613', '', $module), $amodsi18n));
+$smarty->assign('MODULES', array_merge(getPicklistValuesSpecialUitypes('1613', '', $focus->column_fields['qmodule']), $amodsi18n));
 $smarty->assign('targetmodule', $focus->column_fields['qmodule']);
 $smarty->assign('bqname', $focus->column_fields['qname']);
 $smarty->assign('bqcollection', $focus->column_fields['qcollection']);
