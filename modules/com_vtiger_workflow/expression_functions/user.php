@@ -38,10 +38,29 @@ function __getCurrentUserName($arr) {
 function __getCurrentUserField($arr) {
 	global $current_user;
 	VTWorkflowUtils::previousUser();
-	if (isset($arr[0]) && isset($current_user->column_fields[$arr[0]])) {
-		return $current_user->column_fields[$arr[0]];
-	} else {
-		return '';
+	switch (strtolower($arr[0])) {
+		case 'parentrole':
+			$rinfo = getRoleInformation($current_user->column_fields['roleid']);
+			$roles = explode('::', $rinfo[$current_user->column_fields['roleid']][1]);
+			end($roles);
+			return prev($roles);
+			break;
+		case 'parentrolename':
+			$rinfo = getRoleInformation($current_user->column_fields['roleid']);
+			$roles = explode('::', $rinfo[$current_user->column_fields['roleid']][1]);
+			end($roles);
+			return getRoleName(prev($roles));
+			break;
+		case 'rolename':
+			return getRoleName($current_user->column_fields['roleid']);
+			break;
+		default:
+			if (isset($current_user->column_fields[$arr[0]])) {
+				return $current_user->column_fields[$arr[0]];
+			} else {
+				return '';
+			}
+			break;
 	}
 }
 ?>
