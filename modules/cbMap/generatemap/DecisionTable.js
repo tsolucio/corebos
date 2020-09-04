@@ -129,7 +129,7 @@ async function getFieldsForModule(module) {
 			.map(fd => {
 				fields.push(fd);
 			});
-		return fields;
+		return fields.sort();
 	});
 }
 /**
@@ -249,6 +249,7 @@ var DTModuleFields = {};
 var ruleData = new Array();
 var condGroup = new Array();
 var srchData = new Array();
+var fieldList = new Array();
 const tuiGrid = tui.Grid;
 var rulegridInstance;
 var rulegrid = '';
@@ -399,9 +400,11 @@ function appendEmptyFieldRow(type, rowKey = '') {
 	} else if (type == 'condition') {
 		condGroup[rowKey].push(emptyRow);
 		condgridInstance[rowKey].appendRow(emptyRow);
+		updateFieldList(rowKey);
 	} else if (type == 'search') {
 		srchData[rowKey].push(emptyRow);
 		srchgridInstance[rowKey].appendRow(emptyRow);
+		updateFieldList(rowKey);
 	}
 }
 /**
@@ -823,18 +826,28 @@ function generateSection(ev, preLoadMap = {}) {
 				body: '&'+csrfMagicName+'='+csrfMagicToken+'&uitype=1613&MapID='+MapID
 			}
 		).then(response => response.json()).then(response => {
+			let moduleList = new Array();
+			for (let i in response) {
+				const objList = {
+					'module': response[i][0],
+					'label': response[i][1],
+					'selected': response[i][2]
+				}
+				moduleList.push(objList);
+			}
+			const moduleListObj = moduleList.sort((a, b) => (a.label > b.label) ? 1 : -1);
 			let template = `
 			<div class="slds-p-around_small">
 				<legend class="slds-form-element__legend slds-form-element__label">${mod_alert_arr.LBL_MODULE}</legend>
 				<div class="slds-form-element__control">
 					<div class="slds-select_container">
-						<select id="dtmodule-${rowKey}" required name="dtmodule-${rowKey}" class="slds-select" onchange="getDTModuleFields(this.value, ${rowKey});">`;
-						for (let i in response) {
+						<select id="dtmodule-${rowKey}" required name="dtmodule-${rowKey}" class="slds-select" onchange="getDTModuleFields(this.value, ${rowKey});updateFieldList(${rowKey})">`;
+						for (let i in moduleListObj) {
 							let selected = '';
-							if (response[i][1] == module ) {
+							if (moduleListObj[i].module == module ) {
 								selected = 'selected';
 							}
-							template += `<option value="${response[i][1]}" ${selected}>${response[i][0]}</option>`;
+							template += `<option value="${moduleListObj[i].module}" ${selected}>${moduleListObj[i].label}</option>`;
 						}	
 						template += `
 						</select>
@@ -878,7 +891,7 @@ function generateSection(ev, preLoadMap = {}) {
 					</span>
 					</span>${mod_alert_arr.LBL_SEARCH}</a>
 				</li>
-				<li class="slds-tabs_default__item" title="${mod_alert_arr.LBL_CONDITIONS}" role="presentation" id="tabconditionsli${rowKey}" onclick="setActiveDTTab('tabconditions', 'tabsearch', ${rowKey});">
+				<li class="slds-tabs_default__item slds-is-active slds-has-focus" title="${mod_alert_arr.LBL_CONDITIONS}" role="presentation" id="tabconditionsli${rowKey}" onclick="setActiveDTTab('tabconditions', 'tabsearch', ${rowKey});">
 				<a class="slds-tabs_default__link" href="javascript:void(0);" role="tab">
 					<span class="slds-tabs__left-icon">
 					<span class="slds-icon_container slds-icon-standard-opportunity" title="${mod_alert_arr.LBL_CONDITIONS}">
@@ -890,7 +903,7 @@ function generateSection(ev, preLoadMap = {}) {
 				</li>
 			</ul>
 			</div>
-			<div id="tabconditions-${rowKey}">
+			<div id="tabconditions-${rowKey}" class="slds-show">
 				<div class="slds-p-around_x-small slds-grid slds-gutters">
 					<div class="slds-col slds-size_1-of-2 slds-text-align_left">
 						<h2 class="slds-expression__title">${mod_alert_arr.LBL_CONDITIONS}</h2>
@@ -1037,12 +1050,7 @@ function searchGrid(rowKey, srchData, searches = '') {
 			editor: {
 				type: 'select',
 				options: {
-					listItems: [
-						{text: mod_alert_arr.LBL_EXPRESSIONRESULT, value: 'expression'},
-						{text: mod_alert_arr.LBL_FIELDVALUE, value: 'fieldvalue'},
-						{text: mod_alert_arr.LBL_OBJECT, value: 'crmobject'},
-						{text: mod_alert_arr.LBL_ROW, value: 'row'},
-					]
+					listItems: fieldList
 				}
 			},
 			whiteSpace: 'normal',
@@ -1094,6 +1102,10 @@ function searchGrid(rowKey, srchData, searches = '') {
 		header: {
 			align: 'left',
 			valign: 'middle'
+		},
+		onGridMounted: (ev) => {
+			const hideTab = document.getElementById(`tabsearch-${rowKey}`);
+			hideTab.className = 'slds-hide';
 		}
 	});
 	return srchgridInstance;
@@ -1161,7 +1173,12 @@ function condGrid(rowKey, condGroup = '', conditions = '') {
 		{
 			name: 'field',
 			header: mod_alert_arr.LBL_FIELDVALUE,
-			editor: 'text',
+			editor: {
+				type: 'select',
+				options: {
+					listItems: fieldList
+				}
+			},
 			whiteSpace: 'normal',
 			width: 250,
 			sortable: false,
@@ -1295,7 +1312,7 @@ function setRows(ruletype, rules) {
 			mapid: rules.mapid
 		}
 		generateSection(ev, values);
-	} else {	
+	} else {
 		const ev = {
 			rowKey: parseInt(rules.sequence) - 1,
 			value: 'decisiontable',
@@ -1309,5 +1326,20 @@ function setRows(ruletype, rules) {
 			conditions: rules.decisionTable.conditions.condition,
 		}
 		generateSection(ev, values);
+		updateFieldList(rules.sequence, values.module);
 	}	
+}
+
+async function updateFieldList(rowKey, module = '') {
+	fieldList.length = 0;
+	if (module == '') {
+		module = document.getElementById(`dtmodule-${rowKey}`).value;
+	}
+	DTModuleFields = await getFieldsForModule(module);
+	for (let i in DTModuleFields) {
+		const fieldObj = {
+			text: DTModuleFields[i], value: DTModuleFields[i]
+		}
+		fieldList.push(fieldObj);
+	}
 }
