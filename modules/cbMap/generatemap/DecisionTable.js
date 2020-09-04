@@ -829,8 +829,8 @@ function generateSection(ev, preLoadMap = {}) {
 			let moduleList = new Array();
 			for (let i in response) {
 				const objList = {
-					'module': response[i][0],
-					'label': response[i][1],
+					'module': response[i][1],
+					'label': response[i][0],
 					'selected': response[i][2]
 				}
 				moduleList.push(objList);
