@@ -54,7 +54,7 @@ function sendgridsync($input) {
 	foreach ($sendgridevents as $request) {
 		foreach ($request as $key => $value) {
 			if (!is_object($value)) {
-				$LogContent.= "Key: $key; Value: $value \n";
+				$LogContent.= "Key: $key; Value: ".print_r($value, true)." \n";
 			}
 		}
 		evvtWrite2Log($LogContent);
