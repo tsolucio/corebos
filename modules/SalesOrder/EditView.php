@@ -211,6 +211,7 @@ if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == 'true') {
 if (isset($_REQUEST['potential_id']) && $_REQUEST['potential_id'] != '') {
 	$focus->column_fields['potential_id'] = $_REQUEST['potential_id'];
 	$relatedInfo = getRelatedInfo($_REQUEST['potential_id']);
+	$setype = '';
 	if (!empty($relatedInfo)) {
 		$setype = $relatedInfo['setype'];
 		$relID = $relatedInfo['relID'];
@@ -262,6 +263,7 @@ if (is_null($record) && (empty($_REQUEST['convertmode']) || (isset($_REQUEST['co
 	if (!empty($_REQUEST['account_id'])) {
 		$acct_focus = CRMEntity::getInstance('Accounts');
 		$acct_focus->retrieve_entity_info($_REQUEST['account_id'], 'Accounts');
+		$focus->column_fields['account_id'] = vtlib_purify($_REQUEST['account_id']);
 		$focus->column_fields['bill_city'] = $acct_focus->column_fields['bill_city'];
 		$focus->column_fields['ship_city'] = $acct_focus->column_fields['ship_city'];
 		$focus->column_fields['bill_pobox'] = $acct_focus->column_fields['bill_pobox'];
@@ -277,6 +279,7 @@ if (is_null($record) && (empty($_REQUEST['convertmode']) || (isset($_REQUEST['co
 	} elseif (!empty($_REQUEST['contact_id'])) {
 		$cto_focus = CRMEntity::getInstance('Contacts');
 		$cto_focus->retrieve_entity_info($_REQUEST['contact_id'], 'Contacts');
+		$focus->column_fields['contact_id'] = vtlib_purify($_REQUEST['contact_id']);
 		$focus->column_fields['bill_city'] = $cto_focus->column_fields['mailingcity'];
 		$focus->column_fields['ship_city'] = $cto_focus->column_fields['othercity'];
 		$focus->column_fields['bill_pobox'] = $cto_focus->column_fields['mailingpobox'];
