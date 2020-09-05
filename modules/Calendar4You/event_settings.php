@@ -12,7 +12,7 @@ global $current_user,$mod_strings,$app_strings,$theme;
 $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
 require_once 'include/database/PearDatabase.php';
-require_once 'modules/Calendar/CalendarCommon.php';
+require_once 'modules/cbCalendar/CalendarCommon.php';
 require_once 'modules/Calendar4You/Calendar4You.php';
 require_once 'modules/Calendar4You/CalendarUtils.php';
 $t=Date('Ymd');

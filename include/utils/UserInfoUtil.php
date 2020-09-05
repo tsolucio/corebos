@@ -2969,19 +2969,6 @@ function getListViewSecurityParameter($module) {
 		$sec_query .= " vtiger_groups.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid."))) ";
 	} elseif ($module == 'Emails') {
 		$sec_query = " and vtiger_crmentity.smownerid=".$current_user->id." ";
-	} elseif ($module == 'Calendar') {
-		require_once 'modules/Calendar/CalendarCommon.php';
-		$shared_ids = getSharedCalendarId($current_user->id);
-		if (isset($shared_ids) && $shared_ids != '') {
-			$condition = " or (vtiger_crmentity.smownerid in($shared_ids) and vtiger_activity.visibility = 'Public')";
-		} else {
-			$condition = '';
-		}
-		$sec_query = " and (vtiger_crmentity.smownerid in($current_user->id) $condition or vtiger_crmentity.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%')";
-		if (!empty($current_user_groups)) {
-			$sec_query .= " or ((vtiger_groups.groupid in (". implode(',', $current_user_groups) .")))";
-		}
-		$sec_query .= ")";
 	} elseif ($module == 'Quotes') {
 		$sec_query = " and (vtiger_crmentity.smownerid in($current_user->id) or vtiger_crmentity.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")";
 		//Adding criteria for group sharing
@@ -3095,19 +3082,6 @@ function getSecListViewSecurityParameter($module) {
 			$sec_query .= " vtiger_groups$module.groupid in (". implode(',', $current_user_groups) .') or ';
 		}
 		$sec_query .= " vtiger_groups$module.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid."))) ";
-	} elseif ($module == 'Calendar') {
-		require_once 'modules/Calendar/CalendarCommon.php';
-		$shared_ids = getSharedCalendarId($current_user->id);
-		if (isset($shared_ids) && $shared_ids != '') {
-			$condition = " or (vtiger_crmentity$module.smownerid in($shared_ids) and vtiger_activity.visibility = 'Public')";
-		} else {
-			$condition = null;
-		}
-		$sec_query = " and (vtiger_crmentity$module.smownerid in($current_user->id) $condition or vtiger_crmentity$module.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%')";
-		if (!empty($current_user_groups)) {
-			$sec_query .= " or ((vtiger_groups$module.groupid in (". implode(',', $current_user_groups) .")))";
-		}
-		$sec_query .= ')';
 	} elseif ($module == 'Quotes') {
 		$sec_query = " and (vtiger_crmentity$module.smownerid in($current_user->id) or vtiger_crmentity$module.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity$module.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")";
 		//Adding criteria for account related quotes sharing

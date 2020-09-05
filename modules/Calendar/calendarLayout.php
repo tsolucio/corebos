@@ -11,7 +11,7 @@
 require_once('include/database/PearDatabase.php');
 require_once('include/utils/CommonUtils.php');
 require_once('include/utils/UserInfoUtil.php');
-require_once('modules/Calendar/CalendarCommon.php');
+require_once 'modules/cbCalendar/CalendarCommon.php';
 
 
 /**
@@ -2150,7 +2150,6 @@ function getCalendarViewSecurityParameter()
 {
 		global $current_user;
 		$userprivs = $current_user->getPrivileges();
-		require_once('modules/Calendar/CalendarCommon.php');
 		$shared_ids = getSharedCalendarId($current_user->id);
 		if(isset($shared_ids) && $shared_ids != '')
 			$condition = " or (vtiger_crmentity.smownerid in($shared_ids)) or (vtiger_crmentity.smownerid NOT LIKE ($current_user->id))";// and vtiger_activity.visibility = 'Public')";

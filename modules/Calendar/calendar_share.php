@@ -12,7 +12,7 @@ global $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 require_once('include/database/PearDatabase.php');
-require_once('modules/Calendar/CalendarCommon.php');
+require_once 'modules/cbCalendar/CalendarCommon.php';
  $t=Date("Ymd");
  $userDetails=getSharingUserName($current_user->id);
  $shareduser_ids = getSharedUserId($current_user->id);

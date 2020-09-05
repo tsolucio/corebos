@@ -31,6 +31,7 @@ require_once 'include/fields/DateTimeField.php';
 require_once 'include/fields/CurrencyField.php';
 require_once 'data/CRMEntity.php';
 require_once 'vtlib/Vtiger/Language.php';
+require_once 'include/RelatedListView.php';
 
 // Constants to be defined here
 

@@ -3,7 +3,7 @@
 define('_BENNU_VERSION', '0.1');
 
 require_once('include/utils/utils.php');
-require_once('modules/Calendar/CalendarCommon.php');
+require_once('modules/cbCalendar/CalendarCommon.php');
 include('modules/Calendar/iCal/iCalendar_rfc2445.php');
 include('modules/Calendar/iCal/iCalendar_components.php');
 include('modules/Calendar/iCal/iCalendar_properties.php');
