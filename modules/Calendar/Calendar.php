@@ -8,7 +8,6 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-require_once('modules/Calendar/Appointment.php');
 require_once('modules/Calendar/Date.php');
 class Calendar 
 {

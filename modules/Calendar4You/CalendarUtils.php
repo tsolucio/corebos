@@ -327,7 +327,7 @@ function getCalendar4YouListQuery($userid, $invites, $where = '', $type = '1') {
 
 	$query.=" WHERE vtiger_crmentity.deleted = 0 AND activitytype != 'Emails' " . $where;
 
-	$query = listQueryNonAdminChange($query, 'Calendar');
+	$query = listQueryNonAdminChange($query, 'cbCalendar');
 
 	$log->debug('< getListQuery');
 	return $query;
