@@ -8,6 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 require_once 'Smarty_setup.php';
+require_once 'modules/cbCalendar/CalendarCommon.php';
 
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 

@@ -7,6 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
+require_once 'modules/cbCalendar/CalendarCommon.php';
 
 $record = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : null;
 $focus = CRMEntity::getInstance($currentModule);

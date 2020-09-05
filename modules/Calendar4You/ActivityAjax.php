@@ -13,9 +13,10 @@ $image_path = $theme_path.'images/';
 
 require_once 'modules/Calendar/calendarLayout.php';
 require_once 'modules/Calendar4You/CalendarUtils.php';
-require_once 'include/utils/utils.php';
-require_once 'modules/Calendar/Calendar.php';
 require_once 'include/logging.php';
+require_once 'include/utils/utils.php';
+require_once 'modules/cbCalendar/CalendarCommon.php';
+require_once 'modules/Calendar/Calendar.php';
 $cal_log = LoggerManager::getLogger('calendar');
 $cal_log->debug('> Calendar4YouAjax');
 

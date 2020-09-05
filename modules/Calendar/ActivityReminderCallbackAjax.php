@@ -12,6 +12,7 @@ global $app_strings, $currentModule, $image_path, $theme, $adb, $current_user;
 require_once 'Smarty_setup.php';
 require_once 'data/Tracker.php';
 require_once 'include/utils/utils.php';
+require_once 'modules/cbCalendar/CalendarCommon.php';
 
 $cur_time = time();
 coreBOS_Session::set('last_reminder_check_time', $cur_time);
