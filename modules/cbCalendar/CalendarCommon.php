@@ -420,10 +420,10 @@ function sendInvitation($inviteesid, $mode, $subject, $desc) {
 }
 
 function getActivityMailInfo($return_id, $status, $activity_type) {
-	$mail_data = array();
-	global $adb;
-	$qry = 'select * from vtiger_activity where activityid=?';
-	$ary_res = $adb->pquery($qry, array($return_id));
+	global $adb, $current_user;
+	$qg = new QueryGenerator('cbCalendar', $current_user);
+	$qg->setFields(array('*'));
+	$ary_res = $adb->pquery($qg->getQuery(), array($return_id));
 	$send_notification = $adb->query_result($ary_res, 0, 'sendnotification');
 	$subject = $adb->query_result($ary_res, 0, 'subject');
 	$priority = $adb->query_result($ary_res, 0, 'priority');
@@ -432,6 +432,8 @@ function getActivityMailInfo($return_id, $status, $activity_type) {
 	$end_date = $adb->query_result($ary_res, 0, 'due_date');
 	$end_time = $adb->query_result($ary_res, 0, 'time_end');
 	$location = $adb->query_result($ary_res, 0, 'location');
+	$owner_id = $adb->query_result($ary_res, 0, 'smownerid');
+	$description = $adb->query_result($ary_res, 0, 'description');
 
 	if (!empty($st_time)) {
 		$date = new DateTimeField($st_date.' '.$st_time);
@@ -445,9 +447,6 @@ function getActivityMailInfo($return_id, $status, $activity_type) {
 		$end_time = $date->getDisplayTime();
 	}
 
-	$res = $adb->pquery('select smownerid from vtiger_crmentity where crmid=?', array($return_id));
-	$owner_id = $adb->query_result($res, 0, 'smownerid');
-
 	$usr_res = $adb->pquery('select count(*) as count from vtiger_users where id=?', array($owner_id));
 	if ($adb->query_result($usr_res, 0, 'count')>0) {
 		$assignType = 'U';
@@ -459,12 +458,8 @@ function getActivityMailInfo($return_id, $status, $activity_type) {
 		$grp_name = $adb->query_result($grp_res, 0, 'groupname');
 	}
 
-	$desc_qry = 'select description from vtiger_crmentity where crmid=?';
-	$des_res = $adb->pquery($desc_qry, array($return_id));
-	$description = $adb->query_result($des_res, 0, 'description');
-
 	$rel_res = $adb->pquery(
-		"select case vtiger_crmentity.setype
+		"select case vtiger_crmobject.setype
 			when 'Leads' then vtiger_leaddetails.lastname
 			when 'Accounts' then vtiger_account.accountname
 			when 'Potentials' then vtiger_potential.potentialname
@@ -476,7 +471,7 @@ function getActivityMailInfo($return_id, $status, $activity_type) {
 			when 'HelpDesk' then vtiger_troubletickets.title
 			end as relname
 		from vtiger_seactivityrel
-		inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seactivityrel.crmid
+		inner join vtiger_crmobject on vtiger_crmobject.crmid=vtiger_seactivityrel.crmid
 		left join vtiger_leaddetails on vtiger_leaddetails.leadid = vtiger_seactivityrel.crmid
 		left join vtiger_account on vtiger_account.accountid=vtiger_seactivityrel.crmid
 		left join vtiger_potential on vtiger_potential.potentialid=vtiger_seactivityrel.crmid
@@ -539,6 +534,7 @@ function calendarview_getSelectedUserFilterQuerySuffix() {
 	$qcondition = '';
 	if (!empty($only_for_user)) {
 		if ($only_for_user != 'ALL') {
+			$mod = CRMEntity::getInstance('cbCalendar');
 			// For logged in user include the group records also.
 			if ($only_for_user == $current_user->id) {
 				$user_group_ids = fetchUserGroupids($current_user->id);
@@ -549,9 +545,9 @@ function calendarview_getSelectedUserFilterQuerySuffix() {
 					$user_group_ids = '';
 				}
 				$user_group_ids .= $current_user->id;
-				$qcondition = ' AND vtiger_crmentity.smownerid IN (' . $user_group_ids .')';
+				$qcondition = ' AND '.$mod::$crmentityTable.'.smownerid IN (' . $user_group_ids .')';
 			} else {
-				$qcondition = ' AND vtiger_crmentity.smownerid = '  . $adb->sql_escape_string($only_for_user);
+				$qcondition = ' AND '.$mod::$crmentityTable.'.smownerid = ' . $adb->sql_escape_string($only_for_user);
 			}
 		}
 	}

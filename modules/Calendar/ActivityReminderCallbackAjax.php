@@ -42,10 +42,10 @@ if (isPermitted('Calendar', 'index') == 'yes') {
 		$date = date('Y-m-d', strtotime("+$intervalInMinutes minutes", $time));
 		$date_inpast = date('Y-m-d', strtotime('-'.$Calendar_PopupReminder_DaysPast.' day', $time));
 		$time = date('H:i', strtotime("+$intervalInMinutes minutes", $time));
-		$callback_query =
-		"SELECT vtiger_activity_reminder_popup.*" .
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCalendar');
+		$callback_query = 'SELECT vtiger_activity_reminder_popup.*'.
 		" FROM vtiger_activity_reminder_popup" .
-		" inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_activity_reminder_popup.recordid " .
+		' inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_activity_reminder_popup.recordid ' .
 		" inner join vtiger_activity on vtiger_activity.activityid = vtiger_activity_reminder_popup.recordid ".
 		" WHERE vtiger_activity_reminder_popup.status = 0 and vtiger_crmentity.smownerid = ".$current_user->id." and vtiger_crmentity.deleted = 0 " .
 		" AND (vtiger_activity.activitytype not in ('Emails') and vtiger_activity.eventstatus not in ('','Held','Completed','Deferred'))".
@@ -129,13 +129,11 @@ if (isPermitted('Calendar', 'index') == 'yes') {
 					$app_strings['LBL_NEW_BUTTON_LABEL'].$app_strings['LBL_Reminder']."';</script>";
 			}
 		} else {
-			$callback_query =
-			"SELECT * FROM vtiger_activity_reminder_popup inner join vtiger_crmentity where " .
-			" vtiger_activity_reminder_popup.status = 0 and " .
-			" vtiger_activity_reminder_popup.recordid = vtiger_crmentity.crmid " .
-			" and vtiger_crmentity.smownerid = ".$current_user->id." and vtiger_crmentity.deleted = 0 ".
-			"AND vtiger_activity_reminder_popup.reminderid > 0 ORDER BY date_start DESC , ".
-			"TIME_FORMAT(vtiger_activity_reminder_popup.time_start,'%H:%i') DESC LIMIT 1";
+			$callback_query = 'SELECT * FROM vtiger_activity_reminder_popup'
+			.' inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_activity_reminder_popup.recordid '
+			.' where vtiger_activity_reminder_popup.status=0 and vtiger_crmentity.smownerid='.$current_user->id
+			.' and vtiger_crmentity.deleted=0 and vtiger_activity_reminder_popup.reminderid > 0'
+			.' ORDER BY date_start DESC , TIME_FORMAT(vtiger_activity_reminder_popup.time_start,"%H:%i") DESC LIMIT 1';
 			$result = $adb->query($callback_query);
 			$it = new SqlResultIterator($adb, $result);
 			$nextReminderTime = null;
