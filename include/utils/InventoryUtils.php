@@ -1065,10 +1065,10 @@ function createRecords($obj) {
 		$subjectRowIDs = array();
 		for ($j = 0; $j < $count; ++$j) {
 			$subjectRow = $adb->raw_query_result_rowdata($subjectResult, $j);
+			$subjectRowIDs[] = isset($subjectRow['id']) ? $subjectRow['id'] : 0;
 			if ($subjectRow['productid'] == '' || $subjectRow['quantity'] == '' || $subjectRow['listprice'] == '') {
 				continue;
 			}
-			$subjectRowIDs[] = $subjectRow['id'];
 			$lineItemData = array();
 			$lineItemData['discount'] = 0;
 			foreach ($fieldMapping as $fieldName => $index) {

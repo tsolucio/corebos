@@ -1436,12 +1436,16 @@ function doServerValidation(edit_type, formName, callback) {
 			sentForm[myFields[f].name] = myFields[f].value;
 		}
 	}
+	return executeServerValidation(edit_type, action, formName, callback, SVModule, sentForm);
+}
+
+function executeServerValidation(edit_type, action, formName, callback, forModule, sentForm) {
 	//JSONize form data
 	sentForm = JSON.stringify(sentForm);
 	jQuery.ajax({
 		type : 'post',
 		data : {structure: sentForm},
-		url : 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule='+SVModule
+		url : 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule='+forModule
 	}).done(function (msg) {
 		//Validation file answers
 		if (msg.search('%%%CONFIRM%%%') > -1) { //Allow to use confirm alert
@@ -2611,8 +2615,20 @@ function selectSalesOrder(fromlink, fldname, MODULE, ID) {
 function set_return_account_details(fromlink, fldname, MODULE, ID) {
 	if (fldname == 'account_id') {
 		var baseURL = 'index.php?module=Accounts&action=Popup&popuptype=specific_account_address&form=TasksEditView&form_submit=false&fromlink=';
-		var WindowSettings = 'width=680,height=602,resizable=0,scrollbars=0,top=150,left=200';
+		var WindowSettings = 'width=1680,height=850,resizable=0,scrollbars=0,top=150,left=200';
 		window.open(baseURL, 'vtlibui10', WindowSettings);
+	} else {
+		vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
+	}
+}
+
+function open_contact_account_details(fromlink, fldname, MODULE, ID) {
+	if (fldname == 'account_id') {
+		var baseURL = 'index.php?module=Accounts&action=Popup&popuptype=specific_contact_account_address&form=TasksEditView&form_submit=false&fromlink=';
+		baseURL += (fromlink=='qcreate') ? 'qcreate' : '';
+		var WindowSettings = 'width=1680,height=850,resizable=0,scrollbars=0,top=150,left=200';
+		let winname = (fromlink=='qcreate') ? 'vtlibui10qc' : 'vtlibui10';
+		window.open(baseURL, winname, WindowSettings);
 	} else {
 		vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
 	}
@@ -6271,12 +6287,17 @@ window.addEventListener('load', function () {
 		gh.addEventListener('expand', pageHeader.movedown);
 	} else if (gh === null) {
 		pageHeader.initialize();
-		pageHeader.node().classList.add('has-no-global-header');
+		if (pageHeader.node()) {
+			pageHeader.node().classList.add('has-no-global-header');
+		}
 	}
 });
 
 const pageHeader = {
 	'initialize' : () => {
+		if (pageHeader.node() == null) {
+			return;
+		}
 		var h = pageHeader.node().getBoundingClientRect().height;
 
 		if (pageHeader.isCollapsed) {

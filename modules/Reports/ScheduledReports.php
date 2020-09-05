@@ -12,7 +12,6 @@ require_once 'modules/Reports/ReportRun.php';
 
 class VTScheduledReport extends Reports {
 
-	private $db;
 	private $user;
 
 	public $isScheduled = false;
@@ -28,7 +27,6 @@ class VTScheduledReport extends Reports {
 	public static $SCHEDULED_ANNUALLY = 6;
 
 	public function __construct($adb, $user, $reportid = '') {
-		$this->db	= $adb;
 		$this->user = $user;
 		$this->id	= $reportid;
 		parent::__construct($reportid);
@@ -281,7 +279,8 @@ class VTScheduledReport extends Reports {
 	}
 
 	public function updateNextTriggerTime() {
-		$this->db->pquery('UPDATE vtiger_scheduled_reports SET next_trigger_time=? WHERE reportid=?', array($this->getNextTriggerTime(), $this->id));
+		global $adb;
+		$adb->pquery('UPDATE vtiger_scheduled_reports SET next_trigger_time=? WHERE reportid=?', array($this->getNextTriggerTime(), $this->id));
 	}
 
 	public static function generateRecipientOption($type, $value, $name = '') {

@@ -313,7 +313,8 @@ function cbwsgetSearchResults($query, $search_onlyin, $restrictionids, $user) {
 	$search_onlyin = array_filter(array_unique($search_onlyin), function ($var) {
 		return !empty(trim($var));
 	});
-	$object_array = getSearchModules($search_onlyin);
+	$accessModules = vtws_listtypes('', $user); // filter modules user does not have access to
+	$object_array = array_intersect(getSearchModules($search_onlyin), $accessModules['types']);
 	$total_record_count = 0;
 	$i = 0;
 	$j=0;
@@ -1052,6 +1053,9 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 			vtiger_products.cost_price AS cost_price,
 			vtiger_products.mfr_part_no AS mfr_no,
 			vtiger_products.qtyinstock AS qtyinstock,
+			vtiger_products.qty_per_unit AS qty_per_unit,
+			vtiger_products.usageunit AS usageunit,
+			vtiger_products.qtyindemand AS qtyindemand,
 			{$prod_aliasquery}
 			vtiger_crmentity.deleted AS deleted,
 			vtiger_crmentity.crmid AS id,
@@ -1072,6 +1076,9 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 			'' AS mfr_no,
 			0 AS qtyinstock,
 			'' AS cost_price,
+			vtiger_service.qty_per_unit AS qty_per_unit,
+			vtiger_service.service_usageunit AS usageunit,
+			0 AS qtyindemand,
 			{$serv_aliasquery}
 			vtiger_crmentity.deleted AS deleted,
 			vtiger_crmentity.crmid AS id,
@@ -1117,6 +1124,9 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 			),
 			'logistics' => array(
 				'qtyinstock' => number_format((float)$prodser['qtyinstock'], $cur_user_decimals, '.', ''),
+				'qty_per_unit' => number_format((float)$prodser['qty_per_unit'], $cur_user_decimals, '.', ''),
+				'usageunit' => $prodser['usageunit'],
+				'qtyindemand' => number_format((float)$prodser['qtyindemand'], $cur_user_decimals, '.', ''),
 			),
 			'translations' => array(
 				'ven_no' => getTranslatedString('Mfr PartNo', 'Products'),

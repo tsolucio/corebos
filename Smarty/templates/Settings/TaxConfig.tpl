@@ -236,7 +236,7 @@
 			</td>
 			<td width=17% >
 				{if $tax.deleted eq 0}
-					<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&sh_disable=true&sh_taxname={$tax.taxname}">
+					<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&sh_disable=true&sh_taxname={$tax.taxname}&taxid={$tax.taxid}">
 						<span class="slds-icon_container slds-icon_container_circle slds-icon-action-approval" title="{$MOD.LBL_ENABLED}">
 							<svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#approval"></use>
@@ -245,7 +245,7 @@
 						</span>
 					</a>
 				{else}
-					<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&sh_enable=true&sh_taxname={$tax.taxname}">
+					<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&sh_enable=true&sh_taxname={$tax.taxname}&taxid={$tax.taxid}">
 						<span class="slds-icon_container slds-icon_container_circle slds-icon-action-close" title="{$MOD.LBL_DISABLED}">
 							<svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#close"></use>

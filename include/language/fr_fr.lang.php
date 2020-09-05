@@ -1292,6 +1292,7 @@ $app_strings = array(
 	longtemps. Pour des raisons de sécurité, il a expiré. Veuillez recharger la page en appuyant sur CTRL + R ou appuyez sur recharger ci-dessous.',
 	'csrf_reload' => 'Rafraichir la page',
 	'LBL_NOPRODUCTS' => 'Ne peut convertir le bon de commande en facture parce qu\'il n\'y a plus de produits à facturer',
+	'VALIDATION_FAILED' => 'Validation failed',
 );
 
 // Translation for currency names

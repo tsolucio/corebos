@@ -523,7 +523,7 @@ function insertIntoRecurringTable(& $recurObj)
 	 * @param  integer   $recurid         - recuring eventid
 	 * @param  string    $remindermode    - string like 'edit'
 	 */
-	function activity_reminder($activity_id,$reminder_time,$reminder_sent=0,$recurid,$remindermode='')
+	function activity_reminder($activity_id,$reminder_time,$reminder_sent=0,$recurid=0,$remindermode='')
 	{
 		global $log;
 		$log->debug("Entering vtiger_activity_reminder(".$activity_id.",".$reminder_time.",".$reminder_sent.",".$recurid.",".$remindermode.") method ...");

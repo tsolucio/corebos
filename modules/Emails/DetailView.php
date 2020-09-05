@@ -17,6 +17,7 @@ global $log, $app_strings, $mod_strings, $currentModule, $theme, $default_charse
 $focus = CRMEntity::getInstance($currentModule);
 
 $smarty = new vtigerCRM_Smarty;
+getBrowserVariables($smarty);
 if (isset($_REQUEST['record'])) {
 	global $adb;
 	$focus->retrieve_entity_info($_REQUEST['record'], 'Emails');
@@ -113,7 +114,6 @@ if (isset($focus->name)) {
 }
 
 $entries = getBlocks($currentModule, 'detail_view', '', $focus->column_fields);
-//changed this to view description in all langauge - bharath
 $smarty->assign('BLOCKS', $entries[$mod_strings['LBL_EMAIL_INFORMATION']]);
 $smarty->assign('SINGLE_MOD', 'Email');
 

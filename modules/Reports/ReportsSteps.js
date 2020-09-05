@@ -202,6 +202,7 @@ wizard.steps({
 				dataType: 'json',
 			}).done(function (response) {
 				can_pass = fillFilterInfo(response);
+				showDateRange(document.getElementById('stdDateFilter').value);
 			});
 			return can_pass;
 		} else if (currentIndex - new_steps_count == 5  && newIndex - new_steps_count == 6 ) {

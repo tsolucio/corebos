@@ -592,10 +592,11 @@ function fnAddTaxConfigRow(sh) {
 
 	colone.innerHTML='<input type=\'text\' id=\''+label_name+'\' name=\''+label_name+'\' value=\''+tax_labelarr.TAX_NAME+'\' class=\'slds-input\' onclick="this.form.'+label_name+'.value=\'\'";/>';
 	coltwo.innerHTML='<input type=\'text\' id=\''+label_val+'\' name=\''+label_val+'\' value=\''+tax_labelarr.TAX_VALUE+'\' class=\'slds-input\' onclick="this.form.'+label_val+'.value=\'\'";/>';
-	col3.innerHTML='<input type=\'checkbox\' id=\''+label_name+'retention\' name=\''+label_name+'retention\' class=\'slds-checkbox\' />';
-	col4.innerHTML='<input type=\'checkbox\' id=\''+label_name+'default\' name=\''+label_name+'default\' class=\'slds-checkbox\' />';
-	col5.innerHTML='<input type=\'checkbox\' id=\''+label_name+'qcreate\' name=\''+label_name+'qcreate\' class=\'slds-checkbox\' />';
-
+	if (sh == '' && sh != 'sh') {
+		col3.innerHTML='<input type=\'checkbox\' id=\''+label_name+'retention\' name=\''+label_name+'retention\' class=\'slds-checkbox\' />';
+		col4.innerHTML='<input type=\'checkbox\' id=\''+label_name+'default\' name=\''+label_name+'default\' class=\'slds-checkbox\' />';
+		col5.innerHTML='<input type=\'checkbox\' id=\''+label_name+'qcreate\' name=\''+label_name+'qcreate\' class=\'slds-checkbox\' />';
+	}
 	document.getElementById(td_id).innerHTML='<input type=\'submit\' name=\'Save\' value=\' '+tax_labelarr.SAVE_BUTTON+' \' class=\'slds-button slds-button_success save\' onclick="this.form.action.value=\'TaxConfig\'; this.form.'+add_tax_flag+'.value=\'true\'; return validateNewTaxType(\''+label_name+'\',\''+label_val+'\');">&nbsp;<input type=\'submit\' name=\'Cancel\' value=\' '+tax_labelarr.CANCEL_BUTTON+' \' class=\'slds-button slds-button_destructive cancel\' onclick="this.form.action.value=\'TaxConfig\'; this.form.module.value=\'Settings\'; this.form.'+add_tax_flag+'.value=\'false\'; this.form.parenttab.value=\'Settings\';">';
 }
 
@@ -826,10 +827,10 @@ function cloneMoreInfoNode(newRowId) {
 		domflddisp.innerHTML = '';
 	}
 	for (i=0; i<moreInfoFields.length; i++) {
-		var domfld = document.getElementById(moreInfoFields[i]+ newRowId);
+		domfld = document.getElementById(moreInfoFields[i]+ newRowId);
 		if (domfld) {
 			domfld.value = '';
-			var domflddisp = document.getElementById(moreInfoFields[i]+ newRowId+ '_display');
+			domflddisp = document.getElementById(moreInfoFields[i]+ newRowId+ '_display');
 			if (domflddisp) {
 				domflddisp.value = '';
 			}
@@ -1442,9 +1443,11 @@ function InventorySelectAll(mod, image_pth) {
 	 * @param {element}:	Root 'InventoryBlock' Object
 	 * @param {function}: 	Callback for custom implementations. Will receive an object with
 	 *						the root autocomplete node and all the result data
-	 */
-	function ProductAutocomplete(el, parent, callback) {
+		* @param {object}		The root inventoryblock object
+		*/
+	function ProductAutocomplete(el, parent, callback, rootObj) {
 		this.el = el,
+		this.root = rootObj,
 		this.parent = parent,
 		this.specialKeys = ['up', 'down', 'esc', 'enter'],
 		this.threshold = 3,
@@ -1458,6 +1461,7 @@ function InventorySelectAll(mod, image_pth) {
 		this.callback = typeof callback === 'function' ? callback : false;
 
 		/* Instance listeners */
+		window.addEventListener('keyup', this.preventSubmit.bind(this), true);
 		this.utils.on(this.input, 'keyup', this.throttle, this);
 		this.utils.on(this.input, 'blur', this.delayedClear, this);
 	}
@@ -1489,29 +1493,44 @@ function InventorySelectAll(mod, image_pth) {
 			window.setTimeout(this.trigger(e), 100);
 		},
 
+
+		preventSubmit: function (e) {
+			if (e.keyCode == 13 && this.active) {
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				e.stopPropagation();
+				this.selectCurrentlyHighlighted();
+				return false;
+			}
+		},
+
 		getResults: function (term) {
-			var accid = 0;
-			if (document.EditView.account_id != undefined) {
-				accid = document.EditView.account_id.value;
-			} else if (document.EditView.accid != undefined) {
-				accid = document.EditView.accid.value;
-			}
-			var ctoid = 0;
-			if (document.EditView.contact_id != undefined) {
-				ctoid = document.EditView.contact_id.value;
-			} else if (document.EditView.ctoid != undefined) {
-				ctoid = document.EditView.ctoid.value;
-			}
-			var _this = this;
-			var r = new XMLHttpRequest();
+			var h = getAccConFieldnames,
+				dE = document.EditView,
+				accid = h().acc === '' ? 0 : h().acc,
+				ctoid = h().con === '' ? 0 : h().con,
+				recid = dE === undefined ? 0 : dE.record.value,
+				_this = this,
+				r = new XMLHttpRequest();
+
 			r.onreadystatechange = function () {
 				if (this.readyState == 4 && this.status == 200) {
 					var res = JSON.parse(this.responseText);
 					_this.processResult(res);
 				}
 			};
-			r.open('GET', this.source + this.input.value + '&accid='+accid+ '&ctoid='+ctoid+'&modid='+document.EditView.record.value, true);
+			r.open('GET', this.source + this.input.value + '&accid='+accid+ '&ctoid='+ctoid+'&modid='+recid, true);
 			r.send();
+
+			// Helper to keep organized
+			function getAccConFieldnames() {
+				let fldNames = {'acc': '', 'con': ''};
+				if (document.EditView !== undefined) {
+					fldNames.acc = document.EditView.account_id !== undefined ? 'account_id' : 'accid';
+					fldNames.con = document.EditView.contact_id !== undefined ? 'contact_id' : 'ctoid';
+				}
+				return fldNames;
+			}
 		},
 
 		processResult: function (res) {
@@ -1687,8 +1706,7 @@ function InventorySelectAll(mod, image_pth) {
 					this.selectNext();
 					break;
 				case 'enter':
-					var current = this.getCurrentSelectedResult();
-					this.select(this.currentResults[current]);
+					this.selectCurrentlyHighlighted();
 					break;
 				case 'esc':
 					this.clear();
@@ -1755,6 +1773,11 @@ function InventorySelectAll(mod, image_pth) {
 			}
 		},
 
+		selectCurrentlyHighlighted() {
+			var current = this.getCurrentSelectedResult();
+			this.select(this.currentResults[current]);
+		},
+
 		select: function (result) {
 			this.fillLine(result);
 			this.clear(); // Clear autocomplete
@@ -1766,33 +1789,40 @@ function InventorySelectAll(mod, image_pth) {
 					usageunits = this.root.el.getElementsByClassName(this.root.lineClass + '--usageunit');
 
 				this.utils.getFirstClass(lineNode, 'cbds-product-line-image').src = result.obj.meta.image;
-				var currency = document.getElementById('inventory_currency').value;
-				if (result.obj.pricing.multicurrency[currency] != undefined) {
-					this.parent.setField('unit_price', result.obj.pricing.multicurrency[currency].actual_price);
-				} else {
-					this.parent.setField('unit_price', result.obj.pricing.unit_price);
-				}
+				this.parent.setField('listprice', result.obj.pricing.unit_price);
 				this.parent.setField('cost_price', result.obj.pricing.unit_cost);
-				this.parent.setField('qtyinstock', result.obj.logistics.qty_in_stock);
-				this.parent.setField('qtyindemand', result.obj.logistics.curr_ordered);
+				this.parent.setField('qtyinstock', result.obj.logistics.qtyinstock);
+				this.parent.setField('qtyindemand', result.obj.logistics.qtyindemand);
 
-				this.utils.getFirstClass(lineNode, this.root.linePrefix + '--comments').innerHTML = result.obj.meta.comments;
+				this.utils.getFirstClass(lineNode, this.root.inputPrefix + '--description').innerHTML = result.obj.meta.comments;
 				this.input.value = result.obj.meta.name;
 
 				for (var i = usageunits.length - 1; i >= 0; i--) {
 					usageunits[i].innerHTML = result.obj.logistics.usageunit;
 				}
 
+				this.parent.productId = result.obj.meta.id;
+				this.parent.divisible = result.obj.meta.divisible == 0 ? false : true;
+
 				this.parent.expandExtra();
 				this.parent.calcLine();
 
 				this.utils.getFirstClass(this.utils.findUp(this.el, '.' + this.root.lineClass), this.root.inputPrefix + '--quantity').focus();
+				this.retrieveProductTaxes(result.obj.meta.id);
 			} else {
 				this.callback({
 					'result': result.obj,
 					'source': this.el
 				});
 			}
+		},
+
+		retrieveProductTaxes: function (id) {
+			fetch(`index.php?module=Products&action=ProductsAjax&file=InventoryTaxAjax&productid=${id}&ctoid=0&accid=0&vndid=0&returnarray=1`)
+				.then(r => r.json())
+				.then((data) => {
+					this.parent.actualizeLineTaxes(data);
+				});
 		},
 
 		/*
@@ -1945,7 +1975,7 @@ function handleProductAutocompleteSelect(obj) {
 	document.getElementById('comment'+no).innerHTML = obj.result.meta.comments;
 	var currency = document.getElementById('inventory_currency').value;
 	if (obj.result.pricing.multicurrency[currency] != undefined && gVTModule != 'PurchaseOrder' && gVTModule != 'Receiptcards') {
-		document.getElementById('listPrice'+no).value = obj.result.pricing.multicurrency[currency].actual_price;
+		document.getElementById('listPrice'+no).value = obj.result.pricing.multicurrency[currency].converted_price;
 	} else {
 		var list_price = obj.result.pricing.unit_price;
 		if (gVTModule == 'PurchaseOrder' || gVTModule == 'Receiptcards' ) {

@@ -39,7 +39,7 @@ var SpecialSearch = encodeURI(advSearch);
 			<label class="slds-form-element__label"> {'LBL_SELECT'|@getTranslatedString} </label>
 				<div class="slds-form-element__control slds-input-has-fixed-addon">
 					<input id="bmapid" name="bmapid" type="hidden" value="{$task->bmapid}" class="slds-input">
-						<input id="bmapid_display" name="bmapid_display" readonly="" style="border:1px solid #bababa;" type="text" value="{$task->bmapid_display}" class="slds-input" onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=new_task&forfield=bmapid&srcmodule=GlobalVariable'+SpecialSearch,'vtlibui10wf','width=680,height=602,resizable=0,scrollbars=0,top=150,left=200');">
+						<input id="bmapid_display" name="bmapid_display" readonly="" style="border:1px solid #bababa;" type="text" value="{$task->bmapid_display}" class="slds-input" onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=new_task&forfield=bmapid&srcmodule=GlobalVariable'+SpecialSearch,'vtlibui10wf','width=1680,height=850,resizable=0,scrollbars=0,top=150,left=200');">
 							<span class="slds-form-element__addon" id="fixed-text-addon-post">
 								<button type="image" class="slds-button" alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedString}" onClick="this.form.bmapid.value=''; this.form.bmapid_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
 									<svg class="slds-icon slds-icon_small slds-icon-text-light" aria-hidden="true" >

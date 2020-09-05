@@ -1107,6 +1107,7 @@ function getTermsandConditions($module = '') {
 		$module = $currentModule;
 	}
 	$log->debug('> getTermsandConditions '.$module);
+	$tandc = '';
 	if (vtlib_isModuleActive('cbTermConditions')) {
 		$mod = CRMEntity::getInstance('cbTermConditions');
 		$result = $adb->pquery(
@@ -1119,15 +1120,6 @@ function getTermsandConditions($module = '') {
 		);
 		if ($result && $adb->num_rows($result)>0) {
 			$tandc = $adb->query_result($result, 0, 'tandc');
-		} else {
-			$tandc = '';
-		}
-	} else {
-		$result = $adb->pquery('select tandc from vtiger_inventory_tandc limit 1', array());
-		if ($result && $adb->num_rows($result)>0) {
-			$tandc = $adb->query_result($result, 0, 'tandc');
-		} else {
-			$tandc = '';
 		}
 	}
 	$log->debug('< getTermsandConditions');
@@ -2211,8 +2203,7 @@ function decideFilePath() {
 		$filepath.='/';
 	}
 
-	$saveStrategy = GlobalVariable::getVariable('Application_Storage_SaveStrategy', 'dates');
-	switch (strtolower($saveStrategy)) {
+	switch (strtolower(GlobalVariable::getVariable('Application_Storage_SaveStrategy', 'dates'))) {
 		case 'crmid':
 			// CRMID in folder
 			if (isset($_REQUEST['return_id'])) {
@@ -2226,7 +2217,7 @@ function decideFilePath() {
 				//create new folder
 				mkdir($filepath);
 			}
-			$log->debug("Strategy CRMID filepath=\"$filepath\"");
+			$log->debug('Strategy CRMID filepath: '.$filepath);
 			break;
 		case 'dates':
 		default:

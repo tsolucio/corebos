@@ -42,10 +42,10 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 	{/if}
 	<div class="slds-card" id="locateMap" onMouseOut="fninvsh('locateMap')" onMouseOver="fnvshNrm('locateMap')">
 		<div class="slds-card__body slds-card__body_inner">
-			<a href="javascript:;" onClick="fninvsh('locateMap'); searchMapLocation( 'Main' );" class="calMnu">{$address1}</a>
+			<a href="javascript:;" onClick="fninvsh('locateMap'); searchMapLocation('Main');" class="calMnu">{$address1}</a>
 		</div>
 		<div class="slds-card__body slds-card__body_inner">
-			<a href="javascript:;" onClick="fninvsh('locateMap'); searchMapLocation( 'Main' );" class="calMnu">{$address2}</a>
+			<a href="javascript:;" onClick="fninvsh('locateMap'); searchMapLocation('Other');" class="calMnu">{$address2}</a>
 		</div>
 	</div>
 {/if}
@@ -98,8 +98,8 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 												{if $privrecord neq '' || $nextrecord neq ''}
 													<span class="detailview_utils_jumpto" id="jumpBtnIdTop" onclick="var obj = this;var lhref = getListOfRecords(obj, '{$MODULE}',{$ID},'{$CATEGORY}');" title="{$APP.LBL_JUMP_BTN}"><img align="absmiddle" title="{$APP.LBL_JUMP_BTN}" accessKey="{$APP.LBL_JUMP_BTN}" name="jumpBtnIdTop" id="jumpBtnIdTop" src="{'rec_jump.gif'|@vtiger_imageurl:$THEME}"></span>&nbsp;
 												{/if}
-												{if $nextrecord neq ''}
-													<span class="detailview_utils_next" onclick="location.href='index.php?module={$MODULE}&action=DetailView&record={$nextrecord}&start={$nextrecordstart}'" title="{$APP.LNK_LIST_NEXT}"><img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" accessKey="{$APP.LNK_LIST_NEXT}"  name="nextrecord" src="{'rec_next.gif'|@vtiger_imageurl:$THEME}"></span>&nbsp;
+												{if !empty($nextrecord)}
+													<span class="detailview_utils_next" onclick="location.href='index.php?module={$MODULE}&action=DetailView&record={$nextrecord}&start={if !empty($nextrecordstart)}{$nextrecordstart}{/if}'" title="{$APP.LNK_LIST_NEXT}"><img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" accessKey="{$APP.LNK_LIST_NEXT}" name="nextrecord" src="{'rec_next.gif'|@vtiger_imageurl:$THEME}"></span>&nbsp;
 												{else}
 													<img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" src="{'rec_next_disabled.gif'|@vtiger_imageurl:$THEME}">&nbsp;
 												{/if}
@@ -135,7 +135,7 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																						<td class="cblds-t-align_right" align=right>
 																							{if isset($MOD.LBL_ADDRESS_INFORMATION) && $header eq $MOD.LBL_ADDRESS_INFORMATION && ($MODULE eq 'Accounts' || $MODULE eq 'Contacts' || $MODULE eq 'Leads') }
 																								{if $MODULE eq 'Leads'}
-																									<input name="mapbutton" value="{$APP.LBL_LOCATE_MAP}" class="crmbutton small create" type="button" onClick="searchMapLocation( 'Main' )" title="{$APP.LBL_LOCATE_MAP}">
+																									<input name="mapbutton" value="{$APP.LBL_LOCATE_MAP}" class="crmbutton small create" type="button" onClick="searchMapLocation('Main')" title="{$APP.LBL_LOCATE_MAP}">
 																								{else}
 																									<input name="mapbutton" value="{$APP.LBL_LOCATE_MAP}" class="crmbutton small create" type="button" onClick="fnvshobj(this,'locateMap');" onMouseOut="fninvsh('locateMap');" title="{$APP.LBL_LOCATE_MAP}">
 																								{/if}

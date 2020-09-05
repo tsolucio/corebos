@@ -74,7 +74,7 @@ function set_password(form) {
 			return false;
 		}
 	} else { //Password is not ok
-		errmsg.innerHTML = "<?php echo $badpassword; ?>";
+		errmsg.innerHTML = "<?php echo $mod_strings['PASSWORD REQUIREMENTS NOT MET']; ?>";
 		errmsg.style.display = 'block';
 		return false;
 	}
@@ -117,6 +117,7 @@ if (!is_admin($current_user)) {
 <td width='50%' class='dvtCellInfo'><input name='confirm_new_password' type='password' tabindex='1' size='15'></td>
 <td width='30%' class='dvtCellInfo' id='rndpasswordshow' style="font-size: large;"></td>
 </tr>
+<tr><td colspan=3><?php echo $badpassword; ?></td>
 </table>
 <br>
 <table width='100%' cellspacing='0' cellpadding='1' border='0'>

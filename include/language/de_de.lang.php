@@ -1373,6 +1373,7 @@ $app_strings = array(
 'No Module' => 'No related Module',
 'Entity Name' => 'Entity Name',
 'LBL_NOPRODUCTS' => 'Can\'t convert SalesOrder to Invoice because there aren\'t any remaining products to invoice.',
+'VALIDATION_FAILED' => 'Validation failed',
 );
 
 // Translation for currency names

@@ -67,7 +67,7 @@ class VTSimpleTemplate {
 				$result = $this->getWorkflowFunctionValue($fieldname);
 			} else {
 				$referenceId = $this->parent->get($referenceField);
-				if ($referenceId==null) {
+				if ($referenceId==null && !$this->keepvariable) {
 					$result = '';
 				} else {
 					try {
@@ -112,14 +112,14 @@ class VTSimpleTemplate {
 								}
 							} else {
 								if ($this->keepvariable) {
-									$result = '$'.$fieldname;
+									$result = '$'.$full;
 								} else {
 									$result = '';
 								}
 							}
 						} else {
 							if ($this->keepvariable) {
-								$result = '$'.$fieldname;
+								$result = '$'.$full;
 							} else {
 								$result = '';
 							}

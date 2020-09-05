@@ -166,6 +166,9 @@ class WorkFlowScheduler {
 		$errortasks = array();
 		$scheduledWorkflows = $vtWorflowManager->getScheduledWorkflows($currentTimestamp);
 		foreach ($scheduledWorkflows as $workflow) {
+			if (!$workflow->activeWorkflow()) {
+				continue;
+			}
 			$tm = new VTTaskManager($adb);
 			$tasks = $tm->getTasksForWorkflow($workflow->id);
 			if ($tasks) {

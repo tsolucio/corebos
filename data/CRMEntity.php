@@ -24,7 +24,7 @@ class CRMEntity {
 	public $linkmodemodule = '';
 	public $DirectImageFieldValues = array();
 	public $HasDirectImageField = false;
-	private $db;
+	public $db;
 	public static $crmentityTable = 'vtiger_crmentity';
 	public static $crmEntityTableAlias;
 	public static $denormalized = false;
@@ -517,15 +517,15 @@ class CRMEntity {
 		$crmvalues['date'] = $adb->formatDate(date('Y-m-d H:i:s'), true);
 		$crmvalues['created_date'] = $crmvalues['date'];
 		$crmvalues['createdbyuser'] = $current_user->id;
-		if (self::isBulkSaveMode()) {
-			if (!empty($this->column_fields['createdtime'])) {
+			if (self::isBulkSaveMode()) {
+				if (!empty($this->column_fields['createdtime'])) {
 				$crmvalues['created_date'] = $adb->formatDate($this->column_fields['createdtime'], true);
-			}
-			if (!empty($this->column_fields['creator'])) {
+				}
+				if (!empty($this->column_fields['creator'])) {
 				$crmvalues['createdbyuser'] = $this->column_fields['creator'];
+				}
+				//NOTE : modifiedtime ignored to support vtws_sync API track changes.
 			}
-			//NOTE : modifiedtime ignored to support vtws_sync API track changes.
-		}
 		$crmvalues['modified_date'] = $crmvalues['date'];
 
 		$ownerid = empty($this->column_fields['assigned_user_id']) ? $current_user->id : $this->column_fields['assigned_user_id'];
@@ -537,8 +537,8 @@ class CRMEntity {
 				$ownerid = $inputCRMid;
 			} else {
 				die('Invalid user id!');
-			}
 		}
+	}
 
 		$res = $adb->pquery('select ownedby from vtiger_tab where name=?', array($module));
 		$this->ownedby = $adb->query_result($res, 0, 'ownedby');
@@ -955,7 +955,7 @@ class CRMEntity {
 		}
 		$typeofdata = self::$todvalues[$fieldname];
 		$decimals = CurrencyField::getDecimalsFromTypeOfData($typeofdata);
-		if (round($dbvalue, min($decimals, $current_user->no_of_currency_decimals))==$fldvalue) {
+		if (round((float)$dbvalue, min($decimals, $current_user->no_of_currency_decimals))==$fldvalue) {
 			$fldvalue = $dbvalue;
 		}
 		$log->debug('< adjustCurrencyField '.$fldvalue);
@@ -1331,11 +1331,14 @@ class CRMEntity {
 
 	/** Mark an item as deleted */
 	public function mark_deleted($id) {
-		global $current_user;
-		$date_var = date('Y-m-d H:i:s');
-		$query = 'UPDATE '.self::$crmentityTable.' set deleted=1,modifiedtime=?,modifiedby=? where crmid=?';
-		$this->db->pquery($query, array($this->db->formatDate($date_var, true), $current_user->id, $id), true, 'Error marking record deleted: ');
-		$this->db->pquery('UPDATE vtiger_crmobject set deleted=1 WHERE crmid=?', array($id));
+		global $current_user, $adb;
+		$adb->pquery(
+			'UPDATE '.self::$crmentityTable.' set deleted=1,modifiedtime=?,modifiedby=? where crmid=?',
+			array($adb->formatDate(date('Y-m-d H:i:s'), true), $current_user->id, $id),
+			true,
+			'Error marking record deleted: '
+		);
+		$adb->pquery('UPDATE vtiger_crmobject set deleted=1 WHERE crmid=?', array($id));
 	}
 
 	// this method is called during an import before inserting a bean
@@ -1477,8 +1480,8 @@ class CRMEntity {
 			$from_clause .= " INNER JOIN $this->table_name as vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
 			$from_clausesub .= " INNER JOIN $this->table_name as vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
 		} else {
-			$from_clause .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
-			$from_clausesub .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
+		$from_clause .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
+		$from_clausesub .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
 		}
 		// Consider custom table join as well.
 		if (isset($this->customFieldTable)) {
@@ -1543,7 +1546,7 @@ class CRMEntity {
 		if (self::$denormalized) {
 			$query .= ' INNER JOIN '.self::$crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
 		} else {
-			$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
+		$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
 		}
 
 		$joinedTables[] = $this->table_name;
@@ -1607,7 +1610,7 @@ class CRMEntity {
 			$query = "SELECT $fields_list, vtiger_users.user_name AS user_name FROM ".self::$crmentityTable
 				.' INNER JOIN '.self::$crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
 		} else {
-			$query = "SELECT $fields_list, vtiger_users.user_name AS user_name
+		$query = "SELECT $fields_list, vtiger_users.user_name AS user_name
 				FROM ".self::$crmentityTable." INNER JOIN $this->table_name ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
 		}
 
@@ -2498,7 +2501,8 @@ class CRMEntity {
 		$query = 'SELECT vtiger_crmentity.* ';
 
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-		$query .= ", CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN $userNameSql ELSE vtiger_groups.groupname END AS user_name";
+		$q_elsegroupname = $related_module != 'Users' ? 'ELSE vtiger_groups.groupname ' : '';
+		$query .= ", CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN $userNameSql {$q_elsegroupname}END AS user_name";
 
 		$more_relation = '';
 		// Select Custom Field Table Columns if present
@@ -2526,13 +2530,18 @@ class CRMEntity {
 		if (self::$denormalized) {
 			$query .= ' INNER JOIN '.self::$crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
 		} else {
-			$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
+		$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
 		}
 		$query .= ' INNER JOIN vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid = vtiger_crmentity.crmid OR vtiger_crmentityrel.crmid = vtiger_crmentity.crmid)';
 		$query .= $more_relation;
-		$query .= ' LEFT JOIN vtiger_users ON vtiger_users.id = '.self::$crmentityTable.'.smownerid';
-		$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.self::$crmentityTable.'.smownerid';
-		$query .= " WHERE ".self::$crmentityTable.".deleted = 0 AND (vtiger_crmentityrel.crmid = $id OR vtiger_crmentityrel.relcrmid = $id)";
+		if ($related_module != 'Users') {
+			$query .= ' LEFT JOIN vtiger_users ON vtiger_users.id = '.self::$crmentityTable.'.smownerid';
+			$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.self::$crmentityTable.'.smownerid';
+			$del_table = self::$crmentityTable;
+		} else {
+			$del_table = 'vtiger_users';
+		}
+		$query .= " WHERE {$del_table}.deleted = 0 AND (vtiger_crmentityrel.crmid = $id OR vtiger_crmentityrel.relcrmid = $id)";
 
 		$return_value = GetRelatedList($currentModule, $related_module, $other, $query, $button, $returnset);
 
@@ -2646,7 +2655,7 @@ class CRMEntity {
 			if (self::$denormalized) {
 				$query .= ' INNER JOIN '.self::$crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
 			} else {
-				$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
+			$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
 			}
 			$query .= $more_relation;
 			if ($relWithSelf) {
@@ -2781,7 +2790,7 @@ class CRMEntity {
 			if (self::$denormalized) {
 				$query .= ' INNER JOIN '.self::$crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
 			} else {
-				$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
+			$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
 			}
 			$query .= $more_relation;
 			if ($relWithSelf) {
@@ -3364,7 +3373,7 @@ class CRMEntity {
 		if (self::$denormalized) {
 			$query .=' INNER JOIN '.self::$crmentityTable." as vtiger_crmentity ON $this->table_name.$this->table_index = vtiger_crmentity.crmid AND vtiger_crmentity.deleted = 0 ";
 		} else {
-			$query .=" INNER JOIN vtiger_crmentity ON $this->table_name.$this->table_index = vtiger_crmentity.crmid AND deleted = 0 ";
+		$query .=" INNER JOIN vtiger_crmentity ON $this->table_name.$this->table_index = vtiger_crmentity.crmid AND deleted = 0 ";
 		}
 
 		//remove the base table
@@ -3589,14 +3598,14 @@ class CRMEntity {
 	 * return string $sorder    - sortorder string either 'ASC' or 'DESC'
 	 */
 	public function getSortOrder() {
-		global $log;
+		global $log, $adb;
 		$cmodule = get_class($this);
 		$log->debug('> getSortOrder');
 		$sorder = strtoupper(GlobalVariable::getVariable('Application_ListView_Default_OrderDirection', $this->default_sort_order, $cmodule));
 		if (isset($_REQUEST['sorder'])) {
-			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
+			$sorder = $adb->sql_escape_string($_REQUEST['sorder']);
 		} elseif (!empty($_SESSION[$cmodule.'_Sort_Order'])) {
-			$sorder = $this->db->sql_escape_string($_SESSION[$cmodule.'_Sort_Order']);
+			$sorder = $adb->sql_escape_string($_SESSION[$cmodule.'_Sort_Order']);
 		}
 		$log->debug('< getSortOrder');
 		return $sorder;
@@ -3607,7 +3616,7 @@ class CRMEntity {
 	 * return string $order_by    - fieldname(eg: 'accountname')
 	 */
 	public function getOrderBy() {
-		global $log;
+		global $log, $adb;
 		$log->debug('> getOrderBy');
 		$cmodule = get_class($this);
 		$order_by = '';
@@ -3616,9 +3625,9 @@ class CRMEntity {
 		}
 
 		if (isset($_REQUEST['order_by'])) {
-			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
+			$order_by = $adb->sql_escape_string($_REQUEST['order_by']);
 		} elseif (!empty($_SESSION[$cmodule.'_Order_By'])) {
-			$order_by = $this->db->sql_escape_string($_SESSION[$cmodule.'_Order_By']);
+			$order_by = $adb->sql_escape_string($_SESSION[$cmodule.'_Order_By']);
 		}
 		$log->debug('< getOrderBy');
 		return $order_by;

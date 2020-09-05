@@ -3082,7 +3082,7 @@ class ReportRun extends CRMEntity {
 		$roleid=$current_user->roleid;
 		$roleids = getRoleSubordinates($roleid);
 		$roleids[] = $roleid;
-		$roleidslist = implode($roleids, '","');
+		$roleidslist = implode('","', $roleids);
 		$temp_status = array();
 		$fieldlists = array();
 		for ($i=0; $i < $adb->num_rows($result); $i++) {

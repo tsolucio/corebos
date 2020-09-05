@@ -33,7 +33,7 @@ class cbwsLoginSyncHandler extends VTEventHandler {
 						$cbconn = new Vtiger_WSClient($server);
 						$serverID = preg_replace('/[^a-zA-Z0-9_]/', '', $server);
 						$pkey = coreBOS_Settings::getSetting('cbwsLoginSync'.$serverID, '');
-						if (!empty($pkey)) {
+						if (!empty($pkey) && !empty($params[0]) && !empty($params[0]->column_fields['user_name']) && !empty($params[1])) {
 							$cbconn->doLoginSession(
 								$params[0]->column_fields['user_name'],
 								$site_URL,

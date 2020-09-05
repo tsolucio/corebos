@@ -697,6 +697,7 @@ $mod_strings = array(
 	'vcylinder' => 'Verticale cilinder',
 	'LBL_SEND_EMAIL_TO_SENDER' => 'Stuur een kopie van e-mails',
 	'PASSWORD REQUIREMENTS' => 'Wachtwoord vereisten',
+	'PASSWORD REQUIREMENTS NOT MET' => 'PASSWORD REQUIREMENTS NOT MET',
 	'REQUIRED' => 'Vereist',
 	'Min. 8 characters' => 'Minimaal 8 karakters',
 	'Contains3of4' => 'WACHTWOORD MOET MINIMAAL 3 VAN DE VOLGENDE 4 KARAKTERS BEVATTEN',

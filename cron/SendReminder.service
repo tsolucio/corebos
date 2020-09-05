@@ -142,8 +142,7 @@ if (vtlib_isModuleActive('cbCalendar')) {
 						$wsid = vtws_getWebserviceEntityId('cbCalendar', $activity_id);
 						$entityData = $entityCache->forId($wsid);
 						if ($workflow->evaluate($entityCache, $entityData->getId())) {
-							$wfActive = $workflow->activeWorkflow();
-							if ($wfActive == true) {
+							if ($workflow->activeWorkflow()) {
 								$workflow->performTasks($entityData);
 							}
 						}

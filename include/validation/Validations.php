@@ -99,13 +99,37 @@ function validate_notDuplicate($field, $fieldval, $params, $fields) {
 	$otherfields = $params[2];
 	$queryGenerator = new QueryGenerator($module, $current_user);
 	$queryGenerator->setFields(array('id'));
-	$queryGenerator->addCondition($field, $fieldval, 'e');
+	if (getUItypeByFieldName($module, $field)==10) {
+		if (!empty($fieldval)) {
+			if (strpos($fieldval, 'x') > 0) {
+				list($wsid, $relcrmid) = explode('x', $fieldval);
+			} else {
+				$relcrmid = $fieldval;
+			}
+			$relmod = getSalesEntityType($relcrmid);
+			$queryGenerator->addReferenceModuleFieldCondition($relmod, $field, 'id', $relcrmid, 'e');
+		}
+	} else {
+		$queryGenerator->addCondition($field, $fieldval, 'e');
+	}
 	if (isset($crmid) && $crmid !='') {
 		$queryGenerator->addCondition('id', $crmid, 'n', 'and');
 	}
 	if (isset($otherfields)) {
 		foreach ($otherfields as $field) {
-			$queryGenerator->addCondition($field, $fields[$field], 'e', 'and');
+			if (getUItypeByFieldName($module, $field)==10) {
+				if (!empty($fields[$field])) {
+					if (strpos($fields[$field], 'x') > 0) {
+						list($wsid, $relcrmid) = explode('x', $fields[$field]);
+					} else {
+						$relcrmid = $fields[$field];
+					}
+					$relmod = getSalesEntityType($relcrmid);
+					$queryGenerator->addReferenceModuleFieldCondition($relmod, $field, 'id', $relcrmid, 'e', 'and');
+				}
+			} else {
+				$queryGenerator->addCondition($field, $fields[$field], 'e', 'and');
+			}
 		}
 	}
 	$query = $queryGenerator->getQuery();
@@ -169,24 +193,34 @@ function validateRelatedModuleExists($field, $fieldval, $params, $fields) {
  */
 function validate_expression($field, $fieldval, $params, $fields) {
 	$bmap = $params[1];
+	// check that cbmapid is correct and load it
+	if (preg_match('/^[0-9]+x[0-9]+$/', $bmap)) {
+		list($cbmapws, $bmap) = explode('x', $bmap);
+	}
+	if (is_numeric($bmap)) {
+		$cbmap = cbMap::getMapByID($bmap);
+	} else {
+		$cbmapid = GlobalVariable::getVariable('BusinessMapping_'.$bmap, cbMap::getMapIdByName($bmap));
+		$cbmap = cbMap::getMapByID($cbmapid);
+	}
 	if (empty($params[0])) { // isNew
-		// check that cbmapid is correct and load it
-		if (preg_match('/^[0-9]+x[0-9]+$/', $bmap)) {
-			list($cbmapws, $bmap) = explode('x', $bmap);
-		}
-		if (is_numeric($bmap)) {
-			$cbmap = cbMap::getMapByID($bmap);
-		} else {
-			$cbmapid = GlobalVariable::getVariable('BusinessMapping_'.$bmap, cbMap::getMapIdByName($bmap));
-			$cbmap = cbMap::getMapByID($cbmapid);
-		}
-		if (empty($cbmap) || $cbmap->column_fields['maptype'] != 'Condition Expression') {
+		if (empty($cbmap) || ($cbmap->column_fields['maptype'] != 'Condition Expression' && $cbmap->column_fields['maptype'] != 'DecisionTable')) {
 			return false;
 		}
-		return $cbmap->ConditionExpression($fields);
+		if ($cbmap->column_fields['maptype'] == 'Condition Expression') {
+			return $cbmap->ConditionExpression($fields);
+		} else {
+			$dt = $cbmap->DecisionTable($fields);
+			return ($dt!='__DoesNotPass__');
+		}
 	} else { // editing
 		$fields['record_id'] = $params[0];
-		return coreBOS_Rule::evaluate($bmap, $fields);
+		$return = coreBOS_Rule::evaluate($bmap, $fields);
+		if ($cbmap->column_fields['maptype'] == 'DecisionTable') {
+			return ($return!='__DoesNotPass__');
+		} else {
+			return $return;
+		}
 	}
 }
 
