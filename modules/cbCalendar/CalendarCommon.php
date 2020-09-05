@@ -488,6 +488,7 @@ function getActivityMailInfo($return_id, $status, $activity_type) {
 
 	$relatedContacts = getActivityRelatedContacts($return_id);
 
+	$mail_data = array();
 	$mail_data['mode'] = 'edit';
 	$mail_data['activity_mode'] = $activity_type;
 	$mail_data['sendnotification'] = $send_notification;
@@ -508,8 +509,7 @@ function getActivityMailInfo($return_id, $status, $activity_type) {
 	$date = new DateTimeField($st_date.' '.$start_hour);
 	$endDate = new DateTimeField($end_date.' '.$end_hour);
 	$mail_data['st_date_time'] = $date->getDBInsertDateTimeValue();
-	$mail_data['end_date_time'] = $endDate->getDBInsertDateValue().' '.
-			$endDate->getDBInsertTimeValue();
+	$mail_data['end_date_time'] = $endDate->getDBInsertDateValue().' '.$endDate->getDBInsertTimeValue();
 	$mail_data['location']=$location;
 	return $mail_data;
 }
