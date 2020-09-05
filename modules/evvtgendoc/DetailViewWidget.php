@@ -16,15 +16,16 @@
  *  Version      : 1.0
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
+require_once 'data/CRMEntity.php';
 global $adb,$current_user,$mod_strings;
 $moduletemplate = vtlib_purify($_REQUEST['formodule']);
 $modulei18n = getTranslatedString('SINGLE_'.$moduletemplate, $moduletemplate);
 $forrecord = vtlib_purify($_REQUEST['forrecord']);
-
+$crmEntityTable = CRMEntity::getcrmEntityTableAlias('evvtgendoc');
 $templates=$adb->pquery(
 	'SELECT notesid,title
 		FROM vtiger_notes
-		INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_notes.notesid
+		INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_notes.notesid
 		WHERE deleted = 0 and template=1 and template_for=? order by title',
 	array($moduletemplate)
 );

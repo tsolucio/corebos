@@ -158,10 +158,14 @@ $csvheader = implode(',', $field_label);
 //<<<<<<<<<<<<<<<<End>>>>>>>>>>>>>>>>>>>>>>>>
 
 if (count($querycolumns) > 0) {
+	require_once 'data/CRMEntity.php';
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('HelpDesk');
+	$crmEntityTable1 = CRMEntity::getcrmEntityTableAlias('Accounts', true);
+	$crmEntityTable2 = CRMEntity::getcrmEntityTableAlias('Contacts', true);
 	$selectcolumns = implode(',', $querycolumns);
 
 	$query ='select '.$selectcolumns.' from vtiger_troubletickets
-		inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_troubletickets.ticketid
+		inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_troubletickets.ticketid
 		inner join vtiger_ticketcf on vtiger_ticketcf.ticketid = vtiger_troubletickets.ticketid
 		left join vtiger_crmentity as crmentityRelHelpDesk on crmentityRelHelpDesk.crmid = vtiger_troubletickets.parent_id
 		left join vtiger_account as accountRelHelpDesk on accountRelHelpDesk.accountid=crmentityRelHelpDesk.crmid
@@ -170,7 +174,7 @@ if (count($querycolumns) > 0) {
 		left join vtiger_users on vtiger_crmentity.smownerid=vtiger_users.id
 		LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 		left join vtiger_account on vtiger_account.accountid = vtiger_troubletickets.parent_id
-		left join vtiger_crmentity as crmentityAccounts on crmentityAccounts.crmid = vtiger_account.accountid
+		left join '.$crmEntityTable1.' as crmentityAccounts on crmentityAccounts.crmid = vtiger_account.accountid
 		left join vtiger_accountbillads on vtiger_accountbillads.accountaddressid = vtiger_account.accountid
 		left join vtiger_accountshipads on vtiger_accountshipads.accountaddressid = vtiger_account.accountid
 		left join vtiger_accountscf on vtiger_accountbillads.accountaddressid = vtiger_accountscf.accountid
@@ -178,7 +182,7 @@ if (count($querycolumns) > 0) {
 		left join vtiger_users as usersAccounts on usersAccounts.id = crmentityAccounts.smownerid
 		LEFT JOIN vtiger_groups as groupsAccounts ON groupsAccounts.groupid = vtiger_crmentity.smownerid
 		left join vtiger_contactdetails on vtiger_contactdetails.contactid = vtiger_troubletickets.parent_id
-		left join vtiger_crmentity as crmentityContacts on crmentityContacts.crmid = vtiger_contactdetails.contactid
+		left join '.$crmEntityTable2.' as crmentityContacts on crmentityContacts.crmid = vtiger_contactdetails.contactid
 		left join vtiger_contactaddress on vtiger_contactdetails.contactid = vtiger_contactaddress.contactaddressid
 		left join vtiger_contactsubdetails on vtiger_contactdetails.contactid = vtiger_contactsubdetails.contactsubscriptionid
 		left join vtiger_contactscf on vtiger_contactdetails.contactid = vtiger_contactscf.contactid

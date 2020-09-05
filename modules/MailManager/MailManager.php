@@ -8,6 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 require_once 'include/Webservices/Query.php';
+require_once 'data/CRMEntity.php';
 
 class MailManager {
 	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-contact', 'class' => 'slds-icon', 'icon'=>'email');
@@ -65,12 +66,12 @@ class MailManager {
 
 	public static function lookupMailAssociation($mailuid) {
 		global $adb;
-
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('MailManager');
 		// Mail could get associated with two-or-more records if they get deleted after linking.
 		$result = $adb->pquery(
 			'SELECT vtiger_mailmanager_mailrel.*
 				FROM vtiger_mailmanager_mailrel
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_mailmanager_mailrel.crmid
+				INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_mailmanager_mailrel.crmid
 					AND vtiger_crmentity.deleted=0 AND vtiger_mailmanager_mailrel.mailuid=?
 				LIMIT 1',
 			array(decode_html($mailuid))
@@ -83,10 +84,11 @@ class MailManager {
 
 	public static function isEMailAssociatedWithCRMID($mailuid, $crmid) {
 		global $adb;
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('MailManager');
 		$result = $adb->pquery(
 			'SELECT vtiger_mailmanager_mailrel.*
 				FROM vtiger_mailmanager_mailrel
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_mailmanager_mailrel.crmid
+				INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_mailmanager_mailrel.crmid
 					AND vtiger_crmentity.deleted=0 AND vtiger_mailmanager_mailrel.mailuid=? and vtiger_mailmanager_mailrel.crmid=?
 				LIMIT 1',
 			array(decode_html($mailuid),$crmid)

@@ -28,9 +28,11 @@ class ConvertLeadUI {
 
 	public function __construct($leadid, $current_user) {
 		global $adb;
+		require_once 'data/CRMEntity.php';
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Leads');
 		$this->leadid = $leadid;
 		$this->current_user = $current_user;
-		$sql = 'SELECT * FROM vtiger_leaddetails,vtiger_leadscf,vtiger_crmentity
+		$sql = 'SELECT * FROM vtiger_leaddetails,vtiger_leadscf,'.$crmEntityTable.'
 			WHERE vtiger_leaddetails.leadid=vtiger_leadscf.leadid
 			AND vtiger_leaddetails.leadid=vtiger_crmentity.crmid
 			AND vtiger_leaddetails.leadid =?';

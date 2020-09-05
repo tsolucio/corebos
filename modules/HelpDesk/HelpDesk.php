@@ -390,9 +390,10 @@ class HelpDesk extends CRMEntity {
 		$fields_list = str_replace(",vtiger_ticketcomments.comments as 'Add Comment'", ' ', $fields_list);
 
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$crmEntityTable = self::$denormalized ? 'vtiger_troubletickets as vtiger_crmentity' : 'vtiger_crmentity';
 		$query = "SELECT $fields_list,case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name
-			FROM vtiger_crmentity
-			INNER JOIN vtiger_troubletickets ON vtiger_troubletickets.ticketid =vtiger_crmentity.crmid
+			FROM ".$crmEntityTable.
+			" INNER JOIN vtiger_troubletickets ON vtiger_troubletickets.ticketid =vtiger_crmentity.crmid
 			LEFT JOIN vtiger_crmentity vtiger_crmentityRelatedTo ON vtiger_crmentityRelatedTo.crmid = vtiger_troubletickets.parent_id
 			LEFT JOIN vtiger_account ON vtiger_account.accountid = vtiger_troubletickets.parent_id
 			LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid = vtiger_troubletickets.parent_id
@@ -447,8 +448,9 @@ class HelpDesk extends CRMEntity {
 	public static function getUpdateLogEditMessage($ticketid, $column_fields, $assigntype) {
 		global $adb, $current_user;
 		//First retrieve the existing information
+		$crmEntityTable = self::$denormalized ? 'vtiger_troubletickets' : 'vtiger_crmentity';
 		$tktresult = $adb->pquery('select * from vtiger_troubletickets where ticketid=?', array($ticketid));
-		$crmresult = $adb->pquery('select * from vtiger_crmentity where crmid=?', array($ticketid));
+		$crmresult = $adb->pquery('select * from '.$crmEntityTable.' where crmid=?', array($ticketid));
 
 		$updatelog = decode_html($adb->query_result($tktresult, 0, 'update_log'));
 
@@ -551,7 +553,8 @@ class HelpDesk extends CRMEntity {
 		$query = $this->getRelationQuery($module, $secmodule, "vtiger_troubletickets", "ticketid", $queryplanner);
 
 		if ($queryplanner->requireTable("vtiger_crmentityHelpDesk", $matrix)) {
-			$query .=" left join vtiger_crmentity as vtiger_crmentityHelpDesk on vtiger_crmentityHelpDesk.crmid=vtiger_troubletickets.ticketid and vtiger_crmentityHelpDesk.deleted=0";
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('HelpDesk', true);
+			$query .=" left join ".$crmEntityTable." as vtiger_crmentityHelpDesk on vtiger_crmentityHelpDesk.crmid=vtiger_troubletickets.ticketid and vtiger_crmentityHelpDesk.deleted=0";
 		}
 		if ($queryplanner->requireTable("vtiger_ticketcf")) {
 			$query .=" left join vtiger_ticketcf on vtiger_ticketcf.ticketid = vtiger_troubletickets.ticketid";

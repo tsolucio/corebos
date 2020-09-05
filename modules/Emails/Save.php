@@ -28,7 +28,7 @@ if (isset($_REQUEST['server_check']) && $_REQUEST['server_check'] == 'true') {
 require_once 'modules/Emails/Emails.php';
 require_once 'include/logging.php';
 require_once 'include/database/PearDatabase.php';
-
+require_once 'data/CRMEntity.php';
 $focus = new Emails();
 
 global $current_user,$mod_strings,$app_strings;
@@ -99,10 +99,11 @@ if ((isset($_REQUEST['deletebox']) && $_REQUEST['deletebox'] != null) && $_REQUE
 function checkIfContactExists($mailid) {
 	global $log;
 	$log->debug('> checkIfContactExists '.$mailid);
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
 	global $adb;
 	$sql = 'select contactid
 		from vtiger_contactdetails
-		inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_contactdetails.contactid
+		inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_contactdetails.contactid
 		where vtiger_crmentity.deleted=0 and email= ?';
 	$result = $adb->pquery($sql, array($mailid));
 	$numRows = $adb->num_rows($result);
@@ -135,12 +136,12 @@ if (!empty($_REQUEST['record']) && $_REQUEST['send_mail']==false && !empty($_REQ
 }
 $focus->save('Emails');
 $return_id = $focus->id;
-
+$crmEntityTable1 = CRMEntity::getcrmEntityTableAlias('Emails', true);
 require_once 'modules/Emails/mail.php';
 if ($current_user->column_fields['send_email_to_sender']=='1' && isset($_REQUEST['send_mail']) && $_REQUEST['send_mail'] && $_REQUEST['parent_id'] != '') {
 	$user_mail_status = send_mail('Emails', $current_user->column_fields['email1'], $current_user->user_name, '', $_REQUEST['subject'], $_REQUEST['description'], $_REQUEST['ccmail'], $_REQUEST['bccmail'], 'all', $focus->id);
 	if ($user_mail_status != 1) {
-		$adb->pquery('delete from vtiger_crmentity where crmid=?', array($focus->id));
+		$adb->pquery('delete from '.$crmEntityTable1.' where crmid=?', array($focus->id));
 		$adb->pquery('delete from vtiger_emaildetails where emailid=?', array($focus->id));
 		$error_msg = '<font color=red><strong>'.$mod_strings['LBL_CHECK_USER_MAILID'].'</strong></font>';
 		$ret_error = 1;

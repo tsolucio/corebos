@@ -9,6 +9,7 @@
 ********************************************************************************/
 require_once 'include/database/PearDatabase.php';
 require_once 'include/utils/MergeUtils.php';
+require_once 'data/CRMEntity.php';
 global $app_strings, $default_charset;
 
 $randomfilename = 'vt_' . str_replace(array('.',' '), '', microtime());
@@ -45,7 +46,8 @@ if ($mass_merge != '') {
 }
 
 //for setting vtiger_accountid=0 for the contacts which are deleted
-$ct_query = "select crmid from vtiger_crmentity where setype='Contacts' and deleted=1";
+$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
+$ct_query = "select vtiger_crmentity.crmid from ".$crmEntityTable." where setype='Contacts' and deleted=1";
 $result = $adb->pquery($ct_query, array());
 $deleted_id = array();
 while ($row = $adb->fetch_array($result)) {
@@ -151,9 +153,10 @@ $csvheader = implode(',', $field_label);
 
 if (count($querycolumns) > 0) {
 	$selectcolumns = implode(',', $querycolumns);
-
+	$crmEntityTable1 = CRMEntity::getcrmEntityTableAlias('Accounts');
+	$crmEntityTable2 = CRMEntity::getcrmEntityTableAlias('Contacts', true);
 	$query = "select  $selectcolumns from vtiger_account
-		inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_account.accountid
+		inner join $crmEntityTable1 on vtiger_crmentity.crmid=vtiger_account.accountid
 		inner join vtiger_accountbillads on vtiger_account.accountid=vtiger_accountbillads.accountaddressid
 		inner join vtiger_accountshipads on vtiger_account.accountid=vtiger_accountshipads.accountaddressid
 		inner join vtiger_accountscf on vtiger_account.accountid = vtiger_accountscf.accountid
@@ -161,7 +164,7 @@ if (count($querycolumns) > 0) {
 		left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
 		LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 		left join vtiger_contactdetails on vtiger_contactdetails.accountid=vtiger_account.accountid
-		left join vtiger_crmentity as vtiger_crmentityContacts on vtiger_crmentityContacts.crmid = vtiger_contactdetails.contactid
+		left join $crmEntityTable2 as vtiger_crmentityContacts on vtiger_crmentityContacts.crmid = vtiger_contactdetails.contactid
 		left join vtiger_contactaddress on vtiger_contactdetails.contactid = vtiger_contactaddress.contactaddressid
 		left join vtiger_contactsubdetails on vtiger_contactdetails.contactid = vtiger_contactsubdetails.contactsubscriptionid
 		left join vtiger_contactscf on vtiger_contactdetails.contactid = vtiger_contactscf.contactid

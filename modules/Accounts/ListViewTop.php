@@ -19,12 +19,13 @@ function getTopAccounts($maxval, $calCnt) {
 	require_once 'modules/Potentials/Potentials.php';
 	require_once 'include/logging.php';
 	require_once 'include/ListView/ListView.php';
+	require_once 'data/CRMEntity.php';
 	global $app_strings, $adb, $current_language, $current_user;
 	$current_module_strings = return_module_language($current_language, "Accounts");
-
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Potentials');
 	$list_query = 'select vtiger_account.accountid, vtiger_account.accountname, '.
 		'sum(vtiger_potential.amount) as amount from vtiger_potential '.
-		'inner join vtiger_crmentity on (vtiger_potential.potentialid=vtiger_crmentity.crmid) '.
+		'inner join '.$crmEntityTable.' on (vtiger_potential.potentialid=vtiger_crmentity.crmid) '.
 		'inner join vtiger_account on (vtiger_potential.related_to=vtiger_account.accountid) ';
 	$list_query .= ' WHERE vtiger_crmentity.deleted = 0  AND vtiger_potential.potentialid>0';
 	$list_query .= " AND vtiger_crmentity.smownerid='".$current_user->id."' ".
