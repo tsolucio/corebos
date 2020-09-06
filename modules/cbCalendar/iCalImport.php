@@ -9,18 +9,17 @@
  *************************************************************************************/
 define('_BENNU_VERSION', '0.1');
 require_once 'Smarty_setup.php';
-include 'modules/Calendar/iCal/iCalendar_rfc2445.php';
-include 'modules/Calendar/iCal/iCalendar_components.php';
-include 'modules/Calendar/iCal/iCalendar_properties.php';
-include 'modules/Calendar/iCal/iCalendar_parameters.php';
-include 'modules/Calendar/iCal/ical-parser-class.php';
-require_once 'modules/Calendar/iCalLastImport.php';
+include 'modules/cbCalendar/iCal/iCalendar_rfc2445.php';
+include 'modules/cbCalendar/iCal/iCalendar_components.php';
+include 'modules/cbCalendar/iCal/iCalendar_properties.php';
+include 'modules/cbCalendar/iCal/iCalendar_parameters.php';
+include 'modules/cbCalendar/iCal/ical-parser-class.php';
+require_once 'modules/cbCalendar/iCalLastImport.php';
 
 require_once 'include/utils/utils.php';
 require_once 'data/CRMEntity.php';
 
 global $import_dir,$current_user,$mod_strings,$app_strings,$currentModule;
-$currentModule = 'cbCalendar';
 $theme_path = 'themes/'.$theme.'/';
 $image_path = $theme_path.'images/';
 

@@ -4,10 +4,10 @@ define('_BENNU_VERSION', '0.1');
 
 require_once 'include/utils/utils.php';
 require_once 'modules/cbCalendar/CalendarCommon.php';
-include 'modules/Calendar/iCal/iCalendar_rfc2445.php';
-include 'modules/Calendar/iCal/iCalendar_components.php';
-include 'modules/Calendar/iCal/iCalendar_properties.php';
-include 'modules/Calendar/iCal/iCalendar_parameters.php';
+include 'modules/cbCalendar/iCal/iCalendar_rfc2445.php';
+include 'modules/cbCalendar/iCal/iCalendar_components.php';
+include 'modules/cbCalendar/iCal/iCalendar_properties.php';
+include 'modules/cbCalendar/iCal/iCalendar_parameters.php';
 
 //$ical_query = "SELECT * FROM vtiger_activity WHERE (( STATUS != 'Completed' AND STATUS != 'Deferred' ) OR STATUS IS NULL)
 //               AND (( eventstatus != 'Held' AND eventstatus != 'Not Held' ) OR eventstatus IS NULL )";
