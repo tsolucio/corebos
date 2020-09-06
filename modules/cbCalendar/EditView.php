@@ -182,9 +182,9 @@ if ($record && cbCalendar::getCalendarActivityType($record)=='Emails') {
 		$rem_min = ($default_calendar_reminder-$rem_days*24*60)%60;
 		$secondvalue = array('reminder_time'=>array(($default_calendar_reminder>0 ? 'CHECKED' : ''),getTranslatedString('LBL_YES'),getTranslatedString('LBL_NO')));
 		$value['reminder_time'] = array(
-			array(0, 32, 'remdays', getTranslatedString('LBL_DAYS', 'Calendar'), $rem_days),
-			array(0, 24, 'remhrs', getTranslatedString('LBL_HOURS', 'Calendar'), $rem_hrs),
-			array(10, 60, 'remmin', getTranslatedString('LBL_MINUTES', 'Calendar').'&nbsp;&nbsp;'.getTranslatedString('LBL_BEFORE_EVENT', 'Calendar'), $rem_min)
+			array(0, 32, 'remdays', getTranslatedString('LBL_DAYS', 'cbCalendar'), $rem_days),
+			array(0, 24, 'remhrs', getTranslatedString('LBL_HOURS', 'cbCalendar'), $rem_hrs),
+			array(10, 60, 'remmin', getTranslatedString('LBL_MINUTES', 'cbCalendar').'&nbsp;&nbsp;'.getTranslatedString('LBL_BEFORE_EVENT', 'cbCalendar'), $rem_min)
 		);
 		$smarty->assign('secondvalue', $secondvalue);
 		$smarty->assign('thirdvalue', array());

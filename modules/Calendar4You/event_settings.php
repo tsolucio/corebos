@@ -170,7 +170,7 @@ if ($mode != "user" && $id != "invite") {
 			if ($num_field > 0) {
 				while ($row_field = $adb->fetch_array($res_field)) {
 					$fieldid = $row_field['fieldid'];
-					$fieldlabel = getTranslatedString($row_field['fieldlabel'], 'Calendar');
+					$fieldlabel = getTranslatedString($row_field['fieldlabel'], 'cbCalendar');
 
 					$field_data = array();
 					$field_data['fieldid'] = $fieldid;

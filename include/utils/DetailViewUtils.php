@@ -925,9 +925,9 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$rem_days = floor($col_fields[$fieldname] / (24 * 60));
 			$rem_hrs = floor(($col_fields[$fieldname] - $rem_days * 24 * 60) / 60);
 			$rem_min = ($col_fields[$fieldname] - $rem_days * 24 * 60) % 60;
-			$reminder_str = $rem_days . '&nbsp;' . getTranslatedString('LBL_DAYS', 'Calendar') . '&nbsp;' . $rem_hrs . '&nbsp;'
-				. getTranslatedString('LBL_HOURS', 'Calendar') . '&nbsp;' . $rem_min . '&nbsp;' . getTranslatedString('LBL_MINUTES', 'Calendar') . '&nbsp;&nbsp;'
-				. getTranslatedString('LBL_BEFORE_EVENT', 'Calendar');
+			$reminder_str = $rem_days . '&nbsp;' . getTranslatedString('LBL_DAYS', 'cbCalendar') . '&nbsp;' . $rem_hrs . '&nbsp;'
+				. getTranslatedString('LBL_HOURS', 'cbCalendar') . '&nbsp;' . $rem_min . '&nbsp;' . getTranslatedString('LBL_MINUTES', 'cbCalendar') . '&nbsp;&nbsp;'
+				. getTranslatedString('LBL_BEFORE_EVENT', 'cbCalendar');
 		} else {
 			$rem_days = 0;
 			$rem_hrs = 0;

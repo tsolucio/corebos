@@ -66,7 +66,7 @@ function module_Chart_HomePageDashboard($userinfo) {
 	$modrecords['Potentials']= $adb->query_result($potcountres, 0, 'count');
 
 	// Calendar moudule
-	$crmEntityTable3 = CRMEntity::getcrmEntityTableAlias('Calendar');
+	$crmEntityTable3 = CRMEntity::getcrmEntityTableAlias('cbCalendar');
 	$calcountres = $adb->pquery("SELECT count(*) as count FROM ".$crmEntityTable3." INNER JOIN vtiger_activity act ON act.activityid = vtiger_crmentity.crmid
 		WHERE vtiger_crmentity.deleted = 0 AND vtiger_crmentity.smownerid = ? AND act.activitytype != 'Emails' AND
 			(act.eventstatus NOT IN ('Completed', 'Deferred', 'Held', 'Not Held') OR act.eventstatus IS NULL)", array($user_id));

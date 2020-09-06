@@ -328,7 +328,7 @@ function getActivityDetails($description, $user_id, $from = '') {
 	}
 
 	$current_username = getUserFullName($current_user->id);
-	$status = getTranslatedString($description['status'], 'Calendar');
+	$status = getTranslatedString($description['status'], 'cbCalendar');
 	$list = $name.',';
 	$list .= '<br><br>'.$msg.' '.$reply.'.<br> '.$mod_strings['LBL_DETAILS_STRING'].':<br>';
 	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings['LBL_SUBJECT'].' : '.$description['subject'];

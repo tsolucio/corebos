@@ -279,7 +279,7 @@ function getHistory($parentmodule, $query, $id) {
 			}
 
 			$typeofactivity = $row['activitytype'];
-			$typeofactivity = getTranslatedString($typeofactivity, 'Calendar');
+			$typeofactivity = getTranslatedString($typeofactivity, 'cbCalendar');
 			$entries[] = $typeofactivity;
 
 			$activity = '<a href="index.php?module=cbCalendar&action=DetailView&return_module='.$parentmodule.'&return_action=DetailView&record='.$row['activityid'] .'&activity_mode='.$activitymode.'&return_id='.vtlib_purify($_REQUEST['record']).'&parenttab='.vtlib_purify($_REQUEST['parenttab']).'">'.$row['subject'].'</a></td>';

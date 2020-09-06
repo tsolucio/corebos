@@ -165,7 +165,7 @@ function getActTypeForCalendar($activitytypeid, $translate = true) {
 	}
 	$value = html_entity_decode($value, ENT_QUOTES, $default_charset);
 	if ($translate) {
-		return getTranslatedString($value, 'Calendar');
+		return getTranslatedString($value, 'cbCalendar');
 	} else {
 		return $value;
 	}
@@ -551,7 +551,7 @@ function getITSActFieldCombo($fieldname, $tablename, $from_module = '', $follow_
 		}
 		$previousValue = $value;
 		$value = html_entity_decode($value, ENT_QUOTES, $default_charset);
-		$label = getTranslatedString($value, 'Calendar');
+		$label = getTranslatedString($value, 'cbCalendar');
 		if ($value == $def) {
 			$selected = ' selected';
 		} else {

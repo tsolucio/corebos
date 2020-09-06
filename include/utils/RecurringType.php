@@ -298,7 +298,7 @@ class RecurringType {
 	}
 
 	public function getDisplayRecurringInfo() {
-		$i18nModule = 'Calendar';
+		$i18nModule = 'cbCalendar';
 
 		$displayRecurringData = array();
 

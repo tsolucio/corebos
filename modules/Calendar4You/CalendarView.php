@@ -101,7 +101,7 @@ for ($i=0; $i<$adb->num_rows($Res); $i++) {
 	$actname = html_entity_decode($actname, ENT_QUOTES, $default_charset);
 	$eventlist .= $actname.';';
 	$eventlists_array .= '"'.html_entity_decode($actname, ENT_QUOTES, $default_charset).'",';
-	$i18actname = getTranslatedString($actname, 'Calendar');
+	$i18actname = getTranslatedString($actname, 'cbCalendar');
 	$abelist.='<tr><td><a id="add'.strtolower($actname)
 		.'" href="index.php?module=cbCalendar&action=EditView&return_module=Calendar4You&return_action=index&activity_mode=Events&activitytype='.urlencode($actname)
 		.'" class="drop_down">'.$i18actname.'</a></td></tr>';
@@ -178,7 +178,7 @@ foreach ($ActTypes as $act_id => $act_name) {
 
 	$Activity_Types[$act_id] = array(
 		'typename'=>html_entity_decode($act_name, ENT_QUOTES, $default_charset),
-		'label'=>getTranslatedString(html_entity_decode($act_name, ENT_QUOTES, $default_charset), 'Calendar'),
+		'label'=>getTranslatedString(html_entity_decode($act_name, ENT_QUOTES, $default_charset), 'cbCalendar'),
 		'act_type'=>'event',
 		'title_color'=>$Colors_Palete[0],
 		'color'=>$Colors_Palete[1],

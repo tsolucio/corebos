@@ -55,24 +55,24 @@ class delSettingsNotifications extends cbupdaterWorker {
 						$task->active = false;
 					}
 					$subject = $adb->query_result($result_main, 0, 'notificationsubject');
-					$subject = getTranslatedString('Reminder', 'Calendar').' $activitytype @ $date_start $time_start'.
-						'] ($(general : (__VtigerMeta__) dbtimezone)) '.getTranslatedString($adb->query_result($result_main, 0, 'notificationsubject'), 'Calendar');
-					$content = nl2br(getTranslatedString($adb->query_result($result_main, 0, 'notificationbody'), 'Calendar')) ."\n\n ".
-						getTranslatedString('Subject', 'Calendar').' : $subject'."\n ".
-						getTranslatedString('Date & Time', 'Calendar').' : $date_start $time_start&nbsp;($(general : (__VtigerMeta__) dbtimezone))'."\n\n ".
-						getTranslatedString('Visit_Link', 'Calendar')." <a href='$(general : (__VtigerMeta__) crmdetailviewurl)'>".getTranslatedString('Click here', 'Calendar').'</a>';
+					$subject = getTranslatedString('Reminder', 'cbCalendar').' $activitytype @ $date_start $time_start'.
+						'] ($(general : (__VtigerMeta__) dbtimezone)) '.getTranslatedString($adb->query_result($result_main, 0, 'notificationsubject'), 'cbCalendar');
+					$content = nl2br(getTranslatedString($adb->query_result($result_main, 0, 'notificationbody'), 'cbCalendar')) ."\n\n ".
+						getTranslatedString('Subject', 'cbCalendar').' : $subject'."\n ".
+						getTranslatedString('Date & Time', 'cbCalendar').' : $date_start $time_start&nbsp;($(general : (__VtigerMeta__) dbtimezone))'."\n\n ".
+						getTranslatedString('Visit_Link', 'cbCalendar')." <a href='$(general : (__VtigerMeta__) crmdetailviewurl)'>".getTranslatedString('Click here', 'cbCalendar').'</a>';
 				} else {
 					$task->active = false;
 				}
 				if (empty($subject)) {
-					$subject = getTranslatedString('Reminder', 'Calendar').' $activitytype @ @$date_start $time_start'.
+					$subject = getTranslatedString('Reminder', 'cbCalendar').' $activitytype @ @$date_start $time_start'.
 						'] ($(general : (__VtigerMeta__) dbtimezone)) ';
 				}
 				if (empty($content)) {
 					$content = '<p>This is a reminder notification for the Activity<br />'."\n\n<br /> ".
-						getTranslatedString('Subject', 'Calendar').' : $subject'."\n ".
-						getTranslatedString('Date & Time', 'Calendar').' : $date_start $time_start&nbsp;($(general : (__VtigerMeta__) dbtimezone))'."\n\n ".
-						getTranslatedString('Visit_Link', 'Calendar')." <a href='$(general : (__VtigerMeta__) crmdetailviewurl)'>".getTranslatedString('Click here', 'Calendar').'</a></p>';
+						getTranslatedString('Subject', 'cbCalendar').' : $subject'."\n ".
+						getTranslatedString('Date & Time', 'cbCalendar').' : $date_start $time_start&nbsp;($(general : (__VtigerMeta__) dbtimezone))'."\n\n ".
+						getTranslatedString('Visit_Link', 'cbCalendar')." <a href='$(general : (__VtigerMeta__) crmdetailviewurl)'>".getTranslatedString('Click here', 'cbCalendar').'</a></p>';
 				}
 				$task->subject = $subject;
 				$task->content = $content;
@@ -120,10 +120,10 @@ class delSettingsNotifications extends cbupdaterWorker {
 				} else {
 					$task->active = false;
 				}
-				$subject = getTranslatedString('Task_Not_completed', 'Calendar').' : $subject';
-				$content = getTranslatedString('Dear_Admin_tasks_not_been_completed', 'Calendar')." ".getTranslatedString('LBL_SUBJECT', 'Calendar').
-					": $subject<br> ".getTranslatedString('LBL_ASSIGNED_TO', 'Calendar').": $(assigned_user_id : (Users) first_name) $(assigned_user_id : (Users) last_name)<br><br>".
-					getTranslatedString('Task_sign', 'Calendar');
+				$subject = getTranslatedString('Task_Not_completed', 'cbCalendar').' : $subject';
+				$content = getTranslatedString('Dear_Admin_tasks_not_been_completed', 'cbCalendar')." ".getTranslatedString('LBL_SUBJECT', 'cbCalendar').
+					": $subject<br> ".getTranslatedString('LBL_ASSIGNED_TO', 'cbCalendar').": $(assigned_user_id : (Users) first_name) $(assigned_user_id : (Users) last_name)<br><br>".
+					getTranslatedString('Task_sign', 'cbCalendar');
 				$task->subject = $subject;
 				$task->content = $content;
 				$task->summary = 'Delayed Task Notification';

@@ -558,7 +558,7 @@ class Calendar4You extends CRMEntity {
 			$value = html_entity_decode($value, ENT_QUOTES, $default_charset);
 			$checked = true;
 			$valueid = $adb->query_result($Res, $i, 'picklist_valueid');
-			$label = getTranslatedString($value, 'Calendar');
+			$label = getTranslatedString($value, 'cbCalendar');
 			if ($type != '' || $load_ch) {
 				if (!empty($this->View[$type][$valueid])) {
 					$checked = false;
