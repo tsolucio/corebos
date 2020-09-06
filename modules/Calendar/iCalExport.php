@@ -2,19 +2,20 @@
 
 define('_BENNU_VERSION', '0.1');
 
-require_once('include/utils/utils.php');
-require_once('modules/Calendar/CalendarCommon.php');
-include('modules/Calendar/iCal/iCalendar_rfc2445.php');
-include('modules/Calendar/iCal/iCalendar_components.php');
-include('modules/Calendar/iCal/iCalendar_properties.php');
-include('modules/Calendar/iCal/iCalendar_parameters.php');
+require_once 'include/utils/utils.php';
+require_once 'modules/Calendar/CalendarCommon.php';
+include 'modules/Calendar/iCal/iCalendar_rfc2445.php';
+include 'modules/Calendar/iCal/iCalendar_components.php';
+include 'modules/Calendar/iCal/iCalendar_properties.php';
+include 'modules/Calendar/iCal/iCalendar_parameters.php';
 
 //$ical_query = "SELECT * FROM vtiger_activity WHERE (( STATUS != 'Completed' AND STATUS != 'Deferred' ) OR STATUS IS NULL)
 //               AND (( eventstatus != 'Held' AND eventstatus != 'Not Held' ) OR eventstatus IS NULL )";
 
 global $current_user,$adb,$default_timezone;
 $filename = $_REQUEST['filename'];
-$ical_query = 'select vtiger_activity.*,vtiger_crmentity.description,vtiger_crmentity.createdtime,vtiger_crmentity.modifiedtime,vtiger_activity_reminder.reminder_time, '.$current_user->id.' as assigned_user_id'
+$ical_query = 'select vtiger_activity.*,vtiger_crmentity.description,vtiger_crmentity.createdtime,vtiger_crmentity.modifiedtime,vtiger_activity_reminder.reminder_time, '
+	.$current_user->id.' as assigned_user_id'
 	.' from vtiger_activity'
 	.' inner join vtiger_crmentity on vtiger_activity.activityid = vtiger_crmentity.crmid'
 	.' LEFT JOIN vtiger_activity_reminder ON vtiger_activity_reminder.activity_id=vtiger_activity.activityid AND vtiger_activity_reminder.recurringid=0'
@@ -40,20 +41,20 @@ if (isset($todo['taskpriority'])) {
 }
 
 $tz = new iCalendar_timezone;
-if(!empty($default_timezone)){
-	$tzid = explode('/',$default_timezone);
+if (!empty($default_timezone)) {
+	$tzid = explode('/', $default_timezone);
 } else {
 	$default_timezone = date_default_timezone_get();
-	$tzid = explode('/',$default_timezone);
+	$tzid = explode('/', $default_timezone);
 }
 
-if(!empty($tzid[1])){
+if (!empty($tzid[1])) {
 	$tz->add_property('TZID', $tzid[1]);
 } else {
 	$tz->add_property('TZID', $tzid[0]);
 }
 $tz->add_property('TZOFFSETTO', date('O'));
-if(date('I')==1){
+if (date('I')==1) {
 	$tz->add_property('DAYLIGHTC', date('I'));
 } else {
 	$tz->add_property('STANDARDC', date('I'));
@@ -68,7 +69,7 @@ while (!$calendar_results->EOF) {
 	$id = $this_event['activityid'];
 	$type = $this_event['activitytype'];
 	$temp = $todo;
-	foreach($temp as $key=>$val){
+	foreach ($temp as $key => $val) {
 		$temp[$key] = $this_event[$key];
 	}
 	$temp['id'] = $id;
@@ -79,8 +80,8 @@ while (!$calendar_results->EOF) {
 	$al->assign_values($temp);
 	$ev->add_component($al);
 
-    $myical->add_component($ev);
-    $calendar_results->MoveNext();
+	$myical->add_component($ev);
+	$calendar_results->MoveNext();
 }
 // Print the actual calendar
 echo $myical->serialize();

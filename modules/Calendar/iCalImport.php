@@ -8,16 +8,16 @@
  * All Rights Reserved.
  *************************************************************************************/
 define('_BENNU_VERSION', '0.1');
-require_once('Smarty_setup.php');
-include('modules/Calendar/iCal/iCalendar_rfc2445.php');
-include('modules/Calendar/iCal/iCalendar_components.php');
-include('modules/Calendar/iCal/iCalendar_properties.php');
-include('modules/Calendar/iCal/iCalendar_parameters.php');
-include('modules/Calendar/iCal/ical-parser-class.php');
-require_once('modules/Calendar/iCalLastImport.php');
+require_once 'Smarty_setup.php';
+include 'modules/Calendar/iCal/iCalendar_rfc2445.php';
+include 'modules/Calendar/iCal/iCalendar_components.php';
+include 'modules/Calendar/iCal/iCalendar_properties.php';
+include 'modules/Calendar/iCal/iCalendar_parameters.php';
+include 'modules/Calendar/iCal/ical-parser-class.php';
+require_once 'modules/Calendar/iCalLastImport.php';
 
-require_once('include/utils/utils.php');
-require_once('data/CRMEntity.php');
+require_once 'include/utils/utils.php';
+require_once 'data/CRMEntity.php';
 
 global $import_dir,$current_user,$mod_strings,$app_strings,$currentModule;
 $currentModule = 'cbCalendar';
@@ -31,7 +31,7 @@ if (empty($_REQUEST['step']) || $_REQUEST['step']!='undo') {
 	$binFile = 'vtiger_import'.date('YmdHis');
 	$file = $import_dir.''.$binFile;
 	$filetmp_name = $file_details['tmp_name'];
-	$upload_status = move_uploaded_file($filetmp_name,$file);
+	$upload_status = move_uploaded_file($filetmp_name, $file);
 
 	$module = 'cbCalendar';
 	$calendar = CRMEntity::getInstance($module);
@@ -41,7 +41,7 @@ if (empty($_REQUEST['step']) || $_REQUEST['step']!='undo') {
 	$ical_activities = $ical->iCalReader($binFile);
 
 	$cnt = $skip_count = 0;
-	for($i=0;$i<count($ical_activities);$i++){
+	for ($i=0; $i<count($ical_activities); $i++) {
 		$activity = new iCalendar_event;
 		$cnt++;
 		$calendar->column_fields = $activity->generateArray($ical_activities[$i]);
@@ -50,14 +50,14 @@ if (empty($_REQUEST['step']) || $_REQUEST['step']!='undo') {
 		$calendar->column_fields['rel_id']='';
 		$calendar->column_fields['cto_id']='';
 		$skip_record = false;
-		foreach($required_fields as $key){
-			if(empty($calendar->column_fields[$key])){
+		foreach ($required_fields as $key) {
+			if (empty($calendar->column_fields[$key])) {
 				$skip_count++;
 				$skip_record = true;
 				break;
 			}
 		}
-		if($skip_record === true) {
+		if ($skip_record === true) {
 			continue;
 		}
 		$calendar->save($module);
@@ -96,7 +96,6 @@ if (empty($_REQUEST['step']) || $_REQUEST['step']!='undo') {
 	$smarty->assign("MODULE", $currentModule);
 	$smarty->assign("MODULENAME", $currentModule);
 	$smarty->display("iCalImport.tpl");
-
 } else {
 	$smarty = new vtigerCRM_Smarty;
 
@@ -116,7 +115,7 @@ if (empty($_REQUEST['step']) || $_REQUEST['step']!='undo') {
 	$last_import = new iCalLastImport();
 	$ret_value = $last_import->undo('cbCalendar', $current_user->id);
 
-	if(!empty($ret_value)){
+	if (!empty($ret_value)) {
 		$message= "<b>".$mod_strings['LBL_SUCCESS'].'</b><br><br>' .$mod_strings['LBL_LAST_IMPORT_UNDONE']." ";
 	} else {
 		$message= "<b>".$mod_strings['LBL_FAILURE'].'</b><br><br>' .$mod_strings['LBL_NO_IMPORT_TO_UNDO']." ";
