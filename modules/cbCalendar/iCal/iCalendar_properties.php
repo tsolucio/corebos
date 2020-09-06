@@ -106,7 +106,7 @@ class iCalendar_property {
 		// Undo transparent formatting
 		$valtype = $this->val_type;
 		$valarray = array_map(
-			public function ($a) use ($valtype) {
+			function ($a) use ($valtype) {
 				return rfc2445_undo_value_formatting($a, $valtype);
 			},
 			$valarray

@@ -446,7 +446,7 @@ function exportCalendar() {
 	if (document.getElementsByName('exportCalendar')[0].value == 'iCal') {
 		var filename = document.getElementById('ics_filename').value;
 		VtigerJS_DialogBox.block();
-		var url = 'index.php?module=Calendar&action=iCalExport&filename='+filename;
+		var url = 'index.php?module=cbCalendar&action=iCalExport&filename='+filename;
 		location.href = url;
 		VtigerJS_DialogBox.unblock();
 		ghide('CalExport');
@@ -460,7 +460,7 @@ function importCalendar() {
 			alert(alert_arr.PLS_SELECT_VALID_FILE+'.ics');
 		} else {
 			document.ical_import.action.value='iCalImport';
-			document.ical_import.module.value='Calendar';
+			document.ical_import.module.value='cbCalendar';
 			document.ical_import.submit();
 		}
 	}
