@@ -62,8 +62,6 @@ $validationArray = split_validationdataArray(getDBValidationData($focus->tab_nam
 $smarty->assign('VALIDATION_DATA_FIELDNAME', $validationArray['fieldname']);
 $smarty->assign('VALIDATION_DATA_FIELDDATATYPE', $validationArray['datatype']);
 $smarty->assign('VALIDATION_DATA_FIELDLABEL', $validationArray['fieldlabel']);
-$smarty->assign('TODO_PERMISSION', CheckFieldPermission('parent_id', 'Calendar'));
-$smarty->assign('EVENT_PERMISSION', CheckFieldPermission('parent_id', 'Events'));
 
 $smarty->assign('EDIT_PERMISSION', isPermitted($currentModule, 'EditView', $record));
 $smarty->assign('CHECK', $tool_buttons);

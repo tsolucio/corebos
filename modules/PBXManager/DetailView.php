@@ -27,8 +27,6 @@ $smarty->assign('BLOCKS', $blocks);
 $smarty->assign('NAME', html_entity_decode($recordName, ENT_QUOTES, $default_charset));
 $singlepane_view = 'true';
 $smarty->assign('SinglePane_View', $singlepane_view);
-$smarty->assign('TODO_PERMISSION', 'no');
-$smarty->assign('EVENT_PERMISSION', 'no');
 $smarty->assign('EDIT_PERMISSION', 'no');
 $smarty->assign('CREATE_PERMISSION', 'no');
 $smarty->assign('DELETE', 'notpermitted');
