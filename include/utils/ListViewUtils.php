@@ -72,7 +72,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 		if ($fieldname == 'accountname' && $module != 'Accounts') {
 			$fieldname = 'account_id';
 		}
-		if ($fieldname == 'lastname' && ($module == 'SalesOrder' || $module == 'PurchaseOrder' || $module == 'Invoice' || $module == 'Quotes' || $module == 'Calendar')) {
+		if ($fieldname == 'lastname' && ($module == 'SalesOrder' || $module == 'PurchaseOrder' || $module == 'Invoice' || $module == 'Quotes')) {
 			$fieldname = 'contact_id';
 		}
 		if ($fieldname == 'productname' && $module != 'Products') {
@@ -128,7 +128,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 				if ($fieldname == 'accountname' && $module != 'Accounts') {
 					$fieldname = 'account_id';
 				}
-				if ($fieldname == 'lastname' && ($module == 'SalesOrder' || $module == 'PurchaseOrder' || $module == 'Invoice' || $module == 'Quotes' || $module == 'Calendar')) {
+				if ($fieldname == 'lastname' && ($module == 'SalesOrder' || $module == 'PurchaseOrder' || $module == 'Invoice' || $module == 'Quotes')) {
 					$fieldname = 'contact_id';
 				}
 				if ($fieldname == 'productname' && $module != 'Products') {
@@ -142,7 +142,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 			if ($fieldname == 'accountname' && $module != 'Accounts') {
 				$fieldname = 'account_id';
 			}
-			if ($fieldname == 'lastname' && ($module == 'SalesOrder' || $module == 'PurchaseOrder' || $module == 'Invoice' || $module == 'Quotes' || $module == 'Calendar')) {
+			if ($fieldname == 'lastname' && ($module == 'SalesOrder' || $module == 'PurchaseOrder' || $module == 'Invoice' || $module == 'Quotes')) {
 				$fieldname = 'contact_id';
 			}
 			if ($fieldname == 'productname' && $module != 'Products') {
@@ -659,7 +659,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 									}
 								}
 								if ($activitytype == 'Task') {
-									if (getFieldVisibilityPermission('Calendar', $current_user->id, $fieldname) == '0') {
+									if (getFieldVisibilityPermission('cbCalendar', $current_user->id, $fieldname) == '0') {
 										$has_permission = 'yes';
 									} else {
 										$has_permission = 'no';
@@ -874,7 +874,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							}
 						} elseif ($module == 'Calendar' && ($fieldname != 'taskstatus' && $fieldname != 'eventstatus')) {
 							if ($activitytype == 'Task') {
-								if (getFieldVisibilityPermission('Calendar', $current_user->id, $fieldname) == '0') {
+								if (getFieldVisibilityPermission('cbCalendar', $current_user->id, $fieldname) == '0') {
 									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $i, 'list', '');
 								} else {
 									$value = '';

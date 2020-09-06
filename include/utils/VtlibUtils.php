@@ -53,9 +53,7 @@ function vtlib_getModuleNameById($tabid) {
  * NOTE: Ignore the standard modules which is already handled.
  */
 function vtlib_getModuleNameForSharing() {
-	$std_modules = array('Calendar','Leads','Accounts','Contacts','Potentials',
-		'HelpDesk','Campaigns','Quotes','PurchaseOrder','SalesOrder','Invoice','Events');
-	return getSharingModuleList($std_modules);
+	return getSharingModuleList(array('Leads','Accounts','Contacts','Potentials','HelpDesk','Campaigns','Quotes','PurchaseOrder','SalesOrder','Invoice'));
 }
 
 /**

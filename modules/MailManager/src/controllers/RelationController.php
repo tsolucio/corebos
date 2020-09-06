@@ -113,9 +113,7 @@ class MailManager_RelationController extends MailManager_Controller {
 
 			$qcreate_array['form'] = $this->processFormData($qcreate_array['form'], $mail);
 			$viewer->assign('QUICKCREATE', $qcreate_array['form']);
-			if ($moduleName == 'Calendar') {
-				$viewer->assign('QCMODULE', getTranslatedString('Todo', 'Calendar'));
-			} elseif ($moduleName == 'HelpDesk') {
+			if ($moduleName == 'HelpDesk') {
 				$viewer->assign('QCMODULE', getTranslatedString('Ticket', 'HelpDesk'));
 			} else {
 				$viewer->assign('QCMODULE', getTranslatedString('SINGLE_'.$moduleName, $moduleName));
