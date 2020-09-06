@@ -36,7 +36,6 @@
                  <input type="hidden" name="return_id" value="">
                  <input type="hidden" name="return_module" value="{$RETURN_MODULE}">
                  <input type="hidden" name="return_action" value="{$RETURN_ACTION}">
-                 <input type="hidden" name="parenttab" id="parenttab" value="{$PARENTTAB}">
                  <input title="LBL_FINISHED'" accessKey="" class="crmbutton small save" type="submit" name="button" value="  {$MOD.LBL_FINISHED}  "  onclick="this.form.action.value=this.form.return_action.value;this.form.return_module.value=this.form.return_module.value;return true;">
 	     </form></td>
 		<td align="left"  width='50%'>
@@ -46,9 +45,8 @@
                  <input type="hidden" name="action" value="iCalImport">
                  <input type="hidden" name="step" value="undo">
                  <input type="hidden" name="return_module" value="{$RETURN_MODULE}">
-                 <input type="hidden" name="return_id" value="{$RETURN_ID}">
+                 <input type="hidden" name="return_id" value="">
                  <input type="hidden" name="return_action" value="{$RETURN_ACTION}">
-                 <input type="hidden" name="parenttab" value="{$PARENTTAB}">
                  <input title="{$MOD.LBL_UNDO_LAST_IMPORT}" accessKey="" class="crmbutton small cancel" type="submit" name="button" value="  {$MOD.LBL_UNDO_LAST_IMPORT}  ">
              </form>
          	{/if}

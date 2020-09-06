@@ -8,7 +8,6 @@
  *  See http://bennu.sourceforge.net/ for more information and downloads.
  *
  * @author Ioannis Papaioannou
- * @version $Id$
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  */
 
@@ -54,23 +53,52 @@ define('RFC2445_TYPE_TIME',        11);
 define('RFC2445_TYPE_URI',         12); // CAL_ADDRESS === URI
 define('RFC2445_TYPE_UTC_OFFSET',  13);
 
+function core_text_strlen($string) {
+	if (\function_exists('mb_strlen')) {
+		return \mb_strlen($string);
+	} else {
+		return \strlen($string);
+	}
+}
+
+function core_text_substr($string, $start, $length) {
+	if (\function_exists('mb_substr')) {
+		return \mb_substr($string, $start, $length);
+	} else {
+		return \substr($string, $start, $length);
+	}
+}
 
 function rfc2445_fold($string) {
-    if(strlen($string) <= RFC2445_FOLDED_LINE_LENGTH) {
+    if(core_text_strlen($string) <= RFC2445_FOLDED_LINE_LENGTH) {
         return $string;
     }
 
     $retval = '';
+  
+    $i=0;
+    $len_count=0;
 
-    while(strlen($string) > RFC2445_FOLDED_LINE_LENGTH) {
-        $retval .= substr($string, 0, RFC2445_FOLDED_LINE_LENGTH - 1) . RFC2445_CRLF . ' ';
-        $string  = substr($string, RFC2445_FOLDED_LINE_LENGTH - 1);
+    //multi-byte string, get the correct length
+    $section_len = core_text_strlen($string);
+
+    while($len_count<$section_len) {
+        
+        //get the current portion of the line
+        $section = core_text_substr($string, ($i * RFC2445_FOLDED_LINE_LENGTH), (RFC2445_FOLDED_LINE_LENGTH));
+
+        //increment the length we've processed by the length of the new portion
+        $len_count += core_text_strlen($section);
+        
+        /* Add the portion to the return value, terminating with CRLF.HTAB
+           As per RFC 2445, CRLF.HTAB will be replaced by the processor of the 
+           data */
+        $retval .= $section . RFC2445_CRLF . substr(RFC2445_WSP, 0, 1);
+        
+        $i++;
     }
 
-    $retval .= $string;
-    
     return $retval;
-
 }
 
 function rfc2445_unfold($string) {
@@ -110,6 +138,7 @@ function rfc2445_is_valid_value($value, $type) {
             if(!is_string($value)) {
                 return false;
             }
+
             $valid_schemes = array('ftp', 'http', 'ldap', 'gopher', 'mailto', 'news', 'nntp', 'telnet', 'wais', 'file', 'prospero');
 
             $pos = strpos($value, ':');
@@ -125,10 +154,10 @@ function rfc2445_is_valid_value($value, $type) {
             }
         
             if($scheme === 'mailto') {
-                $regexp = '/^[a-zA-Z0-9]+[_a-zA-Z0-9\-]*(\.[_a-z0-9\-]+)*@(([0-9a-zA-Z\-]+\.)+[a-zA-Z][0-9a-zA-Z\-]+|([0-9]{1,3}\.){3}[0-9]{1,3})$/';
+                $regexp = '#^[a-zA-Z0-9]+[_a-zA-Z0-9\-]*(\.[_a-z0-9\-]+)*@(([0-9a-zA-Z\-]+\.)+[a-zA-Z][0-9a-zA-Z\-]+|([0-9]{1,3}\.){3}[0-9]{1,3})$#';
             }
             else {
-                $regexp = '/^//(.+(:.*)?@)?(([0-9a-zA-Z\-]+\.)+[a-zA-Z][0-9a-zA-Z\-]+|([0-9]{1,3}\.){3}[0-9]{1,3})(:[0-9]{1,5})?(/.*)?$/';
+                $regexp = '#^//(.+(:.*)?@)?(([0-9a-zA-Z\-]+\.)+[a-zA-Z][0-9a-zA-Z\-]+|([0-9]{1,3}\.){3}[0-9]{1,3})(:[0-9]{1,5})?(/.*)?$#';
             }
         
             return preg_match($regexp, $remain);
@@ -146,7 +175,7 @@ function rfc2445_is_valid_value($value, $type) {
             }
 
             for($i = 0; $i < $len; ++$i) {
-                $ch = $value{$i};
+                $ch = $value[$i];
                 if(!($ch >= 'a' && $ch <= 'z' || $ch >= 'A' && $ch <= 'Z' || $ch >= '0' && $ch <= '9' || $ch == '-' || $ch == '+')) {
                     if($ch == '=' && $len - $i <= 2) {
                         continue;
@@ -183,9 +212,9 @@ function rfc2445_is_valid_value($value, $type) {
                 return false;
             }
 
-            $y = (int)substr($value, 0, 4);
-            $m = (int)substr($value, 4, 2);
-            $d = (int)substr($value, 6, 2);
+            $y = intval(substr($value, 0, 4));
+            $m = intval(substr($value, 4, 2));
+            $d = intval(substr($value, 6, 2));
 
             return checkdate($m, $d, $y);
         break;
@@ -195,7 +224,7 @@ function rfc2445_is_valid_value($value, $type) {
                 return false;
             }
 
-            return($value{8} == 'T' && 
+            return($value[8] == 'T' && 
                    rfc2445_is_valid_value(substr($value, 0, 8), RFC2445_TYPE_DATE) &&
                    rfc2445_is_valid_value(substr($value, 9), RFC2445_TYPE_TIME));
         break;
@@ -212,12 +241,12 @@ function rfc2445_is_valid_value($value, $type) {
                 return false;
             }
 
-            if($value{0} == '+' || $value{0} == '-') {
+            if($value[0] == '+' || $value[0] == '-') {
                 $value = substr($value, 1);
                 --$len; // Don't forget to update this!
             }
 
-            if($value{0} != 'P') {
+            if($value[0] != 'P') {
                 return false;
             }
 
@@ -226,7 +255,7 @@ function rfc2445_is_valid_value($value, $type) {
             $allowed = 'WDT';
 
             for($i = 1; $i < $len; ++$i) {
-                $ch = $value{$i};
+                $ch = $value[$i];
                 if($ch >= '0' && $ch <= '9') {
                     $num .= $ch;
                     continue;
@@ -293,7 +322,7 @@ function rfc2445_is_valid_value($value, $type) {
             $int = false;
             $len = strlen($value);
             for($i = 0; $i < $len; ++$i) {
-                switch($value{$i}) {
+                switch($value[$i]) {
                     case '-': case '+':
                         // A sign can only be seen at position 0 and cannot be the only char
                         if($i != 0 || $len == 1) {
@@ -333,7 +362,7 @@ function rfc2445_is_valid_value($value, $type) {
                 return false;
             }
 
-            if($value{0} == '+' || $value{0} == '-') {
+            if($value[0] == '+' || $value[0] == '-') {
                 if(strlen($value) == 1) {
                     return false;
                 }
@@ -368,7 +397,7 @@ function rfc2445_is_valid_value($value, $type) {
             }
             else if(rfc2445_is_valid_value($parts[1], RFC2445_TYPE_DURATION)) {
                 // The period MUST NOT be negative
-                return ($parts[1]{0} != '-');
+                return ($parts[1][0] != '-');
             }
 
             // It seems to be illegal
@@ -382,8 +411,8 @@ function rfc2445_is_valid_value($value, $type) {
 
             $parts = explode(';', strtoupper($value));
 
-            // First of all, we need at least a FREQ and a UNTIL or COUNT part, so...
-            if(count($parts) < 2) {
+            // We need at least one part for a valid rule, for example: "FREQ=DAILY".
+            if(empty($parts)) {
                 return false;
             }
 
@@ -559,7 +588,7 @@ function rfc2445_is_valid_value($value, $type) {
                         if(!rfc2445_is_valid_value($intpart, RFC2445_TYPE_INTEGER)) {
                             return false;
                         }
-                        if((int)$intpart == 0) {
+                        if(intval($intpart) == 0) {
                             return false;
                         }
                     }
@@ -577,7 +606,7 @@ function rfc2445_is_valid_value($value, $type) {
                     if(!rfc2445_is_valid_value($mday, RFC2445_TYPE_INTEGER)) {
                         return false;
                     }
-                    $mday = abs((int)$mday);
+                    $mday = abs(intval($mday));
                     if($mday == 0 || $mday > 31) {
                         return false;
                     }
@@ -595,7 +624,7 @@ function rfc2445_is_valid_value($value, $type) {
                     if(!rfc2445_is_valid_value($yday, RFC2445_TYPE_INTEGER)) {
                         return false;
                     }
-                    $yday = abs((int)$yday);
+                    $yday = abs(intval($yday));
                     if($yday == 0 || $yday > 366) {
                         return false;
                     }
@@ -613,7 +642,7 @@ function rfc2445_is_valid_value($value, $type) {
                     if(!rfc2445_is_valid_value($weekno, RFC2445_TYPE_INTEGER)) {
                         return false;
                     }
-                    $weekno = abs((int)$weekno);
+                    $weekno = abs(intval($weekno));
                     if($weekno == 0 || $weekno > 53) {
                         return false;
                     }
@@ -649,7 +678,7 @@ function rfc2445_is_valid_value($value, $type) {
                     if(!rfc2445_is_valid_value($set, RFC2445_TYPE_INTEGER)) {
                         return false;
                     }
-                    $set = abs((int)$set);
+                    $set = abs(intval($set));
                     if($set == 0 || $set > 366) {
                         return false;
                     }
@@ -707,9 +736,9 @@ function rfc2445_is_valid_value($value, $type) {
                 return false;
             }
 
-            $h = (int)substr($value, 0, 2);
-            $m = (int)substr($value, 2, 2);
-            $s = (int)substr($value, 4, 2);
+            $h = intval(substr($value, 0, 2));
+            $m = intval(substr($value, 2, 2));
+            $s = intval(substr($value, 4, 2));
 
             return ($h <= 23 && $m <= 59 && $s <= 60);
         break;
@@ -727,20 +756,21 @@ function rfc2445_is_valid_value($value, $type) {
                 return false;
             }
 
+            $s = 0;
             if(strlen($value) == 7) {
-                $s = (int)substr($value, 5, 2);
+                $s = intval(substr($value, 5, 2));
                 $value = substr($value, 0, 5);
             }
             if(strlen($value) != 5 || $value == "-0000") {
                 return false;
             }
 
-            if($value{0} != '+' && $value{0} != '-') {
+            if($value[0] != '+' && $value[0] != '-') {
                 return false;
             }
 
-            $h = (int)substr($value, 1, 2);
-            $m = (int)substr($value, 3, 2);
+            $h = intval(substr($value, 1, 2));
+            $m = intval(substr($value, 3, 2));
 
             return ($h <= 23 && $m <= 59 && $s <= 59);
         break;
@@ -762,7 +792,7 @@ function rfc2445_do_value_formatting($value, $type) {
         break;
         case RFC2445_TYPE_TEXT:
             // Escape entities
-            $value = strtr($value, array("\n" => '\\n', '\\' => '\\\\', ',' => '\\,', ';' => '\\;'));
+            $value = strtr($value, array("\r\n" => '\\n', "\n" => '\\n', '\\' => '\\\\', ',' => '\\,', ';' => '\\;'));
         break;
     }
     return $value;
@@ -818,5 +848,4 @@ function rfc2445_guid() {
 
     return $random;
 }
-
 ?>
