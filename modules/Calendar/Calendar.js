@@ -56,27 +56,3 @@ function showActivityView(selectactivity_view) {
 	document.frmOpenLstView.action = 'index.php?module=Home&action=index&activity_view='+View_name;
 	document.frmOpenLstView.submit();
 }
-
-function exportCalendar() {
-	if (document.getElementsByName('exportCalendar')[0].value == 'iCal') {
-		var filename = document.getElementById('ics_filename').value;
-		VtigerJS_DialogBox.block();
-		var url = 'index.php?module=Calendar&action=iCalExport&filename='+filename;
-		location.href = url;
-		VtigerJS_DialogBox.unblock();
-		ghide('CalExport');
-	}
-}
-
-function importCalendar() {
-	var file = document.getElementById('ics_file').value;
-	if (file != '') {
-		if (file.indexOf('.ics') != (file.length - 4)) {
-			alert(alert_arr.PLS_SELECT_VALID_FILE+'.ics');
-		} else {
-			document.ical_import.action.value='iCalImport';
-			document.ical_import.module.value='Calendar';
-			document.ical_import.submit();
-		}
-	}
-}

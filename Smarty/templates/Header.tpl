@@ -355,7 +355,7 @@
 
 <div id='miniCal' style='position:absolute; display:none; left:100px; top:100px; z-index:100000'></div>
 
-{if $MODULE_NAME eq 'Calendar'}
+{if $MODULE_NAME eq 'Calendar4You'}
 	<div id="CalExport" style="width:300px; position:absolute; display:none; left:500px; top:100px; z-index:100000" class="layerPopup">
 		<table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
 			<tr>
