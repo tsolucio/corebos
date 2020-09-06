@@ -14,10 +14,11 @@ include 'modules/cbCalendar/iCal/iCalendar_parameters.php';
 
 global $current_user,$adb,$default_timezone;
 $filename = $_REQUEST['filename'];
+$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCalendar');
 $ical_query = 'select vtiger_activity.*,vtiger_crmentity.description,vtiger_crmentity.createdtime,vtiger_crmentity.modifiedtime,vtiger_activity_reminder.reminder_time, '
 	.$current_user->id.' as assigned_user_id'
 	.' from vtiger_activity'
-	.' inner join vtiger_crmentity on vtiger_activity.activityid = vtiger_crmentity.crmid'
+	." inner join $crmEntityTable on vtiger_activity.activityid = vtiger_crmentity.crmid"
 	.' LEFT JOIN vtiger_activity_reminder ON vtiger_activity_reminder.activity_id=vtiger_activity.activityid AND vtiger_activity_reminder.recurringid=0'
 	.' where vtiger_crmentity.deleted=0 and vtiger_crmentity.smownerid='.$current_user->id." and vtiger_activity.activitytype NOT IN ('Emails')";
 

@@ -215,12 +215,12 @@ class SalesOrder extends CRMEntity {
 		} else {
 			$returnset = '&return_module=SalesOrder&return_action=CallRelatedList&return_id='.$id;
 		}
-
+		$crmtablealias = CRMEntity::getcrmEntityTableAlias('Invoice');
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = "select vtiger_crmentity.*, vtiger_invoice.*, vtiger_account.accountname,
 			vtiger_salesorder.subject as salessubject, case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name
 			from vtiger_invoice
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_invoice.invoiceid
+			inner join $crmtablealias on vtiger_crmentity.crmid=vtiger_invoice.invoiceid
 			left outer join vtiger_account on vtiger_account.accountid=vtiger_invoice.accountid
 			inner join vtiger_salesorder on vtiger_salesorder.salesorderid=vtiger_invoice.salesorderid
 			LEFT JOIN vtiger_invoicecf ON vtiger_invoicecf.invoiceid = vtiger_invoice.invoiceid
@@ -246,7 +246,7 @@ class SalesOrder extends CRMEntity {
 		$query = 'select vtiger_sostatushistory.*, vtiger_salesorder.salesorder_no
 			from vtiger_sostatushistory
 			inner join vtiger_salesorder on vtiger_salesorder.salesorderid = vtiger_sostatushistory.salesorderid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_salesorder.salesorderid
+			inner join '.self::$crmEntityTableAlias.' on vtiger_crmentity.crmid = vtiger_salesorder.salesorderid
 			where vtiger_crmentity.deleted = 0 and vtiger_salesorder.salesorderid = ?';
 		$result=$adb->pquery($query, array($id));
 		$header = array();
@@ -445,8 +445,8 @@ class SalesOrder extends CRMEntity {
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 
 		$query = "SELECT $fields_list, case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name
-			FROM vtiger_crmentity
-			INNER JOIN vtiger_salesorder ON vtiger_salesorder.salesorderid = vtiger_crmentity.crmid
+			FROM ".self::$crmEntityTableAlias
+			."INNER JOIN vtiger_salesorder ON vtiger_salesorder.salesorderid = vtiger_crmentity.crmid
 			LEFT JOIN vtiger_salesordercf ON vtiger_salesordercf.salesorderid = vtiger_salesorder.salesorderid
 			LEFT JOIN vtiger_sobillads ON vtiger_sobillads.sobilladdressid = vtiger_salesorder.salesorderid
 			LEFT JOIN vtiger_soshipads ON vtiger_soshipads.soshipaddressid = vtiger_salesorder.salesorderid

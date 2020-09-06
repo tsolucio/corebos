@@ -21,6 +21,7 @@ function modcomms_changeModuleVisibility($mname, $status) {
 }
 function modcomms_getModuleinfo() {
 	global $adb;
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
 	$allEntities = array();
 	$entityQuery = "SELECT tabid,name FROM vtiger_tab WHERE isentitytype=1 and name NOT IN ('Emails', 'Rss','Recyclebin','Events','Calendar')";
 	$result = $adb->pquery($entityQuery, array());
@@ -33,7 +34,7 @@ function modcomms_getModuleinfo() {
 		$module_name = getTabModuleName($tabid);
 		$checkres = $adb->pquery(
 			'SELECT businessactionsid 
-                   FROM vtiger_businessactions INNER JOIN vtiger_crmentity ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid
+                   FROM vtiger_businessactions INNER JOIN '.$crmEntityTable.' ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid
                   WHERE vtiger_crmentity.deleted = 0
                     AND (module_list = ? OR module_list LIKE ? OR module_list LIKE ? OR module_list LIKE ?)
                     AND elementtype_action=? 

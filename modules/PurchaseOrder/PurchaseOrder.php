@@ -173,7 +173,7 @@ class PurchaseOrder extends CRMEntity {
 		$query = 'select vtiger_postatushistory.*, vtiger_purchaseorder.purchaseorder_no
 			from vtiger_postatushistory
 			inner join vtiger_purchaseorder on vtiger_purchaseorder.purchaseorderid = vtiger_postatushistory.purchaseorderid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_purchaseorder.purchaseorderid
+			inner join '.self::$crmEntityTableAlias.' on vtiger_crmentity.crmid=vtiger_purchaseorder.purchaseorderid
 			where vtiger_crmentity.deleted = 0 and vtiger_purchaseorder.purchaseorderid = ?';
 		$result=$adb->pquery($query, array($id));
 		$header = array();
@@ -297,8 +297,12 @@ class PurchaseOrder extends CRMEntity {
 		}
 
 		if ($return_module == 'Vendors') {
-			$sql_req ='UPDATE vtiger_crmentity SET deleted = 1 WHERE crmid= ?';
-			$adb->pquery($sql_req, array($id));
+			$adb->pquery('UPDATE vtiger_crmentity SET deleted=1 WHERE crmid=?', array($id));
+			$adb->pquery('UPDATE vtiger_crmobject SET deleted=1 WHERE crmid=?', array($id));
+			$crmtable = CRMEntity::getcrmEntityTableAlias(getSalesEntityType($id), true);
+			if ($crmtable!='vtiger_crmentity') {
+				$adb->pquery('UPDATE '.$crmtable.' SET deleted=1 WHERE crmid=?', array($id));
+			}
 		} elseif ($return_module == 'Contacts') {
 			$sql_req ='UPDATE vtiger_purchaseorder SET contactid=? WHERE purchaseorderid = ?';
 			$adb->pquery($sql_req, array(null, $id));
@@ -348,8 +352,8 @@ class PurchaseOrder extends CRMEntity {
 		$fields_list .= getInventoryFieldsForExport($this->table_name);
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 
-		$query = "SELECT $fields_list FROM vtiger_crmentity
-			INNER JOIN vtiger_purchaseorder ON vtiger_purchaseorder.purchaseorderid = vtiger_crmentity.crmid
+		$query = "SELECT $fields_list FROM ".self::$crmEntityTableAlias
+			."INNER JOIN vtiger_purchaseorder ON vtiger_purchaseorder.purchaseorderid = vtiger_crmentity.crmid
 			LEFT JOIN vtiger_purchaseordercf ON vtiger_purchaseordercf.purchaseorderid = vtiger_purchaseorder.purchaseorderid
 			LEFT JOIN vtiger_pobillads ON vtiger_pobillads.pobilladdressid = vtiger_purchaseorder.purchaseorderid
 			LEFT JOIN vtiger_poshipads ON vtiger_poshipads.poshipaddressid = vtiger_purchaseorder.purchaseorderid

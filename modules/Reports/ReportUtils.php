@@ -232,10 +232,10 @@ function report_getMoreInfoFromRequest($cbreporttype, $pmodule, $smodule, $pivot
 		}
 		$sql = PivotTableSQL(
 			$adb->database, // adodb connection
-			$pmod->table_name.',vtiger_crmentity,'.$smod->table_name, // tables
+			$pmod->table_name.',vtiger_crmobject,'.$smod->table_name, // tables
 			$pivotcolumns, // rows (multiple fields allowed)
 			$pivotfield, // column to pivot on
-			$pmod->table_name.'.'.$pmod->table_index.'=vtiger_crmentity.crmid and vtiger_crmentity.deleted=0 and '.$reljoin, // joins/where
+			$pmod->table_name.'.'.$pmod->table_index.'=vtiger_crmobject.crmid and vtiger_crmobject.deleted=0 and '.$reljoin, // joins/where
 			$aggfield,
 			$agglabel,
 			vtlib_purify($_REQUEST['crosstabaggfunction'])

@@ -98,22 +98,23 @@ function getPrimaryColumns_GroupingHTML($module, $selected = '') {
 	global $ogReport, $current_language;
 	$id_added=false;
 	$mod_strings = return_module_language($current_language, $module);
-
+	$crmtable = CRMEntity::getcrmEntityTableAlias($module, true);
 	$block_listed = array();
 	$selected = decode_html($selected);
 	$i18nModule = getTranslatedString($module, $module);
+	$shtml = '';
 	foreach ($ogReport->module_list[$module] as $value) {
 		if (isset($ogReport->pri_module_columnslist[$module][$value]) && !$block_listed[$value]) {
 			$block_listed[$value] = true;
 			$shtml .= "<optgroup label=\"".$i18nModule." ".getTranslatedString($value, $module)."\" class=\"select\" style=\"border:none\">";
 			if ($id_added==false) {
 				$is_selected ='';
-				if ($selected == "vtiger_crmentity:crmid:".$module."_ID:crmid:I") {
+				if ($selected == $crmtable.':crmid:'.$module.'_ID:crmid:I') {
 					$is_selected = 'selected';
 				}
-				$shtml .= "<option value=\"vtiger_crmentity:crmid:".$module."_ID:crmid:I\" {$is_selected}>".
+				$shtml .= '<option value="'.$crmtable.':crmid:'.$module."_ID:crmid:I\" {$is_selected}>".
 							getTranslatedString($module, $module).' '.getTranslatedString('ID', $module).
-						"</option>";
+						'</option>';
 				$id_added=true;
 			}
 			foreach ($ogReport->pri_module_columnslist[$module][$value] as $field => $fieldlabel) {

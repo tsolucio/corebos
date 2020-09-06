@@ -734,14 +734,14 @@ class crmtogo_WS_Utils {
 	}
 
 	public static function getConfigComments() {
-		//todo: find better way to identify modules with comments
 		$comments_module = array ();
 		$db = PearDatabase::getInstance();
-		$sql = "SELECT vtiger_businessactions.module_list 
-                  FROM vtiger_businessactions INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_businessactions.businessactionsid 
-                 WHERE vtiger_crmentity.deleted = 0
-                   AND vtiger_businessactions.elementtype_action = 'DETAILVIEWWIDGET' 
-                   AND vtiger_businessactions.linkurl = 'block://ModComments:modules/ModComments/ModComments.php'";
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
+		$sql = "SELECT vtiger_businessactions.module_list
+			FROM vtiger_businessactions INNER JOIN $crmEntityTable ON vtiger_crmentity.crmid = vtiger_businessactions.businessactionsid
+			WHERE vtiger_crmentity.deleted=0
+			AND vtiger_businessactions.elementtype_action='DETAILVIEWWIDGET'
+			AND vtiger_businessactions.linkurl='block://ModComments:modules/ModComments/ModComments.php'";
 		$result = $db->pquery($sql, array());
 		$noofrows = $db->num_rows($result);
 		if ($noofrows >0) {
