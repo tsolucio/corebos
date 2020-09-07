@@ -114,7 +114,7 @@ async function getDTModuleFields(module, rowKey) {
  */
 async function getFieldsForModule(module) {
 	return await fetch(
-		'index.php?module=cbMap&action=cbMapAjax&actionname=mapactions&method=getFieldTablesForModule',
+		'index.php?module=cbMap&action=cbMapAjax&actionname=mapactions&method=getFieldTranslationForModule',
 		{
 			method: 'post',
 			headers: {
@@ -124,12 +124,7 @@ async function getFieldsForModule(module) {
 			body: '&'+csrfMagicName+'='+csrfMagicToken+'&fieldsmodule='+module
 		}
 	).then(response => response.json()).then(response => {
-		var fields = [];
-		Object.keys(response)
-			.map(fd => {
-				fields.push(fd);
-			});
-		return fields.sort();
+		return response;
 	});
 }
 /**
@@ -154,7 +149,7 @@ async function loadFields(id, rowKey) {
 	for (let fields in DTModuleFields) {
 		listFields += `
 		<li class="slds-dropdown__item">
-            <a tabindex="${fields}" id="${DTModuleFields[fields]}" onclick="setFieldValues('${id}', ${rowKey}, this.id)">
+            <a tabindex="${fields}" id="${fields}" onclick="setFieldValues('${id}', ${rowKey}, this.id, '${DTModuleFields[fields]}')">
                 <span class="slds-truncate">${DTModuleFields[fields]}</span>
             </a>
         </li>`;
@@ -168,11 +163,11 @@ async function loadFields(id, rowKey) {
  * @param {int} rowKey
  * @param {string} value
  */
-function setFieldValues(inputid, rowKey, value) {
+function setFieldValues(inputid, rowKey, value, translatedValue) {
 	let template = `
     <li class="slds-listbox-item" role="presentation" id="${inputid}-${value}">
       	<span class="slds-pill" role="option" aria-selected="true">
-        <span class="slds-pill__label" title="${value}">${value}</span>
+        <span class="slds-pill__label" title="${value}">${translatedValue}</span>
         <span class="slds-icon_container slds-pill__remove" id="remove-${inputid}-${value}" onclick="removeField(this, ${rowKey}, '${value}')" style="cursor: pointer">
           	<svg class="slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
             	<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
@@ -246,6 +241,7 @@ document.addEventListener('click', function (event) {
 });
 
 var DTModuleFields = {};
+var FIELD = '';
 var ruleData = new Array();
 var condGroup = new Array();
 var srchData = new Array();
@@ -677,7 +673,7 @@ function generateRuleDefinition(rowKey, show = '') {
  * @param {object} ev
  * @param {object} preLoadMap
  */
-function generateSection(ev, preLoadMap = {}) {
+async function generateSection(ev, preLoadMap = {}) {
 	const rowKey = parseInt(ev.rowKey) + 1;
 	const value = ev.value;
 	const prevValue = ev.prevValue;
@@ -801,9 +797,9 @@ function generateSection(ev, preLoadMap = {}) {
 			conditions = preLoadMap.conditions;
 		}
 		let orderbyObj = orderby.split(',');
-		let orderbyTemplate = generatePill('showOrderByFields', rowKey, orderbyObj);
+		let orderbyTemplate = await generatePill('showOrderByFields', rowKey, orderbyObj, module);
 		let outputObj = output.split(',');
-		let outputTemplate = generatePill('showReturnFields', rowKey, outputObj);
+		let outputTemplate = await generatePill('showReturnFields', rowKey, outputObj, module);
 		//init new array for each instance of grid
 		condGroup[rowKey] = new Array();
 		srchData[rowKey] = new Array();
@@ -965,14 +961,15 @@ function generateSection(ev, preLoadMap = {}) {
  * @param {int} rowKey
  * @param {object} data
  */
-function generatePill(type, rowKey, data) {
+async function generatePill(type, rowKey, data, module) {
 	let template = '';
 	for (let i in data) {
 		if (data[i] != '') {
+			FIELD = await getFieldLabel(data[i], module);
 			template += `
 		    <li class="slds-listbox-item" role="presentation" id="${type}-${rowKey}-${data[i]}">
 		      	<span class="slds-pill" role="option" aria-selected="true">
-		        <span class="slds-pill__label" title="${data[i]}">${data[i]}</span>
+		        <span class="slds-pill__label" title="${data[i]}">${FIELD}</span>
 		        <span class="slds-icon_container slds-pill__remove" id="remove-${type}-${rowKey}-${data[i]}" onclick="removeField(this, ${rowKey}, '${data[i]}')" style="cursor: pointer">
 		          	<svg class="slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
 		            	<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
@@ -984,6 +981,22 @@ function generatePill(type, rowKey, data) {
 	}
 	return template;
 }
+
+async function getFieldLabel(field, module) {
+	return await fetch(
+		'index.php?module=cbMap&action=cbMapAjax&actionname=mapactions&method=getFieldLabel',
+		{
+			method: 'post',
+			headers: {
+				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+			},
+			credentials: 'same-origin',
+			body: '&'+csrfMagicName+'='+csrfMagicToken+'&fieldsmodule='+module+'&field='+field
+		}
+	).then(response => response.json()).then(response => {
+		return response;
+	});
+}
 /**
  * Initialize search grid instance
  * @param {int} rowKey
@@ -993,9 +1006,15 @@ function generatePill(type, rowKey, data) {
 function searchGrid(rowKey, srchData, searches = '') {
 	if (searches != '') {
 		if (searches[1] == undefined) {
+			if (Object.keys(searches.field).length == 0) {
+				searches.field = '';
+			}
 			srchData[rowKey].push(searches);
 		} else {
 			for (let s in searches) {
+				if (Object.keys(searches[s].field).length == 0) {
+					searches[s].field = '';
+				}
 				srchData[rowKey].push(searches[s]);
 			}
 		}
@@ -1047,6 +1066,7 @@ function searchGrid(rowKey, srchData, searches = '') {
 		{
 			name: 'field',
 			header: mod_alert_arr.LBL_FIELDVALUE,
+			formatter: 'listItemText',
 			editor: {
 				type: 'select',
 				options: {
@@ -1119,9 +1139,15 @@ function searchGrid(rowKey, srchData, searches = '') {
 function condGrid(rowKey, condGroup = '', conditions = '') {
 	if (conditions != '') {
 		if (conditions[1] == undefined) {
+			if (Object.keys(conditions.field).length == 0) {
+				conditions.field = '';
+			}
 			condGroup[rowKey].push(conditions);
 		} else {
 			for (let c in conditions) {
+				if (Object.keys(conditions[c].field).length == 0) {
+					conditions[c].field = '';
+				}
 				condGroup[rowKey].push(conditions[c]);
 			}
 		}
@@ -1173,6 +1199,7 @@ function condGrid(rowKey, condGroup = '', conditions = '') {
 		{
 			name: 'field',
 			header: mod_alert_arr.LBL_FIELDVALUE,
+			formatter: 'listItemText',
 			editor: {
 				type: 'select',
 				options: {
@@ -1338,7 +1365,7 @@ async function updateFieldList(rowKey, module = '') {
 	DTModuleFields = await getFieldsForModule(module);
 	for (let i in DTModuleFields) {
 		const fieldObj = {
-			text: DTModuleFields[i], value: DTModuleFields[i]
+			text: DTModuleFields[i], value: i
 		}
 		fieldList.push(fieldObj);
 	}
