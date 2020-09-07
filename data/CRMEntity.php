@@ -539,7 +539,12 @@ class CRMEntity {
 			}
 			$this->column_fields['record_id'] = $current_id;
 			$this->column_fields['record_module'] = $module;
-			$cbuuid = (empty($this->column_fields['cbuuid']) ? $this->getUUID() : $this->column_fields['cbuuid']);
+			if (empty($this->column_fields['cbuuid'])) {
+				$this->column_fields['createdtime'] = $crmvalues['created_date'];
+				$cbuuid = $this->getUUID();
+			} else {
+				$cbuuid = $this->column_fields['cbuuid'];
+			}
 			$sql = 'insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,modifiedby,createdtime,modifiedtime,cbuuid) values(?,?,?,?,?,?,?,?,?)';
 			$params = array($current_id, $createdbyuser, $ownerid, $module, $description_val, $current_user->id, $created_date_var, $modified_date_var, $cbuuid);
 			$adb->pquery($sql, $params);
