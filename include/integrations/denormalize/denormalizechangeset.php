@@ -27,11 +27,15 @@ class denormalizechangeset extends cbupdaterWorker {
 				crmid int(19),
 				deleted tinyint(1),
 				setype varchar(100),
+				smownerid int(19),
+				modifiedtime datetime,
 				PRIMARY KEY (crmid),
 				INDEX (deleted),
 				INDEX (setype)
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8', array());
-			$this->ExecuteQuery('INSERT IGNORE INTO vtiger_crmobject (crmid,deleted,setype) select crmid,deleted,setype from vtiger_crmentity');
+			$this->ExecuteQuery(
+				'INSERT IGNORE INTO vtiger_crmobject (crmid,deleted,setype,smownerid,modifiedtime) select crmid,deleted,setype,smownerid,modifiedtime from vtiger_crmentity'
+			);
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			// $this->markApplied(false); remember to activate this when we are finished
 		}

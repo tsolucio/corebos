@@ -220,6 +220,8 @@ function checkevvtMenuInstalled() {
 		crmid int(19),
 		deleted tinyint(1),
 		setype varchar(100),
+		smownerid int(19),
+		modifiedtime datetime,
 		PRIMARY KEY (crmid),
 		INDEX (deleted),
 		INDEX (setype)

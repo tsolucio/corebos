@@ -481,7 +481,13 @@ class CRMEntity {
 					$params = array($ownerid, $current_user->id, $crmvalues['date'], $this->id);
 				}
 			}
-			$adb->pquery($sql, $params);
+			$rdo = $adb->pquery($sql, $params);
+			if ($rdo) {
+				$adb->pquery(
+					'UPDATE vtiger_crmobject set smownerid=?,modifiedtime=? WHERE crmid=?',
+					array($ownerid, $crmvalues['date'], $this->id)
+				);
+			}
 			$sql1 = 'delete from vtiger_ownernotify where crmid=?';
 			$params1 = array($this->id);
 			$adb->pquery($sql1, $params1);
@@ -504,7 +510,10 @@ class CRMEntity {
 			$params = array($current_id, $crmvalues['createdbyuser'], $ownerid, $module, $crmvalues['description'], $current_user->id, $crmvalues['created_date'], $crmvalues['modified_date'], $cbuuid);
 			$rdo = $adb->pquery($sql, $params);
 			if ($rdo) {
-				$adb->pquery('INSERT INTO vtiger_crmobject (crmid,deleted,setype) values (?,0,?)', array($current_id, $module));
+				$adb->pquery(
+					'INSERT INTO vtiger_crmobject (crmid,deleted,setype,smownerid,modifiedtime) values (?,0,?,?,?)',
+					array($current_id, $module, $ownerid, $crmvalues['modified_date'])
+				);
 			}
 			$this->id = $current_id;
 		}
@@ -873,6 +882,7 @@ class CRMEntity {
 				$value[] = $fldvalue;
 			}
 		}
+		$mtime = $adb->formatDate(date('Y-m-d H:i:s'), true);
 		if (self::$denormalized && $table_name == self::$crmentityTable) {
 			if ($insertion_mode == 'edit') {
 				if (!empty($this->column_fields['cbuuid'])) {
@@ -880,7 +890,7 @@ class CRMEntity {
 					$update_params[] = $this->column_fields['cbuuid'];
 				}
 				$update[] = 'modifiedtime=?';
-				$update_params[] = $adb->formatDate(date('Y-m-d H:i:s'), true);
+				$update_params[] = $mtime;
 				$update[] = 'modifiedby=?';
 				$update_params[] = $current_user->id;
 			} else {
@@ -898,7 +908,7 @@ class CRMEntity {
 				$value[] = $module;
 				$value[] = (empty($this->column_fields['cbuuid']) ? $this->getUUID() : $this->column_fields['cbuuid']);
 				$value[] =$this->column_fields['createdtime'];
-				$value[] =$this->column_fields['modifiedtime'];
+				$value[] =$mtime;
 				$value[] =$this->column_fields['created_user_id'];
 				$value[] =$current_user->id;
 			}
@@ -910,12 +920,21 @@ class CRMEntity {
 				$sql1 = "update $table_name set " . implode(',', $update) . ' where ' . $this->tab_name_index[$table_name] . '=?';
 				$update_params[] = $this->id;
 				$rdo = $adb->pquery($sql1, $update_params);
+				if ($rdo) {
+					$adb->pquery(
+						'UPDATE vtiger_crmobject set smownerid=?,modifiedtime=? WHERE crmid=?',
+						array($this->column_fields['assigned_user_id'], $mtime, $this->id)
+					);
+				}
 			}
 		} else {
 			$sql1 = "insert into $table_name(" . implode(',', $column) . ') values(' . generateQuestionMarks($value) . ')';
 			$rdo = $adb->pquery($sql1, $value);
 			if ($rdo) {
-				$adb->pquery('INSERT IGNORE INTO vtiger_crmobject (crmid,deleted,setype) values (?,0,?)', array($this->id, $module));
+				$adb->pquery(
+					'INSERT IGNORE INTO vtiger_crmobject (crmid,deleted,setype,smownerid,modifiedtime) values (?,0,?,?,?)',
+					array($this->id, $module, $this->column_fields['assigned_user_id'], $this->column_fields['modifiedtime'])
+				);
 			}
 		}
 		if ($rdo===false) {
@@ -1332,13 +1351,14 @@ class CRMEntity {
 	/** Mark an item as deleted */
 	public function mark_deleted($id) {
 		global $current_user, $adb;
+		$mtime = $adb->formatDate(date('Y-m-d H:i:s'), true);
 		$adb->pquery(
 			'UPDATE '.self::$crmentityTable.' set deleted=1,modifiedtime=?,modifiedby=? where crmid=?',
-			array($adb->formatDate(date('Y-m-d H:i:s'), true), $current_user->id, $id),
+			array($mtime, $current_user->id, $id),
 			true,
 			'Error marking record deleted: '
 		);
-		$adb->pquery('UPDATE vtiger_crmobject set deleted=1 WHERE crmid=?', array($id));
+		$adb->pquery('UPDATE vtiger_crmobject set deleted=1,modifiedtime=? WHERE crmid=?', array($mtime, $id));
 	}
 
 	// this method is called during an import before inserting a bean

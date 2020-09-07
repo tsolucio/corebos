@@ -297,11 +297,12 @@ class PurchaseOrder extends CRMEntity {
 		}
 
 		if ($return_module == 'Vendors') {
-			$adb->pquery('UPDATE vtiger_crmentity SET deleted=1 WHERE crmid=?', array($id));
-			$adb->pquery('UPDATE vtiger_crmobject SET deleted=1 WHERE crmid=?', array($id));
+			$mtime = $adb->formatDate(date('Y-m-d H:i:s'), true);
+			$adb->pquery('UPDATE vtiger_crmentity SET deleted=1,modifiedtime=? WHERE crmid=?', array($mtime, $id));
+			$adb->pquery('UPDATE vtiger_crmobject SET deleted=1,modifiedtime=? WHERE crmid=?', array($mtime, $id));
 			$crmtable = CRMEntity::getcrmEntityTableAlias(getSalesEntityType($id), true);
 			if ($crmtable!='vtiger_crmentity') {
-				$adb->pquery('UPDATE '.$crmtable.' SET deleted=1 WHERE crmid=?', array($id));
+				$adb->pquery('UPDATE '.$crmtable.' SET deleted=1,modifiedtime=? WHERE crmid=?', array($mtime, $id));
 			}
 		} elseif ($return_module == 'Contacts') {
 			$sql_req ='UPDATE vtiger_purchaseorder SET contactid=? WHERE purchaseorderid = ?';
