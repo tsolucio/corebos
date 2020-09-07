@@ -517,15 +517,15 @@ class CRMEntity {
 		$crmvalues['date'] = $adb->formatDate(date('Y-m-d H:i:s'), true);
 		$crmvalues['created_date'] = $crmvalues['date'];
 		$crmvalues['createdbyuser'] = $current_user->id;
-			if (self::isBulkSaveMode()) {
-				if (!empty($this->column_fields['createdtime'])) {
+		if (self::isBulkSaveMode()) {
+			if (!empty($this->column_fields['createdtime'])) {
 				$crmvalues['created_date'] = $adb->formatDate($this->column_fields['createdtime'], true);
-				}
-				if (!empty($this->column_fields['creator'])) {
-				$crmvalues['createdbyuser'] = $this->column_fields['creator'];
-				}
-				//NOTE : modifiedtime ignored to support vtws_sync API track changes.
 			}
+			if (!empty($this->column_fields['creator'])) {
+				$crmvalues['createdbyuser'] = $this->column_fields['creator'];
+			}
+			//NOTE : modifiedtime ignored to support vtws_sync API track changes.
+		}
 		$crmvalues['modified_date'] = $crmvalues['date'];
 
 		$ownerid = empty($this->column_fields['assigned_user_id']) ? $current_user->id : $this->column_fields['assigned_user_id'];
@@ -537,8 +537,8 @@ class CRMEntity {
 				$ownerid = $inputCRMid;
 			} else {
 				die('Invalid user id!');
+			}
 		}
-	}
 
 		$res = $adb->pquery('select ownedby from vtiger_tab where name=?', array($module));
 		$this->ownedby = $adb->query_result($res, 0, 'ownedby');
