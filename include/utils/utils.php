@@ -3318,7 +3318,7 @@ function getMailFields($tabid) {
  * @param integer $recordId - record id
  */
 function isRecordExists($recordId) {
-	global $adb, $currentModule;
+	global $adb;
 	$users = $groups = $currency = false;
 	if (strpos($recordId, 'x')) {
 		list($moduleWS,$recordId) = explode('x', $recordId);
@@ -3336,8 +3336,7 @@ function isRecordExists($recordId) {
 	} elseif ($currency) {
 		$query = 'SELECT id FROM vtiger_currency_info where id=? AND deleted=0';
 	} else {
-		$mod = CRMEntity::getInstance($currentModule);
-		$query = 'SELECT crmid FROM '.$mod::$crmentityTable.' where crmid=? AND deleted=0';
+		$query = 'SELECT crmid FROM vtiger_crmobject where crmid=? AND deleted=0';
 	}
 	$result = $adb->pquery($query, array($recordId));
 	if ($adb->num_rows($result)) {
