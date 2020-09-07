@@ -1364,6 +1364,8 @@ Array (
 			foreach ($tables as $table) {
 				if ($firstTable!=$table) {
 					if (!isset($tabNameIndex[$table]) && $table == 'vtiger_crmentity') {
+						$mod = CRMEntity::getInstance($module);
+						$table = $module != 'Documents' ? $mod::$crmentityTable : 'vtiger_crmentity';
 						$this->out['defaultJoinConditions']=$this->out['defaultJoinConditions']." LEFT JOIN $table ON $firstTable.$firstIndex=$table.crmid";
 					} elseif (!isset($tabNameIndex[$table]) && $table == 'vtiger_attachments') {
 						$this->out['defaultJoinConditions'] .= " LEFT JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.crmid=vtiger_activity.activityid";

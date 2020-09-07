@@ -371,7 +371,8 @@ function cbwsgetSearchResults($query, $search_onlyin, $restrictionids, $user) {
 				}
 			}
 		}
-		$field_list .= 'vtiger_crmentity.crmid';
+		$mod = CRMEntity::getInstance($module);
+		$field_list .= $mod::$crmentityTable.'.crmid';
 
 		$listquery = 'select '.$field_list.substr($listquery, stripos($listquery, ' from '));
 

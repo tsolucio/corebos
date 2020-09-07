@@ -1556,9 +1556,10 @@ function getPotentialsRelatedAccounts($record_id) {
 function getEmailsRelatedAccounts($record_id) {
 	global $log, $adb;
 	$log->debug('> getEmailsRelatedAccounts '.$record_id);
+	$mod = CRMEntity::getInstance('Emails');
 	$query = "select vtiger_seactivityrel.crmid
 		from vtiger_seactivityrel
-		inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seactivityrel.crmid
+		inner join ".$mod::$crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seactivityrel.crmid
 		where vtiger_crmentity.setype='Accounts' and activityid=?";
 	$result = $adb->pquery($query, array($record_id));
 	$accountid=$adb->query_result($result, 0, 'crmid');
@@ -1572,9 +1573,10 @@ function getEmailsRelatedAccounts($record_id) {
 function getEmailsRelatedLeads($record_id) {
 	global $log, $adb;
 	$log->debug('> getEmailsRelatedLeads '.$record_id);
+	$mod = CRMEntity::getInstance('Emails');
 	$query = "select vtiger_seactivityrel.crmid
 		from vtiger_seactivityrel
-		inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seactivityrel.crmid
+		inner join ".$mod::$crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seactivityrel.crmid
 		where vtiger_crmentity.setype='Leads' and activityid=?";
 	$result = $adb->pquery($query, array($record_id));
 	$leadid=$adb->query_result($result, 0, 'crmid');

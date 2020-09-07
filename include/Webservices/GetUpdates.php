@@ -231,8 +231,9 @@ function vtws_isRecordDeleted($recordDetails, $deleteColumnDetails, $deletedValu
 }
 
 function vtws_getEmailFromClause() {
+	$mod = CRMEntity::getInstance('Calendar');
 	$q = 'FROM vtiger_activity
-		INNER JOIN vtiger_crmentity ON vtiger_activity.activityid = vtiger_crmentity.crmid
+		INNER JOIN '.$mod::$crmentityTable.' as vtiger_crmentity ON vtiger_activity.activityid = vtiger_crmentity.crmid
 		LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id
 		LEFT JOIN vtiger_groups ON vtiger_crmentity.smownerid = vtiger_groups.groupid
 		LEFT JOIN vtiger_seattachmentsrel ON vtiger_activity.activityid = vtiger_seattachmentsrel.crmid
@@ -245,10 +246,11 @@ function vtws_getEmailFromClause() {
 }
 
 function getSyncQueryBaseTable($elementType) {
+	$mod = CRMEntity::getInstance($elementType);
 	if ($elementType!='Calendar') {
-		return 'vtiger_crmentity';
+		return $mod::$crmentityTable;
 	} else {
-		return "vtiger_crmentity INNER JOIN vtiger_activity ON (vtiger_crmentity.crmid = vtiger_activity.activityid and vtiger_activity.activitytype ='Task')";
+		return $mod::$crmentityTable." as vtiger_crmentity INNER JOIN vtiger_activity ON (vtiger_crmentity.crmid = vtiger_activity.activityid and vtiger_activity.activitytype ='Task')";
 	}
 }
 ?>
