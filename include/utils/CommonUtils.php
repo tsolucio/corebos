@@ -2284,6 +2284,7 @@ function validateImageMetadata($data) {
 			|| stripos($data, '<?=') !== false
 			|| stripos($data, '<%=') !== false
 			|| stripos($data, '<? ') !== false
+			|| stripos($data, '<?php ') !== false
 			|| stripos($data, '<% ') !== false
 		) {
 			return false;
@@ -2309,6 +2310,7 @@ function validateImageContents($filename) {
 		|| stripos($contents, '<?=') !== false
 		|| stripos($contents, '<%=') !== false
 		|| stripos($contents, '<? ') !== false
+		|| stripos($contents, '<?php ') !== false
 		|| stripos($contents, '<% ') !== false
 	) {
 		return false;
