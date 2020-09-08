@@ -25,6 +25,7 @@ if (isset($_REQUEST['type']) && $_REQUEST['type'] != '') {
 <script src="include/chart.js/Chart.min.js"></script>
 <script src="include/chart.js/chartjs-plugin-datalabels.min.js"></script>
 <script src="include/chart.js/chartjs-plugin-colorschemes.min.js"></script>
+<script src="include/chart.js/randomColor.js"></script>
 <script type="text/javascript" src="modules/Dashboard/Dashboard.js"></script>
 <a name="top"></a>
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
