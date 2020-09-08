@@ -1260,9 +1260,10 @@ class ReportRun extends CRMEntity {
 		$secondary_module .="'";
 
 		if ($module == "Leads") {
+			$crmtalias = CRMEntity::getcrmEntityTableAlias('Leads');
 			$val_conv = ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') ? 1 : 0);
 			$query = "from vtiger_leaddetails
-				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_leaddetails.leadid";
+				inner join $crmtalias on vtiger_crmentity.crmid=vtiger_leaddetails.leadid";
 			if ($this->queryPlanner->requireTable('vtiger_leadsubdetails')) {
 				$query .= " inner join vtiger_leadsubdetails on vtiger_leadsubdetails.leadsubscriptionid=vtiger_leaddetails.leadid";
 			}
@@ -1303,8 +1304,9 @@ class ReportRun extends CRMEntity {
 				getNonAdminAccessControlQuery($this->primarymodule, $current_user).
 				' where vtiger_crmentity.deleted=0 ';
 		} elseif ($module == "Contacts") {
+			$crmtalias = CRMEntity::getcrmEntityTableAlias('Contacts');
 			$query = "from vtiger_contactdetails
-				inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid";
+				inner join $crmtalias on vtiger_crmentity.crmid = vtiger_contactdetails.contactid";
 			if ($this->queryPlanner->requireTable('vtiger_contactaddress')) {
 				$query .= " inner join vtiger_contactaddress on vtiger_contactdetails.contactid = vtiger_contactaddress.contactaddressid";
 			}
@@ -1641,8 +1643,9 @@ class ReportRun extends CRMEntity {
 				getNonAdminAccessControlQuery($this->primarymodule, $current_user) .
 				" where vtiger_crmentity.deleted=0";
 		} elseif ($module == "Emails") {
+			$crmtalias = CRMEntity::getcrmEntityTableAlias('Emails');
 			$query = "from vtiger_activity
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_activity.activityid AND vtiger_activity.activitytype = 'Emails'
+			INNER JOIN $crmtalias ON vtiger_crmentity.crmid = vtiger_activity.activityid AND vtiger_activity.activitytype = 'Emails'
 			LEFT JOIN vtiger_emaildetails ON vtiger_emaildetails.emailid=vtiger_activity.activityid";
 
 			if ($this->queryPlanner->requireTable("vtiger_email_track")) {
