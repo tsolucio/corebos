@@ -1109,11 +1109,11 @@ function getTermsandConditions($module = '') {
 	$log->debug('> getTermsandConditions '.$module);
 	$tandc = '';
 	if (vtlib_isModuleActive('cbTermConditions')) {
-		$mod = CRMEntity::getInstance('cbTermConditions');
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbTermConditions');
 		$result = $adb->pquery(
 			'select tandc
 			from vtiger_cbtandc
-			inner join '.$mod::$crmentityTable.' as vtiger_crmentity on crmid=cbtandcid
+			inner join '.$crmEntityTable.' on crmid=cbtandcid
 			where deleted=0 and formodule=? and isdefault=?
 			limit 1',
 			array($module,'1')
@@ -2477,12 +2477,11 @@ function getMergedDescription($description, $id, $parent_type) {
 		$ct = new VTSimpleTemplate($description, true);
 		$description = $ct->render($entityCache, vtws_getEntityId($parent_type).'x'.$id);
 	}
-	$mod = CRMEntity::getInstance('cbCompany');
-	$crmTable = $mod::$crmentityTable;
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCompany');
 	$cmprs = $adb->pquery(
 		'SELECT c.cbcompanyid
 			FROM vtiger_cbcompany c
-			JOIN '.$crmTable.' as vtiger_crmentity on vtiger_crmentity.crmid = c.cbcompanyid
+			JOIN '.$crmEntityTable.' on vtiger_crmentity.crmid = c.cbcompanyid
 			WHERE c.defaultcompany=1 and vtiger_crmentity.deleted=0',
 		array()
 	);

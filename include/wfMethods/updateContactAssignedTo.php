@@ -33,7 +33,7 @@ function updateContactAssignedTo($entity) {
 		if (!empty($accountid)) {
 			$module = 'Contacts';
 			$mod = CRMEntity::getInstance($module);
-			$accassigrs = $adb->pquery('select smownerid from vtiger_crmentity where crmid=?', array($accountid));
+			$accassigrs = $adb->pquery('select smownerid from '.$mod::$crmentityTable.' where crmid=?', array($accountid));
 			$usr_id = $adb->query_result($accassigrs, 0, 0);
 			$query = 'update '.$mod::$crmentityTable.' set smownerid=? where crmid=?';
 			$params = array($usr_id, $acc_id);

@@ -103,28 +103,28 @@ foreach (csv_to_array($file) as $row) {
 				$row['parent_id'] = '';
 			}
 		} else {
-			$mod = CRMEntity::getInstance('Leads');
-			$queryLeads = "SELECT crmid,id FROM ".$mod::$crmentityTable." as vtiger_crmentity INNER JOIN vtiger_leaddetails ON vtiger_leaddetails.leadid = vtiger_crmentity.crmid and vtiger_leaddetails.lastname = ? INNER JOIN vtiger_ws_entity ON vtiger_ws_entity.name = vtiger_crmentity.setype";
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Leads');
+			$queryLeads = "SELECT crmid,id FROM ".$crmEntityTable." INNER JOIN vtiger_leaddetails ON vtiger_leaddetails.leadid = vtiger_crmentity.crmid and vtiger_leaddetails.lastname = ? INNER JOIN vtiger_ws_entity ON vtiger_ws_entity.name = vtiger_crmentity.setype";
 			$resultLeads = $adb->pquery($queryLeads, array($row['parent_id']));
 
-			$mod = CRMEntity::getInstance('Accounts');
-			$queryAcc = "SELECT crmid,id FROM ".$mod::$crmentityTable." as vtiger_crmentity INNER JOIN vtiger_account ON vtiger_account.accountid = vtiger_crmentity.crmid and vtiger_account.accountname = ? INNER JOIN vtiger_ws_entity ON vtiger_ws_entity.name = vtiger_crmentity.setype";
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Accounts');
+			$queryAcc = "SELECT crmid,id FROM ".$crmEntityTable." INNER JOIN vtiger_account ON vtiger_account.accountid = vtiger_crmentity.crmid and vtiger_account.accountname = ? INNER JOIN vtiger_ws_entity ON vtiger_ws_entity.name = vtiger_crmentity.setype";
 			$resultAcc = $adb->pquery($queryAcc, array($row['parent_id']));
 
-			$mod = CRMEntity::getInstance('Potentials');
-			$queryPot = "SELECT crmid,id FROM ".$mod::$crmentityTable." as INNER JOIN vtiger_potential ON vtiger_potential.potentialid = vtiger_crmentity.crmid and vtiger_potential.potentialname = ? INNER JOIN vtiger_ws_entity ON vtiger_ws_entity.name = vtiger_crmentity.setype";
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Potentials');
+			$queryPot = "SELECT crmid,id FROM ".$crmEntityTable." INNER JOIN vtiger_potential ON vtiger_potential.potentialid = vtiger_crmentity.crmid and vtiger_potential.potentialname = ? INNER JOIN vtiger_ws_entity ON vtiger_ws_entity.name = vtiger_crmentity.setype";
 			$resultPot = $adb->pquery($queryPot, array($row['parent_id']));
 
-			$mod = CRMEntity::getInstance('HelpDesk');
-			$queryHD = "SELECT crmid,id FROM ".$mod::$crmentityTable." as INNER JOIN vtiger_troubletickets ON vtiger_troubletickets.ticketid = vtiger_crmentity.crmid and vtiger_troubletickets.title = ? INNER JOIN vtiger_ws_entity ON vtiger_ws_entity.name = vtiger_crmentity.setype";
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('HelpDesk');
+			$queryHD = "SELECT crmid,id FROM ".$crmEntityTable." INNER JOIN vtiger_troubletickets ON vtiger_troubletickets.ticketid = vtiger_crmentity.crmid and vtiger_troubletickets.title = ? INNER JOIN vtiger_ws_entity ON vtiger_ws_entity.name = vtiger_crmentity.setype";
 			$resultHD = $adb->pquery($queryHD, array($row['parent_id']));
 
-			$mod = CRMEntity::getInstance('Campaigns');
-			$queryCmp = "SELECT crmid,id FROM ".$mod::$crmentityTable." as INNER JOIN vtiger_campaign ON vtiger_campaign.campaignid = vtiger_crmentity.crmid and vtiger_campaign.campaignname = ? INNER JOIN vtiger_ws_entity ON vtiger_ws_entity.name = vtiger_crmentity.setype";
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Campaigns');
+			$queryCmp = "SELECT crmid,id FROM ".$crmEntityTable." INNER JOIN vtiger_campaign ON vtiger_campaign.campaignid = vtiger_crmentity.crmid and vtiger_campaign.campaignname = ? INNER JOIN vtiger_ws_entity ON vtiger_ws_entity.name = vtiger_crmentity.setype";
 			$resultCmp = $adb->pquery($queryCmp, array($row['parent_id']));
 
-			$mod = CRMEntity::getInstance('Vendors');
-			$queryVnd = "SELECT crmid,id FROM ".$mod::$crmentityTable." as INNER JOIN  vtiger_vendor ON  vtiger_vendor.vendorid =  vtiger_crmentity.crmid and vtiger_vendor.vendorname = ? INNER JOIN vtiger_ws_entity ON vtiger_ws_entity.name = vtiger_crmentity.setype";
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Vendors');
+			$queryVnd = "SELECT crmid,id FROM ".$crmEntityTable." INNER JOIN  vtiger_vendor ON  vtiger_vendor.vendorid =  vtiger_crmentity.crmid and vtiger_vendor.vendorname = ? INNER JOIN vtiger_ws_entity ON vtiger_ws_entity.name = vtiger_crmentity.setype";
 			$resultVnd = $adb->pquery($queryVnd, array($row['parent_id']));
 
 			if ($resultLeads && $adb->num_rows($resultLeads)>= 1) {

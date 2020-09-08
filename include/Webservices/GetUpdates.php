@@ -230,9 +230,9 @@ function vtws_isRecordDeleted($recordDetails, $deleteColumnDetails, $deletedValu
 }
 
 function vtws_getEmailFromClause() {
-	$mod = CRMEntity::getInstance('Calendar');
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Calendar');
 	$q = 'FROM vtiger_activity
-		INNER JOIN '.$mod::$crmentityTable.' as vtiger_crmentity ON vtiger_activity.activityid = vtiger_crmentity.crmid
+		INNER JOIN '.$crmEntityTable.' ON vtiger_activity.activityid = vtiger_crmentity.crmid
 		LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id
 		LEFT JOIN vtiger_groups ON vtiger_crmentity.smownerid = vtiger_groups.groupid
 		LEFT JOIN vtiger_seattachmentsrel ON vtiger_activity.activityid = vtiger_seattachmentsrel.crmid

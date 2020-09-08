@@ -13,10 +13,10 @@ require_once 'include/logging.php';
 // Get the list of Invoice for which Recurring is enabled.
 
 global $adb;
-$mod = CRMEntity::getInstance('SalesOrder');
+$crmEntityTable = CRMEntity::getcrmEntityTableAlias('SalesOrder');
 $sql="SELECT vtiger_salesorder.salesorderid, recurring_frequency, start_period, end_period, last_recurring_date, payment_duration, invoice_status
 	FROM vtiger_salesorder 
-	INNER JOIN ".$mod::$crmentityTable." as vtiger_crmentity ON vtiger_salesorder.salesorderid = vtiger_crmentity.crmid AND vtiger_crmentity.deleted = 0
+	INNER JOIN ".$crmEntityTable." ON vtiger_salesorder.salesorderid = vtiger_crmentity.crmid AND vtiger_crmentity.deleted = 0
 	INNER JOIN vtiger_invoice_recurring_info ON vtiger_salesorder.salesorderid = vtiger_invoice_recurring_info.salesorderid
 	WHERE DATE_FORMAT(start_period,'%Y-%m-%d') <= '".date('Y-m-d')."' AND DATE_FORMAT(end_period,'%Y-%m-%d') >= '".date('Y-m-d')."'";
 $result = $adb->pquery($sql, array());
