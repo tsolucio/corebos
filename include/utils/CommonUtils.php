@@ -515,6 +515,7 @@ function getCrmObject($name = false) {
 			$tablename = $name ? true : 'vtiger_crmobject';
 		}
 	}
+	//var_dump($tablename);
 	$log->debug('< getCrmObject');
 	return $tablename;
 }
