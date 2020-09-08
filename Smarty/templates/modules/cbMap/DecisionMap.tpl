@@ -1,5 +1,21 @@
 <style>
+.slds-dropdown__scroll::-webkit-scrollbar {
+  width: 8px;
+}
 
+.slds-dropdown__scroll::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 5px;
+}
+ 
+.slds-dropdown__scroll::-webkit-scrollbar-thumb {
+  background: grey; 
+  border-radius: 5px;
+}
+
+.slds-dropdown__scroll::-webkit-scrollbar-thumb:hover {
+  background: #d3d3d3; 
+}
 </style>
 <script src="modules/com_vtiger_workflow/resources/functional.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/com_vtiger_workflow/resources/vtigerwebservices.js" type="text/javascript" charset="utf-8"></script>
@@ -73,7 +89,7 @@
 				<h2 class="slds-expression__title">{'LBL_RULES'|@getTranslatedString:'Settings'}</h2>
 			</div>
 			<div class="slds-col slds-size_1-of-2 slds-text-align_right">
-				<button class="slds-button slds-button_neutral" type="button" id='addrule_button' onclick="appendEmptyFieldRow(); event.stopPropagation();">
+				<button class="slds-button slds-button_neutral" type="button" id='addrule_button' onclick="appendEmptyFieldRow('rule'); event.stopPropagation();">
 					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
 					</svg>
@@ -101,145 +117,7 @@
 </div>
 <div class="slds-col slds-size_7-of-12 slds-form-element slds-form-element_horizontal slds-text-align_left slds-p-right_x-small">
 <section class="slds-card" id="ruleeditsection">
-	<section id="expeditsection">
-		<div class="slds-p-around_x-small slds-grid slds-gutters">
-			<div class="slds-col slds-size_1-of-2 slds-text-align_left">
-				<h2 class="slds-expression__title">{'Expression'|@getTranslatedString:'cbMap'}</h2>
-			</div>
-			<div class="slds-col slds-size_1-of-2 slds-text-align_right">
-				<button class="slds-button slds-button_neutral" onclick="openFunctionSelection('exptextarea');">
-					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
-					</svg>
-					{'Function'|@getTranslatedString:'cbMap'}
-				</button>
-			</div>
-		</div>
-		<div class="slds-p-around_x-small slds-grid slds-gutters">
-			<div class="slds-col slds-size_1-of-1 slds-text-align_left">
-				<textarea id="exptextarea" class="slds-textarea"></textarea>
-			</div>
-		</div>
-	</section>
-	<section id="bmeditsection" style="display:none;">
-		<div class="slds-form slds-p-around_small">
-			<form name="dtbmselection">
-			<label class="slds-form-element__label"> {'SINGLE_cbMap'|@getTranslatedString:'cbMap'} </label>
-			<div class="slds-form-element__control slds-input-has-fixed-addon">
-				<input id="bmapid" name="bmapid" class="slds-input" type="hidden" value="">
-				<input id="bmapid_display" class="slds-input" name="bmapid_display" readonly="" style="border:1px solid #bababa;" type="text" value="" onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=dtbmselection&forfield=bmapid&srcmodule=GlobalVariable'+SpecialSearch,'vtlibui10wf','width=680,height=602,resizable=0,scrollbars=0,top=150,left=200');">
-				<span class="slds-form-element__addon" id="fixed-text-addon-post">
-					<button type="image" class="slds-button" alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedString}" onClick="this.form.bmapid.value=''; this.form.bmapid_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
-						<svg class="slds-icon slds-icon_small slds-icon-text-light" aria-hidden="true" >
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use> 
-						</svg>
-					</button>
-				</span>
-			</div>
-			</form>
-		</div>
-	</section>
-	<section id="dteditsection" style="display:none;">
-		<div class="slds-p-around_small">
-			<legend class="slds-form-element__legend slds-form-element__label">{'LBL_MODULE'|@getTranslatedString}</legend>
-			<div class="slds-form-element__control">
-				<div class="slds-select_container">
-					<select id="dtmodule" required name="dtmodule" class="slds-select" onchange="getDTModuleFields(this.value);">
-						{foreach item=arr from=$MODULES}
-							<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
-						{/foreach}
-					</select>
-				</div>
-			</div>
-			<legend class="slds-form-element__legend slds-form-element__label">{'RETURN_FIELDS'|@getTranslatedString:'cbMap'}</legend>
-			<div class="slds-form-element__control">
-				<div class="slds-input_container">
-					<input id="returnfields" required name="returnfields" class="slds-input">
-				</div>
-			</div>
-			<legend class="slds-form-element__legend slds-form-element__label">{'Order by Column'|@getTranslatedString:'cbQuestion'}</legend>
-			<div class="slds-form-element__control">
-				<div class="slds-input_container">
-					<input id="orderbyrule" required name="orderbyrule" class="slds-input">
-				</div>
-			</div>
-		</div>
-
-		<div class="slds-tabs_default">
-		<ul class="slds-tabs_default__nav" role="tablist">
-			<li class="slds-tabs_default__item" title="{'LBL_SEARCH'|@getTranslatedString}" role="presentation" id="tabsearchli" onclick="setActiveDTTab('tabsearch', 'tabconditions');">
-			<a class="slds-tabs_default__link" href="javascript:void(0);" role="tab">
-				<span class="slds-tabs__left-icon">
-				<span class="slds-icon_container slds-icon-standard-case" title="{'LBL_SEARCH'|@getTranslatedString}">
-					<svg class="slds-icon slds-icon_small" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#search"></use>
-					</svg>
-				</span>
-				</span>{'LBL_SEARCH'|@getTranslatedString}</a>
-			</li>
-			<li class="slds-tabs_default__item" title="{'LBL_CONDITIONS'|@getTranslatedString:'Settings'}" role="presentation" id="tabconditionsli" onclick="setActiveDTTab('tabconditions', 'tabsearch');">
-			<a class="slds-tabs_default__link" href="javascript:void(0);" role="tab">
-				<span class="slds-tabs__left-icon">
-				<span class="slds-icon_container slds-icon-standard-opportunity" title="{'LBL_CONDITIONS'|@getTranslatedString:'Settings'}">
-					<svg class="slds-icon slds-icon_small" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#filter"></use>
-					</svg>
-				</span>
-				</span>{'LBL_CONDITIONS'|@getTranslatedString:'Settings'}</a>
-			</li>
-		</ul>
-		</div>
-		<div id="tabconditions">
-			<div class="slds-p-around_x-small slds-grid slds-gutters">
-				<div class="slds-col slds-size_1-of-2 slds-text-align_left">
-					<h2 class="slds-expression__title">{'LBL_CONDITIONS'|@getTranslatedString:'Settings'}</h2>
-				</div>
-				<div class="slds-col slds-size_1-of-2 slds-text-align_right">
-					<button class="slds-button slds-button_neutral">
-						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
-						</svg>
-						{'Add Condition'|@getTranslatedString:'cbMap'}
-					</button>
-					<button class="slds-button slds-button_text-destructive slds-float_right" type="button" id='delfield_button' onclick="deleteFieldRow(); event.stopPropagation();">
-						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
-						</svg>
-						{'LBL_DELETE'|getTranslatedString}
-					</button>
-				</div>
-			</div>
-
-			<div class="slds-p-around_small">
-				<div class="slds-page-header__meta-text slds-m-left_x-small" id="condgrid" style="width:99%;"></div>
-			</div>
-		</div>
-		<div id="tabsearch">
-			<div class="slds-p-around_x-small slds-grid slds-gutters">
-				<div class="slds-col slds-size_1-of-2 slds-text-align_left">
-					<h2 class="slds-expression__title">{'LBL_SEARCH'|@getTranslatedString:'Settings'}</h2>
-				</div>
-				<div class="slds-col slds-size_1-of-2 slds-text-align_right">
-					<button class="slds-button slds-button_neutral">
-						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
-						</svg>
-						{'Add Search'|@getTranslatedString:'cbMap'}
-					</button>
-					<button class="slds-button slds-button_text-destructive slds-float_right" type="button" id='delfield_button' onclick="deleteFieldRow(); event.stopPropagation();">
-						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
-						</svg>
-						{'LBL_DELETE'|getTranslatedString}
-					</button>
-				</div>
-			</div>
-
-			<div class="slds-p-around_small">
-				<div class="slds-page-header__meta-text slds-m-left_x-small" id="srchgrid" style="width:99%;"></div>
-			</div>
-		</div>
-	</section>
+	<section id="show-ruleeditsection"></section>
 </section>
 </div>
 </div>
@@ -251,7 +129,56 @@ var wfexpselectionDIV = 'selectfunction';
 var DecisionTableMap = {$mapcontent};
 
 function saveModuleMapAction() {
-	saveMapAction('mapid={$MapID}&tmodule={$targetmodule}&content='+encodeURI(JSON.stringify(DecisionTableMap)));
+	let newDecisionTableMap = {};
+	newDecisionTableMap.hitPolicy = document.getElementById('hitpolicy').value;
+	if (newDecisionTableMap.hitPolicy == 'G') {
+		newDecisionTableMap.aggregate = document.getElementById('aggregate').value;
+	}
+	let newRuleData = new Array();
+	for (let r in ruleData) {
+		if (ruleData[r].ruletype == 'expression') {
+			console.log(ruleData[r].sequence);
+			const expression = document.getElementById('exptextarea-'+ruleData[r].sequence).value;
+			const expRule = {
+				sequence: parseInt(ruleData[r].sequence),
+				expression: expression == '' ? '' : expression,
+				output: ruleData[r].output,
+			};
+			newRuleData.push(expRule);
+		} else if (ruleData[r].ruletype == 'businessmap') {
+			const mapid = document.getElementById('bmapid_'+ruleData[r].sequence).value;
+			const mapRule = {
+				sequence: parseInt(ruleData[r].sequence),
+				mapid: mapid  == '' ? '' : mapid,
+				output: ruleData[r].output,
+			}
+			newRuleData.push(mapRule);
+		} else {
+			const module = document.getElementById('dtmodule-'+ruleData[r].sequence).value;
+			const orderbyrule = document.getElementById('orderbyrule-'+ruleData[r].sequence).value;
+			const returnfields = document.getElementById('returnfields-'+ruleData[r].sequence).value;
+			const decisionTable = {
+				sequence: parseInt(ruleData[r].sequence),
+				decisionTable: {
+					module: module,
+					conditions: {
+						condition: condGroup[ruleData[r].sequence]
+					},
+					orderby: orderbyrule.slice(0, -1),
+					searches: {
+						search: {
+							condition: srchData[ruleData[r].sequence]
+						}
+					},
+					output: returnfields.slice(0, -1),
+				},
+				output: ruleData[r].output,
+			}
+			newRuleData.push(decisionTable);
+		}
+	}
+	newDecisionTableMap.rules = newRuleData;
+	saveMapAction('mapid={$MapID}&tmodule={$targetmodule}&content='+encodeURI(JSON.stringify(newDecisionTableMap)));
 }
 </script>
 {include file='Components/ComponentsCSS.tpl'}

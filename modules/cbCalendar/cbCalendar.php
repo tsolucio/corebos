@@ -276,7 +276,7 @@ class cbCalendar extends CRMEntity {
 			if ($noofrows > 0) {
 				$recur_id = $adb->query_result($result, 0, 'recurid');
 			}
-			$current_id =$recur_id+1;
+			$current_id =(int)$recur_id+1;
 			$recurring_insert = 'insert into vtiger_recurringevents values (?,?,?,?,?,?)';
 			$rec_params = array($current_id, $this->id, $st_date, $type, $recur_freq, $recurringinfo);
 			$adb->pquery($recurring_insert, $rec_params);

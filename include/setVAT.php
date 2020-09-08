@@ -185,7 +185,7 @@ function setVAT($entity) {
 			if (!isset($taxsum['nettotal'])) {
 				$taxsum['nettotal'] = 0;
 			}
-			$taxsum['nettotal'] += $total;
+			$taxsum['nettotal'] += $totalAfterDiscount;
 		}
 	}
 	$taxinfo['nettotal']=array('label'=>'Net Total (bGD)', 'field'=>'sum_nettotal');

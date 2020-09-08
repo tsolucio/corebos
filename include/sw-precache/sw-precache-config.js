@@ -102,6 +102,7 @@ module.exports = {
 		'modules/WSAPP/WSAPP.js',
 		'modules/Accounts/Accounts.js',
 		'modules/cbMap/cbMap.js',
+		'modules/cbMap/language/*.js',
 		'modules/cbTermConditions/cbTermConditions.js',
 		'modules/Campaigns/Campaigns.js',
 		'modules/Invoice/Invoice.js',

@@ -311,7 +311,7 @@ class BURAK_Gantt {
 	* @param integer $quality Image quality 0-100
 	* @param integer $project_gantt_type Type of Project Gantt 1-3 1 for daily, 2 for weekly and 3 for monthly
 	*/
-	function outputGantt($file=null,$quality=90, $project_gantt_type){
+	function outputGantt($file=null,$quality=90, $project_gantt_type = '2'){
 		$this->drawGantt($project_gantt_type);
 		if(!empty($file)){
 			imagejpeg($this->im,$file,$quality);

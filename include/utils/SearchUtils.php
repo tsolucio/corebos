@@ -1327,7 +1327,11 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 	if (!$fldname || $adb->num_rows($fldname)==0) {
 		$fldname = $adb->pquery('select fieldname from vtiger_field where tablename=? and columnname=?', array($tablename, $fieldname));
 	}
-	$fld = $adb->query_result($fldname, 0, 0);
+	if ($fldname && $adb->num_rows($fldname)>0) {
+		$fld = $adb->query_result($fldname, 0, 0);
+	} else {
+		$fld = '';
+	}
 	$contactid = 'vtiger_contactdetails.lastname';
 	if ($currentModule != 'Contacts' && $currentModule != 'Leads' && $currentModule != 'Campaigns') {
 		$contactid = getSqlForNameInDisplayFormat(array('lastname'=>'vtiger_contactdetails.lastname', 'firstname'=>'vtiger_contactdetails.firstname'), 'Contacts');

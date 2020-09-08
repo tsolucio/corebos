@@ -28,8 +28,8 @@ class WorkflowRelationEventHandler extends VTEventHandler {
 			$destinationModule = $entityData['destinationModule'];
 			// source module
 			$result = $adb->pquery(
-				'SELECT workflow_id FROM com_vtiger_workflows WHERE execution_condition=? AND module_name=? AND (relatemodule=? OR relatemodule="Any")',
-				array($execcond, $sourceModule, $destinationModule)
+				'SELECT workflow_id FROM com_vtiger_workflows WHERE execution_condition=? AND module_name=? AND active=? AND (relatemodule=? OR relatemodule="Any")',
+				array($execcond, $sourceModule, 'true', $destinationModule)
 			);
 			if ($result && $adb->num_rows($result)>0) {
 				$sourceRecordId = $entityData['sourceRecordId'];
@@ -41,8 +41,8 @@ class WorkflowRelationEventHandler extends VTEventHandler {
 			}
 			// destination module
 			$result = $adb->pquery(
-				'SELECT workflow_id FROM com_vtiger_workflows WHERE execution_condition=? AND module_name=? AND (relatemodule=? OR relatemodule="Any")',
-				array($execcond, $destinationModule, $sourceModule)
+				'SELECT workflow_id FROM com_vtiger_workflows WHERE execution_condition=? AND module_name=? AND active=? AND (relatemodule=? OR relatemodule="Any")',
+				array($execcond, $destinationModule, 'true', $sourceModule)
 			);
 			if ($result && $adb->num_rows($result)>0) {
 				$destinationRecordId = $entityData['destinationRecordId'];

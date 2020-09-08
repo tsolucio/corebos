@@ -1086,6 +1086,7 @@ function getTermsandConditions($module = '') {
 		$module = $currentModule;
 	}
 	$log->debug('> getTermsandConditions '.$module);
+	$tandc = '';
 	if (vtlib_isModuleActive('cbTermConditions')) {
 		$result = $adb->pquery(
 			'select tandc
@@ -1097,15 +1098,6 @@ function getTermsandConditions($module = '') {
 		);
 		if ($result && $adb->num_rows($result)>0) {
 			$tandc = $adb->query_result($result, 0, 'tandc');
-		} else {
-			$tandc = '';
-		}
-	} else {
-		$result = $adb->pquery('select tandc from vtiger_inventory_tandc limit 1', array());
-		if ($result && $adb->num_rows($result)>0) {
-			$tandc = $adb->query_result($result, 0, 'tandc');
-		} else {
-			$tandc = '';
 		}
 	}
 	$log->debug('< getTermsandConditions');

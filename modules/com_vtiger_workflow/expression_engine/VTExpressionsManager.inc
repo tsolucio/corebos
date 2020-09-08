@@ -48,18 +48,32 @@ class VTExpressionsManager {
 				$reflabels[$field['name']] = $field['label'];
 			}
 		}
+		$relmodulei18n = getTranslatedString('SINGLE_Users', 'Users');
+		$relhandler = vtws_getModuleHandlerFromName('Users', $current_user);
+		$relmeta = $relhandler->getMeta();
+		$relfields = $relmeta->getModuleFields();
+		foreach ($mainmeta->getOwnerFields() as $ownerfield) {
+			$mainfieldi18n = getTranslatedString($ownerfield, 'BusinessActions');
+			foreach ($relfields as $relfield => $wsfld) {
+				$relfieldi18n = getTranslatedString($wsfld->getFieldLabelKey(), 'Users');
+				$arr["$($ownerfield : (Users) $relfield)"] = "($mainfieldi18n : ($relmodulei18n) $relfieldi18n)";
+			}
+		}
 		foreach ($referenceFieldInfoList as $mainfield => $relmodules) {
 			if (empty($reflabels[$mainfield])) {
 				continue;
 			}
-			$mainfieldi18n = getTranslatedCurrencyString($reflabels[$mainfield], $moduleName);
+			$mainfieldi18n = getTranslatedString($reflabels[$mainfield], $moduleName);
 			foreach ($relmodules as $relmodule) {
-				$relmodulei18n = getTranslatedCurrencyString($relmodule, $relmodule);
+				$relmodulei18n = getTranslatedString('SINGLE_'.$relmodule, $relmodule);
+				if ($relmodulei18n=='SINGLE_'.$relmodule) {
+					$relmodulei18n = getTranslatedString($relmodule, $relmodule);
+				}
 				$relhandler = vtws_getModuleHandlerFromName($relmodule, $current_user);
 				$relmeta = $relhandler->getMeta();
 				$relfields = $relmeta->getModuleFields();
 				foreach ($relfields as $relfield => $wsfld) {
-					$relfieldi18n = getTranslatedCurrencyString($wsfld->getFieldLabelKey(), $relmodule);
+					$relfieldi18n = getTranslatedString($wsfld->getFieldLabelKey(), $relmodule);
 					$arr["$($mainfield : ($relmodule) $relfield)"] = "($mainfieldi18n : ($relmodulei18n) $relfieldi18n)";
 				}
 			}

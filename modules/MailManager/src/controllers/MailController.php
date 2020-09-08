@@ -246,7 +246,7 @@ class MailManager_MailController extends MailManager_Controller {
 				$mail->readFromDB($request->get('_muid'));
 				$attachment = $mail->attachments(true, $attachmentName);
 
-				if ($attachment[$attachmentName]) {
+				if (!empty($attachment[$attachmentName])) {
 					// Send as downloadable
 					header('Content-type: application/octet-stream');
 					header('Pragma: public');
