@@ -8,6 +8,9 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
+<script>
+	loadJS('modules/{$MODULE}/{$MODULE}.js');
+</script>
 {include file='QuickCreateHidden.tpl'}
 <table border="0" align="center" cellspacing="0" cellpadding="0" width="90%" class="mailClient mailClientBg">
 <tr>
