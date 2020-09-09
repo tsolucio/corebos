@@ -276,9 +276,8 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 	}
 	$uitype = 0;
 	if ($search_field =='crmid') {
-		$mod = CRMEntity::getInstance($module);
 		$column_name='crmid';
-		$table_name=$mod::$crmentityTable;
+		$table_name='vtiger_crmentity';
 		$where="$table_name.$column_name like '". formatForSqlLike($search_string) ."'";
 	} elseif ($search_field =='currency_id' && ($module=='PriceBooks' || $module=='PurchaseOrder' || $module=='SalesOrder' || $module=='Invoice' || $module=='Quotes')) {
 		$column_name='currency_name';

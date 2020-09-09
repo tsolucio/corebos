@@ -3264,7 +3264,17 @@ function getRelatedInfo($id) {
 	$result = $adb->pquery('select related_to from vtiger_potential where potentialid=?', array($id));
 	if ($adb->num_rows($result)>0) {
 		$relID = $adb->query_result($result, 0, 'related_to');
-		$result = $adb->pquery('select setype from vtiger_crmentity where crmid=?', array($relID));
+		$crmObject = getCrmObject();
+		$crmTable = 'vtiger_crmentity';
+		if ($crmObject) {
+			$data = $adb->pquery('select setype from vtiger_crmobject where crmid=?', array($relID));
+			if ($adb->num_rows($data) > 0) {
+				$module = $adb->query_result($data, 0, 'setype');
+				$mod = CRMEntity::getInstance($module);
+				$crmTable = $mod::$crmentityTable;
+			}
+		}
+		$result = $adb->pquery('select setype from '.$crmTable.' where crmid=?', array($relID));
 		if ($adb->num_rows($result)>0) {
 			$setype = $adb->query_result($result, 0, 'setype');
 		}
@@ -3281,7 +3291,17 @@ function getRelatedInfo($id) {
 function getRecordInfoFromID($id) {
 	global $adb;
 	$data = array();
-	$result = $adb->pquery('select setype from vtiger_crmentity where crmid=?', array($id));
+	$crmObject = getCrmObject();
+	$crmTable = 'vtiger_crmentity';
+	if ($crmObject) {
+		$resultNew = $adb->pquery('select setype from vtiger_crmobject where crmid=?', array($id));
+		if ($adb->num_rows($resultNew) > 0) {
+			$module = $adb->query_result($resultNew, 0, 'setype');
+			$mod = CRMEntity::getInstance($module);
+			$crmTable = $mod::$crmentityTable;
+		}
+	}
+	$result = $adb->pquery('select setype from '.$crmTable.' where crmid=?', array($id));
 	if ($adb->num_rows($result)>0) {
 		$setype = $adb->query_result($result, 0, 'setype');
 		$data = getEntityName($setype, $id);

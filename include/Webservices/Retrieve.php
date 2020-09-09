@@ -135,10 +135,10 @@ function vtws_retrieve($id, $user) {
 					if ($mdfield['fieldinfo']['name']=='id') {
 						continue;
 					}
-					$mod = CRMEntity::getInstance('InventoryDetails');
+					$crmEntityTable = CRMEntity::getcrmEntityTableAlias('InventoryDetails');
 					$mdrs = $adb->pquery(
 						'select '.$mdfield['fieldinfo']['name'].',vtiger_inventorydetails.inventorydetailsid from vtiger_inventorydetails
-							inner join '.$mod::$crmentityTable.' as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventorydetails.inventorydetailsid
+							inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_inventorydetails.inventorydetailsid
 							inner join vtiger_inventorydetailscf on vtiger_inventorydetailscf.inventorydetailsid=vtiger_inventorydetails.inventorydetailsid
 							where vtiger_crmentity.deleted=0 and related_to=? and lineitem_id=?',
 						array($recordid, $row['lineitem_id'])
@@ -168,8 +168,18 @@ function vtws_retrieve_deleted($id, $user) {
 	global $log,$adb;
 
 	// First we look if it has been totally eliminated
+	$crmObject = getCrmObject();
+	$crmTable = 'vtiger_crmentity';
 	$parts = explode('x', $id);
-	$result = $adb->pquery('SELECT count(*) as cnt FROM vtiger_crmentity WHERE crmid=?', array($parts[1]));
+	if ($crmObject) {
+		$data = $adb->pquery('SELECT setype FROM vtiger_crmobject WHERE crmid=?', array($parts[1]));
+		if ($adb->num_rows($data) > 0) {
+			$module = $adb->query_result($data, 0, 'setype');
+			$mod = CRMEntity::getInstance($module);
+			$crmTable = $mod::$crmentityTable;
+		}
+	}
+	$result = $adb->pquery('SELECT count(*) as cnt FROM '.$crmTable.' WHERE crmid=?', array($parts[1]));
 	if ($adb->query_result($result, 0, 'cnt') == 1) { // If not we can "almost" continue normally
 		$webserviceObject = VtigerWebserviceObject::fromId($adb, $id);
 		$handlerPath = $webserviceObject->getHandlerPath();
