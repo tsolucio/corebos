@@ -3264,13 +3264,12 @@ function isFileAccessible($filepath) {
 }
 
 /** Function to get the ActivityType for the given entity id
- *  @param entityid : Type Integer
- *  return the activity type for the given id
+ *  @param integer entityid
+ *  @return string the activity type for the given id
  */
 function getActivityType($id) {
 	global $adb;
-	$quer = 'select activitytype from vtiger_activity where activityid=?';
-	$res = $adb->pquery($quer, array($id));
+	$res = $adb->pquery('select activitytype from vtiger_activity where activityid=?', array($id));
 	return $adb->query_result($res, 0, 'activitytype');
 }
 
