@@ -540,7 +540,7 @@ class CRMEntity {
 			$this->column_fields['record_id'] = $current_id;
 			$this->column_fields['record_module'] = $module;
 			if (empty($this->column_fields['cbuuid'])) {
-				$this->column_fields['createdtime'] = $crmvalues['created_date'];
+				//$this->column_fields['createdtime'] = $crmvalues['created_date'];
 				$cbuuid = $this->getUUID();
 			} else {
 				$cbuuid = $this->column_fields['cbuuid'];
