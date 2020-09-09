@@ -63,15 +63,11 @@ class CRMEntity {
 		return isset($VTIGER_BULK_SAVE_MODE) && $VTIGER_BULK_SAVE_MODE;
 	}
 
-	public static function getInstance($module) {
-		$modName = $module;
-		if ($module == 'Calendar') {
-			$modName = 'Activity';
-		}
+	public static function getInstance($modName) {
 		// File access security check
 		if (!class_exists($modName)) {
-			checkFileAccessForInclusion("modules/$module/$modName.php");
-			require_once "modules/$module/$modName.php";
+			checkFileAccessForInclusion("modules/$modName/$modName.php");
+			require_once "modules/$modName/$modName.php";
 		}
 		return new $modName();
 	}

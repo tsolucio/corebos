@@ -2300,67 +2300,6 @@ function getListQuery($module, $where = '') {
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
 			$query .= 'WHERE vtiger_crmentity.deleted = 0 ' . $where;
 			break;
-		case 'Calendar':
-			// only one row per event no matter how many contacts are related
-			$query = "SELECT vtiger_activity.activityid as act_id,vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_crmentity.setype,
-		vtiger_activity.*,
-		vtiger_contactdetails.lastname, vtiger_contactdetails.firstname,
-		vtiger_contactdetails.contactid,
-		vtiger_account.accountid, vtiger_account.accountname
-		FROM vtiger_activity
-		LEFT JOIN vtiger_activitycf
-			ON vtiger_activitycf.activityid = vtiger_activity.activityid
-		LEFT JOIN (SELECT min(vtiger_cntactivityrel.contactid) as contactid,vtiger_cntactivityrel.activityid
-					from vtiger_cntactivityrel
-					inner join ".$crmTable." as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_cntactivityrel.contactid and deleted=0
-					GROUP BY vtiger_cntactivityrel.activityid
-					) ctorel ON ctorel.activityid = vtiger_activity.activityid
-		LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid = ctorel.contactid
-		LEFT JOIN vtiger_seactivityrel
-			ON vtiger_seactivityrel.activityid = vtiger_activity.activityid
-		LEFT OUTER JOIN vtiger_activity_reminder
-			ON vtiger_activity_reminder.activity_id = vtiger_activity.activityid
-		LEFT JOIN ".$crmTable." as vtiger_crmentity
-			ON vtiger_crmentity.crmid = vtiger_activity.activityid
-		LEFT JOIN vtiger_users
-			ON vtiger_users.id = vtiger_crmentity.smownerid
-		LEFT JOIN vtiger_groups
-			ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-		LEFT JOIN vtiger_users vtiger_users2
-			ON vtiger_crmentity.modifiedby = vtiger_users2.id
-		LEFT JOIN vtiger_groups vtiger_groups2
-			ON vtiger_crmentity.modifiedby = vtiger_groups2.groupid
-		LEFT OUTER JOIN vtiger_account
-			ON vtiger_account.accountid = vtiger_contactdetails.accountid
-		LEFT OUTER JOIN vtiger_leaddetails
-			ON vtiger_leaddetails.leadid = vtiger_seactivityrel.crmid
-		LEFT OUTER JOIN vtiger_account vtiger_account2
-			ON vtiger_account2.accountid = vtiger_seactivityrel.crmid
-		LEFT OUTER JOIN vtiger_potential
-			ON vtiger_potential.potentialid = vtiger_seactivityrel.crmid
-		LEFT OUTER JOIN vtiger_troubletickets
-			ON vtiger_troubletickets.ticketid = vtiger_seactivityrel.crmid
-		LEFT OUTER JOIN vtiger_salesorder
-			ON vtiger_salesorder.salesorderid = vtiger_seactivityrel.crmid
-		LEFT OUTER JOIN vtiger_purchaseorder
-			ON vtiger_purchaseorder.purchaseorderid = vtiger_seactivityrel.crmid
-		LEFT OUTER JOIN vtiger_quotes
-			ON vtiger_quotes.quoteid = vtiger_seactivityrel.crmid
-		LEFT OUTER JOIN vtiger_invoice
-			ON vtiger_invoice.invoiceid = vtiger_seactivityrel.crmid
-		LEFT OUTER JOIN vtiger_campaign
-		ON vtiger_campaign.campaignid = vtiger_seactivityrel.crmid";
-
-			//added to fix #5135
-			if (isset($_REQUEST['from_homepage']) && ($_REQUEST['from_homepage'] ==
-					"upcoming_activities" || $_REQUEST['from_homepage'] == "pending_activities")) {
-				$query.=" LEFT OUTER JOIN vtiger_recurringevents ON vtiger_recurringevents.activityid=vtiger_activity.activityid";
-			}
-			//end
-
-			$query .= getNonAdminAccessControlQuery($module, $current_user);
-			$query.=" WHERE vtiger_crmentity.deleted = 0 AND activitytype != 'Emails' " . $where;
-			break;
 		case 'Emails':
 			$query = 'SELECT DISTINCT vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_activity.activityid, vtiger_activity.subject, vtiger_activity.date_start,
 					vtiger_contactdetails.lastname, vtiger_contactdetails.firstname, vtiger_contactdetails.contactid

@@ -310,20 +310,6 @@ class coreBOSEventsPermissionExample extends VTEventHandler {
 					inner join ".$crmTable." as vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cobropago.parent_id
 					where setype='$parentmodule' and smownerid=".$user->id;
 				break;
-			case 'Calendar':
-			case 'Events':
-				if ($parentmodule=='Accounts') {
-					$query = "select vtiger_seactivityrel.activityid as id
-						from vtiger_seactivityrel
-						inner join ".$crmTable." as vtiger_crmentity on vtiger_crmentity.crmid = vtiger_seactivityrel.crmid
-						where setype='Accounts' and deleted=0 and smownerid=".$user->id;
-				} else {
-					$query = "select vtiger_cntactivityrel.activityid as id
-						from vtiger_cntactivityrel
-						inner join ".$crmTable." as vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cntactivityrel.contactid
-						where setype='Contacts' and deleted=0 and smownerid=".$user->id;
-				}
-				break;
 			default:  // we look for uitype 10
 				$rsfld = $adb->pquery('SELECT fieldname from vtiger_fieldmodulerel
 					INNER JOIN vtiger_field on vtiger_field.fieldid=vtiger_fieldmodulerel.fieldid

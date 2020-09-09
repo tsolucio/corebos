@@ -1587,7 +1587,7 @@ function isPresentRelatedLists($module, $activity_mode = '') {
 		array($tab_id)
 	);
 	$count = $adb->num_rows($result);
-	if ($count < 1 || ($module == 'Calendar' && $activity_mode == 'task')) {
+	if ($count < 1) {
 		$retval = 'false';
 	} elseif (empty($moduleRelatedListCache[$module])) {
 		for ($i = 0; $i < $count; ++$i) {

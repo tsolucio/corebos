@@ -557,11 +557,7 @@ class VTSimpleTemplate {
 				$parts = explode('x', $wsId);
 				$recordId = $parts[1];
 				$moduleName = $this->parent->getModuleName();
-				if ($moduleName == 'Calendar') {
-					return $site_URL.'/index.php?action=DetailView&module=cbCalendar&record='.$recordId;
-				} else {
-					return $site_URL.'/index.php?action=DetailView&module='.$moduleName.'&record='.$recordId;
-				}
+				return $site_URL.'/index.php?action=DetailView&module='.$moduleName.'&record='.$recordId;
 			case 'portaldetailviewurl':
 				$wsId = $this->parent->getId();
 				$parts = explode('x', $wsId);

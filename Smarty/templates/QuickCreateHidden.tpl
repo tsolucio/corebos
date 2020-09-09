@@ -17,12 +17,6 @@
 	<input type="hidden" name="return_module" value="{$MODULE}">
 	<input type="hidden" name="search_url" value="{$URLPOPUP}">
 {/if}
-
-{if $MODULE eq 'Calendar'}
-	<input type="hidden" name="activity_mode" value="{if isset($ACTIVITY_MODE)}{$ACTIVITY_MODE}{/if}">
-	<input type="hidden" name="module" value="Calendar4You">
-{else}
 	<input type="hidden" name="module" value="{$MODULE}">
-{/if}
 	<input type="hidden" name="record" value="">
 	<input type="hidden" name="action" value="Save">

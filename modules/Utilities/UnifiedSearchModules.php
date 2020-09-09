@@ -21,7 +21,7 @@ if (!empty($_SESSION['__UnifiedSearch_SelectedModules__']) && is_array($_SESSION
 	}
 }
 
-$doNotSearchThese = array('Dashboard','Home','Calendar','Events','Rss','Reports','Portal','Users','ConfigEditor','Import','MailManager','Mobile','ModTracker',
+$doNotSearchThese = array('Dashboard','Home','Calendar','Rss','Reports','Portal','Users','ConfigEditor','Import','MailManager','Mobile','ModTracker',
 	'PBXManager','VtigerBackup','WSAPP','cbupdater','CronTasks','RecycleBin','Tooltip','Webforms','Calendar4You','GlobalVariable','cbMap','evvtMenu','cbAuditTrail',
 	'cbLoginHistory','cbtranslation');
 $doNotSearchTheseTabids = array();

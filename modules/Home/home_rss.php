@@ -82,7 +82,7 @@ for ($i=0; $i<$adb->num_rows($result); $i++) {
 		$tempresult=$adb->pquery($tempquery, array($mod_notify[$i]['crmid']));
 		$HelpDesk_title=$adb->fetch_array($tempresult);
 		$notify_values[$i]=$HelpDesk_title['title'];
-	} elseif ($mod_notify[$i]['setype']=='Calendar') {
+	} elseif ($mod_notify[$i]['setype']=='cbCalendar') {
 		$tempquery='select subject from vtiger_activity where vtiger_activityid=?';
 		$tempresult=$adb->pquery($tempquery, array($mod_notify[$i]['crmid']));
 		$Activity_subject=$adb->fetch_array($tempresult);

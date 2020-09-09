@@ -484,7 +484,7 @@ class BusinessActions extends CRMEntity {
 		global $adb;
 		$allEntities = array();
 		$allModules = array();
-		$entityQuery = "SELECT tabid,name FROM vtiger_tab WHERE isentitytype=1 and name NOT IN ('Rss','Recyclebin','Events','Calendar')";
+		$entityQuery = "SELECT tabid,name FROM vtiger_tab WHERE isentitytype=1 and name NOT IN ('Rss','Recyclebin','Calendar')";
 		$result = $adb->pquery($entityQuery, array());
 		while ($result && $row = $adb->fetch_array($result)) {
 			$allEntities[$row['tabid']] = getTranslatedString($row['name'], $row['name']);

@@ -48,7 +48,7 @@ if ((isset($_REQUEST['type']) && $_REQUEST['type'] !='') || (isset($_REQUEST['n_
 
 	if ($type == 'minical') {
 		$temp_module = $currentModule;
-		$mod_strings = return_module_language($current_language, 'Calendar');
+		$mod_strings = return_module_language($current_language, 'cbCalendar');
 		$currentModule = 'Calendar';
 		$calendar_arr['IMAGE_PATH'] = $image_path;
 		$calendar_arr['calendar'] = new Calendar('month', $date_data);

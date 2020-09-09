@@ -77,7 +77,7 @@ function moduleList() {
 	$sql = "select distinct vtiger_field.tabid,name
 		from vtiger_field
 		inner join vtiger_tab on vtiger_field.tabid=vtiger_tab.tabid
-		where name not in ('Calendar','Events','Users')";
+		where name not in ('Calendar','Users')";
 	$result = $adb->pquery($sql, array ());
 	$modulelist = array();
 	while ($moduleinfo = $adb->fetch_array($result)) {

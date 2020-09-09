@@ -90,7 +90,7 @@ function homepage_getUpcomingActivities($maxval, $calCnt) {
  */
 function getActivityEntries($open_activity_list) {
 	global $current_language, $app_strings;
-	$current_module_strings = return_module_language($current_language, 'Calendar');
+	$current_module_strings = return_module_language($current_language, 'cbCalendar');
 	if (!empty($open_activity_list)) {
 		$header=array();
 		$header[] =$current_module_strings['LBL_LIST_SUBJECT'];

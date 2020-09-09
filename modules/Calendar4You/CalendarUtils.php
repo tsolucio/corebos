@@ -672,7 +672,7 @@ function getAllModulesWithDateTimeFields() {
 			$params = array($profileList);
 		}
 	}
-	$sqlmods .= " and vtiger_tab.name not in ('cbCalendar','Calendar','Events')";
+	$sqlmods .= " and vtiger_tab.name not in ('cbCalendar','Calendar')";
 	$rsmwd = $adb->pquery($sqlmods, $params);
 	$modswithdt = array();
 	while ($mod = $adb->fetch_array($rsmwd)) {

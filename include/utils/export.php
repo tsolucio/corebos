@@ -123,7 +123,7 @@ function export($type) {
 	}
 
 	$query = $focus->create_export_query($where);
-	if ($search_type != 'includesearch' && $type != 'Calendar') {
+	if ($search_type != 'includesearch') {
 		$stdfiltersql = $oCustomView->getCVStdFilterSQL($viewid);
 		$advfiltersql = $oCustomView->getCVAdvFilterSQL($viewid);
 		if (isset($stdfiltersql) && $stdfiltersql != '') {

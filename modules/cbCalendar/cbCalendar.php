@@ -156,11 +156,11 @@ class cbCalendar extends CRMEntity {
 		//Handling for invitees
 		$selected_users_string = isset($_REQUEST['inviteesid']) ? $_REQUEST['inviteesid'] : '';
 		$invitees_array = explode(';', $selected_users_string);
-		$this->insertIntoInviteeTable('Calendar', $invitees_array);
+		$this->insertIntoInviteeTable('cbCalendar', $invitees_array);
 
 		//Inserting into sales man activity rel
 		$this->insertIntoSmActivityRel();
-		$this->insertIntoActivityReminderPopup('Calendar');
+		$this->insertIntoActivityReminderPopup('cbCalendar');
 		if (isset($_REQUEST['recurringcheck']) && $_REQUEST['recurringcheck']) {
 			unset($_REQUEST['recurringcheck']);
 			$this->column_fields['parent_id'] = $this->column_fields['rel_id'];

@@ -756,7 +756,7 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 		}
 	} elseif ($others_permission_id == UserPrivileges::SHARING_PRIVATE) {
 		if ($actionid == 3 || $actionid == 4) {
-			if ($module == 'Calendar' || $module == 'cbCalendar') {
+			if ($module == 'cbCalendar') {
 				if ($recOwnType == 'Users') {
 					$permission = isCalendarPermittedBySharing($record_id);
 				} else {
@@ -3475,9 +3475,6 @@ function getSharingModuleList($eliminateModules = false) {
 	// Module that needs to be eliminated explicitly
 	if (!in_array('Calendar', $eliminateModules)) {
 		$eliminateModules[] = 'Calendar';
-	}
-	if (!in_array('Events', $eliminateModules)) {
-		$eliminateModules[] = 'Events';
 	}
 
 	$query = "SELECT name FROM vtiger_tab WHERE presence=0 AND ownedby = 0 AND isentitytype = 1 AND name NOT IN('" . implode("','", $eliminateModules) . "')";

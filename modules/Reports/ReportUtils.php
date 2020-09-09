@@ -16,14 +16,6 @@ function getFieldByReportLabel($module, $label) {
 	getColumnFields($module);
 	//lookup all the accessible fields
 	$cachedModuleFields = VTCacheUtils::lookupFieldInfo_Module($module);
-	if ($module == 'Calendar') {
-		$cachedEventsFields = VTCacheUtils::lookupFieldInfo_Module('Events');
-		if ($cachedModuleFields == false) {
-			$cachedModuleFields = $cachedEventsFields;
-		} else {
-			$cachedModuleFields = array_merge($cachedModuleFields, $cachedEventsFields);
-		}
-	}
 	if (empty($cachedModuleFields)) {
 		return null;
 	}

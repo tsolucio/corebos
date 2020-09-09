@@ -908,20 +908,6 @@ function getRelatedAccountContact($entityid, $module = '') {
 				$rspot = $adb->pquery('select parent_id from vtiger_cobropago where cobropagoid=?', array($crmid));
 				$acid = $adb->query_result($rspot, 0, 'parent_id');
 				break;
-			case 'Calendar':
-			case 'Events':
-				if ($module=='Accounts') {
-					$rspot = $adb->pquery('select crmid from vtiger_seactivityrel where activityid=?', array($crmid));
-					if ($rspot && $adb->num_rows($rspot)>0) {
-						$acid = $adb->query_result($rspot, 0, 'crmid');
-					}
-				} else {
-					$rspot = $adb->pquery('select contactid from vtiger_cntactivityrel where activityid=?', array($crmid));
-					if ($rspot && $adb->num_rows($rspot)>0) {
-						$acid = $adb->query_result($rspot, 0, 'contactid');
-					}
-				}
-				break;
 			default:  // we look for uitype 10
 				$rsfld = $adb->pquery('SELECT fieldname from vtiger_fieldmodulerel
 					INNER JOIN vtiger_field on vtiger_field.fieldid=vtiger_fieldmodulerel.fieldid
@@ -1912,7 +1898,7 @@ function getQuickCreateModules() {
 	$qc_query = "select distinct vtiger_tab.tablabel,vtiger_tab.name
 		from vtiger_field
 		inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid 
-		where quickcreate in (0,2) and vtiger_tab.presence != 1 and vtiger_tab.name != 'Calendar' and vtiger_tab.name != 'Events'";
+		where quickcreate in (0,2) and vtiger_tab.presence != 1 and vtiger_tab.name != 'Calendar'";
 
 	$result = $adb->pquery($qc_query, array());
 	$noofrows = $adb->num_rows($result);
@@ -3137,11 +3123,7 @@ function getEmailTemplateVariables($modules_list = null) {
 
 	foreach ($modules_list as $module) {
 		$allFields = array();
-		if ($module == 'Calendar') {
-			$focus = new Activity();
-		} else {
-			$focus = CRMEntity::getInstance($module);
-		}
+		$focus = CRMEntity::getInstance($module);
 		$tabid = getTabid($module);
 		//many to many relation information field campaignrelstatus(this is the column name of the field) has block set to '0', which should be ignored.
 		$result = $adb->pquery(
@@ -3632,7 +3614,7 @@ function getmail_contents_portalUser($request_array, $password, $type = '') {
 function getSearchModulesCommon($filter = array()) {
 	global $adb;
 	// Ignore disabled administrative modules
-	$doNotSearchThese = array('Dashboard','Home','Calendar','Events','Rss','Reports','Portal','Users','ConfigEditor','Import','MailManager','Mobile','ModTracker',
+	$doNotSearchThese = array('Dashboard','Home','Calendar','Rss','Reports','Portal','Users','ConfigEditor','Import','MailManager','Mobile','ModTracker',
 		'PBXManager','VtigerBackup','WSAPP','cbupdater','CronTasks','RecycleBin','Tooltip','Webforms','Calendar4You','GlobalVariable','cbMap','evvtMenu','cbAuditTrail',
 		'cbLoginHistory','cbtranslation','BusinessActions','cbCVManagement');
 	$doNotSearchTheseTabids = array();

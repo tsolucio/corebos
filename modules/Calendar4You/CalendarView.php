@@ -37,7 +37,7 @@ if (count($Ch_Views) > 0) {
 $Calendar_Settings = $Calendar4You->getSettings();
 $smarty->assign('CALENDAR_SETTINGS', $Calendar_Settings);
 
-$c_mod_strings = return_specified_module_language($current_language, 'Calendar');
+$c_mod_strings = return_specified_module_language($current_language, 'cbCalendar');
 $smarty->assign('CMOD', $c_mod_strings);
 
 $smarty->assign('MODULE', $currentModule);
@@ -262,7 +262,7 @@ $smarty->assign('CALENDAR_USERS', $Users);
 $smarty->assign('CURRENT_USER_ID', $current_user->id);
 
 if (isset($tool_buttons)==false) {
-	$tool_buttons = Button_Check('Calendar');
+	$tool_buttons = Button_Check('cbCalendar');
 }
 
 $smarty->assign('CHECK', $tool_buttons);
@@ -331,7 +331,7 @@ if (getFieldVisibilityPermission('cbCalendar', $current_user->id, 'eventstatus',
 }
 $smarty->assign('EVENT_STATUS', $Events_Status);
 
-if (getFieldVisibilityPermission('Calendar', $current_user->id, 'taskpriority', 'readwrite') == '0') {
+if (getFieldVisibilityPermission('cbCalendar', $current_user->id, 'taskpriority', 'readwrite') == '0') {
 	$Task_Priority = $Calendar4You->getActStatusFieldValues('taskpriority', 'vtiger_taskpriority');
 } else {
 	$Task_Priority = array();
