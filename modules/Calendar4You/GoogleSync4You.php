@@ -281,16 +281,20 @@ class GoogleSync4You {
 		$event->setDescription(decode_html(utf8_decode($Data['description'])));
 		$event->setLocation(decode_html(utf8_decode(trim($Data['location']))));
 		$start = new Google_Service_Calendar_EventDateTime();
-		if (strlen($startTime)>4) {
+		if (strlen($startTime) == 5) {
 			$start->setDateTime($startDate.'T'.$startTime.':00.000');
+		} elseif (strlen($startTime)==8) {
+			$start->setDateTime($startDate.'T'.$startTime.'.000');
 		} else {
 			$start->setDateTime($startDate.'T'.$startTime.':00:00.000');
 		}
 		$start->setTimeZone("$default_timezone");
 		$event->setStart($start);
 		$end = new Google_Service_Calendar_EventDateTime();
-		if (strlen($endTime)>4) {
+		if (strlen($endTime) == 5) {
 			$end->setDateTime($endDate.'T'.$endTime.':00.000');
+		} elseif (strlen($endTime) == 8) {
+			$end->setDateTime($endDate.'T'.$endTime.'.000');
 		} else {
 			$end->setDateTime($endDate.'T'.$endTime.':00:00.000');
 		}
@@ -332,16 +336,20 @@ class GoogleSync4You {
 			$event->setDescription(decode_html(utf8_decode($Data['description'])));
 			$event->setLocation(decode_html(utf8_decode(trim($Data['location']))));
 			$start = new Google_Service_Calendar_EventDateTime();
-			if (strlen($startTime)>4) {
+			if (strlen($startTime) == 5) {
 				$start->setDateTime($startDate.'T'.$startTime.':00.000');
+			} elseif (strlen($startTime)==8) {
+				$start->setDateTime($startDate.'T'.$startTime.'.000');
 			} else {
 				$start->setDateTime($startDate.'T'.$startTime.':00:00.000');
 			}
 			$start->setTimeZone("$default_timezone");
 			$event->setStart($start);
 			$end = new Google_Service_Calendar_EventDateTime();
-			if (strlen($endTime)>4) {
+			if (strlen($endTime) == 5) {
 				$end->setDateTime($endDate.'T'.$endTime.':00.000');
+			} elseif (strlen($endTime) == 8) {
+				$end->setDateTime($endDate.'T'.$endTime.'.000');
 			} else {
 				$end->setDateTime($endDate.'T'.$endTime.':00:00.000');
 			}
