@@ -69,7 +69,6 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	$smarty->assign('UPDATEINFO', updateInfo($focus->id));
 	$parent_email = getEmailParentsList('Contacts', $record, $focus);
 	$smarty->assign('HIDDEN_PARENTS_LIST', $parent_email);
-	$smarty->assign('CONTACT_PERMISSION', CheckFieldPermission('contact_id', 'Calendar'));
 	$smarty->assign('EMAIL', $focus->column_fields['email']);
 	$smarty->assign('SECONDARY_EMAIL', $focus->column_fields['secondaryemail']);
 

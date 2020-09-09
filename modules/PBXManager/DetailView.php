@@ -30,7 +30,6 @@ $smarty->assign('SinglePane_View', $singlepane_view);
 $smarty->assign('EDIT_PERMISSION', 'no');
 $smarty->assign('CREATE_PERMISSION', 'no');
 $smarty->assign('DELETE', 'notpermitted');
-$smarty->assign('CONTACT_PERMISSION', 'notpermitted');
 
 $smarty->display('DetailView.tpl');
 ?>
