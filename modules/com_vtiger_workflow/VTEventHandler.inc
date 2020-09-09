@@ -37,7 +37,7 @@ class VTWorkflowEventHandler extends VTEventHandler {
 		global $adb;
 		$isNew = $entityData->isNew();
 		$entityCache = new VTEntityCache($user);
-		$wsModuleName = $util->toWSModuleName($entityData);
+		$wsModuleName = $entityData->getModuleName();
 		$wsId = vtws_getWebserviceEntityId($wsModuleName, $entityData->getId());
 		$entityData = $entityCache->forId($wsId);
 
