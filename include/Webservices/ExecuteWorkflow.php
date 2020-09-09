@@ -82,6 +82,9 @@ function cbwsExecuteWorkflowWithContext($workflow, $entities, $context, $user) {
 				if (VTWorkflowManager::$ONCE == $workflow->executionCondition) {
 					$entity_id = vtws_getIdComponents($entityData->getId());
 					$entity_id = $entity_id[1];
+					if ($workflow->isCompletedForRecord($entity_id)) {
+						continue;
+					}
 					$workflow->markAsCompletedForRecord($entity_id);
 				}
 				try {
