@@ -477,9 +477,6 @@ function getAdvSearchfields($module) {
 	$userprivs = $current_user->getPrivileges();
 
 	$tabid = getTabid($module);
-	if ($tabid==9) {
-		$tabid='9,16';
-	}
 
 	if ($userprivs->hasGlobalReadPermission()) {
 		$sql = 'select vtiger_field.* from vtiger_field where vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2)';
@@ -489,9 +486,6 @@ function getAdvSearchfields($module) {
 		if ($tabid == 14) {
 			$sql.= " and vtiger_field.fieldlabel != 'Product Image'";
 		}
-		if ($tabid == 9 || $tabid==16) {
-			$sql.= " and vtiger_field.fieldname not in('notime','duration_minutes','duration_hours')";
-		}
 		if ($tabid == 4) {
 			$sql.= " and vtiger_field.fieldlabel != 'Contact Image'";
 		}
@@ -499,7 +493,7 @@ function getAdvSearchfields($module) {
 			$sql.= " and vtiger_field.fieldlabel != 'Attachment'";
 		}
 		$sql.= ' and vtiger_field.fieldid in
-			(select min(fieldid) from vtiger_field where vtiger_field.tabid in (?) group by vtiger_field.fieldlabel) order by block,sequence';
+			(select min(fieldid) from vtiger_field where vtiger_field.tabid=? group by vtiger_field.fieldlabel) order by block,sequence';
 
 		$params = array($tabid);
 	} else {
@@ -511,7 +505,6 @@ function getAdvSearchfields($module) {
 			where vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0';
 
 		$params = array();
-
 		if (count($profileList) > 0) {
 			$sql.= ' and vtiger_profile2field.profileid in ('. generateQuestionMarks($profileList) .')';
 			$params[] = $profileList;
@@ -523,9 +516,6 @@ function getAdvSearchfields($module) {
 		if ($tabid == 14) {
 			$sql.= " and vtiger_field.fieldlabel != 'Product Image'";
 		}
-		if ($tabid == 9 || $tabid==16) {
-			$sql.= " and vtiger_field.fieldname not in('notime','duration_minutes','duration_hours')";
-		}
 		if ($tabid == 4) {
 			$sql.= " and vtiger_field.fieldlabel != 'Contact Image'";
 		}
@@ -533,7 +523,7 @@ function getAdvSearchfields($module) {
 			$sql.= " and vtiger_field.fieldlabel != 'Attachment'";
 		}
 		$sql.= ' and vtiger_field.fieldid in
-			(select min(fieldid) from vtiger_field where vtiger_field.tabid in (?) group by vtiger_field.fieldlabel) order by block,sequence';
+			(select min(fieldid) from vtiger_field where vtiger_field.tabid=? group by vtiger_field.fieldlabel) order by block,sequence';
 		$params[] = $tabid;
 	}
 
@@ -623,14 +613,6 @@ function getAdvSearchfields($module) {
 		}
 
 		$OPTION_SET .= "<option value=\'vtiger_crmentity:crmid:".$fieldname.'::'.$fieldtypeofdata."\'>".$mod_fieldlabel.'</option>';
-	}
-	//Added to include activity type in activity advance search
-	if ($module == 'Activities') {
-		$mod_fieldlabel = $mod_strings['Activity Type'];
-		if ($mod_fieldlabel == '') {
-			$mod_fieldlabel = 'Activity Type';
-		}
-		$OPTION_SET .= "<option value=\'vtiger_activity.activitytype:".$fieldname.'::'.$fieldtypeofdata."\'>".$mod_fieldlabel.'</option>';
 	}
 	$log->debug('< getAdvSearchfields');
 	return $OPTION_SET;

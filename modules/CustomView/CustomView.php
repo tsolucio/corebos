@@ -313,26 +313,18 @@ class CustomView extends CRMEntity {
 		if (empty($this->meta) && $module != 'Calendar') {
 			$this->meta = $this->getMeta($module, $current_user);
 		}
-		if ($tabid == 9) {
-			$tabid = '9,16';
-		}
 		$display_type = ' vtiger_field.displaytype in (1,2,3,4)';
 
 		if ($userprivs->hasGlobalReadPermission()) {
-			$tab_ids = explode(',', $tabid);
 			$sql = 'select * from vtiger_field ';
-			$sql.= ' where vtiger_field.tabid in (' . generateQuestionMarks($tab_ids) . ') and vtiger_field.block in (' . generateQuestionMarks($block_ids) . ')';
+			$sql.= ' where vtiger_field.tabid=? and vtiger_field.block in (' . generateQuestionMarks($block_ids) . ')';
 			$sql.= ' and vtiger_field.presence in (0,2) and ' . $display_type;
-			if ($tabid == 9 || $tabid == 16) {
-				$sql.= " and vtiger_field.fieldname not in('notime','duration_minutes','duration_hours')";
-			}
 			$sql.= ' order by sequence';
-			$params = array($tab_ids, $block_ids);
+			$params = array($tabid, $block_ids);
 		} else {
-			$tab_ids = explode(',', $tabid);
 			$profileList = getCurrentUserProfileList();
 			$uniqueFieldsRestriction = 'vtiger_field.fieldid IN (select min(vtiger_field.fieldid) from vtiger_field
-				where vtiger_field.tabid in ('. generateQuestionMarks($tab_ids) .') GROUP BY vtiger_field.columnname)';
+				where vtiger_field.tabid=? GROUP BY vtiger_field.columnname)';
 			$sql = 'select distinct vtiger_field.*
 				from vtiger_field
 				inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid
@@ -340,30 +332,17 @@ class CustomView extends CRMEntity {
 			$sql.= " where $uniqueFieldsRestriction and vtiger_field.block in (" . generateQuestionMarks($block_ids) . ') and';
 			$sql.= "$display_type and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
 
-			$params = array($tab_ids, $block_ids);
+			$params = array($tabid, $block_ids);
 
 			if (count($profileList) > 0) {
 				$sql.= '  and vtiger_profile2field.profileid in (' . generateQuestionMarks($profileList) . ')';
 				$params[] = $profileList;
 			}
-			if ($tabid == 9 || $tabid == 16) {
-				$sql.= " and vtiger_field.fieldname not in('notime','duration_minutes','duration_hours')";
-			}
-
 			$sql.= ' order by sequence';
-		}
-		if ($tabid == '9,16') {
-			$tabid = '9';
 		}
 		$result = $adb->pquery($sql, $params);
 		$noofrows = $adb->num_rows($result);
-		//Added to include vtiger_activity type in vtiger_activity vtiger_customview list
-		if ($module == 'Calendar' && $block == 19) {
-			$module_columnlist['vtiger_activity:activitytype:activitytype:Calendar_Activity_Type:V'] = 'Activity Type';
-		}
-		if ($module != 'Calendar') {
-			$moduleFieldList = $this->meta->getModuleFields();
-		}
+		$moduleFieldList = $this->meta->getModuleFields();
 		if ($noofrows > 0) {
 			$module_columnlist = array();
 		}
@@ -390,9 +369,6 @@ class CustomView extends CRMEntity {
 			}
 			if ($fieldlabel == 'Start Date & Time') {
 				$fieldlabel = 'Start Date';
-				if ($module == 'Calendar' && $block == 19) {
-					$module_columnlist['vtiger_activity:time_start::Calendar_Start_Time:I'] = 'Start Time';
-				}
 			}
 			$fieldlabel1 = str_replace(' ', '_', $fieldlabel);
 			$optionvalue = $fieldtablename . ':' . $fieldcolname . ':' . $fieldname . ':' . $module . '_' . $fieldlabel1 . ':' . $fieldtypeofdata;
