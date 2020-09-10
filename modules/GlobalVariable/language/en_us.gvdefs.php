@@ -116,7 +116,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Boolean',
 	'category' => 'Debug',
 	'values' => '0 | 1',
-	'definition' => 'If set to 1 will sent email to inBucket ',
+	'definition' => 'If set to 1 will send email ALWAYS through the Outgoing server settings which must be set to the inBucket settings',
 ),
 'Accounts_BlockDuplicateName' => array(
 	'status' => 'Implemented',
