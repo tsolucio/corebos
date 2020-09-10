@@ -37,6 +37,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Debug_Calculate_Response_Time',
 				'Debug_ActivityReminder_Deactivated',
 				'Debug_Access_Restricted_File',
+				'Debug_Email_Send_To_Inbucket',
 
 				'Application_Global_Search_SelectedModules',
 				'Application_Global_Search_Binary',
