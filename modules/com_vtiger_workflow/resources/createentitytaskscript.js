@@ -194,7 +194,7 @@ function VTCreateEntityTask($, fieldvaluemapping) {
 		}
 		function forString(opType, mappingno) {
 			var value = $(format('#save_fieldvalues_%s_value', mappingno));
-			value.replaceWith(format('<input type="text" id="save_fieldvalues_%s_value" value="" class="expressionvalue slds-input fieldborder" readonly />', mappingno));
+			value.replaceWith(format('<input type="text" id="save_fieldvalues_%s_value" value="" class="expressionvalue slds-input fieldborder slds-col slds-size_3-of-12 sm_margin" readonly />', mappingno));
 
 			$('#save_fieldvalues_'+mappingno+'_modulename').prop('disabled', '');
 			var fv = $(format('#save_fieldvalues_%s_value', mappingno));
@@ -310,14 +310,14 @@ function VTCreateEntityTask($, fieldvaluemapping) {
 
 			function addFieldValueMapping(mappingno) {
 				$('#save_fieldvaluemapping').append(
-					'<div id="save_fieldvalues_'+mappingno+'" style=\'margin-bottom: 5px\'> \
-						<select id="save_fieldvalues_'+mappingno+'_fieldname" class="fieldname"></select> \
-						<select id="save_fieldvalues_'+mappingno+'_modulename" class="modulename"></select> \
-						<input type="hidden" id="save_fieldvalues_'+mappingno+'_value_type" class="type"> \
-						<input type="text" id="save_fieldvalues_'+mappingno+'_value" class="expressionvalue" readonly > \
-						<span id="save_fieldvalues_'+mappingno+'_remove" class="link remove-link"> \
-						<img src="modules/com_vtiger_workflow/resources/remove.png"></span> \
-					</div>'
+					`<div id="save_fieldvalues_${mappingno}" style=\'margin-bottom: 5px\' class="slds-grid slds-grid_vertical-align-center"> 
+						<select id="save_fieldvalues_${mappingno}_fieldname" class="slds-select slds-col slds-size_3-of-12 slds-page-header__meta-text sm_margin"></select> 
+						<select id="save_fieldvalues_${mappingno}_modulename" class="modulename slds-select slds-col slds-size_3-of-12 slds-page-header__meta-text sm_margin"></select> 
+						<input type="hidden" id="save_fieldvalues_${mappingno}_value_type" class="type slds-input slds-col slds-size_3-of-12 sm_margin"> 
+						<input type="text" id="save_fieldvalues_${mappingno}_value" class="expressionvalue slds-input fieldborder slds-col slds-size_3-of-12 sm_margin" readonly > 
+						<span id="save_fieldvalues_${mappingno}_remove" class="link remove-link"> 
+						<img src="modules/com_vtiger_workflow/resources/remove.png"></span> 
+					</div>`
 				);
 				var fe = $('#save_fieldvalues_'+mappingno+'_fieldname');
 				var i = 1;
