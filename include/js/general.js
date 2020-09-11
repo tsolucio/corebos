@@ -3255,7 +3255,7 @@ function ActivityReminderSetupCallback(cbmodule, cbrecord) {
 		ActivityReminderProgressIndicator(true);
 		jQuery.ajax({
 			method: 'POST',
-			url: 'index.php?module=Calendar&action=CalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax&cbmodule='+
+			url: 'index.php?module=cbCalendar&action=cbCalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax&cbmodule='+
 				encodeURIComponent(cbmodule) + '&cbrecord=' + encodeURIComponent(cbrecord)
 		}).done(function (response) {
 			document.getElementById('ActivityReminder_callbacksetupdiv').innerHTML=response;
@@ -3274,7 +3274,7 @@ function ActivityReminderSetupCallbackSave(form) {
 		ActivityReminderProgressIndicator(true);
 		jQuery.ajax({
 			method: 'POST',
-			url: 'index.php?module=Calendar&action=CalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax' +
+			url: 'index.php?module=cbCalendar&action=cbCalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax' +
 			'&cbaction=' + encodeURIComponent(cbaction) +
 			'&cbmodule='+ encodeURIComponent(cbmodule) +
 			'&cbrecord=' + encodeURIComponent(cbrecord) +
@@ -3296,7 +3296,7 @@ function ActivityReminderPostponeCallback(cbmodule, cbrecord, cbreminderid) {
 		ActivityReminderProgressIndicator(true);
 		jQuery.ajax({
 			method: 'POST',
-			url: 'index.php?module=Calendar&action=CalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax&cbaction=POSTPONE&cbmodule='+
+			url: 'index.php?module=cbCalendar&action=cbCalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax&cbaction=POSTPONE&cbmodule='+
 			encodeURIComponent(cbmodule) + '&cbrecord=' + encodeURIComponent(cbrecord) + '&cbreminderid=' + encodeURIComponent(cbreminderid)
 		}).done(function (response) {
 			ActivityReminderPostponeCallbackProcess(response);
@@ -3356,7 +3356,7 @@ function ActivityReminderCallback(clicked) {
 	} else {
 		jQuery.ajax({
 			method: 'POST',
-			url: "index.php?module=Calendar&action=CalendarAjax&file=ActivityReminderCallbackAjax&ajax=true&clicked="+clicked
+			url: 'index.php?module=cbCalendar&action=cbCalendarAjax&file=ActivityReminderCallbackAjax&ajax=true&clicked='+clicked
 		}).done(function (response) {
 			if (response=='Login') {
 				document.location.href='index.php?module=Users&action=Login';
