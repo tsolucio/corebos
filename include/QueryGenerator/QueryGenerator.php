@@ -1089,7 +1089,11 @@ class QueryGenerator {
 								.(in_array($conditionInfo['operator'], array('n', 'ni', 'nin', 'k', 'dnsw', 'dnew')) ? ' AND ' : ' OR ')
 								.$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
 						} else {
-							$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
+							if ($conditionInfo['operator'] == 'sx') {
+								$fieldSql .= "$fieldGlue ". $valueSql;
+							} else {
+								$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
+							}
 						}
 					}
 				}
@@ -1461,6 +1465,9 @@ class QueryGenerator {
 					$sqlOperator = 'NOT LIKE';
 					$value = "%$value";
 					break;
+				case 'sx':
+					$sqlOperator = 'SOUNDEX';
+					break;
 				case 'l':
 					$sqlOperator = '<';
 					break;
@@ -1490,7 +1497,12 @@ class QueryGenerator {
 			if ($this->isNumericType($field->getFieldDataType()) && empty($value)) {
 				$value = '0';
 			}
-			$sql[] = "$sqlOperator $value";
+			if ($this->requiresSoundex($operator) == 'sx') {
+				$field1 = $field->getFieldName();
+				$sql[] = "SOUNDEX(".$field1.") LIKE SOUNDEX($value)";
+			} else {
+				$sql[] = "$sqlOperator $value";
+			}
 		}
 		return $sql;
 	}
@@ -1533,6 +1545,11 @@ class QueryGenerator {
 
 	private function isDateType($type) {
 		return ($type == 'date' || $type == 'datetime');
+	}
+
+	private function requiresSoundex($operator) {
+		$requiresSX = array('sx');
+		return in_array($operator, $requiresSX);
 	}
 
 	public function fixDateTimeValue($name, $value, $first = true) {
