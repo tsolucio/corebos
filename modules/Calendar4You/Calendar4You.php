@@ -342,7 +342,8 @@ class Calendar4You extends CRMEntity {
 
 		$Settings = array();
 		$Settings['hour_format'] = $current_user->hour_format;
-		list($h, $m) = explode(':', $current_user->start_hour);
+		$sthour = explode(':', $current_user->start_hour);
+		$h = $sthour[0];
 		$Settings['start_hour'] = $h.':00:00';
 		$Settings['end_hour'] = '24:00:00';
 		$Settings['dayoftheweek'] = 'Sunday';
