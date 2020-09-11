@@ -1081,16 +1081,26 @@ class QueryGenerator {
 					if ($fieldName == 'birthday' && !$this->isRelativeSearchOperators($conditionInfo['operator'])) {
 						$fieldSql .= "$fieldGlue DATE_FORMAT(".$field->getTableName().'.'.$field->getColumnName().",'%m%d') ".$valueSql;
 					} else {
-						if ($field->getUIType() == 15 || $field->getUIType() == 16) {
-							$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' IN (
-								select translation_key
-								from vtiger_cbtranslation
-								where locale="'.$current_user->language.'" and forpicklist="'.$this->getModule().'::'.$field->getFieldName().'" and i18n '.$valueSql.')'
-								.(in_array($conditionInfo['operator'], array('n', 'ni', 'nin', 'k', 'dnsw', 'dnew')) ? ' AND ' : ' OR ')
-								.$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
-						} else {
-							if ($conditionInfo['operator'] == 'rgxp' || $conditionInfo['operator'] == 'sx') {
+						if ($conditionInfo['operator'] == 'sx') {
+							if ($field->getUIType() == 15 || $field->getUIType() == 16) {
+								$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' IN (
+									select translation_key
+									from vtiger_cbtranslation
+									where locale="'.$current_user->language.'" and forpicklist="'.$this->getModule().'::'.$field->getFieldName()
+									.'" and SOUNDEX(i18n) LIKE SOUNDEX("'.$conditionInfo['value'].'"))'
+									.(in_array($conditionInfo['operator'], array('n', 'ni', 'nin', 'k', 'dnsw', 'dnew')) ? ' AND ' : ' OR ')
+									.$valueSql;
+							} else {
 								$fieldSql .= "$fieldGlue ". $valueSql;
+							}
+						} else {
+							if ($field->getUIType() == 15 || $field->getUIType() == 16) {
+								$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' IN (
+									select translation_key
+									from vtiger_cbtranslation
+									where locale="'.$current_user->language.'" and forpicklist="'.$this->getModule().'::'.$field->getFieldName().'" and i18n '.$valueSql.')'
+									.(in_array($conditionInfo['operator'], array('n', 'ni', 'nin', 'k', 'dnsw', 'dnew')) ? ' AND ' : ' OR ')
+									.$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
 							} else {
 								$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
 							}
@@ -1500,12 +1510,8 @@ class QueryGenerator {
 			if ($this->isNumericType($field->getFieldDataType()) && empty($value)) {
 				$value = '0';
 			}
-			if ($this->requiresREGEXP($operator) == 'rgxp') {
-				$field1 = $field->getFieldName();
-				$sql[] = $field1.' REGEXP '.$value;
-			} elseif ($this->requiresSoundex($operator) == 'sx') {
-				$field1 = $field->getFieldName();
-				$sql[] = 'SOUNDEX('.$field1.") LIKE SOUNDEX($value)";
+			if ($this->requiresSoundex($operator) == 'sx') {
+				$sql[] = 'SOUNDEX('.$field->getTableName().'.'.$field->getColumnName().") LIKE SOUNDEX($value)";
 			} else {
 				$sql[] = "$sqlOperator $value";
 			}
