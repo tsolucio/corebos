@@ -160,7 +160,7 @@ class cbCalendar extends CRMEntity {
 
 		//Inserting into sales man activity rel
 		$this->insertIntoSmActivityRel();
-		$this->insertIntoActivityReminderPopup('Calendar');
+		$this->insertIntoActivityReminderPopup('cbCalendar');
 		if (isset($_REQUEST['recurringcheck']) && $_REQUEST['recurringcheck']) {
 			unset($_REQUEST['recurringcheck']);
 			$this->column_fields['parent_id'] = $this->column_fields['rel_id'];

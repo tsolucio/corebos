@@ -186,18 +186,31 @@
 				<li class="slds-global-actions__item">
 					<div class="slds-global-actions__favorites slds-dropdown-trigger">
 						<div class="slds-button-group">
-							<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border " aria-pressed="false" title="{$APP.LNK_HELP}" onclick="window.open('{$HELP_URL}')">
+							<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon-border " aria-pressed="false" title="{$APP.LNK_HELP}" onclick="window.open('{$HELP_URL}')">
 									<svg class="slds-button__icon" aria-hidden="true">
 										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
 									</svg>
 									<span class="slds-assistive-text">{$APP.LNK_HELP}</span>
 							</button>
-							<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-pressed="false" title="{$APP.LBL_LAST_VIEWED}" onclick="document.getElementById('cbds-last-visited').classList.add('cbds-anim-slidein--right');document.getElementById('cbds-last-visited').classList.remove('cbds-anim-slideout--right');">
+							<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon-border" aria-pressed="false" title="{$APP.LBL_LAST_VIEWED}" onclick="panelViewToggle('cbds-last-visited');">
 								<svg class="slds-button__icon" aria-hidden="true">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#attach"></use>
 								</svg>
 								<span class="slds-assistive-text">{$APP.LBL_LAST_VIEWED}</span>
 							</button>
+							<button
+								class="slds-button slds-button_icon slds-global-actions__notifications slds-global-actions__item-action slds-global-actions__favorites-action slds-button_icon-border slds-button_last" title="1 new notifications"
+								aria-live="assertive"
+								aria-atomic="true"
+								id="header_notification_button"
+								onclick="ActivityReminderCallback(true);"
+							>
+								<svg class="slds-button__icon" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#notification"></use>
+								</svg>
+								<span class="slds-assistive-text"></span>
+							</button>
+							<span aria-hidden="true" class="slds-notification-badge slds-incoming-notification" id="header_notification_items"></span>
 						</div>
 					</div>
 				</li>
@@ -420,7 +433,7 @@
 <div class="slds-panel__header cbds-bg-blue--gray slds-text-color_default slds-text-color_inverse">
 	<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="{$APP.LBL_LAST_VIEWED}">{$APP.LBL_LAST_VIEWED}
 	</h2>
-	<button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse slds-panel__close" title="{'Close LAST_VIEWED'|@getTranslatedString}" onclick="document.getElementById('cbds-last-visited').classList.add('cbds-anim-slideout--right');document.getElementById('cbds-last-visited').classList.remove('cbds-anim-slidein--right');">
+	<button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse slds-panel__close" title="{'Close LAST_VIEWED'|@getTranslatedString}" onclick="panelViewHide(document.getElementById('cbds-last-visited'));">
 		<svg class="slds-button__icon" aria-hidden="true">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
 		</svg>
@@ -441,7 +454,7 @@
 					</span>
 					</div>
 					<div class="slds-media__body">
-						<h2 class="slds-card__header-title">
+						<h2 class="slds-card__header-title slds-truncate">
 							<a href="index.php?module={$trackelements.module_name}&action=DetailView&record={$trackelements.crmid}&parenttab={$CATEGORY}" class="slds-card__header-link" title="{$trackelements.module_name}">
 								<span>{$trackelements.item_summary}</span>
 							</a>
@@ -478,8 +491,24 @@
 <script type="text/javascript" src="modules/evvtMenu/evvtMenu.js"></script>
 </div>
 <!-- ActivityReminder Customization for callback -->
-<div class="lvtCol fixedLay1" id="ActivityRemindercallback" style="border: 0; right: 0px; bottom: 2px; display:none; padding: 2px; z-index: 10; font-weight: normal;" align="left">
+<!-- link type="text/css" rel="stylesheet" href="include/PendingTasks.css" -->
+<audio id="newEvents" src="modules/cbCalendar/media/new_event.mp3" preload="auto"></audio>
+<div id="cbds-notificationpanel" class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open slds-is-fixed cbds-last-visited" aria-hidden="false">
+<div class="slds-panel__header cbds-bg-blue--gray slds-text-color_default slds-text-color_inverse">
+	<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="{'LBL_NOTIFICATION'|@getTranslatedString:'Settings'}">{'LBL_NOTIFICATION'|@getTranslatedString:'Settings'}
+	</h2>
+	<button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse slds-panel__close" title="{'LBL_CLOSE'|@getTranslatedString}" onclick="panelViewHide(document.getElementById('cbds-notificationpanel'));">
+		<svg class="slds-button__icon" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+		</svg>
+		<span class="slds-assistive-text">{'LBL_CLOSE'|@getTranslatedString}</span>
+	</button>
 </div>
+<div class="slds-panel__body">
+<ul id="todolist"></ul>
+</div>
+</div>
+<!-- End -->
 
 <!-- divs for asterisk integration -->
 <div class="lvtCol fixedLay1" id="notificationDiv" style="float: right; padding-right: 5px; overflow: hidden; border-style: solid; right: 0px; border-color: rgb(141, 141, 141); bottom: 0px; display: none; padding: 2px; z-index: 10; font-weight: normal;" align="left">
