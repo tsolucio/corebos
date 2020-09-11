@@ -37,8 +37,8 @@ if (isPermitted('cbCalendar', 'index') == 'yes') {
 		coreBOS_Session::set('next_reminder_time', 'None');
 	}
 	if ($interval!='None') {
-		$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 10, 'Calendar');
-		$Calendar_PopupReminder_DaysPast = GlobalVariable::getVariable('Calendar_PopupReminder_DaysPast', 7, 'Calendar');
+		$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 10, 'cbCalendar');
+		$Calendar_PopupReminder_DaysPast = GlobalVariable::getVariable('Calendar_PopupReminder_DaysPast', 7, 'cbCalendar');
 		$intervalInMinutes = ConvertToMinutes($interval);
 		// check for reminders every minute
 		$time = time();
