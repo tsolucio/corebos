@@ -229,6 +229,8 @@ class Vtiger_Filter {
 				$comparator = 'DOES_NOT_END_WITH';
 			} elseif ($comparator == 'c') {
 				$comparator = 'CONTAINS';
+			} elseif ($comparator == 'rgxp') {
+				$comparator = 'REGEXP';
 			} elseif ($comparator == 'k') {
 				$comparator = 'DOES_NOT_CONTAINS';
 			} elseif ($comparator == 'l') {
@@ -256,6 +258,8 @@ class Vtiger_Filter {
 				$comparator = 'dnew';
 			} elseif ($comparator == 'CONTAINS') {
 				$comparator = 'c';
+			} elseif ($comparator == 'REGEXP') {
+				$comparator = 'rgxp';
 			} elseif ($comparator == 'DOES_NOT_CONTAINS') {
 				$comparator = 'k';
 			} elseif ($comparator == 'LESS_THAN') {
