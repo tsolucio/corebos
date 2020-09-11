@@ -305,6 +305,23 @@ function changecbqModule(newmodule) {
 	});
 }
 
+function getRelatedModuleFields(newmodule) {
+	this.addEventListener(
+		'condition_builder_module_changed',
+		function (e) {
+			const meta = builderconditions.getMetaInformation();
+			for (const op in meta.fieldLabels) {
+				arrayOfFields.push({
+					'text': meta.fieldLabels[op],
+					'value': op
+				});
+			}
+		},
+		false
+	);
+	return arrayOfFields;
+}
+
 function showSQLMsg(msg, role) {
 	role = role || 'info';
 	document.getElementById('sqlmsg').innerHTML=msg;
@@ -888,6 +905,12 @@ document.addEventListener('DOMContentLoaded', function (event) {
 			header: {
 				align: 'left',
 				valign: 'middle'
+			},
+			onGridMounted(ev) {
+				if (builderconditions.moduleName != '') {
+					arrayOfFields.splice(1, arrayOfFields.length);
+					getRelatedModuleFields(builderconditions.moduleName);
+				}
 			}
 		});
 		dataGridInstance = new tuiGrid({
