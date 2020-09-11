@@ -274,4 +274,11 @@
 	<classname>databasechangesToMoveTocbCalendar</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Set Global Variable blocked field to checkbox</description>
+	<filename>build/changeSets/2020/fixGlobalVariableBlockedTypeOfData.php</filename>
+	<classname>fixGlobalVariableBlockedTypeOfData</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
