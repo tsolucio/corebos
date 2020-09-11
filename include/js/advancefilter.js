@@ -7,7 +7,7 @@
  * All Rights Reserved.
  *********************************************************************************/
 var typeofdata = new Array();
-typeofdata['V'] = ['e', 'n', 's', 'ew', 'dnsw', 'dnew', 'sx', 'c', 'k'];
+typeofdata['V'] = ['e', 'n', 's', 'ew', 'dnsw', 'dnew', 'sx', 'rgxp', 'c', 'k'];
 typeofdata['N'] = ['e', 'n', 'l', 'g', 'm', 'h'];
 typeofdata['T'] = ['e', 'n', 'l', 'g', 'm', 'h', 'bw', 'b', 'a'];
 typeofdata['I'] = ['e', 'n', 'l', 'g', 'm', 'h'];
@@ -15,7 +15,7 @@ typeofdata['C'] = ['e', 'n'];
 typeofdata['D'] = ['e', 'n', 'l', 'g', 'm', 'h', 'bw', 'b', 'a'];
 typeofdata['DT'] = ['e', 'n', 'l', 'g', 'm', 'h', 'bw', 'b', 'a'];
 typeofdata['NN'] = ['e', 'n', 'l', 'g', 'm', 'h'];
-typeofdata['E'] = ['e', 'n', 's', 'ew', 'dnsw', 'dnew', 'sx', 'c', 'k'];
+typeofdata['E'] = ['e', 'n', 's', 'ew', 'dnsw', 'dnew', 'sx', 'rgxp', 'c', 'k'];
 
 var fLabels = new Array();
 fLabels['e'] = alert_arr.EQUALS;
@@ -25,6 +25,7 @@ fLabels['ew'] = alert_arr.ENDS_WITH;
 fLabels['dnsw'] = alert_arr.DOES_NOT_START_WITH;
 fLabels['dnew'] = alert_arr.DOES_NOT_END_WITH;
 fLabels['sx'] = alert_arr.SOUNDEX;
+fLabels['rgxp'] = alert_arr.REGEXP;
 fLabels['c'] = alert_arr.CONTAINS;
 fLabels['k'] = alert_arr.DOES_NOT_CONTAINS;
 fLabels['l'] = alert_arr.LESS_THAN;
