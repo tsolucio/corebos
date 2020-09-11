@@ -105,7 +105,7 @@ $smarty->assign('GS_AUTOCOMP', $cbMapGS);
 $Application_Global_Search_Active = GlobalVariable::getVariable('Application_Global_Search_Active', 1);
 $smarty->assign('Application_Global_Search_Active', $Application_Global_Search_Active);
 
-$smarty->assign('HELP_URL', GlobalVariable::getVariable('Application_Help_URL', 'http://corebos.org/documentation'));
+$smarty->assign('HELP_URL', GlobalVariable::getVariable('Application_Help_URL', 'https://corebos.org/documentation'));
 ob_start();
 cbEventHandler::do_action('corebos.header.premenu');
 $smarty->assign('COREBOS_HEADER_PREMENU', ob_get_clean());
