@@ -3366,17 +3366,17 @@ function ActivityReminderCallback(clicked) {
 				if (typeof(responsearray['template']) == 'undefined') {
 					if (typeof(responsearray['noTasks']) != 'undefined') {
 						//No tasks to show, all tasks finished
-						document.getElementById("todolist").innerHTML= responsearray['noTasks'] + responsearray['next_reminder_interval'];
+						document.getElementById('todolist').innerHTML= responsearray['noTasks'] + responsearray['next_reminder_interval'];
 						//Show todolist if clicked
-						if(clicked && right_value != '0em') {
+						if (clicked && right_value != '0em') {
 							panelViewShow(document.getElementById('cbds-notificationpanel'));
 						}
 					} else {
-						document.getElementById("todolist").innerHTML= responsearray['next_reminder_interval'];
+						document.getElementById('todolist').innerHTML= responsearray['next_reminder_interval'];
 					}
 				} else {
 					//print data list
-					document.getElementById("todolist").innerHTML= responsearray['template'] + responsearray['next_reminder_interval'];
+					document.getElementById('todolist').innerHTML= responsearray['template'] + responsearray['next_reminder_interval'];
 					if (responsearray['not_readed'] > 0) {
 						//new tasks to alert
 						document.getElementById('newEvents').play();
@@ -3409,11 +3409,11 @@ function ActivityReminderCallback(clicked) {
 					} else {
 						ActivityReminder_Newdelay_response_value = parseInt(ActivityReminder_Newdelay_response_value);
 						if (ActivityReminder_Newdelay_response_value > 0) {
-							ActivityReminderRegisterCallback(ActivityReminder_Newdelay_response_value)
+							ActivityReminderRegisterCallback(ActivityReminder_Newdelay_response_value);
 						}
 					}
 					// We don't need the no any longer, it will be sent from server for next Popup
-					jQuery("#"+ActivityReminder_Newdelay_response_node).remove();
+					jQuery('#'+ActivityReminder_Newdelay_response_node).remove();
 				}
 			}
 		});
