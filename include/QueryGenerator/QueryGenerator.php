@@ -1089,7 +1089,11 @@ class QueryGenerator {
 								.(in_array($conditionInfo['operator'], array('n', 'ni', 'nin', 'k', 'dnsw', 'dnew')) ? ' AND ' : ' OR ')
 								.$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
 						} else {
-							$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
+							if ($conditionInfo['operator'] == 'rgxp') {
+								$fieldSql .= "$fieldGlue ". $valueSql;
+							} else {
+								$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
+							}
 						}
 					}
 				}
@@ -1461,6 +1465,10 @@ class QueryGenerator {
 					$sqlOperator = 'NOT LIKE';
 					$value = "%$value";
 					break;
+				case 'rgxp':
+					$sqlOperator = 'REGEXP';
+					$value = "$value";
+					break;
 				case 'l':
 					$sqlOperator = '<';
 					break;
@@ -1490,7 +1498,12 @@ class QueryGenerator {
 			if ($this->isNumericType($field->getFieldDataType()) && empty($value)) {
 				$value = '0';
 			}
-			$sql[] = "$sqlOperator $value";
+			if ($this->requiresREGEXP($operator) == 'rgxp') {
+				$field1 = $field->getFieldName();
+				$sql[] = $field1." REGEXP ".$value;
+			} else {
+				$sql[] = "$sqlOperator $value";
+			}
 		}
 		return $sql;
 	}
@@ -1522,6 +1535,9 @@ class QueryGenerator {
 	private function requiresQuoteSearchOperators($operator) {
 		$requiresQuote = array('s','ew','c','k');
 		return in_array($operator, $requiresQuote);
+	}
+	private function requiresREGEXP($operator) {
+		return in_array($operator, array('rgxp'));
 	}
 	private function isNumericType($type) {
 		return ($type == 'integer' || $type == 'double' || $type == 'currency');
