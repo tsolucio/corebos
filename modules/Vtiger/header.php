@@ -83,6 +83,11 @@ $smarty->assign('coreBOS_app_name', $appUIName);
 $appUINameHTML = decode_html(vtlib_purify(GlobalVariable::getVariable('Application_UI_NameHTML', $appUIName)));
 $smarty->assign('coreBOS_app_nameHTML', $appUINameHTML);
 $smarty->assign('coreBOS_app_coverimage', GlobalVariable::getVariable('Application_UI_CoverImage', 'themes/images/content-bg-1.png'));
+$NotificationSound = GlobalVariable::getVariable('Calendar_Notification_Sound', 'modules/cbCalendar/media/new_event.mp3');
+if (!isInsideApplication($NotificationSound)) {
+	$NotificationSound = 'modules/cbCalendar/media/new_event.mp3';
+}
+$smarty->assign('Calendar_Notification_Sound', $NotificationSound);
 
 $companyDetails = retrieveCompanyDetails();
 $smarty->assign('COMPANY_DETAILS', $companyDetails);

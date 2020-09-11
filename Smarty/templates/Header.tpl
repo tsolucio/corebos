@@ -491,8 +491,7 @@
 <script type="text/javascript" src="modules/evvtMenu/evvtMenu.js"></script>
 </div>
 <!-- ActivityReminder Customization for callback -->
-<!-- link type="text/css" rel="stylesheet" href="include/PendingTasks.css" -->
-<audio id="newEvents" src="modules/cbCalendar/media/new_event.mp3" preload="auto"></audio>
+<audio id="newEvents" src="{$Calendar_Notification_Sound}" preload="auto"></audio>
 <div id="cbds-notificationpanel" class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open slds-is-fixed cbds-last-visited" aria-hidden="false">
 <div class="slds-panel__header cbds-bg-blue--gray slds-text-color_default slds-text-color_inverse">
 	<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="{'LBL_NOTIFICATION'|@getTranslatedString:'Settings'}">{'LBL_NOTIFICATION'|@getTranslatedString:'Settings'}

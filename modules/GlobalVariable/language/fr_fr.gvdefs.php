@@ -1042,6 +1042,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'When you click on an event you will open the detail view of the record instead of the actions toolbar.',
 ),
+'Calendar_Notification_Sound' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Path',
+	'category' => 'Application',
+	'values' => 'path to audio file',
+	'definition' => 'Path to audio file to play when new notification arrives.',
+),
 'CronTasks_cronWatcher_mailto' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Liste CSV',
