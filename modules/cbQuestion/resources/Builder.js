@@ -316,10 +316,10 @@ function getRelatedModuleFields(newmodule) {
 					'value': op
 				});
 			}
+			fieldGridInstance.resetData(fieldData);
 		},
 		false
 	);
-	return arrayOfFields;
 }
 
 function showSQLMsg(msg, role) {
