@@ -51,13 +51,13 @@ if (is_admin($current_user)) {
 	$smarty->assign('ADMIN_LINK', "<a href='index.php?module=Settings&action=index'>".$app_strings['LBL_SETTINGS'].'</a>');
 }
 
-$module_path="modules/".$currentModule."/";
+$module_path='modules/'.$currentModule.'/';
 
 //Assign the entered global search string to a variable and display it again
 if (isset($_REQUEST['query_string']) && $_REQUEST['query_string'] != '') {
-	$smarty->assign("QUERY_STRING", htmlspecialchars($_REQUEST['query_string'], ENT_QUOTES, $default_charset));//BUGIX " Cross-Site-Scripting "
+	$smarty->assign('QUERY_STRING', htmlspecialchars($_REQUEST['query_string'], ENT_QUOTES, $default_charset));//BUGIX Cross-Site-Scripting
 } else {
-	$smarty->assign("QUERY_STRING", "$app_strings[LBL_SEARCH_STRING]");
+	$smarty->assign('QUERY_STRING', $app_strings['LBL_SEARCH_STRING']);
 }
 
 require_once 'data/Tracker.php';
