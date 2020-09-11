@@ -1089,7 +1089,7 @@ class QueryGenerator {
 								.(in_array($conditionInfo['operator'], array('n', 'ni', 'nin', 'k', 'dnsw', 'dnew')) ? ' AND ' : ' OR ')
 								.$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
 						} else {
-							if ($conditionInfo['operator'] == 'sx') {
+							if ($conditionInfo['operator'] == 'rgxp' || $conditionInfo['operator'] == 'sx') {
 								$fieldSql .= "$fieldGlue ". $valueSql;
 							} else {
 								$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
@@ -1468,6 +1468,9 @@ class QueryGenerator {
 				case 'sx':
 					$sqlOperator = 'SOUNDEX';
 					break;
+				case 'rgxp':
+					$sqlOperator = 'REGEXP';
+					break;
 				case 'l':
 					$sqlOperator = '<';
 					break;
@@ -1497,9 +1500,12 @@ class QueryGenerator {
 			if ($this->isNumericType($field->getFieldDataType()) && empty($value)) {
 				$value = '0';
 			}
-			if ($this->requiresSoundex($operator) == 'sx') {
+			if ($this->requiresREGEXP($operator) == 'rgxp') {
 				$field1 = $field->getFieldName();
-				$sql[] = "SOUNDEX(".$field1.") LIKE SOUNDEX($value)";
+				$sql[] = $field1.' REGEXP '.$value;
+			} elseif ($this->requiresSoundex($operator) == 'sx') {
+				$field1 = $field->getFieldName();
+				$sql[] = 'SOUNDEX('.$field1.") LIKE SOUNDEX($value)";
 			} else {
 				$sql[] = "$sqlOperator $value";
 			}
@@ -1535,6 +1541,9 @@ class QueryGenerator {
 		$requiresQuote = array('s','ew','c','k');
 		return in_array($operator, $requiresQuote);
 	}
+	private function requiresREGEXP($operator) {
+		return ($operator == 'rgxp');
+	}
 	private function isNumericType($type) {
 		return ($type == 'integer' || $type == 'double' || $type == 'currency');
 	}
@@ -1548,8 +1557,7 @@ class QueryGenerator {
 	}
 
 	private function requiresSoundex($operator) {
-		$requiresSX = array('sx');
-		return in_array($operator, $requiresSX);
+		return ($operator == 'sx');
 	}
 
 	public function fixDateTimeValue($name, $value, $first = true) {
