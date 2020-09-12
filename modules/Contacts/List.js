@@ -18,7 +18,7 @@ jQuery.Class('Contact', {
 				jQuery('#sync_details').html('<img src='+imagePath+' style="margin-left:40px"/>');
 				var url = jQuery('#sync_button').data('url');
 				if (jQuery('#firsttime').val() == 'yes') {
-					var win=window.open(url, '', 'height=600,width=600,channelmode=1');
+					var win=window.open(url, '', cbPopupWindowSettings+',channelmode=1');
 					//http://stackoverflow.com/questions/1777864/how-to-run-function-of-parent-window-when-child-window-closes
 					window.sync = function () {
 						jQuery('#sync_details').html('<img src='+imagePath+' style="margin-left:40px"/>');

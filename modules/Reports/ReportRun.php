@@ -3447,13 +3447,14 @@ class ReportRun extends CRMEntity {
 		$arr_val = $this->GenerateReport('PDF', $filterlist);
 		$fp = fopen($fileName, 'w+');
 		if (isset($arr_val)) {
+			$CSV_Separator = GlobalVariable::getVariable('Export_Field_Separator_Symbol', ',', $this->primarymodule);
 			$csv_values = array();
 			// Header
 			$csv_values = array_keys($arr_val[0]);
-			fputcsv($fp, $csv_values);
+			fputcsv($fp, $csv_values, $CSV_Separator);
 			foreach ($arr_val as $array_value) {
 				$csv_values = array_map('decode_html', array_values($array_value));
-				fputcsv($fp, $csv_values);
+				fputcsv($fp, $csv_values, $CSV_Separator);
 			}
 		}
 		fclose($fp);

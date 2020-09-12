@@ -457,7 +457,7 @@ function deleteFieldRow() {
 			bmapidDisplay.id = `bmapid_${inc}_display`;
 			bmapidDisplay.name = `bmapid_${inc}_display`;
 			bmapidDisplay.removeAttribute('onclick');
-			bmapidDisplay.setAttribute('onclick', `return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=dtbmselection_${inc}&forfield=bmapid_${inc}&srcmodule=GlobalVariable'+SpecialSearch,'vtlibui10wf','width=680,height=602,resizable=0,scrollbars=0,top=150,left=200')`);
+			bmapidDisplay.setAttribute('onclick', `return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=dtbmselection_${inc}&forfield=bmapid_${inc}&srcmodule=GlobalVariable'+SpecialSearch, 'vtlibui10wf', cbPopupWindowSettings)`);
 			clearBtn.id = `clear-btn-${inc}`;
 			clearBtn.removeAttribute('onclick');
 			clearBtn.setAttribute('onclick', `this.form.bmapid_${inc}.value=''; this.form.bmapid_${inc}_display.value=''; return false;`);
@@ -714,7 +714,7 @@ async function generateSection(ev, preLoadMap = {}) {
             <label class="slds-form-element__label"> ${mod_alert_arr.LBL_MAP} </label>
             <div class="slds-form-element__control slds-input-has-fixed-addon">
                 <input id="bmapid_${rowKey}" name="bmapid_${rowKey}" class="slds-input" type="hidden" value="${mapId}">
-                <input id="bmapid_${rowKey}_display" class="slds-input" name="bmapid_${rowKey}_display" readonly="" style="border:1px solid #bababa;" type="text" value="" onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=dtbmselection_${rowKey}&forfield=bmapid_${rowKey}&srcmodule=GlobalVariable'+SpecialSearch,'vtlibui10wf','width=680,height=602,resizable=0,scrollbars=0,top=150,left=200');">
+                <input id="bmapid_${rowKey}_display" class="slds-input" name="bmapid_${rowKey}_display" readonly="" style="border:1px solid #bababa;" type="text" value="" onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=dtbmselection_${rowKey}&forfield=bmapid_${rowKey}&srcmodule=GlobalVariable'+SpecialSearch, 'vtlibui10wf', cbPopupWindowSettings);">
                 <span class="slds-form-element__addon">
                     <button type="image" id="clear-btn-${rowKey}" class="slds-button" alt="${mod_alert_arr.LBL_CLEAR}" title="${mod_alert_arr.LBL_CLEAR}" onClick="this.form.bmapid_${rowKey}.value=''; this.form.bmapid_${rowKey}_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
                         <svg class="slds-icon slds-icon_small slds-icon-text-light" aria-hidden="true" >

@@ -111,6 +111,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Si se establece en 1, se mostrará una pila de llamadas antes del mensaje de error "Sorry! Attempt to access restricted file."',
 ),
+'Debug_Email_Send_To_Inbucket'=> array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Depuración',
+	'values' => '0 | 1',
+	'definition' => 'Si se establece en 1, enviará correo electrónico SIEMPRE a través de la configuración del servidor saliente, que debe establecerse en la configuración de inBucket',
+),
 'Accounts_BlockDuplicateName' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
@@ -1035,6 +1042,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Al hacer clic en un evento, abrirá la vista detallada del registro en lugar de la barra de herramientas de acciones.',
 ),
+'Calendar_Notification_Sound' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Camino Fichero',
+	'category' => 'Aplicación',
+	'values' => 'camino al fichero de audio',
+	'definition' => 'Camino al fichero de audio que sonará al llegar un nuevo evento.',
+),
 'CronTasks_cronWatcher_mailto' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Emails CSV',
@@ -1554,11 +1568,25 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'Define el esquema de color a utilizar cuando se dibujan gráficos. Por defecto, se utiliza el esquema tableau.Tableau10.',
 ),
 'Application_CSRF_Valid_IP' => array(
-	'status' => 'Implemented',
+	'status' => 'Implementada',
 	'valuetype' => 'CSV IPs',
 	'category' => 'Seguridad',
 	'values' => 'Ejemplo: 127.0.0.1,192.168.0.100',
 	'definition' => 'Lista separada por comas de direcciones IP desde las que se pasa el control de CSRF.',
+),
+'Application_PopupScreen_Width' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'UI',
+	'values' => '',
+	'definition' => 'Porcentaje del ancho de pantalla que utilizarán las ventanas emergentes. El valor predeterminado es 80%',
+),
+'Application_PopupScreen_Height' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'UI',
+	'values' => '',
+	'definition' => 'Porcentaje de la altura de pantalla que utilizarán las ventanas emergentes. El valor predeterminado es 80%',
 ),
 );
 

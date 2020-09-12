@@ -97,3 +97,8 @@
 .fieldborder {
 	border-color: #dddbda !important;
 }
+
+/*Add some space [0 5px] between the elements*/
+.sm_margin {
+	margin: 0 5px;
+}

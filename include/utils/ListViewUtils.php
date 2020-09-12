@@ -2137,7 +2137,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					if ($opennewtab=='') {
 						$value = '<a href="index.php?action=DetailView&module='.$module.'&record='.$entity_id.'" id='.$count.'>'.textlength_check($field_valEncoded).'</a>';
 					} elseif ($opennewtab=='window') {
-						$value = '<a href="#" onclick="window.open(\'index.php?action=DetailView&module='.$module.'&record='.$entity_id."', '$module-$entity_id', 'width=1300, height=900, scrollbars=yes'); return false;".'" id='.$count.'>'.textlength_check($field_valEncoded).'</a>';
+						$value = '<a href="#" onclick="window.open(\'index.php?action=DetailView&module='.$module.'&record='.$entity_id."', '$module-$entity_id', cbPopupWindowSettings); return false;".'" id='.$count.'>'.textlength_check($field_valEncoded).'</a>';
 					} else {
 						$value = '<a href="index.php?action=DetailView&module='.$module.'&record='.$entity_id.'" id='.$count.' target="_blank" >'.textlength_check($field_valEncoded).'</a>';
 					}
