@@ -496,6 +496,12 @@
 <div class="slds-panel__header cbds-bg-blue--gray slds-text-color_default slds-text-color_inverse">
 	<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="{'LBL_NOTIFICATION'|@getTranslatedString:'Settings'}">{'LBL_NOTIFICATION'|@getTranslatedString:'Settings'}
 	</h2>
+	<button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse slds-panel__refresh" title="{'LBL_REFRESH'|@getTranslatedString}" onclick="ActivityReminderCallback();">
+		<svg class="slds-button__icon" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#refresh"></use>
+		</svg>
+		<span class="slds-assistive-text">{'LBL_REFRESH'|@getTranslatedString}</span>
+	</button>
 	<button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse slds-panel__close" title="{'LBL_CLOSE'|@getTranslatedString}" onclick="panelViewHide(document.getElementById('cbds-notificationpanel'));">
 		<svg class="slds-button__icon" aria-hidden="true">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
