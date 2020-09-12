@@ -425,10 +425,6 @@ class QueryGenerator {
 			}
 		}
 
-		if ($this->module == 'Calendar' && !in_array('activitytype', $viewfields)) {
-			$viewfields[] = 'activitytype';
-		}
-
 		if ($this->module == 'Documents' && in_array('filename', $viewfields)) {
 			if (!in_array('filelocationtype', $viewfields)) {
 				$viewfields[] = 'filelocationtype';
@@ -591,26 +587,6 @@ class QueryGenerator {
 			}
 			$sql = $this->getSQLColumn($field);
 			$columns[] = $sql;
-
-			//To merge date and time fields
-			if ($this->meta->getEntityName() == 'Calendar' && ($field == 'date_start' || $field == 'due_date' || $field == 'taskstatus' || $field == 'eventstatus')) {
-				if ($field=='date_start') {
-					$timeField = 'time_start';
-					$sql = $this->getSQLColumn($timeField);
-				} elseif ($field == 'due_date') {
-					$timeField = 'time_end';
-					$sql = $this->getSQLColumn($timeField);
-				} elseif ($field == 'taskstatus' || $field == 'eventstatus') {
-					//In calendar list view, Status value = Planned is not displaying
-					$sql = "CASE WHEN (vtiger_activity.status not like '') THEN vtiger_activity.status ELSE vtiger_activity.eventstatus END AS ";
-					if ($field == 'taskstatus') {
-						$sql .= 'status';
-					} else {
-						$sql .= $field;
-					}
-				}
-				$columns[] = $sql;
-			}
 		}
 		$this->columns = implode(', ', $columns);
 		return $this->columns;
@@ -884,18 +860,6 @@ class QueryGenerator {
 									$alreadyinfrom[] = $fldtname;
 								}
 								if (!in_array($tableName.$fld, $referenceFieldTableList)) {
-									if (($referenceFieldObject->getFieldName() == 'parent_id' || $fld == 'parent_id') && ($this->getModule() == 'Calendar')) {
-										$joinclause = 'LEFT JOIN vtiger_seactivityrel ON vtiger_seactivityrel.activityid = vtiger_activity.activityid';
-										if (strpos($sql, $joinclause)===false) {
-											$sql .= " $joinclause ";
-										}
-									}
-									if (($referenceFieldObject->getFieldName() == 'contact_id' || $fld == 'contact_id') && ($this->getModule() == 'Calendar')) {
-										$joinclause = 'LEFT JOIN vtiger_cntactivityrel ON vtiger_cntactivityrel.activityid = vtiger_activity.activityid';
-										if (strpos($sql, $joinclause)===false) {
-											$sql .= " $joinclause ";
-										}
-									}
 									$sql .= ' LEFT JOIN '.$tableName.' AS '.$tableName.$fld.' ON '.
 										$tableName.$fld.'.'.$reltableList[$tableName].'='.$moduleFields[$fld]->getTableName().'.'.$moduleFields[$fld]->getColumnName();
 									$referenceFieldTableList[] = $tableName.$fld;
@@ -929,18 +893,6 @@ class QueryGenerator {
 								$alreadyinfrom[] = $fldtname;
 							}
 							if (!in_array($tableName.$fld, $referenceFieldTableList)) {
-								if (($referenceFieldObject->getFieldName() == 'parent_id' || $fld == 'parent_id') && ($this->getModule() == 'Calendar')) {
-									$joinclause = 'LEFT JOIN vtiger_seactivityrel ON vtiger_seactivityrel.activityid = vtiger_activity.activityid';
-									if (strpos($sql, $joinclause)===false) {
-										$sql .= " $joinclause ";
-									}
-								}
-								if (($referenceFieldObject->getFieldName() == 'contact_id' || $fld == 'contact_id') && ($this->getModule() == 'Calendar')) {
-									$joinclause = 'LEFT JOIN vtiger_cntactivityrel ON vtiger_cntactivityrel.activityid = vtiger_activity.activityid';
-									if (strpos($sql, $joinclause)===false) {
-										$sql .= " $joinclause ";
-									}
-								}
 								$sql .= ' LEFT JOIN '.$tableName.' AS '.$tableName.$fld.' ON '.
 									$tableName.$fld.'.'.$reltableList[$tableName].'='.$moduleFields[$fld]->getTableName().'.'.$moduleFields[$fld]->getColumnName();
 								$referenceFieldTableList[] = $tableName.$fld;
