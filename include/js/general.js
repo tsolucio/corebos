@@ -3372,7 +3372,6 @@ var ActivityReminder_popup_onscreen = 2 * 1000; // Milli Seconds (should be less
 var ActivityReminder_callback_win_uniqueids = new Object();
 
 function ActivityReminderCallback(clicked) {
-	var right_value = document.getElementById('cbds-notificationpanel').style.right;
 	if (typeof(jQuery) == 'undefined' || ActivityReminder_Deactivated == 1) {
 		return;
 	}
@@ -3396,8 +3395,7 @@ function ActivityReminderCallback(clicked) {
 					if (typeof(responsearray['noTasks']) != 'undefined') {
 						//No tasks to show, all tasks finished
 						document.getElementById('todolist').innerHTML= responsearray['noTasks'] + responsearray['next_reminder_interval'];
-						//Show todolist if clicked
-						if (clicked && right_value != '0em') {
+						if (clicked) {
 							panelViewShow(document.getElementById('cbds-notificationpanel'));
 						}
 					} else {
@@ -3412,17 +3410,13 @@ function ActivityReminderCallback(clicked) {
 						document.getElementById('header_notification_items').innerHTML = responsearray['not_readed'];
 						document.getElementById('header_notification_items').classList.add('slds-show-notification');
 						document.getElementById('header_notification_button').classList.add('slds-incoming-notification');
-						//Show todolist
-						if (right_value != '0em') {
-							document.getElementById('todolist').style.right = '0em';
-						}
+						panelViewShow(document.getElementById('cbds-notificationpanel'));
 					} else {
 						//No new task to alert
 						document.getElementById('header_notification_items').innerHTML = '';
 						document.getElementById('header_notification_items').classList.remove('slds-show-notification');
 						document.getElementById('header_notification_button').classList.remove('slds-incoming-notification');
-						//Show todolist if clicked
-						if (clicked && right_value != '0em') {
+						if (clicked) {
 							panelViewShow(document.getElementById('cbds-notificationpanel'));
 						}
 					}
