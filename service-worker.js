@@ -9497,13 +9497,7 @@ precacheAndRoute([{
   "revision": "15a73d14b6e91db79ae7847c2c0de1a1"
 }, {
   "url": "modules/com_vtiger_workflow/resources/createentitytaskscript.js",
-  "revision": "1470e8fd77b86796fe66786c44413d9d"
-}, {
-  "url": "modules/com_vtiger_workflow/resources/createeventtaskscript.js",
-  "revision": "0a5bfde4da94aac9acaa17c70276988d"
-}, {
-  "url": "modules/com_vtiger_workflow/resources/createtodotaskscript.js",
-  "revision": "d303f6bc780e5b5367842b29220bbf67"
+  "revision": "bcdeefd51eae1cfa30971ed3e0672b8d"
 }, {
   "url": "modules/com_vtiger_workflow/resources/edittaskscript.js",
   "revision": "bb671622a8efbcf219e188c6c9c4411f"
@@ -9548,7 +9542,7 @@ precacheAndRoute([{
   "revision": "c00f6462ceeb5ab01f6cdf297e0e8735"
 }, {
   "url": "modules/com_vtiger_workflow/resources/style.css",
-  "revision": "a6908ffdc9deeea0e21e461a8bcde6cf"
+  "revision": "d62dc231921aab35a4b55aabcc5fc96c"
 }, {
   "url": "modules/com_vtiger_workflow/resources/updatefieldstaskscript.js",
   "revision": "98b52fb0bdc8a6decb396ad4a031ba30"
@@ -9848,7 +9842,7 @@ precacheAndRoute([{
   "revision": "df1beb66383c404ca19595bfede77a1f"
 }, {
   "url": "modules/cbQuestion/resources/Builder.js",
-  "revision": "7ff4f0a9be225ad6c31f9ed4efa02a9a"
+  "revision": "396dce62bd29cab1228ab6fa6a66d949"
 }, {
   "url": "modules/cbQuestion/resources/editbuilder.js",
   "revision": "882f43f4054b3056e66a674b35112825"
