@@ -1574,6 +1574,20 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Example: 127.0.0.1,192.168.0.100',
 	'definition' => 'Comma separated list of IP addresses from which could bypass CSRF control.',
 ),
+'Application_PopupScreen_Width' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'UI',
+	'values' => '',
+	'definition' => 'Percentage of screen width that popups will use. Default is 80%',
+),
+'Application_PopupScreen_Height' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'UI',
+	'values' => '',
+	'definition' => 'Percentage of screen height that popups will use. Default is 80%',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/fr_fr.gvdefs.*.php', GLOB_BRACE) as $tcode) {

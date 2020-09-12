@@ -51,6 +51,37 @@ function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid) {
 	});
 }
 
+var cbPopupScreenWidthPercentage = 80;
+var cbPopupScreenHeightPercentage = 80;
+var cbPopupWindowSettings = '';
+setApplicationPopupWindowSize(cbPopupScreenWidthPercentage, cbPopupScreenHeightPercentage);
+GlobalVariable_getVariable('Application_PopupScreen_Width', 80, (typeof gVTModule==undefined ? '' : gVTModule), '').then(function (response) {
+	var obj = JSON.parse(response);
+	cbPopupScreenWidthPercentage = Number(obj.Application_PopupScreen_Width);
+	setApplicationPopupWindowSize(cbPopupScreenWidthPercentage, cbPopupScreenHeightPercentage);
+}, function (error) {
+	cbPopupScreenWidthPercentage = 80;
+});
+GlobalVariable_getVariable('Application_PopupScreen_Height', 80, (typeof gVTModule==undefined ? '' : gVTModule), '').then(function (response) {
+	var obj = JSON.parse(response);
+	cbPopupScreenHeightPercentage = Number(obj.Application_PopupScreen_Height);
+	setApplicationPopupWindowSize(cbPopupScreenWidthPercentage, cbPopupScreenHeightPercentage);
+}, function (error) {
+	cbPopupScreenHeightPercentage = 80;
+});
+
+function setApplicationPopupWindowSize(w, h, r, s, t, l) {
+	w = w || cbPopupScreenWidthPercentage || 80;
+	h = h || cbPopupScreenHeightPercentage|| 80;
+	r = r || 0;
+	s = s || 0;
+	t = t || 100;
+	l = l || 200;
+	cbPopupWindowSettings = 'width='+(Math.round(window.screen.width*w/100, 0));
+	cbPopupWindowSettings += ',height='+(Math.round(window.screen.height*h/100, 0));
+	cbPopupWindowSettings += ',resizable='+r+',scrollbars='+s+',top='+t+',left='+l;
+}
+
 //Utility Functions
 
 function getTagCloud(crmid) {
@@ -2501,17 +2532,17 @@ function selectContact(check, frmName) {
 			module_string = '&parent_module=Accounts';
 		}
 		if (record_id != '') {
-			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView'+module_string+'&relmod_id='+record_id, 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView'+module_string+'&relmod_id='+record_id, 'test', cbPopupWindowSettings);
 		} else {
-			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView', 'test', cbPopupWindowSettings);
 		}
 	} else if (document.getElementById('vendor_name') && gVTModule=='PurchaseOrder') {
 		record_id = frmName.vendor_id.value;
 		module_string = '&parent_module=Vendors';
 		if (record_id != '') {
-			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView'+module_string+'&relmod_id='+record_id, 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView'+module_string+'&relmod_id='+record_id, 'test', cbPopupWindowSettings);
 		} else {
-			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView', 'test', cbPopupWindowSettings);
 		}
 	} else if ((document.getElementById('parentid'))) {
 		if (getObj('parent_type')) {
@@ -2527,16 +2558,16 @@ function selectContact(check, frmName) {
 					search_string='&popuptype=specific';
 				}
 				if (record_id != '') {
-					window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&form=EditView'+search_string+'&relmod_id='+record_id+'&parent_module='+module[0], 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+					window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&form=EditView'+search_string+'&relmod_id='+record_id+'&parent_module='+module[0], 'test', cbPopupWindowSettings);
 				} else {
-					window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&form=EditView'+search_string, 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+					window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&form=EditView'+search_string, 'test', cbPopupWindowSettings);
 				}
 			}
 		} else {
-			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&return_module=Calendar&select=enable&popuptype=detailview&form=EditView&form_submit=false', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&return_module=Calendar&select=enable&popuptype=detailview&form=EditView&form_submit=false', 'test', cbPopupWindowSettings);
 		}
 	} else {
-		window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView&recordid='+record, 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+		window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView&recordid='+record, 'test', cbPopupWindowSettings);
 	}
 }
 
@@ -2558,9 +2589,9 @@ function selectPotential(fromlink, fldname, MODULE, ID) {
 		parent_module = 'Contacts';
 	}
 	if (record_id != '') {
-		window.open('index.php?module=Potentials&action=Popup&html=Popup_picker&popuptype=specific_potential_account_address&form=EditView&relmod_id='+record_id+'&parent_module='+parent_module, 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+		window.open('index.php?module=Potentials&action=Popup&html=Popup_picker&popuptype=specific_potential_account_address&form=EditView&relmod_id='+record_id+'&parent_module='+parent_module, 'test', cbPopupWindowSettings);
 	} else {
-		window.open('index.php?module=Potentials&action=Popup&html=Popup_picker&popuptype=specific_potential_account_address&form=EditView', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+		window.open('index.php?module=Potentials&action=Popup&html=Popup_picker&popuptype=specific_potential_account_address&form=EditView', 'test', cbPopupWindowSettings);
 	}
 }
 
@@ -2582,9 +2613,9 @@ function selectQuote(fromlink, fldname, MODULE, ID) {
 		parent_module = 'Contacts';
 	}
 	if (record_id != '') {
-		window.open('index.php?module=Quotes&action=Popup&html=Popup_picker&popuptype=specific&form=EditView&relmod_id='+record_id+'&parent_module='+parent_module, 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+		window.open('index.php?module=Quotes&action=Popup&html=Popup_picker&popuptype=specific&form=EditView&relmod_id='+record_id+'&parent_module='+parent_module, 'test', cbPopupWindowSettings);
 	} else {
-		window.open('index.php?module=Quotes&action=Popup&html=Popup_picker&popuptype=specific&form=EditView', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+		window.open('index.php?module=Quotes&action=Popup&html=Popup_picker&popuptype=specific&form=EditView', 'test', cbPopupWindowSettings);
 	}
 }
 
@@ -2606,17 +2637,16 @@ function selectSalesOrder(fromlink, fldname, MODULE, ID) {
 		parent_module = 'Contacts';
 	}
 	if (record_id != '') {
-		window.open('index.php?module=SalesOrder&action=Popup&html=Popup_picker&popuptype=specific&form=EditView&relmod_id='+record_id+'&parent_module='+parent_module, 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+		window.open('index.php?module=SalesOrder&action=Popup&html=Popup_picker&popuptype=specific&form=EditView&relmod_id='+record_id+'&parent_module='+parent_module, 'test', cbPopupWindowSettings);
 	} else {
-		window.open('index.php?module=SalesOrder&action=Popup&html=Popup_picker&popuptype=specific&form=EditView', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+		window.open('index.php?module=SalesOrder&action=Popup&html=Popup_picker&popuptype=specific&form=EditView', 'test', cbPopupWindowSettings);
 	}
 }
 
 function set_return_account_details(fromlink, fldname, MODULE, ID) {
 	if (fldname == 'account_id') {
 		var baseURL = 'index.php?module=Accounts&action=Popup&popuptype=specific_account_address&form=TasksEditView&form_submit=false&fromlink=';
-		var WindowSettings = 'width=1680,height=850,resizable=0,scrollbars=0,top=150,left=200';
-		window.open(baseURL, 'vtlibui10', WindowSettings);
+		window.open(baseURL, 'vtlibui10', cbPopupWindowSettings);
 	} else {
 		vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
 	}
@@ -2626,9 +2656,8 @@ function open_contact_account_details(fromlink, fldname, MODULE, ID) {
 	if (fldname == 'account_id') {
 		var baseURL = 'index.php?module=Accounts&action=Popup&popuptype=specific_contact_account_address&form=TasksEditView&form_submit=false&fromlink=';
 		baseURL += (fromlink=='qcreate') ? 'qcreate' : '';
-		var WindowSettings = 'width=1680,height=850,resizable=0,scrollbars=0,top=150,left=200';
 		let winname = (fromlink=='qcreate') ? 'vtlibui10qc' : 'vtlibui10';
-		window.open(baseURL, winname, WindowSettings);
+		window.open(baseURL, winname, cbPopupWindowSettings);
 	} else {
 		vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
 	}
@@ -3746,7 +3775,7 @@ function lastImport(module, req_module) {
 	if (module == '') {
 		return false;
 	} else {
-		window.open('index.php?module='+module_name+'&action=lastImport&req_mod='+req_module+'&parenttab='+parent_tab, 'lastImport', 'width=750,height=602,menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes');
+		window.open('index.php?module='+module_name+'&action=lastImport&req_mod='+req_module+'&parenttab='+parent_tab, 'lastImport', cbPopupWindowSettings+',menubar=no,toolbar=no,location=no,status=no,scrollbars=yes');
 	}
 }
 
@@ -3807,7 +3836,7 @@ function getMergeRecords(selectedNames, upperlimit, lowerlimit) {
 function merge_fields(selectedNames, module) {
 	var pass_url = getMergeRecords(selectedNames);
 	if (pass_url !== false) {
-		window.open('index.php?module='+module+'&action=ProcessDuplicates&mergemode=mergefields&passurl='+pass_url, 'Merge', 'width=750,height=602,menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes');
+		window.open('index.php?module='+module+'&action=ProcessDuplicates&mergemode=mergefields&passurl='+pass_url, 'Merge', cbPopupWindowSettings+',menubar=no,toolbar=no,location=no,status=no,scrollbars=yes');
 	} else {
 		return false;
 	}

@@ -8,7 +8,7 @@
  ************************************************************************************/
 function showMapWindow(mapid) {
 	var url = 'index.php?module=cbMap&action=cbMapAjax&actionname=mapactions&method=generateMap&mapid='+mapid;
-	window.open(url, 'Create Mapping', 'width=1240,height=800,resizable=1,scrollbars=1');
+	window.open(url, 'Create Mapping', cbPopupWindowSettings+',resizable=1,scrollbars=1');
 }
 
 function validateMap(mapid) {

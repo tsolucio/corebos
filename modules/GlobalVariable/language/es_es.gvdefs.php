@@ -1568,11 +1568,25 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'Define el esquema de color a utilizar cuando se dibujan gráficos. Por defecto, se utiliza el esquema tableau.Tableau10.',
 ),
 'Application_CSRF_Valid_IP' => array(
-	'status' => 'Implemented',
+	'status' => 'Implementada',
 	'valuetype' => 'CSV IPs',
 	'category' => 'Seguridad',
 	'values' => 'Ejemplo: 127.0.0.1,192.168.0.100',
 	'definition' => 'Lista separada por comas de direcciones IP desde las que se pasa el control de CSRF.',
+),
+'Application_PopupScreen_Width' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'UI',
+	'values' => '',
+	'definition' => 'Porcentaje del ancho de pantalla que utilizarán las ventanas emergentes. El valor predeterminado es 80%',
+),
+'Application_PopupScreen_Height' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'UI',
+	'values' => '',
+	'definition' => 'Porcentaje de la altura de pantalla que utilizarán las ventanas emergentes. El valor predeterminado es 80%',
 ),
 );
 

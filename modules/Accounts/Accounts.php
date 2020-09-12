@@ -146,7 +146,7 @@ class Accounts extends CRMEntity {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module)
 					."' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
 					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',"
-					."'width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT')
+					."cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT')
 					.' ' . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
 		}
@@ -201,7 +201,7 @@ class Accounts extends CRMEntity {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module)
 					."' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
 					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',"
-					."'width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT')
+					."cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT')
 					.' ' . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
@@ -264,7 +264,7 @@ class Accounts extends CRMEntity {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module)
 					."' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
 					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',"
-					."'width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT')
+					."cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT')
 					.' ' . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
@@ -419,7 +419,7 @@ class Accounts extends CRMEntity {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module)
 					."' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
 					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',"
-					."'width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT')
+					."cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT')
 					.' ' . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
@@ -483,7 +483,7 @@ class Accounts extends CRMEntity {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module)
 					."' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
 					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',"
-					."'width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT')
+					."cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT')
 					.' ' . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
@@ -548,7 +548,7 @@ class Accounts extends CRMEntity {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module)
 					."' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
 					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',"
-					."'width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT')
+					."cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT')
 					.' ' . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
@@ -621,7 +621,7 @@ class Accounts extends CRMEntity {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module)
 					."' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
 					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',"
-					."'width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT')
+					."cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT')
 					.' ' . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {

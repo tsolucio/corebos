@@ -132,10 +132,10 @@
 									readonly
 									type="text"
 									style="border:1px solid #bababa;"
-									onclick="return window.open('index.php?module=cbQuestion&action=Popup&html=Popup_picker&form=NewReport&forfield=cbquestion&srcmodule=Reports','vtlibui10wf','width=1680,height=850,resizable=0,scrollbars=0,top=150,left=200');"
+									onclick="return window.open('index.php?module=cbQuestion&action=Popup&html=Popup_picker&form=NewReport&forfield=cbquestion&srcmodule=Reports', 'vtlibui10wf', cbPopupWindowSettings);"
 									value="">&nbsp;
 								<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{'LBL_SELECT'|@getTranslatedString}" title="{'LBL_SELECT'|@getTranslatedString}"
-									onclick="return window.open('index.php?module=cbQuestion&action=Popup&html=Popup_picker&form=NewReport&forfield=cbquestion&srcmodule=Reports','vtlibui10wf','width=1680,height=850,resizable=0,scrollbars=0,top=150,left=200');"
+									onclick="return window.open('index.php?module=cbQuestion&action=Popup&html=Popup_picker&form=NewReport&forfield=cbquestion&srcmodule=Reports', 'vtlibui10wf', cbPopupWindowSettings);"
 									align="absmiddle" style='cursor:hand;cursor:pointer'>
 							</td>
 						</tr>
