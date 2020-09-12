@@ -281,4 +281,11 @@
 	<classname>fixGlobalVariableBlockedTypeOfData</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Database changes to eliminate old calendar references: GV, WF, Notifications</description>
+	<filename>build/changeSets/2020/databasechangesToMoveTocbCalendar2.php</filename>
+	<classname>databasechangesToMoveTocbCalendar2</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
