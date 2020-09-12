@@ -54,7 +54,7 @@ class Mobile {
 			);
 			$seq = 0;
 			$supported_module = array(
-				'Contacts','Accounts','Leads','Calendar','Potentials','HelpDesk','Vendors','Assets','Faq','Documents',
+				'Contacts','Accounts','Leads','cbCalendar','Potentials','HelpDesk','Vendors','Assets','Faq','Documents',
 				'Quotes','SalesOrder','Invoice','Products','Project','ProjectMilestone','ProjectTask','Events'
 			);
 			foreach ($supported_module as $mdulename) {

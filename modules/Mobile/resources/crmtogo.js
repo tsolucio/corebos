@@ -207,7 +207,7 @@ var crmtogo_Index_Js = {
 		var tmp_date = new Date();
 		var module = $('#modulename').val();
 		var view = $('#view').val();
-		if (module != 'Calendar' && module != 'cbCalendar') {
+		if (module != 'cbCalendar') {
 			$('#searchInputField').css('display', 'block');
 			$('#inputer').css('display', 'block');
 			$('#viewname-button').css('display', 'block');
