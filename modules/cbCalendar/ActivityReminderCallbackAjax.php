@@ -144,8 +144,13 @@ if (isPermitted('cbCalendar', 'index') == 'yes') {
 
 				$activities_reminder[] = $activity;
 			}
+			$returnResponse['template'] = printToDoList($activities_reminder);
+		} else {
+			$smarty = new vtigerCRM_Smarty;
+			$smarty->assign('NOTASKSInfo', getTranslatedString('TASKS_FINISHED', 'Calendar4You'));
+			$smarty->assign('NOTASKSSize', 'small');
+			$returnResponse['noTasks'] = $smarty->fetch('Components/NoTasks.tpl');
 		}
-		$returnResponse['template'] = printToDoList($activities_reminder);
 		$returnResponse['not_readed'] = $notreaded;
 		$returnResponse['next_reminder_interval'] = "<script type='text/javascript' id='_vtiger_activityreminder_callback_interval_'>".
 			($_SESSION['next_reminder_interval'] * 1000).'</script>';
