@@ -634,12 +634,8 @@ class Calendar4You extends CRMEntity {
 		$log->debug('> get_users '.$id);
 
 		$focus = new Users();
-
-		$button = '<input title="Change" accessKey="" tabindex="2" type="button" class="crmbutton small edit" value="'.getTranslatedString('LBL_SELECT_USER_BUTTON_LABEL')
-			.'" name="button" onclick=\'return window.open("index.php?module=Users&return_module=Calendar&return_action={$return_modname}&activity_mode=Events'
-			.'&action=Popup&popuptype=detailview&form=EditView&form_submit=true&select=enable&return_id='.$id.'&recordid='.$id.'", "test", cbPopupWindowSettings)\';>';
-
-		$returnset = '&return_module=Calendar&return_action=CallRelatedList&return_id='.$id;
+		$button = '';
+		$returnset = '&return_module=cbCalendar&return_action=CallRelatedList&return_id='.$id;
 
 		$query = 'SELECT vtiger_users.id, vtiger_users.first_name,vtiger_users.last_name, vtiger_users.user_name, vtiger_users.email1, vtiger_users.email2,
 				vtiger_users.status, vtiger_users.is_admin, vtiger_user2role.roleid, vtiger_users.secondaryemail, vtiger_users.phone_home, vtiger_users.phone_work,
@@ -651,7 +647,7 @@ class Calendar4You extends CRMEntity {
 			inner join vtiger_user2role on vtiger_user2role.userid=vtiger_users.id
 			where vtiger_activity.activityid='.$id;
 
-		$return_data = GetRelatedList('Calendar', 'Users', $focus, $query, $button, $returnset);
+		$return_data = GetRelatedList('cbCalendar', 'Users', $focus, $query, $button, $returnset);
 
 		if ($return_data == null) {
 			$return_data = array();

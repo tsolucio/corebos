@@ -636,69 +636,32 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 						}
 						$value = $adb->query_result($list_result, $i, $column_name);
 					} else {
-						if ($module == 'Calendar') {
-							$act_id = $adb->query_result($list_result, $i, 'activityid');
-							$activitytype = $adb->query_result($list_result, $i, 'activitytype');
-							if (empty($activitytype)) {
-								$cal_sql = 'select activitytype from vtiger_activity where activityid=?';
-								$cal_res = $adb->pquery($cal_sql, array($act_id));
-								if ($adb->num_rows($cal_res) >= 0) {
-									$activitytype = $adb->query_result($cal_res, 0, 'activitytype');
-								}
-							}
-						}
 						if (($module=='Emails' || $module=='HelpDesk' || $module=='Invoice' || $module=='Leads' || $module=='Contacts')
 							&& (($fieldname=='parent_id') || ($name=='Contact Name') || ($fieldname == 'firstname'))
 						) {
-							if ($module == 'Calendar') {
-								if ($fieldname == 'status') {
-									if ($activitytype == 'Task') {
-										$fieldname = 'taskstatus';
-									} else {
-										$fieldname = 'eventstatus';
-									}
-								}
-								if ($activitytype == 'Task') {
-									if (getFieldVisibilityPermission('cbCalendar', $current_user->id, $fieldname) == '0') {
-										$has_permission = 'yes';
-									} else {
-										$has_permission = 'no';
-									}
-								} else {
-									if (getFieldVisibilityPermission('Events', $current_user->id, $fieldname) == '0') {
-										$has_permission = 'yes';
-									} else {
-										$has_permission = 'no';
-									}
-								}
+							if ($fieldname == 'parent_id') {
+								$value = getRelatedTo($module, $list_result, $i);
 							}
-							if ($module != 'Calendar' || ($module == 'Calendar' && $has_permission == 'yes')) {
-								if ($fieldname == 'parent_id') {
-									$value = getRelatedTo($module, $list_result, $i);
-								}
-								if ($name == 'Contact Name') {
-									$contact_id = $adb->query_result($list_result, $i, 'contactid');
-									$contact_name = getFullNameFromQResult($list_result, $i, 'Contacts');
-									$value = '';
-									//Added to get the contactname for activities custom view - t=2190
-									if ($contact_id != '' && !empty($contact_name)) {
-										$displayValueArray = getEntityName('Contacts', $contact_id);
-										if (!empty($displayValueArray)) {
-											foreach ($displayValueArray as $key => $field_value) {
-												$contact_name = $field_value;
-											}
+							if ($name == 'Contact Name') {
+								$contact_id = $adb->query_result($list_result, $i, 'contactid');
+								$contact_name = getFullNameFromQResult($list_result, $i, 'Contacts');
+								$value = '';
+								//Added to get the contactname for activities custom view
+								if ($contact_id != '' && !empty($contact_name)) {
+									$displayValueArray = getEntityName('Contacts', $contact_id);
+									if (!empty($displayValueArray)) {
+										foreach ($displayValueArray as $key => $field_value) {
+											$contact_name = $field_value;
 										}
 									}
-									if (($contact_name != '') && ($contact_id != 'NULL')) {
-										$value = "<a href='index.php?module=Contacts&action=DetailView&record=".$contact_id."'>".textlength_check($contact_name).'</a>';
-									}
 								}
-								if ($fieldname == 'firstname') {
-									$first_name = textlength_check($adb->query_result($list_result, $i, 'firstname'));
-									$value = '<a href="index.php?action=DetailView&module=' . $module . '&record=' . $entity_id . '">' . $first_name . '</a>';
+								if (($contact_name != '') && ($contact_id != 'NULL')) {
+									$value = "<a href='index.php?module=Contacts&action=DetailView&record=".$contact_id."'>".textlength_check($contact_name).'</a>';
 								}
-							} else {
-								$value = '';
+							}
+							if ($fieldname == 'firstname') {
+								$first_name = textlength_check($adb->query_result($list_result, $i, 'firstname'));
+								$value = '<a href="index.php?action=DetailView&module=' . $module . '&record=' . $entity_id . '">' . $first_name . '</a>';
 							}
 						} elseif ($module=='Documents'
 							&& ($fieldname=='filelocationtype' || $fieldname=='filename' || $fieldname=='filesize' || $fieldname=='filestatus' || $fieldname=='filetype')
@@ -871,20 +834,6 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							$value.= '<a href="javascript:;" onClick="ShowEmail(\'' . $entity_id . '\');">' . textlength_check($tmp_value) . '</a>';
 							if ($name == 'Date Sent') {
 								$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $i, 'list', '');
-							}
-						} elseif ($module == 'Calendar' && ($fieldname != 'taskstatus' && $fieldname != 'eventstatus')) {
-							if ($activitytype == 'Task') {
-								if (getFieldVisibilityPermission('cbCalendar', $current_user->id, $fieldname) == '0') {
-									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $i, 'list', '');
-								} else {
-									$value = '';
-								}
-							} else {
-								if (getFieldVisibilityPermission('Events', $current_user->id, $fieldname) == '0') {
-									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $i, 'list', '');
-								} else {
-									$value = '';
-								}
 							}
 						} elseif ($module == 'PriceBooks' && $fieldname == 'listprice') {
 							$val_raw = $adb->query_result($list_result, $i, $fieldname);

@@ -117,16 +117,6 @@ if (isset($query_string) && $query_string != '') {
 				$customviewcombo_html = $oCustomView->getCustomViewCombo($viewid);
 
 				$listquery = $oCustomView->getModifiedCvListQuery($viewid, $listquery, $module);
-				if ($module == 'Calendar') {
-					if (!isset($oCustomView->list_fields['Close'])) {
-						$oCustomView->list_fields['Close']=array ('activity' => 'status');
-					}
-					if (!isset($oCustomView->list_fields_name['Close'])) {
-						$oCustomView->list_fields_name['Close']='status';
-					}
-					$listquery = str_replace(',vtiger_contactdetails.contactid', '', $listquery);
-					$listquery = str_ireplace('select ', 'select distinct ', $listquery);
-				}
 
 				if ($search_module != '' || $search_tag != '') {//This is for Tag search
 					$where = getTagWhere($search_val, $current_user->id);
@@ -135,7 +125,7 @@ if (isset($query_string) && $query_string != '') {
 				} else { //This is for Global search
 					$where = getUnifiedWhere($listquery, $module, $search_val, $fieldtype);
 					$search_msg = $app_strings['LBL_SEARCH_RESULTS_FOR'];
-					$search_msg .=	"<b>".htmlentities($search_val, ENT_QUOTES, $default_charset)."</b>";
+					$search_msg .= '<b>'.htmlentities($search_val, ENT_QUOTES, $default_charset).'</b>';
 				}
 
 				if ($where != '') {

@@ -3349,7 +3349,7 @@ var ActivityReminder_Deactivated = 0;
 GlobalVariable_getVariable('Debug_ActivityReminder_Deactivated', 0, 'cbCalendar', '').then(function (response) {
 	var obj = JSON.parse(response);
 	ActivityReminder_Deactivated = obj.Debug_ActivityReminder_Deactivated;
-	ExecuteFunctions('ispermitted', 'checkmodule=Calendar&checkaction=index').then(function (response) {
+	ExecuteFunctions('ispermitted', 'checkmodule=cbCalendar&checkaction=index').then(function (response) {
 		var obj = JSON.parse(response);
 		if (obj.isPermitted == false) {
 			ActivityReminder_Deactivated = 1;

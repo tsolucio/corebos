@@ -29,8 +29,7 @@ class GoogleSync4YouHandler extends VTEventHandler {
 		}
 
 		if ($handlerType == 'vtiger.entity.aftersave' || $handlerType == 'vtiger.entity.beforedelete') {
-			$moduleName = $entityData->getModuleName();
-			if ($moduleName == 'Calendar' || $moduleName == 'cbCalendar') {
+			if ($entityData->getModuleName() == 'cbCalendar') {
 				$InGCalendars = array();
 				$id = $entityData->getId();
 				//$Data = $entityData->getData();

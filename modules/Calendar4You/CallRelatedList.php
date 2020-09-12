@@ -20,7 +20,7 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	echo "<script>document.location='index.php?action=DetailView&module=cbCalendar&record=".urlencode($record)."';</script>";
 	die();
 } else {
-	$c_mod_strings = return_specified_module_language($current_language, "Calendar");
+	$c_mod_strings = return_specified_module_language($current_language, 'cbCalendar');
 
 	$focus = CRMEntity::getInstance('cbCalendar');
 	if (isset($_REQUEST['record']) && $_REQUEST['record']!='') {
@@ -37,19 +37,14 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 		$activity_mode = getEventActivityMode($record);
 	}
 
-	if ($activity_mode == 'Task') {
-		$tab_type = 'Calendar';
-		$rel_tab_type = 'Calendar4You';
-		$smarty->assign('SINGLE_MOD', $c_mod_strings['LBL_TODO']);
-	} elseif ($activity_mode == 'Events') {
-		$rel_tab_type = $tab_type = 'Events';
-		$smarty->assign('SINGLE_MOD', $c_mod_strings['LBL_EVENT']);
-	}
+	$tab_type = 'cbCalendar';
+	$rel_tab_type = 'Calendar4You';
+	$smarty->assign('SINGLE_MOD', $c_mod_strings['SINGLE_cbCalendar']);
 
 	$tab_id=getTabid($rel_tab_type);
 
 	if (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
-		$focus->id = "";
+		$focus->id = '';
 	}
 	if (isset($_REQUEST['mode']) && $_REQUEST['mode'] != ' ') {
 		$smarty->assign('OP_MODE', vtlib_purify($_REQUEST['mode']));

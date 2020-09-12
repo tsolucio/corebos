@@ -301,7 +301,7 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 		//Check ends
 
 		//Added to search contact name by lastname
-		if (($module=='Calendar' || $module=='Invoice' || $module=='Documents' || $module=='SalesOrder' || $module=='PurchaseOrder') && ($search_field=='contact_id')) {
+		if (($module=='Invoice' || $module=='Documents' || $module=='SalesOrder' || $module=='PurchaseOrder') && ($search_field=='contact_id')) {
 			$module = 'Contacts';
 			$search_field = 'lastname';
 		}
@@ -423,11 +423,7 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 	if (false !== stripos($where, "like '%%'")) {
 		$where_cond0=str_replace("like '%%'", "like ''", $where);
 		$where_cond1=str_replace("like '%%'", 'is NULL', $where);
-		if ($module == 'Calendar') {
-			$where = '('.$where_cond0.' and '.$where_cond1.')';
-		} else {
-			$where = '('.$where_cond0.' or '.$where_cond1.')';
-		}
+		$where = '('.$where_cond0.' or '.$where_cond1.')';
 	}
 	// commented to support searching '%' with the search string.
 	if (isset($input['type']) && $input['type'] == 'alpbt') {
@@ -1159,15 +1155,7 @@ function generateAdvancedSearchSql($advfilterlist) {
 						$advfiltersql = '('.$columns[0].'.'.$columns[1]." between '".getValidDBInsertDateTimeValue(trim($valuearray[0]), $datatype)."' and '"
 							.getValidDBInsertDateTimeValue(trim($valuearray[1]), $datatype)."')";
 					} else {
-						//Added for getting activity Status
-						if ($currentModule == 'Calendar' && ($columns[1] == 'status' || $columns[1] == 'eventstatus')) {
-							if (getFieldVisibilityPermission('Calendar', $current_user->id, 'taskstatus') == '0') {
-								$advfiltersql = "case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end"
-									.getAdvancedSearchComparator($comparator, trim($value), $datatype);
-							} else {
-								$advfiltersql = 'vtiger_activity.eventstatus'.getAdvancedSearchComparator($comparator, trim($value), $datatype);
-							}
-						} elseif ($currentModule == 'Documents' && $columns[1]=='folderid') {
+						if ($currentModule == 'Documents' && $columns[1]=='folderid') {
 							$advfiltersql = 'vtiger_attachmentsfolder.foldername'.getAdvancedSearchComparator($comparator, trim($value), $datatype);
 						} elseif ($currentModule == 'Assets') {
 							if ($columns[1]=='account') {
@@ -1381,14 +1369,7 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 				$value = 0;
 			}
 		}
-		if ($currentModule == 'Calendar' && ($fieldname=='status' || $fieldname=='taskstatus' || $fieldname=='eventstatus')) {
-			if (getFieldVisibilityPermission('Calendar', $current_user->id, 'taskstatus') == '0') {
-				$value = " (case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end)"
-					.getAdvancedSearchComparator($comparator, $value, $datatype);
-			} else {
-				$value = ' vtiger_activity.eventstatus '.getAdvancedSearchComparator($comparator, $value, $datatype);
-			}
-		} elseif ($comparator == 'e' && (trim($value) == 'NULL' || trim($value) == '')) {
+		if ($comparator == 'e' && (trim($value) == 'NULL' || trim($value) == '')) {
 			$value = '('.$tablename.'.'.$fieldname.' IS NULL OR '.$tablename.'.'.$fieldname.' = \'\')';
 		} else {
 			if ($webserviceQL) {

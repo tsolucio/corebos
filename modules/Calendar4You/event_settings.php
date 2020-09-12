@@ -19,7 +19,7 @@ $t=Date('Ymd');
 $userDetails=getSharingUserName($current_user->id);
 $shareduser_ids = getSharedUserId($current_user->id);
 
-$c_mod_strings = return_module_language($current_language, 'Calendar');
+$c_mod_strings = return_module_language($current_language, 'cbCalendar');
 $users_mod_strings = return_module_language($current_language, 'Users');
 
 $save_google_sync = '0';

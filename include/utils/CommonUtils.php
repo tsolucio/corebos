@@ -1896,10 +1896,10 @@ function getQuickCreateModules() {
 	global $log, $adb;
 	$log->debug('> getQuickCreateModules');
 
-	$qc_query = "select distinct vtiger_tab.tablabel,vtiger_tab.name
+	$qc_query = 'select distinct vtiger_tab.tablabel,vtiger_tab.name
 		from vtiger_field
 		inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid 
-		where quickcreate in (0,2) and vtiger_tab.presence != 1 and vtiger_tab.name != 'Calendar'";
+		where quickcreate in (0,2) and vtiger_tab.presence != 1';
 
 	$result = $adb->pquery($qc_query, array());
 	$noofrows = $adb->num_rows($result);

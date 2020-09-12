@@ -714,7 +714,7 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 	//Checking for Default Org Sharing permission
 	if ($others_permission_id == UserPrivileges::SHARING_READONLY) {
 		if ($actionid == 1 || $actionid == 0) {
-			if ($module == 'Calendar') {
+			if ($module == 'cbCalendar') {
 				if ($recOwnType == 'Users') {
 					$permission = isCalendarPermittedBySharing($record_id);
 				} else {
@@ -777,20 +777,16 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 			$log->debug('< isPermitted');
 			return $permission;
 		} elseif ($actionid ==0 || $actionid ==1) {
-			if ($module == 'Calendar') {
-				$permission='no';
-			} else {
-				$wfs = new VTWorkflowManager($adb);
-				$racbr = $wfs->getRACRuleForRecord($module, $record_id);
-				if ($racbr) {
-					if ($actionid == 0 && !$racbr->hasDetailViewPermissionTo('create')) {
-						return 'no';
-					} elseif ($actionid == 1 && !$racbr->hasDetailViewPermissionTo('update')) {
-						return 'no';
-					}
+			$wfs = new VTWorkflowManager($adb);
+			$racbr = $wfs->getRACRuleForRecord($module, $record_id);
+			if ($racbr) {
+				if ($actionid == 0 && !$racbr->hasDetailViewPermissionTo('create')) {
+					return 'no';
+				} elseif ($actionid == 1 && !$racbr->hasDetailViewPermissionTo('update')) {
+					return 'no';
 				}
-				$permission = isReadWritePermittedBySharing($module, $tabid, $actionid, $record_id);
 			}
+			$permission = isReadWritePermittedBySharing($module, $tabid, $actionid, $record_id);
 			$log->debug('< isPermitted');
 			return $permission;
 		} elseif ($actionid ==2) {
@@ -1027,10 +1023,10 @@ function isAllowed_Outlook($module, $action, $user_id, $record_id) {
 	global $log;
 	$log->debug('> isAllowed_Outlook '.$module.','.$action.','.$user_id.','.$record_id);
 
-	$permission = "no";
-	if ($module == 'Users' || $module == 'Home' ||  $module == 'Settings' || $module == 'Calendar') {
+	$permission = 'no';
+	if ($module == 'Users' || $module == 'Home' || $module == 'Settings') {
 		//These modules do not have security
-		$permission = "yes";
+		$permission = 'yes';
 	} else {
 		global $current_user;
 		$tabid = getTabid($module);
@@ -3470,11 +3466,6 @@ function getSharingModuleList($eliminateModules = false) {
 
 	if (empty($eliminateModules)) {
 		$eliminateModules = array();
-	}
-
-	// Module that needs to be eliminated explicitly
-	if (!in_array('Calendar', $eliminateModules)) {
-		$eliminateModules[] = 'Calendar';
 	}
 
 	$query = "SELECT name FROM vtiger_tab WHERE presence=0 AND ownedby = 0 AND isentitytype = 1 AND name NOT IN('" . implode("','", $eliminateModules) . "')";

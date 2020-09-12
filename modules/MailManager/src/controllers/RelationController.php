@@ -314,7 +314,7 @@ class MailManager_RelationController extends MailManager_Controller {
 	* @return Array
 	*/
 	public function getCurrentUserMailManagerAllowedModules() {
-		$moduleListForCreateRecordFromMail = array('Contacts', 'Accounts', 'Leads', 'HelpDesk', 'Calendar','Potentials','Project','ProjectTask');
+		$moduleListForCreateRecordFromMail = array('Contacts', 'Accounts', 'Leads', 'HelpDesk', 'cbCalendar','Potentials','Project','ProjectTask');
 		foreach ($moduleListForCreateRecordFromMail as $module) {
 			if (MailManager::checkModuleWriteAccessForCurrentUser($module)) {
 				$mailManagerAllowedModules[] = $module;
@@ -328,7 +328,7 @@ class MailManager_RelationController extends MailManager_Controller {
 	* @return string
 	*/
 	public function linkToAvailableActions() {
-		$moduleListForLinkTo = array('Calendar','HelpDesk','ModComments','Emails','Potentials','Project','ProjectTask');
+		$moduleListForLinkTo = array('cbCalendar','HelpDesk','ModComments','Emails','Potentials','Project','ProjectTask');
 		foreach ($moduleListForLinkTo as $module) {
 			if (MailManager::checkModuleWriteAccessForCurrentUser($module)) {
 				$mailManagerAllowedModules[] = $module;

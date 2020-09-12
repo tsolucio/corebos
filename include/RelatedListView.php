@@ -74,10 +74,7 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 	$smarty->assign('IMAGE_PATH', $image_path);
 	$smarty->assign('MODULE', $relatedmodule);
 
-	// We do not have RelatedListView in Detail View mode of Calendar module. So need to skip it.
-	if ($module!= 'Calendar') {
-		$focus->initSortByField($relatedmodule);
-	}
+	$focus->initSortByField($relatedmodule);
 	// Append security parameter
 	if ($relatedmodule != 'Users') {
 		global $current_user;
@@ -137,11 +134,7 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 		$query .= ' ORDER BY '.$query_order_by.' '.$sorder;
 	}
 
-	if ($relatedmodule == 'Calendar') {
-		$mod_listquery = 'activity_listquery';
-	} else {
-		$mod_listquery = strtolower($relatedmodule).'_listquery';
-	}
+	$mod_listquery = strtolower($relatedmodule).'_listquery';
 	coreBOS_Session::set($mod_listquery, $query);
 
 	$url_qry ='&order_by='.$order_by.'&sorder='.$sorder;
@@ -149,7 +142,7 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 	if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, $module) || (boolean) $computeCount == true) {
 		// Retreiving the no of rows
 		list($specialPermissionWithDuplicateRows,$cached) = VTCacheUtils::lookupCachedInformation('SpecialPermissionWithDuplicateRows');
-		if (false && ($specialPermissionWithDuplicateRows || $relatedmodule == 'Calendar')) {
+		if (false && $specialPermissionWithDuplicateRows) {
 			// FIXME FIXME FIXME FIXME
 			// the FALSE above MUST be eliminated, we need to execute mkCountWithFullQuery for modified queries
 			// the problem is that related list queries are hardcoded and can (mostly do) repeat columns which is not supported as a
@@ -157,7 +150,6 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 			// This works on ListView because we use query generator that eliminates those repeated columns
 			// It is currently incorrect and will produce wrong count on related lists when special permissions are active
 			// FIXME FIXME FIXME FIXME
-			// for calendar (with multiple contacts for single activity) and special permissions, count will change
 			$count_result = $adb->query(mkCountWithFullQuery($query));
 		} else {
 			$count_result = $adb->query(mkCountQuery($query));
@@ -241,9 +233,9 @@ function getHistory($parentmodule, $query, $id) {
 
 	//Appending the security parameter
 	$userprivs = $current_user->getPrivileges();
-	$tab_id = getTabid('Calendar');
+	$tab_id = getTabid('cbCalendar');
 	if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing($tab_id)) {
-		$sec_parameter=getListViewSecurityParameter('Calendar');
+		$sec_parameter=getListViewSecurityParameter('cbCalendar');
 		$query .= ' '.$sec_parameter;
 	}
 	$query.= ' ORDER BY vtiger_activity.date_start DESC,vtiger_activity.time_start DESC';
@@ -285,7 +277,7 @@ function getHistory($parentmodule, $query, $id) {
 			$entries[] = '<a href="index.php?module=cbCalendar&action=DetailView&return_module='.$parentmodule.'&return_action=DetailView&record='.$row['activityid']
 				.'&activity_mode='.$activitymode.'&return_id='.vtlib_purify($_REQUEST['record']).'">'.$row['subject'].'</a></td>';
 
-			$parentname = getRelatedTo('Calendar', $result, $i-1);
+			$parentname = getRelatedTo('cbCalendar', $result, $i-1);
 			$entries[] = $parentname;
 
 			$date = new DateTimeField($row['date_start'].' '.$row['time_start']);

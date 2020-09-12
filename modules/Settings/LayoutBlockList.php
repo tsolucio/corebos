@@ -101,7 +101,7 @@ $smarty->assign('CFENTRIES', $cfentries);
 $rellistinfo = getRelatedListInfo($fld_module);
 $smarty->assign('RELATEDLIST', $rellistinfo);
 $pickListResult=getAllowedPicklistModules();
-$nonRelatableModules = array('PBXManager','SMSNotifier','cbupdater','GlobalVariable','Calendar','Emails','ModComments');
+$nonRelatableModules = array('PBXManager','SMSNotifier','cbupdater','GlobalVariable','Emails','ModComments');
 $smsRelatableModules = array('Accounts','Contacts','Leads');
 $entityrelmods=array();
 foreach ($pickListResult as $pValue) {

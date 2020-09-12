@@ -23,7 +23,7 @@ function modcomms_getModuleinfo() {
 	global $adb;
 	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
 	$allEntities = array();
-	$entityQuery = "SELECT tabid,name FROM vtiger_tab WHERE isentitytype=1 and name NOT IN ('Emails', 'Rss','Recyclebin','Calendar')";
+	$entityQuery = "SELECT tabid,name FROM vtiger_tab WHERE isentitytype=1 and name NOT IN ('Emails', 'Rss','Recyclebin')";
 	$result = $adb->pquery($entityQuery, array());
 	while ($result && $row = $adb->fetch_array($result)) {
 		$allEntities[$row['tabid']] = getTranslatedString($row['name'], $row['name']);

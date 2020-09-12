@@ -610,62 +610,27 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 						}
 						$value = $adb->query_result($list_result, $i, $column_name);
 					} else {
-						if ($module == 'Calendar') {
-							$act_id = $adb->query_result($list_result, $i, 'activityid');
-
-							$cal_sql = 'select activitytype from vtiger_activity where activityid=?';
-							$cal_res = $adb->pquery($cal_sql, array($act_id));
-							if ($adb->num_rows($cal_res)>=0) {
-								$activitytype = $adb->query_result($cal_res, 0, 'activitytype');
-							}
-						}
 						if (($module=='Emails' || $module=='HelpDesk' || $module=='Invoice' || $module=='Leads' || $module=='Contacts')
 							&& (($fieldname=='parent_id') || ($name=='Contact Name') || ($fieldname == 'firstname'))
 						) {
-							if ($module == 'Calendar') {
-								if ($fieldname == 'status') {
-									if ($activitytype == 'Task') {
-										$fieldname = 'taskstatus';
-									} else {
-										$fieldname = 'eventstatus';
-									}
+							if ($fieldname == 'parent_id') {
+								$value = getRelatedTo($module, $list_result, $i);
+							}
+							if ($name == 'Contact Name') {
+								$contact_id = $adb->query_result($list_result, $i, 'contactid');
+								$contact_name = getFullNameFromQResult($list_result, $i, 'Contacts');
+								$value = '';
+								//Added to get the contactname for activities custom view
+								if ($contact_id != '' && !empty($contact_name)) {
+									$contact_name = getContactName($contact_id);
 								}
-								if ($activitytype == 'Task') {
-									if (getFieldVisibilityPermission('Calendar', $current_user->id, $fieldname) == '0') {
-										$has_permission = 'yes';
-									} else {
-										$has_permission = 'no';
-									}
-								} else {
-									if (getFieldVisibilityPermission('Events', $current_user->id, $fieldname) == '0') {
-										$has_permission = 'yes';
-									} else {
-										$has_permission = 'no';
-									}
+								if (($contact_name != '') && ($contact_id !='NULL')) {
+									$value = $contact_name;
 								}
 							}
-							if ($module != 'Calendar' || ($module == 'Calendar' && $has_permission == 'yes')) {
-								if ($fieldname == 'parent_id') {
-									$value = getRelatedTo($module, $list_result, $i);
-								}
-								if ($name == 'Contact Name') {
-									$contact_id = $adb->query_result($list_result, $i, 'contactid');
-									$contact_name = getFullNameFromQResult($list_result, $i, 'Contacts');
-									$value = '';
-									//Added to get the contactname for activities custom view - t=2190
-									if ($contact_id != '' && !empty($contact_name)) {
-										$contact_name = getContactName($contact_id);
-									}
-									if (($contact_name != '') && ($contact_id !='NULL')) {
-										$value = $contact_name;
-									}
-								}
-								if ($fieldname == 'firstname') {
-									$first_name = textlength_check($adb->query_result($list_result, $i, 'firstname'));
-									$value = $first_name;
-								}
-							} else {
-								$value = '';
+							if ($fieldname == 'firstname') {
+								$first_name = textlength_check($adb->query_result($list_result, $i, 'firstname'));
+								$value = $first_name;
 							}
 						} elseif ($module=='Documents'
 							&& ($fieldname=='filelocationtype' || $fieldname=='filename' || $fieldname=='filesize' || $fieldname=='filestatus' || $fieldname=='filetype')

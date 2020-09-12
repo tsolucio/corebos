@@ -70,15 +70,14 @@ function getRelatedFieldsList($fieldid, $related_fields) {
 
 /**
  * function to get the module names
- * @return - all module names other than Calendar and Events
+ * @return - all module names other than Users
  */
 function moduleList() {
 	global $adb;
-	$sql = "select distinct vtiger_field.tabid,name
-		from vtiger_field
-		inner join vtiger_tab on vtiger_field.tabid=vtiger_tab.tabid
-		where name not in ('Calendar','Users')";
-	$result = $adb->pquery($sql, array ());
+	$result = $adb->pquery(
+		"select distinct vtiger_field.tabid,name from vtiger_field inner join vtiger_tab on vtiger_field.tabid=vtiger_tab.tabid where name != 'Users'",
+		array ()
+	);
 	$modulelist = array();
 	while ($moduleinfo = $adb->fetch_array($result)) {
 		$modulelist[$moduleinfo['name']] = getTranslatedString($moduleinfo['name'], $moduleinfo['name']);
