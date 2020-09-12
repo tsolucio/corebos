@@ -19,7 +19,7 @@ TASKActions
 *}
 
 <li id="{$TASKItemID}" class="slds-global-header__notification {if !$TASKItemRead}slds-global-header__notification_unread{/if}">
-<div class="slds-media slds-has-flexi-truncate slds-p-around_x-small">
+<div class="slds-media slds-has-flexi-truncate slds-p-around_xx-small">
 	<div class="slds-media__figure">
 		<span class="slds-icon_container slds-icon_container_circle slds-icon-action-description" title="{$TASKType}">
 			<svg class="slds-icon slds-icon_xx-small" aria-hidden="true">

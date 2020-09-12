@@ -175,7 +175,7 @@ function printToDoList($activities_reminder) {
 		$smarty->assign('TASKSubtitleColor', $ACTIVITY['cbcolor']);
 		$smarty->assign('TASKStatus', $ACTIVITY['cbdate'].' '.$ACTIVITY['cbtime']);
 		$actions = array();
-		$actions[getTranslatedString('LBL_VIEW')] = array(
+		$actions[getTranslatedString('LBL_VIEW', 'Settings')] = array(
 			'type' => 'link',
 			'action' => 'index.php?action=DetailView&module=cbCalendar&record='.$ACTIVITY['cbrecord'],
 		);

@@ -199,7 +199,7 @@
 								<span class="slds-assistive-text">{$APP.LBL_LAST_VIEWED}</span>
 							</button>
 							<button
-								class="slds-button slds-button_icon slds-global-actions__notifications slds-global-actions__item-action slds-global-actions__favorites-action slds-button_icon-border slds-button_last" title="1 new notifications"
+								class="slds-button slds-button_icon slds-global-actions__notifications slds-global-actions__item-action slds-global-actions__favorites-action slds-button_icon-border slds-button_last" title="{'LBL_NOTIFICATION'|@getTranslatedString:'Settings'}"
 								aria-live="assertive"
 								aria-atomic="true"
 								id="header_notification_button"
