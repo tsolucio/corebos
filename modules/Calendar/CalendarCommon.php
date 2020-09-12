@@ -82,7 +82,7 @@ function getSharingUserName($id) {
 	$assigned_user_id = $current_user->id;
 	$userprivs = $current_user->getPrivileges();
 	if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid('Calendar'))) {
-		$role_seq = implode($userprivs->getParentRoles(), "::");
+		$role_seq = implode('::', $userprivs->getParentRoles());
 		$query = "select id as id,user_name as user_name from vtiger_users where id=? and status='Active' union select vtiger_user2role.userid as id,vtiger_users.user_name as user_name from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like ? and status='Active' union select shareduserid as id,vtiger_users.user_name as user_name from vtiger_tmp_write_user_sharing_per inner join vtiger_users on vtiger_users.id=vtiger_tmp_write_user_sharing_per.shareduserid where status='Active' and vtiger_tmp_write_user_sharing_per.userid=? and vtiger_tmp_write_user_sharing_per.tabid=9";
 		$params = array($current_user->id, $role_seq."::%", $current_user->id);
 		if (!empty($assigned_user_id)) {

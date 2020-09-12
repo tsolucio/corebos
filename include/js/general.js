@@ -3221,6 +3221,25 @@ function standarizeFormatCurrencyValue(val) {
 	return val;
 }
 
+function panelViewToggle(panel) {
+	let p = document.getElementById(panel);
+	if (p.classList.contains('cbds-anim-slidein--right')) {
+		panelViewHide(p);
+	} else {
+		panelViewShow(p);
+	}
+}
+
+function panelViewShow(panel) {
+	panel.classList.add('cbds-anim-slidein--right');
+	panel.classList.remove('cbds-anim-slideout--right');
+}
+
+function panelViewHide(panel) {
+	panel.classList.add('cbds-anim-slideout--right');
+	panel.classList.remove('cbds-anim-slidein--right');
+}
+
 /******************************************************************************/
 /* Activity reminder Customization: Setup Callback */
 function ActivityReminderProgressIndicator(show) {
@@ -3236,7 +3255,7 @@ function ActivityReminderSetupCallback(cbmodule, cbrecord) {
 		ActivityReminderProgressIndicator(true);
 		jQuery.ajax({
 			method: 'POST',
-			url: 'index.php?module=Calendar&action=CalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax&cbmodule='+
+			url: 'index.php?module=cbCalendar&action=cbCalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax&cbmodule='+
 				encodeURIComponent(cbmodule) + '&cbrecord=' + encodeURIComponent(cbrecord)
 		}).done(function (response) {
 			document.getElementById('ActivityReminder_callbacksetupdiv').innerHTML=response;
@@ -3255,7 +3274,7 @@ function ActivityReminderSetupCallbackSave(form) {
 		ActivityReminderProgressIndicator(true);
 		jQuery.ajax({
 			method: 'POST',
-			url: 'index.php?module=Calendar&action=CalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax' +
+			url: 'index.php?module=cbCalendar&action=cbCalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax' +
 			'&cbaction=' + encodeURIComponent(cbaction) +
 			'&cbmodule='+ encodeURIComponent(cbmodule) +
 			'&cbrecord=' + encodeURIComponent(cbrecord) +
@@ -3277,7 +3296,7 @@ function ActivityReminderPostponeCallback(cbmodule, cbrecord, cbreminderid) {
 		ActivityReminderProgressIndicator(true);
 		jQuery.ajax({
 			method: 'POST',
-			url: 'index.php?module=Calendar&action=CalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax&cbaction=POSTPONE&cbmodule='+
+			url: 'index.php?module=cbCalendar&action=cbCalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax&cbaction=POSTPONE&cbmodule='+
 			encodeURIComponent(cbmodule) + '&cbrecord=' + encodeURIComponent(cbrecord) + '&cbreminderid=' + encodeURIComponent(cbreminderid)
 		}).done(function (response) {
 			ActivityReminderPostponeCallbackProcess(response);
@@ -3323,7 +3342,8 @@ var ActivityReminder_popup_onscreen = 2 * 1000; // Milli Seconds (should be less
 
 var ActivityReminder_callback_win_uniqueids = new Object();
 
-function ActivityReminderCallback() {
+function ActivityReminderCallback(clicked) {
+	var right_value = document.getElementById('cbds-notificationpanel').style.right;
 	if (typeof(jQuery) == 'undefined' || ActivityReminder_Deactivated == 1) {
 		return;
 	}
@@ -3331,16 +3351,73 @@ function ActivityReminderCallback() {
 		window.clearTimeout(ActivityReminder_regcallback_timer);
 		ActivityReminder_regcallback_timer = null;
 	}
-	jQuery.ajax({
-		method: 'POST',
-		url: 'index.php?module=Calendar&action=CalendarAjax&file=ActivityReminderCallbackAjax&ajax=true'
-	}).done(function (response) {
-		if (response=='Login') {
-			document.location.href='index.php?module=Users&action=Login';
-		} else {
-			ActivityReminderCallbackProcess(response);
-		}
-	});
+	if (clicked) {
+		panelViewToggle('cbds-notificationpanel');
+	} else {
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=cbCalendar&action=cbCalendarAjax&file=ActivityReminderCallbackAjax&ajax=true&clicked='+clicked
+		}).done(function (response) {
+			if (response=='Login') {
+				document.location.href='index.php?module=Users&action=Login';
+			} else {
+				var responsedata = trim(response);
+				var responsearray = JSON.parse(responsedata);
+				if (typeof(responsearray['template']) == 'undefined') {
+					if (typeof(responsearray['noTasks']) != 'undefined') {
+						//No tasks to show, all tasks finished
+						document.getElementById('todolist').innerHTML= responsearray['noTasks'] + responsearray['next_reminder_interval'];
+						//Show todolist if clicked
+						if (clicked && right_value != '0em') {
+							panelViewShow(document.getElementById('cbds-notificationpanel'));
+						}
+					} else {
+						document.getElementById('todolist').innerHTML= responsearray['next_reminder_interval'];
+					}
+				} else {
+					//print data list
+					document.getElementById('todolist').innerHTML= responsearray['template'] + responsearray['next_reminder_interval'];
+					if (responsearray['not_readed'] > 0) {
+						//new tasks to alert
+						document.getElementById('newEvents').play();
+						document.getElementById('header_notification_items').innerHTML = responsearray['not_readed'];
+						document.getElementById('header_notification_items').classList.add('slds-show-notification');
+						document.getElementById('header_notification_button').classList.add('slds-incoming-notification');
+						//Show todolist
+						if (right_value != '0em') {
+							document.getElementById('todolist').style.right = '0em';
+						}
+					} else {
+						//No new task to alert
+						document.getElementById('header_notification_items').innerHTML = '';
+						document.getElementById('header_notification_items').classList.remove('slds-show-notification');
+						document.getElementById('header_notification_button').classList.remove('slds-incoming-notification');
+						//Show todolist if clicked
+						if (clicked && right_value != '0em') {
+							panelViewShow(document.getElementById('cbds-notificationpanel'));
+						}
+					}
+				}
+				var ActivityReminder_Newdelay_response_node = '_vtiger_activityreminder_callback_interval_';
+				if (document.getElementById(ActivityReminder_Newdelay_response_node)) {
+					var ActivityReminder_Newdelay_response_value = document.getElementById(ActivityReminder_Newdelay_response_node).innerHTML;
+					if (ActivityReminder_Newdelay_response_value == 'None') {
+						if (ActivityReminder_timer) {
+							window.clearTimeout(ActivityReminder_timer);
+							ActivityReminder_timer = null;
+						}
+					} else {
+						ActivityReminder_Newdelay_response_value = parseInt(ActivityReminder_Newdelay_response_value);
+						if (ActivityReminder_Newdelay_response_value > 0) {
+							ActivityReminderRegisterCallback(ActivityReminder_Newdelay_response_value);
+						}
+					}
+					// We don't need the no any longer, it will be sent from server for next Popup
+					jQuery('#'+ActivityReminder_Newdelay_response_node).remove();
+				}
+			}
+		});
+	}
 }
 
 function ActivityReminderCallbackProcess(message) {

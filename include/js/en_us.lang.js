@@ -108,6 +108,8 @@ var alert_arr = {
 	'GREATER_OR_EQUALS':'greater or equal',
 	'DOES_NOT_START_WITH':'does not start with',
 	'DOES_NOT_END_WITH':'does not end with',
+	'SOUNDEX':'soundex',
+	'REGEXP':'regexp',
 	'Widget_Deleted_Sucessfully':'Widget deleted sucessfully',
 
 	'NO_SPECIAL_CHARS':'Special Characters are not allowed in Invoice String',

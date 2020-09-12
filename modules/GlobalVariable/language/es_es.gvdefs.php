@@ -111,6 +111,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Si se establece en 1, se mostrará una pila de llamadas antes del mensaje de error "Sorry! Attempt to access restricted file."',
 ),
+'Debug_Email_Send_To_Inbucket'=> array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Depuración',
+	'values' => '0 | 1',
+	'definition' => 'Si se establece en 1, enviará correo electrónico SIEMPRE a través de la configuración del servidor saliente, que debe establecerse en la configuración de inBucket',
+),
 'Accounts_BlockDuplicateName' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
@@ -1034,6 +1041,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => '0 | 1',
 	'definition' => 'Al hacer clic en un evento, abrirá la vista detallada del registro en lugar de la barra de herramientas de acciones.',
+),
+'Calendar_Notification_Sound' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Camino Fichero',
+	'category' => 'Aplicación',
+	'values' => 'camino al fichero de audio',
+	'definition' => 'Camino al fichero de audio que sonará al llegar un nuevo evento.',
 ),
 'CronTasks_cronWatcher_mailto' => array(
 	'status' => 'Implementada',

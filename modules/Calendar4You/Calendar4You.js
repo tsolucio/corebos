@@ -8,7 +8,7 @@
 
 // Get User Default calendar variables
 var Calendar_Default_Reminder_Minutes = 0; // false
-GlobalVariable_getVariable('Calendar_Default_Reminder_Minutes', 0, 'Calendar', gVTUserID).then(function (response) {
+GlobalVariable_getVariable('Calendar_Default_Reminder_Minutes', 0, 'cbCalendar', gVTUserID).then(function (response) {
 	var obj = JSON.parse(response);
 	Calendar_Default_Reminder_Minutes = obj.Calendar_Default_Reminder_Minutes;
 }, function (error) {
