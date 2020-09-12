@@ -2345,7 +2345,7 @@ precacheAndRoute([{
   "revision": "1f8c673c8f76832febaeeac88a5f4353"
 }, {
   "url": "modules/Calendar4You/Calendar4You.js",
-  "revision": "b8e5fac4ab1672e1c0bb925f73f17f0f"
+  "revision": "a81f1d53d3b6efa561129db97f106d44"
 }, {
   "url": "modules/Calendar4You/Calendar4You.png",
   "revision": "af2cca5b0d51fbfc4248fee073bb75eb"
@@ -9314,13 +9314,13 @@ precacheAndRoute([{
   "revision": "db90975f5c545839aeedd67e83ac9ab2"
 }, {
   "url": "include/js/general.js",
-  "revision": "d0a12cc5be830a9dfdaebfb0510ad082"
+  "revision": "57988038d7819c61bca8a357c3a50632"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "e4cc7bb9fdef5d2b8a887122f48cfc41"
 }, {
   "url": "include/js/Inventory.js",
-  "revision": "f2288bfb1a05a8474ceca78d53baca12"
+  "revision": "de3bdf307757dfa6ac12102e034b1a83"
 }, {
   "url": "include/js/it_it.lang.js",
   "revision": "1143d8970a3ae5a0a80d8352b09e19a2"
@@ -9383,7 +9383,7 @@ precacheAndRoute([{
   "revision": "008f3e9768bd2d226e65ea69999c9f14"
 }, {
   "url": "include/js/vtlib.js",
-  "revision": "c888ad53fc3f2e63e773fb00e3fa5cdd"
+  "revision": "944544d95497d32e53627230b32492fa"
 }, {
   "url": "include/components/checkboxrenderer.js",
   "revision": "dff2237c054565d7efe12c59bb02e590"
@@ -9506,7 +9506,7 @@ precacheAndRoute([{
   "revision": "dd436dfb50a74136f2d13273daabacde"
 }, {
   "url": "modules/com_vtiger_workflow/resources/emailtaskscript.js",
-  "revision": "7b030711073308450f8902923523de06"
+  "revision": "27565d1c7498be55fb65276f1a2a302a"
 }, {
   "url": "modules/com_vtiger_workflow/resources/entitymethodtask.js",
   "revision": "43155535cd6da302c6ad1c34c077c642"
@@ -9560,7 +9560,7 @@ precacheAndRoute([{
   "revision": "fab39532561524488d757c60df5fedd7"
 }, {
   "url": "modules/com_vtiger_workflow/resources/whatsappworkflowtaskscript.js",
-  "revision": "83300b809c54b712e7ce3c8e3bf7be64"
+  "revision": "03215231318fb05a428b2a80b382bb45"
 }, {
   "url": "modules/com_vtiger_workflow/resources/workflowlistscript.js",
   "revision": "c772b9cea1354ccf15f30bea58aa0fc2"
@@ -9638,7 +9638,7 @@ precacheAndRoute([{
   "revision": "9ed4669f524bec38319be63a2ee4ba26"
 }, {
   "url": "modules/MailManager/MailManager.js",
-  "revision": "ebb8b80b7ee9494a39ca3dfb57848470"
+  "revision": "54d4baf2233a13f8e655e3dafa69dba9"
 }, {
   "url": "modules/MailManager/MailManager.png",
   "revision": "1c045d808355b6ed581cd4971f3436f9"
@@ -9782,7 +9782,7 @@ precacheAndRoute([{
   "revision": "873d28313b837a168de03db9649567cf"
 }, {
   "url": "modules/Products/Productsslide.js",
-  "revision": "09bb586ac917dcb7ac9e67c36d20c0da"
+  "revision": "721bd3d5367129defea7f6bd1bb8eee3"
 }, {
   "url": "modules/Products/multifile.js",
   "revision": "2469a9d75b05798558ca746bff88ef36"
@@ -9809,7 +9809,7 @@ precacheAndRoute([{
   "revision": "69636c3bb0f5569277b10c98016af69a"
 }, {
   "url": "modules/Emails/Emails.js",
-  "revision": "932c0c124d59679432a73c1c96a15bbd"
+  "revision": "e6b32e45cd71456812dd2779e388f97e"
 }, {
   "url": "modules/Rss/Rss.js",
   "revision": "9e93cf2f8dddbea42be801f31e1f73f3"
@@ -9836,7 +9836,7 @@ precacheAndRoute([{
   "revision": "c36c43d8af1b7bdc134c6b5ab8ca3aa3"
 }, {
   "url": "modules/cbCalendar/cbCalendar.js",
-  "revision": "e383c1785117f72a3d803d04229874eb"
+  "revision": "963d1c00b77948ab883373732ad89a8e"
 }, {
   "url": "modules/cbQuestion/cbQuestion.js",
   "revision": "df1beb66383c404ca19595bfede77a1f"
@@ -9890,16 +9890,16 @@ precacheAndRoute([{
   "revision": "c240060c1b952bba5d36d4a506fa0e6e"
 }, {
   "url": "modules/Leads/Leads.js",
-  "revision": "b2e3521002881fd060f5435d35228e73"
+  "revision": "c5db71d972b07b46dd4b9e24a0f0c92a"
 }, {
   "url": "modules/WSAPP/WSAPP.js",
   "revision": "36b3093ded85fbdb78336ed100dae8ac"
 }, {
   "url": "modules/Accounts/Accounts.js",
-  "revision": "30d1fe6fb85db01cd7a3661ab4e5ed60"
+  "revision": "f60fafaea0f0957ec2535a531828e18c"
 }, {
   "url": "modules/cbMap/cbMap.js",
-  "revision": "ede7f6180a6de61909d602b3cd3ba5a0"
+  "revision": "ac4053b733101a16e9ba2a83b0bd7f5a"
 }, {
   "url": "modules/cbMap/language/de_de.js",
   "revision": "1b9a44052d13e3c95c43264a510eba45"
@@ -10013,13 +10013,13 @@ precacheAndRoute([{
   "revision": "2bc5785bbc8662d43972828563d8e11a"
 }, {
   "url": "modules/Contacts/Contacts.js",
-  "revision": "654a202f48a017f0ee0f64283c3e38ca"
+  "revision": "78c1c0ca28f2b99fe8cb695c16eb560b"
 }, {
   "url": "modules/Dashboard/Dashboard.js",
   "revision": "8ab2b632de69afd4fefcd5daccab5af6"
 }, {
   "url": "modules/Services/Services.js",
-  "revision": "6593d0d3ae257fcfcda5fe7281bfbdfd"
+  "revision": "9818216cac31218ab795b9a13eb157f3"
 }, {
   "url": "modules/Vendors/Vendors.js",
   "revision": "29077a91b5317da8237274d0436bbc73"
@@ -10046,7 +10046,7 @@ precacheAndRoute([{
   "revision": "65682db92a471ba46f12737f6f6b3e4d"
 }, {
   "url": "modules/Reports/Reports.js",
-  "revision": "d1fc2fc832501008bf2e3f9afab8313a"
+  "revision": "43d82ff27677848d81724ee74642c05a"
 }, {
   "url": "modules/Reports/ReportsSteps.js",
   "revision": "dac7c3f4b013798df0875b1450e27bc1"
