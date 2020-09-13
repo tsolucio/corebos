@@ -97,7 +97,6 @@ function get_its_mini_calendar(&$cal) {
 				$dy = substr('0' . $cal['slice']->start_time->day, -2);
 				$minical .= "<td scope='row' style='text-align:center'><a href='javascript:void(0);' onclick='return changeCalendarWeekDate(\"".$cal['slice']->start_time->year.'","'.$mt.'","'.$dy."\");'>"
 					.$cal['slice']->start_time->week.'</td>';
-				//index.php?module=Calendar&action=index&view=week".$cal['slice']->start_time->get_date_str()."&parenttab=".$category
 			}
 
 			//To differentiate day having events from other days
@@ -119,7 +118,6 @@ function get_its_mini_calendar(&$cal) {
 				$mt = substr('0' . $cal['slice']->start_time->month, -2);
 				$dy = substr('0' . $cal['slice']->start_time->day, -2);
 				$minical .= "<a href='javascript:void(0);' onClick='return changeCalendarDayDate(\"".$cal['slice']->start_time->year.'","'.$mt.'","'.$dy."\");'>";
-				//$minical .= "<a href='index.php?module=Calendar&action=index&view=".$cal['slice']->getView()."".$cal['slice']->start_time->get_date_str()."&parenttab=".$category."'>BBBBBB";
 				$minical .= $cal['slice']->start_time->get_Date()."</a></a>";
 			} else {
 				$minical .= "<td style='text-align:center'></td>";

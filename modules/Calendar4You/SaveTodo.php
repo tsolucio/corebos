@@ -16,11 +16,7 @@ global $mod_strings, $adb;
 
 $local_log = LoggerManager::getLogger('index');
 $focus = new Activity();
-$activity_mode = vtlib_purify($_REQUEST['activity_mode']);
-if ($activity_mode == 'Task') {
-	$tab_type = 'Calendar';
-	$focus->column_fields['activitytype'] = 'Task';
-}
+$tab_type = 'cbCalendar';
 
 if (isset($_REQUEST['record'])) {
 	$focus->id = $_REQUEST['record'];

@@ -872,11 +872,6 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 				$varreturnset = $returnset;
 			}
 
-			if ($module == 'cbCalendar') {
-				$actvity_type = $adb->query_result($list_result, $i, 'activitytype');
-				$varreturnset .= '&activity_mode=' . ($actvity_type == 'Task' ? 'Task' : 'Call');
-			}
-
 			//Added for Actions ie., edit and delete links in listview
 			$links_info = '';
 			if (!(is_array($selectedfields) && $selectedfields != '')) {
@@ -1560,20 +1555,15 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$focus->record_id = isset($_REQUEST['recordid']) ? vtlib_purify($_REQUEST['recordid']) : 0;
 					$popupMode = isset($_REQUEST['popupmode']) ? vtlib_purify($_REQUEST['popupmode']) : '';
 					$callBack = isset($_REQUEST['callback']) ? vtlib_purify($_REQUEST['callback']) : '';
-					if ($_REQUEST['return_module'] == 'Calendar') {
-						$count = counterValue();
-						$value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" id="calendarCont' . $entity_id . '" onclick=\'add_data_to_relatedlist_incal("' . $entity_id . '","' . decode_html($slashes_temp_val) . '");\'id = ' . $count . '>' . textlength_check($field_valEncoded) . '</a>';
+					$count = counterValue();
+					if (empty($callBack)) {
+						$value = '<a style="cursor:pointer;" onclick=\'add_data_to_relatedlist("' . $entity_id . '","' . $focus->record_id . '","' . $module . '","' . $popupMode . '");\'>' . textlength_check($field_valEncoded) . '</a>';
 					} else {
-						$count = counterValue();
-						if (empty($callBack)) {
-							$value = '<a style="cursor:pointer;" onclick=\'add_data_to_relatedlist("' . $entity_id . '","' . $focus->record_id . '","' . $module . '","' . $popupMode . '");\'>' . textlength_check($field_valEncoded) . '</a>';
-						} else {
-							$value = '<a style="cursor:pointer;" onclick=\'add_data_to_relatedlist("' . $entity_id . '","' . $focus->record_id . '","' . $module . '","' . $popupMode . '",' . $callBack . ');\'>' . textlength_check($field_valEncoded) . '</a>';
-						}
-						if ($module === 'Documents' && $_REQUEST['return_module'] === 'Emails') {
-							$attachment = $adb->query_result($list_result, $list_result_count, 'filename');
-							$value .= "<input type='hidden' id='document_attachment_{$entity_id}' value='{$attachment}'>";
-						}
+						$value = '<a style="cursor:pointer;" onclick=\'add_data_to_relatedlist("' . $entity_id . '","' . $focus->record_id . '","' . $module . '","' . $popupMode . '",' . $callBack . ');\'>' . textlength_check($field_valEncoded) . '</a>';
+					}
+					if ($module === 'Documents' && $_REQUEST['return_module'] === 'Emails') {
+						$attachment = $adb->query_result($list_result, $list_result_count, 'filename');
+						$value .= "<input type='hidden' id='document_attachment_{$entity_id}' value='{$attachment}'>";
 					}
 				} elseif ($popuptype == 'inventory_prod') {
 					$row_id = $_REQUEST['curr_row'];

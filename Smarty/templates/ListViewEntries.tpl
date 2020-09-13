@@ -155,18 +155,13 @@
 						</tr>
 						<tr>
 							<td class="small" align="left" nowrap="nowrap">
-								{if $MODULE neq 'Calendar'}
-									<b><a class="nef_action" href="index.php?module={$MODULE}&action=EditView&return_action=DetailView&parenttab={$CATEGORY}">{$APP.LBL_CREATE} {$APP.$vowel_conf}
-										{$MODULE_CREATE|@getTranslatedString:$MODULE}
-										{if $CHECK.Import eq 'yes' && $MODULE neq 'Documents'}
-										</a></b><br>
-										<b><a class="nef_action" href="index.php?module={$MODULE}&action=Import&step=1&return_module={$MODULE}&return_action=ListView&parenttab={$CATEGORY}">{$APP.LBL_IMPORT} {$MODULE|@getTranslatedString:$MODULE}
-										{/if}
+								<b><a class="nef_action" href="index.php?module={$MODULE}&action=EditView&return_action=DetailView&parenttab={$CATEGORY}">{$APP.LBL_CREATE} {$APP.$vowel_conf}
+									{$MODULE_CREATE|@getTranslatedString:$MODULE}
+									{if $CHECK.Import eq 'yes' && $MODULE neq 'Documents'}
 									</a></b><br>
-								{else}
-									<b><a class="nef_action" href="index.php?module=Calendar4You&amp;action=EventEditView&amp;return_module=Calendar4You&amp;activity_mode=Events&amp;return_action=DetailView&amp;parenttab={$CATEGORY}">{$APP.LBL_CREATE} {$APP.LBL_AN} {$APP.Event}</a></b><br>
-									<b><a class="nef_action" href="index.php?module=Calendar4You&amp;action=EventEditView&amp;return_module=Calendar4You&amp;activity_mode=Task&amp;return_action=DetailView&amp;parenttab={$CATEGORY}">{$APP.LBL_CREATE} {$APP.LBL_A} {$APP.Task}</a></b>
-								{/if}
+									<b><a class="nef_action" href="index.php?module={$MODULE}&action=Import&step=1&return_module={$MODULE}&return_action=ListView&parenttab={$CATEGORY}">{$APP.LBL_IMPORT} {$MODULE|@getTranslatedString:$MODULE}
+									{/if}
+								</a></b><br>
 							</td>
 						</tr>
 						</table>

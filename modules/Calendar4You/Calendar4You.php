@@ -301,25 +301,12 @@ class Calendar4You extends CRMEntity {
 
 	public function actualizeDocRel() {
 		global $adb;
-		$e_tabid = getTabid('Events');
 		$c_tabid = getTabid('Calendar4You');
 		$d_tabid = getTabid('Documents');
 
 		$s_sql = 'SELECT relation_id FROM vtiger_relatedlists WHERE tabid = ? AND related_tabid = ? AND name = ? AND label = ?';
 		$d_sql = 'DELETE FROM vtiger_relatedlists WHERE tabid = ? AND related_tabid = ? AND name = ? AND label = ?';
 		$i_sql = 'INSERT INTO vtiger_relatedlists (relation_id,tabid,related_tabid,name,sequence,label,presence,actions) VALUES (?,?,?,?,?,?,?,?)';
-
-		$result1 = $adb->pquery($s_sql, array($e_tabid,$d_tabid,'get_attachments','Documents'));
-		$num_rows1 = $adb->num_rows($result1);
-
-		if ($num_rows1 != 1) {
-			if ($num_rows1 > 1) {
-				$adb->pquery($d_sql, array($e_tabid,$d_tabid,'get_attachments','Documents'));
-			}
-
-			$relation_id1 = $adb->getUniqueID('vtiger_relatedlists');
-			$adb->pquery($i_sql, array($relation_id1,$e_tabid,$d_tabid,'get_attachments','1','Documents','0','ADD,SELECT'));
-		}
 
 		$result2 = $adb->pquery($s_sql, array($c_tabid,$d_tabid,'get_attachments','Documents'));
 		$num_rows2 = $adb->num_rows($result2);
@@ -585,8 +572,6 @@ class Calendar4You extends CRMEntity {
 		require_once "modules/$related_module/$related_module.php";
 		$other = new $related_module();
 
-		$parenttab = getParentTab();
-
 		$returnset = '&return_module='.$this_module.'&return_action=DetailView&activity_mode=Events&return_id='.$id;
 
 		$search_string = '';
@@ -599,7 +584,7 @@ class Calendar4You extends CRMEntity {
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module)
 					."' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
-					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab$search_string','test',"
+					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id$search_string','test',"
 					."cbPopupWindowSettings);\" value='".getTranslatedString('LBL_SELECT').' '
 					.getTranslatedString($related_module, $related_module)."'>&nbsp;";
 			}
