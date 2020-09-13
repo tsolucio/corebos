@@ -150,6 +150,7 @@ $mod_strings = array (
 	'LBL_MAILMANAGER_ADD_Accounts' => 'Adic. conta',
 	'LBL_MAILMANAGER_ADD_Leads' => 'Adic. lead',
 	'LBL_MAILMANAGER_ADD_Calendar' => 'Adic. compromisso',
+	'LBL_MAILMANAGER_ADD_cbCalendar' => 'Adic. compromisso',
 	'LBL_MAILMANAGER_ADD_HelpDesk' => 'Adic. ticket',
 	'LBL_MAILMANAGER_ADD_Emails' => 'Anexar e-Mail',
 	'LBL_MAILMANAGER_ADD_ModComments' => 'Adic. comentário',

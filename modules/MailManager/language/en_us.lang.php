@@ -154,6 +154,7 @@ $mod_strings = array (
 	'LBL_MAILMANAGER_ADD_Accounts' => 'Add Organization',
 	'LBL_MAILMANAGER_ADD_Leads' => 'Add Lead',
 	'LBL_MAILMANAGER_ADD_Calendar' => 'Add ToDo',
+	'LBL_MAILMANAGER_ADD_cbCalendar' => 'Add ToDo',
 	'LBL_MAILMANAGER_ADD_HelpDesk' => 'Add Ticket',
 	'LBL_MAILMANAGER_ADD_Emails' => 'Attach Email',
 	'LBL_MAILMANAGER_ADD_ModComments' => 'Add Comment',
