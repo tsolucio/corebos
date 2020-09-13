@@ -2999,7 +2999,7 @@ function getRelCheckquery($currentmodule, $returnmodule, $recordid) {
 		$params[] = $recordid;
 		$field = $selectfield = 'contactid';
 		$table = 'vtiger_contactdetails';
-	} elseif ($currentmodule == 'Contacts' && $returnmodule == 'Calendar') {
+	} elseif ($currentmodule == 'Contacts' && $returnmodule == 'cbCalendar') {
 		$reltable = 'vtiger_cntactivityrel';
 		$condition = 'WHERE activityid = ?';
 		$params[] = $recordid;
@@ -3011,7 +3011,7 @@ function getRelCheckquery($currentmodule, $returnmodule, $recordid) {
 		$params[] = $recordid;
 		$field = $selectfield = 'leadid';
 		$table = 'vtiger_leaddetails';
-	} elseif ($currentmodule == 'Users' && $returnmodule == 'Calendar') {
+	} elseif ($currentmodule == 'Users' && $returnmodule == 'cbCalendar') {
 		$reltable = 'vtiger_salesmanactivityrel';
 		$condition = 'WHERE activityid = ?';
 		$params[] = $recordid;

@@ -511,7 +511,7 @@ function getYearViewLayout(&$cal) {
 						}
 					}
 					if ($_1stmonth == $_2ndmonth) {
-						$yearview_layout .= '<a href="index.php?module=Calendar&action=index&view=day&hour=0&day='.$date.'&month='.$month.'&year='.$_1styear.'">'.$date;
+						$yearview_layout .= '<a href="index.php?module=cbCalendar&action=index&view=day&hour=0&day='.$date.'&month='.$month.'&year='.$_1styear.'">'.$date;
 					}
 					$yearview_layout .= '</a></td>';
 					$cnt++;
@@ -1082,7 +1082,7 @@ function getTodoList(&$calendar, $start_date, $end_date, $info = '') {
 		LEFT JOIN vtiger_cntactivityrel ON vtiger_cntactivityrel.activityid = vtiger_activity.activityid
 		LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 		LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
-	$query .= getNonAdminAccessControlQuery('Calendar', $current_user);
+	$query .= getNonAdminAccessControlQuery('cbCalendar', $current_user);
 	$query .= "WHERE vtiger_crmentity.deleted = 0 AND vtiger_activity.activitytype = 'Task'".
 		" AND ((CAST(CONCAT(date_start,' ',time_start) AS DATETIME) >= ? AND CAST(CONCAT(date_start,' ',time_start) AS DATETIME) <= ?)
 				OR	(CAST(CONCAT(due_date,' ',time_end) AS DATETIME) >= ? AND CAST(CONCAT(due_date,' ',time_end) AS DATETIME) <= ? )
@@ -1315,7 +1315,7 @@ function constructEventListView(&$cal, $entry_list, $navigation_array = '') {
 	$list_view .="<table style='background-color: rgb(204, 204, 204);' class='small' align='center' border='0' cellpadding='5' cellspacing='1' width='98%'><tr>";
 	$header_rows = count($header);
 
-	$navigationOutput = getTableHeaderSimpleNavigation($navigation_array, '', "Calendar", "index");
+	$navigationOutput = getTableHeaderSimpleNavigation($navigation_array, '', 'cbCalendar', 'index');
 
 	if ($navigationOutput != '') {
 		$list_view .= "<tr width=100% bgcolor=white><td align=center colspan=$header_rows>";
@@ -1436,7 +1436,7 @@ function constructTodoListView($todo_list, $cal, $subtab, $navigation_array = ''
 			'4'=>$mod_strings['LBL_TODO']
 		);
 		$header_width = array('0'=>'5%','1'=>'10%','2'=>'10%','3'=>'38%',);
-		if (getFieldVisibilityPermission('Calendar', $current_user->id, 'taskstatus') == '0') {
+		if (getFieldVisibilityPermission('cbCalendar', $current_user->id, 'taskstatus') == '0') {
 			$header[] = $mod_strings['LBL_STATUS'];
 			$header_width[] = '10%';
 		}
@@ -1463,7 +1463,7 @@ function constructTodoListView($todo_list, $cal, $subtab, $navigation_array = ''
 				'3'=>'10%',
 				'4'=>'28%'
 			);
-			if (getFieldVisibilityPermission('Calendar', $current_user->id, 'taskstatus') == '0') {
+			if (getFieldVisibilityPermission('cbCalendar', $current_user->id, 'taskstatus') == '0') {
 				$header[] = $mod_strings['LBL_STATUS'];
 				$header_width[] = '10%';
 			}
@@ -1526,7 +1526,7 @@ function constructTodoListView($todo_list, $cal, $subtab, $navigation_array = ''
 		</table>
 		<br><table style='background-color: rgb(204, 204, 204);' class='small' align='center' border='0' cellpadding='5' cellspacing='1' width='98%'>";
 	$header_rows = count($header);
-	$navigationOutput = getTableHeaderSimpleNavigation($navigation_array, '', "Calendar", "index");
+	$navigationOutput = getTableHeaderSimpleNavigation($navigation_array, '', 'cbCalendar', 'index');
 
 	if ($navigationOutput != '') {
 		$list_view .= "<tr width=100% bgcolor=white><td align=center colspan=$header_rows>";

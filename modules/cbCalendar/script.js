@@ -215,7 +215,7 @@ function updateStatus(record, status, view, hour, day, month, year, type) {
 		var OptionData = document.getElementById('view_Option').options[document.getElementById('view_Option').selectedIndex].value;
 		jQuery.ajax({
 			method: 'POST',
-			url: 'index.php?module=Calendar&action=ActivityAjax&record=' + record + '&' + status + '&view=' + view + '&hour=' + hour + '&day=' + day + '&month=' + month + '&year=' + year + '&type=change_status&viewOption=' + OptionData + '&subtab=event&ajax=true'
+			url: 'index.php?module=cbCalendar&action=ActivityAjax&record=' + record + '&' + status + '&view=' + view + '&hour=' + hour + '&day=' + day + '&month=' + month + '&year=' + year + '&type=change_status&viewOption=' + OptionData + '&subtab=event&ajax=true'
 		}).done(function (response) {
 			var result = response.split('####');
 			if (OptionData == 'listview') {
@@ -235,7 +235,7 @@ function updateStatus(record, status, view, hour, day, month, year, type) {
 	if (type == 'todo') {
 		jQuery.ajax({
 			method: 'POST',
-			url: 'index.php?module=Calendar&action=ActivityAjax&record=' + record + '&' + status + '&view=' + view + '&hour=' + hour + '&day=' + day + '&month=' + month + '&year=' + year + '&type=change_status&subtab=todo&ajax=true'
+			url: 'index.php?module=cbCalendar&action=ActivityAjax&record=' + record + '&' + status + '&view=' + view + '&hour=' + hour + '&day=' + day + '&month=' + month + '&year=' + year + '&type=change_status&subtab=todo&ajax=true'
 		}).done(function (response) {
 			var result = response.split('####');
 			document.getElementById('total_activities').innerHTML = result[1];
@@ -293,7 +293,7 @@ function getcalAction(obj, Lay, id, view, hour, dateVal, type) {
 	}
 
 	if (postpone) {
-		postpone.href='index.php?module=Calendar&action=EditView&record='+id+'&return_action=index&activity_mode='+activity_mode+'&view='+view+'&hour='+hour+'&day='+day+'&month='+month+'&year='+year+'&viewOption='+OptionData+'&subtab='+type+'&maintab=Calendar';
+		postpone.href='index.php?module=cbCalendar&action=EditView&record='+id+'&return_action=index&activity_mode='+activity_mode+'&view='+view+'&hour='+hour+'&day='+day+'&month='+month+'&year='+year+'&viewOption='+OptionData+'&subtab='+type+'&maintab=Calendar';
 	}
 
 	if (actdelete) {
@@ -314,7 +314,7 @@ function delActivity(id, view, hour, day, month, year, subtab) {
 		var OptionData = document.getElementById('view_Option').options[document.getElementById('view_Option').selectedIndex].value;
 		jQuery.ajax({
 			method: 'POST',
-			url: 'index.php?module=Users&action=massdelete&return_module=Calendar&return_action=ActivityAjax&idlist=' + id + '&view=' + view + '&hour=' + hour + '&day=' + day + '&month=' + month + '&year=' + year + '&type=activity_delete&viewOption=' + OptionData + '&subtab=event&ajax=true&onlyforuser=' + encodeURIComponent(onlyforuser)
+			url: 'index.php?module=Users&action=massdelete&return_module=cbCalendar&return_action=ActivityAjax&idlist=' + id + '&view=' + view + '&hour=' + hour + '&day=' + day + '&month=' + month + '&year=' + year + '&type=activity_delete&viewOption=' + OptionData + '&subtab=event&ajax=true&onlyforuser=' + encodeURIComponent(onlyforuser)
 		}).done(function (response) {
 			var result = response.split('####');
 			if (OptionData == 'listview') {
@@ -330,7 +330,7 @@ function delActivity(id, view, hour, day, month, year, subtab) {
 	if (subtab == 'todo') {
 		jQuery.ajax({
 			method: 'POST',
-			url: 'index.php?module=Users&action=massdelete&return_module=Calendar&return_action=ActivityAjax&idlist=' + id + '&view=' + view + '&hour=' + hour + '&day=' + day + '&month=' + month + '&year=' + year + '&type=activity_delete&subtab=todo&ajax=true'
+			url: 'index.php?module=Users&action=massdelete&return_module=cbCalendar&return_action=ActivityAjax&idlist=' + id + '&view=' + view + '&hour=' + hour + '&day=' + day + '&month=' + month + '&year=' + year + '&type=activity_delete&subtab=todo&ajax=true'
 		}).done(function (response) {
 			var result = response.split('####');
 			document.getElementById('total_activities').innerHTML = result[1];
