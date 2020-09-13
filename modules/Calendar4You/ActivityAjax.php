@@ -11,7 +11,7 @@ global $theme,$mod_strings,$current_language,$adb,$currentModule,$current_user,$
 $theme_path = 'themes/'.$theme.'/';
 $image_path = $theme_path.'images/';
 
-require_once 'modules/Calendar/calendarLayout.php';
+require_once 'modules/cbCalendar/calendarLayout.php';
 require_once 'modules/Calendar4You/CalendarUtils.php';
 require_once 'include/logging.php';
 require_once 'include/utils/utils.php';
