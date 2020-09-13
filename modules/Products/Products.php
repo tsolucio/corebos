@@ -1310,7 +1310,7 @@ class Products extends CRMEntity {
 			return;
 		}
 
-		if ($return_module == 'Calendar') {
+		if ($return_module == 'cbCalendar') {
 			$sql = 'DELETE FROM vtiger_seactivityrel WHERE crmid = ? AND activityid = ?';
 			$this->db->pquery($sql, array($id, $return_id));
 		} elseif ($return_module == 'Leads' || $return_module == 'Accounts' || $return_module == 'Contacts' || $return_module == 'Potentials') {
