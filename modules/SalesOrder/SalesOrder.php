@@ -361,7 +361,6 @@ class SalesOrder extends CRMEntity {
 	 */
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
-			'Calendar' =>array('vtiger_seactivityrel'=>array('crmid','activityid'),'vtiger_salesorder'=>'salesorderid'),
 			'Invoice' =>array('vtiger_invoice'=>array('salesorderid','invoiceid'),'vtiger_salesorder'=>'salesorderid'),
 			'Quotes' =>array('vtiger_quotes'=>array('salesorderid','quoteid')),
 			'Potentials' =>array('vtiger_salesorder'=>array('salesorderid','potentialid')),

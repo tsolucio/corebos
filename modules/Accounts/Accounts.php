@@ -805,7 +805,6 @@ class Accounts extends CRMEntity {
 			'Quotes' => array('vtiger_quotes'=>array('accountid','quoteid'),'vtiger_account'=>'accountid'),
 			'SalesOrder' => array('vtiger_salesorder'=>array('accountid','salesorderid'),'vtiger_account'=>'accountid'),
 			'Invoice' => array('vtiger_invoice'=>array('accountid','invoiceid'),'vtiger_account'=>'accountid'),
-			'Calendar' => array('vtiger_seactivityrel'=>array('crmid','activityid'),'vtiger_account'=>'accountid'),
 			'HelpDesk' => array('vtiger_troubletickets'=>array('parent_id','ticketid'),'vtiger_account'=>'accountid'),
 			'Products' => array('vtiger_seproductsrel'=>array('crmid','productid'),'vtiger_account'=>'accountid'),
 			'Documents' => array('vtiger_senotesrel'=>array('crmid','notesid'),'vtiger_account'=>'accountid'),

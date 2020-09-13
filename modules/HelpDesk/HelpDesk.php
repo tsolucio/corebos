@@ -593,7 +593,6 @@ class HelpDesk extends CRMEntity {
 	 */
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
-			'Calendar' => array('vtiger_seactivityrel'=>array('crmid','activityid'),'vtiger_troubletickets'=>'ticketid'),
 			'Documents' => array('vtiger_senotesrel'=>array('crmid','notesid'),'vtiger_troubletickets'=>'ticketid'),
 			'Products' => array('vtiger_troubletickets'=>array('ticketid','product_id')),
 			'Services' => array('vtiger_crmentityrel'=>array('crmid','relcrmid'),'vtiger_troubletickets'=>'ticketid'),
