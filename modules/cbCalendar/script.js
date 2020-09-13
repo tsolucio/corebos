@@ -209,28 +209,6 @@ function fnShowEvent() {
 function fnShowButton() {
 	var tagName = document.getElementById('addButtonDropDown').style.display= 'block';
 }
-function getMiniCal(url) {
-	if (url == undefined) {
-		url = 'module=Calendar&action=ActivityAjax&type=minical&ajax=true';
-	} else {
-		url = 'module=Calendar&action=ActivityAjax&'+url+'&type=minical&ajax=true';
-	}
-	jQuery.ajax({
-		method: 'POST',
-		url: 'index.php?'+url,
-	}).done(function (response) {
-		document.getElementById('miniCal').innerHTML = response;
-	});
-}
-
-function getCalSettings(url) {
-	jQuery.ajax({
-		method: 'POST',
-		url: 'index.php?module=Calendar&action=ActivityAjax&' + url + '&type=settings&ajax=true'
-	}).done(function (response) {
-		document.getElementById('calSettings').innerHTML = response;
-	});
-}
 
 function updateStatus(record, status, view, hour, day, month, year, type) {
 	if (type == 'event') {
@@ -262,43 +240,6 @@ function updateStatus(record, status, view, hour, day, month, year, type) {
 			var result = response.split('####');
 			document.getElementById('total_activities').innerHTML = result[1];
 			document.getElementById('mnuTab2').innerHTML = result[0];
-		});
-	}
-}
-
-function cal_navigation(type, urlstring, start) {
-	var url = urlstring;
-	document.getElementById('status').style.display = 'inline';
-	if (type == 'event') {
-		var users = document.getElementsByName('onlyforuser');
-		var onlyforusers = users[0].value;
-		var OptionData = document.getElementById('view_Option').options[document.getElementById('view_Option').selectedIndex].value;
-		jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?module=Calendar&action=CalendarAjax&file=ActivityAjax&ajax=true&n_type=nav&viewOption=' + OptionData + url + start + '&subtab=' + type + '&onlyforuser=' + encodeURIComponent(onlyforusers)
-		}).done(function (response) {
-			var result = response.split('####');
-			if (OptionData == 'listview') {
-				document.getElementById('total_activities').innerHTML = result[1];
-				document.getElementById('listView').innerHTML = result[0];
-				document.getElementById('status').style.display = 'none';
-			}
-			if (OptionData == 'hourview') {
-				document.getElementById('total_activities').innerHTML = result[1];
-				document.getElementById('hrView').innerHTML = result[0];
-				document.getElementById('status').style.display = 'none';
-			}
-		});
-	}
-	if (type == 'todo') {
-		jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?module=Calendar&action=CalendarAjax&file=ActivityAjax&ajax=true&n_type=nav' + url + start + '&subtab=todo'
-		}).done(function (response) {
-			var result = response.split('####');
-			document.getElementById('total_activities').innerHTML = result[1];
-			document.getElementById('mnuTab2').innerHTML = result[0];
-			document.getElementById('status').style.display = 'none';
 		});
 	}
 }

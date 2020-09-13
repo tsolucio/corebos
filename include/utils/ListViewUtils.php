@@ -2646,42 +2646,6 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 		'&srcmodule=' . (isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '') .
 		'&forrecord=' . (isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '');
 
-	if ($module == 'Calendar' && $action_val == 'index') {
-		if ($_REQUEST['view'] == '') {
-			if ($current_user->activity_view == 'This Year') {
-				$mysel = 'year';
-			} elseif ($current_user->activity_view == 'This Month') {
-				$mysel = 'month';
-			} elseif ($current_user->activity_view == 'This Week') {
-				$mysel = 'week';
-			} else {
-				$mysel = 'day';
-			}
-		}
-		$data_value = date('Y-m-d H:i:s');
-		preg_match('/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/', $data_value, $value);
-		$date_data = array(
-			'day' => $value[3],
-			'month' => $value[2],
-			'year' => $value[1],
-			'hour' => $value[4],
-			'min' => $value[5],
-		);
-		$tab_type = ($_REQUEST['subtab'] == '') ? 'event' : vtlib_purify($_REQUEST['subtab']);
-		$url_string .= isset($_REQUEST['view']) ? '&view=' . vtlib_purify($_REQUEST['view']) : '&view=' . $mysel;
-		$url_string .= isset($_REQUEST['subtab']) ? '&subtab=' . vtlib_purify($_REQUEST['subtab']) : '';
-		$url_string .= isset($_REQUEST['viewOption']) ? '&viewOption=' . vtlib_purify($_REQUEST['viewOption']) : '&viewOption=listview';
-		$url_string .= isset($_REQUEST['day']) ? '&day=' . vtlib_purify($_REQUEST['day']) : '&day=' . $date_data['day'];
-		$url_string .= isset($_REQUEST['week']) ? '&week=' . vtlib_purify($_REQUEST['week']) : '';
-		$url_string .= isset($_REQUEST['month']) ? '&month=' . vtlib_purify($_REQUEST['month']) : '&month=' . $date_data['month'];
-		$url_string .= isset($_REQUEST['year']) ? '&year=' . vtlib_purify($_REQUEST['year']) : '&year=' . $date_data['year'];
-		$url_string .= isset($_REQUEST['n_type']) ? '&n_type=' . vtlib_purify($_REQUEST['n_type']) : '';
-		$url_string .= isset($_REQUEST['search_option']) ? '&search_option=' . vtlib_purify($_REQUEST['search_option']) : '';
-	}
-	if ($module == 'Calendar' && $action_val != 'index') { //added for the All link from the homepage -- ticket 5211
-		$url_string .= isset($_REQUEST['from_homepage']) ? '&from_homepage=' . vtlib_purify($_REQUEST['from_homepage']) : '';
-	}
-
 	//Get custom paramaters to url_string
 	if (isset($_REQUEST['cbcustompopupinfo']) && $_REQUEST['cbcustompopupinfo'] != '') {
 		$cbcustompopupinfo = explode(';', $_REQUEST['cbcustompopupinfo']);
@@ -2691,12 +2655,7 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 	}
 
 	if (($navigation_array['prev']) != 0) {
-		if ($module == 'Calendar' && $action_val == 'index') {
-			//$output .= '<a href="index.php?module=Calendar&action=index&start=1'.$url_string.'" alt="'.$app_strings['LBL_FIRST'].'" title="'.$app_strings['LBL_FIRST'].'"><img src="themes/images/start.gif" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="cal_navigation(\'' . $tab_type . '\',\'' . $url_string . '\',\'&start=1\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			//$output .= '<a href="index.php?module=Calendar&action=index&start='.$navigation_array['prev'].$url_string.'" alt="'.$app_strings['LNK_LIST_PREVIOUS'].'"title="'.$app_strings['LNK_LIST_PREVIOUS'].'"><img src="themes/images/previous.gif" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="cal_navigation(\'' . $tab_type . '\',\'' . $url_string . '\',\'&start=' . $navigation_array['prev'] . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-		} elseif ($action_val == 'FindDuplicate') {
+		if ($action_val == 'FindDuplicate') {
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=1' . $url_string . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['prev'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_PREVIOUS'] . '"title="' . $app_strings['LNK_LIST_PREVIOUS'] . '"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		} elseif ($action_val == 'UnifiedSearch') {
@@ -2714,9 +2673,7 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 		$output .= '<img src="' . vtiger_imageurl('previous_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
 	}
 
-	if ($module == 'Calendar' && $action_val == 'index') {
-		$jsNavigate = "cal_navigation('$tab_type','$url_string','&start='+this.value);";
-	} elseif ($action_val == 'FindDuplicate') {
+	if ($action_val == 'FindDuplicate') {
 		$jsNavigate = "getDuplicateListViewEntries_js('$module','parenttab=$tabname&start='+this.value+'$url_string');";
 	} elseif ($action_val == 'UnifiedSearch') {
 		$jsNavigate = "getUnifiedSearchEntries_js('$module','parenttab=$tabname&start='+this.value+'$url_string');";
@@ -2738,12 +2695,7 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 	$output .= $app_strings['LBL_LIST_OF'] . ' ' . $navigation_array['verylast'] . '</span>';
 
 	if (($navigation_array['next']) != 0) {
-		if ($module == 'Calendar' && $action_val == 'index') {
-			//$output .= '<a href="index.php?module=Calendar&action=index&start='.$navigation_array['next'].$url_string.'" alt="'.$app_strings['LNK_LIST_NEXT'].'" title="'.$app_strings['LNK_LIST_NEXT'].'"><img src="themes/images/next.gif" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="cal_navigation(\'' . $tab_type . '\',\'' . $url_string . '\',\'&start=' . $navigation_array['next'] . '\');" alt="' . $app_strings['LNK_LIST_NEXT'] . '" title="' . $app_strings['LNK_LIST_NEXT'] . '"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			//$output .= '<a href="index.php?module=Calendar&action=index&start='.$navigation_array['verylast'].$url_string.'" alt="'.$app_strings['LBL_LAST'].'" title="'.$app_strings['LBL_LAST'].'"><img src="themes/images/end.gif" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="cal_navigation(\'' . $tab_type . '\',\'' . $url_string . '\',\'&start=' . $navigation_array['verylast'] . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-		} elseif ($action_val == "FindDuplicate") {
+		if ($action_val == "FindDuplicate") {
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['next'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_NEXT'] . '" title="' . $app_strings['LNK_LIST_NEXT'] . '"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['verylast'] . $url_string . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		} elseif ($action_val == 'UnifiedSearch') {
@@ -3583,42 +3535,6 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 		'&srcmodule=' . (isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '').
 		'&forrecord=' . (isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '');
 
-	if ($module == 'Calendar' && $action_val == 'index') {
-		if ($_REQUEST['view'] == '') {
-			if ($current_user->activity_view == 'This Year') {
-				$mysel = 'year';
-			} elseif ($current_user->activity_view == 'This Month') {
-				$mysel = 'month';
-			} elseif ($current_user->activity_view == 'This Week') {
-				$mysel = 'week';
-			} else {
-				$mysel = 'day';
-			}
-		}
-		$data_value = date('Y-m-d H:i:s');
-		preg_match('/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/', $data_value, $value);
-		$date_data = array(
-			'day' => $value[3],
-			'month' => $value[2],
-			'year' => $value[1],
-			'hour' => $value[4],
-			'min' => $value[5],
-		);
-		$tab_type = ($_REQUEST['subtab'] == '') ? 'event' : vtlib_purify($_REQUEST['subtab']);
-		$url_string .= isset($_REQUEST['view']) ? '&view=' . vtlib_purify($_REQUEST['view']) : '&view=' . $mysel;
-		$url_string .= isset($_REQUEST['subtab']) ? '&subtab=' . vtlib_purify($_REQUEST['subtab']) : '';
-		$url_string .= isset($_REQUEST['viewOption']) ? '&viewOption=' . vtlib_purify($_REQUEST['viewOption']) : '&viewOption=listview';
-		$url_string .= isset($_REQUEST['day']) ? '&day=' . vtlib_purify($_REQUEST['day']) : '&day=' . $date_data['day'];
-		$url_string .= isset($_REQUEST['week']) ? '&week=' . vtlib_purify($_REQUEST['week']) : '';
-		$url_string .= isset($_REQUEST['month']) ? '&month=' . vtlib_purify($_REQUEST['month']) : '&month=' . $date_data['month'];
-		$url_string .= isset($_REQUEST['year']) ? '&year=' . vtlib_purify($_REQUEST['year']) : '&year=' . $date_data['year'];
-		$url_string .= isset($_REQUEST['n_type']) ? '&n_type=' . vtlib_purify($_REQUEST['n_type']) : '';
-		$url_string .= isset($_REQUEST['search_option']) ? '&search_option=' . vtlib_purify($_REQUEST['search_option']) : '';
-	}
-	if ($module == 'Calendar' && $action_val != 'index') { //added for the All link from the homepage -- ticket 5211
-		$url_string .= isset($_REQUEST['from_homepage']) ? '&from_homepage=' . vtlib_purify($_REQUEST['from_homepage']) : '';
-	}
-
 	//Get custom paramaters to url_string
 	if (isset($_REQUEST['cbcustompopupinfo']) && $_REQUEST['cbcustompopupinfo'] != '') {
 		$cbcustompopupinfo = explode(';', $_REQUEST['cbcustompopupinfo']);
@@ -3628,10 +3544,7 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 	}
 
 	if (($navigation_array['prev']) != 0) {
-		if ($module == 'Calendar' && $action_val == 'index') {
-			$output .= '<a href="javascript:;" onClick="cal_navigation(\'' . $tab_type . '\',\'' . $url_string . '\',\'&start=1\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="cal_navigation(\'' . $tab_type . '\',\'' . $url_string . '\',\'&start=' . $navigation_array['prev'] . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-		} elseif ($action_val == "FindDuplicate") {
+		if ($action_val == "FindDuplicate") {
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=1' . $url_string . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['prev'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_PREVIOUS'] . '"title="' . $app_strings['LNK_LIST_PREVIOUS'] . '"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		} elseif ($action_val == 'UnifiedSearch') {
@@ -3648,9 +3561,7 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 		$output .= '<img src="' . vtiger_imageurl('start_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
 		$output .= '<img src="' . vtiger_imageurl('previous_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
 	}
-	if ($module == 'Calendar' && $action_val == 'index') {
-		$jsNavigate = "cal_navigation('$tab_type','$url_string','&start='+this.value);";
-	} elseif ($action_val == "FindDuplicate") {
+	if ($action_val == "FindDuplicate") {
 		$jsNavigate = "getDuplicateListViewEntries_js('$module','parenttab=$tabname&start='+this.value+'$url_string');";
 	} elseif ($action_val == 'UnifiedSearch') {
 		$jsNavigate = "getUnifiedSearchEntries_js('$search_tag','$module','parenttab=$tabname&start='+this.value+'$url_string');";
@@ -3681,10 +3592,7 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 	$output .='</span>';
 
 	if (($navigation_array['next']) != 0) {
-		if ($module == 'Calendar' && $action_val == 'index') {
-			$output .= '<a href="javascript:;" onClick="cal_navigation(\'' . $tab_type . '\',\'' . $url_string . '\',\'&start=' . $navigation_array['next'] . '\');" alt="' . $app_strings['LNK_LIST_NEXT'] . '" title="' . $app_strings['LNK_LIST_NEXT'] . '"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="cal_navigation(\'' . $tab_type . '\',\'' . $url_string . '\',\'&start=' . $navigation_array['verylast'] . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-		} elseif ($action_val == "FindDuplicate") {
+		if ($action_val == "FindDuplicate") {
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['next'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_NEXT'] . '" title="' . $app_strings['LNK_LIST_NEXT'] . '"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['verylast'] . $url_string . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		} elseif ($action_val == 'UnifiedSearch') {
