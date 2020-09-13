@@ -266,35 +266,6 @@ function getActFieldCombo($fieldname, $tablename, $follow_activitytype = false) 
 	return $combo;
 }
 
-/*Fuction to get value for Assigned To field
- *returns values of Assigned To field in array format
-*/
-function getAssignedTo($tabid) {
-	global $current_user,$noof_group_rows,$adb;
-	$assigned_user_id = $current_user->id;
-	$userprivs = $current_user->getPrivileges();
-	if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing($tabid)) {
-		$result=get_current_user_access_groups('Calendar');
-		$users_combo = get_select_options_array(get_user_array(false, 'Active', $assigned_user_id, 'private'), $assigned_user_id);
-	} else {
-		$result = get_group_options();
-		$users_combo = get_select_options_array(get_user_array(false, 'Active', $assigned_user_id), $assigned_user_id);
-	}
-	if ($result) {
-		$nameArray = $adb->fetch_array($result);
-	}
-
-	if ($noof_group_rows!=0) {
-		do {
-			$groupname=$nameArray['groupname'];
-			$group_option[] = array($groupname=>$selected);
-		} while ($nameArray = $adb->fetch_array($result));
-	}
-	$fieldvalue[] = $users_combo;
-	$fieldvalue[] = $group_option;
-	return $fieldvalue;
-}
-
 /**
  * Function to get the vtiger_activity details for mail body
  * @param   string   $description       - activity description
@@ -304,7 +275,7 @@ function getAssignedTo($tabid) {
 function getActivityDetails($description, $user_id, $from = '') {
 	global $log, $current_user, $current_language;
 	require_once 'include/utils/utils.php';
-	$mod_strings = return_module_language($current_language, 'Calendar');
+	$mod_strings = return_module_language($current_language, 'cbCalendar');
 	$log->debug('> getActivityDetails');
 	$updated = $mod_strings['LBL_UPDATED'];
 	$created = $mod_strings['LBL_CREATED'];
