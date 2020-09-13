@@ -7,51 +7,9 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-function DisableSharing() {
-	var x = document.SharedList.selected_id.length;
-	idstring = '';
-	var xx = 0;
-	if (x == undefined) {
-		if (document.SharedList.selected_id.checked) {
-			document.SharedList.idlist.value = document.SharedList.selected_id.value;
-		} else {
-			alert(alert_arr.SELECT_ATLEAST_ONE_USER);
-			return false;
-		}
-	} else {
-		for (var i = 0; i < x; i++) {
-			if (document.SharedList.selected_id[i].checked) {
-				idstring = document.SharedList.selected_id[i].value + ';' + idstring;
-				xx++;
-			}
-		}
-		if (xx != 0) {
-			document.SharedList.idlist.value = idstring;
-		} else {
-			alert(alert_arr.SELECT_ATLEAST_ONE_USER);
-			return false;
-		}
-	}
-	if (confirm(alert_arr.DISABLE_SHARING_CONFIRMATION + xx + alert_arr.USERS)) {
-		document.SharedList.action = 'index.php?module=Calendar&action=disable_sharing&return_module=Calendar&return_action=calendar_share';
-	} else {
-		return false;
-	}
-}
-
 function showhide(argg) {
 	var x=document.getElementById(argg).style;
 	if (x.display=='none') {
-		x.display='block';
-	} else {
-		x.display='none';
-	}
-}
-
-function showhideRepeat(argg1, argg2) {
-	var x=document.getElementById(argg2).style;
-	var y=document.getElementById(argg1).checked;
-	if (y) {
 		x.display='block';
 	} else {
 		x.display='none';
@@ -117,17 +75,6 @@ function rptoptDisp(Opt) {
 	}
 }
 
-function Taskshow(argg1, type, startdate, starthr, startmin, startfmt) {
-	var y=document.getElementById(argg1).style;
-	if (y.display=='none') {
-		document.EditView.date_start.value = startdate;
-		document.EditView.starthr.value = starthr;
-		document.EditView.startmin.value = startmin;
-		document.EditView.startfmt.value = startfmt;
-		y.display='block';
-	}
-}
-
 function ghide(argg2) {
 	var z=document.getElementById(argg2).style;
 	if (z.display=='block' ) {
@@ -135,23 +82,6 @@ function ghide(argg2) {
 	}
 }
 
-function moveMe(arg1) {
-	var posx = 0;
-	var posy = 0;
-	var e=document.getElementById(arg1);
-
-	if (!e) {
-		var e = window.event;
-	}
-
-	if (e.pageX || e.pageY) {
-		posx = e.pageX;
-		posy = e.pageY;
-	} else if (e.clientX || e.clientY) {
-		posx = e.clientX + document.body.scrollLeft;
-		posy = e.clientY + document.body.scrollTop;
-	}
-}
 
 function switchClass(myModule, toStatus) {
 	var x=document.getElementById(myModule);
@@ -226,30 +156,6 @@ function rmvUser(sel_users) {
 			selectedColumnsObj.remove(selectedColumnsObj.options.selectedIndex);
 		}
 	}
-}
-
-// function to delete activity related contact in calendar
-var del_ids = new Array();
-function removeActContacts() {
-	var avail_contacts = getObj('parentid');
-	// this block is to remove contacts and get deleted contact ids
-	if (avail_contacts.options.selectedIndex > -1) {
-		for (var m = 0; m < avail_contacts.options.length; m++) {
-			if (avail_contacts.options[m].selected == true) {
-				del_ids.push(avail_contacts.options[m].value);
-				avail_contacts.options[m] = null;
-				removeActContacts();
-			}
-		}
-	}
-	document.EditView.deletecntlist.value = del_ids.join(';');
-
-	// this block is to get available id list
-	var avail_ids = new Array();
-	for (var n=0; n<avail_contacts.options.length; n++) {
-		avail_ids.push(avail_contacts.options[n].value);
-	}
-	document.EditView.contactidlist.value = avail_ids.join(';');
 }
 
 function formSelectColumnString(usr, col) {
@@ -501,128 +407,12 @@ function cal_show(divId) {
 	id.style.visibility = 'visible';
 }
 
-function fnAssignTo() {
-	var option_Box = document.getElementById('parent_type');
-	var option_select = option_Box.options[option_Box.selectedIndex].value;
-	if (option_select == 'Leads' || option_select == 'Leads&action=Popup') {
-		document.getElementById('leadLay').style.visibility = 'visible';
-	} else if (option_select == 'Accounts' || option_select == 'Accounts&action=Popup') {
-		document.getElementById('leadLay').style.visibility = 'visible';
-	} else if (option_select == 'Potentials' || option_select == 'Potentials&action=Popup') {
-		document.getElementById('leadLay').style.visibility = 'visible';
-	} else if (option_select == 'Quotes&action=Popup' || option_select == 'Quotes&action=Popup') {
-		document.getElementById('leadLay').style.visibility = 'visible';
-	} else if (option_select == 'PurchaseOrder' || option_select == 'PurchaseOrder&action=Popup') {
-		document.getElementById('leadLay').style.visibility = 'visible';
-	} else if (option_select == 'SalesOrder' || option_select == 'SalesOrder&action=Popup') {
-		document.getElementById('leadLay').style.visibility = 'visible';
-	} else if (option_select == 'Invoice' || option_select == 'Invoice&action=Popup') {
-		document.getElementById('leadLay').style.visibility = 'visible';
-	} else if (option_select == 'Campaigns' || option_select == 'Campaigns&action=Popup') {
-		document.getElementById('leadLay').style.visibility = 'visible';
-	} else {
-		document.getElementById('leadLay').style.visibility = 'hidden';
-	}
-}
-
 function fnShowPopup() {
 	document.getElementById('popupLay').style.display = 'block';
 }
 
 function fnHidePopup() {
 	document.getElementById('popupLay').style.display = 'none';
-}
-
-function getValidationarr(id, activity_mode, opmode, subtab, viewOption) {
-	jQuery.ajax({
-		method: 'POST',
-		url: 'index.php?module=Calendar&action=ActivityAjax&record=' + id + '&activity_mode=' + activity_mode + '&ajax=true&type=view&file=DetailView'
-	}).done(function (response) {
-		document.getElementById('dataArray').innerHTML = response;
-		setFieldvalues(opmode, subtab, viewOption);
-	});
-}
-
-function setFieldvalues(opmode, subtab, viewOption) {
-	var st = document.getElementById('activity_cont');
-	eval(st.innerHTML);
-	var x=0;
-	if (activity_type == 'Events') {
-		document.EditView.viewOption.value = viewOption;
-		document.EditView.subtab.value = subtab;
-		for (x=0; x<key.length; x++) {
-			if (document.EditView[key[x]] != undefined) {
-				if (key[x] == 'visibility' && data[x] == 'Public') {
-					document.EditView.visibility.checked = true;
-				}
-				if (key[x] == 'visibility' && data[x] == 'Private') {
-					document.EditView.visibility.checked = false;
-				}
-				if (key[x] == 'activitytype' && data[x] == 'Call') {
-					document.EditView.activitytype[0].checked = true;
-				} else {
-					document.EditView.activitytype[1].checked = true;
-				}
-				if (key[x] == 'set_reminder' && data[x] == 'Yes') {
-					document.EditView.remindercheck.checked = true;
-					document.getElementById('reminderOptions').style.display = 'block';
-				}
-				if (key[x] == 'recurringcheck' && data[x] == 'on') {
-					document.EditView.recurringcheck.checked = true;
-					document.getElementById('repeatOptions').style.display = 'block';
-				}
-				if (key[x] == 'recurringtype') {
-					if (data[x] == 'Weekly') {
-						document.getElementById('repeatWeekUI').style.display = 'block';
-					} else {
-						document.getElementById('repeatWeekUI').style.display = 'none';
-					}
-					if (data[x] == 'Monthly') {
-						document.getElementById('repeatMonthUI').style.display = 'block';
-					} else {
-						document.getElementById('repeatMonthUI').style.display = 'none';
-					}
-				}
-				if (key[x] == 'parent_name') {
-					if (data[x] != '') {
-						document.getElementById('leadLay').style.visibility = 'visible';
-					} else {
-						document.getElementById('leadLay').style.display = 'hidden';
-					}
-				}
-				document.EditView[key[x]].value = data[x];
-			//}
-			}
-		}
-		document.getElementById('addEvent').style.display = 'block';
-	} else {
-		document.createTodo.viewOption.value = viewOption;
-		document.createTodo.subtab.value = subtab;
-		for (x=0; x<key.length; x++) {
-			if (document.createTodo[key[x]] != undefined) {
-				document.createTodo[key[x]].value = data[x];
-			}
-		}
-		document.getElementById('createTodo').style.display = 'block';
-	}
-}
-
-/** This is Javascript Function which is used to toogle between
-  * assigntype user and group/team select options while assigning owner to Task.
-  */
-function toggleTaskAssignType(currType) {
-	if (currType == 'U') {
-		getObj('task_assign_user').style.display = 'block';
-		getObj('task_assign_team').style.display = 'none';
-	} else {
-		getObj('task_assign_user').style.display = 'none';
-		getObj('task_assign_team').style.display = 'block';
-	}
-}
-
-function dochange(start, end) {
-	var startdate = document.getElementById(start);
-	document.getElementById(end).value = startdate.value;
 }
 
 function getSelectedStatus() {
@@ -636,16 +426,6 @@ function getSelectedStatus() {
 		document.getElementById('date_table_secondtd').style.width = '50%';
 		document.getElementById('date_table_thirdtd').style.display = 'none';
 	}
-}
-
-function cal_fnvshobj(obj, Lay) {
-	var tagName = document.getElementById(Lay);
-	var leftSide = findPosX(obj);
-	var topSide = findPosY(obj);
-	tagName.style.left = 550 + 'px';
-	tagName.style.top= (topSide - 100) + 'px';
-	tagName.style.display = 'block';
-	tagName.style.visibility = 'visible';
 }
 
 /**this is for to add a option element while selecting contact in add event page
