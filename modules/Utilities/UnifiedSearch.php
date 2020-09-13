@@ -121,7 +121,7 @@ if (isset($query_string) && $query_string != '') {
 				if ($search_module != '' || $search_tag != '') {//This is for Tag search
 					$where = getTagWhere($search_val, $current_user->id);
 					$search_msg = $app_strings['LBL_TAG_SEARCH'];
-					$search_msg .= "<b>".to_html($search_val)."</b>";
+					$search_msg .= "<b>".to_html($search_val).'</b>';
 				} else { //This is for Global search
 					$where = getUnifiedWhere($listquery, $module, $search_val, $fieldtype);
 					$search_msg = $app_strings['LBL_SEARCH_RESULTS_FOR'];
