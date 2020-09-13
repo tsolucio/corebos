@@ -264,7 +264,7 @@ if (isset($_REQUEST['subtab']) && $_REQUEST['subtab']!='') {
 }
 
 if ($_REQUEST['recurringcheck']) {
-	include_once 'modules/Calendar/RepeatEvents.php';
+	include_once 'modules/cbCalendar/RepeatEvents.php';
 	Calendar_RepeatEvents::repeatFromRequest($focus);
 }
 
