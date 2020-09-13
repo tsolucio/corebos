@@ -9,7 +9,7 @@
 include_once 'modules/Calendar4You/CalendarUtils.php';
 include_once 'modules/Calendar4You/Calendar4You.php';
 require_once 'modules/cbCalendar/CalendarCommon.php';
-require_once 'modules/Calendar/Calendar.php';
+require_once 'modules/cbCalendar/Calendar.php';
 
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $current_user, $default_charset;
 require_once 'Smarty_setup.php';
