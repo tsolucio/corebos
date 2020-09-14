@@ -2038,19 +2038,13 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					}
 					$slashes_temp_val = popup_from_html($field_valEncoded);
 					$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
-
-					$log->debug('< getValue');
-					if (isset($_REQUEST['maintab']) && $_REQUEST['maintab'] == 'Calendar') {
+					$value = "<a href=\"javascript:if (document.getElementById('closewindow').value=='true') {window.close();}\" onclick='set_return(\"".$entity_id.'", "'
+						.nl2br(decode_html($slashes_temp_val)) . '");\'';
+					if (empty($_REQUEST['forfield']) && $focus->popup_type != 'detailview') {
 						$count = counterValue();
-						$value = '<a href="javascript:window.close();" onclick=\'set_return_todo("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '");\'id = ' . $count . '>' . textlength_check($field_valEncoded) . '</a>';
-					} else {
-						$value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" onclick=\'set_return("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '");\'';
-						if (empty($_REQUEST['forfield']) && $focus->popup_type != 'detailview') {
-							$count = counterValue();
-							$value .= " id='$count' ";
-						}
-						$value .= '>' . textlength_check($field_valEncoded) . '</a>';
+						$value .= " id='$count' ";
 					}
+					$value .= '>' . textlength_check($field_valEncoded) . '</a>';
 				}
 			} else {
 				if (($module == 'Leads' && $colname == 'lastname') || ($module == 'Contacts' && $colname == 'lastname')) {

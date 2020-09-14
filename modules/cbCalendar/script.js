@@ -293,7 +293,7 @@ function getcalAction(obj, Lay, id, view, hour, dateVal, type) {
 	}
 
 	if (postpone) {
-		postpone.href='index.php?module=cbCalendar&action=EditView&record='+id+'&return_action=index&activity_mode='+activity_mode+'&view='+view+'&hour='+hour+'&day='+day+'&month='+month+'&year='+year+'&viewOption='+OptionData+'&subtab='+type+'&maintab=Calendar';
+		postpone.href='index.php?module=cbCalendar&action=EditView&record='+id+'&return_action=index&activity_mode='+activity_mode+'&view='+view+'&hour='+hour+'&day='+day+'&month='+month+'&year='+year+'&viewOption='+OptionData+'&subtab='+type;
 	}
 
 	if (actdelete) {
