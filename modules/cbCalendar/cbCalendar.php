@@ -648,9 +648,10 @@ class cbCalendar extends CRMEntity {
 			while ($act = $adb->fetch_array($rs)) {
 				$adb->pquery($upd, array($act['crmid'],$act['activityid']));
 			}
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
 			$rs = $adb->query('select activityid, contactid
 					from vtiger_cntactivityrel
-					inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cntactivityrel.contactid
+					inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_cntactivityrel.contactid
 					where deleted=0');
 			$upd = 'update vtiger_activity set cto_id=? where activityid=?';
 			$actid = 0;
