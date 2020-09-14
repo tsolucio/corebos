@@ -155,6 +155,7 @@ $mod_strings = array(
 	'LBL_MAILMANAGER_ADD_Accounts' => 'Adaugare Organizatie',
 	'LBL_MAILMANAGER_ADD_Leads' => 'Adaugare Potential',
 	'LBL_MAILMANAGER_ADD_Calendar' => 'Adaugare DeFacut',
+	'LBL_MAILMANAGER_ADD_cbCalendar' => 'Adaugare DeFacut',
 	'LBL_MAILMANAGER_ADD_HelpDesk' => 'Adaugare Ticket',
 	'LBL_MAILMANAGER_ADD_Emails' => 'Atasare Email',
 	'LBL_MAILMANAGER_ADD_ModComments' => 'Adaugare Comentariu',

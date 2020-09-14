@@ -149,6 +149,7 @@ $mod_strings = array(
 	'LBL_MAILMANAGER_ADD_Accounts' => 'Account toevoegen',
 	'LBL_MAILMANAGER_ADD_Leads' => 'Lead toevoegen',
 	'LBL_MAILMANAGER_ADD_Calendar' => 'Actie toevoegen',
+	'LBL_MAILMANAGER_ADD_cbCalendar' => 'Actie toevoegen',
 	'LBL_MAILMANAGER_ADD_HelpDesk' => 'Ticket toevoegen',
 	'LBL_MAILMANAGER_ADD_Emails' => 'E-mail toevoegen',
 	'LBL_MAILMANAGER_ADD_ModComments' => 'Commentaar toevoegen',

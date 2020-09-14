@@ -12,7 +12,7 @@ require_once 'data/CRMEntity.php';
 require_once 'modules/Reports/ReportUtils.php';
 require_once 'modules/Reports/ReportRun.php';
 global $app_strings,$mod_strings, $modules, $blocks, $adv_filter_options;
-global $log, $report_modules, $related_modules, $old_related_modules;
+global $log, $report_modules, $related_modules;
 
 $adv_filter_options = array(
 	'e'=>'equals',
@@ -32,22 +32,7 @@ $adv_filter_options = array(
 	'b'=>'before',
 );
 
-//$report_modules = Array('Faq','Rss','Portal','Recyclebin','Emails','Reports','Dashboard','Home','Activities');
-
-$old_related_modules = array(
-	'Accounts'=>array('Potentials','Contacts','Products','Quotes','Invoice','SalesOrder'),
-	'Contacts'=>array('Accounts','Potentials','Quotes','PurchaseOrder','Invoice'),
-	'Potentials'=>array('Accounts','Contacts','Quotes'),
-	'Calendar'=>array('Leads','Accounts','Contacts','Potentials'),
-	'Products'=>array('Accounts','Contacts'),
-	'Quotes'=>array('Accounts','Contacts','Potentials'),
-	'PurchaseOrder'=>array('Contacts'),
-	'Invoice'=>array('Accounts','Contacts'),
-	'SalesOrder'=>array('Accounts','Contacts','Potentials','Quotes'),
-	'Timecontrol'=>array('Leads','Accounts','Contacts','Vendors','Campaigns','Potentials','Quotes','PurchaseOrder','SalesOrder','Invoice','HelpDesk', 'Project', 'ProjectMilestone', 'ProjectTask', 'Assets', 'ServiceContracts','Products','Services'),
-);
-
-$related_modules =array();
+$related_modules = array();
 
 class Reports extends CRMEntity {
 	/**
@@ -204,9 +189,8 @@ class Reports extends CRMEntity {
 
 	// Initializes the module list for listing columns for report creation.
 	public function initListOfModules() {
-		global $adb, $old_related_modules;
+		global $adb;
 
-		$restricted_modules = array('Events');
 		$restricted_blocks = array('LBL_IMAGE_INFORMATION','LBL_COMMENTS','LBL_COMMENT_INFORMATION');
 
 		$this->module_id = array();
@@ -228,9 +212,6 @@ class Reports extends CRMEntity {
 					}
 					if ($resultrow['isentitytype'] != '1') {
 						continue; // skip extension modules
-					}
-					if (in_array($resultrow['name'], $restricted_modules)) { // skip restricted modules
-						continue;
 					}
 					$this->module_id[$resultrow['tabid']] = $resultrow['name'];
 					$this->module_list[$resultrow['name']] = array();
@@ -268,24 +249,18 @@ class Reports extends CRMEntity {
 				}
 
 				$relatedmodules = $adb->pquery(
-					'SELECT vtiger_tab.name, vtiger_relatedlists.tabid FROM vtiger_tab
+					"SELECT vtiger_tab.name, vtiger_relatedlists.tabid FROM vtiger_tab
 					INNER JOIN vtiger_relatedlists on vtiger_tab.tabid=vtiger_relatedlists.related_tabid
-					WHERE vtiger_tab.isentitytype=1
-					AND vtiger_tab.name NOT IN('.generateQuestionMarks($restricted_modules).")
-					AND vtiger_tab.presence = 0 AND vtiger_relatedlists.label!='Activity History' AND vtiger_relatedlists.name not like 'getPotentialsMonth\_%'
+					WHERE vtiger_tab.isentitytype=1 AND vtiger_tab.presence=0 AND vtiger_relatedlists.name not like 'getPotentialsMonth\_%'
 					UNION
 					SELECT module, vtiger_tab.tabid FROM vtiger_fieldmodulerel
 					INNER JOIN vtiger_tab on vtiger_tab.name = vtiger_fieldmodulerel.relmodule
-					WHERE vtiger_tab.isentitytype = 1
-					AND vtiger_tab.name NOT IN(".generateQuestionMarks($restricted_modules).')
-					AND vtiger_tab.presence = 0
+					WHERE vtiger_tab.isentitytype=1 AND vtiger_tab.presence=0
 					UNION
 					SELECT relmodule, vtiger_tab.tabid FROM vtiger_fieldmodulerel
 					INNER JOIN vtiger_tab on vtiger_tab.name = vtiger_fieldmodulerel.module
-					WHERE vtiger_tab.isentitytype = 1
-					AND vtiger_tab.name NOT IN('.generateQuestionMarks($restricted_modules).')
-					AND vtiger_tab.presence = 0',
-					array($restricted_modules,$restricted_modules,$restricted_modules)
+					WHERE vtiger_tab.isentitytype=1 AND vtiger_tab.presence=0",
+					array()
 				);
 				if ($adb->num_rows($relatedmodules)) {
 					while ($resultrow = $adb->fetch_array($relatedmodules)) {
@@ -297,20 +272,6 @@ class Reports extends CRMEntity {
 
 						if ($module != $resultrow['name']) {
 							$this->related_modules[$module][] = $resultrow['name'];
-						}
-
-						// To achieve Backward Compatability with Report relations
-						if (isset($old_related_modules[$module])) {
-							$rel_mod = array();
-							foreach ($old_related_modules[$module] as $name) {
-								if (vtlib_isModuleActive($name) && isPermitted($name, 'index', '')) {
-									$rel_mod[] = $name;
-								}
-							}
-							if (!empty($rel_mod)) {
-								$this->related_modules[$module] = array_merge($this->related_modules[$module], $rel_mod);
-								$this->related_modules[$module] = array_unique($this->related_modules[$module]);
-							}
 						}
 					}
 				}

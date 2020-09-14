@@ -162,27 +162,6 @@ class MailManager_RelationController extends MailManager_Controller {
 			$linkedto = MailManager_RelationControllerAction::getSalesEntityInfo($parent);
 
 			switch ($linkModule) {
-				case 'Calendar':
-					if (empty($focus->column_fields['activitytype'])) {
-						$focus->column_fields['activitytype'] = 'Task';
-					}
-
-					if (empty($focus->column_fields['due_date'])) {
-						if (!empty($focus->column_fields['date_start'])) {
-							$dateStart = getValidDBInsertDateValue($focus->column_fields['date_start']);
-							$focus->column_fields['due_date'] = date("Y-m-d", strtotime(date("Y-m-d", strtotime($dateStart)) . " +1 day"));
-						} else {
-							$focus->column_fields['due_date'] = date('Y-m-d', strtotime("+1 day"));
-						}
-					}
-					if (!empty($parent)) {
-						if ($linkedto['module'] == 'Contacts') {
-							$focus->column_fields['contact_id'] = $parent;
-						} else {
-							$focus->column_fields['parent_id'] = $parent;
-						}
-					}
-					break;
 				case 'HelpDesk':
 					$from = $mail->from();
 					$focus->column_fields['parent_id'] = $this->setParentForHelpDesk($parent, $from);
@@ -200,7 +179,7 @@ class MailManager_RelationController extends MailManager_Controller {
 
 				// This condition is added so that emails are not created for Todo without Parent,
 				// as there is no way to relate them
-				if (empty($parent) && $linkModule != 'Calendar') {
+				if (empty($parent) && $linkModule != 'cbCalendar') {
 					$linkedto = MailManager_RelationControllerAction::associate($mail, $focus->id);
 				}
 
