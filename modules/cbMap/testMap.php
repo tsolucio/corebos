@@ -126,19 +126,19 @@ switch ($focus->column_fields['maptype']) {
 		}
 		break;
 	case 'Record Set Mapping':
-			$rsm = $focus->RecordSetMapping();
-			$mapinfo = $rsm->getFullRecordSet();
+		$rsm = $focus->RecordSetMapping();
+		$mapinfo = $rsm->getFullRecordSet();
 		break;
 	case 'ListColumns':
-			$rsm = $focus->ListColumns();
-			$mapinfo = $rsm->getCompleteMapping();
+		$rsm = $focus->ListColumns();
+		$mapinfo = $rsm->getCompleteMapping();
 		break;
 	case 'DuplicateRelations':
-			$rsm = $focus->DuplicateRelations();
-			$mapinfo = $rsm->getCompleteMapping();
+		$rsm = $focus->DuplicateRelations();
+		$mapinfo = $rsm->getCompleteMapping();
 		break;
 	case 'RelatedPanes':
-			$mapinfo = $focus->RelatedPanes(array(74));
+		$mapinfo = $focus->RelatedPanes(array(74));
 		break;
 	case 'Import':
 		$mapinfo = $focus->Import()->getCompleteMapping();
@@ -186,11 +186,11 @@ switch ($focus->column_fields['maptype']) {
 		);
 		break;
 	case 'Field Set Mapping':
-			$fsm = $focus->FieldSetMapping();
-			$mapinfo = $fsm->getFieldSet();
+		$fsm = $focus->FieldSetMapping();
+		$mapinfo = $fsm->getFieldSet();
 		break;
 	case 'Detail View Layout Mapping':
-			$mapinfo = $focus->DetailViewLayoutMapping();
+		$mapinfo = $focus->DetailViewLayoutMapping();
 		break;
 	case 'Webservice Mapping':
 		$focus2 = CRMEntity::getInstance('Accounts');
@@ -207,6 +207,12 @@ switch ($focus->column_fields['maptype']) {
 			'numyears' => isset($_REQUEST['numyears']) ? $_REQUEST['numyears'] : 2,
 			'record_id' => 74,
 		);
+		foreach ($_REQUEST as $key => $value) {
+			if ($key=='record') {
+				continue;
+			}
+			$context[$key] = $value;
+		}
 		$mapinfo = $focus->DecisionTable($context);
 		break;
 	default:
