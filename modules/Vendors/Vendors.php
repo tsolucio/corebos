@@ -143,11 +143,11 @@ class Vendors extends CRMEntity {
 					" name='button' value='". getTranslatedString('LBL_ADD_NEW'). ' ' . $singular_modname ."'>";
 			}
 		}
-
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Products');
 		$query = "SELECT vtiger_products.*,vtiger_productcf.*, vtiger_crmentity.crmid, vtiger_crmentity.smownerid,vtiger_vendor.vendorname
 			FROM vtiger_products
 			INNER JOIN vtiger_vendor ON vtiger_vendor.vendorid = vtiger_products.vendor_id
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_products.productid
+			INNER JOIN $crmEntityTable ON vtiger_crmentity.crmid = vtiger_products.productid
 			INNER JOIN vtiger_productcf ON vtiger_productcf.productid = vtiger_products.productid
 			LEFT JOIN vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
 			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
@@ -215,11 +215,12 @@ class Vendors extends CRMEntity {
 			}
 		}
 
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = "SELECT case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,vtiger_contactdetails.*,
 			vtiger_crmentity.crmid, vtiger_crmentity.smownerid,vtiger_vendorcontactrel.vendorid,vtiger_account.accountname
 			from vtiger_contactdetails
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
+			inner join $crmEntityTable on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
 			inner join vtiger_vendorcontactrel on vtiger_vendorcontactrel.contactid=vtiger_contactdetails.contactid
 			left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
 			left join vtiger_account on vtiger_account.accountid = vtiger_contactdetails.accountid
@@ -297,7 +298,9 @@ class Vendors extends CRMEntity {
 	// Function to unlink all the dependent entities of the given Entity by Id
 	public function unlinkDependencies($module, $id) {
 		//Deleting Vendor related PO.
-		$po_q = 'SELECT vtiger_crmentity.crmid FROM vtiger_crmentity
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('PurchaseOrder');
+		$crmEntityTable1 = CRMEntity::getcrmEntityTableAlias('PurchaseOrder', true);
+		$po_q = 'SELECT vtiger_crmentity.crmid FROM '.$crmEntityTable.' 
 			INNER JOIN vtiger_purchaseorder ON vtiger_crmentity.crmid=vtiger_purchaseorder.purchaseorderid
 			INNER JOIN vtiger_vendor ON vtiger_vendor.vendorid=vtiger_purchaseorder.vendorid
 			WHERE vtiger_crmentity.deleted=0 AND vtiger_purchaseorder.vendorid=?';
@@ -306,11 +309,11 @@ class Vendors extends CRMEntity {
 		for ($k=0; $k < $this->db->num_rows($po_res); $k++) {
 			$po_id = $this->db->query_result($po_res, $k, "crmid");
 			$po_ids_list[] = $po_id;
-			$sql = 'UPDATE vtiger_crmentity SET deleted = 1 WHERE crmid = ?';
+			$sql = 'UPDATE '.$crmEntityTable1.' SET deleted = 1 WHERE crmid = ?';
 			$this->db->pquery($sql, array($po_id));
 		}
 		//Backup deleted Vendors related Potentials.
-		$params = array($id, RB_RECORD_UPDATED, 'vtiger_crmentity', 'deleted', 'crmid', implode(",", $po_ids_list));
+		$params = array($id, RB_RECORD_UPDATED, $crmEntityTable1, 'deleted', 'crmid', implode(",", $po_ids_list));
 		$this->db->pquery('INSERT INTO vtiger_relatedlists_rb VALUES (?,?,?,?,?,?)', $params);
 
 		//Backup Product-Vendor Relation
