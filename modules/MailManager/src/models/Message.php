@@ -126,7 +126,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 			$this->_attachments['noname'.$partno. '.' .$p->subtype] = $data;
 		} elseif ($p->type==0 && $data) {
 			// TEXT
-			$this->_charset = $params['charset'];  // assume all parts are same charset
+			$this->_charset = substr($params['charset'], 0, 10);  // assume all parts are same charset
 			$data = self::__convert_encoding($data, 'UTF-8', $this->_charset);
 
 			// Messages may be split in different parts because of inline attachments,
@@ -217,7 +217,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 			$this->_date	= decode_html($resultrow['mdate']);
 			$this->_subject = str_replace('_', ' ', decode_html($resultrow['msubject']));
 			$this->_body    = decode_html($resultrow['mbody']);
-			$this->_charset = decode_html($resultrow['mcharset']);
+			$this->_charset = substr(decode_html($resultrow['mcharset']), 0, 10); // to cut -i in case it is there
 
 			$this->_isbodyhtml   = (int)$resultrow['misbodyhtml'] ? true : false;
 			$this->_plainmessage = $resultrow['mplainmessage'];
@@ -302,7 +302,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 		$params[] = $this->_date;
 		$params[] = $this->_subject;
 		$params[] = $this->_body;
-		$params[] = $this->_charset;
+		$params[] = substr($this->_charset, 0, 10);
 		$params[] = $this->_isbodyhtml;
 		$params[] = $this->_plainmessage;
 		$params[] = $this->_htmlmessage;

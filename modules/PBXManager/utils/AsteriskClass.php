@@ -17,8 +17,8 @@ class Asterisk {
 	public $password;
 	public $sock;
 	public $db;
-	public $log;
 	public $queue;
+	public $strData;
 
 	/**
 	 * this is the constructor of the class, it initializes the parameters of the class
@@ -31,7 +31,6 @@ class Asterisk {
 		$this->address = $server;
 		$this->port = $port;
 		$this->db = PearDatabase::getInstance();
-		$this->log = LoggerManager::getLogger('asterisk');
 		$this->queue = array();
 	}
 
@@ -50,13 +49,14 @@ class Asterisk {
 	 * @return - true on success else false
 	 */
 	public function authenticateUser() {
+		global $log;
 		$request = "Action: Login\r\n".
-					"Username: ".$this->userName."\r\n".
-					"Secret: ".$this->password.
+					'Username: '.$this->userName."\r\n".
+					'Secret: '.$this->password.
 					"\r\n\r\n";
 		if (!fwrite($this->sock, $request)) {
 			echo getTranslatedString('ERR_Authenticate', 'PBXManager');
-			$this->log->debug('< Asterisk:authenticateUser: Socket error, cannot send');
+			$log->debug('< Asterisk:authenticateUser: Socket error, cannot send');
 			exit(0);
 		}
 		sleep(1);	//wait for the response to come
@@ -64,7 +64,7 @@ class Asterisk {
 
 		if (strstr($response, 'Response') && (strstr($response, 'Error') || strstr($response, 'failed'))) {
 			print_r($response);
-			$this->log->debug('< Asterisk:authenticateUser: '.$response);
+			$log->debug('< Asterisk:authenticateUser: '.$response);
 			return false;
 		} else {
 			return true;
@@ -78,19 +78,21 @@ class Asterisk {
 	 * this function prepares the parameter $context and calls the createCall() function
 	 */
 	public function transfer($from, $to) {
-		$this->log->debug("> transfer $from, $to");
+		global $log;
+		$log->debug("> transfer $from, $to");
 		if (empty($from) || empty($to)) {
 			echo getTranslatedString('ERR_Numbers', 'PBXManager');
-			$this->log->debug('< transfer: Not sufficient parameters to create the call');
+			$log->debug('< transfer: Not sufficient parameters to create the call');
 			return false;
 		}
 
 		//the caller would always be a SIP phone in our case
-		if (!strstr($from, "SIP")) {
+		if (!strstr($from, 'SIP')) {
 			$from = "SIP/$from";
 		}
-		if (strpos($to, ":")!==false) {
-			$arr = explode(":", $to);
+		$typeCalled = '';
+		if (strpos($to, ':')!==false) {
+			$arr = explode(':', $to);
 			if (is_array($arr)) {
 				$typeCalled = $arr[0];
 				$to = trim($arr[1]);
@@ -117,17 +119,18 @@ class Asterisk {
 	 * @param string $context - the context of the call (e.g. local-extensions for local calls)
 	 */
 	public function createCall($from, $to, $context) {
-		$arr = explode("/", $from);
+		global $log;
+		$arr = explode('/', $from);
 		$request = "Action: Originate\r\n".
 					"Channel: $from\r\n".
-					"Exten: ".preg_replace('~[^0-9]~', "", $to)."\r\n".
+					'Exten: '.preg_replace('~[^0-9]~', '', $to)."\r\n".
 					"Context: $context\r\n".
 					"Priority: 1\r\n".
 					"Callerid: $arr[1]\r\n".
 					"Async: yes\r\n\r\n";
 		if (!fwrite($this->sock, $request)) {
 			echo getTranslatedString('ERR_Numbers', 'PBXManager');
-			$this->log->debug('< createcall: Socket error, cannot send');
+			$log->debug('< createcall: Socket error, cannot send');
 			exit(0);
 		}
 	}
@@ -160,7 +163,7 @@ class Asterisk {
 				$lines = explode("\r\n", $resp);
 				$obj = array();
 				foreach ($lines as $line) {
-					list($key, $value) = explode(":", $line);
+					list($key, $value) = explode(':', $line);
 					$obj[$key] = trim($value);
 				}
 				$this->queue[] = $obj;

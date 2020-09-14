@@ -780,6 +780,7 @@ $mod_strings = array(
 'vcylinder'=>'Vertical Cylinder',
 'LBL_SEND_EMAIL_TO_SENDER' => 'Send copy of email',
 'PASSWORD REQUIREMENTS' => 'PASSWORD REQUIREMENTS',
+'PASSWORD REQUIREMENTS NOT MET' => 'PASSWORD REQUIREMENTS NOT MET',
 'REQUIRED' => 'REQUIRED',
 'Min. 8 characters' => 'Minimum 8 characters',
 'Contains3of4' => 'PASSWORD CONTAINS AT LEAST THREE OF THE FOLLOWING FOUR CHARACTER GROUPS',

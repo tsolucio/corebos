@@ -233,6 +233,7 @@ $mod_strings = array (
 'LBL_SCHEDULE_EMAIL_DESCRIPTION'=>'Programma invio di un Report a intervalli regolari via mail ad un destinatario ',
 'LBL_USERS_AVAILABEL'=> 'Destinatari',
 'LBL_REPORT_FORMAT_PDF'=> 'PDF',
+'LBL_REPORT_FORMAT_CSV'=> 'CSV',
 'LBL_REPORT_FORMAT_URL'=> 'URL',
 'LBL_REPORT_FORMAT_EXCEL'=> 'EXCEL',
 'LBL_REPORT_FORMAT_BOTH'=> 'Entrambi',

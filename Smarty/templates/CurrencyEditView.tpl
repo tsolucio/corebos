@@ -8,7 +8,6 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 {assign var="MODULEICON" value='currency'}
 {if $ID neq ''}
 	{assign var="MODULESECTION" value='LBL_SETTINGS'|@getTranslatedString|cat:" "|cat:$APP.LBL_FOR|cat:" "|cat:$CURRENCY_NAME|@getTranslatedCurrencyString}

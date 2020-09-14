@@ -6,7 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contribuitor: Ranieri Slemer | 25-04-2020 | Translate Brazilian Portuguese | www.ecrmweb.com.br
+ * Contribuitor: Ranieri Slemer | 20-08-2020 | Translate Brazilian Portuguese | www.ecrmweb.com.br
  ********************************************************************************/
 
 $mod_strings = array(
@@ -34,8 +34,8 @@ $mod_strings = array(
 'currency code'=>'Código da Moeda',
 'currency symbol'=>'Símbolo',
 'conversion rate'=>'Taxa de câmbio',
-'currency status'=>'Estado da Moeda',
-'currency position'=>'Currency Position',
+'currency status'=>'Status da Moeda',
+'currency position'=>'Posição da moeda',
 'defaultid' => 'Default ID',
 'NTC_DELETE_CONFIRMATION'=>'Tem a certeza que deseja apagar este registo?',
 'LBL_PICKLIST_FIELD_SETTINGS'=>'Configurações do campo lista de opções:',
@@ -470,8 +470,8 @@ $mod_strings = array(
 'LBL_START_NOTIFICATION'=>'Notificação de começo do suporte',
 'LBL_ACTIVITY_NOTIFICATION'=>'Notificação/lembrete de evento',
 
-'LBL_TASK_NOTIFICATION_DESCRITPION'=>'Notificação quando uma tarefa está atrasada a mais de 24 h',
-'LBL_BIG_DEAL_DESCRIPTION'=>'Notificação quando existe um grande Negócio',
+'LBL_TASK_NOTIFICATION_DESCRITPION'=>'Notificação quando uma tarefa está atrasada a mais de 24h',
+'LBL_BIG_DEAL_DESCRIPTION'=>'Notificação quando existe um grande negócio',
 'LBL_TICKETS_DESCRIPTION'=>'Notificação para verificar tickets pendentes',
 'LBL_MANY_TICKETS_DESCRIPTION'=>'Notificação quando um usuário recebe muitos tickets, podendo afetar o desempenho do nível de serviço',
 'LBL_START_DESCRIPTION'=>'Notificação sobre a situação do início do suporte/serviço',

@@ -23,7 +23,7 @@ function googlecalsync($input) {
 	global $root_directory, $adb, $site_URL;
 	coreBOS_Session::init();
 	set_include_path($root_directory. 'modules/Calendar4You/');
-	require_once 'gcal/vendor/autoload.php';
+	require_once 'vendor/autoload.php';
 	$service="GoogleCalendar";
 
 	$q=$adb->pquery('select * from its4you_googlesync4you_access where userid=? and service=?', array($_SESSION['authenticated_user_id'],$service));

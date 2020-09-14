@@ -1287,6 +1287,7 @@ $app_strings = array(
 	long. For security reason, it has expired. Please reload the page by hitting CTRL + R or press reload below.',
 	'csrf_reload' => 'Reload the page',
 	'LBL_NOPRODUCTS' => 'Can\'t convert SalesOrder to Invoice because there aren\'t any remaining products to invoice.',
+	'VALIDATION_FAILED' => 'Validation failed',
 );
 
 // Translation for currency names

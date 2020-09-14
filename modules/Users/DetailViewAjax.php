@@ -31,13 +31,13 @@ if ($ajaxaction == 'DETAILVIEW') {
 		$userObj->column_fields[$fieldname] = $fieldvalue;
 
 		if ($fieldname=='asterisk_extension' && trim($fieldvalue)!='') {
-			$query = "select 1 from vtiger_asteriskextensions
+			$query = "select userid from vtiger_asteriskextensions
 				inner join vtiger_users on vtiger_users.id=vtiger_asteriskextensions.userid
 				where status='Active' and asterisk_extension =? and vtiger_users.id!=?";
 			$params = array(trim($fieldvalue),$userid);
 			$result = $adb->pquery($query, $params);
 			if ($adb->num_rows($result) > 0) {
-				echo ':#:ERR'.$mod_strings['LBL_ASTERISKEXTENSIONS_EXIST'].$mod_strings['LBL_FORUSER'].getUserFullName($userid);
+				echo ':#:ERR'.$mod_strings['LBL_ASTERISKEXTENSIONS_EXIST'].$mod_strings['LBL_FORUSER'].getUserFullName($result->fields['userid']);
 				return false;
 			}
 		}

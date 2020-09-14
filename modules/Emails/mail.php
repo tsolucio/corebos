@@ -49,7 +49,22 @@ require_once 'include/utils/CommonUtils.php';
  * $qrScan     - if we should load qrcode images from cache directory   <img src="cid:qrcode{$fname}" />
  * $brScan     - if we should load barcode images from cache directory   <img src="cid:barcode{$fname}" />
  */
-function send_mail($module, $to_email, $from_name, $from_email, $subject, $contents, $cc = '', $bcc = '', $attachment = '', $emailid = '', $logo = '', $replyto = '', $qrScan = '', $brScan = '') {
+function send_mail(
+	$module,
+	$to_email,
+	$from_name,
+	$from_email,
+	$subject,
+	$contents,
+	$cc = '',
+	$bcc = '',
+	$attachment = '',
+	$emailid = '',
+	$logo = '',
+	$replyto = '',
+	$qrScan = '',
+	$brScan = ''
+) {
 	global $adb;
 	$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
 
@@ -124,11 +139,20 @@ function send_mail($module, $to_email, $from_name, $from_email, $subject, $conte
 		$contents = getMergedDescription($contents, $adb->query_result($rs, 0, 'id'), 'Users');
 	}
 
-	list($systemEmailClassName, $systemEmailClassPath) = cbEventHandler::do_filter('corebos.filter.systemEmailClass.getname', array('Emails', 'modules/Emails/Emails.php'));
+	list($systemEmailClassName, $systemEmailClassPath) = cbEventHandler::do_filter(
+		'corebos.filter.systemEmailClass.getname',
+		array('Emails', 'modules/Emails/Emails.php')
+	);
 	require_once $systemEmailClassPath;
 	if (!call_user_func(array($systemEmailClassName, 'useEmailHook'))) {
 		$systemEmailClassName = 'Emails'; // default system method
 	}
+
+	if (GlobalVariable::getVariable('Debug_Email_Send_To_Inbucket', 0)) {
+		$systemEmailClassName = 'Emails';
+		$systemEmailClassPath = 'modules/Emails/Emails.php';
+	}
+
 	return call_user_func_array(
 		array($systemEmailClassName, 'sendEMail'),
 		array(
@@ -414,7 +438,7 @@ function addAttachment($mail, $filename, $record) {
 		if (count($parts)>0 && is_numeric($parts[0])) {
 			$name = substr($bn, strlen($parts[0])+1);
 		} else {
-			$name = $filename;
+			$name = $bn;
 		}
 		$mail->AddAttachment($root_directory.$filename, $name);
 	} elseif (is_numeric($filename)) {

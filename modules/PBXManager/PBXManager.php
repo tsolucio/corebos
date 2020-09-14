@@ -11,13 +11,10 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class PBXManager extends CRMEntity {
-	public $db;
-	public $log;
-
 	public $table_name = 'vtiger_pbxmanager';
 	public $table_index= 'pbxmanagerid';
 	public $column_fields = array();
-
+	public $db;
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = false;
 	public $HasDirectImageField = false;
@@ -75,10 +72,9 @@ class PBXManager extends CRMEntity {
 	public $default_sort_order='DESC';
 
 	public function __construct() {
-		global $log, $currentModule;
+		global $currentModule;
 		$this->column_fields = getColumnFields($currentModule);
 		$this->db = PearDatabase::getInstance();
-		$this->log = $log;
 	}
 
 	public function save_module($module) {

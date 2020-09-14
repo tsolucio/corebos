@@ -156,7 +156,7 @@ class Vtiger_Filter {
 		);
 		$adb->pquery("INSERT INTO vtiger_cvcolumnlist(cvid,columnindex,columnname) VALUES(?,?,?)", array($this->id, $index, $cvcolvalue));
 
-		$this->log("Adding $fieldInstance->name to $this->name filter ... DONE");
+		self::log("Adding $fieldInstance->name to $this->name filter ... DONE");
 		return $this;
 	}
 
@@ -227,8 +227,12 @@ class Vtiger_Filter {
 				$comparator = 'DOES_NOT_START_WITH';
 			} elseif ($comparator == 'dnew') {
 				$comparator = 'DOES_NOT_END_WITH';
+			} elseif ($comparator == 'sx') {
+				$comparator = 'SOUNDEX';
 			} elseif ($comparator == 'c') {
 				$comparator = 'CONTAINS';
+			} elseif ($comparator == 'rgxp') {
+				$comparator = 'REGEXP';
 			} elseif ($comparator == 'k') {
 				$comparator = 'DOES_NOT_CONTAINS';
 			} elseif ($comparator == 'l') {
@@ -254,8 +258,12 @@ class Vtiger_Filter {
 				$comparator = 'dnsw';
 			} elseif ($comparator == 'DOES_NOT_END_WITH') {
 				$comparator = 'dnew';
+			} elseif ($comparator == 'SOUNDEX') {
+				$comparator = 'sx';
 			} elseif ($comparator == 'CONTAINS') {
 				$comparator = 'c';
+			} elseif ($comparator == 'REGEXP') {
+				$comparator = 'rgxp';
 			} elseif ($comparator == 'DOES_NOT_CONTAINS') {
 				$comparator = 'k';
 			} elseif ($comparator == 'LESS_THAN') {

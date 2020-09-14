@@ -46,13 +46,15 @@ class changeStatusTaxHandler extends VTEventHandler {
 			require_once 'vtlib/Vtiger/Module.php';
 
 			$r = $adb->pquery('SELECT taxid FROM vtiger_inventorytaxinfo WHERE taxname = ?', array($eventData['tax_name']));
-			$taxid = $adb->query_result($r, 0, 'taxid');
-			$fieldname = 'id_tax' . $taxid . '_perc';
+			if ($r && $adb->num_rows($r)>0) {
+				$taxid = $adb->query_result($r, 0, 'taxid');
+				$fieldname = 'id_tax' . $taxid . '_perc';
 
-			$mod = Vtiger_Module::getInstance('InventoryDetails');
-			$field = Vtiger_Field::getInstance($fieldname, $mod);
-			$field->presence = $eventData['status'] == 'disabled' ? 1 : 2;
-			$field->save();
+				$mod = Vtiger_Module::getInstance('InventoryDetails');
+				$field = Vtiger_Field::getInstance($fieldname, $mod);
+				$field->presence = $eventData['status'] == 'disabled' ? 1 : 2;
+				$field->save();
+			}
 		}
 	}
 }
@@ -66,17 +68,19 @@ class changeLabelTaxHandler extends VTEventHandler {
 			require_once 'vtlib/Vtiger/Module.php';
 
 			$r = $adb->pquery('SELECT taxid FROM vtiger_inventorytaxinfo WHERE taxlabel = ?', array($eventData['new_label']));
-			$taxid = $adb->query_result($r, 0, 'taxid');
-			$fieldname = 'id_tax' . $taxid . '_perc';
+			if ($r && $adb->num_rows($r)>0) {
+				$taxid = $adb->query_result($r, 0, 'taxid');
+				$fieldname = 'id_tax' . $taxid . '_perc';
 
-			$r = $adb->pquery('SELECT presence FROM vtiger_field WHERE fieldname = ?', array($fieldname));
-			$presence = $adb->query_result($r, 0, 'presence');
+				$r = $adb->pquery('SELECT presence FROM vtiger_field WHERE fieldname = ?', array($fieldname));
+				$presence = $adb->query_result($r, 0, 'presence');
 
-			$mod = Vtiger_Module::getInstance('InventoryDetails');
-			$field = Vtiger_Field::getInstance($fieldname, $mod);
-			$field->label = $eventData['new_label'];
-			$field->presence = $presence;
-			$field->save();
+				$mod = Vtiger_Module::getInstance('InventoryDetails');
+				$field = Vtiger_Field::getInstance($fieldname, $mod);
+				$field->label = $eventData['new_label'];
+				$field->presence = $presence;
+				$field->save();
+			}
 		}
 	}
 }

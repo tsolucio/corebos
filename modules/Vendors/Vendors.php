@@ -12,7 +12,6 @@ require_once 'data/Tracker.php';
 
 class Vendors extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_vendor';
 	public $table_index= 'vendorid';
@@ -135,8 +134,7 @@ class Vendors extends CRMEntity {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module).
 					"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
 					"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',".
-					"'width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). ' '.
-					getTranslatedString($related_module, $related_module) ."'>&nbsp;";
+					"cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT').' '.getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
@@ -206,8 +204,7 @@ class Vendors extends CRMEntity {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT').' '.getTranslatedString($related_module, $related_module).
 					"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
 					"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',".
-					"'width=640,height=602,resizable=0,scrollbars=0');\" value='".getTranslatedString('LBL_SELECT').' '.
-					getTranslatedString($related_module, $related_module) ."'>&nbsp;";
+					"cbPopupWindowSettings);\" value='".getTranslatedString('LBL_SELECT').' '.getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);

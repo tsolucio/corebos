@@ -28,17 +28,6 @@ function getViewsByModule($module, $user) {
 	if (!$meta->isModuleEntity()) {
 		throw new WebServiceException('INVALID_MODULE', "Given module ($module) cannot be found");
 	}
-
-	// check permission on module
-	$entityName = $meta->getEntityName();
-	$types = vtws_listtypes(null, $user);
-	if (!in_array($entityName, $types['types'])) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to perform the operation on module ($mainModule) is denied");
-	}
-
-	if (!$meta->hasReadAccess()) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read module is denied');
-	}
 	if ($module=='Users') {
 		return array(
 			'filters'=>array(array(
@@ -56,6 +45,17 @@ function getViewsByModule($module, $user) {
 			'linkfields'=>array('first_name', 'last_name'),
 			'pagesize' => intval(GlobalVariable::getVariable('Application_ListView_PageSize', 20, $module)),
 		);
+	}
+
+	// check permission on module
+	$entityName = $meta->getEntityName();
+	$types = vtws_listtypes(null, $user);
+	if (!in_array($entityName, $types['types'])) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to perform the operation on module ($mainModule) is denied");
+	}
+
+	if (!$meta->hasReadAccess()) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read module is denied');
 	}
 	$focus = CRMEntity::getInstance($module);
 	$linkfields=array($focus->list_link_field);

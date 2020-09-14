@@ -25,7 +25,7 @@ if (isset($_REQUEST['save_tax']) && $_REQUEST['save_tax'] == 'true') {
 		$retention = isset($_REQUEST[$tax_details[$i]['taxname'].'retention']) ? vtlib_purify($_REQUEST[$tax_details[$i]['taxname'].'retention']) : '';
 		$retention = ($retention=='on' ? 1 : 0);
 		$new_retentions[$tax_details[$i]['taxid']] = $retention;
-		$new_percentages[$tax_details[$i]['taxid']] = vtlib_purify($_REQUEST[$tax_details[$i]['taxname']]);
+		$new_percentages[$tax_details[$i]['taxid']] = isset($_REQUEST[$tax_details[$i]['taxname']]) ? vtlib_purify($_REQUEST[$tax_details[$i]['taxname']]) : 0;
 		$new_cfields[$tax_details[$i]['taxid']] = array(
 			isset($_REQUEST[$tax_details[$i]['taxname'].'default']) ? ($_REQUEST[$tax_details[$i]['taxname'].'default']=='on' ? 1 : 0) : 0,
 			isset($_REQUEST[$tax_details[$i]['taxname'].'qcreate']) ? ($_REQUEST[$tax_details[$i]['taxname'].'qcreate']=='on' ? 1 : 0) : '0',
@@ -39,7 +39,7 @@ if (isset($_REQUEST['save_tax']) && $_REQUEST['save_tax'] == 'true') {
 } elseif (isset($_REQUEST['sh_save_tax']) && $_REQUEST['sh_save_tax'] == 'true') {
 	for ($i=0; $i<count($sh_tax_details); $i++) {
 		$new_labels[$sh_tax_details[$i]['taxid']] = vtlib_purify($_REQUEST[bin2hex($sh_tax_details[$i]['taxlabel'])]);
-		$new_percentages[$sh_tax_details[$i]['taxid']] = vtlib_purify($_REQUEST[$sh_tax_details[$i]['taxname']]);
+		$new_percentages[$sh_tax_details[$i]['taxid']] = vtlib_purify($_REQUEST[str_replace(' ', '_', $sh_tax_details[$i]['taxname'])]);
 	}
 	updateTaxPercentages($new_percentages, 'sh');
 	echo updateTaxLabels($new_labels, 'sh');
@@ -173,9 +173,9 @@ function updateTaxLabels($new_labels, $sh = '') {
 		if ($new_val != '') {
 			//First we will check whether the tax is already available or not
 			if ($sh != '' && $sh == 'sh') {
-				$check_query = 'select taxlabel from vtiger_shippingtaxinfo where taxlabel = ? and taxid != ?';
+				$check_query = 'select taxname,taxlabel from vtiger_shippingtaxinfo where taxlabel=? and taxid != ?';
 			} else {
-				$check_query = 'select taxlabel from vtiger_inventorytaxinfo where taxlabel = ? and taxid != ?';
+				$check_query = 'select taxname,taxlabel from vtiger_inventorytaxinfo where taxlabel=? and taxid != ?';
 			}
 			$check_res = $adb->pquery($check_query, array($new_val, $taxid));
 
@@ -194,6 +194,7 @@ function updateTaxLabels($new_labels, $sh = '') {
 			$event_data = array(
 				'tax_type' => $sh == 'sh' ? 'sh' : 'tax',
 				'tax_id' => $taxid,
+				'tax_name' => $adb->query_result($check_res, 0, 'taxname'),
 				'new_label' => $new_val
 			);
 			cbEventHandler::do_action('corebos.changelabel.tax', $event_data);
@@ -332,13 +333,14 @@ function changeDeleted($taxname, $deleted, $sh = '') {
 	$log->debug("> changeDeleted $taxname, $deleted, $sh");
 
 	if ($sh == 'sh') {
-		$adb->pquery("update vtiger_shippingtaxinfo set deleted=? where taxname=?", array($deleted, $taxname));
+		$adb->pquery('update vtiger_shippingtaxinfo set deleted=? where taxname=?', array($deleted, $taxname));
 	} else {
-		$adb->pquery("update vtiger_inventorytaxinfo set deleted=? where taxname=?", array($deleted, $taxname));
+		$adb->pquery('update vtiger_inventorytaxinfo set deleted=? where taxname=?', array($deleted, $taxname));
 	}
 	$event_data = array(
 		'tax_type' => $sh == 'sh' ? 'sh' : 'tax',
 		'tax_name' => $taxname,
+		'tax_id' => vtlib_purify(($_REQUEST['taxid'])),
 		'status' => $deleted == 1 ? 'disabled' : 'enabled'
 	);
 	cbEventHandler::do_action('corebos.changestatus.tax', $event_data);

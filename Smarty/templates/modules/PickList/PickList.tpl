@@ -8,7 +8,6 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script type="text/javascript" src="include/js/picklist.js"></script>
 <script src="modules/Home/Homestuff.js" type="text/javascript"></script>
 {include file='SetMenu.tpl'}

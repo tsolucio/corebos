@@ -74,9 +74,16 @@ while ($r = $fldnecol->FetchRow()) {
 	$fnec[$r['mfld']] = $r['columnname'];
 }
 $smarty->assign('fieldNEcolumn', json_encode($fnec));
+
 $_REQUEST['fieldsmodule'] = $focus->column_fields['qmodule'];
 $smarty->assign('fieldTableRelation', json_encode(mapactions_Action::getFieldTablesForModule(true)));
-$smarty->assign('rel1tom', GetRelatedModulesOneToMany($focus->column_fields['qmodule'], $current_user));
+if (!empty($_REQUEST['record'])) {
+	try {
+		$smarty->assign('rel1tom', GetRelatedModulesOneToMany($focus->column_fields['qmodule'], $current_user));
+	} catch (\Throwable $th) {
+		$smarty->assign('rel1tom', '');
+	}
+}
 $actormodules = $adb->query('SELECT name FROM vtiger_ws_entity WHERE handler_path="include/Webservices/VtigerActorOperation.php"');
 $amods = $amodsi18n = array();
 while ($r = $actormodules->FetchRow()) {
@@ -84,7 +91,7 @@ while ($r = $actormodules->FetchRow()) {
 	$amodsi18n[] = array(
 		getTranslatedString($r['name'], $r['name']),
 		$r['name'],
-		''
+		($focus->column_fields['qmodule'] == $r['name'] ? 'selected' : '')
 	);
 }
 $smarty->assign('actorModules', json_encode($amods));
@@ -98,7 +105,7 @@ $smarty->assign('WSID', vtws_getEntityId('cbQuestion').'x');
 $smarty->assign('ID', $focus->id);
 $smarty->assign('RECORDID', $focus->id);
 $smarty->assign('MODE', $focus->mode);
-$smarty->assign('MODULES', array_merge(getPicklistValuesSpecialUitypes('1613', '', $module), $amodsi18n));
+$smarty->assign('MODULES', array_merge(getPicklistValuesSpecialUitypes('1613', '', $focus->column_fields['qmodule']), $amodsi18n));
 $smarty->assign('targetmodule', $focus->column_fields['qmodule']);
 $smarty->assign('bqname', $focus->column_fields['qname']);
 $smarty->assign('bqcollection', $focus->column_fields['qcollection']);

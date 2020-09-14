@@ -11,9 +11,6 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class cbCalendar extends CRMEntity {
-	public $db;
-	public $log;
-
 	public $table_name = 'vtiger_activity';
 	public $table_index= 'activityid';
 	public $reminder_table = 'vtiger_activity_reminder';
@@ -163,7 +160,7 @@ class cbCalendar extends CRMEntity {
 
 		//Inserting into sales man activity rel
 		$this->insertIntoSmActivityRel();
-		$this->insertIntoActivityReminderPopup('Calendar');
+		$this->insertIntoActivityReminderPopup('cbCalendar');
 		if (isset($_REQUEST['recurringcheck']) && $_REQUEST['recurringcheck']) {
 			unset($_REQUEST['recurringcheck']);
 			$this->column_fields['parent_id'] = $this->column_fields['rel_id'];
@@ -279,7 +276,7 @@ class cbCalendar extends CRMEntity {
 			if ($noofrows > 0) {
 				$recur_id = $adb->query_result($result, 0, 'recurid');
 			}
-			$current_id =$recur_id+1;
+			$current_id =(int)$recur_id+1;
 			$recurring_insert = 'insert into vtiger_recurringevents values (?,?,?,?,?,?)';
 			$rec_params = array($current_id, $this->id, $st_date, $type, $recur_freq, $recurringinfo);
 			$adb->pquery($recurring_insert, $rec_params);
@@ -360,29 +357,29 @@ class cbCalendar extends CRMEntity {
 	 * @param  string    $remindermode    - string like 'edit'
 	 */
 	public function activity_reminder($activity_id, $reminder_time, $reminder_sent = 0, $recurid = 0, $remindermode = '') {
-		global $log;
+		global $log, $adb;
 		$log->debug('> activity_reminder '.$activity_id.','.$reminder_time.','.$reminder_sent.','.$recurid.','.$remindermode);
 		// Check for activityid already present in the reminder_table
 		$query_exist = "SELECT activity_id FROM ".$this->reminder_table." WHERE activity_id = ?";
-		$result_exist = $this->db->pquery($query_exist, array($activity_id));
+		$result_exist = $adb->pquery($query_exist, array($activity_id));
 
 		if ($remindermode == 'edit') {
-			if ($this->db->num_rows($result_exist) > 0) {
+			if ($adb->num_rows($result_exist) > 0) {
 				$query = 'UPDATE '.$this->reminder_table.' SET reminder_sent = ?, reminder_time = ? WHERE activity_id =?';
 				$params = array($reminder_sent, $reminder_time, $activity_id);
 			} else {
 				$query = "INSERT INTO ".$this->reminder_table." VALUES (?,?,?,?)";
 				$params = array($activity_id, $reminder_time, 0, $recurid);
 			}
-			$this->db->pquery($query, $params, true, "Error in processing table $this->reminder_table");
-		} elseif (($remindermode == 'delete') && ($this->db->num_rows($result_exist) > 0)) {
+			$adb->pquery($query, $params, true, "Error in processing table $this->reminder_table");
+		} elseif (($remindermode == 'delete') && ($adb->num_rows($result_exist) > 0)) {
 			$query = "DELETE FROM ".$this->reminder_table." WHERE activity_id = ?";
 			$params = array($activity_id);
-			$this->db->pquery($query, $params, true, "Error in processing table $this->reminder_table");
-		} elseif ($this->db->num_rows($result_exist) == 0) {
+			$adb->pquery($query, $params, true, "Error in processing table $this->reminder_table");
+		} elseif ($adb->num_rows($result_exist) == 0) {
 			$query = "INSERT INTO ".$this->reminder_table." VALUES (?,?,?,?)";
 			$params = array($activity_id, $reminder_time, 0, $recurid);
-			$this->db->pquery($query, $params, true, "Error in processing table $this->reminder_table");
+			$adb->pquery($query, $params, true, "Error in processing table $this->reminder_table");
 		}
 		$log->debug('< vtiger_activity_reminder');
 	}
@@ -580,7 +577,7 @@ class cbCalendar extends CRMEntity {
 					$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
 					$button .= "<input title='" . getTranslatedString('LBL_SELECT') . " " . $singular_modname . "' class='crmbutton small edit' ".
 						"type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview".
-						"&select=enable&form=EditView&form_submit=false&recordid=$id','test','width=640,height=602,resizable=0,scrollbars=0');\" ".
+						"&select=enable&form=EditView&form_submit=false&recordid=$id', 'test', cbPopupWindowSettings);\" ".
 						"value='" . getTranslatedString('LBL_SELECT') . " " . $singular_modname . "'>&nbsp;";
 				}
 			}

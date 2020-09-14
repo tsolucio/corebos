@@ -233,6 +233,7 @@ $mod_strings = array(
 	'LBL_USERS_AVAILABEL' => 'Recipients',
 	'LBL_REPORT_FORMAT_PDF' => 'PDF',
 	'LBL_REPORT_FORMAT_URL'=> 'URL',
+	'LBL_REPORT_FORMAT_CSV'=> 'CSV',
 	'LBL_REPORT_FORMAT_EXCEL' => 'Excel',
 	'LBL_REPORT_FORMAT_BOTH' => 'Both',
 	'LBL_REPORT_FORMAT' => 'Report format',

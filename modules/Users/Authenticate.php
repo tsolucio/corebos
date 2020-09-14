@@ -53,11 +53,9 @@ if ($focus->is_authenticated() && $focus->is_twofaauthenticated()) {
 	cbEventHandler::do_action('corebos.audit.authenticate', array($focus->id, 'Users', 'Authenticate', $focus->id, date('Y-m-d H:i:s')));
 
 	// Recording the login info
-	$usip = Vtiger_Request::get_ip();
-	$intime=date('Y/m/d H:i:s');
 	require_once 'modules/Users/LoginHistory.php';
 	$loghistory=new LoginHistory();
-	$Signin = $loghistory->user_login($focus->column_fields['user_name'], $usip, $intime);
+	$loghistory->user_login($focus->column_fields['user_name'], Vtiger_Request::get_ip(), date('Y/m/d H:i:s'));
 
 	require_once 'include/utils/UserInfoUtil.php';
 	UserPrivilegesWriter::setUserPrivileges($focus->id);
@@ -91,6 +89,7 @@ if ($focus->is_authenticated() && $focus->is_twofaauthenticated()) {
 
 	coreBOS_Session::set('vtiger_authenticated_user_theme', $authenticated_user_theme);
 	coreBOS_Session::set('authenticated_user_language', $authenticated_user_language);
+	cbEventHandler::do_action('corebos.login', array($focus));
 
 	$log->debug("authenticated_user_theme is $authenticated_user_theme");
 	$log->debug("authenticated_user_language is $authenticated_user_language");

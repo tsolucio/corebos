@@ -11,9 +11,6 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class Services extends CRMEntity {
-	public $db;
-	public $log;
-
 	public $table_name = 'vtiger_service';
 	public $table_index= 'serviceid';
 	public $column_fields = array();
@@ -221,12 +218,13 @@ class Services extends CRMEntity {
 	}
 
 	public function updateUnitPrice() {
-		$prod_res = $this->db->pquery('select unit_price, currency_id from vtiger_service where serviceid=?', array($this->id));
-		$prod_unit_price = $this->db->query_result($prod_res, 0, 'unit_price');
-		$prod_base_currency = $this->db->query_result($prod_res, 0, 'currency_id');
+		global $adb;
+		$prod_res = $adb->pquery('select unit_price, currency_id from vtiger_service where serviceid=?', array($this->id));
+		$prod_unit_price = $adb->query_result($prod_res, 0, 'unit_price');
+		$prod_base_currency = $adb->query_result($prod_res, 0, 'currency_id');
 		$query = 'update vtiger_productcurrencyrel set actual_price=? where productid=? and currencyid=?';
 		$params = array($prod_unit_price, $this->id, $prod_base_currency);
-		$this->db->pquery($query, $params);
+		$adb->pquery($query, $params);
 	}
 
 	/**
@@ -278,7 +276,10 @@ class Services extends CRMEntity {
 				$actions = explode(',', strtoupper($actions));
 			}
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module). "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
+				$button .= "<input title='".getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module)
+					."' class='crmbutton small edit' type='button' "
+					."onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab', 'test', cbPopupWindowSettings);\""
+					." value='". getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
@@ -349,7 +350,10 @@ class Services extends CRMEntity {
 				$actions = explode(',', strtoupper($actions));
 			}
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module). "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
+				$button .= "<input title='".getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module)
+					."' class='crmbutton small edit' type='button'"
+					." onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab', 'test', cbPopupWindowSettings);\""
+					." value='". getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
@@ -413,7 +417,9 @@ class Services extends CRMEntity {
 				$actions = explode(',', strtoupper($actions));
 			}
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module). "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
+				$button .= "<input title='".getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module)
+					."' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab', 'test', cbPopupWindowSettings);\""
+					." value='". getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
@@ -481,7 +487,9 @@ class Services extends CRMEntity {
 				$actions = explode(',', strtoupper($actions));
 			}
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module). "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
+				$button .= "<input title='".getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module)
+					."' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab', 'test', cbPopupWindowSettings);\""
+					." value='". getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
@@ -818,7 +826,8 @@ class Services extends CRMEntity {
 
 	// Function to unlink all the dependent entities of the given Entity by Id
 	public function unlinkDependencies($module, $id) {
-		$this->db->pquery('DELETE from vtiger_seproductsrel WHERE productid=? or crmid=?', array($id, $id));
+		global $adb;
+		$adb->pquery('DELETE from vtiger_seproductsrel WHERE productid=? or crmid=?', array($id, $id));
 		parent::unlinkDependencies($module, $id);
 	}
 

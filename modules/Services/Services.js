@@ -231,16 +231,76 @@ function fnAddServiceRow(module, image_path) {
 	temp+='" onChange="setDiscount(this,'+count+')" value=""/><br>';
 	colfour.innerHTML=temp;
 	//List Price with Discount, Total after Discount and Tax labels
-	colfive.className = 'crmTableRow small';
-	colfive.innerHTML='<table width="100%" cellpadding="0" cellspacing="0"><tr><td align="right"><input id="listPrice'+count+'" name="listPrice'+count+'" value="0.00" type="text" class="small" style="width:70px" onBlur="calcTotal();setDiscount(this,'+count+');callTaxCalc('+count+'); calcTotal();"'+(Inventory_ListPrice_ReadOnly==1 ? ' readonly ' : '')+'/>&nbsp;<img src="themes/images/pricebook.gif" onclick="priceBookPickList(this,'+count+')"></td></tr><tr><td align="right" style="padding:5px;" nowrap>		(-)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,\'discount_div'+count+'\',\'discount\','+count+')" >'+product_labelarr.DISCOUNT+'</a> : </b><div class=\"discountUI\" id=\"discount_div'+count+'"><input type="hidden" id="discount_type'+count+'" name="discount_type'+count+'" value=""><table width="100%" border="0" cellpadding="5" cellspacing="0" class="small"><tr><td id="discount_div_title'+count+'" nowrap align="left" ></td><td align="right"><img src="themes/images/close.gif" border="0" onClick="fnhide(\'discount_div'+count+'\')" style="cursor:pointer;"></td></tr><tr><td align="left" class="lineOnTop"><input type="radio" name="discount'+count+'" checked onclick="setDiscount(this,'+count+'); callTaxCalc('+count+');calcTotal();">&nbsp; '+product_labelarr.ZERO_DISCOUNT+'</td><td class="lineOnTop">&nbsp;</td></tr><tr><td align="left"><input type="radio" name="discount'+count+'" onclick="setDiscount(this,'+count+'); callTaxCalc('+count+');calcTotal();">&nbsp; % '+product_labelarr.PERCENT_OF_PRICE+' </td><td align="right"><input type="text" class="small" size="2" id="discount_percentage'+count+'" name="discount_percentage'+count+'" value="0" style="visibility:hidden" onBlur="setDiscount(this,'+count+'); callTaxCalc('+count+');calcTotal();">&nbsp;%</td></tr><tr><td align="left" nowrap><input type="radio" name="discount'+count+'" onclick="setDiscount(this,'+count+'); callTaxCalc('+count+');calcTotal();">&nbsp; '+product_labelarr.DIRECT_PRICE_REDUCTION+'</td><td align="right"><input type="text" id="discount_amount'+count+'" name="discount_amount'+count+'" size="5" value="0" style="visibility:hidden" onBlur="setDiscount(this,'+count+'); callTaxCalc('+count+');calcTotal();"></td></tr></table></div></td></tr><tr> <td align="right" style="padding:5px;" nowrap><b>'+product_labelarr.TOTAL_AFTER_DISCOUNT+' :</b></td></tr><tr id="individual_tax_row'+count+'" class="TaxShow"><td align="right" style="padding:5px;" nowrap>(+)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,\'tax_div'+count+'\',\'tax\','+count+')" >'+product_labelarr.TAX+' </a> : </b><div class="discountUI" id="tax_div'+count+'"></div></td></tr></table> ';
+	colfive.className = 'crmTableRow small inv-editview__pricecol';
+	colfive.innerHTML=`<table class="slds-table slds-table_cell-buffer"><tbody>
+		<tr>
+			<td style="padding:5px;">
+				<input id="listPrice${count}" name="listPrice${count}" value="0.00" type="text" class="small" style="width:70px" onBlur="calcTotal();setDiscount(this,${count});callTaxCalc(${count}); calcTotal();"${(Inventory_ListPrice_ReadOnly==1 ? ' readonly ' : '')}/>&nbsp;<img src="themes/images/pricebook.gif" onclick="priceBookPickList(this,${count})">
+			</td>
+		</tr>
+		<tr>
+			<td style="padding:5px;" nowrap>
+				(-)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,'discount_div${count}','discount',${count})" >${product_labelarr.DISCOUNT}</a> : </b>
+				<div class="discountUI" id="discount_div${count}">
+					<input type="hidden" id="discount_type${count}" name="discount_type${count}" value="">
+					<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
+					<table class="slds-table slds-table_cell-buffer slds-table_bordered">
+					<thead>
+						<tr class="slds-line-height_reset">
+						<th id="discount_div_title${count}" class="slds-p-left_none" scope="col"></th>
+						<th class="cblds-t-align_right slds-p-right_none" scope="col"><img src="themes/images/close.gif" border="0" onClick="fnhide('discount_div${count}')" style="cursor:pointer;"></th>
+						</tr>
+					</thead>
+					<tbody>
+					<tr>
+						<td class="lineOnTop" style="padding-left: 4px; text-align: left !important;">
+							<input type="radio" name="discount${count}" checked onclick="setDiscount(this,${count}); callTaxCalc(${count});calcTotal();">&nbsp; ${product_labelarr.ZERO_DISCOUNT}
+						</td>
+						<td class="lineOnTop">&nbsp;</td>
+					</tr>
+					<tr>
+						<td style="padding-left: 4px; text-align: left !important;">
+							<input type="radio" name="discount${count}" onclick="setDiscount(this,${count}); callTaxCalc(${count});calcTotal();">&nbsp; % ${product_labelarr.PERCENT_OF_PRICE}
+						</td>
+						<td style="padding-left: 2px; padding-right: 4px;">
+							<input type="text" class="small" size="2" id="discount_percentage${count}" name="discount_percentage${count}" value="0" style="visibility:hidden" onBlur="setDiscount(this,${count}); callTaxCalc(${count});calcTotal();">&nbsp;%
+						</td>
+					</tr>
+					<tr>
+						<td nowrap style="padding-left: 4px; text-align: left !important;">
+							<input type="radio" name="discount${count}" onclick="setDiscount(this,${count}); callTaxCalc(${count});calcTotal();">&nbsp; ${product_labelarr.DIRECT_PRICE_REDUCTION}
+						</td>
+						<td style="padding-left: 2px; padding-right: 4px;">
+							<input type="text" id="discount_amount${count}" name="discount_amount${count}" size="5" value="0" style="visibility:hidden" onBlur="setDiscount(this,${count}); callTaxCalc(${count});calcTotal();">
+						</td>
+					</tr>
+					</table>
+				</div>
+			</td>
+			</tr>
+			<tr>
+				<td style="padding:5px;" nowrap><b>${product_labelarr.TOTAL_AFTER_DISCOUNT} :</b></td>
+			</tr>
+			<tr id="individual_tax_row${count}" class="TaxShow">
+				<td style="padding:5px;" nowrap>
+					(+)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,'tax_div${count}','tax',${count})" >${product_labelarr.TAX} </a> : </b>
+					<div class="discountUI" id="tax_div${count}"></div>
+			</td>
+		</tr>
+		</tbody>
+		</table>`;
 
 	//Total and Discount, Total after Discount and Tax details
-	colsix.className = 'crmTableRow small';
-	colsix.innerHTML = '<table width="100%" cellpadding="5" cellspacing="0"><tr><td id="productTotal'+count+'" align="right">&nbsp;</td></tr><tr><td id="discountTotal'+count+'" align="right">0.00</td></tr><tr><td id="totalAfterDiscount'+count+'" align="right">&nbsp;</td></tr><tr><td id="taxTotal'+count+'" align="right">0.00</td></tr></table>';
+	colsix.className = 'crmTableRow small inv-editview__totalscol';
+	colsix.innerHTML = `<table class="slds-table slds-table_cell-buffer"><tbody>
+		<tr><td id="productTotal${count}" style="padding-top:6px;">&nbsp;</td></tr>
+		<tr><td id="discountTotal${count}" style="padding-top:6px;">0.00</td></tr>
+		<tr><td id="totalAfterDiscount${count}" style="padding-top:6px;">&nbsp;</td></tr>
+		<tr><td id="taxTotal${count}" style="padding-top:6px;">0.00</td></tr>
+		</tbody></table>`;
 
 	//Net Price
-	colseven.className = 'crmTableRow small';
-	colseven.align = 'right';
+	colseven.className = 'crmTableRow small inv-editview__netpricecol';
 	colseven.style.verticalAlign = 'bottom';
 	colseven.innerHTML = '<span id="netPrice'+count+'"><b>&nbsp;</b></span>';
 
@@ -267,8 +327,8 @@ function servicePickList(currObj, module, row_no) {
 	var record_id = '';
 	var additionalinfo = getInventoryModuleTaxRelatedInformation();
 	if (record_id != '') {
-		window.open('index.php?module=Services&action=Popup&html=Popup_picker&select=enable&form=HelpDeskEditView&popuptype=inventory_service&curr_row='+rowId+'&relmod_id='+record_id+'&parent_module=Accounts&return_module='+module+'&currencyid='+currencyid+additionalinfo, 'productWin', 'width=640,height=600,resizable=0,scrollbars=0,status=1,top=150,left=200');
+		window.open('index.php?module=Services&action=Popup&html=Popup_picker&select=enable&form=HelpDeskEditView&popuptype=inventory_service&curr_row='+rowId+'&relmod_id='+record_id+'&parent_module=Accounts&return_module='+module+'&currencyid='+currencyid+additionalinfo, 'productWin', cbPopupWindowSettings);
 	} else {
-		window.open('index.php?module=Services&action=Popup&html=Popup_picker&select=enable&form=HelpDeskEditView&popuptype=inventory_service&curr_row='+rowId+'&return_module='+module+'&currencyid='+currencyid+additionalinfo, 'productWin', 'width=640,height=600,resizable=0,scrollbars=0,status=1,top=150,left=200');
+		window.open('index.php?module=Services&action=Popup&html=Popup_picker&select=enable&form=HelpDeskEditView&popuptype=inventory_service&curr_row='+rowId+'&return_module='+module+'&currencyid='+currencyid+additionalinfo, 'productWin', cbPopupWindowSettings);
 	}
 }

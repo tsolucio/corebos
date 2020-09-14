@@ -176,7 +176,7 @@ function searchDocuments() {
 	window.open(
 		'index.php?module=Documents&return_module=Emails&action=Popup&popuptype=detailview&form=EditView&form_submit=false&srcmodule=Emails&popupmode=ajax&select=1'+q,
 		'emaildocselect',
-		'width=680,height=620,resizable=0,scrollbars=0');
+		cbPopupWindowSettings);
 }
 
 function addOption(id, filename) {

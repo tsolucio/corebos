@@ -175,7 +175,7 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 				}
 			}
 			if (!is_admin($current_user) && isset($oReport->stdselectedcolumn) && !$found) {
-				$BLOCK1 = array_merge((array)$BLOCK1, array('selected'=>true,'value'=>'Not Accessible','label'=>$app_strings['LBL_NOT_ACCESSIBLE']));
+				$BLOCK1 = array_merge((array)$BLOCK1, array(array('selected'=>true,'value'=>'Not Accessible','label'=>$app_strings['LBL_NOT_ACCESSIBLE'])));
 			}
 
 			$BLOCKCRITERIA = $oReport->getSelectedStdFilterCriteria($oReport->stdselectedfilter);

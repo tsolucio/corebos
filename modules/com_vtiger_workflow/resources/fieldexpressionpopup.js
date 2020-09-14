@@ -410,3 +410,17 @@ function com_vtiger_workflowsetValueFromCapture(recordid, value, target_fieldnam
 	document.getElementById('wfrelfield').value = recordid;
 	document.getElementById('wfrelfield_display').value = value;
 }
+
+function toggleExpEditorHelp(helpbutton) {
+	if (helpbutton.classList.contains('slds-is-selected')) {
+		helpbutton.classList.remove('slds-is-selected');
+		helpbutton.setAttribute('aria-pressed', 'false');
+		hide('exphelpbody');
+		show('expeditorbody');
+	} else {
+		helpbutton.classList.add('slds-is-selected');
+		helpbutton.setAttribute('aria-pressed', 'true');
+		show('exphelpbody');
+		hide('expeditorbody');
+	}
+}

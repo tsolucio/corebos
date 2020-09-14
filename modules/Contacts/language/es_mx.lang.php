@@ -169,12 +169,15 @@ $mod_strings = array (
 'LBL_START_DATE'=>'Fecha de Inicio:',
 'LBL_START_TIME'=>'Hora de Inicio:',
 
-//Added vtiger_field after 4_0_1
 'Portal User'=>'Usuario de Portal',
 'LBL_CUSTOMER_PORTAL_INFORMATION'=>'Información del Cliente',
 'Support Start Date'=>'Inicio de Soporte',
 'Support End Date'=>'Vencimiento de Soporte ',
-//Added for 4.2 Release -- CustomView
+'portalpasswordtype' => 'Codificación Contraseña',
+'portalloginuser' => 'Usuario Acceso Portal',
+'PortalUserPasswordManagement' => 'Contraseña Portal',
+'ppset' => 'Establecer Contraseña',
+'ppnotset' => 'Contraseña no definida',
 'Name'=>'Nombre',
 'LBL_ALL'=>'Todos',
 'LBL_MAXIMUM_LIMIT_ERROR'=>'El archivo excede el tamaño máximo permitido. Pruebe con un archivo inferior a 800Kbytes',
@@ -182,7 +185,6 @@ $mod_strings = array (
 'LBL_IMAGE_ERROR'=>'El archivo no es de tipo imágen(.gif/.jpg/.png)',
 'LBL_INVALID_IMAGE'=>'Archivo inválido o no tiene datos',
 
-//Added after 5Alpha5
 'Notify Owner'=>'Notificar al Propietario',
 
 //Added for Picklist Values

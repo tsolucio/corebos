@@ -11,9 +11,6 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class Faq extends CRMEntity {
-	public $db;
-	public $log;
-
 	public $table_name = 'vtiger_faq';
 	public $table_index= 'id';
 	public $column_fields = array();
@@ -141,11 +138,11 @@ class Faq extends CRMEntity {
 	 * @return list $list - list of comments and comment informations as a html output where as these comments and comments informations will be formed in div tag.
 	 **/
 	public function getFAQComments($faqid) {
-		global $log, $default_charset, $mod_strings;
+		global $log, $default_charset, $mod_strings, $adb;
 		$log->debug('> getFAQComments '.$faqid);
 
-		$result = $this->db->pquery('select * from vtiger_faqcomments where faqid=?', array($faqid));
-		$noofrows = $this->db->num_rows($result);
+		$result = $adb->pquery('select * from vtiger_faqcomments where faqid=?', array($faqid));
+		$noofrows = $adb->num_rows($result);
 		$list = '';
 		$enddiv = '';
 		// In ajax save we should not add this div
@@ -155,8 +152,8 @@ class Faq extends CRMEntity {
 		}
 
 		for ($i=0; $i<$noofrows; $i++) {
-			$comment = $this->db->query_result($result, $i, 'comments');
-			$date = new DateTimeField($this->db->query_result($result, $i, 'createdtime'));
+			$comment = $adb->query_result($result, $i, 'comments');
+			$date = new DateTimeField($adb->query_result($result, $i, 'createdtime'));
 			$createdtime = $date->getDisplayDateTimeValue();
 			if ($comment != '') {
 				//this div is to display the comment

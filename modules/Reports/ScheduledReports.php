@@ -12,7 +12,6 @@ require_once 'modules/Reports/ReportRun.php';
 
 class VTScheduledReport extends Reports {
 
-	private $db;
 	private $user;
 
 	public $isScheduled = false;
@@ -28,7 +27,6 @@ class VTScheduledReport extends Reports {
 	public static $SCHEDULED_ANNUALLY = 6;
 
 	public function __construct($adb, $user, $reportid = '') {
-		$this->db	= $adb;
 		$this->user = $user;
 		$this->id	= $reportid;
 		parent::__construct($reportid);
@@ -147,15 +145,28 @@ class VTScheduledReport extends Reports {
 			$emails_to .= $email.',';
 		}
 		$emails_to = trim($emails_to, ',');
-
-		$currentTime = date('Y-m-d H:i:s');
-		$subject = getTranslatedString($this->reportname, $currentModule) .' - '. $currentTime .' ('. DateTimeField::getDBTimeZone() .')';
+		$now = date('YmdHis');
+		$printfReportName = getTranslatedString($this->reportname, $currentModule);
+		if (strpos($printfReportName, '%s')>=0) {
+			$spos = strpos($printfReportName, '%s');
+			$printfReportName = substr($printfReportName, 0, $spos+2).str_replace('%s', '', substr($printfReportName, $spos+2));
+			$printfReportName = sprintf($printfReportName, $now);
+		}
+		$subject = $printfReportName .' - '. date('Y-m-d H:i:s') .' ('. DateTimeField::getDBTimeZone() .')';
 
 		$contents = getTranslatedString('LBL_AUTO_GENERATED_REPORT_EMAIL', $currentModule) .'<br/><br/>';
-		$contents .='<b>'.getTranslatedString('LBL_REPORT_NAME', $currentModule) .' :</b> '. getTranslatedString($this->reportname, $currentModule) .'<br/>';
+		$contents .='<b>'.getTranslatedString('LBL_REPORT_NAME', $currentModule) .' :</b> '. $printfReportName .'<br/>';
 		$contents .='<b>'.getTranslatedString('LBL_DESCRIPTION', $currentModule).' :</b><br/>'.getTranslatedString($this->reportdescription, $currentModule).'<br/><br/>';
 
-		$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_\s]/', '', $this->reportname).'_'. preg_replace('/[^a-zA-Z0-9_\s]/', '', date('YmdHis')));
+		$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_\.\%\s]/', '', $this->reportname));
+		if (strpos($baseFileName, '%s')===false) {
+			$baseFileName .= '_%s'; // add date at end if not positioned explicitly
+		} else {
+			// make sure there is only one
+			$spos = strpos($baseFileName, '%s');
+			$baseFileName = substr($baseFileName, 0, $spos+2).str_replace('%s', '', substr($baseFileName, $spos+2));
+		}
+		$baseFileName = sprintf($baseFileName, $now);
 
 		$oReportRun = new ReportRun($this->id);
 		$reportFormat = $this->scheduledFormat;
@@ -165,6 +176,12 @@ class VTScheduledReport extends Reports {
 			$contents .= '<a href="'.$site_URL.'/index.php?module=Reports&action=SaveAndRun&record='.$this->id.'&folderid='.$this->folderid.'">';
 			$contents .= getTranslatedString('LBL_CLICK_HERE', $currentModule) .'</a>';
 		}
+		if ($reportFormat == 'csv' || $reportFormat == 'csvxls') {
+			$fileName = 'cache/'.$baseFileName.'.csv';
+			$filePath = $root_directory.$fileName;
+			$attachments[] = array('fname'=>$fileName, 'fpath'=>$filePath);
+			$oReportRun->writeReportToCSVFile($filePath, null);
+		}
 		if ($reportFormat == 'pdf' || $reportFormat == 'both') {
 			$fileName = 'cache/'.$baseFileName.'.pdf';
 			$filePath = $root_directory.$fileName;
@@ -172,7 +189,7 @@ class VTScheduledReport extends Reports {
 			$pdf = $oReportRun->getReportPDF(null);
 			$pdf->Output($filePath, 'F');
 		}
-		if ($reportFormat == 'excel' || $reportFormat == 'both') {
+		if ($reportFormat == 'excel' || $reportFormat == 'both' || $reportFormat == 'csvxls') {
 			$fileName = 'cache/'.$baseFileName.'.xls';
 			$filePath = $root_directory.$fileName;
 			$attachments[] = array('fname'=>$fileName, 'fpath'=>$filePath);
@@ -262,7 +279,8 @@ class VTScheduledReport extends Reports {
 	}
 
 	public function updateNextTriggerTime() {
-		$this->db->pquery('UPDATE vtiger_scheduled_reports SET next_trigger_time=? WHERE reportid=?', array($this->getNextTriggerTime(), $this->id));
+		global $adb;
+		$adb->pquery('UPDATE vtiger_scheduled_reports SET next_trigger_time=? WHERE reportid=?', array($this->getNextTriggerTime(), $this->id));
 	}
 
 	public static function generateRecipientOption($type, $value, $name = '') {
@@ -353,10 +371,7 @@ class VTScheduledReport extends Reports {
 	}
 
 	public static function getScheduledReports($adb, $user) {
-
-		$currentTime = date('Y-m-d H:i:s');
-		$result = $adb->pquery("SELECT * FROM vtiger_scheduled_reports WHERE next_trigger_time = '' or next_trigger_time <= ?", array($currentTime));
-
+		$result = $adb->pquery('SELECT * FROM vtiger_scheduled_reports WHERE next_trigger_time <= ?', array(date('Y-m-d H:i:s')));
 		$scheduledReports = array();
 		$noOfScheduledReports = $adb->num_rows($result);
 		for ($i=0; $i<$noOfScheduledReports; ++$i) {

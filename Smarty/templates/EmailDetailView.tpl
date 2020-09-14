@@ -9,8 +9,7 @@
  ********************************************************************************/
 -->*}
 {if $smarty.request.action eq 'EmailsAjax'}
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
@@ -18,7 +17,10 @@
 <link REL="SHORTCUT ICON" HREF="themes/images/favicon.ico">
 <link rel="stylesheet" type="text/css" media="all" href="themes/{$THEME}/style.css">
 <script type="text/javascript" src="include/jquery/jquery.js"></script>
+{include file='BrowserVariables.tpl'}
+<script type="text/javascript" src="include/js/vtlib.js"></script>
 <script type="text/javascript" src="include/js/general.js"></script>
+</head>
 <body marginheight="0" marginwidth="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
 {/if}
 <table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">

@@ -12,7 +12,6 @@ require_once 'data/Tracker.php';
 
 class cbSurveyQuestion extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_cbsurveyquestion';
 	public $table_index= 'cbsurveyquestionid';

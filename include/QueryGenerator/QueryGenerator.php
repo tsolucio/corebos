@@ -377,13 +377,29 @@ class QueryGenerator {
 
 	public function getDefaultCustomViewQuery() {
 		$customView = new CustomView($this->module);
+		$unsetit = false;
+		if (empty($_REQUEST['action'])) {
+			$unsetit = true;
+			$_REQUEST['action'] = 'ListView';
+		}
 		$viewId = $customView->getViewId($this->module);
+		if ($unsetit) {
+			$_REQUEST['action']='';
+		}
 		return $this->getCustomViewQueryById($viewId);
 	}
 
 	public function initForDefaultCustomView() {
 		$customView = new CustomView($this->module);
+		$unsetit = false;
+		if (empty($_REQUEST['action'])) {
+			$unsetit = true;
+			$_REQUEST['action'] = 'ListView';
+		}
 		$viewId = $customView->getViewId($this->module);
+		if ($unsetit) {
+			$_REQUEST['action']='';
+		}
 		$this->initForCustomViewById($viewId);
 	}
 
@@ -895,7 +911,7 @@ class QueryGenerator {
 						continue;
 					}
 					foreach ($this->referenceFieldInfoList as $fld => $mods) {
-						if ($fld=='modifiedby' || $fld == 'assigned_user_id') {
+						if ($fld=='modifiedby' || $fld == 'assigned_user_id' || $moduleFields[$fld]->getUIType()=='77') { // we should add support for uitype 77
 							continue;
 						}
 						if (!empty($this->referenceFields[$fld][$fldmod][$fldname])) {
@@ -1065,15 +1081,29 @@ class QueryGenerator {
 					if ($fieldName == 'birthday' && !$this->isRelativeSearchOperators($conditionInfo['operator'])) {
 						$fieldSql .= "$fieldGlue DATE_FORMAT(".$field->getTableName().'.'.$field->getColumnName().",'%m%d') ".$valueSql;
 					} else {
-						if ($field->getUIType() == 15 || $field->getUIType() == 16) {
-							$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' IN (
-								select translation_key
-								from vtiger_cbtranslation
-								where locale="'.$current_user->language.'" and forpicklist="'.$this->getModule().'::'.$field->getFieldName().'" and i18n '.$valueSql.')'
-								.(in_array($conditionInfo['operator'], array('n', 'ni', 'nin', 'k', 'dnsw', 'dnew')) ? ' AND ' : ' OR ')
-								.$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
+						if ($conditionInfo['operator'] == 'sx') {
+							if ($field->getUIType() == 15 || $field->getUIType() == 16) {
+								$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' IN (
+									select translation_key
+									from vtiger_cbtranslation
+									where locale="'.$current_user->language.'" and forpicklist="'.$this->getModule().'::'.$field->getFieldName()
+									.'" and SOUNDEX(i18n) LIKE SOUNDEX("'.$conditionInfo['value'].'"))'
+									.(in_array($conditionInfo['operator'], array('n', 'ni', 'nin', 'k', 'dnsw', 'dnew')) ? ' AND ' : ' OR ')
+									.$valueSql;
+							} else {
+								$fieldSql .= "$fieldGlue ". $valueSql;
+							}
 						} else {
-							$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
+							if ($field->getUIType() == 15 || $field->getUIType() == 16) {
+								$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' IN (
+									select translation_key
+									from vtiger_cbtranslation
+									where locale="'.$current_user->language.'" and forpicklist="'.$this->getModule().'::'.$field->getFieldName().'" and i18n '.$valueSql.')'
+									.(in_array($conditionInfo['operator'], array('n', 'ni', 'nin', 'k', 'dnsw', 'dnew')) ? ' AND ' : ' OR ')
+									.$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
+							} else {
+								$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
+							}
 						}
 					}
 				}
@@ -1445,6 +1475,12 @@ class QueryGenerator {
 					$sqlOperator = 'NOT LIKE';
 					$value = "%$value";
 					break;
+				case 'sx':
+					$sqlOperator = 'SOUNDEX';
+					break;
+				case 'rgxp':
+					$sqlOperator = 'REGEXP';
+					break;
 				case 'l':
 					$sqlOperator = '<';
 					break;
@@ -1474,7 +1510,11 @@ class QueryGenerator {
 			if ($this->isNumericType($field->getFieldDataType()) && empty($value)) {
 				$value = '0';
 			}
-			$sql[] = "$sqlOperator $value";
+			if ($this->requiresSoundex($operator) == 'sx') {
+				$sql[] = 'SOUNDEX('.$field->getTableName().'.'.$field->getColumnName().") LIKE SOUNDEX($value)";
+			} else {
+				$sql[] = "$sqlOperator $value";
+			}
 		}
 		return $sql;
 	}
@@ -1507,6 +1547,9 @@ class QueryGenerator {
 		$requiresQuote = array('s','ew','c','k');
 		return in_array($operator, $requiresQuote);
 	}
+	private function requiresREGEXP($operator) {
+		return ($operator == 'rgxp');
+	}
 	private function isNumericType($type) {
 		return ($type == 'integer' || $type == 'double' || $type == 'currency');
 	}
@@ -1517,6 +1560,10 @@ class QueryGenerator {
 
 	private function isDateType($type) {
 		return ($type == 'date' || $type == 'datetime');
+	}
+
+	private function requiresSoundex($operator) {
+		return ($operator == 'sx');
 	}
 
 	public function fixDateTimeValue($name, $value, $first = true) {

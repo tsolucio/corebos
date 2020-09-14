@@ -18,7 +18,6 @@ require_once 'modules/Emails/mail.php';
 
 class Emails extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_activity';
 	public $table_index = 'activityid';
@@ -110,11 +109,9 @@ class Emails extends CRMEntity {
 	public $mandatory_fields = array('subject', 'assigned_user_id');
 
 	public function __construct() {
-		global $log;
 		$this_module = get_class($this);
 		$this->column_fields = getColumnFields($this_module);
 		$this->db = PearDatabase::getInstance();
-		$this->log = $log;
 	}
 
 	public function save_module($module) {
@@ -403,7 +400,7 @@ class Emails extends CRMEntity {
 				$button .= "<input title='" . getTranslatedString('LBL_SELECT') . ' ' . getTranslatedString($related_module) .
 				"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup".
 				"&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',".
-				"'width=640,height=602,resizable=0,scrollbars=0');\" value='" . getTranslatedString('LBL_SELECT') .' '. getTranslatedString($related_module) . "'>&nbsp;";
+				"cbPopupWindowSettings);\" value='" . getTranslatedString('LBL_SELECT') .' '. getTranslatedString($related_module) . "'>&nbsp;";
 			}
 			if (in_array('BULKMAIL', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$button .= "<input title='" . getTranslatedString('LBL_BULK_MAILS') . "' class='crmbutton small create'" .

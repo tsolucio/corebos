@@ -51,6 +51,37 @@ function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid) {
 	});
 }
 
+var cbPopupScreenWidthPercentage = 80;
+var cbPopupScreenHeightPercentage = 80;
+var cbPopupWindowSettings = '';
+setApplicationPopupWindowSize(cbPopupScreenWidthPercentage, cbPopupScreenHeightPercentage);
+GlobalVariable_getVariable('Application_PopupScreen_Width', 80, (typeof gVTModule==undefined ? '' : gVTModule), '').then(function (response) {
+	var obj = JSON.parse(response);
+	cbPopupScreenWidthPercentage = Number(obj.Application_PopupScreen_Width);
+	setApplicationPopupWindowSize(cbPopupScreenWidthPercentage, cbPopupScreenHeightPercentage);
+}, function (error) {
+	cbPopupScreenWidthPercentage = 80;
+});
+GlobalVariable_getVariable('Application_PopupScreen_Height', 80, (typeof gVTModule==undefined ? '' : gVTModule), '').then(function (response) {
+	var obj = JSON.parse(response);
+	cbPopupScreenHeightPercentage = Number(obj.Application_PopupScreen_Height);
+	setApplicationPopupWindowSize(cbPopupScreenWidthPercentage, cbPopupScreenHeightPercentage);
+}, function (error) {
+	cbPopupScreenHeightPercentage = 80;
+});
+
+function setApplicationPopupWindowSize(w, h, r, s, t, l) {
+	w = w || cbPopupScreenWidthPercentage || 80;
+	h = h || cbPopupScreenHeightPercentage|| 80;
+	r = r || 0;
+	s = s || 0;
+	t = t || 100;
+	l = l || 200;
+	cbPopupWindowSettings = 'width='+(Math.round(window.screen.width*w/100, 0));
+	cbPopupWindowSettings += ',height='+(Math.round(window.screen.height*h/100, 0));
+	cbPopupWindowSettings += ',resizable='+r+',scrollbars='+s+',top='+t+',left='+l;
+}
+
 //Utility Functions
 
 function getTagCloud(crmid) {
@@ -1436,12 +1467,16 @@ function doServerValidation(edit_type, formName, callback) {
 			sentForm[myFields[f].name] = myFields[f].value;
 		}
 	}
+	return executeServerValidation(edit_type, action, formName, callback, SVModule, sentForm);
+}
+
+function executeServerValidation(edit_type, action, formName, callback, forModule, sentForm) {
 	//JSONize form data
 	sentForm = JSON.stringify(sentForm);
 	jQuery.ajax({
 		type : 'post',
 		data : {structure: sentForm},
-		url : 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule='+SVModule
+		url : 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule='+forModule
 	}).done(function (msg) {
 		//Validation file answers
 		if (msg.search('%%%CONFIRM%%%') > -1) { //Allow to use confirm alert
@@ -1491,9 +1526,13 @@ function doServerValidation(edit_type, formName, callback) {
 			ldsPrompt.show(alert_arr['ERROR'], msg);
 			VtigerJS_DialogBox.unblock();
 		}
-	}).fail(function () {
+	}).fail(function (ev) {
 		//Error while asking file
-		ldsPrompt.show(alert_arr['ERROR'], 'Error with AJAX');
+		let errmsg = 'Error with AJAX';
+		if (ev.responseText != undefined && ev.responseText.indexOf('CSRF Error')!=-1) {
+			errmsg = 'CSRF Error. Reload page.';
+		}
+		ldsPrompt.show(alert_arr['ERROR'], errmsg);
 		VtigerJS_DialogBox.unblock();
 	});
 	return false;
@@ -2493,17 +2532,17 @@ function selectContact(check, frmName) {
 			module_string = '&parent_module=Accounts';
 		}
 		if (record_id != '') {
-			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView'+module_string+'&relmod_id='+record_id, 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView'+module_string+'&relmod_id='+record_id, 'test', cbPopupWindowSettings);
 		} else {
-			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView', 'test', cbPopupWindowSettings);
 		}
 	} else if (document.getElementById('vendor_name') && gVTModule=='PurchaseOrder') {
 		record_id = frmName.vendor_id.value;
 		module_string = '&parent_module=Vendors';
 		if (record_id != '') {
-			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView'+module_string+'&relmod_id='+record_id, 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView'+module_string+'&relmod_id='+record_id, 'test', cbPopupWindowSettings);
 		} else {
-			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView', 'test', cbPopupWindowSettings);
 		}
 	} else if ((document.getElementById('parentid'))) {
 		if (getObj('parent_type')) {
@@ -2519,16 +2558,16 @@ function selectContact(check, frmName) {
 					search_string='&popuptype=specific';
 				}
 				if (record_id != '') {
-					window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&form=EditView'+search_string+'&relmod_id='+record_id+'&parent_module='+module[0], 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+					window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&form=EditView'+search_string+'&relmod_id='+record_id+'&parent_module='+module[0], 'test', cbPopupWindowSettings);
 				} else {
-					window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&form=EditView'+search_string, 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+					window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&form=EditView'+search_string, 'test', cbPopupWindowSettings);
 				}
 			}
 		} else {
-			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&return_module=Calendar&select=enable&popuptype=detailview&form=EditView&form_submit=false', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&return_module=Calendar&select=enable&popuptype=detailview&form=EditView&form_submit=false', 'test', cbPopupWindowSettings);
 		}
 	} else {
-		window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView&recordid='+record, 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+		window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView&recordid='+record, 'test', cbPopupWindowSettings);
 	}
 }
 
@@ -2550,9 +2589,9 @@ function selectPotential(fromlink, fldname, MODULE, ID) {
 		parent_module = 'Contacts';
 	}
 	if (record_id != '') {
-		window.open('index.php?module=Potentials&action=Popup&html=Popup_picker&popuptype=specific_potential_account_address&form=EditView&relmod_id='+record_id+'&parent_module='+parent_module, 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+		window.open('index.php?module=Potentials&action=Popup&html=Popup_picker&popuptype=specific_potential_account_address&form=EditView&relmod_id='+record_id+'&parent_module='+parent_module, 'test', cbPopupWindowSettings);
 	} else {
-		window.open('index.php?module=Potentials&action=Popup&html=Popup_picker&popuptype=specific_potential_account_address&form=EditView', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+		window.open('index.php?module=Potentials&action=Popup&html=Popup_picker&popuptype=specific_potential_account_address&form=EditView', 'test', cbPopupWindowSettings);
 	}
 }
 
@@ -2574,9 +2613,9 @@ function selectQuote(fromlink, fldname, MODULE, ID) {
 		parent_module = 'Contacts';
 	}
 	if (record_id != '') {
-		window.open('index.php?module=Quotes&action=Popup&html=Popup_picker&popuptype=specific&form=EditView&relmod_id='+record_id+'&parent_module='+parent_module, 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+		window.open('index.php?module=Quotes&action=Popup&html=Popup_picker&popuptype=specific&form=EditView&relmod_id='+record_id+'&parent_module='+parent_module, 'test', cbPopupWindowSettings);
 	} else {
-		window.open('index.php?module=Quotes&action=Popup&html=Popup_picker&popuptype=specific&form=EditView', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+		window.open('index.php?module=Quotes&action=Popup&html=Popup_picker&popuptype=specific&form=EditView', 'test', cbPopupWindowSettings);
 	}
 }
 
@@ -2598,17 +2637,27 @@ function selectSalesOrder(fromlink, fldname, MODULE, ID) {
 		parent_module = 'Contacts';
 	}
 	if (record_id != '') {
-		window.open('index.php?module=SalesOrder&action=Popup&html=Popup_picker&popuptype=specific&form=EditView&relmod_id='+record_id+'&parent_module='+parent_module, 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+		window.open('index.php?module=SalesOrder&action=Popup&html=Popup_picker&popuptype=specific&form=EditView&relmod_id='+record_id+'&parent_module='+parent_module, 'test', cbPopupWindowSettings);
 	} else {
-		window.open('index.php?module=SalesOrder&action=Popup&html=Popup_picker&popuptype=specific&form=EditView', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+		window.open('index.php?module=SalesOrder&action=Popup&html=Popup_picker&popuptype=specific&form=EditView', 'test', cbPopupWindowSettings);
 	}
 }
 
 function set_return_account_details(fromlink, fldname, MODULE, ID) {
 	if (fldname == 'account_id') {
 		var baseURL = 'index.php?module=Accounts&action=Popup&popuptype=specific_account_address&form=TasksEditView&form_submit=false&fromlink=';
-		var WindowSettings = 'width=680,height=602,resizable=0,scrollbars=0,top=150,left=200';
-		window.open(baseURL, 'vtlibui10', WindowSettings);
+		window.open(baseURL, 'vtlibui10', cbPopupWindowSettings);
+	} else {
+		vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
+	}
+}
+
+function open_contact_account_details(fromlink, fldname, MODULE, ID) {
+	if (fldname == 'account_id') {
+		var baseURL = 'index.php?module=Accounts&action=Popup&popuptype=specific_contact_account_address&form=TasksEditView&form_submit=false&fromlink=';
+		baseURL += (fromlink=='qcreate') ? 'qcreate' : '';
+		let winname = (fromlink=='qcreate') ? 'vtlibui10qc' : 'vtlibui10';
+		window.open(baseURL, winname, cbPopupWindowSettings);
 	} else {
 		vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
 	}
@@ -3201,6 +3250,25 @@ function standarizeFormatCurrencyValue(val) {
 	return val;
 }
 
+function panelViewToggle(panel) {
+	let p = document.getElementById(panel);
+	if (p.classList.contains('cbds-anim-slidein--right')) {
+		panelViewHide(p);
+	} else {
+		panelViewShow(p);
+	}
+}
+
+function panelViewShow(panel) {
+	panel.classList.add('cbds-anim-slidein--right');
+	panel.classList.remove('cbds-anim-slideout--right');
+}
+
+function panelViewHide(panel) {
+	panel.classList.add('cbds-anim-slideout--right');
+	panel.classList.remove('cbds-anim-slidein--right');
+}
+
 /******************************************************************************/
 /* Activity reminder Customization: Setup Callback */
 function ActivityReminderProgressIndicator(show) {
@@ -3216,7 +3284,7 @@ function ActivityReminderSetupCallback(cbmodule, cbrecord) {
 		ActivityReminderProgressIndicator(true);
 		jQuery.ajax({
 			method: 'POST',
-			url: 'index.php?module=Calendar&action=CalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax&cbmodule='+
+			url: 'index.php?module=cbCalendar&action=cbCalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax&cbmodule='+
 				encodeURIComponent(cbmodule) + '&cbrecord=' + encodeURIComponent(cbrecord)
 		}).done(function (response) {
 			document.getElementById('ActivityReminder_callbacksetupdiv').innerHTML=response;
@@ -3235,7 +3303,7 @@ function ActivityReminderSetupCallbackSave(form) {
 		ActivityReminderProgressIndicator(true);
 		jQuery.ajax({
 			method: 'POST',
-			url: 'index.php?module=Calendar&action=CalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax' +
+			url: 'index.php?module=cbCalendar&action=cbCalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax' +
 			'&cbaction=' + encodeURIComponent(cbaction) +
 			'&cbmodule='+ encodeURIComponent(cbmodule) +
 			'&cbrecord=' + encodeURIComponent(cbrecord) +
@@ -3257,7 +3325,7 @@ function ActivityReminderPostponeCallback(cbmodule, cbrecord, cbreminderid) {
 		ActivityReminderProgressIndicator(true);
 		jQuery.ajax({
 			method: 'POST',
-			url: 'index.php?module=Calendar&action=CalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax&cbaction=POSTPONE&cbmodule='+
+			url: 'index.php?module=cbCalendar&action=cbCalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax&cbaction=POSTPONE&cbmodule='+
 			encodeURIComponent(cbmodule) + '&cbrecord=' + encodeURIComponent(cbrecord) + '&cbreminderid=' + encodeURIComponent(cbreminderid)
 		}).done(function (response) {
 			ActivityReminderPostponeCallbackProcess(response);
@@ -3303,7 +3371,7 @@ var ActivityReminder_popup_onscreen = 2 * 1000; // Milli Seconds (should be less
 
 var ActivityReminder_callback_win_uniqueids = new Object();
 
-function ActivityReminderCallback() {
+function ActivityReminderCallback(clicked) {
 	if (typeof(jQuery) == 'undefined' || ActivityReminder_Deactivated == 1) {
 		return;
 	}
@@ -3311,16 +3379,68 @@ function ActivityReminderCallback() {
 		window.clearTimeout(ActivityReminder_regcallback_timer);
 		ActivityReminder_regcallback_timer = null;
 	}
-	jQuery.ajax({
-		method: 'POST',
-		url: 'index.php?module=Calendar&action=CalendarAjax&file=ActivityReminderCallbackAjax&ajax=true'
-	}).done(function (response) {
-		if (response=='Login') {
-			document.location.href='index.php?module=Users&action=Login';
-		} else {
-			ActivityReminderCallbackProcess(response);
-		}
-	});
+	if (clicked) {
+		panelViewToggle('cbds-notificationpanel');
+	} else {
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=cbCalendar&action=cbCalendarAjax&file=ActivityReminderCallbackAjax&ajax=true&clicked='+clicked
+		}).done(function (response) {
+			if (response=='Login') {
+				document.location.href='index.php?module=Users&action=Login';
+			} else {
+				var responsedata = trim(response);
+				var responsearray = JSON.parse(responsedata);
+				if (typeof(responsearray['template']) == 'undefined') {
+					if (typeof(responsearray['noTasks']) != 'undefined') {
+						//No tasks to show, all tasks finished
+						document.getElementById('todolist').innerHTML= responsearray['noTasks'] + responsearray['next_reminder_interval'];
+						if (clicked) {
+							panelViewShow(document.getElementById('cbds-notificationpanel'));
+						}
+					} else {
+						document.getElementById('todolist').innerHTML= responsearray['next_reminder_interval'];
+					}
+				} else {
+					//print data list
+					document.getElementById('todolist').innerHTML= responsearray['template'] + responsearray['next_reminder_interval'];
+					if (responsearray['not_readed'] > 0) {
+						//new tasks to alert
+						document.getElementById('newEvents').play();
+						document.getElementById('header_notification_items').innerHTML = responsearray['not_readed'];
+						document.getElementById('header_notification_items').classList.add('slds-show-notification');
+						document.getElementById('header_notification_button').classList.add('slds-incoming-notification');
+						panelViewShow(document.getElementById('cbds-notificationpanel'));
+					} else {
+						//No new task to alert
+						document.getElementById('header_notification_items').innerHTML = '';
+						document.getElementById('header_notification_items').classList.remove('slds-show-notification');
+						document.getElementById('header_notification_button').classList.remove('slds-incoming-notification');
+						if (clicked) {
+							panelViewShow(document.getElementById('cbds-notificationpanel'));
+						}
+					}
+				}
+				var ActivityReminder_Newdelay_response_node = '_vtiger_activityreminder_callback_interval_';
+				if (document.getElementById(ActivityReminder_Newdelay_response_node)) {
+					var ActivityReminder_Newdelay_response_value = document.getElementById(ActivityReminder_Newdelay_response_node).innerHTML;
+					if (ActivityReminder_Newdelay_response_value == 'None') {
+						if (ActivityReminder_timer) {
+							window.clearTimeout(ActivityReminder_timer);
+							ActivityReminder_timer = null;
+						}
+					} else {
+						ActivityReminder_Newdelay_response_value = parseInt(ActivityReminder_Newdelay_response_value);
+						if (ActivityReminder_Newdelay_response_value > 0) {
+							ActivityReminderRegisterCallback(ActivityReminder_Newdelay_response_value);
+						}
+					}
+					// We don't need the no any longer, it will be sent from server for next Popup
+					jQuery('#'+ActivityReminder_Newdelay_response_node).remove();
+				}
+			}
+		});
+	}
 }
 
 function ActivityReminderCallbackProcess(message) {
@@ -3649,7 +3769,7 @@ function lastImport(module, req_module) {
 	if (module == '') {
 		return false;
 	} else {
-		window.open('index.php?module='+module_name+'&action=lastImport&req_mod='+req_module+'&parenttab='+parent_tab, 'lastImport', 'width=750,height=602,menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes');
+		window.open('index.php?module='+module_name+'&action=lastImport&req_mod='+req_module+'&parenttab='+parent_tab, 'lastImport', cbPopupWindowSettings+',menubar=no,toolbar=no,location=no,status=no,scrollbars=yes');
 	}
 }
 
@@ -3710,7 +3830,7 @@ function getMergeRecords(selectedNames, upperlimit, lowerlimit) {
 function merge_fields(selectedNames, module) {
 	var pass_url = getMergeRecords(selectedNames);
 	if (pass_url !== false) {
-		window.open('index.php?module='+module+'&action=ProcessDuplicates&mergemode=mergefields&passurl='+pass_url, 'Merge', 'width=750,height=602,menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes');
+		window.open('index.php?module='+module+'&action=ProcessDuplicates&mergemode=mergefields&passurl='+pass_url, 'Merge', cbPopupWindowSettings+',menubar=no,toolbar=no,location=no,status=no,scrollbars=yes');
 	} else {
 		return false;
 	}
@@ -5245,7 +5365,7 @@ function handleAcKeys(e) {
 			highlightAcItemDown();
 			break;
 		}
-	} else if (e.keyCode==13 && appSubmitFormWithEnter && document.forms.EditView) {
+	} else if (e.keyCode==13 && appSubmitFormWithEnter && document.forms.EditView && e.srcElement.nodeName!='TEXTAREA') {
 		document.forms.EditView.action.value='Save';
 		displaydeleted();
 		formValidate();
@@ -6267,12 +6387,17 @@ window.addEventListener('load', function () {
 		gh.addEventListener('expand', pageHeader.movedown);
 	} else if (gh === null) {
 		pageHeader.initialize();
-		pageHeader.node().classList.add('has-no-global-header');
+		if (pageHeader.node()) {
+			pageHeader.node().classList.add('has-no-global-header');
+		}
 	}
 });
 
 const pageHeader = {
 	'initialize' : () => {
+		if (pageHeader.node() == null) {
+			return;
+		}
 		var h = pageHeader.node().getBoundingClientRect().height;
 
 		if (pageHeader.isCollapsed) {

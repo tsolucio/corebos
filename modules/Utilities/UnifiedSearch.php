@@ -206,9 +206,7 @@ if (isset($query_string) && $query_string != '') {
 				unset($listview_entries['total']);
 				if (count($listview_entries) > 0) {
 					$display_header = 1;
-					if (vtlib_isModuleActive('ListViewColors') && count($listview_entries) == 2) {
-						$listview_entries_for1 = $listview_entries;
-					} elseif (!vtlib_isModuleActive('ListViewColors') && count($listview_entries) == 1) {
+					if (count($listview_entries) == 1) {
 						$listview_entries_for1 = $listview_entries;
 					}
 				} else {

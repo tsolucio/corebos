@@ -14,7 +14,6 @@ include_once 'vtlib/Vtiger/LinkData.php';
 
 class BusinessActions extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_businessactions';
 	public $table_index = 'businessactionsid';

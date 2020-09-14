@@ -178,7 +178,7 @@ function searchMapLocation(addressType) {
 		}
 	}
 	mapParameter = removeHTMLFormatting(mapParameter);
-	window.open('http://maps.google.com/maps?q='+mapParameter, 'goolemap', 'height=450,width=700,resizable=no,titlebar,location,top=200,left=250');
+	window.open('https://maps.google.com/maps?q='+mapParameter, 'goolemap', cbPopupWindowSettings+',titlebar,location');
 }
 
 function set_return_contact_address(contact_id, contact_name, mailingstreet, otherstreet, mailingcity, othercity, mailingstate, otherstate, mailingcode, othercode, mailingcountry, othercountry, mailingpobox, otherpobox, formName) {
@@ -517,15 +517,4 @@ function googleContactsLogOut(module) {
 	}).done(function (msg) {
 		window.location.reload();
 	});
-}
-
-function open_contact_account_details(fromlink, fldname, MODULE, ID) {
-	if (fldname == 'account_id') {
-		var baseURL = 'index.php?module=Accounts&action=Popup&popuptype=specific_contact_account_address&form=TasksEditView&form_submit=false&fromlink=';
-		var WindowSettings = 'width=680,height=602,resizable=0,scrollbars=0,top=150,left=200';
-		let winname = (fromlink=='qcreate') ? 'vtlibui10qc' : 'vtlibui10';
-		window.open(baseURL, winname, WindowSettings);
-	} else {
-		vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
-	}
 }

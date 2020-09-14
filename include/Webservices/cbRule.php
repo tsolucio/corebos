@@ -25,7 +25,18 @@ include_once 'modules/cbMap/cbRule.php';
  */
 function cbws_cbRule($conditionid, $context, $user) {
 	global $adb, $log;
-	$conditionid = vtws_getWSID($conditionid);
+	$mapid = vtws_getWSID($conditionid);
+	if ($mapid===false || $mapid=='0x0') {
+		// we try to search it as a string
+		$maprs = $adb->pquery(
+			'select cbmapid from vtiger_cbmap inner join vtiger_crmentity on crmid=cbmapid where deleted=0 and mapname=?',
+			array($conditionid)
+		);
+		if ($maprs && $adb->num_rows($maprs)>0) {
+			$mapid = vtws_getEntityId('cbMap').'x'.$maprs->fields['cbmapid'];
+		}
+	}
+	$conditionid = $mapid;
 	$webserviceObject = VtigerWebserviceObject::fromId($adb, $conditionid);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
@@ -55,7 +66,7 @@ function cbws_cbRule($conditionid, $context, $user) {
 	if (substr($context, 0, 1)=='{') {
 		$context = json_decode($context, true);
 		if (json_last_error() !== JSON_ERROR_NONE) {
-			throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Invalid coreBOS Rule context');
+			throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Invalid Rule context');
 		}
 	}
 	return coreBOS_Rule::evaluate($idComponents[1], $context);

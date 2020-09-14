@@ -44,10 +44,24 @@ if (PHP_SAPI === 'cli' || PHP_SAPI === 'cgi-fcgi' || PHP_SAPI === 'apache2handle
 
 			// Not ready to run yet?
 			if (!$cronTask->isRunnable()) {
-				$msg = sprintf("[INFO]: %s - not ready to run as the time to run again is not completed\n", $cronTask->getName());
-				echo $msg;
-				$logbg->info($msg);
-				continue;
+				$run_task = false;
+				if ($cronTask->getName() == 'cronWatcherService' && $cronTask->isRunning()) {
+					$time = 10;
+					$last = $cronTask->getLastStart();
+					$now = time();
+					if ($now-$last > $time*60) {
+						$msg = sprintf("[INFO]: %s - cron task had timedout as it is not completed for 10 minutes - restarting\n", $cronTask->getName());
+						echo $msg;
+						$logbg->info($msg);
+						$run_task = true;
+					}
+				}
+				if (!$run_task) {
+					$msg = sprintf("[INFO]: %s - not ready to run as the time to run again is not completed\n", $cronTask->getName());
+					echo $msg;
+					$logbg->info($msg);
+					continue;
+				}
 			}
 
 			// Timeout could happen if intermediate cron-tasks fails

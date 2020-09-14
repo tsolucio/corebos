@@ -783,6 +783,7 @@ $mod_strings = array(
 'vcylinder'=>'Cilindro vertical',
 'LBL_SEND_EMAIL_TO_SENDER' => 'Enviar uma cópia do e-mail',
 'PASSWORD REQUIREMENTS' => 'Exigências para a senha',
+'PASSWORD REQUIREMENTS NOT MET' => 'PASSWORD REQUIREMENTS NOT MET',
 'REQUIRED' => 'Exigido',
 'Min. 8 characters' => 'Min. 8 caracteres',
 'Contains3of4' => 'Senha deve conter ao menos três dos seguintes grupos de caracteres',

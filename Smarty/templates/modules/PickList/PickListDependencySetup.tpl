@@ -8,7 +8,6 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script type="text/javascript" src="modules/PickList/DependencyPicklist.js"></script>
 {if empty($MODULE)}
 	{assign var="MODULE" value='PickList'}

@@ -172,7 +172,7 @@ function searchMapLocation(addressType) {
 		}
 	}
 	mapParameter = removeHTMLFormatting(mapParameter);
-	window.open('http://maps.google.com/maps?q='+mapParameter, 'goolemap', 'height=450,width=700,resizable=no,titlebar,location,top=200,left=250');
+	window.open('https://maps.google.com/maps?q='+mapParameter, 'goolemap', cbPopupWindowSettings+',titlebar,location');
 }
 
 function selectTransferTo(module) {

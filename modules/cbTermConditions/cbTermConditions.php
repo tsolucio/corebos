@@ -12,7 +12,6 @@ require_once 'data/Tracker.php';
 
 class cbTermConditions extends CRMEntity {
 	public $db;
-	public $log;
 
 	public $table_name = 'vtiger_cbtandc';
 	public $table_index= 'cbtandcid';

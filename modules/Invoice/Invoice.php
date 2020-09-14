@@ -12,9 +12,6 @@ require_once 'data/Tracker.php';
 require_once 'modules/InventoryDetails/InventoryDetails.php';
 
 class Invoice extends CRMEntity {
-	public $db;
-	public $log;
-
 	public $table_name = 'vtiger_invoice';
 	public $table_index= 'invoiceid';
 	public $column_fields = array();
@@ -84,7 +81,7 @@ class Invoice extends CRMEntity {
 	// Column value to use on detail view record text display
 	public $def_detailview_recname = 'subject';
 
-	public $required_fields = array("accountname"=>1);
+	public $required_fields = array('accountname'=>1);
 
 	//Added these variables which are used as default order by and sortorder in ListView
 	public $default_order_by = 'crmid';
@@ -103,7 +100,10 @@ class Invoice extends CRMEntity {
 	}
 
 	public function save_module($module) {
-		global $updateInventoryProductRel_deduct_stock;
+		global $updateInventoryProductRel_deduct_stock, $adb;
+		if ($this->HasDirectImageField) {
+			$this->insertIntoAttachment($this->id, $module);
+		}
 		$updateInventoryProductRel_deduct_stock = true;
 		if ($this->mode=='edit' && !empty($this->record_status) && $this->record_status!=$this->column_fields['invoicestatus'] && $this->column_fields['invoicestatus']!='') {
 			$this->registerInventoryHistory();
@@ -114,7 +114,7 @@ class Invoice extends CRMEntity {
 			if ($newStatus!='DoNotChange') {
 				$so_id = $this->column_fields['salesorder_id'];
 				$query1 = 'update vtiger_salesorder set sostatus=? where salesorderid=?';
-				$this->db->pquery($query1, array($newStatus, $so_id));
+				$adb->pquery($query1, array($newStatus, $so_id));
 			}
 		}
 
@@ -129,7 +129,7 @@ class Invoice extends CRMEntity {
 			if (inventoryCanSaveProductLines($_REQUEST, 'Invoice')) {
 				//Based on the total Number of rows we will save the product relationship with this entity
 				saveInventoryProductDetails($this, 'Invoice');
-				if (vtlib_isModuleActive("InventoryDetails")) {
+				if (vtlib_isModuleActive('InventoryDetails')) {
 					InventoryDetails::createInventoryDetails($this, 'Invoice');
 				}
 			} elseif ($_REQUEST['action'] == 'InvoiceAjax' || $_REQUEST['action'] == 'MassEditSave') {
@@ -278,39 +278,39 @@ class Invoice extends CRMEntity {
 			$query .= " left join vtiger_currency_info as vtiger_currency_info$secmodule on vtiger_currency_info$secmodule.id = vtiger_invoice.currency_id";
 		}
 		if ($queryPlanner->requireTable('vtiger_salesorderInvoice')) {
-			$query .= " left join vtiger_salesorder as vtiger_salesorderInvoice on vtiger_salesorderInvoice.salesorderid=vtiger_invoice.salesorderid";
+			$query .= ' left join vtiger_salesorder as vtiger_salesorderInvoice on vtiger_salesorderInvoice.salesorderid=vtiger_invoice.salesorderid';
 		}
 		if ($queryPlanner->requireTable('vtiger_invoicebillads')) {
-			$query .= " left join vtiger_invoicebillads on vtiger_invoice.invoiceid=vtiger_invoicebillads.invoicebilladdressid";
+			$query .= ' left join vtiger_invoicebillads on vtiger_invoice.invoiceid=vtiger_invoicebillads.invoicebilladdressid';
 		}
 		if ($queryPlanner->requireTable('vtiger_invoiceshipads')) {
-			$query .= " left join vtiger_invoiceshipads on vtiger_invoice.invoiceid=vtiger_invoiceshipads.invoiceshipaddressid";
+			$query .= ' left join vtiger_invoiceshipads on vtiger_invoice.invoiceid=vtiger_invoiceshipads.invoiceshipaddressid';
 		}
 		if (($type !== 'COLUMNSTOTOTAL') || ($type == 'COLUMNSTOTOTAL' && $where_condition == 'add')) {
 			if ($queryPlanner->requireTable('vtiger_inventoryproductrelInvoice', $matrix)) {
 				if ($module == 'Products') {
-					$query .= " left join vtiger_inventoryproductrel as vtiger_inventoryproductrelInvoice on".
-						" vtiger_invoice.invoiceid = vtiger_inventoryproductrelInvoice.id and vtiger_inventoryproductrelInvoice.productid=vtiger_products.productid ";
+					$query .= ' left join vtiger_inventoryproductrel as vtiger_inventoryproductrelInvoice on'.
+						' vtiger_invoice.invoiceid = vtiger_inventoryproductrelInvoice.id and vtiger_inventoryproductrelInvoice.productid=vtiger_products.productid ';
 				} elseif ($module == 'Services') {
-					$query .= " left join vtiger_inventoryproductrel as vtiger_inventoryproductrelInvoice on".
-						" vtiger_invoice.invoiceid = vtiger_inventoryproductrelInvoice.id and vtiger_inventoryproductrelInvoice.productid=vtiger_service.serviceid ";
+					$query .= ' left join vtiger_inventoryproductrel as vtiger_inventoryproductrelInvoice on'.
+						' vtiger_invoice.invoiceid = vtiger_inventoryproductrelInvoice.id and vtiger_inventoryproductrelInvoice.productid=vtiger_service.serviceid ';
 				} else {
-					$query .= " left join vtiger_inventoryproductrel as vtiger_inventoryproductrelInvoice on".
-						" vtiger_invoice.invoiceid = vtiger_inventoryproductrelInvoice.id ";
+					$query .= ' left join vtiger_inventoryproductrel as vtiger_inventoryproductrelInvoice on'.
+						' vtiger_invoice.invoiceid = vtiger_inventoryproductrelInvoice.id ';
 				}
 			}
 			if ($queryPlanner->requireTable('vtiger_productsInvoice')) {
-				$query .= " left join vtiger_products as vtiger_productsInvoice on vtiger_productsInvoice.productid = vtiger_inventoryproductrelInvoice.productid";
+				$query .= ' left join vtiger_products as vtiger_productsInvoice on vtiger_productsInvoice.productid = vtiger_inventoryproductrelInvoice.productid';
 			}
 			if ($queryPlanner->requireTable('vtiger_serviceInvoice')) {
-				$query .= " left join vtiger_service as vtiger_serviceInvoice on vtiger_serviceInvoice.serviceid = vtiger_inventoryproductrelInvoice.productid";
+				$query .= ' left join vtiger_service as vtiger_serviceInvoice on vtiger_serviceInvoice.serviceid = vtiger_inventoryproductrelInvoice.productid';
 			}
 		}
 		if ($queryPlanner->requireTable('vtiger_contactdetailsInvoice')) {
-			$query .= " left join vtiger_contactdetails as vtiger_contactdetailsInvoice on vtiger_invoice.contactid = vtiger_contactdetailsInvoice.contactid";
+			$query .= ' left join vtiger_contactdetails as vtiger_contactdetailsInvoice on vtiger_invoice.contactid = vtiger_contactdetailsInvoice.contactid';
 		}
 		if ($queryPlanner->requireTable('vtiger_accountInvoice')) {
-			$query .= " left join vtiger_account as vtiger_accountInvoice on vtiger_accountInvoice.accountid = vtiger_invoice.accountid";
+			$query .= ' left join vtiger_account as vtiger_accountInvoice on vtiger_accountInvoice.accountid = vtiger_invoice.accountid';
 		}
 		return $query;
 	}
@@ -332,6 +332,7 @@ class Invoice extends CRMEntity {
 
 	// Function to unlink an entity with given Id from another entity
 	public function unlinkRelationship($id, $return_module, $return_id) {
+		global $adb;
 		if (empty($return_module) || empty($return_id)) {
 			return;
 		}
@@ -340,10 +341,10 @@ class Invoice extends CRMEntity {
 			$this->trash('Invoice', $id);
 		} elseif ($return_module=='SalesOrder') {
 			$relation_query = 'UPDATE vtiger_invoice set salesorderid=? where invoiceid=?';
-			$this->db->pquery($relation_query, array(null,$id));
+			$adb->pquery($relation_query, array(null,$id));
 		} elseif ($return_module == 'Documents') {
 			$sql = 'DELETE FROM vtiger_senotesrel WHERE crmid=? AND notesid=?';
-			$this->db->pquery($sql, array($id, $return_id));
+			$adb->pquery($sql, array($id, $return_id));
 		} else {
 			parent::unlinkRelationship($id, $return_module, $return_id);
 		}
@@ -382,7 +383,7 @@ class Invoice extends CRMEntity {
 				$col_value['comment']= decode_html($col_value['comment']);
 				$columns = array_keys($col_value);
 				$values = array_values($col_value);
-				$query2 = "INSERT INTO vtiger_inventoryproductrel(". implode(",", $columns) .") VALUES (". generateQuestionMarks($values) .")";
+				$query2 = 'INSERT INTO vtiger_inventoryproductrel('. implode(',', $columns) .') VALUES ('. generateQuestionMarks($values) .')';
 				$adb->pquery($query2, array($values));
 				$prod_id = $col_value['productid'];
 				$qty = $col_value['quantity'];
@@ -403,7 +404,7 @@ class Invoice extends CRMEntity {
 				$col_value['id'] = $this->id;
 				$columns = array_keys($col_value);
 				$values = array_values($col_value);
-				$query2 = "INSERT INTO vtiger_inventorysubproductrel(". implode(",", $columns) .") VALUES (". generateQuestionMarks($values) .")";
+				$query2 = 'INSERT INTO vtiger_inventorysubproductrel('. implode(',', $columns) .') VALUES ('. generateQuestionMarks($values) .')';
 				$adb->pquery($query2, array($values));
 				$prod_id = $col_value['productid'];
 				$qty = $update_stock[$col_value['sequence_no']];
@@ -427,13 +428,13 @@ class Invoice extends CRMEntity {
 				$col_value['id'] = $this->id;
 				$columns = array_keys($col_value);
 				$values = array_values($col_value);
-				$query4 = "INSERT INTO vtiger_inventoryshippingrel(". implode(",", $columns) .") VALUES (". generateQuestionMarks($values) .")";
+				$query4 = 'INSERT INTO vtiger_inventoryshippingrel('. implode(',', $columns) .') VALUES ('. generateQuestionMarks($values) .')';
 				$adb->pquery($query4, array($values));
 			}
 		}
 
 		//Update the netprice (subtotal), taxtype, discount, S&H charge, adjustment and total for the Invoice
-		$updatequery = " UPDATE vtiger_invoice SET ";
+		$updatequery = ' UPDATE vtiger_invoice SET ';
 		$updateparams = array();
 		// Remaining column values to be updated -> column name to field name mapping
 		$invoice_column_field = array(
@@ -451,7 +452,7 @@ class Invoice extends CRMEntity {
 			$updateparams[] = $this->column_fields[$field];
 		}
 		if (count($updatecols) > 0) {
-			$updatequery .= implode(",", $updatecols);
+			$updatequery .= implode(',', $updatecols);
 
 			$updatequery .= ' WHERE invoiceid=?';
 			$updateparams[] = $this->id;
@@ -472,7 +473,7 @@ class Invoice extends CRMEntity {
 			$em->initTriggerCache();
 			$entityData = VTEntityData::fromEntityId($adb, $invoiceId);
 			//Event triggering code
-			$em->triggerEvent("vtiger.entity.beforesave", $entityData);
+			$em->triggerEvent('vtiger.entity.beforesave', $entityData);
 		}
 		$type = getSalesEntityType($invoiceId);
 		if ($type=='Invoice' && self::invoice_control_installed()) {
