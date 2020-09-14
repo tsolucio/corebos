@@ -411,7 +411,7 @@ class QueryGenerator {
 		$viewfields = array();
 		foreach ($this->customViewColumnList as $customViewColumnInfo) {
 			$details = explode(':', $customViewColumnInfo);
-			if (empty($details[2]) && $details[1] == 'crmid' && $details[0] == self::$crmentityTable) {
+			if (empty($details[2]) && $details[1] == 'crmid' && $details[0] == 'vtiger_crmentity') {
 				$name = 'id';
 				$this->customViewFields[] = $name;
 			} else {
@@ -472,7 +472,7 @@ class QueryGenerator {
 						$name = explode(':', $filter['columnname']);
 						$mlbl = explode('_', $name[3]);
 						$mname = $mlbl[0];
-						if (empty($name[2]) && $name[1] == 'crmid' && $name[0] == self::$crmentityTable) {
+						if (empty($name[2]) && $name[1] == 'crmid' && $name[0] == 'vtiger_crmentity') {
 							$name = $this->getSQLColumn('id');
 						} else {
 							$name = $name[2];
@@ -810,9 +810,9 @@ class QueryGenerator {
 				foreach ($this->referenceModuleField as $index => $conditionInfo) {
 					if ($conditionInfo['relatedModule'] == 'Users' && $baseModule != 'Users'
 					 && !in_array('vtiger_users', $referenceFieldTableList) && !in_array('vtiger_users', $tableList)) {
-						$sql .= ' LEFT JOIN vtiger_users ON vtiger_users.id = '.self::$crmentityTable.'.smownerid ';
+						$sql .= ' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid ';
 						$referenceFieldTableList[] = 'vtiger_users';
-						$sql .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.self::$crmentityTable.'.smownerid ';
+						$sql .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid ';
 						$referenceFieldTableList[] = 'vtiger_groups';
 						continue;
 					}
@@ -906,9 +906,9 @@ class QueryGenerator {
 					}
 				} else {  // FQN
 					if ($fldmod=='Users' && !in_array('vtiger_users', $referenceFieldTableList) && !in_array('vtiger_users', $alreadyinfrom)) {
-						$sql .= ' LEFT JOIN vtiger_users ON vtiger_users.id = '.self::$crmentityTable.'.smownerid ';
+						$sql .= ' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid ';
 						$referenceFieldTableList[] = $alreadyinfrom[] = 'vtiger_users';
-						$sql .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.self::$crmentityTable.'.smownerid ';
+						$sql .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid ';
 						$referenceFieldTableList[] = $alreadyinfrom[] = 'vtiger_groups';
 						continue;
 					}
@@ -1731,7 +1731,7 @@ class QueryGenerator {
 					$this->startGroup('');
 					foreach ($filtercolumns as $index => $filter) {
 						$name = explode(':', $filter['columnname']);
-						if (empty($name[2]) && $name[1] == 'crmid' && $name[0] == self::$crmentityTable) {
+						if (empty($name[2]) && $name[1] == 'crmid' && $name[0] == 'vtiger_crmentity') {
 							$name = $this->getSQLColumn('id');
 						} else {
 							$name = $name[2];
