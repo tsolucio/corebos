@@ -236,6 +236,7 @@ class Potentials extends CRMEntity {
 			}
 		}
 
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = 'select case when (vtiger_users.user_name not like "") then '.$userNameSql.' else vtiger_groups.groupname end as user_name,
 			vtiger_contactdetails.*,vtiger_potential.potentialid, vtiger_potential.potentialname,
@@ -244,7 +245,7 @@ class Potentials extends CRMEntity {
 			inner join vtiger_contpotentialrel on vtiger_contpotentialrel.potentialid = vtiger_potential.potentialid
 			inner join vtiger_contactdetails on vtiger_contpotentialrel.contactid = vtiger_contactdetails.contactid
 			inner join vtiger_contactscf on vtiger_contactscf.contactid = vtiger_contactdetails.contactid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
 			left join vtiger_account on vtiger_account.accountid = vtiger_contactdetails.accountid
 			left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
 			left join vtiger_users on vtiger_crmentity.smownerid=vtiger_users.id
@@ -304,11 +305,12 @@ class Potentials extends CRMEntity {
 			}
 		}
 
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Products');
 		$query = "SELECT vtiger_products.*,vtiger_productcf.*,
 			vtiger_crmentity.crmid, vtiger_crmentity.smownerid
 			FROM vtiger_products
 			INNER JOIN vtiger_seproductsrel ON vtiger_products.productid = vtiger_seproductsrel.productid and vtiger_seproductsrel.setype = 'Potentials'
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_products.productid
+			INNER JOIN $crmEntityTable ON vtiger_crmentity.crmid = vtiger_products.productid
 			INNER JOIN vtiger_productcf ON vtiger_productcf.productid = vtiger_products.productid
 			INNER JOIN vtiger_potential ON vtiger_potential.potentialid = vtiger_seproductsrel.crmid
 			LEFT JOIN vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
@@ -338,7 +340,7 @@ class Potentials extends CRMEntity {
 		$query = 'select vtiger_potstagehistory.*, vtiger_potential.potentialname
 			from vtiger_potstagehistory
 			inner join vtiger_potential on vtiger_potential.potentialid = vtiger_potstagehistory.potentialid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_potential.potentialid
+			inner join '.self::$crmEntityTableAlias.' on vtiger_crmentity.crmid = vtiger_potential.potentialid
 			where vtiger_crmentity.deleted = 0 and vtiger_potential.potentialid = ?';
 		$result=$adb->pquery($query, array($id));
 		$header = array();
@@ -416,10 +418,11 @@ class Potentials extends CRMEntity {
 			}
 		}
 
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Quotes');
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = "select case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
 			vtiger_account.accountname, vtiger_crmentity.*, vtiger_quotes.*, vtiger_potential.potentialname from vtiger_quotes
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_quotes.quoteid
+			inner join $crmEntityTable on vtiger_crmentity.crmid=vtiger_quotes.quoteid
 			left outer join vtiger_potential on vtiger_potential.potentialid=vtiger_quotes.potentialid
 			left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
 			left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
@@ -479,12 +482,13 @@ class Potentials extends CRMEntity {
 			}
 		}
 
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('SalesOrder');
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = "select vtiger_crmentity.*, vtiger_salesorder.*, vtiger_quotes.subject as quotename
 			, vtiger_account.accountname, vtiger_potential.potentialname,case when
 			(vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname
 			end as user_name from vtiger_salesorder
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_salesorder.salesorderid
+			inner join $crmEntityTable on vtiger_crmentity.crmid=vtiger_salesorder.salesorderid
 			left outer join vtiger_quotes on vtiger_quotes.quoteid=vtiger_salesorder.quoteid
 			left outer join vtiger_account on vtiger_account.accountid=vtiger_salesorder.accountid
 			left outer join vtiger_potential on vtiger_potential.potentialid=vtiger_salesorder.potentialid
