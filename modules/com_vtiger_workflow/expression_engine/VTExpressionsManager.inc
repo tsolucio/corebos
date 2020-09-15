@@ -190,6 +190,7 @@ class VTExpressionsManager {
 			'OR' => 'OR(condition1, condition2)',
 			'AND' => 'AND(condition1, condition2)',
 			'NOT' => 'NOT(condition1)',
+			'regex' => 'regex(pattern, subject)',
 			'exists' => 'exists(fieldname, value)',
 			'existsrelated' => 'existsrelated(relatedmodule, fieldname, value)',
 			'allrelatedare' => 'allrelatedare(relatedmodule, fieldname, value)',
