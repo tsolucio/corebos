@@ -288,4 +288,11 @@
 	<classname>databasechangesToMoveTocbCalendar2</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Increment Custom View Permission Role Field Size</description>
+	<filename>build/changeSets/2020/incCVManagementRoleFieldSize.php</filename>
+	<classname>incCVManagementRoleFieldSize</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
