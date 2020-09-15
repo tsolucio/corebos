@@ -23,7 +23,8 @@ class incCVManagementRoleFieldSize extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->ExecuteQuery('ALTER TABLE vtiger_cbcvmanagement MODIFY COLUMN cvrole VARCHAR(4100)', array());
+			$this->ExecuteQuery('ALTER TABLE vtiger_cbcvmanagement DROP INDEX cvid_2', array());
+			$this->ExecuteQuery('ALTER TABLE vtiger_cbcvmanagement MODIFY COLUMN cvrole VARCHAR(4000)', array());
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
 		}
