@@ -677,7 +677,7 @@ function getInstruction(field, operator, alias) {
 		let op = validOperations.find(x => x.value === operator);
 		switch (operator) {
 			case 'ifelse':
-				fins = 'if '+fnam+' then expression else expression end';
+				fins = 'ifelse(condition, expression_true, expression_false)';
 				break;
 			case 'add':
 			case 'sub':
