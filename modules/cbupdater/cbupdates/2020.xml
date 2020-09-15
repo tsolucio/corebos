@@ -295,4 +295,11 @@
 	<classname>incCVManagementRoleFieldSize</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add CSV file export to Business Question</description>
+	<filename>build/changeSets/2020/addFilePLValueOnQuestion.php</filename>
+	<classname>addFilePLValueOnQuestion</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
