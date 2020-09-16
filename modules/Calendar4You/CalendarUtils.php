@@ -83,6 +83,14 @@ function get_its_mini_calendar(&$cal) {
 		$minical .= '<th width="12%" scope="col">'.$weekday.'</th>';
 	}
 	$minical .= '</tr></thead><tbody>';
+	$start_date = date('Y-m-01');
+	$end_date = date('Y-m-t');
+	$acts = getEventList($cal, $start_date, $end_date);
+	$events = array();
+	foreach ($acts[0] as $act) {
+		list($d, $t) = explode(' ', $act['starttime']);
+		$events[] = $d;
+	}
 	$event_class = '';
 	$class = '';
 	for ($i = 0; $i < $rows; $i++) {
@@ -100,7 +108,7 @@ function get_its_mini_calendar(&$cal) {
 			}
 
 			//To differentiate day having events from other days
-			if (count($cal['slice']->activities)!=0 && ($cal['slice']->start_time->get_formatted_date()==$cal['slice']->activities[0]->start_time->get_formatted_date())) {
+			if (count($acts)>0 && (in_array($cal['slice']->start_time->get_formatted_date(), $events))) {
 				$event_class = 'class="eventDay"';
 			} else {
 				$event_class = '';

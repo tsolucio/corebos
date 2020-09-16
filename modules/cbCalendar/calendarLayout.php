@@ -838,26 +838,19 @@ function getmonthEventLayer(& $cal, $slice) {
  * @return array  eventslists in array format
  */
 function getEventList(&$calendar, $start_date, $end_date, $info = '') {
-	global $adb, $current_user, $mod_strings, $app_strings, $cal_log, $listview_max_textlength, $list_max_entries_per_page, $theme;
+	global $adb, $current_user, $mod_strings, $app_strings, $cal_log, $theme, $currentModule;
+	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $currentModule);
+	$listview_max_textlength = GlobalVariable::getVariable('Application_ListView_Max_Text_Length', 40, $currentModule);
 	$Entries = array();
 	$userprivs = $current_user->getPrivileges();
 	$cal_log->debug('> getEventList');
 
-	$and = "AND (
-		(
-			(
-				(CAST(CONCAT(date_start,' ',time_start) AS DATETIME) >= ? AND CAST(CONCAT(date_start,' ',time_start) AS DATETIME) <= ?)
-				OR (CAST(CONCAT(due_date,' ',time_end) AS DATETIME) >= ? AND CAST(CONCAT(due_date,' ',time_end) AS DATETIME) <= ?)
-				OR (CAST(CONCAT(date_start,' ',time_start) AS DATETIME) <= ? AND CAST(CONCAT(due_date,' ',time_end) AS DATETIME) >= ?)
-			)
-			AND vtiger_recurringevents.activityid is NULL
-		)
+	$and = "AND ((((dtstart >= ? AND dtstart <= ?) OR (dtend >= ? AND dtend <= ?) OR (dtstart <= ? AND dtend >= ?)) AND vtiger_recurringevents.activityid is NULL)
 		OR
 		(
 			(CAST(CONCAT(vtiger_recurringevents.recurringdate,' ',time_start) AS DATETIME) >= ?
 				AND CAST(CONCAT(vtiger_recurringevents.recurringdate,' ',time_start) AS DATETIME) <= ?)
-			OR (CAST(CONCAT(due_date,' ',time_end) AS DATETIME) >= ? AND CAST(CONCAT(due_date,' ',time_end) AS DATETIME) <= ?)
-			OR (CAST(CONCAT(vtiger_recurringevents.recurringdate,' ',time_start) AS DATETIME) <= ? AND CAST(CONCAT(due_date,' ',time_end) AS DATETIME) >= ?)
+			OR (dtend >= ? AND dtend <= ?) OR (CAST(CONCAT(vtiger_recurringevents.recurringdate,' ',time_start) AS DATETIME) <= ? AND dtend >= ?)
 		)
 	)";
 
@@ -867,9 +860,9 @@ function getEventList(&$calendar, $start_date, $end_date, $info = '') {
 		LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 		LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
 		LEFT OUTER JOIN vtiger_recurringevents ON vtiger_recurringevents.activityid = vtiger_activity.activityid
-		WHERE vtiger_crmentity.deleted = 0 AND (vtiger_activity.activitytype not in ('Emails','Task')) $and ";
+		WHERE vtiger_crmentity.deleted = 0 AND vtiger_activity.activitytype != 'Emails' $and ";
 
-	$list_query = $query.' AND vtiger_crmentity.smownerid = '  . $current_user->id;
+	$list_query = $query.' AND vtiger_crmentity.smownerid = ' . $current_user->id;
 
 	$query_filter_prefix = calendarview_getSelectedUserFilterQuerySuffix();
 	$query .= $query_filter_prefix;
@@ -914,14 +907,12 @@ function getEventList(&$calendar, $start_date, $end_date, $info = '') {
 	}
 	$group_cond = ' GROUP BY vtiger_activity.activityid ORDER BY vtiger_activity.date_start,vtiger_activity.time_start ASC';
 
-	//Ticket 6476
 	if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0)) {
 		$count_result = $adb->pquery(mkCountQuery($query), $params);
 		$noofrows = $adb->query_result($count_result, 0, 'count');
 	} else {
 		$noofrows = null;
 	}
-	global $currentModule;
 	$queryMode = (isset($_REQUEST['query']) && $_REQUEST['query'] == 'true');
 	//$viewid is used as a key for cache query and other info so pass the dates as viewid
 	$viewid = $start_date.$end_date;
@@ -1083,7 +1074,7 @@ function getTodoList(&$calendar, $start_date, $end_date, $info = '') {
 		LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 		LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
 	$query .= getNonAdminAccessControlQuery('cbCalendar', $current_user);
-	$query .= "WHERE vtiger_crmentity.deleted = 0 AND vtiger_activity.activitytype = 'Task'".
+	$query .= "WHERE vtiger_crmentity.deleted = 0 AND vtiger_activity.activitytype != 'Emails'".
 		" AND ((CAST(CONCAT(date_start,' ',time_start) AS DATETIME) >= ? AND CAST(CONCAT(date_start,' ',time_start) AS DATETIME) <= ?)
 				OR	(CAST(CONCAT(due_date,' ',time_end) AS DATETIME) >= ? AND CAST(CONCAT(due_date,' ',time_end) AS DATETIME) <= ? )
 				OR	(CAST(CONCAT(date_start,' ',time_start) AS DATETIME) <= ? AND CAST(CONCAT(due_date,' ',time_end) AS DATETIME) >= ?)
