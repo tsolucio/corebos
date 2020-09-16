@@ -113,9 +113,7 @@ class MailManager_RelationController extends MailManager_Controller {
 
 			$qcreate_array['form'] = $this->processFormData($qcreate_array['form'], $mail);
 			$viewer->assign('QUICKCREATE', $qcreate_array['form']);
-			if ($moduleName == 'Calendar') {
-				$viewer->assign('QCMODULE', getTranslatedString('Todo', 'Calendar'));
-			} elseif ($moduleName == 'HelpDesk') {
+			if ($moduleName == 'HelpDesk') {
 				$viewer->assign('QCMODULE', getTranslatedString('Ticket', 'HelpDesk'));
 			} else {
 				$viewer->assign('QCMODULE', getTranslatedString('SINGLE_'.$moduleName, $moduleName));
@@ -164,27 +162,6 @@ class MailManager_RelationController extends MailManager_Controller {
 			$linkedto = MailManager_RelationControllerAction::getSalesEntityInfo($parent);
 
 			switch ($linkModule) {
-				case 'Calendar':
-					if (empty($focus->column_fields['activitytype'])) {
-						$focus->column_fields['activitytype'] = 'Task';
-					}
-
-					if (empty($focus->column_fields['due_date'])) {
-						if (!empty($focus->column_fields['date_start'])) {
-							$dateStart = getValidDBInsertDateValue($focus->column_fields['date_start']);
-							$focus->column_fields['due_date'] = date("Y-m-d", strtotime(date("Y-m-d", strtotime($dateStart)) . " +1 day"));
-						} else {
-							$focus->column_fields['due_date'] = date('Y-m-d', strtotime("+1 day"));
-						}
-					}
-					if (!empty($parent)) {
-						if ($linkedto['module'] == 'Contacts') {
-							$focus->column_fields['contact_id'] = $parent;
-						} else {
-							$focus->column_fields['parent_id'] = $parent;
-						}
-					}
-					break;
 				case 'HelpDesk':
 					$from = $mail->from();
 					$focus->column_fields['parent_id'] = $this->setParentForHelpDesk($parent, $from);
@@ -202,7 +179,7 @@ class MailManager_RelationController extends MailManager_Controller {
 
 				// This condition is added so that emails are not created for Todo without Parent,
 				// as there is no way to relate them
-				if (empty($parent) && $linkModule != 'Calendar') {
+				if (empty($parent) && $linkModule != 'cbCalendar') {
 					$linkedto = MailManager_RelationControllerAction::associate($mail, $focus->id);
 				}
 
@@ -316,7 +293,7 @@ class MailManager_RelationController extends MailManager_Controller {
 	* @return Array
 	*/
 	public function getCurrentUserMailManagerAllowedModules() {
-		$moduleListForCreateRecordFromMail = array('Contacts', 'Accounts', 'Leads', 'HelpDesk', 'Calendar','Potentials','Project','ProjectTask');
+		$moduleListForCreateRecordFromMail = array('Contacts', 'Accounts', 'Leads', 'HelpDesk', 'cbCalendar','Potentials','Project','ProjectTask');
 		foreach ($moduleListForCreateRecordFromMail as $module) {
 			if (MailManager::checkModuleWriteAccessForCurrentUser($module)) {
 				$mailManagerAllowedModules[] = $module;
@@ -330,7 +307,7 @@ class MailManager_RelationController extends MailManager_Controller {
 	* @return string
 	*/
 	public function linkToAvailableActions() {
-		$moduleListForLinkTo = array('Calendar','HelpDesk','ModComments','Emails','Potentials','Project','ProjectTask');
+		$moduleListForLinkTo = array('cbCalendar','HelpDesk','ModComments','Emails','Potentials','Project','ProjectTask');
 		foreach ($moduleListForLinkTo as $module) {
 			if (MailManager::checkModuleWriteAccessForCurrentUser($module)) {
 				$mailManagerAllowedModules[] = $module;

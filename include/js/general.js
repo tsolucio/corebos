@@ -55,14 +55,14 @@ var cbPopupScreenWidthPercentage = 80;
 var cbPopupScreenHeightPercentage = 80;
 var cbPopupWindowSettings = '';
 setApplicationPopupWindowSize(cbPopupScreenWidthPercentage, cbPopupScreenHeightPercentage);
-GlobalVariable_getVariable('Application_PopupScreen_Width', 80, (typeof gVTModule==undefined ? '' : gVTModule), '').then(function (response) {
+GlobalVariable_getVariable('Application_PopupScreen_Width', 80, (typeof gVTModule=='undefined' ? '' : gVTModule), '').then(function (response) {
 	var obj = JSON.parse(response);
 	cbPopupScreenWidthPercentage = Number(obj.Application_PopupScreen_Width);
 	setApplicationPopupWindowSize(cbPopupScreenWidthPercentage, cbPopupScreenHeightPercentage);
 }, function (error) {
 	cbPopupScreenWidthPercentage = 80;
 });
-GlobalVariable_getVariable('Application_PopupScreen_Height', 80, (typeof gVTModule==undefined ? '' : gVTModule), '').then(function (response) {
+GlobalVariable_getVariable('Application_PopupScreen_Height', 80, (typeof gVTModule=='undefined' ? '' : gVTModule), '').then(function (response) {
 	var obj = JSON.parse(response);
 	cbPopupScreenHeightPercentage = Number(obj.Application_PopupScreen_Height);
 	setApplicationPopupWindowSize(cbPopupScreenWidthPercentage, cbPopupScreenHeightPercentage);
@@ -86,7 +86,7 @@ function setApplicationPopupWindowSize(w, h, r, s, t, l) {
 
 function getTagCloud(crmid) {
 	var obj = document.getElementById('tagfields');
-	if (obj != null && typeof(obj) != undefined) {
+	if (obj != null && typeof(obj) != 'undefined') {
 		jQuery.ajax({
 			method:'POST',
 			url:'index.php?module='+gVTModule+'&action='+gVTModule+'Ajax&file=TagCloud&ajxaction=GETTAGCLOUD&recordid='+crmid,
@@ -1404,16 +1404,16 @@ function runBAScript(scripturi) {
 }
 
 function runBAWorkflow(workflowid, crmids) {
-	if (typeof workflowid == undefined || workflowid == '') {
+	if (typeof workflowid == 'undefined' || workflowid == '') {
 		return false;
 	}
-	if (typeof crmids == undefined || crmids == '' || crmids == 'RECORD') {
+	if (typeof crmids == 'undefined' || crmids == '' || crmids == 'RECORD') {
 		let cbrec = document.getElementById('record');
 		if (cbrec) {
 			crmids = cbrec.value;
 		}
 	}
-	if (typeof crmids == undefined || crmids == '') {
+	if (typeof crmids == 'undefined' || crmids == '') {
 		return false;
 	}
 	VtigerJS_DialogBox.block();
@@ -4725,7 +4725,7 @@ function convertOptionsToJSONArray(objName, targetObjName) {
 			arr.push(obj.options[i].value);
 		}
 	}
-	if (targetObjName != 'undefined') {
+	if (targetObjName != undefined) {
 		var targetObj = document.getElementById(targetObjName);
 		if (typeof(targetObj) != 'undefined') {
 			targetObj.value = JSON.stringify(arr);
@@ -5781,7 +5781,7 @@ AutocompleteRelation.prototype.fillFields = function () {
 AutocompleteRelation.prototype.multiselect = function () {
 	if (typeof this.data.multiselect === 'string') {
 		return this.data.multiselect;
-	} else if (typeof this.data.multiselect === undefined) {
+	} else if (typeof this.data.multiselect === 'undefined') {
 		var ref_module = this.getReferenceModule();
 		return (ref_module !== '' ? this.data.multiselect[ref_module] : '');
 	}
@@ -5790,7 +5790,7 @@ AutocompleteRelation.prototype.multiselect = function () {
 AutocompleteRelation.prototype.MaxResults = function () {
 	if (typeof this.data.maxresults === 'number') {
 		return this.data.maxresults;
-	} else if (typeof this.data.maxresults === undefined) {
+	} else if (typeof this.data.maxresults === 'undefined') {
 		var ref_module = this.getReferenceModule();
 		if (ref_module !== '' && this.data.maxresults[ref_module] !== undefined) {
 			return this.data.maxresults[ref_module];

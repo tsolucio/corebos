@@ -46,6 +46,14 @@ function __cb_not($arr) {
 	return !($arr[0]);
 }
 
+function __cb_regex($arr) {
+	if (count($arr)!=2) {
+		return false;
+	}
+	$arr[0] = '/'.trim($arr[0], '/').'/';
+	return preg_match($arr[0], $arr[1])==1;
+}
+
 function __cb_exists($arr) {
 	global $current_user, $adb;
 	$env = $arr[2];
