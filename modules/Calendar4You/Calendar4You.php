@@ -342,7 +342,8 @@ class Calendar4You extends CRMEntity {
 
 		$Settings = array();
 		$Settings['hour_format'] = $current_user->hour_format;
-		list($h, $m) = explode(':', $current_user->start_hour);
+		$sthour = explode(':', $current_user->start_hour);
+		$h = $sthour[0];
 		$Settings['start_hour'] = $h.':00:00';
 		$Settings['end_hour'] = '24:00:00';
 		$Settings['dayoftheweek'] = 'Sunday';
@@ -598,7 +599,7 @@ class Calendar4You extends CRMEntity {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module)
 					."' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
 					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab$search_string','test',"
-					."'width=640,height=602,resizable=0,scrollbars=0');\" value='".getTranslatedString('LBL_SELECT').' '
+					."cbPopupWindowSettings);\" value='".getTranslatedString('LBL_SELECT').' '
 					.getTranslatedString($related_module, $related_module)."'>&nbsp;";
 			}
 		}
@@ -634,8 +635,7 @@ class Calendar4You extends CRMEntity {
 
 		$button = '<input title="Change" accessKey="" tabindex="2" type="button" class="crmbutton small edit" value="'.getTranslatedString('LBL_SELECT_USER_BUTTON_LABEL')
 			.'" name="button" onclick=\'return window.open("index.php?module=Users&return_module=Calendar&return_action={$return_modname}&activity_mode=Events'
-			.'&action=Popup&popuptype=detailview&form=EditView&form_submit=true&select=enable&return_id='.$id.'&recordid='.$id
-			.'","test","width=640,height=525,resizable=0,scrollbars=0")\';>';
+			.'&action=Popup&popuptype=detailview&form=EditView&form_submit=true&select=enable&return_id='.$id.'&recordid='.$id.'", "test", cbPopupWindowSettings)\';>';
 
 		$returnset = '&return_module=Calendar&return_action=CallRelatedList&return_id='.$id;
 

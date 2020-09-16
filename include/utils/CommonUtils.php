@@ -58,8 +58,9 @@ function isInsideApplication($path2check) {
  * THIS FUNCTION IS DEPRECATED AND SHOULD NOT BE USED; USE get_select_options_with_id()
  * Create HTML to display select options in a dropdown list.  To be used inside
  * of a select statement in a form.
- * param $option_list - the array of strings to that contains the option list
- * param $selected - the string which contains the default value
+ * @param $option_list - the array of strings to that contains the option list
+ * @param $selected - the string which contains the default value
+ * @deprecated
  */
 function get_select_options(&$option_list, $selected, $advsearch = 'false') {
 	global $log;
@@ -2284,6 +2285,7 @@ function validateImageMetadata($data) {
 			|| stripos($data, '<?=') !== false
 			|| stripos($data, '<%=') !== false
 			|| stripos($data, '<? ') !== false
+			|| stripos($data, '<?php ') !== false
 			|| stripos($data, '<% ') !== false
 		) {
 			return false;
@@ -2309,6 +2311,7 @@ function validateImageContents($filename) {
 		|| stripos($contents, '<?=') !== false
 		|| stripos($contents, '<%=') !== false
 		|| stripos($contents, '<? ') !== false
+		|| stripos($contents, '<?php ') !== false
 		|| stripos($contents, '<% ') !== false
 	) {
 		return false;

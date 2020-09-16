@@ -466,7 +466,7 @@ var attachmentManager = {
 		if (!attachmentManager.checkUploadCount()) {
 			return false;
 		}
-		window.open('index.php?module=Documents&return_module=MailManager&action=Popup&popuptype=detailview&form=EditView&form_submit=false&recordid=&forrecord=&srcmodule=MailManager&popupmode=ajax&RLreturn_module=MailManager&callback=MailManager.add_data_to_relatedlist', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+		window.open('index.php?module=Documents&return_module=MailManager&action=Popup&popuptype=detailview&form=EditView&form_submit=false&recordid=&forrecord=&srcmodule=MailManager&popupmode=ajax&RLreturn_module=MailManager&callback=MailManager.add_data_to_relatedlist', 'test', cbPopupWindowSettings);
 	},
 	checkUploadCount : function () {
 		var CurrentUploadCount = jQuery('#attachmentCount').val();

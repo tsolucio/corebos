@@ -34,10 +34,10 @@ class GoogleSync4YouHandler extends VTEventHandler {
 				$InGCalendars = array();
 				$id = $entityData->getId();
 				//$Data = $entityData->getData();
-				$ev=CRMEntity::getInstance("Calendar");
+				$ev=CRMEntity::getInstance("cbCalendar");
 				$ev->id=$id;
 				$ev->mode='edit';
-				$ev->retrieve_entity_info($id, "Events");
+				$ev->retrieve_entity_info($id, "cbCalendar");
 				$Data=$ev->column_fields;
 				$result1 = $adb->pquery('SELECT userid, geventid, eventtype FROM its4you_googlesync4you_events WHERE crmid = ?', array($id));
 				$num_rows1 = $adb->num_rows($result1);
@@ -68,7 +68,7 @@ class GoogleSync4YouHandler extends VTEventHandler {
 					}
 				}
 				if (count($InGCalendars) > 0) {
-					while (list($event, $Events) = each($InGCalendars)) {
+					foreach ($InGCalendars as $event => $Events) {
 						foreach ($Events as $userid => $eventURL) {
 							$this->DeleteGCalendarEvent($id, $userid, $eventURL, $event);
 						}

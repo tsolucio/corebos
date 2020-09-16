@@ -109,6 +109,8 @@ var alert_arr = {
 	'LBL_DOES_NOT_END_WITH' : 'não termina com',
 	'DOES_NOT_START_WITH':'não começa com',
 	'DOES_NOT_END_WITH':'não termina com',
+	'SOUNDEX':'soundex',
+	'REGEXP':'regexp',
 	'Widget_Deleted_Sucessfully':'Widget apagado com sucesso',
 	'LESS_OR_EQUALS':'menor ou igual',
 	'GREATER_OR_EQUALS':'maior ou igual',

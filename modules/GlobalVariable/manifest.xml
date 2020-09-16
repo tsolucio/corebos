@@ -177,7 +177,7 @@
 <defaultvalue>Blocked</defaultvalue>
 <sequence>6</sequence>
 <maximumlength>3</maximumlength>
-<typeofdata>V~O</typeofdata>
+<typeofdata>C~O</typeofdata>
 <quickcreate>1</quickcreate>
 <quickcreatesequence></quickcreatesequence>
 <displaytype>1</displaytype>

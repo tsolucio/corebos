@@ -102,6 +102,7 @@ class VTFieldExpressionEvaluater {
 			'OR' => '__cb_or',
 			'AND' => '__cb_and',
 			'NOT' => '__cb_not',
+			'regex' => '__cb_regex',
 			'exists' => '__cb_exists',
 			'existsrelated' => '__cb_existsrelated',
 			'allrelatedare' => '__cb_allrelatedare',

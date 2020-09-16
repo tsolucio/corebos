@@ -369,6 +369,8 @@ var alert_arr = {
 	'LBL_DOES_NOT_END_WITH' : 'endet nicht mit',
 	'DOES_NOT_START_WITH':'beginnt nicht mit',
 	'DOES_NOT_END_WITH':'endet nicht mit',
+	'SOUNDEX':'soundex',
+	'REGEXP':'regexp',
 	'Widget_Deleted_Sucessfully':'Widget deleted sucessfully',
 	'LBL_AFTER' : 'nach',
 	'LBL_IS_TODAY' : 'ist heute',

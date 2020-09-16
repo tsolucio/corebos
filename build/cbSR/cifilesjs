@@ -60,8 +60,6 @@
 ./modules/cbupdater/cbupdater.js
 ./modules/CobroPago/CobroPago.js
 ./modules/com_vtiger_workflow/resources/createentitytaskscript.js
-./modules/com_vtiger_workflow/resources/createeventtaskscript.js
-./modules/com_vtiger_workflow/resources/createtodotaskscript.js
 ./modules/com_vtiger_workflow/resources/edittaskscript.js
 ./modules/com_vtiger_workflow/resources/editworkflowscript.js
 ./modules/com_vtiger_workflow/resources/emailtaskscript.js
