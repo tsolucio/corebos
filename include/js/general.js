@@ -8,6 +8,11 @@
  ********************************************************************************/
 
 function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid) {
+	if (typeof gVTUserID=='undefined' && typeof gVTModule=='undefined') {
+		let rdo = {};
+		rdo[gvname] = gvdefault;
+		return Promise.resolve(JSON.stringify(rdo));
+	}
 	var baseurl = 'index.php?action=GlobalVariableAjax&file=SearchGlobalVar&module=GlobalVariable';
 	if (gvuserid==undefined || gvuserid=='') {
 		if (typeof gVTUserID=='undefined') {
