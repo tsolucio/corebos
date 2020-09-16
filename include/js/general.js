@@ -8,6 +8,11 @@
  ********************************************************************************/
 
 function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid) {
+	if (typeof gVTUserID=='undefined' && typeof gVTModule=='undefined') {
+		let rdo = {};
+		rdo[gvname] = gvdefault;
+		return Promise.resolve(JSON.stringify(rdo));
+	}
 	var baseurl = 'index.php?action=GlobalVariableAjax&file=SearchGlobalVar&module=GlobalVariable';
 	if (gvuserid==undefined || gvuserid=='') {
 		if (typeof gVTUserID=='undefined') {
@@ -3350,10 +3355,15 @@ GlobalVariable_getVariable('Debug_ActivityReminder_Deactivated', 0, 'cbCalendar'
 	var obj = JSON.parse(response);
 	ActivityReminder_Deactivated = obj.Debug_ActivityReminder_Deactivated;
 	ExecuteFunctions('ispermitted', 'checkmodule=Calendar&checkaction=index').then(function (response) {
-		var obj = JSON.parse(response);
-		if (obj.isPermitted == false) {
-			ActivityReminder_Deactivated = 1;
+		try {
+			var obj = JSON.parse(response);
+			if (obj.isPermitted == false) {
+				ActivityReminder_Deactivated = 1;
+			}
+		} catch (e) {
+			return false;
 		}
+	}, function (error) {
 	});
 }, function (error) {
 	ActivityReminder_Deactivated = 0;
@@ -5336,7 +5346,7 @@ function AutocompleteSetup() {
 }
 
 var appSubmitFormWithEnter = 0;
-GlobalVariable_getVariable('Application_EditView_Submit_Form_WithEnter', 1, gVTModule, '').then(function (response) {
+GlobalVariable_getVariable('Application_EditView_Submit_Form_WithEnter', 1, (typeof gVTModule=='undefined' ? '' : gVTModule), '').then(function (response) {
 	var obj = JSON.parse(response);
 	appSubmitFormWithEnter = Number(obj.Application_EditView_Submit_Form_WithEnter);
 }, function (error) {
