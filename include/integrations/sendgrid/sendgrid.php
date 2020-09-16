@@ -134,7 +134,9 @@ class corebos_sendgrid {
 	) {
 		global $adb, $log;
 
-		if (GlobalVariable::getVariable('Debug_Email_Send_To_Inbucket', 0)) {
+		$inBucketServeUrl = GlobalVariable::getVariable('Debug_Email_Send_To_Inbucket', "");
+
+		if (!empty($inBucketServeUrl)) {
 			require_once 'modules/Emails/mail.php';
 			require_once 'modules/Emails/Emails.php';
 			return send_mail('Email', $to_email, $from_name, $from_email, $subject, $contents, $cc, $bcc, $attachment, $emailid, $logo, $replyto, $qrScan, $brScan);
