@@ -89,6 +89,7 @@ include("modules/Migration/versions.php");
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title><?php echo $installationStrings['APP_NAME']. ' - ' . $installationStrings['LBL_CONFIG_WIZARD']. ' - ' . $installationStrings['LBL_CONFIRM_SETTINGS']?></title>
 	<script type="text/javascript" src="include/jquery/jquery.js"></script>
+	<script type="text/javascript" src="include/js/vtlib.js"></script>
 	<script type="text/javascript" src="include/js/general.js"></script>
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">
 </head>
