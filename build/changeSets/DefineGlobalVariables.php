@@ -232,6 +232,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Report_HeaderOnPDF',
 
 				'Inventory_ListPrice_ReadOnly',
+				'Inventory_Comment_Style',
 				'Inventory_Show_ShippingHandlingCharges',
 				'Inventory_Check_Invoiced_Lines',
 				'Inventory_Tax_FillInMode',

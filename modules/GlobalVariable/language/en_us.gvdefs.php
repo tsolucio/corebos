@@ -1280,6 +1280,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Block list price on inventory module. The default is unblocked.',
 ),
+'Inventory_Comment_Style' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'CSS Style',
+	'definition' => 'CSS Style to apply on inventory product line comment box. By default defines width and height.',
+),
 'Application_Group_Selection_Permitted' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
