@@ -16,6 +16,7 @@
 <script type="text/javascript">
 	jQuery(document).ready(function() {ldelim} (new FieldDependencies({$FIELD_DEPENDENCY_DATASOURCE})).init() {rdelim});
 	var Inventory_ListPrice_ReadOnly = '{if isset($Inventory_ListPrice_ReadOnly)}{$Inventory_ListPrice_ReadOnly}{/if}';
+	var Inventory_Comment_Style = '{if isset($Inventory_Comment_Style)}{$Inventory_Comment_Style}{else}width:70%;height:40px;{/if}';
 </script>
 {/if}
 {if vt_hasRTE()}

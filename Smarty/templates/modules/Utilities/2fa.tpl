@@ -12,6 +12,7 @@
 		</h2>
 	</header>
 	<div class="slds-modal__content slds-app-launcher__content slds-p-around_medium">
+		{include file='applicationmessage.tpl'}
 		<form role="form" style="margin:0 100px;" name="faform">
 		<input type="hidden" name="module" value="Utilities">
 		<input type="hidden" name="action" value="integration">

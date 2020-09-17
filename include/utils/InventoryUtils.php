@@ -11,11 +11,11 @@ require_once 'modules/Emails/mail.php';
 
 /**
  * This function returns the Product detail block values in array format.
- * Input Parameter are
- *  $module - module name,
- *  $focus - module object,
- *  $num_of_products - no.of products associated with it
- *  $associated_prod = associated product details
+ * @param string $module - module name,
+ * @param object $focus - module object,
+ * @param integer $num_of_products - no.of products associated with it
+ * @param array $associated_prod = associated product details
+ * @return array Product detail block values
  */
 function getProductDetailsBlockInfo($mode, $module, $focus = '', $num_of_products = '', $associated_prod = '') {
 	global $log;
@@ -1314,7 +1314,8 @@ function getCurrencyId($fieldValue) {
 function inventoryCanSaveProductLines($request, $module) {
 	global $log;
 	$return = ($request['action'] != $module.'Ajax' && $request['action'] != 'MassEditSave' && $request['action'] != 'ProcessDuplicates'
-			&& (empty($request['ajxaction']) || ($request['ajxaction'] != 'DETAILVIEW' && $request['ajxaction'] != 'Workflow')));
+		&& (empty($request['ajxaction']) || ($request['ajxaction'] != 'DETAILVIEW' && $request['ajxaction'] != 'Workflow'))
+		&& (isset($request['totalProductCount']) && (int)$request['totalProductCount'] > 0));
 	$log->debug('>< inventoryCanSaveProductLines '.($return ? 'true':'false'));
 	return $return;
 }
