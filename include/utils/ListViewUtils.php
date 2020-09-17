@@ -3613,17 +3613,12 @@ function getMergeFields($module, $str) {
  */
 function getFirstModule($module, $fieldname) {
 	global $adb;
-	$result = $adb->pquery('select fieldid, uitype from vtiger_field where tabid=? and fieldname=?', array(getTabid($module), $fieldname));
+	$result = $adb->pquery('select fieldid from vtiger_field where tabid=? and fieldname=? and uitype=?', array(getTabid($module), $fieldname, '10'));
 	$data = '';
 	if ($adb->num_rows($result) > 0) {
-		$uitype = $adb->query_result($result, 0, 'uitype');
-		if ($uitype == 10) {
-			$fieldid = $adb->query_result($result, 0, 'fieldid');
-			$result = $adb->pquery('select relmodule from vtiger_fieldmodulerel where fieldid=? order by sequence', array($fieldid));
-			$count = $adb->num_rows($result);
-			if ($count > 0) {
-				$data = $adb->query_result($result, 0, 'relmodule');
-			}
+		$result = $adb->pquery('select relmodule from vtiger_fieldmodulerel where fieldid=? order by sequence', array($adb->query_result($result, 0, 'fieldid')));
+		if ($adb->num_rows($result) > 0) {
+			$data = $adb->query_result($result, 0, 'relmodule');
 		}
 	}
 	return $data;
