@@ -207,7 +207,7 @@ function displayCoords(currObj,obj,mode,curr_row) {ldelim}
 			</tr>
 			<tr>
 				<td class="small cblds-p_none" id="setComment">
-					<textarea id="{$comment}" name="{$comment}" class=small style="width:70%;height:40px">{$data.$comment}</textarea>
+					<textarea id="{$comment}" name="{$comment}" class=small style="{$Inventory_Comment_Style}">{$data.$comment}</textarea>
 					<img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" onClick="getObj('{$comment}').value=''" style="cursor:pointer;" />
 				</td>
 			</tr>

@@ -440,6 +440,9 @@ class cbQuestion extends CRMEntity {
 	public static function getFormattedAnswer($qid, $params = array()) {
 		$ans = self::getAnswer($qid, $params);
 		switch ($ans['type']) {
+			case 'File':
+				$ret = self::getFileFromAnswer($ans);
+				break;
 			case 'Table':
 				$ret = self::getTableFromAnswer($ans);
 				break;
@@ -469,6 +472,31 @@ class cbQuestion extends CRMEntity {
 				$ret = getTranslatedString('LBL_PERMISSION');
 		}
 		return $ret;
+	}
+
+	/**
+	 * properties: {"delimiter":",;", "enclosure":"", "columnlabels":["",...,""]}
+	 */
+	public static function getFileFromAnswer($ans) {
+		$bqfiles = 'cache/bqfiles';
+		if (!is_dir($bqfiles)) {
+			mkdir($bqfiles, 0777, true);
+		}
+		$fname = '';
+		if (!empty($ans)) {
+			$fname = tempnam($bqfiles, 'bq');
+			$fp = fopen($fname, 'w');
+			$properties = json_decode($ans['properties']);
+			$delim = empty($properties->delimiter) ? ',' : $properties->delimiter;
+			$encls = empty($properties->enclosure) ? '"' : $properties->enclosure;
+			if (!empty($properties->columnlabels)) {
+				fputcsv($fp, $properties->columnlabels, $delim, $encls);
+			}
+			foreach ($ans['answer'] as $row) {
+				fputcsv($fp, $row, $delim, $encls);
+			}
+		}
+		return $fname;
 	}
 
 	public static function getTableFromAnswer($ans) {

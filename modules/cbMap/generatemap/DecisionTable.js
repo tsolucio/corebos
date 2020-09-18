@@ -1350,7 +1350,7 @@ function setRows(ruletype, rules) {
 			orderby: Object.keys(rules.decisionTable.orderby).length == 0 ? '' : rules.decisionTable.orderby+',',
 			output: Object.keys(rules.decisionTable.output).length == 0 ? '' : rules.decisionTable.output+',',
 			searches: rules.decisionTable.searches.search.condition,
-			conditions: rules.decisionTable.conditions.condition,
+			conditions: rules.decisionTable.conditions == undefined ? '' : rules.decisionTable.conditions.condition,
 		}
 		generateSection(ev, values);
 		updateFieldList(rules.sequence, values.module);

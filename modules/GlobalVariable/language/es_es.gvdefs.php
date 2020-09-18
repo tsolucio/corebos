@@ -1280,6 +1280,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Bloquear el precio de lista en los módulos de inventario. El valor predeterminado es desbloqueado.',
 ),
+'Inventory_Comment_Style' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'Estilo CSS',
+	'definition' => 'Estilo CSS aplicado en la caja de comentario de las líneas de inventario. Por defecto define altura y anchura.',
+),
 'Application_Group_Selection_Permitted' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',

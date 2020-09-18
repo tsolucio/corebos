@@ -73,6 +73,7 @@ $mod_strings = array(
 	'Record Versioning' => 'Versionamento de registros',
 	'Record Versioning_Desc' => 'Adicione controle de versão aos seus registros',
 	'GoTo2FAActivation_Desc' => 'Adicione autenticação de dois fatores para seus usuários',
+	'GVEditable' => 'The Global Variable module must be editable in order to activate this feature.',
 	'HubSpot Activation_Desc' => 'Sincronize suas informações com o HubSpot',
 	'SMTP Configuration_Desc' => 'Configurar contas de email de entrada e saída para seus usuários',
 	'Zendesk Activation_Desc' => 'Sincronize suas informações com o ZenDesk',

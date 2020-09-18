@@ -9,6 +9,7 @@
  ************************************************************************************/
 require_once 'modules/Users/UserPrivileges.php';
 include_once 'modules/Users/authTypes/TwoFactorAuth/autoload.php';
+include_once 'include/utils/utils.php';
 use \RobThree\Auth\TwoFactorAuth;
 
 class VTSimpleTemplate {
@@ -320,12 +321,16 @@ class VTSimpleTemplate {
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('InventoryDetails');
 		$wsid = $this->parent->getId();
 		list($wsid,$crmid) = explode('x', $wsid);
+		$relfield = getFirstFieldForModule('InventoryDetails', $this->parent->getModuleName());
+		if ($relfield=='') {
+			return '';
+		}
 		$cmsqlws = 'SELECT '.$field.'
 			FROM vtiger_inventorydetails
 			INNER JOIN '.$crmEntityTable.' ON vtiger_inventorydetails.inventorydetailsid=vtiger_crmentity.crmid
 			LEFT JOIN vtiger_products ON vtiger_inventorydetails.productid=vtiger_products.productid
 			LEFT JOIN vtiger_service ON vtiger_inventorydetails.productid=vtiger_service.serviceid
-			WHERE related_to=? order by sequence_no';
+			WHERE '.$relfield.'=? order by sequence_no';
 		$retcm = '';
 		$wsid = $this->parent->getId();
 		$cmrs = $adb->pquery($cmsqlws, array($crmid));

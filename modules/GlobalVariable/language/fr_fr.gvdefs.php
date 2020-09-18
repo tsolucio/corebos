@@ -1280,6 +1280,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Permet l\'édition ou non des prix listés dans les modules Commande Fournisseur, Bon de Commande, Devis, Facture et "Issuecards" . Par défaut (0) les prix listés sont éditables.',
 ),
+'Inventory_Comment_Style' => array(
+	'status' => 'Implémenté',
+	'valuetype' => 'Chaîne',
+	'category' => 'Application',
+	'values' => 'CSS Style',
+	'definition' => 'CSS Style to apply on inventory product line comment box. By default defines width and height.',
+),
 'Application_Group_Selection_Permitted' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Booléen',

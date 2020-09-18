@@ -385,7 +385,11 @@ function cbexpsql_div($arr, $mmodule) {
 }
 
 function cbexpsql_equals($arr, $mmodule) {
-	return 'TRUE';
+	if (count($arr)==2) {
+		return ($arr[0]->type=='string' ? "'".$arr[0]->value."'" : $arr[0]->value).'='.($arr[1]->type=='string' ? "'".$arr[1]->value."'" : $arr[1]->value);
+	} else {
+		return 'TRUE';
+	}
 }
 
 function cbexpsql_distinct($arr, $mmodule) {

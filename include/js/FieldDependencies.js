@@ -133,7 +133,7 @@ FieldDependencies.prototype.actOnSelectChange = function (event) {
 				groupid=conditions[j]['groupid'];
 				fieldName=field.split(':');
 				field=fieldName[1];
-				sourcevalue=(document.getElementById(field)!=undefined ? document.getElementById(field).value : document.getElementsByName(field).item(0).value);
+				sourcevalue=this.getFieldValue(field);
 				switch (comparator) {
 				case 'e': conditionResp+= sourcevalue===value; break;
 				case 'n': conditionResp+= sourcevalue!==value; break;
@@ -282,7 +282,18 @@ FieldDependencies.prototype.fieldValueChange = function (targetFields) {
 			}
 		}
 	}
+};
 
+FieldDependencies.prototype.getFieldValue = function (field) {
+	var fld = document.getElementById(field);
+	if (fld==undefined) {
+		fld = document.getElementsByName(field).item(0);
+	}
+	if (fld.type == 'checkbox') {
+		return (fld.checked ? '1' : '0');
+	} else {
+		return fld.value;
+	}
 };
 
 FieldDependencies.prototype.fieldHide = function (hideFields) {
