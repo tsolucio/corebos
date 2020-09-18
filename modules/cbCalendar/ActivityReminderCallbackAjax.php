@@ -46,10 +46,11 @@ if (isPermitted('cbCalendar', 'index') == 'yes') {
 		$date = date('Y-m-d', strtotime("+$intervalInMinutes minutes", $time));
 		$date_inpast = date('Y-m-d', strtotime('-'.$Calendar_PopupReminder_DaysPast.' day', $time));
 		$time = date('H:i', strtotime("+$intervalInMinutes minutes", $time));
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCalendar');
 		$callback_query =
 		"SELECT vtiger_activity_reminder_popup.*,vtiger_activity_reminder_popup.status as readed, vtiger_crmentity.*" .
 		" FROM vtiger_activity_reminder_popup" .
-		" inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_activity_reminder_popup.recordid " .
+		' inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_activity_reminder_popup.recordid ' .
 		" inner join vtiger_activity on vtiger_activity.activityid = vtiger_activity_reminder_popup.recordid ".
 		" WHERE vtiger_crmentity.smownerid = ".$current_user->id." and vtiger_crmentity.deleted = 0 " .
 		" AND (vtiger_activity.activitytype not in ('Emails') and vtiger_activity.eventstatus not in ('','Held','Completed','Deferred'))".
