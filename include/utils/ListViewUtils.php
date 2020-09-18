@@ -3605,26 +3605,43 @@ function getMergeFields($module, $str) {
 }
 
 /**
- * this function accepts a modulename and a fieldname and returns the first related module for it
+ * this function accepts a module name and a field name and returns the first related module for it
  * it expects the uitype of the field to be 10
  * @param string $module - the modulename
  * @param string $fieldname - the field name
- * @return string $data - the first related module
+ * @return string the first related module in the field or empty if not found
  */
 function getFirstModule($module, $fieldname) {
 	global $adb;
-	$result = $adb->pquery('select fieldid, uitype from vtiger_field where tabid=? and fieldname=?', array(getTabid($module), $fieldname));
+	$result = $adb->pquery('select fieldid from vtiger_field where tabid=? and fieldname=? and uitype=?', array(getTabid($module), $fieldname, '10'));
 	$data = '';
 	if ($adb->num_rows($result) > 0) {
-		$uitype = $adb->query_result($result, 0, 'uitype');
-		if ($uitype == 10) {
-			$fieldid = $adb->query_result($result, 0, 'fieldid');
-			$result = $adb->pquery('select relmodule from vtiger_fieldmodulerel where fieldid=? order by sequence', array($fieldid));
-			$count = $adb->num_rows($result);
-			if ($count > 0) {
-				$data = $adb->query_result($result, 0, 'relmodule');
-			}
+		$result = $adb->pquery('select relmodule from vtiger_fieldmodulerel where fieldid=? order by sequence', array($adb->query_result($result, 0, 'fieldid')));
+		if ($adb->num_rows($result) > 0) {
+			$data = $adb->query_result($result, 0, 'relmodule');
 		}
+	}
+	return $data;
+}
+
+/**
+ * this function accepts a module name and a related modulen ame and returns the first uitype 10 field that relates them
+ * @param string $module - the module name
+ * @param string $relmodule - the related module
+ * @return string the first uitype 10 field that relates the two modules or an empty string
+ */
+function getFirstFieldForModule($module, $relmodule) {
+	global $adb;
+	$linkedModulesQuery = $adb->pquery(
+		'SELECT fieldname
+		FROM vtiger_field
+		INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid'
+		." WHERE uitype='10' AND vtiger_fieldmodulerel.module=? AND vtiger_fieldmodulerel.relmodule=?",
+		array($module, $relmodule)
+	);
+	$data = '';
+	if ($adb->num_rows($linkedModulesQuery) > 0) {
+		$data = $adb->query_result($linkedModulesQuery, 0, 'fieldname');
 	}
 	return $data;
 }
