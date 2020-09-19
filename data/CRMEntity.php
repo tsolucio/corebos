@@ -3161,10 +3161,11 @@ class CRMEntity {
 		return $sec_query;
 	}
 
-	/*
+	/**
 	 * Function to get the security query part of a report
-	 * @param - $module primary module name
-	 * returns the query string formed on fetching the related data for report for security of the module
+	 * @param string $module primary module name
+	 * @return string query formed on fetching the related data for report for security of the module
+	 * @deprecated
 	 */
 	public function getSecListViewSecurityParameter($module) {
 		$tabid = getTabid($module);
