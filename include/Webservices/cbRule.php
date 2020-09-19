@@ -28,8 +28,9 @@ function cbws_cbRule($conditionid, $context, $user) {
 	$mapid = vtws_getWSID($conditionid);
 	if ($mapid===false || $mapid=='0x0') {
 		// we try to search it as a string
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap');
 		$maprs = $adb->pquery(
-			'select cbmapid from vtiger_cbmap inner join vtiger_crmentity on crmid=cbmapid where deleted=0 and mapname=?',
+			'select cbmapid from vtiger_cbmap inner join '.$crmEntityTable.' on crmid=cbmapid where deleted=0 and mapname=?',
 			array($conditionid)
 		);
 		if ($maprs && $adb->num_rows($maprs)>0) {

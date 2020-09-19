@@ -27,10 +27,11 @@ function vtws_loginportal($username, $password, $entity = 'Contacts', $SessionMa
 		if (!in_array('portalpasswordtype', $epflds)) {
 			throw new WebServiceException(WebServiceErrorCode::$INVALIDUSERPWD, 'Necessary portal login fields are not created on employee module');
 		}
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbEmployee');
 		$sql = 'select id, template_language, user_password, portalpasswordtype, portalloginuser
 			from vtiger_portalinfo
 			inner join vtiger_cbemployee on vtiger_portalinfo.id=vtiger_cbemployee.cbemployeeid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_portalinfo.id
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_portalinfo.id
 			where vtiger_crmentity.deleted=0 and user_name=? and isactive=1 and vtiger_cbemployee.portal=1
 				and vtiger_cbemployee.support_start_date <= ? and vtiger_cbemployee.support_end_date >= ?';
 	} else {
@@ -44,11 +45,12 @@ function vtws_loginportal($username, $password, $entity = 'Contacts', $SessionMa
 			}
 			$additionalfields = ", 'md5' as portalpasswordtype, $userId as portalloginuser";
 		}
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
 		$sql = "select id, template_language, user_password $additionalfields
 			from vtiger_portalinfo
 			inner join vtiger_customerdetails on vtiger_portalinfo.id=vtiger_customerdetails.customerid
 			inner join vtiger_contactdetails on vtiger_portalinfo.id=vtiger_contactdetails.contactid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_portalinfo.id
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_portalinfo.id
 			where vtiger_crmentity.deleted=0 and user_name=? and isactive=1 and vtiger_customerdetails.portal=1
 				and vtiger_customerdetails.support_start_date <= ? and vtiger_customerdetails.support_end_date >= ?";
 	}

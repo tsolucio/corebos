@@ -59,7 +59,7 @@ function vtRunTaskJob($adb) {
 			continue;
 		}
 		list($moduleId, $crmId) = explode('x', $entityId);
-		$res = $adb->pquery('select deleted from vtiger_crmentity where crmid=?', array($crmId));
+		$res = $adb->pquery('select deleted from vtiger_crmobject where crmid=?', array($crmId));
 		if ($adb->num_rows($res) == 0) {
 			$logbg->debug('WF Cron:: CRMID '.$crmId.' was totally deleted');
 			continue;

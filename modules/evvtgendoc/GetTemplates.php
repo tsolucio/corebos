@@ -19,7 +19,7 @@
 global $adb,$mod_strings;
 $moduletemplate = vtlib_purify($_REQUEST['moduletemplate']);
 require_once 'data/CRMEntity.php';
-$crmEntityTable = CRMEntity::getcrmEntityTableAlias('evvtgendoc');
+$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents');
 $templates=$adb->pquery(
 	'SELECT notesid,title
 		FROM vtiger_notes

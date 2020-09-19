@@ -323,7 +323,7 @@ function cbexpsql_setype($arr, $mmodule) {
 		if (count($crmidmatches)>0) {
 			list($void, $crmid) = explode('x', $crmid);
 		}
-		$ret = '(select setype from vtiger_crmentity where vtiger_crmentity.crmid='.$crmid.')';
+		$ret = '(select setype from vtiger_crmobject where vtiger_crmobject.crmid='.$crmid.')';
 	}
 	return $ret;
 }

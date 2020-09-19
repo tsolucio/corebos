@@ -560,7 +560,8 @@ class HelpDesk extends CRMEntity {
 			$query .=" left join vtiger_ticketcf on vtiger_ticketcf.ticketid = vtiger_troubletickets.ticketid";
 		}
 		if ($queryplanner->requireTable("vtiger_crmentityRelHelpDesk", $matrix)) {
-			$query .=" left join vtiger_crmentity as vtiger_crmentityRelHelpDesk on vtiger_crmentityRelHelpDesk.crmid = vtiger_troubletickets.parent_id";
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('HelpDesk');
+			$query .=' left join '.$crmEntityTable.' as vtiger_crmentityRelHelpDesk on vtiger_crmentityRelHelpDesk.crmid=vtiger_troubletickets.parent_id';
 		}
 		if ($queryplanner->requireTable("vtiger_accountRelHelpDesk")) {
 			$query .=" left join vtiger_account as vtiger_accountRelHelpDesk on vtiger_accountRelHelpDesk.accountid=vtiger_crmentityRelHelpDesk.crmid";

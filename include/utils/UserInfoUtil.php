@@ -432,10 +432,8 @@ function fetchEmailTemplateInfo($templateName, $desired_lang = null, $default_la
 	if (empty($default_lang)) {
 		$default_lang = cbtranslation::getShortLanguageName($default_language);
 	}
-	$sql = 'select *
-		from vtiger_msgtemplate
-		inner join vtiger_crmentity on crmid=msgtemplateid
-		where deleted=0 and reference=?';
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('MsgTemplate');
+	$sql = 'select * from vtiger_msgtemplate inner join '.$crmEntityTable.' on crmid=msgtemplateid where deleted=0 and reference=?';
 	$result = $adb->pquery($sql.' and msgt_language=?', array($templateName, $desired_lang));
 	if (!$result) {
 		$result = $adb->pquery($sql.' and msgt_language=?', array($templateName, $default_lang));
@@ -2099,6 +2097,7 @@ function tranferGroupOwnership($groupId, $transferId) {
 	global $log, $adb;
 	$log->debug('> tranferGroupOwnership '.$groupId);
 	$adb->pquery('update vtiger_crmentity set smownerid=? where smownerid=?', array($transferId, $groupId));
+	$adb->pquery('update vtiger_crmobject set smownerid=? where smownerid=?', array($transferId, $groupId));
 	if (Vtiger_Utils::CheckTable('vtiger_customerportal_prefs')) {
 		$query = 'UPDATE vtiger_customerportal_prefs SET prefvalue = ? WHERE prefkey = ? AND prefvalue = ?';
 		$params = array($transferId, 'defaultassignee', $groupId);

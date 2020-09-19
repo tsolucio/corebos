@@ -150,11 +150,11 @@ function vtws_getAssignedGroupList($module, $user) {
 function vtws_AuthenticateContact($email, $password, $user = '') {
 	global $adb,$log;
 	$log->debug('> AuthenticateContact '.$email.','.$password);
-
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
 	$rs = $adb->pquery('select id
 		from vtiger_portalinfo
 		inner join vtiger_customerdetails on vtiger_portalinfo.id=vtiger_customerdetails.customerid
-		inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_portalinfo.id
+		inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_portalinfo.id
 		where vtiger_crmentity.deleted=0 and user_name=? and user_password=?
 		 and isactive=1 and vtiger_customerdetails.portal=1', array($email, $password));
 	if ($rs && $adb->num_rows($rs)>0 && !empty($rs->fields['id'])) {

@@ -504,7 +504,9 @@ class Emails extends CRMEntity {
 		$sql = 'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND relmodule=? AND relcrmid=?) OR (relcrmid=? AND module=? AND crmid=?)';
 		$params = array($id, $return_module, $return_id, $id, $return_module, $return_id);
 		$this->db->pquery($sql, $params);
-		$this->db->pquery('UPDATE vtiger_crmentity SET modifiedtime = ? WHERE crmid = ?', array(date('y-m-d H:i:d'), $id));
+		$mtime = date('y-m-d H:i:d');
+		$this->db->pquery('UPDATE '.self::$crmentityTable.' SET modifiedtime=? WHERE crmid=?', array($mtime, $id));
+		$this->db->pquery('UPDATE vtiger_crmobject SET modifiedtime=? WHERE crmid=?', array($mtime, $id));
 	}
 
 	public function getListButtons($app_strings) {

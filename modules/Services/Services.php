@@ -717,7 +717,8 @@ class Services extends CRMEntity {
 			$query .= " left join vtiger_seproductsrel on vtiger_seproductsrel.productid= vtiger_service.serviceid";
 		}
 		if ($queryPlanner->requireTable("vtiger_crmentityRelServices")) {
-			$query .= " left join vtiger_crmentity as vtiger_crmentityRelServices on vtiger_crmentityRelServices.crmid = vtiger_seproductsrel.crmid and vtiger_crmentityRelServices.deleted = 0";
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Services');
+			$query .= " left join $crmEntityTable as vtiger_crmentityRelServices on vtiger_crmentityRelServices.crmid=vtiger_seproductsrel.crmid and vtiger_crmentityRelServices.deleted = 0";
 		}
 		if ($queryPlanner->requireTable("vtiger_accountRelServices")) {
 			$query .= " left join vtiger_account as vtiger_accountRelServices on vtiger_accountRelServices.accountid=vtiger_seproductsrel.crmid";

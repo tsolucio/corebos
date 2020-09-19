@@ -1497,13 +1497,8 @@ class CRMEntity {
 		$select_clause = 'SELECT '. $this->table_name .'.'.$this->table_index .' AS recordid, vtiger_users_last_import.deleted,'.$table_cols;
 		$from_clause = " FROM $this->table_name";
 		$from_clausesub = " FROM $this->table_name";
-		if (self::$denormalized) {
-			$from_clause .= " INNER JOIN $this->table_name as vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
-			$from_clausesub .= " INNER JOIN $this->table_name as vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
-		} else {
-		$from_clause .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
-		$from_clausesub .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
-		}
+		$from_clause .= ' INNER JOIN '.self::$crmEntityTableAlias." ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
+		$from_clausesub .= ' INNER JOIN '.self::$crmEntityTableAlias." ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
 		// Consider custom table join as well.
 		if (isset($this->customFieldTable)) {
 			$from_clause.=' INNER JOIN '.$this->customFieldTable[0].' ON '.$this->customFieldTable[0].'.'.$this->customFieldTable[1]."=$this->table_name.$this->table_index";
@@ -1564,14 +1559,10 @@ class CRMEntity {
 		}
 
 		$query .= " FROM $this->table_name";
-		if (self::$denormalized) {
-			$query .= ' INNER JOIN '.self::$crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
-		} else {
-		$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
-		}
+		$query .= ' INNER JOIN '.self::$crmEntityTableAlias." ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
 
 		$joinedTables[] = $this->table_name;
-		$joinedTables[] = 'vtiger_crmentity';
+		$joinedTables[] = self::$crmentityTable;
 
 		// Consider custom table join as well.
 		if (!empty($this->customFieldTable)) {
@@ -1627,13 +1618,8 @@ class CRMEntity {
 		if ($thismodule=='Faq') {
 			$fields_list = str_replace(",vtiger_faqcomments.comments as 'Add Comment'", ' ', $fields_list);
 		}
-		if (self::$denormalized) {
-			$query = "SELECT $fields_list, vtiger_users.user_name AS user_name FROM ".self::$crmentityTable
-				.' INNER JOIN '.self::$crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
-		} else {
 		$query = "SELECT $fields_list, vtiger_users.user_name AS user_name
-				FROM ".self::$crmentityTable." INNER JOIN $this->table_name ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
-		}
+			FROM ".self::$crmEntityTableAlias." INNER JOIN $this->table_name ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
 
 		if (!empty($this->customFieldTable)) {
 			$query .= ' INNER JOIN '.$this->customFieldTable[0].' ON '.$this->customFieldTable[0].'.'.$this->customFieldTable[1]."= $this->table_name.$this->table_index";
@@ -1943,6 +1929,7 @@ class CRMEntity {
 				$related_ids = explode(',', $related_crm_ids);
 				if ($rel_table == 'vtiger_crmentity' && $rel_column == 'deleted') {
 					$sql = "UPDATE $rel_table set $rel_column = 0 WHERE $ref_column IN (" . generateQuestionMarks($related_ids) . ')';
+					$sql = 'UPDATE vtiger_crmobject set deleted=0 WHERE crmid IN (' . generateQuestionMarks($related_ids) . ')';
 					$this->db->pquery($sql, array($related_ids));
 				} else {
 					$sql = "UPDATE $rel_table set $rel_column = ? WHERE $rel_column = 0 AND $ref_column IN (" . generateQuestionMarks($related_ids) . ')';
@@ -2263,12 +2250,10 @@ class CRMEntity {
 		$query ="select case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
 				vtiger_activity.activityid, vtiger_activity.subject, vtiger_activity.semodule, vtiger_activity.activitytype, vtiger_email_track.access_count,
 				vtiger_activity.date_start,vtiger_activity.time_start, vtiger_activity.status, vtiger_activity.priority, ".self::$crmentityTable.'.crmid,'
-				.self::$crmentityTable.'.smownerid,'.self::$crmentityTable.'.modifiedtime, vtiger_users.user_name, vtiger_seactivityrel.crmid as parent_id, vtiger_emaildetails.*
+				.'vtiger_crmentity.smownerid,vtiger_crmentity.modifiedtime, vtiger_users.user_name, vtiger_seactivityrel.crmid as parent_id, vtiger_emaildetails.*
 			from vtiger_activity
 			inner join vtiger_seactivityrel on vtiger_seactivityrel.activityid=vtiger_activity.activityid'
-			.(self::$denormalized ?
-				' inner join '.self::$crmentityTable.' as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid' :
-				' inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid')
+			.' inner join '.self::$crmEntityTableAlias.' on vtiger_crmentity.crmid=vtiger_activity.activityid'
 			.' inner join vtiger_emaildetails on vtiger_emaildetails.emailid = vtiger_activity.activityid
 			left join vtiger_email_track on (vtiger_email_track.crmid=vtiger_seactivityrel.crmid AND vtiger_email_track.mailid=vtiger_activity.activityid)
 			left join vtiger_groups on vtiger_groups.groupid='.self::$crmentityTable.'.smownerid
@@ -2548,11 +2533,7 @@ class CRMEntity {
 		}
 		$query .= ', '.$other->table_name.'.*';
 		$query .= " FROM $other->table_name";
-		if (self::$denormalized) {
-			$query .= ' INNER JOIN '.self::$crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
-		} else {
-		$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
-		}
+		$query .= ' INNER JOIN '.self::$crmEntityTableAlias." ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
 		$query .= ' INNER JOIN vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid = vtiger_crmentity.crmid OR vtiger_crmentityrel.crmid = vtiger_crmentity.crmid)';
 		$query .= $more_relation;
 		if ($related_module != 'Users') {
@@ -2673,11 +2654,7 @@ class CRMEntity {
 			}
 
 			$query .= " FROM $other->table_name";
-			if (self::$denormalized) {
-				$query .= ' INNER JOIN '.self::$crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
-			} else {
-			$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
-			}
+			$query .= ' INNER JOIN '.self::$crmEntityTableAlias." ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
 			$query .= $more_relation;
 			if ($relWithSelf) {
 				$query .= " INNER JOIN $this->table_name as ".$this->table_name."RelSelf ON $relationconditions";
@@ -2808,11 +2785,7 @@ class CRMEntity {
 			}
 
 			$query .= " FROM $other->table_name";
-			if (self::$denormalized) {
-				$query .= ' INNER JOIN '.self::$crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
-			} else {
-			$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
-			}
+			$query .= ' INNER JOIN '.self::$crmEntityTableAlias." ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
 			$query .= $more_relation;
 			if ($relWithSelf) {
 				$query .= " INNER JOIN $this->table_name as ".$this->table_name."RelSelf ON $relationconditions";
@@ -2976,7 +2949,7 @@ class CRMEntity {
 					$matrix->addDependency($tab_name, $crmentityRelModuleFieldTable);
 
 					if ($queryPlanner->requireTable($crmentityRelModuleFieldTable, $matrix)) {
-						$relquery.= " left join vtiger_crmentity as $crmentityRelModuleFieldTable on ".
+						$relquery.= ' left join '.self::$crmentityTable." as $crmentityRelModuleFieldTable on ".
 							"$crmentityRelModuleFieldTable.crmid = $tab_name.$col_name and $crmentityRelModuleFieldTable.deleted=0";
 					}
 
@@ -2999,11 +2972,7 @@ class CRMEntity {
 		}
 
 		$query = "from $moduletable ";
-		if (self::$denormalized) {
-			$query .= 'inner join '.self::$crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid=$moduletable.$moduleindex";
-		} else {
-			$query .= "inner join vtiger_crmentity on vtiger_crmentity.crmid=$moduletable.$moduleindex";
-		}
+		$query .= 'inner join '.self::$crmEntityTableAlias." on vtiger_crmentity.crmid=$moduletable.$moduleindex";
 
 		// Add the pre-joined custom table query
 		$query .= ' ' . $cfquery;
@@ -3101,7 +3070,7 @@ class CRMEntity {
 					$matrix->addDependency($tab_name, $crmentityRelSecModuleTable);
 
 					if ($queryPlanner->requireTable($crmentityRelSecModuleTable, $matrix)) {
-						$relquery .= " left join vtiger_crmentity as $crmentityRelSecModuleTable on ".
+						$relquery .= ' left join '.self::$crmentityTable." as $crmentityRelSecModuleTable on ".
 							"$crmentityRelSecModuleTable.crmid = $tab_name.$col_name and $crmentityRelSecModuleTable.deleted=0";
 					}
 					for ($j = 0; $j < $adb->num_rows($ui10_modules_query); $j++) {
@@ -3130,7 +3099,7 @@ class CRMEntity {
 		$query = $this->getRelationQuery($module, $secmodule, "$tablename", "$tableindex", $queryPlanner);
 
 		if ($queryPlanner->requireTable("vtiger_crmentity$secmodule", $matrix)) {
-			$query .= " left join vtiger_crmentity as vtiger_crmentity$secmodule on ".
+			$query .= ' left join '.self::$crmentityTable." as vtiger_crmentity$secmodule on ".
 				"vtiger_crmentity$secmodule.crmid = $tablename.$tableindex AND vtiger_crmentity$secmodule.deleted=0";
 		}
 
@@ -3265,11 +3234,7 @@ class CRMEntity {
 
 		// Look forward for temporary table usage as defined by the QueryPlanner
 		$secQueryFrom = " FROM $table_name ";
-		if (self::$denormalized) {
-			$secQueryFrom .= 'INNER JOIN '.self::$crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid=$table_name.$column_name AND ".self::$crmentityTable.".deleted=0 ";
-		} else {
-			$secQueryFrom .= "INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=$table_name.$column_name AND ".self::$crmentityTable.".deleted=0 ";
-		}
+		$secQueryFrom .= 'INNER JOIN '.self::$crmEntityTableAlias." ON vtiger_crmentity.crmid=$table_name.$column_name AND ".self::$crmentityTable.".deleted=0 ";
 
 		//The relation field exists in custom field . relation field added from layout editor
 		if ($pritablename != $table_name && $secmodule != 'Emails') {
@@ -3303,7 +3268,7 @@ class CRMEntity {
 			$condition = "$table_name.$column_name=$tmpname.$secfieldname";
 			if ($pritablename === 'vtiger_senotesrel') {
 				$query = " left join $pritablename as $tmpname ON ($sectablename.$sectableindex=$tmpname.$prifieldname
-					AND $tmpname.notesid IN (SELECT crmid FROM vtiger_crmentity WHERE setype='Documents' AND deleted = 0))";
+					AND $tmpname.notesid IN (SELECT crmid FROM vtiger_crmobject WHERE setype='Documents' AND deleted = 0))";
 			} else {
 				$query = " left join $pritablename as $tmpname ON ($sectablename.$sectableindex=$tmpname.$prifieldname)";
 			}
@@ -3391,11 +3356,7 @@ class CRMEntity {
 		$entitycolumnnames = $entityfields['fieldname'];
 		$query = "select crmid as id, $querycolumnnames, $entitycolumnnames as name ";
 		$query .= " FROM $this->table_name ";
-		if (self::$denormalized) {
-			$query .=' INNER JOIN '.self::$crmentityTable." as vtiger_crmentity ON $this->table_name.$this->table_index = vtiger_crmentity.crmid AND vtiger_crmentity.deleted = 0 ";
-		} else {
-		$query .=" INNER JOIN vtiger_crmentity ON $this->table_name.$this->table_index = vtiger_crmentity.crmid AND deleted = 0 ";
-		}
+		$query .=' INNER JOIN '.self::$crmEntityTableAlias." ON $this->table_name.$this->table_index = vtiger_crmentity.crmid AND vtiger_crmentity.deleted = 0 ";
 
 		//remove the base table
 		$LookupTable = array_unique($lookuptables);

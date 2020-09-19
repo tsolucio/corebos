@@ -60,7 +60,7 @@ class RecordSetMapping extends processcbMap {
 					$action = $this->default_action;
 				}
 				if (isset($v->id)) {
-					$rs = $adb->pquery('select setype from vtiger_crmentity where crmid=? and deleted=0', array((Integer)$v->id));
+					$rs = $adb->pquery('select setype from vtiger_crmobject where crmid=? and deleted=0', array((Integer)$v->id));
 					if ($adb->num_rows($rs)==1) {
 						$recinfo = $adb->fetch_array($rs);
 						$this->mapping[$action]['ids'][] = (Integer)$v->id;

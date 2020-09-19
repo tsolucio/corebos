@@ -11,12 +11,12 @@ require_once 'include/utils/CommonUtils.php';
 require_once 'data/CRMEntity.php';
 global $default_charset;
 
-$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents');
 if (isset($_REQUEST['templateid']) && $_REQUEST['templateid'] !='') {
 	$templatedetails = getTemplateDetails($_REQUEST['templateid']);
 	$crmid = null;
 	$tpl = getTemplateDetails($_REQUEST['templateid'], $crmid);
 	// Get Related Documents
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents');
 	$query='select vtiger_notes.notesid,vtiger_notes.filename
 		from vtiger_notes
 		inner join vtiger_senotesrel on vtiger_senotesrel.notesid= vtiger_notes.notesid

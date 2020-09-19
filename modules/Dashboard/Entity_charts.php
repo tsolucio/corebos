@@ -87,7 +87,7 @@ function module_Chart_HomePageDashboard($userinfo) {
 	}
 
 	// Get count for module that needs special conditions
-	$query = "SELECT setype, count(setype) setype_count FROM vtiger_crmentity se WHERE
+	$query = "SELECT setype, count(setype) setype_count FROM vtiger_crmobject se WHERE
 		se.deleted = 0 AND se.smownerid=$user_id AND se.setype in ($inmodulestr) GROUP BY se.setype";
 	$queryres = $adb->query($query);
 	while ($resrow = $adb->fetch_array($queryres)) {

@@ -1371,7 +1371,8 @@ class ReportRun extends CRMEntity {
 			$matrix->setDependency('vtiger_crmentityRelHelpDesk', array('vtiger_accountRelHelpDesk', 'vtiger_contactdetailsRelHelpDesk'));
 
 			if ($this->queryPlanner->requireTable('vtiger_crmentityRelHelpDesk', $matrix)) {
-				$query .= " left join vtiger_crmentity as vtiger_crmentityRelHelpDesk on vtiger_crmentityRelHelpDesk.crmid = vtiger_troubletickets.parent_id";
+				$crmEntityTable = CRMEntity::getcrmEntityTableAlias('HelpDesk', true);
+				$query .= " left join $crmEntityTable as vtiger_crmentityRelHelpDesk on vtiger_crmentityRelHelpDesk.crmid=vtiger_troubletickets.parent_id";
 			}
 			if ($this->queryPlanner->requireTable('vtiger_accountRelHelpDesk')) {
 				$query .= " left join vtiger_account as vtiger_accountRelHelpDesk on vtiger_accountRelHelpDesk.accountid=vtiger_crmentityRelHelpDesk.crmid";

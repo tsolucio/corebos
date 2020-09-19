@@ -596,8 +596,8 @@ function getAdvSearchfields($module) {
 		if ($mod_fieldlabel =='') {
 			$mod_fieldlabel = 'Ticket ID';
 		}
-
-		$OPTION_SET .= "<option value=\'vtiger_crmentity:crmid:".$fieldname.'::'.$fieldtypeofdata."\'>".$mod_fieldlabel.'</option>';
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('HelpDesk', true);
+		$OPTION_SET .= "<option value=\'$crmEntityTable:crmid:".$fieldname.'::'.$fieldtypeofdata."\'>".$mod_fieldlabel.'</option>';
 	}
 	$log->debug('< getAdvSearchfields');
 	return $OPTION_SET;

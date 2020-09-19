@@ -882,10 +882,11 @@ function getGroupTaskLists($maxval) {
 			if ($query != '') {
 				$query .=' union all ';
 			}
-			//Get the Purchase Order assigned to group
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents');
+			//Get the Documents assigned to group
 			$query .="(select vtiger_notes.notesid as id,vtiger_notes.title as name,vtiger_groups.groupname as groupname, 'Documents' as Type
 				from vtiger_notes
-				inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_notes.notesid
+				inner join ".$crmEntityTable." on vtiger_crmentity.crmid = vtiger_notes.notesid
 				inner join vtiger_groups on vtiger_crmentity.smownerid =vtiger_groups.groupid
 				where vtiger_crmentity.deleted=0 and vtiger_notes.notesid > 0";
 			if (count($groupids) > 0) {

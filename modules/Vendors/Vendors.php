@@ -309,8 +309,8 @@ class Vendors extends CRMEntity {
 		for ($k=0; $k < $this->db->num_rows($po_res); $k++) {
 			$po_id = $this->db->query_result($po_res, $k, "crmid");
 			$po_ids_list[] = $po_id;
-			$sql = 'UPDATE '.$crmEntityTable1.' SET deleted = 1 WHERE crmid = ?';
-			$this->db->pquery($sql, array($po_id));
+			$this->db->pquery('UPDATE '.$crmEntityTable1.' SET deleted=1 WHERE crmid=?', array($po_id));
+			$this->db->pquery('UPDATE vtiger_crmobject SET deleted=1 WHERE crmid=?', array($po_id));
 		}
 		//Backup deleted Vendors related Potentials.
 		$params = array($id, RB_RECORD_UPDATED, $crmEntityTable1, 'deleted', 'crmid', implode(",", $po_ids_list));

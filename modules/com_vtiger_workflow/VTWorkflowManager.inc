@@ -217,7 +217,7 @@ class VTWorkflowManager {
 		if (strpos($recordid, 'x')>0) {
 			list($void,$recordid) = explode('x', $recordid);
 		}
-		$rrs = $adb->pquery('select setype,deleted from vtiger_crmentity where crmid=?', array($recordid));
+		$rrs = $adb->pquery('select setype,deleted from vtiger_crmobject where crmid=?', array($recordid));
 		if (!$rrs) {
 			return false;
 		}

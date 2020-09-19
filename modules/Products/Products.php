@@ -1241,7 +1241,7 @@ class Products extends CRMEntity {
 			) AS innerProduct ON innerProduct.productid = vtiger_products.productid';
 		}
 		if ($queryplanner->requireTable('vtiger_crmentityProducts')) {
-			$query .= ' left join vtiger_crmentity as vtiger_crmentityProducts on vtiger_crmentityProducts.crmid=vtiger_products.productid and vtiger_crmentityProducts.deleted=0';
+			$query .= ' left join '.self::$crmentityTable.' as vtiger_crmentityProducts on vtiger_crmentityProducts.crmid=vtiger_products.productid and vtiger_crmentityProducts.deleted=0';
 		}
 		if ($queryplanner->requireTable('vtiger_productcf')) {
 			$query .= ' left join vtiger_productcf on vtiger_products.productid = vtiger_productcf.productid';

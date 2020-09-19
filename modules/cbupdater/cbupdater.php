@@ -130,9 +130,8 @@ class cbupdater extends CRMEntity {
 		if (empty($cbinfo['filename']) || empty($cbinfo['classname'])) {
 			return false;
 		}
-		$sql = "select 1
-			from vtiger_cbupdater
-			inner join vtiger_crmentity on crmid=cbupdaterid
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbupdater');
+		$sql = 'select 1 from vtiger_cbupdater inner join '.$crmEntityTable." on crmid=cbupdaterid
 			where deleted=0 and (pathfilename=? or pathfilename='' or pathfilename is null) and filename=? and classname=?";
 		$rs = $adb->pquery($sql, array($cbinfo['filename'], basename($cbinfo['filename'], '.php'), $cbinfo['classname']));
 		return ($rs && $adb->num_rows($rs)==1);

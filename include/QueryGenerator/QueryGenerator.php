@@ -52,8 +52,6 @@ class QueryGenerator {
 	public static $AND = 'AND';
 	public static $OR = 'OR';
 	private $customViewFields;
-	public static $crmentityTable = 'vtiger_crmentity';
-	public static $denormalized = false;
 	public $limit = '';
 
 	public function __construct($module, $user) {
@@ -85,7 +83,6 @@ class QueryGenerator {
 		$this->customViewFields = array();
 		$this->setHasUserReferenceField();
 		$this->setReferenceFields();
-		self::$denormalized = (self::$crmentityTable!='vtiger_crmentity');
 	}
 
 	/**

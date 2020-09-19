@@ -2928,9 +2928,11 @@ function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $us
 	$crmID = $adb->getUniqueID('vtiger_crmentity');
 	$timeOfCall = date('Y-m-d H:i:s');
 
-	$sql = 'insert into vtiger_crmentity values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
-	$params = array($crmID, $userID, $userID, 0, 'PBXManager', '', $timeOfCall, $timeOfCall, null, null, 0, 1, 0, $pbxuuid);
-	$adb->pquery($sql, $params);
+	$adb->pquery(
+		'insert into vtiger_crmentity values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+		array($crmID, $userID, $userID, 0, 'PBXManager', '', $timeOfCall, $timeOfCall, null, null, 0, 1, 0, $pbxuuid)
+	);
+	$adb->pquery('insert into vtiger_crmobject values (?,0,?,?,?)', array($crmID, 'PBXManager', $userID, $timeOfCall));
 	$unknownCaller = GlobalVariable::getVariable('PBX_Unknown_CallerID', 'Unknown', 'PBXManager');
 	if (empty($callfrom)) {
 		$callfrom = $unknownCaller;
@@ -3264,21 +3266,8 @@ function getRelatedInfo($id) {
 	$result = $adb->pquery('select related_to from vtiger_potential where potentialid=?', array($id));
 	if ($adb->num_rows($result)>0) {
 		$relID = $adb->query_result($result, 0, 'related_to');
-		$crmObject = getCrmObject();
-		$crmTable = 'vtiger_crmentity';
-		if ($crmObject) {
-			$data = $adb->pquery('select setype from vtiger_crmobject where crmid=?', array($relID));
-			if ($adb->num_rows($data) > 0) {
-				$module = $adb->query_result($data, 0, 'setype');
-				$mod = CRMEntity::getInstance($module);
-				$crmTable = $mod::$crmentityTable;
-			}
-		}
-		$result = $adb->pquery('select setype from '.$crmTable.' where crmid=?', array($relID));
-		if ($adb->num_rows($result)>0) {
-			$setype = $adb->query_result($result, 0, 'setype');
-		}
-		$data = array('setype'=>$setype, 'relID'=>$relID);
+		$result = $adb->pquery('select setype from vtiger_crmobject where crmid=?', array($relID));
+		$data = array('setype'=>($adb->num_rows($result)>0 ? $result->fields['setype'] : ''), 'relID'=>$relID);
 	}
 	return $data;
 }
@@ -3291,20 +3280,9 @@ function getRelatedInfo($id) {
 function getRecordInfoFromID($id) {
 	global $adb;
 	$data = array();
-	$crmObject = getCrmObject();
-	$crmTable = 'vtiger_crmentity';
-	if ($crmObject) {
-		$resultNew = $adb->pquery('select setype from vtiger_crmobject where crmid=?', array($id));
-		if ($adb->num_rows($resultNew) > 0) {
-			$module = $adb->query_result($resultNew, 0, 'setype');
-			$mod = CRMEntity::getInstance($module);
-			$crmTable = $mod::$crmentityTable;
-		}
-	}
-	$result = $adb->pquery('select setype from '.$crmTable.' where crmid=?', array($id));
+	$result = $adb->pquery('select setype from vtiger_crmobject where crmid=?', array($id));
 	if ($adb->num_rows($result)>0) {
-		$setype = $adb->query_result($result, 0, 'setype');
-		$data = getEntityName($setype, $id);
+		$data = getEntityName($result->fields['setype'], $id);
 	}
 	if (count($data)>0) {
 		$data = array_values($data);

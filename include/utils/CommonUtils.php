@@ -2373,10 +2373,9 @@ function getTemplateDetails($templateid, $crmid = null) {
 		$returndata[] = $adb->query_result($result, 0, 'subject');
 		$returndata[] = $adb->query_result($result, 0, 'sendemailfrom');
 	} else { // we look for it in message templates
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Messages');
 		$result = $adb->pquery(
-			'select * from vtiger_msgtemplate
-				inner join vtiger_crmentity on crmid=msgtemplateid
-				where deleted=0 and msgtemplateid=? or reference=?',
+			'select * from vtiger_msgtemplate inner join '.$crmEntityTable.' on crmid=msgtemplateid where deleted=0 and msgtemplateid=? or reference=?',
 			array($templateid, $templateid)
 		);
 		if ($result && $adb->num_rows($result)>0) {
@@ -3646,10 +3645,7 @@ function recordIsAssignedToInactiveUser($crmid) {
 		return false;
 	} else { // editing
 		$urs = $adb->pquery(
-			'select vtiger_users.status
-				from vtiger_crmentity
-				inner join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
-				where crmid = ?',
+			'select vtiger_users.status from vtiger_crmobject inner join vtiger_users on vtiger_users.id=vtiger_crmobject.smownerid where crmid = ?',
 			array($crmid)
 		);
 		return ($adb->query_result($urs, 0, 'status')=='Inactive');

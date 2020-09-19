@@ -1605,7 +1605,7 @@ function is_picklist($field, $module) {
 function get_plantilla($entid) {
 	global $adb,$root_directory,$app_strings,$current_user;
 
-	$SQL = 'SELECT setype FROM vtiger_crmentity WHERE crmid=?';
+	$SQL = 'SELECT setype FROM vtiger_crmobject WHERE crmid=?';
 	$res = $adb->pquery($SQL, array($entid));
 	$relmodule = $adb->query_result($res, 0, 'setype');
 	switch ($relmodule) {
@@ -1707,7 +1707,7 @@ function get_plantilla($entid) {
 function getEntityModule($crmid) {
 	global $adb;
 
-	$seltype = "SELECT setype FROM vtiger_crmentity WHERE crmid=$crmid AND deleted=0";
+	$seltype = "SELECT setype FROM vtiger_crmobject WHERE crmid=$crmid AND deleted=0";
 	$restype = $adb->query($seltype);
 	if ($restype) {
 		$modname = $adb->query_result($restype, 0, 'setype');

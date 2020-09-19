@@ -21,7 +21,7 @@ global $adb,$current_user,$mod_strings;
 $moduletemplate = vtlib_purify($_REQUEST['formodule']);
 $modulei18n = getTranslatedString('SINGLE_'.$moduletemplate, $moduletemplate);
 $forrecord = vtlib_purify($_REQUEST['forrecord']);
-$crmEntityTable = CRMEntity::getcrmEntityTableAlias('evvtgendoc');
+$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents');
 $templates=$adb->pquery(
 	'SELECT notesid,title
 		FROM vtiger_notes

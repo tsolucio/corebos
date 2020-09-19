@@ -171,16 +171,13 @@ function vtws_retrieve_deleted($id, $user) {
 	global $log,$adb;
 
 	// First we look if it has been totally eliminated
-	$crmObject = getCrmObject();
 	$crmTable = 'vtiger_crmentity';
 	$parts = explode('x', $id);
-	if ($crmObject) {
-		$data = $adb->pquery('SELECT setype FROM vtiger_crmobject WHERE crmid=?', array($parts[1]));
-		if ($adb->num_rows($data) > 0) {
-			$module = $adb->query_result($data, 0, 'setype');
-			$mod = CRMEntity::getInstance($module);
-			$crmTable = $mod::$crmentityTable;
-		}
+	$data = $adb->pquery('SELECT setype FROM vtiger_crmobject WHERE crmid=?', array($parts[1]));
+	if ($data && $adb->num_rows($data) > 0) {
+		$module = $adb->query_result($data, 0, 'setype');
+		$mod = CRMEntity::getInstance($module);
+		$crmTable = $mod::$crmentityTable;
 	}
 	$result = $adb->pquery('SELECT count(*) as cnt FROM '.$crmTable.' WHERE crmid=?', array($parts[1]));
 	if ($adb->query_result($result, 0, 'cnt') == 1) { // If not we can "almost" continue normally

@@ -596,7 +596,7 @@ function getdayEventLayer(& $cal, $slice, $rows) {
 			$visibility_query=$adb->pquery('SELECT visibility from vtiger_activity where activityid=?', array($id));
 			$visibility = $adb->query_result($visibility_query, 0, 'visibility');
 			$user_query = $adb->pquery(
-				"SELECT vtiger_crmentity.smownerid,vtiger_users.user_name from vtiger_crmentity,vtiger_users where crmid=? and vtiger_crmentity.smownerid=vtiger_users.id",
+				"SELECT vtiger_crmobject.smownerid,vtiger_users.user_name from vtiger_crmobject,vtiger_users where crmid=? and vtiger_crmobject.smownerid=vtiger_users.id",
 				array($id)
 			);
 			$userid = $adb->query_result($user_query, 0, 'smownerid');
@@ -705,7 +705,7 @@ function getweekEventLayer(&$cal, $slice) {
 			$visibility_query=$adb->pquery('SELECT visibility from vtiger_activity where activityid=?', array($id));
 			$visibility = $adb->query_result($visibility_query, 0, 'visibility');
 			$user_query = $adb->pquery(
-				'SELECT vtiger_crmentity.smownerid,vtiger_users.user_name from vtiger_crmentity,vtiger_users where crmid=? and vtiger_crmentity.smownerid=vtiger_users.id',
+				'SELECT vtiger_crmobject.smownerid,vtiger_users.user_name from vtiger_crmobject,vtiger_users where crmid=? and vtiger_crmobject.smownerid=vtiger_users.id',
 				array($id)
 			);
 			$userid = $adb->query_result($user_query, 0, 'smownerid');
@@ -794,7 +794,7 @@ function getmonthEventLayer(& $cal, $slice) {
 			$visibility_query=$adb->pquery('SELECT visibility from vtiger_activity where activityid=?', array($id));
 			$visibility = $adb->query_result($visibility_query, 0, 'visibility');
 			$user_query = $adb->pquery(
-				'SELECT vtiger_crmentity.smownerid,vtiger_users.user_name from vtiger_crmentity,vtiger_users where crmid=? and vtiger_crmentity.smownerid=vtiger_users.id',
+				'SELECT vtiger_crmobject.smownerid,vtiger_users.user_name from vtiger_crmobject,vtiger_users where crmid=? and vtiger_crmobject.smownerid=vtiger_users.id',
 				array($id)
 			);
 			$userid = $adb->query_result($user_query, 0, 'smownerid');
@@ -853,10 +853,11 @@ function getEventList(&$calendar, $start_date, $end_date, $info = '') {
 			OR (dtend >= ? AND dtend <= ?) OR (CAST(CONCAT(vtiger_recurringevents.recurringdate,' ',time_start) AS DATETIME) <= ? AND dtend >= ?)
 		)
 	)";
-
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCalendar');
 	$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-	$query = "SELECT vtiger_groups.groupname, $userNameSql as user_name,vtiger_crmentity.smownerid, vtiger_crmentity.crmid,vtiger_activity.* FROM vtiger_activity
-		INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_activity.activityid
+	$query = "SELECT vtiger_groups.groupname, $userNameSql as user_name,vtiger_crmentity.smownerid, vtiger_crmentity.crmid,vtiger_activity.*
+		FROM vtiger_activity
+		INNER JOIN ".$crmEntityTable." ON vtiger_crmentity.crmid = vtiger_activity.activityid
 		LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 		LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
 		LEFT OUTER JOIN vtiger_recurringevents ON vtiger_recurringevents.activityid = vtiger_activity.activityid
@@ -1065,14 +1066,14 @@ function getTodoList(&$calendar, $start_date, $end_date, $info = '') {
 	global $app_strings,$theme, $adb, $current_user, $cal_log, $list_max_entries_per_page;
 	$cal_log->debug('> getTodoList');
 	$Entries = array();
-
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCalendar');
 	$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 	$query = "SELECT vtiger_groups.groupname, $userNameSql as user_name, vtiger_crmentity.crmid, vtiger_cntactivityrel.contactid,vtiger_activity.*
 		FROM vtiger_activity
-		INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_activity.activityid
+		INNER JOIN ".$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_activity.activityid
 		LEFT JOIN vtiger_cntactivityrel ON vtiger_cntactivityrel.activityid = vtiger_activity.activityid
 		LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-		LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
+		LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid';
 	$query .= getNonAdminAccessControlQuery('cbCalendar', $current_user);
 	$query .= "WHERE vtiger_crmentity.deleted = 0 AND vtiger_activity.activitytype != 'Emails'".
 		" AND ((CAST(CONCAT(date_start,' ',time_start) AS DATETIME) >= ? AND CAST(CONCAT(date_start,' ',time_start) AS DATETIME) <= ?)
