@@ -3143,16 +3143,14 @@ class CRMEntity {
 		$sec_query = '';
 		$tabid = getTabid($module);
 		if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing($tabid)) {
-			$sec_query .= " and (".self::$crmentityTable.".smownerid in ($current_user->id)
-				or
-				".self::$crmentityTable.".smownerid in (select vtiger_user2role.userid
+			$sec_query .= ' and ('.self::$crmentityTable.".smownerid=$current_user->id or "
+				.self::$crmentityTable.".smownerid in (select vtiger_user2role.userid
 					from vtiger_user2role
 					inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
 					inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
-					where vtiger_role.parentrole like '" . $userprivs->getParentRoleSequence() . "::%')
-				or
-				".self::$crmentityTable.".smownerid in (select shareduserid from vtiger_tmp_read_user_sharing_per where userid=" . $current_user->id . ' and tabid=' . $tabid . ')
-				or (';
+					where vtiger_role.parentrole like '" . $userprivs->getParentRoleSequence() . "::%') or "
+				.self::$crmentityTable.".smownerid in (select shareduserid
+					from vtiger_tmp_read_user_sharing_per where userid=" . $current_user->id . ' and tabid=' . $tabid . ') or (';
 			if ($userprivs->hasGroups()) {
 				$sec_query .= ' vtiger_groups.groupid in (' . implode(',', $userprivs->getGroups()) . ') or ';
 			}
