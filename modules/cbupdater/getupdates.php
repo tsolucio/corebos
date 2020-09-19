@@ -85,9 +85,9 @@ if (count($cbupdate_files)>0) {
 							}
 						} else {
 							// we check for empty pathnames
-							$sql = "select cbupdaterid
+							$sql = 'select cbupdaterid
 								from vtiger_cbupdater
-								inner join ".$crmEntityTable." on vtiger_crmentity.crmid=cbupdaterid
+								inner join '.$crmEntityTable." on vtiger_crmentity.crmid=cbupdaterid
 								where vtiger_crmentity.deleted=0 and (pathfilename='' or pathfilename is null) and classname=? and filename=?";
 							$rs = $adb->pquery($sql, array($cbupd['classname'], basename($cbupd['filename'], '.php')));
 							if ($rs && $adb->num_rows($rs)>0) {

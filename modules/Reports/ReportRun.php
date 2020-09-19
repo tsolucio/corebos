@@ -151,7 +151,7 @@ class ReportRun extends CRMEntity {
 			$fld_lbl = getTranslatedString($fld_lbl_str, $module); //fieldlabel
 			$fieldlabel = $mod_lbl." ".$fld_lbl;
 			if (($selectedfields[0] == "vtiger_usersRel1") && ($selectedfields[1] == 'user_name') && ($selectedfields[2] == 'Quotes_Inventory_Manager')) {
-				$columnslist[$fieldcolname] = "trim( $concatSql ) as ".$module."_Inventory_Manager";
+				$columnslist[$fieldcolname] = "trim( $concatSql ) as ".$module.'_Inventory_Manager';
 				$this->queryPlanner->addTable($selectedfields[0]);
 				continue;
 			}
@@ -1383,7 +1383,7 @@ class ReportRun extends CRMEntity {
 
 			$query .= " ".$this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition).
 				getNonAdminAccessControlQuery($this->primarymodule, $current_user).
-				" where vtiger_crmentity.deleted=0 ";
+				' where vtiger_crmentity.deleted=0 ';
 		} elseif ($module == "Quotes") {
 			$matrix = $this->queryPlanner->newDependencyMatrix();
 
@@ -1471,7 +1471,7 @@ class ReportRun extends CRMEntity {
 			}
 			$query .= " " . $this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition) .
 				getNonAdminAccessControlQuery($this->primarymodule, $current_user) .
-				" where vtiger_crmentity.deleted=0";
+				' where vtiger_crmentity.deleted=0';
 		} elseif ($module == "Invoice") {
 			$matrix = $this->queryPlanner->newDependencyMatrix();
 
@@ -1513,7 +1513,7 @@ class ReportRun extends CRMEntity {
 			}
 			$query .= " " . $this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition) .
 				getNonAdminAccessControlQuery($this->primarymodule, $current_user) .
-				" where vtiger_crmentity.deleted=0";
+				' where vtiger_crmentity.deleted=0';
 		} elseif ($module == "SalesOrder") {
 			$matrix = $this->queryPlanner->newDependencyMatrix();
 
@@ -1561,7 +1561,7 @@ class ReportRun extends CRMEntity {
 			}
 			$query .= " " . $this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition) .
 				getNonAdminAccessControlQuery($this->primarymodule, $current_user) .
-				" where vtiger_crmentity.deleted=0";
+				' where vtiger_crmentity.deleted=0';
 		} elseif ($module == "Emails") {
 			$crmtalias = CRMEntity::getcrmEntityTableAlias('Emails');
 			$query = "from vtiger_activity

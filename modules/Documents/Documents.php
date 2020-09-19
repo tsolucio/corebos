@@ -316,9 +316,9 @@ class Documents extends CRMEntity {
 		global $log,$current_user;
 		$log->debug('> create_export_query '. $where);
 
-		include "include/utils/ExportUtils.php";
+		include 'include/utils/ExportUtils.php';
 		//To get the Permitted fields query and the permitted fields list
-		$sql = getPermittedFieldsQuery("Documents", "detail_view");
+		$sql = getPermittedFieldsQuery('Documents', 'detail_view');
 		$fields_list = getFieldsListFromQuery($sql);
 		$query = "SELECT $fields_list, foldername, filename,
 					concat(path,vtiger_attachments.attachmentsid,'_',filename) as storagename,
@@ -583,11 +583,11 @@ class Documents extends CRMEntity {
 				crm2.crmid, crm2.setype
 				from vtiger_notes
 				inner join vtiger_senotesrel on vtiger_senotesrel.crmid= vtiger_notes.notesid
-				inner join ".self::$crmEntityTableAlias." on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
-				inner join ".$crmEntityTable." crm2 on crm2.crmid=vtiger_senotesrel.notesid and crm2.deleted=0
+				inner join ".self::$crmEntityTableAlias.' on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
+				inner join '.$crmEntityTable.' crm2 on crm2.crmid=vtiger_senotesrel.notesid and crm2.deleted=0
 				left join vtiger_groups on vtiger_groups.groupid = crm2.smownerid
 				left join vtiger_users on vtiger_users.id = crm2.smownerid
-				where vtiger_notes.notesid=?";
+				where vtiger_notes.notesid=?';
 
 		$drs = $adb->pquery($query, array($id,$id));
 		$entries_list = array();

@@ -658,7 +658,7 @@ class Contacts extends CRMEntity {
 		$query = "SELECT case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
 			vtiger_crmentity.*, vtiger_invoice.*, vtiger_contactdetails.lastname,vtiger_contactdetails.firstname, vtiger_salesorder.subject AS salessubject
 			FROM vtiger_invoice
-			INNER JOIN ".$crmEntityTable." ON vtiger_crmentity.crmid = vtiger_invoice.invoiceid
+			INNER JOIN ".$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_invoice.invoiceid
 			LEFT OUTER JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid = vtiger_invoice.contactid
 			LEFT OUTER JOIN vtiger_salesorder ON vtiger_salesorder.salesorderid = vtiger_invoice.salesorderid
 			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
@@ -666,8 +666,7 @@ class Contacts extends CRMEntity {
 			LEFT JOIN vtiger_invoicebillads ON vtiger_invoicebillads.invoicebilladdressid = vtiger_invoice.invoiceid
 			LEFT JOIN vtiger_invoiceshipads ON vtiger_invoiceshipads.invoiceshipaddressid = vtiger_invoice.invoiceid
 			LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id
-			WHERE vtiger_crmentity.deleted = 0
-			AND vtiger_contactdetails.contactid = ".$id;
+			WHERE vtiger_crmentity.deleted = 0 AND vtiger_contactdetails.contactid='.$id;
 
 		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
 
@@ -726,12 +725,12 @@ class Contacts extends CRMEntity {
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = "SELECT case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
 			vtiger_crmentity.crmid, vtiger_vendor.*, vtiger_vendorcf.*
-			from vtiger_vendor inner join ".$crmEntityTable." on vtiger_crmentity.crmid=vtiger_vendor.vendorid
+			from vtiger_vendor inner join ".$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_vendor.vendorid
 			INNER JOIN vtiger_vendorcontactrel on vtiger_vendorcontactrel.vendorid=vtiger_vendor.vendorid
 			LEFT JOIN vtiger_vendorcf on vtiger_vendorcf.vendorid=vtiger_vendor.vendorid
 			LEFT JOIN vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
 			LEFT JOIN vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
-			WHERE vtiger_crmentity.deleted=0 and vtiger_vendorcontactrel.contactid=".$id;
+			WHERE vtiger_crmentity.deleted=0 and vtiger_vendorcontactrel.contactid='.$id;
 
 		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
 

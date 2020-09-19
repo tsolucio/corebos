@@ -551,9 +551,9 @@ class Validations extends processcbMap {
 		}
 		$valmaps = array();
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap');
-		$q = "select cbmapid
+		$q = 'select cbmapid
 			from vtiger_cbmap
-			inner join ".$crmEntityTable." on vtiger_crmentity.crmid=cbmapid
+			inner join '.$crmEntityTable." on vtiger_crmentity.crmid=cbmapid
 			where deleted=0 and maptype=? and targetname=? and mapname like '%_Validations'";
 		$rs = $adb->pquery($q, array('Validations', $module));
 		while ($val = $adb->fetch_array($rs)) {

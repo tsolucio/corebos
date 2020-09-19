@@ -742,7 +742,6 @@ function vtws_getFieldfromFieldId($fieldId, $fieldObjectList) {
  *	@param integer $relatedId - related entity id to which the records need to be transferred
  */
 function vtws_getRelatedActivities($leadId, $accountId, $contactId, $relatedId) {
-
 	if (empty($leadId) || empty($relatedId) || (empty($accountId) && empty($contactId))) {
 		throw new WebServiceException(WebServiceErrorCode::$LEAD_RELATED_UPDATE_FAILED, 'Failed to move related Activities/Emails');
 	}

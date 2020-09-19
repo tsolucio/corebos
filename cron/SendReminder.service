@@ -39,10 +39,10 @@ if (vtlib_isModuleActive('cbCalendar')) {
 		$current_language = 'en_us';
 	}
 	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCalendar');
-	//modified query for recurring events -Jag
-	$query="select vtiger_activity.activityid,vtiger_recurringevents.recurringid
+	// query for recurring events
+	$query='select vtiger_activity.activityid,vtiger_recurringevents.recurringid
 		from vtiger_activity
-		inner join ".$crmEntityTable." on vtiger_crmentity.crmid=vtiger_activity.activityid
+		inner join '.$crmEntityTable." on vtiger_crmentity.crmid=vtiger_activity.activityid
 		inner join vtiger_activity_reminder on vtiger_activity.activityid=vtiger_activity_reminder.activity_id
 		left outer join vtiger_recurringevents on vtiger_activity.activityid=vtiger_recurringevents.activityid
 		left outer join vtiger_seactivityrel on vtiger_seactivityrel.activityid = vtiger_activity.activityid
