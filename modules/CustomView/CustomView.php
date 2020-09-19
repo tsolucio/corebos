@@ -1046,16 +1046,6 @@ class CustomView extends CRMEntity {
 		return getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $datatype, $webserviceQL);
 	}
 
-	/** to get the related name for the given module
-	 * @param $comparator :: type string,
-	 * @param $value :: type string,
-	 * @param $datatype :: type string,
-	 * @returns  $value :: string
-	 */
-	public function getSalesRelatedName($comparator, $value, $datatype, $tablename, $fieldname) {
-		return getAdvancedSearchParentEntityValue($comparator, $value, $datatype, $tablename, $fieldname);
-	}
-
 	/** to get the comparator value for the given comparator and value
 	 * @param $comparator :: type string
 	 * @param $value :: type string

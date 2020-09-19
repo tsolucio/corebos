@@ -1346,9 +1346,6 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 			$tmp_value = $change_table_field[$tablename.'.'.$fieldname].' IS NULL or ';
 		}
 		$value = $tmp_value.$change_table_field[$tablename.'.'.$fieldname].getAdvancedSearchComparator($comparator, $value, $datatype);
-	} elseif (($fieldname == 'crmid' && $tablename != 'vtiger_crmentity') || $fieldname == 'parent_id' || $fieldname == 'parentid') {
-		//For crmentity.crmid the control should not come here. This is only to get the related to modules
-		$value = getAdvancedSearchParentEntityValue($comparator, $value, $datatype, $tablename, $fieldname);
 	} else {
 		$field_uitype = getUItype($currentModule, $fieldname);
 		// For checkbox type values, we have to convert yes/no to 1/0 to get the values
@@ -1377,103 +1374,6 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 			}
 		}
 	}
-	return $value;
-}
-
-function getAdvancedSearchParentEntityValue($comparator, $value, $datatype, $tablename, $fieldname) {
-	global $adb;
-	$adv_chk_value = $value;
-	$value = '(';
-	$sql = 'select distinct(setype) from vtiger_crmentity c INNER JOIN '.$adb->sql_escape_string($tablename).' t ON t.'.$adb->sql_escape_string($fieldname).' = c.crmid';
-	$res=$adb->pquery($sql, array());
-	for ($s=0; $s<$adb->num_rows($res); $s++) {
-		$modulename=$adb->query_result($res, $s, 'setype');
-		if ($modulename == 'Vendors') {
-			continue;
-		}
-		if ($s != 0) {
-			$value .= ' or ';
-		}
-		if ($modulename == 'Accounts') {
-			if (($comparator == 'e' || $comparator == 's' || $comparator == 'c') && trim($adv_chk_value) == '') {
-				if ($tablename == 'vtiger_seactivityrel' && $fieldname == 'crmid') {
-					$value .= 'vtiger_account2.accountname IS NULL or ';
-				} else {
-					$value .= 'vtiger_account.accountname IS NULL or ';
-				}
-			}
-			if ($tablename == 'vtiger_seactivityrel' && $fieldname == 'crmid') {
-					$value .= 'vtiger_account2.accountname';
-			} else {
-				$value .= 'vtiger_account.accountname';
-			}
-		}
-		if ($modulename == 'Leads') {
-			$concatSql = getSqlForNameInDisplayFormat(array('lastname'=>'vtiger_leaddetails.lastname', 'firstname'=>'vtiger_leaddetails.firstname'), 'Leads');
-			if (($comparator == 'e' || $comparator == 's' || $comparator == 'c') && trim($adv_chk_value) == '') {
-				$value .= " $concatSql IS NULL or ";
-			}
-			$value .= " $concatSql";
-		}
-		if ($modulename == 'Potentials') {
-			if (($comparator == 'e' || $comparator == 's' || $comparator == 'c') && trim($adv_chk_value) == '') {
-				$value .= ' vtiger_potential.potentialname IS NULL or ';
-			}
-			$value .= ' vtiger_potential.potentialname';
-		}
-		if ($modulename == 'Products') {
-			if (($comparator == 'e' || $comparator == 's' || $comparator == 'c') && trim($adv_chk_value) == '') {
-				$value .= ' vtiger_products.productname IS NULL or ';
-			}
-			$value .= ' vtiger_products.productname';
-		}
-		if ($modulename == 'Invoice') {
-			if (($comparator == 'e' || $comparator == 's' || $comparator == 'c') && trim($adv_chk_value) == '') {
-				$value .= ' vtiger_invoice.subject IS NULL or ';
-			}
-			$value .= ' vtiger_invoice.subject';
-		}
-		if ($modulename == 'PurchaseOrder') {
-			if (($comparator == 'e' || $comparator == 's' || $comparator == 'c') && trim($adv_chk_value) == '') {
-				$value .= ' vtiger_purchaseorder.subject IS NULL or ';
-			}
-			$value .= ' vtiger_purchaseorder.subject';
-		}
-		if ($modulename == 'SalesOrder') {
-			if (($comparator == 'e' || $comparator == 's' || $comparator == 'c') && trim($adv_chk_value) == '') {
-				$value .= ' vtiger_salesorder.subject IS NULL or ';
-			}
-			$value .= ' vtiger_salesorder.subject';
-		}
-		if ($modulename == 'Quotes') {
-			if (($comparator == 'e' || $comparator == 's' || $comparator == 'c') && trim($adv_chk_value) == '') {
-				$value .= ' vtiger_quotes.subject IS NULL or ';
-			}
-			$value .= ' vtiger_quotes.subject';
-		}
-		if ($modulename == 'Contacts') {
-			$concatSql = getSqlForNameInDisplayFormat(array('lastname'=>'vtiger_contactdetails.lastname', 'firstname'=>'vtiger_contactdetails.firstname'), 'Contacts');
-			if (($comparator == 'e' || $comparator == 's' || $comparator == 'c') && trim($adv_chk_value) == '') {
-				$value .= " $concatSql IS NULL or ";
-			}
-			$value .= " $concatSql";
-		}
-		if ($modulename == 'HelpDesk') {
-			if (($comparator == 'e' || $comparator == 's' || $comparator == 'c') && trim($adv_chk_value) == '') {
-				$value .= ' vtiger_troubletickets.title IS NULL or ';
-			}
-			$value .= ' vtiger_troubletickets.title';
-		}
-		if ($modulename == 'Campaigns') {
-			if (($comparator == 'e' || $comparator == 's' || $comparator == 'c') && trim($adv_chk_value) == '') {
-				$value .= ' vtiger_campaign.campaignname IS NULL or ';
-			}
-			$value .= ' vtiger_campaign.campaignname';
-		}
-
-		$value .= getAdvancedSearchComparator($comparator, $adv_chk_value, $datatype);
-	}
-	$value .= ')';
 	return $value;
 }
 
