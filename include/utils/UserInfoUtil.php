@@ -407,10 +407,11 @@ function insertUsers2GroupMapping($groupname, $userid) {
 function fetchWordTemplateList($module) {
 	global $log, $adb;
 	$log->debug('> fetchWordTemplateList '.$module);
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents');
 	$result=$adb->pquery(
 		'select notesid, filename
 			from vtiger_notes
-			inner join vtiger_crmentity on crmid=notesid
+			inner join '.$crmEntityTable.' on crmid=notesid
 			where deleted=0 and template_for=?',
 		array($module)
 	);
@@ -3479,13 +3480,14 @@ function getSharingModuleList($eliminateModules = false) {
 function isCalendarPermittedBySharing($recordId) {
 	global $adb, $current_user;
 	$permission = 'no';
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCalendar');
 	$query = "select 1
 			from vtiger_sharedcalendar
 			where sharedid=? and
 			userid in (
 				select smownerid as usrid
 				from vtiger_activity
-				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
+				inner join $crmEntityTable on vtiger_crmentity.crmid=vtiger_activity.activityid
 				where vtiger_activity.activityid=? and visibility='Public' and smownerid !=0
 			)
 		UNION
