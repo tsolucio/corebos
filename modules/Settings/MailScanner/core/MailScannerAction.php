@@ -425,7 +425,7 @@ class Vtiger_MailScannerAction {
 				$document = new Documents();
 				$document->column_fields['notes_title']      = $filename;
 				$document->column_fields['filename']         = $filename;
-				$document->column_fields['filesize']         = filesize($this->STORAGE_FOLDER.$attachid.'_'.$filename);
+				$document->column_fields['filesize']         = filesize($this->STORAGE_FOLDER.$attachid.'_'.str_replace(' ', '-', $filename));
 				$document->column_fields['filestatus']       = 1;
 				$document->column_fields['filelocationtype'] = 'I';
 				$document->column_fields['folderid']         = 1; // Default Folder
