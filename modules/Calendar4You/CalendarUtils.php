@@ -742,12 +742,13 @@ function getModuleCalendarFields($module) {
 		$dtflds = getDateFieldsOfModule($tid);
 		if (count($dtflds)>0) {
 			$tmflds = getTimeFieldsOfModule($tid);
+			$efields = getEntityFieldNames($module);
 			$Module_StartEnd_Fields = array(
 				'start'   => $dtflds[0],
 				'end'     => isset($dtflds[1]) ? $dtflds[1] : '',
 				'stime'   => isset($tmflds[0]) ? $tmflds[0] : '',
 				'etime'   => isset($tmflds[1]) ? $tmflds[1] : '',
-				'subject' => '',
+				'subject' => $efields['fieldname'],
 				'color' => '',
 			);
 		} else {
