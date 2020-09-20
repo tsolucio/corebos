@@ -47,7 +47,11 @@ $event_status = (isset($_REQUEST['event_status']) ? vtlib_purify($_REQUEST['even
 if ($event_status != '') {
 	$Load_Event_Status = explode(',', $event_status);
 }
-
+$Load_Task_Priority = array();
+$task_priority = (isset($_REQUEST['task_priority']) ? vtlib_purify($_REQUEST['task_priority']) : '');
+if ($task_priority != '') {
+	$Load_Task_Priority = explode(',', $task_priority);
+}
 $Load_Modules = array();
 foreach ($Type_Ids as $typeid) {
 	if (!is_numeric($typeid) && $typeid != 'invite') {
@@ -152,7 +156,17 @@ if (count($Load_Event_Status) > 0) {
 		$Event_Status[] = $eventstatus;
 	}
 }
-
+$Task_Priority = array();
+if (count($Load_Task_Priority) > 0) {
+	foreach ($Load_Task_Priority as $sid) {
+		$s_result = $adb->pquery('SELECT taskpriority FROM vtiger_taskpriority WHERE picklist_valueid=?', array($sid));
+		$taskpriority = $adb->query_result($s_result, 0, 'taskpriority');
+		$Task_Priority[] = $taskpriority;
+		$taskpriority = html_entity_decode($taskpriority, ENT_QUOTES, $default_charset);
+		$Task_Priority[] = $taskpriority;
+	}
+	$Task_Priority = array_unique($Task_Priority);
+}
 $showGroupEvents = GlobalVariable::getVariable('Calendar_Show_Group_Events', 1);
 $modtab = array_flip($tasklabel);
 foreach ($Users_Ids as $userid) {
@@ -269,6 +283,10 @@ foreach ($Users_Ids as $userid) {
 			if (count($Event_Status) > 0) {
 				$list_query .= ' AND (vtiger_activity.eventstatus NOT IN (' . generateQuestionMarks($Event_Status) . ') OR vtiger_activity.eventstatus IS NULL)';
 				$list_array = array_merge($list_array, $Event_Status);
+			}
+			if (count($Task_Priority) > 0) {
+				$list_query .= ' AND (vtiger_activity.priority NOT IN (' . generateQuestionMarks($Task_Priority) . ') OR vtiger_activity.priority IS NULL)';
+				$list_array = array_merge($list_array, $Task_Priority);
 			}
 		}
 		$list_result = $adb->pquery($list_query, $list_array);
