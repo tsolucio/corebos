@@ -58,14 +58,14 @@ function vtws_query($q, $user, $emptyCache = false) {
 	}
 
 	$types = vtws_listtypes(null, $user);
-	if (!in_array($webserviceObject->getEntityName(), $types['types'])) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
+	if ($webserviceObject->getEntityName() != 'Users') {
+		if (!in_array($webserviceObject->getEntityName(), $types['types'])) {
+			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
+		}
+		if (!$meta->hasReadAccess()) {
+			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read is denied');
+		}
 	}
-
-	if (!$meta->hasReadAccess()) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read is denied');
-	}
-
 	VTWS_PreserveGlobal::flush();
 	$vtwsQueryHandler = $handler;
 	return $handler->query($q);

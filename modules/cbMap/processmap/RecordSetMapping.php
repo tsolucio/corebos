@@ -50,7 +50,7 @@ class RecordSetMapping extends processcbMap {
 		global $adb, $current_user;
 		$xml = $this->getXMLContent();
 		if (isset($xml->records)) {
-			foreach ($xml->records->record as $k => $v) {
+			foreach ($xml->records->record as $v) {
 				if (isset($v->action)) {
 					$action = strtolower((String)$v->action);
 					if (!in_array($action, $this->actions)) {
@@ -82,8 +82,8 @@ class RecordSetMapping extends processcbMap {
 						$id = $adb->query_result($idrs, 0, 0);
 						$this->mapping[$action]['ids'][] = (Integer)$id;
 						$this->mapping[$action][(String)$v->module][] = (Integer)$id;
-						if (!in_array($recinfo['setype'], $this->mapping['modules'])) {
-							$this->mapping['modules'][] = $recinfo['setype'];
+						if (!in_array((String)$v->module, $this->mapping['modules'])) {
+							$this->mapping['modules'][] = (String)$v->module;
 						}
 					}
 				}
