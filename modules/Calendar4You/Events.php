@@ -342,6 +342,7 @@ foreach ($Users_Ids as $userid) {
 					$descflds = explode(',', $stfields['subject']);
 					$descvals = array();
 					$descvals[] = html_entity_decode($into_title, ENT_QUOTES, $default_charset);
+					$acttab = getTabid($activitytypeid);
 					foreach ($descflds as $dfld) {
 						if (strpos($dfld, '.')) {
 							$fld = substr($dfld, strpos($dfld, '.')+1);
@@ -349,7 +350,7 @@ foreach ($Users_Ids as $userid) {
 							$fld = $dfld;
 						}
 						// convert fieldname to columnname
-						$rscol = $adb->pquery('select columnname from vtiger_field where tabid=? and fieldname=?', array(getTabid($activitytypeid),$fld));
+						$rscol = $adb->pquery('select columnname from vtiger_field where tabid=? and fieldname=?', array($acttab, $fld));
 						if ($rscol && $adb->num_rows($rscol)==1) {
 							$fname = $adb->query_result($rscol, 0, 0);
 						} else {
