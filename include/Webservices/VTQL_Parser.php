@@ -162,6 +162,7 @@ Array (
 	}
 
 	public function buildSelectStmt($sqlDump) {
+		global $current_user;
 		$meta = $sqlDump['meta'];
 		$fieldcol = $meta->getFieldColumnMapping();
 		$columnTable = $meta->getColumnTableMapping();
@@ -267,6 +268,8 @@ Array (
 			$this->query = $this->query."$nextToken activitytype!='Emails' AND ";
 		} elseif (strcasecmp('emails', $this->out['moduleName'])===0) {
 			$this->query = $this->query."$nextToken activitytype='Emails' AND ";
+		} elseif (strcasecmp('users', $this->out['moduleName'])===0 && !is_admin($current_user)) {
+			$this->query = $this->query.$nextToken.' vtiger_users.id='.$current_user->id.' AND ';
 		} elseif (!empty($deletedQuery)) {
 			$this->query = $this->query.$nextToken;
 		}
