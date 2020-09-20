@@ -88,7 +88,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 			$this->hasWriteAccess = true;
 			$this->hasDeleteAccess = true;
 		} else {
-			//TODO get oer sort out the preference among profile2tab and profile2globalpermissions.
+			//TODO get or sort out the preference among profile2tab and profile2globalpermissions.
 			//TODO check whether create/edit seperate controls required for web sevices?
 			$profileList = getCurrentUserProfileList();
 
