@@ -273,7 +273,7 @@ foreach ($Users_Ids as $userid) {
 		}
 		$list_result = $adb->pquery($list_query, $list_array);
 		while ($row = $adb->fetchByAssoc($list_result)) {
-			if (!empty($stfields['start']) && empty($row[$stfields['start']])) {
+			if (in_array($activitytypeid, $tasklabel) && !empty($stfields['start']) && empty($row[$stfields['start']])) {
 				continue;
 			}
 			$visibility = 'private';
