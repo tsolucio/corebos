@@ -133,9 +133,7 @@ class corebos_sendgrid {
 		$brScan = ''
 	) {
 		global $adb, $log;
-
 		$inBucketServeUrl = GlobalVariable::getVariable('Debug_Email_Send_To_Inbucket', "");
-
 		if (!empty($inBucketServeUrl)) {
 			require_once 'modules/Emails/mail.php';
 			require_once 'modules/Emails/Emails.php';
