@@ -21,6 +21,9 @@
 <script type="text/javascript">var moduleName = '{$entityName}';</script>
 <script type="text/javascript" charset="utf-8">
 	var reportName = {$task->report_name|json_encode};
+	var mod_alert_arr = {
+		'selectReport': '{'Select Report'|@getTranslatedString:'Reports'}',
+	};
 </script>
 <div class="slds-form-element">
 	<div class="slds-form-element__control">

@@ -1,10 +1,5 @@
 let fileurl = 'module=Reports&action=ReportsAjax&file=getReportInfos';
 $(document).ready(function () {
-	var reportSelectText = '';
-	loadJS('index.php?module=Reports&action=ReportsAjax&file=getjslanguage')
-	.then(() => {
-		reportSelectText = mod_alert_arr.selectReport;
-	});
 	displayDivsection();
 	jQuery.ajax({
 		method: 'GET',
@@ -17,7 +12,7 @@ $(document).ready(function () {
 			$value = reportName.split('$$');
 			$htmloptions += '<option value="'+reportName+'">'+$value[1]+'</option>';
 		} else {
-			$htmloptions += '<option value="">'+reportSelectText+'</option>';
+			$htmloptions += '<option value="">'+mod_alert_arr.selectReport+'</option>';
 		}
 		$.each($reportsdata, function(index, data){
 			$htmloptions += '<option value="'+data.reptid+'$$'+data.reptname+'">'+data.reptname+'</option>';

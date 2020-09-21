@@ -12,13 +12,7 @@ require_once 'include/logging.php';
 require_once 'include/database/PearDatabase.php';
 
 global $current_user,$adb;
-$result = $adb->pquery(
-	'SELECT reportid, reportname
-		FROM vtiger_report
-		INNER JOIN vtiger_crmentity on vtiger_crmentity.crmid=vtiger_report.reportid
-		WHERE vtiger_crmentity.deleted = 0',
-	array()
-);
+$result = $adb->pquery('SELECT reportid, reportname FROM vtiger_report', array());
 $num_rows = $adb->num_rows($result);
 $report_name_arr = array();
 for ($x=0; $x<$num_rows; $x++) {
