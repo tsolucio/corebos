@@ -306,5 +306,6 @@ $mod_strings = array(
 'LBL_AUTO_GENERATED_REPORT_EMAIL' => 'Este é um e-mail gerado automaticamente em nome de um relatório agendado.',
 'LBL_DESCRIPTION'=>'Descrição',
 'ERR_CREATE_REPORT' => 'Erro ao criar o relatório.',
+'Select Report' => 'Select report',
 );
 ?>

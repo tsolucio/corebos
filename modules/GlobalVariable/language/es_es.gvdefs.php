@@ -115,8 +115,8 @@ $GlobalVariableDefinitons = array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
 	'category' => 'Depuración',
-	'values' => '0 | 1',
-	'definition' => 'Si se establece en 1, enviará correo electrónico SIEMPRE a través de la configuración del servidor saliente, que debe establecerse en la configuración de inBucket',
+	'values' => 'InBucket SMTP Listener',
+	'definition' => 'Si se establece, el valor se utilizará como servidor de correo saliente',
 ),
 'Accounts_BlockDuplicateName' => array(
 	'status' => 'Implementada',

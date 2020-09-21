@@ -309,5 +309,6 @@ $mod_strings = array(
 'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Error eliminando la carpeta.',
 'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Error eliminando los informes de la carpeta',
 'ERR_CREATE_REPORT' => 'Error creando el informe.',
+'Select Report' => 'Selecciona informe',
 );
 ?>

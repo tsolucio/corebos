@@ -35,7 +35,7 @@
 		<input name="entityid" type="hidden" value="">
 		<input name="popuptype" type="hidden" value="{$POPUPTYPE}">
 		<input name="idlist" type="hidden" value="">
-		<div style="overflow:auto;height:348px;">
+		<div style="overflow:auto;height:calc(100vh - 200px);">
 		<table style="background-color: rgb(204, 204, 204);" class="small popup-table" border="0" cellpadding="5" cellspacing="1" width="100%">
 		<tbody>
 		<tr>

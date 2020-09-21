@@ -303,6 +303,13 @@
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
+	<author>george1806</author>
+	<description>Install generate report workflow task</description>
+	<filename>build/changeSets/2020/installgenerateReportWfTask.php</filename>
+	<classname>installgenerateReportWfTask</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
 	<author>joebordes</author>
 	<description>The calendar is DEAD, long live the Calendar!</description>
 	<filename>build/changeSets/2020/databasechangesToMoveTocbCalendar3.php</filename>

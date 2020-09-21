@@ -113,10 +113,10 @@ $GlobalVariableDefinitons = array(
 ),
 'Debug_Email_Send_To_Inbucket'=> array(
 	'status' => 'Implemented',
-	'valuetype' => 'Boolean',
+	'valuetype' => 'String',
 	'category' => 'Debug',
-	'values' => '0 | 1',
-	'definition' => 'If set to 1 will send email ALWAYS through the Outgoing server settings which must be set to the inBucket settings',
+	'values' => 'InBucket SMTP Listener',
+	'definition' => 'If set its value will be used as the Out Going Mail Server Host',
 ),
 'Accounts_BlockDuplicateName' => array(
 	'status' => 'Implémenté',
