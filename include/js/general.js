@@ -5210,7 +5210,9 @@ function Uitype1FieldsAutocomplete(fldName, values) {
 		input.addEventListener("input", function (e) {
 			if (inputVal.length>1) {
 				ulo = document.getElementsByClassName("slds-listbox");
-				if (ulo.length >= 1) {closeDiv();}
+				if (ulo.length >= 1) {
+					closeDiv();
+				}
 				if (values.toLowerCase().includes(inputVal.toLowerCase())) {
 					divo = document.getElementById("listbox-unique-id-"+fldName);
 					ul = document.createElement("ul");
@@ -5234,7 +5236,9 @@ function Uitype1FieldsAutocomplete(fldName, values) {
 					});
 					divo.appendChild(ul);
 				}
-				function closeDiv() {divo.removeChild(ul);}
+				function closeDiv() {
+					divo.removeChild(ul);
+				}
 			}
 		});
 	});
