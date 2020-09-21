@@ -148,7 +148,9 @@ function send_mail(
 		$systemEmailClassName = 'Emails'; // default system method
 	}
 
-	if (GlobalVariable::getVariable('Debug_Email_Send_To_Inbucket', 0)) {
+	$inBucketServeUrl = GlobalVariable::getVariable('Debug_Email_Send_To_Inbucket', "");
+
+	if (!empty($inBucketServeUrl)) {
 		$systemEmailClassName = 'Emails';
 		$systemEmailClassPath = 'modules/Emails/Emails.php';
 	}
@@ -340,85 +342,94 @@ function setMailerProperties($mail, $subject, $contents, $from_email, $from_name
   */
 function setMailServerProperties($mail) {
 	global $adb,$default_charset, $current_user;
-	$adb->println('> setMailServerProperties');
-	$user_mail_config = $adb->pquery('select * from vtiger_mail_accounts where user_id=? AND og_server_status=1', array($current_user->id));
-	$res = $adb->pquery('select * from vtiger_systems where server_type=?', array('email'));
-	if (isset($_REQUEST['server'])) {
-		$server = $_REQUEST['server'];
-	} else {
-		if ($user_mail_config && $adb->num_rows($user_mail_config)>0) {
-			$server = $adb->query_result($user_mail_config, 0, 'og_server_name');
-		} else {
-			$server = $adb->query_result($res, 0, 'server');
-		}
-	}
-	if (isset($_REQUEST['server_username'])) {
-		$username = $_REQUEST['server_username'];
-	} else {
-		if ($user_mail_config && $adb->num_rows($user_mail_config)>0) {
-			$username = $adb->query_result($user_mail_config, 0, 'og_server_username');
-		} else {
-			$username = $adb->query_result($res, 0, 'server_username');
-		}
-	}
-	if (isset($_REQUEST['server_password'])) {
-		$password = $_REQUEST['server_password'];
-	} else {
-		if ($user_mail_config && $adb->num_rows($user_mail_config)>0) {
-			require_once 'include/database/PearDatabase.php';
-			require_once 'modules/Users/Users.php';
-			$focus = new Users();
-			$password = $focus->de_cryption($adb->query_result($user_mail_config, 0, 'og_server_password'));
-		} else {
-			$password = html_entity_decode($adb->query_result($res, 0, 'server_password'), ENT_QUOTES, $default_charset);
-		}
-	}
-	if (isset($_REQUEST['smtp_auth'])) {
-		$smtp_auth = $_REQUEST['smtp_auth'];
-	} else {
-		if ($user_mail_config && $adb->num_rows($user_mail_config)>0) {
-			$smtp_auth = $adb->query_result($user_mail_config, 0, 'og_smtp_auth	');
-		} else {
-			$smtp_auth = $adb->query_result($res, 0, 'smtp_auth');
-		}
-	}
 
-	$adb->println("Mail server name,username & password => '".$server."','".$username."','".$password."'");
-	if ('false' != $smtp_auth) {
-		$mail->SMTPAuth = true;
-		if ('true' != $smtp_auth) {
-			if ($smtp_auth == 'sslnc' || $smtp_auth == 'tlsnc') {
-				$mail->SMTPOptions = array(
+	$inBucketServeUrl = GlobalVariable::getVariable('Debug_Email_Send_To_Inbucket', "");
+	if (!empty($inBucketServeUrl)) {
+		$mail->Host = $inBucketServeUrl; // Url for InBucket Server
+		$mail->Username = "";	// SMTP username
+		$mail->Password = "" ;	// SMTP password
+		$mail->SMTPAuth = false;
+	} else {
+		$adb->println('> setMailServerProperties');
+		$user_mail_config = $adb->pquery('select * from vtiger_mail_accounts where user_id=? AND og_server_status=1', array($current_user->id));
+		$res = $adb->pquery('select * from vtiger_systems where server_type=?', array('email'));
+		if (isset($_REQUEST['server'])) {
+			$server = $_REQUEST['server'];
+		} else {
+			if ($user_mail_config && $adb->num_rows($user_mail_config)>0) {
+				$server = $adb->query_result($user_mail_config, 0, 'og_server_name');
+			} else {
+				$server = $adb->query_result($res, 0, 'server');
+			}
+		}
+		if (isset($_REQUEST['server_username'])) {
+			$username = $_REQUEST['server_username'];
+		} else {
+			if ($user_mail_config && $adb->num_rows($user_mail_config)>0) {
+				$username = $adb->query_result($user_mail_config, 0, 'og_server_username');
+			} else {
+				$username = $adb->query_result($res, 0, 'server_username');
+			}
+		}
+		if (isset($_REQUEST['server_password'])) {
+			$password = $_REQUEST['server_password'];
+		} else {
+			if ($user_mail_config && $adb->num_rows($user_mail_config)>0) {
+				require_once 'include/database/PearDatabase.php';
+				require_once 'modules/Users/Users.php';
+				$focus = new Users();
+				$password = $focus->de_cryption($adb->query_result($user_mail_config, 0, 'og_server_password'));
+			} else {
+				$password = html_entity_decode($adb->query_result($res, 0, 'server_password'), ENT_QUOTES, $default_charset);
+			}
+		}
+		if (isset($_REQUEST['smtp_auth'])) {
+			$smtp_auth = $_REQUEST['smtp_auth'];
+		} else {
+			if ($user_mail_config && $adb->num_rows($user_mail_config)>0) {
+				$smtp_auth = $adb->query_result($user_mail_config, 0, 'og_smtp_auth	');
+			} else {
+				$smtp_auth = $adb->query_result($res, 0, 'smtp_auth');
+			}
+		}
+
+		$adb->println("Mail server name,username & password => '".$server."','".$username."','".$password."'");
+		if ('false' != $smtp_auth) {
+			$mail->SMTPAuth = true;
+			if ('true' != $smtp_auth) {
+				if ($smtp_auth == 'sslnc' || $smtp_auth == 'tlsnc') {
+					$mail->SMTPOptions = array(
 					'ssl' => array(
 						'verify_peer' => false,
 						'verify_peer_name' => false,
 						'allow_self_signed' => true
 					)
-				);
-				$smtp_auth = substr($smtp_auth, 0, 3);
+					);
+					$smtp_auth = substr($smtp_auth, 0, 3);
+				}
+				$mail->SMTPSecure = $smtp_auth;
 			}
-			$mail->SMTPSecure = $smtp_auth;
 		}
-	}
-	$mail->Host = $server;		// specify main and backup server
-	$mail->Username = $username ;	// SMTP username
-	$mail->Password = $password ;	// SMTP password
+		$mail->Host = $server;		// specify main and backup server
+		$mail->Username = $username ;	// SMTP username
+		$mail->Password = $password ;	// SMTP password
 
-	$debugEmail = GlobalVariable::getVariable('Debug_Email_Sending', 0);
-	if ($debugEmail) {
-		global $log;
-		$log->fatal(array(
+		$debugEmail = GlobalVariable::getVariable('Debug_Email_Sending', 0);
+		if ($debugEmail) {
+			global $log;
+			$log->fatal(array(
 			'SMTPOptions' => $mail->SMTPOptions,
 			'SMTPSecure' => $mail->SMTPSecure,
 			'Host' => $mail->Host = $server,
 			'Username' => $mail->Username = $username,
 			'Password' => $mail->Password = $password,
-		));
-		$mail->SMTPDebug = 4;
-		$mail->Debugoutput = function ($str, $level) {
-			global $log;
-			$log->fatal($str);
-		};
+			));
+			$mail->SMTPDebug = 4;
+			$mail->Debugoutput = function ($str, $level) {
+				global $log;
+				$log->fatal($str);
+			};
+		}
 	}
 }
 
