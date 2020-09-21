@@ -874,6 +874,11 @@ function validateDate() {
 function ScheduleEmail() {
 	var isScheduledObj = getObj('isReportScheduled');
 	if (isScheduledObj.checked == true) {
+		if (document.NewReport.scheduledTime.value == '') {
+			alert(alert_arr.ERR_INVALID_TIME);
+			return false;
+		}
+
 		var selectedRecipientsObj = getObj('selectedRecipients');
 
 		if (selectedRecipientsObj.options.length == 0) {

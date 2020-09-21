@@ -186,7 +186,7 @@ class Contacts extends CRMEntity {
 					$contact['accountname'] = '';
 					$contact['account_id'] = '';
 				}
-				$contact['contactid'] = $row[contactid];
+				$contact['contactid'] = $row['contactid'];
 				$list[] = $contact;
 			}
 		}

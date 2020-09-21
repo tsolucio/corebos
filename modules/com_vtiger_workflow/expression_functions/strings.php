@@ -119,4 +119,26 @@ function __cb_hash($arr) {
 			return sha1($arr[0]);
 	}
 }
+
+function __cb_jsonencode($arr) {
+	return json_encode($arr[0]);
+}
+
+function __cb_jsondecode($arr) {
+	return json_decode($arr[0], true);
+}
+
+function __cb_implode($arr) {
+	if (count($arr)!=2) {
+		return '';
+	}
+	return implode($arr[0], $arr[1]);
+}
+
+function __cb_explode($arr) {
+	if (count($arr)!=2) {
+		return '';
+	}
+	return explode($arr[0], $arr[1]);
+}
 ?>

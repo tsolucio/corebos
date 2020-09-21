@@ -65,6 +65,10 @@ switch ($exptype) {
 }
 $smarty = new vtigerCRM_Smarty();
 $smarty->assign('ERROR_MESSAGE_CLASS', $msgtype);
-$smarty->assign('ERROR_MESSAGE', $msg);
+if (is_array($msg)) {
+	$smarty->assign('ERROR_MESSAGE', var_export($msg, true));
+} else {
+	$smarty->assign('ERROR_MESSAGE', $msg);
+}
 $smarty->display('applicationmessage.tpl');
 ?>
