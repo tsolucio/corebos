@@ -5204,7 +5204,7 @@ function UnifiedSearch_OnComboSelect(value) {
 	});
 }
 function Uitype1FieldsAutocomplete(fldName, values) {
-	$("#"+fldName).keypress(function(){
+	$("#"+fldName).keypress(function () {
 		var input = document.getElementById(fldName);
 		var inputVal = input.value;
 		input.addEventListener("input", function (e) {
