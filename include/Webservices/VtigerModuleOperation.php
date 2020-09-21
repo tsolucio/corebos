@@ -267,7 +267,8 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 	}
 
 	public function querySQLResults($mysql_query, $q, $meta, $queryRelatedModules) {
-		global $site_URL, $adb, $default_charset;
+		global $site_URL, $adb, $default_charset, $currentModule;
+		$currentModule = $meta->getEntityName();
 		if (strpos($mysql_query, 'vtiger_inventoryproductrel')) {
 			$invlines = true;
 			$pdowsid = vtws_getEntityId('Products');

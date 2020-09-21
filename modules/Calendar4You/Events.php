@@ -381,7 +381,18 @@ foreach ($Users_Ids as $userid) {
 				}
 				if (in_array($activitytypeid, $timeModules) && !empty($stfields['stime'])) {
 					$stfst = $stfst . ' ' . $row[$stfields['stime']];
-					$stfed = $stfed . ' ' . $row[$stfields['etime']];
+					if (empty($row[$stfields['etime']])) {
+						$stfedt = date(
+							'H:i:s',
+							mktime(
+								substr($row[$stfields['stime']], 0, 2),
+								substr($row[$stfields['stime']], 3, 2) + GlobalVariable::getVariable('Calendar_Slot_Minutes', 15)
+							)
+						);
+					} else {
+						$stfedt = $row[$stfields['etime']];
+					}
+					$stfed = $stfed.' '.$stfedt;
 					$allDay = false;
 				}
 				$convert_date_start = DateTimeField::convertToUserTimeZone($stfst);
