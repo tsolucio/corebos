@@ -756,7 +756,7 @@ class CRMEntity {
 					} else {
 						$fldvalue = $this->column_fields[$fieldname];
 					}
-				} elseif ($uitype == 14 && empty($fldvalue)) {
+				} elseif ($uitype == 14 && empty($this->column_fields[$fieldname])) {
 					$fldvalue = null;
 				} elseif ($uitype == 50) {
 					$timefmt = '';
