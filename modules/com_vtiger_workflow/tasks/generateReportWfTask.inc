@@ -14,29 +14,8 @@ require_once 'modules/com_vtiger_workflow/VTTaskQueue.inc';
 class generateReportWfTask extends VTTask {
 
 	public $executeImmediately = true;
-	public $caseType = '';
-	public $reportName = '';
-	public $questionName = '';
-	public $reportFileType = '';
 	public function getFieldNames() {
-
-		return array('case_type', 'file_type', 'report_name', 'question_name');
-	}
-
-	public function after_retrieve() {
-		global $adb, $current_user, $log;
-		if (!empty($this->case_type)) {
-			$this->caseType = $this->case_type;
-		}
-		if (!empty($this->report_name)) {
-			$this->reportName = $this->report_name;
-			if (!empty($this->file_type)) {
-				$this->reportFileType = $this->file_type;
-			}
-		}
-		if (!empty($this->question_name)) {
-			$this->questionName = $this->question_name;
-		}
+		return array('case_type', 'file_type', 'report_name', 'qnfield', 'qnfield_display');
 	}
 
 	public function doTask(&$entity) {
@@ -82,19 +61,14 @@ class generateReportWfTask extends VTTask {
 			}
 		}
 		if ($this->case_type == 'question') {
-			$questiondata = explode("$$", $this->question_name);
-			$questionId = (int)$questiondata[0];
-			$questionName = $questiondata[1];
-			$res = cbQuestion::getFormattedAnswer((int)$questionId, array());
+			$res = cbQuestion::getFormattedAnswer((int)$this->qnfield, array());
 			if ($res) {
-				$pos = strrpos($res, '/');
-				$name = $pos === false ? $res : substr($res, $pos + 1);
-				$path =str_replace($name, '', str_replace($root_directory, '', $res));
-				$name = strrpos($name, '.') === false ? $name.'.csv' : $name;
+				$path_parts = pathinfo($res);
+				$name = $path_parts['basename'];
+				$path =str_replace($root_directory, '', $path_parts['dirname']).'/';
 			}
 		}
-		$entity->WorkflowContext['path'] = $path;
-		$entity->WorkflowContext['filename'] = $name;
+		$entity->WorkflowContext['wfgenerated_file'] = array("path"=>$path, "name"=>$name);
 	}
 }
 ?>
