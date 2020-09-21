@@ -85,7 +85,7 @@
 						type="text"
 						style="border:1px solid #bababa;"
 						onclick='return vtlib_open_popup_window("new_task_form", "qnfield", "cbQuestion", "");'
-						{if !empty($task->qnfield_display )} value = {$task->qnfield_display} {else} value ="" {/if}>&nbsp;
+						{if !empty($task->qnfield_display )} value = "{$task->qnfield_display}" {else} value ="" {/if}>&nbsp;
 						<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_SELECT'|getTranslatedString}" onclick='return vtlib_open_popup_window("new_task_form", "qnfield", "cbQuestion", "");'>
 							<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
