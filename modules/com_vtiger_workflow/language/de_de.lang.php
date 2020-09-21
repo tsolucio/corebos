@@ -233,5 +233,8 @@ $mod_strings = array(
 	'equal to' => 'equal to',
 	'not equal to' => 'not equal to',
 	'EXP_RULE4' => 'Use binary values for the checkbox fields: 0 for false/no, 1 for true/yes.',
-);
+	'Select source module' => 'Select source module',
+	'Business Question' => 'Business Question',
+	'Select File Type' => 'Select file type',
+	);
 ?>

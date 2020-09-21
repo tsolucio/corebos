@@ -235,5 +235,8 @@ $mod_strings = array(
 'equal to' => 'igual a',
 'not equal to' => 'no es igual a',
 'EXP_RULE4' => 'Utiliza valores binarios para los campos de casilla de verificación: 0 para falso/no, 1 para verdadero/sí.',
+'Select source module' => 'Selecciona módulo origen',
+'Business Question' => 'Pregunta Negocio',
+'Select File Type' => 'Selecciona tipo fichero',
 );
 ?>

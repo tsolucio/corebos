@@ -115,7 +115,7 @@ $GlobalVariableDefinitons = array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
 	'category' => 'Debug',
-	'values' => 'InBucket SMTP Listener ',
+	'values' => 'InBucket SMTP Listener',
 	'definition' => 'If set its value will be used as the Out Going Mail Server Host',
 ),
 'Accounts_BlockDuplicateName' => array(
