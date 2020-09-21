@@ -203,6 +203,27 @@ if ($focus->mode != 'edit' && $mod_seq_field != null) {
 	}
 }
 
+$bmapname = $currentModule.'_FieldInfo';
+if (!empty($bmapname)) {
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname), $currentModule, $current_user->id);
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapFI = $cbMap->FieldInfo();
+		$cbMapFI = $cbMapFI['fields'];
+		$featuresval = array();
+		$featurefields = array();
+		foreach ($cbMapFI as $fname => $features) {
+			if (isset($features['combobox'])) {
+				$featurefields[$fname] = $fname;
+				$featuresval[$fname] = $features['combobox'][$currentModule];
+			}
+		}
+		$smarty->assign('MAP_VALUES', $featuresval);
+		$smarty->assign('FIELDS_NAME', $featurefields);
+		$smarty->display('EditViewUI.tpl');
+	}
+}
+
 // Gather the custom link information to display
 include_once 'vtlib/Vtiger/Link.php';
 $customlink_params = array('MODULE'=>$currentModule, 'RECORD'=>$focus->id, 'ACTION'=>vtlib_purify($_REQUEST['action']));
