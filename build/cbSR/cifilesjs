@@ -41,8 +41,7 @@
 ./modules/Assets/Assets.js
 ./modules/BusinessActions/BusinessActions.js
 ./modules/Calendar4You/Calendar4You.js
-./modules/Calendar/Calendar.js
-./modules/Calendar/script.js
+./modules/cbCalendar/script.js
 ./modules/Campaigns/Campaigns.js
 ./modules/cbAuditTrail/cbAuditTrail.js
 ./modules/cbCalendar/cbCalendar.js

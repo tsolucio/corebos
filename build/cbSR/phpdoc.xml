@@ -34,7 +34,7 @@
     <ignore>include/PopulateComboValues.php"</ignore>
     <ignore>modules/Migration/*</ignore>
     <ignore>modules/Users/authTypes/*</ignore>
-    <ignore>modules/Calendar/iCal/*</ignore>
+    <ignore>modules/cbCalendar/iCal/*</ignore>
     <ignore>vtlib/thirdparty/*</ignore>
     <ignore>vtlib/ModuleDir/*</ignore>
     <ignore>Smarty/*</ignore>
