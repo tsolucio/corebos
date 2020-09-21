@@ -5203,7 +5203,42 @@ function UnifiedSearch_OnComboSelect(value) {
 		// continue
 	});
 }
-
+function Uitype1FieldsAutocomplete(fldName, values) {
+	$("#"+fldName).keypress(function(){
+		var input = document.getElementById(fldName);
+		var inputVal = input.value;
+		input.addEventListener("input", function (e) {
+			if (inputVal.length>1) {
+				ulo = document.getElementsByClassName("slds-listbox");
+				if (ulo.length >= 1) {closeDiv();}
+				if (values.toLowerCase().includes(inputVal.toLowerCase())) {
+					divo = document.getElementById("listbox-unique-id-"+fldName);
+					ul = document.createElement("ul");
+					ul.setAttribute("class", "slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid");
+					ul.setAttribute("role", "presentation");
+					ul.setAttribute("id", "ul-list-"+values);
+					ul.style.visibility = 1;
+					ul.style.opacity = 1;
+					ul.style.transform = 'none';
+					ul.style.left = 0;
+					ul.style.padding = '5px';
+					ul.style.marginTop = '5px';
+					ul.style.maxWidth = '90%';
+					ul.style.width = '90%';
+					ul.style.visibility = 'visible';
+					ul.style.cursor="pointer";
+					ul.innerHTML = "<p style='color: #4ea62b;'>" + values + "</p>";
+					ul.addEventListener("click", function (e) {
+						input.value = values;
+						closeDiv();
+					});
+					divo.appendChild(ul);
+				}
+				function closeDiv() {divo.removeChild(ul);}
+			}
+		});
+	});
+}
 /**
  * image pasting into canvas
  * @param {string} canvas_id - canvas id
