@@ -39,8 +39,6 @@ class GoogleStorageAdapter {
 		if (null === $this->filesystem) {
 			return;
 		}
-		var_dump($this->context);
-		die;
 		$adapter = $this->filesystem->getAdapter();
 		$content = file_get_contents($this->context['path'].$this->context['name']);
 		$this->filesystem->write($this->context['name'], $content);
