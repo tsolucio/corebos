@@ -21,7 +21,7 @@ use Gaufrette\Filesystem;
 
 class AzureAdapter {
 
-	function __construct($data, $workflow_context) {
+	public function __construct($data, $workflow_context) {
 		$this->azure_account = $data['azure_account'];
 		$this->azure_key = $data['azure_key'];
 		$this->azure_container = $data['azure_container'];

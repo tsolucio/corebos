@@ -22,7 +22,7 @@ use OpenCloud\Rackspace;
 
 class OpenCloudAdapter {
 
-	function __construct($data, $workflow_context) {
+	public function __construct($data, $workflow_context) {
 		$this->rackspace_user = $data['opencloud_username'];
 		$this->rackspace_apikey = $data['opencloud_password'];
 		$this->rackspace_container = $data['opencloud_projectname'];

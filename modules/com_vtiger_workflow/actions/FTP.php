@@ -21,7 +21,7 @@ use Gaufrette\Filesystem;
 
 class FTPAdapter {
 
-	function __construct($data, $workflow_context) {
+	public function __construct($data, $workflow_context) {
 		$this->host = $data['ftp_host'];
 		$this->port = $data['ftp_port'];
 		$this->user = $data['ftp_username'];

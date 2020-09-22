@@ -21,7 +21,7 @@ use Gaufrette\Filesystem;
 
 class GoogleStorageAdapter {
 
-	function __construct($data, $client, $workflow_context) {
+	public function __construct($data, $client, $workflow_context) {
 		$this->bucket = $data['google_bucket'];
 		$this->client = $client;
 		$this->context = $workflow_context['wfgenerated_file'];
