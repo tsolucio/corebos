@@ -34,8 +34,7 @@ if (isset($_REQUEST['action_id']) && $_REQUEST['action_id'] !='') {
 		from vtiger_notes
 		inner join vtiger_senotesrel on vtiger_senotesrel.notesid= vtiger_notes.notesid
 		inner join '.$crmEntityTable.' on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
-		inner join vtiger_crmentity crm2 on crm2.crmid=vtiger_senotesrel.crmid
-		where crm2.crmid=?';
+		where vtiger_senotesrel.crmid=?';
 	$result = $adb->pquery($query, array($_REQUEST['action_id']));
 }
 ?>
