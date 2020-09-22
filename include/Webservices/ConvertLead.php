@@ -144,7 +144,7 @@ function vtws_convertlead($entityvalues, $user) {
 		vtws_convertLeadTransferHandler($leadIdComponents, $entityIds, $entityvalues);
 
 		$relatedIdComponents = vtws_getIdComponents($entityIds[$entityvalues['transferRelatedRecordsTo']]);
-		vtws_getRelatedActivities($leadIdComponents[1], $accountId, $contactId, $relatedIdComponents[1]);
+		vtws_transferRelatedActivities($leadIdComponents[1], $accountId, $contactId, $relatedIdComponents[1]);
 		// Transfer the related records to be converted
 		$focus = CRMEntity::getInstance('Leads');
 		$focus->transferRelatedRecords($entityvalues['transferRelatedRecordsTo'], array($leadIdComponents[1]), $relatedIdComponents[1]);
