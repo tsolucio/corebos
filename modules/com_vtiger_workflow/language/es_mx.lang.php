@@ -238,5 +238,7 @@ $mod_strings = array(
 'Select source module' => 'Selecciona módulo origen',
 'Business Question' => 'Pregunta Negocio',
 'Select File Type' => 'Selecciona tipo fichero',
+'LBL_SELECT_CREDENTIAL' => 'Select Credential',
+'LBL_SEND_FILE' => 'Send file to',
 );
 ?>
