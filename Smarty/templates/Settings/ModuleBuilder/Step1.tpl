@@ -28,25 +28,25 @@
                             <div class="slds-form-element__control">
                                 <input type="text" id="modulelabel" placeholder="{$MOD.LBL_MB_MODULELABEL}" onchange="mb.updateProgress(1)" required="" class="slds-input" />
                             </div>
-                            </div>
-                            <div class="slds-form-element">
-                                <label class="slds-form-element__label" for="parentmenu">{$MOD.LBL_MB_PARENTMENU}</label>
-                                <div class="slds-form-element__control">
-                                    <div class="slds-select_container">
-                                        <select class="slds-select" id="parentmenu" onchange="mb.updateProgress(1)">
-                                            <option value="" disabled="" selected=""></option>
-                                            {foreach from=$MENU item=m key=k}
-                                            <option value="{$m}">{$m}</option>
-                                            {/foreach}
-                                        </select>
-                                    </div>
+                        </div>
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="parentmenu">{$MOD.LBL_MB_PARENTMENU}</label>
+                            <div class="slds-form-element__control">
+                                <div class="slds-select_container">
+                                    <select class="slds-select" id="parentmenu" onchange="mb.updateProgress(1)">
+                                        <option value="" disabled="" selected=""></option>
+                                        {foreach from=$MENU item=m key=k}
+                                        <option value="{$m}">{$m}</option>
+                                        {/foreach}
+                                    </select>
                                 </div>
                             </div>
-                            <div class="slds-form-element">
-                                <label class="slds-form-element__label" for="moduleicon">{$MOD.LBL_MB_MODULEICON}
-                                    <a href="https://www.lightningdesignsystem.com/icons/" class="slds-badge slds-theme_success slds-m-top_x-small slds-m-bottom_xx-small slds-m-left_small" target="_blank"> {$MOD.LBL_MB_LISTICONS}</a>
-                                </label>
-                                <div class="slds-form-element__control slds-grid slds-gutters">
+                        </div>
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="moduleicon">{$MOD.LBL_MB_MODULEICON}
+                                <a href="https://www.lightningdesignsystem.com/icons/" class="slds-badge slds-theme_success slds-m-top_x-small slds-m-bottom_xx-small slds-m-left_small" target="_blank"> {$MOD.LBL_MB_LISTICONS}</a>
+                            </label>
+                            <div class="slds-form-element__control slds-grid slds-gutters">
                                 <div class="slds-col slds-size_1-of-12">
                                     <span class="slds-icon_container slds-icon-utility-announcement" id="moduleiconshow">
                                         <svg class="slds-icon slds-icon-text-default">
@@ -62,7 +62,30 @@
                                         {/foreach}
                                     </select>
                                 </div>
-                                </div>
+                            </div>
+                        </div><br>
+                        <h3 class="slds-setup-assistant__step-summary-title slds-text-heading_small">
+                            <span style="text-transform: uppercase;">CUSTOM INFORMATION</span>
+                        </h3>
+                        <div class="slds-form-element__control slds-grid slds-gutters">
+                            <div class="slds-col slds-size_6-of-12">
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label" for="parentmenu">SHARING ACCESS</label>
+                                    <div class="slds-form-element__control">
+                                        Private <input type="radio" id="private" checked name="sharingaccess" value="private"/>
+                                        Public <input type="radio" id="public" name="sharingaccess" value="public"/>
+                                    </div>
+                                </div>                               
+                            </div>
+                            <div class="slds-col slds-size_6-of-12">
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label" for="parentmenu">ACTIONS</label>
+                                    <div class="slds-form-element__control">
+                                        Merge <input type="checkbox" id="merge"/>
+                                        Import <input type="checkbox" id="import"/>
+                                        Export <input type="checkbox" id="export"/>
+                                    </div>
+                                </div>                              
                             </div>
                         </div>
                     </div>
@@ -70,13 +93,14 @@
             </div>
         </div>
     </div>
-    <br><br><br>
-    <div class="slds-docked-form-footer">
-        <button class="slds-button slds-button_success" disabled="true" onclick="mb.SaveModule(1);" id="btn-step-1" style="color: white">
-            {$MOD.LBL_MB_NEXT}&nbsp;
-            <svg class="slds-icon slds-icon_small" aria-hidden="true">
-                <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#forward"></use>
-            </svg>
-        </button>
-    </div>
+</div>
+<br><br><br>
+<div class="slds-docked-form-footer">
+    <button class="slds-button slds-button_success" disabled="true" onclick="mb.SaveModule(1);" id="btn-step-1" style="color: white">
+        {$MOD.LBL_MB_NEXT}&nbsp;
+        <svg class="slds-icon slds-icon_small" aria-hidden="true">
+            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#forward"></use>
+        </svg>
+    </button>
+</div>
 </article>

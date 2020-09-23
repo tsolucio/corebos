@@ -13,168 +13,98 @@
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
-//require_once 'include/utils/utils.php';
+
 function SaveModuleBuilder($step) {
 	global $mod_strings,$adb, $current_user;
-	$userid = $current_user->id;
 	switch ($step) {
 		case '1':
-			$modulename = vtlib_purify($_REQUEST['modulename']);
-			$modulelabel = vtlib_purify($_REQUEST['modulelabel']);
-			$parentmenu = vtlib_purify($_REQUEST['parentmenu']);
-			$moduleicon = vtlib_purify($_REQUEST['moduleicon']);
-			//check if module exists
 			$modSql = $adb->pquery('SELECT * FROM vtiger_modulebuilder WHERE modulebuilder_name=?', array(
-				$modulename
+				vtlib_purify($_REQUEST['modulename'])
 			));
 			$modExsists = $adb->num_rows($modSql);
-			if (isset($_COOKIE['ModuleBuilderID']) && $_COOKIE['ModuleBuilderID'] != '' && $modExsists > 0) {
-				$adb->pquery('UPDATE vtiger_modulebuilder SET modulebuilder_name=?, modulebuilder_label=?, modulebuilder_parent=?, icon=? WHERE modulebuilderid=?', array(
-					$modulename,
-					$modulelabel,
-					$parentmenu,
-					$moduleicon,
-					$_COOKIE['ModuleBuilderID']
-				));
-			} else {
-				$ins = $adb->pquery('INSERT INTO vtiger_modulebuilder (modulebuilder_name, modulebuilder_label, modulebuilder_parent, status, icon) VALUES(?,?,?,?,?)', array(
-					$modulename,
-					$modulelabel,
-					$parentmenu,
-					'active',
-					$moduleicon
-				));
-
-				$lastINSID = $adb->getLastInsertID();
-				$adb->pquery('INSERT INTO vtiger_modulebuilder_name (modulebuilderid, date, completed, userid) VALUES (?,?,?,?)', array(
-				$lastINSID,
-				date('Y-m-d'),
-				'20',
-				$userid));
-				$cookie_name = "ModuleBuilderID";
-				$cookie_value = $lastINSID;
-				setcookie($cookie_name, $cookie_value, time() + ((86400 * 30) * 7), "/");
+			$mb = new ModuleBuilder();
+			if ($modExsists > 0) {
+				$mb->id = $_COOKIE['ModuleBuilderID'];
+				$mb->mode = 'edit';
 			}
+			$mb->column_data['modulename'] = vtlib_purify($_REQUEST['modulename']);
+			$mb->column_data['modulelabel'] = vtlib_purify($_REQUEST['modulelabel']);
+			$mb->column_data['parentmenu'] = vtlib_purify($_REQUEST['parentmenu']);
+			$mb->column_data['moduleicon'] = vtlib_purify($_REQUEST['moduleicon']);
+			$mb->column_data['sharingaccess'] = vtlib_purify($_REQUEST['sharingaccess']);
+			$mb->column_data['merge'] = vtlib_purify($_REQUEST['merge']);
+			$mb->column_data['import'] = vtlib_purify($_REQUEST['import']);
+			$mb->column_data['export'] = vtlib_purify($_REQUEST['export']);
+			$ret = $mb->save($step);
+			return $ret;
 			break;
 		case '2':
-			$moduleid = $_COOKIE['ModuleBuilderID'];
-			foreach ($_REQUEST['blocks'] as $key => $value) {
-				if ($value != "") {
-					$adb->pquery('INSERT INTO vtiger_modulebuilder_blocks (blocks_label, moduleid) VALUES (?,?)', array(
-						$value,
-						$moduleid
-					));
-					$adb->pquery('UPDATE vtiger_modulebuilder_name SET completed="40" WHERE userid=? AND modulebuilderid=?', array(
-						$userid,
-						$moduleid,
-					));
-				}
-			}
+			$mb = new ModuleBuilder();
+			$mb->id = $_COOKIE['ModuleBuilderID'];
+			$mb->mode = 'edit';
+			$mb->column_data['blocks'] = vtlib_purify($_REQUEST['blocks']);
+			$ret = $mb->save($step);
+			return $ret;
 			break;
 		case '3':
+			$moduleid = $_COOKIE['ModuleBuilderID'];
 			if (isset($_REQUEST['fields'])) {
-				$moduleid = $_COOKIE['ModuleBuilderID'];
-				//get Module Name
-				$moduleSql = $adb->pquery('SELECT modulebuilder_name FROM vtiger_modulebuilder WHERE modulebuilderid=?', array($moduleid));
-				$moduleName = $adb->query_result($moduleSql, 0, 0);
-				$fields = vtlib_purify($_REQUEST['fields']);
-				if (!isset($fields[0]['fieldsid'])) {
-					$adb->pquery('INSERT INTO vtiger_modulebuilder_fields (blockid, moduleid,fieldname,uitype,columnname,tablename,fieldlabel,presence,sequence,typeofdata,quickcreate,displaytype,masseditable,relatedmodules) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)', array(
-						$fields[0]['blockid'],
-						$moduleid,
-						$fields[0]['fieldname'],
-						$fields[0]['uitype'],
-						$fields[0]['columnname'],
-						strtolower('vtiger_'.$moduleName),
-						$fields[0]['fieldlabel'],
-						$fields[0]['presence'],
-						$fields[0]['sequence'],
-						$fields[0]['typeofdata'],
-						$fields[0]['quickcreate'],
-						$fields[0]['displaytype'],
-						$fields[0]['masseditable'],
-						$fields[0]['relatedmodules'],
-					));
-					$adb->pquery('UPDATE vtiger_modulebuilder_name SET completed="60" WHERE userid=? AND modulebuilderid=?', array(
-						$userid,
-						$moduleid,
-					));
-				} else {
-					$adb->pquery('UPDATE vtiger_modulebuilder_fields SET fieldname=?,columnname=?,fieldlabel=?,uitype=?,tablename=?,presence=?,sequence=?,typeofdata=?,quickcreate=?,displaytype=?,masseditable=?,relatedmodules=? WHERE fieldsid=? AND blockid=? AND moduleid=?', array(
-						$fields[0]['fieldname'],
-						$fields[0]['columnname'],
-						$fields[0]['fieldlabel'],
-						$fields[0]['uitype'],
-						strtolower('vtiger_'.$moduleName),
-						$fields[0]['presence'],
-						$fields[0]['sequence'],
-						$fields[0]['typeofdata'],
-						$fields[0]['quickcreate'],
-						$fields[0]['displaytype'],
-						$fields[0]['masseditable'],
-						$fields[0]['relatedmodules'],
-						$fields[0]['fieldsid'],
-						$fields[0]['blockid'],
-						$moduleid,
-					));
+				$mb = new ModuleBuilder();
+				$mb->id = $moduleid;
+				if (isset($_REQUEST['fields'][0]['fieldsid'])) {
+					$mb->edit = 'edit';
+					$mb->column_data['fieldsid'] = $_REQUEST['fields'][0]['fieldsid'];
 				}
+				$data = $mb->retrieve(1, $moduleid);
+				$moduleName = $data['name'];
+				$mb->column_data['modulename'] = $moduleName;
+				$mb->column_data['blockid'] = vtlib_purify($_REQUEST['fields'][0]['blockid']);
+				$mb->column_data['fieldname'] = vtlib_purify($_REQUEST['fields'][0]['fieldname']);
+				$mb->column_data['uitype'] = vtlib_purify($_REQUEST['fields'][0]['uitype']);
+				$mb->column_data['columnname'] = vtlib_purify($_REQUEST['fields'][0]['columnname']);
+				$mb->column_data['fieldlabel'] = vtlib_purify($_REQUEST['fields'][0]['fieldlabel']);
+				$mb->column_data['presence'] = vtlib_purify($_REQUEST['fields'][0]['presence']);
+				$mb->column_data['sequence'] = vtlib_purify($_REQUEST['fields'][0]['sequence']);
+				$mb->column_data['typeofdata'] = vtlib_purify($_REQUEST['fields'][0]['typeofdata']);
+				$mb->column_data['quickcreate'] = vtlib_purify($_REQUEST['fields'][0]['quickcreate']);
+				$mb->column_data['displaytype'] = vtlib_purify($_REQUEST['fields'][0]['blockid']);
+				$mb->column_data['masseditable'] = vtlib_purify($_REQUEST['fields'][0]['masseditable']);
+				$mb->column_data['relatedmodules'] = vtlib_purify($_REQUEST['fields'][0]['relatedmodules']);
+				$mb->column_data['picklistvalues'] = vtlib_purify($_REQUEST['fields'][0]['picklistvalues']);
+				$ret = $mb->save($step);
+				return $ret;
 			}
+			$adb->pquery('UPDATE vtiger_modulebuilder_name SET completed="60" WHERE userid=? AND modulebuilderid=?', array($current_user->id,$moduleid));
 			break;
 		case '4':
 			$moduleid = $_COOKIE['ModuleBuilderID'];
-			$customview = vtlib_purify($_REQUEST['customview']);
-			print_r($customview);
-			foreach ($customview as $key => $value) {
-				$customviewid = $value['customviewid'];
-				$viewname = $value['viewname'];
-				$setdefault = (String)$value['setdefault'];
-				$fields = (String)$value['fields']['field'];
-				$setmetrics = 'false';
-				if ($customviewid == '') {
-					$adb->pquery('INSERT INTO vtiger_modulebuilder_customview (viewname, setdefault, setmetrics, fields, moduleid) VALUES(?,?,?,?,?)', array(
-						$viewname,
-						$setdefault,
-						$setmetrics,
-						$fields,
-						$moduleid
-					));
-				} else {
-					$adb->pquery('UPDATE vtiger_modulebuilder_customview SET viewname=?, setdefault=?, setmetrics=?, fields=?, moduleid=? WHERE customviewid=?', array(
-						$viewname,
-						$setdefault,
-						$setmetrics,
-						$fields,
-						$moduleid,
-						$customviewid
-					));
-				}
-			}
-			$adb->pquery('UPDATE vtiger_modulebuilder_name SET completed="80" WHERE userid=? AND modulebuilderid=?', array(
-				$userid,
-				$moduleid,
-			));
+			$customview = isset($_REQUEST['customview']) ? vtlib_purify($_REQUEST['customview']) : array();
+			$mb = new ModuleBuilder();
+			$mb->id = $moduleid;
+			$mb->edit = 'edit';
+			$mb->column_data['customview'] = $customview;
+			$ret = $mb->save($step);
+			$adb->pquery('UPDATE vtiger_modulebuilder_name SET completed="80" WHERE userid=? AND modulebuilderid=?', array($current_user->id,$moduleid));
+			return $ret;
 			break;
 		case '5':
 			$moduleid = $_COOKIE['ModuleBuilderID'];
-			$relatedlists = vtlib_purify($_REQUEST['relatedlists']);
-			foreach ($relatedlists as $key => $value) {
-				if ($key != '') {
-					$adb->pquery('INSERT INTO vtiger_modulebuilder_relatedlists (function, label, actions, relatedmodule, moduleid) VALUES(?,?,?,?,?)', array(
-						$value['name'],
-						$value['label'],
-						$value['actions'],
-						$value['relatedmodule'],
-						$moduleid
-					));
-				}
+			$relatedlists = isset($_REQUEST['relatedlists']) ? vtlib_purify($_REQUEST['relatedlists']) : array();
+			if (count($relatedlists) > 0) {
+				$mb = new ModuleBuilder();
+				$mb->id = $moduleid;
+				$mb->edit = 'edit';
+				$mb->column_data['name'] = $relatedlists['name'];
+				$mb->column_data['label'] = $relatedlists['label'];
+				$mb->column_data['actions'] = $relatedlists['actions'];
+				$mb->column_data['relatedmodule'] = $relatedlists['relatedmodule'];
+				$ret = $mb->save($step);
+				return $ret;
 			}
-			$adb->pquery('UPDATE vtiger_modulebuilder_name SET completed="Completed" WHERE userid=? AND modulebuilderid=?', array(
-				$userid,
-				$moduleid,
-			));
+			$adb->pquery('UPDATE vtiger_modulebuilder_name SET completed="Completed" WHERE userid=? AND modulebuilderid=?', array($current_user->id,$moduleid));
 			break;
 		default:
-			echo json_encode();
+			//
 			break;
 	}
 }

@@ -20,10 +20,11 @@
                                         <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
                                     </svg>
                                     </button>
-                                    <input type="hidden" id="number_customview" value="0">
+                                    <input type="hidden" id="FILTER_COUNT" value="0">
                                 </div>
                                 <div class="slds-form-element">
                                     <table id="CustomView"></table>
+                                    <div id="FilterBTN"></div>
                                 </div>
                             </div>
                         </div>

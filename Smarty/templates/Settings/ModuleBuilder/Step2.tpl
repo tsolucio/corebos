@@ -14,7 +14,7 @@
                         </h3>
                         <div style="width: 70%; margin:0 auto;">
                             <div class="slds-media__figure slds-media__figure_reverse">
-                                <button class="slds-button slds-button_brand" onclick="mb.generateInput()">
+                                <button class="slds-button slds-button_brand" onclick="mb.generateInput()" style="text-transform: uppercase;">
                                     {$MOD.LBL_MB_NEWBLOCK}&nbsp;
                                     <svg class="slds-icon slds-icon_small" aria-hidden="true">
                                         <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
@@ -24,7 +24,7 @@
                             <div class="slds-form-element">
                                 <label class="slds-form-element__label" for="blocks_label">
                                     <abbr class="slds-required" title="required">* </abbr>{$MOD.LBL_MB_BLOCKLABEL}</label>
-                                    <input type="hidden" id="number_block" value="0">
+                                    <input type="hidden" id="BLOCK_COUNT" value="0">
                                 <div class="slds-form-element__control" id="blocks_inputs">
                                 </div>
                             </div>

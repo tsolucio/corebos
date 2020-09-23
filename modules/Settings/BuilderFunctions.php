@@ -16,7 +16,7 @@
 require_once 'include/utils/utils.php';
 require_once 'modules/Settings/ModuleBuilder/builder.php';
 $methodName = vtlib_purify($_REQUEST['methodName']);
-
+$mb = new ModuleBuilder();
 switch ($methodName) {
 	case 'Save':
 		require_once 'modules/Settings/ModuleBuilder/SaveModuleBuilder.php';
@@ -25,57 +25,66 @@ switch ($methodName) {
 		break;
 	case 'checkForModule':
 		$modulename = vtlib_purify($_REQUEST['modulename']);
-		$ret = checkForModule($modulename);
+		$ret = $mb->checkForModule($modulename);
 		break;
 	case 'loadModules':
 		$page = vtlib_purify($_REQUEST['page']);
 		$perPage = vtlib_purify($_REQUEST['perPage']);
-		$ret = loadModules($page, $perPage);
+		$ret = $mb->loadModules($page, $perPage);
 		break;
 	case 'loadBlocks':
-		$ret = loadBlocks();
+		$ret = $mb->loadBlocks();
 		break;
 	case 'loadFields':
-		$ret = loadFields();
+		$ret = $mb->loadFields();
 		break;
 	case 'autocomplete':
 		$query = vtlib_purify($_REQUEST['query']);
 		$method = vtlib_purify($_REQUEST['method']);
 		if ($method == 'name') {
-			$ret = autocompleteName($query);
+			$ret = $mb->autocompleteName($query);
 		} elseif ($method == 'module') {
-			$ret = autocompleteModule($query);
+			$ret = $mb->autocompleteModule($query);
 		}
 		break;
 	case 'loadValues':
 		$step = vtlib_purify($_REQUEST['step']);
 		$moduleid = vtlib_purify($_REQUEST['moduleid']);
-		$ret = loadValues($step, $moduleid);
+		$ret = $mb->loadValues($step, $moduleid);
 		break;
 	case 'removeBlock':
 		$blockid = vtlib_purify($_REQUEST['blockid']);
-		$ret = removeBlock($blockid);
+		$ret = $mb->removeBlock($blockid);
 		break;
 	case 'removeField':
 		$fieldsid = vtlib_purify($_REQUEST['fieldsid']);
-		$ret = removeField($fieldsid);
+		$ret = $mb->removeField($fieldsid);
 		break;
 	case 'loadDefaultBlocks':
-		$ret = loadDefaultBlocks();
+		$ret = $mb->loadDefaultBlocks();
 		break;
 	case 'removeCustomView':
 		$viewid = vtlib_purify($_REQUEST['viewid']);
-		$ret = removeCustomView($viewid);
+		$ret = $mb->removeCustomView($viewid);
 		break;
 	case 'removeRelatedLists':
 		$listid = vtlib_purify($_REQUEST['listid']);
-		$ret = removeRelatedLists($listid);
+		$ret = $mb->removeRelatedLists($listid);
 		break;
 	case 'generateManifest':
-		$ret = generateManifest();
+		$ret = $mb->generateManifest();
 		break;
 	case 'loadTemplate':
-		$ret = loadTemplate();
+		$modId = vtlib_purify($_REQUEST['modId']);
+		$ret = $mb->loadTemplate($modId);
+		break;
+	case 'VerifyModule':
+		$modulename = vtlib_purify($_REQUEST['modulename']);
+		$ret = $mb->VerifyModule($modulename);
+		break;
+	case 'installModule':
+		$modulename = vtlib_purify($_REQUEST['modulename']);
+		$ret = $mb->installModule($modulename);
 		break;
 	default:
 		$ret = array();

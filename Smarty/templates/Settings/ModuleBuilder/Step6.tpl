@@ -225,16 +225,29 @@
                             </ol>
                         </div>
                     </div>
-                    <div class="slds-media__figure slds-media__figure_reverse">
-                        <button class="slds-button slds-button_neutral slds-button_dual-stateful" onclick="mb.generateManifest()">
-                            <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
-                                <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
-                            </svg>
-                            {$MOD.LBL_MB_GENERATEMODULE}
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
+    </div>
+    <br><br><br>
+    <div class="slds-docked-form-footer">
+      <button class="slds-button slds-button_brand slds-button_dual-stateful" onclick="mb.generateManifest()" id="genModule">
+          <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
+              <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
+          </svg>
+          {$MOD.LBL_MB_GENERATEMODULE}
+      </button>
+      <button class="slds-button slds-button_neutral slds-button_dual-stateful" id="genModuleProgress" style="display: none">
+          <div class="demo-only">
+            <div class="slds-spinner_container">
+              <div role="status" class="slds-spinner slds-spinner_x-small">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+              </div>
+            </div>
+          </div>
+          {$MOD.LBL_MB_GENERATEMODULE}
+      </button>
     </div>
 </article>

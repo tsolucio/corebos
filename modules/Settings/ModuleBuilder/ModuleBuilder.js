@@ -1,11 +1,11 @@
 loadJS('index.php?module=Settings&action=SettingsAjax&file=getjslanguage');
-loadJS('modules/Settings/ModuleBuilder/fieldconfigs.js');
 const tuiGrid = tui.Grid;
 let url = 'index.php?module=Settings&action=SettingsAjax&file=BuilderFunctions';
 let dataGridInstance;
 let fieldGridInstance;
 let viewGridInstance;
 let listGridInstance;
+let moduleData = new Array();
 
 const mb = {
 	/**
@@ -17,22 +17,22 @@ const mb = {
 	SaveModule: (step, forward = true, buttonid = '') => {
 		var data = {};
 		if (step == 1) {
-			const modulename = mb.loadElement('modulename');
-			const modulelabel = mb.loadElement('modulelabel');
-			const parentmenu = mb.loadElement('parentmenu');
-			const moduleicon = mb.loadElement('moduleicon');
 			data = {
-				modulename: modulename,
-				modulelabel: modulelabel,
-				parentmenu: parentmenu,
-				moduleicon: moduleicon,
+				modulename: mb.loadElement('modulename'),
+				modulelabel: mb.loadElement('modulelabel'),
+				parentmenu: mb.loadElement('parentmenu'),
+				moduleicon: mb.loadElement('moduleicon'),
+				sharingaccess: mb.getRadioValue('sharingaccess'),
+				merge: mb.loadElement('merge', true).checked,
+				import: mb.loadElement('import', true).checked,
+				export: mb.loadElement('export', true).checked,
 				step: step
 			};
 		}
 		if (step == 2) {
 			var blocks_label = [];
-			const number_block = mb.loadElement('number_block');
-			for (var i = 1; i <= number_block; i++) {
+			const BLOCK_COUNT = mb.loadElement('BLOCK_COUNT');
+			for (var i = 1; i <= BLOCK_COUNT; i++) {
 				blocks_label[i] = mb.loadElement(`blocks_label_${i}`);
 			}
 			data = {
@@ -43,35 +43,23 @@ const mb = {
 
 		if (step == 3) {
 			var fields = [];
-			const number_field = mb.loadElement('number_field');
+			const FIELD_COUNT = mb.loadElement('FIELD_COUNT');
 			var btnid = buttonid.split('-')[4];
 			if (forward == false) {
-				var fieldValues = {};
-				var blockid = document.getElementsByName(`select-for-field-${btnid}`);
-				blockid = mb.getRadioValue(`select-for-field-${btnid}`);
-				var fieldname = mb.loadElement(`fieldname_${btnid}`);
-				const columnname = mb.loadElement(`fieldname_${btnid}`);
-				const fieldlabel = mb.loadElement(`fieldlabel_${btnid}`);
-				const relatedmodules = mb.loadElement(`relatedmodules_${btnid}`);
-				const masseditable = mb.loadElement(`Masseditable_${btnid}`);
-				const displaytype = mb.loadElement(`Displaytype_${btnid}`);
-				const quickcreate = mb.loadElement(`Quickcreate_${btnid}`);
-				const typeofdata = mb.loadElement(`Typeofdata_${btnid}`);
-				const presence = mb.loadElement(`Presence_${btnid}`);
-				var uitype = mb.loadElement(`Uitype_${btnid}`);
-				fieldValues = {
-					blockid: blockid,
-					fieldname: fieldname,
-					columnname: columnname,
-					fieldlabel: fieldlabel,
-					relatedmodules: relatedmodules,
-					masseditable: masseditable,
-					displaytype: displaytype,
-					quickcreate: quickcreate,
-					typeofdata: typeofdata,
-					presence: presence,
-					uitype: uitype,
-					sequence: number_field,
+				var fieldValues = {
+					blockid: mb.getRadioValue(`select-for-field-${btnid}`),
+					fieldname: mb.loadElement(`fieldname_${btnid}`),
+					columnname: mb.loadElement(`fieldname_${btnid}`),
+					fieldlabel: mb.loadElement(`fieldlabel_${btnid}`),
+					relatedmodules: mb.loadElement(`relatedmodules_${btnid}`),
+					masseditable: mb.loadElement(`Masseditable_${btnid}`),
+					displaytype: mb.loadElement(`Displaytype_${btnid}`),
+					quickcreate: mb.loadElement(`Quickcreate_${btnid}`),
+					typeofdata: mb.loadElement(`Typeofdata_${btnid}`),
+					presence: mb.loadElement(`Presence_${btnid}`),
+					uitype: mb.loadElement(`Uitype_${btnid}`),
+					picklistvalues: mb.loadElement(`picklistvalues_${btnid}`),
+					sequence: FIELD_COUNT,
 				};
 				fields.push(fieldValues);
 				data = {
@@ -89,17 +77,17 @@ const mb = {
 		if (step == 4) {
 			let customViews = [];
 			let field;
-			const number_customview = mb.loadElement('number_customview');
-			for (var i = 1; i <= number_customview; i++) {
+			var btnid = buttonid.split('-')[4];
+			const FILTER_COUNT = mb.loadElement('FILTER_COUNT');
+			if (forward == false) {
 				var customObj = {
-					//customviewid: mb.loadElement('customviewid-'+i),
-					viewname: mb.loadElement('viewname-'+i),
-					setdefault: mb.loadElement('setdefault-'+i),
+					viewname: mb.loadElement(`viewname-${FILTER_COUNT}`),
+					setdefault: mb.loadElement(`setdefault-${FILTER_COUNT}`),
 				};
-				const checkSize = document.getElementsByName('checkbox-options-'+i).length;
+				const checkSize = document.getElementsByName('checkbox-options-'+FILTER_COUNT).length;
 				var fieldObj = [];
 				for (var j = 0; j < checkSize; j++) {
-					const checkedValue = document.querySelector('#checkbox-'+j+'-id-'+i);
+					const checkedValue = document.querySelector('#checkbox-'+j+'-id-'+FILTER_COUNT);
 					if (checkedValue.checked == true) {
 						fieldObj.push(checkedValue.value);
 					}
@@ -109,29 +97,38 @@ const mb = {
 					field
 				};
 				customViews.push(customObj);
+				data = {
+					customview: customViews,
+					step: step
+				};
+			} else {
+				data = {
+					customview: [],
+					step: step
+				};
 			}
-			data = {
-				customview: customViews,
-				step: step
-			};
 		}
 
 		if (step == 5) {
 			let relatedLists = [];
-			const number_related = mb.loadElement('number_related');
-			for (var i = 1; i <= number_related; i++) {
+			const LIST_COUNT = mb.loadElement('LIST_COUNT');
+			if (forward == false) {
 				let lists = {
-					relatedmodule: mb.loadElement('autocomplete-module-'+i),
-					actions: mb.loadElement('related-action-'+i),
-					name: mb.loadElement('autocomplete-related-'+i),
-					label: mb.loadElement('related-label-'+i),
+					relatedmodule: mb.loadElement(`autocomplete-module-${LIST_COUNT}`),
+					actions: mb.loadElement(`autocomplete-related-${LIST_COUNT}`) == 'get_dependents_list' ? 'ADD' : 'ADD,SELECT',
+					name: mb.loadElement(`autocomplete-related-${LIST_COUNT}`),
+					label: mb.loadElement(`related-label-${LIST_COUNT}`),
 				};
-				relatedLists[i] = lists;
+				data = {
+					relatedlists: lists,
+					step: step
+				};
+			} else {
+				data = {
+					relatedlists: [],
+					step: step
+				};
 			}
-			data = {
-				relatedlists: relatedLists,
-				step: step
-			};
 		}
 
 		jQuery.ajax({
@@ -139,60 +136,145 @@ const mb = {
 			url: url+'&methodName=Save',
 			data: data
 		}).done(function (response) {
-			const msg = mod_alert_arr.RecordDeleted;
-			if (forward != false && step != 3) {
-				mb.loadMessage(msg, true);
+			const res = JSON.parse(response);
+			const msg = mod_alert_arr.RecordSaved;
+			if (res != null && res.error) {
+				mb.loadMessage(res.error, true, 'error');
+				return;
 			}
-			if (forward == false && step == 3) {
-				fieldGridInstance.clear();
-				fieldGridInstance.reloadData();
-				mb.removeElement('for-field-' + btnid, true);
-				mb.loadElement('for-field-inputs-' + btnid, true).innerHTML = '';
+			//show message
+			if (forward != false && step == 2) {
+				if (blocks_label[1] != '') {
+					mb.loadMessage(msg, true);
+				}
 			}
-			if (forward == true) {
-				mb.loadElement('step-' + step, true).style.display = 'none';
+			if (forward == false) {
+				if (step == 3) {
+					mb.loadMessage(msg, true);
+					fieldGridInstance.clear();
+					fieldGridInstance.reloadData();
+					mb.removeElement(`for-field-${btnid}`);
+					mb.removeElement(`for-field-inputs-${btnid}`);
+					mb.loadElement('FIELD_COUNT', true).value = 0;
+				}
+				if (step == 4) {
+					mb.loadMessage(msg, true);
+					viewGridInstance.clear();
+					viewGridInstance.reloadData();
+					mb.removeElement(`for-customview-${btnid}`);
+					mb.removeElement('FilterBTN', true);
+					mb.loadElement('FILTER_COUNT', true).value = 0;
+				}
+				if (step == 5) {
+					mb.loadMessage(msg, true);
+					listGridInstance.clear();
+					listGridInstance.reloadData();
+					document.getElementById('LIST_COUNT').value = 0;
+					mb.removeElement('RelatedLists', true);
+				}
+			} else {
+				mb.loadElement(`step-${step}`, true).style.display = 'none';
 				var nextstep = step + 1;
 				var progress = parseInt(nextstep) * 20 - 20;
 				mb.loadElement('progress', true).style.width = progress + '%';
 				mb.loadElement('progresstext', true).innerHTML = mod_alert_arr.LBL_MB_PROGRESS+': ' + progress + '%';
-				mb.loadElement('step-' + nextstep, true).style.display = 'block';
+				mb.loadElement(`step-${nextstep}`, true).style.display = 'block';
 			}
 			if (step == 3) {
-				document.getElementById('number_customview').value = 0;
+				document.getElementById('FILTER_COUNT').value = 0;
 				mb.removeElement('CustomView', true);
 				mb.removeElement('loadViews', true);
 			}
+			//clean UI
 			if (step == 1) {
-				mb.generateDefaultBlocks();
+				mb.VerifyModule();
+				setTimeout(function () {
+					mb.generateDefaultBlocks();
+				}, 500);
 			} else if (step == 2) {
 				mb.backTo(3);
 			} else if (step == 3 && forward != false) {
 				mb.removeElement('loadFields', true);
 				mb.backTo(4);
-			} else if (step == 4) {
-				document.getElementById('number_customview').value = 0;
-				document.getElementById('number_related').value = 0;
+			} else if (step == 4 && forward != false) {
+				document.getElementById('FILTER_COUNT').value = 0;
+				document.getElementById('LIST_COUNT').value = 0;
 				mb.removeElement('CustomView', true);
 				mb.removeElement('loadViews', true);
 				mb.backTo(5);
-			} else if (step == 5) {
-				document.getElementById('number_related').value = 0;
-				mb.removeElement('RelatedLists', true);
+			} else if (step == 5 && forward != false) {
 				mb.loadTemplate();
 			}
 		});
 	},
 
 	getRadioValue: (name) => {
-		var ele = document.getElementsByName(name);
-		for (var i = 0; i < ele.length; i++) {
-			if (ele[i].checked) {
-				return ele[i].value;
+		var el = document.getElementsByName(name);
+		for (var i = 0; i < el.length; i++) {
+			if (el[i].checked) {
+				return el[i].value;
 			}
 		}
 		return '';
 	},
-	/**
+
+	VerifyModule: () => {
+		const modulename = mb.loadElement('modulename');
+		const data = {
+			modulename: modulename
+		};
+		jQuery.ajax({
+			method: 'POST',
+			url: url+'&methodName=VerifyModule',
+			data: data
+		}).done(function (response) {
+			mb.removeElement('loadBlocks', true);
+			const res = JSON.parse(response);
+			if (response.moduleid != 0) {
+				const msg = mod_alert_arr.editmode;
+				mb.loadMessage(msg, true);
+				//load blocks
+				jQuery.ajax({
+					method: 'GET',
+					url: url+'&methodName=loadValues&step=2&moduleid='+res.moduleid,
+				}).done(function (response) {
+					const res = JSON.parse(response);
+					const getDiv = mb.loadElement('loadBlocks', true);
+					const ul = document.createElement('ul');
+					ul.className = 'slds-has-dividers_top-space slds-list_ordered';
+					ul.id = 'ul-block-mb';
+					getDiv.appendChild(ul);
+					for (let i = 0; i < res.length; i++) {
+						const li = document.createElement('li');
+						const id = res[i].blocksid+'-block';
+						let removeBtn = `
+							<div class="slds-button-group" role="group">
+								<button onclick='mb.removeBlock("${id}")' class="slds-button slds-button_icon slds-button_icon-border-filled" aria-pressed="false">
+									<svg class="slds-button__icon" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+									</svg>
+								</button>
+							</div>`;
+						if (res[i].blocks_label.toUpperCase() == 'LBL_MODULEBLOCK_INFORMATION' || res[i].blocks_label.toUpperCase() == 'LBL_CUSTOM_INFORMATION' || res[i].blocks_label.toUpperCase() == 'LBL_DESCRIPTION_INFORMATION') {
+							removeBtn = '';
+						}
+						li.innerHTML = res[i].blocks_label.toUpperCase()+removeBtn;
+						li.className = 'slds-item';
+						li.id = 'li-block-mb-'+res[i].blocksid;
+						ul.appendChild(li);
+					}
+					mb.updateProgress(2);
+					mb.removeElement('blocks_inputs', true);
+					document.getElementById('BLOCK_COUNT').value = 0;
+				});
+			} else {
+				const msg = mod_alert_arr.RecordSaved;
+				mb.loadMessage(msg, true);
+			}
+		});
+	},
+
+ 	/**
 	 * Go to back step
 	 * @param {number} step
 	 * @param {boolean} mod
@@ -213,18 +295,19 @@ const mb = {
 		if (mod == true) {
 			for (let i = 1; i <=5; i++) {
 				if (i != step) {
-					mb.loadElement('step-' + i, true).style.display = 'none';
+					mb.loadElement(`step-${i}`, true).style.display = 'none';
 				}
 			}
-			mb.loadElement('step-' + step, true).style.display = '';
+			mb.loadElement(`step-${step}`, true).style.display = '';
 		} else {
-			mb.loadElement('step-' + thisStep, true).style.display = 'none';
-			mb.loadElement('step-' + step, true).style.display = '';
+			mb.loadElement(`step-${thisStep}`, true).style.display = 'none';
+			mb.loadElement(`step-${step}`, true).style.display = '';
 		}
 		if (step == 1) {
 			mb.removeElement('loadFields', true);
 			mb.removeElement('loadViews', true);
 			mb.removeElement('loadLists', true);
+			document.getElementById('modulename').setAttribute('readonly', true);
 			//load active module
 			jQuery.ajax({
 				method: 'GET',
@@ -235,6 +318,20 @@ const mb = {
 				mb.loadElement('modulelabel', true).value = res.label;
 				mb.loadElement('parentmenu', true).value = res.parent;
 				mb.loadElement('moduleicon', true).value = res.icon;
+				if (res.sharingaccess == 'private') {
+					mb.loadElement('private', true).checked = 'private';
+				} else {
+					mb.loadElement('public', true).checked = 'public';
+				}
+				if (res.actions.merge == 'true') {
+					mb.loadElement('merge', true).checked = 'true';
+				}
+				if (res.actions.import == 'true') {
+					mb.loadElement('import', true).checked = 'true';
+				}
+				if (res.actions.export == 'true') {
+					mb.loadElement('export', true).checked = 'true';
+				}
 				mb.updateProgress(1);
 			});
 		}
@@ -270,7 +367,7 @@ const mb = {
 								</svg>
 							</button>
 						</div>`;
-					if (res[i].blocks_label.toUpperCase() == 'LBL_MODULEBLOCK_INFORMATION' || res[i].blocks_label.toUpperCase() == 'LBL_CUSTOM_INFORMATION' || res[i].blocks_label.toUpperCase() == 'LBL_DESCRIPTION_INFORMATION') {
+					if (res[i].blocks_label.toUpperCase() == 'LBL_CUSTOM_INFORMATION' || res[i].blocks_label.toUpperCase() == 'LBL_DESCRIPTION_INFORMATION') {
 						removeBtn = '';
 					}
 					li.innerHTML = res[i].blocks_label.toUpperCase()+removeBtn;
@@ -290,27 +387,27 @@ const mb = {
 				columns: [
 					{
 						name: 'blockname',
-						header: 'blockname',
+						header: mod_alert_arr.blockname,
 					},
 					{
 						name: 'fieldname',
-						header: 'fieldname',
+						header: mod_alert_arr.fieldname,
 					},
 					{
 						name: 'fieldlabel',
-						header: 'fieldlabel',
+						header: mod_alert_arr.fieldlabel,
 					},
 					{
 						name: 'uitype',
-						header: 'uitype',
+						header: mod_alert_arr.uitype,
 					},
 					{
 						name: 'typeofdata',
-						header: 'mandatory',
+						header: mod_alert_arr.mandatory,
 					},
 					{
 						name: 'action',
-						header: 'action',
+						header: mod_alert_arr.action,
 						renderer: {
 							type: ActionRender,
 							options: {
@@ -331,9 +428,9 @@ const mb = {
 				useClientSort: false,
 				pageOptions: false,
 				rowHeight: 'auto',
-				bodyHeight: 'auto',
+				bodyHeight: 250,
 				scrollX: false,
-				scrollY: false,
+				scrollY: true,
 				columnOptions: {
 					resizable: true
 				},
@@ -342,7 +439,7 @@ const mb = {
 					valign: 'top'
 				}
 			});
-			tui.Grid.applyTheme('striped');
+			tui.Grid.applyTheme('clean');
 			mb.updateProgress(3);
 		}
 		if (step == 4) {
@@ -354,19 +451,19 @@ const mb = {
 				columns: [
 					{
 						name: 'viewname',
-						header: 'viewname',
+						header: mod_alert_arr.viewname,
 					},
 					{
 						name: 'setdefault',
-						header: 'setdefault',
+						header: mod_alert_arr.setdefault,
 					},
 					{
 						name: 'fields',
-						header: 'fields',
+						header: mod_alert_arr.fields,
 					},
 					{
 						name: 'action',
-						header: 'action',
+						header: mod_alert_arr.action,
 						renderer: {
 							type: ActionRender,
 							options: {
@@ -387,9 +484,9 @@ const mb = {
 				useClientSort: false,
 				pageOptions: false,
 				rowHeight: 'auto',
-				bodyHeight: 'auto',
+				bodyHeight: 250,
 				scrollX: false,
-				scrollY: false,
+				scrollY: true,
 				columnOptions: {
 					resizable: true
 				},
@@ -398,7 +495,7 @@ const mb = {
 					valign: 'top'
 				}
 			});
-			tui.Grid.applyTheme('striped');
+			tui.Grid.applyTheme('clean');
 			mb.updateProgress(4);
 		}
 		if (step == 5) {
@@ -410,23 +507,23 @@ const mb = {
 				columns: [
 					{
 						name: 'relatedmodule',
-						header: 'Related module',
+						header: mod_alert_arr.relatedmodule,
 					},
 					{
 						name: 'actions',
-						header: 'Actions',
+						header: mod_alert_arr.actions,
 					},
 					{
 						name: 'functionname',
-						header: 'Function name',
+						header: mod_alert_arr.functionname,
 					},
 					{
 						name: 'label',
-						header: 'Label',
+						header: mod_alert_arr.fieldlabel,
 					},
 					{
 						name: 'action',
-						header: 'action',
+						header: mod_alert_arr.action,
 						renderer: {
 							type: ActionRender,
 							options: {
@@ -447,9 +544,9 @@ const mb = {
 				useClientSort: false,
 				pageOptions: false,
 				rowHeight: 'auto',
-				bodyHeight: 'auto',
+				bodyHeight: 250,
 				scrollX: false,
-				scrollY: false,
+				scrollY: true,
 				columnOptions: {
 					resizable: true
 				},
@@ -458,7 +555,7 @@ const mb = {
 					valign: 'top'
 				}
 			});
-			tui.Grid.applyTheme('striped');
+			tui.Grid.applyTheme('clean');
 			mb.updateProgress(4);
 		}
 	},
@@ -474,16 +571,16 @@ const mb = {
 				parentmenu: mb.loadElement('parentmenu'),
 				moduleicon: mb.loadElement('moduleicon'),
 			};
-			var NULL = [];
-			for (var i in data) {
+			let modInfo = [];
+			for (let i in data) {
 				if (data[i] == '') {
-					NULL[i] = i;
+					modInfo[i] = i;
 				}
 			}
-			const size = Object.keys(NULL).length;
+			const size = Object.keys(modInfo).length;
 			const progress = (20 - (parseInt(size) * 5));
-			mb.loadElement('progress', true).style.width = progress + '%';
-			mb.loadElement('progresstext', true).innerHTML = mod_alert_arr.LBL_MB_PROGRESS+': ' + progress + '%';
+			mb.loadElement('progress', true).style.width = `${progress}%`;
+			mb.loadElement('progresstext', true).innerHTML = `${mod_alert_arr.LBL_MB_PROGRESS}: ${progress}%`;
 			if (progress == 20) {
 				mb.loadElement('btn-step-1', true).removeAttribute('disabled');
 			} else {
@@ -491,8 +588,8 @@ const mb = {
 			}
 		} else {
 			const progress = parseInt(step) * 20;
-			mb.loadElement('progress', true).style.width = progress + '%';
-			mb.loadElement('progresstext', true).innerHTML = mod_alert_arr.LBL_MB_PROGRESS+': ' + progress + '%';
+			mb.loadElement('progress', true).style.width = `${progress}%`;
+			mb.loadElement('progresstext', true).innerHTML = `${mod_alert_arr.LBL_MB_PROGRESS}: ${progress}%`;
 		}
 	},
 	/**
@@ -516,16 +613,18 @@ const mb = {
 	 */
 	generateDefaultBlocks: () => {
 		mb.removeElement('blocks_inputs', true);
-		mb.loadElement('number_block').value = '1';
+		mb.loadElement('BLOCK_COUNT').value = '1';
 		jQuery.ajax({
 			method: 'GET',
 			url: url+'&methodName=loadDefaultBlocks',
 		}).done(function (response) {
 			const res = JSON.parse(response);
 			if (res == 'load') {
-				mb.generateInput('default');
+				setTimeout(function () {
+					mb.generateInput('default');
+				}, 1000);
 			} else {
-				mb.loadElement('number_block', true).value = '0';
+				mb.loadElement('BLOCK_COUNT', true).value = 0;
 				mb.generateInput();
 			}
 		});
@@ -535,10 +634,11 @@ const mb = {
 	 */
 	generateInput: (type = '') => {
 		if (type == 'default') {
+			const modulename = mb.loadElement('modulename').toUpperCase();
 			const MODULEBLOCK = document.createElement('input');
 			MODULEBLOCK.type = 'text';
 			MODULEBLOCK.id = 'blocks_label_1';
-			MODULEBLOCK.value = 'LBL_MODULEBLOCK_INFORMATION'; //change this to modulename
+			MODULEBLOCK.value = `LBL_${modulename}_INFORMATION`; //change this to modulename
 			MODULEBLOCK.className ='slds-input';
 			mb.loadElement('blocks_inputs', true).appendChild(MODULEBLOCK);
 			const CUSTOM = document.createElement('input');
@@ -553,12 +653,12 @@ const mb = {
 			DESCRIPTION.value = 'LBL_DESCRIPTION_INFORMATION';
 			DESCRIPTION.className ='slds-input';
 			mb.loadElement('blocks_inputs', true).appendChild(DESCRIPTION);
-			mb.loadElement('number_block', true).value = '3';
+			mb.loadElement('BLOCK_COUNT', true).value = '3';
 		} else {
-			const number_block = mb.autoIncrementIds('number_block');
+			const BLOCK_COUNT = mb.autoIncrementIds('BLOCK_COUNT');
 			const input = document.createElement('input');
 			input.type = 'text';
-			input.id = 'blocks_label_' + number_block;
+			input.id = 'blocks_label_' + BLOCK_COUNT;
 			input.placeholder = 'LBL_BLOCKNAME_INFORMATION';
 			input.className ='slds-input';
 			mb.loadElement('blocks_inputs', true).appendChild(input);
@@ -568,52 +668,175 @@ const mb = {
 	 * Generate field input for step 3
 	 */
 	generateFields: () => {
-		const number_field = mb.autoIncrementIds('number_field');
-		const table = mb.getTable('Table');
-		const row = mb.createRow(table, 0, 'for-field-inputs-', number_field);
-		const cell = mb.createCell(row, 0, 'fields_inputs_', number_field);
+		let textfields = [{
+			type: mod_alert_arr.fieldname,
+			value: 'fieldname',
+		},
+		{
+			type: mod_alert_arr.fieldlabel,
+			value: 'fieldlabel',
+		},
+		{
+			type: mod_alert_arr.picklistvalues,
+			value: 'picklistvalues',
+		},
+		{
+			type: mod_alert_arr.relatedmodules,
+			value: 'relatedmodules',
+		}];
+		let fieldtypes = [{
+			type: 'Uitype',
+			values: {
+				1: mod_alert_arr.LineText,
+				21: mod_alert_arr.BlockTextSmall,
+				19: mod_alert_arr.BlockTextLarge,
+				4: mod_alert_arr.AutoGenerated,
+				5: mod_alert_arr.Date,
+				50: mod_alert_arr.DateTime,
+				14: mod_alert_arr.Time,
+				7: mod_alert_arr.Number,
+				71: mod_alert_arr.Currency,
+				9: mod_alert_arr.Percentage,
+				10: mod_alert_arr.RelationModule,
+				101: mod_alert_arr.RelationUsers,
+				11: mod_alert_arr.Phone,
+				13: mod_alert_arr.Email,
+				17: mod_alert_arr.URL,
+				56: mod_alert_arr.Checkbox,
+				69: mod_alert_arr.Image,
+				85: mod_alert_arr.Skype,
+				15: mod_alert_arr.SelectWithRole,
+				16: mod_alert_arr.Select,
+				1613: mod_alert_arr.SelectModules,
+				1024: mod_alert_arr.SelectRoles,
+				33: mod_alert_arr.SelectMultiple,
+				3313: mod_alert_arr.SelectModulesMultiple,
 
-		mb.loadBlocks(table, number_field);
+			}
+		},
+		{
+			type: 'Presence',
+			values: {
+				0: mod_alert_arr.AlwaysActive,
+				1: mod_alert_arr.InactiveActive,
+				2: mod_alert_arr.ActiveActive,
+			}
+		},
+		{
+			type: 'Quickcreate',
+			values: {
+				0: mod_alert_arr.AlwaysShownNoDeactivate,
+				1: mod_alert_arr.NotShownCanBeActivated,
+				2: mod_alert_arr.ShownCanBeDeactivated,
+				3: mod_alert_arr.NotShownCanNotBeActivated,
+			}
+		}];
+		let mandatory = [{
+			type: 'Typeofdata',
+			values: {
+				'M': mod_alert_arr.mandatory,
+				'O': mod_alert_arr.optional,
+			}
+		},
+		{
+			type: 'Displaytype',
+			values: {
+				1: mod_alert_arr.DisplayEverywhere,
+				2: mod_alert_arr.ReadOnly,
+				3: mod_alert_arr.DisplayByProgrammer,
+				4: mod_alert_arr.ReadOnlyModifyWorkflow,
+				5: mod_alert_arr.DisplayCreate,
+			}
+		},
+		{
+			type: 'Masseditable',
+			values: {
+				0: mod_alert_arr.NoMassEditNoActivate,
+				1: mod_alert_arr.MassEditable,
+				2: mod_alert_arr.NoMassEditActivate,
+			},
+		}];
+		const checkboxFields = [];
+		if (document.getElementById('for-field-1')) {
+			const msg = mod_alert_arr.fieldprocces;
+			mb.loadMessage(msg, true, 'error');
+			return;
+		}
+		const FIELD_COUNT = mb.autoIncrementIds('FIELD_COUNT');
+		const table = mb.getTable('Table');
+		const row = mb.createRow(table, 0, 'for-field-inputs-', FIELD_COUNT);
+		const cell = mb.createCell(row, 0, 'fields_inputs_', FIELD_COUNT);
+
+		mb.loadBlocks(table, FIELD_COUNT);
 
 		let inStyle = {
 			'style': 'margin: 5px',
 			'id': '',
 			'onchange': '',
+			'placeholder': '',
 		};
 		let fieldTemplate = '<div class="slds-grid slds-gutters">';
-		for (var i = 0; i < textfields.length; i++) {
-			if (textfields[i] == 'relatedmodules') {
+		for (var key in textfields) {
+			if (textfields[key].value == 'relatedmodules' || textfields[key].value == 'picklistvalues') {
 				inStyle.style = 'margin: 5px; display: none';
-				inStyle.id = `show-field-${number_field}`;
+				inStyle.id = `show-field-${textfields[key].value}-${FIELD_COUNT}`;
+				inStyle.placeholder = 'Value 1,Value 2,...';
 			}
 			fieldTemplate += `
 			<div class="slds-col" style="${inStyle.style}" id="${inStyle.id}">
 				<div class="slds-form-element">
-				<label class="slds-form-element__label" for="${textfields[i]}_${number_field}">
-					<abbr class="slds-required" title="required">* </abbr> ${textfields[i]}
+				<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
+					<abbr class="slds-required" title="required">* </abbr> ${textfields[key].type}
 				</label>
 				<div class="slds-form-element__control">
-					<input type="text" name="${textfields[i]}_${number_field}" id="${textfields[i]}_${number_field}" class="slds-input" />
+					<input type="text" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="${inStyle.placeholder}" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
 				</div>
 				</div>
 			</div>`;
 		}
 		fieldTemplate += '</div><div class="slds-grid slds-gutters">';
 
+		for (i = 0; i < mandatory.length; i++) {
+			const type = mandatory[i].type;
+			const values = mandatory[i].values;
+			const selecttype = document.createElement('select');
+			if (type == 'Uitype') {
+				inStyle.onchange = 'mb.showRelationModule(this, FIELD_COUNT)';
+			}
+			fieldTemplate += `
+			<div class="slds-col">
+				<div class="slds-form-element">
+					<label class="slds-form-element__label" for="${type}_${FIELD_COUNT}">${type}</label>
+					<div class="slds-form-element__control">
+						<div class="slds-select_container">
+							<select class="slds-select" id="${type}_${FIELD_COUNT}" onchange="${inStyle.onchange}">`;
+			for (let j in values) {
+				fieldTemplate += `<option value="${j}">${values[j]}</option>`;
+			}
+			fieldTemplate += `
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			`;
+		}
+
+		fieldTemplate += '</div><div class="slds-grid slds-gutters">';
 		for (i = 0; i < fieldtypes.length; i++) {
 			const type = fieldtypes[i].type;
 			const values = fieldtypes[i].values;
 			const selecttype = document.createElement('select');
 			if (type == 'Uitype') {
-				inStyle.onchange = 'mb.showRelationModule(this, number_field)';
+				inStyle.onchange = 'mb.showRelationModule(this, FIELD_COUNT)';
 			}
 			fieldTemplate += `
 			<div class="slds-col">
 				<div class="slds-form-element">
-					<label class="slds-form-element__label" for="${type}_${number_field}">${type}</label>
+					<label class="slds-form-element__label" for="${type}_${FIELD_COUNT}">${type}</label>
 					<div class="slds-form-element__control">
 						<div class="slds-select_container">
-							<select class="slds-select" id="${type}_${number_field}" onchange="${inStyle.onchange}">`;
+							<select class="slds-select" id="${type}_${FIELD_COUNT}" onchange="${inStyle.onchange}">`;
 			for (let j in values) {
 				fieldTemplate += `<option value="${j}">${values[j]}</option>`;
 			}
@@ -633,34 +856,63 @@ const mb = {
 				<div class="slds-form-element">
 					<div class="slds-form-element__control">
 						<div class="slds-checkbox">
-							<input type="checkbox" name="${checkboxFields[i].type}_${number_field}" id="${checkboxFields[i].type}_${number_field}"/>
-							<label class="slds-checkbox__label" for="${checkboxFields[i].type}_${number_field}">
+							<input type="checkbox" name="${checkboxFields[i].type}_${FIELD_COUNT}" id="${checkboxFields[i].type}_${FIELD_COUNT}"/>
+							<label class="slds-checkbox__label" for="${checkboxFields[i].type}_${FIELD_COUNT}">
 								<span class="slds-checkbox_faux"></span>
 								<span class="slds-form-element__label">${checkboxFields[i].value}</span>
 							</label>
 						</div>
 					</div>
 				</div><br>
-			</div>
-			`;
+			</div>`;
 		}
 		//create save button for each field
 		fieldTemplate += `</div>
-			<button class="slds-button slds-button_neutral slds-button_dual-stateful" id="save-btn-for-field-${number_field}" onclick="mb.SaveModule(3, false, this.id)">
+			<button class="slds-button slds-button_neutral slds-button_dual-stateful" id="save-btn-for-field-${FIELD_COUNT}" onclick="mb.SaveModule(3, false, this.id)">
 				<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
 				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
 				</svg>${mod_alert_arr.LBL_MB_SAVEFIELD}
 			</button>
+			<button class="slds-button slds-button_destructive slds-button_dual-stateful" id="clear-btn-for-field-${FIELD_COUNT}" onclick="mb.clearField(this)">
+				<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
+				</svg>${mod_alert_arr.LBL_MB_CLEAR}
+			</button>
 		`;
-		mb.loadElement(`fields_inputs_${number_field}`, true).innerHTML = fieldTemplate;
+		mb.loadElement(`fields_inputs_${FIELD_COUNT}`, true).innerHTML = fieldTemplate;
 	},
 
 	showRelationModule: (e, id) => {
 		if (e.value == 10) {
-			document.getElementById(`show-field-${id.value}`).style.display = '';
+			document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = '';
+			document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = 'none';
+		} else if (e.value == 15 || e.value == 16) {
+			document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = '';
+			document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = 'none';
 		} else {
-			document.getElementById(`show-field-${id.value}`).style.display = 'none';
+			document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = 'none';
+			document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = 'none';
 		}
+	},
+
+	clearField: (e) => {
+		const id = e.id.split('-')[4];
+		mb.removeElement(`for-field-${id}`);
+		mb.removeElement(`for-field-inputs-${id}`);
+		mb.loadElement('FIELD_COUNT', true).value = 0;
+	},
+
+	clearView: (e) => {
+		const id = e.id.split('-')[4];
+		mb.removeElement(`for-customview-${id}`);
+		mb.removeElement('FilterBTN', true);
+		mb.loadElement('FILTER_COUNT', true).value = 0;
+	},
+
+	clearList: (e) => {
+		const id = e.id.split('-')[4];
+		mb.removeElement(`for-related-${id}`);
+		mb.loadElement('LIST_COUNT', true).value = 0;
 	},
 	/**
 	 * Open tui grid to list all modules
@@ -713,7 +965,7 @@ const mb = {
 				mb.updateData();
 			}
 		});
-		tui.Grid.applyTheme('striped');
+		tui.Grid.applyTheme('clean');
 		mb.loadElement('moduleListsModal', true).style.display = '';
 	},
 	/**
@@ -726,19 +978,19 @@ const mb = {
 	/**
 	 * Load all blocks for specific module in step 3
 	 * @param {Table} tableInstance - Current table instance
-	 * @param {number} number_field
+	 * @param {number} FIELD_COUNT
 	 */
-	loadBlocks: (tableInstance, number_field) => {
+	loadBlocks: (tableInstance, FIELD_COUNT) => {
 		jQuery.ajax({
 			method: 'GET',
 			url: url+'&methodName=loadBlocks',
 		}).done(function (response) {
 			const res = JSON.parse(response);
 			const row = tableInstance.insertRow(0);
-			row.setAttribute('id', `for-field-${number_field}`);
+			row.setAttribute('id', `for-field-${FIELD_COUNT}`);
 			let template = `
 				<fieldset class="slds-form-element">
-				<legend class="slds-form-element__legend slds-form-element__label">${mod_alert_arr.LBL_CHOOSEFIELDBLOCK} ${number_field}</legend>
+				<legend class="slds-form-element__legend slds-form-element__label">${mod_alert_arr.LBL_CHOOSEFIELDBLOCK} ${FIELD_COUNT}</legend>
 				<div class="slds-form-element__control">
 					<div class="slds-radio_button-group">`;
 			let checked = '';
@@ -747,16 +999,16 @@ const mb = {
 					checked = 'checked';
 					template += `
 					<span class="slds-button slds-radio_button">
-						<input type="radio" ${checked} name="select-for-field-${number_field}" id="radio-${res[i].blocksid}${number_field}" value="${res[i].blocksid}" />
-						<label class="slds-radio_button__label" for="radio-${res[i].blocksid}${number_field}">
+						<input type="radio" ${checked} name="select-for-field-${FIELD_COUNT}" id="radio-${res[i].blocksid}${FIELD_COUNT}" value="${res[i].blocksid}" />
+						<label class="slds-radio_button__label" for="radio-${res[i].blocksid}${FIELD_COUNT}">
 						<span class="slds-radio_faux">${res[i].blocks_label}</span>
 						</label>
 					</span>`;
 				} else {
 					template += `
 					<span class="slds-button slds-radio_button">
-						<input type="radio" name="select-for-field-${number_field}" id="radio-${res[i].blocksid}${number_field}" value="${res[i].blocksid}" />
-						<label class="slds-radio_button__label" for="radio-${res[i].blocksid}${number_field}">
+						<input type="radio" name="select-for-field-${FIELD_COUNT}" id="radio-${res[i].blocksid}${FIELD_COUNT}" value="${res[i].blocksid}" />
+						<label class="slds-radio_button__label" for="radio-${res[i].blocksid}${FIELD_COUNT}">
 						<span class="slds-radio_faux">${res[i].blocks_label}</span>
 						</label>
 					</span>`;
@@ -766,39 +1018,48 @@ const mb = {
 				</div>
 			</div>
 			</fieldset>`;
-			document.getElementById(`for-field-${number_field}`).innerHTML = template;
+			document.getElementById(`for-field-${FIELD_COUNT}`).innerHTML = template;
 		});
 	},
 	/**
 	 * Generate inputs for custom views in step 4
 	 */
 	generateCustomView: () => {
-		const number_customview = mb.autoIncrementIds('number_customview');
+		const FILTER_COUNT = mb.autoIncrementIds('FILTER_COUNT');
 		const table = mb.getTable('CustomView');
-		const row = mb.createRow(table, 0, 'for-customview-', number_customview);
-		const cell = mb.createCell(row, 0, 'customview_inputs', number_customview);
+		if (document.getElementById('for-customview-1')) {
+			const msg = mod_alert_arr.filterprocces;
+			mb.loadMessage(msg, true, 'error');
+			return;
+		}
+		const row = mb.createRow(table, 0, 'for-customview-', FILTER_COUNT);
+		const cell = mb.createCell(row, 0, 'customview_inputs', FILTER_COUNT);
 		//create viewname
 		const inStyle = {
 			'style': 'width: 25%'
 		};
-		let viewTemplate = `
+		let setdefaultOption = [{
+			false: alert_arr.NO,
+			true:  alert_arr.YES,
+		}];
+		var viewTemplate = `
 		<div class="slds-grid slds-gutters">
 			<div class="slds-col">
 				<div class="slds-form-element">
-				<label class="slds-form-element__label" for="viewname-${number_customview}">
+				<label class="slds-form-element__label" for="viewname-${FILTER_COUNT}">
 					<abbr class="slds-required" title="required">* </abbr> Viewname
 				</label>
 				<div class="slds-form-element__control">
-					<input type="text" name="viewname-${number_customview}" id="viewname-${number_customview}" class="slds-input"/>
+					<input type="text" placeholder="All" name="viewname-${FILTER_COUNT}" id="viewname-${FILTER_COUNT}" class="slds-input"/>
 				</div>
 				</div>
 			</div>
 			<div class="slds-col">
 				<div class="slds-form-element">
-					<label class="slds-form-element__label" for="setdefault-${number_customview}">Set as default</label>
+					<label class="slds-form-element__label" for="setdefault-${FILTER_COUNT}">Set as default</label>
 					<div class="slds-form-element__control">
 						<div class="slds-select_container">
-							<select class="slds-select" name="setdefault-${number_customview}" id="setdefault-${number_customview}">`;
+							<select class="slds-select" name="setdefault-${FILTER_COUNT}" id="setdefault-${FILTER_COUNT}">`;
 		for (let val in setdefaultOption[0]) {
 			viewTemplate += `<option value="${val}">${setdefaultOption[0][val]}</option>`;
 		}
@@ -824,15 +1085,14 @@ const mb = {
 			url: url+'&methodName=loadFields',
 		}).done(function (response) {
 			let res = JSON.parse(response);
-			viewTemplate += '<div class="slds-grid slds-gutters">';
 			for (let f in res) {
 				viewTemplate += `
 				<div class="slds-col">
 					<div class="slds-form-element">
 					<div class="slds-form-element__control">
 						<div class="slds-checkbox">
-						<input type="checkbox" class="for-checkbox-${number_customview}" name="checkbox-options-${number_customview}" id="checkbox-${f}-id-${number_customview}" value="${res[f]['fieldsid']}"/>
-						<label class="slds-checkbox__label" for="checkbox-${f}-id-${number_customview}">
+						<input type="checkbox" class="for-checkbox-${FILTER_COUNT}" name="checkbox-options-${FILTER_COUNT}" id="checkbox-${f}-id-${FILTER_COUNT}" value="${res[f]['fieldsid']}"/>
+						<label class="slds-checkbox__label" for="checkbox-${f}-id-${FILTER_COUNT}">
 							<span class="slds-checkbox_faux"></span>
 							<span class="slds-form-element__label">${res[f]['fieldname']}</span>
 						</label>
@@ -840,11 +1100,24 @@ const mb = {
 					</div>
 					</div>
 				</div>`;
-				mb.loadElement(`customview_inputs${number_customview}`, true).innerHTML = viewTemplate;
+				mb.loadElement(`customview_inputs${FILTER_COUNT}`, true).innerHTML = viewTemplate;
 			}
-			viewTemplate += '</div>';
 		});
-		mb.loadElement(`customview_inputs${number_customview}`, true).innerHTML = viewTemplate;
+		//create save button for each field
+		let btnTemplate = `
+		<div class="slds-grid slds-gutters">
+			<button class="slds-button slds-button_neutral slds-button_dual-stateful" id="save-btn-for-view-${FILTER_COUNT}" onclick="mb.SaveModule(4, false, this.id)">
+				<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
+				</svg>${mod_alert_arr.LBL_MB_SAVE}
+			</button>
+			<button class="slds-button slds-button_destructive slds-button_dual-stateful" id="clear-btn-for-view-${FILTER_COUNT}" onclick="mb.clearView(this)">
+				<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
+				</svg>${mod_alert_arr.LBL_MB_CLEAR}
+			</button>
+		</div>`;
+		mb.loadElement('FilterBTN', true).innerHTML = btnTemplate;
 	},
 	/**
 	 * Function that load an alert message for success or error
@@ -881,7 +1154,7 @@ const mb = {
 			let moduleid = dataGridInstance.getValue(i, 'moduleid');
 			if (completed == 'Completed') {
 				btn = `
-				<button class="slds-button slds-button_brand" aria-live="assertive">
+				<button class="slds-button slds-button_brand" aria-live="assertive" onclick="mb.generateManifest(${moduleid})">
 					<span class="slds-text-not-pressed">
 						<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#download"></use>
@@ -954,11 +1227,9 @@ const mb = {
 			url: url,
 			data: 'query='+val+'&methodName=autocomplete&method='+method
 		}).done(function (response) {
-			mb.removeElement('autocomplete-span-'+forId, true);
 			mb.removeElement('autocomplete-modulespan-'+forId, true);
 			let res = JSON.parse(response);
 			if (response.length < 3) {
-				mb.removeElement('autocomplete-span-'+forId, true);
 				mb.removeElement('autocomplete-modulespan-'+forId, true);
 			} else {
 				const inStyle = {
@@ -980,105 +1251,7 @@ const mb = {
 				span.innerHTML = ul;
 				if (type == 'module') {
 					mb.loadElement('autocomplete-modulespan-'+forId, true).appendChild(span);
-				} else if (type == 'name') {
-					mb.loadElement('autocomplete-span-'+forId, true).appendChild(span);
 				}
-			}
-		});
-	},
-	loadTemplate: () => {
-		jQuery.ajax({
-			method: 'POST',
-			url: url,
-			data: 'methodName=loadTemplate'
-		}).then(function (response) {
-			let res = JSON.parse(response);
-			let label;
-			//load info block
-			const info = mb.loadElement('info', true);
-			const infoList = document.createElement('ol');
-			info.appendChild(infoList);
-			for (let i in res.info) {
-				const elList = document.createElement('li');
-				if (i == 'name') {
-					label = mod_alert_arr.name;
-				} else if (i == 'parent') {
-					label = mod_alert_arr.parent;
-				} else if (i == 'icon') {
-					label = mod_alert_arr.icon;
-				} else if (i == 'label') {
-					label = mod_alert_arr.label;
-				}
-				elList.innerHTML = `
-				<div class="slds-tree__item">
-					<span class="slds-has-flexi-truncate">
-						<span class="slds-tree__item-label slds-truncate" title="${res.info[i]}">
-							<strong>${label}:</strong> ${res.info[i]}
-						</span>
-					</span>
-				</div>`;
-				infoList.appendChild(elList);
-			}
-			//load blocks
-			const blocks = mb.loadElement('blocks', true);
-			const blockList = document.createElement('ol');
-			blocks.appendChild(blockList);
-			for (let i in res.blocks) {
-				const elList = document.createElement('li');
-				const index = parseInt(i) + 1;
-				elList.innerHTML = `
-					<div class="slds-tree__item">
-						<span class="slds-has-flexi-truncate">
-							<span class="slds-tree__item-label slds-truncate" title="Blockname: ${res.blocks[i].blocks_label}">
-								${index}. ${res.blocks[i].blocks_label}
-							</span>
-						</span>
-					</div>`;
-				blockList.appendChild(elList);
-			}
-			//load views
-			const views = mb.loadElement('views', true);
-			const viewList = document.createElement('ul');
-			viewList.className = 'slds-tree';
-			views.appendChild(viewList);
-			console.log(res.views['data'].contents.length);
-			for (let i = 0; i < res.views['data'].contents.length; i++) {
-				const elList = document.createElement('li');
-				let tree = `
-				<div class="slds-tree__item">
-					<button class="slds-button slds-button_icon slds-m-right_x-small" aria-hidden="true" tabindex="-1" title="Expand Tree Branch">
-						<svg class="slds-button__icon slds-button__icon_small" aria-hidden="true">
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
-						</svg>
-					</button>
-					<span class="slds-has-flexi-truncate">
-						<span class="slds-tree__item-label slds-truncate">
-						${res.views['data'].contents[i].viewname}
-					</span>
-					</span>
-				</div>
-				<ul role="group">`;
-				for (let j in res.views['data'].contents[i].fields) {
-					const fields = res.views['data'].contents[i].fields;
-					tree += `
-					<li aria-level="2" role="treeitem">
-						<div class="slds-tree__item">
-							<button class="slds-button slds-button_icon slds-m-right_x-small slds-is-disabled" aria-hidden="true" tabindex="-1" title="Expand Tree Item">
-								<svg class="slds-button__icon slds-button__icon_small" aria-hidden="true">
-									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
-								</svg>
-							</button>
-							<span class="slds-has-flexi-truncate">
-								<span class="slds-tree__item-label slds-truncate" title="Fieldname: ${fields[j]}">
-									${fields[j]}
-								</span>
-							</span>
-						</div>
-					</li>`;
-				}
-				tree += '</ul>';
-				elList.innerHTML = tree;
-				viewList.appendChild(elList);
 			}
 		});
 	},
@@ -1092,66 +1265,72 @@ const mb = {
 		if (type == 'module') {
 			mb.removeElement('autocomplete-modulespan-'+forId, true);
 			mb.loadElement('autocomplete-module-'+forId, true).value = name;
-		} else if (type == 'name') {
-			mb.removeElement('autocomplete-span-'+forId, true);
-			mb.loadElement('autocomplete-related-'+forId, true).value = name;
 		}
 	},
 	/**
 	 * Generate related lists for step 5
 	 */
 	generateRelatedList: () => {
-		const number_related = mb.autoIncrementIds('number_related');
+		const LIST_COUNT = mb.autoIncrementIds('LIST_COUNT');
 		const table = mb.getTable('RelatedLists');
-		const row = mb.createRow(table, 0, 'for-related-', number_related);
-		const cell = mb.createCell(row, 0, 'related_inputs_', number_related);
+		if (document.getElementById('for-related-1')) {
+			const msg = mod_alert_arr.relatedprocces;
+			mb.loadMessage(msg, true, 'error');
+			return;
+		}
+		const row = mb.createRow(table, 0, 'for-related-', LIST_COUNT);
+		const cell = mb.createCell(row, 0, 'related_inputs_', LIST_COUNT);
 
 		let listTemplate = `
 		<div class="slds-grid slds-gutters">
 			<div class="slds-col">
 				<div class="slds-form-element">
-					<label class="slds-form-element__label" for="autocomplete-related-${number_related}">
+					<label class="slds-form-element__label" for="autocomplete-related-${LIST_COUNT}">
 						<abbr class="slds-required" title="required">* </abbr> Function name
 					</label>
 					<div class="slds-form-element__control">
-					<input type="text" onkeyup="mb.autocomplete(this, 'name')" name="related-function-${number_related}" id="autocomplete-related-${number_related}" class="slds-input" />
-						<span id="autocomplete-span-${number_related}"></span>
+						<div class="slds-select_container">
+							<select name="related-function-${LIST_COUNT}" id="autocomplete-related-${LIST_COUNT}" class="slds-select">
+								<option value="get_dependents_list">get_dependents_list</option>
+								<option value="get_relatedlist_list">get_relatedlist_list</option>
+							</select>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="slds-col">
 				<div class="slds-form-element">
-					<label class="slds-form-element__label" for="related-label-${number_related}">
+					<label class="slds-form-element__label" for="related-label-${LIST_COUNT}">
 						<abbr class="slds-required" title="required">* </abbr> Label
 					</label>
 					<div class="slds-form-element__control">
-					<input type="text" name="related-label-${number_related}" id="related-label-${number_related}" class="slds-input" />
+					<input type="text" name="related-label-${LIST_COUNT}" id="related-label-${LIST_COUNT}" class="slds-input" />
 					</div>
 				</div>
 			</div>
 			<div class="slds-col">
 				<div class="slds-form-element">
-					<label class="slds-form-element__label" for="related-action-${number_related}">
-						<abbr class="slds-required" title="required">* </abbr> Actions
-					</label>
-					<div class="slds-form-element__control">
-					<input type="text" name="related-action-${number_related}" id="related-action-${number_related}" class="slds-input" />
-					</div>
-				</div>
-			</div>
-			<div class="slds-col">
-				<div class="slds-form-element">
-					<label class="slds-form-element__label" for="related-action-${number_related}">
+					<label class="slds-form-element__label" for="related-action-${LIST_COUNT}">
 						<abbr class="slds-required" title="required">* </abbr> Related module
 					</label>
 					<div class="slds-form-element__control">
-					<input type="text" onkeyup="mb.autocomplete(this, 'module')" name="related-module-${number_related}" id="autocomplete-module-${number_related}" class="slds-input" />
+					<input type="text" onkeyup="mb.autocomplete(this, 'module')" name="related-module-${LIST_COUNT}" id="autocomplete-module-${LIST_COUNT}" class="slds-input" />
 					</div>
-					<span id="autocomplete-modulespan-${number_related}"></span>
+					<span id="autocomplete-modulespan-${LIST_COUNT}"></span>
 				</div>
 			</div>
-		</div>`;
-		mb.loadElement(`related_inputs_${number_related}`, true).innerHTML = listTemplate;
+		</div><br>
+		<button class="slds-button slds-button_neutral slds-button_dual-stateful" id="save-btn-for-list-${LIST_COUNT}" onclick="mb.SaveModule(5, false, this.id)">
+			<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
+			</svg>${mod_alert_arr.LBL_MB_SAVE}
+		</button>
+		<button class="slds-button slds-button_destructive slds-button_dual-stateful" id="clear-btn-for-list-${LIST_COUNT}" onclick="mb.clearList(this)">
+			<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
+			</svg>${mod_alert_arr.LBL_MB_CLEAR}
+		</button>`;
+		mb.loadElement(`related_inputs_${LIST_COUNT}`, true).innerHTML = listTemplate;
 	},
 	/**
 	 * Create html labels
@@ -1320,13 +1499,350 @@ const mb = {
 		return value;
 	},
 
-	generateManifest: () => {
+	generateManifest: (modId = 0) => {
+		document.getElementById('genModule').style.display = 'none';
+		document.getElementById('genModuleProgress').style.display = 'block';
 		jQuery.ajax({
 			method: 'POST',
-			url: url+'&methodName=generateManifest',
-		}).done(function (response) {
+			url: url,
+			data: 'methodName=loadTemplate&modId='+modId
+		}).then(function (response) {
+			let res = JSON.parse(response);
+			let modObj = {};
+			//moduleData
+			for (let i in res) {
+				modObj.name = res.info.name;
+				modObj.label = res.info.label;
+				modObj.parent = res.info.parent;
+				modObj.icon = res.info.icon;
+				modObj.version = '1.0';
+				modObj.short_description = res.info.name;
+				modObj.dependencies = {
+					vtiger_version: '5.4.0',
+					vtiger_max_version: '5.*'
+				};
+				modObj.license = {
+					inline: 'Your license here'
+				};
+				const table = [{
+					name: 'vtiger_'+res.info.name.toLowerCase(),
+					sql: '-'
+				},
+				{
+					name: 'vtiger_'+res.info.name.toLowerCase()+'cf',
+					sql: '-'
+				},
+				];
+				modObj.tables = {
+					table
+				};
+				//blocks and fields
+				let blocks = [];
+				for (let i = 0; i < res.blocks.length; i++) {
+					const blocks_label = res.blocks[i].blocks_label;
+					const blockObj = {
+						block: {
+							label: blocks_label,
+							fields: {}
+						}
+					};
+					const field = res.fields.data.contents;
+					let fields = [];
+					for (let j = 0; j < field.length; j++) {
+						if (blocks_label == field[j].blockname) {
+							field[j].sequence = j;
+							fields.push(field[j]);
+						}
+					}
+					blockObj.block.fields = fields;
+					blocks.push(blockObj);
+				}
+				modObj.blocks = blocks;
 
+				//customviews
+				const views = res.views.data.contents;
+				let view = [];
+				for (let i = 0; i < views.length; i++) {
+					const viewObj = {
+						viewname: views[i].viewname,
+						setdefault: views[i].setdefault,
+						setmetrics: false,
+						fields: {}
+					};
+					let fields = [];
+					for (let j = 0; j < views[i].fields.length; j++) {
+						fields.push(views[i].fields[j]);
+					}
+					viewObj.fields = fields;
+					view.push(viewObj);
+				}
+				modObj.customviews = view;
+
+				//relatedlists
+				const lists = res.lists.data.contents;
+				let relatedlists = [];
+				for (let i = 0; i < lists.length; i++) {
+					const actions = lists[i].actions.split(',');
+					const listObj = {
+						function: lists[i].functionname,
+						label: lists[i].label,
+						sequence: i,
+						presence: 0,
+						actions: actions,
+						relatedmodule: lists[i].relatedmodule,
+					};
+					relatedlists.push(listObj);
+				}
+				modObj.relatedlists = relatedlists;
+				modObj.sharingaccess = res.info.sharingaccess;
+				modObj.actions = {
+					'Merge': res.info.actions.merge,
+					'Import': res.info.actions.import,
+					'Export': res.info.actions.export,
+				};
+			}
+			jQuery.ajax({
+				method: 'POST',
+				url: url+'&methodName=generateManifest&map='+encodeURI(JSON.stringify(modObj)),
+			}).done(function (response) {
+				const res = JSON.parse(response);
+				if (res.success == true) {
+					window.location.href = 'modules/Settings/ModuleBuilder/modules/'+res.module+'.zip';
+					const msg = `Module <b>${res.module}</b> is generated successfully!`;
+					mb.resetTemplate();
+					mb.loadMessage(msg, true, 'success');
+				}
+			});
 		});
+	},
+
+	resetTemplate: () => {
+		document.getElementById('modulename').value = '';
+		document.getElementById('modulelabel').value = '';
+		document.getElementById('parentmenu').selected = '';
+		document.getElementById('moduleicon').selected = '';
+		document.getElementById('merge').checked = false;
+		document.getElementById('import').checked = false;
+		document.getElementById('export').checked = false;
+		document.getElementById('loadBlocks').innerHTML = '';
+		document.getElementById('Table').innerHTML = '';
+		document.getElementById('loadFields').innerHTML = '';
+		document.getElementById('CustomView').innerHTML = '';
+		document.getElementById('loadViews').innerHTML = '';
+		document.getElementById('RelatedLists').innerHTML = '';
+		document.getElementById('loadLists').innerHTML = '';
+		document.getElementById('step-1').style.display = 'block';
+		document.getElementById('step-2').style.display = 'none';
+		document.getElementById('step-3').style.display = 'none';
+		document.getElementById('step-4').style.display = 'none';
+		document.getElementById('step-5').style.display = 'none';
+		document.getElementById('step-6').style.display = 'none';
+		document.getElementById('genModule').style.display = 'block';
+		document.getElementById('genModuleProgress').style.display = 'none';
+		document.getElementById('progresstext').innerHTML = 'PROGRESS: 0%';
+		document.getElementById('progress').style.width = '0%';
+		document.getElementById('modulename').removeAttribute('readonly');
+	},
+
+	loadTemplate: () => {
+		jQuery.ajax({
+			method: 'POST',
+			url: url,
+			data: 'methodName=loadTemplate&modId=0'
+		}).then(function (response) {
+			let res = JSON.parse(response);
+			let label;
+			//load info block
+			const info = mb.loadElement('info', true);
+			let infoTemplate = `
+			<table class="slds-table slds-table_cell-buffer slds-table_bordered">
+				<thead>
+				    <tr class="slds-line-height_reset">
+				      	<th scope="col">
+				        	<div class="slds-truncate">${mod_alert_arr.name}</div>
+				      	</th>
+				      	<th scope="col">
+				       		<div class="slds-truncate">${mod_alert_arr.label}</div>
+				      	</th>
+				      	<th scope="col">
+				        	<div class="slds-truncate">${mod_alert_arr.icon}</div>
+				      	</th>
+				      	<th scope="col">
+				        	<div class="slds-truncate">${mod_alert_arr.parent}</div>
+				      	</th>
+				    </tr>
+				</thead>
+				<tbody>
+			    <tr class="slds-hint-parent">
+			      	<td>
+			        	<div class="slds-truncate">${res.info.name}</div>
+			      	</td>
+			      	<td>
+			        	<div class="slds-truncate">${res.info.label}</div>
+			      	</td>
+			      	<td>
+			        	<div class="slds-truncate">${res.info.icon}</div>
+			      	</td>
+			      	<td>
+			        	<div class="slds-truncate">${res.info.parent}</div>
+			      	</td>
+			    </tr>
+				</tbody>
+			</table>`;
+			document.getElementById('info').innerHTML = infoTemplate;
+			//load blocks
+
+			let blockTemplate = `
+			<table class="slds-table slds-table_cell-buffer slds-table_bordered">
+			  <thead>
+			    <tr class="slds-line-height_reset">
+			      	<thscope="col">
+			        	<div class="slds-truncate">Blocks list</div>
+			      	</th>
+			    </tr>
+			  </thead>
+			  <tbody>`;
+			for (let i in res.blocks) {
+				blockTemplate += `
+			    <tr class="slds-hint-parent">
+			      	<td>
+			      		<div class="slds-truncate">${res.blocks[i].blocks_label}</div>
+			      	</td>
+			    </tr>`;
+			}
+			blockTemplate += `
+			  </tbody>
+			</table>`;
+			document.getElementById('blocks').innerHTML = blockTemplate;
+
+			//load fields
+			let tableTemplate = `
+			<table class="slds-table slds-table_cell-buffer slds-table_bordered">
+			  <thead>
+			    <tr class="slds-line-height_reset">
+			      	<th class="" scope="col">
+			        	<div class="slds-truncate" title="fieldname">fieldname</div>
+			      	</th>
+			      	<th class="" scope="col">
+			        	<div class="slds-truncate" title="fieldlabel">fieldlabel</div>
+			      	</th>
+			      	<th class="" scope="col">
+			        	<div class="slds-truncate" title="uitype">uitype</div>
+			      	</th>
+			      	<th class="" scope="col">
+			        	<div class="slds-truncate" title="relatedmodules">relatedmodules</div>
+			      	</th>
+			      	<th class="" scope="col">
+			        	<div class="slds-truncate" title="masseditable">masseditable</div>
+			      	</th>
+			    </tr>
+			  </thead>
+			  <tbody>`;
+			for (let i = 0; i < res.fields['data'].contents.length; i++) {
+				const masseditable = res.fields['data'].contents[i].masseditable == 0 ? 'On' : 'Off';
+				tableTemplate += `
+			    <tr class="slds-hint-parent">
+			      	<td>
+			        	<div class="slds-truncate">${res.fields['data'].contents[i].fieldname}</div>
+			      	</td>
+			      	<td>
+			        	<div class="slds-truncate">${res.fields['data'].contents[i].fieldlabel}</div>
+			      	</td>
+			      	<td>
+			        	<div class="slds-truncate">${res.fields['data'].contents[i].uitype}</div>
+			      	</td>
+			      	<td>
+			        	<div class="slds-truncate">${res.fields['data'].contents[i].relatedmodules}</div>
+			      	</td>
+			      	<td>
+			        	<div class="slds-truncate">${masseditable}</div>
+			      	</td>
+			    </tr>`;
+			}
+			tableTemplate += `
+				</tbody>
+			</table>`;
+			document.getElementById('fields').innerHTML = tableTemplate;
+			//load views
+			let viewTemplate = `
+			<table class="slds-table slds-table_cell-buffer slds-table_bordered">
+			  <thead>
+			    <tr class="slds-line-height_reset">
+			      	<th class="" scope="col">
+			        	<div class="slds-truncate">Name</div>
+			      	</th>
+			      	<th class="" scope="col">
+			        	<div class="slds-truncate">Fields</div>
+			      	</th>
+			    </tr>
+			  </thead>
+			  <tbody>`;
+			for (let i = 0; i < res.views['data'].contents.length; i++) {
+				viewTemplate += `
+			    <tr class="slds-hint-parent">
+			      	<td>
+			        	<div class="slds-truncate">${res.views['data'].contents[i].viewname}</div>
+			      	</td>
+			      	<td>
+			        	<div class="slds-truncate">${res.views['data'].contents[i].fields}</div>
+			      	</td>
+			    </tr>`;
+			}
+			viewTemplate += `
+				</tbody>
+			</table>`;
+			document.getElementById('views').innerHTML = viewTemplate;
+
+			//load views
+			let listTemplate = `
+			<table class="slds-table slds-table_cell-buffer slds-table_bordered">
+			  <thead>
+			    <tr class="slds-line-height_reset">
+			      	<th class="" scope="col">
+			        	<div class="slds-truncate">function</div>
+			      	</th>
+			      	<th class="" scope="col">
+			        	<div class="slds-truncate">label</div>
+			      	</th>
+			      	<th class="" scope="col">
+			        	<div class="slds-truncate">actions</div>
+			      	</th>
+			      	<th class="" scope="col">
+			        	<div class="slds-truncate">relatedmodule</div>
+			      	</th>
+			    </tr>
+			  </thead>
+			  <tbody>`;
+			for (let i = 0; i < res.lists['data'].contents.length; i++) {
+				listTemplate += `
+			    <tr class="slds-hint-parent">
+			      	<td>
+			        	<div class="slds-truncate">${res.lists['data'].contents[i].functionname}</div>
+			      	</td>
+			      	<td>
+			        	<div class="slds-truncate">${res.lists['data'].contents[i].label}</div>
+			      	</td>
+			      	<td>
+			        	<div class="slds-truncate">${res.lists['data'].contents[i].actions}</div>
+			      	</td>
+			      	<td>
+			        	<div class="slds-truncate">${res.lists['data'].contents[i].relatedmodule}</div>
+			      	</td>
+			    </tr>`;
+			}
+			listTemplate += `
+				</tbody>
+			</table>`;
+			document.getElementById('lists').innerHTML = listTemplate;
+		});
+	},
+
+	showInformation: (id) => {
+		document.getElementById(id).style.display = 'block';
+	},
+
+	hideInformation: (id) => {
+		document.getElementById(id).style.display = 'none';
 	},
 };
 

@@ -20,7 +20,7 @@
                                         <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
                                     </svg>
                                     </button>
-                                    <input type="hidden" id="number_related" value="0">
+                                    <input type="hidden" id="LIST_COUNT" value="0">
                                 </div>
                                 <div class="slds-form-element">
                                     <table id="RelatedLists" style="margin: 10px"></table>

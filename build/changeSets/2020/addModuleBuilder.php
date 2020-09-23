@@ -47,16 +47,11 @@ class addModuleBuilder extends cbupdaterWorker {
 					`modulebuilder_parent` varchar(50) NOT NULL,
 					`status` varchar(10) NOT NULL DEFAULT "active",
 					`icon` varchar(50) NOT NULL,
+					`sharingaccess` varchar(20) NOT NULL,
+					`merge` varchar(10) NOT NULL,
+					`import` varchar(10) NOT NULL,
+					`export` varchar(10) NOT NULL,
 					PRIMARY KEY (`modulebuilderid`)
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
-			);
-			$this->ExecuteQuery(
-				'CREATE TABLE `vtiger_modulebuilder_actions` (
-					`actionsid` int(20) NOT NULL AUTO_INCREMENT,
-					`actionname` varchar(50) NOT NULL,
-					`status` varchar(50) NOT NULL,
-					`moduleid` int(20) NOT NULL,
-					PRIMARY KEY (`actionsid`)
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
 			);
 			$this->ExecuteQuery(
@@ -82,28 +77,21 @@ class addModuleBuilder extends cbupdaterWorker {
 				'CREATE TABLE `vtiger_modulebuilder_fields` (
 					`fieldsid` int(20) NOT NULL AUTO_INCREMENT,
 					`blockid` int(20) NOT NULL,
+					`moduleid` int(20) NOT NULL,
 					`fieldname` varchar(100) NOT NULL,
 					`uitype` int(11) NOT NULL,
 					`columnname` varchar(100) NOT NULL,
 					`tablename` varchar(100) NOT NULL,
-					`generatedtype` int(11) NOT NULL,
 					`fieldlabel` varchar(100) NOT NULL,
-					`readonly` int(11) NOT NULL,
 					`presence` int(11) NOT NULL,
-					`selected` int(11) NOT NULL,
 					`sequence` int(11) NOT NULL,
-					`maximumlength` int(11) NOT NULL,
 					`typeofdata` varchar(100) NOT NULL,
 					`quickcreate` int(11) NOT NULL,
-					`quickcreatesequence` int(11) NOT NULL,
 					`displaytype` int(11) NOT NULL,
-					`info_type` varchar(10) NOT NULL,
-					`helpinfo` text NOT NULL,
 					`masseditable` int(11) NOT NULL,
 					`entityidentifier` varchar(10) NOT NULL DEFAULT "no",
-					`entityidfield` varchar(100) NOT NULL,
-					`entityidcolumn` varchar(100) NOT NULL,
 					`relatedmodules` varchar(100) NOT NULL,
+					`picklistvalues` text NOT NULL,
 					PRIMARY KEY (`fieldsid`)
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
 			);

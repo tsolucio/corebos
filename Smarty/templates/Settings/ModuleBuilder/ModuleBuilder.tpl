@@ -22,8 +22,14 @@
 							</div>
 							<button class="slds-button slds-button_brand" onclick="mb.openModal()" style="float: right;margin-bottom: 15px; text-transform: uppercase;">
 								{$MOD.LBL_MB_ALLMODULES}&nbsp;
-								<svg class="slds-icon slds-icon_small" aria-hidden="true" style="color: blue">
+								<svg class="slds-icon slds-icon_small" aria-hidden="true">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#all"></use>
+								</svg>
+							</button>
+							<button class="slds-button slds-button_destructive" onclick="mb.resetTemplate();" style="float: right;margin-bottom: 15px; text-transform: uppercase;">
+								Start new module&nbsp;
+								<svg class="slds-icon slds-icon_small" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
 								</svg>
 							</button>
 							<hr style="border-bottom: 2px solid #1589ee; border-top: 0px">

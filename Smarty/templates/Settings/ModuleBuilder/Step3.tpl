@@ -20,7 +20,21 @@
                                         <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
                                     </svg>
                                     </button>
-                                    <input type="hidden" id="number_field" value="0">
+                                      <a href="javascript:void(0)" onmouseover="mb.showInformation('field-help')"  onmouseout="mb.hideInformation('field-help')">
+                                        <span class="slds-icon_container slds-icon-utility-info">
+                                          <svg class="slds-icon slds-icon slds-icon_xx-small slds-icon-text-default" aria-hidden="true">
+                                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+                                          </svg>
+                                        </span>
+                                      </a>
+                                    <div>
+                                      <div class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left" role="tooltip" id="field-help" style="position:absolute;top:-100px;left:120px; display: none">
+                                        <div class="slds-popover__body">
+                                            Default fields for module <i>assigned_user_id</i>, <i>created_user_id</i>, <i>createdtime</i>, <i>modifiedtime</i> and <i>description</i> are created automatically!
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <input type="hidden" id="FIELD_COUNT" value="0">
                                 </div>
                                 <div class="slds-form-element">
                                     <table id="Table"></table>
