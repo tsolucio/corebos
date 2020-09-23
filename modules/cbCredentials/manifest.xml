@@ -78,6 +78,7 @@ PRIMARY KEY (`cbcredentialsid`)
           <generatedtype>1</generatedtype>
           <fieldlabel>Credentials no</fieldlabel>
           <presence>2</presence>
+          <readonly>1</readonly>
           <sequence>0</sequence>
           <typeofdata>V~O</typeofdata>
           <quickcreate>1</quickcreate>
@@ -96,6 +97,7 @@ PRIMARY KEY (`cbcredentialsid`)
           <generatedtype>1</generatedtype>
           <fieldlabel>Adapter</fieldlabel>
           <presence>0</presence>
+          <readonly>1</readonly>
           <sequence>1</sequence>
           <typeofdata>V~M</typeofdata>
           <quickcreate>0</quickcreate>
@@ -205,6 +207,7 @@ PRIMARY KEY (`cbcredentialsid`)
           <generatedtype>1</generatedtype>
           <fieldlabel>Azure Account</fieldlabel>
           <presence>0</presence>
+          <readonly>1</readonly>
           <sequence>7</sequence>
           <typeofdata>V~O</typeofdata>
           <quickcreate>0</quickcreate>
@@ -219,6 +222,7 @@ PRIMARY KEY (`cbcredentialsid`)
           <generatedtype>1</generatedtype>
           <fieldlabel>Azure Key</fieldlabel>
           <presence>0</presence>
+          <readonly>1</readonly>
           <sequence>8</sequence>
           <typeofdata>V~O</typeofdata>
           <quickcreate>0</quickcreate>
@@ -233,6 +237,7 @@ PRIMARY KEY (`cbcredentialsid`)
           <generatedtype>1</generatedtype>
           <fieldlabel>Azure Container</fieldlabel>
           <presence>0</presence>
+          <readonly>1</readonly>
           <sequence>9</sequence>
           <typeofdata>V~O</typeofdata>
           <quickcreate>0</quickcreate>
@@ -252,6 +257,7 @@ PRIMARY KEY (`cbcredentialsid`)
           <generatedtype>1</generatedtype>
           <fieldlabel>Google Clientid</fieldlabel>
           <presence>0</presence>
+          <readonly>1</readonly>
           <sequence>10</sequence>
           <typeofdata>V~O</typeofdata>
           <quickcreate>0</quickcreate>
@@ -266,6 +272,7 @@ PRIMARY KEY (`cbcredentialsid`)
           <generatedtype>1</generatedtype>
           <fieldlabel>Google Projectid</fieldlabel>
           <presence>0</presence>
+          <readonly>1</readonly>
           <sequence>11</sequence>
           <typeofdata>V~O</typeofdata>
           <quickcreate>0</quickcreate>
@@ -280,6 +287,7 @@ PRIMARY KEY (`cbcredentialsid`)
           <generatedtype>1</generatedtype>
           <fieldlabel>Google Bucket</fieldlabel>
           <presence>0</presence>
+          <readonly>1</readonly>
           <sequence>12</sequence>
           <typeofdata>V~O</typeofdata>
           <quickcreate>0</quickcreate>
@@ -294,6 +302,7 @@ PRIMARY KEY (`cbcredentialsid`)
           <generatedtype>1</generatedtype>
           <fieldlabel>Google Client Secret</fieldlabel>
           <presence>0</presence>
+          <readonly>1</readonly>
           <sequence>13</sequence>
           <typeofdata>V~O</typeofdata>
           <quickcreate>0</quickcreate>
@@ -308,6 +317,7 @@ PRIMARY KEY (`cbcredentialsid`)
           <generatedtype>1</generatedtype>
           <fieldlabel>Google Developer Key</fieldlabel>
           <presence>0</presence>
+          <readonly>1</readonly>
           <sequence>14</sequence>
           <typeofdata>V~O</typeofdata>
           <quickcreate>0</quickcreate>
@@ -322,6 +332,7 @@ PRIMARY KEY (`cbcredentialsid`)
           <generatedtype>1</generatedtype>
           <fieldlabel>Google App name</fieldlabel>
           <presence>0</presence>
+          <readonly>1</readonly>
           <sequence>15</sequence>
           <typeofdata>V~O</typeofdata>
           <quickcreate>0</quickcreate>
@@ -336,6 +347,7 @@ PRIMARY KEY (`cbcredentialsid`)
           <generatedtype>1</generatedtype>
           <fieldlabel>Google Scopes</fieldlabel>
           <presence>0</presence>
+          <readonly>1</readonly>
           <sequence>16</sequence>
           <typeofdata>V~O</typeofdata>
           <quickcreate>0</quickcreate>
@@ -350,6 +362,7 @@ PRIMARY KEY (`cbcredentialsid`)
           <generatedtype>1</generatedtype>
           <fieldlabel>Google Refresh Token</fieldlabel>
           <presence>0</presence>
+          <readonly>1</readonly>
           <sequence>17</sequence>
           <typeofdata>V~O</typeofdata>
           <quickcreate>0</quickcreate>
@@ -369,6 +382,7 @@ PRIMARY KEY (`cbcredentialsid`)
           <generatedtype>1</generatedtype>
           <fieldlabel>FTP Host</fieldlabel>
           <presence>0</presence>
+          <readonly>1</readonly>
           <sequence>18</sequence>
           <typeofdata>V~O</typeofdata>
           <quickcreate>0</quickcreate>
@@ -383,6 +397,7 @@ PRIMARY KEY (`cbcredentialsid`)
           <generatedtype>1</generatedtype>
           <fieldlabel>FTP Port</fieldlabel>
           <presence>0</presence>
+          <readonly>1</readonly>
           <sequence>19</sequence>
           <typeofdata>V~O</typeofdata>
           <quickcreate>0</quickcreate>
@@ -397,6 +412,7 @@ PRIMARY KEY (`cbcredentialsid`)
           <generatedtype>1</generatedtype>
           <fieldlabel>FTP Path</fieldlabel>
           <presence>0</presence>
+          <readonly>1</readonly>
           <sequence>20</sequence>
           <typeofdata>V~O</typeofdata>
           <quickcreate>0</quickcreate>
@@ -411,6 +427,7 @@ PRIMARY KEY (`cbcredentialsid`)
           <generatedtype>1</generatedtype>
           <fieldlabel>FTP Password</fieldlabel>
           <presence>0</presence>
+          <readonly>1</readonly>
           <sequence>21</sequence>
           <typeofdata>V~O</typeofdata>
           <quickcreate>0</quickcreate>
@@ -425,6 +442,7 @@ PRIMARY KEY (`cbcredentialsid`)
           <generatedtype>1</generatedtype>
           <fieldlabel>FTP Username</fieldlabel>
           <presence>0</presence>
+          <readonly>1</readonly>
           <sequence>22</sequence>
           <typeofdata>V~O</typeofdata>
           <quickcreate>0</quickcreate>
@@ -444,6 +462,7 @@ PRIMARY KEY (`cbcredentialsid`)
           <generatedtype>1</generatedtype>
           <fieldlabel>Opencloud Username</fieldlabel>
           <presence>0</presence>
+          <readonly>1</readonly>
           <sequence>23</sequence>
           <typeofdata>V~O</typeofdata>
           <quickcreate>0</quickcreate>
@@ -458,6 +477,7 @@ PRIMARY KEY (`cbcredentialsid`)
           <generatedtype>1</generatedtype>
           <fieldlabel>Opencloud Password</fieldlabel>
           <presence>0</presence>
+          <readonly>1</readonly>
           <sequence>24</sequence>
           <typeofdata>V~O</typeofdata>
           <quickcreate>0</quickcreate>
@@ -472,6 +492,7 @@ PRIMARY KEY (`cbcredentialsid`)
           <generatedtype>1</generatedtype>
           <fieldlabel>Opencloud Projectname</fieldlabel>
           <presence>0</presence>
+          <readonly>1</readonly>
           <sequence>25</sequence>
           <typeofdata>V~O</typeofdata>
           <quickcreate>0</quickcreate>
