@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor(s): Ranieri/Translate terms | 10-set-2019 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
+ * Contributor(s): Ranieri/Translate terms | 23-set-2021 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
  ********************************************************************************/
 
 $mod_strings = array(
@@ -29,7 +29,7 @@ $mod_strings = array(
 'LBL_NEW_REP1_HDR1'=>'Forneça a seguinte informação do relatório',
 'LBL_SELECT_COLUMNS'=>'Selecionar colunas',
 'LBL_SPECIFY_GROUPING'=>'Especificar grupo',
-'LBL_COLUMNS_TO_TOTAL'=>'Escolher colunas para total',
+'LBL_COLUMNS_TO_TOTAL'=>'Escolher colunas para totalizar',
 'LBL_SPECIFY_CRITERIA'=>'Especificar critério',
 'LBL_SAVERUN_BUTTON'=>'Salvar e executar',
 'LBL_TABULAT_REPORT'=>'Relatório tabular',
@@ -175,17 +175,17 @@ $mod_strings = array(
 'Last Month'=>'Último mês',
 'Current Month'=>'Mês atual',
 'Next Month'=>'Próximo mês',
-'Last 7 Days'=>'Últimos 7 Dias',
-'Last 14 Days' => 'Últimos 14 Dias',
-'Last 30 Days'=>'Últimos 30 Dias',
-'Last 60 Days'=>'Últimos 60 Dias',
-'Last 90 Days'=>'Últimos 90 Dias',
-'Last 120 Days'=>'Últimos 120 Dias',
-'Next 7 Days'=>'Próximos 7 Dias',
-'Next 30 Days'=>'Próximos 30 Dias',
-'Next 60 Days'=>'Próximos 60 Dias',
-'Next 90 Days'=>'Próximos 90 Dias',
-'Next 120 Days'=>'Próximos 120 Dias',
+'Last 7 Days'=>'Últimos 7 dias',
+'Last 14 Days' => 'Últimos 14 dias',
+'Last 30 Days'=>'Últimos 30 dias',
+'Last 60 Days'=>'Últimos 60 dias',
+'Last 90 Days'=>'Últimos 90 dias',
+'Last 120 Days'=>'Últimos 120 dias',
+'Next 7 Days'=>'Próximos 7 dias',
+'Next 30 Days'=>'Próximos 30 dias',
+'Next 60 Days'=>'Próximos 60 dias',
+'Next 90 Days'=>'Próximos 90 dias',
+'Next 120 Days'=>'Próximos 120 dias',
 'TITLE_VTIGERCRM_CREATE_REPORT' => 'Criar relatório',
 'TITLE_VTIGERCRM_PRINT_REPORT' => 'Imprimir relatório',
 'NO_FILTER_SELECTED' => 'Nenhum filtro selecionado',
@@ -306,6 +306,6 @@ $mod_strings = array(
 'LBL_AUTO_GENERATED_REPORT_EMAIL' => 'Este é um e-mail gerado automaticamente em nome de um relatório agendado.',
 'LBL_DESCRIPTION'=>'Descrição',
 'ERR_CREATE_REPORT' => 'Erro ao criar o relatório.',
-'Select Report' => 'Select report',
+'Select Report' => 'Selecione relatório',
 );
 ?>
