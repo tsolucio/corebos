@@ -9,15 +9,15 @@
  ************************************************************************************/
 
 $mod_strings = array(
-	'cbCredentials' => 'Credentials',
-	'SINGLE_cbCredentials' => 'Credential',
+	'cbCredentials' => 'Credenciales',
+	'SINGLE_cbCredentials' => 'Credenciales',
 
-	'LBL_CUSTOM_INFORMATION' => 'Custom Information',
-	'LBL_CBCREDENTIALS_INFORMATION' => 'Credentials Information',
-	'LBL_DESCRIPTION_INFORMATION' => 'Description',
-	'LBL_AZURE_INFORMATION' => 'Azure Information',
-	'LBL_GOOGLE_INFORMATION' => 'Google Information',
-	'LBL_FTP_INFORMATION' => 'FTP Information',
-	'LBL_OPENCLOUD_INFORMATION' => 'OpenCloud Information',
+	'LBL_CUSTOM_INFORMATION' => 'Información Personalizada',
+	'LBL_CBCREDENTIALS_INFORMATION' => 'Información Credenciales',
+	'LBL_DESCRIPTION_INFORMATION' => 'Descripción',
+	'LBL_AZURE_INFORMATION' => 'Información Azure',
+	'LBL_GOOGLE_INFORMATION' => 'Información Google',
+	'LBL_FTP_INFORMATION' => 'Información FTP',
+	'LBL_OPENCLOUD_INFORMATION' => 'Información OpenCloud',
 );
 ?>
