@@ -251,6 +251,20 @@ $GlobalVariableDefinitons = array(
 	'values' => 'CSV of authorized CORS domains',
 	'definition' => 'CSV de URI de dominios autorizados a acceder al servicio webservice. El valor especial asterisco "*" dará acceso a cualquier dominio.',
 ),
+'Webservice_Describe_ReturnUserList' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => 'Devuelve la lista de usuarios disponibles en el campo assigned_user_id. Esto puede ser muy grande y producir problemas con el navegador. Puedes obtener la lista del método getAssignedUserlist.',
+),
+'Webservice_Describe_ReturnGroupList' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => 'Devuelve la lista de grupos disponibles en el campo assigned_user_id. Si no utilizas grupos en tu aplicación externa, puedes obtener algún beneficio marginal.',
+),
 'SOAP_CustomerPortal_Enabled' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
