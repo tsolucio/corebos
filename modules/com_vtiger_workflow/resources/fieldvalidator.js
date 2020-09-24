@@ -223,7 +223,8 @@ var VTFieldValidatorPrototype = {
 			}
 		}
 		if (!isValid) {
-			this.messageBoxPopup.show();
+			//this.messageBoxPopup.show();
+			ldsPrompt.show(alert_arr['ERROR'], alert_arr['ERR_MANDATORY_FIELD_VALUE']);
 		}
 		return isValid;
 	},
@@ -239,7 +240,7 @@ var VTFieldValidatorPrototype = {
 function VTFieldValidator(form) {
 	var _this = this;
 	_this.form = form;
-	_this.messageBoxPopup = MessageBoxPopup();
+	//_this.messageBoxPopup = MessageBoxPopup();
 	form.submit(function () {
 		return _this.validate();
 	});
