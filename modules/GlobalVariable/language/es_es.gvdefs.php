@@ -517,6 +517,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'yes | no',
 	'definition' => 'Ejecutar eventos y flujos de trabajo al importar registros. El valor por defecto es no',
 ),
+'Import_LeaveUserReferenceFieldEmpty' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Los campos de referencia a usuario se establecerán al usuario que importa los datos si el valor está vacío o el usuario no tiene permiso para realizar esa asignación. Si esta variable se establece en 1, el campo se dejará vacío si está vacío.',
+),
 'Export_Field_Separator_Symbol' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'carácter',
