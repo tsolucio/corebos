@@ -102,6 +102,10 @@ switch ($_REQUEST['_op']) {
 	case 'setconfigloginsync':
 		include_once 'include/integrations/loginsync/settings.php';
 		break;
+	case 'getconfigdenormalization':
+	case 'setconfigdenormalization':
+		include_once 'include/integrations/denormalize/settings.php';
+		break;
 	default:
 		$smarty = new vtigerCRM_Smarty();
 		$titlemessage = getTranslatedString('Available Integrations', $currentModule);
@@ -171,6 +175,12 @@ switch ($_REQUEST['_op']) {
 				'title' => getTranslatedString('LogAll Activation', 'Utilities'),
 				'desc' => getTranslatedString('LogAll_Desc', 'Utilities'),
 				'url' => 'index.php?action=integration&module=Utilities&_op=getconfiglogall',
+			),
+			array(
+				'abbr' => 'DM',
+				'title' => getTranslatedString('Denormalization Activation', 'Utilities'),
+				'desc' => getTranslatedString('Denormalize_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigdenormalization',
 			),
 		);
 		if (file_exists('build/wsChanges/LoginSession.php')) {

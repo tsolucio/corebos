@@ -23,6 +23,8 @@ class denormalizechangeset extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
+			$this->ExecuteQuery('ALTER TABLE vtiger_entityname ADD isdenormalized VARCHAR(3) DEFAULT 0', array());
+			$this->ExecuteQuery('ALTER TABLE vtiger_entityname ADD denormtable VARCHAR(100) DEFAULT "vtiger_crmentity"', array());
 			$this->ExecuteQuery('CREATE TABLE IF NOT EXISTS vtiger_crmobject (
 				crmid int(19),
 				deleted tinyint(1),
