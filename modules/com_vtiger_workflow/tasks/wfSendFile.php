@@ -25,35 +25,59 @@ class wfSendFile extends VTTask {
 	public $_accessToken = array();
 
 	public function getFieldNames() {
-		return array('adapter', 'credentialid', 'credentialid_display');
+		return array('credentialid', 'credentialid_display', 'filename', 'exptype');
 	}
 
 	public function doTask(&$entity) {
 		global $adb, $site_URL, $current_language, $default_charset;
-
 		$workflow_context = $entity->WorkflowContext;
-		$query = 'select * from vtiger_cbcredentials inner join vtiger_crmentity on crmid=cbcredentialsid where deleted=0 and adapter=? and cbcredentialsid=?';
-		$result = $adb->pquery($query, array($this->adapter, $this->credentialid));
+		$query = 'select * from vtiger_cbcredentials inner join vtiger_crmentity on crmid=cbcredentialsid where deleted=0 and cbcredentialsid=?';
+		$result = $adb->pquery($query, array($this->credentialid));
 		$data = $result->FetchRow();
+		$adapter = $data['adapter'];
 		if ($adb->num_rows($result) == 0) {
 			return [];
 		}
-		if ($this->adapter == 'FTP') {
+		$filename = isset($this->filename) ? $this->filename : '';
+		if ($this->exptype == 'rawtext') {
+			if ($filename != '') {
+				$workflow_context['wfgenerated_file']['dest_name'] = $filename;
+			}
+		} elseif ($this->exptype == 'fieldname') {
+			if ($filename != '') {
+				$util = new VTWorkflowUtils();
+				$adminUser = $util->adminUser();
+				$entityCache = new VTEntityCache($adminUser);
+				$fn = new VTSimpleTemplate(trim($filename));
+				$filename = $fn->render($entityCache, $entity->getId());
+				$workflow_context['wfgenerated_file']['dest_name'] = $filename;
+			}
+		} else {
+			if ($filename != '') {
+				$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($filename)));
+				$expression = $parser->expression();
+				$exprEvaluater = new VTFieldExpressionEvaluater($expression);
+				$filename = $exprEvaluater->evaluate($entity);
+				$workflow_context['wfgenerated_file']['dest_name'] = $filename;
+			}
+		}
+
+		if ($adapter == 'FTP') {
 			require_once 'modules/com_vtiger_workflow/actions/FTP.php';
 			$ftp = new FTPAdapter($data, $workflow_context);
 			$ftp->setUp();
 			$ftp->writeFile();
-		} elseif ($this->adapter == 'AzureBlobStorage') {
+		} elseif ($adapter == 'AzureBlobStorage') {
 			require_once 'modules/com_vtiger_workflow/actions/AzureBlobStorage.php';
 			$azure = new AzureAdapter($data, $workflow_context);
 			$azure->setUp();
 			$azure->writeFile();
-		} elseif ($this->adapter == 'OpenCloud') {
+		} elseif ($adapter == 'OpenCloud') {
 			require_once 'modules/com_vtiger_workflow/actions/OpenCloud.php';
 			$cloud = new OpenCloudAdapter($data, $workflow_context);
 			$cloud->setUp();
 			$cloud->writeFile();
-		} elseif ($this->adapter == 'GoogleCloudStorage') {
+		} elseif ($adapter == 'GoogleCloudStorage') {
 			require_once 'modules/com_vtiger_workflow/actions/GoogleStorage.php';
 			$client = new Google_Client();
 			$client->setClientId($data['google_clientid']);

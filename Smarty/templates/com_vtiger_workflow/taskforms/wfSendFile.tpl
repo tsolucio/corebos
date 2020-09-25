@@ -17,18 +17,21 @@
  *************************************************************************************************/
 -->*}
 <script src="modules/com_vtiger_workflow/resources/vtigerwebservices.js" type="text/javascript" charset="utf-8"></script>
+<script src="modules/{$module->name}/resources/fieldexpressionpopup.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
 var moduleName = '{$entityName}';
-var adapter = {$task->adapter|json_encode};
 var credentialid_display = {$task->credentialid_display|json_encode}
 var credentialid = {$task->credentialid|json_encode}
+var filename = {$task->filename|json_encode}
+var exptype = {$task->exptype|json_encode}
+var wfexeexppressions = null;
 </script>
 <script src="modules/com_vtiger_workflow/resources/wfSendFile.js" type="text/javascript" charset="utf-8"></script>
 <div class="slds-grid slds-gutters slds-grid_vertical-align-center">
 	<div class="slds-col slds-size_2-of-12 slds-text-align_right slds-p-around_x-small">
 		<span><b> {$MOD.LBL_SELECT_CREDENTIAL}: </b></span>
 	</div>
-	<div class="slds-col slds-size_3-of-12 slds-p-around_x-small">
+	<div class="slds-col slds-size_5-of-12 slds-p-around_x-small">
 		<div class="slds-form-element">
 			<div class="slds-form-element__control">
 			<input id="credentialid" name="credentialid" type="hidden">
@@ -36,7 +39,7 @@ var credentialid = {$task->credentialid|json_encode}
 			</div>
 		</div>
 	</div>
-	<div class="slds-col slds-size_1-of-12 slds-text-align_right slds-p-around_x-small">
+	<div class="slds-col slds-size_1-of-12 slds-text-align_right slds-p-around_x-small" style="margin-left: -50px;">
 		<button class="slds-button slds-button_icon" title="Select" type="button" onclick="return window.open('index.php?module=cbCredentials&action=Popup&html=Popup_picker&form=new_task&forfield=credentialid&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);"> 
 			<svg class="slds-button__icon" aria-hidden="true"> 
 				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use> 
@@ -50,18 +53,17 @@ var credentialid = {$task->credentialid|json_encode}
 			<span class="slds-assistive-text">{$MOD.LBL_CLEAR}</span> 
 		</button>
 	</div>
+</div>
+<div class="slds-grid slds-gutters slds-grid_vertical-align-center">
 	<div class="slds-col slds-size_2-of-12 slds-text-align_right slds-p-around_x-small">
-		<span><b> {$MOD.LBL_SEND_FILE}: </b></span>
+		<span><b> {$MOD.FILENAME}: </b></span>
 	</div>
-	<div class="slds-col slds-size_3-of-12 slds-p-around_x-small">
+	<div class="slds-col slds-size_5-of-12 slds-p-around_x-small">
 		<div class="slds-form-element">
 			<div class="slds-form-element__control">
-				<div class="slds-select_container">
-					<select id="adapter" name="adapter" onchange="auth.getAuthToken(this.value)" class="slds-select slds-page-header__meta-text">
-						<option value=''> {$MOD.LBL_SELECT_OPTION_DOTDOTDOT} </option>
-					</select>
-				</div>
+			<input id="filename" class="slds-input" name="filename" value="{$task->filename}" onfocus="wfeditexptype($(this), { 'name':'string' })" onchange="setwfexptype()" style="border: 1px solid #bababa">
+			<input type="hidden" name="exptype" id="exptype" value="{$task->exptype}"/>
 			</div>
 		</div>
-	</div>
+	</div>	
 </div>
