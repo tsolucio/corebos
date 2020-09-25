@@ -50,6 +50,9 @@ class AzureAdapter {
 		}
 		$adapter = $this->filesystem->getAdapter();
 		$content = file_get_contents($this->context['path'].$this->context['name']);
+		if (isset($this->context['dest_name']) && $this->context['dest_name'] != '') {
+			$this->context['name'] = $this->context['dest_name'];
+		}
 		$this->filesystem->write($this->context['name'], $content);
 		$adapter->close();
 	}

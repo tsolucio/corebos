@@ -242,5 +242,6 @@ $mod_strings = array(
 'Select File Type' => 'Selecione o tipo de arquivo',
 'LBL_SELECT_CREDENTIAL' => 'Select Credential',
 'LBL_SEND_FILE' => 'Send file to',
+'FILENAME' => 'Destination filename',
 );
 ?>

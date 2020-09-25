@@ -36,6 +36,13 @@ class auth_Action extends CoreBOS_ActionController {
 		}
 	}
 
+	public function getServiceType() {
+		$credentialid = vtlib_purify($_REQUEST['credentialid']);
+		$focus = CRMEntity::getInstance('cbCredentials');
+		$focus->retrieve_entity_info($credentialid, 'cbCredentials');
+		echo json_encode(array('service' => $focus->column_fields['adapter']));
+	}
+
 	public function getClient($data) {
 		global $site_URL;
 		require_once 'vendor/autoload.php';
