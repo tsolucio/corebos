@@ -99,6 +99,7 @@ $mod_strings = array(
 	'Analyzed' => 'Analyzed',
 	'Missing_GlobalVar' => 'Global Variables ElasticSearch IP missing',
 	'Denormalization Activation' => 'Denormalize Module',
-	'Denormalize_Desc' => 'Denormalize Module which hold a lot of records'
+	'Denormalize_Desc' => 'Denormalize Module which hold a lot of records',
+	'SelectDenormalize' => 'Select Module to Denormalize',
 );
 ?>

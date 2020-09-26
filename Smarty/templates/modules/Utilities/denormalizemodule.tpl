@@ -29,18 +29,18 @@
 			</label>
 		</div>
 		<div class="slds-form-element slds-m-top_small">
-		<label class="slds-form-element__label" for="denor_mods">Select Module to Denormalize</label>
+		<label class="slds-form-element__label" for="denor_mods">{'SelectDenormalize'|@getTranslatedString:'Utilities'}</label>
 		<div class="slds-form-element__control">
 			<select class="slds-select" id="denor_mods" name='denor_mods[]' multiple="">
 				{foreach key=modindex item=modulename from=$modulelist}
-					<option value="{$modulename}" {if in_array($modulename, $denormodulelist)}selected{/if}>{$modulename}</option>
+					<option value="{$modulename}" {if in_array($modulename, $denormodulelist)}selected{/if}>{$modulename|@getTranslatedString:$modulename}</option>
 				{/foreach}
 			</select>
 		</div>
 		</div>
 		<div class="slds-m-top_large">
 			<button type="submit" class="slds-button slds-button_brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
-		</div> 
+		</div>
 		</form>
 	{/if}
 	</div>

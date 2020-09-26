@@ -104,5 +104,8 @@ $mod_strings = array(
 	'sel_fields_es' => 'Selecciona los Campos para el Mapeado de Elasticsearch',
 	'Analyzed' => 'Analizado',
 	'Missing_GlobalVar' => 'Falta la variable global de IP ElasticSearch',
+	'Denormalization Activation' => 'Unificar Módulo',
+	'Denormalize_Desc' => 'Unificar Módulo con muchos registros',
+	'SelectDenormalize' => 'Selecciona Módulo a unificar',
 );
 ?>

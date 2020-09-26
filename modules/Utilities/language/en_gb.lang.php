@@ -98,5 +98,8 @@ $mod_strings = array(
 	'sel_fields_es' => 'Select Fields for Elasticsearch Mapping',
 	'Analyzed' => 'Analyzed',
 	'Missing_GlobalVar' => 'Global Variables ElasticSearch IP missing',
+	'Denormalization Activation' => 'Denormalize Module',
+	'Denormalize_Desc' => 'Denormalize Module which hold a lot of records',
+	'SelectDenormalize' => 'Select Module to Denormalize',
 );
 ?>
