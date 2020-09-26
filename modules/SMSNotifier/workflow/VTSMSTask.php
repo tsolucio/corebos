@@ -43,6 +43,7 @@ class VTSMSTask extends VTTask {
 			if (!empty($tonumbers)) {
 				SMSNotifier::sendsms($content, $tonumbers, $current_user->id, $relatedCRMid, $relatedModule);
 			}
+			$util->revertUser();
 		}
 	}
 }

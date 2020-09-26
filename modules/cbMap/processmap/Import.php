@@ -409,7 +409,7 @@ class Import extends processcbMap {
 		$fileReadStatus = $importController->copyFromFileToDB();
 		if ($fileReadStatus) {
 			$importController->queueDataImport(true);
-			$importController->triggerImport();
+			$importController->triggerImport(false, true);
 		} else {
 			echo '<b>Incorrect Import Table</b>';
 		}

@@ -80,6 +80,7 @@ class GenerateImageCodeWorkflowTask extends VTTask {
 		$moduleInstance->retrieve_entity_info($recordId, $moduleName);
 		$moduleInstance->insertIntoAttachment($recordId, $moduleName);
 		unlink($filepath);
+		$util->revertUser();
 	}
 
 	public function after_retrieve() {

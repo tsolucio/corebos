@@ -5767,18 +5767,19 @@ AutocompleteRelation.prototype.fillFields = function () {
 AutocompleteRelation.prototype.multiselect = function () {
 	if (typeof this.data.multiselect === 'string') {
 		return this.data.multiselect;
-	} else if (typeof this.data.multiselect === 'undefined') {
+	} else if (typeof this.data.multiselect !== 'undefined') {
 		var ref_module = this.getReferenceModule();
 		return (ref_module !== '' ? this.data.multiselect[ref_module] : '');
 	}
+	return '';
 };
 
 AutocompleteRelation.prototype.MaxResults = function () {
 	if (typeof this.data.maxresults === 'number') {
 		return this.data.maxresults;
-	} else if (typeof this.data.maxresults === 'undefined') {
+	} else if (typeof this.data.maxresults !== 'undefined') {
 		var ref_module = this.getReferenceModule();
-		if (ref_module !== '' && this.data.maxresults[ref_module] !== undefined) {
+		if (ref_module !== '' && typeof this.data.maxresults[ref_module] !== 'undefined') {
 			return this.data.maxresults[ref_module];
 		}
 	}
@@ -5791,7 +5792,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 			return this.data.mincharstosearch;
 		}
 		var ref_module = this.getReferenceModule();
-		if (ref_module !== '' && this.data.mincharstosearch[ref_module] !== undefined) {
+		if (ref_module !== '' && typeof this.data.mincharstosearch[ref_module] !== 'undefined') {
 			return this.data.mincharstosearch[ref_module];
 		}
 	}
