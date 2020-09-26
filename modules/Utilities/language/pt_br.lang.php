@@ -10,6 +10,8 @@
  ********************************************************************************/
 
 $mod_strings = array(
+	'Utilities' => 'Utilities',
+	'SINGLE_Utilities' => 'Utility',
 	// Translations for JS (please use the prefix JSLBL in key)
 	'JSLBL_Saving_And_Verifying' => 'Salvando & Verificando',
 	'JSLBL_PASSWORD_CANNOT_BE_EMPTY'=>'Senha não pode ser vazia',
