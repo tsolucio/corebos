@@ -493,6 +493,12 @@ class cbQuestion extends CRMEntity {
 				fputcsv($fp, $properties->columnlabels, $delim, $encls);
 			}
 			foreach ($ans['answer'] as $row) {
+				for ($x=0; $x < count($properties->columns); $x++) {
+					$label = empty($properties->columns[$x]->label) ? '' : $properties->columns[$x]->label;
+					$type = empty($properties->columns[$x]->type) ? '' : $properties->columns[$x]->type;
+					$format = (empty($type) || empty($properties->format->$type)) ? '' : $properties->format->$type;
+					$row[$label] = self::getFormattedValue($row[$label], $type, $format);
+				}
 				fputcsv($fp, $row, $delim, $encls);
 			}
 		}
@@ -664,6 +670,34 @@ class cbQuestion extends CRMEntity {
 			}
 		}
 		return $fieldData;
+	}
+
+	public static function getFormattedValue($value, $type, $format) {
+		global $current_user, $log;
+		switch ($type) {
+			case 'date':
+				if (!empty($format)) {
+					return date_format($value, $format);
+				} else {
+					require_once 'include/fields/DateTimeField.php';
+					return DateTimeField::convertToUserFormat($value, $current_user);
+				}
+				break;
+			case 'float':
+				if (!empty($format) && is_object($format)) {
+					$decimalseparator = empty($format->decimalseparator) ? '' : $format->decimalseparator;
+					$grouping = empty($format->grouping) ? '' : $format->grouping;
+					$numberdecimals = empty($format->numberdecimals) ? '' : $format->numberdecimals;
+					return number_format($value, (int)$numberdecimals, $decimalseparator, $grouping);
+				} else {
+					require_once 'include/fields/CurrencyField.php';
+					return CurrencyField::convertToUserFormat($value, $current_user, true);
+				}
+				break;
+			default:
+				return $value;
+				break;
+		}
 	}
 }
 ?>
