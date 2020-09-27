@@ -492,13 +492,16 @@ class cbQuestion extends CRMEntity {
 			if (!empty($properties->columnlabels)) {
 				fputcsv($fp, $properties->columnlabels, $delim, $encls);
 			}
+			global $log;
 			foreach ($ans['answer'] as $row) {
 				for ($x=0; $x < count($properties->columns); $x++) {
-					if (!empty($properties->columns[$x]->label)) {
+					if (!empty($properties->columns[$x]->label) && !empty($row[$properties->columns[$x]->label])) {
 						$label = $properties->columns[$x]->label;
 						$type = empty($properties->columns[$x]->type) ? '' : $properties->columns[$x]->type;
 						$format = (empty($type) || empty($properties->format->$type)) ? '' : $properties->format->$type;
-						$row[$label] = self::getFormattedValue($row[$label], $type, $format);
+						if ($format !='' && $type !='') {
+							$row[$label] = self::getFormattedValue($row[$label], $type, $format);
+						}
 					}
 				}
 				fputcsv($fp, $row, $delim, $encls);
