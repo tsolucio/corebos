@@ -492,7 +492,6 @@ class cbQuestion extends CRMEntity {
 			if (!empty($properties->columnlabels)) {
 				fputcsv($fp, $properties->columnlabels, $delim, $encls);
 			}
-			global $log;
 			foreach ($ans['answer'] as $row) {
 				for ($x=0; $x < count($properties->columns); $x++) {
 					if (!empty($properties->columns[$x]->label) && !empty($row[$properties->columns[$x]->label])) {
