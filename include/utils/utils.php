@@ -900,9 +900,10 @@ function getUserId($record) {
  * @returns $ownerArr -- owner id :: Type array
 */
 function getRecordOwnerId($record) {
-	global $log, $adb, $currentModule;
+	global $log, $adb;
 	$log->debug('> getRecordOwnerId '.$record);
-	$mod = CRMEntity::getInstance($currentModule);
+	$recModule = getSalesEntityType($record);
+	$mod = CRMEntity::getInstance($recModule);
 	$ownerArr=array();
 	$result=$adb->pquery('select smownerid from '.$mod::$crmentityTable.' where crmid = ?', array($record));
 	if ($adb->num_rows($result) > 0) {
