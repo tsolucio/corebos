@@ -8,6 +8,7 @@
  ********************************************************************************/
 include_once 'modules/Reports/ReportUtils.php';
 require_once 'data/CRMEntity.php';
+include_once 'modules/cbCalendar/CalendarCommon.php';
 
 function getaddITSEventPopupTime($starttime, $endtime, $format) {
 	if (empty($format)) {

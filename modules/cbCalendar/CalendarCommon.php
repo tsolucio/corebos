@@ -7,6 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
+include_once 'include/fields/DateTimeField.php';
 
 /**
  * To get the lists of sharedids
@@ -322,11 +323,7 @@ function getActivityDetails($description, $user_id, $from = '') {
 }
 
 function twoDigit($no) {
-	if ($no < 10 && strlen(trim($no)) < 2) {
-		return '0'.$no;
-	} else {
-		return ''.$no;
-	}
+	return DateTimeField::twoDigit($no);
 }
 
 function timeString($datetime, $fmt) {
