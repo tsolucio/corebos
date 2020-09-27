@@ -50,9 +50,9 @@ function vtws_loginportal($username, $password, $entity = 'Contacts', $SessionMa
 			from vtiger_portalinfo
 			inner join vtiger_customerdetails on vtiger_portalinfo.id=vtiger_customerdetails.customerid
 			inner join vtiger_contactdetails on vtiger_portalinfo.id=vtiger_contactdetails.contactid
-			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_portalinfo.id
+			inner join ".$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_portalinfo.id
 			where vtiger_crmentity.deleted=0 and user_name=? and isactive=1 and vtiger_customerdetails.portal=1
-				and vtiger_customerdetails.support_start_date <= ? and vtiger_customerdetails.support_end_date >= ?";
+				and vtiger_customerdetails.support_start_date <= ? and vtiger_customerdetails.support_end_date >= ?';
 	}
 	$ctors = $adb->pquery($sql, array($username, $current_date, $current_date));
 	if ($ctors && $adb->num_rows($ctors)==1) {
