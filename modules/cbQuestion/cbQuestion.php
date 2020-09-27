@@ -475,7 +475,7 @@ class cbQuestion extends CRMEntity {
 	}
 
 	/**
-	 * properties: {"delimiter":",;", "enclosure":"", "columnlabels":["",...,""]}
+	 * properties: see wiki for the latest definition
 	 */
 	public static function getFileFromAnswer($ans) {
 		$bqfiles = 'cache/bqfiles';
@@ -489,17 +489,24 @@ class cbQuestion extends CRMEntity {
 			$properties = json_decode($ans['properties']);
 			$delim = empty($properties->delimiter) ? ',' : $properties->delimiter;
 			$encls = empty($properties->enclosure) ? '"' : $properties->enclosure;
-			if (!empty($properties->columnlabels)) {
-				fputcsv($fp, $properties->columnlabels, $delim, $encls);
+			$alllabels = array();
+			$alltypes = array();
+			$rowlabels = array_keys($ans['answer'][0]);
+			$ls = 0;
+			foreach ($rowlabels as $label) {
+				$alltypes[$label] = empty($properties->columns[$ls]->type) ? 'string' : $properties->columns[$ls]->type;
+				$alllabels[] = empty($properties->columns[$ls]->label) ? $label : $properties->columns[$ls]->label;
+				$ls++;
+			}
+			if (!empty($alllabels)) {
+				fputcsv($fp, $alllabels, $delim, $encls);
 			}
 			foreach ($ans['answer'] as $row) {
-				for ($x=0; $x < count($properties->columns); $x++) {
-					if (!empty($properties->columns[$x]->label) && !empty($row[$properties->columns[$x]->label])) {
-						$label = $properties->columns[$x]->label;
-						$type = empty($properties->columns[$x]->type) ? '' : $properties->columns[$x]->type;
-						$format = (empty($type) || empty($properties->format->$type)) ? '' : $properties->format->$type;
-						if ($format !='' && $type !='') {
-							$row[$label] = self::getFormattedValue($row[$label], $type, $format);
+				foreach ($row as $label => $value) {
+					if ($alltypes[$label]!='string' && !empty($value)) {
+						$type = $alltypes[$label];
+						if (!empty($properties->format->$type)) {
+							$row[$label] = self::getFormattedValue($value, $type, $properties->format->$type);
 						}
 					}
 				}
@@ -680,14 +687,23 @@ class cbQuestion extends CRMEntity {
 		global $current_user, $log;
 		switch ($type) {
 			case 'date':
+			case 'datetime':
 				if (!empty($format)) {
-					return date_format($value, $format);
+					$dt = explode(' ', $value);
+					list($y, $m, $d) = explode('/', $dt[0]);
+					if (empty($dt[1])) {
+						$h = $i = $s = 0;
+					} else {
+						list($h, $i, $s) = explode(':', $dt[1]);
+					}
+					return date($format, mktime($h, $i, $s, $m, $d, $y));
 				} else {
 					require_once 'include/fields/DateTimeField.php';
 					return DateTimeField::convertToUserFormat($value, $current_user);
 				}
 				break;
 			case 'float':
+			case 'decimal':
 				if (!empty($format) && is_object($format)) {
 					$decimalseparator = empty($format->decimalseparator) ? '' : $format->decimalseparator;
 					$grouping = empty($format->grouping) ? '' : $format->grouping;
