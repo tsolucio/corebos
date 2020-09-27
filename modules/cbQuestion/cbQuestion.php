@@ -494,10 +494,12 @@ class cbQuestion extends CRMEntity {
 			}
 			foreach ($ans['answer'] as $row) {
 				for ($x=0; $x < count($properties->columns); $x++) {
-					$label = empty($properties->columns[$x]->label) ? '' : $properties->columns[$x]->label;
-					$type = empty($properties->columns[$x]->type) ? '' : $properties->columns[$x]->type;
-					$format = (empty($type) || empty($properties->format->$type)) ? '' : $properties->format->$type;
-					$row[$label] = self::getFormattedValue($row[$label], $type, $format);
+					if (!empty($properties->columns[$x]->label)) {
+						$label = $properties->columns[$x]->label;
+						$type = empty($properties->columns[$x]->type) ? '' : $properties->columns[$x]->type;
+						$format = (empty($type) || empty($properties->format->$type)) ? '' : $properties->format->$type;
+						$row[$label] = self::getFormattedValue($row[$label], $type, $format);
+					}
 				}
 				fputcsv($fp, $row, $delim, $encls);
 			}
