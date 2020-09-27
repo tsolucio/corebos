@@ -572,11 +572,25 @@ class CRMEntity {
 	private function setCrmEntityValues($values) {
 		global $current_user;
 		$this->column_fields['created_user_id'] = $values['createdbyuser'];
-		$this->column_fields['assigned_user_id'] = $values['ownerid'];
+		$this->column_fields['assigned_user_id'] = $this->sanitizeOwnerField($values['ownerid']);
 		$this->column_fields['modifiedby'] = $current_user->id;
 		$this->column_fields['createdtime'] = $values['created_date'];
 		$this->column_fields['modifiedtime'] = $values['modified_date'];
 		$this->column_fields['description'] = $values['description'];
+	}
+
+	public function sanitizeOwnerField($value, $defaultCurrent = true) {
+		global $current_user;
+		$ownerid = (empty($value) && $defaultCurrent) ? $current_user->id : $value;
+		if (strpos($ownerid, 'x')>0) { // we have a WSid
+			$usrWSid = vtws_getEntityId('Users');
+			$grpWSid = vtws_getEntityId('Groups');
+			list($inputWSid,$ownerid) = explode('x', $ownerid);
+			if ($usrWSid!=$inputWSid && $grpWSid!=$inputWSid) {
+				die('Invalid user id!');
+			}
+		}
+		return $ownerid;
 	}
 
 	// Function which returns the value based on result type (array / ADODB ResultSet)
@@ -614,7 +628,7 @@ class CRMEntity {
 		} else {
 			$creatingdisplay = ',5';
 		}
-
+		$this->column_fields['assigned_user_id'] = $this->sanitizeOwnerField($this->column_fields['assigned_user_id']);
 		$selectFields = 'fieldname, columnname, uitype, typeofdata';
 
 		$tabid = getTabid($module);
