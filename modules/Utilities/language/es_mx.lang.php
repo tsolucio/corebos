@@ -109,5 +109,6 @@ $mod_strings = array(
 	'Denormalization Activation' => 'Unificar Módulo',
 	'Denormalize_Desc' => 'Unificar Módulo con muchos registros',
 	'SelectDenormalize' => 'Selecciona Módulo a unificar',
+	'denormalize response' => 'Resultado de la Unificación',
 );
 ?>

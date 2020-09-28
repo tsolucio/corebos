@@ -103,5 +103,6 @@ $mod_strings = array(
 	'Denormalization Activation' => 'Denormalize Module',
 	'Denormalize_Desc' => 'Denormalize Module which hold a lot of records',
 	'SelectDenormalize' => 'Select Module to Denormalize',
+	'denormalize response' => 'Denormalize response',
 );
 ?>
