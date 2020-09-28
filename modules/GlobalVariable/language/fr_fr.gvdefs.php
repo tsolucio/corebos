@@ -1308,6 +1308,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'CSS Style',
 	'definition' => 'CSS Style to apply on inventory product line comment box. By default defines width and height.',
 ),
+'Application_Textarea_Style' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'CSS Style',
+	'definition' => 'CSS Style to apply on Textarea fields. By default defines height.',
+),
 'Application_Group_Selection_Permitted' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Booléen',

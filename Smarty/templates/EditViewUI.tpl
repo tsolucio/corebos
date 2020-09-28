@@ -260,7 +260,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			</td>
 			<td id="td_val_{$fldname}" colspan=3 class="dvtCellInfo">
 				<span style='display:none;' id='{$fldname}_hidden'></span>
-				<textarea class="detailedViewTextBox" tabindex="{$vt_tab}" onFocus="this.className='detailedViewTextBoxOn'" name="{$fldname}" id="{$fldname}" onBlur="this.className='detailedViewTextBox'" cols="90" rows="8">{$fldvalue}</textarea>
+				<textarea class="detailedViewTextBox" tabindex="{$vt_tab}" onFocus="this.className='detailedViewTextBoxOn'" name="{$fldname}" id="{$fldname}" onBlur="this.className='detailedViewTextBox'" cols="90" rows="8" style="{$Application_Textarea_Style}">{$fldvalue}</textarea>
 				{assign var="i18nSolution" value='Solution'|@getTranslatedString:$MODULE}
 				{if $fldlabel eq $i18nSolution}
 				<input type="hidden" name="helpdesk_solution" id="helpdesk_solution" value='{$fldvalue}'>

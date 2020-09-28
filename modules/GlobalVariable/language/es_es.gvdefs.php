@@ -1308,6 +1308,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Estilo CSS',
 	'definition' => 'Estilo CSS aplicado en la caja de comentario de las líneas de inventario. Por defecto define altura y anchura.',
 ),
+'Application_Textarea_Style' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'Estilo CSS',
+	'definition' => 'Estilo CSS aplicado en las cajas de texto. Por defecto define la altura.',
+),
 'Application_Group_Selection_Permitted' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
