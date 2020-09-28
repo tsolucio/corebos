@@ -1390,20 +1390,14 @@ class CRMEntity {
 	}
 
 	/**
-	 * Function to check if the custom vtiger_field vtiger_table exists
-	 * return true or false
+	 * Function to check if the custom field table exists
+	 * @param string table name to check
+	 * @return boolean
 	 */
 	public function checkIfCustomTableExists($tablename) {
 		global $adb;
-		$query = 'select * from ' . $adb->sql_escape_string($tablename);
-		$result = $this->db->pquery($query, array());
-		$testrow = $this->db->num_fields($result);
-		if ($testrow > 1) {
-			$exists = true;
-		} else {
-			$exists = false;
-		}
-		return $exists;
+		$result = $adb->query('select 1 from '.$adb->sql_escape_string($tablename));
+		return $result && $adb->num_fields($result)>0;
 	}
 
 	/**
