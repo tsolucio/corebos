@@ -152,7 +152,8 @@ class corebos_denormalize {
 		}
 		$sqlupdentitytable = 'UPDATE vtiger_entityname SET isdenormalized = ?, denormtable = ? WHERE vtiger_entityname.tabid = ?';
 		$result4=$adb->pquery($sqlupdentitytable, array('1',$tablename, getTabid($module)));
-		// $smarty->display('Smarty/templates/modules/Utilities/denormalizefeedback.tpl'); // sending fedback to user screen
+		$smarty->assign('DENORM_RESPONSE', $msg);
+		$smarty->display('modules/Utilities/denormalizefeedback.tpl');
 		return true;
 	}
 }
