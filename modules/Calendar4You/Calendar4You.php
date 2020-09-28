@@ -28,13 +28,10 @@ class Calendar4You extends CRMEntity {
 	private $modulename = 'Calendar4You';
 	private $service='GoogleCalendar';
 
-	public $db;
 	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-event', 'class' => 'slds-icon', 'icon'=>'event');
 
 	// constructor of Calendar4You class
 	public function __construct() {
-		$this->db = PearDatabase::getInstance();
-
 		// array of modules that are allowed for basic version type
 		$this->basicModules = array('20', '21', '22', '23');
 		// array of action names used in profiles permissions
@@ -51,20 +48,21 @@ class Calendar4You extends CRMEntity {
 	 * Function to remove module tables when uninstalling module
 	 */
 	private function dropModuleTables() {
-		$this->db->query('DROP TABLE IF EXISTS its4you_calendar4you_colors');
-		$this->db->query('DROP TABLE IF EXISTS its4you_calendar4you_event_fields');
-		$this->db->query('DROP TABLE IF EXISTS its4you_calendar4you_settings');
-		$this->db->query('DROP TABLE IF EXISTS its4you_calendar4you_view');
-		$this->db->query('DROP TABLE IF EXISTS its4you_googlesync4you_access');
-		$this->db->query('DROP TABLE IF EXISTS its4you_googlesync4you_calendar');
-		$this->db->query('DROP TABLE IF EXISTS its4you_googlesync4you_dis');
-		$this->db->query('DROP TABLE IF EXISTS its4you_googlesync4you_events');
+		global $adb;
+		$adb->query('DROP TABLE IF EXISTS its4you_calendar4you_colors');
+		$adb->query('DROP TABLE IF EXISTS its4you_calendar4you_event_fields');
+		$adb->query('DROP TABLE IF EXISTS its4you_calendar4you_settings');
+		$adb->query('DROP TABLE IF EXISTS its4you_calendar4you_view');
+		$adb->query('DROP TABLE IF EXISTS its4you_googlesync4you_access');
+		$adb->query('DROP TABLE IF EXISTS its4you_googlesync4you_calendar');
+		$adb->query('DROP TABLE IF EXISTS its4you_googlesync4you_dis');
+		$adb->query('DROP TABLE IF EXISTS its4you_googlesync4you_events');
 		if (empty($this->tabid)) {
 			$this->tabid = getTabid('Calendar4You');
 		}
-		$this->db->pquery('DELETE FROM vtiger_org_share_action2tab WHERE tabid = ?', array($this->tabid));
-		$this->db->pquery('DELETE FROM vtiger_def_org_share WHERE tabid = ?', array($this->tabid));
-		$this->db->query("DELETE FROM vtiger_cron_task WHERE name = 'Calendar4You - GoogleSync'");
+		$adb->pquery('DELETE FROM vtiger_org_share_action2tab WHERE tabid = ?', array($this->tabid));
+		$adb->pquery('DELETE FROM vtiger_def_org_share WHERE tabid = ?', array($this->tabid));
+		$adb->query("DELETE FROM vtiger_cron_task WHERE name = 'Calendar4You - GoogleSync'");
 	}
 
 	public function GetProfilesActions() {
@@ -72,15 +70,16 @@ class Calendar4You extends CRMEntity {
 	}
 
 	public function setgoogleaccessparams($userid) {
-		$conf=$this->db->query("select * from its4you_googlesync4you_access where userid=$userid and service='$this->service'");
-		$admin=$this->db->query("select * from its4you_googlesync4you_access where userid=1 and service='$this->service'");
-		if ($this->db->num_rows($conf)==0 && $this->db->num_rows($admin)>0) {
-			$google_login=$this->db->query_result($admin, 0, 'google_login');
-			$google_apikey=$this->db->query_result($admin, 0, 'google_apikey');
-			$google_keyfile=$this->db->query_result($admin, 0, 'google_keyfile');
-			$google_clientid=$this->db->query_result($admin, 0, 'google_clientid');
-			$google_password=$this->db->query_result($admin, 0, 'google_password');
-			$this->db->pquery(
+		global $adb;
+		$conf=$adb->query("select * from its4you_googlesync4you_access where userid=$userid and service='$this->service'");
+		$admin=$adb->query("select * from its4you_googlesync4you_access where userid=1 and service='$this->service'");
+		if ($adb->num_rows($conf)==0 && $adb->num_rows($admin)>0) {
+			$google_login=$adb->query_result($admin, 0, 'google_login');
+			$google_apikey=$adb->query_result($admin, 0, 'google_apikey');
+			$google_keyfile=$adb->query_result($admin, 0, 'google_keyfile');
+			$google_clientid=$adb->query_result($admin, 0, 'google_clientid');
+			$google_password=$adb->query_result($admin, 0, 'google_password');
+			$adb->pquery(
 				'INSERT INTO its4you_googlesync4you_access
 					(userid,google_login,google_password,google_apikey,google_keyfile,google_clientid,googleinsert,service) VALUES (?,?,?,?,?,?,?,?)',
 				array($userid,$google_login,$google_password,$google_apikey,$google_keyfile,$google_clientid,'1',$this->service)
@@ -136,7 +135,7 @@ class Calendar4You extends CRMEntity {
 	//PUBLIC METHODS SECTION
 	//ListView data
 	public function GetCalendarUsersData($orderby = 'templateid', $dir = 'asc') {
-		global $current_user;
+		global $current_user, $adb;
 		include_once 'modules/Calendar4You/class/color_converter.class.php';
 		include_once 'modules/Calendar4You/class/color_harmony.class.php';
 
@@ -183,17 +182,17 @@ class Calendar4You extends CRMEntity {
 				ORDER BY $sortusersby";
 			$params = array($current_user->id, $this->privileges->getParentRoleSequence().'::%', $current_user->id, $this->tabid, $current_user->id);
 		}
-		$result = $this->db->pquery($query, $params);
+		$result = $adb->pquery($query, $params);
 
 		$return_data = array();
-		$num_rows = $this->db->num_rows($result);
+		$num_rows = $adb->num_rows($result);
 
 		for ($i=0; $i < $num_rows; $i++) {
-			$userid = $this->db->query_result($result, $i, 'id');
-			$user_name = $this->db->query_result($result, $i, 'user_name');
-			$first_name = $this->db->query_result($result, $i, 'first_name');
-			$last_name = $this->db->query_result($result, $i, 'last_name');
-			$status = $this->db->query_result($result, $i, 'status');
+			$userid = $adb->query_result($result, $i, 'id');
+			$user_name = $adb->query_result($result, $i, 'user_name');
+			$first_name = $adb->query_result($result, $i, 'first_name');
+			$last_name = $adb->query_result($result, $i, 'last_name');
+			$status = $adb->query_result($result, $i, 'status');
 
 			if ($this->CheckUserPermissions($userid) === false) {
 				continue;

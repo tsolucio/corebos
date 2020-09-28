@@ -11,8 +11,6 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class Messages extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_messages';
 	public $table_index= 'messagesid';
 	public $column_fields = array();

@@ -17,8 +17,6 @@ require_once 'modules/Users/Users.php';
 require_once 'modules/Emails/mail.php';
 
 class Emails extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_activity';
 	public $table_index = 'activityid';
 	public $column_fields = array();
@@ -111,7 +109,6 @@ class Emails extends CRMEntity {
 	public function __construct() {
 		$this_module = get_class($this);
 		$this->column_fields = getColumnFields($this_module);
-		$this->db = PearDatabase::getInstance();
 	}
 
 	public function save_module($module) {
@@ -468,10 +465,10 @@ class Emails extends CRMEntity {
 	 * Used to releate email and contacts -- Outlook Plugin
 	 */
 	public function set_emails_contact_invitee_relationship($email_id, $contact_id) {
-		global $log;
+		global $log, $adb;
 		$log->debug('> set_emails_contact_invitee_relationship '.$email_id.','.$contact_id);
 		$query = "insert into $this->rel_contacts_table (contactid,activityid) values(?,?)";
-		$this->db->pquery($query, array($contact_id, $email_id), true, "Error setting email to contact relationship: <BR>$query");
+		$adb->pquery($query, array($contact_id, $email_id), true, "Error setting email to contact relationship: <BR>$query");
 		$log->debug('< set_emails_contact_invitee_relationship');
 	}
 
@@ -479,10 +476,10 @@ class Emails extends CRMEntity {
 	 * Used to releate email and salesentity -- Outlook Plugin
 	 */
 	public function set_emails_se_invitee_relationship($email_id, $contact_id) {
-		global $log;
+		global $log, $adb;
 		$log->debug('> set_emails_se_invitee_relationship '.$email_id.','.$contact_id);
 		$query = "insert into $this->rel_serel_table (crmid,activityid) values(?,?)";
-		$this->db->pquery($query, array($contact_id, $email_id), true, "Error setting email to contact relationship: <BR>$query");
+		$adb->pquery($query, array($contact_id, $email_id), true, "Error setting email to contact relationship: <BR>$query");
 		$log->debug('< set_emails_se_invitee_relationship');
 	}
 
@@ -490,23 +487,24 @@ class Emails extends CRMEntity {
 	 * Used to releate email and Users -- Outlook Plugin
 	 */
 	public function set_emails_user_invitee_relationship($email_id, $user_id) {
-		global $log;
+		global $log, $adb;
 		$log->debug('> set_emails_user_invitee_relationship '.$email_id.','.$user_id);
 		$query = "insert into $this->rel_users_table (smid,activityid) values (?,?)";
-		$this->db->pquery($query, array($user_id, $email_id), true, "Error setting email to user relationship: <BR>$query");
+		$adb->pquery($query, array($user_id, $email_id), true, "Error setting email to user relationship: <BR>$query");
 		$log->debug('< set_emails_user_invitee_relationship');
 	}
 
 	// Function to unlink an entity with given Id from another entity
 	public function unlinkRelationship($id, $return_module, $return_id) {
+		global $adb;
 		$sql = 'DELETE FROM vtiger_seactivityrel WHERE activityid=? AND crmid = ?';
-		$this->db->pquery($sql, array($id, $return_id));
+		$adb->pquery($sql, array($id, $return_id));
 		$sql = 'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND relmodule=? AND relcrmid=?) OR (relcrmid=? AND module=? AND crmid=?)';
 		$params = array($id, $return_module, $return_id, $id, $return_module, $return_id);
-		$this->db->pquery($sql, $params);
+		$adb->pquery($sql, $params);
 		$mtime = date('y-m-d H:i:d');
-		$this->db->pquery('UPDATE '.self::$crmentityTable.' SET modifiedtime=? WHERE crmid=?', array($mtime, $id));
-		$this->db->pquery('UPDATE vtiger_crmobject SET modifiedtime=? WHERE crmid=?', array($mtime, $id));
+		$adb->pquery('UPDATE '.self::$crmentityTable.' SET modifiedtime=? WHERE crmid=?', array($mtime, $id));
+		$adb->pquery('UPDATE vtiger_crmobject SET modifiedtime=? WHERE crmid=?', array($mtime, $id));
 	}
 
 	public function getListButtons($app_strings) {

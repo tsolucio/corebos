@@ -11,8 +11,6 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class ProductComponent extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_productcomponent';
 	public $table_index= 'productcomponentid';
 	public $column_fields = array();

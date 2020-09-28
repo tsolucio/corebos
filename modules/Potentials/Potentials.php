@@ -17,8 +17,6 @@ require_once 'modules/Emails/Emails.php';
 require 'modules/Vtiger/default_module_view.php';
 
 class Potentials extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_potential';
 	public $table_index= 'potentialid';
 	public $column_fields = array();
@@ -572,24 +570,26 @@ class Potentials extends CRMEntity {
 	// Function to unlink all the dependent entities of the given Entity by Id
 	public function unlinkDependencies($module, $id) {
 		/*//Backup Activity-Potentials Relation
+		global $adb;
 		$act_q = "select activityid from vtiger_seactivityrel where crmid = ?";
-		$act_res = $this->db->pquery($act_q, array($id));
-		if ($this->db->num_rows($act_res) > 0) {
-			for($k=0;$k < $this->db->num_rows($act_res);$k++)
+		$act_res = $adb->pquery($act_q, array($id));
+		if ($adb->num_rows($act_res) > 0) {
+			for($k=0;$k < $adb->num_rows($act_res);$k++)
 			{
-				$act_id = $this->db->query_result($act_res,$k,"activityid");
+				$act_id = $adb->query_result($act_res,$k,"activityid");
 				$params = array($id, RB_RECORD_DELETED, 'vtiger_seactivityrel', 'crmid', 'activityid', $act_id);
-				$this->db->pquery("insert into vtiger_relatedlists_rb values (?,?,?,?,?,?)", $params);
+				$adb->pquery("insert into vtiger_relatedlists_rb values (?,?,?,?,?,?)", $params);
 			}
 		}
 		$sql = 'delete from vtiger_seactivityrel where crmid = ?';
-		$this->db->pquery($sql, array($id));*/
+		$adb->pquery($sql, array($id));*/
 
 		parent::unlinkDependencies($module, $id);
 	}
 
 	// Function to unlink an entity with given Id from another entity
 	public function unlinkRelationship($id, $return_module, $return_id) {
+		global $adb;
 		if (empty($return_module) || empty($return_id)) {
 			return;
 		}
@@ -598,22 +598,22 @@ class Potentials extends CRMEntity {
 			$this->trash('Potentials', $id);
 		} elseif ($return_module == 'Campaigns') {
 			$sql = 'UPDATE vtiger_potential SET campaignid = ? WHERE potentialid = ?';
-			$this->db->pquery($sql, array(null, $id));
+			$adb->pquery($sql, array(null, $id));
 		} elseif ($return_module == 'Products') {
 			$sql = 'DELETE FROM vtiger_seproductsrel WHERE crmid=? AND productid=?';
-			$this->db->pquery($sql, array($id, $return_id));
+			$adb->pquery($sql, array($id, $return_id));
 		} elseif ($return_module == 'Contacts') {
 			$sql = 'DELETE FROM vtiger_contpotentialrel WHERE potentialid=? AND contactid=?';
-			$this->db->pquery($sql, array($id, $return_id));
+			$adb->pquery($sql, array($id, $return_id));
 
 			// Potential directly linked with Contact (not through Account - vtiger_contpotentialrel)
-			$directRelCheck = $this->db->pquery('SELECT related_to FROM vtiger_potential WHERE potentialid=? AND related_to=?', array($id, $return_id));
-			if ($this->db->num_rows($directRelCheck)) {
+			$directRelCheck = $adb->pquery('SELECT related_to FROM vtiger_potential WHERE potentialid=? AND related_to=?', array($id, $return_id));
+			if ($adb->num_rows($directRelCheck)) {
 				$this->trash('Potentials', $id);
 			}
 		} elseif ($return_module == 'Documents') {
 			$sql = 'DELETE FROM vtiger_senotesrel WHERE crmid=? AND notesid=?';
-			$this->db->pquery($sql, array($id, $return_id));
+			$adb->pquery($sql, array($id, $return_id));
 		} else {
 			parent::unlinkRelationship($id, $return_module, $return_id);
 		}

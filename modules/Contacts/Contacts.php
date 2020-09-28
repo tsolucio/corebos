@@ -17,8 +17,6 @@ require_once 'modules/HelpDesk/HelpDesk.php';
 require 'modules/Vtiger/default_module_view.php';
 
 class Contacts extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_contactdetails';
 	public $table_index= 'contactid';
 	public $column_fields = array();
@@ -124,7 +122,7 @@ class Contacts extends CRMEntity {
 	*  Returns the count of contacts assigned to user.
 	*/
 	public function getCount($user_name) {
-		global $log;
+		global $log, $adb;
 		$log->debug('> getCount '.$user_name);
 		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$query = 'select count(*)
@@ -132,9 +130,9 @@ class Contacts extends CRMEntity {
 			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_contactdetails.contactid
 			inner join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
 			where user_name=? and vtiger_crmentity.deleted=0';
-		$result = $this->db->pquery($query, array($user_name), true, 'Error retrieving contacts count');
+		$result = $adb->pquery($query, array($user_name), true, 'Error retrieving contacts count');
 		$log->debug('< getCount');
-		return $this->db->query_result($result, 0, 0);
+		return $adb->query_result($result, 0, 0);
 	}
 
 	/** Function to process list query for Plugin with Security Parameters for a given query
@@ -163,16 +161,16 @@ class Contacts extends CRMEntity {
 				$params1[] = $profileList;
 			}
 		}
-		$result1 = $this->db->pquery($sql1, $params1);
+		$result1 = $adb->pquery($sql1, $params1);
 		for ($i = 0; $i < $adb->num_rows($result1); $i++) {
 			$permitted_field_lists[] = $adb->query_result($result1, $i, 'columnname');
 		}
 
-		$result = &$this->db->query($query, true, "Error retrieving $currentModule list: ");
+		$result = &$adb->query($query, true, "Error retrieving $currentModule list: ");
 		$list = array();
-		$rows_found = $this->db->getRowCount($result);
+		$rows_found = $adb->getRowCount($result);
 		if ($rows_found != 0) {
-			for ($index = 0, $row = $this->db->fetchByAssoc($result, $index); $row && $index < $rows_found; $index++, $row = $this->db->fetchByAssoc($result, $index)) {
+			for ($index = 0, $row = $adb->fetchByAssoc($result, $index); $row && $index < $rows_found; $index++, $row = $adb->fetchByAssoc($result, $index)) {
 				$contact = array();
 
 				$contact['lastname'] = in_array('lastname', $permitted_field_lists) ? $row['lastname'] : '';
@@ -786,7 +784,7 @@ class Contacts extends CRMEntity {
 	* Returns the Merge Fields for Word Plugin
 	*/
 	public function getColumnNames() {
-		global $log, $current_user;
+		global $log, $current_user, $adb;
 		$log->debug('> getColumnNames');
 		$userprivs = $current_user->getPrivileges();
 		if ($userprivs->hasGlobalReadPermission()) {
@@ -806,11 +804,11 @@ class Contacts extends CRMEntity {
 				$params1[] = $profileList;
 			}
 		}
-		$result = $this->db->pquery($sql1, $params1);
-		$numRows = $this->db->num_rows($result);
+		$result = $adb->pquery($sql1, $params1);
+		$numRows = $adb->num_rows($result);
 		$custom_fields = array();
 		for ($i=0; $i < $numRows; $i++) {
-			$custom_fields[$i] = $this->db->query_result($result, $i, 'fieldlabel');
+			$custom_fields[$i] = $adb->query_result($result, $i, 'fieldlabel');
 			$custom_fields[$i] = preg_replace('/\s+/', '', $custom_fields[$i]);
 			$custom_fields[$i] = strtoupper($custom_fields[$i]);
 		}
@@ -1099,6 +1097,7 @@ class Contacts extends CRMEntity {
 	// Function to unlink all the dependent entities of the given Entity by Id
 	public function unlinkDependencies($module, $id) {
 		//Deleting Contact related Potentials.
+		global $adb;
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Potentials');
 		$crmEntityTable1 = CRMEntity::getcrmEntityTableAlias('Potentials', true);
 		$pot_q = 'SELECT vtiger_crmentity.crmid
@@ -1106,96 +1105,97 @@ class Contacts extends CRMEntity {
 			INNER JOIN vtiger_potential ON vtiger_crmentity.crmid=vtiger_potential.potentialid
 			LEFT JOIN vtiger_account ON vtiger_account.accountid=vtiger_potential.related_to
 			WHERE vtiger_crmentity.deleted=0 AND vtiger_potential.related_to=?';
-		$pot_res = $this->db->pquery($pot_q, array($id));
+		$pot_res = $adb->pquery($pot_q, array($id));
 		$pot_ids_list = array();
-		for ($k=0; $k < $this->db->num_rows($pot_res); $k++) {
-			$pot_id = $this->db->query_result($pot_res, $k, 'crmid');
+		for ($k=0; $k < $adb->num_rows($pot_res); $k++) {
+			$pot_id = $adb->query_result($pot_res, $k, 'crmid');
 			$pot_ids_list[] = $pot_id;
 			$sql = 'UPDATE '.$crmEntityTable1.' SET deleted = 1 WHERE crmid = ?';
-			$this->db->pquery($sql, array($pot_id));
+			$adb->pquery($sql, array($pot_id));
 		}
 		//Backup deleted Contact related Potentials.
 		$params = array($id, RB_RECORD_UPDATED, $crmEntityTable1, 'deleted', 'crmid', implode(',', $pot_ids_list));
-		$this->db->pquery('INSERT INTO vtiger_relatedlists_rb VALUES(?,?,?,?,?,?)', $params);
+		$adb->pquery('INSERT INTO vtiger_relatedlists_rb VALUES(?,?,?,?,?,?)', $params);
 
 		//Backup Contact-Trouble Tickets Relation
 		$tkt_q = 'SELECT ticketid FROM vtiger_troubletickets WHERE parent_id=?';
-		$tkt_res = $this->db->pquery($tkt_q, array($id));
-		if ($this->db->num_rows($tkt_res) > 0) {
+		$tkt_res = $adb->pquery($tkt_q, array($id));
+		if ($adb->num_rows($tkt_res) > 0) {
 			$tkt_ids_list = array();
-			for ($k=0; $k < $this->db->num_rows($tkt_res); $k++) {
-				$tkt_ids_list[] = $this->db->query_result($tkt_res, $k, 'ticketid');
+			for ($k=0; $k < $adb->num_rows($tkt_res); $k++) {
+				$tkt_ids_list[] = $adb->query_result($tkt_res, $k, 'ticketid');
 			}
 			$params = array($id, RB_RECORD_UPDATED, 'vtiger_troubletickets', 'parent_id', 'ticketid', implode(',', $tkt_ids_list));
-			$this->db->pquery('INSERT INTO vtiger_relatedlists_rb VALUES (?,?,?,?,?,?)', $params);
+			$adb->pquery('INSERT INTO vtiger_relatedlists_rb VALUES (?,?,?,?,?,?)', $params);
 		}
 		//removing the relationship of contacts with Trouble Tickets
-		$this->db->pquery('UPDATE vtiger_troubletickets SET parent_id=0 WHERE parent_id=?', array($id));
+		$adb->pquery('UPDATE vtiger_troubletickets SET parent_id=0 WHERE parent_id=?', array($id));
 
 		//Backup Contact-PurchaseOrder Relation
 		$po_q = 'SELECT purchaseorderid FROM vtiger_purchaseorder WHERE contactid=?';
-		$po_res = $this->db->pquery($po_q, array($id));
-		if ($this->db->num_rows($po_res) > 0) {
+		$po_res = $adb->pquery($po_q, array($id));
+		if ($adb->num_rows($po_res) > 0) {
 			$po_ids_list = array();
-			for ($k=0; $k < $this->db->num_rows($po_res); $k++) {
-				$po_ids_list[] = $this->db->query_result($po_res, $k, 'purchaseorderid');
+			for ($k=0; $k < $adb->num_rows($po_res); $k++) {
+				$po_ids_list[] = $adb->query_result($po_res, $k, 'purchaseorderid');
 			}
 			$params = array($id, RB_RECORD_UPDATED, 'vtiger_purchaseorder', 'contactid', 'purchaseorderid', implode(',', $po_ids_list));
-			$this->db->pquery('INSERT INTO vtiger_relatedlists_rb VALUES (?,?,?,?,?,?)', $params);
+			$adb->pquery('INSERT INTO vtiger_relatedlists_rb VALUES (?,?,?,?,?,?)', $params);
 		}
 		//removing the relationship of contacts with PurchaseOrder
-		$this->db->pquery('UPDATE vtiger_purchaseorder SET contactid=0 WHERE contactid=?', array($id));
+		$adb->pquery('UPDATE vtiger_purchaseorder SET contactid=0 WHERE contactid=?', array($id));
 
 		//Backup Contact-SalesOrder Relation
 		$so_q = 'SELECT salesorderid FROM vtiger_salesorder WHERE contactid=?';
-		$so_res = $this->db->pquery($so_q, array($id));
-		if ($this->db->num_rows($so_res) > 0) {
+		$so_res = $adb->pquery($so_q, array($id));
+		if ($adb->num_rows($so_res) > 0) {
 			$so_ids_list = array();
-			for ($k=0; $k < $this->db->num_rows($so_res); $k++) {
-				$so_ids_list[] = $this->db->query_result($so_res, $k, 'salesorderid');
+			for ($k=0; $k < $adb->num_rows($so_res); $k++) {
+				$so_ids_list[] = $adb->query_result($so_res, $k, 'salesorderid');
 			}
 			$params = array($id, RB_RECORD_UPDATED, 'vtiger_salesorder', 'contactid', 'salesorderid', implode(',', $so_ids_list));
-			$this->db->pquery('INSERT INTO vtiger_relatedlists_rb VALUES (?,?,?,?,?,?)', $params);
+			$adb->pquery('INSERT INTO vtiger_relatedlists_rb VALUES (?,?,?,?,?,?)', $params);
 		}
 		//removing the relationship of contacts with SalesOrder
-		$this->db->pquery('UPDATE vtiger_salesorder SET contactid=0 WHERE contactid=?', array($id));
+		$adb->pquery('UPDATE vtiger_salesorder SET contactid=0 WHERE contactid=?', array($id));
 
 		//Backup Contact-Quotes Relation
-		$quo_res = $this->db->pquery('SELECT quoteid FROM vtiger_quotes WHERE contactid=?', array($id));
-		if ($this->db->num_rows($quo_res) > 0) {
+		$quo_res = $adb->pquery('SELECT quoteid FROM vtiger_quotes WHERE contactid=?', array($id));
+		if ($adb->num_rows($quo_res) > 0) {
 			$quo_ids_list = array();
-			for ($k=0; $k < $this->db->num_rows($quo_res); $k++) {
-				$quo_ids_list[] = $this->db->query_result($quo_res, $k, 'quoteid');
+			for ($k=0; $k < $adb->num_rows($quo_res); $k++) {
+				$quo_ids_list[] = $adb->query_result($quo_res, $k, 'quoteid');
 			}
 			$params = array($id, RB_RECORD_UPDATED, 'vtiger_quotes', 'contactid', 'quoteid', implode(',', $quo_ids_list));
-			$this->db->pquery('INSERT INTO vtiger_relatedlists_rb VALUES (?,?,?,?,?,?)', $params);
+			$adb->pquery('INSERT INTO vtiger_relatedlists_rb VALUES (?,?,?,?,?,?)', $params);
 		}
 		//removing the relationship of contacts with Quotes
-		$this->db->pquery('UPDATE vtiger_quotes SET contactid=0 WHERE contactid=?', array($id));
+		$adb->pquery('UPDATE vtiger_quotes SET contactid=0 WHERE contactid=?', array($id));
 		//remove the portal info the contact
-		$this->db->pquery('DELETE FROM vtiger_portalinfo WHERE id = ?', array($id));
-		$this->db->pquery('UPDATE vtiger_customerdetails SET portal=0,support_start_date=NULL,support_end_date=NULl WHERE customerid=?', array($id));
+		$adb->pquery('DELETE FROM vtiger_portalinfo WHERE id = ?', array($id));
+		$adb->pquery('UPDATE vtiger_customerdetails SET portal=0,support_start_date=NULL,support_end_date=NULl WHERE customerid=?', array($id));
 		parent::unlinkDependencies($module, $id);
 	}
 
 	// Function to unlink an entity with given Id from another entity
 	public function unlinkRelationship($id, $return_module, $return_id) {
+		global $adb;
 		if (empty($return_module) || empty($return_id)) {
 			return;
 		}
 
 		if ($return_module == 'Accounts') {
-			$this->db->pquery('UPDATE vtiger_contactdetails SET accountid = ? WHERE contactid = ?', array(null, $id));
+			$adb->pquery('UPDATE vtiger_contactdetails SET accountid = ? WHERE contactid = ?', array(null, $id));
 		} elseif ($return_module == 'Potentials') {
-			$this->db->pquery('DELETE FROM vtiger_contpotentialrel WHERE contactid=? AND potentialid=?', array($id, $return_id));
+			$adb->pquery('DELETE FROM vtiger_contpotentialrel WHERE contactid=? AND potentialid=?', array($id, $return_id));
 		} elseif ($return_module == 'Campaigns') {
-			$this->db->pquery('DELETE FROM vtiger_campaigncontrel WHERE contactid=? AND campaignid=?', array($id, $return_id));
+			$adb->pquery('DELETE FROM vtiger_campaigncontrel WHERE contactid=? AND campaignid=?', array($id, $return_id));
 		} elseif ($return_module == 'Products') {
-			$this->db->pquery('DELETE FROM vtiger_seproductsrel WHERE crmid=? AND productid=?', array($id, $return_id));
+			$adb->pquery('DELETE FROM vtiger_seproductsrel WHERE crmid=? AND productid=?', array($id, $return_id));
 		} elseif ($return_module == 'Vendors') {
-			$this->db->pquery('DELETE FROM vtiger_vendorcontactrel WHERE vendorid=? AND contactid=?', array($return_id, $id));
+			$adb->pquery('DELETE FROM vtiger_vendorcontactrel WHERE vendorid=? AND contactid=?', array($return_id, $id));
 		} elseif ($return_module == 'Documents') {
-			$this->db->pquery('DELETE FROM vtiger_senotesrel WHERE crmid=? AND notesid=?', array($id, $return_id));
+			$adb->pquery('DELETE FROM vtiger_senotesrel WHERE crmid=? AND notesid=?', array($id, $return_id));
 		} else {
 			parent::unlinkRelationship($id, $return_module, $return_id);
 		}

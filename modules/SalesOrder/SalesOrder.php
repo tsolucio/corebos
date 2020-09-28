@@ -14,8 +14,6 @@ require_once 'modules/Invoice/Invoice.php';
 require_once 'modules/InventoryDetails/InventoryDetails.php';
 
 class SalesOrder extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_salesorder';
 	public $table_index= 'salesorderid';
 	public $column_fields = array();

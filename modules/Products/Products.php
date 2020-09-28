@@ -12,8 +12,6 @@ require_once 'include/RelatedListView.php';
 require 'modules/Vtiger/default_module_view.php';
 
 class Products extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_products';
 	public $table_index= 'productid';
 	public $column_fields = array();
@@ -111,7 +109,6 @@ class Products extends CRMEntity {
 	public function __construct() {
 		$this_module = get_class($this);
 		$this->column_fields = getColumnFields($this_module);
-		$this->db = PearDatabase::getInstance();
 	}
 
 	public function save_module($module) {
@@ -250,12 +247,13 @@ class Products extends CRMEntity {
 	}
 
 	public function updateUnitPrice() {
-		$prod_res = $this->db->pquery('select unit_price, currency_id from vtiger_products where productid=?', array($this->id));
-		$prod_unit_price = $this->db->query_result($prod_res, 0, 'unit_price');
-		$prod_base_currency = $this->db->query_result($prod_res, 0, 'currency_id');
+		global $adb;
+		$prod_res = $adb->pquery('select unit_price, currency_id from vtiger_products where productid=?', array($this->id));
+		$prod_unit_price = $adb->query_result($prod_res, 0, 'unit_price');
+		$prod_base_currency = $adb->query_result($prod_res, 0, 'currency_id');
 		$query = 'update vtiger_productcurrencyrel set actual_price=? where productid=? and currencyid=?';
 		$params = array($prod_unit_price, $this->id, $prod_base_currency);
-		$this->db->pquery($query, $params);
+		$adb->pquery($query, $params);
 	}
 
 	public function insertIntoAttachment($id, $module, $direct_import = false) {
@@ -965,15 +963,15 @@ class Products extends CRMEntity {
 	 *	@return int number of rows - return the number of products which do not have relationship with vendor
 	 */
 	public function product_novendor() {
-		global $log;
+		global $log, $adb;
 		$log->debug('> product_novendor');
 		$query = 'SELECT vtiger_products.productname, vtiger_crmentity.deleted
 			FROM vtiger_products
 			INNER JOIN '.self::$crmEntityTableAlias.' ON vtiger_crmentity.crmid = vtiger_products.productid
 			WHERE vtiger_crmentity.deleted = 0 AND vtiger_products.vendor_id is NULL';
-		$result=$this->db->pquery($query, array());
+		$result=$adb->pquery($query, array());
 		$log->debug('< product_novendor');
-		return $this->db->num_rows($result);
+		return $adb->num_rows($result);
 	}
 
 	/**
@@ -1289,39 +1287,41 @@ class Products extends CRMEntity {
 	// Function to unlink all the dependent entities of the given Entity by Id
 	public function unlinkDependencies($module, $id) {
 		//Backup Campaigns-Product Relation
-		$cmp_res = $this->db->pquery('SELECT campaignid FROM vtiger_campaign WHERE product_id = ?', array($id));
-		if ($this->db->num_rows($cmp_res) > 0) {
+		global $adb;
+		$cmp_res = $adb->pquery('SELECT campaignid FROM vtiger_campaign WHERE product_id = ?', array($id));
+		if ($adb->num_rows($cmp_res) > 0) {
 			$cmp_ids_list = array();
-			for ($k=0; $k < $this->db->num_rows($cmp_res); $k++) {
-				$cmp_ids_list[] = $this->db->query_result($cmp_res, $k, 'campaignid');
+			for ($k=0; $k < $adb->num_rows($cmp_res); $k++) {
+				$cmp_ids_list[] = $adb->query_result($cmp_res, $k, 'campaignid');
 			}
 			$params = array($id, RB_RECORD_UPDATED, 'vtiger_campaign', 'product_id', 'campaignid', implode(',', $cmp_ids_list));
-			$this->db->pquery('INSERT INTO vtiger_relatedlists_rb VALUES (?,?,?,?,?,?)', $params);
+			$adb->pquery('INSERT INTO vtiger_relatedlists_rb VALUES (?,?,?,?,?,?)', $params);
 		}
 		//we have to update the product_id as null for the campaigns which are related to this product
-		$this->db->pquery('UPDATE vtiger_campaign SET product_id=0 WHERE product_id = ?', array($id));
-		$this->db->pquery('DELETE from vtiger_seproductsrel WHERE productid=? or crmid=?', array($id,$id));
+		$adb->pquery('UPDATE vtiger_campaign SET product_id=0 WHERE product_id = ?', array($id));
+		$adb->pquery('DELETE from vtiger_seproductsrel WHERE productid=? or crmid=?', array($id,$id));
 		parent::unlinkDependencies($module, $id);
 	}
 
 	// Function to unlink an entity with given Id from another entity
 	public function unlinkRelationship($id, $return_module, $return_id) {
+		global $adb;
 		if (empty($return_module) || empty($return_id)) {
 			return;
 		}
 
 		if ($return_module == 'cbCalendar') {
 			$sql = 'DELETE FROM vtiger_seactivityrel WHERE crmid = ? AND activityid = ?';
-			$this->db->pquery($sql, array($id, $return_id));
+			$adb->pquery($sql, array($id, $return_id));
 		} elseif ($return_module == 'Leads' || $return_module == 'Accounts' || $return_module == 'Contacts' || $return_module == 'Potentials') {
 			$sql = 'DELETE FROM vtiger_seproductsrel WHERE productid = ? AND crmid = ?';
-			$this->db->pquery($sql, array($id, $return_id));
+			$adb->pquery($sql, array($id, $return_id));
 		} elseif ($return_module == 'Vendors') {
 			$sql = 'UPDATE vtiger_products SET vendor_id = ? WHERE productid = ?';
-			$this->db->pquery($sql, array(null, $id));
+			$adb->pquery($sql, array(null, $id));
 		} elseif ($return_module == 'Documents') {
 			$sql = 'DELETE FROM vtiger_senotesrel WHERE crmid=? AND notesid=?';
-			$this->db->pquery($sql, array($id, $return_id));
+			$adb->pquery($sql, array($id, $return_id));
 		} else {
 			parent::unlinkRelationship($id, $return_module, $return_id);
 		}

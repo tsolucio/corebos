@@ -13,8 +13,6 @@ include_once 'vtlib/Vtiger/Utils/StringTemplate.php';
 include_once 'vtlib/Vtiger/LinkData.php';
 
 class BusinessActions extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_businessactions';
 	public $table_index = 'businessactionsid';
 	public $column_fields = array();

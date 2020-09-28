@@ -12,8 +12,6 @@ require_once 'data/Tracker.php';
 require_once 'modules/Invoice/Invoice.php';
 
 class CobroPago extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_cobropago';
 	public $table_index= 'cobropagoid';
 	public $column_fields = array();

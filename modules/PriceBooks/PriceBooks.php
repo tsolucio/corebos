@@ -11,8 +11,6 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class PriceBooks extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_pricebook';
 	public $table_index= 'pricebookid';
 	public $column_fields = array();
@@ -221,29 +219,29 @@ class PriceBooks extends CRMEntity {
 	 *		then return false, else return true
 	 */
 	public function get_pricebook_noproduct($id) {
-		global $log;
+		global $log, $adb;
 		$log->debug('> get_pricebook_noproduct '.$id);
 
 		$query = 'select vtiger_crmentity.crmid, vtiger_pricebook.*
 			from vtiger_pricebook
 			inner join '.self::$crmEntityTableAlias.' on vtiger_crmentity.crmid=vtiger_pricebook.pricebookid
 			where vtiger_crmentity.deleted=0';
-		$result = $this->db->pquery($query, array());
-		$no_count = $this->db->num_rows($result);
+		$result = $adb->pquery($query, array());
+		$no_count = $adb->num_rows($result);
 		if ($no_count !=0) {
 			$pb_query = 'select vtiger_crmentity.crmid, vtiger_pricebook.pricebookid,vtiger_pricebookproductrel.productid
 				from vtiger_pricebook
 				inner join '.self::$crmEntityTableAlias.' on vtiger_crmentity.crmid=vtiger_pricebook.pricebookid
 				inner join vtiger_pricebookproductrel on vtiger_pricebookproductrel.pricebookid=vtiger_pricebook.pricebookid
 				where vtiger_crmentity.deleted=0 and vtiger_pricebookproductrel.productid=?';
-			$result_pb = $this->db->pquery($pb_query, array($id));
-			if ($no_count == $this->db->num_rows($result_pb)) {
+			$result_pb = $adb->pquery($pb_query, array($id));
+			if ($no_count == $adb->num_rows($result_pb)) {
 				$log->debug('< get_pricebook_noproduct F');
 				return false;
-			} elseif ($this->db->num_rows($result_pb) == 0) {
+			} elseif ($adb->num_rows($result_pb) == 0) {
 				$log->debug('< get_pricebook_noproduct T');
 				return true;
-			} elseif ($this->db->num_rows($result_pb) < $no_count) {
+			} elseif ($adb->num_rows($result_pb) < $no_count) {
 				$log->debug('< get_pricebook_noproduct T');
 				return true;
 			}

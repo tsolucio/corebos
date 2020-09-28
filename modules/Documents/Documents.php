@@ -12,8 +12,6 @@ require_once 'data/Tracker.php';
 require_once 'include/upload_file.php';
 
 class Documents extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_notes';
 	public $table_index= 'notesid';
 	public $column_fields = array();
@@ -276,8 +274,9 @@ class Documents extends CRMEntity {
 	 * @return String $sorder - sort order for a given folder.
 	 */
 	public function getSortOrderForFolder($folderId) {
+		global $adb;
 		if (isset($_REQUEST['sorder']) && $_REQUEST['folderid'] == $folderId) {
-			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
+			$sorder = $adb->sql_escape_string($_REQUEST['sorder']);
 		} elseif (isset($_SESSION['NOTES_FOLDER_SORT_ORDER']) && is_array($_SESSION['NOTES_FOLDER_SORT_ORDER']) && !empty($_SESSION['NOTES_FOLDER_SORT_ORDER'][$folderId])) {
 				$sorder = $_SESSION['NOTES_FOLDER_SORT_ORDER'][$folderId];
 		} else {
@@ -291,12 +290,13 @@ class Documents extends CRMEntity {
 	 * @return String order by column for a given folder.
 	 */
 	public function getOrderByForFolder($folderId) {
+		global $adb;
 		$use_default_order_by = '';
 		if (GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0)) {
 			$use_default_order_by = $this->default_order_by;
 		}
 		if (isset($_REQUEST['order_by']) && $_REQUEST['folderid'] == $folderId) {
-			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
+			$order_by = $adb->sql_escape_string($_REQUEST['order_by']);
 			if ($order_by == 'notes_title') {
 				$order_by = 'title';
 			}
@@ -439,31 +439,33 @@ class Documents extends CRMEntity {
 	// Function to unlink all the dependent entities of the given Entity by Id
 	public function unlinkDependencies($module, $id) {
 		/*//Backup Documents Related Records
+		global $adb;
 		$se_q = 'SELECT crmid FROM vtiger_senotesrel WHERE notesid = ?';
-		$se_res = $this->db->pquery($se_q, array($id));
-		if ($this->db->num_rows($se_res) > 0) {
-			for($k=0;$k < $this->db->num_rows($se_res);$k++)
+		$se_res = $adb->pquery($se_q, array($id));
+		if ($adb->num_rows($se_res) > 0) {
+			for($k=0;$k < $adb->num_rows($se_res);$k++)
 			{
-				$se_id = $this->db->query_result($se_res,$k,"crmid");
+				$se_id = $adb->query_result($se_res,$k,"crmid");
 				$params = array($id, RB_RECORD_DELETED, 'vtiger_senotesrel', 'notesid', 'crmid', $se_id);
-				$this->db->pquery('INSERT INTO vtiger_relatedlists_rb VALUES (?,?,?,?,?,?)', $params);
+				$adb->pquery('INSERT INTO vtiger_relatedlists_rb VALUES (?,?,?,?,?,?)', $params);
 			}
 		}
 		$sql = 'DELETE FROM vtiger_senotesrel WHERE notesid = ?';
-		$this->db->pquery($sql, array($id));*/
+		$adb->pquery($sql, array($id));*/
 
 		parent::unlinkDependencies($module, $id);
 	}
 
 	// Function to unlink an entity with given Id from another entity
 	public function unlinkRelationship($id, $return_module, $return_id) {
+		global $adb;
 		if (empty($return_module) || empty($return_id)) {
 			return;
 		}
-		$this->db->pquery('DELETE FROM vtiger_senotesrel WHERE notesid = ? AND crmid = ?', array($id, $return_id));
+		$adb->pquery('DELETE FROM vtiger_senotesrel WHERE notesid = ? AND crmid = ?', array($id, $return_id));
 		$sql = 'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND relmodule=? AND relcrmid=?) OR (relcrmid=? AND module=? AND crmid=?)';
 		$params = array($id, $return_module, $return_id, $id, $return_module, $return_id);
-		$this->db->pquery($sql, $params);
+		$adb->pquery($sql, $params);
 	}
 
 	// Function to get fieldname for uitype 27 assuming that documents have only one file type field

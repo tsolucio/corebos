@@ -24,7 +24,6 @@ class CRMEntity {
 	public $linkmodemodule = '';
 	public $DirectImageFieldValues = array();
 	public $HasDirectImageField = false;
-	public $db;
 	public static $crmentityTable = 'vtiger_crmentity';
 	public static $crmEntityTableAlias;
 	public static $denormalized = false;
@@ -34,13 +33,13 @@ class CRMEntity {
 	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-recent', 'class' => 'slds-icon', 'icon'=>'entity');
 
 	public function __construct() {
+		global $adb;
 		self::$denormalized = (self::$crmentityTable!='vtiger_crmentity');
 		self::$crmEntityTableAlias = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$this_module = get_class($this);
 		$this->column_fields = getColumnFields($this_module);
-		$this->db = PearDatabase::getInstance();
-		$result = $this->db->pquery('SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid=? limit 1', array(getTabid($this_module)));
-		$this->HasDirectImageField = ($result && $this->db->num_rows($result)==1);
+		$result = $adb->pquery('SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid=? limit 1', array(getTabid($this_module)));
+		$this->HasDirectImageField = ($result && $adb->num_rows($result)==1);
 	}
 
 	public static function registerMethod($method) {
@@ -145,8 +144,8 @@ class CRMEntity {
 			die('<center>' .getTranslatedString('LBL_MANDATORY_FIELD_MISSING').'</center>');
 		}
 
-		$this->db->println("TRANS saveentity starts $module");
-		$this->db->startTransaction();
+		$adb->println("TRANS saveentity starts $module");
+		$adb->startTransaction();
 
 		foreach ($this->tab_name as $table_name) {
 			if ($table_name == 'vtiger_crmentity') {
@@ -160,14 +159,14 @@ class CRMEntity {
 		if (!empty($this->column_fields['conversion_rate']) && !empty($this->column_fields['currency_id'])) {
 			$update_query = 'update '.$this->table_name.' set currency_id=?, conversion_rate=? where '.$this->table_index.'=?';
 			$update_params = array($this->column_fields['currency_id'], $this->column_fields['conversion_rate'], $this->id);
-			$this->db->pquery($update_query, $update_params);
+			$adb->pquery($update_query, $update_params);
 		}
 
 		//Calling the Module specific save code
 		$this->save_module($module);
 
-		$this->db->completeTransaction();
-		$this->db->println('TRANS saveentity ends');
+		$adb->completeTransaction();
+		$adb->println('TRANS saveentity ends');
 
 		// vtlib customization: Hook provide to enable generic module relation.
 		if (isset($_REQUEST['createmode']) && $_REQUEST['createmode'] == 'link') {
@@ -1482,7 +1481,7 @@ class CRMEntity {
 	 * Function which will give the basic query to find duplicates
 	 */
 	public function getDuplicatesQuery($module, $table_cols, $field_values, $ui_type_arr, $select_cols = '') {
-		global $current_user;
+		global $current_user, $adb;
 		$customView = new CustomView($module);
 		$viewid = $customView->getViewId($module);
 		$queryGenerator = new QueryGenerator($module, $current_user);
@@ -1499,8 +1498,8 @@ class CRMEntity {
 		$fromclause = explode('FROM', $list_query);
 		$list_query = "SELECT $this->table_name.$this->table_index as id FROM ".$fromclause[1];
 		$tableName = strtolower("temp".$module.$current_user->id);
-		$this->db->pquery("create temporary table IF NOT EXISTS $tableName (id int primary key) AS " . $list_query, array());
-		$this->db->pquery("create temporary table IF NOT EXISTS $tableName".'2 (id int primary key) AS ' . $list_query, array());
+		$adb->pquery("create temporary table IF NOT EXISTS $tableName (id int primary key) AS " . $list_query, array());
+		$adb->pquery("create temporary table IF NOT EXISTS $tableName".'2 (id int primary key) AS ' . $list_query, array());
 
 		$select_clause = 'SELECT '. $this->table_name .'.'.$this->table_index .' AS recordid, vtiger_users_last_import.deleted,'.$table_cols;
 		$from_clause = " FROM $this->table_name";
@@ -1555,7 +1554,7 @@ class CRMEntity {
 	 * Get list view query (send more WHERE clause condition if required)
 	 */
 	public function getListQuery($module, $usewhere = '') {
-		global $current_user;
+		global $current_user, $adb;
 		$query = "SELECT vtiger_crmentity.*, $this->table_name.*";
 
 		// Keep track of tables joined to avoid duplicates
@@ -1583,19 +1582,19 @@ class CRMEntity {
 		$joinedTables[] = 'vtiger_users';
 		$joinedTables[] = 'vtiger_groups';
 
-		$linkedModulesQuery = $this->db->pquery(
+		$linkedModulesQuery = $adb->pquery(
 			'SELECT distinct tablename, columnname, relmodule
 			FROM vtiger_field
 			INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid'
 			." WHERE uitype='10' AND vtiger_fieldmodulerel.module=?",
 			array($module)
 		);
-		$linkedFieldsCount = $this->db->num_rows($linkedModulesQuery);
+		$linkedFieldsCount = $adb->num_rows($linkedModulesQuery);
 
 		for ($i=0; $i<$linkedFieldsCount; $i++) {
-			$related_module = $this->db->query_result($linkedModulesQuery, $i, 'relmodule');
-			$tablename = $this->db->query_result($linkedModulesQuery, $i, 'tablename');
-			$columnname = $this->db->query_result($linkedModulesQuery, $i, 'columnname');
+			$related_module = $adb->query_result($linkedModulesQuery, $i, 'relmodule');
+			$tablename = $adb->query_result($linkedModulesQuery, $i, 'tablename');
+			$columnname = $adb->query_result($linkedModulesQuery, $i, 'columnname');
 
 			$other = CRMEntity::getInstance($related_module);
 
@@ -1614,7 +1613,7 @@ class CRMEntity {
 	 * Create query to export the records.
 	 */
 	public function create_export_query($where) {
-		global $current_user;
+		global $current_user, $adb;
 		$thismodule = $_REQUEST['module'];
 
 		include 'include/utils/ExportUtils.php';
@@ -1637,18 +1636,18 @@ class CRMEntity {
 		$query .= " LEFT JOIN vtiger_users ON ".self::$crmentityTable.".smownerid = vtiger_users.id and vtiger_users.status='Active'";
 		$query .= " LEFT JOIN vtiger_users as vtigerCreatedBy ON ".self::$crmentityTable.".smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'";
 
-		$linkedModulesQuery = $this->db->pquery('SELECT distinct fieldname, tablename, columnname, relmodule FROM vtiger_field' .
+		$linkedModulesQuery = $adb->pquery('SELECT distinct fieldname, tablename, columnname, relmodule FROM vtiger_field' .
 			' INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid' .
 			" WHERE uitype='10' AND vtiger_fieldmodulerel.module=?", array($thismodule));
-		$linkedFieldsCount = $this->db->num_rows($linkedModulesQuery);
+		$linkedFieldsCount = $adb->num_rows($linkedModulesQuery);
 
 		$rel_mods = array();
 		$rel_mods[$this->table_name] = 1;
 		for ($i=0; $i<$linkedFieldsCount; $i++) {
-			$related_module = $this->db->query_result($linkedModulesQuery, $i, 'relmodule');
-			//$fieldname = $this->db->query_result($linkedModulesQuery, $i, 'fieldname');
-			$columnname = $this->db->query_result($linkedModulesQuery, $i, 'columnname');
-			$tablename = $this->db->query_result($linkedModulesQuery, $i, 'tablename');
+			$related_module = $adb->query_result($linkedModulesQuery, $i, 'relmodule');
+			//$fieldname = $adb->query_result($linkedModulesQuery, $i, 'fieldname');
+			$columnname = $adb->query_result($linkedModulesQuery, $i, 'columnname');
+			$tablename = $adb->query_result($linkedModulesQuery, $i, 'tablename');
 
 			$other = CRMEntity::getInstance($related_module);
 
@@ -1681,7 +1680,6 @@ class CRMEntity {
 	 * Initialize this instance for importing.
 	 */
 	public function initImport($module) {
-		$this->db = PearDatabase::getInstance();
 		$this->initImportableFields($module);
 	}
 
@@ -1716,7 +1714,7 @@ class CRMEntity {
 				'select id from vtiger_users where id = ? union select groupid as id from vtiger_groups where groupid = ?',
 				array($record_user, $record_user)
 			);
-			if ($this->db->num_rows($sqlresult)!= 1) {
+			if ($adb->num_rows($sqlresult)!= 1) {
 				$this->column_fields['assigned_user_id'] = $current_user->id;
 			} else {
 				$row = $adb->fetchByAssoc($sqlresult, -1, false);
@@ -1815,7 +1813,7 @@ class CRMEntity {
 		$freetag->delete_all_object_tags_for_user($current_user->id, $id);
 
 		$sql_recentviewed = 'DELETE FROM vtiger_tracker WHERE user_id = ? AND item_id = ?';
-		$this->db->pquery($sql_recentviewed, array($current_user->id, $id));
+		$adb->pquery($sql_recentviewed, array($current_user->id, $id));
 
 		if ($em) {
 			$entityData->SetDeleted($id);
@@ -1825,38 +1823,39 @@ class CRMEntity {
 
 	/** Function to unlink all the dependent entities of the given Entity by Id */
 	public function unlinkDependencies($module, $id) {
+		global $adb;
 		if (getSalesEntityType($id)!=$module) { // security
 			return false;
 		}
-		$fieldRes = $this->db->pquery('SELECT tabid, tablename, columnname FROM vtiger_field WHERE fieldid IN (
+		$fieldRes = $adb->pquery('SELECT tabid, tablename, columnname FROM vtiger_field WHERE fieldid IN (
 			SELECT fieldid FROM vtiger_fieldmodulerel WHERE relmodule=?)', array($module));
-		$numOfFields = $this->db->num_rows($fieldRes);
+		$numOfFields = $adb->num_rows($fieldRes);
 		for ($i = 0; $i < $numOfFields; $i++) {
-			$tabId = $this->db->query_result($fieldRes, $i, 'tabid');
-			$tableName = $this->db->query_result($fieldRes, $i, 'tablename');
-			$columnName = $this->db->query_result($fieldRes, $i, 'columnname');
+			$tabId = $adb->query_result($fieldRes, $i, 'tabid');
+			$tableName = $adb->query_result($fieldRes, $i, 'tablename');
+			$columnName = $adb->query_result($fieldRes, $i, 'columnname');
 
 			$relatedModule = vtlib_getModuleNameById($tabId);
 			$focusObj = CRMEntity::getInstance($relatedModule);
 
 			//Backup Field Relations for the deleted entity
 			$relQuery = "SELECT $focusObj->table_index FROM $tableName WHERE $columnName=?";
-			$relResult = $this->db->pquery($relQuery, array($id));
-			$numOfRelRecords = $this->db->num_rows($relResult);
+			$relResult = $adb->pquery($relQuery, array($id));
+			$numOfRelRecords = $adb->num_rows($relResult);
 			if ($numOfRelRecords > 0) {
 				$recordIdsList = array();
 				for ($k = 0; $k < $numOfRelRecords; $k++) {
-					$recordIdsList[] = $this->db->query_result($relResult, $k, $focusObj->table_index);
+					$recordIdsList[] = $adb->query_result($relResult, $k, $focusObj->table_index);
 				}
 				$params = array($id, RB_RECORD_UPDATED, $tableName, $columnName, $focusObj->table_index, implode(',', $recordIdsList));
-				$this->db->pquery('INSERT INTO vtiger_relatedlists_rb VALUES (?,?,?,?,?,?)', $params);
+				$adb->pquery('INSERT INTO vtiger_relatedlists_rb VALUES (?,?,?,?,?,?)', $params);
 			}
 		}
 	}
 
 	/** Function to unlink an entity with given Id from another entity */
 	public function unlinkRelationship($id, $return_module, $return_id) {
-		global $currentModule;
+		global $currentModule, $adb;
 		$data = array();
 		$data['sourceModule'] = getSalesEntityType($id);
 		$data['sourceRecordId'] = $id;
@@ -1866,24 +1865,24 @@ class CRMEntity {
 
 		$query = 'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND relmodule=? AND relcrmid=?) OR (relcrmid=? AND module=? AND crmid=?)';
 		$params = array($id, $return_module, $return_id, $id, $return_module, $return_id);
-		$this->db->pquery($query, $params);
+		$adb->pquery($query, $params);
 
-		$fieldRes = $this->db->pquery(
+		$fieldRes = $adb->pquery(
 			'SELECT tabid, tablename, columnname FROM vtiger_field WHERE fieldid IN (SELECT fieldid FROM vtiger_fieldmodulerel WHERE module=? AND relmodule=?)',
 			array($currentModule, $return_module)
 		);
-		$numOfFields = $this->db->num_rows($fieldRes);
+		$numOfFields = $adb->num_rows($fieldRes);
 		for ($i = 0; $i < $numOfFields; $i++) {
-			$tabId = $this->db->query_result($fieldRes, $i, 'tabid');
-			$tableName = $this->db->query_result($fieldRes, $i, 'tablename');
-			$columnName = $this->db->query_result($fieldRes, $i, 'columnname');
+			$tabId = $adb->query_result($fieldRes, $i, 'tabid');
+			$tableName = $adb->query_result($fieldRes, $i, 'tablename');
+			$columnName = $adb->query_result($fieldRes, $i, 'columnname');
 
 			$relatedModule = vtlib_getModuleNameById($tabId);
 			$focusObj = CRMEntity::getInstance($relatedModule);
 
 			$updateQuery = "UPDATE $tableName SET $columnName=? WHERE $columnName=? AND $focusObj->table_index=?";
 			$updateParams = array(null, $return_id, $id);
-			$this->db->pquery($updateQuery, $updateParams);
+			$adb->pquery($updateQuery, $updateParams);
 		}
 		cbEventHandler::do_action('corebos.entity.link.delete.final', $data);
 	}
@@ -1895,12 +1894,12 @@ class CRMEntity {
 	public function restore($module, $id) {
 		global $current_user, $adb;
 
-		$this->db->println("TRANS restore starts $module");
-		$this->db->startTransaction();
+		$adb->println("TRANS restore starts $module");
+		$adb->startTransaction();
 
 		$date_var = date('Y-m-d H:i:s');
 		$query = 'UPDATE '.self::$crmentityTable.' SET deleted=0,modifiedtime=?,modifiedby=? WHERE crmid = ?';
-		$this->db->pquery($query, array($this->db->formatDate($date_var, true), $current_user->id, $id), true, 'Error restoring records :');
+		$adb->pquery($query, array($adb->formatDate($date_var, true), $current_user->id, $id), true, 'Error restoring records :');
 		//Restore related entities/records
 		$this->restoreRelatedRecords($module, $id);
 
@@ -1917,45 +1916,45 @@ class CRMEntity {
 		$em->triggerEvent('vtiger.entity.afterrestore', $entityData);
 		//Event triggering code ends
 
-		$this->db->completeTransaction();
-		$this->db->println('TRANS restore ends');
+		$adb->completeTransaction();
+		$adb->println('TRANS restore ends');
 	}
 
 	/** Function to restore all the related records of a given record by id */
 	public function restoreRelatedRecords($module, $record) {
-
-		$result = $this->db->pquery('SELECT * FROM vtiger_relatedlists_rb WHERE entityid = ?', array($record));
-		$numRows = $this->db->num_rows($result);
+		global $adb;
+		$result = $adb->pquery('SELECT * FROM vtiger_relatedlists_rb WHERE entityid = ?', array($record));
+		$numRows = $adb->num_rows($result);
 		for ($i = 0; $i < $numRows; $i++) {
-			$action = $this->db->query_result($result, $i, 'action');
-			$rel_table = $this->db->query_result($result, $i, 'rel_table');
-			$rel_column = $this->db->query_result($result, $i, 'rel_column');
-			$ref_column = $this->db->query_result($result, $i, 'ref_column');
-			$related_crm_ids = $this->db->query_result($result, $i, 'related_crm_ids');
+			$action = $adb->query_result($result, $i, 'action');
+			$rel_table = $adb->query_result($result, $i, 'rel_table');
+			$rel_column = $adb->query_result($result, $i, 'rel_column');
+			$ref_column = $adb->query_result($result, $i, 'ref_column');
+			$related_crm_ids = $adb->query_result($result, $i, 'related_crm_ids');
 
 			if (strtoupper($action) == RB_RECORD_UPDATED) {
 				$related_ids = explode(',', $related_crm_ids);
 				if ($rel_table == 'vtiger_crmentity' && $rel_column == 'deleted') {
 					$sql = "UPDATE $rel_table set $rel_column = 0 WHERE $ref_column IN (" . generateQuestionMarks($related_ids) . ')';
 					$sql = 'UPDATE vtiger_crmobject set deleted=0 WHERE crmid IN (' . generateQuestionMarks($related_ids) . ')';
-					$this->db->pquery($sql, array($related_ids));
+					$adb->pquery($sql, array($related_ids));
 				} else {
 					$sql = "UPDATE $rel_table set $rel_column = ? WHERE $rel_column = 0 AND $ref_column IN (" . generateQuestionMarks($related_ids) . ')';
-					$this->db->pquery($sql, array($record, $related_ids));
+					$adb->pquery($sql, array($record, $related_ids));
 				}
 			} elseif (strtoupper($action) == RB_RECORD_DELETED) {
 				if ($rel_table == 'vtiger_seproductrel') {
 					$sql = "INSERT INTO $rel_table($rel_column, $ref_column, 'setype') VALUES (?,?,?)";
-					$this->db->pquery($sql, array($record, $related_crm_ids, $module));
+					$adb->pquery($sql, array($record, $related_crm_ids, $module));
 				} else {
 					$sql = "INSERT INTO $rel_table($rel_column, $ref_column) VALUES (?,?)";
-					$this->db->pquery($sql, array($record, $related_crm_ids));
+					$adb->pquery($sql, array($record, $related_crm_ids));
 				}
 			}
 		}
 
 		//Clean up the the backup data also after restoring
-		$this->db->pquery('DELETE FROM vtiger_relatedlists_rb WHERE entityid = ?', array($record));
+		$adb->pquery('DELETE FROM vtiger_relatedlists_rb WHERE entityid = ?', array($record));
 	}
 
 	/**
@@ -2586,14 +2585,14 @@ class CRMEntity {
 		}
 
 		$return_value = null;
-		$dependentFieldSql = $this->db->pquery("SELECT tabid, tablename, fieldname, columnname FROM vtiger_field WHERE uitype='10' AND"
+		$dependentFieldSql = $adb->pquery("SELECT tabid, tablename, fieldname, columnname FROM vtiger_field WHERE uitype='10' AND"
 			.' fieldid IN (SELECT fieldid FROM vtiger_fieldmodulerel WHERE relmodule=? AND module=?)', array($currentModule, $related_module));
-		$numOfFields = $this->db->num_rows($dependentFieldSql);
+		$numOfFields = $adb->num_rows($dependentFieldSql);
 
 		$relWithSelf = false;
 		if ($numOfFields > 0) {
 			$relconds = array();
-			while ($depflds = $this->db->fetch_array($dependentFieldSql)) {
+			while ($depflds = $adb->fetch_array($dependentFieldSql)) {
 				$dependentTable = $depflds['tablename'];
 				if (isset($other->related_tables)) {
 					$otherRelatedTable = (array)$other->related_tables;
@@ -2708,14 +2707,14 @@ class CRMEntity {
 		}
 
 		$return_value = null;
-		$dependentFieldSql = $this->db->pquery("SELECT tabid, tablename, fieldname, columnname FROM vtiger_field WHERE uitype='10' AND" .
+		$dependentFieldSql = $adb->pquery("SELECT tabid, tablename, fieldname, columnname FROM vtiger_field WHERE uitype='10' AND" .
 				' fieldid IN (SELECT fieldid FROM vtiger_fieldmodulerel WHERE relmodule=? AND module=?)', array($currentModule, $related_module));
-		$numOfFields = $this->db->num_rows($dependentFieldSql);
+		$numOfFields = $adb->num_rows($dependentFieldSql);
 
 		$relWithSelf = false;
 		if ($numOfFields > 0) {
 			$relconds = array();
-			while ($depflds = $this->db->fetch_array($dependentFieldSql)) {
+			while ($depflds = $adb->fetch_array($dependentFieldSql)) {
 				$dependentTable = $depflds['tablename'];
 				if (isset($other->related_tables)) {
 					$otherRelatedTable = (array)$other->related_tables;
@@ -3249,7 +3248,7 @@ class CRMEntity {
 			$modulecfindex = $this->customFieldTable[1];
 
 			if (isset($modulecftable)) {
-				$columns = $this->db->getColumnNames($modulecftable);
+				$columns = $adb->getColumnNames($modulecftable);
 				//remove the primary key since it will conflict with base table column name or else creating temporary table will fail for duplicate columns
 				//eg : vtiger_potential has potentialid and vtiger_potentialscf has same potentialid
 				unset($columns[array_search($modulecfindex, $columns)]);

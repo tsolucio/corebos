@@ -12,8 +12,6 @@ require_once 'data/Tracker.php';
 require_once 'vtlib/Vtiger/Module.php';
 
 class ModCommentsCore extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_modcomments';
 	public $table_index= 'modcommentsid';
 	public $column_fields = array();

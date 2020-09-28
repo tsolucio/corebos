@@ -11,8 +11,6 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class cbQuestion extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_cbquestion';
 	public $table_index= 'cbquestionid';
 	public $column_fields = array();
