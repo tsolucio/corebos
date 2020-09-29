@@ -91,9 +91,12 @@ class wfSendFile extends VTTask {
 			$refresh_token = json_decode($data['google_refresh_token'], true);
 			if (isset($refresh_token) && $refresh_token!='') {
 				$this->_accessToken = array(
-					'access_token' => $refresh_token['refresh_token'],
+					'access_token' => $refresh_token['access_token'],
+					'scope' => $refresh_token['scope'],
+					'token_type' => 'Bearer',
 					'created' => $refresh_token['created'],
 					'expires_in' => $refresh_token['expires_in'],
+					'refresh_token' => $refresh_token['refresh_token'],
 				);
 				$client->setAccessToken($this->_accessToken);
 			}
@@ -106,9 +109,12 @@ class wfSendFile extends VTTask {
 						$this->credentialid
 				));
 				$this->_accessToken = array(
-					'access_token' => $new_token['refresh_token'],
+					'access_token' => $new_token['access_token'],
 					'created' => $new_token['created'],
+					'scope' => $new_token['scope'],
+					'token_type' => 'Bearer',
 					'expires_in' => $new_token['expires_in'],
+					'refresh_token' => $new_token['refresh_token'],
 				);
 				$client->setAccessToken($this->_accessToken);
 			}
