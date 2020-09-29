@@ -1,9 +1,12 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	handleOperationChange();
-    document.getElementById("denorm_op").addEventListener("change", function() {
-	handleOperationChange();
-  });
+	document.getElementById("denorm_op").addEventListener("change", function() {
+		handleOperationChange();
+	});
+	document.getElementById("saveBtn").addEventListener("click", function() {
+		VtigerJS_DialogBox.showbusy();
+	});
 });
 
 function handleOperationChange() {
@@ -23,6 +26,7 @@ function handleOperationChange() {
 }
 </script>
 {include file='Buttons_List.tpl'}
+<div class="loader"></div>
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43" aria-modal="true">
 <div class="slds-modal__container slds-p-around_none">
 	<header class="slds-modal__header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
@@ -90,7 +94,7 @@ function handleOperationChange() {
 		</div>
 		</div>
 		<div class="slds-m-top_large">
-			<button type="submit" class="slds-button slds-button_brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
+			<button id="saveBtn" type="submit" class="slds-button slds-button_brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
 		</div>
 		</form>
 	{/if}

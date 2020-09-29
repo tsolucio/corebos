@@ -191,7 +191,6 @@ class corebos_denormalize {
 		$tablename=$adb->query_result($result, 0, 'tablename');
 		$entityidname=$adb->query_result($result, 0, 'entityidfield');
 		$denormtable=$adb->query_result($result, 0, 'denormtable');
-		$isdenormalized=$adb->query_result($result, 0, 'isdenormalized');
 		$undo_denormsql = "INSERT INTO vtiger_crmentity(
 			crmid,
 			cbuuid,
@@ -238,6 +237,19 @@ class corebos_denormalize {
 		$result2=$adb->pquery($sqlupdentitytable, array('0','vtiger_crmentity', getTabid($module)));
 		if ($result && $result1 && $result2) {
 			$msg .= "Process completed for Module ".$module."<br>";
+			$delete_columnssql = "ALTER TABLE $denormtable
+				DROP COLUMN crmid,
+				DROP COLUMN cbuuid,
+				DROP COLUMN smcreatorid,
+				DROP COLUMN smownerid,
+				DROP COLUMN modifiedby,
+				DROP COLUMN createdtime,
+				DROP COLUMN modifiedtime,
+				DROP COLUMN viewedtime,
+				DROP COLUMN setype,
+				DROP COLUMN description,
+				DROP COLUMN deleted";
+				$result3 = $adb->pquery($delete_columnssql, array());
 		}
 		return $msg;
 	}
