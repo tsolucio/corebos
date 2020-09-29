@@ -31,8 +31,8 @@ function MessageBoxPopup() {
 	jQuery('#error_message_box_close').click(close);
 	jQuery('#error_message_box_cancel').click(close);
 	return {
-		close:close,
-		show:show
+		close: close,
+		show: show
 	};
 }
 
@@ -47,14 +47,14 @@ var validateMandatoryFields = {
 		var mandatoryFields = this.mandatoryFields;
 		for (var i = 0; i < mandatoryFields.length; i++) {
 			var fieldName = mandatoryFields[i];
-			if (typeof this.fieldValue(fieldName) == 'undefined' || this.fieldValue(fieldName)=='') {
+			if (typeof this.fieldValue(fieldName) == 'undefined' || this.fieldValue(fieldName) == '') {
 				emptyFields.push(fieldName);
 			}
 		}
-		if (emptyFields.length!=0) {
-			result =  [false, 'empty_fields_message', emptyFields];
+		if (emptyFields.length != 0) {
+			result = [false, 'empty_fields_message', emptyFields];
 		} else {
-			result =  [true];
+			result = [true];
 		}
 		return result;
 	}
@@ -64,7 +64,7 @@ var validateFieldData = {
 	init: function () {
 		this.validateFieldData = {};
 
-		this.validateDateTime= function (value) {
+		this.validateDateTime = function (value) {
 			value = trim(value);
 			var dateTimeElements = value.split(' ');
 			var datePart = dateTimeElements[0];
@@ -84,25 +84,25 @@ var validateFieldData = {
 			var mm = dateParts[1];
 			var dd = dateParts[2];
 
-			if (dd<1 || dd>31 || mm<1 || mm>12 || yyyy<1 || yyyy<1000) {
+			if (dd < 1 || dd > 31 || mm < 1 || mm > 12 || yyyy < 1 || yyyy < 1000) {
 				return false;
 			}
 
-			if ((mm==2) && (dd>29)) {
+			if ((mm == 2) && (dd > 29)) {
 				return false;
 			}
 
-			if ((mm==2) && (dd>28) && ((yyyy%4)!=0)) {
+			if ((mm == 2) && (dd > 28) && ((yyyy % 4) != 0)) {
 				return false;
 			}
 
 			switch (parseInt(mm)) {
-			case 2 :
-			case 4 :
-			case 6 :
-			case 9 :
-			case 11 :
-				if (dd>30) {
+			case 2:
+			case 4:
+			case 6:
+			case 9:
+			case 11:
+				if (dd > 30) {
 					return false;
 				}
 			}
@@ -119,14 +119,14 @@ var validateFieldData = {
 			var hourval = timeParts[0];
 			var minval = timeParts[1];
 
-			if (hourval>23 || minval>59) {
+			if (hourval > 23 || minval > 59) {
 				return false;
 			}
 			return true;
 		};
-		this.validateInteger= function (value) {
+		this.validateInteger = function (value) {
 			value = trim(value);
-			if (isNaN(value) || value.indexOf('.')!=-1) {
+			if (isNaN(value) || value.indexOf('.') != -1) {
 				return false;
 			}
 			if (value < -2147483648 || value > 2147483647) {
@@ -134,16 +134,16 @@ var validateFieldData = {
 			}
 			return true;
 		};
-		this.validateNumeric= function (value) {
+		this.validateNumeric = function (value) {
 			value = trim(value);
 			if (isNaN(value)) {
 				return false;
 			}
 			return true;
 		},
-		this.validateEmail= function (value) {
+		this.validateEmail = function (value) {
 			value = trim(value);
-			var re=new RegExp(/^[a-zA-Z0-9]+([\_\-\.]*[a-zA-Z0-9]+[\_\-]?)*@[a-zA-Z0-9]+([\_\-]?[a-zA-Z0-9]+)*\.+([\-\_]?[a-zA-Z0-9])+(\.?[a-zA-Z0-9]+)*$/);
+			var re = new RegExp(/^[a-zA-Z0-9]+([\_\-\.]*[a-zA-Z0-9]+[\_\-]?)*@[a-zA-Z0-9]+([\_\-]?[a-zA-Z0-9]+)*\.+([\-\_]?[a-zA-Z0-9])+(\.?[a-zA-Z0-9]+)*$/);
 			if (!re.test(value)) {
 				return false;
 			}
@@ -153,7 +153,7 @@ var validateFieldData = {
 	validator: function () {
 		var invalidFieldValues = {};
 		jQuery('#invalid_field_values_message').css('display', 'none');
-		var result =  [true];
+		var result = [true];
 		var validationFailed = false;
 		var fieldInfo = this.validateFieldData;
 		for (var fieldName in fieldInfo) {
@@ -161,9 +161,9 @@ var validateFieldData = {
 			var fieldType = fieldDetails['type'];
 			var fieldValue = this.fieldValue(fieldName);
 
-			if (typeof fieldValue == 'undefined' || fieldValue == ''
-				|| fieldValue.replace(/^\s+/g, '').replace(/\s+$/g, '').length == 0) {
-			// Empty value, no value validation required.
+			if (typeof fieldValue == 'undefined' || fieldValue == '' ||
+                fieldValue.replace(/^\s+/g, '').replace(/\s+$/g, '').length == 0) {
+				// Empty value, no value validation required.
 			} else if (fieldType == 'email') {
 				if (!this.validateEmail(fieldValue)) {
 					invalidFieldValues[fieldName] = fieldDetails;
@@ -202,9 +202,9 @@ var validateFieldData = {
 			for (fieldName in invalidFieldValues) {
 				errorMessageDetails += '<li>' + invalidFieldValues[fieldName]['label'] + ' (' + invalidFieldValues[fieldName]['type'] + ') </li>';
 			}
-			var errorMessageElement =  jQuery('#invalid_field_values_fieldlist');
+			var errorMessageElement = jQuery('#invalid_field_values_fieldlist');
 			errorMessageElement.html(errorMessageDetails);
-			result =  [false, 'invalid_field_values_message', invalidFieldValues];
+			result = [false, 'invalid_field_values_message', invalidFieldValues];
 		}
 		return result;
 	}
@@ -217,13 +217,14 @@ var VTFieldValidatorPrototype = {
 		for (var i = 0; i < validators.length; i++) {
 			var validator = validators[i];
 			var result = validator.call(this);
-			if (result[0]==false) {
-				jQuery('#'+result[1]).css('display', 'block');
+			if (result[0] == false) {
+				jQuery('#' + result[1]).css('display', 'block');
 				isValid = false;
 			}
 		}
 		if (!isValid) {
-			this.messageBoxPopup.show();
+			// this.messageBoxPopup.show();
+			ldsPrompt.show(alert_arr['ERROR'], alert_arr['ERR_MANDATORY_FIELD_VALUE']);
 		}
 		return isValid;
 	},
@@ -232,7 +233,7 @@ var VTFieldValidatorPrototype = {
 		this.validators.push(validator.validator);
 	},
 	fieldValue: function (fieldName) {
-		return this.form.find('[name='+fieldName+']').val();
+		return this.form.find('[name=' + fieldName + ']').val();
 	}
 };
 

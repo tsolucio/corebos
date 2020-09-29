@@ -1,16 +1,17 @@
 function edittaskscript($) {
+	var validator;
 
 	function NumberBox(element) {
 		var elementId = element.prop('id');
-		var boxId = '#'+elementId+'-number-box';
+		var boxId = '#' + elementId + '-number-box';
 		var str = '';
 		for (var i = 1; i <= 30; i++) {
-			str += '<a href="#'+i+'" class="box_cel">'+(i < 10? ('0'+i) : i)+'</a> ';
+			str += '<a href="#' + i + '" class="box_cel">' + (i < 10 ? ('0' + i) : i) + '</a> ';
 			if (!(i % 5)) {
-				str+='<br>';
+				str += '<br>';
 			}
 		}
-		element.after('<div id="'+elementId+'-number-box" style="display:none;" class="box">'+str+'</div>');
+		element.after('<div id="' + elementId + '-number-box" style="display:none;" class="box">' + str + '</div>');
 		element.focus(function () {
 			var pos = element.position();
 			$(boxId).css('display', 'block');
@@ -18,7 +19,7 @@ function edittaskscript($) {
 				width: '200px',
 				'z-index': '1',
 				position: 'absolute',
-				top: (pos.top+25)+'px'
+				top: (pos.top + 25) + 'px'
 			});
 		});
 
@@ -47,11 +48,14 @@ function edittaskscript($) {
 			}
 		});
 		$('#edittask_cancel_button').click(function () {
-			window.location=returnUrl;
+			window.location = returnUrl;
 		});
 		$('#save').bind('click', function edittasksaveevent() {
+			if (!validator.validate()) {
+				return false;
+			}
 			var conditions = [];
-			var i=0;
+			var i = 0;
 			$('#save_conditions').children('.condition_group_block').each(function (j, conditiongroupblock) {
 				$(conditiongroupblock).children('.save_condition_group').each(function (k, conditiongroup) {
 					$(conditiongroup).children().each(function () {
@@ -63,31 +67,31 @@ function edittaskscript($) {
 						var groupid = this.querySelector('div > .groupid').value;
 						var groupjoin = '';
 						if (groupid != '') {
-							let scgj = document.getElementById('save_condition_group_'+groupid+'_joincondition');
+							let scgj = document.getElementById('save_condition_group_' + groupid + '_joincondition');
 							if (scgj != null) {
 								groupjoin = scgj.value;
 							}
 						}
 						var condition = {
-							fieldname:fieldname,
-							operation:operation,
-							value:value,
-							valuetype:valuetype,
-							joincondition:joincondition,
-							groupid:groupid,
-							groupjoin:groupjoin
+							fieldname: fieldname,
+							operation: operation,
+							value: value,
+							valuetype: valuetype,
+							joincondition: joincondition,
+							groupid: groupid,
+							groupjoin: groupjoin
 						};
-						conditions[i++]=condition;
+						conditions[i++] = condition;
 					});
 				});
 			});
 			var out = '';
-			if (conditions.length>0) {
+			if (conditions.length > 0) {
 				out = JSON.stringify(conditions);
 			}
 			$('#save_conditions_json').prop('value', out);
 			$._data(document.getElementById('save'), 'events').click.map(ev => {
-				if (ev.handler.name!='edittasksaveevent') {
+				if (ev.handler.name != 'edittasksaveevent') {
 					ev.handler();
 				}
 			});
