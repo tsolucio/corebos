@@ -23,7 +23,7 @@ $(document).ready(function() {
 });
 </script>
 <section id="denorm_responsebody" role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
-  <div class="slds-modal__container" style="height:400px; border:20px;">
+  <div class="slds-modal__container" style="height:fit-content; border:20px;">
     <header class="slds-modal__header">
       <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{'denormalize response'|@getTranslatedString}</h2>
     </header>

@@ -22,24 +22,41 @@ $smarty = new vtigerCRM_Smarty();
 $cbosDenormalize = new corebos_denormalize();
 global $adb, $current_user;
 $isadmin = is_admin($current_user);
-if ($isadmin && $_REQUEST['_op'] =='setconfigdenormalization' && $_REQUEST['denormalize_isactive']=='on') {
+if ($isadmin && $_REQUEST['_op'] =='setconfigdenormalization' && $_REQUEST['denormalize_isactive']=='on' && $_REQUEST['denorm_op']) {
 	$isActive = ((empty($_REQUEST['denormalize_isactive']) || $_REQUEST['denormalize_isactive']!='on') ? 0 : 1);
-	$selectedModuleList = (empty($_REQUEST['denor_mods']) ? array() : $_REQUEST['denor_mods']);
-	if (count($selectedModuleList) > 0) {
-		$denormalize_res = $cbosDenormalize->dernormalizeModules($selectedModuleList);
+	if ($_REQUEST['denorm_op'] == 'denorm') {
+		$selectedModuleList = (empty($_REQUEST['denor_mods']) ? array() : $_REQUEST['denor_mods']);
+		if (count($selectedModuleList) > 0) {
+			$denormalize_res = $cbosDenormalize->dernormalizeModules($selectedModuleList);
+			$updateddenorm_list = $cbosDenormalize->denormGetAllModules('denorm_mod');
+			$cbosDenormalize->saveSettings(
+				$isActive,
+				json_encode($updateddenorm_list)
+			);
+		}
 	}
-	$cbosDenormalize->saveSettings(
-		$isActive,
-		json_encode($selectedModuleList)
-	);
+	if ($_REQUEST['denorm_op'] == 'undo_denorm') {
+		$selectedModuleList = (empty($_REQUEST['denorm_mod']) ? array() : $_REQUEST['denorm_mod']);
+		if (count($selectedModuleList) > 0) {
+			$denormalize_res = $cbosDenormalize->undoDernormalizeModules($selectedModuleList);
+			$updateddenorm_list = $cbosDenormalize->denormGetAllModules('denorm_mod');
+			$cbosDenormalize->saveSettings(
+				$isActive,
+				json_encode($updateddenorm_list)
+			);
+			$smarty->assign('denormop', 'undo_denorm');
+		}
+	}
 }
 $allmodules = $cbosDenormalize->denormGetAllModules();
 $smarty->assign('TITLE_MESSAGE', getTranslatedString('Denormalization Activation', $currentModule));
 $dmsettings = $cbosDenormalize->getSettings();
-$denormodulelist = empty($dmsettings['denormodule_list']) ? array():json_decode($dmsettings['denormodule_list']);
+$denormodulelist = $cbosDenormalize->denormGetAllModules('undo_denorm');
 $smarty->assign('isActive', $cbosDenormalize->isActive());
 $smarty->assign('modulelist', $allmodules);
+$smarty->assign('totalmodulelist', count($allmodules));
 $smarty->assign('denormodulelist', $denormodulelist);
+$smarty->assign('totaldenormodulelist', count($denormodulelist));
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);

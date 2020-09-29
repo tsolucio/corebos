@@ -1,3 +1,27 @@
+<script type="text/javascript">
+$(document).ready(function() {
+	handleOperationChange();
+    document.getElementById("denorm_op").addEventListener("change", function() {
+	handleOperationChange();
+  });
+});
+
+function handleOperationChange() {
+	$denorm_operation =  document.getElementById("denorm_op").value;
+	switch($denorm_operation) {
+	case 'denorm':
+		document.getElementById("denormDiv").style.display = "";
+		document.getElementById("denormalizedDiv").style.display = "none";
+		break;
+	case 'undo_denorm':
+		document.getElementById("denormalizedDiv").style.display = "";
+		document.getElementById("denormDiv").style.display = "none";
+		break;
+	default:
+		break;
+	}
+}
+</script>
 {include file='Buttons_List.tpl'}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43" aria-modal="true">
 <div class="slds-modal__container slds-p-around_none">
@@ -28,7 +52,34 @@
 			</span>
 			</label>
 		</div>
-		<div class="slds-form-element slds-m-top_small">
+		<div class="slds-form-element">
+			<label class="slds-form-element__label" for="denorm_op">
+				<abbr class="slds-required" title="required">* </abbr>Select Operation <span class="slds-badge .slds-theme_success">Denormalized {$totaldenormodulelist}/{$totalmodulelist}</span></label>
+			<div class="slds-form-element__control">
+				<div class="slds-select_container">
+				<select class="slds-select" id="denorm_op" name="denorm_op" required="">
+					<option {if (isset($denormop) && $denormop eq "denorm")}{"selected"}{/if} value = 'denorm'>Denormalize</option>
+					<option {if (isset($denormop) && $denormop eq "undo_denorm")}{"selected"}{/if}  value = 'undo_denorm'>Undo Denormalize</option>
+				</select>
+				</div>
+			</div>
+		</div><br>
+		<div id="denormalizedDiv" class="slds-form-element" style="display:none; overflow:scroll">
+			<legend class="slds-form-element__legend slds-form-element__label">Denormalized List(Select & Save to undo)</legend>
+			<div class="slds-form-element__control">
+			<div class="slds-checkbox_button-group" style="width: 50%;">
+			{foreach key=denormodindex item=denormodulename from=$denormodulelist}
+				<span class="slds-button slds-checkbox_button">
+					<input type="checkbox" id="denorm_mod{$denormodindex}" value="{$denormodulename}" name="denorm_mod[]" />
+					<label class="slds-checkbox_button__label" for="denorm_mod{$denormodindex}">
+						<span class="slds-checkbox_faux">{$denormodulename}</span>
+					</label>
+				</span>
+			{/foreach}
+			</div>
+			</div>
+		</div>
+		<div id="denormDiv" class="slds-form-element slds-m-top_small">
 		<label class="slds-form-element__label" for="denor_mods">{'SelectDenormalize'|@getTranslatedString:'Utilities'}</label>
 		<div class="slds-form-element__control">
 			<select class="slds-select" id="denor_mods" name='denor_mods[]' multiple="">

@@ -21,6 +21,8 @@ class corebos_denormalize {
 	private $denormodulelist;
 	const KEY_ISACTIVE = 'denormalize_isactive';
 	const KEY_DENOR_MODULELIST = 'denormodule_list';
+	const DENORM_OPERATION = 'denorm_mod';
+	const UNDO_DENORM_OPERATION = 'undo_denorm';
 
 	public function __construct() {
 		$this->initGlobalScope();
@@ -51,13 +53,17 @@ class corebos_denormalize {
 		return ($isactive==1);
 	}
 
-	public function denormGetAllModules($todenormalize = false) {
+	public function denormGetAllModules($operation = '') {
 		global $adb;
 		$query = 'SELECT modulename FROM vtiger_entityname';
 		$condition = array();
-		if ($todenormalize) {
+		if ($operation == self::DENORM_OPERATION) {
 			$query .= ' WHERE isdenormalized = ?';
 			$condition[] = '0';
+		}
+		if ($operation == self::UNDO_DENORM_OPERATION) {
+			$query .= ' WHERE isdenormalized = ?';
+			$condition[] = '1';
 		}
 		$result=$adb->pquery($query, $condition);
 		$totalmodules = $adb->num_rows($result);
@@ -70,11 +76,11 @@ class corebos_denormalize {
 		return $module_arr;
 	}
 
-	public function getModulestoDernormalize($selectedModuleList) {
-		$undernormalizedModules = $this->denormGetAllModules(true);
+	public function getModulestoDernormalize($selectedModuleList, $operation) {
+		$modulestoprocess = $this->denormGetAllModules($operation);
 		$totalSelectedMods = count($selectedModuleList);
 		for ($xz=0; $xz <$totalSelectedMods; $xz++) {
-			if (!in_array($selectedModuleList[$xz], $undernormalizedModules, true)) {
+			if (!in_array($selectedModuleList[$xz], $modulestoprocess, true)) {
 				unset($selectedModuleList[$xz]);
 			}
 		}
@@ -82,14 +88,18 @@ class corebos_denormalize {
 	}
 
 	public function dernormalizeModules($selectedModuleList) {
-		$modules = $this->getModulestoDernormalize($selectedModuleList);
+		$smarty = new vtigerCRM_Smarty();
+		$msg = '';
+		$modules = $this->getModulestoDernormalize($selectedModuleList, 'denorm_mod');
 		for ($yz=0; $yz < count($modules); $yz++) {
 			try {
-				$res = $this->denormalizeProcess($modules[$yz]);
+				$msg .= $this->denormalizeProcess($modules[$yz]);
 			} catch (Exception $e) {
-				$resMsg = $e->getMessage();
+				$msg .= $e->getMessage();
 			}
 		}
+		$smarty->assign('DENORM_RESPONSE', $msg);
+		$smarty->display('modules/Utilities/denormalizefeedback.tpl');
 		return;
 	}
 
@@ -152,9 +162,84 @@ class corebos_denormalize {
 		}
 		$sqlupdentitytable = 'UPDATE vtiger_entityname SET isdenormalized = ?, denormtable = ? WHERE vtiger_entityname.tabid = ?';
 		$result4=$adb->pquery($sqlupdentitytable, array('1',$tablename, getTabid($module)));
+		return $msg;
+	}
+
+	public function undoDernormalizeModules($selectedModuleList) {
+		$smarty = new vtigerCRM_Smarty();
+		$msg = '';
+		$modules = $this->getModulestoDernormalize($selectedModuleList, 'undo_denorm');
+		for ($yz=0; $yz < count($modules); $yz++) {
+			try {
+				$msg .= $this->undoDenormalizeProcess($modules[$yz]);
+			} catch (Exception $e) {
+				$msg .= $e->getMessage();
+			}
+		}
 		$smarty->assign('DENORM_RESPONSE', $msg);
 		$smarty->display('modules/Utilities/denormalizefeedback.tpl');
-		return true;
+		return;
+	}
+
+	public function undoDenormalizeProcess($module) {
+		$Vtiger_Utils_Log = true;
+		include_once 'vtlib/Vtiger/Module.php';
+		global $adb;
+		$msg = '';
+		$query='SELECT tablename,denormtable, isdenormalized, entityidfield FROM vtiger_entityname WHERE modulename=?';
+		$result=$adb->pquery($query, array($module));
+		$tablename=$adb->query_result($result, 0, 'tablename');
+		$entityidname=$adb->query_result($result, 0, 'entityidfield');
+		$denormtable=$adb->query_result($result, 0, 'denormtable');
+		$isdenormalized=$adb->query_result($result, 0, 'isdenormalized');
+		$undo_denormsql = "INSERT INTO vtiger_crmentity(
+			crmid,
+			cbuuid,
+			smcreatorid,
+			smownerid,
+			modifiedby,
+			createdtime,
+			modifiedtime,
+			viewedtime,
+			setype,
+			description,
+			deleted
+		)
+		SELECT
+			crmid,
+			cbuuid,
+			smcreatorid,
+			smownerid,
+			modifiedby,
+			createdtime,
+			modifiedtime,
+			viewedtime,
+			setype,
+			description,
+			deleted
+		FROM
+			$denormtable
+		ON DUPLICATE KEY
+		UPDATE
+			`cbuuid` = vtiger_crmentity.cbuuid,
+			`smcreatorid` = vtiger_crmentity.smcreatorid,
+			`smownerid`= vtiger_crmentity.smownerid,
+			`modifiedby`= vtiger_crmentity.modifiedby,
+			`createdtime`= vtiger_crmentity.createdtime,
+			`modifiedtime`= vtiger_crmentity.modifiedtime,
+			`viewedtime`= vtiger_crmentity.viewedtime,
+			`setype`= vtiger_crmentity.setype,
+			`description`= vtiger_crmentity.description,
+			`deleted` = vtiger_crmentity.deleted";
+		$result = $adb->pquery($undo_denormsql, array());
+		$updfields = 'update vtiger_field set tablename=? where tabid=? and tablename=?';
+		$result1=$adb->pquery($updfields, array('vtiger_crmentity', getTabid($module), $denormtable));
+		$sqlupdentitytable = 'UPDATE vtiger_entityname SET isdenormalized = ?, denormtable = ? WHERE vtiger_entityname.tabid = ?';
+		$result2=$adb->pquery($sqlupdentitytable, array('0','vtiger_crmentity', getTabid($module)));
+		if ($result && $result1 && $result2) {
+			$msg .= "Process completed for Module ".$module."<br>";
+		}
+		return $msg;
 	}
 }
 ?>
