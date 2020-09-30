@@ -50,7 +50,8 @@ if (empty($selected_module) || $selected_module == 'Documents') {
 	}
 }
 if ($allrec==1 && !empty($selected_module)) {
-	$adb->pquery('DELETE FROM vtiger_crmentity WHERE deleted=1 and setype=?', array($selected_module));
+	$denormModules = getDenormalizedModules($selected_module);
+	$adb->pquery("DELETE FROM $denormModules[0] WHERE deleted=1 and setype=?", array($selected_module));
 	$adb->pquery('DELETE FROM vtiger_relatedlists_rb WHERE entityid in ('.generateQuestionMarks($idlists).')', array($idlists));
 	$adb->pquery('DELETE FROM vtiger_crmobject WHERE deleted=1 and setype=?', array($selected_module));
 	$crmtable = CRMEntity::getcrmEntityTableAlias($selected_module, true);
@@ -67,6 +68,12 @@ if ($allrec==1 && !empty($selected_module)) {
 	$adb->query('DELETE FROM vtiger_relatedlists_rb');
 } else {
 	if (count($idlists)>0) {
+		$denormModules = getDenormalizedModules();
+		if (count($denormModules) > 0) {
+			foreach ($denormModules as $key => $table) {
+				$adb->pquery("DELETE FROM $table WHERE deleted=1 and crmid in (".generateQuestionMarks($idlists).")", array($idlists));
+			}
+		}
 		$adb->pquery('DELETE FROM vtiger_crmentity WHERE deleted=1 and crmid in ('.generateQuestionMarks($idlists).')', array($idlists));
 		$adb->pquery('DELETE FROM vtiger_crmobject WHERE deleted=1 and crmid in ('.generateQuestionMarks($idlists).')', array($idlists));
 		$adb->pquery('DELETE FROM vtiger_relatedlists_rb WHERE entityid in ('.generateQuestionMarks($idlists).')', array($idlists));

@@ -521,6 +521,25 @@ function getCrmObject($name = false) {
 }
 
 /**
+ * Function to get all denormalized modules
+ * @param string $module - check for a specific module
+ * @return tables
+ */
+function getDenormalizedModules($module = '') {
+	global $log, $adb;
+	$log->debug('> getDenormalizedModules');
+	$where = $module != '' ? "and modulename='$module'" : '';
+	$result = $adb->pquery("select denormtable from vtiger_entityname where isdenormalized=1 $where", array());
+	$tables = array();
+	while ($row = $result->FetchRow()) {
+		$denormtable = $row['denormtable'];
+		array_push($tables, $denormtable);
+	}
+	$log->debug('< getDenormalizedModules');
+	return $tables;
+}
+
+/**
  * Function to get the AccountName from an account id
  * Takes the input as $acount_id - account id
  * returns the account name in string format.

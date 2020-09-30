@@ -2097,6 +2097,12 @@ function deleteGroup($groupId, $transferId) {
 function tranferGroupOwnership($groupId, $transferId) {
 	global $log, $adb;
 	$log->debug('> tranferGroupOwnership '.$groupId);
+	$denormModules = getDenormalizedModules();
+	if (count($denormModules) > 0) {
+		foreach ($denormModules as $key => $table) {
+			$adb->pquery('update '.$table.' set smownerid=? where smownerid=?', array($transferId, $groupId));
+		}
+	}
 	$adb->pquery('update vtiger_crmentity set smownerid=? where smownerid=?', array($transferId, $groupId));
 	$adb->pquery('update vtiger_crmobject set smownerid=? where smownerid=?', array($transferId, $groupId));
 	if (Vtiger_Utils::CheckTable('vtiger_customerportal_prefs')) {

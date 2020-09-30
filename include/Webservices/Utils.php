@@ -861,10 +861,17 @@ function vtws_transferComments($sourceRecordId, $destinationRecordId) {
 function vtws_transferOwnership($ownerId, $newOwnerId, $delete = true) {
 	$db = PearDatabase::getInstance();
 	//Updating the smcreatorid,smownerid, modifiedby in vtiger_crmentity
+	$denormModules = getDenormalizedModules();
+	if (count($denormModules) > 0) {
+		foreach ($denormModules as $key => $table) {
+			$db->pquery('update '.$table.' set smcreatorid=? where smcreatorid=?', array($newOwnerId, $ownerId));
+			$db->pquery('update '.$table.' set smownerid=? where smownerid=?', array($newOwnerId, $ownerId));
+			$db->pquery('update '.$table.' set modifiedby=? where modifiedby=?', array($newOwnerId, $ownerId));
+		}
+	}
 	$db->pquery('update vtiger_crmentity set smcreatorid=? where smcreatorid=?', array($newOwnerId, $ownerId));
 	$db->pquery('update vtiger_crmentity set smownerid=? where smownerid=?', array($newOwnerId, $ownerId));
 	$db->pquery('update vtiger_crmentity set modifiedby=? where modifiedby=?', array($newOwnerId, $ownerId));
-
 	//Updating the createdby in vtiger_attachmentsfolder
 	$db->pquery('update vtiger_attachmentsfolder set createdby=? where createdby=?', array($newOwnerId, $ownerId));
 
