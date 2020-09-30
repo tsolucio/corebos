@@ -1,4 +1,5 @@
 function edittaskscript($) {
+	var validator;
 
 	function NumberBox(element) {
 		var elementId = element.prop('id');
@@ -50,6 +51,9 @@ function edittaskscript($) {
 			window.location=returnUrl;
 		});
 		$('#save').bind('click', function edittasksaveevent() {
+			if (!validator.validate()) {
+				return false;
+			}
 			var conditions = [];
 			var i=0;
 			$('#save_conditions').children('.condition_group_block').each(function (j, conditiongroupblock) {
