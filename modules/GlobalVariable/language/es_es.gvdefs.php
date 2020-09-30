@@ -115,8 +115,8 @@ $GlobalVariableDefinitons = array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
 	'category' => 'Depuración',
-	'values' => '0 | 1',
-	'definition' => 'Si se establece en 1, enviará correo electrónico SIEMPRE a través de la configuración del servidor saliente, que debe establecerse en la configuración de inBucket',
+	'values' => 'InBucket SMTP Listener',
+	'definition' => 'Si se establece, el valor se utilizará como servidor de correo saliente',
 ),
 'Accounts_BlockDuplicateName' => array(
 	'status' => 'Implementada',
@@ -250,6 +250,20 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Webservice',
 	'values' => 'CSV of authorized CORS domains',
 	'definition' => 'CSV de URI de dominios autorizados a acceder al servicio webservice. El valor especial asterisco "*" dará acceso a cualquier dominio.',
+),
+'Webservice_Describe_ReturnUserList' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => 'Devuelve la lista de usuarios disponibles en el campo assigned_user_id. Esto puede ser muy grande y producir problemas con el navegador. Puedes obtener la lista del método getAssignedUserlist.',
+),
+'Webservice_Describe_ReturnGroupList' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => 'Devuelve la lista de grupos disponibles en el campo assigned_user_id. Si no utilizas grupos en tu aplicación externa, puedes obtener algún beneficio marginal.',
 ),
 'SOAP_CustomerPortal_Enabled' => array(
 	'status' => 'Implementada',
@@ -502,6 +516,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => 'yes | no',
 	'definition' => 'Ejecutar eventos y flujos de trabajo al importar registros. El valor por defecto es no',
+),
+'Import_LeaveUserReferenceFieldEmpty' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Los campos de referencia a usuario se establecerán al usuario que importa los datos si el valor está vacío o el usuario no tiene permiso para realizar esa asignación. Si esta variable se establece en 1, el campo se dejará vacío si está vacío.',
 ),
 'Export_Field_Separator_Symbol' => array(
 	'status' => 'Implementada',
@@ -1286,6 +1307,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => 'Estilo CSS',
 	'definition' => 'Estilo CSS aplicado en la caja de comentario de las líneas de inventario. Por defecto define altura y anchura.',
+),
+'Application_Textarea_Style' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'Estilo CSS',
+	'definition' => 'Estilo CSS aplicado en las cajas de texto. Por defecto define la altura.',
 ),
 'Application_Group_Selection_Permitted' => array(
 	'status' => 'Implementada',

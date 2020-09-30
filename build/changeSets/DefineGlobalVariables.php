@@ -107,6 +107,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_CSRF_Valid_IP',
 				'Application_PopupScreen_Width',
 				'Application_PopupScreen_Height',
+				'Application_Textarea_Style',
 
 				'Graph_DataLabels',
 				'Graph_DataLabels_Color',
@@ -149,6 +150,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Webservice_Enabled',
 				'WebService_Session_Life_Span',
 				'WebService_Session_Idle_Time',
+				'Webservice_Describe_ReturnUserList',
+				'Webservice_Describe_ReturnGroupList',
 				'SOAP_CustomerPortal_Enabled',
 				'SOAP_Outlook_Enabled',
 
@@ -169,6 +172,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Import_Batch_Limit',
 				'Import_Scheduled_Limit',
 				'Import_Launch_EventsAndWorkflows',
+				'Import_LeaveUserReferenceFieldEmpty',
 				'Export_Field_Separator_Symbol',
 				'Export_RelatedField_GetValueFrom',
 				'Export_RelatedField_NameForSearch',

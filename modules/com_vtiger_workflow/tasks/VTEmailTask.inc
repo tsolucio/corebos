@@ -151,7 +151,8 @@ class VTEmailTask extends VTTask {
 		$cc = preg_replace('/,,+/', ',', $cc);
 		$bcc = preg_replace('/,,+/', ',', $bcc);
 		if (strlen(trim($to_email, " \t\n,")) == 0 && strlen(trim($cc, " \t\n,")) == 0 && strlen(trim($bcc, " \t\n,")) == 0) {
-			return ;
+			$util->revertUser();
+			return;
 		}
 		if (!empty($entity->WorkflowContext['SendThisMsgTemplate'])) {
 			if (strpos($entity->WorkflowContext['SendThisMsgTemplate'], 'x')>0) {

@@ -24,7 +24,7 @@ $type = vtlib_purify($_REQUEST['type']);
 $driver = $adb->pquery('select path, functionname from vtiger_notificationdrivers where type=?', array($type));
 $path = $adb->query_result($driver, 0, 0);
 $function = $adb->query_result($driver, 0, 1);
-if ($type == 'googlecal') {
+if ($type == 'googlecal' || $type == 'googlestorage') {
 	$input = $_GET['code'];
 } else {
 	$input = file_get_contents('php://input');

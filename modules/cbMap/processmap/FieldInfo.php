@@ -77,7 +77,11 @@ class FieldInfo extends processcbMap {
 					$features[(String)$feature->name] = (String)$feature->value;
 				} else {
 					foreach ($feature->values->value as $key1 => $single_value) {
-						$features[(String)$feature->name][(String)$single_value->module] = (String)$single_value->value;
+						if (isset($single_value->module)) {
+							$features[(String)$feature->name][(String)$single_value->module] = (String)$single_value->value;
+						} else {
+							$features[(String)$feature->name][] = isset($single_value->value) ? (String)$single_value->value : (String)$single_value;
+						}
 					}
 				}
 			}

@@ -291,5 +291,6 @@ $mod_strings = array(
 	'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Error while deleting the folder.',
 	'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Error while deleting the reports of the folder',
 	'ERR_CREATE_REPORT' => 'Error creating the report.',
+	'Select Report' => 'Select report',
 );
 ?>

@@ -302,4 +302,32 @@
 	<classname>addFilePLValueOnQuestion</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>george1806</author>
+	<description>Install generate report workflow task</description>
+	<filename>build/changeSets/2020/installgenerateReportWfTask.php</filename>
+	<classname>installgenerateReportWfTask</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Add Send File workflow task</description>
+	<filename>build/changeSets/2020/addExeWFSendFilesTask.php</filename>
+	<classname>addExeWFSendFilesTask</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Install cbCredentials module</description>
+	<filename>build/changeSets/2020/installcbCredentials.php</filename>
+	<classname>installcbCredentials</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Install Google Authencitation Driver</description>
+	<filename>build/changeSets/2020/googleAuthDriver.php</filename>
+	<classname>googleAuthDriver</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

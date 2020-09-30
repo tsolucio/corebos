@@ -175,7 +175,7 @@ class Vtiger_FieldBasic {
 				$this->uitype,
 				$this->name,
 				$this->label,
-				$this->readonly,
+				isset($this->readonly) ? $this->readonly : 1,
 				$this->presence,
 				$this->defaultvalue,
 				$this->maximumlength,

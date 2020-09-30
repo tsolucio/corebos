@@ -294,6 +294,7 @@ $mod_strings = array(
 	'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Eroare la stergerea dosarului.',
 	'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Eroare la stergerea rapoarteler din dosar',
 	'ERR_CREATE_REPORT' => 'Eroare la crearea raportului.',
+	'Select Report' => 'Select report',
 	'WEEKDAY_STRINGS' => array(
 		'' => 'Sunday',
 		'1' => 'Luni',
