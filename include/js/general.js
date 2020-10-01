@@ -5514,11 +5514,48 @@ AutocompleteRelation.prototype.get = function (e) {
 			r.open('GET', 'index.php?module=Utilities&action=UtilitiesAjax&file=getAutocomplete&'+params, true);
 			r.send();
 		}
+	} else if (Array.isArray(this.data)) {
+		var acInstance = this;
+		this.activate();
+		if (this.data.length == 0) {
+			acInstance.clearTargetUL();
+			if (!!window.currentAc) {
+				window.currentAc.deactivate();
+			}
+		} else {
+			acInstance.comboboxAutocompleteList(this.data.filter(val => (typeof val == 'string' && val.indexOf(term)!=-1)));
+		}
 	} else {
 		this.clearTargetUL();
 		this.targetUL.hide();
 	}
 };
+
+AutocompleteRelation.prototype.comboboxAutocompleteList = function (values) {
+	this.clearTargetUL();
+	this.targetUL.show();
+	var acInstance = this;
+	for (var i = 0; i < values.length; i++) {
+		var li = document.createElement('li');
+		li.className = 'slds-listbox__item';
+		li.setAttribute('role', 'presentation');
+		li.setAttribute('data-label', values[i]);
+		var span = document.createElement('span');
+		span.setAttribute('class', 'slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta');
+		span.setAttribute('role', 'option');
+		span.innerHTML = values[i];
+		li.appendChild(span);
+		this.targetUL.appendChild(li);
+		li.addEventListener('click', function (e) {
+			acInstance.inputField.value = this.getAttribute('data-label');
+			acInstance.fillOtherFields(this);
+		});
+		if (i === 0) {
+			window.currentAcItem = li;
+			highlightAcItem(li, true);
+		}
+	}
+}
 
 AutocompleteRelation.prototype.set = function (items) {
 	if (items.length > 0) {
