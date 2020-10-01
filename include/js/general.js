@@ -5555,7 +5555,7 @@ AutocompleteRelation.prototype.comboboxAutocompleteList = function (values) {
 			highlightAcItem(li, true);
 		}
 	}
-}
+};
 
 AutocompleteRelation.prototype.set = function (items) {
 	if (items.length > 0) {
