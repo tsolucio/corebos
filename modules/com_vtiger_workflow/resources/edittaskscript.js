@@ -1,5 +1,4 @@
 function edittaskscript($) {
-	var validator;
 
 	function NumberBox(element) {
 		var elementId = element.prop('id');
