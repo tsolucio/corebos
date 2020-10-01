@@ -9314,7 +9314,7 @@ precacheAndRoute([{
   "revision": "db90975f5c545839aeedd67e83ac9ab2"
 }, {
   "url": "include/js/general.js",
-  "revision": "c0de869cebf10944cce031a0a93cdc49"
+  "revision": "8f0df301eacf85ed1b94e54c82038a96"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "e4cc7bb9fdef5d2b8a887122f48cfc41"
@@ -9500,10 +9500,10 @@ precacheAndRoute([{
   "revision": "bcdeefd51eae1cfa30971ed3e0672b8d"
 }, {
   "url": "modules/com_vtiger_workflow/resources/edittaskscript.js",
-  "revision": "bb671622a8efbcf219e188c6c9c4411f"
+  "revision": "2246ea2e1c8d902d01ebeb1e70f2dd8c"
 }, {
   "url": "modules/com_vtiger_workflow/resources/editworkflowscript.js",
-  "revision": "dd436dfb50a74136f2d13273daabacde"
+  "revision": "30a01e15d9f5c9417bb42dc2df067dca"
 }, {
   "url": "modules/com_vtiger_workflow/resources/emailtaskscript.js",
   "revision": "27565d1c7498be55fb65276f1a2a302a"
@@ -9515,7 +9515,7 @@ precacheAndRoute([{
   "revision": "c400069175af86491f79a6a96e3570ad"
 }, {
   "url": "modules/com_vtiger_workflow/resources/fieldvalidator.js",
-  "revision": "cde6fec9119f368a5eb21d4e506209db"
+  "revision": "756f011777ea71a438be615cecdfde63"
 }, {
   "url": "modules/com_vtiger_workflow/resources/functional.js",
   "revision": "507e0618da87701f11b973970362e3cf"
@@ -9525,6 +9525,9 @@ precacheAndRoute([{
 }, {
   "url": "modules/com_vtiger_workflow/resources/generateimagecode.js",
   "revision": "bc1627f9b46bae11f03fde6958ff5809"
+}, {
+  "url": "modules/com_vtiger_workflow/resources/generateReportWfTask.js",
+  "revision": "a0f59214221e1ffdf620dcfdc681ce40"
 }, {
   "url": "modules/com_vtiger_workflow/resources/ico-workflow.png",
   "revision": "851ca4caa867fa005174afec1fea762f"
@@ -9555,6 +9558,9 @@ precacheAndRoute([{
 }, {
   "url": "modules/com_vtiger_workflow/resources/wfexeexp.js",
   "revision": "70312429e9d136159b33fd985ede4ff8"
+}, {
+  "url": "modules/com_vtiger_workflow/resources/wfSendFile.js",
+  "revision": "c23636884aea9c3436eef9b1c3cb78aa"
 }, {
   "url": "modules/com_vtiger_workflow/resources/Whatsappckeditor.js",
   "revision": "fab39532561524488d757c60df5fedd7"
@@ -10046,7 +10052,7 @@ precacheAndRoute([{
   "revision": "65682db92a471ba46f12737f6f6b3e4d"
 }, {
   "url": "modules/Reports/Reports.js",
-  "revision": "43d82ff27677848d81724ee74642c05a"
+  "revision": "29a48bc56aef2789fce03f0b3a5601fd"
 }, {
   "url": "modules/Reports/ReportsSteps.js",
   "revision": "dac7c3f4b013798df0875b1450e27bc1"
