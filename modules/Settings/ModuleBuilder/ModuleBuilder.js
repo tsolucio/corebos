@@ -46,21 +46,29 @@ const mb = {
 			const FIELD_COUNT = mb.loadElement('FIELD_COUNT');
 			var btnid = buttonid.split('-')[4];
 			if (forward == false) {
-				var fieldValues = {
-					blockid: mb.getRadioValue(`select-for-field-${btnid}`),
-					fieldname: mb.loadElement(`fieldname_${btnid}`),
-					columnname: mb.loadElement(`fieldname_${btnid}`),
-					fieldlabel: mb.loadElement(`fieldlabel_${btnid}`),
-					relatedmodules: mb.loadElement(`relatedmodules_${btnid}`),
-					masseditable: mb.loadElement(`Masseditable_${btnid}`),
-					displaytype: mb.loadElement(`Displaytype_${btnid}`),
-					quickcreate: mb.loadElement(`Quickcreate_${btnid}`),
-					typeofdata: mb.loadElement(`Typeofdata_${btnid}`),
-					presence: mb.loadElement(`Presence_${btnid}`),
-					uitype: mb.loadElement(`Uitype_${btnid}`),
-					picklistvalues: mb.loadElement(`picklistvalues_${btnid}`),
-					sequence: FIELD_COUNT,
-				};
+				if (mb.loadElement(`fieldname_${btnid}`) == '' || mb.loadElement(`fieldlabel_${btnid}`) == '') {
+					mb.loadMessage(mod_alert_arr.FieldsEmpty, true);
+				} else if (mb.loadElement(`Uitype_${btnid}`) == '15' || mb.loadElement(`Uitype_${btnid}`) == '16' && mb.loadElement(`picklistvalues_${btnid}`) == '') {
+					mb.loadMessage(mod_alert_arr.PickListFld, true);
+				} else if (mb.loadElement(`Uitype_${btnid}`) == '10' && mb.loadElement(`relatedmodules_${btnid}`) == '') {
+					mb.loadMessage(mod_alert_arr.Relmod, true);
+				} else {
+					var fieldValues = {
+						blockid: mb.getRadioValue(`select-for-field-${btnid}`),
+						fieldname: mb.loadElement(`fieldname_${btnid}`),
+						columnname: mb.loadElement(`fieldname_${btnid}`),
+						fieldlabel: mb.loadElement(`fieldlabel_${btnid}`),
+						relatedmodules: mb.loadElement(`relatedmodules_${btnid}`),
+						masseditable: mb.loadElement(`Masseditable_${btnid}`),
+						displaytype: mb.loadElement(`Displaytype_${btnid}`),
+						quickcreate: mb.loadElement(`Quickcreate_${btnid}`),
+						typeofdata: mb.loadElement(`Typeofdata_${btnid}`),
+						presence: mb.loadElement(`Presence_${btnid}`),
+						uitype: mb.loadElement(`Uitype_${btnid}`),
+						picklistvalues: mb.loadElement(`picklistvalues_${btnid}`),
+						sequence: FIELD_COUNT,
+					};
+				}
 				fields.push(fieldValues);
 				data = {
 					fields: fields,
