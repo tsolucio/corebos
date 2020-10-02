@@ -22,25 +22,26 @@ class Path
         $prefix = static::getAbsolutePrefix($path);
         $path = substr($path, strlen($prefix));
         $parts = array_filter(explode('/', $path), 'strlen');
-        $tokens = array();
+        $tokens = [];
 
         foreach ($parts as $part) {
             switch ($part) {
                 case '.':
-                    continue;
+                    continue 2;
                 case '..':
                     if (0 !== count($tokens)) {
                         array_pop($tokens);
-                        continue;
+
+                        continue 2;
                     } elseif (!empty($prefix)) {
-                        continue;
+                        continue 2;
                     }
                 default:
                     $tokens[] = $part;
             }
         }
 
-        return $prefix.implode('/', $tokens);
+        return $prefix . implode('/', $tokens);
     }
 
     /**

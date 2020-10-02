@@ -1,3 +1,90 @@
+v0.9.0
+======
+
+## New features
+
+- Add MimeTypeProvider to AzureBlobStorage (#630)
+
+## Fixes
+
+- Fix docker setup for dev env (#580)
+- Define env vars in .env file only (#615)
+- Add PHP Coding Standard check step on CI (#617)
+- PHPUnit tests enhancement (#627)
+
+Thank you @nicolasmure, @peter279k and @rgembalik for your contributions!
+
+v0.8.3
+======
+
+## Changes
+
+- Change Filesystem to FilesystemInterface in File's constructor (#608)
+
+Thank you @athlan for your contribution !
+
+v0.8.2
+======
+
+## New features
+
+- Declare a FilesystemMapInterface (#604)
+- Add SizeCalculator support to GridFS (#603)
+- Local Adapter: directory deletion (#610)
+
+## Fixes
+
+- GridFS : return empty array when object has no metadata (#609)
+
+Thank you @athos7933, @bsperduto and @nicolasmure for your contributions !
+
+v0.8.1
+======
+
+## Fixes
+
+- Fix `rename` with `GoogleCloudStorage` adapter [#598](https://github.com/KnpLabs/Gaufrette/pull/598)
+
+Thank you @jerome-arzel for your contribution !
+
+v0.8
+====
+
+## New features
+
+- Implement `ChecksumCalculator` interface for `AzureBlobStorage` adapter #594
+
+## Changes
+
+In #593 :
+- Drop support for EOL php versions (5.6 and 7.0)
+- Minimim requirement is now php 7.1
+- Add support for php 7.3
+
+## Fixes
+
+- fix opencloud tests #579
+- fix appveyor build #589
+- Fix `ini_get()` for boolean values #595
+
+Thank you @andreybolonin, @damijank, @deguif and @nicolasmure for your
+contributions !
+
+v0.7
+====
+
+## Changes
+- `FilesystemMap::set()` should expect `FilesystemInterface` instead of
+`Filesystem` #576
+
+## Fixes
+
+- Add PutObjectAcl in the required permission #566
+- Ensure correct return type from Flysystem adapter "exists" method #572
+
+Thank you @andreybolonin, @clement-michelet, @jakob-stoeck, @nicolasmure,
+@teohhanhui, @tristanbes for your contributions !
+
 v0.6
 ====
 

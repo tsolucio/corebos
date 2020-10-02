@@ -2,6 +2,7 @@
 
 namespace spec\Gaufrette\Adapter;
 
+use Dropbox_API;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -10,7 +11,7 @@ class DropboxSpec extends ObjectBehavior
     /**
      * @param \Dropbox_API $dropbox
      */
-    function let($dropbox)
+    function let(Dropbox_API $dropbox)
     {
         $this->beConstructedWith($dropbox);
     }
@@ -23,7 +24,7 @@ class DropboxSpec extends ObjectBehavior
     /**
      * @param \Dropbox_API $dropbox
      */
-    function it_reads_file($dropbox)
+    function it_reads_file(Dropbox_API $dropbox)
     {
         $dropbox->getFile('filename')->willReturn('some content');
 
@@ -33,7 +34,7 @@ class DropboxSpec extends ObjectBehavior
     /**
      * @param \Dropbox_API $dropbox
      */
-    function it_does_not_mask_exception_from_client_during_read($dropbox)
+    function it_does_not_mask_exception_from_client_during_read(Dropbox_API $dropbox)
     {
         $dropbox->getFile('filename')->willThrow(new \RuntimeException('read'));
 
@@ -43,7 +44,7 @@ class DropboxSpec extends ObjectBehavior
     /**
      * @param \Dropbox_API $dropbox
      */
-    function it_does_not_read_file($dropbox)
+    function it_does_not_read_file(Dropbox_API $dropbox)
     {
         $dropbox
             ->getFile('filename')
@@ -55,24 +56,24 @@ class DropboxSpec extends ObjectBehavior
     /**
      * @param \Dropbox_API $dropbox
      */
-    function it_checks_if_file_exists($dropbox)
+    function it_checks_if_file_exists(Dropbox_API $dropbox)
     {
         $dropbox
             ->getMetaData('filename', false)
-            ->willReturn(array(
-                "size"         => "225.4KB",
-                "rev"          => "35e97029684fe",
-                "thumb_exists" => false,
-                "bytes"        => 230783,
-                "modified"     => "Tue, 19 Jul 2011 21:55:38 +0000",
-                "client_mtime" => "Mon, 18 Jul 2011 18:04:35 +0000",
-                "path"         => "/filename",
-                "is_dir"       => false,
-                "icon"         => "page_white_acrobat",
-                "root"         => "dropbox",
-                "mime_type"    => "application/pdf",
-                "revision"     => 220823
-            ));
+            ->willReturn([
+                'size' => '225.4KB',
+                'rev' => '35e97029684fe',
+                'thumb_exists' => false,
+                'bytes' => 230783,
+                'modified' => 'Tue, 19 Jul 2011 21:55:38 +0000',
+                'client_mtime' => 'Mon, 18 Jul 2011 18:04:35 +0000',
+                'path' => '/filename',
+                'is_dir' => false,
+                'icon' => 'page_white_acrobat',
+                'root' => 'dropbox',
+                'mime_type' => 'application/pdf',
+                'revision' => 220823,
+            ]);
 
         $this->exists('filename')->shouldReturn(true);
 
@@ -84,7 +85,7 @@ class DropboxSpec extends ObjectBehavior
 
         $dropbox
             ->getMetaData('filename', false)
-            ->willReturn(array("is_deleted" => true));
+            ->willReturn(['is_deleted' => true]);
 
         $this->exists('filename')->shouldReturn(false);
     }
@@ -92,7 +93,7 @@ class DropboxSpec extends ObjectBehavior
     /**
      * @param \Dropbox_API $dropbox
      */
-    function it_does_not_mask_exception_from_client_during_check_if_exists($dropbox)
+    function it_does_not_mask_exception_from_client_during_check_if_exists(Dropbox_API $dropbox)
     {
         $dropbox
             ->getMetaData('filename', false)
@@ -104,24 +105,24 @@ class DropboxSpec extends ObjectBehavior
     /**
      * @param \Dropbox_API $dropbox
      */
-    function it_gets_keys($dropbox)
+    function it_gets_keys(Dropbox_API $dropbox)
     {
         $dropbox
             ->getMetaData('/', true)
-            ->willReturn(array(
-                'contents' => array(
-                    array('path' => '/filename'),
-                    array('path' => '/aaa/filename')
-                )
-            ));
+            ->willReturn([
+                'contents' => [
+                    ['path' => '/filename'],
+                    ['path' => '/aaa/filename'],
+                ],
+            ]);
 
-        $this->keys()->shouldReturn(array('aaa', 'aaa/filename', 'filename'));
+        $this->keys()->shouldReturn(['aaa', 'aaa/filename', 'filename']);
     }
 
     /**
      * @param \Dropbox_API $dropbox
      */
-    function it_does_not_mask_exception_from_client_during_getting_keys($dropbox)
+    function it_does_not_mask_exception_from_client_during_getting_keys(Dropbox_API $dropbox)
     {
         $dropbox
             ->getMetaData('/', true)
@@ -134,22 +135,22 @@ class DropboxSpec extends ObjectBehavior
     /**
      * @param \Dropbox_API $dropbox
      */
-    function it_checks_if_given_key_is_directory($dropbox)
+    function it_checks_if_given_key_is_directory(Dropbox_API $dropbox)
     {
         $dropbox
             ->getMetaData('filename', false)
-            ->willReturn(array(
-                "is_dir" => true
-            ))
+            ->willReturn([
+                'is_dir' => true,
+            ])
         ;
 
         $this->isDirectory('filename')->shouldReturn(true);
 
         $dropbox
             ->getMetaData('filename', false)
-            ->willReturn(array(
-                "is_dir" => false
-            ));
+            ->willReturn([
+                'is_dir' => false,
+            ]);
 
         $this->isDirectory('filename')->shouldReturn(false);
     }
@@ -157,7 +158,7 @@ class DropboxSpec extends ObjectBehavior
     /**
      * @param \Dropbox_API $dropbox
      */
-    function it_writes_file($dropbox)
+    function it_writes_file(Dropbox_API $dropbox)
     {
         $dropbox
             ->putFile('filename', Argument::any())
@@ -170,7 +171,7 @@ class DropboxSpec extends ObjectBehavior
     /**
      * @param \Dropbox_API $dropbox
      */
-    function it_does_not_mask_exception_from_client_during_write($dropbox)
+    function it_does_not_mask_exception_from_client_during_write(Dropbox_API $dropbox)
     {
         $dropbox
             ->putFile('filename', Argument::any())
@@ -183,7 +184,7 @@ class DropboxSpec extends ObjectBehavior
     /**
      * @param \Dropbox_API $dropbox
      */
-    function it_deletes_file($dropbox)
+    function it_deletes_file(Dropbox_API $dropbox)
     {
         $dropbox
             ->delete('filename')
@@ -196,7 +197,7 @@ class DropboxSpec extends ObjectBehavior
     /**
      * @param \Dropbox_API $dropbox
      */
-    function it_does_not_delete_file($dropbox)
+    function it_does_not_delete_file(Dropbox_API $dropbox)
     {
         $dropbox
             ->delete('filename')
@@ -209,7 +210,7 @@ class DropboxSpec extends ObjectBehavior
     /**
      * @param \Dropbox_API $dropbox
      */
-    function it_renames_file($dropbox)
+    function it_renames_file(Dropbox_API $dropbox)
     {
         $dropbox
             ->move('filename', 'filename2')
@@ -222,7 +223,7 @@ class DropboxSpec extends ObjectBehavior
     /**
      * @param \Dropbox_API $dropbox
      */
-    function it_does_not_rename_file($dropbox)
+    function it_does_not_rename_file(Dropbox_API $dropbox)
     {
         $dropbox
             ->move('filename', 'filename2')
@@ -235,13 +236,13 @@ class DropboxSpec extends ObjectBehavior
     /**
      * @param \Dropbox_API $dropbox
      */
-    function it_fetches_mtime($dropbox)
+    function it_fetches_mtime(Dropbox_API $dropbox)
     {
         $dropbox
             ->getMetaData('filename', false)
-            ->willReturn(array(
-                "modified"     => "Tue, 19 Jul 2011 21:55:38 +0000",
-            ))
+            ->willReturn([
+                'modified' => 'Tue, 19 Jul 2011 21:55:38 +0000',
+            ])
         ;
 
         $this->mtime('filename')->shouldReturn(1311112538);
@@ -250,7 +251,7 @@ class DropboxSpec extends ObjectBehavior
     /**
      * @param \Dropbox_API $dropbox
      */
-    function it_does_not_fetch_mtime_when_file_not_found($dropbox)
+    function it_does_not_fetch_mtime_when_file_not_found(Dropbox_API $dropbox)
     {
         $dropbox
             ->getMetaData('filename', false)
@@ -263,7 +264,7 @@ class DropboxSpec extends ObjectBehavior
     /**
      * @param \Dropbox_API $dropbox
      */
-    function it_does_not_check_if_key_is_dir_when_file_not_found($dropbox)
+    function it_does_not_check_if_key_is_dir_when_file_not_found(Dropbox_API $dropbox)
     {
         $dropbox
             ->getMetaData('filename', false)
@@ -276,7 +277,7 @@ class DropboxSpec extends ObjectBehavior
     /**
      * @param \Dropbox_API $dropbox
      */
-    function it_fails_checking_if_key_is_dir_when_dropbox_throws_exception($dropbox)
+    function it_fails_checking_if_key_is_dir_when_dropbox_throws_exception(Dropbox_API $dropbox)
     {
         $dropbox
             ->getMetaData('filename', false)
