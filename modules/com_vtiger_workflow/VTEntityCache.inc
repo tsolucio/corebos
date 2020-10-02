@@ -12,6 +12,7 @@ require_once 'modules/com_vtiger_workflow/VTSimpleTemplate.inc';
 
 class VTWorkflowEntity {
 	private $isDeleted = false;
+	public $formatReferenceValues = true;
 	public $WorkflowEvent = 0;
 	public $WorkflowContext = array();
 
@@ -88,7 +89,11 @@ class VTWorkflowEntity {
 		preg_match('/\((\w+) : \(([_\w]+)\) (\w+)\)/', $fieldName, $matches);
 		if (count($matches)>0) {
 			global $current_user;
-			$ct = new VTSimpleTemplate($fieldName);
+			if (!$this->formatReferenceValues) {
+				$ct = new VTSimpleTemplate($fieldName, false, $this->formatReferenceValues);
+			} else {
+				$ct = new VTSimpleTemplate($fieldName);
+			}
 			$entityCache = new VTEntityCache($current_user);
 			$entityCache->setCache($this->getId(), $this);
 			$info = $ct->render($entityCache, $this->getId());
