@@ -47,9 +47,6 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
             'GuzzleHttp\\Psr7\\' => 16,
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
-            'Google\\Cloud\\Storage\\' => 21,
-            'Google\\Cloud\\Core\\' => 18,
-            'Google\\CRC32\\' => 13,
             'Google\\Auth\\' => 12,
         ),
         'F' => 
@@ -115,18 +112,6 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
         ),
-        'Google\\Cloud\\Storage\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/google/cloud-storage/src',
-        ),
-        'Google\\Cloud\\Core\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/google/cloud-core/src',
-        ),
-        'Google\\CRC32\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/google/crc32/src',
-        ),
         'Google\\Auth\\' => 
         array (
             0 => __DIR__ . '/..' . '/google/auth/src',
@@ -143,13 +128,6 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
             'Smalot\\PdfParser\\' => 
             array (
                 0 => __DIR__ . '/..' . '/smalot/pdfparser/src',
-            ),
-        ),
-        'R' => 
-        array (
-            'Rize\\UriTemplate' => 
-            array (
-                0 => __DIR__ . '/..' . '/rize/uri-template/src',
             ),
         ),
         'G' => 
