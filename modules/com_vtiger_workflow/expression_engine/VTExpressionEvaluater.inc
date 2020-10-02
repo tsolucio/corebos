@@ -256,11 +256,10 @@ class VTFieldExpressionEvaluater {
 			$logbg->debug("VTExpressionSymbol: $loginfo");
 			$this->debug[] = $loginfo;
 			preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $expr->value, $matches);
-			if ($matches>0 && isset($matches[3])) {
+			if (count($matches)>0 && isset($matches[3])) {
 				$module = Vtiger_Module::getInstance($matches[2]);
 				$field = Vtiger_Field::getInstance($matches[3], $module);
-				$formatTypes = array(71, 72, 7, 9);
-				if (in_array($field->uitype, $formatTypes)) {
+				if ($field && in_array($field->uitype, array(71, 72, 7, 9))) {
 					return $this->env($expr, false, false);
 				}
 			}
