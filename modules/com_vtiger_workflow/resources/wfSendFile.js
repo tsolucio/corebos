@@ -68,6 +68,8 @@ function setwfexptype() {
 
 function wfeditexptype(fieldValueNode, fieldType) {
 	editpopupobj.edit(fieldValueNode.prop('id'), fieldValueNode.val(), fieldType);
+	const exptype = document.getElementById('exptype').value;
+	document.getElementById('editpopup_expression_type').value = exptype;
 }
 
 document.addEventListener('DOMContentLoaded', function (event) {
