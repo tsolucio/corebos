@@ -2,6 +2,7 @@
 
 namespace spec\Gaufrette;
 
+use Gaufrette\Filesystem;
 use PhpSpec\ObjectBehavior;
 
 class FilesystemMapSpec extends ObjectBehavior
@@ -14,7 +15,7 @@ class FilesystemMapSpec extends ObjectBehavior
     /**
      * @param Gaufrette\Filesystem $filesystem
      */
-    function it_checks_if_has_mapped_filesystem($filesystem)
+    function it_checks_if_has_mapped_filesystem(Filesystem $filesystem)
     {
         $this->set('some', $filesystem);
         $this->has('some')->shouldReturn(true);
@@ -24,7 +25,7 @@ class FilesystemMapSpec extends ObjectBehavior
     /**
      * @param Gaufrette\Filesystem $filesystem
      */
-    function it_sets_mapped_filesystem($filesystem)
+    function it_sets_mapped_filesystem(Filesystem $filesystem)
     {
         $this->set('some', $filesystem);
         $this->get('some')->shouldReturn($filesystem);
@@ -33,7 +34,7 @@ class FilesystemMapSpec extends ObjectBehavior
     function it_fails_when_get_filesystem_which_was_not_mapped()
     {
         $this
-            ->shouldThrow(new \InvalidArgumentException('There is no filesystem defined for the "some" domain.'))
+            ->shouldThrow(new \InvalidArgumentException('There is no filesystem defined having "some" name.'))
             ->duringGet('some')
         ;
     }
@@ -41,7 +42,7 @@ class FilesystemMapSpec extends ObjectBehavior
     /**
      * @param Gaufrette\Filesystem $filesystem
      */
-    function it_removes_mapped_filesystem($filesystem)
+    function it_removes_mapped_filesystem(Filesystem $filesystem)
     {
         $this->set('some', $filesystem);
         $this->remove('some');
@@ -60,7 +61,7 @@ class FilesystemMapSpec extends ObjectBehavior
     /**
      * @param Gaufrette\Filesystem $filesystem
      */
-    function it_removes_all_filesystems($filesystem)
+    function it_removes_all_filesystems(Filesystem $filesystem)
     {
         $this->set('some', $filesystem);
         $this->set('other', $filesystem);
@@ -68,6 +69,6 @@ class FilesystemMapSpec extends ObjectBehavior
 
         $this->has('some')->shouldReturn(false);
         $this->has('other')->shouldReturn(false);
-        $this->all()->shouldReturn(array());
+        $this->all()->shouldReturn([]);
     }
 }
