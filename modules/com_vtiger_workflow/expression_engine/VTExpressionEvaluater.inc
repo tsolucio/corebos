@@ -114,6 +114,7 @@ class VTFieldExpressionEvaluater {
 			'number_format' => '__cb_number_format',
 			'min' => '__cb_min',
 			'max' => '__cb_max',
+			'sub_workdays' => '__cb_sub_workdays',
 		);
 		$this->operationsSQL = array(
 			'+'  => 'cbexpsql_add',
