@@ -67,30 +67,39 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 	// user has enough permission to start process
 	$fieldcolumn = $meta->getFieldColumnMapping();
 	$queryGenerator = new QueryGenerator($mainModule, $user);
-	$queryColumns = trim(substr($q, 6, stripos($q, ' from ')-5));
-	$queryColumns = explode(',', $queryColumns);
-	$queryColumns = array_map('trim', $queryColumns);
-	$countSelect = ($queryColumns == array('count(*)'));
+	$queryColumns = array();
 	$queryRelatedModules = array();
-	foreach ($queryColumns as $k => $field) {
-		if (strpos($field, '.')>0) {
-			list($m,$f) = explode('.', $field);
-			if ($m=='UsersSec' || $m=='UsersCreator') {
-				$m = 'Users';
-			}
-			if (!isset($queryRelatedModules[$m])) {
-				$relhandler = vtws_getModuleHandlerFromName($m, $user);
-				$relmeta = $relhandler->getMeta();
-				$mn = $relmeta->getTabName();  // normalize module name
-				$queryRelatedModules[$mn] = $relmeta;
-				if ($m!=$mn) {
-					$queryColumns[$k] = $mn.'.'.$f;
+	$hasDistinct = false;
+	$countSelect = false;
+	foreach ($parsed['SELECT'] as $colspec) {
+		if ($colspec['expr_type']=='colref') {
+			if (strpos($colspec['base_expr'], '.')>0) {
+				list($m,$f) = explode('.', $colspec['base_expr']);
+				if ($m=='UsersSec' || $m=='UsersCreator') {
+					$m = 'Users';
 				}
+				if (!isset($queryRelatedModules[$m])) {
+					$relhandler = vtws_getModuleHandlerFromName($m, $user);
+					$relmeta = $relhandler->getMeta();
+					$mn = $relmeta->getTabName();  // normalize module name
+					$queryRelatedModules[$mn] = $relmeta;
+					$queryColumns[] = $mn.'.'.strtolower($f);
+				} else {
+					$queryColumns[] = $m.'.'.strtolower($f);
+				}
+			} else {
+				$queryColumns[] = strtolower($colspec['base_expr']);
 			}
+		} elseif ($colspec['base_expr']=='distinct') {
+			$hasDistinct = true;
+		} elseif ($colspec['base_expr']=='count') {
+			$countSelect = true;
 		}
 	}
-	$queryColumns[] = 'id';  // add ID column to follow REST interface behaviour
-	$queryGenerator->setFields($queryColumns);
+	if (!$hasDistinct) {
+		$queryColumns[] = 'id'; // add ID column to follow REST interface behaviour
+	}
+	$queryGenerator->setFields(array_unique($queryColumns));
 
 	// where
 	if (isset($parsed['WHERE'])) {
@@ -114,7 +123,7 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 	if ($countSelect) {
 		$query .= 'count(*) ';
 	} else {
-		$query .= $queryGenerator->getSelectClauseColumnSQL().' ';
+		$query .= ($hasDistinct ? 'distinct ' : '').$queryGenerator->getSelectClauseColumnSQL().' ';
 	}
 	$query .= $queryGenerator->getFromClause().' ';
 	$query .= $queryGenerator->getWhereClause().' ';
