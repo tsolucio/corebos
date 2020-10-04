@@ -127,6 +127,7 @@ $smarty->assign('USER_MODE', $mode);
 $smarty->assign('PARENTTAB', getParentTab());
 coreBOS_Session::set('Users_FORM_TOKEN', rand(5, 2000) * rand(2, 7));
 $smarty->assign('FORM_TOKEN', $_SESSION['Users_FORM_TOKEN']);
+$smarty->assign('Application_Textarea_Style', GlobalVariable::getVariable('Application_Textarea_Style', 'height:140px;', $currentModule, $current_user->id));
 
 // Gather the help information associated with fields
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
