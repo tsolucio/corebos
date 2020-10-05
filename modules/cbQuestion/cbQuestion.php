@@ -499,7 +499,11 @@ class cbQuestion extends CRMEntity {
 				$ls++;
 			}
 			if (!empty($alllabels)) {
-				fputcsv($fp, $alllabels, $delim, $encls);
+				$line = self::generateCSV($alllabels, $delim, $encls);
+				if (isset($properties->postprocess)) {
+					$line = self::postProcessFileLine($line, $properties->postprocess);
+				}
+				fputs($fp, $line);
 			}
 			foreach ($ans['answer'] as $row) {
 				foreach ($row as $label => $value) {
@@ -512,23 +516,28 @@ class cbQuestion extends CRMEntity {
 				}
 				$line = self::generateCSV($row, $delim, $encls);
 				if (isset($properties->postprocess)) {
-					$postprocess = explode(',', $properties->postprocess);
-					foreach ($postprocess as $process) {
-						switch ($process) {
-							case 'deletedoublequotes':
-								$line = str_replace('\"', '\ç', $line);
-								$line = str_replace('"', '', $line);
-								$line = str_replace('\ç', '\"', $line);
-								break;
-							default:
-								break;
-						}
-					}
+					$line = self::postProcessFileLine($line, $properties->postprocess);
 				}
 				fputs($fp, $line);
 			}
 		}
 		return $fname;
+	}
+
+	public static function postProcessFileLine($line, $actions) {
+		$postprocess = explode(',', $actions);
+		foreach ($postprocess as $process) {
+			switch ($process) {
+				case 'deletedoublequotes':
+					$line = str_replace('\"', '\ç', $line);
+					$line = str_replace('"', '', $line);
+					$line = str_replace('\ç', '\"', $line);
+					break;
+				default:
+					break;
+			}
+		}
+		return $line;
 	}
 
 	public static function getTableFromAnswer($ans) {
