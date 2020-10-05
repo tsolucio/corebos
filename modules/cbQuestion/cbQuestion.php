@@ -510,7 +510,22 @@ class cbQuestion extends CRMEntity {
 						}
 					}
 				}
-				fputcsv($fp, $row, $delim, $encls);
+				$line = self::generateCSV($row, $delim, $encls);
+				if (isset($properties->postprocess)) {
+					$postprocess = explode(',', $properties->postprocess);
+					foreach ($postprocess as $process) {
+						switch ($process) {
+							case 'deletedoublequotes':
+								$line = str_replace('\"', '\ç', $line);
+								$line = str_replace('"', '', $line);
+								$line = str_replace('\ç', '\"', $line);
+								break;
+							default:
+								break;
+						}
+					}
+				}
+				fputs($fp, $line);
 			}
 		}
 		return $fname;
@@ -718,6 +733,20 @@ class cbQuestion extends CRMEntity {
 				return $value;
 				break;
 		}
+	}
+
+	public static function generateCSV($data, $delimiter = ',', $enclosure = '"') {
+		$handle = fopen('php://temp', 'r+');
+		foreach ($data as $line) {
+			fputcsv($handle, $line, $delimiter, $enclosure);
+		}
+		rewind($handle);
+		$contents = '';
+		while (!feof($handle)) {
+			$contents .= fread($handle, 8192);
+		}
+		fclose($handle);
+		return $contents;
 	}
 }
 ?>
