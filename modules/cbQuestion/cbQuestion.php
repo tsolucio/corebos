@@ -737,9 +737,7 @@ class cbQuestion extends CRMEntity {
 
 	public static function generateCSV($data, $delimiter = ',', $enclosure = '"') {
 		$handle = fopen('php://temp', 'r+');
-		foreach ($data as $line) {
-			fputcsv($handle, $line, $delimiter, $enclosure);
-		}
+		fputcsv($handle, $data, $delimiter, $enclosure);
 		rewind($handle);
 		$contents = '';
 		while (!feof($handle)) {
