@@ -690,7 +690,7 @@ class cbQuestion extends CRMEntity {
 			case 'datetime':
 				if (!empty($format)) {
 					$dt = explode(' ', $value);
-					list($y, $m, $d) = explode('/', $dt[0]);
+					list($y, $m, $d) = (strpos($dt[0], '/')) ? explode('/', $dt[0]) : explode('-', $dt[0]);
 					if (empty($dt[1])) {
 						$h = $i = $s = 0;
 					} else {
