@@ -26,20 +26,23 @@ class generateReportWfTask extends VTTask {
 		$path = '';
 		$name = '';
 		if ($this->case_type == 'report') {
+			$baseFileName = !empty($entity->WorkflowContext['GenerateReportName']) ? $entity->WorkflowContext['GenerateReportName'] : '';
 			$reportdata = explode("$$", $this->report_name);
 			$reportId = (int)$reportdata[0];
-			$reportName = $reportdata[1];
-			$now = date('YmdHis');
-			$oReportRun = new ReportRun($reportId);
-			$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_\.\%\s]/', '', $reportName));
-			$path = 'cache/';
-			if (strpos($baseFileName, '%s')===false) {
-				$baseFileName .= '_%s';
-			} else {
-				$spos = strpos($baseFileName, '%s');
-				$baseFileName = substr($baseFileName, 0, $spos+2).str_replace('%s', '', substr($baseFileName, $spos+2));
+			if (empty($baseFileName)) {
+				$reportName = $reportdata[1];
+				$now = date('YmdHis');
+				$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_\.\%\s]/', '', $reportName));
+				if (strpos($baseFileName, '%s')===false) {
+					$baseFileName .= '_%s';
+				} else {
+					$spos = strpos($baseFileName, '%s');
+					$baseFileName = substr($baseFileName, 0, $spos+2).str_replace('%s', '', substr($baseFileName, $spos+2));
+				}
+				$baseFileName = sprintf($baseFileName, $now);
 			}
-			$baseFileName = sprintf($baseFileName, $now);
+			$path = 'cache/';
+			$oReportRun = new ReportRun($reportId);
 			if ($this->file_type == 'pdf') {
 				$fileName = $path.$baseFileName.'.pdf';
 				$filePath = $root_directory.$fileName;

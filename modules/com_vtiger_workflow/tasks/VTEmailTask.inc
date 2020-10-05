@@ -191,6 +191,10 @@ class VTEmailTask extends VTTask {
 		if (!empty($entity->WorkflowContext['MergeTemplateWith'])) {
 			$ids = explode(',', $entity->WorkflowContext['MergeTemplateWith']);
 		}
+		if (!empty($entity->WorkflowContext['GenerateReportName']) && !empty($entity->WorkflowContext['wfgenerated_file'])) {
+			$attname = $entity->WorkflowContext['wfgenerated_file']['path'].$entity->WorkflowContext['wfgenerated_file']['name'];
+			$this->attachmentsinfo[] = $attname;
+		}
 		foreach ($ids as $id) {
 			if (strpos($id, 'x')>0) {
 				list($wsid, $id) = explode('x', $id);
