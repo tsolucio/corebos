@@ -15,7 +15,7 @@ class generateReportWfTask extends VTTask {
 
 	public $executeImmediately = true;
 	public function getFieldNames() {
-		return array('case_type', 'file_type', 'report_name', 'qnfield', 'qnfield_display');
+		return array('case_type', 'file_type', 'report_name', 'qnfield', 'qnfield_display', 'generate_filename');
 	}
 
 	public function doTask(&$entity) {
@@ -26,10 +26,12 @@ class generateReportWfTask extends VTTask {
 		$path = '';
 		$name = '';
 		if ($this->case_type == 'report') {
-			$baseFileName = !empty($entity->WorkflowContext['GenerateReportName']) ? $entity->WorkflowContext['GenerateReportName'] : '';
 			$reportdata = explode("$$", $this->report_name);
 			$reportId = (int)$reportdata[0];
-			if (empty($baseFileName)) {
+			$baseFileName = '';
+			if ($this->generate_filename == '1' && !empty($entity->WorkflowContext['GenerateReportName'])) {
+				$baseFileName = $entity->WorkflowContext['GenerateReportName'];
+			} else {
 				$reportName = $reportdata[1];
 				$now = date('YmdHis');
 				$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_\.\%\s]/', '', $reportName));
