@@ -10,6 +10,9 @@
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 require_once 'modules/com_vtiger_workflow/VTTaskQueue.inc';
+require_once 'modules/Reports/Reports.php';
+require_once 'modules/Reports/ReportRun.php';
+require_once 'modules/cbQuestion/cbQuestion.php';
 
 class generateReportWfTask extends VTTask {
 
@@ -19,20 +22,15 @@ class generateReportWfTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		require_once 'modules/Reports/Reports.php';
-		require_once 'modules/Reports/ReportRun.php';
-		require_once 'modules/cbQuestion/cbQuestion.php';
-		global $adb, $current_user, $root_directory, $log;
+		global $adb, $root_directory;
 		$path = '';
 		$name = '';
 		if ($this->case_type == 'report') {
-			$reportdata = explode("$$", $this->report_name);
+			$reportdata = explode('$$', $this->report_name);
 			$reportId = (int)$reportdata[0];
 			$reportName = $reportdata[1];
 			$now = date('YmdHis');
-			$oReportRun = new ReportRun($reportId);
 			$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_\.\%\s]/', '', $reportName));
-			$path = 'cache/';
 			if (strpos($baseFileName, '%s')===false) {
 				$baseFileName .= '_%s';
 			} else {
@@ -40,6 +38,8 @@ class generateReportWfTask extends VTTask {
 				$baseFileName = substr($baseFileName, 0, $spos+2).str_replace('%s', '', substr($baseFileName, $spos+2));
 			}
 			$baseFileName = sprintf($baseFileName, $now);
+			$path = 'cache/';
+			$oReportRun = new ReportRun($reportId);
 			if ($this->file_type == 'pdf') {
 				$fileName = $path.$baseFileName.'.pdf';
 				$filePath = $root_directory.$fileName;
