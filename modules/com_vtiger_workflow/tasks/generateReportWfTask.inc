@@ -74,7 +74,6 @@ class generateReportWfTask extends VTTask {
 			}
 		}
 		$entity->WorkflowContext['wfgenerated_file'] = array("path"=>$path, "name"=>$name);
-		// $log->fatal($entity->WorkflowContext);
 	}
 }
 ?>
