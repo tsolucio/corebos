@@ -1466,6 +1466,8 @@ function doServerValidation(edit_type, formName, callback) {
 		} else if (myFields[f].type=='textarea' && typeof CKEDITOR != 'undefined' && typeof CKEDITOR.instances[myFields[f].name]!= 'undefined') {
 			CKEDITOR.instances[myFields[f].name].updateElement();
 			sentForm[myFields[f].name] = myFields[f].value;
+		} else if (myFields[f].type=='select-multiple') {
+			sentForm[myFields[f].name.substring(0, myFields[f].name.length-2)] = myFields[f].value;
 		} else if (myFields[f].type=='radio' && myFields[f].checked) {
 			sentForm[myFields[f].name] = myFields[f].value;
 		} else if (myFields[f].type!='radio') {
