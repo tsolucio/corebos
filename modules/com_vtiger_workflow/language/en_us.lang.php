@@ -244,5 +244,6 @@ $mod_strings = array(
 'LBL_SEND_FILE' => 'Send file to',
 'FILENAME' => 'Destination filename',
 'Generate name' => 'Generate file name',
+'Save to document' => 'Save to Document',
 );
 ?>

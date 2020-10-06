@@ -1,5 +1,12 @@
 let fileurl = 'module=Reports&action=ReportsAjax&file=getReportInfos';
 $(document).ready(function () {
+	var savetoDoc = document.getElementById('saveto_doc');
+	if(savetoDoc.checked) {
+		document.getElementById("documentDiv").style.display = "";
+	} else {
+		document.getElementById("documentDiv").style.display = "none";
+	}
+	handlecreateDocOption();
 	displayDivsection();
 	jQuery.ajax({
 		method: 'GET',
@@ -35,4 +42,15 @@ function displayDivsection() {
 		default:
 			break;
 	}
+}
+
+function handlecreateDocOption() {
+	var savetoDoc = document.getElementById('saveto_doc');
+	savetoDoc.addEventListener('change', function() {
+	if(savetoDoc.checked) {
+		document.getElementById("documentDiv").style.display = "";
+	} else {
+		document.getElementById("documentDiv").style.display = 'none';
+	}
+	});
 }

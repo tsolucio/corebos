@@ -15,7 +15,7 @@ class generateReportWfTask extends VTTask {
 
 	public $executeImmediately = true;
 	public function getFieldNames() {
-		return array('case_type', 'file_type', 'report_name', 'qnfield', 'qnfield_display', 'generate_filename');
+		return array('case_type', 'file_type', 'report_name', 'qnfield', 'qnfield_display', 'generate_filename', 'saveto_doc', 'doc_content');
 	}
 
 	public function doTask(&$entity) {
@@ -25,6 +25,7 @@ class generateReportWfTask extends VTTask {
 		global $adb, $current_user, $root_directory, $log;
 		$path = '';
 		$name = '';
+		$type = '';
 		if ($this->case_type == 'report') {
 			$reportdata = explode("$$", $this->report_name);
 			$reportId = (int)$reportdata[0];
@@ -45,6 +46,7 @@ class generateReportWfTask extends VTTask {
 			}
 			$path = 'cache/';
 			$oReportRun = new ReportRun($reportId);
+			$type = $this->file_type;
 			if ($this->file_type == 'pdf') {
 				$fileName = $path.$baseFileName.'.pdf';
 				$filePath = $root_directory.$fileName;
@@ -63,6 +65,7 @@ class generateReportWfTask extends VTTask {
 				$filePath = $root_directory.$fileName;
 				$oReportRun->writeReportToExcelFile($filePath, null);
 				$name = $baseFileName.'.xls';
+				$type = 'xls';
 			}
 		}
 		if ($this->case_type == 'question') {
@@ -71,9 +74,39 @@ class generateReportWfTask extends VTTask {
 				$path_parts = pathinfo($res);
 				$name = $path_parts['basename'];
 				$path =str_replace($root_directory, '', $path_parts['dirname']).'/';
+				$type = 'csv';
 			}
 		}
 		$entity->WorkflowContext['wfgenerated_file'] = array("path"=>$path, "name"=>$name);
+		if ($this->saveto_doc == '1') {
+			$res = $adb->pquery('SELECT folderid FROM vtiger_attachmentsfolder Limit 1', array());
+			$folderid = ($res && $adb->num_rows($res) > 0) ? $adb->query_result($res, 0, 'folderid') : '';
+			$dataArr = array(
+				'assigned_user_id'=>vtws_getEntityId('Users').'x'.$current_user->id,
+				'notes_title' => $name,
+				'filename'=>$name,
+				'filetype'=>$type,
+				'filesize'=>0,
+				'filelocationtype'=>'I',
+				'filedownloadcount'=> 0,
+				'filestatus'=>1,
+				'template'=>0,
+				'mergetemplate'=>0,
+				'description'=>$this->doc_content,
+				'notecontent' => $this->doc_content,
+				'folderid' => vtws_getEntityId('DocumentFolders').'x'.$folderid,
+			);
+			$this->createDocumentfromGeneratedReport($dataArr, $current_user);
+		}
+	}
+
+	public function createDocumentfromGeneratedReport($dataArr, $user) {
+		include_once 'include/Webservices/Create.php';
+		try {
+			$res = vtws_create('Documents', $dataArr, $user);
+		} catch (Exception $e) {
+		}
+		return;
 	}
 }
 ?>
