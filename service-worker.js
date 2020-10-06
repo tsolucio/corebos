@@ -9314,7 +9314,7 @@ precacheAndRoute([{
   "revision": "db90975f5c545839aeedd67e83ac9ab2"
 }, {
   "url": "include/js/general.js",
-  "revision": "8f0df301eacf85ed1b94e54c82038a96"
+  "revision": "9347b41aaa45931fda5711126c527eaa"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "e4cc7bb9fdef5d2b8a887122f48cfc41"
@@ -9560,7 +9560,7 @@ precacheAndRoute([{
   "revision": "70312429e9d136159b33fd985ede4ff8"
 }, {
   "url": "modules/com_vtiger_workflow/resources/wfSendFile.js",
-  "revision": "c23636884aea9c3436eef9b1c3cb78aa"
+  "revision": "849ebcabb1d9f991f67bfb5d7f6581a8"
 }, {
   "url": "modules/com_vtiger_workflow/resources/Whatsappckeditor.js",
   "revision": "fab39532561524488d757c60df5fedd7"
@@ -9785,7 +9785,7 @@ precacheAndRoute([{
   "revision": "1001255e02a066e3fab9687eb4f7ec79"
 }, {
   "url": "modules/Settings/profilePrivileges.js",
-  "revision": "873d28313b837a168de03db9649567cf"
+  "revision": "d81d32d5d140b3eb65edf400f88cd8b6"
 }, {
   "url": "modules/Products/Productsslide.js",
   "revision": "721bd3d5367129defea7f6bd1bb8eee3"
