@@ -15,7 +15,7 @@ class generateReportWfTask extends VTTask {
 
 	public $executeImmediately = true;
 	public function getFieldNames() {
-		return array('case_type', 'file_type', 'report_name', 'qnfield', 'qnfield_display', 'generate_filename');
+		return array('case_type', 'file_type', 'report_name', 'qnfield', 'qnfield_display');
 	}
 
 	public function doTask(&$entity) {
@@ -28,21 +28,25 @@ class generateReportWfTask extends VTTask {
 		if ($this->case_type == 'report') {
 			$reportdata = explode("$$", $this->report_name);
 			$reportId = (int)$reportdata[0];
+			$reportName = $reportdata[1];
 			$baseFileName = '';
-			if ($this->generate_filename == '1' && !empty($entity->WorkflowContext['GenerateReportName'])) {
-				$baseFileName = $entity->WorkflowContext['GenerateReportName'];
-			} else {
-				$reportName = $reportdata[1];
-				$now = date('YmdHis');
-				$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_\.\%\s]/', '', $reportName));
-				if (strpos($baseFileName, '%s')===false) {
-					$baseFileName .= '_%s';
-				} else {
-					$spos = strpos($baseFileName, '%s');
-					$baseFileName = substr($baseFileName, 0, $spos+2).str_replace('%s', '', substr($baseFileName, $spos+2));
+			if (!empty($entity->WorkflowContext['GenerateReportName'])) {
+				$repname = $entity->WorkflowContext['GenerateReportName'];
+				$result = $adb->pquery('SELECT reportid FROM vtiger_report WHERE reportname=? limit 1', array($repname));
+				if ($result && $adb->num_rows($result) > 0) {
+					$reportId = $adb->query_result($result, 0, 'reportid');
+					$reportName = $repname;
 				}
-				$baseFileName = sprintf($baseFileName, $now);
 			}
+			$now = date('YmdHis');
+			$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_\.\%\s]/', '', $reportName));
+			if (strpos($baseFileName, '%s')===false) {
+				$baseFileName .= '_%s';
+			} else {
+				$spos = strpos($baseFileName, '%s');
+				$baseFileName = substr($baseFileName, 0, $spos+2).str_replace('%s', '', substr($baseFileName, $spos+2));
+			}
+			$baseFileName = sprintf($baseFileName, $now);
 			$path = 'cache/';
 			$oReportRun = new ReportRun($reportId);
 			if ($this->file_type == 'pdf') {
@@ -66,6 +70,13 @@ class generateReportWfTask extends VTTask {
 			}
 		}
 		if ($this->case_type == 'question') {
+			if (!empty($entity->WorkflowContext['GenerateQuestionName'])) {
+				$qnName = $entity->WorkflowContext['GenerateQuestionName'];
+				$res = $adb->pquery('SELECT cbquestionid FROM vtiger_cbquestion WHERE qname=? limit 1', array($qnName));
+				if ($res && $adb->num_rows($res) > 0) {
+					$this->qnfield = $adb->query_result($res, 0, 'cbquestionid');
+				}
+			}
 			$res = cbQuestion::getFormattedAnswer((int)$this->qnfield, array());
 			if ($res) {
 				$path_parts = pathinfo($res);
@@ -73,7 +84,7 @@ class generateReportWfTask extends VTTask {
 				$path =str_replace($root_directory, '', $path_parts['dirname']).'/';
 			}
 		}
-		$entity->WorkflowContext['wfgenerated_file'] = array("path"=>$path, "name"=>$name);
+		$entity->WorkflowContext['wfgenerated_file'][] = array("path"=>$path, "name"=>$name);
 	}
 }
 ?>

@@ -47,21 +47,6 @@
 		<table class="slds-table slds-table_cell-buffer" id="reportDiv" style="width:100%;">
 			<tr>
 				<td>
-					<div class="slds-form-element">
-						<div class="slds-form-element__control">
-							<div class="slds-checkbox">
-							<input type="checkbox" name="generate_filename" id="generate_filename" value="1" {if ($task->generate_filename eq "1")} checked {/if}/>
-							<label class="slds-checkbox__label" for="generate_filename">
-								<span class="slds-checkbox_faux"></span>
-								<span class="slds-form-element__label">{'Generate name'|@getTranslatedString}</span>
-							</label>
-							</div>
-						</div>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td>
 					<label class="slds-form-element__label" for="report_name">{'Select Report'|@getTranslatedString:'Reports'}</label>
 				</td>
 			</tr>
