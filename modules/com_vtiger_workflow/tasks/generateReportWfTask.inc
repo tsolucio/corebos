@@ -81,12 +81,13 @@ class generateReportWfTask extends VTTask {
 		if ($this->saveto_doc == '1') {
 			$res = $adb->pquery('SELECT folderid FROM vtiger_attachmentsfolder Limit 1', array());
 			$folderid = ($res && $adb->num_rows($res) > 0) ? $adb->query_result($res, 0, 'folderid') : '';
+			$filesize = filesize($root_directory.$path.$name);
 			$dataArr = array(
 				'assigned_user_id'=>vtws_getEntityId('Users').'x'.$current_user->id,
 				'notes_title' => $name,
 				'filename'=>$name,
 				'filetype'=>$type,
-				'filesize'=>0,
+				'filesize'=>$filesize,
 				'filelocationtype'=>'I',
 				'filedownloadcount'=> 0,
 				'filestatus'=>1,
