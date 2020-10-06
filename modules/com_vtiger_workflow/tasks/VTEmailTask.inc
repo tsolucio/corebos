@@ -18,7 +18,7 @@ include_once 'include/Webservices/VtigerEmailOperation.php';
 
 class VTEmailTask extends VTTask {
 	// Sending email takes more time, this should be handled via queue all the time.
-	public $executeImmediately = true;
+	public $executeImmediately = false;
 	public $attachmentsinfo = array();
 	public $dzattinfo = array();
 	private $entityrecord = 0;
