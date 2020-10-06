@@ -499,7 +499,11 @@ class cbQuestion extends CRMEntity {
 				$ls++;
 			}
 			if (!empty($alllabels)) {
-				fputcsv($fp, $alllabels, $delim, $encls);
+				$line = self::generateCSV($alllabels, $delim, $encls);
+				if (isset($properties->postprocess)) {
+					$line = self::postProcessFileLine($line, $properties->postprocess);
+				}
+				fputs($fp, $line);
 			}
 			foreach ($ans['answer'] as $row) {
 				foreach ($row as $label => $value) {
@@ -510,10 +514,30 @@ class cbQuestion extends CRMEntity {
 						}
 					}
 				}
-				fputcsv($fp, $row, $delim, $encls);
+				$line = self::generateCSV($row, $delim, $encls);
+				if (isset($properties->postprocess)) {
+					$line = self::postProcessFileLine($line, $properties->postprocess);
+				}
+				fputs($fp, $line);
 			}
 		}
 		return $fname;
+	}
+
+	public static function postProcessFileLine($line, $actions) {
+		$postprocess = explode(',', $actions);
+		foreach ($postprocess as $process) {
+			switch ($process) {
+				case 'deletedoublequotes':
+					$line = str_replace('\"', '\ç', $line);
+					$line = str_replace('"', '', $line);
+					$line = str_replace('\ç', '\"', $line);
+					break;
+				default:
+					break;
+			}
+		}
+		return $line;
 	}
 
 	public static function getTableFromAnswer($ans) {
@@ -690,7 +714,7 @@ class cbQuestion extends CRMEntity {
 			case 'datetime':
 				if (!empty($format)) {
 					$dt = explode(' ', $value);
-					list($y, $m, $d) = explode('/', $dt[0]);
+					list($y, $m, $d) = (strpos($dt[0], '/')) ? explode('/', $dt[0]) : explode('-', $dt[0]);
 					if (empty($dt[1])) {
 						$h = $i = $s = 0;
 					} else {
@@ -718,6 +742,18 @@ class cbQuestion extends CRMEntity {
 				return $value;
 				break;
 		}
+	}
+
+	public static function generateCSV($data, $delimiter = ',', $enclosure = '"') {
+		$handle = fopen('php://temp', 'r+');
+		fputcsv($handle, $data, $delimiter, $enclosure);
+		rewind($handle);
+		$contents = '';
+		while (!feof($handle)) {
+			$contents .= fread($handle, 8192);
+		}
+		fclose($handle);
+		return $contents;
 	}
 }
 ?>

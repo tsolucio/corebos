@@ -90,9 +90,9 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 			} else {
 				$queryColumns[] = strtolower($colspec['base_expr']);
 			}
-		} elseif ($colspec['base_expr']=='distinct') {
+		} elseif (strtolower($colspec['base_expr'])=='distinct') {
 			$hasDistinct = true;
-		} elseif ($colspec['base_expr']=='count') {
+		} elseif (strtolower($colspec['base_expr'])=='count') {
 			$countSelect = true;
 		}
 	}
