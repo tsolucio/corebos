@@ -1088,7 +1088,7 @@ class QueryGenerator {
 									from vtiger_cbtranslation
 									where locale="'.$current_user->language.'" and forpicklist="'.$this->getModule().'::'.$field->getFieldName()
 									.'" and SOUNDEX(i18n) LIKE SOUNDEX("'.$conditionInfo['value'].'"))'
-									.(in_array($conditionInfo['operator'], array('n', 'ni', 'nin', 'k', 'dnsw', 'dnew')) ? ' AND ' : ' OR ')
+									.(in_array($conditionInfo['operator'], array('n', 'ni', 'nin', 'dnsw', 'dnew')) ? ' AND ' : ' OR ')
 									.$valueSql;
 							} else {
 								$fieldSql .= "$fieldGlue ". $valueSql;
@@ -1099,7 +1099,7 @@ class QueryGenerator {
 									select translation_key
 									from vtiger_cbtranslation
 									where locale="'.$current_user->language.'" and forpicklist="'.$this->getModule().'::'.$field->getFieldName().'" and i18n '.$valueSql.')'
-									.(in_array($conditionInfo['operator'], array('n', 'ni', 'nin', 'k', 'dnsw', 'dnew')) ? ' AND ' : ' OR ')
+									.(in_array($conditionInfo['operator'], array('n', 'ni', 'nin', 'dnsw', 'dnew')) ? ' AND ' : ' OR ')
 									.$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
 							} else {
 								$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
