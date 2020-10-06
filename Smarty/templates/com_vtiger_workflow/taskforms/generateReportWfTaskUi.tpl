@@ -42,19 +42,6 @@
 						</select>
 					</div>
 				</td>
-				<td>
-					<div class="slds-form-element">
-						<div class="slds-form-element__control">
-							<div class="slds-checkbox">
-							<input type="checkbox" name="saveto_doc" id="saveto_doc" value="1" {if !empty($task->saveto_doc) && $task->saveto_doc eq "1"} checked {/if}/>
-							<label class="slds-checkbox__label" for="saveto_doc">
-								<span class="slds-checkbox_faux"></span>
-								<span class="slds-form-element__label">{'Save to document'|@getTranslatedString}</span>
-							</label>
-							</div>
-						</div>
-					</div>
-				</td>
 			</tr>
 		</table>
 		<table class="slds-table slds-table_cell-buffer" id="reportDiv" style="width:100%;">
@@ -135,26 +122,5 @@
 				</td>
 			</tr><br/>
 		</table>
-		<table class="slds-table slds-table_cell-buffer" id="documentDiv" style="width:100%; display:none;">
-			<tr>
-				<td>
-					<div class="slds-form-element">
-						<label class="slds-form-element__label" for="doc_content">{'Description'|@getTranslatedString}</label>
-						<div class="slds-form-element__control">
-							<textarea id="doc_content" name="doc_content" class="slds-textarea">{$task->doc_content} </textarea>
-						</div>
-					</div>
-				</td>
-			</tr>
-		</table>
-		<script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
-		<script type="text/javascript" defer="1">
-			var textAreaName = 'doc_content';
-			CKEDITOR.replace( textAreaName, {ldelim}
-				extraPlugins : 'uicolor',
-				uiColor: '#dfdff1'
-			{rdelim} ) ;
-			var oCKeditor = CKEDITOR.instances[textAreaName];
-		</script>
 	</div>
 </div>

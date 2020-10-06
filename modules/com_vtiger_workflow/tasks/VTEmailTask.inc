@@ -18,7 +18,7 @@ include_once 'include/Webservices/VtigerEmailOperation.php';
 
 class VTEmailTask extends VTTask {
 	// Sending email takes more time, this should be handled via queue all the time.
-	public $executeImmediately = false;
+	public $executeImmediately = true;
 	public $attachmentsinfo = array();
 	public $dzattinfo = array();
 	private $entityrecord = 0;
@@ -191,10 +191,6 @@ class VTEmailTask extends VTTask {
 		if (!empty($entity->WorkflowContext['MergeTemplateWith'])) {
 			$ids = explode(',', $entity->WorkflowContext['MergeTemplateWith']);
 		}
-		if (!empty($entity->WorkflowContext['GenerateReportName']) && !empty($entity->WorkflowContext['wfgenerated_file'])) {
-			$attname = $entity->WorkflowContext['wfgenerated_file']['path'].$entity->WorkflowContext['wfgenerated_file']['name'];
-			$this->attachmentsinfo[] = $attname;
-		}
 		foreach ($ids as $id) {
 			if (strpos($id, 'x')>0) {
 				list($wsid, $id) = explode('x', $id);
@@ -206,6 +202,10 @@ class VTEmailTask extends VTTask {
 			$this->content = getMergedDescription($this->content, $id, $module);
 		}
 		$this->after_retrieve();
+		if (!empty($entity->WorkflowContext['GenerateReportName']) && !empty($entity->WorkflowContext['wfgenerated_file'])) {
+			$attname = $entity->WorkflowContext['wfgenerated_file']['path'].$entity->WorkflowContext['wfgenerated_file']['name'];
+			$this->attachmentsinfo[] = $attname;
+		}
 		if (!empty($this->attfieldnames)) {
 			if (substr($this->attfieldnames, -24) == ' : (Documents) filename)') {
 				$this->attfieldnames = substr($this->attfieldnames, 1, strlen($this->attfieldnames)-25);
