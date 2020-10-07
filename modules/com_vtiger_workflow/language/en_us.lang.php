@@ -240,5 +240,11 @@ $mod_strings = array(
 'Select source module' => 'Select source module',
 'Business Question' => 'Business Question',
 'Select File Type' => 'Select file type',
+'Launch Workflow' => 'Launch Workflow',
+'LBL_EXECUTE_THIS_WORKFLOW' => 'Execute This Workflow',
+'LBL_WITH_THIS_CONDITION' => 'With This Condition',
+'LBL_ON_THESE' => 'On These', 
+'LBL_CURRENT_RECORD' => 'On Current Record',
+'LBL_IDS' => 'On These CRMID\'s'
 );
 ?>
