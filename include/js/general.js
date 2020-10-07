@@ -5904,14 +5904,17 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		this.parentForm = _findUp(this.input, '$FORM'),
 		this.valueHolder = this.getValueHolder(),
 		this.isMulti = params.isMulti,
+		this.enabled = params.enabled !== undefined ? params.enabled : true,
 		this.labels = {};
 
 		/* Instance listeners */
-		_on(el, 'mousedown', this.handleClick, this);
-		_on(el, 'click', this.trigger, this);
-		_on(this.input, 'focus', this.trigger, this);
-		_on(this.input, 'keyup', this.trigger, this);
-		_on(this.input, 'blur', this.close, this);
+		if (this.enabled) {
+			_on(el, 'mousedown', this.handleClick, this);
+			_on(el, 'click', this.trigger, this);
+			_on(this.input, 'focus', this.trigger, this);
+			_on(this.input, 'keyup', this.trigger, this);
+			_on(this.input, 'blur', this.close, this);
+		}
 
 		if (this.parentForm !== undefined) {
 			_on(this.parentForm, 'keydown', this.preventFormSubmit, this);
