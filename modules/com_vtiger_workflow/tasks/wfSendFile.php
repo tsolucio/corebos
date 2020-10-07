@@ -31,6 +31,7 @@ class wfSendFile extends VTTask {
 	public function doTask(&$entity) {
 		global $adb, $site_URL, $current_language, $default_charset;
 		$workflow_context = $entity->WorkflowContext;
+		$reportfile_context = !empty($entity->WorkflowContext['wfgenerated_file']) ? $entity->WorkflowContext['wfgenerated_file'] : array();
 		$query = 'select * from vtiger_cbcredentials inner join vtiger_crmentity on crmid=cbcredentialsid where deleted=0 and cbcredentialsid=?';
 		$result = $adb->pquery($query, array($this->credentialid));
 		$data = $result->FetchRow();
@@ -41,7 +42,9 @@ class wfSendFile extends VTTask {
 		$filename = isset($this->filename) ? $this->filename : '';
 		if ($this->exptype == 'rawtext') {
 			if ($filename != '') {
-				$workflow_context['wfgenerated_file']['dest_name'] = $filename;
+				for ($y=0; $y < count($reportfile_context); $y++) {
+					$workflow_context['wfgenerated_file'][$y]['dest_name'] = empty($reportfile_context[$y]['dest_name']) ? $filename : $reportfile_context[$y]['dest_name'];
+				}
 			}
 		} elseif ($this->exptype == 'fieldname') {
 			if ($filename != '') {
@@ -50,7 +53,9 @@ class wfSendFile extends VTTask {
 				$entityCache = new VTEntityCache($adminUser);
 				$fn = new VTSimpleTemplate(trim($filename));
 				$filename = $fn->render($entityCache, $entity->getId());
-				$workflow_context['wfgenerated_file']['dest_name'] = $filename;
+				for ($y=0; $y < count($reportfile_context); $y++) {
+					$workflow_context['wfgenerated_file'][$y]['dest_name'] = empty($reportfile_context[$y]['dest_name']) ? $filename : $reportfile_context[$y]['dest_name'];
+				}
 			}
 		} else {
 			if ($filename != '') {
@@ -58,7 +63,9 @@ class wfSendFile extends VTTask {
 				$expression = $parser->expression();
 				$exprEvaluater = new VTFieldExpressionEvaluater($expression);
 				$filename = $exprEvaluater->evaluate($entity);
-				$workflow_context['wfgenerated_file']['dest_name'] = $filename;
+				for ($y=0; $y < count($reportfile_context); $y++) {
+					$workflow_context['wfgenerated_file'][$y]['dest_name'] = empty($reportfile_context[$y]['dest_name']) ? $filename : $reportfile_context[$y]['dest_name'];
+				}
 			}
 		}
 
