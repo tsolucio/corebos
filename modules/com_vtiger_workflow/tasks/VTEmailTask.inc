@@ -205,6 +205,11 @@ class VTEmailTask extends VTTask {
 			$this->content = getMergedDescription($this->content, $id, $module);
 		}
 		$this->after_retrieve();
+		if (!empty($entity->WorkflowContext['wfgenerated_file'])) {
+			for ($y=0; $y < count($entity->WorkflowContext['wfgenerated_file']); $y++) {
+				$this->attachmentsinfo[] = $entity->WorkflowContext['wfgenerated_file'][$y]['path'].$entity->WorkflowContext['wfgenerated_file'][$y]['name'];
+			}
+		}
 		if (!empty($this->attfieldnames)) {
 			if (substr($this->attfieldnames, -24) == ' : (Documents) filename)') {
 				$this->attfieldnames = substr($this->attfieldnames, 1, strlen($this->attfieldnames)-25);

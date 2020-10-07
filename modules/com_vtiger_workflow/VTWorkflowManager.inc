@@ -171,7 +171,7 @@ class VTWorkflowManager {
 		$query = 'SELECT * FROM com_vtiger_workflows WHERE execution_condition=? and active=?';
 		$params = array(VTWorkflowManager::$ON_SCHEDULE, 'true');
 		if ($referenceTime != '') {
-			$query .= " AND (nexttrigger_time = '' OR nexttrigger_time IS NULL OR nexttrigger_time <= ?)";
+			$query .= ' AND (nexttrigger_time IS NULL OR nexttrigger_time <= ?)';
 			$params[] = $referenceTime;
 		}
 		$result = $this->adb->pquery($query, $params);

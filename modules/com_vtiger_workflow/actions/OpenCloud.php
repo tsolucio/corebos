@@ -59,12 +59,13 @@ class OpenCloudAdapter {
 		if (null === $this->filesystem) {
 			return;
 		}
-		$adapter = $this->filesystem->getAdapter();
-		$content = file_get_contents($this->context['path'].$this->context['name']);
-		if (isset($this->context['dest_name']) && $this->context['dest_name'] != '') {
-			$this->context['name'] = $this->context['dest_name'];
+		$this->filesystem->getAdapter();
+		for ($y=0; $y < count($this->context); $y++) {
+			$content = file_get_contents($this->context[$y]['path'].$this->context[$y]['name']);
+			if (!empty($this->context[$y]['dest_name'])) {
+				$this->context[$y]['name'] = $this->context[$y]['dest_name'];
+			}
+			$this->filesystem->write($this->context[$y]['name'], $content);
 		}
-		$this->filesystem->write($this->context['name'], $content);
-		$adapter->close();
 	}
 }

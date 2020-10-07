@@ -1247,7 +1247,7 @@ class Contacts extends CRMEntity {
 				}
 				$adb->pquery('insert into vtiger_seproductsrel values (?,?,?)', array($crmid, $with_crmid, 'Contacts'));
 			} elseif ($with_module == 'Campaigns') {
-				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_campaigncontrel WHERE campaignid = ? AND contacrid = ?', array($with_crmid, $crmid));
+				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_campaigncontrel WHERE campaignid = ? AND contactid = ?', array($with_crmid, $crmid));
 				if ($checkResult && $adb->num_rows($checkResult) > 0) {
 					continue;
 				}

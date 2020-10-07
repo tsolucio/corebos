@@ -10,6 +10,9 @@
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 require_once 'modules/com_vtiger_workflow/VTTaskQueue.inc';
+require_once 'modules/Reports/Reports.php';
+require_once 'modules/Reports/ReportRun.php';
+require_once 'modules/cbQuestion/cbQuestion.php';
 
 class generateReportWfTask extends VTTask {
 
@@ -19,20 +22,24 @@ class generateReportWfTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		require_once 'modules/Reports/Reports.php';
-		require_once 'modules/Reports/ReportRun.php';
-		require_once 'modules/cbQuestion/cbQuestion.php';
-		global $adb, $current_user, $root_directory, $log;
+		global $adb, $root_directory;
 		$path = '';
 		$name = '';
 		if ($this->case_type == 'report') {
-			$reportdata = explode("$$", $this->report_name);
+			$reportdata = explode('$$', $this->report_name);
 			$reportId = (int)$reportdata[0];
 			$reportName = $reportdata[1];
+			$baseFileName = '';
+			if (!empty($entity->WorkflowContext['GenerateReportName'])) {
+				$repname = $entity->WorkflowContext['GenerateReportName'];
+				$result = $adb->pquery('SELECT reportid FROM vtiger_report WHERE reportname=? limit 1', array($repname));
+				if ($result && $adb->num_rows($result) > 0) {
+					$reportId = $adb->query_result($result, 0, 'reportid');
+					$reportName = $repname;
+				}
+			}
 			$now = date('YmdHis');
-			$oReportRun = new ReportRun($reportId);
 			$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_\.\%\s]/', '', $reportName));
-			$path = 'cache/';
 			if (strpos($baseFileName, '%s')===false) {
 				$baseFileName .= '_%s';
 			} else {
@@ -40,6 +47,8 @@ class generateReportWfTask extends VTTask {
 				$baseFileName = substr($baseFileName, 0, $spos+2).str_replace('%s', '', substr($baseFileName, $spos+2));
 			}
 			$baseFileName = sprintf($baseFileName, $now);
+			$path = 'cache/';
+			$oReportRun = new ReportRun($reportId);
 			if ($this->file_type == 'pdf') {
 				$fileName = $path.$baseFileName.'.pdf';
 				$filePath = $root_directory.$fileName;
@@ -61,6 +70,13 @@ class generateReportWfTask extends VTTask {
 			}
 		}
 		if ($this->case_type == 'question') {
+			if (!empty($entity->WorkflowContext['GenerateQuestionName'])) {
+				$qnName = $entity->WorkflowContext['GenerateQuestionName'];
+				$res = $adb->pquery('SELECT cbquestionid FROM vtiger_cbquestion WHERE qname=? limit 1', array($qnName));
+				if ($res && $adb->num_rows($res) > 0) {
+					$this->qnfield = $adb->query_result($res, 0, 'cbquestionid');
+				}
+			}
 			$res = cbQuestion::getFormattedAnswer((int)$this->qnfield, array());
 			if ($res) {
 				$path_parts = pathinfo($res);
@@ -68,7 +84,10 @@ class generateReportWfTask extends VTTask {
 				$path =str_replace($root_directory, '', $path_parts['dirname']).'/';
 			}
 		}
-		$entity->WorkflowContext['wfgenerated_file'] = array("path"=>$path, "name"=>$name);
+		if (empty($entity->WorkflowContext['wfgenerated_file'])) {
+			$entity->WorkflowContext['wfgenerated_file'] = array();
+		}
+		$entity->WorkflowContext['wfgenerated_file'][] = array('path'=>$path, 'name'=>$name);
 	}
 }
 ?>

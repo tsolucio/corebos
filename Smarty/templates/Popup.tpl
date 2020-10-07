@@ -58,6 +58,7 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 <script type='text/javascript' src='include/jquery/jquery.js'></script>
 <script type="text/javascript" src="include/js/ListView.js"></script>
 <script type="text/javascript" src="include/js/general.js"></script>
+<script type="text/javascript" src="include/components/ldsprompt.js"></script>
 <script type="text/javascript" src="include/js/vtlib.js"></script>
 <script type="text/javascript" src="include/js/QuickCreate.js"></script>
 <script type="text/javascript" src="include/js/Inventory.js"></script>

@@ -459,27 +459,27 @@
     },
     {
         "name": "knplabs/gaufrette",
-        "version": "v0.7.0",
-        "version_normalized": "0.7.0.0",
+        "version": "v0.9.0",
+        "version_normalized": "0.9.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/KnpLabs/Gaufrette.git",
-            "reference": "a0627e91e8753f442eea6560cb347151cd306b2c"
+            "reference": "786247eba04d4693e88a80ca9fdabb634675dcac"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/KnpLabs/Gaufrette/zipball/a0627e91e8753f442eea6560cb347151cd306b2c",
-            "reference": "a0627e91e8753f442eea6560cb347151cd306b2c",
+            "url": "https://api.github.com/repos/KnpLabs/Gaufrette/zipball/786247eba04d4693e88a80ca9fdabb634675dcac",
+            "reference": "786247eba04d4693e88a80ca9fdabb634675dcac",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.6"
+            "php": ">=7.1"
         },
         "conflict": {
             "microsoft/windowsazure": "<0.4.3"
         },
         "require-dev": {
-            "akeneo/phpspec-skip-example-extension": "~1.2",
+            "akeneo/phpspec-skip-example-extension": "^4.0",
             "amazonwebservices/aws-sdk-for-php": "1.5.*",
             "aws/aws-sdk-php": "^2.4.12||~3",
             "doctrine/dbal": ">=2.3",
@@ -489,9 +489,10 @@
             "microsoft/azure-storage-blob": "^1.0",
             "mikey179/vfsstream": "~1.2.0",
             "mongodb/mongodb": "^1.1",
+            "pedrotroller/php-cs-custom-fixer": "^2.17",
             "phpseclib/phpseclib": "^2.0",
-            "phpspec/phpspec": "~2.4",
-            "phpunit/phpunit": "^5.6.8",
+            "phpspec/phpspec": "~5.1",
+            "phpunit/phpunit": "~7.5",
             "rackspace/php-opencloud": "^1.9.2"
         },
         "suggest": {
@@ -512,11 +513,11 @@
             "google/apiclient": "to use GoogleCloudStorage adapter",
             "knplabs/knp-gaufrette-bundle": "to use with Symfony2"
         },
-        "time": "2018-08-30T13:26:15+00:00",
+        "time": "2019-12-26T15:15:38+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "0.7.x-dev"
+                "dev-master": "0.10.x-dev"
             }
         },
         "installation-source": "dist",
@@ -531,12 +532,12 @@
         ],
         "authors": [
             {
-                "name": "The contributors",
-                "homepage": "http://github.com/knplabs/Gaufrette/contributors"
-            },
-            {
                 "name": "KnpLabs Team",
                 "homepage": "http://knplabs.com"
+            },
+            {
+                "name": "The contributors",
+                "homepage": "http://github.com/knplabs/Gaufrette/contributors"
             }
         ],
         "description": "PHP library that provides a filesystem abstraction layer",

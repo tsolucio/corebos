@@ -623,7 +623,8 @@ class Invoice extends CRMEntity {
 		}
 		if ($context=='CobroPago') {
 			//Event triggering code
-			$em->triggerEvent("vtiger.entity.aftersave", $entityData);
+			$em->triggerEvent('vtiger.entity.aftersave', $entityData);
+			$em->triggerEvent('vtiger.entity.aftersave.final', $entityData);
 			//Event triggering code ends
 		}
 	}

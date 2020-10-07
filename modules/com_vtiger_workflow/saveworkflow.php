@@ -85,7 +85,8 @@ function vtWorkflowSave($adb, $request) {
 		$wf->test = $conditions;
 		$wf->executionConditionAsLabel($executionCondition);
 		$wf->schtypeid = $request['schtypeid'];
-		$wf->schtime = DateTimeField::formatDatebaseTimeString($request['schtime'], 'pm');
+		$fmt = (date('a', strtotime($request['schtime'])));
+		$wf->schtime = DateTimeField::formatDatebaseTimeString($request['schtime'], $fmt);
 		$wf->schdayofmonth = isset($request['schdayofmonth']) ? json_encode($request['schdayofmonth']) : '';
 		$wf->schdayofweek = isset($schdayofweek) ? json_encode($schdayofweek) : '';
 		$wf->schannualdates = $schannualdates;
@@ -102,7 +103,8 @@ function vtWorkflowSave($adb, $request) {
 		$wf->test = $conditions;
 		$wf->executionConditionAsLabel($executionCondition);
 		$wf->schtypeid = $request['schtypeid'];
-		$wf->schtime = DateTimeField::formatDatebaseTimeString($request['schtime'], 'pm');
+		$fmt = (date('a', strtotime($request['schtime'])));
+		$wf->schtime = DateTimeField::formatDatebaseTimeString($request['schtime'], $fmt);
 		$wf->schdayofmonth = isset($request['schdayofmonth']) ? json_encode($request['schdayofmonth']) : '';
 		$wf->schdayofweek = isset($schdayofweek) ? json_encode($schdayofweek) : '';
 		$wf->schannualdates = $schannualdates;

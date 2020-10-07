@@ -96,10 +96,7 @@ class SyncServer {
 	public function checkIdExistInQueue($syncServerId) {
 		$db = PearDatabase::getInstance();
 		$result = $db->pquery('SELECT syncserverid FROM vtiger_wsapp_queuerecords WHERE syncserverid=?', array($syncServerId));
-		if ($db->num_rows($result)>0) {
-				return true;
-		}
-		return false;
+		return ($db->num_rows($result)>0);
 	}
 
 	public function markRecordAsDeleteForAllCleints($recordValues) {

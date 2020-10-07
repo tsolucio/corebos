@@ -310,6 +310,10 @@ class WorkFlowScheduler {
 					}
 					$value = '::#'.$substExpressionsIndex;
 					$substExpressionsIndex++;
+					preg_match('/(\w+) : \((\w+)\) (\w+)/', $condition['fieldname'], $matches);
+					if (count($matches) != 0) {
+						list($full, $referenceField, $referenceModule, $fieldname) = $matches;
+					}
 				} else {
 					$value = html_entity_decode($value);
 					preg_match('/(\w+) : \((\w+)\) (\w+)/', $condition['fieldname'], $matches);

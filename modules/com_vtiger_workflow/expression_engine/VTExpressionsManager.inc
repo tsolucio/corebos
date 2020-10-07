@@ -125,6 +125,7 @@ class VTExpressionsManager {
 			'add_days' => 'add_days(datefield, noofdays)',
 			'add_workdays' => 'add_workdays(date, numofdays, addsaturday, holidays)',
 			'sub_days' => 'sub_days(datefield, noofdays)',
+			'sub_workdays' => 'sub_workdays(date, numofdays, removesaturday, holidays)',
 			'add_months' => 'add_months(datefield, noofmonths)',
 			'sub_months' => 'sub_months(datefield, noofmonths)',
 			'add_time(timefield, minutes)' => 'add_time(timefield, minutes)',
