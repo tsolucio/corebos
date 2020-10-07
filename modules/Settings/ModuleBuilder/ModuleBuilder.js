@@ -46,29 +46,41 @@ const mb = {
 			const FIELD_COUNT = mb.loadElement('FIELD_COUNT');
 			var btnid = buttonid.split('-')[4];
 			if (forward == false) {
+				let proceed = true;
 				if (mb.loadElement(`fieldname_${btnid}`) == '' || mb.loadElement(`fieldlabel_${btnid}`) == '') {
 					mb.loadMessage(mod_alert_arr.FieldsEmpty, true);
-				} else if (mb.loadElement(`Uitype_${btnid}`) == '15' || mb.loadElement(`Uitype_${btnid}`) == '16' && mb.loadElement(`picklistvalues_${btnid}`) == '') {
-					mb.loadMessage(mod_alert_arr.PickListFld, true);
-				} else if (mb.loadElement(`Uitype_${btnid}`) == '10' && mb.loadElement(`relatedmodules_${btnid}`) == '') {
-					mb.loadMessage(mod_alert_arr.Relmod, true);
-				} else {
-					var fieldValues = {
-						blockid: mb.getRadioValue(`select-for-field-${btnid}`),
-						fieldname: mb.loadElement(`fieldname_${btnid}`),
-						columnname: mb.loadElement(`fieldname_${btnid}`),
-						fieldlabel: mb.loadElement(`fieldlabel_${btnid}`),
-						relatedmodules: mb.loadElement(`relatedmodules_${btnid}`),
-						masseditable: mb.loadElement(`Masseditable_${btnid}`),
-						displaytype: mb.loadElement(`Displaytype_${btnid}`),
-						quickcreate: mb.loadElement(`Quickcreate_${btnid}`),
-						typeofdata: mb.loadElement(`Typeofdata_${btnid}`),
-						presence: mb.loadElement(`Presence_${btnid}`),
-						uitype: mb.loadElement(`Uitype_${btnid}`),
-						picklistvalues: mb.loadElement(`picklistvalues_${btnid}`),
-						sequence: FIELD_COUNT,
-					};
+					proceed = false;
 				}
+				if (mb.loadElement(`Uitype_${btnid}`) == '10') {
+					if (mb.loadElement(`relatedmodules_${btnid}`) == '') {
+						mb.loadMessage(mod_alert_arr.Relmod, true);
+						proceed = false;
+					}
+				}
+				if (mb.loadElement(`Uitype_${btnid}`) == '15' || mb.loadElement(`Uitype_${btnid}`) == '16') {
+					if (mb.loadElement(`picklistvalues_${btnid}`) == '') {
+						mb.loadMessage(mod_alert_arr.PickListFld, true);
+						proceed = false;
+					}
+				}
+				if (!proceed) {
+					return;
+				}
+				var fieldValues = {
+					blockid: mb.getRadioValue(`select-for-field-${btnid}`),
+					fieldname: mb.loadElement(`fieldname_${btnid}`),
+					columnname: mb.loadElement(`fieldname_${btnid}`),
+					fieldlabel: mb.loadElement(`fieldlabel_${btnid}`),
+					relatedmodules: mb.loadElement(`relatedmodules_${btnid}`),
+					masseditable: mb.loadElement(`Masseditable_${btnid}`),
+					displaytype: mb.loadElement(`Displaytype_${btnid}`),
+					quickcreate: mb.loadElement(`Quickcreate_${btnid}`),
+					typeofdata: mb.loadElement(`Typeofdata_${btnid}`),
+					presence: mb.loadElement(`Presence_${btnid}`),
+					uitype: mb.loadElement(`Uitype_${btnid}`),
+					picklistvalues: mb.loadElement(`picklistvalues_${btnid}`),
+					sequence: FIELD_COUNT,
+				};
 				fields.push(fieldValues);
 				data = {
 					fields: fields,
@@ -88,6 +100,25 @@ const mb = {
 			var btnid = buttonid.split('-')[4];
 			const FILTER_COUNT = mb.loadElement('FILTER_COUNT');
 			if (forward == false) {
+				let proceed = true;
+				if (mb.loadElement(`viewname-${FILTER_COUNT}`) == '') {
+					mb.loadMessage(mod_alert_arr.Viewname_msg, true);
+					proceed = false;
+				}
+				const checkboxes = document.getElementsByName('checkbox-options-1');
+				let checkboxesChecked = [];
+				for (let i = 0; i < checkboxes.length; i++) {
+					if (checkboxes[i].checked) {
+						checkboxesChecked.push(checkboxes[i].id);
+					}
+				}
+				if (checkboxesChecked.length == 0) {
+					mb.loadMessage(mod_alert_arr.CheckOpt, true);
+					proceed = false;
+				}
+				if (!proceed) {
+					return;
+				}
 				var customObj = {
 					viewname: mb.loadElement(`viewname-${FILTER_COUNT}`),
 					setdefault: mb.loadElement(`setdefault-${FILTER_COUNT}`),
@@ -121,6 +152,14 @@ const mb = {
 			let relatedLists = [];
 			const LIST_COUNT = mb.loadElement('LIST_COUNT');
 			if (forward == false) {
+				let proceed = true;
+				if (mb.loadElement(`autocomplete-related-${LIST_COUNT}`) == '' || mb.loadElement(`related-label-${LIST_COUNT}`)) {
+					mb.loadMessage(mod_alert_arr.Related_name_label, true);
+					proceed = false;
+				}
+				if (!proceed) {
+					return;
+				}
 				let lists = {
 					relatedmodule: mb.loadElement(`autocomplete-module-${LIST_COUNT}`),
 					actions: mb.loadElement(`autocomplete-related-${LIST_COUNT}`) == 'get_dependents_list' ? 'ADD' : 'ADD,SELECT',
