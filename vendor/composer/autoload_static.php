@@ -39,6 +39,8 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         'M' => 
         array (
             'Monolog\\' => 8,
+            'MicrosoftAzure\\Storage\\Common\\' => 30,
+            'MicrosoftAzure\\Storage\\Blob\\' => 28,
         ),
         'G' => 
         array (
@@ -60,7 +62,7 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         ),
         'Twilio\\' => 
         array (
-            0 => __DIR__ . '/..' . '/twilio/sdk/Twilio',
+            0 => __DIR__ . '/..' . '/twilio/sdk/src/Twilio',
         ),
         'Symfony\\Polyfill\\Mbstring\\' => 
         array (
@@ -90,6 +92,14 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
+        'MicrosoftAzure\\Storage\\Common\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/microsoft/azure-storage-common/src/Common',
+        ),
+        'MicrosoftAzure\\Storage\\Blob\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/microsoft/azure-storage-blob/src/Blob',
+        ),
         'GuzzleHttp\\Psr7\\' => 
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
@@ -113,6 +123,13 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
     );
 
     public static $prefixesPsr0 = array (
+        'S' => 
+        array (
+            'Smalot\\PdfParser\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/smalot/pdfparser/src',
+            ),
+        ),
         'G' => 
         array (
             'Google_Service_' => 
@@ -123,12 +140,30 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
             array (
                 0 => __DIR__ . '/..' . '/google/apiclient/src',
             ),
+            'Gaufrette' => 
+            array (
+                0 => __DIR__ . '/..' . '/knplabs/gaufrette/src',
+            ),
         ),
     );
 
     public static $classMap = array (
+        'Datamatrix' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/datamatrix.php',
         'Google_Service_Exception' => __DIR__ . '/..' . '/google/apiclient/src/Google/Service/Exception.php',
         'Google_Service_Resource' => __DIR__ . '/..' . '/google/apiclient/src/Google/Service/Resource.php',
+        'PDF417' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/pdf417.php',
+        'QRcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/qrcode.php',
+        'TCPDF' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf.php',
+        'TCPDF2DBarcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_barcodes_2d.php',
+        'TCPDFBarcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_barcodes_1d.php',
+        'TCPDF_COLORS' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_colors.php',
+        'TCPDF_FILTERS' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_filters.php',
+        'TCPDF_FONTS' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_fonts.php',
+        'TCPDF_FONT_DATA' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_font_data.php',
+        'TCPDF_IMAGES' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_images.php',
+        'TCPDF_IMPORT' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_import.php',
+        'TCPDF_PARSER' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_parser.php',
+        'TCPDF_STATIC' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_static.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

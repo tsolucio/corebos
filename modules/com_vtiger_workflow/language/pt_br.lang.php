@@ -6,7 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 03/05/2020 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 23/09/2021 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
   ************************************************************************************/
 $mod_strings = array(
 'com_vtiger_workflow' => 'Workflows',
@@ -45,19 +45,19 @@ $mod_strings = array(
 'LBL_MESSAGE'=>'Mensagem',
 'LBL_SET_FIELD_VALUES'=>'Configurar valor campos',
 'LBL_ADD_FIELD'=>'Adicionar campo',
-'LBL_DELETE_FIELD' => 'Delete Field',
+'LBL_DELETE_FIELD' => 'Apagar Campo',
 
 'LBL_USE_FIELD_VALUE_DASHDASH'=>'-- Utilizar valor campo --',
 'LBL_USE_FUNCTION_DASHDASH'=>'-- Utilizar função --',
-'LBL_FUNCTIONS'=>'Expression Functions',
-'Math' => 'Math',
-'Date and Time' => 'Date and Time',
-'Text' => 'Text',
-'Information' => 'Information',
-'Logical' => 'Logical',
-'Finance' => 'Finance',
-'Application' => 'Application',
-'Statistics' => 'Statistics',
+'LBL_FUNCTIONS'=>'Funções de expressão',
+'Math' => 'Matemáticas',
+'Date and Time' => 'Data e hora',
+'Text' => 'Texto',
+'Information' => 'Informação',
+'Logical' => 'Lógica',
+'Finance' => 'Financeiras',
+'Application' => 'Applicação',
+'Statistics' => 'Estatisticas',
 
 'LBL_RAW_TEXT'=>'Texto puro',
 'LBL_FIELD'=>'Campo',
@@ -202,7 +202,7 @@ $mod_strings = array(
 'Select IO Map' => 'Selecionar IO Map',
 'Select Config Map' => 'Selecionar Configuration Map',
 'CBPushNotificationTask' => 'Enviar notificação',
-'pushnoturl' => 'Enviar link de notification',
+'pushnoturl' => 'Enviar link de notificação',
 'CBQuestionMViewFunction' => 'Atualizar Materialized View',
 'LBL_WHERE_TO_SAVE' => 'Onde salvar:',
 'LBL_WHAT_TO_ENCODE' => 'O que codificar',
@@ -230,15 +230,18 @@ $mod_strings = array(
 'wfExecExpression' => 'Executar expressão',
 'wdexeexpVariableHelp' => 'O valor será salvo no contexto com esse nome, se fornecido. Senão apenas a expressão será executada.',
 'LBL_EXPRESSIONS' => 'Expressões',
-'EXP_RULES' => 'Rules to follow while using expressions',
-'EXP_RULE1' => "Define text field values inside single quotes (' ').",
-'EXP_RULE2' => 'Use arithmetic operators to perform Addition(+), Subtraction(-), Multiplication(*), and Division(/). You can perform these operations between two or more fields, values, or combination of both fields and values.',
-'EXP_RULE3' => 'Use relational operators in the expressions',
-'equal to' => 'equal to',
-'not equal to' => 'not equal to',
-'EXP_RULE4' => 'Use binary values for the checkbox fields: 0 for false/no, 1 for true/yes.',
-'Select source module' => 'Select source module',
+'EXP_RULES' => 'Regras a seguir ao usar expressões',
+'EXP_RULE1' => "Defina os valores dos campos de texto entre aspas simples (' ').",
+'EXP_RULE2' => 'Use operadores aritméticos para realizar adição (+), subtração (-), multiplicação (*) e divisão (/). Você pode realizar essas operações entre dois ou mais campos, valores ou combinação de ambos os campos e valores.',
+'EXP_RULE3' => 'Use operadores relacionais nas expressões',
+'equal to' => 'igual a',
+'not equal to' => 'diferetent de',
+'EXP_RULE4' => 'Use valores binários para os campos da caixa de seleção: 0 para falso / não, 1 para verdadeiro / sim.',
+'Select source module' => 'Selecione o módulo fonte',
 'Business Question' => 'Business Question',
-'Select File Type' => 'Select file type',
+'Select File Type' => 'Selecione o tipo de arquivo',
+'LBL_SELECT_CREDENTIAL' => 'Select Credential',
+'LBL_SEND_FILE' => 'Send file to',
+'FILENAME' => 'Destination filename',
 );
 ?>

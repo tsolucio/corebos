@@ -50,7 +50,7 @@ function getRelatedModulesInfomation($module, $user) {
 			$relationfield = null;
 		} else {
 			$rs = $adb->pquery('select fieldname from vtiger_field where fieldid=?', array($relationfieldid));
-			$relationfield = $rs->fields['fieldname'];
+			$relationfield = $adb->query_result($rs, 0, 'fieldname');
 		}
 		if ($rel_tab_id != 0) {
 			$relModuleName = getTabModuleName($rel_tab_id);

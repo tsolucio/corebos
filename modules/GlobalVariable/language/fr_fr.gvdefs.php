@@ -251,6 +251,20 @@ $GlobalVariableDefinitons = array(
 	'values' => 'CSV des domaines CORS autorisés',
 	'definition' => 'Liste CSV d\'URI de noms de domaine autorisés d\'accés au webservice. La valeur spéciale astérisque "*" donne accée à tous les noms de domaine.',
 ),
+'Webservice_Describe_ReturnUserList' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => 'Return list of available users in the assigned_user_id field. This can be very big and produce browser issues. You can get the list from getAssignedUserlist method.',
+),
+'Webservice_Describe_ReturnGroupList' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => 'Return list of available groups in the assigned_user_id field. If you do not use groups in your external application you can get some marginal benefit.',
+),
 'SOAP_CustomerPortal_Enabled' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Booléen',
@@ -502,6 +516,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'yes | no',
 	'definition' => 'Launch events and workflows when importing records. Default value is no',
+),
+'Import_LeaveUserReferenceFieldEmpty' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'User reference fields will be set to the user importing the data if the value is empty or the user does not have permission to make that assignment. If this variable is set to 1 the field will be left empty if it is empty.',
 ),
 'Export_Field_Separator_Symbol' => array(
 	'status' => 'Implemented',
@@ -1286,6 +1307,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'CSS Style',
 	'definition' => 'CSS Style to apply on inventory product line comment box. By default defines width and height.',
+),
+'Application_Textarea_Style' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'CSS Style',
+	'definition' => 'CSS Style to apply on Textarea fields. By default defines height.',
 ),
 'Application_Group_Selection_Permitted' => array(
 	'status' => 'Implémenté',

@@ -14,9 +14,12 @@ use \RobThree\Auth\TwoFactorAuth;
 
 class VTSimpleTemplate {
 
-	public function __construct($templateString, $keepvariable = false) {
+	private $formatValue = true;
+
+	public function __construct($templateString, $keepvariable = false, $formatValue = true) {
 		$this->template = $templateString;
 		$this->keepvariable = $keepvariable;
+		$this->formatValue = $formatValue;
 	}
 
 	public function render($entityCache, $entityId, $void = array()) {
@@ -101,6 +104,9 @@ class VTSimpleTemplate {
 									$date = new DateTimeField($data[$fieldname]);
 									$result = $date->getDisplayDateTimeValue($current_user);
 								} elseif ($uitype == '71' || $uitype == '72' || $uitype == '7' || $uitype == '9') {
+									if (!$this->formatValue) {
+										return $data[$fieldname];
+									}
 									$currencyField = new CurrencyField($data[$fieldname]);
 									$result = $currencyField->getDisplayValue(null, true);
 								} elseif ($uitype == '14' || ($uitype == '2' && ($fieldname == 'time_start' || $fieldname == 'time_end'))) { // time

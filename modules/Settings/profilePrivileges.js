@@ -105,7 +105,8 @@ function unSelectDelete(id) {
 }
 
 function hideTab(id) {
-	var createid = 'tab_chk_1_'+id;
+	var createid = id+'_field_util_7';
+	var editid = 'tab_chk_1_'+id;
 	var viewid = 'tab_chk_4_'+id;
 	var deleteid = 'tab_chk_2_'+id;
 	var imageid = 'img_'+id;
@@ -113,30 +114,36 @@ function hideTab(id) {
 	if (document.getElementById('tab_chk_com_'+id).checked == false) {
 		unselect_view_all();
 		unselect_edit_all();
-		if (typeof(document.getElementById(imageid)) != 'undefined') {
+		if (document.getElementById(imageid)) {
 			document.getElementById(imageid).style.display = 'none';
 		}
 		document.getElementById(contid).className = 'hideTable';
-		if (typeof(document.getElementById(createid)) != 'undefined') {
+		if (document.getElementById(createid)) {
 			document.getElementById(createid).checked = false;
 		}
-		if (typeof(document.getElementById(deleteid)) != 'undefined') {
+		if (document.getElementById(editid)) {
+			document.getElementById(editid).checked = false;
+		}
+		if (document.getElementById(deleteid)) {
 			document.getElementById(deleteid).checked = false;
 		}
-		if (typeof(document.getElementById(viewid)) != 'undefined') {
+		if (document.getElementById(viewid)) {
 			document.getElementById(viewid).checked = false;
 		}
 	} else {
-		if (typeof(document.getElementById(imageid)) != 'undefined') {
+		if (document.getElementById(imageid)) {
 			document.getElementById(imageid).style.display = 'block';
 		}
-		if (typeof(document.getElementById(createid)) != 'undefined') {
+		if (document.getElementById(createid)) {
 			document.getElementById(createid).checked = true;
 		}
-		if (typeof(document.getElementById(deleteid)) != 'undefined') {
+		if (document.getElementById(editid)) {
+			document.getElementById(editid).checked = true;
+		}
+		if (document.getElementById(deleteid)) {
 			document.getElementById(deleteid).checked = true;
 		}
-		if (typeof(document.getElementById(viewid)) != 'undefined') {
+		if (document.getElementById(viewid)) {
 			document.getElementById(viewid).checked = true;
 		}
 		var fieldid = id +'_field_';

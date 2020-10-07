@@ -151,7 +151,8 @@ class VTEmailTask extends VTTask {
 		$cc = preg_replace('/,,+/', ',', $cc);
 		$bcc = preg_replace('/,,+/', ',', $bcc);
 		if (strlen(trim($to_email, " \t\n,")) == 0 && strlen(trim($cc, " \t\n,")) == 0 && strlen(trim($bcc, " \t\n,")) == 0) {
-			return ;
+			$util->revertUser();
+			return;
 		}
 		if (!empty($entity->WorkflowContext['SendThisMsgTemplate'])) {
 			if (strpos($entity->WorkflowContext['SendThisMsgTemplate'], 'x')>0) {
@@ -201,6 +202,11 @@ class VTEmailTask extends VTTask {
 			$this->content = getMergedDescription($this->content, $id, $module);
 		}
 		$this->after_retrieve();
+		if (!empty($entity->WorkflowContext['wfgenerated_file'])) {
+			for ($y=0; $y < count($entity->WorkflowContext['wfgenerated_file']); $y++) {
+				$this->attachmentsinfo[] = $entity->WorkflowContext['wfgenerated_file'][$y]['path'].$entity->WorkflowContext['wfgenerated_file'][$y]['name'];
+			}
+		}
 		if (!empty($this->attfieldnames)) {
 			if (substr($this->attfieldnames, -24) == ' : (Documents) filename)') {
 				$this->attfieldnames = substr($this->attfieldnames, 1, strlen($this->attfieldnames)-25);
