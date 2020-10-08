@@ -31,7 +31,7 @@ class CBLaunchWorkFlowTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $current_user, $currentModule, $log;
+		global $adb, $current_user, $currentModule, $log, $from_wf;
 
 		switch ($this->record_filter_opt) {
 			case "filterByCurrentRecord":
@@ -39,7 +39,7 @@ class CBLaunchWorkFlowTask extends VTTask {
 				$crmids[] = $entity->getId();
 				$this->executeWorkflow($this->workflowid, $crmids, '[]', $current_user);
 				break;
-			case "filterByContextVariable":
+			case "filterByThese":
 				$idslist = explode(',', $this->crmids_list);
 				if (count($idslist) > 0) {
 					$entityids = array();
@@ -52,75 +52,50 @@ class CBLaunchWorkFlowTask extends VTTask {
 				}
 				break;
 			case "filterByrelModuleAndConditionExpressionMap":
-				require_once 'modules/cbMap/cbMap.php';
-				$focus = new cbMap();
-				$focus->id = $this->conditionexpressionmapid;
-				$focus->retrieve_entity_info($this->conditionexpressionmapid, 'cbMap');
-				list($moduleId, $crmId) = explode('x', $entity->getId());
-				$parentModule = getSalesEntityType($crmId);
-				$relatedModuleId = vtws_getEntityId($this->relModlist);
-
-				if ((($parentModule == 'Leads') && ($this->relModlist == 'Products')) ||
-					(($parentModule == 'Products' ) && ($this->relModlist == 'Accounts' || $this->relModlist == 'Contacts' ||
-					$this->relModlist == 'Potentials' || $this->relModlist == 'Leads')) || (($parentModule == 'Potentials') &&
-					($this->relModlist == 'Products'))) {
-					$sql = 'select productid as id from vtiger_seproductsrel where crmid = ? and setype = ?';
-					$result = $adb->pquery($sql, array($crmId, $parentModule));
-				} elseif (($parentModule == 'Leads') && ($this->relModlist == 'Campaigns')) {
-					$sql = 'select campaignid as id from vtiger_campaignleadrel where leadid = ?';
-					$result = $adb->pquery($sql, array($crmId));
-				} elseif (($parentModule == 'Vendors') && ($this->relModlist == 'Contacts')) {
-					$sql = 'select contactid as id from vtiger_vendorcontactrel where vendorid = ?';
-					$result = $adb->pquery($sql, array($crmId));
-				} elseif (($parentModule == 'Vendors') && ($this->relModlist == 'Products')) {
-					$sql = 'select productid as id from vtiger_products where vendor_id = ?';
-					$result = $adb->pquery($sql, array($crmId));
-				} elseif (($parentModule == 'Potentials') && ($this->relModlist == 'Contacts')) {
-					$sql = 'select contactid as id from vtiger_contpotentialrel where potentialid = ?';
-					$result = $adb->pquery($sql, array($crmId));
-				} elseif (($parentModule == 'Contacts') && ($this->relModlist == 'Products')) {
-					$sql = 'select productid as id from vtiger_seproductsrel where crmid = ?';
-					$result = $adb->pquery($sql, array($crmId));
-				} elseif (($parentModule == 'Contacts') && ($this->relModlist == 'Campaigns')) {
-					$sql = 'select campaignid as id from vtiger_campaigncontrel where contactid = ?';
-					$result = $adb->pquery($sql, array($crmId));
-				} elseif (($parentModule == 'Contacts') && ($this->relModlist == 'Potentials')) {
-					$sql = 'select potentialid as id from vtiger_contpotentialrel where contactid = ?';
-					$result = $adb->pquery($sql, array($crmId));
-				} elseif (($parentModule == 'Contacts') && ($this->relModlist == 'Vendors')) {
-					$sql = 'select vendorid as id from vtiger_vendorcontactrel where contactid = ?';
-					$result = $adb->pquery($sql, array($crmId));
-				} elseif (($parentModule == 'cbCalendar') && ($this->relModlist == 'Contacts')) {
-					$sql = 'select contactid as id from vtiger_vendorcontactrel where activityid = ?';
-					$result = $adb->pquery($sql, array($crmId));
-				} elseif (($parentModule == 'Campaigns') && ($this->relModlist == 'Leads')) {
-					$sql = 'select leadid as id from vtiger_campaignleadrel where campaignid = ?';
-					$result = $adb->pquery($sql, array($crmId));
-				} elseif (($parentModule == 'Campaigns') && ($this->relModlist == 'Contacts')) {
-					$sql = 'select contactid as id from vtiger_campaigncontrel where campaignid = ?';
-					$result = $adb->pquery($sql, array($crmId));
-				} elseif (($parentModule == 'Campaigns') && ($this->relModlist == 'Accounts')) {
-					$sql = 'select accountid as id from vtiger_campaignaccountrel where campaignid = ?';
-					$result = $adb->pquery($sql, array($crmId));
-				} elseif (($parentModule == 'Accounts') && ($this->relModlist == 'Products')) {
-					$sql = 'select productid as id from vtiger_seproductsrel where crmid = ?';
-					$result = $adb->pquery($sql, array($crmId));
-				} elseif (($parentModule == 'Accounts') && ($this->relModlist == 'Campaigns')) {
-					$sql = 'select campaignid as id from vtiger_campaignaccountrel where accountid = ?';
-					$result = $adb->pquery($sql, array($crmId));
-				} else {
-					$sql = 'select relcrmid as id from vtiger_crmentityrel where crmid = ? and relmodule = ?';
-					$result = $adb->pquery($sql, array($crmId, $this->relModlist));
-				}
-
-				$crmids = array();
-				if ($result && $adb->num_rows($result) > 0) {
-					while ($related = $adb->fetch_array($result)) {
-						if ($focus->ConditionExpression($relatedModuleId.'x'.$related['id'])) {
-							$crmids[] = $relatedModuleId.'x'.$related['id'];
+				include_once 'data/CRMEntity.php';
+				list($wsid, $crmid) = explode('x', $entity->getId());
+				$parentModule = getSalesEntityType($crmid);
+				$focus = CRMEntity::getInstance($parentModule);
+				$focus->id = $crmid;
+				$focus->retrieve_entity_info($crmid, $parentModule, false, $from_wf);
+				global $GetRelatedList_ReturnOnlyQuery, $adb;
+				$holdValue = $GetRelatedList_ReturnOnlyQuery;
+				$GetRelatedList_ReturnOnlyQuery = true;
+				$rectabid = getTabid($parentModule);
+				$relatedModuleId = getTabid($this->relModlist);
+				$relationResult = $adb->pquery(
+					'SELECT name FROM vtiger_relatedlists WHERE tabid=? AND related_tabid=? limit 1',
+					array($rectabid, $relatedModuleId)
+				);
+				$relationInfo = $adb->fetch_array($relationResult);
+				$params = array($crmid, $rectabid, $relatedModuleId);
+				$holdCM = $currentModule;
+				$currentModule = $parentModule;
+				$relationData = call_user_func_array(array($focus, $relationInfo['name']), $params);
+				$GetRelatedList_ReturnOnlyQuery = $holdValue;
+				$currentModule = $holdCM;
+				if (isset($relationData['query'])) {
+					$query = $relationData['query'];
+					preg_match('/[\t ]from /i', $query, $matches, PREG_OFFSET_CAPTURE);
+					$query = 'select vtiger_crmentity.crmid as id'.substr($query, $matches[0][1]).$condition;
+					$result = $adb->query($query);
+					$crmids = array();
+					if ($result && $adb->num_rows($result) > 0) {
+						while ($related = $adb->fetch_array($result)) {
+							if (!empty($this->conditionexpressionmapid)) {
+								$cbMapObject = new cbMap();
+								$cbMapObject->id = $this->conditionexpressionmapid;
+								$cbMapObject->retrieve_entity_info($this->conditionexpressionmapid, 'cbMap');
+								if ($cbMapObject->ConditionExpression($relatedModuleId.'x'.$related['id'])) {
+									$crmids[] = $relatedModuleId.'x'.$related['id'];
+								}
+							} else {
+								$crmids[] = $relatedModuleId.'x'.$related['id'];
+							}
 						}
+
+						$this->executeWorkflow($this->workflowid, $crmids, '[]', $current_user);
 					}
-					$this->executeWorkflow($this->workflowid, $crmids, '[]', $current_user);
 				}
 				break;
 			case "filterByRecordSetMap":

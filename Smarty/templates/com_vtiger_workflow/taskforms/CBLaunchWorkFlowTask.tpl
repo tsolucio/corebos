@@ -76,7 +76,7 @@
             </tr><br />
             <tr>
                 <td>
-                    <input type="radio" name="record_filter_opt" id="context_variable_opt" {if $task->record_filter_opt eq "filterByContextVariable"}checked{/if} value="filterByContextVariable"/>
+                    <input type="radio" name="record_filter_opt" id="context_variable_opt" {if $task->record_filter_opt eq "filterByThese"}checked{/if} value="filterByThese"/>
                     <label class="slds-radio__label" for="context_variable_opt">
                         <span class="slds-radio_faux"></span>
                         <span class="slds-form-element__label">{'LBL_IDS'|@getTranslatedString}</span>
