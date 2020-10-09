@@ -183,6 +183,7 @@ class WorkFlowScheduler {
 					$moduleName = $workflow->moduleName;
 					$wsEntityId = vtws_getWebserviceEntityId($moduleName, $recordId);
 					$entityData = $entityCache->forId($wsEntityId);
+					$entityData->WorkflowContext = array();
 					$data = $entityData->getData();
 					foreach ($tasks as $task) {
 						if ($task->active) {
