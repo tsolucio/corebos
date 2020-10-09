@@ -188,6 +188,126 @@
   transform: translateY(-3.125rem);
 }
 
+/* ---- CBDS Inventorydetails block ---- */
+
+.cbds-detail-block {
+	width: 100%;
+}
+.cbds-inventoryline--template {
+	display: none;
+}
+.cbds-inventoryline {
+	background-color: #ffffff;
+	position: relative;
+	border-top: 3px solid #32435c;
+}
+.cbds-inventoryline__headingswrapper {
+  transition: padding 100ms ease;
+  overflow: hidden;
+}
+.cbds-inventoryline__headingswrapper--show {
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+}
+.cbds-inventoryline__headings {
+  top: -100%;
+  width: 100%;
+  transition: top 100ms ease;
+}
+.cbds-inventoryline__headingswrapper--show .cbds-inventoryline__headings {
+  top: 0;
+}
+.cbds-inventoryline__extra {
+	transform: scaleY(0);
+	height: 0;
+	transform-origin: 0 0;
+	transition: transform 0ms linear;
+}
+.cbds-inventoryline__extra--expanded {
+	transform: scaleY(1);
+	height: auto;
+	transition: transform 100ms linear;
+}
+.cbds-inventoryline .slds-has-inline-listbox .slds-combobox__input[value] {
+	box-shadow: none;
+}
+.cbds-form-element__help--fixed{
+	position: absolute;
+	background-color: rgba(255,255,255,0.7);
+	z-index: 1;
+	padding: 0 10px;
+}
+.cbds-inventoryline--taxcol-hidden {
+	width: 0;
+	padding: 0;
+	display: none;
+}
+
+/* Images */
+.cbds-image-container {
+	text-align: center;
+	overflow: hidden;
+}
+.cbds-image-container img {
+	height: 100%;
+	width: auto;
+}
+
+/* Aggregation block */
+.cbds-product-lines-aggr {
+	background-color: rgb(230,230,230);
+	color: rgb(140,140,140);
+	padding: 1rem;
+}
+.cbds-product-lines-aggr input {
+	background-color: rgb(230,230,230);
+	vertical-align: baseline;
+	padding: 0;
+	font-size: 1.05rem;
+}
+
+/* Autocomplete */
+.slds-listbox__item:last-child {
+	border-bottom: none;
+}
+.cbds-product-search-title {
+	color: rgb(22, 50, 92);
+}
+
+/* Tools */
+.cbds-detail-line-dragtool {
+	cursor: pointer;
+}
+
+.cbds-button--delete {
+	background-color: #d17575;
+}
+.cbds-button--delete use,
+.cbds-button--delete svg {
+	color: #ffffff;
+	fill: #ffffff;
+}
+.cbds-detail-line-extratool svg {
+	transition: transform 100ms linear;
+}
+.cbds-exp-coll-icon--expanded {
+	-webkit-transform: rotate(180deg);
+	-moz-transform: rotate(180deg);
+	transform: rotate(180deg);
+}
+
+/* Aggregations */
+.cbds-inventoryaggr__taxes--group {
+	height: 0;
+	overflow: hidden;
+	opacity: 0;
+	transition: opacity 100ms linear;
+}
+.cbds-inventoryaggr__taxes--group.active {
+	height: auto;
+	opacity: 1;
+}
+
 /* ---- CBDS animations ---- */
 /* -- Source: animate.css */
 
