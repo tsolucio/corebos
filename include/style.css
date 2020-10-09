@@ -193,7 +193,7 @@
 .cbds-detail-block {
 	width: 100%;
 }
-.cbds-inventoryline--template {
+.cbds-inventoryline_template {
 	display: none;
 }
 .cbds-inventoryline {
@@ -205,7 +205,7 @@
   transition: padding 100ms ease;
   overflow: hidden;
 }
-.cbds-inventoryline__headingswrapper--show {
+.cbds-inventoryline__headingswrapper_show {
   padding-top: 1rem !important;
   padding-bottom: 1rem !important;
 }
@@ -214,7 +214,7 @@
   width: 100%;
   transition: top 100ms ease;
 }
-.cbds-inventoryline__headingswrapper--show .cbds-inventoryline__headings {
+.cbds-inventoryline__headingswrapper_show .cbds-inventoryline__headings {
   top: 0;
 }
 .cbds-inventoryline__extra {
@@ -223,7 +223,7 @@
 	transform-origin: 0 0;
 	transition: transform 0ms linear;
 }
-.cbds-inventoryline__extra--expanded {
+.cbds-inventoryline__extra_expanded {
 	transform: scaleY(1);
 	height: auto;
 	transition: transform 100ms linear;
@@ -231,13 +231,13 @@
 .cbds-inventoryline .slds-has-inline-listbox .slds-combobox__input[value] {
 	box-shadow: none;
 }
-.cbds-form-element__help--fixed{
+.cbds-form-element__help_fixed{
 	position: absolute;
 	background-color: rgba(255,255,255,0.7);
 	z-index: 1;
 	padding: 0 10px;
 }
-.cbds-inventoryline--taxcol-hidden {
+.cbds-inventoryline_taxcol-hidden {
 	width: 0;
 	padding: 0;
 	display: none;
@@ -279,31 +279,31 @@
 	cursor: pointer;
 }
 
-.cbds-button--delete {
+.cbds-button_delete {
 	background-color: #d17575;
 }
-.cbds-button--delete use,
-.cbds-button--delete svg {
+.cbds-button_delete use,
+.cbds-button_delete svg {
 	color: #ffffff;
 	fill: #ffffff;
 }
 .cbds-detail-line-extratool svg {
 	transition: transform 100ms linear;
 }
-.cbds-exp-coll-icon--expanded {
+.cbds-exp-coll-icon_expanded {
 	-webkit-transform: rotate(180deg);
 	-moz-transform: rotate(180deg);
 	transform: rotate(180deg);
 }
 
 /* Aggregations */
-.cbds-inventoryaggr__taxes--group {
+.cbds-inventoryaggr__taxes_group {
 	height: 0;
 	overflow: hidden;
 	opacity: 0;
 	transition: opacity 100ms linear;
 }
-.cbds-inventoryaggr__taxes--group.active {
+.cbds-inventoryaggr__taxes_group.active {
 	height: auto;
 	opacity: 1;
 }
