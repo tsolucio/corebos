@@ -909,7 +909,13 @@ if (typeof(MailManager) == 'undefined') {
 			jQuery('#_mail_replyfrm_bcc_').val('');
 			var replySubject = (subject.toUpperCase().indexOf('RE:') == 0) ? subject : 'Re: ' + subject;
 			jQuery('#_mail_replyfrm_subject_').val(replySubject);
-			var replyBody = MailManager.sprintf('<p></p><p style="margin:0;padding:0;">%s, %s, %s:</p><blockquote style="border:0;margin:0;border-left:1px solid gray;padding:0 0 0 2px;">%s</blockquote><br />', 'On ' + date, from, 'wrote', body);
+			var replyBody = MailManager.sprintf(
+				'<p></p><p style="margin:0;padding:0;">%s, %s, %s:</p><blockquote style="border:0;margin:0;border-left:1px solid gray;padding:0 0 0 2px;">%s</blockquote><br />',
+				MailManager.i18n('JSLBL_ON')+' '+date,
+				from,
+				MailManager.i18n('JSLBL_WROTE'),
+				body
+			);
 			jQuery('#emailid').val('');
 			jQuery('#attachmentCount').val('');
 			MailManager.mail_reply_rteinit(replyBody);
