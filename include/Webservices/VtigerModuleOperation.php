@@ -268,6 +268,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 
 	public function querySQLResults($mysql_query, $q, $meta, $queryRelatedModules) {
 		global $site_URL, $adb, $default_charset, $currentModule;
+		$holdCM = $currentModule;
 		$currentModule = $meta->getEntityName();
 		if (strpos($mysql_query, 'vtiger_inventoryproductrel')) {
 			$invlines = true;
@@ -282,6 +283,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$this->pearDB->completeTransaction();
 
 		if ($error) {
+			$currentModule = $holdCM;
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
 		$imageFields = $meta->getImageFields();
@@ -362,6 +364,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		} else {
 			$this->queryTotalRows = 0;
 		}
+		$currentModule = $holdCM;
 		return $output;
 	}
 
