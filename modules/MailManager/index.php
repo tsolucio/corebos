@@ -46,7 +46,7 @@ class MailManager_IndexController extends MailManager_Controller {
 	}
 
 	public function processRoot(MailManager_Request $request) {
-		global$current_user;
+		global $current_user;
 		include_once 'vtlib/Vtiger/Mailer.php';
 		$viewer = $this->getViewer();
 		$tool_buttons = array(
