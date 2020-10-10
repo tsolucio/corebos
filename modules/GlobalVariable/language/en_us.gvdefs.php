@@ -1224,6 +1224,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Send separate, individual emails to each recipient instead of one email to all. This is the default behavior of the application.',
 ),
+'EMail_Signature_BeforeQuote' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Adds the user signature before the quoted email instead of at the end of the whole email.',
+),
 'Workflow_Send_Email_ToCCBCC' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Email CSV',

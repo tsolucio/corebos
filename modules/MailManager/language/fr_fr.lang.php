@@ -75,6 +75,8 @@ $mod_strings = array (
 	'JSLBL_NO_EMAILS_SELECTED' => 'Aucun email sélectionné.',
 	'JSLBL_ENTER_SOME_VALUE' => 'Saisir une chaine à rechercher',
 	'JSLBL_DRAFT_MAIL_SAVED'=>'Message sauvé dans les brouillons',
+	'JSLBL_ON'=>'On',
+	'JSLBL_WROTE'=>'wrote',
 
 		// General translations
 	'LBL_Folders'         => 'Dossiers',

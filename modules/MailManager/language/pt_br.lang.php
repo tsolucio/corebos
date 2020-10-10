@@ -77,6 +77,8 @@ $mod_strings = array (
 	'JSLBL_NO_EMAILS_SELECTED' => 'Nenhum e-Mail selecionado.',
 	'JSLBL_ENTER_SOME_VALUE' => 'Digite alguma palavra-chave para pesquisa',
 	'JSLBL_DRAFT_MAIL_SAVED'=>'A mensagem foi salva em rascunhos',
+	'JSLBL_ON'=>'On',
+	'JSLBL_WROTE'=>'wrote',
 
 		// General translations
 	'LBL_Folders'         => 'Pastas',
