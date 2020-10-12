@@ -330,4 +330,11 @@
 	<classname>googleAuthDriver</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>MajorLabel</author>
+	<description>Convert InventoryDetails quantityfield to UI type 7</description>
+	<filename>build/changeSets/2020/InventoryDetailsQtyUI7.php</filename>
+	<classname>InventoryDetailsQtyUI7</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
