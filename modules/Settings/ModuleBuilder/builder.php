@@ -371,14 +371,25 @@ class ModuleBuilder {
 		if ($query == '' || strlen($query) < 2) {
 			return array();
 		}
-		$function = $adb->pquery('SELECT DISTINCT name FROM vtiger_tab WHERE name LIKE "%'.$query.'%" LIMIT 5', array());
+		$function = $adb->pquery("SELECT relatedmodules FROM vtiger_modulebuilder_fields WHERE uitype = 10 AND relatedmodules LIKE '%".$query."%' ORDER BY fieldsid DESC LIMIT 5", array());
 		$module = array();
 		while ($row = $function->FetchRow()) {
 			$moduleInfo = array();
-			$moduleInfo['name'] = $row['name'];
+			$moduleInfo['relatedmodules'] = $row['relatedmodules'];
 			array_push($module, $moduleInfo);
 		}
 		return $module;
+	}
+
+	public function getCountFilter($modName) {
+		global $adb;
+		$sql = $adb->pquery("SELECT modulebuilderid FROM vtiger_modulebuilder WHERE modulebuilder_name=?" , array($modName));
+		while ($row = $sql->FetchRow()) {
+			$modulebuilderid = $row['modulebuilderid'];
+		}
+		$getCnt = $adb->pquery("SELECT * FROM vtiger_modulebuilder_customview WHERE moduleid=?", array($modulebuilderid));
+		$num_rows = $adb->num_rows($getCnt);
+		return $num_rows;
 	}
 
 	public function loadValues($step, $moduleId) {

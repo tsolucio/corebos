@@ -101,10 +101,31 @@ const mb = {
 			const FILTER_COUNT = mb.loadElement('FILTER_COUNT');
 			if (forward == false) {
 				let proceed = true;
-				if (mb.loadElement(`viewname-${FILTER_COUNT}`) == '') {
-					mb.loadMessage(mod_alert_arr.Viewname_msg, true);
-					proceed = false;
-				}
+				const modulename = mb.loadElement('modulename');
+				const data = {
+					modulename: modulename
+				};
+				jQuery.ajax({
+					method: 'POST',
+					url: url+'&methodName=getCountFilter',
+					data: data
+				}).done(function (response) {
+					if (response == 0) {
+						if (mb.loadElement(`viewname-${FILTER_COUNT}`) == 'All') {
+							proceed = true;
+						}
+						if (mb.loadElement(`viewname-${FILTER_COUNT}`) != 'All' || mb.loadElement(`viewname-${FILTER_COUNT}`) != '') {
+							mb.loadMessage(mod_alert_arr.FirstFilterAll_msg, true);
+							proceed = false;
+						}
+					} 
+					if (response > 0) {
+						if (mb.loadElement(`viewname-${FILTER_COUNT}`) == '') {
+							mb.loadMessage(mod_alert_arr.ViewnameEmpty_msg, true);
+							proceed = false;
+						}
+					}
+				});
 				const checkboxes = document.getElementsByName('checkbox-options-1');
 				let checkboxesChecked = [];
 				for (let i = 0; i < checkboxes.length; i++) {
@@ -153,7 +174,7 @@ const mb = {
 			const LIST_COUNT = mb.loadElement('LIST_COUNT');
 			if (forward == false) {
 				let proceed = true;
-				if (mb.loadElement(`autocomplete-related-${LIST_COUNT}`) == '' || mb.loadElement(`related-label-${LIST_COUNT}`)) {
+				if (mb.loadElement(`autocomplete-module-${LIST_COUNT}`) == '' || mb.loadElement(`related-label-${LIST_COUNT}`) == '') {
 					mb.loadMessage(mod_alert_arr.Related_name_label, true);
 					proceed = false;
 				}
@@ -1289,8 +1310,8 @@ const mb = {
 				let ul = `<ul class="slds-dropdown__list" style="${inStyle.style}">`;
 				for (let i = 0; i < res.length; i++) {
 					ul += `<li class="slds-dropdown__item">
-							<a onclick="mb.setValueToInput(this.id, ${forId}, '${method}')" tabindex="${i}" id="${res[i].name}">
-								<span class="slds-truncate" title="${res[i].name}">${res[i].name}</span>
+							<a onclick="mb.setValueToInput(this.id, ${forId}, '${method}')" tabindex="${i}" id="${res[i].relatedmodules}">
+								<span class="slds-truncate" title="${res[i].relatedmodules}">${res[i].relatedmodules}</span>
 							</a>
 						</li>`;
 				}
