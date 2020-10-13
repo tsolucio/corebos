@@ -383,7 +383,7 @@ class ModuleBuilder {
 
 	public function getCountFilter($modName) {
 		global $adb;
-		$sql = $adb->pquery("SELECT modulebuilderid FROM vtiger_modulebuilder WHERE modulebuilder_name=?" , array($modName));
+		$sql = $adb->pquery("SELECT modulebuilderid FROM vtiger_modulebuilder WHERE modulebuilder_name=?", array($modName));
 		while ($row = $sql->FetchRow()) {
 			$modulebuilderid = $row['modulebuilderid'];
 		}
