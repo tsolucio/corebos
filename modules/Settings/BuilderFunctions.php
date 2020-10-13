@@ -86,6 +86,10 @@ switch ($methodName) {
 		$modulename = vtlib_purify($_REQUEST['modulename']);
 		$ret = $mb->installModule($modulename);
 		break;
+	case 'getCountFilter':
+		$modulename = vtlib_purify($_REQUEST['modulename']);
+		$ret = $mb->getCountFilter($modulename);
+		break;
 	default:
 		$ret = array();
 		break;
