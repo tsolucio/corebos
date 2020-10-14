@@ -1,3 +1,18 @@
+/*************************************************************************************************
+ * Copyright 2020 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
+ * file except in compliance with the License. You can redistribute it and/or modify it
+ * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
+ * granted by the License. coreBOS distributed by JPL TSolucio S.L. is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Unless required by
+ * applicable law or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT ANY WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License. You may obtain a copy of the License
+ * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
+ *************************************************************************************************/
+
 loadJS('index.php?module=Settings&action=SettingsAjax&file=getjslanguage');
 const tuiGrid = tui.Grid;
 let url = 'index.php?module=Settings&action=SettingsAjax&file=BuilderFunctions';
@@ -118,7 +133,7 @@ const mb = {
 							mb.loadMessage(mod_alert_arr.FirstFilterAll_msg, true);
 							proceed = false;
 						}
-					} 
+					}
 					if (response > 0) {
 						if (mb.loadElement(`viewname-${FILTER_COUNT}`) == '') {
 							mb.loadMessage(mod_alert_arr.ViewnameEmpty_msg, true);
@@ -243,9 +258,6 @@ const mb = {
 			} else {
 				mb.loadElement(`step-${step}`, true).style.display = 'none';
 				var nextstep = step + 1;
-				var progress = parseInt(nextstep) * 20 - 20;
-				mb.loadElement('progress', true).style.width = progress + '%';
-				mb.loadElement('progresstext', true).innerHTML = mod_alert_arr.LBL_MB_PROGRESS+': ' + progress + '%';
 				mb.loadElement(`step-${nextstep}`, true).style.display = 'block';
 			}
 			if (step == 3) {
@@ -624,7 +636,7 @@ const mb = {
 				}
 			});
 			tui.Grid.applyTheme('clean');
-			mb.updateProgress(4);
+			mb.updateProgress(5);
 		}
 	},
 	/**
@@ -647,18 +659,38 @@ const mb = {
 			}
 			const size = Object.keys(modInfo).length;
 			const progress = (20 - (parseInt(size) * 5));
-			mb.loadElement('progress', true).style.width = `${progress}%`;
-			mb.loadElement('progresstext', true).innerHTML = `${mod_alert_arr.LBL_MB_PROGRESS}: ${progress}%`;
 			if (progress == 20) {
 				mb.loadElement('btn-step-1', true).removeAttribute('disabled');
 			} else {
 				mb.loadElement('btn-step-1', true).setAttribute('disabled', '');
 			}
+			document.getElementById('block-information').classList.remove('slds-is-active');
+			document.getElementById('field-information').classList.remove('slds-is-active');
+			document.getElementById('filters').classList.remove('slds-is-active');
+			document.getElementById('relationship').classList.remove('slds-is-active');
 		} else {
-			const progress = parseInt(step) * 20;
-			mb.loadElement('progress', true).style.width = `${progress}%`;
-			mb.loadElement('progresstext', true).innerHTML = `${mod_alert_arr.LBL_MB_PROGRESS}: ${progress}%`;
-		}
+			if (step == 2) {
+				document.getElementById('block-information').classList.add('slds-is-active');
+				document.getElementById('field-information').classList.remove('slds-is-active');
+				document.getElementById('filters').classList.remove('slds-is-active');
+				document.getElementById('relationship').classList.remove('slds-is-active');
+			} else if (step == 3) {
+				document.getElementById('block-information').classList.add('slds-is-active');
+				document.getElementById('field-information').classList.add('slds-is-active');
+				document.getElementById('filters').classList.remove('slds-is-active');
+				document.getElementById('relationship').classList.remove('slds-is-active');
+			} else if (step == 4) {
+				document.getElementById('block-information').classList.add('slds-is-active');
+				document.getElementById('field-information').classList.add('slds-is-active');
+				document.getElementById('filters').classList.add('slds-is-active');
+				document.getElementById('relationship').classList.remove('slds-is-active');
+			} else if (step == 5) {
+				document.getElementById('block-information').classList.add('slds-is-active');
+				document.getElementById('field-information').classList.add('slds-is-active');
+				document.getElementById('filters').classList.add('slds-is-active');
+				document.getElementById('relationship').classList.add('slds-is-active');
+			}
+ 		}
 	},
 	/**
 	 * Show module icons in step 1
@@ -936,17 +968,20 @@ const mb = {
 		}
 		//create save button for each field
 		fieldTemplate += `</div>
-			<button class="slds-button slds-button_neutral slds-button_dual-stateful" id="save-btn-for-field-${FIELD_COUNT}" onclick="mb.SaveModule(3, false, this.id)">
-				<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
-				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
-				</svg>${mod_alert_arr.LBL_MB_SAVEFIELD}
-			</button>
-			<button class="slds-button slds-button_destructive slds-button_dual-stateful" id="clear-btn-for-field-${FIELD_COUNT}" onclick="mb.clearField(this)">
-				<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
-				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
-				</svg>${mod_alert_arr.LBL_MB_CLEAR}
-			</button>
-		`;
+		<div class="slds-grid slds-gutters">
+			<div class="slds-col"><br>
+				<button class="slds-button slds-button_neutral slds-button_dual-stateful" id="save-btn-for-field-${FIELD_COUNT}" onclick="mb.SaveModule(3, false, this.id)">
+					<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
+					</svg>${mod_alert_arr.LBL_MB_SAVEFIELD}
+				</button>
+				<button class="slds-button slds-button_destructive slds-button_dual-stateful" id="clear-btn-for-field-${FIELD_COUNT}" onclick="mb.clearField(this)">
+					<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
+					</svg>${mod_alert_arr.LBL_MB_CLEAR}
+				</button>
+			</div>
+		</div>`;
 		mb.loadElement(`fields_inputs_${FIELD_COUNT}`, true).innerHTML = fieldTemplate;
 	},
 
@@ -1707,8 +1742,10 @@ const mb = {
 		document.getElementById('step-6').style.display = 'none';
 		document.getElementById('genModule').style.display = 'block';
 		document.getElementById('genModuleProgress').style.display = 'none';
-		document.getElementById('progresstext').innerHTML = 'PROGRESS: 0%';
-		document.getElementById('progress').style.width = '0%';
+		document.getElementById('block-information').classList.remove('slds-is-active');
+		document.getElementById('field-information').classList.remove('slds-is-active');
+		document.getElementById('filters').classList.remove('slds-is-active');
+		document.getElementById('relationship').classList.remove('slds-is-active');
 		document.getElementById('modulename').removeAttribute('readonly');
 	},
 

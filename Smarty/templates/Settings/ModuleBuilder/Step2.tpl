@@ -1,17 +1,9 @@
 <article class="slds-setup-assistant__step" id="step-2" style="display: none">
     <div class="slds-setup-assistant__step-summary">
         <div class="slds-media">
-            <div class="slds-media__figure">
-                <div class="slds-progress-ring slds-progress-ring_large">
-                    <div class="slds-progress-ring__content">2</div>
-                </div>
-            </div>
             <div class="slds-media__body slds-m-top_x-small">
                 <div class="slds-media">
                     <div class="slds-setup-assistant__step-summary-content slds-media__body">
-                        <h3 class="slds-setup-assistant__step-summary-title slds-text-heading_small">
-                            <span style="text-transform: uppercase;">{$MOD.LBL_MB_MODULEBLOCKS}</span>
-                        </h3>
                         <div style="width: 70%; margin:0 auto;">
                             <div class="slds-media__figure slds-media__figure_reverse">
                                 <button class="slds-button slds-button_brand" onclick="mb.generateInput()" style="text-transform: uppercase;">

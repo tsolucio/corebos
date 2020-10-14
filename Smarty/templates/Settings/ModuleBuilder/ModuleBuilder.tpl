@@ -35,9 +35,67 @@
 							<hr style="border-bottom: 2px solid #1589ee; border-top: 0px">
 							<br>
 							<div id="moduleLists"></div>
-							<span id="progresstext" class="slds-badge" style="margin-bottom: 5px;text-transform: uppercase;">{$MOD.LBL_MB_PROGRESS}: 0%</span>
-							<div class="slds-progress-bar" aria-valuemin="0" aria-valuemax="100" role="progressbar">
-								<span class="slds-progress-bar__value" id="progress" style="width:0%"></span>
+							<div class="slds-path">
+							  <div class="slds-grid slds-path__track">
+							    <div class="slds-grid slds-path__scroller-container">
+							      <div class="slds-path__scroller">
+							        <div class="slds-path__scroller_inner">
+							          <ul class="slds-path__nav" role="listbox" aria-orientation="horizontal">
+							            <li class="slds-path__item slds-is-current slds-is-active" id="general-information">
+							              <a aria-selected="true" class="slds-path__link" href="javascript:void(0);">
+							                <span class="slds-path__stage">
+							                  <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+							                    <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
+							                  </svg>
+							                </span>
+							                <span class="slds-path__title">{$MOD.LBL_MB_GENERAL}</span>
+							              </a>
+							            </li>
+							            <li class="slds-path__item slds-is-incomplete" role="presentation"id="block-information">
+							              <a aria-selected="false" class="slds-path__link" href="javascript:void(0);">
+							                <span class="slds-path__stage">
+							                  <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+							                    <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
+							                  </svg>
+							                </span>
+							                <span class="slds-path__title">{$MOD.LBL_MB_MODULEBLOCKS}</span>
+							              </a>
+							            </li>
+							            <li class="slds-path__item slds-is-incomplete" role="presentation" id="field-information">
+							              <a aria-selected="false" class="slds-path__link" href="javascript:void(0);">
+							                <span class="slds-path__stage">
+							                  <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+							                    <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
+							                  </svg>
+							                </span>
+							                <span class="slds-path__title">{$MOD.LBL_MB_MODULEFIELDS}</span>
+							              </a>
+							            </li>
+							            <li class="slds-path__item slds-is-incomplete" role="presentation" id="filters">
+							              <a aria-selected="false" class="slds-path__link" href="javascript:void(0);">
+							                <span class="slds-path__stage">
+							                  <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+							                    <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
+							                  </svg>
+							                </span>
+							                <span class="slds-path__title">{$MOD.LBL_MB_CVS}</span>
+							              </a>
+							            </li>
+							            <li class="slds-path__item slds-is-incomplete" role="presentation" id="relationship">
+							              <a aria-selected="false" class="slds-path__link" href="javascript:void(0);">
+							                <span class="slds-path__stage">
+							                  <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+							                    <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
+							                  </svg>
+							                </span>
+							                <span class="slds-path__title">{$MOD.LBL_MB_RELATEDLISTS}</span>
+							              </a>
+							            </li>
+							          </ul>
+							        </div>
+							      </div>
+							    </div>
+							  </div>
 							</div>
 							<ol class="slds-setup-assistant">
 								<li class="slds-setup-assistant__item">
