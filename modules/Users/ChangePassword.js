@@ -24,7 +24,7 @@ function loadPassword(userid) {
                 <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
               </svg>
         </span>
-        <div class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left" role="tooltip" id="help-passowrd" style="position:absolute;top: 245px;left: 4px;display: none;">
+        <div class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left" role="tooltip" id="help-passowrd" style="position:fixed;display: none;overflow:hidden">
             <div class="slds-popover__body">
                 <div class="slds-popover__body">
                 ${alert_arr['PASSWORD REQUIREMENTS']}
@@ -162,7 +162,7 @@ function changepassword(is_admin, userid) {
 			data: data
 		}).done(function (response) {
 			const res = JSON.parse(response);
-			if (res.password == 'incorrect_old_password') {
+			if (res.password == false) {
 				document.getElementById('show-err_msg').style.display = 'block';
 				document.getElementById('err_msg').innerHTML = alert_arr['Old password is incorrect'];
 			} else {
