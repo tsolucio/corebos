@@ -99,8 +99,7 @@ if ((is_admin($current_user) || $_REQUEST['record'] == $current_user->id)
 			break;
 		default:
 			$buttons = "<input title='".$mod_strings['LBL_CHANGE_PASSWORD_BUTTON_TITLE']."' accessKey='".$mod_strings['LBL_CHANGE_PASSWORD_BUTTON_KEY']
-				."' class='crmButton password small' onclick='return window.open(\"index.php?module=Users&action=ChangePassword&form=DetailView\",\"test\","
-				."\"width=700,height=490,resizable=no,scrollbars=0, toolbar=no, titlebar=no, left=200, top=226, screenX=100, screenY=126\");' type='button' "
+				."' class='crmButton password small' onclick='loadPassword(".vtlib_purify($_REQUEST['record']).")' type='button' "
 				."name='password' value='".$mod_strings['LBL_CHANGE_PASSWORD_BUTTON_LABEL']."'>";
 			break;
 	}
