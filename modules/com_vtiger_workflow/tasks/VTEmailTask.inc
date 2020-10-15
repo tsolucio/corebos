@@ -27,7 +27,7 @@ class VTEmailTask extends VTTask {
 	private $entityinfo = '';
 
 	public function getFieldNames() {
-		return array('fromname', 'fromemail', 'replyto', 'subject', 'content', 'recepient', 'emailcc', 'emailbcc', 'attfieldnames', 'attachmentids');
+		return array('fromname', 'fromemail', 'replyto', 'subject', 'content', 'recepient', 'emailcc', 'emailbcc', 'attfieldnames', 'attachmentids', 'attach_icalendar');
 	}
 	public function after_retrieve() {
 		global $adb, $current_user;
@@ -236,6 +236,15 @@ class VTEmailTask extends VTTask {
 				$attfield = new VTSimpleTemplate('$'.$this->attfieldnames);
 				$pathattfield = $attfield->render($entityCache, $entity->getId());
 				$this->attachmentsinfo[] = $pathattfield;
+			}
+		}
+		if (!empty($this->attach_icalendar) && $this->attach_icalendar == 'on' && $entity->moduleName == 'cbCalendar') {
+			list($tabid,$recordid) = explode('x', $entity->getId());
+			$cbCalendar = CRMEntity::getInstance('cbCalendar');
+			$cbCalendar->retrieve_entity_info($recordid, 'cbCalendar');
+			$icalfilename = $cbCalendar->getiCalendar($cbCalendar);
+			if(!empty($icalfilename)) {
+				$this->attachmentsinfo[] = $icalfilename;
 			}
 		}
 		$st = new VTSimpleTemplate($this->subject);

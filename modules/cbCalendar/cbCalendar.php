@@ -1044,5 +1044,69 @@ class cbCalendar extends CRMEntity {
 		}
 		return $query;
 	}
+
+	/*
+	 * Function to get iCalendar formatted event
+	 * returns relative filepath formatted iCalendar
+	 */
+	public function getiCalendar($activityData) {
+		define('_BENNU_VERSION', '0.1');
+		require_once 'include/utils/utils.php';
+		require_once 'modules/cbCalendar/CalendarCommon.php';
+		require_once 'modules/cbCalendar/iCal/iCalendar_rfc2445.php';
+		require_once 'modules/cbCalendar/iCal/iCalendar_components.php';
+		require_once 'modules/cbCalendar/iCal/iCalendar_properties.php';
+		require_once 'modules/cbCalendar/iCal/iCalendar_parameters.php';
+		global $current_user,$adb,$default_timezone;
+		$dataArr = $activityData->column_fields;
+		$todo = array();
+		if (!empty($activityData->column_fields)) {
+			$temp = $activityData->column_fields;
+			$recordid = $temp['record_id'];
+			$filename = 'icalfile_'.$recordid.'.ics';
+			header('Content-type: text/calendar');
+			header('Content-Disposition: attachment; filename='.$filename);
+			$temp['id'] = $recordid;
+			unset($temp['record_id']);
+			$tz = new iCalendar_timezone;
+			if (!empty($default_timezone)) {
+				$tzid = explode('/', $default_timezone);
+			} else {
+				$default_timezone = date_default_timezone_get();
+				$tzid = explode('/', $default_timezone);
+			}
+			if (!empty($tzid[1])) {
+				$tz->add_property('TZID', $tzid[1]);
+			} else {
+				$tz->add_property('TZID', $tzid[0]);
+			}
+			$tz->add_property('TZOFFSETTO', date('O'));
+			if (date('I')==1) {
+				$tz->add_property('DAYLIGHTC', date('I'));
+			} else {
+				$tz->add_property('STANDARDC', date('I'));
+			}
+			$myical = new iCalendar;
+			$myical->add_component($tz);
+			$temp['visibility'] = 'yes';
+			$todo = $temp;
+			if (isset($todo['taskpriority'])) {
+				$todo['priority'] = $todo['taskpriority'];
+				unset($todo['taskpriority']);
+			}
+			$ev = new iCalendar_event;
+			$ev->assign_values($todo);
+			$al = new iCalendar_alarm;
+			$al->assign_values($todo);
+			$ev->add_component($al);
+			$myical->add_component($ev);
+			$filepath = 'cache/'.$filename;
+			$res = file_put_contents($filepath, $myical->serialize());
+			if ($res) {
+				return $filepath;
+			}
+			return '';
+		}
+	}
 }
 ?>
