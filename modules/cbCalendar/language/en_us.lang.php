@@ -434,5 +434,6 @@ $mod_strings = array(
 
 	'LBL_ARE_YOU_SURE'=>'Are you sure?',
 	'Calendar ID' => 'Tasks ID',
+	'LBL_Attach_icalendar' => 'Attach iCalendar invitation',
 );
 ?>
