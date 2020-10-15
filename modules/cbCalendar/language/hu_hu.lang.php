@@ -341,5 +341,6 @@ $mod_strings = array(
 	'End Time' => 'Befejezés ideje',
 	'LBL_EVTDTL' => 'Esemény',
 	'LBL_ACTIVITY_STRING' => 'Aktivitás'
+	'LBL_Attach_icalendar' => 'Attach iCalendar invitation',
 );
 ?>

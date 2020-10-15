@@ -407,5 +407,6 @@ $mod_strings = array(
 		'11' => 'Nov',
 		'12' => 'Dec',
 	),
+	'LBL_Attach_icalendar' => 'Attach iCalendar invitation',
 );
 ?>

@@ -243,7 +243,5 @@ $mod_strings = array(
 'LBL_SELECT_CREDENTIAL' => 'Select Credential',
 'LBL_SEND_FILE' => 'Send file to',
 'FILENAME' => 'Destination filename',
-'LBL_ENABLED' => 'Enabled',
-'LBL_DISABLED' => 'Disabled',
 );
 ?>

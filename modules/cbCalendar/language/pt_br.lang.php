@@ -436,5 +436,6 @@ $mod_strings = array(
 	'LBL_ARE_YOU_SURE'=>'Tem a certeza?',
 	'Calendar ID' => 'ID Agenda',
 	'ToDo' => 'A Fazer',
+	'LBL_Attach_icalendar' => 'Attach iCalendar invitation',
 );
 ?>

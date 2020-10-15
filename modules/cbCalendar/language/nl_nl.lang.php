@@ -431,5 +431,6 @@ $mod_strings = array(
 	'LBL_SUCCESS'=>'Succes!',
 	'LBL_NO_IMPORT_TO_UNDO'=>'Er Is Geen Import Om Ongedaan Te Maken.',
 	'LBL_FAILURE'=>'Fout!',
+	'LBL_Attach_icalendar' => 'Attach iCalendar invitation',
 );
 ?>

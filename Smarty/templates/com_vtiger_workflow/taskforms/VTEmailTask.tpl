@@ -245,8 +245,8 @@ var __attinfo = {$task->dzattinfo|json_encode};
 					<input type="checkbox" id= "attach_icalendar" name="attach_icalendar" aria-describedby="toggle-desc" {if ($task->attach_icalendar eq "on")}{"checked"}{/if}/>
 					<span id="toggle-desc" class="slds-checkbox_faux_container" aria-live="assertive">
 						<span class="slds-checkbox_faux"></span>
-						<span class="slds-checkbox_on">{'LBL_ENABLED'|@getTranslatedString}</span>
-						<span class="slds-checkbox_off">{'LBL_DISABLED'|@getTranslatedString}</span>
+						<span class="slds-checkbox_on">{'LBL_ENABLED'|@getTranslatedString:'Settings'}</span>
+						<span class="slds-checkbox_off">{'LBL_DISABLED'|@getTranslatedString:'Settings'}</span>
 					</span>
 					<span>&nbsp;{'LBL_Attach_icalendar'|@getTranslatedString:'cbCalendar'}</span>
 					</label>
