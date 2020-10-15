@@ -491,7 +491,13 @@ class cbQuestion extends CRMEntity {
 			$encls = empty($properties->enclosure) ? '"' : $properties->enclosure;
 			$alllabels = array();
 			$alltypes = array();
-			$rowlabels = array_keys($ans['answer'][0]);
+			$rowlabels = !empty($ans['answer'][0]) ? array_keys($ans['answer'][0]) : array();
+			if (empty($rowlabels) && !empty($properties->columns)) {
+				for ($i=0; $i < count($properties->columns); $i++) {
+					$alllabels[] = $properties->columns[$i]->label;
+				}
+				$line = self::generateCSV($alllabels, $delim, $encls);
+			}
 			$ls = 0;
 			foreach ($rowlabels as $label) {
 				$alltypes[$label] = empty($properties->columns[$ls]->type) ? 'string' : $properties->columns[$ls]->type;
