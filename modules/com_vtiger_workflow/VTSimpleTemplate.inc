@@ -10,6 +10,7 @@
 require_once 'modules/Users/UserPrivileges.php';
 include_once 'modules/Users/authTypes/TwoFactorAuth/autoload.php';
 include_once 'include/utils/utils.php';
+require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
 use \RobThree\Auth\TwoFactorAuth;
 
 class VTSimpleTemplate {
