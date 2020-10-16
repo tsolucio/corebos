@@ -394,41 +394,147 @@ class VTSimpleTemplate {
 		return $retcm;
 	}
 
-	private function getRelatedContacts($format) {
-		global $adb, $current_user;
-		$format = strtolower($format);
-		if ($format!='table') {
-			$format = 'table';
+	private function getRelatedList($relmodule, $format, $field) {
+		global $adb;
+		$modulename = $this->parent->getModuleName();
+		$mmtabid = getTabid($modulename);
+		$rmtabid = getTabid($relmodule);
+		$rs = $adb->pquery('select relation_id,name from vtiger_relatedlists where tabid=? and related_tabid=? limit 1', array($mmtabid, $rmtabid));
+		if ($adb->num_rows($rs)==0) {
+			return '';
 		}
-		$table = ($format == 'table');
+		$func = $adb->query_result($rs, 0, 'name');
+		$relid = $adb->query_result($rs, 0, 'relation_id');
+		$mod = CRMEntity::getInstance($modulename);
 		$wsid = $this->parent->getId();
-		$sql = 'select vtiger_contactdetails.firstname, vtiger_contactdetails.lastname FROM vtiger_contactdetails 
-		inner join vtiger_cntactivityrel on vtiger_cntactivityrel.contactid=vtiger_contactdetails.contactid 
-		inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid  
-		where vtiger_cntactivityrel.activityid=? and vtiger_crmentity.deleted=0';
 		list($wsid,$crmid) = explode('x', $wsid);
-
-		$retcm = '';
-		$cnres = $adb->pquery($sql, array($crmid));
-		if ($table) {
-			$retcm .= '<table><tr><td>';
+		$mod->retrieve_entity_info($crmid, $modulename);
+		$mod->id = $crmid;
+		$_REQUEST['relation_id'] = $relid;
+		$_REQUEST['module'] = $modulename;
+		$_REQUEST['record'] = $crmid;
+		$_REQUEST['action'] = 'CallRelatedList';
+		$params = array($crmid, $mmtabid, $rmtabid);
+		$relationData = call_user_func_array(array($mod, $func), $params);
+		if (empty($relationData['entries'])) {
+			return '';
 		}
-		$numOfRows = $adb->num_rows($cnres);
-		$idx = 0;
-		while ($cn = $adb->fetch_array($cnres)) {
-			if ($table) {
-				$delimiter = ', ';
-				if ($idx == $numOfRows-1) {
-					$delimiter = '';
-				}
-				$retcm .= $cn['firstname'].' '.$cn['lastname'].$delimiter;
+		$fields = array();
+		$idx = 1;
+		$firstentry = reset($relationData['entries']);
+		foreach ($firstentry as $row) {
+			$matches = preg_match_all("/vtfieldname='(.+?)'/", $row, $fname);
+			if ($matches) {
+				$fields[$idx] = $fname[1][0];
+			} else {
+				$fields[$idx] = 'nodef';
 			}
 			$idx++;
 		}
-		if ($table) {
-			$retcm .= '</td></tr></table>';
+		if ($field!='*') {
+			$fields2show = explode(',', $field);
+		} else {
+			$fields2show = $fields;
 		}
-		return $retcm;
+		$format = strtolower($format);
+		if ($format!='html' && $format!='text' && $format!='table') {
+			$format = 'html';
+		}
+		$html = ($format == 'html');
+		$table = ($format == 'table');
+		$retrl = '';
+		if ($html) {
+			$retrl .= '<div class="relatedlist">';
+		}
+		if ($table) {
+			$retrl .= '<table class="relatedlist"><tbody>';
+		}
+		$numelems = count($relationData['header']);
+		$idx = 1;
+		if ($html) {
+			$retrl .= '<div class="relatedlistheaderrow"><ul class="relatedlistheaderfields">';
+		}
+		if ($table) {
+			$retrl .= '<tr class="relatedlistheaderrow">';
+		}
+		foreach ($relationData['header'] as $row) {
+			if ($idx==$numelems) {
+				continue;
+			}
+			if (!in_array($fields[$idx], $fields2show)) {
+				continue;
+			}
+			if ($html) {
+				$retrl .= '<li class="relatedlistheaderfield">';
+			}
+			if ($table) {
+				$retrl .= '<td class="relatedlistheaderfield">';
+			}
+			$retrl .= vtlib_purify(evvt_strip_html_links($row));
+			if ($html) {
+				$retrl .= '</li>';
+			}
+			if ($table) {
+				$retrl .= '</td>';
+			}
+			$idx++;
+		}
+		if ($html) {
+			$retrl .= '</ul></div>';
+		}
+		if ($table) {
+			$retrl .= '</tr>';
+		}
+		if (!$html && !$table) {
+			$retrl .= "\n";
+		}
+		foreach ($relationData['entries'] as $row) {
+			$idx = 1;
+			if ($html) {
+				$retrl .= '<div class="relatedlistrow"><ul class="relatedlistfields">';
+			}
+			if ($table) {
+				$retrl .= '<tr class="relatedlistrow">';
+			}
+			foreach ($row as $fieldvalue) {
+				if ($idx==$numelems) {
+					continue;
+				}
+				if (!in_array($fields[$idx], $fields2show)) {
+					continue;
+				}
+				if ($html) {
+					$retrl .= '<li class="relatedlistfield">';
+				}
+				if ($table) {
+					$retrl .= '<td class="relatedlistfield">';
+				}
+				$retrl .= str_replace('<span></span>', '', vtlib_purify(evvt_strip_html_links($fieldvalue)));
+				if ($html) {
+					$retrl .= '</li>';
+				}
+				if ($table) {
+					$retrl .= '</td>';
+				}
+				$idx++;
+			}
+			if (!$html && !$table) {
+				$retrl .= "\n";
+			}
+			if ($html) {
+				$retrl .= '</ul></div>';
+			}
+			if ($table) {
+				$retrl .= '</tr>';
+			}
+		}
+		if ($html) {
+			$retrl .= '</div>';
+		}
+		if ($table) {
+			$retrl .= '</tbody></table>';
+		}
+		return $retrl;
 	}
 
 	private function getinvitedUsersList($recid) {
@@ -593,9 +699,35 @@ class VTSimpleTemplate {
 		if (substr($fieldname, 0, 11) == 'scanBarCode') {
 			list($fieldname, $codetype, $field) = explode('->', decode_html($fieldname));
 		}
-		if (substr($fieldname, 0, 15) == 'RelatedContacts') {
-			$format = explode('[', substr($fieldname, 16, -1))[0];
-			$fieldname = 'RelatedContacts';
+		if (strtolower(substr($fieldname, 0, 11)) == 'relatedlist') {
+			$rlspec = substr($fieldname, 12);
+			if (strlen($rlspec)>0) {
+				$underscore = strpos($rlspec, '_');
+				if ($underscore!==false) {
+					$relmodule = substr($rlspec, 0, $underscore);
+					$rlspec = substr($rlspec, $underscore+1);
+					if (strlen($rlspec)>0) {
+						$underscore = strpos($rlspec, '_');
+						if ($underscore!==false) {
+							$format = substr($rlspec, 0, $underscore);
+							$field = substr($rlspec, $underscore+1);
+						} else {
+							$format = $rlspec;
+							$field = '*';
+						}
+					} else {
+						$format = 'html';
+						$field = '*';
+					}
+				} else {
+					$relmodule = $rlspec;
+					$format = 'html';
+					$field = '*';
+				}
+			} else {
+				return '';
+			}
+			$fieldname = 'RelatedList';
 		}
 		switch ($fieldname) {
 			case 'date':
@@ -661,8 +793,8 @@ class VTSimpleTemplate {
 				return $this->getGroupFieldList($groupname, 'email1');
 			case 'Events_Users_Invited':
 				return $this->getinvitedUsersList($this->parent->getId());
-			case 'RelatedContacts':
-				return $this->getRelatedContacts($format);
+			case 'RelatedList':
+				return $this->getRelatedList($relmodule, $format, $field);
 			case 'scanQRCode':
 				$wsId = $this->parent->getId();
 				$parts = explode('x', $wsId);
