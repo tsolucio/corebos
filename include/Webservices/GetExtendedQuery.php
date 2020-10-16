@@ -476,6 +476,7 @@ function __FQNExtendedQueryAddCondition($queryGenerator, $condition, $glue, $mai
 		case 'in':
 		case 'notin':
 			$op = ($op=='notin' ? 'ni' : 'i');
+			$val = preg_replace("/,([\s])+/", ",", $val);
 			$val = ltrim($val, '(');
 			$val = rtrim($val, ')');
 			$val = explode(',', $val);
