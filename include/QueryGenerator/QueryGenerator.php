@@ -1321,6 +1321,7 @@ class QueryGenerator {
 			return $sql;
 		}
 		if ($operator=='i' || $operator=='in' || $operator=='ni' || $operator=='nin') {
+			$valueArray = preg_replace("/[\']+/", '', $valueArray);
 			$vals = array_map(array($db, 'quote'), $valueArray);
 			$sql[] = (($operator=='ni' || $operator=='nin') ? ' NOT ':'').'IN ('.implode(',', $vals).')';
 			return $sql;
