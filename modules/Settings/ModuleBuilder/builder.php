@@ -225,11 +225,13 @@ class ModuleBuilder {
 				));
 			}
 		} elseif ($step == 4) {
-			$viewname = $this->column_data['customview']['viewname'];
-			$setdefault = (String)$this->column_data['customview']['setdefault'];
-			$fields = substr((String)$this->column_data['customview']['fields'], 1);
-			$setmetrics = 'false';
-			$adb->pquery('INSERT INTO vtiger_modulebuilder_customview (viewname, setdefault, setmetrics, fields, moduleid) VALUES(?,?,?,?,?)', array($viewname,$setdefault,$setmetrics,$fields,$this->id));
+			if (isset($this->column_data['customview']['viewname']) && $this->column_data['customview']['viewname'] != '') {
+				$viewname = $this->column_data['customview']['viewname'];
+				$setdefault = (String)$this->column_data['customview']['setdefault'];
+				$fields = substr((String)$this->column_data['customview']['fields'], 0, -1);
+				$setmetrics = 'false';
+				$adb->pquery('INSERT INTO vtiger_modulebuilder_customview (viewname, setdefault, setmetrics, fields, moduleid) VALUES(?,?,?,?,?)', array($viewname,$setdefault,$setmetrics,$fields,$this->id));
+			}
 		} elseif ($step == 5) {
 			if (isset($this->column_data['name']) && $this->column_data['name'] != '') {
 				$adb->pquery('INSERT INTO vtiger_modulebuilder_relatedlists (function, label, actions, relatedmodule, moduleid) VALUES(?,?,?,?,?)', array(

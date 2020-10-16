@@ -1163,7 +1163,7 @@ const mb = {
 		}];
 		var viewTemplate = `
 		<div class="slds-grid slds-gutters">
-			<div class="slds-col">
+			<div class="slds-col slds-size_1-of-2">
 				<div class="slds-form-element">
 				<label class="slds-form-element__label" for="viewname-${FILTER_COUNT}">
 					<abbr class="slds-required" title="required">* </abbr> ${mod_alert_arr.filter}
@@ -1173,7 +1173,7 @@ const mb = {
 				</div>
 				</div>
 			</div>
-			<div class="slds-col">
+			<div class="slds-col slds-size_1-of-2">
 				<div class="slds-form-element">
 					<label class="slds-form-element__label" for="setdefault-${FILTER_COUNT}">${mod_alert_arr.default}</label>
 					<div class="slds-form-element__control">
@@ -1199,7 +1199,7 @@ const mb = {
 				</label>
 			</div>
 		</div>
-		<div class="slds-col">
+		<div class="slds-col slds-size_1-of-2">
 			<input type="hidden" name="viewfields-${FILTER_COUNT}" id="viewfields-${FILTER_COUNT}">
 			<div class="slds-pill_container" onclick="mb.loadFields('load-fields', ${FILTER_COUNT})">
 			  <ul class="slds-listbox slds-listbox_horizontal" role="listbox" id="show-fields">
@@ -1237,21 +1237,28 @@ const mb = {
 				position: absolute;
 				z-index: 1000;
 				height: 200px;
-				width: 100%;
+				width: 15%;
 				overflow:hidden;
 				overflow-y:scroll;`
 			};
 			let listFields = `<ul class="slds-dropdown__list slds-dropdown__scroll" style="${inStyle.style}">`;
+			const ids = document.getElementById(`viewfields-${FILTER_COUNT}`).value;
+			let show = false;
 			for (let r in res) {
-				listFields += `
-				<li class="slds-dropdown__item">
-		            <a id="${res[r].fieldsid}" onclick="mb.setFieldValues('${res[r].fieldname}', '${res[r].fieldsid}', ${FILTER_COUNT})">
-		                <span class="slds-truncate">${res[r].fieldname}</span>
-		            </a>
-		        </li>`;
+				if (!ids.includes(res[r].fieldsid)) {
+					listFields += `
+					<li class="slds-dropdown__item">
+			            <a id="${res[r].fieldsid}" onclick="mb.setFieldValues('${res[r].fieldname}', '${res[r].fieldsid}', ${FILTER_COUNT})">
+			                <span class="slds-truncate">${res[r].fieldname}</span>
+			            </a>
+			        </li>`;
+			    show = true;
+		    	}
 			}
 			listFields += '</ul>';
-			document.getElementById(`${id}`).innerHTML = listFields;
+			if (show) {
+				document.getElementById(`${id}`).innerHTML = listFields;
+			}
 		});
 	},
 
@@ -1270,7 +1277,14 @@ const mb = {
 		const fields = document.getElementById(`viewfields-${FILTER_COUNT}`).value;
 		const getfields = document.getElementById('show-fields').innerHTML;
 		const pills = `${getfields}${template}`;
-		const newValue = `${fields},${fieldid}`;
+		let newValue = `${fields},${fieldid}`;
+		const parseId = newValue.split(',');
+		newValue = '';
+		for (let p in parseId) {
+			if (parseId[p] != '') {
+				newValue += `${parseId[p]},`;
+			}
+		}
 		document.getElementById(`viewfields-${FILTER_COUNT}`).value = newValue;
 		document.getElementById('show-fields').innerHTML = pills;
 	},
@@ -1288,6 +1302,7 @@ const mb = {
 				newValues += `${objValues[i]},`;
 			}
 		}
+		console.log(newValues);
 		document.getElementById(`viewfields-${FILTER_COUNT}`).value = newValues;
 	},
 
