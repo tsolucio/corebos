@@ -404,10 +404,7 @@ class VTSimpleTemplate {
 		$wsid = $this->parent->getId();
 		$sql = 'select vtiger_contactdetails.firstname, vtiger_contactdetails.lastname FROM vtiger_contactdetails 
 		inner join vtiger_cntactivityrel on vtiger_cntactivityrel.contactid=vtiger_contactdetails.contactid 
-		inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid 
-		left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid 
-		left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid 
-		left JOIN vtiger_account ON vtiger_account.accountid = vtiger_contactdetails.accountid 
+		inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid  
 		where vtiger_cntactivityrel.activityid=? and vtiger_crmentity.deleted=0';
 		list($wsid,$crmid) = explode('x', $wsid);
 
