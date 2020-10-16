@@ -323,7 +323,9 @@ class iCalendar_component {
 	public function assign_values($activity) {
 		foreach ($this->mapping_arr as $key => $components) {
 			if (!is_array($components['component']) && empty($components['function'])) {
-				$this->add_property($key, $activity[$components['component']]);
+				if (isset($activity[$components['component']])) {
+					$this->add_property($key, $activity[$components['component']]);
+				}
 			} elseif (is_array($components['component']) && empty($components['function'])) {
 				$component = '';
 				foreach ($components['component'] as $comp) {

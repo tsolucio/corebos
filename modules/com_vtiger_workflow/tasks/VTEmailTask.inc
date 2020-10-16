@@ -243,7 +243,7 @@ class VTEmailTask extends VTTask {
 			$cbCalendar = CRMEntity::getInstance('cbCalendar');
 			$cbCalendar->retrieve_entity_info($recordid, 'cbCalendar');
 			$icalfilename = $cbCalendar->getiCalendar($cbCalendar);
-			if(!empty($icalfilename)) {
+			if (!empty($icalfilename)) {
 				$this->attachmentsinfo[] = $icalfilename;
 			}
 		}
