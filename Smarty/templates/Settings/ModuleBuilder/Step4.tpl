@@ -16,7 +16,7 @@
                                 </div>
                                 <div class="slds-form-element">
                                     <table id="CustomView"></table>
-                                    <div id="FilterBTN"></div>
+                                    <div id="FilterBTN" style="padding: 20px"></div>
                                 </div>
                             </div>
                         </div>

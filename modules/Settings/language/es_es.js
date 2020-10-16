@@ -80,4 +80,6 @@ var mod_alert_arr = {
 	'filterprocces': 'A custom view is now in process',
 	'relatedprocces': 'A related list is now in process',
 	'picklistvalues': 'Picklist values',
+	'filter': 'Filter',
+	'default': 'Set as default',
 };

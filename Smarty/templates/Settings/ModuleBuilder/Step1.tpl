@@ -61,21 +61,63 @@
                         </h3>
                         <div class="slds-form-element__control slds-grid slds-gutters">
                             <div class="slds-col slds-size_6-of-12">
-                                <div class="slds-form-element">
-                                    <label class="slds-form-element__label" for="parentmenu">SHARING ACCESS</label>
-                                    <div class="slds-form-element__control">
-                                        Private <input type="radio" id="private" checked name="sharingaccess" value="private"/>
-                                        Public <input type="radio" id="public" name="sharingaccess" value="public"/>
-                                    </div>
-                                </div>                               
+                            <fieldset class="slds-form-element">
+                              <legend class="slds-form-element__legend slds-form-element__label">SHARING ACCESS</legend>
+                              <div class="slds-form-element__control">
+                                <span class="slds-radio">
+                                  <input type="radio" id="private" value="private" name="sharingaccess" checked="" />
+                                  <label class="slds-radio__label" for="private">
+                                    <span class="slds-radio_faux"></span>
+                                    <span class="slds-form-element__label">Private</span>
+                                  </label>
+                                </span>
+                                <span class="slds-radio">
+                                  <input type="radio" id="public" value="public" name="sharingaccess" />
+                                  <label class="slds-radio__label" for="public">
+                                    <span class="slds-radio_faux"></span>
+                                    <span class="slds-form-element__label">Public</span>
+                                  </label>
+                                </span>
+                              </div>
+                            </fieldset>                               
                             </div>
                             <div class="slds-col slds-size_6-of-12">
                                 <div class="slds-form-element">
-                                    <label class="slds-form-element__label" for="parentmenu">ACTIONS</label>
+                                    <label class="slds-form-element__legend slds-form-element__label">ACTIONS</label>
                                     <div class="slds-form-element__control">
-                                        Merge <input type="checkbox" id="merge"/>
-                                        Import <input type="checkbox" id="import"/>
-                                        Export <input type="checkbox" id="export"/>
+                                    <div class="slds-form-element">
+                                      <div class="slds-form-element__control">
+                                        <div class="slds-checkbox">
+                                          <input type="checkbox" id="merge" name="merge" />
+                                          <label class="slds-checkbox__label" for="merge">
+                                            <span class="slds-checkbox_faux"></span>
+                                            <span class="slds-form-element__label">Merge</span>
+                                          </label>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="slds-form-element">
+                                      <div class="slds-form-element__control">
+                                        <div class="slds-checkbox">
+                                          <input type="checkbox" id="import" name="import" />
+                                          <label class="slds-checkbox__label" for="import">
+                                            <span class="slds-checkbox_faux"></span>
+                                            <span class="slds-form-element__label">Import</span>
+                                          </label>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="slds-form-element">
+                                      <div class="slds-form-element__control">
+                                        <div class="slds-checkbox">
+                                          <input type="checkbox" id="export" name="export" />
+                                          <label class="slds-checkbox__label" for="export">
+                                            <span class="slds-checkbox_faux"></span>
+                                            <span class="slds-form-element__label">Export</span>
+                                          </label>
+                                        </div>
+                                      </div>
+                                    </div>
                                     </div>
                                 </div>                              
                             </div>

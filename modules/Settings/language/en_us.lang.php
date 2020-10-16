@@ -1028,7 +1028,7 @@ $mod_strings = array(
 'LBL_MB_STATUS' => 'Status',
 'LBL_MB_CVS' => 'Filters',
 'LBL_MB_MODULECVS' => 'Module Custom Views',
-'LBL_MB_ADDCV' => 'Add Custom View',
+'LBL_MB_ADDCV' => 'Add Filter',
 'LBL_MODULE_BUILDER' => 'Module Builder',
 'LBL_MODULE_BUILDER_DESCRIPTION' => 'Create new module',
 'LBL_MB_RELATEDLISTS' => 'Relationships',
@@ -1044,8 +1044,8 @@ $mod_strings = array(
 'LBL_MB_EDITCVS' => 'Edit Custom Views',
 'LBL_MB_EDITRLS' => 'Edit Related Lists',
 'LBL_MB_BACK' => 'BACK',
-'LBL_MB_LISTRLISTS' => 'LIST OF RELATED LISTS',
-'LBL_MB_LISTVIEWS' => 'LIST OF VIEWS',
+'LBL_MB_LISTRLISTS' => 'LIST OF RELATIONSHIPS',
+'LBL_MB_LISTVIEWS' => 'LIST OF FILTERS',
 'LBL_MB_LISTFIELDS' => 'LIST OF FIELDS',
 );
 ?>

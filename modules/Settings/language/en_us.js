@@ -1,6 +1,6 @@
 var mod_alert_arr = {
 	'LBL_CHOOSEFIELDBLOCK': 'Choose block for field',
-	'LBL_CHOOSECUSTOMVIEW': 'Choose fields for custom view',
+	'LBL_CHOOSECUSTOMVIEW': 'Choose fields for filter',
 	'LBL_MB_PROGRESS': 'Progress',
 	'RecordSaved': 'The record was successfully saved',
 	'Field': 'Field',
@@ -17,7 +17,7 @@ var mod_alert_arr = {
 	'DateCreated': 'Date created',
 	'Status': 'Status',
 	'Export': 'Export',
-	'LBL_CHOOSEFIELDFILTER': 'Choose fields for custom view',
+	'LBL_CHOOSEFIELDFILTER': 'Choose fields for filter',
 	'StartEditing': 'Start editing',
 	'AlreadyExists': 'already exists',
 	'LineText': 'Line of Text',
@@ -74,7 +74,7 @@ var mod_alert_arr = {
 	'mandatory': 'Mandatory',
 	'optional': 'Optional',
 	'action': 'Action',
-	'viewname': 'View',
+	'viewname': 'Filter',
 	'setdefault': 'Default',
 	'fields': 'List of fields',
 	'relatedmodule': 'Related module',
@@ -88,4 +88,6 @@ var mod_alert_arr = {
 	'filterprocces': 'A custom view is now in process',
 	'relatedprocces': 'A related list is now in process',
 	'picklistvalues': 'Picklist values',
+	'filter': 'Filter',
+	'default': 'Set as default',
 };

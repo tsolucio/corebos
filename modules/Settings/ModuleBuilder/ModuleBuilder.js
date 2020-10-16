@@ -117,13 +117,13 @@ const mb = {
 			if (forward == false) {
 				let proceed = true;
 				const modulename = mb.loadElement('modulename');
-				const data = {
+				const _data = {
 					modulename: modulename
 				};
 				jQuery.ajax({
 					method: 'POST',
 					url: url+'&methodName=getCountFilter',
-					data: data
+					data: _data
 				}).done(function (response) {
 					if (response == 0) {
 						if (mb.loadElement(`viewname-${FILTER_COUNT}`) == 'All') {
@@ -142,13 +142,7 @@ const mb = {
 					}
 				});
 				const checkboxes = document.getElementsByName('checkbox-options-1');
-				let checkboxesChecked = [];
-				for (let i = 0; i < checkboxes.length; i++) {
-					if (checkboxes[i].checked) {
-						checkboxesChecked.push(checkboxes[i].id);
-					}
-				}
-				if (checkboxesChecked.length == 0) {
+				if (mb.loadElement(`viewfields-${FILTER_COUNT}`) == '') {
 					mb.loadMessage(mod_alert_arr.CheckOpt, true);
 					proceed = false;
 				}
@@ -158,22 +152,10 @@ const mb = {
 				var customObj = {
 					viewname: mb.loadElement(`viewname-${FILTER_COUNT}`),
 					setdefault: mb.loadElement(`setdefault-${FILTER_COUNT}`),
+					fields: mb.loadElement(`viewfields-${FILTER_COUNT}`),
 				};
-				const checkSize = document.getElementsByName('checkbox-options-'+FILTER_COUNT).length;
-				var fieldObj = [];
-				for (var j = 0; j < checkSize; j++) {
-					const checkedValue = document.querySelector('#checkbox-'+j+'-id-'+FILTER_COUNT);
-					if (checkedValue.checked == true) {
-						fieldObj.push(checkedValue.value);
-					}
-				}
-				field = fieldObj.join(',');
-				customObj.fields = {
-					field
-				};
-				customViews.push(customObj);
 				data = {
-					customview: customViews,
+					customview: customObj,
 					step: step
 				};
 			} else {
@@ -519,7 +501,7 @@ const mb = {
 					valign: 'top'
 				}
 			});
-			tui.Grid.applyTheme('clean');
+			tui.Grid.applyTheme('striped');
 			mb.updateProgress(3);
 		}
 		if (step == 4) {
@@ -575,7 +557,7 @@ const mb = {
 					valign: 'top'
 				}
 			});
-			tui.Grid.applyTheme('clean');
+			tui.Grid.applyTheme('striped');
 			mb.updateProgress(4);
 		}
 		if (step == 5) {
@@ -635,7 +617,7 @@ const mb = {
 					valign: 'top'
 				}
 			});
-			tui.Grid.applyTheme('clean');
+			tui.Grid.applyTheme('striped');
 			mb.updateProgress(5);
 		}
 	},
@@ -877,22 +859,54 @@ const mb = {
 		};
 		let fieldTemplate = '<div class="slds-grid slds-gutters">';
 		for (var key in textfields) {
-			if (textfields[key].value == 'relatedmodules' || textfields[key].value == 'picklistvalues') {
+			if (textfields[key].value == 'relatedmodules') {
 				inStyle.style = 'margin: 5px; display: none';
 				inStyle.id = `show-field-${textfields[key].value}-${FIELD_COUNT}`;
 				inStyle.placeholder = 'Value 1,Value 2,...';
+				fieldTemplate += `
+				<div class="slds-col" style="${inStyle.style}" id="${inStyle.id}">
+					<div class="slds-form-element">
+					<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
+						<abbr class="slds-required" title="required">* </abbr> ${textfields[key].type}
+					</label>
+					<div class="slds-form-element__control">
+						<input type="hidden" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="${inStyle.placeholder}" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
+						<div class="slds-pill_container" onclick="mb.loadModules('load-mods')">
+							<ul class="slds-listbox slds-listbox_horizontal" role="listbox" id="show-pills">
+							</ul>
+						</div>
+						<span id="load-mods" class="closeList"></span>
+					</div>
+					</div>
+				</div>`;
+			} else if (textfields[key].value == 'picklistvalues') {
+				inStyle.style = 'margin: 5px; display: none';
+				inStyle.id = `show-field-${textfields[key].value}-${FIELD_COUNT}`;
+				inStyle.placeholder = 'Value 1,Value 2,...';
+				fieldTemplate += `
+				<div class="slds-col" style="${inStyle.style}" id="${inStyle.id}">
+					<div class="slds-form-element">
+					<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
+						<abbr class="slds-required" title="required">* </abbr> ${textfields[key].type}
+					</label>
+					<div class="slds-form-element__control">
+						<input type="text" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="${inStyle.placeholder}" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
+					</div>
+					</div>
+				</div>`;
+			} else {
+				fieldTemplate += `
+				<div class="slds-col" style="${inStyle.style}" id="${inStyle.id}">
+					<div class="slds-form-element">
+					<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
+						<abbr class="slds-required" title="required">* </abbr> ${textfields[key].type}
+					</label>
+					<div class="slds-form-element__control">
+						<input type="text" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="${inStyle.placeholder}" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
+					</div>
+					</div>
+				</div>`;
 			}
-			fieldTemplate += `
-			<div class="slds-col" style="${inStyle.style}" id="${inStyle.id}">
-				<div class="slds-form-element">
-				<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
-					<abbr class="slds-required" title="required">* </abbr> ${textfields[key].type}
-				</label>
-				<div class="slds-form-element__control">
-					<input type="text" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="${inStyle.placeholder}" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
-				</div>
-				</div>
-			</div>`;
 		}
 		fieldTemplate += '</div><div class="slds-grid slds-gutters">';
 
@@ -989,9 +1003,11 @@ const mb = {
 		if (e.value == 10) {
 			document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = '';
 			document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = 'none';
+			document.getElementById(`Uitype_${id.value}`).disabled = 'true';
 		} else if (e.value == 15 || e.value == 16) {
 			document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = '';
 			document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = 'none';
+			document.getElementById(`Uitype_${id.value}`).disabled = 'true';
 		} else {
 			document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = 'none';
 			document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = 'none';
@@ -1150,7 +1166,7 @@ const mb = {
 			<div class="slds-col">
 				<div class="slds-form-element">
 				<label class="slds-form-element__label" for="viewname-${FILTER_COUNT}">
-					<abbr class="slds-required" title="required">* </abbr> Viewname
+					<abbr class="slds-required" title="required">* </abbr> ${mod_alert_arr.filter}
 				</label>
 				<div class="slds-form-element__control">
 					<input type="text" placeholder="All" name="viewname-${FILTER_COUNT}" id="viewname-${FILTER_COUNT}" class="slds-input"/>
@@ -1159,7 +1175,7 @@ const mb = {
 			</div>
 			<div class="slds-col">
 				<div class="slds-form-element">
-					<label class="slds-form-element__label" for="setdefault-${FILTER_COUNT}">Set as default</label>
+					<label class="slds-form-element__label" for="setdefault-${FILTER_COUNT}">${mod_alert_arr.default}</label>
 					<div class="slds-form-element__control">
 						<div class="slds-select_container">
 							<select class="slds-select" name="setdefault-${FILTER_COUNT}" id="setdefault-${FILTER_COUNT}">`;
@@ -1176,36 +1192,22 @@ const mb = {
 
 		//get all fields
 		viewTemplate += `
-			<div class="slds-grid slds-gutters">
-				<div class="slds-col"><br>
-					<label class="slds-form-element__label">
-						<abbr class="slds-required" title="required">* </abbr> ${mod_alert_arr.LBL_CHOOSECUSTOMVIEW}
-					</label>
-				</div>
-			</div>`;
-		jQuery.ajax({
-			method: 'GET',
-			url: url+'&methodName=loadFields',
-		}).done(function (response) {
-			let res = JSON.parse(response);
-			for (let f in res) {
-				viewTemplate += `
-				<div class="slds-col">
-					<div class="slds-form-element">
-					<div class="slds-form-element__control">
-						<div class="slds-checkbox">
-						<input type="checkbox" class="for-checkbox-${FILTER_COUNT}" name="checkbox-options-${FILTER_COUNT}" id="checkbox-${f}-id-${FILTER_COUNT}" value="${res[f]['fieldsid']}"/>
-						<label class="slds-checkbox__label" for="checkbox-${f}-id-${FILTER_COUNT}">
-							<span class="slds-checkbox_faux"></span>
-							<span class="slds-form-element__label">${res[f]['fieldname']}</span>
-						</label>
-						</div>
-					</div>
-					</div>
-				</div>`;
-				mb.loadElement(`customview_inputs${FILTER_COUNT}`, true).innerHTML = viewTemplate;
-			}
-		});
+		<div class="slds-grid slds-gutters">
+			<div class="slds-col"><br>
+				<label class="slds-form-element__label">
+					<abbr class="slds-required" title="required">* </abbr> ${mod_alert_arr.LBL_CHOOSECUSTOMVIEW}
+				</label>
+			</div>
+		</div>
+		<div class="slds-col">
+			<input type="hidden" name="viewfields-${FILTER_COUNT}" id="viewfields-${FILTER_COUNT}">
+			<div class="slds-pill_container" onclick="mb.loadFields('load-fields', ${FILTER_COUNT})">
+			  <ul class="slds-listbox slds-listbox_horizontal" role="listbox" id="show-fields">
+			  </ul>
+			  <span id="load-fields" class="closeList"></span>
+			</div>
+		</div>`;
+		mb.loadElement(`customview_inputs${FILTER_COUNT}`, true).innerHTML = viewTemplate;
 		//create save button for each field
 		let btnTemplate = `
 		<div class="slds-grid slds-gutters">
@@ -1222,6 +1224,73 @@ const mb = {
 		</div>`;
 		mb.loadElement('FilterBTN', true).innerHTML = btnTemplate;
 	},
+
+	loadFields: (id, FILTER_COUNT) => {
+		jQuery.ajax({
+			method: 'GET',
+			url: url+'&methodName=loadFields',
+		}).done(function (response) {
+			let res = JSON.parse(response);
+			const inStyle = {
+				style: `background: white;
+				border: 1px solid #d1d1d1;
+				position: absolute;
+				z-index: 1000;
+				height: 200px;
+				width: 100%;
+				overflow:hidden;
+				overflow-y:scroll;`
+			};
+			let listFields = `<ul class="slds-dropdown__list slds-dropdown__scroll" style="${inStyle.style}">`;
+			for (let r in res) {
+				listFields += `
+				<li class="slds-dropdown__item">
+		            <a id="${res[r].fieldsid}" onclick="mb.setFieldValues('${res[r].fieldname}', '${res[r].fieldsid}', ${FILTER_COUNT})">
+		                <span class="slds-truncate">${res[r].fieldname}</span>
+		            </a>
+		        </li>`;
+			}
+			listFields += '</ul>';
+			document.getElementById(`${id}`).innerHTML = listFields;
+		});
+	},
+
+	setFieldValues: (fieldaname, fieldid, FILTER_COUNT) => {
+		let template = `
+	    <li class="slds-listbox-item" role="presentation" id="${fieldid}">
+	      	<span class="slds-pill" role="option" aria-selected="true">
+	        <span class="slds-pill__label" title="${fieldaname}">${fieldaname}</span>
+	        <span class="slds-icon_container slds-pill__remove" id="remove-${fieldid}" onclick="mb.removeFieldForFilter(this, ${FILTER_COUNT})" style="cursor: pointer">
+	          	<svg class="slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+	            	<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+	          	</svg>
+	        </span>
+	      	</span>
+	    </li>`;
+		const fields = document.getElementById(`viewfields-${FILTER_COUNT}`).value;
+		const getfields = document.getElementById('show-fields').innerHTML;
+		const pills = `${getfields}${template}`;
+		const newValue = `${fields},${fieldid}`;
+		document.getElementById(`viewfields-${FILTER_COUNT}`).value = newValue;
+		document.getElementById('show-fields').innerHTML = pills;
+	},
+
+	removeFieldForFilter: (el, FILTER_COUNT) => {
+		let id = el.id.split('-')[1];
+		const pills = document.getElementById(`${id}`);
+		let objValues;
+		let newValues = '';
+		pills.parentNode.removeChild(pills);
+		const mods = document.getElementById(`viewfields-${FILTER_COUNT}`).value;
+		objValues = mods.split(',');
+		for (let i in objValues) {
+			if (objValues[i] != id && objValues[i] != '') {
+				newValues += `${objValues[i]},`;
+			}
+		}
+		document.getElementById(`viewfields-${FILTER_COUNT}`).value = newValues;
+	},
+
 	/**
 	 * Function that load an alert message for success or error
 	 * @param {text} msg
@@ -1339,14 +1408,15 @@ const mb = {
 					style: `background: white;
 					border: 1px solid #d1d1d1;
 					position: absolute;
-					z-index: 1000`
+					z-index: 1000;
+					width: 100%`
 				};
 				let span = document.createElement('span');
 				let ul = `<ul class="slds-dropdown__list" style="${inStyle.style}">`;
 				for (let i = 0; i < res.length; i++) {
 					ul += `<li class="slds-dropdown__item">
-							<a onclick="mb.setValueToInput(this.id, ${forId}, '${method}')" tabindex="${i}" id="${res[i].relatedmodules}">
-								<span class="slds-truncate" title="${res[i].relatedmodules}">${res[i].relatedmodules}</span>
+							<a onclick="mb.setValueToInput(this.id, ${forId}, '${method}')" tabindex="${i}" id="${res[i]}">
+								<span class="slds-truncate">${res[i]}</span>
 							</a>
 						</li>`;
 				}
@@ -1949,7 +2019,87 @@ const mb = {
 	hideInformation: (id) => {
 		document.getElementById(id).style.display = 'none';
 	},
+
+	loadModules: (id) => {
+		jQuery.ajax({
+			method: 'POST',
+			url: url,
+			data: 'methodName=getModules'
+		}).then(function (response) {
+			const modules = JSON.parse(response);
+			const inStyle = {
+				style: `background: white;
+				border: 1px solid #d1d1d1;
+				position: absolute;
+				z-index: 1000;
+				height: 200px;
+				width: 100%;
+				overflow:hidden;
+				overflow-y:scroll;`
+			};
+			let listMods = `<ul class="slds-dropdown__list slds-dropdown__scroll" style="${inStyle.style}">`;
+			for (let m in modules) {
+				listMods += `
+				<li class="slds-dropdown__item">
+		            <a tabindex="${modules[m]}" id="${modules[m]}" onclick="mb.setModuleValues('${modules[m]}')">
+		                <span class="slds-truncate">${modules[m]}</span>
+		            </a>
+		        </li>`;
+			}
+			listMods += '</ul>';
+			document.getElementById(`${id}`).innerHTML = listMods;
+		});
+	},
+
+	setModuleValues: (modulename) => {
+		let template = `
+	    <li class="slds-listbox-item" role="presentation" id="${modulename}">
+	      	<span class="slds-pill" role="option" aria-selected="true">
+	        <span class="slds-pill__label" title="${modulename}">${modulename}</span>
+	        <span class="slds-icon_container slds-pill__remove" id="remove-${modulename}" onclick="mb.removeField(this)" style="cursor: pointer">
+	          	<svg class="slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+	            	<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+	          	</svg>
+	        </span>
+	      	</span>
+	    </li>`;
+		const modules = document.getElementById('relatedmodules_1').value;
+		const getmodules = document.getElementById('show-pills').innerHTML;
+		const pills = `${getmodules}${template}`;
+		const newValue = `${modules},${modulename}`;
+		document.getElementById('relatedmodules_1').value = newValue;
+		document.getElementById('show-pills').innerHTML = pills;
+	},
+
+	removeField: (el) => {
+		let id = el.id.split('-')[1];
+		const pills = document.getElementById(`${id}`);
+		let objValues;
+		let newValues = '';
+		pills.parentNode.removeChild(pills);
+		const mods = document.getElementById('relatedmodules_1').value;
+		objValues = mods.split(',');
+		for (let i in objValues) {
+			if (objValues[i] != id && objValues[i] != '') {
+				newValues += `${objValues[i]},`;
+			}
+		}
+		document.getElementById('relatedmodules_1').value = newValues;
+	},
 };
+
+/**
+ * Close list fields on click
+ */
+document.addEventListener('click', function (event) {
+	const getSection = document.getElementsByClassName('closeList');
+	let getIds = Array.prototype.filter.call(getSection, function (el) {
+	  	return el.nodeName;
+	});
+	for (let i in getIds) {
+		document.getElementById(getIds[i].id).innerHTML = '';
+	}
+});
 
 class ActionRender {
 

@@ -42,7 +42,7 @@
 							        <div class="slds-path__scroller_inner">
 							          <ul class="slds-path__nav" role="listbox" aria-orientation="horizontal">
 							            <li class="slds-path__item slds-is-current slds-is-active" id="general-information">
-							              <a aria-selected="true" class="slds-path__link" href="javascript:void(0);">
+							              <a aria-selected="true" class="slds-path__link">
 							                <span class="slds-path__stage">
 							                  <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 							                    <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
@@ -52,7 +52,7 @@
 							              </a>
 							            </li>
 							            <li class="slds-path__item slds-is-incomplete" role="presentation"id="block-information">
-							              <a aria-selected="false" class="slds-path__link" href="javascript:void(0);">
+							              <a aria-selected="false" class="slds-path__link">
 							                <span class="slds-path__stage">
 							                  <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 							                    <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
@@ -62,7 +62,7 @@
 							              </a>
 							            </li>
 							            <li class="slds-path__item slds-is-incomplete" role="presentation" id="field-information">
-							              <a aria-selected="false" class="slds-path__link" href="javascript:void(0);">
+							              <a aria-selected="false" class="slds-path__link">
 							                <span class="slds-path__stage">
 							                  <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 							                    <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
@@ -72,7 +72,7 @@
 							              </a>
 							            </li>
 							            <li class="slds-path__item slds-is-incomplete" role="presentation" id="filters">
-							              <a aria-selected="false" class="slds-path__link" href="javascript:void(0);">
+							              <a aria-selected="false" class="slds-path__link">
 							                <span class="slds-path__stage">
 							                  <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 							                    <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
@@ -82,7 +82,7 @@
 							              </a>
 							            </li>
 							            <li class="slds-path__item slds-is-incomplete" role="presentation" id="relationship">
-							              <a aria-selected="false" class="slds-path__link" href="javascript:void(0);">
+							              <a aria-selected="false" class="slds-path__link">
 							                <span class="slds-path__stage">
 							                  <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 							                    <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#check"></use>

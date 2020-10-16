@@ -1,3 +1,22 @@
+<style>
+.slds-dropdown__scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.slds-dropdown__scroll::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 5px;
+}
+ 
+.slds-dropdown__scroll::-webkit-scrollbar-thumb {
+  background: grey; 
+  border-radius: 5px;
+}
+
+.slds-dropdown__scroll::-webkit-scrollbar-thumb:hover {
+  background: #d3d3d3; 
+}
+</style>
 <article class="slds-setup-assistant__step" id="step-3" style="display: none">
     <div class="slds-setup-assistant__step-summary">
         <div class="slds-media">
@@ -20,7 +39,7 @@
                                         </span>
                                       </a>
                                     <div>
-                                      <div class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left" role="tooltip" id="field-help" style="position:absolute;top:-70px;left:120px; display: none">
+                                      <div class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left" role="tooltip" id="field-help" style="position:fixed;display: none;overflow:hidden">
                                         <div class="slds-popover__body">
                                             Default fields for module <i>assigned_user_id</i>, <i>created_user_id</i>, <i>createdtime</i>, <i>modifiedtime</i> and <i>description</i> are created automatically!
                                         </div>

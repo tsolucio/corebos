@@ -225,18 +225,11 @@ class ModuleBuilder {
 				));
 			}
 		} elseif ($step == 4) {
-			foreach ($this->column_data['customview'] as $key => $value) {
-				$customviewid = isset($value['customviewid']) ? $value['customviewid'] : '';
-				$viewname = $value['viewname'];
-				$setdefault = (String)$value['setdefault'];
-				$fields = (String)$value['fields']['field'];
-				$setmetrics = 'false';
-				if ($customviewid == '') {
-					$adb->pquery('INSERT INTO vtiger_modulebuilder_customview (viewname, setdefault, setmetrics, fields, moduleid) VALUES(?,?,?,?,?)', array($viewname,$setdefault,$setmetrics,$fields,$this->id));
-				} else {
-					$adb->pquery('UPDATE vtiger_modulebuilder_customview SET viewname=?, setdefault=?, setmetrics=?, fields=?, moduleid=? WHERE customviewid=?', array($viewname,$setdefault,$setmetrics,$fields,$this->id,$customviewid));
-				}
-			}
+			$viewname = $this->column_data['customview']['viewname'];
+			$setdefault = (String)$this->column_data['customview']['setdefault'];
+			$fields = substr((String)$this->column_data['customview']['fields'], 1);
+			$setmetrics = 'false';
+			$adb->pquery('INSERT INTO vtiger_modulebuilder_customview (viewname, setdefault, setmetrics, fields, moduleid) VALUES(?,?,?,?,?)', array($viewname,$setdefault,$setmetrics,$fields,$this->id));
 		} elseif ($step == 5) {
 			if (isset($this->column_data['name']) && $this->column_data['name'] != '') {
 				$adb->pquery('INSERT INTO vtiger_modulebuilder_relatedlists (function, label, actions, relatedmodule, moduleid) VALUES(?,?,?,?,?)', array(
@@ -371,14 +364,18 @@ class ModuleBuilder {
 		if ($query == '' || strlen($query) < 2) {
 			return array();
 		}
-		$function = $adb->pquery("SELECT relatedmodules FROM vtiger_modulebuilder_fields WHERE uitype = 10 AND relatedmodules LIKE '%".$query."%' ORDER BY fieldsid DESC LIMIT 5", array());
+		$modId = vtlib_purify($_COOKIE['ModuleBuilderID']);
+		$function = $adb->pquery("SELECT relatedmodules FROM vtiger_modulebuilder_fields WHERE uitype = 10 AND moduleid = ? ORDER BY fieldsid DESC", array($modId));
 		$module = array();
 		while ($row = $function->FetchRow()) {
-			$moduleInfo = array();
-			$moduleInfo['relatedmodules'] = $row['relatedmodules'];
-			array_push($module, $moduleInfo);
+			$relatedmodules = explode(',', $row['relatedmodules']);
+			foreach ($relatedmodules as $key => $value) {
+				if (strpos(strtolower($value), strtolower($query)) !== false) {
+					array_push($module, $value);
+				}
+			}
 		}
-		return $module;
+		return array_unique($module);
 	}
 
 	public function getCountFilter($modName) {
@@ -677,6 +674,7 @@ class ModuleBuilder {
 				$field->addChild('generatedtype', 1);
 				$field->addChild('fieldlabel', $map['label'].' no');
 				$field->addChild('presence', 2);
+				$field->addChild('readonly', 1);
 				$field->addChild('sequence', $sequence);
 				$field->addChild('typeofdata', 'V~O');
 				$field->addChild('quickcreate', 1);
@@ -695,6 +693,7 @@ class ModuleBuilder {
 				$field->addChild('generatedtype', 1);
 				$field->addChild('fieldlabel', $fValue['fieldlabel']);
 				$field->addChild('presence', $fValue['presence']);
+				$field->addChild('readonly', 1);
 				$field->addChild('sequence', $sequence);
 				$field->addChild('typeofdata', $this->typeofdata($fValue['typeofdata'], $fValue['uitype']));
 				$field->addChild('quickcreate', $fValue['quickcreate']);
@@ -853,6 +852,8 @@ class ModuleBuilder {
 		$search_fields = "'MODULE_NAME_LABEL'=> array('MODULE_NAME_LOWERCASE' => 'MODULE_REFERENCE_FIELD')";
 		$list_fields_name = "'MODULE_NAME_LABEL'=> 'MODULE_REFERENCE_FIELD',";
 		$search_fields_name = "'MODULE_NAME_LABEL'=> 'MODULE_REFERENCE_FIELD'";
+		$replist_fields .= "'".$map['name']."'=> array('MODULE_NAME_LOWERCASE' => '".$map['name']."no'),";
+		$replist_fields_name .= "'".$map['label']."'=> '".$map['name']."no',";
 		foreach ($customviews as $key => $value) {
 			foreach ($fields as $f => $name) {
 				if ($name['fieldname'] == $value) {
@@ -861,8 +862,6 @@ class ModuleBuilder {
 				}
 			}
 		}
-		$replist_fields .= "'".$map['name']."'=> array('MODULE_NAME_LOWERCASE' => '".$map['name']."no'),";
-		$replist_fields_name .= "'".$map['label']."'=> '".$map['name']."no',";
 		$newContent = str_replace($list_fields, $replist_fields, $content);
 		$newContent = str_replace($search_fields, $replist_fields, $newContent);
 		$newContent = str_replace($list_fields_name, $replist_fields_name, $newContent);
@@ -973,6 +972,16 @@ class ModuleBuilder {
 
 	public function typeofdata($typeofdata, $uitype) {
 		return $this->typeofdata[$uitype][1].$typeofdata;
+	}
+
+	public function getModules() {
+		global $adb;
+		$mods = $adb->pquery('SELECT modulename FROM vtiger_entityname', array());
+		$list = array();
+		while ($row = $mods->FetchRow()) {
+			array_push($list, $row['modulename']);
+		}
+		return $list;
 	}
 }
 ?>
