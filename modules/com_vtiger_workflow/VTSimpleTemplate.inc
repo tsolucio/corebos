@@ -394,6 +394,43 @@ class VTSimpleTemplate {
 		return $retcm;
 	}
 
+	private function getRelatedContacts($format) {
+		global $adb, $current_user;
+		$format = strtolower($format);
+		if ($format!='table') {
+			$format = 'table';
+		}
+		$table = ($format == 'table');
+		$wsid = $this->parent->getId();
+		$sql = 'select vtiger_contactdetails.firstname, vtiger_contactdetails.lastname FROM vtiger_contactdetails 
+		inner join vtiger_cntactivityrel on vtiger_cntactivityrel.contactid=vtiger_contactdetails.contactid 
+		inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid  
+		where vtiger_cntactivityrel.activityid=? and vtiger_crmentity.deleted=0';
+		list($wsid,$crmid) = explode('x', $wsid);
+
+		$retcm = '';
+		$cnres = $adb->pquery($sql, array($crmid));
+		if ($table) {
+			$retcm .= '<table><tr><td>';
+		}
+		$numOfRows = $adb->num_rows($cnres);
+		$idx = 0;
+		while ($cn = $adb->fetch_array($cnres)) {
+			if ($table) {
+				$delimiter = ', ';
+				if ($idx == $numOfRows-1) {
+					$delimiter = '';
+				}
+				$retcm .= $cn['firstname'].' '.$cn['lastname'].$delimiter;
+			}
+			$idx++;
+		}
+		if ($table) {
+			$retcm .= '</td></tr></table>';
+		}
+		return $retcm;
+	}
+
 	private function getinvitedUsersList($recid) {
 		global $adb;
 		$modulename = $this->parent->getModuleName();
@@ -556,6 +593,10 @@ class VTSimpleTemplate {
 		if (substr($fieldname, 0, 11) == 'scanBarCode') {
 			list($fieldname, $codetype, $field) = explode('->', decode_html($fieldname));
 		}
+		if (substr($fieldname, 0, 15) == 'RelatedContacts') {
+			$format = explode('[', substr($fieldname, 16, -1))[0];
+			$fieldname = 'RelatedContacts';
+		}
 		switch ($fieldname) {
 			case 'date':
 				return getNewDisplayDate();
@@ -620,6 +661,8 @@ class VTSimpleTemplate {
 				return $this->getGroupFieldList($groupname, 'email1');
 			case 'Events_Users_Invited':
 				return $this->getinvitedUsersList($this->parent->getId());
+			case 'RelatedContacts':
+				return $this->getRelatedContacts($format);
 			case 'scanQRCode':
 				$wsId = $this->parent->getId();
 				$parts = explode('x', $wsId);
