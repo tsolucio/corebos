@@ -99,5 +99,15 @@ $mod_strings = array(
 	'sel_fields_es' => 'Selecionar campos para o mapeamento do Elasticsearch',
 	'Analyzed' => 'Analisado',
 	'Missing_GlobalVar' => 'Variável Global ElasticSearch IP está faltando',
+	'SAML Activation' => 'SAML Activation',
+	'SAML Activation_Desc' => 'Login all users from a central Identity Provider',
+	'SAML SP' => 'Service Provider',
+	'SAML IP' => 'Identity Provider',
+	'SAML EID' => 'Entity ID',
+	'SAML NID' => 'Name ID Format',
+	'SAML ACS' => 'Assertion Consumer Service',
+	'SAML SSO' => 'Single Sign On Service',
+	'SAML SLO' => 'Single Logout Service',
+	'SAML x509' => 'x509 Certificate',
 );
 ?>

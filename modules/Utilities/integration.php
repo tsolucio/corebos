@@ -74,6 +74,10 @@ switch ($_REQUEST['_op']) {
 	case 'setconfigwhatsapp':
 		include_once 'include/integrations/whatsapp/settings.php';
 		break;
+	case 'getconfigsaml':
+	case 'setconfigsaml':
+		include_once 'include/integrations/saml/settings.php';
+		break;
 	case 'getconfigsendgrid':
 	case 'setconfigsendgrid':
 		include_once 'include/integrations/sendgrid/settings.php';
@@ -111,6 +115,12 @@ switch ($_REQUEST['_op']) {
 				'title' => getTranslatedString('GoTo2FAActivation', 'Utilities'),
 				'desc' => getTranslatedString('GoTo2FAActivation_Desc', 'Utilities'),
 				'url' => 'index.php?action=integration&module=Utilities&_op=getconfig2fa',
+			),
+			array(
+				'abbr' => 'SSO',
+				'title' => getTranslatedString('SAML Activation', 'Utilities'),
+				'desc' => getTranslatedString('SAML Activation_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigsaml',
 			),
 			array(
 				'abbr' => 'GC',
