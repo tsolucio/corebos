@@ -9,7 +9,7 @@ var mod_alert_arr = {
 	'PickListFld': 'Picklist field cant be empty',
 	'ViewnameEmpty_msg': 'View name cant be empty',
 	'Related_name_label': 'Related name or label cant be empty',
-	'CheckOpt': 'Please check at least one field to continue',
+	'ChoseField': 'Please choose at least one field to continue',
 	'FirstFilterAll_msg': 'First Filter should be All',
 	'WasSaved': 'was successfully saved',
 	'LBL_MB_SAVEFIELD': 'Save field',
