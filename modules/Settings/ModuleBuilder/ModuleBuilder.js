@@ -114,36 +114,26 @@ const mb = {
 			let field;
 			var btnid = buttonid.split('-')[4];
 			const FILTER_COUNT = mb.loadElement('FILTER_COUNT');
+			let CV_NUMBER = document.getElementsByName('cvnumber').value;
 			if (forward == false) {
 				let proceed = true;
-				const modulename = mb.loadElement('modulename');
-				const _data = {
-					modulename: modulename
-				};
-				jQuery.ajax({
-					method: 'POST',
-					url: url+'&methodName=getCountFilter',
-					data: _data
-				}).done(function (response) {
-					if (response == 0) {
-						if (mb.loadElement(`viewname-${FILTER_COUNT}`) == 'All') {
-							proceed = true;
-						}
-						if (mb.loadElement(`viewname-${FILTER_COUNT}`) != 'All' || mb.loadElement(`viewname-${FILTER_COUNT}`) != '') {
-							mb.loadMessage(mod_alert_arr.FirstFilterAll_msg, true);
-							proceed = false;
-						}
+				if (CV_NUMBER == 0) {
+					if (mb.loadElement(`viewname-${FILTER_COUNT}`) == 'All') {
+						proceed = true;
 					}
-					if (response > 0) {
-						if (mb.loadElement(`viewname-${FILTER_COUNT}`) == '') {
-							mb.loadMessage(mod_alert_arr.ViewnameEmpty_msg, true);
-							proceed = false;
-						}
+					if (mb.loadElement(`viewname-${FILTER_COUNT}`) != 'All' || mb.loadElement(`viewname-${FILTER_COUNT}`) == '') {
+						mb.loadMessage(mod_alert_arr.FirstFilterAll_msg, true);
+						proceed = false;
 					}
-				});
-				const checkboxes = document.getElementsByName('checkbox-options-1');
+				} 
+				if (CV_NUMBER > 0) {
+					if (mb.loadElement(`viewname-${FILTER_COUNT}`) == '') {
+						mb.loadMessage(mod_alert_arr.ViewnameEmpty_msg, true);
+						proceed = false;
+					}
+				}
 				if (mb.loadElement(`viewfields-${FILTER_COUNT}`) == '') {
-					mb.loadMessage(mod_alert_arr.CheckOpt, true);
+					mb.loadMessage(mod_alert_arr.ChoseField, true);
 					proceed = false;
 				}
 				if (!proceed) {
@@ -1151,6 +1141,18 @@ const mb = {
 			mb.loadMessage(msg, true, 'error');
 			return;
 		}
+		// get custom view number for filter
+		const modulename = mb.loadElement('modulename');
+		const _data = {
+			modulename: modulename
+		};
+		jQuery.ajax({
+			method: 'POST',
+			url: url+'&methodName=getCountFilter',
+			data: _data
+		}).done(function (response) {
+			document.getElementsByName('cvnumber').value = response;
+		});
 		const row = mb.createRow(table, 0, 'for-customview-', FILTER_COUNT);
 		const cell = mb.createCell(row, 0, 'customview_inputs', FILTER_COUNT);
 		//create viewname
@@ -1170,6 +1172,7 @@ const mb = {
 				</label>
 				<div class="slds-form-element__control">
 					<input type="text" placeholder="All" name="viewname-${FILTER_COUNT}" id="viewname-${FILTER_COUNT}" class="slds-input"/>
+					<input type="hidden" name="cvnumber" id="cvnumber" class="slds-input"/>
 				</div>
 				</div>
 			</div>
