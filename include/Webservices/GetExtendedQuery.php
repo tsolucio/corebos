@@ -76,7 +76,9 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 		if ($colspec['expr_type']=='colref') {
 			if (strpos($colspec['base_expr'], '.')>0) {
 				list($m,$f) = explode('.', $colspec['base_expr']);
+				$mo = '';
 				if ($m=='UsersSec' || $m=='UsersCreator') {
+					$mo = $m;
 					$m = 'Users';
 				}
 				if (!isset($queryRelatedModules[$m])) {
@@ -84,9 +86,9 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 					$relmeta = $relhandler->getMeta();
 					$mn = $relmeta->getTabName();  // normalize module name
 					$queryRelatedModules[$mn] = $relmeta;
-					$queryColumns[] = $mn.'.'.(in_array($f, $capsfield) ? $f : strtolower($f));
+					$queryColumns[] = ($mo!='' ? $mo : $mn).'.'.(in_array($f, $capsfield) ? $f : strtolower($f));
 				} else {
-					$queryColumns[] = $m.'.'.(in_array($f, $capsfield) ? $f : strtolower($f));
+					$queryColumns[] = ($mo!='' ? $mo : $m).'.'.(in_array($f, $capsfield) ? $f : strtolower($f));
 				}
 			} else {
 				$queryColumns[] = (in_array($colspec['base_expr'], $capsfield) ? $colspec['base_expr'] : strtolower($colspec['base_expr']));
