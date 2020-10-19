@@ -9,111 +9,156 @@
  ********************************************************************************/
 -->*}
 <!-- Customized Reports Table Starts Here  -->
-	<form>
-	{if $DEL_DENIED neq ""}
-	<span id="action_msg_status" class="small" align="left"><font color=red><b>{$MOD.LBL_PERM_DENIED} {$DEL_DENIED}</b> </font></span>
-	{/if}
-	<input id="folder_ids" name="folderId" type="hidden" value='{$FOLDE_IDS}'>
-	{assign var=poscount value=0}
-	{foreach item=reportfolder from=$REPT_CUSFLDR}
-	{assign var=poscount value=$poscount+1}
-		<table class="reportsListTable" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+<form>
+{if $DEL_DENIED neq ""}
+<span id="action_msg_status" class="small" align="left"><font color=red><b>{$MOD.LBL_PERM_DENIED} {$DEL_DENIED}</b> </font></span>
+{/if}
+<input id="folder_ids" class="slds-input" name="folderId" type="hidden" value='{$FOLDE_IDS}'>
+{assign var=poscount value=0}
+{foreach item=reportfolder from=$REPT_CUSFLDR}
+{assign var=poscount value=$poscount+1}
+	<div class="slds-grid">
+		<div class="slds-col slds-size_1-of-1">
+			<div class="slds-page-header">
+				<div class="slds-grid">
+					<div class="slds-col slds-size_1-of-2 slds-p-vertical_small">
+						<div class="slds-page-header__col-title">
+							<div class="slds-page-header__name">
+								<div class="slds-text-title">
+									<h1>
+										<span id='folder{$reportfolder.id}'> {$reportfolder.name} <span class="slds-text-color_weak"><em> {if $reportfolder.description neq ''} - {$reportfolder.description} {/if} </em></span> </span>
+									</h1>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="slds-col slds-size_1-of-2 slds-p-vertical_small slds-text-align_right">
+						<a class="cardinner maximize minmaxtoggle" onclick="toggleGridCard({$poscount})"> 
+							<svg class="slds-icon slds-icon_x-small slds-icon-text-light minimizereport expandthis_svg" aria-hidden="true" >
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#contract"></use> 
+							</svg>
+							<svg class="slds-icon slds-icon_x-small slds-icon-text-light maximizereport hidethis_svg" aria-hidden="true" >
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#expand"></use> 
+							</svg>
+						</a>
+					</div>
+				</div>
+				<div class="slds-grid">
+					<div class="slds-col slds-size_7-of-12" id="repposition{$poscount}">
+						<input name="newReportInThisModule" value="{$MOD.LBL_CREATE_REPORT}..." class="slds-button slds-button_brand" onclick="gcurrepfolderid={$reportfolder.id};fnvshobj(this,'reportLay')" type="button">
+					</div>
+					<div class="slds-col slds-size_5-of-12">
+						<div class="slds-grid slds-grid_align-end">
+							<div class="slds-col slds-size_1-of-2 slds-text-align_right">
+								<input type="button" name="Edit" value=" {$MOD.LBL_RENAME_FOLDER} " class="slds-button slds-button_success" onClick='EditFolder("{$reportfolder.id}","{$reportfolder.fname}","{$reportfolder.fdescription}"),fnvshobj(this,"orgLay");'>
+							</div>
+							<div class="slds-col slds-size_1-of-2 slds-text-align_right">
+								<input type="button" name="delete" value=" {$MOD.LBL_DELETE_FOLDER} " class="slds-button slds-button_destructive" onClick="DeleteFolder('{$reportfolder.id}');">
+							</div>
+						</div>
+					</div>
+			</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="slds-grid grid_reports_container">
+		<div class="slds-col slds-size_1-of-1">
+			<table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped" role="grid">
+				<thead>
+					<tr class="slds-line-height_reset">
+						<th class="" scope="col" width="5%">
+							<div class="slds-truncate" title="#"> <input type="checkbox" name="selectall" onclick='toggleSelect(this.checked,"selected_id{$reportfolder.id}")' value="checkbox" /> </div>
+						</th>
+						<th class="" scope="col" width="35%">
+							<div class="slds-truncate" title="{$MOD.LBL_REPORT_NAME}">{$MOD.LBL_REPORT_NAME}</div>
+						</th>
+						<th class="" scope="col" width="50%">
+							<div class="slds-truncate" title="{$MOD.LBL_DESCRIPTION}">{$MOD.LBL_DESCRIPTION}</div>
+						</th>
+						<th class="" scope="col" width="10%">
+							<div class="slds-truncate" title="{$MOD.LBL_TOOLS}">
+								{$MOD.LBL_TOOLS}
+							</div>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					{foreach name=reportdtls item=reportdetails from=$reportfolder.details}
+						<tr class="lvtColData" onmouseover="this.className='lvtColDataHover'" onmouseout="this.className='lvtColData'" bgcolor="white">
+							<td>
+								{if $reportdetails.customizable eq '1' && $reportdetails.editable eq 'true'}
+									<input name="selected_id{$reportfolder.id}" value="{$reportdetails.reportid}" onclick='toggleSelectAll(this.name,"selectall")' type="checkbox">
+								{/if}
+							</td>
+							<td>
+								{if $reportdetails.cbreporttype eq 'external'}
+									<a href="{$reportdetails.moreinfo}" target="_blank">{$reportdetails.reportname|@getTranslatedString:$MODULE}</a>
+								{else}
+									<a href="index.php?module=Reports&action=SaveAndRun&record={$reportdetails.reportid}&folderid={$reportfolder.id}">{$reportdetails.reportname}</a>
+								{/if}
+								{if $reportdetails.sharingtype eq 'Shared'}
+									<img src="{'Meetings.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border=0 height=12 width=12 />
+								{/if}
+							</td>
+							<td>{$reportdetails.description}</td>
+							<td>
+								{if $reportdetails.customizable eq '1' && $reportdetails.editable eq 'true'}
+									<a href="javascript:;" onClick="editReport('{$reportdetails.reportid}');" class="slds-button">
+										<svg class="slds-icon slds-icon_x-small slds-icon-text-light" aria-hidden="true" >
+											<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#edit"></use> 
+										</svg>
+									</a>
+								{/if}
+								{if $ISADMIN || ($reportdetails.state neq 'SAVED' && $reportdetails.editable eq 'true')}
+								<a href="javascript:;" onClick="DeleteReport('{$reportdetails.reportid}');" class="slds-button">
+									<svg class="slds-icon slds-icon_x-small slds-icon-text-light" aria-hidden="true" title="Delete...">
+										<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#close"></use> 
+									</svg>
+								</a>
+								{/if}
+								{if $reportdetails.cbreporttype neq 'external' && $reportdetails.export eq 'yes'}
+								<a href="javascript:void(0);" class="slds-button" onclick="gotourl('index.php?module=Reports&action=ReportsAjax&file=CreateCSV&record={$reportdetails.reportid}');" alt="{$MOD.LBL_EXPORTCSV}" title="{$MOD.LBL_EXPORTCSV}">
+									<svg class="slds-icon slds-icon_x-small" aria-hidden="true" >
+										<use xlink:href="include/LD/assets/icons/doctype-sprite/svg/symbols.svg#csv"></use> 
+									</svg>
+								</a>
+								<a href="javascript:void(0);" class="slds-button" onclick="gotourl('index.php?module=Reports&action=CreateXL&record={$reportdetails.reportid}');" alt="{$MOD.LBL_EXPORTXL_BUTTON}" title="{$MOD.LBL_EXPORTXL_BUTTON}">
+									<svg class="slds-icon slds-icon_x-small" aria-hidden="true" >
+										<use xlink:href="include/LD/assets/icons/doctype-sprite/svg/symbols.svg#excel"></use> 
+									</svg>
+								</a>
+								<a href="javascript:void(0);" class="slds-button" onclick="gotourl('index.php?module=Reports&action=CreatePDF&record={$reportdetails.reportid}');" alt="{$MOD.LBL_EXPORTPDF_BUTTON}" title="{$MOD.LBL_EXPORTPDF_BUTTON}">
+									<svg class="slds-icon slds-icon_x-small" aria-hidden="true" >
+										<use xlink:href="include/LD/assets/icons/doctype-sprite/svg/symbols.svg#pdf"></use> 
+									</svg>
+								</a>
+								{/if}
+							</td>
+						</tr>
+					{/foreach}
+				</tbody>
+			</table>
+		</div>
+	</div>
+<br />
+{foreachelse}
+<div align="center" class="createbtn_design">
+<a href="javascript:;" onclick="fnvshobj(this,'orgLay');">{$MOD.LBL_CLICK_HERE}</a>&nbsp;{$MOD.LBL_TO_ADD_NEW_GROUP}
+</div>
+{/foreach}
+</form>
+<!-- Customized Reports Table Ends Here  -->
+
+<div style="display: none;left:193px;top:106px;width:155px;" id="folderLay" onmouseout="fninvsh('folderLay')" onmouseover="fnvshNrm('folderLay')">
+	<table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="100%">
+		<tr><td style="border-bottom: 1px solid rgb(204, 204, 204); padding: 5px;" align="left"><b>{$MOD.LBL_MOVE_TO} :</b></td></tr>
 		<tr>
-		<td class="mailSubHeader" align="left" colspan="3" style="font-weight:bold;">
-		<span id='folder{$reportfolder.id}'> {$reportfolder.name}</span>
-		<i><font color='#C0C0C0'>
-			{if $reportfolder.description neq ''}
-				 - {$reportfolder.description}
-			{/if}
-		</font></i>
-		</td>
-		</tr>
-		<tr>
-			<td class="hdrNameBg" colspan="3" style="padding: 5px;" align="right" >
-				<!-- Custom Report Group's Buttons -->
-				<table width="100%" border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td id="repposition{$poscount}" width="5%" align="right">
-						<input name="newReportInThisModule" value="{$MOD.LBL_CREATE_REPORT}..." class="crmButton small create" onclick="gcurrepfolderid={$reportfolder.id};fnvshobj(this,'reportLay')" type="button">
-					</td>
-					<td width="75%" align="right">
-						<input type="button" name="Edit" value=" {$MOD.LBL_RENAME_FOLDER} " class="crmbutton small edit" onClick='EditFolder("{$reportfolder.id}","{$reportfolder.fname}","{$reportfolder.fdescription}"),fnvshobj(this,"orgLay");'>&nbsp;
-					</td>
-					<td align="right">
-						<input type="button" name="delete" value=" {$MOD.LBL_DELETE_FOLDER} " class="crmbutton small delete" onClick="DeleteFolder('{$reportfolder.id}');">
-					</td>
-				</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-		<td colspan="3">
-		<table border="0" cellpadding="3" cellspacing="1" width="100%">
-			<tbody>
-			<tr>
-			<td class="lvtCol" width="5%">
-				<input type="checkbox" name="selectall" onclick='toggleSelect(this.checked,"selected_id{$reportfolder.id}")' value="checkbox" />
-			</td>
-			<td class="lvtCol" align="left" width="35%">{$MOD.LBL_REPORT_NAME}</td>
-			<td class="lvtCol" align="left" width="50%">{$MOD.LBL_DESCRIPTION}</td>
-			<td class="lvtCol" width="10%">{$MOD.LBL_TOOLS}</td>
-			</tr>
-			{foreach name=reportdtls item=reportdetails from=$reportfolder.details}
-			<tr class="lvtColData" onmouseover="this.className='lvtColDataHover'" onmouseout="this.className='lvtColData'" bgcolor="white">
-			<td>
-				{if $reportdetails.customizable eq '1' && $reportdetails.editable eq 'true'}
-					<input name="selected_id{$reportfolder.id}" value="{$reportdetails.reportid}" onclick='toggleSelectAll(this.name,"selectall")' type="checkbox">
-				{/if}
-			</td>
-			<td align="left">
-			{if $reportdetails.cbreporttype eq 'external'}
-				<a href="{$reportdetails.moreinfo}" target="_blank">{$reportdetails.reportname|@getTranslatedString:$MODULE}</a>
-			{else}
-				<a href="index.php?module=Reports&action=SaveAndRun&record={$reportdetails.reportid}&folderid={$reportfolder.id}">{$reportdetails.reportname}</a>
-			{/if}
-			{if $reportdetails.sharingtype eq 'Shared'}
-				<img src="{'Meetings.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border=0 height=12 width=12 />
-			{/if}
-			</td>
-			<td align="left">{$reportdetails.description}</td>
-			<td align="right" nowrap>
-			{if $reportdetails.customizable eq '1' && $reportdetails.editable eq 'true'}
-				<a href="javascript:;" onClick="editReport('{$reportdetails.reportid}');"><img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" title="Customize..." border="0"></a>
-			{/if}
-			{if $ISADMIN || ($reportdetails.state neq 'SAVED' && $reportdetails.editable eq 'true')}
-			&nbsp;|&nbsp;<a href="javascript:;" onClick="DeleteReport('{$reportdetails.reportid}');"><img src="{'delete.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" title="Delete..." border="0"></a>
-			{/if}
-			{if $reportdetails.cbreporttype neq 'external' && $reportdetails.export eq 'yes'}
-			&nbsp;|&nbsp;<a href="javascript:void(0);" onclick="gotourl('index.php?module=Reports&action=ReportsAjax&file=CreateCSV&record={$reportdetails.reportid}');"><img src="{'csv_text.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTCSV}" title="{$MOD.LBL_EXPORTCSV}" border="0"></a>
-			&nbsp;|&nbsp;<a href="javascript:void(0);" onclick="gotourl('index.php?module=Reports&action=CreateXL&record={$reportdetails.reportid}');"><img src="{'excel.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTXL_BUTTON}" title="{$MOD.LBL_EXPORTXL_BUTTON}" border="0"></a>
-			&nbsp;|&nbsp;<a href="javascript:void(0);" onclick="gotourl('index.php?module=Reports&action=CreatePDF&record={$reportdetails.reportid}');"><img src="{'pdf.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTPDF_BUTTON}" title="{$MOD.LBL_EXPORTPDF_BUTTON}" border="0"></a>
-			{/if}
-			</td>
-			</tr>
-			{/foreach}
-			</tbody>
-		</table>
+		<td align="left">
+		{foreach item=folder from=$REPT_FOLDERS}
+		<a href="javascript:;" onClick='MoveReport("{$folder.id}","{$folder.fname}");' class="drop_down">- {$folder.name}</a>
+		{/foreach}
 		</td>
 		</tr>
 	</table>
-	<br />
-	{foreachelse}
-	<div align="center" style="position:relative;width:50%;height:30px;border:1px dashed #CCCCCC;background-color:#FFFFCC;padding:10px;">
-	<a href="javascript:;" onclick="fnvshobj(this,'orgLay');">{$MOD.LBL_CLICK_HERE}</a>&nbsp;{$MOD.LBL_TO_ADD_NEW_GROUP}
-	</div>
-	{/foreach}
-	</form>
-	<!-- Customized Reports Table Ends Here  -->
-
-<div style="display: none;left:193px;top:106px;width:155px;" id="folderLay" onmouseout="fninvsh('folderLay')" onmouseover="fnvshNrm('folderLay')">
-<table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="100%">
-	<tr><td style="border-bottom: 1px solid rgb(204, 204, 204); padding: 5px;" align="left"><b>{$MOD.LBL_MOVE_TO} :</b></td></tr>
-	<tr>
-	<td align="left">
-	{foreach item=folder from=$REPT_FOLDERS}
-	<a href="javascript:;" onClick='MoveReport("{$folder.id}","{$folder.fname}");' class="drop_down">- {$folder.name}</a>
-	{/foreach}
-	</td>
-	</tr>
-</table>
 </div>
