@@ -42,7 +42,8 @@ $parenttab = getParentTab();
 $return_action = vtlib_purify($_REQUEST['return_action']);
 if ($cvmodule != '') {
 	$cv_tabid = getTabid($cvmodule);
-	$viewname = vtlib_purify($_REQUEST['viewName']);
+	$viewname = isset($_REQUEST['viewName']) ? vtlib_purify($_REQUEST['viewName']) : '';
+	$permit_all = isset($_REQUEST['permit_all']) ? vtlib_purify($_REQUEST['permit_all']) : 'false';
 	if ($default_charset != 'UTF-8') {
 		$viewname = htmlentities($viewname);
 	}
@@ -95,10 +96,10 @@ if ($cvmodule != '') {
 	$std_filter_list = array();
 	$stdfiltercolumn = isset($_REQUEST['stdDateFilterField']) ? $_REQUEST['stdDateFilterField'] : '';
 	$std_filter_list['columnname'] = $stdfiltercolumn;
-	$stdcriteria = $_REQUEST['stdDateFilter'];
+	$stdcriteria = isset($_REQUEST['stdDateFilter']) ? $_REQUEST['stdDateFilter'] : '';
 	$std_filter_list['stdfilter'] = $stdcriteria;
-	$startdate = $_REQUEST['startdate'];
-	$enddate = $_REQUEST['enddate'];
+	$startdate = isset($_REQUEST['startdate']) ? $_REQUEST['startdate'] : '';
+	$enddate = isset($_REQUEST['enddate']) ?  $_REQUEST['enddate'] : '';
 	if (empty($startdate) && empty($enddate)) {
 		unset($std_filter_list);
 	} else {
@@ -111,10 +112,10 @@ if ($cvmodule != '') {
 	//<<<<<<<standardfilters>>>>>>>>>
 
 	//<<<<<<<advancedfilter>>>>>>>>>
-	$advft_criteria = $_REQUEST['advft_criteria'];
+	$advft_criteria = isset($_REQUEST['advft_criteria']) ? $_REQUEST['advft_criteria'] : '';
 	$advft_criteria = json_decode($advft_criteria, true);
 
-	$advft_criteria_groups = $_REQUEST['advft_criteria_groups'];
+	$advft_criteria_groups = isset($_REQUEST['advft_criteria_groups']) ? $_REQUEST['advft_criteria_groups'] : '';
 	$advft_criteria_groups = json_decode($advft_criteria_groups, true);
 	//<<<<<<<advancedfilter>>>>>>>>
 
@@ -274,6 +275,10 @@ if ($cvmodule != '') {
 		}
 	} else {
 		if (is_admin($current_user) || $current_user->id) {
+			if ($permit_all === 'true') {
+				$viewname = 'All';
+				$status = 0;
+			}
 			$updatecvsql = 'UPDATE vtiger_customview SET viewname = ?, setmetrics = ?, status = ? WHERE cvid = ?';
 			$updatecvparams = array($viewname, $setmetrics, $status, $cvid);
 			$updatecvresult = $adb->pquery($updatecvsql, $updatecvparams);
