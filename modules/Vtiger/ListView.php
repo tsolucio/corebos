@@ -273,7 +273,7 @@ if (is_array($listview_header_search)) {
 // Search Panel Status
 $DEFAULT_SEARCH_PANEL_STATUS = GlobalVariable::getVariable('Application_ListView_SearchPanel_Open', 1);
 $smarty->assign('DEFAULT_SEARCH_PANEL_STATUS', ($DEFAULT_SEARCH_PANEL_STATUS ? 'display: block' : 'display: none'));
-$smarty->assign('EDIT_FILTER_ALL', GlobalVariable::getVariable('Application_Edit_Filter_ALL', 0));
+$smarty->assign('EDIT_FILTER_ALL', GlobalVariable::getVariable('Application_Filter_All_Edit', 0));
 
 if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
 	$smarty->display('ListViewEntries.tpl');

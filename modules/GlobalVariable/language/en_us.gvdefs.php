@@ -1630,7 +1630,7 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Percentage of screen height that popups will use. Default is 80%',
 ),
-'Application_Edit_Filter_ALL' => array(
+'Application_Filter_All_Edit' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
