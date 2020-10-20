@@ -21,6 +21,8 @@ require_once 'modules/Users/Users.php';
 require_once 'modules/Users/UserPrivilegesWriter.php';
 require 'vendor/autoload.php';
 
+define('ONELOGIN_CUSTOMPATH', 'include/integrations/saml/');
+
 class corebos_saml {
 
 	// Configuration Keys
