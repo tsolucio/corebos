@@ -43,6 +43,7 @@ $return_action = vtlib_purify($_REQUEST['return_action']);
 if ($cvmodule != '') {
 	$cv_tabid = getTabid($cvmodule);
 	$viewname = vtlib_purify($_REQUEST['viewName']);
+	$permit_all = vtlib_purify($_REQUEST['permit_all']);
 	if ($default_charset != 'UTF-8') {
 		$viewname = htmlentities($viewname);
 	}
@@ -274,6 +275,10 @@ if ($cvmodule != '') {
 		}
 	} else {
 		if (is_admin($current_user) || $current_user->id) {
+			if ($permit_all === 'true') {
+				$viewname = 'All';
+				$status = 0;
+			}
 			$updatecvsql = 'UPDATE vtiger_customview SET viewname = ?, setmetrics = ?, status = ? WHERE cvid = ?';
 			$updatecvparams = array($viewname, $setmetrics, $status, $cvid);
 			$updatecvresult = $adb->pquery($updatecvsql, $updatecvparams);
