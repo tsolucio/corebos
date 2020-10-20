@@ -13,6 +13,7 @@
                                     </svg>
                                     </button>
                                     <input type="hidden" id="LIST_COUNT" value="0">
+                                    <input type="hidden" name="uitype_no" id="uitype_no" class="slds-input"/>
                                 </div>
                                 <div class="slds-form-element">
                                     <table id="RelatedLists" style="margin: 10px"></table>
