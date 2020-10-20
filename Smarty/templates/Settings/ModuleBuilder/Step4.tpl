@@ -13,6 +13,7 @@
                                     </svg>
                                     </button>
                                     <input type="hidden" id="FILTER_COUNT" value="0">
+                                    <input type="hidden" name="cvnumber" id="cvnumber" class="slds-input"/>
                                 </div>
                                 <div class="slds-form-element">
                                     <table id="CustomView"></table>

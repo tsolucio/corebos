@@ -380,6 +380,17 @@ class ModuleBuilder {
 		return array_unique($module);
 	}
 
+	public function getUitypeNumber($modu) {
+		global $adb;
+		$table = 'vtiger_'.strtolower($modu);
+		$sqli = $adb->pquery("SELECT uitype FROM vtiger_modulebuilder_fields WHERE tablename = ? AND uitype = 10", array($table));
+		while ($row = $sqli->FetchRow()) {
+			$uitype = $row['uitype'];
+		}
+		$val = intval($uitype);
+		return $val;
+	}
+
 	public function getCountFilter($modName) {
 		global $adb;
 		$sql = $adb->pquery("SELECT modulebuilderid FROM vtiger_modulebuilder WHERE modulebuilder_name=?", array($modName));
