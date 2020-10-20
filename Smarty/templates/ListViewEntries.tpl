@@ -48,7 +48,11 @@
 												{if isset($ALL) && $ALL eq 'All'}
 												<td style="padding-left:5px;padding-right:5px" align="center"><a href="index.php?module={$MODULE}&action=CustomView&parenttab={$CATEGORY}">{$APP.LNK_CV_CREATEVIEW}</a>
 													<span class="small">|</span>
-													<span class="small" disabled>{$APP.LNK_CV_EDIT}</span>
+													{if isset($EDIT_FILTER_ALL) && $EDIT_FILTER_ALL eq '1'}
+														<a href="index.php?module={$MODULE}&action=CustomView&record={$VIEWID}&parenttab={$CATEGORY}&permitall=true">{$APP.LNK_CV_EDIT}</a>
+													{else}
+														<span class="small">{$APP.LNK_CV_EDIT}</span>
+													{/if}
 													<span class="small">|</span>
 													<span class="small" disabled>{$APP.LNK_CV_DELETE}</span>
 												</td>

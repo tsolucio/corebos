@@ -66,6 +66,7 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 
 	// user has enough permission to start process
 	$fieldcolumn = $meta->getFieldColumnMapping();
+	$capsfield = array('hdnDiscountAmount', 'hdnDiscountPercent', 'hdnGrandTotal', 'hdnSubTotal', 'hdnS_H_Amount', 'hdnTaxType', 'txtAdjustment');
 	$queryGenerator = new QueryGenerator($mainModule, $user);
 	$queryColumns = array();
 	$queryRelatedModules = array();
@@ -75,7 +76,9 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 		if ($colspec['expr_type']=='colref') {
 			if (strpos($colspec['base_expr'], '.')>0) {
 				list($m,$f) = explode('.', $colspec['base_expr']);
+				$mo = '';
 				if ($m=='UsersSec' || $m=='UsersCreator') {
+					$mo = $m;
 					$m = 'Users';
 				}
 				if (!isset($queryRelatedModules[$m])) {
@@ -83,12 +86,12 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 					$relmeta = $relhandler->getMeta();
 					$mn = $relmeta->getTabName();  // normalize module name
 					$queryRelatedModules[$mn] = $relmeta;
-					$queryColumns[] = $mn.'.'.strtolower($f);
+					$queryColumns[] = ($mo!='' ? $mo : $mn).'.'.(in_array($f, $capsfield) ? $f : strtolower($f));
 				} else {
-					$queryColumns[] = $m.'.'.strtolower($f);
+					$queryColumns[] = ($mo!='' ? $mo : $m).'.'.(in_array($f, $capsfield) ? $f : strtolower($f));
 				}
 			} else {
-				$queryColumns[] = strtolower($colspec['base_expr']);
+				$queryColumns[] = (in_array($colspec['base_expr'], $capsfield) ? $colspec['base_expr'] : strtolower($colspec['base_expr']));
 			}
 		} elseif (strtolower($colspec['base_expr'])=='distinct') {
 			$hasDistinct = true;
@@ -475,6 +478,7 @@ function __FQNExtendedQueryAddCondition($queryGenerator, $condition, $glue, $mai
 		case 'in':
 		case 'notin':
 			$op = ($op=='notin' ? 'ni' : 'i');
+			$val = preg_replace("/,([\s])+/", ",", $val);
 			$val = ltrim($val, '(');
 			$val = rtrim($val, ')');
 			$val = explode(',', $val);

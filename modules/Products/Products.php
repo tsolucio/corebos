@@ -112,10 +112,10 @@ class Products extends CRMEntity {
 	}
 
 	public function save_module($module) {
-		if (inventoryCanSaveProductLines($_REQUEST, $module)) {
+		if (isFrontendEditViewAction($_REQUEST, $module)) {
 			$this->insertPriceInformation('vtiger_productcurrencyrel', 'Products');
 		}
-		if (inventoryCanSaveProductLines($_REQUEST, $module) || $_REQUEST['action'] == 'MassEditSave') {
+		if (isFrontendEditViewAction($_REQUEST, $module) || $_REQUEST['action'] == 'MassEditSave') {
 			$this->insertTaxInformation('vtiger_producttaxrel', 'Products');
 		}
 

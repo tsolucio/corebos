@@ -6,6 +6,7 @@
         "smalot/pdfparser": "*",
         "knplabs/gaufrette": "0.9.0",
         "gaufrette/azure-blob-storage-adapter": "^0.6.0",
-        "gaufrette/ftp-adapter": "^0.4.0"
+        "gaufrette/ftp-adapter": "^0.4.0",
+        "onelogin/php-saml": "^3.4"
     }
 }

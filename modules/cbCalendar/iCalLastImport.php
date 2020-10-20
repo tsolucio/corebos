@@ -62,13 +62,9 @@ class iCalLastImport {
 	public function undo($moduleName, $userId) {
 		$adb = PearDatabase::getInstance();
 		if (Vtiger_Utils::CheckTable($this->tableName)) {
-			$mod = CRMEntity::getInstance($moduleName);
-			$adb->pquery(
-				'UPDATE vtiger_crmobject set deleted=1 WHERE crmid IN (SELECT crmid FROM '.$this->tableName .' WHERE userid=? AND entitytype=?)',
-				array($userId, $moduleName)
-			);
 			$result = $adb->pquery(
-				'UPDATE '.$mod::$crmentityTable.' SET deleted=1 WHERE crmid IN (SELECT crmid FROM '.$this->tableName .' WHERE userid=? AND entitytype=?)',
+				'UPDATE vtiger_crmentity SET deleted=1 WHERE crmid IN
+								(SELECT crmid FROM '.$this->tableName .' WHERE userid = ? AND entitytype = ?)',
 				array($userId, $moduleName)
 			);
 			return $adb->getAffectedRowCount($result);

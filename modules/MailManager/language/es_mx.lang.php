@@ -76,6 +76,8 @@ $mod_strings = array (
 	'JSLBL_NO_EMAILS_SELECTED' => 'No se han seleccionado correos.',
 	'JSLBL_ENTER_SOME_VALUE' => 'Introduce una cadena para buscar',
 	'JSLBL_DRAFT_MAIL_SAVED'=>'Se ha guardado el correo en Borradores',
+	'JSLBL_ON'=>'El',
+	'JSLBL_WROTE'=>'escribió',
 
 		// General translations
 	'LBL_Folders'         => 'Carpetas',

@@ -110,5 +110,17 @@ $mod_strings = array(
 	'Denormalize_Desc' => 'Unificar Módulo con muchos registros',
 	'SelectDenormalize' => 'Selecciona Módulo a unificar',
 	'denormalize response' => 'Resultado de la Unificación',
+	'SAML Activation' => 'Activación SAML',
+	'SAML Activation_Desc' => 'Inicia sesión a todos los usuarios desde un proveedor de identidad central',
+	'SAML SP' => 'Proveedor de Servicio',
+	'SAML IP' => 'Proveedor de Identidad',
+	'SAML EID' => 'ID Entidad',
+	'SAML NID' => 'Formato ID Nombre',
+	'SAML ACS' => 'Assertion Consumer Service',
+	'SAML SSO' => 'Servicio de Acceso Unico',
+	'SAML SLO' => 'Servicio de Desconexión Unico',
+	'SAML x509' => 'Certificado x509',
+	'SAML WS' => 'API Web Service',
+	'SAML RWURL' => 'URL de respuesta',
 );
 ?>

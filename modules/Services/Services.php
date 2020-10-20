@@ -109,10 +109,10 @@ class Services extends CRMEntity {
 			$this->insertIntoAttachment($this->id, $module);
 		}
 		//Inserting into service_taxrel table
-		if (inventoryCanSaveProductLines($_REQUEST, $module)) {
+		if (isFrontendEditViewAction($_REQUEST, $module)) {
 			$this->insertPriceInformation('vtiger_productcurrencyrel', 'Services');
 		}
-		if (inventoryCanSaveProductLines($_REQUEST, $module) || $_REQUEST['action'] == 'MassEditSave') {
+		if (isFrontendEditViewAction($_REQUEST, $module) || $_REQUEST['action'] == 'MassEditSave') {
 			$this->insertTaxInformation('vtiger_producttaxrel', 'Services');
 		}
 		// Update unit price value in vtiger_productcurrencyrel
