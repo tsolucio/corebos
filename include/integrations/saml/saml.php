@@ -25,6 +25,7 @@ class corebos_saml {
 
 	// Configuration Keys
 	const KEY_ISACTIVE = 'SAML_ISACTIVE';
+	const KEY_ISACTIVEWS = 'SAML_ISACTIVEWS';
 	const KEY_SPEID = 'SAML_SPEID';
 	const KEY_SPACS = 'SAML_SPACS';
 	const KEY_SPSLO = 'SAML_SPSLO';
@@ -33,6 +34,7 @@ class corebos_saml {
 	const KEY_IPSSO = 'SAML_IPSSO';
 	const KEY_IPSLO = 'SAML_IPSLO';
 	const KEY_IP509 = 'SAML_IP509';
+	const KEY_RWURL = 'SAML_RWURL';
 
 	// Debug
 	const DEBUG = true;
@@ -48,54 +50,105 @@ class corebos_saml {
 	public function __construct() {
 		global $current_language, $default_language;
 		$current_language = $default_language;
-		if ($this->isActive()) {
+		if ($this->isActiveEither()) {
 			$this->samlclient = new \OneLogin\Saml2\Auth($this->getSSOSettings());
 		}
+	}
+
+	public function findUser($attributes) {
+		global $adb;
+		$email = $clientid = '';
+		foreach ($attributes as $attributeName => $attributeValues) {
+			if ($email=='' && stripos($attributeName, 'email')!==false) {
+				foreach ($attributeValues as $attributeValue) {
+					if (filter_var($attributeValue, FILTER_VALIDATE_EMAIL) && $email=='') {
+						$email = $attributeValue;
+					}
+					break;
+				}
+			}
+			if (stripos($attributeName, 'clientid')!==false || stripos($attributeName, 'ldap')!==false) {
+				foreach ($attributeValues as $attributeValue) {
+					$clientid = $attributeValue;
+					break;
+				}
+			}
+		}
+		$userid = 0;
+		$cnacc=$adb->getColumnNames('vtiger_users');
+		if ($clientid!='') {
+			if (in_array('clientid', $cnacc)) {
+				$userid = getSingleFieldValue('vtiger_users', 'id', 'clientid', $clientid);
+			}
+			if (in_array('ldap', $cnacc)) {
+				$userid = getSingleFieldValue('vtiger_users', 'id', 'ldap', $clientid);
+			}
+			if (in_array('lmldaplogin', $cnacc)) {
+				$userid = getSingleFieldValue('vtiger_users', 'id', 'lmldaplogin', $clientid);
+			}
+		}
+		if ($email!='' && $userid==0) {
+			$userid = getSingleFieldValue('vtiger_users', 'id', 'email1', $email);
+		}
+		return $userid;
+	}
+
+	public function findUserPortal($attributes) {
+		global $adb;
+		$email = $clientid = '';
+		foreach ($attributes as $attributeName => $attributeValues) {
+			if ($email=='' && stripos($attributeName, 'email')!==false) {
+				foreach ($attributeValues as $attributeValue) {
+					if (filter_var($attributeValue, FILTER_VALIDATE_EMAIL) && $email=='') {
+						$email = $attributeValue;
+					}
+					break;
+				}
+			}
+			if (stripos($attributeName, 'clientid')!==false || stripos($attributeName, 'ldap')!==false) {
+				foreach ($attributeValues as $attributeValue) {
+					$clientid = $attributeValue;
+					break;
+				}
+			}
+		}
+		$userid = 0;
+		if ($clientid!='') {
+			$cnacc=$adb->getColumnNames('vtiger_contactdetails');
+			if (in_array('username', $cnacc)) {
+				$rs = $adb->pquery(
+					'select contactid from vtiger_contactdetails inner join vtiger_crmentity on crmid=contactid where deleted=0 and username=?',
+					array($clientid)
+				);
+				if ($rs && $adb->num_rows($rs)>0) {
+					$userid = $adb->query_result($rs, 0, 'contactid');
+				}
+			}
+		}
+		if ($email!='' && $userid==0) {
+			$rs = $adb->pquery(
+				'select contactid from vtiger_contactdetails inner join vtiger_crmentity on crmid=contactid where deleted=0 and email=?',
+				array($email)
+			);
+			if ($rs && $adb->num_rows($rs)>0) {
+				$userid = $adb->query_result($rs, 0, 'contactid');
+			}
+		}
+		if ($userid==0) {
+			$userid = $this->findUser($attributes);
+		}
+		return $userid;
 	}
 
 	public function authenticate() {
 		global $adb, $log, $application_unique_key;
 		if ($this->isActive()) {
-			$attributes = $_SESSION['samlUserdata'];
-			$email = $clientid = '';
-			foreach ($attributes as $attributeName => $attributeValues) {
-				if ($email=='' && stripos($attributeName, 'email')!==false) {
-					foreach ($attributeValues as $attributeValue) {
-						if (filter_var($attributeValue, FILTER_VALIDATE_EMAIL) && $email=='') {
-							$email = $attributeValue;
-						}
-						break;
-					}
-				}
-				if (stripos($attributeName, 'clientid')!==false || stripos($attributeName, 'ldap')!==false) {
-					foreach ($attributeValues as $attributeValue) {
-						$clientid = $attributeValue;
-						break;
-					}
-				}
-			}
-			$userid = 0;
-			$cnacc=$adb->getColumnNames('vtiger_users');
-			if ($clientid!='') {
-				if (in_array('clientid', $cnacc)) {
-					$userid = getSingleFieldValue('vtiger_users', 'id', 'clientid', $clientid);
-				}
-				if (in_array('ldap', $cnacc)) {
-					$userid = getSingleFieldValue('vtiger_users', 'id', 'ldap', $clientid);
-				}
-				if (in_array('lmldaplogin', $cnacc)) {
-					$userid = getSingleFieldValue('vtiger_users', 'id', 'lmldaplogin', $clientid);
-				}
-			}
-			if ($email!='' && $userid==0) {
-				$userid = getSingleFieldValue('vtiger_users', 'id', 'email1', $email);
-			}
+			$userid = $this->findUser($_SESSION['samlUserdata']);
 			if ($userid) {
 				$usrrs = $adb->pquery('select status,deleted,failed_login_attempts from vtiger_users where id=?', array($userid));
 				if ($adb->query_result($usrrs, 0, 'status')!='Inactive' && $adb->query_result($usrrs, 0, 'deleted')=='0') {
 					$focus = new Users();
 					$focus->retrieve_entity_info($userid, 'Users');
-					$focus->loadPreferencesFromDB($focus->column_fields['user_preferences']);
 					$focus->authenticated = true;
 					coreBOS_Session::destroy();
 					//Inserting entries for audit trail during login
@@ -167,6 +220,7 @@ class corebos_saml {
 					} else {
 						header('Location: index.php');
 					}
+					die();
 				}
 				$failed_login_attempts = $adb->query_result($usrrs, 0, 'failed_login_attempts');
 				$maxFailedLoginAttempts = GlobalVariable::getVariable('Application_MaxFailedLoginAttempts', 5);
@@ -188,8 +242,8 @@ class corebos_saml {
 		header('Location: index.php?module=Users&action=Login&nativelogin=1');
 	}
 
-	public function acs() {
-		if ($this->isActive()) {
+	public function acs($sessionManager = null, $API_VERSION = '0.22', $portal = false) {
+		if ($this->isActiveEither()) {
 			if (isset($_SESSION) && isset($_SESSION['AuthNRequestID'])) {
 				$requestID = $_SESSION['AuthNRequestID'];
 			} else {
@@ -201,12 +255,18 @@ class corebos_saml {
 			$errors = $this->samlclient->getErrors();
 
 			if (!empty($errors)) {
-				echo '<p>',implode(', ', $errors),'</p>';
+				echo json_encode(array(
+					'success' => false,
+					'error' => implode(', ', $errors),
+				));
+				exit();
 			}
 
 			if (!$this->samlclient->isAuthenticated()) {
-				echo "<p>Not authenticated</p>";
-				echo "AAA: ".$this->samlclient->getNameId();
+				echo json_encode(array(
+					'success' => false,
+					'error' => 'Not authenticated',
+				));
 				exit();
 			}
 
@@ -220,12 +280,16 @@ class corebos_saml {
 			if (isset($_POST['RelayState'])) {
 				$_SESSION['lastpage'] = $_POST['RelayState'];
 			}
-			$this->authenticate();
+			if ($this->isActive()) {
+				$this->authenticate();
+			} else {
+				$this->authenticateWS($sessionManager, $API_VERSION, $portal);
+			}
 		}
 	}
 
 	public function metadata() {
-		if ($this->isActive()) {
+		if ($this->isActiveEither()) {
 			try {
 				$settings = new \OneLogin\Saml2\Settings($this->getSSOSettings(), true);
 				$metadata = $settings->getSPMetadata();
@@ -246,7 +310,7 @@ class corebos_saml {
 	}
 
 	public function login() {
-		if ($this->isActive()) {
+		if ($this->isActiveEither()) {
 			$this->samlclient->login();
 		}
 	}
@@ -262,8 +326,97 @@ class corebos_saml {
 		}
 	}
 
-	public function saveSettings($isactive, $speid, $spacs, $spslo, $spnid, $ipeid, $ipsso, $ipslo, $ip509) {
+	public function logoutWS($sessionId, $userid) {
+		global $app_strings, $current_user;
+		if ($this->isActiveWS()) {
+			require_once 'include/Webservices/Logout.php';
+			if (!empty($userid)) {
+				$seed_user = new Users();
+				$current_user = $seed_user->retrieveCurrentUserInfoFromFile($userid);
+				if (!empty($current_user->language)) {
+					$app_strings = return_application_language($current_user->language);
+				}
+			} else {
+				$current_user = Users::getActiveAdminUser();
+			}
+			vtws_logout($sessionId, $current_user);
+			$nameId = isset($_SESSION['samlNameId']) ? $_SESSION['samlNameId'] : null;
+			$nameIdFormat = isset($_SESSION['samlNameIdFormat']) ? $_SESSION['samlNameIdFormat'] : null;
+			$nameIdNameQualifier = isset($_SESSION['samlNameIdNameQualifier']) ? $_SESSION['samlNameIdNameQualifier'] : null;
+			$nameIdSPNameQualifier = isset($_SESSION['samlNameIdSPNameQualifier']) ? $_SESSION['samlNameIdSPNameQualifier'] : null;
+			$sessionIndex = isset($_SESSION['samlSessionIndex']) ? $_SESSION['samlSessionIndex'] : null;
+			$this->samlclient->logout(null, array(), $nameId, $sessionIndex, false, $nameIdFormat, $nameIdNameQualifier, $nameIdSPNameQualifier);
+		}
+	}
+
+	public function authenticateWS($sessionManager, $API_VERSION, $portal = false) {
+		global $adb;
+		if ($this->isActiveWS()) {
+			$settings = $this->getSettings();
+			if ($portal!='LoginPortal') {
+				$userid = $this->findUser($sessionManager->get('samlUserdata'));
+			} else {
+				$userid = $this->findUserPortal($sessionManager->get('samlUserdata'));
+			}
+			if ($userid) {
+				$ctoid = $tpllang = '';
+				$sql = "select template_language, portalloginuser
+					from vtiger_portalinfo
+					inner join vtiger_customerdetails on vtiger_portalinfo.id=vtiger_customerdetails.customerid
+					inner join vtiger_contactdetails on vtiger_portalinfo.id=vtiger_contactdetails.contactid
+					inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_portalinfo.id
+					where vtiger_crmentity.deleted=0 and contactid=? and isactive=1 and vtiger_customerdetails.portal=1
+						and vtiger_customerdetails.support_start_date <= ? and vtiger_customerdetails.support_end_date >= ?";
+				$current_date = date('Y-m-d');
+				$ctors = $adb->pquery($sql, array($userid, $current_date, $current_date));
+				if ($ctors && $adb->num_rows($ctors)==1) {
+					$ctoid = $userid;
+					$userid = $adb->query_result($ctors, 0, 'portalloginuser');
+					$tpllang = $adb->query_result($ctors, 0, 'template_language');
+				}
+				$usrrs = $adb->pquery('select status,deleted from vtiger_users where id=?', array($userid));
+				if ($adb->query_result($usrrs, 0, 'status')!='Inactive' && $adb->query_result($usrrs, 0, 'deleted')=='0') {
+					$userDetails = new Users();
+					$userDetails->retrieve_entity_info($userid, 'Users');
+					$userDetails->authenticated = true;
+					$sessionManager->destroy();
+					$sessionManager->startSession();
+					$sessionManager->set('authenticatedUserId', $userid);
+					cbEventHandler::do_action('corebos.login', array($userDetails, $sessionManager, 'webservice'));
+					$webserviceObject = VtigerWebserviceObject::fromName($adb, 'Users');
+					$userId = vtws_getId($webserviceObject->getEntityId(), $userid);
+					$resp = json_encode(array(
+						'success' => true,
+						'result' => array(
+							'sessionName' => $sessionManager->getSessionId(),
+							'userId' => $userId,
+							'contactid' => vtws_getEntityId(getSalesEntityType($ctoid)).'x'.$ctoid,
+							'language' => $tpllang,
+						)
+					));
+					header('Location: '.$settings['WSRURL'].'&response='.$resp);
+				} else {
+					$resp = json_encode(array(
+						'success' => false,
+						'error' => 'Invalid username or password',
+					));
+					cbEventHandler::do_action('corebos.audit.login.attempt', array(0, $userid, 'Login Attempt', 0, date('Y-m-d H:i:s')));
+				}
+			} else {
+				$resp = json_encode(array(
+					'success' => false,
+					'error' => 'Invalid username or password',
+				));
+			}
+			header('Location: '.$settings['WSRURL'].(strpos($settings['WSRURL'], '?')!==false ? '&' : '?').'response='.$resp);
+			die();
+		}
+		header('Location: index.php?module=Users&action=Login&nativelogin=1');
+	}
+
+	public function saveSettings($isactive, $speid, $spacs, $spslo, $spnid, $ipeid, $ipsso, $ipslo, $ip509, $isactivews, $rwurl) {
 		coreBOS_Settings::setSetting(self::KEY_ISACTIVE, $isactive);
+		coreBOS_Settings::setSetting(self::KEY_ISACTIVEWS, $isactivews);
 		coreBOS_Settings::setSetting(self::KEY_SPEID, $speid);
 		coreBOS_Settings::setSetting(self::KEY_SPACS, $spacs);
 		coreBOS_Settings::setSetting(self::KEY_SPSLO, $spslo);
@@ -272,11 +425,13 @@ class corebos_saml {
 		coreBOS_Settings::setSetting(self::KEY_IPSSO, $ipsso);
 		coreBOS_Settings::setSetting(self::KEY_IPSLO, $ipslo);
 		coreBOS_Settings::setSetting(self::KEY_IP509, $ip509);
+		coreBOS_Settings::setSetting(self::KEY_RWURL, $rwurl);
 	}
 
 	public function getSettings() {
 		return array(
-			'isActive' => coreBOS_Settings::getSetting(self::KEY_ISACTIVE, ''),
+			'isActive' => coreBOS_Settings::getSetting(self::KEY_ISACTIVE, '0'),
+			'isActiveWS' => coreBOS_Settings::getSetting(self::KEY_ISACTIVEWS, '0'),
 			'SPentityId' => coreBOS_Settings::getSetting(self::KEY_SPEID, ''),
 			'SPACS' => coreBOS_Settings::getSetting(self::KEY_SPACS, ''),
 			'SPSLO' => coreBOS_Settings::getSetting(self::KEY_SPSLO, ''),
@@ -285,11 +440,16 @@ class corebos_saml {
 			'IPSSO' => coreBOS_Settings::getSetting(self::KEY_IPSSO, ''),
 			'IPSLO' => coreBOS_Settings::getSetting(self::KEY_IPSLO, ''),
 			'IPx509' => coreBOS_Settings::getSetting(self::KEY_IP509, ''),
+			'WSRURL' => coreBOS_Settings::getSetting(self::KEY_RWURL, ''),
 		);
 	}
 
 	public function getSSOSettings() {
-		$acscsrf = urlencode(base64_encode('acs_'.csrf_get_tokens()));
+		if ($this->isActive()) {
+			$acscsrf = urlencode(base64_encode('acs_'.csrf_get_tokens()));
+		} else {
+			$acscsrf = 'acs';
+		}
 		return array(
 			'sp' => array (
 				'entityId' => coreBOS_Settings::getSetting(self::KEY_SPEID, '').'?mode=metadata',
@@ -317,6 +477,15 @@ class corebos_saml {
 	public function isActive() {
 		$isactive = coreBOS_Settings::getSetting(self::KEY_ISACTIVE, '0');
 		return ($isactive=='1');
+	}
+
+	public function isActiveWS() {
+		$isactive = coreBOS_Settings::getSetting(self::KEY_ISACTIVEWS, '0');
+		return ($isactive=='1');
+	}
+
+	public function isActiveEither() {
+		return ($this->isActive() || $this->isActiveWS());
 	}
 }
 ?>

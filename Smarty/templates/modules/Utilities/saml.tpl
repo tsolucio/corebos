@@ -110,7 +110,41 @@
 				<input type="text" id="ip509" name="ip509" class="slds-input" value="{$ip509}" />
 			</div>
 		</div>
-		<div class="slds-m-top--large">
+		<div class="slds-page-header slds-m-top_large">
+			<div class="slds-page-header__row">
+				<div class="slds-page-header__col-title">
+					<div class="slds-media">
+						<div class="slds-media__body">
+							<div class="slds-page-header__name">
+								<div class="slds-page-header__name-title">
+									<h1>
+									<span class="slds-page-header__title slds-truncate" title="{'SAML WS'|@getTranslatedString:'Utilities'}">{'SAML WS'|@getTranslatedString:'Utilities'}</span>
+									</h1>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="slds-form-element slds-m-top_small">
+			<label class="slds-checkbox_toggle slds-grid">
+			<span class="slds-form-element__label slds-m-bottom_none">{'_active'|@getTranslatedString:$MODULE}</span>
+			<input type="checkbox" name="saml_activews" aria-describedby="toggle-desc" {if $isActiveWS}checked{/if} />
+			<span id="toggle-desc" class="slds-checkbox_faux_container" aria-live="assertive">
+				<span class="slds-checkbox_faux"></span>
+				<span class="slds-checkbox_on">{'LBL_ENABLED'|@getTranslatedString:'Settings'}</span>
+				<span class="slds-checkbox_off">{'LBL_DISABLED'|@getTranslatedString:'Settings'}</span>
+			</span>
+			</label>
+		</div>
+		<div class="slds-form-element slds-m-top_small">
+			<label class="slds-form-element__label" for="rwurl">{'SAML RWURL'|@getTranslatedString:$MODULE}</label>
+			<div class="slds-form-element__control">
+				<input type="text" id="rwurl" name="rwurl" class="slds-input" value="{$rwurl}" />
+			</div>
+		</div>
+		<div class="slds-m-top_large">
 			<button type="submit" class="slds-button slds-button--brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
 		</div>
 		</form>
