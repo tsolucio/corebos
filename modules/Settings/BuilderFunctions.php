@@ -90,6 +90,10 @@ switch ($methodName) {
 		$modulename = vtlib_purify($_REQUEST['modulename']);
 		$ret = $mb->getCountFilter($modulename);
 		break;
+	case 'getUitypeNumber':
+		$modulename = vtlib_purify($_REQUEST['modulename']);
+		$ret = $mb->getUitypeNumber($modulename);
+		break;
 	case 'getModules':
 		$ret = $mb->getModules();
 		break;
