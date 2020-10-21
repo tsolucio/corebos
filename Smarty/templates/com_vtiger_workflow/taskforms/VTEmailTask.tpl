@@ -184,9 +184,15 @@ var __attinfo = {$task->dzattinfo|json_encode};
 				<button onclick="jQuery('#file-uploader').show();attachmentManager.getDocuments();return false;" class="slds-button slds-button_success">{'LBL_SELECT_DOCUMENTS'|@getTranslatedString:'MailManager'}</button>
 			</div>
 		</div>
-		<div class="slds-grid slds-p-top_x-small">
-			<div class="slds-col">
-				<button onclick="jQuery('#file-uploader').toggle();return false;" class="slds-button slds-button_success">{'LBL_Attachments'|@getTranslatedString:'MailManager'}</button>
+		-->
+		<div class="slds-grid_vertical-align-center slds-grid_vertical slds-p-top_x-small slds-grid">
+			<div class="slds-grid slds-size_1-of-1">
+				<div class="slds-col slds-p-vertical_x-small slds-size_1-of-2">
+					<button onclick="jQuery('#file-uploader').show();attachmentManager.getDocuments();return false;" class="slds-button slds-button_success">{'LBL_SELECT_DOCUMENTS'|@getTranslatedString:'MailManager'}</button>
+				</div>
+				<div class="slds-col slds-p-vertical_x-small slds-size_1-of-2">
+					<button onclick="jQuery('#file-uploader').toggle();return false;" class="slds-button slds-button_success">{'LBL_Attachments'|@getTranslatedString:'MailManager'}</button>
+				</div>
 			</div>
 			{if $entityName eq 'cbCalendar'}
 				<div class="slds-col">
@@ -350,18 +356,18 @@ var __attinfo = {$task->dzattinfo|json_encode};
 		<div class="slds-col slds-size_1-of-1 slds-p-around_x-small">
 			<div class="slds-form-element">
 				<span class="slds-form-element__label slds-size--1-of-3">
-					<input type='hidden' class='small' name="cbMsgTemplate_type" id="cbMsgTemplate_type" value="MsgTemplate">
-					<input id="cbMsgTemplate" name="cbMsgTemplate" type="hidden" value="">
+					<input type='hidden' class='small' name="cbmsgtemplate_type" id="cbmsgtemplate_type" value="MsgTemplate">
+					<input id="cbmsgtemplate" name="cbmsgtemplate" type="hidden" value="">
 					<input
 						class="slds-input"
-						id="cbMsgTemplate_display"
-						name="cbMsgTemplate_display"
+						id="cbmsgtemplate_display"
+						name="cbmsgtemplate_display"
 						readonly
 						type="text"
 						style="border:1px solid #bababa; width: 90%;"
-						onclick='return vtlib_open_popup_window("", "cbMsgTemplate", "MsgTemplate", "");'
+						onclick='document.getElementById("calltype").value = "function::vtlib_setvalue_from_popup"; return vtlib_open_popup_window("new_task_form", "cbmsgtemplate", "MsgTemplate", "");'
 						value="">
-					<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_CLEAR'|getTranslatedString}" onclick="document.getElementById('cbMsgTemplate').value=''; document.getElementById('cbMsgTemplate_display').value=''; return false;">
+					<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_CLEAR'|getTranslatedString}" onclick="document.getElementById('cbmsgtemplate').value=''; document.getElementById('cbmsgtemplate_display').value=''; return false;">
 					<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
 					</svg>
@@ -392,7 +398,7 @@ var __attinfo = {$task->dzattinfo|json_encode};
 		<div class="slds-col slds-size_1-of-1 slds-p-around_x-small">
 			<div class="slds-form-element">
 				<span class="slds-form-element__label slds-size--1-of-3">
-					<input type='hidden' class='small' name="sgMsgTemplate_type" id=sgMsgTemplate_type">
+					<input type='hidden' class='small' name="sgmsgtemplate" id="sgmsgtemplate">
 					<div class="slds-select_container" style="width: 90%;">
 						<select class="slds-select slds-page-header__meta-text" id="sgMsgTemplate">
 							<option value="">{'LBL_SELECT_OPTION_DOTDOTDOT'|@getTranslatedString:$MODULE_NAME}</option>

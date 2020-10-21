@@ -27,7 +27,7 @@ class VTEmailTask extends VTTask {
 	private $entityinfo = '';
 
 	public function getFieldNames() {
-		return array('fromname', 'fromemail', 'replyto', 'subject', 'content', 'recepient', 'emailcc', 'emailbcc', 'attfieldnames', 'attachmentids', 'attach_icalendar');
+		return array('fromname', 'fromemail', 'replyto', 'subject', 'content', 'recepient', 'emailcc', 'emailbcc', 'attfieldnames', 'attachmentids', 'attach_icalendar', 'cbmsgtemplate', 'sgmsgtemplate');
 	}
 	public function after_retrieve() {
 		global $adb, $current_user;
