@@ -1283,6 +1283,7 @@ class CustomView extends CRMEntity {
 		$log->debug("> isPermittedCustomView $record_id,$action,$module");
 
 		$permission = 'yes';
+		$permit_all = isset($_REQUEST['permitall']) ? vtlib_purify($_REQUEST['permitall']) : 'false';
 
 		if ($record_id != '') {
 			$status_userid_info = $this->getStatusAndUserid($record_id);
@@ -1293,7 +1294,7 @@ class CustomView extends CRMEntity {
 
 				if ($status == CV_STATUS_DEFAULT) {
 					$log->debug('status=0');
-					if ($action == 'ListView' || $action == $module . 'Ajax' || $action == 'index' || $action == 'DetailView' || $action == 'Export') {
+					if ($action == 'ListView' || $action == $module . 'Ajax' || $action == 'index' || $action == 'DetailView' || $action == 'Export' || ($permit_all === 'true')) {
 						$permission = 'yes';
 					} else {
 						$permission = 'no';

@@ -106,13 +106,17 @@ class genDecisionTable extends generatecbMap {
 			}
 			$r->addChild('output', $rule['output']);
 		}
+		$dom = dom_import_simplexml($xml)->ownerDocument;
+		$dom->preserveWhiteSpace = false;
+		$dom->formatOutput = true;
+		$dom->loadXML($xml->asXML());
 		return str_replace(
 			array(
 				'<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL.'<deletethis>',
 				'</deletethis>',
 			),
 			'',
-			$xml->asXML()
+			$dom->saveXML()
 		);
 	}
 }

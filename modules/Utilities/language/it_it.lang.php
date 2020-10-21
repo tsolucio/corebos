@@ -98,5 +98,17 @@ $mod_strings = array (
 	'sel_fields_es' => 'Seleziona Campi per il Mapping di Elasticsearch',
 	'Analyzed' => 'Analizzati',
 	'Missing_GlobalVar' => 'Global Variables ElasticSearch IP missing',
+	'SAML Activation' => 'SAML Activation',
+	'SAML Activation_Desc' => 'Login all users from a central Identity Provider',
+	'SAML SP' => 'Service Provider',
+	'SAML IP' => 'Identity Provider',
+	'SAML EID' => 'Entity ID',
+	'SAML NID' => 'Name ID Format',
+	'SAML ACS' => 'Assertion Consumer Service',
+	'SAML SSO' => 'Single Sign On Service',
+	'SAML SLO' => 'Single Logout Service',
+	'SAML x509' => 'x509 Certificate',
+	'SAML WS' => 'Web Service API',
+	'SAML RWURL' => 'Relay Response URL',
 );
 ?>

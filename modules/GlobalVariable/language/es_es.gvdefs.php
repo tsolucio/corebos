@@ -1224,6 +1224,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Envía correos electrónicos individuales por separado a cada destinatario en lugar de un correo electrónico a todos. Este es el comportamiento predeterminado de la aplicación.',
 ),
+'EMail_Signature_BeforeQuote' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Agrega la firma del usuario antes del texto citado en lugar de al final de todo el correo electrónico.',
+),
 'Workflow_Send_Email_ToCCBCC' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Email CSV',

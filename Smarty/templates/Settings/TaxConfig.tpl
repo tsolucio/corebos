@@ -175,7 +175,7 @@
 		<input type="hidden" name="sh_add_tax_type" value="">
 		<!-- Table to display the S&H Tax Add and Edit Buttons - Starts -->
 		<div class="slds-grid slds-gutters">
-			<div class="slds-col slds-size_2-of-12">
+			<div class="slds-col slds-size_2-of-12 slds-p-top_large">
 				<p class="big" colspan="3"><strong>{$MOD.LBL_SHIPPING_HANDLING_TAX_SETTINGS}</strong></p>
 			</div>
 			<div class="slds-col slds-size_10-of-12 slds-p-vertical_medium slds-p-right_xx-large"  width="80%">

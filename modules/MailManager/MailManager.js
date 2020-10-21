@@ -792,9 +792,12 @@ if (typeof(MailManager) == 'undefined') {
 					}).done(function (response) {
 						emltpl = JSON.parse(response);
 						document.getElementById('_mail_replyfrm_subject_').value = emltpl.subject;
-						document.getElementById('_mail_replyfrm_body_').value = emltpl.body;
+						document.getElementById('_mail_replyfrm_body_').value = emltpl.body + emailSignature,
 						MailManager.mail_reply_rteinit(emltpl.body);
 					});
+				} else {
+					document.getElementById('_mail_replyfrm_body_').value = '<p></p>' + emailSignature,
+					MailManager.mail_reply_rteinit(emltpl.body);
 				}
 			});
 		},
@@ -909,7 +912,15 @@ if (typeof(MailManager) == 'undefined') {
 			jQuery('#_mail_replyfrm_bcc_').val('');
 			var replySubject = (subject.toUpperCase().indexOf('RE:') == 0) ? subject : 'Re: ' + subject;
 			jQuery('#_mail_replyfrm_subject_').val(replySubject);
-			var replyBody = MailManager.sprintf('<p></p><p style="margin:0;padding:0;">%s, %s, %s:</p><blockquote style="border:0;margin:0;border-left:1px solid gray;padding:0 0 0 2px;">%s</blockquote><br />', 'On ' + date, from, 'wrote', body);
+			var replyBody = MailManager.sprintf(
+				(emailSignatureBeforeQuote ? '<p></p>'+emailSignature : '<p></p>') +
+				'<p style="margin:0;padding:0;">%s, %s, %s:</p><blockquote style="border:0;margin:0;border-left:1px solid gray;padding:0 0 0 2px;">%s</blockquote><br/>'
+				+ (emailSignatureBeforeQuote ? '' : emailSignature),
+				MailManager.i18n('JSLBL_ON')+' '+date,
+				from,
+				MailManager.i18n('JSLBL_WROTE'),
+				body
+			);
 			jQuery('#emailid').val('');
 			jQuery('#attachmentCount').val('');
 			MailManager.mail_reply_rteinit(replyBody);
@@ -996,7 +1007,14 @@ if (typeof(MailManager) == 'undefined') {
 			replyfrm.cc.value = '';
 			replyfrm.bcc.value = '';
 			replyfrm.subject.value = (subject.toUpperCase().indexOf('FWD:') == 0) ? subject : 'Fwd: ' + subject;
-			replyfrm.body.value = MailManager.sprintf('<p></p><p>%s<br/>%s</p>%s', MailManager.i18n('JSLBL_FORWARD_MESSAGE_TEXT'), fwdMsgMetaInfo, body);
+			replyfrm.body.value = MailManager.sprintf(
+				(emailSignatureBeforeQuote ? '<p></p>'+emailSignature : '<p></p>') +
+				'<p>%s<br/>%s</p>%s' +
+				(emailSignatureBeforeQuote ? '<br/>' : emailSignature),
+				MailManager.i18n('JSLBL_FORWARD_MESSAGE_TEXT'),
+				fwdMsgMetaInfo,
+				body
+			);
 
 			replyfrm.emailid.value = '';
 			replyfrm.attachmentCount.value = '';

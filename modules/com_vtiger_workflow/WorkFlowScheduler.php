@@ -183,6 +183,7 @@ class WorkFlowScheduler {
 					$moduleName = $workflow->moduleName;
 					$wsEntityId = vtws_getWebserviceEntityId($moduleName, $recordId);
 					$entityData = $entityCache->forId($wsEntityId);
+					$entityData->WorkflowContext = array();
 					$data = $entityData->getData();
 					foreach ($tasks as $task) {
 						if ($task->active) {
@@ -310,6 +311,10 @@ class WorkFlowScheduler {
 					}
 					$value = '::#'.$substExpressionsIndex;
 					$substExpressionsIndex++;
+					preg_match('/(\w+) : \((\w+)\) (\w+)/', $condition['fieldname'], $matches);
+					if (count($matches) != 0) {
+						list($full, $referenceField, $referenceModule, $fieldname) = $matches;
+					}
 				} else {
 					$value = html_entity_decode($value);
 					preg_match('/(\w+) : \((\w+)\) (\w+)/', $condition['fieldname'], $matches);

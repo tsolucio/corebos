@@ -4,8 +4,9 @@
         "google/apiclient": "^2.0",
         "twilio/sdk": "^5.28",
         "smalot/pdfparser": "*",
-        "knplabs/gaufrette": "^0.7.0",
+        "knplabs/gaufrette": "0.9.0",
         "gaufrette/azure-blob-storage-adapter": "^0.6.0",
-        "gaufrette/ftp-adapter": "^0.4.0"
+        "gaufrette/ftp-adapter": "^0.4.0",
+        "onelogin/php-saml": "^3.4"
     }
 }

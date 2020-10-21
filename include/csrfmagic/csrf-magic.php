@@ -211,6 +211,13 @@ function csrf_check($fatal = true) {
 			return true;
 		}
 	}
+	if (isset($_REQUEST['mode'])) {
+		$mode = urldecode(base64_decode($_REQUEST['mode']));
+		if (substr($mode, 0, 4)=='acs_') {
+			$_POST[$GLOBALS['csrf']['input-name']] = substr($mode, 4);
+			$_REQUEST['mode'] = 'acs';
+		}
+	}
 	$exceptions = array(
 		array('action'=>'Import', 'module'=>'*', 'mode'=>'upload_and_parse'),
 	);
