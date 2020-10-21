@@ -26,6 +26,9 @@ function submittemplate(recordid, value, target_fieldname, formname) {
 		let func = calltype.substring(10);
 		if (typeof (window[func])=='function') {
 			window[func](recordid, value, target_fieldname, formname);
+			if (document.getElementById('closewindow').value=='true') {
+				window.close();
+			}
 		}
 	}
 }
