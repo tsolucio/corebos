@@ -227,7 +227,7 @@ var __attinfo = {$task->dzattinfo|json_encode};
 <div dir="rtl" class="slds-size--small">
 	<div class="slds-form-element">
 		<label class="slds-checkbox_toggle slds-grid">
-		<span class="slds-form-element__label slds-m-bottom_none">{'LINK_EMAIL_TEMPLATE'|@getTranslatedString:$MODULE}</span>
+		<span class="slds-form-element__label slds-m-bottom_none">{'LINK_EMAIL_TEMPLATE'|@getTranslatedString:$MODULE_NAME}</span>
 		<input type="checkbox" name="link-template" onChange="handleToggle()" aria-describedby="toggle-template"  />
 		<span id="toggle-template" class="slds-checkbox_faux_container" aria-live="assertive">
 			<span class="slds-checkbox_faux"></span>
