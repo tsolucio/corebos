@@ -106,7 +106,7 @@ function vtws_create($elementType, $element, $user) {
 		// Validate assigned_user_id
 		if (in_array('assigned_user_id', $meta->getMandatoryFields())) {
 			list($void, $assigned_user_id) = explode('x', $element['assigned_user_id']);
-			$result = $adb->pquery('select first_name from vtiger_users where id=? and status=? and deleted=?', array($assigned_user_id, 'Active', 0));
+			$result = $adb->pquery('select 1 from vtiger_users where id=? and status=? and deleted=?', array($assigned_user_id, 'Active', 0));
 			if (!$result || $adb->num_rows($result)==0) {
 				throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, "Invalid reference specified for assigned_user_id");
 			}
