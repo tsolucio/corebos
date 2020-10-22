@@ -356,6 +356,32 @@ switch ($functiontocall) {
 	case 'getUserName':
 		$ret = getUserName(vtlib_purify($_REQUEST['userid']));
 		break;
+	case 'isAdmin':
+		if (is_admin($current_user)) {
+			$ret = array('admin' => 'on');
+		} else {
+			$ret = array('admin' => 'off');
+		}
+		break;
+	case 'setNewPassword':
+		require_once 'modules/Users/Users.php';
+		require_once 'include/utils/UserInfoUtil.php';
+		$userid = vtlib_purify($_REQUEST['record']);
+		if (is_admin($current_user) || $current_user->id==$userid) {
+			$focus = new Users();
+			$focus->mode='edit';
+			$focus->id = $userid;
+			$focus->retrieve_entity_info($userid, 'Users');
+			$ret = $focus->change_password(vtlib_purify($_REQUEST['old_password']), vtlib_purify($_REQUEST['new_password']));
+			if ($ret) {
+				$ret = array('password'=>$ret);
+			} else {
+				$ret = array('password'=>false);
+			}
+		} else {
+			$ret = array('password'=>false);
+		}
+		break;
 	case 'ismoduleactive':
 	default:
 		$mod = vtlib_purify($_REQUEST['checkmodule']);

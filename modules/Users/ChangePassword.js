@@ -15,7 +15,6 @@
 
 function loadPassword(userid) {
 	loadJS('index.php?module=Users&action=UsersAjax&file=getjslanguage');
-	console.log(alert_arr);
 	const headText = `${alert_arr['LBL_CHANGE_PASSWORD']}`;
 	const tooltip = `    
     <a href="javascript:void(0)" aria-describedby="help" onmouseover="showTooltip('help-passowrd').style.backgroundColor = 'white'" onmouseout="hideTooltip('help-passowrd')">
@@ -41,7 +40,8 @@ function loadPassword(userid) {
         </div>
     </a>`;
 	fetch(
-		'index.php?module=Users&action=UsersAjax&file=IsAdmin&ajax=true', {
+		'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=isAdmin',
+		{
 			method: 'get',
 			headers: {
 				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -70,7 +70,6 @@ function loadPassword(userid) {
 		      		<svg class="slds-button__icon" aria-hidden="true">
 		        		<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
 		      		</svg>
-		      	<span class="slds-assistive-text">Close</span>
 		    	</button>
 		  	</div>
 		</div>                              
@@ -81,12 +80,12 @@ function loadPassword(userid) {
 	        </div>
 	        <div class="slds-grid slds-col slds-size_2-of-4">
 	            <input name='new_password' class='slds-input' type='password' id="new_password">
-	              <button class="slds-button slds-button_icon slds-button_icon-border-filled" title="${alert_arr['LBL_PREVIEW_BUTTON_LABEL']}" onclick="showPassword(this.id, 'new_password')" id="btn_new_password">
+	              <button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="showPassword(this.id, 'new_password')" id="btn_new_password">
 	                <svg class="slds-button__icon" aria-hidden="true">
 	                      <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#preview"></use>
 	                </svg>
 	              </button>
-	            <button class="slds-button slds-button_icon slds-button_icon-border-filled"  aria-pressed="false" title="${alert_arr['Generate password']}" onclick="generatePassword()">
+	            <button class="slds-button slds-button_icon slds-button_icon-border-filled"  aria-pressed="false" onclick="generatePassword()">
 	                <svg class="slds-button__icon" aria-hidden="true">
 	                    <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
 	                </svg>
@@ -158,7 +157,7 @@ function changepassword(is_admin, userid) {
 		};
 		jQuery.ajax({
 			method:'POST',
-			url:'index.php?module=Users&action=UsersAjax&file=SetNewPassword&ajax=true',
+			url: 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=setNewPassword',
 			data: data
 		}).done(function (response) {
 			const res = JSON.parse(response);
