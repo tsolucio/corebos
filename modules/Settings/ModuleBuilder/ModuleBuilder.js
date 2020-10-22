@@ -125,7 +125,7 @@ const mb = {
 						mb.loadMessage(mod_alert_arr.FirstFilterAll_msg, true);
 						proceed = false;
 					}
-				} 
+				}
 				if (CV_NUMBER > 0) {
 					if (mb.loadElement(`viewname-${FILTER_COUNT}`) == '') {
 						mb.loadMessage(mod_alert_arr.ViewnameEmpty_msg, true);
@@ -308,7 +308,7 @@ const mb = {
 						const id = res[i].blocksid+'-block';
 						let removeBtn = `
 							<div class="slds-button-group" role="group">
-								<button onclick='mb.removeBlock("${id}")' class="slds-button slds-button_icon slds-button_icon-border-filled" aria-pressed="false">
+								<button onclick='mb.deleteBlocks("${id}")' class="slds-button slds-button_icon slds-button_icon-border-filled" aria-pressed="false">
 									<svg class="slds-button__icon" aria-hidden="true">
 										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
 									</svg>
@@ -420,7 +420,7 @@ const mb = {
 					const id = res[i].blocksid+'-block';
 					let removeBtn = `
 						<div class="slds-button-group" role="group">
-							<button onclick='mb.removeBlock("${id}")' class="slds-button slds-button_icon slds-button_icon-border-filled" aria-pressed="false">
+							<button onclick='mb.deleteBlocks("${id}")' class="slds-button slds-button_icon slds-button_icon-border-filled" aria-pressed="false">
 								<svg class="slds-button__icon" aria-hidden="true">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
 								</svg>
@@ -1479,7 +1479,7 @@ const mb = {
 		}).done(function (response) {
 			document.getElementsByName('uitype_no').value = response;
 			let proceed = true;
-			if (response != 10) {
+			if (response == 0) {
 				mb.loadMessage(mod_alert_arr.Related_modlabel, true);
 				proceed = false;
 			} else {
@@ -1624,11 +1624,11 @@ const mb = {
 	 * Remove block on step 2
 	 * @param {string} blockid - Current cell instance
 	 */
-	removeBlock: (blockid) => {
+	deleteBlocks: (blockid) => {
 		const id = blockid.split('-')[0];
 		jQuery.ajax({
 			method: 'POST',
-			url: url+'&methodName=removeBlock',
+			url: url+'&methodName=deleteBlocks',
 			data: 'blockid='+id
 		}).done(function (response) {
 			const res = JSON.parse(response);
@@ -1641,10 +1641,10 @@ const mb = {
 	 * Remove Field on step 3
 	 * @param {string} fieldsid
 	 */
-	removeField: (fieldsid) => {
+	deleteFields: (fieldsid) => {
 		jQuery.ajax({
 			method: 'POST',
-			url: url+'&methodName=removeField',
+			url: url+'&methodName=deleteFields',
 			data: 'fieldsid='+fieldsid
 		}).done(function (response) {
 			const res = JSON.parse(response);
@@ -1658,10 +1658,10 @@ const mb = {
 	 * Remove View on step 4
 	 * @param {string} viewid
 	 */
-	removeCustomView: (viewid) => {
+	deleteFilters: (viewid) => {
 		jQuery.ajax({
 			method: 'POST',
-			url: url+'&methodName=removeCustomView',
+			url: url+'&methodName=deleteFilters',
 			data: 'viewid='+viewid
 		}).done(function (response) {
 			const res = JSON.parse(response);
@@ -1675,10 +1675,10 @@ const mb = {
 	 * Remove Lists on step 5
 	 * @param {string} listid
 	 */
-	removeRelatedLists: (list) => {
+	deleteRelationships: (list) => {
 		jQuery.ajax({
 			method: 'POST',
-			url: url+'&methodName=removeRelatedLists',
+			url: url+'&methodName=deleteRelationships',
 			data: 'listid='+list
 		}).done(function (response) {
 			const res = JSON.parse(response);
@@ -2155,13 +2155,13 @@ class ActionRender {
 		const { type } = props.columnInfo.renderer.options;
 		if (type == 'Fields') {
 			id = props.grid.getValue(rowKey, 'fieldsid');
-			functionName = 'removeField';
+			functionName = 'deleteFields';
 		} else if (type == 'CustomView') {
 			id = props.grid.getValue(rowKey, 'customviewid');
-			functionName = 'removeCustomView';
+			functionName = 'deleteFilters';
 		} else if (type == 'RelatedLists') {
 			id = props.grid.getValue(rowKey, 'relatedlistid');
-			functionName = 'removeRelatedLists';
+			functionName = 'deleteRelationships';
 		}
 		el = document.createElement('span');
 		let actions = `

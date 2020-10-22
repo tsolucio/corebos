@@ -16,16 +16,18 @@
 
 function SaveModuleBuilder($step) {
 	global $mod_strings,$adb, $current_user;
+	$moduleid = $_COOKIE['ModuleBuilderID'];
 	switch ($step) {
 		case '1':
 			$modSql = $adb->pquery('SELECT * FROM vtiger_modulebuilder WHERE modulebuilder_name=?', array(
 				vtlib_purify($_REQUEST['modulename'])
 			));
 			$modExsists = $adb->num_rows($modSql);
-			$mb = new ModuleBuilder();
 			if ($modExsists > 0) {
-				$mb->id = $_COOKIE['ModuleBuilderID'];
+				$mb = new ModuleBuilder($moduleid);
 				$mb->mode = 'edit';
+			} else {
+				$mb = new ModuleBuilder();
 			}
 			$mb->column_data['modulename'] = vtlib_purify($_REQUEST['modulename']);
 			$mb->column_data['modulelabel'] = vtlib_purify($_REQUEST['modulelabel']);
@@ -39,8 +41,7 @@ function SaveModuleBuilder($step) {
 			return $ret;
 			break;
 		case '2':
-			$mb = new ModuleBuilder();
-			$mb->id = $_COOKIE['ModuleBuilderID'];
+			$mb = new ModuleBuilder($moduleid);
 			$mb->mode = 'edit';
 			$mb->column_data['blocks'] = vtlib_purify($_REQUEST['blocks']);
 			$ret = $mb->save($step);
@@ -49,8 +50,7 @@ function SaveModuleBuilder($step) {
 		case '3':
 			$moduleid = $_COOKIE['ModuleBuilderID'];
 			if (isset($_REQUEST['fields'])) {
-				$mb = new ModuleBuilder();
-				$mb->id = $moduleid;
+				$mb = new ModuleBuilder($moduleid);
 				if (isset($_REQUEST['fields'][0]['fieldsid'])) {
 					$mb->edit = 'edit';
 					$mb->column_data['fieldsid'] = $_REQUEST['fields'][0]['fieldsid'];
@@ -77,10 +77,8 @@ function SaveModuleBuilder($step) {
 			$adb->pquery('UPDATE vtiger_modulebuilder_name SET completed="60" WHERE userid=? AND modulebuilderid=?', array($current_user->id,$moduleid));
 			break;
 		case '4':
-			$moduleid = $_COOKIE['ModuleBuilderID'];
 			$customview = isset($_REQUEST['customview']) ? vtlib_purify($_REQUEST['customview']) : array();
-			$mb = new ModuleBuilder();
-			$mb->id = $moduleid;
+			$mb = new ModuleBuilder($moduleid);
 			$mb->edit = 'edit';
 			$mb->column_data['customview'] = $customview;
 			$ret = $mb->save($step);
@@ -88,11 +86,9 @@ function SaveModuleBuilder($step) {
 			return $ret;
 			break;
 		case '5':
-			$moduleid = $_COOKIE['ModuleBuilderID'];
 			$relatedlists = isset($_REQUEST['relatedlists']) ? vtlib_purify($_REQUEST['relatedlists']) : array();
 			if (count($relatedlists) > 0) {
-				$mb = new ModuleBuilder();
-				$mb->id = $moduleid;
+				$mb = new ModuleBuilder($moduleid);
 				$mb->edit = 'edit';
 				$mb->column_data['name'] = $relatedlists['name'];
 				$mb->column_data['label'] = $relatedlists['label'];

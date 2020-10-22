@@ -16,10 +16,13 @@
 
 class ModuleBuilder {
 
-	public $id = '';
+	public function __construct($id) {
+		$this->id = $id;
+		$this->path = 'modules/Settings/ModuleBuilder/modules/';
+	}
+
 	public $mode = '';
 	public $column_data = array();
-	private $path = 'modules/Settings/ModuleBuilder/modules/';
 
 	private $typeofdata = array(
 		'1' => array('VARCHAR(200)', 'V~'),
@@ -319,7 +322,7 @@ class ModuleBuilder {
 		global $adb, $current_user;
 		$blocks = $adb->pquery('SELECT blocksid, blocks_label FROM vtiger_modulebuilder LEFT JOIN vtiger_modulebuilder_blocks ON modulebuilderid=moduleid WHERE status=? AND modulebuilderid=?', array(
 			'active',
-			$_COOKIE['ModuleBuilderID']
+			$this->id
 		));
 		$blockname = array();
 		while ($row = $blocks->FetchRow()) {
@@ -334,7 +337,7 @@ class ModuleBuilder {
 	public function loadFields() {
 		global $adb, $current_user;
 		$field = $adb->pquery('SELECT fieldsid, fieldname FROM vtiger_modulebuilder_fields WHERE moduleid=?', array(
-			$_COOKIE['ModuleBuilderID']
+			$this->id
 		));
 		$fields = array();
 		while ($row = $field->FetchRow()) {
@@ -366,8 +369,7 @@ class ModuleBuilder {
 		if ($query == '' || strlen($query) < 2) {
 			return array();
 		}
-		$modId = vtlib_purify($_COOKIE['ModuleBuilderID']);
-		$function = $adb->pquery("SELECT relatedmodules FROM vtiger_modulebuilder_fields WHERE uitype = 10 AND moduleid = ? ORDER BY fieldsid DESC", array($modId));
+		$function = $adb->pquery("SELECT relatedmodules FROM vtiger_modulebuilder_fields WHERE uitype = 10 AND moduleid = ? ORDER BY fieldsid DESC", array($this->id));
 		$module = array();
 		while ($row = $function->FetchRow()) {
 			$relatedmodules = explode(',', $row['relatedmodules']);
@@ -380,21 +382,29 @@ class ModuleBuilder {
 		return array_unique($module);
 	}
 
-	public function getUitypeNumber($modu) {
+	public function getUitypeNumber($mod) {
 		global $adb;
-		$table = 'vtiger_'.strtolower($modu);
-		$sqli = $adb->pquery("SELECT uitype FROM vtiger_modulebuilder_fields WHERE tablename = ? AND uitype = 10", array($table));
-		while ($row = $sqli->FetchRow()) {
-			$uitype = $row['uitype'];
+		if ($mod == '') {
+			$modInfo = $this->loadValues(1, $this->id);
+			$mod = $modInfo['name'];
 		}
-		$val = intval($uitype);
-		return $val;
+		$table = 'vtiger_'.strtolower($mod);
+		$result = $adb->pquery("SELECT uitype FROM vtiger_modulebuilder_fields WHERE tablename = ? AND uitype = 10", array($table));
+		$numOfRows = $adb->num_rows($result);
+		if ($numOfRows > 0) {
+			return intval($numOfRows);
+		}
+		return 0;
 	}
 
 	public function getCountFilter($modName) {
 		global $adb;
-		$sql = $adb->pquery("SELECT modulebuilderid FROM vtiger_modulebuilder WHERE modulebuilder_name=?", array($modName));
-		while ($row = $sql->FetchRow()) {
+		if ($modName == '') {
+			$modInfo = $this->loadValues(1, $this->id);
+			$modName = $modInfo['name'];
+		}
+		$result = $adb->pquery("SELECT modulebuilderid FROM vtiger_modulebuilder WHERE modulebuilder_name=?", array($modName));
+		while ($row = $result->FetchRow()) {
 			$modulebuilderid = $row['modulebuilderid'];
 		}
 		$getCnt = $adb->pquery("SELECT * FROM vtiger_modulebuilder_customview WHERE moduleid=?", array($modulebuilderid));
@@ -405,8 +415,7 @@ class ModuleBuilder {
 	public function loadValues($step, $moduleId) {
 		global $adb;
 		if ($moduleId == 0 || $moduleId == 'undefined') {
-			$moduleid = $_COOKIE['ModuleBuilderID'];
-			//var_dump($moduleid); // id + 1
+			$moduleid = $this->id;
 		} else {
 			$cookie_name = "ModuleBuilderID";
 			$cookie_value = $moduleId;
@@ -506,6 +515,10 @@ class ModuleBuilder {
 				$fields = $row['fields'];
 				$fields = explode(',', $fields);
 				$fieldInfo = array();
+				if ($viewname == 'All') {
+					$modName = $this->loadValues(1, $moduleid)['name'];
+					$fieldInfo[] = strtolower($modName).'no';
+				}
 				foreach ($fields as $key => $value) {
 					$fieldSql = $adb->pquery('SELECT fieldname FROM vtiger_modulebuilder_fields WHERE fieldsid=?', array($value));
 					$fieldname = $adb->query_result($fieldSql, 0, 'fieldname');
@@ -583,61 +596,63 @@ class ModuleBuilder {
 		}
 	}
 
-	public function removeBlock($blockid) {
-		global $adb;
-		$delete = $adb->pquery('delete from vtiger_modulebuilder_blocks where blocksid=?', array($blockid));
-		if ($delete) {
-			return true;
-		}
-		return false;
+	public function deleteBlocks($blockid) {
+		return $this->delete(array(
+			'id' => $blockid,
+			'field' => 'blocksid',
+			'table' => 'vtiger_modulebuilder_blocks',
+		));
 	}
 
-	public function removeField($fieldsid) {
-		global $adb;
-		$delete = $adb->pquery('delete from vtiger_modulebuilder_fields where fieldsid=?', array($fieldsid));
-		if ($delete) {
-			return true;
-		}
-		return false;
+	public function deleteFields($fieldsid) {
+		return $this->delete(array(
+			'id' => $fieldsid,
+			'field' => 'fieldsid',
+			'table' => 'vtiger_modulebuilder_fields',
+		));
 	}
 
-	public function removeCustomView($viewid) {
-		global $adb;
-		$delete = $adb->pquery('delete from vtiger_modulebuilder_customview where customviewid=?', array($viewid));
-		if ($delete) {
-			return true;
-		}
-		return false;
+	public function deleteFilters($viewid) {
+		return $this->delete(array(
+			'id' => $viewid,
+			'field' => 'customviewid',
+			'table' => 'vtiger_modulebuilder_customview',
+		));
 	}
 
-	public function removeRelatedLists($listid) {
-		global $adb;
-		$delete = $adb->pquery('delete from vtiger_modulebuilder_relatedlists where relatedlistid=?', array($listid));
-		if ($delete) {
-			return true;
-		}
-		return false;
+	public function deleteRelationships($listid) {
+		return $this->delete(array(
+			'id' => $listid,
+			'field' => 'relatedlistid',
+			'table' => 'vtiger_modulebuilder_relatedlists',
+		));
 	}
 
 	public function loadDefaultBlocks() {
 		global $adb;
-		$blockSql = $adb->pquery('SELECT * FROM vtiger_modulebuilder_blocks WHERE moduleid=? AND blocks_label=?', array(
-			$_COOKIE['ModuleBuilderID'],
-			'LBL_DESCRIPTION_INFORMATION'
+		$blockSql = $this->select(array(
+			'table' => 'vtiger_modulebuilder_blocks',
+			'where' => array(
+				'moduleid',
+				'blocks_label',
+			),
+			'params' => array(
+				$this->id,
+				'LBL_DESCRIPTION_INFORMATION'
+			)
 		));
 		if ($adb->num_rows($blockSql) == 0) {
 			return 'load';
 		}
-		return $_COOKIE['ModuleBuilderID'];
+		return $this->id;
 	}
 
 	public function loadTemplate($modId = 0) {
 		if (isset($modId) && $modId != 0) {
 			$moduleid = $modId;
 		} else {
-			$moduleid = vtlib_purify($_COOKIE['ModuleBuilderID']);
+			$moduleid = $this->id;
 		}
-
 		return array(
 			'info' => $this->loadValues(1, $moduleid),
 			'blocks' => $this->loadValues(2, $moduleid),
@@ -645,6 +660,118 @@ class ModuleBuilder {
 			'views' => $this->loadValues(4, $moduleid),
 			'lists' => $this->loadValues(5, $moduleid)
 		);
+	}
+
+	public function delete($el) {
+		global $adb;
+		$delete = $adb->pquery("delete from {$el['table']} where {$el['field']}=?", array($el['id']));
+		if ($delete) {
+			return true;
+		}
+		return false;
+	}
+
+	public function zipModule($modPath, $module) {
+		$rootPath = realpath($modPath);
+		$zip = new ZipArchive();
+		$zip->open($this->path.$module.'.zip', ZipArchive::CREATE | ZipArchive::OVERWRITE);
+		$files = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator($rootPath),
+			RecursiveIteratorIterator::LEAVES_ONLY
+		);
+		foreach ($files as $name => $file) {
+			if (!$file->isDir()) {
+				$filePath = $file->getRealPath();
+				$relativePath = substr($filePath, strlen($rootPath) + 1);
+				$zip->addFile($filePath, $relativePath);
+			}
+		}
+		$zip->close();
+	}
+
+	public function deleteDirectory($dir) {
+		if (!file_exists($dir)) {
+			return true;
+		}
+		if (!is_dir($dir)) {
+			return unlink($dir);
+		}
+		foreach (scandir($dir) as $item) {
+			if ($item == '.' || $item == '..') {
+				continue;
+			}
+			if (!$this->deleteDirectory($dir . DIRECTORY_SEPARATOR . $item)) {
+				return false;
+			}
+		}
+		return rmdir($dir);
+	}
+
+	public function VerifyModule($modulename) {
+		global $adb;
+		$sql = $adb->pquery('SELECT * FROM vtiger_modulebuilder WHERE modulebuilder_name=?', array($modulename));
+		if ($adb->num_rows($sql) > 0) {
+			return array('moduleid' => (Int)$adb->query_result($sql, 0, 'modulebuilderid'));
+		}
+		return 0;
+	}
+
+	public function licencseTemplate($module) {
+		global $current_user;
+		return $template = '*************************************************************************************************
+	 * Copyright '.date('Y').' JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS customizations.
+	 * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
+	 * Vizsage Public License (the "License"). You may not use this file except in compliance with the
+	 * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
+	 * and share improvements. However, for proper details please read the full License, available at
+	 * http://vizsage.com/license/Vizsage-License-BY-NC-SA.html and the handy reference for understanding
+	 * the full license at http://vizsage.com/license/Vizsage-Deed-BY-NC-SA.html. Unless required by
+	 * applicable law or agreed to in writing, any software distributed under the License is distributed
+	 * on an  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and limitations under the
+	 * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
+	 *************************************************************************************************
+	 *  Module       : '.$module.'
+	 *  Version      : 5.4.0
+	 *  Author       : '.$current_user->first_name.' '.$current_user->last_name.'
+	 *************************************************************************************************
+		';
+	}
+
+	public function generateSql($blocks, $module, $idx) {
+		$fields = array();
+		if ($idx == 0) {
+			$table = "CREATE TABLE IF NOT EXISTS `vtiger_".strtolower($module)."` (\n";
+			$table .= "`".strtolower($module)."id` INT(11) NOT NULL,\n";
+			$table .= "`".strtolower($module)."no` VARCHAR(255) DEFAULT NULL,\n";
+			foreach ($blocks as $key => $value) {
+				foreach ($value['block']['fields'] as $field => $info) {
+					$fieldname = $info['fieldname'];
+					$uitype = $info['uitype'];
+					$table .= "`".strtolower($fieldname)."` ".$this->typeofdata[$uitype][0]." DEFAULT NULL,\n";
+				}
+			}
+			$table .= "PRIMARY KEY (`".strtolower($module)."id`)\n";
+		} else {
+			$table = "CREATE TABLE IF NOT EXISTS `vtiger_".strtolower($module)."cf` (\n";
+			$table .= "`".strtolower($module)."id` INT(11) NOT NULL,\nPRIMARY KEY (`".strtolower($module)."id`)\n";
+		}
+		$table .= ") ENGINE=InnoDB DEFAULT CHARSET=utf8";
+		return $table;
+	}
+
+	public function typeofdata($typeofdata, $uitype) {
+		return $this->typeofdata[$uitype][1].$typeofdata;
+	}
+
+	public function getModules() {
+		global $adb;
+		$mods = $adb->pquery('SELECT modulename FROM vtiger_entityname', array());
+		$list = array();
+		while ($row = $mods->FetchRow()) {
+			array_push($list, $row['modulename']);
+		}
+		return $list;
 	}
 
 	public function generateManifest() {
@@ -865,8 +992,8 @@ class ModuleBuilder {
 		$search_fields = "'MODULE_NAME_LABEL'=> array('MODULE_NAME_LOWERCASE' => 'MODULE_REFERENCE_FIELD')";
 		$list_fields_name = "'MODULE_NAME_LABEL'=> 'MODULE_REFERENCE_FIELD',";
 		$search_fields_name = "'MODULE_NAME_LABEL'=> 'MODULE_REFERENCE_FIELD'";
-		$replist_fields .= "'".$map['name']."'=> array('MODULE_NAME_LOWERCASE' => '".$map['name']."no'),";
-		$replist_fields_name .= "'".$map['label']."'=> '".$map['name']."no',";
+		$replist_fields .= "'".$map['name']."'=> array('MODULE_NAME_LOWERCASE' => '".$map['name']."no'),\n\t\t";
+		$replist_fields_name .= "'".$map['label']."'=> '".$map['name']."no',\n\t\t";
 		foreach ($customviews as $key => $value) {
 			foreach ($fields as $f => $name) {
 				if ($name['fieldname'] == $value) {
@@ -881,7 +1008,6 @@ class ModuleBuilder {
 		$newContent = str_replace($search_fields_name, $replist_fields_name, $newContent);
 		$newContent = str_replace("'Assigned To' => array('crmentity' => 'smownerid')", '', $newContent);
 		$newContent = str_replace("'Assigned To' => 'assigned_user_id'", '', $newContent);
-		//TO DO module reference field
 		$newContent = str_replace('MODULE_NAME_LOWERCASE', strtolower($module), $newContent);
 		$newContent = str_replace('ModuleClass', $module, $newContent);
 		$newContent = str_replace('MODULE_REFERENCE_FIELD', $map['name'].'no', $newContent);
@@ -892,109 +1018,6 @@ class ModuleBuilder {
 		fclose($moduleFile);
 		$this->zipModule($path, $module);
 		return array('success'=>true, 'module'=>$module);
-	}
-
-	public function zipModule($modPath, $module) {
-		$rootPath = realpath($modPath);
-		$zip = new ZipArchive();
-		$zip->open($this->path.$module.'.zip', ZipArchive::CREATE | ZipArchive::OVERWRITE);
-		$files = new RecursiveIteratorIterator(
-			new RecursiveDirectoryIterator($rootPath),
-			RecursiveIteratorIterator::LEAVES_ONLY
-		);
-		foreach ($files as $name => $file) {
-			if (!$file->isDir()) {
-				$filePath = $file->getRealPath();
-				$relativePath = substr($filePath, strlen($rootPath) + 1);
-				$zip->addFile($filePath, $relativePath);
-			}
-		}
-		$zip->close();
-	}
-
-	public function deleteDirectory($dir) {
-		if (!file_exists($dir)) {
-			return true;
-		}
-		if (!is_dir($dir)) {
-			return unlink($dir);
-		}
-		foreach (scandir($dir) as $item) {
-			if ($item == '.' || $item == '..') {
-				continue;
-			}
-			if (!$this->deleteDirectory($dir . DIRECTORY_SEPARATOR . $item)) {
-				return false;
-			}
-		}
-		return rmdir($dir);
-	}
-
-	public function VerifyModule($modulename) {
-		global $adb;
-		$sql = $adb->pquery('SELECT * FROM vtiger_modulebuilder WHERE modulebuilder_name=?', array($modulename));
-		if ($adb->num_rows($sql) > 0) {
-			return array('moduleid' => (Int)$adb->query_result($sql, 0, 'modulebuilderid'));
-		}
-		return 0;
-	}
-
-	public function licencseTemplate($module) {
-		global $current_user;
-		return $template = '*************************************************************************************************
-	 * Copyright '.date('Y').' JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS customizations.
-	 * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
-	 * Vizsage Public License (the "License"). You may not use this file except in compliance with the
-	 * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
-	 * and share improvements. However, for proper details please read the full License, available at
-	 * http://vizsage.com/license/Vizsage-License-BY-NC-SA.html and the handy reference for understanding
-	 * the full license at http://vizsage.com/license/Vizsage-Deed-BY-NC-SA.html. Unless required by
-	 * applicable law or agreed to in writing, any software distributed under the License is distributed
-	 * on an  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and limitations under the
-	 * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
-	 *************************************************************************************************
-	 *  Module       : '.$module.'
-	 *  Version      : 5.4.0
-	 *  Author       : '.$current_user->first_name.' '.$current_user->last_name.'
-	 *************************************************************************************************
-		';
-	}
-
-	public function generateSql($blocks, $module, $idx) {
-		$fields = array();
-		if ($idx == 0) {
-			$table = "CREATE TABLE IF NOT EXISTS `vtiger_".strtolower($module)."` (\n";
-			$table .= "`".strtolower($module)."id` INT(11) NOT NULL,\n";
-			$table .= "`".strtolower($module)."no` VARCHAR(255) DEFAULT NULL,\n";
-			foreach ($blocks as $key => $value) {
-				foreach ($value['block']['fields'] as $field => $info) {
-					$fieldname = $info['fieldname'];
-					$uitype = $info['uitype'];
-					$table .= "`".strtolower($fieldname)."` ".$this->typeofdata[$uitype][0]." DEFAULT NULL,\n";
-				}
-			}
-			$table .= "PRIMARY KEY (`".strtolower($module)."id`)\n";
-		} else {
-			$table = "CREATE TABLE IF NOT EXISTS `vtiger_".strtolower($module)."cf` (\n";
-			$table .= "`".strtolower($module)."id` INT(11) NOT NULL,\nPRIMARY KEY (`".strtolower($module)."id`)\n";
-		}
-		$table .= ") ENGINE=InnoDB DEFAULT CHARSET=utf8";
-		return $table;
-	}
-
-	public function typeofdata($typeofdata, $uitype) {
-		return $this->typeofdata[$uitype][1].$typeofdata;
-	}
-
-	public function getModules() {
-		global $adb;
-		$mods = $adb->pquery('SELECT modulename FROM vtiger_entityname', array());
-		$list = array();
-		while ($row = $mods->FetchRow()) {
-			array_push($list, $row['modulename']);
-		}
-		return $list;
 	}
 }
 ?>

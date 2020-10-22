@@ -15,8 +15,9 @@
 *************************************************************************************************/
 require_once 'include/utils/utils.php';
 require_once 'modules/Settings/ModuleBuilder/builder.php';
+$moduleid = $_COOKIE['ModuleBuilderID'];
 $methodName = vtlib_purify($_REQUEST['methodName']);
-$mb = new ModuleBuilder();
+$mb = new ModuleBuilder($moduleid);
 switch ($methodName) {
 	case 'Save':
 		require_once 'modules/Settings/ModuleBuilder/SaveModuleBuilder.php';
@@ -52,24 +53,24 @@ switch ($methodName) {
 		$moduleid = vtlib_purify($_REQUEST['moduleid']);
 		$ret = $mb->loadValues($step, $moduleid);
 		break;
-	case 'removeBlock':
+	case 'deleteBlocks':
 		$blockid = vtlib_purify($_REQUEST['blockid']);
-		$ret = $mb->removeBlock($blockid);
+		$ret = $mb->deleteBlocks($blockid);
 		break;
-	case 'removeField':
+	case 'deleteFields':
 		$fieldsid = vtlib_purify($_REQUEST['fieldsid']);
-		$ret = $mb->removeField($fieldsid);
+		$ret = $mb->deleteFields($fieldsid);
 		break;
 	case 'loadDefaultBlocks':
 		$ret = $mb->loadDefaultBlocks();
 		break;
-	case 'removeCustomView':
+	case 'deleteFilters':
 		$viewid = vtlib_purify($_REQUEST['viewid']);
-		$ret = $mb->removeCustomView($viewid);
+		$ret = $mb->deleteFilters($viewid);
 		break;
-	case 'removeRelatedLists':
+	case 'deleteRelationships':
 		$listid = vtlib_purify($_REQUEST['listid']);
-		$ret = $mb->removeRelatedLists($listid);
+		$ret = $mb->deleteRelationships($listid);
 		break;
 	case 'generateManifest':
 		$ret = $mb->generateManifest();
