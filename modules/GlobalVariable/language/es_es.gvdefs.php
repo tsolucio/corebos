@@ -1630,6 +1630,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Porcentaje de la altura de pantalla que utilizarán las ventanas emergentes. El valor predeterminado es 80%',
 ),
+'Application_Filter_All_Edit' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleana',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Permitir la edición del filtro "Todos". Por defecto es 1',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {
