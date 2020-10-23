@@ -3237,8 +3237,11 @@ class ReportRun extends CRMEntity {
 		return $pdf;
 	}
 
-	public function writeReportToExcelFile($fileName, $filterlist = '') {
+	public function writeReportToExcelFile($fileName, $filterlist = '', $modulename = '') {
 		global $currentModule, $current_language, $current_user;
+		if (empty($currentModule)) {
+			$currentModule = $modulename;
+		}
 		$mod_strings = return_module_language($current_language, $currentModule);
 
 		require 'include/PhpSpreadsheet/autoload.php';
