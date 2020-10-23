@@ -330,7 +330,7 @@ var __attinfo = {$task->dzattinfo|json_encode};
 
 	<script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
 	<p style="border:1px solid black;">
-		<textarea style="width:90%;height:200px;" name="content" rows="55" cols="40" id="save_content" class="detailedViewTextBox"> <!-- {$task->content} --></textarea>
+		<textarea style="width:90%;height:200px;" name="content" rows="55" cols="40" id="save_content" class="detailedViewTextBox">{$task->content}</textarea>
 	</p>
 </div>
 <div class="linked-template slds-hide">
@@ -357,7 +357,7 @@ var __attinfo = {$task->dzattinfo|json_encode};
 			<div class="slds-form-element">
 				<span class="slds-form-element__label slds-size--1-of-3">
 					<input type='hidden' class='small' name="cbmsgtemplate_type" id="cbmsgtemplate_type" value="MsgTemplate">
-					<input id="cbmsgtemplate" name="cbmsgtemplate" type="hidden" value="">
+					<input id="cbmsgtemplate" name="cbmsgtemplate" type="hidden" value="{if isset($task->cbmsgtemplate)}{$task->cbmsgtemplate}{/if}">
 					<input
 						class="slds-input"
 						id="cbmsgtemplate_display"
@@ -366,7 +366,7 @@ var __attinfo = {$task->dzattinfo|json_encode};
 						type="text"
 						style="border:1px solid #bababa; width: 90%;"
 						onclick='document.getElementById("calltype").value = "function::vtlib_setvalue_from_popup"; return vtlib_open_popup_window("new_task_form", "cbmsgtemplate", "MsgTemplate", "");'
-						value="">
+						value="{if isset($task->cbmsgtemplate_display)}{$task->cbmsgtemplate_display}{/if}">
 					<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_CLEAR'|getTranslatedString}" onclick="document.getElementById('cbmsgtemplate').value=''; document.getElementById('cbmsgtemplate_display').value=''; return false;">
 					<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
