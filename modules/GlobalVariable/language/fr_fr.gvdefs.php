@@ -1630,6 +1630,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Percentage of screen height that popups will use. Default is 80%',
 ),
+'Application_Filter_All_Edit' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Edit the filter "All". The default is 1',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/fr_fr.gvdefs.*.php', GLOB_BRACE) as $tcode) {

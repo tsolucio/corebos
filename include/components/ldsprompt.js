@@ -1,3 +1,4 @@
+if (typeof ldsPrompt == 'undefined') {
 const ldsPrompt = {
 	show : (headText, content, theme) => {
 		theme = theme || 'error';
@@ -42,3 +43,4 @@ const ldsPrompt = {
 	},
 	active: false
 };
+}

@@ -1836,8 +1836,8 @@ function openPopUp(winInst, currObj, baseURL, winName, width, height, features) 
 		}
 	}
 
-	features='width='+width+',height='+height+',top='+top+',left='+left+';'+features;
-	eval(winInst+'=window.open("'+baseURL+'","'+winName+'","'+features+'")');
+	features = cbPopupWindowSettings+',top='+top+',left='+left+';'+features;
+	winInst = window.open(baseURL, winName, features);
 }
 
 var scrX=0, scrY=0, pgeX=0, pgeY=0;

@@ -59,6 +59,14 @@
 		<span id="_mailopen_msgid_" style="display:none;">{$MAIL->_uniqueid|@escape:'UTF-8'}</span>
 		<table width="100%" cellpadding=2 cellspacing=0 border=0 class="small cblds-table-border_sep cblds-table-bordersp_medium">
 		<tr>
+			<td width="100px" align=right class="cblds-t-align_right">{'LBL_REPLYTO'|@getTranslatedString}:</td>
+			<td id="_mailopen_replyto">
+				{foreach item=REPLYTO from=$MAIL->replyto()}
+					{$REPLYTO}
+				{/foreach}
+			</td>
+		</tr>
+		<tr>
 			<td width="100px" align=right class="cblds-t-align_right">{'LBL_FROM'|@getTranslatedString}:</td>
 			<td id="_mailopen_from">
 				{foreach item=SENDER from=$MAIL->from()}

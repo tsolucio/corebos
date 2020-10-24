@@ -27,6 +27,12 @@
 		<td>
 			<table width="100%" cellpadding=2 cellspacing=0 border=0 class="small">
 			<tr>
+				<td align=right style="width:50px">{'LBL_REPLYTO'|@getTranslatedString}:</td>
+				<td colspan="2">
+					<input type="text" name="replyto" class="detailedViewTextBox" id="_mail_replyfrm_replyto_" style="width:85%;">
+				</td>
+			</tr>
+			<tr>
 				<td align=right style="width:50px">{'LBL_TO'|@getTranslatedString}:</td>
 				<td colspan="2">
 					<input type="text" name="to" class="detailedViewTextBox" id="_mail_replyfrm_to_" style="width:85%;">

@@ -507,8 +507,8 @@ class Leads extends CRMEntity {
 					and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)';
 			$params1 = array();
 			if (count($profileList) > 0) {
-				 $sql1 .= ' and vtiger_profile2field.profileid in ('. generateQuestionMarks($profileList) .')';
-				 $params1[] = $profileList;
+				$sql1 .= ' and vtiger_profile2field.profileid in ('. generateQuestionMarks($profileList) .')';
+				$params1[] = $profileList;
 			}
 		}
 		$result1 = $adb->pquery($sql1, $params1);

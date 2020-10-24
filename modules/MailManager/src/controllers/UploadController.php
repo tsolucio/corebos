@@ -96,9 +96,9 @@ class MailManager_UploadFile {
 
 			//sanitize the filename
 			$binFile = sanitizeUploadFileName($fileName, $upload_badext);
-			$fileName = ltrim(basename(" ".$binFile));
+			$fileName = ltrim(basename(' '.$binFile));
 
-			$saveAttachment = $this->save($uploadPath.$attachid."_".$fileName);
+			$saveAttachment = $this->save($uploadPath.$attachid.'_'.$fileName);
 			if ($saveAttachment) {
 				$description = $fileName;
 				$date_var = $adb->formatDate(date('YmdHis'), true);
@@ -107,10 +107,10 @@ class MailManager_UploadFile {
 				$adb->pquery(
 					'INSERT INTO vtiger_crmentity(crmid, smcreatorid, smownerid, modifiedby, setype, description, createdtime, modifiedtime, presence, deleted)
 						VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-					array($attachid, $current_user->id, $current_user->id, $current_user->id, "Documents Attachment", $description, $usetime, $usetime, 1, 0)
+					array($attachid, $current_user->id, $current_user->id, $current_user->id, 'Documents Attachment', $description, $usetime, $usetime, 1, 0)
 				);
 
-				$mimetype = MailAttachmentMIME::detect($uploadPath.$attachid."_".$fileName);
+				$mimetype = MailAttachmentMIME::detect($uploadPath.$attachid.'_'.$fileName);
 
 				$adb->pquery(
 					'INSERT INTO vtiger_attachments SET attachmentsid=?, name=?, description=?, type=?, path=?',
@@ -225,10 +225,10 @@ class MailManager_Uploader {
 	*/
 	public function handleUpload($uploadDirectory, $replaceOldFile = false) {
 		if (isPermitted('Documents', 'CreateView')=='no') {
-			return array('error' => "Permission not available");
+			return array('error' => 'Permission not available');
 		}
 		if (!is_writable($uploadDirectory)) {
-			return array('error' => "Server error. Upload directory isn't writable.");
+			return array('error' => 'Server error. Upload directory is not writable');
 		}
 		if (!$this->file) {
 			return array('error' => 'No files were uploaded.');

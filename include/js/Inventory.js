@@ -1805,6 +1805,7 @@ function InventorySelectAll(mod, image_pth) {
 				this.parent.divisible = result.obj.meta.divisible == 0 ? false : true;
 
 				this.parent.expandExtra();
+				this.parent.getProductImage(result.obj.meta.id);
 				this.parent.calcLine();
 
 				this.utils.getFirstClass(this.utils.findUp(this.el, '.' + this.root.lineClass), this.root.inputPrefix + '--quantity').focus();

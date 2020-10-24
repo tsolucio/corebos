@@ -46,18 +46,24 @@
 	<td class="lvtCol" width="15%" height="70px" style="padding: 5px;" align="right"><b>{$MOD.LBL_TO}</b></td>
 	<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$TO_MAIL}</td>
 	</tr>
-		{if 'ccmail'|@emails_checkFieldVisiblityPermission eq '0'}
+	{if 'replyto'|@emails_checkFieldVisiblityPermission eq '0'}
+		<tr>
+		<td class="lvtCol" style="padding: 5px;" align="right"><b>{$MOD.replyto}</b></td>
+		<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$REPLYTO}</td>
+		</tr>
+	{/if}
+	{if 'ccmail'|@emails_checkFieldVisiblityPermission eq '0'}
 		<tr>
 		<td class="lvtCol" style="padding: 5px;" align="right"><b>{$MOD.LBL_CC}</b></td>
 		<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$CC_MAIL}</td>
 		</tr>
-		{/if}
-		{if 'bccmail'|@emails_checkFieldVisiblityPermission eq '0'}
+	{/if}
+	{if 'bccmail'|@emails_checkFieldVisiblityPermission eq '0'}
 		<tr>
 		<td class="lvtCol" style="padding: 5px;" align="right"><b>{$MOD.LBL_BCC}</b></td>
 		<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$BCC_MAIL}</td>
 		</tr>
-		{/if}
+	{/if}
 	<tr>
 		<td class="lvtCol" style="padding: 5px;" align="right"><b>{$MOD.LBL_DATE}</b></td>
 		<td class="dvtCellLabel" style="padding: 5px;">{$DATE_START}&nbsp;</td>
