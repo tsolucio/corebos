@@ -163,7 +163,8 @@ class MailManager_MailController extends MailManager_Controller {
 
 					$mailer = new Vtiger_Mailer();
 					$mailer->IsHTML(true);
-					$mailer->ConfigSenderInfo($fromEmail, $userFullName, $current_user->email1);
+					$replyTo = (empty($request->get('replyto')) ? $current_user->email1 : $request->get('replyto'));
+					$mailer->ConfigSenderInfo($fromEmail, $userFullName, $replyTo);
 					$mailer->Subject = $subject;
 					$mailer->Body = $description;
 					// $mailer->addSignature($userId);
@@ -217,6 +218,7 @@ class MailManager_MailController extends MailManager_Controller {
 				$email->column_fields['activitytype'] = 'Emails';
 				$email->column_fields['from_email'] = $mailer->From;
 				$email->column_fields['saved_toid'] = $to_string;
+				$email->column_fields['replyto'] = $replyTo;
 				$email->column_fields['ccmail'] = $cc_string;
 				$email->column_fields['bccmail'] = $bcc_string;
 				$email->column_fields['email_flag'] = 'SENT';

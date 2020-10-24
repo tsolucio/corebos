@@ -55,6 +55,7 @@ if (isset($_REQUEST['assigntype']) && $_REQUEST['assigntype'] == 'T' && !empty($
 } else {
 	$to_email = getUserEmailId('id', $focus->column_fields['assigned_user_id']);
 }
+$replyto = $_REQUEST['replyto'];
 $cc = $_REQUEST['ccmail'];
 $bcc = $_REQUEST['bccmail'];
 $errorheader1 = 0;
@@ -173,7 +174,7 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 
 				if ($individual_emails) {
 					if (isPermitted($pmodule, 'DetailView', $mycrmid) == 'yes') {
-						$mail_status = send_mail('Emails', $emailadd, $from_name, $from_address, $subject, $description, '', '', 'all', $focus->id, $logo);
+						$mail_status = send_mail('Emails', $emailadd, $from_name, $from_address, $subject, $description, '', '', 'all', $focus->id, $logo, $replyto);
 					}
 					$mail_status_str .= $emailadd.'='.$mail_status.'&&&';
 					//added to get remain the EditView page if an error occurs in mail sending
@@ -188,7 +189,7 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 
 // Sending group emails
 if (!$individual_emails) {
-	$mail_status = send_mail('Emails', implode(',', $all_to_emailids), $from_name, $from_address, $subject, $description, '', '', 'all', $focus->id, $logo);
+	$mail_status = send_mail('Emails', implode(',', $all_to_emailids), $from_name, $from_address, $subject, $description, '', '', 'all', $focus->id, $logo, $replyto);
 	$mail_status_str .= $mail_status.'&&&';
 	//added to get remain the EditView page if an error occurs in mail sending
 	if ($mail_status != 1) {

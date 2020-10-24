@@ -330,4 +330,11 @@
 	<classname>googleAuthDriver</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add ReplyTo on Email module</description>
+	<filename>build/changeSets/2020/addReplyToOnEmail.php</filename>
+	<classname>addReplyToOnEmail</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

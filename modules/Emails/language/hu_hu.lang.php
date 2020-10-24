@@ -59,6 +59,7 @@ $mod_strings = array(
 	'LBL_FROM' => 'Küldő :',
 	'LBL_CC' => 'Másolat :',
 	'LBL_BCC' => 'Rejtett másolat :',
+	'replyto' => 'Reply To',
 	'NTC_REMOVE_INVITEE' => 'Biztos vagy abban, hogy ezt a Címzettet el akarod távolítani az emailből?',
 	'LBL_INVITEE' => 'Címzettek',
 	'LBL_BULK_MAILS' => 'Tömeges levelek',

@@ -259,6 +259,7 @@ class VTEmailTask extends VTTask {
 		$element['parent_type'] = $module;
 		$element['parent_id'] = $entity->getId();
 		$element['from_email'] = $from_email;
+		$element['replyto'] = $replyto;
 		$element['ccmail'] = $cc;
 		$element['bccmail'] = $bcc;
 		$element['subject'] = $subject;

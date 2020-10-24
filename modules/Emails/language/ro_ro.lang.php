@@ -60,6 +60,7 @@ $mod_strings = array(
 	'LBL_FROM' => 'De La :',
 	'LBL_CC' => 'Cc :',
 	'LBL_BCC' => 'Bcc :',
+	'replyto' => 'Reply To',
 	'NTC_REMOVE_INVITEE' => 'Sigur doriti stergerea destinatarului din email?',
 	'LBL_INVITEE' => 'Destinatari',
 	'LBL_BULK_MAILS' => 'Mal-uri Bulk',
