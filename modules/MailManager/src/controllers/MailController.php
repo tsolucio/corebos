@@ -109,7 +109,7 @@ class MailManager_MailController extends MailManager_Controller {
 									$parentIds = $relateto[1].'@'.($relatedtos[$i]['module']=='Users' ? '-' : '').'1';
 								} elseif ($relatedtos[$i]['module'] == $val) {
 									$relateto = vtws_getIdComponents($relatedtos[$i]['record']);
-									$parentIds = $relateto[1]."@1";
+									$parentIds = $relateto[1].'@1';
 									break;
 								}
 							}
@@ -197,7 +197,7 @@ class MailManager_MailController extends MailManager_Controller {
 
 					if (is_array($attachments)) {
 						foreach ($attachments as $attachment) {
-							$fileNameWithPath = $root_directory.$attachment['path'].$attachment['fileid']."_".$attachment['attachment'];
+							$fileNameWithPath = $root_directory.$attachment['path'].$attachment['fileid'].'_'.$attachment['attachment'];
 							if (is_file($fileNameWithPath)) {
 								$mailer->AddAttachment($fileNameWithPath, $attachment['attachment']);
 							}
