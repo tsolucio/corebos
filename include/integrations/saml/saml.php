@@ -37,6 +37,8 @@ class corebos_saml {
 	const KEY_IPSLO = 'SAML_IPSLO';
 	const KEY_IP509 = 'SAML_IP509';
 	const KEY_RWURL = 'SAML_RWURL';
+	const KEY_RWURL2 = 'SAML_RWURL2';
+	const KEY_RWURL3 = 'SAML_RWURL3';
 
 	// Debug
 	const DEBUG = true;
@@ -311,9 +313,9 @@ class corebos_saml {
 		}
 	}
 
-	public function login() {
+	public function login($redirectTo = null) {
 		if ($this->isActiveEither()) {
-			$this->samlclient->login();
+			$this->samlclient->login($redirectTo);
 		}
 	}
 
@@ -355,6 +357,16 @@ class corebos_saml {
 		global $adb;
 		if ($this->isActiveWS()) {
 			$settings = $this->getSettings();
+			$redirectTo = $settings['WSRURL'];
+			if (isset($_POST['RelayState'])) {
+				$vars = array();
+				parse_str(parse_url($_POST['RelayState'], PHP_URL_QUERY), $vars);
+				if (!empty($vars['RTURL']) && is_numeric($vars['RTURL'])) {
+					if ($vars['RTURL']>1) {
+						$redirectTo = $settings['WSRURL'.$vars['RTURL']];
+					}
+				}
+			}
 			if ($portal!='LoginPortal') {
 				$userid = $this->findUser($sessionManager->get('samlUserdata'));
 			} else {
@@ -396,7 +408,7 @@ class corebos_saml {
 							'language' => $tpllang,
 						)
 					));
-					header('Location: '.$settings['WSRURL'].'&response='.$resp);
+					header('Location: '.$redirectTo.(strpos($redirectTo, '?')!==false ? '&' : '?').'response='.$resp);
 				} else {
 					$resp = json_encode(array(
 						'success' => false,
@@ -410,13 +422,13 @@ class corebos_saml {
 					'error' => 'Invalid username or password',
 				));
 			}
-			header('Location: '.$settings['WSRURL'].(strpos($settings['WSRURL'], '?')!==false ? '&' : '?').'response='.$resp);
+			header('Location: '.$redirectTo.(strpos($redirectTo, '?')!==false ? '&' : '?').'response='.$resp);
 			die();
 		}
 		header('Location: index.php?module=Users&action=Login&nativelogin=1');
 	}
 
-	public function saveSettings($isactive, $speid, $spacs, $spslo, $spnid, $ipeid, $ipsso, $ipslo, $ip509, $isactivews, $rwurl) {
+	public function saveSettings($isactive, $speid, $spacs, $spslo, $spnid, $ipeid, $ipsso, $ipslo, $ip509, $isactivews, $rwurl, $rwurl2, $rwurl3) {
 		coreBOS_Settings::setSetting(self::KEY_ISACTIVE, $isactive);
 		coreBOS_Settings::setSetting(self::KEY_ISACTIVEWS, $isactivews);
 		coreBOS_Settings::setSetting(self::KEY_SPEID, $speid);
@@ -428,6 +440,8 @@ class corebos_saml {
 		coreBOS_Settings::setSetting(self::KEY_IPSLO, $ipslo);
 		coreBOS_Settings::setSetting(self::KEY_IP509, $ip509);
 		coreBOS_Settings::setSetting(self::KEY_RWURL, $rwurl);
+		coreBOS_Settings::setSetting(self::KEY_RWURL2, $rwurl2);
+		coreBOS_Settings::setSetting(self::KEY_RWURL3, $rwurl3);
 	}
 
 	public function getSettings() {
@@ -443,6 +457,8 @@ class corebos_saml {
 			'IPSLO' => coreBOS_Settings::getSetting(self::KEY_IPSLO, ''),
 			'IPx509' => coreBOS_Settings::getSetting(self::KEY_IP509, ''),
 			'WSRURL' => coreBOS_Settings::getSetting(self::KEY_RWURL, ''),
+			'WSRURL2' => coreBOS_Settings::getSetting(self::KEY_RWURL2, ''),
+			'WSRURL3' => coreBOS_Settings::getSetting(self::KEY_RWURL3, ''),
 		);
 	}
 
