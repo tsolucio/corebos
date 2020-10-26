@@ -1,0 +1,40 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_workassignment</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_workassignment` (
+          `workassignmentid` INT(11) NOT NULL,
+          `workassignment_no` VARCHAR(56) default NULL,
+          `workassignmentname` VARCHAR(100) NOT NULL,
+          `startdate` DATE NOT NULL,
+          `enddate` DATE DEFAULT NULL,
+          `account_id` INT(11) NOT NULL,
+          `contact_id` INT(11) DEFAULT NULL,
+          `salesorder` INT(11) NOT NULL,
+          `wastatus` VARCHAR(100) DEFAULT NULL,
+          `pl_gross_total` DECIMAL(25,6),
+          `pl_dto_line` DECIMAL(25,6),
+          `pl_dto_global` DECIMAL(25,6),
+          `pl_dto_total` DECIMAL(25,6),
+          `pl_net_total` DECIMAL(25,6),
+          `pl_sh_total` DECIMAL(25,6),
+          `pl_sh_tax` DECIMAL(25,6),
+          `pl_adjustment` DECIMAL(25,6),
+          `pl_grand_total` DECIMAL(25,6),
+          `sum_nettotal` DECIMAL(25,6),
+          `sum_taxtotal` DECIMAL(25,6),
+          `taxtype` VARCHAR(16) DEFAULT 'group',
+          `currencyid` INT(11) DEFAULT 1,
+          PRIMARY KEY (`workassignmentid`)
+          ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_workassignmentcf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_workassignmentcf` (
+            `workassignmentid` INT(11) NOT NULL,
+            PRIMARY KEY (`workassignmentid`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

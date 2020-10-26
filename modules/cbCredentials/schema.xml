@@ -1,0 +1,40 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_cbcredentials</name>
+			<sql><![CDATA[CREATE TABLE IF NOT EXISTS `vtiger_cbcredentials` (
+`cbcredentialsid` INT(11) NOT NULL,
+`cbcredentialsno` VARCHAR(255) DEFAULT NULL,
+`adapter` VARCHAR(100) DEFAULT NULL,
+`azure_account` VARCHAR(255) DEFAULT NULL,
+`azure_key` VARCHAR(255) DEFAULT NULL,
+`azure_container` VARCHAR(200) DEFAULT NULL,
+`google_clientid` VARCHAR(200) DEFAULT NULL,
+`google_project_id` VARCHAR(200) DEFAULT NULL,
+`google_bucket` VARCHAR(200) DEFAULT NULL,
+`google_client_secret` VARCHAR(200) DEFAULT NULL,
+`google_developer_key` VARCHAR(200) DEFAULT NULL,
+`google_application_name` VARCHAR(200) DEFAULT NULL,
+`google_refresh_token` VARCHAR(200) DEFAULT NULL,
+`google_scopes` VARCHAR(200) DEFAULT NULL,
+`ftp_host` VARCHAR(200) DEFAULT NULL,
+`ftp_path` VARCHAR(200) DEFAULT NULL,
+`ftp_password` VARCHAR(200) DEFAULT NULL,
+`ftp_username` VARCHAR(200) DEFAULT NULL,
+`ftp_port` VARCHAR(200) DEFAULT NULL,
+`opencloud_username` VARCHAR(200) DEFAULT NULL,
+`opencloud_password` VARCHAR(200) DEFAULT NULL,
+`opencloud_projectname` VARCHAR(200) DEFAULT NULL,
+PRIMARY KEY (`cbcredentialsid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_cbcredentialscf</name>
+			<sql><![CDATA[CREATE TABLE IF NOT EXISTS `vtiger_cbcredentialscf` (
+`cbcredentialsid` INT(11) NOT NULL,
+PRIMARY KEY (`cbcredentialsid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>
