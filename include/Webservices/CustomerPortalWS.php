@@ -915,7 +915,7 @@ function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $use
 			$fieldsname = 'concat(';
 			$fieldsname = $fieldsname . implode(",' ',", $fieldlists);
 			$fieldsname = $fieldsname . ')';
-			$wherefield = implode(" $op '$term' or ", $fieldlists)." $op '$term' ";
+			$wherefield = implode(" $op '$term' or ", $fieldlists)." $op '$term' or $fieldsname $op '$term'";
 		}
 		$qry = "select crmid,$fieldsname as crmname
 			from {$ei['tablename']}
