@@ -97,6 +97,14 @@ function vtws_update($element, $user) {
 			}
 		}
 	}
+	// Validate assigned_user_id
+	if (!empty($element['assigned_user_id'])) {
+		list($void, $assigned_user_id) = explode('x', $element['assigned_user_id']);
+		$result = $adb->pquery('select 1 from vtiger_users where id=? and status=? and deleted=?', array($assigned_user_id, 'Active', 0));
+		if (!$result || $adb->num_rows($result)==0) {
+			throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, "Invalid reference specified for assigned_user_id");
+		}
+	}
 	// Product line support
 	if (in_array($entityName, getInventoryModules()) && isset($element['pdoInformation']) && (is_array($element['pdoInformation']))) {
 		$elementType = $entityName;
