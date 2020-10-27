@@ -110,5 +110,6 @@ $mod_strings = array(
 	'SAML x509' => 'x509 Certificate',
 	'SAML WS' => 'Web Service API',
 	'SAML RWURL' => 'Relay Response URL',
+	'LBL_API_URL' => 'Sendgrid API URL',
 );
 ?>

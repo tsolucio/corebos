@@ -30,6 +30,7 @@ class corebos_sendgrid {
 	private $srv_marketing = 'wxyz';
 	private $user_marketing = '123';
 	private $pass_marketing = 'abcde';
+	private $apiurl_transactional;
 
 	// Configuration Keys
 	const KEY_ISACTIVE = 'sendgrid_isactive';
@@ -41,6 +42,7 @@ class corebos_sendgrid {
 	const KEY_SRV_MARKETING = 'srvmarketing';
 	const KEY_USER_MARKETING = 'usermarketing';
 	const KEY_PASS_MARKETING = 'passwordmarketing';
+	const KEY_APIURL_TRANSACTIONAL = 'apiurl_transactional';
 
 	// Errors
 	public static $ERROR_NONE = 0;
@@ -63,6 +65,7 @@ class corebos_sendgrid {
 		$this->srv_marketing = coreBOS_Settings::getSetting(self::KEY_SRV_MARKETING, '');
 		$this->user_marketing = coreBOS_Settings::getSetting(self::KEY_USER_MARKETING, '');
 		$this->pass_marketing = coreBOS_Settings::getSetting(self::KEY_PASS_MARKETING, '');
+		$this->apiurl_transactional = coreBOS_Settings::getSetting(self::KEY_APIURL_TRANSACTIONAL, '');
 	}
 
 	public function saveSettings(
@@ -74,7 +77,8 @@ class corebos_sendgrid {
 		$usesg_marketing,
 		$srv_marketing,
 		$user_marketing,
-		$pass_marketing
+		$pass_marketing,
+		$apiurl_transactional
 	) {
 		coreBOS_Settings::setSetting(self::KEY_ISACTIVE, $isactive);
 		coreBOS_Settings::setSetting(self::KEY_USESG_TRANSACTIONAL, $usesg_transactional);
@@ -85,6 +89,7 @@ class corebos_sendgrid {
 		coreBOS_Settings::setSetting(self::KEY_SRV_MARKETING, $srv_marketing);
 		coreBOS_Settings::setSetting(self::KEY_USER_MARKETING, $user_marketing);
 		coreBOS_Settings::setSetting(self::KEY_PASS_MARKETING, $pass_marketing);
+		coreBOS_Settings::setSetting(self::KEY_APIURL_TRANSACTIONAL, $apiurl_transactional);
 		global $adb;
 		$em = new VTEventsManager($adb);
 		if (self::useEmailHook()) {
@@ -105,6 +110,7 @@ class corebos_sendgrid {
 			'srv_marketing' => coreBOS_Settings::getSetting(self::KEY_SRV_MARKETING, ''),
 			'user_marketing' => coreBOS_Settings::getSetting(self::KEY_USER_MARKETING, ''),
 			'pass_marketing' => coreBOS_Settings::getSetting(self::KEY_PASS_MARKETING, ''),
+			'apiurl_transactional' => coreBOS_Settings::getSetting(self::KEY_APIURL_TRANSACTIONAL, ''),
 		);
 	}
 
@@ -321,6 +327,81 @@ class corebos_sendgrid {
 			return array('corebos_sendgrid', 'include/integrations/sendgrid/sendgrid.php');
 		} else {
 			return $parameter;
+		}
+	}
+
+	public function getEmailTemplates() {
+		require_once 'vtlib/Vtiger/Net/Client.php';
+		global $log;
+		if (self::useEmailHook()) {
+			$apiUrl = coreBOS_Settings::getSetting(self::KEY_APIURL_TRANSACTIONAL, '');
+			$apiKey = coreBOS_Settings::getSetting(self::KEY_PASS_TRANSACTIONAL, '');
+			if (!empty($apiKey) && !empty($apiUrl)) {
+				$apiUrl .= '/templates?generations=dynamic';
+				$client = new Vtiger_Net_Client($apiUrl);
+				$client->setHeaders(array(
+					'Authorization' => 'Bearer '.$apiKey,
+					'Content-Type' => 'application/json'
+				));
+				try {
+					$response = $client->doGet();
+				} catch (Exception $e) {
+					$log->fatal('Exeption Encountered: '. $e->getMessage());
+				}
+				if (!empty($response)) {
+					return $response;
+				}
+				return '';
+			}
+		}
+	}
+
+	public function sendemailtemplate($templateId, $recordId, $mapId, $toEmail, $subject, $fromName, $fromEmail = '') {
+		global $current_user, $log;
+		if (empty($current_user)) {
+			$current_user = Users::getActiveAdminUser();
+		}
+		if (empty($fromEmail)) {
+			$fromEmail = GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
+		}
+		if (self::useEmailHook()) {
+			try {
+				$email = new \SendGrid\Mail\Mail();
+				$data = vtws_retrieve($recordId, $current_user);
+				$cbMap = cbMap::getMapByID($mapId);
+				$dataArr = array();
+				if ($cbMap) {
+					$dataArr = $cbMap->Mapping($data, $dataArr);
+				}
+				$email->setFrom($fromEmail, $fromName);
+				$email->setSubject($subject);
+				if (is_array($toEmail)) {
+					foreach ($toEmail as $email_to) {
+						$email->addTo(
+							$email_to,
+							$email_to, ///where to read the name of receiver --pending
+							$dataArr
+						);
+					}
+				} else {
+					$email->addTo(
+						$toEmail,
+						$toEmail, //where to read the name of receiver --pending
+						$dataArr
+					);
+				}
+				$email->setTemplateId($templateId);
+				$sendgrid = new \SendGrid(coreBOS_Settings::getSetting(self::KEY_PASS_TRANSACTIONAL, ''));
+				$response = $sendgrid->send($email);
+				if ($response->statusCode() != 202) {
+					$log->fatal($response->body());
+					return $response->statusCode();
+				}
+				return 1;
+			} catch (Exception $e) {
+				$log->fatal('Exeption Encountered: '. $e->getMessage());
+				return 0;
+			}
 		}
 	}
 }

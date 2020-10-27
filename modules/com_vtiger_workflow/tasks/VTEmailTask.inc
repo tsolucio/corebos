@@ -27,7 +27,7 @@ class VTEmailTask extends VTTask {
 	private $entityinfo = '';
 
 	public function getFieldNames() {
-		return array('fromname', 'fromemail', 'replyto', 'subject', 'content', 'recepient', 'emailcc', 'emailbcc', 'attfieldnames', 'attachmentids', 'attach_icalendar', 'cbmsgtemplate', 'cbmsgtemplate_display', 'sgmsgtemplate');
+		return array('fromname', 'fromemail', 'replyto', 'subject', 'content', 'recepient', 'emailcc', 'emailbcc', 'attfieldnames', 'attachmentids', 'attach_icalendar', 'cbmsgtemplate', 'cbmsgtemplate_display', 'sgmsgtemplate', 'sgmap', 'sgmap_display');
 	}
 	public function after_retrieve() {
 		global $adb, $current_user;
@@ -268,6 +268,15 @@ class VTEmailTask extends VTTask {
 		$crmid = $this->createMessage($this->entityid, $module, $subject, $this->summary);
 		if ($crmid=='') {
 			list($wsid, $crmid) = explode('x', $emailid);
+		}
+		if (!empty($this->sgmsgtemplate) && !empty($this->sgmap)) {
+			include_once 'include/integrations/sendgrid/sendgrid.php';
+			$sdInstance = new corebos_sendgrid();
+			try {
+				$res = $sdInstance->sendemailtemplate($this->sgmsgtemplate, $entity->getId(), $this->sgmap, $to_email, $subject, $from_name, $from_email);
+				return;
+			} catch (Exception $e) {
+			}
 		}
 		$rdo = send_mail($module, $to_email, $from_name, $from_email, $subject, $content, $cc, $bcc, $this->attachmentsinfo, $crmid, $logo, $replyto, $qrScan, $brScan);
 		$logbg->debug("VTEmailTask\nTo: $to_email\nFromName: $from_name\nFromEmail: $from_email\nCC: $cc\nBCC: $bcc\nResult: $rdo\nAttInfo: ".print_r($this->attachmentsinfo, true));
