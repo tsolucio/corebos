@@ -9314,7 +9314,7 @@ precacheAndRoute([{
   "revision": "db90975f5c545839aeedd67e83ac9ab2"
 }, {
   "url": "include/js/general.js",
-  "revision": "0a1488c60e373d3d718480d33bf82f3d"
+  "revision": "4d56b8b5dc682b8ece2cfc16a2f999a5"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "e4cc7bb9fdef5d2b8a887122f48cfc41"
@@ -9392,7 +9392,7 @@ precacheAndRoute([{
   "revision": "bd7796d82792b933aacc59cb48e0335e"
 }, {
   "url": "include/components/ldsprompt.js",
-  "revision": "223e52353f04374c75e36f084051d2ab"
+  "revision": "dcff6c137f5d5a9669c75dd4a719f2b0"
 }, {
   "url": "include/components/loadjs.js",
   "revision": "0cd3b9c507677b2cb93c292225399888"
@@ -9644,7 +9644,7 @@ precacheAndRoute([{
   "revision": "9ed4669f524bec38319be63a2ee4ba26"
 }, {
   "url": "modules/MailManager/MailManager.js",
-  "revision": "86956ec81e66b2b9eb9dd2e441f7f88f"
+  "revision": "12d6ddb8c1784c10beadea337823e434"
 }, {
   "url": "modules/MailManager/MailManager.png",
   "revision": "1c045d808355b6ed581cd4971f3436f9"
