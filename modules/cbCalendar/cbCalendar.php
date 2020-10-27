@@ -1051,7 +1051,9 @@ class cbCalendar extends CRMEntity {
 	 */
 	public function getiCalendar($activityData, $sendtobrowser = false) {
 		global $default_timezone;
-		define('_BENNU_VERSION', '0.1');
+		if (!defined('_BENNU_VERSION')) {
+			define('_BENNU_VERSION', '0.1');
+		}
 		require_once 'include/utils/utils.php';
 		//require_once 'modules/cbCalendar/CalendarCommon.php';
 		require_once 'modules/cbCalendar/iCal/iCalendar_rfc2445.php';
@@ -1063,8 +1065,6 @@ class cbCalendar extends CRMEntity {
 			$temp = $activityData->column_fields;
 			$recordid = $temp['record_id'];
 			$filename = 'icalfile_'.$recordid.'.ics';
-			header('Content-type: text/calendar');
-			header('Content-Disposition: attachment; filename='.$filename);
 			$temp['id'] = $recordid;
 			unset($temp['record_id']);
 			$tz = new iCalendar_timezone;
@@ -1103,6 +1103,8 @@ class cbCalendar extends CRMEntity {
 				echo $myical->serialize();
 			} else {
 				$filepath = 'cache/'.$filename;
+				header('Content-type: text/calendar');
+				header('Content-Disposition: attachment; filename='.$filename);
 				$res = file_put_contents($filepath, $myical->serialize());
 				if ($res) {
 					return $filepath;
