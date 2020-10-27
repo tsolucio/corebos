@@ -227,7 +227,7 @@ class corebos_saml {
 					die();
 				}
 				$failed_login_attempts = $adb->query_result($usrrs, 0, 'failed_login_attempts');
-				$maxFailedLoginAttempts = GlobalVariable::getVariable('Application_MaxFailedLoginAttempts', 5);
+				$maxFailedLoginAttempts = GlobalVariable::getVariable('Application_MaxFailedLoginAttempts', 5, $userid);
 				// Increment number of failed login attempts
 				$adb->pquery('UPDATE vtiger_users SET failed_login_attempts=COALESCE(failed_login_attempts,0)+1 where id=?', array($userid));
 				if (empty($_SESSION['login_error'])) {

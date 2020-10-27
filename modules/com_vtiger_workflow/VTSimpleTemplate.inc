@@ -395,7 +395,7 @@ class VTSimpleTemplate {
 	}
 
 	private function getRelatedList($relmodule, $format, $field) {
-		global $adb;
+		global $adb, $currentModule;
 		$modulename = $this->parent->getModuleName();
 		$mmtabid = getTabid($modulename);
 		$rmtabid = getTabid($relmodule);
@@ -414,8 +414,11 @@ class VTSimpleTemplate {
 		$_REQUEST['module'] = $modulename;
 		$_REQUEST['record'] = $crmid;
 		$_REQUEST['action'] = 'CallRelatedList';
+		$hold = isset($currentModule) ? $currentModule : '';
+		$currentModule = $modulename;
 		$params = array($crmid, $mmtabid, $rmtabid);
 		$relationData = call_user_func_array(array($mod, $func), $params);
+		$currentModule = $hold;
 		if (empty($relationData['entries'])) {
 			return '';
 		}
