@@ -1135,7 +1135,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		while ($mcinfo = $adb->fetch_array($multic)) {
 			$mc[$mcinfo['currencyid']] = array(
 				'converted_price' => number_format((float)$mcinfo['converted_price'], $cur_user_decimals, '.', ''),
-				'actual_price' => number_format((float)$unitprice, $cur_user_decimals, '.', ''),
+				'actual_price' => number_format((float)$mcinfo['actual_price'], $cur_user_decimals, '.', ''),
 			);
 		}
 		$ret_prodser['pricing']['multicurrency'] = $mc;
