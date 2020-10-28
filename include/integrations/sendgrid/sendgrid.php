@@ -357,6 +357,8 @@ class corebos_sendgrid {
 	}
 
 	public function sendemailtemplate($templateId, $recordId, $mapId, $toEmail, $subject, $fromName, $fromEmail = '') {
+		require_once 'include/Webservices/Retrieve.php';
+		require_once 'modules/cbMap/cbMap.php';
 		global $current_user, $log;
 		if (empty($current_user)) {
 			$current_user = Users::getActiveAdminUser();
@@ -379,14 +381,14 @@ class corebos_sendgrid {
 					foreach ($toEmail as $email_to) {
 						$email->addTo(
 							$email_to,
-							$email_to, ///where to read the name of receiver --pending
+							$email_to,
 							$dataArr
 						);
 					}
 				} else {
 					$email->addTo(
 						$toEmail,
-						$toEmail, //where to read the name of receiver --pending
+						$toEmail,
 						$dataArr
 					);
 				}
