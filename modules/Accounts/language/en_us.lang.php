@@ -192,5 +192,7 @@ $mod_strings = array(
 	'Free Space' => 'Free Space',
 	'Space Consumed' => 'Space Consumed',
 	'Frequency' => 'Invoice Frequency',
+	'ship_countrycode' => 'Shipping countrycode',
+	'bill_countrycode' => 'Billing countrycode',
 );
 ?>
