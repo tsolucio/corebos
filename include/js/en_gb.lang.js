@@ -393,5 +393,7 @@ var alert_arr = {
 	'Okay': 'Okay',
 	'Failed': 'Failed',
 	'Warning': 'Warning',
-	'Copied': 'Copied'
+	'Copied': 'Copied',
+	'ACT_UNIT_PRICE_MISMATCH': 'The actual price for this currency should be equal to the unit price, but this is not the case for this product or service'
+
 };

@@ -1975,8 +1975,13 @@ function handleProductAutocompleteSelect(obj) {
 	document.getElementById('productName'+no).value = obj.result.meta.name;
 	document.getElementById('comment'+no).innerHTML = obj.result.meta.comments;
 	var currency = document.getElementById('inventory_currency').value;
+	console.log(obj)
+	console.log(obj.result.pricing.multicurrency.length)
 	if (obj.result.pricing.multicurrency[currency] != undefined && gVTModule != 'PurchaseOrder' && gVTModule != 'Receiptcards') {
-		document.getElementById('listPrice'+no).value = obj.result.pricing.multicurrency[currency].converted_price;
+		if (Object.keys(obj.result.pricing.multicurrency).length == 1 && obj.result.pricing.multicurrency[currency].actual_price != obj.result.pricing.unit_price) {
+			ldsPrompt.show(alert_arr['Warning'], alert_arr.ACT_UNIT_PRICE_MISMATCH);
+		}
+		document.getElementById('listPrice'+no).value = obj.result.pricing.multicurrency[currency].actual_price;
 	} else {
 		var list_price = obj.result.pricing.unit_price;
 		if (gVTModule == 'PurchaseOrder' || gVTModule == 'Receiptcards' ) {
