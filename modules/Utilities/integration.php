@@ -102,6 +102,10 @@ switch ($_REQUEST['_op']) {
 	case 'setconfigloginsync':
 		include_once 'include/integrations/loginsync/settings.php';
 		break;
+	case 'getconfigonesignal':
+	case 'setconfigonesignal':
+		include_once 'include/integrations/onesignal/settings.php';
+		break;
 	default:
 		$smarty = new vtigerCRM_Smarty();
 		$titlemessage = getTranslatedString('Available Integrations', $currentModule);
@@ -179,6 +183,14 @@ switch ($_REQUEST['_op']) {
 				'title' => getTranslatedString('Login Sync Activation', 'Utilities'),
 				'desc' => getTranslatedString('Login_Synic Desc', 'Utilities'),
 				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigloginsync',
+			);
+		}
+		if (file_exists('OneSignalSDKUpdaterWorker.js') && file_exists('OneSignalSDKWorker.js')) {
+			$intgr[] = array(
+				'abbr' => 'OS',
+				'title' => getTranslatedString('OneSignal Activation', 'Utilities'),
+				'desc' => getTranslatedString('OneSignal Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigonesignal',
 			);
 		}
 		$smarty->assign('integrations', $intgr);

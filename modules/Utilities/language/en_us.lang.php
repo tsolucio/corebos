@@ -98,5 +98,10 @@ $mod_strings = array(
 	'sel_fields_es' => 'Select Fields for Elasticsearch Mapping',
 	'Analyzed' => 'Analyzed',
 	'Missing_GlobalVar' => 'Global Variables ElasticSearch IP missing',
+	'OneSignal Activation' => 'OneSignal Activation',
+	'OneSignal Desc' => 'Send Notification using OneSignal',
+	'onesignal_appid' => 'App ID',
+	'onesignal_apikey' => 'API Key',
+	'OneSignal Activation' => 'OneSignal Activation',
 );
 ?>

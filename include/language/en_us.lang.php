@@ -1200,6 +1200,7 @@ $app_strings = array(
 'LBL_CALLER_INFORMATION'=>'Caller Information',
 'LBL_CALLER_NUMBER'=>'Number :',
 'LBL_CALLER_NAME'=>'Name :',
+'LBL_VIEW_CONTACT' => 'View Contact',
 
 //asterisk integration ends
 

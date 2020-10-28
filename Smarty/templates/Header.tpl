@@ -55,6 +55,37 @@
 	<!-- End -->
 	{include file='BrowserVariables.tpl'}
 	{include file='Components/Components.tpl'}
+	{if $ONESIGNAL_IS_ACTIVE eq true}
+		<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+		<script>
+			let currentUserEmail = "{$CURRENT_USER_MAIL}";
+			let currentUserID = {$CURRENT_USER_ID};
+			let onesignal_appid = "{$ONESIGNAL_APP_ID}";
+			window.OneSignal = window.OneSignal || [];
+			OneSignal.push(function() {
+				//OneSignal.setRequiresUserPrivacyConsent(true);
+				OneSignal.init({
+					appId: onesignal_appid,
+				});
+
+				OneSignal.on('subscriptionChange', function(isSubscribed) {
+					if (isSubscribed) {
+						OneSignal.push(function() {
+						OneSignal.setExternalUserId(currentUserID);
+						OneSignal.setEmail(currentUserEmail);
+					});
+					}
+				});
+			});
+
+			function removeOneSignalExternalUserId() {
+				OneSignal.push(function() {
+					OneSignal.removeExternalUserId();
+					OneSignal.logoutEmail();
+				});
+			}
+		</script>
+	{/if}
 </head>
 <body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small style="min-width:1100px; width: 100%">
 	<!-- header -->
@@ -299,7 +330,7 @@
 								</li>
 								<li class="slds-dropdown__item" role="presentation">
 									<a href="index.php?module=Users&action=Logout" role="menuitem" tabindex="-1">
-										<span class="slds-truncate" title="{$APP.LBL_LOGOUT}">{$APP.LBL_LOGOUT}</span>
+										<span onclick="removeOneSignalExternalUserId(); return false" class="slds-truncate" title="{$APP.LBL_LOGOUT}">{$APP.LBL_LOGOUT}</span>
 									</a>
 								</li>
 							</ul>

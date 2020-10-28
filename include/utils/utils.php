@@ -3835,4 +3835,77 @@ function setDefaultCompanyParams($companyDetails) {
 	}
 	return $companyDetails;
 }
+
+/** Function to Send Pushnotification to corebos user
+  * @param $contents -- Content Displayed on Notification :: Type Array
+  * @param $headings -- Notification Head :: Type Array
+  * @param $subtitle -- Notification Header Subtitile:: Type Array
+  * @param $filters -- Condition for user to Receive Notification:: Type Array
+  * @param $external_user_id -- Condition for user to REceive Notification:: Type Array
+  * @returns $sendStatus -- Notification Sent Status:: Type Boolean
+  */
+function sendDesktopNotification($contents, $headings, $subtitle, $filters, $external_user_id, $web_url, $web_buttons) {
+	global $log;
+	include_once 'include/integrations/onesignal/onesignal.php';
+	$sendStatus = false;
+
+	$clientclass = new corebos_onesignal();
+	$isactive = $clientclass->isActive();
+	$appid = $clientclass->getAppId();
+	$apikey = $clientclass->getAPIKey();
+
+	if ($isactive) {
+		$fields = array(
+		  'app_id' => $appid
+		);
+
+		if (!empty($contents)) {
+			$fields['contents'] = $contents;
+		}
+
+		if (!empty($headings)) {
+			$fields['headings'] = $headings;
+		}
+
+		if (!empty($filters)) {
+			$fields['filters'] = $filters;
+		}
+
+		if (!empty($subtitle)) {
+			$fields['subtitle'] = $subtitle;
+		}
+
+		if (!empty($external_user_id)) {
+			$fields['include_external_user_ids'] = $external_user_id;
+		}
+
+		if (!empty($web_buttons)) {
+			$fields['web_buttons'] = $web_buttons;
+		}
+
+		if ($web_url != '') {
+			$fields['web_url'] = $web_url;
+		}
+
+		$fields = json_encode($fields);
+		$log->fatal($fields);
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, "https://onesignal.com/api/v1/notifications");
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+		  'Content-Type: application/json; charset=utf-8',
+		  'Authorization: Basic '.$apikey
+		));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+		$response = curl_exec($ch);
+		$log->fatal($response);
+		curl_close($ch);
+	}
+	return sendStatus;
+}
 ?>
