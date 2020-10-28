@@ -61,8 +61,8 @@
 		<tr>
 			<td width="100px" align=right class="cblds-t-align_right">{'LBL_REPLYTO'|@getTranslatedString}:</td>
 			<td id="_mailopen_replyto">
-				{foreach item=REPLYTO from=$MAIL->replyto()}
-					{$REPLYTO}
+				{foreach item=REPLYTO from=$MAIL->replyto() name='REPLYTO'}
+					{if $smarty.foreach.REPLYTO.index > 0}, {/if}{$REPLYTO}
 				{/foreach}
 			</td>
 		</tr>

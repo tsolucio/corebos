@@ -211,7 +211,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 
 			$this->_from = json_decode(decode_html($resultrow['mfrom']));
 			$this->_to   = json_decode(decode_html($resultrow['mto']));
-			$this->_reply_to   = json_decode(decode_html($resultrow['mreplyto']));
+			$this->_reply_to = json_decode(decode_html($resultrow['mreplyto']));
 			$this->_cc   = json_decode(decode_html($resultrow['mcc']));
 			$this->_bcc  = json_decode(decode_html($resultrow['mbcc']));
 

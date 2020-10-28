@@ -137,7 +137,8 @@ if ($saml->isActiveWS() && !empty($saml->samlclient) && ($mode!='' || ($operatio
 		} elseif ($mode=='metadata') {
 			$saml->metadata();
 		} else {
-			$saml->login();
+			$rturl = vtws_getParameter($_REQUEST, 'RTURL', '');
+			$saml->login($mode.($rturl=='' ? '' : '&RTURL='.$rturl));
 		}
 	}
 	die();

@@ -47,8 +47,10 @@ class MailManager_MailController extends MailManager_Controller {
 			$uicontent = $viewer->fetch($this->getModuleTpl('Mail.Open.tpl'));
 
 			$metainfo = array(
-				'from' => $mail->from(), 'subject' => $mail->subject(),
-				'msgno' => $mail->msgNo(), 'msguid' => $mail->uniqueid(),
+				'from' => $mail->from(),
+				'subject' => $mail->subject(),
+				'msgno' => $mail->msgNo(),
+				'msguid' => $mail->uniqueid(),
 				'folder' => $foldername
 			);
 

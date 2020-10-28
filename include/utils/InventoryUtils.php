@@ -749,14 +749,14 @@ function getPriceDetailsForProduct($productid, $unit_price, $available = 'availa
 		$product_base_conv_rate = getBaseConversionRateForProduct($productid, 'edit', $itemtype);
 		// Detail View
 		if ($available == 'available_associated') {
-			$query = "select vtiger_currency_info.*, vtiger_productcurrencyrel.converted_price, vtiger_productcurrencyrel.actual_price
+			$query = "select vtiger_currency_info.*, vtiger_productcurrencyrel.actual_price
 					from vtiger_currency_info
 					inner join vtiger_productcurrencyrel on vtiger_currency_info.id = vtiger_productcurrencyrel.currencyid
 					where vtiger_currency_info.currency_status = 'Active' and vtiger_currency_info.deleted=0
 					and vtiger_productcurrencyrel.productid = ? and vtiger_currency_info.id != ?";
 			$params = array($productid, $product_currency_id);
 		} else { // Edit View
-			$query = "select vtiger_currency_info.*, vtiger_productcurrencyrel.converted_price, vtiger_productcurrencyrel.actual_price
+			$query = "select vtiger_currency_info.*, vtiger_productcurrencyrel.actual_price
 					from vtiger_currency_info
 					left join vtiger_productcurrencyrel
 					on vtiger_currency_info.id = vtiger_productcurrencyrel.currencyid and vtiger_productcurrencyrel.productid = ?

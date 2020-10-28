@@ -63,6 +63,7 @@ function vtws_create($elementType, $element, $user) {
 	}
 
 	$referenceFields = $meta->getReferenceFieldDetails();
+	$referenceFields['assigned_user_id'] = array('Users', 'Groups');
 	foreach ($referenceFields as $fieldName => $details) {
 		if (!empty($element[$fieldName])) {
 			$element[$fieldName] = vtws_getWSID($element[$fieldName]);

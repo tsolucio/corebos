@@ -169,6 +169,7 @@ if (isset($_REQUEST['reply']) && $_REQUEST['reply'] == 'true') {
 		$from_mail = $adb->query_result($result, 0, 'from_email');
 		$replyto = $adb->query_result($result, 0, 'replyto');
 		$smarty->assign('TO_MAIL', (empty($replyto) ? trim($from_mail, ',').',' : $replyto));
+		$smarty->assign('REPLYTO', '');
 		$smarty->assign('FROM_MAIL', '');
 		$cc_add = implode(',', json_decode($adb->query_result($result, 0, 'cc_email'), true));
 		$smarty->assign('CC_MAIL', $cc_add);

@@ -121,6 +121,8 @@ $mod_strings = array(
 	'SAML SLO' => 'Servicio de Desconexión Unico',
 	'SAML x509' => 'Certificado x509',
 	'SAML WS' => 'API Web Service',
-	'SAML RWURL' => 'URL de respuesta',
+	'SAML RWURL' => 'URL de respuesta 1',
+	'SAML RWURL2' => 'URL de respuesta 2',
+	'SAML RWURL3' => 'URL de respuesta 3',
 );
 ?>

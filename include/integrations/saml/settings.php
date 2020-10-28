@@ -23,7 +23,7 @@ $wa = new corebos_saml();
 
 $isadmin = is_admin($current_user);
 
-if ($isadmin && isset($_REQUEST['speid'])) {
+if ($isadmin && !empty($_REQUEST['speid'])) {
 	$isActive = ((empty($_REQUEST['saml_active']) || $_REQUEST['saml_active']!='on') ? '0' : '1');
 	$isActiveWS = ((empty($_REQUEST['saml_activews']) || $_REQUEST['saml_activews']!='on') ? '0' : '1');
 	$speid = (empty($_REQUEST['speid']) ? '' : vtlib_purify($_REQUEST['speid']));
@@ -35,7 +35,9 @@ if ($isadmin && isset($_REQUEST['speid'])) {
 	$ipslo = (empty($_REQUEST['ipslo']) ? '' : vtlib_purify($_REQUEST['ipslo']));
 	$ip509 = (empty($_REQUEST['ip509']) ? '' : vtlib_purify($_REQUEST['ip509']));
 	$rwurl = (empty($_REQUEST['rwurl']) ? '' : vtlib_purify($_REQUEST['rwurl']));
-	$wa->saveSettings($isActive, $speid, $spacs, $spslo, $spnid, $ipeid, $ipsso, $ipslo, $ip509, $isActiveWS, $rwurl);
+	$rwurl2 = (empty($_REQUEST['rwurl2']) ? '' : vtlib_purify($_REQUEST['rwurl2']));
+	$rwurl3 = (empty($_REQUEST['rwurl3']) ? '' : vtlib_purify($_REQUEST['rwurl3']));
+	$wa->saveSettings($isActive, $speid, $spacs, $spslo, $spnid, $ipeid, $ipsso, $ipslo, $ip509, $isActiveWS, $rwurl, $rwurl2, $rwurl3);
 }
 
 $smarty->assign('TITLE_MESSAGE', getTranslatedString('SAML Activation', $currentModule));
@@ -51,6 +53,8 @@ $smarty->assign('ipsso', $wasettings['IPSSO']);
 $smarty->assign('ipslo', $wasettings['IPSLO']);
 $smarty->assign('ip509', $wasettings['IPx509']);
 $smarty->assign('rwurl', $wasettings['WSRURL']);
+$smarty->assign('rwurl2', $wasettings['WSRURL2']);
+$smarty->assign('rwurl3', $wasettings['WSRURL3']);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
