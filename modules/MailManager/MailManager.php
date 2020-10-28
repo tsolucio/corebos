@@ -12,6 +12,9 @@ require_once 'data/CRMEntity.php';
 
 class MailManager {
 	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-contact', 'class' => 'slds-icon', 'icon'=>'email');
+	public static $crmentityTable = 'vtiger_crmentity';
+	public static $crmEntityTableAlias;
+	public static $denormalized = false;
 
 	public static function updateMailAssociation($mailuid, $emailid, $crmid) {
 		global $adb;
