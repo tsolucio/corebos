@@ -337,4 +337,12 @@
 	<classname>addReplyToOnEmail</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>MajorLabel</author>
+	<description>Add countrycode to account address section</description>
+	<filename>build/changeSets/2020/addCountryCode.php</filename>
+	<classname>addCountryCode</classname>
+	<systemupdate>false</systemupdate>
+	<blocked>true</blocked>
+</changeSet>
 </updatesChangeLog>
