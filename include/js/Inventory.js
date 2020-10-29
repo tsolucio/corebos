@@ -56,8 +56,8 @@ function copyAddressRight(form) {
 
 	if (form.ship_countrycode != undefined) {
 		[...form.ship_countrycode.options].forEach((option) => {
-			option.selected = option.value == form.bill_countrycode.value
-		})
+			option.selected = (option.value == form.bill_countrycode.value);
+		});
 	}
 
 	return true;
@@ -90,8 +90,8 @@ function copyAddressLeft(form) {
 
 	if (form.bill_countrycode != undefined) {
 		[...form.bill_countrycode.options].forEach((option) => {
-			option.selected = option.value == form.ship_countrycode.value
-		})
+			option.selected = (option.value == form.ship_countrycode.value);
+		});
 	}
 
 	return true;

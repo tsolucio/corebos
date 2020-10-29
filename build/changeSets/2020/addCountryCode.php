@@ -32,8 +32,8 @@ class addCountryCode extends cbupdaterWorker {
 			$file = 'https://raw.githubusercontent.com/datasets/country-codes/master/data/country-codes.csv';
 			$lines = array_map('str_getcsv', explode(PHP_EOL, file_get_contents($file)));
 			array_walk($lines, function (&$line) use ($lines) {
-				$line = array_combine($lines[0], $line);
-				$line = $line['ISO3166-1-Alpha-2'];
+				$line = @array_combine($lines[0], $line);
+				$line = empty($line['ISO3166-1-Alpha-2']) ? false : $line['ISO3166-1-Alpha-2'];
 			});
 			array_shift($lines);
 			array_unshift($lines, '--None--');
