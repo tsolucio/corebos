@@ -1311,7 +1311,6 @@ const mb = {
 				newValues += `${objValues[i]},`;
 			}
 		}
-		console.log(newValues);
 		document.getElementById(`viewfields-${FILTER_COUNT}`).value = newValues;
 	},
 
@@ -1916,7 +1915,7 @@ const mb = {
 			  <thead>
 			    <tr class="slds-line-height_reset">
 			      	<thscope="col">
-			        	<div class="slds-truncate">Blocks list</div>
+			        	<div class="slds-truncate">${mod_alert_arr.blockslist}</div>
 			      	</th>
 			    </tr>
 			  </thead>
@@ -1940,19 +1939,19 @@ const mb = {
 			  <thead>
 			    <tr class="slds-line-height_reset">
 			      	<th class="" scope="col">
-			        	<div class="slds-truncate" title="fieldname">fieldname</div>
+			        	<div class="slds-truncate">${mod_alert_arr.fieldname}</div>
 			      	</th>
 			      	<th class="" scope="col">
-			        	<div class="slds-truncate" title="fieldlabel">fieldlabel</div>
+			        	<div class="slds-truncate">${mod_alert_arr.fieldlabel}</div>
 			      	</th>
 			      	<th class="" scope="col">
-			        	<div class="slds-truncate" title="uitype">uitype</div>
+			        	<div class="slds-truncate">${mod_alert_arr.uitype}</div>
 			      	</th>
 			      	<th class="" scope="col">
-			        	<div class="slds-truncate" title="relatedmodules">relatedmodules</div>
+			        	<div class="slds-truncate">${mod_alert_arr.relatedmodule}</div>
 			      	</th>
 			      	<th class="" scope="col">
-			        	<div class="slds-truncate" title="masseditable">masseditable</div>
+			        	<div class="slds-truncate">${mod_alert_arr.massedit}</div>
 			      	</th>
 			    </tr>
 			  </thead>
@@ -1988,10 +1987,10 @@ const mb = {
 			  <thead>
 			    <tr class="slds-line-height_reset">
 			      	<th class="" scope="col">
-			        	<div class="slds-truncate">Name</div>
+			        	<div class="slds-truncate">${mod_alert_arr.filter}</div>
 			      	</th>
 			      	<th class="" scope="col">
-			        	<div class="slds-truncate">Fields</div>
+			        	<div class="slds-truncate">${mod_alert_arr.fields}</div>
 			      	</th>
 			    </tr>
 			  </thead>
@@ -2018,16 +2017,16 @@ const mb = {
 			  <thead>
 			    <tr class="slds-line-height_reset">
 			      	<th class="" scope="col">
-			        	<div class="slds-truncate">function</div>
+			        	<div class="slds-truncate">${mod_alert_arr.functionname}</div>
 			      	</th>
 			      	<th class="" scope="col">
-			        	<div class="slds-truncate">label</div>
+			        	<div class="slds-truncate">${mod_alert_arr.fieldlabel}</div>
 			      	</th>
 			      	<th class="" scope="col">
-			        	<div class="slds-truncate">actions</div>
+			        	<div class="slds-truncate">${mod_alert_arr.actions}</div>
 			      	</th>
 			      	<th class="" scope="col">
-			        	<div class="slds-truncate">relatedmodule</div>
+			        	<div class="slds-truncate">${mod_alert_arr.relatedmodules}</div>
 			      	</th>
 			    </tr>
 			  </thead>

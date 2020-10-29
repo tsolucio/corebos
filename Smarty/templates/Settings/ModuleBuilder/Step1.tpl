@@ -57,25 +57,25 @@
                             </div>
                         </div><br>
                         <h3 class="slds-setup-assistant__step-summary-title slds-text-heading_small">
-                            <span style="text-transform: uppercase;">CUSTOM INFORMATION</span>
+                            <span style="text-transform: uppercase;">{$MOD.LBL_CUSTOM_INFORMATION}</span>
                         </h3>
                         <div class="slds-form-element__control slds-grid slds-gutters">
                             <div class="slds-col slds-size_6-of-12">
                             <fieldset class="slds-form-element">
-                              <legend class="slds-form-element__legend slds-form-element__label">SHARING ACCESS</legend>
+                              <legend class="slds-form-element__legend slds-form-element__label">{$MOD.LBL_SHARING_ACCESS}</legend>
                               <div class="slds-form-element__control">
                                 <span class="slds-radio">
                                   <input type="radio" id="private" value="private" name="sharingaccess" checked="" />
                                   <label class="slds-radio__label" for="private">
                                     <span class="slds-radio_faux"></span>
-                                    <span class="slds-form-element__label">Private</span>
+                                    <span class="slds-form-element__label">{$MOD.LBL_PRIVATE}</span>
                                   </label>
                                 </span>
                                 <span class="slds-radio">
                                   <input type="radio" id="public" value="public" name="sharingaccess" />
                                   <label class="slds-radio__label" for="public">
                                     <span class="slds-radio_faux"></span>
-                                    <span class="slds-form-element__label">Public</span>
+                                    <span class="slds-form-element__label">{$MOD.LBL_PUBLIC}</span>
                                   </label>
                                 </span>
                               </div>
@@ -83,7 +83,7 @@
                             </div>
                             <div class="slds-col slds-size_6-of-12">
                                 <div class="slds-form-element">
-                                    <label class="slds-form-element__legend slds-form-element__label">ACTIONS</label>
+                                    <label class="slds-form-element__legend slds-form-element__label">{$MOD.LBL_ACTIONS}</label>
                                     <div class="slds-form-element__control">
                                     <div class="slds-form-element">
                                       <div class="slds-form-element__control">
@@ -91,7 +91,7 @@
                                           <input type="checkbox" id="merge" name="merge" />
                                           <label class="slds-checkbox__label" for="merge">
                                             <span class="slds-checkbox_faux"></span>
-                                            <span class="slds-form-element__label">Merge</span>
+                                            <span class="slds-form-element__label">{$MOD.LBL_MERGE}</span>
                                           </label>
                                         </div>
                                       </div>
@@ -102,7 +102,7 @@
                                           <input type="checkbox" id="import" name="import" />
                                           <label class="slds-checkbox__label" for="import">
                                             <span class="slds-checkbox_faux"></span>
-                                            <span class="slds-form-element__label">Import</span>
+                                            <span class="slds-form-element__label">{$MOD.LBL_IMPORT}</span>
                                           </label>
                                         </div>
                                       </div>
@@ -113,7 +113,7 @@
                                           <input type="checkbox" id="export" name="export" />
                                           <label class="slds-checkbox__label" for="export">
                                             <span class="slds-checkbox_faux"></span>
-                                            <span class="slds-form-element__label">Export</span>
+                                            <span class="slds-form-element__label">{$MOD.LBL_EXPORT}</span>
                                           </label>
                                         </div>
                                       </div>
