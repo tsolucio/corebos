@@ -923,5 +923,13 @@ $mod_strings = array(
 	'LBL_MB_NEWRL' => 'Add related list',
 	'LBL_MB_FINISH' => 'Finish',
 	'LBL_MB_BACK' => 'BACK',
+	'LBL_CUSTOM_INFORMATION' => 'CUSTOM INFORMATION',
+	'LBL_SHARING_ACCESS' => 'SHARING ACCESS',
+	'LBL_PRIVATE' => 'Private',
+	'LBL_PUBLIC' => 'Public',
+	'LBL_ACTIONS' => 'ACTIONS',
+	'LBL_MERGE' => 'Merge',
+	'LBL_IMPORT' => 'Import',
+	'LBL_EXPORT' => 'Export',
 );
 ?>
