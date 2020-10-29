@@ -288,5 +288,7 @@ $mod_strings = array(
 	'SYNC_RESULTS'=>'Sync Results',
 	'ERR_GContactsSync'=>'There has been an error accessing Google. The settings have been deleted, please configure the access again.',
 	'Template Language' => 'Template Language',
+	'ship_countrycode' => 'A Landcode',
+	'bill_countrycode' => 'P landcode',
 );
 ?>
