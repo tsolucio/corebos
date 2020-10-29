@@ -345,4 +345,12 @@
 	<systemupdate>false</systemupdate>
 	<blocked>true</blocked>
 </changeSet>
+<changeSet>
+	<author>MajorLabel</author>
+	<description>Add countrycode to contact address section</description>
+	<filename>build/changeSets/2020/addCountryCodeContacts.php</filename>
+	<classname>addCountryCodeContacts</classname>
+	<systemupdate>false</systemupdate>
+	<blocked>true</blocked>
+</changeSet>
 </updatesChangeLog>
