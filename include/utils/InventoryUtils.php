@@ -11,11 +11,11 @@ require_once 'modules/Emails/mail.php';
 
 /**
  * This function returns the Product detail block values in array format.
- * Input Parameter are
- *  $module - module name,
- *  $focus - module object,
- *  $num_of_products - no.of products associated with it
- *  $associated_prod = associated product details
+ * @param string $module - module name,
+ * @param object $focus - module object,
+ * @param integer $num_of_products - no.of products associated with it
+ * @param array $associated_prod = associated product details
+ * @return array Product detail block values
  */
 function getProductDetailsBlockInfo($mode, $module, $focus = '', $num_of_products = '', $associated_prod = '') {
 	global $log;
@@ -749,14 +749,14 @@ function getPriceDetailsForProduct($productid, $unit_price, $available = 'availa
 		$product_base_conv_rate = getBaseConversionRateForProduct($productid, 'edit', $itemtype);
 		// Detail View
 		if ($available == 'available_associated') {
-			$query = "select vtiger_currency_info.*, vtiger_productcurrencyrel.converted_price, vtiger_productcurrencyrel.actual_price
+			$query = "select vtiger_currency_info.*, vtiger_productcurrencyrel.actual_price
 					from vtiger_currency_info
 					inner join vtiger_productcurrencyrel on vtiger_currency_info.id = vtiger_productcurrencyrel.currencyid
 					where vtiger_currency_info.currency_status = 'Active' and vtiger_currency_info.deleted=0
 					and vtiger_productcurrencyrel.productid = ? and vtiger_currency_info.id != ?";
 			$params = array($productid, $product_currency_id);
 		} else { // Edit View
-			$query = "select vtiger_currency_info.*, vtiger_productcurrencyrel.converted_price, vtiger_productcurrencyrel.actual_price
+			$query = "select vtiger_currency_info.*, vtiger_productcurrencyrel.actual_price
 					from vtiger_currency_info
 					left join vtiger_productcurrencyrel
 					on vtiger_currency_info.id = vtiger_productcurrencyrel.currencyid and vtiger_productcurrencyrel.productid = ?
@@ -1065,10 +1065,10 @@ function createRecords($obj) {
 		$subjectRowIDs = array();
 		for ($j = 0; $j < $count; ++$j) {
 			$subjectRow = $adb->raw_query_result_rowdata($subjectResult, $j);
+			$subjectRowIDs[] = isset($subjectRow['id']) ? $subjectRow['id'] : 0;
 			if ($subjectRow['productid'] == '' || $subjectRow['quantity'] == '' || $subjectRow['listprice'] == '') {
 				continue;
 			}
-			$subjectRowIDs[] = $subjectRow['id'];
 			$lineItemData = array();
 			$lineItemData['discount'] = 0;
 			foreach ($fieldMapping as $fieldName => $index) {
@@ -1311,10 +1311,19 @@ function getCurrencyId($fieldValue) {
 	return $currencyId;
 }
 
+function isFrontendEditViewAction($request, $module) {
+	global $log;
+	$return = ($request['action'] != $module.'Ajax' && $request['action'] != 'MassEditSave' && $request['action'] != 'ProcessDuplicates'
+		&& (empty($request['ajxaction']) || ($request['ajxaction'] != 'DETAILVIEW' && $request['ajxaction'] != 'Workflow')));
+	$log->debug('>< isFrontendEditViewAction '.($return ? 'true':'false'));
+	return $return;
+}
+
 function inventoryCanSaveProductLines($request, $module) {
 	global $log;
 	$return = ($request['action'] != $module.'Ajax' && $request['action'] != 'MassEditSave' && $request['action'] != 'ProcessDuplicates'
-			&& (empty($request['ajxaction']) || ($request['ajxaction'] != 'DETAILVIEW' && $request['ajxaction'] != 'Workflow')));
+		&& (empty($request['ajxaction']) || ($request['ajxaction'] != 'DETAILVIEW' && $request['ajxaction'] != 'Workflow'))
+		&& (isset($request['totalProductCount']) && (int)$request['totalProductCount'] > 0));
 	$log->debug('>< inventoryCanSaveProductLines '.($return ? 'true':'false'));
 	return $return;
 }

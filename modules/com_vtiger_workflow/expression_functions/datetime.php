@@ -52,15 +52,16 @@ function __cb_holidaydifference($arr) {
 		return 0; // one or more parameter is missing
 	}
 
+	if (empty($date1) || empty($date2)) {
+		return 0;
+	}
+
 	if ($addsaturday == 0) {
 		$lastdow = 6;
 	} else {
 		$lastdow = 7;
 	}
 
-	if (empty($date1) || empty($date2)) {
-		return 0;
-	}
 	$firstDate = new DateTime($date1);
 	$lastDate = new DateTime($date2);
 	if ($firstDate>$lastDate) {
@@ -84,7 +85,7 @@ function __cb_holidaydifference($arr) {
 			$holidays = explode(',', $arr[3]);
 		}
 		//add holidays dates
-		foreach ($holidays as $key => $dateVal) {
+		foreach ($holidays as $dateVal) {
 			$holidayDate = new DateTime($dateVal);
 			if (strtotime($dateVal) >= strtotime($date1) && strtotime($dateVal) <= strtotime($date2)) {
 				$days -= $holidayDate->format('N') < $lastdow ? 1 : 0;
@@ -129,7 +130,7 @@ function __cb_networkdays($arr) {
 			$holidays = explode(',', $arr[2]);
 		}
 		//add holidays dates
-		foreach ($holidays as $key => $dateVal) {
+		foreach ($holidays as $dateVal) {
 			$holidayDate = new DateTime($dateVal);
 			if (strtotime($dateVal) >= strtotime($net_date1) && strtotime($dateVal) <= strtotime($net_date2)) {
 				$days -= $holidayDate->format('N') < 6 ? 1 : 0;
@@ -436,6 +437,37 @@ function __cb_add_workdays($arr) {
 	$x = 0;
 	while ($x < $numofdays) {
 		$date = $date->add($interval);
+		if ($date->format('N') < $lastdow && !in_array($date->format('Y-m-d'), $holidays)) {
+			$x++;
+		}
+	}
+	return $date->format('Y-m-d');
+}
+
+function __cb_sub_workdays($arr) {
+	$date = new DateTime($arr[0]);
+	$numofdays = $arr[1];
+	$removesaturday = isset($arr[2]) ? $arr[2] : 0;
+	if ($removesaturday == 1) {
+		$lastdow = 7;
+	} else {
+		$lastdow = 6;
+	}
+	if (isset($arr[3]) && trim($arr[3])!='') {
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$arr[3], cbMap::getMapIdByName($arr[3]));
+		if ($cbMapid != 0) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$holidays = $cbMap->InformationMap()->readInformationValue();
+		} else {
+			$holidays = explode(',', $arr[3]);
+		}
+	} else {
+		$holidays = array();
+	}
+	$interval = new DateInterval('P1D');
+	$x = 0;
+	while ($x < $numofdays) {
+		$date = $date->sub($interval);
 		if ($date->format('N') < $lastdow && !in_array($date->format('Y-m-d'), $holidays)) {
 			$x++;
 		}

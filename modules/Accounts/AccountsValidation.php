@@ -33,10 +33,9 @@ if ($blockDuplicateAccounts && isset($screen_values['accountname'])) {
 	$query = 'SELECT 1 FROM vtiger_account,vtiger_crmentity WHERE accountname=? and vtiger_account.accountid=vtiger_crmentity.crmid and vtiger_crmentity.deleted!=1';
 	$value = vtlib_purify($screen_values['accountname']);
 	$params = array($value);
-	$id = vtlib_purify($screen_values['record']);
-	if (!empty($id)) {
+	if (!empty($screen_values['record'])) {
 		$query .= ' and vtiger_account.accountid != ?';
-		$params[] = $id;
+		$params[] = vtlib_purify($screen_values['record']);
 	}
 	$result = $adb->pquery($query, $params);
 	if ($adb->num_rows($result) > 0) {

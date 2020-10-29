@@ -154,6 +154,6 @@ function extract_recurrence($ical_string) {
 			}
 		}
 	} //foreach $rep
-	return implode($recur_list, "\r\n");
+	return implode("\r\n", $recur_list);
 }
 ?>

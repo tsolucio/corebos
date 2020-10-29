@@ -37,6 +37,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Debug_Calculate_Response_Time',
 				'Debug_ActivityReminder_Deactivated',
 				'Debug_Access_Restricted_File',
+				'Debug_Email_Send_To_Inbucket',
 
 				'Application_Global_Search_SelectedModules',
 				'Application_Global_Search_Binary',
@@ -55,6 +56,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_DetailView_Record_Navigation',
 				'Application_DetailView_Sticky_BlockStatus',
 				'Application_DetailView_PageHeader_Message',
+				'Application_Filter_All_Edit',
 				'Application_EditView_Submit_Form_WithEnter',
 				'Application_TrackerMaxHistory',
 				'Application_Announcement',
@@ -104,6 +106,9 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Popup_Address_Selection',
 				'Application_Unique_Identifier',
 				'Application_CSRF_Valid_IP',
+				'Application_PopupScreen_Width',
+				'Application_PopupScreen_Height',
+				'Application_Textarea_Style',
 
 				'Graph_DataLabels',
 				'Graph_DataLabels_Color',
@@ -124,6 +129,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Calendar_Show_Only_My_Events',
 				'Calendar_Show_WeekNumber',
 				'Calendar_goDirectToDetailView',
+				'Calendar_Notification_Sound',
 
 				'CronTasks_cronWatcher_mailto',
 				'CronTasks_cronWatcher_TimeThreshold',
@@ -145,6 +151,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Webservice_Enabled',
 				'WebService_Session_Life_Span',
 				'WebService_Session_Idle_Time',
+				'Webservice_Describe_ReturnUserList',
+				'Webservice_Describe_ReturnGroupList',
 				'SOAP_CustomerPortal_Enabled',
 				'SOAP_Outlook_Enabled',
 
@@ -165,6 +173,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Import_Batch_Limit',
 				'Import_Scheduled_Limit',
 				'Import_Launch_EventsAndWorkflows',
+				'Import_LeaveUserReferenceFieldEmpty',
 				'Export_Field_Separator_Symbol',
 				'Export_RelatedField_GetValueFrom',
 				'Export_RelatedField_NameForSearch',
@@ -199,6 +208,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'EMail_CustomCurrentDate_Format',
 				'EMail_Less_Strict_ContentClean',
 				'EMail_Send_Individual',
+				'EMail_Signature_BeforeQuote',
 				'MailManager_Show_SentTo_Links',
 				'ToolTip_MaxFieldValueLength',
 				'ToolTip_NumberOfComments',
@@ -228,6 +238,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Report_HeaderOnPDF',
 
 				'Inventory_ListPrice_ReadOnly',
+				'Inventory_Comment_Style',
 				'Inventory_Show_ShippingHandlingCharges',
 				'Inventory_Check_Invoiced_Lines',
 				'Inventory_Tax_FillInMode',

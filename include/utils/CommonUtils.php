@@ -58,8 +58,9 @@ function isInsideApplication($path2check) {
  * THIS FUNCTION IS DEPRECATED AND SHOULD NOT BE USED; USE get_select_options_with_id()
  * Create HTML to display select options in a dropdown list.  To be used inside
  * of a select statement in a form.
- * param $option_list - the array of strings to that contains the option list
- * param $selected - the string which contains the default value
+ * @param $option_list - the array of strings to that contains the option list
+ * @param $selected - the string which contains the default value
+ * @deprecated
  */
 function get_select_options(&$option_list, $selected, $advsearch = 'false') {
 	global $log;
@@ -1086,6 +1087,7 @@ function getTermsandConditions($module = '') {
 		$module = $currentModule;
 	}
 	$log->debug('> getTermsandConditions '.$module);
+	$tandc = '';
 	if (vtlib_isModuleActive('cbTermConditions')) {
 		$result = $adb->pquery(
 			'select tandc
@@ -1097,15 +1099,6 @@ function getTermsandConditions($module = '') {
 		);
 		if ($result && $adb->num_rows($result)>0) {
 			$tandc = $adb->query_result($result, 0, 'tandc');
-		} else {
-			$tandc = '';
-		}
-	} else {
-		$result = $adb->pquery('select tandc from vtiger_inventory_tandc limit 1', array());
-		if ($result && $adb->num_rows($result)>0) {
-			$tandc = $adb->query_result($result, 0, 'tandc');
-		} else {
-			$tandc = '';
 		}
 	}
 	$log->debug('< getTermsandConditions');
@@ -2292,6 +2285,7 @@ function validateImageMetadata($data) {
 			|| stripos($data, '<?=') !== false
 			|| stripos($data, '<%=') !== false
 			|| stripos($data, '<? ') !== false
+			|| stripos($data, '<?php ') !== false
 			|| stripos($data, '<% ') !== false
 		) {
 			return false;
@@ -2317,6 +2311,7 @@ function validateImageContents($filename) {
 		|| stripos($contents, '<?=') !== false
 		|| stripos($contents, '<%=') !== false
 		|| stripos($contents, '<? ') !== false
+		|| stripos($contents, '<?php ') !== false
 		|| stripos($contents, '<% ') !== false
 	) {
 		return false;

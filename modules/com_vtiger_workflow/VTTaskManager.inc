@@ -128,8 +128,9 @@ class VTTaskManager {
 	}
 
 	public function unserializeTask($str) {
-		$tasktype = VTTaskType::getInstanceFromTaskType(self::taskName($str));
-		$this->requireTask(self::taskName($str), $tasktype);
+		$taskName = $this->taskName($str);
+		$tasktype = VTTaskType::getInstanceFromTaskType($taskName);
+		$this->requireTask($taskName, $tasktype);
 		return unserialize($str);
 	}
 
@@ -149,8 +150,9 @@ class VTTaskManager {
 		$tasks = array();
 		foreach ($it as $row) {
 			$text = $row->task;
-			$tasktype = VTTaskType::getInstanceFromTaskType(self::taskName($text));
-			$this->requireTask(self::taskName($text), $tasktype);
+			$taskName = $this->taskName($text);
+			$tasktype = VTTaskType::getInstanceFromTaskType($taskName);
+			$this->requireTask($taskName, $tasktype);
 			$wftask = unserialize($text);
 			$wftask->executionorder = $row->executionorder;
 			$tasks[] = $wftask;

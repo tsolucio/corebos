@@ -14,7 +14,7 @@ $service='GoogleCalendar';
 if (!empty($_REQUEST['hour_format'])) {
 	$hour_format = vtlib_purify($_REQUEST['hour_format']);
 } else {
-	$hour_format = '24';
+	$hour_format = '12';
 }
 
 $activity_view = $_REQUEST['activity_view'];

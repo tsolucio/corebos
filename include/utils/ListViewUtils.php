@@ -2112,18 +2112,9 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					}
 				}
 			} else {
-				if (($module == 'Leads' && $colname == 'lastname') || ($module == 'Contacts' && $colname == 'lastname')) {
+				if ($colname == 'lastname' && ($module == 'Leads' || $module == 'Contacts')) {
 					$count = counterValue();
 					$value = '<a href="index.php?action=DetailView&module='.$module.'&record='.$entity_id.'" id='.$count.'>'.textlength_check($field_valEncoded).'</a>';
-				} elseif ($module == 'cbCalendar') {
-					$actvity_type = $adb->query_result($list_result, $list_result_count, 'activitytype');
-					$actvity_type = ($actvity_type != '') ? $actvity_type : $adb->query_result($list_result, $list_result_count, 'type');
-					$count = counterValue();
-					if ($actvity_type == 'Task') {
-						$value = '<a href="index.php?action=DetailView&module=cbCalendar&record='.$entity_id.'&activity_mode=Task" id='.$count.'>'.textlength_check($field_valEncoded).'</a>';
-					} else {
-						$value = '<a href="index.php?action=DetailView&module=cbCalendar&record='.$entity_id.'&activity_mode=Events" id='.$count.'>'.textlength_check($field_valEncoded).'</a>';
-					}
 				} elseif ($module == 'Emails') {
 					$value = $field_valHTML;
 				} elseif (($module == 'Users' && $colname == 'last_name')) {
@@ -2135,7 +2126,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					if ($opennewtab=='') {
 						$value = '<a href="index.php?action=DetailView&module='.$module.'&record='.$entity_id.'" id='.$count.'>'.textlength_check($field_valEncoded).'</a>';
 					} elseif ($opennewtab=='window') {
-						$value = '<a href="#" onclick="window.open(\'index.php?action=DetailView&module='.$module.'&record='.$entity_id."', '$module-$entity_id', 'width=1300, height=900, scrollbars=yes'); return false;".'" id='.$count.'>'.textlength_check($field_valEncoded).'</a>';
+						$value = '<a href="#" onclick="window.open(\'index.php?action=DetailView&module='.$module.'&record='.$entity_id."', '$module-$entity_id', cbPopupWindowSettings); return false;".'" id='.$count.'>'.textlength_check($field_valEncoded).'</a>';
 					} else {
 						$value = '<a href="index.php?action=DetailView&module='.$module.'&record='.$entity_id.'" id='.$count.' target="_blank" >'.textlength_check($field_valEncoded).'</a>';
 					}
@@ -3614,26 +3605,43 @@ function getMergeFields($module, $str) {
 }
 
 /**
- * this function accepts a modulename and a fieldname and returns the first related module for it
+ * this function accepts a module name and a field name and returns the first related module for it
  * it expects the uitype of the field to be 10
  * @param string $module - the modulename
  * @param string $fieldname - the field name
- * @return string $data - the first related module
+ * @return string the first related module in the field or empty if not found
  */
 function getFirstModule($module, $fieldname) {
 	global $adb;
-	$result = $adb->pquery('select fieldid, uitype from vtiger_field where tabid=? and fieldname=?', array(getTabid($module), $fieldname));
+	$result = $adb->pquery('select fieldid from vtiger_field where tabid=? and fieldname=? and uitype=?', array(getTabid($module), $fieldname, '10'));
 	$data = '';
 	if ($adb->num_rows($result) > 0) {
-		$uitype = $adb->query_result($result, 0, 'uitype');
-		if ($uitype == 10) {
-			$fieldid = $adb->query_result($result, 0, 'fieldid');
-			$result = $adb->pquery('select relmodule from vtiger_fieldmodulerel where fieldid=? order by sequence', array($fieldid));
-			$count = $adb->num_rows($result);
-			if ($count > 0) {
-				$data = $adb->query_result($result, 0, 'relmodule');
-			}
+		$result = $adb->pquery('select relmodule from vtiger_fieldmodulerel where fieldid=? order by sequence', array($adb->query_result($result, 0, 'fieldid')));
+		if ($adb->num_rows($result) > 0) {
+			$data = $adb->query_result($result, 0, 'relmodule');
 		}
+	}
+	return $data;
+}
+
+/**
+ * this function accepts a module name and a related modulen ame and returns the first uitype 10 field that relates them
+ * @param string $module - the module name
+ * @param string $relmodule - the related module
+ * @return string the first uitype 10 field that relates the two modules or an empty string
+ */
+function getFirstFieldForModule($module, $relmodule) {
+	global $adb;
+	$linkedModulesQuery = $adb->pquery(
+		'SELECT fieldname
+		FROM vtiger_field
+		INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid'
+		." WHERE uitype='10' AND vtiger_fieldmodulerel.module=? AND vtiger_fieldmodulerel.relmodule=?",
+		array($module, $relmodule)
+	);
+	$data = '';
+	if ($adb->num_rows($linkedModulesQuery) > 0) {
+		$data = $adb->query_result($linkedModulesQuery, 0, 'fieldname');
 	}
 	return $data;
 }

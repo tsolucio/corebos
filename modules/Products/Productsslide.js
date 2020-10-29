@@ -135,7 +135,7 @@ function CarImages() {
 
 function C_LdLnk() {
 	if (this.lnk) {
-		window.open(this.lnk, 'test', 'width=600,height=400,resizable=1,scrollbars=1');
+		window.open(this.lnk, 'test', cbPopupWindowSettings+',resizable=1,scrollbars=1');
 	}
 }
 function C_Stp() {

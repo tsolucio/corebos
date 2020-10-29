@@ -58,6 +58,7 @@ $smarty->assign("VALIDATION_DATA_FIELDDATATYPE", $validationArray['datatype']);
 $smarty->assign("VALIDATION_DATA_FIELDLABEL", $validationArray['fieldlabel']);
 $cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule);
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
+$smarty->assign('Application_Textarea_Style', GlobalVariable::getVariable('Application_Textarea_Style', 'height:140px;', $currentModule, $current_user->id));
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 $smarty->display('MassEditForm.tpl');
 ?>

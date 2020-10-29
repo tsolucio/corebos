@@ -55,7 +55,7 @@ function cbwsExecuteWorkflow($workflow, $entities, $user) {
  */
 function cbwsExecuteWorkflowWithContext($workflow, $entities, $context, $user) {
 	global $adb;
-	$result = $adb->pquery('select * from com_vtiger_workflows where workflow_id=? or summary=?', array($workflow, $workflow));
+	$result = $adb->pquery('select * from com_vtiger_workflows where (workflow_id=? or summary=?) and active=?', array($workflow, $workflow, 'true'));
 	if (!$result || $adb->num_rows($result)==0) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid parameter: workflow');
 	}
@@ -82,11 +82,13 @@ function cbwsExecuteWorkflowWithContext($workflow, $entities, $context, $user) {
 				if (VTWorkflowManager::$ONCE == $workflow->executionCondition) {
 					$entity_id = vtws_getIdComponents($entityData->getId());
 					$entity_id = $entity_id[1];
+					if ($workflow->isCompletedForRecord($entity_id)) {
+						continue;
+					}
 					$workflow->markAsCompletedForRecord($entity_id);
 				}
 				try {
-					$wfActive = $workflow->activeWorkflow();
-					if ($wfActive == true) {
+					if ($workflow->activeWorkflow()) {
 						$workflow->performTasks($entityData, $ctx, true);
 					}
 				} catch (WebServiceException $e) {

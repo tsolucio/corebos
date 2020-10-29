@@ -13,7 +13,7 @@ require_once 'modules/Calendar4You/CalendarUtils.php';
 
 global $adb, $current_user, $default_timezone, $default_theme, $default_language;
 
-$currentModule = 'Calendar';
+$currentModule = 'cbCalendar';
 $controlmonths = GlobalVariable::getVariable('GoogleCalendarSync_BaseUpdateMonths', '4');
 $controltime = strtotime('-'.$controlmonths.' month');
 $controldate = date('Y-m-d', $controltime);
@@ -76,9 +76,9 @@ if ($num_rows1 > 0) {
 								$record = $row2['crmid'];
 								$activitytype = $row2['activitytype'];
 								if ($activitytype == 'Task') {
-									$tab_type = 'Calendar';
+									$tab_type = 'cbCalendar';
 								} else {
-									$tab_type = 'Events';
+									$tab_type = 'cbCalendar';
 								}
 								$focus = CRMEntity::getInstance($currentModule);
 								$focus->retrieve_entity_info($record, $tab_type);
@@ -134,6 +134,8 @@ if ($num_rows1 > 0) {
 								$focus->column_fields['due_date'] = $user_date_end;
 								$focus->column_fields['time_start'] = $user_time_start;
 								$focus->column_fields['time_end'] = $user_time_end;
+								$focus->column_fields['dtstart'] = $user_date_start.' '.$user_time_start;
+								$focus->column_fields['dtend'] = $user_date_end.' '.$user_time_end;
 								$duration_time = $new_time_end_time - $new_time_start_time;
 								$duration_hour = floor($duration_time / 3600);
 								$duration_minutes = ($duration_time - ($duration_hour * 3600 )) / 60;

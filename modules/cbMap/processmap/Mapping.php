@@ -132,7 +132,9 @@ class Mapping extends processcbMap {
 					$testexpression = array_pop($fieldinfo);
 					if (strtoupper($idx[0])=='FIELD') {
 						$testexpression = trim($testexpression);
-						if (substr($testexpression, 0, 1) != '$') {
+						if ($testexpression=='record_id') {
+							$testexpression = $ofields['record_id'];
+						} elseif (substr($testexpression, 0, 1) != '$') {
 							$testexpression = '$' . $testexpression;
 						}
 					}

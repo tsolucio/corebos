@@ -126,7 +126,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 			$this->_attachments['noname'.$partno. '.' .$p->subtype] = $data;
 		} elseif ($p->type==0 && $data) {
 			// TEXT
-			$this->_charset = $params['charset'];  // assume all parts are same charset
+			$this->_charset = substr($params['charset'], 0, 10);  // assume all parts are same charset
 			$data = self::__convert_encoding($data, 'UTF-8', $this->_charset);
 
 			// Messages may be split in different parts because of inline attachments,
@@ -211,13 +211,14 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 
 			$this->_from = json_decode(decode_html($resultrow['mfrom']));
 			$this->_to   = json_decode(decode_html($resultrow['mto']));
+			$this->_reply_to = json_decode(decode_html($resultrow['mreplyto']));
 			$this->_cc   = json_decode(decode_html($resultrow['mcc']));
 			$this->_bcc  = json_decode(decode_html($resultrow['mbcc']));
 
 			$this->_date	= decode_html($resultrow['mdate']);
 			$this->_subject = str_replace('_', ' ', decode_html($resultrow['msubject']));
 			$this->_body    = decode_html($resultrow['mbody']);
-			$this->_charset = decode_html($resultrow['mcharset']);
+			$this->_charset = substr(decode_html($resultrow['mcharset']), 0, 10); // to cut -i in case it is there
 
 			$this->_isbodyhtml   = (int)$resultrow['misbodyhtml'] ? true : false;
 			$this->_plainmessage = $resultrow['mplainmessage'];
@@ -297,12 +298,13 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 		$params[] = $uid;
 		$params[] = json_encode($this->_from);
 		$params[] = json_encode($this->_to);
+		$params[] = json_encode($this->_reply_to);
 		$params[] = json_encode($this->_cc);
 		$params[] = json_encode($this->_bcc);
 		$params[] = $this->_date;
 		$params[] = $this->_subject;
 		$params[] = $this->_body;
-		$params[] = $this->_charset;
+		$params[] = substr($this->_charset, 0, 10);
 		$params[] = $this->_isbodyhtml;
 		$params[] = $this->_plainmessage;
 		$params[] = $this->_htmlmessage;
@@ -311,7 +313,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 		$params[] = $savedtime;
 
 		$adb->pquery(
-			'INSERT INTO vtiger_mailmanager_mailrecord (userid, muid, mfrom, mto, mcc, mbcc,
+			'INSERT INTO vtiger_mailmanager_mailrecord (userid, muid, mfrom, mto, mreplyto, mcc, mbcc,
 				mdate, msubject, mbody, mcharset, misbodyhtml, mplainmessage, mhtmlmessage, muniqueid,
 				mbodyparsed, lastsavedtime) VALUES ('.generateQuestionMarks($params).')',
 			$params
@@ -461,6 +463,14 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 	 */
 	public function to() {
 		return $this->_to;
+	}
+
+	/**
+	 * Gets the Mail To Email Addresses
+	 * @return Email(s)
+	 */
+	public function replyto() {
+		return $this->_reply_to;
 	}
 
 	/**

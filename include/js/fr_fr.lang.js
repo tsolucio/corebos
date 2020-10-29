@@ -109,6 +109,8 @@ var alert_arr = {
 	'LBL_DOES_NOT_END_WITH' : 'does not end with',
 	'DOES_NOT_START_WITH':'does not start with',
 	'DOES_NOT_END_WITH':'does not end with',
+	'SOUNDEX':'soundex',
+	'REGEXP':'regexp',
 	'Widget_Deleted_Sucessfully':'Widget deleted sucessfully',
 
 	'NO_SPECIAL_CHARS':'Les caractères spéciaux comme les guillemets, backslash, symboles mathématiques, pourcentages et de ponctuation ne sont pas autorisés',

@@ -792,9 +792,12 @@ if (typeof(MailManager) == 'undefined') {
 					}).done(function (response) {
 						emltpl = JSON.parse(response);
 						document.getElementById('_mail_replyfrm_subject_').value = emltpl.subject;
-						document.getElementById('_mail_replyfrm_body_').value = emltpl.body;
+						document.getElementById('_mail_replyfrm_body_').value = emltpl.body + emailSignature,
 						MailManager.mail_reply_rteinit(emltpl.body);
 					});
+				} else {
+					document.getElementById('_mail_replyfrm_body_').value = '<p></p>' + emailSignature,
+					MailManager.mail_reply_rteinit(emltpl.body);
 				}
 			});
 		},
@@ -890,6 +893,7 @@ if (typeof(MailManager) == 'undefined') {
 			}
 
 			var from = jQuery('#_mailopen_from').html();
+			var replyto = jQuery('#_mailopen_replyto').html();
 			var cc = jQuery('#_mailopen_cc') ? jQuery('#_mailopen_cc').html() : '';
 			var subject = jQuery('#_mailopen_subject').html();
 			var body = jQuery('#_mailopen_body').html();
@@ -905,11 +909,19 @@ if (typeof(MailManager) == 'undefined') {
 				jQuery('#_mail_replyfrm_cc_').val('');
 			}
 
-			jQuery('#_mail_replyfrm_to_').val(from);
+			jQuery('#_mail_replyfrm_to_').val(replyto=='' ? from : replyto);
 			jQuery('#_mail_replyfrm_bcc_').val('');
 			var replySubject = (subject.toUpperCase().indexOf('RE:') == 0) ? subject : 'Re: ' + subject;
 			jQuery('#_mail_replyfrm_subject_').val(replySubject);
-			var replyBody = MailManager.sprintf('<p></p><p style="margin:0;padding:0;">%s, %s, %s:</p><blockquote style="border:0;margin:0;border-left:1px solid gray;padding:0 0 0 2px;">%s</blockquote><br />', 'On ' + date, from, 'wrote', body);
+			var replyBody = MailManager.sprintf(
+				(emailSignatureBeforeQuote ? '<p></p>'+emailSignature : '<p></p>') +
+				'<p style="margin:0;padding:0;">%s, %s, %s:</p><blockquote style="border:0;margin:0;border-left:1px solid gray;padding:0 0 0 2px;">%s</blockquote><br/>'
+				+ (emailSignatureBeforeQuote ? '' : emailSignature),
+				MailManager.i18n('JSLBL_ON')+' '+date,
+				from,
+				MailManager.i18n('JSLBL_WROTE'),
+				body
+			);
 			jQuery('#emailid').val('');
 			jQuery('#attachmentCount').val('');
 			MailManager.mail_reply_rteinit(replyBody);
@@ -996,7 +1008,14 @@ if (typeof(MailManager) == 'undefined') {
 			replyfrm.cc.value = '';
 			replyfrm.bcc.value = '';
 			replyfrm.subject.value = (subject.toUpperCase().indexOf('FWD:') == 0) ? subject : 'Fwd: ' + subject;
-			replyfrm.body.value = MailManager.sprintf('<p></p><p>%s<br/>%s</p>%s', MailManager.i18n('JSLBL_FORWARD_MESSAGE_TEXT'), fwdMsgMetaInfo, body);
+			replyfrm.body.value = MailManager.sprintf(
+				(emailSignatureBeforeQuote ? '<p></p>'+emailSignature : '<p></p>') +
+				'<p>%s<br/>%s</p>%s' +
+				(emailSignatureBeforeQuote ? '<br/>' : emailSignature),
+				MailManager.i18n('JSLBL_FORWARD_MESSAGE_TEXT'),
+				fwdMsgMetaInfo,
+				body
+			);
 
 			replyfrm.emailid.value = '';
 			replyfrm.attachmentCount.value = '';
@@ -1044,7 +1063,7 @@ if (typeof(MailManager) == 'undefined') {
 
 			var msguid = encodeURIComponent(meta['msguid'] ? meta['msguid'].replace('<', '&lt;').replace('>', '&gt;') : '');
 
-			if (!MailManager.validateEmailFields(form.to.value, form.cc.value, form.bcc.value)) {
+			if (!MailManager.validateEmailFields(form.to.value, form.cc.value, form.bcc.value, form.replyto.value)) {
 				return false;
 			}
 
@@ -1069,6 +1088,7 @@ if (typeof(MailManager) == 'undefined') {
 				'_operationarg':'send',
 				'_msgid':msguid,
 				'to':encodeURIComponent(form.to.value),
+				'replyto':encodeURIComponent(form.replyto.value),
 				'cc':encodeURIComponent(form.cc.value),
 				'bcc':encodeURIComponent(form.bcc.value),
 				'subject':encodeURIComponent(form.subject.value),
@@ -1101,7 +1121,7 @@ if (typeof(MailManager) == 'undefined') {
 				MailManager.mail_reply_rteinstance.updateElement();
 			}
 
-			if (!MailManager.validateEmailFields(form.to.value, form.cc.value, form.bcc.value)) {
+			if (!MailManager.validateEmailFields(form.to.value, form.cc.value, form.bcc.value, form.replyto.value)) {
 				return false;
 			}
 
@@ -1113,9 +1133,11 @@ if (typeof(MailManager) == 'undefined') {
 
 			MailManager.progress_show(MailManager.i18n('JSLBL_Saving'), ' ...');
 			var params = {
-				'_operation':'mail', '_operationarg':'save',
+				'_operation':'mail',
+				'_operationarg':'save',
 				'emailid':encodeURIComponent(form.emailid.value),
 				'to':encodeURIComponent(form.to.value),
+				'replyto':encodeURIComponent(form.replyto.value),
 				'cc':encodeURIComponent(form.cc.value),
 				'bcc':encodeURIComponent(form.bcc.value),
 				'subject':encodeURIComponent(form.subject.value),
@@ -1341,10 +1363,10 @@ if (typeof(MailManager) == 'undefined') {
 					}
 					emailId = responseText.result.emailid;
 					jQuery('#emailid').val(emailId);
-					window.open('index.php?module=Documents&return_module=MailManager&action=Popup&popuptype=detailview&form=EditView&form_submit=false&recordid='+emailId+'&forrecord='+emailId+'&parenttab=Marketing&srcmodule=MailManager&popupmode=ajax&RLreturn_module=MailManager&RLparent_id='+emailId+'&parenttab=My Home Page&callback=MailManager.add_data_to_relatedlist', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+					window.open('index.php?module=Documents&return_module=MailManager&action=Popup&popuptype=detailview&form=EditView&form_submit=false&recordid='+emailId+'&forrecord='+emailId+'&parenttab=Marketing&srcmodule=MailManager&popupmode=ajax&RLreturn_module=MailManager&RLparent_id='+emailId+'&parenttab=My Home Page&callback=MailManager.add_data_to_relatedlist', 'test', cbPopupWindowSettings);
 				});
 			} else {
-				window.open('index.php?module=Documents&return_module=MailManager&action=Popup&popuptype=detailview&form=EditView&form_submit=false&recordid='+emailId+'&forrecord='+emailId+'&parenttab=Marketing&srcmodule=MailManager&popupmode=ajax&RLreturn_module=MailManager&RLparent_id='+emailId+'&parenttab=My Home Page&callback=MailManager.add_data_to_relatedlist', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+				window.open('index.php?module=Documents&return_module=MailManager&action=Popup&popuptype=detailview&form=EditView&form_submit=false&recordid='+emailId+'&forrecord='+emailId+'&parenttab=Marketing&srcmodule=MailManager&popupmode=ajax&RLreturn_module=MailManager&RLparent_id='+emailId+'&parenttab=My Home Page&callback=MailManager.add_data_to_relatedlist', 'test', cbPopupWindowSettings);
 			}
 			VtigerJS_DialogBox.unblock();
 		},
@@ -1455,7 +1477,12 @@ if (typeof(MailManager) == 'undefined') {
 			return fileSize;
 		},
 
-		validateEmailFields :  function (to, cc, bcc) {
+		validateEmailFields :  function (to, cc, bcc, replyto) {
+			if (replyto != '') {
+				if (!MailManager.mail_validate(replyto)) {
+					return false;
+				}
+			}
 			if (to != '') {
 				if (!MailManager.mail_validate(to)) {
 					return false;

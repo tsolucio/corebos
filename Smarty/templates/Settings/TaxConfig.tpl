@@ -175,7 +175,7 @@
 		<input type="hidden" name="sh_add_tax_type" value="">
 		<!-- Table to display the S&H Tax Add and Edit Buttons - Starts -->
 		<div class="slds-grid slds-gutters">
-			<div class="slds-col slds-size_2-of-12">
+			<div class="slds-col slds-size_2-of-12 slds-p-top_large">
 				<p class="big" colspan="3"><strong>{$MOD.LBL_SHIPPING_HANDLING_TAX_SETTINGS}</strong></p>
 			</div>
 			<div class="slds-col slds-size_10-of-12 slds-p-vertical_medium slds-p-right_xx-large"  width="80%">
@@ -236,7 +236,7 @@
 			</td>
 			<td width=17% >
 				{if $tax.deleted eq 0}
-					<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&sh_disable=true&sh_taxname={$tax.taxname}">
+					<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&sh_disable=true&sh_taxname={$tax.taxname}&taxid={$tax.taxid}">
 						<span class="slds-icon_container slds-icon_container_circle slds-icon-action-approval" title="{$MOD.LBL_ENABLED}">
 							<svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#approval"></use>
@@ -245,7 +245,7 @@
 						</span>
 					</a>
 				{else}
-					<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&sh_enable=true&sh_taxname={$tax.taxname}">
+					<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&sh_enable=true&sh_taxname={$tax.taxname}&taxid={$tax.taxid}">
 						<span class="slds-icon_container slds-icon_container_circle slds-icon-action-close" title="{$MOD.LBL_DISABLED}">
 							<svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#close"></use>

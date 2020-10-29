@@ -20,6 +20,8 @@ var MailManageri18nInfo = {ldelim}{rdelim};
 		MailManageri18nInfo['{$i18nKey}'] = '{$i18nValue}';
 	{/if}
 {/foreach}
+var emailSignature = `{$emailSignature}`;
+var emailSignatureBeforeQuote = {$emailSignatureBeforeQuote};
 </script>
 
 <table style="width:98%;margin:auto;">

@@ -8,7 +8,7 @@
 
 // Get User Default calendar variables
 var Calendar_Default_Reminder_Minutes = 0; // false
-GlobalVariable_getVariable('Calendar_Default_Reminder_Minutes', 0, 'Calendar', gVTUserID).then(function (response) {
+GlobalVariable_getVariable('Calendar_Default_Reminder_Minutes', 0, 'cbCalendar', gVTUserID).then(function (response) {
 	var obj = JSON.parse(response);
 	Calendar_Default_Reminder_Minutes = obj.Calendar_Default_Reminder_Minutes;
 }, function (error) {
@@ -68,7 +68,7 @@ function gITSshow(argg1, type, startdate, enddate, starthr, startmin, startfmt, 
 		g = d.getElementsByTagName('body')[0],
 		x = w.innerWidth || e.clientWidth || g.clientWidth,
 		y = w.innerHeight|| e.clientHeight|| g.clientHeight;
-	window.open(url, null, 'scrollbars=yes,resizable=yes,dependent=yes,width=' + (x-100), true);
+	window.open(url, null, cbPopupWindowSettings + ',dependent=yes', true);
 }
 
 function graphicalCalendarRefresh() {
@@ -144,9 +144,8 @@ function C_TCPopup(field, palette) {
 	this.field = field;
 	this.initPalette = !palette || palette > 3 ? 0 : palette;
 	var w = 194, h = 240,
-		move = screen ?
-			',left=' + ((screen.width - w) >> 1) + ',top=' + ((screen.height - h) >> 1) : '',
-		o_colWindow = window.open('modules/Calendar4You/color_picker.html', null, 'help=no,status=no,scrollbars=no,resizable=no' + move + ',width=' + w + ',height=' + h + ',dependent=yes', true);
+		move = screen ? ',left=' + ((screen.width - w) >> 1) + ',top=' + ((screen.height - h) >> 1) : '',
+		o_colWindow = window.open('modules/Calendar4You/color_picker.html', null, cbPopupWindowSettings + ',help=no,status=no,dependent=yes', true);
 	o_colWindow.opener = window;
 	o_colWindow.focus();
 }
@@ -440,5 +439,29 @@ function insertIntoCRM(userid, eventid, eventtype, geventid, start_date, end_dat
 		document.EditView.geventid.value = geventid;
 		document.EditView.gevent_type.value = eventtype;
 		document.EditView.gevent_userid.value = userid;
+	}
+}
+
+function exportCalendar() {
+	if (document.getElementsByName('exportCalendar')[0].value == 'iCal') {
+		var filename = document.getElementById('ics_filename').value;
+		VtigerJS_DialogBox.block();
+		var url = 'index.php?module=cbCalendar&action=iCalExport&filename='+filename;
+		location.href = url;
+		VtigerJS_DialogBox.unblock();
+		ghide('CalExport');
+	}
+}
+
+function importCalendar() {
+	var file = document.getElementById('ics_file').value;
+	if (file != '') {
+		if (file.indexOf('.ics') != (file.length - 4)) {
+			alert(alert_arr.PLS_SELECT_VALID_FILE+'.ics');
+		} else {
+			document.ical_import.action.value='iCalImport';
+			document.ical_import.module.value='cbCalendar';
+			document.ical_import.submit();
+		}
 	}
 }

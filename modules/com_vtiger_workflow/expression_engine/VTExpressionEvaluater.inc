@@ -90,6 +90,10 @@ class VTFieldExpressionEvaluater {
 			'getGEODistanceFromCoordinates' => '__cb_getGEODistanceFromCoordinates',
 			'getFromContext' => '__cb_getfromcontext',
 			'setToContext' => '__cb_setfromcontext',
+			'jsonEncode' => '__cb_jsonencode',
+			'jsonDecode' => '__cb_jsondecode',
+			'implode' => '__cb_implode',
+			'explode' => '__cb_explode',
 			'getSetting' => '__cb_getSetting',
 			'setSetting' => '__cb_setSetting',
 			'delSetting' => '__cb_delSetting',
@@ -102,6 +106,7 @@ class VTFieldExpressionEvaluater {
 			'OR' => '__cb_or',
 			'AND' => '__cb_and',
 			'NOT' => '__cb_not',
+			'regex' => '__cb_regex',
 			'exists' => '__cb_exists',
 			'existsrelated' => '__cb_existsrelated',
 			'allrelatedare' => '__cb_allrelatedare',
@@ -109,6 +114,7 @@ class VTFieldExpressionEvaluater {
 			'number_format' => '__cb_number_format',
 			'min' => '__cb_min',
 			'max' => '__cb_max',
+			'sub_workdays' => '__cb_sub_workdays',
 		);
 		$this->operationsSQL = array(
 			'+'  => 'cbexpsql_add',
@@ -249,6 +255,14 @@ class VTFieldExpressionEvaluater {
 			$loginfo = print_r($expr, true);
 			$logbg->debug("VTExpressionSymbol: $loginfo");
 			$this->debug[] = $loginfo;
+			preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $expr->value, $matches);
+			if (count($matches)>0 && isset($matches[3])) {
+				$module = Vtiger_Module::getInstance($matches[2]);
+				$field = Vtiger_Field::getInstance($matches[3], $module);
+				if ($field && in_array($field->uitype, array(71, 72, 7, 9))) {
+					return $this->env($expr, false, false);
+				}
+			}
 			return $this->env($expr);
 		} elseif ($expr instanceof VTExpressionTreeNode) {
 			$op = $expr->getName();
@@ -391,8 +405,9 @@ class VTFieldExpressionEvaluater {
 		}
 	}
 
-	public function env($sym, $raw = false) {
+	public function env($sym, $raw = false, $formatValue = true) {
 		if ($this->env) {
+			$this->env->formatReferenceValues = $formatValue;
 			$val = $this->env->get($sym->value);
 			if (isset($this->env->moduleName)) {
 				$module = Vtiger_Module::getInstance($this->env->moduleName);

@@ -111,6 +111,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Si se establece en 1, se mostrará una pila de llamadas antes del mensaje de error "Sorry! Attempt to access restricted file."',
 ),
+'Debug_Email_Send_To_Inbucket'=> array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Depuración',
+	'values' => 'InBucket SMTP Listener',
+	'definition' => 'Si se establece, el valor se utilizará como servidor de correo saliente',
+),
 'Accounts_BlockDuplicateName' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
@@ -243,6 +250,20 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Webservice',
 	'values' => 'CSV of authorized CORS domains',
 	'definition' => 'CSV de URI de dominios autorizados a acceder al servicio webservice. El valor especial asterisco "*" dará acceso a cualquier dominio.',
+),
+'Webservice_Describe_ReturnUserList' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => 'Devuelve la lista de usuarios disponibles en el campo assigned_user_id. Esto puede ser muy grande y producir problemas con el navegador. Puedes obtener la lista del método getAssignedUserlist.',
+),
+'Webservice_Describe_ReturnGroupList' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => 'Devuelve la lista de grupos disponibles en el campo assigned_user_id. Si no utilizas grupos en tu aplicación externa, puedes obtener algún beneficio marginal.',
 ),
 'SOAP_CustomerPortal_Enabled' => array(
 	'status' => 'Implementada',
@@ -495,6 +516,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => 'yes | no',
 	'definition' => 'Ejecutar eventos y flujos de trabajo al importar registros. El valor por defecto es no',
+),
+'Import_LeaveUserReferenceFieldEmpty' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Los campos de referencia a usuario se establecerán al usuario que importa los datos si el valor está vacío o el usuario no tiene permiso para realizar esa asignación. Si esta variable se establece en 1, el campo se dejará vacío si está vacío.',
 ),
 'Export_Field_Separator_Symbol' => array(
 	'status' => 'Implementada',
@@ -1035,6 +1063,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Al hacer clic en un evento, abrirá la vista detallada del registro en lugar de la barra de herramientas de acciones.',
 ),
+'Calendar_Notification_Sound' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Camino Fichero',
+	'category' => 'Aplicación',
+	'values' => 'camino al fichero de audio',
+	'definition' => 'Camino al fichero de audio que sonará al llegar un nuevo evento.',
+),
 'CronTasks_cronWatcher_mailto' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Emails CSV',
@@ -1189,6 +1224,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Envía correos electrónicos individuales por separado a cada destinatario en lugar de un correo electrónico a todos. Este es el comportamiento predeterminado de la aplicación.',
 ),
+'EMail_Signature_BeforeQuote' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Agrega la firma del usuario antes del texto citado en lugar de al final de todo el correo electrónico.',
+),
 'Workflow_Send_Email_ToCCBCC' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Email CSV',
@@ -1265,6 +1307,20 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => '0 | 1',
 	'definition' => 'Bloquear el precio de lista en los módulos de inventario. El valor predeterminado es desbloqueado.',
+),
+'Inventory_Comment_Style' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'Estilo CSS',
+	'definition' => 'Estilo CSS aplicado en la caja de comentario de las líneas de inventario. Por defecto define altura y anchura.',
+),
+'Application_Textarea_Style' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'Estilo CSS',
+	'definition' => 'Estilo CSS aplicado en las cajas de texto. Por defecto define la altura.',
 ),
 'Application_Group_Selection_Permitted' => array(
 	'status' => 'Implementada',
@@ -1554,11 +1610,32 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'Define el esquema de color a utilizar cuando se dibujan gráficos. Por defecto, se utiliza el esquema tableau.Tableau10.',
 ),
 'Application_CSRF_Valid_IP' => array(
-	'status' => 'Implemented',
+	'status' => 'Implementada',
 	'valuetype' => 'CSV IPs',
 	'category' => 'Seguridad',
 	'values' => 'Ejemplo: 127.0.0.1,192.168.0.100',
 	'definition' => 'Lista separada por comas de direcciones IP desde las que se pasa el control de CSRF.',
+),
+'Application_PopupScreen_Width' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'UI',
+	'values' => '',
+	'definition' => 'Porcentaje del ancho de pantalla que utilizarán las ventanas emergentes. El valor predeterminado es 80%',
+),
+'Application_PopupScreen_Height' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'UI',
+	'values' => '',
+	'definition' => 'Porcentaje de la altura de pantalla que utilizarán las ventanas emergentes. El valor predeterminado es 80%',
+),
+'Application_Filter_All_Edit' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleana',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Permitir la edición del filtro "Todos". Por defecto es 1',
 ),
 );
 

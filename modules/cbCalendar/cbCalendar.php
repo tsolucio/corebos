@@ -160,7 +160,7 @@ class cbCalendar extends CRMEntity {
 
 		//Inserting into sales man activity rel
 		$this->insertIntoSmActivityRel();
-		$this->insertIntoActivityReminderPopup('Calendar');
+		$this->insertIntoActivityReminderPopup('cbCalendar');
 		if (isset($_REQUEST['recurringcheck']) && $_REQUEST['recurringcheck']) {
 			unset($_REQUEST['recurringcheck']);
 			$this->column_fields['parent_id'] = $this->column_fields['rel_id'];
@@ -276,7 +276,7 @@ class cbCalendar extends CRMEntity {
 			if ($noofrows > 0) {
 				$recur_id = $adb->query_result($result, 0, 'recurid');
 			}
-			$current_id =$recur_id+1;
+			$current_id =(int)$recur_id+1;
 			$recurring_insert = 'insert into vtiger_recurringevents values (?,?,?,?,?,?)';
 			$rec_params = array($current_id, $this->id, $st_date, $type, $recur_freq, $recurringinfo);
 			$adb->pquery($recurring_insert, $rec_params);
@@ -577,7 +577,7 @@ class cbCalendar extends CRMEntity {
 					$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
 					$button .= "<input title='" . getTranslatedString('LBL_SELECT') . " " . $singular_modname . "' class='crmbutton small edit' ".
 						"type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview".
-						"&select=enable&form=EditView&form_submit=false&recordid=$id','test','width=640,height=602,resizable=0,scrollbars=0');\" ".
+						"&select=enable&form=EditView&form_submit=false&recordid=$id', 'test', cbPopupWindowSettings);\" ".
 						"value='" . getTranslatedString('LBL_SELECT') . " " . $singular_modname . "'>&nbsp;";
 				}
 			}
@@ -1043,6 +1043,75 @@ class cbCalendar extends CRMEntity {
 			$query .= ' left join vtiger_recurringevents on vtiger_recurringevents.activityid = vtiger_activity.activityid';
 		}
 		return $query;
+	}
+
+	/*
+	 * Function to get iCalendar formatted event
+	 * returns relative filepath formatted iCalendar
+	 */
+	public function getiCalendar($activityData, $sendtobrowser = false) {
+		global $default_timezone;
+		if (!defined('_BENNU_VERSION')) {
+			define('_BENNU_VERSION', '0.1');
+		}
+		require_once 'include/utils/utils.php';
+		//require_once 'modules/cbCalendar/CalendarCommon.php';
+		require_once 'modules/cbCalendar/iCal/iCalendar_rfc2445.php';
+		require_once 'modules/cbCalendar/iCal/iCalendar_components.php';
+		require_once 'modules/cbCalendar/iCal/iCalendar_properties.php';
+		require_once 'modules/cbCalendar/iCal/iCalendar_parameters.php';
+		$todo = array();
+		if (!empty($activityData->column_fields)) {
+			$temp = $activityData->column_fields;
+			$recordid = $temp['record_id'];
+			$filename = 'icalfile_'.$recordid.'.ics';
+			$temp['id'] = $recordid;
+			unset($temp['record_id']);
+			$tz = new iCalendar_timezone;
+			if (!empty($default_timezone)) {
+				$tzid = explode('/', $default_timezone);
+			} else {
+				$default_timezone = date_default_timezone_get();
+				$tzid = explode('/', $default_timezone);
+			}
+			if (!empty($tzid[1])) {
+				$tz->add_property('TZID', $tzid[1]);
+			} else {
+				$tz->add_property('TZID', $tzid[0]);
+			}
+			$tz->add_property('TZOFFSETTO', date('O'));
+			if (date('I')==1) {
+				$tz->add_property('DAYLIGHTC', date('I'));
+			} else {
+				$tz->add_property('STANDARDC', date('I'));
+			}
+			$myical = new iCalendar;
+			$myical->add_component($tz);
+			$temp['visibility'] = 'yes';
+			$todo = $temp;
+			if (isset($todo['taskpriority'])) {
+				$todo['priority'] = $todo['taskpriority'];
+				unset($todo['taskpriority']);
+			}
+			$ev = new iCalendar_event;
+			$ev->assign_values($todo);
+			$al = new iCalendar_alarm;
+			$al->assign_values($todo);
+			$ev->add_component($al);
+			$myical->add_component($ev);
+			if ($sendtobrowser) {
+				echo $myical->serialize();
+			} else {
+				$filepath = 'cache/'.$filename;
+				header('Content-type: text/calendar');
+				header('Content-Disposition: attachment; filename='.$filename);
+				$res = file_put_contents($filepath, $myical->serialize());
+				if ($res) {
+					return $filepath;
+				}
+			}
+			return '';
+		}
 	}
 }
 ?>

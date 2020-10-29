@@ -360,7 +360,7 @@ function CreateReport(element) {
 }
 
 function fnPopupWin(winName) {
-	window.open(winName, 'ReportWindow', 'width=1020px,height=680px,scrollbars=yes');
+	window.open(winName, 'ReportWindow', cbPopupWindowSettings+',scrollbars=yes');
 }
 
 function re_dateValidate(fldval, fldLabel, type) {
@@ -874,6 +874,11 @@ function validateDate() {
 function ScheduleEmail() {
 	var isScheduledObj = getObj('isReportScheduled');
 	if (isScheduledObj.checked == true) {
+		if (document.NewReport.scheduledTime.value == '') {
+			alert(alert_arr.ERR_INVALID_TIME);
+			return false;
+		}
+
 		var selectedRecipientsObj = getObj('selectedRecipients');
 
 		if (selectedRecipientsObj.options.length == 0) {
@@ -1175,7 +1180,7 @@ function goToPrintReport(id) {
 	}
 	var advft_criteria = document.getElementById('advft_criteria').value;
 	var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
-	window.open('index.php?module=Reports&action=ReportsAjax&file=PrintReport&record='+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups, i18nLBL_PRINT_REPORT, 'width=800,height=650,resizable=1,scrollbars=1,left=100');
+	window.open('index.php?module=Reports&action=ReportsAjax&file=PrintReport&record='+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups, i18nLBL_PRINT_REPORT, cbPopupWindowSettings+',resizable=1,scrollbars=1');
 }
 
 function getRandomColor() {

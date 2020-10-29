@@ -53,6 +53,7 @@ $mod_strings = array (
 	'LBL_FROM' => 'De :',
 	'LBL_CC' => 'Cc :',
 	'LBL_BCC' => 'Bcc :',
+	'replyto' => 'Reply To',
 	'NTC_REMOVE_INVITEE' => 'Etes-vous certain de vouloir retirer ce destinataire ?',
 	'LBL_INVITEE' => 'Destinataires',
 	'LBL_BULK_MAILS' => 'Email en masse',

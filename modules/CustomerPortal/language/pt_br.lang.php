@@ -6,19 +6,19 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-* Contributor: Ranieri Slemer | missing terms - translate portuguese | www.ecrmweb.com.br
+* Contributor: Ranieri Slemer | missing terms - translate portuguese | 20/08/2020 -  www.ecrmweb.com.br
  ********************************************************************************/
 $mod_strings = array (
-'CustomerPortal' => 'Portal do Cliente',
-'SINGLE_CustomerPortal' => 'Portal do Cliente',
-'LBL_BASIC_SETTINGS'=>'Configurações Básicas',
-'LBL_ADVANCED_SETTINGS'=>'Configurações Avançadas',
-'LBL_VIEW_ALL_RECORD'=>'Visualizar Todos os Registros Relacionados?',
+'CustomerPortal' => 'Portal do cliente',
+'SINGLE_CustomerPortal' => 'Portal do cliente',
+'LBL_BASIC_SETTINGS'=>'Configurações básicas',
+'LBL_ADVANCED_SETTINGS'=>'Configurações avançadas',
+'LBL_VIEW_ALL_RECORD'=>'Visualizar todos os registros relacionados?',
 'YES'=>'Sim',
 'NO'=>'Não',
-'LBL_USER_DESCRIPTION'=>'O Perfil de Usuário acima selecionado será definido para controle dos campos que aparecem no Portal do Cliente
+'LBL_USER_DESCRIPTION'=>'O Perfil de usuário acima selecionado será definido para controle dos campos que aparecem no Portal do Cliente
 				Você poderá habilitar/desabilitar os campos que aparecem no Portal do Cliente.',
-'SELECT_USERS'=>'Selecionar Usuários',
+'SELECT_USERS'=>'Selecionar usuários',
 'LBL_DISABLE'=>'Desabilitar',
 'LBL_ENABLE' =>'Habilitar',
 'Module' => 'Módulo',
@@ -26,13 +26,13 @@ $mod_strings = array (
 'Visible'=>'Visível',
 
 'LBL_CUSTOMERPORTAL_SETTINGS'=>'Configurações do Portal do Cliente',
-'LBL_MODULE_INFORMATION'=>'Informação Módulo',
+'LBL_MODULE_INFORMATION'=>'Informação módulo',
 'LBL_MODULE' => 'Módulo',
 'LBL_SEQUENCE' =>'Sequencia',
 'LBL_VISIBLE'=>'Visível',
-'LBL_USER_INFORMATION'=>'Informação do Usuário',
-'LBL_SELECT_USERS'=>'Perfil do Usuário',
-'LBL_DEFAULT_USERS'=>'Usuário Modelo',
-'LBL_GROUP_DESCRIPTION'=>'NOTA: Os Tickets serão atribuídos ao usuário selecionado acima, por padrão grupo / usuário a partir do Portal do Cliente.',
+'LBL_USER_INFORMATION'=>'Informação do usuário',
+'LBL_SELECT_USERS'=>'Perfil do usuário',
+'LBL_DEFAULT_USERS'=>'Usuário modelo',
+'LBL_GROUP_DESCRIPTION'=>'NOTA: Os tickets serão atribuídos ao usuário selecionado acima, por padrão grupo / usuário a partir do Portal do Cliente.',
 );
 ?>

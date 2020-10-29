@@ -16,6 +16,7 @@
 	<link REL="SHORTCUT ICON" HREF="themes/images/blank.gif">
 	<link rel="stylesheet" type="text/css" href="include/LD/assets/styles/override_lds.css">
 {include file='BrowserVariables.tpl'}
+{include file='Components/Components.tpl'}
 <script type="text/javascript">
 var image_pth = '{$IMAGE_PATH}';
 var product_default_units = '{if isset($Product_Default_Units)}{$Product_Default_Units}{else}1{/if}';
@@ -57,12 +58,14 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 <script type='text/javascript' src='include/jquery/jquery.js'></script>
 <script type="text/javascript" src="include/js/ListView.js"></script>
 <script type="text/javascript" src="include/js/general.js"></script>
+<script type="text/javascript" src="include/components/ldsprompt.js"></script>
 <script type="text/javascript" src="include/js/vtlib.js"></script>
 <script type="text/javascript" src="include/js/QuickCreate.js"></script>
 <script type="text/javascript" src="include/js/Inventory.js"></script>
 <script type="text/javascript" src="include/js/search.js"></script>
 <script type="text/javascript" src="include/js/Mail.js"></script>
 <script type="text/javascript" src="modules/Tooltip/TooltipHeaderScript.js"></script>
+{include file='Components/ComponentsJS.tpl'}
 <script type="text/javascript" src="jscalendar/calendar.js"></script>
 <script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
 <script type="text/javascript" src="jscalendar/lang/calendar-{$APP.LBL_JSCALENDAR_LANG}.js"></script>

@@ -17,6 +17,7 @@ global $log, $app_strings, $mod_strings, $currentModule, $theme, $default_charse
 $focus = CRMEntity::getInstance($currentModule);
 
 $smarty = new vtigerCRM_Smarty;
+getBrowserVariables($smarty);
 if (isset($_REQUEST['record'])) {
 	global $adb;
 	$focus->retrieve_entity_info($_REQUEST['record'], 'Emails');
@@ -30,6 +31,7 @@ if (isset($_REQUEST['record'])) {
 	$to_email = json_decode($adb->query_result($result, 0, 'to_email'), true);
 	$cc_email = json_decode($adb->query_result($result, 0, 'cc_email'), true);
 	$smarty->assign('TO_MAIL', vt_suppressHTMLTags(@implode(',', $to_email)));
+	$smarty->assign('REPLYTO', $adb->query_result($result, 0, 'replyto'));
 	$smarty->assign('CC_MAIL', vt_suppressHTMLTags(@implode(',', $cc_email)));
 	$bcc_email = json_decode($adb->query_result($result, 0, 'bcc_email'), true);
 	$smarty->assign('BCC_MAIL', vt_suppressHTMLTags(@implode(',', $bcc_email)));
@@ -113,7 +115,6 @@ if (isset($focus->name)) {
 }
 
 $entries = getBlocks($currentModule, 'detail_view', '', $focus->column_fields);
-//changed this to view description in all langauge - bharath
 $smarty->assign('BLOCKS', $entries[$mod_strings['LBL_EMAIL_INFORMATION']]);
 $smarty->assign('SINGLE_MOD', 'Email');
 

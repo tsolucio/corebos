@@ -111,6 +111,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'If set to 1 a call stack will be output before the "Sorry! Attempt to access restricted file." error message.',
 ),
+'Debug_Email_Send_To_Inbucket'=> array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Debug',
+	'values' => 'InBucket SMTP Listener',
+	'definition' => 'If set its value will be used as the Out Going Mail Server Host',
+),
 'Accounts_BlockDuplicateName' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Booléen',
@@ -243,6 +250,20 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Webservice',
 	'values' => 'CSV des domaines CORS autorisés',
 	'definition' => 'Liste CSV d\'URI de noms de domaine autorisés d\'accés au webservice. La valeur spéciale astérisque "*" donne accée à tous les noms de domaine.',
+),
+'Webservice_Describe_ReturnUserList' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => 'Return list of available users in the assigned_user_id field. This can be very big and produce browser issues. You can get the list from getAssignedUserlist method.',
+),
+'Webservice_Describe_ReturnGroupList' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => 'Return list of available groups in the assigned_user_id field. If you do not use groups in your external application you can get some marginal benefit.',
 ),
 'SOAP_CustomerPortal_Enabled' => array(
 	'status' => 'Implémenté',
@@ -495,6 +516,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'yes | no',
 	'definition' => 'Launch events and workflows when importing records. Default value is no',
+),
+'Import_LeaveUserReferenceFieldEmpty' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'User reference fields will be set to the user importing the data if the value is empty or the user does not have permission to make that assignment. If this variable is set to 1 the field will be left empty if it is empty.',
 ),
 'Export_Field_Separator_Symbol' => array(
 	'status' => 'Implemented',
@@ -1035,6 +1063,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'When you click on an event you will open the detail view of the record instead of the actions toolbar.',
 ),
+'Calendar_Notification_Sound' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Path',
+	'category' => 'Application',
+	'values' => 'path to audio file',
+	'definition' => 'Path to audio file to play when new notification arrives.',
+),
 'CronTasks_cronWatcher_mailto' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Liste CSV',
@@ -1189,6 +1224,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Send separate, individual emails to each recipient instead of one email to all. This is the default behavior of the application.',
 ),
+'EMail_Signature_BeforeQuote' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Adds the user signature before the quoted email instead of at the end of the whole email.',
+),
 'Workflow_Send_Email_ToCCBCC' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Liste CSV',
@@ -1265,6 +1307,20 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'Permet l\'édition ou non des prix listés dans les modules Commande Fournisseur, Bon de Commande, Devis, Facture et "Issuecards" . Par défaut (0) les prix listés sont éditables.',
+),
+'Inventory_Comment_Style' => array(
+	'status' => 'Implémenté',
+	'valuetype' => 'Chaîne',
+	'category' => 'Application',
+	'values' => 'CSS Style',
+	'definition' => 'CSS Style to apply on inventory product line comment box. By default defines width and height.',
+),
+'Application_Textarea_Style' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'CSS Style',
+	'definition' => 'CSS Style to apply on Textarea fields. By default defines height.',
 ),
 'Application_Group_Selection_Permitted' => array(
 	'status' => 'Implémenté',
@@ -1559,6 +1615,27 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Security',
 	'values' => 'Example: 127.0.0.1,192.168.0.100',
 	'definition' => 'Comma separated list of IP addresses from which could bypass CSRF control.',
+),
+'Application_PopupScreen_Width' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'UI',
+	'values' => '',
+	'definition' => 'Percentage of screen width that popups will use. Default is 80%',
+),
+'Application_PopupScreen_Height' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'UI',
+	'values' => '',
+	'definition' => 'Percentage of screen height that popups will use. Default is 80%',
+),
+'Application_Filter_All_Edit' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Edit the filter "All". The default is 1',
 ),
 );
 

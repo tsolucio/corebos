@@ -12,7 +12,6 @@ require_once 'modules/Reports/ReportRun.php';
 
 class VTScheduledReport extends Reports {
 
-	private $db;
 	private $user;
 
 	public $isScheduled = false;
@@ -28,7 +27,6 @@ class VTScheduledReport extends Reports {
 	public static $SCHEDULED_ANNUALLY = 6;
 
 	public function __construct($adb, $user, $reportid = '') {
-		$this->db	= $adb;
 		$this->user = $user;
 		$this->id	= $reportid;
 		parent::__construct($reportid);
@@ -178,7 +176,7 @@ class VTScheduledReport extends Reports {
 			$contents .= '<a href="'.$site_URL.'/index.php?module=Reports&action=SaveAndRun&record='.$this->id.'&folderid='.$this->folderid.'">';
 			$contents .= getTranslatedString('LBL_CLICK_HERE', $currentModule) .'</a>';
 		}
-		if ($reportFormat == 'csv') {
+		if ($reportFormat == 'csv' || $reportFormat == 'csvxls') {
 			$fileName = 'cache/'.$baseFileName.'.csv';
 			$filePath = $root_directory.$fileName;
 			$attachments[] = array('fname'=>$fileName, 'fpath'=>$filePath);
@@ -191,7 +189,7 @@ class VTScheduledReport extends Reports {
 			$pdf = $oReportRun->getReportPDF(null);
 			$pdf->Output($filePath, 'F');
 		}
-		if ($reportFormat == 'excel' || $reportFormat == 'both') {
+		if ($reportFormat == 'excel' || $reportFormat == 'both' || $reportFormat == 'csvxls') {
 			$fileName = 'cache/'.$baseFileName.'.xls';
 			$filePath = $root_directory.$fileName;
 			$attachments[] = array('fname'=>$fileName, 'fpath'=>$filePath);
@@ -281,7 +279,8 @@ class VTScheduledReport extends Reports {
 	}
 
 	public function updateNextTriggerTime() {
-		$this->db->pquery('UPDATE vtiger_scheduled_reports SET next_trigger_time=? WHERE reportid=?', array($this->getNextTriggerTime(), $this->id));
+		global $adb;
+		$adb->pquery('UPDATE vtiger_scheduled_reports SET next_trigger_time=? WHERE reportid=?', array($this->getNextTriggerTime(), $this->id));
 	}
 
 	public static function generateRecipientOption($type, $value, $name = '') {

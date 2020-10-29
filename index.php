@@ -502,10 +502,10 @@ if (!$viewAttachment && (!$viewAttachment && $action!='home_rss') && $action!=$A
 			$reminder_interval_reset = ($last_reminder_check_time + $next_reminder_interval - $cur_time) * 1000;
 			if (isset($_SESSION['last_reminder_check_time']) && $reminder_interval_reset > 0) {
 				echo "window.setTimeout(function(){
-						ActivityReminderCallback();
+						ActivityReminderCallback(false);
 					},$reminder_interval_reset);";
 			} else {
-				echo 'ActivityReminderCallback();';
+				echo 'ActivityReminderCallback(false);';
 			}
 			echo '</script>';
 		}

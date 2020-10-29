@@ -6,7 +6,7 @@
 * The Initial Developer of the Original Code is vtiger.
 * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
 * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|30/12/2010|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
-* Contributor(s): Ranieri/Translate terms eCRM web | 5/12/2017 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
+* Contributor(s): Ranieri/Translate terms eCRM web | 20/08/2020 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
 ********************************************************************************/
 
 $mod_strings = array(
@@ -15,11 +15,11 @@ $mod_strings = array(
 	'SINGLE_PBXManager' => 'Gerenciador iPBX',
 	'Asterisk' => 'Asterisk',
 	'LBL_ASTERISK_INFORMATION' => 'Informação ASTERISK',
-	'LBL_CALL_INFORMATION' => 'Informação da Chamada',
+	'LBL_CALL_INFORMATION' => 'Informação da chamada',
 
-	'Call From'=>'Chamada de',
+	'Call From'=>'Chamada a partir de',
 	'Call To'=>'Chamada para',
-	'Time Of Call'=>'Hora da Chamada',
+	'Time Of Call'=>'Data & Hora da chamada',
 	'ERR_Authenticate' => 'ERRO: authenticateUser. Erro ao conectar com o servidor.',
 	'ERR_Numbers' => 'Da extensão ou o número de destino está vazio. Não é possível prosseguir com a chamada.',
 	'ERR_Call' => 'ERRO: createcall. Erro ao conectar com o servidor.',
@@ -31,6 +31,6 @@ $mod_strings = array(
 	'incoming-received' => 'Recebida-Atendida',
 	'missed' => 'Perdida',
 	'received' => 'Recebida',
-	'OutgoingCall' => 'Ligação Saída de',
+	'OutgoingCall' => 'Chamada a partir de',
 );
 ?>

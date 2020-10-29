@@ -162,6 +162,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 					}
 				}
 			}
+			$util->revertUser();
 			$_REQUEST['ajxaction'] = $hold_ajxaction;
 		}
 		$util->revertUser();

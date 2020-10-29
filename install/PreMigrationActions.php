@@ -30,6 +30,7 @@ $_SESSION['pre_migration'] = true;
 	<title><?php echo $installationStrings['APP_NAME']. ' - ' . $installationStrings['LBL_CONFIG_WIZARD']. ' - ' . $installationStrings['LBL_PRE_MIGRATION_TOOLS']?></title>
 	<link href="themes/softed/style.css" rel="stylesheet" type="text/css">
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="include/js/vtlib.js"></script>
 	<script type="text/javascript" src="include/js/general.js"></script>
 	<script type="text/javascript" src="include/jquery/jquery.js"></script>
 	<script type="text/javascript">

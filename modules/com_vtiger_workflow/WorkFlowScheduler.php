@@ -12,7 +12,6 @@ require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 require_once 'modules/Users/Users.php';
 
 class WorkFlowScheduler {
-	private $user;
 	private $db;
 	public static $conditionMapping = array(
 		'equal to' => 'e',
@@ -49,15 +48,15 @@ class WorkFlowScheduler {
 	);
 
 	public function __construct($adb) {
-		$util = new VTWorkflowUtils();
-		$adminUser = $util->adminUser();
-		$this->user = $adminUser;
 		$this->db = $adb;
 	}
 
 	public function getWorkflowQuery($workflow, $fields = array(), $addID = true, $user = null) {
+		$revertUser = false;
 		if (is_null($user)) {
-			$user = $this->user;
+			$revertUser = true;
+			$util = new VTWorkflowUtils();
+			$user = $util->adminUser();
 		}
 		$moduleName = $workflow->moduleName;
 
@@ -131,6 +130,9 @@ class WorkFlowScheduler {
 				}
 			}
 		}
+		if ($revertUser) {
+			$util->revertUser();
+		}
 		return $query;
 	}
 
@@ -151,10 +153,12 @@ class WorkFlowScheduler {
 	public function queueScheduledWorkflowTasks() {
 		global $default_timezone;
 		$adb = $this->db;
+		$util = new VTWorkflowUtils();
+		$user = $util->adminUser();
 
 		$vtWorflowManager = new VTWorkflowManager($adb);
 		$taskQueue = new VTTaskQueue($adb);
-		$entityCache = new VTEntityCache($this->user);
+		$entityCache = new VTEntityCache($user);
 
 		// set the time zone to the admin's time zone, this is needed so that the scheduled workflow will be triggered
 		// at admin's time zone rather than the systems time zone. This is specially needed for Hourly and Daily scheduled workflows
@@ -166,6 +170,9 @@ class WorkFlowScheduler {
 		$errortasks = array();
 		$scheduledWorkflows = $vtWorflowManager->getScheduledWorkflows($currentTimestamp);
 		foreach ($scheduledWorkflows as $workflow) {
+			if (!$workflow->activeWorkflow()) {
+				continue;
+			}
 			$tm = new VTTaskManager($adb);
 			$tasks = $tm->getTasksForWorkflow($workflow->id);
 			if ($tasks) {
@@ -176,6 +183,7 @@ class WorkFlowScheduler {
 					$moduleName = $workflow->moduleName;
 					$wsEntityId = vtws_getWebserviceEntityId($moduleName, $recordId);
 					$entityData = $entityCache->forId($wsEntityId);
+					$entityData->WorkflowContext = array();
 					$data = $entityData->getData();
 					foreach ($tasks as $task) {
 						if ($task->active) {
@@ -222,6 +230,7 @@ class WorkFlowScheduler {
 			$logbg->fatal('> **************************');
 		}
 		$scheduledWorkflows = null;
+		$util->revertUser();
 	}
 
 	public function addWorkflowConditionsToQueryGenerator($queryGenerator, $conditions) {
@@ -302,6 +311,10 @@ class WorkFlowScheduler {
 					}
 					$value = '::#'.$substExpressionsIndex;
 					$substExpressionsIndex++;
+					preg_match('/(\w+) : \((\w+)\) (\w+)/', $condition['fieldname'], $matches);
+					if (count($matches) != 0) {
+						list($full, $referenceField, $referenceModule, $fieldname) = $matches;
+					}
 				} else {
 					$value = html_entity_decode($value);
 					preg_match('/(\w+) : \((\w+)\) (\w+)/', $condition['fieldname'], $matches);

@@ -623,7 +623,7 @@ class ListViewController {
 								"$recordId' title='".getTranslatedString($module, $module)."'>$value</a>";
 						} elseif ($opennewtab=='window') {
 							$value = "<a href='#' onclick='window.open(\"index.php?module=$module&parenttab=$parenttab&action=DetailView&record="
-								."$recordId\", \"$module".'_'."$recordId\", \"width=1300, height=900, scrollbars=yes\"); return false;' title='"
+								."$recordId\", \"$module".'_'."$recordId\", cbPopupWindowSettings); return false;' title='"
 								.getTranslatedString($module, $module)."'>$value</a>";
 						} else {
 							$value = "<a href='index.php?module=$module&parenttab=$parenttab&action=DetailView&record="

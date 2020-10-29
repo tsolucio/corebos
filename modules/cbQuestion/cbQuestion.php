@@ -440,6 +440,9 @@ class cbQuestion extends CRMEntity {
 	public static function getFormattedAnswer($qid, $params = array()) {
 		$ans = self::getAnswer($qid, $params);
 		switch ($ans['type']) {
+			case 'File':
+				$ret = self::getFileFromAnswer($ans);
+				break;
 			case 'Table':
 				$ret = self::getTableFromAnswer($ans);
 				break;
@@ -469,6 +472,78 @@ class cbQuestion extends CRMEntity {
 				$ret = getTranslatedString('LBL_PERMISSION');
 		}
 		return $ret;
+	}
+
+	/**
+	 * properties: see wiki for the latest definition
+	 */
+	public static function getFileFromAnswer($ans) {
+		$bqfiles = 'cache/bqfiles';
+		if (!is_dir($bqfiles)) {
+			mkdir($bqfiles, 0777, true);
+		}
+		$fname = '';
+		if (!empty($ans)) {
+			$fname = tempnam($bqfiles, 'bq');
+			$fp = fopen($fname, 'w');
+			$properties = json_decode($ans['properties']);
+			$delim = empty($properties->delimiter) ? ',' : $properties->delimiter;
+			$encls = empty($properties->enclosure) ? '"' : $properties->enclosure;
+			$alllabels = array();
+			$alltypes = array();
+			$rowlabels = !empty($ans['answer'][0]) ? array_keys($ans['answer'][0]) : array();
+			if (empty($rowlabels) && !empty($properties->columns)) {
+				for ($i=0; $i < count($properties->columns); $i++) {
+					$alllabels[] = $properties->columns[$i]->label;
+				}
+				$line = self::generateCSV($alllabels, $delim, $encls);
+			}
+			$ls = 0;
+			foreach ($rowlabels as $label) {
+				$alltypes[$label] = empty($properties->columns[$ls]->type) ? 'string' : $properties->columns[$ls]->type;
+				$alllabels[] = empty($properties->columns[$ls]->label) ? $label : $properties->columns[$ls]->label;
+				$ls++;
+			}
+			if (!empty($alllabels)) {
+				$line = self::generateCSV($alllabels, $delim, $encls);
+				if (isset($properties->postprocess)) {
+					$line = self::postProcessFileLine($line, $properties->postprocess);
+				}
+				fputs($fp, $line);
+			}
+			foreach ($ans['answer'] as $row) {
+				foreach ($row as $label => $value) {
+					if ($alltypes[$label]!='string' && !empty($value)) {
+						$type = $alltypes[$label];
+						if (!empty($properties->format->$type)) {
+							$row[$label] = self::getFormattedValue($value, $type, $properties->format->$type);
+						}
+					}
+				}
+				$line = self::generateCSV($row, $delim, $encls);
+				if (isset($properties->postprocess)) {
+					$line = self::postProcessFileLine($line, $properties->postprocess);
+				}
+				fputs($fp, $line);
+			}
+		}
+		return $fname;
+	}
+
+	public static function postProcessFileLine($line, $actions) {
+		$postprocess = explode(',', $actions);
+		foreach ($postprocess as $process) {
+			switch ($process) {
+				case 'deletedoublequotes':
+					$line = str_replace('\"', '\ç', $line);
+					$line = str_replace('"', '', $line);
+					$line = str_replace('\ç', '\"', $line);
+					break;
+				default:
+					break;
+			}
+		}
+		return $line;
 	}
 
 	public static function getTableFromAnswer($ans) {
@@ -636,6 +711,55 @@ class cbQuestion extends CRMEntity {
 			}
 		}
 		return $fieldData;
+	}
+
+	public static function getFormattedValue($value, $type, $format) {
+		global $current_user, $log;
+		switch ($type) {
+			case 'date':
+			case 'datetime':
+				if (!empty($format)) {
+					$dt = explode(' ', $value);
+					list($y, $m, $d) = (strpos($dt[0], '/')) ? explode('/', $dt[0]) : explode('-', $dt[0]);
+					if (empty($dt[1])) {
+						$h = $i = $s = 0;
+					} else {
+						list($h, $i, $s) = explode(':', $dt[1]);
+					}
+					return date($format, mktime($h, $i, $s, $m, $d, $y));
+				} else {
+					require_once 'include/fields/DateTimeField.php';
+					return DateTimeField::convertToUserFormat($value, $current_user);
+				}
+				break;
+			case 'float':
+			case 'decimal':
+				if (!empty($format) && is_object($format)) {
+					$decimalseparator = empty($format->decimalseparator) ? '' : $format->decimalseparator;
+					$grouping = empty($format->grouping) ? '' : $format->grouping;
+					$numberdecimals = empty($format->numberdecimals) ? '' : $format->numberdecimals;
+					return number_format($value, (int)$numberdecimals, $decimalseparator, $grouping);
+				} else {
+					require_once 'include/fields/CurrencyField.php';
+					return CurrencyField::convertToUserFormat($value, $current_user, true);
+				}
+				break;
+			default:
+				return $value;
+				break;
+		}
+	}
+
+	public static function generateCSV($data, $delimiter = ',', $enclosure = '"') {
+		$handle = fopen('php://temp', 'r+');
+		fputcsv($handle, $data, $delimiter, $enclosure);
+		rewind($handle);
+		$contents = '';
+		while (!feof($handle)) {
+			$contents .= fread($handle, 8192);
+		}
+		fclose($handle);
+		return $contents;
 	}
 }
 ?>

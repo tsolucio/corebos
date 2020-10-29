@@ -211,6 +211,13 @@ function csrf_check($fatal = true) {
 			return true;
 		}
 	}
+	if (isset($_REQUEST['mode'])) {
+		$mode = urldecode(base64_decode($_REQUEST['mode']));
+		if (substr($mode, 0, 4)=='acs_') {
+			$_POST[$GLOBALS['csrf']['input-name']] = substr($mode, 4);
+			$_REQUEST['mode'] = 'acs';
+		}
+	}
 	$exceptions = array(
 		array('action'=>'Import', 'module'=>'*', 'mode'=>'upload_and_parse'),
 	);
@@ -283,8 +290,10 @@ function csrf_get_tokens() {
 	}
 	if ($GLOBALS['csrf']['cookie']) {
 		$val = csrf_generate_secret();
-		header('Set-Cookie: '.$GLOBALS['csrf']['cookie'].'='.$val.'; SameSite=Strict', false);
-		//setcookie($GLOBALS['csrf']['cookie'], $val);
+		if (!headers_sent()) {
+			header('Set-Cookie: '.$GLOBALS['csrf']['cookie'].'='.$val.'; SameSite=Strict', false);
+			//setcookie($GLOBALS['csrf']['cookie'], $val);
+		}
 		return 'cookie:' . csrf_hash($val) . $ip;
 	}
 	if ($GLOBALS['csrf']['key']) {

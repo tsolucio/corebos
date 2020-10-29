@@ -305,6 +305,23 @@ function changecbqModule(newmodule) {
 	});
 }
 
+function getRelatedModuleFields(newmodule) {
+	this.addEventListener(
+		'condition_builder_module_changed',
+		function (e) {
+			const meta = builderconditions.getMetaInformation();
+			for (const op in meta.fieldLabels) {
+				arrayOfFields.push({
+					'text': meta.fieldLabels[op],
+					'value': op
+				});
+			}
+			fieldGridInstance.resetData(fieldData);
+		},
+		false
+	);
+}
+
 function showSQLMsg(msg, role) {
 	role = role || 'info';
 	document.getElementById('sqlmsg').innerHTML=msg;
@@ -660,7 +677,7 @@ function getInstruction(field, operator, alias) {
 		let op = validOperations.find(x => x.value === operator);
 		switch (operator) {
 			case 'ifelse':
-				fins = 'if '+fnam+' then expression else expression end';
+				fins = 'ifelse(condition, expression_true, expression_false)';
 				break;
 			case 'add':
 			case 'sub':
@@ -888,6 +905,12 @@ document.addEventListener('DOMContentLoaded', function (event) {
 			header: {
 				align: 'left',
 				valign: 'middle'
+			},
+			onGridMounted(ev) {
+				if (builderconditions.moduleName != '') {
+					arrayOfFields.splice(1, arrayOfFields.length);
+					getRelatedModuleFields(builderconditions.moduleName);
+				}
 			}
 		});
 		dataGridInstance = new tuiGrid({

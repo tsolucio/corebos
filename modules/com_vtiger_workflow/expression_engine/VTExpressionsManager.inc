@@ -48,18 +48,32 @@ class VTExpressionsManager {
 				$reflabels[$field['name']] = $field['label'];
 			}
 		}
+		$relmodulei18n = getTranslatedString('SINGLE_Users', 'Users');
+		$relhandler = vtws_getModuleHandlerFromName('Users', $current_user);
+		$relmeta = $relhandler->getMeta();
+		$relfields = $relmeta->getModuleFields();
+		foreach ($mainmeta->getOwnerFields() as $ownerfield) {
+			$mainfieldi18n = getTranslatedString($ownerfield, 'BusinessActions');
+			foreach ($relfields as $relfield => $wsfld) {
+				$relfieldi18n = getTranslatedString($wsfld->getFieldLabelKey(), 'Users');
+				$arr["$($ownerfield : (Users) $relfield)"] = "($mainfieldi18n : ($relmodulei18n) $relfieldi18n)";
+			}
+		}
 		foreach ($referenceFieldInfoList as $mainfield => $relmodules) {
 			if (empty($reflabels[$mainfield])) {
 				continue;
 			}
-			$mainfieldi18n = getTranslatedCurrencyString($reflabels[$mainfield], $moduleName);
+			$mainfieldi18n = getTranslatedString($reflabels[$mainfield], $moduleName);
 			foreach ($relmodules as $relmodule) {
-				$relmodulei18n = getTranslatedCurrencyString($relmodule, $relmodule);
+				$relmodulei18n = getTranslatedString('SINGLE_'.$relmodule, $relmodule);
+				if ($relmodulei18n=='SINGLE_'.$relmodule) {
+					$relmodulei18n = getTranslatedString($relmodule, $relmodule);
+				}
 				$relhandler = vtws_getModuleHandlerFromName($relmodule, $current_user);
 				$relmeta = $relhandler->getMeta();
 				$relfields = $relmeta->getModuleFields();
 				foreach ($relfields as $relfield => $wsfld) {
-					$relfieldi18n = getTranslatedCurrencyString($wsfld->getFieldLabelKey(), $relmodule);
+					$relfieldi18n = getTranslatedString($wsfld->getFieldLabelKey(), $relmodule);
 					$arr["$($mainfield : ($relmodule) $relfield)"] = "($mainfieldi18n : ($relmodulei18n) $relfieldi18n)";
 				}
 			}
@@ -67,11 +81,36 @@ class VTExpressionsManager {
 		return $arr;
 	}
 
+	public function expressionFunctionCategories() {
+		return array(
+			'All' => getTranslatedString('LBL_ALL'),
+			'Math' => getTranslatedString('Math'),
+			'Date and Time' => getTranslatedString('Date and Time'),
+			'Text' => getTranslatedString('Text'),
+			'Information' => getTranslatedString('Information'),
+			'Logical' => getTranslatedString('Logical'),
+			'Finance' => getTranslatedString('Finance'),
+			'Application' => getTranslatedString('Application'),
+			'Statistics' => getTranslatedString('Statistics'),
+		);
+	}
+
+	public function expressionFunctionDetails() {
+		global $current_language;
+		$fname = 'modules/com_vtiger_workflow/language/'.$current_language.'.fndefs.php';
+		if (file_exists($fname) && isInsideApplication($fname)) {
+			include $fname;
+		} else {
+			include 'modules/com_vtiger_workflow/language/en_us.fndefs.php';
+		}
+		return $WFExpressionFunctionDefinitons;
+	}
+
 	public function expressionFunctions() {
 		global $adb;
 		$return = array(
-			'concat' => 'concat(a,b)',
-			'coalesce' => 'coalesce(a,...,n)',
+			'concat' => 'concat(a,b,...)',
+			'coalesce' => 'coalesce(a,b,...)',
 			'time_diffdays(a,b)' => 'time_diffdays(a,b)',
 			'time_diffdays(a)' => 'time_diffdays(a)',
 			'time_diffyears(a,b)' => 'time_diffyears(a,b)',
@@ -86,6 +125,7 @@ class VTExpressionsManager {
 			'add_days' => 'add_days(datefield, noofdays)',
 			'add_workdays' => 'add_workdays(date, numofdays, addsaturday, holidays)',
 			'sub_days' => 'sub_days(datefield, noofdays)',
+			'sub_workdays' => 'sub_workdays(date, numofdays, removesaturday, holidays)',
 			'add_months' => 'add_months(datefield, noofmonths)',
 			'sub_months' => 'sub_months(datefield, noofmonths)',
 			'add_time(timefield, minutes)' => 'add_time(timefield, minutes)',
@@ -139,6 +179,10 @@ class VTExpressionsManager {
 			'getGEODistanceFromCoordinates' => 'getGEODistanceFromCoordinates({lat1},{long1},{lat2},{long2})',
 			'getFromContext' => 'getFromContext(variablename)',
 			'setToContext' => 'setToContext(variablename, value)',
+			'jsonEncode' => 'jsonEncode(field)',
+			'jsonDecode' => 'jsonDecode(field)',
+			'implode' => 'implode(delimiter, field)',
+			'explode' => 'explode(delimiter, field)',
 			'sendMessage' => 'sendMessage(message, channel, time)',
 			'readMessage' => 'readMessage(channel)',
 			'getSetting' => "getSetting('setting_key', 'default')",
@@ -151,6 +195,7 @@ class VTExpressionsManager {
 			'OR' => 'OR(condition1, condition2)',
 			'AND' => 'AND(condition1, condition2)',
 			'NOT' => 'NOT(condition1)',
+			'regex' => 'regex(pattern, subject)',
 			'exists' => 'exists(fieldname, value)',
 			'existsrelated' => 'existsrelated(relatedmodule, fieldname, value)',
 			'allrelatedare' => 'allrelatedare(relatedmodule, fieldname, value)',

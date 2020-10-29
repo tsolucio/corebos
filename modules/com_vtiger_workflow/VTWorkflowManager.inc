@@ -168,10 +168,10 @@ class VTWorkflowManager {
 	 * @return Workflow
 	 */
 	public function getScheduledWorkflows($referenceTime = '') {
-		$query = 'SELECT * FROM com_vtiger_workflows WHERE execution_condition = ?';
-		$params = array(VTWorkflowManager::$ON_SCHEDULE);
+		$query = 'SELECT * FROM com_vtiger_workflows WHERE execution_condition=? and active=?';
+		$params = array(VTWorkflowManager::$ON_SCHEDULE, 'true');
 		if ($referenceTime != '') {
-			$query .= " AND (nexttrigger_time = '' OR nexttrigger_time IS NULL OR nexttrigger_time <= ?)";
+			$query .= ' AND (nexttrigger_time IS NULL OR nexttrigger_time <= ?)';
 			$params[] = $referenceTime;
 		}
 		$result = $this->adb->pquery($query, $params);
@@ -183,7 +183,10 @@ class VTWorkflowManager {
 	 * @return Integer
 	 */
 	public function getScheduledWorkflowsCount() {
-		$result = $this->adb->pquery('SELECT count(*) AS count FROM com_vtiger_workflows WHERE execution_condition = ?', array(VTWorkflowManager::$ON_SCHEDULE));
+		$result = $this->adb->pquery(
+			'SELECT count(*) AS count FROM com_vtiger_workflows WHERE execution_condition=? and active=?',
+			array(VTWorkflowManager::$ON_SCHEDULE, 'true')
+		);
 		return $this->adb->query_result($result, 0, 'count');
 	}
 
@@ -250,8 +253,8 @@ class VTWorkflowManager {
 	public function getRACWorkflowsForModule($moduleName) {
 		$adb=$this->adb;
 		$result = $adb->pquery(
-			'select * from com_vtiger_workflows where execution_condition = ? and module_name=?',
-			array(VTWorkflowManager::$RECORD_ACCESS_CONTROL,$moduleName)
+			'select * from com_vtiger_workflows where execution_condition=? and module_name=? and active=?',
+			array(VTWorkflowManager::$RECORD_ACCESS_CONTROL, $moduleName, 'true')
 		);
 		return $this->getWorkflowsForResult($result);
 	}
@@ -267,6 +270,9 @@ class VTWorkflowManager {
 		$entityCache->forId($recordid);
 		$found = false;
 		foreach ($wfs as $wf) {
+			if (!$wf->activeWorkflow()) {
+				continue;
+			}
 			$found = $wf->evaluate($entityCache, $recordid);
 			if ($found) {
 				break;

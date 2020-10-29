@@ -163,7 +163,7 @@ class Emails extends CRMEntity {
 				if ($realid[1]=='-1') { // user
 					$usrrs = $adb->pquery('select id from vtiger_users where id=?', array($mycrmid));
 					if ($adb->num_rows($usrrs)==0) {
-						$adb->pquery('DELETE FROM vtiger_seactivityrel WHERE crmid=? AND activityid=?', array($this->column_fields['parent_id'], $this->id));
+						$adb->pquery('DELETE FROM vtiger_seactivityrel WHERE crmid=? AND activityid=?', array($mycrmid, $this->id));
 						//$this->insertIntoEntityTable('vtiger_seactivityrel', $module);
 						$sql = 'insert into vtiger_seactivityrel values(?,?)';
 						$params = array($mycrmid, $this->id);
@@ -174,7 +174,7 @@ class Emails extends CRMEntity {
 						$params = array($mycrmid, $this->id);
 					}
 				} else {
-					$adb->pquery('DELETE FROM vtiger_seactivityrel WHERE crmid=? AND activityid=?', array($this->column_fields['parent_id'], $this->id));
+					$adb->pquery('DELETE FROM vtiger_seactivityrel WHERE crmid=? AND activityid=?', array($mycrmid, $this->id));
 					//$this->insertIntoEntityTable('vtiger_seactivityrel', $module);
 					$sql = 'insert into vtiger_seactivityrel values(?,?)';
 					$params = array($mycrmid, $this->id);
@@ -400,7 +400,7 @@ class Emails extends CRMEntity {
 				$button .= "<input title='" . getTranslatedString('LBL_SELECT') . ' ' . getTranslatedString($related_module) .
 				"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup".
 				"&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',".
-				"'width=640,height=602,resizable=0,scrollbars=0');\" value='" . getTranslatedString('LBL_SELECT') .' '. getTranslatedString($related_module) . "'>&nbsp;";
+				"cbPopupWindowSettings);\" value='" . getTranslatedString('LBL_SELECT') .' '. getTranslatedString($related_module) . "'>&nbsp;";
 			}
 			if (in_array('BULKMAIL', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$button .= "<input title='" . getTranslatedString('LBL_BULK_MAILS') . "' class='crmbutton small create'" .

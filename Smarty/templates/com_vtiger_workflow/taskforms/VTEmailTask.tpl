@@ -235,10 +235,25 @@ var __attinfo = {$task->dzattinfo|json_encode};
 				<button onclick="jQuery('#file-uploader').show();attachmentManager.getDocuments();return false;" class="slds-button slds-button_success">{'LBL_SELECT_DOCUMENTS'|@getTranslatedString:'MailManager'}</button>
 			</div>
 		</div>
-		<div class="slds-grid_vertical-align-center slds-grid_vertical slds-p-top_x-small slds-grid">
-			<div class="slds-col slds-size_1-of-1 slds-p-vertical_x-small">
+		<div class="slds-grid slds-p-top_x-small">
+			<div class="slds-col">
 				<button onclick="jQuery('#file-uploader').toggle();return false;" class="slds-button slds-button_success">{'LBL_Attachments'|@getTranslatedString:'MailManager'}</button>
 			</div>
+			{if $entityName eq 'cbCalendar'}
+				<div class="slds-col">
+					<label class="slds-checkbox_toggle slds-grid">
+					<input type="checkbox" id= "attach_icalendar" name="attach_icalendar" aria-describedby="toggle-desc" {if ($task->attach_icalendar eq "on")}{"checked"}{/if}/>
+					<span id="toggle-desc" class="slds-checkbox_faux_container" aria-live="assertive">
+						<span class="slds-checkbox_faux"></span>
+						<span class="slds-checkbox_on">{'LBL_ENABLED'|@getTranslatedString:'Settings'}</span>
+						<span class="slds-checkbox_off">{'LBL_DISABLED'|@getTranslatedString:'Settings'}</span>
+					</span>
+					<span>&nbsp;{'LBL_Attach_icalendar'|@getTranslatedString:'cbCalendar'}</span>
+					</label>
+				</div>
+			{/if}
+		</div>
+		<div class="slds-grid_vertical-align-center slds-grid_vertical slds-p-top_x-small slds-grid">
 			<div class="slds-col slds-size_1-of-1">
 				<div class="slds-form-element">
 					<span><b>{'LBL_AttachmentInField'|@getTranslatedString:$MODULE_NAME}</b></span>

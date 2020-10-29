@@ -14,7 +14,6 @@ require_once 'VTWorkflowApplication.inc';
 require_once 'VTWorkflowManager.inc';
 require_once 'VTWorkflowUtils.php';
 require_once 'modules/com_vtiger_workflow/VTTaskManager.inc';
-require_once 'modules/com_vtiger_workflow/tasks/VTCreateEventTask.inc';
 
 function vtWorkflowSave($adb, $request) {
 	global $current_language;
@@ -86,7 +85,8 @@ function vtWorkflowSave($adb, $request) {
 		$wf->test = $conditions;
 		$wf->executionConditionAsLabel($executionCondition);
 		$wf->schtypeid = $request['schtypeid'];
-		$wf->schtime = VTCreateEventTask::conv12to24hour($request['schtime']);
+		$fmt = (date('a', strtotime($request['schtime'])));
+		$wf->schtime = DateTimeField::formatDatebaseTimeString($request['schtime'], $fmt);
 		$wf->schdayofmonth = isset($request['schdayofmonth']) ? json_encode($request['schdayofmonth']) : '';
 		$wf->schdayofweek = isset($schdayofweek) ? json_encode($schdayofweek) : '';
 		$wf->schannualdates = $schannualdates;
@@ -103,7 +103,8 @@ function vtWorkflowSave($adb, $request) {
 		$wf->test = $conditions;
 		$wf->executionConditionAsLabel($executionCondition);
 		$wf->schtypeid = $request['schtypeid'];
-		$wf->schtime = VTCreateEventTask::conv12to24hour($request['schtime']);
+		$fmt = (date('a', strtotime($request['schtime'])));
+		$wf->schtime = DateTimeField::formatDatebaseTimeString($request['schtime'], $fmt);
 		$wf->schdayofmonth = isset($request['schdayofmonth']) ? json_encode($request['schdayofmonth']) : '';
 		$wf->schdayofweek = isset($schdayofweek) ? json_encode($schdayofweek) : '';
 		$wf->schannualdates = $schannualdates;

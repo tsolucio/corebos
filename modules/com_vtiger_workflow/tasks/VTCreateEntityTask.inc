@@ -20,6 +20,9 @@ class VTCreateEntityTask extends VTTask {
 
 	public function doTask(&$entity) {
 		global $adb, $current_user, $from_wf, $logbg;
+		if (!vtlib_isModuleActive($this->entity_type)) {
+			return;
+		}
 		$from_wf = true;
 		$util = new VTWorkflowUtils();
 
@@ -28,13 +31,7 @@ class VTCreateEntityTask extends VTTask {
 		$entityId = $entity->getId();
 		$recordId = vtws_getIdComponents($entityId);
 		$recordId = $recordId[1];
-
 		$entityType = $this->entity_type;
-		if (!vtlib_isModuleActive($entityType)) {
-			$util->revertUser();
-			return;
-		}
-
 		$fieldValueMapping = array();
 		if (!empty($this->field_value_mapping)) {
 			$fieldValueMapping = json_decode($this->field_value_mapping, true);

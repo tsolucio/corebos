@@ -133,114 +133,121 @@ class corebos_sendgrid {
 		$brScan = ''
 	) {
 		global $adb, $log;
-		if (self::useEmailHook()) {
-			if (is_array($attachment)) {
-				$atts = $attachment;
-			} else {
-				$atts = getAllAttachments($emailid);
-			}
-			if (isset($_REQUEST['filename_hidden_docu'])) {
-				$file_name = $_REQUEST['filename_hidden_docu'];
-				$atts[]=array('fname'=>$file_name,'fpath'=>$file_name);
-			}
-			if (isset($_REQUEST['filename_hidden_gendoc'])) {
-				$file_name = $_REQUEST['filename_hidden_gendoc'];
-				$atts[]=array('fname'=>$file_name,'fpath'=>$file_name);
-			}
-			if ($logo == 1) {
-				$cmp = retrieveCompanyDetails();
-				$atts[]=array(
-					'fname' => basename($cmp['companylogo']),
-					'fpath' => $cmp['companylogo'],
-					'attachtype' => 'inline',
-					'attachmarker' => 'logo', // '<img src="cid:logo" />',
-				);
-			}
-			preg_match_all('/<img src="cid:(qrcode.*)"/', $contents, $matches);
-			if ($qrScan == 1 || count($matches[1])>0) {
-				foreach ($matches[1] as $qrname) {
+		$inBucketServeUrl = GlobalVariable::getVariable('Debug_Email_Send_To_Inbucket', "");
+		if (!empty($inBucketServeUrl)) {
+			require_once 'modules/Emails/mail.php';
+			require_once 'modules/Emails/Emails.php';
+			return send_mail('Email', $to_email, $from_name, $from_email, $subject, $contents, $cc, $bcc, $attachment, $emailid, $logo, $replyto, $qrScan, $brScan);
+		} else {
+			if (self::useEmailHook()) {
+				if (is_array($attachment)) {
+					$atts = $attachment;
+				} else {
+					$atts = getAllAttachments($emailid);
+				}
+				if (isset($_REQUEST['filename_hidden_docu'])) {
+					$file_name = $_REQUEST['filename_hidden_docu'];
+					$atts[]=array('fname'=>$file_name,'fpath'=>$file_name);
+				}
+				if (isset($_REQUEST['filename_hidden_gendoc'])) {
+					$file_name = $_REQUEST['filename_hidden_gendoc'];
+					$atts[]=array('fname'=>$file_name,'fpath'=>$file_name);
+				}
+				if ($logo == 1) {
+					$cmp = retrieveCompanyDetails();
 					$atts[]=array(
-						'fname' => $qrname.'.png',
-						'fpath' => 'cache/images/'.$qrname.'.png',
+						'fname' => basename($cmp['companylogo']),
+						'fpath' => $cmp['companylogo'],
 						'attachtype' => 'inline',
-						'attachmarker' => $qrname, //'<img src="cid:'.$qrname.'" />',
+						'attachmarker' => 'logo', // '<img src="cid:logo" />',
 					);
 				}
-			}
-			preg_match_all('/<img src="cid:(barcode.*)"/', $contents, $matches);
-			if ($brScan == 1 || count($matches[1])>0) {
-				foreach ($matches[1] as $brname) {
-					$atts[]=array(
-						'fname' => $brname.'.png',
-						'fpath' => 'cache/images/'.$brname.'.png',
-						'attachtype' => 'inline',
-						'attachmarker' => $brname, //'<img src="cid:'.$brname.'" />',
-					);
+				preg_match_all('/<img src="cid:(qrcode.*)"/', $contents, $matches);
+				if ($qrScan == 1 || count($matches[1])>0) {
+					foreach ($matches[1] as $qrname) {
+						$atts[]=array(
+							'fname' => $qrname.'.png',
+							'fpath' => 'cache/images/'.$qrname.'.png',
+							'attachtype' => 'inline',
+							'attachmarker' => $qrname, //'<img src="cid:'.$qrname.'" />',
+						);
+					}
 				}
-			}
-			$rs = $adb->pquery('select first_name,last_name from vtiger_users where user_name=?', array($from_name));
-			if ($adb->num_rows($rs) > 0) {
-				$from_name = decode_html($adb->query_result($rs, 0, 'first_name').' '.$adb->query_result($rs, 0, 'last_name'));
-			}
-			if (!is_array($to_email)) {
-				$to_email = trim($to_email, ',');
-				$to_email = explode(',', $to_email);
-			}
-			if (empty($cc)) {
-				$cc = array();
-			}
-			if (!is_array($cc)) {
-				$cc = self::setSendGridCCAddress($cc);
-			}
-			if (empty($bcc)) {
-				$bcc = array();
-			}
-			if (!is_array($bcc)) {
-				$bcc = self::setSendGridCCAddress($bcc);
-			}
-			$subject = '=?UTF-8?B?'.base64_encode($subject).'?=';
-			$email = new \SendGrid\Mail\Mail();
-			$email->setFrom($from_email, $from_name);
-			$email->setSubject($subject);
-			$alreadysent = array();
-			foreach ($to_email as $oneemail) {
-				if (!in_array($oneemail, $alreadysent)) {
-					$email->addTo($oneemail);
-					$alreadysent[] = $oneemail;
+				preg_match_all('/<img src="cid:(barcode.*)"/', $contents, $matches);
+				if ($brScan == 1 || count($matches[1])>0) {
+					foreach ($matches[1] as $brname) {
+						$atts[]=array(
+							'fname' => $brname.'.png',
+							'fpath' => 'cache/images/'.$brname.'.png',
+							'attachtype' => 'inline',
+							'attachmarker' => $brname, //'<img src="cid:'.$brname.'" />',
+						);
+					}
 				}
-			}
-			foreach ($cc as $oneemail) {
-				if (!in_array($oneemail, $alreadysent)) {
-					$email->addCc($oneemail);
-					$alreadysent[] = $oneemail;
+				$rs = $adb->pquery('select first_name,last_name from vtiger_users where user_name=?', array($from_name));
+				if ($adb->num_rows($rs) > 0) {
+					$from_name = decode_html($adb->query_result($rs, 0, 'first_name').' '.$adb->query_result($rs, 0, 'last_name'));
 				}
-			}
-			foreach ($bcc as $oneemail) {
-				if (!in_array($oneemail, $alreadysent)) {
-					$email->addBcc($oneemail);
-					$alreadysent[] = $oneemail;
+				if (!is_array($to_email)) {
+					$to_email = trim($to_email, ',');
+					$to_email = explode(',', $to_email);
 				}
-			}
-			if (!empty($replyto)) {
-				$email->setReplyTo($replyto);
-			}
-			//$email->addContent("text/plain", "and easy to do anywhere, even with PHP");
-			$email->addContent('text/html', $contents);
-			$email->addAttachments(self::convertAttachmentArray($atts));
-			$email->addCategory('Transactional');
-			$email->addCustomArg('crmid', (string)$emailid);
-			$sendgrid = new \SendGrid(coreBOS_Settings::getSetting(self::KEY_PASS_TRANSACTIONAL, ''));
-			try {
-				$response = $sendgrid->send($email);
-				if ($response->statusCode() > 299) {
-					$log->fatal('Caught SENDGRID email error: '.$response->statusCode());
-					$log->fatal($response->body());
-					return $response->statusCode();
+				if (empty($cc)) {
+					$cc = array();
 				}
-				return 1;
-			} catch (Exception $e) {
-				$log->fatal('Caught SENDGRID email exception: '. $e->getMessage());
-				return 0;
+				if (!is_array($cc)) {
+					$cc = self::setSendGridCCAddress($cc);
+				}
+				if (empty($bcc)) {
+					$bcc = array();
+				}
+				if (!is_array($bcc)) {
+					$bcc = self::setSendGridCCAddress($bcc);
+				}
+				$subject = '=?UTF-8?B?'.base64_encode($subject).'?=';
+				$email = new \SendGrid\Mail\Mail();
+				$email->setFrom($from_email, $from_name);
+				$email->setSubject($subject);
+				$alreadysent = array();
+				foreach ($to_email as $oneemail) {
+					if (!in_array($oneemail, $alreadysent)) {
+						$email->addTo($oneemail);
+						$alreadysent[] = $oneemail;
+					}
+				}
+				foreach ($cc as $oneemail) {
+					if (!in_array($oneemail, $alreadysent)) {
+						$email->addCc($oneemail);
+						$alreadysent[] = $oneemail;
+					}
+				}
+				foreach ($bcc as $oneemail) {
+					if (!in_array($oneemail, $alreadysent)) {
+						$email->addBcc($oneemail);
+						$alreadysent[] = $oneemail;
+					}
+				}
+				if (!empty($replyto)) {
+					$email->setReplyTo($replyto);
+				}
+				//$email->addContent("text/plain", "and easy to do anywhere, even with PHP");
+				$email->addContent('text/html', $contents);
+				$email->addAttachments(self::convertAttachmentArray($atts));
+				$email->addCategory('Transactional');
+				$email->addCustomArg('crmid', (string)$emailid);
+				$sendgrid = new \SendGrid(coreBOS_Settings::getSetting(self::KEY_PASS_TRANSACTIONAL, ''));
+				try {
+					$response = $sendgrid->send($email);
+					if ($response->statusCode() > 299) {
+						$log->fatal('Caught SENDGRID email error: '.$response->statusCode());
+						$log->fatal($response->body());
+						return $response->statusCode();
+					}
+					return 1;
+				} catch (Exception $e) {
+					$log->fatal('Caught SENDGRID email exception: '. $e->getMessage());
+					return 0;
+				}
 			}
 		}
 	}

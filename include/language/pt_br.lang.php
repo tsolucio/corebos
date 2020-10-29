@@ -1357,6 +1357,7 @@ $app_strings = array (
 'No Module' => 'Sem módulos relacionados',
 'Entity Name' => 'Nome entidade',
 'LBL_NOPRODUCTS' => 'Não é possível converter pedido de vendas em Fatura porque não há produtos restantes na fatura.',
+'VALIDATION_FAILED' => 'Validation failed',
 );
 
 // Translation for currency names

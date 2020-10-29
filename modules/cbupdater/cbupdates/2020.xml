@@ -260,4 +260,97 @@
 	<systemupdate>false</systemupdate>
 	<blocked>true</blocked>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add generate map action to business maps</description>
+	<filename>build/changeSets/2020/addGenerateAction2cbMap.php</filename>
+	<classname>addGenerateAction2cbMap</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Database changes to eliminate old calendar references</description>
+	<filename>build/changeSets/2020/databasechangesToMoveTocbCalendar.php</filename>
+	<classname>databasechangesToMoveTocbCalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Set Global Variable blocked field to checkbox</description>
+	<filename>build/changeSets/2020/fixGlobalVariableBlockedTypeOfData.php</filename>
+	<classname>fixGlobalVariableBlockedTypeOfData</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Database changes to eliminate old calendar references: GV, WF, Notifications</description>
+	<filename>build/changeSets/2020/databasechangesToMoveTocbCalendar2.php</filename>
+	<classname>databasechangesToMoveTocbCalendar2</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Increment Custom View Permission Role Field Size</description>
+	<filename>build/changeSets/2020/incCVManagementRoleFieldSize.php</filename>
+	<classname>incCVManagementRoleFieldSize</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add CSV file export to Business Question</description>
+	<filename>build/changeSets/2020/addFilePLValueOnQuestion.php</filename>
+	<classname>addFilePLValueOnQuestion</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>george1806</author>
+	<description>Install generate report workflow task</description>
+	<filename>build/changeSets/2020/installgenerateReportWfTask.php</filename>
+	<classname>installgenerateReportWfTask</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Add Send File workflow task</description>
+	<filename>build/changeSets/2020/addExeWFSendFilesTask.php</filename>
+	<classname>addExeWFSendFilesTask</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Install cbCredentials module</description>
+	<filename>build/changeSets/2020/installcbCredentials.php</filename>
+	<classname>installcbCredentials</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Install Google Authencitation Driver</description>
+	<filename>build/changeSets/2020/googleAuthDriver.php</filename>
+	<classname>googleAuthDriver</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add ReplyTo on Email module</description>
+	<filename>build/changeSets/2020/addReplyToOnEmail.php</filename>
+	<classname>addReplyToOnEmail</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>MajorLabel</author>
+	<description>Add countrycode to account address section</description>
+	<filename>build/changeSets/2020/addCountryCode.php</filename>
+	<classname>addCountryCode</classname>
+	<systemupdate>false</systemupdate>
+	<blocked>true</blocked>
+</changeSet>
+<changeSet>
+	<author>MajorLabel</author>
+	<description>Add countrycode to contact address section</description>
+	<filename>build/changeSets/2020/addCountryCodeContacts.php</filename>
+	<classname>addCountryCodeContacts</classname>
+	<systemupdate>false</systemupdate>
+	<blocked>true</blocked>
+</changeSet>
 </updatesChangeLog>

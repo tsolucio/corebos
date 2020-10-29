@@ -9,7 +9,7 @@
   *********************************************************************************/
 header('X-Frame-Options: DENY');
 //we don't want the parent module's string file, but rather the string file specifc to this subpanel
-global $current_language;
+global $current_language, $current_user;
 $current_module_strings = return_module_language($current_language, 'Users');
 
 define('IN_LOGIN', true);
@@ -72,6 +72,8 @@ if ($twofasecret===false) {
 }
 $code = $tfa->getCode($twofasecret);
 coreBOS_Settings::setSetting('coreBOS_2FA_Code_'.$focus->id, $code);
+$focus->retrieveCurrentUserInfoFromFile($focus->id);
+$current_user = $focus;
 Users::send2FACode($code, $focus->id);
 
 $smarty=new vtigerCRM_Smarty;

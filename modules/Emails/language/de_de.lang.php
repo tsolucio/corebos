@@ -56,7 +56,7 @@ $mod_strings = array(
 'LBL_FROM'=>'Von :',
 'LBL_CC'=>'CC :',
 'LBL_BCC'=>'BCC :',
-
+'replyto' => 'Reply To',
 'NTC_REMOVE_INVITEE'=>'Möchten Sie diesen Empfänger von der E-Mail löschen',
 'LBL_INVITEE'=>'Empfänger',
 

@@ -366,6 +366,8 @@ var alert_arr = {
 	'LBL_DOES_NOT_END_WITH' : 'no acaba por',
 	'DOES_NOT_START_WITH':'no empieza por',
 	'DOES_NOT_END_WITH':'no acaba por',
+	'SOUNDEX':'soundex',
+	'REGEXP':'regexp',
 	'Widget_Deleted_Sucessfully':'Widget eliminado correctamente',
 	'LBL_BEFORE' : 'antes',
 	'LBL_AFTER' : 'después',

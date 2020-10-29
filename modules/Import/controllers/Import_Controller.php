@@ -42,7 +42,7 @@ class Import_Controller {
 		}
 	}
 
-	public function triggerImport($batchImport = false) {
+	public function triggerImport($batchImport = false, $setBatchImport = false) {
 		$importInfo = Import_Queue_Controller::getImportInfo($this->userInputObject->get('module'), $this->user);
 		$importDataController = new Import_Data_Controller($importInfo, $this->user);
 
@@ -52,7 +52,9 @@ class Import_Controller {
 				exit;
 			}
 		}
-
+		if ($setBatchImport) {
+			$importDataController->batchImport = false;
+		}
 		$importDataController->importData();
 		Import_Queue_Controller::updateStatus($importInfo['id'], Import_Queue_Controller::$IMPORT_STATUS_HALTED);
 		$importInfo = Import_Queue_Controller::getImportInfo($this->userInputObject->get('module'), $this->user);
@@ -75,7 +77,7 @@ class Import_Controller {
 
 		$importStatusCount = $importDataController->getImportStatusCount();
 		$totalRecords = $importStatusCount['TOTAL'];
-		if ($totalRecords > ($importStatusCount['IMPORTED'] + $importStatusCount['FAILED'])) {
+		if ($totalRecords > ($importStatusCount['IMPORTED'] + $importStatusCount['FAILED']) && strpos(PHP_SAPI, 'apache')!==false) {
 //			if ($importInfo['status'] == Import_Queue_Controller::$IMPORT_STATUS_SCHEDULED) {
 //				self::showScheduledStatus($importInfo);
 //				exit;

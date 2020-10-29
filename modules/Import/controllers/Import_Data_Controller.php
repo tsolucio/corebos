@@ -335,6 +335,7 @@ class Import_Data_Controller {
 	}
 
 	public function transformForImport($fieldData, $moduleMeta, $fillDefault = true, $mergeMode = false) {
+		$LeaveUserReferenceFieldEmpty = GlobalVariable::getVariable('Import_LeaveUserReferenceFieldEmpty', 0, $moduleMeta->getEntityName());
 		$moduleFields = $moduleMeta->getModuleFields();
 		$defaultFieldValues = $this->getDefaultFieldValues($moduleMeta);
 		foreach ($fieldData as $fieldName => $fieldValue) {
@@ -396,7 +397,9 @@ class Import_Data_Controller {
 							$referenceModuleName = $referenceModule;
 							if ($referenceModule == 'Users') {
 								$referenceEntityId = getUserId_Ol($entityLabel);
-								if (empty($referenceEntityId) || !Import_Utils::hasAssignPrivilege($moduleMeta->getEntityName(), $referenceEntityId)) {
+								if ((empty($referenceEntityId) && !$LeaveUserReferenceFieldEmpty)
+									|| (!empty($referenceEntityId) && !Import_Utils::hasAssignPrivilege($moduleMeta->getEntityName(), $referenceEntityId))
+								) {
 									$referenceEntityId = $this->user->id;
 								}
 							} elseif ($referenceModule == 'Currency') {
@@ -436,7 +439,9 @@ class Import_Data_Controller {
 						if (isset($defaultFieldValues[$fieldName])) {
 							$fieldData[$fieldName] = $defaultFieldValues[$fieldName];
 						}
-						if (empty($fieldData[$fieldName]) || !Import_Utils::hasAssignPrivilege($moduleMeta->getEntityName(), $fieldData[$fieldName])) {
+						if ((empty($fieldData[$fieldName]) && !$LeaveUserReferenceFieldEmpty)
+							|| (!empty($fieldData[$fieldName]) && !Import_Utils::hasAssignPrivilege($moduleMeta->getEntityName(), $fieldData[$fieldName]))
+						) {
 							$fieldData[$fieldName] = $this->user->id;
 						}
 					} else {

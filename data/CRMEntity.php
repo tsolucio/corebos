@@ -539,7 +539,12 @@ class CRMEntity {
 			}
 			$this->column_fields['record_id'] = $current_id;
 			$this->column_fields['record_module'] = $module;
-			$cbuuid = (empty($this->column_fields['cbuuid']) ? $this->getUUID() : $this->column_fields['cbuuid']);
+			if (empty($this->column_fields['cbuuid'])) {
+				//$this->column_fields['createdtime'] = $crmvalues['created_date'];
+				$cbuuid = $this->getUUID();
+			} else {
+				$cbuuid = $this->column_fields['cbuuid'];
+			}
 			$sql = 'insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,modifiedby,createdtime,modifiedtime,cbuuid) values(?,?,?,?,?,?,?,?,?)';
 			$params = array($current_id, $createdbyuser, $ownerid, $module, $description_val, $current_user->id, $created_date_var, $modified_date_var, $cbuuid);
 			$adb->pquery($sql, $params);
@@ -751,7 +756,7 @@ class CRMEntity {
 					} else {
 						$fldvalue = $this->column_fields[$fieldname];
 					}
-				} elseif ($uitype == 14 && empty($fldvalue)) {
+				} elseif ($uitype == 14 && empty($this->column_fields[$fieldname])) {
 					$fldvalue = null;
 				} elseif ($uitype == 50) {
 					$timefmt = '';
@@ -897,7 +902,7 @@ class CRMEntity {
 		}
 		$typeofdata = self::$todvalues[$fieldname];
 		$decimals = CurrencyField::getDecimalsFromTypeOfData($typeofdata);
-		if (round($dbvalue, min($decimals, $current_user->no_of_currency_decimals))==$fldvalue) {
+		if (round((float)$dbvalue, min($decimals, $current_user->no_of_currency_decimals))==$fldvalue) {
 			$fldvalue = $dbvalue;
 		}
 		$log->debug('< adjustCurrencyField '.$fldvalue);
@@ -1273,10 +1278,13 @@ class CRMEntity {
 
 	/** Mark an item as deleted */
 	public function mark_deleted($id) {
-		global $current_user;
-		$date_var = date('Y-m-d H:i:s');
-		$query = 'UPDATE vtiger_crmentity set deleted=1,modifiedtime=?,modifiedby=? where crmid=?';
-		$this->db->pquery($query, array($this->db->formatDate($date_var, true), $current_user->id, $id), true, 'Error marking record deleted: ');
+		global $current_user, $adb;
+		$adb->pquery(
+			'UPDATE vtiger_crmentity set deleted=1,modifiedtime=?,modifiedby=? where crmid=?',
+			array($adb->formatDate(date('Y-m-d H:i:s'), true), $current_user->id, $id),
+			true,
+			'Error marking record deleted: '
+		);
 	}
 
 	// this method is called during an import before inserting a bean
@@ -2071,7 +2079,7 @@ class CRMEntity {
 					$button .= "<input title='" . getTranslatedString('LBL_SELECT') . ' ' . getTranslatedString($related_module, $related_module).
 						"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
 						"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',".
-						"'width=640,height=602,resizable=0,scrollbars=0');\" value='" . getTranslatedString('LBL_SELECT') . ' ' .
+						"cbPopupWindowSettings);\" value='" . getTranslatedString('LBL_SELECT') . ' ' .
 						getTranslatedString($related_module, $related_module) . "'>&nbsp;";
 				}
 			}
@@ -2154,7 +2162,7 @@ class CRMEntity {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module).
 					"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
 					"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',".
-					"'width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). ' ' .
+					"cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT'). ' ' .
 					getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
@@ -2337,7 +2345,7 @@ class CRMEntity {
 				$button .= "<input title='" . getTranslatedString('LBL_SELECT') . ' ' . getTranslatedString($related_module, $related_module).
 					"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
 					"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',".
-					"'width=640,height=602,resizable=0,scrollbars=0');\" value='" . getTranslatedString('LBL_SELECT') . ' '.
+					"cbPopupWindowSettings);\" value='" . getTranslatedString('LBL_SELECT') . ' '.
 					getTranslatedString($related_module, $related_module) . "'>&nbsp;";
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
@@ -2397,7 +2405,7 @@ class CRMEntity {
 					$button .= "<input title='" . getTranslatedString('LBL_SELECT') . ' ' . getTranslatedString($related_module, $related_module).
 						"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
 						"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',".
-						"'width=640,height=602,resizable=0,scrollbars=0');\" value='" . getTranslatedString('LBL_SELECT') . ' '.
+						"cbPopupWindowSettings);\" value='" . getTranslatedString('LBL_SELECT') . ' '.
 						getTranslatedString($related_module, $related_module) . "'>&nbsp;";
 				}
 			}
@@ -3497,14 +3505,14 @@ class CRMEntity {
 	 * return string $sorder    - sortorder string either 'ASC' or 'DESC'
 	 */
 	public function getSortOrder() {
-		global $log;
+		global $log, $adb;
 		$cmodule = get_class($this);
 		$log->debug('> getSortOrder');
 		$sorder = strtoupper(GlobalVariable::getVariable('Application_ListView_Default_OrderDirection', $this->default_sort_order, $cmodule));
 		if (isset($_REQUEST['sorder'])) {
-			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
+			$sorder = $adb->sql_escape_string($_REQUEST['sorder']);
 		} elseif (!empty($_SESSION[$cmodule.'_Sort_Order'])) {
-			$sorder = $this->db->sql_escape_string($_SESSION[$cmodule.'_Sort_Order']);
+			$sorder = $adb->sql_escape_string($_SESSION[$cmodule.'_Sort_Order']);
 		}
 		$log->debug('< getSortOrder');
 		return $sorder;
@@ -3515,7 +3523,7 @@ class CRMEntity {
 	 * return string $order_by    - fieldname(eg: 'accountname')
 	 */
 	public function getOrderBy() {
-		global $log;
+		global $log, $adb;
 		$log->debug('> getOrderBy');
 		$cmodule = get_class($this);
 		$order_by = '';
@@ -3524,9 +3532,9 @@ class CRMEntity {
 		}
 
 		if (isset($_REQUEST['order_by'])) {
-			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
+			$order_by = $adb->sql_escape_string($_REQUEST['order_by']);
 		} elseif (!empty($_SESSION[$cmodule.'_Order_By'])) {
-			$order_by = $this->db->sql_escape_string($_SESSION[$cmodule.'_Order_By']);
+			$order_by = $adb->sql_escape_string($_SESSION[$cmodule.'_Order_By']);
 		}
 		$log->debug('< getOrderBy');
 		return $order_by;

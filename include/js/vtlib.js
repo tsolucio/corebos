@@ -74,11 +74,11 @@ function vtlib_open_popup_window(fromlink, fldname, MODULE, ID) {
 		}
 	}
 	if (fromlink == 'qcreate') {
-		window.open('index.php?module='+ mod +'&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield='+fldname+'&srcmodule='+MODULE+'&forrecord='+ID, 'vtlibui10qc', 'width=680,height=602,resizable=0,scrollbars=0,top=150,left=200');
+		window.open('index.php?module='+ mod +'&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield='+fldname+'&srcmodule='+MODULE+'&forrecord='+ID, 'vtlibui10qc', cbPopupWindowSettings);
 	} else if (fromlink != '') {
-		window.open('index.php?module='+ mod +'&action=Popup&html=Popup_picker&form='+fromlink+'&forfield='+fldname+'&srcmodule='+MODULE+'&forrecord='+ID, 'vtlibui10', 'width=680,height=602,resizable=0,scrollbars=0,top=150,left=200');
+		window.open('index.php?module='+ mod +'&action=Popup&html=Popup_picker&form='+fromlink+'&forfield='+fldname+'&srcmodule='+MODULE+'&forrecord='+ID, 'vtlibui10', cbPopupWindowSettings);
 	} else {
-		window.open('index.php?module='+ mod +'&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield='+fldname+'&srcmodule='+MODULE+'&forrecord='+ID, 'vtlibui10', 'width=680,height=602,resizable=0,scrollbars=0,top=150,left=200');
+		window.open('index.php?module='+ mod +'&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield='+fldname+'&srcmodule='+MODULE+'&forrecord='+ID, 'vtlibui10', cbPopupWindowSettings);
 	}
 	return true;
 }

@@ -27,7 +27,7 @@ class VTEmailTask extends VTTask {
 	private $entityinfo = '';
 
 	public function getFieldNames() {
-		return array('fromname', 'fromemail', 'replyto', 'subject', 'content', 'recepient', 'emailcc', 'emailbcc', 'attfieldnames', 'attachmentids');
+		return array('fromname', 'fromemail', 'replyto', 'subject', 'content', 'recepient', 'emailcc', 'emailbcc', 'attfieldnames', 'attachmentids', 'attach_icalendar');
 	}
 	public function after_retrieve() {
 		global $adb, $current_user;
@@ -151,7 +151,8 @@ class VTEmailTask extends VTTask {
 		$cc = preg_replace('/,,+/', ',', $cc);
 		$bcc = preg_replace('/,,+/', ',', $bcc);
 		if (strlen(trim($to_email, " \t\n,")) == 0 && strlen(trim($cc, " \t\n,")) == 0 && strlen(trim($bcc, " \t\n,")) == 0) {
-			return ;
+			$util->revertUser();
+			return;
 		}
 		if (!empty($entity->WorkflowContext['SendThisMsgTemplate'])) {
 			if (strpos($entity->WorkflowContext['SendThisMsgTemplate'], 'x')>0) {
@@ -188,16 +189,24 @@ class VTEmailTask extends VTTask {
 		}
 		$ids = array();
 		if (!empty($entity->WorkflowContext['MergeTemplateWith'])) {
-			$ids = explode(",", $entity->WorkflowContext['MergeTemplateWith']);
+			$ids = explode(',', $entity->WorkflowContext['MergeTemplateWith']);
 		}
-		if (count($ids) > 0) {
-			foreach ($ids as $id) {
+		foreach ($ids as $id) {
+			if (strpos($id, 'x')>0) {
+				list($wsid, $id) = explode('x', $id);
+				$module = vtws_getEntityName($wsid);
+			} else {
 				$module = getSalesEntityType($id);
-				$this->subject = getMergedDescription($this->subject, $id, $module);
-				$this->content = getMergedDescription($this->content, $id, $module);
 			}
+			$this->subject = getMergedDescription($this->subject, $id, $module);
+			$this->content = getMergedDescription($this->content, $id, $module);
 		}
 		$this->after_retrieve();
+		if (!empty($entity->WorkflowContext['wfgenerated_file'])) {
+			for ($y=0; $y < count($entity->WorkflowContext['wfgenerated_file']); $y++) {
+				$this->attachmentsinfo[] = $entity->WorkflowContext['wfgenerated_file'][$y]['path'].$entity->WorkflowContext['wfgenerated_file'][$y]['name'];
+			}
+		}
 		if (!empty($this->attfieldnames)) {
 			if (substr($this->attfieldnames, -24) == ' : (Documents) filename)') {
 				$this->attfieldnames = substr($this->attfieldnames, 1, strlen($this->attfieldnames)-25);
@@ -229,6 +238,17 @@ class VTEmailTask extends VTTask {
 				$this->attachmentsinfo[] = $pathattfield;
 			}
 		}
+		if (!empty($this->attach_icalendar) && $this->attach_icalendar == 'on' && $entity->moduleName == 'cbCalendar') {
+			list($tabid,$recordid) = explode('x', $entity->getId());
+			if (isRecordExists($recordid)) {
+				$cbCalendar = CRMEntity::getInstance('cbCalendar');
+				$cbCalendar->retrieve_entity_info($recordid, 'cbCalendar');
+				$icalfilename = $cbCalendar->getiCalendar($cbCalendar);
+				if (!empty($icalfilename)) {
+					$this->attachmentsinfo[] = $icalfilename;
+				}
+			}
+		}
 		$st = new VTSimpleTemplate($this->subject);
 		$subject = $st->render($entityCache, $entity->getId());
 		$ct = new VTSimpleTemplate($this->content);
@@ -241,6 +261,7 @@ class VTEmailTask extends VTTask {
 		$element['parent_type'] = $module;
 		$element['parent_id'] = $entity->getId();
 		$element['from_email'] = $from_email;
+		$element['replyto'] = $replyto;
 		$element['ccmail'] = $cc;
 		$element['bccmail'] = $bcc;
 		$element['subject'] = $subject;

@@ -735,14 +735,14 @@ function vtws_getFieldfromFieldId($fieldId, $fieldObjectList) {
 	return null;
 }
 
-/**	Function used to get the lead related activities with other entities Account and Contact
+/**	Function used to transfer the lead related activities with other entities Account and Contact
  *	@param integer $leadId - lead entity id
  *	@param integer $accountId - related account id
- *	@param integer $contactId -  related contact id
+ *	@param integer $contactId - related contact id
  *	@param integer $relatedId - related entity id to which the records need to be transferred
+ *	@return boolean true if transfered correctly, false otherwise
  */
-function vtws_getRelatedActivities($leadId, $accountId, $contactId, $relatedId) {
-
+function vtws_transferRelatedActivities($leadId, $accountId, $contactId, $relatedId) {
 	if (empty($leadId) || empty($relatedId) || (empty($accountId) && empty($contactId))) {
 		throw new WebServiceException(WebServiceErrorCode::$LEAD_RELATED_UPDATE_FAILED, 'Failed to move related Activities/Emails');
 	}
@@ -754,14 +754,13 @@ function vtws_getRelatedActivities($leadId, $accountId, $contactId, $relatedId) 
 	$rowCount = $adb->num_rows($result);
 	for ($i=0; $i<$rowCount; ++$i) {
 		$activityId=$adb->query_result($result, $i, 'activityid');
-
 		$resultNew = $adb->pquery('select setype from vtiger_crmentity where crmid=?', array($activityId));
 		if ($resultNew === false) {
 			return false;
 		}
 		$type=$adb->query_result($resultNew, 0, 'setype');
 
-		$resultNew = $adb->pquery('delete from vtiger_seactivityrel where crmid=?', array($leadId));
+		$resultNew = $adb->pquery('delete from vtiger_seactivityrel where crmid=? and activityid=?', array($leadId, $activityId));
 		if ($resultNew === false) {
 			return false;
 		}
@@ -771,12 +770,14 @@ function vtws_getRelatedActivities($leadId, $accountId, $contactId, $relatedId) 
 				if ($resultNew === false) {
 					return false;
 				}
+				$adb->pquery('update vtiger_activity set rel_id=? where activityid=?', array($accountId, $activityId));
 			}
 			if (!empty($contactId)) {
 				$resultNew = $adb->pquery('insert into vtiger_cntactivityrel(contactid,activityid) values (?,?)', array($contactId, $activityId));
 				if ($resultNew === false) {
 					return false;
 				}
+				$adb->pquery('update vtiger_activity set cto_id=? where (cto_id="" or cto_id is null) and activityid=?', array($contactId, $activityId));
 			}
 		} else {
 			$resultNew = $adb->pquery('insert into vtiger_seactivityrel(crmid,activityid) values (?,?)', array($relatedId, $activityId));

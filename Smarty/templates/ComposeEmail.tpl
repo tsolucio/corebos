@@ -75,7 +75,9 @@
 		<input type="hidden" name="saved_toid" value="{if isset($TO_MAIL)}{$TO_MAIL}{/if}">
 		<input id="parent_name" name="parent_name" readonly class="txtBox" type="text" value="{if isset($TO_MAIL)}{$TO_MAIL}{/if}" style="width: 525px;">&nbsp;
 		<span class="mailClientCSSButton">
-			<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
+			<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}"
+				onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails", "test", cbPopupWindowSettings);'
+				align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
 		</span>
 		<span class="mailClientCSSButton" >
 			<img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="document.getElementById('parent_id').value=''; document.getElementById('hidden_toid').value='';document.getElementById('parent_name').value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
@@ -96,16 +98,10 @@
 	</td>
 	</tr>
 	<tr>
-	{if 'ccmail'|@emails_checkFieldVisiblityPermission:'readwrite' eq '0'}
-	<td class="mailSubHeader" style="padding: 5px;" align="right">{$MOD.LBL_CC}</td>
+	{if 'replyto'|@emails_checkFieldVisiblityPermission:'readwrite' eq '0'}
+	<td class="mailSubHeader" style="padding: 5px;" align="right">{$MOD.replyto}</td>
 	<td class="cellText" style="padding: 5px;">
-		<input name="ccmail" id ="cc_name" class="txtBox" type="text" value="{if isset($CC_MAIL)}{$CC_MAIL}{/if}" style="width:525px">&nbsp;
-		<span class="mailClientCSSButton">
-			<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails&email_field=cc_name","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
-		</span>
-		<span class="mailClientCSSButton" >
-			<img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="document.getElementById('cc_name').value='';return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
-		</span>
+		<input name="replyto" id ="replyto" class="txtBox" type="text" value="{if isset($REPLYTO)}{$REPLYTO}{/if}" style="width:525px">&nbsp;
 	</td>
 	{else}
 		<td>&nbsp;</td>
@@ -113,13 +109,31 @@
 	{/if}
 	<td valign="top" class="cellLabel" rowspan="4"><div id="attach_cont" class="addEventInnerBox" style="overflow:auto;height:100px;width:100%;position:relative;left:0px;top:0px;"></div>
 	</tr>
+	<tr>
+	{if 'ccmail'|@emails_checkFieldVisiblityPermission:'readwrite' eq '0'}
+	<td class="mailSubHeader" style="padding: 5px;" align="right">{$MOD.LBL_CC}</td>
+	<td class="cellText" style="padding: 5px;">
+		<input name="ccmail" id ="cc_name" class="txtBox" type="text" value="{if isset($CC_MAIL)}{$CC_MAIL}{/if}" style="width:525px">&nbsp;
+		<span class="mailClientCSSButton">
+			<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}"
+				onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails&email_field=cc_name", "test", cbPopupWindowSettings);'
+				align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
+		</span>
+		<span class="mailClientCSSButton" >
+			<img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="document.getElementById('cc_name').value='';return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
+		</span>
+	</td>
+	{/if}
+	</tr>
 	{if 'bccmail'|@emails_checkFieldVisiblityPermission:'readwrite' eq '0'}
 	<tr>
 	<td class="mailSubHeader" style="padding: 5px;" align="right">{$MOD.LBL_BCC}</td>
 	<td class="cellText" style="padding: 5px;">
 		<input name="bccmail" id="bcc_name" class="txtBox" type="text" value="{if isset($BCC_MAIL)}{$BCC_MAIL}{/if}" style="width:525px">&nbsp;
 		<span class="mailClientCSSButton">
-			<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails&email_field=bcc_name","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
+			<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}"
+				onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails&email_field=bcc_name", "test", cbPopupWindowSettings);'
+				align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
 		</span>
 		<span class="mailClientCSSButton" >
 			<img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="document.getElementById('bcc_name').value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>

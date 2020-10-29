@@ -157,13 +157,19 @@ abstract class WebserviceEntityOperation {
 				$typeDetails['assignto']['users'] = array(
 					'label_raw' => 'Users',
 					'label' => getTranslatedString('Users', $mname),
-					'options' => json_decode(vtws_getAssignedUserList($mname, $current_user), true)
+					'options' => array()
 				);
 				$typeDetails['assignto']['groups'] = array(
 					'label_raw' => 'Groups',
 					'label' => getTranslatedString('Groups', $mname),
-					'options' => json_decode(vtws_getAssignedGroupList($mname, $current_user), true),
+					'options' => array(),
 				);
+				if (GlobalVariable::getVariable('Webservice_Describe_ReturnUserList', 1)) {
+					$typeDetails['assignto']['users']['options'] = json_decode(vtws_getAssignedUserList($mname, $current_user), true);
+				}
+				if (GlobalVariable::getVariable('Webservice_Describe_ReturnGroupList', 1)) {
+					$typeDetails['assignto']['groups']['options'] = json_decode(vtws_getAssignedGroupList($mname, $current_user), true);
+				}
 		}
 		return $typeDetails;
 	}

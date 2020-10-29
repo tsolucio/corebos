@@ -6,8 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|10/11/2011|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer | 10/08/2016 |translate to Brazilian Portuguese, missing terms |www.slemernet.com.br
- * Contributor: Ranieri Slemer | Brazilian translate Missing Terms | 16-10-2018 | www.slemernet.com.br
+ * Contributor: Ranieri Slemer | Brazilian translate Missing Terms | 16-10-2020 | www.slemernet.com.br
  ************************************************************************************/
 $mod_strings = array (
 	'MailManager' => 'Gestor de Mensagens',
@@ -46,7 +45,7 @@ $mod_strings = array (
 	'JSLBL_Failed_To_Save_Mail'		=>	'Falha ao salvar a mensagem',
 	'JSLBL_ATTACHMENT_NOT_DELETED'	=>	'Anexo não pode ser apagado',
 	'JSLBL_UPLOAD_CANCEL'	=> 'Cancelar',
-	'JSLBL_UPLOAD_DROPFILES'=>'Liberar arquivo aqui, para enviar',
+	'JSLBL_UPLOAD_DROPFILES'=>'Soltar arquivo aqui, para enviar',
 	'JSLBL_UPLOAD_FILE'=>'Anexar',
 	'JSLBL_UPLOAD_DELETE'=>'[x]',
 	'JSLBL_UPLOAD_FAILED'=>'Falhou',
@@ -57,9 +56,9 @@ $mod_strings = array (
 	'JSLBL_Delete'            =>  'Apagar',
 	'JSLBL_Drafts'=>'Rascunhos',
 	'JSLBL_PASSWORD_CANNOT_BE_EMPTY'=>'A senha não pode estar vazia',
-	'JSLBL_SERVERNAME_CANNOT_BE_EMPTY'=>'O Nome do servidor não pode estar vazio',
-	'JSLBL_USERNAME_CANNOT_BE_EMPTY'=>'O Nome de usuário não pode estar vazio',
-	'JSLBL_ACCOUNTNAME_CANNOT_EMPTY'=>'O Nome da conta não pode estar vazio',
+	'JSLBL_SERVERNAME_CANNOT_BE_EMPTY'=>'O nome do servidor não pode estar vazio',
+	'JSLBL_USERNAME_CANNOT_BE_EMPTY'=>'O nome de usuário não pode estar vazio',
+	'JSLBL_ACCOUNTNAME_CANNOT_EMPTY'=>'O nome da conta não pode estar vazio',
 	'JSLBL_FROM'=>'De:',
 	'JSLBL_DATE'=>'Data: ',
 	'JSLBL_SUBJECT'=>'Assunto: ',
@@ -77,6 +76,8 @@ $mod_strings = array (
 	'JSLBL_NO_EMAILS_SELECTED' => 'Nenhum e-Mail selecionado.',
 	'JSLBL_ENTER_SOME_VALUE' => 'Digite alguma palavra-chave para pesquisa',
 	'JSLBL_DRAFT_MAIL_SAVED'=>'A mensagem foi salva em rascunhos',
+	'JSLBL_ON'=>'Lig',
+	'JSLBL_WROTE'=>'Escrevi',
 
 		// General translations
 	'LBL_Folders'         => 'Pastas',
@@ -86,6 +87,7 @@ $mod_strings = array (
 	'LBL_Go_Back'         => 'Voltar',
 	'LBL_Reply_All'       => 'Responder a todos',
 	'LBL_Reply'           => 'Responder',
+	'LBL_REPLYTO'         => 'Reply To',
 	'LBL_Mark_As_Unread'  => 'Marcar como não lida',
 	'LBL_Previous'        => 'anterior',
 	'LBL_Next'            => 'próximo',
@@ -150,6 +152,7 @@ $mod_strings = array (
 	'LBL_MAILMANAGER_ADD_Accounts' => 'Adic. conta',
 	'LBL_MAILMANAGER_ADD_Leads' => 'Adic. lead',
 	'LBL_MAILMANAGER_ADD_Calendar' => 'Adic. compromisso',
+	'LBL_MAILMANAGER_ADD_cbCalendar' => 'Adic. compromisso',
 	'LBL_MAILMANAGER_ADD_HelpDesk' => 'Adic. ticket',
 	'LBL_MAILMANAGER_ADD_Emails' => 'Anexar e-Mail',
 	'LBL_MAILMANAGER_ADD_ModComments' => 'Adic. comentário',

@@ -250,5 +250,7 @@ $mod_strings = array(
 	'Issuecards' => 'Emiterecarduri',
 	'Receiptcards' => 'Receiptcards',
 	'cbControlIngresoGasto' => 'cbControlIngresoGasto',
+	'ship_countrycode' => 'Shipping Country Code',
+	'bill_countrycode' => 'Billing Country Code',
 );
 ?>
