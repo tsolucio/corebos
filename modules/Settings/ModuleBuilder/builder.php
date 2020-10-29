@@ -16,7 +16,7 @@
 
 class ModuleBuilder {
 
-	public function __construct($id) {
+	public function __construct($id = 0) {
 		$this->id = $id;
 		$this->path = 'modules/Settings/ModuleBuilder/modules/';
 	}
@@ -630,16 +630,9 @@ class ModuleBuilder {
 
 	public function loadDefaultBlocks() {
 		global $adb;
-		$blockSql = $this->select(array(
-			'table' => 'vtiger_modulebuilder_blocks',
-			'where' => array(
-				'moduleid',
-				'blocks_label',
-			),
-			'params' => array(
-				$this->id,
-				'LBL_DESCRIPTION_INFORMATION'
-			)
+		$blockSql = $adb->pquery('SELECT * FROM vtiger_modulebuilder_blocks WHERE moduleid=? AND blocks_label=?', array(
+			$_COOKIE['ModuleBuilderID'],
+			'LBL_DESCRIPTION_INFORMATION',
 		));
 		if ($adb->num_rows($blockSql) == 0) {
 			return 'load';
