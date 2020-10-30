@@ -187,6 +187,40 @@ class VTEmailTask extends VTTask {
 				}
 			}
 		}
+		if (!empty($this->cbmsgtemplate)) {
+			$mail_templateid = $this->cbmsgtemplate;
+			list($tabid,$record_id) = explode('x', $entity->getId());
+			$msgtemp_res = $adb->pquery(
+				'select subject,template,templateonlytext
+				from vtiger_msgtemplate
+				inner join vtiger_crmentity on msgtemplateid=crmid
+				where deleted=0 and msgtemplateid=?',
+				array($mail_templateid)
+			);
+			if ($msgtemp_res && $adb->num_rows($msgtemp_res) > 0) {
+				if (!empty($msgtemp_res->fields['subject'])) {
+					$this->subject = $msgtemp_res->fields['subject'];
+				}
+				if (!empty($msgtemp_res->fields['template'])) {
+					$this->content = $msgtemp_res->fields['template'];
+				}
+				$this->subject = getMergedDescription($this->subject, $record_id, $entity->moduleName);
+				$this->content = getMergedDescription($this->content, $record_id, $entity->moduleName);
+				$mailtemp_docrs = $adb->pquery(
+					'select notesid
+					from vtiger_senotesrel
+					inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_senotesrel.notesid
+					where vtiger_crmentity.deleted=0 and vtiger_senotesrel.crmid=?',
+					array($mail_templateid)
+				);
+				while (!$mailtemp_docrs->EOF) {
+					$doc = $mailtemp_docrs->FetchRow();
+					if (strpos($this->attachmentids, $doc['notesid'])===false) {
+						$this->attachmentids .= ($this->attachmentids=='' ? $doc['notesid'] : ','.$doc['notesid']);
+					}
+				}
+			}
+		}
 		$ids = array();
 		if (!empty($entity->WorkflowContext['MergeTemplateWith'])) {
 			$ids = explode(',', $entity->WorkflowContext['MergeTemplateWith']);
@@ -273,7 +307,7 @@ class VTEmailTask extends VTTask {
 			include_once 'include/integrations/sendgrid/sendgrid.php';
 			$sdInstance = new corebos_sendgrid();
 			try {
-				$res = $sdInstance->sendemailtemplate($this->sgmsgtemplate, $entity->getId(), $entity->moduleName, $to_email, $subject, $from_name, $from_email);
+				$res = $sdInstance->sendemailtemplate($this->sgmsgtemplate, $entity->getId(), $entity->moduleName, $to_email, $subject, $this->attachmentsinfo, $from_name, $from_email, $cc, $bcc, $replyto);
 				return;
 			} catch (Exception $e) {
 			}

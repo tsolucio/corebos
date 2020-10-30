@@ -356,18 +356,30 @@ class corebos_sendgrid {
 		}
 	}
 
-	public function sendemailtemplate($templateId, $recordId, $moduleName, $toEmail, $subject, $fromName, $fromEmail = '') {
+	public function sendemailtemplate(
+		$templateId,
+		$recordId,
+		$moduleName,
+		$toEmail,
+		$subject,
+		$attachment,
+		$fromName,
+		$fromEmail = '',
+		$cc = '',
+		$bcc = '',
+		$replyto = ''
+	) {
 		require_once 'include/Webservices/Retrieve.php';
-		require_once 'vtlib/Vtiger/Net/Client.php';
 		require_once 'data/CRMEntity.php';
-		global $current_user, $log;
+		global $current_user, $logbg;
 		if (empty($current_user)) {
 			$current_user = Users::getActiveAdminUser();
 		}
 		if (empty($fromEmail)) {
 			$fromEmail = GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
 		}
-		if (self::useEmailHook()) {
+		$apiKey = coreBOS_Settings::getSetting(self::KEY_PASS_TRANSACTIONAL, '');
+		if (self::useEmailHook() && !empty($apiKey)) {
 			try {
 				$dataArr = array();
 				$email = new \SendGrid\Mail\Mail();
@@ -382,6 +394,35 @@ class corebos_sendgrid {
 						$reldata = vtws_retrieve($relwsId, $current_user);
 						$dataArr[$relmodName] = $reldata;
 					}
+				}
+				if (!empty($attachment) && is_array($attachment)) {
+					$email->addAttachments(self::convertAttachmentArray($attachment));
+				}
+				if (!empty($cc) && !is_array($cc)) {
+					$cc = self::setSendGridCCAddress($cc);
+				}
+				if (!empty($bcc) && !is_array($bcc)) {
+					$cc = self::setSendGridCCAddress($bcc);
+				}
+				$alreadyinList = array();
+				if (is_array($cc)) {
+					foreach ($cc as $ccemail) {
+						if (!in_array($ccemail, $alreadyinList)) {
+							$email->addCc($ccemail);
+							$alreadyinList[] = $ccemail;
+						}
+					}
+				}
+				if (is_array($bcc)) {
+					foreach ($bcc as $bccemail) {
+						if (!in_array($bccemail, $alreadyinList)) {
+							$email->addBcc($bccemail);
+							$alreadyinList[] = $bccemail;
+						}
+					}
+				}
+				if (!empty($replyto)) {
+					$email->setReplyTo($replyto);
 				}
 				$email->setFrom($fromEmail, $fromName);
 				$email->setSubject($subject);
@@ -401,15 +442,15 @@ class corebos_sendgrid {
 					);
 				}
 				$email->setTemplateId($templateId);
-				$sendgrid = new \SendGrid(coreBOS_Settings::getSetting(self::KEY_PASS_TRANSACTIONAL, ''));
+				$sendgrid = new \SendGrid($apiKey);
 				$response = $sendgrid->send($email);
 				if ($response->statusCode() != 202) {
-					$log->debug($response->body());
+					$logbg->debug("sendemailtemplate\n:". $response->statusCode());
 					return $response->statusCode();
 				}
 				return 1;
 			} catch (Exception $e) {
-				$log->debug('Exeption Encountered: '. $e->getMessage());
+				$logbg->debug('sendemailtemplate:: Exeption Encountered: '. $e->getMessage());
 				return 0;
 			}
 		}
