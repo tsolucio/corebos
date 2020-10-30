@@ -419,39 +419,6 @@ var selectedSGTemplate = '{if isset($task->sgmsgtemplate)}{$task->sgmsgtemplate}
 			</div>
 		</div>
 	</div>
-	<div class="slds-grid slds-grid_vertical-align-center slds-p-horizontal_xx-large">
-		<div class="slds-col slds-size_1-of-1 slds-p-around_x-small">
-			<div class="slds-form-element__label slds-size--1-of-3">
-				<input id="sgmap" name="sgmap" type="hidden" value="{if isset($task->sgmap)}{$task->sgmap}{else}''{/if}">
-				<input type='hidden' class='small' name="sgmap_type" id="sgmap_type" value="cbMap">
-				<span>{'cbMap'|@getTranslatedString:'cbMap'}</span>
-					<input
-						class="slds-input"
-						id="sgmap_display"
-						name="sgmap_display"
-						readonly
-						type="text"
-						style="border:1px solid #bababa; width: 80%;"
-						onclick='return vtlib_open_popup_window("new_task_form", "sgmap", "cbMap", "");'
-						{if !empty($task->sgmap_display )} value = "{$task->sgmap_display}" {else} value ="" {/if}>&nbsp;
-				<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_SELECT'|getTranslatedString}" onclick='return vtlib_open_popup_window("new_task_form", "sgmap", "cbMap", "");'>
-					<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
-						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
-					</svg>
-				</span>
-				<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_ADD_ITEM'|getTranslatedString}" onclick='return window.open("index.php?module=cbMap&action=EditView");'>
-					<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
-						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_create"></use>
-					</svg>
-				</span>
-				<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_CLEAR'|getTranslatedString}" onclick="document.getElementById('sgmap').value=''; document.getElementById('sgmap_display').value=''; return false;">
-					<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
-						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
-					</svg>
-				</span>
-			</div>
-		</div>
-	</div>
 </div>
 <script type="text/javascript">
 function handleToggle() {

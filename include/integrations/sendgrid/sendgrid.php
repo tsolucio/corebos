@@ -356,9 +356,10 @@ class corebos_sendgrid {
 		}
 	}
 
-	public function sendemailtemplate($templateId, $recordId, $mapId, $toEmail, $subject, $fromName, $fromEmail = '') {
+	public function sendemailtemplate($templateId, $recordId, $moduleName, $toEmail, $subject, $fromName, $fromEmail = '') {
 		require_once 'include/Webservices/Retrieve.php';
-		require_once 'modules/cbMap/cbMap.php';
+		require_once 'vtlib/Vtiger/Net/Client.php';
+		require_once 'data/CRMEntity.php';
 		global $current_user, $log;
 		if (empty($current_user)) {
 			$current_user = Users::getActiveAdminUser();
@@ -368,12 +369,19 @@ class corebos_sendgrid {
 		}
 		if (self::useEmailHook()) {
 			try {
+				$dataArr = array();
 				$email = new \SendGrid\Mail\Mail();
 				$data = vtws_retrieve($recordId, $current_user);
-				$cbMap = cbMap::getMapByID($mapId);
-				$dataArr = array();
-				if ($cbMap) {
-					$dataArr = $cbMap->Mapping($data, $dataArr);
+				if ($data) {
+					$dataArr[$moduleName] = $data;
+					$relatedMods = $this->checkForRelatedInfo($data);
+					for ($y=0; $y < count($relatedMods); $y++) {
+						$relcrmId = CRMEntity::getCRMIDfromUUID($relatedMods[$y]['cbuuid']);
+						$relmodName = $relatedMods[$y]['modulename'];
+						$relwsId = vtws_getEntityId($relmodName).'x'.$relcrmId;
+						$reldata = vtws_retrieve($relwsId, $current_user);
+						$dataArr[$relmodName] = $reldata;
+					}
 				}
 				$email->setFrom($fromEmail, $fromName);
 				$email->setSubject($subject);
@@ -396,15 +404,29 @@ class corebos_sendgrid {
 				$sendgrid = new \SendGrid(coreBOS_Settings::getSetting(self::KEY_PASS_TRANSACTIONAL, ''));
 				$response = $sendgrid->send($email);
 				if ($response->statusCode() != 202) {
-					$log->fatal($response->body());
+					$log->debug($response->body());
 					return $response->statusCode();
 				}
 				return 1;
 			} catch (Exception $e) {
-				$log->fatal('Exeption Encountered: '. $e->getMessage());
+				$log->debug('Exeption Encountered: '. $e->getMessage());
 				return 0;
 			}
 		}
+	}
+	public function checkForRelatedInfo($dataArr) {
+		$relmods = array();
+		foreach ($dataArr as $key => $el) {
+			if (is_array($el) && !empty($el['module']) && !empty($el['cbuuid'])) {
+				if (!in_array($el['module'], $relmods)) {
+					$relmods[] = array(
+					'modulename' => $el['module'],
+					'cbuuid' => $el['cbuuid']
+					);
+				}
+			}
+		}
+		return $relmods;
 	}
 }
 ?>
