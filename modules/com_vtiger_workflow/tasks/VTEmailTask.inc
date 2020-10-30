@@ -269,7 +269,7 @@ class VTEmailTask extends VTTask {
 		if ($crmid=='') {
 			list($wsid, $crmid) = explode('x', $emailid);
 		}
-		if (!empty($this->sgmsgtemplate) && !empty($this->sgmap)) {
+		if (!empty($this->sgmsgtemplate)) {
 			include_once 'include/integrations/sendgrid/sendgrid.php';
 			$sdInstance = new corebos_sendgrid();
 			try {
