@@ -15,3 +15,12 @@ function getData(fieldname, modulename, divid) {
 		}
 	});
 }
+
+function changefieldUitype(uitype, tabid, fieldname) {
+	jQuery.ajax({
+		method:'POST',
+		url: 'index.php?module=Utilities&uitype='+uitype+'&modtabid='+tabid+'&fieldN='+fieldname+'&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=changeFieldUitype&ajax=true',
+	}).done(function (response) {
+		//
+	});
+}

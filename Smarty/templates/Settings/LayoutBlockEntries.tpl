@@ -369,6 +369,21 @@
 							</tr>
 							<tr>
 								<td valign="top" class="dvtCellInfo" align="left" width="10px">
+									<input id="longfield_check_{$value.fieldselect}" type="checkbox"
+									{if $value.uitype eq '19'}
+										checked
+									{elseif $value.uitype eq '21'}
+										unchecked
+									{elseif $value.uitype neq '19' || $value.uitype neq '21'}
+										unchecked disabled
+									{/if} onchange='changefieldUitype({$value.uitype}, {$value.tabid}, "{$value.columnname}");'>
+								</td>
+								<td valign="top" class="dvtCellInfo" align="left">
+								&nbsp;<label for="longfield_check_{$value.fieldselect}">{$MOD.LBL_LONG_FIELD}</label>
+								</td>
+							</tr>
+							<tr>
+								<td valign="top" class="dvtCellInfo" align="left" width="10px">
 									{assign var="defaultsetting" value=$value.defaultvalue}
 									<input id="defaultvalue_check_{$value.fieldselect}" type="checkbox"
 									{if $defaultsetting.permitted eq false} disabled{/if}
