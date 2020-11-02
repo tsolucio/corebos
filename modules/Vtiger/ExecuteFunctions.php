@@ -230,6 +230,17 @@ switch ($functiontocall) {
 			$ret = '';
 		}
 		break;
+	case 'changeFieldUitype':
+		$modtabid = $adb->sql_escape_string(vtlib_purify($_REQUEST['modtabid']));
+		$uitype = $adb->sql_escape_string(vtlib_purify($_REQUEST['uitype']));
+		$fieldName = $adb->sql_escape_string(vtlib_purify($_REQUEST['fieldN']));
+		if ($uitype == 19) {
+			$adb->pquery('UPDATE vtiger_field SET uitype=? WHERE tabid=? AND uitype=? AND columnname=?', array(21, $modtabid, $uitype, $fieldName));
+		}
+		if ($uitype == 21) {
+			$adb->pquery('UPDATE vtiger_field SET uitype=? WHERE tabid=? AND uitype=? AND columnname=?', array(19, $modtabid, $uitype, $fieldName));
+		}
+	break;
 	case 'getNumberDisplayValue':
 		$value = vtlib_purify($_REQUEST['val']);
 		if (empty($value)) {
