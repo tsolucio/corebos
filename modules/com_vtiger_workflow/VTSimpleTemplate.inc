@@ -543,7 +543,7 @@ class VTSimpleTemplate {
 	private function getinvitedUsersList($recid) {
 		global $adb;
 		$modulename = $this->parent->getModuleName();
-		if ($modulename!='Events') {
+		if ($modulename!='cbCalendar') {
 			return '';
 		}
 		list($wsid,$activity_id) = explode('x', $recid);
@@ -558,6 +558,33 @@ class VTSimpleTemplate {
 		while ($user_result_row = $adb->fetch_array($user_result)) {
 			if (!in_array($user_result_row['email1'], $ulist)) {
 				$ulist[] = $user_result_row['email1'];
+			}
+		}
+		if (count($ulist)>0) {
+			return implode(',', $ulist);
+		}
+		return '';
+	}
+
+	private function getRelatedContactsList($recid) {
+		global $adb;
+		$modulename = $this->parent->getModuleName();
+		if ($modulename!='cbCalendar') {
+			return '';
+		}
+		list($wsid,$activity_id) = explode('x', $recid);
+		$user_result = $adb->pquery(
+			'SELECT email
+			FROM vtiger_contactdetails
+			inner join vtiger_cntactivityrel on vtiger_cntactivityrel.contactid=vtiger_contactdetails.contactid
+			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
+			where vtiger_cntactivityrel.activityid=? and vtiger_crmentity.deleted=0',
+			array($activity_id)
+		);
+		$ulist = array();
+		while ($user_result_row = $adb->fetch_array($user_result)) {
+			if (!in_array($user_result_row['email'], $ulist)) {
+				$ulist[] = $user_result_row['email'];
 			}
 		}
 		if (count($ulist)>0) {
@@ -796,6 +823,8 @@ class VTSimpleTemplate {
 				return $this->getGroupFieldList($groupname, 'email1');
 			case 'Events_Users_Invited':
 				return $this->getinvitedUsersList($this->parent->getId());
+			case 'Events_Related_Contacts':
+				return $this->getRelatedContactsList($this->parent->getId());
 			case 'RelatedList':
 				return $this->getRelatedList($relmodule, $format, $field);
 			case 'scanQRCode':
