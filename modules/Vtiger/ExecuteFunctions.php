@@ -230,6 +230,16 @@ switch ($functiontocall) {
 			$ret = '';
 		}
 		break;
+	case 'changeFieldUitype':
+		$uitype = $adb->sql_escape_string(vtlib_purify($_REQUEST['uitype']));
+		$fieldID = $adb->sql_escape_string(vtlib_purify($_REQUEST['fieldID']));
+		if ($uitype == 19) {
+			$adb->pquery('UPDATE vtiger_field SET uitype=? WHERE fieldid=? AND uitype=?', array(21, $fieldID, $uitype));
+		}
+		if ($uitype == 21) {
+			$adb->pquery('UPDATE vtiger_field SET uitype=? WHERE fieldid=? AND uitype=?', array(19, $fieldID, $uitype));
+		}
+		break;
 	case 'getNumberDisplayValue':
 		$value = vtlib_purify($_REQUEST['val']);
 		if (empty($value)) {
