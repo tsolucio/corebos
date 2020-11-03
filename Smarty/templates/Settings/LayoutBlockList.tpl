@@ -132,13 +132,14 @@ function getCreateCustomBlockForm(modulename,mode) {
 	});
 }
 
-function saveFieldInfo(fieldid,module,sub_mode,typeofdata) {
+function saveFieldInfo(fieldid,module,sub_mode,typeofdata,uitype) {
 	urlstring = '';
 	var mandatory_check = document.getElementById('mandatory_check_'+fieldid);
 	var presence_check = document.getElementById('presence_check_'+fieldid);
 	var quickcreate_check = document.getElementById('quickcreate_check_'+fieldid);
 	var massedit_check = document.getElementById('massedit_check_'+fieldid);
 	var defaultvalue_check = document.getElementById('defaultvalue_check_'+fieldid);
+	var longfield_check = document.getElementById('longfield_check_'+fieldid);
 
 	if(mandatory_check != null){
 		urlstring = urlstring+'&ismandatory=' + mandatory_check.checked;
@@ -151,6 +152,13 @@ function saveFieldInfo(fieldid,module,sub_mode,typeofdata) {
 	}
 	if(massedit_check != null){
 		urlstring = urlstring + '&massedit=' + massedit_check.checked;
+	}
+	if(longfield_check != null){
+		jQuery.ajax({
+			method:'POST',
+			url: 'index.php?module=Utilities&uitype='+uitype+'&fieldID='+fieldid+'&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=changeFieldUitype&ajax=true',
+		}).done(function (response) {
+		});
 	}
 	if(defaultvalue_check != null) {
 		var defaultvalueelement = document.getElementById('defaultvalue_'+fieldid);
