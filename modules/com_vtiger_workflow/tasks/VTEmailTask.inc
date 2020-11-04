@@ -274,11 +274,13 @@ class VTEmailTask extends VTTask {
 		}
 		if (!empty($this->attach_icalendar) && $this->attach_icalendar == 'on' && $entity->moduleName == 'cbCalendar') {
 			list($tabid,$recordid) = explode('x', $entity->getId());
-			$cbCalendar = CRMEntity::getInstance('cbCalendar');
-			$cbCalendar->retrieve_entity_info($recordid, 'cbCalendar');
-			$icalfilename = $cbCalendar->getiCalendar($cbCalendar);
-			if (!empty($icalfilename)) {
-				$this->attachmentsinfo[] = $icalfilename;
+			if (isRecordExists($recordid)) {
+				$cbCalendar = CRMEntity::getInstance('cbCalendar');
+				$cbCalendar->retrieve_entity_info($recordid, 'cbCalendar');
+				$icalfilename = $cbCalendar->getiCalendar($cbCalendar);
+				if (!empty($icalfilename)) {
+					$this->attachmentsinfo[] = $icalfilename;
+				}
 			}
 		}
 		$st = new VTSimpleTemplate($this->subject);
@@ -293,6 +295,7 @@ class VTEmailTask extends VTTask {
 		$element['parent_type'] = $module;
 		$element['parent_id'] = $entity->getId();
 		$element['from_email'] = $from_email;
+		$element['replyto'] = $replyto;
 		$element['ccmail'] = $cc;
 		$element['bccmail'] = $bcc;
 		$element['subject'] = $subject;

@@ -211,6 +211,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 
 			$this->_from = json_decode(decode_html($resultrow['mfrom']));
 			$this->_to   = json_decode(decode_html($resultrow['mto']));
+			$this->_reply_to = json_decode(decode_html($resultrow['mreplyto']));
 			$this->_cc   = json_decode(decode_html($resultrow['mcc']));
 			$this->_bcc  = json_decode(decode_html($resultrow['mbcc']));
 
@@ -297,6 +298,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 		$params[] = $uid;
 		$params[] = json_encode($this->_from);
 		$params[] = json_encode($this->_to);
+		$params[] = json_encode($this->_reply_to);
 		$params[] = json_encode($this->_cc);
 		$params[] = json_encode($this->_bcc);
 		$params[] = $this->_date;
@@ -311,7 +313,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 		$params[] = $savedtime;
 
 		$adb->pquery(
-			'INSERT INTO vtiger_mailmanager_mailrecord (userid, muid, mfrom, mto, mcc, mbcc,
+			'INSERT INTO vtiger_mailmanager_mailrecord (userid, muid, mfrom, mto, mreplyto, mcc, mbcc,
 				mdate, msubject, mbody, mcharset, misbodyhtml, mplainmessage, mhtmlmessage, muniqueid,
 				mbodyparsed, lastsavedtime) VALUES ('.generateQuestionMarks($params).')',
 			$params
@@ -461,6 +463,14 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 	 */
 	public function to() {
 		return $this->_to;
+	}
+
+	/**
+	 * Gets the Mail To Email Addresses
+	 * @return Email(s)
+	 */
+	public function replyto() {
+		return $this->_reply_to;
 	}
 
 	/**

@@ -232,6 +232,7 @@ function VTEmailTask($) {
 		}
 		if (parentModule=='Events') {
 			select.append('<option class="'+optionClass+'" value="(general : (__VtigerMeta__) Events_Users_Invited)">Invited Users</option>');
+			select.append('<option class="'+optionClass+'" value="(general : (__VtigerMeta__) Events_Related_Contacts)">Related Contacts</option>');
 		}
 	}
 

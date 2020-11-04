@@ -83,6 +83,7 @@ $mod_strings = array(
 	'LBL_Go_Back' => 'Terug',
 	'LBL_Reply_All' => 'Antwoord Allen',
 	'LBL_Reply' => 'Antwoord',
+	'LBL_REPLYTO'         => 'Reply To',
 	'LBL_Mark_As_Unread' => 'Markeer als ongelezen',
 	'LBL_Previous' => 'vorige',
 	'LBL_Next' => 'volgende',

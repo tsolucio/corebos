@@ -14,22 +14,39 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 
-class databasechangesToMoveTocbCalendar extends cbupdaterWorker {
+class addReplyToOnEmail extends cbupdaterWorker {
 
 	public function applyChange() {
-		global $adb;
 		if ($this->hasError()) {
 			$this->sendError();
 		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->ExecuteQuery('DELETE FROM vtiger_relatedlists WHERE related_tabid=9 and name=? and label=?', array('get_history','Activity History'));
-			$this->ExecuteQuery('DELETE FROM vtiger_fieldmodulerel WHERE fieldid not in (SELECT fieldid from vtiger_field)');
-			$this->ExecuteQuery('UPDATE IGNORE vtiger_fieldmodulerel SET relmodule=? WHERE relmodule=?', array('cbCalendar', 'Calendar'));
-			$this->ExecuteQuery('UPDATE IGNORE vtiger_fieldmodulerel SET module=? WHERE module=?', array('cbCalendar', 'Calendar'));
-			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied(false);
+			$modname = 'Emails';
+			$module = Vtiger_Module::getInstance($modname);
+			if ($module) {
+				$fromemail = Vtiger_Field::getInstance('from_email', $module);
+				$field = Vtiger_Field::getInstance('replyto', $module);
+				if (!$field) {
+					$field = new Vtiger_Field();
+					$field->name = 'replyto';
+					$field->label= 'replyto';
+					$field->table = 'vtiger_emaildetails';
+					$field->column = 'replyto';
+					$field->columntype = 'VARCHAR(500)';
+					$field->uitype = 12;
+					$field->typeofdata = 'V~O';
+					$field->displaytype = 1;
+					$field->presence = 0;
+					$fromemail->block->addField($field);
+				}
+				$this->ExecuteQuery('ALTER TABLE `vtiger_mailmanager_mailrecord` ADD `mreplyto` VARCHAR(500) NOT NULL');
+				$this->sendMsg('Changeset '.get_class($this).' applied!');
+				$this->markApplied();
+			} else {
+				$this->sendMsgError('Changeset '.get_class($this).' NOT applied! cbQuestion module not found');
+			}
 		}
 		$this->finishExecution();
 	}

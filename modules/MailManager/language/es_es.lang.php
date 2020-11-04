@@ -86,6 +86,7 @@ $mod_strings = array (
 	'LBL_Go_Back'         => 'Atrás',
 	'LBL_Reply_All'       => 'Responder a todos',
 	'LBL_Reply'           => 'Responder',
+	'LBL_REPLYTO'         => 'Responder a',
 	'LBL_Mark_As_Unread'  => 'Marcar como leído',
 	'LBL_Previous'        => 'anterior',
 	'LBL_Next'            => 'siguiente',

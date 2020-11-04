@@ -98,6 +98,18 @@
 	</td>
 	</tr>
 	<tr>
+	{if 'replyto'|@emails_checkFieldVisiblityPermission:'readwrite' eq '0'}
+	<td class="mailSubHeader" style="padding: 5px;" align="right">{$MOD.replyto}</td>
+	<td class="cellText" style="padding: 5px;">
+		<input name="replyto" id ="replyto" class="txtBox" type="text" value="{if isset($REPLYTO)}{$REPLYTO}{/if}" style="width:525px">&nbsp;
+	</td>
+	{else}
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	{/if}
+	<td valign="top" class="cellLabel" rowspan="4"><div id="attach_cont" class="addEventInnerBox" style="overflow:auto;height:100px;width:100%;position:relative;left:0px;top:0px;"></div>
+	</tr>
+	<tr>
 	{if 'ccmail'|@emails_checkFieldVisiblityPermission:'readwrite' eq '0'}
 	<td class="mailSubHeader" style="padding: 5px;" align="right">{$MOD.LBL_CC}</td>
 	<td class="cellText" style="padding: 5px;">
@@ -111,11 +123,7 @@
 			<img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="document.getElementById('cc_name').value='';return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
 		</span>
 	</td>
-	{else}
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
 	{/if}
-	<td valign="top" class="cellLabel" rowspan="4"><div id="attach_cont" class="addEventInnerBox" style="overflow:auto;height:100px;width:100%;position:relative;left:0px;top:0px;"></div>
 	</tr>
 	{if 'bccmail'|@emails_checkFieldVisiblityPermission:'readwrite' eq '0'}
 	<tr>

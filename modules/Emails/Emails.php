@@ -163,7 +163,7 @@ class Emails extends CRMEntity {
 				if ($realid[1]=='-1') { // user
 					$usrrs = $adb->pquery('select id from vtiger_users where id=?', array($mycrmid));
 					if ($adb->num_rows($usrrs)==0) {
-						$adb->pquery('DELETE FROM vtiger_seactivityrel WHERE crmid=? AND activityid=?', array($this->column_fields['parent_id'], $this->id));
+						$adb->pquery('DELETE FROM vtiger_seactivityrel WHERE crmid=? AND activityid=?', array($mycrmid, $this->id));
 						//$this->insertIntoEntityTable('vtiger_seactivityrel', $module);
 						$sql = 'insert into vtiger_seactivityrel values(?,?)';
 						$params = array($mycrmid, $this->id);
@@ -174,7 +174,7 @@ class Emails extends CRMEntity {
 						$params = array($mycrmid, $this->id);
 					}
 				} else {
-					$adb->pquery('DELETE FROM vtiger_seactivityrel WHERE crmid=? AND activityid=?', array($this->column_fields['parent_id'], $this->id));
+					$adb->pquery('DELETE FROM vtiger_seactivityrel WHERE crmid=? AND activityid=?', array($mycrmid, $this->id));
 					//$this->insertIntoEntityTable('vtiger_seactivityrel', $module);
 					$sql = 'insert into vtiger_seactivityrel values(?,?)';
 					$params = array($mycrmid, $this->id);

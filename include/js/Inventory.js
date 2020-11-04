@@ -54,6 +54,12 @@ function copyAddressRight(form) {
 		form.ship_pobox.value = form.bill_pobox.value;
 	}
 
+	if (form.ship_countrycode != undefined) {
+		[...form.ship_countrycode.options].forEach((option) => {
+			option.selected = (option.value == form.bill_countrycode.value);
+		});
+	}
+
 	return true;
 }
 
@@ -80,6 +86,12 @@ function copyAddressLeft(form) {
 
 	if (typeof(form.bill_pobox) != 'undefined' && typeof(form.ship_pobox) != 'undefined') {
 		form.bill_pobox.value = form.ship_pobox.value;
+	}
+
+	if (form.bill_countrycode != undefined) {
+		[...form.bill_countrycode.options].forEach((option) => {
+			option.selected = (option.value == form.ship_countrycode.value);
+		});
 	}
 
 	return true;
@@ -1805,6 +1817,7 @@ function InventorySelectAll(mod, image_pth) {
 				this.parent.divisible = result.obj.meta.divisible == 0 ? false : true;
 
 				this.parent.expandExtra();
+				this.parent.getProductImage(result.obj.meta.id);
 				this.parent.calcLine();
 
 				this.utils.getFirstClass(this.utils.findUp(this.el, '.' + this.root.lineClass), this.root.inputPrefix + '--quantity').focus();

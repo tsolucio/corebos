@@ -93,7 +93,7 @@ abstract class MailManager_Controller {
 	 */
 	protected function getConnector($folder = '') {
 		if (!$this->mConnector || ($this->mFolder != $folder)) {
-			if ($folder == "__vt_drafts") {
+			if ($folder == '__vt_drafts') {
 				$draftController = new MailManager_DraftController();
 				$this->mConnector = $draftController->connectorWithModel();
 			} else {

@@ -144,6 +144,18 @@
 				<input type="text" id="rwurl" name="rwurl" class="slds-input" value="{$rwurl}" />
 			</div>
 		</div>
+		<div class="slds-form-element slds-m-top_small">
+			<label class="slds-form-element__label" for="rwurl2">{'SAML RWURL2'|@getTranslatedString:$MODULE}</label>
+			<div class="slds-form-element__control">
+				<input type="text" id="rwurl2" name="rwurl2" class="slds-input" value="{$rwurl2}" />
+			</div>
+		</div>
+		<div class="slds-form-element slds-m-top_small">
+			<label class="slds-form-element__label" for="rwurl3">{'SAML RWURL3'|@getTranslatedString:$MODULE}</label>
+			<div class="slds-form-element__control">
+				<input type="text" id="rwurl3" name="rwurl3" class="slds-input" value="{$rwurl3}" />
+			</div>
+		</div>
 		<div class="slds-m-top_large">
 			<button type="submit" class="slds-button slds-button--brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
 		</div>

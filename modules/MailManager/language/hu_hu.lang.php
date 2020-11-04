@@ -88,6 +88,7 @@ $mod_strings = array(
 	'LBL_Go_Back' => 'Vissza',
 	'LBL_Reply_All' => 'Válasz mindenkinek',
 	'LBL_Reply' => 'Válasz',
+	'LBL_REPLYTO'         => 'Reply To',
 	'LBL_Mark_As_Unread' => 'Jelöld olvasatlannak',
 	'LBL_Previous' => 'előző',
 	'LBL_Next' => 'következő',

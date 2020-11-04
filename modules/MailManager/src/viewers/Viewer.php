@@ -20,7 +20,7 @@ class MailManager_Viewer extends vtigerCRM_Smarty {
 		$this->assign('MODULE', $currentModule);
 		$this->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 		$this->assign('CATEGORY', getParentTab());
-		$this->assign('IMAGE_PATH', "themes/$theme/images/");
+		$this->assign('IMAGE_PATH', 'themes/$theme/images/');
 		$this->assign('THEME', $theme);
 	}
 }

@@ -24,6 +24,7 @@ foreach ($cronTasks as $cronTask) {
 	$cron_id = $cronTask->getId();
 	$cron_mod = $cronTask->getName();
 	$cron_freq = $cronTask->getFrequency();
+	$cron_ntt = date('Y-m-d H:i', $cronTask->getNextTriggerTime());
 	$cron_st = $cronTask->getStatus();
 	if ($cronTask->getLastStart() != 0) {
 		$start_ts = $cronTask->getLastStart();
@@ -47,6 +48,7 @@ foreach ($cronTasks as $cronTask) {
 	$out['status'] = $cron_st;
 	$out['laststart']= $cron_started;
 	$out['lastend'] =$cron_end;
+	$out['ntt'] =$cron_ntt;
 	if ($out['status'] == Vtiger_Cron::$STATUS_DISABLED) {
 		$out['status'] = $mod_strings['LBL_INACTIVE'];
 	} elseif ($out['status'] == Vtiger_Cron::$STATUS_ENABLED) {
