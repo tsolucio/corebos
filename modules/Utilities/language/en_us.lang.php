@@ -112,6 +112,6 @@ $mod_strings = array(
 	'SAML RWURL' => 'Relay Response URL 1',
 	'SAML RWURL2' => 'Relay Response URL 2',
 	'SAML RWURL3' => 'Relay Response URL 3',
-	'LBL_API_URL' => 'Sendgrid API URL',
+	'LBL_API_URL' => 'SendGrid API URL',
 );
 ?>

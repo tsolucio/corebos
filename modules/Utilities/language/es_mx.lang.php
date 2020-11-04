@@ -118,5 +118,6 @@ $mod_strings = array(
 	'SAML RWURL' => 'URL de respuesta 1',
 	'SAML RWURL2' => 'URL de respuesta 2',
 	'SAML RWURL3' => 'URL de respuesta 3',
+	'LBL_API_URL' => 'URL del API de SendGrid',
 );
 ?>

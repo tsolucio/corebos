@@ -248,6 +248,6 @@ $mod_strings = array(
 'LBL_UNLINKED' => 'unlinked',
 'LBL_SELECT_EMAIL_TEMPLATE' => 'Select Email Template',
 'LBL_SELECT_SENDGRID_EMAIL_TEMPLATE' => 'Select SendGrid Email Template',
-'LBL_LOAD_SENDGRID_TEMPLATES' => 'Load Sendgrid Templates',
+'LBL_LOAD_SENDGRID_TEMPLATES' => 'Load SendGrid Templates',
 );
 ?>
