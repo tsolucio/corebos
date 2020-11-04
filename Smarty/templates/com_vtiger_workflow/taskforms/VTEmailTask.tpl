@@ -10,6 +10,7 @@ var __attfieldnames = '{if isset($task->attfieldnames)}{$task->attfieldnames}{/i
 var __attdocids = '{if isset($task->attachmentids)}{$task->attachmentids}{/if}';
 var __attdocidcnt = {if isset($task->attachmentids)}(__attdocids.match(/,/g) || []).length{else}0{/if};
 var __attinfo = {$task->dzattinfo|json_encode};
+var selectedSGTemplate = '{if isset($task->sgmsgtemplate)}{$task->sgmsgtemplate}{/if}';
 </script>
 <script src="modules/com_vtiger_workflow/resources/emailtaskscript.js" type="text/javascript" charset="utf-8"></script>
 <div id='_progress_' style='float: right; display: none; position: absolute; right: 35px; font-weight: bold;'>
@@ -160,59 +161,7 @@ var __attinfo = {$task->dzattinfo|json_encode};
 		</div>
 	</div>
 </div>
-<div class="slds-grid slds-gutters slds-grid_vertical-align-center">
-	<div class="slds-col slds-size_2-of-12 slds-text-align_right slds-p-around_x-small">
-		<span><b> <abbr class="slds-required" title="required">* </abbr>{'LBL_EMAIL_SUBJECT'|@getTranslatedString:$MODULE_NAME}</b></span>
-	</div>
-	<div class="slds-col slds-size_3-of-12 slds-p-around_x-small">
-		<div class="slds-form-element">
-			<div class="slds-form-element__control">
-				<input type="text" class="slds-input" name="subject" value="{if isset($task->subject)}{$task->subject}{/if}" id="save_subject"/>
-			</div>
-		</div>
-	</div>
-	<div class="slds-col slds-size_3-of-12 slds-p-around_x-small">
-		<div class="slds-form-element">
-			<span id="task-subjectfields-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}"></span>
-			<div class="slds-form-element__control">
-				<div class="slds-select_container">
-					<select class="slds-select slds-page-header__meta-text" id="task-subjectfields" style="display: none;">
-						<option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option>
-					</select>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="slds-grid slds-grid_vertical-align-center slds-p-horizontal_xx-large slds-border_top">
-	<div class="slds-col slds-size_1-of-3 slds-p-around_x-small">
-		<span id="task-fieldnames-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}"></span>
-		<div class="slds-form-element__control">
-			<div class="slds-select_container">
-				<select class="slds-select slds-page-header__meta-text" id='task-fieldnames' style="display: none;">
-					<option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option>
-				</select>
-			</div>
-		</div>
-	</div>
-	<div class="slds-col slds-size_1-of-3  slds-p-around_x-small">
-		<div class="slds-form-element__control">
-			<div class="slds-select_container">
-				<select class="slds-select slds-page-header__meta-text" id="task_timefields">
-					<option value="">{'Select Meta Variables'|@getTranslatedString:$MODULE_NAME}</option>
-					{foreach key=META_LABEL item=META_VALUE from=$META_VARIABLES}
-					<option value="{$META_VALUE}">{$META_LABEL|@getTranslatedString:$MODULE_NAME}</option>
-					{/foreach}
-				</select>
-			</div>
-		</div>
-	</div>
-	<div class="slds-col slds-size_1-of-3 slds-text-align_right slds-p-around_x-small">
-		<div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_warning" role="alert">
-			<h2>{$MOD.LBL_WORKFLOW_NOTE_CRON_CONFIG}</h2>
-		</div>
-	</div>
-</div>
+
 <div class="slds-grid slds-grid_vertical-align-center slds-p-horizontal_xx-large">
 	<div class="slds-col slds-size_8-of-12 slds-p-around_x-small">
 		<span id="_messagediv_" style="display: none;z-index:22;" class="cb-alert-info"></span>
@@ -227,6 +176,7 @@ var __attinfo = {$task->dzattinfo|json_encode};
 		<input class="slds-input" type='hidden' name="msgtpopup_type" id="msgtpopup_type" value="MsgTemplate" />
 		<input class="slds-input" type='hidden' name="calltype" id="calltype" value="emailworkflow"/>
 		<input class="slds-input" type="hidden" id="attachmentids"  name="attachmentids" value="{if isset($task->attachmentids)}{$task->attachmentids}{/if}"/>
+		<!--
 		<div class="slds-grid">
 			<div class="slds-col">
 				<input class="slds-button slds-button_success" title="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_TITLE}" accessKey="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_KEY}" onclick="jQuery('#file-uploader').show();return vtlib_open_popup_window('','msgtpopup','MsgTemplate','{$workflow->moduleName}&relmod_id=0&parent_module={$workflow->moduleName}');" type="button" name="button" value=" {$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_LABEL}"/>
@@ -235,9 +185,15 @@ var __attinfo = {$task->dzattinfo|json_encode};
 				<button onclick="jQuery('#file-uploader').show();attachmentManager.getDocuments();return false;" class="slds-button slds-button_success">{'LBL_SELECT_DOCUMENTS'|@getTranslatedString:'MailManager'}</button>
 			</div>
 		</div>
-		<div class="slds-grid slds-p-top_x-small">
-			<div class="slds-col">
-				<button onclick="jQuery('#file-uploader').toggle();return false;" class="slds-button slds-button_success">{'LBL_Attachments'|@getTranslatedString:'MailManager'}</button>
+		-->
+		<div class="slds-grid_vertical-align-center slds-grid_vertical slds-p-top_x-small slds-grid">
+			<div class="slds-grid slds-size_1-of-1">
+				<div class="slds-col slds-p-vertical_x-small slds-size_1-of-2">
+					<button onclick="jQuery('#file-uploader').show();attachmentManager.getDocuments();return false;" class="slds-button slds-button_success">{'LBL_SELECT_DOCUMENTS'|@getTranslatedString:'MailManager'}</button>
+				</div>
+				<div class="slds-col slds-p-vertical_x-small slds-size_1-of-2">
+					<button onclick="jQuery('#file-uploader').toggle();return false;" class="slds-button slds-button_success">{'LBL_Attachments'|@getTranslatedString:'MailManager'}</button>
+				</div>
 			</div>
 			{if $entityName eq 'cbCalendar'}
 				<div class="slds-col">
@@ -269,30 +225,212 @@ var __attinfo = {$task->dzattinfo|json_encode};
 		</div>
 	</div>
 </div>
-
-<div class="slds-page-header">
-	<div class="slds-grid slds-gutters">
-		<div class="slds-col slds-size_1-of-1">
-			<h1>
-				<span class="slds-page-header__title slds-truncate" title="{$MOD.LBL_MESSAGE}">
-					<span class="slds-tabs__left-icon">
-						<span class="slds-icon_container" title="{$MOD.LBL_MESSAGE}">
-							<svg class="slds-icon slds-icon_small" style="color:green;" aria-hidden="true">
-								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#email"></use>
-							</svg>
+<div dir="rtl" class="slds-size--small">
+	<div class="slds-form-element">
+		<label class="slds-checkbox_toggle slds-grid">
+		<span class="slds-form-element__label slds-m-bottom_none">{'LINK_EMAIL_TEMPLATE'|@getTranslatedString:$MODULE_NAME}</span>
+		<input type="checkbox" name="link-template" onChange="handleToggle()" aria-describedby="toggle-template"  />
+		<span id="toggle-template" class="slds-checkbox_faux_container" aria-live="assertive">
+			<span class="slds-checkbox_faux"></span>
+			<span class="slds-checkbox_on">{'LBL_LINKED'|@getTranslatedString:'MODULE'}</span>
+			<span class="slds-checkbox_off">{'LBL_UNLINKED'|@getTranslatedString:'MODULE'}</span>
+		</span>
+		</label>
+	</div>
+</div>
+<div class="unlinked-template">
+	<div class="slds-page-header">
+		<div class="slds-grid slds-gutters">
+			<div class="slds-col slds-size_1-of-1">
+				<h1>
+					<span class="slds-page-header__title slds-truncate" title="{'LBL_EMAIL_SUBJECT'|@getTranslatedString:$MODULE_NAME}">
+						<span class="slds-tabs__left-icon">
+							<span class="slds-icon_container" title="{'LBL_EMAIL_SUBJECT'|@getTranslatedString:$MODULE_NAME}">
+								<svg class="slds-icon slds-icon_small" style="color:green;" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#email"></use>
+								</svg>
+							</span>
 						</span>
+							{'LBL_EMAIL_SUBJECT'|@getTranslatedString:$MODULE_NAME}
 					</span>
-						{$MOD.LBL_MESSAGE}
+				</h1>
+			</div>
+		</div>
+	</div>
+	<div class="slds-grid slds-grid_vertical-align-center slds-p-horizontal_xx-large slds-border_top">
+		<div class="slds-col slds-size_1-of-3 slds-p-around_x-small">
+			<div class="slds-form-element">
+				<div class="slds-form-element__control">
+					<input type="text" class="slds-input" name="subject" value="{if isset($task->subject)}{$task->subject}{/if}" id="save_subject"/>
+				</div>
+			</div>
+		</div>
+		<div class="slds-col slds-size_1-of-3  slds-p-around_x-small">
+			<div class="slds-form-element">
+				<span id="task-subjectfields-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}"></span>
+				<div class="slds-form-element__control">
+					<div class="slds-select_container">
+						<select class="slds-select slds-page-header__meta-text" id="task-subjectfields" style="display: none;">
+							<option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="slds-col slds-size_1-of-3 slds-text-align_right slds-p-around_x-small">
+		</div>
+	</div>
+
+	<div class="slds-page-header">
+		<div class="slds-grid slds-gutters">
+			<div class="slds-col slds-size_1-of-1">
+				<h1>
+					<span class="slds-page-header__title slds-truncate" title="{$MOD.LBL_MESSAGE}">
+						<span class="slds-tabs__left-icon">
+							<span class="slds-icon_container" title="{$MOD.LBL_MESSAGE}">
+								<svg class="slds-icon slds-icon_small" style="color:green;" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#email"></use>
+								</svg>
+							</span>
+						</span>
+							{$MOD.LBL_MESSAGE}
+					</span>
+				</h1>
+			</div>
+		</div>
+	</div>
+	<div class="slds-grid slds-grid_vertical-align-center slds-p-horizontal_xx-large slds-border_top">
+		<div class="slds-col slds-size_1-of-3 slds-p-around_x-small">
+			<span id="task-fieldnames-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}"></span>
+			<div class="slds-form-element__control">
+				<div class="slds-select_container">
+					<select class="slds-select slds-page-header__meta-text" id='task-fieldnames' style="display: none;">
+						<option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="slds-col slds-size_1-of-3  slds-p-around_x-small">
+			<div class="slds-form-element__control">
+				<div class="slds-select_container">
+					<select class="slds-select slds-page-header__meta-text" id="task_timefields">
+						<option value="">{'Select Meta Variables'|@getTranslatedString:$MODULE_NAME}</option>
+						{foreach key=META_LABEL item=META_VALUE from=$META_VARIABLES}
+						<option value="{$META_VALUE}">{$META_LABEL|@getTranslatedString:$MODULE_NAME}</option>
+						{/foreach}
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="slds-col slds-size_1-of-3 slds-text-align_right slds-p-around_x-small">
+			<div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_warning" role="alert">
+				<h2>{$MOD.LBL_WORKFLOW_NOTE_CRON_CONFIG}</h2>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
+	<p style="border:1px solid black;">
+		<textarea style="width:90%;height:200px;" name="content" rows="55" cols="40" id="save_content" class="detailedViewTextBox">{$task->content}</textarea>
+	</p>
+</div>
+<div class="linked-template slds-hide">
+	<div class="slds-page-header">
+		<div class="slds-grid slds-gutters">
+			<div class="slds-col slds-size_1-of-1">
+				<h1>
+					<span class="slds-page-header__title slds-truncate" title="{$MOD.LBL_SELECT_EMAIL_TEMPLATE}">
+						<span class="slds-tabs__left-icon">
+							<span class="slds-icon_container" title="{$MOD.LBL_SELECT_EMAIL_TEMPLATE}">
+								<svg class="slds-icon slds-icon_small" style="color:green;" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#email"></use>
+								</svg>
+							</span>
+						</span>
+							{$MOD.LBL_SELECT_EMAIL_TEMPLATE}
+					</span>
+				</h1>
+			</div>
+		</div>
+	</div>
+	<div class="slds-grid slds-grid_vertical-align-center slds-p-horizontal_xx-large slds-border_top">
+		<div class="slds-col slds-size_1-of-1 slds-p-around_x-small">
+			<div class="slds-form-element">
+				<span class="slds-form-element__label slds-size--1-of-3">
+					<input type='hidden' class='small' name="cbmsgtemplate_type" id="cbmsgtemplate_type" value="MsgTemplate">
+					<input id="cbmsgtemplate" name="cbmsgtemplate" type="hidden" value="{if isset($task->cbmsgtemplate)}{$task->cbmsgtemplate}{/if}">
+					<input
+						class="slds-input"
+						id="cbmsgtemplate_display"
+						name="cbmsgtemplate_display"
+						readonly
+						type="text"
+						style="border:1px solid #bababa; width: 80%;"
+						onclick='document.getElementById("calltype").value = "function::vtlib_setvalue_from_popup"; return vtlib_open_popup_window("new_task_form", "cbmsgtemplate", "MsgTemplate", "");'
+						value="{if isset($task->cbmsgtemplate_display)}{$task->cbmsgtemplate_display}{/if}">&nbsp;
+					<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_SELECT'|getTranslatedString}" onclick='return vtlib_open_popup_window("new_task_form", "cbmsgtemplate", "MsgTemplate", "");'>
+						<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
+						</svg>
+					</span>
+					<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_ADD_ITEM'|getTranslatedString}" onclick='return window.open("index.php?module=MsgTemplate&action=EditView");'>
+						<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_create"></use>
+						</svg>
+					</span>
+					<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_CLEAR'|getTranslatedString}" onclick="document.getElementById('cbmsgtemplate').value=''; document.getElementById('cbmsgtemplate_display').value=''; return false;">
+					<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
+					</svg>
+					</span>
 				</span>
-			</h1>
+			</div>
+		</div>
+	</div>
+	<div class="slds-page-header">
+		<div class="slds-grid slds-gutters">
+			<div class="slds-col slds-size_1-of-1">
+				<h1>
+					<span class="slds-page-header__title slds-truncate" title="{$MOD.LBL_SELECT_SENDGRID_EMAIL_TEMPLATE}">
+						<span class="slds-tabs__left-icon">
+							<span class="slds-icon_container" title="{$MOD.LBL_SELECT_SENDGRID_EMAIL_TEMPLATE}">
+								<svg class="slds-icon slds-icon_small" style="color:green;" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#email"></use>
+								</svg>
+							</span>
+						</span>
+							{$MOD.LBL_SELECT_SENDGRID_EMAIL_TEMPLATE}
+					</span>
+				</h1>
+			</div>
+		</div>
+	</div>
+	<div class="slds-grid slds-grid_vertical-align-center slds-p-horizontal_xx-large slds-border_top">
+		<div class="slds-col slds-size_1-of-1 slds-p-around_x-small">
+			<div class="slds-form-element">
+				<span class="slds-form-element__label slds-size--1-of-3">
+					<input type='hidden' class='small' name="sgmsgtemplate" id="sgmsgtemplate" value="{if isset($task->sgmsgtemplate)}{$task->sgmsgtemplate}{else}''{/if}">
+					<div class="slds-select_container" style="width: 80%;">
+						<select class="slds-select slds-page-header__meta-text" id="sgMsgTemplate">
+							<option value="">{'LBL_SELECT_OPTION_DOTDOTDOT'|@getTranslatedString:$MODULE_NAME}</option>
+						</select>
+					</div>
+				</span>
+			</div>
 		</div>
 	</div>
 </div>
-
-<script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
-<p style="border:1px solid black;">
-	<textarea style="width:90%;height:200px;" name="content" rows="55" cols="40" id="save_content" class="detailedViewTextBox"> {$task->content} </textarea>
-</p>
+<script type="text/javascript">
+function handleToggle() {
+	if($('.slds-checkbox_on').is(':visible')) {
+		$('.unlinked-template').addClass('slds-hide');
+		$('.linked-template').removeClass('slds-hide');
+	} else {
+		$('.linked-template').addClass('slds-hide');
+		$('.unlinked-template').removeClass('slds-hide');
+	}
+}
+</script>
 <script type="text/javascript" defer="1">
 	var textAreaName = 'save_content';
 	CKEDITOR.replace( textAreaName,	{ldelim}
