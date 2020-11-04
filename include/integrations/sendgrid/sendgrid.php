@@ -110,7 +110,7 @@ class corebos_sendgrid {
 			'srv_marketing' => coreBOS_Settings::getSetting(self::KEY_SRV_MARKETING, ''),
 			'user_marketing' => coreBOS_Settings::getSetting(self::KEY_USER_MARKETING, ''),
 			'pass_marketing' => coreBOS_Settings::getSetting(self::KEY_PASS_MARKETING, ''),
-			'apiurl_transactional' => coreBOS_Settings::getSetting(self::KEY_APIURL_TRANSACTIONAL, ''),
+			'apiurl_transactional' => coreBOS_Settings::getSetting(self::KEY_APIURL_TRANSACTIONAL, 'https://api.sendgrid.com/v3'),
 		);
 	}
 
