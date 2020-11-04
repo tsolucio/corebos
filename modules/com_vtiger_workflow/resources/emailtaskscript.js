@@ -538,3 +538,27 @@ function uploadCountUpdater() {
 	}
 	countElement.val(++MailManagerCurrentUploadCount);
 }
+
+$(document).ready(function () {
+	let fileurl = 'module=MsgTemplate&action=MsgTemplateAjax&file=getSGTemplates';
+	var templateBody = document.getElementById('sgMsgTemplate');
+	$.ajax({
+		method: 'GET',
+		url: 'index.php?' + fileurl
+	}).done(function (templates) {
+		response = $.parseJSON(templates);
+		$.each(response, function (index, data) {
+			var opt = document.createElement('option');
+			opt.appendChild(document.createTextNode(data.templateName));
+			opt.value = data.templateId;
+			if (data.templateId == selectedSGTemplate) {
+				opt.setAttribute('selected', 'selected');
+			}
+			templateBody.appendChild(opt);
+		});
+	});
+	templateBody.addEventListener("change", function () {
+		selvalue = document.getElementById('sgMsgTemplate').value;
+		document.getElementById('sgmsgtemplate').value = selvalue;
+	});
+});

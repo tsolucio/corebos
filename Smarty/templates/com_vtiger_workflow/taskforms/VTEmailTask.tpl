@@ -10,6 +10,7 @@ var __attfieldnames = '{if isset($task->attfieldnames)}{$task->attfieldnames}{/i
 var __attdocids = '{if isset($task->attachmentids)}{$task->attachmentids}{/if}';
 var __attdocidcnt = {if isset($task->attachmentids)}(__attdocids.match(/,/g) || []).length{else}0{/if};
 var __attinfo = {$task->dzattinfo|json_encode};
+var selectedSGTemplate = '{if isset($task->sgmsgtemplate)}{$task->sgmsgtemplate}{/if}';
 </script>
 <script src="modules/com_vtiger_workflow/resources/emailtaskscript.js" type="text/javascript" charset="utf-8"></script>
 <div id='_progress_' style='float: right; display: none; position: absolute; right: 35px; font-weight: bold;'>
@@ -364,9 +365,19 @@ var __attinfo = {$task->dzattinfo|json_encode};
 						name="cbmsgtemplate_display"
 						readonly
 						type="text"
-						style="border:1px solid #bababa; width: 90%;"
+						style="border:1px solid #bababa; width: 80%;"
 						onclick='document.getElementById("calltype").value = "function::vtlib_setvalue_from_popup"; return vtlib_open_popup_window("new_task_form", "cbmsgtemplate", "MsgTemplate", "");'
-						value="{if isset($task->cbmsgtemplate_display)}{$task->cbmsgtemplate_display}{/if}">
+						value="{if isset($task->cbmsgtemplate_display)}{$task->cbmsgtemplate_display}{/if}">&nbsp;
+					<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_SELECT'|getTranslatedString}" onclick='return vtlib_open_popup_window("new_task_form", "cbmsgtemplate", "MsgTemplate", "");'>
+						<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
+						</svg>
+					</span>
+					<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_ADD_ITEM'|getTranslatedString}" onclick='return window.open("index.php?module=MsgTemplate&action=EditView");'>
+						<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_create"></use>
+						</svg>
+					</span>
 					<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_CLEAR'|getTranslatedString}" onclick="document.getElementById('cbmsgtemplate').value=''; document.getElementById('cbmsgtemplate_display').value=''; return false;">
 					<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
@@ -398,8 +409,8 @@ var __attinfo = {$task->dzattinfo|json_encode};
 		<div class="slds-col slds-size_1-of-1 slds-p-around_x-small">
 			<div class="slds-form-element">
 				<span class="slds-form-element__label slds-size--1-of-3">
-					<input type='hidden' class='small' name="sgmsgtemplate" id="sgmsgtemplate">
-					<div class="slds-select_container" style="width: 90%;">
+					<input type='hidden' class='small' name="sgmsgtemplate" id="sgmsgtemplate" value="{if isset($task->sgmsgtemplate)}{$task->sgmsgtemplate}{else}''{/if}">
+					<div class="slds-select_container" style="width: 80%;">
 						<select class="slds-select slds-page-header__meta-text" id="sgMsgTemplate">
 							<option value="">{'LBL_SELECT_OPTION_DOTDOTDOT'|@getTranslatedString:$MODULE_NAME}</option>
 						</select>
