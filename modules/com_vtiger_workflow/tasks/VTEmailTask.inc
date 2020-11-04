@@ -147,9 +147,9 @@ class VTEmailTask extends VTTask {
 				$bcc = $mailto;
 			}
 		}
-		$to_email = preg_replace('/,,+/', ',', $to_email);
-		$cc = preg_replace('/,,+/', ',', $cc);
-		$bcc = preg_replace('/,,+/', ',', $bcc);
+		$to_email = trim(preg_replace('/,,+/', ',', $to_email), ',');
+		$cc = trim(preg_replace('/,,+/', ',', $cc), ',');
+		$bcc = trim(preg_replace('/,,+/', ',', $bcc), ',');
 		if (strlen(trim($to_email, " \t\n,")) == 0 && strlen(trim($cc, " \t\n,")) == 0 && strlen(trim($bcc, " \t\n,")) == 0) {
 			$util->revertUser();
 			return;
