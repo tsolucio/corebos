@@ -22,83 +22,76 @@ require "vendor/autoload.php";
 // Use the REST API Client to make requests to the Twilio REST API
 use Twilio\Rest\Client;
 
-class corebos_cache
-{
-    // Configuration Properties
-    private $adapter;
-    private $ip;
-    private $port;
+class corebos_cache {
 
-    // Configuration Keys
-    const KEY_ISACTIVE = 'cache_isactive';
-    const KEY_ADAPTER = 'cache_adapter';
-    const KEY_IP = 'cache_ip';
-    const KEY_PORT = 'cache_port';
+	// Configuration Properties
+	private $adapter;
+	private $ip;
+	private $port;
 
-    const ADAPTER_MEMORY = "memory";
-    const ADAPTER_REDIS = "redis";
-    const ADAPTER_MEMCACHED = "memcached";
+	// Configuration Keys
+	const KEY_ISACTIVE = 'cache_isactive';
+	const KEY_ADAPTER = 'cache_adapter';
+	const KEY_IP = 'cache_ip';
+	const KEY_PORT = 'cache_port';
 
-    // Utilities
-    private static $cacheClient = null;
+	const ADAPTER_MEMORY = "memory";
+	const ADAPTER_REDIS = "redis";
+	const ADAPTER_MEMCACHED = "memcached";
 
-    public function __construct()
-    {
-        $this->initGlobalScope();
-    }
+	// Utilities
+	private static $cacheClient = null;
 
-    public function initGlobalScope()
-    {
-        $this->adapter = coreBOS_Settings::getSetting(self::KEY_ADAPTER, '');
-        $this->ip = coreBOS_Settings::getSetting(self::KEY_IP, '');
-        $this->port = coreBOS_Settings::getSetting(self::KEY_PORT, '');
-        if($this->adapter == self::ADAPTER_MEMORY) {
-            self::setCacheClient();
-        } elseif(!empty($this->ip) && !empty($this->port)) {
-            if($this->adapter == self::ADAPTER_REDIS) {
-                $adapterOptions = ['server' => ['host' => $this->ip, 'port' => $this->port, 'timeout' => 100000]];
-            } else { //defaults to memcached
-                $adapterOptions = ['servers' => [[$this->ip, $this->port]]];
-            }
-            $plugins = ['serializer'];
-            self::setCacheClient($adapterOptions, $plugins);
-        }
-    }
+	public function __construct() {
+		$this->initGlobalScope();
+	}
 
-    public function saveSettings($isactive, $adapter = 'memory', $ip = null, $port = null)
-    {
-        coreBOS_Settings::setSetting(self::KEY_ISACTIVE, $isactive);
-        coreBOS_Settings::setSetting(self::KEY_ADAPTER, $adapter);
-        coreBOS_Settings::setSetting(self::KEY_IP, $ip);
-        coreBOS_Settings::setSetting(self::KEY_PORT, $port);
-    }
+	public function initGlobalScope() {
+		$this->adapter = coreBOS_Settings::getSetting(self::KEY_ADAPTER, '');
+		$this->ip = coreBOS_Settings::getSetting(self::KEY_IP, '');
+		$this->port = coreBOS_Settings::getSetting(self::KEY_PORT, '');
+		if ($this->adapter == self::ADAPTER_MEMORY) {
+			self::setCacheClient();
+		} elseif (!empty($this->ip) && !empty($this->port)) {
+			if ($this->adapter == self::ADAPTER_REDIS) {
+				$adapterOptions = ['server' => ['host' => $this->ip, 'port' => $this->port, 'timeout' => 100000]];
+			} else { //defaults to memcached
+				$adapterOptions = ['servers' => [[$this->ip, $this->port]]];
+			}
+			$plugins = ['serializer'];
+			self::setCacheClient($adapterOptions, $plugins);
+		}
+	}
 
-    public function getSettings()
-    {
-        return array(
-            'isActive' => coreBOS_Settings::getSetting(self::KEY_ISACTIVE, ''),
-            'adapter' => coreBOS_Settings::getSetting(self::KEY_ADAPTER, ''),
-            'ip' => coreBOS_Settings::getSetting(self::KEY_IP, ''),
-            'port' => coreBOS_Settings::getSetting(self::KEY_PORT, ''),
-        );
-    }
+	public function saveSettings($isactive, $adapter = 'memory', $ip = null, $port = null) {
+		coreBOS_Settings::setSetting(self::KEY_ISACTIVE, $isactive);
+		coreBOS_Settings::setSetting(self::KEY_ADAPTER, $adapter);
+		coreBOS_Settings::setSetting(self::KEY_IP, $ip);
+		coreBOS_Settings::setSetting(self::KEY_PORT, $port);
+	}
 
-    public function isActive()
-    {
-        $isactive = coreBOS_Settings::getSetting(self::KEY_ISACTIVE, '0');
-        return ($isactive=='1');
-    }
+	public function getSettings() {
+		return array(
+			'isActive' => coreBOS_Settings::getSetting(self::KEY_ISACTIVE, ''),
+			'adapter' => coreBOS_Settings::getSetting(self::KEY_ADAPTER, ''),
+			'ip' => coreBOS_Settings::getSetting(self::KEY_IP, ''),
+			'port' => coreBOS_Settings::getSetting(self::KEY_PORT, ''),
+		);
+	}
 
-    public function getCacheClient()
-    {
-        return self::$cacheClient;
-    }
+	public function isActive() {
+		$isactive = coreBOS_Settings::getSetting(self::KEY_ISACTIVE, '0');
+		return ($isactive=='1');
+	}
 
-    private function setCacheClient($adapterOptions = [], $plugins = null)
-    {
-        if(!self::$cacheClient) {
-            self::$cacheClient = new cbCache($this->adapter, $adapterOptions, $plugins);
-        }
-    }
+	public function getCacheClient() {
+		return self::$cacheClient;
+	}
+
+	private function setCacheClient($adapterOptions = [], $plugins = null) {
+		if (!self::$cacheClient) {
+			self::$cacheClient = new cbCache($this->adapter, $adapterOptions, $plugins);
+		}
+	}
 }
 ?>

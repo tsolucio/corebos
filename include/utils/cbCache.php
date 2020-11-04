@@ -21,89 +21,83 @@ use Laminas\Cache\StorageFactory;
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
 
-class cbCache extends SimpleCacheDecorator
-{
-    private $_modifiedTimePostfix = "_modified_time";
+class cbCache extends SimpleCacheDecorator {
 
-    public function __construct($adapterName, $adapterOptions = [], $plugins = null)
-    {
-        $configurations = [
-            'adapter' => [
-                'name'    => $adapterName,
-                'options' => $adapterOptions,
-            ],
-        ];
-        if ($plugins) {
-            $configurations['plugins'] = $plugins;
-        }
+	private $_modifiedTimePostfix = "_modified_time";
 
-        $storage = StorageFactory::factory($configurations);
-        parent::__construct($storage);
-    }
+	public function __construct($adapterName, $adapterOptions = [], $plugins = null) {
+		$configurations = [
+			'adapter' => [
+				'name'    => $adapterName,
+				'options' => $adapterOptions,
+			],
+		];
+		if ($plugins) {
+			$configurations['plugins'] = $plugins;
+		}
 
-    public function getModifiedTimePostfix()
-    {
-        return $this->_modifiedTimePostfix;
-    }
+		$storage = StorageFactory::factory($configurations);
+		parent::__construct($storage);
+	}
 
-    public function hasWithModuleCheck($key, $module, $id = 0)
-    {
-        global $adb;
-        $modifiedTimeKey = $key . $this->_modifiedTimePostfix;
-        if(!$this->has($key) && !$this->has($modifiedTimeKey)) {
-            return false;
-        }
-        if(!empty($id)) {
-            $entities = $adb->pquery("select date_format(modifiedtime,'%Y%m%d%H%i%s') from vtiger_crmentity where crmid=? and deleted = 0", array($id));
-            $itemsExpired = $this->removeExpiredCacheItems($key, $entities);
-            if($itemsExpired) {
-                return false;
-            }
-        } else {
-            $entities = $adb->pquery("select date_format(modifiedtime,'%Y%m%d%H%i%s') from vtiger_crmentity where setype=? and deleted = 0 order by modifiedtime desc limit 1", array($module));
-            $itemsExpired = $this->removeExpiredCacheItems($key, $entities);
-            if($itemsExpired) {
-                return false;
-            }
-        }
-        return true;
-    }
+	public function getModifiedTimePostfix() {
+		return $this->_modifiedTimePostfix;
+	}
 
-    public function hasWithQueryCheck($key, $query, $queryParams = [])
-    {
-        global $adb;
-        $modifiedTimeKey = $key . $this->_modifiedTimePostfix;
-        if(!$this->has($key) && !$this->has($modifiedTimeKey)) {
-            return false;
-        }
-        $result = $adb->pquery($query, $queryParams);
-        $itemsExpired = $this->removeExpiredCacheItems($key, $result);
-        if($itemsExpired) {
-            return false;
-        }
-        return true;
-    }
+	public function hasWithModuleCheck($key, $module, $id = 0) {
+		global $adb;
+		$modifiedTimeKey = $key . $this->_modifiedTimePostfix;
+		if (!$this->has($key) && !$this->has($modifiedTimeKey)) {
+			return false;
+		}
+		if (!empty($id)) {
+			$entities = $adb->pquery("select date_format(modifiedtime,'%Y%m%d%H%i%s') from vtiger_crmentity where crmid=? and deleted = 0", array($id));
+			$itemsExpired = $this->removeExpiredCacheItems($key, $entities);
+			if ($itemsExpired) {
+				return false;
+			}
+		} else {
+			$entities = $adb->pquery("select date_format(modifiedtime,'%Y%m%d%H%i%s') from vtiger_crmentity where setype=? and deleted = 0 order by modifiedtime desc limit 1", array($module));
+			$itemsExpired = $this->removeExpiredCacheItems($key, $entities);
+			if ($itemsExpired) {
+				return false;
+			}
+		}
+		return true;
+	}
 
-    private function removeExpiredCacheItems($key, $dbEntities)
-    {
-        global $adb;
+	public function hasWithQueryCheck($key, $query, $queryParams = []) {
+		global $adb;
+		$modifiedTimeKey = $key . $this->_modifiedTimePostfix;
+		if (!$this->has($key) && !$this->has($modifiedTimeKey)) {
+			return false;
+		}
+		$result = $adb->pquery($query, $queryParams);
+		$itemsExpired = $this->removeExpiredCacheItems($key, $result);
+		if ($itemsExpired) {
+			return false;
+		}
+		return true;
+	}
 
-        $modifiedTimeKey = $key . $this->_modifiedTimePostfix;
-        $cacheItemModifiedTime = $this->get($modifiedTimeKey);
+	private function removeExpiredCacheItems($key, $dbEntities) {
+		global $adb;
 
-        if($adb->num_rows($dbEntities) == 0) {
-            $this->deleteMultiple([$key, $modifiedTimeKey]);
-            return true;
-        }
-        $lastModifiedTime = $adb->query_result($dbEntities, 0, 0);
-        $lastModifiedTimestamp = strtotime($lastModifiedTime);
-        $cacheModifiedTimestamp = strtotime($cacheItemModifiedTime);
-        if($lastModifiedTimestamp > $cacheModifiedTimestamp) {
-            $this->deleteMultiple([$key, $modifiedTimeKey]);
-            return true;
-        }
+		$modifiedTimeKey = $key . $this->_modifiedTimePostfix;
+		$cacheItemModifiedTime = $this->get($modifiedTimeKey);
 
-        return false;
-    }
+		if ($adb->num_rows($dbEntities) == 0) {
+			$this->deleteMultiple([$key, $modifiedTimeKey]);
+			return true;
+		}
+		$lastModifiedTime = $adb->query_result($dbEntities, 0, 0);
+		$lastModifiedTimestamp = strtotime($lastModifiedTime);
+		$cacheModifiedTimestamp = strtotime($cacheItemModifiedTime);
+		if ($lastModifiedTimestamp > $cacheModifiedTimestamp) {
+			$this->deleteMultiple([$key, $modifiedTimeKey]);
+			return true;
+		}
 
+		return false;
+	}
 }
