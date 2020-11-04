@@ -228,8 +228,8 @@ var selectedSGTemplate = '{if isset($task->sgmsgtemplate)}{$task->sgmsgtemplate}
 <div dir="rtl" class="slds-size--small">
 	<div class="slds-form-element">
 		<label class="slds-checkbox_toggle slds-grid">
-		<span class="slds-form-element__label slds-m-bottom_none">{'LINK_EMAIL_TEMPLATE'|@getTranslatedString:$MODULE_NAME}</span>
-		<input type="checkbox" name="link-template" onChange="handleToggle()" aria-describedby="toggle-template"  />
+		<span class="slds-form-element__label slds-m-bottom_none slds-m-left_x-small">{'LINK_EMAIL_TEMPLATE'|@getTranslatedString:$MODULE_NAME}</span>
+		<input type="checkbox" name="linktemplate" onChange="handleToggle()" aria-describedby="toggle-template" {if !empty($task->linktemplate)}checked{/if} />
 		<span id="toggle-template" class="slds-checkbox_faux_container" aria-live="assertive">
 			<span class="slds-checkbox_faux"></span>
 			<span class="slds-checkbox_on">{'LBL_LINKED'|@getTranslatedString:'MODULE'}</span>
@@ -238,7 +238,7 @@ var selectedSGTemplate = '{if isset($task->sgmsgtemplate)}{$task->sgmsgtemplate}
 		</label>
 	</div>
 </div>
-<div class="unlinked-template">
+<div class="unlinked-template {if !empty($task->linktemplate)}slds-hide{/if}">
 	<div class="slds-page-header">
 		<div class="slds-grid slds-gutters">
 			<div class="slds-col slds-size_1-of-1">
@@ -334,7 +334,7 @@ var selectedSGTemplate = '{if isset($task->sgmsgtemplate)}{$task->sgmsgtemplate}
 		<textarea style="width:90%;height:200px;" name="content" rows="55" cols="40" id="save_content" class="detailedViewTextBox">{$task->content}</textarea>
 	</p>
 </div>
-<div class="linked-template slds-hide">
+<div class="linked-template {if empty($task->linktemplate)}slds-hide{/if}">
 	<div class="slds-page-header">
 		<div class="slds-grid slds-gutters">
 			<div class="slds-col slds-size_1-of-1">

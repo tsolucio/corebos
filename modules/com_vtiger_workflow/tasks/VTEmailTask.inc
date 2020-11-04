@@ -27,7 +27,7 @@ class VTEmailTask extends VTTask {
 	private $entityinfo = '';
 
 	public function getFieldNames() {
-		return array('fromname', 'fromemail', 'replyto', 'subject', 'content', 'recepient', 'emailcc', 'emailbcc', 'attfieldnames', 'attachmentids', 'attach_icalendar', 'cbmsgtemplate', 'cbmsgtemplate_display', 'sgmsgtemplate');
+		return array('fromname', 'fromemail', 'replyto', 'subject', 'content', 'recepient', 'emailcc', 'emailbcc', 'attfieldnames', 'attachmentids', 'attach_icalendar', 'cbmsgtemplate', 'cbmsgtemplate_display', 'sgmsgtemplate', 'linktemplate');
 	}
 	public function after_retrieve() {
 		global $adb, $current_user;
@@ -187,7 +187,7 @@ class VTEmailTask extends VTTask {
 				}
 			}
 		}
-		if (!empty($this->cbmsgtemplate)) {
+		if (!empty($this->linktemplate) && !empty($this->cbmsgtemplate)) {
 			$mail_templateid = $this->cbmsgtemplate;
 			list($tabid,$record_id) = explode('x', $entity->getId());
 			$msgtemp_res = $adb->pquery(
@@ -306,7 +306,7 @@ class VTEmailTask extends VTTask {
 		if ($crmid=='') {
 			list($wsid, $crmid) = explode('x', $emailid);
 		}
-		if (!empty($this->sgmsgtemplate)) {
+		if (!empty($this->linktemplate) && !empty($this->sgmsgtemplate)) {
 			include_once 'include/integrations/sendgrid/sendgrid.php';
 			$sdInstance = new corebos_sendgrid();
 			try {
