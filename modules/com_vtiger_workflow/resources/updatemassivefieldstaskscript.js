@@ -307,38 +307,18 @@ function CBMassiveUpdateRelatedTask($, fieldvaluemapping) {
 				function addFieldValueMapping(mappingno) {
 					$('#save_fieldvaluemapping').append(
 						`<div id="save_fieldvalues_${mappingno}" style="margin-bottom: 5px" class="slds-grid slds-gutters slds-p-horizontal_x-large slds-grid_vertical-align-center">
-							<div class="slds-col slds-size_3-of-12 slds-p-around_x-small">
-								<div class="slds-form-element">
-									<div class="slds-form-element__control">
-										<div class="slds-select_container">
-											<select id="save_fieldvalues_${mappingno}_fieldmodule" class="slds-page-header__meta-text slds-select"></select>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="slds-col slds-size_3-of-12 slds-p-around_x-small">
-								<div class="slds-form-element">
-									<div class="slds-form-element__control">
-										<div class="slds-select_container">
-											<select id="save_fieldvalues_${mappingno}_fieldname" class="slds-page-header__meta-text slds-select"></select>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="slds-col slds-size_3-of-12 slds-p-around_x-small">
-								<div class="slds-form-element">
-									<div class="slds-form-element__control">
-										<input type="hidden" id="save_fieldvalues_${mappingno}_value_type" class="type slds-input">
-											<input type="hidden" id="save_fieldvalues_${mappingno}_valuemodule" class="slds-input fieldborder" readonly ><input type="text" id="save_fieldvalues_${mappingno}_value" class="expressionvalue slds-input fieldborder" readonly >
-									</div>
-								</div>
-							</div>
-							<div class="slds-col slds-size_1-of-12 slds-p-around_x-small">
-								<span id="save_fieldvalues_${mappingno}_remove" class="link remove-link">
-									<img src="modules/com_vtiger_workflow/resources/remove.png"><input type="hidden" id="modtypes"></span>
-							</div>
-						</div>
-						`
+							<select id="save_fieldvalues_${mappingno}_fieldmodule" class="fieldmodule slds-page-header__meta-text slds-select"></select>
+							<select id="save_fieldvalues_${mappingno}_fieldname" class="fieldname slds-page-header__meta-text slds-select slds-m-left_x-small"></select>
+							<input type="hidden" id="save_fieldvalues_${mappingno}_value_type" class="type">
+							<input type="hidden" id="save_fieldvalues_${mappingno}_valuemodule" class="fieldborder" readonly >
+							<input type="text" id="save_fieldvalues_${mappingno}_value" class="expressionvalue slds-input fieldborder slds-m-left_x-small" readonly >
+							<span id="save_fieldvalues_${mappingno}_remove" class="link remove-link slds-m-left_x-small">
+								<svg class="slds-icon slds-icon_small slds-icon-text-light" aria-hidden="true" >
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+								</svg>
+								<input type="hidden" id="modtypes">
+							</span>
+						</div>`
 					);
 					var fe = $('#save_fieldvalues_'+mappingno+'_fieldmodule');
 					var i = 1;
@@ -415,6 +395,7 @@ function CBMassiveUpdateRelatedTask($, fieldvaluemapping) {
 							fillOptions(fe1, fieldLabels, 0);
 							var fullFieldName = fe1.val();
 							resetFields(getFieldType(fullFieldName), fullFieldName, mappingno, module[0]+'__'+module[1]);
+							fe1.unbind('change');
 							fe1.bind('change', function () {
 								var select = $(this);
 								var mappingno = select.prop('id').match(/save_fieldvalues_(\d+)_fieldname/)[1];
@@ -523,6 +504,7 @@ function CBMassiveUpdateRelatedTask($, fieldvaluemapping) {
 
 				$('#save_fieldvaluemapping_add').bind('click', function () {
 					addFieldValueMapping(mappingno++);
+					return false;
 				});
 
 				$('#save').bind('click', function () {
