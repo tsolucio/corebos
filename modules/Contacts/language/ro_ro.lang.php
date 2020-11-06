@@ -303,5 +303,7 @@ $mod_strings = array(
 	'Receiptcards' => 'ChitanteCarduri',
 	'cbControlIngresoGasto' => 'cbControlGasto',
 	'BankAccounts' => 'Conturi Bancare',
-);
+	'ship_countrycode' => 'Shipping Country Code',
+	'bill_countrycode' => 'Billing Country Code'
+	);
 ?>

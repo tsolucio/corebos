@@ -1,11 +1,11 @@
 <?php
 /*********************************************************************************
- * * The contents of this file are subject to the vtiger CRM Public License Version 1.0
- * ("License"); You may not use this file except in compliance with the License
- * The Original Code is:  vtiger CRM Open Source
- * The Initial Developer of the Original Code is vtiger.
- * Portions created by vtiger are Copyright (C) vtiger.
- * All Rights Reserved.
+  ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
+   * ("License"); You may not use this file except in compliance with the License
+   * The Original Code is:  vtiger CRM Open Source
+   * The Initial Developer of the Original Code is vtiger.
+   * Portions created by vtiger are Copyright (C) vtiger.
+   * All Rights Reserved.
  ********************************************************************************/
 
 $mod_strings = array (
@@ -112,6 +112,7 @@ $mod_strings = array (
 	'SAML RWURL' => 'Relay Response URL 1',
 	'SAML RWURL2' => 'Relay Response URL 2',
 	'SAML RWURL3' => 'Relay Response URL 3',
+	'LBL_API_URL' => 'SendGrid API URL',
 	'cache_select_adapter_type' => 'Select adapter type',
 	'cache_adapter_memory' => 'Memory',
 	'cache_adapter_redis' => 'Redis',

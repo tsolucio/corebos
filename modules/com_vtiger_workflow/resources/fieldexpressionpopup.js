@@ -407,8 +407,10 @@ function com_vtiger_workflowsetValueFromCapture(recordid, value, target_fieldnam
 		seldiv.innerHTML +=retrecList;
 	}
 	$('#editpopup_expression').val(recordid);
-	document.getElementById('wfrelfield').value = recordid;
-	document.getElementById('wfrelfield_display').value = value;
+	if(document.getElementById('wfrelfield')) {
+		document.getElementById('wfrelfield').value = recordid;
+		document.getElementById('wfrelfield_display').value = value;
+	}
 }
 
 function toggleExpEditorHelp(helpbutton) {

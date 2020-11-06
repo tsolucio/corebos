@@ -1,11 +1,11 @@
 <?php
 /***********************************************************
- *  Module       : Utilities
- *  Language     : French
- *  Version      : 5.3.0
- *  License      : GPL
- *  Author       : ABOnline solutions http://www.vtiger-crm.fr
- ***********************************************************/
+*  Module       : Utilities
+*  Language     : French
+*  Version      : 5.3.0
+*  License      : GPL
+*  Author       : ABOnline solutions http://www.vtiger-crm.fr
+***********************************************************/
 
 $mod_strings = array (
 	// Translations for JS (please use the prefix JSLBL in key)
@@ -111,6 +111,7 @@ $mod_strings = array (
 	'SAML RWURL' => 'Relay Response URL 1',
 	'SAML RWURL2' => 'Relay Response URL 2',
 	'SAML RWURL3' => 'Relay Response URL 3',
+	'LBL_API_URL' => 'SendGrid API URL',
 	'cache_select_adapter_type' => 'Select adapter type',
 	'cache_adapter_memory' => 'Memory',
 	'cache_adapter_redis' => 'Redis',
