@@ -3069,11 +3069,9 @@ function getModuleSequenceField($module) {
 			foreach ($cachedModuleFields as $fieldinfo) {
 				if ($fieldinfo['uitype'] == '4') {
 					$field = array();
-
 					$field['name'] = $fieldinfo['fieldname'];
 					$field['column'] = $fieldinfo['columnname'];
 					$field['label'] = $fieldinfo['fieldlabel'];
-
 					break;
 				}
 			}
