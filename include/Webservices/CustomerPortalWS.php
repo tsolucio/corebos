@@ -991,13 +991,36 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 	}
 
 	for ($i=0; $i < count($productsearchfields); $i++) {
-		$productsearchquery .= 'vtiger_products.' . $productsearchfields[$i] . ' LIKE \'%' . $term . '%\'';
+		if (preg_match('/\[[\w_|]+\]/', $productsearchfields[$i])) {
+			// It's a compounded field definition
+			$cfields = explode('|', $productsearchfields[$i]);
+			array_walk($cfields, function (&$cfield) {
+				$cfield = preg_replace('/\[|\]/', '', $cfield);
+				$cfield = preg_match('/cf_/', $cfield) ? 'vtiger_productcf.' . $cfield : 'vtiger_products.' . $cfield;
+			});
+			array_unshift($cfields, 'CONCAT_WS(\' \'');
+			$productsearchquery .= implode(',', $cfields) . ') LIKE \'%' . $term . '%\'';
+		} else {
+			$productsearchquery .= 'vtiger_products.' . $productsearchfields[$i] . ' LIKE \'%' . $term . '%\'';
+		}
 		if (($i + 1) < count($productsearchfields)) {
 			$productsearchquery .= ' OR ';
 		}
 	}
+
 	for ($i=0; $i < count($servicesearchfields); $i++) {
-		$servicesearchquery .= 'vtiger_service.' . $servicesearchfields[$i] . ' LIKE \'%' . $term . '%\'';
+		if (preg_match('/\[[\w_|]+\]/', $servicesearchfields[$i])) {
+			// It's a compounded field definition
+			$cfields = explode('|', $servicesearchfields[$i]);
+			array_walk($cfields, function (&$cfield) {
+				$cfield = preg_replace('/\[|\]/', '', $cfield);
+				$cfield = preg_match('/cf_/', $cfield) ? 'vtiger_servicecf.' . $cfield : 'vtiger_service.' . $cfield;
+			});
+			array_unshift($cfields, 'CONCAT_WS(\' \'');
+			$servicesearchquery .= implode(',', $cfields) . ') LIKE \'%' . $term . '%\'';
+		} else {
+			$servicesearchquery .= 'vtiger_service.' . $servicesearchfields[$i] . ' LIKE \'%' . $term . '%\'';
+		}
 		if (($i + 1) < count($servicesearchfields)) {
 			$servicesearchquery .= ' OR ';
 		}
