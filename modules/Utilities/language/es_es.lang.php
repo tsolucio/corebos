@@ -118,5 +118,15 @@ $mod_strings = array(
 	'SAML RWURL2' => 'URL de respuesta 2',
 	'SAML RWURL3' => 'URL de respuesta 3',
 	'LBL_API_URL' => 'URL del API de SendGrid',
+	'cache_select_adapter_type' => 'Selecciona tipo de adaptador',
+	'cache_adapter_memory' => 'Memoria',
+	'cache_adapter_redis' => 'Redis',
+	'cache_adapter_memcached' => 'Memcached',
+	'cache_ip' => 'IP Servidor',
+	'cache_port' => 'Puerto Servidor',
+	'cache_ip_required' => 'IP servidor es obligatorio',
+	'cache_port_required' => 'Puerto servidor es obligatorio',
+	'Cache Activation' => 'Activación Cache externo',
+	'Cache Activation_Desc' => 'Hacer uso de una capa de caché implementada por tres adaptadores: Memoria, Redis, Memcached',
 );
 ?>

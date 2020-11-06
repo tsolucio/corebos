@@ -18,189 +18,199 @@
  *************************************************************************************************/
 
 if (!isset($_REQUEST['_op'])) {
-	$_REQUEST['_op'] = 'HELP';
+    $_REQUEST['_op'] = 'HELP';
 }
 switch ($_REQUEST['_op']) {
-	case 'Success':
-		$smarty = new vtigerCRM_Smarty();
-		$titlemessage = getTranslatedString('SUCCESSFUL_REGISTRATION_TITLE', $currentModule);
-		$smarty->assign('TITLE_MESSAGE', $titlemessage);
-		$smarty->assign('MESSAGE', sprintf(getTranslatedString('SUCCESSFUL_REGISTRATION_MESSAGE', $currentModule), vtlib_purify($_REQUEST['integration'])));
-		$smarty->assign('ERROR_CLASS', '');
-		$smarty->assign('APP', $app_strings);
-		$smarty->assign('MOD', $mod_strings);
-		$smarty->assign('MODULE', $currentModule);
-		$smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
-		$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
-		$smarty->assign('THEME', $theme);
-		include 'include/integrations/forcedButtons.php';
-		$smarty->assign('CHECK', $tool_buttons);
-		$smarty->display('modules/Utilities/integration.tpl');
-		break;
-	case 'Error':
-		$smarty = new vtigerCRM_Smarty();
-		$titlemessage = getTranslatedString('UNSUCCESSFUL_REGISTRATION_TITLE', $currentModule);
-		$smarty->assign('TITLE_MESSAGE', $titlemessage);
-		$smarty->assign('MESSAGE', sprintf(getTranslatedString('UNSUCCESSFUL_REGISTRATION_MESSAGE', $currentModule), vtlib_purify($_REQUEST['integration'])).
-			'<br>'.vtlib_purify($_REQUEST['error_description']).' ('.vtlib_purify($_REQUEST['error_code']).')');
-		$smarty->assign('ERROR_CLASS', 'slds-theme_error');
-		$smarty->assign('APP', $app_strings);
-		$smarty->assign('MOD', $mod_strings);
-		$smarty->assign('MODULE', $currentModule);
-		$smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
-		$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
-		$smarty->assign('THEME', $theme);
-		include 'include/integrations/forcedButtons.php';
-		$smarty->assign('CHECK', $tool_buttons);
-		$smarty->display('modules/Utilities/integration.tpl');
-		break;
-	case 'getconfighubspot':
-	case 'setconfighubspot':
-		include_once 'include/integrations/hubspot/settings.php';
-		break;
-	case 'getconfigzendesk':
-	case 'setconfigzendesk':
-		include_once 'include/integrations/zendesk/settings.php';
-		break;
-	case 'getconfig2fa':
-	case 'setconfig2fa':
-		include_once 'include/integrations/2fa/settings.php';
-		break;
-	case 'getconfiggcontact':
-	case 'setconfiggcontact':
-		include_once 'include/integrations/GContacts/settings.php';
-		break;
-	case 'getconfigwhatsapp':
-	case 'setconfigwhatsapp':
-		include_once 'include/integrations/whatsapp/settings.php';
-		break;
-	case 'getconfigsaml':
-	case 'setconfigsaml':
-		include_once 'include/integrations/saml/settings.php';
-		break;
-	case 'getconfigsendgrid':
-	case 'setconfigsendgrid':
-		include_once 'include/integrations/sendgrid/settings.php';
-		break;
-	case 'getconfigsmtp':
-	case 'setconfigsmtp':
-		include_once 'include/integrations/smtp/settings.php';
-		break;
-	case 'getconfiggmp':
-	case 'setconfiggmp':
-		include_once 'include/integrations/gmp/settings.php';
-		break;
-	case 'getconfigrecordversioning':
-	case 'setconfigrecordversioning':
-		include_once 'include/integrations/recordversioning/settings.php';
-		break;
-	case 'getconfigelasticsearch':
-	case 'setconfigelasticsearch':
-		include_once 'include/integrations/elasticsearch/settings.php';
-		break;
-	case 'getconfiglogall':
-	case 'setconfiglogall':
-		include_once 'include/integrations/logall/settings.php';
-		break;
-	case 'getconfigloginsync':
-	case 'setconfigloginsync':
-		include_once 'include/integrations/loginsync/settings.php';
-		break;
-	default:
-		$smarty = new vtigerCRM_Smarty();
-		$titlemessage = getTranslatedString('Available Integrations', $currentModule);
-		$intgr = array(
-			array(
-				'abbr' => '2F',
-				'title' => getTranslatedString('GoTo2FAActivation', 'Utilities'),
-				'desc' => getTranslatedString('GoTo2FAActivation_Desc', 'Utilities'),
-				'url' => 'index.php?action=integration&module=Utilities&_op=getconfig2fa',
-			),
-			array(
-				'abbr' => 'SSO',
-				'title' => getTranslatedString('SAML Activation', 'Utilities'),
-				'desc' => getTranslatedString('SAML Activation_Desc', 'Utilities'),
-				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigsaml',
-			),
-			array(
-				'abbr' => 'GC',
-				'title' => getTranslatedString('GOOGLE_CONTACTS', 'Contacts'),
-				'desc' => getTranslatedString('GOOGLE_CONTACTS_Desc', 'Contacts'),
-				'url' => 'index.php?action=integration&module=Utilities&_op=getconfiggcontact',
-			),
-			array(
-				'abbr' => 'HS',
-				'title' => getTranslatedString('HubSpot Activation', 'Utilities'),
-				'desc' => getTranslatedString('HubSpot Activation_Desc', 'Utilities'),
-				'url' => 'index.php?action=integration&module=Utilities&_op=getconfighubspot',
-			),
-			array(
-				'abbr' => 'EM',
-				'title' => getTranslatedString('SMTP Configuration', 'Utilities'),
-				'desc' => getTranslatedString('SMTP Configuration_Desc', 'Utilities'),
-				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigsmtp&savemode=false',
-			),
-			array(
-				'abbr' => 'RV',
-				'title' => getTranslatedString('Record Versioning', 'Utilities'),
-				'desc' => getTranslatedString('Record Versioning_Desc', 'Utilities'),
-				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigrecordversioning',
-			),
-			// array(
-			// 	'abbr' => 'ZD',
-			// 	'title' => getTranslatedString('Zendesk Activation', 'Utilities'),
-			// 	'desc' => getTranslatedString('Zendesk Activation_Desc', 'Utilities'),
-			// 	'url' => 'index.php?action=integration&module=Utilities&_op=getconfigzendesk',
-			// ),
-			array(
-				'abbr' => 'WA',
-				'title' => getTranslatedString('Whatsapp Activation', 'Utilities'),
-				'desc' => getTranslatedString('Whatsapp Activation_Desc', 'Utilities'),
-				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigwhatsapp',
-			),
-			array(
-				'abbr' => 'SG',
-				'title' => getTranslatedString('SendGrid Activation', 'Utilities'),
-				'desc' => getTranslatedString('SendGrid Activation_Desc', 'Utilities'),
-				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigsendgrid',
-			),
-			array(
-				'abbr' => 'GM',
-				'title' => getTranslatedString('GMP Activation', 'Utilities'),
-				'desc' => getTranslatedString('GMP Activation_Desc', 'Utilities'),
-				'url' => 'index.php?action=integration&module=Utilities&_op=getconfiggmp',
-			),
-			array(
-				'abbr' => 'ES',
-				'title' => getTranslatedString('ElasticSearch Activation', 'Utilities'),
-				'desc' => getTranslatedString('Elasticsearch_Desc', 'Utilities'),
-				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigelasticsearch',
-			),
-			array(
-				'abbr' => 'LA',
-				'title' => getTranslatedString('LogAll Activation', 'Utilities'),
-				'desc' => getTranslatedString('LogAll_Desc', 'Utilities'),
-				'url' => 'index.php?action=integration&module=Utilities&_op=getconfiglogall',
-			),
-		);
-		if (file_exists('build/wsChanges/LoginSession.php')) {
-			$intgr[] = array(
-				'abbr' => 'LS',
-				'title' => getTranslatedString('Login Sync Activation', 'Utilities'),
-				'desc' => getTranslatedString('Login_Synic Desc', 'Utilities'),
-				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigloginsync',
-			);
-		}
-		$smarty->assign('integrations', $intgr);
-		$smarty->assign('TITLE_MESSAGE', $titlemessage);
-		$smarty->assign('APP', $app_strings);
-		$smarty->assign('MOD', $mod_strings);
-		$smarty->assign('MODULE', $currentModule);
-		$smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
-		$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
-		$smarty->assign('THEME', $theme);
-		include 'include/integrations/forcedButtons.php';
-		$smarty->assign('CHECK', $tool_buttons);
-		$smarty->display('modules/Utilities/integrationhelp.tpl');
-		break;
+    case 'Success':
+        $smarty = new vtigerCRM_Smarty();
+        $titlemessage = getTranslatedString('SUCCESSFUL_REGISTRATION_TITLE', $currentModule);
+        $smarty->assign('TITLE_MESSAGE', $titlemessage);
+        $smarty->assign('MESSAGE', sprintf(getTranslatedString('SUCCESSFUL_REGISTRATION_MESSAGE', $currentModule), vtlib_purify($_REQUEST['integration'])));
+        $smarty->assign('ERROR_CLASS', '');
+        $smarty->assign('APP', $app_strings);
+        $smarty->assign('MOD', $mod_strings);
+        $smarty->assign('MODULE', $currentModule);
+        $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
+        $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
+        $smarty->assign('THEME', $theme);
+        include 'include/integrations/forcedButtons.php';
+        $smarty->assign('CHECK', $tool_buttons);
+        $smarty->display('modules/Utilities/integration.tpl');
+        break;
+    case 'Error':
+        $smarty = new vtigerCRM_Smarty();
+        $titlemessage = getTranslatedString('UNSUCCESSFUL_REGISTRATION_TITLE', $currentModule);
+        $smarty->assign('TITLE_MESSAGE', $titlemessage);
+        $smarty->assign('MESSAGE', sprintf(getTranslatedString('UNSUCCESSFUL_REGISTRATION_MESSAGE', $currentModule), vtlib_purify($_REQUEST['integration'])).
+            '<br>'.vtlib_purify($_REQUEST['error_description']).' ('.vtlib_purify($_REQUEST['error_code']).')');
+        $smarty->assign('ERROR_CLASS', 'slds-theme_error');
+        $smarty->assign('APP', $app_strings);
+        $smarty->assign('MOD', $mod_strings);
+        $smarty->assign('MODULE', $currentModule);
+        $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
+        $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
+        $smarty->assign('THEME', $theme);
+        include 'include/integrations/forcedButtons.php';
+        $smarty->assign('CHECK', $tool_buttons);
+        $smarty->display('modules/Utilities/integration.tpl');
+        break;
+    case 'getconfighubspot':
+    case 'setconfighubspot':
+        include_once 'include/integrations/hubspot/settings.php';
+        break;
+    case 'getconfigzendesk':
+    case 'setconfigzendesk':
+        include_once 'include/integrations/zendesk/settings.php';
+        break;
+    case 'getconfig2fa':
+    case 'setconfig2fa':
+        include_once 'include/integrations/2fa/settings.php';
+        break;
+    case 'getconfiggcontact':
+    case 'setconfiggcontact':
+        include_once 'include/integrations/GContacts/settings.php';
+        break;
+    case 'getconfigwhatsapp':
+    case 'setconfigwhatsapp':
+        include_once 'include/integrations/whatsapp/settings.php';
+        break;
+    case 'getconfigsaml':
+    case 'setconfigsaml':
+        include_once 'include/integrations/saml/settings.php';
+        break;
+    case 'getconfigsendgrid':
+    case 'setconfigsendgrid':
+        include_once 'include/integrations/sendgrid/settings.php';
+        break;
+    case 'getconfigsmtp':
+    case 'setconfigsmtp':
+        include_once 'include/integrations/smtp/settings.php';
+        break;
+    case 'getconfiggmp':
+    case 'setconfiggmp':
+        include_once 'include/integrations/gmp/settings.php';
+        break;
+    case 'getconfigrecordversioning':
+    case 'setconfigrecordversioning':
+        include_once 'include/integrations/recordversioning/settings.php';
+        break;
+    case 'getconfigelasticsearch':
+    case 'setconfigelasticsearch':
+        include_once 'include/integrations/elasticsearch/settings.php';
+        break;
+    case 'getconfiglogall':
+    case 'setconfiglogall':
+        include_once 'include/integrations/logall/settings.php';
+        break;
+    case 'getconfigloginsync':
+    case 'setconfigloginsync':
+        include_once 'include/integrations/loginsync/settings.php';
+        break;
+    case 'getconfigcache':
+    case 'setconfigcache':
+        include_once 'include/integrations/cache/settings.php';
+        break;
+    default:
+        $smarty = new vtigerCRM_Smarty();
+        $titlemessage = getTranslatedString('Available Integrations', $currentModule);
+        $intgr = array(
+            array(
+                'abbr' => '2F',
+                'title' => getTranslatedString('GoTo2FAActivation', 'Utilities'),
+                'desc' => getTranslatedString('GoTo2FAActivation_Desc', 'Utilities'),
+                'url' => 'index.php?action=integration&module=Utilities&_op=getconfig2fa',
+            ),
+            array(
+                'abbr' => 'SSO',
+                'title' => getTranslatedString('SAML Activation', 'Utilities'),
+                'desc' => getTranslatedString('SAML Activation_Desc', 'Utilities'),
+                'url' => 'index.php?action=integration&module=Utilities&_op=getconfigsaml',
+            ),
+            array(
+                'abbr' => 'GC',
+                'title' => getTranslatedString('GOOGLE_CONTACTS', 'Contacts'),
+                'desc' => getTranslatedString('GOOGLE_CONTACTS_Desc', 'Contacts'),
+                'url' => 'index.php?action=integration&module=Utilities&_op=getconfiggcontact',
+            ),
+            array(
+                'abbr' => 'HS',
+                'title' => getTranslatedString('HubSpot Activation', 'Utilities'),
+                'desc' => getTranslatedString('HubSpot Activation_Desc', 'Utilities'),
+                'url' => 'index.php?action=integration&module=Utilities&_op=getconfighubspot',
+            ),
+            array(
+                'abbr' => 'EM',
+                'title' => getTranslatedString('SMTP Configuration', 'Utilities'),
+                'desc' => getTranslatedString('SMTP Configuration_Desc', 'Utilities'),
+                'url' => 'index.php?action=integration&module=Utilities&_op=getconfigsmtp&savemode=false',
+            ),
+            array(
+                'abbr' => 'RV',
+                'title' => getTranslatedString('Record Versioning', 'Utilities'),
+                'desc' => getTranslatedString('Record Versioning_Desc', 'Utilities'),
+                'url' => 'index.php?action=integration&module=Utilities&_op=getconfigrecordversioning',
+            ),
+            // array(
+            // 	'abbr' => 'ZD',
+            // 	'title' => getTranslatedString('Zendesk Activation', 'Utilities'),
+            // 	'desc' => getTranslatedString('Zendesk Activation_Desc', 'Utilities'),
+            // 	'url' => 'index.php?action=integration&module=Utilities&_op=getconfigzendesk',
+            // ),
+            array(
+                'abbr' => 'WA',
+                'title' => getTranslatedString('Whatsapp Activation', 'Utilities'),
+                'desc' => getTranslatedString('Whatsapp Activation_Desc', 'Utilities'),
+                'url' => 'index.php?action=integration&module=Utilities&_op=getconfigwhatsapp',
+            ),
+            array(
+                'abbr' => 'SG',
+                'title' => getTranslatedString('SendGrid Activation', 'Utilities'),
+                'desc' => getTranslatedString('SendGrid Activation_Desc', 'Utilities'),
+                'url' => 'index.php?action=integration&module=Utilities&_op=getconfigsendgrid',
+            ),
+            array(
+                'abbr' => 'GM',
+                'title' => getTranslatedString('GMP Activation', 'Utilities'),
+                'desc' => getTranslatedString('GMP Activation_Desc', 'Utilities'),
+                'url' => 'index.php?action=integration&module=Utilities&_op=getconfiggmp',
+            ),
+            array(
+                'abbr' => 'ES',
+                'title' => getTranslatedString('ElasticSearch Activation', 'Utilities'),
+                'desc' => getTranslatedString('Elasticsearch_Desc', 'Utilities'),
+                'url' => 'index.php?action=integration&module=Utilities&_op=getconfigelasticsearch',
+            ),
+            array(
+                'abbr' => 'LA',
+                'title' => getTranslatedString('LogAll Activation', 'Utilities'),
+                'desc' => getTranslatedString('LogAll_Desc', 'Utilities'),
+                'url' => 'index.php?action=integration&module=Utilities&_op=getconfiglogall',
+            ),
+            array(
+                'abbr' => 'CA',
+                'title' => getTranslatedString('Cache Activation', 'Utilities'),
+                'desc' => getTranslatedString('Cache Activation_Desc', 'Utilities'),
+                'url' => 'index.php?action=integration&module=Utilities&_op=getconfigcache',
+            ),
+        );
+        if (file_exists('build/wsChanges/LoginSession.php')) {
+            $intgr[] = array(
+                'abbr' => 'LS',
+                'title' => getTranslatedString('Login Sync Activation', 'Utilities'),
+                'desc' => getTranslatedString('Login_Synic Desc', 'Utilities'),
+                'url' => 'index.php?action=integration&module=Utilities&_op=getconfigloginsync',
+            );
+        }
+        $smarty->assign('integrations', $intgr);
+        $smarty->assign('TITLE_MESSAGE', $titlemessage);
+        $smarty->assign('APP', $app_strings);
+        $smarty->assign('MOD', $mod_strings);
+        $smarty->assign('MODULE', $currentModule);
+        $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
+        $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
+        $smarty->assign('THEME', $theme);
+        include 'include/integrations/forcedButtons.php';
+        $smarty->assign('CHECK', $tool_buttons);
+        $smarty->display('modules/Utilities/integrationhelp.tpl');
+        break;
 }
