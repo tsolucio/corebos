@@ -132,13 +132,14 @@ function getCreateCustomBlockForm(modulename,mode) {
 	});
 }
 
-function saveFieldInfo(fieldid,module,sub_mode,typeofdata) {
+function saveFieldInfo(fieldid,module,sub_mode,typeofdata,uitype) {
 	urlstring = '';
 	var mandatory_check = document.getElementById('mandatory_check_'+fieldid);
 	var presence_check = document.getElementById('presence_check_'+fieldid);
 	var quickcreate_check = document.getElementById('quickcreate_check_'+fieldid);
 	var massedit_check = document.getElementById('massedit_check_'+fieldid);
 	var defaultvalue_check = document.getElementById('defaultvalue_check_'+fieldid);
+	var longfield_check = document.getElementById('longfield_check_'+fieldid);
 
 	if(mandatory_check != null){
 		urlstring = urlstring+'&ismandatory=' + mandatory_check.checked;
@@ -151,6 +152,9 @@ function saveFieldInfo(fieldid,module,sub_mode,typeofdata) {
 	}
 	if(massedit_check != null){
 		urlstring = urlstring + '&massedit=' + massedit_check.checked;
+	}
+	if(longfield_check != null){
+		urlstring = urlstring + '&longfield=' + longfield_check.checked;
 	}
 	if(defaultvalue_check != null) {
 		var defaultvalueelement = document.getElementById('defaultvalue_'+fieldid);
@@ -183,7 +187,7 @@ function saveFieldInfo(fieldid,module,sub_mode,typeofdata) {
 	jQuery.ajax({
 		method:'POST',
 		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode='+sub_mode+'&parenttab=Settings'+
-			'&fieldid='+fieldid+'&fld_module='+module+'&ajax=true'+urlstring
+			'&fieldid='+fieldid+'&fld_module='+module+'&uitype='+uitype+'&ajax=true'+urlstring
 	}).done(function(response) {
 		fninvsh('editfield_'+fieldid);
 		document.getElementById('cfList').innerHTML=response;
