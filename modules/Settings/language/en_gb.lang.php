@@ -790,6 +790,7 @@ $mod_strings = array(
 	'LBL_MANDATORY_FIELD' => 'Mandatory Field',
 	'LBL_QUICK_CREATE' => 'Quick Create',
 	'LBL_MASS_EDIT' => 'Mass Edit',
+	'LBL_LONG_FIELD' => 'Long Field',
 	'LBL_BLOCK_NAME' => 'Block name',
 	'AFTER' => 'After',
 	'ADD_BLOCK' => 'Add Block',
