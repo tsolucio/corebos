@@ -1069,9 +1069,15 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 			vtiger_products.productname AS name,
 			vtiger_products.divisible AS divisible,
 			'Products' AS type,
-			vtiger_products.vendor_part_no AS ven_no,
+			CASE 
+				WHEN (SELECT presence FROM vtiger_field WHERE columnname = 'vendor_part_no' AND tablename = 'vtiger_products') = '1' THEN '##FIELDDISABLED##'
+				ELSE vtiger_products.vendor_part_no
+			END AS ven_no,
 			vtiger_products.cost_price AS cost_price,
-			vtiger_products.mfr_part_no AS mfr_no,
+			CASE 
+				WHEN (SELECT presence FROM vtiger_field WHERE columnname = 'mfr_part_no' AND tablename = 'vtiger_products') = '1' THEN '##FIELDDISABLED##'
+				ELSE vtiger_products.mfr_part_no
+			END AS mfr_no,
 			vtiger_products.qtyinstock AS qtyinstock,
 			vtiger_products.qty_per_unit AS qty_per_unit,
 			vtiger_products.usageunit AS usageunit,

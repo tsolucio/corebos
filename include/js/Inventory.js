@@ -1640,7 +1640,9 @@ function InventorySelectAll(mod, image_pth) {
 
 			mediaBody.appendChild(listboxText);
 			for (var i = 0; i < listboxMetas.length; i++) {
-				mediaBody.appendChild(listboxMetas[i]);
+				if (lines[i].value != '##FIELDDISABLED##') {
+					mediaBody.appendChild(listboxMetas[i]);
+				}
 			}
 
 			var media = _createEl('div', 'slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta');
