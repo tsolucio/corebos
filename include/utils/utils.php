@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once 'modules/Settings/configod.php';
+include_once 'modules/Settings/configod.php';
 require_once 'include/utils/Session.php';
 require_once 'include/utils/Request.php';
 require_once 'include/database/PearDatabase.php';
@@ -48,10 +48,8 @@ define('RB_RECORD_UPDATED', 'update');
 
 //libxml_disable_entity_loader(true);
 
-/**
- * Function to load global browser variables for javascript
- *
- * @param   smarty object to load the variables, if empty it will only return the variables in an array
+/** Function to load global browser variables for javascript
+ * @param smarty object to load the variables, if empty it will only return the variables in an array
  * @returns array with the variables
  */
 function getBrowserVariables(&$smarty) {
@@ -106,12 +104,10 @@ function getBrowserVariables(&$smarty) {
 	}
 }
 
-/**
- * Function to return a full name
- *
- * @param   $row          -- row:: Type integer
- * @param   $first_column -- first column:: Type string
- * @param   $last_column  -- last column:: Type string
+/** Function to return a full name
+ * @param $row -- row:: Type integer
+ * @param $first_column -- first column:: Type string
+ * @param $last_column -- last column:: Type string
  * @returns $fullname -- fullname:: Type string
  */
 function return_name(&$row, $first_column, $last_column) {
@@ -144,9 +140,7 @@ function return_name(&$row, $first_column, $last_column) {
 	return $full_name;
 }
 
-/**
- * Function to return language
- *
+/** Function to return language
  * @returns $languages -- languages:: Type string
  */
 function get_languages() {
@@ -155,10 +149,8 @@ function get_languages() {
 	return $languages;
 }
 
-/**
- * Function to return language
- *
- * @param   $key -- key:: Type string
+/** Function to return language
+ * @param $key -- key:: Type string
  * @returns $languages -- languages:: Type string
  */
 function get_language_display($key) {
@@ -167,10 +159,8 @@ function get_language_display($key) {
 	return $languages[$key];
 }
 
-/**
- * Function returns the user array
- *
- * @param   $assigned_user_id -- assigned_user_id:: Type string
+/** Function returns the user array
+ * @param $assigned_user_id -- assigned_user_id:: Type string
  * @returns $user_list -- user list:: Type array
  */
 function get_assigned_user_name($assigned_user_id) {
@@ -185,13 +175,11 @@ function get_assigned_user_name($assigned_user_id) {
 	return '';
 }
 
-/**
- * Function returns the user key in user array
- *
- * @param   $add_blank     -- boolean:: Type boolean
- * @param   $status        -- user status:: Type string
- * @param   $assigned_user -- user id:: Type string
- * @param   $private       -- sharing type:: Type string
+/** Function returns the user key in user array
+ * @param $add_blank -- boolean:: Type boolean
+ * @param $status -- user status:: Type string
+ * @param $assigned_user -- user id:: Type string
+ * @param $private -- sharing type:: Type string
  * @returns $user_array -- user array:: Type array
  */
 function get_user_array($add_blank = true, $status = 'Active', $assigned_user = '', $private = '') {
@@ -207,7 +195,7 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 	$module = isset($_REQUEST['module']) ? $_REQUEST['module'] : '';
 
 	if ($user_array == null) {
-		include_once 'include/database/PearDatabase.php';
+		require_once 'include/database/PearDatabase.php';
 		$db = PearDatabase::getInstance();
 		$temp_result = array();
 		$userOrder = GlobalVariable::getVariable('Application_User_SortBy', 'user_name ASC', $module, $current_user->id);
@@ -246,10 +234,10 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 					inner join vtiger_users on vtiger_users.id=vtiger_tmp_write_user_sharing_per.shareduserid
 					where status='Active' and vtiger_tmp_write_user_sharing_per.userid=? and vtiger_tmp_write_user_sharing_per.tabid=?";
 				$params = array(
-				$current_user->id,
-				(isset($current_user_parent_role_seq) ? $current_user_parent_role_seq : '').(empty($assignBrothers) ? '::%' : '%'),
-				$current_user->id,
-				getTabid($module)
+					$current_user->id,
+					(isset($current_user_parent_role_seq) ? $current_user_parent_role_seq : '').(empty($assignBrothers) ? '::%' : '%'),
+					$current_user->id,
+					getTabid($module)
 				);
 			} else {
 				$query = 'SELECT id, user_name,first_name,last_name from vtiger_users WHERE status=?';
@@ -306,7 +294,7 @@ function get_group_array($add_blank = true, $status = 'Active', $assigned_user =
 	$module= (isset($_REQUEST['module']) ? vtlib_purify($_REQUEST['module']) : $currentModule);
 
 	if ($group_array == null || $force) {
-		include_once 'include/database/PearDatabase.php';
+		require_once 'include/database/PearDatabase.php';
 		$db = PearDatabase::getInstance();
 		$temp_result = array();
 		// Sharing is Public. All users should be listed
@@ -367,11 +355,9 @@ function get_group_array($add_blank = true, $status = 'Active', $assigned_user =
 	return $group_array;
 }
 
-/**
- * Function skips executing arbitary commands given in a string
- *
- * @param   $string    -- string:: Type string
- * @param   $maxlength -- maximun length:: Type integer
+/** Function skips executing arbitary commands given in a string
+ * @param $string -- string:: Type string
+ * @param $maxlength -- maximun length:: Type integer
  * @returns $string -- escaped string:: Type string
  */
 function clean($string, $maxLength) {
@@ -425,7 +411,7 @@ function return_app_currency_strings_language($language) {
 	@include "include/language/$language.lang.php";
 	if (!isset($app_currency_strings)) {
 		$log->fatal('Unable to find the application language file for language: '.$language);
-		include "include/language/$default_language.lang.php";
+		require "include/language/$default_language.lang.php";
 	}
 	if (!isset($app_currency_strings)) {
 		$log->fatal("Unable to load the application language file for the selected language($language) or the default language($default_language)");
@@ -441,10 +427,8 @@ function return_app_currency_strings_language($language) {
 	return $return_value;
 }
 
-/**
- * This function retrieves an application language file and returns the array of strings included.
- * If you are using the current language, do not call this function unless you are loading it for the first time
- */
+/** This function retrieves an application language file and returns the array of strings included.
+ * If you are using the current language, do not call this function unless you are loading it for the first time */
 function return_application_language($language) {
 	global $app_strings, $default_language, $log;
 	$log->debug('> return_application_language '.$language);
@@ -454,7 +438,7 @@ function return_application_language($language) {
 	@include "include/language/$language.lang.php";
 	if (!isset($app_strings)) {
 		$log->fatal('Unable to find the application language file for language: '.$language);
-		include "include/language/$default_language.lang.php";
+		require "include/language/$default_language.lang.php";
 		$languagefound = $default_language;
 	}
 
@@ -475,10 +459,8 @@ function return_application_language($language) {
 	return $return_value;
 }
 
-/**
- * This function retrieves a module's language file and returns the array of strings included.
- * If you are in the current module, do not call this function unless you are loading it for the first time
- */
+/** This function retrieves a module's language file and returns the array of strings included.
+ * If you are in the current module, do not call this function unless you are loading it for the first time */
 function return_module_language($language, $module) {
 	global $mod_strings, $default_language, $log;
 	$log->debug('> return_module_language '.$language.','. $module);
@@ -495,14 +477,14 @@ function return_module_language($language, $module) {
 	if (!isset($mod_strings)) {
 		$log->fatal('Unable to find the module language file for language: '.$language.' and module: '.$module);
 		if ($default_language == 'en_us') {
-			include "modules/$module/language/$default_language.lang.php";
+			require "modules/$module/language/$default_language.lang.php";
 			$languagefound = $default_language;
 		} else {
 			@include "modules/$module/language/$default_language.lang.php";
 			$languagefound = $default_language;
 			if (!isset($mod_strings)) {
 				if (file_exists("modules/$module/language/en_us.lang.php")) {
-					include "modules/$module/language/en_us.lang.php";
+					require "modules/$module/language/en_us.lang.php";
 				} else {
 					$mod_strings = array();
 				}
@@ -537,7 +519,7 @@ function return_specified_module_language($language, $module) {
 	@include "modules/$module/language/$language.lang.php";
 	if (!isset($mod_strings)) {
 		$log->fatal('Unable to find the module language file for language: '.$language.' and module: '.$module);
-		include "modules/$module/language/$default_language.lang.php";
+		require "modules/$module/language/$default_language.lang.php";
 		$languagefound = $default_language;
 	}
 
@@ -557,9 +539,7 @@ function return_specified_module_language($language, $module) {
 	return $return_value;
 }
 
-/**
- * If the session variable is defined and is not equal to '' then return it. Otherwise, return the default value.
- */
+/** If the session variable is defined and is not equal to '' then return it. Otherwise, return the default value. */
 function return_session_value_or_default($varname, $default) {
 	global $log;
 	$log->debug('> return_session_value_or_default '.$varname.','. $default);
@@ -575,10 +555,9 @@ function return_session_value_or_default($varname, $default) {
 /**
  * Creates an array of where restrictions. These are used to construct a where SQL statement on the query
  * It looks for the variable in the $_REQUEST array. If it is set and is not '' it will create a where clause out of it.
- *
  * @param &$where_clauses - The array to append the clause to
- * @param $variable_name  - The name of the variable to look for an add to the where clause if found
- * @param $SQL_name       - [Optional] If specified, this is the SQL column name that is used. If not specified, the $variable_name is used as the SQL_name.
+ * @param $variable_name - The name of the variable to look for an add to the where clause if found
+ * @param $SQL_name - [Optional] If specified, this is the SQL column name that is used. If not specified, the $variable_name is used as the SQL_name.
  */
 function append_where_clause(&$where_clauses, $variable_name, $SQL_name = null) {
 	global $log;
@@ -595,8 +574,7 @@ function append_where_clause(&$where_clauses, $variable_name, $SQL_name = null) 
 
 /**
  * Generate the appropriate SQL based on the where clauses.
- *
- * @param   $where_clauses - An Array of individual where clauses stored as strings
+ * @param $where_clauses - An Array of individual where clauses stored as strings
  * @returns string where_clause - The final SQL where clause to be executed.
  */
 function generate_where_statement($where_clauses) {
@@ -615,7 +593,6 @@ function generate_where_statement($where_clauses) {
 
 /**
  * A temporary method of generating GUIDs of the correct format for our DB.
- *
  * @return String contianing a GUID in the format: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
  */
 function create_guid() {
@@ -647,10 +624,8 @@ function create_guid() {
 	return $guid;
 }
 
-/**
- * Function to create guid section for a given character
- *
- * @param   $characters -- characters:: Type string
+/** Function to create guid section for a given character
+ * @param $characters -- characters:: Type string
  * @returns $return -- integer:: Type integer``
  */
 function create_guid_section($characters) {
@@ -664,9 +639,7 @@ function create_guid_section($characters) {
 	return $return;
 }
 
-/**
- * Function to ensure length
- *
+/** Function to ensure length
  * @param $string -- string:: Type string
  * @param $length -- length:: Type string
  */
@@ -739,10 +712,8 @@ function decide_to_html() {
 }
 decide_to_html();//call the function once when loading
 
-/**
- * Function to convert the given string to html
- *
- * @param   $string -- string:: Type string
+/** Function to convert the given string to html
+ * @param $string -- string:: Type string
  * @returns $string -- string:: Type string
  */
 function to_html($string) {
@@ -763,10 +734,8 @@ function to_html($string) {
 	return $string;
 }
 
-/**
- * Function to get the tablabel for a given id
- *
- * @param   $tabid -- tab id:: Type integer
+/** Function to get the tablabel for a given id
+ * @param $tabid -- tab id:: Type integer
  * @returns $string -- string:: Type string
  */
 function getTabname($tabid) {
@@ -778,10 +747,8 @@ function getTabname($tabid) {
 	return $tabname;
 }
 
-/**
- * Function to get the tab module name for a given id
- *
- * @param   $tabid -- tab id:: Type integer
+/** Function to get the tab module name for a given id
+ * @param $tabid -- tab id:: Type integer
  * @returns $string -- string:: Type string
  */
 function getTabModuleName($tabid) {
@@ -800,10 +767,8 @@ function getTabModuleName($tabid) {
 	return $tabname;
 }
 
-/**
- * Function to get column fields for a given module
- *
- * @param   $module -- module:: Type string
+/** Function to get column fields for a given module
+ * @param $module -- module:: Type string
  * @returns $column_fld -- column field :: Type array
  */
 function getColumnFields($module) {
@@ -852,10 +817,8 @@ function getColumnFields($module) {
 	return $column_fld;
 }
 
-/**
- * Function to get a users's mail id
- *
- * @param   $userid -- userid :: Type integer
+/** Function to get a users's mail id
+ * @param $userid -- userid :: Type integer
  * @returns $email -- email :: Type string
  */
 function getUserEmail($userid) {
@@ -873,10 +836,8 @@ function getUserEmail($userid) {
 	return $email;
 }
 
-/**
- * Function to get a userid for outlook // outlook security
- *
- * @param   $username -- username :: Type string
+/** Function to get a userid for outlook // outlook security
+ * @param $username -- username :: Type string
  * @returns $user_id -- user id :: Type integer
  */
 function getUserId_Ol($username) {
@@ -893,10 +854,8 @@ function getUserId_Ol($username) {
 	return $user_id;
 }
 
-/**
- * Function to get a action id for a given action name //outlook security
- *
- * @param   $action -- action name :: Type string
+/** Function to get a action id for a given action name //outlook security
+ * @param $action -- action name :: Type string
  * @returns $actionid -- action id :: Type integer
  */
 function getActionid($action) {
@@ -908,10 +867,8 @@ function getActionid($action) {
 	return $actionid;
 }
 
-/**
- * Function to get a action for a given action id
- *
- * @param   $action id -- action id :: Type integer
+/** Function to get a action for a given action id
+ * @param $action id -- action id :: Type integer
  * @returns $actionname-- action name :: Type string
  */
 function getActionname($actionid) {
@@ -924,10 +881,8 @@ function getActionname($actionid) {
 	return $actionname;
 }
 
-/**
- * Function to get a assigned user id for a given entity
- *
- * @param   $record -- entity id :: Type integer
+/** Function to get a assigned user id for a given entity
+ * @param $record -- entity id :: Type integer
  * @returns $user_id -- user id :: Type integer
  */
 function getUserId($record) {
@@ -939,10 +894,8 @@ function getUserId($record) {
 	return $user_id;
 }
 
-/**
- * Function to get a user id or group id for a given entity
- *
- * @param   $record -- entity id :: Type integer
+/** Function to get a user id or group id for a given entity
+ * @param $record -- entity id :: Type integer
  * @returns $ownerArr -- owner id :: Type array
  */
 function getRecordOwnerId($record) {
@@ -963,9 +916,7 @@ function getRecordOwnerId($record) {
 	return $ownerArr;
 }
 
-/**
- * Function to insert value to profile2field table
- *
+/** Function to insert value to profile2field table
  * @param $profileid -- profileid :: Type integer
  */
 function insertProfile2field($profileid) {
@@ -987,9 +938,7 @@ function insertProfile2field($profileid) {
 	$log->debug('< insertProfile2field');
 }
 
-/**
- * Function to insert into default org field
- */
+/** Function to insert into default org field */
 function insert_def_org_field() {
 	global $log, $adb;
 	$log->debug('> insert_def_org_field');
@@ -1008,11 +957,9 @@ function insert_def_org_field() {
 	$log->debug('< insert_def_org_field');
 }
 
-/**
- * Function to insert value to profile2field table
- *
- * @param   $fld_module -- field module :: Type string
- * @param   $profileid  -- profileid :: Type integer
+/** Function to insert value to profile2field table
+ * @param $fld_module -- field module :: Type string
+ * @param $profileid -- profileid :: Type integer
  * @returns $result -- result :: Type string
  */
 function getProfile2FieldList($fld_module, $profileid) {
@@ -1028,11 +975,9 @@ function getProfile2FieldList($fld_module, $profileid) {
 	return $result;
 }
 
-/**
- * Function to insert value to profile2fieldPermissions table
- *
- * @param   $fld_module -- field module :: Type string
- * @param   $profileid  -- profileid :: Type integer
+/** Function to insert value to profile2fieldPermissions table
+ * @param $fld_module -- field module :: Type string
+ * @param $profileid -- profileid :: Type integer
  * @returns $return_data -- return_data :: Type string
  */
 function getProfile2FieldPermissionList($fld_module, $profileid) {
@@ -1056,13 +1001,13 @@ function getProfile2FieldPermissionList($fld_module, $profileid) {
 		$return_data = array();
 		while ($row = $adb->fetch_array($result)) {
 			$return_data[]=array(
-			$row['fieldlabel'],
-			$row['visible'], // From vtiger_profile2field.visible
-			$row['uitype'],
-			$row['readonly'],
-			$row['fieldid'],
-			$row['displaytype'],
-			$row['typeofdata'],
+				$row['fieldlabel'],
+				$row['visible'], // From vtiger_profile2field.visible
+				$row['uitype'],
+				$row['readonly'],
+				$row['fieldid'],
+				$row['displaytype'],
+				$row['typeofdata'],
 			);
 		}
 
@@ -1073,11 +1018,9 @@ function getProfile2FieldPermissionList($fld_module, $profileid) {
 	return $return_data;
 }
 
-/**
- * Function to insert value to profile2fieldPermissions table
- *
- * @param   $fld_module -- field module :: Type string
- * @param   $profileid  -- profileid :: Type integer
+/** Function to insert value to profile2fieldPermissions table
+ * @param $fld_module -- field module :: Type string
+ * @param $profileid -- profileid :: Type integer
  * @returns $return_data -- return_data :: Type string
  */
 function getProfile2ModuleFieldPermissionList($fld_module, $profileid) {
@@ -1103,25 +1046,23 @@ function getProfile2ModuleFieldPermissionList($fld_module, $profileid) {
 		$res = $adb->pquery($selsql, array($row['fieldid'], $tabid, $profileid));
 		$moreinfo = $adb->fetch_array($res);
 		$return_data[] = array(
-		$row['fieldlabel'],
-		$moreinfo['visible'], // From vtiger_profile2field.visible
-		$row['uitype'],
-		$moreinfo['readonly'], // From vtiger_profile2field.readonly
-		$row['fieldid'],
-		$row['displaytype'],
-		$row['typeofdata'],
-		$moreinfo['summary'], // From vtiger_profile2field.summary
+			$row['fieldlabel'],
+			$moreinfo['visible'], // From vtiger_profile2field.visible
+			$row['uitype'],
+			$moreinfo['readonly'], // From vtiger_profile2field.readonly
+			$row['fieldid'],
+			$row['displaytype'],
+			$row['typeofdata'],
+			$moreinfo['summary'], // From vtiger_profile2field.summary
 		);
 	}
 	$log->debug('< getProfile2ModuleFieldPermissionList');
 	return $return_data;
 }
 
-/**
- * Function to getProfile2allfieldsListinsert value to profile2fieldPermissions table
- *
- * @param   $mod_array -- mod_array :: Type string
- * @param   $profileid -- profileid :: Type integer
+/** Function to getProfile2allfieldsListinsert value to profile2fieldPermissions table
+ * @param $mod_array -- mod_array :: Type string
+ * @param $profileid -- profileid :: Type integer
  * @returns $profilelist -- profilelist :: Type string
  */
 function getProfile2AllFieldList($mod_array, $profileid) {
@@ -1135,10 +1076,8 @@ function getProfile2AllFieldList($mod_array, $profileid) {
 	return $profilelist;
 }
 
-/**
- * Function to getdefaultfield organisation list for a given module
- *
- * @param   $fld_module -- module name :: Type string
+/** Function to getdefaultfield organisation list for a given module
+ * @param $fld_module -- module name :: Type string
  * @returns $result -- string :: Type object
  */
 function getDefOrgFieldList($fld_module) {
@@ -1157,11 +1096,9 @@ function getDefOrgFieldList($fld_module) {
 	return $result;
 }
 
-/**
- * Function to getQuickCreate for a given tabid
- *
- * @param   $tabid    -- tab id :: Type string
- * @param   $actionid -- action id :: Type integer
+/** Function to getQuickCreate for a given tabid
+ * @param $tabid -- tab id :: Type string
+ * @param $actionid -- action id :: Type integer
  * @returns $QuickCreateForm -- QuickCreateForm :: Type boolean
  */
 function getQuickCreate($tabid, $actionid) {
@@ -1179,10 +1116,8 @@ function getQuickCreate($tabid, $actionid) {
 	return $QuickCreateForm;
 }
 
-/**
- * Function to get unitprice for a given product id
- *
- * @param   $productid -- product id :: Type integer
+/** Function to get unitprice for a given product id
+ * @param $productid -- product id :: Type integer
  * @returns $up -- up :: Type string
  */
 function getUnitPrice($productid, $module = 'Products') {
@@ -1200,12 +1135,10 @@ function getUnitPrice($productid, $module = 'Products') {
 	return $unitpice;
 }
 
-/**
- * Function to upload product image file
- *
- * @param      $mode -- mode :: Type string
- * @param      $id   -- id :: Type integer
- * @returns    $ret_array -- return array:: Type array
+/** Function to upload product image file
+ * @param $mode -- mode :: Type string
+ * @param $id -- id :: Type integer
+ * @returns $ret_array -- return array:: Type array
  * @deprecated
  */
 function upload_product_image_file($mode, $id) {
@@ -1245,11 +1178,9 @@ function upload_product_image_file($mode, $id) {
 	return $ret_array;
 }
 
-/**
- * Function to upload product image file
- *
- * @param  integer $id            product crmid
- * @param  array   $deleted_array images to be deleted
+/** Function to upload product image file
+ * @param integer $id product crmid
+ * @param array $deleted_array images to be deleted
  * @return array $imagename imagelist
  */
 function getProductImageName($id, $deleted_array = array()) {
@@ -1271,10 +1202,8 @@ function getProductImageName($id, $deleted_array = array()) {
 	return $retval;
 }
 
-/**
- * Function to get Contact images
- *
- * @param   $id -- id :: Type integer
+/** Function to get Contact images
+ * @param $id -- id :: Type integer
  * @returns $imagename -- imagename:: Type string
  */
 function getContactImageName($id) {
@@ -1286,15 +1215,13 @@ function getContactImageName($id) {
 	return $image_name;
 }
 
-/**
- * Function to update sub total in inventory
- *
- * @param $module     -- module name :: Type string
- * @param $tablename  -- tablename :: Type string
- * @param $colname    -- colname :: Type string
- * @param $colname1   -- coluname1 :: Type string
- * @param $entid_fld  -- entity field :: Type string
- * @param $entid      -- entid :: Type integer
+/** Function to update sub total in inventory
+ * @param $module -- module name :: Type string
+ * @param $tablename -- tablename :: Type string
+ * @param $colname -- colname :: Type string
+ * @param $colname1 -- coluname1 :: Type string
+ * @param $entid_fld -- entity field :: Type string
+ * @param $entid -- entid :: Type integer
  * @param $prod_total -- totalproduct :: Type integer
  */
 function updateSubTotal($module, $tablename, $colname, $colname1, $entid_fld, $entid, $prod_total) {
@@ -1315,11 +1242,9 @@ function updateSubTotal($module, $tablename, $colname, $colname1, $entid_fld, $e
 	$log->debug('< updateSubTotal');
 }
 
-/**
- * Function to get Inventory Total
- *
- * @param   $return_module -- return module :: Type string
- * @param   $id            -- entity id :: Type integer
+/** Function to get Inventory Total
+ * @param $return_module -- return module :: Type string
+ * @param $id -- entity id :: Type integer
  * @returns $total -- total:: Type integer
  * *** FUNCTION NOT USED IN THE APPLICATION > left only in case it is used by some extension
  */
@@ -1356,11 +1281,9 @@ function getInventoryTotal($return_module, $id) {
 	return $total;
 }
 
-/**
- * Function to update product quantity
- *
+/** Function to update product quantity
  * @param $product_id -- product id :: Type integer
- * @param $upd_qty    -- quantity :: Type integer
+ * @param $upd_qty -- quantity :: Type integer
  */
 function updateProductQty($product_id, $upd_qty) {
 	global $log, $adb;
@@ -1369,10 +1292,8 @@ function updateProductQty($product_id, $upd_qty) {
 	$log->debug('< updateProductQty');
 }
 
-/**
- * Function to get account information
- *
- * @param   $parent_id -- parent id :: Type integer
+/** Function to get account information
+ * @param $parent_id -- parent id :: Type integer
  * @returns $accountid -- accountid:: Type integer
  */
 function get_account_info($parent_id) {
@@ -1392,11 +1313,9 @@ function getFolderSize($dir) {
 	return $size;
 }
 
-/**
- * Function to get email text field
- *
- * @param   $module -- module name :: Type name
- * @param   $id -- entity id :: Type integer
+/** Function to get email text field
+ * @param $module -- module name :: Type name
+ * @param $id -- entity id :: Type integer
  * @returns $hidden -- hidden:: Type string
  */
 //Added to get the parents list as hidden for Emails -- 09-11-2005
@@ -1429,8 +1348,7 @@ function getEmailParentsList($module, $id, $focus = false) {
 	return $hidden;
 }
 
-/**
- * This Function returns the current status of the specified Purchase Order.
+/** This Function returns the current status of the specified Purchase Order.
  * The following is the input parameter for the function
  *  $po_id --> Purchase Order Id, Type:Integer
  */
@@ -1443,8 +1361,7 @@ function getPoStatus($po_id) {
 	return $po_status;
 }
 
-/**
- * This Function adds the specified product quantity to the Product Quantity in Stock in the Warehouse
+/** This Function adds the specified product quantity to the Product Quantity in Stock in the Warehouse
  * The following is the input parameter for the function:
  *  $productId --> ProductId, Type:Integer
  *  $qty --> Quantity to be added, Type:Integer
@@ -1458,11 +1375,9 @@ function addToProductStock($productId, $qty) {
 	$log->debug('< addToProductStock');
 }
 
-/**
- * This Function adds the specified product quantity to the Product Quantity in Demand in the Warehouse
- *
+/** This Function adds the specified product quantity to the Product Quantity in Demand in the Warehouse
  * @param int $productId - ProductId
- * @param int $qty       - Quantity to be added
+ * @param int $qty - Quantity to be added
  */
 function addToProductDemand($productId, $qty) {
 	global $log, $adb;
@@ -1473,11 +1388,9 @@ function addToProductDemand($productId, $qty) {
 	$log->debug('< addToProductDemand');
 }
 
-/**
- * This Function subtract the specified product quantity to the Product Quantity in Stock in the Warehouse
- *
+/** This Function subtract the specified product quantity to the Product Quantity in Stock in the Warehouse
  * @param int $productId - ProductId
- * @param int $qty       - Quantity to be subtracted
+ * @param int $qty - Quantity to be subtracted
  */
 function deductFromProductStock($productId, $qty) {
 	global $log, $adb;
@@ -1488,11 +1401,9 @@ function deductFromProductStock($productId, $qty) {
 	$log->debug('< deductFromProductStock');
 }
 
-/**
- * This Function subtract the specified product quantity to the Product Quantity in Demand in the Warehouse
- *
- * @param int $productId - ProductId
- * @param int $qty       - Quantity to be subtract
+/**	This Function subtract the specified product quantity to the Product Quantity in Demand in the Warehouse
+ *	@param int $productId - ProductId
+ *	@param int $qty - Quantity to be subtract
  */
 function deductFromProductDemand($productId, $qty) {
 	global $log, $adb;
@@ -1503,8 +1414,7 @@ function deductFromProductDemand($productId, $qty) {
 	$log->debug('< deductFromProductDemand');
 }
 
-/**
- * This Function returns the current product quantity in stock.
+/** This Function returns the current product quantity in stock.
  * The following is the input parameter for the function:
  *  $product_id --> ProductId, Type:Integer
  */
@@ -1517,11 +1427,9 @@ function getProductQtyInStock($product_id) {
 	return $qtyinstck;
 }
 
-/**
- * This Function returns the current product quantity in demand.
- *
- * @param  int $product_id - ProductId
- * @return int $qtyInDemand - Quantity in Demand of a product
+/**	This Function returns the current product quantity in demand.
+ *	@param int $product_id - ProductId
+ *	@return int $qtyInDemand - Quantity in Demand of a product
  */
 function getProductQtyInDemand($product_id) {
 	global $log, $adb;
@@ -1532,8 +1440,7 @@ function getProductQtyInDemand($product_id) {
 	return $qtyInDemand;
 }
 
-/**
- * Function to seperate the Date and Time
+/** Function to seperate the Date and Time
  * This function accepts a sting with date and time and
  * returns an array of two elements.The first element
  * contains the date and the second one contains the time
@@ -1546,10 +1453,8 @@ function getDateFromDateAndtime($date_time) {
 	return $result;
 }
 
-/**
- * Function to get header for block in edit/create and detailview
- *
- * @param   $header_label -- header label :: Type string
+/** Function to get header for block in edit/create and detailview
+ * @param $header_label -- header label :: Type string
  * @returns $output -- output:: Type string
  */
 function getBlockTableHeader($header_label) {
@@ -1561,12 +1466,10 @@ function getBlockTableHeader($header_label) {
 	return $output;
 }
 
-/**
- * Function to get the vtiger_table name from 'field' vtiger_table for the input vtiger_field based on the module
- *
- * @param  : string $module    - current module value
- * @param  : string $fieldname - vtiger_fieldname to which we want the vtiger_tablename
- * @return : string $tablename - vtiger_tablename in which $fieldname is a column, which is retrieved from 'field' vtiger_table per $module basis
+/**     Function to get the vtiger_table name from 'field' vtiger_table for the input vtiger_field based on the module
+ *      @param  : string $module - current module value
+ *      @param  : string $fieldname - vtiger_fieldname to which we want the vtiger_tablename
+ *      @return : string $tablename - vtiger_tablename in which $fieldname is a column, which is retrieved from 'field' vtiger_table per $module basis
  */
 function getTableNameForField($module, $fieldname) {
 	global $log, $adb;
@@ -1584,9 +1487,7 @@ function getTableNameForField($module, $fieldname) {
 	return $tablename;
 }
 
-/**
- * Function to get the module name of a 'field'
- *
+/** Function to get the module name of a 'field'
  * @param  : int $fieldid - fieldid
  * @return : string modulename - module name of the fieldid
  */
@@ -1611,12 +1512,10 @@ function getModuleForField($fieldid) {
 	return $modname;
 }
 
-/**
- * Function to get parent record owner
- *
- * @param   $tabid     -- tabid :: Type integer
- * @param   $parModId  -- parent module id :: Type integer
- * @param   $record_id -- record id :: Type integer
+/** Function to get parent record owner
+ * @param $tabid -- tabid :: Type integer
+ * @param $parModId -- parent module id :: Type integer
+ * @param $record_id -- record id :: Type integer
  * @returns $parentRecOwner -- parentRecOwner:: Type integer
  */
 function getParentRecordOwner($tabid, $parModId, $record_id) {
@@ -1634,10 +1533,8 @@ function getParentRecordOwner($tabid, $parModId, $record_id) {
 	return $parentRecOwner;
 }
 
-/**
- * Function to get potential related accounts
- *
- * @param   $record_id -- record id :: Type integer
+/** Function to get potential related accounts
+ * @param $record_id -- record id :: Type integer
  * @returns $accountid -- accountid:: Type integer
  */
 function getPotentialsRelatedAccounts($record_id) {
@@ -1649,10 +1546,8 @@ function getPotentialsRelatedAccounts($record_id) {
 	return $accountid;
 }
 
-/**
- * Function to get email related accounts
- *
- * @param   $record_id -- record id :: Type integer
+/** Function to get email related accounts
+ * @param $record_id -- record id :: Type integer
  * @returns $accountid -- accountid:: Type integer
  */
 function getEmailsRelatedAccounts($record_id) {
@@ -1667,10 +1562,8 @@ function getEmailsRelatedAccounts($record_id) {
 	$log->debug('< getEmailsRelatedAccounts');
 	return $accountid;
 }
-/**
- * Function to get email related Leads
- *
- * @param   $record_id -- record id :: Type integer
+/** Function to get email related Leads
+ * @param $record_id -- record id :: Type integer
  * @returns $leadid -- leadid:: Type integer
  */
 function getEmailsRelatedLeads($record_id) {
@@ -1686,10 +1579,8 @@ function getEmailsRelatedLeads($record_id) {
 	return $leadid;
 }
 
-/**
- * Function to get HelpDesk related Accounts
- *
- * @param   $record_id -- record id :: Type integer
+/** Function to get HelpDesk related Accounts
+ * @param $record_id -- record id :: Type integer
  * @returns $accountid -- accountid:: Type integer
  */
 function getHelpDeskRelatedAccounts($record_id) {
@@ -1705,10 +1596,8 @@ function getHelpDeskRelatedAccounts($record_id) {
 	return $accountid;
 }
 
-/**
- * Function to get Quotes related Accounts
- *
- * @param   $record_id -- record id :: Type integer
+/** Function to get Quotes related Accounts
+ * @param $record_id -- record id :: Type integer
  * @returns $accountid -- accountid:: Type integer
  */
 function getQuotesRelatedAccounts($record_id) {
@@ -1720,10 +1609,8 @@ function getQuotesRelatedAccounts($record_id) {
 	return $accountid;
 }
 
-/**
- * Function to get Quotes related Potentials
- *
- * @param   $record_id -- record id :: Type integer
+/** Function to get Quotes related Potentials
+ * @param $record_id -- record id :: Type integer
  * @returns $potid -- potid:: Type integer
  */
 function getQuotesRelatedPotentials($record_id) {
@@ -1735,10 +1622,8 @@ function getQuotesRelatedPotentials($record_id) {
 	return $potid;
 }
 
-/**
- * Function to get Quotes related Potentials
- *
- * @param   $record_id -- record id :: Type integer
+/** Function to get Quotes related Potentials
+ * @param $record_id -- record id :: Type integer
  * @returns $accountid -- accountid:: Type integer
  */
 function getSalesOrderRelatedAccounts($record_id) {
@@ -1750,10 +1635,8 @@ function getSalesOrderRelatedAccounts($record_id) {
 	return $accountid;
 }
 
-/**
- * Function to get SalesOrder related Potentials
- *
- * @param   $record_id -- record id :: Type integer
+/** Function to get SalesOrder related Potentials
+ * @param $record_id -- record id :: Type integer
  * @returns $potid -- potid:: Type integer
  */
 function getSalesOrderRelatedPotentials($record_id) {
@@ -1765,10 +1648,8 @@ function getSalesOrderRelatedPotentials($record_id) {
 	return $potid;
 }
 
-/**
- * Function to get SalesOrder related Quotes
- *
- * @param   $record_id -- record id :: Type integer
+/** Function to get SalesOrder related Quotes
+ * @param $record_id -- record id :: Type integer
  * @returns $qtid -- qtid:: Type integer
  */
 function getSalesOrderRelatedQuotes($record_id) {
@@ -1780,10 +1661,8 @@ function getSalesOrderRelatedQuotes($record_id) {
 	return $qtid;
 }
 
-/**
- * Function to get Invoice related Accounts
- *
- * @param   $record_id -- record id :: Type integer
+/** Function to get Invoice related Accounts
+ * @param $record_id -- record id :: Type integer
  * @returns $accountid -- accountid:: Type integer
  */
 function getInvoiceRelatedAccounts($record_id) {
@@ -1795,10 +1674,8 @@ function getInvoiceRelatedAccounts($record_id) {
 	return $accountid;
 }
 
-/**
- * Function to get Invoice related SalesOrder
- *
- * @param   $record_id -- record id :: Type integer
+/** Function to get Invoice related SalesOrder
+ * @param $record_id -- record id :: Type integer
  * @returns $soid -- soid:: Type integer
  */
 function getInvoiceRelatedSalesOrder($record_id) {
@@ -1810,8 +1687,7 @@ function getInvoiceRelatedSalesOrder($record_id) {
 	return $soid;
 }
 
-/**
- * Function to get Days and Dates in between the dates specified
+/** Function to get Days and Dates in between the dates specified
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  */
@@ -1835,8 +1711,7 @@ function get_days_n_dates($st, $en) {
 	return $nodays_dates; //passing no of days , days in between the days
 }
 
-/**
- * Function to get the start and End Dates based upon the period which we give
+/** Function to get the start and End Dates based upon the period which we give
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  */
@@ -1901,8 +1776,7 @@ function start_end_dates($period) {
 	return $datevalues;
 }
 
-/**
- * Function to get the Graph and vtiger_table format for a particular date based upon the period
+/** Function to get the Graph and vtiger_table format for a particular date based upon the period
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  */
@@ -1925,10 +1799,8 @@ function Graph_n_table_format($period_type, $date_value) {
 	return $values;
 }
 
-/**
- * Function to get image count for a given product
- *
- * @param   $id -- product id :: Type integer
+/** Function to get image count for a given product
+ * @param $id -- product id :: Type integer
  * @returns count -- count:: Type integer
  */
 function getImageCount($id) {
@@ -1942,10 +1814,8 @@ function getImageCount($id) {
 	return count($image_lists);
 }
 
-/**
- * Function to get user image for a given user
- *
- * @param   $id -- user id :: Type integer
+/** Function to get user image for a given user
+ * @param $id -- user id :: Type integer
  * @returns $image_name -- image name:: Type string
  */
 function getUserImageName($id) {
@@ -1957,9 +1827,7 @@ function getUserImageName($id) {
 	return $image_name;
 }
 
-/**
- * Function to get all user images for displaying it in listview
- *
+/** Function to get all user images for displaying it in listview
  * @returns $image_name -- image name:: Type array
  */
 function getUserImageNames() {
@@ -1978,8 +1846,7 @@ function getUserImageNames() {
 	}
 }
 
-/**
- * Function to remove the script tag in the contents
+/**   Function to remove the script tag in the contents
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  */
@@ -1995,9 +1862,7 @@ function strip_selected_tags($text, $tags = array()) {
 	return $text;
 }
 
-/**
- * Function to check whether user has opted for internal mailer
- *
+/** Function to check whether user has opted for internal mailer
  * @returns $int_mailer -- int mailer:: Type boolean
  */
 function useInternalMailer() {
@@ -2048,7 +1913,7 @@ function utf8RawUrlDecode($source) {
 }
 
 /**
- * simple HTML to UTF-8 conversion:
+ *simple HTML to UTF-8 conversion:
  */
 function html_to_utf8($data) {
 	return preg_replace_callback("/\\&\\#(\d{3,10})\\;/", '_html_to_utf8', $data);
@@ -2123,9 +1988,9 @@ function generateQuestionMarks($items_list) {
  */
 function is_uitype($uitype, $reqtype) {
 	$ui_type_arr = array(
-	'_date_' => array(5, 6, 23, 70),
-	'_picklist_' => array(15, 16, 55, 63, 115, 357),
-	'_users_list_' => array(52, 53, 77, 98, 101,),
+		'_date_' => array(5, 6, 23, 70),
+		'_picklist_' => array(15, 16, 55, 63, 115, 357),
+		'_users_list_' => array(52, 53, 77, 98, 101,),
 	);
 
 	if ($ui_type_arr[$reqtype] != null) {
@@ -2137,8 +2002,7 @@ function is_uitype($uitype, $reqtype) {
 }
 /**
  * Function to escape quotes
- *
- * @param  $value - String in which single quotes have to be replaced.
+ * @param $value - String in which single quotes have to be replaced.
  * @return Input string with single quotes escaped.
  */
 function escape_single_quotes($value) {
@@ -2150,11 +2014,10 @@ function escape_single_quotes($value) {
 
 /**
  * Function to format the input value for SQL like clause.
- *
- * @param  $str  - Input string value to be formatted.
- * @param  $flag - By default set to 0 (Will look for cases %string%).
- *               If set to 1 - Will look for cases %string.
- *               If set to 2 - Will look for cases string%.
+ * @param $str - Input string value to be formatted.
+ * @param $flag - By default set to 0 (Will look for cases %string%).
+ *                If set to 1 - Will look for cases %string.
+ *                If set to 2 - Will look for cases string%.
  * @return String formatted as per the SQL like clause requirement
  */
 function formatForSqlLike($str, $flag = 0, $is_field = false) {
@@ -2242,11 +2105,9 @@ function setCurrentLanguage($active_module = null) {
 	}
 }
 
-/**
- * Function used to get all the picklists and their values for a module
- *
-	@param  string $module - Module name to which the list of picklists and their values needed
-	@return array $fieldlists - Array of picklists and their values
+/**	Function used to get all the picklists and their values for a module
+@param string $module - Module name to which the list of picklists and their values needed
+@return array $fieldlists - Array of picklists and their values
  **/
 function getAccessPickListValues($module) {
 	global $adb, $log, $current_user;
@@ -2320,11 +2181,9 @@ function getAccessPickListValues($module) {
 	return $fieldlists;
 }
 
-/**
- * Search for value in the picklist and return if it is present or not
- *
- * @param  string $value         - value to search in the picklist
- * @param  string $picklist_name - picklist name where we will search
+/** Search for value in the picklist and return if it is present or not
+ * @param string $value - value to search in the picklist
+ * @param string $picklist_name - picklist name where we will search
  * @return boolean
  **/
 function isValueInPicklist($value, $picklist_name) {
@@ -2332,9 +2191,7 @@ function isValueInPicklist($value, $picklist_name) {
 	return in_array($value, $picklistvalues);
 }
 
-/**
- * Function to convert a given time string to Minutes
- */
+/** Function to convert a given time string to Minutes */
 function ConvertToMinutes($time_string) {
 	if (empty($time_string)) {
 		return 0;
@@ -2351,9 +2208,7 @@ function ConvertToMinutes($time_string) {
 }
 
 //added to find duplicates
-/**
- * To get the converted record values which have to be display in duplicates merging tpl
- */
+/** To get the converted record values which have to be display in duplicates merging tpl*/
 function getRecordValues($id_array, $module) {
 	global $adb,$current_user, $app_strings;
 	$tabid=getTabid($module);
@@ -2405,7 +2260,7 @@ function getRecordValues($id_array, $module) {
 						$date = new DateTimeField($field_values[$j][$fld_name]);
 						$value_pair['disp_value'] = $date->getDisplayDate();
 						if (strpos($field_values[$j][$fld_name], ' ') > -1) {
-								  $value_pair['disp_value'] .= (' ' . $date->getDisplayTime());
+							$value_pair['disp_value'] .= (' ' . $date->getDisplayTime());
 						}
 					} elseif ($field_values[$j][$fld_name] == '0000-00-00') {
 						$value_pair['disp_value'] = '';
@@ -2435,9 +2290,7 @@ function getRecordValues($id_array, $module) {
 	return $parent_array;
 }
 
-/**
- * Get SQL to find duplicates in a particular module
- */
+/** Get SQL to find duplicates in a particular module */
 function getDuplicateQuery($module, $field_values, $ui_type_arr) {
 	$tbl_col_fld = explode(',', $field_values);
 	$i=0;
@@ -2455,9 +2308,7 @@ function getDuplicateQuery($module, $field_values, $ui_type_arr) {
 	return $nquery;
 }
 
-/**
- * Function to return the duplicate records data as a formatted array
- */
+/** Function to return the duplicate records data as a formatted array */
 function getDuplicateRecordsArr($module, $use_limit = true) {
 	global $adb,$app_strings,$theme,$default_charset;
 	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $module);
@@ -2619,9 +2470,7 @@ function getDuplicateRecordsArr($module, $use_limit = true) {
 	return $ret_arr;
 }
 
-/**
- * Function to Delete Exact Duplicates
- */
+/** Function to Delete Exact Duplicates */
 function deleteExactDuplicates($dup_records, $module) {
 	$dup_records_ids=array();
 	$delete_fail_status=false;
@@ -2648,9 +2497,7 @@ function deleteExactDuplicates($dup_records, $module) {
 	return $delete_fail_status;
 }
 
-/**
- * Function to get on clause criteria for sub tables like address tables to construct duplicate check query
- */
+/** Function to get on clause criteria for sub tables like address tables to construct duplicate check query */
 function get_special_on_clause($field_list) {
 	$field_array = explode(',', $field_list);
 	$ret_str = '';
@@ -2699,9 +2546,7 @@ function get_special_on_clause($field_list) {
 	return $ret_arr;
 }
 
-/**
- * Function to get on clause criteria for duplicate check queries
- */
+/** Function to get on clause criteria for duplicate check queries */
 function get_on_clause($field_list, $uitype_arr, $module) {
 	$field_array = explode(',', $field_list);
 	$ret_str = '';
@@ -2728,9 +2573,7 @@ function elimina_acentos($cadena) {
 	return utf8_encode(strtr(utf8_decode($cadena), $tofind, $replac));
 }
 
-/**
- * call back function to change the array values in to lower case
- */
+/** call back function to change the array values in to lower case */
 function setFormatForDuplicateCompare(&$string) {
 	global $default_charset;
 	$string = html_entity_decode($string, ENT_QUOTES, $default_charset);
@@ -2738,20 +2581,18 @@ function setFormatForDuplicateCompare(&$string) {
 	$string = strtolower($string);
 }
 
-/**
- * Function to get recordids for subquery where condition
- */
+/** Function to get recordids for subquery where condition */
 function get_subquery_recordids($sub_query) {
 	global $adb;
 	//need to update this module whenever duplicate check tool added for new modules
 	$module_id_array = array(
-	'Accounts' => 'accountid',
-	'Contacts' => 'contactid',
-	'Leads' => 'leadid',
-	'Products' => 'productid',
-	'HelpDesk' => 'ticketid',
-	'Potentials' => 'potentialid',
-	'Vendors' => 'vendorid',
+		'Accounts' => 'accountid',
+		'Contacts' => 'contactid',
+		'Leads' => 'leadid',
+		'Products' => 'productid',
+		'HelpDesk' => 'ticketid',
+		'Potentials' => 'potentialid',
+		'Vendors' => 'vendorid',
 	);
 	$id = ($module_id_array[$_REQUEST['modulename']] != '')?$module_id_array[$_REQUEST['modulename']]:$module_id_array[$_REQUEST['module']];
 	$sub_res = '';
@@ -2769,9 +2610,7 @@ function get_subquery_recordids($sub_query) {
 	return $sub_res;
 }
 
-/**
- * Function to get tablename, columnname, fieldname, fieldlabel and uitypes of fields of merge criteria for a particular module
- */
+/** Function to get tablename, columnname, fieldname, fieldlabel and uitypes of fields of merge criteria for a particular module*/
 function getFieldValues($module) {
 	global $adb,$current_user;
 
@@ -2823,9 +2662,7 @@ function getFieldValues($module) {
 	return $field_values_array;
 }
 
-/**
- * To get security parameter for a particular module
- */
+/** To get security parameter for a particular module */
 function getSecParameterforMerge($module) {
 	global $current_user;
 	$tab_id = getTabid($module);
@@ -2919,7 +2756,7 @@ function transferPriceBookCurrency($old_cur, $new_cur) {
 	}
 
 	if (count($pb_ids) > 0) {
-		include_once 'modules/PriceBooks/PriceBooks.php';
+		require_once 'modules/PriceBooks/PriceBooks.php';
 		foreach ($pb_ids as $pb_id) {
 			$focus = new PriceBooks();
 			$focus->id = $pb_id;
@@ -2936,10 +2773,9 @@ function transferPriceBookCurrency($old_cur, $new_cur) {
 //functions for asterisk integration start
 /**
  * this function returns the caller name based on the phone number that is passed to it
- *
  * @param $from - the number which is calling
- *              returns caller information in name(type) format :: for e.g. Mary Smith (Contact)
- *              if no information is present in database, it returns :: Unknown Caller (Unknown)
+ * returns caller information in name(type) format :: for e.g. Mary Smith (Contact)
+ * if no information is present in database, it returns :: Unknown Caller (Unknown)
  */
 function getCallerName($from) {
 	//information found
@@ -2965,7 +2801,7 @@ function getCallerName($from) {
  * this function searches for a given number and returns the callerInfo in an array format
  * currently the search is made across only leads, accounts and contacts modules
  *
- * @param  $number - the number whose information you want
+ * @param $number - the number whose information you want
  * @return array in format array(name=>callername, module=>module, id=>id);
  */
 function getCallerInfo($number) {
@@ -3026,9 +2862,8 @@ function getCallerInfo($number) {
 
 /**
  * this function returns the tablename and primarykeys for a given module in array format
- *
- * @param  object $adb    - peardatabase type object
- * @param  string $module - module name for which you want the array
+ * @param object $adb - peardatabase type object
+ * @param string $module - module name for which you want the array
  * @return array(tablename1=>primarykey1,.....)
  */
 function get_tab_name_index($adb, $module) {
@@ -3047,7 +2882,6 @@ function get_tab_name_index($adb, $module) {
 
 /**
  * this function returns the value of use_asterisk from the database for the current user
- *
  * @param string $id - the id of the current user
  */
 function get_use_asterisk($id) {
@@ -3073,10 +2907,10 @@ function get_use_asterisk($id) {
  * this function adds a record to the callhistory module
  *
  * @param string $userExtension - the extension of the current user
- * @param string $callfrom      - the caller number
- * @param string $callto        - the called number
- * @param string $status        - the status of the call (outgoing/incoming/missed)
- * @param object $adb           - the peardatabase object
+ * @param string $callfrom - the caller number
+ * @param string $callto - the called number
+ * @param string $status - the status of the call (outgoing/incoming/missed)
+ * @param object $adb - the peardatabase object
  */
 function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $useCallerInfo, $pbxuuid) {
 	$result = $adb->pquery('select userid from vtiger_asteriskextensions where asterisk_extension=?', array($userExtension));
@@ -3222,14 +3056,14 @@ function getModuleSequenceField($module) {
 				array('4', getTabid($module))
 			);
 			if ($adb->num_rows($seqColRes) > 0) {
-				   $fieldname = $adb->query_result($seqColRes, 0, 'fieldname');
-				   $columnname = $adb->query_result($seqColRes, 0, 'columnname');
-				   $fieldlabel = $adb->query_result($seqColRes, 0, 'fieldlabel');
+				$fieldname = $adb->query_result($seqColRes, 0, 'fieldname');
+				$columnname = $adb->query_result($seqColRes, 0, 'columnname');
+				$fieldlabel = $adb->query_result($seqColRes, 0, 'fieldlabel');
 
-				   $field = array();
-				   $field['name'] = $fieldname;
-				   $field['column'] = $columnname;
-				   $field['label'] = $fieldlabel;
+				$field = array();
+				$field['name'] = $fieldname;
+				$field['column'] = $columnname;
+				$field['label'] = $fieldlabel;
 			}
 		} else {
 			foreach ($cachedModuleFields as $fieldinfo) {
@@ -3263,8 +3097,8 @@ function getFieldsResultForMerge($tabid) {
 
 	// List of Fields not allowed for Duplicates Merging based on the module (tabid) [tabid to fields mapping]
 	$nonmergable_field_tab = array(
-	4 => array('portal','imagename'),
-	13 => array('update_log','filename','comments'),
+		4 => array('portal','imagename'),
+		13 => array('update_log','filename','comments'),
 	);
 
 	$nonmergable_displaytypes = array(4);
@@ -3327,8 +3161,8 @@ function getRelationTables($module, $secmodule) {
 				$reltables = array($ui10_tablename=>array(''.$primary_obj->table_index.'',"$ui10_columnname"));
 			} elseif ($secondary_obj->table_name == $ui10_tablename) {
 				$reltables = array(
-				$ui10_tablename => array($ui10_columnname, $secondary_obj->table_index),
-				$primary_obj->table_name => $primary_obj->table_index
+					$ui10_tablename => array($ui10_columnname, $secondary_obj->table_index),
+					$primary_obj->table_name => $primary_obj->table_index
 				);
 			} else {
 				if (isset($secondary_obj->tab_name_index[$ui10_tablename])) {
@@ -3348,8 +3182,8 @@ function getRelationTables($module, $secmodule) {
 		$rel_array = $reltables;
 	} else {
 		$rel_array = array(
-		'vtiger_crmentityrel' => array('crmid','relcrmid'),
-		$primary_obj->table_name => $primary_obj->table_index
+			'vtiger_crmentityrel' => array('crmid','relcrmid'),
+			$primary_obj->table_name => $primary_obj->table_index
 		);
 	}
 	return $rel_array;
@@ -3403,9 +3237,8 @@ function relateEntities($focus, $sourceModule, $sourceRecordId, $destinationModu
 
 /**
  * this function checks if a given column exists in a given table or not
- *
- * @param  string $columnName - the columnname
- * @param  string $tableName  - the tablename
+ * @param string $columnName - the columnname
+ * @param string $tableName - the tablename
  * @return boolean $status - true if column exists; false otherwise
  */
 function columnExists($columnName, $tableName) {
@@ -3416,8 +3249,7 @@ function columnExists($columnName, $tableName) {
 
 /**
  * this function accepts a potential id returns the module name and entity value for the related field
- *
- * @param  integer $id - the potential id
+ * @param integer $id - the potential id
  * @return array $data - the related module name and field value
  */
 function getRelatedInfo($id) {
@@ -3437,8 +3269,7 @@ function getRelatedInfo($id) {
 
 /**
  * this function accepts an ID and returns the entity value for that id
- *
- * @param  integer $id - the crmid of the record
+ * @param integer $id - the crmid of the record
  * @return string $data - the entity name for the id
  */
 function getRecordInfoFromID($id) {
@@ -3460,8 +3291,7 @@ function getRecordInfoFromID($id) {
 
 /**
  * this function accepts a tabiD and returns the tablename, fieldname and fieldlabel of the first email field it finds
- *
- * @param  integer $tabid - the tabid of the module
+ * @param integer $tabid - the tabid of the module
  * @return array $fields - array of the email field's tablename, fieldname and fieldlabel or empty if not found
  */
 function getMailFields($tabid) {
@@ -3479,7 +3309,6 @@ function getMailFields($tabid) {
 
 /**
  * Function to check if a given record exists (not deleted)
- *
  * @param integer $recordId - record id
  */
 function isRecordExists($recordId) {
@@ -3510,10 +3339,8 @@ function isRecordExists($recordId) {
 	return false;
 }
 
-/**
- * Function to set date values compatible to database (YY_MM_DD)
- *
- * @param   $value -- value :: Type string
+/** Function to set date values compatible to database (YY_MM_DD)
+ * @param $value -- value :: Type string
  * @returns $insert_date -- insert_date :: Type string
  */
 function getValidDBInsertDateValue($value) {
@@ -3583,9 +3410,7 @@ function getValidDBInsertDateTimeValue($value) {
 	return '';
 }
 
-/**
- * Function to set the PHP memory limit to the specified value, if the memory limit set in the php.ini is less than the specified value
- *
+/** Function to set the PHP memory limit to the specified value, if the memory limit set in the php.ini is less than the specified value
  * @param $newvalue -- Required Memory Limit
  */
 function _phpset_memorylimit_MB($newvalue) {
@@ -3598,10 +3423,8 @@ function _phpset_memorylimit_MB($newvalue) {
 	}
 }
 
-/**
- * Function to sanitize the upload file name when the file name is detected to have bad extensions
- *
- * @param  String -- $fileName - File name to be sanitized
+/** Function to sanitize the upload file name when the file name is detected to have bad extensions
+ * @param String -- $fileName - File name to be sanitized
  * @return String - Sanitized file name
  */
 function sanitizeUploadFileName($fileName, $badFileExtensions) {
@@ -3629,10 +3452,8 @@ function sanitizeUploadFileName($fileName, $badFileExtensions) {
 	return $newFileName;
 }
 
-/**
- * Function to get the tab meta information for a given id
- *
- * @param   $tabId -- tab id :: Type integer
+/** Function to get the tab meta information for a given id
+ * @param $tabId -- tab id :: Type integer
  * @returns $tabInfo -- array of preference name to preference value :: Type array
  */
 function getTabInfo($tabId) {
@@ -3646,10 +3467,8 @@ function getTabInfo($tabId) {
 	}
 }
 
-/**
- * Function to return block name
- *
- * @param  Integer -- $blockid
+/** Function to return block name
+ * @param Integer -- $blockid
  * @return String - Block Name
  */
 function getBlockName($blockid) {
@@ -3752,8 +3571,7 @@ function getInventoryModules() {
 
 /**
  * Function to get the list of Contacts related to an activity
- *
- * @param  Integer $activityId
+ * @param Integer $activityId
  * @return Array $contactsList - List of Contact ids, mapped to Contact Names
  */
 function getActivityRelatedContacts($activityId) {
@@ -3891,9 +3709,7 @@ function getCampaignLeadIds($id) {
 	return $adb->pquery($sql, array($id));
 }
 
-/**
- * Function to get the difference between 2 datetime strings or millisecond values
- */
+/** Function to get the difference between 2 datetime strings or millisecond values */
 function dateDiff($d1, $d2) {
 	$d1 = (is_string($d1) ? strtotime($d1) : $d1);
 	$d2 = (is_string($d2) ? strtotime($d2) : $d2);
@@ -3902,17 +3718,17 @@ function dateDiff($d1, $d2) {
 	$baseYear = min(date('Y', $d1), date('Y', $d2));
 	$diff = mktime(0, 0, $diffSecs, 1, 1, $baseYear);
 	return array(
-	'years' => date('Y', $diff) - $baseYear,
-	'months_total' => (date('Y', $diff) - $baseYear) * 12 + date('n', $diff) - 1,
-	'months' => date('n', $diff) - 1,
-	'days_total' => floor($diffSecs / (3600 * 24)),
-	'days' => date('j', $diff) - 1,
-	'hours_total' => floor($diffSecs / 3600),
-	'hours' => date('G', $diff),
-	'minutes_total' => floor($diffSecs / 60),
-	'minutes' => (int) date('i', $diff),
-	'seconds_total' => $diffSecs,
-	'seconds' => (int) date('s', $diff)
+		'years' => date('Y', $diff) - $baseYear,
+		'months_total' => (date('Y', $diff) - $baseYear) * 12 + date('n', $diff) - 1,
+		'months' => date('n', $diff) - 1,
+		'days_total' => floor($diffSecs / (3600 * 24)),
+		'days' => date('j', $diff) - 1,
+		'hours_total' => floor($diffSecs / 3600),
+		'hours' => date('G', $diff),
+		'minutes_total' => floor($diffSecs / 60),
+		'minutes' => (int) date('i', $diff),
+		'seconds_total' => $diffSecs,
+		'seconds' => (int) date('s', $diff)
 	);
 }
 

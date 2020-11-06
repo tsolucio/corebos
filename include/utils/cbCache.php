@@ -1,11 +1,6 @@
 <?php
-require_once 'include/database/PearDatabase.php';
-require "vendor/autoload.php";
-use Laminas\Cache\Psr\SimpleCache\SimpleCacheDecorator;
-use Laminas\Cache\StorageFactory;
-
 /*************************************************************************************************
- * Copyright 2017 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Copyright 2020 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
  * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
  * file except in compliance with the License. You can redistribute it and/or modify it
  * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
@@ -20,6 +15,11 @@ use Laminas\Cache\StorageFactory;
  * ************************************************************************************************
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
+
+require_once 'include/database/PearDatabase.php';
+require "vendor/autoload.php";
+use Laminas\Cache\Psr\SimpleCache\SimpleCacheDecorator;
+use Laminas\Cache\StorageFactory;
 
 class cbCache extends SimpleCacheDecorator {
 

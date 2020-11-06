@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2019 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS customizations.
+ * Copyright 2020 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS customizations.
  * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
  * Vizsage Public License (the "License"). You may not use this file except in compliance with the
  * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and limitations under the
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  * ************************************************************************************************
- *  Module    : Whatsapp Integration Settings
+ *  Module    : PSR-16 cache integration
  *  Version   : 1.0
  *  Author    : JPL TSolucio, S. L.
  *************************************************************************************************/

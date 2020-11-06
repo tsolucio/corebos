@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2017 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS customizations.
+ * Copyright 2020 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS customizations.
  * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
  * Vizsage Public License (the "License"). You may not use this file except in compliance with the
  * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
@@ -12,15 +12,12 @@
  * See the License for the specific language governing permissions and limitations under the
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  * ************************************************************************************************
- *  Module    : Whatsapp Integration
+ *  Module    : PSR-16 cache integration
  *  Version   : 1.0
  *  Author    : JPL TSolucio, S. L.
  *************************************************************************************************/
 require_once 'vtlib/Vtiger/Module.php';
 require "vendor/autoload.php";
-
-// Use the REST API Client to make requests to the Twilio REST API
-use Twilio\Rest\Client;
 
 class corebos_cache {
 
@@ -90,8 +87,23 @@ class corebos_cache {
 
 	private function setCacheClient($adapterOptions = [], $plugins = null) {
 		if (!self::$cacheClient) {
-			self::$cacheClient = new cbCache($this->adapter, $adapterOptions, $plugins);
+			try {
+				self::$cacheClient = new cbCache($this->adapter, $adapterOptions, $plugins);
+			} catch (Exception $exception) {
+				self::$cacheClient = null;
+			}
 		}
+	}
+
+	private function isConnected() {
+		if (!self::getCacheClient()) {
+			return false;
+		}
+		return true;
+	}
+
+	public function isUsable() {
+		return $this->isActive() && $this->isConnected();
 	}
 }
 ?>
