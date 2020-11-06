@@ -374,11 +374,24 @@
 	</div>
 </div>
 <div class="slds-col slds-size_1-of-2">
+	<button class="slds-button slds-button_text-destructive slds-float_right" type="button" id='exportresult_button' onclick="export_results();event.stopPropagation();">
+		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#download"></use>
+		</svg>
+		<span id="export_text">{'Export Results'|@getTranslatedString:'cbQuestion'}</span>
+	</button>
 	<button class="slds-button slds-button_neutral slds-float_right" type="button" id='launchsearch_button' onclick="getQuestionResults(); event.stopPropagation();">
 		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
 		</svg>
 		{$APP.LBL_SEARCH}
+	</button>
+	<button class="slds-button slds-button_neutral slds-float_right" aria-live="assertive" type="button" onclick="addRowToContextTable(); event.stopPropagation();">
+		<span class="slds-text-not-selected">
+			<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
+			</svg>{'Add variable'|@getTranslatedString:'cbQuestion'}
+		</span>
 	</button>
 </div>
 </div>
@@ -419,6 +432,9 @@
 				</svg>
 				</span>
 			</span>
+		</div>
+		<div class="slds-p-top_xx-small slds-form-element slds-form-element_horizontal">
+			{include file='Smarty/templates/modules/cbQuestion/ContextVariables.tpl'}
 		</div>
 		</span>
 		<div id="cqanswer" class="slds-m-around_xx-small slds-p-around_xx-small slds-badge_lightest slds-scrollable"></div>

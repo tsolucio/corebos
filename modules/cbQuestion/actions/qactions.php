@@ -373,7 +373,25 @@ class qactions_Action extends CoreBOS_ActionController {
 		echo cbQuestion::getFormattedAnswer(0, $params);
 	}
 
-	public function getBuilderData() {
+	public function exportBuilderData() {
+		global $log;
+		$log->debug('> exportBuilderData');
+		$bqname = vtlib_purify($_REQUEST['bqname']);
+		$data = $this->getBuilderData(true)['data']['contents'];
+		$date = date_create(date('Y-m-d h:i:s'));
+		$filename = $bqname.'_'.date_format($date, date('Ymdhis'));
+		$path = 'cache/'.$filename.'.csv';
+		$file = fopen($path,"w");
+		fputcsv($file, array_keys($data[0]));
+		foreach ($data as $key => $value) {
+			fputcsv($file, $value);
+		}
+		fclose($file);
+		$log->debug('< exportBuilderData');
+		echo json_encode($filename);
+	}
+
+	public function getBuilderData($ret = false) {
 		global $log, $adb, $current_user;
 		$log->debug('> getBuilderData');
 
@@ -422,7 +440,10 @@ class qactions_Action extends CoreBOS_ActionController {
 			$page = 1;
 		}
 		$from = ($page-1)*$rowsperpage;
-		$limit = " limit $from,$rowsperpage";
+		$limit = '';
+		if (!$ret) {
+			$limit = " limit $from,$rowsperpage";
+		}
 		$result = $adb->query(trim($list_query, ';').$limit);
 		$count_result = $adb->query('SELECT FOUND_ROWS();');
 		$noofrows = $adb->query_result($count_result, 0, 0);
@@ -473,6 +494,9 @@ class qactions_Action extends CoreBOS_ActionController {
 			);
 		}
 		$log->debug('< getBuilderData');
+		if ($ret) {
+			return $entries_list;
+		}
 		echo json_encode($entries_list);
 	}
 }

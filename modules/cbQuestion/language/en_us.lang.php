@@ -107,5 +107,12 @@ $mod_strings = array(
 	'Update View when Related Changes' => 'Update View when Related Changes',
 	'UpdateMViewRelatedInfo' => 'Update Materialized View Related Info',
 	'Update Materialized Views Related Information.' => 'Updates all Materialized Views Related Information.',
+	'Add variable' => 'Add variable',
+	'Export Results' => 'Export Results',
+	'Must match' => 'Must match',
+	'all conditions' => 'all conditions',
+	'any condition' => 'any condition',
+	'Operator' => 'Operator',
+	'Value' => 'Value',
 );
 ?>

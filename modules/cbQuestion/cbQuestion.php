@@ -177,6 +177,12 @@ class cbQuestion extends CRMEntity {
 	public static function getSQL($qid, $params = array()) {
 		global $current_user, $adb, $log;
 		$q = new cbQuestion();
+		$c = $params['cbQuestionRecord']['context_variable'];
+		if (count($c['context']) > 0) {
+			$context = $c['context'];
+			$condition = $c['condition'];
+			$operator = $c['operator'];
+		}
 		if (empty($qid) && !empty($params['cbQuestionRecord']) && is_array($params['cbQuestionRecord'])) {
 			$q->column_fields = $params['cbQuestionRecord'];
 			unset($params['cbQuestionRecord']);
@@ -239,12 +245,33 @@ class cbQuestion extends CRMEntity {
 				return getTranslatedString('SQLError', 'cbQuestion').': <b>Incorrect module name.</b>';
 			}
 			$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.decode_html($q->column_fields['qmodule']);
+			$context_data = array();
+			if (isset($context)) {
+				foreach ($context as $con => $v) {
+					$context_data[] = array(
+						'fieldname' => $v['variable'],
+						'operation' => $v['operator'],
+						'value' => $v['value'],
+						'valuetype' => 'rawtext',
+						'joincondition' => $condition,
+						'groupid' => 0,
+						'groupjoin' => ''
+					);
+				}
+			}
 			if (!empty($q->column_fields['qcondition'])) {
 				$conds = decode_html($q->column_fields['qcondition']);
 				foreach ($params as $param => $value) {
 					$conds = str_replace($param, $value, $conds);
 				}
-				$query .= ' WHERE '.$conds;
+				if (count($context_data) > 0) {
+					$merge_conds = array_merge(json_decode($conds, true), $context_data);
+					$query .= ' WHERE '.json_encode($merge_conds);
+				} else {
+					$query .= ' WHERE '.$conds;
+				}
+			} else {
+				$query .= ' WHERE '.json_encode($context_data);
 			}
 			if (!empty($q->column_fields['groupby'])) {
 				$query .= ' GROUP BY '.$q->column_fields['groupby'];
@@ -273,6 +300,12 @@ class cbQuestion extends CRMEntity {
 	public static function getAnswer($qid, $params = array()) {
 		global $current_user, $default_charset, $adb, $log;
 		$q = new cbQuestion();
+		$c = $params['cbQuestionRecord']['context_variable'];
+		if (count($c['context']) > 0) {
+			$context = $c['context'];
+			$condition = $c['condition'];
+			$operator = $c['operator'];
+		}
 		if (empty($qid) && !empty($params['cbQuestionRecord']) && is_array($params['cbQuestionRecord'])) {
 			$q->column_fields = $params['cbQuestionRecord'];
 			unset($params['cbQuestionRecord']);
@@ -392,12 +425,33 @@ class cbQuestion extends CRMEntity {
 			include_once 'include/Webservices/Query.php';
 			if ($q->column_fields['sqlquery']=='0') {
 				$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.decode_html($q->column_fields['qmodule']);
+				$context_data = array();
+				if (isset($context)) {
+					foreach ($context as $con => $v) {
+						$context_data[] = array(
+							'fieldname' => $v['variable'],
+							'operation' => $v['operator'],
+							'value' => $v['value'],
+							'valuetype' => 'rawtext',
+							'joincondition' => $condition,
+							'groupid' => 0,
+							'groupjoin' => ''
+						);
+					}
+				}
 				if (!empty($q->column_fields['qcondition'])) {
 					$conds = decode_html($q->column_fields['qcondition']);
 					foreach ((array)$params as $param => $value) {
 						$conds = str_replace($param, $value, $conds);
 					}
-					$query .= ' WHERE '.$conds;
+					if (count($context_data) > 0) {
+						$merge_conds = array_merge(json_decode($conds, true), $context_data);
+						$query .= ' WHERE '.json_encode($merge_conds);
+					} else {
+						$query .= ' WHERE '.$conds;
+					}
+				} else {
+					$query .= ' WHERE '.json_encode($context_data);
 				}
 				if (!empty($q->column_fields['groupby'])) {
 					$query .= ' GROUP BY '.$q->column_fields['groupby'];
