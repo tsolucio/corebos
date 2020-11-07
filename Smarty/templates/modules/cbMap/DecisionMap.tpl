@@ -20,6 +20,7 @@
 <script src="modules/com_vtiger_workflow/resources/functional.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/com_vtiger_workflow/resources/vtigerwebservices.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/com_vtiger_workflow/resources/fieldexpressionpopup.js" type="text/javascript" charset="utf-8"></script>
+<script src="modules/com_vtiger_workflow/resources/functionselect.js" type="text/javascript" charset="utf-8"></script>
 <input type="hidden" name="MapID" value="{$MapID}" id="MapID">
 <input type="hidden" name="MapName" id="MapName" value="{$NameOFMap}">
 <table class="slds-table slds-no-row-hover slds-table-moz map-generator-table">

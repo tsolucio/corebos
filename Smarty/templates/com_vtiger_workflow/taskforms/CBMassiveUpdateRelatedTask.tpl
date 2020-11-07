@@ -41,8 +41,8 @@
 {/literal}
 </script>
 <script src="modules/{$module->name}/resources/fieldexpressionpopup.js" type="text/javascript" charset="utf-8"></script>
+<script src="modules/{$module->name}/resources/functionselect.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/updatemassivefieldstaskscript.js" type="text/javascript" charset="utf-8"></script>
-
 
 <div class="slds-grid slds-p-horizontal_x-large slds-grid_vertical-align-center slds-border_top slds-border_bottom">
 	<div class="slds-col slds-size_1-of-2 slds-p-around_x-small">

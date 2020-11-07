@@ -15,12 +15,14 @@ function openFunctionSelection(fillin) {
 		document.getElementById(wfexpselectionDIV).innerHTML = response;
 		show(wfexpselectionDIV);
 	});
+	return false;
 }
 
 function setSelectedFunction(fillinID) {
 	var fi = document.getElementById(fillinID);
 	fi.value += document.getElementById('selectedfunction').value;
 	hide(wfexpselectionDIV);
+	return false;
 }
 
 function dblClickFunctionSelect(selected) {

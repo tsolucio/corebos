@@ -25,6 +25,7 @@
 	{/if}
 </script>
 <script src="modules/{$module->name}/resources/fieldexpressionpopup.js" type="text/javascript" charset="utf-8"></script>
+<script src="modules/{$module->name}/resources/functionselect.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/updatefieldstaskscript.js" type="text/javascript" charset="utf-8"></script>
 
 <table class="tableHeading" width="100%" border="0" cellspacing="0" cellpadding="5">
