@@ -153,7 +153,7 @@ class VTExpressionsManager {
 			'round' => 'round(numericfield,decimals)',
 			'ceil' => 'ceil(numericfield)',
 			'floor' => 'floor(numericfield)',
-			'modulo' => 'modulo(numericfield)',
+			'modulo' => 'modulo(numericfield,numericfield)',
 			'hash' => 'hash(field, method)',
 			'globalvariable' => 'globalvariable(gvname)',
 			'aggregation'=>'aggregation(operation,RelatedModule,relatedFieldToAggregate,conditions)',

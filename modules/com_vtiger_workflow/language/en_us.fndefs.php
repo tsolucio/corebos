@@ -237,25 +237,25 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'aggregate_time' => array(
 	'name' => 'aggregate_time(relatedModuleName, relatedModuleField, conditions)',
-	'desc' => 'This function returns aggrigate time of reltedmodule,field and conditions',
+	'desc' => 'This function returns aggregate time of a related module, field and conditions',
 	'params' => array(
 		array(
 			'name' => 'relatedModuleName',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'related module for aggregate',
+			'desc' => 'related module to aggregate',
 		),
 		array(
 			'name' => 'relatedModuleField',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'related  fieldname for aggregate',
+			'desc' => 'related  field name to aggregate',
 		),
 		array(
 			'name' => 'conditions',
 			'type' => 'String',
 			'optional' => true,
-			'desc' => 'condition for aggrigate ',
+			'desc' => 'condition for aggregation ',
 		),
 	),
 	'categories' => array('Aggregations'),
@@ -265,7 +265,7 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'add_days' => array(
 	'name' => 'add_days(datefield, noofdays)',
-	'desc' => 'Compute a new date based on a given date with specified number of days added',
+	'desc' => 'Compute a new date based on a given date with a specified number of days added',
 	'params' => array(
 		array(
 			'name' => 'datefield',
@@ -288,7 +288,7 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'add_workdays' => array(
 	'name' => 'add_workdays(date, numofdays, addsaturday, holidays)',
-	'desc' => 'Compute a working days  date based on a given date with specified number of days,saturdays and holidays added',
+	'desc' => 'Compute a working days date based on a given date with a specified number of days, Saturdays and holidays added',
 	'params' => array(
 		array(
 			'name' => 'date',
@@ -306,7 +306,7 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'addsaturday',
 			'type' => 'Integer',
 			'optional' => false,
-			'desc' => 'if set to 0 saturdays will not be added, if set to any other value, they will be added',
+			'desc' => 'if set to 0, Saturdays will not be added, if set to any other value, they will be added',
 		),
 		array(
 			'name' => 'holidays',
@@ -323,7 +323,7 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'sub_days' => array(
 	'name' => 'sub_days(datefield, noofdays)',
-	'desc' => 'Compute a new date based on a given date with specified number of days deducted',
+	'desc' => 'Compute a new date based on a given date with a specified number of days deducted',
 	'params' => array(
 		array(
 			'name' => 'datefield',
@@ -346,7 +346,7 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'sub_workdays' => array(
 	'name' => 'sub_workdays(date, numofdays, removesaturday, holidays)',
-	'desc' => 'Compute a new working days date based on a given date with specified number of days,saturday and holiday deducted',
+	'desc' => 'Compute a new working days date based on a given date with a specified number of days, Saturday and holiday deducted',
 	'params' => array(
 		array(
 			'name' => 'date',
@@ -364,7 +364,7 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'removesaturday',
 			'type' => 'Integer',
 			'optional' => false,
-			'desc' => 'if set to 0 saturdays will not be added, if set to any other value, they will be added',
+			'desc' => 'if set to 0, Saturdays will not be added, if set to any other value, they will be added',
 		),
 		array(
 			'name' => 'holidays',
@@ -381,7 +381,7 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'add_months' => array(
 	'name' => 'add_months(datefield, noofmonths)',
-	'desc' => 'Compute a new date based on a given date with specified number of month added',
+	'desc' => 'Compute a new date based on a given date with a specified number of months added',
 	'params' => array(
 		array(
 			'name' => 'datefield',
@@ -404,7 +404,7 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'sub_months' => array(
 	'name' => 'sub_months(datefield, noofmonths)',
-	'desc' => 'Compute a new date based on a given date with specified number of months deducted',
+	'desc' => 'Compute a new date based on a given date with a specified number of months deducted',
 	'params' => array(
 		array(
 			'name' => 'datefield',
@@ -427,7 +427,7 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'add_time' => array(
 	'name' => 'add_time(timefield, minutes)',
-	'desc' => 'Compute a new time based on a given time,with respect to specified minutes added',
+	'desc' => 'Compute a new time based on a given time, with the specified minutes added',
 	'params' => array(
 		array(
 			'name' => 'timefield',
@@ -450,7 +450,7 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'sub_time' => array(
 	'name' => 'sub_time(timefield, minutes)',
-	'desc' => 'Compute a new time based on a given time; with respect to specified minutes deducted',
+	'desc' => 'Compute a new time based on a given time, with the specified minutes deducted',
 	'params' => array(
 		array(
 			'name' => 'timefield',
@@ -473,70 +473,77 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'today' => array(
 	'name' => "get_date('today')",
-	'desc' => 'This function allows you to update the task on the current day/time when a given condition is met',
+	'desc' => 'This function returns the current date as a date value',
 	'params' => array(
 		array(
 			'name' => 'today',
 			'type' => 'String',
 			'optional' => true,
-			'desc' => 'Returns the current date as a date value',
-		),
-		array(
-			'name' => 'now',
-			'type' => 'String',
-			'optional' => true,
-			'desc' => 'Returns the current date and time as a date value',
+			'desc' => 'the string today',
 		),
 	),
 	'categories' => array('Date and Time'),
 	'examples' => array(
 		"get_date('today')'",
+	),
+),
+'today' => array(
+	'name' => "get_date('now')",
+	'desc' => 'This function returns the current date-time as a date value',
+	'params' => array(
+		array(
+			'name' => 'now',
+			'type' => 'String',
+			'optional' => true,
+			'desc' => 'the string now',
+		),
+	),
+	'categories' => array('Date and Time'),
+	'examples' => array(
 		"get_date('now')",
 	),
 ),
 'tomorrow' => array(
 	'name' => "get_date('tomorrow')",
-	'desc' => 'This function allows you to update the task the day after today,tomorrow if the given conditions are met',
+	'desc' => 'This function returns tomorrow date as a date value',
 	'params' => array(
 		array(
 			'name' => 'tomorrow',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'A word tomorrow',
+			'desc' => 'the word tomorrow',
 		),
 	),
 	'categories' => array('Date and Time'),
 	'examples' => array(
-		"get_date('tomorrow')",
 		"get_date('tomorrow')",
 	),
 ),
 'yesterday' => array(
 	'name' => "get_date('yesterday')",
-	'desc' => 'This function allows you to update the task with the past date,yesterday if the given conditions are met.',
+	'desc' => 'This function returns yesterday date as a date value.',
 	'params' => array(
 		array(
 			'name' => 'yesterday',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'A word yesterday',
+			'desc' => 'the word yesterday',
 		),
 	),
 	'categories' => array('Date and Time'),
 	'examples' => array(
 		"get_date('yesterday')",
-		"get_date('yesterday')",
 	),
 ),
 'time' => array(
 	'name' => "get_date('time')",
-	'desc' => 'This function allows you to update the task with the time,time if the given conditions are met.',
+	'desc' => 'This function returns the current time.',
 	'params' => array(
 		array(
 			'name' => 'time',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'A word time',
+			'desc' => 'the word time',
 		),
 	),
 	'categories' => array('Date and Time'),
@@ -546,19 +553,19 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'format_date' => array(
 	'name' => 'format_date(date,format)',
-	'desc' => 'This function allows you to update the date formats.',
+	'desc' => 'This function applies a specific format to a date.',
 	'params' => array(
 		array(
 			'name' => 'date',
 			'type' => 'Date',
 			'optional' => false,
-			'desc' => 'A date you need to format',
+			'desc' => 'the date you need to format',
 		),
 		array(
 			'name' => 'format',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'A format you need for date format',
+			'desc' => 'PHP date format specification',
 		),
 	),
 	'categories' => array('Date and Time'),
@@ -569,13 +576,13 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'next_date' => array(
 	'name' => 'get_nextdate(startDate,days,holidays,include_weekend)',
-	'desc' => 'Compute a next date based on a given date with specified  days,saturday and holiday deducted',
+	'desc' => 'Compute a next date based on a given date with specified days, Saturday and holiday excluded',
 	'params' => array(
 		array(
 			'name' => 'startDate',
 			'type' => 'Date',
 			'optional' => false,
-			'desc' => 'any valid date or date type fieldname',
+			'desc' => 'any valid date or date type field name',
 		),
 		array(
 			'name' => 'days',
@@ -593,7 +600,7 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'include_weekend',
 			'type' => 'Integer',
 			'optional' => false,
-			'desc' => 'if set to 0 weekend will not be added, if set to any other value, they will be included',
+			'desc' => 'if set to 0, weekend will not be added, if set to any other value, they will be included',
 		),
 	),
 	'categories' => array('Date and Time'),
@@ -604,7 +611,7 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'next_date_laborable' => array(
 	'name' => 'get_nextdatelaborable(startDate,days,holidays,saturday_laborable)',
-	'desc' => 'Compute a next date based on a given date with specified  days, Saturday and holiday deducted',
+	'desc' => 'Compute a next date based on a given date with specified days, Saturday and holiday excluded',
 	'params' => array(
 		array(
 			'name' => 'startDate',
@@ -628,7 +635,7 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'saturday_laborable',
 			'type' => 'Integer',
 			'optional' => false,
-			'desc' => 'if set to 0 weekend will not be added, if set to any other value, they will be included',
+			'desc' => 'if set to 0, weekend will not be added, if set to any other value, they will be included',
 		),
 	),
 	'categories' => array('Date and Time'),
@@ -639,7 +646,7 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'stringposition' => array(
 	'name' => 'stringposition(haystack,needle)',
-	'desc' => 'This function allows you to Find the position of the first occurrence of a substring in a string.',
+	'desc' => 'This function allows you to find the position of the first occurrence of a substring in a string.',
 	'params' => array(
 		array(
 			'name' => 'haystack',
@@ -667,7 +674,7 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'string',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'Specifies the string to check',
+			'desc' => 'Specifies the string to measure',
 		),
 	),
 	'categories' => array('Strings'),
@@ -677,25 +684,25 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'stringreplace' => array(
 	'name' => 'stringreplace(search,replace,subject)',
-	'desc' => 'This function returns a string or an array with all occurrences of search in subject replaced with the given replace value.',
+	'desc' => 'This function returns a string with all occurrences of search in subject replaced with the given replace value.',
 	'params' => array(
 		array(
 			'name' => 'search',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'The value being searched for',
+			'desc' => 'the value being searched for',
 		),
 		array(
 			'name' => 'replace',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'The replacement value that replaces found search values',
+			'desc' => 'the replacement value',
 		),
 		array(
 			'name' => 'subject',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'The string  being searched and replaced on',
+			'desc' => 'the string being searched and replaced on',
 		),
 	),
 	'categories' => array('Strings'),
@@ -705,29 +712,29 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'power(base,exponential)' => array(
 	'name' => 'power(base,exponential)',
-	'desc' => 'This function is used to calculate the power of any digit such as calculating squares and cube on integer fields.',
+	'desc' => 'This function is used to calculate the power of any number such as calculating squares and cube on integer fields.',
 	'params' => array(
 		array(
 			'name' => 'base',
 			'type' => 'Integer',
 			'optional' => false,
-			'desc' => 'The base to exponent',
+			'desc' => 'the base to exponent',
 		),
 		array(
 			'name' => 'exponential',
 			'type' => 'Integer',
 			'optional' => false,
-			'desc' => 'The number of the exponent to base',
+			'desc' => 'the number of exponent to base',
 		),
 	),
 	'categories' => array('Matrix'),
 	'examples' => array(
-		power(2, 3),
+		'power(2, 3)',
 	),
 ),
 'substring' => array(
 	'name' => 'substring(stringfield,start,length)',
-	'desc' => 'This function returns the portion of Stringfield specified by the start and length parameters.',
+	'desc' => 'This function returns the portion of stringfield specified by the start and length parameters.',
 	'params' => array(
 		array(
 			'name' => 'stringfield',
@@ -739,13 +746,13 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'start',
 			'type' => 'Integer',
 			'optional' => false,
-			'desc' => 'Specifies where to start in the string,0 Start at the first character in string,A positive number Start at a specified position in the string,A negative number Start at a specified position from the end of the string',
+			'desc' => 'Specifies where to start in the string, 0 is the first character in the string. A negative number counts backward from the end of the string',
 		),
 		array(
 			'name' => 'length',
 			'type' => 'Integer',
 			'optional' => true,
-			'desc' => 'Specifies the length of the returned string,If the length parameter is 0, NULL, or FALSE - it return an empty string',
+			'desc' => 'Specifies the length of the returned string. If the length parameter is 0, NULL, or FALSE it return an empty string',
 		),
 	),
 	'categories' => array('Text'),
@@ -755,13 +762,13 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'uppercase' => array(
 	'name' => 'uppercase(stringfield)',
-	'desc' => 'This function converts a specified string to uppercase.',
+	'desc' => 'This function converts a specified string to upper case.',
 	'params' => array(
 		array(
 			'name' => 'string',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'The string to convert to uppercase',
+			'desc' => 'The string to convert to upper case',
 		),
 	),
 	'categories' => array('Text'),
@@ -771,13 +778,13 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'lowercase' => array(
 	'name' => 'lowercase(stringfield)',
-	'desc' => 'This function converts a specified string to lowercase.',
+	'desc' => 'This function converts a specified string to lower case.',
 	'params' => array(
 		array(
 			'name' => 'string',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'The string to convert to lowercase',
+			'desc' => 'The string to convert to lower case',
 		),
 	),
 	'categories' => array('Text'),
@@ -787,13 +794,13 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'uppercasefirst' => array(
 	'name' => 'uppercasefirst(stringfield)',
-	'desc' => 'This function converts the first character of each word in a string to uppercase.',
+	'desc' => 'This function converts the first character of each word in a string to upper case.',
 	'params' => array(
 		array(
 			'name' => 'stringfield',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'The string to convert each first character to uppercase',
+			'desc' => 'The string to convert each first character to upper case',
 		),
 	),
 	'categories' => array('Text'),
@@ -803,7 +810,7 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'num2str' => array(
 	'name' => 'num2str(number|field, language)',
-	'desc' => 'This function converts a number into a string.',
+	'desc' => 'This function converts a number into its textual representation.',
 	'params' => array(
 		array(
 			'name' => 'number|field',
@@ -815,7 +822,7 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'language',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'The language you need to convert the number',
+			'desc' => 'The language you want the textual representation in',
 		),
 	),
 	'categories' => array('Strings'),
@@ -825,7 +832,7 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'number_format' => array(
 	'name' => 'number_format(number, decimals, decimal_separator, thousands_separator)',
-	'desc' => 'This function formats a number with grouped thousands  ie This function supports 1, 2, or 4 parameters (not 3).',
+	'desc' => 'This function formats a number with grouped thousands.',
 	'params' => array(
 		array(
 			'name' => 'number',
@@ -837,25 +844,25 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'decimals',
 			'type' => 'String',
 			'optional' => true,
-			'desc' => 'Specifies how many decimals. If this parameter is set, the number will be formatted with a dot (.) as decimal point',
+			'desc' => 'Specifies how many decimals. If this parameter is set, the number will be formatted with a dot (.) as a decimal point',
 		),
 		array(
 			'name' => 'decimal_separator',
 			'type' => 'String',
 			'optional' => true,
-			'desc' => 'Specifies what string to use for a decimal point',
+			'desc' => 'Specifies the character to use as a decimal point',
 		),
 		array(
 			'name' => 'thousands_separator',
 			'type' => 'String',
 			'optional' => true,
-			'desc' => 'Specifies what string to use for thousands separator ie If this parameter is given, all other parameters are required as well',
+			'desc' => 'Specifies the character to use as thousands separator',
 		),
 	),
 	'categories' => array('Math'),
 	'examples' => array(
-		number_format("1000000", 2, ",", "."),
-		number_format("1000000", 2),
+		'number_format("1000000", 2, ",", ".")',
+		'number_format("1000000", 2)',
 	),
 ),
 'translate' => array(
@@ -932,19 +939,25 @@ $WFExpressionFunctionDefinitons = array(
 	),
 ),
 'modulo' => array(
-	'name' => 'modulo(numericfield)',
-	'desc' => 'This function returns the remainder of numericfield.',
+	'name' => 'modulo(numericfield,numericfield)',
+	'desc' => 'This function returns the remainder of the division of the parameters.',
 	'params' => array(
 		array(
 			'name' => 'numericfield',
 			'type' => 'Integer',
 			'optional' => false,
-			'desc' => 'value or field for modulo ',
+			'desc' => 'value or field',
+		),
+		array(
+			'name' => 'numericfield',
+			'type' => 'Integer',
+			'optional' => false,
+			'desc' => 'value or field',
 		),
 	),
 	'categories' => array('Math'),
 	'examples' => array(
-		"modulo(5 % 3)",
+		"modulo(5, 3)",
 	),
 ),
 'hash' => array(
@@ -955,63 +968,63 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'field',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'selected hashing algorithm (i.e. "md5", "sha256", "haval160,4", etc..)',
+			'desc' => 'Message to be hashed',
 		),
 		array(
 			'name' => 'method',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'Message to be hashed',
+			'desc' => 'selected hashing algorithm: "md5", "sha1", "crc32"',
 		),
 	),
 	'categories' => array('Strings'),
 	'examples' => array(
-		"hash('sha256', 'admin')",
+		"hash('admin', 'sha1')",
 	),
 ),
 'globalvariable' => array(
 	'name' => 'globalvariable(gvname)',
-	'desc' => 'This function converts number into a string.',
+	'desc' => 'Returns the value of a global variable.',
 	'params' => array(
 		array(
 			'name' => 'gvname',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'any globalvariable name',
+			'desc' => 'any global variable name',
 		),
 	),
 	'categories' => array('Application'),
 	'examples' => array(
-		"globalvariable('adb')",
+		"globalvariable('Application_ListView_PageSize')",
 	),
 ),
 'aggregation' => array(
 	'name' => 'aggregation(operation,RelatedModule,relatedFieldToAggregate,conditions)',
-	'desc' => 'This is a function where the values of multiple rows are grouped together to form a single summary value.',
+	'desc' => 'Multiple rows are grouped together to form a single summary value on a field.',
 	'params' => array(
 		array(
 			'name' => 'operation',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'operation name for aggregation.eg SUM',
+			'desc' => 'sum, min, max, avg, count, std, variance, group_concat, time_to_sec',
 		),
 		array(
 			'name' => 'RelatedModule',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'module for aggeration',
+			'desc' => 'related module for aggregation',
 		),
 		array(
 			'name' => 'relatedFieldToAggregate',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'any field related to aggregation',
+			'desc' => 'related field to aggregate',
 		),
 		array(
 			'name' => 'conditions',
 			'type' => 'String',
 			'optional' => true,
-			'desc' => 'condition used for that aggregation',
+			'desc' => 'optional condition used to filter the records: [field,op,value,glue],[...]',
 		),
 	),
 	'categories' => array('aggregation'),
@@ -1022,31 +1035,31 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'aggregation_fields_operation' => array(
 	'name' => 'aggregation_fields_operation(operation,RelatedModule,relatedFieldsToAggregateWithOperation,conditions)',
-	'desc' => 'This is a function which aggregate operation with a related module, related field to operation and condition.',
+	'desc' => 'Multiple rows are grouped together to form a single summary value on an operation of fields.',
 	'params' => array(
 		array(
 			'name' => 'operation',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'operation name for aggregation.eg SUM',
+			'desc' => 'sum, min, max, avg, count, std, variance, group_concat, time_to_sec',
 		),
 		array(
 			'name' => 'RelatedModule',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'module for aggeration',
+			'desc' => 'related module for aggeration',
 		),
 		array(
 			'name' => 'relatedFieldsToAggregateWithOperation',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'any field related to aggregate with the operation',
+			'desc' => 'SQL expression to execute and aggregate',
 		),
 		array(
 			'name' => 'conditions',
 			'type' => 'String',
 			'optional' => true,
-			'desc' => 'condition used for aggregation',
+			'desc' => 'optional condition used to filter the records: [field,op,value,glue],[...]',
 		),
 	),
 	'categories' => array('aggregation'),
@@ -1066,8 +1079,14 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'getCurrentUserName' => array(
 	'name' => 'getCurrentUserName({full})',
-	'desc' => 'This function returns the current user name in full.',
+	'desc' => 'This function returns the current user name.',
 	'params' => array(
+		array(
+			'name' => 'full',
+			'type' => 'String',
+			'optional' => true,
+			'desc' => 'the string full, if given the full name will be returned (first and last) instead of the application user name',
+		),
 	),
 	'categories' => array('user'),
 	'examples' => array(
@@ -1076,13 +1095,13 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'getCurrentUserField' => array(
 	'name' => 'getCurrentUserField(fieldname)',
-	'desc' => 'This function returns the current user of a fieldname eg.current user email.',
+	'desc' => 'This function returns a field value of the current user',
 	'params' => array(
 		array(
 			'name' => 'fieldname',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'any fieldname or field type name',
+			'desc' => 'any user field name',
 		),
 	),
 	'categories' => array('user'),
@@ -1092,13 +1111,13 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'getEntityType' => array(
 	'name' => 'getEntityType(field)',
-	'desc' => 'This function Converts a number into string.',
+	'desc' => 'This function returns the module name of the given ID.',
 	'params' => array(
 		array(
 			'name' => 'field',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'any field or field type',
+			'desc' => 'any relation field',
 		),
 	),
 	'categories' => array('Application'),
@@ -1109,13 +1128,13 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'getimageurl' => array(
 	'name' => 'getimageurl(field)',
-	'desc' => 'This function returns image url.',
+	'desc' => 'This function returns the URL of the image contained in an image field.',
 	'params' => array(
 		array(
 			'name' => 'field',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'any field for image url',
+			'desc' => 'any image field',
 		),
 	),
 	'categories' => array('Application'),
@@ -1125,7 +1144,7 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'getLatitude' => array(
 	'name' => 'getLatitude(address)',
-	'desc' => 'This function returns latitude of a gven address.',
+	'desc' => ' This function returns the latitude of a given address.',
 	'params' => array(
 		array(
 			'name' => 'address',
@@ -1141,7 +1160,7 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'getLongitude' => array(
 	'name' => 'getLongitude(address)',
-	'desc' => 'This function returns longitude of a given address.',
+	'desc' => 'This function returns the longitude of a given address.',
 	'params' => array(
 		array(
 			'name' => 'address',
@@ -1179,13 +1198,13 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'getGEODistanceFromCompanyAddress' => array(
 	'name' => 'getGEODistanceFromCompanyAddress(address)',
-	'desc' => 'This function returns the distance from company address.',
+	'desc' => 'This function returns the distance from the given address to the established company address.',
 	'params' => array(
 		array(
 			'name' => 'address',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'Company address',
+			'desc' => 'address',
 		),
 	),
 	'categories' => array('geodistance'),
@@ -1195,13 +1214,13 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'getGEODistanceFromUserAddress' => array(
 	'name' => 'getGEODistanceFromUserAddress(address)',
-	'desc' => 'This function returns the distance from user adress.',
+	'desc' => 'This function returns the distance from the given address to the established user address.',
 	'params' => array(
 		array(
 			'name' => 'address',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'User address',
+			'desc' => 'address',
 		),
 	),
 	'categories' => array('geodistance'),
@@ -1211,47 +1230,47 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'getGEODistanceFromUser2AccountBilling' => array(
 	'name' => 'getGEODistanceFromUser2AccountBilling(account,address_specification)',
-	'desc' => 'This function Calculate distance from user to Accountbilling address.',
+	'desc' => 'This function calculates the distance from the user address to the account billing address.',
 	'params' => array(
 		array(
 			'name' => 'account',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'Account billing',
+			'desc' => 'Account ID',
 		),
 		array(
 			'name' => 'address_specification',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'Specification of user billing address',
+			'desc' => 'fields that contain the billing address',
 		),
 	),
 	'categories' => array('geodistance'),
 	'examples' => array(
-		'getGEODistanceFromUser2AccountBilling(account,address_specification)'
+		'getGEODistanceFromUser2AccountBilling(account)'
 	),
 ),
 'getGEODistanceFromAssignUser2AccountBilling' => array(
 	'name' => 'getGEODistanceFromAssignUser2AccountBilling(account,assigned_user,address_specification)',
-	'desc' => 'This function Calculate distance from Assign user to Accountbilling address.',
+	'desc' => 'This function calculates the distance from the assigned user to the account billing address.',
 	'params' => array(
 		array(
 			'name' => 'account',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'Billing Account',
+			'desc' => 'Account ID',
 		),
 		array(
 			'name' => 'assigned_user',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'AssignUser',
+			'desc' => 'User ID',
 		),
 		array(
 			'name' => 'address_specification',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'Specification of Assign user  billing address',
+			'desc' => 'fields that contain the billing address',
 		),
 	),
 	'categories' => array('geodistance'),
@@ -1261,19 +1280,19 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'getGEODistanceFromUser2AccountShipping' => array(
 	'name' => 'getGEODistanceFromUser2AccountShipping(account,address_specification)',
-	'desc' => 'This function Calculate distance from user to AccountShipping address.',
+	'desc' => 'This function calculates the distance from the current user to the account Shipping address.',
 	'params' => array(
 		array(
 			'name' => 'account',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'Shipping Account',
+			'desc' => 'Account ID',
 		),
 		array(
 			'name' => 'address_specification',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'Specification of user shipping address',
+			'desc' => 'fields that contain the shipping address',
 		),
 	),
 	'categories' => array('geodistance'),
@@ -1289,19 +1308,19 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'account',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'Shipping Account',
+			'desc' => 'Account ID',
 		),
 		array(
 			'name' => 'assigned_user',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'AssignUser',
+			'desc' => 'User ID',
 		),
 		array(
 			'name' => 'address_specification',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'Specification of user Shipping address',
+			'desc' => 'fields that contain the shipping address',
 		),
 	),
 	'categories' => array('geodistance'),
@@ -1311,19 +1330,19 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'getGEODistanceFromUser2ContactBilling' => array(
 	'name' => 'getGEODistanceFromUser2ContactBilling(contact,address_specification)',
-	'desc' => 'This function Calculate distance from user to ContactBilling address.',
+	'desc' => 'This function calculates the distance from the user to the contact Billing address.',
 	'params' => array(
 		array(
 			'name' => 'contact',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'Billing contact',
+			'desc' => 'Contact ID',
 		),
 		array(
 			'name' => 'address_specification',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'Specification of user billing address',
+			'desc' => 'fields that contain the billing address',
 		),
 	),
 	'categories' => array('geodistance'),
@@ -1333,25 +1352,25 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'getGEODistanceFromAssignUser2ContactBilling' => array(
 	'name' => 'getGEODistanceFromAssignUser2ContactBilling(contact,assigned_user,address_specification)',
-	'desc' => 'This function Calculate distance from Assign user to ContactBilling address.',
+	'desc' => 'This function calculates the distance from the assigned user to the contact Billing address.',
 	'params' => array(
 		array(
 			'name' => 'contact',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'Billing contact',
+			'desc' => 'Contact ID',
 		),
 		array(
 			'name' => 'assigned_user',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'AssignUser',
+			'desc' => 'User ID',
 		),
 		array(
 			'name' => 'address_specification',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'Specification of Assign user billing address',
+			'desc' => 'fields that contain the billing address',
 		),
 	),
 	'categories' => array('geodistance'),
@@ -1361,19 +1380,19 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'getGEODistanceFromUser2ContactShipping' => array(
 	'name' => 'getGEODistanceFromUser2ContactShipping(contact,address_specification)',
-	'desc' => 'This function Calculate distance from user to ContactShipping address.',
+	'desc' => 'This function calculates the distance from a user to a contact Shipping address.',
 	'params' => array(
 		array(
 			'name' => 'contact',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'Billing contact',
+			'desc' => 'Contact ID',
 		),
 		array(
 			'name' => 'address_specification',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'Specification of user shipping address',
+			'desc' => 'fields that contain the shipping address',
 		),
 	),
 	'categories' => array('geodistance'),
@@ -1383,25 +1402,25 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'getGEODistanceFromAssignUser2ContactShipping' => array(
 	'name' => 'getGEODistanceFromAssignUser2ContactShipping(contact,assigned_user,address_specification)',
-	'desc' => 'This function Calculate distance from Assign user to ContactShipping address.',
+	'desc' => 'This function calculates the distance from the assigned user to the contact Shipping address.',
 	'params' => array(
 		array(
 			'name' => 'contact',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'Billing contact address',
+			'desc' => 'Contact ID',
 		),
 		array(
 			'name' => 'assigned_user',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'AssignUser',
+			'desc' => 'User ID',
 		),
 		array(
 			'name' => 'address_specification',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'Specification of Assign user shipping address',
+			'desc' => 'fields that contain the shipping address',
 		),
 	),
 	'categories' => array('geodistance'),
@@ -1410,48 +1429,48 @@ $WFExpressionFunctionDefinitons = array(
 	),
 ),
 'getGEODistanceFromCoordinates' => array(
-	'name' => 'getGEODistanceFromCoordinates({lat1},{long1},{lat2},{long2})',
-	'desc' => 'This function Calculate distance from coordinates such as latitude and longitudes.',
+	'name' => 'getGEODistanceFromCoordinates(lat1,long1,lat2,long2)',
+	'desc' => 'This function calculates the distance between two coordinates.',
 	'params' => array(
 		array(
-			'name' => '{lat1}',
+			'name' => 'lat1',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'latitude one',
+			'desc' => 'latitude from',
 		),
 		array(
-			'name' => 'assigned_user',
+			'name' => 'long1',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'longitude one',
+			'desc' => 'longitude from',
 		),
 		array(
-			'name' => 'address_specification',
+			'name' => 'lat2',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'latitude two',
+			'desc' => 'latitude to',
 		),
 		array(
-			'name' => 'address_specification',
+			'name' => 'long2',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'longitude two',
+			'desc' => 'longitude to',
 		),
 	),
 	'categories' => array('geodistance'),
 	'examples' => array(
-		'getGEODistanceFromCoordinates({lat1},{long1},{lat2},{long2})',
+		'getGEODistanceFromCoordinates(lat1,long1,lat2,long2)',
 	),
 ),
 'getFromContext' => array(
 	'name' => 'getFromContext(variablename)',
-	'desc' => 'This function get a context from a variablename.',
+	'desc' => 'This function gets the value of the variablename context variable.',
 	'params' => array(
 		array(
 			'name' => 'variablename',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'variablename to get context from',
+			'desc' => 'variablename to get from context',
 		),
 	),
 	'categories' => array('Application'),
@@ -1461,19 +1480,19 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'setToContext' => array(
 	'name' => 'setToContext(variablename, value)',
-	'desc' => 'This function set a context to a variablename with its value.',
+	'desc' => 'This function sets a value in a context variable.',
 	'params' => array(
 		array(
 			'name' => 'variablename',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'variablename to set context',
+			'desc' => 'variable to set in context',
 		),
 		array(
 			'name' => 'value',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'value to set in a context',
+			'desc' => 'value to set',
 		),
 	),
 	'categories' => array('Application'),
@@ -1483,7 +1502,7 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'jsonEncode' => array(
 	'name' => 'jsonEncode(field)',
-	'desc' => 'This function Encode JSON of a field.',
+	'desc' => 'This function JSON encodes the given variable.',
 	'params' => array(
 		array(
 			'name' => 'field',
@@ -1499,13 +1518,13 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'jsonDecode' => array(
 	'name' => 'jsonDecode(field)',
-	'desc' => 'This function return Decode JSON of a field.',
+	'desc' => 'This function returns the JSON decode of a variable.',
 	'params' => array(
 		array(
 			'name' => 'field',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'field to decode in JSON',
+			'desc' => 'variable to decode from JSON',
 		),
 	),
 	'categories' => array('Strings'),
@@ -1515,19 +1534,19 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'implode' => array(
 	'name' => 'implode(delimiter, field)',
-	'desc' => 'This function returns a string from the elements of an array.',
+	'desc' => 'This function returns a concatenation string from the elements of an array.',
 	'params' => array(
 		array(
 			'name' => 'delimiter',
 			'type' => 'String',
 			'optional' => true,
-			'desc' => 'Specifies what to put between the array elements. Default is "" (an empty string)',
+			'desc' => 'Specifies what to put between the array elements. Default is an empty string',
 		),
 		array(
 			'name' => 'field',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'field  array to join to a string',
+			'desc' => 'array field or variable to join',
 		),
 	),
 	'categories' => array('Strings'),
@@ -1537,7 +1556,7 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'explode' => array(
 	'name' => 'explode(delimiter, field)',
-	'desc' => 'This function Returns an array of strings, each of which is a substring of field formed by splitting it on boundaries formed by the string delimiter.',
+	'desc' => 'This function returns an array of strings, each of which is a substring of field formed by splitting it on boundaries formed by the string delimiter.',
 	'params' => array(
 		array(
 			'name' => 'delimiter',
@@ -1559,7 +1578,7 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'sendMessage' => array(
 	'name' => 'sendMessage(message, channel, time)',
-	'desc' => 'This function sends  a message to a channel in provided time.',
+	'desc' => 'This function sends a message to coreBOS message queue channel.',
 	'params' => array(
 		array(
 			'name' => 'message',
@@ -1571,39 +1590,39 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'channel',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'channel to send a message',
+			'desc' => 'channel to send the message to',
 		),
 		array(
 			'name' => 'time',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'time to send a message',
+			'desc' => 'expire time of the message',
 		),
 	),
 	'categories' => array('Application'),
 	'examples' => array(
-		"sendMessage(message, channel, time)",
+		"sendMessage('message', 'somechannel', 90)",
 	),
 ),
 'readMessage' => array(
 	'name' => 'readMessage(channel)',
-	'desc' => 'This function allows reading message in a channel.',
+	'desc' => 'This function reads a message from a coreBOS message queue channel.',
 	'params' => array(
 		array(
 			'name' => 'channel',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'channel to read a message',
+			'desc' => 'channel to read the message from',
 		),
 	),
 	'categories' => array('Application'),
 	'examples' => array(
-		"readMessage(channel)",
+		"readMessage('somechannel')",
 	),
 ),
 'getSetting' => array(
 	'name' => 'getSetting("setting_key", "default")',
-	'desc' => 'This function allows to get a setting key with it default.',
+	'desc' => 'This function reads a variable from the coreBOS key-value store, with a default if not found.',
 	'params' => array(
 		array(
 			'name' => 'setting_key',
@@ -1615,17 +1634,17 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'default',
 			'type' => 'String',
 			'optional' => true,
-			'desc' => 'default of setting key',
+			'desc' => 'default if not found',
 		),
 	),
 	'categories' => array('Application'),
 	'examples' => array(
-		"getSetting('KEY_ACCESSTOKEN', '')",
+		"getSetting('KEY_ACCESSTOKEN', 'some default value')",
 	),
 ),
 'setSetting' => array(
-	'name' => 'setSetting("setting_key", "default")',
-	'desc' => 'This function allows to set a setting key with it default value.',
+	'name' => 'setSetting("setting_key", value)',
+	'desc' => 'This function allows to set a vaue in the coreBOS key-value store.',
 	'params' => array(
 		array(
 			'name' => 'setting_key',
@@ -1634,10 +1653,10 @@ $WFExpressionFunctionDefinitons = array(
 			'desc' => 'setting key',
 		),
 		array(
-			'name' => 'default',
+			'name' => 'value',
 			'type' => 'String',
 			'optional' => true,
-			'desc' => 'The default value of setting key',
+			'desc' => 'value to set in key',
 		),
 	),
 	'categories' => array('Application'),
@@ -1647,7 +1666,7 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'delSetting' => array(
 	'name' => 'delSetting("setting_key")',
-	'desc' => 'This function delete  setting.',
+	'desc' => 'This function deletes a key from the coreBOS key-value store.',
 	'params' => array(
 		array(
 			'name' => 'setting_key',
@@ -1663,13 +1682,13 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'evaluateRule' => array(
 	'name' => 'evaluateRule(ruleID)',
-	'desc' => 'This function evaluate rule of a rule ID.',
+	'desc' => 'This function evaluates a coreBOS rule.',
 	'params' => array(
 		array(
 			'name' => 'ruleID',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'rule id to excute',
+			'desc' => 'rule id to execute',
 		),
 	),
 	'categories' => array('Application'),
@@ -1679,7 +1698,7 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'getCRUDMode' => array(
 	'name' => 'getCRUDMode()',
-	'desc' => 'This function return create, read, update and delete mode.',
+	'desc' => 'This function returns create or edit depending on the action being done.',
 	'params' => array(
 	),
 	'categories' => array('Application'),
@@ -1689,13 +1708,13 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'isNumeric' => array(
 	'name' => 'isNumeric(fieldname)',
-	'desc' => 'This function checks if a fieldname is numeric.',
+	'desc' => 'This function checks if a field is numeric.',
 	'params' => array(
 		array(
 			'name' => 'fieldname',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'fieldname to look if its numeric',
+			'desc' => 'field to evaluate',
 		),
 	),
 	'categories' => array('Logicalops'),
@@ -1705,13 +1724,13 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'isString' => array(
 	'name' => 'isString(fieldname)',
-	'desc' => 'This function checks if fieldname is string.',
+	'desc' => 'This function checks if field is a string.',
 	'params' => array(
 		array(
 			'name' => 'fieldname',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'fieldname to check if its string',
+			'desc' => 'field to check if it is string',
 		),
 	),
 	'categories' => array('Logicalops'),
@@ -1720,8 +1739,8 @@ $WFExpressionFunctionDefinitons = array(
 	),
 ),
 'OR' => array(
-	'name' => 'OR(condition1, condition2)',
-	'desc' => 'This function returns true if any of the provided conidtion are logically true, and false if all of the provided condition are logically false.',
+	'name' => 'OR(condition1, condition2, {conditions})',
+	'desc' => 'This function returns true if any of the provided conditions are logically true, and false if all of the provided conditions are logically false.',
 	'params' => array(
 		array(
 			'name' => 'condition1',
@@ -1742,8 +1761,8 @@ $WFExpressionFunctionDefinitons = array(
 	),
 ),
 'AND' => array(
-	'name' => 'AND(condition1, condition2)',
-	'desc' => 'This function returns true if any of the provided conidtion are both logically true, and false if all of the provided condition are logically false.',
+	'name' => 'AND(condition1, condition2, {conditions})',
+	'desc' => 'This function returns true if all of the provided conditions are logically true, and false if any of the provided conditions are logically false.',
 	'params' => array(
 		array(
 			'name' => 'condition1',
@@ -1771,7 +1790,7 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'condition1',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'condition for NOT',
+			'desc' => 'condition',
 		),
 	),
 	'categories' => array('Logicalops'),
@@ -1781,41 +1800,41 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'regex' => array(
 	'name' => 'regex(pattern, subject)',
-	'desc' => 'This function return regex of a given pattern and subject.',
+	'desc' => 'This function returns the result of a regex pattern on the given subject.',
 	'params' => array(
 		array(
 			'name' => 'pattern',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'patten to subject',
+			'desc' => 'regex patten',
 		),
 		array(
 			'name' => 'subject',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'subject to patten',
+			'desc' => 'subject to apply patten on',
 		),
 	),
 	'categories' => array('Logicalops'),
 	'examples' => array(
-		"regex(numberRegex, msg )",
+		"regex('[a-z]+', msg )",
 	),
 ),
 'exists' => array(
 	'name' => 'exists(fieldname, value)',
-	'desc' => 'This function checks if a record exists or not exists.',
+	'desc' => 'This function checks if a record with the given value in the given field exists or not.',
 	'params' => array(
 		array(
 			'name' => 'fieldname',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'fieldname to check for its existence',
+			'desc' => 'field to check for its existence',
 		),
 		array(
 			'name' => 'value',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'value of a fieldname',
+			'desc' => 'value the field must have',
 		),
 	),
 	'categories' => array('Logicalops'),
@@ -1825,7 +1844,7 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'existsrelated' => array(
 	'name' => 'existsrelated(relatedmodule, fieldname, value)',
-	'desc' => 'This function check if the record exist to related  module.',
+	'desc' => 'This function checks if a related module record with the given value in the given field exists or not.',
 	'params' => array(
 		array(
 			'name' => 'relatedmodule',
@@ -1837,13 +1856,13 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'fieldname',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'fieldname to look for its existence',
+			'desc' => 'field to filter records',
 		),
 		array(
 			'name' => 'value',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'value of the fieldname',
+			'desc' => 'value of the field',
 		),
 	),
 	'categories' => array('Logicalops'),
@@ -1853,7 +1872,7 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'allrelatedare' => array(
 	'name' => 'allrelatedare(relatedmodule, fieldname, value)',
-	'desc' => 'This function checks all related  record if exist to  related  module.',
+	'desc' => 'This function checks if all records on the related module have the given value in the given field.',
 	'params' => array(
 		array(
 			'name' => 'relatedmodule',
@@ -1865,13 +1884,13 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'fieldname',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'fieldname to look for its existence',
+			'desc' => 'field to filter records',
 		),
 		array(
 			'name' => 'value',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'value of the fieldname',
+			'desc' => 'value of the field',
 		),
 	),
 	'categories' => array('Logicalops'),
@@ -1881,13 +1900,13 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'min' => array(
 	'name' => 'min(fieldname)',
-	'desc' => 'This function returns minimum of a fielname.',
+	'desc' => 'This function returns the minimum value of a field.',
 	'params' => array(
 		array(
 			'name' => 'fieldname',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'fieldname to ruturn its minimum',
+			'desc' => 'field to search in',
 		),
 	),
 	'categories' => array('Logicalops'),
@@ -1897,13 +1916,13 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'max' => array(
 	'name' => 'max(fieldname)',
-	'desc' => 'This function returns maximum of a fielname.',
+	'desc' => 'This function returns the maximum value of a field.',
 	'params' => array(
 		array(
 			'name' => 'fieldname',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'fieldname to ruturn its maximum',
+			'desc' => 'ffield to search in',
 		),
 	),
 	'categories' => array('Logicalops'),
@@ -1911,8 +1930,6 @@ $WFExpressionFunctionDefinitons = array(
 		"max(employees)",
 	),
 ),
-
-
 );
 
 foreach (glob('modules/com_vtiger_workflow/language/en_us.fndefs.*.php', GLOB_BRACE) as $tcode) {
