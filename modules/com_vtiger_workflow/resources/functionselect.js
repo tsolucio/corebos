@@ -115,6 +115,7 @@ function wffnFilterCategories(cat) {
 	} else {
 		var fns = Object.keys(wfexpfndefs)
 			.filter(fn => wfexpfndefs[fn].categories.indexOf(cat) > -1)
+			.sort()
 			.reduce((res, key) => (res[key] = wfexpfndefs[key], res), {});
 	}
 	setFilteredFunctions(fns);
