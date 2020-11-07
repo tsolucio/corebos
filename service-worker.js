@@ -9320,7 +9320,7 @@ precacheAndRoute([{
   "revision": "e4cc7bb9fdef5d2b8a887122f48cfc41"
 }, {
   "url": "include/js/Inventory.js",
-  "revision": "6f7971deb37237979ea368ab559e421d"
+  "revision": "c497a2d6bfe6eb879194e39cdd913b6d"
 }, {
   "url": "include/js/it_it.lang.js",
   "revision": "1143d8970a3ae5a0a80d8352b09e19a2"
@@ -9506,13 +9506,13 @@ precacheAndRoute([{
   "revision": "30a01e15d9f5c9417bb42dc2df067dca"
 }, {
   "url": "modules/com_vtiger_workflow/resources/emailtaskscript.js",
-  "revision": "27565d1c7498be55fb65276f1a2a302a"
+  "revision": "0b670f1ff0dbfc21ad0384314accb886"
 }, {
   "url": "modules/com_vtiger_workflow/resources/entitymethodtask.js",
   "revision": "43155535cd6da302c6ad1c34c077c642"
 }, {
   "url": "modules/com_vtiger_workflow/resources/fieldexpressionpopup.js",
-  "revision": "c400069175af86491f79a6a96e3570ad"
+  "revision": "db7e2085ce27b4db1973d1d85a110661"
 }, {
   "url": "modules/com_vtiger_workflow/resources/fieldvalidator.js",
   "revision": "756f011777ea71a438be615cecdfde63"
@@ -9551,7 +9551,7 @@ precacheAndRoute([{
   "revision": "98b52fb0bdc8a6decb396ad4a031ba30"
 }, {
   "url": "modules/com_vtiger_workflow/resources/updatemassivefieldstaskscript.js",
-  "revision": "efe2ac9da371216aec6fea90f3c2fda5"
+  "revision": "f1837704807d429d5a2f712d1a101992"
 }, {
   "url": "modules/com_vtiger_workflow/resources/vtigerwebservices.js",
   "revision": "8acb4cd5b3583547db71a8345e8f667e"
@@ -9803,7 +9803,7 @@ precacheAndRoute([{
   "revision": "90cb31321c92bc6d3f1e73e5ecd0255a"
 }, {
   "url": "modules/MsgTemplate/MsgTemplate.js",
-  "revision": "e2c3b8930517372b04d89059ad3fcaac"
+  "revision": "4137b49c61a51b277dec2522dc505491"
 }, {
   "url": "modules/ProjectTask/ProjectTask.js",
   "revision": "c240060c1b952bba5d36d4a506fa0e6e"
@@ -10040,7 +10040,7 @@ precacheAndRoute([{
   "revision": "e9be4cf50f50eedc61a491219ac3fc86"
 }, {
   "url": "modules/Utilities/Utilities.js",
-  "revision": "797f33dc5aac0dd086468f1ade3c1a76"
+  "revision": "864fa0c60694a45cfadf9bc2203c2ac7"
 }, {
   "url": "modules/Import/resources/ImportStep2.js",
   "revision": "45c632cf97d1f03c7f6805c1f78ae0a7"
