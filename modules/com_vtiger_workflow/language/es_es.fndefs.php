@@ -217,13 +217,13 @@ $WFExpressionFunctionDefinitons = array(
 		array(
 			'name' => 'endDate',
 			'type' => 'Fecha',
-			'optional' => false,
-			'desc' => 'cualquier fecha válida o nombre de campo de tipo de fecha',
+			'optional' => true,
+			'desc' => 'cualquier fecha válida o nombre de campo de tipo de fecha, se utiliza HOY si no se da',
 		),
 		array(
 			'name' => 'holidays',
 			'type' => 'Texto',
-			'optional' => false,
+			'optional' => true,
 			'desc' => 'nombre de un mapa de información que contiene las fechas de vacaciones para excluir<br>'.nl2br(htmlentities("<map>\n<information>\n<infotype>Holidays in France 2020</infotype>\n<value>date1</value>\n<value>date2</value>\n</information>\n</map>")).'</pre>',
 		),
 	),
@@ -590,13 +590,13 @@ $WFExpressionFunctionDefinitons = array(
 		array(
 			'name' => 'holidays',
 			'type' => 'Texto',
-			'optional' => false,
+			'optional' => true,
 			'desc' => 'nombre de un mapa de información que contiene las fechas de vacaciones para incluir',
 		),
 		array(
 			'name' => 'include_weekend',
 			'type' => 'Entero',
-			'optional' => false,
+			'optional' => true,
 			'desc' => 'si se establece en 0, el fin de semana no se agregará, si se establece en cualquier otro valor, se incluirán',
 		),
 	),
@@ -625,13 +625,13 @@ $WFExpressionFunctionDefinitons = array(
 		array(
 			'name' => 'holidays',
 			'type' => 'Texto',
-			'optional' => false,
+			'optional' => true,
 			'desc' => 'nombre de un mapa de información que contiene las fechas de vacaciones para incluir',
 		),
 		array(
 			'name' => 'saturday_laborable',
 			'type' => 'Entero',
-			'optional' => false,
+			'optional' => true,
 			'desc' => 'si se establece en 0, el fin de semana no se agregará, si se establece en cualquier otro valor, se incluirán',
 		),
 	),
