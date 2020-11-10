@@ -109,6 +109,9 @@ switch ($_REQUEST['_op']) {
 	case 'getconfigdenormalization':
 	case 'setconfigdenormalization':
 		include_once 'include/integrations/denormalize/settings.php';
+	case 'getconfigcache':
+	case 'setconfigcache':
+		include_once 'include/integrations/cache/settings.php';
 		break;
 	default:
 		$smarty = new vtigerCRM_Smarty();
@@ -191,6 +194,12 @@ switch ($_REQUEST['_op']) {
 				'title' => getTranslatedString('Denormalization Activation', 'Utilities'),
 				'desc' => getTranslatedString('Denormalize_Desc', 'Utilities'),
 				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigdenormalization',
+			),
+			array(
+				'abbr' => 'CA',
+				'title' => getTranslatedString('Cache Activation', 'Utilities'),
+				'desc' => getTranslatedString('Cache Activation_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigcache',
 			),
 		);
 		if (file_exists('build/wsChanges/LoginSession.php')) {

@@ -118,5 +118,16 @@ $mod_strings = array (
 	'SAML RWURL' => 'Relay Response URL 1',
 	'SAML RWURL2' => 'Relay Response URL 2',
 	'SAML RWURL3' => 'Relay Response URL 3',
+	'LBL_API_URL' => 'SendGrid API URL',
+	'cache_select_adapter_type' => 'Select adapter type',
+	'cache_adapter_memory' => 'Memory',
+	'cache_adapter_redis' => 'Redis',
+	'cache_adapter_memcached' => 'Memcached',
+	'cache_ip' => 'Server IP',
+	'cache_port' => 'Service Port',
+	'cache_ip_required' => 'Cache server IP is required',
+	'cache_port_required' => 'Cache service PORT is required',
+	'Cache Activation' => 'Cache layer activation',
+	'Cache Activation_Desc' => 'Make use of a cache layer implemented for three adapters: Memory, Redis, Memcached',
 );
 ?>

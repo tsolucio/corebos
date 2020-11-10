@@ -437,6 +437,7 @@
 <script src="modules/com_vtiger_workflow/resources/parallelexecuter.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/com_vtiger_workflow/resources/fieldvalidator.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/com_vtiger_workflow/resources/fieldexpressionpopup.js" type="text/javascript" charset="utf-8"></script>
+<script src="modules/com_vtiger_workflow/resources/functionselect.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/cbQuestion/resources/editbuilder.js" type="text/javascript" charset="utf-8"></script>
 <link rel="stylesheet" href="modules/com_vtiger_workflow/resources/style.css" type="text/css" />
 <script src="modules/cbQuestion/resources/Builder.js" type="text/javascript" charset="utf-8"></script>

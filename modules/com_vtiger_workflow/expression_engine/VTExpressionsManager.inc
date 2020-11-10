@@ -103,6 +103,7 @@ class VTExpressionsManager {
 		} else {
 			include 'modules/com_vtiger_workflow/language/en_us.fndefs.php';
 		}
+		asort($WFExpressionFunctionDefinitons);
 		return $WFExpressionFunctionDefinitons;
 	}
 
@@ -153,7 +154,7 @@ class VTExpressionsManager {
 			'round' => 'round(numericfield,decimals)',
 			'ceil' => 'ceil(numericfield)',
 			'floor' => 'floor(numericfield)',
-			'modulo' => 'modulo(numericfield)',
+			'modulo' => 'modulo(numericfield,numericfield)',
 			'hash' => 'hash(field, method)',
 			'globalvariable' => 'globalvariable(gvname)',
 			'aggregation'=>'aggregation(operation,RelatedModule,relatedFieldToAggregate,conditions)',

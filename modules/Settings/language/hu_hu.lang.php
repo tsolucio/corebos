@@ -790,6 +790,7 @@ $mod_strings = array(
 	'LBL_MANDATORY_FIELD' => 'Kötelező Mező',
 	'LBL_QUICK_CREATE' => 'Gyors Létrehozás',
 	'LBL_MASS_EDIT' => 'Tömeges Szerkesztés',
+	'LBL_LONG_FIELD' => 'Long Field',
 	'LBL_BLOCK_NAME' => 'Tömb név',
 	'AFTER' => 'Utána',
 	'ADD_BLOCK' => 'Tömb Hozzáadás',

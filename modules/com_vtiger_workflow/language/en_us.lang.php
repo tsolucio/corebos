@@ -245,5 +245,11 @@ $mod_strings = array(
 'FILENAME' => 'Destination filename',
 'LBL_ENABLED' => 'Enabled',
 'LBL_DISABLED' => 'Disabled',
+'LINK_EMAIL_TEMPLATE' => 'Link with email template',
+'LBL_LINKED' => 'linked',
+'LBL_UNLINKED' => 'unlinked',
+'LBL_SELECT_EMAIL_TEMPLATE' => 'Select Email Template',
+'LBL_SELECT_SENDGRID_EMAIL_TEMPLATE' => 'Select SendGrid Email Template',
+'LBL_LOAD_SENDGRID_TEMPLATES' => 'Load SendGrid Templates',
 );
 ?>

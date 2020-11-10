@@ -681,9 +681,9 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 							$parent_id .=$mycrmid.'@0|';
 							$parent_name .= $vendor_name.'<'.$myemail.'>; ';
 						} else {
-							$emailfield = getFirstEmailField($pmodule);
+							$emailfield = getFirstEmailField($parent_module);
 							if ($emailfield != '') {
-								$qg = new QueryGenerator($pmodule, $current_user);
+								$qg = new QueryGenerator($parent_module, $current_user);
 								$qg->setFields(array($emailfield));
 								$qg->addCondition('id', $mycrmid, 'e');
 								$query = $qg->getQuery();
@@ -693,7 +693,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 								$myemail = '';
 							}
 							$parent_id .=$mycrmid.'@0|';
-							$minfo = getEntityName($pmodule, array($mycrmid));
+							$minfo = getEntityName($parent_module, array($mycrmid));
 							$parent_name .= $minfo[$mycrmid] . '<'.$myemail.'>; ';
 						}
 					}

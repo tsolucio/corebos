@@ -269,5 +269,7 @@ $mod_strings = array(
 'SYNC_RESULTS'=>'Resultado do sincronismo',
 'ERR_GContactsSync'=>'Ocorreu um erro ao acessar o Google. As configurações foram excluídas, configure novamente o acesso.',
 'Template Language' => 'linguagem do modelo',
+'ship_countrycode' => 'Shipping Country Code',
+'bill_countrycode' => 'Billing Country Code'
 );
 ?>

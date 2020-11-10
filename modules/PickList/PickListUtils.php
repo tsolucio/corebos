@@ -159,7 +159,7 @@ function getNonEditablePicklistValues($fieldName, $lang, $adb) {
 		}
 	}
 	if (count($values)==0) {
-		$values = "";
+		$values = '';
 	}
 	return $values;
 }
@@ -248,7 +248,7 @@ function getPicklistValuesSpecialUitypes($uitype, $fieldname, $value, $action = 
 	$picklistValues = getAllowedPicklistModules($allowNonEntities);
 	$options = array();
 	$pickcount = 0;
-	if ($uitype == "1613") {
+	if ($uitype == '1613') {
 		$found = false;
 		foreach ($picklistValues as $pValue) {
 			$value = decode_html($value);
@@ -267,8 +267,8 @@ function getPicklistValuesSpecialUitypes($uitype, $fieldname, $value, $action = 
 				$options[] = array(getTranslatedString($pickListValue, $pickListValue), $pickListValue, $chk_val);
 			}
 		}
-	} elseif ($uitype == "3313") {
-		$valueArr = explode("|##|", $value);
+	} elseif ($uitype == '3313') {
+		$valueArr = explode('|##|', $value);
 		foreach ($valueArr as $key => $value) {
 			$valueArr[$key] = trim(html_entity_decode($value, ENT_QUOTES, $default_charset));
 		}
@@ -287,7 +287,7 @@ function getPicklistValuesSpecialUitypes($uitype, $fieldname, $value, $action = 
 				}
 			}
 		}
-	} elseif ($uitype == "1024") {
+	} elseif ($uitype == '1024') {
 		$arr_evo=explode(' |##| ', $value);
 		if ($action != 'DetailView') {
 			$roleid = $current_user->roleid;

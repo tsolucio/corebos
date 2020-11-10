@@ -228,6 +228,54 @@ if (typeof(Utilities) == 'undefined') {
 		},
 		close_og_error_toast: function () {
 			jQuery('#og-validation-error').hide();
+		},
+		cache_control_input_visibility: function () {
+			var adapter = jQuery('#adapter_type').val();
+			var ipPortContainer = jQuery('#ip_port_container');
+
+			if (adapter === 'memory') {
+				ipPortContainer.hide();
+			} else {
+				ipPortContainer.show();
+			}
+		},
+		cache_form_submit_validation: function () {
+			var adapter = jQuery('#adapter_type').val();
+			var ip = jQuery('#ip').val();
+			var port = jQuery('#port').val();
+			var form = jQuery('#cache_form');
+
+			if (adapter !== 'memory') {
+				if (ip !== '') {
+					this.cache_hide_ip_error();
+				} else {
+					this.cache_show_ip_error();
+					return;
+				}
+				if (port !== '') {
+					this.cache_hide_port_error();
+				} else {
+					this.cache_show_port_error();
+					return;
+				}
+			}
+			form.submit();
+		},
+		cache_show_ip_error: function () {
+			jQuery('#ip').addClass('slds-has-error').focus();
+			jQuery('#ip_required_message').show();
+		},
+		cache_hide_ip_error: function () {
+			jQuery('#ip').removeClass('slds-has-error');
+			jQuery('#ip_required_message').hide();
+		},
+		cache_show_port_error: function () {
+			jQuery('#port').addClass('slds-has-error').focus();
+			jQuery('#port_required_message').show();
+		},
+		cache_hide_port_error: function () {
+			jQuery('#port').removeClass('slds-has-error');
+			jQuery('#port_required_message').hide();
 		}
 	};
 }

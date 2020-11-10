@@ -412,5 +412,6 @@ var alert_arr = {
 	'Okay': 'Okay',
 	'Failed': 'Failed',
 	'Warning': 'Warning',
-	'Copied': 'Copied'
+	'Copied': 'Copied',
+	'ACT_UNIT_PRICE_MISMATCH': 'Il prezzo effettivo per questa valuta dovrebbe essere uguale al prezzo unitario, ma questo non è il caso di questo prodotto o servizio'
 };

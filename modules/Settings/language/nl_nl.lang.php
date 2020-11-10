@@ -889,6 +889,7 @@ $mod_strings = array(
 'LBL_ACTIVE' => 'Actief',
 'LBL_QUICK_CREATE' => 'Snel Maken',
 'LBL_MASS_EDIT' => 'Massa Wijzig',
+'LBL_LONG_FIELD' => 'Long Field',
 'LBL_BLOCK_NAME' => 'Blok naam',
 'AFTER' => 'Na',
 'ADD_BLOCK' => 'Voeg Blok Toe',

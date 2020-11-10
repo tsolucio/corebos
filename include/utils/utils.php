@@ -12,6 +12,7 @@ require_once 'include/utils/Session.php';
 require_once 'include/utils/Request.php';
 require_once 'include/database/PearDatabase.php';
 require_once 'include/utils/cbSettings.php';
+require_once 'include/utils/cbCache.php';
 require_once 'include/cbmqtm/cbmqtm_loader.php';
 require_once 'include/events/include.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowManager.inc';
@@ -105,11 +106,11 @@ function getBrowserVariables(&$smarty) {
 }
 
 /** Function to return a full name
-  * @param $row -- row:: Type integer
-  * @param $first_column -- first column:: Type string
-  * @param $last_column -- last column:: Type string
-  * @returns $fullname -- fullname:: Type string
-*/
+ * @param $row -- row:: Type integer
+ * @param $first_column -- first column:: Type string
+ * @param $last_column -- last column:: Type string
+ * @returns $fullname -- fullname:: Type string
+ */
 function return_name(&$row, $first_column, $last_column) {
 	global $log;
 	$log->debug('> return_name '.$row.','.$first_column.','.$last_column);
@@ -141,8 +142,8 @@ function return_name(&$row, $first_column, $last_column) {
 }
 
 /** Function to return language
-  * @returns $languages -- languages:: Type string
-*/
+ * @returns $languages -- languages:: Type string
+ */
 function get_languages() {
 	global $log, $languages;
 	$log->debug('>< get_languages');
@@ -150,9 +151,9 @@ function get_languages() {
 }
 
 /** Function to return language
-  * @param $key -- key:: Type string
-  * @returns $languages -- languages:: Type string
-*/
+ * @param $key -- key:: Type string
+ * @returns $languages -- languages:: Type string
+ */
 function get_language_display($key) {
 	global $log, $languages;
 	$log->debug('>< get_language_display '.$key);
@@ -162,7 +163,7 @@ function get_language_display($key) {
 /** Function returns the user array
  * @param $assigned_user_id -- assigned_user_id:: Type string
  * @returns $user_list -- user list:: Type array
-*/
+ */
 function get_assigned_user_name($assigned_user_id) {
 	global $log;
 	$log->debug('> get_assigned_user_name '.$assigned_user_id);
@@ -176,12 +177,12 @@ function get_assigned_user_name($assigned_user_id) {
 }
 
 /** Function returns the user key in user array
-  * @param $add_blank -- boolean:: Type boolean
-  * @param $status -- user status:: Type string
-  * @param $assigned_user -- user id:: Type string
-  * @param $private -- sharing type:: Type string
-  * @returns $user_array -- user array:: Type array
-*/
+ * @param $add_blank -- boolean:: Type boolean
+ * @param $status -- user status:: Type string
+ * @param $assigned_user -- user id:: Type string
+ * @param $private -- sharing type:: Type string
+ * @returns $user_array -- user array:: Type array
+ */
 function get_user_array($add_blank = true, $status = 'Active', $assigned_user = '', $private = '') {
 	global $log, $current_user;
 	$log->debug('> get_user_array '.$add_blank.','. $status.','.$assigned_user.','.$private);
@@ -356,10 +357,10 @@ function get_group_array($add_blank = true, $status = 'Active', $assigned_user =
 }
 
 /** Function skips executing arbitary commands given in a string
-  * @param $string -- string:: Type string
-  * @param $maxlength -- maximun length:: Type integer
-  * @returns $string -- escaped string:: Type string
-*/
+ * @param $string -- string:: Type string
+ * @param $maxlength -- maximun length:: Type integer
+ * @returns $string -- escaped string:: Type string
+ */
 function clean($string, $maxLength) {
 	global $log;
 	$log->debug('> clean '.$string.','. $maxLength);
@@ -553,12 +554,12 @@ function return_session_value_or_default($varname, $default) {
 }
 
 /**
-  * Creates an array of where restrictions. These are used to construct a where SQL statement on the query
-  * It looks for the variable in the $_REQUEST array. If it is set and is not '' it will create a where clause out of it.
-  * @param &$where_clauses - The array to append the clause to
-  * @param $variable_name - The name of the variable to look for an add to the where clause if found
-  * @param $SQL_name - [Optional] If specified, this is the SQL column name that is used. If not specified, the $variable_name is used as the SQL_name.
-  */
+ * Creates an array of where restrictions. These are used to construct a where SQL statement on the query
+ * It looks for the variable in the $_REQUEST array. If it is set and is not '' it will create a where clause out of it.
+ * @param &$where_clauses - The array to append the clause to
+ * @param $variable_name - The name of the variable to look for an add to the where clause if found
+ * @param $SQL_name - [Optional] If specified, this is the SQL column name that is used. If not specified, the $variable_name is used as the SQL_name.
+ */
 function append_where_clause(&$where_clauses, $variable_name, $SQL_name = null) {
 	global $log;
 	$log->debug('> append_where_clause '.$where_clauses.','.$variable_name.','.$SQL_name);
@@ -573,10 +574,10 @@ function append_where_clause(&$where_clauses, $variable_name, $SQL_name = null) 
 }
 
 /**
-  * Generate the appropriate SQL based on the where clauses.
-  * @param $where_clauses - An Array of individual where clauses stored as strings
-  * @returns string where_clause - The final SQL where clause to be executed.
-  */
+ * Generate the appropriate SQL based on the where clauses.
+ * @param $where_clauses - An Array of individual where clauses stored as strings
+ * @returns string where_clause - The final SQL where clause to be executed.
+ */
 function generate_where_statement($where_clauses) {
 	global $log;
 	$log->debug('> generate_where_statement '.$where_clauses);
@@ -594,7 +595,7 @@ function generate_where_statement($where_clauses) {
 /**
  * A temporary method of generating GUIDs of the correct format for our DB.
  * @return String contianing a GUID in the format: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
-*/
+ */
 function create_guid() {
 	global $log;
 	$log->debug('> create_guid');
@@ -713,9 +714,9 @@ function decide_to_html() {
 decide_to_html();//call the function once when loading
 
 /** Function to convert the given string to html
-* @param $string -- string:: Type string
-* @returns $string -- string:: Type string
-*/
+ * @param $string -- string:: Type string
+ * @returns $string -- string:: Type string
+ */
 function to_html($string) {
 	global $doconvert,$default_charset;
 	if ($doconvert == true) {
@@ -737,7 +738,7 @@ function to_html($string) {
 /** Function to get the tablabel for a given id
  * @param $tabid -- tab id:: Type integer
  * @returns $string -- string:: Type string
-*/
+ */
 function getTabname($tabid) {
 	global $log, $adb;
 	$log->debug('> getTabname '.$tabid);
@@ -750,7 +751,7 @@ function getTabname($tabid) {
 /** Function to get the tab module name for a given id
  * @param $tabid -- tab id:: Type integer
  * @returns $string -- string:: Type string
-*/
+ */
 function getTabModuleName($tabid) {
 	global $log, $adb;
 	$log->debug('> getTabModuleName '.$tabid);
@@ -770,7 +771,7 @@ function getTabModuleName($tabid) {
 /** Function to get column fields for a given module
  * @param $module -- module:: Type string
  * @returns $column_fld -- column field :: Type array
-*/
+ */
 function getColumnFields($module) {
 	global $log, $adb;
 	$log->debug('> getColumnFields '.$module);
@@ -839,7 +840,7 @@ function getUserEmail($userid) {
 /** Function to get a userid for outlook // outlook security
  * @param $username -- username :: Type string
  * @returns $user_id -- user id :: Type integer
-*/
+ */
 function getUserId_Ol($username) {
 	global $log, $adb;
 	$log->debug('> getUserId_Ol '.$username);
@@ -857,7 +858,7 @@ function getUserId_Ol($username) {
 /** Function to get a action id for a given action name //outlook security
  * @param $action -- action name :: Type string
  * @returns $actionid -- action id :: Type integer
-*/
+ */
 function getActionid($action) {
 	global $log, $adb;
 	$log->debug('> getActionid '.$action);
@@ -870,7 +871,7 @@ function getActionid($action) {
 /** Function to get a action for a given action id
  * @param $action id -- action id :: Type integer
  * @returns $actionname-- action name :: Type string
-*/
+ */
 function getActionname($actionid) {
 	global $log, $adb;
 	$log->debug('> getActionname '.$actionid);
@@ -884,7 +885,7 @@ function getActionname($actionid) {
 /** Function to get a assigned user id for a given entity
  * @param $record -- entity id :: Type integer
  * @returns $user_id -- user id :: Type integer
-*/
+ */
 function getUserId($record) {
 	global $log, $adb, $currentModule;
 	$log->debug('> getUserId '.$record);
@@ -898,7 +899,7 @@ function getUserId($record) {
 /** Function to get a user id or group id for a given entity
  * @param $record -- entity id :: Type integer
  * @returns $ownerArr -- owner id :: Type array
-*/
+ */
 function getRecordOwnerId($record) {
 	global $log, $adb;
 	$log->debug('> getRecordOwnerId '.$record);
@@ -920,8 +921,8 @@ function getRecordOwnerId($record) {
 }
 
 /** Function to insert value to profile2field table
-  * @param $profileid -- profileid :: Type integer
-*/
+ * @param $profileid -- profileid :: Type integer
+ */
 function insertProfile2field($profileid) {
 	global $log, $adb;
 	$log->debug('> insertProfile2field '.$profileid);
@@ -1445,10 +1446,10 @@ function getProductQtyInDemand($product_id) {
 }
 
 /** Function to seperate the Date and Time
-  * This function accepts a sting with date and time and
-  * returns an array of two elements.The first element
-  * contains the date and the second one contains the time
-  */
+ * This function accepts a sting with date and time and
+ * returns an array of two elements.The first element
+ * contains the date and the second one contains the time
+ */
 function getDateFromDateAndtime($date_time) {
 	global $log;
 	$log->debug('> getDateFromDateAndtime '.$date_time);
@@ -1458,9 +1459,9 @@ function getDateFromDateAndtime($date_time) {
 }
 
 /** Function to get header for block in edit/create and detailview
-  * @param $header_label -- header label :: Type string
-  * @returns $output -- output:: Type string
-  */
+ * @param $header_label -- header label :: Type string
+ * @returns $output -- output:: Type string
+ */
 function getBlockTableHeader($header_label) {
 	global $log, $mod_strings;
 	$log->debug('> getBlockTableHeader '.$header_label);
@@ -1517,11 +1518,11 @@ function getModuleForField($fieldid) {
 }
 
 /** Function to get parent record owner
-  * @param $tabid -- tabid :: Type integer
-  * @param $parModId -- parent module id :: Type integer
-  * @param $record_id -- record id :: Type integer
-  * @returns $parentRecOwner -- parentRecOwner:: Type integer
-  */
+ * @param $tabid -- tabid :: Type integer
+ * @param $parModId -- parent module id :: Type integer
+ * @param $record_id -- record id :: Type integer
+ * @returns $parentRecOwner -- parentRecOwner:: Type integer
+ */
 function getParentRecordOwner($tabid, $parModId, $record_id) {
 	global $log;
 	$log->debug('> getParentRecordOwner '.$tabid.','.$parModId.','.$record_id);
@@ -1879,9 +1880,9 @@ function useInternalMailer() {
 }
 
 /**
-* the function is like unescape in javascript
-* added by dingjianting on 2006-10-1 for picklist editor
-*/
+ * the function is like unescape in javascript
+ * added by dingjianting on 2006-10-1 for picklist editor
+ */
 function utf8RawUrlDecode($source) {
 	global $default_charset;
 	$decodedStr = '';
@@ -1920,8 +1921,8 @@ function utf8RawUrlDecode($source) {
 }
 
 /**
-*simple HTML to UTF-8 conversion:
-*/
+ *simple HTML to UTF-8 conversion:
+ */
 function html_to_utf8($data) {
 	return preg_replace_callback("/\\&\\#(\d{3,10})\\;/", '_html_to_utf8', $data);
 }
@@ -1979,8 +1980,8 @@ function _questionify($v) {
 }
 
 /**
-* Function to generate question marks for a given list of items
-*/
+ * Function to generate question marks for a given list of items
+ */
 function generateQuestionMarks($items_list) {
 	// array_map will call the function specified in the first parameter for every element of the list in second parameter
 	if (is_array($items_list)) {
@@ -1991,8 +1992,8 @@ function generateQuestionMarks($items_list) {
 }
 
 /**
-* Function to find the UI type of a field based on the uitype id
-*/
+ * Function to find the UI type of a field based on the uitype id
+ */
 function is_uitype($uitype, $reqtype) {
 	$ui_type_arr = array(
 		'_date_' => array(5, 6, 23, 70),
@@ -2113,9 +2114,9 @@ function setCurrentLanguage($active_module = null) {
 }
 
 /**	Function used to get all the picklists and their values for a module
-	@param string $module - Module name to which the list of picklists and their values needed
-	@return array $fieldlists - Array of picklists and their values
-**/
+@param string $module - Module name to which the list of picklists and their values needed
+@return array $fieldlists - Array of picklists and their values
+ **/
 function getAccessPickListValues($module) {
 	global $adb, $log, $current_user;
 	$log->debug('> getAccessPickListValues '.$module);
@@ -2308,7 +2309,7 @@ function getDuplicateQuery($module, $field_values, $ui_type_arr) {
 	}
 	$table_cols = implode(',', $tbl_cols);
 	$sec_parameter = getSecParameterforMerge($module);
-		$modObj = CRMEntity::getInstance($module);
+	$modObj = CRMEntity::getInstance($module);
 	if ($modObj != null && method_exists($modObj, 'getDuplicatesQuery')) {
 		$nquery = $modObj->getDuplicatesQuery($module, $table_cols, $field_values, $ui_type_arr);
 	}
@@ -3078,11 +3079,9 @@ function getModuleSequenceField($module) {
 			foreach ($cachedModuleFields as $fieldinfo) {
 				if ($fieldinfo['uitype'] == '4') {
 					$field = array();
-
 					$field['name'] = $fieldinfo['fieldname'];
 					$field['column'] = $fieldinfo['columnname'];
 					$field['label'] = $fieldinfo['fieldlabel'];
-
 					break;
 				}
 			}
@@ -3345,9 +3344,9 @@ function isRecordExists($recordId) {
 }
 
 /** Function to set date values compatible to database (YY_MM_DD)
-  * @param $value -- value :: Type string
-  * @returns $insert_date -- insert_date :: Type string
-  */
+ * @param $value -- value :: Type string
+ * @returns $insert_date -- insert_date :: Type string
+ */
 function getValidDBInsertDateValue($value) {
 	global $log;
 	$log->debug('> getValidDBInsertDateValue '.$value);
@@ -3458,9 +3457,9 @@ function sanitizeUploadFileName($fileName, $badFileExtensions) {
 }
 
 /** Function to get the tab meta information for a given id
-  * @param $tabId -- tab id :: Type integer
-  * @returns $tabInfo -- array of preference name to preference value :: Type array
-  */
+ * @param $tabId -- tab id :: Type integer
+ * @returns $tabInfo -- array of preference name to preference value :: Type array
+ */
 function getTabInfo($tabId) {
 	global $adb;
 	$tabInfoResult = $adb->pquery('SELECT prefname, prefvalue FROM vtiger_tab_info WHERE tabid=?', array($tabId));
@@ -3741,8 +3740,8 @@ function dateDiff($d1, $d2) {
 }
 
 /**
-* Function to get the approximate difference between two date time values as string
-*/
+ * Function to get the approximate difference between two date time values as string
+ */
 function dateDiffAsString($d1, $d2) {
 	global $currentModule;
 

@@ -25,7 +25,10 @@ function submittemplate(recordid, value, target_fieldname, formname) {
 	if (calltype.substring(0, 10)=='function::') {
 		let func = calltype.substring(10);
 		if (typeof (window[func])=='function') {
-			window[func](recordid);
+			window[func](recordid, value, target_fieldname, formname);
+			if (document.getElementById('closewindow').value=='true') {
+				window.close();
+			}
 		}
 	}
 }

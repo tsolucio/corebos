@@ -97,6 +97,8 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 			$hasDistinct = true;
 		} elseif (strtolower($colspec['base_expr'])=='count') {
 			$countSelect = true;
+		} elseif ($colspec['expr_type']=='expression') {
+			throw new WebServiceException(WebServiceErrorCode::$QUERYSYNTAX, 'expressions not supported');
 		}
 	}
 	if (!$hasDistinct) {

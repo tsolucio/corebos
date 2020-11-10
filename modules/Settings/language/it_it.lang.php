@@ -783,6 +783,7 @@ $mod_strings = array (
 'LBL_ACTIVE' => 'Attiva',
 'LBL_QUICK_CREATE' => 'Creazione Veloce',
 'LBL_MASS_EDIT' => 'Mass Edit',
+'LBL_LONG_FIELD' => 'Long Field',
 'LBL_BLOCK_NAME' => 'Nome Blocco',
 'AFTER' => 'Dopo',
 'ADD_BLOCK' => 'Aggiungi Blocco',
