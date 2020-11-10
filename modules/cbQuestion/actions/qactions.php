@@ -364,7 +364,6 @@ class qactions_Action extends CoreBOS_ActionController {
 		return $params;
 	}
 	public function getBuilderAnswer() {
-		global $current_user;
 		$params = array('cbQuestionRecord' => json_decode($_REQUEST['cbQuestionRecord'], true));
 		$ctx = $this->getQuestionContext();
 		if (count($ctx)) {
@@ -381,7 +380,7 @@ class qactions_Action extends CoreBOS_ActionController {
 		$date = date_create(date('Y-m-d h:i:s'));
 		$filename = $bqname.'_'.date_format($date, date('Ymdhis'));
 		$path = 'cache/'.$filename.'.csv';
-		$file = fopen($path,"w");
+		$file = fopen($path, 'w');
 		fputcsv($file, array_keys($data[0]));
 		foreach ($data as $key => $value) {
 			fputcsv($file, $value);
