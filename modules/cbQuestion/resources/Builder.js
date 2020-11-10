@@ -124,22 +124,15 @@ function getQuestionResults() {
 	const qsqlqry = (document.getElementById('sqlquery').checked ? '1' : '0');
 	const context_var = document.getElementsByName('context_variable');
 	const context_val = document.getElementsByName('context_value');
-	const context_operator = document.getElementsByName('context_operator');
 	let context_data = Array();
 	for (var i = 0; i < context_var.length; i++) {
 		const variable = context_var[i].value;
 		const value = context_val[i].value;
-		const operator = context_operator[i].value;
 		context_data.push({
 			variable: variable,
 			value: value,
-			operator: operator,
 		});
 	}
-	const context_variable = {
-		condition: document.getElementById('all').checked ? 'and' : 'or',
-		context: context_data,
-	};
 	let cbq = JSON.stringify({
 		'qname': document.getElementById('bqname').value,
 		'qtype': qtype,
@@ -152,7 +145,7 @@ function getQuestionResults() {
 		'typeprops': document.getElementById('qprops').value,
 		'sqlquery': qsqlqry,
 		'condfilterformat': '0',
-		'context_variable': context_variable
+		'context_variable': context_data
 	});
 	const evaluatewith = document.getElementById('evaluatewith').value;
 	let cbqctx = '';

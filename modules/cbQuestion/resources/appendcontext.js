@@ -14,19 +14,6 @@
  *************************************************************************************************/
 
 function addRowToContextTable() {
-	const op = {
-		'is': alert_arr.LBL_IS,
-		'is not': alert_arr.LBL_IS_NOT,
-		'contains': alert_arr.LBL_CONTAINS,
-		'does not contain': alert_arr.LBL_DOES_NOT_CONTAIN,
-		'equal to': alert_arr.LBL_EQUAL_TO,
-		'does not equal': alert_arr.LBL_DOEST_NOT_EQUAL,
-		'less than': alert_arr.LBL_LESS_THAN,
-		'greater than': alert_arr.LBL_GREATER_THAN,
-		'between': alert_arr.LBL_BETWEEN,
-		'before': alert_arr.LBL_BEFORE,
-		'after': alert_arr.LBL_AFTER,
-	};
  	const numrow = document.getElementById('context_rows').rows.length;
  	const tr = document.createElement('tr');
  	tr.id = `row-${numrow}`;
@@ -35,22 +22,12 @@ function addRowToContextTable() {
 	<div class="slds-truncate">
 		<input type="text" class="slds-input" name="context_variable">
 	</div>`;
-	const td1 = tr.insertCell(1);
-	let operators = '<select name="context_operator" class="slds-select">';
-	for (let o in op) {
-		operators += `<option value="${o}">${op[o]}</option>`;
-	}
-	operators += '</select>';
- 	td1.innerHTML = `
-	<div class="slds-truncate">
-		${operators}
-	</div>`;
- 	const td2 = tr.insertCell(2);
+ 	const td2 = tr.insertCell(1);
  	td2.innerHTML = `
 	<div class="slds-truncate">
 		<input type="text" class="slds-input" name="context_value">
 	</div>`;
- 	const td3 = tr.insertCell(3);
+ 	const td3 = tr.insertCell(2);
  	td3.innerHTML = `
  	<a onclick="deleteContextRow(${numrow})" id="delete-${numrow}">
  	<svg class="slds-button__icon" aria-hidden="true">
@@ -87,22 +64,15 @@ function export_results() {
 	const qsqlqry = (document.getElementById('sqlquery').checked ? '1' : '0');
 	const context_var = document.getElementsByName('context_variable');
 	const context_val = document.getElementsByName('context_value');
-	const context_operator = document.getElementsByName('context_operator');
 	let context_data = Array();
 	for (var i = 0; i < context_var.length; i++) {
 		const variable = context_var[i].value;
 		const value = context_val[i].value;
-		const operator = context_operator[i].value;
 		context_data.push({
 			variable: variable,
 			value: value,
-			operator: operator,
 		});
 	}
-	const context_variable = {
-		condition: document.getElementById('all').checked ? 'and' : 'or',
-		context: context_data,
-	};
 	const bqname = document.getElementById('bqname').value;
 	let cbq = JSON.stringify({
 		'qname': bqname,
@@ -116,9 +86,8 @@ function export_results() {
 		'typeprops': document.getElementById('qprops').value,
 		'sqlquery': qsqlqry,
 		'condfilterformat': '0',
-		'context_variable': context_variable
+		'context_variable': context_data
 	});
-	console.log(cbq);
 	const evaluatewith = document.getElementById('evaluatewith').value;
 	let cbqctx = '';
 	if (evaluatewith!=0 && evaluatewith!='') {
