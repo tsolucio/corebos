@@ -99,5 +99,8 @@ $mod_strings = array(
 	'Context Module' => 'Context Module',
 	'Query Context' => 'Query Context',
 	'SelectModule' => 'Select a module',
+	'Add variable' => 'Add variable',
+	'Export Results' => 'Export Results',
+	'Value' => 'Value',
 );
 ?>

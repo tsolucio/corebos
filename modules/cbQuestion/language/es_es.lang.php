@@ -106,5 +106,8 @@ $mod_strings = array(
 	'Update View when Related Changes' => 'Actualizar Vista cuando Cambia Relacionado',
 	'UpdateMViewRelatedInfo' => 'Actualizar Información Relacionada en Vistas Materializadas',
 	'Update Materialized Views Related Information.' => 'Actualiza la información Relacionada de Vistas Materializadas.',
+	'Add variable' => 'Add variable',
+	'Export Results' => 'Export Results',
+	'Value' => 'Value',
 );
 ?>

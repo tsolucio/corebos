@@ -241,6 +241,12 @@ class cbQuestion extends CRMEntity {
 			$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.decode_html($q->column_fields['qmodule']);
 			if (!empty($q->column_fields['qcondition'])) {
 				$conds = decode_html($q->column_fields['qcondition']);
+				$context_variable = $q->column_fields['context_variable'];
+				if (count($context_variable) > 0) {
+					foreach ($context_variable as $variable => $value) {
+						$conds = str_replace($value['variable'], $value['value'], $conds);
+					}
+				}
 				foreach ($params as $param => $value) {
 					$conds = str_replace($param, $value, $conds);
 				}
@@ -394,6 +400,12 @@ class cbQuestion extends CRMEntity {
 				$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.decode_html($q->column_fields['qmodule']);
 				if (!empty($q->column_fields['qcondition'])) {
 					$conds = decode_html($q->column_fields['qcondition']);
+					$context_variable = $q->column_fields['context_variable'];
+					if (count($context_variable) > 0) {
+						foreach ($context_variable as $variable => $value) {
+							$conds = str_replace($value['variable'], $value['value'], $conds);
+						}
+					}
 					foreach ((array)$params as $param => $value) {
 						$conds = str_replace($param, $value, $conds);
 					}
