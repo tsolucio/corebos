@@ -101,10 +101,6 @@ $mod_strings = array(
 	'SelectModule' => 'Select a module',
 	'Add variable' => 'Add variable',
 	'Export Results' => 'Export Results',
-	'Must match' => 'Must match',
-	'all conditions' => 'all conditions',
-	'any condition' => 'any condition',
-	'Operator' => 'Operator',
 	'Value' => 'Value',
 );
 ?>
