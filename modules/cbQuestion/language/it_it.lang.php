@@ -17,5 +17,11 @@ $mod_strings = array(
 	'LBL_MODULEBLOCK_INFORMATION' => 'Informazione Blocco del Modulo',
 
 	'ModuleFieldLabel' => 'Testo Etichetta Campo Modulo',
+	'Context Module' => 'Modulo Contesto',
+	'Query Context' => 'Query Contesto',
+	'SelectModule' => 'Seleziona un modulo',
+	'Add variable' => 'Aggiungi variabile',
+	'Export Results' => 'Esporta Risultati',
+	'Value' => 'Valore',
 );
 ?>
