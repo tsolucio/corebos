@@ -21,18 +21,18 @@
 		<thead>
 			<tr class="slds-line-height_reset">
 				<th scope="col">
-					<div class="slds-truncate" title="{'Variable'|@getTranslatedString:$module->name}">
-						{'Variable'|@getTranslatedString:$module->name}
+					<div class="slds-truncate" title="{'Variable'|@getTranslatedString:$MODULE}">
+						{'Variable'|@getTranslatedString:$MODULE}
 					</div>
 				</th>
 				<th scope="col">
-					<div title="{'Variable'|@getTranslatedString:$module->name}">
-						{'Value'|@getTranslatedString:$module->name}
+					<div title="{'Variable'|@getTranslatedString:$MODULE}">
+						{'Value'|@getTranslatedString:$MODULE}
 					</div>
 				</th>
 				<th scope="col" style="width:5%;">
-					<div title="{'LBL_DELETE'|@getTranslatedString:$module->name}">
-						{'LBL_DELETE'|@getTranslatedString:$module->name}
+					<div title="{'LBL_DELETE'|@getTranslatedString:$MODULE}">
+						{'LBL_DELETE'|@getTranslatedString:$MODULE}
 					</div>
 				</th>
 			</tr>
