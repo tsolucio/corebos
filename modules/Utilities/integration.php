@@ -109,6 +109,7 @@ switch ($_REQUEST['_op']) {
 	case 'getconfigonesignal':
 	case 'setconfigonesignal':
 		include_once 'include/integrations/onesignal/settings.php';
+		break;
 	case 'getconfigcache':
 	case 'setconfigcache':
 		include_once 'include/integrations/cache/settings.php';
