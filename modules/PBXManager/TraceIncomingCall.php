@@ -123,18 +123,18 @@ function TraceIncomingCall() {
 				array('id'=>"create-opportunity", 'text'=>$callerLinks_2_label, 'icon'=>'', 'url'=>$callerLinks_2)
 			);
 			$filters = array();
-	
+
 			sendDesktopNotification(
-				$contents, 
-				$headings, 
-				$subtitle, 
-				$filters, 
+				$contents,
+				$headings,
+				$subtitle,
+				$filters,
 				$external_user_id,
 				$web_url,
 				$web_buttons
 			);
 			return '';
-		} 
+		}
 	}
 
 	return $status;
