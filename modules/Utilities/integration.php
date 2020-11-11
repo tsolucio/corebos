@@ -74,6 +74,10 @@ switch ($_REQUEST['_op']) {
 	case 'setconfigwhatsapp':
 		include_once 'include/integrations/whatsapp/settings.php';
 		break;
+	case 'getconfigsaml':
+	case 'setconfigsaml':
+		include_once 'include/integrations/saml/settings.php';
+		break;
 	case 'getconfigsendgrid':
 	case 'setconfigsendgrid':
 		include_once 'include/integrations/sendgrid/settings.php';
@@ -105,6 +109,9 @@ switch ($_REQUEST['_op']) {
 	case 'getconfigonesignal':
 	case 'setconfigonesignal':
 		include_once 'include/integrations/onesignal/settings.php';
+	case 'getconfigcache':
+	case 'setconfigcache':
+		include_once 'include/integrations/cache/settings.php';
 		break;
 	default:
 		$smarty = new vtigerCRM_Smarty();
@@ -115,6 +122,12 @@ switch ($_REQUEST['_op']) {
 				'title' => getTranslatedString('GoTo2FAActivation', 'Utilities'),
 				'desc' => getTranslatedString('GoTo2FAActivation_Desc', 'Utilities'),
 				'url' => 'index.php?action=integration&module=Utilities&_op=getconfig2fa',
+			),
+			array(
+				'abbr' => 'SSO',
+				'title' => getTranslatedString('SAML Activation', 'Utilities'),
+				'desc' => getTranslatedString('SAML Activation_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigsaml',
 			),
 			array(
 				'abbr' => 'GC',
@@ -175,6 +188,12 @@ switch ($_REQUEST['_op']) {
 				'title' => getTranslatedString('LogAll Activation', 'Utilities'),
 				'desc' => getTranslatedString('LogAll_Desc', 'Utilities'),
 				'url' => 'index.php?action=integration&module=Utilities&_op=getconfiglogall',
+			),
+			array(
+				'abbr' => 'CA',
+				'title' => getTranslatedString('Cache Activation', 'Utilities'),
+				'desc' => getTranslatedString('Cache Activation_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigcache',
 			),
 		);
 		if (file_exists('build/wsChanges/LoginSession.php')) {

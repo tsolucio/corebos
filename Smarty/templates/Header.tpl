@@ -387,7 +387,7 @@
 
 <div id='miniCal' style='position:absolute; display:none; left:100px; top:100px; z-index:100000'></div>
 
-{if $MODULE_NAME eq 'Calendar'}
+{if $MODULE_NAME eq 'Calendar4You'}
 	<div id="CalExport" style="width:300px; position:absolute; display:none; left:500px; top:100px; z-index:100000" class="layerPopup">
 		<table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
 			<tr>
@@ -461,7 +461,7 @@
 <div id="qcform" style="position:absolute;width:700px;top:80px;left:450px;z-index:90000;"></div>
 
 <!-- Last visited panel -->
-<div id="cbds-last-visited" class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open slds-is-fixed cbds-last-visited" aria-hidden="false">
+<div id="cbds-last-visited" class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open slds-is-fixed cbds-last-visited containernpanel" aria-hidden="false" style="height: 90%;">
 <div class="slds-panel__header cbds-bg-blue--gray slds-text-color_default slds-text-color_inverse">
 	<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="{$APP.LBL_LAST_VIEWED}">{$APP.LBL_LAST_VIEWED}
 	</h2>
@@ -472,7 +472,7 @@
 		<span class="slds-assistive-text">{'Close LAST_VIEWED'|@getTranslatedString}</span>
 	</button>
 </div>
-<div class="slds-panel__body">
+<div class="slds-panel__body containernpanel" style="height: 92%;">
 	{foreach name=trackinfo item=trackelements from=$TRACINFO}
 		<article class="slds-card">
 			<div class="slds-card__header slds-grid">
@@ -524,7 +524,7 @@
 </div>
 <!-- ActivityReminder Customization for callback -->
 <audio id="newEvents" src="{$Calendar_Notification_Sound}" preload="auto"></audio>
-<div id="cbds-notificationpanel" class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open slds-is-fixed cbds-last-visited" aria-hidden="false">
+<div id="cbds-notificationpanel" class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open slds-is-fixed cbds-last-visited containernpanel" aria-hidden="false" style="height: 90%;">
 <div class="slds-panel__header cbds-bg-blue--gray slds-text-color_default slds-text-color_inverse">
 	<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="{'LBL_NOTIFICATION'|@getTranslatedString:'Settings'}">{'LBL_NOTIFICATION'|@getTranslatedString:'Settings'}
 	</h2>
@@ -541,7 +541,7 @@
 		<span class="slds-assistive-text">{'LBL_CLOSE'|@getTranslatedString}</span>
 	</button>
 </div>
-<div class="slds-panel__body">
+<div class="slds-panel__body containernpanel" style="height: 92%;">
 <ul id="todolist"></ul>
 </div>
 </div>

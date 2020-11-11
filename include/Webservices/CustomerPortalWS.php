@@ -909,18 +909,18 @@ function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $use
 		$eirs = $adb->pquery('select fieldname,tablename,entityidfield from vtiger_entityname where modulename=?', array($srchmod));
 		$ei = $adb->fetch_array($eirs);
 		$fieldsname = $ei['fieldname'];
-		$wherefield = $ei['fieldname']." $op '$term' ";
+		$wherefield = $ei['fieldname']." $op '$term'";
 		if (!(strpos($fieldsname, ',') === false)) {
 			$fieldlists = explode(',', $fieldsname);
 			$fieldsname = 'concat(';
 			$fieldsname = $fieldsname . implode(",' ',", $fieldlists);
 			$fieldsname = $fieldsname . ')';
-			$wherefield = implode(" $op '$term' or ", $fieldlists)." $op '$term' ";
+			$wherefield = implode(" $op '$term' or ", $fieldlists)." $op '$term' or $fieldsname $op '$term'";
 		}
 		$qry = "select crmid,$fieldsname as crmname
-				from {$ei['tablename']}
-				inner join vtiger_crmentity on crmid = {$ei['entityidfield']}
-				where deleted = 0 and ($wherefield)";
+			from {$ei['tablename']}
+			inner join vtiger_crmentity on crmid = {$ei['entityidfield']}
+			where deleted = 0 and ($wherefield)";
 		$rsemp=$adb->query($qry);
 		$trmod = getTranslatedString($srchmod, $srchmod);
 		$wsid = vtyiicpng_getWSEntityId($srchmod);
@@ -991,13 +991,36 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 	}
 
 	for ($i=0; $i < count($productsearchfields); $i++) {
-		$productsearchquery .= 'vtiger_products.' . $productsearchfields[$i] . ' LIKE \'%' . $term . '%\'';
+		if (preg_match('/\[[\w_|]+\]/', $productsearchfields[$i])) {
+			// It's a compounded field definition
+			$cfields = explode('|', $productsearchfields[$i]);
+			array_walk($cfields, function (&$cfield) {
+				$cfield = preg_replace('/\[|\]/', '', $cfield);
+				$cfield = preg_match('/cf_/', $cfield) ? 'vtiger_productcf.' . $cfield : 'vtiger_products.' . $cfield;
+			});
+			array_unshift($cfields, 'CONCAT_WS(\' \'');
+			$productsearchquery .= implode(',', $cfields) . ') LIKE \'%' . $term . '%\'';
+		} else {
+			$productsearchquery .= 'vtiger_products.' . $productsearchfields[$i] . ' LIKE \'%' . $term . '%\'';
+		}
 		if (($i + 1) < count($productsearchfields)) {
 			$productsearchquery .= ' OR ';
 		}
 	}
+
 	for ($i=0; $i < count($servicesearchfields); $i++) {
-		$servicesearchquery .= 'vtiger_service.' . $servicesearchfields[$i] . ' LIKE \'%' . $term . '%\'';
+		if (preg_match('/\[[\w_|]+\]/', $servicesearchfields[$i])) {
+			// It's a compounded field definition
+			$cfields = explode('|', $servicesearchfields[$i]);
+			array_walk($cfields, function (&$cfield) {
+				$cfield = preg_replace('/\[|\]/', '', $cfield);
+				$cfield = preg_match('/cf_/', $cfield) ? 'vtiger_servicecf.' . $cfield : 'vtiger_service.' . $cfield;
+			});
+			array_unshift($cfields, 'CONCAT_WS(\' \'');
+			$servicesearchquery .= implode(',', $cfields) . ') LIKE \'%' . $term . '%\'';
+		} else {
+			$servicesearchquery .= 'vtiger_service.' . $servicesearchfields[$i] . ' LIKE \'%' . $term . '%\'';
+		}
 		if (($i + 1) < count($servicesearchfields)) {
 			$servicesearchquery .= ' OR ';
 		}
@@ -1135,7 +1158,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		while ($mcinfo = $adb->fetch_array($multic)) {
 			$mc[$mcinfo['currencyid']] = array(
 				'converted_price' => number_format((float)$mcinfo['converted_price'], $cur_user_decimals, '.', ''),
-				'actual_price' => number_format((float)$unitprice, $cur_user_decimals, '.', ''),
+				'actual_price' => number_format((float)$mcinfo['actual_price'], $cur_user_decimals, '.', ''),
 			);
 		}
 		$ret_prodser['pricing']['multicurrency'] = $mc;

@@ -909,6 +909,7 @@ $mod_strings = array(
 	'LBL_ACTIVE' => 'Aktiv',
 	'LBL_QUICK_CREATE' => 'schnell erstellen',
 	'LBL_MASS_EDIT' => 'Massenänderung',
+	'LBL_LONG_FIELD' => 'Long Field',
 	'LBL_BLOCK_NAME' => 'Blockname',
 	'AFTER' => 'nach',
 	'ADD_BLOCK' => 'Block hinzufügen',

@@ -11,5 +11,7 @@ var mod_alert_arr = {
 	'DESC': 'Descending',
 	'NameNotEmpty': 'Question name cannot be empty.',
 	'ModuleNotEmpty': 'You must select a module.',
-	'QuestionSaved': 'Question has been saved correctly.'
+	'QuestionSaved': 'Question has been saved correctly.',
+	'export_results': 'Export Results',
+	'Exporting': 'Exporting...',
 };

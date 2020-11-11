@@ -54,5 +54,5 @@
 	</div>
 {/block}
 {block name=ModalFooter}
-<button class="slds-button slds-button_neutral" onClick="setSelectedFunction('{$FillInField}');" id="wffnselectbutton">{$APP.LBL_SELECT}</button>
+<button class="slds-button slds-button_neutral" onClick="return setSelectedFunction('{$FillInField}');" id="wffnselectbutton">{$APP.LBL_SELECT}</button>
 {/block}

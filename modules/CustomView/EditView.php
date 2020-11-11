@@ -19,6 +19,7 @@ require_once 'modules/CustomView/CustomView.php';
 
 $cv_module = vtlib_purify($_REQUEST['module']);
 $recordid = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : '';
+$permit_all = isset($_REQUEST['permitall']) ? vtlib_purify($_REQUEST['permitall']) : 'false';
 
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('CATEGORY', getParentTab());
@@ -117,6 +118,7 @@ if ($recordid == '') {
 		$smarty->assign('EXIST', 'true');
 		$data_type[] = $oCustomView->data_type;
 		$smarty->assign('DATATYPE', $data_type);
+		$smarty->assign('PERMITALL', $permit_all);
 	} else {
 		$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 		exit;

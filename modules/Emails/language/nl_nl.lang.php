@@ -58,6 +58,7 @@ $mod_strings = array(
 	'LBL_FROM' => 'Van :',
 	'LBL_CC' => 'Cc :',
 	'LBL_BCC' => 'Bcc :',
+	'replyto' => 'Reply To',
 	'NTC_REMOVE_INVITEE' => 'Wilt u dit adres verwijderen van deze e-mail?',
 	'LBL_INVITEE' => 'Ontvangers',
 	'LBL_BULK_MAILS' => 'Bulk e-mails',

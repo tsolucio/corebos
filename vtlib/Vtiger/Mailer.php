@@ -52,11 +52,11 @@ class Vtiger_Mailer extends PHPMailer {
 			$smtp_auth = $adb->query_result($result, 0, 'smtp_auth');
 			if ($smtp_auth == 'sslnc' || $smtp_auth == 'tlsnc') {
 				$this->SMTPOptions = array(
-						'ssl' => array(
-								'verify_peer' => false,
-								'verify_peer_name' => false,
-								'allow_self_signed' => true
-						)
+					'ssl' => array(
+						'verify_peer' => false,
+						'verify_peer_name' => false,
+						'allow_self_signed' => true
+					)
 				);
 				$smtp_auth = substr($smtp_auth, 0, 3);
 			}
@@ -284,14 +284,14 @@ class Vtiger_Mailer extends PHPMailer {
 				$emails = $adb->pquery('SELECT * FROM vtiger_mailer_queueinfo WHERE id=?', array($queueid));
 				for ($eidx = 0; $eidx < $adb->num_rows($emails); ++$eidx) {
 					$email_record = $adb->fetch_array($emails, $eidx);
-					if ($email_record[type] == 'TO') {
-						$mailer->AddAddress($email_record[email], $email_record[name]);
-					} elseif ($email_record[type] == 'CC') {
-						$mailer->AddCC($email_record[email], $email_record[name]);
-					} elseif ($email_record[type] == 'BCC') {
-						$mailer->AddBCC($email_record[email], $email_record[name]);
-					} elseif ($email_record[type] == 'RPLYTO') {
-						$mailer->AddReplyTo($email_record[email], $email_record[name]);
+					if ($email_record['type'] == 'TO') {
+						$mailer->AddAddress($email_record['email'], $email_record['name']);
+					} elseif ($email_record['type'] == 'CC') {
+						$mailer->AddCC($email_record['email'], $email_record['name']);
+					} elseif ($email_record['type'] == 'BCC') {
+						$mailer->AddBCC($email_record['email'], $email_record['name']);
+					} elseif ($email_record['type'] == 'RPLYTO') {
+						$mailer->AddReplyTo($email_record['email'], $email_record['name']);
 					}
 				}
 

@@ -15,12 +15,14 @@ function openFunctionSelection(fillin) {
 		document.getElementById(wfexpselectionDIV).innerHTML = response;
 		show(wfexpselectionDIV);
 	});
+	return false;
 }
 
 function setSelectedFunction(fillinID) {
 	var fi = document.getElementById(fillinID);
 	fi.value += document.getElementById('selectedfunction').value;
 	hide(wfexpselectionDIV);
+	return false;
 }
 
 function dblClickFunctionSelect(selected) {
@@ -113,6 +115,7 @@ function wffnFilterCategories(cat) {
 	} else {
 		var fns = Object.keys(wfexpfndefs)
 			.filter(fn => wfexpfndefs[fn].categories.indexOf(cat) > -1)
+			.sort()
 			.reduce((res, key) => (res[key] = wfexpfndefs[key], res), {});
 	}
 	setFilteredFunctions(fns);

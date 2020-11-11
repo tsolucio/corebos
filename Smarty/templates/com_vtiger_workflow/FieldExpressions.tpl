@@ -33,6 +33,14 @@
 	height:350px;
 }
 </style>
+<script>
+document.addEventListener('DOMContentLoaded', function (event) {
+	loadJS('index.php?module=cbMap&action=cbMapAjax&file=getjslanguage');
+});
+var wfexpfndefs = {$FNDEFS};
+var wfexpselectionDIV = 'selectfunction';
+</script>
+<div id="selectfunction"></div>
 <div id='editpopup' class='layerPopup slds-align_absolute-center' style='display:none;z-index:1;'>
 	<div id='editpopup_draghandle' style='cursor: move;' class="slds-grid slds-badge_lightest">
 		<div class="slds-col slds-size_3-of-4 slds-page-header__title slds-m-top_xx-small">
@@ -118,9 +126,12 @@
 			</select>
 		</div>
 		<div class="slds-col slds-size_2-of-4 slds-p-around_xxx-small">
-			<select id='editpopup_functions' class='slds-select'>
-				<option value="">{$MOD.LBL_USE_FUNCTION_DASHDASH}</option>
-			</select>
+			<button class="slds-button slds-button_neutral" id="editpopup_functions" onclick="return openFunctionSelection('editpopup_expression');">
+				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
+				</svg>
+				{$MOD.LBL_USE_FUNCTION_DASHDASH}
+			</button>
 		</div>
 	</div>
 	<div class="slds-grid">

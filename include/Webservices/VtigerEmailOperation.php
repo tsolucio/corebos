@@ -42,7 +42,7 @@ class VtigerEmailOperation extends VtigerModuleOperation {
 			foreach ($element['files'] as $file) {
 				$element['filesize']=$file['size'];
 				$file['assigned_user_id'] = $element['assigned_user_id'];
-				$file['setype'] = "Emails Attachment";
+				$file['setype'] = 'Emails Attachment';
 				$attachments[] = SaveAttachmentDB($file);
 				$element['filetype']=$file['type'];
 				$element['filename']= str_replace(' ', '_', $file['name']);

@@ -241,6 +241,12 @@ class cbQuestion extends CRMEntity {
 			$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.decode_html($q->column_fields['qmodule']);
 			if (!empty($q->column_fields['qcondition'])) {
 				$conds = decode_html($q->column_fields['qcondition']);
+				$context_variable = vtlib_purify(json_decode(urldecode($_REQUEST['cbQuestionRecord']), true));
+				if (isset($context_variable['context_variable'])) {
+					foreach ($context_variable['context_variable'] as $key => $value) {
+						$conds = str_replace($value['variable'], $value['value'], $conds);
+					}
+				}
 				foreach ($params as $param => $value) {
 					$conds = str_replace($param, $value, $conds);
 				}
@@ -394,6 +400,12 @@ class cbQuestion extends CRMEntity {
 				$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.decode_html($q->column_fields['qmodule']);
 				if (!empty($q->column_fields['qcondition'])) {
 					$conds = decode_html($q->column_fields['qcondition']);
+					$context_variable = vtlib_purify(json_decode(urldecode($_REQUEST['cbQuestionRecord']), true));
+					if (isset($context_variable['context_variable'])) {
+						foreach ($context_variable['context_variable'] as $key => $value) {
+							$conds = str_replace($value['variable'], $value['value'], $conds);
+						}
+					}
 					foreach ((array)$params as $param => $value) {
 						$conds = str_replace($param, $value, $conds);
 					}
@@ -491,7 +503,13 @@ class cbQuestion extends CRMEntity {
 			$encls = empty($properties->enclosure) ? '"' : $properties->enclosure;
 			$alllabels = array();
 			$alltypes = array();
-			$rowlabels = array_keys($ans['answer'][0]);
+			$rowlabels = !empty($ans['answer'][0]) ? array_keys($ans['answer'][0]) : array();
+			if (empty($rowlabels) && !empty($properties->columns)) {
+				for ($i=0; $i < count($properties->columns); $i++) {
+					$alllabels[] = $properties->columns[$i]->label;
+				}
+				$line = self::generateCSV($alllabels, $delim, $encls);
+			}
 			$ls = 0;
 			foreach ($rowlabels as $label) {
 				$alltypes[$label] = empty($properties->columns[$ls]->type) ? 'string' : $properties->columns[$ls]->type;

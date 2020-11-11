@@ -508,7 +508,6 @@
 							{* Import button *}
 							{if $CHECK.Import eq 'yes'
 								&& $MODULE neq 'Documents'
-								&& $MODULE neq 'Calendar'
 								&& $MODULE neq 'Calendar4You'
 							}
 							<a
@@ -523,7 +522,7 @@
 										{$APP.LBL_IMPORT} {$MODULE|getTranslatedString:$MODULE}
 									</span>
 							</a>
-							{elseif $CHECK.Import eq 'yes' && $MODULE eq 'Calendar'}
+							{elseif $CHECK.Import eq 'yes' && $MODULE eq 'Calendar4You'}
 							<button
 								class="slds-button slds-button_icon slds-button_icon-border-filled"
 								aria-haspopup="true"
@@ -538,10 +537,12 @@
 							</button>
 							{/if}
 							{* Export Button *}
-							{if $CHECK.Export eq 'yes' && $MODULE neq 'Calendar' && $MODULE neq 'Calendar4You'}
-								{$exportbuttononclick = "return selectedRecords('{$MODULE}','{$CATEGORY}')"}
-							{elseif $CHECK.Export eq 'yes' && $MODULE eq 'Calendar'}
-								{$exportbuttononclick = "fnvshobj(this,'CalExport');"}
+							{if $CHECK.Export eq 'yes'}
+								{if $MODULE eq 'Calendar4You'}
+									{$exportbuttononclick = "fnvshobj(this,'CalExport');"}
+								{else}
+									{$exportbuttononclick = "return selectedRecords('{$MODULE}','{$CATEGORY}')"}
+								{/if}
 							{/if}
 							{if isset($exportbuttononclick)}
 							<button

@@ -65,6 +65,7 @@ function vtws_revise($element, $user) {
 	}
 
 	$referenceFields = $meta->getReferenceFieldDetails();
+	$referenceFields['assigned_user_id'] = array('Users', 'Groups');
 	foreach ($referenceFields as $fieldName => $details) {
 		if (isset($element[$fieldName]) && strlen($element[$fieldName]) > 0) {
 			$element[$fieldName] = vtws_getWSID($element[$fieldName]);

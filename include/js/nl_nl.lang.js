@@ -429,5 +429,6 @@ var alert_arr = {
 	'Okay': 'Oké',
 	'Failed': 'Failed',
 	'Warning': 'Warning',
-	'Copied': 'Copied'
+	'Copied': 'Copied',
+	'ACT_UNIT_PRICE_MISMATCH': 'De actuele prijs van de valuta zou overeen moeten komen met de verkoopprijs, maar dit is niet het geval voor dit product of deze dienst'
 };

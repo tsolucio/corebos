@@ -441,3 +441,27 @@ function insertIntoCRM(userid, eventid, eventtype, geventid, start_date, end_dat
 		document.EditView.gevent_userid.value = userid;
 	}
 }
+
+function exportCalendar() {
+	if (document.getElementsByName('exportCalendar')[0].value == 'iCal') {
+		var filename = document.getElementById('ics_filename').value;
+		VtigerJS_DialogBox.block();
+		var url = 'index.php?module=cbCalendar&action=iCalExport&filename='+filename;
+		location.href = url;
+		VtigerJS_DialogBox.unblock();
+		ghide('CalExport');
+	}
+}
+
+function importCalendar() {
+	var file = document.getElementById('ics_file').value;
+	if (file != '') {
+		if (file.indexOf('.ics') != (file.length - 4)) {
+			alert(alert_arr.PLS_SELECT_VALID_FILE+'.ics');
+		} else {
+			document.ical_import.action.value='iCalImport';
+			document.ical_import.module.value='cbCalendar';
+			document.ical_import.submit();
+		}
+	}
+}
