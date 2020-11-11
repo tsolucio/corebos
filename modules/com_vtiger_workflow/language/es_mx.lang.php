@@ -62,7 +62,7 @@ $mod_strings = array(
 'LBL_EXPRESSION'=>'Expresión',
 'LBL_SET_EXPRESSION'=>'Definir Expresión',
 
-'LBL_MANUAL'=>'Sistema. Acciones Masivas.',
+'LBL_MANUAL'=>'Sistema. Acciones Masivas',
 'LBL_RECORD_ACCESS_CONTROL' => 'Control de Acceso a Registro',
 'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL'=>'Añadir Condición de Grupo',
 
