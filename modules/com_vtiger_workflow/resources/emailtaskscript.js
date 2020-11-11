@@ -544,7 +544,7 @@ $(document).ready(function () {
 	let fileurl = 'module=MsgTemplate&action=MsgTemplateAjax&file=getSGTemplates';
 	var templateBody = document.getElementById('sgMsgTemplate');
 	if(templateBody.selectedIndex == 0) {
-		document.getElementById('sgPreviewLink').setAttribute("disabled","disabled");
+		document.getElementById('sgPreviewLink').removeAttribute("disabled");
 	}
 	$.ajax({
 		method: 'GET',
@@ -563,7 +563,7 @@ $(document).ready(function () {
 					previewLink.href = "https://mc.sendgrid.com/dynamic-templates/"+data.templateId+"/version/"+data.versionId+"/preview";
 					previewLink.disabled = false;
 				} else {
-					previewLink.setAttribute("disabled","disabled");
+					previewLink.removeAttribute("disabled");
 				}
 			}
 			templateBody.appendChild(opt);
