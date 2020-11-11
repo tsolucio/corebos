@@ -358,7 +358,7 @@ var selectedSGTemplate = '{if isset($task->sgmsgtemplate)}{$task->sgmsgtemplate}
 			<div class="slds-form-element">
 				<span class="slds-form-element__label slds-size--1-of-3">
 					<input type='hidden' class='small' name="cbmsgtemplate_type" id="cbmsgtemplate_type" value="MsgTemplate">
-					<input id="cbmsgtemplate" name="cbmsgtemplate" type="hidden" value="{if isset($task->cbmsgtemplate)}{$task->cbmsgtemplate}{/if}">
+					<input id="cbmsgtemplate" name="cbmsgtemplate" type="hidden" value="{if isset($task->cbmsgtemplate)}{$task->cbmsgtemplate}{/if}" onchange='document.getElementById("sgMsgTemplate").selectedIndex = "0"; document.getElementById("sgMsgTemplate").value = "";'>
 					<input
 						class="slds-input"
 						id="cbmsgtemplate_display"
@@ -411,7 +411,7 @@ var selectedSGTemplate = '{if isset($task->sgmsgtemplate)}{$task->sgmsgtemplate}
 				<span class="slds-form-element__label slds-size--1-of-3">
 					<input type='hidden' class='small' name="sgmsgtemplate" id="sgmsgtemplate" value="{if isset($task->sgmsgtemplate)}{$task->sgmsgtemplate}{else}''{/if}">
 					<div class="slds-select_container" style="width: 80%;">
-						<select class="slds-select slds-page-header__meta-text" id="sgMsgTemplate">
+						<select class="slds-select slds-page-header__meta-text" id="sgMsgTemplate" onclick="document.getElementById('cbmsgtemplate').value=''; document.getElementById('cbmsgtemplate_display').value=''; return false;">
 							<option value="">{'LBL_SELECT_OPTION_DOTDOTDOT'|@getTranslatedString:$MODULE_NAME}</option>
 						</select>
 					</div>
