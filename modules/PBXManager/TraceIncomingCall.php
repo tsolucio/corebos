@@ -17,7 +17,7 @@ echo TraceIncomingCall();
  */
 function TraceIncomingCall() {
 	require_once 'modules/PBXManager/AsteriskUtils.php';
-	global $adb, $current_user, $app_strings;
+	global $adb, $current_user, $app_strings, $log, $site_URL;
 
 	$asterisk_extension = false;
 	if (isset($current_user->column_fields)) {
@@ -84,6 +84,59 @@ function TraceIncomingCall() {
 					</table>";
 		}
 	}
+
+	if ($status != '' && $status != 'failure') {
+		$callerInfos = getCallerInfo($callerNumber);
+		$createActivityInfo = urlencode(serialize($createActivityInfo));
+		if ($callerInfos !== false) {
+			$callerName = decode_html($callerInfos['name']);
+			$module = $callerInfos['module'];
+			$callerModule = " [$module]";
+			$callerID = $callerInfos['id'];
+			$callerLinks_0 = $site_URL.'/index.php?module='.$module.'&action=DetailView&record='.$callerID;
+			$callerLinks_1 = $site_URL.'/index.php?module=HelpDesk&action=EditView&parent_id='.$callerID.'&ticket_title='.$callerName.'&cbcustominfo1='.$createActivityInfo;
+			$callerLinks_2 = $site_URL.'/index.php?module=Potentials&action=EditView&related_to='.$callerID.'&potentialname='.$callerName.'&cbcustominfo1='.$createActivityInfo;
+			$callerLinks_0_label = getTranslatedString('LBL_VIEW_CONTACT');
+			$callerLinks_1_label = getTranslatedString('LBL_CREATE_TICKET');
+			$callerLinks_2_label = getTranslatedString('LBL_CREATE').' '.getTranslatedString('SINGLE_Potentials', 'Potentials');
+		} else {
+			$from = urlencode($callerNumber);
+			$fromname = urlencode($callerName);
+			$callerLinks_0 = $site_URL.'/index.php?module=Leads&action=EditView&lastname='.$fromname.'&phone='.$from.'&cbcustominfo1='.$createActivityInfo;
+			$callerLinks_1 = $site_URL.'/index.php?module=Contacts&action=EditView&lastname='.$fromname.'&phone='.$from.'&cbcustominfo1='.$createActivityInfo;
+			$callerLinks_2 = $site_URL.'/index.php?module=Accounts&action=EditView&accountname='.$fromname.'&phone=$from&cbcustominfo1='.$createActivityInfo;
+			$callerLinks_0_label = getTranslatedString('LBL_CREATE_LEAD');
+			$callerLinks_1_label = getTranslatedString('LBL_CREATE_CONTACT');
+			$callerLinks_2_label = getTranslatedString('LBL_CREATE_ACCOUNT');
+		}
+
+		if (coreBOS_Settings::getSetting('onesignal_isactive', '') == '1') {
+			require_once 'include/utils/utils.php';
+			$message = $app_strings['LBL_CALLER_NUMBER'].':'.$callerNumber .'	'.$app_strings['LBL_CALLER_NAME'].':'.$callerName;
+			$contents = array("en" => $message );
+			$headings = array("en" => $app_strings['LBL_INCOMING_CALL'].' ('.$app_strings['LBL_CLICK_NOTIFICATION_TO'].$callerLinks_0_label.')');
+			$subtitle = array("en" => $app_strings['LBL_CALLER_INFORMATION']);
+			$external_user_id = array($current_user->id);
+			$web_url = $callerLinks_0;
+			$web_buttons = array(
+				array('id'=>"create-ticket", 'text'=>$callerLinks_1_label, 'icon'=>'', 'url'=>$callerLinks_1),
+				array('id'=>"create-opportunity", 'text'=>$callerLinks_2_label, 'icon'=>'', 'url'=>$callerLinks_2)
+			);
+			$filters = array();
+
+			sendDesktopNotification(
+				$contents,
+				$headings,
+				$subtitle,
+				$filters,
+				$external_user_id,
+				$web_url,
+				$web_buttons
+			);
+			return '';
+		}
+	}
+
 	return $status;
 }
 
