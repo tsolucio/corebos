@@ -543,6 +543,9 @@ function uploadCountUpdater() {
 $(document).ready(function () {
 	let fileurl = 'module=MsgTemplate&action=MsgTemplateAjax&file=getSGTemplates';
 	var templateBody = document.getElementById('sgMsgTemplate');
+	if(templateBody.selectedIndex == 0) {
+		document.getElementById('sgPreviewLink').setAttribute("disabled","disabled");
+	}
 	$.ajax({
 		method: 'GET',
 		url: 'index.php?' + fileurl
@@ -552,14 +555,32 @@ $(document).ready(function () {
 			var opt = document.createElement('option');
 			opt.appendChild(document.createTextNode(data.templateName));
 			opt.value = data.templateId;
+			opt.setAttribute('versionid', data.versionId);
 			if (data.templateId == selectedSGTemplate) {
 				opt.setAttribute('selected', 'selected');
+				previewLink = document.getElementById('sgPreviewLink');
+				if (data.versionId !=null) {
+					previewLink.href = "https://mc.sendgrid.com/dynamic-templates/"+data.templateId+"/version/"+data.versionId+"/preview";
+					previewLink.disabled = false;
+				} else {
+					previewLink.setAttribute("disabled","disabled");
+				}
 			}
 			templateBody.appendChild(opt);
 		});
 	});
 	templateBody.addEventListener("change", function () {
 		selvalue = document.getElementById('sgMsgTemplate').value;
+		sel = document.getElementById('sgMsgTemplate');
 		document.getElementById('sgmsgtemplate').value = selvalue;
+		previewLink = document.getElementById('sgPreviewLink');
+		templateVersion = sel.options[sel.selectedIndex].getAttribute('versionid');
+		if (templateVersion !=null) {
+			previewLink.href = "https://mc.sendgrid.com/dynamic-templates/"+selvalue+"/version/"+templateVersion+"/preview";
+			previewLink.disabled = false;
+
+		} else {
+			previewLink.setAttribute("disabled","disabled");
+		}
 	});
 });
