@@ -3888,10 +3888,9 @@ function sendDesktopNotification($contents, $headings, $subtitle, $filters, $ext
 		}
 
 		$fields = json_encode($fields);
-		$log->fatal($fields);
 
 		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, "https://onesignal.com/api/v1/notifications");
+		curl_setopt($ch, CURLOPT_URL, $clientclass::$APIURL);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
 		  'Content-Type: application/json; charset=utf-8',
 		  'Authorization: Basic '.$apikey
@@ -3903,7 +3902,6 @@ function sendDesktopNotification($contents, $headings, $subtitle, $filters, $ext
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
 		$response = curl_exec($ch);
-		$log->fatal($response);
 		curl_close($ch);
 	}
 	return sendStatus;
