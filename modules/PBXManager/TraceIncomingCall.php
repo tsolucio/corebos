@@ -114,7 +114,7 @@ function TraceIncomingCall() {
 			require_once 'include/utils/utils.php';
 			$message = $app_strings['LBL_CALLER_NUMBER'].':'.$callerNumber .'	'.$app_strings['LBL_CALLER_NAME'].':'.$callerName;
 			$contents = array("en" => $message );
-			$headings = array("en" => $app_strings['LBL_INCOMING_CALL'].' (Click Notification to '.$callerLinks_0_label.')');
+			$headings = array("en" => $app_strings['LBL_INCOMING_CALL'].' ('.$app_strings['LBL_CLICK_NOTIFICATION_TO'].$callerLinks_0_label.')');
 			$subtitle = array("en" => $app_strings['LBL_CALLER_INFORMATION']);
 			$external_user_id = array($current_user->id);
 			$web_url = $callerLinks_0;
