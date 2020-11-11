@@ -60,12 +60,10 @@
 		<script>
 			let currentUserEmail = "{$CURRENT_USER_MAIL}";
 			let currentUserID = {$CURRENT_USER_ID};
-			let onesignal_appid = "{$ONESIGNAL_APP_ID}";
 			window.OneSignal = window.OneSignal || [];
 			OneSignal.push(function() {
-				//OneSignal.setRequiresUserPrivacyConsent(true);
 				OneSignal.init({
-					appId: onesignal_appid,
+					appId: "{$ONESIGNAL_APP_ID}",
 				});
 
 				OneSignal.on('subscriptionChange', function(isSubscribed) {
@@ -79,10 +77,13 @@
 			});
 
 			function removeOneSignalExternalUserId() {
-				OneSignal.push(function() {
-					OneSignal.removeExternalUserId();
-					OneSignal.logoutEmail();
-				});
+				let oneSignalActiveStatus = "{$ONESIGNAL_IS_ACTIVE}";
+				if (oneSignalActiveStatus == "1") {
+					OneSignal.push(function() {
+						OneSignal.removeExternalUserId();
+						OneSignal.logoutEmail();
+					});
+				}
 			}
 		</script>
 	{/if}
