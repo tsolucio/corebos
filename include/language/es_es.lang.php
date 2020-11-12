@@ -1169,6 +1169,8 @@ $app_strings = array (
 	'LBL_CALLER_INFORMATION'=>'Información Llamada Entrante',
 	'LBL_CALLER_NUMBER'=>'Número :',
 	'LBL_CALLER_NAME'=>'Nombre :',
+	'LBL_VIEW_CONTACT' => 'Ver Contacto',
+	'LBL_CLICK_NOTIFICATION_TO'=> 'Haz click para ',
 	//asterisk integration ends
 
 	// Module Sequence Numbering

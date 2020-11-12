@@ -102,7 +102,6 @@ $mod_strings = array(
 	'OneSignal Desc' => 'Send Notification using OneSignal',
 	'onesignal_appid' => 'App ID',
 	'onesignal_apikey' => 'API Key',
-	'OneSignal Activation' => 'OneSignal Activation',
 	'SAML Activation' => 'SAML Activation',
 	'SAML Activation_Desc' => 'Login all users from a central Identity Provider',
 	'SAML SP' => 'Service Provider',
