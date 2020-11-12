@@ -542,6 +542,7 @@ function uploadCountUpdater() {
 
 $(document).ready(function () {
 	let fileurl = 'module=MsgTemplate&action=MsgTemplateAjax&file=getSGTemplates';
+	const sendgridTemplateURL = 'https://mc.sendgrid.com/dynamic-templates/';
 	var templateBody = document.getElementById('sgMsgTemplate');
 	if(templateBody.selectedIndex == 0) {
 		document.getElementById('sgPreviewLink').removeAttribute("disabled");
@@ -558,9 +559,9 @@ $(document).ready(function () {
 			opt.setAttribute('versionid', data.versionId);
 			if (data.templateId == selectedSGTemplate) {
 				opt.setAttribute('selected', 'selected');
-				previewLink = document.getElementById('sgPreviewLink');
+				var previewLink = document.getElementById('sgPreviewLink');
 				if (data.versionId !=null) {
-					previewLink.href = "https://mc.sendgrid.com/dynamic-templates/"+data.templateId+"/version/"+data.versionId+"/preview";
+					previewLink.href = sendgridTemplateURL+data.templateId+"/version/"+data.versionId+"/preview";
 					previewLink.disabled = false;
 				} else {
 					previewLink.removeAttribute("disabled");
@@ -570,13 +571,13 @@ $(document).ready(function () {
 		});
 	});
 	templateBody.addEventListener("change", function () {
-		selvalue = document.getElementById('sgMsgTemplate').value;
-		sel = document.getElementById('sgMsgTemplate');
+		var selvalue = document.getElementById('sgMsgTemplate').value;
+		var sel = document.getElementById('sgMsgTemplate');
 		document.getElementById('sgmsgtemplate').value = selvalue;
-		previewLink = document.getElementById('sgPreviewLink');
-		templateVersion = sel.options[sel.selectedIndex].getAttribute('versionid');
+		var previewLink = document.getElementById('sgPreviewLink');
+		var templateVersion = sel.options[sel.selectedIndex].getAttribute('versionid');
 		if (templateVersion !=null) {
-			previewLink.href = "https://mc.sendgrid.com/dynamic-templates/"+selvalue+"/version/"+templateVersion+"/preview";
+			previewLink.href = sendgridTemplateURL+selvalue+"/version/"+templateVersion+"/preview";
 			previewLink.disabled = false;
 
 		} else {

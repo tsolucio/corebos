@@ -356,16 +356,16 @@ var selectedSGTemplate = '{if isset($task->sgmsgtemplate)}{$task->sgmsgtemplate}
 	<div class="slds-grid slds-grid_vertical-align-center slds-p-horizontal_xx-large slds-border_top">
 		<div class="slds-col slds-size_1-of-1 slds-p-around_x-small">
 			<div class="slds-form-element">
-				<span class="slds-form-element__label slds-size--1-of-3">
+				<span class="slds-form-element__label slds-size--1-of-2">
 					<input type='hidden' class='small' name="cbmsgtemplate_type" id="cbmsgtemplate_type" value="MsgTemplate">
-					<input id="cbmsgtemplate" name="cbmsgtemplate" type="hidden" value="{if isset($task->cbmsgtemplate)}{$task->cbmsgtemplate}{/if}" onchange='document.getElementById("sgMsgTemplate").selectedIndex = "0"; document.getElementById("sgMsgTemplate").value = ""; document.getElementById("sgmsgtemplate").value = "";'>
+					<input id="cbmsgtemplate" name="cbmsgtemplate" type="hidden" value="{if isset($task->cbmsgtemplate)}{$task->cbmsgtemplate}{/if}" onchange='document.getElementById("sgMsgTemplate").selectedIndex = "0"; document.getElementById("sgMsgTemplate").value = ""; document.getElementById("sgmsgtemplate").value = ""; var cbTemplateLink = "index.php?module=MsgTemplate&action=DetailView&record="; document.getElementById("cbPreviewLink").href = cbTemplateLink+this.value;'>
 					<input
 						class="slds-input"
 						id="cbmsgtemplate_display"
 						name="cbmsgtemplate_display"
 						readonly
 						type="text"
-						style="border:1px solid #bababa; width: 80%;"
+						style="border:1px solid #bababa; width: 52%;"
 						onclick='document.getElementById("calltype").value = "function::vtlib_setvalue_from_popup"; return vtlib_open_popup_window("new_task_form", "cbmsgtemplate", "MsgTemplate", "");'
 						value="{if isset($task->cbmsgtemplate_display)}{$task->cbmsgtemplate_display}{/if}">&nbsp;
 					<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_SELECT'|getTranslatedString}" onclick='return vtlib_open_popup_window("new_task_form", "cbmsgtemplate", "MsgTemplate", "");'>
@@ -383,6 +383,8 @@ var selectedSGTemplate = '{if isset($task->sgmsgtemplate)}{$task->sgmsgtemplate}
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
 					</svg>
 					</span>
+					&nbsp;
+					<a class="slds-button slds-button_neutral" href="{if isset($task->cbmsgtemplate)}index.php?module=MsgTemplate&action=DetailView&record={$task->cbmsgtemplate}{/if}" id="cbPreviewLink" target="_blank" style="width: 20%;">{$MOD.LBL_PREVIEW_BUTTON}</a>
 				</span>
 			</div>
 		</div>
@@ -416,7 +418,7 @@ var selectedSGTemplate = '{if isset($task->sgmsgtemplate)}{$task->sgmsgtemplate}
 						</select>
 					</div>
 					&nbsp;
-					<a class="slds-button slds-button_neutral" id="sgPreviewLink" target="_blank" style="width: 20%;">Preview</a>
+					<a class="slds-button slds-button_neutral" id="sgPreviewLink" target="_blank" style="width: 20%;">{$MOD.LBL_PREVIEW_BUTTON}</a>
 				</span>
 			</div>
 		</div>
