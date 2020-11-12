@@ -90,7 +90,7 @@
 	</div>
 {if $RecordSetTab}
 	<div class="slds-col slds-size_1-of-2 slds-page-header__meta-text">
-		<fieldset class="slds-form-element" id="fsmalaunch">
+		<fieldset class="slds-form-element" id="fsmalaunch" style="{if $workflow->executionCondition eq 6 or $workflow->executionCondition eq 7}display:block;{else}display:none;{/if}">
 			<legend class="slds-form-element__legend slds-form-element__label">{'Select where to get the records from'|@getTranslatedString:$MODULE_NAME}</legend>
 			<div class="slds-form-element__control">
 			<span class="slds-radio slds-p-top_xx-small">
