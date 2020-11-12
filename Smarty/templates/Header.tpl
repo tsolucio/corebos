@@ -330,7 +330,7 @@
 								</li>
 								<li class="slds-dropdown__item" role="presentation">
 									<a href="index.php?module=Users&action=Logout" role="menuitem" tabindex="-1">
-										<span onclick="removeOneSignalExternalUserId(); return false" class="slds-truncate" title="{$APP.LBL_LOGOUT}">{$APP.LBL_LOGOUT}</span>
+										<span {if $ONESIGNAL_IS_ACTIVE eq true}onclick="removeOneSignalExternalUserId(); return false"{/if} class="slds-truncate" title="{$APP.LBL_LOGOUT}">{$APP.LBL_LOGOUT}</span>
 									</a>
 								</li>
 							</ul>
