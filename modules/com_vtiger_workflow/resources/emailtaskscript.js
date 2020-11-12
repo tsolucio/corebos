@@ -544,8 +544,8 @@ $(document).ready(function () {
 	let fileurl = 'module=MsgTemplate&action=MsgTemplateAjax&file=getSGTemplates';
 	const sendgridTemplateURL = 'https://mc.sendgrid.com/dynamic-templates/';
 	var templateBody = document.getElementById('sgMsgTemplate');
-	if(templateBody.selectedIndex == 0) {
-		document.getElementById('sgPreviewLink').removeAttribute("disabled");
+	if (templateBody.selectedIndex == 0) {
+		document.getElementById('sgPreviewLink').removeAttribute('disabled');
 	}
 	$.ajax({
 		method: 'GET',
@@ -561,27 +561,27 @@ $(document).ready(function () {
 				opt.setAttribute('selected', 'selected');
 				var previewLink = document.getElementById('sgPreviewLink');
 				if (data.versionId !=null) {
-					previewLink.href = sendgridTemplateURL+data.templateId+"/version/"+data.versionId+"/preview";
+					previewLink.href = sendgridTemplateURL+data.templateId+'/version/'+data.versionId+'/preview';
 					previewLink.disabled = false;
 				} else {
-					previewLink.removeAttribute("disabled");
+					previewLink.removeAttribute('disabled');
 				}
 			}
 			templateBody.appendChild(opt);
 		});
 	});
-	templateBody.addEventListener("change", function () {
+	templateBody.addEventListener('change', function () {
 		var selvalue = document.getElementById('sgMsgTemplate').value;
 		var sel = document.getElementById('sgMsgTemplate');
 		document.getElementById('sgmsgtemplate').value = selvalue;
 		var previewLink = document.getElementById('sgPreviewLink');
 		var templateVersion = sel.options[sel.selectedIndex].getAttribute('versionid');
 		if (templateVersion !=null) {
-			previewLink.href = sendgridTemplateURL+selvalue+"/version/"+templateVersion+"/preview";
+			previewLink.href = sendgridTemplateURL+selvalue+'/version/'+templateVersion+'/preview';
 			previewLink.disabled = false;
 
 		} else {
-			previewLink.setAttribute("disabled","disabled");
+			previewLink.setAttribute('disabled', 'disabled');
 		}
 	});
 });
