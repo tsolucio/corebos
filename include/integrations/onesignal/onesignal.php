@@ -72,5 +72,74 @@ class corebos_onesignal {
 	public function getAPIKey() {
 		return coreBOS_Settings::getSetting(self::KEY_API_KEY, '');
 	}
+
+	/** Function to Send Push notification to corebos user
+	 * @param array $contents -- Content Displayed on Notification
+	 * @param array $headings -- Notification Head
+	 * @param array $subtitle -- Notification Header Subtitile
+	 * @param array $filters -- Condition for user to Receive Notification
+	 * @param array $external_user_id -- Condition for user to Receive Notification
+	 * @return boolean $sendStatus -- Notification Sent Status
+	*/
+	public static function sendDesktopNotification($contents, $headings, $subtitle, $filters, $external_user_id, $web_url, $web_buttons) {
+		$sendStatus = false;
+
+		$clientclass = new corebos_onesignal();
+		$isactive = $clientclass->isActive();
+		$appid = $clientclass->getAppId();
+		$apikey = $clientclass->getAPIKey();
+
+		if ($isactive) {
+			$fields = array(
+				'app_id' => $appid
+			);
+
+			if (!empty($contents)) {
+				$fields['contents'] = $contents;
+			}
+
+			if (!empty($headings)) {
+				$fields['headings'] = $headings;
+			}
+
+			if (!empty($filters)) {
+				$fields['filters'] = $filters;
+			}
+
+			if (!empty($subtitle)) {
+				$fields['subtitle'] = $subtitle;
+			}
+
+			if (!empty($external_user_id)) {
+				$fields['include_external_user_ids'] = $external_user_id;
+			}
+
+			if (!empty($web_buttons)) {
+				$fields['web_buttons'] = $web_buttons;
+			}
+
+			if ($web_url != '') {
+				$fields['web_url'] = $web_url;
+			}
+
+			$fields = json_encode($fields);
+
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $clientclass::$APIURL);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'Content-Type: application/json; charset=utf-8',
+				'Authorization: Basic '.$apikey
+			));
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_HEADER, false);
+			curl_setopt($ch, CURLOPT_POST, true);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+			curl_exec($ch);
+			curl_close($ch);
+		}
+		return $sendStatus;
+	}
 }
 ?>
