@@ -91,7 +91,6 @@ function TraceIncomingCall() {
 		if ($callerInfos !== false) {
 			$callerName = decode_html($callerInfos['name']);
 			$module = $callerInfos['module'];
-			$callerModule = " [$module]";
 			$callerID = $callerInfos['id'];
 			$callerLinks_0 = $site_URL.'/index.php?module='.$module.'&action=DetailView&record='.$callerID;
 			$callerLinks_1 = $site_URL.'/index.php?module=HelpDesk&action=EditView&parent_id='.$callerID.'&ticket_title='.$callerName.'&cbcustominfo1='.$createActivityInfo;
@@ -113,14 +112,14 @@ function TraceIncomingCall() {
 		if (coreBOS_Settings::getSetting('onesignal_isactive', '') == '1') {
 			require_once 'include/utils/utils.php';
 			$message = $app_strings['LBL_CALLER_NUMBER'].':'.$callerNumber .'	'.$app_strings['LBL_CALLER_NAME'].':'.$callerName;
-			$contents = array("en" => $message );
-			$headings = array("en" => $app_strings['LBL_INCOMING_CALL'].' ('.$app_strings['LBL_CLICK_NOTIFICATION_TO'].$callerLinks_0_label.')');
-			$subtitle = array("en" => $app_strings['LBL_CALLER_INFORMATION']);
+			$contents = array('en' => $message );
+			$headings = array('en' => $app_strings['LBL_INCOMING_CALL'].' ('.$app_strings['LBL_CLICK_NOTIFICATION_TO'].$callerLinks_0_label.')');
+			$subtitle = array('en' => $app_strings['LBL_CALLER_INFORMATION']);
 			$external_user_id = array($current_user->id);
 			$web_url = $callerLinks_0;
 			$web_buttons = array(
-				array('id'=>"create-ticket", 'text'=>$callerLinks_1_label, 'icon'=>'', 'url'=>$callerLinks_1),
-				array('id'=>"create-opportunity", 'text'=>$callerLinks_2_label, 'icon'=>'', 'url'=>$callerLinks_2)
+				array('id'=>'create-ticket', 'text'=>$callerLinks_1_label, 'icon'=>'', 'url'=>$callerLinks_1),
+				array('id'=>'create-opportunity', 'text'=>$callerLinks_2_label, 'icon'=>'', 'url'=>$callerLinks_2)
 			);
 			$filters = array();
 
@@ -133,7 +132,6 @@ function TraceIncomingCall() {
 				$web_url,
 				$web_buttons
 			);
-			return '';
 		}
 	}
 

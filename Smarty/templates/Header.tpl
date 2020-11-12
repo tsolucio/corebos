@@ -56,20 +56,19 @@
 	{include file='BrowserVariables.tpl'}
 	{include file='Components/Components.tpl'}
 	{if $ONESIGNAL_IS_ACTIVE eq true}
-		<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+		<script src='https://cdn.onesignal.com/sdks/OneSignalSDK.js' async=''></script>
 		<script>
-			let currentUserEmail = "{$CURRENT_USER_MAIL}";
-			let currentUserID = {$CURRENT_USER_ID};
+			let currentUserEmail = '{$CURRENT_USER_MAIL}';
 			window.OneSignal = window.OneSignal || [];
 			OneSignal.push(function() {
 				OneSignal.init({
-					appId: "{$ONESIGNAL_APP_ID}",
+					appId: '{$ONESIGNAL_APP_ID}',
 				});
 
 				OneSignal.on('subscriptionChange', function(isSubscribed) {
 					if (isSubscribed) {
 						OneSignal.push(function() {
-						OneSignal.setExternalUserId(currentUserID);
+						OneSignal.setExternalUserId({$CURRENT_USER_ID});
 						OneSignal.setEmail(currentUserEmail);
 					});
 					}
@@ -77,8 +76,8 @@
 			});
 
 			function removeOneSignalExternalUserId() {
-				let oneSignalActiveStatus = "{$ONESIGNAL_IS_ACTIVE}";
-				if (oneSignalActiveStatus == "1") {
+				let oneSignalActiveStatus = '{$ONESIGNAL_IS_ACTIVE}';
+				if (oneSignalActiveStatus == '1') {
 					OneSignal.push(function() {
 						OneSignal.removeExternalUserId();
 						OneSignal.logoutEmail();
