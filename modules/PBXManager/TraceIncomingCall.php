@@ -112,7 +112,7 @@ function TraceIncomingCall() {
 		if (coreBOS_Settings::getSetting('onesignal_isactive', '') == '1') {
 			require_once 'include/integrations/onesignal/onesignal.php';
 			$message = $app_strings['LBL_CALLER_NUMBER'].':'.$callerNumber .'	'.$app_strings['LBL_CALLER_NAME'].':'.$callerName;
-			$contents = array('en' => $message );
+			$contents = array('en' => $message);
 			$headings = array('en' => $app_strings['LBL_INCOMING_CALL'].' ('.$app_strings['LBL_CLICK_NOTIFICATION_TO'].$callerLinks_0_label.')');
 			$subtitle = array('en' => $app_strings['LBL_CALLER_INFORMATION']);
 			$external_user_id = array($current_user->id);

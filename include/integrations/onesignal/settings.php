@@ -28,7 +28,7 @@ if ($isadmin && !empty($_REQUEST['appid'])) {
 	$appid = (empty($_REQUEST['appid']) ? '' : vtlib_purify($_REQUEST['appid']));
 	$apikey = (empty($_REQUEST['apikey']) ? '' : vtlib_purify($_REQUEST['apikey']));
 	$oneSignal->saveSettings($isActive, $appid, $apikey);
-	if ($_REQUEST['testit']=='1') {
+	if (!empty($_REQUEST['testit'])) {
 		$oneSignal->sendTestMessage();
 	}
 }
