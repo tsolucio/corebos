@@ -75,13 +75,16 @@
 				});
 			});
 
-			function removeOneSignalExternalUserId() {
-				let oneSignalActiveStatus = '{$ONESIGNAL_IS_ACTIVE}';
-				if (oneSignalActiveStatus == '1') {
+			function removeOneSignalExternalUserId(logout) {
+				logout = logout || 0;
+				if ('{$ONESIGNAL_IS_ACTIVE}' == '1') {
 					OneSignal.push(function() {
 						OneSignal.removeExternalUserId();
 						OneSignal.logoutEmail();
 					});
+				}
+				if (logout) {
+					window.location.assign('index.php?module=Users&action=Logout');
 				}
 			}
 		</script>
@@ -329,8 +332,8 @@
 									</a>
 								</li>
 								<li class="slds-dropdown__item" role="presentation">
-									<a href="index.php?module=Users&action=Logout" role="menuitem" tabindex="-1">
-										<span {if $ONESIGNAL_IS_ACTIVE eq true}onclick="removeOneSignalExternalUserId(); return false"{/if} class="slds-truncate" title="{$APP.LBL_LOGOUT}">{$APP.LBL_LOGOUT}</span>
+									<a href="{if $ONESIGNAL_IS_ACTIVE eq true}javascript:removeOneSignalExternalUserId(1){else}index.php?module=Users&action=Logout{/if}" role="menuitem" tabindex="-1">
+										<span class="slds-truncate" title="{$APP.LBL_LOGOUT}">{$APP.LBL_LOGOUT}</span>
 									</a>
 								</li>
 							</ul>
