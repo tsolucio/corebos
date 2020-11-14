@@ -42,6 +42,10 @@
                     </div>
                     <div class="slds-m-top--large">
                         <button type="submit" class="slds-button slds-button--brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
+                        {if $isActive}
+                            <input type="hidden" id="testit" name="testit" value="0" />
+                            <button type="submit" class="slds-button slds-button_success" onclick="document.getElementById('testit').value=1;">{'Test'|@getTranslatedString:'GlobalVariable'}</button>
+                        {/if}
                     </div>
                 </form>
             {/if}

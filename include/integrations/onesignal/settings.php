@@ -23,11 +23,14 @@ $oneSignal = new corebos_onesignal();
 
 $isadmin = is_admin($current_user);
 
-if ($isadmin && isset($_REQUEST['appid'])) {
+if ($isadmin && !empty($_REQUEST['appid'])) {
 	$isActive = ((empty($_REQUEST['onesignal_active']) || $_REQUEST['onesignal_active']!='on') ? '0' : '1');
 	$appid = (empty($_REQUEST['appid']) ? '' : vtlib_purify($_REQUEST['appid']));
 	$apikey = (empty($_REQUEST['apikey']) ? '' : vtlib_purify($_REQUEST['apikey']));
 	$oneSignal->saveSettings($isActive, $appid, $apikey);
+	if ($_REQUEST['testit']=='1') {
+		$oneSignal->sendTestMessage();
+	}
 }
 
 $smarty->assign('TITLE_MESSAGE', getTranslatedString('OneSignal Activation', $currentModule));

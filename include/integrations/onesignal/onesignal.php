@@ -73,6 +73,19 @@ class corebos_onesignal {
 		return coreBOS_Settings::getSetting(self::KEY_API_KEY, '');
 	}
 
+	public function sendTestMessage() {
+		global $current_user;
+		self::sendDesktopNotification(
+			'This is a test message from '.GlobalVariable::getVariable('Application_UI_Name', 'coreBOS'),
+			'Test Message',
+			'Hello',
+			array(),
+			array($current_user->id),
+			array(),
+			array()
+		);
+	}
+
 	/** Function to Send Push notification to corebos user
 	 * @param array $contents -- Content Displayed on Notification
 	 * @param array $headings -- Notification Head
