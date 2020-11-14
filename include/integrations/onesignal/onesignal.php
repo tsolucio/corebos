@@ -35,7 +35,7 @@ class corebos_onesignal {
 	public static $ERROR_NOTCONFIGURED = 1;
 	public static $ERROR_NOACCESSTOKEN = 2;
 	public static $APIURL = 'https://onesignal.com/api/v1/notifications';
-
+	public static $DEBUG = false;
 
 	public function __construct() {
 		$this->initGlobalScope();
@@ -74,14 +74,14 @@ class corebos_onesignal {
 	}
 
 	public function sendTestMessage() {
-		global $current_user;
+		global $current_user, $site_URL;
 		self::sendDesktopNotification(
-			'This is a test message from '.GlobalVariable::getVariable('Application_UI_Name', 'coreBOS'),
-			'Test Message',
-			'Hello',
+			array('en' => 'This is a test message from '.GlobalVariable::getVariable('Application_UI_Name', 'coreBOS')),
+			array('en' => 'Test Message'),
+			array('en' => 'Hello'),
 			array(),
 			array($current_user->id),
-			array(),
+			$site_URL,
 			array()
 		);
 	}
@@ -149,7 +149,11 @@ class corebos_onesignal {
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
-			curl_exec($ch);
+			$r = curl_exec($ch);
+			if (self::$DEBUG) {
+				global $log;
+				$log->fatal([$fields, $r]);
+			}
 			curl_close($ch);
 		}
 		return $sendStatus;
