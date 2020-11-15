@@ -1123,6 +1123,10 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 	);
 	while ($prodser = $adb->fetch_array($r)) {
 		$unitprice = $prodser['unit_price'];
+		if (!empty($_REQUEST['currencyid'])) {
+			$prod_prices = getPricesForProducts($_REQUEST['currencyid'], array($prodser['id']));
+			$unitprice = $prod_prices[$prodser['id']];
+		}
 		$parr['productid'] = $prodser['id'];
 		list($unitprice, $dtopdo, $void) = cbEventHandler::do_filter('corebos.filter.inventory.getprice', array($unitprice, 0, $parr));
 
