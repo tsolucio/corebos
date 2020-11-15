@@ -1188,7 +1188,9 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
 	if (empty($searchinmodule) || empty($fields)) {
 		return $respuesta;
 	}
+	$current_user = VTWS_PreserveGlobal::preserveGlobal('current_user', $user);
 	if (!(vtlib_isModuleActive($searchinmodule) && isPermitted($searchinmodule, 'DetailView')=='yes')) {
+		VTWS_PreserveGlobal::flush();
 		return $respuesta;
 	}
 	if (empty($returnfields)) {
@@ -1200,7 +1202,7 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
 
 	if (empty($term)) {
 		$term='%';
-		$op='like';
+		$op='c';
 	} else {
 		switch ($filter) {
 			case 'eq':
@@ -1223,7 +1225,6 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
 				break;
 		}
 	}
-	$current_user = VTWS_PreserveGlobal::preserveGlobal('current_user', $user);
 	$smod = CRMEntity::getInstance($searchinmodule);
 	$sindex = $smod->table_index;
 	$queryGenerator = new QueryGenerator($searchinmodule, $current_user);
