@@ -60,7 +60,7 @@
 		<script>
 			window.OneSignal = window.OneSignal || [];
 			OneSignal.push(function() {
-				OneSignal.init({appId: '{$ONESIGNAL_APP_ID}'});
+				OneSignal.init({ 'appId': '{$ONESIGNAL_APP_ID}' });
 				OneSignal.on('subscriptionChange', function(isSubscribed) {
 					if (isSubscribed) {
 						OneSignal.push(function() {
