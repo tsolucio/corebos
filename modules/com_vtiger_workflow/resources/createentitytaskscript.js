@@ -171,7 +171,7 @@ function VTCreateEntityTask($, fieldvaluemapping) {
 		var fv = $('#save_fieldvalues_'+mappingno+'_value');
 		fv.prop('name', fieldName);
 		var fieldLabel = jQuery('#save_fieldvalues_'+mappingno+'_fieldname option:selected').html();
-		validator.validateFieldData[fieldName] = {type: opType.name, label: fieldLabel};
+		//validator.validateFieldData[fieldName] = {type: opType.name, label: fieldLabel};
 	}
 
 	function defaultValue(fieldType) {
