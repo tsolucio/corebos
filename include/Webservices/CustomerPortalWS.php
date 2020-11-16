@@ -1231,7 +1231,12 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
 	$sfields = explode(',', $fields);
 	$rfields = array_filter(explode(',', $returnfields));
 	$flds = array_unique(array_merge($rfields, $sfields, array('id')));
-
+	$colum_names = array();
+	$tabid = getTabid($searchinmodule);
+	foreach ($rfields as $rf) {
+		$colum_name = getColumnnameByFieldname($tabid, $rf);
+		$colum_names[$rf] = ($colum_name ? $colum_name : $rf);
+	}
 	$queryGenerator->setFields($flds);
 	$queryGenerator->startGroup();
 	foreach ($sfields as $sfld) {
@@ -1244,9 +1249,7 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
 	while ($emp=$adb->fetch_array($rsemp)) {
 		$rsp = array();
 		foreach ($rfields as $rf) {
-			$mod_fields = $queryGenerator->getModuleFields();
-			$colum_name = $mod_fields[$rf]->getColumnName();
-			$rsp[$rf] = html_entity_decode($emp[$colum_name], ENT_QUOTES, $default_charset);
+			$rsp[$rf] = html_entity_decode($emp[$colum_names[$rf]], ENT_QUOTES, $default_charset);
 		}
 		$respuesta[] = array(
 			'crmid'=>$wsid.$emp[$sindex],
