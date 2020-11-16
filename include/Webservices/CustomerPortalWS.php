@@ -1243,7 +1243,7 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
 		$queryGenerator->addCondition($sfld, $term, $op, $queryGenerator::$OR);
 	}
 	$queryGenerator->endGroup();
-	$query = $queryGenerator->getQuery();
+	$query = $queryGenerator->getQuery(false, $limit);
 	$rsemp=$adb->query($query);
 	$wsid = vtyiicpng_getWSEntityId($searchinmodule);
 	while ($emp=$adb->fetch_array($rsemp)) {
@@ -1255,9 +1255,6 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
 			'crmid'=>$wsid.$emp[$sindex],
 			'crmfields'=>$rsp,
 		);
-		if (count($respuesta)>=$limit) {
-			break;
-		}
 	}
 	VTWS_PreserveGlobal::flush();
 	return $respuesta;
