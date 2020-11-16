@@ -1171,6 +1171,45 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 	return $ret;
 }
 
+function getFieldAutocompleteQuery($term, $filter, $searchinmodule, $fields, $returnfields, $limit, $user) {
+	if (empty($term)) {
+		$term='%';
+		$op='c';
+	} else {
+		switch ($filter) {
+			case 'eq':
+				$op='e';
+				break;
+			case 'neq':
+				$op='n';
+				break;
+			case 'startswith':
+				$op='s';
+				break;
+			case 'endswith':
+				$op='ew';
+				break;
+			case 'contains':
+				$op='c';
+				break;
+			default:
+				$op='e';
+				break;
+		}
+	}
+	$queryGenerator = new QueryGenerator($searchinmodule, $user);
+	$sfields = explode(',', $fields);
+	$rfields = array_filter(explode(',', $returnfields));
+	$flds = array_unique(array_merge($rfields, $sfields, array('id')));
+	$queryGenerator->setFields($flds);
+	$queryGenerator->startGroup();
+	foreach ($sfields as $sfld) {
+		$queryGenerator->addCondition($sfld, $term, $op, $queryGenerator::$OR);
+	}
+	$queryGenerator->endGroup();
+	return $queryGenerator->getQuery(false, $limit);
+}
+
 /**
  * @param String $term: search term
  * @param String $filter: operator to use: eq, neq, startswith, endswith, contains
@@ -1199,51 +1238,16 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
 	if (empty($limit)) {
 		$limit = 30;  // hard coded default
 	}
-
-	if (empty($term)) {
-		$term='%';
-		$op='c';
-	} else {
-		switch ($filter) {
-			case 'eq':
-				$op='e';
-				break;
-			case 'neq':
-				$op='n';
-				break;
-			case 'startswith':
-				$op='s';
-				break;
-			case 'endswith':
-				$op='ew';
-				break;
-			case 'contains':
-				$op='c';
-				break;
-			default:
-				$op='e';
-				break;
-		}
-	}
 	$smod = CRMEntity::getInstance($searchinmodule);
 	$sindex = $smod->table_index;
-	$queryGenerator = new QueryGenerator($searchinmodule, $current_user);
-	$sfields = explode(',', $fields);
 	$rfields = array_filter(explode(',', $returnfields));
-	$flds = array_unique(array_merge($rfields, $sfields, array('id')));
 	$colum_names = array();
 	$tabid = getTabid($searchinmodule);
 	foreach ($rfields as $rf) {
 		$colum_name = getColumnnameByFieldname($tabid, $rf);
 		$colum_names[$rf] = ($colum_name ? $colum_name : $rf);
 	}
-	$queryGenerator->setFields($flds);
-	$queryGenerator->startGroup();
-	foreach ($sfields as $sfld) {
-		$queryGenerator->addCondition($sfld, $term, $op, $queryGenerator::$OR);
-	}
-	$queryGenerator->endGroup();
-	$query = $queryGenerator->getQuery(false, $limit);
+	$query = getFieldAutocompleteQuery($term, $filter, $searchinmodule, $fields, $returnfields, $limit, $user);
 	$rsemp=$adb->query($query);
 	$wsid = vtyiicpng_getWSEntityId($searchinmodule);
 	while ($emp=$adb->fetch_array($rsemp)) {
