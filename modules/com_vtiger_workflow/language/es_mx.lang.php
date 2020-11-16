@@ -247,5 +247,6 @@ $mod_strings = array(
 'LBL_SELECT_EMAIL_TEMPLATE' => 'Selecciona Plantilla de Email',
 'LBL_SELECT_SENDGRID_EMAIL_TEMPLATE' => 'Selecciona Plantilla de SendGrid',
 'LBL_LOAD_SENDGRID_TEMPLATES' => 'Cargar Plantillas de SendGrid',
+'LBL_PREVIEW_BUTTON' => 'Previsualizar',
 );
 ?>

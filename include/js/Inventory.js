@@ -1524,6 +1524,11 @@ function InventorySelectAll(mod, image_pth) {
 				recid = dE === undefined ? 0 : dE.record.value,
 				_this = this,
 				r = new XMLHttpRequest();
+			var currencyfield = document.getElementById('inventory_currency');
+			var currencyid = '';
+			if (currencyfield!=undefined) {
+				currencyid = currencyfield.value;
+			}
 
 			r.onreadystatechange = function () {
 				if (this.readyState == 4 && this.status == 200) {
@@ -1531,7 +1536,7 @@ function InventorySelectAll(mod, image_pth) {
 					_this.processResult(res);
 				}
 			};
-			r.open('GET', this.source + this.input.value + '&accid='+accid+ '&ctoid='+ctoid+'&modid='+recid, true);
+			r.open('GET', this.source + this.input.value + '&accid='+accid+ '&ctoid='+ctoid+'&modid='+recid+'&currencyid='+currencyid, true);
 			r.send();
 
 			// Helper to keep organized

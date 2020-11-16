@@ -1123,6 +1123,10 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 	);
 	while ($prodser = $adb->fetch_array($r)) {
 		$unitprice = $prodser['unit_price'];
+		if (!empty($_REQUEST['currencyid'])) {
+			$prod_prices = getPricesForProducts($_REQUEST['currencyid'], array($prodser['id']));
+			$unitprice = $prod_prices[$prodser['id']];
+		}
 		$parr['productid'] = $prodser['id'];
 		list($unitprice, $dtopdo, $void) = cbEventHandler::do_filter('corebos.filter.inventory.getprice', array($unitprice, 0, $parr));
 
@@ -1167,36 +1171,13 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 	return $ret;
 }
 
-/**
- * @param String $term: search term
- * @param String $filter: operator to use: eq, neq, startswith, endswith, contains
- * @param String $searchinmodule: valid module to search in
- * @param String $fields: comma separated list of fields to search in
- * @param String $returnfields: comma separated list of fields to return as result, if empty $fields will be returned
- * @param Number $limit: maximum number of values to return
- * @param Users $user
- * @return Array values found: crmid => array($returnfields)
- */
-function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnfields, $limit, $user) {
-	global $current_user, $adb, $default_charset;
-
-	$respuesta=array();
-	if (empty($searchinmodule) || empty($fields)) {
-		return $respuesta;
-	}
-	if (!(vtlib_isModuleActive($searchinmodule) && isPermitted($searchinmodule, 'DetailView')=='yes')) {
-		return $respuesta;
-	}
-	if (empty($returnfields)) {
-		$returnfields = $fields;
-	}
+function getFieldAutocompleteQuery($term, $filter, $searchinmodule, $fields, $returnfields, $limit, $user) {
 	if (empty($limit)) {
 		$limit = 30;  // hard coded default
 	}
-
 	if (empty($term)) {
 		$term='%';
-		$op='like';
+		$op='c';
 	} else {
 		switch ($filter) {
 			case 'eq':
@@ -1219,37 +1200,68 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
 				break;
 		}
 	}
-	$current_user = VTWS_PreserveGlobal::preserveGlobal('current_user', $user);
-	$smod = CRMEntity::getInstance($searchinmodule);
-	$sindex = $smod->table_index;
-	$queryGenerator = new QueryGenerator($searchinmodule, $current_user);
+	$queryGenerator = new QueryGenerator($searchinmodule, $user);
 	$sfields = explode(',', $fields);
 	$rfields = array_filter(explode(',', $returnfields));
 	$flds = array_unique(array_merge($rfields, $sfields, array('id')));
-
 	$queryGenerator->setFields($flds);
 	$queryGenerator->startGroup();
 	foreach ($sfields as $sfld) {
 		$queryGenerator->addCondition($sfld, $term, $op, $queryGenerator::$OR);
 	}
 	$queryGenerator->endGroup();
-	$query = $queryGenerator->getQuery();
+	return $queryGenerator->getQuery(false, $limit);
+}
+
+/**
+ * @param String $term: search term
+ * @param String $filter: operator to use: eq, neq, startswith, endswith, contains
+ * @param String $searchinmodule: valid module to search in
+ * @param String $fields: comma separated list of fields to search in
+ * @param String $returnfields: comma separated list of fields to return as result, if empty $fields will be returned
+ * @param Number $limit: maximum number of values to return
+ * @param Users $user
+ * @return Array values found: crmid => array($returnfields)
+ */
+function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnfields, $limit, $user) {
+	global $current_user, $adb, $default_charset;
+
+	$respuesta=array();
+	if (empty($searchinmodule) || empty($fields)) {
+		return $respuesta;
+	}
+	$current_user = VTWS_PreserveGlobal::preserveGlobal('current_user', $user);
+	if (!(vtlib_isModuleActive($searchinmodule) && isPermitted($searchinmodule, 'DetailView')=='yes')) {
+		VTWS_PreserveGlobal::flush();
+		return $respuesta;
+	}
+	if (empty($returnfields)) {
+		$returnfields = $fields;
+	}
+	if (empty($limit)) {
+		$limit = 30;  // hard coded default
+	}
+	$smod = CRMEntity::getInstance($searchinmodule);
+	$sindex = $smod->table_index;
+	$rfields = array_filter(explode(',', $returnfields));
+	$colum_names = array();
+	$tabid = getTabid($searchinmodule);
+	foreach ($rfields as $rf) {
+		$colum_name = getColumnnameByFieldname($tabid, $rf);
+		$colum_names[$rf] = ($colum_name ? $colum_name : $rf);
+	}
+	$query = getFieldAutocompleteQuery($term, $filter, $searchinmodule, $fields, $returnfields, $limit, $user);
 	$rsemp=$adb->query($query);
 	$wsid = vtyiicpng_getWSEntityId($searchinmodule);
 	while ($emp=$adb->fetch_array($rsemp)) {
 		$rsp = array();
 		foreach ($rfields as $rf) {
-			$mod_fields = $queryGenerator->getModuleFields();
-			$colum_name = $mod_fields[$rf]->getColumnName();
-			$rsp[$rf] = html_entity_decode($emp[$colum_name], ENT_QUOTES, $default_charset);
+			$rsp[$rf] = html_entity_decode($emp[$colum_names[$rf]], ENT_QUOTES, $default_charset);
 		}
 		$respuesta[] = array(
 			'crmid'=>$wsid.$emp[$sindex],
 			'crmfields'=>$rsp,
 		);
-		if (count($respuesta)>=$limit) {
-			break;
-		}
 	}
 	VTWS_PreserveGlobal::flush();
 	return $respuesta;

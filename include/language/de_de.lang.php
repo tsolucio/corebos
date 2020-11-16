@@ -1192,6 +1192,8 @@ $app_strings = array(
 'LBL_CALLER_INFORMATION'=>'Information über Anrufer',
 'LBL_CALLER_NUMBER'=>'Nummer:',
 'LBL_CALLER_NAME'=>'Name:',
+'LBL_VIEW_CONTACT' => 'View Contact',
+'LBL_CLICK_NOTIFICATION_TO'=> 'Click Notification to ',
 
 //asterisk integration ends
 

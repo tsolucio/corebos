@@ -54,5 +54,6 @@
 	</div>
 {/block}
 {block name=ModalFooter}
+<button name="cancel" id='editpopup_cancel' type="button" onClick="hide('selectfunction');" class="slds-button slds-button_text-destructive" >{$APP.LBL_CANCEL_BUTTON_LABEL}</button>
 <button class="slds-button slds-button_neutral" onClick="return setSelectedFunction('{$FillInField}');" id="wffnselectbutton">{$APP.LBL_SELECT}</button>
 {/block}
