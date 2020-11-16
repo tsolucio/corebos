@@ -1172,6 +1172,9 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 }
 
 function getFieldAutocompleteQuery($term, $filter, $searchinmodule, $fields, $returnfields, $limit, $user) {
+	if (empty($limit)) {
+		$limit = 30;  // hard coded default
+	}
 	if (empty($term)) {
 		$term='%';
 		$op='c';
