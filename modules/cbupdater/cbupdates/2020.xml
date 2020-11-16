@@ -353,4 +353,12 @@
 	<systemupdate>false</systemupdate>
 	<blocked>true</blocked>
 </changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Add Workflow MassActions Columns</description>
+	<filename>build/changeSets/2020/addWorkflowMassActionsColumns.php</filename>
+	<classname>addWorkflowMassActionsColumns</classname>
+	<systemupdate>false</systemupdate>
+	<blocked>true</blocked>
+</changeSet>
 </updatesChangeLog>

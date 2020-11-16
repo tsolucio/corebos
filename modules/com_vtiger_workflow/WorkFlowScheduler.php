@@ -10,6 +10,8 @@
 require_once 'modules/com_vtiger_workflow/WorkflowScheduler.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 require_once 'modules/Users/Users.php';
+include_once 'include/Webservices/cbRule.php';
+include_once 'include/Webservices/cbQuestion.php';
 
 class WorkFlowScheduler {
 	private $db;
@@ -137,16 +139,25 @@ class WorkFlowScheduler {
 	}
 
 	public function getEligibleWorkflowRecords($workflow) {
-		$adb = $this->db;
-		$query = $this->getWorkflowQuery($workflow);
-		// echo $query."\n"; // for debugging > get query on screen
-		$result = $adb->query($query);
-		$noOfRecords = $adb->num_rows($result);
+		global $current_user;
 		$recordsList = array();
-		for ($i = 0; $i < $noOfRecords; ++$i) {
-			$recordsList[] = $adb->query_result($result, $i, 0);
+		if ($workflow->options == 'conditions') {
+			$adb = $this->db;
+			$query = $this->getWorkflowQuery($workflow);
+			// echo $query."\n"; // for debugging > get query on screen
+			$result = $adb->query($query);
+			$noOfRecords = $adb->num_rows($result);
+			for ($i = 0; $i < $noOfRecords; ++$i) {
+				$recordsList[] = $adb->query_result($result, $i, 0);
+			}
+			$result = null;
+		} elseif ($workflow->options == 'cbquestion') {
+			$recordsList = cbwsGetAnswer(vtws_getEntityId('cbQuestion').'x'.$workflow->cbquestion, '', $current_user);
+		} elseif ($workflow->options == 'recordset') {
+			$recordsList = cbws_cbRule(vtws_getEntityId('cbMap').'x'.$workflow->recordset, array(), $current_user);
+		} elseif ($workflow->options == 'onerecord') {
+			$recordsList = $workflow->onerecord;
 		}
-		$result = null;
 		return $recordsList;
 	}
 

@@ -37,6 +37,19 @@ function vtWorkflowSave($adb, $request) {
 	$conditions = $request['conditions'];
 	$saveType = $request['save_type'];
 	$executionCondition = $request['execution_condition'];
+	$options = $request['options'];
+	$cbquestion = $request['cbquestion'];
+	$recordset = $request['recordset'];
+	$onerecord = $request['onerecord'];
+	if ($options == 'conditions') {
+		$cbquestion = $recordset = $onerecord = null;
+	} elseif ($options == 'cbquestion') {
+		$recordset = $onerecord = null;
+	} elseif ($options == 'recordset') {
+		$cbquestion = $onerecord = null;
+	} elseif ($options == 'onerecord') {
+		$cbquestion = $recordset = null;
+	}
 	$schdayofweek = array();
 	if (isset($request['sun_flag']) && $_REQUEST['sun_flag'] != null) {
 		$schdayofweek[] = 1;
@@ -92,6 +105,10 @@ function vtWorkflowSave($adb, $request) {
 		$wf->schannualdates = $schannualdates;
 		$wf->schminuteinterval = $schminuteinterval;
 		$wf->relatemodule = $relatemodule;
+		$wf->options = $options;
+		$wf->cbquestion = ($cbquestion !== '') ? $cbquestion : null;
+		$wf->recordset = ($recordset !== '') ? $recordset : null;
+		$wf->onerecord = ($onerecord !== '') ? $onerecord : null;
 		$wm->save($wf);
 	} elseif ($saveType == 'edit') {
 		$wf = $wm->retrieve($request['workflow_id']);
@@ -110,6 +127,10 @@ function vtWorkflowSave($adb, $request) {
 		$wf->schannualdates = $schannualdates;
 		$wf->schminuteinterval = $schminuteinterval;
 		$wf->relatemodule = $relatemodule;
+		$wf->options = $options;
+		$wf->cbquestion = ($cbquestion !== '') ? $cbquestion : null;
+		$wf->recordset = ($recordset !== '') ? $recordset : null;
+		$wf->onerecord = ($onerecord !== '') ? $onerecord : null;
 		$wm->save($wf);
 	} else {
 		throw new Exception();

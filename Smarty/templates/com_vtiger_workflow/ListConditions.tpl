@@ -90,11 +90,12 @@
 	</div>
 {if $RecordSetTab}
 	<div class="slds-col slds-size_1-of-2 slds-page-header__meta-text">
+	{$workflow->options}
 		<fieldset class="slds-form-element" id="fsmalaunch" style="{if $workflow->executionCondition eq 6 or $workflow->executionCondition eq 7}display:block;{else}display:none;{/if}">
 			<legend class="slds-form-element__legend slds-form-element__label">{'Select where to get the records from'|@getTranslatedString:$MODULE_NAME}</legend>
 			<div class="slds-form-element__control">
 			<span class="slds-radio slds-p-top_xx-small">
-				<input type="radio" id="radio-4" value="conditions" name="options" checked="" />
+				<input type="radio" id="radio-4" value="conditions" name="options" {if $workflow->options eq 'conditions'}checked="checked"{/if} />
 				<label class="slds-radio__label" for="radio-4">
 				<span class="slds-radio_faux"></span>
 				<span class="slds-form-element__label">
@@ -102,20 +103,20 @@
 				</label>
 			</span>
 			<span class="slds-radio slds-p-top_xx-small">
-			<input type="radio" id="radio-5" value="cbquestion" name="options" />
+			<input type="radio" id="radio-5" value="cbquestion" name="options" {if $workflow->options eq 'cbquestion'}checked="checked"{/if} />
 			<label class="slds-radio__label" for="radio-5">
 			<span class="slds-radio_faux"></span>
 			<span class="slds-form-element__label">
 				<span style="width:150px;display:inline-block;">{'cbQuestion'|@getTranslatedString:'cbQuestion'}</span>
 				<input type='hidden' class='small' name="cbquestion_type" id="cbquestion_type" value="cbQuestion">
-				<input id="cbquestion" name="cbquestion" type="hidden" value="">
+				<input id="cbquestion" name="cbquestion" type="hidden" value="{$workflow->cbquestion}">
 				<input
 					id="cbquestion_display"
 					name="cbquestion_display"
 					readonly
 					type="text"
 					style="border:1px solid #bababa;"
-					onclick='return vtlib_open_popup_window("", "cbquestion", "cbQuestion", "");'
+					onclick='return vtlib_open_popup_window("", "cbquestion", "cbQuestion", "{$workflow->cbquestion}");'
 					value="">&nbsp;
 				<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_SELECT'|getTranslatedString}" onclick='return vtlib_open_popup_window("", "cbquestion", "cbQuestion", "");'>
 				<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
@@ -135,13 +136,13 @@
 			</label>
 			</span>
 			<span class="slds-radio slds-p-top_xx-small">
-			<input type="radio" id="radio-6" value="recordset" name="options" />
+			<input type="radio" id="radio-6" value="recordset" name="options" {if $workflow->options eq 'recordset'}checked="checked"{/if} />
 			<label class="slds-radio__label" for="radio-6">
 			<span class="slds-radio_faux"></span>
 			<span class="slds-form-element__label">
 				<span style="width:150px;display:inline-block;">{'Record Set Mapping'|@getTranslatedString:'cbMap'}</span>
 				<input type='hidden' class='small' name="recordset_type" id="recordset_type" value="cbMap">
-				<input id="recordset" name="recordset" type="hidden" value="">
+				<input id="recordset" name="recordset" type="hidden" value="{$workflow->recordset}">
 				<input
 					id="recordset_display"
 					name="recordset_display"
@@ -169,7 +170,7 @@
 			</label>
 			</span>
 			<span class="slds-radio slds-p-top_xx-small">
-			<input type="radio" id="radio-7" value="onerecord" name="options" />
+			<input type="radio" id="radio-7" value="onerecord" name="options"  {if $workflow->options eq 'onerecord'}checked="checked"{/if}  />
 			<label class="slds-radio__label" for="radio-7">
 			<span class="slds-radio_faux"></span>
 			<span class="slds-form-element__label">
@@ -182,9 +183,9 @@
 					readonly
 					type="text"
 					style="border:1px solid #bababa;"
-					onclick='return vtlib_open_popup_window("", "onerecord", "{$workflow->moduleName}", "");'
+					onclick='return vtlib_open_popup_window("", "onerecord", "{$workflow->moduleName}", "{$workflow->onerecord}");'
 					value="">&nbsp;
-				<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_SELECT'|getTranslatedString}" onclick='return vtlib_open_popup_window("", "onerecord", "{$workflow->moduleName}", "");'>
+				<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_SELECT'|getTranslatedString}" onclick='return vtlib_open_popup_window("", "onerecord", "{$workflow->moduleName}", "{$workflow->onerecord}");'>
 				<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
 				</svg>
