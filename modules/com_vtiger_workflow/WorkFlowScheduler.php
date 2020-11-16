@@ -156,7 +156,7 @@ class WorkFlowScheduler {
 		} elseif ($workflow->options == 'recordset') {
 			$recordsList = cbws_cbRule(vtws_getEntityId('cbMap').'x'.$workflow->recordset, array(), $current_user);
 		} elseif ($workflow->options == 'onerecord') {
-			$recordsList = $workflow->onerecord;
+			$recordsList[] = $workflow->onerecord;
 		}
 		return $recordsList;
 	}
