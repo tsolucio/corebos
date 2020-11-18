@@ -100,6 +100,16 @@ function vtws_retrieve($id, $user) {
 		$pdowsid = vtws_getEntityId('Products').'x';
 		$srvwsid = vtws_getEntityId('Services').'x';
 		list($wsid, $recordid) = explode('x', $id);
+		$ipr_cols = $adb->getColumnNames('vtiger_inventoryproductrel');
+		if ($entityName != 'PurchaseOrder' && $entityName != 'Receiptcards') {
+			if (GlobalVariable::getVariable('Application_B2B', '1')=='1') {
+				$acvid = isset($entity['account_id']) ? $entity['account_id'] : (isset($entity['accid']) ? $entity['accid'] : 0);
+			} else {
+				$acvid = isset($entity['contact_id']) ? $entity['contact_id'] : (isset($entity['ctoid']) ? $entity['ctoid'] : 0);
+			}
+		} else {
+			$acvid = isset($entity['vendor_id']) ? $entity['vendor_id'] : (isset($entity['vendorid']) ? $entity['vendorid'] : 0);
+		}
 		$result = $adb->pquery('select * from vtiger_inventoryproductrel where id=?', array($recordid));
 		while ($row=$adb->getNextRow($result, false)) {
 			if ($row['discount_amount'] == null && $row['discount_percent'] == null) {
@@ -133,6 +143,19 @@ function vtws_retrieve($id, $user) {
 				'discount_percentage'=>$discount_percent,
 				'discount_amount'=>$discount_amount,
 			);
+			if ($entity['hdnTaxType']=='individual') {
+				foreach (getTaxDetailsForProduct($row['productid'], 'all', $acvid) as $taxItem) {
+					$tax_name = $taxItem['taxname'];
+					if (!in_array($tax_name, $ipr_cols)) {
+						continue;
+					}
+					$onlyPrd[$tax_name] = (float)$row[$tax_name];
+					$onlyPrd[$tax_name.'_label'] = $taxItem['taxlabel'];
+					$totalAfterDiscount = $row['quantity']*$row['listprice']-$discount_amount;
+					$individual_taxamount = $totalAfterDiscount * $row[$tax_name] / 100;
+					$onlyPrd[$tax_name.'_amount'] = (float)CurrencyField::convertToUserFormat($individual_taxamount, null, true);
+				}
+			}
 			if ($MDMapFound) {
 				foreach ($cbMapFields['detailview']['fields'] as $mdfield) {
 					if ($mdfield['fieldinfo']['name']=='id') {
