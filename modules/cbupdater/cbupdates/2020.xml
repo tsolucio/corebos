@@ -355,6 +355,13 @@
 </changeSet>
 <changeSet>
 	<author>joebordes</author>
+	<description>Increment message name/subject field size</description>
+	<filename>build/changeSets/2020/incmessagenamefield.php</filename>
+	<classname>incmessagenamefield</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
 	<description>The calendar is DEAD, long live the Calendar!</description>
 	<filename>build/changeSets/2020/databasechangesToMoveTocbCalendar3.php</filename>
 	<classname>databasechangesToMoveTocbCalendar3</classname>

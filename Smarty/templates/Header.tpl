@@ -55,6 +55,36 @@
 	<!-- End -->
 	{include file='BrowserVariables.tpl'}
 	{include file='Components/Components.tpl'}
+	{if $ONESIGNAL_IS_ACTIVE eq true}
+		<script src='https://cdn.onesignal.com/sdks/OneSignalSDK.js' async=''></script>
+		<script>
+			window.OneSignal = window.OneSignal || [];
+			OneSignal.push(function() {
+				OneSignal.init({ 'appId': '{$ONESIGNAL_APP_ID}' });
+				OneSignal.on('subscriptionChange', function(isSubscribed) {
+					if (isSubscribed) {
+						OneSignal.push(function() {
+						OneSignal.setExternalUserId({$CURRENT_USER_ID});
+						OneSignal.setEmail('{$CURRENT_USER_MAIL}');
+					});
+					}
+				});
+			});
+
+			function removeOneSignalExternalUserId(logout) {
+				logout = logout || 0;
+				if ('{$ONESIGNAL_IS_ACTIVE}' == '1') {
+					OneSignal.push(function() {
+						OneSignal.removeExternalUserId();
+						OneSignal.logoutEmail();
+					});
+				}
+				if (logout) {
+					window.location.assign('index.php?module=Users&action=Logout');
+				}
+			}
+		</script>
+	{/if}
 </head>
 <body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small style="min-width:1100px; width: 100%">
 	<!-- header -->
@@ -298,7 +328,7 @@
 									</a>
 								</li>
 								<li class="slds-dropdown__item" role="presentation">
-									<a href="index.php?module=Users&action=Logout" role="menuitem" tabindex="-1">
+									<a href="{if $ONESIGNAL_IS_ACTIVE eq true}javascript:removeOneSignalExternalUserId(1){else}index.php?module=Users&action=Logout{/if}" role="menuitem" tabindex="-1">
 										<span class="slds-truncate" title="{$APP.LBL_LOGOUT}">{$APP.LBL_LOGOUT}</span>
 									</a>
 								</li>
@@ -429,7 +459,7 @@
 <div id="qcform" style="position:absolute;width:700px;top:80px;left:450px;z-index:90000;"></div>
 
 <!-- Last visited panel -->
-<div id="cbds-last-visited" class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open slds-is-fixed cbds-last-visited" aria-hidden="false">
+<div id="cbds-last-visited" class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open slds-is-fixed cbds-last-visited containernpanel" aria-hidden="false" style="height: 90%;">
 <div class="slds-panel__header cbds-bg-blue--gray slds-text-color_default slds-text-color_inverse">
 	<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="{$APP.LBL_LAST_VIEWED}">{$APP.LBL_LAST_VIEWED}
 	</h2>
@@ -440,7 +470,7 @@
 		<span class="slds-assistive-text">{'Close LAST_VIEWED'|@getTranslatedString}</span>
 	</button>
 </div>
-<div class="slds-panel__body">
+<div class="slds-panel__body containernpanel" style="height: 92%;">
 	{foreach name=trackinfo item=trackelements from=$TRACINFO}
 		<article class="slds-card">
 			<div class="slds-card__header slds-grid">
@@ -492,7 +522,7 @@
 </div>
 <!-- ActivityReminder Customization for callback -->
 <audio id="newEvents" src="{$Calendar_Notification_Sound}" preload="auto"></audio>
-<div id="cbds-notificationpanel" class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open slds-is-fixed cbds-last-visited" aria-hidden="false">
+<div id="cbds-notificationpanel" class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open slds-is-fixed cbds-last-visited containernpanel" aria-hidden="false" style="height: 90%;">
 <div class="slds-panel__header cbds-bg-blue--gray slds-text-color_default slds-text-color_inverse">
 	<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="{'LBL_NOTIFICATION'|@getTranslatedString:'Settings'}">{'LBL_NOTIFICATION'|@getTranslatedString:'Settings'}
 	</h2>
@@ -509,7 +539,7 @@
 		<span class="slds-assistive-text">{'LBL_CLOSE'|@getTranslatedString}</span>
 	</button>
 </div>
-<div class="slds-panel__body">
+<div class="slds-panel__body containernpanel" style="height: 92%;">
 <ul id="todolist"></ul>
 </div>
 </div>

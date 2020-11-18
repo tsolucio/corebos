@@ -685,6 +685,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Número máximo de resultados a mostrar en la pantalla de búsqueda global autocompletada.',
 ),
+'Application_ProductService_Search_Autocomplete_Limit' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'Aplicación',
+	'values' => '',
+	'definition' => 'Número máximo de resultados a mostrar en la pantalla de búsqueda autocompletada de productos/servicios en líneas de inventario.',
+),
 'Product_Copy_Bundle_OnDuplicate' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',

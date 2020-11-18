@@ -218,13 +218,12 @@ var VTFieldValidatorPrototype = {
 			var validator = validators[i];
 			var result = validator.call(this);
 			if (result[0]==false) {
-				jQuery('#'+result[1]).css('display', 'block');
 				isValid = false;
+				break;
 			}
 		}
 		if (!isValid) {
-			//this.messageBoxPopup.show();
-			ldsPrompt.show(alert_arr['ERROR'], alert_arr['ERR_MANDATORY_FIELD_VALUE']);
+			ldsPrompt.show(wfi18nerror['VALIDATION_ERROR'], wfi18nerror[result[1]]);
 		}
 		return isValid;
 	},
@@ -240,7 +239,6 @@ var VTFieldValidatorPrototype = {
 function VTFieldValidator(form) {
 	var _this = this;
 	_this.form = form;
-	_this.messageBoxPopup = MessageBoxPopup();
 	form.submit(function () {
 		return _this.validate();
 	});

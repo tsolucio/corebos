@@ -1476,6 +1476,14 @@ function InventorySelectAll(mod, image_pth) {
 		window.addEventListener('keyup', this.preventSubmit.bind(this), true);
 		this.utils.on(this.input, 'keyup', this.throttle, this);
 		this.utils.on(this.input, 'blur', this.delayedClear, this);
+
+		GlobalVariable_getVariable('Application_ProductService_Search_Autocomplete_Limit', 1, '', gVTUserID)
+			.then((r) => {
+				const limit = JSON.parse(r)['Application_ProductService_Search_Autocomplete_Limit'];
+				this.source = this.source.replace('limit=10', `limit=${limit}`);
+			}).catch((e) => {
+				console.error(e);
+			});
 	}
 
 	ProductAutocomplete.prototype = {
@@ -1524,6 +1532,11 @@ function InventorySelectAll(mod, image_pth) {
 				recid = dE === undefined ? 0 : dE.record.value,
 				_this = this,
 				r = new XMLHttpRequest();
+			var currencyfield = document.getElementById('inventory_currency');
+			var currencyid = '';
+			if (currencyfield!=undefined) {
+				currencyid = currencyfield.value;
+			}
 
 			r.onreadystatechange = function () {
 				if (this.readyState == 4 && this.status == 200) {
@@ -1531,7 +1544,7 @@ function InventorySelectAll(mod, image_pth) {
 					_this.processResult(res);
 				}
 			};
-			r.open('GET', this.source + this.input.value + '&accid='+accid+ '&ctoid='+ctoid+'&modid='+recid, true);
+			r.open('GET', this.source + this.input.value + '&accid='+accid+ '&ctoid='+ctoid+'&modid='+recid+'&currencyid='+currencyid, true);
 			r.send();
 
 			// Helper to keep organized
@@ -1640,7 +1653,9 @@ function InventorySelectAll(mod, image_pth) {
 
 			mediaBody.appendChild(listboxText);
 			for (var i = 0; i < listboxMetas.length; i++) {
-				mediaBody.appendChild(listboxMetas[i]);
+				if (lines[i].value != '##FIELDDISABLED##') {
+					mediaBody.appendChild(listboxMetas[i]);
+				}
 			}
 
 			var media = _createEl('div', 'slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta');

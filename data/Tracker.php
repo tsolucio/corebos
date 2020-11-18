@@ -45,8 +45,7 @@ class Tracker {
 		// change the query so that it puts the tracker entry whenever you touch on the DetailView of the required entity
 		// get the first name and last name from the respective modules
 		if ($current_module != '') {
-			$query = "select fieldname,tablename,entityidfield from vtiger_entityname where modulename = ?";
-			$result = $adb->pquery($query, array($current_module));
+			$result = $adb->pquery('select fieldname,tablename,entityidfield from vtiger_entityname where modulename=?', array($current_module));
 			$fieldsname = $adb->query_result($result, 0, 'fieldname');
 			$tablename = $adb->query_result($result, 0, 'tablename');
 			$entityidfield = $adb->query_result($result, 0, 'entityidfield');
@@ -67,7 +66,7 @@ class Tracker {
 			$item_summary = html_entity_decode($adb->query_result($result, 0, 'entityname'), ENT_QUOTES, $default_charset);
 			$item_summary = textlength_check($item_summary);
 		}
-		#if condition added to skip faq in last viewed history
+		//if condition added to skip faq in last viewed history
 		$query = "INSERT into $this->table_name (user_id, module_name, item_id, item_summary) values (?,?,?,?)";
 		$qparams = array($user_id, $current_module, $item_id, $item_summary);
 		$this->db->pquery($query, $qparams, true);
@@ -147,7 +146,7 @@ class Tracker {
 		// Check to see if the number of items in the list is now greater than the config max.
 		$rs = $this->db->pquery("SELECT count(*) from {$this->table_name} WHERE user_id=?", array($user_id));
 		$count = $this->db->query_result($rs, 0, 0);
-		while ($count > $this->history_max_viewed) {
+		while ($count >= $this->history_max_viewed) {
 			// delete the last one. This assumes that entries are added one at a time > we should never add a bunch of entries
 			$query = "SELECT * from $this->table_name WHERE user_id='$user_id' ORDER BY id ASC";
 			$result = $this->db->limitQuery($query, 0, 1);

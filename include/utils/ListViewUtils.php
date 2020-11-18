@@ -2819,31 +2819,17 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 			}
 			$condition = 'and vtiger_contactdetails.contactid in ' . $contactid_comma;
 		} elseif ($relmodule == 'HelpDesk' || $relmodule == 'Trouble Tickets') {
-			$query = 'select parent_id from vtiger_troubletickets where ticketid =?';
-			$result = $adb->pquery($query, array($relmod_recordid));
+			$condition = ' and vtiger_contactdetails.contactid=0';
+			$result = $adb->pquery('select parent_id from vtiger_troubletickets where ticketid=?', array($relmod_recordid));
 			$parent_id = $adb->query_result($result, 0, 'parent_id');
 			if ($parent_id != '') {
-				$crmObject = getCrmObject();
-				$crmTable = 'vtiger_crmentity';
-				if ($crmObject) {
-					$res = $adb->pquery('select setype from vtiger_crmobject where crmid=?', array($parent_id));
-					if ($adb->num_rows($res) > 0) {
-						$module = $adb->query_result($res, 0, 'setype');
-						$mod = CRMEntity::getInstance($module);
-						$crmTable = $mod::$crmentityTable;
-					}
-				}
-				$crmquery = 'select setype from '.$crmTable.' where crmid=?';
-				$parentmodule_id = $adb->pquery($crmquery, array($parent_id));
-				$parent_modname = $adb->query_result($parentmodule_id, 0, 'setype');
+				$parent_modname = getSalesEntityType($parent_id);
 				if ($parent_modname == 'Accounts') {
 					$condition = 'and vtiger_contactdetails.accountid= ' . $parent_id;
 				}
 				if ($parent_modname == 'Contacts') {
 					$condition = 'and vtiger_contactdetails.contactid= ' . $parent_id;
 				}
-			} else {
-				$condition = ' and vtiger_contactdetails.contactid=0';
 			}
 		}
 	} elseif ($current_module == 'Potentials') {

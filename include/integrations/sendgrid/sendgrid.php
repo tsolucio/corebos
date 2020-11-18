@@ -345,7 +345,11 @@ class corebos_sendgrid {
 				));
 				try {
 					$response = $client->doGet();
+					if (strpos($response, "<h1>406 Not Acceptable</h1>") === false) {
+						coreBOS_Settings::setSetting('SG_DYNAMICTPLS', $response);
+					}
 				} catch (Exception $e) {
+					$response = coreBOS_Settings::getSetting('SG_DYNAMICTPLS', '');
 					$log->fatal('Exeption Encountered: '. $e->getMessage());
 				}
 				if (!empty($response)) {

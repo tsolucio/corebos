@@ -10,11 +10,13 @@ if ($templates) {
 		for ($x=0; $x < count($versions); $x++) {
 			if ($versions[$x]->active == 1) {
 				$templateId = $versions[$x]->template_id;
+				$versionId = $versions[$x]->id;
 			}
 		}
 		$templateArr[] = array(
 			'templateName' => $templates[$y]->name,
 			'templateId' => $templateId,
+			'versionId' => $versionId,
 		);
 	}
 	echo json_encode($templateArr);

@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2019 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Copyright 2020 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
 * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
 * file except in compliance with the License. You can redistribute it and/or modify it
 * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
@@ -14,7 +14,7 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 
-class cbQuestionContextParameter extends cbupdaterWorker {
+class incmessagenamefield extends cbupdaterWorker {
 
 	public function applyChange() {
 		if ($this->hasError()) {
@@ -23,18 +23,9 @@ class cbQuestionContextParameter extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			global $adb;
-			$result = $adb->pquery('SELECT operationid FROM vtiger_ws_operation WHERE name = ?', array('cbQuestionAnswer'));
-			if ($result) {
-				$operationid = $adb->query_result($result, 0, 'operationid');
-				if (isset($operationid)) {
-					$this->ExecuteQuery("INSERT INTO vtiger_ws_operation_parameters (`operationid`,`name`,`type`,`sequence`) VALUES ($operationid,'params','String',2);");
-				}
-				$this->sendMsg('Changeset '.get_class($this).' applied!');
-				$this->markApplied(false);
-			} else {
-				$this->sendMsgError('Changeset '.get_class($this).' could not be applied yet. Please launch again.');
-			}
+			$this->ExecuteQuery('ALTER TABLE vtiger_messages MODIFY COLUMN messagename VARCHAR(1100)', array());
+			$this->sendMsg('Changeset '.get_class($this).' applied!');
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}

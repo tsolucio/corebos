@@ -109,6 +109,11 @@ switch ($_REQUEST['_op']) {
 	case 'getconfigdenormalization':
 	case 'setconfigdenormalization':
 		include_once 'include/integrations/denormalize/settings.php';
+		break;
+	case 'getconfigonesignal':
+	case 'setconfigonesignal':
+		include_once 'include/integrations/onesignal/settings.php';
+		break;
 	case 'getconfigcache':
 	case 'setconfigcache':
 		include_once 'include/integrations/cache/settings.php';
@@ -208,6 +213,14 @@ switch ($_REQUEST['_op']) {
 				'title' => getTranslatedString('Login Sync Activation', 'Utilities'),
 				'desc' => getTranslatedString('Login_Synic Desc', 'Utilities'),
 				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigloginsync',
+			);
+		}
+		if (file_exists('OneSignalSDKUpdaterWorker.js') && file_exists('OneSignalSDKWorker.js')) {
+			$intgr[] = array(
+				'abbr' => 'OS',
+				'title' => getTranslatedString('OneSignal Activation', 'Utilities'),
+				'desc' => getTranslatedString('OneSignal Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigonesignal',
 			);
 		}
 		$smarty->assign('integrations', $intgr);
