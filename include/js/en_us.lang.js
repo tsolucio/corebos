@@ -50,6 +50,7 @@ var alert_arr = {
 	'SELECT_ATLEAST_ONE_USER':'Please select at least one user',
 	'DISABLE_SHARING_CONFIRMATION':'Are you sure you want to disable sharing for selected ',
 	'USERS':' user(s) ?',
+	'confirm_msg_smpt': 'Are you sure you want to clear these smtp settings?',
 	'ENDTIME_GREATER_THAN_STARTTIME':'End Time should be greater than Start Time ',
 	'MISSING_EVENT_NAME':'Missing Event Name',
 	'EVENT_TYPE_NOT_SELECTED':'Event Type is not selected',
