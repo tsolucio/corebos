@@ -251,7 +251,19 @@ function checkevvtMenuInstalled() {
 		$adb->query("ALTER TABLE vtiger_profile2field ADD summary enum('T', 'H','B', 'N') DEFAULT 'B' NOT NULL");
 	}
 	if (vtlib_isModuleActive('cbupdater')) {
-		// first we make sure we have Global Variable
+		$rsup = $adb->query("select cbupdaterid,execstate from vtiger_cbupdater where classname='denormalizechangeset'");
+		if ($adb->query_result($rsup, 0, 'execstate')!='Executed') {
+			$holduser = $current_user;
+			ob_start();
+			include 'modules/cbupdater/getupdatescli.php';
+			$updid = $adb->query_result($rsup, 0, 'cbupdaterid');
+			$argv[0] = 'doworkcli';
+			$argv[1] = 'apply';
+			$argv[2] = $updid;
+			include 'modules/cbupdater/doworkcli.php';
+			ob_end_clean();
+			$current_user = $holduser;
+		}
 		if (!vtlib_isModuleActive('GlobalVariable')) {
 			$holduser = $current_user;
 			ob_start();

@@ -493,31 +493,10 @@ function getTabOwnedBy($module) {
 function getSalesEntityType($crmid) {
 	global $log, $adb;
 	$log->debug('> getSalesEntityType '.$crmid);
-	$tableName = getCrmObject();
-	$result = $adb->pquery('select setype from '.$tableName.' where crmid=?', array($crmid));
+	$result = $adb->pquery('select setype from vtiger_crmobject where crmid=?', array($crmid));
 	$parent_module = $adb->query_result($result, 0, 'setype');
 	$log->debug('< getSalesEntityType');
 	return $parent_module;
-}
-
-/**
- * Function to check if vtiger_crmobject exists
- * @param boolean $name
- * @return tablename
- */
-function getCrmObject($name = false) {
-	global $log, $adb;
-	$log->debug('> getCrmObject');
-	$tablename = $name ? false : 'vtiger_crmentity';
-	$tables = $adb->query("show tables like 'vtiger_crmobject'");
-	if ($adb->num_rows($tables)>0) {
-		$rows = $adb->query('select count(*) as cnt from vtiger_crmobject');
-		if ($rows->fields['cnt']>0) {
-			$tablename = $name ? true : 'vtiger_crmobject';
-		}
-	}
-	$log->debug('< getCrmObject');
-	return $tablename;
 }
 
 /**
