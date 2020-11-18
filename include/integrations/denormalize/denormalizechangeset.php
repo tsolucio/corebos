@@ -39,7 +39,7 @@ class denormalizechangeset extends cbupdaterWorker {
 				'INSERT IGNORE INTO vtiger_crmobject (crmid,deleted,setype,smownerid,modifiedtime) select crmid,deleted,setype,smownerid,modifiedtime from vtiger_crmentity'
 			);
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			// $this->markApplied(false); remember to activate this when we are finished
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}
