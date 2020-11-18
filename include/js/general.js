@@ -3963,6 +3963,40 @@ function selectDel(ThisName, CheckAllName) {
 	CheckAllNameOptions[0].checked=flag;
 }
 
+function clearIncomingSMTPSettings(inc_smtp_user) {
+	if (confirm(alert_arr.confirm_msg_smpt)) {
+		if (inc_smtp_user != '') {
+			jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?module=Utilities&action=UtilitiesAjax&inc_smtp_user='+inc_smtp_user+'&file=smtpsettings&ajax=true',
+			}).done(function (response) {
+				if (response == 'updated') {
+					window.location.href = 'index.php?action=integration&module=Utilities&_op=getconfigsmtp&savemode=false';
+				}
+			});
+		}
+	} else {
+		return false;
+	}
+}
+
+function clearOutgoingSMTPSettings(og_smtp_user) {
+	if (confirm(alert_arr.confirm_msg_smpt)) {
+		if (og_smtp_user != '') {
+			jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?module=Utilities&action=UtilitiesAjax&og_smtp_user='+og_smtp_user+'&file=smtpsettings&ajax=true',
+			}).done(function (response) {
+				if (response == 'updated') {
+					window.location.href = 'index.php?action=integration&module=Utilities&_op=getconfigsmtp&savemode=false';
+				}
+			});
+		}
+	} else {
+		return false;
+	}
+}
+
 // Added for page navigation in duplicate-listview
 var dup_start = '';
 function getDuplicateListViewEntries_js(module, url) {
