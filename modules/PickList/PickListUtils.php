@@ -235,7 +235,6 @@ function getAllowedPicklistModules($allowNonEntities = 0) {
 function getPicklistValuesSpecialUitypes($uitype, $fieldname, $value, $action = 'EditView') {
 	global $adb, $current_user, $default_charset;
 
-	$fieldname = $adb->sql_escape_string($fieldname);
 	if ($uitype == '1614') {
 		$uitype = '1613';
 		$allowNonEntities = 1;
@@ -245,18 +244,16 @@ function getPicklistValuesSpecialUitypes($uitype, $fieldname, $value, $action = 
 	} else {
 		$allowNonEntities = 0;
 	}
-	$picklistValues = getAllowedPicklistModules($allowNonEntities);
 	$options = array();
 	$pickcount = 0;
 	if ($uitype == '1613') {
-		$found = false;
+		$picklistValues = getAllowedPicklistModules($allowNonEntities);
 		foreach ($picklistValues as $pValue) {
 			$value = decode_html($value);
 			$pickListValue = decode_html($pValue);
 			if ($value == trim($pickListValue)) {
 				$chk_val = 'selected';
 				$pickcount++;
-				$found = true;
 			} else {
 				$chk_val = '';
 			}
@@ -272,6 +269,7 @@ function getPicklistValuesSpecialUitypes($uitype, $fieldname, $value, $action = 
 		foreach ($valueArr as $key => $value) {
 			$valueArr[$key] = trim(html_entity_decode($value, ENT_QUOTES, $default_charset));
 		}
+		$picklistValues = getAllowedPicklistModules($allowNonEntities);
 		if (!empty($picklistValues)) {
 			foreach ($picklistValues as $pickListValue) {
 				if (in_array(trim($pickListValue), $valueArr)) {
