@@ -17,40 +17,18 @@
  *  Author    : JPL TSolucio, S. L.
  *************************************************************************************************/
 class corebos_denormalize {
-	private $isactive = 0;
-	private $denormodulelist;
-	const KEY_ISACTIVE = 'denormalize_isactive';
 	const KEY_DENOR_MODULELIST = 'denormodule_list';
 	const DENORM_OPERATION = 'denorm_mod';
 	const UNDO_DENORM_OPERATION = 'undo_denorm';
 
-	public function __construct() {
-		$this->initGlobalScope();
-	}
-
-	public function initGlobalScope() {
-		$this->isactive = coreBOS_Settings::getSetting(self::KEY_ISACTIVE, 0);
-		$this->denormodulelist = coreBOS_Settings::getSetting(self::KEY_DENOR_MODULELIST, '');
-	}
-
-	public function saveSettings(
-		$isactive,
-		$denormodulelist
-	) {
-		coreBOS_Settings::setSetting(self::KEY_ISACTIVE, $isactive);
+	public function saveSettings($denormodulelist) {
 		coreBOS_Settings::setSetting(self::KEY_DENOR_MODULELIST, $denormodulelist);
 	}
 
 	public function getSettings() {
 		return array(
-			'denormalize_isactive' => coreBOS_Settings::getSetting(self::KEY_ISACTIVE, ''),
 			'denormodule_list' => coreBOS_Settings::getSetting(self::KEY_DENOR_MODULELIST, ''),
 		);
-	}
-
-	public function isActive() {
-		$isactive = coreBOS_Settings::getSetting(self::KEY_ISACTIVE, 0);
-		return ($isactive==1);
 	}
 
 	public function denormGetAllModules($operation = '') {
@@ -104,16 +82,27 @@ class corebos_denormalize {
 	}
 
 	public function denormalizeProcess($module) {
-		$smarty = new vtigerCRM_Smarty();
+		global $adb, $dbconfig;
 		$Vtiger_Utils_Log = true;
 		include_once 'vtlib/Vtiger/Module.php';
-		global $adb, $log;
 		$msg = '';
 		$query='SELECT tablename,entityidfield FROM vtiger_entityname WHERE modulename=?';
 		$result=$adb->pquery($query, array($module));
 		$tablename=$adb->query_result($result, 0, 'tablename');
 		$entityidname=$adb->query_result($result, 0, 'entityidfield');
 		$join=$tablename.'.'.$entityidname;
+		$fkey = $adb->pquery(
+			"SELECT constraint_name
+			FROM information_schema.key_column_usage
+			WHERE table_name=? and referenced_table_name='vtiger_crmentity' and constraint_schema=?",
+			array($tablename, $dbconfig['db_name'])
+		);
+		if ($fkey && $adb->num_rows($fkey)>0) {
+			$fcst = $adb->query_result($fkey, 0, 'constraint_name');
+			$adb->query('ALTER TABLE '.$tablename.' DROP FOREIGN KEY '.$fcst);
+			$msg .= 'ALTER TABLE '.$tablename.' DROP FOREIGN KEY '.$fcst;
+			$msg .= 'Foreign Key constraint deleted.<br>';
+		}
 		$query2= "ALTER TABLE $tablename
 			ADD  `crmid` INT( 19 ) NOT NULL DEFAULT 0 ,
 			ADD  `cbuuid` char(40) NULL DEFAULT NULL,
@@ -134,7 +123,7 @@ class corebos_denormalize {
 			ADD INDEX (`smownerid`, `deleted`)";
 		$result1=$adb->query($query2);
 		if ($result1) {
-			$msg .=  "Table ".$tablename." altered with the new crmentity fields.<br>";
+			$msg .=  "Table $tablename altered with the new crmentity fields.<br>";
 		}
 		$updfields = 'update vtiger_field set tablename=? where tabid=? and tablename=?';
 		$result2=$adb->pquery($updfields, array($tablename, getTabid($module), 'vtiger_crmentity'));
@@ -155,13 +144,19 @@ class corebos_denormalize {
 			$tablename.description= vtiger_crmentity.description,
 			$tablename.deleted = vtiger_crmentity.deleted";
 		$result3=$adb->query($query3);
-		$que="UPDATE $tablename left join vtiger_crmentity on vtiger_crmentity.crmid=$join set $tablename.deleted=1 WHERE $tablename.createdtime is NUll";
-		$res=$adb->query($que);
+		$adb->query("UPDATE $tablename left join vtiger_crmentity on vtiger_crmentity.crmid=$join set $tablename.deleted=1 WHERE $tablename.createdtime is NUll");
 		if ($result3) {
-			$msg .= "Table ".$tablename." filled with the crmentity data.<br>";
+			$msg .= "Table $tablename filled with the crmentity data.<br>";
 		}
-		$sqlupdentitytable = 'UPDATE vtiger_entityname SET isdenormalized = ?, denormtable = ? WHERE vtiger_entityname.tabid = ?';
+		$sqlupdentitytable = 'UPDATE vtiger_entityname SET isdenormalized=?, denormtable=? WHERE vtiger_entityname.tabid=?';
 		$result4=$adb->pquery($sqlupdentitytable, array('1',$tablename, getTabid($module)));
+		if ($result4) {
+			$msg .= 'Table entityname updated.<br>';
+		}
+		$result5=$adb->pquery('DELETE FROM vtiger_crmentity WHERE setype=?', array($module));
+		if ($result5) {
+			$msg .= 'CRMEntity rows deleted.<br>';
+		}
 		return $msg;
 	}
 
@@ -186,10 +181,7 @@ class corebos_denormalize {
 		include_once 'vtlib/Vtiger/Module.php';
 		global $adb;
 		$msg = '';
-		$query='SELECT tablename,denormtable, isdenormalized, entityidfield FROM vtiger_entityname WHERE modulename=?';
-		$result=$adb->pquery($query, array($module));
-		$tablename=$adb->query_result($result, 0, 'tablename');
-		$entityidname=$adb->query_result($result, 0, 'entityidfield');
+		$result=$adb->pquery('SELECT denormtable FROM vtiger_entityname WHERE modulename=?', array($module));
 		$denormtable=$adb->query_result($result, 0, 'denormtable');
 		$undo_denormsql = "INSERT INTO vtiger_crmentity(
 			crmid,
@@ -216,8 +208,7 @@ class corebos_denormalize {
 			setype,
 			description,
 			deleted
-		FROM
-			$denormtable
+		FROM $denormtable
 		ON DUPLICATE KEY
 		UPDATE
 			`cbuuid` = vtiger_crmentity.cbuuid,
@@ -231,13 +222,14 @@ class corebos_denormalize {
 			`description`= vtiger_crmentity.description,
 			`deleted` = vtiger_crmentity.deleted";
 		$result = $adb->pquery($undo_denormsql, array());
-		$updfields = 'update vtiger_field set tablename=? where tabid=? and tablename=?';
-		$result1=$adb->pquery($updfields, array('vtiger_crmentity', getTabid($module), $denormtable));
-		$sqlupdentitytable = 'UPDATE vtiger_entityname SET isdenormalized = ?, denormtable = ? WHERE vtiger_entityname.tabid = ?';
+		$updfields = 'update vtiger_field set tablename=?
+			where tabid=? and fieldname in ("cbuuid","smcreatorid","smownerid","modifiedby","createdtime","modifiedtime","viewedtime","setype","description","deleted")';
+		$result1=$adb->pquery($updfields, array('vtiger_crmentity', getTabid($module)));
+		$sqlupdentitytable = 'UPDATE vtiger_entityname SET isdenormalized=?, denormtable=? WHERE vtiger_entityname.tabid=?';
 		$result2=$adb->pquery($sqlupdentitytable, array('0','vtiger_crmentity', getTabid($module)));
 		if ($result && $result1 && $result2) {
-			$msg .= "Process completed for Module ".$module."<br>";
-			$delete_columnssql = "ALTER TABLE $denormtable
+			$msg .= "Process completed for Module $module<br>";
+			$adb->query("ALTER TABLE $denormtable
 				DROP COLUMN crmid,
 				DROP COLUMN cbuuid,
 				DROP COLUMN smcreatorid,
@@ -248,8 +240,7 @@ class corebos_denormalize {
 				DROP COLUMN viewedtime,
 				DROP COLUMN setype,
 				DROP COLUMN description,
-				DROP COLUMN deleted";
-				$result3 = $adb->pquery($delete_columnssql, array());
+				DROP COLUMN deleted");
 		}
 		return $msg;
 	}

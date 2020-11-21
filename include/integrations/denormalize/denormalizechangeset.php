@@ -27,16 +27,18 @@ class denormalizechangeset extends cbupdaterWorker {
 			$this->ExecuteQuery('ALTER TABLE vtiger_entityname ADD denormtable VARCHAR(100) DEFAULT "vtiger_crmentity"', array());
 			$this->ExecuteQuery('CREATE TABLE IF NOT EXISTS vtiger_crmobject (
 				crmid int(19),
+				cbuuid char(40),
 				deleted tinyint(1),
 				setype varchar(100),
 				smownerid int(19),
 				modifiedtime datetime,
 				PRIMARY KEY (crmid),
+				INDEX (cbuuid),
 				INDEX (deleted),
 				INDEX (setype)
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8', array());
 			$this->ExecuteQuery(
-				'INSERT IGNORE INTO vtiger_crmobject (crmid,deleted,setype,smownerid,modifiedtime) select crmid,deleted,setype,smownerid,modifiedtime from vtiger_crmentity'
+				'INSERT IGNORE INTO vtiger_crmobject (crmid,deleted,setype,smownerid,modifiedtime,cbuuid) select crmid,deleted,setype,smownerid,modifiedtime,cbuuid from vtiger_crmentity'
 			);
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);

@@ -22,15 +22,13 @@ $smarty = new vtigerCRM_Smarty();
 $cbosDenormalize = new corebos_denormalize();
 global $adb, $current_user;
 $isadmin = is_admin($current_user);
-if ($isadmin && $_REQUEST['_op'] =='setconfigdenormalization' && $_REQUEST['denormalize_isactive']=='on' && $_REQUEST['denorm_op']) {
-	$isActive = ((empty($_REQUEST['denormalize_isactive']) || $_REQUEST['denormalize_isactive']!='on') ? 0 : 1);
+if ($isadmin && $_REQUEST['_op'] =='setconfigdenormalization' && $_REQUEST['denorm_op']) {
 	if ($_REQUEST['denorm_op'] == 'denorm') {
 		$selectedModuleList = (empty($_REQUEST['denor_mods']) ? array() : $_REQUEST['denor_mods']);
 		if (count($selectedModuleList) > 0) {
-			$denormalize_res = $cbosDenormalize->dernormalizeModules($selectedModuleList);
+			$cbosDenormalize->dernormalizeModules($selectedModuleList);
 			$updateddenorm_list = $cbosDenormalize->denormGetAllModules('denorm_mod');
 			$cbosDenormalize->saveSettings(
-				$isActive,
 				json_encode($updateddenorm_list)
 			);
 		}
@@ -38,21 +36,20 @@ if ($isadmin && $_REQUEST['_op'] =='setconfigdenormalization' && $_REQUEST['deno
 	if ($_REQUEST['denorm_op'] == 'undo_denorm') {
 		$selectedModuleList = (empty($_REQUEST['denorm_mod']) ? array() : $_REQUEST['denorm_mod']);
 		if (count($selectedModuleList) > 0) {
-			$denormalize_res = $cbosDenormalize->undoDernormalizeModules($selectedModuleList);
+			$cbosDenormalize->undoDernormalizeModules($selectedModuleList);
 			$updateddenorm_list = $cbosDenormalize->denormGetAllModules('denorm_mod');
 			$cbosDenormalize->saveSettings(
-				$isActive,
 				json_encode($updateddenorm_list)
 			);
 			$smarty->assign('denormop', 'undo_denorm');
 		}
 	}
 }
+
 $allmodules = $cbosDenormalize->denormGetAllModules();
 $smarty->assign('TITLE_MESSAGE', getTranslatedString('Denormalization Activation', $currentModule));
 $dmsettings = $cbosDenormalize->getSettings();
 $denormodulelist = $cbosDenormalize->denormGetAllModules('undo_denorm');
-$smarty->assign('isActive', $cbosDenormalize->isActive());
 $smarty->assign('modulelist', $allmodules);
 $smarty->assign('totalmodulelist', count($allmodules));
 $smarty->assign('denormodulelist', $denormodulelist);

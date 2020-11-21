@@ -46,17 +46,6 @@ function handleOperationChange() {
 		<input type="hidden" name="action" value="integration">
 		<input type="hidden" name="_op" value="setconfigdenormalization">
 		<div class="slds-form-element">
-			<label class="slds-checkbox_toggle slds-grid">
-			<span class="slds-form-element__label slds-m-bottom_none">{'_active'|@getTranslatedString:$MODULE}</span>
-			<input type="checkbox" name="denormalize_isactive" aria-describedby="toggle-desc" {if $isActive}checked{/if} />
-			<span id="toggle-desc" class="slds-checkbox_faux_container" aria-live="assertive">
-				<span class="slds-checkbox_faux"></span>
-				<span class="slds-checkbox_on">{'LBL_ENABLED'|@getTranslatedString:'Settings'}</span>
-				<span class="slds-checkbox_off">{'LBL_DISABLED'|@getTranslatedString:'Settings'}</span>
-			</span>
-			</label>
-		</div>
-		<div class="slds-form-element">
 			<label class="slds-form-element__label" for="denorm_op">
 				<abbr class="slds-required" title="required">* </abbr>Select Operation <span class="slds-badge .slds-theme_success">Denormalized {$totaldenormodulelist}/{$totalmodulelist}</span></label>
 			<div class="slds-form-element__control">
