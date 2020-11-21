@@ -2934,7 +2934,7 @@ function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $us
 		'insert into vtiger_crmentity values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
 		array($crmID, $userID, $userID, 0, 'PBXManager', '', $timeOfCall, $timeOfCall, null, null, 0, 1, 0, $pbxuuid)
 	);
-	$adb->pquery('insert into vtiger_crmobject values (?,0,?,?,?)', array($crmID, 'PBXManager', $userID, $timeOfCall));
+	$adb->pquery('insert into vtiger_crmobject values (?,?,0,?,?,?)', array($crmID, $pbxuuid, 'PBXManager', $userID, $timeOfCall));
 	$unknownCaller = GlobalVariable::getVariable('PBX_Unknown_CallerID', 'Unknown', 'PBXManager');
 	if (empty($callfrom)) {
 		$callfrom = $unknownCaller;

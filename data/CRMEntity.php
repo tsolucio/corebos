@@ -84,7 +84,7 @@ class CRMEntity {
 
 	public static function getUUIDfromCRMID($refval) {
 		global $adb;
-		$rs = $adb->pquery('select cbuuid from '.self::$crmentityTable.' where crmid=?', array($refval));
+		$rs = $adb->pquery('select cbuuid from vtiger_crmobject where crmid=?', array($refval));
 		return (($rs && $adb->num_rows($rs)>0) ? $rs->fields['cbuuid'] : '');
 	}
 
@@ -105,14 +105,14 @@ class CRMEntity {
 		if (empty($refval)) {
 			return '';
 		}
-		$rs = $adb->pquery('select crmid from '.self::$crmentityTable.' where cbuuid=?', array($refval));
+		$rs = $adb->pquery('select crmid from vtiger_crmobject where cbuuid=?', array($refval));
 		return (($rs && $adb->num_rows($rs)>0) ? $rs->fields['crmid'] : '');
 	}
 
 	public static function getWSIDfromUUID($refval) {
 		global $adb;
 		$rs = $adb->pquery(
-			'select concat(id,"x",crmid) as wsid from '.self::$crmentityTable.' inner join vtiger_ws_entity on name=setype where cbuuid=?',
+			'select concat(id,"x",crmid) as wsid from vtiger_crmobject inner join vtiger_ws_entity on name=setype where cbuuid=?',
 			array($refval)
 		);
 		return (($rs && $adb->num_rows($rs)>0) ? $rs->fields['wsid'] : '');
@@ -479,8 +479,8 @@ class CRMEntity {
 			$rdo = $adb->pquery($sql, $params);
 			if ($rdo) {
 				$adb->pquery(
-					'UPDATE vtiger_crmobject set smownerid=?,modifiedtime=? WHERE crmid=?',
-					array($ownerid, $crmvalues['date'], $this->id)
+					'UPDATE vtiger_crmobject set smownerid=?,modifiedtime=?,cbuuid=? WHERE crmid=?',
+					array($ownerid, $crmvalues['date'], $this->column_fields['cbuuid'], $this->id)
 				);
 			}
 			$sql1 = 'delete from vtiger_ownernotify where crmid=?';
@@ -511,8 +511,8 @@ class CRMEntity {
 			$rdo = $adb->pquery($sql, $params);
 			if ($rdo) {
 				$adb->pquery(
-					'INSERT INTO vtiger_crmobject (crmid,deleted,setype,smownerid,modifiedtime) values (?,0,?,?,?)',
-					array($current_id, $module, $ownerid, $crmvalues['modified_date'])
+					'INSERT INTO vtiger_crmobject (crmid,deleted,setype,smownerid,modifiedtime,cbuuid) values (?,0,?,?,?,?)',
+					array($current_id, $module, $ownerid, $crmvalues['modified_date'], $cbuuid)
 				);
 			}
 			$this->id = $current_id;
@@ -897,34 +897,53 @@ class CRMEntity {
 			}
 		}
 		$mtime = $adb->formatDate(date('Y-m-d H:i:s'), true);
-		if (self::$denormalized && $table_name == self::$crmentityTable) {
+		if ($this->denormalized && $table_name == $this->crmentityTable) {
 			if ($insertion_mode == 'edit') {
 				if (!empty($this->column_fields['cbuuid'])) {
 					$update[] = 'cbuuid=?';
 					$update_params[] = $this->column_fields['cbuuid'];
 				}
-				$update[] = 'modifiedtime=?';
-				$update_params[] = $mtime;
-				$update[] = 'modifiedby=?';
-				$update_params[] = $current_user->id;
+				if (!in_array('modifiedtime=?', $update)) {
+					$update[] = 'modifiedtime=?';
+					$update_params[] = $mtime;
+				}
+				if (!in_array('modifiedby=?', $update)) {
+					$update[] = 'modifiedby=?';
+					$update_params[] = $current_user->id;
+				}
 			} else {
 				$_REQUEST['currentid'] = $this->id;
 				$this->column_fields['record_id'] = $this->id;
 				$this->column_fields['record_module'] = $module;
-				$column[] = 'crmid';
-				$column[] = 'setype';
-				$column[] = 'cbuuid';
-				$column[] = 'createdtime';
-				$column[] = 'modifiedtime';
-				$column[] = 'smcreatorid';
-				$column[] = 'modifiedby';
-				$value[] = $this->id;
-				$value[] = $module;
-				$value[] = (empty($this->column_fields['cbuuid']) ? $this->getUUID() : $this->column_fields['cbuuid']);
-				$value[] =$this->column_fields['createdtime'];
-				$value[] =$mtime;
-				$value[] =$this->column_fields['created_user_id'];
-				$value[] =$current_user->id;
+				$this->column_fields['cbuuid'] = (empty($this->column_fields['cbuuid']) ? $this->getUUID() : $this->column_fields['cbuuid']);
+				if (!in_array('crmid', $column)) {
+					$column[] = 'crmid';
+					$value[] = $this->id;
+				}
+				if (!in_array('setype', $column)) {
+					$column[] = 'setype';
+					$value[] = $module;
+				}
+				if (!in_array('cbuuid', $column)) {
+					$column[] = 'cbuuid';
+					$value[] = $this->column_fields['cbuuid'];
+				}
+				if (!in_array('createdtime', $column)) {
+					$column[] = 'createdtime';
+					$value[] =$this->column_fields['createdtime'];
+				}
+				if (!in_array('modifiedtime', $column)) {
+					$column[] = 'modifiedtime';
+					$value[] =$mtime;
+				}
+				if (!in_array('smcreatorid', $column)) {
+					$column[] = 'smcreatorid';
+					$value[] =$this->column_fields['created_user_id'];
+				}
+				if (!in_array('modifiedby', $column)) {
+					$column[] = 'modifiedby';
+					$value[] =$current_user->id;
+				}
 			}
 		}
 		$rdo = true;
@@ -939,15 +958,19 @@ class CRMEntity {
 						'UPDATE vtiger_crmobject set smownerid=?,modifiedtime=? WHERE crmid=?',
 						array($this->column_fields['assigned_user_id'], $mtime, $this->id)
 					);
+					if (!empty($this->column_fields['cbuuid'])) {
+						$adb->pquery('UPDATE vtiger_crmobject set cbuuid=? WHERE crmid=?', array($this->column_fields['cbuuid'], $this->id));
+					}
 				}
 			}
 		} else {
 			$sql1 = "insert into $table_name(" . implode(',', $column) . ') values(' . generateQuestionMarks($value) . ')';
 			$rdo = $adb->pquery($sql1, $value);
 			if ($rdo) {
+				$this->column_fields['cbuuid'] = (empty($this->column_fields['cbuuid']) ? $this->getUUID() : $this->column_fields['cbuuid']);
 				$adb->pquery(
-					'INSERT IGNORE INTO vtiger_crmobject (crmid,deleted,setype,smownerid,modifiedtime) values (?,0,?,?,?)',
-					array($this->id, $module, $this->column_fields['assigned_user_id'], $this->column_fields['modifiedtime'])
+					'INSERT IGNORE INTO vtiger_crmobject (crmid,deleted,setype,smownerid,modifiedtime,cbuuid) values (?,0,?,?,?,?)',
+					array($this->id, $module, $this->column_fields['assigned_user_id'], $this->column_fields['modifiedtime'], $this->column_fields['cbuuid'])
 				);
 			}
 		}
@@ -1444,8 +1467,11 @@ class CRMEntity {
 	 * @return Column value of the field.
 	 */
 	public function get_column_value($columnname, $fldvalue, $fieldname, $uitype, $datatype = '') {
-		global $log;
+		global $log, $current_user;
 		$log->debug("> get_column_value $columnname, $fldvalue, $fieldname, $uitype, $datatype");
+		if ($uitype==52 && $fldvalue=='') {
+			return $current_user->id;
+		}
 		if (is_uitype($uitype, '_date_') && $fldvalue == '') {
 			return null;
 		}
