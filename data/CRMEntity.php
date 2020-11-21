@@ -1398,6 +1398,13 @@ class CRMEntity {
 		$adb->pquery('UPDATE vtiger_crmobject set deleted=1,modifiedtime=? WHERE crmid=?', array($mtime, $id));
 	}
 
+	/** Mark an item as undeleted */
+	public function mark_undeleted($id) {
+		global $adb;
+		$adb->pquery('UPDATE '.$this->crmentityTable.' set deleted=0 where crmid=?', array($id));
+		$adb->pquery('UPDATE vtiger_crmobject set deleted=0 WHERE crmid=?', array($id));
+	}
+
 	// this method is called during an import before inserting a bean
 	// define an associative array called $special_fields
 	// the keys are user defined, and don't directly map to the bean's vtiger_fields
