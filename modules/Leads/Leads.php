@@ -114,7 +114,7 @@ class Leads extends CRMEntity {
 		$fields_list = getFieldsListFromQuery($sql);
 
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
+		$crmEntityTable = $this->denormalized ? $this->crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$query = "SELECT $fields_list,case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name
 			FROM ".$crmEntityTable." 
 			INNER JOIN vtiger_leaddetails ON vtiger_crmentity.crmid=vtiger_leaddetails.leadid
@@ -462,7 +462,7 @@ class Leads extends CRMEntity {
 			$groupidlist.=','.$adb->query_result($gresult, $j, 'groupid');
 		}
 		//crm-now changed query to search in groups too and make only owned contacts available
-		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
+		$crmEntityTable = $this->denormalized ? $this->crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$query = 'SELECT vtiger_leaddetails.lastname, vtiger_leaddetails.firstname, vtiger_leaddetails.leadid, vtiger_leaddetails.email, vtiger_leaddetails.company
 			FROM vtiger_leaddetails
 			INNER JOIN '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_leaddetails.leadid

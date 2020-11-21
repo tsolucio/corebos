@@ -89,7 +89,7 @@ class coreBOSEventsPermissionExample extends VTEventHandler {
 		} elseif ($this->typeOfPermissionOverride=='addToUserPermission') {
 			// check if ticket is owned by user or the related account or product is owned by user
 			$mod = CRMEntity::getInstance('HelpDesk');
-			$crmTable = $mod::$crmentityTable;
+			$crmTable = $mod->crmentityTable;
 			$hdownerrs = $adb->pquery(
 				'select 1
 				from vtiger_troubletickets
@@ -105,7 +105,7 @@ class coreBOSEventsPermissionExample extends VTEventHandler {
 		} else { // showTheseRecords
 			// check if the related account or product is owned by user
 			$mod = CRMEntity::getInstance('HelpDesk');
-			$crmTable = $mod::$crmentityTable;
+			$crmTable = $mod->crmentityTable;
 			$hdownerrs = $adb->pquery(
 				'select 1
 				from vtiger_troubletickets
@@ -129,7 +129,7 @@ class coreBOSEventsPermissionExample extends VTEventHandler {
 	public function getHelpDeskAccessQuery($module, $user) {
 		global $adb;
 		$mod = CRMEntity::getInstance($module);
-		$crmTable = $mod::$crmentityTable;
+		$crmTable = $mod->crmentityTable;
 		$query = "select distinct vtiger_troubletickets.ticketid as id
 			from vtiger_troubletickets
 			inner join ".$crmTable." as vtiger_crmentity on 
@@ -153,7 +153,7 @@ class coreBOSEventsPermissionExample extends VTEventHandler {
 		$acid = getRelatedAccountContact($record_id);
 		if (!empty($acid)) {
 			$mod = CRMEntity::getInstance($module);
-			$acownerrs = $adb->pquery('select smownerid from '.$mod::$crmentityTable.' where crmid=? and deleted=0', array($acid));
+			$acownerrs = $adb->pquery('select smownerid from '.$mod->crmentityTable.' where crmid=? and deleted=0', array($acid));
 			if ($acownerrs && $adb->num_rows($acownerrs)>0) {
 				$owner = $adb->query_result($acownerrs, 0, 0);
 				if ($owner==$current_user->id) {

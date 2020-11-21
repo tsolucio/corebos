@@ -276,7 +276,7 @@ function vtws_updateConvertLeadStatus($entityIds, $leadId, $user) {
 		//update the modifiedtime and modified by information for the record
 		$mod = CRMEntity::getInstance('Leads');
 		$leadModifiedTime = $adb->formatDate(date('Y-m-d H:i:s'), true);
-		$adb->pquery('UPDATE '.$mod::$crmentityTable.' SET modifiedtime=?, modifiedby=? WHERE crmid=?', array($leadModifiedTime, $user->id, $leadIdComponents[1]));
+		$adb->pquery('UPDATE '.$mod->crmentityTable.' SET modifiedtime=?, modifiedby=? WHERE crmid=?', array($leadModifiedTime, $user->id, $leadIdComponents[1]));
 	}
 	$moduleArray = array('Accounts','Contacts','Potentials');
 	foreach ($moduleArray as $module) {

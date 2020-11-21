@@ -65,7 +65,7 @@ class OutlookSyncServer extends SyncServer {
 				$crmid = vtws_getIdComponents($record['crmid']);
 				$module = getSalesEntityType($crmid[1]);
 				$mod = CRMEntity::getInstance($module);
-				$lookupResult = $db->pquery('SELECT crmid,modifiedtime FROM '.$mod::$crmentityTable.' WHERE crmid=?', array($crmid[1]));
+				$lookupResult = $db->pquery('SELECT crmid,modifiedtime FROM '.$mod->crmentityTable.' WHERE crmid=?', array($crmid[1]));
 				if ($db->num_rows($lookupResult)) {
 					$lookupRecordId = $record['crmid'];
 				}

@@ -1140,9 +1140,9 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 				$sub_prod_query = $adb->pquery(
 					'SELECT vtiger_products.productid,vtiger_products.productname,vtiger_productcomponent.quantity
 						from vtiger_products
-						INNER JOIN '.$mod::$crmentityTable.' as vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
+						INNER JOIN '.$mod->crmentityTable.' as vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
 						INNER JOIN vtiger_productcomponent on vtiger_productcomponent.topdo=vtiger_products.productid
-						INNER JOIN '.$mod::$crmentityTable.' crmpc ON crmpc.crmid=vtiger_productcomponent.productcomponentid
+						INNER JOIN '.$mod->crmentityTable.' crmpc ON crmpc.crmid=vtiger_productcomponent.productcomponentid
 						WHERE crmpc.deleted=0 AND vtiger_productcomponent.frompdo=?',
 					array($entity_id)
 				);
@@ -1175,7 +1175,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 					$sub_products_query = $adb->pquery(
 						'SELECT 1
 							FROM vtiger_productcomponent
-							INNER JOIN '.$mod::$crmentityTable.' as vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
+							INNER JOIN '.$mod->crmentityTable.' as vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
 							WHERE vtiger_crmentity.deleted=0 AND frompdo=? limit 1',
 						array($entity_id)
 					);
@@ -1599,9 +1599,9 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						'SELECT vtiger_products.productid,vtiger_products.productname,vtiger_products.qtyinstock,
 								vtiger_crmentity.description,vtiger_productcomponent.quantity
 							FROM vtiger_products
-							INNER JOIN '.$mod::$crmentityTable.' as vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
+							INNER JOIN '.$mod->crmentityTable.' as vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
 							INNER JOIN vtiger_productcomponent on vtiger_productcomponent.topdo=vtiger_products.productid
-							INNER JOIN '.$mod::$crmentityTable.' crmpc ON crmpc.crmid=vtiger_productcomponent.productcomponentid
+							INNER JOIN '.$mod->crmentityTable.' crmpc ON crmpc.crmid=vtiger_productcomponent.productcomponentid
 							WHERE crmpc.deleted=0 AND vtiger_productcomponent.frompdo=?',
 						array($entity_id)
 					);
@@ -1653,9 +1653,9 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						'SELECT vtiger_products.productid,vtiger_products.productname,vtiger_products.qtyinstock,
 								vtiger_crmentity.description,vtiger_productcomponent.quantity
 							FROM vtiger_products
-							INNER JOIN '.$mod::$crmentityTable.' as vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
+							INNER JOIN '.$mod->crmentityTable.' as vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
 							INNER JOIN vtiger_productcomponent on vtiger_productcomponent.topdo=vtiger_products.productid
-							INNER JOIN '.$mod::$crmentityTable.' crmpc ON crmpc.crmid=vtiger_productcomponent.productcomponentid
+							INNER JOIN '.$mod->crmentityTable.' crmpc ON crmpc.crmid=vtiger_productcomponent.productcomponentid
 							WHERE crmpc.deleted=0 AND vtiger_productcomponent.frompdo=?',
 						array($entity_id)
 					);
@@ -2120,7 +2120,7 @@ function getListQuery($module, $where = '') {
 	global $log, $current_user;
 	$log->debug('> getListQuery ' . $module . ',' . $where);
 	$mod = CRMEntity::getInstance($module);
-	$crmTable = $mod::$crmentityTable;
+	$crmTable = $mod->crmentityTable;
 	$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 	switch ($module) {
 		case 'HelpDesk':
@@ -2376,7 +2376,7 @@ function getReadEntityIds($module) {
 	global $log, $current_user;
 	$log->debug('> getReadEntityIds ' . $module);
 	$mod = CRMEntity::getInstance($module);
-	$crmTable = $mod::$crmentityTable;
+	$crmTable = $mod->crmentityTable;
 	if ($module == 'Leads') {
 		$val_conv = ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') ? 1 : 0);
 		$query = 'SELECT vtiger_crmentity.crmid
@@ -2542,7 +2542,7 @@ function getRelatedToEntity($module, $list_result, $rset) {
 function getRelatedTo($module, $list_result, $rset) {
 	global $adb, $log, $app_strings;
 	$mod = CRMEntity::getInstance($module);
-	$crmTable = $mod::$crmentityTable;
+	$crmTable = $mod->crmentityTable;
 	if ($module == 'Documents') {
 		$notesid = $adb->query_result($list_result, $rset, 'notesid');
 		$evt_query = 'SELECT vtiger_senotesrel.crmid, vtiger_crmentity.setype
@@ -2752,7 +2752,7 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 			$mod = CRMEntity::getInstance('Contacts');
 			$vcquery = "SELECT vtiger_contactdetails.contactid
 				from vtiger_contactdetails
-				inner join ".$mod::$crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
+				inner join ".$mod->crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
 				inner join vtiger_vendorcontactrel on vtiger_vendorcontactrel.contactid=vtiger_contactdetails.contactid
 				where vtiger_crmentity.deleted=0 and vtiger_vendorcontactrel.vendorid = $relmod_recordid";
 			$condition = "and vtiger_contactdetails.contactid in ($vcquery)";
@@ -2839,13 +2839,13 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 				$pot_query = 'select vtiger_crmentity.crmid,vtiger_contactdetails.contactid,vtiger_potential.potentialid
 					from vtiger_potential
 					inner join vtiger_contactdetails on vtiger_contactdetails.contactid=vtiger_potential.related_to
-					inner join '.$mod::$crmentityTable.' as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_contactdetails.contactid
+					inner join '.$mod->crmentityTable.' as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_contactdetails.contactid
 					where vtiger_crmentity.deleted=0 and vtiger_potential.related_to=?';
 			} else {
 				$pot_query = 'select vtiger_crmentity.crmid,vtiger_account.accountid,vtiger_potential.potentialid
 					from vtiger_potential
 					inner join vtiger_account on vtiger_account.accountid=vtiger_potential.related_to
-					inner join '.$mod::$crmentityTable.' as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_account.accountid
+					inner join '.$mod->crmentityTable.' as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_account.accountid
 					where vtiger_crmentity.deleted=0 and vtiger_potential.related_to=?';
 			}
 			$pot_result = $result = $adb->pquery($pot_query, array($relmod_recordid));
@@ -3321,7 +3321,7 @@ function getEntityId($module, $entityName, $searchonfield = '') {
 			$sql = 'select vtiger_users.id from vtiger_users where deleted = 0 and '.$fieldsname.' = ?';
 		} else {
 			$mod = CRMEntity::getInstance($module);
-			$sql = "select $tablename.$entityidfield from $tablename INNER JOIN ".$mod::$crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid = $tablename.$entityidfield " .
+			$sql = "select $tablename.$entityidfield from $tablename INNER JOIN ".$mod->crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid = $tablename.$entityidfield " .
 				" $cfquery WHERE vtiger_crmentity.deleted = 0 and $fieldsname=?";
 		}
 		$result = $adb->pquery($sql, array($entityName));
@@ -3353,13 +3353,13 @@ function getParentId($parent_name) {
 	$mod = CRMEntity::getInstance($parent_module);
 	if ($parent_module == 'Contacts') {
 		$query = "select crmid
-			from vtiger_contactdetails, ".$mod::$crmentityTable." as vtiger_crmentity
+			from vtiger_contactdetails, ".$mod->crmentityTable." as vtiger_crmentity
 			WHERE concat(lastname,' ',firstname)=? and vtiger_crmentity.crmid =vtiger_contactdetails.contactid and vtiger_crmentity.deleted=0";
 		$result = $adb->pquery($query, array($parent_name));
 		$num_rows = $adb->num_rows($result);
 	} elseif ($parent_module == 'Accounts') {
 		$query = 'select crmid
-			from vtiger_account, '.$mod::$crmentityTable.' as vtiger_crmentity
+			from vtiger_account, '.$mod->crmentityTable.' as vtiger_crmentity
 			WHERE accountname=? and vtiger_crmentity.crmid =vtiger_account.accountid and vtiger_crmentity.deleted=0';
 		$result = $adb->pquery($query, array($parent_name));
 		$num_rows = $adb->num_rows($result);

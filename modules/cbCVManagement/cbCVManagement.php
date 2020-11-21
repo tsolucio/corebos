@@ -180,7 +180,7 @@ class cbCVManagement extends CRMEntity {
 		}
 		self::$validationinfo[] = '---';
 		self::$validationinfo[] = 'search for mandatory records';
-		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCVManagement');
 		$cvsql = 'select vtiger_cbcvmanagement.cvid
 			from vtiger_cbcvmanagement
 			inner join '.$crmEntityTable." on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
@@ -307,7 +307,7 @@ class cbCVManagement extends CRMEntity {
 		}
 		self::$validationinfo[] = '---';
 		self::$validationinfo[] = 'search for mandatory records';
-		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCVManagement');
 		$cvsql = 'select vtiger_cbcvmanagement.cvid
 			from vtiger_cbcvmanagement
 			inner join '.$crmEntityTable." on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
@@ -484,7 +484,7 @@ class cbCVManagement extends CRMEntity {
 		}
 		self::$validationinfo[] = '---';
 		self::$validationinfo[] = 'search for mandatory/owner records';
-		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCVManagement');
 		$cvsql = 'select cvcreate as c, cvretrieve as r, cvupdate as u, cvdelete as d, cvapprove as a
 			from vtiger_cbcvmanagement
 			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid

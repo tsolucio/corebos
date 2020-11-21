@@ -224,14 +224,14 @@ class PriceBooks extends CRMEntity {
 
 		$query = 'select vtiger_crmentity.crmid, vtiger_pricebook.*
 			from vtiger_pricebook
-			inner join '.self::$crmEntityTableAlias.' on vtiger_crmentity.crmid=vtiger_pricebook.pricebookid
+			inner join '.$this->crmentityTableAlias.' on vtiger_crmentity.crmid=vtiger_pricebook.pricebookid
 			where vtiger_crmentity.deleted=0';
 		$result = $adb->pquery($query, array());
 		$no_count = $adb->num_rows($result);
 		if ($no_count !=0) {
 			$pb_query = 'select vtiger_crmentity.crmid, vtiger_pricebook.pricebookid,vtiger_pricebookproductrel.productid
 				from vtiger_pricebook
-				inner join '.self::$crmEntityTableAlias.' on vtiger_crmentity.crmid=vtiger_pricebook.pricebookid
+				inner join '.$this->crmentityTableAlias.' on vtiger_crmentity.crmid=vtiger_pricebook.pricebookid
 				inner join vtiger_pricebookproductrel on vtiger_pricebookproductrel.pricebookid=vtiger_pricebook.pricebookid
 				where vtiger_crmentity.deleted=0 and vtiger_pricebookproductrel.productid=?';
 			$result_pb = $adb->pquery($pb_query, array($id));

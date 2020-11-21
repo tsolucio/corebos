@@ -41,7 +41,7 @@ class ModTrackerHandler extends VTEventHandler {
 								}
 								// get modified time from database in case it has been hidden in GUI
 								$mod = CRMEntity::getInstance($moduleName);
-								$crmrs = $adb->pquery('select modifiedtime from '.$mod::$crmentityTable.' where crmid=?', array($recordId));
+								$crmrs = $adb->pquery('select modifiedtime from '.$mod->crmentityTable.' where crmid=?', array($recordId));
 								$modtime = $adb->query_result($crmrs, 0, 0);
 								$this->id = $adb->getUniqueId('vtiger_modtracker_basic');
 								$adb->pquery(

@@ -1075,7 +1075,7 @@ class CustomView extends CRMEntity {
 		$mod = CRMEntity::getInstance($module);
 		$query = '';
 		if ($viewid != '' && $listquery != '') {
-			$query = 'select ' . $this->getCvColumnListSQL($viewid) . ' ,'.$mod::$crmentityTable.'.crmid ';
+			$query = 'select ' . $this->getCvColumnListSQL($viewid) . ' ,'.$mod->crmentityTable.'.crmid ';
 			$listviewquery = substr($listquery, strpos($listquery, 'FROM'), strlen($listquery));
 			if ($module == 'Emails') {
 				$query.= ", vtiger_activity.activityid, vtiger_activity.activitytype as type, vtiger_activity.priority,

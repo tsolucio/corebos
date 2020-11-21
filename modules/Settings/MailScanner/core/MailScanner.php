@@ -355,12 +355,8 @@ class Vtiger_MailScanner {
 				$this->log("Reusing Cached Employee Id for email: $email");
 				return $this->_cachedEmployeeIds[$email];
 			}
-			$mod = CRMEntity::getInstance('cbEmployee');
-			if ($mod::$denormalized) {
-				$dnjoin = 'INNER JOIN '.$mod::$crmentityTable.' as vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_cbemployee.cbemployeeid';
-			} else {
-				$dnjoin = 'INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_cbemployee.cbemployeeid';
-			}
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbEmployee');
+			$dnjoin = 'INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_cbemployee.cbemployeeid';
 			$empres = $adb->pquery(
 				'SELECT cbemployeeid,userid FROM vtiger_cbemployee '.$dnjoin.' WHERE vtiger_crmentity.deleted=0 and (personal_email=? or work_email=?)',
 				array($email,$email)
@@ -398,12 +394,8 @@ class Vtiger_MailScanner {
 			return $this->_cachedContactIds[$email];
 		}
 		$contactid = false;
-		$mod = CRMEntity::getInstance('Contacts');
-		if ($mod::$denormalized) {
-			$dnjoin = 'INNER JOIN '.$mod::$crmentityTable.' as vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_contactdetails.contactid';
-		} else {
-			$dnjoin = 'INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_contactdetails.contactid';
-		}
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
+		$dnjoin = 'INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_contactdetails.contactid';
 		$contactres = $adb->pquery(
 			'SELECT contactid FROM vtiger_contactdetails '.$dnjoin.' WHERE vtiger_crmentity.deleted=0 and (email=? or secondaryemail=?)',
 			array($email,$email)
@@ -436,12 +428,8 @@ class Vtiger_MailScanner {
 		}
 
 		$accountid = false;
-		$mod = CRMEntity::getInstance('Accounts');
-		if ($mod::$denormalized) {
-			$dnjoin = 'INNER JOIN '.$mod::$crmentityTable.' as vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_account.accountid';
-		} else {
-			$dnjoin = 'INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_account.accountid';
-		}
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Accounts');
+		$dnjoin = 'INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_account.accountid';
 		$accountres = $adb->pquery(
 			'SELECT accountid FROM vtiger_account '.$dnjoin.' WHERE vtiger_crmentity.deleted=0 and (email1=? OR email2=?)',
 			array($email, $email)

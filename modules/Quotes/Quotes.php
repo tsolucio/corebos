@@ -197,7 +197,7 @@ class Quotes extends CRMEntity {
 		$query = 'select vtiger_quotestagehistory.*, vtiger_quotes.quote_no
 			from vtiger_quotestagehistory
 			inner join vtiger_quotes on vtiger_quotes.quoteid = vtiger_quotestagehistory.quoteid
-			inner join '.self::$crmEntityTableAlias.' on vtiger_crmentity.crmid = vtiger_quotes.quoteid
+			inner join '.$this->crmentityTableAlias.' on vtiger_crmentity.crmid = vtiger_quotes.quoteid
 			where vtiger_crmentity.deleted = 0 and vtiger_quotes.quoteid = ?';
 		$result=$adb->pquery($query, array($id));
 		$header = array();
@@ -388,7 +388,7 @@ class Quotes extends CRMEntity {
 		$fields_list .= getInventoryFieldsForExport($this->table_name);
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 
-		$query = "SELECT $fields_list FROM ".self::$crmEntityTableAlias
+		$query = "SELECT $fields_list FROM ".$this->crmentityTableAlias
 			." INNER JOIN vtiger_quotes ON vtiger_quotes.quoteid = vtiger_crmentity.crmid
 			LEFT JOIN vtiger_quotescf ON vtiger_quotescf.quoteid = vtiger_quotes.quoteid
 			LEFT JOIN vtiger_quotesbillads ON vtiger_quotesbillads.quotebilladdressid = vtiger_quotes.quoteid

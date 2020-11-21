@@ -665,7 +665,7 @@ class Accounts extends CRMEntity {
 		$sql = getPermittedFieldsQuery('Accounts', 'detail_view');
 		$fields_list = getFieldsListFromQuery($sql);
 		$query = "SELECT $fields_list,case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name
-				FROM ".self::$crmEntityTableAlias."
+				FROM ".$this->crmentityTableAlias."
 				INNER JOIN vtiger_account ON vtiger_account.accountid = vtiger_crmentity.crmid
 				LEFT JOIN vtiger_accountbillads ON vtiger_accountbillads.accountaddressid = vtiger_account.accountid
 				LEFT JOIN vtiger_accountshipads ON vtiger_accountshipads.accountaddressid = vtiger_account.accountid
@@ -908,7 +908,7 @@ class Accounts extends CRMEntity {
 		global $log, $adb;
 		$log->debug('> __getParentAccounts '.$id.','.print_r($parent_accounts, true));
 		$query = "SELECT parentid FROM vtiger_account " .
-				" INNER JOIN ".self::$crmEntityTableAlias." ON vtiger_crmentity.crmid = vtiger_account.accountid" .
+				" INNER JOIN ".$this->crmentityTableAlias." ON vtiger_crmentity.crmid = vtiger_account.accountid" .
 				" WHERE vtiger_crmentity.deleted = 0 and vtiger_account.accountid = ?";
 		$params = array($id);
 
@@ -926,7 +926,7 @@ class Accounts extends CRMEntity {
 		$query = "SELECT vtiger_account.*, vtiger_accountbillads.*," .
 				" CASE when (vtiger_users.user_name not like '') THEN $userNameSql ELSE vtiger_groups.groupname END as user_name " .
 				" FROM vtiger_account" .
-				" INNER JOIN ".self::$crmEntityTableAlias.
+				" INNER JOIN ".$this->crmentityTableAlias.
 				" ON vtiger_crmentity.crmid = vtiger_account.accountid" .
 				" INNER JOIN vtiger_accountbillads" .
 				" ON vtiger_account.accountid = vtiger_accountbillads.accountaddressid " .
@@ -972,7 +972,7 @@ class Accounts extends CRMEntity {
 		$query = "SELECT vtiger_account.*, vtiger_accountbillads.*," .
 				" CASE when (vtiger_users.user_name not like '') THEN $userNameSql ELSE vtiger_groups.groupname END as user_name " .
 				" FROM vtiger_account" .
-				" INNER JOIN " .self::$crmEntityTableAlias.
+				" INNER JOIN " .$this->crmentityTableAlias.
 				" ON vtiger_crmentity.crmid = vtiger_account.accountid" .
 				" INNER JOIN vtiger_accountbillads" .
 				" ON vtiger_account.accountid = vtiger_accountbillads.accountaddressid " .
@@ -1154,7 +1154,7 @@ class Accounts extends CRMEntity {
 		//crm-now changed query to search in groups too and make only owned contacts available
 		$query = "SELECT vtiger_account.accountname, vtiger_account.account_no, vtiger_account.accountid, vtiger_account.email1
 					FROM vtiger_account 
-					INNER JOIN ".self::$crmEntityTableAlias." on vtiger_crmentity.crmid=vtiger_account.accountid
+					INNER JOIN ".$this->crmentityTableAlias." on vtiger_crmentity.crmid=vtiger_account.accountid
 					LEFT JOIN vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid  
 					LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 					WHERE vtiger_crmentity.deleted=0";

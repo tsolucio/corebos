@@ -160,7 +160,7 @@ class GlobalVariable extends CRMEntity {
 			}
 			$inmodule = $this->column_fields['in_module_list'];
 			$existmod = $adb->pquery('select module_list,in_module_list from vtiger_globalvariable
-				left join '.self::$crmEntityTableAlias.' on vtiger_crmentity.crmid=vtiger_globalvariable.globalvariableid
+				left join '.$this->crmentityTableAlias.' on vtiger_crmentity.crmid=vtiger_globalvariable.globalvariableid
 				where gvname=? and deleted=0 and mandatory=1 and globalvariableid!=?', array($this->column_fields['gvname'],$recordid));
 			$num = $adb->num_rows($existmod);
 			$all_modules=vtws_getModuleNameList();
@@ -338,7 +338,7 @@ class GlobalVariable extends CRMEntity {
 			self::$validationinfo[] = 'variable found in cache';
 			return $value;
 		}
-		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('GlobalVariable');
 		$value='';
 		$join = ' FROM vtiger_globalvariable INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid ';
 		$select = 'select * '.$join;
@@ -436,7 +436,7 @@ class GlobalVariable extends CRMEntity {
 		if (empty($module)) {
 			$module = $currentModule;
 		}
-		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('GlobalVariable');
 		$sql = 'SELECT default_check,mandatory,module_list,in_module_list,smownerid
 			FROM vtiger_globalvariable
 			INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid

@@ -51,8 +51,8 @@ class REVISIONBLOCK_DetailViewBlock extends DeveloperBlock {
 		}
 		$seqnors = $adb->pquery("select $uniquefield from $table_name where $entityidfield=?", array($id));
 		$seqno = $adb->query_result($seqnors, 0, 0);
-		if ($focus::$denormalized) {
-			$dnjoin = 'INNER JOIN '.$focus::$crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid = $table_name.$entityidfield";
+		if ($focus->denormalized) {
+			$dnjoin = 'INNER JOIN '.$focus->crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid = $table_name.$entityidfield";
 		} else {
 			$dnjoin = "INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $table_name.$entityidfield";
 		}

@@ -82,10 +82,10 @@ class PBXManager extends CRMEntity {
 	 * Get list view query.
 	 */
 	public function getListQuery($module, $usewhere = '') {
-		$query = "SELECT $this->table_name.*".(self::$crmentityTable!=$this->table_name ? ', '.self::$crmentityTable.'.*' : '');
+		$query = "SELECT $this->table_name.*".($this->crmentityTable!=$this->table_name ? ', '.$this->crmentityTable.'.*' : '');
 		$query .= " FROM $this->table_name";
-		if (self::$denormalized) {
-			$query .= ' INNER JOIN '.self::$crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
+		if ($this->denormalized) {
+			$query .= ' INNER JOIN '.$this->crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
 		} else {
 			$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
 		}
@@ -119,8 +119,8 @@ class PBXManager extends CRMEntity {
 		$query = "SELECT $fields_list, 'vtiger_groups_groupname as Assigned To Group',
 			CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN vtiger_users.user_name ELSE vtiger_groups.groupname END AS user_name
 			FROM $this->table_name ";
-		if (self::$denormalized) {
-			$query.= 'INNER JOIN '.self::$crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
+		if ($this->denormalized) {
+			$query.= 'INNER JOIN '.$this->crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
 		} else {
 			$query.= "INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
 		}

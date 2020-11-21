@@ -697,7 +697,7 @@ class cbtranslation extends CRMEntity {
 		parent::trash($module, $record);
 		$adb->pquery('Delete from vtiger_cbtranslation where cbtranslationid=?', array($record));
 		$adb->pquery('Delete from vtiger_cbtranslationcf where cbtranslationid=?', array($record));
-		$adb->pquery('Delete from '.self::$crmentityTable.' where crmid=?', array($record));
+		$adb->pquery('Delete from '.$this->crmentityTable.' where crmid=?', array($record));
 	}
 }
 ?>

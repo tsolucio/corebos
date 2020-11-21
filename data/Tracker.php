@@ -88,7 +88,7 @@ class Tracker {
 		$crmTable = 'vtiger_crmentity';
 		if ($module_name != '') {
 			$mod = CRMEntity::getInstance($module_name);
-			$crmTable = $mod::$crmentityTable;
+			$crmTable = $mod->crmentityTable;
 		}
 		$query = "SELECT *
 			from {$this->table_name}

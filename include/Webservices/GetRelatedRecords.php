@@ -384,9 +384,9 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 					if ($productDiscriminator=='productlinequote' || $productDiscriminator=='productlineall') {
 						$mod = CRMEntity::getInstance('Quotes');
 						$q = "select distinct $qfields from vtiger_quotes
-							inner join ".$mod::$crmentityTable." as crmq on crmq.crmid=vtiger_quotes.quoteid
+							inner join ".$mod->crmentityTable." as crmq on crmq.crmid=vtiger_quotes.quoteid
 							left join vtiger_inventoryproductrel on vtiger_inventoryproductrel.id=vtiger_quotes.quoteid
-							inner join ".$mod::$crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
+							inner join ".$mod->crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
 							left join vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
 							left join $pstable on $pstable.$psfield = vtiger_inventoryproductrel.productid
 							where vtiger_inventoryproductrel.productid = $pstable.$psfield AND crmq.deleted=0
@@ -396,9 +396,9 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 					if ($productDiscriminator=='productlineinvoice' || $productDiscriminator=='productlineall') {
 						$mod = CRMEntity::getInstance('SalesOrder');
 						$q = "select distinct $qfields from vtiger_invoice
-							inner join ".$mod::$crmentityTable." as crmi on crmi.crmid=vtiger_invoice.invoiceid
+							inner join ".$mod->crmentityTable." as crmi on crmi.crmid=vtiger_invoice.invoiceid
 							left join vtiger_inventoryproductrel on vtiger_inventoryproductrel.id=vtiger_invoice.invoiceid
-							inner join ".$mod::$crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
+							inner join ".$mod->crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
 							left join vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid 
 							left join $pstable on $pstable.$psfield = vtiger_inventoryproductrel.productid
 							where vtiger_inventoryproductrel.productid = $pstable.$psfield AND crmi.deleted=0
@@ -408,9 +408,9 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 					if ($productDiscriminator=='productlinesalesorder' || $productDiscriminator=='productlineall') {
 						$mod = CRMEntity::getInstance('SalesOrder');
 						$q = "select distinct $qfields from vtiger_salesorder
-						inner join ".$mod::$crmentityTable." as crms on crms.crmid=vtiger_salesorder.salesorderid
+						inner join ".$mod->crmentityTable." as crms on crms.crmid=vtiger_salesorder.salesorderid
 						left join vtiger_inventoryproductrel on vtiger_inventoryproductrel.id=vtiger_salesorder.salesorderid
-						inner join ".$mod::$crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
+						inner join ".$mod->crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
 						left join vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
 						left join $pstable on $pstable.$psfield = vtiger_inventoryproductrel.productid
 						where vtiger_inventoryproductrel.productid = $pstable.$psfield AND crms.deleted=0
@@ -485,7 +485,7 @@ function __getRLQueryFromJoins($query, $meta, $relatedModule = '') {
 		// this query is non-standard, I try to fix it a bit to get it working
 		$chgFrom = 'from vtiger_activity, vtiger_seactivityrel, vtiger_contactdetails, vtiger_users, vtiger_crmentity';
 		$chgTo = 'from vtiger_activity
-					inner join '.$mod::$crmentityTable.' as vtiger_crmentity on vtiger_crmentity.crmid = vtiger_activity.activityid
+					inner join '.$mod->crmentityTable.' as vtiger_crmentity on vtiger_crmentity.crmid = vtiger_activity.activityid
 					left join vtiger_seactivityrel on vtiger_seactivityrel.activityid = vtiger_activity.activityid
 					left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
 					left join vtiger_contactdetails on vtiger_contactdetails.contactid = vtiger_seactivityrel.crmid ';

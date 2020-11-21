@@ -39,7 +39,7 @@ function cbwsModulePermissionQuery($module, $user) {
 			$mod = CRMEntity::getInstance($module);
 			if ($typeOfPermissionOverride=='none' || trim($tsSpecialAccessQuery)=='') {
 				$query = $crmentity->getNonAdminAccessQuery($module, $user, $userprivs->getParentRoleSequence(), $userprivs->getGroups());
-				$join = " INNER JOIN $tableName $tableName$scope ON $tableName$scope.id = ".$mod::$crmentityTable."$scope.smownerid ";
+				$join = " INNER JOIN $tableName $tableName$scope ON $tableName$scope.id = ".$mod->crmentityTable."$scope.smownerid ";
 			} else {
 				$tableName = "tsolucio_tmp_u{$user->id}";
 				if ($typeOfPermissionOverride=='addToUserPermission') {
@@ -47,13 +47,13 @@ function cbwsModulePermissionQuery($module, $user) {
 					$join = "$query UNION ($tsSpecialAccessQuery) ";
 				}
 				if ($typeOfPermissionOverride=='addToUserPermission') {
-					$join = " INNER JOIN {$tableName} on ({$tableName}.id=".$mod::$crmentityTable.".crmid or {$tableName}.id = ".$mod::$crmentityTable."$scope.smownerid) ";
+					$join = " INNER JOIN {$tableName} on ({$tableName}.id=".$mod->crmentityTable.".crmid or {$tableName}.id = ".$mod->crmentityTable."$scope.smownerid) ";
 				} elseif ($typeOfPermissionOverride=='showTheseRecords') {
-					$join = " INNER JOIN {$tableName} on {$tableName}.id=".$mod::$crmentityTable.".crmid ";
+					$join = " INNER JOIN {$tableName} on {$tableName}.id=".$mod->crmentityTable.".crmid ";
 				} elseif ($typeOfPermissionOverride=='SubstractFromUserPermission') {
 					$query = $crmentity->getNonAdminAccessQuery($module, $user, $userprivs->getParentRoleSequence(), $userprivs->getGroups());
-					$join = " INNER JOIN $tableName $tableName$scope ON $tableName$scope.id = ".$mod::$crmentityTable."$scope.smownerid ";
-					$join .= " INNER JOIN {$tableName} on {$tableName}.id=".$mod::$crmentityTable.".crmid ";
+					$join = " INNER JOIN $tableName $tableName$scope ON $tableName$scope.id = ".$mod->crmentityTable."$scope.smownerid ";
+					$join .= " INNER JOIN {$tableName} on {$tableName}.id=".$mod->crmentityTable.".crmid ";
 				}
 			}
 		}

@@ -967,7 +967,7 @@ class Products extends CRMEntity {
 		$log->debug('> product_novendor');
 		$query = 'SELECT vtiger_products.productname, vtiger_crmentity.deleted
 			FROM vtiger_products
-			INNER JOIN '.self::$crmEntityTableAlias.' ON vtiger_crmentity.crmid = vtiger_products.productid
+			INNER JOIN '.$this->crmentityTableAlias.' ON vtiger_crmentity.crmid = vtiger_products.productid
 			WHERE vtiger_crmentity.deleted = 0 AND vtiger_products.vendor_id is NULL';
 		$result=$adb->pquery($query, array());
 		$log->debug('< product_novendor');
@@ -1025,7 +1025,7 @@ class Products extends CRMEntity {
 			INNER JOIN vtiger_productcomponentcf ON vtiger_productcomponentcf.productcomponentid = vtiger_productcomponent.productcomponentid
 			INNER JOIN $crmtablealias ON vtiger_crmentity.crmid = vtiger_productcomponent.productcomponentid
 			INNER JOIN vtiger_products on vtiger_products.productid=vtiger_productcomponent.topdo
-			INNER JOIN ".self::$crmentityTable." cpdo ON cpdo.crmid = vtiger_products.productid
+			INNER JOIN ".$this->crmentityTable." cpdo ON cpdo.crmid = vtiger_products.productid
 			LEFT JOIN vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
 			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 			WHERE vtiger_crmentity.deleted = 0 AND cpdo.deleted = 0 AND vtiger_productcomponent.frompdo = $id";
@@ -1070,7 +1070,7 @@ class Products extends CRMEntity {
 			INNER JOIN $crmtablealias ON vtiger_crmentity.crmid = vtiger_productcomponent.productcomponentid
 			INNER JOIN vtiger_productcomponentcf ON vtiger_productcomponentcf.productcomponentid = vtiger_productcomponent.productcomponentid
 			INNER JOIN vtiger_products on vtiger_products.productid=vtiger_productcomponent.frompdo
-			INNER JOIN ".self::$crmentityTable." cpdo ON cpdo.crmid = vtiger_products.productid
+			INNER JOIN ".$this->crmentityTable." cpdo ON cpdo.crmid = vtiger_products.productid
 			WHERE vtiger_crmentity.deleted = 0 AND cpdo.deleted = 0 AND vtiger_productcomponent.topdo = $id";
 
 		$log->debug('< get_parent_products');
@@ -1092,7 +1092,7 @@ class Products extends CRMEntity {
 		$fields_list = getFieldsListFromQuery($sql);
 
 		$query = "SELECT $fields_list FROM ".$this->table_name ."
-			INNER JOIN ".self::$crmEntityTableAlias.' ON vtiger_crmentity.crmid = vtiger_products.productid
+			INNER JOIN ".$this->crmentityTableAlias.' ON vtiger_crmentity.crmid = vtiger_products.productid
 			LEFT JOIN vtiger_productcf ON vtiger_products.productid = vtiger_productcf.productid
 			LEFT JOIN vtiger_vendor ON vtiger_vendor.vendorid = vtiger_products.vendor_id';
 
@@ -1239,7 +1239,7 @@ class Products extends CRMEntity {
 			) AS innerProduct ON innerProduct.productid = vtiger_products.productid';
 		}
 		if ($queryplanner->requireTable('vtiger_crmentityProducts')) {
-			$query .= ' left join '.self::$crmentityTable.' as vtiger_crmentityProducts on vtiger_crmentityProducts.crmid=vtiger_products.productid and vtiger_crmentityProducts.deleted=0';
+			$query .= ' left join '.$this->crmentityTable.' as vtiger_crmentityProducts on vtiger_crmentityProducts.crmid=vtiger_products.productid and vtiger_crmentityProducts.deleted=0';
 		}
 		if ($queryplanner->requireTable('vtiger_productcf')) {
 			$query .= ' left join vtiger_productcf on vtiger_products.productid = vtiger_productcf.productid';
@@ -1383,7 +1383,7 @@ class Products extends CRMEntity {
 				return 'SELECT vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_crmentity.description, vtiger_products.*,
 					vtiger_productcf.*,vtiger_stock.stocknum as qtyinstock
 				FROM vtiger_products
-				INNER JOIN '.self::$crmEntityTableAlias.' ON vtiger_crmentity.crmid = vtiger_products.productid
+				INNER JOIN '.$this->crmentityTableAlias.' ON vtiger_crmentity.crmid = vtiger_products.productid
 				INNER JOIN vtiger_productcf ON vtiger_products.productid = vtiger_productcf.productid
 				INNER JOIN vtiger_stock ON vtiger_stock.pdoid=vtiger_products.productid
 				INNER JOIN '.$crmtable.' crmstock ON vtiger_stock.stockid=crmstock.crmid and crmstock.deleted = 0

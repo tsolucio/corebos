@@ -210,7 +210,7 @@ class BusinessActions extends CRMEntity {
 				$type_sql = $adb->convert2Sql(' AND elementtype_action = ?', array($type));
 			}
 		}
-		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
 		$query = 'SELECT businessactionsid,
 				elementtype_action,
 				linklabel,
@@ -334,7 +334,7 @@ class BusinessActions extends CRMEntity {
 	public static function addLink($tabid, $type, $label, $url, $iconpath = '', $sequence = 0, $handlerInfo = null, $onlyonmymodule = false, $brmap = 0) {
 		global $adb;
 		$module_name = getTabModuleName($tabid);
-		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
 		$linkcheck = $adb->pquery(
 			'SELECT businessactionsid
 				FROM vtiger_businessactions INNER JOIN '.$crmEntityTable.' 
@@ -382,7 +382,7 @@ class BusinessActions extends CRMEntity {
 	public static function deleteLink($tabid, $type, $label, $url = false) {
 		global $adb;
 		$module_name = getTabModuleName($tabid);
-		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
 		if ($url) {
 			$ba = $adb->pquery(
 				'SELECT vtiger_businessactions.businessactionsid
@@ -420,10 +420,9 @@ class BusinessActions extends CRMEntity {
 	 * @param Integer Module ID.
 	 */
 	public static function deleteAll($tabid) {
-
 		global $adb;
 		$module_name = getTabModuleName($tabid);
-		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
 		$ba = $adb->pquery(
 			'SELECT vtiger_businessactions.businessactionsid
 				FROM vtiger_businessactions
@@ -461,7 +460,7 @@ class BusinessActions extends CRMEntity {
 			if (isset($linkInfo['status'])) {
 				$linkInfo['active'] = $linkInfo['status'];
 			}
-			$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
 			$businessAction = $adb->pquery(
 				'SELECT 1 
 				FROM vtiger_businessactions
@@ -490,7 +489,7 @@ class BusinessActions extends CRMEntity {
 		}
 		asort($allEntities);
 		$mlist = array();
-		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
 		foreach ($allEntities as $tabid => $mname) {
 			$checkres = $adb->pquery(
 				'SELECT 1

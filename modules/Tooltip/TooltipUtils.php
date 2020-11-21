@@ -149,15 +149,10 @@ function getToolTipText($view, $fieldname, $module, $value) {
 			$text[$label] = $fieldvalue;
 		} elseif ($fieldname=='ModComments') {
 			list($wsmod, $crmid) = explode('x', $value[0]['id']);
-			$mod = CRMEntity::getInstance('ModComments');
-			if ($mod::$denormalized) {
-				$dnjoin = 'INNER JOIN '.$mod::$crmentityTable.' as vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_modcomments.modcommentsid';
-			} else {
-				$dnjoin = 'INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_modcomments.modcommentsid';
-			}
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Accounts');
 			$query = 'SELECT vtiger_crmentity.smownerid, vtiger_modcomments.commentcontent, vtiger_crmentity.modifiedtime
-				FROM vtiger_modcomments '
-				.$dnjoin
+				FROM vtiger_modcomments'
+				.' INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_modcomments.modcommentsid'
 				.' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
 				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 				WHERE vtiger_crmentity.deleted=0 AND vtiger_modcomments.related_to=?

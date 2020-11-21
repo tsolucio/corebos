@@ -324,7 +324,7 @@ class Documents extends CRMEntity {
 					concat(path,vtiger_attachments.attachmentsid,'_',filename) as storagename,
 					concat(account_no,' ',accountname) as account, concat(contact_no,' ',firstname,' ',lastname) as contact,vtiger_senotesrel.crmid as relatedid
 				FROM vtiger_notes
-				inner join ".self::$crmEntityTableAlias." on vtiger_crmentity.crmid=vtiger_notes.notesid
+				inner join ".$this->crmentityTableAlias." on vtiger_crmentity.crmid=vtiger_notes.notesid
 				left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_notes.notesid
 				left join vtiger_attachments on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
 				LEFT JOIN vtiger_attachmentsfolder on vtiger_notes.folderid=vtiger_attachmentsfolder.folderid
@@ -575,7 +575,7 @@ class Documents extends CRMEntity {
 				crm2.crmid, crm2.setype
 				from vtiger_notes
 				inner join vtiger_senotesrel on vtiger_senotesrel.notesid= vtiger_notes.notesid
-				inner join ".self::$crmEntityTableAlias." on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
+				inner join ".$this->crmentityTableAlias." on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
 				inner join vtiger_crmentity crm2 on crm2.crmid=vtiger_senotesrel.crmid and crm2.deleted=0
 				left join vtiger_groups on vtiger_groups.groupid = crm2.smownerid
 				left join vtiger_users on vtiger_users.id = crm2.smownerid
@@ -585,7 +585,7 @@ class Documents extends CRMEntity {
 				crm2.crmid, crm2.setype
 				from vtiger_notes
 				inner join vtiger_senotesrel on vtiger_senotesrel.crmid= vtiger_notes.notesid
-				inner join ".self::$crmEntityTableAlias.' on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
+				inner join ".$this->crmentityTableAlias.' on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
 				inner join '.$crmEntityTable.' crm2 on crm2.crmid=vtiger_senotesrel.notesid and crm2.deleted=0
 				left join vtiger_groups on vtiger_groups.groupid = crm2.smownerid
 				left join vtiger_users on vtiger_users.id = crm2.smownerid

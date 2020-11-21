@@ -439,13 +439,9 @@ class VtigerCRMObjectMeta extends EntityMeta {
 				}
 			}
 		} else {
-			$module = $this->getTabName();
-			$mod = CRMEntity::getInstance($module);
-			$result = $adb->pquery('select setype from '.$mod::$crmentityTable.' where crmid=? and deleted=?', array($id,$deleted));
-			if ($result != null && isset($result)) {
-				if ($adb->num_rows($result)>0) {
-					$seType = $adb->query_result($result, 0, 'setype');
-				}
+			$result = $adb->pquery('select setype from vtiger_crmobject where crmid=? and deleted=?', array($id, $deleted));
+			if ($result && $adb->num_rows($result)>0) {
+				$seType = $adb->query_result($result, 0, 'setype');
 			}
 		}
 		return $seType;
@@ -469,7 +465,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		} else {
 			$module = $this->getTabName();
 			$mod = CRMEntity::getInstance($module);
-			$sql = "select 1 from ".$mod::$crmentityTable." where crmid=? and deleted=0 and setype='".$this->getTabName()."'";
+			$sql = "select 1 from ".$mod->crmentityTable." where crmid=? and deleted=0 and setype='".$this->getTabName()."'";
 		}
 
 		if ($sql) {

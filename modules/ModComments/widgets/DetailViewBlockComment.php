@@ -80,7 +80,7 @@ class ModComments_DetailViewBlockCommentWidget {
 					$queryCriteria =  sprintf(' ORDER BY %s.%s DESC LIMIT 5', $entityInstance->table_name, $entityInstance->table_index) ;
 					break;
 				case 'Mine':
-					$queryCriteria = ' AND '.$entityInstance::$crmentityTable.'.smcreatorid=' . $current_user->id.
+					$queryCriteria = ' AND '.$entityInstance->crmentityTable.'.smcreatorid=' . $current_user->id.
 						sprintf(' ORDER BY %s.%s DESC ', $entityInstance->table_name, $entityInstance->table_index);
 					break;
 			}

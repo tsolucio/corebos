@@ -263,7 +263,7 @@ class Project extends CRMEntity {
 		$related_projecttasks = $adb->pquery(
 			'SELECT pt.*
 				FROM vtiger_projecttask AS pt
-				INNER JOIN '.self::$crmentityTable.' AS crment ON pt.projecttaskid=crment.crmid
+				INNER JOIN '.$this->crmentityTable.' AS crment ON pt.projecttaskid=crment.crmid
 				WHERE projectid=? AND crment.deleted=0 AND pt.startdate IS NOT NULL AND pt.enddate IS NOT NULL',
 			array($record)
 		);
@@ -282,7 +282,7 @@ class Project extends CRMEntity {
 		$related_projectmilestones = $adb->pquery(
 			'SELECT pm.*
 				FROM vtiger_projectmilestone AS pm
-				INNER JOIN '.self::$crmentityTable.' AS crment on pm.projectmilestoneid=crment.crmid
+				INNER JOIN '.$this->crmentityTable.' AS crment on pm.projectmilestoneid=crment.crmid
 				WHERE projectid=? and crment.deleted=0',
 			array($record)
 		);

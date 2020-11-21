@@ -194,7 +194,7 @@ class VtigerCRMObject {
 		global $adb;
 		$module = $this->getModuleName();
 		$mod = CRMEntity::getInstance($module);
-		$result = $adb->pquery('select 1 from '.$mod::$crmentityTable.' where crmid=? and deleted=0 limit 1', array($id));
+		$result = $adb->pquery('select 1 from '.$mod->crmentityTable.' where crmid=? and deleted=0 limit 1', array($id));
 		return ($result && $adb->num_rows($result)>0);
 	}
 

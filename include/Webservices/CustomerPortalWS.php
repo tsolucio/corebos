@@ -883,7 +883,7 @@ function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $use
 			$wherefield = implode(" $op '$term' or ", $fieldlists)." $op '$term' or $fieldsname $op '$term'";
 		}
 		$mod = CRMEntity::getInstance($srchmod);
-		$crmTable = $mod::$crmentityTable;
+		$crmTable = $mod->crmentityTable;
 		$qry = "select crmid,$fieldsname as crmname
 			from {$ei['tablename']}
 			inner join {$crmTable} on crmid = {$ei['entityidfield']}
@@ -1027,12 +1027,12 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 	$servcondquery .= count($servconds) > 0 ? ')' : '';
 	$prod_aliasquery = '';
 	$modProducts = CRMEntity::getInstance('Products');
-	$crmTableProducts = $modProducts::$crmentityTable;
+	$crmTableProducts = $modProducts->crmentityTable;
 	$modServices = CRMEntity::getInstance('Services');
-	$crmTableServices = $modServices::$crmentityTable;
+	$crmTableServices = $modServices->crmentityTable;
 	foreach ($prodffs as $prodff) {
 		list($palias, $pcolumn) = explode('=', $prodff);
-		$table = in_array($pcolumn, $entitytablemap) ? $modProducts::$crmentityTable : 'vtiger_products';
+		$table = in_array($pcolumn, $entitytablemap) ? $modProducts->crmentityTable : 'vtiger_products';
 		$table = substr($pcolumn, 0, 3) == 'cf_' ? 'vtiger_productcf' : $table;
 		$selector = $pcolumn == '\'\'' ? $pcolumn : $table . '.' . $pcolumn;
 		$prod_aliasquery .= $selector . ' AS ' . $palias . ',';
@@ -1040,7 +1040,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 	$serv_aliasquery = '';
 	foreach ($servffs as $servff) {
 		list($salias, $scolumn) = explode('=', $servff);
-		$table = in_array($scolumn, $entitytablemap) ? $modServices::$crmentityTable : 'vtiger_service';
+		$table = in_array($scolumn, $entitytablemap) ? $modServices->crmentityTable : 'vtiger_service';
 		$table = substr($scolumn, 0, 3) == 'cf_' ? 'vtiger_servicecf' : $table;
 		$selector = $scolumn == '\'\'' ? $scolumn : $table . '.' . $scolumn;
 		$serv_aliasquery .= $selector . ' AS ' . $salias . ',';

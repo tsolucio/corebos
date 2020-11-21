@@ -503,7 +503,7 @@ class Emails extends CRMEntity {
 		$params = array($id, $return_module, $return_id, $id, $return_module, $return_id);
 		$adb->pquery($sql, $params);
 		$mtime = date('y-m-d H:i:d');
-		$adb->pquery('UPDATE '.self::$crmentityTable.' SET modifiedtime=? WHERE crmid=?', array($mtime, $id));
+		$adb->pquery('UPDATE '.$this->crmentityTable.' SET modifiedtime=? WHERE crmid=?', array($mtime, $id));
 		$adb->pquery('UPDATE vtiger_crmobject SET modifiedtime=? WHERE crmid=?', array($mtime, $id));
 	}
 

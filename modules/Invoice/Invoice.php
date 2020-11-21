@@ -201,7 +201,7 @@ class Invoice extends CRMEntity {
 	public function get_invoicestatushistory($id) {
 		global $log, $adb, $app_strings, $current_user;
 		$log->debug('> get_invoicestatushistory '.$id);
-		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
+		$crmEntityTable = $this->denormalized ? $this->crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$query = 'select vtiger_invoicestatushistory.*, vtiger_invoice.invoice_no
 			from vtiger_invoicestatushistory
 			inner join vtiger_invoice on vtiger_invoice.invoiceid = vtiger_invoicestatushistory.invoiceid
@@ -689,7 +689,7 @@ class Invoice extends CRMEntity {
 		$sql = getPermittedFieldsQuery('Invoice', 'detail_view');
 		$fields_list = getFieldsListFromQuery($sql);
 		$fields_list .= getInventoryFieldsForExport($this->table_name);
-		$crmEntityTable = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
+		$crmEntityTable = $this->denormalized ? $this->crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$query = "SELECT $fields_list FROM ".$crmEntityTable." 
 			INNER JOIN vtiger_invoice ON vtiger_invoice.invoiceid = vtiger_crmentity.crmid
 			LEFT JOIN vtiger_invoicecf ON vtiger_invoicecf.invoiceid = vtiger_invoice.invoiceid

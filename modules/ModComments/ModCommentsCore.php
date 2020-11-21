@@ -103,7 +103,7 @@ class ModCommentsCore extends CRMEntity {
 			$relemailrs = $adb->pquery(
 				'SELECT email1
 					FROM vtiger_modcomments
-					INNER JOIN '.$mod::$crmentityTable.' on crmid=related_to
+					INNER JOIN '.$mod->crmentityTable.' on crmid=related_to
 					INNER JOIN vtiger_users on id = smownerid
 					WHERE modcommentsid=?',
 				array($this->id)

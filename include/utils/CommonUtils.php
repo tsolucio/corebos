@@ -1495,7 +1495,7 @@ function updateInfoSinceMessage($id) {
 	global $log, $adb, $app_strings, $currentModule;
 	$log->debug('> updateInfoSinceMessage ' . $id);
 	$mod = CRMEntity::getInstance($currentModule);
-	$result = $adb->pquery('SELECT modifiedtime, modifiedby, smcreatorid FROM '.$mod::$crmentityTable.' WHERE crmid=?', array($id));
+	$result = $adb->pquery('SELECT modifiedtime, modifiedby, smcreatorid FROM '.$mod->crmentityTable.' WHERE crmid=?', array($id));
 	$modifiedtime = $adb->query_result($result, 0, 'modifiedtime');
 	$modifiedby_id = $adb->query_result($result, 0, 'modifiedby');
 	if (empty($modifiedby_id)) {

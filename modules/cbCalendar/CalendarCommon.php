@@ -513,9 +513,9 @@ function calendarview_getSelectedUserFilterQuerySuffix() {
 					$user_group_ids = '';
 				}
 				$user_group_ids .= $current_user->id;
-				$qcondition = ' AND '.$mod::$crmentityTable.'.smownerid IN (' . $user_group_ids .')';
+				$qcondition = ' AND '.$mod->crmentityTable.'.smownerid IN (' . $user_group_ids .')';
 			} else {
-				$qcondition = ' AND '.$mod::$crmentityTable.'.smownerid = ' . $adb->sql_escape_string($only_for_user);
+				$qcondition = ' AND '.$mod->crmentityTable.'.smownerid = ' . $adb->sql_escape_string($only_for_user);
 			}
 		}
 	}

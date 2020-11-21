@@ -338,7 +338,7 @@ class Potentials extends CRMEntity {
 		$query = 'select vtiger_potstagehistory.*, vtiger_potential.potentialname
 			from vtiger_potstagehistory
 			inner join vtiger_potential on vtiger_potential.potentialid = vtiger_potstagehistory.potentialid
-			inner join '.self::$crmEntityTableAlias.' on vtiger_crmentity.crmid = vtiger_potential.potentialid
+			inner join '.$this->crmentityTableAlias.' on vtiger_crmentity.crmid = vtiger_potential.potentialid
 			where vtiger_crmentity.deleted = 0 and vtiger_potential.potentialid = ?';
 		$result=$adb->pquery($query, array($id));
 		$header = array();
