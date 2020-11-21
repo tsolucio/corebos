@@ -6,6 +6,7 @@ modules/Campaigns
 modules/cbAuditTrail
 modules/cbCalendar
 modules/cbCompany
+modules/cbCredentials
 modules/cbCVManagement
 modules/cbLoginHistory
 modules/cbMap
