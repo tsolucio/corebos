@@ -34,11 +34,22 @@ class CRMEntity {
 
 	public function __construct() {
 		global $adb;
-		self::$denormalized = (self::$crmentityTable!='vtiger_crmentity');
-		self::$crmEntityTableAlias = self::$denormalized ? self::$crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$this_module = get_class($this);
+		$tabid = getTabid($this_module);
+		$result = $adb->pquery('SELECT denormtable FROM vtiger_entityname WHERE tabid=?', array($tabid));
+		if ($result) {
+			$this->crmentityTable = $adb->query_result($result, 0, 'denormtable');
+		}
+		$this->denormalized = ($this->crmentityTable!='vtiger_crmentity');
+		if ($this->denormalized) {
+			if (($key = array_search('vtiger_crmentity', $this->tab_name)) !== false) {
+				unset($this->tab_name[$key]);
+			}
+			unset($this->tab_name_index['vtiger_crmentity']);
+		}
+		$this->crmentityTableAlias = $this->denormalized ? $this->crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$this->column_fields = getColumnFields($this_module);
-		$result = $adb->pquery('SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid=? limit 1', array(getTabid($this_module)));
+		$result = $adb->pquery('SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid=? limit 1', array($tabid));
 		$this->HasDirectImageField = ($result && $adb->num_rows($result)==1);
 	}
 
