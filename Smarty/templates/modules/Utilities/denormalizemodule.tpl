@@ -63,7 +63,7 @@ function handleOperationChange() {
 			<div class="slds-checkbox_button-group" style="width: 50%;">
 			{foreach key=denormodindex item=denormodulename from=$denormodulelist}
 				<span class="slds-button slds-checkbox_button">
-					<input type="checkbox" id="denorm_mod{$denormodindex}" value="{$denormodulename}" name="denorm_mod[]" />
+					<input type="checkbox" id="denorm_mod{$denormodindex}" value="{$denormodindex}" name="denorm_mod[]" />
 					<label class="slds-checkbox_button__label" for="denorm_mod{$denormodindex}">
 						<span class="slds-checkbox_faux">{$denormodulename}</span>
 					</label>
@@ -77,7 +77,7 @@ function handleOperationChange() {
 		<div class="slds-form-element__control">
 			<select class="slds-select" id="denor_mods" name='denor_mods[]' multiple="">
 				{foreach key=modindex item=modulename from=$modulelist}
-					<option value="{$modulename}" {if in_array($modulename, $denormodulelist)}selected{/if}>{$modulename|@getTranslatedString:$modulename}</option>
+					<option value="{$modindex}" {if !empty($denormodulelist[$modindex])}selected{/if}>{$modulename}</option>
 				{/foreach}
 			</select>
 		</div>

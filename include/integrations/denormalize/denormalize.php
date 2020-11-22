@@ -44,13 +44,13 @@ class corebos_denormalize {
 			$condition[] = '1';
 		}
 		$result=$adb->pquery($query, $condition);
-		$totalmodules = $adb->num_rows($result);
 		$module_arr = array();
-		if ($result && $totalmodules > 0) {
-			for ($z=0; $z < $totalmodules; $z++) {
-				$module_arr[] = $adb->query_result($result, $z, 'modulename');
-			}
+		while ($modinfo = $adb->fetch_array($result)) {
+			$module_arr[$modinfo['modulename']] = getTranslatedString($modinfo['modulename'], $modinfo['modulename']);
 		}
+		uasort($module_arr, function ($a, $b) {
+			return (strtolower($a) < strtolower($b)) ? -1 : 1;
+		});
 		return $module_arr;
 	}
 
