@@ -344,6 +344,9 @@ function mass_edit1x1(obj) {
 
 function mass_edit(obj, divid, module, parenttab) {
 	var select_options = document.getElementById('allselectedboxes').value;
+	if (select_options != 'all') {
+		ListView.getCheckedRows();
+	}
 	var numOfRows = document.getElementById('numOfRows').value;
 	var excludedRecords = document.getElementById('excludedRecords').value;
 	var count = 0;
@@ -577,9 +580,13 @@ function massDelete(module) {
 				method: 'POST',
 				url: 'index.php?module=Users&action=massdelete&return_module='+module+'&'+gstart+'&viewname='+viewid+'&idlist='+idstring+searchurl+url
 			}).done(function (response) {
-				document.getElementById('status').style.display='none';
+				const selectedType = document.getElementById('allselectedboxes').value;
+				if (selectedType == 'all') {
+					ListView.removeRows('all');
+				} else {
+					ListView.removeRows();
+				}
 				var result = response.split('&#&#&#');
-				document.getElementById('ListViewContents').innerHTML= result[2];
 				if (result[1] != '') {
 					ldsPrompt.show(alert_arr['ERROR'], result[1]);
 				}
@@ -602,16 +609,11 @@ function showDefaultCustomView(selectView, module, parenttab) {
 		method: 'POST',
 		url: 'index.php?module=' + module + '&action=' + module + 'Ajax&file=ListView&ajax=true&start=1&viewname=' + viewName + '&parenttab=' + parenttab
 	}).done(function (response) {
-		document.getElementById('status').style.display = 'none';
+		ListView.ListViewJSON('filter');
 		var result = response.split('&#&#&#');
-		document.getElementById('ListViewContents').innerHTML = result[2];
-		vtlib_executeJavascriptInElement(document.getElementById('ListViewContents'));
 		if (result[1] != '') {
 			ldsPrompt.show(alert_arr['ERROR'], result[1]);
 		}
-		document.getElementById('basicsearchcolumns_real').innerHTML = document.getElementById('basicsearchcolumns').innerHTML;
-		document.getElementById('basicsearchcolumns').innerHTML = '';
-		document.basicSearch.search_text.value = '';
 	});
 }
 
@@ -1010,20 +1012,7 @@ function callSearch(searchtype) {
 		urlstring += 'searchtype=advance&';
 	}
 	document.getElementById('status').style.display = 'inline';
-	jQuery.ajax({
-		method: 'POST',
-		url: 'index.php?' + urlstring + 'query=true&file=index&module=' + gVTModule + '&action=' + gVTModule + 'Ajax&ajax=true&search=true'
-	}).done(function (response) {
-		document.getElementById('status').style.display = 'none';
-		var result = response.split('&#&#&#');
-		var LVC = document.getElementById('ListViewContents');
-		LVC.innerHTML = result[2];
-		vtlib_executeJavascriptInElement(LVC);
-		if (result[1] != '') {
-			ldsPrompt.show(alert_arr['ERROR'], result[1]);
-		}
-		document.getElementById('basicsearchcolumns').innerHTML = '';
-	});
+	ListView.ListViewJSON('search', urlstring, searchtype);
 	return false;
 }
 
@@ -1034,20 +1023,7 @@ function alphabetic(module, url, dataid) {
 	}
 	getObj(dataid).className = 'searchAlphselected';
 	document.getElementById('status').style.display = 'inline';
-	jQuery.ajax({
-		method: 'POST',
-		url: 'index.php?module=' + module + '&action=' + module + 'Ajax&file=index&ajax=true&search=true&' + url
-	}).done(function (response) {
-		document.getElementById('status').style.display = 'none';
-		var result = response.split('&#&#&#');
-		var LVC = document.getElementById('ListViewContents');
-		LVC.innerHTML = result[2];
-		vtlib_executeJavascriptInElement(LVC);
-		if (result[1] != '') {
-			ldsPrompt.show(alert_arr['ERROR'], result[1]);
-		}
-		document.getElementById('basicsearchcolumns').innerHTML = '';
-	});
+	ListView.ListViewJSON('alphabetic', url);
 }
 
 function PositionDialogToCenter(ID) {

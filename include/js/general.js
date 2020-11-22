@@ -1325,8 +1325,8 @@ function run_massedit() {
 							method: 'POST',
 							url: 'index.php?module='+gVTModule+'&action='+gVTModule+'Ajax&file=ListView&ajax=meditupdate'
 						}).done(function (response) {
+							ListView.ListViewJSON('massedit');
 							var result = response.split('&#&#&#');
-							document.getElementById('ListViewContents').innerHTML= result[2];
 							if (result[1] != '') {
 								ldsPrompt.show(alert_arr['ERROR'], result[1]);
 							}
@@ -3552,10 +3552,7 @@ function ajaxChangeCalendarStatus(statusname, activityid, from) {
 	}).done(function (response) {
 		document.getElementById('status').style.display = 'none';
 		var result = response.split('&#&#&#');
-		if (document.getElementById('ListViewContents')) {
-			document.getElementById('ListViewContents').innerHTML = result[2];
-			document.getElementById('basicsearchcolumns').innerHTML = '';
-		}
+		ListView.ListViewJSON('massedit');
 		if (result[1] && result[1] != '') {
 			ldsPrompt.show(alert_arr['ERROR'], result[1]);
 		}
