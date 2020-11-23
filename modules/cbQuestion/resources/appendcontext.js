@@ -74,6 +74,7 @@ function export_results() {
 		});
 	}
 	const bqname = document.getElementById('bqname').value;
+	const bqmodule = document.getElementById('bqmodule').value;
 	let cbq = JSON.stringify({
 		'qname': bqname,
 		'qtype': qtype,
@@ -97,6 +98,17 @@ function export_results() {
 		});
 	}
 	document.getElementById('export_text').innerHTML = mod_alert_arr.Exporting;
+	const columns = getDataColumns();
+	let headers = [];
+	columns.map(cinfo => {
+		headers.push({
+			field: cinfo.header,
+			module: bqmodule
+		});
+	});
+	const headerflds = JSON.stringify({
+		headers: headers
+	});
 	fetch(
 		'index.php?module=cbQuestion&action=cbQuestionAjax&actionname=qactions&method=exportBuilderData',
 		{
@@ -105,7 +117,7 @@ function export_results() {
 				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
 			},
 			credentials: 'same-origin',
-			body: '&'+csrfMagicName+'='+csrfMagicToken+'&cbQuestionRecord='+encodeURIComponent(cbq)+'&cbQuestionContext='+encodeURIComponent(cbqctx)+'&bqname='+bqname
+			body: '&'+csrfMagicName+'='+csrfMagicToken+'&cbQuestionRecord='+encodeURIComponent(cbq)+'&cbQuestionContext='+encodeURIComponent(cbqctx)+'&bqname='+bqname+'&columns='+encodeURIComponent(headerflds)
 		}
 	).then(response => response.json()).then(response => {
 		document.getElementById('export_text').innerHTML = mod_alert_arr.export_results;
