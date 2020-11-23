@@ -20,7 +20,7 @@ $idlists = array_filter($idlists); // this is to eliminate the empty value we al
 if (empty($selected_module) || $selected_module == 'Documents') {
 	$docstodel = array();
 	if (count($idlists)==0) {
-		$delcrm=$adb->pquery('SELECT crmid FROM vtiger_crmentity WHERE deleted = 1 and setype=?', array('Documents'));
+		$delcrm=$adb->pquery('SELECT crmid FROM vtiger_crmobject WHERE deleted=1 and setype=?', array('Documents'));
 		if ($delcrm) {
 			while ($row = $adb->fetch_array($delcrm)) {
 				$docstodel[] = $row;
@@ -50,17 +50,37 @@ if (empty($selected_module) || $selected_module == 'Documents') {
 	}
 }
 if ($allrec==1 && !empty($selected_module)) {
-	$delcrm=$adb->pquery('DELETE FROM vtiger_crmentity WHERE deleted = 1 and setype=?', array($selected_module));
-	$delrel = $adb->pquery('DELETE FROM vtiger_relatedlists_rb WHERE entityid in ('.generateQuestionMarks($idlists).')', array($idlists));
+	$denormModules = getDenormalizedModules($selected_module);
+	$adb->pquery("DELETE FROM $denormModules[0] WHERE deleted=1 and setype=?", array($selected_module));
+	$adb->pquery('DELETE FROM vtiger_relatedlists_rb WHERE entityid in ('.generateQuestionMarks($idlists).')', array($idlists));
+	$adb->pquery('DELETE FROM vtiger_crmobject WHERE deleted=1 and setype=?', array($selected_module));
+	$crmtable = CRMEntity::getcrmEntityTableAlias($selected_module, true);
+	if ($crmtable!='vtiger_crmentity') {
+		$adb->pquery("DELETE FROM $crmtable WHERE deleted=1 and setype=?", array($selected_module));
+	}
 } elseif ($allrec==1 && empty($selected_module)) {  // empty all modules
-	$adb->query('DELETE FROM vtiger_crmentity WHERE deleted = 1');
-	// TODO Related records for the module records deleted from vtiger_crmentity have to be deleted
+	$adb->query('DELETE FROM vtiger_crmentity WHERE deleted=1');
+	$adb->query('DELETE FROM vtiger_crmobject WHERE deleted=1');
+	// TODO
+	// Find all modules with a denormalized table and delete their records
+	// Related records for the module records deleted from vtiger_crmentity have to be deleted
 	// It needs lookup in the related tables and needs to be removed if doesn't have a reference record in vtiger_crmentity
 	$adb->query('DELETE FROM vtiger_relatedlists_rb');
 } else {
 	if (count($idlists)>0) {
-		$delselcrm=$adb->pquery('DELETE FROM vtiger_crmentity WHERE deleted = 1 and crmid in ('.generateQuestionMarks($idlists).')', array($idlists));
-		$delselrel = $adb->pquery('DELETE FROM vtiger_relatedlists_rb WHERE entityid in ('.generateQuestionMarks($idlists).')', array($idlists));
+		$denormModules = getDenormalizedModules();
+		if (count($denormModules) > 0) {
+			foreach ($denormModules as $key => $table) {
+				$adb->pquery("DELETE FROM $table WHERE deleted=1 and crmid in (".generateQuestionMarks($idlists).")", array($idlists));
+			}
+		}
+		$adb->pquery('DELETE FROM vtiger_crmentity WHERE deleted=1 and crmid in ('.generateQuestionMarks($idlists).')', array($idlists));
+		$adb->pquery('DELETE FROM vtiger_crmobject WHERE deleted=1 and crmid in ('.generateQuestionMarks($idlists).')', array($idlists));
+		$adb->pquery('DELETE FROM vtiger_relatedlists_rb WHERE entityid in ('.generateQuestionMarks($idlists).')', array($idlists));
+		$crmtable = CRMEntity::getcrmEntityTableAlias($selected_module, true);
+		if ($crmtable!='vtiger_crmentity') {
+			$adb->pquery("DELETE FROM $crmtable WHERE deleted=1 and crmid in (".generateQuestionMarks($idlists).')', array($idlists));
+		}
 	}
 }
 header('Location: index.php?module=RecycleBin&action=RecycleBinAjax&file=index&mode=ajax&selected_module='.urlencode($selected_module));

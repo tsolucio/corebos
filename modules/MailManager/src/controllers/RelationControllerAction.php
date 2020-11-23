@@ -238,7 +238,7 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 	 */
 	public static function getSalesEntityInfo($crmid) {
 		global $adb;
-		$result = $adb->pquery('SELECT setype FROM vtiger_crmentity WHERE crmid=? AND deleted=0', array($crmid));
+		$result = $adb->pquery('SELECT setype FROM vtiger_crmobject WHERE crmid=? AND deleted=0', array($crmid));
 		if ($adb->num_rows($result)) {
 			$modulename = $adb->query_result($result, 0, 'setype');
 			$recordlabels = getEntityName($modulename, array($crmid));

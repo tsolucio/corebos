@@ -72,7 +72,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 		if ($fieldname == 'accountname' && $module != 'Accounts') {
 			$fieldname = 'account_id';
 		}
-		if ($fieldname == 'lastname' && ($module == 'SalesOrder' || $module == 'PurchaseOrder' || $module == 'Invoice' || $module == 'Quotes' || $module == 'Calendar')) {
+		if ($fieldname == 'lastname' && ($module == 'SalesOrder' || $module == 'PurchaseOrder' || $module == 'Invoice' || $module == 'Quotes')) {
 			$fieldname = 'contact_id';
 		}
 		if ($fieldname == 'productname' && $module != 'Products') {
@@ -128,7 +128,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 				if ($fieldname == 'accountname' && $module != 'Accounts') {
 					$fieldname = 'account_id';
 				}
-				if ($fieldname == 'lastname' && ($module == 'SalesOrder' || $module == 'PurchaseOrder' || $module == 'Invoice' || $module == 'Quotes' || $module == 'Calendar')) {
+				if ($fieldname == 'lastname' && ($module == 'SalesOrder' || $module == 'PurchaseOrder' || $module == 'Invoice' || $module == 'Quotes')) {
 					$fieldname = 'contact_id';
 				}
 				if ($fieldname == 'productname' && $module != 'Products') {
@@ -142,7 +142,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 			if ($fieldname == 'accountname' && $module != 'Accounts') {
 				$fieldname = 'account_id';
 			}
-			if ($fieldname == 'lastname' && ($module == 'SalesOrder' || $module == 'PurchaseOrder' || $module == 'Invoice' || $module == 'Quotes' || $module == 'Calendar')) {
+			if ($fieldname == 'lastname' && ($module == 'SalesOrder' || $module == 'PurchaseOrder' || $module == 'Invoice' || $module == 'Quotes')) {
 				$fieldname = 'contact_id';
 			}
 			if ($fieldname == 'productname' && $module != 'Products') {
@@ -636,69 +636,32 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 						}
 						$value = $adb->query_result($list_result, $i, $column_name);
 					} else {
-						if ($module == 'Calendar') {
-							$act_id = $adb->query_result($list_result, $i, 'activityid');
-							$activitytype = $adb->query_result($list_result, $i, 'activitytype');
-							if (empty($activitytype)) {
-								$cal_sql = 'select activitytype from vtiger_activity where activityid=?';
-								$cal_res = $adb->pquery($cal_sql, array($act_id));
-								if ($adb->num_rows($cal_res) >= 0) {
-									$activitytype = $adb->query_result($cal_res, 0, 'activitytype');
-								}
-							}
-						}
 						if (($module=='Emails' || $module=='HelpDesk' || $module=='Invoice' || $module=='Leads' || $module=='Contacts')
 							&& (($fieldname=='parent_id') || ($name=='Contact Name') || ($fieldname == 'firstname'))
 						) {
-							if ($module == 'Calendar') {
-								if ($fieldname == 'status') {
-									if ($activitytype == 'Task') {
-										$fieldname = 'taskstatus';
-									} else {
-										$fieldname = 'eventstatus';
-									}
-								}
-								if ($activitytype == 'Task') {
-									if (getFieldVisibilityPermission('Calendar', $current_user->id, $fieldname) == '0') {
-										$has_permission = 'yes';
-									} else {
-										$has_permission = 'no';
-									}
-								} else {
-									if (getFieldVisibilityPermission('Events', $current_user->id, $fieldname) == '0') {
-										$has_permission = 'yes';
-									} else {
-										$has_permission = 'no';
-									}
-								}
+							if ($fieldname == 'parent_id') {
+								$value = getRelatedTo($module, $list_result, $i);
 							}
-							if ($module != 'Calendar' || ($module == 'Calendar' && $has_permission == 'yes')) {
-								if ($fieldname == 'parent_id') {
-									$value = getRelatedTo($module, $list_result, $i);
-								}
-								if ($name == 'Contact Name') {
-									$contact_id = $adb->query_result($list_result, $i, 'contactid');
-									$contact_name = getFullNameFromQResult($list_result, $i, 'Contacts');
-									$value = '';
-									//Added to get the contactname for activities custom view - t=2190
-									if ($contact_id != '' && !empty($contact_name)) {
-										$displayValueArray = getEntityName('Contacts', $contact_id);
-										if (!empty($displayValueArray)) {
-											foreach ($displayValueArray as $key => $field_value) {
-												$contact_name = $field_value;
-											}
+							if ($name == 'Contact Name') {
+								$contact_id = $adb->query_result($list_result, $i, 'contactid');
+								$contact_name = getFullNameFromQResult($list_result, $i, 'Contacts');
+								$value = '';
+								//Added to get the contactname for activities custom view
+								if ($contact_id != '' && !empty($contact_name)) {
+									$displayValueArray = getEntityName('Contacts', $contact_id);
+									if (!empty($displayValueArray)) {
+										foreach ($displayValueArray as $key => $field_value) {
+											$contact_name = $field_value;
 										}
 									}
-									if (($contact_name != '') && ($contact_id != 'NULL')) {
-										$value = "<a href='index.php?module=Contacts&action=DetailView&record=".$contact_id."'>".textlength_check($contact_name).'</a>';
-									}
 								}
-								if ($fieldname == 'firstname') {
-									$first_name = textlength_check($adb->query_result($list_result, $i, 'firstname'));
-									$value = '<a href="index.php?action=DetailView&module=' . $module . '&record=' . $entity_id . '">' . $first_name . '</a>';
+								if (($contact_name != '') && ($contact_id != 'NULL')) {
+									$value = "<a href='index.php?module=Contacts&action=DetailView&record=".$contact_id."'>".textlength_check($contact_name).'</a>';
 								}
-							} else {
-								$value = '';
+							}
+							if ($fieldname == 'firstname') {
+								$first_name = textlength_check($adb->query_result($list_result, $i, 'firstname'));
+								$value = '<a href="index.php?action=DetailView&module=' . $module . '&record=' . $entity_id . '">' . $first_name . '</a>';
 							}
 						} elseif ($module=='Documents'
 							&& ($fieldname=='filelocationtype' || $fieldname=='filename' || $fieldname=='filesize' || $fieldname=='filestatus' || $fieldname=='filetype')
@@ -872,20 +835,6 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							if ($name == 'Date Sent') {
 								$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $i, 'list', '');
 							}
-						} elseif ($module == 'Calendar' && ($fieldname != 'taskstatus' && $fieldname != 'eventstatus')) {
-							if ($activitytype == 'Task') {
-								if (getFieldVisibilityPermission('Calendar', $current_user->id, $fieldname) == '0') {
-									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $i, 'list', '');
-								} else {
-									$value = '';
-								}
-							} else {
-								if (getFieldVisibilityPermission('Events', $current_user->id, $fieldname) == '0') {
-									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $i, 'list', '');
-								} else {
-									$value = '';
-								}
-							}
 						} elseif ($module == 'PriceBooks' && $fieldname == 'listprice') {
 							$val_raw = $adb->query_result($list_result, $i, $fieldname);
 							$value = $val_raw;
@@ -921,11 +870,6 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 				$varreturnset = '&return_module=' . $module . '&return_action=index';
 			} else {
 				$varreturnset = $returnset;
-			}
-
-			if ($module == 'cbCalendar') {
-				$actvity_type = $adb->query_result($list_result, $i, 'activitytype');
-				$varreturnset .= '&activity_mode=' . ($actvity_type == 'Task' ? 'Task' : 'Call');
 			}
 
 			//Added for Actions ie., edit and delete links in listview
@@ -1173,6 +1117,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 			if ($module == 'Products' && ($focus->popup_type == 'inventory_prod' || $focus->popup_type == 'inventory_prod_po')) {
 				global $default_charset;
 				$row_id = $_REQUEST['curr_row'];
+				$mod = CRMEntity::getInstance($module);
 
 				//To get all the tax types and values and pass it to product details
 				$tax_str = '';
@@ -1195,9 +1140,9 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 				$sub_prod_query = $adb->pquery(
 					'SELECT vtiger_products.productid,vtiger_products.productname,vtiger_productcomponent.quantity
 						from vtiger_products
-						INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
+						INNER JOIN '.$mod->crmentityTable.' as vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
 						INNER JOIN vtiger_productcomponent on vtiger_productcomponent.topdo=vtiger_products.productid
-						INNER JOIN vtiger_crmentity crmpc ON crmpc.crmid=vtiger_productcomponent.productcomponentid
+						INNER JOIN '.$mod->crmentityTable.' crmpc ON crmpc.crmid=vtiger_productcomponent.productcomponentid
 						WHERE crmpc.deleted=0 AND vtiger_productcomponent.frompdo=?',
 					array($entity_id)
 				);
@@ -1230,7 +1175,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 					$sub_products_query = $adb->pquery(
 						'SELECT 1
 							FROM vtiger_productcomponent
-							INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
+							INNER JOIN '.$mod->crmentityTable.' as vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
 							WHERE vtiger_crmentity.deleted=0 AND frompdo=? limit 1',
 						array($entity_id)
 					);
@@ -1610,24 +1555,19 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$focus->record_id = isset($_REQUEST['recordid']) ? vtlib_purify($_REQUEST['recordid']) : 0;
 					$popupMode = isset($_REQUEST['popupmode']) ? vtlib_purify($_REQUEST['popupmode']) : '';
 					$callBack = isset($_REQUEST['callback']) ? vtlib_purify($_REQUEST['callback']) : '';
-					if ($_REQUEST['return_module'] == 'Calendar') {
-						$count = counterValue();
-						$value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" id="calendarCont' . $entity_id . '" onclick=\'add_data_to_relatedlist_incal("' . $entity_id . '","' . decode_html($slashes_temp_val) . '");\'id = ' . $count . '>' . textlength_check($field_valEncoded) . '</a>';
+					$count = counterValue();
+					if (empty($callBack)) {
+						$value = '<a style="cursor:pointer;" onclick=\'add_data_to_relatedlist("' . $entity_id . '","' . $focus->record_id . '","' . $module . '","' . $popupMode . '");\'>' . textlength_check($field_valEncoded) . '</a>';
 					} else {
-						$count = counterValue();
-						if (empty($callBack)) {
-							$value = '<a style="cursor:pointer;" onclick=\'add_data_to_relatedlist("' . $entity_id . '","' . $focus->record_id . '","' . $module . '","' . $popupMode . '");\'>' . textlength_check($field_valEncoded) . '</a>';
-						} else {
-							$value = '<a style="cursor:pointer;" onclick=\'add_data_to_relatedlist("' . $entity_id . '","' . $focus->record_id . '","' . $module . '","' . $popupMode . '",' . $callBack . ');\'>' . textlength_check($field_valEncoded) . '</a>';
-						}
-						if ($module === 'Documents' && $_REQUEST['return_module'] === 'Emails') {
-							$attachment = $adb->query_result($list_result, $list_result_count, 'filename');
-							$value .= "<input type='hidden' id='document_attachment_{$entity_id}' value='{$attachment}'>";
-						}
+						$value = '<a style="cursor:pointer;" onclick=\'add_data_to_relatedlist("' . $entity_id . '","' . $focus->record_id . '","' . $module . '","' . $popupMode . '",' . $callBack . ');\'>' . textlength_check($field_valEncoded) . '</a>';
+					}
+					if ($module === 'Documents' && $_REQUEST['return_module'] === 'Emails') {
+						$attachment = $adb->query_result($list_result, $list_result_count, 'filename');
+						$value .= "<input type='hidden' id='document_attachment_{$entity_id}' value='{$attachment}'>";
 					}
 				} elseif ($popuptype == 'inventory_prod') {
 					$row_id = $_REQUEST['curr_row'];
-
+					$mod = CRMEntity::getInstance($module);
 					//To get all the tax types and values and pass it to product details
 					$tax_str = '';
 					foreach (getAllTaxes() as $tax_detail) {
@@ -1659,9 +1599,9 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						'SELECT vtiger_products.productid,vtiger_products.productname,vtiger_products.qtyinstock,
 								vtiger_crmentity.description,vtiger_productcomponent.quantity
 							FROM vtiger_products
-							INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
+							INNER JOIN '.$mod->crmentityTable.' as vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
 							INNER JOIN vtiger_productcomponent on vtiger_productcomponent.topdo=vtiger_products.productid
-							INNER JOIN vtiger_crmentity crmpc ON crmpc.crmid=vtiger_productcomponent.productcomponentid
+							INNER JOIN '.$mod->crmentityTable.' crmpc ON crmpc.crmid=vtiger_productcomponent.productcomponentid
 							WHERE crmpc.deleted=0 AND vtiger_productcomponent.frompdo=?',
 						array($entity_id)
 					);
@@ -1692,6 +1632,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $qty_stock . '","' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '","' . $sub_det . '",'.$dtopdo.');\' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($field_valEncoded) . '</a>';
 				} elseif ($popuptype == 'inventory_prod_po') {
 					$row_id = $_REQUEST['curr_row'];
+					$mod = CRMEntity::getInstance($module);
 
 					//To get all the tax types and values and pass it to product details
 					$tax_str = '';
@@ -1712,9 +1653,9 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						'SELECT vtiger_products.productid,vtiger_products.productname,vtiger_products.qtyinstock,
 								vtiger_crmentity.description,vtiger_productcomponent.quantity
 							FROM vtiger_products
-							INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
+							INNER JOIN '.$mod->crmentityTable.' as vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
 							INNER JOIN vtiger_productcomponent on vtiger_productcomponent.topdo=vtiger_products.productid
-							INNER JOIN vtiger_crmentity crmpc ON crmpc.crmid=vtiger_productcomponent.productcomponentid
+							INNER JOIN '.$mod->crmentityTable.' crmpc ON crmpc.crmid=vtiger_productcomponent.productcomponentid
 							WHERE crmpc.deleted=0 AND vtiger_productcomponent.frompdo=?',
 						array($entity_id)
 					);
@@ -2097,19 +2038,13 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					}
 					$slashes_temp_val = popup_from_html($field_valEncoded);
 					$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
-
-					$log->debug('< getValue');
-					if (isset($_REQUEST['maintab']) && $_REQUEST['maintab'] == 'Calendar') {
+					$value = "<a href=\"javascript:if (document.getElementById('closewindow').value=='true') {window.close();}\" onclick='set_return(\"".$entity_id.'", "'
+						.nl2br(decode_html($slashes_temp_val)) . '");\'';
+					if (empty($_REQUEST['forfield']) && $focus->popup_type != 'detailview') {
 						$count = counterValue();
-						$value = '<a href="javascript:window.close();" onclick=\'set_return_todo("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '");\'id = ' . $count . '>' . textlength_check($field_valEncoded) . '</a>';
-					} else {
-						$value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" onclick=\'set_return("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '");\'';
-						if (empty($_REQUEST['forfield']) && $focus->popup_type != 'detailview') {
-							$count = counterValue();
-							$value .= " id='$count' ";
-						}
-						$value .= '>' . textlength_check($field_valEncoded) . '</a>';
+						$value .= " id='$count' ";
 					}
+					$value .= '>' . textlength_check($field_valEncoded) . '</a>';
 				}
 			} else {
 				if ($colname == 'lastname' && ($module == 'Leads' || $module == 'Contacts')) {
@@ -2184,7 +2119,8 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 function getListQuery($module, $where = '') {
 	global $log, $current_user;
 	$log->debug('> getListQuery ' . $module . ',' . $where);
-
+	$mod = CRMEntity::getInstance($module);
+	$crmTable = $mod->crmentityTable;
 	$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 	switch ($module) {
 		case 'HelpDesk':
@@ -2193,7 +2129,7 @@ function getListQuery($module, $where = '') {
 					vtiger_account.accountid, vtiger_troubletickets.email, vtiger_account.accountname, vtiger_ticketcf.*, vtiger_troubletickets.ticket_no
 				FROM vtiger_troubletickets
 				INNER JOIN vtiger_ticketcf ON vtiger_ticketcf.ticketid = vtiger_troubletickets.ticketid
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_troubletickets.ticketid
+				INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_troubletickets.ticketid
 				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 				LEFT JOIN vtiger_contactdetails ON vtiger_troubletickets.parent_id = vtiger_contactdetails.contactid
 				LEFT JOIN vtiger_account ON vtiger_account.accountid = vtiger_troubletickets.parent_id
@@ -2205,7 +2141,7 @@ function getListQuery($module, $where = '') {
 		case 'Accounts':
 			$query = 'SELECT vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_account.*, vtiger_accountbillads.bill_city, vtiger_accountscf.*
 				FROM vtiger_account
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_account.accountid
+				INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_account.accountid
 				INNER JOIN vtiger_accountbillads ON vtiger_account.accountid = vtiger_accountbillads.accountaddressid
 				INNER JOIN vtiger_accountshipads ON vtiger_account.accountid = vtiger_accountshipads.accountaddressid
 				INNER JOIN vtiger_accountscf ON vtiger_account.accountid = vtiger_accountscf.accountid
@@ -2220,7 +2156,7 @@ function getListQuery($module, $where = '') {
 					vtiger_potential.sales_stage, vtiger_potential.amount, vtiger_potential.currency, vtiger_potential.closingdate, vtiger_potential.typeofrevenue,
 					vtiger_potential.email, vtiger_potentialscf.*
 				FROM vtiger_potential
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_potential.potentialid
+				INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_potential.potentialid
 				INNER JOIN vtiger_potentialscf ON vtiger_potentialscf.potentialid = vtiger_potential.potentialid
 				LEFT JOIN vtiger_account ON vtiger_potential.related_to = vtiger_account.accountid
 				LEFT JOIN vtiger_contactdetails ON vtiger_potential.related_to = vtiger_contactdetails.contactid
@@ -2235,7 +2171,7 @@ function getListQuery($module, $where = '') {
 			$query = 'SELECT vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_leaddetails.firstname, vtiger_leaddetails.lastname,
 					vtiger_leaddetails.company, vtiger_leadaddress.phone, vtiger_leadsubdetails.website, vtiger_leaddetails.email, vtiger_leadscf.*
 				FROM vtiger_leaddetails
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_leaddetails.leadid
+				INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_leaddetails.leadid
 				INNER JOIN vtiger_leadsubdetails ON vtiger_leadsubdetails.leadsubscriptionid = vtiger_leaddetails.leadid
 				INNER JOIN vtiger_leadaddress ON vtiger_leadaddress.leadaddressid = vtiger_leadsubdetails.leadsubscriptionid
 				INNER JOIN vtiger_leadscf ON vtiger_leaddetails.leadid = vtiger_leadscf.leadid
@@ -2247,7 +2183,7 @@ function getListQuery($module, $where = '') {
 		case 'Products':
 			$query = 'SELECT vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_crmentity.description, vtiger_products.*, vtiger_productcf.*
 				FROM vtiger_products
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_products.productid
+				INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_products.productid
 				INNER JOIN vtiger_productcf ON vtiger_products.productid = vtiger_productcf.productid
 				LEFT JOIN vtiger_vendor ON vtiger_vendor.vendorid = vtiger_products.vendor_id
 				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
@@ -2273,7 +2209,7 @@ function getListQuery($module, $where = '') {
 			$query = 'SELECT vtiger_contactdetails.*, vtiger_contactaddress.*, vtiger_contactsubdetails.*, vtiger_contactscf.*, vtiger_customerdetails.*,
 					vtiger_crmentity.smownerid, vtiger_crmentity.crmid
 				FROM vtiger_contactdetails
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid
+				INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid
 				INNER JOIN vtiger_contactaddress ON vtiger_contactaddress.contactaddressid = vtiger_contactdetails.contactid
 				INNER JOIN vtiger_contactsubdetails ON vtiger_contactsubdetails.contactsubscriptionid = vtiger_contactdetails.contactid
 				INNER JOIN vtiger_contactscf ON vtiger_contactscf.contactid = vtiger_contactdetails.contactid
@@ -2288,72 +2224,11 @@ function getListQuery($module, $where = '') {
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
 			$query .= 'WHERE vtiger_crmentity.deleted = 0 ' . $where;
 			break;
-		case 'Calendar':
-			// only one row per event no matter how many contacts are related
-			$query = "SELECT vtiger_activity.activityid as act_id,vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_crmentity.setype,
-		vtiger_activity.*,
-		vtiger_contactdetails.lastname, vtiger_contactdetails.firstname,
-		vtiger_contactdetails.contactid,
-		vtiger_account.accountid, vtiger_account.accountname
-		FROM vtiger_activity
-		LEFT JOIN vtiger_activitycf
-			ON vtiger_activitycf.activityid = vtiger_activity.activityid
-		LEFT JOIN (SELECT min(vtiger_cntactivityrel.contactid) as contactid,vtiger_cntactivityrel.activityid
-					from vtiger_cntactivityrel
-					inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_cntactivityrel.contactid and deleted=0
-					GROUP BY vtiger_cntactivityrel.activityid
-					) ctorel ON ctorel.activityid = vtiger_activity.activityid
-		LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid = ctorel.contactid
-		LEFT JOIN vtiger_seactivityrel
-			ON vtiger_seactivityrel.activityid = vtiger_activity.activityid
-		LEFT OUTER JOIN vtiger_activity_reminder
-			ON vtiger_activity_reminder.activity_id = vtiger_activity.activityid
-		LEFT JOIN vtiger_crmentity
-			ON vtiger_crmentity.crmid = vtiger_activity.activityid
-		LEFT JOIN vtiger_users
-			ON vtiger_users.id = vtiger_crmentity.smownerid
-		LEFT JOIN vtiger_groups
-			ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-		LEFT JOIN vtiger_users vtiger_users2
-			ON vtiger_crmentity.modifiedby = vtiger_users2.id
-		LEFT JOIN vtiger_groups vtiger_groups2
-			ON vtiger_crmentity.modifiedby = vtiger_groups2.groupid
-		LEFT OUTER JOIN vtiger_account
-			ON vtiger_account.accountid = vtiger_contactdetails.accountid
-		LEFT OUTER JOIN vtiger_leaddetails
-			ON vtiger_leaddetails.leadid = vtiger_seactivityrel.crmid
-		LEFT OUTER JOIN vtiger_account vtiger_account2
-			ON vtiger_account2.accountid = vtiger_seactivityrel.crmid
-		LEFT OUTER JOIN vtiger_potential
-			ON vtiger_potential.potentialid = vtiger_seactivityrel.crmid
-		LEFT OUTER JOIN vtiger_troubletickets
-			ON vtiger_troubletickets.ticketid = vtiger_seactivityrel.crmid
-		LEFT OUTER JOIN vtiger_salesorder
-			ON vtiger_salesorder.salesorderid = vtiger_seactivityrel.crmid
-		LEFT OUTER JOIN vtiger_purchaseorder
-			ON vtiger_purchaseorder.purchaseorderid = vtiger_seactivityrel.crmid
-		LEFT OUTER JOIN vtiger_quotes
-			ON vtiger_quotes.quoteid = vtiger_seactivityrel.crmid
-		LEFT OUTER JOIN vtiger_invoice
-			ON vtiger_invoice.invoiceid = vtiger_seactivityrel.crmid
-		LEFT OUTER JOIN vtiger_campaign
-		ON vtiger_campaign.campaignid = vtiger_seactivityrel.crmid";
-
-			//added to fix #5135
-			if (isset($_REQUEST['from_homepage']) && ($_REQUEST['from_homepage'] ==
-					"upcoming_activities" || $_REQUEST['from_homepage'] == "pending_activities")) {
-				$query.=" LEFT OUTER JOIN vtiger_recurringevents ON vtiger_recurringevents.activityid=vtiger_activity.activityid";
-			}
-			//end
-
-			$query .= getNonAdminAccessControlQuery($module, $current_user);
-			$query.=" WHERE vtiger_crmentity.deleted = 0 AND activitytype != 'Emails' " . $where;
-			break;
 		case 'Emails':
 			$query = 'SELECT DISTINCT vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_activity.activityid, vtiger_activity.subject, vtiger_activity.date_start,
 					vtiger_contactdetails.lastname, vtiger_contactdetails.firstname, vtiger_contactdetails.contactid
 				FROM vtiger_activity
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_activity.activityid
+				INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_activity.activityid
 				LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
 				LEFT JOIN vtiger_seactivityrel ON vtiger_seactivityrel.activityid = vtiger_activity.activityid
 				LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid = vtiger_seactivityrel.crmid
@@ -2367,7 +2242,7 @@ function getListQuery($module, $where = '') {
 		case 'Faq':
 			$query = 'SELECT vtiger_crmentity.crmid, vtiger_crmentity.createdtime, vtiger_crmentity.modifiedtime, vtiger_faq.*
 				FROM vtiger_faq
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_faq.id
+				INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_faq.id
 				LEFT JOIN vtiger_products ON vtiger_faq.product_id = vtiger_products.productid';
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
 			$query .= 'WHERE vtiger_crmentity.deleted = 0 ' . $where;
@@ -2375,7 +2250,7 @@ function getListQuery($module, $where = '') {
 		case 'Vendors':
 			$query = 'SELECT vtiger_crmentity.crmid, vtiger_vendor.*
 				FROM vtiger_vendor
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_vendor.vendorid
+				INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_vendor.vendorid
 				INNER JOIN vtiger_vendorcf ON vtiger_vendor.vendorid = vtiger_vendorcf.vendorid';
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
 			$query .= 'WHERE vtiger_crmentity.deleted = 0 ' . $where;
@@ -2383,7 +2258,7 @@ function getListQuery($module, $where = '') {
 		case 'PriceBooks':
 			$query = 'SELECT vtiger_crmentity.crmid, vtiger_pricebook.*, vtiger_currency_info.currency_name
 				FROM vtiger_pricebook
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_pricebook.pricebookid
+				INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_pricebook.pricebookid
 				INNER JOIN vtiger_pricebookcf ON vtiger_pricebook.pricebookid = vtiger_pricebookcf.pricebookid
 				LEFT JOIN vtiger_currency_info ON vtiger_pricebook.currency_id = vtiger_currency_info.id
 				WHERE vtiger_crmentity.deleted = 0 ' . $where;
@@ -2392,7 +2267,7 @@ function getListQuery($module, $where = '') {
 			$query = 'SELECT vtiger_crmentity.*, vtiger_quotes.*, vtiger_quotesbillads.*, vtiger_quotesshipads.*, vtiger_potential.potentialname,
 					vtiger_account.accountname, vtiger_currency_info.currency_name
 				FROM vtiger_quotes
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_quotes.quoteid
+				INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_quotes.quoteid
 				INNER JOIN vtiger_quotesbillads ON vtiger_quotes.quoteid = vtiger_quotesbillads.quotebilladdressid
 				INNER JOIN vtiger_quotesshipads ON vtiger_quotes.quoteid = vtiger_quotesshipads.quoteshipaddressid
 				LEFT JOIN vtiger_quotescf ON vtiger_quotes.quoteid = vtiger_quotescf.quoteid
@@ -2410,7 +2285,7 @@ function getListQuery($module, $where = '') {
 			$query = 'SELECT vtiger_crmentity.*, vtiger_purchaseorder.*, vtiger_pobillads.*, vtiger_poshipads.*, vtiger_vendor.vendorname,
 					vtiger_currency_info.currency_name
 				FROM vtiger_purchaseorder
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_purchaseorder.purchaseorderid
+				INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_purchaseorder.purchaseorderid
 				LEFT OUTER JOIN vtiger_vendor ON vtiger_purchaseorder.vendorid = vtiger_vendor.vendorid
 				LEFT JOIN vtiger_contactdetails ON vtiger_purchaseorder.contactid = vtiger_contactdetails.contactid
 				INNER JOIN vtiger_pobillads ON vtiger_purchaseorder.purchaseorderid = vtiger_pobillads.pobilladdressid
@@ -2426,7 +2301,7 @@ function getListQuery($module, $where = '') {
 			$query = 'SELECT vtiger_crmentity.*, vtiger_salesorder.*, vtiger_sobillads.*, vtiger_soshipads.*, vtiger_quotes.subject AS quotename,
 					vtiger_account.accountname, vtiger_currency_info.currency_name
 				FROM vtiger_salesorder
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_salesorder.salesorderid
+				INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_salesorder.salesorderid
 				INNER JOIN vtiger_sobillads ON vtiger_salesorder.salesorderid = vtiger_sobillads.sobilladdressid
 				INNER JOIN vtiger_soshipads ON vtiger_salesorder.salesorderid = vtiger_soshipads.soshipaddressid
 				LEFT JOIN vtiger_salesordercf ON vtiger_salesordercf.salesorderid = vtiger_salesorder.salesorderid
@@ -2445,7 +2320,7 @@ function getListQuery($module, $where = '') {
 			$query = 'SELECT vtiger_crmentity.*, vtiger_invoice.*, vtiger_invoicebillads.*, vtiger_invoiceshipads.*, vtiger_salesorder.subject AS salessubject,
 					vtiger_account.accountname, vtiger_currency_info.currency_name
 				FROM vtiger_invoice
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_invoice.invoiceid
+				INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_invoice.invoiceid
 				INNER JOIN vtiger_invoicebillads ON vtiger_invoice.invoiceid = vtiger_invoicebillads.invoicebilladdressid
 				INNER JOIN vtiger_invoiceshipads ON vtiger_invoice.invoiceid = vtiger_invoiceshipads.invoiceshipaddressid
 				LEFT JOIN vtiger_currency_info ON vtiger_invoice.currency_id = vtiger_currency_info.id
@@ -2461,7 +2336,7 @@ function getListQuery($module, $where = '') {
 		case 'Campaigns':
 			$query = 'SELECT vtiger_crmentity.*, vtiger_campaign.*
 				FROM vtiger_campaign
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_campaign.campaignid
+				INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_campaign.campaignid
 				INNER JOIN vtiger_campaignscf ON vtiger_campaign.campaignid = vtiger_campaignscf.campaignid
 				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 				LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
@@ -2500,12 +2375,13 @@ function getListQuery($module, $where = '') {
 function getReadEntityIds($module) {
 	global $log, $current_user;
 	$log->debug('> getReadEntityIds ' . $module);
-
+	$mod = CRMEntity::getInstance($module);
+	$crmTable = $mod->crmentityTable;
 	if ($module == 'Leads') {
 		$val_conv = ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') ? 1 : 0);
 		$query = 'SELECT vtiger_crmentity.crmid
 			FROM vtiger_leaddetails
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_leaddetails.leadid
+			INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_leaddetails.leadid
 			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
 		$query .= getNonAdminAccessControlQuery($module, $current_user);
 		$query .= "WHERE vtiger_crmentity.deleted = 0 AND vtiger_leaddetails.converted = $val_conv ";
@@ -2513,7 +2389,7 @@ function getReadEntityIds($module) {
 		//Query modified to sort by assigned to
 		$query = 'SELECT vtiger_crmentity.crmid
 			FROM vtiger_account
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_account.accountid
+			INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_account.accountid
 			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
 		$query .= getNonAdminAccessControlQuery($module, $current_user);
 		$query .= 'WHERE vtiger_crmentity.deleted = 0 ';
@@ -2521,7 +2397,7 @@ function getReadEntityIds($module) {
 		//Query modified to sort by assigned to
 		$query = 'SELECT vtiger_crmentity.crmid
 			FROM vtiger_potential
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_potential.potentialid
+			INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_potential.potentialid
 			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
 		$query .= getNonAdminAccessControlQuery($module, $current_user);
 		$query .= 'WHERE vtiger_crmentity.deleted = 0 ';
@@ -2529,14 +2405,14 @@ function getReadEntityIds($module) {
 		//Query modified to sort by assigned to
 		$query = 'SELECT vtiger_crmentity.crmid
 			FROM vtiger_contactdetails
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid
+			INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid
 			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
 		$query .= getNonAdminAccessControlQuery($module, $current_user);
 		$query .= 'WHERE vtiger_crmentity.deleted = 0 ';
 	} elseif ($module == 'Products') {
 		$query = 'SELECT DISTINCT vtiger_crmentity.crmid
 			FROM vtiger_products
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_products.productid
+			INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_products.productid
 			LEFT JOIN vtiger_seproductsrel ON vtiger_seproductsrel.productid = vtiger_products.productid
 			WHERE vtiger_crmentity.deleted = 0
 			AND (vtiger_seproductsrel.crmid IS NULL
@@ -2548,7 +2424,7 @@ function getReadEntityIds($module) {
 		//Query modified to sort by assigned to
 		$query = 'SELECT vtiger_crmentity.crmid
 			FROM vtiger_purchaseorder
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_purchaseorder.purchaseorderid
+			INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_purchaseorder.purchaseorderid
 			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
 		$query .= getNonAdminAccessControlQuery($module, $current_user);
 		$query .= 'WHERE vtiger_crmentity.deleted = 0 ';
@@ -2556,28 +2432,28 @@ function getReadEntityIds($module) {
 		//Query modified to sort by assigned to
 		$query = 'SELECT vtiger_crmentity.crmid
 			FROM vtiger_salesorder
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_salesorder.salesorderid
+			INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_salesorder.salesorderid
 			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
 		$query .= getNonAdminAccessControlQuery($module, $current_user);
 		$query .= 'WHERE vtiger_crmentity.deleted = 0 ';
 	} elseif ($module == 'Invoice') {
 		$query = 'SELECT vtiger_crmentity.crmid
 			FROM vtiger_invoice
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_invoice.invoiceid
+			INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_invoice.invoiceid
 			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
 		$query .= getNonAdminAccessControlQuery($module, $current_user);
 		$query .= 'WHERE vtiger_crmentity.deleted = 0 ';
 	} elseif ($module == 'Quotes') {
 		$query = 'SELECT vtiger_crmentity.crmid
 			FROM vtiger_quotes
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_quotes.quoteid
+			INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_quotes.quoteid
 			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
 		$query .= getNonAdminAccessControlQuery($module, $current_user);
 		$query .= 'WHERE vtiger_crmentity.deleted = 0 ';
 	} elseif ($module == 'HelpDesk') {
 		$query = 'SELECT vtiger_crmentity.crmid
 			FROM vtiger_troubletickets
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_troubletickets.ticketid
+			INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_troubletickets.ticketid
 			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
 		$query .= getNonAdminAccessControlQuery($module, $current_user);
 		$query .= 'WHERE vtiger_crmentity.deleted = 0 ';
@@ -2665,6 +2541,8 @@ function getRelatedToEntity($module, $list_result, $rset) {
 //used in home page listTop files
 function getRelatedTo($module, $list_result, $rset) {
 	global $adb, $log, $app_strings;
+	$mod = CRMEntity::getInstance($module);
+	$crmTable = $mod->crmentityTable;
 	if ($module == 'Documents') {
 		$notesid = $adb->query_result($list_result, $rset, 'notesid');
 		$evt_query = 'SELECT vtiger_senotesrel.crmid, vtiger_crmentity.setype
@@ -2676,21 +2554,21 @@ function getRelatedTo($module, $list_result, $rset) {
 		$productid = $adb->query_result($list_result, $rset, 'productid');
 		$evt_query = 'SELECT vtiger_seproductsrel.crmid, vtiger_crmentity.setype
 			FROM vtiger_seproductsrel
-			INNER JOIN vtiger_crmentity ON vtiger_seproductsrel.crmid = vtiger_crmentity.crmid
+			INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_seproductsrel.crmid = vtiger_crmentity.crmid
 			WHERE vtiger_seproductsrel.productid =?';
 		$params = array($productid);
 	} else {
 		$activity_id = $adb->query_result($list_result, $rset, 'activityid');
 		$evt_query = 'SELECT vtiger_seactivityrel.crmid, vtiger_crmentity.setype
 			FROM vtiger_seactivityrel
-			INNER JOIN vtiger_crmentity ON vtiger_seactivityrel.crmid = vtiger_crmentity.crmid
+			INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_seactivityrel.crmid = vtiger_crmentity.crmid
 			WHERE vtiger_seactivityrel.activityid=?';
 		$params = array($activity_id);
 
 		if ($module == 'HelpDesk') {
 			$activity_id = $adb->query_result($list_result, $rset, 'parent_id');
 			if ($activity_id != '') {
-				$evt_query = 'SELECT crmid, setype FROM vtiger_crmentity WHERE crmid=?';
+				$evt_query = 'SELECT crmid, setype FROM '.$crmTable.' WHERE crmid=?';
 				$params = array($activity_id);
 			}
 		}
@@ -2753,42 +2631,6 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 		'&srcmodule=' . (isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '') .
 		'&forrecord=' . (isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '');
 
-	if ($module == 'Calendar' && $action_val == 'index') {
-		if ($_REQUEST['view'] == '') {
-			if ($current_user->activity_view == 'This Year') {
-				$mysel = 'year';
-			} elseif ($current_user->activity_view == 'This Month') {
-				$mysel = 'month';
-			} elseif ($current_user->activity_view == 'This Week') {
-				$mysel = 'week';
-			} else {
-				$mysel = 'day';
-			}
-		}
-		$data_value = date('Y-m-d H:i:s');
-		preg_match('/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/', $data_value, $value);
-		$date_data = array(
-			'day' => $value[3],
-			'month' => $value[2],
-			'year' => $value[1],
-			'hour' => $value[4],
-			'min' => $value[5],
-		);
-		$tab_type = ($_REQUEST['subtab'] == '') ? 'event' : vtlib_purify($_REQUEST['subtab']);
-		$url_string .= isset($_REQUEST['view']) ? '&view=' . vtlib_purify($_REQUEST['view']) : '&view=' . $mysel;
-		$url_string .= isset($_REQUEST['subtab']) ? '&subtab=' . vtlib_purify($_REQUEST['subtab']) : '';
-		$url_string .= isset($_REQUEST['viewOption']) ? '&viewOption=' . vtlib_purify($_REQUEST['viewOption']) : '&viewOption=listview';
-		$url_string .= isset($_REQUEST['day']) ? '&day=' . vtlib_purify($_REQUEST['day']) : '&day=' . $date_data['day'];
-		$url_string .= isset($_REQUEST['week']) ? '&week=' . vtlib_purify($_REQUEST['week']) : '';
-		$url_string .= isset($_REQUEST['month']) ? '&month=' . vtlib_purify($_REQUEST['month']) : '&month=' . $date_data['month'];
-		$url_string .= isset($_REQUEST['year']) ? '&year=' . vtlib_purify($_REQUEST['year']) : '&year=' . $date_data['year'];
-		$url_string .= isset($_REQUEST['n_type']) ? '&n_type=' . vtlib_purify($_REQUEST['n_type']) : '';
-		$url_string .= isset($_REQUEST['search_option']) ? '&search_option=' . vtlib_purify($_REQUEST['search_option']) : '';
-	}
-	if ($module == 'Calendar' && $action_val != 'index') { //added for the All link from the homepage -- ticket 5211
-		$url_string .= isset($_REQUEST['from_homepage']) ? '&from_homepage=' . vtlib_purify($_REQUEST['from_homepage']) : '';
-	}
-
 	//Get custom paramaters to url_string
 	if (isset($_REQUEST['cbcustompopupinfo']) && $_REQUEST['cbcustompopupinfo'] != '') {
 		$cbcustompopupinfo = explode(';', $_REQUEST['cbcustompopupinfo']);
@@ -2798,12 +2640,7 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 	}
 
 	if (($navigation_array['prev']) != 0) {
-		if ($module == 'Calendar' && $action_val == 'index') {
-			//$output .= '<a href="index.php?module=Calendar&action=index&start=1'.$url_string.'" alt="'.$app_strings['LBL_FIRST'].'" title="'.$app_strings['LBL_FIRST'].'"><img src="themes/images/start.gif" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="cal_navigation(\'' . $tab_type . '\',\'' . $url_string . '\',\'&start=1\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			//$output .= '<a href="index.php?module=Calendar&action=index&start='.$navigation_array['prev'].$url_string.'" alt="'.$app_strings['LNK_LIST_PREVIOUS'].'"title="'.$app_strings['LNK_LIST_PREVIOUS'].'"><img src="themes/images/previous.gif" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="cal_navigation(\'' . $tab_type . '\',\'' . $url_string . '\',\'&start=' . $navigation_array['prev'] . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-		} elseif ($action_val == 'FindDuplicate') {
+		if ($action_val == 'FindDuplicate') {
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=1' . $url_string . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['prev'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_PREVIOUS'] . '"title="' . $app_strings['LNK_LIST_PREVIOUS'] . '"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		} elseif ($action_val == 'UnifiedSearch') {
@@ -2821,9 +2658,7 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 		$output .= '<img src="' . vtiger_imageurl('previous_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
 	}
 
-	if ($module == 'Calendar' && $action_val == 'index') {
-		$jsNavigate = "cal_navigation('$tab_type','$url_string','&start='+this.value);";
-	} elseif ($action_val == 'FindDuplicate') {
+	if ($action_val == 'FindDuplicate') {
 		$jsNavigate = "getDuplicateListViewEntries_js('$module','parenttab=$tabname&start='+this.value+'$url_string');";
 	} elseif ($action_val == 'UnifiedSearch') {
 		$jsNavigate = "getUnifiedSearchEntries_js('$module','parenttab=$tabname&start='+this.value+'$url_string');";
@@ -2845,12 +2680,7 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 	$output .= $app_strings['LBL_LIST_OF'] . ' ' . $navigation_array['verylast'] . '</span>';
 
 	if (($navigation_array['next']) != 0) {
-		if ($module == 'Calendar' && $action_val == 'index') {
-			//$output .= '<a href="index.php?module=Calendar&action=index&start='.$navigation_array['next'].$url_string.'" alt="'.$app_strings['LNK_LIST_NEXT'].'" title="'.$app_strings['LNK_LIST_NEXT'].'"><img src="themes/images/next.gif" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="cal_navigation(\'' . $tab_type . '\',\'' . $url_string . '\',\'&start=' . $navigation_array['next'] . '\');" alt="' . $app_strings['LNK_LIST_NEXT'] . '" title="' . $app_strings['LNK_LIST_NEXT'] . '"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			//$output .= '<a href="index.php?module=Calendar&action=index&start='.$navigation_array['verylast'].$url_string.'" alt="'.$app_strings['LBL_LAST'].'" title="'.$app_strings['LBL_LAST'].'"><img src="themes/images/end.gif" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="cal_navigation(\'' . $tab_type . '\',\'' . $url_string . '\',\'&start=' . $navigation_array['verylast'] . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-		} elseif ($action_val == "FindDuplicate") {
+		if ($action_val == "FindDuplicate") {
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['next'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_NEXT'] . '" title="' . $app_strings['LNK_LIST_NEXT'] . '"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['verylast'] . $url_string . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		} elseif ($action_val == 'UnifiedSearch') {
@@ -2919,9 +2749,10 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 				$condition = 'and vtiger_contactdetails.contactid= 0';
 			}
 		} elseif ($relmodule == 'Vendors') {
+			$mod = CRMEntity::getInstance('Contacts');
 			$vcquery = "SELECT vtiger_contactdetails.contactid
 				from vtiger_contactdetails
-				inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
+				inner join ".$mod->crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
 				inner join vtiger_vendorcontactrel on vtiger_vendorcontactrel.contactid=vtiger_contactdetails.contactid
 				where vtiger_crmentity.deleted=0 and vtiger_vendorcontactrel.vendorid = $relmod_recordid";
 			$condition = "and vtiger_contactdetails.contactid in ($vcquery)";
@@ -2995,24 +2826,26 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 				$parent_modname = getSalesEntityType($parent_id);
 				if ($parent_modname == 'Accounts') {
 					$condition = 'and vtiger_contactdetails.accountid= ' . $parent_id;
-				} elseif ($parent_modname == 'Contacts') {
+				}
+				if ($parent_modname == 'Contacts') {
 					$condition = 'and vtiger_contactdetails.contactid= ' . $parent_id;
 				}
 			}
 		}
 	} elseif ($current_module == 'Potentials') {
 		if ($relmodule == 'Accounts' || $relmodule == 'Contacts') {
+			$mod = CRMEntity::getInstance($relmodule);
 			if ($relmodule == 'Contacts') {
 				$pot_query = 'select vtiger_crmentity.crmid,vtiger_contactdetails.contactid,vtiger_potential.potentialid
 					from vtiger_potential
 					inner join vtiger_contactdetails on vtiger_contactdetails.contactid=vtiger_potential.related_to
-					inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_contactdetails.contactid
+					inner join '.$mod->crmentityTable.' as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_contactdetails.contactid
 					where vtiger_crmentity.deleted=0 and vtiger_potential.related_to=?';
 			} else {
 				$pot_query = 'select vtiger_crmentity.crmid,vtiger_account.accountid,vtiger_potential.potentialid
 					from vtiger_potential
 					inner join vtiger_account on vtiger_account.accountid=vtiger_potential.related_to
-					inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_account.accountid
+					inner join '.$mod->crmentityTable.' as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_account.accountid
 					where vtiger_crmentity.deleted=0 and vtiger_potential.related_to=?';
 			}
 			$pot_result = $result = $adb->pquery($pot_query, array($relmod_recordid));
@@ -3137,7 +2970,7 @@ function getRelCheckquery($currentmodule, $returnmodule, $recordid) {
 		$params[] = $recordid;
 		$field = $selectfield = 'contactid';
 		$table = 'vtiger_contactdetails';
-	} elseif ($currentmodule == 'Contacts' && $returnmodule == 'Calendar') {
+	} elseif ($currentmodule == 'Contacts' && $returnmodule == 'cbCalendar') {
 		$reltable = 'vtiger_cntactivityrel';
 		$condition = 'WHERE activityid = ?';
 		$params[] = $recordid;
@@ -3149,7 +2982,7 @@ function getRelCheckquery($currentmodule, $returnmodule, $recordid) {
 		$params[] = $recordid;
 		$field = $selectfield = 'leadid';
 		$table = 'vtiger_leaddetails';
-	} elseif ($currentmodule == 'Users' && $returnmodule == 'Calendar') {
+	} elseif ($currentmodule == 'Users' && $returnmodule == 'cbCalendar') {
 		$reltable = 'vtiger_salesmanactivityrel';
 		$condition = 'WHERE activityid = ?';
 		$params[] = $recordid;
@@ -3487,7 +3320,8 @@ function getEntityId($module, $entityName, $searchonfield = '') {
 		if ($module=='Users') {
 			$sql = 'select vtiger_users.id from vtiger_users where deleted = 0 and '.$fieldsname.' = ?';
 		} else {
-			$sql = "select $tablename.$entityidfield from $tablename INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $tablename.$entityidfield " .
+			$mod = CRMEntity::getInstance($module);
+			$sql = "select $tablename.$entityidfield from $tablename INNER JOIN ".$mod->crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid = $tablename.$entityidfield " .
 				" $cfquery WHERE vtiger_crmentity.deleted = 0 and $fieldsname=?";
 		}
 		$result = $adb->pquery($sql, array($entityName));
@@ -3516,15 +3350,16 @@ function getParentId($parent_name) {
 	$parent_name = $relatedTo[3];
 	$parent_name = trim($parent_name, ' ');
 	$num_rows = 0;
+	$mod = CRMEntity::getInstance($parent_module);
 	if ($parent_module == 'Contacts') {
 		$query = "select crmid
-			from vtiger_contactdetails, vtiger_crmentity
+			from vtiger_contactdetails, ".$mod->crmentityTable." as vtiger_crmentity
 			WHERE concat(lastname,' ',firstname)=? and vtiger_crmentity.crmid =vtiger_contactdetails.contactid and vtiger_crmentity.deleted=0";
 		$result = $adb->pquery($query, array($parent_name));
 		$num_rows = $adb->num_rows($result);
 	} elseif ($parent_module == 'Accounts') {
 		$query = 'select crmid
-			from vtiger_account, vtiger_crmentity
+			from vtiger_account, '.$mod->crmentityTable.' as vtiger_crmentity
 			WHERE accountname=? and vtiger_crmentity.crmid =vtiger_account.accountid and vtiger_crmentity.deleted=0';
 		$result = $adb->pquery($query, array($parent_name));
 		$num_rows = $adb->num_rows($result);
@@ -3688,42 +3523,6 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 		'&srcmodule=' . (isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '').
 		'&forrecord=' . (isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '');
 
-	if ($module == 'Calendar' && $action_val == 'index') {
-		if ($_REQUEST['view'] == '') {
-			if ($current_user->activity_view == 'This Year') {
-				$mysel = 'year';
-			} elseif ($current_user->activity_view == 'This Month') {
-				$mysel = 'month';
-			} elseif ($current_user->activity_view == 'This Week') {
-				$mysel = 'week';
-			} else {
-				$mysel = 'day';
-			}
-		}
-		$data_value = date('Y-m-d H:i:s');
-		preg_match('/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/', $data_value, $value);
-		$date_data = array(
-			'day' => $value[3],
-			'month' => $value[2],
-			'year' => $value[1],
-			'hour' => $value[4],
-			'min' => $value[5],
-		);
-		$tab_type = ($_REQUEST['subtab'] == '') ? 'event' : vtlib_purify($_REQUEST['subtab']);
-		$url_string .= isset($_REQUEST['view']) ? '&view=' . vtlib_purify($_REQUEST['view']) : '&view=' . $mysel;
-		$url_string .= isset($_REQUEST['subtab']) ? '&subtab=' . vtlib_purify($_REQUEST['subtab']) : '';
-		$url_string .= isset($_REQUEST['viewOption']) ? '&viewOption=' . vtlib_purify($_REQUEST['viewOption']) : '&viewOption=listview';
-		$url_string .= isset($_REQUEST['day']) ? '&day=' . vtlib_purify($_REQUEST['day']) : '&day=' . $date_data['day'];
-		$url_string .= isset($_REQUEST['week']) ? '&week=' . vtlib_purify($_REQUEST['week']) : '';
-		$url_string .= isset($_REQUEST['month']) ? '&month=' . vtlib_purify($_REQUEST['month']) : '&month=' . $date_data['month'];
-		$url_string .= isset($_REQUEST['year']) ? '&year=' . vtlib_purify($_REQUEST['year']) : '&year=' . $date_data['year'];
-		$url_string .= isset($_REQUEST['n_type']) ? '&n_type=' . vtlib_purify($_REQUEST['n_type']) : '';
-		$url_string .= isset($_REQUEST['search_option']) ? '&search_option=' . vtlib_purify($_REQUEST['search_option']) : '';
-	}
-	if ($module == 'Calendar' && $action_val != 'index') { //added for the All link from the homepage -- ticket 5211
-		$url_string .= isset($_REQUEST['from_homepage']) ? '&from_homepage=' . vtlib_purify($_REQUEST['from_homepage']) : '';
-	}
-
 	//Get custom paramaters to url_string
 	if (isset($_REQUEST['cbcustompopupinfo']) && $_REQUEST['cbcustompopupinfo'] != '') {
 		$cbcustompopupinfo = explode(';', $_REQUEST['cbcustompopupinfo']);
@@ -3733,10 +3532,7 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 	}
 
 	if (($navigation_array['prev']) != 0) {
-		if ($module == 'Calendar' && $action_val == 'index') {
-			$output .= '<a href="javascript:;" onClick="cal_navigation(\'' . $tab_type . '\',\'' . $url_string . '\',\'&start=1\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="cal_navigation(\'' . $tab_type . '\',\'' . $url_string . '\',\'&start=' . $navigation_array['prev'] . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-		} elseif ($action_val == "FindDuplicate") {
+		if ($action_val == "FindDuplicate") {
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=1' . $url_string . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['prev'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_PREVIOUS'] . '"title="' . $app_strings['LNK_LIST_PREVIOUS'] . '"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		} elseif ($action_val == 'UnifiedSearch') {
@@ -3753,9 +3549,7 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 		$output .= '<img src="' . vtiger_imageurl('start_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
 		$output .= '<img src="' . vtiger_imageurl('previous_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
 	}
-	if ($module == 'Calendar' && $action_val == 'index') {
-		$jsNavigate = "cal_navigation('$tab_type','$url_string','&start='+this.value);";
-	} elseif ($action_val == "FindDuplicate") {
+	if ($action_val == "FindDuplicate") {
 		$jsNavigate = "getDuplicateListViewEntries_js('$module','parenttab=$tabname&start='+this.value+'$url_string');";
 	} elseif ($action_val == 'UnifiedSearch') {
 		$jsNavigate = "getUnifiedSearchEntries_js('$search_tag','$module','parenttab=$tabname&start='+this.value+'$url_string');";
@@ -3786,10 +3580,7 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 	$output .='</span>';
 
 	if (($navigation_array['next']) != 0) {
-		if ($module == 'Calendar' && $action_val == 'index') {
-			$output .= '<a href="javascript:;" onClick="cal_navigation(\'' . $tab_type . '\',\'' . $url_string . '\',\'&start=' . $navigation_array['next'] . '\');" alt="' . $app_strings['LNK_LIST_NEXT'] . '" title="' . $app_strings['LNK_LIST_NEXT'] . '"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="cal_navigation(\'' . $tab_type . '\',\'' . $url_string . '\',\'&start=' . $navigation_array['verylast'] . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-		} elseif ($action_val == "FindDuplicate") {
+		if ($action_val == "FindDuplicate") {
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['next'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_NEXT'] . '" title="' . $app_strings['LNK_LIST_NEXT'] . '"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['verylast'] . $url_string . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		} elseif ($action_val == 'UnifiedSearch') {

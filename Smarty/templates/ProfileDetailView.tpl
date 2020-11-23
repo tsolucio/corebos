@@ -243,11 +243,7 @@ function UpdateProfile() {
 								<tbody>
 						{if !empty($FIELD_PRIVILEGES[$tabid])}
 						<tr>
-							{if $modulename eq 'Calendar'}
-								<td class="small colHeader cblds-p-v_medium" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN} ({$APP.Tasks})</td>
-							{else}
-								<td class="small colHeader cblds-p-v_medium" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN}</td>
-							{/if}
+							<td class="small colHeader cblds-p-v_medium" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN}</td>
 						</tr>
 						{foreach item=row_values from=$FIELD_PRIVILEGES[$tabid]}
 								<tr>

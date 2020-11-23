@@ -27,6 +27,18 @@ $current_user = Users::getActiveAdminUser();
 
 @include_once 'install/config.db.php';
 $adb->query("SET SESSION sql_mode = ''");
+$adb->query('CREATE TABLE IF NOT EXISTS vtiger_crmobject (
+	crmid int(19),
+	cbuuid char(40),
+	deleted tinyint(1),
+	setype varchar(100),
+	smownerid int(19),
+	modifiedtime datetime,
+	PRIMARY KEY (crmid),
+	INDEX (cbuuid),
+	INDEX (deleted),
+	INDEX (setype)
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8');
 
 // mandatory coreBOS DB changes
 $result = $adb->pquery('show columns from com_vtiger_workflowtasks like ?', array('executionorder'));

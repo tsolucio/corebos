@@ -151,11 +151,12 @@ function vtws_massretrieve($ids, $user) {
 							if ($mdfield['fieldinfo']['name']=='id') {
 								continue;
 							}
+							$crmEntityTable = CRMEntity::getcrmEntityTableAlias('InventoryDetails');
 							$mdrs = $adb->pquery(
 								'select '.$mdfield['fieldinfo']['name'].',vtiger_inventorydetails.inventorydetailsid from vtiger_inventorydetails
-									inner join vtiger_crmentity on crmid=vtiger_inventorydetails.inventorydetailsid
+									inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_inventorydetails.inventorydetailsid
 									inner join vtiger_inventorydetailscf on vtiger_inventorydetailscf.inventorydetailsid=vtiger_inventorydetails.inventorydetailsid
-									where deleted=0 and related_to=? and lineitem_id=?',
+									where vtiger_crmentity.deleted=0 and related_to=? and lineitem_id=?',
 								array($recordid, $row['lineitem_id'])
 							);
 							if ($mdrs) {

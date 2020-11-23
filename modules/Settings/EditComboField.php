@@ -29,11 +29,7 @@ $image_path=$theme_path.'images/';
 $smarty = new vtigerCRM_Smarty;
 
 //Added to get the strings from language files if present
-if ($moduleName == 'Events') {
-	$temp_module_strings = return_module_language($current_language, 'Calendar');
-} else {
-	$temp_module_strings = return_module_language($current_language, $moduleName);
-}
+$temp_module_strings = return_module_language($current_language, $moduleName);
 
 //To get the Editable Picklist Values
 $query = 'select * from vtiger_'.$tableName

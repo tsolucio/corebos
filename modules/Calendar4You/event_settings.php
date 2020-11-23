@@ -12,14 +12,14 @@ global $current_user,$mod_strings,$app_strings,$theme;
 $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
 require_once 'include/database/PearDatabase.php';
-require_once 'modules/Calendar/CalendarCommon.php';
+require_once 'modules/cbCalendar/CalendarCommon.php';
 require_once 'modules/Calendar4You/Calendar4You.php';
 require_once 'modules/Calendar4You/CalendarUtils.php';
 $t=Date('Ymd');
 $userDetails=getSharingUserName($current_user->id);
 $shareduser_ids = getSharedUserId($current_user->id);
 
-$c_mod_strings = return_module_language($current_language, 'Calendar');
+$c_mod_strings = return_module_language($current_language, 'cbCalendar');
 $users_mod_strings = return_module_language($current_language, 'Users');
 
 $save_google_sync = '0';
@@ -170,7 +170,7 @@ if ($mode != "user" && $id != "invite") {
 			if ($num_field > 0) {
 				while ($row_field = $adb->fetch_array($res_field)) {
 					$fieldid = $row_field['fieldid'];
-					$fieldlabel = getTranslatedString($row_field['fieldlabel'], 'Calendar');
+					$fieldlabel = getTranslatedString($row_field['fieldlabel'], 'cbCalendar');
 
 					$field_data = array();
 					$field_data['fieldid'] = $fieldid;

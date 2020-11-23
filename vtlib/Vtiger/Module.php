@@ -227,10 +227,6 @@ class Vtiger_Module extends Vtiger_ModuleBasic {
 	 * @param String Module name
 	 */
 	public static function getClassInstance($modulename) {
-		if ($modulename == 'Calendar') {
-			$modulename = 'Activity';
-		}
-
 		$instance = false;
 		$filepath = "modules/$modulename/$modulename.php";
 		if (Vtiger_Utils::checkFileAccessForInclusion($filepath, false)) {

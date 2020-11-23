@@ -26,11 +26,7 @@
 <input type="hidden" name="RLparent_id" id="RLparent_id" value="{$ID}">
 <input type="hidden" name="parenttab" id="parenttab" value="{$CATEGORY}">
 <input type="hidden" name="action">
-{if $MODULE eq 'Calendar'}
-	<input type="hidden" name="activity_mode" value="{$ACTIVITY_MODE}">
-	<input type="hidden" name="user_id" value="{$USER_ID}">
-	<input type="hidden" name="record" value="{$ID}">
-{elseif $MODULE eq 'Accounts'}
+{if $MODULE eq 'Accounts'}
 	<input type="hidden" name="account_id" value="{$ID}">
 	{$HIDDEN_PARENTS_LIST}
 {elseif $MODULE eq 'Contacts'}

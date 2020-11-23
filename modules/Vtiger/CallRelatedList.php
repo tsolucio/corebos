@@ -60,8 +60,6 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 
 	$smarty->assign('NAME', $focus->column_fields[$focus->def_detailview_recname]);
 	$smarty->assign('UPDATEINFO', updateInfo($focus->id));
-	$smarty->assign('TODO_PERMISSION', CheckFieldPermission('parent_id', 'Calendar'));
-	$smarty->assign('EVENT_PERMISSION', CheckFieldPermission('parent_id', 'Events'));
 
 	// Module Sequence Numbering
 	$mod_seq_field = getModuleSequenceField($currentModule);

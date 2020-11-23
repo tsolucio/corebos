@@ -85,9 +85,14 @@ class Tracker {
 		global $current_user;
 
 		//$query = "SELECT * from $this->table_name WHERE user_id='$user_id' ORDER BY id DESC";
+		$crmTable = 'vtiger_crmentity';
+		if ($module_name != '') {
+			$mod = CRMEntity::getInstance($module_name);
+			$crmTable = $mod->crmentityTable;
+		}
 		$query = "SELECT *
 			from {$this->table_name}
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_tracker.item_id WHERE user_id=? and vtiger_crmentity.deleted=0 ORDER BY id DESC";
+			inner join {$crmTable} as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_tracker.item_id WHERE user_id=? and vtiger_crmentity.deleted=0 ORDER BY id DESC";
 		$result = $this->db->pquery($query, array($user_id), true);
 		$list = array();
 		while ($row = $this->db->fetchByAssoc($result, -1, false)) {

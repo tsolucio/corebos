@@ -9,6 +9,7 @@
 ********************************************************************************/
 require_once 'include/database/PearDatabase.php';
 require_once 'include/utils/MergeUtils.php';
+require_once 'data/CRMEntity.php';
 global $app_strings, $default_charset;
 
 $randomfilename = 'vt_' . str_replace(array('.',' '), '', microtime());
@@ -142,9 +143,10 @@ $csvheader = implode(',', $field_label);
 
 if (count($querycolumns) > 0) {
 	$selectcolumns = implode(',', $querycolumns);
-
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
+	$crmEntityTable1 = CRMEntity::getcrmEntityTableAlias('Accounts', true);
 	$query = "select $selectcolumns from vtiger_contactdetails
-		inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
+		inner join $crmEntityTable on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
 		inner join vtiger_contactaddress on vtiger_contactdetails.contactid = vtiger_contactaddress.contactaddressid
 		inner join vtiger_contactsubdetails on vtiger_contactdetails.contactid = vtiger_contactsubdetails.contactsubscriptionid
 		inner join vtiger_contactscf on vtiger_contactdetails.contactid = vtiger_contactscf.contactid
@@ -154,7 +156,7 @@ if (count($querycolumns) > 0) {
 		left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
 		LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 		left join vtiger_account on vtiger_account.accountid = vtiger_contactdetails.accountid
-		left join vtiger_crmentity as crmentityAccounts on crmentityAccounts.crmid=vtiger_account.accountid
+		left join $crmEntityTable1 as crmentityAccounts on crmentityAccounts.crmid=vtiger_account.accountid
 		left join vtiger_accountbillads on vtiger_account.accountid=vtiger_accountbillads.accountaddressid
 		left join vtiger_accountshipads on vtiger_account.accountid=vtiger_accountshipads.accountaddressid
 		left join vtiger_accountscf on vtiger_account.accountid = vtiger_accountscf.accountid

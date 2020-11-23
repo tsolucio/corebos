@@ -7,6 +7,8 @@
  * All Rights Reserved.
  ********************************************************************************/
 include_once 'modules/Reports/ReportUtils.php';
+require_once 'data/CRMEntity.php';
+include_once 'modules/cbCalendar/CalendarCommon.php';
 
 function getaddITSEventPopupTime($starttime, $endtime, $format) {
 	if (empty($format)) {
@@ -82,6 +84,14 @@ function get_its_mini_calendar(&$cal) {
 		$minical .= '<th width="12%" scope="col">'.$weekday.'</th>';
 	}
 	$minical .= '</tr></thead><tbody>';
+	$start_date = date('Y-m-01');
+	$end_date = date('Y-m-t');
+	$acts = getEventList($cal, $start_date, $end_date);
+	$events = array();
+	foreach ($acts[0] as $act) {
+		list($d, $t) = explode(' ', $act['starttime']);
+		$events[] = $d;
+	}
 	$event_class = '';
 	$class = '';
 	for ($i = 0; $i < $rows; $i++) {
@@ -96,11 +106,10 @@ function get_its_mini_calendar(&$cal) {
 				$dy = substr('0' . $cal['slice']->start_time->day, -2);
 				$minical .= "<td scope='row' style='text-align:center'><a href='javascript:void(0);' onclick='return changeCalendarWeekDate(\"".$cal['slice']->start_time->year.'","'.$mt.'","'.$dy."\");'>"
 					.$cal['slice']->start_time->week.'</td>';
-				//index.php?module=Calendar&action=index&view=week".$cal['slice']->start_time->get_date_str()."&parenttab=".$category
 			}
 
 			//To differentiate day having events from other days
-			if (count($cal['slice']->activities)!=0 && ($cal['slice']->start_time->get_formatted_date()==$cal['slice']->activities[0]->start_time->get_formatted_date())) {
+			if (count($acts)>0 && (in_array($cal['slice']->start_time->get_formatted_date(), $events))) {
 				$event_class = 'class="eventDay"';
 			} else {
 				$event_class = '';
@@ -118,7 +127,6 @@ function get_its_mini_calendar(&$cal) {
 				$mt = substr('0' . $cal['slice']->start_time->month, -2);
 				$dy = substr('0' . $cal['slice']->start_time->day, -2);
 				$minical .= "<a href='javascript:void(0);' onClick='return changeCalendarDayDate(\"".$cal['slice']->start_time->year.'","'.$mt.'","'.$dy."\");'>";
-				//$minical .= "<a href='index.php?module=Calendar&action=index&view=".$cal['slice']->getView()."".$cal['slice']->start_time->get_date_str()."&parenttab=".$category."'>BBBBBB";
 				$minical .= $cal['slice']->start_time->get_Date()."</a></a>";
 			} else {
 				$minical .= "<td style='text-align:center'></td>";
@@ -164,7 +172,7 @@ function getActTypeForCalendar($activitytypeid, $translate = true) {
 	}
 	$value = html_entity_decode($value, ENT_QUOTES, $default_charset);
 	if ($translate) {
-		return getTranslatedString($value, 'Calendar');
+		return getTranslatedString($value, 'cbCalendar');
 	} else {
 		return $value;
 	}
@@ -282,6 +290,7 @@ function NOPermissionDiv() {
 function getCalendar4YouListQuery($userid, $invites, $where = '', $type = '1') {
 	global $log, $adb;
 	$log->debug('> getCalendar4YouListQuery '.$userid.','.$where);
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Calendar4You');
 	//$tab_id = getTabid('Calendar4You');
 	//$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' =>'vtiger_users.last_name'), 'Users');
 
@@ -292,7 +301,7 @@ function getCalendar4YouListQuery($userid, $invites, $where = '', $type = '1') {
 	LEFT JOIN vtiger_activitycf ON vtiger_activitycf.activityid = vtiger_activity.activityid
 	LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid = vtiger_activity.cto_id
 	LEFT OUTER JOIN vtiger_activity_reminder ON vtiger_activity_reminder.activity_id = vtiger_activity.activityid
-	LEFT JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_activity.activityid
+	LEFT JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_activity.activityid
 	LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
 	LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 	LEFT JOIN vtiger_users vtiger_users2 ON vtiger_crmentity.modifiedby = vtiger_users2.id
@@ -325,7 +334,7 @@ function getCalendar4YouListQuery($userid, $invites, $where = '', $type = '1') {
 
 	$query.=" WHERE vtiger_crmentity.deleted = 0 AND activitytype != 'Emails' " . $where;
 
-	$query = listQueryNonAdminChange($query, 'Calendar');
+	$query = listQueryNonAdminChange($query, 'cbCalendar');
 
 	$log->debug('< getListQuery');
 	return $query;
@@ -549,7 +558,7 @@ function getITSActFieldCombo($fieldname, $tablename, $from_module = '', $follow_
 		}
 		$previousValue = $value;
 		$value = html_entity_decode($value, ENT_QUOTES, $default_charset);
-		$label = getTranslatedString($value, 'Calendar');
+		$label = getTranslatedString($value, 'cbCalendar');
 		if ($value == $def) {
 			$selected = ' selected';
 		} else {
@@ -619,7 +628,7 @@ function getAllModulesWithDateFields() {
 			$params = array($profileList);
 		}
 	}
-	$sqlmods .= " and vtiger_tab.name not in ('cbCalendar','Calendar')";
+	$sqlmods .= " and vtiger_tab.name != 'cbCalendar'";
 	$rsmwd = $adb->pquery($sqlmods, $params);
 	$modswithdates = array();
 	while ($mod = $adb->fetch_array($rsmwd)) {
@@ -670,7 +679,7 @@ function getAllModulesWithDateTimeFields() {
 			$params = array($profileList);
 		}
 	}
-	$sqlmods .= " and vtiger_tab.name not in ('cbCalendar','Calendar','Events')";
+	$sqlmods .= " and vtiger_tab.name != 'cbCalendar'";
 	$rsmwd = $adb->pquery($sqlmods, $params);
 	$modswithdt = array();
 	while ($mod = $adb->fetch_array($rsmwd)) {
@@ -734,12 +743,13 @@ function getModuleCalendarFields($module) {
 		$dtflds = getDateFieldsOfModule($tid);
 		if (count($dtflds)>0) {
 			$tmflds = getTimeFieldsOfModule($tid);
+			$efields = getEntityFieldNames($module);
 			$Module_StartEnd_Fields = array(
 				'start'   => $dtflds[0],
 				'end'     => isset($dtflds[1]) ? $dtflds[1] : '',
 				'stime'   => isset($tmflds[0]) ? $tmflds[0] : '',
 				'etime'   => isset($tmflds[1]) ? $tmflds[1] : '',
-				'subject' => '',
+				'subject' => $efields['fieldname'],
 				'color' => '',
 			);
 		} else {

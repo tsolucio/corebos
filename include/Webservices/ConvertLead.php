@@ -87,8 +87,9 @@ function vtws_convertlead($entityvalues, $user) {
 
 			$create = true;
 			if ($entityvalue['name'] == 'Accounts' && empty($entityvalue['forcecreate'])) {
+				$crmEntityTable = CRMEntity::getcrmEntityTableAlias($entityvalue['name']);
 				$sql = 'SELECT vtiger_account.accountid
-					FROM vtiger_account, vtiger_crmentity
+					FROM vtiger_account, '.$crmEntityTable.'
 					WHERE vtiger_crmentity.crmid=vtiger_account.accountid AND vtiger_account.accountname=? AND vtiger_crmentity.deleted=0';
 				$result = $adb->pquery($sql, array($entityvalue['accountname']));
 				if ($adb->num_rows($result) > 0) {
@@ -273,8 +274,9 @@ function vtws_updateConvertLeadStatus($entityIds, $leadId, $user) {
 		$adb->pquery('DELETE FROM vtiger_tracker WHERE item_id=?', array($leadIdComponents[1]));
 
 		//update the modifiedtime and modified by information for the record
+		$mod = CRMEntity::getInstance('Leads');
 		$leadModifiedTime = $adb->formatDate(date('Y-m-d H:i:s'), true);
-		$adb->pquery('UPDATE vtiger_crmentity SET modifiedtime=?, modifiedby=? WHERE crmid=?', array($leadModifiedTime, $user->id, $leadIdComponents[1]));
+		$adb->pquery('UPDATE '.$mod->crmentityTable.' SET modifiedtime=?, modifiedby=? WHERE crmid=?', array($leadModifiedTime, $user->id, $leadIdComponents[1]));
 	}
 	$moduleArray = array('Accounts','Contacts','Potentials');
 	foreach ($moduleArray as $module) {

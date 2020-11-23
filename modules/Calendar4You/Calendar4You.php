@@ -7,6 +7,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
+require_once 'data/CRMEntity.php';
 class Calendar4You extends CRMEntity {
 	private $basicModules;
 
@@ -27,13 +28,10 @@ class Calendar4You extends CRMEntity {
 	private $modulename = 'Calendar4You';
 	private $service='GoogleCalendar';
 
-	public $db;
 	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-event', 'class' => 'slds-icon', 'icon'=>'event');
 
 	// constructor of Calendar4You class
 	public function __construct() {
-		$this->db = PearDatabase::getInstance();
-
 		// array of modules that are allowed for basic version type
 		$this->basicModules = array('20', '21', '22', '23');
 		// array of action names used in profiles permissions
@@ -50,20 +48,21 @@ class Calendar4You extends CRMEntity {
 	 * Function to remove module tables when uninstalling module
 	 */
 	private function dropModuleTables() {
-		$this->db->query('DROP TABLE IF EXISTS its4you_calendar4you_colors');
-		$this->db->query('DROP TABLE IF EXISTS its4you_calendar4you_event_fields');
-		$this->db->query('DROP TABLE IF EXISTS its4you_calendar4you_settings');
-		$this->db->query('DROP TABLE IF EXISTS its4you_calendar4you_view');
-		$this->db->query('DROP TABLE IF EXISTS its4you_googlesync4you_access');
-		$this->db->query('DROP TABLE IF EXISTS its4you_googlesync4you_calendar');
-		$this->db->query('DROP TABLE IF EXISTS its4you_googlesync4you_dis');
-		$this->db->query('DROP TABLE IF EXISTS its4you_googlesync4you_events');
+		global $adb;
+		$adb->query('DROP TABLE IF EXISTS its4you_calendar4you_colors');
+		$adb->query('DROP TABLE IF EXISTS its4you_calendar4you_event_fields');
+		$adb->query('DROP TABLE IF EXISTS its4you_calendar4you_settings');
+		$adb->query('DROP TABLE IF EXISTS its4you_calendar4you_view');
+		$adb->query('DROP TABLE IF EXISTS its4you_googlesync4you_access');
+		$adb->query('DROP TABLE IF EXISTS its4you_googlesync4you_calendar');
+		$adb->query('DROP TABLE IF EXISTS its4you_googlesync4you_dis');
+		$adb->query('DROP TABLE IF EXISTS its4you_googlesync4you_events');
 		if (empty($this->tabid)) {
 			$this->tabid = getTabid('Calendar4You');
 		}
-		$this->db->pquery('DELETE FROM vtiger_org_share_action2tab WHERE tabid = ?', array($this->tabid));
-		$this->db->pquery('DELETE FROM vtiger_def_org_share WHERE tabid = ?', array($this->tabid));
-		$this->db->query("DELETE FROM vtiger_cron_task WHERE name = 'Calendar4You - GoogleSync'");
+		$adb->pquery('DELETE FROM vtiger_org_share_action2tab WHERE tabid = ?', array($this->tabid));
+		$adb->pquery('DELETE FROM vtiger_def_org_share WHERE tabid = ?', array($this->tabid));
+		$adb->query("DELETE FROM vtiger_cron_task WHERE name = 'Calendar4You - GoogleSync'");
 	}
 
 	public function GetProfilesActions() {
@@ -71,15 +70,16 @@ class Calendar4You extends CRMEntity {
 	}
 
 	public function setgoogleaccessparams($userid) {
-		$conf=$this->db->query("select * from its4you_googlesync4you_access where userid=$userid and service='$this->service'");
-		$admin=$this->db->query("select * from its4you_googlesync4you_access where userid=1 and service='$this->service'");
-		if ($this->db->num_rows($conf)==0 && $this->db->num_rows($admin)>0) {
-			$google_login=$this->db->query_result($admin, 0, 'google_login');
-			$google_apikey=$this->db->query_result($admin, 0, 'google_apikey');
-			$google_keyfile=$this->db->query_result($admin, 0, 'google_keyfile');
-			$google_clientid=$this->db->query_result($admin, 0, 'google_clientid');
-			$google_password=$this->db->query_result($admin, 0, 'google_password');
-			$this->db->pquery(
+		global $adb;
+		$conf=$adb->query("select * from its4you_googlesync4you_access where userid=$userid and service='$this->service'");
+		$admin=$adb->query("select * from its4you_googlesync4you_access where userid=1 and service='$this->service'");
+		if ($adb->num_rows($conf)==0 && $adb->num_rows($admin)>0) {
+			$google_login=$adb->query_result($admin, 0, 'google_login');
+			$google_apikey=$adb->query_result($admin, 0, 'google_apikey');
+			$google_keyfile=$adb->query_result($admin, 0, 'google_keyfile');
+			$google_clientid=$adb->query_result($admin, 0, 'google_clientid');
+			$google_password=$adb->query_result($admin, 0, 'google_password');
+			$adb->pquery(
 				'INSERT INTO its4you_googlesync4you_access
 					(userid,google_login,google_password,google_apikey,google_keyfile,google_clientid,googleinsert,service) VALUES (?,?,?,?,?,?,?,?)',
 				array($userid,$google_login,$google_password,$google_apikey,$google_keyfile,$google_clientid,'1',$this->service)
@@ -135,7 +135,7 @@ class Calendar4You extends CRMEntity {
 	//PUBLIC METHODS SECTION
 	//ListView data
 	public function GetCalendarUsersData($orderby = 'templateid', $dir = 'asc') {
-		global $current_user;
+		global $current_user, $adb;
 		include_once 'modules/Calendar4You/class/color_converter.class.php';
 		include_once 'modules/Calendar4You/class/color_harmony.class.php';
 
@@ -182,17 +182,17 @@ class Calendar4You extends CRMEntity {
 				ORDER BY $sortusersby";
 			$params = array($current_user->id, $this->privileges->getParentRoleSequence().'::%', $current_user->id, $this->tabid, $current_user->id);
 		}
-		$result = $this->db->pquery($query, $params);
+		$result = $adb->pquery($query, $params);
 
 		$return_data = array();
-		$num_rows = $this->db->num_rows($result);
+		$num_rows = $adb->num_rows($result);
 
 		for ($i=0; $i < $num_rows; $i++) {
-			$userid = $this->db->query_result($result, $i, 'id');
-			$user_name = $this->db->query_result($result, $i, 'user_name');
-			$first_name = $this->db->query_result($result, $i, 'first_name');
-			$last_name = $this->db->query_result($result, $i, 'last_name');
-			$status = $this->db->query_result($result, $i, 'status');
+			$userid = $adb->query_result($result, $i, 'id');
+			$user_name = $adb->query_result($result, $i, 'user_name');
+			$first_name = $adb->query_result($result, $i, 'first_name');
+			$last_name = $adb->query_result($result, $i, 'last_name');
+			$status = $adb->query_result($result, $i, 'status');
 
 			if ($this->CheckUserPermissions($userid) === false) {
 				continue;
@@ -300,25 +300,12 @@ class Calendar4You extends CRMEntity {
 
 	public function actualizeDocRel() {
 		global $adb;
-		$e_tabid = getTabid('Events');
 		$c_tabid = getTabid('Calendar4You');
 		$d_tabid = getTabid('Documents');
 
 		$s_sql = 'SELECT relation_id FROM vtiger_relatedlists WHERE tabid = ? AND related_tabid = ? AND name = ? AND label = ?';
 		$d_sql = 'DELETE FROM vtiger_relatedlists WHERE tabid = ? AND related_tabid = ? AND name = ? AND label = ?';
 		$i_sql = 'INSERT INTO vtiger_relatedlists (relation_id,tabid,related_tabid,name,sequence,label,presence,actions) VALUES (?,?,?,?,?,?,?,?)';
-
-		$result1 = $adb->pquery($s_sql, array($e_tabid,$d_tabid,'get_attachments','Documents'));
-		$num_rows1 = $adb->num_rows($result1);
-
-		if ($num_rows1 != 1) {
-			if ($num_rows1 > 1) {
-				$adb->pquery($d_sql, array($e_tabid,$d_tabid,'get_attachments','Documents'));
-			}
-
-			$relation_id1 = $adb->getUniqueID('vtiger_relatedlists');
-			$adb->pquery($i_sql, array($relation_id1,$e_tabid,$d_tabid,'get_attachments','1','Documents','0','ADD,SELECT'));
-		}
 
 		$result2 = $adb->pquery($s_sql, array($c_tabid,$d_tabid,'get_attachments','Documents'));
 		$num_rows2 = $adb->num_rows($result2);
@@ -558,7 +545,7 @@ class Calendar4You extends CRMEntity {
 			$value = html_entity_decode($value, ENT_QUOTES, $default_charset);
 			$checked = true;
 			$valueid = $adb->query_result($Res, $i, 'picklist_valueid');
-			$label = getTranslatedString($value, 'Calendar');
+			$label = getTranslatedString($value, 'cbCalendar');
 			if ($type != '' || $load_ch) {
 				if (!empty($this->View[$type][$valueid])) {
 					$checked = false;
@@ -584,8 +571,6 @@ class Calendar4You extends CRMEntity {
 		require_once "modules/$related_module/$related_module.php";
 		$other = new $related_module();
 
-		$parenttab = getParentTab();
-
 		$returnset = '&return_module='.$this_module.'&return_action=DetailView&activity_mode=Events&return_id='.$id;
 
 		$search_string = '';
@@ -598,18 +583,19 @@ class Calendar4You extends CRMEntity {
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module)
 					."' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
-					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab$search_string','test',"
+					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id$search_string','test',"
 					."cbPopupWindowSettings);\" value='".getTranslatedString('LBL_SELECT').' '
 					.getTranslatedString($related_module, $related_module)."'>&nbsp;";
 			}
 		}
 
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
 		$query = 'select vtiger_users.user_name,vtiger_contactdetails.accountid,vtiger_contactdetails.contactid, vtiger_contactdetails.firstname,
 				vtiger_contactdetails.lastname, vtiger_contactdetails.department, vtiger_contactdetails.title, vtiger_contactdetails.email,
 				vtiger_contactdetails.phone, vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_crmentity.modifiedtime
 			from vtiger_contactdetails
 			inner join vtiger_cntactivityrel on vtiger_cntactivityrel.contactid=vtiger_contactdetails.contactid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
 			left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
 			left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid
 			where vtiger_cntactivityrel.activityid='.$id.' and vtiger_crmentity.deleted=0';
@@ -632,12 +618,8 @@ class Calendar4You extends CRMEntity {
 		$log->debug('> get_users '.$id);
 
 		$focus = new Users();
-
-		$button = '<input title="Change" accessKey="" tabindex="2" type="button" class="crmbutton small edit" value="'.getTranslatedString('LBL_SELECT_USER_BUTTON_LABEL')
-			.'" name="button" onclick=\'return window.open("index.php?module=Users&return_module=Calendar&return_action={$return_modname}&activity_mode=Events'
-			.'&action=Popup&popuptype=detailview&form=EditView&form_submit=true&select=enable&return_id='.$id.'&recordid='.$id.'", "test", cbPopupWindowSettings)\';>';
-
-		$returnset = '&return_module=Calendar&return_action=CallRelatedList&return_id='.$id;
+		$button = '';
+		$returnset = '&return_module=cbCalendar&return_action=CallRelatedList&return_id='.$id;
 
 		$query = 'SELECT vtiger_users.id, vtiger_users.first_name,vtiger_users.last_name, vtiger_users.user_name, vtiger_users.email1, vtiger_users.email2,
 				vtiger_users.status, vtiger_users.is_admin, vtiger_user2role.roleid, vtiger_users.secondaryemail, vtiger_users.phone_home, vtiger_users.phone_work,
@@ -649,7 +631,7 @@ class Calendar4You extends CRMEntity {
 			inner join vtiger_user2role on vtiger_user2role.userid=vtiger_users.id
 			where vtiger_activity.activityid='.$id;
 
-		$return_data = GetRelatedList('Calendar', 'Users', $focus, $query, $button, $returnset);
+		$return_data = GetRelatedList('cbCalendar', 'Users', $focus, $query, $button, $returnset);
 
 		if ($return_data == null) {
 			$return_data = array();

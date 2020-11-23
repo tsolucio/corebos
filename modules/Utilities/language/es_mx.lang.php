@@ -15,6 +15,8 @@
  ********************************************************************************/
 
 $mod_strings = array(
+	'Utilities' => 'Utilidades',
+	'SINGLE_Utilities' => 'Utilidad',
 	// Translations for JS (please use the prefix JSLBL in key)
 	'JSLBL_Saving_And_Verifying' => 'Guardando y Verificando',
 	'JSLBL_PASSWORD_CANNOT_BE_EMPTY'=>'La contraseña no puede estar vacía',
@@ -104,6 +106,10 @@ $mod_strings = array(
 	'sel_fields_es' => 'Selecciona los Campos para el Mapeado de Elasticsearch',
 	'Analyzed' => 'Analizado',
 	'Missing_GlobalVar' => 'Falta la variable global de IP ElasticSearch',
+	'Denormalization Activation' => 'Unificar Módulo',
+	'Denormalize_Desc' => 'Unificar Módulo con muchos registros',
+	'SelectDenormalize' => 'Selecciona Módulo a unificar',
+	'denormalize response' => 'Resultado de la Unificación',
 	'OneSignal Activation' => 'Activación OneSignal',
 	'OneSignal Desc' => 'Enviar notificaciones utilizando OneSignal',
 	'onesignal_appid' => 'App ID',

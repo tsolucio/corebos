@@ -66,16 +66,14 @@ function gotoUpdateListPrice(id,pbid,proid){
 					<table border=0 cellspacing=0 cellpadding=3 width=100% class="small">
 						<tr>
 							{if $OP_MODE eq 'edit_view'}
-                                    {assign var="action" value="EventEditView"}
-	                        {else}
-            		                {assign var="action" value="EventDetailView"}
-                            {/if}
+								{assign var="action" value="EditView"}
+							{else}
+								{assign var="action" value="DetailView"}
+							{/if}
 							<td class="dvtTabCache" style="width:10px" nowrap>&nbsp;</td>
-							{if $TABTYPE eq 'Calendar'}
-                            	<td class="dvtUnSelectedCell" align=center nowrap><a href="index.php?action={$action}&module={$MODULE}&record={$ID}&activity_mode={$ACTIVITY_MODE}&parenttab={$CATEGORY}">{$SINGLE_MOD} {$APP.LBL_INFORMATION}</a></td>
-                            {else}
-	                            <td class="dvtUnSelectedCell" align=center nowrap><a href="index.php?action={$action}&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$SINGLE_MOD} {$APP.LBL_INFORMATION}</a></td>
-            		        {/if}
+							<td class="dvtUnSelectedCell" align=center nowrap>
+								<a href="index.php?action={$action}&module={$MODULE}&record={$ID}">{$SINGLE_MOD} {$APP.LBL_INFORMATION}</a>
+							</td>
 							<td class="dvtTabCache" style="width:10px">&nbsp;</td>
 							<td class="dvtSelectedCell" align=center nowrap>{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</td>
 							<td class="dvtTabCache" style="width:100%">&nbsp;</td>
@@ -112,16 +110,14 @@ function gotoUpdateListPrice(id,pbid,proid){
 					<table border=0 cellspacing=0 cellpadding=3 width=100% class="small">
 						<tr>
 							{if $OP_MODE eq 'edit_view'}
-		                                                {assign var="action" value="EventEditView"}
-                		                        {else}
-                                		                {assign var="action" value="EventDetailView"}
-		                                        {/if}
+								{assign var="action" value="EditView"}
+							{else}
+								{assign var="action" value="DetailView"}
+							{/if}
 							<td class="dvtTabCacheBottom" style="width:10px" nowrap>&nbsp;</td>
-							{if $MODULE eq 'Calendar'}
-                                                	<td class="dvtUnSelectedCell" align=center nowrap><a href="index.php?action={$action}&module={$MODULE}&record={$ID}&activity_mode={$ACTIVITY_MODE}&parenttab={$CATEGORY}">{$SINGLE_MOD} {$APP.LBL_INFORMATION}</a></td>
-		                                        {else}
-                		                        <td class="dvtUnSelectedCell" align=center nowrap><a href="index.php?action={$action}&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$SINGLE_MOD} {$APP.LBL_INFORMATION}</a></td>
-                                		        {/if}
+							<td class="dvtUnSelectedCell" align=center nowrap>
+								<a href="index.php?action={$action}&module={$MODULE}&record={$ID}">{$SINGLE_MOD} {$APP.LBL_INFORMATION}</a>
+							</td>
 							<td class="dvtTabCacheBottom" style="width:10px">&nbsp;</td>
 							<td class="dvtSelectedCellBottom" align=center nowrap>{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</td>
 							<td class="dvtTabCacheBottom" style="width:100%">&nbsp;</td>

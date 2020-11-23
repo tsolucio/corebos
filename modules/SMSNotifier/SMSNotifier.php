@@ -56,7 +56,7 @@ class SMSNotifier extends SMSNotifierBase {
 				relateEntities($focus, $moduleName, $focus->id, $linktoModule, $linktoids);
 			} else {
 				// Link modulename not provided (linktoids can belong to mix of module so determine proper modulename)
-				$linkidsetypes = $adb->pquery('SELECT setype,crmid FROM vtiger_crmentity WHERE crmid IN ('.generateQuestionMarks($linktoids) . ')', array($linktoids));
+				$linkidsetypes = $adb->pquery('SELECT setype,crmid FROM vtiger_crmobject WHERE crmid IN ('.generateQuestionMarks($linktoids) . ')', array($linktoids));
 				if ($linkidsetypes && $adb->num_rows($linkidsetypes)) {
 					while ($linkidsetypesrow = $adb->fetch_array($linkidsetypes)) {
 						relateEntities($focus, $moduleName, $focus->id, $linkidsetypesrow['setype'], $linkidsetypesrow['crmid']);
@@ -77,12 +77,12 @@ class SMSNotifier extends SMSNotifierBase {
 		// Pick the distinct modulenames based on related records.
 		$result = $adb->pquery(
 			'SELECT distinct setype
-			FROM vtiger_crmentity
+			FROM vtiger_crmobject
 			WHERE crmid in (
 				SELECT relcrmid
 				FROM vtiger_crmentityrel
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_crmentityrel.crmid
-				WHERE vtiger_crmentity.crmid = ? AND vtiger_crmentity.deleted=0)',
+				INNER JOIN vtiger_crmobject ON vtiger_crmobject.crmid=vtiger_crmentityrel.crmid
+				WHERE vtiger_crmobject.crmid=? AND vtiger_crmobject.deleted=0)',
 			array($this->id)
 		);
 

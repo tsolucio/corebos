@@ -55,19 +55,20 @@ if (!empty($moduleid) && $_REQUEST['_op']=='setconfigelasticsearch') {
 	$isFormActive = ((empty($_REQUEST['rvactive']) || $_REQUEST['rvactive']!='on') ? '0' : '1');
 
 	//check for global variable ip_elastic_server
-	$recexists = $adb->pquery("select globalvariableid,module_list
-            from vtiger_globalvariable
-            inner join vtiger_crmentity on crmid=globalvariableid
-            where deleted=0 and gvname=?", array('ip_elastic_server'));
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('GlobalVariable');
+	$recexists = $adb->pquery(
+		'select globalvariableid,module_list from vtiger_globalvariable inner join '.$crmEntityTable.' on crmid=globalvariableid where deleted=0 and gvname=?',
+		array('ip_elastic_server')
+	);
 	$count = $adb->num_rows($recexists);
 	$module_list = explode(' |##| ', $adb->query_result($recexists, 0, 1));
 	$gvid = ($count>0 ? $adb->query_result($recexists, 0, 0) : '');
 
 	//check for global variable ip_elastic_indexprefix
-	$recexists2 = $adb->pquery("select globalvariableid,module_list
-            from vtiger_globalvariable
-            inner join vtiger_crmentity on crmid=globalvariableid
-            where deleted=0 and gvname=?", array('ip_elastic_indexprefix'));
+	$recexists2 = $adb->pquery(
+		'select globalvariableid,module_list from vtiger_globalvariable inner join '.$crmEntityTable.' on crmid=globalvariableid where deleted=0 and gvname=?',
+		array('ip_elastic_indexprefix')
+	);
 	$count2 = $adb->num_rows($recexists2);
 	$module_list2 = explode(' |##| ', $adb->query_result($recexists2, 0, 1));
 	$gvid2 = ($count2>0 ? $adb->query_result($recexists2, 0, 0) : '');

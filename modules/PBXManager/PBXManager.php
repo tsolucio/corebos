@@ -14,7 +14,6 @@ class PBXManager extends CRMEntity {
 	public $table_name = 'vtiger_pbxmanager';
 	public $table_index= 'pbxmanagerid';
 	public $column_fields = array();
-	public $db;
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = false;
 	public $HasDirectImageField = false;
@@ -74,7 +73,6 @@ class PBXManager extends CRMEntity {
 	public function __construct() {
 		global $currentModule;
 		$this->column_fields = getColumnFields($currentModule);
-		$this->db = PearDatabase::getInstance();
 	}
 
 	public function save_module($module) {
@@ -84,62 +82,24 @@ class PBXManager extends CRMEntity {
 	 * Get list view query.
 	 */
 	public function getListQuery($module, $usewhere = '') {
-		$query = "SELECT $this->table_name.*, vtiger_crmentity.*";
+		$query = "SELECT $this->table_name.*".($this->crmentityTable!=$this->table_name ? ', '.$this->crmentityTable.'.*' : '');
 		$query .= " FROM $this->table_name";
-
-		$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index
-					LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
-
+		if ($this->denormalized) {
+			$query .= ' INNER JOIN '.$this->crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
+		} else {
+			$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
+		}
 		// Consider custom table join as well.
 		if (!empty($this->customFieldTable)) {
 			$query .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
 				" = $this->table_name.$this->table_index";
 		}
 		$query .= ' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid ';
+		$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
 
 		$query .= ' WHERE vtiger_crmentity.deleted = 0';
 		$query .= $this->getListViewSecurityParameter($module);
 		return $query;
-	}
-
-	/**
-	 * Apply security restriction (sharing privilege) query part for List view.
-	 */
-	public function getListViewSecurityParameter($module) {
-		global $current_user;
-		$userprivs = $current_user->getPrivileges();
-
-		$sec_query = '';
-		$tabid = getTabid($module);
-
-		if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing($tabid)) {
-			$sec_query .= " AND (vtiger_crmentity.smownerid in($current_user->id) OR vtiger_crmentity.smownerid IN
-				(
-					SELECT vtiger_user2role.userid FROM vtiger_user2role
-					INNER JOIN vtiger_users ON vtiger_users.id=vtiger_user2role.userid
-					INNER JOIN vtiger_role ON vtiger_role.roleid=vtiger_user2role.roleid
-					WHERE vtiger_role.parentrole LIKE '".$userprivs->getParentRoleSequence()."::%'
-				)
-				OR vtiger_crmentity.smownerid IN
-				(
-					SELECT shareduserid FROM vtiger_tmp_read_user_sharing_per
-					WHERE userid=".$current_user->id." AND tabid=".$tabid.'
-				)
-				OR (';
-
-			// Build the query based on the group association of current user.
-			if ($userprivs->hasGroups()) {
-				$sec_query .= ' vtiger_groups.groupid IN ('. implode(',', $userprivs->getGroups()) .') OR ';
-			}
-			$sec_query .= ' vtiger_groups.groupid IN
-				(
-					SELECT vtiger_tmp_read_group_sharing_per.sharedgroupid
-					FROM vtiger_tmp_read_group_sharing_per
-					WHERE userid='.$current_user->id.' and tabid='.$tabid.'
-				)
-			))';
-		}
-		return $sec_query;
 	}
 
 	/**
@@ -157,9 +117,13 @@ class PBXManager extends CRMEntity {
 		$fields_list = getFieldsListFromQuery($sql);
 
 		$query = "SELECT $fields_list, 'vtiger_groups_groupname as Assigned To Group',
-				CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN vtiger_users.user_name ELSE vtiger_groups.groupname END
-				AS user_name FROM vtiger_crmentity INNER JOIN $this->table_name ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
-
+			CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN vtiger_users.user_name ELSE vtiger_groups.groupname END AS user_name
+			FROM $this->table_name ";
+		if ($this->denormalized) {
+			$query.= 'INNER JOIN '.$this->crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
+		} else {
+			$query.= "INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
+		}
 		if (!empty($this->customFieldTable)) {
 			$query.=" INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1]." = $this->table_name.$this->table_index";
 		}

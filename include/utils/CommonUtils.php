@@ -493,10 +493,29 @@ function getTabOwnedBy($module) {
 function getSalesEntityType($crmid) {
 	global $log, $adb;
 	$log->debug('> getSalesEntityType '.$crmid);
-	$result = $adb->pquery('select setype from vtiger_crmentity where crmid=?', array($crmid));
+	$result = $adb->pquery('select setype from vtiger_crmobject where crmid=?', array($crmid));
 	$parent_module = $adb->query_result($result, 0, 'setype');
 	$log->debug('< getSalesEntityType');
 	return $parent_module;
+}
+
+/**
+ * Function to get all denormalized modules
+ * @param string $module - check for a specific module
+ * @return tables
+ */
+function getDenormalizedModules($module = '') {
+	global $log, $adb;
+	$log->debug('> getDenormalizedModules');
+	$where = $module != '' ? "and modulename='$module'" : '';
+	$result = $adb->pquery("select denormtable from vtiger_entityname where isdenormalized=1 $where", array());
+	$tables = array();
+	while ($row = $result->FetchRow()) {
+		$denormtable = $row['denormtable'];
+		array_push($tables, $denormtable);
+	}
+	$log->debug('< getDenormalizedModules');
+	return $tables;
 }
 
 /**
@@ -888,20 +907,6 @@ function getRelatedAccountContact($entityid, $module = '') {
 				$rspot = $adb->pquery('select parent_id from vtiger_cobropago where cobropagoid=?', array($crmid));
 				$acid = $adb->query_result($rspot, 0, 'parent_id');
 				break;
-			case 'Calendar':
-			case 'Events':
-				if ($module=='Accounts') {
-					$rspot = $adb->pquery('select crmid from vtiger_seactivityrel where activityid=?', array($crmid));
-					if ($rspot && $adb->num_rows($rspot)>0) {
-						$acid = $adb->query_result($rspot, 0, 'crmid');
-					}
-				} else {
-					$rspot = $adb->pquery('select contactid from vtiger_cntactivityrel where activityid=?', array($crmid));
-					if ($rspot && $adb->num_rows($rspot)>0) {
-						$acid = $adb->query_result($rspot, 0, 'contactid');
-					}
-				}
-				break;
 			default:  // we look for uitype 10
 				$rsfld = $adb->pquery('SELECT fieldname from vtiger_fieldmodulerel
 					INNER JOIN vtiger_field on vtiger_field.fieldid=vtiger_fieldmodulerel.fieldid
@@ -1089,10 +1094,11 @@ function getTermsandConditions($module = '') {
 	$log->debug('> getTermsandConditions '.$module);
 	$tandc = '';
 	if (vtlib_isModuleActive('cbTermConditions')) {
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbTermConditions');
 		$result = $adb->pquery(
 			'select tandc
 			from vtiger_cbtandc
-			inner join vtiger_crmentity on crmid=cbtandcid
+			inner join '.$crmEntityTable.' on crmid=cbtandcid
 			where deleted=0 and formodule=? and isdefault=?
 			limit 1',
 			array($module,'1')
@@ -1486,9 +1492,10 @@ function updateInfo($id) {
  * @return string "updated <No of Days> day ago <(date when updated)>"
  */
 function updateInfoSinceMessage($id) {
-	global $log, $adb, $app_strings;
+	global $log, $adb, $app_strings, $currentModule;
 	$log->debug('> updateInfoSinceMessage ' . $id);
-	$result = $adb->pquery('SELECT modifiedtime, modifiedby, smcreatorid FROM vtiger_crmentity WHERE crmid=?', array($id));
+	$mod = CRMEntity::getInstance($currentModule);
+	$result = $adb->pquery('SELECT modifiedtime, modifiedby, smcreatorid FROM '.$mod->crmentityTable.' WHERE crmid=?', array($id));
 	$modifiedtime = $adb->query_result($result, 0, 'modifiedtime');
 	$modifiedby_id = $adb->query_result($result, 0, 'modifiedby');
 	if (empty($modifiedby_id)) {
@@ -1887,10 +1894,10 @@ function getQuickCreateModules() {
 	global $log, $adb;
 	$log->debug('> getQuickCreateModules');
 
-	$qc_query = "select distinct vtiger_tab.tablabel,vtiger_tab.name
+	$qc_query = 'select distinct vtiger_tab.tablabel,vtiger_tab.name
 		from vtiger_field
 		inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid 
-		where quickcreate in (0,2) and vtiger_tab.presence != 1 and vtiger_tab.name != 'Calendar' and vtiger_tab.name != 'Events'";
+		where quickcreate in (0,2) and vtiger_tab.presence != 1';
 
 	$result = $adb->pquery($qc_query, array());
 	$noofrows = $adb->num_rows($result);
@@ -2364,10 +2371,9 @@ function getTemplateDetails($templateid, $crmid = null) {
 		$returndata[] = $adb->query_result($result, 0, 'subject');
 		$returndata[] = $adb->query_result($result, 0, 'sendemailfrom');
 	} else { // we look for it in message templates
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Messages');
 		$result = $adb->pquery(
-			'select * from vtiger_msgtemplate
-				inner join vtiger_crmentity on crmid=msgtemplateid
-				where deleted=0 and msgtemplateid=? or reference=?',
+			'select * from vtiger_msgtemplate inner join '.$crmEntityTable.' on crmid=msgtemplateid where deleted=0 and msgtemplateid=? or reference=?',
 			array($templateid, $templateid)
 		);
 		if ($result && $adb->num_rows($result)>0) {
@@ -2457,10 +2463,11 @@ function getMergedDescription($description, $id, $parent_type) {
 		$ct = new VTSimpleTemplate($description, true);
 		$description = $ct->render($entityCache, vtws_getEntityId($parent_type).'x'.$id);
 	}
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCompany');
 	$cmprs = $adb->pquery(
 		'SELECT c.cbcompanyid
 			FROM vtiger_cbcompany c
-			JOIN vtiger_crmentity on vtiger_crmentity.crmid = c.cbcompanyid
+			JOIN '.$crmEntityTable.' on vtiger_crmentity.crmid = c.cbcompanyid
 			WHERE c.defaultcompany=1 and vtiger_crmentity.deleted=0',
 		array()
 	);
@@ -2863,11 +2870,7 @@ function is_emailId($entity_id) {
 
 	$module = getSalesEntityType($entity_id);
 	if ($module == 'Contacts') {
-		$sql = 'select email,secondaryemail
-			from vtiger_contactdetails
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
-			where contactid=?';
-		$result = $adb->pquery($sql, array($entity_id));
+		$result = $adb->pquery('select email,secondaryemail from vtiger_contactdetails where contactid=?', array($entity_id));
 		$email1 = $adb->query_result($result, 0, 'email');
 		$email2 = $adb->query_result($result, 0, 'secondaryemail');
 		if ($email1 != '' || $email2 != '') {
@@ -2876,11 +2879,7 @@ function is_emailId($entity_id) {
 			$check_mailids = 'false';
 		}
 	} elseif ($module == 'Leads') {
-		$sql = 'select email,secondaryemail
-			from vtiger_leaddetails
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_leaddetails.leadid
-			where leadid=?';
-		$result = $adb->pquery($sql, array($entity_id));
+		$result = $adb->pquery('select email,secondaryemail from vtiger_leaddetails where leadid=?', array($entity_id));
 		$email1 = $adb->query_result($result, 0, 'email');
 		$email2 = $adb->query_result($result, 0, 'secondaryemail');
 		if ($email1 != '' || $email2 != '') {
@@ -3121,11 +3120,7 @@ function getEmailTemplateVariables($modules_list = null) {
 
 	foreach ($modules_list as $module) {
 		$allFields = array();
-		if ($module == 'Calendar') {
-			$focus = new Activity();
-		} else {
-			$focus = CRMEntity::getInstance($module);
-		}
+		$focus = CRMEntity::getInstance($module);
 		$tabid = getTabid($module);
 		//many to many relation information field campaignrelstatus(this is the column name of the field) has block set to '0', which should be ignored.
 		$result = $adb->pquery(
@@ -3266,13 +3261,12 @@ function isFileAccessible($filepath) {
 }
 
 /** Function to get the ActivityType for the given entity id
- *  @param entityid : Type Integer
- *  return the activity type for the given id
+ *  @param integer entityid
+ *  @return string the activity type for the given id
  */
 function getActivityType($id) {
 	global $adb;
-	$quer = 'select activitytype from vtiger_activity where activityid=?';
-	$res = $adb->pquery($quer, array($id));
+	$res = $adb->pquery('select activitytype from vtiger_activity where activityid=?', array($id));
 	return $adb->query_result($res, 0, 'activitytype');
 }
 
@@ -3616,7 +3610,7 @@ function getmail_contents_portalUser($request_array, $password, $type = '') {
 function getSearchModulesCommon($filter = array()) {
 	global $adb;
 	// Ignore disabled administrative modules
-	$doNotSearchThese = array('Dashboard','Home','Calendar','Events','Rss','Reports','Portal','Users','ConfigEditor','Import','MailManager','Mobile','ModTracker',
+	$doNotSearchThese = array('Dashboard','Home','Calendar','Rss','Reports','Portal','Users','ConfigEditor','Import','MailManager','Mobile','ModTracker',
 		'PBXManager','VtigerBackup','WSAPP','cbupdater','CronTasks','RecycleBin','Tooltip','Webforms','Calendar4You','GlobalVariable','cbMap','evvtMenu','cbAuditTrail',
 		'cbLoginHistory','cbtranslation','BusinessActions','cbCVManagement');
 	$doNotSearchTheseTabids = array();
@@ -3649,10 +3643,7 @@ function recordIsAssignedToInactiveUser($crmid) {
 		return false;
 	} else { // editing
 		$urs = $adb->pquery(
-			'select vtiger_users.status
-				from vtiger_crmentity
-				inner join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
-				where crmid = ?',
+			'select vtiger_users.status from vtiger_crmobject inner join vtiger_users on vtiger_users.id=vtiger_crmobject.smownerid where crmid = ?',
 			array($crmid)
 		);
 		return ($adb->query_result($urs, 0, 'status')=='Inactive');

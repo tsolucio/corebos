@@ -46,16 +46,6 @@ function add_data_to_relatedlist(entity_id, recordid) {
 	opener.document.location.href='index.php?module=Emails&action=updateRelations&destination_module=Accounts&entityid='+entity_id+'&parentid='+recordid;
 }
 
-function set_return_todo(product_id, product_name) {
-	if (document.getElementById('from_link').value != '') {
-		window.opener.document.QcEditView.task_parent_name.value = product_name;
-		window.opener.document.QcEditView.task_parent_id.value = product_id;
-	} else {
-		window.opener.document.createTodo.task_parent_name.value = product_name;
-		window.opener.document.createTodo.task_parent_id.value = product_id;
-	}
-}
-
 function QuotessetValueFromCapture(recordid, value, target_fieldname) {
 	if (target_fieldname=='tandc') {
 		var url = 'module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getFieldValuesFromRecord&getTheseFields=tandc&getFieldValuesFrom='+recordid;

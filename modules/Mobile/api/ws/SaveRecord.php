@@ -87,7 +87,6 @@ class crmtogo_WS_SaveRecord extends crmtogo_WS_FetchRecord {
 			if (isset($this->recordValues['id'])) {
 				$this->recordValues = vtws_update($this->recordValues, $current_user);
 			} else {
-				// Set right target module name for Calendar/Event record
 				if ($module == 'cbCalendar') {
 					// make sure visibility is not NULL
 					if (empty($this->recordValues['visibility'])) {

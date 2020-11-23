@@ -7,6 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-$_REQUEST['module'] = 'Calendar';
+$_REQUEST['module'] = 'cbCalendar';
 include 'modules/CustomView/index.php';
 ?>

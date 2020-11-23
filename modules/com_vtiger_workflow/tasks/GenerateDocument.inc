@@ -75,8 +75,17 @@ class GenerateDocument extends VTTask {
 			}
 			$docid = OpenDocument::saveAsDocument($record, $module, $format, $mergeTemplateName, ($format=='pdf' ? $fullpdfname : $fullfilename), $name);
 			if ($this->updateOnChange) {
+				$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents', true);
 				$adb->pquery(
-					'update vtiger_crmentity set vtiger_crmentity.deleted=1 where vtiger_crmentity.crmid in (
+					'update '.$crmEntityTable.' set '.$crmEntityTable.'.deleted=1 where '.$crmEntityTable.'.crmid in (
+						SELECT vtiger_senotesrel.notesid
+						FROM vtiger_senotesrel
+						INNER JOIN vtiger_notes on vtiger_notes.notesid=vtiger_senotesrel.notesid
+						WHERE vtiger_notes.gendoctplid=? and vtiger_senotesrel.crmid=?)',
+					array($fileid, $record)
+				);
+				$adb->pquery(
+					'update vtiger_crmobject set vtiger_crmobject.deleted=1 where vtiger_crmobject.crmid in (
 						SELECT vtiger_senotesrel.notesid
 						FROM vtiger_senotesrel
 						INNER JOIN vtiger_notes on vtiger_notes.notesid=vtiger_senotesrel.notesid

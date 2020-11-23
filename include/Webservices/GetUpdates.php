@@ -80,11 +80,8 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 		$entityDefaultBaseTables = $moduleMeta->getEntityDefaultTableList();
 		//since there will be only one base table for all entities
 		$baseCRMTable = $entityDefaultBaseTables[0];
-		if ($elementType=='Calendar') {
-			$baseCRMTable = getSyncQueryBaseTable($elementType);
-		}
 	} else {
-		$baseCRMTable = ' vtiger_crmentity ';
+		$baseCRMTable = ' vtiger_crmobject ';
 	}
 
 	//modifiedtime - next token
@@ -230,8 +227,9 @@ function vtws_isRecordDeleted($recordDetails, $deleteColumnDetails, $deletedValu
 }
 
 function vtws_getEmailFromClause() {
-	$q = 'FROM vtiger_activity
-		INNER JOIN vtiger_crmentity ON vtiger_activity.activityid = vtiger_crmentity.crmid
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCalendar');
+	return 'FROM vtiger_activity
+		INNER JOIN '.$crmEntityTable.' ON vtiger_activity.activityid = vtiger_crmentity.crmid
 		LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id
 		LEFT JOIN vtiger_groups ON vtiger_crmentity.smownerid = vtiger_groups.groupid
 		LEFT JOIN vtiger_seattachmentsrel ON vtiger_activity.activityid = vtiger_seattachmentsrel.crmid
@@ -240,14 +238,5 @@ function vtws_getEmailFromClause() {
 		INNER JOIN vtiger_emaildetails ON vtiger_activity.activityid = vtiger_emaildetails.emailid
 		LEFT JOIN vtiger_users vtiger_users2 ON vtiger_emaildetails.idlists = vtiger_users2.id
 		LEFT JOIN vtiger_groups vtiger_groups2 ON vtiger_emaildetails.idlists = vtiger_groups2.groupid';
-	return $q;
-}
-
-function getSyncQueryBaseTable($elementType) {
-	if ($elementType!='Calendar') {
-		return 'vtiger_crmentity';
-	} else {
-		return "vtiger_crmentity INNER JOIN vtiger_activity ON (vtiger_crmentity.crmid = vtiger_activity.activityid and vtiger_activity.activitytype ='Task')";
-	}
 }
 ?>

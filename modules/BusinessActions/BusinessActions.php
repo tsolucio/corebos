@@ -13,8 +13,6 @@ include_once 'vtlib/Vtiger/Utils/StringTemplate.php';
 include_once 'vtlib/Vtiger/LinkData.php';
 
 class BusinessActions extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_businessactions';
 	public $table_index = 'businessactionsid';
 	public $column_fields = array();
@@ -212,7 +210,7 @@ class BusinessActions extends CRMEntity {
 				$type_sql = $adb->convert2Sql(' AND elementtype_action = ?', array($type));
 			}
 		}
-
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
 		$query = 'SELECT businessactionsid,
 				elementtype_action,
 				linklabel,
@@ -225,7 +223,7 @@ class BusinessActions extends CRMEntity {
 				onlyonmymodule,
 				brmap,
 				mandatory
-			FROM vtiger_businessactions INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_businessactions.businessactionsid
+			FROM vtiger_businessactions INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_businessactions.businessactionsid
 			WHERE vtiger_crmentity.deleted = 0  AND active = 1 '.$module_sql.$type_sql;
 
 		$orderby = ' ORDER BY elementtype_action, sequence';
@@ -336,10 +334,10 @@ class BusinessActions extends CRMEntity {
 	public static function addLink($tabid, $type, $label, $url, $iconpath = '', $sequence = 0, $handlerInfo = null, $onlyonmymodule = false, $brmap = 0) {
 		global $adb;
 		$module_name = getTabModuleName($tabid);
-
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
 		$linkcheck = $adb->pquery(
 			'SELECT businessactionsid
-				FROM vtiger_businessactions INNER JOIN vtiger_crmentity
+				FROM vtiger_businessactions INNER JOIN '.$crmEntityTable.' 
 				WHERE vtiger_crmentity.crmid = vtiger_businessactions.businessactionsid
 				AND vtiger_crmentity.deleted = 0
 				AND module_list = ?
@@ -384,12 +382,12 @@ class BusinessActions extends CRMEntity {
 	public static function deleteLink($tabid, $type, $label, $url = false) {
 		global $adb;
 		$module_name = getTabModuleName($tabid);
-
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
 		if ($url) {
 			$ba = $adb->pquery(
 				'SELECT vtiger_businessactions.businessactionsid
 					FROM vtiger_businessactions
-					INNER JOIN vtiger_crmentity ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid
+					INNER JOIN '.$crmEntityTable.' ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid
 						AND vtiger_crmentity.deleted = 0
 						AND vtiger_businessactions.module_list = ?
 						AND vtiger_businessactions.elementtype_action = ?
@@ -401,7 +399,7 @@ class BusinessActions extends CRMEntity {
 			$ba = $adb->pquery(
 				'SELECT vtiger_businessactions.businessactionsid
 					FROM vtiger_businessactions
-					INNER JOIN vtiger_crmentity ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid
+					INNER JOIN '.$crmEntityTable.' ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid
 						AND vtiger_crmentity.deleted = 0
 						AND vtiger_businessactions.module_list = ?
 						AND vtiger_businessactions.elementtype_action = ?
@@ -422,14 +420,13 @@ class BusinessActions extends CRMEntity {
 	 * @param Integer Module ID.
 	 */
 	public static function deleteAll($tabid) {
-
 		global $adb;
 		$module_name = getTabModuleName($tabid);
-
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
 		$ba = $adb->pquery(
 			'SELECT vtiger_businessactions.businessactionsid
 				FROM vtiger_businessactions
-				INNER JOIN vtiger_crmentity ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid
+				INNER JOIN '.$crmEntityTable.' ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid
 					AND vtiger_crmentity.deleted = 0
 					AND vtiger_businessactions.module_list = ?',
 			array($module_name)
@@ -463,11 +460,11 @@ class BusinessActions extends CRMEntity {
 			if (isset($linkInfo['status'])) {
 				$linkInfo['active'] = $linkInfo['status'];
 			}
-
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
 			$businessAction = $adb->pquery(
 				'SELECT 1 
 				FROM vtiger_businessactions
-				INNER JOIN vtiger_crmentity ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid
+				INNER JOIN '.$crmEntityTable.' ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid
 					AND vtiger_crmentity.deleted = 0
 					AND vtiger_businessactions.module_list = ?
 					AND vtiger_businessactions.businessactionsid = ?',
@@ -484,7 +481,7 @@ class BusinessActions extends CRMEntity {
 		global $adb;
 		$allEntities = array();
 		$allModules = array();
-		$entityQuery = "SELECT tabid,name FROM vtiger_tab WHERE isentitytype=1 and name NOT IN ('Rss','Recyclebin','Events','Calendar')";
+		$entityQuery = "SELECT tabid,name FROM vtiger_tab WHERE isentitytype=1 and name NOT IN ('Rss','Recyclebin')";
 		$result = $adb->pquery($entityQuery, array());
 		while ($result && $row = $adb->fetch_array($result)) {
 			$allEntities[$row['tabid']] = getTranslatedString($row['name'], $row['name']);
@@ -492,11 +489,12 @@ class BusinessActions extends CRMEntity {
 		}
 		asort($allEntities);
 		$mlist = array();
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
 		foreach ($allEntities as $tabid => $mname) {
 			$checkres = $adb->pquery(
 				'SELECT 1
 					FROM vtiger_businessactions
-					INNER JOIN vtiger_crmentity ON crmid = businessactionsid
+					INNER JOIN '.$crmEntityTable.' ON crmid = businessactionsid
 					WHERE vtiger_crmentity.deleted = 0
 						AND (module_list = ? OR module_list LIKE ? OR module_list LIKE ? OR module_list LIKE ?)
 						AND elementtype_action=? AND linklabel=?',

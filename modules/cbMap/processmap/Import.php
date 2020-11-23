@@ -246,6 +246,7 @@ class Import extends processcbMap {
 
 	private function doImportDirect($csvfile) {
 		include_once 'modules/Users/Users.php';
+		require_once 'data/CRMEntity.php';
 		global $adb,$current_user;
 		$table = $this->initializeImportDirect($csvfile);
 		if ($table == 'error' || $table == '') {
@@ -260,11 +261,12 @@ class Import extends processcbMap {
 		$matchFld=$this->getMapMatchFld();
 		$updateFld=$this->getMapUpdateFld();
 		$options=$this->getMapOptions();
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias($module);
 		while ($dataQuery && $data = $adb->fetch_array($dataQuery)) {
 			$id = $data['id'];
 			$index_q = "SELECT $focus->table_name.$focus->table_index
 				FROM $focus->table_name
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=$focus->table_name.$focus->table_index
+				INNER JOIN ".$crmEntityTable." ON vtiger_crmentity.crmid=$focus->table_name.$focus->table_index
 				INNER JOIN $customfld[0] ON $customfld[0].$customfld[1]=$focus->table_name.$focus->table_index
 				WHERE vtiger_crmentity.deleted=0 ";
 			foreach ($matchFld as $k => $v) {
@@ -306,10 +308,11 @@ class Import extends processcbMap {
 							if (!empty($otherid)) {
 								include_once "modules/$relModule/$relModule.php";
 								$otherModule = CRMEntity::getInstance($relModule);
+								$crmEntityTable = CRMEntity::getcrmEntityTableAlias($otherModule);
 								$customfld1 = $otherModule->customFieldTable;
 								$index_rel = $adb->query("SELECT $otherModule->table_name.$otherModule->table_index
 									FROM $otherModule->table_name
-									INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=$otherModule->table_name.$otherModule->table_index
+									INNER JOIN ".$crmEntityTable." ON vtiger_crmentity.crmid=$otherModule->table_name.$otherModule->table_index
 									INNER JOIN $customfld1[0] ON $customfld1[0].$customfld1[1]=$otherModule->table_name.$otherModule->table_index
 									WHERE vtiger_crmentity.deleted=0 and $fieldName='$otherid'");
 								$focus->column_fields[$upkey] =$adb->query_result($index_rel, 0);
@@ -347,10 +350,11 @@ class Import extends processcbMap {
 						if (!empty($otherid)) {
 							include_once "modules/$relModule/$relModule.php";
 							$otherModule = CRMEntity::getInstance($relModule);
+							$crmEntityTable = CRMEntity::getcrmEntityTableAlias($relModule);
 							$customfld1 = $otherModule->customFieldTable;
 							$index_rel = $adb->query("SELECT $otherModule->table_name.$otherModule->table_index
 								FROM $otherModule->table_name
-								INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=$otherModule->table_name.$otherModule->table_index
+								INNER JOIN ".$crmEntityTable." ON vtiger_crmentity.crmid=$otherModule->table_name.$otherModule->table_index
 								INNER JOIN $customfld1[0] ON $customfld1[0].$customfld1[1]=$otherModule->table_name.$otherModule->table_index
 								WHERE vtiger_crmentity.deleted=0 and $fieldName='$otherid'");
 							$focus1->column_fields[$upkey] =$adb->query_result($index_rel, 0);

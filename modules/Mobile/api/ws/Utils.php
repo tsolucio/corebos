@@ -11,12 +11,6 @@
 
 class crmtogo_WS_Utils {
 
-	public static function initModuleGlobals($module) {
-		if ($module == 'Events' || $module == 'Calendar') {
-			$module = 'cbCalendar';
-		}
-	}
-
 	public static function getVtigerVersion() {
 		global $vtiger_current_version;
 		return $vtiger_current_version;
@@ -137,30 +131,18 @@ class crmtogo_WS_Utils {
 		$db = PearDatabase::getInstance();
 		$current_language = crmtogo_WS_Controller::sessionGet('language') ;
 		$current_module_strings = return_module_language($current_language, $module);
-		self::initModuleGlobals($module);
 		// Cache hit?
 		if (isset(self::$gatherModuleFieldGroupInfoCache[$module])) {
 			return self::$gatherModuleFieldGroupInfoCache[$module];
 		}
-		if ($module != 'Calendar') {
-			$result = $db->pquery(
-				"SELECT fieldname, fieldlabel, blocklabel, uitype, typeofdata, displaytype
-					FROM vtiger_field
-					INNER JOIN vtiger_blocks ON vtiger_blocks.tabid=vtiger_field.tabid AND vtiger_blocks.blockid=vtiger_field.block
-					WHERE vtiger_field.tabid=? AND vtiger_field.presence != 1 AND vtiger_field.tablename !='vtiger_ticketcomments'
-					ORDER BY vtiger_blocks.sequence, vtiger_field.sequence",
-				array(getTabid($module))
-			);
-		} else {
-			$result = $db->pquery(
-				"SELECT fieldname, fieldlabel, blocklabel, uitype, typeofdata, displaytype
-					FROM vtiger_field
-					INNER JOIN vtiger_blocks ON vtiger_blocks.tabid=vtiger_field.tabid AND vtiger_blocks.blockid=vtiger_field.block
-					WHERE vtiger_field.tabid=? AND vtiger_field.presence != 1 and fieldname != 'eventstatus' and fieldname !=  'activitytype'
-					ORDER BY vtiger_blocks.sequence, vtiger_field.sequence",
-				array(getTabid($module))
-			);
-		}
+		$result = $db->pquery(
+			"SELECT fieldname, fieldlabel, blocklabel, uitype, typeofdata, displaytype
+				FROM vtiger_field
+				INNER JOIN vtiger_blocks ON vtiger_blocks.tabid=vtiger_field.tabid AND vtiger_blocks.blockid=vtiger_field.block
+				WHERE vtiger_field.tabid=? AND vtiger_field.presence != 1 AND vtiger_field.tablename !='vtiger_ticketcomments'
+				ORDER BY vtiger_blocks.sequence, vtiger_field.sequence",
+			array(getTabid($module))
+		);
 
 		$fieldgroups = array();
 		while ($resultrow = $db->fetch_array($result)) {
@@ -628,12 +610,13 @@ class crmtogo_WS_Utils {
 	public static function getDetailedDocumentInformation($documentrecord) {
 		$documentid = explode('x', $documentrecord['id']);
 		$db = PearDatabase::getInstance();
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents');
 		$sql = 'SELECT filename,filetype,fileversion, filedownloadcount,notecontent,filesize, path, vtiger_attachments.attachmentsid
-			FROM vtiger_notes
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_notes.notesid
-			INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.crmid = vtiger_notes.notesid
+			FROM vtiger_notes '
+			.' INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_notes.notesid'
+			.' INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.crmid = vtiger_notes.notesid
 			INNER JOIN vtiger_attachments ON vtiger_attachments.attachmentsid = vtiger_seattachmentsrel.attachmentsid
-			WHERE vtiger_notes.notesid = ? and vtiger_crmentity.deleted = 0';
+			WHERE vtiger_notes.notesid=? and vtiger_crmentity.deleted=0';
 		$result = $db->pquery($sql, array($documentid[1]));
 		$noofrows = $db->num_rows($result);
 		if ($noofrows >0) {
@@ -728,14 +711,14 @@ class crmtogo_WS_Utils {
 	}
 
 	public static function getConfigComments() {
-		//todo: find better way to identify modules with comments
 		$comments_module = array ();
 		$db = PearDatabase::getInstance();
-		$sql = "SELECT vtiger_businessactions.module_list 
-                  FROM vtiger_businessactions INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_businessactions.businessactionsid 
-                 WHERE vtiger_crmentity.deleted = 0
-                   AND vtiger_businessactions.elementtype_action = 'DETAILVIEWWIDGET' 
-                   AND vtiger_businessactions.linkurl = 'block://ModComments:modules/ModComments/ModComments.php'";
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
+		$sql = "SELECT vtiger_businessactions.module_list
+			FROM vtiger_businessactions INNER JOIN $crmEntityTable ON vtiger_crmentity.crmid = vtiger_businessactions.businessactionsid
+			WHERE vtiger_crmentity.deleted=0
+			AND vtiger_businessactions.elementtype_action='DETAILVIEWWIDGET'
+			AND vtiger_businessactions.linkurl='block://ModComments:modules/ModComments/ModComments.php'";
 		$result = $db->pquery($sql, array());
 		$noofrows = $db->num_rows($result);
 		if ($noofrows >0) {

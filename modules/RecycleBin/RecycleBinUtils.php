@@ -101,8 +101,6 @@ function basicRBsearch($module, $search_field, $search_string) {
 					//here where condition is added , since the $where query must go as differently so that it must give an empty set, either than Yes or No...
 					$where="$table_name.$column_name = 2";
 				}
-			} elseif ($table_name == "vtiger_activity" && $column_name == "status") {
-				$where="$table_name.$column_name like '%".$search_string."%' or vtiger_activity.eventstatus like '".formatForSqlLike($search_string)."'";
 			}
 			$sql = "select concat(tablename,':',fieldname) as tablename from vtiger_entityname where entityidfield='$column_name' or entityidcolumn='$column_name'";
 			$no_of_rows = $adb->num_rows($adb->query($sql));

@@ -11,7 +11,6 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class EtiquetasOO extends CRMEntity {
-	public $db;
 	public $moduleIcon = array('library' => 'utility', 'containerClass' => 'slds-icon_container slds-icon-standard-contact', 'class' => 'slds-icon', 'icon'=>'text_template');
 
 	/**

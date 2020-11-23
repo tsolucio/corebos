@@ -9,7 +9,7 @@
  ********************************************************************************/
 require_once 'include/utils/utils.php';
 require_once "include/utils/ChartUtils.php";
-
+require_once 'data/CRMEntity.php';
 /* Function to get the Account name for a given account id
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
@@ -47,24 +47,28 @@ function module_Chart_HomePageDashboard($userinfo) {
 
 	// Leads module
 	$val_conv = ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') ? 'le.converted = 1' : 'le.converted = 0 OR le.converted IS NULL');
-	$leadcountres = $adb->query("SELECT count(*) as count FROM vtiger_crmentity se INNER JOIN vtiger_leaddetails le on le.leadid = se.crmid
-		WHERE se.deleted = 0 AND se.smownerid = $user_id AND ($val_conv)");
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Leads');
+	$leadcountres = $adb->query("SELECT count(*) as count FROM ".$crmEntityTable." INNER JOIN vtiger_leaddetails le on le.leadid = vtiger_crmentity.crmid
+		WHERE vtiger_crmentity.deleted = 0 AND vtiger_crmentity.smownerid = $user_id AND ($val_conv)");
 	$modrecords['Leads'] = $adb->query_result($leadcountres, 0, 'count');
 
 	// HelpDesk module
-	$helpdeskcountres = $adb->query("SELECT count(*) as count FROM vtiger_crmentity se INNER JOIN vtiger_troubletickets tt ON tt.ticketid = se.crmid
-		WHERE se.deleted = 0 AND se.smownerid = $user_id AND (tt.status != 'Closed' OR tt.status IS NULL)");
+	$crmEntityTable1 = CRMEntity::getcrmEntityTableAlias('HelpDesk');
+	$helpdeskcountres = $adb->query("SELECT count(*) as count FROM ".$crmEntityTable1." INNER JOIN vtiger_troubletickets tt ON tt.ticketid = vtiger_crmentity.crmid
+		WHERE vtiger_crmentity.deleted = 0 AND vtiger_crmentity.smownerid = $user_id AND (tt.status != 'Closed' OR tt.status IS NULL)");
 	$modrecords['HelpDesk']=$adb->query_result($helpdeskcountres, 0, 'count');
 
 	// Potentials module
-	$potcountres = $adb->query("SELECT count(*) as count FROM vtiger_crmentity se INNER JOIN vtiger_potential pot ON pot.potentialid = se.crmid
-		WHERE se.deleted = 0 AND se.smownerid = $user_id AND (pot.sales_stage NOT IN ('".$app_strings['LBL_CLOSE_WON']."','".
+	$crmEntityTable2 = CRMEntity::getcrmEntityTableAlias('Potentials');
+	$potcountres = $adb->query("SELECT count(*) as count FROM ".$crmEntityTable2." INNER JOIN vtiger_potential pot ON pot.potentialid = vtiger_crmentity.crmid
+		WHERE vtiger_crmentity.deleted = 0 AND vtiger_crmentity.smownerid = $user_id AND (pot.sales_stage NOT IN ('".$app_strings['LBL_CLOSE_WON']."','".
 		$app_strings['LBL_CLOSE_LOST']."') OR pot.sales_stage IS NULL)");
 	$modrecords['Potentials']= $adb->query_result($potcountres, 0, 'count');
 
 	// Calendar moudule
-	$calcountres = $adb->pquery("SELECT count(*) as count FROM vtiger_crmentity se INNER JOIN vtiger_activity act ON act.activityid = se.crmid
-		WHERE se.deleted = 0 AND se.smownerid = ? AND act.activitytype != 'Emails' AND
+	$crmEntityTable3 = CRMEntity::getcrmEntityTableAlias('cbCalendar');
+	$calcountres = $adb->pquery("SELECT count(*) as count FROM ".$crmEntityTable3." INNER JOIN vtiger_activity act ON act.activityid = vtiger_crmentity.crmid
+		WHERE vtiger_crmentity.deleted = 0 AND vtiger_crmentity.smownerid = ? AND act.activitytype != 'Emails' AND
 			(act.eventstatus NOT IN ('Completed', 'Deferred', 'Held', 'Not Held') OR act.eventstatus IS NULL)", array($user_id));
 	$modrecords['Calendar']= $adb->query_result($calcountres, 0, 'count');
 
@@ -83,7 +87,7 @@ function module_Chart_HomePageDashboard($userinfo) {
 	}
 
 	// Get count for module that needs special conditions
-	$query = "SELECT setype, count(setype) setype_count FROM vtiger_crmentity se WHERE
+	$query = "SELECT setype, count(setype) setype_count FROM vtiger_crmobject se WHERE
 		se.deleted = 0 AND se.smownerid=$user_id AND se.setype in ($inmodulestr) GROUP BY se.setype";
 	$queryres = $adb->query($query);
 	while ($resrow = $adb->fetch_array($queryres)) {

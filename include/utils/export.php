@@ -15,7 +15,6 @@ require_once 'modules/Contacts/Contacts.php';
 require_once 'modules/Leads/Leads.php';
 require_once 'modules/Contacts/Contacts.php';
 require_once 'modules/Emails/Emails.php';
-require_once 'modules/Calendar/Activity.php';
 require_once 'modules/Documents/Documents.php';
 require_once 'modules/Potentials/Potentials.php';
 require_once 'modules/Users/Users.php';
@@ -124,7 +123,7 @@ function export($type) {
 	}
 
 	$query = $focus->create_export_query($where);
-	if ($search_type != 'includesearch' && $type != 'Calendar') {
+	if ($search_type != 'includesearch') {
 		$stdfiltersql = $oCustomView->getCVStdFilterSQL($viewid);
 		$advfiltersql = $oCustomView->getCVAdvFilterSQL($viewid);
 		if (isset($stdfiltersql) && $stdfiltersql != '') {

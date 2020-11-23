@@ -217,7 +217,7 @@ class VTWorkflowManager {
 		if (strpos($recordid, 'x')>0) {
 			list($void,$recordid) = explode('x', $recordid);
 		}
-		$rrs = $adb->pquery('select setype,deleted from vtiger_crmentity where crmid=?', array($recordid));
+		$rrs = $adb->pquery('select setype,deleted from vtiger_crmobject where crmid=?', array($recordid));
 		if (!$rrs) {
 			return false;
 		}
@@ -226,19 +226,10 @@ class VTWorkflowManager {
 		if ($deleted!=0 || in_array($moduleName, $not_supported)) {
 			return false;
 		}
-		if ($moduleName=='Calendar') {
+		if ($moduleName=='cbCalendar') {
 			$actrs = $adb->pquery('select activitytype from vtiger_activity where activityid=?', array($recordid));
-			$actvity_type = $adb->query_result($actrs, 0, 'activitytype');
-			switch ($actvity_type) {
-				case 'Emails':
-					$moduleName = 'Emails';
-					break;
-				case 'Task':
-					$moduleName = 'Calendar';
-					break;
-				default:
-					$moduleName = 'Events';
-					break;
+			if ($adb->query_result($actrs, 0, 'activitytype') == 'Emails') {
+				$moduleName = 'Emails';
 			}
 		}
 		$result = $adb->pquery('select id from vtiger_ws_entity where name=?', array($moduleName));

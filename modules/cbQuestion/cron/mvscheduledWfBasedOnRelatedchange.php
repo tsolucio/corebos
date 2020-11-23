@@ -1,5 +1,6 @@
 <?php
 include_once 'include/Webservices/GetRelatedRecords.php';
+require_once 'data/CRMEntity.php';
 global $adb, $current_user;
 if (empty($current_user)) {
 	$current_user = Users::getActiveAdminUser();
@@ -27,7 +28,8 @@ if ($result && $adb->num_rows($result) > 0) {
 		if (count($relatedModulesArr) > 0) {
 			for ($z = 0; $z < count($relatedModulesArr); $z++) {
 				$setype = $relatedModulesArr[$z];
-				$relatedRecords = $adb->pquery('SELECT crmid from vtiger_crmentity where modifiedtime > ? AND setype = ?', array($lastExecution, $setype));
+				$crmEntityTable = CRMEntity::getcrmEntityTableAlias($setype);
+				$relatedRecords = $adb->pquery('SELECT crmid from '.$crmEntityTable.' where modifiedtime > ? AND setype = ?', array($lastExecution, $setype));
 				while ($crmidArr = $adb->fetch_array($relatedRecords)) {
 					$crmid = $crmidArr['crmid'];
 					$crmid = vtws_getEntityId($setype) . 'x'. $crmid;
