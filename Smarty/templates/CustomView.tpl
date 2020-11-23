@@ -266,13 +266,21 @@ function mandatoryCheck()
 			<tr><td>&nbsp;</td></tr>
 		</table>
 	</div>
-	<div id="mnuTab2" {$advdiv} >
+	<div id="mnuTab2" class="cv-advfilt-tab" {$advdiv}>
 		<table width="100%" cellspacing="0" cellpadding="5" class="dvtContentSpace">
 			<tr><td><br>
 			<table width="75%" border="0" cellpadding="5" cellspacing="0" align="center">
 			<tr>
 				<td>
-					{include file='AdvanceFilter.tpl' SOURCE='customview'}
+					<div class="slds-grid slds-m-top--large cbds-advanced-search--active" id="cbds-advanced-search">
+						<div class="slds-col">
+							<div class="slds-expression slds-p-bottom_xx-large slds-p-horizontal_small">
+								<input type="hidden" name="advft_criteria" id="advft_criteria" value="">
+								<input type="hidden" name="advft_criteria_groups" id="advft_criteria_groups" value="">
+								{include file='AdvanceFilter.tpl' SOURCE='customview' MODULES_BLOCK=$FIELDNAMES_ARRAY}
+							</div>
+						</div>
+					</div>
 				</td>
 			</tr>
 			</table>
@@ -325,7 +333,7 @@ if(document.CustomView.record.value == '') {
 
 function validateCV() {
 	if(checkDuplicate()) {
-		return checkAdvancedFilter();
+		return window.AdvancedFilter.updateHiddenFields();
 	}
 	return false;
 }

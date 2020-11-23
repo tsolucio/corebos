@@ -292,13 +292,16 @@ class CustomView extends CRMEntity {
 	/** to get the getColumnsListbyBlock for the given module and Block
 	 * @param $module :: Type String
 	 * @param $block :: Type Integer
+	 * @param $markMandatory :: Type Bool
+	 * @param $assocArray :: Type Bool: return field properties as associative
+	 * 									array (true) or colon separated (false)
 	 * @returns  $columnlist Array in the format
 	 * $columnlist = Array ($fieldlabel =>'$fieldtablename:$fieldcolname:$fieldname:$module_$fieldlabel1:$fieldtypeofdata',
 	  $fieldlabel1 =>'$fieldtablename1:$fieldcolname1:$fieldname1:$module_$fieldlabel11:$fieldtypeofdata1',
 	  |
 	  $fieldlabeln =>'$fieldtablenamen:$fieldcolnamen:$fieldnamen:$module_$fieldlabel1n:$fieldtypeofdatan')
 	 */
-	public function getColumnsListbyBlock($module, $block, $markMandatory = true) {
+	public function getColumnsListbyBlock($module, $block, $markMandatory = true, $assocArray = false) {
 		global $adb, $current_user;
 		$module_columnlist = null;
 		$block_ids = explode(',', $block);
@@ -377,11 +380,27 @@ class CustomView extends CRMEntity {
 				$this->data_type[$fieldlabel] = $fieldtype[1];
 			}
 		}
+		if ($assocArray) {
+			$mod_columnlist_array = array();
+			foreach ($module_columnlist as $optval => $fldname) {
+				list($table, $column, $fldname, $mod_fldlbl, $tod) = explode(':', $optval);
+				$fldlbl = str_replace('_', ' ', str_replace($module . '_', '', $mod_fldlbl));
+				$mod_columnlist_array[$fldname] = array(
+					'label' => getTranslatedString($fldlbl, $module),
+					'value' => $optval,
+					'selected' => '',
+					'typeofdata' => $tod
+				);
+			}
+			$module_columnlist = $mod_columnlist_array;
+		}
 		return $module_columnlist;
 	}
 
 	/** to get the getModuleColumnsList for the given module
 	 * @param $module :: Type String
+	 * @param $assocArray :: Type Bool: return field properties as associative
+	 * 									array (true) or colon separated (false)
 	 * @returns  $ret_module_list Array in the following format
 	 * $ret_module_list =
 	  Array ('module' =>
@@ -396,11 +415,11 @@ class CustomView extends CRMEntity {
 	  Array('$fieldtablename:$fieldcolname:$fieldname:$module_$fieldlabel1:$fieldtypeofdata'=>$fieldlabel,
 	  Array('$fieldtablename1:$fieldcolname1:$fieldname1:$module_$fieldlabel11:$fieldtypeofdata1'=>$fieldlabel1,
 	 */
-	public function getModuleColumnsList($module) {
+	public function getModuleColumnsList($module, $assocArray = false) {
 		global $current_user;
 		$this->getCustomViewModuleInfo($module);
 		foreach ($this->module_list[$module] as $key => $value) {
-			$columnlist = $this->getColumnsListbyBlock($module, $value, true);
+			$columnlist = $this->getColumnsListbyBlock($module, $value, true, $assocArray);
 			if (isset($columnlist)) {
 				$ret_module_list[$module][$key] = $columnlist;
 			}
@@ -418,7 +437,7 @@ class CustomView extends CRMEntity {
 				}
 				$this->getCustomViewModuleInfo($mod);
 				foreach ($this->module_list[$mod] as $key => $value) {
-					$columnlist = $this->getColumnsListbyBlock($mod, $value, false);
+					$columnlist = $this->getColumnsListbyBlock($mod, $value, false, $assocArray);
 					if (isset($columnlist)) {
 						$ret_module_list[$mod][$key] = $columnlist;
 					}
@@ -436,7 +455,7 @@ class CustomView extends CRMEntity {
 			'vtiger_users:department:department:Users_Department:V',
 		);
 		foreach ($this->module_list[$mod] as $key => $value) {
-			$columnlist = $this->getColumnsListbyBlock($mod, $value, false);
+			$columnlist = $this->getColumnsListbyBlock($mod, $value, false, $assocArray);
 			if (isset($columnlist)) {
 				foreach ($columnlist as $col => $label) {
 					if (!in_array($col, $userFilterFields)) {
