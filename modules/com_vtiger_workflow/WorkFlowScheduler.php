@@ -199,23 +199,19 @@ class WorkFlowScheduler {
 									$delay = 0;
 								}
 							}
-							if ($task->executeImmediately == true && $wfminutes==null) {
-								if (empty($task->test) || $task->evaluate($entityCache, $entityData->getId())) {
-									try {
-										$task->startTask($entityData);
-										$task->doTask($entityData);
-										$task->endTask($entityData);
-									} catch (Exception $e) {
-										$errortasks[] = array(
-											'entitydata' => $entityData->data,
-											'entityid' => $entityData->getId(),
-											'taskid' => $task->id,
-											'error' => $e->getMessage(),
-										);
-									}
+							if (empty($task->test) || $task->evaluate($entityCache, $entityData->getId())) {
+								try {
+									$task->startTask($entityData);
+									$task->doTask($entityData);
+									$task->endTask($entityData);
+								} catch (Exception $e) {
+									$errortasks[] = array(
+										'entitydata' => $entityData->data,
+										'entityid' => $entityData->getId(),
+										'taskid' => $task->id,
+										'error' => $e->getMessage(),
+									);
 								}
-							} else {
-								$taskQueue->queueTask($task->id, $entityData->getId(), $delay);
 							}
 						}
 					}
