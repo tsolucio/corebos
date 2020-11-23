@@ -213,10 +213,10 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 		$linkRow = array();
 		foreach ($row as $fieldName => $fieldValue) {
 			if (!is_numeric($fieldName)) {
-				$fieldnameSql = $adb->pquery('SELECT fieldname FROM vtiger_field WHERE columnname=? AND tabid=?', array(
-					$fieldName,
-					$tabid
-				));
+				$fieldnameSql = $adb->pquery('SELECT fieldname FROM vtiger_field WHERE columnname=? AND tabid=?', array($fieldName, $tabid));
+				if (!$fieldnameSql || $adb->num_rows($fieldnameSql)==0) {
+					continue;
+				}
 				$fieldName = $adb->query_result($fieldnameSql, 0, 0);
 				//check field uitypes
 				$fieldType = getUItypeByFieldName($currentModule, $fieldName);
