@@ -62,12 +62,14 @@ if ($recordid == '') {
 	$smarty->assign('FOPTION', $advfilterhtml);
 	$smarty->assign('COLUMNS_BLOCK', $modulecolumnshtml);
 	$smarty->assign('FIELDNAMES_ARRAY', $modulecollist_array);
+	$smarty->assign('CRITERIA_GROUPS', array());
 
 	$smarty->assign('MANDATORYCHECK', implode(',', array_unique($oCustomView->mandatoryvalues)));
 	$smarty->assign('SHOWVALUES', implode(',', $oCustomView->showvalues));
 	$smarty->assign('EXIST', 'false');
 	$data_type[] = $oCustomView->data_type;
 	$smarty->assign('DATATYPE', $data_type);
+	$smarty->assign('PERMITALL', $permit_all);
 } else {
 	$oCustomView = new CustomView($cv_module);
 	$now_action = vtlib_purify($_REQUEST['action']);

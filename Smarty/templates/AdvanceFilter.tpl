@@ -181,8 +181,8 @@
 							<div class="slds-combobox_container">
 								<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click cbds-advfilt-cond__field" aria-expanded="false" aria-haspopup="listbox" role="combobox">
 									<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
-										<input class="slds-input slds-combobox__input slds-combobox__input-value" autocomplete="off" role="textbox" type="text" placeholder="{$SELECTEDFIELD.label}" readonly="" value="{$SELECTEDFIELD.label}" data-valueholder="nextsibling" />
-										<input type="hidden" value="{$SELECTEDFIELD.value}" />
+										<input class="slds-input slds-combobox__input slds-combobox__input-value" autocomplete="off" role="textbox" type="text" placeholder="{if !empty($SELECTEDFIELD)}{$SELECTEDFIELD.label}{/if}" readonly="" value="{if !empty($SELECTEDFIELD)}{$SELECTEDFIELD.label}{/if}" data-valueholder="nextsibling" />
+										<input type="hidden" value="{if !empty($SELECTEDFIELD)}{$SELECTEDFIELD.value}{/if}" />
 										<span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
 											<svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
 												<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
