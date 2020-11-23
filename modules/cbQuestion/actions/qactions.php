@@ -376,7 +376,8 @@ class qactions_Action extends CoreBOS_ActionController {
 		global $log;
 		$log->debug('> exportBuilderData');
 		$bqname = vtlib_purify($_REQUEST['bqname']);
-		$columns = json_decode(urldecode($_REQUEST['columns']), true)['headers'];
+		$columns = json_decode(urldecode($_REQUEST['columns']), true);
+		$columns = $columns['headers'];
 		$translatedHeaders = array_map(function ($key) {
 			return getTranslatedString($key['field'], $key['module']);
 		}, $columns);
