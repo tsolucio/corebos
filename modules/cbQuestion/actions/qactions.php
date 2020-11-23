@@ -381,7 +381,8 @@ class qactions_Action extends CoreBOS_ActionController {
 		$translatedHeaders = array_map(function ($key) {
 			return getTranslatedString($key['field'], $key['module']);
 		}, $columns);
-		$data = $this->getBuilderData(true)['data']['contents'];
+		$data = $this->getBuilderData(true);
+		$data = $data['data']['contents'];
 		$date = date_create(date('Y-m-d h:i:s'));
 		$filename = $bqname.'_'.date_format($date, date('Ymdhis'));
 		$path = 'cache/'.$filename.'.csv';
