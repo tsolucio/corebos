@@ -376,12 +376,18 @@ class qactions_Action extends CoreBOS_ActionController {
 		global $log;
 		$log->debug('> exportBuilderData');
 		$bqname = vtlib_purify($_REQUEST['bqname']);
-		$data = $this->getBuilderData(true)['data']['contents'];
+		$columns = json_decode(urldecode($_REQUEST['columns']), true);
+		$columns = $columns['headers'];
+		$translatedHeaders = array_map(function ($key) {
+			return getTranslatedString($key['field'], $key['module']);
+		}, $columns);
+		$data = $this->getBuilderData(true);
+		$data = $data['data']['contents'];
 		$date = date_create(date('Y-m-d h:i:s'));
 		$filename = $bqname.'_'.date_format($date, date('Ymdhis'));
 		$path = 'cache/'.$filename.'.csv';
 		$file = fopen($path, 'w');
-		fputcsv($file, array_keys($data[0]));
+		fputcsv($file, $translatedHeaders);
 		foreach ($data as $key => $value) {
 			fputcsv($file, $value);
 		}
