@@ -134,5 +134,12 @@ $mod_strings = array(
 	'cache_port_required' => 'Cache service PORT is required',
 	'Cache Activation' => 'Cache layer activation',
 	'Cache Activation_Desc' => 'Make use of a cache layer implemented for three adapters: Memory, Redis, Memcached',
+	'DENORMALIZED_LIST' => 'Denormalized List',
+	'Select' => 'Select',
+	'SAVE_TO_UNDO' => 'Save to undo',
+	'UNDO_DENORMALIZE' => 'Undo Denormalize',
+	'DENORMALIZE' => 'Denormalize',
+	'DENORMALIZED' => 'Denormalized',
+	'SELECT_OPERATION' => 'Select Operation',
 );
 ?>
