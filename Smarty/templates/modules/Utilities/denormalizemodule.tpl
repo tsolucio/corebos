@@ -47,18 +47,18 @@ function handleOperationChange() {
 		<input type="hidden" name="_op" value="setconfigdenormalization">
 		<div class="slds-form-element">
 			<label class="slds-form-element__label" for="denorm_op">
-				<abbr class="slds-required" title="required">* </abbr>Select Operation <span class="slds-badge .slds-theme_success">Denormalized {$totaldenormodulelist}/{$totalmodulelist}</span></label>
+				<abbr class="slds-required" title="required">* </abbr>{'SELECT_OPERATION'|@getTranslatedString:$MODULE} <span class="slds-badge .slds-theme_success">{'DENORMALIZED'|@getTranslatedString:$MODULE} {$totaldenormodulelist}/{$totalmodulelist}</span></label>
 			<div class="slds-form-element__control">
 				<div class="slds-select_container">
 				<select class="slds-select" id="denorm_op" name="denorm_op" required="">
-					<option {if (isset($denormop) && $denormop eq "denorm")}{"selected"}{/if} value = 'denorm'>Denormalize</option>
-					<option {if (isset($denormop) && $denormop eq "undo_denorm")}{"selected"}{/if}  value = 'undo_denorm'>Undo Denormalize</option>
+					<option {if (isset($denormop) && $denormop eq "denorm")}{"selected"}{/if} value = 'denorm'>{'DENORMALIZE'|@getTranslatedString:$MODULE}</option>
+					<option {if (isset($denormop) && $denormop eq "undo_denorm")}{"selected"}{/if}  value = 'undo_denorm'>{'UNDO_DENORMALIZE'|@getTranslatedString:$MODULE}</option>
 				</select>
 				</div>
 			</div>
 		</div><br>
 		<div id="denormalizedDiv" class="slds-form-element" style="display:none; overflow:scroll">
-			<legend class="slds-form-element__legend slds-form-element__label">Denormalized List(Select & Save to undo)</legend>
+			<legend class="slds-form-element__legend slds-form-element__label">{'DENORMALIZED_LIST'|@getTranslatedString:$MODULE}({'Select'|@getTranslatedString:$MODULE} & {'SAVE_TO_UNDO'|@getTranslatedString:$MODULE})</legend>
 			<div class="slds-form-element__control">
 			<div class="slds-checkbox_button-group" style="width: 50%;">
 			{foreach key=denormodindex item=denormodulename from=$denormodulelist}
