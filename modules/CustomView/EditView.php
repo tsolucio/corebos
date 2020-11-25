@@ -66,6 +66,7 @@ if ($recordid == '') {
 	$smarty->assign('EXIST', 'false');
 	$data_type[] = $oCustomView->data_type;
 	$smarty->assign('DATATYPE', $data_type);
+	$smarty->assign('PERMITALL', $permit_all);
 } else {
 	$oCustomView = new CustomView($cv_module);
 	$now_action = vtlib_purify($_REQUEST['action']);
