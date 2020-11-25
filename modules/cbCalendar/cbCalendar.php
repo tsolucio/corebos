@@ -450,11 +450,12 @@ class cbCalendar extends CRMEntity {
 			if ($id != '') {
 				$displayValueArray = getEntityName('Contacts', $id);
 				if (!empty($displayValueArray)) {
+					$contact_name = '';
 					foreach ($displayValueArray as $field_value) {
 						$contact_name = $field_value;
 					}
+					$cont_name .= $contact_name .', ';
 				}
-				$cont_name .= $contact_name .', ';
 			}
 		}
 		$cont_name  = trim($cont_name, ', ');
