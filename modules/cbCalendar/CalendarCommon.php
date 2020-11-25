@@ -371,22 +371,6 @@ function formatUserTimeString($datetime, $fmt) {
 	return $timeStr;
 }
 
-function sendInvitation($inviteesid, $mode, $subject, $desc) {
-	global $current_user,$mod_strings;
-	require_once 'modules/Emails/mail.php';
-	$invites=$mod_strings['INVITATION'];
-	$invitees_array = explode(';', $inviteesid);
-	$subject = $invites.' : '.$subject;
-	$record = $focus->id;
-	foreach ($invitees_array as $inviteeid) {
-		if ($inviteeid != '') {
-			$description=getActivityDetails($desc, $inviteeid, 'invite');
-			$to_email = getUserEmailId('id', $inviteeid);
-			send_mail('Calendar', $to_email, $current_user->user_name, '', $subject, $description);
-		}
-	}
-}
-
 function getActivityMailInfo($return_id, $status, $activity_type) {
 	global $adb, $current_user;
 	$qg = new QueryGenerator('cbCalendar', $current_user);

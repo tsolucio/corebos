@@ -212,7 +212,7 @@ if (isset($_REQUEST['contactidlist']) && $_REQUEST['contactidlist'] != '') {
 //code added to send mail to the vtiger_invitees
 if (isset($_REQUEST['inviteesid']) && $_REQUEST['inviteesid']!='') {
 	$mail_contents = getRequestData($return_id);
-	sendInvitation($_REQUEST['inviteesid'], $_REQUEST['activity_mode'], $_REQUEST['subject'], $mail_contents);
+	$focus->sendInvitation($_REQUEST['inviteesid'], $_REQUEST['subject'], $mail_contents);
 }
 
 //to delete contact account relation while editing event
