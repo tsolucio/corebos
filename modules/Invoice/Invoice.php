@@ -359,6 +359,8 @@ class Invoice extends CRMEntity {
 		$salesorder_id = $this->_salesorderid;
 		$res = $adb->pquery('SELECT * FROM vtiger_inventoryproductrel WHERE id=?', array($salesorder_id));
 		$no_of_products = $adb->num_rows($res);
+		//To permit Saving InventoryLines && save FinancialInfo
+		$_REQUEST['totalProductCount'] = $no_of_products;
 		$fieldsList = $adb->getFieldsArray($res);
 		$update_stock = array();
 		for ($j=0; $j<$no_of_products; $j++) {
