@@ -210,5 +210,12 @@ $mod_strings = array(
 	'LBL_SELECT_CREDENTIAL' => 'Select Credential',
 	'LBL_SEND_FILE' => 'Send file to',
 	'FILENAME' => 'Destination filename',
+	'LINK_EMAIL_TEMPLATE' => 'Link with email template',
+	'LBL_LINKED' => 'linked',
+	'LBL_UNLINKED' => 'unlinked',
+	'LBL_SELECT_EMAIL_TEMPLATE' => 'Select Email Template',
+	'LBL_SELECT_SENDGRID_EMAIL_TEMPLATE' => 'Select SendGrid Email Template',
+	'LBL_LOAD_SENDGRID_TEMPLATES' => 'Load SendGrid Templates',
+	'LBL_PREVIEW_BUTTON' => 'Preview',
 );
 ?>

@@ -122,6 +122,17 @@ function saveQuestion(update) {
 function getQuestionResults() {
 	const qtype = document.getElementById('qtype').value;
 	const qsqlqry = (document.getElementById('sqlquery').checked ? '1' : '0');
+	const context_var = document.getElementsByName('context_variable');
+	const context_val = document.getElementsByName('context_value');
+	let context_data = Array();
+	for (var i = 0; i < context_var.length; i++) {
+		const variable = context_var[i].value;
+		const value = context_val[i].value;
+		context_data.push({
+			variable: variable,
+			value: value,
+		});
+	}
 	let cbq = JSON.stringify({
 		'qname': document.getElementById('bqname').value,
 		'qtype': qtype,
@@ -133,7 +144,8 @@ function getQuestionResults() {
 		'groupby': getSQLGroupBy().substr(9),
 		'typeprops': document.getElementById('qprops').value,
 		'sqlquery': qsqlqry,
-		'condfilterformat': '0'
+		'condfilterformat': '0',
+		'context_variable': context_data
 	});
 	const evaluatewith = document.getElementById('evaluatewith').value;
 	let cbqctx = '';
@@ -183,7 +195,7 @@ function getDataColumns() {
 			let fnam = finfo.fieldname;
 			let fhdr = finfo.fieldname;
 			if (typeof fieldNEcolumn[document.getElementById('bqmodule').value+fnam] != 'undefined') {
-				fnam = fieldNEcolumn[document.getElementById('bqmodule').value+fnam]
+				fnam = fieldNEcolumn[document.getElementById('bqmodule').value+fnam];
 			}
 			if (finfo.fieldname.indexOf(': (')==-1) {
 				if (finfo.operators!='custom' && finfo.alias!='') {
@@ -328,7 +340,7 @@ function showSQLMsg(msg, role) {
 	document.getElementById('cbqmsgdiv').classList.remove('bldcontainer-hidden');
 	document.getElementById('cbqmsgdiv').classList.add('bldcontainer-visible');
 	let msgdiv = document.getElementById('sqlmsgdiv');
-	msgdiv.classList.remove('slds-theme_info','slds-theme_error','slds-theme_success','slds-theme_warning');
+	msgdiv.classList.remove('slds-theme_info', 'slds-theme_error', 'slds-theme_success', 'slds-theme_warning');
 	msgdiv.classList.add('slds-theme_'+role);
 	document.getElementById('sqlmsgicon').childNodes[1].href.baseVal='include/LD/assets/icons/utility-sprite/svg/symbols.svg#'+role;
 	msgdiv.classList.remove('bld-hidden');
@@ -457,27 +469,27 @@ function getSQLConditions() {
 					// 	}
 					// }
 					switch (operation) {
-						case 'contains':
-							conditions += fieldname+" LIKE '%"+value+"%' "+joincondition;
-							break;
-						case 'does not contain':
-							conditions += fieldname+" NOT LIKE '%"+value+"%' "+joincondition;
-							break;
-						case 'does not end with':
-							conditions += fieldname+" NOT LIKE '%"+value+"' "+joincondition;
-							break;
-						case 'does not start with':
-							conditions += fieldname+" NOT LIKE '"+value+"%' "+joincondition;
-							break;
-						case 'ends with':
-							conditions += fieldname+" LIKE '%"+value+"' "+joincondition;
-							break;
-						case 'starts with':
-							conditions += fieldname+" LIKE '"+value+"%' "+joincondition;
-							break;
-						default:
-							conditions += fieldname+' '+ops[operation]+" '"+value+"' "+joincondition;
-							break;
+					case 'contains':
+						conditions += fieldname+' LIKE \'%'+value+'%\' '+joincondition;
+						break;
+					case 'does not contain':
+						conditions += fieldname+' NOT LIKE \'%'+value+'%\' '+joincondition;
+						break;
+					case 'does not end with':
+						conditions += fieldname+' NOT LIKE \'%'+value+'\' '+joincondition;
+						break;
+					case 'does not start with':
+						conditions += fieldname+' NOT LIKE \''+value+'%\' '+joincondition;
+						break;
+					case 'ends with':
+						conditions += fieldname+' LIKE \'%'+value+'\' '+joincondition;
+						break;
+					case 'starts with':
+						conditions += fieldname+' LIKE \''+value+'%\' '+joincondition;
+						break;
+					default:
+						conditions += fieldname+' '+ops[operation]+' \''+value+'\' '+joincondition;
+						break;
 					}
 				});
 			});
@@ -676,83 +688,83 @@ function getInstruction(field, operator, alias) {
 	if (operator!='custom') {
 		let op = validOperations.find(x => x.value === operator);
 		switch (operator) {
-			case 'ifelse':
-				fins = 'ifelse(condition, expression_true, expression_false)';
-				break;
-			case 'add':
-			case 'sub':
-			case 'mul':
-			case 'div':
-			case 'distinct':
-			case 'ltequals':
-			case 'gtequals':
-			case 'lt':
-			case 'gt':
-				fins = fnam + ' ' + op.text;
-				break;
-			case 'power':
-			case 'round':
-			case 'ceil':
-			case 'floor':
-			case 'modulo':
-			case 'concat':
-			case 'stringposition':
-			case 'stringlength':
-			case 'stringreplace':
-			case 'substring':
-			case 'uppercase':
-			case 'lowercase':
-			case 'time_diff(a)':
-			case 'time_diff(a,b)':
-			case 'time_diffdays(a)':
-			case 'time_diffdays(a,b)':
-			case 'time_diffyears(a)':
-			case 'time_diffyears(a,b)':
-			case 'add_days':
-			case 'sub_days':
-			case 'add_months':
-			case 'sub_months':
-			case 'add_time':
-			case 'sub_time':
-			case 'sum':
-			case 'min':
-			case 'max':
-			case 'avg':
-			case 'aggregation':
-			case 'aggregation_fields':
-			case 'aggregate_time':
-			case 'isString':
-			case 'isNumeric':
-			case 'coalesce':
-			case 'hash':
-			case 'getEntityType':
-			case 'number_format':
-			case 'getSetting':
-			case 'group_concat':
-			case 'count':
-				if (op.text.indexOf("('")!=-1) {
-					fins = op.text.replace(/\('?.+?'?,/, "('"+fnam+"',");
-				} else if (op.text.indexOf(',')!=-1) {
-					if (fnam.indexOf(': (')!=-1) {
-						fins = op.text.replace(/\(.+?,/, '($('+fnam+'),');
-					} else {
-						fins = op.text.replace(/\(.+?,/, '('+fnam+',');
-					}
+		case 'ifelse':
+			fins = 'ifelse(condition, expression_true, expression_false)';
+			break;
+		case 'add':
+		case 'sub':
+		case 'mul':
+		case 'div':
+		case 'distinct':
+		case 'ltequals':
+		case 'gtequals':
+		case 'lt':
+		case 'gt':
+			fins = fnam + ' ' + op.text;
+			break;
+		case 'power':
+		case 'round':
+		case 'ceil':
+		case 'floor':
+		case 'modulo':
+		case 'concat':
+		case 'stringposition':
+		case 'stringlength':
+		case 'stringreplace':
+		case 'substring':
+		case 'uppercase':
+		case 'lowercase':
+		case 'time_diff(a)':
+		case 'time_diff(a,b)':
+		case 'time_diffdays(a)':
+		case 'time_diffdays(a,b)':
+		case 'time_diffyears(a)':
+		case 'time_diffyears(a,b)':
+		case 'add_days':
+		case 'sub_days':
+		case 'add_months':
+		case 'sub_months':
+		case 'add_time':
+		case 'sub_time':
+		case 'sum':
+		case 'min':
+		case 'max':
+		case 'avg':
+		case 'aggregation':
+		case 'aggregation_fields':
+		case 'aggregate_time':
+		case 'isString':
+		case 'isNumeric':
+		case 'coalesce':
+		case 'hash':
+		case 'getEntityType':
+		case 'number_format':
+		case 'getSetting':
+		case 'group_concat':
+		case 'count':
+			if (op.text.indexOf('(\'')!=-1) {
+				fins = op.text.replace(/\('?.+?'?,/, '(\''+fnam+'\',');
+			} else if (op.text.indexOf(',')!=-1) {
+				if (fnam.indexOf(': (')!=-1) {
+					fins = op.text.replace(/\(.+?,/, '($('+fnam+'),');
 				} else {
-					if (fnam.indexOf(': (')!=-1) {
-						fins = op.text.replace(/\(.+\)/, '($('+fnam+'))');
-					} else {
-						fins = op.text.replace(/\(.+\)/, '('+fnam+')');
-					}
+					fins = op.text.replace(/\(.+?,/, '('+fnam+',');
 				}
-				break;
-			case 'today':
-			case 'tomorrow':
-			case 'yesterday':
-				fins = op.text;
-				break;
-			default:
-				break;
+			} else {
+				if (fnam.indexOf(': (')!=-1) {
+					fins = op.text.replace(/\(.+\)/, '($('+fnam+'))');
+				} else {
+					fins = op.text.replace(/\(.+\)/, '('+fnam+')');
+				}
+			}
+			break;
+		case 'today':
+		case 'tomorrow':
+		case 'yesterday':
+			fins = op.text;
+			break;
+		default:
+			break;
 		}
 	} else {
 		if (fnam.indexOf(': (')!=-1) {
@@ -770,182 +782,182 @@ var fieldGridInstance;
 var fieldGridColumns = '';
 document.addEventListener('DOMContentLoaded', function (event) {
 	loadJS('index.php?module=cbQuestion&action=cbQuestionAjax&file=getjslanguage')
-	.then(() => {
-		fieldGridColumns = [
-			{
-				name: 'fieldname',
-				header: mod_alert_arr.LBL_FIELD,
-				formatter: 'listItemText',
-				editor: {
-					type: 'select',
-					options: {
-						listItems: arrayOfFields
+		.then(() => {
+			fieldGridColumns = [
+				{
+					name: 'fieldname',
+					header: mod_alert_arr.LBL_FIELD,
+					formatter: 'listItemText',
+					editor: {
+						type: 'select',
+						options: {
+							listItems: arrayOfFields
+						}
+					},
+					sortingType: 'desc',
+					sortable: true,
+					onAfterChange(ev) {
+						const idx = fieldGridInstance.getIndexOfRow(ev.rowKey);
+						fieldData[idx].instruction = getInstruction(ev.value, fieldData[idx].operators, fieldData[idx].alias);
+						updateFieldData(idx, 'fieldname', ev.value);
+						fieldGridInstance.resetData(fieldData);
 					}
 				},
-				sortingType: 'desc',
-				sortable: true,
-				onAfterChange(ev) {
-					const idx = fieldGridInstance.getIndexOfRow(ev.rowKey);
-					fieldData[idx].instruction = getInstruction(ev.value, fieldData[idx].operators, fieldData[idx].alias);
-					updateFieldData(idx, 'fieldname', ev.value);
-					fieldGridInstance.resetData(fieldData);
-				}
-			},
-			{
-				name: 'operators',
-				header: mod_alert_arr.LBL_OPERATION,
-				formatter: 'listItemText',
-				editor: {
-					type: 'select',
-					options: {
-						listItems: validOperations
+				{
+					name: 'operators',
+					header: mod_alert_arr.LBL_OPERATION,
+					formatter: 'listItemText',
+					editor: {
+						type: 'select',
+						options: {
+							listItems: validOperations
+						}
+					},
+					whiteSpace: 'normal',
+					sortable: false,
+					onAfterChange(ev) {
+						const idx = fieldGridInstance.getIndexOfRow(ev.rowKey);
+						fieldData[idx].instruction = getInstruction(fieldData[idx].fieldname, ev.value, fieldData[idx].alias);
+						updateFieldData(idx, 'operators', ev.value);
+						fieldGridInstance.resetData(fieldData);
 					}
 				},
-				whiteSpace: 'normal',
-				sortable: false,
-				onAfterChange(ev) {
-					const idx = fieldGridInstance.getIndexOfRow(ev.rowKey);
-					fieldData[idx].instruction = getInstruction(fieldData[idx].fieldname, ev.value, fieldData[idx].alias);
-					updateFieldData(idx, 'operators', ev.value);
-					fieldGridInstance.resetData(fieldData);
-				}
-			},
-			{
-				name: 'alias',
-				header: mod_alert_arr.LBL_ALIAS,
-				editor: 'text',
-				whiteSpace: 'normal',
-				width: 250,
-				sortable: false,
-				onAfterChange(ev) {
-					const idx = fieldGridInstance.getIndexOfRow(ev.rowKey);
-					updateFieldData(idx, 'alias', ev.value);
-				}
-			},
-			{
-				name: 'sort',
-				header: mod_alert_arr.LBL_SORT,
-				whiteSpace: 'normal',
-				width: 150,
-				formatter: 'listItemText',
-				editor: {
-					type: 'select',
-					options: {
-						listItems: [
-							{ text: mod_alert_arr.LBL_NONE, value: 'NONE' },
-							{ text: mod_alert_arr.ASC, value: 'ASC' },
-							{ text: mod_alert_arr.DESC, value: 'DESC' }
-						]
+				{
+					name: 'alias',
+					header: mod_alert_arr.LBL_ALIAS,
+					editor: 'text',
+					whiteSpace: 'normal',
+					width: 250,
+					sortable: false,
+					onAfterChange(ev) {
+						const idx = fieldGridInstance.getIndexOfRow(ev.rowKey);
+						updateFieldData(idx, 'alias', ev.value);
 					}
 				},
-				sortable: false,
-				onAfterChange(ev) {
-					const idx = fieldGridInstance.getIndexOfRow(ev.rowKey);
-					updateFieldData(idx, 'sort', ev.value);
-				}
-			},
-			{
-				name: 'group',
-				header: mod_alert_arr.LBL_GROUP,
-				whiteSpace: 'normal',
-				width: 150,
-				formatter: 'listItemText',
-				editor: {
-					type: 'radio',
-					options: {
-						listItems:[
-						{ text: alert_arr.NO, value: '0' },
-						{ text: alert_arr.YES, value: '1' }
-						]
+				{
+					name: 'sort',
+					header: mod_alert_arr.LBL_SORT,
+					whiteSpace: 'normal',
+					width: 150,
+					formatter: 'listItemText',
+					editor: {
+						type: 'select',
+						options: {
+							listItems: [
+								{ text: mod_alert_arr.LBL_NONE, value: 'NONE' },
+								{ text: mod_alert_arr.ASC, value: 'ASC' },
+								{ text: mod_alert_arr.DESC, value: 'DESC' }
+							]
+						}
+					},
+					sortable: false,
+					onAfterChange(ev) {
+						const idx = fieldGridInstance.getIndexOfRow(ev.rowKey);
+						updateFieldData(idx, 'sort', ev.value);
 					}
 				},
-				sortable: false,
-				onAfterChange(ev) {
-					const idx = fieldGridInstance.getIndexOfRow(ev.rowKey);
-					updateFieldData(idx, 'group', ev.value);
+				{
+					name: 'group',
+					header: mod_alert_arr.LBL_GROUP,
+					whiteSpace: 'normal',
+					width: 150,
+					formatter: 'listItemText',
+					editor: {
+						type: 'radio',
+						options: {
+							listItems:[
+								{ text: alert_arr.NO, value: '0' },
+								{ text: alert_arr.YES, value: '1' }
+							]
+						}
+					},
+					sortable: false,
+					onAfterChange(ev) {
+						const idx = fieldGridInstance.getIndexOfRow(ev.rowKey);
+						updateFieldData(idx, 'group', ev.value);
+					}
+				},
+				{
+					name: 'instruction',
+					header: mod_alert_arr.LBL_INSTRUCTION,
+					editor: 'text',
+					whiteSpace: 'normal',
+					sortable: false,
+					onAfterChange(ev) {
+						const idx = fieldGridInstance.getIndexOfRow(ev.rowKey);
+						updateFieldData(idx, 'instruction', ev.value);
+					}
 				}
-			},
-			{
-				name: 'instruction',
-				header: mod_alert_arr.LBL_INSTRUCTION,
-				editor: 'text',
-				whiteSpace: 'normal',
-				sortable: false,
-				onAfterChange(ev) {
-					const idx = fieldGridInstance.getIndexOfRow(ev.rowKey);
-					updateFieldData(idx, 'instruction', ev.value);
-				}
-			}
-		];
-		fieldGridInstance = new tuiGrid({
-			el: document.getElementById('fieldgrid'),
-			rowHeaders: [
-			{
-				type: 'checkbox',
-				header: `
+			];
+			fieldGridInstance = new tuiGrid({
+				el: document.getElementById('fieldgrid'),
+				rowHeaders: [
+					{
+						type: 'checkbox',
+						header: `
 				<label for="all-checkbox" class="checkbox">
 					<input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
 					<span class="custom-input"></span>
 				</label>`,
-				renderer: {
-					type: CheckboxRenderer
-				}
-			}
-			],
-			columns: fieldGridColumns,
-			data: fieldData,
-			useClientSort: false,
-			rowHeight: 'auto',
-			bodyHeight: 350,
-			scrollX: false,
-			scrollY: true,
-			columnOptions: {
-				resizable: true
-			},
-			header: {
-				align: 'left',
-				valign: 'middle'
-			},
-			onGridMounted(ev) {
-				if (builderconditions.moduleName != '') {
-					arrayOfFields.splice(1, arrayOfFields.length);
-					getRelatedModuleFields(builderconditions.moduleName);
-				}
-			}
-		});
-		dataGridInstance = new tuiGrid({
-			el: document.getElementById('resultsgrid'),
-			columns: [{
-				'name': 'empty',
-				'header': 'empty',
-				'whiteSpace': 'normal',
-				'sortable': false
-			}],
-			data: {
-				api: {
-					readData: {
-						url: 'index.php?module=cbQuestion&action=cbQuestionAjax&actionname=qactions&method=getBuilderData',
-						method: 'GET'
+						renderer: {
+							type: CheckboxRenderer
+						}
+					}
+				],
+				columns: fieldGridColumns,
+				data: fieldData,
+				useClientSort: false,
+				rowHeight: 'auto',
+				bodyHeight: 350,
+				scrollX: false,
+				scrollY: true,
+				columnOptions: {
+					resizable: true
+				},
+				header: {
+					align: 'left',
+					valign: 'middle'
+				},
+				onGridMounted(ev) {
+					if (builderconditions.moduleName != '') {
+						arrayOfFields.splice(1, arrayOfFields.length);
+						getRelatedModuleFields(builderconditions.moduleName);
 					}
 				}
-			},
-			pageOptions: {
-				useClient: false,
-				perPage: Report_ListView_PageSize
-			},
-			useClientSort: false,
-			rowHeight: 'auto',
-			bodyHeight: 550,
-			scrollX: true,
-			scrollY: true,
-			columnOptions: {
-				resizable: true
-			},
-			header: {
-				align: 'left',
-				valign: 'middle'
-			}
+			});
+			dataGridInstance = new tuiGrid({
+				el: document.getElementById('resultsgrid'),
+				columns: [{
+					'name': 'empty',
+					'header': 'empty',
+					'whiteSpace': 'normal',
+					'sortable': false
+				}],
+				data: {
+					api: {
+						readData: {
+							url: 'index.php?module=cbQuestion&action=cbQuestionAjax&actionname=qactions&method=getBuilderData',
+							method: 'GET'
+						}
+					}
+				},
+				pageOptions: {
+					useClient: false,
+					perPage: Report_ListView_PageSize
+				},
+				useClientSort: false,
+				rowHeight: 'auto',
+				bodyHeight: 550,
+				scrollX: true,
+				scrollY: true,
+				columnOptions: {
+					resizable: true
+				},
+				header: {
+					align: 'left',
+					valign: 'middle'
+				}
+			});
+			tui.Grid.applyTheme('striped');
 		});
-		tui.Grid.applyTheme('striped');
-	});
 });

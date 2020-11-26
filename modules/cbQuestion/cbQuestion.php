@@ -241,6 +241,14 @@ class cbQuestion extends CRMEntity {
 			$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.decode_html($q->column_fields['qmodule']);
 			if (!empty($q->column_fields['qcondition'])) {
 				$conds = decode_html($q->column_fields['qcondition']);
+				if (!empty($_REQUEST['cbQuestionRecord'])) {
+					$context_variable = vtlib_purify(json_decode(urldecode($_REQUEST['cbQuestionRecord']), true));
+					if (isset($context_variable['context_variable'])) {
+						foreach ($context_variable['context_variable'] as $value) {
+							$conds = str_replace($value['variable'], $value['value'], $conds);
+						}
+					}
+				}
 				foreach ($params as $param => $value) {
 					$conds = str_replace($param, $value, $conds);
 				}
@@ -394,6 +402,14 @@ class cbQuestion extends CRMEntity {
 				$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.decode_html($q->column_fields['qmodule']);
 				if (!empty($q->column_fields['qcondition'])) {
 					$conds = decode_html($q->column_fields['qcondition']);
+					if (!empty($_REQUEST['cbQuestionRecord'])) {
+						$context_variable = vtlib_purify(json_decode(urldecode($_REQUEST['cbQuestionRecord']), true));
+						if (isset($context_variable['context_variable'])) {
+							foreach ($context_variable['context_variable'] as $value) {
+								$conds = str_replace($value['variable'], $value['value'], $conds);
+							}
+						}
+					}
 					foreach ((array)$params as $param => $value) {
 						$conds = str_replace($param, $value, $conds);
 					}

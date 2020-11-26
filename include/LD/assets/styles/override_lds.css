@@ -416,3 +416,12 @@ symbol#search {
   width: auto !important;
   max-width: 100000000px !important;
 }
+
+.containernpanel {
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
+}
+.containernpanel::-webkit-scrollbar { /* WebKit */
+  width: 0px;
+}

@@ -18,6 +18,7 @@
 -->*}
 <script src="modules/com_vtiger_workflow/resources/vtigerwebservices.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/fieldexpressionpopup.js" type="text/javascript" charset="utf-8"></script>
+<script src="modules/{$module->name}/resources/functionselect.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
 var moduleName = '{$entityName}';
 var credentialid_display = {$task->credentialid_display|json_encode}

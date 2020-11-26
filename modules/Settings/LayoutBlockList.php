@@ -682,6 +682,15 @@ function updateFieldProperties() {
 	$oldmassedit = $adb->query_result($req_result, 0, 'masseditable');
 	$oldpresence = $adb->query_result($req_result, 0, 'presence');
 
+	$cal_uitype = vtlib_purify($_REQUEST['uitype']);
+	$longfield_check = vtlib_purify($_REQUEST['longfield']);
+	if ($cal_uitype == 19 && $longfield_check == 'false') {
+		$adb->pquery('UPDATE vtiger_field SET uitype=? WHERE fieldid=?', array(21, $fieldid));
+	}
+	if ($cal_uitype == 21 && $longfield_check == 'true') {
+		$adb->pquery('UPDATE vtiger_field SET uitype=? WHERE fieldid=?', array(19, $fieldid));
+	}
+
 	if (!empty($_REQUEST['fld_module'])) {
 		$fld_module = vtlib_purify($_REQUEST['fld_module']);
 	} else {

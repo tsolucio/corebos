@@ -92,17 +92,15 @@
 </div>
 </section>
 <script>
-function DeleteProfile(obj,profileid)
-{ldelim}
-		document.getElementById("status").style.display="inline";
-		jQuery.ajax({ldelim}
-				method:"POST",
-				url:'index.php?module=Users&action=UsersAjax&file=ProfileDeleteStep1&profileid='+profileid,
-		{rdelim}).done(function(response) {ldelim}
-					document.getElementById("status").style.display="none";
-					document.getElementById("tempdiv").innerHTML=response;
-					fnvshobj(obj,"tempdiv");
-			{rdelim}
-		);
+function DeleteProfile(obj, profileid) {ldelim}
+	document.getElementById('status').style.display='inline';
+	jQuery.ajax({ldelim}
+		method:"POST",
+		url:'index.php?module=Users&action=UsersAjax&file=ProfileDeleteStep1&profileid='+profileid,
+	{rdelim}).done(function (response) {ldelim}
+		document.getElementById('status').style.display='none';
+		document.getElementById('tempdiv').innerHTML=response;
+		positionDivToCenter('tempdiv');
+	{rdelim});
 {rdelim}
 </script>

@@ -65,6 +65,7 @@ function vtws_revise($element, $user) {
 	}
 
 	$referenceFields = $meta->getReferenceFieldDetails();
+	$referenceFields['assigned_user_id'] = array('Users', 'Groups');
 	foreach ($referenceFields as $fieldName => $details) {
 		if (isset($element[$fieldName]) && strlen($element[$fieldName]) > 0) {
 			$element[$fieldName] = vtws_getWSID($element[$fieldName]);
@@ -86,15 +87,6 @@ function vtws_revise($element, $user) {
 	}
 	//check if the element has mandtory fields filled
 	$meta->isUpdateMandatoryFields($element);
-
-	// Validate assigned_user_id
-	if (!empty($element['assigned_user_id'])) {
-		list($void, $assigned_user_id) = explode('x', $element['assigned_user_id']);
-		$result = $adb->pquery('select 1 from vtiger_users where id=? and status=? and deleted=?', array($assigned_user_id, 'Active', 0));
-		if (!$result || $adb->num_rows($result)==0) {
-			throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, "Invalid reference specified for assigned_user_id");
-		}
-	}
 
 	$ownerFields = $meta->getOwnerFields();
 	if (is_array($ownerFields)) {

@@ -77,7 +77,7 @@ function validate_EU_VAT($field, $num_tva, $params, $fields) {
 		$prefix = substr($num_tva, 0, 2);
 		$tva = substr($num_tva, 2);
 		$param = array('countryCode' => $prefix, 'vatNumber' => $tva);
-		$soap = new SoapClient('http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl');
+		$soap = new SoapClient('https://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl');
 		try {
 			$xml = $soap->checkVat($param);
 		} catch (Exception $e) {

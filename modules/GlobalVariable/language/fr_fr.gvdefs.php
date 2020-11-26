@@ -685,6 +685,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Maximum númber of results to be shown in autocomplete global search.',
 ),
+'Application_ProductService_Search_Autocomplete_Limit' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Maximum number of results to be shown in product/service autocomplete search.',
+),
 'Product_Copy_Bundle_OnDuplicate' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Chaîne',

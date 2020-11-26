@@ -26,6 +26,7 @@
 	var i18nDelete = '{'LBL_DELETE'|@getTranslatedString:'Settings'}';
 </script>
 <script src="modules/{$module->name}/resources/fieldexpressionpopup.js" type="text/javascript" charset="utf-8"></script>
+<script src="modules/{$module->name}/resources/functionselect.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/wfexeexp.js" type="text/javascript" charset="utf-8"></script>
 
 <div style="width:80%">

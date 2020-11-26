@@ -428,5 +428,6 @@ var alert_arr = {
 	'Okay': 'Ok',
 	'Failed': 'Falhou',
 	'Warning': 'Alerta',
-	'Copied': 'Copiado'
+	'Copied': 'Copiado',
+	'ACT_UNIT_PRICE_MISMATCH': 'O preço real para esta moeda deve ser igual ao preço unitário, mas este não é o caso para este produto ou serviço'
 };

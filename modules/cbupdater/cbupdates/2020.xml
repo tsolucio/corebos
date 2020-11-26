@@ -337,4 +337,27 @@
 	<classname>addReplyToOnEmail</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>MajorLabel</author>
+	<description>Add countrycode to account address section</description>
+	<filename>build/changeSets/2020/addCountryCode.php</filename>
+	<classname>addCountryCode</classname>
+	<systemupdate>false</systemupdate>
+	<blocked>true</blocked>
+</changeSet>
+<changeSet>
+	<author>MajorLabel</author>
+	<description>Add countrycode to contact address section</description>
+	<filename>build/changeSets/2020/addCountryCodeContacts.php</filename>
+	<classname>addCountryCodeContacts</classname>
+	<systemupdate>false</systemupdate>
+	<blocked>true</blocked>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Increment message name/subject field size</description>
+	<filename>build/changeSets/2020/incmessagenamefield.php</filename>
+	<classname>incmessagenamefield</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

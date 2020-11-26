@@ -22,6 +22,7 @@
 	var createEntityHeaderTemplate = '<input type="button" class="slds-button slds-button_success" value="'+"{'LBL_ADD_FIELD'|@getTranslatedString:$MODULE_NAME}"+ '" id="save_fieldvaluemapping_add" />';
 </script>
 <script src="modules/{$module->name}/resources/fieldexpressionpopup.js" type="text/javascript" charset="utf-8"></script>
+<script src="modules/{$module->name}/resources/functionselect.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/createentitytaskscript.js" type="text/javascript" charset="utf-8"></script>
 
 <div class="slds-grid slds-grid_vertical-align-center">

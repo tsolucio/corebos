@@ -1176,6 +1176,8 @@ $app_strings = array (
 'LBL_CALLER_INFORMATION'=>'Informação de quem liga',
 'LBL_CALLER_NUMBER'=>'Número :',
 'LBL_CALLER_NAME'=>'Nome :',
+'LBL_VIEW_CONTACT' => 'View Contact',
+'LBL_CLICK_NOTIFICATION_TO'=> 'Click Notification to ',
 
 // Module Sequence Numbering
 'LBL_DUPLICATE' => 'Duplicar',

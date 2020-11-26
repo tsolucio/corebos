@@ -200,7 +200,7 @@ Template.define('userlist_row_template', {
 					url:'index.php?module=Users&action=UsersAjax&file=UserDeleteStep1&record='+data.id
 				}).done(function(response) {
 					document.getElementById('tempdiv').innerHTML= response;
-					fnvshobj(obj,'tempdiv');
+					positionDivToCenter('tempdiv');
 				}
 			);
 		});
