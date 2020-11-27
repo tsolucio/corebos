@@ -87,26 +87,27 @@ if (isset($query_string) && $query_string != '') {
 	if (empty($_REQUEST['ajax'])) {
 		echo '<div id="globasearch_results" style="display:none;">';
 	}
+	$smarty = new vtigerCRM_Smarty;
+	$smarty->assign('THEME', $theme);
+	$smarty->assign('IMAGE_PATH', $image_path);
+	$smarty->assign('ISAJAXCALL', isset($_REQUEST['ajax']));
+	$smarty->assign('APP', $app_strings);
+	$smarty->assign('TAG_SEARCH', $search_tag);
+	$smarty->assign('SEARCH_MODULE', $search_module);
+	$smarty->assign('SEARCH_STRING', htmlentities($search_val, ENT_QUOTES, $default_charset));
+	$smarty->assign('MODULES_LIST', $object_array);
 	foreach ($object_array as $module => $object_name) {
 		if ($curModule == 'Utilities' || ($curModule == $module && !empty($_REQUEST['ajax']))) {
 			$focus = CRMEntity::getInstance($module);
 			if (isPermitted($module, 'index') == 'yes') {
-				$smarty = new vtigerCRM_Smarty;
 
 				if (!file_exists("modules/$module/language/".$current_language.'.lang.php')) {
 					$current_language = 'en_us';
 				}
 				require_once "modules/$module/language/".$current_language.'.lang.php';
-
 				$smarty->assign('MOD', $mod_strings);
-				$smarty->assign('APP', $app_strings);
-				$smarty->assign('THEME', $theme);
-				$smarty->assign('IMAGE_PATH', $image_path);
 				$smarty->assign('MODULE', $module);
-				$smarty->assign('TAG_SEARCH', $search_tag);
-				$smarty->assign('SEARCH_MODULE', $search_module);
 				$smarty->assign('SINGLE_MOD', $module);
-				$smarty->assign('SEARCH_STRING', htmlentities($search_val, ENT_QUOTES, $default_charset));
 
 				if ($module=='Calendar') {
 					$listquery = 'SELECT vtiger_activity.activityid as act_id,vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_crmentity.setype,
@@ -222,9 +223,7 @@ if (isset($query_string) && $query_string != '') {
 				$smarty->assign('ModuleRecordCount', $moduleRecordCount);
 				$total_record_count = $total_record_count + $noofrows;
 				$smarty->assign('SEARCH_CRITERIA', "( $noofrows )".$search_msg);
-				$smarty->assign('MODULES_LIST', $object_array);
 				$smarty->assign('CUSTOMVIEW_OPTION', $customviewcombo_html);
-				$smarty->assign('ISAJAXCALL', isset($_REQUEST['ajax']));
 
 				if (($i != 0 && empty($_REQUEST['ajax'])) || !(empty($_REQUEST['ajax']))) {
 					$smarty->display('UnifiedSearchAjax.tpl');
