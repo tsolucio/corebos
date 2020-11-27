@@ -3444,7 +3444,7 @@ function getListViewDeleteLink($module, $entity_id, $relatedlist, $returnset, $l
 		$requestAction = vtlib_purify($_REQUEST['file']);
 	}
 	if ($isCustomModule && !in_array($requestAction, array('index', 'ListView'))) {
-		$requestRecord = vtlib_purify($_REQUEST['record']);
+		$requestRecord = empty($_REQUEST['record']) ? '' : vtlib_purify($_REQUEST['record']);
 		$del_link = "index.php?module=$requestModule&action=updateRelations&parentid=$requestRecord";
 		$del_link .= "&destination_module=$module&idlist=$entity_id&mode=delete";
 	}
