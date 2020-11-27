@@ -84,7 +84,9 @@ if (isset($query_string) && $query_string != '') {
 	}
 	$i = 0;
 	$moduleRecordCount = array();
-	echo '<div id="globasearch_results" style="display:none;">';
+	if (empty($_REQUEST['ajax'])) {
+		echo '<div id="globasearch_results" style="display:none;">';
+	}
 	foreach ($object_array as $module => $object_name) {
 		if ($curModule == 'Utilities' || ($curModule == $module && !empty($_REQUEST['ajax']))) {
 			$focus = CRMEntity::getInstance($module);
@@ -197,6 +199,7 @@ if (isset($query_string) && $query_string != '') {
 				$smarty->assign('SEARCH_CRITERIA', "( $noofrows )".$search_msg);
 				$smarty->assign('MODULES_LIST', $object_array);
 				$smarty->assign('CUSTOMVIEW_OPTION', $customviewcombo_html);
+				$smarty->assign('ISAJAXCALL', isset($_REQUEST['ajax']));
 
 				if (($i != 0 && empty($_REQUEST['ajax'])) || !(empty($_REQUEST['ajax']))) {
 					$smarty->display('UnifiedSearchAjax.tpl');
@@ -208,7 +211,9 @@ if (isset($query_string) && $query_string != '') {
 			}
 		}
 	}
-	echo '</div>';
+	if (empty($_REQUEST['ajax'])) {
+		echo '</div>';
+	}
 	if ($total_record_count == 1) {
 		// we have just one record in one module > we go there directly
 		$modwith1 = array_filter($moduleRecordCount, function ($e) {
