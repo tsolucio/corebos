@@ -65,7 +65,7 @@ class generateReportWfTask extends VTTask {
 			if ($this->file_type  == 'excel') {
 				$fileName = $path.$baseFileName.'.xls';
 				$filePath = $root_directory.$fileName;
-				$oReportRun->writeReportToExcelFile($filePath, null, $entity->moduleName);
+				$oReportRun->writeReportToExcelFile($filePath, null, $entity->getModuleName());
 				$name = $baseFileName.'.xls';
 			}
 		}

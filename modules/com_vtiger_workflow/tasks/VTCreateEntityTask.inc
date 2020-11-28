@@ -56,6 +56,7 @@ class VTCreateEntityTask extends VTTask {
 			$entityModuleHandler = vtws_getModuleHandlerFromName($entityType, $current_user);
 			$handlerMeta = $entityModuleHandler->getMeta();
 			$ownerFields = $handlerMeta->getOwnerFields();
+			$imageFields = $handlerMeta->getImageFields();
 			$dtFields = $handlerMeta->getFieldListByType('datetime');
 			$datetimeFields = array();
 			foreach ($dtFields as $webserviceField) {
@@ -64,6 +65,7 @@ class VTCreateEntityTask extends VTTask {
 			unset($dtFields);
 			$logbg->debug($focus->column_fields);
 			$logbg->debug($fieldValueMapping);
+			$files_set = false;
 			foreach ($fieldValueMapping as $fieldInfo) {
 				$fieldName = $fieldInfo['fieldname'];
 				$referenceModule = $fieldInfo['modulename'];
@@ -109,6 +111,15 @@ class VTCreateEntityTask extends VTTask {
 				if (in_array($fieldName, $datetimeFields) && strpos($fieldValue, ' ')===false) {
 					$rs = $adb->pquery('select start_hour from vtiger_users where id=?', array($current_user->id));
 					$fieldValue = $fieldValue.' '.$adb->query_result($rs, 0, 'start_hour');
+				}
+				if (in_array($fieldName, $imageFields) && !empty($fieldValue)) {
+					if (!$files_set) {
+						$files_set =true;
+						$_FILES=array();
+					}
+					$_REQUEST[$fieldName.'_hidden']=$fieldValue;
+					$_FILES[$fieldName]=array('size'=>0);
+					$_REQUEST['__cbisduplicatedfromrecordid']=$recordId;
 				}
 
 				$newEntity->column_fields[$fieldName] = $fieldValue;

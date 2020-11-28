@@ -9,6 +9,7 @@
  ************************************************************************************/
 require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
+require_once 'modules/cbCalendar/CalendarCommon.php';
 
 class cbCalendar extends CRMEntity {
 	public $table_name = 'vtiger_activity';
@@ -450,11 +451,12 @@ class cbCalendar extends CRMEntity {
 			if ($id != '') {
 				$displayValueArray = getEntityName('Contacts', $id);
 				if (!empty($displayValueArray)) {
+					$contact_name = '';
 					foreach ($displayValueArray as $field_value) {
 						$contact_name = $field_value;
 					}
+					$cont_name .= $contact_name .', ';
 				}
-				$cont_name .= $contact_name .', ';
 			}
 		}
 		$cont_name  = trim($cont_name, ', ');
@@ -491,8 +493,9 @@ class cbCalendar extends CRMEntity {
 		require_once 'modules/Emails/mail.php';
 		$invites = getTranslatedString('INVITATION', 'cbCalendar');
 		$invitees_array = explode(';', $inviteesid);
-		$subject = $invites.' : '.$subject;
+		$subject = $invites.' : '.vtlib_purify($subject);
 		foreach ($invitees_array as $inviteeid) {
+			$inviteeid = vtlib_purify($inviteeid);
 			if (!empty($inviteeid)) {
 				$description = getActivityDetails($desc, $inviteeid, 'invite');
 				$to_email = getUserEmailId('id', $inviteeid);
