@@ -127,15 +127,13 @@ if (isset($order_by) && $order_by != '') {
 
 // vtlib customization: To override module specific popup query for a given field
 $list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $currentModule);
+$count_result = $adb->pquery(mkCountQuery($query), array());
+$noofrows = $adb->query_result($count_result, 0, 'count');
 //Retreiving the start value from request
 if (isset($_REQUEST['start']) && $_REQUEST['start'] != '') {
 	$start = vtlib_purify($_REQUEST['start']);
-	if ($start == 'last') {
-		$count_result = $adb->pquery(mkCountQuery($query), array());
-		$noofrows = $adb->query_result($count_result, 0, 'count');
-		if ($noofrows > 0) {
-			$start = ceil($noofrows/$list_max_entries_per_page);
-		}
+	if ($start == 'last' && $noofrows > 0) {
+		$start = ceil($noofrows/$list_max_entries_per_page);
 	}
 	if (!is_numeric($start)) {
 		$start = 1;
@@ -148,10 +146,7 @@ if (isset($_REQUEST['start']) && $_REQUEST['start'] != '') {
 }
 $limstart=($start-1)*$list_max_entries_per_page;
 $query.=" LIMIT $limstart,$list_max_entries_per_page";
-$query = 'SELECT SQL_CALC_FOUND_ROWS'.substr($query, 6);
 $list_result = $adb->pquery($query, array());
-$count_result = $adb->query('SELECT FOUND_ROWS();');
-$noofrows = $adb->query_result($count_result, 0, 0);
 if (GlobalVariable::getVariable('Debug_Popup_Query', '0')=='1') {
 	echo '<br>'.$query.'<br>';
 }

@@ -115,9 +115,6 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	if (!empty($order_by)) {
 		$list_query .= ' ORDER BY '.$queryGenerator->getOrderByColumn($order_by).' '.$sorder;
 	}
-	$list_result = $adb->pquery($list_query, array());
-	$count_result = $adb->query('SELECT FOUND_ROWS();');
-	$noofrows = $adb->query_result($count_result, 0, 0);
 
 	$start = coreBOS_Session::get('lvs^'.$currentModule.'^'.$viewid.'^start', 1);
 	if ($currentPage == 1) {
@@ -139,13 +136,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	//get entityfieldid
 	$entityField = getEntityField($currentModule);
 	$entityidfield = $entityField['entityid'];
-	$tablename = $entityField['tablename'];
 	$fieldname = $focus->list_link_field;
-	try {
-		$list_query = 'SELECT SQL_CALC_FOUND_ROWS '.$tablename.'.'.$entityidfield.','.substr($list_query, 6);
-	} catch (Exception $e) {
-		$sql_error = true;
-	}
 	$controller = new ListViewController($adb, $current_user, $queryGenerator);
 	$listview_header_search = $controller->getBasicSearchFieldInfoList();
 	//add action in header
@@ -206,8 +197,13 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 		$Colorizer = true;
 	}
 	$data = array();
-	$linkfield = array();
-	$result = $adb->pquery($list_query, array());
+	try {
+		$result = $adb->pquery($list_query, array());
+		$count_result = $adb->query(mkXQuery(stripTailCommandsFromQuery($list_query, false), 'count(*) AS count'));
+		$noofrows = $adb->query_result($count_result, 0, 0);
+	} catch (Exception $e) {
+		$sql_error = true;
+	}
 	while ($result && $row = $adb->fetch_array($result)) {
 		$rows = array();
 		$linkRow = array();

@@ -196,10 +196,9 @@ if ($sql_error) {
 		$queryMode = (isset($_REQUEST['query']) && $_REQUEST['query'] == 'true');
 		$start = ListViewSession::getRequestCurrentPage($currentModule, $list_query, $viewid, $queryMode);
 		$limit_start_rec = ($start-1) * $list_max_entries_per_page;
-		$list_query = 'SELECT SQL_CALC_FOUND_ROWS'.substr($list_query, 6);
 		$list_result = $adb->pquery($list_query. " LIMIT $limit_start_rec, $list_max_entries_per_page", array());
-		$count_result = $adb->query('SELECT FOUND_ROWS();');
 		if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0)) {
+			$count_result = $adb->query(mkCountQuery($list_query));
 			$noofrows = $adb->query_result($count_result, 0, 0);
 		} else {
 			$noofrows = null;

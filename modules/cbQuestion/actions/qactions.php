@@ -426,7 +426,6 @@ class qactions_Action extends CoreBOS_ActionController {
 		if (stripos($list_query, ' LIMIT ') > 0) {
 			$list_query = substr($list_query, 0, stripos($list_query, ' LIMIT '));
 		}
-		$list_query = 'SELECT SQL_CALC_FOUND_ROWS '.substr($list_query, 6);
 		unset($_REQUEST['cbQuestionRecord']);
 		if (!empty($_REQUEST['perPage']) && is_numeric($_REQUEST['perPage'])) {
 			$rowsperpage = (int) vtlib_purify($_REQUEST['perPage']);
@@ -444,7 +443,7 @@ class qactions_Action extends CoreBOS_ActionController {
 			$limit = " limit $from,$rowsperpage";
 		}
 		$result = $adb->query(trim($list_query, ';').$limit);
-		$count_result = $adb->query('SELECT FOUND_ROWS();');
+		$count_result = $adb->query(mkXQuery(stripTailCommandsFromQuery($list_query, false), 'count(*) AS count'));
 		$noofrows = $adb->query_result($count_result, 0, 0);
 		if ($result) {
 			if ($noofrows>0) {

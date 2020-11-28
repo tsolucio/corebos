@@ -2135,10 +2135,9 @@ class ReportRun extends CRMEntity {
 			return $resp;
 		} elseif ($outputformat == 'JSON' || $outputformat == 'JSONPAGED') {
 			$sSQL = $this->sGetSQLforReport($this->reportid, $filtersql, ($outputformat == 'JSON' ? 'HTML' : 'HTMLPAGED'));
-			$sSQL = 'SELECT SQL_CALC_FOUND_ROWS'.substr($sSQL, 6);
 			$result = $adb->query($sSQL);
 			if ($result) {
-				$count_result = $adb->query('SELECT FOUND_ROWS();');
+				$count_result = $adb->query(mkXQuery(stripTailCommandsFromQuery($sSQL, false), 'count(*) AS count'));
 			}
 			$error_msg = $adb->database->ErrorMsg();
 			if (!$result && $error_msg!='') {
@@ -2147,10 +2146,9 @@ class ReportRun extends CRMEntity {
 					// we have temp tables so we deactivate them and try again
 					$this->queryPlanner->disableTempTables();
 					$sSQL = $this->sGetSQLforReport($this->reportid, $filtersql, ($outputformat == 'JSON' ? 'HTML' : 'HTMLPAGED'));
-					$sSQL = 'SELECT SQL_CALC_FOUND_ROWS'.substr($sSQL, 6);
 					$result = $adb->query($sSQL);
 					if ($result) {
-						$count_result = $adb->query('SELECT FOUND_ROWS();');
+						$count_result = $adb->query(mkXQuery(stripTailCommandsFromQuery($sSQL, false), 'count(*) AS count'));
 					}
 					$error_msg = $adb->database->ErrorMsg();
 				}
