@@ -2,7 +2,8 @@
 include_once 'include/integrations/sendgrid/sendgrid.php';
 $sd = new corebos_sendgrid();
 $templates = $sd->getEmailTemplates();
-$templates = json_decode($templates)->templates;
+$templates = json_decode($templates);
+$templates = isset($templates->templates) ? $templates->templates: 0;
 $templateArr = array();
 if ($templates) {
 	for ($y=0; $y < count($templates); $y++) {
@@ -19,7 +20,5 @@ if ($templates) {
 			'versionId' => $versionId,
 		);
 	}
-	echo json_encode($templateArr);
-} else {
-	echo '';
 }
+echo json_encode($templateArr);
