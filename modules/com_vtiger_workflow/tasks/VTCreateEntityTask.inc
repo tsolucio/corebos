@@ -112,14 +112,16 @@ class VTCreateEntityTask extends VTTask {
 					$rs = $adb->pquery('select start_hour from vtiger_users where id=?', array($current_user->id));
 					$fieldValue = $fieldValue.' '.$adb->query_result($rs, 0, 'start_hour');
 				}
-				if (in_array($fieldName, $imageFields) && !empty($fieldValue)) {
+				if (in_array($fieldName, $imageFields)) {
 					if (!$files_set) {
 						$files_set =true;
 						$_FILES=array();
 					}
-					$_REQUEST[$fieldName.'_hidden']=$fieldValue;
-					$_FILES[$fieldName]=array('size'=>0);
-					$_REQUEST['__cbisduplicatedfromrecordid']=$recordId;
+					if (!empty($fieldValue)) {
+						$_REQUEST[$fieldName.'_hidden']=$fieldValue;
+						$_FILES[$fieldName]=array('size'=>0);
+						$_REQUEST['__cbisduplicatedfromrecordid']=$recordId;
+					}
 				}
 
 				$newEntity->column_fields[$fieldName] = $fieldValue;
