@@ -28,7 +28,11 @@ if ($isadmin && isset($_REQUEST['ck']) && isset($_REQUEST['cs']) && isset($_REQU
 	$cs = (empty($_REQUEST['cs']) ? '' : vtlib_purify($_REQUEST['cs']));
 	$ck = (empty($_REQUEST['ck']) ? '' : vtlib_purify($_REQUEST['ck']));
 	$wcurl = (empty($_REQUEST['wcurl']) ? '' : vtlib_purify($_REQUEST['wcurl']));
-	$wc->saveSettings($isActive, $cs, $ck, $wcurl);
+	$wcsct = (empty($_REQUEST['wcsct']) ? '' : vtlib_purify($_REQUEST['wcsct']));
+	$cm = ((empty($_REQUEST['woocommerce_customer']) || $_REQUEST['woocommerce_customer']!='on') ? '0' : '1');
+	$pm = ((empty($_REQUEST['woocommerce_product']) || $_REQUEST['woocommerce_product']!='on') ? '0' : '1');
+	$om = ((empty($_REQUEST['woocommerce_order']) || $_REQUEST['woocommerce_order']!='on') ? '0' : '1');
+	$wc->saveSettings($isActive, $cs, $ck, $wcurl, $wcsct, $cm, $pm, $om);
 }
 
 $smarty->assign('TITLE_MESSAGE', getTranslatedString('Woocommerce Activation', $currentModule));
@@ -37,6 +41,10 @@ $smarty->assign('isActive', $wc->isActive());
 $smarty->assign('cs', $wcsettings['cs']);
 $smarty->assign('ck', $wcsettings['ck']);
 $smarty->assign('wcurl', $wcsettings['url']);
+$smarty->assign('wcsct', $wcsettings['sct']);
+$smarty->assign('isContact', $wcsettings['cm']);
+$smarty->assign('isProduct', $wcsettings['pm']);
+$smarty->assign('isSalesOrder', $wcsettings['om']);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
