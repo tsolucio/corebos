@@ -67,11 +67,6 @@ class Vtiger_Version {
 	public static function updateVersionFile($version) {
 		// we do not generate this file anymore, it is controlled by git
 		return true;
-		$vfile = file_get_contents('vtigerversion.php');
-		$search = '$vtiger_current_version = \''.Vtiger_Version::current()."';";
-		$replace = '$vtiger_current_version = \''.$version."';";
-		$vfile = str_replace($search, $replace, $vfile);
-		file_put_contents('vtigerversion.php', $vfile);
 	}
 
 	public static function updateVersionDatabase($version) {
