@@ -25,10 +25,9 @@ class CoreBOS_ActionController extends CoreBOS_Controller {
 	protected $request;
 
 	/**
-	 * Constructor method, calls another controller method
-	 * if it exists
+	 * Constructor method, calls another controller method if it exists
 	 *
-	 * @param CoreBOS_Request $request [description]
+	 * @param Vtiger_Request $request sanitized REQUEST parameters
 	 */
 	public function __construct(Vtiger_Request $request) {
 		$this->request = $request;

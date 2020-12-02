@@ -25,8 +25,8 @@ class Vtiger_Version {
 
 	/**
 	 * Check current version of vtiger with given version
-	 * @param String Version against which comparision to be done
-	 * @param String Condition like ( '=', '!=', '<', '<=', '>', '>=')
+	 * @param String $with_version version against which comparision is to be done
+	 * @param String $condition like ( '=', '!=', '<', '<=', '>', '>=')
 	 */
 	public static function check($with_version, $condition = '=') {
 		$current_version = self::current();
