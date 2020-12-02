@@ -490,8 +490,8 @@ class CRMEntity {
 			$rdo = $adb->pquery($sql, $params);
 			if ($rdo) {
 				$adb->pquery(
-					'UPDATE vtiger_crmobject set smownerid=?,modifiedtime=?,cbuuid=? WHERE crmid=?',
-					array($ownerid, $crmvalues['date'], $this->column_fields['cbuuid'], $this->id)
+					"UPDATE vtiger_crmobject set smownerid=?,modifiedtime=? $cbuuidupdate WHERE crmid=?",
+					array($ownerid, $crmvalues['date'], $this->id)
 				);
 			}
 			$sql1 = 'delete from vtiger_ownernotify where crmid=?';
