@@ -16,7 +16,6 @@
 
 function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sortColumn = '', $currentPage = 1, $searchUrl = '', $searchtype = 'Basic') {
 	global $app_strings, $mod_strings, $current_user, $adb;
-	include_once 'include/utils/utils.php';
 	include_once 'modules/Tooltip/TooltipUtils.php';
 	require_once "modules/$currentModule/$currentModule.php";
 	$category = getParentTab();
@@ -36,7 +35,6 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	}
 
 	coreBOS_Session::set($currentModule.'_Order_By', $order_by);
-	coreBOS_Session::set($currentModule.'_Sort_Order', $sorder);
 
 	$customViewarr = array();
 	$customView = new CustomView($currentModule);
@@ -113,7 +111,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 
 	// Sorting
 	if (!empty($order_by)) {
-		$list_query .= ' ORDER BY '.$queryGenerator->getOrderByColumn($order_by).' '.$sorder;
+		$list_query .= ' ORDER BY '.$queryGenerator->getOrderByColumn(coreBOS_Session::get($currentModule.'_Order_By')).' '.coreBOS_Session::get($currentModule.'_Sort_Order');
 	}
 
 	$start = coreBOS_Session::get('lvs^'.$currentModule.'^'.$viewid.'^start', 1);
@@ -154,7 +152,6 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	$listview_header_arr = array();
 	foreach ($listview_header_search as $fName => $fValue) {
 		$fieldType = getUItypeByFieldName($currentModule, $fName);
-		$tabid = getTabid($currentModule);
 		$tooltip = ToolTipExists($fName, $tabid);
 		if ($fieldType == '15') {
 			$picklistValues = vtlib_getPicklistValues($fName);
@@ -262,18 +259,26 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 				}
 			}
 			$Actions = array();
-			if ($currentModule == 'cbCalendar' && $focus->CheckPermissions('EDIT', $row[$entityidfield])) {
-				$evstatus = $row['eventstatus'];
-				if (!($evstatus == 'Deferred' || $evstatus == 'Completed' || $evstatus == 'Held' || $evstatus == '')) {
-					if ($row['activitytype'] == 'Task') {
-						$evt_status = 'Completed';
-					} else {
-						$evt_status = 'Held';
+			if ($currentModule == 'cbCalendar') {
+				if ($focus->CheckPermissions('EDIT', $row[$entityidfield])) {
+					$evstatus = $row['eventstatus'];
+					if (!($evstatus == 'Deferred' || $evstatus == 'Completed' || $evstatus == 'Held' || $evstatus == '')) {
+						if ($row['activitytype'] == 'Task') {
+							$evt_status = 'Completed';
+						} else {
+							$evt_status = 'Held';
+						}
+						$Actions = array(
+							'status' => $evt_status,
+						);
 					}
-					$Actions = array(
-						'status' => $evt_status,
-					);
 				}
+			}
+			if ($currentModule == 'Documents') {
+				$fileattach = 'select attachmentsid from vtiger_seattachmentsrel where crmid = ?';
+				$res = $adb->pquery($fileattach, array($row[$entityidfield]));
+				$fileid = $adb->query_result($res, 0, 'attachmentsid');
+				$rows['fileid'] = $fileid;
 			}
 			$rows['action'] = array(
 				'edit' => $edit,

@@ -19,6 +19,7 @@ let tuiGrid = tui.Grid;
 let dataGridInstance;
 let SearchColumns = 0;
 let ListViewCopy = 0;
+let Application_Filter_All_Edit = 0;
 GlobalVariable_getVariable('Application_ListView_PageSize', 20, module, '').then(function (response) {
 	let obj = JSON.parse(response);
 	PageSize = obj.Application_ListView_PageSize;
@@ -26,6 +27,10 @@ GlobalVariable_getVariable('Application_ListView_PageSize', 20, module, '').then
 GlobalVariable_getVariable('Application_ListView_SearchColumns', 0).then(function (response) {
 	let obj = JSON.parse(response);
 	SearchColumns = obj.Application_ListView_SearchColumns;
+});
+GlobalVariable_getVariable('Application_Filter_All_Edit', 0).then(function (response) {
+	let obj = JSON.parse(response);
+	Application_Filter_All_Edit = obj.Application_Filter_All_Edit;
 });
 document.addEventListener('DOMContentLoaded', function () {
 	ListView.ListViewJSON();
@@ -69,6 +74,12 @@ const ListView = {
 		}
 	},
 	/**
+	 * List of modules that can't edit in listview
+	 */
+	permissionsMods: () => {
+		return ['cbupdater'];
+	},
+	/**
 	 * Get all headers for table
 	 * @param {Object} headerObj
 	 */
@@ -87,6 +98,9 @@ const ListView = {
 			let values = {};
 			if (uitype == '15' || uitype == '52' || uitype == '53') {
 				values = headerObj[index].picklist;
+			}
+			if (ListView.permissionsMods().includes(module)) {
+				edit = false;
 			}
 			if (edit) {
 				editor = ListView.getEditorType(uitype, values, fieldname);
@@ -195,7 +209,7 @@ const ListView = {
 	              ]
 	            }
 	        };
-		} else if (uitype == '10' || fieldname == 'createdtime' || fieldname == 'modifiedtime') {
+		} else if (uitype == '10' || uitype == '4' || fieldname == 'createdtime' || fieldname == 'modifiedtime') {
 			editor = false;
 		} else if (uitype == '15') {
 			let listItems = [];
@@ -321,14 +335,51 @@ const ListView = {
 					}
 				}
 			});
+			//load empty create new record template
+			const nr_records = dataGridInstance.store.data.rawData.length;
+			if (nr_records == 0) {
+				const no_data_template = document.getElementsByClassName('tui-grid-layer-state-content')[0];
+				const grid_template = document.getElementsByClassName('tui-grid-content-area')[0];
+				const mod_label = document.getElementsByClassName('hdrLink')[0].innerText;
+				grid_template.style.height = '240px';
+				no_data_template.innerHTML = `
+				<article class="slds-card" style="width: 40%;margin-left: auto;margin-right: auto;">
+					<div class="slds-card__header slds-grid">
+						<header class="slds-media slds-media_center slds-has-flexi-truncate">
+					    	<div class="slds-media__figure">
+								<span class="slds-icon_container slds-icon-standard-record-create">
+					          		<svg class="slds-icon slds-icon_small" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#record_create"></use>
+									</svg>
+								</span>
+							</div>
+							<div class="slds-media__body">
+								<h2 class="slds-card__header-title">
+									<span>${alert_arr.LBL_NO_DATA}</span>
+								</h2>
+							</div>
+							<div class="slds-no-flex">
+								<a href="index.php?module=${module}&action=EditView&return_action=DetailView&parenttab=ptab">
+									<button class="slds-button slds-button_neutral">${alert_arr.LBL_CREATE} ${mod_label}</button>
+								</a>
+							</div>
+						</header>
+					</div>
+					<footer class="slds-card__footer">
+						<a class="slds-card__footer-action" href="index.php?module=${module}&action=Import&step=1&return_module=${module}&return_action=ListView&parenttab=ptab">
+							${alert_arr.LBL_IMPORT} ${mod_label}
+						</a>
+					</footer>
+				</article>`;
+			}
 			//change style in grid
 			const getBodyArea = document.getElementsByClassName('tui-grid-body-area');
 			for (let i = 0; i < getBodyArea.length; i++) {
-			  getBodyArea[i].style.overflow = 'visible';
+			  	getBodyArea[i].style.overflow = 'visible';
 			}
 			const getRside = document.getElementsByClassName('tui-grid-rside-area');
 			for (let i = 0; i < getRside.length; i++) {
-			  getRside[i].style.overflow = 'visible';
+			  	getRside[i].style.overflow = 'visible';
 			}
 			ListView.registerEvent(url);
 			tui.Grid.applyTheme('striped');
@@ -601,19 +652,53 @@ const ListView = {
 
 		//create filterActions
 		let fedit = document.createElement('span');
-		if (filters.edit_permit == 'yes') {
-			fedit.innerHTML = `| <a href="index.php?module=${module}&action=CustomView&record=${filters.viewid}&parenttab=${filters.category}">${alert_arr['LNK_EDIT_ACTION']}</a> |`;
+		let edit_query = {
+			'module': module,
+			'action': 'CustomView',
+			'record': filters.viewid,
+			'parenttab': filters.category,
+			'permitall': 'false'
+		};
+		if (Application_Filter_All_Edit == 1 && filters.viewinfo.viewname == 'All') {
+			edit_query.permitall = 'true';
+		}
+		let edit_query_string = ListView.encodeQueryData(edit_query);
+		edit_query = {};
+		if (filters.edit_permit == 'yes' || Application_Filter_All_Edit == 1) {
+			fedit.innerHTML = `| <a href="index.php?${edit_query_string}">${alert_arr['LNK_EDIT_ACTION']}</a> |`;
 		} else {
 			fedit.innerHTML = `| ${alert_arr['LNK_EDIT_ACTION']} |`;
 		}
 		document.getElementById('filterEditActions').appendChild(fedit);
+		//delete a filter
 		let fdelete = document.createElement('span');
+		edit_query = {
+			'module': 'CustomView',
+			'action': 'Delete',
+			'dmodule': module,
+			'record': filters.viewid,
+			'parenttab': filters.category
+		};
+		edit_query_string = ListView.encodeQueryData(edit_query);
 		if (filters.delete_permit == 'yes') {
-			fdelete.innerHTML = `<a href="javascript:confirmdelete('index.php?module=CustomView&action=Delete&dmodule=${module}&record=${filters.viewid}&parenttab=${filters.category}')">${alert_arr['LNK_DELETE_ACTION']}`;
+			fdelete.innerHTML = `
+			<a href="javascript:confirmdelete('index.php?${edit_query_string}')">
+				${alert_arr['LNK_DELETE_ACTION']}
+			</a>`;
 		} else {
 			fdelete.innerHTML = `${alert_arr['LNK_DELETE_ACTION']}`;
 		}
 		document.getElementById('filterDeleteActions').appendChild(fdelete);
+	},
+	/**
+	 * Build query
+	 */
+	encodeQueryData: (data) => {
+		const ret = [];
+		for (let d in data) {
+			ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
+		}
+		return ret.join('&');
 	},
 	/**
 	 * Check rows in grid
