@@ -1527,8 +1527,8 @@ function InventorySelectAll(mod, image_pth) {
 		getResults: function (term) {
 			var h = getAccConFieldnames,
 				dE = document.EditView,
-				accid = h().acc === '' ? 0 : h().acc,
-				ctoid = h().con === '' ? 0 : h().con,
+				accid = h().acc === '' ? 0 : document.EditView[h().acc].value,
+				ctoid = h().con === '' ? 0 : document.EditView[h().con].value,
 				recid = dE === undefined ? 0 : dE.record.value,
 				_this = this,
 				r = new XMLHttpRequest();

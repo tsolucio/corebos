@@ -25,8 +25,8 @@ class Vtiger_Version {
 
 	/**
 	 * Check current version of vtiger with given version
-	 * @param String Version against which comparision to be done
-	 * @param String Condition like ( '=', '!=', '<', '<=', '>', '>=')
+	 * @param String $with_version version against which comparision is to be done
+	 * @param String $condition like ( '=', '!=', '<', '<=', '>', '>=')
 	 */
 	public static function check($with_version, $condition = '=') {
 		$current_version = self::current();
@@ -67,11 +67,6 @@ class Vtiger_Version {
 	public static function updateVersionFile($version) {
 		// we do not generate this file anymore, it is controlled by git
 		return true;
-		$vfile = file_get_contents('vtigerversion.php');
-		$search = '$vtiger_current_version = \''.Vtiger_Version::current()."';";
-		$replace = '$vtiger_current_version = \''.$version."';";
-		$vfile = str_replace($search, $replace, $vfile);
-		file_put_contents('vtigerversion.php', $vfile);
 	}
 
 	public static function updateVersionDatabase($version) {

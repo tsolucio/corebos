@@ -39,7 +39,6 @@ class Vtiger_Zip {
 			$this->zipa->addFile($filename, $cfilename);
 		} elseif ($filename) {
 			throw new Exception("Cannot add $filename. File not found");
-			return false;
 		} else {
 			// DATA is given
 			$this->zipa->addFromString($cfilename, $data);
@@ -60,15 +59,15 @@ class Vtiger_Zip {
 		if (!$this->isInsideApplication($zipfileName)) {
 			return false; // if the file is not inside the application tree we do not send it
 		}
-		header("Pragma: public");
-		header("Expires: 0");
-		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-		header("Cache-Control: private", false);
-		header("Content-Type: application/zip");
-		header("Content-Disposition: attachment; filename=".basename($zipfileName).";");
+		header('Pragma: public');
+		header('Expires: 0');
+		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		header('Cache-Control: private', false);
+		header('Content-Type: application/zip');
+		header('Content-Disposition: attachment; filename='.basename($zipfileName).';');
 		//header("Content-Transfer-Encoding: binary");
 		$disk_file_size = filesize($zipfileName);
-		header("Content-Length: ".$disk_file_size);
+		header('Content-Length: '.$disk_file_size);
 		readfile($zipfileName);
 	}
 

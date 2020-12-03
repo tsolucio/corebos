@@ -34,13 +34,21 @@ class corebos_woocommerce {
 	private $ck = '';
 	private $cs = '';
 	private $url = '';
+	private $customerModule = '1';
+	private $productModule = '1';
+	private $orderModule = '1';
 	private $apiversion = 'wc/v3';
+	public static $supportedModules = array('Accounts','Contacts','Products','Services','SalesOrder','Invoice');
 
 	// Configuration Keys
 	const KEY_ISACTIVE = 'woocommerce_isactive';
 	const KEY_CS = 'wcconsumersecret';
 	const KEY_CK = 'wcconsumerkey';
 	const KEY_URL = 'wcwpurl';
+	const KEY_SCT = 'wcwpsecret';
+	const KEY_CM = 'wcwpcustomermodule';
+	const KEY_PM = 'wcwpproductmodule';
+	const KEY_OM = 'wcwpordermodule';
 
 	// Debug
 	const DEBUG = true;
@@ -52,6 +60,12 @@ class corebos_woocommerce {
 
 	// Utilities
 	public $wcclient = null;
+	private $messagequeue = null;
+	private $AccountWSID;
+	private $ContactWSID;
+	private $ProductWSID;
+	private $UserWSID;
+	private $moduleMeta = array();
 
 	public function __construct() {
 		$this->initGlobalScope();
@@ -61,16 +75,34 @@ class corebos_woocommerce {
 		$this->cs = coreBOS_Settings::getSetting(self::KEY_CS, '');
 		$this->ck = coreBOS_Settings::getSetting(self::KEY_CK, '');
 		$this->url = coreBOS_Settings::getSetting(self::KEY_URL, '');
+		$this->customerModule = coreBOS_Settings::getSetting(self::KEY_CM, '1');
+		$this->productModule = coreBOS_Settings::getSetting(self::KEY_PM, '1');
+		$this->orderModule = coreBOS_Settings::getSetting(self::KEY_OM, '1');
 		if (!empty($this->ck) && !empty($this->cs) && !empty($this->url)) {
 			$this->wcclient = new Client($this->url, $this->ck, $this->cs, array('version' => $this->apiversion));
 		}
+		$this->messagequeue = coreBOS_MQTM::getInstance();
+		$this->AccountWSID = vtws_getEntityId('Accounts').'x';
+		$this->ContactWSID = vtws_getEntityId('Contacts').'x';
+		$this->ProductWSID = vtws_getEntityId('Products').'x';
+		$this->UserWSID = vtws_getEntityId('Users').'x';
 	}
 
-	public function saveSettings($isactive, $cs, $ck, $url) {
+	public function saveSettings($isactive, $cs, $ck, $url, $sct, $cm, $pm, $om) {
 		coreBOS_Settings::setSetting(self::KEY_ISACTIVE, $isactive);
 		coreBOS_Settings::setSetting(self::KEY_CS, $cs);
 		coreBOS_Settings::setSetting(self::KEY_CK, $ck);
 		coreBOS_Settings::setSetting(self::KEY_URL, $url);
+		coreBOS_Settings::setSetting(self::KEY_SCT, $sct);
+		coreBOS_Settings::setSetting(self::KEY_CM, $cm);
+		coreBOS_Settings::setSetting(self::KEY_PM, $pm);
+		coreBOS_Settings::setSetting(self::KEY_OM, $om);
+		$cs = new woocommercechangeset(0, false);
+		if ($this->isActive()) {
+			$cs->applyChange();
+		} else {
+			$cs->undoChange();
+		}
 	}
 
 	public function getSettings() {
@@ -79,12 +111,776 @@ class corebos_woocommerce {
 			'cs' => coreBOS_Settings::getSetting(self::KEY_CS, ''),
 			'ck' => coreBOS_Settings::getSetting(self::KEY_CK, ''),
 			'url' => coreBOS_Settings::getSetting(self::KEY_URL, ''),
+			'sct' => coreBOS_Settings::getSetting(self::KEY_SCT, ''),
+			'cm' => coreBOS_Settings::getSetting(self::KEY_CM, '1'),
+			'pm' => coreBOS_Settings::getSetting(self::KEY_PM, '1'),
+			'om' => coreBOS_Settings::getSetting(self::KEY_OM, '1'),
 		);
 	}
 
 	public function isActive() {
 		$isactive = coreBOS_Settings::getSetting(self::KEY_ISACTIVE, '0');
 		return ($isactive=='1');
+	}
+
+	public function WCChangeSync() {
+		$this->initGlobalScope();
+		if (!$this->isActive()) {
+			return;
+		}
+		while ($msg = $this->messagequeue->getMessage('WooCChangeChannel', 'WCChangeSync', 'WCChangeHandler')) {
+			$change = json_decode($msg['information'], true);
+			$moduleName = $change['module'];
+			if (in_array($moduleName, self::$supportedModules)) {
+				switch ($moduleName) {
+					case 'Accounts':
+					case 'Contacts':
+						$this->sendCustomer2WC($change);
+						break;
+					case 'Products':
+					case 'Services':
+						$this->sendProduct2WC($change);
+						break;
+					case 'SalesOrder':
+					case 'Invoice':
+						$this->sendOrder2WC($change);
+						break;
+					default:
+						$this->messagequeue->rejectMessage($msg, 'Module not supported: '.$moduleName);
+				}
+			}
+		}
+	}
+
+	public function WCDeleteSync() {
+		$this->initGlobalScope();
+		if (!$this->isActive()) {
+			return;
+		}
+		while ($msg = $this->messagequeue->getMessage('WooCChangeChannel', 'WCDeleteSync', 'WCChangeHandler')) {
+			$change = json_decode($msg['information'], true);
+			$moduleName = $change['module'];
+			if (in_array($moduleName, self::$supportedModules)) {
+				switch ($moduleName) {
+					case 'Accounts':
+					case 'Contacts':
+						$this->deleteCustomerInWC($change);
+						break;
+					case 'SalesOrder':
+					case 'Invoice':
+						$this->deleteOrderInWC($change);
+						break;
+					case 'Products':
+					case 'Services':
+						$this->deleteProductInWC($change);
+						break;
+					default:
+						$this->messagequeue->rejectMessage($msg, 'Module not supported: '.$moduleName);
+				}
+			}
+		}
+	}
+
+	public function cbChangeSync() {
+		$this->initGlobalScope();
+		if (!$this->isActive()) {
+			return;
+		}
+		while ($msg = $this->messagequeue->getMessage('WooCChangeChannel', 'cbChangeSync', 'WCChangeHandler')) {
+			$change = json_decode($msg['information'], true);
+			list($moduleName, $action) = explode('.', $change['event']);
+			if ($moduleName=='customer') {
+				$moduleName = $this->customerModule ? 'Contacts' : 'Accounts';
+			} elseif ($moduleName=='order') {
+				$moduleName = $this->orderModule ? 'SalesOrder' : 'Invoice';
+			} elseif ($moduleName=='product') {
+				$moduleName = $this->productModule ? 'Products' : 'Services';
+			} else {
+				return;
+			}
+			switch ($action) {
+				case 'created':
+					$this->createFromWC($moduleName, $change['data']);
+					break;
+				case 'updated':
+					$this->updateFromWC($moduleName, $change['data']);
+					break;
+				case 'deleted':
+					$this->deleteFromWC($moduleName, $change['data']);
+					break;
+				case 'restored':
+					$this->restoreFromWC($moduleName, $change['data']);
+					break;
+				default:
+					$this->messagequeue->rejectMessage($msg, "Action $action not supported for $moduleName");
+			}
+		}
+	}
+
+	public function sendCustomer2WC($change) {
+		$send2wc = $this->getPropertiesToWC($change);
+		if (count($send2wc)>0) {
+			$wcid = $this->getWCIDFromEntity($change['module'], $change['record_id']);
+			if ($wcid!='') {
+				try {
+					$rdo = $this->wcclient->put('customers/'.$wcid, $send2wc);
+					if (isset($rdo->data) && isset($rdo->data->status) && isset($rdo->message)) {
+						$this->logMessage('sendCustomer2WC', $rdo->code.' - '.$rdo->message, $send2wc, $rdo);
+					}
+				} catch (Exception $e) {
+					$this->logMessage('sendCustomer2WC', $e->getMessage(), $send2wc, 0);
+				}
+			} elseif ($wcid == 'CREATEIT') {
+				try {
+					$rdo = $this->wcclient->post('customers', $send2wc);
+					if (isset($rdo->data) && isset($rdo->data->status) && isset($rdo->message)) {
+						$this->logMessage('sendCustomer2WC', $rdo->code.' - '.$rdo->message, $send2wc, $rdo);
+					} else {
+						$this->updateControlFields($change['module'], $change['record_id'], $rdo->id);
+					}
+				} catch (Exception $e) {
+					$this->logMessage('sendCustomer2WC', $e->getMessage(), $send2wc, 0);
+				}
+			}
+		}
+	}
+
+	public function sendProduct2WC($change) {
+		$send2wc = $this->getPropertiesToWC($change);
+		if (count($send2wc)>0) {
+			$wcid = $this->getWCIDFromEntity($change['module'], $change['record_id']);
+			if ($wcid!='') {
+				try {
+					$rdo = $this->wcclient->put('products/'.$wcid, $send2wc);
+					if (isset($rdo->data) && isset($rdo->data->status) && isset($rdo->message)) {
+						$this->logMessage('sendProduct2WC', $rdo->code.' - '.$rdo->message, $send2wc, $rdo);
+					}
+				} catch (Exception $e) {
+					$this->logMessage('sendProduct2WC', $e->getMessage(), $send2wc, 0);
+				}
+			} elseif ($wcid == 'CREATEIT') {
+				try {
+					$rdo = $this->wcclient->post('products', $send2wc);
+					if (isset($rdo->data) && isset($rdo->data->status) && isset($rdo->message)) {
+						$this->logMessage('sendProduct2WC', $rdo->code.' - '.$rdo->message, $send2wc, $rdo);
+					} else {
+						$this->updateControlFields($change['module'], $change['record_id'], $rdo->id);
+					}
+				} catch (Exception $e) {
+					$this->logMessage('sendProduct2WC', $e->getMessage(), $send2wc, 0);
+				}
+			}
+		}
+	}
+
+	public function sendOrder2WC($change) {
+		$send2wc = $this->getPropertiesToWC($change);
+		if (count($send2wc)>0) {
+			// we do not support this yet
+		}
+	}
+
+	public function deleteCustomerInWC($change) {
+		$wcid = $this->getWCIDFromEntity($change['module'], $change['record_id']);
+		if ($wcid!='' && $this->isActive()) {
+			try {
+				$rdo = $this->wcclient->delete('customers/'.$wcid, ['force' => true]);
+				if (isset($rdo->data) && isset($rdo->data->status) && isset($rdo->message)) {
+					$this->logMessage('delCustomerInWC', $rdo->code.' - '.$rdo->message, $change, $rdo);
+				} else {
+					$this->updateDeleteFields($change['module'], $change['record_id']);
+				}
+			} catch (Exception $e) {
+				$this->logMessage('delCustomerInWC', $e->getMessage(), $change, 0);
+			}
+		}
+	}
+
+	public function deleteProductInWC($change) {
+		$wcid = $this->getWCIDFromEntity($change['module'], $change['record_id']);
+		if ($wcid!='' && $this->isActive()) {
+			try {
+				$rdo = $this->wcclient->delete('products/'.$wcid, ['force' => true]);
+				if (isset($rdo->data) && isset($rdo->data->status) && isset($rdo->message)) {
+					$this->logMessage('delProductInWC', $rdo->code.' - '.$rdo->message, $change, $rdo);
+				} else {
+					$this->updateDeleteFields($change['module'], $change['record_id']);
+				}
+			} catch (Exception $e) {
+				$this->logMessage('delProductInWC', $e->getMessage(), $change, 0);
+			}
+		}
+	}
+
+	public function deleteOrderInWC($change) {
+		$send2wc = $this->getPropertiesToWC($change);
+		if (count($send2wc)>0) {
+			// we do not support this yet
+		}
+	}
+
+	public function createFromWC($moduleName, $data) {
+		global $current_user;
+		$send2cb = $this->getPropertiesFromWC($moduleName, $data);
+		if (count($send2cb)>0) {
+			try {
+				$send2cb = DataTransform::sanitizeReferences($send2cb, $this->getModuleMetaData($moduleName));
+				$send2cb['wcsyncstatus'] = 'Active';
+				$send2cb['wccreated'] = '1';
+				$send2cb['wccode'] = $data['id'];
+				$send2cb['wcdeleted'] = '0';
+				$send2cb['wcurl'] = $this->getWCURL($moduleName, $data['id']);
+				vtws_create($moduleName, $send2cb, $current_user);
+			} catch (Exception $e) {
+				$this->logMessage('sendProduct2WC', $e->getMessage(), $send2cb, 0);
+			}
+		}
+	}
+
+	public function updateFromWC($moduleName, $data) {
+		global $current_user;
+		$send2cb = $this->getPropertiesFromWC($moduleName, $data);
+		if (count($send2cb)>0) {
+			try {
+				$send2cb = DataTransform::sanitizeReferences($send2cb, $this->getModuleMetaData($moduleName));
+				vtws_revise($send2cb, $current_user);
+			} catch (Exception $e) {
+				$this->logMessage('sendProduct2WC', $e->getMessage(), $send2cb, 0);
+			}
+		}
+	}
+
+	public function deleteFromWC($moduleName, $data) {
+		$crmid = $this->getCBIDFromEntity($moduleName, $data['id']);
+		if (!empty($crmid)) {
+			$this->updateDeleteFields($moduleName, $crmid);
+		}
+	}
+
+	public function restoreFromWC($moduleName, $data) {
+		global $adb;
+		$crmid = $this->getCBIDFromEntity($moduleName, $data['id']);
+		if (!empty($crmid)) {
+			$mod = CRMEntity::getInstance($moduleName);
+			$adb->pquery('update '.$mod->table_name.' set wcdeleted=0,wcdeletedon=null where '.$mod->table_index.'=?', array($crmid));
+		}
+	}
+
+	// Utility functions
+
+	private function getModuleMetaData($module) {
+		global $adb, $log, $current_user;
+		if (empty($this->moduleMeta[$module])) {
+			$webserviceObject = VtigerWebserviceObject::fromName($adb, $module);
+			$handlerPath = $webserviceObject->getHandlerPath();
+			$handlerClass = $webserviceObject->getHandlerClass();
+			require_once $handlerPath;
+			$handler = new $handlerClass($webserviceObject, $current_user, $adb, $log);
+			$this->moduleMeta[$module] = $handler->getMeta();
+		}
+		return $this->moduleMeta[$module];
+	}
+
+	private function getWCURL($setype, $wcid) {
+		$endpoint = '';
+		switch ($setype) {
+			case 'Accounts':
+			case 'Contacts':
+				$endpoint = $this->url.'/wp-admin/user-edit.php?user_id='.$wcid;
+				break;
+			case 'Products':
+			case 'Services':
+			case 'SalesOrder':
+			case 'Invoice':
+				$endpoint = $this->url.'/wp-admin/post.php?post='.$wcid.'&action=edit';
+				break;
+		}
+		return $endpoint;
+	}
+
+	public function updateControlFields($setype, $crmid, $wcid) {
+		global $adb;
+		switch ($setype) {
+			case 'Accounts':
+				$table = 'vtiger_account';
+				$idcol = 'accountid';
+				break;
+			case 'Contacts':
+				$table = 'vtiger_contactdetails';
+				$idcol = 'contactid';
+				break;
+			case 'Products':
+				$table = 'vtiger_products';
+				$idcol = 'productid';
+				break;
+			case 'Services':
+				$table = 'vtiger_service';
+				$idcol = 'serviceid';
+				break;
+			case 'SalesOrder':
+				$table = 'vtiger_salesorder';
+				$idcol = 'salesorderid';
+				break;
+			case 'Invoice':
+				$table = 'vtiger_invoice';
+				$idcol = 'invoiceid';
+				break;
+		}
+		$upd = "update $table set wcsyncstatus='Active'";
+		$params = array(date('Y-m-d H:i:s'));
+		if (!empty($wcid)) {
+			$upd .= ', wccode=?, wcurl=?';
+			$params[] = $wcid;
+			$params[] = $this->getWCURL($setype, $wcid);
+		}
+		$upd .= ' where ' . $idcol . '=?';
+		$params[] = $crmid;
+		$adb->pquery($upd, $params);
+	}
+
+	public function updateDeleteFields($setype, $crmid) {
+		global $adb;
+		$mod = CRMEntity::getInstance($setype);
+		$adb->pquery('update '.$mod->table_name.' set wcdeleted=?,wcdeletedon=? where '.$mod->table_index.'=?', array(1, date('Y-m-d H:i:s'), $crmid));
+	}
+
+	public function getPropertiesToWC($change) {
+		global $adb, $current_user, $site_URL;
+		$send2wc = array();
+		$cbfrommodule = $change['module'];
+		$bmapname = $cbfrommodule . '2WC';
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+		if ($cbMapid) {
+			$wcprops = array();
+			$cbfrom = CRMEntity::getInstance($cbfrommodule);
+			$cbfromid = $change['record_id'];
+			$cbfrom->retrieve_entity_info($cbfromid, $cbfrommodule);
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$wcprops = $cbMap->Mapping($cbfrom->column_fields, $wcprops);
+			// mandatory
+			switch ($cbfrommodule) {
+				case 'Accounts':
+					if (!isset($wcprops['email'])) {
+						$wcprops['email'] = $cbfrom->column_fields['email1'];
+					}
+					if (!isset($wcprops['accountname']) && !empty($cbfrom->column_fields['firstname'])) {
+						$wcprops['accountname'] = $cbfrom->column_fields['firstname'];
+					}
+					$wcprops['billing'] = array(
+						'first_name' => $wcprops['accountname'],
+						'last_name' => '',
+						'company' => isset($wcprops['accountname']) ? $wcprops['accountname'] : (empty($wcprops['account_id']) ? '' : getAccountName($wcprops['account_id'])),
+						'address_1' => isset($wcprops['bill_street']) ? $wcprops['bill_street'] : '',
+						'address_2' => '',
+						'city' => isset($wcprops['bill_city']) ? $wcprops['bill_city'] : '',
+						'state' => isset($wcprops['bill_state']) ? $wcprops['bill_state'] : '',
+						'postcode' => isset($wcprops['bill_code']) ? $wcprops['bill_code'] : '',
+						'country' => isset($wcprops['bill_country']) ? $wcprops['bill_country'] : '',
+						'email' => isset($wcprops['email']) ? $wcprops['email'] : (empty($wcprops['email1']) ? '' : $wcprops['email1']),
+						'phone' => isset($wcprops['phone']) ? $wcprops['phone'] : '',
+					);
+					$wcprops['shipping'] = array(
+						'first_name' => $wcprops['first_name'],
+						'last_name' => '',
+						'company' => $wcprops['billing']['company'],
+						'address_1' => isset($wcprops['ship_street']) ? $wcprops['ship_street'] : '',
+						'address_2' => '',
+						'city' => isset($wcprops['ship_city']) ? $wcprops['ship_city'] : '',
+						'state' => isset($wcprops['ship_state']) ? $wcprops['ship_state'] : '',
+						'postcode' => isset($wcprops['ship_code']) ? $wcprops['ship_code'] : '',
+						'country' => isset($wcprops['ship_country']) ? $wcprops['ship_country'] : '',
+						'email' => $wcprops['billing']['email'],
+						'phone' => $wcprops['billing']['phone'],
+					);
+					break;
+				case 'Contacts':
+					if (!isset($wcprops['email'])) {
+						$wcprops['email'] = $cbfrom->column_fields['email'];
+					}
+					if (!isset($wcprops['first_name'])) {
+						$wcprops['first_name'] = $cbfrom->column_fields['firstname'];
+					}
+					if (!isset($wcprops['last_name'])) {
+						$wcprops['last_name'] = $cbfrom->column_fields['lastname'];
+					}
+					$wcprops['billing'] = array(
+						'first_name' => $wcprops['first_name'],
+						'last_name' => $wcprops['last_name'],
+						'company' => isset($wcprops['accountname']) ? $wcprops['accountname'] : (empty($wcprops['account_id']) ? '' : getAccountName($wcprops['account_id'])),
+						'address_1' => isset($wcprops['mailingstreet']) ? $wcprops['mailingstreet'] : '',
+						'address_2' => '',
+						'city' => isset($wcprops['mailingcity']) ? $wcprops['mailingcity'] : '',
+						'state' => isset($wcprops['mailingstate']) ? $wcprops['mailingstate'] : '',
+						'postcode' => isset($wcprops['mailingzip']) ? $wcprops['mailingzip'] : '',
+						'country' => isset($wcprops['mailingcountry']) ? $wcprops['mailingcountry'] : '',
+						'email' => isset($wcprops['email']) ? $wcprops['email'] : '',
+						'phone' => isset($wcprops['phone']) ? $wcprops['phone'] : '',
+					);
+					$wcprops['shipping'] = array(
+						'first_name' => $wcprops['first_name'],
+						'last_name' => $wcprops['last_name'],
+						'company' => $wcprops['billing']['company'],
+						'address_1' => isset($wcprops['otherstreet']) ? $wcprops['otherstreet'] : '',
+						'address_2' => '',
+						'city' => isset($wcprops['othercity']) ? $wcprops['othercity'] : '',
+						'state' => isset($wcprops['otherstate']) ? $wcprops['otherstate'] : '',
+						'postcode' => isset($wcprops['otherzip']) ? $wcprops['otherzip'] : '',
+						'country' => isset($wcprops['othercountry']) ? $wcprops['othercountry'] : '',
+						'email' => $wcprops['billing']['email'],
+						'phone' => $wcprops['billing']['phone'],
+					);
+					break;
+				case 'Products':
+					if (!isset($wcprops['name'])) {
+						$wcprops['name'] = $cbfrom->column_fields['productname'];
+					}
+					if (!isset($wcprops['regular_price'])) {
+						$wcprops['regular_price'] = $cbfrom->column_fields['unit_price'];
+					}
+					if (vtlib_isModuleActive('wcProductImage')) {
+						$images = vtws_query(
+							"select wcpiname,wcpialt,wcpimage from wcProductImage where Products.id='".vtws_getEntityId('Products')."x$cbfromid';",
+							$current_user
+						);
+						$wcprops['images'] = array();
+						foreach ($images as $image) {
+							$wcprops['images'][] = array(
+								'name' => $image['wcpiname'],
+								'src' => $image['wcpimagefullpath'],
+								'alt' => $image['wcpialt'],
+							);
+						}
+					} else {
+						$query = 'select vtiger_attachments.name, vtiger_attachments.type, vtiger_attachments.attachmentsid, vtiger_attachments.path
+							from vtiger_attachments
+							inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
+							inner join vtiger_seattachmentsrel on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
+							where (vtiger_crmentity.setype LIKE "%Image" or vtiger_crmentity.setype LIKE "%Attachment") and deleted=0 and vtiger_seattachmentsrel.crmid=?';
+						$result_image = $adb->pquery($query, array($cbfromid));
+						$wcprops['images']=array();
+						while ($image = $adb->fetch_array($result_image)) {
+							$wcprops['images'][] = array(
+								'src' => $site_URL.'/'.$image['path'].$image['attachmentsid'].'_'.$image['name'],
+							);
+						}
+					}
+					break;
+				case 'Services':
+					if (!isset($wcprops['name'])) {
+						$wcprops['name'] = $cbfrom->column_fields['servicename'];
+					}
+					if (!isset($wcprops['regular_price'])) {
+						$wcprops['regular_price'] = $cbfrom->column_fields['unit_price'];
+					}
+					if (vtlib_isModuleActive('wcProductImage')) {
+						$images = vtws_query(
+							"select wcpiname,wcpialt,wcpimage from wcProductImage where Services.id='".vtws_getEntityId('Services')."x$cbfromid';",
+							$current_user
+						);
+						$wcprops['images'] = array();
+						foreach ($images as $image) {
+							$wcprops['images'][] = array(
+								'name' => $image['wcpiname'],
+								'src' => $image['wcpimagefullpath'],
+								'alt' => $image['wcpialt'],
+							);
+						}
+					} else {
+						$images = cbws_getrecordimageinfo($cbfromid, $current_user);
+						$wcprops['images']=array();
+						foreach ($images['images'] as $image) {
+							$wcprops['images'][] = array(
+								'name' => $image['name'],
+								'src' => $image['fullpath'],
+							);
+						}
+					}
+					break;
+				case 'SalesOrder':
+				case 'Invoice':
+					// not supported yet
+				default:
+					break;
+			}
+			$send2wc = $wcprops;
+		}
+		return $send2wc;
+	}
+
+	public function getPropertiesFromWC($cbfrommodule, $data) {
+		global $current_user, $adb;
+		$send2cb = array();
+		$bmapname = $cbfrommodule.'2WC';
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+		if ($cbMapid) {
+			$cbfromid = $this->getCBIDFromEntity($cbfrommodule, $data['id']);
+			$data['record_id'] = $cbfromid;
+			$data['wccode'] = $data['id'];
+			$data['module'] = $cbfrommodule;
+			if (!empty($cbfromid)) {
+				$cbfrom = CRMEntity::getInstance($cbfrommodule);
+				$cbfrom->retrieve_entity_info($cbfromid, $cbfrommodule);
+				$send2cb = $cbfrom->column_fields;
+			}
+			switch ($cbfrommodule) {
+				case 'Accounts':
+					if (empty($send2cb['accountname'])) {
+						if (!empty($data['company'])) {
+							$send2cb['accountname'] = $data['company'];
+						} elseif (!empty($data['firstname'])) {
+							$send2cb['accountname'] = $data['firstname'];
+						} else {
+							$send2cb['accountname'] = 'notdefined';
+						}
+					}
+					$checkEmpty = array(
+						'email1' => 'email',
+					);
+					foreach ($checkEmpty as $cbfield => $wcfield) {
+						if (empty($send2cb[$cbfield]) && !empty($data[$wcfield])) {
+							$send2cb[$cbfield] = $data[$wcfield];
+						}
+					}
+					$checkEmpty = array(
+						'bill_street' => 'address_1',
+						'bill_city' => 'city',
+						'bill_state' => 'state',
+						'bill_code' => 'postcode',
+						'bill_country' => 'country',
+					);
+					foreach ($checkEmpty as $cbfield => $wcfield) {
+						if (empty($send2cb[$cbfield]) && !empty($data['billing'][$wcfield])) {
+							$send2cb[$cbfield] = $data['billing'][$wcfield];
+						}
+					}
+					$checkEmpty = array(
+						'ship_street' => 'address_1',
+						'ship_city' => 'city',
+						'ship_state' => 'state',
+						'ship_code' => 'postcode',
+						'ship_country' => 'country',
+					);
+					foreach ($checkEmpty as $cbfield => $wcfield) {
+						if (empty($send2cb[$cbfield]) && !empty($data['shipping'][$wcfield])) {
+							$send2cb[$cbfield] = $data['shipping'][$wcfield];
+						}
+					}
+					break;
+				case 'Contacts':
+					if (empty($send2cb['account_id']) && !empty($data['company'])) {
+						$rs = $adb->pquery(
+							'select accountid
+							from vtiger_account
+							inner join vtiger_crmobject on vtiger_crmobject.crmid=accountid
+							where vtiger_crmobject.deleted=0 and accountname=?',
+							array($data['company'])
+						);
+						if ($rs && $adb->num_rows($rs)>0) {
+							$send2cb['account_id'] = $adb->query_result($rs, 0, 'accountid');
+						}
+					}
+					$checkEmpty = array(
+						'email' => 'email',
+						'firstname' => 'first_name',
+						'lastname' => 'last_name',
+					);
+					foreach ($checkEmpty as $cbfield => $wcfield) {
+						if (empty($send2cb[$cbfield]) && !empty($data[$wcfield])) {
+							$send2cb[$cbfield] = $data[$wcfield];
+						}
+					}
+					$checkEmpty = array(
+						'mailingstreet' => 'address_1',
+						'mailingcity' => 'city',
+						'mailingstate' => 'state',
+						'mailingzip' => 'postcode',
+						'mailingcountry' => 'country',
+					);
+					foreach ($checkEmpty as $cbfield => $wcfield) {
+						if (empty($send2cb[$cbfield]) && !empty($data['billing'][$wcfield])) {
+							$send2cb[$cbfield] = $data['billing'][$wcfield];
+						}
+					}
+					$checkEmpty = array(
+						'otherstreet' => 'address_1',
+						'othercity' => 'city',
+						'otherstate' => 'state',
+						'otherzip' => 'postcode',
+						'othercountry' => 'country',
+					);
+					foreach ($checkEmpty as $cbfield => $wcfield) {
+						if (empty($send2cb[$cbfield]) && !empty($data['shipping'][$wcfield])) {
+							$send2cb[$cbfield] = $data['shipping'][$wcfield];
+						}
+					}
+					break;
+				case 'Products':
+					$checkEmpty = array(
+						'productname' => 'name',
+						'unit_price' => 'regular_price',
+					);
+					foreach ($checkEmpty as $cbfield => $wcfield) {
+						if (empty($send2cb[$cbfield]) && !empty($data[$wcfield])) {
+							$send2cb[$cbfield] = $data[$wcfield];
+						}
+					}
+					break;
+				case 'Services':
+					$checkEmpty = array(
+						'servicename' => 'name',
+						'unit_price' => 'regular_price',
+					);
+					foreach ($checkEmpty as $cbfield => $wcfield) {
+						if (empty($send2cb[$cbfield]) && !empty($data[$wcfield])) {
+							$send2cb[$cbfield] = $data[$wcfield];
+						}
+					}
+					break;
+				case 'SalesOrder':
+				case 'Invoice':
+					$checkEmpty = array(
+						'subject' => 'number',
+						'invoicedate' => 'date_created',
+						'duedate' => 'date_created',
+						'date_paid' => 'date_paid',
+						'transaction_id' => 'transaction_id',
+						'payment_method_title' => 'payment_method_title',
+						'description' => 'customer_note',
+						'hdnGrandTotal' => 'total',
+						'hdnTaxType' => 'group',
+						'hdnDiscountAmount' => 'discount_total',
+						'hdnS_H_Amount' => 'shipping_total',
+					);
+					foreach ($checkEmpty as $cbfield => $wcfield) {
+						if (empty($send2cb[$cbfield]) && !empty($data[$wcfield])) {
+							$send2cb[$cbfield] = $data[$wcfield];
+						}
+					}
+					$send2cb['currency_id'] = getCurrencyId($data['currency']);
+					$send2cb['account_id'] = $this->getCBIDFromEntity('Accounts', $data['customer_id']);
+					$send2cb['contact_id'] = $this->getCBIDFromEntity('Contacts', $data['customer_id']);
+					$checkEmpty = array(
+						'bill_street' => 'address_1',
+						'bill_city' => 'city',
+						'bill_state' => 'state',
+						'bill_code' => 'postcode',
+						'bill_country' => 'country',
+					);
+					foreach ($checkEmpty as $cbfield => $wcfield) {
+						if (empty($send2cb[$cbfield]) && !empty($data['billing'][$wcfield])) {
+							$send2cb[$cbfield] = $data['billing'][$wcfield];
+						}
+					}
+					$checkEmpty = array(
+						'ship_street' => 'address_1',
+						'ship_city' => 'city',
+						'ship_state' => 'state',
+						'ship_code' => 'postcode',
+						'ship_country' => 'country',
+					);
+					foreach ($checkEmpty as $cbfield => $wcfield) {
+						if (empty($send2cb[$cbfield]) && !empty($data['shipping'][$wcfield])) {
+							$send2cb[$cbfield] = $data['shipping'][$wcfield];
+						}
+					}
+					$status = '';
+					switch ($data['status']) {
+						case 'pending':
+							$status = 'Created';
+							break;
+						case 'processing':
+							$status = 'Approved';
+							break;
+						case 'completed':
+							$status = 'Delivered';
+							break;
+						case 'cancelled':
+							$status = 'Cancelled';
+							break;
+						case 'refunded':
+						case 'on-hold':
+						case 'failed':
+						case 'trash':
+						default:
+							$status = $data['status'];
+							break;
+					}
+					$send2cb['sostatus'] = $data['set_paid'] ?  'Paid': $status;
+					$send2cb['invoicestatus'] = $data['set_paid'] ?  'Paid': $status;
+					$litems = array();
+					foreach ($data['line_items'] as $litem) {
+						$li = $this->getCBIDFromEntity('Products', $litem['product_id']);
+						if ($li=='') {
+							$li = $this->getCBIDFromEntity('Services', $litem['product_id']);
+						}
+						$litems[] = array(
+							'productid' => $li,
+							'comment' => '',
+							'qty' => $litem['quantity'],
+							'listprice' => $litem['price'],
+							'discount' => 0,  // 0 no discount, 1 discount
+							'discount_type' => 0,  //  amount/percentage
+							'discount_percentage' => 0,  // not needed nor used if type is amount
+							'discount_amount' => 0,  // not needed nor used if type is percentage
+						);
+					}
+					break;
+			}
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$send2cb = $cbMap->Mapping($send2cb, $data);
+			if (empty($send2cb['assigned_user_id'])) {
+				$send2cb['assigned_user_id'] = $current_user->id;
+			}
+		}
+		return $send2cb;
+	}
+
+	private function getWCIDFromEntity($module, $crmid) {
+		global $adb, $current_user;
+		$queryGenerator = new QueryGenerator($module, $current_user);
+		$queryGenerator->setFields(array('wccode','wcsyncstatus','wcdeleted'));
+		$queryGenerator->addCondition('id', $crmid, 'e');
+		$query = $queryGenerator->getQuery();
+		$rs = $adb->pquery($query, array());
+		$wcid = '';
+		if ($rs && $adb->num_rows($rs)>0) {
+			$sw = $adb->query_result($rs, 0, 'wcsyncstatus');
+			$dl = $adb->query_result($rs, 0, 'wcdeleted');
+			if ($sw != 'Inactive' && $dl!='1') {
+				$wcid = $adb->query_result($rs, 0, 'wccode');
+				if (empty($wcid)) {
+					$wcid = 'CREATEIT';
+				}
+			}
+		}
+		return $wcid;
+	}
+
+	private function getCBIDFromEntity($module, $wcid) {
+		global $adb, $current_user;
+		$queryGenerator = new QueryGenerator($module, $current_user);
+		$queryGenerator->setFields(array('id'));
+		$queryGenerator->addCondition('wccode', $wcid, 'e');
+		$query = $queryGenerator->getQuery();
+		$rs = $adb->pquery($query, array());
+		$cbid = '';
+		if ($rs && $adb->num_rows($rs)>0) {
+			$cbid = $adb->query_result($rs, 0, 0);
+		}
+		return $cbid;
+	}
+
+	public function logMessage($operation, $message, $data, $result) {
+		if (self::DEBUG) {
+			$information = array(
+				'error' => '['.$operation.']: ' . $message,
+				'info' => $data
+			);
+			if (!empty($result)) {
+				$information['response'] = $result;
+			}
+			$this->messagequeue->sendMessage('errorlog', 'woocommerce', 'logmanager', 'Event', 'P:S', 0, 32000000, 0, 0, print_r($information, true));
+		}
 	}
 }
 ?>
