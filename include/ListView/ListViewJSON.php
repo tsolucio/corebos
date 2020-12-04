@@ -14,14 +14,14 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 
-function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sortColumn = '', $currentPage = 1, $searchUrl = '', $searchtype = 'Basic') {
-	global $app_strings, $mod_strings, $current_user, $adb;
-	include_once 'include/utils/utils.php';
+function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sortColumn = '', $currentPage = 1, $searchUrl = '', $searchtype = 'Basic', $tabid) {
+	global $current_user, $adb;
 	include_once 'modules/Tooltip/TooltipUtils.php';
 	require_once "modules/$currentModule/$currentModule.php";
 	$category = getParentTab();
 	$profileid = fetchUserProfileId($current_user->id);
 	$lastPage = vtlib_purify($_REQUEST['lastPage']);
+	$viewid = $_SESSION['lvs'][$currentModule]['viewname'];
 	if ($currentModule == 'Utilities') {
 		$currentModule = vtlib_purify($_REQUEST['formodule']);
 	}
@@ -36,27 +36,8 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	}
 
 	coreBOS_Session::set($currentModule.'_Order_By', $order_by);
-	coreBOS_Session::set($currentModule.'_Sort_Order', $sorder);
-
-	$customViewarr = array();
-	$customView = new CustomView($currentModule);
-	$viewid = $customView->getViewId($currentModule);
-	$customview_html = $customView->getCustomViewCombo($viewid);
-	$viewinfo = $customView->getCustomViewByCvid($viewid);
-	// Approving or Denying status-public by the admin in CustomView
-	$statusdetails = $customView->isPermittedChangeStatus($viewinfo['status'], $viewid);
-	// To check if a user is able to edit/delete a CustomView
-	$edit_permit = $customView->isPermittedCustomView($viewid, 'EditView', $currentModule);
-	$delete_permit = $customView->isPermittedCustomView($viewid, 'Delete', $currentModule);
-	$customViewarr['viewid'] = $viewid;
-	$customViewarr['viewinfo'] = $viewinfo;
-	$customViewarr['edit_permit'] = $edit_permit;
-	$customViewarr['delete_permit'] = $delete_permit;
-	$customViewarr['customview_html'] = $customview_html;
-	$customViewarr['category'] = $category;
 
 	$sql_error = false;
-
 	$queryGenerator = new QueryGenerator($currentModule, $current_user);
 	try {
 		if ($viewid != '0') {
@@ -113,7 +94,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 
 	// Sorting
 	if (!empty($order_by)) {
-		$list_query .= ' ORDER BY '.$queryGenerator->getOrderByColumn($order_by).' '.$sorder;
+		$list_query .= ' ORDER BY '.$queryGenerator->getOrderByColumn(coreBOS_Session::get($currentModule.'_Order_By')).' '.coreBOS_Session::get($currentModule.'_Sort_Order');
 	}
 
 	$start = coreBOS_Session::get('lvs^'.$currentModule.'^'.$viewid.'^start', 1);
@@ -137,10 +118,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	$entityField = getEntityField($currentModule);
 	$entityidfield = $entityField['entityid'];
 	$fieldname = $focus->list_link_field;
-	$controller = new ListViewController($adb, $current_user, $queryGenerator);
-	$listview_header_search = $controller->getBasicSearchFieldInfoList();
 	//add action in header
-	$tabid = getTabid($currentModule);
 	$actionPermission = getTabsActionPermission($profileid)[$tabid];
 	$delete = true;
 	$edit = true;
@@ -149,43 +127,6 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	}
 	if ($actionPermission[2]) {
 		$delete = false;
-	}
-	$listview_header_search['action'] = $app_strings['LBL_ACTION'];
-	$listview_header_arr = array();
-	foreach ($listview_header_search as $fName => $fValue) {
-		$fieldType = getUItypeByFieldName($currentModule, $fName);
-		$tabid = getTabid($currentModule);
-		$tooltip = ToolTipExists($fName, $tabid);
-		if ($fieldType == '15') {
-			$picklistValues = vtlib_getPicklistValues($fName);
-			$lv_arr = array(
-				'fieldname' => $fName,
-				'fieldvalue' => $fValue,
-				'uitype' => $fieldType,
-				'picklist' => $picklistValues,
-				'tooltip' => $tooltip,
-				'edit' => $edit,
-			);
-		} elseif ($fieldType == '52' || $fieldType == '53') {
-			$users = get_user_array();
-			$lv_arr = array(
-				'fieldname' => $fName,
-				'fieldvalue' => $fValue,
-				'uitype' => $fieldType,
-				'picklist' => $users,
-				'tooltip' => $tooltip,
-				'edit' => $edit,
-			);
-		} else {
-			$lv_arr = array(
-				'fieldname' => $fName,
-				'fieldvalue' => $fValue,
-				'uitype' => $fieldType,
-				'tooltip' => $tooltip,
-				'edit' => $edit,
-			);
-		}
-		array_push($listview_header_arr, $lv_arr);
 	}
 	if ($currentModule == 'cbCalendar') {
 		require_once 'modules/Calendar4You/Calendar4You.php';
@@ -262,18 +203,26 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 				}
 			}
 			$Actions = array();
-			if ($currentModule == 'cbCalendar' && $focus->CheckPermissions('EDIT', $row[$entityidfield])) {
-				$evstatus = $row['eventstatus'];
-				if (!($evstatus == 'Deferred' || $evstatus == 'Completed' || $evstatus == 'Held' || $evstatus == '')) {
-					if ($row['activitytype'] == 'Task') {
-						$evt_status = 'Completed';
-					} else {
-						$evt_status = 'Held';
+			if ($currentModule == 'cbCalendar') {
+				if ($focus->CheckPermissions('EDIT', $row[$entityidfield])) {
+					$evstatus = $row['eventstatus'];
+					if (!($evstatus == 'Deferred' || $evstatus == 'Completed' || $evstatus == 'Held' || $evstatus == '')) {
+						if ($row['activitytype'] == 'Task') {
+							$evt_status = 'Completed';
+						} else {
+							$evt_status = 'Held';
+						}
+						$Actions = array(
+							'status' => $evt_status,
+						);
 					}
-					$Actions = array(
-						'status' => $evt_status,
-					);
 				}
+			}
+			if ($currentModule == 'Documents') {
+				$fileattach = 'select attachmentsid from vtiger_seattachmentsrel where crmid = ?';
+				$res = $adb->pquery($fileattach, array($row[$entityidfield]));
+				$fileid = $adb->query_result($res, 0, 'attachmentsid');
+				$rows['fileid'] = $fileid;
 			}
 			$rows['action'] = array(
 				'edit' => $edit,
@@ -303,8 +252,6 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 					),
 				),
 				'entityfield' => $entityidfield,
-				'headers' => $listview_header_arr,
-				'customview' => $customViewarr,
 				'export_where' => $where,
 				'result' => true,
 				'message' => '',
@@ -319,8 +266,6 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 					),
 				),
 				'entityfield' => $entityidfield,
-				'headers' => $listview_header_arr,
-				'customview' => $customViewarr,
 				'export_where' => $where,
 				'result' => false,
 				'message' => getTranslatedString('NoData', $currentModule),
@@ -336,15 +281,105 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 				),
 			),
 			'entityfield' => $entityidfield,
-			'headers' => $listview_header_arr,
-			'customview' => $customViewarr,
 			'export_where' => $where,
 			'result' => false,
 			'message' => getTranslatedString('NoData', $currentModule),
 		);
 	}
 
-	return array('data'=>$res, 'headers'=>$listview_header_arr);
+	return array('data'=>$res);
+}
+
+function getListViewHeaders($currentModule, $tabid) {
+	global $app_strings, $mod_strings, $current_user, $adb;
+	include_once 'modules/Tooltip/TooltipUtils.php';
+	require_once "modules/$currentModule/$currentModule.php";
+	$category = getParentTab();
+	$profileid = fetchUserProfileId($current_user->id);
+	if ($currentModule == 'Utilities') {
+		$currentModule = vtlib_purify($_REQUEST['formodule']);
+	}
+
+	$customViewarr = array();
+	$customView = new CustomView($currentModule);
+	$viewid = $customView->getViewId($currentModule);
+	$customview_html = $customView->getCustomViewCombo($viewid);
+	$viewinfo = $customView->getCustomViewByCvid($viewid);
+	// Approving or Denying status-public by the admin in CustomView
+	$statusdetails = $customView->isPermittedChangeStatus($viewinfo['status'], $viewid);
+	// To check if a user is able to edit/delete a CustomView
+	$edit_permit = $customView->isPermittedCustomView($viewid, 'EditView', $currentModule);
+	$delete_permit = $customView->isPermittedCustomView($viewid, 'Delete', $currentModule);
+	$customViewarr['viewid'] = $viewid;
+	$customViewarr['viewinfo'] = $viewinfo;
+	$customViewarr['edit_permit'] = $edit_permit;
+	$customViewarr['delete_permit'] = $delete_permit;
+	$customViewarr['customview_html'] = $customview_html;
+	$customViewarr['category'] = $category;
+
+	$queryGenerator = new QueryGenerator($currentModule, $current_user);
+	try {
+		if ($viewid != '0') {
+			$queryGenerator->initForCustomViewById($viewid);
+		} else {
+			$queryGenerator->initForDefaultCustomView();
+		}
+	} catch (Exception $e) {
+		$sql_error = true;
+	}
+	//add action in header
+	$actionPermission = getTabsActionPermission($profileid)[$tabid];
+	$delete = true;
+	$edit = true;
+	if ($actionPermission[1]) {
+		$edit = false;
+	}
+	if ($actionPermission[2]) {
+		$delete = false;
+	}
+	$controller = new ListViewController($adb, $current_user, $queryGenerator);
+	$listview_header_search = $controller->getBasicSearchFieldInfoList();
+	$listview_header_search['action'] = $app_strings['LBL_ACTION'];
+	$listview_header_arr = array();
+	foreach ($listview_header_search as $fName => $fValue) {
+		$fieldType = getUItypeByFieldName($currentModule, $fName);
+		$tooltip = ToolTipExists($fName, $tabid);
+		if ($fieldType == '15') {
+			$picklistValues = vtlib_getPicklistValues($fName);
+			$lv_arr = array(
+				'fieldname' => $fName,
+				'fieldvalue' => $fValue,
+				'uitype' => $fieldType,
+				'picklist' => $picklistValues,
+				'tooltip' => $tooltip,
+				'edit' => $edit,
+			);
+		} elseif ($fieldType == '52' || $fieldType == '53') {
+			$users = get_user_array();
+			$lv_arr = array(
+				'fieldname' => $fName,
+				'fieldvalue' => $fValue,
+				'uitype' => $fieldType,
+				'picklist' => $users,
+				'tooltip' => $tooltip,
+				'edit' => $edit,
+			);
+		} else {
+			$lv_arr = array(
+				'fieldname' => $fName,
+				'fieldvalue' => $fValue,
+				'uitype' => $fieldType,
+				'tooltip' => $tooltip,
+				'edit' => $edit,
+			);
+		}
+		array_push($listview_header_arr, $lv_arr);
+	}
+	return array(
+		'headers' => $listview_header_arr,
+		'customview' => $customViewarr,
+		'result' => true,
+	);
 }
 
 function updateDataListView() {

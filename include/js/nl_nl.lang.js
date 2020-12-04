@@ -437,4 +437,8 @@ var alert_arr = {
 	'LNK_EDIT': 'Bewerk',
 	'LNK_EDIT_ACTION': 'Bewerk',
 	'LNK_DELETE_ACTION': 'Verwijder',
+	'LBL_MODIFIED': 'Modified',
+	'LBL_CREATE': 'Create a',
+	'LBL_IMPORT': 'Import',
+	'LBL_NO_DATA': 'No Data Found',
 };

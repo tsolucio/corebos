@@ -52,7 +52,7 @@ class CheckboxRender {
 class LinkRender {
 
 	constructor(props) {
-		let el;
+		let el, edit_query, edit_query_string;
 		let module = document.getElementById('curmodule').value;
 		let rowKey = props.rowKey;
 		let columnName = props.columnInfo.name;
@@ -79,8 +79,15 @@ class LinkRender {
 			if (tooltip) {
 				el.id = `tooltip-el-${recordid}-${columnName}`;
 			}
-			el.href = `index.php?module=${module}&action=DetailView&record=`+recordid;
+			edit_query = {
+				'module': module,
+				'action': 'DetailView',
+				'record': recordid,
+			};
+			edit_query_string = ListView.encodeQueryData(edit_query);
+			el.href = `index.php?${edit_query_string}`;
 			el.innerHTML = String(props.value);
+			el.style.marginLeft = '5px';
 			this.el = el;
 			this.render(props);
 		} else if (relatedRows[columnName] != undefined) {
@@ -90,16 +97,42 @@ class LinkRender {
 			if (tooltip) {
 				el.id = `tooltip-el-${recordid}-${columnName}`;
 			}
-			el.href = `index.php?module=${moduleName}&action=DetailView&record=`+fieldId;
+			edit_query = {
+				'module': moduleName,
+				'action': 'DetailView',
+				'record': fieldId,
+			};
+			edit_query_string = ListView.encodeQueryData(edit_query);
+			el.href = `index.php?${edit_query_string}`;
 			el.innerHTML = String(props.value);
+			el.style.marginLeft = '5px';
 			this.el = el;
 			this.render(props);
 		} else {
-			el = document.createElement('span');
-			if (tooltip) {
-				el.id = `tooltip-el-${recordid}-${columnName}`;
+			if (columnName == 'filename' && module == 'Documents') {
+				el = document.createElement('a');
+				if (tooltip) {
+					el.id = `tooltip-el-${recordid}-${columnName}`;
+				}
+				el.setAttribute('onclick', `javascript:dldCntIncrease(${recordid})`);
+				edit_query = {
+					'module': 'Utilities',
+					'action': 'UtilitiesAjax',
+					'file': 'ExecuteFunctions',
+					'functiontocall': 'downloadfile',
+					'entityid': recordid,
+					'fileid': props.grid.getValue(rowKey, 'fileid'),
+				};
+				edit_query_string = ListView.encodeQueryData(edit_query);
+				el.href = `index.php?${edit_query_string}`;
+			} else {
+				el = document.createElement('span');
+				if (tooltip) {
+					el.id = `tooltip-el-${recordid}-${columnName}`;
+				}
 			}
 			el.innerHTML = String(props.value);
+			el.style.marginLeft = '5px';
 			this.el = el;
 			this.render(props);
 		}
@@ -140,7 +173,7 @@ class ActionRender {
 					    <svg class="slds-button__icon" aria-hidden="true">
 					        <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
 					    </svg>
-						Close
+						${alert_arr.LBL_CLOSE_TITLE}
 					</span>
 				</a>
 			</li>`;
@@ -155,7 +188,7 @@ class ActionRender {
 					        <svg class="slds-button__icon" aria-hidden="true">
 					          <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#notification"></use>
 					        </svg>
-							Modified
+							${alert_arr.LBL_MODIFIED}
 						</span>
 					</a>
 	          	</li>`;
@@ -167,7 +200,7 @@ class ActionRender {
 				    <svg class="slds-button__icon" aria-hidden="true">
 				      <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
 				    </svg>
-				    Close
+				    ${alert_arr.LBL_CLOSE_TITLE}
 				</a>
 				<div class="slds-dropdown-trigger slds-dropdown-trigger_hover slds-button_last">
 			    <button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" title="Show More">
@@ -188,7 +221,7 @@ class ActionRender {
 				    <svg class="slds-button__icon" aria-hidden="true">
 				      <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
 				    </svg>
-				    Close
+				    ${alert_arr.LBL_CLOSE_TITLE}
 				</a>`;
 		} else if (modified != '' && status == '') {
 			customActions += `

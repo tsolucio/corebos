@@ -364,6 +364,7 @@ switch ($functiontocall) {
 			$formodule = isset($_REQUEST['formodule']) ? vtlib_purify($_REQUEST['formodule']) : '';
 			$columns = isset($_REQUEST['columns']) ? vtlib_purify($_REQUEST['columns']) : '';
 			$beforeFilter = isset($_REQUEST['beforeFilter']) ? vtlib_purify($_REQUEST['beforeFilter']) : '';
+			$tabid = getTabid($formodule);
 			if (isset($_REQUEST['perPage'])) {
 				//get data
 				$perPage = isset($_REQUEST['perPage']) ? vtlib_purify($_REQUEST['perPage']) : $entries;
@@ -372,19 +373,35 @@ switch ($functiontocall) {
 				$page = isset($_REQUEST['page']) ? vtlib_purify($_REQUEST['page']) : 1;
 				$search = isset($_REQUEST['search']) ? vtlib_purify($_REQUEST['search']) : '';
 				$searchtype = isset($_REQUEST['searchtype']) ? vtlib_purify($_REQUEST['searchtype']) : '';
-				if ($sortAscending == 'true') {
-					$orderBy = ' ASC';
+				$session_sort = coreBOS_Session::get($formodule.'_Sort_Order');
+				if ($session_sort != '') {
+					if ($session_sort == ' ASC' && $sortAscending == 'true') {
+						$orderBy = ' ASC';
+					} elseif ($session_sort == ' ASC' && $sortAscending == 'false') {
+						$orderBy = ' DESC';
+					} elseif ($session_sort == ' DESC' && $sortAscending == 'true') {
+						$orderBy = ' ASC';
+					} elseif ($session_sort == ' DESC' && $sortAscending == 'false') {
+						$orderBy = ' DESC';
+					} elseif ($sortAscending == '') {
+						$orderBy = $session_sort;
+					}
+				} else {
+					if ($sortAscending == 'true') {
+						$orderBy = ' ASC';
+					}
 				}
+				coreBOS_Session::set($formodule.'_Sort_Order', $orderBy);
 				if ($perPage == 0) {
 					$perPage = $list_max_entries_per_page;
 				}
-				$LV = getListViewJSON($formodule, $perPage, $orderBy, $sortColumn, $page, $search, $searchtype);
+				$LV = getListViewJSON($formodule, $perPage, $orderBy, $sortColumn, $page, $search, $searchtype, $tabid);
 			} else {
 				//get headers
-				$LV = getListViewJSON($formodule);
+				$LV = getListViewHeaders($formodule, $tabid);
 			}
 			if (isset($columns) && $columns == 'true') {
-				$ret = array($LV['headers'], $LV['data']['customview'], $LV['data']['export_where']);
+				$ret = array($LV['headers'], $LV['customview']);
 			} else {
 				$ret = $LV['data'];
 			}

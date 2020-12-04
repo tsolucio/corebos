@@ -399,4 +399,8 @@ var alert_arr = {
 	'LNK_EDIT': 'edit',
 	'LNK_EDIT_ACTION': 'Editare',
 	'LNK_DELETE_ACTION': 'Stergere',
+	'LBL_MODIFIED': 'Modified',
+	'LBL_CREATE': 'Create a',
+	'LBL_IMPORT': 'Import',
+	'LBL_NO_DATA': 'No Data Found',
 };
