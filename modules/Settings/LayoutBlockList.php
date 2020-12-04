@@ -683,7 +683,7 @@ function updateFieldProperties() {
 	$oldpresence = $adb->query_result($req_result, 0, 'presence');
 
 	$cal_uitype = vtlib_purify($_REQUEST['uitype']);
-	$longfield_check = vtlib_purify($_REQUEST['longfield']);
+	$longfield_check = isset($_REQUEST['longfield']) ? vtlib_purify($_REQUEST['longfield']) : '';
 	if ($cal_uitype == 19 && $longfield_check == 'false') {
 		$adb->pquery('UPDATE vtiger_field SET uitype=? WHERE fieldid=?', array(21, $fieldid));
 	}

@@ -151,7 +151,7 @@ function getSelectedRecordIds($input, $module, $idstring, $excludedRecords) {
 		$excludedRecords=explode(';', $excludedRecords);
 		$storearray=array_merge(array_diff($storearray, $excludedRecords));
 	} else {
-		$storearray = explode(";", $idstring);
+		$storearray = explode(';', $idstring);
 	}
 	return $storearray;
 }
