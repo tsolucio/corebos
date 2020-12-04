@@ -42,7 +42,7 @@ function wcnotification($input) {
 	$wcsettings = $wc->getSettings();
 	$headers = apache_request_headers();
 	$signature = base64_encode(hash_hmac('sha256', $input, $wcsettings['sct'], true));
-	if ($wc->isActive() && $headers['X-WC-Webhook-Source']==$wcsettings['url'] && $headers['X-WC-Webhook-Signature']==$signature) {
+	if ($wc->isActive() && trim($headers['X-WC-Webhook-Source'], '/')==trim($wcsettings['url'], '/') && $headers['X-WC-Webhook-Signature']==$signature) {
 		$msg = array(
 			'event' => $headers['X-WC-Webhook-Topic'],
 			'data' => json_decode($input, true),
