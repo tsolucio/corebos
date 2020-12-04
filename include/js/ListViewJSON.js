@@ -20,6 +20,7 @@ let dataGridInstance;
 let SearchColumns = 0;
 let ListViewCopy = 0;
 let Application_Filter_All_Edit = 0;
+let lastPage = sessionStorage.getItem(module+'_lastPage');
 GlobalVariable_getVariable('Application_ListView_PageSize', 20, module, '').then(function (response) {
 	let obj = JSON.parse(response);
 	PageSize = obj.Application_ListView_PageSize;
@@ -47,7 +48,6 @@ const ListView = {
 		if (document.getElementById('curmodule') != undefined) {
 			module = document.getElementById('curmodule').value;
 		}
-		let lastPage = sessionStorage.getItem(module+'_lastPage');
 		if (!lastPage) {
 			lastPage = 1;
 		}
