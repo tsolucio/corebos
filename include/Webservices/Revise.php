@@ -73,7 +73,7 @@ function vtws_revise($element, $user) {
 			$elemTypeId = $ids[0];
 			$referenceObject = VtigerWebserviceObject::fromId($adb, $elemTypeId);
 			if (!in_array($referenceObject->getEntityName(), $details)) {
-				throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, 'Invalid reference specified for $fieldName');
+				throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, "Invalid reference specified for $fieldName");
 			}
 			if ($referenceObject->getEntityName() == 'Users') {
 				if (!$meta->hasAssignPrivilege($element[$fieldName])) {
