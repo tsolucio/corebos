@@ -312,7 +312,7 @@ class corebos_woocommerce {
 	}
 
 	public function createFromWC($moduleName, $data) {
-		global $current_user;
+		global $current_user, $adb;
 		$send2cb = $this->getPropertiesFromWC($moduleName, $data);
 		if (count($send2cb)>0) {
 			$hold = '';
@@ -331,8 +331,11 @@ class corebos_woocommerce {
 				$send2cb['wcdeleted'] = '0';
 				$send2cb['wcurl'] = $this->getWCURL($moduleName, $data['id']);
 				coreBOS_Settings::setSetting('woocommerce_syncing', 'creating');
-				vtws_create($moduleName, $send2cb, $current_user);
+				$new = vtws_create($moduleName, $send2cb, $current_user);
 				coreBOS_Settings::delSetting('woocommerce_syncing');
+				$mod = CRMEntity::getInstance($moduleName);
+				list($wsid, $crmid) = $new['id'];
+				$adb->pquery('update '.$mod->table_name.' set wccreated=1,wcdeleted=0,wcdeletedon=null where '.$mod->table_index.'=?', array($crmid));
 			} catch (Exception $e) {
 				$this->logMessage('sendProduct2WC', $e->getMessage(), $send2cb, 0);
 			}
