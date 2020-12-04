@@ -139,7 +139,8 @@ function getSelectedRecordIds($input, $module, $idstring, $excludedRecords) {
 
 		$queryGenerator->setFields(array('id'));
 		$query = $queryGenerator->getQuery();
-		$query = preg_replace("/vtiger_crmentity.deleted\s*=\s*0/i", 'vtiger_crmentity.deleted=1', $query);
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias($module, true);
+		$query = preg_replace("/$crmEntityTable.deleted\s*=\s*0/i", $crmEntityTable.'.deleted=1', $query);
 		$result = $adb->pquery($query, array());
 		$storearray = array();
 
