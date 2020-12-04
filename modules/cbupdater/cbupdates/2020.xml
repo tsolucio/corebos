@@ -360,4 +360,11 @@
 	<classname>incmessagenamefield</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>Kiko Jover</author>
+	<description>Change size and uitype of cbCompany Lagal Fields</description>
+	<filename>build/changeSets/2020/upd_cbCompanyLegalFields.php</filename>
+	<classname>upd_cbCompanyLegalFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
