@@ -433,8 +433,8 @@ var alert_arr = {
 	'LNK_EDIT': 'editar',
 	'LNK_EDIT_ACTION': 'Editar',
 	'LNK_DELETE_ACTION': 'Borrar',
-	'LBL_MODIFIED': 'Modified',
-	'LBL_CREATE': 'Create a',
-	'LBL_IMPORT': 'Import',
-	'LBL_NO_DATA': 'No Data Found',
+	'LBL_MODIFIED': 'Modificado',
+	'LBL_CREATE': 'Crea un/a',
+	'LBL_IMPORT': 'Importa',
+	'LBL_NO_DATA': 'No Hay Registros',
 };
