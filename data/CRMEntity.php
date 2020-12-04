@@ -1938,12 +1938,13 @@ class CRMEntity {
 	public function restore($module, $id) {
 		global $current_user, $adb;
 
-		$adb->println("TRANS restore starts $module");
+		$adb->println("> restore $module, $id");
 		$adb->startTransaction();
 
-		$date_var = date('Y-m-d H:i:s');
+		$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);
 		$query = 'UPDATE '.$this->crmentityTable.' SET deleted=0,modifiedtime=?,modifiedby=? WHERE crmid = ?';
-		$adb->pquery($query, array($adb->formatDate($date_var, true), $current_user->id, $id), true, 'Error restoring records :');
+		$adb->pquery($query, array($date_var, $current_user->id, $id), true, 'Error restoring records :');
+		$adb->pquery('UPDATE vtiger_crmobject SET deleted=0,modifiedtime=? WHERE crmid=?', array($date_var, $id), true, 'Error restoring records :');
 		//Restore related entities/records
 		$this->restoreRelatedRecords($module, $id);
 
@@ -1961,7 +1962,7 @@ class CRMEntity {
 		//Event triggering code ends
 
 		$adb->completeTransaction();
-		$adb->println('TRANS restore ends');
+		$adb->println('< restore');
 	}
 
 	/** Function to restore all the related records of a given record by id */
