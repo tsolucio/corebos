@@ -31,7 +31,7 @@ class upd_cbCompanyLegalFields extends cbupdaterWorker {
 			$this->ExecuteQuery('UPDATE vtiger_blocks SET sequence = sequence+1 WHERE tabid = ? AND sequence > 1', array($module->id));
 			$this->ExecuteQuery('UPDATE vtiger_blocks SET sequence = 2 WHERE blockid = ?', array($block->id));
 
-			foreach($fields as $fldname){
+			foreach ($fields as $fldname) {
 				$field = Vtiger_Field::getInstance($fldname, $module);
 				if ($field) {
 					$this->ExecuteQuery('ALTER TABLE '.$field->table.' CHANGE '.$field->column.' '.$field->column.' TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;', array());
@@ -45,5 +45,4 @@ class upd_cbCompanyLegalFields extends cbupdaterWorker {
 		$this->finishExecution();
 	}
 }
-
 ?>
