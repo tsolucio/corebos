@@ -21,7 +21,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	$category = getParentTab();
 	$profileid = fetchUserProfileId($current_user->id);
 	$lastPage = vtlib_purify($_REQUEST['lastPage']);
-	$viewid = $_SESSION['lvs'][$currentModule]['viewname'];
+	$viewid = isset($_SESSION['lvs'][$currentModule]) ? $_SESSION['lvs'][$currentModule]['viewname'] : 0;
 	if ($currentModule == 'Utilities') {
 		$currentModule = vtlib_purify($_REQUEST['formodule']);
 	}
