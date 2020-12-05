@@ -374,4 +374,11 @@
 	<classname>fixEmailParentFieldTypeData</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Standardize Sales Order and HelpDesk related list on Modules</description>
+	<filename>build/changeSets/2020/standardizeSORLonModules.php</filename>
+	<classname>standardizeSORLonModules</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

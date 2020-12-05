@@ -29,8 +29,6 @@ class SalesOrder extends CRMEntity {
 	 * Mandatory table for supporting custom fields.
 	 */
 	public $customFieldTable = array('vtiger_salesordercf', 'salesorderid');
-	// Uncomment the line below to support custom field columns on related lists
-	public $related_tables = array('vtiger_account'=>array('accountid'));
 
 	public $tab_name = array(
 		'vtiger_crmentity',
