@@ -367,4 +367,11 @@
 	<classname>upd_cbCompanyLegalFields</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Fix EMail Parent Field Type of Data</description>
+	<filename>build/changeSets/2020/fixEmailParentFieldTypeData.php</filename>
+	<classname>fixEmailParentFieldTypeData</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

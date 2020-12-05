@@ -13,7 +13,7 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-class upd_cbCompanyLegalFields extends cbupdaterWorker {
+class fixEmailParentFieldTypeData extends cbupdaterWorker {
 
 	public function applyChange() {
 		if ($this->hasError()) {
@@ -22,21 +22,10 @@ class upd_cbCompanyLegalFields extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$modname = 'cbCompany';
-			$fields = ['companybr', 'companylopd'];
-			$module = Vtiger_Module::getInstance($modname);
-			$block = new Vtiger_Block();
-			$block->label = 'LBL_COMPANY_LEGAL';
-			$module->addBlock($block);
-			$this->ExecuteQuery('UPDATE vtiger_blocks SET sequence = sequence+1 WHERE tabid = ? AND sequence > 1', array($module->id));
-			$this->ExecuteQuery('UPDATE vtiger_blocks SET sequence = 2 WHERE blockid = ?', array($block->id));
-
-			foreach ($fields as $fldname) {
-				$field = Vtiger_Field::getInstance($fldname, $module);
-				if ($field) {
-					$this->ExecuteQuery('ALTER TABLE '.$field->table.' CHANGE '.$field->column.' '.$field->column.' TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;', array());
-					$this->ExecuteQuery('UPDATE vtiger_field SET uitype = 19, block = ? WHERE fieldid = ?', array($block->id, $field->id));
-				}
+			$module = Vtiger_Module::getInstance('Emails');
+			$field = Vtiger_Field::getInstance('parent_type', $module);
+			if ($field) {
+				$this->ExecuteQuery('UPDATE vtiger_field SET typeofdata=? WHERE fieldid=?', array('V~O', $field->id));
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
