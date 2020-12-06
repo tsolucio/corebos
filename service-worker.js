@@ -9320,7 +9320,7 @@ precacheAndRoute([{
   "revision": "e4cc7bb9fdef5d2b8a887122f48cfc41"
 }, {
   "url": "include/js/Inventory.js",
-  "revision": "7e5c79239c445fe4066b7f8ab4bbf650"
+  "revision": "91536c6bbef632e4c599afe3f4173f40"
 }, {
   "url": "include/js/it_it.lang.js",
   "revision": "82d0688c57068a35105286134212467f"
@@ -9476,7 +9476,7 @@ precacheAndRoute([{
   "revision": "143302dc3175324824d718937e339fff"
 }, {
   "url": "include/style.css",
-  "revision": "c4a0b3a72980a276921a4bbb3e511d40"
+  "revision": "b88841f49337823f3942ea7efb185bdd"
 }, {
   "url": "include/print.css",
   "revision": "6b1e0c714dd4c389fb51b840e4cf01d2"
@@ -9815,7 +9815,7 @@ precacheAndRoute([{
   "revision": "69636c3bb0f5569277b10c98016af69a"
 }, {
   "url": "modules/Emails/Emails.js",
-  "revision": "e6b32e45cd71456812dd2779e388f97e"
+  "revision": "92590b1064f23d4416aefcf66dd83c31"
 }, {
   "url": "modules/Rss/Rss.js",
   "revision": "9e93cf2f8dddbea42be801f31e1f73f3"
@@ -9848,7 +9848,7 @@ precacheAndRoute([{
   "revision": "df1beb66383c404ca19595bfede77a1f"
 }, {
   "url": "modules/cbQuestion/resources/appendcontext.js",
-  "revision": "532307e942f68736954674dd296f9325"
+  "revision": "87897968e569d8a5f69b730b27c8aa4b"
 }, {
   "url": "modules/cbQuestion/resources/Builder.js",
   "revision": "f11bf7fb61310f00c2bb311981b36de9"
