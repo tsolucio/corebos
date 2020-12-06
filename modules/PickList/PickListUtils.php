@@ -84,6 +84,7 @@ function getrole2picklist() {
  * @return array $module_pick - the picklists present in the module in an array format
  */
 function get_available_module_picklist($picklist_details) {
+	$module_pick = array();
 	foreach ($picklist_details as $key => $val) {
 		$module_pick[$picklist_details[$key]['fieldname']] = getTranslatedString($picklist_details[$key]['fieldlabel']);
 	}
