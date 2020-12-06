@@ -337,7 +337,7 @@ class corebos_woocommerce {
 				list($wsid, $crmid) = $new['id'];
 				$adb->pquery('update '.$mod->table_name.' set wccreated=1,wcdeleted=0,wcdeletedon=null where '.$mod->table_index.'=?', array($crmid));
 			} catch (Exception $e) {
-				$this->logMessage('sendProduct2WC', $e->getMessage(), $send2cb, 0);
+				$this->logMessage('send'.$moduleName.'2WC', $e->getMessage(), $send2cb, 0);
 			}
 		}
 	}
@@ -365,7 +365,7 @@ class corebos_woocommerce {
 				vtws_revise($send2cb, $current_user);
 				coreBOS_Settings::delSetting('woocommerce_syncing');
 			} catch (Exception $e) {
-				$this->logMessage('sendProduct2WC', $e->getMessage(), $send2cb, 0);
+				$this->logMessage('send'.$moduleName.'2WC', $e->getMessage(), $send2cb, 0);
 			}
 		}
 	}
@@ -418,42 +418,17 @@ class corebos_woocommerce {
 		return $endpoint;
 	}
 
-	public function updateControlFields($setype, $crmid, $wcid) {
+	public function updateControlFields($moduleName, $crmid, $wcid) {
 		global $adb;
-		switch ($setype) {
-			case 'Accounts':
-				$table = 'vtiger_account';
-				$idcol = 'accountid';
-				break;
-			case 'Contacts':
-				$table = 'vtiger_contactdetails';
-				$idcol = 'contactid';
-				break;
-			case 'Products':
-				$table = 'vtiger_products';
-				$idcol = 'productid';
-				break;
-			case 'Services':
-				$table = 'vtiger_service';
-				$idcol = 'serviceid';
-				break;
-			case 'SalesOrder':
-				$table = 'vtiger_salesorder';
-				$idcol = 'salesorderid';
-				break;
-			case 'Invoice':
-				$table = 'vtiger_invoice';
-				$idcol = 'invoiceid';
-				break;
-		}
-		$upd = "update $table set wcsyncstatus='Active'";
+		$mod = CRMEntity::getInstance($moduleName);
+		$upd = 'update '.$mod->table_name." set wcsyncstatus='Active'";
 		$params = array();
 		if (!empty($wcid)) {
 			$upd .= ', wccode=?, wcurl=?';
 			$params[] = $wcid;
-			$params[] = $this->getWCURL($setype, $wcid);
+			$params[] = $this->getWCURL($moduleName, $wcid);
 		}
-		$upd .= ' where ' . $idcol . '=?';
+		$upd .= ' where ' . $mod->table_index . '=?';
 		$params[] = $crmid;
 		$adb->pquery($upd, $params);
 	}
