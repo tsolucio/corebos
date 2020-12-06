@@ -143,41 +143,6 @@ if ($sql_error) {
 	$queryGenerator = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.after', $queryGenerator);
 	$list_query = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.query', $list_query);
 	$where = $queryGenerator->getConditionalWhere();
-	if ($currentModule=='Emails' && isset($_REQUEST['folderid'])) {
-		$emailwhere = $queryGenerator->getWhereClause();
-		$addseactrel = false;
-		$addsemanrel = false;
-		switch ($_REQUEST['folderid']) {
-			case '2':
-				$emailwhere .= " AND vtiger_seactivityrel.crmid in (select contactid from vtiger_contactdetails) AND vtiger_emaildetails.email_flag !='WEBMAIL'";
-				$addseactrel = true;
-				break;
-			case '3':
-				$emailwhere .= ' AND vtiger_seactivityrel.crmid in (select accountid from vtiger_account)';
-				$addseactrel = true;
-				break;
-			case '4':
-				$emailwhere .= ' AND vtiger_seactivityrel.crmid in (select leadid from vtiger_leaddetails)';
-				$addseactrel = true;
-				break;
-			case '5':
-				$emailwhere .= ' AND vtiger_salesmanactivityrel.smid in (select id from vtiger_users)';
-				$addsemanrel = true;
-				break;
-			case '6':
-				$emailwhere .= " AND vtiger_emaildetails.email_flag ='WEBMAIL'";
-				break;
-		}
-		if ($addseactrel || $addsemanrel) {
-			$list_query = 'SELECT '.$queryGenerator->getSelectClauseColumnSQL().' '.$queryGenerator->getFromClause();
-			if ($addseactrel) {
-				$list_query.= 'INNER JOIN vtiger_seactivityrel ON vtiger_seactivityrel.activityid=vtiger_activity.activityid';
-			} else {
-				$list_query.= 'INNER JOIN vtiger_salesmanactivityrel ON vtiger_salesmanactivityrel.activityid=vtiger_activity.activityid';
-			}
-			$list_query.= $emailwhere;
-		}
-	}
 	if (isset($where) && $where != '') {
 		coreBOS_Session::set('export_where', $where);
 	} else {
