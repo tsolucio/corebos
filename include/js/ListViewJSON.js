@@ -518,7 +518,6 @@ const ListView = {
 			}
 			ListView.setFilters(filters, true);
 		 	dataGridInstance.setColumns(headers);
-		 	dataGridInstance.reloadData();
 		});
 		ListView.updateData();
 		//update pagination onchange
