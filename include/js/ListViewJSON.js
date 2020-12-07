@@ -336,42 +336,7 @@ const ListView = {
 				}
 			});
 			//load empty create new record template
-			const nr_records = dataGridInstance.store.data.rawData.length;
-			if (nr_records == 0) {
-				const no_data_template = document.getElementsByClassName('tui-grid-layer-state-content')[0];
-				const grid_template = document.getElementsByClassName('tui-grid-content-area')[0];
-				const mod_label = document.getElementsByClassName('hdrLink')[0].innerText;
-				grid_template.style.height = '240px';
-				no_data_template.innerHTML = `
-				<article class="slds-card" style="width: 40%;margin-left: auto;margin-right: auto;">
-					<div class="slds-card__header slds-grid">
-						<header class="slds-media slds-media_center slds-has-flexi-truncate">
-					    	<div class="slds-media__figure">
-								<span class="slds-icon_container slds-icon-standard-record-create">
-					          		<svg class="slds-icon slds-icon_small" aria-hidden="true">
-										<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#record_create"></use>
-									</svg>
-								</span>
-							</div>
-							<div class="slds-media__body">
-								<h2 class="slds-card__header-title">
-									<span>${alert_arr.LBL_NO_DATA}</span>
-								</h2>
-							</div>
-							<div class="slds-no-flex">
-								<a href="index.php?module=${module}&action=EditView&return_action=DetailView&parenttab=ptab">
-									<button class="slds-button slds-button_neutral">${alert_arr.LBL_CREATE} ${mod_label}</button>
-								</a>
-							</div>
-						</header>
-					</div>
-					<footer class="slds-card__footer">
-						<a class="slds-card__footer-action" href="index.php?module=${module}&action=Import&step=1&return_module=${module}&return_action=ListView&parenttab=ptab">
-							${alert_arr.LBL_IMPORT} ${mod_label}
-						</a>
-					</footer>
-				</article>`;
-			}
+			ListView.noData();
 			//change style in grid
 			const getBodyArea = document.getElementsByClassName('tui-grid-body-area');
 			for (let i = 0; i < getBodyArea.length; i++) {
@@ -415,6 +380,16 @@ const ListView = {
 				ListView.ListViewReloadData();
 			}
 		});
+		dataGridInstance.on('successResponse', function (data) {
+			const filteredData = document.getElementById('filteredData');
+			const res = JSON.parse(data.xhr.response);
+			const search_mode = res.search_mode;
+			if (search_mode) {
+				filteredData.innerHTML = `<span class="slds-badge slds-theme_success">${alert_arr.filterApplied}</span>`;
+			} else {
+				filteredData.innerHTML = '';
+			}
+	 	});
 	},
 	/**
 	 * Get the new headers in a onchange search
@@ -440,6 +415,7 @@ const ListView = {
 		//update pagination onchange
 		dataGridInstance.setPerPage(parseInt(PageSize));
 	 	ListView.updateData();
+	 	ListView.noData();
 	},
 	/**
 	 * Get results for alphabetic search
@@ -456,7 +432,6 @@ const ListView = {
 		document.getElementById('search_url').value = `&query=true&search_field=${urlArr['search_field']}&search_text=${urlArr['search_text']}&searchtype=BasicSearch&type=alpbt&operator=${urlArr['operator']}`;
 		dataGridInstance.clear();
 	 	dataGridInstance.setRequestParams({'search': url, 'searchtype': 'Basic'});
-	 	dataGridInstance.reloadData();
 		dataGridInstance.on('successResponse', function (data) {
 			const res = JSON.parse(data.xhr.response);
 			const export_where = res.export_where;
@@ -467,6 +442,7 @@ const ListView = {
 		//update pagination onchange
 		dataGridInstance.setPerPage(parseInt(PageSize));
 		const total = ListView.updateData();
+		ListView.noData();
 		document.getElementById('numOfRows').value = total;
 		document.getElementById('count').innerHTML = total;
 	},
@@ -479,6 +455,7 @@ const ListView = {
 	 		dataGridInstance.setRequestParams({'search': '', 'searchtype': '', 'page': lastPage});
 	 	} else {
 	 		dataGridInstance.setRequestParams({'search': '', 'searchtype': ''});
+	 		document.getElementsByName('search_text')[0].value = '';
 	 	}
 	 	dataGridInstance.reloadData();
 	 	//update pagination onchange
@@ -518,6 +495,7 @@ const ListView = {
 			}
 			ListView.setFilters(filters, true);
 		 	dataGridInstance.setColumns(headers);
+		 	ListView.noData();
 		});
 		ListView.updateData();
 		//update pagination onchange
@@ -814,6 +792,65 @@ const ListView = {
 				createEl.classList.add('cbds-tooltip__wrapper');
 				createEl.innerHTML = el;
 				document.getElementById(`cbds-tooltip__trigger-${recordid}-${fieldname}`).appendChild(createEl);
+			});
+		}
+	},
+	noData: () => {
+		const nr_records = dataGridInstance.store.data.rawData.length;
+		if (nr_records == 0) {
+			fetch(
+				'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=checkButton&formodule='+lvmodule,
+				{
+					method: 'get',
+					headers: {
+						'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+					},
+					credentials: 'same-origin',
+				}
+			).then(response => response.json()).then(response => {
+				const no_data_template = document.getElementsByClassName('tui-grid-layer-state-content')[0];
+				const grid_template = document.getElementsByClassName('tui-grid-content-area')[0];
+				const mod_label = document.getElementsByClassName('hdrLink')[0].innerText;
+				grid_template.style.height = '240px';
+				let create_template = '';
+				let import_template = '';
+				if (response.CreateView == 'yes') {
+					create_template = `
+					<a href="index.php?module=${lvmodule}&action=EditView&return_action=DetailView&parenttab=ptab">
+						<button class="slds-button slds-button_neutral">${alert_arr.LBL_CREATE} ${mod_label}</button>
+					</a>`;
+				}
+				if (response.Import == 'yes') {
+					import_template = `
+					<a class="slds-card__footer-action" href="index.php?module=${lvmodule}&action=Import&step=1&return_module=${lvmodule}&return_action=ListView&parenttab=ptab">
+						${alert_arr.LBL_IMPORT} ${mod_label}
+					</a>`;
+				}
+				no_data_template.innerHTML = `
+				<article class="slds-card" style="width: 40%;margin-left: auto;margin-right: auto;">
+					<div class="slds-card__header slds-grid">
+						<header class="slds-media slds-media_center slds-has-flexi-truncate">
+					    	<div class="slds-media__figure">
+								<span class="slds-icon_container slds-icon-standard-record-create">
+					          		<svg class="slds-icon slds-icon_small" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#record_create"></use>
+									</svg>
+								</span>
+							</div>
+							<div class="slds-media__body">
+								<h2 class="slds-card__header-title">
+									<span>${alert_arr.LBL_NO_DATA}</span>
+								</h2>
+							</div>
+							<div class="slds-no-flex">
+								${create_template}
+							</div>
+						</header>
+					</div>
+					<footer class="slds-card__footer">
+						${import_template}
+					</footer>
+				</article>`;
 			});
 		}
 	},

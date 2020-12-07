@@ -48,7 +48,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	} catch (Exception $e) {
 		$sql_error = true;
 	}
-
+	$search_mode = false;
 	if ($searchtype == 'Basic' && $searchUrl != '') {
 		$search = explode('&', $searchUrl);
 		foreach ($search as $key => $value) {
@@ -61,6 +61,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 		$_search['action'] = $currentModule.'Ajax';
 		$_search['module'] = $currentModule;
 		$_search['search'] = 'true';
+		$search_mode = true;
 	} elseif ($searchtype == 'Advanced' && $searchUrl != '') {
 		$search = explode('&', $searchUrl);
 		$advft_criteria = explode('=', $search[1])[1];
@@ -71,6 +72,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 		$_search['module'] = $currentModule;
 		$_search['query'] = 'true';
 		$_search['search'] = 'true';
+		$search_mode = true;
 	}
 
 	if ((isset($searchUrl) && $searchUrl != '')) {
@@ -296,6 +298,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 				'export_where' => $where,
 				'result' => true,
 				'message' => '',
+				'search_mode' => $search_mode,
 			);
 		} else {
 			$res = array(
@@ -310,6 +313,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 				'export_where' => $where,
 				'result' => false,
 				'message' => getTranslatedString('NoData', $currentModule),
+				'search_mode' => $search_mode,
 			);
 		}
 	} else {
@@ -325,6 +329,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 			'export_where' => $where,
 			'result' => false,
 			'message' => getTranslatedString('NoData', $currentModule),
+			'search_mode' => $search_mode,
 		);
 	}
 

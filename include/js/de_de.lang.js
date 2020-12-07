@@ -439,4 +439,5 @@ var alert_arr = {
 	'LBL_CREATE': 'Create a',
 	'LBL_IMPORT': 'Import',
 	'LBL_NO_DATA': 'No Data Found',
+	'filterApplied': 'Filter applied',
 };

@@ -53,6 +53,7 @@
 		</td>
 		<td class="small" nowrap width=40% >
 			<input name="submit" type="button" class="crmbutton small create" onClick="callSearch('Basic');document.basicSearch.searchtype.searchlaunched='basic';" value=" {$APP.LBL_SEARCH_NOW_BUTTON} ">&nbsp;
+			<input type="button" class="crmbutton small edit" value="{$APP.LBL_CLEAR}" onClick="ListView.ListViewReloadData()">&nbsp;
 		</td>
 		<td class="small closeX" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="searchshowhide('searchAcc','advSearch');document.basicSearch.searchtype.searchlaunched='';">[x]</td>
 	</tr>
