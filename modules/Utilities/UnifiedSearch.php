@@ -100,7 +100,6 @@ if (isset($query_string) && $query_string != '') {
 		if ($curModule == 'Utilities' || ($curModule == $module && !empty($_REQUEST['ajax']))) {
 			$focus = CRMEntity::getInstance($module);
 			if (isPermitted($module, 'index') == 'yes') {
-
 				if (!file_exists("modules/$module/language/".$current_language.'.lang.php')) {
 					$current_language = 'en_us';
 				}

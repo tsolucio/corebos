@@ -1008,7 +1008,7 @@ function flattenComparisonFields(fields) {
 		fields[tod].forEach((field) => {
 			let fieldComponents = field.split('::');
 			retFields.push({'value': fieldComponents[0], 'label': fieldComponents[1]});
-		})
+		});
 	}
 	return retFields;
 }
