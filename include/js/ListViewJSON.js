@@ -13,15 +13,15 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 loadJS('index.php?module=cbQuestion&action=cbQuestionAjax&file=getjslanguage');
-let module = '';
+let lvmodule = '';
 let PageSize = 20;
 let tuiGrid = tui.Grid;
 let dataGridInstance;
 let SearchColumns = 0;
 let ListViewCopy = 0;
 let Application_Filter_All_Edit = 0;
-let lastPage = sessionStorage.getItem(module+'_lastPage');
-GlobalVariable_getVariable('Application_ListView_PageSize', 20, module, '').then(function (response) {
+let lastPage = sessionStorage.getItem(lvmodule+'_lastPage');
+GlobalVariable_getVariable('Application_ListView_PageSize', 20, lvmodule, '').then(function (response) {
 	let obj = JSON.parse(response);
 	PageSize = obj.Application_ListView_PageSize;
 });
@@ -46,12 +46,12 @@ const ListView = {
 	 */
 	ListViewJSON: (actionType = false, urlstring = '', searchtype = '') => {
 		if (document.getElementById('curmodule') != undefined) {
-			module = document.getElementById('curmodule').value;
+			lvmodule = document.getElementById('curmodule').value;
 		}
 		if (!lastPage) {
 			lastPage = 1;
 		}
-		let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=listViewJSON&formodule='+module+'&lastPage='+lastPage;
+		let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=listViewJSON&formodule='+lvmodule+'&lastPage='+lastPage;
 		if (actionType == 'filter') {
 			document.getElementById('basicsearchcolumns').innerHTML = '';
 			document.basicSearch.search_text.value = '';
@@ -68,8 +68,8 @@ const ListView = {
 			ListView.ListViewReloadData(lastPage, true);
 			document.getElementById('status').style.display = 'none';
 		} else {
-			if (module != '' && module != undefined) {
-				ListView.ListViewDefault(module, url);
+			if (lvmodule != '' && lvmodule != undefined) {
+				ListView.ListViewDefault(lvmodule, url);
 			}
 		}
 	},
@@ -99,7 +99,7 @@ const ListView = {
 			if (uitype == '15' || uitype == '52' || uitype == '53') {
 				values = headerObj[index].picklist;
 			}
-			if (ListView.permissionsMods().includes(module)) {
+			if (ListView.permissionsMods().includes(lvmodule)) {
 				edit = false;
 			}
 			if (edit) {
@@ -646,14 +646,14 @@ const ListView = {
 		select.id = 'viewname';
 		select.name = 'viewname';
 		select.className = 'small';
-		select.setAttribute('onchange', 'showDefaultCustomView(this, "'+module+'", "'+filters.category+'")');
+		select.setAttribute('onchange', 'showDefaultCustomView(this, "'+lvmodule+'", "'+filters.category+'")');
 		select.innerHTML = filters.customview_html;
 		document.getElementById('filterOptions').appendChild(select);
 
 		//create filterActions
 		let fedit = document.createElement('span');
 		let edit_query = {
-			'module': module,
+			'module': lvmodule,
 			'action': 'CustomView',
 			'record': filters.viewid,
 			'parenttab': filters.category,
@@ -675,7 +675,7 @@ const ListView = {
 		edit_query = {
 			'module': 'CustomView',
 			'action': 'Delete',
-			'dmodule': module,
+			'dmodule': lvmodule,
 			'record': filters.viewid,
 			'parenttab': filters.category
 		};
@@ -729,7 +729,7 @@ const ListView = {
 				method: 'POST',
 				url: 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=listViewJSON&method=updateDataListView',
 				data: {
-					modulename: module,
+					modulename: lvmodule,
 					value: value,
 					columnName: columnName,
 					recordid: recordid,
