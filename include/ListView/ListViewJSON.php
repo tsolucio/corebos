@@ -21,10 +21,10 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	$category = getParentTab();
 	$profileid = fetchUserProfileId($current_user->id);
 	$lastPage = vtlib_purify($_REQUEST['lastPage']);
-	$viewid = isset($_SESSION['lvs'][$currentModule]) ? $_SESSION['lvs'][$currentModule]['viewname'] : 0;
 	if ($currentModule == 'Utilities') {
 		$currentModule = vtlib_purify($_REQUEST['formodule']);
 	}
+	$viewid = isset($_SESSION['lvs'][$currentModule]) ? $_SESSION['lvs'][$currentModule]['viewname'] : 0;
 	$focus = new $currentModule();
 	$focus->initSortbyField($currentModule);
 	$url_string = '';
@@ -145,40 +145,58 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	} catch (Exception $e) {
 		$sql_error = true;
 	}
-	while ($result && $row = $adb->fetch_array($result)) {
+	$App_LV_Record = GlobalVariable::getVariable('Application_ListView_Record_Change_Indicator', 1, $currentModule);
+	while ($row = $result->FetchRow()) {
 		$rows = array();
 		$linkRow = array();
 		foreach ($row as $fieldName => $fieldValue) {
+			if ($fieldValue == '' || $fieldValue == null) {
+				$rows[$fieldName] = '';
+				continue;
+			}
 			if (!is_numeric($fieldName)) {
-				$fieldnameSql = $adb->pquery('SELECT fieldname FROM vtiger_field WHERE columnname=? AND tabid=?', array($fieldName, $tabid));
+				$fieldnameSql = $adb->pquery('SELECT fieldname, uitype FROM vtiger_field WHERE columnname=? AND tabid=?', array($fieldName, $tabid));
 				if (!$fieldnameSql || $adb->num_rows($fieldnameSql)==0) {
 					continue;
 				}
 				$fieldName = $adb->query_result($fieldnameSql, 0, 0);
+				$fieldType = $adb->query_result($fieldnameSql, 0, 1);
 				//check field uitypes
-				$fieldType = getUItypeByFieldName($currentModule, $fieldName);
 				if ($fieldType == '10') {
 					//get value
-					$parent_module = getSalesEntityType($fieldValue);
-					$valueTitle = getTranslatedString($parent_module, $parent_module);
-					$displayValueArray = getEntityName($parent_module, $fieldValue);
 					$field10Value = '';
-					if (!empty($displayValueArray)) {
-						foreach ($displayValueArray as $k => $value) {
-							$field10Value = $value;
+					if ($fieldValue != 0 || $fieldValue != null || $fieldValue != '') {
+						$parent_module = getSalesEntityType($fieldValue);
+						$displayValueArray = getEntityName($parent_module, $fieldValue);
+						if (!empty($displayValueArray)) {
+							$field10Value = $displayValueArray[$fieldValue];
 						}
+						$linkRow[$fieldName] = array($parent_module, $fieldValue, $field10Value);
 					}
 					$rows[$fieldName] = $field10Value;
-					$linkRow[$fieldName] = array($parent_module, $fieldValue, $field10Value);
 				} elseif ($fieldType == '14' || ($fieldType == '2' && ($fieldName == 'time_start' || $fieldName == 'time_end'))) {
 					$date = new DateTimeField($fieldValue);
 					$rows[$fieldName] = $date->getDisplayTime($current_user);
 				} elseif ($fieldType == '5' || $fieldType == '6' || $fieldType == '23') {
 					$date = new DateTimeField($fieldValue);
 					$rows[$fieldName] = $date->getDisplayDate($current_user);
-				} elseif ($fieldType == '50') {
+				} elseif ($fieldType == '50' || $fieldType == '70') {
 					$date = new DateTimeField($fieldValue);
-					$rows[$fieldName] = $date->getDisplayDateTimeValue($current_user);
+					$value = $date->getDisplayDate();
+					if ($fieldValue != '0000-00-00' && $fieldValue != '0000-00-00 00:00') {
+						$value .= ' ' . $date->getDisplayTime();
+						$user_format = ($current_user->hour_format=='24' ? '24' : '12');
+						if ($user_format != '24') {
+							$curr_time = DateTimeField::formatUserTimeString($value, '12');
+							$time_format = substr($curr_time, -2);
+							$curr_time = substr($curr_time, 0, 5);
+							list($dt,$tm) = explode(' ', $value);
+							$value = $dt . ' ' . $curr_time . $time_format;
+						}
+					} elseif ($value == '0000-00-00' || $value == '0000-00-00 00:00') {
+						$value = '';
+					}
+					$rows[$fieldName] = $value;
 				} elseif ($fieldType == '56') {
 					if ($fieldValue == 1) {
 						$rows[$fieldName] = getTranslatedString('yes', $currentModule);
@@ -189,14 +207,37 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 					}
 				} elseif ($fieldType == '71' || $fieldType == '72' || $fieldType == '7' || $fieldType == '9') {
 					$currencyField = new CurrencyField($fieldValue);
-					$rows[$fieldName] = $currencyField->getDisplayValue($current_user, true);
+					if ($fieldType == '72') {
+						if ($fieldName == 'unit_price') {
+							$currencyId = getProductBaseCurrency($row[$entityidfield], $currentModule);
+							$cursym_convrate = getCurrencySymbolandCRate($currencyId);
+							$currencySymbol = $cursym_convrate['symbol'];
+						} else {
+							$currencyInfo = getInventoryCurrencyInfo($currentModule, $row[$entityidfield]);
+							$currencySymbol = $currencyInfo['currency_symbol'];
+						}
+						$currencyValue = CurrencyField::convertToUserFormat($fieldValue, null, true);
+						$value = CurrencyField::appendCurrencySymbol($currencyValue, $currencySymbol);
+					} else {
+						$value = CurrencyField::convertToUserFormat($fieldValue);
+					}
+					$rows[$fieldName] = $value;
+				} elseif ($fieldType == '27') {
+					if ($fieldValue == 'I') {
+						$rows[$fieldName] = getTranslatedString('LBL_INTERNAL', $currentModule);
+					} elseif ($fieldValue == 'E') {
+						$rows[$fieldName] = getTranslatedString('LBL_EXTERNAL', $currentModule);
+					} else {
+						$rows[$fieldName] = '--';
+					}
 				} else {
 					if ($fieldName) {
 						$rows[$fieldName] = $fieldValue;
 					}
 				}
+				$rows['uitype_'.$fieldName] = $fieldType;
 			}
-			if (GlobalVariable::getVariable('Application_ListView_Record_Change_Indicator', 1, $currentModule)) {
+			if ($App_LV_Record) {
 				$isModified = false;
 				if (!$focus->isViewed($row[$entityidfield])) {
 					$isModified = true;

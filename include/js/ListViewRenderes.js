@@ -126,9 +126,17 @@ class LinkRender {
 				edit_query_string = ListView.encodeQueryData(edit_query);
 				el.href = `index.php?${edit_query_string}`;
 			} else {
-				el = document.createElement('span');
-				if (tooltip) {
-					el.id = `tooltip-el-${recordid}-${columnName}`;
+				let fieldType = props.grid.getValue(rowKey, 'uitype_'+columnName);
+				let fieldValue = props.grid.getValue(rowKey, columnName);
+				if (fieldType == '17') {
+					el = document.createElement('a');
+					el.href = fieldValue;
+					el.target = '_blank';
+				} else {
+					el = document.createElement('span');
+					if (tooltip) {
+						el.id = `tooltip-el-${recordid}-${columnName}`;
+					}
 				}
 			}
 			el.innerHTML = String(props.value);

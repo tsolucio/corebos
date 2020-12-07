@@ -390,9 +390,20 @@ const ListView = {
 	 * @param {String} url
 	 */
 	registerEvent: (url) => {
-		dataGridInstance.on('afterFilter', (ev) => {
+		dataGridInstance.on('filter', (ev) => {
 			const operatorData = {
-				eq: 'e', contain: 'c', ne: 'n', start: 's', ls: 'l', gt: 'g', lte: 'm', gte: 'h', after: 'a', afterEq: 'h', before: 'b', beforeEq: 'm',
+				eq: 'e',
+				contain: 'c',
+				ne: 'n',
+				start: 's',
+				ls: 'l',
+				gt: 'g',
+				lte: 'm',
+				gte: 'h',
+				after: 'a',
+				afterEq: 'h',
+				before: 'b',
+				beforeEq: 'm',
 			};
 			const operator = operatorData[ev.filterState[0].state[0]['code']];
 			const urlstring = `&query=true&search_field=${ev.columnName}&search_text=${ev.filterState[0].state[0]['value']}&searchtype=BasicSearch&operator=${operator}`;
@@ -426,7 +437,6 @@ const ListView = {
 	 	}
 		dataGridInstance.clear();
 	 	dataGridInstance.setRequestParams({'search': urlstring, 'searchtype': searchtype});
-	 	dataGridInstance.reloadData();
 		//update pagination onchange
 		dataGridInstance.setPerPage(parseInt(PageSize));
 	 	ListView.updateData();
