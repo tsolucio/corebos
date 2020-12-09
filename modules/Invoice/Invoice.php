@@ -149,21 +149,20 @@ class Invoice extends CRMEntity {
 
 	public function registerInventoryHistory() {
 		global $app_strings;
-		if (isset($_REQUEST['ajxaction']) && $_REQUEST['ajxaction'] == 'DETAILVIEW') { //if we use ajax edit
-			if (GlobalVariable::getVariable('Application_B2B', '1')) {
+		if (GlobalVariable::getVariable('Application_B2B', '1')) {
+			if (!empty($this->column_fields['account_id'])) {
 				$relatedname = getAccountName($this->column_fields['account_id']);
 			} else {
+				$relatedname = getAccountName(getSingleFieldValue($this->table_name, 'accountid', $this->table_index, $this->id));
+			}
+		} else {
+			if (!empty($this->column_fields['contact_id'])) {
 				$relatedname = getContactName($this->column_fields['contact_id']);
-			}
-			$total = $this->column_fields['hdnGrandTotal'];
-		} else { //using edit button and save
-			if (GlobalVariable::getVariable('Application_B2B', '1')) {
-				$relatedname = $_REQUEST['account_name'];
 			} else {
-				$relatedname = $_REQUEST['contact_name'];
+				$relatedname = getContactName(getSingleFieldValue($this->table_name, 'contactid', $this->table_index, $this->id));
 			}
-			$total = $_REQUEST['total'];
 		}
+		$total = getSingleFieldValue($this->table_name, 'total', $this->table_index, $this->id);
 		if ($this->column_fields['invoicestatus'] == $app_strings['LBL_NOT_ACCESSIBLE']) {
 			//If the value in the request is Not Accessible for a picklist, the existing value will be replaced instead of Not Accessible value.
 			$stat_value = getSingleFieldValue($this->table_name, 'invoicestatus', $this->table_index, $this->id);
