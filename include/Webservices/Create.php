@@ -105,6 +105,7 @@ function vtws_create($elementType, $element, $user) {
 			}
 		}
 		// Product line support
+		$hrequest = $_REQUEST;
 		if (in_array($elementType, getInventoryModules()) && (is_array($element['pdoInformation']))) {
 			include 'include/Webservices/ProductLines.php';
 		} else {
@@ -130,6 +131,7 @@ function vtws_create($elementType, $element, $user) {
 			vtws_internal_setrelation($newrecid, $modname, $relations);
 		}
 		VTWS_PreserveGlobal::flush();
+		$_REQUEST = $hrequest;
 		if (!empty($wsAttachments)) {
 			foreach ($wsAttachments as $file) {
 				@unlink($file);
