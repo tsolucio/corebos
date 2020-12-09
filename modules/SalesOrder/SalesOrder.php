@@ -12,6 +12,7 @@ require_once 'data/Tracker.php';
 require 'modules/Vtiger/default_module_view.php';
 require_once 'modules/Invoice/Invoice.php';
 require_once 'modules/InventoryDetails/InventoryDetails.php';
+include_once 'include/Webservices/Revise.php';
 
 class SalesOrder extends CRMEntity {
 	public $db;
@@ -114,7 +115,7 @@ class SalesOrder extends CRMEntity {
 	}
 
 	public function save_module($module) {
-		global $updateInventoryProductRel_deduct_stock, $adb;
+		global $updateInventoryProductRel_deduct_stock, $current_user;
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
 		}
@@ -126,9 +127,14 @@ class SalesOrder extends CRMEntity {
 		if (!empty($this->column_fields['quote_id'])) {
 			$newStatus = GlobalVariable::getVariable('Quote_StatusOnSalesOrderSave', 'Accepted');
 			if ($newStatus!='DoNotChange') {
-				$qt_id = $this->column_fields['quote_id'];
-				$query1 = 'update vtiger_quotes set quotestage=? where quoteid=?';
-				$adb->pquery($query1, array($newStatus, $qt_id));
+				$h = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : 'NOTSET';
+				$_REQUEST['ajxaction'] = 'Workflow';
+				vtws_revise(array('id'=>vtws_getEntityId('Quotes').'x'.$this->column_fields['quote_id'], 'quotestage'=>$newStatus), $current_user);
+				if ($h=='NOTSET') {
+					unset($_REQUEST['ajxaction']);
+				} else {
+					$_REQUEST['ajxaction'] = $h;
+				}
 			}
 		}
 

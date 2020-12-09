@@ -10,6 +10,7 @@
 require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 require_once 'modules/InventoryDetails/InventoryDetails.php';
+include_once 'include/Webservices/Revise.php';
 
 class Invoice extends CRMEntity {
 	public $table_name = 'vtiger_invoice';
@@ -100,7 +101,7 @@ class Invoice extends CRMEntity {
 	}
 
 	public function save_module($module) {
-		global $updateInventoryProductRel_deduct_stock, $adb;
+		global $updateInventoryProductRel_deduct_stock, $current_user;
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
 		}
@@ -112,9 +113,14 @@ class Invoice extends CRMEntity {
 		if (!empty($this->column_fields['salesorder_id'])) {
 			$newStatus = GlobalVariable::getVariable('SalesOrder_StatusOnInvoiceSave', 'Approved');
 			if ($newStatus!='DoNotChange') {
-				$so_id = $this->column_fields['salesorder_id'];
-				$query1 = 'update vtiger_salesorder set sostatus=? where salesorderid=?';
-				$adb->pquery($query1, array($newStatus, $so_id));
+				$h = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : 'NOTSET';
+				$_REQUEST['ajxaction'] = 'Workflow';
+				vtws_revise(array('id'=>vtws_getEntityId('SalesOrder').'x'.$this->column_fields['salesorder_id'], 'sostatus'=>$newStatus), $current_user);
+				if ($h=='NOTSET') {
+					unset($_REQUEST['ajxaction']);
+				} else {
+					$_REQUEST['ajxaction'] = $h;
+				}
 			}
 		}
 
