@@ -44,7 +44,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 		$focus->list_fields = $cbMapLC->getListFieldsFor($parentmodule);
 		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor($parentmodule);
 		$focus->list_link_field = $cbMapLC->getListLinkFor($parentmodule);
-		if ($parentmodule == 'Home' && $cbMapLC->issetListFieldsMappingFor('Home')) {
+		if ($parentmodule == 'Utilities' && $cbMapLC->issetListFieldsMappingFor('Utilities')) {
 			$oCv->list_fields = $focus->list_fields;
 			$oCv->list_fields_name = $focus->list_fields_name;
 		}
@@ -460,7 +460,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 		$focus->list_fields = $cbMapLC->getListFieldsFor($parentmodule);
 		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor($parentmodule);
 		$focus->list_link_field = $cbMapLC->getListLinkFor($parentmodule);
-		if ($parentmodule == 'Home' && $cbMapLC->issetListFieldsMappingFor('Home')) {
+		if ($parentmodule == 'Utilities' && $cbMapLC->issetListFieldsMappingFor('Utilities')) {
 			$oCv->list_fields = $focus->list_fields;
 			$oCv->list_fields_name = $focus->list_fields_name;
 		}

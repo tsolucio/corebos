@@ -119,13 +119,12 @@ class PurchaseOrder extends CRMEntity {
 
 	public function registerInventoryHistory() {
 		global $app_strings;
-		if (isset($_REQUEST['ajxaction']) && $_REQUEST['ajxaction'] == 'DETAILVIEW') { //if we use ajax edit
+		if (!empty($this->column_fields['vendor_id'])) {
 			$relatedname = getVendorName($this->column_fields['vendor_id']);
-			$total = $this->column_fields['hdnGrandTotal'];
-		} else { //using edit button and save
-			$relatedname = $_REQUEST['vendor_name'];
-			$total = $_REQUEST['total'];
+		} else {
+			$relatedname = getVendorName(getSingleFieldValue($this->table_name, 'vendorid', $this->table_index, $this->id));
 		}
+		$total = getSingleFieldValue($this->table_name, 'total', $this->table_index, $this->id);
 		if ($this->column_fields['postatus'] == $app_strings['LBL_NOT_ACCESSIBLE']) {
 			//If the value in the request is Not Accessible for a picklist, the existing value will be replaced instead of Not Accessible value.
 			$stat_value = getSingleFieldValue($this->table_name, 'postatus', $this->table_index, $this->id);

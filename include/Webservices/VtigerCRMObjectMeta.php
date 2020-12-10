@@ -359,7 +359,9 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		}
 		$this->retrieveMetaForBlock($blockArray);
 		$this->meta = true;
-		VTWS_PreserveGlobal::flush();
+		VTWS_PreserveGlobal::restore('current_user');
+		VTWS_PreserveGlobal::restore('theme');
+		VTWS_PreserveGlobal::restore('current_language');
 	}
 
 	private function retrieveUserHierarchy() {
