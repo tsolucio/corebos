@@ -99,6 +99,7 @@ function vtws_update($element, $user) {
 		}
 	}
 	// Product line support
+	$hrequest = $_REQUEST;
 	if (in_array($entityName, getInventoryModules()) && isset($element['pdoInformation']) && (is_array($element['pdoInformation']))) {
 		$elementType = $entityName;
 		include 'include/Webservices/ProductLines.php';
@@ -116,6 +117,7 @@ function vtws_update($element, $user) {
 		$adb->pquery('update vtiger_troubletickets set update_log=? where ticketid=?', array($updlog, $idList[1]));
 	}
 	VTWS_PreserveGlobal::flush();
+	$_REQUEST = $hrequest;
 	if (!empty($wsAttachments)) {
 		foreach ($wsAttachments as $file) {
 			@unlink($file);

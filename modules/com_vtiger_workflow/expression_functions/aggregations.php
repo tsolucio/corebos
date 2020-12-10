@@ -135,11 +135,13 @@ function __cb_aggregation_getQuery($arr, $userdefinedoperation = true) {
 		}
 		$query = $relationData['query'];
 		$query = str_replace(array("\n", "\t", "\r"), ' ', $query);
+		$query = stripTailCommandsFromQuery($query);
 		if (!empty($arr[3])) {
 			$query .= ' and ('.__cb_aggregation_getconditions($arr[3], $relmodule, $mainmodule, $crmid).')';
 		}
 	} elseif ($mainmodule==$relmodule) {
 		$query = __cb_aggregation_queryonsamemodule($arr[3], $mainmodule, $relfield, $crmid);
+		$query = stripTailCommandsFromQuery($query);
 	} else {
 		return 0; // MODULES_NOT_RELATED
 	}
@@ -165,6 +167,7 @@ function __cb_aggregation_getconditions($conditions, $module, $mainmodule, $reco
 	$entityCache = new VTEntityCache($current_user);
 	$qg = new QueryGenerator($module, $current_user);
 	$qg->setFields(array('id'));
+	$qg->startGroup();
 	foreach ($c as $cond) {
 		$cndparams = explode(',', $cond);
 		if (!$SQLGenerationMode) {
@@ -175,6 +178,7 @@ function __cb_aggregation_getconditions($conditions, $module, $mainmodule, $reco
 		}
 		$qg->addCondition($cndparams[0], $value, $cndparams[1], $cndparams[3]);
 	}
+	$qg->endGroup();
 	$where = $qg->getWhereClause();
 	return substr($where, stripos($where, 'where ')+6);
 }
