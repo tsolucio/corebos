@@ -439,4 +439,5 @@ var alert_arr = {
 	'LBL_CREATE': 'Crea un/a',
 	'LBL_IMPORT': 'Importa',
 	'LBL_NO_DATA': 'No Hay Registros',
+	'filterApplied': 'Filter applied',
 };

@@ -353,6 +353,10 @@ switch ($functiontocall) {
 		$rdo = isPermitted($mod, $act, $rec)=='yes';
 		$ret = array('isPermitted'=>$rdo);
 		break;
+	case 'checkButton':
+		$mod = vtlib_purify($_REQUEST['formodule']);
+		$ret = Button_Check($mod);
+		break;
 	case 'listViewJSON':
 		include_once 'include/ListView/ListViewJSON.php';
 		if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'updateDataListView') {
