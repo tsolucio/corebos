@@ -36,6 +36,9 @@ if (!empty($_REQUEST['record'])) {
 	$focus->retrieve_entity_info($record, $currentModule);
 	$focus->name=$focus->column_fields[$focus->list_link_field];
 	$fields = vtws_describe($focus->column_fields['qmodule'], $current_user);
+	if ($focus->column_fields['qtype']!='Mermaid') {
+		$smarty->assign('QSQL', cbQuestion::getSQL($record));
+	}
 	$smarty->assign('headerurl', 'index.php?action=DetailView&module='.$currentModule.'&record='.$record);
 } else {
 	$fields = array('fields'=>array());
