@@ -500,9 +500,21 @@ class cbQuestion extends CRMEntity {
 		}
 		$fname = '';
 		if (!empty($ans)) {
-			$fname = tempnam($bqfiles, 'bq');
-			$fp = fopen($fname, 'w');
 			$properties = json_decode($ans['properties']);
+			if (!empty($properties->filename)) {
+				$now = date('YmdHis');
+				$fname = utf8_decode(preg_replace('/[^a-zA-Z0-9_\.\%\s]/', '', $properties->filename));
+				if (strpos($fname, '%s')===false) {
+					$fname .= '_%s';
+				} else {
+					$spos = strpos($fname, '%s');
+					$fname = substr($fname, 0, $spos+2).str_replace('%s', '', substr($fname, $spos+2));
+				}
+				$fname = $bqfiles.'/'.sprintf($fname, $now);
+			} else {
+				$fname = tempnam($bqfiles, 'bq');
+			}
+			$fp = fopen($fname, 'w');
 			$delim = empty($properties->delimiter) ? ',' : $properties->delimiter;
 			$encls = empty($properties->enclosure) ? '"' : $properties->enclosure;
 			$alllabels = array();
@@ -542,6 +554,7 @@ class cbQuestion extends CRMEntity {
 				}
 				fputs($fp, $line);
 			}
+			fclose($fp);
 		}
 		return $fname;
 	}
