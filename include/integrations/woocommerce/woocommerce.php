@@ -525,6 +525,9 @@ class corebos_woocommerce {
 				if (!isset($wcprops['regular_price'])) {
 					$wcprops['regular_price'] = $cbfrom->column_fields['unit_price'];
 				}
+				if (!empty($data['status'])) {
+					$wcprops['status'] = ($cbfrom->column_fields['wcsyncstatus']=='Published' ? 'publish' : 'pending');
+				}
 				if (vtlib_isModuleActive('wcProductImage')) {
 					$images = vtws_query(
 						"select wcpiname,wcpialt,wcpimage from wcProductImage where Products.id='".vtws_getEntityId('Products')."x$cbfromid';",
@@ -562,6 +565,9 @@ class corebos_woocommerce {
 				}
 				if (!isset($wcprops['regular_price'])) {
 					$wcprops['regular_price'] = $cbfrom->column_fields['unit_price'];
+				}
+				if (!empty($data['status'])) {
+					$wcprops['status'] = ($cbfrom->column_fields['wcsyncstatus']=='Published' ? 'publish' : 'pending');
 				}
 				if (vtlib_isModuleActive('wcProductImage')) {
 					$images = vtws_query(
@@ -743,6 +749,9 @@ class corebos_woocommerce {
 						$send2cb[$cbfield] = $data[$wcfield];
 					}
 				}
+				if (!empty($data['status'])) {
+					$data['wcsyncstatus'] = ($data['status']=='publish' ? 'Published' : 'Active');
+				}
 				break;
 			case 'Services':
 				$checkEmpty = array(
@@ -753,6 +762,9 @@ class corebos_woocommerce {
 					if (empty($send2cb[$cbfield]) && !empty($data[$wcfield])) {
 						$send2cb[$cbfield] = $data[$wcfield];
 					}
+				}
+				if (!empty($data['status'])) {
+					$data['wcsyncstatus'] = ($data['status']=='publish' ? 'Published' : 'Active');
 				}
 				break;
 			case 'SalesOrder':
