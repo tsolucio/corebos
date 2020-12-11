@@ -317,6 +317,7 @@ class cbCVManagement extends CRMEntity {
 		if ($cvrs && $adb->num_rows($cvrs)>0) {
 			self::$validationinfo[] = 'mandatory records found';
 			while ($value = $adb->fetch_array($cvrs)) {
+				self::$validationinfo[] = $value['cvid'];
 				$allViews[] = $value['cvid'];
 			}
 		}
@@ -325,13 +326,16 @@ class cbCVManagement extends CRMEntity {
 			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
 			inner join vtiger_customview on vtiger_customview.cvid=vtiger_cbcvmanagement.cvid
 			left join vtiger_user2role on vtiger_user2role.userid=?
-			where vtiger_crmentity.deleted=0 and cvrole like concat('%', vtiger_user2role.roleid, '%') and entitytype=? and cvretrieve='1'";
+			where vtiger_crmentity.deleted=0 and entitytype=? and cvretrieve='1'
+			and (cvrole=vtiger_user2role.roleid or cvrole like concat(vtiger_user2role.roleid, ' %')
+				or cvrole like concat('% ', vtiger_user2role.roleid, ' %') or cvrole like concat('% ', vtiger_user2role.roleid))";
 		self::$validationinfo[] = '---';
 		self::$validationinfo[] = 'search for role records';
 		$cvrs = $adb->pquery($cvsql, array($cvuserid, $module));
 		if ($cvrs && $adb->num_rows($cvrs)>0) {
 			self::$validationinfo[] = 'role records found';
 			while ($value = $adb->fetch_array($cvrs)) {
+				self::$validationinfo[] = $value['cvid'];
 				$allViews[] = $value['cvid'];
 			}
 		}
@@ -346,6 +350,7 @@ class cbCVManagement extends CRMEntity {
 		if ($cvrs && $adb->num_rows($cvrs)>0) {
 			self::$validationinfo[] = 'user records found';
 			while ($value = $adb->fetch_array($cvrs)) {
+				self::$validationinfo[] = $value['cvid'];
 				$allViews[] = $value['cvid'];
 			}
 		}
@@ -365,6 +370,7 @@ class cbCVManagement extends CRMEntity {
 			if ($cvrs && $adb->num_rows($cvrs)>0) {
 				self::$validationinfo[] = 'group records found';
 				while ($value = $adb->fetch_array($cvrs)) {
+					self::$validationinfo[] = $value['cvid'];
 					$allViews[] = $value['cvid'];
 				}
 			}
@@ -382,6 +388,7 @@ class cbCVManagement extends CRMEntity {
 		if ($cvrs && $adb->num_rows($cvrs)>0) {
 			self::$validationinfo[] = 'default setting records found';
 			while ($value = $adb->fetch_array($cvrs)) {
+				self::$validationinfo[] = $value['cvid'];
 				$allViews[] = $value['cvid'];
 			}
 		}
@@ -392,6 +399,7 @@ class cbCVManagement extends CRMEntity {
 		if ($cvrs && $adb->num_rows($cvrs)>0) {
 			self::$validationinfo[] = 'CV default records found';
 			while ($value = $adb->fetch_array($cvrs)) {
+				self::$validationinfo[] = $value['cvid'];
 				$allViews[] = $value['cvid'];
 			}
 		}
