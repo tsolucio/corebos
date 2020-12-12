@@ -502,7 +502,11 @@ class cbQuestion extends CRMEntity {
 		if (!empty($ans)) {
 			$properties = json_decode($ans['properties']);
 			if (!empty($properties->filename)) {
-				$now = date('YmdHis');
+				if (empty($properties->filenamedateformat)) {
+					$now = date('YmdHis');
+				} else {
+					$now = date($properties->filenamedateformat);
+				}
 				$fname = utf8_decode(preg_replace('/[^a-zA-Z0-9_\.\%\s]/', '', $properties->filename));
 				if (strpos($fname, '%s')===false) {
 					$fname .= '_%s';
