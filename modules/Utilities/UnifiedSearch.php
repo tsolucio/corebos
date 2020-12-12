@@ -109,42 +109,7 @@ if (isset($query_string) && $query_string != '') {
 				$smarty->assign('MODULE', $module);
 				$smarty->assign('SINGLE_MOD', $module);
 
-				if ($module=='Calendar') {
-					$listquery = 'SELECT vtiger_activity.activityid as act_id,vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_crmentity.setype,
-						vtiger_activity.*
-						FROM vtiger_activity
-						LEFT JOIN vtiger_activitycf ON vtiger_activitycf.activityid = vtiger_activity.activityid
-						LEFT JOIN vtiger_cntactivityrel ON vtiger_cntactivityrel.activityid = vtiger_activity.activityid
-						LEFT JOIN vtiger_seactivityrel ON vtiger_seactivityrel.activityid = vtiger_activity.activityid
-						LEFT OUTER JOIN vtiger_activity_reminder ON vtiger_activity_reminder.activity_id = vtiger_activity.activityid
-						LEFT JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_activity.activityid
-						LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
-						LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
-					$listquery .= getNonAdminAccessControlQuery($module, $current_user);
-					$listquery .= ' where vtiger_crmentity.deleted=0 ';
-				} else {
-					$listquery = getListQuery($module);
-				}
-				$oCustomView = '';
-
-				$oCustomView = new CustomView($module);
-				//Instead of getting current customview id, use cvid of All so that all entities will be found
-				//$viewid = $oCustomView->getViewId($module);
-				$cv_res = $adb->pquery("select cvid from vtiger_customview where viewname='All' and entitytype=?", array($module));
-				$viewid = $adb->query_result($cv_res, 0, 'cvid');
-				$customviewcombo_html = $oCustomView->getCustomViewCombo($viewid);
-
-				$listquery = $oCustomView->getModifiedCvListQuery($viewid, $listquery, $module);
-				if ($module == 'Calendar') {
-					if (!isset($oCustomView->list_fields['Close'])) {
-						$oCustomView->list_fields['Close']=array ('activity' => 'status');
-					}
-					if (!isset($oCustomView->list_fields_name['Close'])) {
-						$oCustomView->list_fields_name['Close']='status';
-					}
-					$listquery = str_replace(',vtiger_contactdetails.contactid', '', $listquery);
-					$listquery = str_ireplace('select ', 'select distinct ', $listquery);
-				}
+				$listquery = getListQuery($module);
 
 				if ($search_module != '' || $search_tag != '') {//This is for Tag search
 					$where = getTagWhere($search_val, $current_user->id);
@@ -199,9 +164,9 @@ if (isset($query_string) && $query_string != '') {
 					.'&noofrows='.(isset($_REQUEST['noofrows']) ? $_REQUEST['noofrows'] : 0).'&message='.(isset($_REQUEST['message']) ? $_REQUEST['message'] : '').
 					'&skipped_record_count='.(isset($_REQUEST['skipped_record_count']) ? $_REQUEST['skipped_record_count'] : 0);
 				$url_string = '&modulename='.(isset($_REQUEST['modulename']) ? $_REQUEST['modulename'] : '').'&nav_module='.$module.$info_message;
-				$viewid = '';
 
-				$navigationOutput = getTableHeaderSimpleNavigation($navigation_array, $url_string, $module, 'UnifiedSearch', $viewid);
+				$oCustomView = new CustomView($module);
+				$navigationOutput = getTableHeaderSimpleNavigation($navigation_array, $url_string, $module, 'UnifiedSearch', '');
 				$listview_header = getListViewHeader($focus, $module, '', '', '', 'global', $oCustomView);
 				$listview_entries = getListViewEntries($focus, $module, $list_result, $navigation_array, '', '', '', '', $oCustomView);
 
@@ -223,7 +188,6 @@ if (isset($query_string) && $query_string != '') {
 				$smarty->assign('ModuleRecordCount', $moduleRecordCount);
 				$total_record_count = $total_record_count + $noofrows;
 				$smarty->assign('SEARCH_CRITERIA', "( $noofrows )".$search_msg);
-				$smarty->assign('CUSTOMVIEW_OPTION', $customviewcombo_html);
 
 				if (($i != 0 && empty($_REQUEST['ajax'])) || !(empty($_REQUEST['ajax']))) {
 					$smarty->display('UnifiedSearchAjax.tpl');
