@@ -158,13 +158,11 @@ class VTScheduledReport extends Reports {
 		$contents .='<b>'.getTranslatedString('LBL_REPORT_NAME', $currentModule) .' :</b> '. $printfReportName .'<br/>';
 		$contents .='<b>'.getTranslatedString('LBL_DESCRIPTION', $currentModule).' :</b><br/>'.getTranslatedString($this->reportdescription, $currentModule).'<br/><br/>';
 
-		$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_\.\%\s]/', '', $this->reportname));
+		$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_\.\%]/', '', $this->reportname));
 		if (strpos($baseFileName, '%s')===false) {
 			$baseFileName .= '_%s'; // add date at end if not positioned explicitly
 		} else {
-			// make sure there is only one
-			$spos = strpos($baseFileName, '%s');
-			$baseFileName = substr($baseFileName, 0, $spos+2).str_replace('%s', '', substr($baseFileName, $spos+2));
+			$baseFileName = suppressAllButFirst('%s', $baseFileName);
 		}
 		$baseFileName = sprintf($baseFileName, $now);
 
