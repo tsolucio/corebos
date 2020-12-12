@@ -936,11 +936,7 @@ function getURLstring($focus) {
 	$qry = '';
 	foreach ($focus->column_fields as $fldname => $val) {
 		if (isset($_REQUEST[$fldname]) && $_REQUEST[$fldname] != '') {
-			if ($qry == '') {
-				$qry = '&' . $fldname . '=' . vtlib_purify($_REQUEST[$fldname]);
-			} else {
-				$qry .='&' . $fldname . '=' . vtlib_purify($_REQUEST[$fldname]);
-			}
+			$qry .='&' . $fldname . '=' . vtlib_purify($_REQUEST[$fldname]);
 		}
 	}
 	if (isset($_REQUEST['current_user_only']) && $_REQUEST['current_user_only'] != '') {
