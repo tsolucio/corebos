@@ -39,7 +39,7 @@ class generateReportWfTask extends VTTask {
 				}
 			}
 			$now = date('YmdHis');
-			$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_\.\%\s]/', '', $reportName));
+			$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_\.\%]/', '', $reportName));
 			if (strpos($baseFileName, '%s')===false) {
 				$baseFileName .= '_%s';
 			} else {

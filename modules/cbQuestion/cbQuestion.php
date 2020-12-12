@@ -507,7 +507,7 @@ class cbQuestion extends CRMEntity {
 				} else {
 					$now = date($properties->filenamedateformat);
 				}
-				$fname = utf8_decode(preg_replace('/[^a-zA-Z0-9_\.\%\s]/', '', $properties->filename));
+				$fname = utf8_decode(preg_replace('/[^a-zA-Z0-9_\.\%]/', '', $properties->filename));
 				if (strpos($fname, '%s')===false) {
 					$fname .= '_%s';
 				} else {
