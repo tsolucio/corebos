@@ -507,8 +507,7 @@ class cbQuestion extends CRMEntity {
 				if (strpos($fname, '%s')===false) {
 					$fname .= '_%s';
 				} else {
-					$spos = strpos($fname, '%s');
-					$fname = substr($fname, 0, $spos+2).str_replace('%s', '', substr($fname, $spos+2));
+					$fname = suppressAllButFirst('%s', $fname);
 				}
 				$fname = $bqfiles.'/'.sprintf($fname, $now);
 			} else {

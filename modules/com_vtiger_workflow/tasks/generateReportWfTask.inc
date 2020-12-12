@@ -43,8 +43,7 @@ class generateReportWfTask extends VTTask {
 			if (strpos($baseFileName, '%s')===false) {
 				$baseFileName .= '_%s';
 			} else {
-				$spos = strpos($baseFileName, '%s');
-				$baseFileName = substr($baseFileName, 0, $spos+2).str_replace('%s', '', substr($baseFileName, $spos+2));
+				$baseFileName = suppressAllButFirst('%s', $baseFileName);
 			}
 			$baseFileName = sprintf($baseFileName, $now);
 			$path = 'cache/';

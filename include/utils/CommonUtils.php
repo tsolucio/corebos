@@ -3468,6 +3468,20 @@ function getEntityFieldNameDisplay($module, $fieldsName, $fieldValues) {
 	return '';
 }
 
+/** eliminate all occurrences of a string except the first one foundfrom another string
+ * @param string that we want to delete all except first occurrence
+ * @param string from which we need to delete the occurrences
+ * @return string with only one (or none) occurrence of the given string to delete
+ */
+function suppressAllButFirst($occurence, $from) {
+	if ($occurence=='') {
+		return $from;
+	}
+	$spos = strpos($from, $occurence);
+	$slen = strlen($occurence);
+	return substr($from, 0, $spos+$slen).str_replace($occurence, '', substr($from, $spos+$slen));
+}
+
 function vt_suppressHTMLTags($string) {
 	return preg_replace(array('/</', '/>/', '/"/'), array('&lt;', '&gt;', '&quot;'), $string);
 }

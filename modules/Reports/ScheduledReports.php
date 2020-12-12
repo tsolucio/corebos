@@ -162,9 +162,7 @@ class VTScheduledReport extends Reports {
 		if (strpos($baseFileName, '%s')===false) {
 			$baseFileName .= '_%s'; // add date at end if not positioned explicitly
 		} else {
-			// make sure there is only one
-			$spos = strpos($baseFileName, '%s');
-			$baseFileName = substr($baseFileName, 0, $spos+2).str_replace('%s', '', substr($baseFileName, $spos+2));
+			$baseFileName = suppressAllButFirst('%s', $baseFileName);
 		}
 		$baseFileName = sprintf($baseFileName, $now);
 
