@@ -100,7 +100,6 @@ if (isset($query_string) && $query_string != '') {
 		if ($curModule == 'Utilities' || ($curModule == $module && !empty($_REQUEST['ajax']))) {
 			$focus = CRMEntity::getInstance($module);
 			if (isPermitted($module, 'index') == 'yes') {
-
 				if (!file_exists("modules/$module/language/".$current_language.'.lang.php')) {
 					$current_language = 'en_us';
 				}
@@ -114,11 +113,11 @@ if (isset($query_string) && $query_string != '') {
 				if ($search_module != '' || $search_tag != '') {//This is for Tag search
 					$where = getTagWhere($search_val, $current_user->id);
 					$search_msg = $app_strings['LBL_TAG_SEARCH'];
-					$search_msg .= "<b>".to_html($search_val)."</b>";
+					$search_msg .= '<b>'.to_html($search_val).'</b>';
 				} else { //This is for Global search
 					$where = getUnifiedWhere($listquery, $module, $search_val, $fieldtype);
 					$search_msg = $app_strings['LBL_SEARCH_RESULTS_FOR'];
-					$search_msg .=	"<b>".htmlentities($search_val, ENT_QUOTES, $default_charset)."</b>";
+					$search_msg .= '<b>'.htmlentities($search_val, ENT_QUOTES, $default_charset).'</b>';
 				}
 
 				if ($where != '') {
@@ -161,8 +160,8 @@ if (isset($query_string) && $query_string != '') {
 				$moduleRecordCount[$module]['recordListRangeMessage'] = getRecordRangeMessage($list_result, $limitStartRecord, $noofrows);
 
 				$info_message='&recordcount='.(isset($_REQUEST['recordcount']) ? $_REQUEST['recordcount'] : 0)
-					.'&noofrows='.(isset($_REQUEST['noofrows']) ? $_REQUEST['noofrows'] : 0).'&message='.(isset($_REQUEST['message']) ? $_REQUEST['message'] : '').
-					'&skipped_record_count='.(isset($_REQUEST['skipped_record_count']) ? $_REQUEST['skipped_record_count'] : 0);
+					.'&noofrows='.(isset($_REQUEST['noofrows']) ? $_REQUEST['noofrows'] : 0).'&message='.(isset($_REQUEST['message']) ? $_REQUEST['message'] : '')
+					.'&skipped_record_count='.(isset($_REQUEST['skipped_record_count']) ? $_REQUEST['skipped_record_count'] : 0);
 				$url_string = '&modulename='.(isset($_REQUEST['modulename']) ? $_REQUEST['modulename'] : '').'&nav_module='.$module.$info_message;
 
 				$oCustomView = new CustomView($module);
