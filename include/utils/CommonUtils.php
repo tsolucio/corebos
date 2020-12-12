@@ -941,11 +941,7 @@ function getURLstring($focus) {
 	$qry = '';
 	foreach ($focus->column_fields as $fldname => $val) {
 		if (isset($_REQUEST[$fldname]) && $_REQUEST[$fldname] != '') {
-			if ($qry == '') {
-				$qry = '&' . $fldname . '=' . vtlib_purify($_REQUEST[$fldname]);
-			} else {
-				$qry .='&' . $fldname . '=' . vtlib_purify($_REQUEST[$fldname]);
-			}
+			$qry .='&' . $fldname . '=' . vtlib_purify($_REQUEST[$fldname]);
 		}
 	}
 	if (isset($_REQUEST['current_user_only']) && $_REQUEST['current_user_only'] != '') {
@@ -3460,6 +3456,20 @@ function getEntityFieldNameDisplay($module, $fieldsName, $fieldValues) {
 		}
 	}
 	return '';
+}
+
+/** eliminate all occurrences of a string except the first one foundfrom another string
+ * @param string that we want to delete all except first occurrence
+ * @param string from which we need to delete the occurrences
+ * @return string with only one (or none) occurrence of the given string to delete
+ */
+function suppressAllButFirst($occurence, $from) {
+	if ($occurence=='') {
+		return $from;
+	}
+	$spos = strpos($from, $occurence);
+	$slen = strlen($occurence);
+	return substr($from, 0, $spos+$slen).str_replace($occurence, '', substr($from, $spos+$slen));
 }
 
 function vt_suppressHTMLTags($string) {
