@@ -41,7 +41,7 @@ class VTWorkflowEventHandler extends VTEventHandler {
 		$wsId = vtws_getWebserviceEntityId($entityData->getModuleName(), $crmid);
 		$entityData = $entityCache->forId($wsId);
 		$wfs = new VTWorkflowManager($adb);
-		$workflows = $wfs->getWorkflowsForModule($entityData->getModuleName());
+		$workflows = $wfs->getWorkflowsForModule($entityData->getModuleName(), true);
 
 		foreach ($workflows as $workflow) {
 			if (!is_a($workflow, 'Workflow')) {
