@@ -84,6 +84,10 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 						<span class="slds-checkbox_faux"></span>
 						<span class="slds-form-element__label">{'Active'|@getTranslatedString:$MODULE}</span>
 					</label>
+					<button class="slds-button slds-button_destructive delete" title="{$APP.LBL_DELETE_BUTTON_TITLE}" accessKey="{$APP.LBL_DELETE_BUTTON_KEY}" onClick="if (confirm('{$APP.SMTP_DELETE_CONFIRMATION}')) {literal}{window.location.href = 'index.php?action=integration&module=Utilities&_op=getconfigsmtp&savemode=false&smtp_settings=inc_set';} else { return false;}{/literal}" type="submit" name="Delete">
+						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use> </svg>
+						{$APP.LBL_DELETE_BUTTON_LABEL}
+					</button>
 					</div>
 				</div>
 			</div>
@@ -263,6 +267,10 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 						<span class="slds-checkbox_faux"></span>
 						<span class="slds-form-element__label">{'Active'|@getTranslatedString:$MODULE}</span>
 					</label>
+					<button class="slds-button slds-button_destructive delete" title="{$APP.LBL_DELETE_BUTTON_TITLE}" accessKey="{$APP.LBL_DELETE_BUTTON_KEY}" onClick="if (confirm('{$APP.SMTP_DELETE_CONFIRMATION}')) {literal}{window.location.href = 'index.php?action=integration&module=Utilities&_op=getconfigsmtp&savemode=false&smtp_settings=og_set';} else { return false;}{/literal}" type="submit" name="Delete">
+						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use> </svg>
+						{$APP.LBL_DELETE_BUTTON_LABEL}
+					</button>
 					</div>
 				</div>
 			</div>
