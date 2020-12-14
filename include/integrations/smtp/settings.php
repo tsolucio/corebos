@@ -86,6 +86,23 @@ if ($savemode == 'true') {
 	);
 	echo json_encode($response);
 } else {
+
+	$smtp_settings_mode = $_REQUEST['smtp_settings'];
+	/**
+	 * delete Incoming Mail Server Configuration
+	 */
+	if ($smtp_settings_mode == 'inc_set') {
+		$smtpconfig->clearInc_SMTPSettings();
+		header("Location: index.php?action=integration&module=Utilities&_op=getconfigsmtp&savemode=false");
+	}
+	/**
+	 * delete Outgoing Mail Server Configuration
+	 */
+	if ($smtp_settings_mode == 'og_set') {
+		$smtpconfig->clearOg_SMTPSettings();
+		header("Location: index.php?action=integration&module=Utilities&_op=getconfigsmtp&savemode=false");
+	}
+
 	$ic_mail_server_validation_error = false;
 	$ic_mail_server_validation_success = false;
 	$og_mail_server_validation_error = false;
