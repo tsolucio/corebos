@@ -109,21 +109,11 @@ if (isset($query_string) && $query_string != '') {
 				$smarty->assign('SINGLE_MOD', $module);
 
 				$listquery = getListQuery($module);
-				$oCustomView = '';
-
-				$oCustomView = new CustomView($module);
-				//Instead of getting current customview id, use cvid of All so that all entities will be found
-				//$viewid = $oCustomView->getViewId($module);
-				$cv_res = $adb->pquery("select cvid from vtiger_customview where viewname='All' and entitytype=?", array($module));
-				$viewid = $adb->query_result($cv_res, 0, 'cvid');
-				$customviewcombo_html = $oCustomView->getCustomViewCombo($viewid);
-
-				$listquery = $oCustomView->getModifiedCvListQuery($viewid, $listquery, $module);
 
 				if ($search_module != '' || $search_tag != '') {//This is for Tag search
 					$where = getTagWhere($search_val, $current_user->id);
 					$search_msg = $app_strings['LBL_TAG_SEARCH'];
-					$search_msg .= "<b>".to_html($search_val).'</b>';
+					$search_msg .= '<b>'.to_html($search_val).'</b>';
 				} else { //This is for Global search
 					$where = getUnifiedWhere($listquery, $module, $search_val, $fieldtype);
 					$search_msg = $app_strings['LBL_SEARCH_RESULTS_FOR'];
@@ -170,12 +160,12 @@ if (isset($query_string) && $query_string != '') {
 				$moduleRecordCount[$module]['recordListRangeMessage'] = getRecordRangeMessage($list_result, $limitStartRecord, $noofrows);
 
 				$info_message='&recordcount='.(isset($_REQUEST['recordcount']) ? $_REQUEST['recordcount'] : 0)
-					.'&noofrows='.(isset($_REQUEST['noofrows']) ? $_REQUEST['noofrows'] : 0).'&message='.(isset($_REQUEST['message']) ? $_REQUEST['message'] : '').
-					'&skipped_record_count='.(isset($_REQUEST['skipped_record_count']) ? $_REQUEST['skipped_record_count'] : 0);
+					.'&noofrows='.(isset($_REQUEST['noofrows']) ? $_REQUEST['noofrows'] : 0).'&message='.(isset($_REQUEST['message']) ? $_REQUEST['message'] : '')
+					.'&skipped_record_count='.(isset($_REQUEST['skipped_record_count']) ? $_REQUEST['skipped_record_count'] : 0);
 				$url_string = '&modulename='.(isset($_REQUEST['modulename']) ? $_REQUEST['modulename'] : '').'&nav_module='.$module.$info_message;
-				$viewid = '';
 
-				$navigationOutput = getTableHeaderSimpleNavigation($navigation_array, $url_string, $module, 'UnifiedSearch', $viewid);
+				$oCustomView = new CustomView($module);
+				$navigationOutput = getTableHeaderSimpleNavigation($navigation_array, $url_string, $module, 'UnifiedSearch', '');
 				$listview_header = getListViewHeader($focus, $module, '', '', '', 'global', $oCustomView);
 				$listview_entries = getListViewEntries($focus, $module, $list_result, $navigation_array, '', '', '', '', $oCustomView);
 
@@ -197,7 +187,6 @@ if (isset($query_string) && $query_string != '') {
 				$smarty->assign('ModuleRecordCount', $moduleRecordCount);
 				$total_record_count = $total_record_count + $noofrows;
 				$smarty->assign('SEARCH_CRITERIA', "( $noofrows )".$search_msg);
-				$smarty->assign('CUSTOMVIEW_OPTION', $customviewcombo_html);
 
 				if (($i != 0 && empty($_REQUEST['ajax'])) || !(empty($_REQUEST['ajax']))) {
 					$smarty->display('UnifiedSearchAjax.tpl');

@@ -106,11 +106,6 @@ class Products extends CRMEntity {
 
 	public $unit_price; // for importing/exporting
 
-	public function __construct() {
-		$this_module = get_class($this);
-		$this->column_fields = getColumnFields($this_module);
-	}
-
 	public function save_module($module) {
 		if (isFrontendEditViewAction($_REQUEST, $module)) {
 			$this->insertPriceInformation('vtiger_productcurrencyrel', 'Products');
