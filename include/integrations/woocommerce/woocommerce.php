@@ -19,6 +19,7 @@
 include_once 'vtlib/Vtiger/Module.php';
 require_once 'include/Webservices/Revise.php';
 require_once 'include/Webservices/Create.php';
+require_once 'include/Webservices/SetRelation.php';
 require_once 'include/integrations/woocommerce/wcchangeset.php';
 require 'vendor/autoload.php';
 use Automattic\WooCommerce\Client;
@@ -336,6 +337,7 @@ class corebos_woocommerce {
 				$mod = CRMEntity::getInstance($moduleName);
 				list($wsid, $crmid) = $new['id'];
 				$adb->pquery('update '.$mod->table_name.' set wccreated=1,wcdeleted=0,wcdeletedon=null where '.$mod->table_index.'=?', array($crmid));
+				$this->setCategoryRelations($moduleName, $crmid, $send2cb);
 			} catch (Exception $e) {
 				$this->logMessage('send'.$moduleName.'2WC', $e->getMessage(), $send2cb, 0);
 			}
@@ -364,8 +366,31 @@ class corebos_woocommerce {
 				coreBOS_Settings::setSetting('woocommerce_syncing', $crmid);
 				vtws_revise($send2cb, $current_user);
 				coreBOS_Settings::delSetting('woocommerce_syncing');
+				$this->setCategoryRelations($moduleName, $crmid, $send2cb);
 			} catch (Exception $e) {
 				$this->logMessage('send'.$moduleName.'2WC', $e->getMessage(), $send2cb, 0);
+			}
+		}
+	}
+
+	public function setCategoryRelations($moduleName, $crmid, $send2cb) {
+		global $adb, $current_user;
+		if (($moduleName=='Products' || $moduleName=='Services') && !empty($send2cb['categories']) && vtlib_isModuleActive('wcProductCategory')) {
+			// delete existing relations
+			$adb->pquery(
+				'delete from vtiger_crmentityrel where (crmid=? and relmodule=?) OR (relcrmid=? and module=?)',
+				array($crmid, 'wcProductCategory', $crmid, 'wcProductCategory')
+			);
+			// establish relations
+			$cats = array();
+			foreach ($send2cb['categories'] as $wccat) {
+				$c = getSingleFieldValue('vtiger_wcproductcategory', 'wcproductcategoryid', 'wccode', $wccat);
+				if (!empty($c)) {
+					$cats[] = $c;
+				}
+			}
+			if (!empty($cats)) {
+				vtws_setrelation($crmid, $cats, $current_user);
 			}
 		}
 	}
@@ -528,6 +553,21 @@ class corebos_woocommerce {
 				if (!empty($data['status'])) {
 					$wcprops['status'] = ($cbfrom->column_fields['wcsyncstatus']=='Published' ? 'publish' : 'pending');
 				}
+				if (vtlib_isModuleActive('wcProductCategory')) {
+					$wcCatEntityTable = CRMEntity::getcrmEntityTableAlias('wcProductCategory');
+					$cats = $adb->pquery(
+						'select wcProductCategory.wccode
+						from wcProductCategory
+						INNER JOIN '.$wcCatEntityTable.' ON vtiger_crmentity.crmid = wcProductCategory.wcproductcategoryid
+						INNER JOIN vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid=vtiger_crmentity.crmid OR vtiger_crmentityrel.crmid=vtiger_crmentity.crmid)
+						WHERE vtiger_crmentity.deleted=0 AND (vtiger_crmentityrel.relcrmid=? OR vtiger_crmentityrel.crmid=?)',
+						array($cbfromid, $cbfromid)
+					);
+					$wcprops['categories'] = array();
+					foreach ($cats as $cat) {
+						$wcprops['categories'][] = array('id' => $cat['wccode']);
+					}
+				}
 				if (vtlib_isModuleActive('wcProductImage')) {
 					$images = vtws_query(
 						"select wcpiname,wcpialt,wcpimage from wcProductImage where Products.id='".vtws_getEntityId('Products')."x$cbfromid';",
@@ -568,6 +608,21 @@ class corebos_woocommerce {
 				}
 				if (!empty($data['status'])) {
 					$wcprops['status'] = ($cbfrom->column_fields['wcsyncstatus']=='Published' ? 'publish' : 'pending');
+				}
+				if (vtlib_isModuleActive('wcProductCategory')) {
+					$wcCatEntityTable = CRMEntity::getcrmEntityTableAlias('wcProductCategory');
+					$cats = $adb->pquery(
+						'select wcProductCategory.wccode
+						from wcProductCategory
+						INNER JOIN '.$wcCatEntityTable.' ON vtiger_crmentity.crmid = wcProductCategory.wcproductcategoryid
+						INNER JOIN vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid=vtiger_crmentity.crmid OR vtiger_crmentityrel.crmid=vtiger_crmentity.crmid)
+						WHERE vtiger_crmentity.deleted=0 AND (vtiger_crmentityrel.relcrmid=? OR vtiger_crmentityrel.crmid=?)',
+						array($cbfromid, $cbfromid)
+					);
+					$wcprops['categories'] = array();
+					foreach ($cats as $cat) {
+						$wcprops['categories'][] = array('id' => $cat['wccode']);
+					}
 				}
 				if (vtlib_isModuleActive('wcProductImage')) {
 					$images = vtws_query(
