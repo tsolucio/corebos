@@ -39,7 +39,7 @@ class corebos_woocommerce {
 	private $productModule = '1';
 	private $orderModule = '1';
 	private $apiversion = 'wc/v3';
-	public static $supportedModules = array('Accounts','Contacts','Products','Services','SalesOrder','Invoice');
+	public static $supportedModules = array('Accounts','Contacts','Products','Services','SalesOrder','Invoice','wcProductCategory');
 
 	// Configuration Keys
 	const KEY_ISACTIVE = 'woocommerce_isactive';
@@ -138,6 +138,9 @@ class corebos_woocommerce {
 					case 'Invoice':
 						$this->sendOrder2WC($change);
 						break;
+					case 'wcProductCategory':
+						$this->sendCategory2WC($change);
+						break;
 					default:
 						$this->messagequeue->rejectMessage($msg, 'Module not supported: '.$moduleName);
 				}
@@ -166,6 +169,9 @@ class corebos_woocommerce {
 					case 'Products':
 					case 'Services':
 						$this->deleteProductInWC($change);
+						break;
+					case 'wcProductCategory':
+						$this->deleteCategoryInWC($change);
 						break;
 					default:
 						$this->messagequeue->rejectMessage($msg, 'Module not supported: '.$moduleName);
@@ -266,6 +272,34 @@ class corebos_woocommerce {
 		}
 	}
 
+	public function sendCategory2WC($change) {
+		$send2wc = $this->getPropertiesToWC($change);
+		if (count($send2wc)>0) {
+			$wcid = $this->getWCIDFromEntity($change['module'], $change['record_id']);
+			if ($wcid == 'CREATEIT') {
+				try {
+					$rdo = $this->wcclient->post('products/categories', $send2wc);
+					if (isset($rdo->data) && isset($rdo->data->status) && isset($rdo->message)) {
+						$this->logMessage('sendCategory2WC', $rdo->code.' - '.$rdo->message, $send2wc, $rdo);
+					} else {
+						$this->updateControlFields($change['module'], $change['record_id'], $rdo->id);
+					}
+				} catch (Exception $e) {
+					$this->logMessage('sendCategory2WC', $e->getMessage(), $send2wc, 0);
+				}
+			} elseif ($wcid!='') {
+				try {
+					$rdo = $this->wcclient->put('products/categories/'.$wcid, $send2wc);
+					if (isset($rdo->data) && isset($rdo->data->status) && isset($rdo->message)) {
+						$this->logMessage('sendProduct2WC', $rdo->code.' - '.$rdo->message, $send2wc, $rdo);
+					}
+				} catch (Exception $e) {
+					$this->logMessage('sendCategory2WC', $e->getMessage(), $send2wc, 0);
+				}
+			}
+		}
+	}
+
 	public function sendOrder2WC($change) {
 		$send2wc = $this->getPropertiesToWC($change);
 		if (count($send2wc)>0) {
@@ -301,6 +335,22 @@ class corebos_woocommerce {
 				}
 			} catch (Exception $e) {
 				$this->logMessage('delProductInWC', $e->getMessage(), $change, 0);
+			}
+		}
+	}
+
+	public function deleteCategoryInWC($change) {
+		$wcid = $this->getWCIDFromEntity($change['module'], $change['record_id']);
+		if ($wcid!='' && $this->isActive()) {
+			try {
+				$rdo = $this->wcclient->delete('products/categories/'.$wcid, ['force' => true]);
+				if (isset($rdo->data) && isset($rdo->data->status) && isset($rdo->message)) {
+					$this->logMessage('delCategoryInWC', $rdo->code.' - '.$rdo->message, $change, $rdo);
+				} else {
+					$this->updateDeleteFields($change['module'], $change['record_id']);
+				}
+			} catch (Exception $e) {
+				$this->logMessage('delCategoryInWC', $e->getMessage(), $change, 0);
 			}
 		}
 	}
@@ -651,6 +701,26 @@ class corebos_woocommerce {
 					unset($wcprops['images']);
 				}
 				break;
+			case 'wcProductCategory':
+				if (!isset($wcprops['name'])) {
+					$wcprops['name'] = decode_html($cbfrom->column_fields['category_name']);
+				}
+				if (!isset($wcprops['slug'])) {
+					$wcprops['slug'] = decode_html($cbfrom->column_fields['slug']);
+				}
+				if (!isset($wcprops['description'])) {
+					$wcprops['description'] = decode_html($cbfrom->column_fields['description']);
+				}
+				if (!isset($wcprops['display'])) {
+					$wcprops['display'] = $cbfrom->column_fields['display'];
+				}
+				if (!isset($wcprops['parent']) && !empty($cbfrom->column_fields['parent_category'])) {
+					$p = getSingleFieldValue('vtiger_wcproductcategory', 'wccode', 'wcproductcategoryid', $cbfrom->id);
+					if (!empty($p)) {
+						$wcprops['parent'] = $p;
+					}
+				}
+				break;
 			case 'SalesOrder':
 			case 'Invoice':
 				// not supported yet
@@ -821,6 +891,9 @@ class corebos_woocommerce {
 				if (!empty($data['status'])) {
 					$data['wcsyncstatus'] = ($data['status']=='publish' ? 'Published' : 'Active');
 				}
+				break;
+			case 'wcProductCategory':
+				// not supported yet
 				break;
 			case 'SalesOrder':
 			case 'Invoice':
