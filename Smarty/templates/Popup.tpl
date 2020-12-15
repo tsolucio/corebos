@@ -212,7 +212,7 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 				<table cellpadding="2" cellspacing="0" width="100%" align="center" class="searchUIAdv2 small" border=0>
 					<tr>
 						<td align="center" class="small" width=90%>
-							{include file='AdvanceFilter.tpl' SOURCE='customview' COLUMNS_BLOCK=$FIELDNAMES}
+							{include file='AdvanceFilter.tpl' SOURCE='customview' COLUMNS_BLOCK=$FIELDNAMES MODULES_BLOCK=$FIELDNAMES_ARRAY}
 						</td>
 					</tr>
 				</table>
