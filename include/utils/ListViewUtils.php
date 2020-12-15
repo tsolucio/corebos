@@ -2123,21 +2123,6 @@ function getListQuery($module, $where = '') {
 	$crmTable = $mod->crmentityTable;
 	$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 	switch ($module) {
-		case 'HelpDesk':
-			$query = 'SELECT vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_troubletickets.title, vtiger_troubletickets.status,vtiger_troubletickets.priority,
-					vtiger_troubletickets.parent_id, vtiger_contactdetails.contactid, vtiger_contactdetails.firstname, vtiger_contactdetails.lastname,
-					vtiger_account.accountid, vtiger_troubletickets.email, vtiger_account.accountname, vtiger_ticketcf.*, vtiger_troubletickets.ticket_no
-				FROM vtiger_troubletickets
-				INNER JOIN vtiger_ticketcf ON vtiger_ticketcf.ticketid = vtiger_troubletickets.ticketid
-				INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_troubletickets.ticketid
-				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-				LEFT JOIN vtiger_contactdetails ON vtiger_troubletickets.parent_id = vtiger_contactdetails.contactid
-				LEFT JOIN vtiger_account ON vtiger_account.accountid = vtiger_troubletickets.parent_id
-				LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id
-				LEFT JOIN vtiger_products ON vtiger_products.productid = vtiger_troubletickets.product_id';
-			$query .= ' ' . getNonAdminAccessControlQuery($module, $current_user);
-			$query .= 'WHERE vtiger_crmentity.deleted = 0 ' . $where;
-			break;
 		case 'Accounts':
 			$query = 'SELECT vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_account.*, vtiger_accountbillads.bill_city, vtiger_accountscf.*
 				FROM vtiger_account
