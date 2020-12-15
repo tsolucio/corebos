@@ -70,11 +70,6 @@ class PBXManager extends CRMEntity {
 	public $default_order_by = 'timeofcall';
 	public $default_sort_order='DESC';
 
-	public function __construct() {
-		global $currentModule;
-		$this->column_fields = getColumnFields($currentModule);
-	}
-
 	public function save_module($module) {
 	}
 

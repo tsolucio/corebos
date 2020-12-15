@@ -106,11 +106,6 @@ class Emails extends CRMEntity {
 	// Refers to vtiger_field.fieldname values.
 	public $mandatory_fields = array('subject', 'assigned_user_id');
 
-	public function __construct() {
-		$this_module = get_class($this);
-		$this->column_fields = getColumnFields($this_module);
-	}
-
 	public function save_module($module) {
 		global $adb;
 		//Inserting into seactivityrel
