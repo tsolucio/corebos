@@ -11,8 +11,6 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class ProductComponent extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_productcomponent';
 	public $table_index= 'productcomponentid';
 	public $column_fields = array();
@@ -178,9 +176,7 @@ class ProductComponent extends CRMEntity {
 
 	public static function getRelation($fromProduct = '*', $toProduct = '*', $fromDate = '*', $toDate = '*', $relationType = '*') {
 		global $adb;
-		$sql = 'select * from vtiger_productcomponent
-			inner join vtiger_crmentity on crmid=productcomponentid
-			where deleted=0';
+		$sql = 'select * from vtiger_productcomponent inner join '.$this->crmentityTable.' on crmid=productcomponentid where deleted=0';
 		if ($fromProduct!='*') {
 			$sql.=' and frompdo=? ';
 			$params[] = $fromProduct;

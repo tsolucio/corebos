@@ -22,11 +22,7 @@ $moduleName=vtlib_purify($_REQUEST['fld_module']);
 $uitype=vtlib_purify($_REQUEST['uitype']);
 $mode=vtlib_purify($_REQUEST['mode']);
 
-if ($moduleName == 'Events') {
-	$temp_module_strings = return_module_language($current_language, 'Calendar');
-} else {
-	$temp_module_strings = return_module_language($current_language, $moduleName);
-}
+$temp_module_strings = return_module_language($current_language, $moduleName);
 
 $result = $adb->pquery('select picklistid from vtiger_picklist where name=?', array($fieldName));
 $picklistid = $adb->query_result($result, 0, 'picklistid');

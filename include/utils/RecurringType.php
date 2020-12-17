@@ -8,7 +8,7 @@
  * All Rights Reserved.
  * ****************************************************************************** */
 require_once 'include/utils/utils.php';
-require_once 'modules/Calendar/Date.php';
+require_once 'modules/cbCalendar/Date.php';
 
 class RecurringType {
 
@@ -298,7 +298,7 @@ class RecurringType {
 	}
 
 	public function getDisplayRecurringInfo() {
-		$i18nModule = 'Calendar';
+		$i18nModule = 'cbCalendar';
 
 		$displayRecurringData = array();
 

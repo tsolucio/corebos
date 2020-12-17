@@ -15,6 +15,7 @@ require_once 'include/utils/CommonUtils.php';
 require_once 'modules/Messages/Messages.php';
 require_once 'modules/Emails/mail.php';
 include_once 'include/Webservices/VtigerEmailOperation.php';
+require_once 'data/CRMEntity.php';
 
 class VTEmailTask extends VTTask {
 	// Sending email takes more time, this should be handled via queue all the time.
@@ -158,11 +159,12 @@ class VTEmailTask extends VTTask {
 			if (strpos($entity->WorkflowContext['SendThisMsgTemplate'], 'x')>0) {
 				list($wsid, $entity->WorkflowContext['SendThisMsgTemplate']) = explode('x', $entity->WorkflowContext['SendThisMsgTemplate']);
 			}
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('MsgTemplate');
 			$mtrs = $adb->pquery(
 				'select subject,template,templateonlytext
 				from vtiger_msgtemplate
-				inner join vtiger_crmentity on msgtemplateid=crmid
-				where deleted=0 and msgtemplateid=?',
+				inner join '.$crmEntityTable.' on msgtemplateid=vtiger_crmentity.crmid
+				where vtiger_crmentity.deleted=0 and msgtemplateid=?',
 				array($entity->WorkflowContext['SendThisMsgTemplate'])
 			);
 			if ($mtrs && $adb->num_rows($mtrs)>0) {
@@ -172,10 +174,11 @@ class VTEmailTask extends VTTask {
 				if (!empty($mtrs->fields['template'])) {
 					$this->content = $mtrs->fields['template'];
 				}
+				$crmEntityTable1 = CRMEntity::getcrmEntityTableAlias('Documents');
 				$docrs = $adb->pquery(
 					'select notesid
 					from vtiger_senotesrel
-					inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_senotesrel.notesid
+					inner join '.$crmEntityTable1.' on vtiger_crmentity.crmid=vtiger_senotesrel.notesid
 					where vtiger_crmentity.deleted=0 and vtiger_senotesrel.crmid=?',
 					array($entity->WorkflowContext['SendThisMsgTemplate'])
 				);

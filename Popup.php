@@ -72,15 +72,6 @@ if (!empty($_REQUEST['popqc']) && $_REQUEST['popqc'] = 'true' && empty($_REQUEST
 	$_REQUEST['advft_criteria'] = '[{"groupid":"1","columnname":"'.$optionvalue.'","comparator":"e","value":"'.$fldval.'","columncondition":""}]';
 }
 
-//added to get relatedto field value for todo, while selecting from the popup list, after done the alphabet or basic search.
-if (isset($_REQUEST['maintab']) && $_REQUEST['maintab'] != '') {
-	$act_tab = vtlib_purify($_REQUEST['maintab']);
-	$url = '&maintab='.$act_tab;
-} else {
-	$act_tab = '';
-}
-$smarty->assign('MAINTAB', $act_tab);
-
 // This is added to support the type of popup and callback
 if (isset($_REQUEST['popupmode']) && isset($_REQUEST['callback'])) {
 	$url = '&popupmode='.vtlib_purify($_REQUEST['popupmode']).'&callback='.vtlib_purify($_REQUEST['callback']);
@@ -273,10 +264,11 @@ $smarty->assign('RETURN_ACTION', isset($_REQUEST['return_action']) ? vtlib_purif
 if ($currentModule == 'PriceBooks' && isset($_REQUEST['productid'])) {
 	$productid= isset($_REQUEST['productid']) ? vtlib_purify($_REQUEST['productid']) : 0;
 	$currency_id= isset($_REQUEST['currencyid']) ? vtlib_purify($_REQUEST['currencyid']) : fetchCurrency($current_user->id);
+	$crmalias = CRMEntity::getcrmEntityTableAlias('PriceBooks');
 	$query = 'select vtiger_pricebook.*, vtiger_pricebookproductrel.productid, vtiger_pricebookproductrel.listprice, ' .
 		'vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_crmentity.modifiedtime ' .
 		'from vtiger_pricebook inner join vtiger_pricebookproductrel on vtiger_pricebookproductrel.pricebookid = vtiger_pricebook.pricebookid ' .
-		'inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_pricebook.pricebookid ' .
+		"inner join $crmalias on vtiger_crmentity.crmid = vtiger_pricebook.pricebookid " .
 		'where vtiger_crmentity.deleted=0 and vtiger_pricebook.currency_id='.$adb->sql_escape_string($currency_id).' and vtiger_pricebook.active=1';
 	if (!empty($productid)) {
 		$query.= ' and vtiger_pricebookproductrel.productid='.$adb->sql_escape_string($productid);
@@ -329,16 +321,18 @@ if ($currentModule == 'PriceBooks' && isset($_REQUEST['productid'])) {
 		if ($showSubproducts == 'yes') {
 			$where_relquery.=' and vtiger_products.discontinued <> 0';
 		} else {
-			$where_relquery.=' and vtiger_products.discontinued<>0 AND vtiger_products.productid NOT IN (SELECT distinct topdo
+			$crmalias = CRMEntity::getcrmEntityTableAlias('ProductComponent');
+			$where_relquery.=" and vtiger_products.discontinued<>0 AND vtiger_products.productid NOT IN (SELECT distinct topdo
 				FROM vtiger_productcomponent
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
-				WHERE vtiger_crmentity.deleted = 0)';
+				INNER JOIN $crmalias ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
+				WHERE vtiger_crmentity.deleted = 0)";
 		}
 	} elseif ($currentModule == 'Products' && !empty($_REQUEST['record_id']) && ($popuptype == 'inventory_prod' || $popuptype == 'inventory_prod_po')) {
+		$crmalias = CRMEntity::getcrmEntityTableAlias('ProductComponent');
 		$where_relquery .= ' and vtiger_products.discontinued <> 0 AND (vtiger_products.productid IN '
-			.'(SELECT topdo FROM vtiger_productcomponent
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
-				WHERE vtiger_crmentity.deleted=0 AND frompdo='.$adb->sql_escape_string($_REQUEST['record_id']).'))';
+			."(SELECT topdo FROM vtiger_productcomponent
+				INNER JOIN $crmalias ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
+				WHERE vtiger_crmentity.deleted=0 AND frompdo=".$adb->sql_escape_string($_REQUEST['record_id']).'))';
 	} elseif ($currentModule == 'Products' && (empty($_REQUEST['return_module']) || $_REQUEST['return_module'] != 'Products')) {
 		$where_relquery .= ' and vtiger_products.discontinued <> 0';
 	}
@@ -349,21 +343,23 @@ if ($currentModule == 'PriceBooks' && isset($_REQUEST['productid'])) {
 		if ($parentLikeSubProduct == 'yes' && $SubProductBeParent == 'no') {
 			$where_relquery .=' and vtiger_products.discontinued <> 0 AND vtiger_crmentity.crmid NOT IN ('.$adb->sql_escape_string($_REQUEST['recordid']).')';
 		} elseif ($parentLikeSubProduct == 'yes' && $SubProductBeParent == 'yes') {
+			$crmalias = CRMEntity::getcrmEntityTableAlias('ProductComponent');
 			$where_relquery .=' and vtiger_products.discontinued <> 0 AND (vtiger_crmentity.crmid NOT IN ('.$adb->sql_escape_string($_REQUEST['recordid'])
-				.') AND vtiger_crmentity.crmid NOT IN (SELECT distinct frompdo
+				.") AND vtiger_crmentity.crmid NOT IN (SELECT distinct frompdo
 					FROM vtiger_productcomponent
-					INNER JOIN vtiger_crmentity crmpc ON crmpc.crmid=vtiger_productcomponent.productcomponentid
-					WHERE crmpc.deleted=0 AND topdo='.$adb->sql_escape_string($_REQUEST['recordid']).'))';
+					INNER JOIN $crmalias ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
+					WHERE vtiger_crmentity.deleted=0 AND topdo=".$adb->sql_escape_string($_REQUEST['recordid']).'))';
 		} else {
+			$crmalias = CRMEntity::getcrmEntityTableAlias('ProductComponent');
 			$where_relquery .=' and vtiger_products.discontinued <> 0 AND (vtiger_crmentity.crmid NOT IN ('.$adb->sql_escape_string($_REQUEST['recordid'])
-				.') AND vtiger_crmentity.crmid NOT IN (SELECT distinct frompdo
+				.") AND vtiger_crmentity.crmid NOT IN (SELECT distinct frompdo
 					FROM vtiger_productcomponent
-					INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
+					INNER JOIN $crmalias ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
 					WHERE vtiger_crmentity.deleted=0
 				) AND vtiger_crmentity.crmid NOT IN (SELECT distinct topdo
 					FROM vtiger_productcomponent
-					INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
-					WHERE vtiger_crmentity.deleted=0 AND frompdo='.$adb->sql_escape_string($_REQUEST['recordid']).'))';
+					INNER JOIN $crmalias ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
+					WHERE vtiger_crmentity.deleted=0 AND frompdo=".$adb->sql_escape_string($_REQUEST['recordid']).'))';
 		}
 	}
 	$smarty->assign('SHOW_SUBPRODUCTS', GlobalVariable::getVariable('Product_Show_Subproducts_Popup', 'no'));

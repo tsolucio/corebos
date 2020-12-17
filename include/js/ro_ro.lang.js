@@ -392,5 +392,11 @@ var alert_arr = {
 	'Failed': 'Failed',
 	'Warning': 'Warning',
 	'Copied': 'Copied',
-	'ACT_UNIT_PRICE_MISMATCH': 'The actual price for this currency should be equal to the unit price, but this is not the case for this product or service'
+	'ACT_UNIT_PRICE_MISMATCH': 'The actual price for this currency should be equal to the unit price, but this is not the case for this product or service',
+	'LBL_SHOWING': 'Afisare Inregistrari ',
+	'LBL_RECORDS': ' din ',
+	'LNK_DELETE': 'sterge',
+	'LNK_EDIT': 'edit',
+	'LNK_EDIT_ACTION': 'Editare',
+	'LNK_DELETE_ACTION': 'Stergere',
 };

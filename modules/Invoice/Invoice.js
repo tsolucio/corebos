@@ -47,16 +47,6 @@ function set_return_inventory(product_id, product_name, unitprice, qtyinstock, c
 	window.opener.document.EditView.elements['txtQty'+curr_row].focus();
 }
 
-function set_return_todo(product_id, product_name) {
-	if (document.getElementById('from_link').value != '') {
-		window.opener.document.QcEditView.task_parent_name.value = product_name;
-		window.opener.document.QcEditView.task_parent_id.value = product_id;
-	} else {
-		window.opener.document.createTodo.task_parent_name.value = product_name;
-		window.opener.document.createTodo.task_parent_id.value = product_id;
-	}
-}
-
 function InvoicesetValueFromCapture(recordid, value, target_fieldname) {
 	if (target_fieldname=='tandc') {
 		var url = 'module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getFieldValuesFromRecord&getTheseFields=tandc&getFieldValuesFrom='+recordid;

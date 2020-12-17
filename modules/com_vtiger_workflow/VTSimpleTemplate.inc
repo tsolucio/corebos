@@ -297,6 +297,7 @@ class VTSimpleTemplate {
 
 	private function getInventoryDetails($format, $field) {
 		global $adb, $current_user;
+		require_once 'data/CRMEntity.php';
 		$format = strtolower($format);
 		if ($format!='html' && $format!='text'&& $format!='table') {
 			$format = 'html';
@@ -324,7 +325,7 @@ class VTSimpleTemplate {
 		$singlefield = (count($fields)==1);
 		// Checking if field present in the table.
 		// To Do.
-
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('InventoryDetails');
 		$wsid = $this->parent->getId();
 		list($wsid,$crmid) = explode('x', $wsid);
 		$relfield = getFirstFieldForModule('InventoryDetails', $this->parent->getModuleName());
@@ -333,7 +334,7 @@ class VTSimpleTemplate {
 		}
 		$cmsqlws = 'SELECT '.$field.'
 			FROM vtiger_inventorydetails
-			INNER JOIN vtiger_crmentity ON vtiger_inventorydetails.inventorydetailsid=vtiger_crmentity.crmid
+			INNER JOIN '.$crmEntityTable.' ON vtiger_inventorydetails.inventorydetailsid=vtiger_crmentity.crmid
 			LEFT JOIN vtiger_products ON vtiger_inventorydetails.productid=vtiger_products.productid
 			LEFT JOIN vtiger_service ON vtiger_inventorydetails.productid=vtiger_service.serviceid
 			WHERE '.$relfield.'=? order by sequence_no';
@@ -771,11 +772,7 @@ class VTSimpleTemplate {
 				$parts = explode('x', $wsId);
 				$recordId = $parts[1];
 				$moduleName = $this->parent->getModuleName();
-				if ($moduleName == 'Calendar') {
-					return $site_URL.'/index.php?action=DetailView&module=cbCalendar&record='.$recordId;
-				} else {
-					return $site_URL.'/index.php?action=DetailView&module='.$moduleName.'&record='.$recordId;
-				}
+				return $site_URL.'/index.php?action=DetailView&module='.$moduleName.'&record='.$recordId;
 			case 'portaldetailviewurl':
 				$wsId = $this->parent->getId();
 				$parts = explode('x', $wsId);

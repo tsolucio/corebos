@@ -425,9 +425,10 @@ class corebos_hubspot {
 			case 'Potentials':
 				$table = 'vtiger_potential';
 				$idcol = 'potentialid';
+				$crmEntityTable = CRMEntity::getcrmEntityTableAlias($setype);
 				$reltors = $adb->pquery('select related_to,setype
 					from vtiger_potential
-					inner join vtiger_crmentity on crmid = related_to
+					inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = related_to
 					where potentialid=?', array($crmid));
 				if ($reltors && $adb->num_rows($reltors)>0) {
 					$relto = $adb->query_result($reltors, 0, 'related_to');

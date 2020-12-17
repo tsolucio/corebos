@@ -55,16 +55,16 @@ function wsapp_getRecordEntityNameIds($entityNames, $modules, $user) {
 			$entityMetaList[$moduleName] = $meta;
 		}
 		$meta = $entityMetaList[$moduleName];
-		$nameFieldsArray = explode(",", $meta->getNameFields());
+		$nameFieldsArray = explode(',', $meta->getNameFields());
 		if (count($nameFieldsArray)>1) {
 			$nameFields = 'concat('.implode(",' ',", $nameFieldsArray).')';
 		} else {
 			$nameFields = $nameFieldsArray[0];
 		}
-
+		$mod = CRMEntity::getInstance($moduleName);
 		$query = 'SELECT '.$meta->getObectIndexColumn()." as id,$nameFields as entityname
-			FROM ".$meta->getEntityBaseTable()." as moduleentity
-			INNER JOIN vtiger_crmentity as crmentity
+			FROM ".$meta->getEntityBaseTable().' as moduleentity
+			INNER JOIN '.$mod->crmentityTable." as crmentity
 			WHERE $nameFields IN(".generateQuestionMarks($entityNames).') AND crmentity.deleted=0 AND crmentity.crmid = moduleentity.'.$meta->getObectIndexColumn();
 		$result = $db->pquery($query, $entityNames);
 		$num_rows = $db->num_rows($result);
@@ -84,9 +84,9 @@ function wsapp_convertDateTimeToTimeZone($dateTime, $toTimeZone) {
 	global $default_timezone;
 	$time_zone = $default_timezone;
 	$source_time = date_default_timezone_set($time_zone);
-	$sourceDate = date("Y-m-d H:i:s");
+	$sourceDate = date('Y-m-d H:i:s');
 	$dest_time = date_default_timezone_set($toTimeZone);
-	$destinationDate = date("Y-m-d H:i:s");
+	$destinationDate = date('Y-m-d H:i:s');
 	$diff = (strtotime($destinationDate)-strtotime($sourceDate));
 	$givenTimeInSec = strtotime($dateTime);
 	$modifiedTimeSec = $givenTimeInSec+$diff;
@@ -101,7 +101,7 @@ function wsapp_checkIfRecordsAssignToUser($recordsIds, $userIds) {
 	}
 	$userIds = (array)$userIds;
 	$db = PearDatabase::getInstance();
-	$query = 'SELECT crmid FROM vtiger_crmentity where crmid IN ('.generateQuestionMarks($recordsIds).") and smownerid in (".generateQuestionMarks($userIds).")";
+	$query = 'SELECT crmid FROM vtiger_crmobject where crmid IN ('.generateQuestionMarks($recordsIds).') and smownerid in ('.generateQuestionMarks($userIds).')';
 	$params = $recordsIds;
 	foreach ($userIds as $userId) {
 		$params[] = $userId;
@@ -128,7 +128,7 @@ function wsapp_getAppKey($appName) {
 function wsapp_getAppSyncType($appKey) {
 	$db = PearDatabase::getInstance();
 	$result = $db->pquery('SELECT type FROM vtiger_wsapp WHERE appkey=?', array($appKey));
-	$syncType="";
+	$syncType='';
 	if ($db->num_rows($result)>0) {
 		$syncType = $db->query_result($result, 0, 'type');
 	}

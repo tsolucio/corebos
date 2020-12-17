@@ -67,7 +67,7 @@ class vtigerCRMHandler extends SyncHandler {
 		$crmIds = array();
 
 		foreach ($updatedRecords as $index => $record) {
-			$webserviceRecordId = $record["id"];
+			$webserviceRecordId = $record['id'];
 			$recordIdComp = vtws_getIdComponents($webserviceRecordId);
 			$crmIds[] = $recordIdComp[1];
 		}
@@ -76,7 +76,7 @@ class vtigerCRMHandler extends SyncHandler {
 			$assignedRecordIds = wsapp_checkIfRecordsAssignToUser($crmIds, $this->user->id);
 			// To check if the record assigned to group
 			if ($this->isClientUserAndGroupSyncType()) {
-				$groupIds = $this->getGroupIds($this->user->id);
+				$groupIds = explode(',', fetchUserGroupids($this->user->id));
 				foreach ($groupIds as $group) {
 					$groupRecordId = wsapp_checkIfRecordsAssignToUser($crmIds, $group);
 					$assignedRecordIds = array_merge($assignedRecordIds, $groupRecordId);
@@ -84,7 +84,7 @@ class vtigerCRMHandler extends SyncHandler {
 			}
 		}
 		foreach ($updatedRecords as $index => $record) {
-			$webserviceRecordId = $record["id"];
+			$webserviceRecordId = $record['id'];
 			$recordIdComp = vtws_getIdComponents($webserviceRecordId);
 			try {
 				if (in_array($recordIdComp[1], $assignedRecordIds)) {
@@ -148,7 +148,7 @@ class vtigerCRMHandler extends SyncHandler {
 		$nativeCreatedRecords = array();
 		foreach ($syncCreatedRecords as $index => $createRecord) {
 			if (empty($createRecord['assigned_user_id'])) {
-				$createRecord['assigned_user_id'] = vtws_getWebserviceEntityId("Users", $this->user->id);
+				$createRecord['assigned_user_id'] = vtws_getWebserviceEntityId('Users', $this->user->id);
 			}
 			$nativeCreatedRecords[$index] = $createRecord;
 		}

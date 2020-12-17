@@ -120,7 +120,7 @@
  *************************************************************************************************/
 
 include_once 'include/validation/load_validations.php';
-
+require_once 'data/CRMEntity.php';
 class Validations extends processcbMap {
 
 	/*
@@ -464,18 +464,20 @@ class Validations extends processcbMap {
 
 	public static function ValidationsExist($module) {
 		global $adb, $current_user;
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap');
 		$q = "select 1
 			from vtiger_cbmap
-			inner join vtiger_crmentity on crmid=cbmapid
+			inner join ".$crmEntityTable." on vtiger_crmentity.crmid=cbmapid
 			where deleted=0 and maptype=? and targetname=? and mapname like '%_Validations' limit 1";
 		$rs = $adb->pquery($q, array('Validations',$module));
 		if ($rs && $adb->num_rows($rs)==1) {
 			return true;
 		}
+		$crmGvEntityTable = CRMEntity::getcrmEntityTableAlias('GlobalVariable');
 		$q = 'select globalvariableid
 			from vtiger_globalvariable
-			inner join vtiger_crmentity on crmid=globalvariableid
-			where deleted=0 and gvname=? and module_list=? and bmapid!=0 and bmapid is not null';
+			inner join '.$crmGvEntityTable.' on vtiger_crmentity.crmid=globalvariableid
+			where vtiger_crmentity.deleted=0 and gvname=? and module_list=? and bmapid!=0 and bmapid is not null';
 		$rs = $adb->pquery($q, array('BusinessMapping_Validations', $module));
 		if ($rs && $adb->num_rows($rs)>0) {
 			while ($gv = $adb->fetch_array($rs)) {
@@ -548,18 +550,20 @@ class Validations extends processcbMap {
 			}
 		}
 		$valmaps = array();
-		$q = "select cbmapid
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap');
+		$q = 'select cbmapid
 			from vtiger_cbmap
-			inner join vtiger_crmentity on crmid=cbmapid
+			inner join '.$crmEntityTable." on vtiger_crmentity.crmid=cbmapid
 			where deleted=0 and maptype=? and targetname=? and mapname like '%_Validations'";
 		$rs = $adb->pquery($q, array('Validations', $module));
 		while ($val = $adb->fetch_array($rs)) {
 			$valmaps[] = $val['cbmapid'];
 		}
+		$crmGvEntityTable = CRMEntity::getcrmEntityTableAlias('GlobalVariable');
 		$q = 'select globalvariableid, bmapid
 			from vtiger_globalvariable
-			inner join vtiger_crmentity on crmid=globalvariableid
-			where deleted=0 and gvname=? and module_list=? and bmapid!=0 and bmapid is not null';
+			inner join '.$crmGvEntityTable.' on vtiger_crmentity.crmid=globalvariableid
+			where vtiger_crmentity.deleted=0 and gvname=? and module_list=? and bmapid!=0 and bmapid is not null';
 		$rs = $adb->pquery($q, array('BusinessMapping_Validations', $module));
 		if ($rs && $adb->num_rows($rs)>0) {
 			while ($gv = $adb->fetch_array($rs)) {

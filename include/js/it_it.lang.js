@@ -413,5 +413,11 @@ var alert_arr = {
 	'Failed': 'Failed',
 	'Warning': 'Warning',
 	'Copied': 'Copied',
-	'ACT_UNIT_PRICE_MISMATCH': 'Il prezzo effettivo per questa valuta dovrebbe essere uguale al prezzo unitario, ma questo non è il caso di questo prodotto o servizio'
+	'ACT_UNIT_PRICE_MISMATCH': 'Il prezzo effettivo per questa valuta dovrebbe essere uguale al prezzo unitario, ma questo non è il caso di questo prodotto o servizio',
+	'LBL_SHOWING': 'Visualizzando Record ',
+	'LBL_RECORDS': ' di ',
+	'LNK_DELETE': 'canc',
+	'LNK_EDIT': 'modifica',
+	'LNK_EDIT_ACTION': 'Modifica',
+	'LNK_DELETE_ACTION': 'Elimina',
 };

@@ -36,8 +36,9 @@ function whatsappsync($input) {
 		}
 	}
 	if ($eventype == 'READ') {
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Messages');
 		$unique = $adb->pquery(
-			'select messagesid,open from vtiger_messages join vtiger_crmentity on crmid=messagesid where deleted=0 and messagesuniqueid=?',
+			'select messagesid,open from vtiger_messages join '.$crmEntityTable.' on crmid=messagesid where deleted=0 and messagesuniqueid=?',
 			array($msid)
 		);
 		$mesid = $adb->query_result($unique, 0, 0);

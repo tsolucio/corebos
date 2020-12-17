@@ -11,14 +11,14 @@ global $current_user,$mod_strings,$app_strings, $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 require_once 'include/database/PearDatabase.php';
-require_once 'modules/Calendar/CalendarCommon.php';
+require_once 'modules/cbCalendar/CalendarCommon.php';
 require_once 'modules/Calendar4You/Calendar4You.php';
 require_once 'modules/Calendar4You/GoogleSync4You.php';
 $t=Date('Ymd');
 $userDetails=getSharingUserName($current_user->id);
 $shareduser_ids = getSharedUserId($current_user->id);
 
-$c_mod_strings = return_module_language($current_language, 'Calendar');
+$c_mod_strings = return_module_language($current_language, 'cbCalendar');
 $users_mod_strings = return_module_language($current_language, 'Users');
 
 $Calendar4You = new Calendar4You();

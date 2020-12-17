@@ -12,8 +12,6 @@ require_once 'data/Tracker.php';
 require_once 'vtlib/Vtiger/Module.php';
 
 class ModCommentsCore extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_modcomments';
 	public $table_index= 'modcommentsid';
 	public $column_fields = array();
@@ -100,11 +98,12 @@ class ModCommentsCore extends CRMEntity {
 		}
 		$relto = $this->column_fields['related_to'];
 		if (!empty($relto)) {
+			$mod = CRMEntity::getInstance(getSalesEntityType($relto));
 			// update related assigned to email read only field
 			$relemailrs = $adb->pquery(
 				'SELECT email1
 					FROM vtiger_modcomments
-					INNER JOIN vtiger_crmentity on crmid=related_to
+					INNER JOIN '.$mod->crmentityTable.' on crmid=related_to
 					INNER JOIN vtiger_users on id = smownerid
 					WHERE modcommentsid=?',
 				array($this->id)

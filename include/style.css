@@ -177,7 +177,8 @@
 .cbds-advanced-search--active {
 	opacity: 1;
 	height: auto;
-	transition: opacity 100ms linear 50ms, height 0ms linear 0ms;
+  transition: opacity 100ms linear 50ms, height 0ms linear 0ms;
+  overflow: visible;
 }
 
 /* ---- CBDS expansion on LDS components ---- */
@@ -191,6 +192,12 @@
   -webkit-transform: translateY(-3.125rem);
   -moz-transform: translateY(-3.125rem);
   transform: translateY(-3.125rem);
+}
+
+.slds-dropdown_length-3, .slds-dropdown--length-3 {
+  -webkit-overflow-scrolling:touch;
+  max-height:calc(((1rem * 1.5) + 1rem) * 3);
+  overflow-y:auto;
 }
 
 /* ---- CBDS Inventorydetails block ---- */
@@ -454,4 +461,28 @@
     -webkit-transform: translate3d(100%, 0, 0);
     transform: translate3d(100%, 0, 0);
   }
+}
+
+/* =========================================================== */
+/* ===================== SOME OVERRIDES ====================== */
+/* =========================================================== */
+
+#report-steps > .steps {
+  width: 20%;
+}
+#report-steps > .content {
+  box-sizing: border-box;
+  width: 80%;
+  margin: 0;
+  padding: 1.5%;
+}
+#report-steps > .content > .body {
+  width: 100%;
+  padding: 2% 0.5rem;
+}
+#cbds-advfilt-groups > .slds-expression__group {
+  padding: 0.75rem !important;
+}
+#mnuTab2.cv-advfilt-tab {
+  overflow: visible;
 }

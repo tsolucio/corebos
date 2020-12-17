@@ -355,8 +355,10 @@ class Vtiger_MailScanner {
 				$this->log("Reusing Cached Employee Id for email: $email");
 				return $this->_cachedEmployeeIds[$email];
 			}
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbEmployee');
+			$dnjoin = 'INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_cbemployee.cbemployeeid';
 			$empres = $adb->pquery(
-				'SELECT cbemployeeid,userid FROM vtiger_cbemployee inner join vtiger_crmentity on crmid=cbemployeeid WHERE deleted=0 and (personal_email=? or work_email=?)',
+				'SELECT cbemployeeid,userid FROM vtiger_cbemployee '.$dnjoin.' WHERE vtiger_crmentity.deleted=0 and (personal_email=? or work_email=?)',
 				array($email,$email)
 			);
 			if ($adb->num_rows($empres)) {
@@ -392,8 +394,10 @@ class Vtiger_MailScanner {
 			return $this->_cachedContactIds[$email];
 		}
 		$contactid = false;
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
+		$dnjoin = 'INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_contactdetails.contactid';
 		$contactres = $adb->pquery(
-			'SELECT contactid FROM vtiger_contactdetails inner join vtiger_crmentity on crmid=contactid WHERE deleted=0 and (email=? or secondaryemail=?)',
+			'SELECT contactid FROM vtiger_contactdetails '.$dnjoin.' WHERE vtiger_crmentity.deleted=0 and (email=? or secondaryemail=?)',
 			array($email,$email)
 		);
 		while ($cto = $adb->fetch_array($contactres)) {
@@ -424,8 +428,10 @@ class Vtiger_MailScanner {
 		}
 
 		$accountid = false;
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Accounts');
+		$dnjoin = 'INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_account.accountid';
 		$accountres = $adb->pquery(
-			'SELECT accountid FROM vtiger_account inner join vtiger_crmentity on crmid=accountid WHERE deleted=0 and (email1=? OR email2=?)',
+			'SELECT accountid FROM vtiger_account '.$dnjoin.' WHERE vtiger_crmentity.deleted=0 and (email1=? OR email2=?)',
 			array($email, $email)
 		);
 		while ($acc = $adb->fetch_array($accountres)) {
@@ -477,7 +483,7 @@ class Vtiger_MailScanner {
 		// Verify ticket is not deleted
 		$ticketid = false;
 		if ($checkTicketId) {
-			$crmres = $adb->pquery('SELECT setype, deleted FROM vtiger_crmentity WHERE crmid=?', array($checkTicketId));
+			$crmres = $adb->pquery('SELECT setype, deleted FROM vtiger_crmobject WHERE crmid=?', array($checkTicketId));
 			if ($adb->num_rows($crmres)) {
 				if ($adb->query_result($crmres, 0, 'setype') == 'HelpDesk' && $adb->query_result($crmres, 0, 'deleted') == '0') {
 					$ticketid = $checkTicketId;
@@ -525,7 +531,7 @@ class Vtiger_MailScanner {
 		// Verify ticket is not deleted
 		$projectid = false;
 		if ($checkProjectId) {
-			$crmres = $adb->pquery('SELECT setype, deleted FROM vtiger_crmentity WHERE crmid=?', array($checkProjectId));
+			$crmres = $adb->pquery('SELECT setype, deleted FROM vtiger_crmobject WHERE crmid=?', array($checkProjectId));
 			if ($adb->num_rows($crmres)) {
 				if ($adb->query_result($crmres, 0, 'setype') == 'Project' && $adb->query_result($crmres, 0, 'deleted') == '0') {
 					$projectid = $checkProjectId;

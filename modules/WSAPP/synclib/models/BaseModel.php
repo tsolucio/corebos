@@ -45,5 +45,4 @@ class WSAPP_BaseModel {
 		return (!isset($this->data[$key]) || empty($this->data[$key]));
 	}
 }
-
 ?>

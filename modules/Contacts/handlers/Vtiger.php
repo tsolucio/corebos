@@ -50,7 +50,7 @@ class Google_Vtiger_Handler extends vtigerCRMHandler {
 			$assignedRecordIds = wsapp_checkIfRecordsAssignToUser($crmIds, $this->user->id);
 			// To check if the record assigned to group
 			if ($this->isClientUserAndGroupSyncType()) {
-				$groupIds = $this->getGroupIds($this->user->id);
+				$groupIds = explode(',', fetchUserGroupids($this->user->id));
 				foreach ($groupIds as $group) {
 					$groupRecordId = wsapp_checkIfRecordsAssignToUser($crmIds, $group);
 					$assignedRecordIds = array_merge($assignedRecordIds, $groupRecordId);

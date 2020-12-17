@@ -100,9 +100,10 @@ $csvheader = implode(',', $field_label);
 
 if (count($querycolumns) > 0) {
 	$selectcolumns = implode(',', $querycolumns);
-
+	require_once 'data/CRMEntity.php';
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Leads');
 	$query = 'select '.$selectcolumns.' from vtiger_leaddetails
-	  inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_leaddetails.leadid
+	  inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_leaddetails.leadid
 	  inner join vtiger_leadsubdetails on vtiger_leadsubdetails.leadsubscriptionid=vtiger_leaddetails.leadid
 	  inner join vtiger_leadaddress on vtiger_leadaddress.leadaddressid=vtiger_leadsubdetails.leadsubscriptionid
 	  inner join vtiger_leadscf on vtiger_leaddetails.leadid = vtiger_leadscf.leadid

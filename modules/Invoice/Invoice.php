@@ -206,11 +206,11 @@ class Invoice extends CRMEntity {
 	public function get_invoicestatushistory($id) {
 		global $log, $adb, $app_strings, $current_user;
 		$log->debug('> get_invoicestatushistory '.$id);
-
+		$crmEntityTable = $this->denormalized ? $this->crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$query = 'select vtiger_invoicestatushistory.*, vtiger_invoice.invoice_no
 			from vtiger_invoicestatushistory
 			inner join vtiger_invoice on vtiger_invoice.invoiceid = vtiger_invoicestatushistory.invoiceid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_invoice.invoiceid
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_invoice.invoiceid
 			where vtiger_crmentity.deleted = 0 and vtiger_invoice.invoiceid = ?';
 		$result=$adb->pquery($query, array($id));
 		$header = array();
@@ -327,7 +327,6 @@ class Invoice extends CRMEntity {
 	 */
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
-			'Calendar' =>array('vtiger_seactivityrel'=>array('crmid','activityid'),'vtiger_invoice'=>'invoiceid'),
 			'Documents' => array('vtiger_senotesrel'=>array('crmid','notesid'),'vtiger_invoice'=>'invoiceid'),
 			'Accounts' => array('vtiger_invoice'=>array('invoiceid','accountid')),
 			'Contacts' => array('vtiger_invoice'=>array('invoiceid','contactid')),
@@ -483,11 +482,12 @@ class Invoice extends CRMEntity {
 			$em->triggerEvent('vtiger.entity.beforesave', $entityData);
 		}
 		$type = getSalesEntityType($invoiceId);
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('CobroPago', true);
 		if ($type=='Invoice' && self::invoice_control_installed()) {
 			//Sum Credit = 1
 			$query = "select sum(amount)
 			from vtiger_cobropago cp
-			join vtiger_crmentity crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
+			join ".$crmEntityTable." crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
 			where cp.related_id={$invoiceId} and paid=1 and credit=1";
 			$res = $adb->query($query);
 			$totalCredit = $adb->query_result($res, 0, 0);
@@ -497,7 +497,7 @@ class Invoice extends CRMEntity {
 			//Sum Credit = 0
 			$query = "select sum(amount)
 			from vtiger_cobropago cp
-			join vtiger_crmentity crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
+			join ".$crmEntityTable." crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
 			where cp.related_id={$invoiceId} and paid=1 and credit=0";
 			$res = $adb->query($query);
 			$totalNoCredit = $adb->query_result($res, 0, 0);
@@ -537,7 +537,7 @@ class Invoice extends CRMEntity {
 			//Sum Credit = 0
 			$query = "select sum(amount) as am
 			from vtiger_cobropago cp
-			join vtiger_crmentity crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
+			join ".$crmEntityTable." crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
 			where cp.related_id={$invoiceId} and paid=1 and credit=0";
 			$res = $adb->query($query);
 			$totalNoCredit = $adb->query_result($res, 0, 0);
@@ -547,7 +547,7 @@ class Invoice extends CRMEntity {
 			//Sum Credit = 1
 			$query = "select sum(amount)
 			from vtiger_cobropago cp
-			join vtiger_crmentity crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
+			join ".$crmEntityTable." crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
 			where cp.related_id={$invoiceId} and paid=1 and credit=1";
 			$res = $adb->query($query);
 			$totalCredit = $adb->query_result($res, 0, 0);
@@ -585,7 +585,7 @@ class Invoice extends CRMEntity {
 			//Sum Credit = 1
 			$query = "select sum(amount)
 			from vtiger_cobropago cp
-			join vtiger_crmentity crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
+			join ".$crmEntityTable." crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
 			where cp.related_id={$invoiceId} and paid=1 and credit=1";
 			$res = $adb->query($query);
 			$totalCredit = $adb->query_result($res, 0, 0);
@@ -595,7 +595,7 @@ class Invoice extends CRMEntity {
 			//Sum Credit = 0
 			$query = "select sum(amount)
 			from vtiger_cobropago cp
-			join vtiger_crmentity crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
+			join ".$crmEntityTable." crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
 			where cp.related_id={$invoiceId} and paid=1 and credit=0";
 			$res = $adb->query($query);
 			$totalNoCredit = $adb->query_result($res, 0, 0);
@@ -696,8 +696,8 @@ class Invoice extends CRMEntity {
 		$sql = getPermittedFieldsQuery('Invoice', 'detail_view');
 		$fields_list = getFieldsListFromQuery($sql);
 		$fields_list .= getInventoryFieldsForExport($this->table_name);
-
-		$query = "SELECT $fields_list FROM vtiger_crmentity
+		$crmEntityTable = $this->denormalized ? $this->crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
+		$query = "SELECT $fields_list FROM ".$crmEntityTable." 
 			INNER JOIN vtiger_invoice ON vtiger_invoice.invoiceid = vtiger_crmentity.crmid
 			LEFT JOIN vtiger_invoicecf ON vtiger_invoicecf.invoiceid = vtiger_invoice.invoiceid
 			LEFT JOIN vtiger_salesorder ON vtiger_salesorder.salesorderid = vtiger_invoice.salesorderid

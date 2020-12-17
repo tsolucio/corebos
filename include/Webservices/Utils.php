@@ -754,7 +754,7 @@ function vtws_transferRelatedActivities($leadId, $accountId, $contactId, $relate
 	$rowCount = $adb->num_rows($result);
 	for ($i=0; $i<$rowCount; ++$i) {
 		$activityId=$adb->query_result($result, $i, 'activityid');
-		$resultNew = $adb->pquery('select setype from vtiger_crmentity where crmid=?', array($activityId));
+		$resultNew = $adb->pquery('select setype from vtiger_crmobject where crmid=?', array($activityId));
 		if ($resultNew === false) {
 			return false;
 		}
@@ -861,10 +861,17 @@ function vtws_transferComments($sourceRecordId, $destinationRecordId) {
 function vtws_transferOwnership($ownerId, $newOwnerId, $delete = true) {
 	$db = PearDatabase::getInstance();
 	//Updating the smcreatorid,smownerid, modifiedby in vtiger_crmentity
+	$denormModules = getDenormalizedModules();
+	if (count($denormModules) > 0) {
+		foreach ($denormModules as $key => $table) {
+			$db->pquery('update '.$table.' set smcreatorid=? where smcreatorid=?', array($newOwnerId, $ownerId));
+			$db->pquery('update '.$table.' set smownerid=? where smownerid=?', array($newOwnerId, $ownerId));
+			$db->pquery('update '.$table.' set modifiedby=? where modifiedby=?', array($newOwnerId, $ownerId));
+		}
+	}
 	$db->pquery('update vtiger_crmentity set smcreatorid=? where smcreatorid=?', array($newOwnerId, $ownerId));
 	$db->pquery('update vtiger_crmentity set smownerid=? where smownerid=?', array($newOwnerId, $ownerId));
 	$db->pquery('update vtiger_crmentity set modifiedby=? where modifiedby=?', array($newOwnerId, $ownerId));
-
 	//Updating the createdby in vtiger_attachmentsfolder
 	$db->pquery('update vtiger_attachmentsfolder set createdby=? where createdby=?', array($newOwnerId, $ownerId));
 

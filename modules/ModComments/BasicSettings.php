@@ -21,8 +21,9 @@ function modcomms_changeModuleVisibility($mname, $status) {
 }
 function modcomms_getModuleinfo() {
 	global $adb;
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
 	$allEntities = array();
-	$entityQuery = "SELECT tabid,name FROM vtiger_tab WHERE isentitytype=1 and name NOT IN ('Emails', 'Rss','Recyclebin','Events','Calendar')";
+	$entityQuery = "SELECT tabid,name FROM vtiger_tab WHERE isentitytype=1 and name NOT IN ('Emails', 'Rss','Recyclebin')";
 	$result = $adb->pquery($entityQuery, array());
 	while ($result && $row = $adb->fetch_array($result)) {
 		$allEntities[$row['tabid']] = getTranslatedString($row['name'], $row['name']);
@@ -33,11 +34,11 @@ function modcomms_getModuleinfo() {
 		$module_name = getTabModuleName($tabid);
 		$checkres = $adb->pquery(
 			'SELECT businessactionsid 
-                   FROM vtiger_businessactions INNER JOIN vtiger_crmentity ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid
-                  WHERE vtiger_crmentity.deleted = 0
-                    AND (module_list = ? OR module_list LIKE ? OR module_list LIKE ? OR module_list LIKE ?)
-                    AND elementtype_action=? 
-                    AND linklabel=?',
+			FROM vtiger_businessactions INNER JOIN '.$crmEntityTable.' ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid
+			WHERE vtiger_crmentity.deleted=0
+				AND (module_list = ? OR module_list LIKE ? OR module_list LIKE ? OR module_list LIKE ?)
+				AND elementtype_action=?
+				AND linklabel=?',
 			array($module_name, $module_name.' %', '% '.$module_name.' %', '% '.$module_name, 'DETAILVIEWWIDGET', 'DetailViewBlockCommentWidget')
 		);
 		$mlist[$tabid] = array(
@@ -48,16 +49,16 @@ function modcomms_getModuleinfo() {
 	return $mlist;
 }
 
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
 
 $smarty = new vtigerCRM_Smarty;
 $category = getParentTab();
 
-$smarty->assign("MOD", $mod_strings);
-$smarty->assign("APP", $app_strings);
-$smarty->assign("THEME", $theme);
-$smarty->assign("IMAGE_PATH", $image_path);
+$smarty->assign('MOD', $mod_strings);
+$smarty->assign('APP', $app_strings);
+$smarty->assign('THEME', $theme);
+$smarty->assign('IMAGE_PATH', $image_path);
 $smarty->assign('CATEGORY', $category);
 if (!is_admin($current_user)) {
 	$smarty->display(vtlib_getModuleTemplate('Vtiger', 'OperationNotPermitted.tpl'));

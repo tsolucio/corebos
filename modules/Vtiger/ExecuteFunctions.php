@@ -353,6 +353,43 @@ switch ($functiontocall) {
 		$rdo = isPermitted($mod, $act, $rec)=='yes';
 		$ret = array('isPermitted'=>$rdo);
 		break;
+	case 'listViewJSON':
+		include_once 'include/ListView/ListViewJSON.php';
+		if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'updateDataListView') {
+			updateDataListView();
+			$ret = array();
+		} else {
+			$orderBy = ' DESC';
+			$entries = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $currentModule);
+			$formodule = isset($_REQUEST['formodule']) ? vtlib_purify($_REQUEST['formodule']) : '';
+			$columns = isset($_REQUEST['columns']) ? vtlib_purify($_REQUEST['columns']) : '';
+			$beforeFilter = isset($_REQUEST['beforeFilter']) ? vtlib_purify($_REQUEST['beforeFilter']) : '';
+			if (isset($_REQUEST['perPage'])) {
+				//get data
+				$perPage = isset($_REQUEST['perPage']) ? vtlib_purify($_REQUEST['perPage']) : $entries;
+				$sortAscending = isset($_REQUEST['sortAscending']) ? vtlib_purify($_REQUEST['sortAscending']) : '';
+				$sortColumn = isset($_REQUEST['sortColumn']) ? vtlib_purify($_REQUEST['sortColumn']) : '';
+				$page = isset($_REQUEST['page']) ? vtlib_purify($_REQUEST['page']) : 1;
+				$search = isset($_REQUEST['search']) ? vtlib_purify($_REQUEST['search']) : '';
+				$searchtype = isset($_REQUEST['searchtype']) ? vtlib_purify($_REQUEST['searchtype']) : '';
+				if ($sortAscending == 'true') {
+					$orderBy = ' ASC';
+				}
+				if ($perPage == 0) {
+					$perPage = $list_max_entries_per_page;
+				}
+				$LV = getListViewJSON($formodule, $perPage, $orderBy, $sortColumn, $page, $search, $searchtype);
+			} else {
+				//get headers
+				$LV = getListViewJSON($formodule);
+			}
+			if (isset($columns) && $columns == 'true') {
+				$ret = array($LV['headers'], $LV['data']['customview'], $LV['data']['export_where']);
+			} else {
+				$ret = $LV['data'];
+			}
+		}
+		break;
 	case 'getUserName':
 		$ret = getUserName(vtlib_purify($_REQUEST['userid']));
 		break;

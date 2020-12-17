@@ -109,11 +109,21 @@ if (isset($query_string) && $query_string != '') {
 				$smarty->assign('SINGLE_MOD', $module);
 
 				$listquery = getListQuery($module);
+				$oCustomView = '';
+
+				$oCustomView = new CustomView($module);
+				//Instead of getting current customview id, use cvid of All so that all entities will be found
+				//$viewid = $oCustomView->getViewId($module);
+				$cv_res = $adb->pquery("select cvid from vtiger_customview where viewname='All' and entitytype=?", array($module));
+				$viewid = $adb->query_result($cv_res, 0, 'cvid');
+				$customviewcombo_html = $oCustomView->getCustomViewCombo($viewid);
+
+				$listquery = $oCustomView->getModifiedCvListQuery($viewid, $listquery, $module);
 
 				if ($search_module != '' || $search_tag != '') {//This is for Tag search
 					$where = getTagWhere($search_val, $current_user->id);
 					$search_msg = $app_strings['LBL_TAG_SEARCH'];
-					$search_msg .= '<b>'.to_html($search_val).'</b>';
+					$search_msg .= "<b>".to_html($search_val).'</b>';
 				} else { //This is for Global search
 					$where = getUnifiedWhere($listquery, $module, $search_val, $fieldtype);
 					$search_msg = $app_strings['LBL_SEARCH_RESULTS_FOR'];

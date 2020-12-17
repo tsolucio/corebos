@@ -11,8 +11,6 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class cbtranslation extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_cbtranslation';
 	public $table_index= 'cbtranslationid';
 	public $column_fields = array();
@@ -699,7 +697,7 @@ class cbtranslation extends CRMEntity {
 		parent::trash($module, $record);
 		$adb->pquery('Delete from vtiger_cbtranslation where cbtranslationid=?', array($record));
 		$adb->pquery('Delete from vtiger_cbtranslationcf where cbtranslationid=?', array($record));
-		$adb->pquery('Delete from vtiger_crmentity where crmid=?', array($record));
+		$adb->pquery('Delete from '.$this->crmentityTable.' where crmid=?', array($record));
 	}
 }
 ?>

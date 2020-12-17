@@ -1,0 +1,49 @@
+.listview-checkbox {
+    position: relative;
+    cursor: pointer;
+}
+
+.listview-checkbox:before {
+    content: "";
+    border: 1px solid #d3d3d3;
+    display: block;
+    position: absolute;
+    width: 17px;
+    height: 17px;
+    top: 0px;
+    left: 0px;
+    background-color:#fff;
+    border-radius: 2px
+}
+
+.listview-checkbox:checked:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 17px;
+    height: 17px;
+    top: 0px;
+    left: 0px;
+    background-color:#509cf1;
+    border-radius: 2px
+}
+
+.listview-checkbox:checked:after {
+    content: "";
+    display: block;
+    width: 4px;
+    height: 7px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    position: absolute;
+    top: 4px;
+    left: 6px;
+}
+
+#ttmodcomments .dataField,
+#ttmodcomments .dataLabel {
+  white-space: normal;
+}

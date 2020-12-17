@@ -21,7 +21,7 @@ if (!$delete_permissions) {
 	NOPermissionDiv();
 }
 
-$currentModule = 'Calendar';
+$currentModule = 'cbCalendar';
 $focus = CRMEntity::getInstance($currentModule);
 
 require_once 'include/logging.php';
@@ -31,7 +31,7 @@ $url = getBasic_Advance_SearchURL();
 if (!isset($_REQUEST['record'])) {
 	die($mod_strings['ERR_DELETE_RECORD']);
 }
-DeleteEntity('Calendar', $_REQUEST['return_module'], $focus, $_REQUEST['record'], $_REQUEST['return_id']);
+DeleteEntity('cbCalendar', $_REQUEST['return_module'], $focus, $_REQUEST['record'], $_REQUEST['return_id']);
 $url = 'Location: index.php?module='.vtlib_purify($_REQUEST['return_module']).'&action='.vtlib_purify($_REQUEST['return_action'])
 	.'&record='.vtlib_purify($_REQUEST['return_id']).'&relmodule='.vtlib_purify($_REQUEST['module']).$url;
 header($url);

@@ -131,7 +131,7 @@ if (!$wsrs || $adb->num_rows($wsrs)==0) {
 	die();
 }
 $currentModule = $adb->query_result($wsrs, 0, 0);
-if ($semod != $currentModule && ($semod!='Calendar' && $currentModule!='Events')) {
+if ($semod != $currentModule) {
 	echo "<h2>Incorrect crmid:</h2>";
 	echo "<b>crmid</b> could not be evaluated as a valid record ID<br>";
 	die();

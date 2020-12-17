@@ -38,6 +38,7 @@ $smarty->assign('STATUS', '');
 if ($recordid == '') {
 	$oCustomView = new CustomView();
 	$modulecollist = $oCustomView->getModuleColumnsList($cv_module);
+	$modulecollist_array = $oCustomView->getModuleColumnsList($cv_module, true);
 	$log->debug('CustomView :: ColumnsList for the module'.$cv_module);
 	if (isset($modulecollist)) {
 		$choosecolslist = getByModule_ColumnsList($cv_module, $modulecollist);
@@ -60,6 +61,8 @@ if ($recordid == '') {
 	$modulecolumnshtml = getByModule_ColumnsHTML($cv_module, $modulecollist);
 	$smarty->assign('FOPTION', $advfilterhtml);
 	$smarty->assign('COLUMNS_BLOCK', $modulecolumnshtml);
+	$smarty->assign('FIELDNAMES_ARRAY', $modulecollist_array);
+	$smarty->assign('CRITERIA_GROUPS', array());
 
 	$smarty->assign('MANDATORYCHECK', implode(',', array_unique($oCustomView->mandatoryvalues)));
 	$smarty->assign('SHOWVALUES', implode(',', $oCustomView->showvalues));
@@ -74,6 +77,7 @@ if ($recordid == '') {
 		$customviewdtls = $oCustomView->getCustomViewByCvid($recordid);
 		$log->debug('CustomView :: ViewDetails for the Viewid'.$recordid);
 		$modulecollist = $oCustomView->getModuleColumnsList($cv_module);
+		$modulecollist_array = $oCustomView->getModuleColumnsList($cv_module, true);
 		$selectedcolumnslist = $oCustomView->getColumnsListByCvid($recordid);
 		$log->debug('CustomView :: ColumnsList for the Viewid'.$recordid);
 
@@ -112,6 +116,7 @@ if ($recordid == '') {
 		$modulecolumnshtml = getByModule_ColumnsHTML($cv_module, $modulecollist);
 		$smarty->assign('FOPTION', $advfilterhtml);
 		$smarty->assign('COLUMNS_BLOCK', $modulecolumnshtml);
+		$smarty->assign('FIELDNAMES_ARRAY', $modulecollist_array);
 		$smarty->assign('CRITERIA_GROUPS', $advfilterlist);
 
 		$smarty->assign('MANDATORYCHECK', implode(',', array_unique($oCustomView->mandatoryvalues)));

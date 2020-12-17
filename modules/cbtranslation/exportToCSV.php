@@ -18,6 +18,8 @@
  *  Author       : OpenCubed
  *************************************************************************************************/
 global $adb, $log;
+require_once 'data/CRMEntity.php';
+$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbtranslation');
 $allrecords = substr($_REQUEST['allrecords'], 0, -1);
 $allids = str_replace(';', ',', $allrecords);
 $allids = explode(',', $allids);
@@ -28,7 +30,7 @@ if (!empty($allids)) {
 	header('Content-Disposition: attachment; filename=' . $filename);
 	$queryString = 'SELECT translation_module,translation_key,i18n
 		FROM vtiger_cbtranslation
-		INNER JOIN vtiger_crmentity ce ON ce.crmid=vtiger_cbtranslation.cbtranslationid
+		INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_cbtranslation.cbtranslationid
 		WHERE vtiger_cbtranslation.cbtranslationid IN (' . generateQuestionMarks($allids) . ')';
 	$cbtranslationQuery = $adb->pquery($queryString, $allids);
 	if ($cbtranslationQuery && $adb->num_rows($cbtranslationQuery) > 0) {

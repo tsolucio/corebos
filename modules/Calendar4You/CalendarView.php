@@ -8,7 +8,8 @@
  ********************************************************************************/
 include_once 'modules/Calendar4You/CalendarUtils.php';
 include_once 'modules/Calendar4You/Calendar4You.php';
-require_once 'modules/Calendar/Calendar.php';
+require_once 'modules/cbCalendar/CalendarCommon.php';
+require_once 'modules/cbCalendar/Calendar.php';
 
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $current_user, $default_charset;
 require_once 'Smarty_setup.php';
@@ -36,7 +37,7 @@ if (count($Ch_Views) > 0) {
 $Calendar_Settings = $Calendar4You->getSettings();
 $smarty->assign('CALENDAR_SETTINGS', $Calendar_Settings);
 
-$c_mod_strings = return_specified_module_language($current_language, 'Calendar');
+$c_mod_strings = return_specified_module_language($current_language, 'cbCalendar');
 $smarty->assign('CMOD', $c_mod_strings);
 
 $smarty->assign('MODULE', $currentModule);
@@ -100,7 +101,7 @@ for ($i=0; $i<$adb->num_rows($Res); $i++) {
 	$actname = html_entity_decode($actname, ENT_QUOTES, $default_charset);
 	$eventlist .= $actname.';';
 	$eventlists_array .= '"'.html_entity_decode($actname, ENT_QUOTES, $default_charset).'",';
-	$i18actname = getTranslatedString($actname, 'Calendar');
+	$i18actname = getTranslatedString($actname, 'cbCalendar');
 	$abelist.='<tr><td><a id="add'.strtolower($actname)
 		.'" href="index.php?module=cbCalendar&action=EditView&return_module=Calendar4You&return_action=index&activity_mode=Events&activitytype='.urlencode($actname)
 		.'" class="drop_down">'.$i18actname.'</a></td></tr>';
@@ -177,7 +178,7 @@ foreach ($ActTypes as $act_id => $act_name) {
 
 	$Activity_Types[$act_id] = array(
 		'typename'=>html_entity_decode($act_name, ENT_QUOTES, $default_charset),
-		'label'=>getTranslatedString(html_entity_decode($act_name, ENT_QUOTES, $default_charset), 'Calendar'),
+		'label'=>getTranslatedString(html_entity_decode($act_name, ENT_QUOTES, $default_charset), 'cbCalendar'),
 		'act_type'=>'event',
 		'title_color'=>$Colors_Palete[0],
 		'color'=>$Colors_Palete[1],
@@ -261,7 +262,7 @@ $smarty->assign('CALENDAR_USERS', $Users);
 $smarty->assign('CURRENT_USER_ID', $current_user->id);
 
 if (isset($tool_buttons)==false) {
-	$tool_buttons = Button_Check('Calendar');
+	$tool_buttons = Button_Check('cbCalendar');
 }
 
 $smarty->assign('CHECK', $tool_buttons);
@@ -330,7 +331,7 @@ if (getFieldVisibilityPermission('cbCalendar', $current_user->id, 'eventstatus',
 }
 $smarty->assign('EVENT_STATUS', $Events_Status);
 
-if (getFieldVisibilityPermission('Calendar', $current_user->id, 'taskpriority', 'readwrite') == '0') {
+if (getFieldVisibilityPermission('cbCalendar', $current_user->id, 'taskpriority', 'readwrite') == '0') {
 	$Task_Priority = $Calendar4You->getActStatusFieldValues('taskpriority', 'vtiger_taskpriority');
 } else {
 	$Task_Priority = array();

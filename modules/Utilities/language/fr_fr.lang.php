@@ -8,6 +8,8 @@
 ***********************************************************/
 
 $mod_strings = array (
+	'Utilities' => 'Utilities',
+	'SINGLE_Utilities' => 'Utility',
 	// Translations for JS (please use the prefix JSLBL in key)
 	'JSLBL_Saving_And_Verifying' => 'Saving & Verifying',
 	'JSLBL_PASSWORD_CANNOT_BE_EMPTY'=>'Password cannot be empty',
@@ -97,6 +99,10 @@ $mod_strings = array (
 	'sel_fields_es' => 'Select Fields for Elasticsearch Mapping',
 	'Analyzed' => 'Analyzed',
 	'Missing_GlobalVar' => 'Global Variables ElasticSearch IP missing',
+	'Denormalization Activation' => 'Denormalize Module',
+	'Denormalize_Desc' => 'Denormalize Module which hold a lot of records',
+	'SelectDenormalize' => 'Select Module to Denormalize',
+	'denormalize response' => 'Denormalize response',
 	'OneSignal Activation' => 'OneSignal Activation',
 	'OneSignal Desc' => 'Send Notification using OneSignal',
 	'onesignal_appid' => 'App ID',

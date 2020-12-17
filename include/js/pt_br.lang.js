@@ -429,5 +429,11 @@ var alert_arr = {
 	'Failed': 'Falhou',
 	'Warning': 'Alerta',
 	'Copied': 'Copiado',
-	'ACT_UNIT_PRICE_MISMATCH': 'O preço real para esta moeda deve ser igual ao preço unitário, mas este não é o caso para este produto ou serviço'
+	'ACT_UNIT_PRICE_MISMATCH': 'O preço real para esta moeda deve ser igual ao preço unitário, mas este não é o caso para este produto ou serviço',
+	'LBL_SHOWING': 'Exibindo Registros ',
+	'LBL_RECORDS': ' de ',
+	'LNK_DELETE': 'Lixeira',
+	'LNK_EDIT': 'Editar',
+	'LNK_EDIT_ACTION': 'Editar',
+	'LNK_DELETE_ACTION': 'Apagar',
 };

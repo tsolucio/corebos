@@ -125,11 +125,7 @@ class ChartUtils {
 				if ($fieldDetails != '') {
 					if ($dateField) {
 						$advanceSearchCondition = CustomReportUtils::getAdvanceSearchCondition($fieldDetails, $criteria, $groupFieldValue);
-						if ($module == 'Calendar') {
-							$link_val = 'index.php?module=' . $module . '&query=true&action=ListView&' . $advanceSearchCondition;
-						} else {
-							$link_val = 'index.php?module=' . $module . '&query=true&action=index&' . $advanceSearchCondition;
-						}
+						$link_val = 'index.php?module=' . $module . '&query=true&action=index&' . $advanceSearchCondition;
 					} else {
 						$conditions = $oReport->advft_criteria;
 						if (count($conditions)>0) {
