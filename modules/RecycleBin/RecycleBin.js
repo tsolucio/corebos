@@ -26,8 +26,7 @@ function callRBSearch(searchtype) {
 		url: 'index.php?'+urlstring +'&query=true&module=RecycleBin&action=RecycleBinAjax&file=index&ajax=true&mode=ajax'
 	}).done(function (response) {
 		document.getElementById('status').style.display='none';
-		document.getElementById('modules_datas').innerHTML=response;
-		document.getElementById('search_ajax').innerHTML = '';
+		ListView.ListViewJSON('search', urlstring, searchtype);
 	});
 }
 
@@ -93,8 +92,7 @@ function massRestore() {
 				url: 'index.php?action=RecycleBinAjax&module=RecycleBin&mode=ajax&file=Restoration&idlist='+idstring+'&selectmodule='+selectmodule+'&excludedRecords='+excludedRecords
 			}).done(function (response) {
 				document.getElementById('status').style.display='none';
-				document.getElementById('modules_datas').innerHTML=response;
-				document.getElementById('search_ajax').innerHTML = '';
+				ListView.ListViewReloadData(1, true);
 			});
 		}
 	}
@@ -108,8 +106,7 @@ function restore(entityid, select_module) {
 			url: 'index.php?action=RecycleBinAjax&module=RecycleBin&mode=ajax&file=Restoration&idlist='+entityid+'&selectmodule='+select_module
 		}).done(function (response) {
 			document.getElementById('status').style.display='none';
-			document.getElementById('modules_datas').innerHTML=response;
-			document.getElementById('search_ajax').innerHTML = '';
+			ListView.ListViewReloadData(1, true);
 		});
 	}
 }
@@ -181,9 +178,7 @@ function emptyRecyclebin(id) {
 		url: 'index.php?module=RecycleBin&action=RecycleBinAjax&file=EmptyRecyclebin&mode=ajax&ajax=true&selected_module=&allrec=1'
 	}).done(function (response) {
 		document.getElementById('status').style.display='none';
-		document.getElementById('modules_datas').innerHTML= response;
-		document.getElementById('searchAcc').innerHTML = document.getElementById('search_ajax').innerHTML;
-		document.getElementById('search_ajax').innerHTML = '';
+		ListView.ListViewReloadData(1, true);
 		VtigerJS_DialogBox.hideprogress();
 	});
 }
@@ -253,8 +248,7 @@ function callEmptyRecyclebin(id) {
 				url: 'index.php?action=RecycleBinAjax&module=RecycleBin&ajax=true&file=EmptyRecyclebin&idlist='+idstring+'&selectmodule='+selectmodule+'&excludedRecords='+excludedRecords+'&allrec='+allrec
 			}).done(function (response) {
 				document.getElementById('status').style.display='none';
-				document.getElementById('modules_datas').innerHTML=response;
-				document.getElementById('search_ajax').innerHTML = '';
+				ListView.ListViewReloadData(1, true);
 			});
 		}
 	}

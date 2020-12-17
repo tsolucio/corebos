@@ -273,12 +273,6 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 				$fileid = $adb->query_result($res, 0, 'attachmentsid');
 				$rows['fileid'] = $fileid;
 			}
-			// $rows['action'] = array(
-			// 	'edit' => true,
-			// 	'delete' => true,
-			// 	'isModified' => false,
-			// 	'cbCalendar' => '',
-			// );
 			$rows['assigned_user_id'] = isset($smownerid) ? getUserFullName($smownerid) : '';
 			$rows['recordid'] = $recordID;
 			$rows['reference'] = $reference_field;
