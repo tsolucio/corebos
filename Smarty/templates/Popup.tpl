@@ -212,7 +212,32 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 				<table cellpadding="2" cellspacing="0" width="100%" align="center" class="searchUIAdv2 small" border=0>
 					<tr>
 						<td align="center" class="small" width=90%>
-							{include file='AdvanceFilter.tpl' SOURCE='customview' COLUMNS_BLOCK=$FIELDNAMES}
+							<input type="hidden" name="advft_criteria" id="advft_criteria" value="">
+							<input type="hidden" name="advft_criteria_groups" id="advft_criteria_groups" value="">
+							<div class="slds-grid slds-m-top--large cbds-advanced-search--inactive" id="cbds-advanced-search">
+								<div class="slds-col">
+									<div class="slds-expression slds-p-bottom_xx-large">
+										<div class="slds-grid">
+											<div class="slds-col slds-size_11-of-12">
+												<div class="slds-text-title_caps slds-align_absolute-center">{$APP.LBL_SEARCH}</div>
+											</div>
+											<div class="slds-col slds-size_1-of-12 slds-clearfix">
+												<button type="button" 
+														class="slds-button slds-button_icon slds-button_icon-border slds-float_right"
+														onClick="show('searchAcc');fnhide('advSearch');document.basicSearch.searchtype.value='basic';document.basicSearch.searchtype.searchlaunched='';document.getElementById('cbds-advanced-search').classList.remove('cbds-advanced-search--active')">
+													<svg class="slds-button__icon" aria-hidden="true">
+														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+													</svg>
+													<span class="slds-assistive-text">{$APP.LBL_DELETE_GROUP}</span>
+												</button>
+											</div>
+										</div>
+										<pre>
+										</pre>
+										{include file='AdvanceFilter.tpl' SOURCE='customview' MODULES_BLOCK=$FIELDNAMES_ARRAY}
+									</div>
+								</div>
+							</div>
 						</td>
 					</tr>
 				</table>

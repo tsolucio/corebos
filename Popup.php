@@ -408,7 +408,9 @@ $smarty->assign('ALPHABETICAL', $alphabetical);
 $queryGenerator = new QueryGenerator($currentModule, $current_user);
 $controller = new ListViewController($adb, $current_user, $queryGenerator);
 $fieldnames = $controller->getAdvancedSearchOptionString();
+$fieldnames_array = $controller->getAdvancedSearchOptionArray();
 $smarty->assign('FIELDNAMES', $fieldnames);
+$smarty->assign('FIELDNAMES_ARRAY', $fieldnames_array);
 
 if (isset($_REQUEST['query']) && $_REQUEST['query'] == 'true') {
 	list($where, $ustring) = explode('#@@#', getWhereCondition($currentModule));
