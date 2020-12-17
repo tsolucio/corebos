@@ -86,7 +86,6 @@ if ($savemode == 'true') {
 	);
 	echo json_encode($response);
 } else {
-
 	$smtp_settings_mode = $_REQUEST['smtp_settings'];
 	/**
 	 * delete Incoming Mail Server Configuration

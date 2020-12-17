@@ -206,8 +206,7 @@ class corebos_smtp {
 		if ($adb->num_rows($result) > 0) {
 			$sql='update vtiger_mail_accounts set display_name=?, mail_id=?, mail_protocol=?, mail_username=?, mail_password=?, mail_servername=?,
 				box_refresh=?, mails_per_page=?, ssltype=? , sslmeth=?, status=? where og_server_status=0 or og_server_status=1 and user_id='.$current_user->id;
-			$params = array('
-			', '', '', '', '', '', 0, 0, '', '', 0);
+			$params = array('', '', '', '', '', '', 0, 0, '', '', 0);
 		}
 		$adb->pquery($sql, $params);
 	}
