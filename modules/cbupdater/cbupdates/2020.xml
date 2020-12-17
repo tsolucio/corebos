@@ -360,4 +360,25 @@
 	<classname>incmessagenamefield</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>Kiko Jover</author>
+	<description>Change size and uitype of cbCompany Lagal Fields</description>
+	<filename>build/changeSets/2020/upd_cbCompanyLegalFields.php</filename>
+	<classname>upd_cbCompanyLegalFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Fix EMail Parent Field Type of Data</description>
+	<filename>build/changeSets/2020/fixEmailParentFieldTypeData.php</filename>
+	<classname>fixEmailParentFieldTypeData</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Standardize Sales Order and HelpDesk related list on Modules</description>
+	<filename>build/changeSets/2020/standardizeSORLonModules.php</filename>
+	<classname>standardizeSORLonModules</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

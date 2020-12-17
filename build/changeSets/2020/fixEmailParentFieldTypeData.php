@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2016 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Copyright 2020 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
  * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
  * file except in compliance with the License. You can redistribute it and/or modify it
  * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
@@ -12,25 +12,25 @@
  * either express or implied. See the License for the specific language governing
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
- *************************************************************************************************
- *  Module       : Notifications Drivers
- *  Version      : 1.0
- *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
-include_once 'include/database/PearDatabase.php';
-include_once 'include/utils/utils.php';
-global $adb;
-$type = vtlib_purify($_REQUEST['type']);
-$driver = $adb->pquery('select path, functionname from vtiger_notificationdrivers where type=?', array($type));
-if ($driver && $adb->num_rows($driver)>0) {
-	$path = $adb->query_result($driver, 0, 0);
-	$function = $adb->query_result($driver, 0, 1);
-	if ($type == 'googlecal' || $type == 'googlestorage') {
-		$input = $_GET['code'];
-	} else {
-		$input = file_get_contents('php://input');
+class fixEmailParentFieldTypeData extends cbupdaterWorker {
+
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
+		if ($this->isApplied()) {
+			$this->sendMsg('Changeset '.get_class($this).' already applied!');
+		} else {
+			$module = Vtiger_Module::getInstance('Emails');
+			$field = Vtiger_Field::getInstance('parent_type', $module);
+			if ($field) {
+				$this->ExecuteQuery('UPDATE vtiger_field SET typeofdata=? WHERE fieldid=?', array('V~O', $field->id));
+			}
+			$this->sendMsg('Changeset '.get_class($this).' applied!');
+			$this->markApplied();
+		}
+		$this->finishExecution();
 	}
-	//run function
-	include_once $path;
-	$function($input);
 }
+?>

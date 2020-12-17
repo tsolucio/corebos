@@ -44,7 +44,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 		$focus->list_fields = $cbMapLC->getListFieldsFor($parentmodule);
 		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor($parentmodule);
 		$focus->list_link_field = $cbMapLC->getListLinkFor($parentmodule);
-		if ($parentmodule == 'Home' && $cbMapLC->issetListFieldsMappingFor('Home')) {
+		if ($parentmodule == 'Utilities' && $cbMapLC->issetListFieldsMappingFor('Utilities')) {
 			$oCv->list_fields = $focus->list_fields;
 			$oCv->list_fields_name = $focus->list_fields_name;
 		}
@@ -460,7 +460,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 		$focus->list_fields = $cbMapLC->getListFieldsFor($parentmodule);
 		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor($parentmodule);
 		$focus->list_link_field = $cbMapLC->getListLinkFor($parentmodule);
-		if ($parentmodule == 'Home' && $cbMapLC->issetListFieldsMappingFor('Home')) {
+		if ($parentmodule == 'Utilities' && $cbMapLC->issetListFieldsMappingFor('Utilities')) {
 			$oCv->list_fields = $focus->list_fields;
 			$oCv->list_fields_name = $focus->list_fields_name;
 		}
@@ -2187,21 +2187,6 @@ function getListQuery($module, $where = '') {
 
 	$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 	switch ($module) {
-		case 'HelpDesk':
-			$query = 'SELECT vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_troubletickets.title, vtiger_troubletickets.status,vtiger_troubletickets.priority,
-					vtiger_troubletickets.parent_id, vtiger_contactdetails.contactid, vtiger_contactdetails.firstname, vtiger_contactdetails.lastname,
-					vtiger_account.accountid, vtiger_troubletickets.email, vtiger_account.accountname, vtiger_ticketcf.*, vtiger_troubletickets.ticket_no
-				FROM vtiger_troubletickets
-				INNER JOIN vtiger_ticketcf ON vtiger_ticketcf.ticketid = vtiger_troubletickets.ticketid
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_troubletickets.ticketid
-				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-				LEFT JOIN vtiger_contactdetails ON vtiger_troubletickets.parent_id = vtiger_contactdetails.contactid
-				LEFT JOIN vtiger_account ON vtiger_account.accountid = vtiger_troubletickets.parent_id
-				LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id
-				LEFT JOIN vtiger_products ON vtiger_products.productid = vtiger_troubletickets.product_id';
-			$query .= ' ' . getNonAdminAccessControlQuery($module, $current_user);
-			$query .= 'WHERE vtiger_crmentity.deleted = 0 ' . $where;
-			break;
 		case 'Accounts':
 			$query = 'SELECT vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_account.*, vtiger_accountbillads.bill_city, vtiger_accountscf.*
 				FROM vtiger_account
@@ -3444,7 +3429,7 @@ function getListViewDeleteLink($module, $entity_id, $relatedlist, $returnset, $l
 		$requestAction = vtlib_purify($_REQUEST['file']);
 	}
 	if ($isCustomModule && !in_array($requestAction, array('index', 'ListView'))) {
-		$requestRecord = vtlib_purify($_REQUEST['record']);
+		$requestRecord = empty($_REQUEST['record']) ? '' : vtlib_purify($_REQUEST['record']);
 		$del_link = "index.php?module=$requestModule&action=updateRelations&parentid=$requestRecord";
 		$del_link .= "&destination_module=$module&idlist=$entity_id&mode=delete";
 	}

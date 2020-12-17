@@ -1135,7 +1135,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 	while ($prodser = $adb->fetch_array($r)) {
 		$unitprice = $prodser['unit_price'];
 		if (!empty($_REQUEST['currencyid'])) {
-			$prod_prices = getPricesForProducts($_REQUEST['currencyid'], array($prodser['id']));
+			$prod_prices = getPricesForProducts($_REQUEST['currencyid'], array($prodser['id']), $prodser['type']);
 			$unitprice = $prod_prices[$prodser['id']];
 		}
 		$parr['productid'] = $prodser['id'];

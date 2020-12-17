@@ -97,6 +97,7 @@ function vtws_revise($element, $user) {
 		}
 	}
 	//  Product line support
+	$hrequest = $_REQUEST;
 	if (in_array($entityName, getInventoryModules()) && isset($element['pdoInformation']) && is_array($element['pdoInformation'])) {
 		$elementType = $entityName;
 		include 'include/Webservices/ProductLines.php';
@@ -106,6 +107,7 @@ function vtws_revise($element, $user) {
 
 	$entity = $handler->revise($element);
 	VTWS_PreserveGlobal::flush();
+	$_REQUEST = $hrequest;
 	if (!empty($wsAttachments)) {
 		foreach ($wsAttachments as $file) {
 			if (file_exists($file)) {

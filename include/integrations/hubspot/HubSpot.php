@@ -1311,5 +1311,4 @@ class corebos_hubspot {
 		}
 	}
 }
-
 ?>

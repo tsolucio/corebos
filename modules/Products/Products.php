@@ -1091,41 +1091,6 @@ class Products extends CRMEntity {
 		return GetRelatedList('Products', 'ProductComponent', $focus, $query, $button, $returnset);
 	}
 
-	/**	function used to get the export query for product
-	 *	@param string $where - reference of the where variable which will be added with the query
-	 *	@return string $query - return the query which will give the list of products to export
-	 */
-	public function create_export_query($where) {
-		global $log, $current_user;
-		$log->debug('> create_export_query '.$where);
-
-		include "include/utils/ExportUtils.php";
-
-		//To get the Permitted fields query and the permitted fields list
-		$sql = getPermittedFieldsQuery("Products", "detail_view");
-		$fields_list = getFieldsListFromQuery($sql);
-
-		$query = "SELECT $fields_list FROM ".$this->table_name ."
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_products.productid
-			LEFT JOIN vtiger_productcf ON vtiger_products.productid = vtiger_productcf.productid
-			LEFT JOIN vtiger_vendor ON vtiger_vendor.vendorid = vtiger_products.vendor_id";
-
-		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
-		$query .= " LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id AND vtiger_users.status='Active'";
-		$query .= " LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'";
-		$query .= $this->getNonAdminAccessControlQuery('Products', $current_user);
-		$where_auto = " vtiger_crmentity.deleted=0";
-
-		if ($where != '') {
-			$query .= " WHERE ($where) AND $where_auto";
-		} else {
-			$query .= " WHERE $where_auto";
-		}
-
-		$log->debug('< create_export_query');
-		return $query;
-	}
-
 	/** Function to check if the product is parent of any other product
 	*/
 	public function isparent_check() {

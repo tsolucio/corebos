@@ -183,20 +183,15 @@ class Workflow {
 
 	public function isCompletedForRecord($recordId) {
 		global $adb;
-		$result = $adb->pquery('SELECT * FROM com_vtiger_workflow_activatedonce WHERE entity_id=? and workflow_id=?', array($recordId, $this->id));
+		$result = $adb->pquery('SELECT 1 FROM com_vtiger_workflow_activatedonce WHERE entity_id=? and workflow_id=?', array($recordId, $this->id));
 		$result2=$adb->pquery(
-			'SELECT *
+			'SELECT 1
 			FROM com_vtiger_workflowtasks
-			INNER JOIN com_vtiger_workflowtask_queue ON com_vtiger_workflowtasks.task_id= com_vtiger_workflowtask_queue.task_id
+			INNER JOIN com_vtiger_workflowtask_queue ON com_vtiger_workflowtasks.task_id=com_vtiger_workflowtask_queue.task_id
 			WHERE workflow_id=? AND entity_id=?',
 			array($this->id, $recordId)
 		);
-
-		if ($adb->num_rows($result)===0 && $adb->num_rows($result2)===0) { // Workflow not done for specified record
-			return false;
-		} else {
-			return true;
-		}
+		return !($adb->num_rows($result)===0 && $adb->num_rows($result2)===0); // Workflow not done for specified record
 	}
 
 	public function markAsCompletedForRecord($recordId) {

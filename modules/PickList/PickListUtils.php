@@ -20,10 +20,10 @@ function getUserFldArray($fld_module, $roleid) {
 	$tabid = getTabid($fld_module);
 
 	$query="SELECT vtiger_field.fieldlabel,vtiger_field.columnname,vtiger_field.fieldname, vtiger_field.uitype
-		FROM vtiger_field inner
-		JOIN vtiger_picklist on vtiger_field.fieldname = vtiger_picklist.name
-		WHERE (displaytype in (1,2,3,4) and vtiger_field.tabid=? and vtiger_field.uitype in ('15','55','33','16')
-			or (vtiger_field.tabid=? and fieldname='salutationtype' and fieldname !='vendortype'))
+		FROM vtiger_field
+		LEFT JOIN vtiger_picklist on vtiger_field.fieldname = vtiger_picklist.name
+		WHERE (displaytype in (1,2,3,4) and vtiger_field.tabid=? and vtiger_field.uitype in ('15','33','16')
+			or (vtiger_field.tabid=? and fieldname='salutationtype' and fieldname !='vendortype' and fieldname !='firstname'))
 			and vtiger_field.presence in (0,2) ORDER BY vtiger_picklist.picklistid ASC";
 
 	$result = $adb->pquery($query, array($tabid, $tabid));
@@ -46,16 +46,17 @@ function getUserFldArray($fld_module, $roleid) {
 }
 
 /**
- * Function to get modules which has picklist values
- * It gets the picklist modules and return in an array in the following format
- * $modules = Array($tabid=>$tablabel,$tabid1=>$tablabel1,$tabid2=>$tablabel2,-------------,$tabidn=>$tablabeln)
+ * Function to get modules which have picklists
+ * @param boolean true will include non-role based picklist, false will not include them
+ * @return array of modules with picklists in this format: array($tabid1=>$tablabel1,$tabid2=>$tablabel2,...,$tabidn=>$tablabeln)
  */
-function getPickListModules() {
+function getPickListModules($includeNonRole = false) {
 	global $adb;
+	$inr = ($includeNonRole ? ',16' : '');
 	$query = 'select distinct vtiger_tab.tablabel, vtiger_tab.name as tabname
 		from vtiger_field
 		inner join vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
-		where uitype IN (15,33) and vtiger_field.tabid != 29 and vtiger_tab.presence != 1 and vtiger_field.presence in (0,2)';
+		where uitype IN (15,33'.$inr.') and vtiger_field.tabid != 29 and vtiger_tab.presence != 1 and vtiger_field.presence in (0,2)';
 	$result = $adb->pquery($query, array());
 	while ($row = $adb->fetch_array($result)) {
 		$modules[$row['tablabel']] = $row['tabname'];
@@ -83,6 +84,7 @@ function getrole2picklist() {
  * @return array $module_pick - the picklists present in the module in an array format
  */
 function get_available_module_picklist($picklist_details) {
+	$module_pick = array();
 	foreach ($picklist_details as $key => $val) {
 		$module_pick[$picklist_details[$key]['fieldname']] = getTranslatedString($picklist_details[$key]['fieldlabel']);
 	}
@@ -207,6 +209,19 @@ function getAssignedPicklistValues($tableName, $roleid, $adb, $lang = array()) {
 				}
 			}
 		}
+	} else { // uitype 16
+		$result = $adb->query('SELECT '.$adb->sql_escape_string($tableName).' FROM '.$adb->sql_escape_string("vtiger_$tableName"));
+		if (!empty($result)) {
+			while (!$result->EOF) {
+				$pick_val = $result->FetchRow();
+				$pick_val = $pick_val[$tableName];
+				if (isset($lang[$pick_val]) && $lang[$pick_val] != '') {
+					$arr[$pick_val] = $lang[$pick_val];
+				} else {
+					$arr[$pick_val] = $pick_val;
+				}
+			}
+		}
 	}
 
 	$cache[$cacheId] = $arr;
@@ -313,7 +328,7 @@ function getPicklistValuesSpecialUitypes($uitype, $fieldname, $value, $action = 
 			}
 		}
 	} elseif ($uitype == '1615') {
-		$actual = getPickListModules();
+		$actual = getPickListModules(true);
 		$i = 0;
 		foreach ($actual as $mod) {
 			$options[$i++] = array(

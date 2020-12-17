@@ -348,7 +348,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 				$result_image = $adb->pquery($imgquery, array($rowcrmid));
 				while ($img = $adb->fetch_array($result_image)) {
 					foreach ($imageFields as $imgvalue) {
-						if ($img['name'] == $row[$imgvalue]) {
+						if ($img['name'] == $row[$imgvalue] || $img['name'] == str_replace(' ', '_', $row[$imgvalue])) {
 							$newrow[$imgvalue.'fullpath'] = $site_URL.'/'.$img['path'].$img['attachmentsid'].'_'.$img['name'];
 							break;
 						}

@@ -122,7 +122,7 @@ function daemon_shutdown_function()
 {
     $error = error_get_last();
 
-    if (is_array($error) && isset($error['type']) == false)
+    if (empty($error) || (is_array($error) && isset($error['type']) == false))
         return;
 
     switch ($error['type'])

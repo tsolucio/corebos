@@ -37,12 +37,11 @@ class VTWorkflowEventHandler extends VTEventHandler {
 		global $adb;
 		$isNew = $entityData->isNew();
 		$entityCache = new VTEntityCache($user);
-		$wsModuleName = $util->toWSModuleName($entityData);
-		$wsId = vtws_getWebserviceEntityId($wsModuleName, $entityData->getId());
+		$crmid = $entityData->getId();
+		$wsId = vtws_getWebserviceEntityId($entityData->getModuleName(), $crmid);
 		$entityData = $entityCache->forId($wsId);
-
 		$wfs = new VTWorkflowManager($adb);
-		$workflows = $wfs->getWorkflowsForModule($entityData->getModuleName());
+		$workflows = $wfs->getWorkflowsForModule($entityData->getModuleName(), true);
 
 		foreach ($workflows as $workflow) {
 			if (!is_a($workflow, 'Workflow')) {
@@ -61,13 +60,7 @@ class VTWorkflowEventHandler extends VTEventHandler {
 					}
 					break;
 				case VTWorkflowManager::$ONCE:
-					$entity_id = vtws_getIdComponents($entityData->getId());
-					$entity_id = $entity_id[1];
-					if ($workflow->isCompletedForRecord($entity_id)) {
-						$doEvaluate = false;
-					} else {
-						$doEvaluate = true;
-					}
+					$doEvaluate = !($workflow->isCompletedForRecord($crmid));
 					break;
 				case VTWorkflowManager::$ON_EVERY_SAVE:
 					$doEvaluate = true;
