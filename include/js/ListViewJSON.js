@@ -67,16 +67,27 @@ const ListView = {
 			//use this function to reload data in every change
 			ListView.ListViewReloadData(lastPage, true);
 			document.getElementById('status').style.display = 'none';
+		} else if (actionType == 'RecycleBin') {
+			dataGridInstance.destroy();
+			const select_module = document.getElementById('select_module').value;
+			url = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=listViewJSON&formodule='+select_module+'&lastPage='+lastPage+'&isRecycleModule=true';
+			ListView.ListViewDefault(select_module, url);
+			ListView.RenderFilter(url);
+			ListView.updateData();
 		} else {
 			if (lvmodule != '' && lvmodule != undefined) {
 				ListView.ListViewDefault(lvmodule, url);
+			} else if (gVTModule == 'RecycleBin') {
+				const select_module = document.getElementById('select_module').value;
+				url = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=listViewJSON&formodule='+select_module+'&lastPage='+lastPage+'&isRecycleModule=true';
+				ListView.ListViewDefault(select_module, url);
 			}
 		}
 	},
 	/**
 	 * List of modules that can't edit in listview
 	 */
-	permissionsMods: () => {
+	deniedMods: () => {
 		return ['cbupdater'];
 	},
 	/**
@@ -99,7 +110,9 @@ const ListView = {
 			if (uitype == '15' || uitype == '52' || uitype == '53') {
 				values = headerObj[index].picklist;
 			}
-			if (ListView.permissionsMods().includes(lvmodule)) {
+			if (ListView.deniedMods().includes(lvmodule)) {
+				edit = false;
+			} else if (lvmodule == '') {
 				edit = false;
 			}
 			if (edit) {
@@ -110,35 +123,35 @@ const ListView = {
 			if (fieldname == 'action') {
 				header = {
 					name: fieldname,
-					header: fieldvalue,
+					header: ' ',
 					sortable: false,
 					whiteSpace: 'normal',
-					width: 120,
+					width: 40,
 					renderer: {
-    					type: ActionRender,
-    				},
-	      		};
-	      	} else {
-	      		if (SearchColumns == 0) {
+						type: ActionRender,
+					},
+				};
+			} else {
+				if (SearchColumns == 0) {
 					if (uitype == '7' || uitype == '9' || uitype == '71' || uitype == '72') {
-		      			filter = {
+						filter = {
 							type: 'number',
 							showApplyBtn: true,
 							showClearBtn: true
-		      			};
-		      		} else if (uitype == '5' || uitype == '50' || uitype == '70') {
-		      			filter = {
+						};
+					} else if (uitype == '5' || uitype == '50' || uitype == '70') {
+						filter = {
 							type: 'date',
 							showApplyBtn: true,
 							showClearBtn: true
-		      			};
-		      		} else {
-		      			filter = {
+						};
+					} else {
+						filter = {
 							type: 'text',
 							showApplyBtn: true,
 							showClearBtn: true
-		      			};
-		      		}
+						};
+					}
 					if (uitype == '15' || uitype == '52' || uitype == '53' || uitype == '56') {
 						if (edit) {
 							formatter = 'listItemText';
@@ -147,6 +160,15 @@ const ListView = {
 						}
 					} else {
 						formatter = false;
+					}
+					if ((fieldname == 'modifiedtime' || fieldname == 'modifiedby') && lvmodule == '') {
+						header = {
+							name: fieldname,
+							header: fieldvalue,
+							sortable: false,
+							whiteSpace: 'normal',
+							formatter: formatter
+						};
 					}
 					header = {
 						name: fieldname,
@@ -157,19 +179,19 @@ const ListView = {
 						editor: editor,
 						filter: filter,
 						whiteSpace: 'normal',
-				        onAfterChange(ev) {
-				        	const idx = dataGridInstance.getIndexOfRow(ev.rowKey);
-				        	const referenceField = dataGridInstance.getValue(idx, 'reference');
-				            ListView.updateFieldData(ev, idx);
-				        },
+						onAfterChange(ev) {
+							const idx = dataGridInstance.getIndexOfRow(ev.rowKey);
+							const referenceField = dataGridInstance.getValue(idx, 'reference');
+							ListView.updateFieldData(ev, idx);
+						},
 						renderer: {
-        					type: LinkRender,
-        					options: {
-        						tooltip: tooltip
-        					}
-        				},
+							type: LinkRender,
+							options: {
+								tooltip: tooltip
+							}
+						},
 					};
-	      		} else {
+				} else {
 					header = {
 						name: fieldname,
 						header: fieldvalue,
@@ -178,16 +200,16 @@ const ListView = {
 						formatter: formatter,
 						editor: editor,
 						whiteSpace: 'normal',
-				        onAfterChange(ev) {
-				        	const idx = dataGridInstance.getIndexOfRow(ev.rowKey);
-				        	const referenceField = dataGridInstance.getValue(idx, 'reference');
-				            ListView.updateFieldData(ev, idx);
-				        },
+						onAfterChange(ev) {
+							const idx = dataGridInstance.getIndexOfRow(ev.rowKey);
+							const referenceField = dataGridInstance.getValue(idx, 'reference');
+							ListView.updateFieldData(ev, idx);
+						},
 						renderer: {
-        					type: LinkRender,
-        				},
+							type: LinkRender,
+						},
 					};
-	      		}
+				}
 			}
 			res.push(header);
 		}
@@ -202,13 +224,13 @@ const ListView = {
 		if (uitype == '56') {
 			editor =  {
 				type: 'radio',
-	            options: {
-	              listItems: [
-	                { text: alert_arr.YES, value: '1' },
-	                { text: alert_arr.NO, value: '0' },
-	              ]
-	            }
-	        };
+				options: {
+					listItems: [
+						{ text: alert_arr.YES, value: '1' },
+						{ text: alert_arr.NO, value: '0' },
+					]
+				}
+			};
 		} else if (uitype == '10' || uitype == '4' || fieldname == 'createdtime' || fieldname == 'modifiedtime') {
 			editor = false;
 		} else if (uitype == '15') {
@@ -221,27 +243,27 @@ const ListView = {
 				};
 				listItems.push(listValues);
 			}
-       	 	editor = {
-            	type: 'select',
-	            options: {
-	            	listItems: listItems
-	            }
-	        };
+			editor = {
+				type: 'select',
+				options: {
+					listItems: listItems
+				}
+			};
 		} else if (uitype == '50' || uitype == '70') {
 			editor = {
-	            type: 'datePicker',
-	            options: {
-	              format: 'yyyy-MM-dd HH:mm A',
-	              timepicker: true
-	            }
-	        };
+				type: 'datePicker',
+				options: {
+					format: 'yyyy-MM-dd HH:mm A',
+					timepicker: true
+				}
+			};
 		} else if (uitype == '5') {
 			editor = {
-	            type: 'datePicker',
-	            options: {
-	              format: 'yyyy-MM-dd'
-	            }
-	        };
+				type: 'datePicker',
+				options: {
+					format: 'yyyy-MM-dd'
+				}
+			};
 		} else if (uitype == '52' || uitype == '53') {
 			let listItems = [];
 			for (let f in values) {
@@ -252,12 +274,12 @@ const ListView = {
 				};
 				listItems.push(listValues);
 			}
-       	 	editor = {
-            	type: 'select',
-	            options: {
-	            	listItems: listItems
-	            }
-	        };
+			editor = {
+				type: 'select',
+				options: {
+					listItems: listItems
+				}
+			};
 		} else {
 			editor = 'text';
 		}
@@ -287,14 +309,13 @@ const ListView = {
 				columns: headers,
 				rowHeaders: [{
 					type: 'checkbox',
-			        header: `
-			          <label for="all-checkbox" class="checkbox">
-			            <input type="checkbox" id="selectCurrentPageRec" class="listview-checkbox" onclick="toggleSelect_ListView(this.checked,'selected_id[]');ListView.getCheckedRows('currentPage', this);" name="_checked" />
-			          </label>
-			        `,
+					header: `
+						<label for="all-checkbox" class="checkbox">
+							<input type="checkbox" id="selectCurrentPageRec" class="listview-checkbox" onclick="toggleSelect_ListView(this.checked,'selected_id[]');ListView.getCheckedRows('currentPage', this);" name="_checked" />
+						</label>`,
 					renderer: {
-	            		type: CheckboxRender
-	          		}
+						type: CheckboxRender
+					}
 				}],
 				data: {
 					api: {
@@ -330,7 +351,7 @@ const ListView = {
 					const getGridCell = document.getElementsByClassName('tui-grid-cell');
 					for (let i = 0; i < getGridCell.length; i++) {
 						if (getGridCell[i].dataset.columnName == 'action') {
-					  		getGridCell[i].style.overflow = 'visible';
+							getGridCell[i].style.overflow = 'visible';
 						}
 					}
 				}
@@ -340,11 +361,11 @@ const ListView = {
 			//change style in grid
 			const getBodyArea = document.getElementsByClassName('tui-grid-body-area');
 			for (let i = 0; i < getBodyArea.length; i++) {
-			  	getBodyArea[i].style.overflow = 'visible';
+				getBodyArea[i].style.overflow = 'visible';
 			}
 			const getRside = document.getElementsByClassName('tui-grid-rside-area');
 			for (let i = 0; i < getRside.length; i++) {
-			  	getRside[i].style.overflow = 'visible';
+				getRside[i].style.overflow = 'visible';
 			}
 			ListView.registerEvent(url);
 			tui.Grid.applyTheme('striped');
@@ -380,16 +401,26 @@ const ListView = {
 				ListView.ListViewReloadData();
 			}
 		});
-		dataGridInstance.on('successResponse', function (data) {
-			const filteredData = document.getElementById('filteredData');
-			const res = JSON.parse(data.xhr.response);
-			const search_mode = res.search_mode;
-			if (search_mode) {
-				filteredData.innerHTML = `<span class="slds-badge slds-theme_success">${alert_arr.filterApplied}</span>`;
-			} else {
-				filteredData.innerHTML = '';
+		if (lvmodule != '') {
+			dataGridInstance.on('successResponse', function (data) {
+				const filteredData = document.getElementById('filteredData');
+				const res = JSON.parse(data.xhr.response);
+				const search_mode = res.search_mode;
+				if (search_mode) {
+					filteredData.innerHTML = `<span class="slds-badge slds-theme_success">${alert_arr.filterApplied}</span>`;
+				} else {
+					filteredData.innerHTML = '';
+				}
+			});
+		}
+		document.addEventListener('click', function () {
+			const dropdown = document.getElementsByClassName('slds-dropdown_right');
+			for (let d in dropdown) {
+				if (dropdown[d].id != '' && dropdown[d].id != undefined) {
+					document.getElementById(dropdown[d].id).style.display = 'none';
+				}
 			}
-	 	});
+		}, false);
 	},
 	/**
 	 * Get the new headers in a onchange search
@@ -397,32 +428,32 @@ const ListView = {
 	 * @param {String} urlstring
 	 * @param {String} searchtype
 	 */
-	 ListViewSearch: (url, urlstring, searchtype) => {
-	 	//set search_url value to input
-	 	if (searchtype == 'Basic') {
+	ListViewSearch: (url, urlstring, searchtype) => {
+		//set search_url value to input
+		if (searchtype == 'Basic') {
 			const parseUrl = urlstring.split('&');
 			let urlArr = [];
 			for (arg in parseUrl) {
 				const URI = parseUrl[arg].split('=');
-				urlArr[URI[0]] = URI[1];
+				urlArr[URI[0]] = decodeURI(URI[1]);
 			}
 			document.getElementById('search_url').value = `&query=true&search_field=${urlArr['search_field']}&search_text=${urlArr['search_text']}&searchtype=BasicSearch`;
-	 	} else {
-	 		document.getElementById('search_url').value = urlstring + '&query=true';
-	 	}
+		} else {
+			document.getElementById('search_url').value = urlstring + '&query=true';
+		}
 		dataGridInstance.clear();
-	 	dataGridInstance.setRequestParams({'search': urlstring, 'searchtype': searchtype});
+		dataGridInstance.setRequestParams({'search': urlstring, 'searchtype': searchtype});
 		//update pagination onchange
 		dataGridInstance.setPerPage(parseInt(PageSize));
-	 	ListView.updateData();
-	 	ListView.noData();
+		ListView.updateData();
+		ListView.noData();
 	},
 	/**
 	 * Get results for alphabetic search
 	 * @param {String} url
 	 */
-	 ListViewAlpha: (url) => {
-	 	//set search_url value to input
+	ListViewAlpha: (url) => {
+		//set search_url value to input
 		const parseUrl = url.split('&');
 		let urlArr = [];
 		for (arg in parseUrl) {
@@ -431,38 +462,36 @@ const ListView = {
 		}
 		document.getElementById('search_url').value = `&query=true&search_field=${urlArr['search_field']}&search_text=${urlArr['search_text']}&searchtype=BasicSearch&type=alpbt&operator=${urlArr['operator']}`;
 		dataGridInstance.clear();
-	 	dataGridInstance.setRequestParams({'search': url, 'searchtype': 'Basic'});
+		dataGridInstance.setRequestParams({'search': url, 'searchtype': 'Basic'});
 		dataGridInstance.on('successResponse', function (data) {
 			const res = JSON.parse(data.xhr.response);
 			const export_where = res.export_where;
 			if (export_where) {
 				document.getElementsByName('where_export')[0].value = export_where;
 			}
-	 	});
+		});
 		//update pagination onchange
 		dataGridInstance.setPerPage(parseInt(PageSize));
 		const total = ListView.updateData();
 		ListView.noData();
-		document.getElementById('numOfRows').value = total;
-		document.getElementById('count').innerHTML = total;
 	},
 	/**
 	 * Get the new headers in a onchange data
 	 */
-	 ListViewReloadData: (lastPage = 1, reload = true) => {
+	ListViewReloadData: (lastPage = 1, reload = true) => {
 		dataGridInstance.clear();
 		if (reload) {
-	 		dataGridInstance.setRequestParams({'search': '', 'searchtype': '', 'page': lastPage});
-	 	} else {
-	 		dataGridInstance.setRequestParams({'search': '', 'searchtype': ''});
-	 		document.getElementsByName('search_text')[0].value = '';
-	 	}
-	 	dataGridInstance.reloadData();
-	 	//update pagination onchange
-	 	if (reload) {
-	 		dataGridInstance.setPerPage(parseInt(PageSize));
-	 	}
-	 	ListView.updateData();
+			dataGridInstance.setRequestParams({'search': '', 'searchtype': '', 'page': lastPage});
+		} else {
+			dataGridInstance.setRequestParams({'search': '', 'searchtype': ''});
+			document.getElementsByName('search_text')[0].value = '';
+		}
+		dataGridInstance.reloadData();
+		//update pagination onchange
+		if (reload) {
+			dataGridInstance.setPerPage(parseInt(PageSize));
+		}
+		ListView.updateData();
 	},
 	/**
 	 * Get the new headers in a onchange filter
@@ -494,12 +523,40 @@ const ListView = {
 				}
 			}
 			ListView.setFilters(filters, true);
-		 	dataGridInstance.setColumns(headers);
-		 	ListView.noData();
+			dataGridInstance.setColumns(headers);
+			ListView.noData();
 		});
 		ListView.updateData();
 		//update pagination onchange
 		dataGridInstance.setPerPage(parseInt(PageSize));
+	},
+	/**
+	 * Get columns for RecycleBin filter
+	 * @param {String} url
+	 */
+	RenderFilter: (url) => {
+		fetch(
+			url+'&columns=true',
+			{
+				method: 'get',
+				headers: {
+					'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+				},
+				credentials: 'same-origin',
+			}
+		).then(response => response.json()).then(response => {
+			let headers = ListView.getColumnHeaders(response[0]);
+			let filters = response[1];
+			document.getElementById('bas_searchfield').innerHTML = '';
+			for (let h in headers) {
+				if (headers[h]['name'] != 'action') {
+					let option = document.createElement('option');
+					option.innerHTML = headers[h]['header'];
+					option.value = headers[h]['name'];
+					document.getElementById('bas_searchfield').appendChild(option);
+				}
+			}
+		});
 	},
 	/**
 	 * Get all checked rows
@@ -568,10 +625,10 @@ const ListView = {
 		}
 		//remove all ids for current page if header checkbox is unchecked
 		if (checkedRows.length == 0) {
-		 	for (let i = 0; i < PageSize; i++) {
-		 		let recordId = dataGridInstance.getValue(parseInt(i), 'recordid');
-		 		select_options = select_options.replace(recordId+';', '');
-		 	}
+			for (let i = 0; i < PageSize; i++) {
+				let recordId = dataGridInstance.getValue(parseInt(i), 'recordid');
+				select_options = select_options.replace(recordId+';', '');
+			}
 		}
 		document.getElementById('allselectedboxes').value = select_options;
 		if (select_options.indexOf('on;') !== -1) {
@@ -594,8 +651,6 @@ const ListView = {
 			document.getElementById('linkForSelectAll').style.display = 'none';
 		} else {
 			const total = ListView.updateData();
-			document.getElementById('numOfRows').value = total;
-			document.getElementById('count').innerHTML = total;
 			document.getElementById('linkForSelectAll').style.display = 'none';
 		}
 	},
@@ -603,6 +658,11 @@ const ListView = {
 	 * Update data in every change
 	 */
 	updateData: () => {
+		if (Object.keys(dataGridInstance).length == 0) {
+			document.getElementById('gridRecordCountHeader').innerHTML = '';
+			document.getElementById('gridRecordCountFooter').innerHTML = '';
+			return 0;
+		}
 		const gridInstance = dataGridInstance.store.data.pageOptions;
 		const page = gridInstance.page;
 		const totalCount = gridInstance.totalCount;
@@ -616,6 +676,8 @@ const ListView = {
 			document.getElementById('gridRecordCountHeader').innerHTML = '';
 			document.getElementById('gridRecordCountFooter').innerHTML = '';
 		}
+		document.getElementById('numOfRows').value = totalCount;
+		document.getElementById('count').innerHTML = totalCount;
 		return totalCount;
 	},
 	/**
@@ -624,6 +686,9 @@ const ListView = {
 	 * @param {Boolean} reload
 	 */
 	setFilters: (filters, reload = false) => {
+		if (lvmodule == '') {
+			return;
+		}
 		if (reload == true) {
 			document.getElementById('filterOptions').innerHTML = '';
 			document.getElementById('filterEditActions').innerHTML = '';
@@ -765,28 +830,27 @@ const ListView = {
 					}
 				}
 				const el = `
-					<div class="cbds-tooltip__wrapper--inner">
-					    <section class="slds-popover slds-nubbin_bottom" role="dialog" style="${width};">
-					      <header class="slds-popover__header" style="background: #1589ee;color: white">
-					        <div class="slds-media slds-media_center slds-has-flexi-truncate">
-					          <div class="slds-media__figure">
-					            <span class="slds-icon_container slds-icon-utility-error">
-					              <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
-					                <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#preview"></use>
-					              </svg>
-					            </span>
-					          </div>
-					          <div class="slds-media__body">
-					            <h2 class="slds-truncate slds-text-heading_medium" title="Quick view">Quick view</h2>
-					          </div>
-					        </div>
-					      </header>
-					      <div class="slds-popover__body">
-					        ${body}
-					      </div>
-					    </section>
-					</div>
-				`;
+				<div class="cbds-tooltip__wrapper--inner">
+					<section class="slds-popover slds-nubbin_bottom" role="dialog" style="${width};">
+						<header class="slds-popover__header" style="background: #1589ee;color: white">
+							<div class="slds-media slds-media_center slds-has-flexi-truncate">
+							<div class="slds-media__figure">
+								<span class="slds-icon_container slds-icon-utility-error">
+									<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#preview"></use>
+									</svg>
+								</span>
+							</div>
+							<div class="slds-media__body">
+								<h2 class="slds-truncate slds-text-heading_medium" title="Quick view">Quick view</h2>
+							</div>
+							</div>
+						</header>
+						<div class="slds-popover__body">
+							${body}
+						</div>
+					</section>
+				</div>`;
 				const createEl = document.createElement('div');
 				createEl.id = `tooltip-${recordid}-${fieldname}`;
 				createEl.classList.add('cbds-tooltip__wrapper');
@@ -795,6 +859,9 @@ const ListView = {
 			});
 		}
 	},
+	/**
+	 * Show No Data message in listview
+	 */
 	noData: () => {
 		const nr_records = dataGridInstance.store.data.rawData.length;
 		if (nr_records == 0) {
@@ -814,13 +881,13 @@ const ListView = {
 				grid_template.style.height = '240px';
 				let create_template = '';
 				let import_template = '';
-				if (response.CreateView == 'yes') {
+				if (response.CreateView == 'yes' && lvmodule != '') {
 					create_template = `
 					<a href="index.php?module=${lvmodule}&action=EditView&return_action=DetailView&parenttab=ptab">
 						<button class="slds-button slds-button_neutral">${alert_arr.LBL_CREATE} ${mod_label}</button>
 					</a>`;
 				}
-				if (response.Import == 'yes') {
+				if (response.Import == 'yes' && lvmodule != '') {
 					import_template = `
 					<a class="slds-card__footer-action" href="index.php?module=${lvmodule}&action=Import&step=1&return_module=${lvmodule}&return_action=ListView&parenttab=ptab">
 						${alert_arr.LBL_IMPORT} ${mod_label}
@@ -830,9 +897,9 @@ const ListView = {
 				<article class="slds-card" style="width: 40%;margin-left: auto;margin-right: auto;">
 					<div class="slds-card__header slds-grid">
 						<header class="slds-media slds-media_center slds-has-flexi-truncate">
-					    	<div class="slds-media__figure">
+							<div class="slds-media__figure">
 								<span class="slds-icon_container slds-icon-standard-record-create">
-					          		<svg class="slds-icon slds-icon_small" aria-hidden="true">
+									<svg class="slds-icon slds-icon_small" aria-hidden="true">
 										<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#record_create"></use>
 									</svg>
 								</span>
@@ -853,6 +920,90 @@ const ListView = {
 				</article>`;
 			});
 		}
+	},
+	/**
+	 * Render actions onclick for every row in listview
+	 * @param {String} recordid
+	 */
+	RenderActions: (recordid) => {
+		const dropdown = document.getElementsByClassName('slds-dropdown_right');
+		for (let d in dropdown) {
+			if (dropdown[d].id != `dropdown-${recordid}` && dropdown[d].id != '' && dropdown[d].id != undefined) {
+				document.getElementById(dropdown[d].id).style.display = 'none';
+			}
+		}
+		fetch(
+			'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getRecordActions&formodule='+lvmodule+'&recordid='+recordid,
+			{
+				method: 'get',
+				headers: {
+					'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+				},
+				credentials: 'same-origin',
+			}
+		).then(response => response.json()).then(response => {
+			let button_template = '<div class="slds-button-group" role="group">';
+			if (response == true) { //recycle bin module
+				const select_module = document.getElementById('select_module').value;
+				button_template += `
+				<a class="slds-button slds-button_outline-brand" onclick="restore(${recordid}, '${select_module}')">
+					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#refresh"></use>
+					</svg>
+					Restore
+				</a>
+				<a class="slds-button slds-button_outline-brand" onclick="callEmptyRecyclebin('${recordid}');" style="color: red; border: 1px solid;">
+					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+					</svg>
+					${alert_arr.LNK_EDIT_ACTION}
+				</a>`;
+			} else {
+				const edit_action = response.edit;
+				const delete_action = response.delete;
+				const view_action = response.view;
+				const calendar_action = (response.calendar) ? response.calendar.status : undefined;
+				if (calendar_action != undefined) {
+					button_template += `
+					<button onclick="ajaxChangeCalendarStatus('${calendar_action}',${recordid});" class="slds-button slds-button_outline-brand">
+						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+						</svg>
+						${alert_arr.LBL_CLOSE_TITLE}
+					</button>`;
+				}
+				if (edit_action.edit == true) {
+					button_template += `
+					<a class="slds-button slds-button_outline-brand" href="${edit_action.link}">
+						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
+						</svg>
+						${alert_arr.LNK_EDIT_ACTION}
+					</a>`;
+				}
+				if (delete_action.delete == true) {
+					button_template += `
+					<a class="slds-button slds-button_outline-brand" onclick="javascript:confirmdelete('${delete_action.link}');" style="color: red; border: 1px solid;">
+						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+						</svg>
+						${alert_arr.LNK_DELETE_ACTION}
+					</a>`;
+				}
+				if (view_action.view == true) {
+					button_template += `
+					<button class="slds-button slds-button_outline-brand" style="color: green; border: 1px solid;">
+						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#notification"></use>
+						</svg>
+						${alert_arr.LBL_MODIFIED}
+					</button>`;
+				}
+				button_template += '</div>';
+			}
+			document.getElementById(`dropdown-${recordid}`).innerHTML = button_template;
+			document.getElementById(`dropdown-${recordid}`).style.display = 'block';
+		});
 	},
 	/**
 	 * See if certain recordid already has a loaded tooltip

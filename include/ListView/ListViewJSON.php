@@ -18,7 +18,6 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	global $current_user, $adb;
 	include_once 'modules/Tooltip/TooltipUtils.php';
 	require_once "modules/$currentModule/$currentModule.php";
-	$category = getParentTab();
 	$profileid = fetchUserProfileId($current_user->id);
 	$lastPage = vtlib_purify($_REQUEST['lastPage']);
 	if ($currentModule == 'Utilities') {
@@ -54,7 +53,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 		foreach ($search as $key => $value) {
 			if ($value != '') {
 				$arg = explode('=', $value)[0];
-				$val = explode('=', $value)[1];
+				$val = explode('=', urldecode($value))[1];
 				$_search[$arg] = $val;
 			}
 		}
@@ -82,6 +81,19 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	if (!empty($order_by)) {
 		$queryGenerator->addWhereField($order_by);
 	}
+	if (isset($_REQUEST['isRecycleModule'])) {
+		$rbfields = $queryGenerator->getFields();
+		if (!in_array('modifiedtime', $rbfields)) {
+			// Recycle Bin List view always shows modifiedtime
+			$rbfields[] = 'modifiedtime';
+			$queryGenerator->setFields($rbfields);
+		}
+		if (!in_array('modifiedby', $rbfields)) {
+			// Recycle Bin List view always shows modifiedby
+			$rbfields[] = 'modifiedby';
+			$queryGenerator->setFields($rbfields);
+		}
+	}
 	$queryGenerator = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.before', $queryGenerator);
 	$list_query = $queryGenerator->getQuery();
 	$queryGenerator = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.after', $queryGenerator);
@@ -99,6 +111,10 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 		$list_query .= ' ORDER BY '.$queryGenerator->getOrderByColumn(coreBOS_Session::get($currentModule.'_Order_By')).' '.coreBOS_Session::get($currentModule.'_Sort_Order');
 	}
 
+	if (isset($_REQUEST['isRecycleModule'])) {
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias($currentModule, true);
+		$list_query = preg_replace("/$crmEntityTable.deleted\s*=\s*0/i", $crmEntityTable.'.deleted = 1', $list_query);
+	}
 	$start = coreBOS_Session::get('lvs^'.$currentModule.'^'.$viewid.'^start', 1);
 	if ($currentPage == 1) {
 		if ($lastPage == 1) {
@@ -119,17 +135,8 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	//get entityfieldid
 	$entityField = getEntityField($currentModule);
 	$entityidfield = $entityField['entityid'];
-	$fieldname = $focus->list_link_field;
+	$reference_field = $focus->list_link_field;
 	//add action in header
-	$actionPermission = getTabsActionPermission($profileid)[$tabid];
-	$delete = true;
-	$edit = true;
-	if ($actionPermission[1]) {
-		$edit = false;
-	}
-	if ($actionPermission[2]) {
-		$delete = false;
-	}
 	if ($currentModule == 'cbCalendar') {
 		require_once 'modules/Calendar4You/Calendar4You.php';
 		$focus = new Calendar4You();
@@ -144,142 +151,141 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 		$result = $adb->pquery($list_query, array());
 		$count_result = $adb->query(mkXQuery(stripTailCommandsFromQuery($list_query, false), 'count(*) AS count'));
 		$noofrows = $adb->query_result($count_result, 0, 0);
+		$rowCount = $adb->num_rows($result);
+		$listviewcolumns = $adb->getFieldsArray($result);
 	} catch (Exception $e) {
 		$sql_error = true;
 	}
-	$App_LV_Record = GlobalVariable::getVariable('Application_ListView_Record_Change_Indicator', 1, $currentModule);
-	while ($row = $result->FetchRow()) {
+	$field_types = array();
+			$a = '';
+	foreach ($listviewcolumns as $key => $fName) {
+		$fieldnameSql = $adb->pquery('SELECT fieldname, uitype FROM vtiger_field WHERE columnname=? AND tabid=?', array($fName, $tabid));
+		if (!$fieldnameSql || $adb->num_rows($fieldnameSql)==0) {
+			$field_types[] = array(
+				'fieldname' => $fName,
+				'fieldtype' => '',
+			);
+			continue;
+		}
+		$fieldName = $adb->query_result($fieldnameSql, 0, 0);
+		$fieldType = $adb->query_result($fieldnameSql, 0, 1);
+		$field_types[] = array(
+			'fieldname' => $fieldName,
+			'fieldtype' => $fieldType,
+		);
+	}
+	for ($i=0; $i < $rowCount; $i++) {
 		$rows = array();
+		$colorizer_row = array();
 		$linkRow = array();
-		foreach ($row as $fieldName => $fieldValue) {
+		foreach ($field_types as $idx => $val) {
+			$fieldName = $val['fieldname'];
+			$fieldType = $val['fieldtype'];
+			$fieldValue = $adb->query_result($result, $i, $fieldName);
+			$recordID = $adb->query_result($result, $i, $entityidfield);
+			$smownerid = $adb->query_result($result, $i, 'smownerid');
+			$colorizer_row[$fieldName] = $fieldValue;
 			if ($fieldValue == '' || $fieldValue == null) {
 				$rows[$fieldName] = '';
 				continue;
 			}
-			if (!is_numeric($fieldName)) {
-				$fieldnameSql = $adb->pquery('SELECT fieldname, uitype FROM vtiger_field WHERE columnname=? AND tabid=?', array($fieldName, $tabid));
-				if (!$fieldnameSql || $adb->num_rows($fieldnameSql)==0) {
-					continue;
+			//check field uitypes
+			if ($fieldType == '10') {
+				//get value
+				$field10Value = '';
+				if ($fieldValue != 0 || $fieldValue != null || $fieldValue != '') {
+					$parent_module = getSalesEntityType($fieldValue);
+					$displayValueArray = getEntityName($parent_module, $fieldValue);
+					if (!empty($displayValueArray)) {
+						$field10Value = $displayValueArray[$fieldValue];
+					}
+					$linkRow[$fieldName] = array($parent_module, $fieldValue, $field10Value);
 				}
-				$fieldName = $adb->query_result($fieldnameSql, 0, 0);
-				$fieldType = $adb->query_result($fieldnameSql, 0, 1);
-				//check field uitypes
-				if ($fieldType == '10') {
-					//get value
-					$field10Value = '';
-					if ($fieldValue != 0 || $fieldValue != null || $fieldValue != '') {
-						$parent_module = getSalesEntityType($fieldValue);
-						$displayValueArray = getEntityName($parent_module, $fieldValue);
-						if (!empty($displayValueArray)) {
-							$field10Value = $displayValueArray[$fieldValue];
-						}
-						$linkRow[$fieldName] = array($parent_module, $fieldValue, $field10Value);
+				$rows[$fieldName] = $field10Value;
+			} elseif ($fieldType == '14' || ($fieldType == '2' && ($fieldName == 'time_start' || $fieldName == 'time_end'))) {
+				$date = new DateTimeField($fieldValue);
+				$rows[$fieldName] = $date->getDisplayTime($current_user);
+			} elseif ($fieldType == '5' || $fieldType == '6' || $fieldType == '23') {
+				$date = new DateTimeField($fieldValue);
+				$rows[$fieldName] = $date->getDisplayDate($current_user);
+			} elseif ($fieldType == '50' || $fieldType == '70') {
+				$date = new DateTimeField($fieldValue);
+				$value = $date->getDisplayDate();
+				if ($fieldValue != '0000-00-00' && $fieldValue != '0000-00-00 00:00') {
+					$value .= ' ' . $date->getDisplayTime();
+					$user_format = ($current_user->hour_format=='24' ? '24' : '12');
+					if ($user_format != '24') {
+						$curr_time = DateTimeField::formatUserTimeString($value, '12');
+						$time_format = substr($curr_time, -2);
+						$curr_time = substr($curr_time, 0, 5);
+						list($dt,$tm) = explode(' ', $value);
+						$value = $dt . ' ' . $curr_time . $time_format;
 					}
-					$rows[$fieldName] = $field10Value;
-				} elseif ($fieldType == '14' || ($fieldType == '2' && ($fieldName == 'time_start' || $fieldName == 'time_end'))) {
-					$date = new DateTimeField($fieldValue);
-					$rows[$fieldName] = $date->getDisplayTime($current_user);
-				} elseif ($fieldType == '5' || $fieldType == '6' || $fieldType == '23') {
-					$date = new DateTimeField($fieldValue);
-					$rows[$fieldName] = $date->getDisplayDate($current_user);
-				} elseif ($fieldType == '50' || $fieldType == '70') {
-					$date = new DateTimeField($fieldValue);
-					$value = $date->getDisplayDate();
-					if ($fieldValue != '0000-00-00' && $fieldValue != '0000-00-00 00:00') {
-						$value .= ' ' . $date->getDisplayTime();
-						$user_format = ($current_user->hour_format=='24' ? '24' : '12');
-						if ($user_format != '24') {
-							$curr_time = DateTimeField::formatUserTimeString($value, '12');
-							$time_format = substr($curr_time, -2);
-							$curr_time = substr($curr_time, 0, 5);
-							list($dt,$tm) = explode(' ', $value);
-							$value = $dt . ' ' . $curr_time . $time_format;
-						}
-					} elseif ($value == '0000-00-00' || $value == '0000-00-00 00:00') {
-						$value = '';
-					}
-					$rows[$fieldName] = $value;
-				} elseif ($fieldType == '56') {
-					if ($fieldValue == 1) {
-						$rows[$fieldName] = getTranslatedString('yes', $currentModule);
-					} elseif ($fieldValue == 0) {
-						$rows[$fieldName] = getTranslatedString('no', $currentModule);
-					} else {
-						$rows[$fieldName] = '--';
-					}
-				} elseif ($fieldType == '71' || $fieldType == '72' || $fieldType == '7' || $fieldType == '9') {
-					$currencyField = new CurrencyField($fieldValue);
-					if ($fieldType == '72') {
-						if ($fieldName == 'unit_price') {
-							$currencyId = getProductBaseCurrency($row[$entityidfield], $currentModule);
-							$cursym_convrate = getCurrencySymbolandCRate($currencyId);
-							$currencySymbol = $cursym_convrate['symbol'];
-						} else {
-							$currencyInfo = getInventoryCurrencyInfo($currentModule, $row[$entityidfield]);
-							$currencySymbol = $currencyInfo['currency_symbol'];
-						}
-						$currencyValue = CurrencyField::convertToUserFormat($fieldValue, null, true);
-						$value = CurrencyField::appendCurrencySymbol($currencyValue, $currencySymbol);
-					} else {
-						$value = CurrencyField::convertToUserFormat($fieldValue);
-					}
-					$rows[$fieldName] = $value;
-				} elseif ($fieldType == '27') {
-					if ($fieldValue == 'I') {
-						$rows[$fieldName] = getTranslatedString('LBL_INTERNAL', $currentModule);
-					} elseif ($fieldValue == 'E') {
-						$rows[$fieldName] = getTranslatedString('LBL_EXTERNAL', $currentModule);
-					} else {
-						$rows[$fieldName] = '--';
-					}
+				} elseif ($value == '0000-00-00' || $value == '0000-00-00 00:00') {
+					$value = '';
+				}
+				$rows[$fieldName] = $value;
+			} elseif ($fieldType == '56') {
+				if ($fieldValue == 1) {
+					$rows[$fieldName] = getTranslatedString('yes', $currentModule);
+				} elseif ($fieldValue == 0) {
+					$rows[$fieldName] = getTranslatedString('no', $currentModule);
 				} else {
-					if ($fieldName) {
-						$rows[$fieldName] = $fieldValue;
+					$rows[$fieldName] = '--';
+				}
+			} elseif ($fieldType == '71' || $fieldType == '72' || $fieldType == '7' || $fieldType == '9') {
+				$currencyField = new CurrencyField($fieldValue);
+				if ($fieldType == '72') {
+					if ($fieldName == 'unit_price') {
+						$currencyId = getProductBaseCurrency($recordID, $currentModule);
+						$cursym_convrate = getCurrencySymbolandCRate($currencyId);
+						$currencySymbol = $cursym_convrate['symbol'];
+					} else {
+						$currencyInfo = getInventoryCurrencyInfo($currentModule, $recordID);
+						$currencySymbol = $currencyInfo['currency_symbol'];
 					}
+					$currencyValue = CurrencyField::convertToUserFormat($fieldValue, null, true);
+					$value = CurrencyField::appendCurrencySymbol($currencyValue, $currencySymbol);
+				} else {
+					$value = CurrencyField::convertToUserFormat($fieldValue);
 				}
-				$rows['uitype_'.$fieldName] = $fieldType;
-			}
-			if ($App_LV_Record) {
-				$isModified = false;
-				if (!$focus->isViewed($row[$entityidfield])) {
-					$isModified = true;
+				$rows[$fieldName] = $value;
+			} elseif ($fieldType == '27') {
+				if ($fieldValue == 'I') {
+					$rows[$fieldName] = getTranslatedString('LBL_INTERNAL', $currentModule);
+				} elseif ($fieldValue == 'E') {
+					$rows[$fieldName] = getTranslatedString('LBL_EXTERNAL', $currentModule);
+				} else {
+					$rows[$fieldName] = '--';
+				}
+			} elseif ($fieldName == 'modifiedby') {
+					$rows[$fieldName] = getUserFullName($fieldValue);
+			} else {
+				if ($fieldName) {
+					$rows[$fieldName] = textlength_check($fieldValue);
 				}
 			}
+			$rows['uitype_'.$fieldName] = $fieldType;
 			$Actions = array();
-			if ($currentModule == 'cbCalendar') {
-				if ($focus->CheckPermissions('EDIT', $row[$entityidfield])) {
-					$evstatus = $row['eventstatus'];
-					if (!($evstatus == 'Deferred' || $evstatus == 'Completed' || $evstatus == 'Held' || $evstatus == '')) {
-						if ($row['activitytype'] == 'Task') {
-							$evt_status = 'Completed';
-						} else {
-							$evt_status = 'Held';
-						}
-						$Actions = array(
-							'status' => $evt_status,
-						);
-					}
-				}
-			}
 			if ($currentModule == 'Documents') {
 				$fileattach = 'select attachmentsid from vtiger_seattachmentsrel where crmid = ?';
-				$res = $adb->pquery($fileattach, array($row[$entityidfield]));
+				$res = $adb->pquery($fileattach, array($recordID));
 				$fileid = $adb->query_result($res, 0, 'attachmentsid');
 				$rows['fileid'] = $fileid;
 			}
-			$rows['action'] = array(
-				'edit' => $edit,
-				'delete' => $delete,
-				'isModified' => $isModified,
-				'cbCalendar' => $Actions,
-			);
-			$rows['assigned_user_id'] = isset($row['smownerid']) ? getUserFullName($row['smownerid']) : '';
-			$rows['recordid'] = $row[$entityidfield];
-			$rows['reference'] = $fieldname;
+			// $rows['action'] = array(
+			// 	'edit' => true,
+			// 	'delete' => true,
+			// 	'isModified' => false,
+			// 	'cbCalendar' => '',
+			// );
+			$rows['assigned_user_id'] = isset($smownerid) ? getUserFullName($smownerid) : '';
+			$rows['recordid'] = $recordID;
+			$rows['reference'] = $reference_field;
 			$rows['relatedRows'] = $linkRow;
 		}
 		if ($Colorizer) {
-			$className = enableColorizer($row, $tabid);
+			$className = enableColorizer($colorizer_row, $tabid);
 			$rows['_attributes'] = $className;
 		}
 		array_push($data, $rows);
@@ -380,11 +386,17 @@ function getListViewHeaders($currentModule, $tabid) {
 	if ($actionPermission[1]) {
 		$edit = false;
 	}
-	if ($actionPermission[2]) {
-		$delete = false;
-	}
 	$controller = new ListViewController($adb, $current_user, $queryGenerator);
 	$listview_header_search = $controller->getBasicSearchFieldInfoList();
+	if (isset($_REQUEST['isRecycleModule'])) {
+		$rbfields = $queryGenerator->getFields();
+		if (!in_array('modifiedtime', $rbfields)) {
+			$listview_header_search['modifiedtime'] = getTranslatedString('Modified Time', 'RecycleBin');
+		}
+		if (!in_array('modifiedby', $rbfields)) {
+			$listview_header_search['modifiedby'] = getTranslatedString('Last Modified By', 'RecycleBin');
+		}
+	}
 	$listview_header_search['action'] = $app_strings['LBL_ACTION'];
 	$listview_header_arr = array();
 	foreach ($listview_header_search as $fName => $fValue) {
@@ -426,6 +438,87 @@ function getListViewHeaders($currentModule, $tabid) {
 		'customview' => $customViewarr,
 		'result' => true,
 	);
+}
+
+function getRecordActions($module, $recordId) {
+	global $adb, $current_user;
+	if ($module == '') {
+		return true;
+	}
+	$queryGenerator = new QueryGenerator($module, $current_user);
+	$lvc = new ListViewController($adb, $current_user, $queryGenerator);
+	$wfs = new VTWorkflowManager($adb);
+	$actions = array();
+	if (isPermitted($module, 'EditView', $recordId) == 'yes') {
+		$racbr = $wfs->getRACRuleForRecord($module, $recordId);
+		if (!$racbr || $racbr->hasListViewPermissionTo('edit')) {
+			$edit_link = $lvc->getListViewEditLink($module, $recordId);
+			$actions['edit'] = array(
+				'edit' => true,
+				'link' => $edit_link,
+			);
+		}
+	} else {
+		$actions['edit'] = array(
+			'edit' => false,
+			'link' => '',
+		);
+	}
+	if (isPermitted($module, 'Delete', $recordId) == 'yes') {
+		$racbr = $wfs->getRACRuleForRecord($module, $recordId);
+		if (!$racbr || $racbr->hasListViewPermissionTo('delete')) {
+			$del_link = $lvc->getListViewDeleteLink($module, $recordId);
+			$actions['delete'] = array(
+				'delete' => true,
+				'link' => $del_link,
+			);
+		}
+	} else {
+		$actions['delete'] = array(
+			'delete' => false,
+			'link' => '',
+		);
+	}
+	$focus = new $module();
+	$App_LV_Record = GlobalVariable::getVariable('Application_ListView_Record_Change_Indicator', 1, $module);
+	if ($App_LV_Record && method_exists($focus, 'isViewed')) {
+		$isModified = false;
+		if (!$focus->isViewed($recordId)) {
+			$actions['view'] = array(
+				'view' => true,
+			);
+		} else {
+			$actions['view'] = array(
+				'view' => false,
+			);
+		}
+	} else {
+		$actions['view'] = array(
+			'view' => false,
+		);
+	}
+	if ($module == 'cbCalendar') {
+		require_once 'modules/Calendar4You/Calendar4You.php';
+		$focus = new Calendar4You();
+		$focus->GetDefPermission($current_user);
+		if ($focus->CheckPermissions('EDIT', $recordId)) {
+			$focus = new $module();
+			$focus->retrieve_entity_info($recordId, 'cbCalendar');
+			$evstatus = $focus->column_fields['eventstatus'];
+			$activitytype = $focus->column_fields['activitytype'];
+			if (!($evstatus == 'Deferred' || $evstatus == 'Completed' || $evstatus == 'Held' || $evstatus == '')) {
+				if ($activitytype == 'Task') {
+					$evt_status = 'Completed';
+				} else {
+					$evt_status = 'Held';
+				}
+				$actions['calendar'] = array(
+					'status' => $evt_status,
+				);
+			}
+		}
+	}
+	return $actions;
 }
 
 function updateDataListView() {

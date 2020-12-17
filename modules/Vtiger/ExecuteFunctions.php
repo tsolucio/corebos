@@ -357,6 +357,12 @@ switch ($functiontocall) {
 		$mod = vtlib_purify($_REQUEST['formodule']);
 		$ret = Button_Check($mod);
 		break;
+	case 'getRecordActions':
+		include_once 'include/ListView/ListViewJSON.php';
+		$mod = vtlib_purify($_REQUEST['formodule']);
+		$recordid = vtlib_purify($_REQUEST['recordid']);
+		$ret = getRecordActions($mod, $recordid);
+		break;
 	case 'listViewJSON':
 		include_once 'include/ListView/ListViewJSON.php';
 		if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'updateDataListView') {
