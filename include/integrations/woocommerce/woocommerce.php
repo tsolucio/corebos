@@ -715,7 +715,7 @@ class corebos_woocommerce {
 					$wcprops['display'] = $cbfrom->column_fields['display'];
 				}
 				if (!isset($wcprops['parent']) && !empty($cbfrom->column_fields['parent_category'])) {
-					$p = getSingleFieldValue('vtiger_wcproductcategory', 'wccode', 'wcproductcategoryid', $cbfrom->id);
+					$p = getSingleFieldValue('vtiger_wcproductcategory', 'wccode', 'wcproductcategoryid', $cbfrom->column_fields['parent_category']);
 					if (!empty($p)) {
 						$wcprops['parent'] = $p;
 					}
