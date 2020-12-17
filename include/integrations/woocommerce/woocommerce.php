@@ -606,9 +606,9 @@ class corebos_woocommerce {
 				if (vtlib_isModuleActive('wcProductCategory')) {
 					$wcCatEntityTable = CRMEntity::getcrmEntityTableAlias('wcProductCategory');
 					$cats = $adb->pquery(
-						'select wcProductCategory.wccode
-						from wcProductCategory
-						INNER JOIN '.$wcCatEntityTable.' ON vtiger_crmentity.crmid = wcProductCategory.wcproductcategoryid
+						'select vtiger_wcproductcategory.wccode
+						from vtiger_wcproductcategory
+						INNER JOIN '.$wcCatEntityTable.' ON vtiger_crmentity.crmid = vtiger_wcproductcategory.wcproductcategoryid
 						INNER JOIN vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid=vtiger_crmentity.crmid OR vtiger_crmentityrel.crmid=vtiger_crmentity.crmid)
 						WHERE vtiger_crmentity.deleted=0 AND (vtiger_crmentityrel.relcrmid=? OR vtiger_crmentityrel.crmid=?)',
 						array($cbfromid, $cbfromid)
@@ -662,9 +662,9 @@ class corebos_woocommerce {
 				if (vtlib_isModuleActive('wcProductCategory')) {
 					$wcCatEntityTable = CRMEntity::getcrmEntityTableAlias('wcProductCategory');
 					$cats = $adb->pquery(
-						'select wcProductCategory.wccode
-						from wcProductCategory
-						INNER JOIN '.$wcCatEntityTable.' ON vtiger_crmentity.crmid = wcProductCategory.wcproductcategoryid
+						'select vtiger_wcproductcategory.wccode
+						from vtiger_wcproductcategory
+						INNER JOIN '.$wcCatEntityTable.' ON vtiger_crmentity.crmid = vtiger_wcproductcategory.wcproductcategoryid
 						INNER JOIN vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid=vtiger_crmentity.crmid OR vtiger_crmentityrel.crmid=vtiger_crmentity.crmid)
 						WHERE vtiger_crmentity.deleted=0 AND (vtiger_crmentityrel.relcrmid=? OR vtiger_crmentityrel.crmid=?)',
 						array($cbfromid, $cbfromid)
