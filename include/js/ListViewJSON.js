@@ -83,6 +83,10 @@ const ListView = {
 				ListView.ListViewDefault(select_module, url);
 			}
 		}
+		const contentArea = document.getElementsByClassName('tui-grid-content-area');
+		if (contentArea[0]) {
+			contentArea[0].style.height = 'auto';
+		}
 	},
 	/**
 	 * List of modules that can't edit in listview
@@ -486,7 +490,6 @@ const ListView = {
 			dataGridInstance.setRequestParams({'search': '', 'searchtype': ''});
 			document.getElementsByName('search_text')[0].value = '';
 		}
-		dataGridInstance.reloadData();
 		//update pagination onchange
 		if (reload) {
 			dataGridInstance.setPerPage(parseInt(PageSize));

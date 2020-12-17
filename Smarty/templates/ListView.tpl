@@ -34,14 +34,30 @@
 		<span class="moduleName">{$APP.LBL_SEARCH}</span><br><span class="small"><a href="#" onClick="fnhide('searchAcc');show('advSearch');document.basicSearch.searchtype.value='advance';document.basicSearch.searchtype.searchlaunched='';document.getElementById('cbds-advanced-search').classList.add('cbds-advanced-search--active')">{$APP.LBL_GO_TO} {$APP.LNK_ADVANCED_SEARCH}</a></span>
 		<!-- <img src="themes/images/basicSearchLens.gif" align="absmiddle" alt="{$APP.LNK_BASIC_SEARCH}" title="{$APP.LNK_BASIC_SEARCH}" border=0>&nbsp;&nbsp;-->
 		</td>
-		<td class="small" nowrap align=right><b>{$APP.LBL_SEARCH_FOR}</b></td>
-		<td class="small"><input type="text" class="txtBox" style="width:120px" name="search_text"></td>
-		<td class="small" nowrap><b>{$APP.LBL_IN}</b>&nbsp;</td>
-		<td class="small" nowrap>
+		<td class="small" width="20%">
+			<div class="slds-form-element">
+				<div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+					<svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+					</svg>
+					<input type="text" id="search_text" name="search_text" placeholder="{$APP.LBL_SEARCH_FOR}" class="slds-input" />
+				</div>
+			</div>
+		</td>
+		<td class="small" nowrap width="1%">
+			<label class="slds-form-element__label">{$APP.LBL_IN}</label>
+		</td>
+		<td class="small" nowrap width="20%">
 			<div id="basicsearchcolumns_real">
-			<select name="search_field" id="bas_searchfield" class="txtBox" style="width:150px">
-			{html_options options=$SEARCHLISTHEADER }
-			</select>
+				<div class="slds-form-element">
+					<div class="slds-form-element__control">
+						<div class="slds-select_container">
+							<select class="slds-select" name="search_field" id="bas_searchfield">
+								{html_options options=$SEARCHLISTHEADER }
+							</select>
+						</div>
+					</div>
+				</div>
 			</div>
 			<input type="hidden" name="searchtype" value="BasicSearch">
 			<input type="hidden" name="module" value="{$MODULE}" id="curmodule">
@@ -51,11 +67,29 @@
 			<input type="hidden" name="query" value="true">
 			<input type="hidden" name="search_cnt">
 		</td>
-		<td class="small" nowrap width=40% >
-			<input name="submit" type="button" class="crmbutton small create" onClick="callSearch('Basic');document.basicSearch.searchtype.searchlaunched='basic';" value=" {$APP.LBL_SEARCH_NOW_BUTTON} ">&nbsp;
-			<input type="button" class="crmbutton small edit" value="{$APP.LBL_CLEAR}" onClick="ListView.ListViewReloadData()">&nbsp;
+		<td class="small" nowrap width="30%">
+			<div class="slds-button-group" role="group">
+				<a onClick="callSearch('Basic');document.basicSearch.searchtype.searchlaunched='basic';" class="slds-button slds-button_neutral">
+					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+					</svg>
+					{$APP.LBL_SEARCH_NOW_BUTTON}
+				</a>
+				<a onClick="ListView.ListViewReloadData()" class="slds-button slds-button_text-destructive">
+					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#refresh"></use>
+					</svg>
+					{$APP.LBL_CLEAR}
+				</a>
+			</div>
 		</td>
-		<td class="small closeX" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="searchshowhide('searchAcc','advSearch');document.basicSearch.searchtype.searchlaunched='';">[x]</td>
+		<td class="small closeX" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="searchshowhide('searchAcc','advSearch');document.basicSearch.searchtype.searchlaunched='';">
+			<button class="slds-button slds-button_icon slds-button_icon-border slds-button_icon-x-small">
+				<svg class="slds-button__icon" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+				</svg>
+			</button>
+		</td>
 	</tr>
 	<tr>
 		<td colspan="7" align="center" class="small">
