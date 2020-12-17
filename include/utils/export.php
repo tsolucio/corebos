@@ -333,7 +333,7 @@ class ExportUtils {
 			} elseif ($uitype == 10) {
 				//have to handle uitype 10
 				$value = trim($value);
-				if (!empty($value)) {
+				if (!empty($value) && is_numeric($value)) {
 					$parent_module = getSalesEntityType($value);
 					$Export_RelatedField_GetValueFrom = GlobalVariable::getVariable('Export_RelatedField_GetValueFrom', '', $parent_module);
 					if ($Export_RelatedField_GetValueFrom != '') {
@@ -365,7 +365,7 @@ class ExportUtils {
 						$value = '';
 					}
 				} else {
-					$value = '';
+					$value = empty($value) ? '' : $value;
 				}
 			} elseif ($uitype == 71) {
 				$value = CurrencyField::convertToUserFormat($value);
