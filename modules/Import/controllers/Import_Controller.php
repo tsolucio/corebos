@@ -109,10 +109,10 @@ class Import_Controller {
 		$viewer->assign('OWNER_ID', $ownerId);
 		$viewer->assign('IMPORT_RESULT', $importStatusCount);
 		$viewer->assign('MERGE_ENABLED', $importInfo['merge_type']);
-		if (strpos(PHP_SAPI, 'apache')!==false) {
-			$viewer->display('ImportResult.tpl');
-		} else {
+		if (PHP_SAPI == 'cli') {
 			$viewer->display('ImportResultCLI.tpl');
+		} else {
+			$viewer->display('ImportResult.tpl');
 		}
 	}
 
