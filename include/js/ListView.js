@@ -436,7 +436,7 @@ function mass_edit_formload(idstring, module, parenttab) {
 			if (search_txt_val != '') {// if the search fields are not empty
 				urlstring = '&query=true&ajax=true&search=true&search_field=' + search_fld_val + '&searchtype=BasicSearch&search_text=' + search_txt_val;
 			}
-		} else if (document.basicSearch.searchtype.searchlaunched != undefined && document.basicSearch.searchtype.searchlaunched == 'advance' && checkAdvancedFilter()) {
+		} else if (document.basicSearch.searchtype.searchlaunched != undefined && document.basicSearch.searchtype.searchlaunched == 'advance' && AdvancedFilter.updateHiddenFields()) {
 			var advft_criteria = encodeURIComponent(document.getElementById('advft_criteria').value);
 			var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
 			urlstring = '&query=true&ajax=true&search=true&advft_criteria=' + advft_criteria + '&advft_criteria_groups=' + advft_criteria_groups + '&searchtype=advance';
