@@ -185,6 +185,7 @@ $list_report_form->assign('DATEFORMAT', $current_user->date_format);
 $list_report_form->assign('JS_DATEFORMAT', parse_calendardate($app_strings['NTC_DATE_FORMAT']));
 $list_report_form->assign('MODULE', 'Reports');
 $list_report_form->assign('COMPANY_DETAILS', retrieveCompanyDetails());
+$list_report_form->assign('CRITERIA_GROUPS', array());
 
 $list_report_form->display('ReportsStep0.tpl');
 ?>
