@@ -632,9 +632,12 @@ class corebos_woocommerce {
 						WHERE vtiger_crmentity.deleted=0 AND (vtiger_crmentityrel.relcrmid=? OR vtiger_crmentityrel.crmid=?)',
 						array($cbfromid, $cbfromid)
 					);
-					$wcprops['categories'] = array();
+					$categories = array();
 					foreach ($cats as $cat) {
-						$wcprops['categories'][] = array('id' => $cat['wccode']);
+						$categories[] = array('id' => $cat['wccode']);
+					}
+					if (count($categories)>0) {
+						$wcprops['categories'] = $categories;
 					}
 				}
 				if (vtlib_isModuleActive('wcProductImage')) {
@@ -688,9 +691,12 @@ class corebos_woocommerce {
 						WHERE vtiger_crmentity.deleted=0 AND (vtiger_crmentityrel.relcrmid=? OR vtiger_crmentityrel.crmid=?)',
 						array($cbfromid, $cbfromid)
 					);
-					$wcprops['categories'] = array();
+					$categories = array();
 					foreach ($cats as $cat) {
-						$wcprops['categories'][] = array('id' => $cat['wccode']);
+						$categories[] = array('id' => $cat['wccode']);
+					}
+					if (count($categories)>0) {
+						$wcprops['categories'] = $categories;
 					}
 				}
 				if (vtlib_isModuleActive('wcProductImage')) {
