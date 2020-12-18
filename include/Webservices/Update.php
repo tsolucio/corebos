@@ -11,7 +11,7 @@ include_once 'include/Webservices/CustomerPortalWS.php';
 include_once 'include/Webservices/getRecordImages.php';
 
 function vtws_update($element, $user) {
-	global $log,$adb,$root_directory;
+	global $log,$adb;
 	if (empty($element['id'])) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Id specified is incorrect');
 	}
@@ -26,22 +26,7 @@ function vtws_update($element, $user) {
 	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 	$meta = $handler->getMeta();
 	$entityName = $meta->getObjectEntityName($element['id']);
-	$wsAttachments = array();
-	if (!empty($element['attachments'])) {
-		foreach ($element['attachments'] as $fieldname => $attachment) {
-			$filepath = $root_directory.'cache/'.$attachment['name'];
-			file_put_contents($filepath, base64_decode($attachment['content']));
-			$_FILES[$fieldname] = array(
-				'name' => $attachment['name'],
-				'type' => $attachment['type'],
-				'tmp_name' => $filepath,
-				'error' => 0,
-				'size' => $attachment['size']
-			);
-			$wsAttachments[] = $filepath;
-		}
-		unset($element['attachments']);
-	}
+	require 'include/Webservices/processAttachments.php';
 
 	$types = vtws_listtypes(null, $user);
 	if (!in_array($entityName, $types['types'])) {
