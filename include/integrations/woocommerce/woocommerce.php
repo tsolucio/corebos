@@ -199,7 +199,12 @@ class corebos_woocommerce {
 			}
 			switch ($action) {
 				case 'created':
-					$this->createFromWC($moduleName, $change['data']);
+					$crmid = $this->getCBIDFromEntity($moduleName, $change['data']['id']);
+					if (empty($crmid)) {
+						$this->createFromWC($moduleName, $change['data']);
+					} else {
+						$this->updateFromWC($moduleName, $change['data']);
+					}
 					break;
 				case 'updated':
 					$this->updateFromWC($moduleName, $change['data']);
