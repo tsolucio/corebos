@@ -45,8 +45,9 @@ function wcnotification($input) {
 	$wcsig = isset($headers['X-WC-Webhook-Signature']) ? $headers['X-WC-Webhook-Signature'] : (isset($headers['X-Wc-Webhook-Signature']) ? $headers['X-Wc-Webhook-Signature'] : '');
 	$source = isset($headers['X-WC-Webhook-Source']) ? $headers['X-WC-Webhook-Source'] : (isset($headers['X-Wc-Webhook-Source']) ? $headers['X-Wc-Webhook-Source'] : '');
 	if ($wc->isActive() && trim($source, '/')==trim($wcsettings['url'], '/') && $wcsig==$signature) {
+		$event = isset($headers['X-WC-Webhook-Topic']) ? $headers['X-WC-Webhook-Topic'] : (isset($headers['X-Wc-Webhook-Topic']) ? $headers['X-Wc-Webhook-Topic'] : '');
 		$msg = array(
-			'event' => $headers['X-WC-Webhook-Topic'],
+			'event' => $event,
 			'data' => json_decode($input, true),
 		);
 		$cbmq = coreBOS_MQTM::getInstance();
