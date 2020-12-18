@@ -47,3 +47,28 @@
 #ttmodcomments .dataLabel {
   white-space: normal;
 }
+
+/* ---- CBDS tooltip ---- */
+.cbds-tooltip__trigger .cbds-tooltip__wrapper {
+  left: 1000000000000000px;
+  z-index: 100000;
+  position: absolute;
+  opacity: 0;
+  transform: translateY(1rem);
+}
+
+.cbds-tooltip__trigger:hover .cbds-tooltip__wrapper {
+  left: auto;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 100ms linear 50ms, transform 100ms linear 50ms;
+}
+
+.cbds-tooltip__wrapper--inner {
+  position:absolute;
+  color: #080707 !important;
+  padding-bottom: 1rem;
+  -webkit-transform: translateY(-100%) translateY(-1rem) translateX(-50%) translateX(0.5rem);
+  -moz-transform: translateY(-100%) translateY(-1rem) translateX(-50%) translateX(0.5rem);
+  transform: translateY(-100%) translateY(-1rem) translateX(-50%) translateX(0.5rem);
+}
