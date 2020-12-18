@@ -32,12 +32,8 @@
 			</td>
 				<!-- Record Counts -->
 			<td style="padding-right:20px" class="small" nowrap id="gridRecordCountHeader"></td>
+			<td style="padding-right:20px" class="small" nowrap id="filteredData"></td>
 			<!-- Page Navigation -->
-			<td nowrap width="30%" align="center">
-				<table border=0 cellspacing=0 cellpadding=0 class="small">
-					<tr>{$NAVIGATION}</tr>
-				</table>
-			</td>
 			<td width=100% align="right" class="cblds-t-align_right">
 				<b>{$MOD.LBL_SELECT_MODULE} : </b>
 				<select id="select_module" onChange="ListView.ListViewJSON('RecycleBin');" class="small">
@@ -50,6 +46,14 @@
 				{/if}
 				{/foreach}
 				</select>
+			</td>
+		</tr>
+	</table>
+	<table border=0 cellspacing=1 cellpadding=3 width=100%>
+		<tr>
+			<td id="linkForSelectAll" class="linkForSelectAll" style="display:none;" colspan=15>
+				<span id="selectAllRec" class="selectall" style="display:inline;" onClick="toggleSelectAll_Records('{$MODULE}',true,'selected_id[]')">{$APP.LBL_SELECT_ALL} <span id="count"> </span> {$APP.LBL_RECORDS_IN} {$MODULE|@getTranslatedString:$MODULE}</span>
+				<span id="deSelectAllRec" class="selectall" style="display:none;" onClick="toggleSelectAll_Records('{$MODULE}',false,'selected_id[]')">{$APP.LBL_DESELECT_ALL} {$MODULE|@getTranslatedString:$MODULE}</span>
 			</td>
 		</tr>
 	</table>
@@ -73,11 +77,6 @@
 			<!-- Record Counts -->
 			<td style="padding-right:20px" class="small" nowrap id="gridRecordCountFooter"></td>
 			<!-- Page Navigation -->
-			<td nowrap width="30%" align="center">
-				<table border=0 cellspacing=0 cellpadding=0 class="small">
-					<tr>{$NAVIGATION}</tr>
-				</table>
-			</td>
 			<td width=100% align="right">&nbsp;</td>
 		</tr>
 	</table>

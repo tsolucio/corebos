@@ -158,14 +158,7 @@ function alphabetic(module, url, dataid) {
 	url += '&selected_module='+selectedmodule;
 	getObj(dataid).className = 'searchAlphselected';
 	document.getElementById('status').style.display='inline';
-	jQuery.ajax({
-		method: 'POST',
-		url: 'index.php?module='+module+'&action='+module+'Ajax&file=index&mode=ajax&ajax=true&'+url
-	}).done(function (response) {
-		document.getElementById('status').style.display='none';
-		document.getElementById('modules_datas').innerHTML=response;
-		document.getElementById('search_ajax').innerHTML = '';
-	});
+	ListView.ListViewJSON('alphabetic', url);
 }
 
 function emptyRecyclebin(id) {
