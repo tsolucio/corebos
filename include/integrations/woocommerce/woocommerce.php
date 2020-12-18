@@ -227,6 +227,7 @@ class corebos_woocommerce {
 						$this->logMessage('sendCustomer2WC', $rdo->code.' - '.$rdo->message, $send2wc, $rdo);
 					} else {
 						$this->updateControlFields($change['module'], $change['record_id'], $rdo->id);
+						$this->logMessage('sendCustomer2WC', 'OK', $send2wc, $rdo, false);
 					}
 				} catch (Exception $e) {
 					$this->logMessage('sendCustomer2WC', $e->getMessage(), $send2wc, 0);
@@ -236,6 +237,8 @@ class corebos_woocommerce {
 					$rdo = $this->wcclient->put('customers/'.$wcid, $send2wc);
 					if (isset($rdo->data) && isset($rdo->data->status) && isset($rdo->message)) {
 						$this->logMessage('sendCustomer2WC', $rdo->code.' - '.$rdo->message, $send2wc, $rdo);
+					} else {
+						$this->logMessage('sendCustomer2WC', 'OK', $send2wc, $rdo, false);
 					}
 				} catch (Exception $e) {
 					$this->logMessage('sendCustomer2WC', $e->getMessage(), $send2wc, 0);
@@ -255,6 +258,7 @@ class corebos_woocommerce {
 						$this->logMessage('sendProduct2WC', $rdo->code.' - '.$rdo->message, $send2wc, $rdo);
 					} else {
 						$this->updateControlFields($change['module'], $change['record_id'], $rdo->id);
+						$this->logMessage('sendProduct2WC', 'OK', $send2wc, $rdo, false);
 					}
 				} catch (Exception $e) {
 					$this->logMessage('sendProduct2WC', $e->getMessage(), $send2wc, 0);
@@ -264,6 +268,8 @@ class corebos_woocommerce {
 					$rdo = $this->wcclient->put('products/'.$wcid, $send2wc);
 					if (isset($rdo->data) && isset($rdo->data->status) && isset($rdo->message)) {
 						$this->logMessage('sendProduct2WC', $rdo->code.' - '.$rdo->message, $send2wc, $rdo);
+					} else {
+						$this->logMessage('sendProduct2WC', 'OK', $send2wc, $rdo, false);
 					}
 				} catch (Exception $e) {
 					$this->logMessage('sendProduct2WC', $e->getMessage(), $send2wc, 0);
@@ -283,6 +289,7 @@ class corebos_woocommerce {
 						$this->logMessage('sendCategory2WC', $rdo->code.' - '.$rdo->message, $send2wc, $rdo);
 					} else {
 						$this->updateControlFields($change['module'], $change['record_id'], $rdo->id);
+						$this->logMessage('sendCategory2WC', 'OK', $send2wc, $rdo, false);
 					}
 				} catch (Exception $e) {
 					$this->logMessage('sendCategory2WC', $e->getMessage(), $send2wc, 0);
@@ -291,7 +298,9 @@ class corebos_woocommerce {
 				try {
 					$rdo = $this->wcclient->put('products/categories/'.$wcid, $send2wc);
 					if (isset($rdo->data) && isset($rdo->data->status) && isset($rdo->message)) {
-						$this->logMessage('sendProduct2WC', $rdo->code.' - '.$rdo->message, $send2wc, $rdo);
+						$this->logMessage('sendCategory2WC', $rdo->code.' - '.$rdo->message, $send2wc, $rdo);
+					} else {
+						$this->logMessage('sendCategory2WC', 'OK', $send2wc, $rdo, false);
 					}
 				} catch (Exception $e) {
 					$this->logMessage('sendCategory2WC', $e->getMessage(), $send2wc, 0);
@@ -316,6 +325,7 @@ class corebos_woocommerce {
 					$this->logMessage('delCustomerInWC', $rdo->code.' - '.$rdo->message, $change, $rdo);
 				} else {
 					$this->updateDeleteFields($change['module'], $change['record_id']);
+					$this->logMessage('delCustomerInWC', 'OK', $wcid, $rdo, false);
 				}
 			} catch (Exception $e) {
 				$this->logMessage('delCustomerInWC', $e->getMessage(), $change, 0);
@@ -332,6 +342,7 @@ class corebos_woocommerce {
 					$this->logMessage('delProductInWC', $rdo->code.' - '.$rdo->message, $change, $rdo);
 				} else {
 					$this->updateDeleteFields($change['module'], $change['record_id']);
+					$this->logMessage('delProductInWC', 'OK', $wcid, $rdo, false);
 				}
 			} catch (Exception $e) {
 				$this->logMessage('delProductInWC', $e->getMessage(), $change, 0);
@@ -348,6 +359,7 @@ class corebos_woocommerce {
 					$this->logMessage('delCategoryInWC', $rdo->code.' - '.$rdo->message, $change, $rdo);
 				} else {
 					$this->updateDeleteFields($change['module'], $change['record_id']);
+					$this->logMessage('delCategoryInWC', 'OK', $wcid, $rdo, false);
 				}
 			} catch (Exception $e) {
 				$this->logMessage('delCategoryInWC', $e->getMessage(), $change, 0);
@@ -384,6 +396,7 @@ class corebos_woocommerce {
 				coreBOS_Settings::setSetting('woocommerce_syncing', 'creating');
 				$new = vtws_create($moduleName, $send2cb, $current_user);
 				coreBOS_Settings::delSetting('woocommerce_syncing');
+				$this->logMessage('send'.$moduleName.'2WC', 'OK:Create', $send2cb, $new, false);
 				$mod = CRMEntity::getInstance($moduleName);
 				list($wsid, $crmid) = $new['id'];
 				$adb->pquery('update '.$mod->table_name.' set wccreated=1,wcdeleted=0,wcdeletedon=null where '.$mod->table_index.'=?', array($crmid));
@@ -414,8 +427,9 @@ class corebos_woocommerce {
 					$send2cb['pdoInformation'] = $hold;
 				}
 				coreBOS_Settings::setSetting('woocommerce_syncing', $crmid);
-				vtws_revise($send2cb, $current_user);
+				$rdo = vtws_revise($send2cb, $current_user);
 				coreBOS_Settings::delSetting('woocommerce_syncing');
+				$this->logMessage('send'.$moduleName.'2WC', 'OK:Update', $send2cb, $rdo, false);
 				$this->setCategoryRelations($moduleName, $crmid, $send2cb);
 			} catch (Exception $e) {
 				$this->logMessage('send'.$moduleName.'2WC', $e->getMessage(), $send2cb, 0);
@@ -1058,16 +1072,17 @@ class corebos_woocommerce {
 		return $cbid;
 	}
 
-	public function logMessage($operation, $message, $data, $result) {
+	public function logMessage($operation, $message, $data, $result, $error = true) {
 		if (self::DEBUG) {
 			$information = array(
-				'error' => '['.$operation.']: ' . $message,
 				'info' => $data
 			);
+			$key = $error ? 'error' : 'result';
+			$information[$key] = '['.$operation.']: ' . $message;
 			if (!empty($result)) {
 				$information['response'] = $result;
 			}
-			$this->messagequeue->sendMessage('errorlog', 'woocommerce', 'logmanager', 'Event', 'P:S', 0, 32000000, 0, 0, print_r($information, true));
+			$this->messagequeue->sendMessage($key.'log', 'woocommerce', 'logmanager', 'Event', 'P:S', 0, 32000000, 0, 0, print_r($information, true));
 		}
 	}
 }
