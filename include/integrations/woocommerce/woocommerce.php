@@ -776,7 +776,7 @@ class corebos_woocommerce {
 					'email1' => 'email',
 				);
 				foreach ($checkEmpty as $cbfield => $wcfield) {
-					if (empty($send2cb[$cbfield]) && !empty($data[$wcfield])) {
+					if (!empty($data[$wcfield])) {
 						$send2cb[$cbfield] = $data[$wcfield];
 					}
 				}
@@ -788,7 +788,7 @@ class corebos_woocommerce {
 					'bill_country' => 'country',
 				);
 				foreach ($checkEmpty as $cbfield => $wcfield) {
-					if (empty($send2cb[$cbfield]) && !empty($data['billing'][$wcfield])) {
+					if (!empty($data['billing'][$wcfield])) {
 						$send2cb[$cbfield] = $data['billing'][$wcfield];
 					}
 				}
@@ -800,7 +800,7 @@ class corebos_woocommerce {
 					'ship_country' => 'country',
 				);
 				foreach ($checkEmpty as $cbfield => $wcfield) {
-					if (empty($send2cb[$cbfield]) && !empty($data['shipping'][$wcfield])) {
+					if (!empty($data['shipping'][$wcfield])) {
 						$send2cb[$cbfield] = $data['shipping'][$wcfield];
 					}
 				}
@@ -884,7 +884,7 @@ class corebos_woocommerce {
 					'qtyinstock' => 'stock_quantity',
 				);
 				foreach ($checkEmpty as $cbfield => $wcfield) {
-					if (empty($send2cb[$cbfield]) && !empty($data[$wcfield])) {
+					if (!empty($data[$wcfield])) {
 						$send2cb[$cbfield] = $data[$wcfield];
 					}
 				}
@@ -898,7 +898,7 @@ class corebos_woocommerce {
 					'unit_price' => 'regular_price',
 				);
 				foreach ($checkEmpty as $cbfield => $wcfield) {
-					if (empty($send2cb[$cbfield]) && !empty($data[$wcfield])) {
+					if (!empty($data[$wcfield])) {
 						$send2cb[$cbfield] = $data[$wcfield];
 					}
 				}
@@ -925,7 +925,7 @@ class corebos_woocommerce {
 					'hdnS_H_Amount' => 'shipping_total',
 				);
 				foreach ($checkEmpty as $cbfield => $wcfield) {
-					if (empty($send2cb[$cbfield]) && !empty($data[$wcfield])) {
+					if (!empty($data[$wcfield])) {
 						$send2cb[$cbfield] = $data[$wcfield];
 					}
 				}
