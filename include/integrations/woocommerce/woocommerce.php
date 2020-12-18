@@ -396,13 +396,13 @@ class corebos_woocommerce {
 				coreBOS_Settings::setSetting('woocommerce_syncing', 'creating');
 				$new = vtws_create($moduleName, $send2cb, $current_user);
 				coreBOS_Settings::delSetting('woocommerce_syncing');
-				$this->logMessage('send'.$moduleName.'2WC', 'OK:Create', $send2cb, $new, false);
+				$this->logMessage('get'.$moduleName.'FromWC', 'OK:Create', $send2cb, $new, false);
 				$mod = CRMEntity::getInstance($moduleName);
 				list($wsid, $crmid) = $new['id'];
 				$adb->pquery('update '.$mod->table_name.' set wccreated=1,wcdeleted=0,wcdeletedon=null where '.$mod->table_index.'=?', array($crmid));
 				$this->setCategoryRelations($moduleName, $crmid, $send2cb);
 			} catch (Exception $e) {
-				$this->logMessage('send'.$moduleName.'2WC', $e->getMessage(), $send2cb, 0);
+				$this->logMessage('get'.$moduleName.'FromWC', $e->getMessage(), $send2cb, 0);
 			}
 		}
 	}
@@ -429,10 +429,10 @@ class corebos_woocommerce {
 				coreBOS_Settings::setSetting('woocommerce_syncing', $crmid);
 				$rdo = vtws_revise($send2cb, $current_user);
 				coreBOS_Settings::delSetting('woocommerce_syncing');
-				$this->logMessage('send'.$moduleName.'2WC', 'OK:Update', $send2cb, $rdo, false);
+				$this->logMessage('get'.$moduleName.'FromWC', 'OK:Update', $send2cb, $rdo, false);
 				$this->setCategoryRelations($moduleName, $crmid, $send2cb);
 			} catch (Exception $e) {
-				$this->logMessage('send'.$moduleName.'2WC', $e->getMessage(), $send2cb, 0);
+				$this->logMessage('get'.$moduleName.'FromWC', $e->getMessage(), $send2cb, 0);
 			}
 		}
 	}
