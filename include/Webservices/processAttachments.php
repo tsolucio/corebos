@@ -25,6 +25,9 @@ if (!empty($element['attachments'])) {
 			'size' => $attachment['size']
 		);
 		$wsAttachments[] = $filepath;
+		if (validateImageFile($_FILES[$fieldname]) == 'true' && validateImageContents($filepath) == false) {
+			throw new WebServiceException(WebServiceErrorCode::$VALIDATION_FAILED, getTranslatedString('LBL_IMAGESECURITY_ERROR'));
+		}
 	}
 	unset($element['attachments']);
 }

@@ -890,6 +890,7 @@ $app_strings = array(
 	'MSG_VTIGERTEAM' => ' coreBOS Team',
 	'MSG_IS_NOT_UPLOADED' => 'Niet voltooid. U mag alleen deze types gebruiken- jpeg, png, jpg, pjpeg, x-png or gif',
 	'MSG_IMAGE_ERROR' => 'afbeelding niet gevonden',
+	'LBL_IMAGESECURITY_ERROR' => 'Invalid image: contains potential malicious contents',
 	'Information' => 'Informatie',
 	'Address' => 'Adres',
 	'Custom Information' => 'Standaard informatie',

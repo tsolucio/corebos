@@ -855,6 +855,7 @@ $app_strings = array(
 	'MSG_VTIGERTEAM' => 'Echipa coreBOS',
 	'MSG_IS_NOT_UPLOADED' => 'nu e incarcat. Tipuri de fisiere permise - jpeg, png, jpg, pjpeg, x-png or gif',
 	'MSG_IMAGE_ERROR' => 'Imaginea nu a fost gasita',
+	'LBL_IMAGESECURITY_ERROR' => 'Invalid image: contains potential malicious contents',
 	'Information' => 'Informatie',
 	'Address' => 'Adresa',
 	'Custom Information' => 'Informatii Custom',

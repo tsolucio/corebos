@@ -874,7 +874,7 @@ $app_strings = array (
 'MSG_VTIGERTEAM'=>'Equipe CRM',
 'MSG_IS_NOT_UPLOADED'=>'não foi atualizado. São permitidos arquivos do tipo - jpeg, png, jpg, pjpeg, x-png or gif',
 'MSG_IMAGE_ERROR'=>'Imagem não encontrada',
-
+'LBL_IMAGESECURITY_ERROR' => 'Invalid image: contains potential malicious contents',
 'Information'=>'Informação',
 'Address'=>'Endereço',
 'Custom Information'=>'Informação customizada',

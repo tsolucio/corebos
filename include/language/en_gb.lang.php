@@ -869,6 +869,7 @@ $app_strings = array(
 	'MSG_VTIGERTEAM' => ' coreBOS team',
 	'MSG_IS_NOT_UPLOADED' => 'is not uploaded. Allowed file types - jpeg, png, jpg, pjpeg, x-png or gif',
 	'MSG_IMAGE_ERROR' => 'Image not found',
+	'LBL_IMAGESECURITY_ERROR' => 'Invalid image: contains potential malicious contents',
 	'Information' => 'Information',
 	'Address' => 'Address',
 	'Custom Information' => 'Custom Information',

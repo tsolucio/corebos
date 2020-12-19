@@ -868,6 +868,7 @@ $app_strings = array(
 	'MSG_VTIGERTEAM' => ' coreBOS Team',
 	'MSG_IS_NOT_UPLOADED' => 'nem került feltöltésre. Megengedett fájl típusok - jpeg, png, jpg, pjpeg, x-png vagy gif',
 	'MSG_IMAGE_ERROR' => 'A kép nem található',
+	'LBL_IMAGESECURITY_ERROR' => 'Invalid image: contains potential malicious contents',
 	'Information' => 'Információ',
 	'Address' => 'Cím',
 	'Custom Information' => 'Egyedi adatok',
