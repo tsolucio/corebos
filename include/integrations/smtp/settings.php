@@ -91,15 +91,15 @@ if ($savemode == 'true') {
 	 * delete Incoming Mail Server Configuration
 	 */
 	if ($smtp_settings_mode == 'inc_set') {
-		$smtpconfig->clearInc_SMTPSettings();
-		header("Location: index.php?action=integration&module=Utilities&_op=getconfigsmtp&savemode=false");
+		$smtpconfig->clearIncSMTPSettings();
+		$smtpconfig = new corebos_smtp();
 	}
 	/**
 	 * delete Outgoing Mail Server Configuration
 	 */
 	if ($smtp_settings_mode == 'og_set') {
-		$smtpconfig->clearOg_SMTPSettings();
-		header("Location: index.php?action=integration&module=Utilities&_op=getconfigsmtp&savemode=false");
+		$smtpconfig->clearOgSMTPSettings();
+		$smtpconfig = new corebos_smtp();
 	}
 
 	$ic_mail_server_validation_error = false;

@@ -200,26 +200,30 @@ class corebos_smtp {
 		$adb->pquery($sql, $params);
 	}
 
-	public function clearInc_SMTPSettings() {
+	public function clearIncSMTPSettings() {
 		global $adb, $current_user;
 		$result = $adb->pquery('select 1 from vtiger_mail_accounts where user_id=?', array($current_user->id));
 		if ($adb->num_rows($result) > 0) {
-			$sql='update vtiger_mail_accounts set display_name=?, mail_id=?, mail_protocol=?, mail_username=?, mail_password=?, mail_servername=?,
-				box_refresh=?, mails_per_page=?, ssltype=? , sslmeth=?, status=? where og_server_status=0 or og_server_status=1 and user_id='.$current_user->id;
-			$params = array('', '', '', '', '', '', 0, 0, '', '', 0);
+			$adb->pquery(
+				'update vtiger_mail_accounts set
+					display_name=?,mail_id=?,mail_protocol=?,mail_username=?,mail_password=?,mail_servername=?,box_refresh=?,mails_per_page=?,ssltype=?,sslmeth=?,status=?
+					where user_id=?',
+				array('', '', '', '', '', '', 0, 0, '', '', 0, $current_user->id)
+			);
 		}
-		$adb->pquery($sql, $params);
 	}
 
-	public function clearOg_SMTPSettings() {
+	public function clearOgSMTPSettings() {
 		global $adb, $current_user;
 		$result = $adb->pquery('select 1 from vtiger_mail_accounts where user_id=?', array($current_user->id));
 		if ($adb->num_rows($result) > 0) {
-			$sql='update vtiger_mail_accounts set og_server_name=?, og_server_username=?, og_server_password=?, og_smtp_auth=?, og_server_port=?,
-				og_server_status=? where status=0 or status=1 and user_id ='.$current_user->id;
-			$params = array('', '', '', 'false', 0, 0);
+			$adb->pquery(
+				'update vtiger_mail_accounts set
+					og_server_name=?,og_server_username=?,og_server_password=?,og_smtp_auth=?,og_server_port=?,og_server_status=?
+					where user_id=?',
+				array('', '', '', 'false', 0, 0, $current_user->id)
+			);
 		}
-		$adb->pquery($sql, $params);
 	}
 
 	public static function setServerName($mServer) {
