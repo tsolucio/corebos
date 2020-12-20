@@ -86,6 +86,22 @@ if ($savemode == 'true') {
 	);
 	echo json_encode($response);
 } else {
+	$smtp_settings_mode = isset($_REQUEST['smtp_settings']) ? vtlib_purify($_REQUEST['smtp_settings']) : '';
+	/**
+	 * delete Incoming Mail Server Configuration
+	 */
+	if ($smtp_settings_mode == 'inc_set') {
+		$smtpconfig->clearIncSMTPSettings();
+		$smtpconfig = new corebos_smtp();
+	}
+	/**
+	 * delete Outgoing Mail Server Configuration
+	 */
+	if ($smtp_settings_mode == 'og_set') {
+		$smtpconfig->clearOgSMTPSettings();
+		$smtpconfig = new corebos_smtp();
+	}
+
 	$ic_mail_server_validation_error = false;
 	$ic_mail_server_validation_success = false;
 	$og_mail_server_validation_error = false;

@@ -1327,6 +1327,16 @@ class CRMEntity {
 	public function preSaveCheck($request) {
 		list($request,$void,$saveerror,$errormessage,$error_action,$returnvalues) =
 			cbEventHandler::do_filter('corebos.filter.preSaveCheck', array($request,$this,false,'','',''));
+		if (!$saveerror && !empty($_FILES)) {
+			foreach ($_FILES as $file_details) {
+				if (validateImageFile($file_details) == 'true' && validateImageContents($file_details['tmp_name']) == false) {
+					$saveerror = true;
+					$errormessage = getTranslatedString('LBL_IMAGESECURITY_ERROR');
+					$error_action = 'EditView';
+					$returnvalues = '';
+				}
+			}
+		}
 		return array($saveerror,$errormessage,$error_action,$returnvalues);
 	}
 

@@ -2255,6 +2255,9 @@ function validateImageFile($file_details) {
 	$filetype = $file_type_details['1'];
 
 	if (!empty($filetype)) {
+		if (strpos($filetype, ';')) {
+			list($filetype, $void) = explode(';', $filetype);
+		}
 		$filetype = strtolower($filetype);
 	}
 	if ($filetype == 'jpeg' || $filetype == 'png' || $filetype == 'jpg' || $filetype == 'pjpeg' || $filetype == 'x-png' || $filetype == 'gif' || $filetype == 'bmp') {
