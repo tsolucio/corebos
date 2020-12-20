@@ -86,7 +86,7 @@ if ($savemode == 'true') {
 	);
 	echo json_encode($response);
 } else {
-	$smtp_settings_mode = $_REQUEST['smtp_settings'];
+	$smtp_settings_mode = isset($_REQUEST['smtp_settings']) ? vtlib_purify($_REQUEST['smtp_settings']) : '';
 	/**
 	 * delete Incoming Mail Server Configuration
 	 */

@@ -183,6 +183,7 @@ $app_strings = array(
 	'NTC_TIME_FORMAT' => '(24:00)',
 	'NTC_DATE_TIME_FORMAT' => '(yyyy-mm-dd 24:00)',
 	'NTC_DELETE_CONFIRMATION' => 'Biztos vagy abban, hogy törölni kívánod ezt a rekordot?',
+	'SMTP_DELETE_CONFIRMATION' => 'Are you sure you want to delete this SMTP settings?',
 	'NTC_ACCOUNT_DELETE_CONFIRMATION' => 'A Cég(ek) törlése el fogja távolítani a kapcsolódó Lehetőségeket és Árajánlatokat is. Biztos vagy abban, hogy törölni kívánod a Cége(ke)t?',
 	'NTC_VENDOR_DELETE_CONFIRMATION' => 'A Beszállító(k) törlése el fogja távolítani a kapcsolódó Beszerzés rendeléseket is. Biztos vagy abban, hogy törölni kívánod a Beszállító(ka)t?',
 	'ERR_DELETE_RECORD' => 'Adj meg egy rekord azonosítót a Kapcsolat törléséhez.',

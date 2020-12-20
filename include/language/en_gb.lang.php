@@ -183,6 +183,7 @@ $app_strings = array(
 	'NTC_TIME_FORMAT' => '(24:00)',
 	'NTC_DATE_TIME_FORMAT' => '(yyyy-mm-dd 24:00)',
 	'NTC_DELETE_CONFIRMATION' => 'Are you sure you want to delete this record?',
+	'SMTP_DELETE_CONFIRMATION' => 'Are you sure you want to delete this SMTP settings?',
 	'NTC_ACCOUNT_DELETE_CONFIRMATION' => 'Deleting this Organisation will remove its related Opportunities & Quotes. Are you sure you want to delete this Organisation?',
 	'NTC_VENDOR_DELETE_CONFIRMATION' => 'Deleting this Vendor will remove its related Purchase Orders. Are you sure you want to delete this Vendor?',
 	'ERR_DELETE_RECORD' => 'A record number must be specified to delete the Contact.',

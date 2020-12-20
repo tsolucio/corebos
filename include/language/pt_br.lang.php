@@ -184,6 +184,7 @@ $app_strings = array (
 'NTC_TIME_FORMAT' => '(24:00)',
 'NTC_DATE_TIME_FORMAT' => '(yyyy-mm-dd 24:00)',
 'NTC_DELETE_CONFIRMATION' => 'Você tem certeza que deseja apagar este registro?',
+'SMTP_DELETE_CONFIRMATION' => 'Are you sure you want to delete this SMTP settings?',
 'NTC_ACCOUNT_DELETE_CONFIRMATION' => 'Apagando esta Conta removerá as oportunidades e cotações relacionadas. Tem certeza que deseja apagar esta conta?',
 'NTC_VENDOR_DELETE_CONFIRMATION' => 'Apagando este fornecedor serão removidas os pedidos de compras relacionados. Tem certeza que deseja apagar este fornecedor?',
 'ERR_DELETE_RECORD' => 'Um registro dever ser especificado para apagar o contato.',

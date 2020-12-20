@@ -188,6 +188,7 @@ $app_strings = array(
 	'NTC_TIME_FORMAT' => '(24:00)',
 	'NTC_DATE_TIME_FORMAT' => '(aaaa-ll-zz 24:00)',
 	'NTC_DELETE_CONFIRMATION' => 'Suntei sigur ca doriti sa stergeti aceasta inregistrare?',
+	'SMTP_DELETE_CONFIRMATION' => 'Are you sure you want to delete this SMTP settings?',
 	'NTC_ACCOUNT_DELETE_CONFIRMATION' => 'Ștergerea acestei organizații va elimina Oportunitățile & Ofertele relaționate. Sunteți sigur ca doriți sa ștergeți aceasta organizație?',
 	'NTC_VENDOR_DELETE_CONFIRMATION' => 'Ștergerea acestui furnizor va elimina Ordinele de Cumpărare relaționate. Sunteți sigur ca doriți sa ștergeți acest furnizor?',
 	'ERR_DELETE_RECORD' => 'Trebuie specificat un număr de înregistrare pentru a șterge acest contact.',

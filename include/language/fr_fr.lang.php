@@ -182,6 +182,7 @@ $app_strings = array(
 	'NTC_TIME_FORMAT' => '(24:00)',
 	'NTC_DATE_TIME_FORMAT' => '(jj-mm-aaaa 24:00)',
 	'NTC_DELETE_CONFIRMATION' => 'Êtes-vous certain de vouloir supprimer cet enregistrement ?',
+	'SMTP_DELETE_CONFIRMATION' => 'Are you sure you want to delete this SMTP settings?',
 	'NTC_ACCOUNT_DELETE_CONFIRMATION' => 'Supprimer ce compte entrainera la suppression des données en relation (affaires, devis, commandes, facture). Êtes-vous certain de vouloir faire cela ?',
 	'NTC_VENDOR_DELETE_CONFIRMATION' => 'Supprimer ce fournisseur entrainera la suppression des commandes fournisseur en relation. Êtes-vous certain de vouloir faire cela ?',
 	'ERR_DELETE_RECORD' => 'Veuillez sélectionner au moins un enregistrement.',

@@ -181,6 +181,7 @@ $app_strings = array(
 'NTC_TIME_FORMAT'=>'(24:00)',
 'NTC_DATE_TIME_FORMAT'=>'(dd-mm-yyyy 24:00)',
 'NTC_DELETE_CONFIRMATION'=>'Wollen Sie diesen Eintrag löschen?',
+'SMTP_DELETE_CONFIRMATION' => 'Are you sure you want to delete this SMTP settings?',
 'NTC_ACCOUNT_DELETE_CONFIRMATION' => 'Wenn Sie diese Organisation löschen, werden auch die darauf bezogenen Einträge in den Potentialen und Angeboten gelöscht. Sind Sie sicher, dass Sie diese Organisation wirklich löschen wollen?',
 'NTC_VENDOR_DELETE_CONFIRMATION' => 'Wenn Sie diese Organisation löschen, werden auch die darauf bezogenen Einträge in den Einkaufsbestellungen gelöscht. Sind Sie sicher, dass Sie diesen Lieferanten wirklich löschen wollen?',
 'ERR_DELETE_RECORD'=>'Zum Löschen muss mindestens ein Eintrag markiert sein.',
