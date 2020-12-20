@@ -1537,7 +1537,7 @@ function InventorySelectAll(mod, image_pth) {
 			var term = this.input.value;
 			if (!isSpecialKey && term.length > this.threshold) {
 				this.getResults(term);
-				this.setSpinner(true)
+				this.setSpinner(true);
 			} else if (term.length < this.threshold) {
 				this.clear();
 			}
@@ -1551,31 +1551,31 @@ function InventorySelectAll(mod, image_pth) {
 			}
 		},
 
-		handleImmediateInput: function(e) {
+		handleImmediateInput: function (e) {
 			if (this.isSpecialKey(e.keyCode)) {
 				this.handleKeyInput(e);
 			}
 		},
 
 		debounce: function (func, duration) {
-			let timeout
+			let timeout;
 
 			return function (...args) {
 				const effect = () => {
-					timeout = null
-					return func.apply(this, args)
-				}
-				clearTimeout(timeout)
-				timeout = setTimeout(effect, duration)
-			}
+					timeout = null;
+					return func.apply(this, args);
+				};
+				clearTimeout(timeout);
+				timeout = setTimeout(effect, duration);
+			};
 		},
 
-		setSpinner: function(state) {
-			let spinner = this.utils.getFirstClass(this.el, 'slds-spinner')
+		setSpinner: function (state) {
+			let spinner = this.utils.getFirstClass(this.el, 'slds-spinner');
 			if (state) {
-				spinner.classList.remove('slds-hide')
+				spinner.classList.remove('slds-hide');
 			} else {
-				spinner.classList.add('slds-hide')
+				spinner.classList.add('slds-hide');
 			}
 		},
 
@@ -1638,7 +1638,7 @@ function InventorySelectAll(mod, image_pth) {
 				// Build results
 				this.buildResults(res);
 			}
-			this.setSpinner(false)
+			this.setSpinner(false);
 		},
 
 		buildResultBox: function () {

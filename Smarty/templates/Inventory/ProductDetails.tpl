@@ -146,7 +146,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 							</span>
 							<div class="slds-input__icon-group slds-input__icon-group_right">
 								<div role="status" class="slds-spinner slds-spinner_brand slds-spinner_x-small slds-input__spinner slds-hide">
-									<span class="slds-assistive-text">Loading</span>
+									<span class="slds-assistive-text">{'LBL_LOADING'|@getTranslatedString}</span>
 									<div class="slds-spinner__dot-a"></div>
 									<div class="slds-spinner__dot-b"></div>
 								</div>
