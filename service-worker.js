@@ -2282,7 +2282,7 @@ precacheAndRoute([{
   "revision": "10409c671140a39b91e9f96dcedbe1b1"
 }, {
   "url": "jscalendar/lang/calendar-it.js",
-  "revision": "a947e189174be4d737ac034abe9db957"
+  "revision": "662c160592a0c67e0798be5e9918e008"
 }, {
   "url": "jscalendar/lang/calendar-jp.js",
   "revision": "b47ddea3200306ace5d9493ef98eca8e"
@@ -9320,7 +9320,7 @@ precacheAndRoute([{
   "revision": "e4cc7bb9fdef5d2b8a887122f48cfc41"
 }, {
   "url": "include/js/Inventory.js",
-  "revision": "91536c6bbef632e4c599afe3f4173f40"
+  "revision": "b5210badcd0cda84cbd9bd9f320069b7"
 }, {
   "url": "include/js/it_it.lang.js",
   "revision": "82d0688c57068a35105286134212467f"
@@ -10028,7 +10028,7 @@ precacheAndRoute([{
   "revision": "8ab2b632de69afd4fefcd5daccab5af6"
 }, {
   "url": "modules/Services/Services.js",
-  "revision": "6233d137c122fc3f08950b8f45dd49b6"
+  "revision": "6aea15159a09cc39b9e8330ad777e35b"
 }, {
   "url": "modules/Vendors/Vendors.js",
   "revision": "29077a91b5317da8237274d0436bbc73"

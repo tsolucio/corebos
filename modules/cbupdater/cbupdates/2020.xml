@@ -383,6 +383,13 @@
 </changeSet>
 <changeSet>
 	<author>joebordes</author>
+	<description>Increment key-value value field to handle bigger values in settings</description>
+	<filename>build/changeSets/2020/incsettingsfield.php</filename>
+	<classname>incsettingsfield</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
 	<description>The calendar is DEAD, long live the Calendar!</description>
 	<filename>build/changeSets/2020/databasechangesToMoveTocbCalendar3.php</filename>
 	<classname>databasechangesToMoveTocbCalendar3</classname>

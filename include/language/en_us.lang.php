@@ -182,6 +182,7 @@ $app_strings = array(
 'NTC_TIME_FORMAT' => '(24:00)',
 'NTC_DATE_TIME_FORMAT' => '(yyyy-mm-dd 24:00)',
 'NTC_DELETE_CONFIRMATION' => 'Are you sure you want to delete this record?',
+'SMTP_DELETE_CONFIRMATION' => 'Are you sure you want to delete this SMTP settings?',
 'NTC_ACCOUNT_DELETE_CONFIRMATION' => 'Deleting this account will remove its related Opportunities & Quotes. Are you sure you want to delete this account?',
 'NTC_VENDOR_DELETE_CONFIRMATION' => 'Deleting this vendor will remove its related Purchase Orders. Are you sure you want to delete this vendor?',
 'ERR_DELETE_RECORD' => 'A record number must be specified to delete the contact.',
@@ -879,7 +880,7 @@ $app_strings = array(
 'MSG_VTIGERTEAM'=>' coreBOS Team',
 'MSG_IS_NOT_UPLOADED'=>'is not uploaded. Allowed file types - jpeg, png, jpg, pjpeg, x-png or gif',
 'MSG_IMAGE_ERROR'=>'Image not found',
-
+'LBL_IMAGESECURITY_ERROR' => 'Invalid image: contains potential malicious contents',
 'Information'=>'Information',
 'Address'=>'Address',
 'Custom Information'=>'Custom Information',
