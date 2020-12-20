@@ -95,8 +95,8 @@ class MailManager_Connector {
 		$this->mBoxUrl = $boxUrl;
 		$this->mBoxBaseUrl = $baseUrl; // Used for folder List
 		$this->mBox = @imap_open($url, $username, $password);
-		imap_errors();
 		$this->isError();
+		imap_errors();
 	}
 
 	/**
