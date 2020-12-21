@@ -238,7 +238,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 				}
 			} elseif ($fieldType == '71' || $fieldType == '72' || $fieldType == '7' || $fieldType == '9') {
 				$currencyField = new CurrencyField($fieldValue);
-				if ($fieldType == '72') {
+				if ($fieldType == '72' || $fieldType == '71') {
 					if ($fieldName == 'unit_price') {
 						$currencyId = getProductBaseCurrency($recordID, $currentModule);
 						$cursym_convrate = getCurrencySymbolandCRate($currencyId);
@@ -277,7 +277,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 			}
 			$rows['assigned_user_id'] = isset($smownerid) ? getUserFullName($smownerid) : '';
 			$rows['recordid'] = $recordID;
-			$rows['reference'] = $reference_field;
+			$rows['reference_field'] = $reference_field;
 			$rows['relatedRows'] = $linkRow;
 		}
 		if ($Colorizer) {

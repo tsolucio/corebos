@@ -185,7 +185,7 @@ const ListView = {
 						whiteSpace: 'normal',
 						onAfterChange(ev) {
 							const idx = dataGridInstance.getIndexOfRow(ev.rowKey);
-							const referenceField = dataGridInstance.getValue(idx, 'reference');
+							const referenceField = dataGridInstance.getValue(idx, 'reference_field');
 							ListView.updateFieldData(ev, idx);
 						},
 						renderer: {
@@ -215,7 +215,7 @@ const ListView = {
 						whiteSpace: 'normal',
 						onAfterChange(ev) {
 							const idx = dataGridInstance.getIndexOfRow(ev.rowKey);
-							const referenceField = dataGridInstance.getValue(idx, 'reference');
+							const referenceField = dataGridInstance.getValue(idx, 'reference_field');
 							ListView.updateFieldData(ev, idx);
 						},
 						renderer: {

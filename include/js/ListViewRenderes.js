@@ -61,7 +61,7 @@ class LinkRender {
 		let rowKey = props.rowKey;
 		let columnName = props.columnInfo.name;
 		let recordid = props.grid.getValue(rowKey, 'recordid');
-		let referenceField = props.grid.getValue(rowKey, 'reference');
+		let referenceField = props.grid.getValue(rowKey, 'reference_field');
 		let referenceValue = props.grid.getValue(rowKey, referenceField);
 		let relatedRows = props.grid.getValue(rowKey, 'relatedRows');
 		const { tooltip } = props.columnInfo.renderer.options;
