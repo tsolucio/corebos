@@ -72,3 +72,24 @@
   -moz-transform: translateY(-100%) translateY(-1rem) translateX(-50%) translateX(0.5rem);
   transform: translateY(-100%) translateY(-1rem) translateX(-50%) translateX(0.5rem);
 }
+
+/* ---- CBDS loader ---- */
+.cbds-loader {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #006dcc;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+  margin-left: 45%;
+  margin-top: 5%;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

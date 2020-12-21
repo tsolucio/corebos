@@ -20,6 +20,7 @@ let dataGridInstance;
 let SearchColumns = 0;
 let ListViewCopy = 0;
 let Application_Filter_All_Edit = 0;
+let startInterval;
 let lastPage = sessionStorage.getItem(lvmodule+'_lastPage');
 GlobalVariable_getVariable('Application_ListView_PageSize', 20, lvmodule, '').then(function (response) {
 	let obj = JSON.parse(response);
@@ -34,6 +35,7 @@ GlobalVariable_getVariable('Application_Filter_All_Edit', 0).then(function (resp
 	Application_Filter_All_Edit = obj.Application_Filter_All_Edit;
 });
 document.addEventListener('DOMContentLoaded', function () {
+	ListView.loader('show');
 	ListView.ListViewJSON();
 }, false);
 
@@ -369,6 +371,7 @@ const ListView = {
 					}
 				}
 			});
+			ListView.loader('hide');
 			//load empty create new record template
 			ListView.noData();
 			//change style in grid
@@ -1020,6 +1023,24 @@ const ListView = {
 			document.getElementById(`dropdown-${recordid}`).innerHTML = button_template;
 			document.getElementById(`dropdown-${recordid}`).style.display = 'block';
 		});
+	},
+	/**
+	 * Show or hide loader in listview
+	 * @param {String} type show/hide
+	 */
+	loader: (type) => {
+		const tuiId = document.getElementById('listview-tui-grid');
+		if (type == 'show') {
+			const loader = document.createElement('div');
+			tuiId.style.height = '400px';
+			tuiId.appendChild(loader);
+			loader.classList.add('cbds-loader');
+			loader.id = 'cbds-loader';
+		} else if (type == 'hide') {
+			const loader = document.getElementById('cbds-loader');
+			tuiId.style.height = 'auto';
+			loader.remove();
+		}
 	},
 	/**
 	 * See if certain recordid already has a loaded tooltip
