@@ -174,15 +174,6 @@ const ListView = {
 					} else {
 						formatter = false;
 					}
-					if ((fieldname == 'modifiedtime' || fieldname == 'modifiedby') && lvmodule == '') {
-						header = {
-							name: fieldname,
-							header: fieldvalue,
-							sortable: false,
-							whiteSpace: 'normal',
-							formatter: formatter
-						};
-					}
 					header = {
 						name: fieldname,
 						header: fieldvalue,
@@ -204,6 +195,15 @@ const ListView = {
 							}
 						},
 					};
+					if ((fieldname == 'modifiedtime' || fieldname == 'modifiedby') && lvmodule == '') {
+						header = {
+							name: fieldname,
+							header: fieldvalue,
+							sortable: false,
+							whiteSpace: 'normal',
+							formatter: formatter
+						};
+					}
 				} else {
 					header = {
 						name: fieldname,
@@ -419,7 +419,13 @@ const ListView = {
 			const res = JSON.parse(data.xhr.response);
 			const search_mode = res.search_mode;
 			if (search_mode) {
-				filteredData.innerHTML = `<span class="slds-badge slds-theme_success">${alert_arr.filterApplied}</span>`;
+				filteredData.innerHTML = `
+				<span class="slds-badge slds-theme_success">
+					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+					</svg>
+					${alert_arr.filterApplied}
+				</span>`;
 			} else {
 				filteredData.innerHTML = '';
 			}
