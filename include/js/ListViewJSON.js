@@ -72,6 +72,7 @@ const ListView = {
 			dataGridInstance.destroy();
 			const select_module = document.getElementById('select_module').value;
 			url = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=listViewJSON&formodule='+select_module+'&lastPage='+lastPage+'&isRecycleModule=true';
+			ListView.loader('show');
 			ListView.ListViewDefault(select_module, url);
 			ListView.RenderFilter(url);
 			ListView.updateData();
@@ -503,11 +504,24 @@ const ListView = {
 			dataGridInstance.setRequestParams({'search': '', 'searchtype': '', 'page': lastPage});
 		} else {
 			dataGridInstance.setRequestParams({'search': '', 'searchtype': ''});
-			document.getElementsByName('search_text')[0].value = '';
 		}
+		document.getElementsByName('search_text')[0].value = '';
 		//update pagination onchange
 		if (reload) {
 			dataGridInstance.setPerPage(parseInt(PageSize));
+		}
+		const content = document.getElementsByClassName('tui-grid-content-area');
+		if (lvmodule == '') {
+			const contentArea = setInterval(function () {
+				if (content[0]) {
+					content[0].style.height = 'auto';
+					clearInterval(contentArea);
+				}
+			}, 100);
+		} else {
+			if (content[0]) {
+				content[0].style.height = 'auto';
+			}
 		}
 		ListView.updateData();
 	},
@@ -1029,13 +1043,13 @@ const ListView = {
 	 */
 	loader: (type) => {
 		const tuiId = document.getElementById('listview-tui-grid');
-		if (type == 'show') {
+		if (type == 'show' && tuiId) {
 			const loader = document.createElement('div');
 			tuiId.style.height = '400px';
 			tuiId.appendChild(loader);
 			loader.classList.add('cbds-loader');
 			loader.id = 'cbds-loader';
-		} else if (type == 'hide') {
+		} else if (type == 'hide' && tuiId) {
 			const loader = document.getElementById('cbds-loader');
 			tuiId.style.height = 'auto';
 			loader.remove();
