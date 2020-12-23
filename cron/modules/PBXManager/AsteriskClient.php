@@ -157,7 +157,7 @@ function asterisk_handleResponse2($mainresponse, $adb, $asterisk, $state) {
 				} else {
 					$query = 'INSERT INTO vtiger_asteriskincomingcalls (refuid, from_number, from_name, to_number, callertype, flag, timer) VALUES(?,?,?,?,?,?,?)';
 					$adb->pquery($query, array($uniqueid, $callerNumber, $callerName, $extension, $callerType, 0, time()));
-					sendNotification($callerNumber, $$checkresrow['from_name']);
+					sendPBXNotification($callerNumber, $checkresrow['from_name']);
 				}
 			}
 		}
@@ -211,7 +211,7 @@ function asterisk_handleResponse3($mainresponse, $adb, $asterisk) {
 			if (checkExtension($extensionCalled, $adb)) {
 				$query = 'INSERT INTO vtiger_asteriskincomingcalls (refuid, from_number, from_name, to_number, callertype, flag, timer) VALUES(?,?,?,?,?,?,?)';
 				$adb->pquery($query, array($uid, $callerNumber, $checkresrow['from_name'], $extensionCalled, '', 0, time()));
-				sendNotification($callerNumber, $$checkresrow['from_name']);
+				sendPBXNotification($callerNumber, $checkresrow['from_name']);
 			}
 		}
 	} elseif ($mainresponse['Event']== 'Newexten' && $mainresponse['AppData'] == 'DIALSTATUS=CONGESTION' || $mainresponse['Event'] == 'Hangup') {
@@ -270,7 +270,7 @@ function checkExtension($ext, $adb) {
 	}
 }
 
-function sendNotification($callerNumber, $callerName) {
+function sendPBXNotification($callerNumber, $callerName) {
 	global $current_user;
 
 	if (!$current_user) {
