@@ -41,7 +41,7 @@
 		var BLOCKJS = "";
 		var BLOCKCRITERIA = "";
 		{if $SOURCE neq 'customview'}
-			var COL_BLOCK = '{$COLUMNS_BLOCK}';
+			var COL_BLOCK = '{$COLUMNS_BLOCK|addcslashes:"'"}';
 		{else}
 			var COL_BLOCK = "{$COLUMNS_BLOCK}";
 		{/if};
