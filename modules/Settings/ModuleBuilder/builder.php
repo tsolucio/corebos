@@ -814,8 +814,8 @@ class ModuleBuilder {
 				$field->addChild('displaytype', 1);
 				$field->addChild('masseditable', 1);
 				$entityidentifier = $field->addChild('entityidentifier');
-				$entityidentifier->addChild('entityidfield', strtolower($map['name']).'no');
-				$entityidentifier->addChild('entityidcolumn', strtolower($map['name']).'no');
+				$entityidentifier->addChild('entityidfield', strtolower($map['name']).'id');
+				$entityidentifier->addChild('entityidcolumn', strtolower($map['name']).'id');
 			}
 			foreach ($blockInfo['block']['fields'] as $kField => $fValue) {
 				$field = $fields->addChild('field');
@@ -836,7 +836,9 @@ class ModuleBuilder {
 					$relatedmodules = $field->addChild('relatedmodules');
 					$relModules = explode(',', $fValue['relatedmodules']);
 					foreach ($relModules as $rel => $mod) {
-						$relatedmodules->addChild('relatedmodule', $mod);
+						if ($mod != '') {
+							$relatedmodules->addChild('relatedmodule', $mod);
+						}
 					}
 				} elseif ($fValue['uitype'] == 15 || $fValue['uitype'] == 16) {
 					$picklistvalues = $field->addChild('picklistvalues');
@@ -849,6 +851,9 @@ class ModuleBuilder {
 			}
 			if ($blockInfo['block']['label'] == 'LBL_'.strtoupper($map['name']).'_INFORMATION') {
 				foreach ($this->defaultFields as $fieldname => $fieldInfo) {
+					if ($fieldname == 'description') {
+						continue;
+					}
 					$field = $fields->addChild('field');
 					$field->addChild('fieldname', $fieldname);
 					$field->addChild('uitype', $fieldInfo['uitype']);
