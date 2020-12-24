@@ -627,7 +627,11 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 	}
 	//Checking for Action Permission
 	if (is_null($ternary) || (strlen($ternary) < 1 && $ternary == '')) {
-		$permission = 'yes';
+		if ($action=='DuplicatesHandling' && in_array($module, getInventoryModules())) {
+			$permission = 'no';
+		} else {
+			$permission = 'yes';
+		}
 		$log->debug('< isPermitted');
 		return $permission;
 	}
