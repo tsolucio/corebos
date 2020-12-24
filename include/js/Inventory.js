@@ -1516,7 +1516,7 @@ function InventorySelectAll(mod, image_pth) {
 
 		/* Instance listeners */
 		window.addEventListener('keyup', this.preventSubmit.bind(this), true);
-		this.utils.on(this.input, 'keyup', this.debounce(this.trigger, 600), this);
+		this.utils.on(this.input, 'keyup', this.debounce(this.trigger, 420), this);
 		this.utils.on(this.input, 'keyup', this.handleImmediateInput, this);
 		this.utils.on(this.input, 'blur', this.delayedClear, this);
 
