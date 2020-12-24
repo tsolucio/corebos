@@ -619,8 +619,8 @@ class corebos_woocommerce {
 				if (!isset($wcprops['regular_price'])) {
 					$wcprops['regular_price'] = $cbfrom->column_fields['unit_price'];
 				}
-				if (!empty($data['status'])) {
-					$wcprops['status'] = ($cbfrom->column_fields['wcsyncstatus']=='Published' ? 'publish' : 'pending');
+				if (!isset($wcprops['status'])) {
+					$wcprops['status'] = ($cbfrom->column_fields['wcsyncstatus']=='Published' ? 'publish' : 'draft');
 				}
 				if (vtlib_isModuleActive('wcProductCategory')) {
 					$wcCatEntityTable = CRMEntity::getcrmEntityTableAlias('wcProductCategory');
@@ -1029,10 +1029,11 @@ class corebos_woocommerce {
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 		if ($cbMapid) {
 			$cbMap = cbMap::getMapByID($cbMapid);
-			$data['record_id'] = $cbfromid;
 			$data['wccode'] = $data['id'];
 			$data['module'] = $cbfrommodule;
+			unset($data['record_id']);
 			$send2cb = $cbMap->Mapping($data, $send2cb);
+			$send2cb['record_id'] = $cbfromid;
 		}
 		if (empty($send2cb['wccode'])) {
 			$send2cb['wccode'] = $data['id'];
