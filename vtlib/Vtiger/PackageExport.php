@@ -12,6 +12,8 @@ include_once 'vtlib/Vtiger/Menu.php';
 include_once 'vtlib/Vtiger/Event.php';
 include_once 'vtlib/Vtiger/Zip.php';
 include_once 'vtlib/Vtiger/Cron.php';
+include_once 'modules/Settings/configod.php';
+
 /**
  * Provides API to package vtiger CRM module and associated files.
  * @package vtlib
@@ -114,7 +116,7 @@ class Vtiger_PackageExport {
 	 * @param Boolean True for sending the output as download
 	 */
 	public function export($moduleInstance, $todir = '', $zipfilename = '', $directDownload = false) {
-
+		global $cbodBlockModuleExport;
 		$module = $moduleInstance->name;
 
 		$this->__initExport($module, $moduleInstance);
@@ -134,17 +136,21 @@ class Vtiger_PackageExport {
 		$zipfilename = "$todir/$zipfilename";
 
 		$zip = new Vtiger_Zip($zipfilename);
-		// Add manifest file
-		$zip->addFile($this->__getManifestFilePath(), "manifest.xml");
-		// Copy module directory
-		$zip->copyDirectoryFromDisk("modules/$module");
-		// Copy templates directory of the module (if any)
-		if (is_dir("Smarty/templates/modules/$module")) {
-			$zip->copyDirectoryFromDisk("Smarty/templates/modules/$module", "templates");
-		}
-		// Copy cron files of the module (if any)
-		if (is_dir("cron/modules/$module")) {
-			$zip->copyDirectoryFromDisk("cron/modules/$module", "cron");
+		if ($cbodBlockModuleExport) {
+			$zip->addFile('modules/Settings/modulecannotbeexported.txt', 'modulecannotbeexported.txt');
+		} else {
+			// Add manifest file
+			$zip->addFile($this->__getManifestFilePath(), 'manifest.xml');
+			// Copy module directory
+			$zip->copyDirectoryFromDisk("modules/$module");
+			// Copy templates directory of the module (if any)
+			if (is_dir("Smarty/templates/modules/$module")) {
+				$zip->copyDirectoryFromDisk("Smarty/templates/modules/$module", 'templates');
+			}
+			// Copy cron files of the module (if any)
+			if (is_dir("cron/modules/$module")) {
+				$zip->copyDirectoryFromDisk("cron/modules/$module", 'cron');
+			}
 		}
 		$zip->save();
 
