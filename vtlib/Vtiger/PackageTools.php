@@ -47,11 +47,11 @@ class PackageTools {
 		$zip->copyDirectoryFromDisk("modules/$moduleName");
 		// Copy templates directory of the module (if any)
 		if (is_dir("Smarty/templates/modules/$moduleName")) {
-			$zip->copyDirectoryFromDisk("Smarty/templates/modules/$moduleName", "templates");
+			$zip->copyDirectoryFromDisk("Smarty/templates/modules/$moduleName", 'templates');
 		}
 		// Copy cron files of the module (if any)
 		if (is_dir("cron/modules/$moduleName")) {
-			$zip->copyDirectoryFromDisk("cron/modules/$moduleName", "cron");
+			$zip->copyDirectoryFromDisk("cron/modules/$moduleName", 'cron');
 		}
 		$zip->save();
 	}

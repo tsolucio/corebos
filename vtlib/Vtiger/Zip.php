@@ -104,7 +104,7 @@ class Vtiger_Zip {
 	 */
 	public function __normalizePath($path) {
 		if ($path && strpos($path, '\\')!== false) {
-			$path = preg_replace("/\\\\/", "/", $path);
+			$path = preg_replace("/\\\\/", '/', $path);
 		}
 		return $path;
 	}

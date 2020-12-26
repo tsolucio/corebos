@@ -231,7 +231,7 @@ class Vtiger_FieldBasic {
 			if (!empty($params)) {
 				self::log(print_r($params, true));
 			} else {
-				self::log("A field with that name or label already exists.");
+				self::log('A field with that name or label already exists.');
 			}
 		}
 	}
