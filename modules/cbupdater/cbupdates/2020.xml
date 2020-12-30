@@ -395,4 +395,11 @@
 	<classname>workflowexpfunctioninfo</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Increment Document filetype length</description>
+	<filename>build/changeSets/2020/incdocfiletypelength.php</filename>
+	<classname>incdocfiletypelength</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
