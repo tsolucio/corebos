@@ -286,7 +286,7 @@ class cbQuestion extends CRMEntity {
 		$q = new cbQuestion();
 		if (empty($qid) && !empty($params['cbQuestionRecord']) && is_array($params['cbQuestionRecord'])) {
 			$q->column_fields = $params['cbQuestionRecord'];
-			unset($params['cbQuestionRecord']);
+			//unset($params['cbQuestionRecord']);
 			if (isset($params['cbQuestionContext'])) {
 				$qctx = $params['cbQuestionContext'];
 				unset($params['cbQuestionContext']);
@@ -443,7 +443,15 @@ class cbQuestion extends CRMEntity {
 				$queryRelatedModules = array(); // this has to be filled in with all the related modules in the query
 				$webserviceObject = VtigerWebserviceObject::fromName($adb, $q->column_fields['qmodule']);
 				$modOp = new VtigerModuleOperation($webserviceObject, $current_user, $adb, $log);
-				$answer = $modOp->querySQLResults(cbQuestion::getSQL($qid, $params), ' not in ', $meta, $queryRelatedModules);
+				$sql_question_context_variable = json_decode($q->column_fields['typeprops']);
+				$context_var_array = (array) $sql_question_context_variable->context_variables;
+				$sql_query = cbQuestion::getSQL($qid, $params);
+				if (!empty(context_var_array)) {
+					foreach ($context_var_array as $key => $value) {
+						$sql_query = str_replace($key, $value, $sql_query);
+					}
+				}
+				$answer = $modOp->querySQLResults($sql_query, ' not in ', $meta, $queryRelatedModules);
 				return array(
 					'module' => $q->column_fields['qmodule'],
 					'columns' => $q->column_fields['qcolumns'],
