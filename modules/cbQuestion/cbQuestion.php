@@ -9,6 +9,9 @@
  ************************************************************************************/
 require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
+require_once 'include/QueryGenerator/PHPSQLParserInclude.php';
+use \PHPSQLParser\PHPSQLParser;
+use \PHPSQLParser\utils\ExpressionType;
 
 class cbQuestion extends CRMEntity {
 	public $db;
@@ -686,7 +689,7 @@ class cbQuestion extends CRMEntity {
 	}
 
 	public function convertColumns2DataTable() {
-		global $adb;
+		global $adb, $log;
 		$qcols = $this->column_fields;
 		if (empty($qcols['qcolumns'])) {
 			return array(
@@ -709,8 +712,41 @@ class cbQuestion extends CRMEntity {
 		$orderby = explode(',', strtolower(str_replace(' ', '', decode_html($qcols['orderby']))));
 		$groupby = explode(',', strtolower(str_replace(' ', '', decode_html($qcols['groupby']))));
 		$qcols = decode_html($qcols['qcolumns']);
+
+		$parser = new PHPSQLParser();
+		$parsed = $parser->parse('select '.$qcols.' from stubtable');
+		$generatedQColumns = '';
+		if (isset($parsed['SELECT'])) {
+			$selectCoulums = $parsed["SELECT"];
+			foreach ($selectCoulums as $col) {
+				if ($col['expr_type'] == 'colref' || $col['expr_type'] == 'function' || $col['expr_type'] == 'expression') {
+					$value = '';
+					if (!empty($col['alias'])) {
+						$value = $col['alias']['name'];
+					} else {
+						$base_expr = explode(',', $col['base_expr']);
+						if (count($base_expr) > 1) {
+							$value = $base_expr[1];
+						} else {
+							$value = $col['base_expr'];
+						}
+					}
+				} elseif ($col['expr_type'] == 'aggregate_function') {
+					$value = '';
+					$sub_tree = $col['sub_tree'][0]['base_expr'];
+					$value = strtolower($col['base_expr']).'('.$sub_tree.')';
+				}
+
+				if (empty($generatedQColumns)) {
+					$generatedQColumns = $value.' AS ' .$value;
+				} else {
+					$generatedQColumns = $generatedQColumns.','.$value.' AS ' .$value;
+				}
+			}
+		}
+
 		if (strpos($qcols, '[')===false) {
-			$qcols = preg_replace('/\s*,\s*/', ',', $qcols);
+			$qcols = preg_replace('/\s*,\s*/', ',', $generatedQColumns);
 			$qcols = explode(',', $qcols);
 			foreach ($qcols as $finfo) {
 				$alias = '';
@@ -718,6 +754,7 @@ class cbQuestion extends CRMEntity {
 					$alias = preg_replace('/\s+/', ' ', $finfo);
 					$alias = explode(' ', $alias);
 					$alias = $alias[2];
+					$finfo = strtolower($alias);
 				}
 				$fieldData[] = array(
 					'fieldname' => $finfo,
