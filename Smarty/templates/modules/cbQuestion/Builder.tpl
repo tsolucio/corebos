@@ -116,84 +116,80 @@
 		<div class="slds-form-element__help" id="msmodulescontainerhelp" style="display:{if empty($targetmodule)}flex{else}none{/if};">{'SelectModule'|@getTranslatedString:'cbQuestion'}</div>
 	</div>
 </div>
-{if $sqlquery != '1'}
-	<div class="slds-page-header to_hide_if_is_sql_query" onclick="toggleBlock('bqfieldgridblock');">
-	<div class="slds-grid slds-gutters">
-	<div class="slds-col slds-size_1-of-2">
-		<div class="slds-page-header__col-title">
-		<div class="slds-media">
-			<div class="slds-media__body">
-			<div class="slds-page-header__name">
-				<div class="slds-page-header__name-title">
-				<h1>
-					<span class="slds-page-header__title slds-truncate" title="{'msgt_fields'|@getTranslatedString:'MsgTemplate'}">
-						<span class="slds-tabs__left-icon">
-							<span class="slds-icon_container" title="{'msgt_fields'|@getTranslatedString:'MsgTemplate'}">
-							<svg class="slds-icon slds-icon_small" style="color:green;" aria-hidden="true">
-								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#merge_field"></use>
-							</svg>
-							</span>
+<div class="slds-page-header to_hide_if_is_sql_query" onclick="toggleBlock('bqfieldgridblock');" {if $sqlquery == '1'} style="display: none;" {/if}>
+<div class="slds-grid slds-gutters">
+<div class="slds-col slds-size_1-of-2">
+	<div class="slds-page-header__col-title">
+	<div class="slds-media">
+		<div class="slds-media__body">
+		<div class="slds-page-header__name">
+			<div class="slds-page-header__name-title">
+			<h1>
+				<span class="slds-page-header__title slds-truncate" title="{'msgt_fields'|@getTranslatedString:'MsgTemplate'}">
+					<span class="slds-tabs__left-icon">
+						<span class="slds-icon_container" title="{'msgt_fields'|@getTranslatedString:'MsgTemplate'}">
+						<svg class="slds-icon slds-icon_small" style="color:green;" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#merge_field"></use>
+						</svg>
 						</span>
-						{'msgt_fields'|@getTranslatedString:'MsgTemplate'}
 					</span>
-				</h1>
-				</div>
-			</div>
+					{'msgt_fields'|@getTranslatedString:'MsgTemplate'}
+				</span>
+			</h1>
 			</div>
 		</div>
 		</div>
 	</div>
-	<div class="slds-col slds-size_1-of-2">
-		<button class="slds-button slds-button_text-destructive slds-float_right" type="button" id='delfield_button' onclick="deleteFieldRow(); event.stopPropagation();">
-			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
-			</svg>
-			{'LBL_DELETE_FIELD'|getTranslatedString:'com_vtiger_workflow'}
-		</button>
-		<button class="slds-button slds-button_neutral slds-float_right" type="button" id='addfield_button' onclick="appendEmptyFieldRow(); event.stopPropagation();">
-			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
-			</svg>
-			{'LBL_ADD_FIELD'|getTranslatedString:'com_vtiger_workflow'}
-		</button>
 	</div>
-	</div>
-	</div>
-	<span id="bqfieldgridblock">
-	<div class="slds-grid slds-gutters slds-m-top_small slds-m-bottom_x-small">
-		<div class="slds-col slds-size_1-of-1 slds-page-header__meta-text slds-m-left_x-small" id="fieldgrid" style="width:99%;"></div>
-	</div>
-	</span>
-{/if}
+</div>
+<div class="slds-col slds-size_1-of-2">
+	<button class="slds-button slds-button_text-destructive slds-float_right" type="button" id='delfield_button' onclick="deleteFieldRow(); event.stopPropagation();">
+		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+		</svg>
+		{'LBL_DELETE_FIELD'|getTranslatedString:'com_vtiger_workflow'}
+	</button>
+	<button class="slds-button slds-button_neutral slds-float_right" type="button" id='addfield_button' onclick="appendEmptyFieldRow(); event.stopPropagation();">
+		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
+		</svg>
+		{'LBL_ADD_FIELD'|getTranslatedString:'com_vtiger_workflow'}
+	</button>
+</div>
+</div>
+</div>
+<span id="bqfieldgridblock" {if $sqlquery == '1'} style="display: none;" {/if}>
+<div class="slds-grid slds-gutters slds-m-top_small slds-m-bottom_x-small">
+	<div class="slds-col slds-size_1-of-1 slds-page-header__meta-text slds-m-left_x-small" id="fieldgrid" style="width:99%;"></div>
+</div>
+</span>
 
 <div class="slds-page-header" onclick="toggleBlock('condsandsql');">
 <div class="slds-grid slds-gutters">
-{if $sqlquery != '1'}
-	<div class="slds-col slds-size_1-of-2">
-		<div class="slds-page-header__col-title">
-		<div class="slds-media">
-			<div class="slds-media__body">
-			<div class="slds-page-header__name">
-				<div class="slds-page-header__name-title">
-				<h1>
-					<span class="slds-page-header__title slds-truncate" title="{'LBL_CONDITIONS'|@getTranslatedString:'Settings'}">
-						<span class="slds-tabs__left-icon">
-							<span class="slds-icon_container" title="{'LBL_CONDITIONS'|@getTranslatedString:'Settings'}">
-							<svg class="slds-icon slds-icon_small" style="color:green;" aria-hidden="true">
-								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#rules"></use>
-							</svg>
-							</span>
+<div class="slds-col slds-size_1-of-2" {if $sqlquery == '1'} style="display: none;" {/if}>
+	<div class="slds-page-header__col-title">
+	<div class="slds-media">
+		<div class="slds-media__body">
+		<div class="slds-page-header__name">
+			<div class="slds-page-header__name-title">
+			<h1>
+				<span class="slds-page-header__title slds-truncate" title="{'LBL_CONDITIONS'|@getTranslatedString:'Settings'}">
+					<span class="slds-tabs__left-icon">
+						<span class="slds-icon_container" title="{'LBL_CONDITIONS'|@getTranslatedString:'Settings'}">
+						<svg class="slds-icon slds-icon_small" style="color:green;" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#rules"></use>
+						</svg>
 						</span>
-						{'LBL_CONDITIONS'|@getTranslatedString:'Settings'}
 					</span>
-				</h1>
-				</div>
-			</div>
+					{'LBL_CONDITIONS'|@getTranslatedString:'Settings'}
+				</span>
+			</h1>
 			</div>
 		</div>
 		</div>
 	</div>
-{/if}
+	</div>
+</div>
 <div class="slds-col slds-size_1-of-2">
 	<div class="slds-page-header__col-title">
 	<div class="slds-media">
@@ -222,8 +218,7 @@
 </div>
 <span id="condsandsql">
 <div class="slds-grid slds-gutters slds-m-top_small">
-{if $sqlquery != '1'}
-	<div class="slds-col slds-size_1-of-2 slds-page-header__meta-text to_hide_if_is_sql_query">
+<div class="slds-col slds-size_1-of-2 slds-page-header__meta-text to_hide_if_is_sql_query" {if $sqlquery == '1'} style="display: none;" {/if}>
 		<div id="workflow_loading" class="slds-align_absolute-center" style="height:5rem;">
 		<b>{'LBL_LOADING'|@getTranslatedString:'com_vtiger_workflow'}</b>
 		</div>
@@ -238,53 +233,58 @@
 		<div id="save_conditions"></div>
 		<br>
 		{include file="com_vtiger_workflow/FieldExpressions.tpl"}
-	</div>
-{/if}
-	<div class="slds-col slds-size_1-of-2 slds-page-header__meta-text">
-		<div class="slds-grid slds-gutters slds-m-around_xxx-small">
-			<div class="slds-col slds-page-header__meta-text">
-				<button class="slds-button slds-button_neutral" type="button" onclick="copysql();">
-					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#copy"></use>
-					</svg>
-					{$APP.LBL_COPY_BUTTON}
-				</button>
-				<button class="slds-button slds-button_neutral" type="button" onclick="testBuilderSQL();">
-					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
-					</svg>
-					{'Test SQL'|@getTranslatedString:'cbQuestion'}
-				</button>
-				<div class="slds-form-element" style="display:inline-flex;vertical-align:top;">
-					<label class="slds-checkbox_toggle slds-grid" onclick="toggleSQLView();">
-						<span class="slds-form-element__label slds-m-bottom_none"></span>
-						<input type="checkbox" id="checkboxsqlwsq" aria-describedby="show sql or web service query" {if $sqlquery == '1'} disabled {/if} />
-						<span id="checkbox-toggle-16" class="slds-checkbox_faux_container" aria-live="assertive">
-						<span class="slds-checkbox_faux"></span>
-						<span class="slds-checkbox_on">SQL</span>
-						<span class="slds-checkbox_off">Web Service</span>
-						</span>
-					</label>
-				</div>
+</div>
+<div {if $sqlquery != '1'} class="slds-col slds-size_1-of-2 slds-page-header__meta-text" {else} class="slds-col slds-size_1-of-1 slds-page-header__meta-text" {/if}>
+	<div class="slds-grid slds-gutters slds-m-around_xxx-small">
+		<div class="slds-col slds-page-header__meta-text">
+			<button class="slds-button slds-button_neutral" type="button" onclick="copysql();">
+				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#copy"></use>
+				</svg>
+				{$APP.LBL_COPY_BUTTON}
+			</button>
+			<button class="slds-button slds-button_neutral" type="button" onclick="testBuilderSQL();">
+				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
+				</svg>
+				{'Test SQL'|@getTranslatedString:'cbQuestion'}
+			</button>
+			<div class="slds-form-element" style="display:inline-flex;vertical-align:top;">
+				<label class="slds-checkbox_toggle slds-grid" {if $sqlquery != '1'} onclick="toggleSQLView();" {/if}>
+					<span class="slds-form-element__label slds-m-bottom_none"></span>
+					<input type="checkbox" id="checkboxsqlwsq" aria-describedby="show sql or web service query" {if $sqlquery == '1'} disabled {/if} />
+					<span id="checkbox-toggle-16" class="slds-checkbox_faux_container" aria-live="assertive">
+					<span class="slds-checkbox_faux"></span>
+					<span class="slds-checkbox_on">SQL</span>
+					<span class="slds-checkbox_off">Web Service</span>
+					</span>
+				</label>
 			</div>
 		</div>
-		<div class="slds-grid slds-gutters slds-m-around_xxx-small bldcontainer-hidden" id="cbqmsgdiv">
-			<div class="slds-col slds-page-header__meta-text">
-				<div class="slds-notify slds-notify_alert slds-theme_info slds-theme_alert-texture bld-visible bld-hidden" role="alert" style="padding:0.1rem;" id="sqlmsgdiv" >
-					<h2>
-						<svg class="slds-icon slds-icon_small slds-m-right_x-small" aria-hidden="true" id="sqlmsgicon">
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
-						</svg>
-						<span id="sqlmsg">MESSAGE</span>
-					</h2>
-				</div>
+	</div>
+	<div class="slds-grid slds-gutters slds-m-around_xxx-small bldcontainer-hidden" id="cbqmsgdiv">
+		<div class="slds-col slds-page-header__meta-text">
+			<div class="slds-notify slds-notify_alert slds-theme_info slds-theme_alert-texture bld-visible bld-hidden" role="alert" style="padding:0.1rem;" id="sqlmsgdiv" >
+				<h2>
+					<svg class="slds-icon slds-icon_small slds-m-right_x-small" aria-hidden="true" id="sqlmsgicon">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+					</svg>
+					<span id="sqlmsg">MESSAGE</span>
+				</h2>
 			</div>
 		</div>
-		<fieldset class="slds-form-element slds-m-around_x-small">
-		<textarea id="bqsql" class="slds-textarea" style="height:280px;">{$QSQL}</textarea>
-		<textarea id="bqwsq" class="slds-textarea" style="display:none;height:280px;"></textarea>
-		</fieldset>
 	</div>
+
+	<fieldset class="slds-form-element slds-m-around_x-small">
+		<legend class="slds-form-element__legend slds-form-element__label">{'SQLQuery'|@getTranslatedString:'cbQuestion'}</legend>
+		<textarea id="bqsql" class="slds-textarea" {if $sqlquery != '1'} style="display:none;height:280px;" {else} style="height:280px;" disabled {/if}>{$QSQL}</textarea>
+		<textarea id="bqwsq" class="slds-textarea" {if $sqlquery == '1'} style="display:none;height:280px;" {else} style="height:280px;" {/if}></textarea>
+		<legend class="slds-form-element__legend slds-form-element__label" {if $sqlquery != '1'} style="display:none;" {/if}>{'qcolumns'|@getTranslatedString:'cbQuestion'}</legend>
+		<textarea id="bqsqlcoulumns" class="slds-textarea" {if $sqlquery != '1'} style="display:none;" {else} style="height:280px;"  {/if}>{$questioncolumns}</textarea>
+		<legend class="slds-form-element__legend slds-form-element__label" {if $sqlquery != '1'} style="display:none;" {/if}><h2><b>{'qcondition'|@getTranslatedString:'cbQuestion'}</b></h2></legend>
+		<textarea id="bqsqlconditions" class="slds-textarea"  {if $sqlquery != '1'} style="display:none;" {else} style="height:280px;"  {/if}>{$cbqconditons}</textarea>
+	</fieldset>
+</div>
 </div>
 </span>
 
@@ -464,10 +464,10 @@
 <script src="modules/cbQuestion/resources/Builder.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
 	var moduleName = '{$targetmodule}';
-	{if isset($cbqconditons)}
-	var conditions = {$cbqconditons};
+	{if isset($cbqconditons) && $sqlquery != '1'}
+		var conditions = {$cbqconditons};
 	{else}
-	var conditions = null;
+		var conditions = null;
 	{/if}
 	var builderconditions = editbuilderscript(jQuery, conditions);
 	document.getElementById('evalid_type').value = (moduleName=='Workflow' ? 'com_vtiger_workflow' : moduleName);
@@ -477,4 +477,11 @@
 	var fieldNEcolumn = {$fieldNEcolumn};
 	var fieldTableRelation = {$fieldTableRelation};
 	var actorModules = {$actorModules};
+	{if $sqlquery == '1' && $typeprops !=''}
+		var typeProperties = {$typeprops};
+		var ctxVariables = typeProperties['context_variables'];
+		for (var variableName in ctxVariables) {
+			addRowToContextTable(variableName, ctxVariables[variableName]);
+		}
+	{/if}
 </script>
