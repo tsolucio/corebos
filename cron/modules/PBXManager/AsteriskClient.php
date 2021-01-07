@@ -259,13 +259,8 @@ function asterisk_handleResponse3($mainresponse, $adb, $asterisk) {
  * Check if extension is configured to user in vtiger
  */
 function checkExtension($ext, $adb) {
-	$sql = 'select 1 from vtiger_asteriskextensions where asterisk_extension=?';
-	$result = $adb->pquery($sql, array($ext));
-	if ($adb->num_rows($result)>0) {
-		return true;
-	} else {
-		return false;
-	}
+	$result = $adb->pquery('select 1 from vtiger_asteriskextensions where asterisk_extension=?', array($ext));
+	return ($adb->num_rows($result)>0);
 }
 
 function sendPBXNotification($callerNumber, $callerName) {
