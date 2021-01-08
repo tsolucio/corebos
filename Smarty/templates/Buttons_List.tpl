@@ -262,7 +262,7 @@
 								onclick="
 									{if isset($smarty.request.Module_Popup_Edit)}window.close()
 									{elseif isset($CANCELGO)}window.location.href='{$CANCELGO}'
-									{else}window.history.back()
+									{else}if (window.history.length==1) { window.close(); } else { window.history.back(); }
 									{/if};"
 								type="button"
 								name="button">
