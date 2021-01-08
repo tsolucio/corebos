@@ -294,6 +294,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 			// special product relation with Q/SO/I/PO
 			if ($relatedModule == 'Products' && in_array($module, array('Invoice','Quotes','SalesOrder','PurchaseOrder'))) {
 				$qparams = ' ' . $queryParameters['columns'] . ' ';
+				$qparams = str_replace(' productid', ' vtiger_inventoryproductrel.productid', $qparams);
 				$qparams = str_replace(' id ', ' vtiger_inventoryproductrel.productid as id ', $qparams);
 				$qparams = str_replace(',id ', ',vtiger_inventoryproductrel.productid as id ', $qparams);
 				$qparams = str_replace(' id,', ' vtiger_inventoryproductrel.productid as id,', $qparams);
