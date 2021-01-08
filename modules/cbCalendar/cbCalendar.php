@@ -1026,8 +1026,12 @@ class cbCalendar extends CRMEntity {
 			'id' => vtws_getEntityId('cbCalendar') . 'x' . $activityid,
 			'eventstatus' => $status
 		);
-		vtws_revise($element, $current_user);
-		$log->debug('< changeStatus');
+		try {
+			vtws_revise($element, $current_user);
+			$log->debug('< changeStatus');
+		} catch (\Throwable $th) {
+			$log->debug('< changeStatus ERROR: '.print_r($element, true));
+		}
 	}
 
 	/*
