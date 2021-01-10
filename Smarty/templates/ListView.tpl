@@ -83,13 +83,7 @@
 				</a>
 			</div>
 		</td>
-		<td class="small closeX" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="searchshowhide('searchAcc','advSearch');document.basicSearch.searchtype.searchlaunched='';">
-			<button class="slds-button slds-button_icon slds-button_icon-border slds-button_icon-x-small">
-				<svg class="slds-button__icon" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-				</svg>
-			</button>
-		</td>
+		<td class="small closeX" valign="top"></td>
 	</tr>
 	<tr>
 		<td colspan="7" align="center" class="small">

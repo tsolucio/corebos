@@ -162,6 +162,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 		$fieldnameSql = $adb->pquery('SELECT fieldname, uitype FROM vtiger_field WHERE columnname=? AND tabid=?', array($fName, $tabid));
 		if (!$fieldnameSql || $adb->num_rows($fieldnameSql)==0) {
 			$field_types[] = array(
+				'columnname' => $fName,
 				'fieldname' => $fName,
 				'fieldtype' => '',
 			);
@@ -170,6 +171,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 		$fieldName = $adb->query_result($fieldnameSql, 0, 0);
 		$fieldType = $adb->query_result($fieldnameSql, 0, 1);
 		$field_types[] = array(
+			'columnname' => $fName,
 			'fieldname' => $fieldName,
 			'fieldtype' => $fieldType,
 		);
@@ -179,9 +181,10 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 		$colorizer_row = array();
 		$linkRow = array();
 		foreach ($field_types as $idx => $val) {
+			$columnName = $val['columnname'];
 			$fieldName = $val['fieldname'];
 			$fieldType = $val['fieldtype'];
-			$fieldValue = $adb->query_result($result, $i, $fieldName);
+			$fieldValue = $adb->query_result($result, $i, $columnName);
 			$recordID = $adb->query_result($result, $i, $entityidfield);
 			$smownerid = $adb->query_result($result, $i, 'smownerid');
 			$colorizer_row[$fieldName] = $fieldValue;
@@ -235,7 +238,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 				}
 			} elseif ($fieldType == '71' || $fieldType == '72' || $fieldType == '7' || $fieldType == '9') {
 				$currencyField = new CurrencyField($fieldValue);
-				if ($fieldType == '72') {
+				if ($fieldType == '72' || $fieldType == '71') {
 					if ($fieldName == 'unit_price') {
 						$currencyId = getProductBaseCurrency($recordID, $currentModule);
 						$cursym_convrate = getCurrencySymbolandCRate($currencyId);
@@ -266,7 +269,6 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 				}
 			}
 			$rows['uitype_'.$fieldName] = $fieldType;
-			$Actions = array();
 			if ($currentModule == 'Documents') {
 				$fileattach = 'select attachmentsid from vtiger_seattachmentsrel where crmid = ?';
 				$res = $adb->pquery($fileattach, array($recordID));
@@ -275,7 +277,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 			}
 			$rows['assigned_user_id'] = isset($smownerid) ? getUserFullName($smownerid) : '';
 			$rows['recordid'] = $recordID;
-			$rows['reference'] = $reference_field;
+			$rows['reference_field'] = $reference_field;
 			$rows['relatedRows'] = $linkRow;
 		}
 		if ($Colorizer) {

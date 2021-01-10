@@ -402,9 +402,6 @@ switch ($functiontocall) {
 					}
 				}
 				coreBOS_Session::set($formodule.'_Sort_Order', $orderBy);
-				if ($perPage == 0) {
-					$perPage = $list_max_entries_per_page;
-				}
 				$LV = getListViewJSON($formodule, $perPage, $orderBy, $sortColumn, $page, $search, $searchtype, $tabid);
 			} else {
 				//get headers
