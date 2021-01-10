@@ -766,6 +766,7 @@ class ListViewController {
 		global $theme, $current_user;
 
 		$arrow='';
+		$sorder=trim($sorder);
 		$header = array();
 
 		//$tabid = getTabid($module);
