@@ -413,7 +413,7 @@
 						#marquee span {
 							display: inline-block;
 							padding-left: 100%;
-							animation: marquee {$ANNOUNCEMENT|count_characters / 3}s linear infinite;
+							animation: marquee {math equation="max(15, y/3)" y=$ANNOUNCEMENT|count_characters}s linear infinite;
 						}
 						#marquee span:hover {
 							animation-play-state: paused
