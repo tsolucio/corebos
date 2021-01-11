@@ -82,15 +82,12 @@ if (vtlib_isModuleActive('cbCalendar')) {
 				$parent_content = getTranslatedString($parent_module, $parent_module) .' : '.$ename[$parent_type]."\n";
 			}
 
-			//code included for recurring events by jaguar starts
 			$recur_id = $result_set['recurringid'];
-			$current_date=date('Y-m-d');
 			if ($recur_id == 0) {
 				$date_start = $result_set['date_start'];
 			} else {
 				$date_start = $result_set['recurringdate'];
 			}
-			//code included for recurring events by jaguar ends
 			$date = new DateTimeField("$date_start $time_start");
 			$activity_time = strtotime($date->getDisplayDateTimeValue())/60;
 			if (($activity_time - $curr_time) > -12 && ($activity_time - $curr_time) <= $reminder_time) {
