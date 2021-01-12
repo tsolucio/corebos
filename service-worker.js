@@ -9308,7 +9308,7 @@ precacheAndRoute([{
   "revision": "7023a4e6ee65093266df7e837578c52c"
 }, {
   "url": "include/js/FieldDepFunc.js",
-  "revision": "f1545b3ac72f267062e2d7e4b0fa02a0"
+  "revision": "c6dd1fa8efe64120bc4721d19987922d"
 }, {
   "url": "include/js/fr_fr.lang.js",
   "revision": "70ba1f235d541fb6ca03498bdd32b405"
@@ -9320,7 +9320,7 @@ precacheAndRoute([{
   "revision": "e4cc7bb9fdef5d2b8a887122f48cfc41"
 }, {
   "url": "include/js/Inventory.js",
-  "revision": "b5210badcd0cda84cbd9bd9f320069b7"
+  "revision": "a6c5b7b4b2e49913e0babaa1152e36b7"
 }, {
   "url": "include/js/it_it.lang.js",
   "revision": "82d0688c57068a35105286134212467f"
