@@ -122,7 +122,7 @@ const ListView = {
 			let editor;
 			let formatter;
 			let values = {};
-			if (uitype == '15' || uitype == '52' || uitype == '53') {
+			if (uitype == '15' || uitype == '16' || uitype == '52' || uitype == '53') {
 				values = headerObj[index].picklist;
 			}
 			if (ListView.deniedMods().includes(lvmodule)) {
@@ -248,13 +248,13 @@ const ListView = {
 			};
 		} else if (uitype == '10' || uitype == '4' || fieldname == 'createdtime' || fieldname == 'modifiedtime') {
 			editor = false;
-		} else if (uitype == '15') {
+		} else if (uitype == '15' || uitype == '16') {
 			let listItems = [];
 			for (let f in values) {
 				let listValues = {};
 				listValues = {
-					text: values[f],
-					value: values[f]
+					text: values[f].label,
+					value: values[f].value
 				};
 				listItems.push(listValues);
 			}

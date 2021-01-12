@@ -265,7 +265,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 					$rows[$fieldName] = getUserFullName($fieldValue);
 			} else {
 				if ($fieldName) {
-					$rows[$fieldName] = textlength_check($fieldValue);
+					$rows[$fieldName] = textlength_check(getTranslatedString($fieldValue, $currentModule));
 				}
 			}
 			$rows['uitype_'.$fieldName] = $fieldType;
@@ -398,13 +398,19 @@ function getListViewHeaders($currentModule, $tabid) {
 	foreach ($listview_header_search as $fName => $fValue) {
 		$fieldType = getUItypeByFieldName($currentModule, $fName);
 		$tooltip = ToolTipExists($fName, $tabid);
-		if ($fieldType == '15') {
+		if ($fieldType == '15' || $fieldType == '16') {
 			$picklistValues = vtlib_getPicklistValues($fName);
+			$picklistEditor = array_map(function ($val) use ($currentModule) {
+				return array(
+					'label' => getTranslatedString($val, $currentModule),
+					'value' => $val
+				);
+			}, $picklistValues);
 			$lv_arr = array(
 				'fieldname' => $fName,
 				'fieldvalue' => $fValue,
 				'uitype' => $fieldType,
-				'picklist' => $picklistValues,
+				'picklist' => $picklistEditor,
 				'tooltip' => $tooltip,
 				'edit' => $edit,
 			);

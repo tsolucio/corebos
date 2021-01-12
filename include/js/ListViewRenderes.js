@@ -175,12 +175,8 @@ class ActionRender {
 		let rowKey = props.rowKey;
 		let recordid = props.grid.getValue(rowKey, 'recordid');
 		el = document.createElement('span');
-		let actions = '<div class="slds-button-group" role="group">';
-		const str = '|';
-		const editUrl = `index.php?module=${module}&action=EditView&record=${recordid}&return_module=${module}&return_action=index`;
-		const deleteUrl = `javascript:confirmdelete('index.php?module=${module}&action=Delete&record=${recordid}&return_module=${module}&return_action=index&parenttab=ptab');`;
-		let status = '';
-		actions += `
+		let actions = `
+		<div class="slds-button-group" role="group">
 			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="ListView.RenderActions(${recordid});">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#threedots"></use>
