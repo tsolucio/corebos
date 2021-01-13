@@ -446,7 +446,7 @@ class cbQuestion extends CRMEntity {
 				$sql_question_context_variable = json_decode($q->column_fields['typeprops']);
 				$context_var_array = (array) $sql_question_context_variable->context_variables;
 				$sql_query = cbQuestion::getSQL($qid, $params);
-				if (!empty(context_var_array)) {
+				if (!empty($context_var_array)) {
 					foreach ($context_var_array as $key => $value) {
 						$sql_query = str_replace($key, $value, $sql_query);
 					}

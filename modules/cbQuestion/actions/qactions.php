@@ -517,7 +517,7 @@ class qactions_Action extends CoreBOS_ActionController {
 		}
 
 		$context_var_array = (array) $sql_question_context_variable->context_variables;
-		if (!empty(context_var_array)) {
+		if (!empty($context_var_array)) {
 			foreach ($context_var_array as $key => $value) {
 				$list_query = str_replace($key, $value, $list_query);
 			}
