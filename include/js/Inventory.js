@@ -2089,6 +2089,11 @@ function handleProductAutocompleteSelect(obj) {
 	if (obj.result.pricing.discount != undefined && obj.result.pricing.discount != 0) {
 		document.EditView.elements['discount'+no][1].checked = true;
 		document.EditView.elements['discount_percentage'+no].value = obj.result.pricing.discount;
+	} else {
+		// zero discount
+		document.EditView.elements['discount'+no][0].checked = true;
+		document.EditView.elements['discount_percentage'+no].value = 0;
+		document.EditView.elements['discount_amount'+no].value = 0;
 	}
 
 	// Update the icon
