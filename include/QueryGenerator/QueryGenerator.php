@@ -253,6 +253,9 @@ class QueryGenerator {
 	}
 
 	public function getModuleNameFields($module) {
+		if (empty($this->moduleNameFields[$module])) {
+			$this->getMeta($module);
+		}
 		return $this->moduleNameFields[$module];
 	}
 
@@ -691,7 +694,7 @@ class QueryGenerator {
 				foreach ($moduleList as $module) {
 					$tabid = getTabid($module);
 					$meta = $this->getMeta($module);
-					$nameFields = $this->moduleNameFields[$module];
+					$nameFields = $this->getModuleNameFields($module);
 					$nameFieldList = explode(',', $nameFields);
 					foreach ($nameFieldList as $index => $column) {
 						$joinas = 'LEFT JOIN';
@@ -1041,7 +1044,7 @@ class QueryGenerator {
 					$moduleList = $this->referenceFieldInfoList[$fieldName];
 					foreach ($moduleList as $module) {
 						$tabid = getTabid($module);
-						$nameFields = $this->moduleNameFields[$module];
+						$nameFields = $this->getModuleNameFields($module);
 						$nameFieldList = explode(',', $nameFields);
 						$meta = $this->getMeta($module);
 						$columnList = array();
