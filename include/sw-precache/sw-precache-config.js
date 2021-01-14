@@ -126,6 +126,7 @@ module.exports = {
 		'modules/InventoryDetails/InventoryDetails.js',
 		'modules/ServiceContracts/ServiceContracts.js',
 		'modules/Users/Users.js',
+		'modules/Users/ChangePassword.js',
 		'modules/Utilities/Utilities.js',
 		'modules/Import/resources/ImportStep2.js',
 		'modules/Import/resources/Import.js',

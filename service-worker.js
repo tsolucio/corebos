@@ -9284,7 +9284,7 @@ precacheAndRoute([{
   "revision": "fac2826174b3ef2d807edd9524c029f3"
 }, {
   "url": "include/js/de_de.lang.js",
-  "revision": "08c9813155d551bdef705a41138b8118"
+  "revision": "9bdc40c49cb44c9b6ef30b1a325e144a"
 }, {
   "url": "include/js/dedup.js",
   "revision": "3aab10a82c3f05de285ce73b6dc3be35"
@@ -9293,16 +9293,16 @@ precacheAndRoute([{
   "revision": "6059341b114976dd92665c122b2e7410"
 }, {
   "url": "include/js/en_gb.lang.js",
-  "revision": "19e2b144c09cec23ff08e03c8bea78d2"
+  "revision": "1b9c9c68b0f525ed155ba81aa84bfa76"
 }, {
   "url": "include/js/en_us.lang.js",
-  "revision": "d79b56de6e72352279f479d7e0f583fd"
+  "revision": "26a514c523910b2760840edcda2a4768"
 }, {
   "url": "include/js/es_es.lang.js",
-  "revision": "d95dfaf590a2c678bb3bf42a1952fa43"
+  "revision": "cb71e57d94a384fa9623ac532548002c"
 }, {
   "url": "include/js/es_mx.lang.js",
-  "revision": "78735f46f81081209934bbdebb833b85"
+  "revision": "121219828b8f09462e770c89dddfbcf1"
 }, {
   "url": "include/js/FieldDependencies.js",
   "revision": "7023a4e6ee65093266df7e837578c52c"
@@ -9311,19 +9311,19 @@ precacheAndRoute([{
   "revision": "c6dd1fa8efe64120bc4721d19987922d"
 }, {
   "url": "include/js/fr_fr.lang.js",
-  "revision": "70ba1f235d541fb6ca03498bdd32b405"
+  "revision": "7e3475dc4975cfa1620c75215d8250b5"
 }, {
   "url": "include/js/general.js",
   "revision": "4d56b8b5dc682b8ece2cfc16a2f999a5"
 }, {
   "url": "include/js/hu_hu.lang.js",
-  "revision": "e4cc7bb9fdef5d2b8a887122f48cfc41"
+  "revision": "9dc5fb21f95a007631a7cff71b7b784c"
 }, {
   "url": "include/js/Inventory.js",
   "revision": "8829b95d773ce339a56bdc9321a4d20d"
 }, {
   "url": "include/js/it_it.lang.js",
-  "revision": "82d0688c57068a35105286134212467f"
+  "revision": "d21d489b6895ceceb669f95acc1382f2"
 }, {
   "url": "include/js/jslog.js",
   "revision": "31c7a760819a0277d2cdb75b82c2c66f"
@@ -9347,7 +9347,7 @@ precacheAndRoute([{
   "revision": "92db09ac10a555be4bfc0398f2a93379"
 }, {
   "url": "include/js/nl_nl.lang.js",
-  "revision": "c4d93b978d39e689fbd55d06ee72aaee"
+  "revision": "3f65a157d4eece9d1d02440edffac782"
 }, {
   "url": "include/js/notebook.js",
   "revision": "d944ea5145ae45ecbafab41bcbd112f3"
@@ -9365,7 +9365,7 @@ precacheAndRoute([{
   "revision": "9dcdc285def88f01bd2f4308acdf8755"
 }, {
   "url": "include/js/pt_br.lang.js",
-  "revision": "23bbe93eeb453312d9bd309a135397b3"
+  "revision": "e7d0b3b3684e669f7a258182e887c632"
 }, {
   "url": "include/js/QuickCreate.js",
   "revision": "e5029e6a617bfb7f9114191938738069"
@@ -9374,7 +9374,7 @@ precacheAndRoute([{
   "revision": "5bce2a6cf35180a097828b2cde3346ff"
 }, {
   "url": "include/js/ro_ro.lang.js",
-  "revision": "af46dc4ead40aec0477d31bdd325e84d"
+  "revision": "cac7731fa82cdbb0c5185e9828a423e7"
 }, {
   "url": "include/js/search.js",
   "revision": "d5c8ddcb6451bc0c05aa26f123363e0f"
@@ -10041,6 +10041,9 @@ precacheAndRoute([{
 }, {
   "url": "modules/Users/Users.js",
   "revision": "e9be4cf50f50eedc61a491219ac3fc86"
+}, {
+  "url": "modules/Users/ChangePassword.js",
+  "revision": "15bd7822790e2fcd520ed18cdb019883"
 }, {
   "url": "modules/Utilities/Utilities.js",
   "revision": "864fa0c60694a45cfadf9bc2203c2ac7"
