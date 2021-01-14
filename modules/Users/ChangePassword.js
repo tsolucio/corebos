@@ -39,29 +39,7 @@ function loadPassword(userid) {
 			</div>
 		</div>
 	</a>`;
-	fetch(
-		'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=isAdmin',
-		{
-			method: 'get',
-			headers: {
-				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-			},
-			credentials: 'same-origin',
-		}
-	).then(response => response.json()).then(response => {
-		let old_password = '';
-		if (response.admin == 'off') {
-			old_password = `
-			<div class="slds-grid">
-				<div class="slds-grid slds-col slds-size_1-of-4" style="font-size: 15px"> 
-					<label for="">${alert_arr['LBL_OLD_PASSWORD']}</label>
-				</div>
-				<div class="slds-grid slds-col slds-size_2-of-4">
-					<input name='old_password' class='slds-input' type='password' id="old_password">
-				</div>
-			</div>`;
-		}
-		const Content = `
+	const Content = `
 		<div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" id="show-err_msg" style="margin-bottom: 20px;display: none">
 			<span class="slds-assistive-text">error</span>
 			<h2 id="err_msg"></h2>
@@ -73,7 +51,6 @@ function loadPassword(userid) {
 				</button>
 			</div>
 		</div>
-		${old_password}
 		<div class="slds-grid">
 			<div class="slds-grid slds-col slds-size_1-of-4" style="font-size: 15px"> 
 				<label for="${alert_arr['LBL_NEW_PASSWORD']}">${alert_arr['LBL_NEW_PASSWORD']} ${tooltip}</label>
@@ -92,8 +69,7 @@ function loadPassword(userid) {
 				</button>
 			</div>
 		</div>`;
-		ldsModal.show(headText, Content, 'small', `changepassword('${response.admin}', ${userid})`);
-	});
+	ldsModal.show(headText, Content, 'small', `changepassword(1, ${userid})`);
 }
 
 function generatePassword() {
@@ -121,23 +97,9 @@ function showPassword(btnid, inputid) {
 
 function changepassword(is_admin, userid) {
 	let err_msg = '';
-	let old_password = '';
 	let new_password = document.getElementById('new_password').value;
-	if (is_admin == 'off') {
-		old_password = document.getElementById('old_password').value;
-		if (trim(old_password) == trim(new_password)) {
-			err_msg += alert_arr['ERR_PASSWORD_NOT_CHANGED'];
-		}
-		if (old_password == '') {
-			err_msg += alert_arr['ERR_ENTER_OLD_PASSWORD'];
-		}
-		if (new_password == '') {
-			err_msg += alert_arr['ERR_ENTER_NEW_PASSWORD'];
-		}
-	} else {
-		if (new_password == '') {
-			err_msg += alert_arr['ERR_ENTER_NEW_PASSWORD'];
-		}
+	if (new_password == '') {
+		err_msg += alert_arr['ERR_ENTER_NEW_PASSWORD'];
 	}
 	if (err_msg != '') {
 		document.getElementById('show-err_msg').style.display = 'block';
@@ -152,7 +114,6 @@ function changepassword(is_admin, userid) {
 	} else {
 		const data = {
 			record: userid,
-			old_password: old_password,
 			new_password: new_password
 		};
 		jQuery.ajax({
