@@ -179,6 +179,7 @@ class WorkFlowScheduler {
 				$records = $this->getEligibleWorkflowRecords($workflow);
 				$noOfRecords = count($records);
 				for ($j = 0; $j < $noOfRecords; ++$j) {
+					$tasks = $tm->getTasksForWorkflow($workflow->id);
 					$recordId = $records[$j];
 					$moduleName = $workflow->moduleName;
 					$wsEntityId = vtws_getWebserviceEntityId($moduleName, $recordId);
