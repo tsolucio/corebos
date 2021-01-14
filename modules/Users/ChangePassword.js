@@ -16,29 +16,29 @@
 function loadPassword(userid) {
 	loadJS('index.php?module=Users&action=UsersAjax&file=getjslanguage');
 	const headText = `${alert_arr['LBL_CHANGE_PASSWORD']}`;
-	const tooltip = `    
-    <a href="javascript:void(0)" aria-describedby="help" onmouseover="showTooltip('help-passowrd')" onmouseout="hideTooltip('help-passowrd')">
-        <span class="slds-icon_container slds-icon-utility-info">
-              <svg class="slds-icon slds-icon slds-icon_xx-small slds-icon-text-default" aria-hidden="true">
-                <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
-              </svg>
-        </span>
-        <div class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left" role="tooltip" id="help-passowrd" style="position:fixed;display: none;overflow:hidden">
-            <div class="slds-popover__body">
-                <div class="slds-popover__body">
-                ${alert_arr['PASSWORD REQUIREMENTS']}
-                <br>----------------------------------------<br>
-                ${alert_arr['REQUIRED']}:<br> 
-                ${alert_arr['Min. 8 characters']}<br><br>
-                ${alert_arr['Contains3of4']}<br> 
-                ${alert_arr['Min. 1 uppercase']}<br> 
-                ${alert_arr['Min. 1 lowercase']}<br> 
-                ${alert_arr['Min. 1 number']}<br> 
-                ${alert_arr['Min. 1 special character']}
-            	</div>
-    		</div>
-        </div>
-    </a>`;
+	const tooltip = `
+	<a href="javascript:void(0)" aria-describedby="help" onmouseover="showTooltip('help-passowrd')" onmouseout="hideTooltip('help-passowrd')">
+		<span class="slds-icon_container slds-icon-utility-info">
+			<svg class="slds-icon slds-icon slds-icon_xx-small slds-icon-text-default" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+			</svg>
+		</span>
+		<div class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left" role="tooltip" id="help-passowrd" style="position:fixed;display: none;overflow:hidden">
+			<div class="slds-popover__body">
+				<div class="slds-popover__body">
+				${alert_arr['PASSWORD REQUIREMENTS']}
+				<br>----------------------------------------<br>
+				${alert_arr['REQUIRED']}:<br> 
+				${alert_arr['Min. 8 characters']}<br><br>
+				${alert_arr['Contains3of4']}<br> 
+				${alert_arr['Min. 1 uppercase']}<br> 
+				${alert_arr['Min. 1 lowercase']}<br> 
+				${alert_arr['Min. 1 number']}<br> 
+				${alert_arr['Min. 1 special character']}
+				</div>
+			</div>
+		</div>
+	</a>`;
 	fetch(
 		'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=isAdmin',
 		{
@@ -52,47 +52,47 @@ function loadPassword(userid) {
 		let old_password = '';
 		if (response.admin == 'off') {
 			old_password = `
-		    <div class="slds-grid">
-		        <div class="slds-grid slds-col slds-size_1-of-4" style="font-size: 15px"> 
-		            <label for="">${alert_arr['LBL_OLD_PASSWORD']}</label>
-		        </div>
-		        <div class="slds-grid slds-col slds-size_2-of-4">
-		            <input name='old_password' class='slds-input' type='password' id="old_password">
-		        </div>
-		    </div>`;
+			<div class="slds-grid">
+				<div class="slds-grid slds-col slds-size_1-of-4" style="font-size: 15px"> 
+					<label for="">${alert_arr['LBL_OLD_PASSWORD']}</label>
+				</div>
+				<div class="slds-grid slds-col slds-size_2-of-4">
+					<input name='old_password' class='slds-input' type='password' id="old_password">
+				</div>
+			</div>`;
 		}
-	    const Content = `
+		const Content = `
 		<div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" id="show-err_msg" style="margin-bottom: 20px;display: none">
-		  	<span class="slds-assistive-text">error</span>
-		  	<h2 id="err_msg"></h2>
-		  	<div class="slds-notify__close">
-		    	<button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse" onclick="hideTooltip('show-err_msg')">
-		      		<svg class="slds-button__icon" aria-hidden="true">
-		        		<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-		      		</svg>
-		    	</button>
-		  	</div>
-		</div>                              
-	    ${old_password}
-	    <div class="slds-grid">
+			<span class="slds-assistive-text">error</span>
+			<h2 id="err_msg"></h2>
+			<div class="slds-notify__close">
+				<button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse" onclick="hideTooltip('show-err_msg')">
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+					</svg>
+				</button>
+			</div>
+		</div>
+		${old_password}
+		<div class="slds-grid">
 			<div class="slds-grid slds-col slds-size_1-of-4" style="font-size: 15px"> 
-	            <label for="${alert_arr['LBL_NEW_PASSWORD']}">${alert_arr['LBL_NEW_PASSWORD']} ${tooltip}</label>
-	        </div>
-	        <div class="slds-grid slds-col slds-size_2-of-4">
-	            <input name='new_password' class='slds-input' type='password' id="new_password">
-	              <button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="showPassword(this.id, 'new_password')" id="btn_new_password">
-	                <svg class="slds-button__icon" aria-hidden="true">
-	                      <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#preview"></use>
-	                </svg>
-	              </button>
-	            <button class="slds-button slds-button_icon slds-button_icon-border-filled"  aria-pressed="false" onclick="generatePassword()">
-	                <svg class="slds-button__icon" aria-hidden="true">
-	                    <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
-	                </svg>
-	            </button>
-	        </div>
-	    </div>`;
-    	ldsModal.show(headText, Content, 'small', `changepassword('${response.admin}', ${userid})`);
+				<label for="${alert_arr['LBL_NEW_PASSWORD']}">${alert_arr['LBL_NEW_PASSWORD']} ${tooltip}</label>
+			</div>
+			<div class="slds-grid slds-col slds-size_2-of-4">
+				<input name='new_password' class='slds-input' type='password' id="new_password">
+				<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="showPassword(this.id, 'new_password')" id="btn_new_password">
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#preview"></use>
+					</svg>
+				</button>
+				<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-pressed="false" onclick="generatePassword()">
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
+					</svg>
+				</button>
+			</div>
+		</div>`;
+		ldsModal.show(headText, Content, 'small', `changepassword('${response.admin}', ${userid})`);
 	});
 }
 
@@ -102,21 +102,21 @@ function generatePassword() {
 }
 
 function showPassword(btnid, inputid) {
-  	const password = document.getElementById(inputid);
-  	const btn = document.getElementById(btnid);
-  	if (password.type === 'password') {
-  		btn.innerHTML = `
-  			<svg class="slds-button__icon" aria-hidden="true">
-		    	<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#hide"></use>
-		   	</svg>`;
-    	password.type = 'text';
-  	} else {
-  		btn.innerHTML = `
-  			<svg class="slds-button__icon" aria-hidden="true">
-		    	<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#preview"></use>
-		   	</svg>`;
-    	password.type = 'password';
-  	}
+	const password = document.getElementById(inputid);
+	const btn = document.getElementById(btnid);
+	if (password.type === 'password') {
+		btn.innerHTML = `
+			<svg class="slds-button__icon" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#hide"></use>
+			</svg>`;
+		password.type = 'text';
+	} else {
+		btn.innerHTML = `
+			<svg class="slds-button__icon" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#preview"></use>
+			</svg>`;
+		password.type = 'password';
+	}
 }
 
 function changepassword(is_admin, userid) {
