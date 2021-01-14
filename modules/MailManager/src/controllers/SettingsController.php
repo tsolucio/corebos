@@ -31,6 +31,7 @@ class MailManager_SettingsController extends MailManager_MainUIController {
 			$model = $this->getMailBoxModel();
 			$model->setServer($request->get('_mbox_server'));
 			$model->setUsername($request->get('_mbox_user'));
+			$request->set('_mbox_pwd', urlencode($_REQUEST['_mbox_pwd']));
 			$model->setPassword($request->get('_mbox_pwd'));
 			$model->setProtocol($request->get('_mbox_protocol', 'imap2'));
 			$model->setSSLType($request->get('_mbox_ssltype', 'tls'));

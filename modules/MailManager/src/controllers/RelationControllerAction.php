@@ -51,16 +51,18 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 
 		$focus->column_fields['description'] = $mailrecord->getBodyHTML();
 		$focus->column_fields['assigned_user_id'] = $linkfocus->column_fields['assigned_user_id'];
-		$focus->column_fields["date_start"]= date('Y-m-d', $mailrecord->_date);
-		$focus->column_fields["email_flag"] = 'MailManager';
+		$focus->column_fields['date_start']= date('Y-m-d', $mailrecord->_date);
+		$focus->column_fields['email_flag'] = 'MailManager';
 
 		$from=$mailrecord->_from[0];
+		$replyto=$mailrecord->_reply_to[0];
 		$to = $mailrecord->_to[0];
 		$cc = (!empty($mailrecord->_cc))? implode(',', $mailrecord->_cc) : '';
 		$bcc= (!empty($mailrecord->_bcc))? implode(',', $mailrecord->_bcc) : '';
 
 		//emails field were restructured and to,bcc and cc field are JSON arrays
 		$focus->column_fields['from_email'] = $from;
+		$focus->column_fields['replyto'] = $replyto;
 		$focus->column_fields['saved_toid'] = $to;
 		$focus->column_fields['ccmail'] = $cc;
 		$focus->column_fields['bccmail'] = $bcc;

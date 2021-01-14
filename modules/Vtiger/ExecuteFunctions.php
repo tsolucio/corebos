@@ -356,6 +356,17 @@ switch ($functiontocall) {
 	case 'getUserName':
 		$ret = getUserName(vtlib_purify($_REQUEST['userid']));
 		break;
+	case 'getImageInfoFor':
+		$id = vtlib_purify($_REQUEST['record']);
+		require_once 'include/Webservices/getRecordImages.php';
+		$imageinfo = cbws_getrecordimageinfo($id, $current_user);
+		header('Content-Type: application/json');
+		if ((int)$imageinfo['results'] > 0) {
+			$ret = $imageinfo;
+		} else {
+			$ret = '';
+		}
+		break;
 	case 'isAdmin':
 		if (is_admin($current_user)) {
 			$ret = array('admin' => 'on');

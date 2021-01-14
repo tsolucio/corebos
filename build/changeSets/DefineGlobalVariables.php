@@ -44,6 +44,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Global_Search_TopModules',
 				'Application_Global_Search_Active',
 				'Application_Global_Search_Autocomplete_Limit',
+				'Application_ProductService_Search_Autocomplete_Limit',
 				'Application_Storage_Directory',
 				'Application_Storage_SaveStrategy',
 				'Application_OpenRecordInNewXOnRelatedList',
@@ -56,6 +57,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_DetailView_Record_Navigation',
 				'Application_DetailView_Sticky_BlockStatus',
 				'Application_DetailView_PageHeader_Message',
+				'Application_Filter_All_Edit',
 				'Application_EditView_Submit_Form_WithEnter',
 				'Application_TrackerMaxHistory',
 				'Application_Announcement',
@@ -154,6 +156,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Webservice_Describe_ReturnGroupList',
 				'SOAP_CustomerPortal_Enabled',
 				'SOAP_Outlook_Enabled',
+				'WEBDAV_Enabled',
 
 				'Users_ReplyTo_SecondEmail',
 				'Users_Default_Send_Email_Template',

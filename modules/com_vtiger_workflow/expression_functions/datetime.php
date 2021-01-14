@@ -97,7 +97,7 @@ function __cb_holidaydifference($arr) {
 
 function __cb_networkdays($arr) {
 	$net_date1 = $arr[0];
-	$net_date2 = $arr[1];
+	$net_date2 = empty($arr[1]) ? date('Y-m-d H:i:s') : $arr[1];
 	$mapname = isset($arr[2]) ? $arr[2] : '';
 
 	if (empty($net_date1) || empty($net_date2)) {

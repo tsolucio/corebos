@@ -11,5 +11,7 @@ var mod_alert_arr = {
 	'DESC': 'Descendente',
 	'NameNotEmpty': 'El nombre de la pregunta no puede estar vacío.',
 	'ModuleNotEmpty': 'Tienes que seleccionar un módulo.',
-	'QuestionSaved': 'La pregunta se ha guardado correctamente.'
+	'QuestionSaved': 'La pregunta se ha guardado correctamente.',
+	'export_results': 'Exportar Resultados',
+	'Exporting': 'Exportando...',
 };

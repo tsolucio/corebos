@@ -75,7 +75,7 @@ function deleteUser(obj, userid) {
 	}).done(function(response) {
 		document.getElementById('status').style.display='none';
 		document.getElementById('tempdiv').innerHTML= response;
-		fnvshobj(obj,'tempdiv');
+		positionDivToCenter('tempdiv');
 	});
 }
 

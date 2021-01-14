@@ -17,7 +17,7 @@
                 <xs:complexType>
                   <xs:sequence>
                     <xs:element type="xs:string" name="module"/>
-                    <xs:element type="xs:string" name="linkfield"/>
+                    <xs:element type="xs:string" name="linkfield" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="columns">
                       <xs:complexType mixed="true">
                         <xs:sequence>

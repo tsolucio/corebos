@@ -53,13 +53,13 @@ class cbCredentials extends CRMEntity {
 		// tablename should not have prefix 'vtiger_'
 		'Credential no'=> array('cbcredentials' => 'cbcredentialsno'),
 		'Adapter'=> array('cbcredentials' => 'adapter'),
-		'Assigned To'   => array('cbcredentials' => 'assigned_user_id')			
+		'Assigned To' => array('crmentity' => 'smownerid')
 	);
 	public $list_fields_name = array(
 		/* Format: Field Label => fieldname */
 		'Credential no'=> 'cbcredentialsno',
 		'Adapter'=> 'adapter',
-		'Assigned To'   => 'assigned_user_id'
+		'Assigned To' => 'assigned_user_id'
 	);
 
 	// Make the field link to detail view from list view (Fieldname)
@@ -71,13 +71,13 @@ class cbCredentials extends CRMEntity {
 		// tablename should not have prefix 'vtiger_'
 		'Credentials no'=> array('cbcredentials' => 'cbcredentialsno'),
 		'Adapter'=> array('cbcredentials' => 'adapter'),
-		'Assigned To'   => array('cbcredentials' => 'assigned_user_id')		
+		'Assigned To' => array('crmentity' => 'smownerid')
 	);
 	public $search_fields_name = array(
 		/* Format: Field Label => fieldname */
 		'Credentials no'=> 'cbcredentialsno',
 		'Adapter'=> 'adapter',
-		'Assigned To'   => 'assigned_user_id'		
+		'Assigned To' => 'assigned_user_id'
 	);
 
 	// For Popup window record selection

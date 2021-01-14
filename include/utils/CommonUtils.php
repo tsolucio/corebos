@@ -936,11 +936,7 @@ function getURLstring($focus) {
 	$qry = '';
 	foreach ($focus->column_fields as $fldname => $val) {
 		if (isset($_REQUEST[$fldname]) && $_REQUEST[$fldname] != '') {
-			if ($qry == '') {
-				$qry = '&' . $fldname . '=' . vtlib_purify($_REQUEST[$fldname]);
-			} else {
-				$qry .='&' . $fldname . '=' . vtlib_purify($_REQUEST[$fldname]);
-			}
+			$qry .='&' . $fldname . '=' . vtlib_purify($_REQUEST[$fldname]);
 		}
 	}
 	if (isset($_REQUEST['current_user_only']) && $_REQUEST['current_user_only'] != '') {
@@ -2252,6 +2248,9 @@ function validateImageFile($file_details) {
 	$filetype = $file_type_details['1'];
 
 	if (!empty($filetype)) {
+		if (strpos($filetype, ';')) {
+			list($filetype, $void) = explode(';', $filetype);
+		}
 		$filetype = strtolower($filetype);
 	}
 	if ($filetype == 'jpeg' || $filetype == 'png' || $filetype == 'jpg' || $filetype == 'pjpeg' || $filetype == 'x-png' || $filetype == 'gif' || $filetype == 'bmp') {
@@ -2553,13 +2552,12 @@ function getSingleFieldValue($tablename, $fieldname, $idname, $id) {
 	return $fieldval;
 }
 
-/** 	Function used to retrieve the announcements from database
- * 	The function accepts no argument and returns the announcements
- * 	return string $announcement  - List of announments for the CRM users
+/** Function used to retrieve the announcements from database
+ * @return string announcement
  */
 function get_announcements() {
 	global $default_charset, $currentModule;
-	$announcement = GlobalVariable::getVariable('Application_Announcement', '', $currentModule);
+	$announcement = cbEventHandler::do_filter('corebos.filter.announcement', GlobalVariable::getVariable('Application_Announcement', '', $currentModule));
 	if ($announcement != '') {
 		$announcement = html_entity_decode($announcement, ENT_QUOTES, $default_charset);
 		$announcement = vtlib_purify($announcement);
@@ -3200,7 +3198,9 @@ function checkFileAccessForInclusion($filepath) {
 	if (stripos($realfilepath, $rootdirpath) !== 0 || in_array($filePathParts[0], $unsafeDirectories)) {
 		global $default_charset;
 		if (GlobalVariable::getVariable('Debug_Access_Restricted_File', 0)) {
+			echo '<pre>';
 			debug_print_backtrace();
+			echo '</pre>';
 		}
 		echo 'Sorry! Attempt to access restricted file.<br>';
 		echo 'We are looking for this file path: '.htmlspecialchars($filepath, ENT_QUOTES, $default_charset).'<br>';
@@ -3466,6 +3466,20 @@ function getEntityFieldNameDisplay($module, $fieldsName, $fieldValues) {
 		}
 	}
 	return '';
+}
+
+/** eliminate all occurrences of a string except the first one foundfrom another string
+ * @param string that we want to delete all except first occurrence
+ * @param string from which we need to delete the occurrences
+ * @return string with only one (or none) occurrence of the given string to delete
+ */
+function suppressAllButFirst($occurence, $from) {
+	if ($occurence=='') {
+		return $from;
+	}
+	$spos = strpos($from, $occurence);
+	$slen = strlen($occurence);
+	return substr($from, 0, $spos+$slen).str_replace($occurence, '', substr($from, $spos+$slen));
 }
 
 function vt_suppressHTMLTags($string) {

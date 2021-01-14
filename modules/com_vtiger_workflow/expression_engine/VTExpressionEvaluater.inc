@@ -134,6 +134,7 @@ class VTFieldExpressionEvaluater {
 			'time_diffdays' => 'cbexpsql_time_diffdays',
 			'time_diffyears' => 'cbexpsql_time_diffyears',
 			'time_diffweekdays' => 'cbexpsql_getWeekdayDifference',
+			'networkdays' => 'cbexpsql_networkdays',
 			'aggregate_time' => 'cbexpsql_aggregate_time',
 			'add_days' => 'cbexpsql_add_days',
 			'sub_days' => 'cbexpsql_sub_days',

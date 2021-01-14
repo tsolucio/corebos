@@ -306,7 +306,18 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			if ($isRelatedQuery) {
 				if ($invlines) {
 					$newrow = $row;
-					$newrow['id'] = (getSalesEntityType($newrow['id']) == 'Products' ? $pdowsid : $srvwsid) . 'x' . $newrow['id'];
+					if (!empty($newrow['id'])) {
+						$newrow['id'] = vtws_getEntityId(getSalesEntityType($newrow['id'])) . 'x' . $newrow['id'];
+					}
+					$newrow['linetype'] = '';
+					if (!empty($newrow['productid'])) {
+						$newrow['linetype'] = getSalesEntityType($newrow['productid']);
+						$newrow['productid'] = ($newrow['linetype'] == 'Products' ? $pdowsid : $srvwsid) . 'x' . $newrow['productid'];
+					}
+					if (!empty($newrow['serviceid'])) {
+						$newrow['linetype'] = 'Services';
+						$newrow['serviceid'] = $srvwsid . 'x' . $newrow['serviceid'];
+					}
 				} else {
 					$relflds = array_diff_key($row, $newrow);
 					foreach ($queryRelatedModules as $relmod => $relmeta) {
@@ -348,7 +359,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 				$result_image = $adb->pquery($imgquery, array($rowcrmid));
 				while ($img = $adb->fetch_array($result_image)) {
 					foreach ($imageFields as $imgvalue) {
-						if ($img['name'] == $row[$imgvalue]) {
+						if ($img['name'] == $row[$imgvalue] || $img['name'] == str_replace(' ', '_', $row[$imgvalue])) {
 							$newrow[$imgvalue.'fullpath'] = $site_URL.'/'.$img['path'].$img['attachmentsid'].'_'.$img['name'];
 							break;
 						}

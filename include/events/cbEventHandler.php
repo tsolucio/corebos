@@ -21,9 +21,9 @@
  *  https://github.com/swarnat/vtigerCRM-EventHandler
  *************************************************************************************************/
 class cbEventHandler {
-	protected static $_eventManager = false;
-	protected static $_objectCache = array();
-	protected static $_filterCache = false;
+	protected static $eventManager = false;
+	protected static $objectCache = array();
+	protected static $filterCache = false;
 
 	protected static $Counter = 0;
 	protected static $CounterInternal = 0;
@@ -32,15 +32,14 @@ class cbEventHandler {
 
 	protected static function _loadFilterCache($filtername) {
 		global $adb;
-		$query = 'SELECT handler_path, handler_class FROM vtiger_eventhandlers WHERE is_active=true AND event_name = ?';
-		$result = $adb->pquery($query, array($filtername));
+		$result = $adb->pquery('SELECT handler_path, handler_class FROM vtiger_eventhandlers WHERE is_active=true AND event_name=?', array($filtername));
 
-		if (!isset(self::$_filterCache[$filtername])) {
-			self::$_filterCache[$filtername] = array();
+		if (!isset(self::$filterCache[$filtername])) {
+			self::$filterCache[$filtername] = array();
 		}
 
 		while ($filter = $adb->fetchByAssoc($result)) {
-			self::$_filterCache[$filtername][] = $filter;
+			self::$filterCache[$filtername][] = $filter;
 		}
 	}
 
@@ -61,15 +60,15 @@ class cbEventHandler {
 		}
 
 		// Handle Events with the internal EventsManager
-		if (self::$_eventManager === false) {
+		if (self::$eventManager === false) {
 			global $adb;
-			self::$_eventManager = new VTEventsManager($adb);
+			self::$eventManager = new VTEventsManager($adb);
 			// Initialize Event trigger cache
-			self::$_eventManager->initTriggerCache();
+			self::$eventManager->initTriggerCache();
 		}
 
 		$startTime2 = microtime(true);
-		self::$_eventManager->triggerEvent($eventName, $parameter);
+		self::$eventManager->triggerEvent($eventName, $parameter);
 
 		self::$Counter += (microtime(true) - $startTime);
 		self::$CounterInternal += (microtime(true) - $startTime2);
@@ -79,26 +78,26 @@ class cbEventHandler {
 		$startTime = microtime(true);
 
 		// load the Cache for this Filter
-		if (self::$_filterCache === false || !isset(self::$_filterCache[$filtername])) {
+		if (self::$filterCache === false || !isset(self::$filterCache[$filtername])) {
 			self::_loadFilterCache($filtername);
 		}
 
 		// if no filter is registerd only return $parameter
-		if (!isset(self::$_filterCache[$filtername]) || count(self::$_filterCache[$filtername]) == 0) {
+		if (!isset(self::$filterCache[$filtername]) || count(self::$filterCache[$filtername]) == 0) {
 			return $parameter;
 		}
 
-		foreach (self::$_filterCache[$filtername] as $filter) {
+		foreach (self::$filterCache[$filtername] as $filter) {
 			self::$numCounter[1]++;
 
 			// if not used before this, create the Handler Class
-			if (!isset(self::$_objectCache[$filter['handler_path'].'/'.$filter['handler_class']])) {
+			if (!isset(self::$objectCache[$filter['handler_path'].'#'.$filter['handler_class']])) {
 				require_once $filter['handler_path'];
 				$className = $filter['handler_class'];
-				self::$_objectCache[$filter['handler_path'].'#'.$filter['handler_class']] = new $className();
+				self::$objectCache[$filter['handler_path'].'#'.$filter['handler_class']] = new $className();
 			}
 
-			$obj = self::$_objectCache[$filter['handler_path'].'#'.$filter['handler_class']];
+			$obj = self::$objectCache[$filter['handler_path'].'#'.$filter['handler_class']];
 
 			$startTime2 = microtime(true);
 			// call the filter and set the return value again to $parameter

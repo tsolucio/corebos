@@ -432,4 +432,5 @@ var alert_arr = {
 	'Min. 1 number': 'Min. 1 caractère numérique',
 	'Min. 1 special character': 'Min. 1 caractère spécial ! ? , ; - @ #',
 	'LBL_CHANGE_PASSWORD': 'Changer mot de passe',
+	'ACT_UNIT_PRICE_MISMATCH': 'Le prix réel de cette devise doit être égal au prix unitaire, mais ce n\'est pas le cas pour ce produit ou service'
 };

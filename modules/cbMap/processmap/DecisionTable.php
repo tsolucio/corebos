@@ -181,19 +181,18 @@ class DecisionTable extends processcbMap {
 								$uitype = getUItypeByFieldName($module, (String)$v->field);
 								$queryGenerator->startGroup($queryGenerator::$AND);
 								if ($uitype==10) {
-									if (!empty($conditionvalue)) {
-										if (strpos($conditionvalue, 'x') > 0) {
-											list($wsid, $crmid) = explode('x', $conditionvalue);
-										} else {
-											$crmid = $conditionvalue;
-										}
+									if (strpos($conditionvalue, 'x') > 0) {
+										list($wsid, $crmid) = explode('x', $conditionvalue);
+									} else {
+										$crmid = $conditionvalue;
+									}
 										$relmod = getSalesEntityType($crmid);
 										$queryGenerator->addReferenceModuleFieldCondition($relmod, (String)$v->field, 'id', $crmid, (String)$v->operation);
-									}
+										$queryGenerator->addReferenceModuleFieldCondition($relmod, (String)$v->field, 'id', '', 'y', $queryGenerator::$OR);
 								} else {
 									$queryGenerator->addCondition((String)$v->field, $conditionvalue, (String)$v->operation);
+									$queryGenerator->addCondition((String)$v->field, '__IGNORE__', 'e', $queryGenerator::$OR);
 								}
-								$queryGenerator->addCondition((String)$v->field, '__IGNORE__', 'e', $queryGenerator::$OR);
 								$queryGenerator->endGroup();
 							}
 						}

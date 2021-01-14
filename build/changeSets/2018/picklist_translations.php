@@ -61,7 +61,7 @@ class picklist_translations extends cbupdaterWorker {
 							"select fieldname
 								from vtiger_tab
 								join vtiger_field on vtiger_tab.tabid=vtiger_field.tabid
-								where (uitype='15' or uitype='16') and name=?",
+								where uitype in ('15','33','16') and name=?",
 							array($impmod)
 						);
 						$count = $adb->num_rows($query);

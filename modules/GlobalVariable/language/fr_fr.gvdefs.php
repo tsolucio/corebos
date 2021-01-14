@@ -685,6 +685,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Maximum númber of results to be shown in autocomplete global search.',
 ),
+'Application_ProductService_Search_Autocomplete_Limit' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Maximum number of results to be shown in product/service autocomplete search.',
+),
 'Product_Copy_Bundle_OnDuplicate' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Chaîne',
@@ -1629,6 +1636,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'UI',
 	'values' => '',
 	'definition' => 'Percentage of screen height that popups will use. Default is 80%',
+),
+'Application_Filter_All_Edit' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Edit the filter "All". The default is 1',
 ),
 );
 

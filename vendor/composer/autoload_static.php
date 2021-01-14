@@ -9,10 +9,19 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+        '7e9bd612cc444b3eed788ebbe46263a0' => __DIR__ . '/..' . '/laminas/laminas-zendframework-bridge/src/autoload.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
+        '383eaff206634a77a1be54e64e6459c7' => __DIR__ . '/..' . '/sabre/uri/lib/functions.php',
+        '2b9d0f43f9552984cfa82fee95491826' => __DIR__ . '/..' . '/sabre/event/lib/coroutine.php',
+        'd81bab31d3feb45bfe2f283ea3c8fdf7' => __DIR__ . '/..' . '/sabre/event/lib/Loop/functions.php',
+        'a1cce3d26cc15c00fcd0b3354bd72c88' => __DIR__ . '/..' . '/sabre/event/lib/Promise/functions.php',
+        '3569eecfeed3bcf0bad3c998a494ecb8' => __DIR__ . '/..' . '/sabre/xml/lib/Deserializer/functions.php',
+        '93aa591bc4ca510c520999e34229ee79' => __DIR__ . '/..' . '/sabre/xml/lib/Serializer/functions.php',
+        'ebdb698ed4152ae445614b69b5e4bb6a' => __DIR__ . '/..' . '/sabre/http/lib/functions.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '78d47739fff607f33066e6259f091845' => __DIR__ . '/..' . '/laminas/laminas-cache/autoload/patternPluginManagerPolyfill.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -29,18 +38,51 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Component\\Debug\\' => 24,
             'Symfony\\Component\\Console\\' => 26,
+            'Sabre\\Xml\\' => 10,
+            'Sabre\\VObject\\' => 14,
+            'Sabre\\Uri\\' => 10,
+            'Sabre\\HTTP\\' => 11,
+            'Sabre\\Event\\' => 12,
+            'Sabre\\DAV\\' => 10,
+            'Sabre\\DAVACL\\' => 13,
+            'Sabre\\CardDAV\\' => 14,
+            'Sabre\\CalDAV\\' => 13,
+        ),
+        'R' => 
+        array (
+            'RobRichards\\XMLSecLibs\\' => 23,
         ),
         'P' => 
         array (
+            'Psr\\SimpleCache\\' => 16,
             'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
+            'Psr\\Container\\' => 14,
             'Psr\\Cache\\' => 10,
+        ),
+        'O' => 
+        array (
+            'OneLogin\\' => 9,
         ),
         'M' => 
         array (
             'Monolog\\' => 8,
             'MicrosoftAzure\\Storage\\Common\\' => 30,
             'MicrosoftAzure\\Storage\\Blob\\' => 28,
+        ),
+        'L' => 
+        array (
+            'Laminas\\ZendFrameworkBridge\\' => 28,
+            'Laminas\\Stdlib\\' => 15,
+            'Laminas\\ServiceManager\\' => 23,
+            'Laminas\\Serializer\\' => 19,
+            'Laminas\\Json\\' => 13,
+            'Laminas\\EventManager\\' => 21,
+            'Laminas\\Cache\\' => 14,
+        ),
+        'I' => 
+        array (
+            'Interop\\Container\\' => 18,
         ),
         'G' => 
         array (
@@ -76,6 +118,50 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         array (
             0 => __DIR__ . '/..' . '/symfony/console',
         ),
+        'Sabre\\Xml\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sabre/xml/lib',
+        ),
+        'Sabre\\VObject\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sabre/vobject/lib',
+        ),
+        'Sabre\\Uri\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sabre/uri/lib',
+        ),
+        'Sabre\\HTTP\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sabre/http/lib',
+        ),
+        'Sabre\\Event\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sabre/event/lib',
+        ),
+        'Sabre\\DAV\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sabre/dav/lib/DAV',
+        ),
+        'Sabre\\DAVACL\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sabre/dav/lib/DAVACL',
+        ),
+        'Sabre\\CardDAV\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sabre/dav/lib/CardDAV',
+        ),
+        'Sabre\\CalDAV\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sabre/dav/lib/CalDAV',
+        ),
+        'RobRichards\\XMLSecLibs\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/robrichards/xmlseclibs/src',
+        ),
+        'Psr\\SimpleCache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/simple-cache/src',
+        ),
         'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
@@ -84,9 +170,17 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
+        'Psr\\Container\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
         'Psr\\Cache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/cache/src',
+        ),
+        'OneLogin\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/onelogin/php-saml/src',
         ),
         'Monolog\\' => 
         array (
@@ -99,6 +193,38 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         'MicrosoftAzure\\Storage\\Blob\\' => 
         array (
             0 => __DIR__ . '/..' . '/microsoft/azure-storage-blob/src/Blob',
+        ),
+        'Laminas\\ZendFrameworkBridge\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laminas/laminas-zendframework-bridge/src',
+        ),
+        'Laminas\\Stdlib\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laminas/laminas-stdlib/src',
+        ),
+        'Laminas\\ServiceManager\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laminas/laminas-servicemanager/src',
+        ),
+        'Laminas\\Serializer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laminas/laminas-serializer/src',
+        ),
+        'Laminas\\Json\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laminas/laminas-json/src',
+        ),
+        'Laminas\\EventManager\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laminas/laminas-eventmanager/src',
+        ),
+        'Laminas\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laminas/laminas-cache/src',
+        ),
+        'Interop\\Container\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/container-interop/container-interop/src/Interop/Container',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (

@@ -33,12 +33,13 @@ class MailManager_Model_DraftEmail {
 		} else {
 			$where = $type ." LIKE '%". $q ."%'" ;
 		}
-		$where = " AND ".$where;
+		$where = ' AND '.$where;
 		return $this->getDrafts($page, $limit, $folder, $where);
 	}
 
 	public function constructAllClause($query) {
 		$fields = array('bccmail','ccmail','subject','saved_toid','description');
+		$clause = '';
 		for ($i=0; $i<count($fields); $i++) {
 			if ($i == count($fields)-1) {
 				$clause .=  $fields[$i]." LIKE '%".$query."%'";

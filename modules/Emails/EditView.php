@@ -37,9 +37,11 @@ if (isset($_REQUEST['par_module']) && $_REQUEST['par_module']!='') {
 if (isset($_REQUEST['record']) && $_REQUEST['record'] !='') {
 	$focus->id = $_REQUEST['record'];
 	$focus->mode = 'edit';
-	$focus->retrieve_entity_info($_REQUEST['record'], "Emails");
-	$query = 'select idlists,from_email,to_email,cc_email,bcc_email from vtiger_emaildetails where emailid =?';
+	$focus->retrieve_entity_info($_REQUEST['record'], 'Emails');
+	$query = 'select idlists,from_email,to_email,cc_email,bcc_email,replyto from vtiger_emaildetails where emailid =?';
 	$result = $adb->pquery($query, array($focus->id));
+	$replyto = $adb->query_result($result, 0, 'replyto');
+	$smarty->assign('REPLYTO', $replyto);
 	$from_email = $adb->query_result($result, 0, 'from_email');
 	$smarty->assign('FROM_MAIL', $from_email);
 	$to_email = decode_html($adb->query_result($result, 0, 'to_email'));
@@ -163,9 +165,11 @@ if (isset($_REQUEST['internal_mailer']) && $_REQUEST['internal_mailer'] == 'true
 //handled for replying emails
 if (isset($_REQUEST['reply']) && $_REQUEST['reply'] == 'true') {
 		$fromadd = $_REQUEST['record'];
-		$result = $adb->pquery('select from_email,idlists,cc_email,bcc_email from vtiger_emaildetails where emailid =?', array($fromadd));
+		$result = $adb->pquery('select from_email,idlists,cc_email,bcc_email,replyto from vtiger_emaildetails where emailid =?', array($fromadd));
 		$from_mail = $adb->query_result($result, 0, 'from_email');
-		$smarty->assign('TO_MAIL', trim($from_mail, ',').',');
+		$replyto = $adb->query_result($result, 0, 'replyto');
+		$smarty->assign('TO_MAIL', (empty($replyto) ? trim($from_mail, ',').',' : $replyto));
+		$smarty->assign('REPLYTO', '');
 		$smarty->assign('FROM_MAIL', '');
 		$cc_add = implode(',', json_decode($adb->query_result($result, 0, 'cc_email'), true));
 		$smarty->assign('CC_MAIL', $cc_add);
@@ -309,6 +313,9 @@ if (isset($ret_error) && $ret_error == 1) {
 	$ret_toadd = '';
 	if ($ret_subject != '') {
 		$smarty->assign('SUBJECT', $ret_subject);
+	}
+	if ($ret_replyto != '') {
+		$smarty->assign('REPLYTO', $ret_replyto);
 	}
 	if ($ret_ccaddress != '') {
 		$smarty->assign('CC_MAIL', $ret_ccaddress);

@@ -31,6 +31,7 @@ if (isset($_REQUEST['record'])) {
 	$to_email = json_decode($adb->query_result($result, 0, 'to_email'), true);
 	$cc_email = json_decode($adb->query_result($result, 0, 'cc_email'), true);
 	$smarty->assign('TO_MAIL', vt_suppressHTMLTags(@implode(',', $to_email)));
+	$smarty->assign('REPLYTO', $adb->query_result($result, 0, 'replyto'));
 	$smarty->assign('CC_MAIL', vt_suppressHTMLTags(@implode(',', $cc_email)));
 	$bcc_email = json_decode($adb->query_result($result, 0, 'bcc_email'), true);
 	$smarty->assign('BCC_MAIL', vt_suppressHTMLTags(@implode(',', $bcc_email)));

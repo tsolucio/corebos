@@ -232,6 +232,7 @@ function VTEmailTask($) {
 		}
 		if (parentModule=='Events') {
 			select.append('<option class="'+optionClass+'" value="(general : (__VtigerMeta__) Events_Users_Invited)">Invited Users</option>');
+			select.append('<option class="'+optionClass+'" value="(general : (__VtigerMeta__) Events_Related_Contacts)">Related Contacts</option>');
 		}
 	}
 
@@ -538,3 +539,49 @@ function uploadCountUpdater() {
 	}
 	countElement.val(++MailManagerCurrentUploadCount);
 }
+
+$(document).ready(function () {
+	let fileurl = 'module=MsgTemplate&action=MsgTemplateAjax&file=getSGTemplates';
+	const sendgridTemplateURL = 'https://mc.sendgrid.com/dynamic-templates/';
+	var templateBody = document.getElementById('sgMsgTemplate');
+	if (templateBody.selectedIndex == 0) {
+		document.getElementById('sgPreviewLink').removeAttribute('disabled');
+	}
+	$.ajax({
+		method: 'GET',
+		url: 'index.php?' + fileurl
+	}).done(function (templates) {
+		response = $.parseJSON(templates);
+		$.each(response, function (index, data) {
+			var opt = document.createElement('option');
+			opt.appendChild(document.createTextNode(data.templateName));
+			opt.value = data.templateId;
+			opt.setAttribute('versionid', data.versionId);
+			if (data.templateId == selectedSGTemplate) {
+				opt.setAttribute('selected', 'selected');
+				var previewLink = document.getElementById('sgPreviewLink');
+				if (data.versionId !=null) {
+					previewLink.href = sendgridTemplateURL+data.templateId+'/version/'+data.versionId+'/preview';
+					previewLink.disabled = false;
+				} else {
+					previewLink.removeAttribute('disabled');
+				}
+			}
+			templateBody.appendChild(opt);
+		});
+	});
+	templateBody.addEventListener('change', function () {
+		var selvalue = document.getElementById('sgMsgTemplate').value;
+		var sel = document.getElementById('sgMsgTemplate');
+		document.getElementById('sgmsgtemplate').value = selvalue;
+		var previewLink = document.getElementById('sgPreviewLink');
+		var templateVersion = sel.options[sel.selectedIndex].getAttribute('versionid');
+		if (templateVersion !=null) {
+			previewLink.href = sendgridTemplateURL+selvalue+'/version/'+templateVersion+'/preview';
+			previewLink.disabled = false;
+
+		} else {
+			previewLink.setAttribute('disabled', 'disabled');
+		}
+	});
+});

@@ -149,7 +149,7 @@ class MailManager_Model_Mailbox {
 		global $adb, $current_user;
 		$instance = new MailManager_Model_Mailbox();
 
-		$result = $adb->pquery("SELECT * FROM vtiger_mail_accounts WHERE user_id=? AND status=1 AND set_default=0", array($current_user->id));
+		$result = $adb->pquery('SELECT * FROM vtiger_mail_accounts WHERE user_id=? AND status=1 AND set_default=0', array($current_user->id));
 		if ($adb->num_rows($result)) {
 			$instance->mServer = trim($adb->query_result($result, 0, 'mail_servername'));
 			$instance->mUsername = trim($adb->query_result($result, 0, 'mail_username'));

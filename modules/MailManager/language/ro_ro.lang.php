@@ -89,6 +89,7 @@ $mod_strings = array(
 	'LBL_Go_Back' => 'Inapoi',
 	'LBL_Reply_All' => 'Raspunde tuturor',
 	'LBL_Reply' => 'Raspunde',
+	'LBL_REPLYTO'         => 'Reply To',
 	'LBL_Mark_As_Unread' => 'Marcheaza necitit',
 	'LBL_Previous' => 'anterior',
 	'LBL_Next' => 'urmator',

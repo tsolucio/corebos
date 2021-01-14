@@ -284,34 +284,36 @@ function fieldExpressionPopup(moduleName, $) {
 		function (result) {
 			result = JSON.parse(result);
 			var functions = $('#editpopup_functions');
-			$.each(result, function (label, template) {
-				functions.append(format('<option value="%s">%s</option>', template, label));
-			});
-			$('#editpopup_functions').bind('change', function () {
-				var textarea = $('#editpopup_expression').get(0);
-				var value = $(this).val();
-				//http://alexking.org/blog/2003/06/02/inserting-at-the-cursor-using-javascript
-				if (document.selection) {
-					textarea.focus();
-					var sel = document.selection.createRange();
-					sel.text = value;
-					textarea.focus();
-				} else if (textarea.selectionStart || textarea.selectionStart == '0') {
-					var startPos = textarea.selectionStart;
-					var endPos = textarea.selectionEnd;
-					var scrollTop = textarea.scrollTop;
-					textarea.value = textarea.value.substring(0, startPos) + value + textarea.value.substring(endPos, textarea.value.length);
-					textarea.focus();
-					textarea.selectionStart = startPos + value.length;
-					textarea.selectionEnd = startPos + value.length;
-					textarea.scrollTop = scrollTop;
-				} else {
-					textarea.value += value;
-					textarea.focus();
-				}
-				// Reset the selected option (to enable next selection)
-				this.value = '';
-			});
+			if (document.getElementById('editpopup_functions').type=='select-one') {
+				$.each(result, function (label, template) {
+					functions.append(format('<option value="%s">%s</option>', template, label));
+				});
+				$('#editpopup_functions').bind('change', function () {
+					var textarea = $('#editpopup_expression').get(0);
+					var value = $(this).val();
+					//http://alexking.org/blog/2003/06/02/inserting-at-the-cursor-using-javascript
+					if (document.selection) {
+						textarea.focus();
+						var sel = document.selection.createRange();
+						sel.text = value;
+						textarea.focus();
+					} else if (textarea.selectionStart || textarea.selectionStart == '0') {
+						var startPos = textarea.selectionStart;
+						var endPos = textarea.selectionEnd;
+						var scrollTop = textarea.scrollTop;
+						textarea.value = textarea.value.substring(0, startPos) + value + textarea.value.substring(endPos, textarea.value.length);
+						textarea.focus();
+						textarea.selectionStart = startPos + value.length;
+						textarea.selectionEnd = startPos + value.length;
+						textarea.scrollTop = scrollTop;
+					} else {
+						textarea.value += value;
+						textarea.focus();
+					}
+					// Reset the selected option (to enable next selection)
+					this.value = '';
+				});
+			}
 		}
 	);
 
@@ -407,8 +409,10 @@ function com_vtiger_workflowsetValueFromCapture(recordid, value, target_fieldnam
 		seldiv.innerHTML +=retrecList;
 	}
 	$('#editpopup_expression').val(recordid);
-	document.getElementById('wfrelfield').value = recordid;
-	document.getElementById('wfrelfield_display').value = value;
+	if (document.getElementById('wfrelfield')) {
+		document.getElementById('wfrelfield').value = recordid;
+		document.getElementById('wfrelfield_display').value = value;
+	}
 }
 
 function toggleExpEditorHelp(helpbutton) {

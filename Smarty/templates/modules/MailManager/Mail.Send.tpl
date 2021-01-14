@@ -6,7 +6,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************}
-<script type="text/javascript" src="include/js/general.js"></script>
 <script type="text/javascript" src="include/js/vtlib.js"></script>
 <form action="javascript:void(0)" method="POST" id="_mail_replyfrm_" ENCTYPE="multipart/form-data" name='submit'>
 <span class="moduleName" id="send_mail_fldrname" name="send_mail_fldrname">{'LBL_Compose'|@getTranslatedString}</span>
@@ -26,6 +25,12 @@
 	<tr valign=top>
 		<td>
 			<table width="100%" cellpadding=2 cellspacing=0 border=0 class="small">
+			<tr>
+				<td align=right style="width:50px">{'LBL_REPLYTO'|@getTranslatedString}:</td>
+				<td colspan="2">
+					<input type="text" name="replyto" class="detailedViewTextBox" id="_mail_replyfrm_replyto_" style="width:85%;">
+				</td>
+			</tr>
 			<tr>
 				<td align=right style="width:50px">{'LBL_TO'|@getTranslatedString}:</td>
 				<td colspan="2">

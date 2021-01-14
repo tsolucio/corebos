@@ -194,6 +194,7 @@ $app_strings = array (
 	'NTC_TIME_FORMAT' => '(24:00)',
 	'NTC_DATE_TIME_FORMAT' => '(aaaa-mm-dd 24:00)',
 	'NTC_DELETE_CONFIRMATION' => '¿Está seguro que desea eliminar este registro?',
+	'SMTP_DELETE_CONFIRMATION' => '¿Está seguro que desea eliminar esta configuración SMTP?',
 	'NTC_ACCOUNT_DELETE_CONFIRMATION' => 'Borrar esta cuenta eliminará sus relaciones con Oportunidades, Cotizaciones, Pedidos y Facturas. ¿Quiere Borrar la Cuenta?',
 	'NTC_VENDOR_DELETE_CONFIRMATION' => 'Borrar este proveedor eliminará sus relaciones con Oportunidades, Cotizaciones, Pedidos y Facturas. ¿Quiere Borrar el Proveedor?',
 	'ERR_DELETE_RECORD' => ' Debe especificar un registro para poder eliminar el contacto.',
@@ -875,6 +876,7 @@ $app_strings = array (
 	'MSG_VTIGERTEAM' => 'coreBOS Team',
 	'MSG_IS_NOT_UPLOADED' => 'no se ha subido. Las extensiones permitidas son jpeg, png, jpg, pjpeg, x-png o gif',
 	'MSG_IMAGE_ERROR' => 'Imagen no encontrada',
+	'LBL_IMAGESECURITY_ERROR' => 'Imagen inválida: contiene elementos potencialmente maliciosos',
 	'Information' => 'Información',
 	'Address' => 'Dirección',
 	'Custom Information' => 'Información Personalizada',
@@ -1163,6 +1165,8 @@ $app_strings = array (
 	'LBL_CALLER_INFORMATION'=>'Información Llamada Entrante',
 	'LBL_CALLER_NUMBER'=>'Número :',
 	'LBL_CALLER_NAME'=>'Nombre :',
+	'LBL_VIEW_CONTACT' => 'Ver Contacto',
+	'LBL_CLICK_NOTIFICATION_TO'=> 'Haz click para ',
 	//asterisk integration ends
 
 	// Module Sequence Numbering

@@ -39,12 +39,11 @@ class generateReportWfTask extends VTTask {
 				}
 			}
 			$now = date('YmdHis');
-			$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_\.\%\s]/', '', $reportName));
+			$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_\.\%]/', '', $reportName));
 			if (strpos($baseFileName, '%s')===false) {
 				$baseFileName .= '_%s';
 			} else {
-				$spos = strpos($baseFileName, '%s');
-				$baseFileName = substr($baseFileName, 0, $spos+2).str_replace('%s', '', substr($baseFileName, $spos+2));
+				$baseFileName = suppressAllButFirst('%s', $baseFileName);
 			}
 			$baseFileName = sprintf($baseFileName, $now);
 			$path = 'cache/';
@@ -65,7 +64,7 @@ class generateReportWfTask extends VTTask {
 			if ($this->file_type  == 'excel') {
 				$fileName = $path.$baseFileName.'.xls';
 				$filePath = $root_directory.$fileName;
-				$oReportRun->writeReportToExcelFile($filePath, null);
+				$oReportRun->writeReportToExcelFile($filePath, null, $entity->getModuleName());
 				$name = $baseFileName.'.xls';
 			}
 		}

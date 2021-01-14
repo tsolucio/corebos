@@ -54,6 +54,12 @@ function copyAddressRight(form) {
 		form.ship_pobox.value = form.bill_pobox.value;
 	}
 
+	if (form.ship_countrycode != undefined) {
+		[...form.ship_countrycode.options].forEach((option) => {
+			option.selected = (option.value == form.bill_countrycode.value);
+		});
+	}
+
 	return true;
 }
 
@@ -80,6 +86,12 @@ function copyAddressLeft(form) {
 
 	if (typeof(form.bill_pobox) != 'undefined' && typeof(form.ship_pobox) != 'undefined') {
 		form.bill_pobox.value = form.ship_pobox.value;
+	}
+
+	if (form.bill_countrycode != undefined) {
+		[...form.bill_countrycode.options].forEach((option) => {
+			option.selected = (option.value == form.ship_countrycode.value);
+		});
 	}
 
 	return true;
@@ -696,15 +708,57 @@ function fnAddProductRow(module, image_path) {
 
 	//Product Name with Popup image to select product
 	coltwo.className = 'crmTableRow small';
-	coltwo.innerHTML= '<table border="0" cellpadding="1" cellspacing="0" width="100%"><tr><td class="small"><div class="slds-combobox_container slds-has-inline-listbox cbds-product-search" style="width:70%;display:inline-block">'+
-					'<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-combobox-lookup" aria-expanded="false" aria-haspopup="listbox" role="combobox">'+
-					'<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none"><input id="productName'+count+'" name="productName'+count+'" class="slds-input slds-combobox__input '+
-					'cbds-inventoryline__input--name" aria-autocomplete="list" aria-controls="listbox-unique-id" autocomplete="off" role="textbox" placeholder="'+inventoryi18n.typetosearch_prodser+'" value="" '+
-					'type="text" style="box-shadow: none;"></div></div></div>'+
-					'&nbsp;<img id="searchIcon'+count+'" title="'+alert_arr.Products+'" src="themes/images/products.gif" style="cursor: pointer;" onclick="productPickList(this,\''+module+'\','+count+')" align="absmiddle">'+
-					'<input id="hdnProductId'+count+'" name="hdnProductId'+count+'" value="" type="hidden"><input type="hidden" id="lineItemType'+count+'" name="lineItemType'+count+'" value="Products" />'+
-					'</td></tr><tr><td class="small"><input type="hidden" value="" id="subproduct_ids'+count+'" name="subproduct_ids'+count+'" /><span id="subprod_names'+count+'" name="subprod_names'+count+'" style="color:#C0C0C0;font-style:italic;"> </span>'+
-					'</td></tr><tr><td class="small" id="setComment'+count+'"><textarea id="comment'+count+'" name="comment'+count+'" class=small style="'+Inventory_Comment_Style+'"></textarea><img src="themes/images/clear_field.gif" onClick="getObj(\'comment'+count+'\').value=\'\'"; style="cursor:pointer;" /></td></tr></tbody></table>';
+	coltwo.innerHTML= `<table border="0" cellpadding="1" cellspacing="0" width="100%">
+							<tbody>
+								<tr>
+									<td class="small">
+										<div class="slds-combobox_container slds-has-inline-listbox cbds-product-search" style="width:70%;display:inline-block">
+											<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-combobox-lookup" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+												<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+													<input id="productName${count}"
+															name="productName${count}"
+															class="slds-input slds-combobox__input cbds-inventoryline__input--name"
+															aria-autocomplete="list"
+															aria-controls="listbox-unique-id"
+															autocomplete="off"
+															role="textbox"
+															placeholder="${inventoryi18n.typetosearch_prodser}" value=""
+															type="text"
+															style="box-shadow: none;">
+														<span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right">
+															<svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+																<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+															</svg>
+														</span>
+														<div class="slds-input__icon-group slds-input__icon-group_right">
+															<div role="status" class="slds-spinner slds-spinner_brand slds-spinner_x-small slds-input__spinner slds-hide">
+																<span class="slds-assistive-text">Loading</span>
+																<div class="slds-spinner__dot-a"></div>
+																<div class="slds-spinner__dot-b"></div>
+															</div>
+														</div>
+												</div>
+											</div>
+										</div>&nbsp;
+										<img id="searchIcon${count}" title="${alert_arr.Products}" src="themes/images/products.gif" style="cursor: pointer;" onclick="productPickList(this,'${module}',${count})" align="absmiddle">
+										<input id="hdnProductId${count}" name="hdnProductId${count}" value="" type="hidden">
+										<input type="hidden" id="lineItemType${count}" name="lineItemType${count}" value="Products" />
+									</td>
+								</tr>
+								<tr>
+									<td class="small">
+										<input type="hidden" value="" id="subproduct_ids${count}" name="subproduct_ids${count}" />
+										<span id="subprod_names${count}" name="subprod_names${count}" style="color:#C0C0C0;font-style:italic;"></span>
+									</td>
+								</tr>
+								<tr>
+									<td class="small" id="setComment${count}">
+										<textarea id="comment${count}" name="comment${count}" class=small style="${Inventory_Comment_Style}"></textarea>
+										<img src="themes/images/clear_field.gif" onClick="getObj('comment${count}').value=''"; style="cursor:pointer;" />
+									</td>
+								</tr>
+							</tbody>
+						</table>`;
 
 	//Additional Information column
 	colthree.className = 'crmTableRow small';
@@ -1462,8 +1516,17 @@ function InventorySelectAll(mod, image_pth) {
 
 		/* Instance listeners */
 		window.addEventListener('keyup', this.preventSubmit.bind(this), true);
-		this.utils.on(this.input, 'keyup', this.throttle, this);
+		this.utils.on(this.input, 'keyup', this.debounce(this.trigger, 420), this);
+		this.utils.on(this.input, 'keyup', this.handleImmediateInput, this);
 		this.utils.on(this.input, 'blur', this.delayedClear, this);
+
+		GlobalVariable_getVariable('Application_ProductService_Search_Autocomplete_Limit', 1, '', gVTUserID)
+			.then((r) => {
+				const limit = JSON.parse(r)['Application_ProductService_Search_Autocomplete_Limit'];
+				this.source = this.source.replace('limit=10', `limit=${limit}`);
+			}).catch((e) => {
+				console.error(e);
+			});
 	}
 
 	ProductAutocomplete.prototype = {
@@ -1474,10 +1537,9 @@ function InventorySelectAll(mod, image_pth) {
 			var term = this.input.value;
 			if (!isSpecialKey && term.length > this.threshold) {
 				this.getResults(term);
+				this.setSpinner(true);
 			} else if (term.length < this.threshold) {
 				this.clear();
-			} else if (isSpecialKey) {
-				this.handleKeyInput(e);
 			}
 		},
 
@@ -1489,10 +1551,33 @@ function InventorySelectAll(mod, image_pth) {
 			}
 		},
 
-		throttle: function (e) {
-			window.setTimeout(this.trigger(e), 100);
+		handleImmediateInput: function (e) {
+			if (this.isSpecialKey(e.keyCode)) {
+				this.handleKeyInput(e);
+			}
 		},
 
+		debounce: function (func, duration) {
+			let timeout;
+
+			return function (...args) {
+				const effect = () => {
+					timeout = null;
+					return func.apply(this, args);
+				};
+				clearTimeout(timeout);
+				timeout = setTimeout(effect, duration);
+			};
+		},
+
+		setSpinner: function (state) {
+			let spinner = this.utils.getFirstClass(this.el, 'slds-spinner');
+			if (state) {
+				spinner.classList.remove('slds-hide');
+			} else {
+				spinner.classList.add('slds-hide');
+			}
+		},
 
 		preventSubmit: function (e) {
 			if (e.keyCode == 13 && this.active) {
@@ -1507,11 +1592,16 @@ function InventorySelectAll(mod, image_pth) {
 		getResults: function (term) {
 			var h = getAccConFieldnames,
 				dE = document.EditView,
-				accid = h().acc === '' ? 0 : h().acc,
-				ctoid = h().con === '' ? 0 : h().con,
+				accid = h().acc === '' ? 0 : document.EditView[h().acc].value,
+				ctoid = h().con === '' ? 0 : document.EditView[h().con].value,
 				recid = dE === undefined ? 0 : dE.record.value,
 				_this = this,
 				r = new XMLHttpRequest();
+			var currencyfield = document.getElementById('inventory_currency');
+			var currencyid = '';
+			if (currencyfield!=undefined) {
+				currencyid = currencyfield.value;
+			}
 
 			r.onreadystatechange = function () {
 				if (this.readyState == 4 && this.status == 200) {
@@ -1519,7 +1609,7 @@ function InventorySelectAll(mod, image_pth) {
 					_this.processResult(res);
 				}
 			};
-			r.open('GET', this.source + this.input.value + '&accid='+accid+ '&ctoid='+ctoid+'&modid='+recid, true);
+			r.open('GET', this.source + this.input.value + '&accid='+accid+ '&ctoid='+ctoid+'&modid='+recid+'&currencyid='+currencyid, true);
 			r.send();
 
 			// Helper to keep organized
@@ -1548,6 +1638,7 @@ function InventorySelectAll(mod, image_pth) {
 				// Build results
 				this.buildResults(res);
 			}
+			this.setSpinner(false);
 		},
 
 		buildResultBox: function () {
@@ -1628,7 +1719,9 @@ function InventorySelectAll(mod, image_pth) {
 
 			mediaBody.appendChild(listboxText);
 			for (var i = 0; i < listboxMetas.length; i++) {
-				mediaBody.appendChild(listboxMetas[i]);
+				if (lines[i].value != '##FIELDDISABLED##') {
+					mediaBody.appendChild(listboxMetas[i]);
+				}
 			}
 
 			var media = _createEl('div', 'slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta');
@@ -1805,6 +1898,7 @@ function InventorySelectAll(mod, image_pth) {
 				this.parent.divisible = result.obj.meta.divisible == 0 ? false : true;
 
 				this.parent.expandExtra();
+				this.parent.getProductImage(result.obj.meta.id);
 				this.parent.calcLine();
 
 				this.utils.getFirstClass(this.utils.findUp(this.el, '.' + this.root.lineClass), this.root.inputPrefix + '--quantity').focus();
@@ -1975,7 +2069,10 @@ function handleProductAutocompleteSelect(obj) {
 	document.getElementById('comment'+no).innerHTML = obj.result.meta.comments;
 	var currency = document.getElementById('inventory_currency').value;
 	if (obj.result.pricing.multicurrency[currency] != undefined && gVTModule != 'PurchaseOrder' && gVTModule != 'Receiptcards') {
-		document.getElementById('listPrice'+no).value = obj.result.pricing.multicurrency[currency].converted_price;
+		if (Object.keys(obj.result.pricing.multicurrency).length == 1 && obj.result.pricing.multicurrency[currency].actual_price != obj.result.pricing.unit_price) {
+			ldsPrompt.show(alert_arr['Warning'], alert_arr.ACT_UNIT_PRICE_MISMATCH);
+		}
+		document.getElementById('listPrice'+no).value = obj.result.pricing.multicurrency[currency].actual_price;
 	} else {
 		var list_price = obj.result.pricing.unit_price;
 		if (gVTModule == 'PurchaseOrder' || gVTModule == 'Receiptcards' ) {
@@ -1992,6 +2089,11 @@ function handleProductAutocompleteSelect(obj) {
 	if (obj.result.pricing.discount != undefined && obj.result.pricing.discount != 0) {
 		document.EditView.elements['discount'+no][1].checked = true;
 		document.EditView.elements['discount_percentage'+no].value = obj.result.pricing.discount;
+	} else {
+		// zero discount
+		document.EditView.elements['discount'+no][0].checked = true;
+		document.EditView.elements['discount_percentage'+no].value = 0;
+		document.EditView.elements['discount_amount'+no].value = 0;
 	}
 
 	// Update the icon

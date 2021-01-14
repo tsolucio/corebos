@@ -330,4 +330,76 @@
 	<classname>googleAuthDriver</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add ReplyTo on Email module</description>
+	<filename>build/changeSets/2020/addReplyToOnEmail.php</filename>
+	<classname>addReplyToOnEmail</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>MajorLabel</author>
+	<description>Add countrycode to account address section</description>
+	<filename>build/changeSets/2020/addCountryCode.php</filename>
+	<classname>addCountryCode</classname>
+	<systemupdate>false</systemupdate>
+	<blocked>true</blocked>
+</changeSet>
+<changeSet>
+	<author>MajorLabel</author>
+	<description>Add countrycode to contact address section</description>
+	<filename>build/changeSets/2020/addCountryCodeContacts.php</filename>
+	<classname>addCountryCodeContacts</classname>
+	<systemupdate>false</systemupdate>
+	<blocked>true</blocked>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Increment message name/subject field size</description>
+	<filename>build/changeSets/2020/incmessagenamefield.php</filename>
+	<classname>incmessagenamefield</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>Kiko Jover</author>
+	<description>Change size and uitype of cbCompany Lagal Fields</description>
+	<filename>build/changeSets/2020/upd_cbCompanyLegalFields.php</filename>
+	<classname>upd_cbCompanyLegalFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Fix EMail Parent Field Type of Data</description>
+	<filename>build/changeSets/2020/fixEmailParentFieldTypeData.php</filename>
+	<classname>fixEmailParentFieldTypeData</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Standardize Sales Order and HelpDesk related list on Modules</description>
+	<filename>build/changeSets/2020/standardizeSORLonModules.php</filename>
+	<classname>standardizeSORLonModules</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Increment key-value value field to handle bigger values in settings</description>
+	<filename>build/changeSets/2020/incsettingsfield.php</filename>
+	<classname>incsettingsfield</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add information fields to custom workflow expression functions</description>
+	<filename>build/changeSets/2020/workflowexpfunctioninfo.php</filename>
+	<classname>workflowexpfunctioninfo</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Increment Document filetype length</description>
+	<filename>build/changeSets/2020/incdocfiletypelength.php</filename>
+	<classname>incdocfiletypelength</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

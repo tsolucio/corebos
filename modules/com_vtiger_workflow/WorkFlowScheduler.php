@@ -179,6 +179,7 @@ class WorkFlowScheduler {
 				$records = $this->getEligibleWorkflowRecords($workflow);
 				$noOfRecords = count($records);
 				for ($j = 0; $j < $noOfRecords; ++$j) {
+					$tasks = $tm->getTasksForWorkflow($workflow->id);
 					$recordId = $records[$j];
 					$moduleName = $workflow->moduleName;
 					$wsEntityId = vtws_getWebserviceEntityId($moduleName, $recordId);
@@ -188,18 +189,12 @@ class WorkFlowScheduler {
 					foreach ($tasks as $task) {
 						if ($task->active) {
 							$trigger = (empty($task->trigger) ? null : $task->trigger);
-							$wfminutes=$workflow->schminuteinterval;
-							if ($wfminutes!=null) {
-								$time = time();
-								$delay=$time;
+							if ($trigger != null) {
+								$delay = strtotime($data[$trigger['field']]) + $trigger['days'] * 86400;
 							} else {
-								if ($trigger != null) {
-									$delay = strtotime($data[$trigger['field']]) + $trigger['days'] * 86400;
-								} else {
-									$delay = 0;
-								}
+								$delay = 0;
 							}
-							if ($task->executeImmediately == true && $wfminutes==null) {
+							if ($delay==0) {
 								if (empty($task->test) || $task->evaluate($entityCache, $entityData->getId())) {
 									try {
 										$task->startTask($entityData);

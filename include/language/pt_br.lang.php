@@ -184,6 +184,7 @@ $app_strings = array (
 'NTC_TIME_FORMAT' => '(24:00)',
 'NTC_DATE_TIME_FORMAT' => '(yyyy-mm-dd 24:00)',
 'NTC_DELETE_CONFIRMATION' => 'Você tem certeza que deseja apagar este registro?',
+'SMTP_DELETE_CONFIRMATION' => 'Are you sure you want to delete this SMTP settings?',
 'NTC_ACCOUNT_DELETE_CONFIRMATION' => 'Apagando esta Conta removerá as oportunidades e cotações relacionadas. Tem certeza que deseja apagar esta conta?',
 'NTC_VENDOR_DELETE_CONFIRMATION' => 'Apagando este fornecedor serão removidas os pedidos de compras relacionados. Tem certeza que deseja apagar este fornecedor?',
 'ERR_DELETE_RECORD' => 'Um registro dever ser especificado para apagar o contato.',
@@ -874,7 +875,7 @@ $app_strings = array (
 'MSG_VTIGERTEAM'=>'Equipe CRM',
 'MSG_IS_NOT_UPLOADED'=>'não foi atualizado. São permitidos arquivos do tipo - jpeg, png, jpg, pjpeg, x-png or gif',
 'MSG_IMAGE_ERROR'=>'Imagem não encontrada',
-
+'LBL_IMAGESECURITY_ERROR' => 'Invalid image: contains potential malicious contents',
 'Information'=>'Informação',
 'Address'=>'Endereço',
 'Custom Information'=>'Informação customizada',
@@ -1176,6 +1177,8 @@ $app_strings = array (
 'LBL_CALLER_INFORMATION'=>'Informação de quem liga',
 'LBL_CALLER_NUMBER'=>'Número :',
 'LBL_CALLER_NAME'=>'Nome :',
+'LBL_VIEW_CONTACT' => 'View Contact',
+'LBL_CLICK_NOTIFICATION_TO'=> 'Click Notification to ',
 
 // Module Sequence Numbering
 'LBL_DUPLICATE' => 'Duplicar',

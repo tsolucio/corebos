@@ -42,61 +42,63 @@ function ShowFolders(folderid)
 		method:'POST',
 		url:'index.php?module=Emails&ajax=true&action=EmailsAjax&file=ListView&folderid='+folderid
 	{rdelim}).done(function(response) {ldelim}
-										document.getElementById("status").style.display="none";
-										if (document.getElementById('mail_fldrname')!=null){ldelim}
-											if(document.getElementById('_mailfolder_'+mail_folder)!=null && document.getElementById('_mailfolder_'+mail_folder).className!='mm_folder'){ldelim}
-												document.getElementById('_mailfolder_'+mail_folder).className='mm_folder';
-												document.getElementById('_mailfolder_'+mail_folder).parentNode.className='';
-											{rdelim}
-										{rdelim}
-										if (document.getElementById('_replydiv_')!=null){ldelim}
-											if(document.getElementById('_replydiv_').style.display!='none')
-											{ldelim}
-											document.getElementById('_replydiv_').style.display='none';
-											document.getElementById('_contentdiv_').style.display='block';
-												document.getElementById('_mailfolder_mm_compose').parentNode.className='';
-												document.getElementById('_mailfolder_mm_compose').className='';
-											{rdelim}
-										{rdelim}
-										if (document.getElementById('_settingsdiv_')!=null){ldelim}
-											if(document.getElementById('_settingsdiv_').style.display!='none')
-											{ldelim}document.getElementById('_settingsdiv_').style.display='none';
-											document.getElementById('_contentdiv_').style.display='block';
-												document.getElementById('_mailfolder_mm_settings').parentNode.className='';
-												document.getElementById('_mailfolder_mm_settings').className='';
-											{rdelim}
-										{rdelim}
-										if (document.getElementById('_contentdiv2_')!=null){ldelim}
-											if(document.getElementById('_contentdiv2_').style.display!='none')
-											{ldelim}
-											document.getElementById('_contentdiv2_').style.display='none';
-											document.getElementById('_contentdiv_').style.display='block';
-												document.getElementById('_mailfolder_mm_settings').parentNode.className='';
-											{rdelim}
-										{rdelim}
-										result = response.split('&#&#&#');
-										if (result[1] != '') alert(result[1]);
-										if (gFolderid == folderid) {ldelim}
-											gselectedrowid = 0;
-											document.getElementById("email_con").innerHTML=result[2];
-											var emaildtl = document.getElementById('EmailDetails');
-											if (emaildtl) {
-												emaildtl.innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top:10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
-											}
-											execJS(document.getElementById('email_con'));
-										{rdelim} else {ldelim}
-											if (emaildtl) {
-												emaildtl.innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top:10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
-											}
-											document.getElementById("email_con").innerHTML=result[2];
-											execJS(document.getElementById('email_con'));
-										{rdelim}
-										if(document.getElementById('_contentdiv_')!=null){ldelim}
-											if(document.getElementById('_mailfolder_mm_drafts').parentNode.className=='mm_folder_selected'){ldelim}
-												document.getElementById('_mailfolder_mm_drafts').parentNode.className='';
-												document.getElementById('mm_folder mm_folder_selected').className='';
-											{rdelim}
-										{rdelim}
+		document.getElementById('status').style.display='none';
+		if (document.getElementById('mail_fldrname')!=null){ldelim}
+			if(document.getElementById('_mailfolder_'+mail_folder)!=null && document.getElementById('_mailfolder_'+mail_folder).className!='mm_folder'){ldelim}
+				document.getElementById('_mailfolder_'+mail_folder).className='mm_folder';
+				document.getElementById('_mailfolder_'+mail_folder).parentNode.className='';
+			{rdelim}
+		{rdelim}
+		if (document.getElementById('_replydiv_')!=null){ldelim}
+			if(document.getElementById('_replydiv_').style.display!='none')
+			{ldelim}
+			document.getElementById('_replydiv_').style.display='none';
+			document.getElementById('_contentdiv_').style.display='block';
+				document.getElementById('_mailfolder_mm_compose').parentNode.className='';
+				document.getElementById('_mailfolder_mm_compose').className='';
+			{rdelim}
+		{rdelim}
+		if (document.getElementById('_settingsdiv_')!=null){ldelim}
+			if(document.getElementById('_settingsdiv_').style.display!='none')
+			{ldelim}document.getElementById('_settingsdiv_').style.display='none';
+			document.getElementById('_contentdiv_').style.display='block';
+				document.getElementById('_mailfolder_mm_settings').parentNode.className='';
+				document.getElementById('_mailfolder_mm_settings').className='';
+			{rdelim}
+		{rdelim}
+		if (document.getElementById('_contentdiv2_')!=null){ldelim}
+			if(document.getElementById('_contentdiv2_').style.display!='none')
+			{ldelim}
+			document.getElementById('_contentdiv2_').style.display='none';
+			document.getElementById('_contentdiv_').style.display='block';
+				document.getElementById('_mailfolder_mm_settings').parentNode.className='';
+			{rdelim}
+		{rdelim}
+		result = response.split('&#&#&#');
+		if (result[1] != '') {
+			alert(result[1]);
+		}
+		if (gFolderid == folderid) {ldelim}
+			gselectedrowid = 0;
+			document.getElementById('email_con').innerHTML=result[2];
+			var emaildtl = document.getElementById('EmailDetails');
+			if (emaildtl) {
+				emaildtl.innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top:10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
+			}
+			execJS(document.getElementById('email_con'));
+		{rdelim} else {ldelim}
+			if (emaildtl) {
+				emaildtl.innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top:10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
+			}
+			document.getElementById('email_con').innerHTML=result[2];
+			execJS(document.getElementById('email_con'));
+		{rdelim}
+		if(document.getElementById('_contentdiv_')!=null){ldelim}
+			if(document.getElementById('_mailfolder_mm_drafts').parentNode.className=='mm_folder_selected'){ldelim}
+				document.getElementById('_mailfolder_mm_drafts').parentNode.className='';
+				document.getElementById('mm_folder mm_folder_selected').className='';
+			{rdelim}
+		{rdelim}
 	{rdelim});
 {rdelim}
 </script>

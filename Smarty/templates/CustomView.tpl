@@ -24,6 +24,7 @@
 <input type="hidden" name="record" value="{$CUSTOMVIEWID}">
 <input type="hidden" name="return_action" value="{$RETURN_ACTION}">
 <input type="hidden" id="user_dateformat" name="user_dateformat" value="{$DATEFORMAT}">
+<input type="hidden" name="permit_all" value="{$PERMITALL}" />
 <script type="text/javascript">
 function mandatoryCheck()
 {ldelim}
@@ -83,7 +84,7 @@ function mandatoryCheck()
    <div class="small" style="padding: 20px;">
 	<span class="lvtHeaderText"><a class="hdrLink" href="index.php?action=ListView&module={$MODULE}&parenttab={$CATEGORY}">{$MODULELABEL}</a> &gt;
 	{if $EXIST eq "true" && $EXIST neq ''}
-		{$MOD.Edit_Custom_View}
+		{$MOD.Edit_Custom_View} {$VIEWNAME}
 	{else}
 	 	{$MOD.New_Custom_View}
 	{/if}
@@ -104,29 +105,33 @@ function mandatoryCheck()
 					<td class="dvtCellInfo cblds-p_medium" width="10%" align="right"><span class="style1">*</span>{$MOD.LBL_VIEW_NAME}
 					</td>
 					<td class="dvtCellInfo" width="30%">
-						<input class="detailedViewTextBox" type="text" name='viewName' value="{if isset($VIEWNAME)}{$VIEWNAME}{/if}" onfocus="this.className='detailedViewTextBoxOn'" onblur="this.className='detailedViewTextBox'" size="40"/>
+						<input class="detailedViewTextBox" type="text" name='viewName' value="{if isset($VIEWNAME)}{$VIEWNAME}{/if}" onfocus="this.className='detailedViewTextBoxOn'" onblur="this.className='detailedViewTextBox'" size="40" {if $PERMITALL eq 'true'}disabled{/if}/>
 					</td>
 					<td class="dvtCellInfo" width="20%">
 					{if $CHECKED eq 'checked'}
-						<input type="checkbox" name="setDefault" value="1" checked/>{$MOD.LBL_SETDEFAULT}
+						<input type="checkbox" name="setDefault" value="1" checked {if $PERMITALL eq 'true'}disabled{/if} />{$MOD.LBL_SETDEFAULT}
 					{else}
-						<input type="checkbox" name="setDefault" value="0" />{$MOD.LBL_SETDEFAULT}
+						<input type="checkbox" name="setDefault" value="0" {if $PERMITALL eq 'true'}disabled{/if} />{$MOD.LBL_SETDEFAULT}
 					{/if}
 					</td>
 					<td class="dvtCellInfo" width="20%">
 					{if $MCHECKED eq 'checked'}
-						<input type="checkbox" name="setMetrics" value="1" checked/>{$MOD.LBL_LIST_IN_METRICS}
+						<input type="checkbox" name="setMetrics" value="1" checked {if $PERMITALL eq 'true'}disabled{/if} />{$MOD.LBL_LIST_IN_METRICS}
 					{else}
-						<input type="checkbox" name="setMetrics" value="0" />{$MOD.LBL_LIST_IN_METRICS}
+						<input type="checkbox" name="setMetrics" value="0" {if $PERMITALL eq 'true'}disabled{/if} />{$MOD.LBL_LIST_IN_METRICS}
 					{/if}
 					</td>
 					<td class="dvtCellInfo" width="20%">
-					{if $STATUS eq '' || $STATUS eq 1}
-						<input type="checkbox" name="setStatus" value="1"/>
-					{elseif $STATUS eq 2}
-						<input type="checkbox" name="setStatus" value="2" checked/>
-					{elseif $STATUS eq 3 || $STATUS eq 0}
-						<input type="checkbox" name="setStatus" value="3" checked/>
+					{if $PERMITALL eq 'true'}
+						<input type="checkbox" name="setStatus" value="0" checked {if $PERMITALL eq 'true'}disabled{/if} />
+					{else}
+						{if $STATUS eq '' || $STATUS eq 1}
+							<input type="checkbox" name="setStatus" value="1" />
+						{elseif $STATUS eq 2}
+							<input type="checkbox" name="setStatus" value="2" checked />
+						{elseif $STATUS eq 3 || $STATUS eq 0}
+							<input type="checkbox" name="setStatus" value="3" checked />
+						{/if}
 					{/if}
 						{$MOD.LBL_SET_AS_PUBLIC}
 					</td>
@@ -167,6 +172,7 @@ function mandatoryCheck()
 		</tr>
 		{/section}
 		<tr><td colspan="4">&nbsp;</td></tr>
+		{if $PERMITALL neq 'true'}
 		<tr><td colspan="4"><table align="center" border="0" cellpadding="0" cellspacing="0" width="95%">
 		<tbody><tr>
 		 <td>
@@ -279,11 +285,14 @@ function mandatoryCheck()
 	</table>
 	</td>
 	</tr>
+	{/if}
   <tr><td colspan="4">&nbsp;</td></tr>
   <tr><td colspan="4" style="padding: 5px;">
 	<div align="center">
 	  <input title="{$APP.LBL_SAVE_BUTTON_LABEL}" accesskey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save"  name="button2" value="{$APP.LBL_SAVE_BUTTON_LABEL}" type="submit" onClick="return validateCV();"/>
-	  <input title="{$APP.LBL_NEW_BUTTON_TITLE}" accesskey="{$APP.LBL_NEW_BUTTON_KEY}" class="crmbutton small create" name="newsave" value="{$APP.LBL_NEW_BUTTON_LABEL}" type="submit" onClick="return validateCV();"/>
+	  {if $PERMITALL neq 'true'}
+	  	<input title="{$APP.LBL_NEW_BUTTON_TITLE}" accesskey="{$APP.LBL_NEW_BUTTON_KEY}" class="crmbutton small create" name="newsave" value="{$APP.LBL_NEW_BUTTON_LABEL}" type="submit" onClick="return validateCV();"/>
+	  {/if}
 	  <input title="{$APP.LBL_CANCEL_BUTTON_LABEL}" accesskey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" name="button2" onclick='window.history.back()' value="{$APP.LBL_CANCEL_BUTTON_LABEL}" type="button" />
 	</div>
   </td></tr>
@@ -298,6 +307,7 @@ function mandatoryCheck()
 var k;
 var colOpts;
 var manCheck = new Array({$MANDATORYCHECK});
+var permitAll = {$PERMITALL};
 {literal}
 if(document.CustomView.record.value == '') {
 	for(k=0;k<manCheck.length;k++) {
@@ -321,7 +331,7 @@ function validateCV() {
 }
 
 function checkDuplicate() {
-	if(getObj('viewName').value.toLowerCase() == 'all') {
+	if(getObj('viewName').value.toLowerCase() == 'all' && !permitAll) {
 		alert(alert_arr.ALL_FILTER_CREATION_DENIED);
 		return false;
 	}

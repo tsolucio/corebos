@@ -262,7 +262,7 @@
 								onclick="
 									{if isset($smarty.request.Module_Popup_Edit)}window.close()
 									{elseif isset($CANCELGO)}window.location.href='{$CANCELGO}'
-									{else}window.history.back()
+									{else}if (window.history.length==1) { window.close(); } else { window.history.back(); }
 									{/if};"
 								type="button"
 								name="button">
@@ -413,7 +413,7 @@
 						#marquee span {
 							display: inline-block;
 							padding-left: 100%;
-							animation: marquee {$ANNOUNCEMENT|count_characters / 3}s linear infinite;
+							animation: marquee {math equation="max(15, y/3)" y=$ANNOUNCEMENT|count_characters}s linear infinite;
 						}
 						#marquee span:hover {
 							animation-play-state: paused
@@ -508,7 +508,6 @@
 							{* Import button *}
 							{if $CHECK.Import eq 'yes'
 								&& $MODULE neq 'Documents'
-								&& $MODULE neq 'Calendar'
 								&& $MODULE neq 'Calendar4You'
 							}
 							<a
@@ -523,7 +522,7 @@
 										{$APP.LBL_IMPORT} {$MODULE|getTranslatedString:$MODULE}
 									</span>
 							</a>
-							{elseif $CHECK.Import eq 'yes' && $MODULE eq 'Calendar'}
+							{elseif $CHECK.Import eq 'yes' && $MODULE eq 'Calendar4You'}
 							<button
 								class="slds-button slds-button_icon slds-button_icon-border-filled"
 								aria-haspopup="true"
@@ -538,10 +537,12 @@
 							</button>
 							{/if}
 							{* Export Button *}
-							{if $CHECK.Export eq 'yes' && $MODULE neq 'Calendar' && $MODULE neq 'Calendar4You'}
-								{$exportbuttononclick = "return selectedRecords('{$MODULE}','{$CATEGORY}')"}
-							{elseif $CHECK.Export eq 'yes' && $MODULE eq 'Calendar'}
-								{$exportbuttononclick = "fnvshobj(this,'CalExport');"}
+							{if $CHECK.Export eq 'yes'}
+								{if $MODULE eq 'Calendar4You'}
+									{$exportbuttononclick = "fnvshobj(this,'CalExport');"}
+								{else}
+									{$exportbuttononclick = "return selectedRecords('{$MODULE}','{$CATEGORY}')"}
+								{/if}
 							{/if}
 							{if isset($exportbuttononclick)}
 							<button

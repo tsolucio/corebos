@@ -24,6 +24,7 @@ require_once 'include/Webservices/SessionManager.php';
 require_once 'include/logging.php';
 checkFileAccessForInclusion("include/language/$default_language.lang.php");
 require_once "include/language/$default_language.lang.php";
+include_once 'include/integrations/saml/saml.php';
 
 $API_VERSION = '0.22';
 $adminid = Users::getActiveAdminId();
@@ -119,8 +120,30 @@ $operation = vtws_getParameter($_REQUEST, 'operation');
 $operation = strtolower($operation);
 $format = vtws_getParameter($_REQUEST, 'format', 'json');
 $sessionId = vtws_getParameter($_REQUEST, 'sessionName');
+$mode = vtws_getParameter($_REQUEST, 'mode', '');
 
 $sessionManager = new SessionManager();
+
+$saml = new corebos_saml();
+if ($saml->isActiveWS() && !empty($saml->samlclient) && ($mode!='' || ($operation=='logout' && !empty($sessionId)))) {
+	$sessionManager->startSession();
+	if (!empty($sessionManager->get('samlUserdata'))) {
+		$saml->authenticateWS($sessionManager, $API_VERSION, $mode);
+	} else {
+		if ($operation=='logout' || $mode=='slo') {
+			$saml->logoutWS($sessionId, $sessionManager->get('authenticatedUserId'));
+		} elseif ($mode=='acs') {
+			$saml->acs($sessionManager, $API_VERSION, $mode);
+		} elseif ($mode=='metadata') {
+			$saml->metadata();
+		} else {
+			$rturl = vtws_getParameter($_REQUEST, 'RTURL', '');
+			$saml->login($mode.($rturl=='' ? '' : '&RTURL='.$rturl));
+		}
+	}
+	die();
+}
+
 try {
 	$operationManager = new OperationManager($adb, $operation, $format, $sessionManager);
 } catch (WebServiceException $e) {

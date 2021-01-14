@@ -893,6 +893,7 @@ if (typeof(MailManager) == 'undefined') {
 			}
 
 			var from = jQuery('#_mailopen_from').html();
+			var replyto = jQuery('#_mailopen_replyto').html();
 			var cc = jQuery('#_mailopen_cc') ? jQuery('#_mailopen_cc').html() : '';
 			var subject = jQuery('#_mailopen_subject').html();
 			var body = jQuery('#_mailopen_body').html();
@@ -908,7 +909,7 @@ if (typeof(MailManager) == 'undefined') {
 				jQuery('#_mail_replyfrm_cc_').val('');
 			}
 
-			jQuery('#_mail_replyfrm_to_').val(from);
+			jQuery('#_mail_replyfrm_to_').val(replyto=='' ? from : replyto);
 			jQuery('#_mail_replyfrm_bcc_').val('');
 			var replySubject = (subject.toUpperCase().indexOf('RE:') == 0) ? subject : 'Re: ' + subject;
 			jQuery('#_mail_replyfrm_subject_').val(replySubject);
@@ -1062,7 +1063,7 @@ if (typeof(MailManager) == 'undefined') {
 
 			var msguid = encodeURIComponent(meta['msguid'] ? meta['msguid'].replace('<', '&lt;').replace('>', '&gt;') : '');
 
-			if (!MailManager.validateEmailFields(form.to.value, form.cc.value, form.bcc.value)) {
+			if (!MailManager.validateEmailFields(form.to.value, form.cc.value, form.bcc.value, form.replyto.value)) {
 				return false;
 			}
 
@@ -1087,6 +1088,7 @@ if (typeof(MailManager) == 'undefined') {
 				'_operationarg':'send',
 				'_msgid':msguid,
 				'to':encodeURIComponent(form.to.value),
+				'replyto':encodeURIComponent(form.replyto.value),
 				'cc':encodeURIComponent(form.cc.value),
 				'bcc':encodeURIComponent(form.bcc.value),
 				'subject':encodeURIComponent(form.subject.value),
@@ -1119,7 +1121,7 @@ if (typeof(MailManager) == 'undefined') {
 				MailManager.mail_reply_rteinstance.updateElement();
 			}
 
-			if (!MailManager.validateEmailFields(form.to.value, form.cc.value, form.bcc.value)) {
+			if (!MailManager.validateEmailFields(form.to.value, form.cc.value, form.bcc.value, form.replyto.value)) {
 				return false;
 			}
 
@@ -1131,9 +1133,11 @@ if (typeof(MailManager) == 'undefined') {
 
 			MailManager.progress_show(MailManager.i18n('JSLBL_Saving'), ' ...');
 			var params = {
-				'_operation':'mail', '_operationarg':'save',
+				'_operation':'mail',
+				'_operationarg':'save',
 				'emailid':encodeURIComponent(form.emailid.value),
 				'to':encodeURIComponent(form.to.value),
+				'replyto':encodeURIComponent(form.replyto.value),
 				'cc':encodeURIComponent(form.cc.value),
 				'bcc':encodeURIComponent(form.bcc.value),
 				'subject':encodeURIComponent(form.subject.value),
@@ -1473,7 +1477,12 @@ if (typeof(MailManager) == 'undefined') {
 			return fileSize;
 		},
 
-		validateEmailFields :  function (to, cc, bcc) {
+		validateEmailFields :  function (to, cc, bcc, replyto) {
+			if (replyto != '') {
+				if (!MailManager.mail_validate(replyto)) {
+					return false;
+				}
+			}
 			if (to != '') {
 				if (!MailManager.mail_validate(to)) {
 					return false;

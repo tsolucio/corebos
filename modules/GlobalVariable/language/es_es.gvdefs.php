@@ -685,6 +685,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Número máximo de resultados a mostrar en la pantalla de búsqueda global autocompletada.',
 ),
+'Application_ProductService_Search_Autocomplete_Limit' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'Aplicación',
+	'values' => '',
+	'definition' => 'Número máximo de resultados a mostrar en la pantalla de búsqueda autocompletada de productos/servicios en líneas de inventario.',
+),
 'Product_Copy_Bundle_OnDuplicate' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
@@ -1629,6 +1636,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'UI',
 	'values' => '',
 	'definition' => 'Porcentaje de la altura de pantalla que utilizarán las ventanas emergentes. El valor predeterminado es 80%',
+),
+'Application_Filter_All_Edit' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleana',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Permitir la edición del filtro "Todos". Por defecto es 1',
 ),
 );
 

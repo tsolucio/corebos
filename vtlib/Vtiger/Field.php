@@ -318,8 +318,8 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 	 */
 	public static function deleteForModule($moduleInstance) {
 		global $adb;
-		$adb->pquery("DELETE FROM vtiger_field WHERE tabid=?", array($moduleInstance->id));
-		self::log("Deleting fields of the module ... DONE");
+		$adb->pquery('DELETE FROM vtiger_field WHERE tabid=?', array($moduleInstance->id));
+		self::log('Deleting fields of the module ... DONE');
 	}
 
 	/**

@@ -33,6 +33,7 @@ if ($isadmin && $_REQUEST['_op']=='setconfigsendgrid') {
 	$srv_marketing = (empty($_REQUEST['srv_marketing']) ? '' : vtlib_purify($_REQUEST['srv_marketing']));
 	$user_marketing = (empty($_REQUEST['user_marketing']) ? '' : vtlib_purify($_REQUEST['user_marketing']));
 	$pass_marketing = (empty($_REQUEST['pass_marketing']) ? '' : vtlib_purify($_REQUEST['pass_marketing']));
+	$apiurl_transactional = (empty($_REQUEST['apiurl_transactional']) ? '' : vtlib_purify($_REQUEST['apiurl_transactional']));
 	$sd->saveSettings(
 		$isActive,
 		$usesg_transactional,
@@ -42,7 +43,8 @@ if ($isadmin && $_REQUEST['_op']=='setconfigsendgrid') {
 		$usesg_marketing,
 		$srv_marketing,
 		$user_marketing,
-		$pass_marketing
+		$pass_marketing,
+		$apiurl_transactional
 	);
 }
 
@@ -57,6 +59,7 @@ $smarty->assign('usesg_marketing', $sdsettings['usesg_marketing']);
 $smarty->assign('srv_marketing', $sdsettings['srv_marketing']);
 $smarty->assign('user_marketing', $sdsettings['user_marketing']);
 $smarty->assign('pass_marketing', $sdsettings['pass_marketing']);
+$smarty->assign('apiurl_transactional', $sdsettings['apiurl_transactional']);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);

@@ -442,4 +442,5 @@ var alert_arr = {
 	'Min. 1 number': 'Mínimo un número',
 	'Min. 1 special character': 'Mínimo un caracter especial ! ? , ; - @ #',
 	'LBL_CHANGE_PASSWORD': 'Cambiar contraseña',
+	'ACT_UNIT_PRICE_MISMATCH': 'El precio real de esta moneda debe ser igual al precio unitario, pero este no es el caso de este producto o servicio.'
 };

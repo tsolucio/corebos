@@ -75,6 +75,7 @@ if ($file_name != '' && $_FILES['filename']['size'] == 0) {
 		$ret_parentid = vtlib_purify($_REQUEST['parent_id']);
 		$ret_toadd = vtlib_purify($_REQUEST['parent_name']);
 		$ret_subject = vtlib_purify($_REQUEST['subject']);
+		$ret_replyto = vtlib_purify($_REQUEST['replyto']);
 		$ret_ccaddress = vtlib_purify($_REQUEST['ccmail']);
 		$ret_bccaddress = vtlib_purify($_REQUEST['bccmail']);
 		$ret_description = vtlib_purify($_REQUEST['description']);
@@ -147,6 +148,7 @@ if ($current_user->column_fields['send_email_to_sender']=='1' && isset($_REQUEST
 		$ret_parentid = vtlib_purify($_REQUEST['parent_id']);
 		$ret_toadd = vtlib_purify($_REQUEST['parent_name']);
 		$ret_subject = vtlib_purify($_REQUEST['subject']);
+		$ret_replyto = vtlib_purify($_REQUEST['replyto']);
 		$ret_ccaddress = vtlib_purify($_REQUEST['ccmail']);
 		$ret_bccaddress = vtlib_purify($_REQUEST['bccmail']);
 		$ret_description = vtlib_purify($_REQUEST['description']);

@@ -241,6 +241,14 @@ class cbQuestion extends CRMEntity {
 			$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.decode_html($q->column_fields['qmodule']);
 			if (!empty($q->column_fields['qcondition'])) {
 				$conds = decode_html($q->column_fields['qcondition']);
+				if (!empty($_REQUEST['cbQuestionRecord'])) {
+					$context_variable = vtlib_purify(json_decode(urldecode($_REQUEST['cbQuestionRecord']), true));
+					if (isset($context_variable['context_variable'])) {
+						foreach ($context_variable['context_variable'] as $value) {
+							$conds = str_replace($value['variable'], $value['value'], $conds);
+						}
+					}
+				}
 				foreach ($params as $param => $value) {
 					$conds = str_replace($param, $value, $conds);
 				}
@@ -394,6 +402,14 @@ class cbQuestion extends CRMEntity {
 				$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.decode_html($q->column_fields['qmodule']);
 				if (!empty($q->column_fields['qcondition'])) {
 					$conds = decode_html($q->column_fields['qcondition']);
+					if (!empty($_REQUEST['cbQuestionRecord'])) {
+						$context_variable = vtlib_purify(json_decode(urldecode($_REQUEST['cbQuestionRecord']), true));
+						if (isset($context_variable['context_variable'])) {
+							foreach ($context_variable['context_variable'] as $value) {
+								$conds = str_replace($value['variable'], $value['value'], $conds);
+							}
+						}
+					}
 					foreach ((array)$params as $param => $value) {
 						$conds = str_replace($param, $value, $conds);
 					}
@@ -484,14 +500,35 @@ class cbQuestion extends CRMEntity {
 		}
 		$fname = '';
 		if (!empty($ans)) {
-			$fname = tempnam($bqfiles, 'bq');
-			$fp = fopen($fname, 'w');
 			$properties = json_decode($ans['properties']);
+			if (!empty($properties->filename)) {
+				if (empty($properties->filenamedateformat)) {
+					$now = date('YmdHis');
+				} else {
+					$now = date($properties->filenamedateformat);
+				}
+				$fname = utf8_decode(preg_replace('/[^a-zA-Z0-9_\.\%]/', '', $properties->filename));
+				if (strpos($fname, '%s')===false) {
+					$fname .= '_%s';
+				} else {
+					$fname = suppressAllButFirst('%s', $fname);
+				}
+				$fname = $bqfiles.'/'.sprintf($fname, $now);
+			} else {
+				$fname = tempnam($bqfiles, 'bq');
+			}
+			$fp = fopen($fname, 'w');
 			$delim = empty($properties->delimiter) ? ',' : $properties->delimiter;
 			$encls = empty($properties->enclosure) ? '"' : $properties->enclosure;
 			$alllabels = array();
 			$alltypes = array();
-			$rowlabels = array_keys($ans['answer'][0]);
+			$rowlabels = !empty($ans['answer'][0]) ? array_keys($ans['answer'][0]) : array();
+			if (empty($rowlabels) && !empty($properties->columns)) {
+				for ($i=0; $i < count($properties->columns); $i++) {
+					$alllabels[] = $properties->columns[$i]->label;
+				}
+				$line = self::generateCSV($alllabels, $delim, $encls);
+			}
 			$ls = 0;
 			foreach ($rowlabels as $label) {
 				$alltypes[$label] = empty($properties->columns[$ls]->type) ? 'string' : $properties->columns[$ls]->type;
@@ -520,6 +557,7 @@ class cbQuestion extends CRMEntity {
 				}
 				fputs($fp, $line);
 			}
+			fclose($fp);
 		}
 		return $fname;
 	}

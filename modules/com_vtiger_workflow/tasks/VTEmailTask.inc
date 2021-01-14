@@ -27,7 +27,7 @@ class VTEmailTask extends VTTask {
 	private $entityinfo = '';
 
 	public function getFieldNames() {
-		return array('fromname', 'fromemail', 'replyto', 'subject', 'content', 'recepient', 'emailcc', 'emailbcc', 'attfieldnames', 'attachmentids');
+		return array('fromname', 'fromemail', 'replyto', 'subject', 'content', 'recepient', 'emailcc', 'emailbcc', 'attfieldnames', 'attachmentids', 'attach_icalendar', 'cbmsgtemplate', 'cbmsgtemplate_display', 'sgmsgtemplate', 'linktemplate');
 	}
 	public function after_retrieve() {
 		global $adb, $current_user;
@@ -147,9 +147,9 @@ class VTEmailTask extends VTTask {
 				$bcc = $mailto;
 			}
 		}
-		$to_email = preg_replace('/,,+/', ',', $to_email);
-		$cc = preg_replace('/,,+/', ',', $cc);
-		$bcc = preg_replace('/,,+/', ',', $bcc);
+		$to_email = trim(preg_replace('/,,+/', ',', $to_email), ',');
+		$cc = trim(preg_replace('/,,+/', ',', $cc), ',');
+		$bcc = trim(preg_replace('/,,+/', ',', $bcc), ',');
 		if (strlen(trim($to_email, " \t\n,")) == 0 && strlen(trim($cc, " \t\n,")) == 0 && strlen(trim($bcc, " \t\n,")) == 0) {
 			$util->revertUser();
 			return;
@@ -181,6 +181,40 @@ class VTEmailTask extends VTTask {
 				);
 				while (!$docrs->EOF) {
 					$doc = $docrs->FetchRow();
+					if (strpos($this->attachmentids, $doc['notesid'])===false) {
+						$this->attachmentids .= ($this->attachmentids=='' ? $doc['notesid'] : ','.$doc['notesid']);
+					}
+				}
+			}
+		}
+		if (!empty($this->linktemplate) && !empty($this->cbmsgtemplate)) {
+			$mail_templateid = $this->cbmsgtemplate;
+			list($tabid,$record_id) = explode('x', $entity->getId());
+			$msgtemp_res = $adb->pquery(
+				'select subject,template,templateonlytext
+				from vtiger_msgtemplate
+				inner join vtiger_crmentity on msgtemplateid=crmid
+				where deleted=0 and msgtemplateid=?',
+				array($mail_templateid)
+			);
+			if ($msgtemp_res && $adb->num_rows($msgtemp_res) > 0) {
+				if (!empty($msgtemp_res->fields['subject'])) {
+					$this->subject = $msgtemp_res->fields['subject'];
+				}
+				if (!empty($msgtemp_res->fields['template'])) {
+					$this->content = $msgtemp_res->fields['template'];
+				}
+				$this->subject = getMergedDescription($this->subject, $record_id, $entity->moduleName);
+				$this->content = getMergedDescription($this->content, $record_id, $entity->moduleName);
+				$mailtemp_docrs = $adb->pquery(
+					'select notesid
+					from vtiger_senotesrel
+					inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_senotesrel.notesid
+					where vtiger_crmentity.deleted=0 and vtiger_senotesrel.crmid=?',
+					array($mail_templateid)
+				);
+				while (!$mailtemp_docrs->EOF) {
+					$doc = $mailtemp_docrs->FetchRow();
 					if (strpos($this->attachmentids, $doc['notesid'])===false) {
 						$this->attachmentids .= ($this->attachmentids=='' ? $doc['notesid'] : ','.$doc['notesid']);
 					}
@@ -238,6 +272,17 @@ class VTEmailTask extends VTTask {
 				$this->attachmentsinfo[] = $pathattfield;
 			}
 		}
+		if (!empty($this->attach_icalendar) && $this->attach_icalendar == 'on' && $entity->moduleName == 'cbCalendar') {
+			list($tabid,$recordid) = explode('x', $entity->getId());
+			if (isRecordExists($recordid)) {
+				$cbCalendar = CRMEntity::getInstance('cbCalendar');
+				$cbCalendar->retrieve_entity_info($recordid, 'cbCalendar');
+				$icalfilename = $cbCalendar->getiCalendar($cbCalendar);
+				if (!empty($icalfilename)) {
+					$this->attachmentsinfo[] = $icalfilename;
+				}
+			}
+		}
 		$st = new VTSimpleTemplate($this->subject);
 		$subject = $st->render($entityCache, $entity->getId());
 		$ct = new VTSimpleTemplate($this->content);
@@ -250,6 +295,7 @@ class VTEmailTask extends VTTask {
 		$element['parent_type'] = $module;
 		$element['parent_id'] = $entity->getId();
 		$element['from_email'] = $from_email;
+		$element['replyto'] = $replyto;
 		$element['ccmail'] = $cc;
 		$element['bccmail'] = $bcc;
 		$element['subject'] = $subject;
@@ -259,6 +305,17 @@ class VTEmailTask extends VTTask {
 		$crmid = $this->createMessage($this->entityid, $module, $subject, $this->summary);
 		if ($crmid=='') {
 			list($wsid, $crmid) = explode('x', $emailid);
+		}
+		if (!empty($this->linktemplate) && !empty($this->sgmsgtemplate)) {
+			include_once 'include/integrations/sendgrid/sendgrid.php';
+			$sdInstance = new corebos_sendgrid();
+			try {
+				$res = $sdInstance->sendemailtemplate($this->sgmsgtemplate, $entity->getId(), $entity->moduleName, $to_email, $subject, $this->attachmentsinfo, $from_name, $from_email, $cc, $bcc, $replyto);
+				$logbg->debug("SG template mail was sent \nTo: $to_email\nFromName: $from_name\nFromEmail: $from_email\nCC: $cc\nBCC: $bcc\nResult: $res\nAttInfo: ".print_r($this->attachmentsinfo, true));
+			} catch (Exception $e) {
+				$logbg->debug('SG template mail failed:: '. $e->getMessage());
+			}
+			return;
 		}
 		$rdo = send_mail($module, $to_email, $from_name, $from_email, $subject, $content, $cc, $bcc, $this->attachmentsinfo, $crmid, $logo, $replyto, $qrScan, $brScan);
 		$logbg->debug("VTEmailTask\nTo: $to_email\nFromName: $from_name\nFromEmail: $from_email\nCC: $cc\nBCC: $bcc\nResult: $rdo\nAttInfo: ".print_r($this->attachmentsinfo, true));

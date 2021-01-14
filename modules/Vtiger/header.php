@@ -112,5 +112,12 @@ $smarty->assign('COREBOS_HEADER_PREMENU', ob_get_clean());
 getBrowserVariables($smarty);
 $smarty->assign('Module_Popup_Edit', isset($_REQUEST['Module_Popup_Edit']) ? vtlib_purify($_REQUEST['Module_Popup_Edit']) : 0);
 
+if (coreBOS_Settings::getSetting('onesignal_isactive', '0') == '1') {
+	$smarty->assign('ONESIGNAL_APP_ID', coreBOS_Settings::getSetting('onesignal_app_id', ''));
+	$smarty->assign('ONESIGNAL_IS_ACTIVE', true);
+} else {
+	$smarty->assign('ONESIGNAL_IS_ACTIVE', false);
+}
+
 $smarty->display('Header.tpl');
 ?>

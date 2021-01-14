@@ -1,0 +1,101 @@
+{
+    "name": "laminas/laminas-cache",
+    "description": "Caching implementation with a variety of storage options, as well as codified caching strategies for callbacks, classes, and output",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "laminas",
+        "cache",
+        "psr-6",
+        "psr-16"
+    ],
+    "homepage": "https://laminas.dev",
+    "support": {
+        "docs": "https://docs.laminas.dev/laminas-cache/",
+        "issues": "https://github.com/laminas/laminas-cache/issues",
+        "source": "https://github.com/laminas/laminas-cache",
+        "rss": "https://github.com/laminas/laminas-cache/releases.atom",
+        "chat": "https://laminas.dev/chat",
+        "forum": "https://discourse.laminas.dev"
+    },
+    "config": {
+        "process-timeout": 600,
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.9.x-dev",
+            "dev-develop": "2.10.x-dev"
+        },
+        "laminas": {
+            "component": "Laminas\\Cache",
+            "config-provider": "Laminas\\Cache\\ConfigProvider"
+        }
+    },
+    "require": {
+        "php": "^5.6 || ^7.0",
+        "laminas/laminas-eventmanager": "^2.6.3 || ^3.2",
+        "laminas/laminas-servicemanager": "^2.7.8 || ^3.3",
+        "laminas/laminas-stdlib": "^3.2.1",
+        "laminas/laminas-zendframework-bridge": "^1.0",
+        "psr/cache": "^1.0",
+        "psr/simple-cache": "^1.0"
+    },
+    "require-dev": {
+        "cache/integration-tests": "^0.16",
+        "laminas/laminas-coding-standard": "~1.0.0",
+        "laminas/laminas-serializer": "^2.6",
+        "laminas/laminas-session": "^2.7.4",
+        "phpbench/phpbench": "^0.13",
+        "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1.2"
+    },
+    "provide": {
+        "psr/cache-implementation": "1.0",
+        "psr/simple-cache-implementation": "1.0"
+    },
+    "suggest": {
+        "ext-apc": "APC or compatible extension, to use the APC storage adapter",
+        "ext-apcu": "APCU >= 5.1.0, to use the APCu storage adapter",
+        "ext-dba": "DBA, to use the DBA storage adapter",
+        "ext-memcache": "Memcache >= 2.0.0 to use the Memcache storage adapter",
+        "ext-memcached": "Memcached >= 1.0.0 to use the Memcached storage adapter",
+        "ext-mongo": "Mongo, to use MongoDb storage adapter",
+        "ext-mongodb": "MongoDB, to use the ExtMongoDb storage adapter",
+        "ext-redis": "Redis, to use Redis storage adapter",
+        "ext-wincache": "WinCache, to use the WinCache storage adapter",
+        "ext-xcache": "XCache, to use the XCache storage adapter",
+        "laminas/laminas-serializer": "Laminas\\Serializer component",
+        "laminas/laminas-session": "Laminas\\Session component",
+        "mongodb/mongodb": "Required for use with the ext-mongodb adapter",
+        "mongofill/mongofill": "Alternative to ext-mongo - a pure PHP implementation designed as a drop in replacement"
+    },
+    "autoload": {
+        "files": [
+            "autoload/patternPluginManagerPolyfill.php"
+        ],
+        "psr-4": {
+            "Laminas\\Cache\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LaminasTest\\Cache\\": "test/",
+            "LaminasBench\\Cache\\": "benchmark/"
+        },
+        "files": [
+            "test/autoload.php"
+        ]
+    },
+    "scripts": {
+        "check": [
+            "@cs-check",
+            "@test"
+        ],
+        "cs-check": "phpcs",
+        "cs-fix": "phpcbf",
+        "test": "phpunit --colors=always",
+        "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
+    },
+    "replace": {
+        "zendframework/zend-cache": "self.version"
+    }
+}
