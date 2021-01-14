@@ -3241,12 +3241,12 @@ function getGrpId($groupname) {
 	return $groupid;
 }
 
-/** Function to check permission to access a vtiger_field for a given user
-  * @param $fld_module -- Module :: Type String
-  * @param $userid -- User Id :: Type integer
-  * @param $fieldname -- Field Name :: Type varchar
-  * @param $accessmode -- Access Mode :: Type varchar :: readonly or anything else
-  * @returns 0 | 1 :: Type varchar if visible or not
+/** Function to check permission to access a field for a given user
+  * @param string module
+  * @param integer user ID
+  * @param string field name
+  * @param string access mode :: readonly or anything else
+  * @return string 0 | 1 :: if visible or not
  */
 function getFieldVisibilityPermission($fld_module, $userid, $fieldname, $accessmode = 'readonly') {
 	global $log,$adb, $current_user;
