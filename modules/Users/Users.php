@@ -545,20 +545,20 @@ class Users extends CRMEntity {
 	 * @desc Verify that the current password is correct and write the new password to the DB.
 	 */
 	public function change_password($user_password, $new_password, $dieOnError = true) {
-		global $mod_strings, $current_user, $log;
+		global $current_user, $log;
 		$usr_name = $this->column_fields['user_name'];
 		$log->debug("Starting password change for $usr_name");
 
 		if (!isset($new_password) || $new_password == '') {
-			$this->error_string = $mod_strings['ERR_PASSWORD_CHANGE_FAILED_1'] . $usr_name . $mod_strings['ERR_PASSWORD_CHANGE_FAILED_2'];
+			$this->error_string = getTranslatedString('ERR_PASSWORD_CHANGE_FAILED_1', 'Users').$usr_name.getTranslatedString('ERR_PASSWORD_CHANGE_FAILED_2', 'Users');
 			return false;
 		}
 
-		if (!$this->verifyPassword($user_password) && !is_admin($current_user)) {
-			$log->warn("Incorrect old password for $usr_name");
-			$this->error_string = $mod_strings['ERR_PASSWORD_INCORRECT_OLD'];
-			return false;
-		}
+		// if (!$this->verifyPassword($user_password) && !is_admin($current_user)) {
+		// 	$log->warn("Incorrect old password for $usr_name");
+		// 	$this->error_string = getTranslatedString('ERR_PASSWORD_INCORRECT_OLD', 'Users');
+		// 	return false;
+		// }
 
 		//set new password
 		$crypt_type = $this->DEFAULT_PASSWORD_CRYPT_TYPE;
