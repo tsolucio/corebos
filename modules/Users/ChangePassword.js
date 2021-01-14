@@ -17,7 +17,7 @@ function loadPassword(userid) {
 	loadJS('index.php?module=Users&action=UsersAjax&file=getjslanguage');
 	const headText = `${alert_arr['LBL_CHANGE_PASSWORD']}`;
 	const tooltip = `    
-    <a href="javascript:void(0)" aria-describedby="help" onmouseover="showTooltip('help-passowrd').style.backgroundColor = 'white'" onmouseout="hideTooltip('help-passowrd')">
+    <a href="javascript:void(0)" aria-describedby="help" onmouseover="showTooltip('help-passowrd')" onmouseout="hideTooltip('help-passowrd')">
         <span class="slds-icon_container slds-icon-utility-info">
               <svg class="slds-icon slds-icon slds-icon_xx-small slds-icon-text-default" aria-hidden="true">
                 <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
