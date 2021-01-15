@@ -101,6 +101,10 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 		if ($value!='') {
 			$fieldvalue = getTranslatedCurrencyString($value);
 		}
+	} elseif ($fieldType == 'double') {
+		if (!empty($value)) {
+			$fieldvalue = CurrencyField::convertToUserFormat($value, null, true);
+		}
 	} elseif ((in_array($dbField->name, $report->ui101_fields) || (isset($field) && $field->getUIType() == '52')) && !empty($value)) {
 		if (is_numeric($value)) {
 			$entityNames = getEntityName('Users', $value);
