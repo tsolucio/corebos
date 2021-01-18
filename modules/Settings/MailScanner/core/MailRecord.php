@@ -323,8 +323,10 @@ class Vtiger_MailRecord {
 			}
 			$this->_attachments[$filename] = $data;  // TODO: this is a problem if two files have same name
 		} elseif ($p->type==0 && $data) { // TEXT
-			$this->_charset = substr($params['charset'], 0, 10);  // assume all parts are same charset
-			$data = self::__convert_encoding($data, 'UTF-8', $this->_charset);
+			if (!empty($params['charset']) && $params['charset']!='UTF-8') {
+				$this->_charset = substr($params['charset'], 0, 10);  // assume all parts are same charset
+				$data = self::__convert_encoding($data, 'UTF-8', $this->_charset);
+			}
 			// Messages may be split in different parts because of inline attachments,
 			// so append parts together with blank row.
 			if (strtolower($p->subtype)=='plain') {

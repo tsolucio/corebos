@@ -26,7 +26,7 @@ class MailManager_Request {
 		if (!empty($value)) {
 			$value = vtlib_purify($value);
 		}
-		return $value;
+		return urldecode($value);
 	}
 
 	public function set($key, $value) {

@@ -225,9 +225,12 @@ class VTWorkflowManager {
 		return GlobalVariable::getVariable('Workflow_Maximum_Scheduled', 10);
 	}
 
-	public function getWorkflowsForModule($moduleName) {
+	public function getWorkflowsForModule($moduleName, $onlyActive = false) {
 		global $current_user;
 		$where = is_admin($current_user) ? '' : ' and defaultworkflow=2';
+		if ($onlyActive) {
+			$where .= " and active='true'";
+		}
 		$result = $this->adb->pquery(
 			'select workflow_id, module_name, summary, test, execution_condition, defaultworkflow, type, purpose, wfstarton, wfendon, active, options, cbquestion, recordset, onerecord from com_vtiger_workflows where module_name=?'.$where,
 			array($moduleName)

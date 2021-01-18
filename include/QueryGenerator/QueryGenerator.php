@@ -253,6 +253,9 @@ class QueryGenerator {
 	}
 
 	public function getModuleNameFields($module) {
+		if (empty($this->moduleNameFields[$module])) {
+			$this->getMeta($module);
+		}
 		return $this->moduleNameFields[$module];
 	}
 
@@ -691,7 +694,7 @@ class QueryGenerator {
 				foreach ($moduleList as $module) {
 					$tabid = getTabid($module);
 					$meta = $this->getMeta($module);
-					$nameFields = $this->moduleNameFields[$module];
+					$nameFields = $this->getModuleNameFields($module);
 					$nameFieldList = explode(',', $nameFields);
 					foreach ($nameFieldList as $index => $column) {
 						$joinas = 'LEFT JOIN';
@@ -830,7 +833,7 @@ class QueryGenerator {
 						$tableName = $fieldObject->getTableName();
 					}
 
-					if (!in_array($tableName, $referenceFieldTableList)) {
+					if (!in_array($tableName, $referenceFieldTableList) && !in_array($tableName.$conditionInfo['referenceField'], $referenceFieldTableList)) {
 						if ($baseTable != $referenceFieldObject->getTableName() && !in_array($referenceFieldObject->getTableName(), $alreadyinfrom)) {
 							if ($this->getModule() == 'Emails') {
 								$join = 'INNER JOIN ';
@@ -1041,7 +1044,7 @@ class QueryGenerator {
 					$moduleList = $this->referenceFieldInfoList[$fieldName];
 					foreach ($moduleList as $module) {
 						$tabid = getTabid($module);
-						$nameFields = $this->moduleNameFields[$module];
+						$nameFields = $this->getModuleNameFields($module);
 						$nameFieldList = explode(',', $nameFields);
 						$meta = $this->getMeta($module);
 						$columnList = array();
@@ -1171,11 +1174,15 @@ class QueryGenerator {
 						if ($bTable=='vtiger_users') {
 							$fieldSqlList[$index] = "(vtiger_users.id $sqlOperator $value or vtiger_groups.groupid $sqlOperator $value)";
 						} else {
+							$tname = $bTable.$conditionInfo['referenceField'];
+							if (strpos($this->fromClause, $tname)===false) {
+								$tname = $bTable;
+							}
 							if (($conditionInfo['SQLOperator'] == 'empty' || $conditionInfo['SQLOperator'] == 'y')) {
-								$fieldSqlList[$index] = "($bTable".$conditionInfo['referenceField'].".$fname IS NULL OR $bTable".$conditionInfo['referenceField'].".$fname = '' OR $bTable".$conditionInfo['referenceField'].".$fname = '0')";
+								$fieldSqlList[$index] = "($tname.$fname IS NULL OR $tname.$fname = '' OR $tname.$fname = '0')";
 								continue;
 							}
-							$fieldSqlList[$index] = "($bTable".$conditionInfo['referenceField'].".$fname $sqlOperator $value)";
+							$fieldSqlList[$index] = "($tname.$fname $sqlOperator $value)";
 						}
 					}
 					continue;

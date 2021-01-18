@@ -36,8 +36,9 @@ $stdDepth=$fromRoleInfo['2'];
 
 //Constructing the query
 $query='update vtiger_role set parentrole=?,depth=? where roleid=?';
+$recalculate = false;
 foreach ($roleInfo as $mvRoleId => $mvRoleInfo) {
-	$subPar=explode($replaceToString, $mvRoleInfo[1], 2);//we have to spilit as two elements only
+	$subPar=explode($replaceToString, $mvRoleInfo[1], 2);//we have to split as two elements only
 	$mvParString=$replace_with.$subPar[1];
 	$subDepth=$mvRoleInfo[2];
 	$mvDepth=$orgDepth+(($subDepth-$stdDepth)+1);
@@ -45,7 +46,10 @@ foreach ($roleInfo as $mvRoleId => $mvRoleInfo) {
 
 	// Invalidate any cached information
 	VTCacheUtils::clearRoleSubordinates($mvRoleId);
+	$recalculate = true;
 }
-
+if ($recalculate) {
+	RecalculateSharingRules();
+}
 header('Location: index.php?action=SettingsAjax&module=Settings&file=listroles&ajax=true');
 ?>

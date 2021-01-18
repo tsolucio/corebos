@@ -91,6 +91,9 @@ class ConvertInventoryModule extends VTTask {
 			$data = array_merge($fromEntity->column_fields, $toEntity->column_fields);
 			$data['record_id'] = $record;
 			$data['relations'] = $entity->getId();
+			if ($cbfrommodule=='Potentials' && ($this->convertto=='Quotes' || $this->convertto=='SalesOrder')) {
+				$data['potential_id'] = $record;
+			}
 			$data['assigned_user_id'] = $current_user->id;
 			$data['created_user_id'] = $current_user->id;
 			$data['account_id'] = getRelatedAccountContact($record, 'Accounts');

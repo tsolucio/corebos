@@ -955,6 +955,8 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 	$cbMapid = GlobalVariable::getVariable('BusinessMapping_FieldInfo', cbMap::getMapIdByName($bmapname), $sourceModule, $current_user->id);
 	$productsearchfields = array('productname','mfr_part_no','vendor_part_no');
 	$servicesearchfields = array('servicename');
+	$mfr_selector = 'vtiger_products.mfr_part_no';
+	$ven_selector = 'vtiger_products.vendor_part_no';
 	$productsearchquery = '';
 	$servicesearchquery = '';
 	$prodconds = array();
@@ -988,6 +990,15 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 			$prodffs = array_key_exists('Products', $ff) ? explode(',', $ff['Products']) : $prodffs;
 			$servffs = array_key_exists('Service', $ff) ? explode(',', $ff['Service']) : $servffs;
 		}
+	}
+
+	if (!getFieldVisibilityPermission('Products', $current_user->id, 'mfr_part_no') == '0') {
+		unset($productsearchfields['mfr_part_no']);
+		$mfr_selector = '\'##FIELDDISABLED##\'';
+	}
+	if (!getFieldVisibilityPermission('Products', $current_user->id, 'vendor_part_no') == '0') {
+		unset($productsearchfields['vendor_part_no']);
+		$ven_selector = '\'##FIELDDISABLED##\'';
 	}
 
 	for ($i=0; $i < count($productsearchfields); $i++) {
@@ -1069,9 +1080,9 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 			vtiger_products.productname AS name,
 			vtiger_products.divisible AS divisible,
 			'Products' AS type,
-			vtiger_products.vendor_part_no AS ven_no,
+			{$ven_selector} AS ven_no,
 			vtiger_products.cost_price AS cost_price,
-			vtiger_products.mfr_part_no AS mfr_no,
+			{$mfr_selector} AS mfr_no,
 			vtiger_products.qtyinstock AS qtyinstock,
 			vtiger_products.qty_per_unit AS qty_per_unit,
 			vtiger_products.usageunit AS usageunit,
@@ -1124,7 +1135,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 	while ($prodser = $adb->fetch_array($r)) {
 		$unitprice = $prodser['unit_price'];
 		if (!empty($_REQUEST['currencyid'])) {
-			$prod_prices = getPricesForProducts($_REQUEST['currencyid'], array($prodser['id']));
+			$prod_prices = getPricesForProducts($_REQUEST['currencyid'], array($prodser['id']), $prodser['type']);
 			$unitprice = $prod_prices[$prodser['id']];
 		}
 		$parr['productid'] = $prodser['id'];

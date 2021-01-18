@@ -262,7 +262,7 @@
 								onclick="
 									{if isset($smarty.request.Module_Popup_Edit)}window.close()
 									{elseif isset($CANCELGO)}window.location.href='{$CANCELGO}'
-									{else}window.history.back()
+									{else}if (window.history.length==1) { window.close(); } else { window.history.back(); }
 									{/if};"
 								type="button"
 								name="button">
@@ -413,7 +413,7 @@
 						#marquee span {
 							display: inline-block;
 							padding-left: 100%;
-							animation: marquee {$ANNOUNCEMENT|count_characters / 3}s linear infinite;
+							animation: marquee {math equation="max(15, y/3)" y=$ANNOUNCEMENT|count_characters}s linear infinite;
 						}
 						#marquee span:hover {
 							animation-play-state: paused

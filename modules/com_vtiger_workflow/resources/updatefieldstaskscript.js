@@ -336,10 +336,10 @@ function VTUpdateFieldsTask($, fieldvaluemapping) {
 			if (fieldName!='none') {
 				defaultValue(opType.name)(opType, mappingno);
 				var fieldLabel = jQuery('#save_fieldvalues_'+mappingno+'_fieldname option:selected').html();
-				validator.validateFieldData[fieldName] = {
-					type: opType.name,
-					label: fieldLabel
-				};
+				// validator.validateFieldData[fieldName] = {
+				// 	type: opType.name,
+				// 	label: fieldLabel
+				// };
 			}
 		}
 	}

@@ -12,6 +12,7 @@ require_once 'data/Tracker.php';
 require 'modules/Vtiger/default_module_view.php';
 require_once 'modules/Invoice/Invoice.php';
 require_once 'modules/InventoryDetails/InventoryDetails.php';
+include_once 'include/Webservices/Revise.php';
 
 class SalesOrder extends CRMEntity {
 	public $db;
@@ -29,8 +30,6 @@ class SalesOrder extends CRMEntity {
 	 * Mandatory table for supporting custom fields.
 	 */
 	public $customFieldTable = array('vtiger_salesordercf', 'salesorderid');
-	// Uncomment the line below to support custom field columns on related lists
-	public $related_tables = array('vtiger_account'=>array('accountid'));
 
 	public $tab_name = array(
 		'vtiger_crmentity',
@@ -116,7 +115,7 @@ class SalesOrder extends CRMEntity {
 	}
 
 	public function save_module($module) {
-		global $updateInventoryProductRel_deduct_stock, $adb;
+		global $updateInventoryProductRel_deduct_stock, $current_user;
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
 		}
@@ -128,9 +127,17 @@ class SalesOrder extends CRMEntity {
 		if (!empty($this->column_fields['quote_id'])) {
 			$newStatus = GlobalVariable::getVariable('Quote_StatusOnSalesOrderSave', 'Accepted');
 			if ($newStatus!='DoNotChange') {
-				$qt_id = $this->column_fields['quote_id'];
-				$query1 = 'update vtiger_quotes set quotestage=? where quoteid=?';
-				$adb->pquery($query1, array($newStatus, $qt_id));
+				$h = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : 'NOTSET';
+				$_REQUEST['ajxaction'] = 'Workflow';
+				try {
+					vtws_revise(array('id'=>vtws_getEntityId('Quotes').'x'.$this->column_fields['quote_id'], 'quotestage'=>$newStatus), $current_user);
+				} catch (\Throwable $th) {
+				}
+				if ($h=='NOTSET') {
+					unset($_REQUEST['ajxaction']);
+				} else {
+					$_REQUEST['ajxaction'] = $h;
+				}
 			}
 		}
 
@@ -148,21 +155,20 @@ class SalesOrder extends CRMEntity {
 
 	public function registerInventoryHistory() {
 		global $app_strings;
-		if (isset($_REQUEST['ajxaction']) && $_REQUEST['ajxaction'] == 'DETAILVIEW') { //if we use ajax edit
-			if (GlobalVariable::getVariable('Application_B2B', '1')) {
+		if (GlobalVariable::getVariable('Application_B2B', '1')) {
+			if (!empty($this->column_fields['account_id'])) {
 				$relatedname = getAccountName($this->column_fields['account_id']);
 			} else {
+				$relatedname = getAccountName(getSingleFieldValue($this->table_name, 'accountid', $this->table_index, $this->id));
+			}
+		} else {
+			if (!empty($this->column_fields['contact_id'])) {
 				$relatedname = getContactName($this->column_fields['contact_id']);
-			}
-			$total = $this->column_fields['hdnGrandTotal'];
-		} else { //using edit button and save
-			if (GlobalVariable::getVariable('Application_B2B', '1')) {
-				$relatedname = $_REQUEST['account_name'];
 			} else {
-				$relatedname = $_REQUEST['contact_name'];
+				$relatedname = getContactName(getSingleFieldValue($this->table_name, 'contactid', $this->table_index, $this->id));
 			}
-			$total = $_REQUEST['total'];
 		}
+		$total = getSingleFieldValue($this->table_name, 'total', $this->table_index, $this->id);
 		if ($this->column_fields['sostatus'] == $app_strings['LBL_NOT_ACCESSIBLE']) {
 			//If the value in the request is Not Accessible for a picklist, the existing value will be replaced instead of Not Accessible value.
 			$stat_value = getSingleFieldValue($this->table_name, 'sostatus', $this->table_index, $this->id);

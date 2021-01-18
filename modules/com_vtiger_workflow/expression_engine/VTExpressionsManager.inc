@@ -96,12 +96,24 @@ class VTExpressionsManager {
 	}
 
 	public function expressionFunctionDetails() {
-		global $current_language;
+		global $current_language, $adb;
 		$fname = 'modules/com_vtiger_workflow/language/'.$current_language.'.fndefs.php';
 		if (file_exists($fname) && isInsideApplication($fname)) {
 			include $fname;
 		} else {
 			include 'modules/com_vtiger_workflow/language/en_us.fndefs.php';
+		}
+		$wfexpfuncs = $adb->query('select expname,expinfo,funcdesc,funccategory,funcparam,funcexamples from com_vtiger_workflows_expfunctions');
+		while ($func = $adb->fetch_array($wfexpfuncs)) {
+			if (empty($WFExpressionFunctionDefinitons[$func['expname']])) {
+				$WFExpressionFunctionDefinitons[$func['expname']] = array(
+					'name' => $func['expinfo'],
+					'desc' => $func['funcdesc'],
+					'params' => json_decode(decode_html($func['funcparam']), true),
+					'categories' => json_decode(decode_html($func['funccategory']), true),
+					'examples' => json_decode(decode_html($func['funcexamples']), true),
+				);
+			}
 		}
 		asort($WFExpressionFunctionDefinitons);
 		return $WFExpressionFunctionDefinitons;
