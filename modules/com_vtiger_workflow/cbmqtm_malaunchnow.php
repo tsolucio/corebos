@@ -15,13 +15,16 @@
 
 require_once 'include/Webservices/ExecuteWorkflow.php';
 
-function cbmqtm_MALaunchNow() {
-	global $current_user;
-	$cbmq = coreBOS_MQTM::getInstance();
-	$msg = $cbmq->getMessage('wfLaunchNowChannel', 'malaunchnow', 'malaunchnow');
-	$data = unserialize($msg['information']);
-	$wfid = $data['wfid'];
-	$crmids = $data['crmids'];
-	$context = '[]';
-	cbwsExecuteWorkflowWithContext($wfid, json_encode($crmids), $context, $current_user);
+class cbmqtm_malaunchnow {
+	public function MALaunchNow() {
+		global $current_user;
+		$cbmq = coreBOS_MQTM::getInstance();
+		while ($msg = $cbmq->getMessage('wfLaunchNowChannel', 'malaunchnow', 'malaunchnow')) {
+			$data = json_decode($msg['information'], true);
+			$wfid = $data['wfid'];
+			$crmids = $data['crmids'];
+			$context = '[]';
+			cbwsExecuteWorkflowWithContext($wfid, json_encode($crmids), $context, $current_user);
+		}
+	}
 }

@@ -166,7 +166,7 @@ function vtWorkflowSave($adb, $request) {
 					'wfid' => $wf->id,
 					'crmids' => $crmids,
 				);
-				$cbmq->sendMessage('wfLaunchNowChannel', 'malaunchnow', 'malaunchnow', 'Data', '1:M', 0, 8640000, 0, 0, serialize($msg));
+				$cbmq->sendMessage('wfLaunchNowChannel', 'malaunchnow', 'malaunchnow', 'Data', '1:M', 0, 8640000, 0, 0, json_encode($msg));
 			}
 		}
 		if (count($crmids) > 0) {
