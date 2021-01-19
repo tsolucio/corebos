@@ -3337,6 +3337,20 @@ function isRecordExists($recordId) {
 	return false;
 }
 
+/** Function to check if a number is a attachmentid
+  * $id -- number or attachmentid
+  */
+function is_attachmentid($id) {
+	global $adb, $log;
+	$log->debug('> is_attachmentid '.$id);
+	$result = $adb->pquery('SELECT attachmentsid FROM vtiger_attachments
+		INNER JOIN vtiger_crmentity ON attachmentsid=crmid WHERE deleted=0 AND attachmentsid=?', array(
+		$id
+	));
+	$log->debug('< is_attachmentid '.$id);
+	return ($adb->num_rows($result) > 0);
+}
+
 /** Function to set date values compatible to database (YY_MM_DD)
  * @param $value -- value :: Type string
  * @returns $insert_date -- insert_date :: Type string
