@@ -467,23 +467,6 @@ function addAttachment($mail, $filename, $record) {
 	}
 }
 
-/** Function to check if a number is a attachmentid
-  * $id -- number or attachmentid
-  */
-function is_attachmentid($id) {
-	global $adb;
-	$adb->println('> is_attachment '.$id);
-	$result = $adb->pquery('SELECT attachmentsid FROM vtiger_attachments
-		INNER JOIN vtiger_crmentity ON attachmentsid=crmid WHERE deleted=0 AND attachmentsid=?', array(
-		$id
-	));
-	if ($adb->num_rows($result) > 0) {
-		return true;
-	}
-	$adb->println('< is_attachment '.$id);
-	return false;
-}
-
 /** Function to add the file as attachment with the mail object
   * $mail -- reference of the mail object
   * $filename -- filename which is going to added with the mail
