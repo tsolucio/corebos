@@ -670,6 +670,10 @@ class corebos_woocommerce {
 				if (count($wcprops['images'])==0) {
 					unset($wcprops['images']);
 				}
+				$wcprops['meta_data'] = [
+					['key' => '_wpm_gtin_code',
+					'value' => $cbfrom->column_fields['serial_no'],],
+				];
 				break;
 			case 'Services':
 				if (!isset($wcprops['name'])) {
@@ -725,6 +729,10 @@ class corebos_woocommerce {
 				if (count($wcprops['images'])==0) {
 					unset($wcprops['images']);
 				}
+				$wcprops['meta_data'] = [
+					['key' => '_wpm_gtin_code',
+					'value' => $cbfrom->column_fields['serial_no'],],
+				];
 				break;
 			case 'wcProductCategory':
 				if (!isset($wcprops['name'])) {
@@ -902,6 +910,12 @@ class corebos_woocommerce {
 				if (!empty($data['status'])) {
 					$data['wcsyncstatus'] = ($data['status']=='publish' ? 'Published' : 'Active');
 				}
+				if (!empty($data['meta_data'])) {
+					$key = array_search('_wpm_gtin_code', array_column($data['meta_data'], 'key'));
+					if ($key) {
+						$send2cb['serial_no'] = $data['meta_data'][$key]['value'];
+					}
+				}
 				break;
 			case 'Services':
 				$checkEmpty = array(
@@ -915,6 +929,12 @@ class corebos_woocommerce {
 				}
 				if (!empty($data['status'])) {
 					$data['wcsyncstatus'] = ($data['status']=='publish' ? 'Published' : 'Active');
+				}
+				if (!empty($data['meta_data'])) {
+					$key = array_search('_wpm_gtin_code', array_column($data['meta_data'], 'key'));
+					if ($key) {
+						$send2cb['serial_no'] = $data['meta_data'][$key]['value'];
+					}
 				}
 				break;
 			case 'wcProductCategory':
