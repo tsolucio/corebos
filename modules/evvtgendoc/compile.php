@@ -546,7 +546,7 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 		$reemplazo = '{'.$marcador.'}';
 	}
 
-	$reemplazo = str_replace("\n", '<br>', $reemplazo);
+	$reemplazo = str_replace("\n", '<text:line-break/>', $reemplazo);
 	return $reemplazo;
 }
 
