@@ -28,7 +28,10 @@ class Quotes extends CRMEntity {
 	 */
 	public $customFieldTable = array('vtiger_quotescf', 'quoteid');
 	// Uncomment the line below to support custom field columns on related lists
-	public $related_tables = array('vtiger_account'=>array('accountid'));
+	public $related_tables = array(
+		'vtiger_quotesbillads' => array('quotebilladdressid', 'vtiger_quotes', 'quoteid', 'Quotes'),
+		'vtiger_quotesshipads' => array('quoteshipaddressid', 'vtiger_quotes', 'quoteid', 'Quotes'),
+	);
 
 	public $tab_name = array('vtiger_crmentity','vtiger_quotes','vtiger_quotesbillads','vtiger_quotesshipads','vtiger_quotescf');
 

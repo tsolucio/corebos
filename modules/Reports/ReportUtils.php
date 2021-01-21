@@ -76,7 +76,7 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 	if ($fieldType == 'currency' && $value != '') {
 		// Some of the currency fields like Unit Price, Total, Sub-total etc of Inventory modules, do not need currency conversion
 		if ($field->getUIType() == '72') {
-			$curid_value = explode("::", $value);
+			$curid_value = explode('::', $value);
 			$currency_id = $curid_value[0];
 			$currency_value = $curid_value[1];
 			$cur_sym_rate = getCurrencySymbolandCRate($currency_id);
@@ -88,10 +88,15 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 			$currencyField = new CurrencyField($value);
 			$fieldvalue = $currencyField->getDisplayValue();
 		}
-	} elseif ($dbField->name == "PurchaseOrder_Currency" || $dbField->name == "SalesOrder_Currency"
-				|| $dbField->name == "Invoice_Currency" || $dbField->name == "Quotes_Currency" || $dbField->name == "PriceBooks_Currency") {
+	} elseif ($dbField->name == 'PurchaseOrder_Currency' || $dbField->name == 'SalesOrder_Currency' || $dbField->name == 'Invoice_Currency'
+		|| $dbField->name == 'Quotes_Currency' || $dbField->name == 'PriceBooks_Currency'
+	) {
 		if ($value!='') {
 			$fieldvalue = getTranslatedCurrencyString($value);
+		}
+	} elseif ($fieldType == 'double') {
+		if (!empty($value)) {
+			$fieldvalue = CurrencyField::convertToUserFormat($value, null, true);
 		}
 	} elseif ((in_array($dbField->name, $report->ui101_fields) || (isset($field) && $field->getUIType() == '52')) && !empty($value)) {
 		if (is_numeric($value)) {
@@ -102,7 +107,7 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 		}
 	} elseif ($fieldType == 'date' && !empty($value)) {
 			$fieldvalue = DateTimeField::convertToUserFormat($value);
-	} elseif ($fieldType == "datetime" && !empty($value)) {
+	} elseif ($fieldType == 'datetime' && !empty($value)) {
 		$date = new DateTimeField($value);
 		$fieldvalue = $date->getDisplayDateTimeValue();
 		$user_format = ($current_user->hour_format=='24' ? '24' : '12');
@@ -111,9 +116,9 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 			list($dt,$tm) = explode(' ', $fieldvalue);
 			$fieldvalue = $dt . ' ' . $curr_time;
 		}
-	} elseif ($fieldType == "picklist" && !empty($value)) {
+	} elseif ($fieldType == 'picklist' && !empty($value)) {
 		$fieldvalue = getTranslatedString($value, $module);
-	} elseif ($fieldType == "multipicklist" && !empty($value)) {
+	} elseif ($fieldType == 'multipicklist' && !empty($value)) {
 		if (count($picklistArray)>0 && is_array($picklistArray[1])) {
 			$valueList = explode(' |##| ', $value);
 			$translatedValueList = array();
@@ -129,7 +134,7 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 		} else {
 			$fieldvalue = implode(', ', $translatedValueList);
 		}
-	} elseif ($fieldType == "multireference" && !empty($value)) {
+	} elseif ($fieldType == 'multireference' && !empty($value)) {
 		require_once 'modules/PickList/PickListUtils.php';
 		$content = getPicklistValuesSpecialUitypes($field->getUIType(), $field->getFieldName(), $value, 'DetailView');
 		$fieldvalue = strip_tags(implode(', ', $content));
@@ -143,18 +148,18 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 			$fieldvalue = $value;
 		}
 	}
-	if ($fieldvalue == "") {
-		return "-";
+	if ($fieldvalue == '') {
+		return '-';
 	}
-	$fieldvalue = str_replace("<", "&lt;", $fieldvalue);
-	$fieldvalue = str_replace(">", "&gt;", $fieldvalue);
+	$fieldvalue = str_replace('<', '&lt;', $fieldvalue);
+	$fieldvalue = str_replace('>', '&gt;', $fieldvalue);
 	$fieldvalue = decode_html($fieldvalue);
 
-	if (stristr($fieldvalue, "|##|") && empty($fieldType)) {
+	if (stristr($fieldvalue, '|##|') && empty($fieldType)) {
 		$fieldvalue = str_ireplace(' |##| ', ', ', $fieldvalue);
-	} elseif ($fld_type == "date" && empty($fieldType)) {
+	} elseif ($fld_type == 'date' && empty($fieldType)) {
 		$fieldvalue = DateTimeField::convertToUserFormat($fieldvalue);
-	} elseif ($fld_type == "datetime" && empty($fieldType)) {
+	} elseif ($fld_type == 'datetime' && empty($fieldType)) {
 		$date = new DateTimeField($fieldvalue);
 		$fieldvalue = $date->getDisplayDateTimeValue();
 	}

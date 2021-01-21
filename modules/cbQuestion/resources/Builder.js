@@ -56,6 +56,7 @@ function toggleSQLView() {
 function saveQuestion(update) {
 	const qname = document.getElementById('bqname').value;
 	const qmodule = document.getElementById('bqmodule').value;
+	const issqlwsq_disabled = document.getElementById("checkboxsqlwsq").disabled;
 	if (qname=='') {
 		ldsPrompt.show(alert_arr.ERROR, mod_alert_arr.NameNotEmpty, 'error');
 		document.getElementById('bqname').focus();
@@ -68,6 +69,29 @@ function saveQuestion(update) {
 	}
 	const qtype = document.getElementById('qtype').value;
 	const qsqlqry = (document.getElementById('sqlquery').checked ? '1' : '0');
+
+	var type_properties = new Object();
+	if (document.getElementById('qprops').value == '') {
+		type_properties = {};
+
+	} else {
+		type_properties = JSON.parse(document.getElementById('qprops').value);
+	}
+	type_properties.context_variables = undefined;
+	if (document.getElementById('sqlquery').checked) {
+		const context_var = document.getElementsByName('context_variable');
+		const context_val = document.getElementsByName('context_value');
+		var context_data_ = new Object();
+		for (var i = 0; i < context_var.length; i++) {
+			const variable = context_var[i].value;
+			const value = context_val[i].value;
+			context_data_[variable] = value;
+		}
+		type_properties['context_variables'] = context_data_;
+	} else {
+		type_properties = document.getElementById('qprops').value;
+	}
+	
 	let cbq = {
 		'qname': qname,
 		//'cbquestionno': ,
@@ -83,13 +107,15 @@ function saveQuestion(update) {
 		// 'mviewwf': ,
 		'assigned_user_id': builderconditions.cbaccess.userId,
 		'condfilterformat': 0,
-		'qcolumns': (qsqlqry=='1' ? document.getElementById('bqsql').value : (qtype=='Mermaid' ? document.getElementById('bqwsq').value : getSQLSelect())),
-		'qcondition': (qtype=='Mermaid' ? '' : getSQLConditions()),
+		'qcolumns': (qsqlqry=='1' ? document.getElementById('bqsqlcoulumns').value : (qtype=='Mermaid' ? document.getElementById('bqwsq').value : getSQLSelect())),
+		'qcondition': (qtype=='Mermaid' ? '' : (issqlwsq_disabled==true ? document.getElementById('bqsqlconditions').value : getSQLConditions())),
 		'orderby': getSQLOrderBy(false).substr(9),
 		'groupby': getSQLGroupBy(false).substr(9),
-		'typeprops': document.getElementById('qprops').value,
+		// 'typeprops': document.getElementById('qprops').value,
+		'typeprops': JSON.stringify(type_properties),
 		//'description': ,
-		//'id': document.getElementById('wsrecord').value+document.getElementById('record').value
+		//'id': document.getElementById('wsrecord').value+document.getElementById('record').value,
+		'issqlwsq_disabled': issqlwsq_disabled
 	};
 	if (update && document.getElementById('record').value!='') {
 		cbq.id = document.getElementById('wsrecord').value+document.getElementById('record').value;
@@ -124,6 +150,7 @@ function getQuestionResults() {
 	const qsqlqry = (document.getElementById('sqlquery').checked ? '1' : '0');
 	const context_var = document.getElementsByName('context_variable');
 	const context_val = document.getElementsByName('context_value');
+	const issqlwsq_disabled = document.getElementById("checkboxsqlwsq").disabled;
 	let context_data = Array();
 	for (var i = 0; i < context_var.length; i++) {
 		const variable = context_var[i].value;
@@ -138,14 +165,15 @@ function getQuestionResults() {
 		'qtype': qtype,
 		'qmodule': document.getElementById('bqmodule').value,
 		'qpagesize': document.getElementById('qpagesize').value,
-		'qcolumns': (qsqlqry=='1' ? document.getElementById('bqsql').value : (qtype=='Mermaid' ? document.getElementById('bqwsq').value : getSQLSelect())),
-		'qcondition': (qtype=='Mermaid' ? '' : getSQLConditions()),
+		'qcolumns': (qsqlqry=='1' ? document.getElementById('bqsqlcoulumns').value : (qtype=='Mermaid' ? document.getElementById('bqwsq').value : getSQLSelect())),
+		'qcondition': (qtype=='Mermaid' ? '' : (issqlwsq_disabled==true ? document.getElementById('bqsqlconditions').value : getSQLConditions())),
 		'orderby': getSQLOrderBy().substr(9),
 		'groupby': getSQLGroupBy().substr(9),
 		'typeprops': document.getElementById('qprops').value,
 		'sqlquery': qsqlqry,
 		'condfilterformat': '0',
-		'context_variable': context_data
+		'context_variable': context_data,
+		'issqlwsq_disabled': issqlwsq_disabled
 	});
 	const evaluatewith = document.getElementById('evaluatewith').value;
 	let cbqctx = '';

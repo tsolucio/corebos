@@ -42,6 +42,7 @@ require_once 'include/Webservices/Utils.php';
  *  orderby: a syntactically and semantically correct order by directive wihtout the "order by", only the fields and their order (no validation is done)
  *  columns: a a comma separated string of column names that are to be returned. The special value "*" will return all fields.
  *       for example: 'assigned_user_id,id,createdtime,notes_title,filedownloadcount,filelocationtype,filesize'
+ *  relationtouse: label of the relation to select when more than one is found, if not given, or not found an exception will be thrown
  *
  * Author: JPL TSolucio, S.L. June 2012.  Joe Bordes
  *
@@ -293,6 +294,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 			// special product relation with Q/SO/I/PO
 			if ($relatedModule == 'Products' && in_array($module, array('Invoice','Quotes','SalesOrder','PurchaseOrder'))) {
 				$qparams = ' ' . $queryParameters['columns'] . ' ';
+				$qparams = str_replace(' productid', ' vtiger_inventoryproductrel.productid', $qparams);
 				$qparams = str_replace(' id ', ' vtiger_inventoryproductrel.productid as id ', $qparams);
 				$qparams = str_replace(',id ', ',vtiger_inventoryproductrel.productid as id ', $qparams);
 				$qparams = str_replace(' id,', ' vtiger_inventoryproductrel.productid as id,', $qparams);
@@ -311,7 +313,17 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 				}
 
 				if ($adb->num_rows($relationResult) > 1) {
-					throw new WebServiceException('MANY_RELATIONS', "More than one relation exists between $module and $relatedModule");
+					if (empty($queryParameters['relationtouse'])) {
+						throw new WebServiceException('MANY_RELATIONS', "More than one relation exists between $module and $relatedModule");
+					} else {
+						$relationResult = $adb->pquery(
+							"SELECT * FROM vtiger_relatedlists WHERE tabid=? AND related_tabid=? AND label=? $relation_criteria",
+							array($moduleId, $relatedModuleId, $queryParameters['relationtouse'])
+						);
+						if ($adb->num_rows($relationResult) != 1) {
+							throw new WebServiceException('MANY_RELATIONS', "More than one relation exists between $module and $relatedModule");
+						}
+					}
 				}
 
 				$relationInfo = $adb->fetch_array($relationResult);

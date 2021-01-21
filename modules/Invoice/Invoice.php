@@ -115,7 +115,10 @@ class Invoice extends CRMEntity {
 			if ($newStatus!='DoNotChange') {
 				$h = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : 'NOTSET';
 				$_REQUEST['ajxaction'] = 'Workflow';
-				vtws_revise(array('id'=>vtws_getEntityId('SalesOrder').'x'.$this->column_fields['salesorder_id'], 'sostatus'=>$newStatus), $current_user);
+				try {
+					vtws_revise(array('id'=>vtws_getEntityId('SalesOrder').'x'.$this->column_fields['salesorder_id'], 'sostatus'=>$newStatus), $current_user);
+				} catch (\Throwable $th) {
+				}
 				if ($h=='NOTSET') {
 					unset($_REQUEST['ajxaction']);
 				} else {

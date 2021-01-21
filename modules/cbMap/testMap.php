@@ -107,9 +107,29 @@ switch ($focus->column_fields['maptype']) {
 		$mapinfo['TEST RECORD'] = "<h3>Testing with $testrecord</h3>";
 		break;
 	case 'Mapping':
-		$sofocus = CRMEntity::getInstance('SalesOrder');
-		$sofocus->retrieve_entity_info(10569, 'SalesOrder');
-		$mapinfo = $focus->Mapping($sofocus->column_fields, array('sentin'=>'notmodified'));
+		if (!empty($_REQUEST['testrecord'])) {
+			$testrecord = vtlib_purify($_REQUEST['testrecord']);
+			if (strpos($testrecord, 'x')>0) {
+					list($wsid, $testrecord) = explode('x', $testrecord);
+			}
+			$testModule = getSalesEntityType($testrecord);
+			$sofocus = CRMEntity::getInstance($testModule);
+			$sofocus->retrieve_entity_info($testrecord, $testModule);
+			$recfields = $sofocus->column_fields;
+		} elseif (isset($_REQUEST['testrecord'])) {
+			$recfields = array();
+		} else {
+			$sofocus = CRMEntity::getInstance('SalesOrder');
+			$sofocus->retrieve_entity_info(10569, 'SalesOrder');
+			$recfields = $sofocus->column_fields;
+		}
+		foreach ($_REQUEST as $key => $value) {
+			if ($key=='module' || $key=='testrecord' || $key=='record' || $key=='action') {
+					continue;
+			}
+			$recfields[$key] = $value;
+		}
+		$mapinfo = $focus->Mapping($recfields, array('sentin'=>'notmodified'));
 		break;
 	case 'Record Access Control':
 		$rac = $focus->RecordAccessControl();

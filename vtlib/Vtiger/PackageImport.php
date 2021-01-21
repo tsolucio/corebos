@@ -286,7 +286,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 
 			// Unzip selectively
 			$unzip->unzipAllEx(
-				".",
+				'.',
 				array(
 					// Include only file/folders that need to be extracted
 					'include' => array('templates', "modules/$module", 'cron','manifest.xml'),
@@ -540,7 +540,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 				} else {
 					self::log("SQL: $tablesql ... ", false);
 					Vtiger_Utils::ExecuteQuery($tablesql);
-					self::log("DONE");
+					self::log('DONE');
 				}
 			}
 		}

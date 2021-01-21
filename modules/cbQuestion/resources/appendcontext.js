@@ -13,19 +13,19 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 
-function addRowToContextTable() {
+function addRowToContextTable(key ='', value = '') {
  	const numrow = document.getElementById('context_rows').rows.length;
  	const tr = document.createElement('tr');
  	tr.id = `row-${numrow}`;
  	const td0 = tr.insertCell(0);
  	td0.innerHTML = `
 	<div class="slds-truncate">
-		<input type="text" class="slds-input" name="context_variable">
+		<input type="text" class="slds-input" name="context_variable" value=${key}>
 	</div>`;
  	const td2 = tr.insertCell(1);
  	td2.innerHTML = `
 	<div class="slds-truncate">
-		<input type="text" class="slds-input" name="context_value">
+		<input type="text" class="slds-input" name="context_value" value=${value}>
 	</div>`;
  	const td3 = tr.insertCell(2);
  	td3.innerHTML = `
@@ -75,19 +75,23 @@ function export_results() {
 	}
 	const bqname = document.getElementById('bqname').value;
 	const bqmodule = document.getElementById('bqmodule').value;
+	const issqlwsq_disabled = document.getElementById("checkboxsqlwsq").disabled;
 	let cbq = JSON.stringify({
 		'qname': bqname,
 		'qtype': qtype,
 		'qmodule': document.getElementById('bqmodule').value,
 		'qpagesize': document.getElementById('qpagesize').value,
-		'qcolumns': (qsqlqry=='1' ? document.getElementById('bqsql').value : (qtype=='Mermaid' ? document.getElementById('bqwsq').value : getSQLSelect())),
-		'qcondition': (qtype=='Mermaid' ? '' : getSQLConditions()),
+		//'qcolumns': (qsqlqry=='1' ? document.getElementById('bqsql').value : (qtype=='Mermaid' ? document.getElementById('bqwsq').value : getSQLSelect())),
+		'qcolumns': (qsqlqry=='1' ? document.getElementById('bqsqlcoulumns').value : (qtype=='Mermaid' ? document.getElementById('bqwsq').value : getSQLSelect())),
+		//'qcondition': (qtype=='Mermaid' ? '' : getSQLConditions()),
+		'qcondition': (qtype=='Mermaid' ? '' : (issqlwsq_disabled==true ? document.getElementById('bqsqlconditions').value : getSQLConditions())),
 		'orderby': getSQLOrderBy().substr(9),
 		'groupby': getSQLGroupBy().substr(9),
 		'typeprops': document.getElementById('qprops').value,
 		'sqlquery': qsqlqry,
 		'condfilterformat': '0',
-		'context_variable': context_data
+		'context_variable': context_data,
+		'issqlwsq_disabled': issqlwsq_disabled
 	});
 	const evaluatewith = document.getElementById('evaluatewith').value;
 	let cbqctx = '';

@@ -306,7 +306,18 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			if ($isRelatedQuery) {
 				if ($invlines) {
 					$newrow = $row;
-					$newrow['id'] = (getSalesEntityType($newrow['id']) == 'Products' ? $pdowsid : $srvwsid) . 'x' . $newrow['id'];
+					if (!empty($newrow['id'])) {
+						$newrow['id'] = vtws_getEntityId(getSalesEntityType($newrow['id'])) . 'x' . $newrow['id'];
+					}
+					$newrow['linetype'] = '';
+					if (!empty($newrow['productid'])) {
+						$newrow['linetype'] = getSalesEntityType($newrow['productid']);
+						$newrow['productid'] = ($newrow['linetype'] == 'Products' ? $pdowsid : $srvwsid) . 'x' . $newrow['productid'];
+					}
+					if (!empty($newrow['serviceid'])) {
+						$newrow['linetype'] = 'Services';
+						$newrow['serviceid'] = $srvwsid . 'x' . $newrow['serviceid'];
+					}
 				} else {
 					$relflds = array_diff_key($row, $newrow);
 					foreach ($queryRelatedModules as $relmod => $relmeta) {

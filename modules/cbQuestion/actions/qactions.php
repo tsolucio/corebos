@@ -373,7 +373,7 @@ class qactions_Action extends CoreBOS_ActionController {
 	}
 
 	public function exportBuilderData() {
-		global $log;
+		global $log, $adb;
 		$log->debug('> exportBuilderData');
 		$bqname = vtlib_purify($_REQUEST['bqname']);
 		$columns = json_decode(urldecode($_REQUEST['columns']), true);
@@ -381,15 +381,18 @@ class qactions_Action extends CoreBOS_ActionController {
 		$translatedHeaders = array_map(function ($key) {
 			return getTranslatedString($key['field'], $key['module']);
 		}, $columns);
-		$data = $this->getBuilderData(true);
-		$data = $data['data']['contents'];
+
+		set_time_limit(0);
+
+		$qinfo = $this->getBuilderDataQuery(true);
+		$result = $adb->query($qinfo['query']);
 		$date = date_create(date('Y-m-d h:i:s'));
 		$filename = $bqname.'_'.date_format($date, date('Ymdhis'));
 		$path = 'cache/'.$filename.'.csv';
 		$file = fopen($path, 'w');
 		fputcsv($file, $translatedHeaders);
-		foreach ($data as $key => $value) {
-			fputcsv($file, $value);
+		while ($row = $adb->fetchByAssoc($result)) {
+			fputcsv($file, $row);
 		}
 		fclose($file);
 		$log->debug('< exportBuilderData');
@@ -417,38 +420,8 @@ class qactions_Action extends CoreBOS_ActionController {
 			echo json_encode($entries_list);
 			return;
 		}
-		$params = array('cbQuestionRecord' => json_decode(urldecode($_REQUEST['cbQuestionRecord']), true));
-		$ctx = $this->getQuestionContext();
-		if (count($ctx)) {
-			$params['cbQuestionContext'] = $ctx;
-		}
-		if ($params['cbQuestionRecord']['sqlquery']=='1') {
-			include_once 'include/Webservices/showqueryfromwsdoquery.php';
-			$sqlinfo = showqueryfromwsdoquery($params['cbQuestionRecord']['qcolumns'], $current_user);
-			$list_query = $sqlinfo['sql'];
-		} else {
-			$list_query = cbQuestion::getSQL(0, $params);
-		}
-		if (stripos($list_query, ' LIMIT ') > 0) {
-			$list_query = substr($list_query, 0, stripos($list_query, ' LIMIT '));
-		}
-		unset($_REQUEST['cbQuestionRecord']);
-		if (!empty($_REQUEST['perPage']) && is_numeric($_REQUEST['perPage'])) {
-			$rowsperpage = (int) vtlib_purify($_REQUEST['perPage']);
-		} else {
-			$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize', 40);
-		}
-		if (isset($_REQUEST['page'])) {
-			$page = vtlib_purify($_REQUEST['page']);
-		} else {
-			$page = 1;
-		}
-		$from = ($page-1)*$rowsperpage;
-		$limit = '';
-		if (!$ret) {
-			$limit = " limit $from,$rowsperpage";
-		}
-		$result = $adb->query(trim($list_query, ';').$limit);
+		$builderData = $this->getBuilderDataQuery($ret);
+		$result = $adb->query(trim($builderData['query'], ';').$builderData['limit']);
 		$count_result = $adb->query(mkXQuery(stripTailCommandsFromQuery($list_query, false), 'count(*) AS count'));
 		$noofrows = $adb->query_result($count_result, 0, 0);
 		if ($result) {
@@ -457,7 +430,7 @@ class qactions_Action extends CoreBOS_ActionController {
 					'data' => array(
 						'contents' => array(),
 						'pagination' => array(
-							'page' => (int)$page,
+							'page' => (int)$builderData['page'],
 							'totalCount' => (int)$noofrows,
 						),
 					),
@@ -493,7 +466,7 @@ class qactions_Action extends CoreBOS_ActionController {
 				),
 				'result' => false,
 				'message' => getTranslatedString('ERR_SQL', 'cbAuditTrail'),
-				'debug_query' => $list_query.$limit,
+				'debug_query' => $builderData['query'].$builderData['limit'],
 				'debug_params' => print_r($_REQUEST, true),
 			);
 		}
@@ -502,6 +475,59 @@ class qactions_Action extends CoreBOS_ActionController {
 			return $entries_list;
 		}
 		echo json_encode($entries_list);
+	}
+
+	public function getBuilderDataQuery($ret) {
+		$params = array('cbQuestionRecord' => json_decode(urldecode($_REQUEST['cbQuestionRecord']), true));
+		$ctx = $this->getQuestionContext();
+		$sql_question_context_variable = json_decode($params['cbQuestionRecord']['typeprops']);
+
+		if (count($ctx)) {
+			$params['cbQuestionContext'] = $ctx;
+		}
+
+		if ($params['cbQuestionRecord']['sqlquery']=='1' && !$params['cbQuestionRecord']['issqlwsq_disabled']) {
+			include_once 'include/Webservices/showqueryfromwsdoquery.php';
+			$sqlinfo = showqueryfromwsdoquery($params['cbQuestionRecord']['qcolumns'], $current_user);
+			$list_query = $sqlinfo['sql'];
+		} else {
+			$list_query = cbQuestion::getSQL(0, $params);
+		}
+
+		if (stripos($list_query, ' LIMIT ') > 0) {
+			$list_query = substr($list_query, 0, stripos($list_query, ' LIMIT '));
+		}
+		unset($_REQUEST['cbQuestionRecord']);
+		if (!empty($_REQUEST['perPage']) && is_numeric($_REQUEST['perPage'])) {
+			$rowsperpage = (int) vtlib_purify($_REQUEST['perPage']);
+		} else {
+			$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize', 40);
+		}
+		if (isset($_REQUEST['page'])) {
+			$page = vtlib_purify($_REQUEST['page']);
+		} else {
+			$page = 1;
+		}
+		$from = ($page-1)*$rowsperpage;
+		$limit = '';
+
+		if (!$ret) {
+			$limit = " limit $from,$rowsperpage";
+		}
+
+		$context_var_array = (array) $sql_question_context_variable->context_variables;
+		if (!empty($context_var_array)) {
+			foreach ($context_var_array as $key => $value) {
+				$list_query = str_replace($key, $value, $list_query);
+			}
+		}
+
+		return array(
+		'query' => $list_query,
+		'page' => $page,
+		'rowsperpage' => $rowsperpage,
+		'limit' => $limit,
+		);
 	}
 }
 ?>

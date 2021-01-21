@@ -72,6 +72,10 @@ function fieldDep_AssignNewValue(change_field, action_field, new_value, old_valu
 	document.getElementsByName(action_field).item(0).value = new_value;
 }
 
+function fieldDep_CopyFieldValue(change_field, action_field, new_value, old_value, parameters) {
+	document.getElementsByName(action_field).item(0).value = document.getElementsByName(parameters[0]).item(0).value;
+}
+
 function fieldDep_AssignUser(change_field, action_field, new_value, old_value, parameters) {
 	document.querySelector('input[name="assigntype"][value="U"]').checked=true;
 	document.querySelector('input[name="assigntype"][value="T"]').checked=false;

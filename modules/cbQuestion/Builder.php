@@ -36,6 +36,9 @@ if (!empty($_REQUEST['record'])) {
 	$focus->retrieve_entity_info($record, $currentModule);
 	$focus->name=$focus->column_fields[$focus->list_link_field];
 	$fields = vtws_describe($focus->column_fields['qmodule'], $current_user);
+	if ($focus->column_fields['qtype']!='Mermaid') {
+		$smarty->assign('QSQL', cbQuestion::getSQL($record));
+	}
 	$smarty->assign('headerurl', 'index.php?action=DetailView&module='.$currentModule.'&record='.$record);
 } else {
 	$fields = array('fields'=>array());
@@ -113,7 +116,8 @@ $smarty->assign('bqcollection', $focus->column_fields['qcollection']);
 $smarty->assign('sqlquery', $focus->column_fields['sqlquery']);
 $smarty->assign('qpagesize', $focus->column_fields['qpagesize']);
 $smarty->assign('qtype', empty($focus->column_fields['qtype']) ? 'Table' : $focus->column_fields['qtype']);
-$smarty->assign('typeprops', $focus->column_fields['typeprops']);
+$smarty->assign('typeprops', decode_html($focus->column_fields['typeprops']));
+$smarty->assign('questioncolumns', decode_html($focus->column_fields['qcolumns']));
 $smarty->assign('cbqconditons', empty($focus->column_fields['qcondition']) ? null : decode_html($focus->column_fields['qcondition']));
 $emgr = new VTExpressionsManager($adb);
 $smarty->assign('FNDEFS', json_encode($emgr->expressionFunctionDetails()));

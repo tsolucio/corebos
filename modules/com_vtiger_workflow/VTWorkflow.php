@@ -367,11 +367,11 @@ class Workflow {
 		$scheduleMinute= $this->getScheduleMinute();
 		$nextTime = date('Y-m-d H:i:s');
 		if ($scheduleType==Workflow::$SCHEDULED_BY_MINUTE) {
-			$nextTime=date("Y-m-d H:i:s", strtotime("+ $scheduleMinute minutes"));
+			$nextTime=date('Y-m-d H:i:s', strtotime("+ $scheduleMinute minutes"));
 		}
 
 		if ($scheduleType == Workflow::$SCHEDULED_HOURLY) {
-			$nextTime = date("Y-m-d H:i:s", strtotime("+1 hour"));
+			$nextTime = date('Y-m-d H:i:s', strtotime('+1 hour'));
 		}
 
 		if ($scheduleType == Workflow::$SCHEDULED_DAILY) {
@@ -523,15 +523,15 @@ class Workflow {
 		$currentDayOfMonth = date('j', $currentTime);
 		$scheduledTime = $this->getWFScheduleTime();
 		if ($scheduledWeekDayOfMonth == $currentDayOfMonth) {
-			$nextTime = date("Y-m-d H:i:s", strtotime('+1 month '.$scheduledTime));
+			$nextTime = date('Y-m-d H:i:s', strtotime('+1 month '.$scheduledTime));
 		} else {
 			$monthInFullText = date('F', $currentTime);
 			$yearFullNumberic = date('Y', $currentTime);
 			if ($scheduledWeekDayOfMonth < $currentDayOfMonth) {
-				$nextMonth = date("Y-m-d H:i:s", strtotime('next month'));
+				$nextMonth = date('Y-m-d H:i:s', strtotime('next month'));
 				$monthInFullText = date('F', strtotime($nextMonth));
 			}
-			$nextTime = date("Y-m-d H:i:s", strtotime($scheduledWeekDayOfMonth.' '.$monthInFullText.' '.$yearFullNumberic.' '.$scheduledTime));
+			$nextTime = date('Y-m-d H:i:s', strtotime($scheduledWeekDayOfMonth.' '.$monthInFullText.' '.$yearFullNumberic.' '.$scheduledTime));
 		}
 		return $nextTime;
 	}
