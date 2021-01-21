@@ -7,4 +7,11 @@
 	<classname>standardizeQuotesRLonModules</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Register Workflow Mass Action CBMQTM Channel</description>
+	<filename>build/changeSets/2021/registerMassActionCBMQTMChannel.php</filename>
+	<classname>registerMassActionCBMQTMChannel</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

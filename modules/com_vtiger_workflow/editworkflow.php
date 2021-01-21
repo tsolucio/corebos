@@ -159,6 +159,23 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 	$smarty->assign('saveType', !empty($workflow->id) ? 'edit' : 'new');
 	$smarty->assign('module', $module);
 
+	if (coreBOS_Session::has('malaunch_records')) {
+		$malaunch_records = coreBOS_Session::get('malaunch_records');
+		$smarty->assign('malaunch_records', $malaunch_records);
+		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-success');
+		$msg = $mod['Records execution success'];
+		$msg .= '<br />';
+		$msg .= $mod['Records'];
+		$msg .= '<br />';
+		$msg .= '<ul>';
+		foreach ($malaunch_records as $record) {
+			$msg .= '<li>'.$record.'</li>';
+		}
+		$msg .= '</ul>';
+		$smarty->assign('ERROR_MESSAGE', $msg);
+		coreBOS_Session::delete('malaunch_records');
+	}
+
 	$smarty->display("{$module->name}/EditWorkflow.tpl");
 }
 $returl = 'index.php?'.$_SERVER['QUERY_STRING'];

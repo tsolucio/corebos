@@ -402,4 +402,11 @@
 	<classname>incdocfiletypelength</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Add Workflow MassActions Columns</description>
+	<filename>build/changeSets/2020/addWorkflowMassActionsColumns.php</filename>
+	<classname>addWorkflowMassActionsColumns</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

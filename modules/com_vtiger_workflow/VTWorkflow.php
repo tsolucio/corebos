@@ -165,6 +165,10 @@ class Workflow {
 		$this->wfendon = isset($row['wfendon']) ? $row['wfendon'] : '';
 		$this->active = isset($row['active']) ? $row['active'] : '';
 		$this->nexttrigger_time = isset($row['nexttrigger_time']) ? $row['nexttrigger_time'] : '';
+		$this->options = isset($row['options']) ? $row['options'] : '';
+		$this->cbquestion = isset($row['cbquestion']) ? $row['cbquestion'] : null;
+		$this->recordset = isset($row['recordset']) ? $row['recordset'] : null;
+		$this->onerecord = isset($row['onerecord']) ? $row['onerecord'] : null;
 		if ($row['execution_condition']==VTWorkflowManager::$ON_RELATE || $row['execution_condition']==VTWorkflowManager::$ON_UNRELATE) {
 			$this->relatemodule = isset($row['relatemodule']) ? $row['relatemodule'] : '';
 		} else {
