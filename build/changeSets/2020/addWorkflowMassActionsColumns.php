@@ -24,12 +24,15 @@ class addWorkflowMassActionsColumns extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD options VARCHAR(100);");
-			$this->ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD cbquestion INT(15);");
-			$this->ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD recordset INT(15);");
-			$this->ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD onerecord INT(15);");
-			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$cnmsg = $adb->getColumnNames('com_vtiger_workflows');
+			if (!in_array('options', $cnmsg)) {
+				$this->ExecuteQuery('ALTER TABLE com_vtiger_workflows ADD options VARCHAR(100);');
+				$this->ExecuteQuery('ALTER TABLE com_vtiger_workflows ADD cbquestion INT(11);');
+				$this->ExecuteQuery('ALTER TABLE com_vtiger_workflows ADD recordset INT(11);');
+				$this->ExecuteQuery('ALTER TABLE com_vtiger_workflows ADD onerecord INT(11);');
+			}
+			$this->sendMsg('Changeset '.get_class($this).' applied! You can safely ignore errors in this changeset, it is a redundant check to make sure the fields are there.');
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}
