@@ -110,7 +110,7 @@ switch ($focus->column_fields['maptype']) {
 		if (!empty($_REQUEST['testrecord'])) {
 			$testrecord = vtlib_purify($_REQUEST['testrecord']);
 			if (strpos($testrecord, 'x')>0) {
-					list($wsid, $testrecord) = explode('x', $testrecord);
+				list($wsid, $testrecord) = explode('x', $testrecord);
 			}
 			$testModule = getSalesEntityType($testrecord);
 			$sofocus = CRMEntity::getInstance($testModule);
@@ -125,7 +125,7 @@ switch ($focus->column_fields['maptype']) {
 		}
 		foreach ($_REQUEST as $key => $value) {
 			if ($key=='module' || $key=='testrecord' || $key=='record' || $key=='action') {
-					continue;
+				continue;
 			}
 			$recfields[$key] = $value;
 		}
@@ -233,7 +233,10 @@ switch ($focus->column_fields['maptype']) {
 			}
 			$context[$key] = $value;
 		}
-		$mapinfo = $focus->DecisionTable($context);
+		$mapinfo = array(
+			'result' => $focus->DecisionTable($context),
+			'info' => $focus->mapExecutionInfo,
+		);
 		break;
 	default:
 		break;

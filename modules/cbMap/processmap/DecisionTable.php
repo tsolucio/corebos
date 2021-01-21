@@ -110,6 +110,7 @@ class DecisionTable extends processcbMap {
 			);
 			$eval = '';
 			if (isset($value->expression)) {
+				$this->mapExecutionInfo['type'] = 'Expression';
 				$testexpression = (String)$value->expression;
 				$rule['type'] = 'expression';
 				$rule['valueraw'] = $testexpression;
@@ -134,6 +135,7 @@ class DecisionTable extends processcbMap {
 					$outputs[$sequence] = '__DoesNotPass__';
 				}
 			} elseif (isset($value->mapid)) {
+				$this->mapExecutionInfo['type'] = 'Map';
 				$mapid = (String)$value->mapid;
 				$eval = coreBOS_Rule::evaluate($mapid, $context);
 				$rule['type'] = 'map';
@@ -149,6 +151,8 @@ class DecisionTable extends processcbMap {
 					$outputs[$sequence] = '__DoesNotPass__';
 				}
 			} elseif (isset($value->decisionTable)) {
+				$this->mapExecutionInfo['type'] = 'DecisionTable';
+				$this->mapExecutionInfo['queries'] = array();
 				$module = (String)$value->decisionTable->module;
 				$queryGenerator = new QueryGenerator($module, $current_user);
 				if (isset($value->decisionTable->conditions)) {
@@ -214,6 +218,7 @@ class DecisionTable extends processcbMap {
 					$query .= ' ORDER BY '.$queryGenerator->getOrderByColumn($orderby);
 				}
 				$result = $adb->pquery($query, array());
+				$this->mapExecutionInfo['queries'][] = $query;
 				$rule['type'] = 'module';
 				$rule['valueraw'] = $module;
 				$rule['valueevaluate'] = $query;
