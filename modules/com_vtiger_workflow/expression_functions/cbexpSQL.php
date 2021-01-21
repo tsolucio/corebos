@@ -44,6 +44,7 @@ function cbexpsql_supportedFunctions() {
 		'time_diffyears(a,b)' => 'time_diffyears(a,b)',
 		//'time_diffweekdays(a)' => 'time_diffweekdays(a)',
 		//'time_diffweekdays(a,b)' => 'time_diffweekdays(a,b)',
+		'networkdays' => 'networkdays(startDate, endDate, holidays)',
 		'add_days' => 'add_days(datefield, noofdays)',
 		'sub_days' => 'sub_days(datefield, noofdays)',
 		'add_months' => 'add_months(datefield, noofmonths)',
@@ -189,6 +190,17 @@ function cbexpsql_time_diffyears($arr, $mmodule) {
 	$arr[1] = $arr[0];
 	$arr[0] = new VTExpressionSymbol('YEAR', 'constant');
 	return __cbexpsql_functionparams('TIMESTAMPDIFF', $arr, $mmodule);
+}
+
+function cbexpsql_networkdays($arr, $mmodule) {
+	$s = $arr[0]->value;
+	$e = $arr[1]->value;
+	// https://stackoverflow.com/questions/1828948/mysql-function-to-find-the-number-of-working-days-between-two-dates
+	// 0123444401233334012222340111123400001234000123440 > I increment one day to match our function
+	return "(SELECT CASE
+		WHEN '$e' < '$s' THEN -5 * (DATEDIFF('$e', '$s') DIV 7) + SUBSTRING('1234555512344445123333451222234511112345001234550', 7 * WEEKDAY('$e') + WEEKDAY('$s') + 1, 1)
+		ELSE 5 * (DATEDIFF('$e', '$s') DIV 7) + SUBSTRING('1234555512344445123333451222234511112345001234550', 7 * WEEKDAY('$s') + WEEKDAY('$e') + 1, 1)
+	END)";
 }
 
 function cbexpsql_add_days($arr, $mmodule) {

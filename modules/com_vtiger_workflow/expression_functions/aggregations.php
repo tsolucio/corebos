@@ -15,6 +15,9 @@
  *************************************************************************************************
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
+require_once 'include/QueryGenerator/PHPSQLParserInclude.php';
+use \PHPSQLParser\PHPSQLParser;
+use \PHPSQLParser\utils\ExpressionType;
 
 /*
  * function to aggregate a set of records related to a main record
@@ -137,7 +140,10 @@ function __cb_aggregation_getQuery($arr, $userdefinedoperation = true) {
 		$query = str_replace(array("\n", "\t", "\r"), ' ', $query);
 		$query = stripTailCommandsFromQuery($query);
 		if (!empty($arr[3])) {
-			$query .= ' and ('.__cb_aggregation_getconditions($arr[3], $relmodule, $mainmodule, $crmid).')';
+			global $__cb_aggregation_condition_joins;
+			$conditions = __cb_aggregation_getconditions($arr[3], $relmodule, $mainmodule, $crmid);
+			$query = __cb_aggregation_mergejoins($query, $__cb_aggregation_condition_joins);
+			$query .= ' and ('.$conditions.')';
 		}
 	} elseif ($mainmodule==$relmodule) {
 		$query = __cb_aggregation_queryonsamemodule($arr[3], $mainmodule, $relfield, $crmid);
@@ -156,7 +162,7 @@ function __cb_aggregation_getQuery($arr, $userdefinedoperation = true) {
 }
 
 function __cb_aggregation_getconditions($conditions, $module, $mainmodule, $recordid) {
-	global $current_user;
+	global $current_user, $__cb_aggregation_condition_joins;
 	$c = explode('],[', $conditions);
 	array_walk($c, function (&$v, $k) {
 		$v = trim($v, '[');
@@ -180,7 +186,34 @@ function __cb_aggregation_getconditions($conditions, $module, $mainmodule, $reco
 	}
 	$qg->endGroup();
 	$where = $qg->getWhereClause();
+	$__cb_aggregation_condition_joins = $qg->getFromClause();
 	return substr($where, stripos($where, 'where ')+6);
+}
+
+function __cb_aggregation_mergejoins($query, $__cb_aggregation_condition_joins) {
+	$parser = new PHPSQLParser();
+	$q = $parser->parse($query);
+	$j = $parser->parse('select * '.$__cb_aggregation_condition_joins);
+	$qt = $jt = array();
+	foreach ($q['FROM'] as $jinfo) {
+		$qt[] = $jinfo['table'];
+	}
+	foreach ($j['FROM'] as $jinfo) {
+		$jt[] = $jinfo['table'];
+	}
+	$missing = array_diff($jt, $qt);
+	if (count($missing)>0) {
+		$mjoin = '';
+		foreach ($missing as $mtable) {
+			foreach ($j['FROM'] as $jinfo) {
+				if ($jinfo['table']==$mtable) {
+					$mjoin .= ' '.($jinfo['join_type']=='JOIN' ? 'INNER JOIN ' : $jinfo['join_type'].' JOIN ').$jinfo['base_expr'];
+				}
+			}
+		}
+		$query = appendFromClauseToQuery($query, $mjoin.' ');
+	}
+	return $query;
 }
 
 function __cb_aggregation_queryonsamemodule($conditions, $module, $relfield, $recordid) {

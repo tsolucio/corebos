@@ -390,6 +390,20 @@
 </changeSet>
 <changeSet>
 	<author>joebordes</author>
+	<description>Add information fields to custom workflow expression functions</description>
+	<filename>build/changeSets/2020/workflowexpfunctioninfo.php</filename>
+	<classname>workflowexpfunctioninfo</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Increment Document filetype length</description>
+	<filename>build/changeSets/2020/incdocfiletypelength.php</filename>
+	<classname>incdocfiletypelength</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
 	<description>The calendar is DEAD, long live the Calendar!</description>
 	<filename>build/changeSets/2020/databasechangesToMoveTocbCalendar3.php</filename>
 	<classname>databasechangesToMoveTocbCalendar3</classname>

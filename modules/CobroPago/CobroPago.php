@@ -269,8 +269,8 @@ class CobroPago extends CRMEntity {
 
 	public function unlinkRelationship($id, $return_module, $return_id) {
 		global $adb;
-		parent::unlinkRelationship($id, $return_module, $return_id);
 		$rs = $adb->pquery('select related_id,parent_id from vtiger_cobropago where cobropagoid=?', array($id));
+		parent::unlinkRelationship($id, $return_module, $return_id);
 		if ($rs && $adb->num_rows($rs)==1) {
 			$relatedId = $adb->query_result($rs, 0, 'related_id');
 			$pid = $adb->query_result($rs, 0, 'parent_id');

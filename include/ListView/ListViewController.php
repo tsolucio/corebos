@@ -559,9 +559,9 @@ class ListViewController {
 						$setype = getSalesEntityType($value);
 						$moduleList = array($setype);
 						if (!isset($this->nameList[$fieldName])) {
-							$this->nameList[$fieldName] = array($fieldName=>array());
+							$this->nameList[$fieldName] = array();
 						}
-						if (!isset($this->nameList[$fieldName][$value])) {
+						if (!isset($this->nameList[$fieldName][$value]) && !empty($value)) {
 							$en = getEntityName($setype, $value);
 							$this->nameList[$fieldName][$value] = $en[$value];
 						}
@@ -740,6 +740,7 @@ class ListViewController {
 		global $theme, $current_user;
 
 		$arrow='';
+		$sorder=trim($sorder);
 		$header = array();
 
 		//$tabid = getTabid($module);

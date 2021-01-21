@@ -1516,7 +1516,7 @@ function InventorySelectAll(mod, image_pth) {
 
 		/* Instance listeners */
 		window.addEventListener('keyup', this.preventSubmit.bind(this), true);
-		this.utils.on(this.input, 'keyup', this.debounce(this.trigger, 600), this);
+		this.utils.on(this.input, 'keyup', this.debounce(this.trigger, 420), this);
 		this.utils.on(this.input, 'keyup', this.handleImmediateInput, this);
 		this.utils.on(this.input, 'blur', this.delayedClear, this);
 
@@ -2089,6 +2089,11 @@ function handleProductAutocompleteSelect(obj) {
 	if (obj.result.pricing.discount != undefined && obj.result.pricing.discount != 0) {
 		document.EditView.elements['discount'+no][1].checked = true;
 		document.EditView.elements['discount_percentage'+no].value = obj.result.pricing.discount;
+	} else {
+		// zero discount
+		document.EditView.elements['discount'+no][0].checked = true;
+		document.EditView.elements['discount_percentage'+no].value = 0;
+		document.EditView.elements['discount_amount'+no].value = 0;
 	}
 
 	// Update the icon

@@ -350,7 +350,8 @@ if ($use_current_login) {
 }
 // Force password change
 if ($current_user->mustChangePassword() && $_REQUEST['action']!='Logout' && $_REQUEST['action']!='CalendarAjax' && $_REQUEST['action']!='UsersAjax'
-	&& $_REQUEST['action']!='ChangePassword' && $_REQUEST['action'] != 'PBXManagerAjax' && !($_REQUEST['module']=='Users' && $_REQUEST['action']=='Save')
+	&& ($_REQUEST['action']!='UtilitiesAjax' && $_REQUEST['functiontocall']!='setNewPassword') && $_REQUEST['action'] != 'PBXManagerAjax'
+	&& !($_REQUEST['module']=='Users' && $_REQUEST['action']=='Save')
 ) {
 	$currentModule = 'Users';
 	$currentModuleFile = 'modules/Users/DetailView.php';

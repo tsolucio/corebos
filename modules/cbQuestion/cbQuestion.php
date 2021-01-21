@@ -9,6 +9,9 @@
  ************************************************************************************/
 require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
+require_once 'include/QueryGenerator/PHPSQLParserInclude.php';
+use \PHPSQLParser\PHPSQLParser;
+use \PHPSQLParser\utils\ExpressionType;
 
 class cbQuestion extends CRMEntity {
 	public $table_name = 'vtiger_cbquestion';
@@ -281,7 +284,7 @@ class cbQuestion extends CRMEntity {
 		$q = new cbQuestion();
 		if (empty($qid) && !empty($params['cbQuestionRecord']) && is_array($params['cbQuestionRecord'])) {
 			$q->column_fields = $params['cbQuestionRecord'];
-			unset($params['cbQuestionRecord']);
+			//unset($params['cbQuestionRecord']);
 			if (isset($params['cbQuestionContext'])) {
 				$qctx = $params['cbQuestionContext'];
 				unset($params['cbQuestionContext']);
@@ -438,7 +441,15 @@ class cbQuestion extends CRMEntity {
 				$queryRelatedModules = array(); // this has to be filled in with all the related modules in the query
 				$webserviceObject = VtigerWebserviceObject::fromName($adb, $q->column_fields['qmodule']);
 				$modOp = new VtigerModuleOperation($webserviceObject, $current_user, $adb, $log);
-				$answer = $modOp->querySQLResults(cbQuestion::getSQL($qid, $params), ' not in ', $meta, $queryRelatedModules);
+				$sql_question_context_variable = json_decode($q->column_fields['typeprops']);
+				$context_var_array = (array) $sql_question_context_variable->context_variables;
+				$sql_query = cbQuestion::getSQL($qid, $params);
+				if (!empty($context_var_array)) {
+					foreach ($context_var_array as $key => $value) {
+						$sql_query = str_replace($key, $value, $sql_query);
+					}
+				}
+				$answer = $modOp->querySQLResults($sql_query, ' not in ', $meta, $queryRelatedModules);
 				return array(
 					'module' => $q->column_fields['qmodule'],
 					'columns' => $q->column_fields['qcolumns'],
@@ -684,7 +695,7 @@ class cbQuestion extends CRMEntity {
 	}
 
 	public function convertColumns2DataTable() {
-		global $adb;
+		global $adb, $log;
 		$qcols = $this->column_fields;
 		if (empty($qcols['qcolumns'])) {
 			return array(
@@ -707,8 +718,41 @@ class cbQuestion extends CRMEntity {
 		$orderby = explode(',', strtolower(str_replace(' ', '', decode_html($qcols['orderby']))));
 		$groupby = explode(',', strtolower(str_replace(' ', '', decode_html($qcols['groupby']))));
 		$qcols = decode_html($qcols['qcolumns']);
+
+		$parser = new PHPSQLParser();
+		$parsed = $parser->parse('select '.$qcols.' from stubtable');
+		$generatedQColumns = '';
+		if (isset($parsed['SELECT'])) {
+			$selectCoulums = $parsed["SELECT"];
+			foreach ($selectCoulums as $col) {
+				if ($col['expr_type'] == 'colref' || $col['expr_type'] == 'function' || $col['expr_type'] == 'expression') {
+					$value = '';
+					if (!empty($col['alias'])) {
+						$value = $col['alias']['name'];
+					} else {
+						$base_expr = explode(',', $col['base_expr']);
+						if (count($base_expr) > 1) {
+							$value = $base_expr[1];
+						} else {
+							$value = $col['base_expr'];
+						}
+					}
+				} elseif ($col['expr_type'] == 'aggregate_function') {
+					$value = '';
+					$sub_tree = $col['sub_tree'][0]['base_expr'];
+					$value = strtolower($col['base_expr']).'('.$sub_tree.')';
+				}
+
+				if (empty($generatedQColumns)) {
+					$generatedQColumns = $value.' AS ' .$value;
+				} else {
+					$generatedQColumns = $generatedQColumns.','.$value.' AS ' .$value;
+				}
+			}
+		}
+
 		if (strpos($qcols, '[')===false) {
-			$qcols = preg_replace('/\s*,\s*/', ',', $qcols);
+			$qcols = preg_replace('/\s*,\s*/', ',', $generatedQColumns);
 			$qcols = explode(',', $qcols);
 			foreach ($qcols as $finfo) {
 				$alias = '';
@@ -716,6 +760,7 @@ class cbQuestion extends CRMEntity {
 					$alias = preg_replace('/\s+/', ' ', $finfo);
 					$alias = explode(' ', $alias);
 					$alias = $alias[2];
+					$finfo = strtolower($alias);
 				}
 				$fieldData[] = array(
 					'fieldname' => $finfo,

@@ -112,7 +112,7 @@ class Vtiger_ModuleBasic {
 	 */
 	public function __getNextSequence() {
 		global $adb;
-		$result = $adb->pquery("SELECT MAX(tabsequence) AS max_tabseq FROM vtiger_tab", array());
+		$result = $adb->pquery('SELECT MAX(tabsequence) AS max_tabseq FROM vtiger_tab', array());
 		$maxtabseq = $adb->query_result($result, 0, 'max_tabseq');
 		return ++$maxtabseq;
 	}

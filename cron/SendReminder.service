@@ -82,15 +82,12 @@ if (vtlib_isModuleActive('cbCalendar')) {
 				$parent_content = getTranslatedString($parent_module, $parent_module) .' : '.$ename[$parent_type]."\n";
 			}
 
-			//code included for recurring events by jaguar starts
 			$recur_id = $result_set['recurringid'];
-			$current_date=date('Y-m-d');
 			if ($recur_id == 0) {
 				$date_start = $result_set['date_start'];
 			} else {
 				$date_start = $result_set['recurringdate'];
 			}
-			//code included for recurring events by jaguar ends
 			$date = new DateTimeField("$date_start $time_start");
 			$activity_time = strtotime($date->getDisplayDateTimeValue())/60;
 			if (($activity_time - $curr_time) > -12 && ($activity_time - $curr_time) <= $reminder_time) {
@@ -130,13 +127,13 @@ if (vtlib_isModuleActive('cbCalendar')) {
 					}
 				} else {
 					// coreBOS workflow based notification template
-					$result = $adb->pquery("select * from com_vtiger_workflows where summary='Send Reminder Template' and module_name=? limit 1", array('cbCalendar'));
-					if ($result && $adb->num_rows($result)>0) {
+					$rstpl = $adb->pquery("select * from com_vtiger_workflows where summary='Send Reminder Template' and module_name=? limit 1", array('cbCalendar'));
+					if ($rstpl && $adb->num_rows($rstpl)>0) {
 						$util = new VTWorkflowUtils();
 						$adminUser = $util->adminUser();
 						$entityCache = new VTEntityCache($adminUser);
 						$wfs = new VTWorkflowManager($adb);
-						$workflows = $wfs->getWorkflowsForResult($result);
+						$workflows = $wfs->getWorkflowsForResult($rstpl);
 						$workflow = reset($workflows);
 						$wsid = vtws_getWebserviceEntityId('cbCalendar', $activity_id);
 						$entityData = $entityCache->forId($wsid);

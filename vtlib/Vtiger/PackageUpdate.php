@@ -40,7 +40,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 
 			// Unzip selectively
 			$unzip->unzipAllEx(
-				".",
+				'.',
 				array(
 					'include' => array('templates', "modules/$module"), // We don't need manifest.xml
 					//'exclude' => Array('manifest.xml')                // DEFAULT: excludes all not in include
@@ -206,7 +206,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 							// Supress any SQL query failures
 							self::log("SQL: $tablesql ... ", false);
 							Vtiger_Utils::ExecuteQuery($tablesql, true);
-							self::log("DONE");
+							self::log('DONE');
 						}
 					}
 				}
