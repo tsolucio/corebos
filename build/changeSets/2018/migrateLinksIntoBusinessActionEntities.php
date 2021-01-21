@@ -49,6 +49,12 @@ class migrateLinksIntoBusinessActionEntities extends cbupdaterWorker {
 			if (!in_array('active', $cnmsg)) {
 				$this->ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `active` varchar(10) NULL;');
 			}
+			if (!in_array('options', $cnmsg)) {
+				$adb->query('ALTER TABLE com_vtiger_workflows ADD options VARCHAR(100);');
+				$adb->query('ALTER TABLE com_vtiger_workflows ADD cbquestion INT(11);');
+				$adb->query('ALTER TABLE com_vtiger_workflows ADD recordset INT(11);');
+				$adb->query('ALTER TABLE com_vtiger_workflows ADD onerecord INT(11);');
+			}
 			if ($this->isModuleInstalled('BusinessActions')) {
 				vtlib_toggleModuleAccess('BusinessActions', true);
 				global $adb, $current_user;

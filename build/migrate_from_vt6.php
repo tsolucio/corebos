@@ -128,6 +128,9 @@ $cnmsg = $adb->getColumnNames('com_vtiger_workflows');
 if (!in_array('purpose', $cnmsg)) {
 	$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `purpose` TEXT NULL;');
 }
+if (!in_array('relatemodule', $cnmsg)) {
+	$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `relatemodule` varchar(100) default NULL;');
+}
 if (!in_array('wfstarton', $cnmsg)) {
 	$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `wfstarton` datetime NULL;');
 }
@@ -137,8 +140,11 @@ if (!in_array('wfendon', $cnmsg)) {
 if (!in_array('active', $cnmsg)) {
 	$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `active` varchar(10) NULL;');
 }
-if (!in_array('relatemodule', $cnmsg)) {
-	$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `relatemodule` varchar(100) default NULL;');
+if (!in_array('options', $cnmsg)) {
+	$adb->query('ALTER TABLE com_vtiger_workflows ADD options VARCHAR(100);');
+	$adb->query('ALTER TABLE com_vtiger_workflows ADD cbquestion INT(11);');
+	$adb->query('ALTER TABLE com_vtiger_workflows ADD recordset INT(11);');
+	$adb->query('ALTER TABLE com_vtiger_workflows ADD onerecord INT(11);');
 }
 $cnmsg = $adb->getColumnNames('vtiger_profile2field');
 if (!in_array('summary', $cnmsg)) {
