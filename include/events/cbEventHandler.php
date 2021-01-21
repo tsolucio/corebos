@@ -88,6 +88,9 @@ class cbEventHandler {
 		}
 
 		foreach (self::$filterCache[$filtername] as $filter) {
+			if (empty($filter['handler_path'])) {
+				continue;
+			}
 			self::$numCounter[1]++;
 
 			// if not used before this, create the Handler Class
