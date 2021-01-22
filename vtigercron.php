@@ -23,7 +23,7 @@ if (PHP_SAPI === 'cli' || PHP_SAPI === 'cgi-fcgi' || PHP_SAPI === 'apache2handle
 		$srv = empty($argv[1]) ? $_REQUEST['service'] : $argv[1];
 		$srv = vtlib_purify($srv);
 		if ($srv == '--quiet' || $srv == '-q') {
-			// do nothing
+			$cronTasks = Vtiger_Cron::listAllActiveInstances();
 		} else {
 			$srvcron = Vtiger_Cron::getInstance($srv);
 			if ($srvcron !== false) {
@@ -61,11 +61,20 @@ if (PHP_SAPI === 'cli' || PHP_SAPI === 'cgi-fcgi' || PHP_SAPI === 'apache2handle
 					}
 				}
 				if (!$run_task) {
-					if (empty($argv[1]) || $argv[1] != '--quiet' || $argv[1] != '-q') {
+					if (empty($argv[1])) {
 						$msg = sprintf("[INFO]: %s - not ready to run as the time to run again is not completed\n", $cronTask->getName());
 						echo $msg;
 						$logbg->info($msg);
 						continue;
+					} else {
+						if ($argv[1] == '--quiet' || $argv[1] == '-q') {
+							continue;
+						} else {
+							$msg = sprintf("[INFO]: %s - not ready to run as the time to run again is not completed\n", $cronTask->getName());
+							echo $msg;
+							$logbg->info($msg);
+							continue;
+						}
 					}
 				}
 			}
