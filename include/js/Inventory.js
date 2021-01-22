@@ -1520,7 +1520,7 @@ function InventorySelectAll(mod, image_pth) {
 		this.utils.on(this.input, 'keyup', this.handleImmediateInput, this);
 		this.utils.on(this.input, 'blur', this.delayedClear, this);
 
-		GlobalVariable_getVariable('Application_ProductService_Search_Autocomplete_Limit', 1, '', gVTUserID)
+		GlobalVariable_getVariable('Application_ProductService_Search_Autocomplete_Limit', 10, '', gVTUserID)
 			.then((r) => {
 				const limit = JSON.parse(r)['Application_ProductService_Search_Autocomplete_Limit'];
 				this.source = this.source.replace('limit=10', `limit=${limit}`);
