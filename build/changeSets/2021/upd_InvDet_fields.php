@@ -28,9 +28,9 @@ class upd_InvDet_fields extends cbupdaterWorker {
 		} else {
 			$mod = Vtiger_Module::getInstance('InventoryDetails');
 			$fields = array('quantity', 'listprice', 'extgross', 'discount_amount', 'extnet', 'linetax', 'linetotal', 'units_delivered_received', 'cost_price', 'cost_gross', 'total_stock', 'remaining_units');
- 			foreach($fields as $fieldname){
-				$fld = Vtiger_Field::getInstance($fieldname,$mod);
-				if($fld){
+			foreach ($fields as $fieldname) {
+				$fld = Vtiger_Field::getInstance($fieldname, $mod);
+				if ($fld) {
 					$this->ExecuteQuery("UPDATE vtiger_field SET typeofdata='NN~O' WHERE fieldid=?", array($fld->id));
 				}
 			}
@@ -54,16 +54,16 @@ class upd_InvDet_fields extends cbupdaterWorker {
 			if ($this->isApplied()) {
 				$mod = Vtiger_Module::getInstance('InventoryDetails');
 				$fields = array('quantity', 'listprice', 'extgross', 'discount_amount', 'extnet', 'linetax', 'linetotal', 'units_delivered_received', 'cost_price', 'cost_gross', 'total_stock');
-	 			foreach($fields as $fieldname){
-					$fld = Vtiger_Field::getInstance($fieldname,$mod);
-					if($fld){
+				foreach ($fields as $fieldname) {
+					$fld = Vtiger_Field::getInstance($fieldname, $mod);
+					if ($fld) {
 						$this->ExecuteQuery("UPDATE vtiger_field SET typeofdata='N~O' WHERE fieldid=?", array($fld->id));
 					}
 				}
 				$fieldsdec = array('discount_percent', 'tax_percent');
-				foreach($fieldsdec as $fieldname){
-					$fld = Vtiger_Field::getInstance($fieldname,$mod);
-					if($fld){
+				foreach ($fieldsdec as $fieldname) {
+					$fld = Vtiger_Field::getInstance($fieldname, $mod);
+					if ($fld) {
 						$this->ExecuteQuery("UPDATE vtiger_field SET typeofdata='N~O~3,2' WHERE fieldid=?", array($fld->id));
 					}
 				}
