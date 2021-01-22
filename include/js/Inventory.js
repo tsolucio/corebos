@@ -1616,8 +1616,16 @@ function InventorySelectAll(mod, image_pth) {
 			function getAccConFieldnames() {
 				let fldNames = {'acc': '', 'con': ''};
 				if (document.EditView !== undefined) {
-					fldNames.acc = document.EditView.account_id !== undefined ? 'account_id' : 'accid';
-					fldNames.con = document.EditView.contact_id !== undefined ? 'contact_id' : 'ctoid';
+					if (document.EditView.account_id !== undefined) {
+						fldNames.acc = 'account_id';
+					} else if (document.EditView.accid !== undefined) {
+						fldNames.acc = 'accid';
+					}
+					if (document.EditView.contact_id !== undefined) {
+						fldNames.con = 'contact_id';
+					} else if (document.EditView.ctoid !== undefined) {
+						fldNames.acc = 'ctoid';
+					}
 				}
 				return fldNames;
 			}
