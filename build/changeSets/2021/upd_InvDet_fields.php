@@ -27,7 +27,7 @@ class upd_InvDet_fields extends cbupdaterWorker {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$mod = Vtiger_Module::getInstance('InventoryDetails');
-			$fields = array('quantity', 'listprice', 'extgross', 'discount_amount', 'extnet', 'linetax', 'linetotal', 'units_delivered_received', 'cost_price', 'cost_gross', 'total_stock', 'remainig_units');
+			$fields = array('quantity', 'listprice', 'extgross', 'discount_amount', 'extnet', 'linetax', 'linetotal', 'units_delivered_received', 'cost_price', 'cost_gross', 'total_stock', 'remaining_units');
  			foreach($fields as $fieldname){
 				$fld = Vtiger_Field::getInstance($fieldname,$mod);
 				if($fld){
