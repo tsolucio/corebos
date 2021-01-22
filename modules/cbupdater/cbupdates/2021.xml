@@ -7,4 +7,11 @@
 	<classname>standardizeQuotesRLonModules</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>Kiko Jover</author>
+	<description>Change typeofdata on InventoryDetails to permit negative numbers</description>
+	<filename>build/changeSets/2021/upd_InvDet_fields.php</filename>
+	<classname>upd_InvDet_fields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
