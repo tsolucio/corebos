@@ -64,7 +64,10 @@ foreach ($wcronTasks as $wcronTask) {
 	} else {
 		$thisAlertTime = $warningTimeThreshold;
 	}
-	if ($alerttime==-1 || ($cron_st!=Vtiger_Cron::$STATUS_RUNNING && $elapsed<$thisAlertTime)) {
+	if ($alerttime==-1
+		|| ($cron_st!=Vtiger_Cron::$STATUS_RUNNING && $elapsed<($thisAlertTime+$wcronTask->getFrequency()))
+		|| ($cron_st==Vtiger_Cron::$STATUS_RUNNING && $elapsed<$thisAlertTime)
+	) {
 		continue;
 	}
 	$out = array();
