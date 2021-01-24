@@ -18,16 +18,22 @@ if (PHP_SAPI === 'cli' || PHP_SAPI === 'cgi-fcgi' || PHP_SAPI === 'apache2handle
 	|| (isset($_SESSION['authenticated_user_id']) && isset($_SESSION['app_unique_key']) && $_SESSION['app_unique_key'] == $application_unique_key)
 ) {
 	$cronTasks = false;
+	$quiet = false;
 	if (isset($_REQUEST['service']) || ($argc==2 && !empty($argv[1]))) {
 		// Run specific service
 		$srv = empty($argv[1]) ? $_REQUEST['service'] : $argv[1];
 		$srv = vtlib_purify($srv);
-		$srvcron = Vtiger_Cron::getInstance($srv);
-		if ($srvcron !== false) {
-			$cronTasks = array($srvcron);
+		if ($srv == '--quiet' || $srv == '-q') {
+			$cronTasks = Vtiger_Cron::listAllActiveInstances();
+			$quiet = true;
 		} else {
-			echo "** Service $srv not found **";
-			die();
+			$srvcron = Vtiger_Cron::getInstance($srv);
+			if ($srvcron !== false) {
+				$cronTasks = array($srvcron);
+			} else {
+				echo "** Service $srv not found **";
+				die();
+			}
 		}
 	} else {
 		// Run all service
@@ -56,7 +62,7 @@ if (PHP_SAPI === 'cli' || PHP_SAPI === 'cgi-fcgi' || PHP_SAPI === 'apache2handle
 						$run_task = true;
 					}
 				}
-				if (!$run_task) {
+				if (!$run_task && !$quiet) {
 					$msg = sprintf("[INFO]: %s - not ready to run as the time to run again is not completed\n", $cronTask->getName());
 					echo $msg;
 					$logbg->info($msg);
