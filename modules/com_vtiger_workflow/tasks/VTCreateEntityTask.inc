@@ -51,6 +51,7 @@ class VTCreateEntityTask extends VTTask {
 			$newEntity->mode = '';
 			if ($moduleName == $entityType) {
 				$newEntity->column_fields = $focus->column_fields;
+				unset($newEntity->column_fields['cbuuid']);
 			}
 			$newEntityData = VTEntityData::fromCRMEntity($newEntity);
 			$entityModuleHandler = vtws_getModuleHandlerFromName($entityType, $current_user);
