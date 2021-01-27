@@ -1520,7 +1520,7 @@ function InventorySelectAll(mod, image_pth) {
 		this.utils.on(this.input, 'keyup', this.handleImmediateInput, this);
 		this.utils.on(this.input, 'blur', this.delayedClear, this);
 
-		GlobalVariable_getVariable('Application_ProductService_Search_Autocomplete_Limit', 1, '', gVTUserID)
+		GlobalVariable_getVariable('Application_ProductService_Search_Autocomplete_Limit', 10, '', gVTUserID)
 			.then((r) => {
 				const limit = JSON.parse(r)['Application_ProductService_Search_Autocomplete_Limit'];
 				this.source = this.source.replace('limit=10', `limit=${limit}`);
@@ -1616,8 +1616,16 @@ function InventorySelectAll(mod, image_pth) {
 			function getAccConFieldnames() {
 				let fldNames = {'acc': '', 'con': ''};
 				if (document.EditView !== undefined) {
-					fldNames.acc = document.EditView.account_id !== undefined ? 'account_id' : 'accid';
-					fldNames.con = document.EditView.contact_id !== undefined ? 'contact_id' : 'ctoid';
+					if (document.EditView.account_id !== undefined) {
+						fldNames.acc = 'account_id';
+					} else if (document.EditView.accid !== undefined) {
+						fldNames.acc = 'accid';
+					}
+					if (document.EditView.contact_id !== undefined) {
+						fldNames.con = 'contact_id';
+					} else if (document.EditView.ctoid !== undefined) {
+						fldNames.acc = 'ctoid';
+					}
 				}
 				return fldNames;
 			}

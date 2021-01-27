@@ -9320,7 +9320,7 @@ precacheAndRoute([{
   "revision": "9dc5fb21f95a007631a7cff71b7b784c"
 }, {
   "url": "include/js/Inventory.js",
-  "revision": "8829b95d773ce339a56bdc9321a4d20d"
+  "revision": "194a5778a4ced8a0b8efb8a1a76f0d72"
 }, {
   "url": "include/js/it_it.lang.js",
   "revision": "d21d489b6895ceceb669f95acc1382f2"
@@ -9848,10 +9848,10 @@ precacheAndRoute([{
   "revision": "df1beb66383c404ca19595bfede77a1f"
 }, {
   "url": "modules/cbQuestion/resources/appendcontext.js",
-  "revision": "87897968e569d8a5f69b730b27c8aa4b"
+  "revision": "1cf249c6ecc742fb1ff1d04b3c597ea8"
 }, {
   "url": "modules/cbQuestion/resources/Builder.js",
-  "revision": "f11bf7fb61310f00c2bb311981b36de9"
+  "revision": "0eec1243725a7c0ff1f3881e2eeb01c8"
 }, {
   "url": "modules/cbQuestion/resources/editbuilder.js",
   "revision": "882f43f4054b3056e66a674b35112825"

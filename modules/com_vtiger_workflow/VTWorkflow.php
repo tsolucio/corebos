@@ -235,7 +235,7 @@ class Workflow {
 					// for example a mathematical operation or a decision on a value of a field that
 					// may change during the delay. This is for some certain types of updates, generally
 					// absolute updates. You MUST know what you are doing when creating workflows.
-					if ($delay!=0 && get_class($task) == 'VTUpdateFieldsTask') {
+					if ($delay!=0 && (get_class($task) == 'VTUpdateFieldsTask' || get_class($task) == 'VTCreateEntityTask')) {
 						$taskQueue->queueTask($task->id, $entityData->getId(), $delay);
 					} else {
 						$entityCache->emptyCache($entityData->getId());
