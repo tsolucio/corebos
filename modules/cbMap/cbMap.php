@@ -109,6 +109,7 @@ class cbMap extends CRMEntity {
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
 	public $mandatory_fields = array('createdtime', 'modifiedtime', 'mapname');
+	public $mapExecutionInfo = array();
 
 	public function save_module($module) {
 		if ($this->HasDirectImageField) {
@@ -201,7 +202,9 @@ class cbMap extends CRMEntity {
 	public function __call($name, $arguments) {
 		require_once 'modules/cbMap/processmap/'.$name.'.php';
 		$processmap = new $name($this);
-		return $processmap->processMap($arguments);
+		$return = $processmap->processMap($arguments);
+		$this->mapExecutionInfo = $processmap->mapExecutionInfo;
+		return $return;
 	}
 
 	public static function getMapByID($cbmapid) {

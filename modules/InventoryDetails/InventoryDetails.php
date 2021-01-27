@@ -376,7 +376,12 @@ class InventoryDetails extends CRMEntity {
 						if ($invdet_focus->mode == 'edit') {
 							$diff = $row['quantity']-$invdet_focus->column_fields['quantity'];
 							$result_units = $invdet_focus->column_fields['remaining_units']+$diff;
-							$invdet_focus->column_fields['remaining_units'] = ($result_units > 0 ? $result_units : 0);
+							if ($invdet_focus->column_fields['remaining_units'] > 0 && $result_units < 0) {
+								$result_units = 0;
+							} elseif ($invdet_focus->column_fields['remaining_units'] < 0 && $result_units > 0) {
+								$result_units = 0;
+							}
+							$invdet_focus->column_fields['remaining_units'] = $result_units;
 						} else {
 							$invdet_focus->column_fields['remaining_units'] = $row['quantity'];
 						}
@@ -395,10 +400,20 @@ class InventoryDetails extends CRMEntity {
 								if ($invdet_focus->mode == 'edit') {
 									$diff = $row['quantity']-$invdet_focus->column_fields['quantity'];
 									$result_units = $rel_id_focus->column_fields['remaining_units']-$diff;
-									$rel_id_focus->column_fields['remaining_units'] = ($result_units > 0 ? $result_units : 0);
+									if ($rel_id_focus->column_fields['remaining_units'] > 0 && $result_units < 0) {
+										$result_units = 0;
+									} elseif ($rel_id_focus->column_fields['remaining_units'] < 0 && $result_units > 0) {
+										$result_units = 0;
+									}
+									$rel_id_focus->column_fields['remaining_units'] = $result_units;
 								} else {
 									$result_units = $rel_id_focus->column_fields['remaining_units'] - $row['quantity'];
-									$rel_id_focus->column_fields['remaining_units'] = ($result_units > 0 ? $result_units : 0);
+									if ($rel_id_focus->column_fields['remaining_units'] > 0 && $result_units < 0) {
+										$result_units = 0;
+									} elseif ($rel_id_focus->column_fields['remaining_units'] < 0 && $result_units > 0) {
+										$result_units = 0;
+									}
+									$rel_id_focus->column_fields['remaining_units'] = $result_units;
 								}
 								$rel_id_focus->save('InventoryDetails');
 							}

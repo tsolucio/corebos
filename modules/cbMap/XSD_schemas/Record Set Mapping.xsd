@@ -5,12 +5,12 @@
         <xs:element name="records">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="record">
+              <xs:element name="record" maxOccurs="unbounded" minOccurs="1">
                 <xs:complexType mixed="true">
                   <xs:sequence>
-                    <xs:element type="xs:byte" name="id"/>
-                    <xs:element type="xs:string" name="module"/>
-                    <xs:element type="xs:string" name="value"/>
+                    <xs:element type="xs:string" name="id"/>
+                    <xs:element type="xs:string" name="module" maxOccurs="1" minOccurs="0"/>
+                    <xs:element type="xs:string" name="value" maxOccurs="1" minOccurs="0"/>
                     <xs:element type="xs:string" name="action"/>
                   </xs:sequence>
                 </xs:complexType>

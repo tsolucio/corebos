@@ -3343,16 +3343,17 @@ function isRecordExists($recordId) {
 	return false;
 }
 
-/** Function to check if a number is a attachmentid
-  * $id -- number or attachmentid
+/** Function to check if a number is an attachment ID
+ * @param integer entity ID
+ * @return boolean true if ID belongs to an attachment, false otherwise
   */
 function is_attachmentid($id) {
 	global $adb, $log;
 	$log->debug('> is_attachmentid '.$id);
-	$result = $adb->pquery('SELECT attachmentsid FROM vtiger_attachments
-		INNER JOIN vtiger_crmentity ON attachmentsid=crmid WHERE deleted=0 AND attachmentsid=?', array(
-		$id
-	));
+	$result = $adb->pquery(
+		'SELECT attachmentsid FROM vtiger_attachments INNER JOIN vtiger_crmentity ON attachmentsid=crmid WHERE deleted=0 AND attachmentsid=?',
+		array($id)
+	);
 	$log->debug('< is_attachmentid '.$id);
 	return ($adb->num_rows($result) > 0);
 }

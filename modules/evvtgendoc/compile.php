@@ -225,7 +225,9 @@ function compile($text, $id, $module, $changeamp = false, $applyformat = true) {
 				$replacewith = eval_expression($marcador, $id);
 			} elseif ($changeamp) {
 				$compiled_marc = retrieve_from_db($marcador, $id, $module, $applyformat);
-				$replacewith = str_replace('&', '&amp;', $compiled_marc);
+				$compiledtext = mb_convert_encoding($compiled_marc, 'UTF-8', 'HTML-ENTITIES');
+				$compiledtext = str_replace('<br>', '<text:line-break/>', $compiledtext);
+				$replacewith = str_replace('&', '&amp;', $compiledtext);
 			} else {
 				$replacewith = retrieve_from_db($marcador, $id, $module, $applyformat);
 			}
