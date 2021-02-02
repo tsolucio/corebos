@@ -445,7 +445,11 @@ if (!$skipSecurityCheck && $use_current_login) {
 	}
 
 	if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
-		$display = isPermitted($module, $now_action, $_REQUEST['record']);
+		if ($now_action=='EditView' && isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate']=='true') {
+			$display = isPermitted($module, 'CreateView', $_REQUEST['record']);
+		} else {
+			$display = isPermitted($module, $now_action, $_REQUEST['record']);
+		}
 	} else {
 		if ($now_action=='EditView' || $now_action=='EventEditView' || $now_action=='Save'
 			|| ($now_action=='DetailViewAjax' && isset($_REQUEST['ajxaction']) && $_REQUEST['ajxaction']=='WIDGETADDCOMMENT')
