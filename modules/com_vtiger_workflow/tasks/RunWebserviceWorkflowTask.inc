@@ -167,8 +167,8 @@ class RunWebserviceWorkflowTask extends VTTask {
 								$elemfield = $elements[1];
 								if (isset($response2->$elemresponse)) {
 									if (is_array($response2->$elemresponse)) {
-									$elemprop = $elements[2];
-									if (count($elements)==2 && isset($response2->$elemresponse[$elemfield])) {
+										$elemprop = $elements[2];
+										if (count($elements)==2 && isset($response2->$elemresponse[$elemfield])) {
 											$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2->$elemresponse[$elemfield]));
 										} elseif (count($elements)==3 && isset($response2->$elemresponse[$elemfield]->$elemprop)) {
 											$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2->$elemresponse[$elemfield]->$elemprop));
