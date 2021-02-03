@@ -13,13 +13,13 @@
 
 .small {
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 11px;
+	font-size: var(--cbsofted-small-fontsize, 11px);
 	color: #000000;
 }
 
 .big {
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
+	font-size: var(--cbsofted-big-fontsize, 12px);
 	line-height: 18px;
 	color: #000000;
 	font-weight:bold;
@@ -364,6 +364,8 @@ a:hover {
 	color:#545454;
 	padding-left:10px;
 	padding-right:10px;
+	padding-top: var(--cbsofted-dvtCellLabel-paddingtop);
+	padding-bottom: var(--cbsofted-dvtCellLabel-paddingbottom);
 	white-space:nowrap;}
 
 .dvtCellInfo, .cellInfo {
@@ -402,20 +404,24 @@ a:hover {
 
 .detailedViewTextBox {
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 11px;
+	font-size: var(--cbsofted-detailedViewTextBox-fontsize, 11px);
 	color: #000000;
 	border:1px solid #bababa;
 	padding-left:5px;
+	padding-top: var(--cbsofted-detailedViewTextBox-paddingtop);
+	padding-bottom: var(--cbsofted-detailedViewTextBox-paddingbottom);
 	width:90%;
 	background-color:#ffffff;
 }
 
 .detailedViewTextBoxOn {
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 11px;
+	font-size: var(--cbsofted-detailedViewTextBoxOn-fontsize, 11px);
 	color: #000000;
 	border:1px solid #bababa;
 	padding-left:5px;
+	padding-top: var(--cbsofted-detailedViewTextBoxOn-paddingtop);
+	padding-bottom: var(--cbsofted-detailedViewTextBoxOn-paddingbottom);
 	width:90%;
 	background-color:#ffffdd;
 }
