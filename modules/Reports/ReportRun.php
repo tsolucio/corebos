@@ -2912,7 +2912,9 @@ class ReportRun extends CRMEntity {
 					}
 					if ($fieldlist[4] == 2) {
 						if ($fieldlist[2]=='totaltime') {
-							$stdfilterlist[$fieldcolname] = "sec_to_time(sum(time_to_sec(".$query_columnalias."))) '".$field_columnalias."'";
+							//$stdfilterlist[$fieldcolname] = "sec_to_time(sum(time_to_sec(".$query_columnalias."))) '".$field_columnalias."'";
+							$summinutes = "sum(SUBSTRING_INDEX($query_columnalias, ':', 1)*60+SUBSTRING_INDEX($query_columnalias, ':', -1))";
+							$stdfilterlist[$fieldcolname] = "concat(floor($summinutes / 60), ':', floor($summinutes % 60)) '$field_columnalias'";
 						} else {
 							$stdfilterlist[$fieldcolname] = "sum(`$query_columnalias`) '".$field_columnalias."'";
 						}
@@ -2921,21 +2923,27 @@ class ReportRun extends CRMEntity {
 						//when we use avg() function, NULL values will be ignored.to avoid this we use (sum/count) to find average.
 						//$stdfilterlist[$fieldcolname] = "avg(".$fieldlist[1].".".$fieldlist[2].") '".$fieldlist[3]."'";
 						if ($fieldlist[2]=='totaltime') {
-							$stdfilterlist[$fieldcolname] = 'sec_to_time(sum(time_to_sec('.$query_columnalias."))/count(*)) '".$field_columnalias."'";
+							//$stdfilterlist[$fieldcolname] = 'sec_to_time(sum(time_to_sec('.$query_columnalias."))/count(*)) '".$field_columnalias."'";
+							$avgminutes = "sum(SUBSTRING_INDEX($query_columnalias, ':', 1)*60+SUBSTRING_INDEX($query_columnalias, ':', -1))/count(*)";
+							$stdfilterlist[$fieldcolname] = "concat(floor($avgminutes / 60), ':', floor($avgminutes % 60)) '$field_columnalias'";
 						} else {
 							$stdfilterlist[$fieldcolname] = "(sum(`$query_columnalias`)/count(*)) '".$field_columnalias."'";
 						}
 					}
 					if ($fieldlist[4] == 4) {
 						if ($fieldlist[2]=='totaltime') {
-							$stdfilterlist[$fieldcolname] = 'sec_to_time(min(time_to_sec('.$query_columnalias."))) '".$field_columnalias."'";
+							//$stdfilterlist[$fieldcolname] = 'sec_to_time(min(time_to_sec('.$query_columnalias."))) '".$field_columnalias."'";
+							$minminutes = "min(SUBSTRING_INDEX($query_columnalias, ':', 1)*60+SUBSTRING_INDEX($query_columnalias, ':', -1))";
+							$stdfilterlist[$fieldcolname] = "concat(floor($minminutes / 60), ':', floor($minminutes % 60)) '$field_columnalias'";
 						} else {
 							$stdfilterlist[$fieldcolname] = "min(`$query_columnalias`) '".$field_columnalias."'";
 						}
 					}
 					if ($fieldlist[4] == 5) {
 						if ($fieldlist[2]=='totaltime') {
-							$stdfilterlist[$fieldcolname] = 'sec_to_time(max(time_to_sec('.$query_columnalias."))) '".$field_columnalias."'";
+							//$stdfilterlist[$fieldcolname] = 'sec_to_time(max(time_to_sec('.$query_columnalias."))) '".$field_columnalias."'";
+							$maxminutes = "max(SUBSTRING_INDEX($query_columnalias, ':', 1)*60+SUBSTRING_INDEX($query_columnalias, ':', -1))";
+							$stdfilterlist[$fieldcolname] = "concat(floor($maxminutes / 60), ':', floor($maxminutes % 60)) '$field_columnalias'";
 						} else {
 							$stdfilterlist[$fieldcolname] = "max(`$query_columnalias`) '".$field_columnalias."'";
 						}

@@ -15,6 +15,9 @@
 	<meta name="robots" content="noindex">
 	<title>{$USER} - {$MODULE_NAME|@getTranslatedString:$MODULE_NAME} - {$coreBOS_app_name}</title>
 	<link REL="SHORTCUT ICON" HREF="{$COMPANY_DETAILS.favicon}">
+	{if !empty($SET_CSS_PROPERTIES) && is_file($SET_CSS_PROPERTIES)}
+		<link rel="stylesheet" type="text/css" media="all" href="{$SET_CSS_PROPERTIES}">
+	{/if}
 	<link rel="stylesheet" type="text/css" media="all" href="themes/{$THEME}/style.css">
 	{if $Application_JSCalendar_Load neq 0}<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">{/if}
 	<link rel="stylesheet" href="include/print.css" type="text/css" media="print" />

@@ -294,9 +294,7 @@
 							</button>
 						</li>
 					{/if}
-					{if ((isset($CREATE_PERMISSION) && $CREATE_PERMISSION eq 'permitted')
-						|| (isset($EDIT_PERMISSION) && $EDIT_PERMISSION eq 'yes'))
-						&& !empty($isDetailView)}
+					{if isset($CREATE_PERMISSION) && $CREATE_PERMISSION eq 'permitted' && !empty($isDetailView)}
 						<li>
 							<button
 								class="slds-button slds-button_neutral"

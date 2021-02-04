@@ -110,6 +110,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_PopupScreen_Width',
 				'Application_PopupScreen_Height',
 				'Application_Textarea_Style',
+				'Application_CSS_Properties',
 
 				'Graph_DataLabels',
 				'Graph_DataLabels_Color',
