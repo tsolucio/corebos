@@ -225,7 +225,8 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 				'BLOCKJS'=>$BLOCK1,
 				'BLOCKCRITERIA'=>$BLOCKCRITERIA,
 				'COLUMNS_BLOCK'=>$COLUMNS_BLOCK,
-				'REL_FIELDS'=>json_encode($rel_fields)
+				'REL_FIELDS'=>json_encode($rel_fields),
+				'CRITERIA_GROUPS' => $oReport->advft_criteria
 				)
 			);
 		}
