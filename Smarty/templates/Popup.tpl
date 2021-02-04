@@ -14,7 +14,6 @@
 	<meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
 	<title>{$MODULE|@getTranslatedString:$MODULE} - {$coreBOS_uiapp_name}</title>
 	<link REL="SHORTCUT ICON" HREF="themes/images/blank.gif">
-	<link rel="stylesheet" type="text/css" href="include/LD/assets/styles/override_lds.css">
 {include file='BrowserVariables.tpl'}
 {include file='Components/Components.tpl'}
 <script type="text/javascript">
@@ -40,9 +39,13 @@ var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
 var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
 var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 </script>
+{if !empty($SET_CSS_PROPERTIES) && is_file($SET_CSS_PROPERTIES)}
+	<link rel="stylesheet" type="text/css" media="all" href="{$SET_CSS_PROPERTIES}">
+{/if}
 <link rel="stylesheet" type="text/css" href="{$THEME_PATH}style.css">
 <link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
 <link rel="stylesheet" type="text/css" href="include/LD/assets/styles/salesforce-lightning-design-system.css" />
+<link rel="stylesheet" type="text/css" href="include/LD/assets/styles/override_lds.css">
 {* corebos customization: Inclusion of custom javascript and css as registered in popup *}
 {if $HEADERCSS}
 	<!-- Custom Header CSS -->

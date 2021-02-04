@@ -261,7 +261,15 @@ class WebserviceMapping extends cbMapcore {
 							$entity->setContext($ctx);
 							$exprEvaluation = $exprEvaluater->evaluate($entity);
 						}
-						$value.= $exprEvaluation.$delim;
+						if (is_array($exprEvaluation)) {
+							if (is_array($value)) {
+								$value = array_merge($value, $exprEvaluation);
+							} else {
+								$value = $exprEvaluation;
+							}
+						} else {
+							$value.= $exprEvaluation.$delim;
+						}
 					} elseif (!empty($ofields['record_id']) && (strtoupper($idx[0])=='FIELD' || strtoupper($idx[0])=='TEMPLATE')) {
 						$util = new VTWorkflowUtils();
 						$adminUser = $util->adminUser();
@@ -312,7 +320,9 @@ class WebserviceMapping extends cbMapcore {
 					}
 				}
 			}
-			$value = rtrim($value, $delim);
+			if (!is_array($value)) {
+				$value = rtrim($value, $delim);
+			}
 			if ($targetfield =='Response' || $targetfield =='WSConfig') {
 				$value = $sourcefields;
 			}

@@ -140,9 +140,20 @@ class RunWebserviceWorkflowTask extends VTTask {
 						$r2 = '';
 						if (is_array($response2)) {
 							if (strpos($fld, '.')) {
-								list ($elemresponse, $elemfield) = explode('.', $fld);
-								if (isset($response2[0]->$elemresponse) && isset($response2[0]->$elemresponse->$elemfield)) {
-									$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2[0]->$elemresponse->$elemfield));
+								$elements = explode('.', $fld);
+								$elemresponse = $elements[0];
+								$elemfield = $elements[1];
+								if (isset($response2[0]->$elemresponse)) {
+									if (is_array($response2[0]->$elemresponse)) {
+										$elemprop = $elements[2];
+										if (count($elements)==2 && isset($response2[0]->$elemresponse[$elemfield])) {
+											$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2[0]->$elemresponse[$elemfield]));
+										} elseif (count($elements)==3 && isset($response2[0]->$elemresponse[$elemfield]->$elemprop)) {
+											$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2[0]->$elemresponse[$elemfield]->$elemprop));
+										}
+									} elseif (isset($response2[0]->$elemresponse->$elemfield)) {
+										$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2[0]->$elemresponse->$elemfield));
+									}
 								}
 							} else {
 								if (isset($response2[0]->$fld)) {
@@ -151,9 +162,20 @@ class RunWebserviceWorkflowTask extends VTTask {
 							}
 						} else {
 							if (strpos($fld, '.')) {
-								list ($elemresponse, $elemfield) = explode('.', $fld);
-								if (isset($response2->$elemresponse) && isset($response2->$elemresponse->$elemfield)) {
-									$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2->$elemresponse->$elemfield));
+								$elements = explode('.', $fld);
+								$elemresponse = $elements[0];
+								$elemfield = $elements[1];
+								if (isset($response2->$elemresponse)) {
+									if (is_array($response2->$elemresponse)) {
+										$elemprop = $elements[2];
+										if (count($elements)==2 && isset($response2->$elemresponse[$elemfield])) {
+											$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2->$elemresponse[$elemfield]));
+										} elseif (count($elements)==3 && isset($response2->$elemresponse[$elemfield]->$elemprop)) {
+											$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2->$elemresponse[$elemfield]->$elemprop));
+										}
+									} elseif (isset($response2->$elemresponse->$elemfield)) {
+										$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2->$elemresponse->$elemfield));
+									}
 								}
 							} else {
 								if (isset($response2->$fld)) {

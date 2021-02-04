@@ -38,6 +38,15 @@ hr {
 	height: 1.875rem;
 }
 
+.slds-dropdown {
+  font-size: var(--cbslds-dropdown-fontsize, 0.75rem);
+}
+.slds-context-bar__label-action {
+  font-size: var(--cbslds-context-bar__label-action-fontsize, 0.8125rem);
+}
+.slds-context-bar__app-name {
+  font-size: var(--cbslds-context-bar__app-name-fontsize, 1.125rem);
+}
 @media print {
 	a[href]:after {
 		content: none;
