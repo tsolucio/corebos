@@ -1568,10 +1568,10 @@ class CRMEntity {
 		$from_clause.=' INNER JOIN '.$tableName.' temptab ON temptab.id='.$this->table_name .'.'.$this->table_index;
 		$from_clausesub.=' INNER JOIN '.$tableName.'2 temptab2 ON temptab2.id='.$this->table_name .'.'.$this->table_index;
 
-		$from_clause .= ' LEFT JOIN vtiger_users ON vtiger_users.id = '.$this->crmentityTable.'.smownerid
-						LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$this->crmentityTable.'.smownerid';
-		$from_clausesub .= ' LEFT JOIN vtiger_users ON vtiger_users.id = '.$this->crmentityTable.'.smownerid
-						LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$this->crmentityTable.'.smownerid';
+		$from_clause .= ' LEFT JOIN vtiger_users ON vtiger_users.id='.$this->crmentityTable.'.smownerid
+			LEFT JOIN vtiger_groups ON vtiger_groups.groupid='.$this->crmentityTable.'.smownerid';
+		$from_clausesub .= ' LEFT JOIN vtiger_users ON vtiger_users.id='.$this->crmentityTable.'.smownerid
+			LEFT JOIN vtiger_groups ON vtiger_groups.groupid='.$this->crmentityTable.'.smownerid';
 
 		$where_clause = ' WHERE '.$this->crmentityTable.'.deleted = 0';
 		$where_clause .= $this->getListViewSecurityParameter($module);
@@ -1582,7 +1582,7 @@ class CRMEntity {
 			if (isset($this->customFieldTable)) {
 				$sub_query .= ' LEFT JOIN '.$this->customFieldTable[0].' tcf ON tcf.'.$this->customFieldTable[1]." = t.$this->table_index";
 			}
-			$sub_query .= " WHERE crm.deleted=0  GROUP BY $select_cols HAVING COUNT(*)>1";
+			$sub_query .= " WHERE crm.deleted=0 GROUP BY $select_cols HAVING COUNT(*)>1";
 		} else {
 			$sub_query = "SELECT $table_cols $from_clausesub $where_clause GROUP BY $table_cols HAVING COUNT(*)>1";
 		}
