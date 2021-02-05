@@ -58,7 +58,7 @@ class corebos_denormalize {
 		$modulestoprocess = $this->denormGetAllModules($operation);
 		$totalSelectedMods = count($selectedModuleList);
 		for ($xz=0; $xz <$totalSelectedMods; $xz++) {
-			if (!in_array($selectedModuleList[$xz], $modulestoprocess, true)) {
+			if (!isset($modulestoprocess[$selectedModuleList[$xz]])) {
 				unset($selectedModuleList[$xz]);
 			}
 		}
