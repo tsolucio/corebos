@@ -3208,7 +3208,6 @@ class CRMEntity {
 			$sec_query .= ' and ('.$this->crmentityTable.".smownerid=$current_user->id or "
 				.$this->crmentityTable.".smownerid in (select vtiger_user2role.userid
 					from vtiger_user2role
-					inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
 					inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
 					where vtiger_role.parentrole like '" . $userprivs->getParentRoleSequence() . "::%') or "
 				.$this->crmentityTable.".smownerid in (select shareduserid
@@ -3238,7 +3237,6 @@ class CRMEntity {
 		$sec_query = " and (vtiger_crmentity$module.smownerid=$current_user->id or vtiger_crmentity$module.smownerid in ".
 			"(select vtiger_user2role.userid
 				from vtiger_user2role
-				inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
 				inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
 				where vtiger_role.parentrole like '" . $userprivs->getParentRoleSequence() . "::%') or vtiger_crmentity$module.smownerid in ".
 					"(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=" . $current_user->id . ' and tabid=' . $tabid . ') or (';
@@ -3486,10 +3484,8 @@ class CRMEntity {
 	 * @param <type> $userGroups
 	 */
 	public function getNonAdminUserAccessQuery($user, $parentRole, $userGroups) {
-		$query = "(SELECT $user->id as id) UNION (SELECT vtiger_user2role.userid AS userid FROM " .
-				'vtiger_user2role INNER JOIN vtiger_users ON vtiger_users.id=vtiger_user2role.userid ' .
-				'INNER JOIN vtiger_role ON vtiger_role.roleid=vtiger_user2role.roleid WHERE ' .
-				"vtiger_role.parentrole like '$parentRole::%')";
+		$query = "(SELECT $user->id as id) UNION (SELECT vtiger_user2role.userid AS userid FROM vtiger_user2role"
+			." INNER JOIN vtiger_role ON vtiger_role.roleid=vtiger_user2role.roleid WHERE vtiger_role.parentrole like '$parentRole::%')";
 		if (count($userGroups) > 0) {
 			$query .= ' UNION (SELECT groupid FROM vtiger_groups where groupid in (' . implode(',', $userGroups) . '))';
 		}

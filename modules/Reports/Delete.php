@@ -21,7 +21,6 @@ if (isset($_REQUEST['idlist']) && $_REQUEST['idlist']!= '') {
 	$query = $adb->pquery(
 		"select userid
 			from vtiger_user2role
-			inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
 			inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
 			where vtiger_role.parentrole like '".$userprivs->getParentRoleSequence()."::%'",
 		array()
