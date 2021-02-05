@@ -2308,8 +2308,8 @@ function getDuplicateQuery($module, $field_values, $ui_type_arr) {
 		$i++;
 	}
 	$table_cols = implode(',', $tbl_cols);
-	$sec_parameter = getSecParameterforMerge($module);
 	$modObj = CRMEntity::getInstance($module);
+	$nquery = '';
 	if ($modObj != null && method_exists($modObj, 'getDuplicatesQuery')) {
 		$nquery = $modObj->getDuplicatesQuery($module, $table_cols, $field_values, $ui_type_arr);
 	}
@@ -2670,48 +2670,21 @@ function getFieldValues($module) {
 	return $field_values_array;
 }
 
-/** To get security parameter for a particular module */
+/** To get security parameter for a particular module
+ * @deprecated
+ */
 function getSecParameterforMerge($module) {
 	global $current_user;
-	$tab_id = getTabid($module);
 	$sec_parameter='';
 	$userprivs = $current_user->getPrivileges();
-	if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing($tab_id)) {
+	if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing(getTabid($module))) {
 		$sec_parameter=getListViewSecurityParameter($module);
-		if ($module == 'Accounts') {
-			$sec_parameter .= ' AND (vtiger_crmentity.smownerid IN ('.$current_user->id.")
-				OR vtiger_crmentity.smownerid IN (
-				SELECT vtiger_user2role.userid
-				FROM vtiger_user2role
-				INNER JOIN vtiger_users ON vtiger_users.id = vtiger_user2role.userid
-				INNER JOIN vtiger_role ON vtiger_role.roleid = vtiger_user2role.roleid
-				WHERE vtiger_role.parentrole LIKE '".$userprivs->getParentRoleSequence()."::%')
-				OR vtiger_crmentity.smownerid IN (
-				SELECT shareduserid
-				FROM vtiger_tmp_read_user_sharing_per
-				WHERE userid=".$current_user->id.' AND tabid='.$tab_id.')
-				OR (vtiger_crmentity.smownerid in (0)
-				AND (';
-
-			if ($userprivs->hasGroups()) {
-				$sec_parameter .= ' vtiger_groups.groupname IN (
-					SELECT groupname
-					FROM vtiger_groups
-					WHERE groupid IN ('. implode(',', $userprivs->getGroups()) .')) OR ';
-			}
-			$sec_parameter .= ' vtiger_groups.groupname IN (
-				SELECT vtiger_groups.groupname
-				FROM vtiger_tmp_read_group_sharing_per
-				INNER JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_tmp_read_group_sharing_per.sharedgroupid
-				WHERE userid='.$current_user->id.' AND tabid='.$tab_id.')))) ';
-		}
 	}
 	return $sec_parameter;
 }
 
 // Update all the data refering to currency $old_cur to $new_cur
 function transferCurrency($old_cur, $new_cur) {
-
 	// Transfer User currency to new currency
 	transferUserCurrency($old_cur, $new_cur);
 
