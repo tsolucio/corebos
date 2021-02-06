@@ -21,5 +21,6 @@ $webservice_strings = array(
 	'LBL_NEW_PASSWORD_MISMATCH' => "Het nieuwe wachtwoord komt niet overeen met de bevestiging.",
 	'LBL_DATABASE_QUERY_ERROR' => 'Database fout tijdens uitvoeren van de gevraagde operatie',
 	'LBL_CHANGE_PASSWORD_FAILURE' => 'Wijzigen wachtwoord is mislukt',
+	'LBL_PASSWORD_NOT_STRONG' => 'To keep your data safe, we suggest that you use a strong password. Password should be at least 8 characters long, include one number, one lowercase alphabet character, one uppercase alphabet character and one special character',
 );
 ?>

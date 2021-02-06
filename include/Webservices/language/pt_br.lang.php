@@ -22,5 +22,6 @@ $webservice_strings = array(
 	'LBL_NEW_PASSWORD_MISMATCH' => "A nova Senha e a Senha de confirmação não são iguais",
 	'LBL_DATABASE_QUERY_ERROR' => 'Erro na base de dados ao executar a operação solicitada',
 	'LBL_CHANGE_PASSWORD_FAILURE' => 'Falha ao alterar a Senha',
+	'LBL_PASSWORD_NOT_STRONG' => 'To keep your data safe, we suggest that you use a strong password. Password should be at least 8 characters long, include one number, one lowercase alphabet character, one uppercase alphabet character and one special character',
 );
 ?>
