@@ -1586,7 +1586,6 @@ function getCalendarViewSecurityParameter() {
 	$sec_query = " and (vtiger_crmentity.smownerid=$current_user->id $condition or vtiger_crmentity.smownerid in ";
 	$sec_query.= "(select vtiger_user2role.userid
 		from vtiger_user2role
-		inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
 		inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
 		where vtiger_role.parentrole like '".$userprivs->getParentRoleSequence()."::%')";
 
