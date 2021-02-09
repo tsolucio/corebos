@@ -48,13 +48,19 @@ class CBUpsertTask extends VTTask {
 		if ($context != '') {
 			$context_data = json_decode($context['context'], true);
 			$ws_map_response = $context['ws_map_response'];
+			$map_fields = array();
 			foreach ($ws_map_response as $key => $value) {
 				if ($key != 'message' && $key != 'data') {
 					$field_map = $value['field'];
 					$context_map = str_replace('wsctx_', '', $value['context']);
 					if (strpos($field_map, '.') !== false) {
-						$related_modulename = explode('.', $field_map)[0];
-						$fieldname = explode('.', $field_map)[1];
+						$field = explode('.', $field_map);
+						$related_modulename = $field[0];
+						$fieldname = $field[1];
+						$related_field = '';
+						if (count($field) == 3) {
+							$related_field = $field[2];
+						}
 						$fields_data = $adb->pquery('SELECT * FROM vtiger_field WHERE columnname=?', array($fieldname));
 						$tabId = $adb->query_result($fields_data, 0, 'tabid');
 						$uitype = $adb->query_result($fields_data, 0, 'uitype');
@@ -66,7 +72,8 @@ class CBUpsertTask extends VTTask {
 							'field' => $fieldname,
 							'context' => $context_map,
 							'uitype' => $uitype,
-							'related_modulename' => $uitype == '10' ? $related_modulename : ''
+							'related_modulename' => $uitype == '10' ? $related_modulename : '',
+							'related_field' => $related_field
 						));
 					}
 				}
@@ -76,17 +83,20 @@ class CBUpsertTask extends VTTask {
 				$map_records = array();
 				foreach ($map_fields as $module => $fld) {
 					$crmid = coreBOS_Rule::evaluate($this->bmapid, $key);
+					$crmid = '';
 					$flds = array_map(function ($k) use ($module, $key) {
 						$field = $k['field'];
 						$context_field = $k['context'];
 						$uitype = $k['uitype'];
 						$related_modulename = $k['related_modulename'];
+						$related_field = $k['related_field'];
 						return array(
 							$module,
 							$field,
 							$key[$context_field],
 							$uitype,
 							$related_modulename,
+							$related_field,
 						);
 					}, $fld);
 					$records = $this->groupArrayByKey($flds, 0);
@@ -105,12 +115,10 @@ class CBUpsertTask extends VTTask {
 	}
 
 	public function upsertData($data, $action, $crmid = 0) {
-		global $logbg, $adb, $current_user;
+		global $logbg, $adb;
 		$logbg->debug('> upsertData');
 		foreach ($data as $module => $val) {
 			include_once "modules/$module/$module.php";
-			$moduleHandler = vtws_getModuleHandlerFromName($module, $current_user);
-			$handlerMeta = $moduleHandler->getMeta();
 			$focus = new $module();
 			if ($action == 'doCreate') {
 				$focus->modue = '';
@@ -124,9 +132,20 @@ class CBUpsertTask extends VTTask {
 				$value = $val[$i][2];
 				$uitype = $val[$i][3];
 				$relMod = $val[$i][4];
+				$relFld = $val[$i][5]; //add it only if uitype 10 values isn't crmid
+				if ($uitype == '10') {
+					//get recordid if another value is given
+					if (!isRecordExists($value) && $relFld != '') {
+						include_once "modules/$relMod/$relMod.php";
+						$relFocus = new $relMod();
+						$table_name = $relFocus->table_name;
+						$table_index = $relFocus->table_index;
+						$result = $adb->pquery("SELECT $table_index FROM $table_name INNER JOIN vtiger_crmentity ON crmid=$table_index WHERE deleted=0 AND $relFld=?", array($value));
+						$value = $adb->query_result($result, 0, $table_index);
+					}
+				}
 				$focus->column_fields[$field] = $value;
 			}
-			$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $handlerMeta);
 			$focus->save($module);
 		}
 		$logbg->debug('< upsertData');
