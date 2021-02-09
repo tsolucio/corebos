@@ -179,7 +179,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 								}
 							} else {
 								if (isset($response2->$fld)) {
-									$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2->$fld));
+									$r2 = json_encode($response2->$fld);
 								}
 							}
 						}
@@ -190,6 +190,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 							$conds[$v['field']] = $r2;
 						}
 						$entity->WorkflowContext[$v['context']] = $r2;
+						$entity->WorkflowContext['ws_map_response'] = $target_fields['Response'];
 					}
 				}
 				if ($outputtype == 'XML') {
