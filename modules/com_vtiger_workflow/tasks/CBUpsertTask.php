@@ -111,7 +111,6 @@ class CBUpsertTask extends VTTask {
 		$util->revertUser();
 		$from_wf = false;
 		$logbg->debug('< CBUpsertTask');
-		die;
 	}
 
 	public function upsertData($data, $action, $crmid = 0) {
