@@ -115,25 +115,30 @@ function getAllPickListValues($fieldName, $lang = array()) {
 }
 
 /**
- * this function accepts the fieldname and the language string array and returns all the editable picklist values for that fieldname
+ * given a picklist field name, returns all the editable picklist values for that field
  * @param string $fieldName - the name of the picklist
- * @param array $lang - the language string array
- * @param object $adb - the peardatabase object
- * @return array $pick - the editable picklist values
+ * @param boolean $lang - true if elements should be returned translated
+ * @param object $adb - the pear database object
+ * @return array the editable picklist values
  */
 function getEditablePicklistValues($fieldName, $lang, $adb) {
 	$values = array();
 	$fieldName = $adb->sql_escape_string($fieldName);
-	$sql="select $fieldName from vtiger_$fieldName where presence=1 and $fieldName <> '--None--'";
-	$res = $adb->query($sql);
+	$res = $adb->query("select $fieldName from vtiger_$fieldName where presence=1 and $fieldName <> '--None--'");
 	$RowCount = $adb->num_rows($res);
 	if ($RowCount > 0) {
-		$frs = $adb->pquery('select fieldid from vtiger_field where fieldname=? limit 1', array($fieldName));
-		$fieldid = $adb->query_result($frs, 0, 0);
-		$module = getModuleForField($fieldid);
+		if ($lang) {
+			$frs = $adb->pquery('select fieldid from vtiger_field where fieldname=? limit 1', array($fieldName));
+			$fieldid = $adb->query_result($frs, 0, 0);
+			$module = getModuleForField($fieldid);
+		}
 		for ($i=0; $i<$RowCount; $i++) {
 			$pick_val = $adb->query_result($res, $i, $fieldName);
-			$values[$pick_val] = getTranslatedString($pick_val, $module);
+			if ($lang) {
+				$values[$pick_val] = getTranslatedString($pick_val, $module);
+			} else {
+				$values[$pick_val] = $pick_val;
+			}
 		}
 	}
 	return $values;
