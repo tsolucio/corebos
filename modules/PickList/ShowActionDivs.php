@@ -23,11 +23,9 @@ $fieldLabel = vtlib_purify($_REQUEST['fieldlabel']);
 $moduleName = vtlib_purify($_REQUEST['moduleName']);
 $mode = vtlib_purify($_REQUEST['mode']);
 
-$temp_module_strings = return_module_language($current_language, $moduleName);
-
 if (isset($fieldName)) {
-	$editableValues = getEditablePicklistValues($fieldName, $temp_module_strings, $adb);
-	$nonEditableValues = getNonEditablePicklistValues($fieldName, $temp_module_strings, $adb);
+	$editableValues = getEditablePicklistValues($fieldName, false, $adb);
+	$nonEditableValues = getNonEditablePicklistValues($fieldName, array(), $adb);
 }
 $temp_label = getTranslatedString($fieldLabel);
 $roleDetails=getAllRoleDetails();
