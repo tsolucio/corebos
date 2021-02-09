@@ -545,22 +545,18 @@ class Products extends CRMEntity {
 		}
 		$crmtablealias = CRMEntity::getcrmEntityTableAlias($related_module);
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-		$query = "SELECT vtiger_potential.potentialid, vtiger_crmentity.crmid,
-			vtiger_potential.potentialname, vtiger_account.accountname, vtiger_potential.related_to,
-			vtiger_potential.sales_stage, vtiger_potential.amount, vtiger_potential.closingdate,
-			case when (vtiger_users.user_name not like '') then $userNameSql else
-			vtiger_groups.groupname end as user_name, vtiger_crmentity.smownerid,
-			vtiger_products.productname, vtiger_products.qty_per_unit, vtiger_products.unit_price,
-			vtiger_products.expiry_date
+		$query = "SELECT vtiger_crmentity.*, vtiger_potential.*, vtiger_potentialscf.*, vtiger_account.accountname,
+			case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
+			vtiger_products.productname, vtiger_products.qty_per_unit, vtiger_products.unit_price, vtiger_products.expiry_date
 			FROM vtiger_potential
-			INNER JOIN '.$crmtablealias.' ON vtiger_crmentity.crmid = vtiger_potential.potentialid
+			INNER JOIN ".$crmtablealias.' ON vtiger_crmentity.crmid = vtiger_potential.potentialid
 			INNER JOIN vtiger_potentialscf ON vtiger_potential.potentialid = vtiger_potentialscf.potentialid
 			INNER JOIN vtiger_seproductsrel ON vtiger_seproductsrel.crmid = vtiger_potential.potentialid
 			INNER JOIN vtiger_products ON vtiger_seproductsrel.productid = vtiger_products.productid
 			LEFT JOIN vtiger_account ON vtiger_potential.related_to = vtiger_account.accountid
 			LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
 			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			WHERE vtiger_crmentity.deleted = 0 AND vtiger_products.productid = ".$id;
+			WHERE vtiger_crmentity.deleted=0 AND vtiger_products.productid='.$id;
 
 		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
 
