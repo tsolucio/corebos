@@ -89,7 +89,9 @@ function __cb_getfromcontext($arr) {
 	$str_arr = explode(',', $arr[0]);
 	$variableArr = array();
 	foreach ($str_arr as $vname) {
-		if (empty($arr[1]->WorkflowContext[$vname])) {
+		if (strpos($vname, '.')) {
+			$variableArr[$vname] = __cb_getfromcontextvalueinarrayobject($arr[1]->WorkflowContext, $vname);
+		} elseif (empty($arr[1]->WorkflowContext[$vname])) {
 			$variableArr[$vname] = '';
 		} else {
 			$variableArr[$vname] = $arr[1]->WorkflowContext[$vname];
@@ -100,6 +102,31 @@ function __cb_getfromcontext($arr) {
 	} else {
 		return json_encode($variableArr);
 	}
+}
+
+function __cb_getfromcontextvalueinarrayobject($aORo, $vname) {
+	$value = '';
+	$levels = explode('.', $vname);
+	foreach ($levels as $key) {
+		if (is_array($aORo)) {
+			if (!empty($aORo[$key])) {
+				$value = $aORo[$key];
+				$aORo = $aORo[$key];
+			} else {
+				$value = '';
+			}
+		} elseif (is_object($aORo)) {
+			if (!empty($aORo->$key)) {
+				$value = $aORo->$key;
+				$aORo = $aORo->$key;
+			} else {
+				$value = '';
+			}
+		} else {
+			$value = '';
+		}
+	}
+	return $value;
 }
 
 function __cb_setfromcontext($arr) {

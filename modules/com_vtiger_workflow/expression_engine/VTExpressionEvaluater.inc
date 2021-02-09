@@ -210,8 +210,6 @@ class VTFieldExpressionEvaluater {
 			'__cb_getGEODistanceFromAssignUser2ContactShipping',
 			'__cbwf_setype',
 			'__cb_getcrudmode',
-			'__cb_getfromcontext',
-			'__cb_setfromcontext',
 			'__cb_min',
 			'__cb_max',
 			'__cb_holidaydifference',
