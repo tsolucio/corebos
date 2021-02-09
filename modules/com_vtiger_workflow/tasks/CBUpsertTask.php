@@ -115,10 +115,12 @@ class CBUpsertTask extends VTTask {
 	}
 
 	public function upsertData($data, $action, $crmid = 0) {
-		global $logbg, $adb;
+		global $logbg, $adb, $current_user;
 		$logbg->debug('> upsertData');
 		foreach ($data as $module => $val) {
 			include_once "modules/$module/$module.php";
+			$moduleHandler = vtws_getModuleHandlerFromName($module, $current_user);
+			$handlerMeta = $moduleHandler->getMeta()
 			$focus = new $module();
 			if ($action == 'doCreate') {
 				$focus->modue = '';
@@ -146,6 +148,7 @@ class CBUpsertTask extends VTTask {
 				}
 				$focus->column_fields[$field] = $value;
 			}
+			$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $handlerMeta);
 			$focus->save($module);
 		}
 		$logbg->debug('< upsertData');
