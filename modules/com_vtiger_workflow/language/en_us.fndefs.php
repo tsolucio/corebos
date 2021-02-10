@@ -1470,12 +1470,49 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'variablename',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'the variable name to get from context',
+			'desc' => 'the variable name to get from context. dot syntax supported in variable names and more than one variable can be specified separating them with commas. If more than one variable is given a JSON encoded array with the values will be returned.',
 		),
 	),
 	'categories' => array('Application'),
 	'examples' => array(
 		"getFromContext('ID')",
+		"getFromContext('ID,firstname,lastname')",
+		"getFromContext('response.property.index.field')",
+		"getFromContext('response.data.2.label')",
+	),
+),
+'getFromContextSearching' => array(
+	'name' => 'getFromContextSearching(variablename, searchon, searchfor, returnthis)',
+	'desc' => 'This function gets the value of the returnthis context variable but searches for the correct entry in an array indicated by variablename. This function will traverse the variable in the context and arrive at an array, then it will search in the array for an element that has searchon property set to searchfor value, once found it will return the property indicated by `returnthis`. The array is supposed to contain objects or indexed arrays to search on.',
+	'params' => array(
+		array(
+			'name' => 'variablename',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'the path to an array in context. dot syntax supported in variable names and more than one variable can be specified separating them with commas. If more than one variable is given a JSON encoded array with the values will be returned.',
+		),
+		array(
+			'name' => 'searchon',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'property of the array element to search on',
+		),
+		array(
+			'name' => 'searchfor',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'value to search for',
+		),
+		array(
+			'name' => 'returnthis',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'property of the array element to return',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"getFromContextSearching('response.data.2.custom_fields', 'label', 'Servizio_di_portineria', 'fleet_data')",
 	),
 ),
 'setToContext' => array(

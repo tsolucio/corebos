@@ -1467,12 +1467,49 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'variablename',
 			'type' => 'Texto',
 			'optional' => false,
-			'desc' => 'el nombre de la variable para leer del contexto',
+			'desc' => 'el nombre de la variable para leer del contexto. acepta sintaxis de puntos en el nombre de la variable y se puede especificar más de una variable separándolas con comas. Si se proporciona más de una variable, se devolverá una matriz codificada en JSON con los valores',
 		),
 	),
 	'categories' => array('Application'),
 	'examples' => array(
 		"getFromContext('ID')",
+		"getFromContext('ID,firstname,lastname')",
+		"getFromContext('response.property.index.field')",
+		"getFromContext('response.data.2.label')",
+	),
+),
+'getFromContextSearching' => array(
+	'name' => 'getFromContextSearching(variablename, searchon, searchfor, returnthis)',
+	'desc' => 'Esta función obtiene el valor de returnthis del contexto pero busca la entrada correcta en una matriz indicada por nombre de la variable. Esta función recorrerá la variable en el contexto y llegará a una matriz, luego buscará en la matriz un elemento que tenga la propiedad searchon establecida al valor de searchfor, una vez encontrado, devolverá la propiedad indicada por `returnnthis`. Se supone que la matriz contiene objetos o matrices indexadas para buscar.',
+	'params' => array(
+		array(
+			'name' => 'variablename',
+			'type' => 'Texto',
+			'optional' => false,
+			'desc' => 'la ruta a una matriz en contexto. acepta sintaxis de puntos en el nombre de la variable y se puede especificar más de una variable separándolas con comas. Si se proporciona más de una variable, se devolverá una matriz codificada en JSON con los valores',
+		),
+		array(
+			'name' => 'searchon',
+			'type' => 'Texto',
+			'optional' => false,
+			'desc' => 'propiedad del elemento de matriz para buscar',
+		),
+		array(
+			'name' => 'searchfor',
+			'type' => 'Texto',
+			'optional' => false,
+			'desc' => 'valor para buscar',
+		),
+		array(
+			'name' => 'returnthis',
+			'type' => 'Texto',
+			'optional' => false,
+			'desc' => 'propiedad del elemento de matriz para devolver',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"getFromContextSearching('response.data.2.custom_fields', 'label', 'Servizio_di_portineria', 'fleet_data')",
 	),
 ),
 'setToContext' => array(

@@ -104,6 +104,34 @@ function __cb_getfromcontext($arr) {
 	}
 }
 
+function __cb_getfromcontextsearching($arr) {
+	$str_arr = explode(',', $arr[0]);
+	$variableArr = array();
+	foreach ($str_arr as $vname) {
+		$array = false;
+		if (strpos($vname, '.')) {
+			$array = __cb_getfromcontextvalueinarrayobject($arr[4]->WorkflowContext, $vname);
+		} elseif (empty($arr[4]->WorkflowContext[$vname])) {
+			$variableArr[$vname] = '';
+		} else {
+			$array = $arr[4]->WorkflowContext[$vname];
+		}
+		if (is_array($array)) {
+			$key = array_search($arr[2], array_column($array, $arr[1]));
+			if ($key && !empty($array[$key])) {
+				$variableArr[$vname] = __cb_getfromcontextvalueinarrayobject($array[$key], $arr[3]);
+			} else {
+				$variableArr[$vname] = '';
+			}
+		}
+	}
+	if (count($variableArr)==1) {
+		return $variableArr[$arr[0]];
+	} else {
+		return json_encode($variableArr);
+	}
+}
+
 function __cb_getfromcontextvalueinarrayobject($aORo, $vname) {
 	$value = '';
 	$levels = explode('.', $vname);

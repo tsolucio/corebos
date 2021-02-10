@@ -191,6 +191,7 @@ class VTExpressionsManager {
 			'getGEODistanceFromAssignUser2ContactShipping' => 'getGEODistanceFromAssignUser2ContactShipping(contact,assigned_user,address_specification)',
 			'getGEODistanceFromCoordinates' => 'getGEODistanceFromCoordinates({lat1},{long1},{lat2},{long2})',
 			'getFromContext' => 'getFromContext(variablename)',
+			'getFromContextSearching' => 'getFromContextSearching(variablename, searchon, searchfor, returnthis)',
 			'setToContext' => 'setToContext(variablename, value)',
 			'jsonEncode' => 'jsonEncode(field)',
 			'jsonDecode' => 'jsonDecode(field)',

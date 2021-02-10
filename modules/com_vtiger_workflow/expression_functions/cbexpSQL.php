@@ -103,6 +103,7 @@ function cbexpsql_supportedFunctions() {
 		// 'getGEODistanceFromAssignUser2ContactShipping' => 'getGEODistanceFromAssignUser2ContactShipping(contact,assigned_user,address_specification)',
 		// 'getGEODistanceFromCoordinates' => 'getGEODistanceFromCoordinates({lat1},{long1},{lat2},{long2})',
 		// 'getFromContext' => 'getFromContext(variablename)',
+		// 'getFromContextSearching' => 'getFromContextSearching(variablename, searchon, searchfor, returnthis)',
 		// 'setToContext' => 'setToContext(variablename, value)',
 		'getSetting' => "getSetting('setting_key', 'default')",
 		// 'setSetting' => 'setSetting('setting_key', value)',
