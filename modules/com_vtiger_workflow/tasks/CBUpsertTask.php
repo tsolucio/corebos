@@ -82,7 +82,6 @@ class CBUpsertTask extends VTTask {
 			foreach ($context_data as $key) {
 				$map_records = array();
 				foreach ($map_fields as $module => $fld) {
-					$crmid = coreBOS_Rule::evaluate($this->bmapid, $key);
 					$crmid = '';
 					$flds = array_map(function ($k) use ($module, $key) {
 						$field = $k['field'];
@@ -91,15 +90,16 @@ class CBUpsertTask extends VTTask {
 						$related_modulename = $k['related_modulename'];
 						$related_field = $k['related_field'];
 						return array(
-							$module,
-							$field,
-							$key[$context_field],
-							$uitype,
-							$related_modulename,
-							$related_field,
+							'module' => $module,
+							'fieldname' => $field,
+							$field => $key[$context_field],
+							'uitype' => $uitype,
+							'related_modulename' => $related_modulename,
+							'related_field' => $related_field,
 						);
 					}, $fld);
-					$records = $this->groupArrayByKey($flds, 0);
+					$records = $this->groupArrayByKey($flds, 'module');
+					$crmid = coreBOS_Rule::evaluate($this->bmapid, $records);
 					if (empty($crmid)) {
 						$this->upsertData($records, 'doCreate');
 					} else {
@@ -119,7 +119,7 @@ class CBUpsertTask extends VTTask {
 		foreach ($data as $module => $val) {
 			include_once "modules/$module/$module.php";
 			$moduleHandler = vtws_getModuleHandlerFromName($module, $current_user);
-			$handlerMeta = $moduleHandler->getMeta()
+			$handlerMeta = $moduleHandler->getMeta();
 			$focus = new $module();
 			if ($action == 'doCreate') {
 				$focus->modue = '';
@@ -129,11 +129,11 @@ class CBUpsertTask extends VTTask {
 				$focus->modue = 'edit';
 			}
 			for ($i=0; $i<count($val); $i++) {
-				$field = $val[$i][1];
-				$value = $val[$i][2];
-				$uitype = $val[$i][3];
-				$relMod = $val[$i][4];
-				$relFld = $val[$i][5]; //add it only if uitype 10 values isn't crmid
+				$field = $val[$i]['fieldname'];
+				$value = $val[$i][$field];
+				$uitype = $val[$i]['uitype'];
+				$relMod = $val[$i]['related_modulename'];
+				$relFld = $val[$i]['related_field']; //add it only if uitype 10 values isn't crmid
 				if ($uitype == '10') {
 					//get recordid if another value is given
 					if (!isRecordExists($value) && $relFld != '') {
