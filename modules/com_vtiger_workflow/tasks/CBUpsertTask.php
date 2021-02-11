@@ -20,7 +20,6 @@ require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 require_once 'modules/com_vtiger_workflow/VTTaskQueue.inc';
 require_once 'modules/cbMap/cbMap.php';
 require_once 'include/events/include.inc';
-require_once 'modules/com_vtiger_workflow/expression_functions/application.php';
 
 class CBUpsertTask extends VTTask {
 	public $executeImmediately = true;
@@ -101,15 +100,16 @@ class CBUpsertTask extends VTTask {
 					$relfield = $fieldmodule[1];
 					$fval = $fieldValue[$fldmod];
 					$crmid = coreBOS_Rule::evaluate($bmapid, $fval);
+					$crmid = '';
 					if (empty($crmid)) {
 						$this->upsertData($fval, $relmodule, $relfield, 'doCreate');
 					} else {
 						$this->upsertData($fval, $relmodule, $relfield, 'doUpdate', $crmid);
 					}
-					$util->revertUser();
-					$_REQUEST['ajxaction'] = $hold_ajxaction;
 				}
 			}
+			$util->revertUser();
+			$_REQUEST['ajxaction'] = $hold_ajxaction;
 		}
 		$util->revertUser();
 		$from_wf = false;
