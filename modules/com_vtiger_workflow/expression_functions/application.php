@@ -85,6 +85,19 @@ function __cb_getcrudmode($arr) {
 	}
 }
 
+function __cb_getidof($arr) {
+	global $current_user, $adb;
+	$qg = new QueryGenerator($arr[0], $current_user);
+	$qg->setFields(array('id'));
+	$qg->addCondition($arr[1], $arr[2], 'e');
+	$rs = $adb->query($qg->getQuery(false, 1));
+	if ($rs && $adb->num_rows($rs)>0) {
+		return $adb->query_result($rs, 0, 0);
+	} else {
+		return 0;
+	}
+}
+
 function __cb_getfromcontext($arr) {
 	$str_arr = explode(',', $arr[0]);
 	$variableArr = array();

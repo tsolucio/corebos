@@ -1462,6 +1462,35 @@ $WFExpressionFunctionDefinitons = array(
 		'getGEODistanceFromCoordinates(lat1, long1, lat2, long2)',
 	),
 ),
+'getIDof' => array(
+	'name' => 'getIDof(module, searchon, searchfor)',
+	'desc' => 'This function searches the given module for a record with the `searchfor` value in the `searchon` field and returns the ID of that record if found or 0 if not. The goal of this function is to set related field values in create/update tasks.',
+	'params' => array(
+		array(
+			'name' => 'module',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'the module name to search in.',
+		),
+		array(
+			'name' => 'searchon',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'field of the module to search in',
+		),
+		array(
+			'name' => 'searchfor',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'value to search for',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"getIDof('Contacts', 'firstname', 'Amy')",
+		"getIDof('Accounts', 'siccode', 'xyhdmsi33')",
+	),
+),
 'getFromContext' => array(
 	'name' => 'getFromContext(variablename)',
 	'desc' => 'This function gets the value of the variablename context variable.',

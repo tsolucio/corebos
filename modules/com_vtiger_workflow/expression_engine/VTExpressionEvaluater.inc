@@ -88,6 +88,7 @@ class VTFieldExpressionEvaluater {
 			'getGEODistanceFromUser2ContactShipping' => '__cb_getGEODistanceFromUser2ContactShipping',
 			'getGEODistanceFromAssignUser2ContactShipping' => '__cb_getGEODistanceFromAssignUser2ContactShipping',
 			'getGEODistanceFromCoordinates' => '__cb_getGEODistanceFromCoordinates',
+			'getIDof' => '__cb_getidof',
 			'getFromContext' => '__cb_getfromcontext',
 			'getFromContextSearching' => '__cb_getfromcontextsearching',
 			'setToContext' => '__cb_setfromcontext',
@@ -199,6 +200,7 @@ class VTFieldExpressionEvaluater {
 			'NOT' => 'cbexpsql_not',
 			'number_format' => 'cbexpsql_number_format',
 			'getSetting' => 'cbexpsql_getsetting',
+			'getIDof' => 'cbexpsql_getidof',
 		);
 		$this->rawparams = array(
 			'__cb_getGEODistanceFromUser2AccountBilling',

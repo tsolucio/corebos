@@ -190,6 +190,7 @@ class VTExpressionsManager {
 			'getGEODistanceFromUser2ContactShipping' => 'getGEODistanceFromUser2ContactShipping(contact,address_specification)',
 			'getGEODistanceFromAssignUser2ContactShipping' => 'getGEODistanceFromAssignUser2ContactShipping(contact,assigned_user,address_specification)',
 			'getGEODistanceFromCoordinates' => 'getGEODistanceFromCoordinates({lat1},{long1},{lat2},{long2})',
+			'getIDof' => 'getIDof(module, searchon, searchfor)',
 			'getFromContext' => 'getFromContext(variablename)',
 			'getFromContextSearching' => 'getFromContextSearching(variablename, searchon, searchfor, returnthis)',
 			'setToContext' => 'setToContext(variablename, value)',
