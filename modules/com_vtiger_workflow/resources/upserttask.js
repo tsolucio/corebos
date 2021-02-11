@@ -574,4 +574,4 @@ function CBUpsertTask($, fieldvaluemapping) {
 
 	});
 }
-vtCBUpsertTask = CBUpsertTask(jQuery, fieldvaluemapping);
+CBUpsertTask = CBUpsertTask(jQuery, fieldvaluemapping);
