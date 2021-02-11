@@ -20,6 +20,7 @@ require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 require_once 'modules/com_vtiger_workflow/VTTaskQueue.inc';
 require_once 'modules/cbMap/cbMap.php';
 require_once 'include/events/include.inc';
+require_once 'modules/com_vtiger_workflow/expression_functions/application.php';
 
 class CBUpsertTask extends VTTask {
 	public $executeImmediately = true;
@@ -45,8 +46,10 @@ class CBUpsertTask extends VTTask {
 		$recordId = vtws_getIdComponents($entityId);
 		$recordId = $recordId[1];
 		$bmapid = $this->bmapid;
-		$context_data = json_decode($context['context'], true);
 		$logbg->debug("Module: $moduleName, Record: $entityId");
+		$moduleHandler = vtws_getModuleHandlerFromName($moduleName, Users::getActiveAdminUser());
+		$handlerMeta = $moduleHandler->getMeta();
+		$moduleFields = $handlerMeta->getModuleFields();
 		if (!empty($this->field_value_mapping)) {
 			$fieldValueMapping = json_decode($this->field_value_mapping, true);
 		}
@@ -68,37 +71,44 @@ class CBUpsertTask extends VTTask {
 			$handlerMetarel[] = array();
 			$fieldValue = array();
 			$fieldmodule = array();
-			foreach ($fieldValueMapping as $fieldInfo) {
-				$fieldName = $fieldInfo['fieldname'];
-				$fieldType = '';
-				$fldmod = '';
-				$fieldValueType = $fieldInfo['valuetype'];
-				$fieldValue1 = trim($fieldInfo['value']);
-				if (array_key_exists('fieldmodule', $fieldInfo)) {
-					$fldmod = trim($fieldInfo['fieldmodule']);
-					$fieldmodule = explode('__', trim($fieldInfo['fieldmodule']));
-				}
-				$module = $fieldmodule[0];
-				$moduleHandlerrel = vtws_getModuleHandlerFromName($module, Users::getActiveAdminUser());
-				$handlerMetarel[$fldmod] = $moduleHandlerrel->getMeta();
-				$moduleFieldsrel = $handlerMetarel[$fldmod]->getModuleFields();
-				$fieldValue[$fldmod][$fieldName]=$util->fieldvaluebytype($moduleFieldsrel, $fieldValueType, $fieldValue1, $fieldName, $focus, $entity, $handlerMeta);
+			if (empty($entity->WorkflowContext['upsert_data'])) {
+				$entity->WorkflowContext['upsert_data'] = array($focus->column_fields);
 			}
 			$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
 			$_REQUEST['ajxaction'] = 'Workflow';
-			if ($fldmod != '') {
-				$fieldmodule = explode('__', $fldmod);
-				$relmodule = $fieldmodule[0];
-				$relfield = $fieldmodule[1];
-				$fval = $fieldValue[$fldmod];
-				$crmid = coreBOS_Rule::evaluate($bmapid, $fval);
-				if (empty($crmid)) {
-					$this->upsertData($fval, $relmodule, $relfield, 'doCreate');
-				} else {
-					$this->upsertData($fval, $relmodule, $relfield, 'doUpdate', $crmid);
+			$upsert_data = json_decode($entity->WorkflowContext['upsert_data'], true);
+			foreach ($upsert_data as $key) {
+				$entity->WorkflowContext['current_upsert_row'] = $key;
+				foreach ($fieldValueMapping as $fieldInfo) {
+					$fieldName = $fieldInfo['fieldname'];
+					$fieldType = '';
+					$fldmod = '';
+					$fieldValueType = $fieldInfo['valuetype'];
+					$fieldValue1 = trim($fieldInfo['value']);
+					if (array_key_exists('fieldmodule', $fieldInfo)) {
+						$fldmod = trim($fieldInfo['fieldmodule']);
+						$fieldmodule = explode('__', trim($fieldInfo['fieldmodule']));
+					}
+					$module = $fieldmodule[0];
+					$moduleHandlerrel = vtws_getModuleHandlerFromName($module, Users::getActiveAdminUser());
+					$handlerMetarel[$fldmod] = $moduleHandlerrel->getMeta();
+					$moduleFieldsrel = $handlerMetarel[$fldmod]->getModuleFields();
+					$fieldValue[$fldmod][$fieldName]=$util->fieldvaluebytype($moduleFieldsrel, $fieldValueType, $fieldValue1, $fieldName, $focus, $entity, $handlerMeta);
 				}
-				$util->revertUser();
-				$_REQUEST['ajxaction'] = $hold_ajxaction;
+				if ($fldmod != '') {
+					$fieldmodule = explode('__', $fldmod);
+					$relmodule = $fieldmodule[0];
+					$relfield = $fieldmodule[1];
+					$fval = $fieldValue[$fldmod];
+					$crmid = coreBOS_Rule::evaluate($bmapid, $fval);
+					if (empty($crmid)) {
+						$this->upsertData($fval, $relmodule, $relfield, 'doCreate');
+					} else {
+						$this->upsertData($fval, $relmodule, $relfield, 'doUpdate', $crmid);
+					}
+					$util->revertUser();
+					$_REQUEST['ajxaction'] = $hold_ajxaction;
+				}
 			}
 		}
 		$util->revertUser();
@@ -109,7 +119,6 @@ class CBUpsertTask extends VTTask {
 	public function upsertData($data, $relmodule, $relfield, $action, $crmid = 0) {
 		global $logbg, $adb, $current_user;
 		$logbg->debug('> upsertData');
-		include_once "modules/$relmodule/$relmodule.php";
 		$moduleHandler = vtws_getModuleHandlerFromName($relmodule, $current_user);
 		$handlerMeta = $moduleHandler->getMeta();
 		$focusrel = CRMEntity::getInstance($relmodule);
