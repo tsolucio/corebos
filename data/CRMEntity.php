@@ -698,7 +698,7 @@ class CRMEntity {
 		// Attempt to re-use the query-result to avoid reading for every save operation
 		static $_privatecache = array();
 
-		$cachekey = md5($insertion_mode . serialize($params));
+		$cachekey = md5($insertion_mode . $sql . json_encode($params));
 
 		if (!isset($_privatecache[$cachekey])) {
 			$result = $adb->pquery($sql, $params);
