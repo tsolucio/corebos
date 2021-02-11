@@ -100,7 +100,6 @@ class CBUpsertTask extends VTTask {
 					$relfield = $fieldmodule[1];
 					$fval = $fieldValue[$fldmod];
 					$crmid = coreBOS_Rule::evaluate($bmapid, $fval);
-					$crmid = '';
 					if (empty($crmid)) {
 						$this->upsertData($fval, $relmodule, $relfield, 'doCreate');
 					} else {
