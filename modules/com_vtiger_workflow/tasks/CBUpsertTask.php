@@ -25,7 +25,7 @@ class CBUpsertTask extends VTTask {
 	public $executeImmediately = true;
 
 	public function getFieldNames() {
-		return array('bmapid', 'bmapid_display');
+		return array('field_value_mapping', 'bmapid', 'bmapid_display');
 	}
 
 	public function doTask(&$entity) {
@@ -44,68 +44,61 @@ class CBUpsertTask extends VTTask {
 		$entityId = $entity->getId();
 		$recordId = vtws_getIdComponents($entityId);
 		$recordId = $recordId[1];
+		$bmapid = $this->bmapid;
+		$context_data = json_decode($context['context'], true);
 		$logbg->debug("Module: $moduleName, Record: $entityId");
-		if ($context != '') {
-			$context_data = json_decode($context['context'], true);
-			$ws_map_response = $context['ws_map_response'];
-			$map_fields = array();
-			foreach ($ws_map_response as $key => $value) {
-				if ($key != 'message' && $key != 'data') {
-					$field_map = $value['field'];
-					$context_map = str_replace('wsctx_', '', $value['context']);
-					if (strpos($field_map, '.') !== false) {
-						$field = explode('.', $field_map);
-						$related_modulename = $field[0];
-						$fieldname = $field[1];
-						$related_field = '';
-						if (count($field) == 3) {
-							$related_field = $field[2];
-						}
-						$fields_data = $adb->pquery('SELECT * FROM vtiger_field WHERE columnname=?', array($fieldname));
-						$tabId = $adb->query_result($fields_data, 0, 'tabid');
-						$uitype = $adb->query_result($fields_data, 0, 'uitype');
-						$module = vtlib_getModuleNameById($tabId);
-						if (!array_key_exists($module, $map_fields)) {
-							$map_fields[$module] = array();
-						}
-						array_push($map_fields[$module], array(
-							'field' => $fieldname,
-							'context' => $context_map,
-							'uitype' => $uitype,
-							'related_modulename' => $uitype == '10' ? $related_modulename : '',
-							'related_field' => $related_field
-						));
-					}
-				}
+		if (!empty($this->field_value_mapping)) {
+			$fieldValueMapping = json_decode($this->field_value_mapping, true);
+		}
+		$logbg->debug("field mapping: ".print_r($fieldValueMapping, true));
+		if (!empty($fieldValueMapping) && count($fieldValueMapping) > 0) {
+			include_once 'data/CRMEntity.php';
+			$focus = CRMEntity::getInstance($moduleName);
+			$focus->id = $recordId;
+			$focus->mode = 'edit';
+			$focus->retrieve_entity_info($recordId, $moduleName, false, $from_wf);
+			$focus->clearSingletonSaveFields();
+
+			$hold_user = $current_user;
+			$util->loggedInUser();
+			if (is_null($current_user)) {
+				$current_user = $hold_user; // make sure current_user is defined
 			}
-			//match fields from map with values in ws response
-			foreach ($context_data as $key) {
-				$map_records = array();
-				foreach ($map_fields as $module => $fld) {
-					$crmid = '';
-					$flds = array_map(function ($k) use ($module, $key) {
-						$field = $k['field'];
-						$context_field = $k['context'];
-						$uitype = $k['uitype'];
-						$related_modulename = $k['related_modulename'];
-						$related_field = $k['related_field'];
-						return array(
-							'module' => $module,
-							'fieldname' => $field,
-							$field => $key[$context_field],
-							'uitype' => $uitype,
-							'related_modulename' => $related_modulename,
-							'related_field' => $related_field,
-						);
-					}, $fld);
-					$records = $this->groupArrayByKey($flds, 'module');
-					$crmid = coreBOS_Rule::evaluate($this->bmapid, $records);
-					if (empty($crmid)) {
-						$this->upsertData($records, 'doCreate');
-					} else {
-						$this->upsertData($records, 'doUpdate', $crmid);
-					}
+			$relmodule = array();
+			$handlerMetarel[] = array();
+			$fieldValue = array();
+			$fieldmodule = array();
+			foreach ($fieldValueMapping as $fieldInfo) {
+				$fieldName = $fieldInfo['fieldname'];
+				$fieldType = '';
+				$fldmod = '';
+				$fieldValueType = $fieldInfo['valuetype'];
+				$fieldValue1 = trim($fieldInfo['value']);
+				if (array_key_exists('fieldmodule', $fieldInfo)) {
+					$fldmod = trim($fieldInfo['fieldmodule']);
+					$fieldmodule = explode('__', trim($fieldInfo['fieldmodule']));
 				}
+				$module = $fieldmodule[0];
+				$moduleHandlerrel = vtws_getModuleHandlerFromName($module, Users::getActiveAdminUser());
+				$handlerMetarel[$fldmod] = $moduleHandlerrel->getMeta();
+				$moduleFieldsrel = $handlerMetarel[$fldmod]->getModuleFields();
+				$fieldValue[$fldmod][$fieldName]=$util->fieldvaluebytype($moduleFieldsrel, $fieldValueType, $fieldValue1, $fieldName, $focus, $entity, $handlerMeta);
+			}
+			$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
+			$_REQUEST['ajxaction'] = 'Workflow';
+			if ($fldmod != '') {
+				$fieldmodule = explode('__', $fldmod);
+				$relmodule = $fieldmodule[0];
+				$relfield = $fieldmodule[1];
+				$fval = $fieldValue[$fldmod];
+				$crmid = coreBOS_Rule::evaluate($bmapid, $fval);
+				if (empty($crmid)) {
+					$this->upsertData($fval, $relmodule, $relfield, 'doCreate');
+				} else {
+					$this->upsertData($fval, $relmodule, $relfield, 'doUpdate', $crmid);
+				}
+				$util->revertUser();
+				$_REQUEST['ajxaction'] = $hold_ajxaction;
 			}
 		}
 		$util->revertUser();
@@ -113,55 +106,26 @@ class CBUpsertTask extends VTTask {
 		$logbg->debug('< CBUpsertTask');
 	}
 
-	public function upsertData($data, $action, $crmid = 0) {
+	public function upsertData($data, $relmodule, $relfield, $action, $crmid = 0) {
 		global $logbg, $adb, $current_user;
 		$logbg->debug('> upsertData');
-		foreach ($data as $module => $val) {
-			include_once "modules/$module/$module.php";
-			$moduleHandler = vtws_getModuleHandlerFromName($module, $current_user);
-			$handlerMeta = $moduleHandler->getMeta();
-			$focus = new $module();
-			if ($action == 'doCreate') {
-				$focus->modue = '';
-			} elseif ($action == 'doUpdate') {
-				$focus->retrieve_entity_info($crmid, $module);
-				$focus->id = $crmid;
-				$focus->modue = 'edit';
-			}
-			for ($i=0; $i<count($val); $i++) {
-				$field = $val[$i]['fieldname'];
-				$value = $val[$i][$field];
-				$uitype = $val[$i]['uitype'];
-				$relMod = $val[$i]['related_modulename'];
-				$relFld = $val[$i]['related_field']; //add it only if uitype 10 values isn't crmid
-				if ($uitype == '10') {
-					//get recordid if another value is given
-					if (!isRecordExists($value) && $relFld != '') {
-						include_once "modules/$relMod/$relMod.php";
-						$relFocus = new $relMod();
-						$table_name = $relFocus->table_name;
-						$table_index = $relFocus->table_index;
-						$result = $adb->pquery("SELECT $table_index FROM $table_name INNER JOIN vtiger_crmentity ON crmid=$table_index WHERE deleted=0 AND $relFld=?", array($value));
-						$value = $adb->query_result($result, 0, $table_index);
-					}
-				}
-				$focus->column_fields[$field] = $value;
-			}
-			$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $handlerMeta);
-			$focus->save($module);
+		include_once "modules/$relmodule/$relmodule.php";
+		$moduleHandler = vtws_getModuleHandlerFromName($relmodule, $current_user);
+		$handlerMeta = $moduleHandler->getMeta();
+		$focusrel = CRMEntity::getInstance($relmodule);
+		if ($action == 'doCreate') {
+			$focusrel->mode = '';
+		} else {
+			$focusrel->retrieve_entity_info($crmid, $relmodule);
+			$focusrel->id = $crmid;
+			$focusrel->mode = 'edit';
 		}
+		foreach ($data as $key => $value) {
+			$focusrel->column_fields[$key] = $value;
+		}
+		$focusrel->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel->column_fields, $handlerMeta);
+		$focusrel->save($relmodule);
 		$logbg->debug('< upsertData');
-	}
-
-	public function groupArrayByKey($array, $key) {
-		global $logbg;
-		$logbg->debug('> groupArrayByKey');
-		$result = array();
-		foreach ($array as $element) {
-			$result[$element[$key]][] = $element;
-		}
-		$logbg->debug('< groupArrayByKey');
-		return $result;
 	}
 }
 ?>
