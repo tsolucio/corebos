@@ -3319,8 +3319,9 @@ class ReportRun extends CRMEntity {
 							$celltype = \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_BOOL;
 							$value = ($value==$BoolTrue ? 1:0);
 							break;
-						case 'integer':
 						case 'double':
+							$value = str_replace(',','.',$value);
+						case 'integer':
 						case 'currency':
 							$celltype = \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_NUMERIC;
 							break;
