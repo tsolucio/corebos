@@ -91,9 +91,9 @@ class CBUpsertTask extends VTTask {
 				}
 				$crmid = coreBOS_Rule::evaluate($bmapid, $fieldValue);
 				if (empty($crmid)) {
-					$this->upsertData($fval, $relmodule, $relfield, 'doCreate');
+					$this->upsertData($fieldValue, $relmodule, $relfield, 'doCreate');
 				} else {
-					$this->upsertData($fval, $relmodule, $relfield, 'doUpdate', $crmid);
+					$this->upsertData($fieldValue, $relmodule, $relfield, 'doUpdate', $crmid);
 				}
 			}
 			$util->revertUser();
