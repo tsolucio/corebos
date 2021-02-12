@@ -14,4 +14,11 @@
 	<classname>upd_InvDet_fields</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Add workflow Upsert task</description>
+	<filename>build/changeSets/2021/addExeWFUpsertTask.php</filename>
+	<classname>addExeWFUpsertTask</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

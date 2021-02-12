@@ -179,7 +179,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 								}
 							} else {
 								if (isset($response2->$fld)) {
-									$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2->$fld));
+									$r2 = json_encode($response2->$fld);
 								}
 							}
 						}
