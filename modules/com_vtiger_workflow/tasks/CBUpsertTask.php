@@ -32,28 +32,26 @@ class CBUpsertTask extends VTTask {
 		global $adb, $current_user, $logbg, $from_wf, $currentModule;
 		$from_wf = true;
 		$logbg->debug('> CBUpsertTask');
-		$util = new VTWorkflowUtils();
-		$util->adminUser();
-		$isqueue=$entity->isqueue;
-		$taskQueue = new VTTaskQueue($adb);
-		$moduleName = $entity->getModuleName();
-		$context = $entity->WorkflowContext;
-		if (empty($currentModule) || $currentModule!=$moduleName) {
-			$currentModule = $moduleName;
-		}
-		$entityId = $entity->getId();
-		$recordId = vtws_getIdComponents($entityId);
-		$recordId = $recordId[1];
-		$bmapid = $this->bmapid;
-		$logbg->debug("Module: $moduleName, Record: $entityId");
-		$moduleHandler = vtws_getModuleHandlerFromName($moduleName, Users::getActiveAdminUser());
-		$handlerMeta = $moduleHandler->getMeta();
-		$moduleFields = $handlerMeta->getModuleFields();
 		if (!empty($this->field_value_mapping)) {
 			$fieldValueMapping = json_decode($this->field_value_mapping, true);
 		}
 		$logbg->debug("field mapping: ".print_r($fieldValueMapping, true));
 		if (!empty($fieldValueMapping) && count($fieldValueMapping) > 0) {
+			$util = new VTWorkflowUtils();
+			$util->adminUser();
+			$moduleName = $entity->getModuleName();
+			$context = $entity->WorkflowContext;
+			if (empty($currentModule) || $currentModule!=$moduleName) {
+				$currentModule = $moduleName;
+			}
+			$entityId = $entity->getId();
+			$recordId = vtws_getIdComponents($entityId);
+			$recordId = $recordId[1];
+			$bmapid = $this->bmapid;
+			$logbg->debug("Module: $moduleName, Record: $entityId");
+			$moduleHandler = vtws_getModuleHandlerFromName($moduleName, Users::getActiveAdminUser());
+			$handlerMeta = $moduleHandler->getMeta();
+			$moduleFields = $handlerMeta->getModuleFields();
 			include_once 'data/CRMEntity.php';
 			$focus = CRMEntity::getInstance($moduleName);
 			$focus->id = $recordId;
@@ -66,51 +64,41 @@ class CBUpsertTask extends VTTask {
 			if (is_null($current_user)) {
 				$current_user = $hold_user; // make sure current_user is defined
 			}
-			$relmodule = array();
-			$handlerMetarel[] = array();
 			$fieldValue = array();
-			$fieldmodule = array();
 			if (empty($entity->WorkflowContext['upsert_data'])) {
 				$entity->WorkflowContext['upsert_data'] = array($focus->column_fields);
 			}
 			$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
 			$_REQUEST['ajxaction'] = 'Workflow';
-			$upsert_data = json_decode($entity->WorkflowContext['upsert_data'], true);
+			$upsert_data = $entity->WorkflowContext['upsert_data'];
+			if (!is_array($entity->WorkflowContext['upsert_data'])) {
+				$upsert_data = json_decode($entity->WorkflowContext['upsert_data'], true);
+			}
+			$fieldmodule = $fieldValueMapping[0]['fieldmodule'];
+			$fieldmodule = explode('__', trim($fieldmodule));
+			$relmodule = $fieldmodule[0];
+			$relfield = $fieldmodule[1];
+			$moduleHandlerrel = vtws_getModuleHandlerFromName($relmodule, Users::getActiveAdminUser());
+			$handlerMetarel = $moduleHandlerrel->getMeta();
+			$moduleFieldsrel = $handlerMetarel->getModuleFields();
 			foreach ($upsert_data as $key) {
 				$entity->WorkflowContext['current_upsert_row'] = $key;
 				foreach ($fieldValueMapping as $fieldInfo) {
 					$fieldName = $fieldInfo['fieldname'];
-					$fieldType = '';
-					$fldmod = '';
 					$fieldValueType = $fieldInfo['valuetype'];
 					$fieldValue1 = trim($fieldInfo['value']);
-					if (array_key_exists('fieldmodule', $fieldInfo)) {
-						$fldmod = trim($fieldInfo['fieldmodule']);
-						$fieldmodule = explode('__', trim($fieldInfo['fieldmodule']));
-					}
-					$module = $fieldmodule[0];
-					$moduleHandlerrel = vtws_getModuleHandlerFromName($module, Users::getActiveAdminUser());
-					$handlerMetarel[$fldmod] = $moduleHandlerrel->getMeta();
-					$moduleFieldsrel = $handlerMetarel[$fldmod]->getModuleFields();
-					$fieldValue[$fldmod][$fieldName]=$util->fieldvaluebytype($moduleFieldsrel, $fieldValueType, $fieldValue1, $fieldName, $focus, $entity, $handlerMeta);
+					$fieldValue[$fieldName]=$util->fieldvaluebytype($moduleFieldsrel, $fieldValueType, $fieldValue1, $fieldName, $focus, $entity, $handlerMeta);
 				}
-				if ($fldmod != '') {
-					$fieldmodule = explode('__', $fldmod);
-					$relmodule = $fieldmodule[0];
-					$relfield = $fieldmodule[1];
-					$fval = $fieldValue[$fldmod];
-					$crmid = coreBOS_Rule::evaluate($bmapid, $fval);
-					if (empty($crmid)) {
-						$this->upsertData($fval, $relmodule, $relfield, 'doCreate');
-					} else {
-						$this->upsertData($fval, $relmodule, $relfield, 'doUpdate', $crmid);
-					}
+				$crmid = coreBOS_Rule::evaluate($bmapid, $fieldValue);
+				if (empty($crmid)) {
+					$this->upsertData($fval, $relmodule, $relfield, 'doCreate');
+				} else {
+					$this->upsertData($fval, $relmodule, $relfield, 'doUpdate', $crmid);
 				}
 			}
 			$util->revertUser();
 			$_REQUEST['ajxaction'] = $hold_ajxaction;
 		}
-		$util->revertUser();
 		$from_wf = false;
 		$logbg->debug('< CBUpsertTask');
 	}
