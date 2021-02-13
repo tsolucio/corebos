@@ -88,7 +88,14 @@ class CBUpsertTask extends VTTask {
 					$fieldValue1 = trim($fieldInfo['value']);
 					$fieldValue[$fieldName]=$util->fieldvaluebytype($moduleFieldsrel, $fieldValueType, $fieldValue1, $fieldName, $focus, $entity, $handlerMeta);
 				}
-				$crmid = coreBOS_Rule::evaluate($bmapid, $fieldValue);
+				$crmid = 0; // no map > we create
+				if (!empty($bmapid)) {
+					$mapValues = $fieldValue;
+					if (empty($mapValues['record_id'])) {
+						$mapValues['record_id'] = $recordId;
+					}
+					$crmid = coreBOS_Rule::evaluate($bmapid, $mapValues);
+				}
 				if (empty($crmid)) {
 					$this->upsertData($fieldValue, $relmodule, 'doCreate');
 				} else {
