@@ -111,7 +111,11 @@ class CBUpsertTask extends VTTask {
 
 	public function upsertData($data, $relmodule, $action, $crmid = 0) {
 		global $logbg, $current_user;
-		$logbg->debug('> upsertData');
+		if (strpos($crmid, 'x')>0) {
+			list($void, $crmid) = explode('x', $crmid); // suppport WS ID
+		}
+		$logbg->debug('> upsertData: '.$relmodule.' - '.$action);
+		$logbg->debug('data: '.print_r($data, true));
 		$moduleHandler = vtws_getModuleHandlerFromName($relmodule, $current_user);
 		$handlerMeta = $moduleHandler->getMeta();
 		$focusrel = CRMEntity::getInstance($relmodule);
