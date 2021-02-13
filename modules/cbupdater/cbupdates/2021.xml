@@ -21,4 +21,11 @@
 	<classname>addExeWFUpsertTask</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add multi-language field to picklsts</description>
+	<filename>build/changeSets/2021/addmultii18nfieldtopicklists.php</filename>
+	<classname>addmultii18nfieldtopicklists</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

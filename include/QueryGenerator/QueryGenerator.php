@@ -1036,7 +1036,7 @@ class QueryGenerator {
 						$fieldSql .= "$fieldGlue DATE_FORMAT(".$field->getTableName().'.'.$field->getColumnName().",'%m%d') ".$valueSql;
 					} else {
 						if ($conditionInfo['operator'] == 'sx') {
-							if ($field->getUIType() == 15 || $field->getUIType() == 16) {
+							if (($field->getUIType() == 15 || $field->getUIType() == 16) && hasMultiLanguageSupport($field->getFieldName())) {
 								$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' IN (
 									select translation_key
 									from vtiger_cbtranslation
@@ -1048,7 +1048,7 @@ class QueryGenerator {
 								$fieldSql .= "$fieldGlue ". $valueSql;
 							}
 						} else {
-							if ($field->getUIType() == 15 || $field->getUIType() == 16) {
+							if (($field->getUIType() == 15 || $field->getUIType() == 16) && hasMultiLanguageSupport($field->getFieldName())) {
 								$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' IN (
 									select translation_key
 									from vtiger_cbtranslation

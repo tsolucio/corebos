@@ -19,7 +19,7 @@ function getUserFldArray($fld_module, $roleid) {
 	$user_fld = array();
 	$tabid = getTabid($fld_module);
 
-	$query="SELECT vtiger_field.fieldlabel,vtiger_field.columnname,vtiger_field.fieldname, vtiger_field.uitype
+	$query="SELECT vtiger_field.fieldlabel,vtiger_field.columnname,vtiger_field.fieldname, vtiger_field.uitype, vtiger_picklist.multii18n
 		FROM vtiger_field
 		LEFT JOIN vtiger_picklist on vtiger_field.fieldname = vtiger_picklist.name
 		WHERE (displaytype in (1,2,3,4) and vtiger_field.tabid=? and vtiger_field.uitype in ('15','33','16')
@@ -35,6 +35,7 @@ function getUserFldArray($fld_module, $roleid) {
 			$user_fld = array();
 			$user_fld['fieldlabel'] = $adb->query_result($result, $i, 'fieldlabel');
 			$user_fld['generatedtype'] = $adb->query_result($result, $i, 'generatedtype');
+			$user_fld['multii18n'] = ($adb->query_result($result, $i, 'multii18n')=='' ? 1 : $adb->query_result($result, $i, 'multii18n'));
 			$user_fld['columnname'] = $adb->query_result($result, $i, 'columnname');
 			$user_fld['fieldname'] = $adb->query_result($result, $i, 'fieldname');
 			$user_fld['uitype'] = $adb->query_result($result, $i, 'uitype');
@@ -169,6 +170,30 @@ function getNonEditablePicklistValues($fieldName, $lang, $adb) {
 		$values = '';
 	}
 	return $values;
+}
+
+/**
+ * this function accepts the fieldname of a picklist and returns true if it contains noneditable values and false if not
+ * @param string $fieldName - the name of the picklist
+ * @param object $adb - the peardatabase object
+ * @return boolean true if the picklist has noneditable values
+ */
+function hasNonEditablePicklistValues($fieldName) {
+	global $adb;
+	$result = $adb->query('select 1 from vtiger_'.$adb->sql_escape_string($fieldName).' where presence=0 limit 1');
+	return ($adb->num_rows($result)==1);
+}
+
+/**
+ * this function accepts the fieldname of a picklist and returns true if it contains noneditable values and false if not
+ * @param string $fieldName - the name of the picklist
+ * @param object $adb - the peardatabase object
+ * @return boolean true if the picklist has noneditable values
+ */
+function hasMultiLanguageSupport($fieldName) {
+	global $adb;
+	$result = $adb->pquery('select multii18n from vtiger_picklist where name=?', array($fieldName));
+	return ((int)$adb->query_result($result, 0, 'multii18n')==1);
 }
 
 /**

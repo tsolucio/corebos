@@ -279,6 +279,19 @@ function validateEdit(fieldname, module) {
 	pickReplace(module, fieldname, JSON.stringify(newVal), JSON.stringify(oldVal));
 }
 
+function saveMultiLanguage(module, fieldname, isChecked) {
+	var i18nChecked = isChecked;
+	jQuery.ajax({
+		method: 'GET',
+		url: 'index.php?action=PickListAjax&module=PickList&mode=savei18n&file=PickListAction&fld_module='+encodeURIComponent(module)+'&ischecked='+isChecked+'&fieldname='+encodeURIComponent(fieldname),
+	}).done(function (response) {
+		if (response != 'SUCCESS') {
+			document.getElementById('monoi18n_'+fieldname).checked = !i18nChecked;
+			alert(response);
+		}
+	});
+}
+
 /**
  * this function is used to modify the picklist values
  * @param string module - the module name

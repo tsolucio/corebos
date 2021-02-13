@@ -176,5 +176,12 @@ if ($mode == 'add') {
 		}
 	}
 	echo 'SUCCESS';
+} elseif ($mode == 'savei18n') {
+	if (hasNonEditablePicklistValues($_REQUEST['fieldname'])) {
+		echo getTranslatedString('ERR_MustBeTranslated', 'PickList');
+	} else {
+		$adb->pquery('update vtiger_picklist set multii18n=? where name=?', array(($_REQUEST['ischecked']=='true' ? 1 : 0), $_REQUEST['fieldname']));
+		echo 'SUCCESS';
+	}
 }
 ?>
