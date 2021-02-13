@@ -29,18 +29,17 @@ class CBUpsertTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $current_user, $logbg, $from_wf, $currentModule;
+		global $current_user, $logbg, $from_wf, $currentModule;
 		$from_wf = true;
 		$logbg->debug('> CBUpsertTask');
 		if (!empty($this->field_value_mapping)) {
 			$fieldValueMapping = json_decode($this->field_value_mapping, true);
 		}
-		$logbg->debug("field mapping: ".print_r($fieldValueMapping, true));
+		$logbg->debug('field mapping: '.print_r($fieldValueMapping, true));
 		if (!empty($fieldValueMapping) && count($fieldValueMapping) > 0) {
 			$util = new VTWorkflowUtils();
 			$util->adminUser();
 			$moduleName = $entity->getModuleName();
-			$context = $entity->WorkflowContext;
 			if (empty($currentModule) || $currentModule!=$moduleName) {
 				$currentModule = $moduleName;
 			}
@@ -51,7 +50,7 @@ class CBUpsertTask extends VTTask {
 			$logbg->debug("Module: $moduleName, Record: $entityId");
 			$moduleHandler = vtws_getModuleHandlerFromName($moduleName, Users::getActiveAdminUser());
 			$handlerMeta = $moduleHandler->getMeta();
-			$moduleFields = $handlerMeta->getModuleFields();
+			//$moduleFields = $handlerMeta->getModuleFields();
 			include_once 'data/CRMEntity.php';
 			$focus = CRMEntity::getInstance($moduleName);
 			$focus->id = $recordId;
@@ -77,7 +76,7 @@ class CBUpsertTask extends VTTask {
 			$fieldmodule = $fieldValueMapping[0]['fieldmodule'];
 			$fieldmodule = explode('__', trim($fieldmodule));
 			$relmodule = $fieldmodule[0];
-			$relfield = $fieldmodule[1];
+			//$relfield = $fieldmodule[1];
 			$moduleHandlerrel = vtws_getModuleHandlerFromName($relmodule, Users::getActiveAdminUser());
 			$handlerMetarel = $moduleHandlerrel->getMeta();
 			$moduleFieldsrel = $handlerMetarel->getModuleFields();
@@ -91,9 +90,9 @@ class CBUpsertTask extends VTTask {
 				}
 				$crmid = coreBOS_Rule::evaluate($bmapid, $fieldValue);
 				if (empty($crmid)) {
-					$this->upsertData($fieldValue, $relmodule, $relfield, 'doCreate');
+					$this->upsertData($fieldValue, $relmodule, 'doCreate');
 				} else {
-					$this->upsertData($fieldValue, $relmodule, $relfield, 'doUpdate', $crmid);
+					$this->upsertData($fieldValue, $relmodule, 'doUpdate', $crmid);
 				}
 			}
 			$util->revertUser();
@@ -103,8 +102,8 @@ class CBUpsertTask extends VTTask {
 		$logbg->debug('< CBUpsertTask');
 	}
 
-	public function upsertData($data, $relmodule, $relfield, $action, $crmid = 0) {
-		global $logbg, $adb, $current_user;
+	public function upsertData($data, $relmodule, $action, $crmid = 0) {
+		global $logbg, $current_user;
 		$logbg->debug('> upsertData');
 		$moduleHandler = vtws_getModuleHandlerFromName($relmodule, $current_user);
 		$handlerMeta = $moduleHandler->getMeta();
