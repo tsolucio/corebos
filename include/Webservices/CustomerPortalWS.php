@@ -113,6 +113,10 @@ function vtws_getAllUsers($user = '') {
 function vtws_getAssignedUserList($module, $user) {
 	global $log, $default_charset;
 	$log->debug('> getAssignedUserList '.$module);
+	$types = vtws_listtypes(null, $user);
+	if (!in_array($module, $types['types'])) {
+		return '[]';
+	}
 	$userprivs = $user->getPrivileges();
 	$tabid=getTabid($module);
 	if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing($tabid)) {
@@ -131,6 +135,10 @@ function vtws_getAssignedUserList($module, $user) {
 function vtws_getAssignedGroupList($module, $user) {
 	global $log, $default_charset;
 	$log->debug('> vtws_getAssignedGroupList '.$module);
+	$types = vtws_listtypes(null, $user);
+	if (!in_array($module, $types['types'])) {
+		return '[]';
+	}
 	$userPrivs = $user->getPrivileges();
 
 	$tabid=getTabid($module);
@@ -169,6 +177,10 @@ function vtws_getPicklistValues($fld_module, $user = '') {
 	include_once 'modules/PickList/PickListUtils.php';
 	$log->debug('> getPicklistValues '.$fld_module);
 	$res=array();
+	$types = vtws_listtypes(null, $user);
+	if (!in_array($fld_module, $types['types'])) {
+		return serialize($res);
+	}
 	$allpicklists=getUserFldArray($fld_module, 'H1');
 	foreach ($allpicklists as $picklist) {
 		$res[$picklist['fieldname']]=$picklist['value'];
@@ -191,9 +203,13 @@ function vtws_getPicklistValues($fld_module, $user = '') {
 function vtws_getUItype($module, $user) {
 	global $adb,$log;
 	$log->debug('> getUItype '.$module);
+	$resp=array();
+	$types = vtws_listtypes(null, $user);
+	if (!in_array($module, $types['types'])) {
+		return $resp;
+	}
 	$res=$adb->pquery('select uitype,fieldname from vtiger_field where tabid=? and presence in (0,2)', array(getTabid($module)));
 	$nr=$adb->num_rows($res);
-	$resp=array();
 	for ($i=0; $i<$nr; $i++) {
 		$fieldname=$adb->query_result($res, $i, 'fieldname');
 		$resp[$fieldname]=$adb->query_result($res, $i, 'uitype');

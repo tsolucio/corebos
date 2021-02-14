@@ -45,11 +45,13 @@ function getRelatedModulesManytoOne($module, $user) {
 	);
 	$modules=array();
 	while ($rel = $adb->fetch_array($result)) {
-		$modules[] = array(
-			'label' => getTranslatedString($rel['module'], $rel['module']),
-			'name' => $rel['module'],
-			'field' => $rel['fieldname'],
-		);
+		if (in_array($rel['module'], $types['types'])) {
+			$modules[] = array(
+				'label' => getTranslatedString($rel['module'], $rel['module']),
+				'name' => $rel['module'],
+				'field' => $rel['fieldname'],
+			);
+		}
 	}
 	return $modules;
 }
