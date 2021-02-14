@@ -347,19 +347,6 @@ function cbwsgetSearchResults($query, $search_onlyin, $restrictionids, $user) {
 		$cv_res = $adb->pquery("select cvid from vtiger_customview where viewname='All' and entitytype=?", array($module));
 		$viewid = $adb->query_result($cv_res, 0, 'cvid');
 		$listquery = $oCustomView->getModifiedCvListQuery($viewid, $listquery, $module);
-		if (!empty($accountId) && !empty($contactId)) {
-			switch ($module) {
-				case 'Documents':
-					$listquery = str_replace(
-						' WHERE ',
-						" inner join vtiger_senotesrel on vtiger_senotesrel.notesid=vtiger_notes.notesid and (vtiger_senotesrel.crmid=$accountId or vtiger_senotesrel.crmid=$contactId) WHERE ",
-						$listquery
-					);
-					break;
-				default:
-					break;
-			}
-		}
 		$bmapname = $module.'_ListColumns';
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 		if ($cbMapid) {
@@ -401,7 +388,11 @@ function cbwsgetSearchResults($query, $search_onlyin, $restrictionids, $user) {
 		if (!empty($accountId) && !empty($contactId)) {
 			$cond = evvt_PortalModuleRestrictions($module, $accountId, $contactId);
 			if ($cond != '') {
-				$listquery .= ' and ('.$cond.')';
+				if (stripos($cond, ' join ')===true) {
+					$listquery = appendFromClauseToQuery($listquery, $cond);
+				} else {
+					$listquery .= ' and ('.$cond.')';
+				}
 			}
 		}
 		if ($limit > 0) {
@@ -552,7 +543,8 @@ function evvt_PortalModuleRestrictions($module, $accountId, $contactId, $company
 			$condition = "faqstatus='Published'";
 			break;
 		case 'Documents':
-			// already added in main search function
+			$ac = array_merge((array)$accountId, (array)$contactId);
+			$condition = ' inner join vtiger_senotesrel on vtiger_senotesrel.notesid=vtiger_notes.notesid and vtiger_senotesrel.crmid IN ("'.implode('","', $ac).'")';
 			break;
 		default: // we look for uitype 10
 			$condition = '';
