@@ -433,35 +433,98 @@ function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 	return serialize(cbwsgetSearchResults($query, $search_onlyin, $restrictionids, $user));
 }
 
-function evvt_PortalModuleRestrictions($module, $accountId, $contactId) {
+/**
+ * return SQL conditions to restrict records for Contact portal access
+ * @param string module we need to restrict
+ * @param integer account ID
+ * @param integer contact ID
+ * @param integer company access level:
+ * 		0 account or contact
+ * 		1 account, contact or any other contact in the account
+ * 		2 parent account, account, contact or any other contact in the account
+ * 		3 parent account, all child accounts, contact or any other contact in the account
+ * 		4 parent account, all child accounts, all contacts of those accounts
+ * @return string SQL condition
+ */
+function evvt_PortalModuleRestrictions($module, $accountId, $contactId, $companyAccess = 0) {
+	global $adb;
+	switch ($companyAccess) {
+		case 4:
+			$rs = $adb->pquery('SELECT parentid FROM vtiger_account WHERE accountid=?', array($accountId));
+			$accountId = array($accountId);
+			if ($rs && $adb->num_rows($rs)>0) {
+				$pid = $adb->query_result($rs, 0, 'parentid');
+				if (!empty($pid)) {
+					$accountId[] = $pid;
+					$rs = $adb->pquery('SELECT accountid FROM vtiger_account WHERE parentid=?', array($pid));
+					while ($acc = $adb->fetch_array($rs)) {
+						if (!in_array($acc['accountid'], $accountId)) {
+							$accountId[] = $acc['accountid'];
+						}
+					}
+				}
+			}
+			$contactId = array();
+			foreach ($accountId as $accId) {
+				$rs = $adb->pquery('SELECT contactid FROM vtiger_contactdetails WHERE accountid=?', array($accId));
+				while ($cto = $adb->fetch_array($rs)) {
+					$contactId[] = $cto['contactid'];
+				}
+			}
+			break;
+		case 3:
+			if (!is_array($accountId)) {
+				$accountId = array($accountId);
+			}
+			$rs = $adb->pquery('SELECT parentid FROM vtiger_account WHERE accountid=?', array($accountId[0]));
+			if ($rs && $adb->num_rows($rs)>0) {
+				$pid = $adb->query_result($rs, 0, 'parentid');
+				if (!empty($pid)) {
+					$rs = $adb->pquery('SELECT accountid FROM vtiger_account WHERE parentid=?', array($pid));
+					while ($acc = $adb->fetch_array($rs)) {
+						if (!in_array($acc['accountid'], $accountId)) {
+							$accountId[] = $acc['accountid'];
+						}
+					}
+				}
+			}
+			// fall through intentional as IDs are accumulative
+		case 2:
+			if (!is_array($accountId)) {
+				$accountId = array($accountId);
+			}
+			$rs = $adb->pquery('SELECT parentid FROM vtiger_account WHERE accountid=?', array($accountId[0]));
+			if ($rs && $adb->num_rows($rs)>0) {
+				$pid = $adb->query_result($rs, 0, 'parentid');
+				if (!empty($pid) && !in_array($pid, $accountId)) {
+					$accountId[] = $pid;
+				}
+			}
+			// fall through intentional as IDs are accumulative
+		case 1:
+			if (!is_array($contactId)) {
+				$contactId = array();
+			}
+			if (is_array($accountId)) {
+				$accId = $accountId[0];
+			} else {
+				$accId = $accountId;
+			}
+			$rs = $adb->pquery('SELECT contactid FROM vtiger_contactdetails WHERE accountid=?', array($accId));
+			while ($cto = $adb->fetch_array($rs)) {
+				$contactId[] = $cto['contactid'];
+			}
+			break;
+		default:
+			// do nothing
+	}
 	$condition = '';
 	switch ($module) {
 		case 'Contacts':
-			$condition = "vtiger_contactdetails.accountid=$accountId";
+			$condition = 'vtiger_contactdetails.accountid'.(is_array($accountId) ? " IN ('".implode("','", $accountId)."')" : '='.$accountId);
 			break;
 		case 'Accounts':
-			$condition = "vtiger_account.accountid=$accountId";
-			break;
-		case 'Quotes':
-			$condition = "vtiger_quotes.accountid=$accountId or vtiger_quotes.contactid=$contactId";
-			break;
-		case 'SalesOrder':
-			$condition = "vtiger_salesorder.accountid=$accountId or vtiger_salesorder.contactid=$contactId";
-			break;
-		case 'ServiceContracts':
-			$condition = "vtiger_servicecontracts.sc_related_to=$accountId or vtiger_servicecontracts.sc_related_to=$contactId";
-			break;
-		case 'Invoice':
-			$condition = "vtiger_invoice.accountid=$accountId or vtiger_invoice.contactid=$contactId";
-			break;
-		case 'HelpDesk':
-			$condition = "vtiger_troubletickets.parent_id=$accountId or vtiger_troubletickets.parent_id=$contactId";
-			break;
-		case 'Assets':
-			$condition = "vtiger_assets.account=$accountId";
-			break;
-		case 'Project':
-			$condition = "vtiger_project.linktoaccountscontacts=$accountId or vtiger_project.linktoaccountscontacts=$contactId";
+			$condition = 'vtiger_account.accountid'.(is_array($accountId) ? " IN ('".implode("','", $accountId)."')" : '='.$accountId);
 			break;
 		case 'Products':
 			//$condition = "related.Contacts='".$contactId."'";
@@ -475,8 +538,26 @@ function evvt_PortalModuleRestrictions($module, $accountId, $contactId) {
 		case 'Documents':
 			// already added in main search function
 			break;
-		default:
+		default: // we look for uitype 10
 			$condition = '';
+			$rsfld = $adb->pquery(
+				'SELECT concat(tablename,".",columnname)
+					FROM vtiger_fieldmodulerel INNER JOIN vtiger_field on vtiger_field.fieldid=vtiger_fieldmodulerel.fieldid WHERE module=? and relmodule=?',
+				array($module, 'Accounts')
+			);
+			if ($rsfld && $adb->num_rows($rsfld)>0) {
+				$col = $adb->query_result($rsfld, 0, 0);
+				$condition = $col.(is_array($accountId) ? " IN ('".implode("','", $accountId)."')" : '='.$accountId);
+			}
+			$rsfld = $adb->pquery(
+				'SELECT concat(tablename,".",columnname)
+					FROM vtiger_fieldmodulerel INNER JOIN vtiger_field on vtiger_field.fieldid=vtiger_fieldmodulerel.fieldid WHERE module=? and relmodule=?',
+				array($module, 'Contacts')
+			);
+			if ($rsfld && $adb->num_rows($rsfld)>0) {
+				$col = $adb->query_result($rsfld, 0, 0);
+				$condition .= ($condition=='' ? '' : ' or ').$col.(is_array($contactId) ? " IN ('".implode("','", $contactId)."')" : '='.$contactId);
+			}
 	}
 	return $condition;
 }
