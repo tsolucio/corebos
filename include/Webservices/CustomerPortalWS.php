@@ -332,7 +332,7 @@ function cbwsgetSearchResults($query, $search_onlyin, $restrictionids, $user) {
 	$search_onlyin = array_filter(array_unique($search_onlyin), function ($var) {
 		return !empty(trim($var));
 	});
-	$accessModules = vtws_listtypes('', $user); // filter modules user does not have access to
+	$accessModules = vtws_listtypes('', $newUser); // filter modules user does not have access to
 	$object_array = array_intersect(getSearchModules($search_onlyin), $accessModules['types']);
 	$total_record_count = 0;
 	$i = 0;
