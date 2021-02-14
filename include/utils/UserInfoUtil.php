@@ -3310,8 +3310,9 @@ function getNonAdminAccessControlQuery($module, $user, $scope = '') {
 
 function appendFromClauseToQuery($query, $fromClause) {
 	$query = preg_replace('/\s+/', ' ', $query);
-	$condition = substr($query, strripos($query, ' where '), strlen($query));
-	$newQuery = substr($query, 0, strripos($query, ' where '));
+	$wherepos = strripos($query, ' where ');
+	$condition = substr($query, $wherepos, strlen($query));
+	$newQuery = substr($query, 0, $wherepos);
 	$query = $newQuery.$fromClause.$condition;
 	return $query;
 }
