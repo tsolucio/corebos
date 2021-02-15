@@ -533,10 +533,10 @@ function evvt_PortalModuleRestrictions($module, $accountId, $contactId, $company
 	$condition = '';
 	switch ($module) {
 		case 'Contacts':
-			$condition = 'vtiger_contactdetails.accountid'.(is_array($accountId) ? " IN ('".implode("','", $accountId)."')" : '='.$accountId);
+			$condition = 'vtiger_contactdetails.accountid'.(is_array($accountId) ? ' IN ('.implode(',', $accountId).')' : '='.$accountId);
 			break;
 		case 'Accounts':
-			$condition = 'vtiger_account.accountid'.(is_array($accountId) ? " IN ('".implode("','", $accountId)."')" : '='.$accountId);
+			$condition = 'vtiger_account.accountid'.(is_array($accountId) ? ' IN ('.implode(',', $accountId).')' : '='.$accountId);
 			break;
 		case 'Products':
 			//$condition = "related.Contacts='".$contactId."'";
@@ -549,7 +549,7 @@ function evvt_PortalModuleRestrictions($module, $accountId, $contactId, $company
 			break;
 		case 'Documents':
 			$ac = array_merge((array)$accountId, (array)$contactId);
-			$condition = ' inner join vtiger_senotesrel on vtiger_senotesrel.notesid=vtiger_notes.notesid and vtiger_senotesrel.crmid IN ("'.implode('","', $ac).'")';
+			$condition = ' inner join vtiger_senotesrel on vtiger_senotesrel.notesid=vtiger_notes.notesid and vtiger_senotesrel.crmid IN ('.implode(',', $ac).')';
 			break;
 		default: // we look for uitype 10
 			$condition = '';
@@ -560,7 +560,7 @@ function evvt_PortalModuleRestrictions($module, $accountId, $contactId, $company
 			);
 			if ($rsfld && $adb->num_rows($rsfld)>0) {
 				$col = $adb->query_result($rsfld, 0, 0);
-				$condition = $col.(is_array($accountId) ? " IN ('".implode("','", $accountId)."')" : '='.$accountId);
+				$condition = $col.(is_array($accountId) ? ' IN ('.implode(',', $accountId).')' : '='.$accountId);
 			}
 			$rsfld = $adb->pquery(
 				'SELECT concat(tablename,".",columnname)
@@ -569,7 +569,7 @@ function evvt_PortalModuleRestrictions($module, $accountId, $contactId, $company
 			);
 			if ($rsfld && $adb->num_rows($rsfld)>0) {
 				$col = $adb->query_result($rsfld, 0, 0);
-				$condition .= ($condition=='' ? '' : ' or ').$col.(is_array($contactId) ? " IN ('".implode("','", $contactId)."')" : '='.$contactId);
+				$condition .= ($condition=='' ? '' : ' or ').$col.(is_array($contactId) ? ' IN ('.implode(',', $contactId).')' : '='.$contactId);
 			}
 	}
 	return $condition;
