@@ -386,14 +386,7 @@ function cbwsgetSearchResults($query, $search_onlyin, $restrictionids, $user) {
 			$listquery .= ' and ('.$where.')';
 		}
 		if (!empty($accountId) && !empty($contactId)) {
-			$cond = evvt_PortalModuleRestrictions($module, $accountId, $contactId);
-			if ($cond != '') {
-				if (stripos($cond, ' join ')===true) {
-					$listquery = appendFromClauseToQuery($listquery, $cond);
-				} else {
-					$listquery .= ' and ('.$cond.')';
-				}
-			}
+			$listquery = addPortalModuleRestrictions($listquery, $module, $accountId, $contactId);
 		}
 		if ($limit > 0) {
 			$listquery = $listquery.' limit '.$limit;
@@ -438,6 +431,18 @@ function cbwsgetSearchResults($query, $search_onlyin, $restrictionids, $user) {
  */
 function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 	return serialize(cbwsgetSearchResults($query, $search_onlyin, $restrictionids, $user));
+}
+
+function addPortalModuleRestrictions($listquery, $module, $accountId, $contactId) {
+	$cond = evvt_PortalModuleRestrictions($module, $accountId, $contactId);
+	if ($cond != '') {
+		if (stripos($cond, ' join ')===true) {
+			$listquery = appendFromClauseToQuery($listquery, $cond);
+		} else {
+			$listquery .= ' and ('.$cond.')';
+		}
+	}
+	return $listquery;
 }
 
 /**
