@@ -10,6 +10,7 @@
 require_once 'include/database/PearDatabase.php';
 require_once 'include/utils/utils.php';
 require_once 'include/utils/GetUserGroups.php';
+require_once 'include/DatabaseUtil.php';
 include 'config.inc.php';
 global $log;
 
@@ -3296,24 +3297,5 @@ function deleteGroupReportRelations($groupId) {
 function isFieldActive($modulename, $fieldname) {
 	$fieldid = getFieldid(getTabid($modulename), $fieldname, true);
 	return ($fieldid !== false);
-}
-
-/**
- * @param String $module - module name for which query needs to be generated.
- * @param Users $user - user for which query needs to be generated.
- * @return String Access control Query for the user.
- */
-function getNonAdminAccessControlQuery($module, $user, $scope = '') {
-	$instance = CRMEntity::getInstance($module);
-	return $instance->getNonAdminAccessControlQuery($module, $user, $scope);
-}
-
-function appendFromClauseToQuery($query, $fromClause) {
-	$query = preg_replace('/\s+/', ' ', $query);
-	$wherepos = strripos($query, ' where ');
-	$condition = substr($query, $wherepos, strlen($query));
-	$newQuery = substr($query, 0, $wherepos);
-	$query = $newQuery.$fromClause.$condition;
-	return $query;
 }
 ?>

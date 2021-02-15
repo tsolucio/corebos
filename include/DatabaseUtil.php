@@ -127,4 +127,23 @@ function mkCountWithFullQuery($query) {
 	}
 	return "SELECT count(*) AS count FROM ($query) as sqlcount";
 }
+
+/**
+ * @param String $module - module name for which query needs to be generated.
+ * @param Users $user - user for which query needs to be generated.
+ * @return String Access control Query for the user.
+ */
+function getNonAdminAccessControlQuery($module, $user, $scope = '') {
+	$instance = CRMEntity::getInstance($module);
+	return $instance->getNonAdminAccessControlQuery($module, $user, $scope);
+}
+
+function appendFromClauseToQuery($query, $fromClause) {
+	$query = preg_replace('/\s+/', ' ', $query);
+	$wherepos = strripos($query, ' where ');
+	$condition = substr($query, $wherepos, strlen($query));
+	$newQuery = substr($query, 0, $wherepos);
+	$query = $newQuery.$fromClause.$condition;
+	return $query;
+}
 ?>
