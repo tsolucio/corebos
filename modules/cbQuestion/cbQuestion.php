@@ -9,7 +9,6 @@
  ************************************************************************************/
 require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
-require_once 'include/QueryGenerator/PHPSQLParserInclude.php';
 use \PHPSQLParser\PHPSQLParser;
 use \PHPSQLParser\utils\ExpressionType;
 

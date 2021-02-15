@@ -15,7 +15,6 @@
  *************************************************************************************************
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
-require_once 'include/QueryGenerator/PHPSQLParserInclude.php';
 use \PHPSQLParser\PHPSQLParser;
 use \PHPSQLParser\utils\ExpressionType;
 
