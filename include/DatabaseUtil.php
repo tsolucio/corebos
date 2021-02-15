@@ -7,6 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
+use \PHPSQLParser\PHPSQLParser;
+use \PHPSQLParser\PHPSQLCreator;
 
 // check database charset and collation are set to UTF8.
 function check_db_utf8_support($conn) {
@@ -145,5 +147,22 @@ function appendFromClauseToQuery($query, $fromClause) {
 	$newQuery = substr($query, 0, $wherepos);
 	$query = $newQuery.$fromClause.$condition;
 	return $query;
+}
+
+function appendConditionClauseToQuery($query, $condClause, $glue = 'and') {
+	$query = preg_replace('/\s+/', ' ', $query);
+	if (trim($condClause)=='') {
+		return $query;
+	}
+	$parser = new PHPSQLParser();
+	$parsed = $parser->parse($query);
+	if (!isset($parsed['WHERE'])) {
+		return $query.' WHERE '.$condClause;
+	} else {
+		unset($parsed['WHERE']);
+		$creator = new PHPSQLCreator($parsed);
+		// we need to find the 'where' of the SQL, $creator->created contains the query up to that 'where' so we start searching 9 characters before that length
+		return $creator->created.' WHERE ('.$condClause.') '.$glue.' '.substr($query, stripos($query, ' where ', strlen($creator->created)-9)+7);
+	}
 }
 ?>
