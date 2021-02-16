@@ -1348,7 +1348,7 @@ $app_strings = array (
 	'csrf_reload' => 'Cargar de nuevo la página',
 	'LBL_NOPRODUCTS' => 'No se puede convertir la Orden de Venta ya que no hay lineas facturables.',
 	'VALIDATION_FAILED' => 'Validación errónea',
-	'Select Module To Upsert' => 'Select Module To Upsert',
+	'Select Module To Upsert' => 'Selecciona Módulo',
 );
 
 // Translation for currency names
