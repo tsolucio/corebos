@@ -322,7 +322,7 @@ function CBUpsertTask($, fieldvaluemapping) {
 					}
 				}
 			});
-			//getTranslatedString;
+
 			function addFieldValueMapping(mappingno) {
 				const selected_upsert_module = document.getElementById('upsert_module').value;
 				if (!fieldvaluemapping) {
