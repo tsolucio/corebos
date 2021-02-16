@@ -25,7 +25,7 @@ class CBUpsertTask extends VTTask {
 	public $executeImmediately = true;
 
 	public function getFieldNames() {
-		return array('field_value_mapping', 'bmapid', 'bmapid_display');
+		return array('field_value_mapping', 'bmapid', 'bmapid_display', 'upsert_module');
 	}
 
 	public function doTask(&$entity) {
@@ -73,10 +73,7 @@ class CBUpsertTask extends VTTask {
 			if (!is_array($entity->WorkflowContext['upsert_data'])) {
 				$upsert_data = json_decode($entity->WorkflowContext['upsert_data'], true);
 			}
-			$fieldmodule = $fieldValueMapping[0]['fieldmodule'];
-			$fieldmodule = explode('__', trim($fieldmodule));
-			$relmodule = $fieldmodule[0];
-			//$relfield = $fieldmodule[1];
+			$relmodule = $this->upsert_module;
 			$moduleHandlerrel = vtws_getModuleHandlerFromName($relmodule, Users::getActiveAdminUser());
 			$handlerMetarel = $moduleHandlerrel->getMeta();
 			$moduleFieldsrel = $handlerMetarel->getModuleFields();

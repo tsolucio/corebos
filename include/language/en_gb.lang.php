@@ -1257,6 +1257,7 @@ $app_strings = array(
 	'csrf_reload' => 'Reload the page',
 	'LBL_NOPRODUCTS' => 'Can\'t convert SalesOrder to Invoice because there aren\'t any remaining products to invoice.',
 	'VALIDATION_FAILED' => 'Validation failed',
+	'Select Module To Upsert' => 'Select Module To Upsert',
 );
 
 $app_currency_strings = array(

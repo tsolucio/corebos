@@ -1431,5 +1431,6 @@ $app_currency_strings = array(
 	'Malawi, kwacha'		=> 'Malawi, kwacha',
 	'Tunisian, Dinar'		=> 'Tunisian, Dinar',
 	'Moroccan, Dirham'		=> 'Moroccan, Dirham',
+	'Select Module To Upsert' => 'Select Module To Upsert',
 );
 ?>
