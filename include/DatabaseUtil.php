@@ -145,6 +145,7 @@ function appendFromClauseToQuery($query, $fromClause) {
 	if (trim($fromClause)=='') {
 		return $query;
 	}
+	$fromClause = ' '.trim($fromClause);
 	$parser = new PHPSQLParser();
 	$parsed = $parser->parse($query);
 	if (!isset($parsed['WHERE'])) {
@@ -152,8 +153,9 @@ function appendFromClauseToQuery($query, $fromClause) {
 	} else {
 		unset($parsed['WHERE']);
 		$creator = new PHPSQLCreator($parsed);
-		// we need to find the 'where' of the SQL, $creator->created contains the query up to that 'where' so we start searching 9 characters before that length
-		return $creator->created.' '.$fromClause.substr($query, stripos($query, ' where ', strlen($creator->created)-9));
+		// we need to find the 'where' of the SQL, $creator->created contains the query up to that 'where' so we start searching from there backwards
+		$whereposition = strripos(substr($query, 0, strlen($creator->created)+8), ' where ');
+		return substr($query, 0, $whereposition).$fromClause.substr($query, $whereposition);
 	}
 }
 
@@ -169,8 +171,9 @@ function appendConditionClauseToQuery($query, $condClause, $glue = 'and') {
 	} else {
 		unset($parsed['WHERE']);
 		$creator = new PHPSQLCreator($parsed);
-		// we need to find the 'where' of the SQL, $creator->created contains the query up to that 'where' so we start searching 9 characters before that length
-		return $creator->created.' WHERE ('.$condClause.') '.$glue.' '.substr($query, stripos($query, ' where ', strlen($creator->created)-9)+7);
+		// we need to find the 'where' of the SQL, $creator->created contains the query up to that 'where' so we start searching from there backwards
+		$whereposition = strripos(substr($query, 0, strlen($creator->created)+8), ' where ')+7;
+		return $creator->created.' WHERE ('.$condClause.') '.$glue.' '.substr($query, $whereposition);
 	}
 }
 ?>
