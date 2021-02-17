@@ -3291,8 +3291,9 @@ function deleteGroupReportRelations($groupId) {
 }
 
 /** Function to check if the field is Active
- *  @params  $modulename -- Module Name :: String Type
- *   		 $fieldname  -- Field Name  :: String Type
+ * @param string Module Name
+ * @param string Field Name
+ * @return boolean true if field is active, false if not
  */
 function isFieldActive($modulename, $fieldname) {
 	$fieldid = getFieldid(getTabid($modulename), $fieldname, true);

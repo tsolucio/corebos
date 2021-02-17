@@ -3113,11 +3113,11 @@ function getFieldsResultForMerge($tabid) {
 	return $res;
 }
 
-/* Function to get the related tables data
- * @param - $module - Primary module name
- * @param - $secmodule - Secondary module name
- * return Array $rel_array tables and fields to be compared are sent
- * */
+/** get the related tables data
+ * @param string $module - Primary module name
+ * @param string $secmodule - Secondary module name
+ * @return array $rel_array tables and fields to be compared are sent
+ */
 function getRelationTables($module, $secmodule) {
 	global $adb;
 	$primary_obj = CRMEntity::getInstance($module);

@@ -155,6 +155,9 @@ function vtws_getAssignedGroupList($module, $user) {
 	return json_encode($usrinfo);
 }
 
+/**
+ * @deprecated use Login Portal
+ */
 function vtws_AuthenticateContact($email, $password, $user = '') {
 	global $adb,$log;
 	$log->debug('> AuthenticateContact '.$email.','.$password);

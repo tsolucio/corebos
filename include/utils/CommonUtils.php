@@ -798,11 +798,11 @@ function getParentName($parent_id) {
 	return $entityNames[$parent_id];
 }
 
-/*
- * Return account/contact crmid of any given entityid
- * @param: crmid/webserviceid of the record we need to get the related account/contact
- * @param: Accounts | Contacts related entity to return
- * @returns: crmid of the account/contact related to the entityid
+/**
+ * Return account/contact crmid related to any given entityid
+ * @param integer crmid/webserviceid of the record we need to get the related account/contact
+ * @param string Accounts | Contacts related entity to return
+ * @return integer crmid of the account/contact related to the entityid
  */
 function getRelatedAccountContact($entityid, $module = '') {
 	global $adb, $current_user;
@@ -3462,7 +3462,7 @@ function getEntityFieldNameDisplay($module, $fieldsName, $fieldValues) {
 	return '';
 }
 
-/** eliminate all occurrences of a string except the first one foundfrom another string
+/** eliminate all occurrences of a string except the first one found from another string
  * @param string that we want to delete all except first occurrence
  * @param string from which we need to delete the occurrences
  * @return string with only one (or none) occurrence of the given string to delete
