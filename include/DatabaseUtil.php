@@ -142,11 +142,19 @@ function getNonAdminAccessControlQuery($module, $user, $scope = '') {
 
 function appendFromClauseToQuery($query, $fromClause) {
 	$query = preg_replace('/\s+/', ' ', $query);
-	$wherepos = strripos($query, ' where ');
-	$condition = substr($query, $wherepos, strlen($query));
-	$newQuery = substr($query, 0, $wherepos);
-	$query = $newQuery.$fromClause.$condition;
-	return $query;
+	if (trim($fromClause)=='') {
+		return $query;
+	}
+	$parser = new PHPSQLParser();
+	$parsed = $parser->parse($query);
+	if (!isset($parsed['WHERE'])) {
+		return $query.' '.$fromClause;
+	} else {
+		unset($parsed['WHERE']);
+		$creator = new PHPSQLCreator($parsed);
+		// we need to find the 'where' of the SQL, $creator->created contains the query up to that 'where' so we start searching 9 characters before that length
+		return $creator->created.' '.$fromClause.substr($query, stripos($query, ' where ', strlen($creator->created)-9));
+	}
 }
 
 function appendConditionClauseToQuery($query, $condClause, $glue = 'and') {
