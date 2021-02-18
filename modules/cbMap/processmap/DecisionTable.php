@@ -87,6 +87,9 @@ class DecisionTable extends processcbMap {
 				$entity->setData($context);
 			}
 		} else {
+			if (empty($context['module'])) {
+				$context['module'] = 'Accounts'; // should be set, but... so we just pick one
+			}
 			$entity = new cbexpsql_environmentstub($context['module'], 0);
 			$entity->setData($context);
 		}
