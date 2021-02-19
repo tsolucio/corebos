@@ -151,7 +151,7 @@ function appendFromClauseToQuery($query, $fromClause) {
 	if (!isset($parsed['WHERE'])) {
 		return $query.' '.$fromClause;
 	} else {
-		unset($parsed['WHERE']);
+		unset($parsed['WHERE'], $parsed['ORDER'], $parsed['LIMIT'], $parsed['GROUP'], $parsed['HAVING']);
 		$creator = new PHPSQLCreator($parsed);
 		// we need to find the 'where' of the SQL, $creator->created contains the query up to that 'where' so we start searching from there backwards
 		$whereposition = strripos(substr($query, 0, strlen($creator->created)+8), ' where ');
@@ -169,7 +169,7 @@ function appendConditionClauseToQuery($query, $condClause, $glue = 'and') {
 	if (!isset($parsed['WHERE'])) {
 		return $query.' WHERE '.$condClause;
 	} else {
-		unset($parsed['WHERE']);
+		unset($parsed['WHERE'], $parsed['ORDER'], $parsed['LIMIT'], $parsed['GROUP'], $parsed['HAVING']);
 		$creator = new PHPSQLCreator($parsed);
 		// we need to find the 'where' of the SQL, $creator->created contains the query up to that 'where' so we start searching from there backwards
 		$whereposition = strripos(substr($query, 0, strlen($creator->created)+8), ' where ')+7;
