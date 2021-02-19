@@ -172,8 +172,8 @@ function appendConditionClauseToQuery($query, $condClause, $glue = 'and') {
 		unset($parsed['WHERE'], $parsed['ORDER'], $parsed['LIMIT'], $parsed['GROUP'], $parsed['HAVING']);
 		$creator = new PHPSQLCreator($parsed);
 		// we need to find the 'where' of the SQL, $creator->created contains the query up to that 'where' so we start searching from there backwards
-		$whereposition = strripos(substr($query, 0, strlen($creator->created)+8), ' where ')+7;
-		return $creator->created.' WHERE ('.$condClause.') '.$glue.' '.substr($query, $whereposition);
+		$whereposition = strripos(substr($query, 0, strlen($creator->created)+8), ' where ');
+		return substr($query, 0, $whereposition).' WHERE ('.$condClause.') '.$glue.' '.substr($query, $whereposition+7);
 	}
 }
 ?>
