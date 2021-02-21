@@ -140,22 +140,43 @@ function getNonAdminAccessControlQuery($module, $user, $scope = '') {
 	return $instance->getNonAdminAccessControlQuery($module, $user, $scope);
 }
 
-function appendFromClauseToQuery($query, $fromClause) {
+function getFromClauseAlreadyPresent($parsed, $fromClause) {
+	$found = '';
+	if (isset($parsed['FROM'])) {
+		$fromClause = substr($fromClause, stripos($fromClause, ' join ')+6); // strip join
+		$fromClause = str_replace(' ', '', $fromClause);
+		foreach ($parsed['FROM'] as $clause) {
+			if ($clause['ref_type']=='ON') {
+				if (str_replace(' ', '', $clause['base_expr'])==$fromClause) {
+					return ($clause['join_type']=='JOIN' ? 'INNER' : $clause['join_type']).' join '.$clause['base_expr'];
+				}
+			}
+		}
+	}
+	return $found;
+}
+
+function appendFromClauseToQuery($query, $fromClause, $fromClauseNoConditions = '') {
 	$query = preg_replace('/\s+/', ' ', $query);
 	if (trim($fromClause)=='') {
 		return $query;
 	}
-	$fromClause = ' '.trim($fromClause);
+	$fromClause = trim($fromClause);
 	$parser = new PHPSQLParser();
 	$parsed = $parser->parse($query);
-	if (!isset($parsed['WHERE'])) {
-		return $query.' '.$fromClause;
+	$alreadyPresent = getFromClauseAlreadyPresent($parsed, ($fromClauseNoConditions=='' ? $fromClause : $fromClauseNoConditions));
+	if ($alreadyPresent=='') {
+		if (!isset($parsed['WHERE'])) {
+			return $query.' '.$fromClause;
+		} else {
+			unset($parsed['WHERE'], $parsed['ORDER'], $parsed['LIMIT'], $parsed['GROUP'], $parsed['HAVING']);
+			$creator = new PHPSQLCreator($parsed);
+			// we need to find the 'where' of the SQL, $creator->created contains the query up to that 'where' so we start searching from there backwards
+			$whereposition = strripos(substr($query, 0, strlen($creator->created)+8), ' where ');
+			return substr($query, 0, $whereposition).' '.$fromClause.substr($query, $whereposition);
+		}
 	} else {
-		unset($parsed['WHERE'], $parsed['ORDER'], $parsed['LIMIT'], $parsed['GROUP'], $parsed['HAVING']);
-		$creator = new PHPSQLCreator($parsed);
-		// we need to find the 'where' of the SQL, $creator->created contains the query up to that 'where' so we start searching from there backwards
-		$whereposition = strripos(substr($query, 0, strlen($creator->created)+8), ' where ');
-		return substr($query, 0, $whereposition).$fromClause.substr($query, $whereposition);
+		return str_ireplace($alreadyPresent, $fromClause, $query);
 	}
 }
 
