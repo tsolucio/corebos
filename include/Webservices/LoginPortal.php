@@ -99,12 +99,14 @@ function vtws_loginportal($username, $password, $entity = 'Contacts', $SessionMa
 				throw new WebServiceException(WebServiceErrorCode::$SESSIONIDINVALID, 'Could not create session');
 			}
 			$sessionManager->set('authenticatedUserId', $userId);
+			$sessionManager->set('authenticatedUserIsPortalUser', 1);
+			$sessionManager->set('authenticatedUserPortalContact', $ctocmrid);
 			$accessinfo = array();
 			$accessinfo['sessionName'] = $sessionManager->getSessionId();
 			$accessinfo['user'] = array(
 				'id' => vtws_getEntityId('Users').'x'.$userId,
 				'user_name' => $user->column_fields['user_name'],
-				'accesskey' => $user->column_fields['accesskey'],
+				//'accesskey' => $user->column_fields['accesskey'],
 				'contactid' => vtws_getEntityId(getSalesEntityType($ctocmrid)).'x'.$ctocmrid,
 				'language' => $ctors->fields ['template_language'],
 			);
