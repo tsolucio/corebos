@@ -317,6 +317,13 @@ function cbwsgetSearchResults($query, $search_onlyin, $restrictionids, $user) {
 	}
 	list($void,$accountId) = explode('x', $restrictionids['accountId']);
 	list($void,$contactId) = explode('x', $restrictionids['contactId']);
+	if (coreBOS_Session::get('authenticatedUserIsPortalUser', false)) {
+		$contactId = coreBOS_Session::get('authenticatedUserPortalContact', 0);
+		if (empty($contactId)) {
+			return $res;
+		}
+		$accountId = getSingleFieldValue('vtiger_contactdetails', 'accountid', 'contactid', $contactId);
+	}
 	list($void,$userId) = explode('x', $restrictionids['userId']);
 	$limit = (isset($restrictionids['limit']) ? $restrictionids['limit'] : 0);
 	// if connected user does not have admin privileges > user must be the connected user
@@ -388,7 +395,7 @@ function cbwsgetSearchResults($query, $search_onlyin, $restrictionids, $user) {
 		if ($where != '') {
 			$listquery .= ' and ('.$where.')';
 		}
-		if (!empty($accountId) && !empty($contactId)) {
+		if (!empty($contactId)) {
 			$listquery = addPortalModuleRestrictions($listquery, $module, $accountId, $contactId);
 		}
 		if ($limit > 0) {
@@ -438,11 +445,13 @@ function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 
 function addPortalModuleRestrictions($listquery, $module, $accountId, $contactId) {
 	$cond = evvt_PortalModuleRestrictions($module, $accountId, $contactId);
-	if ($cond != '') {
-		if (stripos($cond, ' join ')===true) {
+	if (is_array($cond)) {
+		$listquery = appendFromClauseToQuery($listquery, $cond['clause'], $cond['noconditions']);
+	} elseif ($cond != '') {
+		if (stripos($cond, ' join ')!==false) {
 			$listquery = appendFromClauseToQuery($listquery, $cond);
 		} else {
-			$listquery .= ' and ('.$cond.')';
+			$listquery = appendConditionClauseToQuery($listquery, $cond, 'and');
 		}
 	}
 	return $listquery;
@@ -463,6 +472,9 @@ function addPortalModuleRestrictions($listquery, $module, $accountId, $contactId
  */
 function evvt_PortalModuleRestrictions($module, $accountId, $contactId, $companyAccess = 0) {
 	global $adb;
+	if (empty($accountId)) {
+		$accountId = -1; // so we don't return contacts with accountid=0
+	}
 	switch ($companyAccess) {
 		case 4:
 			$rs = $adb->pquery('SELECT parentid FROM vtiger_account WHERE accountid=?', array($accountId));
@@ -550,9 +562,33 @@ function evvt_PortalModuleRestrictions($module, $accountId, $contactId, $company
 		case 'Faq':
 			$condition = "faqstatus='Published'";
 			break;
+		case 'ProjectTask':
+			$ac = array_merge((array)$accountId, (array)$contactId);
+			$condition = array(
+				'clause' => ' INNER JOIN vtiger_project ON (vtiger_project.projectid = vtiger_projecttask.projectid) and vtiger_project.linktoaccountscontacts IN ('.implode(',', $ac).')',
+				'noconditions' => 'INNER JOIN vtiger_project ON (vtiger_project.projectid = vtiger_projecttask.projectid)',
+			);
+			break;
+		case 'ProjectMilestone':
+			$ac = array_merge((array)$accountId, (array)$contactId);
+			$condition = array(
+				'clause' => ' LEFT JOIN vtiger_project AS vtiger_projectprojectid ON vtiger_projectprojectid.projectid=vtiger_projectmilestone.projectid and vtiger_projectprojectid.linktoaccountscontacts IN ('.implode(',', $ac).')',
+				'noconditions' => 'LEFT JOIN vtiger_project AS vtiger_projectprojectid ON vtiger_projectprojectid.projectid=vtiger_projectmilestone.projectid',
+			);
+			break;
+		case 'Emails':
+			$ac = array_merge((array)$accountId, (array)$contactId);
+			$condition = array(
+				'clause' => ' inner join vtiger_seactivityrel on vtiger_seactivityrel.activityid=vtiger_activity.activityid and vtiger_seactivityrel.crmid IN ('.implode(',', $ac).')',
+				'noconditions' => 'inner join vtiger_seactivityrel on vtiger_seactivityrel.activityid=vtiger_activity.activityid',
+			);
+			break;
 		case 'Documents':
 			$ac = array_merge((array)$accountId, (array)$contactId);
-			$condition = ' inner join vtiger_senotesrel on vtiger_senotesrel.notesid=vtiger_notes.notesid and vtiger_senotesrel.crmid IN ('.implode(',', $ac).')';
+			$condition = array(
+				'clause' => ' inner join vtiger_senotesrel on vtiger_senotesrel.notesid=vtiger_notes.notesid and vtiger_senotesrel.crmid IN ('.implode(',', $ac).')',
+				'noconditions' => ' inner join vtiger_senotesrel on vtiger_senotesrel.notesid=vtiger_notes.notesid',
+			);
 			break;
 		default: // we look for uitype 10
 			$condition = '';
