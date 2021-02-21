@@ -258,6 +258,15 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			$mysql_query = $parser->getSql();
 			$meta = $parser->getObjectMetaData();
 		}
+		if (!empty(coreBOS_Session::get('authenticatedUserIsPortalUser', false))) {
+			$contactId = coreBOS_Session::get('authenticatedUserPortalContact', 0);
+			if (empty($contactId)) {
+				$mysql_query = 'select 1';
+			} else {
+				$accountId = getSingleFieldValue('vtiger_contactdetails', 'accountid', 'contactid', $contactId);
+				$mysql_query = addPortalModuleRestrictions($mysql_query, $meta->getEntityName(), $accountId, $contactId);
+			}
+		}
 		return $mysql_query;
 	}
 
