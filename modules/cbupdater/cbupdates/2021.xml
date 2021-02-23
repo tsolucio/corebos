@@ -28,4 +28,11 @@
 	<classname>addmultii18nfieldtopicklists</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>MajorLabel</author>
+	<description>Convert InventoryDetails quantity field to UI type 7</description>
+	<filename>build/changeSets/2021/InventoryDetailsQtyUI7.php</filename>
+	<classname>InventoryDetailsQtyUI7</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
