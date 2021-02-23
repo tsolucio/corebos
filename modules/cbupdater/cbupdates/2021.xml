@@ -28,4 +28,11 @@
 	<classname>addmultii18nfieldtopicklists</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>glorymoshi</author>
+	<description>Hide password in detailview and add business action to change password in my preference</description>
+	<filename>build/changeSets/2021/addActioninUserAndHideUserPasswordinDetailView.php</filename>
+	<classname>addActioninUserAndHideUserPasswordinDetailView</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
