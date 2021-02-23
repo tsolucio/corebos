@@ -433,8 +433,6 @@ class InventoryDetails extends CRMEntity {
 					$invdet_focus->column_fields[$fieldname] = $row[$fieldname];
 				}
 			}
-			$invdet_focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($invdet_focus->column_fields, $meta);
-
 			foreach ($invdet_focus->column_fields as $fieldname => $val) {
 				if (isset($_REQUEST[$fieldname.$requestindex])) {
 					$invdet_focus->column_fields[$fieldname] = vtlib_purify($_REQUEST[$fieldname.$requestindex]);
@@ -458,6 +456,7 @@ class InventoryDetails extends CRMEntity {
 				$invdet_focus->column_fields['tax_percent'] = 0;
 				$invdet_focus->column_fields['linetax'] = 0;
 			}
+			$invdet_focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($invdet_focus->column_fields, $meta);
 			$invdet_focus->save('InventoryDetails');
 			$requestindex++;
 			while (isset($_REQUEST['deleted'.$requestindex]) && $_REQUEST['deleted'.$requestindex] == 1) {
