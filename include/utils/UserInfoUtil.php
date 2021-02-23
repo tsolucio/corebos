@@ -1717,8 +1717,7 @@ function deleteGroupRelatedSharingRules($grpId) {
 function getAllUserName() {
 	global $log, $adb;
 	$log->debug('> getAllUserName');
-	$query='select * from vtiger_users where deleted=0';
-	$result = $adb->pquery($query, array());
+	$result = $adb->pquery('select id,first_name,last_name,email1 from vtiger_users where deleted=0', array());
 	$num_rows=$adb->num_rows($result);
 	$user_details=array();
 	for ($i=0; $i<$num_rows; $i++) {
