@@ -1736,8 +1736,7 @@ function getAllUserName() {
 function getAllGroupName() {
 	global $log, $adb;
 	$log->debug('> getAllGroupName');
-	$query="select groupid, groupname from vtiger_groups";
-	$result = $adb->pquery($query, array());
+	$result = $adb->pquery('select groupid, groupname from vtiger_groups', array());
 	$num_rows=$adb->num_rows($result);
 	$group_details=array();
 	for ($i=0; $i<$num_rows; $i++) {
@@ -1756,8 +1755,7 @@ function getAllGroupName() {
 function getGroupDetails($id) {
 	global $log, $adb;
 	$log->debug('> getAllGroupDetails');
-	$query='select * from vtiger_groups where groupid = ?';
-	$result = $adb->pquery($query, array($id));
+	$result = $adb->pquery('select * from vtiger_groups where groupid=?', array($id));
 	$num_rows=$adb->num_rows($result);
 	if ($num_rows < 1) {
 		return null;
