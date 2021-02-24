@@ -96,6 +96,9 @@ class CBUpsertTask extends VTTask {
 				if (empty($crmid)) {
 					$this->upsertData($fieldValue, $relmodule, 'doCreate');
 				} else {
+					if ($crmid < 0) {
+						continue;
+					}
 					$this->upsertData($fieldValue, $relmodule, 'doUpdate', $crmid);
 				}
 			}
