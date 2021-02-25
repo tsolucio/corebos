@@ -89,6 +89,7 @@ class corebos_cache {
 		if (!self::$cacheClient) {
 			try {
 				self::$cacheClient = new cbCache($this->adapter, $adapterOptions, $plugins);
+				self::$cacheClient->has("health");
 			} catch (Exception $exception) {
 				self::$cacheClient = null;
 			}
