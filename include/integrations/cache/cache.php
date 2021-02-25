@@ -44,20 +44,22 @@ class corebos_cache {
 	}
 
 	public function initGlobalScope() {
-		$this->adapter = coreBOS_Settings::getSetting(self::KEY_ADAPTER, '');
-		$this->ip = coreBOS_Settings::getSetting(self::KEY_IP, '');
-		$this->port = coreBOS_Settings::getSetting(self::KEY_PORT, '');
-		if ($this->adapter == self::ADAPTER_MEMORY) {
-			self::setCacheClient();
-		} elseif (!empty($this->ip) && !empty($this->port)) {
-			if ($this->adapter == self::ADAPTER_REDIS) {
-				$adapterOptions = ['server' => ['host' => $this->ip, 'port' => $this->port, 'timeout' => 100000]];
-			} else { //defaults to memcached
-				$adapterOptions = ['servers' => [[$this->ip, $this->port]]];
-			}
-			$plugins = ['serializer'];
-			self::setCacheClient($adapterOptions, $plugins);
-		}
+	    if ($this->isActive()) {
+            $this->adapter = coreBOS_Settings::getSetting(self::KEY_ADAPTER, '');
+            $this->ip = coreBOS_Settings::getSetting(self::KEY_IP, '');
+            $this->port = coreBOS_Settings::getSetting(self::KEY_PORT, '');
+            if ($this->adapter == self::ADAPTER_MEMORY) {
+                self::setCacheClient();
+            } elseif (!empty($this->ip) && !empty($this->port)) {
+                if ($this->adapter == self::ADAPTER_REDIS) {
+                    $adapterOptions = ['server' => ['host' => $this->ip, 'port' => $this->port, 'timeout' => 100000]];
+                } else { //defaults to memcached
+                    $adapterOptions = ['servers' => [[$this->ip, $this->port]]];
+                }
+                $plugins = ['serializer'];
+                self::setCacheClient($adapterOptions, $plugins);
+            }
+        }
 	}
 
 	public function saveSettings($isactive, $adapter = 'memory', $ip = null, $port = null) {
