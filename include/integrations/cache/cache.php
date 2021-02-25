@@ -32,9 +32,9 @@ class corebos_cache {
 	const KEY_IP = 'cache_ip';
 	const KEY_PORT = 'cache_port';
 
-	const ADAPTER_MEMORY = "memory";
-	const ADAPTER_REDIS = "redis";
-	const ADAPTER_MEMCACHED = "memcached";
+	const ADAPTER_MEMORY = 'memory';
+	const ADAPTER_REDIS = 'redis';
+	const ADAPTER_MEMCACHED = 'memcached';
 
 	// Utilities
 	private static $cacheClient = null;
@@ -44,22 +44,22 @@ class corebos_cache {
 	}
 
 	public function initGlobalScope() {
-	    if ($this->isActive()) {
-            $this->adapter = coreBOS_Settings::getSetting(self::KEY_ADAPTER, '');
-            $this->ip = coreBOS_Settings::getSetting(self::KEY_IP, '');
-            $this->port = coreBOS_Settings::getSetting(self::KEY_PORT, '');
-            if ($this->adapter == self::ADAPTER_MEMORY) {
-                self::setCacheClient();
-            } elseif (!empty($this->ip) && !empty($this->port)) {
-                if ($this->adapter == self::ADAPTER_REDIS) {
-                    $adapterOptions = ['server' => ['host' => $this->ip, 'port' => $this->port, 'timeout' => 100000]];
-                } else { //defaults to memcached
-                    $adapterOptions = ['servers' => [[$this->ip, $this->port]]];
-                }
-                $plugins = ['serializer'];
-                self::setCacheClient($adapterOptions, $plugins);
-            }
-        }
+		if ($this->isActive()) {
+			$this->adapter = coreBOS_Settings::getSetting(self::KEY_ADAPTER, '');
+			$this->ip = coreBOS_Settings::getSetting(self::KEY_IP, '');
+			$this->port = coreBOS_Settings::getSetting(self::KEY_PORT, '');
+			if ($this->adapter == self::ADAPTER_MEMORY) {
+				$this->setCacheClient();
+			} elseif (!empty($this->ip) && !empty($this->port)) {
+				if ($this->adapter == self::ADAPTER_REDIS) {
+					$adapterOptions = ['server' => ['host' => $this->ip, 'port' => $this->port, 'timeout' => 100000]];
+				} else { //defaults to memcached
+					$adapterOptions = ['servers' => [[$this->ip, $this->port]]];
+				}
+				$plugins = ['serializer'];
+				$this->setCacheClient($adapterOptions, $plugins);
+			}
+		}
 	}
 
 	public function saveSettings($isactive, $adapter = 'memory', $ip = null, $port = null) {
@@ -91,7 +91,7 @@ class corebos_cache {
 		if (!self::$cacheClient) {
 			try {
 				self::$cacheClient = new cbCache($this->adapter, $adapterOptions, $plugins);
-				self::$cacheClient->has("health");
+				self::$cacheClient->has('health');
 			} catch (Exception $exception) {
 				self::$cacheClient = null;
 			}
@@ -99,7 +99,7 @@ class corebos_cache {
 	}
 
 	private function isConnected() {
-		if (!self::getCacheClient()) {
+		if (!$this->getCacheClient()) {
 			return false;
 		}
 		return true;
