@@ -42,7 +42,7 @@ function cbws_getmergedtemplate($template, $crmids, $output_format, $user) {
 		$usrlang = substr($user->column_fields['language'], 0, 2);
 		$zip = new Vtiger_Zip($zipname);
 		$file2merge = array();
-
+		$types = vtws_listtypes(null, $user);
 		$crmids = json_decode($crmids, true);
 		foreach ($crmids as $crmid) {
 			if (!empty($crmid)) {
@@ -55,7 +55,6 @@ function cbws_getmergedtemplate($template, $crmids, $output_format, $user) {
 				$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 				$meta = $handler->getMeta();
 				$entityName = $meta->getObjectEntityName($crmid);
-				$types = vtws_listtypes(null, $user);
 
 				if (!in_array($entityName, $types['types'])) {
 					continue;

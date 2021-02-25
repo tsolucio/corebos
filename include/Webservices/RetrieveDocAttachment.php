@@ -26,6 +26,7 @@ function vtws_retrievedocattachment($all_ids, $returnfile, $user) {
 		WHERE n.notesid in $all_ids and n.filelocationtype in ('I','E') and c.deleted=0";
 	$result = $adb->query($query);
 	$nr=$adb->num_rows($result);
+	$types = vtws_listtypes(null, $user);
 	for ($i=0; $i<$nr; $i++) {
 		$id=$docWSId.$adb->query_result($result, $i, 'notesid');
 		$webserviceObject = VtigerWebserviceObject::fromId($adb, $id);
@@ -37,7 +38,6 @@ function vtws_retrievedocattachment($all_ids, $returnfile, $user) {
 		$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 		$meta = $handler->getMeta();
 		$entityName = $meta->getObjectEntityName($id);
-		$types = vtws_listtypes(null, $user);
 		if (!in_array($entityName, $types['types'])) {
 			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
 		}

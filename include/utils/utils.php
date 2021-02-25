@@ -874,8 +874,11 @@ function getActionid($action) {
  */
 function getActionname($actionid) {
 	global $log, $adb;
+	if ($actionid==='') {
+		$log->debug('>< getActionname empty');
+		return '';
+	}
 	$log->debug('> getActionname '.$actionid);
-	$actionname='';
 	$result = $adb->pquery('select actionname from vtiger_actionmapping where actionid=? and securitycheck=0', array($actionid));
 	$actionname = $adb->query_result($result, 0, 'actionname');
 	$log->debug('< getActionname');
@@ -903,14 +906,18 @@ function getUserId($record) {
 function getRecordOwnerId($record) {
 	global $log, $adb;
 	$log->debug('> getRecordOwnerId '.$record);
-	$recModule = getSalesEntityType($record);
-	$mod = CRMEntity::getInstance($recModule);
 	$ownerArr=array();
-	$result=$adb->pquery('select smownerid from '.$mod->crmentityTable.' where crmid = ?', array($record));
+	$recModule = getSalesEntityType($record);
+	if (empty($recModule)) {
+		$log->debug('< getRecordOwnerId record not found');
+		return $ownerArr;
+	}
+	$mod = CRMEntity::getInstance($recModule);
+	$result=$adb->pquery('select smownerid from '.$mod->crmentityTable.' where crmid=?', array($record));
 	if ($adb->num_rows($result) > 0) {
 		$ownerId=$adb->query_result($result, 0, 'smownerid');
-		$sql_result = $adb->pquery('select count(*) as count from vtiger_users where id = ?', array($ownerId));
-		if ($adb->query_result($sql_result, 0, 'count') > 0) {
+		$sql_result = $adb->query('select 1 from vtiger_users where id='.$ownerId);
+		if ($adb->num_rows($sql_result) > 0) {
 			$ownerArr['Users'] = $ownerId;
 		} else {
 			$ownerArr['Groups'] = $ownerId;
