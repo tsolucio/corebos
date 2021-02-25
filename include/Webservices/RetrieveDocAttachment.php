@@ -18,13 +18,14 @@ function vtws_retrievedocattachment($all_ids, $returnfile, $user) {
 	$entities = array();
 	$docWSId = vtws_getEntityId('Documents').'x';
 	$log->debug('> vtws_retrievedocattachment');
-	$all_ids='('.str_replace($docWSId, '', $all_ids).')';
+	$all_ids = str_replace($docWSId, '', $all_ids);
+	$all_ids = explode(',', $all_ids);
 	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents', true);
 	$query = "SELECT n.notesid, n.filename, n.filelocationtype, n.filetype
 		FROM vtiger_notes n
 		INNER JOIN $crmEntityTable c ON c.crmid=n.notesid
-		WHERE n.notesid in $all_ids and n.filelocationtype in ('I','E') and c.deleted=0";
-	$result = $adb->query($query);
+		WHERE n.notesid in (".generateQuestionMarks($all_ids).") and n.filelocationtype in ('I','E') and c.deleted=0";
+	$result = $adb->pquery($query, $all_ids);
 	$nr=$adb->num_rows($result);
 	$types = vtws_listtypes(null, $user);
 	for ($i=0; $i<$nr; $i++) {
