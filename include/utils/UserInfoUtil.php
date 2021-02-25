@@ -200,8 +200,8 @@ function getTabsUtilityActionPermission($profileid) {
 	return $check;
 }
 
- /**This Function returns the Default Organization Sharing Action Array for all modules whose sharing actions are editable
-  * The returned array will be in the following format:
+ /** This Function returns the Default Organization Sharing Action array for all modules whose sharing actions are editable
+  * @return array with following format:
   * Arr=(tabid1=>Sharing Action Id,
   *      tabid2=>Sharing Action Id,
   *            |
@@ -220,8 +220,8 @@ function getDefaultSharingEditAction() {
 	return $copy;
 }
 
-/**This Function returns the Default Organization Sharing Action Array for modules with edit status in (0,1)
-  * The returned array will be in the following format:
+/** This Function returns the Default Organization Sharing Action array for modules with edit status in (0,1)
+  * @return array with following format:
   * Arr=(tabid1=>Sharing Action Id,
   *      tabid2=>Sharing Action Id,
   *            |
@@ -240,8 +240,8 @@ function getDefaultSharingAction() {
 	return $copy;
 }
 
-/**This Function returns the Default Organisation Sharing Action Array for all modules
-  * The result array will be in the following format:
+/** This Function returns the Default Organisation Sharing Action array for all modules
+  * @return array with following format:
   * Arr=(tabid1=>Sharing Action Id,
   *      tabid2=>SharingAction Id,
   *            |
@@ -265,11 +265,11 @@ function getAllDefaultSharingAction() {
 	return $copy;
 }
 
-/** Function to create the role
- * @param $roleName -- Role Name:: Type varchar
- * @param $parentRoleId -- Parent Role Id:: Type varchar
- * @param $roleProfileArray -- Profile to be associated with this role:: Type Array
- * @returns  the Rold Id :: Type varchar
+/** Function to create a role
+ * @param string Role Name
+ * @param string Parent Role ID
+ * @param array Profile to be associated with this role
+ * @return string Rold Id
  */
 function createRole($roleName, $parentRoleId, $roleProfileArray) {
 	global $log,$adb;

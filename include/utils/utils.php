@@ -855,9 +855,9 @@ function getUserId_Ol($username) {
 	return $user_id;
 }
 
-/** Function to get a action id for a given action name //outlook security
- * @param $action -- action name :: Type string
- * @returns $actionid -- action id :: Type integer
+/** Function to get an action ID from an action name
+ * @param string action name
+ * @return integer action id
  */
 function getActionid($action) {
 	global $log, $adb;
@@ -868,9 +868,9 @@ function getActionid($action) {
 	return $actionid;
 }
 
-/** Function to get a action for a given action id
- * @param $action id -- action id :: Type integer
- * @returns $actionname-- action name :: Type string
+/** Function to get the action name from an action ID
+ * @param integer action id
+ * @return string action name if securitycheck=0, empty if not
  */
 function getActionname($actionid) {
 	global $log, $adb;
