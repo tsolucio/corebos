@@ -555,106 +555,97 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 	}
 	$userprivs = $current_user->getPrivileges();
 	$is_admin = is_admin($current_user);
-	$parenttab = empty($_REQUEST['parenttab']) ? '' : vtlib_purify($_REQUEST['parenttab']);
+	if ($is_admin) {
+		$log->debug('< isPermitted administrator yes');
+		return 'yes';
+	}
 	$permission = 'no';
-	if (($module == 'Users' || $module == 'Home' || $module == 'Utilities') && $parenttab != 'Settings') {
+	if ($module == 'Users' || $module == 'Home' || $module == 'Utilities') {
 		//These modules dont have security right now
-		$permission = 'yes';
-		$log->debug('< isPermitted');
-		return $permission;
+		$log->debug('< isPermitted module access yes');
+		return 'yes';
 	}
 
 	//Checking the Access for the Settings Module
-	if ($module == 'Settings' || $parenttab == 'Settings') {
+	if ($module == 'Settings') {
 		if (!$is_admin) {
 			$permission = 'no';
 		} else {
 			$permission = 'yes';
 		}
-		$log->debug('< isPermitted');
+		$log->debug('< isPermitted Settings '.$permission);
 		return $permission;
 	}
 
-	//Checking whether the user is admin
-	if ($is_admin) {
-		$permission ='yes';
-		$log->debug('< isPermitted');
-		return $permission;
-	}
-	//Retreiving the Tabid and Action Id
 	$tabid = getTabid($module);
 	$actionid=getActionid($actionname);
-	//If no actionid, then allow action is vtiger_tab permission is available
+	// If no actionid, then allow action if tab permission is available
 	if ($actionid === '') {
 		if ($userprivs->hasModuleAccess($tabid)) {
 			$permission = 'yes';
-			$log->debug('< isPermitted');
 		} else {
 			$permission ='no';
 		}
+		$log->debug('< isPermitted no actionid '.$permission);
 		return $permission;
 	}
 
-	$action = getActionname($actionid);
 	//Checking for view all permission
 	if ($userprivs->hasGlobalReadPermission()) {
 		if ($actionid == 3 || $actionid == 4) {
-			$permission = 'yes';
-			$log->debug('< isPermitted');
-			return $permission;
+			$log->debug('< isPermitted view all permission yes');
+			return 'yes';
 		}
 	}
 	//Checking for edit all permission
 	if ($userprivs->hasGlobalWritePermission()) {
 		if ($actionid == 3 || $actionid == 4 || $actionid ==0 || $actionid ==1) {
-			$permission = 'yes';
-			$log->debug('< isPermitted');
-			return $permission;
+			$log->debug('< isPermitted edit all permission yes');
+			return 'yes';
 		}
 	}
 	//Checking for tab permission
 	if (!is_null($tabid) && !$userprivs->hasModuleAccess($tabid)) {
-		$permission = 'no';
-		$log->debug('< isPermitted');
-		return $permission;
-	}
-	$ternary = $userprivs->getModulePermission($tabid, $actionid);
-	if (is_null($ternary) && ($action == 'Export' || $action == 'Import')) {
+		$log->debug('< isPermitted tab permission no');
 		return 'no';
 	}
 	//Checking for Action Permission
-	if (is_null($ternary) || (strlen($ternary) < 1 && $ternary == '')) {
+	$action = getActionname($actionid);
+	$ternary = $userprivs->getModulePermission($tabid, $actionid);
+	if (is_null($ternary) && ($action == 'Export' || $action == 'Import')) {
+		// if permission is not defined we do not permit export/import
+		$log->debug('< isPermitted profile action permission Export/Import');
+		return 'no';
+	}
+	if (is_null($ternary) || $ternary === '') {
 		if ($action=='DuplicatesHandling' && in_array($module, getInventoryModules())) {
 			$permission = 'no';
 		} else {
 			$permission = 'yes';
 		}
-		$log->debug('< isPermitted');
+		$log->debug('< isPermitted profile action permission not set '.$permission);
 		return $permission;
 	}
 
 	if ($ternary != 0 && $ternary != '') {
-		$permission = 'no';
-		$log->debug('< isPermitted');
-		return $permission;
+		$log->debug('< isPermitted profile action permission no');
+		return 'no';
 	}
 	//Checking and returning true if recorid is null
 	if ($record_id == '') {
-		$permission = 'yes';
-		$log->debug('< isPermitted');
-		return $permission;
+		$log->debug('< isPermitted has permission on module and record is not set yes');
+		return 'yes';
 	}
 
-	//If modules is Faq or PriceBook then no sharing
+	//If module is not shareable, everyone has access. Faq, PriceBook, among others
 	if ($record_id != '') {
 		if (getTabOwnedBy($module) == 1) {
-			$permission = 'yes';
-			$log->debug('< isPermitted');
-			return $permission;
+			$log->debug('< isPermitted TabOwnedBy sharing disabled yes');
+			return 'yes';
 		}
 	}
 
-	//Retreiving the RecordOwnerId
+	// has access to module, now let's check the record
 	$recOwnType='';
 	$recOwnId='';
 	$recordOwnerArr=getRecordOwnerId($record_id);
@@ -662,8 +653,6 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 		$recOwnType=$type;
 		$recOwnId=$id;
 	}
-	//Retreiving the default Organisation sharing Access
-	$others_permission_id = $userprivs->getModuleSharingPermission($tabid);
 
 	if ($recOwnType == 'Users') {
 		$wfs = new VTWorkflowManager($adb);
@@ -677,7 +666,7 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 			} else {
 				$permission = 'no';
 			}
-			$log->debug('< isPermitted');
+			$log->debug('< isPermitted is owner of record '.$permission);
 			return $permission;
 		}
 		//Checking if the Record Owner is the Subordinate User
@@ -690,12 +679,12 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 				} else {
 					$permission = 'no';
 				}
-				$log->debug('< isPermitted');
+				$log->debug('< isPermitted owner is subordinate '.$permission);
 				return $permission;
 			}
 		}
 		if ($racbr!==false && $racbr->hasDetailViewPermissionTo($actionname, false)) {
-			$log->debug('< isPermitted RAC User');
+			$log->debug('< isPermitted RAC User yes');
 			return 'yes';
 		}
 	} elseif ($recOwnType == 'Groups') {
@@ -710,12 +699,13 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 			} else {
 				$permission = 'no';
 			}
-			$log->debug('< isPermitted');
+			$log->debug('< isPermitted current user in assigned group '.$permission);
 			return $permission;
 		}
 	}
 
 	//Checking for Default Org Sharing permission
+	$others_permission_id = $userprivs->getModuleSharingPermission($tabid);
 	if ($others_permission_id == UserPrivileges::SHARING_READONLY) {
 		if ($actionid == 1 || $actionid == 0) {
 			if ($module == 'cbCalendar') {
@@ -727,26 +717,22 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 			} else {
 				$permission = isReadWritePermittedBySharing($module, $tabid, $actionid, $record_id);
 			}
-			$log->debug('< isPermitted');
+			$log->debug('< isPermitted sharing readonly: save and edit no, but special sharing permission are calculated '.$permission);
 			return $permission;
 		} elseif ($actionid == 2) {
-			$permission = 'no';
-			$log->debug('< isPermitted');
-			return $permission;
+			$log->debug('< isPermitted sharing readonly: delete no');
+			return 'no';
 		} else {
-			$permission = 'yes';
-			$log->debug('< isPermitted');
-			return $permission;
+			$log->debug('< isPermitted sharing readonly: all other actions yes');
+			return 'yes';
 		}
 	} elseif ($others_permission_id == UserPrivileges::SHARING_READWRITE) {
 		if ($actionid == 2) {
-			$permission = 'no';
-			$log->debug('< isPermitted');
-			return $permission;
+			$log->debug('< isPermitted sharing readwrite: delete no');
+			return 'no';
 		} else {
-			$permission = 'yes';
-			$log->debug('< isPermitted');
-			return $permission;
+			$log->debug('< isPermitted sharing readwrite: all other actions yes');
+			return 'yes';
 		}
 	} elseif ($others_permission_id == UserPrivileges::SHARING_READWRITEDELETE) {
 		$wfs = new VTWorkflowManager($adb);
@@ -754,9 +740,8 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 		if (($actionname!='EditView' && $actionname!='Delete' && $actionname!='DetailView' && $actionname!='CreateView')
 			|| (!$racbr || $racbr->hasDetailViewPermissionTo($actionname))
 		) {
-			$permission = 'yes';
-			$log->debug('< isPermitted');
-			return $permission;
+			$log->debug('< isPermitted sharing readwritedelete: all actions yes if RAC permits');
+			return 'yes';
 		}
 	} elseif ($others_permission_id == UserPrivileges::SHARING_PRIVATE) {
 		if ($actionid == 3 || $actionid == 4) {
@@ -771,41 +756,44 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 				$racbr = $wfs->getRACRuleForRecord($module, $record_id);
 				if ($racbr) {
 					if ($actionid == 3 && !$racbr->hasListViewPermissionTo('retrieve')) {
+						$log->debug('< isPermitted sharing private: list view RAC no');
 						return 'no';
 					} elseif ($actionid == 4 && !$racbr->hasDetailViewPermissionTo('retrieve')) {
+						$log->debug('< isPermitted sharing private: detail view RAC no');
 						return 'no';
 					}
 				}
 				$permission = isReadPermittedBySharing($module, $tabid, $actionid, $record_id);
 			}
-			$log->debug('< isPermitted');
+			$log->debug('< isPermitted sharing private: view no, but special sharing permission are calculated '.$permission);
 			return $permission;
 		} elseif ($actionid ==0 || $actionid ==1) {
 			$wfs = new VTWorkflowManager($adb);
 			$racbr = $wfs->getRACRuleForRecord($module, $record_id);
 			if ($racbr) {
 				if ($actionid == 0 && !$racbr->hasDetailViewPermissionTo('create')) {
+					$log->debug('< isPermitted sharing private: create RAC no');
 					return 'no';
 				} elseif ($actionid == 1 && !$racbr->hasDetailViewPermissionTo('update')) {
+					$log->debug('< isPermitted sharing private: update RAC no');
 					return 'no';
 				}
 			}
 			$permission = isReadWritePermittedBySharing($module, $tabid, $actionid, $record_id);
-			$log->debug('< isPermitted');
+			$log->debug('< isPermitted sharing private: save and edit no, but special sharing permission are calculated '.$permission);
 			return $permission;
 		} elseif ($actionid ==2) {
-				$permission ='no';
-				return $permission;
+			$log->debug('< isPermitted sharing private: delete no');
+			return 'no';
 		} else {
-			$permission = 'yes';
-			$log->debug('< isPermitted');
-			return $permission;
+			$log->debug('< isPermitted sharing private: all other actions yes');
+			return 'yes';
 		}
 	} else {
 		$permission = 'yes';
 	}
 
-	$log->debug('< isPermitted');
+	$log->debug('< isPermitted end '.$permission);
 	return $permission;
 }
 
