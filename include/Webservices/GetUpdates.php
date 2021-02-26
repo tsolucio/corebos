@@ -13,8 +13,6 @@ require_once 'include/utils/CommonUtils.php';
 
 function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 	global $adb;
-
-	$numRecordsLimit = 100;
 	$ignoreModules = array('Users');
 	$typed = true;
 	$dformat = 'Y-m-d H:i:s';
@@ -96,6 +94,9 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 		$params = array_merge($params, $ownerIds);
 	}
 
+	$streamraw = (isset($_REQUEST['format']) && strtolower($_REQUEST['format'])=='streamraw');
+	$streaming = (isset($_REQUEST['format']) && (strtolower($_REQUEST['format'])=='stream' || $streamraw));
+	$numRecordsLimit = GlobalVariable::getVariable('Webservice_Sync_RecordLimit'.($streaming ? 'Streaming' : ''), 100, $accessableModules[0]);
 	$q .=" order by modifiedtime limit $numRecordsLimit";
 	$result = $adb->pquery($q, $params);
 
@@ -108,7 +109,7 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 	} else {
 		$maxModifiedTime = $datetime;
 	}
-
+	$stream = '';
 	foreach ($accessableModules as $elementType) {
 		$handler = vtws_getModuleHandlerFromName($elementType, $user);
 		$moduleMeta = $handler->getMeta();
@@ -155,19 +156,45 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 				if (!$moduleMeta->hasAccess()) {
 					continue;
 				}
-				$output['deleted'][] = vtws_getId($moduleMeta->getEntityId(), $key);
+				if ($streaming) {
+					$stream .= json_encode(array('action' => 'deleted', 'record' => vtws_getId($moduleMeta->getEntityId(), $key)))."\n";
+					if (($i % 500)==0) {
+						echo $stream;
+						flush();
+						$stream = '';
+					}
+				} else {
+					$output['deleted'][] = vtws_getId($moduleMeta->getEntityId(), $key);
+				}
 			} else {
 				if (!$moduleMeta->hasAccess() ||!$moduleMeta->hasPermission(EntityMeta::$RETRIEVE, $key)) {
 					continue;
 				}
 				try {
-					$output['updated'][] = DataTransform::sanitizeDataWithColumn($arre, $moduleMeta);
+					if ($streaming) {
+						$stream .= json_encode(array(
+							'action' => 'updated',
+							'record' => ($streamraw ? $arre : DataTransform::sanitizeDataWithColumn($arre, $moduleMeta)),
+						))."\n";
+						if (($i % 500)==0) {
+							echo $stream;
+							flush();
+							$stream = '';
+						}
+					} else {
+						$output['updated'][] = DataTransform::sanitizeDataWithColumn($arre, $moduleMeta);
+					}
 				} catch (WebServiceException $e) {
 					//ignore records the user doesn't have access to.
 					continue;
 				} catch (Exception $e) {
 					throw new WebServiceException(WebServiceErrorCode::$INTERNALERROR, 'Unknown Error while processing request');
 				}
+			}
+			if ($stream!='') {
+				echo $stream;
+				flush();
+				$stream = '';
 			}
 		}
 	}
