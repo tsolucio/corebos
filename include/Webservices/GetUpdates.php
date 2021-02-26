@@ -60,10 +60,11 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 	if (!$typed) {
 		$accessableModules = $entityModules;
 	} else {
-		if (!in_array($elementType, $entityModules)) {
+		$elementType = explode(',', $elementType);
+		if (empty(array_intersect($elementType, $entityModules))) {
 			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
 		}
-		$accessableModules[] = $elementType;
+		$accessableModules = $elementType;
 	}
 
 	$accessableModules = array_diff($accessableModules, $ignoreModules);
@@ -74,8 +75,8 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 		return $output;
 	}
 
-	if ($typed) {
-		$handler = vtws_getModuleHandlerFromName($elementType, $user);
+	if ($typed && count($elementType)==1) {
+		$handler = vtws_getModuleHandlerFromName($elementType[0], $user);
 		$moduleMeta = $handler->getMeta();
 		$entityDefaultBaseTables = $moduleMeta->getEntityDefaultTableList();
 		//since there will be only one base table for all entities
