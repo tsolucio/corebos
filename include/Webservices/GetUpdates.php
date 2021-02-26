@@ -145,7 +145,7 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 			$fromClause.= 'and smownerid IN('.generateQuestionMarks($ownerIds).')';
 			$params = array_merge($params, $ownerIds);
 		}
-		$fromClause.= ' ) vtiger_ws_sync ON (vtiger_crmentity.crmid = vtiger_ws_sync.crmid)';
+		$fromClause.= ' ) vtiger_ws_sync ON ('.$moduleMeta->baseTable.'.'.$moduleMeta->idColumn.'=vtiger_ws_sync.crmid)';
 		$q = $selectClause.' '.$fromClause;
 		$result = $adb->pquery($q, $params);
 		while ($arre = $adb->fetchByAssoc($result)) {
