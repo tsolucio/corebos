@@ -15,8 +15,8 @@ include 'config.inc.php';
 global $log;
 
 /** To retreive the mail server info resultset for the specified user
-  * @param $user -- The user object:: Type Object
-  * @returns  the mail server info resultset
+  * @param object user object
+  * @return object mail server database information resultset
  */
 function getMailServerInfo($user) {
 	global $log, $adb;
@@ -27,8 +27,8 @@ function getMailServerInfo($user) {
 }
 
 /** To get the Role of the specified user
-  * @param $userid -- The user Id:: Type integer
-  * @returns roleid :: Type String
+  * @param integer user ID
+  * @return string role ID
  */
 function fetchUserRole($userid) {
 	global $log, $adb;
@@ -46,8 +46,8 @@ function fetchUserRole($userid) {
 	return $roleid;
 }
 
-/** Deprecated. Function to be replaced by getUserProfile()
- * Should be done accross the product
+/** Function to be replaced by getUserProfile()
+ * @deprecated
  */
 function fetchUserProfileId($userid) {
 	global $log;
@@ -457,9 +457,9 @@ function substituteTokens($filename, $globals) {
 	return '';
 }
 
-/** Function to get the role name from the roleid
- * @param $roleid -- Role Id:: Type varchar
- * @returns $rolename -- Role Name:: Type varchar
+/** Function to get the role name from a role ID
+ * @param string Role ID
+ * @return string Role Name
  */
 function getRoleName($roleid) {
 	global $log, $adb;
@@ -470,9 +470,9 @@ function getRoleName($roleid) {
 	return $rolename;
 }
 
-/** Function to get the profile name from the profileid
- * @param $profileid -- Profile Id:: Type integer
- * @returns $rolename -- Role Name:: Type varchar
+/** Function to get the profile name from a profile ID
+ * @param integer Profile ID
+ * @return string Role Name
  */
 function getProfileName($profileid) {
 	global $log, $adb;
@@ -483,9 +483,9 @@ function getProfileName($profileid) {
 	return $profilename;
 }
 
-/** Function to get the vtiger_profile Description from the vtiger_profileid
- * @param $profileid -- Profile Id:: Type integer
- * @returns $rolename -- Role Name:: Type varchar
+/** Function to get the profile description of a profile ID
+ * @param integer Profile ID
+ * @return string Role Name
  */
 function getProfileDescription($profileid) {
 	global $log, $adb;
@@ -536,10 +536,10 @@ function isPermitted($module, $actionname, $record_id = '') {
 }
 
 /** Function to check if the currently logged in user is permitted to perform the specified action
- * @param $module -- Module Name:: Type varchar
- * @param $actionname -- Action Name:: Type varchar
- * @param $recordid -- Record Id:: Type integer
- * @returns yes or no. If Yes means this action is allowed for the currently logged in user. If no means this action is not allowed for the currently logged in user
+ * @param string Module Name
+ * @param string Action Name
+ * @param integer Record ID
+ * @return string yes/no: If Yes means this action is allowed for the currently logged in user. If no means this action is not allowed for the currently logged in user
  */
 function _vtisPermitted($module, $actionname, $record_id = '') {
 	global $log, $adb, $current_user;
@@ -1308,8 +1308,8 @@ function deleteProfile($prof_id, $transfer_profileid = '') {
 	$log->debug('< deleteProfile');
 }
 
-/** Function to get all  the role information
- * @returns array $allRoleDetailArray -- array will contain the details of all the roles. RoleId will be the key
+/** Function to get all the role information
+ * @return array will contain the details of all the roles. Role ID will be the key
  */
 function getAllRoleDetails() {
 	global $log, $adb;
@@ -1369,8 +1369,8 @@ function getAllProfileInfo() {
 }
 
 /** Function to get the role information of the specified role
- * @param $roleid -- RoleId :: Type varchar
- * @returns $roleInfoArray-- RoleInfoArray in the following format:
+ * @param string Role ID
+ * @return array Role Information array in the following format
  *       array($roleId=>array($rolename, $parentrole, $roledepth, $immediateParent));
  */
 function getRoleInformation($roleid) {
@@ -1395,8 +1395,8 @@ function getRoleInformation($roleid) {
 }
 
 /** Function to get the role related profiles
- * @param $roleid -- RoleId :: Type varchar
- * @returns $roleProfiles-- Role Related Profile Array in the following format:
+ * @param string Role ID
+ * @return array Role Related Profile array in the following format:
  *       $roleProfiles=Array($profileId1=>$profileName,$profileId2=>$profileName,........,$profileIdn=>$profileName));
  */
 function getRoleRelatedProfiles($roleId) {
@@ -1417,8 +1417,8 @@ function getRoleRelatedProfiles($roleId) {
 }
 
 /** Function to get the role related users
- * @param $roleid -- RoleId :: Type varchar
- * @returns $roleUsers-- Role Related User Array in the following format:
+ * @param string Role ID
+ * @return array Role Related User array in the following format:
  *       $roleUsers=Array($userId1=>$userName,$userId2=>$userName,........,$userIdn=>$userName));
  */
 function getRoleUsers($roleId) {
@@ -1440,8 +1440,8 @@ function getRoleUsers($roleId) {
 }
 
 /** Function to get the role related user ids
- * @param $roleid -- RoleId :: Type varchar
- * @returns $roleUserIds-- Role Related User Array in the following format:
+ * @param string Role ID
+ * @return array Role Related User array in the following format:
  *       $roleUserIds=Array($userId1,$userId2,........,$userIdn);
  */
 function getRoleUserIds($roleId) {
@@ -1459,8 +1459,8 @@ function getRoleUserIds($roleId) {
 }
 
 /** Function to get the role and subordinate users
- * @param $roleid -- RoleId :: Type varchar
- * @returns $roleSubUsers-- Role and Subordinates Related Users Array in the following format:
+ * @param string Role ID
+ * @return array Role and Subordinates Related Users array in the following format:
  *       $roleSubUsers=Array($userId1=>$userName,$userId2=>$userName,........,$userIdn=>$userName));
  */
 function getRoleAndSubordinateUsers($roleId) {
@@ -1483,8 +1483,8 @@ function getRoleAndSubordinateUsers($roleId) {
 }
 
 /** Function to get the role and subordinate user ids
- * @param $roleid -- RoleId :: Type varchar
- * @returns $roleSubUserIds-- Role and Subordinates Related Users Array in the following format:
+ * @param string Role ID
+ * @return array Role and Subordinates Related Users array in the following format:
  *       $roleSubUserIds=Array($userId1,$userId2,........,$userIdn);
  */
 function getRoleAndSubordinateUserIds($roleId) {
@@ -1505,9 +1505,9 @@ function getRoleAndSubordinateUserIds($roleId) {
 	return $roleRelatedUsers;
 }
 
-/** Function to get the role and subordinate Information for the specified roleId
- * @param $roleid -- RoleId :: Type varchar
- * @returns $roleSubInfo-- Role and Subordinates Information array in the following format:
+/** Function to get the role and subordinate Information for the specified role ID
+ * @param string Role ID
+ * @return array Role and Subordinates Information array in the following format:
  *       $roleSubInfo=Array($roleId1=>Array($rolename,$parentrole,$roledepth,$immediateParent), $roleId2=>Array($rolename,$parentrole,$roledepth,$immediateParent),.....);
  */
 function getRoleAndSubordinatesInformation($roleId) {
@@ -1540,9 +1540,9 @@ function getRoleAndSubordinatesInformation($roleId) {
 	return $roleInfo;
 }
 
-/** Function to get the role and subordinate role ids
- * @param $roleid -- RoleId :: Type varchar
- * @returns $roleSubRoleIds-- Role and Subordinates RoleIds in an Array in the following format:
+/** Function to get the role and subordinate role IDs
+ * @param string Role ID
+ * @return array Role and Subordinates Role IDs array in the following format:
  *       $roleSubRoleIds=Array($roleId1,$roleId2,........,$roleIdn);
  */
 function getRoleAndSubordinatesRoleIds($roleId) {
@@ -1564,7 +1564,7 @@ function getRoleAndSubordinatesRoleIds($roleId) {
 }
 
 /** Function to get the role and subordinate hierarchy
- * @returns $roleSubRoleIds-- Role and Subordinates RoleIds in an Array tree of hierarchy dependencies
+ * @return array Role and Subordinates Role IDs in an array tree of hierarchy dependencies
  */
 function getRoleAndSubordinatesHierarchy() {
 	global $adb;
