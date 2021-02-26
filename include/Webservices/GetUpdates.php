@@ -118,7 +118,7 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 		$deleteFieldValues = $deletedFieldDetails[2];
 		$deleteColumnNames = array();
 		foreach ($fieldNameDetails as $tableName_fieldName) {
-			$fieldComp = explode(".", $tableName_fieldName);
+			$fieldComp = explode('.', $tableName_fieldName);
 			$deleteColumnNames[$tableName_fieldName] = $fieldComp[1];
 		}
 		$params = array($moduleMeta->getTabName(),$datetime,$maxModifiedTime);
@@ -128,7 +128,7 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 		$moduleFieldNames = array_keys($moduleFields);
 		$moduleFieldNames[]='id';
 		$queryGenerator->setFields($moduleFieldNames);
-		$selectClause = "SELECT ".$queryGenerator->getSelectClauseColumnSQL();
+		$selectClause = 'SELECT '.$queryGenerator->getSelectClauseColumnSQL();
 		// adding the fieldnames that are present in the delete condition to the select clause
 		// since not all fields present in delete condition will be present in the fieldnames of the module
 		foreach ($deleteColumnNames as $table_fieldName => $columnName) {
@@ -172,7 +172,7 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 		}
 	}
 
-	$q = "SELECT crmid FROM $baseCRMTable WHERE modifiedtime>?  and setype IN(".generateQuestionMarks($accessableModules).')';
+	$q = "SELECT count(*) as cnt FROM $baseCRMTable WHERE modifiedtime>? and setype IN(".generateQuestionMarks($accessableModules).')';
 	$params = array($maxModifiedTime);
 
 	foreach ($accessableModules as $entityModule) {
@@ -182,13 +182,8 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 		$q.='and smownerid IN('.generateQuestionMarks($ownerIds).')';
 		$params = array_merge($params, $ownerIds);
 	}
-
 	$result = $adb->pquery($q, $params);
-	if ($adb->num_rows($result)>0) {
-		$output['more'] = true;
-	} else {
-		$output['more'] = false;
-	}
+	$output['more'] = ($adb->query_result($result, 0, 'cnt')>0);
 	if (!$maxModifiedTime) {
 		$modifiedtime = $mtime;
 	} else {
