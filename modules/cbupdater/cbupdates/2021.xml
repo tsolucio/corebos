@@ -35,4 +35,11 @@
 	<classname>InventoryDetailsQtyUI7</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete old Calendar Tab from Orginization Sharing</description>
+	<filename>build/changeSets/2021/deleteCalendarTabFromOrgShare.php</filename>
+	<classname>deleteCalendarTabFromOrgShare</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
