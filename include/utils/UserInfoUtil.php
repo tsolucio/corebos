@@ -647,6 +647,25 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 		$recOwnType=$type;
 		$recOwnId=$id;
 	}
+	$CPUserLogin = $CPRecordRelatedToAC = false;
+	if (!empty(coreBOS_Session::get('authenticatedUserIsPortalUser', false))) {
+		$CPUserLogin = true;
+		if (in_array($module, ['Products', 'Services', 'Faq'])) {
+			$CPRecordRelatedToAC = true; // not related so we accept whatever the normal permission system says
+		} else {
+			$contactId = coreBOS_Session::get('authenticatedUserPortalContact', 0);
+			if (!empty($contactId)) {
+				if ($contactId!=getRelatedAccountContact($record_id, 'Contacts')) {
+					$accountId = getSingleFieldValue('vtiger_contactdetails', 'accountid', 'contactid', $contactId);
+					if (!empty($accountId) && $accountId==getRelatedAccountContact($record_id, 'Accounts')) {
+						$CPRecordRelatedToAC = true;
+					}
+				} else {
+					$CPRecordRelatedToAC = true;
+				}
+			}
+		}
+	}
 
 	if ($recOwnType == 'Users') {
 		$wfs = new VTWorkflowManager($adb);
@@ -657,6 +676,9 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 				|| (!$racbr || $racbr->hasDetailViewPermissionTo($actionname, true))
 			) {
 				$permission = 'yes';
+				if ($CPUserLogin && !$CPRecordRelatedToAC) {
+					$permission = 'no';
+				}
 			} else {
 				$permission = 'no';
 			}
@@ -670,6 +692,9 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 					|| (!$racbr || $racbr->hasDetailViewPermissionTo($actionname, true))
 				) {
 					$permission = 'yes';
+					if ($CPUserLogin && !$CPRecordRelatedToAC) {
+						$permission = 'no';
+					}
 				} else {
 					$permission = 'no';
 				}
@@ -690,6 +715,9 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 				|| (!$racbr || $racbr->hasDetailViewPermissionTo($actionname))
 			) {
 				$permission = 'yes';
+				if ($CPUserLogin && !$CPRecordRelatedToAC) {
+					$permission = 'no';
+				}
 			} else {
 				$permission = 'no';
 			}
@@ -711,22 +739,33 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 			} else {
 				$permission = isReadWritePermittedBySharing($module, $tabid, $actionid, $record_id);
 			}
+			if ($permission=='yes' && $CPUserLogin && !$CPRecordRelatedToAC) {
+				$permission = 'no';
+			}
 			$log->debug('< isPermitted sharing readonly: save and edit no, but special sharing permission are calculated '.$permission);
 			return $permission;
 		} elseif ($actionid == 2) {
 			$log->debug('< isPermitted sharing readonly: delete no');
 			return 'no';
 		} else {
-			$log->debug('< isPermitted sharing readonly: all other actions yes');
-			return 'yes';
+			$permission = 'yes';
+			if ($CPUserLogin && !$CPRecordRelatedToAC) {
+				$permission = 'no';
+			}
+			$log->debug('< isPermitted sharing readonly: all other actions '.$permission);
+			return $permission;
 		}
 	} elseif ($others_permission_id == UserPrivileges::SHARING_READWRITE) {
 		if ($actionid == 2) {
 			$log->debug('< isPermitted sharing readwrite: delete no');
 			return 'no';
 		} else {
-			$log->debug('< isPermitted sharing readwrite: all other actions yes');
-			return 'yes';
+			$permission = 'yes';
+			if ($CPUserLogin && !$CPRecordRelatedToAC) {
+				$permission = 'no';
+			}
+			$log->debug('< isPermitted sharing readwrite: all other actions '.$permission);
+			return $permission;
 		}
 	} elseif ($others_permission_id == UserPrivileges::SHARING_READWRITEDELETE) {
 		$wfs = new VTWorkflowManager($adb);
@@ -734,8 +773,12 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 		if (($actionname!='EditView' && $actionname!='Delete' && $actionname!='DetailView' && $actionname!='CreateView')
 			|| (!$racbr || $racbr->hasDetailViewPermissionTo($actionname))
 		) {
-			$log->debug('< isPermitted sharing readwritedelete: all actions yes if RAC permits');
-			return 'yes';
+			$permission = 'yes';
+			if ($CPUserLogin && !$CPRecordRelatedToAC) {
+				$permission = 'no';
+			}
+			$log->debug('< isPermitted sharing readwritedelete: all actions yes if RAC permits '.$permission);
+			return $permission;
 		}
 	} elseif ($others_permission_id == UserPrivileges::SHARING_PRIVATE) {
 		if ($actionid == 3 || $actionid == 4) {
@@ -759,6 +802,9 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 				}
 				$permission = isReadPermittedBySharing($module, $tabid, $actionid, $record_id);
 			}
+			if ($CPUserLogin && !$CPRecordRelatedToAC) {
+				$permission = 'no';
+			}
 			$log->debug('< isPermitted sharing private: view no, but special sharing permission are calculated '.$permission);
 			return $permission;
 		} elseif ($actionid ==0 || $actionid ==1) {
@@ -774,17 +820,27 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 				}
 			}
 			$permission = isReadWritePermittedBySharing($module, $tabid, $actionid, $record_id);
+			if ($permission=='yes' && $CPUserLogin && !$CPRecordRelatedToAC) {
+				$permission = 'no';
+			}
 			$log->debug('< isPermitted sharing private: save and edit no, but special sharing permission are calculated '.$permission);
 			return $permission;
 		} elseif ($actionid ==2) {
 			$log->debug('< isPermitted sharing private: delete no');
 			return 'no';
 		} else {
-			$log->debug('< isPermitted sharing private: all other actions yes');
-			return 'yes';
+			$permission = 'yes';
+			if ($CPUserLogin && !$CPRecordRelatedToAC) {
+				$permission = 'no';
+			}
+			$log->debug('< isPermitted sharing private: all other actions '.$permission);
+			return $permission;
 		}
 	} else {
 		$permission = 'yes';
+		if ($CPUserLogin && !$CPRecordRelatedToAC) {
+			$permission = 'no';
+		}
 	}
 
 	$log->debug('< isPermitted end '.$permission);
