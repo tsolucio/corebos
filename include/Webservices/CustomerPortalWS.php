@@ -548,7 +548,8 @@ function evvt_PortalModuleRestrictions($module, $accountId, $contactId, $company
 	$condition = '';
 	switch ($module) {
 		case 'Contacts':
-			$condition = 'vtiger_contactdetails.accountid'.(is_array($accountId) ? ' IN ('.implode(',', $accountId).')' : '='.$accountId);
+			$condition = '(vtiger_contactdetails.accountid'.(is_array($accountId) ? ' IN ('.implode(',', $accountId).')' : '='.$accountId);
+			$condition.= ' or vtiger_contactdetails.contactid'.(is_array($contactId) ? ' IN ('.implode(',', $contactId).')' : '='.$contactId).')';
 			break;
 		case 'Accounts':
 			$condition = 'vtiger_account.accountid'.(is_array($accountId) ? ' IN ('.implode(',', $accountId).')' : '='.$accountId);
