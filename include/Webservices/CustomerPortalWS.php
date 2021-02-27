@@ -1008,21 +1008,22 @@ function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $use
 		$eirs = $adb->pquery('select fieldname,tablename,entityidfield from vtiger_entityname where modulename=?', array($srchmod));
 		$ei = $adb->fetch_array($eirs);
 		$fieldsname = $ei['fieldname'];
-		$wherefield = $ei['fieldname']." $op '$term'";
+		$wherefield = $ei['fieldname']." $op ?";
+		$params = array($term);
 		if (!(strpos($fieldsname, ',') === false)) {
 			$fieldlists = explode(',', $fieldsname);
 			$fieldsname = 'concat(';
 			$fieldsname = $fieldsname . implode(",' ',", $fieldlists);
 			$fieldsname = $fieldsname . ')';
-			$wherefield = implode(" $op '$term' or ", $fieldlists)." $op '$term' or $fieldsname $op '$term'";
+			$wherefield = implode(" $op ? or ", $fieldlists)." $op ? or $fieldsname $op ?";
+			for ($f=1; $f<=count($fieldlists); $f++) {
+				$params[] = $term;
+			}
 		}
 		$mod = CRMEntity::getInstance($srchmod);
 		$crmTable = $mod->crmentityTable;
-		$qry = "select crmid,$fieldsname as crmname
-			from {$ei['tablename']}
-			inner join {$crmTable} on crmid = {$ei['entityidfield']}
-			where deleted = 0 and ($wherefield)";
-		$rsemp=$adb->query($qry);
+		$qry = "select crmid,$fieldsname as crmname from {$ei['tablename']} inner join {$crmTable} on crmid={$ei['entityidfield']} where deleted=0 and ($wherefield)";
+		$rsemp=$adb->pquery($qry, $params);
 		$trmod = getTranslatedString($srchmod, $srchmod);
 		$wsid = vtyiicpng_getWSEntityId($srchmod);
 		while ($emp=$adb->fetch_array($rsemp)) {
