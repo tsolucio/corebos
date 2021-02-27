@@ -255,6 +255,9 @@ function vtws_getReferenceValue($strids, $user) {
 				if ($modulename == 'Currency') {
 					$entityinfo[$realid] = getCurrencyName($realid, true);
 				} else {
+					if (isPermitted($modulename, 'index', $realid)=='no') {
+						continue;
+					}
 					$entityinfo = getEntityName($modulename, $realid);
 					if (isset($entityinfo[$realid])) {
 						$entityinfo[$realid] = html_entity_decode($entityinfo[$realid], ENT_QUOTES, $default_charset);
@@ -999,10 +1002,21 @@ function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $use
 				break;
 		}
 	}
+	$portalLogin = false;
+	if (!empty(coreBOS_Session::get('authenticatedUserIsPortalUser', false))) {
+		$portalLogin = true;
+		$contactId = coreBOS_Session::get('authenticatedUserPortalContact', 0);
+		$accountId = -1;
+		if (empty($contactId)) {
+			return $respuesta;
+		} else {
+			$accountId = getSingleFieldValue('vtiger_contactdetails', 'accountid', 'contactid', $contactId);
+		}
+	}
 
 	$num_search_modules = count($searchin);
 	foreach ($searchin as $srchmod) {
-		if (!(vtlib_isModuleActive($srchmod) && isPermitted($srchmod, 'DetailView'))) {
+		if (!(vtlib_isModuleActive($srchmod) && isPermitted($srchmod, 'DetailView')=='yes')) {
 			continue;
 		}
 		$eirs = $adb->pquery('select fieldname,tablename,entityidfield from vtiger_entityname where modulename=?', array($srchmod));
@@ -1023,6 +1037,9 @@ function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $use
 		$mod = CRMEntity::getInstance($srchmod);
 		$crmTable = $mod->crmentityTable;
 		$qry = "select crmid,$fieldsname as crmname from {$ei['tablename']} inner join {$crmTable} on crmid={$ei['entityidfield']} where deleted=0 and ($wherefield)";
+		if ($portalLogin) {
+			$qry = addPortalModuleRestrictions($qry, $srchmod, $accountId, $contactId);
+		}
 		$rsemp=$adb->pquery($qry, $params);
 		$trmod = getTranslatedString($srchmod, $srchmod);
 		$wsid = vtyiicpng_getWSEntityId($srchmod);
@@ -1327,7 +1344,17 @@ function getFieldAutocompleteQuery($term, $filter, $searchinmodule, $fields, $re
 		$queryGenerator->addCondition($sfld, $term, $op, $queryGenerator::$OR);
 	}
 	$queryGenerator->endGroup();
-	return $queryGenerator->getQuery(false, $limit);
+	$query = $queryGenerator->getQuery(false, $limit);
+	if (!empty(coreBOS_Session::get('authenticatedUserIsPortalUser', false))) {
+		$contactId = coreBOS_Session::get('authenticatedUserPortalContact', 0);
+		if (empty($contactId)) {
+			$query = 'select 1';
+		} else {
+			$accountId = getSingleFieldValue('vtiger_contactdetails', 'accountid', 'contactid', $contactId);
+			$query = addPortalModuleRestrictions($query, $searchinmodule, $accountId, $contactId);
+		}
+	}
+	return $query;
 }
 
 /**
@@ -1373,7 +1400,9 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
 	while ($emp=$adb->fetch_array($rsemp)) {
 		$rsp = array();
 		foreach ($rfields as $rf) {
-			$rsp[$rf] = html_entity_decode($emp[$colum_names[$rf]], ENT_QUOTES, $default_charset);
+			if (isset($colum_names[$rf]) && isset($emp[$colum_names[$rf]])) {
+				$rsp[$rf] = html_entity_decode($emp[$colum_names[$rf]], ENT_QUOTES, $default_charset);
+			}
 		}
 		$respuesta[] = array(
 			'crmid'=>$wsid.$emp[$sindex],
