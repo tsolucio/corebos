@@ -894,6 +894,9 @@ function getRelatedAccountContact($entityid, $module = '') {
 					array($module, $crmid)
 				);
 				$acid = $adb->query_result($rspot, 0, 'crmid');
+				if ($acid=='') {
+					$acid=0;
+				}
 				break;
 			case 'Documents':
 				$rspot = $adb->pquery(
@@ -904,6 +907,9 @@ function getRelatedAccountContact($entityid, $module = '') {
 					array($module, $crmid)
 				);
 				$acid = $adb->query_result($rspot, 0, 'crmid');
+				if ($acid=='') {
+					$acid=0;
+				}
 				break;
 			case 'ProjectMilestone':
 				$rspot = $adb->pquery('select linktoaccountscontacts
