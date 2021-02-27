@@ -74,11 +74,7 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 	}
 
 	if ($typed && count($elementType)==1) {
-		$handler = vtws_getModuleHandlerFromName($elementType[0], $user);
-		$moduleMeta = $handler->getMeta();
-		$entityDefaultBaseTables = $moduleMeta->getEntityDefaultTableList();
-		//since there will be only one base table for all entities
-		$baseCRMTable = $entityDefaultBaseTables[0];
+		$baseCRMTable = CRMEntity::getcrmEntityTableAlias($elementType[0], true);
 	} else {
 		$baseCRMTable = ' vtiger_crmobject ';
 	}
