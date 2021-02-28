@@ -215,7 +215,9 @@ function vtws_getUItype($module, $user) {
 	$nr=$adb->num_rows($res);
 	for ($i=0; $i<$nr; $i++) {
 		$fieldname=$adb->query_result($res, $i, 'fieldname');
-		$resp[$fieldname]=$adb->query_result($res, $i, 'uitype');
+		if (getFieldVisibilityPermission($module, $user->id, $fieldname) == '0') {
+			$resp[$fieldname]=$adb->query_result($res, $i, 'uitype');
+		}
 	}
 	return $resp;
 }
