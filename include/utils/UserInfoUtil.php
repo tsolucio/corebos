@@ -650,7 +650,7 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 	$CPUserLogin = $CPRecordRelatedToAC = false;
 	if (!empty(coreBOS_Session::get('authenticatedUserIsPortalUser', false))) {
 		$CPUserLogin = true;
-		if (in_array($module, ['Products', 'Services', 'Faq'])) {
+		if (in_array($module, ['Products', 'Services', 'Faq', 'cbQuestion'])) {
 			$CPRecordRelatedToAC = true; // not related so we accept whatever the normal permission system says
 		} else {
 			$contactId = coreBOS_Session::get('authenticatedUserPortalContact', 0);

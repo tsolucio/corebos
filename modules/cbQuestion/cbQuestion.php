@@ -465,6 +465,15 @@ class cbQuestion extends CRMEntity {
 						}
 					}
 				}
+				if (!empty(coreBOS_Session::get('authenticatedUserIsPortalUser', false))) {
+					$contactId = coreBOS_Session::get('authenticatedUserPortalContact', 0);
+					if (empty($contactId)) {
+						$sql_query = 'select 1';
+					} else {
+						$accountId = getSingleFieldValue('vtiger_contactdetails', 'accountid', 'contactid', $contactId);
+						$sql_query = addPortalModuleRestrictions($sql_query, $meta->getEntityName(), $accountId, $contactId);
+					}
+				}
 				return array(
 					'module' => $q->column_fields['qmodule'],
 					'columns' => $q->column_fields['qcolumns'],
