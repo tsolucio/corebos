@@ -42,4 +42,11 @@
 	<classname>deleteCalendarTabFromOrgShare</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add previous password parameter to Change Portal User Password</description>
+	<filename>build/changeSets/2021/addParameterToChangePortalUserPassword.php</filename>
+	<classname>addParameterToChangePortalUserPassword</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

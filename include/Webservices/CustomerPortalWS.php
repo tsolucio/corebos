@@ -30,10 +30,15 @@ function evvt_strip_html_links($text) {
 	return $text;
 }
 
-function vtws_changePortalUserPassword($email, $newPass, $user = '') {
+function vtws_changePortalUserPassword($email, $newPass, $oldPassword, $user = '') {
 	global $adb,$log;
-	$log->debug('>< changePortalUserPassword');
+	$log->debug('> changePortalUserPassword');
+	$passwd = getSingleFieldValue('vtiger_portalinfo', 'user_password', 'user_name', $email);
+	if (empty($oldPassword) || $passwd!=$oldPassword) {
+		throw new WebServiceException(WebServiceErrorCode::$INVALIDOLDPASSWORD, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$INVALIDOLDPASSWORD));
+	}
 	$nra = $adb->pquery('update vtiger_portalinfo set user_password=? where user_name=?', array($newPass,$email));
+	$log->debug('< changePortalUserPassword');
 	return ($nra && $adb->getAffectedRowCount($nra) == 1);
 }
 
