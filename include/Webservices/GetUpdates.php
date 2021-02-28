@@ -13,8 +13,6 @@ require_once 'include/utils/CommonUtils.php';
 
 function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 	global $adb;
-
-	$numRecordsLimit = 100;
 	$ignoreModules = array('Users');
 	$typed = true;
 	$dformat = 'Y-m-d H:i:s';
@@ -60,10 +58,11 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 	if (!$typed) {
 		$accessableModules = $entityModules;
 	} else {
-		if (!in_array($elementType, $entityModules)) {
+		$elementType = explode(',', $elementType);
+		if (empty(array_intersect($elementType, $entityModules))) {
 			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
 		}
-		$accessableModules[] = $elementType;
+		$accessableModules = $elementType;
 	}
 
 	$accessableModules = array_diff($accessableModules, $ignoreModules);
@@ -74,12 +73,8 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 		return $output;
 	}
 
-	if ($typed) {
-		$handler = vtws_getModuleHandlerFromName($elementType, $user);
-		$moduleMeta = $handler->getMeta();
-		$entityDefaultBaseTables = $moduleMeta->getEntityDefaultTableList();
-		//since there will be only one base table for all entities
-		$baseCRMTable = $entityDefaultBaseTables[0];
+	if ($typed && count($elementType)==1) {
+		$baseCRMTable = CRMEntity::getcrmEntityTableAlias($elementType[0], true);
 	} else {
 		$baseCRMTable = ' vtiger_crmobject ';
 	}
@@ -95,6 +90,9 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 		$params = array_merge($params, $ownerIds);
 	}
 
+	$streamraw = (isset($_REQUEST['format']) && strtolower($_REQUEST['format'])=='streamraw');
+	$streaming = (isset($_REQUEST['format']) && (strtolower($_REQUEST['format'])=='stream' || $streamraw));
+	$numRecordsLimit = GlobalVariable::getVariable('Webservice_Sync_RecordLimit'.($streaming ? 'Streaming' : ''), 100, $accessableModules[0]);
 	$q .=" order by modifiedtime limit $numRecordsLimit";
 	$result = $adb->pquery($q, $params);
 
@@ -107,7 +105,7 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 	} else {
 		$maxModifiedTime = $datetime;
 	}
-
+	$stream = '';
 	foreach ($accessableModules as $elementType) {
 		$handler = vtws_getModuleHandlerFromName($elementType, $user);
 		$moduleMeta = $handler->getMeta();
@@ -117,7 +115,7 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 		$deleteFieldValues = $deletedFieldDetails[2];
 		$deleteColumnNames = array();
 		foreach ($fieldNameDetails as $tableName_fieldName) {
-			$fieldComp = explode(".", $tableName_fieldName);
+			$fieldComp = explode('.', $tableName_fieldName);
 			$deleteColumnNames[$tableName_fieldName] = $fieldComp[1];
 		}
 		$params = array($moduleMeta->getTabName(),$datetime,$maxModifiedTime);
@@ -127,7 +125,7 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 		$moduleFieldNames = array_keys($moduleFields);
 		$moduleFieldNames[]='id';
 		$queryGenerator->setFields($moduleFieldNames);
-		$selectClause = "SELECT ".$queryGenerator->getSelectClauseColumnSQL();
+		$selectClause = 'SELECT '.$queryGenerator->getSelectClauseColumnSQL();
 		// adding the fieldnames that are present in the delete condition to the select clause
 		// since not all fields present in delete condition will be present in the fieldnames of the module
 		foreach ($deleteColumnNames as $table_fieldName => $columnName) {
@@ -145,7 +143,7 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 			$fromClause.= 'and smownerid IN('.generateQuestionMarks($ownerIds).')';
 			$params = array_merge($params, $ownerIds);
 		}
-		$fromClause.= ' ) vtiger_ws_sync ON (vtiger_crmentity.crmid = vtiger_ws_sync.crmid)';
+		$fromClause.= ' ) vtiger_ws_sync ON ('.$moduleMeta->baseTable.'.'.$moduleMeta->idColumn.'=vtiger_ws_sync.crmid)';
 		$q = $selectClause.' '.$fromClause;
 		$result = $adb->pquery($q, $params);
 		while ($arre = $adb->fetchByAssoc($result)) {
@@ -154,13 +152,34 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 				if (!$moduleMeta->hasAccess()) {
 					continue;
 				}
-				$output['deleted'][] = vtws_getId($moduleMeta->getEntityId(), $key);
+				if ($streaming) {
+					$stream .= json_encode(array('action' => 'deleted', 'record' => vtws_getId($moduleMeta->getEntityId(), $key)))."\n";
+					if (($i % 500)==0) {
+						echo $stream;
+						flush();
+						$stream = '';
+					}
+				} else {
+					$output['deleted'][] = vtws_getId($moduleMeta->getEntityId(), $key);
+				}
 			} else {
 				if (!$moduleMeta->hasAccess() ||!$moduleMeta->hasPermission(EntityMeta::$RETRIEVE, $key)) {
 					continue;
 				}
 				try {
-					$output['updated'][] = DataTransform::sanitizeDataWithColumn($arre, $moduleMeta);
+					if ($streaming) {
+						$stream .= json_encode(array(
+							'action' => 'updated',
+							'record' => ($streamraw ? $arre : DataTransform::sanitizeDataWithColumn($arre, $moduleMeta)),
+						))."\n";
+						if (($i % 500)==0) {
+							echo $stream;
+							flush();
+							$stream = '';
+						}
+					} else {
+						$output['updated'][] = DataTransform::sanitizeDataWithColumn($arre, $moduleMeta);
+					}
 				} catch (WebServiceException $e) {
 					//ignore records the user doesn't have access to.
 					continue;
@@ -168,10 +187,15 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 					throw new WebServiceException(WebServiceErrorCode::$INTERNALERROR, 'Unknown Error while processing request');
 				}
 			}
+			if ($stream!='') {
+				echo $stream;
+				flush();
+				$stream = '';
+			}
 		}
 	}
 
-	$q = "SELECT crmid FROM $baseCRMTable WHERE modifiedtime>?  and setype IN(".generateQuestionMarks($accessableModules).')';
+	$q = "SELECT count(*) as cnt FROM $baseCRMTable WHERE modifiedtime>? and setype IN(".generateQuestionMarks($accessableModules).')';
 	$params = array($maxModifiedTime);
 
 	foreach ($accessableModules as $entityModule) {
@@ -181,13 +205,8 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 		$q.='and smownerid IN('.generateQuestionMarks($ownerIds).')';
 		$params = array_merge($params, $ownerIds);
 	}
-
 	$result = $adb->pquery($q, $params);
-	if ($adb->num_rows($result)>0) {
-		$output['more'] = true;
-	} else {
-		$output['more'] = false;
-	}
+	$output['more'] = ($adb->query_result($result, 0, 'cnt')>0);
 	if (!$maxModifiedTime) {
 		$modifiedtime = $mtime;
 	} else {

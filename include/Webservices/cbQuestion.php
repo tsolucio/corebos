@@ -62,5 +62,11 @@ function cbwsGetAnswer($qid, $params, $user) {
 	if (!$meta->exists($qidComponents[1])) {
 		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record you are trying to access is not found');
 	}
+	if (is_string($params) && substr($params, 0, 1)=='{') {
+		$params = json_decode($params, true);
+		if (json_last_error() !== JSON_ERROR_NONE) {
+			throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Invalid Question context');
+		}
+	}
 	return cbQuestion::getAnswer($qidComponents[1], $params);
 }

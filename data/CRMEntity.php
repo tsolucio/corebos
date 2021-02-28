@@ -3563,7 +3563,7 @@ class CRMEntity {
 			}
 			if ($typeOfPermissionOverride=='none' || trim($tsSpecialAccessQuery)=='') {
 				$this->setupTemporaryTable($tableName, $sharedModule, $user, $userprivs->getParentRoleSequence(), $userprivs->getGroups());
-				$query = " INNER JOIN $tableName $tableName$scope ON $tableName$scope.id = vtiger_crmentity$scope.smownerid ";
+				$query = " INNER JOIN $tableName $tableName$scope ON $tableName$scope.id = ".$this->crmentityTable."$scope.smownerid ";
 			} else {
 				global $adb;
 				VTCacheUtils::updateCachedInformation('SpecialPermissionWithDuplicateRows', $SpecialPermissionMayHaveDuplicateRows);

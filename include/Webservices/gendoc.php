@@ -33,13 +33,19 @@ require_once 'modules/evvtgendoc/OpenDocument.php';
 
 function cbws_convert($file, $convert_format, $user) {
 	global $adb, $root_directory;
+	if (GlobalVariable::getVariable('Webservice_GenDocConversion_Active', 0, 'evvtgendoc', $user->id)==0) {
+		return array(
+			'result' => 'success',
+			'errormessage' => 'Service deactivated',
+		);
+	}
 	$globaltime_start = microtime(true);
 	$tmpplace = $root_directory.'cache/gd'.uniqid();
 	mkdir($tmpplace);
 	$filename = basename($file['name']);
 	$tmppath = $tmpplace.'/'.$filename;
 	$partsfile = explode('.', $filename);
-	$resfile = $partsfile[0].'.'.$convert_format;
+	$resfile = $partsfile[0].'.'.str_replace(['.',',','/',' '], '', $convert_format);
 	$result = file_put_contents($tmppath, base64_decode($file['content']));
 	if ($result === false) {
 		$ret = array(
@@ -64,8 +70,6 @@ function cbws_convert($file, $convert_format, $user) {
 					'content' => base64_encode(file_get_contents($resultpath))
 				),
 			);
-			array_map('unlink', glob($tmpplace.'/*'));
-			rmdir($tmpplace);
 		} else {
 			$ret = array(
 				'result' => 'error',
@@ -78,6 +82,8 @@ function cbws_convert($file, $convert_format, $user) {
 			'errormessage' => 'Error saving input file, filesize differ'
 		);
 	}
+	array_map('unlink', glob($tmpplace.'/*'));
+	rmdir($tmpplace);
 	$globaltime = microtime(true)-$globaltime_start;
 	$logarray = array(
 		'ip' => $_SERVER['REMOTE_ADDR'],

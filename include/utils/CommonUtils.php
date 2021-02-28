@@ -885,6 +885,32 @@ function getRelatedAccountContact($entityid, $module = '') {
 				$rspot = $adb->pquery('select account from vtiger_assets where assetsid=?', array($crmid));
 				$acid = $adb->query_result($rspot, 0, 'account');
 				break;
+			case 'Emails':
+				$rspot = $adb->pquery(
+					'select vtiger_seactivityrel.crmid
+					from vtiger_seactivityrel
+					inner join vtiger_crmobject on vtiger_seactivityrel.crmid=vtiger_crmobject.crmid
+					where deleted=0 and setype=? and activityid=?',
+					array($module, $crmid)
+				);
+				$acid = $adb->query_result($rspot, 0, 'crmid');
+				if ($acid=='') {
+					$acid=0;
+				}
+				break;
+			case 'Documents':
+				$rspot = $adb->pquery(
+					'select vtiger_senotesrel.crmid
+					from vtiger_senotesrel
+					inner join vtiger_crmobject on vtiger_senotesrel.crmid=vtiger_crmobject.crmid
+					where deleted=0 and setype=? and notesid=?',
+					array($module, $crmid)
+				);
+				$acid = $adb->query_result($rspot, 0, 'crmid');
+				if ($acid=='') {
+					$acid=0;
+				}
+				break;
 			case 'ProjectMilestone':
 				$rspot = $adb->pquery('select linktoaccountscontacts
 				from vtiger_project

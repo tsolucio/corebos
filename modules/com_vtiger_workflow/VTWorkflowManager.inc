@@ -350,9 +350,10 @@ class VTWorkflowManager {
 	}
 
 	public function newWorkflow($moduleName) {
+		global $current_user;
 		$workflow = $this->getWorkflowInstance();
 		$workflow->moduleName = $moduleName;
-		$workflow->executionCondition = self::$ON_EVERY_SAVE;
+		$workflow->executionCondition = (is_admin($current_user) ? self::$ON_EVERY_SAVE : self::$ON_SCHEDULE);
 		$workflow->type = 'basic';
 		$workflow->id = 0;
 		$workflow->description = '';
