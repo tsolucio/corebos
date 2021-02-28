@@ -186,10 +186,11 @@ class cbQuestion extends CRMEntity {
 				$params = array_merge($params, $qctx);
 			}
 		} else {
-			if (isPermitted('cbQuestion', 'DetailView', $qid) != 'yes') {
-				return array('type' => 'ERROR', 'answer' => 'LBL_PERMISSION');
-			}
 			$q->retrieve_entity_info($qid, 'cbQuestion');
+		}
+		$q->id = (empty($q->column_fields['record_id']) ? 0 : $q->column_fields['record_id']);
+		if (empty($q->id) || isPermitted('cbQuestion', 'DetailView', $q->id) != 'yes') {
+			return getTranslatedString('SQLError', 'cbQuestion').': PERMISSION';
 		}
 		include_once 'include/Webservices/Query.php';
 		include_once 'include/Webservices/VtigerModuleOperation.php';
@@ -290,10 +291,11 @@ class cbQuestion extends CRMEntity {
 				$params = array_merge($params, $qctx);
 			}
 		} else {
-			if (isPermitted('cbQuestion', 'DetailView', $qid) != 'yes') {
-				return array('type' => 'ERROR', 'answer' => 'LBL_PERMISSION');
-			}
 			$q->retrieve_entity_info($qid, 'cbQuestion');
+		}
+		$q->id = (empty($q->column_fields['record_id']) ? 0 : $q->column_fields['record_id']);
+		if (empty($q->id) || isPermitted('cbQuestion', 'DetailView', $q->id) != 'yes') {
+			return array('type' => 'ERROR', 'answer' => 'PERMISSION');
 		}
 		if ($q->column_fields['qtype']=='Mermaid') {
 			$graph = 'LR'; // default graph
