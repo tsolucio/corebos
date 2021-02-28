@@ -199,9 +199,22 @@ class cbQuestion extends CRMEntity {
 			$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.$mod->table_name.' ';
 			if (!empty($q->column_fields['qcondition'])) {
 				$conds = decode_html($q->column_fields['qcondition']);
+				$queryparams = array();
 				foreach ($params as $param => $value) {
-					$conds = str_replace($param, $value, $conds);
+					$conds = str_replace("'$param'", '?', $conds, $howmany);
+					for ($times=1; $times<=$howmany; $times++) {
+						$queryparams[] = $value;
+					}
+					$conds = str_replace('"'.$param.'"', '?', $conds, $howmany);
+					for ($times=1; $times<=$howmany; $times++) {
+						$queryparams[] = $value;
+					}
+					$conds = str_replace($param, '?', $conds, $howmany);
+					for ($times=1; $times<=$howmany; $times++) {
+						$queryparams[] = $value;
+					}
 				}
+				$conds = $adb->convert2Sql($conds, $queryparams);
 				if ($q->column_fields['condfilterformat']=='1') { // filter conditions
 					$queryGenerator = new QueryGenerator($q->column_fields['qmodule'], $current_user);
 					$fields = array();
