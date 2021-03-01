@@ -32,20 +32,20 @@ class coreBOS_Rule {
 		);
 
 		$cache = new corebos_cache();
-		$cacheKey = md5(implode("", $params));
 		if ($cache->isUsable()) {
+			$cacheKey = md5(implode('', $params));
 			$query = 'select vtiger_crmentity.modifiedtime
-                        from vtiger_crmentity
-                        inner join vtiger_cbmap on (vtiger_cbmap.targetname=vtiger_crmentity.setype and vtiger_cbmap.cbmapid=?)
-                        where vtiger_crmentity.deleted=0
-                      UNION
-                      select vtiger_crmentity.modifiedtime
-                        from vtiger_crmentity
-                       where vtiger_crmentity.deleted=0 and vtiger_crmentity.crmid=?
-                      order by `modifiedtime` desc limit 1';
+				from vtiger_crmentity
+				inner join vtiger_cbmap on (vtiger_cbmap.targetname=vtiger_crmentity.setype and vtiger_cbmap.cbmapid=?)
+				where vtiger_crmentity.deleted=0
+				UNION
+				select vtiger_crmentity.modifiedtime
+				from vtiger_crmentity
+				where vtiger_crmentity.deleted=0 and vtiger_crmentity.crmid=?
+				order by `modifiedtime` desc limit 1';
 			if ($cache->getCacheClient()->hasWithQueryCheck($cacheKey, $query, [$conditionid, $conditionid])) {
 				$cacheValue = $cache->getCacheClient()->get($cacheKey);
-				cbEventHandler::do_action('corebos.audit.rule', array($current_user->id, $params, false, "Cache", $cacheValue, date('Y-m-d H:i:s')));
+				cbEventHandler::do_action('corebos.audit.rule', array($current_user->id, $params, false, 'Cache', $cacheValue, date('Y-m-d H:i:s')));
 				return $cacheValue;
 			}
 		}
