@@ -6728,7 +6728,7 @@ function checkOneRevisionSelected() {
 	* @return: (bool)
 	*/
 	cbVal.isNegNum = function (val) {
-		return (cbVal.isNum(val) && val.toString().indexOf('-') == 0);
+		return cbVal.isNum(val);
 	};
 
 	/*
