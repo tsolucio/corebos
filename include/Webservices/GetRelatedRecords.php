@@ -72,6 +72,15 @@ function getRelatedRecords($id, $module, $relatedModule, $queryParameters, $user
 	$meta = $handler->getMeta();
 
 	$query = __getRLQuery($id, $module, $relatedModule, $queryParameters, $user);
+	if (!empty(coreBOS_Session::get('authenticatedUserIsPortalUser', false))) {
+		$contactId = coreBOS_Session::get('authenticatedUserPortalContact', 0);
+		if (empty($contactId)) {
+			throw new WebServiceException(WebServiceErrorCode::$OPERATIONNOTSUPPORTED, 'Customer portal access with no contact information');
+		} else {
+			$accountId = getSingleFieldValue('vtiger_contactdetails', 'accountid', 'contactid', $contactId);
+			$query = addPortalModuleRestrictions($query, $relatedModule, $accountId, $contactId);
+		}
+	}
 	$result = $adb->pquery($query, array());
 	$records = array();
 

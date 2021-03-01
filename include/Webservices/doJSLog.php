@@ -14,6 +14,10 @@
 *************************************************************************************************/
 
 function cbws_jslog($level, $message, $user) {
+	global $LOG4PHP_DEBUG;
+	if ($LOG4PHP_DEBUG!=true) {
+		return;
+	}
 	$logjs= LoggerManager::getLogger('JAVASCRIPT');
 	$msg = json_decode($message, true);
 	if (json_last_error() !== JSON_ERROR_NONE) {

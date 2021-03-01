@@ -102,7 +102,9 @@ function cbexpsql_supportedFunctions() {
 		// 'getGEODistanceFromUser2ContactShipping' => 'getGEODistanceFromUser2ContactShipping(contact,address_specification)',
 		// 'getGEODistanceFromAssignUser2ContactShipping' => 'getGEODistanceFromAssignUser2ContactShipping(contact,assigned_user,address_specification)',
 		// 'getGEODistanceFromCoordinates' => 'getGEODistanceFromCoordinates({lat1},{long1},{lat2},{long2})',
+		'getIDof' => 'getIDof(module, searchon, searchfor)',
 		// 'getFromContext' => 'getFromContext(variablename)',
+		// 'getFromContextSearching' => 'getFromContextSearching(variablename, searchon, searchfor, returnthis)',
 		// 'setToContext' => 'setToContext(variablename, value)',
 		'getSetting' => "getSetting('setting_key', 'default')",
 		// 'setSetting' => 'setSetting('setting_key', value)',
@@ -336,6 +338,21 @@ function cbexpsql_setype($arr, $mmodule) {
 			list($void, $crmid) = explode('x', $crmid);
 		}
 		$ret = '(select setype from vtiger_crmobject where vtiger_crmobject.crmid='.$crmid.')';
+	}
+	return $ret;
+}
+
+function cbexpsql_getidof($arr, $mmodule) {
+	global $current_user;
+	$ret = '';
+	if (!empty($arr[0])) {
+		$mod = trim(__cbexpsql_functionparamsvalue($arr[0], $mmodule), "'");
+		$fld = trim(__cbexpsql_functionparamsvalue($arr[1], $mmodule), "'");
+		$val = trim(__cbexpsql_functionparamsvalue($arr[2], $mmodule), "'");
+		$qg = new QueryGenerator($mod, $current_user);
+		$qg->setFields(array('id'));
+		$qg->addCondition($fld, $val, 'e');
+		$ret = 'coalesce(('.$qg->getQuery(false, 1).'), 0)';
 	}
 	return $ret;
 }

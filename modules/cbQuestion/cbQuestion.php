@@ -9,7 +9,6 @@
  ************************************************************************************/
 require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
-require_once 'include/QueryGenerator/PHPSQLParserInclude.php';
 use \PHPSQLParser\PHPSQLParser;
 use \PHPSQLParser\utils\ExpressionType;
 
@@ -187,10 +186,11 @@ class cbQuestion extends CRMEntity {
 				$params = array_merge($params, $qctx);
 			}
 		} else {
-			if (isPermitted('cbQuestion', 'DetailView', $qid) != 'yes') {
-				return array('type' => 'ERROR', 'answer' => 'LBL_PERMISSION');
-			}
 			$q->retrieve_entity_info($qid, 'cbQuestion');
+		}
+		$q->id = (empty($q->column_fields['record_id']) ? 0 : $q->column_fields['record_id']);
+		if (empty($q->id) || isPermitted('cbQuestion', 'DetailView', $q->id) != 'yes') {
+			return getTranslatedString('SQLError', 'cbQuestion').': PERMISSION';
 		}
 		include_once 'include/Webservices/Query.php';
 		include_once 'include/Webservices/VtigerModuleOperation.php';
@@ -199,9 +199,22 @@ class cbQuestion extends CRMEntity {
 			$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.$mod->table_name.' ';
 			if (!empty($q->column_fields['qcondition'])) {
 				$conds = decode_html($q->column_fields['qcondition']);
+				$queryparams = array();
 				foreach ($params as $param => $value) {
-					$conds = str_replace($param, $value, $conds);
+					$conds = str_replace("'$param'", '?', $conds, $howmany);
+					for ($times=1; $times<=$howmany; $times++) {
+						$queryparams[] = $value;
+					}
+					$conds = str_replace('"'.$param.'"', '?', $conds, $howmany);
+					for ($times=1; $times<=$howmany; $times++) {
+						$queryparams[] = $value;
+					}
+					$conds = str_replace($param, '?', $conds, $howmany);
+					for ($times=1; $times<=$howmany; $times++) {
+						$queryparams[] = $value;
+					}
 				}
+				$conds = $adb->convert2Sql($conds, $queryparams);
 				if ($q->column_fields['condfilterformat']=='1') { // filter conditions
 					$queryGenerator = new QueryGenerator($q->column_fields['qmodule'], $current_user);
 					$fields = array();
@@ -291,10 +304,11 @@ class cbQuestion extends CRMEntity {
 				$params = array_merge($params, $qctx);
 			}
 		} else {
-			if (isPermitted('cbQuestion', 'DetailView', $qid) != 'yes') {
-				return array('type' => 'ERROR', 'answer' => 'LBL_PERMISSION');
-			}
 			$q->retrieve_entity_info($qid, 'cbQuestion');
+		}
+		$q->id = (empty($q->column_fields['record_id']) ? 0 : $q->column_fields['record_id']);
+		if (empty($q->id) || isPermitted('cbQuestion', 'DetailView', $q->id) != 'yes') {
+			return array('type' => 'ERROR', 'answer' => 'PERMISSION');
 		}
 		if ($q->column_fields['qtype']=='Mermaid') {
 			$graph = 'LR'; // default graph
@@ -441,22 +455,32 @@ class cbQuestion extends CRMEntity {
 				$queryRelatedModules = array(); // this has to be filled in with all the related modules in the query
 				$webserviceObject = VtigerWebserviceObject::fromName($adb, $q->column_fields['qmodule']);
 				$modOp = new VtigerModuleOperation($webserviceObject, $current_user, $adb, $log);
-				$sql_question_context_variable = json_decode($q->column_fields['typeprops']);
-				$context_var_array = (array) $sql_question_context_variable->context_variables;
 				$sql_query = cbQuestion::getSQL($qid, $params);
-				if (!empty($context_var_array)) {
-					foreach ($context_var_array as $key => $value) {
-						$sql_query = str_replace($key, $value, $sql_query);
+				$sql_question_context_variable = json_decode($q->column_fields['typeprops']);
+				if ($sql_question_context_variable) {
+					$context_var_array = (array) $sql_question_context_variable->context_variables;
+					if (!empty($context_var_array)) {
+						foreach ($context_var_array as $key => $value) {
+							$sql_query = str_replace($key, $value, $sql_query);
+						}
 					}
 				}
-				$answer = $modOp->querySQLResults($sql_query, ' not in ', $meta, $queryRelatedModules);
+				if (!empty(coreBOS_Session::get('authenticatedUserIsPortalUser', false))) {
+					$contactId = coreBOS_Session::get('authenticatedUserPortalContact', 0);
+					if (empty($contactId)) {
+						$sql_query = 'select 1';
+					} else {
+						$accountId = getSingleFieldValue('vtiger_contactdetails', 'accountid', 'contactid', $contactId);
+						$sql_query = addPortalModuleRestrictions($sql_query, $meta->getEntityName(), $accountId, $contactId);
+					}
+				}
 				return array(
 					'module' => $q->column_fields['qmodule'],
 					'columns' => $q->column_fields['qcolumns'],
 					'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
 					'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
 					'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),
-					'answer' => $answer
+					'answer' => $modOp->querySQLResults($sql_query, ' not in ', $meta, $queryRelatedModules),
 				);
 			}
 		}

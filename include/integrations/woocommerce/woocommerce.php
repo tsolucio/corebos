@@ -953,7 +953,7 @@ class corebos_woocommerce {
 					'hdnGrandTotal' => 'total',
 					'hdnTaxType' => 'group',
 					'hdnDiscountAmount' => 'discount_total',
-					'hdnS_H_Amount' => 'shipping_total',
+					'shipping_handling_charge' => 'shipping_total',
 				);
 				foreach ($checkEmpty as $cbfield => $wcfield) {
 					if (!empty($data[$wcfield])) {

@@ -235,65 +235,7 @@ class Accounts extends CRMEntity {
 
 	/** Returns a list of the associated opportunities */
 	public function get_opportunities($id, $cur_tab_id, $rel_tab_id, $actions = false) {
-		global $log, $singlepane_view,$currentModule;
-		$log->debug('> get_opportunities '.$id);
-		$this_module = $currentModule;
-
-		$related_module = vtlib_getModuleNameById($rel_tab_id);
-		require_once "modules/$related_module/$related_module.php";
-		$other = new $related_module();
-
-		$parenttab = getParentTab();
-
-		if ($singlepane_view == 'true') {
-			$returnset = '&return_module='.$this_module.'&return_action=DetailView&return_id='.$id;
-		} else {
-			$returnset = '&return_module='.$this_module.'&return_action=CallRelatedList&return_id='.$id;
-		}
-
-		$button = '';
-
-		if ($actions) {
-			if (is_string($actions)) {
-				$actions = explode(',', strtoupper($actions));
-			}
-			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module)
-					."' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
-					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',"
-					."cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT')
-					.' ' . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
-			}
-			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
-				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
-				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". $singular_modname ."' class='crmbutton small create'" .
-					" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
-					" value='". getTranslatedString('LBL_ADD_NEW'). " " . $singular_modname ."'>&nbsp;";
-			}
-		}
-		$crmEntityTable = CRMEntity::getcrmEntityTableAlias($related_module);
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-		$query = "SELECT vtiger_potential.potentialid, vtiger_potential.related_to,
-				vtiger_potential.potentialname, vtiger_potential.sales_stage,
-				vtiger_potential.potentialtype, vtiger_potential.amount,vtiger_crmentity.crmid, vtiger_crmentity.smownerid,
-				vtiger_potential.closingdate, vtiger_potential.potentialtype, vtiger_account.accountname,
-				case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name
-			FROM vtiger_potential
-			INNER JOIN ".$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_potential.potentialid
-			LEFT JOIN vtiger_account ON vtiger_account.accountid = vtiger_potential.related_to
-			LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id
-			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			WHERE vtiger_crmentity.deleted=0 AND vtiger_potential.related_to='.$id;
-
-		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
-
-		if ($return_value == null) {
-			$return_value = array();
-		}
-		$return_value['CUSTOM_BUTTON'] = $button;
-
-		$log->debug('< get_opportunities');
-		return $return_value;
+		return $this->get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions);
 	}
 
 	/** Returns a list of the associated emails */

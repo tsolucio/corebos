@@ -374,26 +374,10 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 				} else {
 					$where="$table_name.$column_name = '-1'";
 				}
-			} elseif ($uitype == 15 || $uitype == 16) {
+			} elseif (($uitype == 15 || $uitype == 16) && hasMultiLanguageSupport($field_name)) {
 				$currlang = $current_user->language;
-				// Get all the keys for the for the Picklist value
-				$mod_keys = array_keys($mod_strings, $search_string);
-				if (count($mod_keys) >= 1) {
-					// Iterate on the keys, to get the first key which doesn't start with LBL_      (assuming it is not used in PickList)
-					foreach ($mod_keys as $mod_key) {
-						$stridx = strpos($mod_key, 'LBL_');
-						// Use strict type comparision, refer strpos for more details
-						if ($stridx !== 0) {
-							$search_string = $mod_key;
-							$where="$table_name.$column_name IN (select translation_key from vtiger_cbtranslation where locale='$currlang' and forpicklist='$module::$field_name' and i18n LIKE '". formatForSqlLike($search_string) ."') OR $table_name.$column_name like '". formatForSqlLike($search_string) ."'";
-							break;
-						} else { //if the mod strings cointains LBL , just return the original search string. Not the key
-							$where="$table_name.$column_name IN (select translation_key from vtiger_cbtranslation where locale='$currlang' and forpicklist='$module::$field_name' and i18n LIKE '". formatForSqlLike($search_string) ."') OR $table_name.$column_name like '". formatForSqlLike($search_string) ."'";
-						}
-					}
-				} else {
-					$where="$table_name.$column_name IN (select translation_key from vtiger_cbtranslation where locale='$currlang' and forpicklist='$module::$field_name' and i18n LIKE '". formatForSqlLike($search_string) ."') OR $table_name.$column_name like '". formatForSqlLike($search_string) ."'";
-				}
+				$where = "$table_name.$column_name IN (select translation_key from vtiger_cbtranslation where locale='$currlang' and forpicklist='$module::$field_name'"
+					." and i18n LIKE '".formatForSqlLike($search_string) ."') OR $table_name.$column_name like '". formatForSqlLike($search_string) ."'";
 			} elseif ($table_name == 'vtiger_crmentity' && $column_name == 'smownerid') {
 				$where = get_usersid($table_name, $column_name, $search_string);
 			} elseif ($table_name == 'vtiger_crmentity' && $column_name == 'modifiedby') {
@@ -1020,7 +1004,7 @@ function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 			if ($binary_search) {
 				$where .= 'LOWER('.$tablename.'.'.$columnname.") LIKE BINARY LOWER('". formatForSqlLike($search_val) ."')";
 			} else {
-				if (is_uitype($field_uitype, '_picklist_')) {
+				if (is_uitype($field_uitype, '_picklist_') && hasMultiLanguageSupport($fieldname)) {
 					$where .= '('.$tablename.'.'.$columnname.' IN (select translation_key from vtiger_cbtranslation
 						where locale="'.$current_user->language.'" and forpicklist="'.$module.'::'.$fieldname.'" and i18n LIKE "'.formatForSqlLike($search_val).'") OR '
 						.$tablename.'.'.$columnname.' LIKE "'. formatForSqlLike($search_val).'")';
@@ -1362,7 +1346,7 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 			if ($webserviceQL) {
 				$value = $fld.getAdvancedSearchComparator($comparator, $value, $datatype);
 			} else {
-				if (is_uitype($field_uitype, '_picklist_')) {
+				if (is_uitype($field_uitype, '_picklist_') && hasMultiLanguageSupport($fieldname)) {
 					$value = $tablename.'.'.$fieldname.' IN (select translation_key from vtiger_cbtranslation
 						where locale="'.$current_user->language.'" and forpicklist="'.$currentModule.'::'.$fld
 						.'" and i18n '.getAdvancedSearchComparator($comparator, $value, $datatype).')'

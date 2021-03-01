@@ -701,7 +701,7 @@ class CRMEntity {
 		// Attempt to re-use the query-result to avoid reading for every save operation
 		static $_privatecache = array();
 
-		$cachekey = md5($insertion_mode . serialize($params));
+		$cachekey = md5($insertion_mode . $sql . json_encode($params));
 
 		if (!isset($_privatecache[$cachekey])) {
 			$result = $adb->pquery($sql, $params);
@@ -1571,10 +1571,10 @@ class CRMEntity {
 		$from_clause.=' INNER JOIN '.$tableName.' temptab ON temptab.id='.$this->table_name .'.'.$this->table_index;
 		$from_clausesub.=' INNER JOIN '.$tableName.'2 temptab2 ON temptab2.id='.$this->table_name .'.'.$this->table_index;
 
-		$from_clause .= ' LEFT JOIN vtiger_users ON vtiger_users.id = '.$this->crmentityTable.'.smownerid
-						LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$this->crmentityTable.'.smownerid';
-		$from_clausesub .= ' LEFT JOIN vtiger_users ON vtiger_users.id = '.$this->crmentityTable.'.smownerid
-						LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$this->crmentityTable.'.smownerid';
+		$from_clause .= ' LEFT JOIN vtiger_users ON vtiger_users.id='.$this->crmentityTable.'.smownerid
+			LEFT JOIN vtiger_groups ON vtiger_groups.groupid='.$this->crmentityTable.'.smownerid';
+		$from_clausesub .= ' LEFT JOIN vtiger_users ON vtiger_users.id='.$this->crmentityTable.'.smownerid
+			LEFT JOIN vtiger_groups ON vtiger_groups.groupid='.$this->crmentityTable.'.smownerid';
 
 		$where_clause = ' WHERE '.$this->crmentityTable.'.deleted = 0';
 		$where_clause .= $this->getListViewSecurityParameter($module);
@@ -1585,7 +1585,7 @@ class CRMEntity {
 			if (isset($this->customFieldTable)) {
 				$sub_query .= ' LEFT JOIN '.$this->customFieldTable[0].' tcf ON tcf.'.$this->customFieldTable[1]." = t.$this->table_index";
 			}
-			$sub_query .= " WHERE crm.deleted=0  GROUP BY $select_cols HAVING COUNT(*)>1";
+			$sub_query .= " WHERE crm.deleted=0 GROUP BY $select_cols HAVING COUNT(*)>1";
 		} else {
 			$sub_query = "SELECT $table_cols $from_clausesub $where_clause GROUP BY $table_cols HAVING COUNT(*)>1";
 		}
@@ -3211,7 +3211,6 @@ class CRMEntity {
 			$sec_query .= ' and ('.$this->crmentityTable.".smownerid=$current_user->id or "
 				.$this->crmentityTable.".smownerid in (select vtiger_user2role.userid
 					from vtiger_user2role
-					inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
 					inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
 					where vtiger_role.parentrole like '" . $userprivs->getParentRoleSequence() . "::%') or "
 				.$this->crmentityTable.".smownerid in (select shareduserid
@@ -3241,7 +3240,6 @@ class CRMEntity {
 		$sec_query = " and (vtiger_crmentity$module.smownerid=$current_user->id or vtiger_crmentity$module.smownerid in ".
 			"(select vtiger_user2role.userid
 				from vtiger_user2role
-				inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
 				inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
 				where vtiger_role.parentrole like '" . $userprivs->getParentRoleSequence() . "::%') or vtiger_crmentity$module.smownerid in ".
 					"(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=" . $current_user->id . ' and tabid=' . $tabid . ') or (';
@@ -3489,10 +3487,8 @@ class CRMEntity {
 	 * @param <type> $userGroups
 	 */
 	public function getNonAdminUserAccessQuery($user, $parentRole, $userGroups) {
-		$query = "(SELECT $user->id as id) UNION (SELECT vtiger_user2role.userid AS userid FROM " .
-				'vtiger_user2role INNER JOIN vtiger_users ON vtiger_users.id=vtiger_user2role.userid ' .
-				'INNER JOIN vtiger_role ON vtiger_role.roleid=vtiger_user2role.roleid WHERE ' .
-				"vtiger_role.parentrole like '$parentRole::%')";
+		$query = "(SELECT $user->id as id) UNION (SELECT vtiger_user2role.userid AS userid FROM vtiger_user2role"
+			." INNER JOIN vtiger_role ON vtiger_role.roleid=vtiger_user2role.roleid WHERE vtiger_role.parentrole like '$parentRole::%')";
 		if (count($userGroups) > 0) {
 			$query .= ' UNION (SELECT groupid FROM vtiger_groups where groupid in (' . implode(',', $userGroups) . '))';
 		}
@@ -3570,7 +3566,7 @@ class CRMEntity {
 			}
 			if ($typeOfPermissionOverride=='none' || trim($tsSpecialAccessQuery)=='') {
 				$this->setupTemporaryTable($tableName, $sharedModule, $user, $userprivs->getParentRoleSequence(), $userprivs->getGroups());
-				$query = " INNER JOIN $tableName $tableName$scope ON $tableName$scope.id = vtiger_crmentity$scope.smownerid ";
+				$query = " INNER JOIN $tableName $tableName$scope ON $tableName$scope.id = ".$this->crmentityTable."$scope.smownerid ";
 			} else {
 				global $adb;
 				VTCacheUtils::updateCachedInformation('SpecialPermissionWithDuplicateRows', $SpecialPermissionMayHaveDuplicateRows);
@@ -3604,7 +3600,7 @@ class CRMEntity {
 		//as mysql query optimizer puts crmentity on the left side and considerably slow down
 		$query = preg_replace('/\s+/', ' ', $query);
 		if (strripos($query, ' WHERE ') !== false) {
-			$query = preg_replace('/ where /i', " WHERE $this->table_name.$this->table_index > 0 AND ", $query, 1);
+			$query = str_ireplace(' where ', " WHERE $this->table_name.$this->table_index>0 AND ", $query);
 		}
 		return $query;
 	}

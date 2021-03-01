@@ -10,14 +10,17 @@
 
 class OperationManager {
 	private $format;
+	private const FORMATDEFAULTS = array(
+		'includePath'=>'include/Webservices/OperationManagerEnDecode.php',
+		'class'=>'OperationManagerEnDecode',
+		'encodeMethod'=>'encode',
+		'decodeMethod'=>'decode',
+		'postCreate'=>''
+	);
 	private $formatsData=array(
-		'json'=>array(
-			'includePath'=>'include/Webservices/OperationManagerEnDecode.php',
-			'class'=>'OperationManagerEnDecode',
-			'encodeMethod'=>'encode',
-			'decodeMethod'=>'decode',
-			'postCreate'=>''
-		)
+		'json'=> self::FORMATDEFAULTS,
+		'stream'=> self::FORMATDEFAULTS,
+		'streamraw'=> self::FORMATDEFAULTS,
 	);
 	private $formatObjects ;
 	private $inParamProcess ;

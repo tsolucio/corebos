@@ -215,7 +215,7 @@ function getAdminevvtMenu() {
 }
 
 function checkevvtMenuInstalled() {
-	global $adb, $current_user;
+	global $adb, $current_user, $currentModule;
 	$adb->query('CREATE TABLE IF NOT EXISTS vtiger_crmobject (
 		crmid int(19),
 		cbuuid char(40),
@@ -253,6 +253,7 @@ function checkevvtMenuInstalled() {
 		$adb->query("ALTER TABLE vtiger_profile2field ADD summary enum('T', 'H','B', 'N') DEFAULT 'B' NOT NULL");
 	}
 	if (vtlib_isModuleActive('cbupdater')) {
+		$holdModule = $currentModule;
 		$rsup = $adb->query("select cbupdaterid,execstate from vtiger_cbupdater where classname='denormalizechangeset'");
 		if ($adb->query_result($rsup, 0, 'execstate')!='Executed') {
 			$holduser = $current_user;
@@ -308,6 +309,7 @@ function checkevvtMenuInstalled() {
 			ob_end_clean();
 			$current_user = $holduser;
 		}
+		$currentModule = $holdModule;
 	}
 }
 

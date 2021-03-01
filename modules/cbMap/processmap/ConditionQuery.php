@@ -69,7 +69,8 @@ class ConditionQuery extends processcbMap {
 
 	private function executeSQL($sql, $arguments, $return) {
 		global $adb;
-		$rs = $adb->pquery($sql, $arguments);
+		$sql = $adb->convert2Sql($sql, $arguments);
+		$rs = $adb->query($sql);
 		if ($rs) {
 			if (strtolower($return)=='count') {
 				return $adb->num_rows($rs);

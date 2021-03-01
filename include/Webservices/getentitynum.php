@@ -20,8 +20,8 @@ function vtws_get_entitynum($user = '') {
 	require_once 'include/utils/UserInfoUtil.php';
 	require_once 'modules/Users/Users.php';
 	global $adb;
-
-	$enumres = $adb->query('SELECT semodule, prefix FROM vtiger_modentity_num');
+	$types = vtws_listtypes(null, $user);
+	$enumres = $adb->query('SELECT semodule, prefix FROM vtiger_modentity_num WHERE semodule in ("'.implode('","', $types['types']).'")');
 	$no_of_cont = $adb->num_rows($enumres);
 	$entitynum = array();
 	for ($i=0; $i<$no_of_cont; $i++) {

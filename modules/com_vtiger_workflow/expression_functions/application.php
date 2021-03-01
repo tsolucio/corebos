@@ -85,11 +85,26 @@ function __cb_getcrudmode($arr) {
 	}
 }
 
+function __cb_getidof($arr) {
+	global $current_user, $adb;
+	$qg = new QueryGenerator($arr[0], $current_user);
+	$qg->setFields(array('id'));
+	$qg->addCondition($arr[1], $arr[2], 'e');
+	$rs = $adb->query($qg->getQuery(false, 1));
+	if ($rs && $adb->num_rows($rs)>0) {
+		return $adb->query_result($rs, 0, 0);
+	} else {
+		return 0;
+	}
+}
+
 function __cb_getfromcontext($arr) {
 	$str_arr = explode(',', $arr[0]);
 	$variableArr = array();
 	foreach ($str_arr as $vname) {
-		if (empty($arr[1]->WorkflowContext[$vname])) {
+		if (strpos($vname, '.')) {
+			$variableArr[$vname] = __cb_getfromcontextvalueinarrayobject($arr[1]->WorkflowContext, $vname);
+		} elseif (empty($arr[1]->WorkflowContext[$vname])) {
 			$variableArr[$vname] = '';
 		} else {
 			$variableArr[$vname] = $arr[1]->WorkflowContext[$vname];
@@ -100,6 +115,59 @@ function __cb_getfromcontext($arr) {
 	} else {
 		return json_encode($variableArr);
 	}
+}
+
+function __cb_getfromcontextsearching($arr) {
+	$str_arr = explode(',', $arr[0]);
+	$variableArr = array();
+	foreach ($str_arr as $vname) {
+		$array = false;
+		if (strpos($vname, '.')) {
+			$array = __cb_getfromcontextvalueinarrayobject($arr[4]->WorkflowContext, $vname);
+		} elseif (empty($arr[4]->WorkflowContext[$vname])) {
+			$variableArr[$vname] = '';
+		} else {
+			$array = $arr[4]->WorkflowContext[$vname];
+		}
+		if (is_array($array)) {
+			$key = array_search($arr[2], array_column($array, $arr[1]));
+			if ($key && !empty($array[$key])) {
+				$variableArr[$vname] = __cb_getfromcontextvalueinarrayobject($array[$key], $arr[3]);
+			} else {
+				$variableArr[$vname] = '';
+			}
+		}
+	}
+	if (count($variableArr)==1) {
+		return $variableArr[$arr[0]];
+	} else {
+		return json_encode($variableArr);
+	}
+}
+
+function __cb_getfromcontextvalueinarrayobject($aORo, $vname) {
+	$value = '';
+	$levels = explode('.', $vname);
+	foreach ($levels as $key) {
+		if (is_array($aORo)) {
+			if (!empty($aORo[$key])) {
+				$value = $aORo[$key];
+				$aORo = $aORo[$key];
+			} else {
+				$value = '';
+			}
+		} elseif (is_object($aORo)) {
+			if (!empty($aORo->$key)) {
+				$value = $aORo->$key;
+				$aORo = $aORo->$key;
+			} else {
+				$value = '';
+			}
+		} else {
+			$value = '';
+		}
+	}
+	return $value;
 }
 
 function __cb_setfromcontext($arr) {

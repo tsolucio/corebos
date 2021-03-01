@@ -14,4 +14,39 @@
 	<classname>upd_InvDet_fields</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Add workflow Upsert task</description>
+	<filename>build/changeSets/2021/addExeWFUpsertTask.php</filename>
+	<classname>addExeWFUpsertTask</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add multi-language field to picklsts</description>
+	<filename>build/changeSets/2021/addmultii18nfieldtopicklists.php</filename>
+	<classname>addmultii18nfieldtopicklists</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>MajorLabel</author>
+	<description>Convert InventoryDetails quantity field to UI type 7</description>
+	<filename>build/changeSets/2021/InventoryDetailsQtyUI7.php</filename>
+	<classname>InventoryDetailsQtyUI7</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete old Calendar Tab from Orginization Sharing</description>
+	<filename>build/changeSets/2021/deleteCalendarTabFromOrgShare.php</filename>
+	<classname>deleteCalendarTabFromOrgShare</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add previous password parameter to Change Portal User Password</description>
+	<filename>build/changeSets/2021/addParameterToChangePortalUserPassword.php</filename>
+	<classname>addParameterToChangePortalUserPassword</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

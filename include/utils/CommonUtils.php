@@ -798,11 +798,11 @@ function getParentName($parent_id) {
 	return $entityNames[$parent_id];
 }
 
-/*
- * Return account/contact crmid of any given entityid
- * @param: crmid/webserviceid of the record we need to get the related account/contact
- * @param: Accounts | Contacts related entity to return
- * @returns: crmid of the account/contact related to the entityid
+/**
+ * Return account/contact crmid related to any given entityid
+ * @param integer crmid/webserviceid of the record we need to get the related account/contact
+ * @param string Accounts | Contacts related entity to return
+ * @return integer crmid of the account/contact related to the entityid
  */
 function getRelatedAccountContact($entityid, $module = '') {
 	global $adb, $current_user;
@@ -884,6 +884,32 @@ function getRelatedAccountContact($entityid, $module = '') {
 			case 'Assets':
 				$rspot = $adb->pquery('select account from vtiger_assets where assetsid=?', array($crmid));
 				$acid = $adb->query_result($rspot, 0, 'account');
+				break;
+			case 'Emails':
+				$rspot = $adb->pquery(
+					'select vtiger_seactivityrel.crmid
+					from vtiger_seactivityrel
+					inner join vtiger_crmobject on vtiger_seactivityrel.crmid=vtiger_crmobject.crmid
+					where deleted=0 and setype=? and activityid=?',
+					array($module, $crmid)
+				);
+				$acid = $adb->query_result($rspot, 0, 'crmid');
+				if ($acid=='') {
+					$acid=0;
+				}
+				break;
+			case 'Documents':
+				$rspot = $adb->pquery(
+					'select vtiger_senotesrel.crmid
+					from vtiger_senotesrel
+					inner join vtiger_crmobject on vtiger_senotesrel.crmid=vtiger_crmobject.crmid
+					where deleted=0 and setype=? and notesid=?',
+					array($module, $crmid)
+				);
+				$acid = $adb->query_result($rspot, 0, 'crmid');
+				if ($acid=='') {
+					$acid=0;
+				}
 				break;
 			case 'ProjectMilestone':
 				$rspot = $adb->pquery('select linktoaccountscontacts
@@ -3462,7 +3488,7 @@ function getEntityFieldNameDisplay($module, $fieldsName, $fieldValues) {
 	return '';
 }
 
-/** eliminate all occurrences of a string except the first one foundfrom another string
+/** eliminate all occurrences of a string except the first one found from another string
  * @param string that we want to delete all except first occurrence
  * @param string from which we need to delete the occurrences
  * @return string with only one (or none) occurrence of the given string to delete
