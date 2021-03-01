@@ -208,8 +208,13 @@ function getAssignedPicklistValues($tableName, $roleid, $adb, $lang = array()) {
 	static $questionMarkLists = [];
 	static $paramLists = [];
 
+	$cache = new corebos_cache();
 	$cacheId = $tableName . '#' . $roleid;
-	if (isset($cache[$cacheId])) {
+	if ($cache->isUsable()) {
+		if ($cache->getCacheClient()->has($cacheId)) {
+			return $cache->getCacheClient()->get($cacheId);
+		}
+	} elseif (isset($cache[$cacheId])) {
 		return $cache[$cacheId];
 	}
 
@@ -254,7 +259,11 @@ function getAssignedPicklistValues($tableName, $roleid, $adb, $lang = array()) {
 		}
 	}
 
-	$cache[$cacheId] = $arr;
+	if ($cache->isUsable()) {
+		$cache->getCacheClient()->set($cacheId, $arr);
+	} else {
+		$cache[$cacheId] = $arr;
+	}
 	return $arr;
 }
 
