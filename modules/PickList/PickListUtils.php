@@ -204,13 +204,15 @@ function hasMultiLanguageSupport($fieldName) {
  * @return array $val - the assigned picklist values in array format
  */
 function getAssignedPicklistValues($tableName, $roleid, $adb, $lang = array()) {
-	static $cache = array();
 	static $questionMarkLists = [];
 	static $paramLists = [];
 
+	$cache = new corebos_cache();
 	$cacheId = $tableName . '#' . $roleid;
-	if (isset($cache[$cacheId])) {
-		return $cache[$cacheId];
+	if ($cache->isUsable()) {
+		if ($cache->getCacheClient()->has($cacheId)) {
+			return $cache->getCacheClient()->get($cacheId);
+		}
 	}
 
 	$arr = array();
@@ -254,7 +256,9 @@ function getAssignedPicklistValues($tableName, $roleid, $adb, $lang = array()) {
 		}
 	}
 
-	$cache[$cacheId] = $arr;
+	if ($cache->isUsable()) {
+		$cache->getCacheClient()->set($cacheId, $arr);
+	}
 	return $arr;
 }
 
