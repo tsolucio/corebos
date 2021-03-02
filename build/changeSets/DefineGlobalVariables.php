@@ -110,7 +110,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_PopupScreen_Width',
 				'Application_PopupScreen_Height',
 				'Application_Textarea_Style',
-				'Application_CSS_Properties',
+				'Application_Merge_Record_Limit',
 
 				'Graph_DataLabels',
 				'Graph_DataLabels_Color',
@@ -155,9 +155,6 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'WebService_Session_Idle_Time',
 				'Webservice_Describe_ReturnUserList',
 				'Webservice_Describe_ReturnGroupList',
-				'Webservice_Sync_RecordLimit',
-				'Webservice_Sync_RecordLimitStreaming',
-				'Webservice_GenDocConversion_Active',
 				'SOAP_CustomerPortal_Enabled',
 				'SOAP_Outlook_Enabled',
 				'WEBDAV_Enabled',
