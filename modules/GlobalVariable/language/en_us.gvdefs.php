@@ -1553,6 +1553,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'SQL sort specification|DO NOT SORT',
 	'definition' => 'If given will be feeded directly into the SQL query to retrieve users that appear in the Assigned To dropdown permitting us to customize the sort order of these users.',
 ),
+'Application_Merge_Record_Limit' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'The maximum numbers of records to perform deduplication merging. The default is 8 records',
+),
 'Workflow_ListView_PageSize' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',
