@@ -49,4 +49,11 @@
 	<classname>addParameterToChangePortalUserPassword</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>Add entity name field to users</description>
+	<filename>build/changeSets/2021/addentityfield2moduleusers.php</filename>
+	<classname>addentityfield2moduleusers</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
