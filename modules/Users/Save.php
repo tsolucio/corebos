@@ -139,6 +139,9 @@ if (empty($_REQUEST['changepassword']) || $_REQUEST['changepassword'] != 'true')
 	if (empty($focus->column_fields['roleid']) && !empty($_POST['user_role'])) {
 		$focus->column_fields['roleid'] = $_POST['user_role'];
 	}
+	$first_name = $focus->column_fields['first_name'];
+	$last_name = $focus->column_fields['last_name'];
+	$focus->column_fields['ename'] = $first_name.' '.$last_name;
 	$focus->save('Users');
 
 	$return_id = $focus->id;
