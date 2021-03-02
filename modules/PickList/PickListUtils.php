@@ -204,7 +204,7 @@ function hasMultiLanguageSupport($fieldName) {
  * @return array $val - the assigned picklist values in array format
  */
 function getAssignedPicklistValues($tableName, $roleid, $adb, $lang = array()) {
-	static $cache = array();
+	static $cacheObsolete = array();
 	static $questionMarkLists = [];
 	static $paramLists = [];
 
@@ -214,8 +214,8 @@ function getAssignedPicklistValues($tableName, $roleid, $adb, $lang = array()) {
 		if ($cache->getCacheClient()->has($cacheId)) {
 			return $cache->getCacheClient()->get($cacheId);
 		}
-	} elseif (isset($cache[$cacheId])) {
-		return $cache[$cacheId];
+	} elseif (isset($cacheObsolete[$cacheId])) {
+		return $cacheObsolete[$cacheId];
 	}
 
 	$arr = array();
@@ -262,7 +262,7 @@ function getAssignedPicklistValues($tableName, $roleid, $adb, $lang = array()) {
 	if ($cache->isUsable()) {
 		$cache->getCacheClient()->set($cacheId, $arr);
 	} else {
-		$cache[$cacheId] = $arr;
+		$cacheObsolete[$cacheId] = $arr;
 	}
 	return $arr;
 }
