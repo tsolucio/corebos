@@ -93,6 +93,9 @@ class CBUpsertTask extends VTTask {
 					}
 					$crmid = coreBOS_Rule::evaluate($bmapid, $mapValues);
 				}
+				if (!empty($entity->WorkflowContext['linkmodeid'])) {
+					$fieldValue['linkmodeid'] = $entity->WorkflowContext['linkmodeid'];
+				}
 				if (empty($crmid)) {
 					$this->upsertData($fieldValue, $relmodule, 'doCreate');
 				} else {
@@ -128,6 +131,12 @@ class CBUpsertTask extends VTTask {
 		}
 		foreach ($data as $key => $value) {
 			$focusrel->column_fields[$key] = $value;
+		}
+		if (!empty($focusrel->column_fields['linkmodeid'])) {
+			$focusrel->linkmodeid = $focusrel->column_fields['linkmodeid'];
+			$focusrel->linkmodemodule = getSalesEntityType($focusrel->column_fields['linkmodeid']);
+			$_REQUEST['createmode'] = 'link';
+			unset($focusrel->column_fields['linkmodeid']);
 		}
 		$focusrel->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel->column_fields, $handlerMeta);
 		$focusrel->save($relmodule);
