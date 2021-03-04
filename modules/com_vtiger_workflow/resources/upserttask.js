@@ -361,6 +361,14 @@ function CBUpsertTask($, fieldvaluemapping) {
 							alert(alert_arr.WF_UPDATE_MAP_ERROR_INFO);
 							return {name:'string'};
 						}
+						if (fullFieldName == 'folderid' && moduleFieldTypes[fieldModule][fieldName]['name']=='reference') {
+							moduleFieldTypes[fieldModule][fieldName]['name']='picklist';
+							moduleFieldTypes[fieldModule][fieldName]['picklistValues']=moduleFieldTypes[fieldModule][fieldName]['picklistValues'].map((plval) => {
+								$wsid = plval.value.split('x');
+								plval.value = $wsid[1];
+								return plval;
+							});
+						}
 						return moduleFieldTypes[fieldModule][fieldName];
 					}
 
@@ -441,6 +449,14 @@ function CBUpsertTask($, fieldvaluemapping) {
 								alert(alert_arr.WF_UPDATE_MAP_ERROR+fieldModule+'.'+fieldName);
 								alert(alert_arr.WF_UPDATE_MAP_ERROR_INFO);
 								return {name:'string'};
+							}
+							if (fullFieldName == 'folderid' && moduleFieldTypes[fieldModule][fieldName]['name']=='reference') {
+								moduleFieldTypes[fieldModule][fieldName]['name']='picklist';
+								moduleFieldTypes[fieldModule][fieldName]['picklistValues']=moduleFieldTypes[fieldModule][fieldName]['picklistValues'].map((plval) => {
+									$wsid = plval.value.split('x');
+									plval.value = $wsid[1];
+									return plval;
+								});
 							}
 							return moduleFieldTypes[fieldModule][fieldName];
 						}
