@@ -138,8 +138,15 @@ class CBUpsertTask extends VTTask {
 			$_REQUEST['createmode'] = 'link';
 			unset($focusrel->column_fields['linkmodeid']);
 		}
+		$attmodule = $relmodule;
+		require 'modules/com_vtiger_workflow/tasks/processAttachments.php';
 		$focusrel->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel->column_fields, $handlerMeta);
 		$focusrel->save($relmodule);
+		if (!empty($wsAttachments)) {
+			foreach ($wsAttachments as $file) {
+				@unlink($file);
+			}
+		}
 		$logbg->debug('< upsertData');
 	}
 }
