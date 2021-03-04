@@ -1558,7 +1558,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Integer',
 	'category' => 'Application',
 	'values' => '',
-	'definition' => 'The maximum numbers of records to perform deduplication merging. The default is 8 records',
+	'definition' => 'The maximum number of records to perform deduplication merging. The default is 8 records',
 ),
 'Workflow_ListView_PageSize' => array(
 	'status' => 'Implemented',

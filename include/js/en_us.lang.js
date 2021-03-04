@@ -169,7 +169,8 @@ var alert_arr = {
 	/* For Duplicate merging feature */
 	'SAME_GROUPS': 'You have to select the records in the same groups for merging',
 	'ATLEAST_TWO': 'Select at least two records for merging',
-	'MAX_EIGHT': 'You are allowed to select a maximum of eight records',
+	'MAX_THREE': 'You are allowed to select a maximum of three records',
+	'MAX_RECORDS_EXCEEDED': 'You have exceeded the maximum amount of selectable records',
 	'MAX_RECORDS': 'You are allowed to select a maximum of four records',
 	'CON_MANDATORY': 'Select the mandatory field Last Name',
 	'LE_MANDATORY': 'Select the mandatory fields Last Name and Company',

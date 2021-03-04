@@ -74,6 +74,13 @@ GlobalVariable_getVariable('Application_PopupScreen_Height', 80, (typeof gVTModu
 }, function (error) {
 	cbPopupScreenHeightPercentage = 80;
 });
+var Application_Merge_Record_Limit = 8;
+GlobalVariable_getVariable('Application_Merge_Record_Limit', 8, (typeof gVTModule=='undefined' ? '' : gVTModule), '').then(function (response) {
+	var obj = JSON.parse(response);
+	Application_Merge_Record_Limit = obj.Application_Merge_Record_Limit;
+}, function (error) {
+	Application_Merge_Record_Limit = 8; // set default value on error
+});
 
 function setApplicationPopupWindowSize(w, h, r, s, t, l) {
 	w = w || cbPopupScreenWidthPercentage || 80;
@@ -3766,13 +3773,6 @@ function getMergeRecords(selectedNames, upperlimit, lowerlimit) {
 		lowerlimit = 2;
 	}
 	if (typeof upperlimit == 'undefined' || upperlimit == null) {
-		var Application_Merge_Record_Limit = 8; // define the variable and set it's default value
-		GlobalVariable_getVariable('Application_Merge_Record_Limit', 8, gVTModule).then(function (response) {
-			var obj = JSON.parse(response);
-			Application_Merge_Record_Limit = obj.Application_Merge_Record_Limit;
-		}, function (error) {
-			Application_Merge_Record_Limit = 8; // set default value on error
-		});
 		upperlimit = Application_Merge_Record_Limit;
 	}
 	var select_options=document.getElementsByName(selectedNames);
@@ -3790,7 +3790,7 @@ function getMergeRecords(selectedNames, upperlimit, lowerlimit) {
 	var tmp = 0;
 	if (xx != 0) {
 		if (xx > upperlimit) {
-			ldsPrompt.show(alert_arr['ERROR'], alert_arr.MAX_EIGHT);
+			ldsPrompt.show(alert_arr['ERROR'], alert_arr.MAX_RECORDS_EXCEEDED);
 			return false;
 		}
 		if (xx > 0) {
