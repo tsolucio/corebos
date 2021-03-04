@@ -229,8 +229,7 @@ function CBUpsertTask($, fieldvaluemapping) {
 				},
 				opType['picklistValues'])
 			);
-			value.replaceWith('<select id="save_fieldvalues_'+mappingno+'_value" class="expressionvalue">'+
-				options+'</select>');
+			value.replaceWith('<select id="save_fieldvalues_'+mappingno+'_value" class="expressionvalue">'+options+'</select>');
 			$('#save_fieldvalues_'+mappingno+'_value_type').val('rawtext');
 		}
 		function forStringField(opType, mappingno) {
