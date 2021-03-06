@@ -141,7 +141,7 @@ class SMSNotifier extends SMSNotifierBase {
 			require_once 'include/utils/GetGroupUsers.php';
 			$getGroupObj=new GetGroupUsers();
 			$getGroupObj->getAllUsersInGroup($assignedtoid);
-			  $userIds = $getGroupObj->group_users;
+			$userIds = $getGroupObj->group_users;
 		}
 
 		$tonumbers = array();
@@ -242,7 +242,7 @@ class SMSNotifier extends SMSNotifierBase {
 		$qresult = $adb->pquery('SELECT * FROM vtiger_smsnotifier_status WHERE smsnotifierid=?', array($record));
 		if ($qresult && $adb->num_rows($qresult)) {
 			while ($resultrow = $adb->fetch_array($qresult)) {
-				 $results[] = $resultrow;
+				$results[] = $resultrow;
 			}
 		}
 		return $results;
@@ -270,7 +270,6 @@ class SMSNotifierManager {
 				$provider->setParameter($k, $v);
 			}
 			$provider->setAuthParameters($resultrow['username'], $resultrow['password']);
-
 			return $provider;
 		}
 		return false;
