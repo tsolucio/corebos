@@ -199,22 +199,17 @@ class cbQuestion extends CRMEntity {
 			$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.$mod->table_name.' ';
 			if (!empty($q->column_fields['qcondition'])) {
 				$conds = decode_html($q->column_fields['qcondition']);
-				$queryparams = array();
+				$queryparams = 'set ';
+				$paramcount = 1;
+				$qpprefix = '@qp'.time();
 				foreach ($params as $param => $value) {
-					$conds = str_replace("'$param'", '?', $conds, $howmany);
-					for ($times=1; $times<=$howmany; $times++) {
-						$queryparams[] = $value;
-					}
-					$conds = str_replace('"'.$param.'"', '?', $conds, $howmany);
-					for ($times=1; $times<=$howmany; $times++) {
-						$queryparams[] = $value;
-					}
-					$conds = str_replace($param, '?', $conds, $howmany);
-					for ($times=1; $times<=$howmany; $times++) {
-						$queryparams[] = $value;
-					}
+					$qp = $qpprefix.$paramcount;
+					$paramcount++;
+					$queryparams.= $adb->convert2Sql(" $qp = ?,", [$value]);
+					$conds = str_replace(["'$param'", '"'.$param.'"', $param], $qp, $conds);
 				}
-				$conds = $adb->convert2Sql($conds, $queryparams);
+				$queryparams = trim($queryparams, ',');
+				$adb->query($queryparams);
 				if ($q->column_fields['condfilterformat']=='1') { // filter conditions
 					$queryGenerator = new QueryGenerator($q->column_fields['qmodule'], $current_user);
 					$fields = array();
