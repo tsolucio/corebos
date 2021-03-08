@@ -130,6 +130,9 @@ class SMSNotifier extends SMSNotifierBase {
 
 	protected function smsAssignedTo() {
 		global $adb;
+		if (empty(GlobalVariable::getVariable('SMSNotifier_SendCopyToUser', 1, 'SMSNotifier'))) {
+			return;
+		}
 
 		// Determine the number based on Assign To
 		$assignedtoid = $this->column_fields['assigned_user_id'];
