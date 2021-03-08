@@ -209,7 +209,9 @@ class cbQuestion extends CRMEntity {
 					$conds = str_replace(["'$param'", '"'.$param.'"', $param], $qp, $conds);
 				}
 				$queryparams = trim($queryparams, ',');
-				$adb->query($queryparams);
+				if (!empty($params)) {
+					$adb->query($queryparams);
+				}
 				if ($q->column_fields['condfilterformat']=='1') { // filter conditions
 					$queryGenerator = new QueryGenerator($q->column_fields['qmodule'], $current_user);
 					$fields = array();
