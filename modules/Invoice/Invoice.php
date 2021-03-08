@@ -105,7 +105,6 @@ class Invoice extends CRMEntity {
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
 		}
-		$updateInventoryProductRel_deduct_stock = true;
 		if ($this->mode=='edit' && !empty($this->record_status) && $this->record_status!=$this->column_fields['invoicestatus'] && $this->column_fields['invoicestatus']!='') {
 			$this->registerInventoryHistory();
 		}
@@ -128,6 +127,7 @@ class Invoice extends CRMEntity {
 		}
 
 		//in ajax save we should not call this function, because this will delete all the existing product values
+		$updateInventoryProductRel_deduct_stock = true;
 		if (isset($this->_recurring_mode) && $this->_recurring_mode == 'recurringinvoice_from_so' && isset($this->_salesorderid) && $this->_salesorderid!='') {
 			// We are getting called from the RecurringInvoice cron service!
 			$this->createRecurringInvoiceFromSO();

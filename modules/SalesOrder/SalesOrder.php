@@ -120,7 +120,6 @@ class SalesOrder extends CRMEntity {
 		if ($this->mode=='edit' && !empty($this->record_status) && $this->record_status != $this->column_fields['sostatus'] && $this->column_fields['sostatus'] != '') {
 			$this->registerInventoryHistory();
 		}
-		$updateInventoryProductRel_deduct_stock = true;
 		//Checking if quote_id is present and updating the quote status
 		if (!empty($this->column_fields['quote_id'])) {
 			$newStatus = GlobalVariable::getVariable('Quote_StatusOnSalesOrderSave', 'Accepted');
@@ -140,6 +139,7 @@ class SalesOrder extends CRMEntity {
 		}
 
 		//in ajax save we should not call this function, because this will delete all the existing product values
+		$updateInventoryProductRel_deduct_stock = true;
 		if (inventoryCanSaveProductLines($_REQUEST, 'SalesOrder')) {
 			//Based on the total Number of rows we will save the product relationship with this entity
 			saveInventoryProductDetails($this, 'SalesOrder');
