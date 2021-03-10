@@ -2715,7 +2715,7 @@ class CRMEntity {
 			}
 
 			$query .= " FROM $other->table_name";
-			$query .= ' INNER JOIN '.$this->crmentityTableAlias." ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
+			$query .= ' INNER JOIN '.$other->crmentityTableAlias." ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
 			$query .= $more_relation;
 			if ($relWithSelf) {
 				$query .= " INNER JOIN $this->table_name as ".$this->table_name."RelSelf ON $relationconditions";
