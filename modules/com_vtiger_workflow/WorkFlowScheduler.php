@@ -45,6 +45,7 @@ class WorkFlowScheduler {
 		'exists' => 'exists',
 		'does not start with' => 'dnsw',
 		'does not end with' => 'dnew',
+		'monthday' => 'monthday',
 	);
 
 	public function __construct($adb) {
@@ -350,7 +351,7 @@ class WorkFlowScheduler {
 	 */
 	private function _specialDateTimeOperator() {
 		return array('less than days ago', 'more than days ago', 'in less than', 'in more than', 'days ago', 'days later',
-			'less than hours before', 'less than hours later', 'more than hours later', 'more than hours before', 'is today');
+			'less than hours before', 'less than hours later', 'more than hours later', 'more than hours before', 'is today', 'monthday');
 	}
 
 	/**
@@ -421,6 +422,11 @@ class WorkFlowScheduler {
 			case 'more than hours before':
 				$hours = $condition['value'];
 				$value = date('Y-m-d H:i:s', strtotime('-'.$hours.' hours'));
+				break;
+			case 'monthday':
+				$monthday = $condition['value'];
+				$value = date('m-d', strtotime($monthday));
+				var_dump($value);
 				break;
 		}
 		@date_default_timezone_set($default_timezone);
