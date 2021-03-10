@@ -240,8 +240,20 @@ class VTEmailTask extends VTTask {
 		}
 		$this->after_retrieve();
 		if (!empty($entity->WorkflowContext['wfgenerated_file'])) {
-			for ($y=0; $y < count($entity->WorkflowContext['wfgenerated_file']); $y++) {
-				$this->attachmentsinfo[] = $entity->WorkflowContext['wfgenerated_file'][$y]['path'].$entity->WorkflowContext['wfgenerated_file'][$y]['name'];
+			$sendifempty = GlobalVariable::getVariable('Report_Send_Scheduled_ifEmpty', 1);
+			if ($sendifempty) {
+				for ($y=0; $y < count($entity->WorkflowContext['wfgenerated_file']); $y++) {
+					$this->attachmentsinfo[] = $entity->WorkflowContext['wfgenerated_file'][$y]['path'].$entity->WorkflowContext['wfgenerated_file'][$y]['name'];
+				}
+			} else {
+				for ($y=0; $y < count($entity->WorkflowContext['wfgenerated_file']); $y++) {
+					if ($entity->WorkflowContext['wfgenerated_file'][$y]['hascontent']) {
+						$this->attachmentsinfo[] = $entity->WorkflowContext['wfgenerated_file'][$y]['path'].$entity->WorkflowContext['wfgenerated_file'][$y]['name'];
+					}
+				}
+				if (empty($this->attachmentsinfo)) {
+					return;
+				}
 			}
 		}
 		if (!empty($this->attfieldnames)) {
