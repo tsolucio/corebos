@@ -204,6 +204,9 @@ class CRMEntity {
 
 	public function insertIntoAttachment($id, $module, $direct_import = false) {
 		global $log, $adb;
+		if (empty($_FILES)) {
+			return;
+		}
 		$log->debug("> insertIntoAttachment $id,$module");
 		$file_saved = false;
 		// get the list of uitype 69 fields so we can set their value
