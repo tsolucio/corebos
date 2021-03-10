@@ -2816,6 +2816,15 @@ class OpenDocument {
 		}
 	}
 
+	public static function PDFConversionActive() {
+		$GenDocPDF = (coreBOS_Settings::getSetting('cbgendoc_server', '')!='' || GlobalVariable::getVariable('GenDoc_Convert_URL', '', 'evvtgendoc')!='');
+		if (!$GenDocPDF) {
+			$rdo = shell_exec('which unoconv > /dev/null; echo $?');
+			$GenDocPDF = ($rdo==0);
+		}
+		return $GenDocPDF;
+	}
+
 	public function convert($frompath, $topath, $format = 'pdf') {
 		$gendoc_active = coreBOS_Settings::getSetting('cbgendoc_active', 0);
 		if ($gendoc_active == 1) {
