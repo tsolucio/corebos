@@ -571,26 +571,23 @@ class Documents extends CRMEntity {
 				" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 		}
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents', true);
-		$query = "select case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name,
-				crm2.crmid, crm2.setype
-				from vtiger_notes
-				inner join vtiger_senotesrel on vtiger_senotesrel.notesid= vtiger_notes.notesid
-				inner join ".$this->crmentityTableAlias." on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
-				inner join vtiger_crmentity crm2 on crm2.crmid=vtiger_senotesrel.crmid and crm2.deleted=0
-				left join vtiger_groups on vtiger_groups.groupid = crm2.smownerid
-				left join vtiger_users on vtiger_users.id = crm2.smownerid
-				where vtiger_notes.notesid=?
-				UNION
-				select case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name,
-				crm2.crmid, crm2.setype
-				from vtiger_notes
-				inner join vtiger_senotesrel on vtiger_senotesrel.crmid= vtiger_notes.notesid
-				inner join ".$this->crmentityTableAlias.' on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
-				inner join '.$crmEntityTable.' crm2 on crm2.crmid=vtiger_senotesrel.notesid and crm2.deleted=0
-				left join vtiger_groups on vtiger_groups.groupid = crm2.smownerid
-				left join vtiger_users on vtiger_users.id = crm2.smownerid
-				where vtiger_notes.notesid=?';
-
+		$query = "select case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name, crm2.crmid, crm2.setype
+			from vtiger_notes
+			inner join vtiger_senotesrel on vtiger_senotesrel.notesid=vtiger_notes.notesid
+			inner join ".$this->crmentityTableAlias." on vtiger_crmentity.crmid=vtiger_notes.notesid and vtiger_crmentity.deleted=0
+			inner join vtiger_crmentity crm2 on crm2.crmid=vtiger_senotesrel.crmid and crm2.deleted=0
+			left join vtiger_groups on vtiger_groups.groupid=crm2.smownerid
+			left join vtiger_users on vtiger_users.id=crm2.smownerid
+			where vtiger_notes.notesid=?
+			UNION
+			select case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name, crm2.crmid, crm2.setype
+			from vtiger_notes
+			inner join vtiger_senotesrel on vtiger_senotesrel.crmid=vtiger_notes.notesid
+			inner join ".$this->crmentityTableAlias.' on vtiger_crmentity.crmid=vtiger_notes.notesid and vtiger_crmentity.deleted=0
+			inner join '.$crmEntityTable.' crm2 on crm2.crmid=vtiger_senotesrel.notesid and crm2.deleted=0
+			left join vtiger_groups on vtiger_groups.groupid=crm2.smownerid
+			left join vtiger_users on vtiger_users.id=crm2.smownerid
+			where vtiger_notes.notesid=?';
 		$drs = $adb->pquery($query, array($id,$id));
 		$entries_list = array();
 		while ($row = $adb->fetch_array($drs)) {
