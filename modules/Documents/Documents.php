@@ -601,7 +601,7 @@ class Documents extends CRMEntity {
 			$entries[] = $row['user_name'];
 			$entries_list[] = $entries;
 		}
-		$return_data = array('header'=>$header,'entries'=>$entries_list,'CUSTOM_BUTTON' => $button,'navigation'=>array('',''));
+		$return_data = array('header'=>$header,'entries'=>$entries_list,'CUSTOM_BUTTON' => $button,'navigation'=>array('','<td></td>'));
 		$log->debug('< getEntities');
 		return $return_data;
 	}
