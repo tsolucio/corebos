@@ -389,9 +389,16 @@ class corebos_woocommerce {
 					$hold = $send2cb['pdoInformation'];
 					unset($send2cb['pdoInformation']);
 				}
+				if (isset($send2cb['taxtype'])) {
+					$holdtax = $send2cb['taxtype'];
+					unset($send2cb['taxtype']);
+				}
 				$send2cb = DataTransform::sanitizeData($send2cb, $this->getModuleMetaData($moduleName));
 				if (is_array($hold)) {
 					$send2cb['pdoInformation'] = $hold;
+				}
+				if (isset($holdtax)) {
+					$send2cb['taxtype'] = $holdtax;
 				}
 				$send2cb['wcsyncstatus'] = 'Active';
 				$send2cb['wccreated'] = '1';
@@ -427,9 +434,16 @@ class corebos_woocommerce {
 					$hold = $send2cb['pdoInformation'];
 					unset($send2cb['pdoInformation']);
 				}
+				if (isset($send2cb['taxtype'])) {
+					$holdtax = $send2cb['taxtype'];
+					unset($send2cb['taxtype']);
+				}
 				$send2cb = DataTransform::sanitizeData($send2cb, $this->getModuleMetaData($moduleName));
 				if (is_array($hold)) {
 					$send2cb['pdoInformation'] = $hold;
+				}
+				if (isset($holdtax)) {
+					$send2cb['taxtype'] = $holdtax;
 				}
 				coreBOS_Settings::setSetting('woocommerce_syncing', $crmid);
 				$rdo = vtws_revise($send2cb, $current_user);
