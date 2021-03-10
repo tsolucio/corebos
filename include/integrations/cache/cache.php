@@ -16,7 +16,7 @@
  *  Version   : 1.0
  *  Author    : JPL TSolucio, S. L.
  *************************************************************************************************/
-require "vendor/autoload.php";
+require 'vendor/autoload.php';
 
 class corebos_cache {
 

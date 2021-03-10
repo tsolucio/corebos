@@ -1489,6 +1489,7 @@ $WFExpressionFunctionDefinitons = array(
 	'examples' => array(
 		"getIDof('Contacts', 'firstname', 'Amy')",
 		"getIDof('Accounts', 'siccode', 'xyhdmsi33')",
+		"getIDof('Accounts', 'siccode', some_field)",
 	),
 ),
 'getFromContext' => array(
