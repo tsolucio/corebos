@@ -36,14 +36,8 @@ class VTEmailTask extends VTTask {
 		$this->dzattinfo = array();
 		if (!empty($this->attachmentids)) {
 			$GenDocActive = vtlib_isModuleActive('evvtgendoc');
-			if ($GenDocActive) {
-				include_once 'modules/evvtgendoc/OpenDocument.php';
-				$gendoc_url = GlobalVariable::getVariable('GenDoc_Convert_URL', '', 'evvtgendoc');
-				$gendoc_srv = coreBOS_Settings::getSetting('cbgendoc_server', '');
-				$GenDocPDF = ($gendoc_srv!='' || $gendoc_url!='');
-			} else {
-				$GenDocPDF = false;
-			}
+			include_once 'modules/evvtgendoc/OpenDocument.php';
+			$GenDocPDF = ($GenDocActive && OpenDocument::PDFConversionActive());
 			$aids = explode(',', trim($this->attachmentids, ','));
 			$query = 'SELECT vtiger_attachments.path, vtiger_attachments.name, vtiger_attachments.attachmentsid, vtiger_notes.filename, vtiger_notes.filesize,
 					vtiger_notes.template, vtiger_notes.template_for
