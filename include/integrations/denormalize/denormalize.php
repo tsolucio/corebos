@@ -101,7 +101,35 @@ class corebos_denormalize {
 			$fcst = $adb->query_result($fkey, 0, 'constraint_name');
 			$adb->query('ALTER TABLE '.$tablename.' DROP FOREIGN KEY '.$fcst);
 			$msg .= 'ALTER TABLE '.$tablename.' DROP FOREIGN KEY '.$fcst;
-			$msg .= 'Foreign Key constraint deleted.<br>';
+			$msg .= '<br>Foreign Key constraint deleted.<br>';
+		}
+		if ($module=='Contacts') {
+			$fkey = $adb->pquery(
+				"SELECT constraint_name
+				FROM information_schema.key_column_usage
+				WHERE table_name='vtiger_seactivityrel' and referenced_table_name='vtiger_crmentity' and constraint_schema=?",
+				array($dbconfig['db_name'])
+			);
+			if ($fkey && $adb->num_rows($fkey)>0) {
+				$fcst = $adb->query_result($fkey, 0, 'constraint_name');
+				$adb->query('ALTER TABLE vtiger_seactivityrel DROP FOREIGN KEY '.$fcst);
+				$msg .= 'ALTER TABLE vtiger_seactivityrel DROP FOREIGN KEY '.$fcst;
+				$msg .= '<br>Foreign Key constraint deleted.<br>';
+			}
+		}
+		if ($module=='Documents') {
+			$fkey = $adb->pquery(
+				"SELECT constraint_name
+				FROM information_schema.key_column_usage
+				WHERE table_name='vtiger_seattachmentsrel' and referenced_table_name='vtiger_crmentity' and constraint_schema=?",
+				array($dbconfig['db_name'])
+			);
+			if ($fkey && $adb->num_rows($fkey)>0) {
+				$fcst = $adb->query_result($fkey, 0, 'constraint_name');
+				$adb->query('ALTER TABLE vtiger_seattachmentsrel DROP FOREIGN KEY '.$fcst);
+				$msg .= 'ALTER TABLE vtiger_seattachmentsrel DROP FOREIGN KEY '.$fcst;
+				$msg .= '<br>Foreign Key constraint deleted.<br>';
+			}
 		}
 		$query2= "ALTER TABLE $tablename
 			ADD `crmid` INT( 19 ) NOT NULL DEFAULT 0 ,

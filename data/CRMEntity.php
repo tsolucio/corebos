@@ -2247,13 +2247,13 @@ class CRMEntity {
 			from vtiger_notes
 			inner join vtiger_senotesrel on vtiger_senotesrel.notesid=vtiger_notes.notesid
 			left join vtiger_notescf ON vtiger_notescf.notesid=vtiger_notes.notesid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_notes.notesid and vtiger_crmentity.deleted=0
-			inner join vtiger_crmentity crm2 on crm2.crmid=vtiger_senotesrel.crmid
+			inner join ".$other->crmentityTableAlias.' on vtiger_crmentity.crmid=vtiger_notes.notesid and vtiger_crmentity.deleted=0
+			inner join vtiger_crmobject crm2 on crm2.crmid=vtiger_senotesrel.crmid
 			left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
 			left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_notes.notesid
 			left join vtiger_attachments on vtiger_seattachmentsrel.attachmentsid=vtiger_attachments.attachmentsid
 			left join vtiger_users on vtiger_crmentity.smownerid=vtiger_users.id
-			where crm2.crmid=" . $id;
+			where crm2.crmid=' . $id;
 
 		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
 
