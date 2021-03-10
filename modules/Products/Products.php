@@ -1011,7 +1011,7 @@ class Products extends CRMEntity {
 			}
 		}
 		$crmtablealias = CRMEntity::getcrmEntityTableAlias($related_module);
-		$query = "SELECT vtiger_productcomponent.*,vtiger_productcomponentcf.*,vtiger_crmentity.crmid, vtiger_crmentity.smownerid,vtiger_products.*
+		$query = "SELECT vtiger_productcomponent.*,vtiger_productcomponentcf.*,vtiger_products.*,vtiger_crmentity.crmid, vtiger_crmentity.smownerid
 			FROM vtiger_productcomponent
 			INNER JOIN vtiger_productcomponentcf ON vtiger_productcomponentcf.productcomponentid = vtiger_productcomponent.productcomponentid
 			INNER JOIN $crmtablealias ON vtiger_crmentity.crmid = vtiger_productcomponent.productcomponentid
@@ -1056,7 +1056,7 @@ class Products extends CRMEntity {
 			$returnset = '&return_module=Products&return_action=CallRelatedList&is_parent=1&return_id='.$id;
 		}
 		$crmtablealias = CRMEntity::getcrmEntityTableAlias('ProductComponent');
-		$query = "SELECT vtiger_productcomponent.*,vtiger_productcomponentcf.*,vtiger_crmentity.crmid, vtiger_crmentity.smownerid,vtiger_products.*
+		$query = "SELECT vtiger_productcomponent.*,vtiger_productcomponentcf.*,vtiger_products.*,vtiger_crmentity.crmid, vtiger_crmentity.smownerid
 			FROM vtiger_productcomponent
 			INNER JOIN $crmtablealias ON vtiger_crmentity.crmid = vtiger_productcomponent.productcomponentid
 			INNER JOIN vtiger_productcomponentcf ON vtiger_productcomponentcf.productcomponentid = vtiger_productcomponent.productcomponentid
