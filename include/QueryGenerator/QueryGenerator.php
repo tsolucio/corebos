@@ -1052,6 +1052,9 @@ class QueryGenerator {
 						}
 					}
 				}
+				if ($conditionInfo['operator'] = 'monthday') {
+					$fieldSql = "("."$fieldGlue "."DATE_FORMAT(".$field->getTableName().".".$field->getColumnName().", '%m-%d') = '".$conditionInfo['value']."'";
+				}
 				if ($conditionInfo['operator'] == 'n' || $conditionInfo['operator'] == 'k' || $conditionInfo['operator'] == 'dnsw') {
 					$fieldGlue = ' AND';
 				} else {
