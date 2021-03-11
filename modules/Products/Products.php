@@ -121,7 +121,7 @@ class Products extends CRMEntity {
 			$this->insertIntoAttachment($this->id, $module);
 		}
 		$copyBundle = GlobalVariable::getVariable('Product_Copy_Bundle_OnDuplicate', 'false');
-		if ($copyBundle != 'false' && $_REQUEST['cbcustominfo1'] == 'duplicatingproduct' && !empty($_REQUEST['cbcustominfo2'])) {
+		if ($copyBundle!='false' && $_REQUEST['cbcustominfo1']=='duplicatingproduct' && !empty($_REQUEST['cbcustominfo2']) && vtlib_isModuleActive('ProductComponent')) {
 			include_once 'include/Webservices/Create.php';
 			include_once 'include/Webservices/Retrieve.php';
 			global $adb, $current_user;
@@ -1072,6 +1072,9 @@ class Products extends CRMEntity {
 	*/
 	public function isparent_check() {
 		global $adb;
+		if (!vtlib_isModuleActive('ProductComponent')) {
+			return false;
+		}
 		$crmtablealias = CRMEntity::getcrmEntityTableAlias('ProductComponent');
 		$isparent_query = $adb->pquery(
 			'SELECT EXISTS (SELECT 1
@@ -1087,6 +1090,9 @@ class Products extends CRMEntity {
 	*/
 	public function ismember_check() {
 		global $adb;
+		if (!vtlib_isModuleActive('ProductComponent')) {
+			return false;
+		}
 		$SubProductBeParent = GlobalVariable::getVariable('Product_Permit_Subproduct_Be_Parent', 'no');
 		$ismember = 0;
 		if ($SubProductBeParent == 'no') {
