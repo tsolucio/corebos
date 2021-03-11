@@ -97,6 +97,7 @@ $mod_strings = array(
 'Site Url' => 'Site Url',
 'Portal Url' => 'Portal Url',
 'groupEmailList' => 'Group Email List',
+'groupUsersWsIdList' => 'Group Users Web Service Id List',
 
 'Recommended frequency for Workflow is 15 mins' => 'Recommended frequency for Workflow is 15 mins',
 'Workflow'=>'Workflow',
@@ -250,5 +251,10 @@ $mod_strings = array(
 'LBL_SELECT_SENDGRID_EMAIL_TEMPLATE' => 'Select SendGrid Email Template',
 'LBL_LOAD_SENDGRID_TEMPLATES' => 'Load SendGrid Templates',
 'LBL_PREVIEW_BUTTON' => 'Preview',
+'LBL_ONESIGNAL_NOTIFICATION_HEADING' => 'Notification Heading',
+'LBL_ONESIGNAL_NOTIFICATION_SUBTITLE' => 'Notification Subtitle',
+'LBL_NOTIFICATION_CONTENT' => 'Notification Content',
+'LBL_ONESIGNAL_NOTIFICATION_INCLUDE_SEGMENT' => 'Included Segments',
+'LBL_ONESIGNAL_NOTIFICATION_EXCLUDED_SEGMENT' => 'Excluded Segments',
 );
 ?>
