@@ -56,4 +56,11 @@
 	<classname>addentityfield2moduleusers</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>updating entity name to all existing users</description>
+	<filename>build/changeSets/2021/updatingEntityNameToAllUsers.php</filename>
+	<classname>updatingEntityNameToAllUsers</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
