@@ -18,12 +18,10 @@ class CBSendOneSignalNotificationWorkFlowTask extends VTTask {
 		return array('notification_heading', 'notification_subtitle', 'notification_include_segment',
 		 'notification_excluded_segment', 'notification_web_url', 'notification_content', 'external_user_id');
 	}
-	
+
 	public function doTask(&$entityData) {
 		global $current_user;
-		$moduleName = $entityData->getModuleName();
-		$data = $entityData->getData();
-		
+
 		if (coreBOS_Settings::getSetting('onesignal_isactive', '') == '1') {
 			$entityCache = new VTEntityCache($current_user);
 			$ws_id = $entityData->getId();
@@ -51,7 +49,6 @@ class CBSendOneSignalNotificationWorkFlowTask extends VTTask {
 					$data = $adb->fetch_array($result);
 					$external_user_id = array($data['id']);
 				}
-
 			}
 
 			try {
@@ -73,7 +70,6 @@ class CBSendOneSignalNotificationWorkFlowTask extends VTTask {
 					$web_url,
 					$web_buttons
 				);
-				
 			} catch (Exception $e) {
 				global $log;
 				$log->debug("Error on Send OneSignal Notification Task");
