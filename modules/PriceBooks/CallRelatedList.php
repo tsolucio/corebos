@@ -60,8 +60,6 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 
 	$smarty->assign('NAME', $focus->column_fields[$focus->def_detailview_recname]);
 	$smarty->assign('UPDATEINFO', updateInfo($focus->id));
-	$smarty->assign('TODO_PERMISSION', CheckFieldPermission('parent_id', 'Calendar'));
-	$smarty->assign('EVENT_PERMISSION', CheckFieldPermission('parent_id', 'Events'));
 	$smarty->assign('CURRENCY_ID', $focus->column_fields['currency_id']);
 
 	// Module Sequence Numbering

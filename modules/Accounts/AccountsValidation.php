@@ -25,12 +25,13 @@
   using the text following the CONFIRM label
   Any other message will be interpreted as an error message that will be shown to user.
 ************************************************************************************/
+require_once 'data/CRMEntity.php';
 global $log,$currentModule,$adb;
-
+$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Accounts');
 $screen_values = json_decode($_REQUEST['structure'], true);
 $blockDuplicateAccounts = GlobalVariable::getVariable('Accounts_BlockDuplicateName', 1, 'Accounts');
 if ($blockDuplicateAccounts && isset($screen_values['accountname'])) {
-	$query = 'SELECT 1 FROM vtiger_account,vtiger_crmentity WHERE accountname=? and vtiger_account.accountid=vtiger_crmentity.crmid and vtiger_crmentity.deleted!=1';
+	$query = 'SELECT 1 FROM vtiger_account,'.$crmEntityTable.' WHERE accountname=? and vtiger_account.accountid=vtiger_crmentity.crmid and vtiger_crmentity.deleted!=1';
 	$value = vtlib_purify($screen_values['accountname']);
 	$params = array($value);
 	if (!empty($screen_values['record'])) {

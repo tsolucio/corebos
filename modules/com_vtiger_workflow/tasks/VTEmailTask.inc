@@ -15,6 +15,7 @@ require_once 'include/utils/CommonUtils.php';
 require_once 'modules/Messages/Messages.php';
 require_once 'modules/Emails/mail.php';
 include_once 'include/Webservices/VtigerEmailOperation.php';
+require_once 'data/CRMEntity.php';
 
 class VTEmailTask extends VTTask {
 	// Sending email takes more time, this should be handled via queue all the time.
@@ -35,14 +36,8 @@ class VTEmailTask extends VTTask {
 		$this->dzattinfo = array();
 		if (!empty($this->attachmentids)) {
 			$GenDocActive = vtlib_isModuleActive('evvtgendoc');
-			if ($GenDocActive) {
-				include_once 'modules/evvtgendoc/OpenDocument.php';
-				$gendoc_url = GlobalVariable::getVariable('GenDoc_Convert_URL', '', 'evvtgendoc');
-				$gendoc_srv = coreBOS_Settings::getSetting('cbgendoc_server', '');
-				$GenDocPDF = ($gendoc_srv!='' || $gendoc_url!='');
-			} else {
-				$GenDocPDF = false;
-			}
+			include_once 'modules/evvtgendoc/OpenDocument.php';
+			$GenDocPDF = ($GenDocActive && OpenDocument::PDFConversionActive());
 			$aids = explode(',', trim($this->attachmentids, ','));
 			$query = 'SELECT vtiger_attachments.path, vtiger_attachments.name, vtiger_attachments.attachmentsid, vtiger_notes.filename, vtiger_notes.filesize,
 					vtiger_notes.template, vtiger_notes.template_for
@@ -158,11 +153,12 @@ class VTEmailTask extends VTTask {
 			if (strpos($entity->WorkflowContext['SendThisMsgTemplate'], 'x')>0) {
 				list($wsid, $entity->WorkflowContext['SendThisMsgTemplate']) = explode('x', $entity->WorkflowContext['SendThisMsgTemplate']);
 			}
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('MsgTemplate');
 			$mtrs = $adb->pquery(
 				'select subject,template,templateonlytext
 				from vtiger_msgtemplate
-				inner join vtiger_crmentity on msgtemplateid=crmid
-				where deleted=0 and msgtemplateid=?',
+				inner join '.$crmEntityTable.' on msgtemplateid=vtiger_crmentity.crmid
+				where vtiger_crmentity.deleted=0 and msgtemplateid=?',
 				array($entity->WorkflowContext['SendThisMsgTemplate'])
 			);
 			if ($mtrs && $adb->num_rows($mtrs)>0) {
@@ -172,10 +168,11 @@ class VTEmailTask extends VTTask {
 				if (!empty($mtrs->fields['template'])) {
 					$this->content = $mtrs->fields['template'];
 				}
+				$crmEntityTable1 = CRMEntity::getcrmEntityTableAlias('Documents');
 				$docrs = $adb->pquery(
 					'select notesid
 					from vtiger_senotesrel
-					inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_senotesrel.notesid
+					inner join '.$crmEntityTable1.' on vtiger_crmentity.crmid=vtiger_senotesrel.notesid
 					where vtiger_crmentity.deleted=0 and vtiger_senotesrel.crmid=?',
 					array($entity->WorkflowContext['SendThisMsgTemplate'])
 				);
@@ -237,8 +234,20 @@ class VTEmailTask extends VTTask {
 		}
 		$this->after_retrieve();
 		if (!empty($entity->WorkflowContext['wfgenerated_file'])) {
-			for ($y=0; $y < count($entity->WorkflowContext['wfgenerated_file']); $y++) {
-				$this->attachmentsinfo[] = $entity->WorkflowContext['wfgenerated_file'][$y]['path'].$entity->WorkflowContext['wfgenerated_file'][$y]['name'];
+			$sendifempty = GlobalVariable::getVariable('Report_Send_Scheduled_ifEmpty', 1);
+			if ($sendifempty) {
+				for ($y=0; $y < count($entity->WorkflowContext['wfgenerated_file']); $y++) {
+					$this->attachmentsinfo[] = $entity->WorkflowContext['wfgenerated_file'][$y]['path'].$entity->WorkflowContext['wfgenerated_file'][$y]['name'];
+				}
+			} else {
+				for ($y=0; $y < count($entity->WorkflowContext['wfgenerated_file']); $y++) {
+					if ($entity->WorkflowContext['wfgenerated_file'][$y]['hascontent']) {
+						$this->attachmentsinfo[] = $entity->WorkflowContext['wfgenerated_file'][$y]['path'].$entity->WorkflowContext['wfgenerated_file'][$y]['name'];
+					}
+				}
+				if (empty($this->attachmentsinfo)) {
+					return;
+				}
 			}
 		}
 		if (!empty($this->attfieldnames)) {

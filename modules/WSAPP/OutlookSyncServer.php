@@ -63,7 +63,9 @@ class OutlookSyncServer extends SyncServer {
 			// Added for Duplication handling
 			if (!empty($record['crmid'])) {
 				$crmid = vtws_getIdComponents($record['crmid']);
-				$lookupResult = $db->pquery('SELECT crmid,modifiedtime FROM vtiger_crmentity WHERE crmid=?', array($crmid[1]));
+				$module = getSalesEntityType($crmid[1]);
+				$mod = CRMEntity::getInstance($module);
+				$lookupResult = $db->pquery('SELECT crmid,modifiedtime FROM '.$mod->crmentityTable.' WHERE crmid=?', array($crmid[1]));
 				if ($db->num_rows($lookupResult)) {
 					$lookupRecordId = $record['crmid'];
 				}
@@ -142,7 +144,7 @@ class OutlookSyncServer extends SyncServer {
 			$response['updated'][] = $responseRecord;
 		}
 		foreach ($result['deleted'] as $clientRecordId => $record) {
-			parent::idmap_put($appid, $record, $clientRecordId, "", "", $serverAppId, $this->delete);
+			parent::idmap_put($appid, $record, $clientRecordId, '', '', $serverAppId, $this->delete);
 			$response['deleted'][] = $clientRecordId;
 		}
 		$queueRecordIds = array();

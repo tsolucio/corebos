@@ -191,7 +191,7 @@ require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
 require_once 'modules/com_vtiger_workflow/VTSimpleTemplateOnData.inc';
 require_once 'include/Webservices/Retrieve.php';
 
-class WebserviceMapping extends cbMapcore {
+class WebserviceMapping extends processcbMap {
 
 	public function processMap($arguments) {
 		global $current_user;

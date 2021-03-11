@@ -55,7 +55,7 @@
 <table border=0 cellspacing=0 cellpadding=0 width=100% class="listTable">
 <tr>
 <td valign=top width="50%">
-	<table width="100%" class="listTable" cellpadding="5" cellspacing="0">
+	<table>
 	{foreach item=picklists from=$PICKLIST_VALUES}
 	<tr>
 		{foreach item=picklistfields from=$picklists}
@@ -67,8 +67,22 @@
 						<b>{$picklistfields.fieldlabel}</b>
 					{/if}
 				</td>
-				<td class="listTableTopButtons" valign="top">
-					<input type="button" value="{$MOD_PICKLIST.LBL_ASSIGN_BUTTON}" class="crmButton small edit" onclick="assignPicklistValues('{$MODULE}','{$picklistfields.fieldname}','{$picklistfields.fieldlabel}');" >
+				<td class="listTableTopButtons" valign="top" rowspan="2" style="width:200px;">
+					<button class="slds-button slds-button_outline-brand slds-m-top_x-small slds-m-left_small" onclick="assignPicklistValues('{$MODULE}','{$picklistfields.fieldname}','{$picklistfields.fieldlabel}');">
+						{$MOD_PICKLIST.LBL_ASSIGN_BUTTON}
+					</button>
+					<div class="slds-form-element slds-m-top_small slds-m-left_small">
+						<label class="slds-checkbox_toggle slds-grid">
+							<input type="checkbox" name="monoi18n_{$picklistfields.fieldname}" id="monoi18n_{$picklistfields.fieldname}" {if $picklistfields.multii18n}checked{/if}
+								onchange="saveMultiLanguage('{$MODULE}', '{$picklistfields.fieldname}', this.checked);"
+								aria-describedby="monoi18n_{$picklistfields.fieldname}_desc" />
+							<span id="monoi18n_{$picklistfields.fieldname}_desc" class="slds-checkbox_faux_container" aria-live="assertive">
+								<span class="slds-checkbox_faux"></span>
+								<span class="slds-checkbox_on">{$MOD_PICKLIST.multii18n}</span>
+								<span class="slds-checkbox_off">{$MOD_PICKLIST.monoi18n}</span>
+						</span>
+						</label>
+					</div>
 				</td>
 			{else}
 				<td class="listTableTopButtons small" colspan="2">&nbsp;</td>
@@ -79,7 +93,7 @@
 		{foreach item=picklistelements from=$picklists}
 			{if $picklistelements neq ''}
 				<td colspan="2" valign="top">
-				<ul style="list-style-type: none;">
+				<ul class="slds-m-left_small">
 					{foreach item=elements from=$picklistelements.value}
 						{if !empty($TEMP_MOD[$elements])}
 							<li>{$TEMP_MOD[$elements]}</li>

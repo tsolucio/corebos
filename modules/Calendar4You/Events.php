@@ -47,7 +47,11 @@ $event_status = (isset($_REQUEST['event_status']) ? vtlib_purify($_REQUEST['even
 if ($event_status != '') {
 	$Load_Event_Status = explode(',', $event_status);
 }
-
+$Load_Task_Priority = array();
+$task_priority = (isset($_REQUEST['task_priority']) ? vtlib_purify($_REQUEST['task_priority']) : '');
+if ($task_priority != '') {
+	$Load_Task_Priority = explode(',', $task_priority);
+}
 $Load_Modules = array();
 foreach ($Type_Ids as $typeid) {
 	if (!is_numeric($typeid) && $typeid != 'invite') {
@@ -69,7 +73,6 @@ $ParentUsers = array();
 
 $u_query = 'select vtiger_user2role.userid as id
 	from vtiger_user2role
-	inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
 	inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
 	where vtiger_role.parentrole like ?';
 $u_params = array($privileges->getParentRoleSequence().'::%');
@@ -152,7 +155,17 @@ if (count($Load_Event_Status) > 0) {
 		$Event_Status[] = $eventstatus;
 	}
 }
-
+$Task_Priority = array();
+if (count($Load_Task_Priority) > 0) {
+	foreach ($Load_Task_Priority as $sid) {
+		$s_result = $adb->pquery('SELECT taskpriority FROM vtiger_taskpriority WHERE picklist_valueid=?', array($sid));
+		$taskpriority = $adb->query_result($s_result, 0, 'taskpriority');
+		$Task_Priority[] = $taskpriority;
+		$taskpriority = html_entity_decode($taskpriority, ENT_QUOTES, $default_charset);
+		$Task_Priority[] = $taskpriority;
+	}
+	$Task_Priority = array_unique($Task_Priority);
+}
 $showGroupEvents = GlobalVariable::getVariable('Calendar_Show_Group_Events', 1);
 $modtab = array_flip($tasklabel);
 foreach ($Users_Ids as $userid) {
@@ -270,10 +283,14 @@ foreach ($Users_Ids as $userid) {
 				$list_query .= ' AND (vtiger_activity.eventstatus NOT IN (' . generateQuestionMarks($Event_Status) . ') OR vtiger_activity.eventstatus IS NULL)';
 				$list_array = array_merge($list_array, $Event_Status);
 			}
+			if (count($Task_Priority) > 0) {
+				$list_query .= ' AND (vtiger_activity.priority NOT IN (' . generateQuestionMarks($Task_Priority) . ') OR vtiger_activity.priority IS NULL)';
+				$list_array = array_merge($list_array, $Task_Priority);
+			}
 		}
 		$list_result = $adb->pquery($list_query, $list_array);
 		while ($row = $adb->fetchByAssoc($list_result)) {
-			if (!empty($stfields['start']) && empty($row[$stfields['start']])) {
+			if (in_array($activitytypeid, $tasklabel) && !empty($stfields['start']) && empty($row[$stfields['start']])) {
 				continue;
 			}
 			$visibility = 'private';
@@ -342,6 +359,7 @@ foreach ($Users_Ids as $userid) {
 					$descflds = explode(',', $stfields['subject']);
 					$descvals = array();
 					$descvals[] = html_entity_decode($into_title, ENT_QUOTES, $default_charset);
+					$acttab = getTabid($activitytypeid);
 					foreach ($descflds as $dfld) {
 						if (strpos($dfld, '.')) {
 							$fld = substr($dfld, strpos($dfld, '.')+1);
@@ -349,7 +367,7 @@ foreach ($Users_Ids as $userid) {
 							$fld = $dfld;
 						}
 						// convert fieldname to columnname
-						$rscol = $adb->pquery('select columnname from vtiger_field where tabid=? and fieldname=?', array(getTabid($activitytypeid),$fld));
+						$rscol = $adb->pquery('select columnname from vtiger_field where tabid=? and fieldname=?', array($acttab, $fld));
 						if ($rscol && $adb->num_rows($rscol)==1) {
 							$fname = $adb->query_result($rscol, 0, 0);
 						} else {

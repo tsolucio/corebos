@@ -51,11 +51,16 @@ class REVISIONBLOCK_DetailViewBlock extends DeveloperBlock {
 		}
 		$seqnors = $adb->pquery("select $uniquefield from $table_name where $entityidfield=?", array($id));
 		$seqno = $adb->query_result($seqnors, 0, 0);
+		if ($focus->denormalized) {
+			$dnjoin = 'INNER JOIN '.$focus->crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid = $table_name.$entityidfield";
+		} else {
+			$dnjoin = "INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $table_name.$entityidfield";
+		}
 		$revisiones=$adb->pquery(
 			"select $entityidfield,revision,modifiedtime
-			from $table_name
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $table_name.$entityidfield
-			where deleted = 0 and revisionactiva=0 and $uniquefield=? order by revision",
+			from $table_name "
+			.$dnjoin
+			." where deleted=0 and revisionactiva=0 and $uniquefield=? order by revision",
 			array($seqno)
 		);
 		$number=$adb->num_rows($revisiones);

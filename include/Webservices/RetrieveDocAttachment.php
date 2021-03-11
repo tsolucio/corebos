@@ -18,13 +18,16 @@ function vtws_retrievedocattachment($all_ids, $returnfile, $user) {
 	$entities = array();
 	$docWSId = vtws_getEntityId('Documents').'x';
 	$log->debug('> vtws_retrievedocattachment');
-	$all_ids='('.str_replace($docWSId, '', $all_ids).')';
+	$all_ids = str_replace($docWSId, '', $all_ids);
+	$all_ids = explode(',', $all_ids);
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents', true);
 	$query = "SELECT n.notesid, n.filename, n.filelocationtype, n.filetype
 		FROM vtiger_notes n
-		INNER JOIN vtiger_crmentity c ON c.crmid=n.notesid
-		WHERE n.notesid in $all_ids and n.filelocationtype in ('I','E') and c.deleted=0";
-	$result = $adb->query($query);
+		INNER JOIN $crmEntityTable ON vtiger_crmentity.crmid=n.notesid
+		WHERE n.notesid in (".generateQuestionMarks($all_ids).") and n.filelocationtype in ('I','E') and vtiger_crmentity.deleted=0";
+	$result = $adb->pquery($query, $all_ids);
 	$nr=$adb->num_rows($result);
+	$types = vtws_listtypes(null, $user);
 	for ($i=0; $i<$nr; $i++) {
 		$id=$docWSId.$adb->query_result($result, $i, 'notesid');
 		$webserviceObject = VtigerWebserviceObject::fromId($adb, $id);
@@ -36,7 +39,6 @@ function vtws_retrievedocattachment($all_ids, $returnfile, $user) {
 		$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 		$meta = $handler->getMeta();
 		$entityName = $meta->getObjectEntityName($id);
-		$types = vtws_listtypes(null, $user);
 		if (!in_array($entityName, $types['types'])) {
 			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
 		}

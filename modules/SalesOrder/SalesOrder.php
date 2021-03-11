@@ -15,8 +15,6 @@ require_once 'modules/InventoryDetails/InventoryDetails.php';
 include_once 'include/Webservices/Revise.php';
 
 class SalesOrder extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_salesorder';
 	public $table_index= 'salesorderid';
 	public $column_fields = array();
@@ -122,7 +120,6 @@ class SalesOrder extends CRMEntity {
 		if ($this->mode=='edit' && !empty($this->record_status) && $this->record_status != $this->column_fields['sostatus'] && $this->column_fields['sostatus'] != '') {
 			$this->registerInventoryHistory();
 		}
-		$updateInventoryProductRel_deduct_stock = true;
 		//Checking if quote_id is present and updating the quote status
 		if (!empty($this->column_fields['quote_id'])) {
 			$newStatus = GlobalVariable::getVariable('Quote_StatusOnSalesOrderSave', 'Accepted');
@@ -142,6 +139,7 @@ class SalesOrder extends CRMEntity {
 		}
 
 		//in ajax save we should not call this function, because this will delete all the existing product values
+		$updateInventoryProductRel_deduct_stock = true;
 		if (inventoryCanSaveProductLines($_REQUEST, 'SalesOrder')) {
 			//Based on the total Number of rows we will save the product relationship with this entity
 			saveInventoryProductDetails($this, 'SalesOrder');
@@ -221,12 +219,12 @@ class SalesOrder extends CRMEntity {
 		} else {
 			$returnset = '&return_module=SalesOrder&return_action=CallRelatedList&return_id='.$id;
 		}
-
+		$crmtablealias = CRMEntity::getcrmEntityTableAlias('Invoice');
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = "select vtiger_crmentity.*, vtiger_invoice.*, vtiger_account.accountname,
 			vtiger_salesorder.subject as salessubject, case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name
 			from vtiger_invoice
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_invoice.invoiceid
+			inner join $crmtablealias on vtiger_crmentity.crmid=vtiger_invoice.invoiceid
 			left outer join vtiger_account on vtiger_account.accountid=vtiger_invoice.accountid
 			inner join vtiger_salesorder on vtiger_salesorder.salesorderid=vtiger_invoice.salesorderid
 			LEFT JOIN vtiger_invoicecf ON vtiger_invoicecf.invoiceid = vtiger_invoice.invoiceid
@@ -252,7 +250,7 @@ class SalesOrder extends CRMEntity {
 		$query = 'select vtiger_sostatushistory.*, vtiger_salesorder.salesorder_no
 			from vtiger_sostatushistory
 			inner join vtiger_salesorder on vtiger_salesorder.salesorderid = vtiger_sostatushistory.salesorderid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_salesorder.salesorderid
+			inner join '.$this->crmentityTableAlias.' on vtiger_crmentity.crmid = vtiger_salesorder.salesorderid
 			where vtiger_crmentity.deleted = 0 and vtiger_salesorder.salesorderid = ?';
 		$result=$adb->pquery($query, array($id));
 		$header = array();
@@ -367,7 +365,6 @@ class SalesOrder extends CRMEntity {
 	 */
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
-			'Calendar' =>array('vtiger_seactivityrel'=>array('crmid','activityid'),'vtiger_salesorder'=>'salesorderid'),
 			'Invoice' =>array('vtiger_invoice'=>array('salesorderid','invoiceid'),'vtiger_salesorder'=>'salesorderid'),
 			'Quotes' =>array('vtiger_quotes'=>array('salesorderid','quoteid')),
 			'Potentials' =>array('vtiger_salesorder'=>array('salesorderid','potentialid')),
@@ -451,8 +448,8 @@ class SalesOrder extends CRMEntity {
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 
 		$query = "SELECT $fields_list, case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name
-			FROM vtiger_crmentity
-			INNER JOIN vtiger_salesorder ON vtiger_salesorder.salesorderid = vtiger_crmentity.crmid
+			FROM ".$this->crmentityTableAlias
+			." INNER JOIN vtiger_salesorder ON vtiger_salesorder.salesorderid = vtiger_crmentity.crmid
 			LEFT JOIN vtiger_salesordercf ON vtiger_salesordercf.salesorderid = vtiger_salesorder.salesorderid
 			LEFT JOIN vtiger_sobillads ON vtiger_sobillads.sobilladdressid = vtiger_salesorder.salesorderid
 			LEFT JOIN vtiger_soshipads ON vtiger_soshipads.soshipaddressid = vtiger_salesorder.salesorderid

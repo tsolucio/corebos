@@ -17,13 +17,13 @@
  *************************************************************************************************/
 
 require_once 'include/database/PearDatabase.php';
-require "vendor/autoload.php";
+require 'vendor/autoload.php';
 use Laminas\Cache\Psr\SimpleCache\SimpleCacheDecorator;
 use Laminas\Cache\StorageFactory;
 
 class cbCache extends SimpleCacheDecorator {
 
-	private $_modifiedTimePostfix = "_modified_time";
+	private $modifiedTimePostfix = '_modified_time';
 
 	public function __construct($adapterName, $adapterOptions = [], $plugins = null) {
 		$configurations = [
@@ -41,23 +41,26 @@ class cbCache extends SimpleCacheDecorator {
 	}
 
 	public function getModifiedTimePostfix() {
-		return $this->_modifiedTimePostfix;
+		return $this->modifiedTimePostfix;
 	}
 
 	public function hasWithModuleCheck($key, $module, $id = 0) {
 		global $adb;
-		$modifiedTimeKey = $key . $this->_modifiedTimePostfix;
+		$modifiedTimeKey = $key . $this->modifiedTimePostfix;
 		if (!$this->has($key) && !$this->has($modifiedTimeKey)) {
 			return false;
 		}
 		if (!empty($id)) {
-			$entities = $adb->pquery("select date_format(modifiedtime,'%Y%m%d%H%i%s') from vtiger_crmentity where crmid=? and deleted = 0", array($id));
+			$entities = $adb->pquery("select date_format(modifiedtime,'%Y%m%d%H%i%s') from vtiger_crmentity where crmid=? and deleted=0", array($id));
 			$itemsExpired = $this->removeExpiredCacheItems($key, $entities);
 			if ($itemsExpired) {
 				return false;
 			}
 		} else {
-			$entities = $adb->pquery("select date_format(modifiedtime,'%Y%m%d%H%i%s') from vtiger_crmentity where setype=? and deleted = 0 order by modifiedtime desc limit 1", array($module));
+			$entities = $adb->pquery(
+				"select date_format(modifiedtime,'%Y%m%d%H%i%s') from vtiger_crmentity where setype=? and deleted=0 order by modifiedtime desc limit 1",
+				array($module)
+			);
 			$itemsExpired = $this->removeExpiredCacheItems($key, $entities);
 			if ($itemsExpired) {
 				return false;
@@ -68,7 +71,7 @@ class cbCache extends SimpleCacheDecorator {
 
 	public function hasWithQueryCheck($key, $query, $queryParams = []) {
 		global $adb;
-		$modifiedTimeKey = $key . $this->_modifiedTimePostfix;
+		$modifiedTimeKey = $key . $this->modifiedTimePostfix;
 		if (!$this->has($key) && !$this->has($modifiedTimeKey)) {
 			return false;
 		}
@@ -83,7 +86,7 @@ class cbCache extends SimpleCacheDecorator {
 	private function removeExpiredCacheItems($key, $dbEntities) {
 		global $adb;
 
-		$modifiedTimeKey = $key . $this->_modifiedTimePostfix;
+		$modifiedTimeKey = $key . $this->modifiedTimePostfix;
 		$cacheItemModifiedTime = $this->get($modifiedTimeKey);
 
 		if ($adb->num_rows($dbEntities) == 0) {

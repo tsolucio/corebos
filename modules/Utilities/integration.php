@@ -106,6 +106,10 @@ switch ($_REQUEST['_op']) {
 	case 'setconfigloginsync':
 		include_once 'include/integrations/loginsync/settings.php';
 		break;
+	case 'getconfigdenormalization':
+	case 'setconfigdenormalization':
+		include_once 'include/integrations/denormalize/settings.php';
+		break;
 	case 'getconfigonesignal':
 	case 'setconfigonesignal':
 		include_once 'include/integrations/onesignal/settings.php';
@@ -113,6 +117,10 @@ switch ($_REQUEST['_op']) {
 	case 'getconfigcache':
 	case 'setconfigcache':
 		include_once 'include/integrations/cache/settings.php';
+		break;
+	case 'getconfigwc':
+	case 'setconfigwc':
+		include_once 'include/integrations/woocommerce/settings.php';
 		break;
 	default:
 		$smarty = new vtigerCRM_Smarty();
@@ -191,10 +199,22 @@ switch ($_REQUEST['_op']) {
 				'url' => 'index.php?action=integration&module=Utilities&_op=getconfiglogall',
 			),
 			array(
+				'abbr' => 'DM',
+				'title' => getTranslatedString('Denormalization Activation', 'Utilities'),
+				'desc' => getTranslatedString('Denormalize_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigdenormalization',
+			),
+			array(
 				'abbr' => 'CA',
 				'title' => getTranslatedString('Cache Activation', 'Utilities'),
 				'desc' => getTranslatedString('Cache Activation_Desc', 'Utilities'),
 				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigcache',
+			),
+			array(
+				'abbr' => 'WC',
+				'title' => getTranslatedString('Woocommerce Activation', 'Utilities'),
+				'desc' => getTranslatedString('Woocommerce Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigwc',
 			),
 		);
 		if (file_exists('build/wsChanges/LoginSession.php')) {

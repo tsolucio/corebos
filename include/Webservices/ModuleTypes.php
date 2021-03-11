@@ -30,10 +30,6 @@ function vtws_listtypes($fieldTypeList, $user) {
 		vtws_preserveGlobal('current_user', $user);
 		//get All the modules the current user is permitted to Access.
 		$allModuleNames = getPermittedModuleNames();
-		$idx = array_search('Calendar', $allModuleNames);
-		if ($idx !== false) {
-			unset($allModuleNames[$idx]);
-		}
 
 		if (!empty($fieldTypeList)) {
 			$sql = 'SELECT distinct(vtiger_field.tabid) as tabid

@@ -15,7 +15,6 @@
 require_once 'include/Webservices/Utils.php';
 require_once 'modules/com_vtiger_workflow/include.inc';
 require_once 'modules/com_vtiger_workflow/WorkFlowScheduler.php';
-require_once 'include/QueryGenerator/PHPSQLParserInclude.php';
 use \PHPSQLParser\PHPSQLParser;
 use \PHPSQLParser\utils\ExpressionType;
 

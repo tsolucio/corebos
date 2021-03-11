@@ -170,6 +170,7 @@ var alert_arr = {
 	'SAME_GROUPS': 'U moet records in dezelfde groep kiezen om samen te voegen',
 	'ATLEAST_TWO': 'Kies minimaal twee records om samen te voegen',
 	'MAX_THREE': 'U mag maximaal drie records kiezen',
+	'MAX_RECORDS_EXCEEDED': 'You have exceeded the maximum amount of selectable records',
 	'MAX_RECORDS': 'U mag maximaal vier records kiezen',
 	'CON_MANDATORY': 'Kies het verplchte veld achternaam',
 	'LE_MANDATORY': 'Kies de verplichte velden achternaam en accountnaam',

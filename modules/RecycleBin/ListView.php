@@ -104,7 +104,8 @@ if (count($module_name) > 0) {
 	}
 
 	$list_query = $queryGenerator->getQuery();
-	$list_query = preg_replace("/vtiger_crmentity.deleted\s*=\s*0/i", 'vtiger_crmentity.deleted = 1', $list_query);
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias($select_module, true);
+	$list_query = preg_replace("/$crmEntityTable.deleted\s*=\s*0/i", $crmEntityTable.'.deleted = 1', $list_query);
 	//Search criteria added to the list Query
 	if (isset($where) && $where != '') {
 		$list_query .= ' AND '.$where;

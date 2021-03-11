@@ -10,17 +10,20 @@
 
 class OperationManager {
 	private $format;
-	private $formatsData=array(
-		'json'=>array(
-			'includePath'=>'include/Webservices/OperationManagerEnDecode.php',
-			'class'=>'OperationManagerEnDecode',
-			'encodeMethod'=>'encode',
-			'decodeMethod'=>'decode',
-			'postCreate'=>''
-		)
+	private const FORMATDEFAULTS = array(
+		'includePath'=>'include/Webservices/OperationManagerEnDecode.php',
+		'class'=>'OperationManagerEnDecode',
+		'encodeMethod'=>'encode',
+		'decodeMethod'=>'decode',
+		'postCreate'=>''
 	);
-	private $formatObjects ;
-	private $inParamProcess ;
+	private $formatsData=array(
+		'json'=> self::FORMATDEFAULTS,
+		'stream'=> self::FORMATDEFAULTS,
+		'streamraw'=> self::FORMATDEFAULTS,
+	);
+	private $formatObjects;
+	private $inParamProcess;
 	private $sessionManager;
 	private $pearDB;
 	private $operationName;

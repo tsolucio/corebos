@@ -365,7 +365,7 @@ function dq_updateRevisionFields($module, $crmid, $new_record_id) {
 		$revisiones=$adb->pquery(
 			"select count($entityidfield) as num_revisiones
 			from $table_name
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $table_name.$entityidfield
+			INNER JOIN ".$focus->crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid = $table_name.$entityidfield
 			where deleted=0 and $uniquefield=? order by revision",
 			array($seqno)
 		);

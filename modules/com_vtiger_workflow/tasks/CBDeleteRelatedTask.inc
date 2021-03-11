@@ -152,7 +152,11 @@ class CBDeleteRelatedTask extends VTTask {
 			$queryGenerator->addReferenceModuleFieldCondition($module, $reffield, 'id', $masterRecord, 'e');
 			$query = $queryGenerator->getQuery();
 
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias($relatedModule, true);
+			$denormed = ($crmEntityTable!='vtiger_crmentity');
 			$updquery = 'UPDATE vtiger_crmentity set deleted=1 where crmid=?';
+			$updobject = 'UPDATE vtiger_crmobject set deleted=1 where crmid=?';
+			$upddenorm = 'UPDATE '.$crmEntityTable.' set deleted=1 where crmid=?';
 			$relrecs = $adb->query($query);
 
 			for ($relrec=0; $relrec<$adb->num_rows($relrecs); $relrec++) {
@@ -168,16 +172,31 @@ class CBDeleteRelatedTask extends VTTask {
 				if ($businessMap == 'Condition Query') {
 					if (in_array($adb->query_result($relrecs, $relrec, 0), $ids)) {
 						$em->triggerEvent('corebos.beforedelete.workflow', $entityData);
-						$adb->pquery($updquery, array($adb->query_result($relrecs, $relrec, 0)));
+						if ($denormed) {
+							$adb->pquery($upddenorm, array($adb->query_result($relrecs, $relrec, 0)));
+						} else {
+							$adb->pquery($updquery, array($adb->query_result($relrecs, $relrec, 0)));
+						}
+						$adb->pquery($updobject, array($adb->query_result($relrecs, $relrec, 0)));
 					}
 				} elseif ($businessMap == 'Condition Expression') {
 					if ($focus->ConditionExpression($webserviceObject->getEntityId().'x'.$adb->query_result($relrecs, $relrec, 0))) {
 						$em->triggerEvent('corebos.beforedelete.workflow', $entityData);
-						$adb->pquery($updquery, array($adb->query_result($relrecs, $relrec, 0)));
+						if ($denormed) {
+							$adb->pquery($upddenorm, array($adb->query_result($relrecs, $relrec, 0)));
+						} else {
+							$adb->pquery($updquery, array($adb->query_result($relrecs, $relrec, 0)));
+						}
+						$adb->pquery($updobject, array($adb->query_result($relrecs, $relrec, 0)));
 					}
 				} else {
 					$em->triggerEvent('corebos.beforedelete.workflow', $entityData);
-					$adb->pquery($updquery, array($adb->query_result($relrecs, $relrec, 0)));
+					if ($denormed) {
+						$adb->pquery($upddenorm, array($adb->query_result($relrecs, $relrec, 0)));
+					} else {
+						$adb->pquery($updquery, array($adb->query_result($relrecs, $relrec, 0)));
+					}
+					$adb->pquery($updobject, array($adb->query_result($relrecs, $relrec, 0)));
 				}
 			}
 		}

@@ -20,11 +20,6 @@ function set_return_specific(product_id, product_name) {
 	fldId.value = product_id;
 }
 
-function set_return_todo(product_id, product_name) {
-	window.opener.document.createTodo.task_parent_name.value = product_name;
-	window.opener.document.createTodo.task_parent_id.value = product_id;
-}
-
 function PurchaseOrdersetValueFromCapture(recordid, value, target_fieldname) {
 	if (target_fieldname=='tandc') {
 		var url = 'module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getFieldValuesFromRecord&getTheseFields=tandc&getFieldValuesFrom='+recordid;

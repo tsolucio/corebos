@@ -12,8 +12,6 @@ require_once 'data/Tracker.php';
 require_once 'include/upload_file.php';
 
 class Documents extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_notes';
 	public $table_index= 'notesid';
 	public $column_fields = array();
@@ -276,8 +274,9 @@ class Documents extends CRMEntity {
 	 * @return String $sorder - sort order for a given folder.
 	 */
 	public function getSortOrderForFolder($folderId) {
+		global $adb;
 		if (isset($_REQUEST['sorder']) && $_REQUEST['folderid'] == $folderId) {
-			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
+			$sorder = $adb->sql_escape_string($_REQUEST['sorder']);
 		} elseif (isset($_SESSION['NOTES_FOLDER_SORT_ORDER']) && is_array($_SESSION['NOTES_FOLDER_SORT_ORDER']) && !empty($_SESSION['NOTES_FOLDER_SORT_ORDER'][$folderId])) {
 				$sorder = $_SESSION['NOTES_FOLDER_SORT_ORDER'][$folderId];
 		} else {
@@ -291,12 +290,13 @@ class Documents extends CRMEntity {
 	 * @return String order by column for a given folder.
 	 */
 	public function getOrderByForFolder($folderId) {
+		global $adb;
 		$use_default_order_by = '';
 		if (GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0)) {
 			$use_default_order_by = $this->default_order_by;
 		}
 		if (isset($_REQUEST['order_by']) && $_REQUEST['folderid'] == $folderId) {
-			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
+			$order_by = $adb->sql_escape_string($_REQUEST['order_by']);
 			if ($order_by == 'notes_title') {
 				$order_by = 'title';
 			}
@@ -316,16 +316,15 @@ class Documents extends CRMEntity {
 		global $log,$current_user;
 		$log->debug('> create_export_query '. $where);
 
-		include "include/utils/ExportUtils.php";
+		include 'include/utils/ExportUtils.php';
 		//To get the Permitted fields query and the permitted fields list
-		$sql = getPermittedFieldsQuery("Documents", "detail_view");
+		$sql = getPermittedFieldsQuery('Documents', 'detail_view');
 		$fields_list = getFieldsListFromQuery($sql);
-
 		$query = "SELECT $fields_list, foldername, filename,
 					concat(path,vtiger_attachments.attachmentsid,'_',filename) as storagename,
 					concat(account_no,' ',accountname) as account, concat(contact_no,' ',firstname,' ',lastname) as contact,vtiger_senotesrel.crmid as relatedid
 				FROM vtiger_notes
-				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_notes.notesid
+				inner join ".$this->crmentityTableAlias." on vtiger_crmentity.crmid=vtiger_notes.notesid
 				left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_notes.notesid
 				left join vtiger_attachments on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
 				LEFT JOIN vtiger_attachmentsfolder on vtiger_notes.folderid=vtiger_attachmentsfolder.folderid
@@ -390,10 +389,11 @@ class Documents extends CRMEntity {
 	 * returns the query string formed on fetching the related data for report for primary module
 	 */
 	public function generateReportsQuery($module, $queryplanner) {
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias($module);
 		$moduletable = $this->table_name;
 		$moduleindex = $this->tab_name_index[$moduletable];
 		$query = "from $moduletable
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=$moduletable.$moduleindex";
+			inner join $crmEntityTable on vtiger_crmentity.crmid=$moduletable.$moduleindex";
 		if ($queryplanner->requireTable("vtiger_attachmentsfolder")) {
 			$query .= " inner join vtiger_attachmentsfolder on vtiger_attachmentsfolder.folderid=$moduletable.folderid";
 		}
@@ -439,31 +439,33 @@ class Documents extends CRMEntity {
 	// Function to unlink all the dependent entities of the given Entity by Id
 	public function unlinkDependencies($module, $id) {
 		/*//Backup Documents Related Records
+		global $adb;
 		$se_q = 'SELECT crmid FROM vtiger_senotesrel WHERE notesid = ?';
-		$se_res = $this->db->pquery($se_q, array($id));
-		if ($this->db->num_rows($se_res) > 0) {
-			for($k=0;$k < $this->db->num_rows($se_res);$k++)
+		$se_res = $adb->pquery($se_q, array($id));
+		if ($adb->num_rows($se_res) > 0) {
+			for($k=0;$k < $adb->num_rows($se_res);$k++)
 			{
-				$se_id = $this->db->query_result($se_res,$k,"crmid");
+				$se_id = $adb->query_result($se_res,$k,"crmid");
 				$params = array($id, RB_RECORD_DELETED, 'vtiger_senotesrel', 'notesid', 'crmid', $se_id);
-				$this->db->pquery('INSERT INTO vtiger_relatedlists_rb VALUES (?,?,?,?,?,?)', $params);
+				$adb->pquery('INSERT INTO vtiger_relatedlists_rb VALUES (?,?,?,?,?,?)', $params);
 			}
 		}
 		$sql = 'DELETE FROM vtiger_senotesrel WHERE notesid = ?';
-		$this->db->pquery($sql, array($id));*/
+		$adb->pquery($sql, array($id));*/
 
 		parent::unlinkDependencies($module, $id);
 	}
 
 	// Function to unlink an entity with given Id from another entity
 	public function unlinkRelationship($id, $return_module, $return_id) {
+		global $adb;
 		if (empty($return_module) || empty($return_id)) {
 			return;
 		}
-		$this->db->pquery('DELETE FROM vtiger_senotesrel WHERE notesid = ? AND crmid = ?', array($id, $return_id));
+		$adb->pquery('DELETE FROM vtiger_senotesrel WHERE notesid = ? AND crmid = ?', array($id, $return_id));
 		$sql = 'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND relmodule=? AND relcrmid=?) OR (relcrmid=? AND module=? AND crmid=?)';
 		$params = array($id, $return_module, $return_id, $id, $return_module, $return_id);
-		$this->db->pquery($sql, $params);
+		$adb->pquery($sql, $params);
 	}
 
 	// Function to get fieldname for uitype 27 assuming that documents have only one file type field
@@ -568,26 +570,24 @@ class Documents extends CRMEntity {
 				"&select=enable&form=EditView&form_submit=false&recordid=$id', 'test', cbPopupWindowSettings);\"" .
 				" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 		}
-		$query = "select case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name,
-				crm2.crmid, crm2.setype
-				from vtiger_notes
-				inner join vtiger_senotesrel on vtiger_senotesrel.notesid= vtiger_notes.notesid
-				inner join vtiger_crmentity on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
-				inner join vtiger_crmentity crm2 on crm2.crmid=vtiger_senotesrel.crmid and crm2.deleted=0
-				left join vtiger_groups on vtiger_groups.groupid = crm2.smownerid
-				left join vtiger_users on vtiger_users.id = crm2.smownerid
-				where vtiger_notes.notesid=?
-				UNION
-				select case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name,
-				crm2.crmid, crm2.setype
-				from vtiger_notes
-				inner join vtiger_senotesrel on vtiger_senotesrel.crmid= vtiger_notes.notesid
-				inner join vtiger_crmentity on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
-				inner join vtiger_crmentity crm2 on crm2.crmid=vtiger_senotesrel.notesid and crm2.deleted=0
-				left join vtiger_groups on vtiger_groups.groupid = crm2.smownerid
-				left join vtiger_users on vtiger_users.id = crm2.smownerid
-				where vtiger_notes.notesid=?";
-
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents', true);
+		$query = "select case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name, crm2.crmid, crm2.setype
+			from vtiger_notes
+			inner join vtiger_senotesrel on vtiger_senotesrel.notesid=vtiger_notes.notesid
+			inner join ".$this->crmentityTableAlias." on vtiger_crmentity.crmid=vtiger_notes.notesid and vtiger_crmentity.deleted=0
+			inner join vtiger_crmobject crm2 on crm2.crmid=vtiger_senotesrel.crmid and crm2.deleted=0
+			left join vtiger_groups on vtiger_groups.groupid=crm2.smownerid
+			left join vtiger_users on vtiger_users.id=crm2.smownerid
+			where vtiger_notes.notesid=?
+			UNION
+			select case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name, crm2.crmid, crm2.setype
+			from vtiger_notes
+			inner join vtiger_senotesrel on vtiger_senotesrel.crmid=vtiger_notes.notesid
+			inner join ".$this->crmentityTableAlias.' on vtiger_crmentity.crmid=vtiger_notes.notesid and vtiger_crmentity.deleted=0
+			inner join '.$crmEntityTable.' crm2 on crm2.crmid=vtiger_senotesrel.notesid and crm2.deleted=0
+			left join vtiger_groups on vtiger_groups.groupid=crm2.smownerid
+			left join vtiger_users on vtiger_users.id=crm2.smownerid
+			where vtiger_notes.notesid=?';
 		$drs = $adb->pquery($query, array($id,$id));
 		$entries_list = array();
 		while ($row = $adb->fetch_array($drs)) {
@@ -601,7 +601,7 @@ class Documents extends CRMEntity {
 			$entries[] = $row['user_name'];
 			$entries_list[] = $entries;
 		}
-		$return_data = array('header'=>$header,'entries'=>$entries_list,'CUSTOM_BUTTON' => $button,'navigation'=>array('',''));
+		$return_data = array('header'=>$header,'entries'=>$entries_list,'CUSTOM_BUTTON' => $button,'navigation'=>array('','<td></td>'));
 		$log->debug('< getEntities');
 		return $return_data;
 	}

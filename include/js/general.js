@@ -74,6 +74,13 @@ GlobalVariable_getVariable('Application_PopupScreen_Height', 80, (typeof gVTModu
 }, function (error) {
 	cbPopupScreenHeightPercentage = 80;
 });
+var Application_Merge_Record_Limit = 8;
+GlobalVariable_getVariable('Application_Merge_Record_Limit', 8, (typeof gVTModule=='undefined' ? '' : gVTModule), '').then(function (response) {
+	var obj = JSON.parse(response);
+	Application_Merge_Record_Limit = obj.Application_Merge_Record_Limit;
+}, function (error) {
+	Application_Merge_Record_Limit = 8; // set default value on error
+});
 
 function setApplicationPopupWindowSize(w, h, r, s, t, l) {
 	w = w || cbPopupScreenWidthPercentage || 80;
@@ -1916,9 +1923,7 @@ function toggleDiv(id) {
 //set_cookie(id,listTableObj.style.display)
 }
 
-/** This is Javascript Function which is used to toogle between
-  * assigntype user and group/team select options while assigning owner to entity.
-  */
+/** Toogle between assigntype user and group/team select options while assigning owner to entity. */
 function toggleAssignType(currType) {
 	if (currType=='U') {
 		getObj('assign_user').style.display='block';
@@ -2550,28 +2555,6 @@ function selectContact(check, frmName) {
 			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView'+module_string+'&relmod_id='+record_id, 'test', cbPopupWindowSettings);
 		} else {
 			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView', 'test', cbPopupWindowSettings);
-		}
-	} else if ((document.getElementById('parentid'))) {
-		if (getObj('parent_type')) {
-			rel_parent_module = frmName.parent_type.value;
-			record_id = frmName.parent_id.value;
-			module = rel_parent_module.split('&');
-			if (record_id != '' && module[0] == 'Leads') {
-				ldsPrompt.show(alert_arr['ERROR'], alert_arr.CANT_SELECT_CONTACTS);
-			} else {
-				if (check == 'true') {
-					search_string = '&return_module=Calendar&select=enable&popuptype=detailview&form_submit=false';
-				} else {
-					search_string='&popuptype=specific';
-				}
-				if (record_id != '') {
-					window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&form=EditView'+search_string+'&relmod_id='+record_id+'&parent_module='+module[0], 'test', cbPopupWindowSettings);
-				} else {
-					window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&form=EditView'+search_string, 'test', cbPopupWindowSettings);
-				}
-			}
-		} else {
-			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&return_module=Calendar&select=enable&popuptype=detailview&form=EditView&form_submit=false', 'test', cbPopupWindowSettings);
 		}
 	} else {
 		window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView&recordid='+record, 'test', cbPopupWindowSettings);
@@ -3356,7 +3339,7 @@ var ActivityReminder_Deactivated = 0;
 GlobalVariable_getVariable('Debug_ActivityReminder_Deactivated', 0, 'cbCalendar', '').then(function (response) {
 	var obj = JSON.parse(response);
 	ActivityReminder_Deactivated = obj.Debug_ActivityReminder_Deactivated;
-	ExecuteFunctions('ispermitted', 'checkmodule=Calendar&checkaction=index').then(function (response) {
+	ExecuteFunctions('ispermitted', 'checkmodule=cbCalendar&checkaction=index').then(function (response) {
 		try {
 			var obj = JSON.parse(response);
 			if (obj.isPermitted == false) {
@@ -3790,7 +3773,7 @@ function getMergeRecords(selectedNames, upperlimit, lowerlimit) {
 		lowerlimit = 2;
 	}
 	if (typeof upperlimit == 'undefined' || upperlimit == null) {
-		upperlimit = 3;
+		upperlimit = Application_Merge_Record_Limit;
 	}
 	var select_options=document.getElementsByName(selectedNames);
 	var x = select_options.length;
@@ -3807,7 +3790,7 @@ function getMergeRecords(selectedNames, upperlimit, lowerlimit) {
 	var tmp = 0;
 	if (xx != 0) {
 		if (xx > upperlimit) {
-			ldsPrompt.show(alert_arr['ERROR'], alert_arr.MAX_THREE);
+			ldsPrompt.show(alert_arr['ERROR'], alert_arr.MAX_RECORDS_EXCEEDED);
 			return false;
 		}
 		if (xx > 0) {

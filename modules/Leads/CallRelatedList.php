@@ -62,8 +62,6 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 
 	$smarty->assign('NAME', $focus->lastname.' '.$focus->firstname);
 	$smarty->assign('UPDATEINFO', updateInfo($focus->id));
-	$smarty->assign('TODO_PERMISSION', CheckFieldPermission('parent_id', 'Calendar'));
-	$smarty->assign('EVENT_PERMISSION', CheckFieldPermission('parent_id', 'Events'));
 	$parent_email = getEmailParentsList('Leads', $focus->id, $focus);
 	$smarty->assign('HIDDEN_PARENTS_LIST', $parent_email);
 	$smarty->assign('EMAIL', $focus->column_fields['email']);

@@ -163,6 +163,7 @@ var alert_arr = {
 	'SAME_GROUPS': 'Tienes que seleccionar los registros en el mismo grupo para combinar',
 	'ATLEAST_TWO': 'Selecciona al menos dos registros para combinar',
 	'MAX_THREE': 'Está permitido seleccionar un máximo de tres registros',
+	'MAX_RECORDS_EXCEEDED': 'Has superado la cantidad máxima de registros seleccionables',
 	'MAX_RECORDS': 'Está permitido seleccionar un máximo de cuatro registros',
 	'CON_MANDATORY': 'Selecciona el campo obligatorio Apellido',
 	'LE_MANDATORY': 'Selecciona el campo obligatorio Apellido y Compañía',

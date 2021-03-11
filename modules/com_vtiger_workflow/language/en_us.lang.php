@@ -244,6 +244,8 @@ $mod_strings = array(
 'LBL_SELECT_CREDENTIAL' => 'Select Credential',
 'LBL_SEND_FILE' => 'Send file to',
 'FILENAME' => 'Destination filename',
+'LBL_ENABLED' => 'Enabled',
+'LBL_DISABLED' => 'Disabled',
 'LINK_EMAIL_TEMPLATE' => 'Link with email template',
 'LBL_LINKED' => 'linked',
 'LBL_UNLINKED' => 'unlinked',
@@ -256,5 +258,6 @@ $mod_strings = array(
 'LBL_NOTIFICATION_CONTENT' => 'Notification Content',
 'LBL_ONESIGNAL_NOTIFICATION_INCLUDE_SEGMENT' => 'Included Segments',
 'LBL_ONESIGNAL_NOTIFICATION_EXCLUDED_SEGMENT' => 'Excluded Segments',
+'CBUpsertTask' => 'Upsert',
 );
 ?>

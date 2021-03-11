@@ -53,9 +53,7 @@ function vtlib_getModuleNameById($tabid) {
  * NOTE: Ignore the standard modules which is already handled.
  */
 function vtlib_getModuleNameForSharing() {
-	$std_modules = array('Calendar','Leads','Accounts','Contacts','Potentials',
-		'HelpDesk','Campaigns','Quotes','PurchaseOrder','SalesOrder','Invoice','Events');
-	return getSharingModuleList($std_modules);
+	return getSharingModuleList(array('Leads','Accounts','Contacts','Potentials','HelpDesk','Campaigns','Quotes','PurchaseOrder','SalesOrder','Invoice'));
 }
 
 /**
@@ -180,7 +178,7 @@ function vtlib_getToggleModuleInfo() {
 	$sqlresult = $adb->query(
 		"SELECT name, presence, customized, isentitytype
 		FROM vtiger_tab
-		WHERE name NOT IN ('Users','Calendar') AND presence IN (0,1) ORDER BY name"
+		WHERE name NOT IN ('Users') AND presence IN (0,1) ORDER BY name"
 	);
 	$num_rows  = $adb->num_rows($sqlresult);
 	for ($idx = 0; $idx < $num_rows; ++$idx) {
@@ -521,9 +519,6 @@ function vtlib_process_widget($widgetLinkInfo, $context = false) {
 }
 
 function vtlib_module_icon($modulename) {
-	if ($modulename == 'Events') {
-		return 'modules/Calendar/Events.png';
-	}
 	if (file_exists("modules/$modulename/$modulename.png")) {
 		return "modules/$modulename/$modulename.png";
 	}

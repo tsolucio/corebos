@@ -9,7 +9,9 @@
  ************************************************************************************/
 require_once 'Smarty_setup.php';
 require 'modules/Vtiger/default_module_view.php';
-
+if (isset($override_singlepane_view)) {
+	$singlepane_view = $override_singlepane_view;
+}
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
 $action = vtlib_purify($_REQUEST['action']);
@@ -60,8 +62,6 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 
 	$smarty->assign('NAME', $focus->column_fields[$focus->def_detailview_recname]);
 	$smarty->assign('UPDATEINFO', updateInfo($focus->id));
-	$smarty->assign('TODO_PERMISSION', CheckFieldPermission('parent_id', 'Calendar'));
-	$smarty->assign('EVENT_PERMISSION', CheckFieldPermission('parent_id', 'Events'));
 
 	// Module Sequence Numbering
 	$mod_seq_field = getModuleSequenceField($currentModule);

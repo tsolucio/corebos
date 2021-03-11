@@ -162,7 +162,7 @@ class Quotes extends CRMEntity {
 		$query = 'select vtiger_quotestagehistory.*, vtiger_quotes.quote_no
 			from vtiger_quotestagehistory
 			inner join vtiger_quotes on vtiger_quotes.quoteid = vtiger_quotestagehistory.quoteid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_quotes.quoteid
+			inner join '.$this->crmentityTableAlias.' on vtiger_crmentity.crmid = vtiger_quotes.quoteid
 			where vtiger_crmentity.deleted = 0 and vtiger_quotes.quoteid = ?';
 		$result=$adb->pquery($query, array($id));
 		$header = array();
@@ -284,7 +284,6 @@ class Quotes extends CRMEntity {
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
 			'SalesOrder' =>array('vtiger_salesorder'=>array('quoteid','salesorderid'),'vtiger_quotes'=>'quoteid'),
-			'Calendar' =>array('vtiger_seactivityrel'=>array('crmid','activityid'),'vtiger_quotes'=>'quoteid'),
 			'Documents' => array('vtiger_senotesrel'=>array('crmid','notesid'),'vtiger_quotes'=>'quoteid'),
 			'Accounts' => array('vtiger_quotes'=>array('quoteid','accountid')),
 			'Contacts' => array('vtiger_quotes'=>array('quoteid','contactid')),
@@ -354,8 +353,8 @@ class Quotes extends CRMEntity {
 		$fields_list .= getInventoryFieldsForExport($this->table_name);
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 
-		$query = "SELECT $fields_list FROM vtiger_crmentity
-			INNER JOIN vtiger_quotes ON vtiger_quotes.quoteid = vtiger_crmentity.crmid
+		$query = "SELECT $fields_list FROM ".$this->crmentityTableAlias
+			." INNER JOIN vtiger_quotes ON vtiger_quotes.quoteid = vtiger_crmentity.crmid
 			LEFT JOIN vtiger_quotescf ON vtiger_quotescf.quoteid = vtiger_quotes.quoteid
 			LEFT JOIN vtiger_quotesbillads ON vtiger_quotesbillads.quotebilladdressid = vtiger_quotes.quoteid
 			LEFT JOIN vtiger_quotesshipads ON vtiger_quotesshipads.quoteshipaddressid = vtiger_quotes.quoteid

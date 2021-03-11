@@ -50,5 +50,8 @@ $mod_strings = array(
 	'LBL_MOVE_RIGHT' => 'Nach rechts',
 	'LBL_REMOVE' => 'Entfernen',
 	'NTC_DELETE_CONFIRMATION'=>'Sind Sie sicher, dass Sie diese Auswahllistabhängigkeit löschen wollen?',
+	'multii18n' => 'Multi-Language',
+	'monoi18n' => 'Mono-Language',
+	'ERR_MustBeTranslated' => 'This picklist must support multi-language',
 );
 ?>

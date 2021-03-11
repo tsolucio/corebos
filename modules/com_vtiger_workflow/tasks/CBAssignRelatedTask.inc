@@ -48,16 +48,25 @@ class CBAssignRelatedTask extends VTTask {
 				$queryGenerator->addReferenceModuleFieldCondition($module, $reffield, 'id', $cto_id, 'e');
 				$query = $queryGenerator->getQuery();
 				if ($this->username=='assigneduser') {
-					$usrquery = $adb->pquery('SELECT smownerid FROM vtiger_crmentity WHERE crmid=?', array($cto_id));
+					$usrquery = $adb->pquery('SELECT smownerid FROM vtiger_crmobject WHERE crmid=?', array($cto_id));
 					$usr = $adb->query_result($usrquery, 0, 0);
 				} else {
 					$usr = $this->username;
 				}
+				$crmEntityTable = CRMEntity::getcrmEntityTableAlias($this->relmodule, true);
+				$denormed = ($crmEntityTable!='vtiger_crmentity');
 				$updquery = 'UPDATE vtiger_crmentity set smownerid=? where crmid=?';
+				$updobject = 'UPDATE vtiger_crmobject set smownerid=? where crmid=?';
+				$upddenorm = 'UPDATE '.$crmEntityTable.' set smownerid=? where crmid=?';
 				$relrecs = $adb->query($query);
 				for ($relrec=0; $relrec<$adb->num_rows($relrecs); $relrec++) {
 					// direct assignment to avoid relaunching workflows > I am not sure this is correct (!)
-					$adb->pquery($updquery, array($usr, $adb->query_result($relrecs, $relrec, 0)));
+					if ($denormed) {
+						$adb->pquery($upddenorm, array($usr, $adb->query_result($relrecs, $relrec, 0)));
+					} else {
+						$adb->pquery($updquery, array($usr, $adb->query_result($relrecs, $relrec, 0)));
+					}
+					$adb->pquery($updobject, array($usr, $adb->query_result($relrecs, $relrec, 0)));
 				}
 			}
 		}

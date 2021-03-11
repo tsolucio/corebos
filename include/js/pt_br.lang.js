@@ -174,6 +174,7 @@ var alert_arr = {
 	'SAME_GROUPS': 'você terá que selecionar um registro de em um mesmo grupo para mesclar',
 	'ATLEAST_TWO': 'Selecione pelo menos dois registros para mesclar',
 	'MAX_THREE': 'você tem permissão para selecionar no máximo três registros',
+	'MAX_RECORDS_EXCEEDED': 'You have exceeded the maximum amount of selectable records',
 	'MAX_RECORDS': 'você tem permissão para selecionar no máximo quatro registros',
 	'CON_MANDATORY': 'Selecione o campo obrigatório sobrenome',
 	'LE_MANDATORY': 'Selecione os campos obrigatórios sobrenome e empresa',

@@ -12,6 +12,7 @@ require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 require_once 'modules/com_vtiger_workflow/VTTaskQueue.inc';
 require_once 'include/events/include.inc';
 require_once 'modules/cbMap/cbMap.php';
+require_once 'modules/com_vtiger_workflow/expression_functions/application.php';
 
 class RunWebserviceWorkflowTask extends VTTask {
 	public $executeImmediately = true;
@@ -140,50 +141,22 @@ class RunWebserviceWorkflowTask extends VTTask {
 						$r2 = '';
 						if (is_array($response2)) {
 							if (strpos($fld, '.')) {
-								$elements = explode('.', $fld);
-								$elemresponse = $elements[0];
-								$elemfield = $elements[1];
-								if (isset($response2[0]->$elemresponse)) {
-									if (is_array($response2[0]->$elemresponse)) {
-										$elemprop = $elements[2];
-										if (count($elements)==2 && isset($response2[0]->$elemresponse[$elemfield])) {
-											$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2[0]->$elemresponse[$elemfield]));
-										} elseif (count($elements)==3 && isset($response2[0]->$elemresponse[$elemfield]->$elemprop)) {
-											$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2[0]->$elemresponse[$elemfield]->$elemprop));
-										}
-									} elseif (isset($response2[0]->$elemresponse->$elemfield)) {
-										$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2[0]->$elemresponse->$elemfield));
-									}
-								}
+								$r2 = __cb_getfromcontextvalueinarrayobject($response2, $fld);
 							} else {
 								if (isset($response2[0]->$fld)) {
-									$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2[0]->$fld));
+									$r2 = json_encode($response2[0]->$fld);
 								}
 							}
 						} else {
 							if (strpos($fld, '.')) {
-								$elements = explode('.', $fld);
-								$elemresponse = $elements[0];
-								$elemfield = $elements[1];
-								if (isset($response2->$elemresponse)) {
-									if (is_array($response2->$elemresponse)) {
-										$elemprop = $elements[2];
-										if (count($elements)==2 && isset($response2->$elemresponse[$elemfield])) {
-											$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2->$elemresponse[$elemfield]));
-										} elseif (count($elements)==3 && isset($response2->$elemresponse[$elemfield]->$elemprop)) {
-											$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2->$elemresponse[$elemfield]->$elemprop));
-										}
-									} elseif (isset($response2->$elemresponse->$elemfield)) {
-										$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2->$elemresponse->$elemfield));
-									}
-								}
+								$r2 = __cb_getfromcontextvalueinarrayobject($response2, $fld);
 							} else {
 								if (isset($response2->$fld)) {
-									$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2->$fld));
+									$r2 = json_encode($response2->$fld);
 								}
 							}
 						}
-						if ((string)$r2 == 'null' || is_null($r2)) {
+						if ((!is_array($r2) && (string)$r2 == 'null') || is_null($r2)) {
 							$r2 = '';
 						}
 						if (!empty($v['field'])) {
@@ -207,7 +180,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 						} else {
 							$r2 = $response2[$fld];
 						}
-						if ((string)$r2 == 'null' || is_null($r2)) {
+						if ((!is_array($r2) && (string)$r2 == 'null') || is_null($r2)) {
 							$r2 = '';
 						}
 						if (!empty($v['field'])) {

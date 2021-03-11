@@ -10,16 +10,13 @@
 require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 require_once 'include/logging.php';
+require_once 'include/utils/utils.php';
 require_once 'modules/Contacts/Contacts.php';
-require_once 'modules/Calendar/Activity.php';
 require_once 'modules/Documents/Documents.php';
 require_once 'modules/Emails/Emails.php';
-require_once 'include/utils/utils.php';
 require 'modules/Vtiger/default_module_view.php';
 
 class Potentials extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_potential';
 	public $table_index= 'potentialid';
 	public $column_fields = array();
@@ -237,6 +234,7 @@ class Potentials extends CRMEntity {
 			}
 		}
 
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = 'select case when (vtiger_users.user_name not like "") then '.$userNameSql.' else vtiger_groups.groupname end as user_name,
 			vtiger_contactdetails.*,vtiger_potential.potentialid, vtiger_potential.potentialname,
@@ -245,7 +243,7 @@ class Potentials extends CRMEntity {
 			inner join vtiger_contpotentialrel on vtiger_contpotentialrel.potentialid = vtiger_potential.potentialid
 			inner join vtiger_contactdetails on vtiger_contpotentialrel.contactid = vtiger_contactdetails.contactid
 			inner join vtiger_contactscf on vtiger_contactscf.contactid = vtiger_contactdetails.contactid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
 			left join vtiger_account on vtiger_account.accountid = vtiger_contactdetails.accountid
 			left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
 			left join vtiger_users on vtiger_crmentity.smownerid=vtiger_users.id
@@ -305,11 +303,12 @@ class Potentials extends CRMEntity {
 			}
 		}
 
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Products');
 		$query = "SELECT vtiger_products.*,vtiger_productcf.*,
 			vtiger_crmentity.crmid, vtiger_crmentity.smownerid
 			FROM vtiger_products
 			INNER JOIN vtiger_seproductsrel ON vtiger_products.productid = vtiger_seproductsrel.productid and vtiger_seproductsrel.setype = 'Potentials'
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_products.productid
+			INNER JOIN $crmEntityTable ON vtiger_crmentity.crmid = vtiger_products.productid
 			INNER JOIN vtiger_productcf ON vtiger_productcf.productid = vtiger_products.productid
 			INNER JOIN vtiger_potential ON vtiger_potential.potentialid = vtiger_seproductsrel.crmid
 			LEFT JOIN vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
@@ -339,7 +338,7 @@ class Potentials extends CRMEntity {
 		$query = 'select vtiger_potstagehistory.*, vtiger_potential.potentialname
 			from vtiger_potstagehistory
 			inner join vtiger_potential on vtiger_potential.potentialid = vtiger_potstagehistory.potentialid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_potential.potentialid
+			inner join '.$this->crmentityTableAlias.' on vtiger_crmentity.crmid = vtiger_potential.potentialid
 			where vtiger_crmentity.deleted = 0 and vtiger_potential.potentialid = ?';
 		$result=$adb->pquery($query, array($id));
 		$header = array();
@@ -428,7 +427,6 @@ class Potentials extends CRMEntity {
 	 */
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
-			"Calendar" => array("vtiger_seactivityrel"=>array("crmid","activityid"),"vtiger_potential"=>"potentialid"),
 			"Products" => array("vtiger_seproductsrel"=>array("crmid","productid"),"vtiger_potential"=>"potentialid"),
 			"Quotes" => array("vtiger_quotes"=>array("potentialid","quoteid"),"vtiger_potential"=>"potentialid"),
 			"SalesOrder" => array("vtiger_salesorder"=>array("potentialid","salesorderid"),"vtiger_potential"=>"potentialid"),
@@ -441,24 +439,26 @@ class Potentials extends CRMEntity {
 	// Function to unlink all the dependent entities of the given Entity by Id
 	public function unlinkDependencies($module, $id) {
 		/*//Backup Activity-Potentials Relation
+		global $adb;
 		$act_q = "select activityid from vtiger_seactivityrel where crmid = ?";
-		$act_res = $this->db->pquery($act_q, array($id));
-		if ($this->db->num_rows($act_res) > 0) {
-			for($k=0;$k < $this->db->num_rows($act_res);$k++)
+		$act_res = $adb->pquery($act_q, array($id));
+		if ($adb->num_rows($act_res) > 0) {
+			for($k=0;$k < $adb->num_rows($act_res);$k++)
 			{
-				$act_id = $this->db->query_result($act_res,$k,"activityid");
+				$act_id = $adb->query_result($act_res,$k,"activityid");
 				$params = array($id, RB_RECORD_DELETED, 'vtiger_seactivityrel', 'crmid', 'activityid', $act_id);
-				$this->db->pquery("insert into vtiger_relatedlists_rb values (?,?,?,?,?,?)", $params);
+				$adb->pquery("insert into vtiger_relatedlists_rb values (?,?,?,?,?,?)", $params);
 			}
 		}
 		$sql = 'delete from vtiger_seactivityrel where crmid = ?';
-		$this->db->pquery($sql, array($id));*/
+		$adb->pquery($sql, array($id));*/
 
 		parent::unlinkDependencies($module, $id);
 	}
 
 	// Function to unlink an entity with given Id from another entity
 	public function unlinkRelationship($id, $return_module, $return_id) {
+		global $adb;
 		if (empty($return_module) || empty($return_id)) {
 			return;
 		}
@@ -467,22 +467,22 @@ class Potentials extends CRMEntity {
 			$this->trash('Potentials', $id);
 		} elseif ($return_module == 'Campaigns') {
 			$sql = 'UPDATE vtiger_potential SET campaignid = ? WHERE potentialid = ?';
-			$this->db->pquery($sql, array(null, $id));
+			$adb->pquery($sql, array(null, $id));
 		} elseif ($return_module == 'Products') {
 			$sql = 'DELETE FROM vtiger_seproductsrel WHERE crmid=? AND productid=?';
-			$this->db->pquery($sql, array($id, $return_id));
+			$adb->pquery($sql, array($id, $return_id));
 		} elseif ($return_module == 'Contacts') {
 			$sql = 'DELETE FROM vtiger_contpotentialrel WHERE potentialid=? AND contactid=?';
-			$this->db->pquery($sql, array($id, $return_id));
+			$adb->pquery($sql, array($id, $return_id));
 
 			// Potential directly linked with Contact (not through Account - vtiger_contpotentialrel)
-			$directRelCheck = $this->db->pquery('SELECT related_to FROM vtiger_potential WHERE potentialid=? AND related_to=?', array($id, $return_id));
-			if ($this->db->num_rows($directRelCheck)) {
+			$directRelCheck = $adb->pquery('SELECT related_to FROM vtiger_potential WHERE potentialid=? AND related_to=?', array($id, $return_id));
+			if ($adb->num_rows($directRelCheck)) {
 				$this->trash('Potentials', $id);
 			}
 		} elseif ($return_module == 'Documents') {
 			$sql = 'DELETE FROM vtiger_senotesrel WHERE crmid=? AND notesid=?';
-			$this->db->pquery($sql, array($id, $return_id));
+			$adb->pquery($sql, array($id, $return_id));
 		} else {
 			parent::unlinkRelationship($id, $return_module, $return_id);
 		}

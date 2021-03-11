@@ -7,10 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once 'modules/Calendar/Activity.php';
 require_once 'include/logging.php';
 require_once 'include/database/PearDatabase.php';
-require_once 'modules/Calendar/CalendarCommon.php';
+require_once 'include/utils/utils.php';
+require_once 'modules/cbCalendar/CalendarCommon.php';
 require_once 'modules/Calendar4You/Calendar4You.php';
 require_once 'modules/Calendar4You/CalendarUtils.php';
 
@@ -31,10 +31,8 @@ if (!$edit_permissions) {
 	NOPermissionDiv();
 }
 
-$focus = new Activity();
-$activity_mode = vtlib_purify($_REQUEST['activity_mode']);
-$tab_type = 'Calendar';
-//added to fix 4600
+$tab_type = 'cbCalendar';
+$focus = CRMEntity::getInstance($tab_type);
 $search=vtlib_purify($_REQUEST['search_url']);
 
 $focus->column_fields['activitytype'] = 'Task';
@@ -107,7 +105,7 @@ $focus->column_fields[$fieldname] = $date->getDBInsertTimeValue();
 
 $focus->save($tab_type);
 /* For Followup START */
-if (isset($_REQUEST['followup']) && $_REQUEST['followup']=='on' && $activity_mode=='Events' && isset($_REQUEST['followup_time_start']) &&  $_REQUEST['followup_time_start']!='') {
+if (isset($_REQUEST['followup']) && $_REQUEST['followup']=='on' && isset($_REQUEST['followup_time_start']) &&  $_REQUEST['followup_time_start']!='') {
 	$heldevent_id = $focus->id;
 	$focus->column_fields['subject'] = '['.getTranslatedString('LBL_FOLLOWUP', 'cbCalendar').'] '.$focus->column_fields['subject'];
 	$startDate = new DateTimeField($_REQUEST['followup_date'].' '.$_REQUEST['followup_time_start']);
@@ -138,11 +136,6 @@ if (isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != '') {
 	$returnid = vtlib_purify($_REQUEST['return_id']);
 }
 
-$activemode = '';
-if ($activity_mode != '') {
-	$activemode = '&activity_mode='.$activity_mode;
-}
-
 function getRequestData($return_id) {
 	global $adb;
 	$cont_qry = 'select contactid from vtiger_cntactivityrel where activityid=?';
@@ -170,7 +163,7 @@ function getRequestData($return_id) {
 	$mail_data = array();
 	$mail_data['user_id'] = $_REQUEST['assigned_user_id'];
 	$mail_data['subject'] = $_REQUEST['subject'];
-	$mail_data['status'] = (($_REQUEST['activity_mode']=='Task')?($_REQUEST['taskstatus']):($_REQUEST['eventstatus']));
+	$mail_data['status'] = $_REQUEST['eventstatus'];
 	$mail_data['activity_mode'] = $_REQUEST['activity_mode'];
 	$mail_data['taskpriority'] = $_REQUEST['taskpriority'];
 	$mail_data['relatedto'] = $_REQUEST['parent_name'];
@@ -219,7 +212,7 @@ if (isset($_REQUEST['contactidlist']) && $_REQUEST['contactidlist'] != '') {
 //code added to send mail to the vtiger_invitees
 if (isset($_REQUEST['inviteesid']) && $_REQUEST['inviteesid']!='') {
 	$mail_contents = getRequestData($return_id);
-	sendInvitation($_REQUEST['inviteesid'], $_REQUEST['activity_mode'], $_REQUEST['subject'], $mail_contents);
+	$focus->sendInvitation($_REQUEST['inviteesid'], $_REQUEST['subject'], $mail_contents);
 }
 
 //to delete contact account relation while editing event
@@ -264,7 +257,7 @@ if (isset($_REQUEST['subtab']) && $_REQUEST['subtab']!='') {
 }
 
 if ($_REQUEST['recurringcheck']) {
-	include_once 'modules/Calendar/RepeatEvents.php';
+	include_once 'modules/cbCalendar/RepeatEvents.php';
 	Calendar_RepeatEvents::repeatFromRequest($focus);
 }
 
@@ -276,8 +269,6 @@ if ($_REQUEST['return_viewname'] != '') {
 	$return_viewname=vtlib_purify($_REQUEST['return_viewname']);
 }
 
-$parenttab=getParentTab();
-
 if (!empty($_REQUEST['start'])) {
 	$page='&start='.vtlib_purify($_REQUEST['start']);
 }
@@ -285,9 +276,9 @@ if (!empty($_REQUEST['pagenumber'])) {
 	$page = '&start='.vtlib_purify($_REQUEST['pagenumber']);
 }
 $url = 'Location: index.php?action='.$return_action.'&module='.$return_module.'&view='.$view.'&hour='.$hour.'&day='.$day.'&month='.$month.'&year='.$year;
-if ($_REQUEST['maintab'] == 'Calendar' || (!empty($return_id) && empty($returnid))) {
+if (!empty($return_id) && empty($returnid)) {
 	header('&record='.$return_id.'&viewOption='.$viewOption.'&subtab='.$subtab);
 } else {
-	header('&record='.$returnid . $activemode .'&viewname='.$return_viewname . $page . $search);
+	header('&record='.$returnid.'&viewname='.$return_viewname . $page . $search);
 }
 ?>

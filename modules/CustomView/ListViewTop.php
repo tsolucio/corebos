@@ -53,26 +53,14 @@ function getKeyMetrics($maxval, $calCnt) {
 	if (isset($metriclists)) {
 		global $current_user;
 		foreach ($metriclists as $key => $metriclist) {
-			if ($metriclist['module'] == "Calendar") {
-				$listquery = getListQuery($metriclist['module']);
-				$oCustomView = new CustomView($metriclist['module']);
-				$metricsql = $oCustomView->getModifiedCvListQuery($metriclist['id'], $listquery, $metriclist['module']);
-				$metricsql = mkCountQuery($metricsql);
-				$metricresult = $adb->query($metricsql);
-				if ($metricresult) {
-					$rowcount = $adb->fetch_array($metricresult);
-					$metriclists[$key]['count'] = $rowcount['count'];
-				}
-			} else {
-				$queryGenerator = new QueryGenerator($metriclist['module'], $current_user);
-				$queryGenerator->initForCustomViewById($metriclist['id']);
-				$metricsql = $queryGenerator->getQuery();
-				$metricsql = mkCountQuery($metricsql);
-				$metricresult = $adb->query($metricsql);
-				if ($metricresult) {
-					$rowcount = $adb->fetch_array($metricresult);
-					$metriclists[$key]['count'] = $rowcount['count'];
-				}
+			$queryGenerator = new QueryGenerator($metriclist['module'], $current_user);
+			$queryGenerator->initForCustomViewById($metriclist['id']);
+			$metricsql = $queryGenerator->getQuery();
+			$metricsql = mkCountQuery($metricsql);
+			$metricresult = $adb->query($metricsql);
+			if ($metricresult) {
+				$rowcount = $adb->fetch_array($metricresult);
+				$metriclists[$key]['count'] = $rowcount['count'];
 			}
 		}
 	}
@@ -121,7 +109,6 @@ function getMetricList() {
 		$ssql .= " and (vtiger_customview.status=0 or vtiger_customview.userid = ? or vtiger_customview.status =3 or vtiger_customview.userid in
 			(select vtiger_user2role.userid
 				from vtiger_user2role
-				inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
 				inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
 				where vtiger_role.parentrole like '".$userprivs->getParentRoleSequence()."::%'))";
 		$sparams[] = $current_user->id;

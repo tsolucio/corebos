@@ -7,9 +7,10 @@ namespace Composer\Autoload;
 class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
 {
     public static $files = array (
+        '7e9bd612cc444b3eed788ebbe46263a0' => __DIR__ . '/..' . '/laminas/laminas-zendframework-bridge/src/autoload.php',
+        '78d47739fff607f33066e6259f091845' => __DIR__ . '/..' . '/laminas/laminas-cache/autoload/patternPluginManagerPolyfill.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
-        '7e9bd612cc444b3eed788ebbe46263a0' => __DIR__ . '/..' . '/laminas/laminas-zendframework-bridge/src/autoload.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
@@ -21,7 +22,6 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         '93aa591bc4ca510c520999e34229ee79' => __DIR__ . '/..' . '/sabre/xml/lib/Serializer/functions.php',
         'ebdb698ed4152ae445614b69b5e4bb6a' => __DIR__ . '/..' . '/sabre/http/lib/functions.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        '78d47739fff607f33066e6259f091845' => __DIR__ . '/..' . '/laminas/laminas-cache/autoload/patternPluginManagerPolyfill.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -78,6 +78,7 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
             'Laminas\\Serializer\\' => 19,
             'Laminas\\Json\\' => 13,
             'Laminas\\EventManager\\' => 21,
+            'Laminas\\Cache\\Storage\\Adapter\\' => 30,
             'Laminas\\Cache\\' => 14,
         ),
         'I' => 
@@ -218,6 +219,24 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         array (
             0 => __DIR__ . '/..' . '/laminas/laminas-eventmanager/src',
         ),
+        'Laminas\\Cache\\Storage\\Adapter\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-apc/src',
+            1 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-apcu/src',
+            2 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-blackhole/src',
+            3 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-dba/src',
+            4 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-ext-mongodb/src',
+            5 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-filesystem/src',
+            6 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-memcache/src',
+            7 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-memcached/src',
+            8 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-memory/src',
+            9 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-mongodb/src',
+            10 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-redis/src',
+            11 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-session/src',
+            12 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-wincache/src',
+            13 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-xcache/src',
+            14 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-zend-server/src',
+        ),
         'Laminas\\Cache\\' => 
         array (
             0 => __DIR__ . '/..' . '/laminas/laminas-cache/src',
@@ -254,6 +273,13 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
             'Smalot\\PdfParser\\' => 
             array (
                 0 => __DIR__ . '/..' . '/smalot/pdfparser/src',
+            ),
+        ),
+        'P' => 
+        array (
+            'PHPSQLParser\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/greenlion/php-sql-parser/src',
             ),
         ),
         'G' => 

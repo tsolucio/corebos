@@ -73,7 +73,9 @@ function setResponseHeaders() {
 			header('Access-Control-Max-Age: 86400');    // cache for 1 day
 		}
 	}
-	header('Content-type: application/json');
+	if (!(isset($_REQUEST['format']) && (strtolower($_REQUEST['format'])=='stream' || strtolower($_REQUEST['format'])=='streamraw'))) {
+		header('Content-type: application/json');
+	}
 }
 
 function writeErrorOutput($operationManager, $error) {

@@ -38,11 +38,11 @@ if (vtlib_isModuleActive('cbCalendar')) {
 	if (empty($current_language)) {
 		$current_language = 'en_us';
 	}
-
-	//modified query for recurring events -Jag
-	$query="select vtiger_activity.activityid,vtiger_recurringevents.recurringid
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCalendar');
+	// query for recurring events
+	$query='select vtiger_activity.activityid,vtiger_recurringevents.recurringid
 		from vtiger_activity
-		inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
+		inner join '.$crmEntityTable." on vtiger_crmentity.crmid=vtiger_activity.activityid
 		inner join vtiger_activity_reminder on vtiger_activity.activityid=vtiger_activity_reminder.activity_id
 		left outer join vtiger_recurringevents on vtiger_activity.activityid=vtiger_recurringevents.activityid
 		left outer join vtiger_seactivityrel on vtiger_seactivityrel.activityid = vtiger_activity.activityid
@@ -57,7 +57,7 @@ if (vtlib_isModuleActive('cbCalendar')) {
 		$query='select vtiger_crmentity.crmid,vtiger_seactivityrel.crmid as setype,vtiger_activity.*,vtiger_crmentity.setype as calendarsetype,
 			vtiger_activity_reminder.reminder_time,vtiger_activity_reminder.recurringid,vtiger_recurringevents.recurringdate
 			from vtiger_activity
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_activity.activityid
 			inner join vtiger_activity_reminder on vtiger_activity.activityid=vtiger_activity_reminder.activity_id
 			left outer join vtiger_recurringevents on vtiger_activity.activityid=vtiger_recurringevents.activityid
 			left outer join vtiger_seactivityrel on vtiger_seactivityrel.activityid = vtiger_activity.activityid
@@ -110,16 +110,16 @@ if (vtlib_isModuleActive('cbCalendar')) {
 								$current_language = $reminduser->column_fields['language'];
 								$app_strings = return_application_language($current_language);
 								$stdatetime = new DateTimeField($result_set['date_start'].' '.$result_set['time_start']);
-								$subject = getTranslatedString('Reminder', 'Calendar').getTranslatedString($result_set['activitytype'], 'Calendar').' @ '
+								$subject = getTranslatedString('Reminder', 'cbCalendar').getTranslatedString($result_set['activitytype'], 'cbCalendar').' @ '
 									.$stdatetime->getDisplayDateTimeValue($reminduser) .'] ('.$reminduser->column_fields['time_zone'].') '
-									.getTranslatedString($adb->query_result($result_main, 0, 'notificationsubject'), 'Calendar');
+									.getTranslatedString($adb->query_result($result_main, 0, 'notificationsubject'), 'cbCalendar');
 								//Set the mail body/contents here
-								$contents = nl2br(getTranslatedString($adb->query_result($result_main, 0, 'notificationbody'), 'Calendar')) ."\n\n "
-									.getTranslatedString('Subject', 'Calendar').' : '.$activity_sub."\n ". $parent_content .' '
-									.getTranslatedString('Date & Time', 'Calendar').' : '.$stdatetime->getDisplayDateTimeValue($reminduser).' ('
-									.$reminduser->column_fields['time_zone'] .")\n\n ".getTranslatedString('Visit_Link', 'Calendar')
+								$contents = nl2br(getTranslatedString($adb->query_result($result_main, 0, 'notificationbody'), 'cbCalendar')) ."\n\n "
+									.getTranslatedString('Subject', 'cbCalendar').' : '.$activity_sub."\n ". $parent_content .' '
+									.getTranslatedString('Date & Time', 'cbCalendar').' : '.$stdatetime->getDisplayDateTimeValue($reminduser).' ('
+									.$reminduser->column_fields['time_zone'] .")\n\n ".getTranslatedString('Visit_Link', 'cbCalendar')
 									." <a href='".$site_URL.'/index.php?action=DetailView&module=cbCalendar&record='.$activity_id.'&activity_mode='.$activitymode."'>"
-									.getTranslatedString('Click here', 'Calendar').'</a>';
+									.getTranslatedString('Click here', 'cbCalendar').'</a>';
 								$sendto = $user_result_row['email1'];
 								$rdo = send_mail('Calendar', $sendto, $HELPDESK_SUPPORT_NAME, $from, $subject, nl2br($contents));
 							}

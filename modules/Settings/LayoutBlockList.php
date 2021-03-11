@@ -101,7 +101,7 @@ $smarty->assign('CFENTRIES', $cfentries);
 $rellistinfo = getRelatedListInfo($fld_module);
 $smarty->assign('RELATEDLIST', $rellistinfo);
 $pickListResult=getAllowedPicklistModules();
-$nonRelatableModules = array('PBXManager','SMSNotifier','cbupdater','GlobalVariable','Calendar','Emails','ModComments');
+$nonRelatableModules = array('PBXManager','SMSNotifier','cbupdater','GlobalVariable','Emails','ModComments');
 $smsRelatableModules = array('Accounts','Contacts','Leads');
 $entityrelmods=array();
 foreach ($pickListResult as $pValue) {
@@ -683,7 +683,7 @@ function updateFieldProperties() {
 	$oldpresence = $adb->query_result($req_result, 0, 'presence');
 
 	$cal_uitype = vtlib_purify($_REQUEST['uitype']);
-	$longfield_check = vtlib_purify($_REQUEST['longfield']);
+	$longfield_check = isset($_REQUEST['longfield']) ? vtlib_purify($_REQUEST['longfield']) : '';
 	if ($cal_uitype == 19 && $longfield_check == 'false') {
 		$adb->pquery('UPDATE vtiger_field SET uitype=? WHERE fieldid=?', array(21, $fieldid));
 	}
@@ -987,24 +987,7 @@ function addCustomField() {
 	$blockid = vtlib_purify($_REQUEST['blockid']);
 
 	$tabid = getTabid($fldmodule);
-	if ($fldmodule == 'Calendar' && isset($_REQUEST['activity_type'])) {
-		$activitytype = vtlib_purify($_REQUEST['activity_type']);
-		if ($activitytype == 'E') {
-			$tabid = '16';
-		}
-		if ($activitytype == 'T') {
-			$tabid = '9';
-		}
-	}
-
-	$dup_check_tab_id = $tabid;
-	if ($fldmodule == 'Calendar') {
-		$dup_check_tab_id = array('9', '16');
-	}
-	$checkquery='select * from vtiger_field where tabid in ('. generateQuestionMarks($dup_check_tab_id) .') and fieldlabel=?';
-	$params =  array($dup_check_tab_id, $fldlabel);
-	$checkresult=$adb->pquery($checkquery, $params);
-
+	$checkresult=$adb->pquery('select * from vtiger_field where tabid=? and fieldlabel=?', array($tabid, $fldlabel));
 	if ($adb->num_rows($checkresult) > 0) {
 		return 'yes';
 	} else {

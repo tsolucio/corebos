@@ -50,9 +50,6 @@ if (!empty($picklists_entries)) {
 }
 $mods = array();
 foreach ($modules as $lbl => $m) {
-	if ($m == 'Calendar' || $m == 'Events') {
-		continue;
-	}
 	$mods[$m] = getTranslatedString($lbl, $m);
 }
 $smarty->assign('MODULE_LISTS', $mods);

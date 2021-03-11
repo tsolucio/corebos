@@ -19,7 +19,7 @@ function getUserFldArray($fld_module, $roleid) {
 	$user_fld = array();
 	$tabid = getTabid($fld_module);
 
-	$query="SELECT vtiger_field.fieldlabel,vtiger_field.columnname,vtiger_field.fieldname, vtiger_field.uitype
+	$query="SELECT vtiger_field.fieldlabel,vtiger_field.columnname,vtiger_field.fieldname, vtiger_field.uitype, vtiger_picklist.multii18n
 		FROM vtiger_field
 		LEFT JOIN vtiger_picklist on vtiger_field.fieldname = vtiger_picklist.name
 		WHERE (displaytype in (1,2,3,4) and vtiger_field.tabid=? and vtiger_field.uitype in ('15','33','16')
@@ -35,6 +35,7 @@ function getUserFldArray($fld_module, $roleid) {
 			$user_fld = array();
 			$user_fld['fieldlabel'] = $adb->query_result($result, $i, 'fieldlabel');
 			$user_fld['generatedtype'] = $adb->query_result($result, $i, 'generatedtype');
+			$user_fld['multii18n'] = ($adb->query_result($result, $i, 'multii18n')=='' ? 1 : $adb->query_result($result, $i, 'multii18n'));
 			$user_fld['columnname'] = $adb->query_result($result, $i, 'columnname');
 			$user_fld['fieldname'] = $adb->query_result($result, $i, 'fieldname');
 			$user_fld['uitype'] = $adb->query_result($result, $i, 'uitype');
@@ -115,25 +116,30 @@ function getAllPickListValues($fieldName, $lang = array()) {
 }
 
 /**
- * this function accepts the fieldname and the language string array and returns all the editable picklist values for that fieldname
+ * given a picklist field name, returns all the editable picklist values for that field
  * @param string $fieldName - the name of the picklist
- * @param array $lang - the language string array
- * @param object $adb - the peardatabase object
- * @return array $pick - the editable picklist values
+ * @param boolean $lang - true if elements should be returned translated
+ * @param object $adb - the pear database object
+ * @return array the editable picklist values
  */
 function getEditablePicklistValues($fieldName, $lang, $adb) {
 	$values = array();
 	$fieldName = $adb->sql_escape_string($fieldName);
-	$sql="select $fieldName from vtiger_$fieldName where presence=1 and $fieldName <> '--None--'";
-	$res = $adb->query($sql);
+	$res = $adb->query("select $fieldName from vtiger_$fieldName where presence=1 and $fieldName <> '--None--'");
 	$RowCount = $adb->num_rows($res);
 	if ($RowCount > 0) {
-		$frs = $adb->pquery('select fieldid from vtiger_field where fieldname=? limit 1', array($fieldName));
-		$fieldid = $adb->query_result($frs, 0, 0);
-		$module = getModuleForField($fieldid);
+		if ($lang) {
+			$frs = $adb->pquery('select fieldid from vtiger_field where fieldname=? limit 1', array($fieldName));
+			$fieldid = $adb->query_result($frs, 0, 0);
+			$module = getModuleForField($fieldid);
+		}
 		for ($i=0; $i<$RowCount; $i++) {
 			$pick_val = $adb->query_result($res, $i, $fieldName);
-			$values[$pick_val] = getTranslatedString($pick_val, $module);
+			if ($lang) {
+				$values[$pick_val] = getTranslatedString($pick_val, $module);
+			} else {
+				$values[$pick_val] = $pick_val;
+			}
 		}
 	}
 	return $values;
@@ -167,6 +173,30 @@ function getNonEditablePicklistValues($fieldName, $lang, $adb) {
 }
 
 /**
+ * this function accepts the fieldname of a picklist and returns true if it contains noneditable values and false if not
+ * @param string $fieldName - the name of the picklist
+ * @param object $adb - the peardatabase object
+ * @return boolean true if the picklist has noneditable values
+ */
+function hasNonEditablePicklistValues($fieldName) {
+	global $adb;
+	$result = $adb->query('select 1 from vtiger_'.$adb->sql_escape_string($fieldName).' where presence=0 limit 1');
+	return ($adb->num_rows($result)==1);
+}
+
+/**
+ * this function accepts the fieldname of a picklist and returns true if it contains noneditable values and false if not
+ * @param string $fieldName - the name of the picklist
+ * @param object $adb - the peardatabase object
+ * @return boolean true if the picklist has noneditable values
+ */
+function hasMultiLanguageSupport($fieldName) {
+	global $adb;
+	$result = $adb->pquery('select multii18n from vtiger_picklist where name=?', array($fieldName));
+	return ((int)$adb->query_result($result, 0, 'multii18n')==1);
+}
+
+/**
  * this function returns all the assigned picklist values for the given tablename for the given roleid
  * @param string $tableName - the picklist tablename
  * @param integer $roleid - the roleid of the role for which you want data
@@ -174,13 +204,18 @@ function getNonEditablePicklistValues($fieldName, $lang, $adb) {
  * @return array $val - the assigned picklist values in array format
  */
 function getAssignedPicklistValues($tableName, $roleid, $adb, $lang = array()) {
-	static $cache = array();
+	static $cacheObsolete = array();
 	static $questionMarkLists = [];
 	static $paramLists = [];
 
+	$cache = new corebos_cache();
 	$cacheId = $tableName . '#' . $roleid;
-	if (isset($cache[$cacheId])) {
-		return $cache[$cacheId];
+	if ($cache->isUsable()) {
+		if ($cache->getCacheClient()->has($cacheId)) {
+			return $cache->getCacheClient()->get($cacheId);
+		}
+	} elseif (isset($cacheObsolete[$cacheId])) {
+		return $cacheObsolete[$cacheId];
 	}
 
 	$arr = array();
@@ -224,7 +259,11 @@ function getAssignedPicklistValues($tableName, $roleid, $adb, $lang = array()) {
 		}
 	}
 
-	$cache[$cacheId] = $arr;
+	if ($cache->isUsable()) {
+		$cache->getCacheClient()->set($cacheId, $arr);
+	} else {
+		$cacheObsolete[$cacheId] = $arr;
+	}
 	return $arr;
 }
 

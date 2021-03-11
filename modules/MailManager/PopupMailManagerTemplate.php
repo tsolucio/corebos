@@ -8,7 +8,8 @@
  * All Rights Reserved.
  ********************************************************************************/
 require_once 'include/utils/utils.php';
-
+require_once 'data/CRMEntity.php';
+$crmEntityTable = CRMEntity::getcrmEntityTableAlias('MsgTemplate');
 global $theme,$current_user,$mod_strings;
 $theme = vtlib_purify($theme);
 $theme_path='themes/'.$theme.'/';
@@ -32,8 +33,8 @@ $theme_path='themes/'.$theme.'/';
 <?php
 $result = $adb->pquery(
 	'select * from vtiger_msgtemplate
-		inner join vtiger_crmentity on crmid=msgtemplateid
-		where deleted=0 order by reference',
+		inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=msgtemplateid
+		where vtiger_crmentity.deleted=0 order by reference',
 	array()
 );
 $temprow = $adb->fetch_array($result);

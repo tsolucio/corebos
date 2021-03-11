@@ -9,6 +9,7 @@
  ************************************************************************************/
 require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
+require_once 'modules/cbCalendar/CalendarCommon.php';
 
 class cbCalendar extends CRMEntity {
 	public $table_name = 'vtiger_activity';
@@ -156,7 +157,7 @@ class cbCalendar extends CRMEntity {
 		//Handling for invitees
 		$selected_users_string = isset($_REQUEST['inviteesid']) ? $_REQUEST['inviteesid'] : '';
 		$invitees_array = explode(';', $selected_users_string);
-		$this->insertIntoInviteeTable('Calendar', $invitees_array);
+		$this->insertIntoInviteeTable('cbCalendar', $invitees_array);
 
 		//Inserting into sales man activity rel
 		$this->insertIntoSmActivityRel();
@@ -165,7 +166,7 @@ class cbCalendar extends CRMEntity {
 			unset($_REQUEST['recurringcheck']);
 			$this->column_fields['parent_id'] = $this->column_fields['rel_id'];
 			$this->column_fields['contact_id'] = $this->column_fields['cto_id'];
-			include_once 'modules/Calendar/RepeatEvents.php';
+			include_once 'modules/cbCalendar/RepeatEvents.php';
 			Calendar_RepeatEvents::repeatFromRequest($this);
 			//Insert into vtiger_recurring event table
 			if (isset($this->column_fields['recurringtype']) && $this->column_fields['recurringtype']!='' && $this->column_fields['recurringtype']!='--None--') {
@@ -492,55 +493,15 @@ class cbCalendar extends CRMEntity {
 		require_once 'modules/Emails/mail.php';
 		$invites = getTranslatedString('INVITATION', 'cbCalendar');
 		$invitees_array = explode(';', $inviteesid);
-		$subject = $invites.' : '.$subject;
+		$subject = $invites.' : '.vtlib_purify($subject);
 		foreach ($invitees_array as $inviteeid) {
+			$inviteeid = vtlib_purify($inviteeid);
 			if (!empty($inviteeid)) {
 				$description = getActivityDetails($desc, $inviteeid, 'invite');
 				$to_email = getUserEmailId('id', $inviteeid);
 				send_mail('Calendar', $to_email, $current_user->user_name, '', $subject, $description);
 			}
 		}
-	}
-
-	/**
-	 * Apply security restriction (sharing privilege) query part for List view.
-	 */
-	public function getListViewSecurityParameter($module) {
-		global $current_user;
-		$userprivs = $current_user->getPrivileges();
-
-		$sec_query = '';
-		$tabid = getTabid($module);
-
-		if ($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tabid] == 3) {
-			$sec_query .= " AND (vtiger_crmentity.smownerid in($current_user->id) OR vtiger_crmentity.smownerid IN
-				(
-					SELECT vtiger_user2role.userid FROM vtiger_user2role
-					INNER JOIN vtiger_users ON vtiger_users.id=vtiger_user2role.userid
-					INNER JOIN vtiger_role ON vtiger_role.roleid=vtiger_user2role.roleid
-					WHERE vtiger_role.parentrole LIKE '".$userprivs->getParentRoleSequence()."::%'
-				)
-				OR vtiger_crmentity.smownerid IN
-				(
-					SELECT shareduserid FROM vtiger_tmp_read_user_sharing_per
-					WHERE userid=".$current_user->id." AND tabid=".$tabid."
-				)
-				OR (";
-
-			// Build the query based on the group association of current user.
-			if ($userprivs->hasGroups()) {
-				$sec_query .= ' vtiger_groups.groupid IN ('. implode(',', $userprivs->getGroups()) .') OR ';
-			}
-			$sec_query .= ' vtiger_groups.groupid IN
-				(
-					SELECT vtiger_tmp_read_group_sharing_per.sharedgroupid
-					FROM vtiger_tmp_read_group_sharing_per
-					WHERE userid='.$current_user->id.' and tabid='.$tabid.'
-				)';
-			$sec_query .= ')
-			)';
-		}
-		return $sec_query;
 	}
 
 	/**
@@ -613,9 +574,10 @@ class cbCalendar extends CRMEntity {
 			}
 		}
 
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
 		$query .= ' FROM vtiger_contactdetails
 			inner join vtiger_cntactivityrel on vtiger_cntactivityrel.contactid=vtiger_contactdetails.contactid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
 			left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
 			left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid';
 		$query .= $more_relation;
@@ -648,9 +610,10 @@ class cbCalendar extends CRMEntity {
 			while ($act = $adb->fetch_array($rs)) {
 				$adb->pquery($upd, array($act['crmid'],$act['activityid']));
 			}
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
 			$rs = $adb->query('select activityid, contactid
 					from vtiger_cntactivityrel
-					inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cntactivityrel.contactid
+					inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_cntactivityrel.contactid
 					where deleted=0');
 			$upd = 'update vtiger_activity set cto_id=? where activityid=?';
 			$actid = 0;

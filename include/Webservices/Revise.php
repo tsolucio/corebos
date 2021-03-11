@@ -58,7 +58,7 @@ function vtws_revise($element, $user) {
 			$elemTypeId = $ids[0];
 			$referenceObject = VtigerWebserviceObject::fromId($adb, $elemTypeId);
 			if (!in_array($referenceObject->getEntityName(), $details)) {
-				throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, 'Invalid reference specified for $fieldName');
+				throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, "Invalid reference specified for $fieldName");
 			}
 			if ($referenceObject->getEntityName() == 'Users') {
 				if (!$meta->hasAssignPrivilege($element[$fieldName])) {
@@ -115,7 +115,7 @@ function vtws_revise($element, $user) {
 	if (count($listofrelfields)>0) {
 		$deref = unserialize(vtws_getReferenceValue(serialize($listofrelfields), $user));
 		foreach ($r as $relfield => $mods) {
-			if (!empty($entity[$relfield])) {
+			if (!empty($entity[$relfield]) && !empty($deref[$entity[$relfield]])) {
 				$entity[$relfield.'ename'] = $deref[$entity[$relfield]];
 			}
 		}

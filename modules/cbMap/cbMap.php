@@ -13,8 +13,6 @@ require_once 'modules/cbMap/processmap/processMap.php';
 include_once 'modules/cbMap/cbRule.php';
 
 class cbMap extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_cbmap';
 	public $table_index= 'cbmapid';
 	public $column_fields = array();
@@ -211,7 +209,8 @@ class cbMap extends CRMEntity {
 
 	public static function getMapByID($cbmapid) {
 		global $adb;
-		$query = 'SELECT crmid,setype FROM vtiger_crmentity where crmid=? AND deleted=0';
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap', true);
+		$query = 'SELECT crmid,setype FROM '.$crmEntityTable.' where crmid=? AND deleted=0';
 		$result = $adb->pquery($query, array($cbmapid));
 		if ($result && $adb->num_rows($result)>0 && $adb->query_result($result, 0, 'setype') == 'cbMap') {
 			$cbmap = new cbMap();
@@ -224,10 +223,11 @@ class cbMap extends CRMEntity {
 
 	public static function getMapByName($name, $type = '') {
 		global $adb;
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap');
 		$sql = 'select cbmapid
 			from vtiger_cbmap
-			inner join vtiger_crmentity on crmid=cbmapid
-			where deleted=0 and mapname=?';
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=cbmapid
+			where vtiger_crmentity.deleted=0 and mapname=?';
 		$prm = array($name);
 		if ($type!='') {
 			$sql .= ' and maptype=?';
@@ -246,11 +246,12 @@ class cbMap extends CRMEntity {
 
 	public static function getMapIdByName($name) {
 		global $adb;
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap');
 		$mrs = $adb->pquery(
 			'select cbmapid
 			from vtiger_cbmap
-			inner join vtiger_crmentity on crmid=cbmapid
-			where deleted=0 and mapname=?',
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=cbmapid
+			where vtiger_crmentity.deleted=0 and mapname=?',
 			array($name)
 		);
 		if ($mrs && $adb->num_rows($mrs)>0) {

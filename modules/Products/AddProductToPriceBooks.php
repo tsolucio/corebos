@@ -59,17 +59,17 @@ $num_rows = $adb->num_rows($list_result);
 
 //Retreiving the array of already releated products
 if ($currentModule=='Products') {
-	$sql1='select vtiger_crmentity.crmid, vtiger_pricebookproductrel.pricebookid,vtiger_products.unit_price
+	$sql1='select vtiger_crmobject.crmid, vtiger_pricebookproductrel.pricebookid,vtiger_products.unit_price
 		from vtiger_pricebookproductrel
-		inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_pricebookproductrel.productid
+		inner join vtiger_crmobject on vtiger_crmobject.crmid=vtiger_pricebookproductrel.productid
 		inner join vtiger_products on vtiger_products.productid=vtiger_pricebookproductrel.productid
-		where vtiger_crmentity.deleted=0 and vtiger_pricebookproductrel.productid=?';
+		where vtiger_crmobject.deleted=0 and vtiger_pricebookproductrel.productid=?';
 } else {
-	$sql1='select vtiger_crmentity.crmid, vtiger_pricebookproductrel.pricebookid,vtiger_service.unit_price
+	$sql1='select vtiger_crmobject.crmid, vtiger_pricebookproductrel.pricebookid,vtiger_service.unit_price
 		from vtiger_pricebookproductrel
-		inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_pricebookproductrel.productid
+		inner join vtiger_crmobject on vtiger_crmobject.crmid=vtiger_pricebookproductrel.productid
 		inner join vtiger_service on vtiger_service.serviceid=vtiger_pricebookproductrel.productid
-		where vtiger_crmentity.deleted=0 and vtiger_pricebookproductrel.productid=?';
+		where vtiger_crmobject.deleted=0 and vtiger_pricebookproductrel.productid=?';
 }
 $res1 = $adb->pquery($sql1, array($productid));
 $num_prod_rows = $adb->num_rows($res1);

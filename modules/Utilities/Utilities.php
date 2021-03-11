@@ -11,8 +11,6 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class Utilities extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_MODULE_NAME_LOWERCASE';
 	public $table_index= 'MODULE_NAME_LOWERCASEid';
 	public $column_fields = array();

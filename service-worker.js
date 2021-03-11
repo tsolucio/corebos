@@ -2681,7 +2681,7 @@ precacheAndRoute([{
   "revision": "89744856c32a6fa01ec83cf86b78f27f"
 }, {
   "url": "modules/Mobile/resources/crmtogo.js",
-  "revision": "ae01304427dd8dab540c2eec0aa80c11"
+  "revision": "0d047c8401e10aa50d21a6de4fd63686"
 }, {
   "url": "modules/Mobile/resources/css/images/ui-bg_diagonals-thick_18_b81900_40x40.png",
   "revision": "e9c44fa4ccdc5d2d4c5e2bf65fc166aa"
@@ -7805,7 +7805,7 @@ precacheAndRoute([{
   "revision": "60718c9174ed712f0c6a240e34adec1d"
 }, {
   "url": "include/LD/assets/styles/override_lds.css",
-  "revision": "f304bcad34585dd5835ea3eee334899e"
+  "revision": "c37206ef39090fb15ec13ba1ad56a747"
 }, {
   "url": "include/LD/assets/styles/salesforce-lightning-design-system_touch.css",
   "revision": "aae0a7ead47c69e71bbd2ae18e509560"
@@ -9284,7 +9284,7 @@ precacheAndRoute([{
   "revision": "fac2826174b3ef2d807edd9524c029f3"
 }, {
   "url": "include/js/de_de.lang.js",
-  "revision": "9bdc40c49cb44c9b6ef30b1a325e144a"
+  "revision": "b34dfb95ac5ea8bd84490c7d41f3bdbd"
 }, {
   "url": "include/js/dedup.js",
   "revision": "3aab10a82c3f05de285ce73b6dc3be35"
@@ -9293,16 +9293,16 @@ precacheAndRoute([{
   "revision": "6059341b114976dd92665c122b2e7410"
 }, {
   "url": "include/js/en_gb.lang.js",
-  "revision": "1b9c9c68b0f525ed155ba81aa84bfa76"
+  "revision": "61d256e43844b1e85296cc69cb741050"
 }, {
   "url": "include/js/en_us.lang.js",
-  "revision": "26a514c523910b2760840edcda2a4768"
+  "revision": "7cf4ae64473da752b336f7b4467ee3d7"
 }, {
   "url": "include/js/es_es.lang.js",
-  "revision": "cb71e57d94a384fa9623ac532548002c"
+  "revision": "1394943a9797e0c1025ac282548895b0"
 }, {
   "url": "include/js/es_mx.lang.js",
-  "revision": "121219828b8f09462e770c89dddfbcf1"
+  "revision": "5f82f573500574274f4b6858736eaffd"
 }, {
   "url": "include/js/FieldDependencies.js",
   "revision": "7023a4e6ee65093266df7e837578c52c"
@@ -9311,19 +9311,19 @@ precacheAndRoute([{
   "revision": "c6dd1fa8efe64120bc4721d19987922d"
 }, {
   "url": "include/js/fr_fr.lang.js",
-  "revision": "7e3475dc4975cfa1620c75215d8250b5"
+  "revision": "03a067d91231bf0f881cb1449dfd8efd"
 }, {
   "url": "include/js/general.js",
-  "revision": "4d56b8b5dc682b8ece2cfc16a2f999a5"
+  "revision": "55ded6eee2b4f46f371d6932e9627234"
 }, {
   "url": "include/js/hu_hu.lang.js",
-  "revision": "9dc5fb21f95a007631a7cff71b7b784c"
+  "revision": "b8243aa64b88f790bbe422b6b6fa741b"
 }, {
   "url": "include/js/Inventory.js",
   "revision": "194a5778a4ced8a0b8efb8a1a76f0d72"
 }, {
   "url": "include/js/it_it.lang.js",
-  "revision": "d21d489b6895ceceb669f95acc1382f2"
+  "revision": "00f9ba3dddb9e3dffbd251872cc2c8aa"
 }, {
   "url": "include/js/jslog.js",
   "revision": "31c7a760819a0277d2cdb75b82c2c66f"
@@ -9347,7 +9347,7 @@ precacheAndRoute([{
   "revision": "92db09ac10a555be4bfc0398f2a93379"
 }, {
   "url": "include/js/nl_nl.lang.js",
-  "revision": "3f65a157d4eece9d1d02440edffac782"
+  "revision": "530bac24ec772a9e064772b6ccae43f3"
 }, {
   "url": "include/js/notebook.js",
   "revision": "d944ea5145ae45ecbafab41bcbd112f3"
@@ -9359,13 +9359,13 @@ precacheAndRoute([{
   "revision": "d871391e97faa107c84bfdf8e770f113"
 }, {
   "url": "include/js/picklist.js",
-  "revision": "2b72e46b2012116ecbb8c7cfb872d98a"
+  "revision": "1ef073a518be05c33505aa254eb0e2cd"
 }, {
   "url": "include/js/popup.js",
-  "revision": "9dcdc285def88f01bd2f4308acdf8755"
+  "revision": "b1cd730bb99018ac56e2bf1ea6ce2d1c"
 }, {
   "url": "include/js/pt_br.lang.js",
-  "revision": "e7d0b3b3684e669f7a258182e887c632"
+  "revision": "8f59175bc8023be576a92eaeca953ef4"
 }, {
   "url": "include/js/QuickCreate.js",
   "revision": "e5029e6a617bfb7f9114191938738069"
@@ -9374,7 +9374,7 @@ precacheAndRoute([{
   "revision": "5bce2a6cf35180a097828b2cde3346ff"
 }, {
   "url": "include/js/ro_ro.lang.js",
-  "revision": "cac7731fa82cdbb0c5185e9828a423e7"
+  "revision": "4c3d054f2e93114d3884b9d56f4ca4dd"
 }, {
   "url": "include/js/search.js",
   "revision": "d5c8ddcb6451bc0c05aa26f123363e0f"
@@ -9551,7 +9551,10 @@ precacheAndRoute([{
   "revision": "15d69567f5bb39bb9c454e7d1536995a"
 }, {
   "url": "modules/com_vtiger_workflow/resources/updatemassivefieldstaskscript.js",
-  "revision": "f1837704807d429d5a2f712d1a101992"
+  "revision": "53c91688a4be6a0a08144e1f7b60dea0"
+}, {
+  "url": "modules/com_vtiger_workflow/resources/upserttask.js",
+  "revision": "34b851fddbd3a550f557a0de87f88415"
 }, {
   "url": "modules/com_vtiger_workflow/resources/vtigerwebservices.js",
   "revision": "8acb4cd5b3583547db71a8345e8f667e"
@@ -9673,9 +9676,6 @@ precacheAndRoute([{
   "url": "modules/Assets/Assets.png",
   "revision": "1731082fd75d2dd046cd8d2b205f205c"
 }, {
-  "url": "modules/Calendar/Events.png",
-  "revision": "d272fe117e3a9104236b81d78dbf7a7c"
-}, {
   "url": "modules/Campaigns/Campaigns.png",
   "revision": "9025d280f0e8b147e104dacec651c980"
 }, {
@@ -9779,7 +9779,7 @@ precacheAndRoute([{
   "revision": "5379a537fce7b3cba68f684538cbcec9"
 }, {
   "url": "modules/SalesOrder/SalesOrder.js",
-  "revision": "20916140c09d05b2965c64907a7a76d0"
+  "revision": "08044cebfd004af72f26432ff7cdd289"
 }, {
   "url": "modules/Settings/Settings.js",
   "revision": "1001255e02a066e3fab9687eb4f7ec79"
@@ -9824,10 +9824,10 @@ precacheAndRoute([{
   "revision": "8b38e7858ab48183ba87dc24e60178bc"
 }, {
   "url": "modules/HelpDesk/HelpDesk.js",
-  "revision": "a1d67a7ccdf46c451b108ae99930bba8"
+  "revision": "7cdb17802602d0c07de8fbeb2d2efbc4"
 }, {
   "url": "modules/Potentials/Potentials.js",
-  "revision": "4ebb204b35da3e737622cff83e0de88c"
+  "revision": "5e37ebfc8e680819028987f996246f3a"
 }, {
   "url": "modules/CronTasks/CronTasks.js",
   "revision": "5ed805a40a9bb0df7a12e9bd966311ab"
@@ -9835,11 +9835,8 @@ precacheAndRoute([{
   "url": "modules/PBXManager/PBXManager.js",
   "revision": "c663d6d8dfeba2b51a542382c8623087"
 }, {
-  "url": "modules/Calendar/script.js",
-  "revision": "72f944c5928692ba7107b1a9b04a37bc"
-}, {
-  "url": "modules/Calendar/Calendar.js",
-  "revision": "42eb8ee2c489f5282fb720547738a037"
+  "url": "modules/cbCalendar/script.js",
+  "revision": "5ff84bd241541613e3a0105839d7daeb"
 }, {
   "url": "modules/cbCalendar/cbCalendar.js",
   "revision": "963d1c00b77948ab883373732ad89a8e"
@@ -9899,13 +9896,13 @@ precacheAndRoute([{
   "revision": "c240060c1b952bba5d36d4a506fa0e6e"
 }, {
   "url": "modules/Leads/Leads.js",
-  "revision": "c5db71d972b07b46dd4b9e24a0f0c92a"
+  "revision": "9a96351a66773a3b404c50db5c685385"
 }, {
   "url": "modules/WSAPP/WSAPP.js",
   "revision": "36b3093ded85fbdb78336ed100dae8ac"
 }, {
   "url": "modules/Accounts/Accounts.js",
-  "revision": "f60fafaea0f0957ec2535a531828e18c"
+  "revision": "62ebabcb3d9f2ffc968f93808a84fc82"
 }, {
   "url": "modules/cbMap/cbMap.js",
   "revision": "ac4053b733101a16e9ba2a83b0bd7f5a"
@@ -9947,10 +9944,10 @@ precacheAndRoute([{
   "revision": "c240060c1b952bba5d36d4a506fa0e6e"
 }, {
   "url": "modules/Campaigns/Campaigns.js",
-  "revision": "12de06af8b7cc1f09fb8e27c69736dbf"
+  "revision": "36804a710b0d90fecd80178cc5f6f0a2"
 }, {
   "url": "modules/Invoice/Invoice.js",
-  "revision": "6491883f6fec8e2268507b4acb12e98a"
+  "revision": "1b3fe21f81e26efd0ebc450567a49667"
 }, {
   "url": "modules/CobroPago/CobroPago.js",
   "revision": "c240060c1b952bba5d36d4a506fa0e6e"
@@ -10022,7 +10019,7 @@ precacheAndRoute([{
   "revision": "2bc5785bbc8662d43972828563d8e11a"
 }, {
   "url": "modules/Contacts/Contacts.js",
-  "revision": "78c1c0ca28f2b99fe8cb695c16eb560b"
+  "revision": "c1b4a7ca39e33a21739bd848a8f9b48d"
 }, {
   "url": "modules/Dashboard/Dashboard.js",
   "revision": "8ab2b632de69afd4fefcd5daccab5af6"
@@ -10067,10 +10064,10 @@ precacheAndRoute([{
   "revision": "1975335374a344be4e3f98dbfe6756b4"
 }, {
   "url": "modules/Quotes/Quotes.js",
-  "revision": "e13706328f79bdc133480d480ede4968"
+  "revision": "fd94d449f05b6edf97b677620d131ec1"
 }, {
   "url": "modules/PurchaseOrder/PurchaseOrder.js",
-  "revision": "e7a778edc2cbf9bbc6849469beb2746e"
+  "revision": "c4d6beb74ea9772d82bdde6a243a16fd"
 }, {
   "url": "include/Webservices/WSClient.js",
   "revision": "ce5b9c7843df949930c6521cb685b0bd"

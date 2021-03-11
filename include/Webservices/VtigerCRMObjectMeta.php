@@ -19,6 +19,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 	private $hasDeleteAccess;
 	private $assignUsers;
 	public $idColumn;
+	public $baseTable;
 
 	public function __construct($webserviceObject, $user) {
 		parent::__construct($webserviceObject, $user);
@@ -441,11 +442,9 @@ class VtigerCRMObjectMeta extends EntityMeta {
 				}
 			}
 		} else {
-			$result = $adb->pquery('select setype from vtiger_crmentity where crmid=? and deleted=?', array($id,$deleted));
-			if ($result != null && isset($result)) {
-				if ($adb->num_rows($result)>0) {
-					$seType = $adb->query_result($result, 0, 'setype');
-				}
+			$result = $adb->pquery('select setype from vtiger_crmobject where crmid=? and deleted=?', array($id, $deleted));
+			if ($result && $adb->num_rows($result)>0) {
+				$seType = $adb->query_result($result, 0, 'setype');
 			}
 		}
 		return $seType;
@@ -467,7 +466,9 @@ class VtigerCRMObjectMeta extends EntityMeta {
 				$sql = "select 1 from vtiger_users where id=? and deleted=0 and status='Active'";
 			}
 		} else {
-			$sql = "select 1 from vtiger_crmentity where crmid=? and deleted=0 and setype='".$this->getTabName()."'";
+			$module = $this->getTabName();
+			$mod = CRMEntity::getInstance($module);
+			$sql = "select 1 from ".$mod->crmentityTable." where crmid=? and deleted=0 and setype='".$this->getTabName()."'";
 		}
 
 		if ($sql) {

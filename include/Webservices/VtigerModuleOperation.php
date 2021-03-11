@@ -258,6 +258,15 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			$mysql_query = $parser->getSql();
 			$meta = $parser->getObjectMetaData();
 		}
+		if (!empty(coreBOS_Session::get('authenticatedUserIsPortalUser', false))) {
+			$contactId = coreBOS_Session::get('authenticatedUserPortalContact', 0);
+			if (empty($contactId)) {
+				$mysql_query = 'select 1';
+			} else {
+				$accountId = getSingleFieldValue('vtiger_contactdetails', 'accountid', 'contactid', $contactId);
+				$mysql_query = addPortalModuleRestrictions($mysql_query, $meta->getEntityName(), $accountId, $contactId);
+			}
+		}
 		return $mysql_query;
 	}
 
@@ -296,77 +305,98 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$isRelatedQuery = __FQNExtendedQueryIsFQNQuery($q);
 		$noofrows = $this->pearDB->num_rows($result);
 		$output = array();
+		$streamraw = (isset($_REQUEST['format']) && strtolower($_REQUEST['format'])=='streamraw');
+		$streaming = (isset($_REQUEST['format']) && (strtolower($_REQUEST['format'])=='stream' || $streamraw));
+		$stream = '';
 		for ($i=0; $i<$noofrows; $i++) {
 			$row = $this->pearDB->fetchByAssoc($result, $i);
 			$rowcrmid = (isset($row[$meta->idColumn]) ? $row[$meta->idColumn] : (isset($row['crmid']) ? $row['crmid'] : (isset($row['id']) ? $row['id'] : '')));
 			if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $rowcrmid)) {
 				continue;
 			}
-			$newrow = DataTransform::sanitizeDataWithColumn($row, $meta);
-			if ($isRelatedQuery) {
-				if ($invlines) {
-					$newrow = $row;
-					if (!empty($newrow['id'])) {
-						$newrow['id'] = vtws_getEntityId(getSalesEntityType($newrow['id'])) . 'x' . $newrow['id'];
+			if ($streamraw) {
+				$newrow = $row;
+			} else {
+				$newrow = DataTransform::sanitizeDataWithColumn($row, $meta);
+				if ($isRelatedQuery) {
+					if ($invlines) {
+						$newrow = $row;
+						if (!empty($newrow['id'])) {
+							$newrow['id'] = vtws_getEntityId(getSalesEntityType($newrow['id'])) . 'x' . $newrow['id'];
+						}
+						$newrow['linetype'] = '';
+						if (!empty($newrow['productid'])) {
+							$newrow['linetype'] = getSalesEntityType($newrow['productid']);
+							$newrow['productid'] = ($newrow['linetype'] == 'Products' ? $pdowsid : $srvwsid) . 'x' . $newrow['productid'];
+						}
+						if (!empty($newrow['serviceid'])) {
+							$newrow['linetype'] = 'Services';
+							$newrow['serviceid'] = $srvwsid . 'x' . $newrow['serviceid'];
+						}
+					} else {
+						$relflds = array_diff_key($row, $newrow);
+						foreach ($queryRelatedModules as $relmod => $relmeta) {
+							$lrm = strtolower($relmod);
+							$newrflds = array();
+							foreach ($relflds as $fldname => $fldvalue) {
+								$fldmod = substr($fldname, 0, strlen($relmod));
+								if (isset($row[$fldname]) && $fldmod==$lrm) {
+									$newkey = substr($fldname, strlen($lrm));
+									$newrflds[$newkey] = $fldvalue;
+								}
+							}
+							$relrow = DataTransform::sanitizeDataWithColumn($newrflds, $relmeta);
+							$newrelrow = array();
+							foreach ($relrow as $key => $value) {
+								$newrelrow[$lrm.$key] = $value;
+							}
+							$newrow = array_merge($newrow, $newrelrow);
+						}
 					}
-					$newrow['linetype'] = '';
-					if (!empty($newrow['productid'])) {
-						$newrow['linetype'] = getSalesEntityType($newrow['productid']);
-						$newrow['productid'] = ($newrow['linetype'] == 'Products' ? $pdowsid : $srvwsid) . 'x' . $newrow['productid'];
+				}
+				if ($isDocModule) {
+					$relatt=$adb->pquery('SELECT attachmentsid FROM vtiger_seattachmentsrel WHERE crmid=?', array($rowcrmid));
+					if ($relatt && $adb->num_rows($relatt)==1) {
+						$fileid = $adb->query_result($relatt, 0, 0);
+						$attrs=$adb->pquery('SELECT * FROM vtiger_attachments WHERE attachmentsid=?', array($fileid));
+						if ($attrs && $adb->num_rows($attrs) == 1) {
+							$name = @$adb->query_result($attrs, 0, 'name');
+							$filepath = @$adb->query_result($attrs, 0, 'path');
+							$name = html_entity_decode($name, ENT_QUOTES, $default_charset);
+							$newrow['_downloadurl'] = $site_URL.'/'.$filepath.$fileid.'_'.$name;
+							$newrow['filename'] = $name;
+						}
 					}
-					if (!empty($newrow['serviceid'])) {
-						$newrow['linetype'] = 'Services';
-						$newrow['serviceid'] = $srvwsid . 'x' . $newrow['serviceid'];
+				} elseif (!empty($imageFields)) {
+					foreach ($imageFields as $imgvalue) {
+						$newrow[$imgvalue.'fullpath'] = ''; // initialize so we have same number of columns in all rows
 					}
-				} else {
-					$relflds = array_diff_key($row, $newrow);
-					foreach ($queryRelatedModules as $relmod => $relmeta) {
-						$lrm = strtolower($relmod);
-						$newrflds = array();
-						foreach ($relflds as $fldname => $fldvalue) {
-							$fldmod = substr($fldname, 0, strlen($relmod));
-							if (isset($row[$fldname]) && $fldmod==$lrm) {
-								$newkey = substr($fldname, strlen($lrm));
-								$newrflds[$newkey] = $fldvalue;
+					$result_image = $adb->pquery($imgquery, array($rowcrmid));
+					while ($img = $adb->fetch_array($result_image)) {
+						foreach ($imageFields as $imgvalue) {
+							if ($img['name'] == $row[$imgvalue] || $img['name'] == str_replace(' ', '_', $row[$imgvalue])) {
+								$newrow[$imgvalue.'fullpath'] = $site_URL.'/'.$img['path'].$img['attachmentsid'].'_'.$img['name'];
+								break;
 							}
 						}
-						$relrow = DataTransform::sanitizeDataWithColumn($newrflds, $relmeta);
-						$newrelrow = array();
-						foreach ($relrow as $key => $value) {
-							$newrelrow[$lrm.$key] = $value;
-						}
-						$newrow = array_merge($newrow, $newrelrow);
 					}
 				}
 			}
-			if ($isDocModule) {
-				$relatt=$adb->pquery('SELECT attachmentsid FROM vtiger_seattachmentsrel WHERE crmid=?', array($rowcrmid));
-				if ($relatt && $adb->num_rows($relatt)==1) {
-					$fileid = $adb->query_result($relatt, 0, 0);
-					$attrs=$adb->pquery('SELECT * FROM vtiger_attachments WHERE attachmentsid=?', array($fileid));
-					if ($attrs && $adb->num_rows($attrs) == 1) {
-						$name = @$adb->query_result($attrs, 0, 'name');
-						$filepath = @$adb->query_result($attrs, 0, 'path');
-						$name = html_entity_decode($name, ENT_QUOTES, $default_charset);
-						$newrow['_downloadurl'] = $site_URL.'/'.$filepath.$fileid.'_'.$name;
-						$newrow['filename'] = $name;
-					}
+			if ($streaming) {
+				$stream .= json_encode($newrow)."\n";
+				if (($i % 500)==0) {
+					echo $stream;
+					flush();
+					$stream = '';
 				}
-			} elseif (!empty($imageFields)) {
-				foreach ($imageFields as $imgvalue) {
-					$newrow[$imgvalue.'fullpath'] = ''; // initialize so we have same number of columns in all rows
-				}
-				$result_image = $adb->pquery($imgquery, array($rowcrmid));
-				while ($img = $adb->fetch_array($result_image)) {
-					foreach ($imageFields as $imgvalue) {
-						if ($img['name'] == $row[$imgvalue] || $img['name'] == str_replace(' ', '_', $row[$imgvalue])) {
-							$newrow[$imgvalue.'fullpath'] = $site_URL.'/'.$img['path'].$img['attachmentsid'].'_'.$img['name'];
-							break;
-						}
-					}
-				}
+			} else {
+				$output[] = $newrow;
 			}
-			$output[] = $newrow;
+		}
+		if ($stream!='') {
+			echo $stream;
+			flush();
+			$stream = '';
 		}
 		$mysql_query = mkXQuery(stripTailCommandsFromQuery($mysql_query, false), 'count(*) AS cnt');
 		$result = $this->pearDB->pquery($mysql_query, array());

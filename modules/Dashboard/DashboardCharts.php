@@ -18,7 +18,7 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
 require_once 'include/utils/ChartUtils.php';
-
+require_once 'data/CRMEntity.php';
 class DashboardCharts {
 
 	public static function pipeline_by_sales_stage($datax, $date_start, $date_end, $user_id, $width, $height) {
@@ -62,10 +62,10 @@ class DashboardCharts {
 		//build the where clause for the query that matches $date_start and $date_end
 		$where .= " AND closingdate >= '$date_start' AND closingdate <= '$date_end'";
 		$subtitle = $mod_strings['LBL_DATE_RANGE'].' '.$date->getDisplayDate().' '.$mod_strings['LBL_DATE_RANGE_TO'].' '.$endDate->getDisplayDate();
-
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Potentials');
 		$sql = 'SELECT `sales_stage`,smownerid,count(*) as potcnt,sum(amount) as potsum
 			FROM `vtiger_potential`
-			INNER JOIN vtiger_crmentity on crmid=potentialid '.
+			INNER JOIN '.$crmEntityTable.' on vtiger_crmentity.crmid=potentialid '.
 			getNonAdminAccessControlQuery('Potentials', $current_user).
 			" WHERE $where
 			GROUP BY `sales_stage`,smownerid
@@ -184,9 +184,10 @@ class DashboardCharts {
 
 		$total = 0;
 		$realwhere = $where." and sales_stage='Closed Won' ";
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Potentials');
 		$sql = 'SELECT MONTH(closingdate) as potmonth,count(*) as potcnt,sum(amount) as potsum
 			FROM `vtiger_potential`
-			INNER JOIN vtiger_crmentity on crmid=potentialid '.
+			INNER JOIN '.$crmEntityTable.' on vtiger_crmentity.crmid=potentialid '.
 			getNonAdminAccessControlQuery('Potentials', $current_user).
 			" WHERE $realwhere
 			GROUP BY potmonth
@@ -202,7 +203,7 @@ class DashboardCharts {
 		$realwhere = $where." and sales_stage='Closed Lost' ";
 		$sql = 'SELECT MONTH(closingdate) as potmonth,count(*) as potcnt,sum(amount) as potsum
 			FROM `vtiger_potential`
-			INNER JOIN vtiger_crmentity on crmid=potentialid '.
+			INNER JOIN '.$crmEntityTable.' on vtiger_crmentity.crmid=potentialid '.
 			getNonAdminAccessControlQuery('Potentials', $current_user).
 			" WHERE $realwhere
 			GROUP BY potmonth
@@ -218,7 +219,7 @@ class DashboardCharts {
 		$realwhere = $where." and sales_stage!='Closed Lost' and sales_stage!='Closed Won' ";
 		$sql = 'SELECT MONTH(closingdate) as potmonth,count(*) as potcnt,sum(amount) as potsum
 			FROM `vtiger_potential`
-			INNER JOIN vtiger_crmentity on crmid=potentialid '.
+			INNER JOIN '.$crmEntityTable.' on vtiger_crmentity.crmid=potentialid '.
 			getNonAdminAccessControlQuery('Potentials', $current_user).
 			" WHERE $realwhere
 			GROUP BY potmonth
@@ -379,10 +380,10 @@ class DashboardCharts {
 			}
 			$where .= ')';
 		}
-
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Potentials');
 		$sql = 'SELECT `leadsource`,smownerid,count(*) as potcnt,sum(amount) as potsum
 			FROM `vtiger_potential`
-			INNER JOIN vtiger_crmentity on crmid=potentialid '.
+			INNER JOIN '.$crmEntityTable.' on vtiger_crmentity.crmid=potentialid '.
 			getNonAdminAccessControlQuery('Potentials', $current_user).
 			" WHERE $where
 			GROUP BY `leadsource`,smownerid
@@ -506,10 +507,10 @@ class DashboardCharts {
 			}
 			$where .= ')';
 		}
-
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Potentials');
 		$sql = 'SELECT `leadsource`,count(*) as potcnt,sum(amount) as potsum
 			FROM `vtiger_potential`
-			INNER JOIN vtiger_crmentity on crmid=potentialid '.
+			INNER JOIN '.$crmEntityTable.' on vtiger_crmentity.crmid=potentialid '.
 			getNonAdminAccessControlQuery('Potentials', $current_user).
 			" WHERE $where
 			GROUP BY `leadsource`

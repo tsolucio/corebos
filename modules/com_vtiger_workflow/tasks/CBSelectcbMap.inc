@@ -17,6 +17,7 @@
  *************************************************************************************************/
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
+require_once 'data/CRMEntity.php';
 
 class CBSelectcbMap extends VTTask {
 	public $executeImmediately = true;
@@ -27,10 +28,11 @@ class CBSelectcbMap extends VTTask {
 
 	public function doTask(&$recordid) {
 		global $adb;
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap');
 		$maprs = $adb->pquery('select 1
 			from vtiger_cbmap
-			inner join vtiger_crmentity on crmid=cbmapid
-			where deleted=0 and cbmapid=?', array($this->bmapid));
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=cbmapid
+			where vtiger_crmentity.deleted=0 and cbmapid=?', array($this->bmapid));
 		if ($maprs && $adb->num_rows($maprs)>0) {
 			require_once 'modules/cbMap/cbMap.php';
 			require_once 'modules/cbMap/processmap/processMap.php';

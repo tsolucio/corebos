@@ -218,7 +218,7 @@ if ($sql_error) {
 
 		$smarty->assign('CUSTOMVIEW_OPTION', $customview_html);
 
-	// Navigation
+		// Navigation
 		$navigationOutput = getTableHeaderSimpleNavigation($navigation_array, $url_string, $currentModule, 'index', $viewid);
 		$smarty->assign('NAVIGATION', $navigationOutput);
 

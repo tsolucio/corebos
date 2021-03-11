@@ -70,15 +70,14 @@ function getRelatedFieldsList($fieldid, $related_fields) {
 
 /**
  * function to get the module names
- * @return - all module names other than Calendar and Events
+ * @return - all module names other than Users
  */
 function moduleList() {
 	global $adb;
-	$sql = "select distinct vtiger_field.tabid,name
-		from vtiger_field
-		inner join vtiger_tab on vtiger_field.tabid=vtiger_tab.tabid
-		where name not in ('Calendar','Events','Users')";
-	$result = $adb->pquery($sql, array ());
+	$result = $adb->pquery(
+		"select distinct vtiger_field.tabid,name from vtiger_field inner join vtiger_tab on vtiger_field.tabid=vtiger_tab.tabid where name != 'Users'",
+		array ()
+	);
 	$modulelist = array();
 	while ($moduleinfo = $adb->fetch_array($result)) {
 		$modulelist[$moduleinfo['name']] = getTranslatedString($moduleinfo['name'], $moduleinfo['name']);
@@ -150,10 +149,11 @@ function getToolTipText($view, $fieldname, $module, $value) {
 			$text[$label] = $fieldvalue;
 		} elseif ($fieldname=='ModComments') {
 			list($wsmod, $crmid) = explode('x', $value[0]['id']);
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Accounts');
 			$query = 'SELECT vtiger_crmentity.smownerid, vtiger_modcomments.commentcontent, vtiger_crmentity.modifiedtime
-				FROM vtiger_modcomments
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_modcomments.modcommentsid
-				LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
+				FROM vtiger_modcomments'
+				.' INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_modcomments.modcommentsid'
+				.' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
 				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 				WHERE vtiger_crmentity.deleted=0 AND vtiger_modcomments.related_to=?
 				ORDER BY vtiger_crmentity.createdtime desc LIMIT '.GlobalVariable::getVariable('ToolTip_NumberOfComments', 5, $module);

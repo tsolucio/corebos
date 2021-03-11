@@ -84,5 +84,4 @@ if (!empty($_REQUEST['sorder'])) {
 } else {
 	$order_by = $focus->default_order_by.' '.$focus->default_sort_order;
 }
-$response = $focus->getWorkFlowJSON($conds, $params, $page, $order_by);
-echo $response;
+echo $focus->getWorkFlowJSON($conds, $params, $page, $order_by);

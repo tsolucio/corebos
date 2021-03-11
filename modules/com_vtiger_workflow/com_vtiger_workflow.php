@@ -11,6 +11,8 @@ class com_vtiger_workflow extends CRMEntity {
 
 	public $table_name = 'com_vtiger_workflows';
 	public $table_index= 'workflow_id';
+	public $tab_name = array('com_vtiger_workflows');
+	public $tab_name_index = array('com_vtiger_workflows' => 'workflow_id');
 	public $default_order_by = 'summary';
 	public $default_sort_order='ASC';
 	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-document', 'class' => 'slds-icon', 'icon'=>'process');

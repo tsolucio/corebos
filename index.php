@@ -46,7 +46,6 @@ if (isset($_REQUEST['view'])) {
 	coreBOS_Session::set('view', $view);
 }
 
-
 require_once 'include/logging.php';
 require_once 'modules/Users/Users.php';
 $calculate_response_time = GlobalVariable::getVariable('Debug_Calculate_Response_Time', 0, '', Users::getActiveAdminId());
@@ -305,7 +304,7 @@ if ($use_current_login) {
 
 	/* Skip audit trail log for special request types */
 	$skip_auditing = false;
-	if (($action == 'ActivityReminderCallbackAjax' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'ActivityReminderCallbackAjax')) && $module == 'Calendar') {
+	if (($action == 'ActivityReminderCallbackAjax' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'ActivityReminderCallbackAjax')) && $module == 'cbCalendar') {
 		$skip_auditing = true;
 	} elseif (($action == 'TraceIncomingCall' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'TraceIncomingCall')) && $module == 'PBXManager') {
 		$skip_auditing = true;
@@ -350,7 +349,7 @@ if ($use_current_login) {
 }
 // Force password change
 if ($current_user->mustChangePassword() && $_REQUEST['action']!='Logout' && $_REQUEST['action']!='CalendarAjax' && $_REQUEST['action']!='UsersAjax'
-	&& ($_REQUEST['action']!='UtilitiesAjax' && $_REQUEST['functiontocall']!='setNewPassword') && $_REQUEST['action'] != 'PBXManagerAjax'
+	&& ($_REQUEST['action']!='UtilitiesAjax' && (empty($_REQUEST['functiontocall']) || $_REQUEST['functiontocall']!='setNewPassword')) && $_REQUEST['action'] != 'PBXManagerAjax'
 	&& !($_REQUEST['module']=='Users' && $_REQUEST['action']=='Save')
 ) {
 	$currentModule = 'Users';

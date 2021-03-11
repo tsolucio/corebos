@@ -39,7 +39,7 @@ if (count($ids_list) > 0) {
 }
 
 if (isset($_REQUEST['start']) && ($_REQUEST['start']!='')) {
-	$rstart = "&start=".urlencode(vtlib_purify($_REQUEST['start']));
+	$rstart = '&start='.urlencode(vtlib_purify($_REQUEST['start']));
 }
 $returnmodule = urlencode($returnmodule);
 if ($returnmodule == 'Emails') {
@@ -48,7 +48,7 @@ if ($returnmodule == 'Emails') {
 	} else {
 		$folderid = 1;
 	}
-	header("Location: index.php?module=$returnmodule&action=".$returnmodule."Ajax&folderid=".$folderid."&ajax=delete".$rstart."&file=ListView&errormsg=".$errormsg.$url);
+	header("Location: index.php?module=$returnmodule&action=".$returnmodule.'Ajax&folderid='.$folderid.'&ajax=delete'.$rstart.'&file=ListView&errormsg='.$errormsg.$url);
 } elseif ($return_action == 'ActivityAjax') {
 	$req = new Vtiger_Request();
 	$req->set('return_view', $_REQUEST['view']);
@@ -63,7 +63,7 @@ if ($returnmodule == 'Emails') {
 	header('Location: index.php?module='.$returnmodule.'&action='.$return_action.$rstart.$urlpart.'&viewOption='.urlencode(vtlib_purify($_REQUEST['viewOption'])).$url);
 } else {
 	if (!isset($_REQUEST['__NoReload'])) {
-		header("Location: index.php?module=".$returnmodule."&action=".$returnmodule."Ajax&ajax=delete".$rstart."&file=ListView&errormsg=".$errormsg.$url);
+		header('Location: index.php?module='.$returnmodule.'&action='.$returnmodule.'Ajax&ajax=delete'.$rstart.'&file=ListView&errormsg='.$errormsg.$url);
 	}
 }
 ?>
