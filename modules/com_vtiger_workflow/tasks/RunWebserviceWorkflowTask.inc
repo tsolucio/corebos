@@ -156,7 +156,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 								}
 							}
 						}
-						if ((string)$r2 == 'null' || is_null($r2)) {
+						if ((!is_array($r2) && (string)$r2 == 'null') || is_null($r2)) {
 							$r2 = '';
 						}
 						if (!empty($v['field'])) {
@@ -180,7 +180,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 						} else {
 							$r2 = $response2[$fld];
 						}
-						if ((string)$r2 == 'null' || is_null($r2)) {
+						if ((!is_array($r2) && (string)$r2 == 'null') || is_null($r2)) {
 							$r2 = '';
 						}
 						if (!empty($v['field'])) {
