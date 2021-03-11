@@ -426,7 +426,6 @@ class WorkFlowScheduler {
 			case 'monthday':
 				$monthday = $condition['value'];
 				$value = date('m-d', strtotime($monthday));
-				var_dump($value);
 				break;
 		}
 		@date_default_timezone_set($default_timezone);
