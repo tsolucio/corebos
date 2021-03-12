@@ -25,6 +25,7 @@ class LoggerManager {
 				if ($loggerConfig[$name]['Enabled']) {
 					$logger = new Logger($name);
 					$formatter = new LineFormatter(self::LOGLINEFORMAT);
+					$logger = self::addHandlers($logger, $formatter);
 					$stream = new RotatingFileHandler('logs/'.$loggerConfig[$name]['File'].'.log', $loggerConfig[$name]['MaxBackup'], self::getLogLevel($loggerConfig[$name]['Level']));
 					$stream->setFormatter($formatter);
 					$logger->pushHandler($stream);
@@ -38,6 +39,7 @@ class LoggerManager {
 				if ($loggerConfig[$name]['Enabled']) {
 					$logger = new Logger('APPLICATION');
 					$formatter = new LineFormatter(self::LOGLINEFORMAT);
+					$logger = self::addHandlers($logger, $formatter);
 					$stream = new RotatingFileHandler('logs/'.$loggerConfig['APPLICATION']['File'].'.log', $loggerConfig['APPLICATION']['MaxBackup'], self::getLogLevel($loggerConfig[$name]['Level']));
 					$stream->setFormatter($formatter);
 					$logger->pushHandler($stream);
@@ -50,6 +52,17 @@ class LoggerManager {
 			$name = 'APPLICATION';
 		}
 		return self::$cacheLoggers[$name];
+	}
+
+	private static function addHandlers($logger, $formatter) {
+		require 'include/logging/confighandlers.php';
+		foreach ($loggerConfigHandlers as $handler => $cfg) {
+			if ($cfg['Enabled']) {
+				$use = "\Monolog\Handler\\$handler";
+				$logger->pushHandler(new $use(...$cfg['Params']));
+			}
+		}
+		return $logger;
 	}
 
 	private static function getLogLevel($corebos) {
