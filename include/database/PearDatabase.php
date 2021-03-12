@@ -17,7 +17,7 @@ require_once 'include/logging.php';
 include 'include/adodb/adodb.inc.php';
 require_once 'include/adodb/adodb-xmlschema.inc.php';
 
-$log = LoggerManager::getLogger('VT');
+$log = LoggerManager::getLogger('APPLICATION');
 $logsqltm = LoggerManager::getLogger('SQLTIME');
 
 // Callback class useful to convert PreparedStatement Question Marks to SQL value
