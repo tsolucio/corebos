@@ -544,7 +544,7 @@ class Products extends CRMEntity {
 			}
 		}
 		$crmtablealias = CRMEntity::getcrmEntityTableAlias($related_module);
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('ename'=> 'vtiger_users.ename'), 'Users');
 		$query = "SELECT vtiger_crmentity.*, vtiger_potential.*, vtiger_potentialscf.*, vtiger_account.accountname,
 			case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
 			vtiger_products.productname, vtiger_products.qty_per_unit, vtiger_products.unit_price, vtiger_products.expiry_date
@@ -611,7 +611,7 @@ class Products extends CRMEntity {
 			}
 		}
 		$crmtablealias = CRMEntity::getcrmEntityTableAlias($related_module);
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('ename'=> 'vtiger_users.ename'), 'Users');
 		$query = "SELECT case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name, vtiger_users.id,
 			vtiger_products.productid, vtiger_products.productname,
 			vtiger_troubletickets.ticketid,
@@ -680,7 +680,7 @@ class Products extends CRMEntity {
 			}
 		}
 		$crmtablealias = CRMEntity::getcrmEntityTableAlias($related_module);
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('enname'=> 'vtiger_users.ename'), 'Users');
 		$query = "SELECT vtiger_crmentity.*,
 			vtiger_quotes.*,
 			vtiger_potential.potentialname,
@@ -749,7 +749,7 @@ class Products extends CRMEntity {
 			}
 		}
 		$crmtablealias = CRMEntity::getcrmEntityTableAlias($related_module);
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('ename'=> 'vtiger_users.ename'), 'Users');
 		$query = "SELECT vtiger_crmentity.*, vtiger_purchaseorder.*, vtiger_products.productname, vtiger_inventoryproductrel.productid,
 			case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name
 			FROM vtiger_purchaseorder
@@ -813,7 +813,7 @@ class Products extends CRMEntity {
 			}
 		}
 		$crmtablealias = CRMEntity::getcrmEntityTableAlias($related_module);
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('ename'=> 'vtiger_users.ename'), 'Users');
 		$query = "SELECT vtiger_crmentity.*, vtiger_salesorder.*, vtiger_account.accountname,
 			case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name
 			FROM vtiger_salesorder
@@ -878,7 +878,7 @@ class Products extends CRMEntity {
 			}
 		}
 		$crmtablealias = CRMEntity::getcrmEntityTableAlias($related_module);
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('ename'=> 'vtiger_users.ename'), 'Users');
 		$query = "SELECT vtiger_crmentity.*, vtiger_invoice.*, vtiger_account.accountname,
 			case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name
 			FROM vtiger_invoice

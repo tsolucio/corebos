@@ -289,7 +289,7 @@ class Services extends CRMEntity {
 			}
 		}
 		$crmtablealias = CRMEntity::getcrmEntityTableAlias($related_module);
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('ename'=> 'vtiger_users.ename'), 'Users');
 		$query = "SELECT vtiger_crmentity.*, vtiger_quotes.*, vtiger_potential.potentialname, vtiger_account.accountname,
 			case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name
 			FROM vtiger_quotes
@@ -354,7 +354,7 @@ class Services extends CRMEntity {
 			}
 		}
 		$crmtablealias = CRMEntity::getcrmEntityTableAlias($related_module);
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('ename'=> 'vtiger_users.ename'), 'Users');
 		$query = "SELECT vtiger_crmentity.*, vtiger_purchaseorder.*, vtiger_service.servicename, vtiger_inventoryproductrel.productid,
 			case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name
 			FROM vtiger_purchaseorder
@@ -416,7 +416,7 @@ class Services extends CRMEntity {
 			}
 		}
 		$crmtablealias = CRMEntity::getcrmEntityTableAlias($related_module);
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('ename'=> 'vtiger_users.ename'), 'Users');
 		$query = "SELECT vtiger_crmentity.*, vtiger_salesorder.*, vtiger_account.accountname,
 			case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name
 			FROM vtiger_salesorder
@@ -479,7 +479,7 @@ class Services extends CRMEntity {
 			}
 		}
 		$crmtablealias = CRMEntity::getcrmEntityTableAlias($related_module);
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('ename'=> 'vtiger_users.ename'), 'Users');
 		$query = "SELECT vtiger_crmentity.*, vtiger_invoice.*, vtiger_account.accountname,
 			case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name
 			FROM vtiger_invoice

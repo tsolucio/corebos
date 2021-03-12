@@ -556,7 +556,7 @@ class cbCalendar extends CRMEntity {
 
 		$query = 'select vtiger_contactdetails.*, vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_crmentity.modifiedtime';
 
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name','last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('ename'=>'vtiger_users.ename'), 'Users');
 		$query .= ", CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN $userNameSql ELSE vtiger_groups.groupname END AS user_name";
 
 		$more_relation = '';

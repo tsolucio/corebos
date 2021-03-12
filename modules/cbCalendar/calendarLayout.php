@@ -854,7 +854,7 @@ function getEventList(&$calendar, $start_date, $end_date, $info = '') {
 		)
 	)";
 	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCalendar');
-	$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+	$userNameSql = getSqlForNameInDisplayFormat(array('ename'=>'vtiger_users.ename'), 'Users');
 	$query = "SELECT vtiger_groups.groupname, $userNameSql as user_name,vtiger_crmentity.smownerid, vtiger_crmentity.crmid,vtiger_activity.*
 		FROM vtiger_activity
 		INNER JOIN ".$crmEntityTable." ON vtiger_crmentity.crmid = vtiger_activity.activityid
@@ -1067,7 +1067,7 @@ function getTodoList(&$calendar, $start_date, $end_date, $info = '') {
 	$cal_log->debug('> getTodoList');
 	$Entries = array();
 	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCalendar');
-	$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+	$userNameSql = getSqlForNameInDisplayFormat(array('ename'=>'vtiger_users.ename'), 'Users');
 	$query = "SELECT vtiger_groups.groupname, $userNameSql as user_name, vtiger_crmentity.crmid, vtiger_cntactivityrel.contactid,vtiger_activity.*
 		FROM vtiger_activity
 		INNER JOIN ".$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_activity.activityid
@@ -1325,7 +1325,7 @@ function constructEventListView(&$cal, $entry_list, $navigation_array = '') {
 		for ($i=0; $i<count($entry_list); $i++) {
 			$list_view .="<tr class='lvtColData' onmouseover='this.className=\"lvtColDataHover\"' onmouseout='this.className=\"lvtColData\"' bgcolor='white'>";
 
-			$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+			$userNameSql = getSqlForNameInDisplayFormat(array('ename'=>'vtiger_users.ename'), 'Users');
 			$assigned_role_query=$adb->pquery(
 				"select vtiger_user2role.roleid,vtiger_user2role.userid
 					from vtiger_user2role

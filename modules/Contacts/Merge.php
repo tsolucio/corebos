@@ -72,8 +72,8 @@ if ($userprivs->hasGlobalReadPermission() || $module == 'Users' || $module == 'E
 }
 $result = $adb->pquery($query1, $params1);
 $y=$adb->num_rows($result);
-$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-$accountUserNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'usersAccounts.first_name', 'last_name' => 'usersAccounts.last_name'), 'Users');
+$userNameSql = getSqlForNameInDisplayFormat(array('ename' => 'vtiger_users.ename'), 'Users');
+$accountUserNameSql = getSqlForNameInDisplayFormat(array('ename'=>'usersAccounts.ename'), 'Users');
 
 for ($x=0; $x<$y; $x++) {
 	$tablename = $adb->query_result($result, $x, 'tablename');

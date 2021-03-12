@@ -166,7 +166,7 @@ class Campaigns extends CRMEntity {
 		}
 
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Accounts');
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('ename'=> 'vtiger_users.ename'), 'Users');
 		$query = "SELECT vtiger_account.*,
 				CASE when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
 				vtiger_crmentity.*, vtiger_crmentity.modifiedtime, vtiger_campaignrelstatus.*, vtiger_accountbillads.*
@@ -271,7 +271,7 @@ class Campaigns extends CRMEntity {
 		}
 
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('ename'=> 'vtiger_users.ename'), 'Users');
 		$query = "SELECT vtiger_contactdetails.accountid, vtiger_account.accountname,
 				CASE when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name ,
 				vtiger_contactdetails.contactid, vtiger_contactdetails.lastname, vtiger_contactdetails.firstname, vtiger_contactdetails.title,
@@ -380,7 +380,7 @@ class Campaigns extends CRMEntity {
 		}
 
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Leads');
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('ename'=> 'vtiger_users.ename'), 'Users');
 		$query = "SELECT vtiger_leaddetails.*, vtiger_crmentity.crmid,vtiger_leadaddress.phone,vtiger_leadsubdetails.website,
 				CASE when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
 				vtiger_crmentity.smownerid, vtiger_campaignrelstatus.*

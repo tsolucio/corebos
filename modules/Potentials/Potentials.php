@@ -235,7 +235,7 @@ class Potentials extends CRMEntity {
 		}
 
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('ename'=> 'vtiger_users.ename'), 'Users');
 		$query = 'select case when (vtiger_users.user_name not like "") then '.$userNameSql.' else vtiger_groups.groupname end as user_name,
 			vtiger_contactdetails.*,vtiger_potential.potentialid, vtiger_potential.potentialname,
 			vtiger_contactscf.*, vtiger_crmentity.crmid, vtiger_crmentity.smownerid,

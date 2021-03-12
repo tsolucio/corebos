@@ -130,7 +130,7 @@ class ReportRun extends CRMEntity {
 				//user has no access to this field, skip it.
 				continue;
 			}
-			$concatSql = getSqlForNameInDisplayFormat(array('first_name'=>$selectedfields[0].'.first_name', 'last_name'=>$selectedfields[0].'.last_name'), 'Users');
+			$concatSql = getSqlForNameInDisplayFormat(array('ename'=>$selectedfields[0].'.ename'), 'Users');
 			$querycolumns = $this->getEscapedColumns($selectedfields);
 
 			$targetTableName = $tablename;
@@ -194,7 +194,7 @@ class ReportRun extends CRMEntity {
 							$condition = "and vtiger_crmentity.crmid!=''";
 						}
 						if ($temp_module_from_tablename == $module) {
-							$concatSql = getSqlForNameInDisplayFormat(array('first_name' => $selectedfields[0] . '.first_name', 'last_name' => $selectedfields[0] . '.last_name'), 'Users');
+							$concatSql = getSqlForNameInDisplayFormat(array('ename' => $selectedfields[0] . '.ename'), 'Users');
 							$columnslist[$fieldcolname] = ' case when('.$selectedfields[0].".last_name NOT LIKE '' $condition )
 								THEN ".$concatSql.' else vtiger_groups'.$module.".groupname end as '".$module."_$field'";
 							$this->queryPlanner->addTable('vtiger_groups' . $module); // Auto-include the dependent module table.
@@ -204,7 +204,7 @@ class ReportRun extends CRMEntity {
 						$this->queryPlanner->addTable($selectedfields[0]);
 					} elseif (stristr($selectedfields[0], 'vtiger_crmentity') && ($selectedfields[1] == 'modifiedby')) {
 						$targetTableName = 'vtiger_lastModifiedBy' . $module;
-						$concatSql=getSqlForNameInDisplayFormat(array('last_name'=>$targetTableName.'.last_name', 'first_name'=>$targetTableName.'.first_name'), 'Users');
+						$concatSql=getSqlForNameInDisplayFormat(array('ename'=>$targetTableName.'.ename'), 'Users');
 						$columnslist[$fieldcolname] = "trim($concatSql) as $header_label";
 						$this->queryPlanner->addTable("vtiger_crmentity$module");
 						$this->queryPlanner->addTable($targetTableName);
@@ -213,7 +213,7 @@ class ReportRun extends CRMEntity {
 						$this->queryPlanner->addTable($moduleInstance->table_name);
 					} elseif (stristr($selectedfields[0], 'vtiger_crmentity') && ($selectedfields[1] == 'smcreatorid')) {
 						$targetTableName = 'vtiger_CreatedBy' . $module;
-						$concatSql=getSqlForNameInDisplayFormat(array('last_name'=>$targetTableName.'.last_name', 'first_name'=>$targetTableName.'.first_name'), 'Users');
+						$concatSql=getSqlForNameInDisplayFormat(array('ename'=>$targetTableName.'.ename'), 'Users');
 						$columnslist[$fieldcolname] = "trim($concatSql) as $header_label";
 						$this->queryPlanner->addTable("vtiger_crmentity$module");
 						$this->queryPlanner->addTable($targetTableName);
@@ -334,8 +334,7 @@ class ReportRun extends CRMEntity {
 		if ($moduleName == 'ModComments' && $fieldName == 'creator') {
 			$concatSql = getSqlForNameInDisplayFormat(
 				array(
-					'first_name' => 'vtiger_usersModComments.first_name',
-					'last_name' => 'vtiger_usersModComments.last_name'
+					'ename' => 'vtiger_usersModComments.ename'
 				),
 				'Users'
 			);
@@ -607,7 +606,7 @@ class ReportRun extends CRMEntity {
 						$moduleFieldLabel = $selectedfields[2];
 						list($moduleName, $fieldLabel) = explode('_', $moduleFieldLabel, 2);
 						$fieldInfo = getFieldByReportLabel($moduleName, $fieldLabel);
-						$concatSql = getSqlForNameInDisplayFormat(array('first_name'=>$selectedfields[0].'.first_name', 'last_name'=>$selectedfields[0].'.last_name'), 'Users');
+						$concatSql = getSqlForNameInDisplayFormat(array('ename'=>$selectedfields[0].'.ename'), 'Users');
 						// Added to handle the crmentity table name for Primary module
 						if ($selectedfields[0] == 'vtiger_crmentity'.$this->primarymodule) {
 							$selectedfields[0] = 'vtiger_crmentity';
@@ -692,7 +691,7 @@ class ReportRun extends CRMEntity {
 							if ($value=='current_user') {
 								$value = $currentUserFullName;
 							}
-							$fieldvalue = getSqlForNameInDisplayFormat(array('last_name'=>"$tableName.last_name",'first_name'=>"$tableName.first_name"), 'Users').
+							$fieldvalue = getSqlForNameInDisplayFormat(array('ename'=>"$tableName.ename"), 'Users').
 									$this->getAdvComparator($comparator, $value, $datatype);
 							$this->queryPlanner->addTable($tableName);
 						} elseif ($selectedfields[1]=='modifiedby') {
@@ -706,7 +705,7 @@ class ReportRun extends CRMEntity {
 							if ($value=='current_user') {
 								$value = $currentUserFullName;
 							}
-							$fieldvalue = getSqlForNameInDisplayFormat(array('last_name'=>"$tableName.last_name",'first_name'=>"$tableName.first_name"), 'Users').
+							$fieldvalue = getSqlForNameInDisplayFormat(array('ename'=>"$tableName.ename"), 'Users').
 									$this->getAdvComparator($comparator, $value, $datatype);
 							$this->queryPlanner->addTable($tableName);
 						} elseif ($selectedfields[0] == 'vtiger_activity' && $selectedfields[1] == 'status') {

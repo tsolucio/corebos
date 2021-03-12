@@ -255,7 +255,7 @@ foreach ($Users_Ids as $userid) {
 				}
 			}
 			$list_query = $queryGenerator->getQuery();
-			$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+			$userNameSql = getSqlForNameInDisplayFormat(array('ename' => 'vtiger_users.ename'), 'Users');
 			$list_query = "SELECT distinct vtiger_crmentity.crmid, vtiger_groups.groupname, $userNameSql as user_name, " .
 				$queryGenerator->getSelectClauseColumnSQL() . $queryGenerator->getFromClause() . $queryGenerator->getWhereClause();
 			$list_array = array();
