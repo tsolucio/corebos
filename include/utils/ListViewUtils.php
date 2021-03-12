@@ -2121,7 +2121,7 @@ function getListQuery($module, $where = '') {
 	$log->debug('> getListQuery ' . $module . ',' . $where);
 	$mod = CRMEntity::getInstance($module);
 	$crmTable = $mod->crmentityTable;
-	$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+	$userNameSql = getSqlForNameInDisplayFormat(array('ename'=> 'vtiger_users.ename'), 'Users');
 	switch ($module) {
 		case 'Accounts':
 			$query = 'SELECT vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_account.*, vtiger_accountbillads.bill_city, vtiger_accountscf.*

@@ -133,7 +133,7 @@ function getFieldsListFromQuery($query) {
 			$fields .= 'concat("Potentials::::",vtiger_potential.potentialname) as "'.$fieldlabel.'",';
 		} elseif ($tablename == 'vtiger_quotes' && $columnName == 'inventorymanager') {
 			$userNameSql = getSqlForNameInDisplayFormat(
-				array('first_name' => 'vtiger_inventoryManager.first_name', 'last_name' => 'vtiger_inventoryManager.last_name'),
+				array('ename' => 'vtiger_inventoryManager.ename'),
 				'Users'
 			);
 			$fields .= $userNameSql. ' as "'.$fieldlabel.'",';
