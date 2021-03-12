@@ -68,8 +68,8 @@ class cbLogger {
 
 	public function info($message, $context = []) {
 		if ($this->isLevelEnabled('INFO')) {
-			if (is_array($message)) {
-				$context = $message;
+			if (is_array($message) || is_object($message)) {
+				$context = (array)$message;
 				$message = '';
 			}
 			$this->emit('INFO', $message, $context);
@@ -78,8 +78,8 @@ class cbLogger {
 
 	public function debug($message, $context = []) {
 		if ($this->isDebugEnabled()) {
-			if (is_array($message)) {
-				$context = $message;
+			if (is_array($message) || is_object($message)) {
+				$context = (array)$message;
 				$message = '';
 			}
 			$this->emit('DEBUG', $message, $context);
@@ -92,8 +92,8 @@ class cbLogger {
 
 	public function warn($message, $context = []) {
 		if ($this->isLevelEnabled('WARN')) {
-			if (is_array($message)) {
-				$context = $message;
+			if (is_array($message) || is_object($message)) {
+				$context = (array)$message;
 				$message = '';
 			}
 			$this->emit('WARN', $message, $context);
@@ -106,8 +106,8 @@ class cbLogger {
 
 	public function fatal($message, $context = []) {
 		if ($this->isLevelEnabled('FATAL')) {
-			if (is_array($message)) {
-				$context = $message;
+			if (is_array($message) || is_object($message)) {
+				$context = (array)$message;
 				$message = '';
 			}
 			$this->emit('FATAL', $message, $context);
@@ -116,8 +116,8 @@ class cbLogger {
 
 	public function error($message, $context = []) {
 		if ($this->isLevelEnabled('ERROR')) {
-			if (is_array($message)) {
-				$context = $message;
+			if (is_array($message) || is_object($message)) {
+				$context = (array)$message;
 				$message = '';
 			}
 			$this->emit('ERROR', $message, $context);
