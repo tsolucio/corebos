@@ -201,13 +201,8 @@ class PearDatabase {
 	}
 
 	public function println($msg) {
-		require_once 'include/logging.php';
-		$log1 = LoggerManager::getLogger('DB');
-		if (is_array($msg)) {
-			$log1->info('DB >'.print_r($msg, true));
-		} else {
-			$log1->info('DB >'.$msg);
-		}
+		global $log;
+		$log->info('', (array)$msg);
 		return $msg;
 	}
 
@@ -330,9 +325,9 @@ class PearDatabase {
 					);
 				}
 			}
-			$logsqltm->debug("SQL: " . $sql);
-			if ($params != null && count($params) > 0) {
-				$logsqltm->debug("PARAMS: [" . implode(",", $params) . "]");
+			$logsqltm->debug('SQL: ' . $sql);
+			if ($params != null && is_array($params)) {
+				$logsqltm->debug('parameters', $params);
 			}
 			$logsqltm->debug("EXEC: " . ($endat - $startat) ." micros [START=$startat, END=$endat]");
 			$logsqltm->debug("");
@@ -466,8 +461,8 @@ class PearDatabase {
 
 		$sql_start_time = microtime(true);
 		$params = $this->flatten_array($params);
-		if (!is_null($params) && count($params) > 0) {
-			$log->debug('> pquery parameters [' . implode(',', $params) . ']');
+		if (!is_null($params) && is_array($params)) {
+			$log->debug('parameters', $params);
 		}
 
 		if ($this->avoidPreparedSql || empty($params)) {
