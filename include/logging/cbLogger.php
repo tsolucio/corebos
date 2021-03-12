@@ -124,6 +124,16 @@ class cbLogger {
 		}
 	}
 
+	public function alert($message, $context = []) {
+		if ($this->isLevelEnabled('ALERT')) {
+			if (is_array($message) || is_object($message)) {
+				$context = (array)$message;
+				$message = '';
+			}
+			$this->emit('ALERT', $message, $context);
+		}
+	}
+
 	public function isLevelEnabled($level) {
 		return $this->enableLogLevel[$level];
 		if ($this->enableLogLevel[$level] && $this->configinfo) {
