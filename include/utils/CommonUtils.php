@@ -64,7 +64,7 @@ function isInsideApplication($path2check) {
  */
 function get_select_options(&$option_list, $selected, $advsearch = 'false') {
 	global $log;
-	$log->debug('>< get_select_options ' . print_r($option_list, true) . ',' . $selected . ',' . $advsearch);
+	$log->debug('>< get_select_options');
 	return get_select_options_with_id($option_list, $selected, $advsearch);
 }
 
@@ -76,13 +76,13 @@ function get_select_options(&$option_list, $selected, $advsearch = 'false') {
  */
 function get_select_options_with_id(&$option_list, $selected_key, $advsearch = 'false') {
 	global $log;
-	$log->debug('>< get_select_options_with_id ' . print_r($option_list, true) . ',' . print_r($selected_key, true) . ',' . $advsearch);
+	$log->debug('>< get_select_options_with_id');
 	return get_select_options_with_id_separate_key($option_list, $option_list, $selected_key, $advsearch);
 }
 
 function get_select_options_with_value(&$option_list, $selected_key, $advsearch = 'false') {
 	global $log;
-	$log->debug('>< get_select_options_with_id ' . print_r($option_list, true) . ',' . $selected_key . ',' . $advsearch);
+	$log->debug('>< get_select_options_with_id');
 	return get_select_options_with_value_separate_key($option_list, $option_list, $selected_key, $advsearch);
 }
 
@@ -93,7 +93,7 @@ function get_select_options_with_value(&$option_list, $selected_key, $advsearch 
  */
 function get_select_options_array(&$option_list, $selected_key, $advsearch = 'false') {
 	global $log;
-	$log->debug('>< get_select_options_array ' . print_r($option_list, true) . ',' . $selected_key . ',' . $advsearch);
+	$log->debug('>< get_select_options_array');
 	return get_options_array_seperate_key($option_list, $option_list, $selected_key, $advsearch);
 }
 
@@ -106,7 +106,7 @@ function get_select_options_array(&$option_list, $selected_key, $advsearch = 'fa
  */
 function get_options_array_seperate_key(&$label_list, &$key_list, $selected_key, $advsearch = 'false') {
 	global $log,  $app_strings;
-	$log->debug('> get_options_array_seperate_key '.print_r($label_list, true).','.print_r($key_list, true).','.$selected_key.','.$advsearch);
+	$log->debug('> get_options_array_seperate_key');
 	if ($advsearch == 'true') {
 		$select_options = "\n<OPTION value=''>--NA--</OPTION>";
 	} else {
@@ -1251,7 +1251,7 @@ function getBlockOpenClosedStatus($module, $disp_view) {
  */
 function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = '') {
 	global $log, $adb, $current_user;
-	$log->debug('> getBlocks ' . $module . ',' . $disp_view . ',' . $mode . ',' . print_r($col_fields, true) . ',' . $info_type);
+	$log->debug('> getBlocks', [$module, $disp_view, $mode, $col_fields, $info_type]);
 	$tabid = getTabid($module);
 	$getBlockInfo = array();
 	$query = "select blockid,blocklabel,display_status,isrelatedlist from vtiger_blocks where tabid=? and $disp_view=0 and visible = 0 order by sequence";
@@ -2025,7 +2025,7 @@ function QuickCreate($module) {
 	}
 	$form_data['form'] = $return_data;
 	$form_data['data'] = $fieldName_array;
-	$log->debug('< QuickCreate ' . print_r($form_data, true));
+	$log->debug('< QuickCreate', $form_data);
 	return $form_data;
 }
 
@@ -2275,7 +2275,7 @@ function decideFilePath() {
  */
 function validateImageFile($file_details) {
 	global $log, $app_strings;
-	$log->debug('> validateImageFile '.print_r($file_details, true));
+	$log->debug('> validateImageFile', $file_details);
 
 	$file_type_details = explode('/', $file_details['type']);
 	$filetype = $file_type_details['1'];

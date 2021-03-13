@@ -825,7 +825,7 @@ function getColumnFields($module) {
  */
 function getUserEmail($userid) {
 	global $log, $adb;
-	$log->debug('> getUserEmail '.print_r($userid, true));
+	$log->debug('> getUserEmail', (array)$userid);
 	$email = '';
 	if (!empty($userid) && is_numeric($userid)) {
 		$userid = (array)$userid;

@@ -540,7 +540,7 @@ class Accounts extends CRMEntity {
 	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
-		$log->debug('> transferRelatedRecords '.$module.','.print_r($transferEntityIds, true).','.$entityId);
+		$log->debug('> transferRelatedRecords', ['module' => $module, 'transferEntityIds' => $transferEntityIds, 'entityId' => $entityId]);
 		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
 		$rel_table_arr = array(
 			'Contacts'=>'vtiger_contactdetails',
@@ -711,7 +711,7 @@ class Accounts extends CRMEntity {
 	*/
 	public function __getParentAccounts($id, &$parent_accounts, &$encountered_accounts) {
 		global $log, $adb;
-		$log->debug('> __getParentAccounts '.$id.','.print_r($parent_accounts, true));
+		$log->debug('> __getParentAccounts '.$id);
 		$query = "SELECT parentid FROM vtiger_account " .
 				" INNER JOIN ".$this->crmentityTableAlias." ON vtiger_crmentity.crmid = vtiger_account.accountid" .
 				" WHERE vtiger_crmentity.deleted = 0 and vtiger_account.accountid = ?";
@@ -771,7 +771,7 @@ class Accounts extends CRMEntity {
 	*/
 	public function __getChildAccounts($id, &$child_accounts, $depth) {
 		global $log, $adb;
-		$log->debug('> __getChildAccounts '.$id.','.print_r($child_accounts, true).','.$depth);
+		$log->debug('> __getChildAccounts '.$id);
 
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = "SELECT vtiger_account.*, vtiger_accountbillads.*," .

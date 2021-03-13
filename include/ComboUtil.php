@@ -16,7 +16,7 @@ require_once 'include/database/PearDatabase.php';
  */
 function getComboArray($combofieldNames) {
 	global $log, $adb, $current_user;
-	$log->debug('> getComboArray '.print_r($combofieldNames, true));
+	$log->debug('> getComboArray');
 	$roleid=$current_user->roleid;
 	$comboFieldArray = array();
 	foreach ($combofieldNames as $tableName => $arrayName) {

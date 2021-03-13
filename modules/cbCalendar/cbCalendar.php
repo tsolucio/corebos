@@ -392,7 +392,7 @@ class cbCalendar extends CRMEntity {
 	 */
 	public function insertIntoInviteeTable($module, $invitees_array) {
 		global $log,$adb;
-		$log->debug('> insertIntoInviteeTable '.$module.','.print_r($invitees_array, true));
+		$log->debug('> insertIntoInviteeTable', [$module, $invitees_array]);
 		if ($this->mode == 'edit') {
 			$adb->pquery('delete from vtiger_invitees where activityid=?', array($this->id));
 		}

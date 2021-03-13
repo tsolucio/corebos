@@ -35,7 +35,7 @@ class CBUpsertTask extends VTTask {
 		if (!empty($this->field_value_mapping)) {
 			$fieldValueMapping = json_decode($this->field_value_mapping, true);
 		}
-		$logbg->debug('field mapping: '.print_r($fieldValueMapping, true));
+		$logbg->debug('field mapping', $fieldValueMapping);
 		if (!empty($fieldValueMapping) && count($fieldValueMapping) > 0) {
 			$util = new VTWorkflowUtils();
 			$util->adminUser();
@@ -120,7 +120,7 @@ class CBUpsertTask extends VTTask {
 			list($void, $crmid) = explode('x', $crmid); // suppport WS ID
 		}
 		$logbg->debug('> upsertData: '.$relmodule.' - '.$action);
-		$logbg->debug('data: '.print_r($data, true));
+		$logbg->debug('data', $data);
 		$moduleHandler = vtws_getModuleHandlerFromName($relmodule, $current_user);
 		$handlerMeta = $moduleHandler->getMeta();
 		$focusrel = CRMEntity::getInstance($relmodule);

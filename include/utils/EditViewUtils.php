@@ -24,7 +24,7 @@ require_once 'modules/PickList/DependentPickListUtils.php';
   */
 function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields, $generatedtype, $module_name, $mode = '', $typeofdata = null, $cbMapFI = array()) {
 	global $log,$app_strings, $adb,$default_charset, $current_user;
-	$log->debug('> getOutputHtml '.$uitype.','. $fieldname.','. $fieldlabel.','. $maxlength.','. print_r($col_fields, true).','.$generatedtype.','.$module_name);
+	$log->debug('> getOutputHtml', [$uitype, $fieldname, $fieldlabel, $maxlength, $col_fields, $generatedtype, $module_name]);
 
 	$userprivs = $current_user->getPrivileges();
 
@@ -1658,7 +1658,7 @@ function getNoOfAssocProducts($module, $focus, $seid = '') {
 */
 function getBlockInformation($module, $result, $col_fields, $tabid, $block_label, $mode) {
 	global $log, $adb;
-	$log->debug('> getBlockInformation '.$module.','. print_r($col_fields, true).','.$tabid.','.print_r($block_label, true));
+	$log->debug('> getBlockInformation', [$module, $col_fields, $tabid, $block_label]);
 	$isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : false;
 	$editview_arr = array();
 
@@ -1753,7 +1753,7 @@ function getBlockInformation($module, $result, $col_fields, $tabid, $block_label
 */
 function split_validationdataArray($validationData) {
 	global $log;
-	$log->debug('> split_validationdataArray '.print_r($validationData, true));
+	$log->debug('> split_validationdataArray', $validationData);
 	$fieldName = '';
 	$fieldLabel = '';
 	$fldDataType = '';

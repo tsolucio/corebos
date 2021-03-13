@@ -320,14 +320,36 @@ class VTEmailTask extends VTTask {
 			$sdInstance = new corebos_sendgrid();
 			try {
 				$res = $sdInstance->sendemailtemplate($this->sgmsgtemplate, $entity->getId(), $entity->moduleName, $to_email, $subject, $this->attachmentsinfo, $from_name, $from_email, $cc, $bcc, $replyto);
-				$logbg->debug("SG template mail was sent \nTo: $to_email\nFromName: $from_name\nFromEmail: $from_email\nCC: $cc\nBCC: $bcc\nResult: $res\nAttInfo: ".print_r($this->attachmentsinfo, true));
+				$logbg->debug(
+					'SG template mail was sent',
+					[
+						'To' => $to_email,
+						'FromName' => $from_name,
+						'FromEmail' => $from_email,
+						'CC' => $cc,
+						'BCC' => $bcc,
+						'Result' => $res,
+						'AttInfo' => $this->attachmentsinfo,
+					]
+				);
 			} catch (Exception $e) {
-				$logbg->debug('SG template mail failed:: '. $e->getMessage());
+				$logbg->debug('SG template mail failed: '. $e->getMessage());
 			}
 			return;
 		}
 		$rdo = send_mail($module, $to_email, $from_name, $from_email, $subject, $content, $cc, $bcc, $this->attachmentsinfo, $crmid, $logo, $replyto, $qrScan, $brScan);
-		$logbg->debug("VTEmailTask\nTo: $to_email\nFromName: $from_name\nFromEmail: $from_email\nCC: $cc\nBCC: $bcc\nResult: $rdo\nAttInfo: ".print_r($this->attachmentsinfo, true));
+		$logbg->debug(
+			'EmailWFTask',
+			[
+				'To' => $to_email,
+				'FromName' => $from_name,
+				'FromEmail' => $from_email,
+				'CC' => $cc,
+				'BCC' => $bcc,
+				'Result' => $rdo,
+				'AttInfo' => $this->attachmentsinfo,
+			]
+		);
 		$util->revertUser();
 	}
 

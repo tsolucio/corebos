@@ -327,7 +327,7 @@ class CRMEntity {
 	 */
 	public function uploadAndSaveFile($id, $module, $file_details, $attachmentname = '', $direct_import = false, $forfield = '') {
 		global $log, $adb, $current_user, $upload_badext;
-		$log->debug('> uploadAndSaveFile '.$id.','.$module.','.print_r($file_details, true));
+		$log->debug('> uploadAndSaveFile', [$id, $module, $file_details]);
 
 		$date_var = date('Y-m-d H:i:s');
 
@@ -2886,7 +2886,7 @@ class CRMEntity {
 	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb, $log;
-		$log->debug('> transferRelatedRecords '.$module.','.print_r($transferEntityIds, true).','.$entityId);
+		$log->debug('> transferRelatedRecords', [$module, $transferEntityIds, $entityId]);
 		include_once 'include/utils/duplicate.php';
 		$rel_table_arr = array('Activities'=>'vtiger_seactivityrel');
 		$tbl_field_arr = array('vtiger_seactivityrel'=>'activityid');

@@ -1237,7 +1237,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
  */
 function getValue($field_result, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, $mode, $popuptype) {
 	global $log, $app_strings, $current_language, $currentModule, $adb, $current_user, $default_charset;
-	$log->debug('> getValue '.print_r($field_result, true).",list_result,$fieldname,focus,$module,$entity_id,$list_result_count,$mode,$popuptype");
+	$log->debug('> getValue', [$field_result, 'list_result', $fieldname, 'focus', $module, $entity_id, $list_result_count, $mode, $popuptype]);
 
 	$tabid = getTabid($module);
 	return_module_language($current_language, $module);
@@ -2600,7 +2600,7 @@ function getRelatedTo($module, $list_result, $rset) {
  */
 function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $action_val = 'index', $viewid = '') {
 	global $log, $app_strings, $theme, $current_user;
-	$log->debug('> getTableHeaderNavigation '.print_r($navigation_array, true) . ',' . $url_qry . ',' . $module . ',' . $action_val . ',' . $viewid);
+	$log->debug('> getTableHeaderNavigation');
 	if ($module == 'Documents' && GlobalVariable::getVariable('Document_Folder_View', 1, 'Documents')) {
 		$output = '<td class="mailSubHeader" width="100%" align="center">';
 	} else {
