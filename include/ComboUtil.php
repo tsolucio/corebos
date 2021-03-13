@@ -10,9 +10,9 @@
 require_once 'include/utils/CommonUtils.php';
 require_once 'include/database/PearDatabase.php';
 
-/** Function to  returns the combo field values in array format
-  * @param $combofieldNames -- combofieldNames:: Type string array
-  * @returns $comboFieldArray -- comboFieldArray:: Type string array
+/** Function to return the combo field values in array format
+ * @param array $combofieldNames
+ * @return array $comboFieldArray
  */
 function getComboArray($combofieldNames) {
 	global $log, $adb, $current_user;

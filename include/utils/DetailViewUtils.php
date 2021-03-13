@@ -31,7 +31,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 	$label_fld = array();
 	$userprivs = $current_user->getPrivileges();
 
-	// vtlib customization: New uitype to handle relation between modules
+	// uitype to handle relation between modules
 	if ($uitype == '10') {
 		$fieldlabel = getTranslatedString($fieldlabel, $module);
 		$parent_id = $col_fields[$fieldname];

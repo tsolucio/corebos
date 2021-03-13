@@ -819,9 +819,9 @@ function getColumnFields($module) {
 	return $column_fld;
 }
 
-/** Function to get a users's mail id
- * @param $userid -- userid :: Type integer
- * @returns $email -- email :: Type string
+/** Function to get a users email
+ * @param integer user ID
+ * @return string email
  */
 function getUserEmail($userid) {
 	global $log, $adb;

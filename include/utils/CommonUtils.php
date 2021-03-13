@@ -2270,8 +2270,8 @@ function decideFilePath() {
 
 /**
  * 	This function is used to check whether the attached file is a image file or not
- * 	@param array $file_details  - files array which contains all the uploaded file details
- * 	return string $save_image - true or false. if the image can be uploaded then true will return otherwise false.
+ * 	@param array $file_details - files array which contains all the uploaded file details
+ * 	@return string $save_image - true or false. if the image can be uploaded then true will return otherwise false.
  */
 function validateImageFile($file_details) {
 	global $log, $app_strings;

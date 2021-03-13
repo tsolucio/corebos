@@ -524,7 +524,7 @@ class Accounts extends CRMEntity {
 		$custom_fields = array();
 		for ($i=0; $i < $numRows; $i++) {
 			$custom_fields[$i] = $adb->query_result($result, $i, "fieldlabel");
-			$custom_fields[$i] = preg_replace("/\s+/", "", $custom_fields[$i]);
+			$custom_fields[$i] = preg_replace('/\s+/', '', $custom_fields[$i]);
 			$custom_fields[$i] = strtoupper($custom_fields[$i]);
 		}
 		$mergeflds = $custom_fields;

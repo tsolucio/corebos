@@ -319,11 +319,11 @@ class CRMEntity {
 	}
 
 	/**
-	 * This function is used to upload the attachment in the server and save that attachment information in db.
-	 * @param int $id - entity id to which the file to be uploaded
+	 * function used to upload the attachment in the server and save that attachment information in db.
+	 * @param int $id - entity id to which the file will be uploaded
 	 * @param string $module - the current module name
-	 * @param array $file_details  - array which contains the file information(name, type, size, tmp_name and error)
-	 * return void
+	 * @param array $file_details - contains the file information (name, type, size, tmp_name and error)
+	 * @return boolean - true if uploaded, false if the image is not secure or some other error occured
 	 */
 	public function uploadAndSaveFile($id, $module, $file_details, $attachmentname = '', $direct_import = false, $forfield = '') {
 		global $log, $adb, $current_user, $upload_badext;
