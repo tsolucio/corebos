@@ -925,7 +925,7 @@ class OpenDocument {
 			$command = "{$root_directory}modules/evvtgendoc/unoservice.sh {$pFilename} {$filename} {$filename}";
 			//$command = "{$root_directory}modules/evvtgendoc/unoservice.sh {$pFilename} {$filename} {$filename} >>{$root_directory}/modules/evvtgendoc/unoservice.log 2>&1";
 			$status = exec($command);
-			$this->debugmsg('Post processing: '.print_r(array($command, $status), true));
+			$this->debugmsg('Post processing: '.json_encode(array($command, $status)));
 			// Remove temp files
 			unlink($pFilename);
 		} else {

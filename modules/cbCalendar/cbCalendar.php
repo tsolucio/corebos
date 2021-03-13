@@ -993,7 +993,7 @@ class cbCalendar extends CRMEntity {
 			vtws_revise($element, $current_user);
 			$log->debug('< changeStatus');
 		} catch (\Throwable $th) {
-			$log->debug('< changeStatus ERROR: '.print_r($element, true));
+			$log->debug('< changeStatus ERROR: '.json_encode($element));
 		}
 	}
 

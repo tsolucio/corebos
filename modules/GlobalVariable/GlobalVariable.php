@@ -287,7 +287,7 @@ class GlobalVariable extends CRMEntity {
 				}
 			}
 		}
-		self::$validationinfo[] = "candidate list of modules to look for $module: ".print_r($list_of_modules, true);
+		self::$validationinfo[] = "candidate list of modules to look for $module: ".json_encode($list_of_modules);
 		if (count($list_of_modules) > 0) {
 			if (array_key_exists($module, $list_of_modules)) {
 				return $list_of_modules[$module];

@@ -108,7 +108,7 @@ function cbwsExecuteWorkflowWithContext($workflow, $entities, $context, $user) {
 		}
 	}
 	if (count($errortasks)>0) {
-		throw new WebServiceException(WebServiceErrorCode::$WORKFLOW_TASK_FAILED, print_r($errortasks, true));
+		throw new WebServiceException(WebServiceErrorCode::$WORKFLOW_TASK_FAILED, json_encode($errortasks));
 	}
 	return true;
 }

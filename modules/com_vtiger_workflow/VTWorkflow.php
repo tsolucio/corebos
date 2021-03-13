@@ -265,7 +265,7 @@ class Workflow {
 			$logbg->fatal('> **************************');
 			if ($webservice) {
 				require_once 'include/Webservices/WebServiceError.php';
-				throw new WebServiceException(WebServiceErrorCode::$WORKFLOW_TASK_FAILED, print_r($errortasks, true));
+				throw new WebServiceException(WebServiceErrorCode::$WORKFLOW_TASK_FAILED, json_encode($errortasks));
 			}
 		}
 	}
