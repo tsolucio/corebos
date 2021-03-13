@@ -2276,7 +2276,9 @@ function decideFilePath() {
 function validateImageFile($file_details) {
 	global $log, $app_strings;
 	$log->debug('> validateImageFile', $file_details);
-
+	if (!empty($file_details['error'])) {
+		return 'true';
+	}
 	$file_type_details = explode('/', $file_details['type']);
 	$filetype = $file_type_details['1'];
 
