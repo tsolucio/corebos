@@ -228,6 +228,10 @@ function checkevvtMenuInstalled() {
 		INDEX (deleted),
 		INDEX (setype)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8');
+	$cncrm = $adb->getColumnNames('vtiger_users');
+	if (!in_array('ename', $cncrm)) {
+		$adb->query('ALTER TABLE `vtiger_users` ADD `ename` varchar(200) default "";');
+	}
 	$cncrm = $adb->getColumnNames('vtiger_crmentity');
 	if (!in_array('cbuuid', $cncrm)) {
 		$adb->query('ALTER TABLE `vtiger_crmentity` ADD `cbuuid` char(40) default "";');

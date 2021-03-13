@@ -38,7 +38,7 @@ class addentityfield2moduleusers extends cbupdaterWorker {
 			);
 			$this->massCreateFields($fields);
 			$this->sendMsg('Changeset ' . get_class($this) . ' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}
