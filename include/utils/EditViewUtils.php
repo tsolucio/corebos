@@ -1177,7 +1177,7 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 			'Products' AS entitytype
 			FROM vtiger_products
 			INNER JOIN $crmETProduct ON vtiger_crmentity.crmid=vtiger_products.productid
-			WHERE vtiger_crmentity.deleted=0 AND productid=?";
+			WHERE vtiger_crmentity.deleted=0 AND vtiger_products.productid=?";
 			$params = array($seid);
 	} elseif ($module == 'Services') {
 		$query="SELECT vtiger_service.serviceid AS productid, 'NA' AS productcode, vtiger_service.servicename AS productname,
@@ -1185,7 +1185,7 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 			'Services' AS entitytype
 			FROM vtiger_service
 			INNER JOIN $crmETService ON vtiger_crmentity.crmid=vtiger_service.serviceid
-			WHERE vtiger_crmentity.deleted=0 AND serviceid=?";
+			WHERE vtiger_crmentity.deleted=0 AND vtiger_service.serviceid=?";
 			$params = array($seid);
 	} else {
 		$query = "SELECT vtiger_products.productid, vtiger_products.productname, vtiger_products.productcode,
