@@ -2243,8 +2243,8 @@ class CRMEntity {
 			$returnset = "&return_module=$this_module&return_action=CallRelatedList&return_id=$id";
 		}
 
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-		$query = "select case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,'Documents' ActivityType,
+		$userNameSql = getSqlForNameInDisplayFormat(array('ename'=>'vtiger_users.ename'), 'Users');
+		$query = "select case when (vtiger_users.user_name not like '') then ename else vtiger_groups.groupname end as user_name,'Documents' ActivityType,
 				vtiger_attachments.type FileType,crm2.modifiedtime lastmodified,vtiger_crmentity.modifiedtime,vtiger_seattachmentsrel.attachmentsid attachmentsid,
 				vtiger_crmentity.smownerid smownerid, vtiger_notes.notesid crmid,vtiger_notes.notecontent description,vtiger_notes.*
 			from vtiger_notes
@@ -2310,8 +2310,8 @@ class CRMEntity {
 			}
 		}
 
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-		$query ="select case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
+		$userNameSql = getSqlForNameInDisplayFormat(array('ename'=>'vtiger_users.ename'), 'Users');
+		$query ="select case when (vtiger_users.user_name not like '') then ename else vtiger_groups.groupname end as user_name,
 				vtiger_activity.activityid, vtiger_activity.subject, vtiger_activity.semodule, vtiger_activity.activitytype, vtiger_email_track.access_count,
 				vtiger_activity.date_start,vtiger_activity.time_start, vtiger_activity.status, vtiger_activity.priority, ".$this->crmentityTable.'.crmid,'
 				.'vtiger_crmentity.smownerid,vtiger_crmentity.modifiedtime, vtiger_users.user_name, vtiger_seactivityrel.crmid as parent_id, vtiger_emaildetails.*
@@ -2570,9 +2570,9 @@ class CRMEntity {
 
 		$query = 'SELECT vtiger_crmentity.* ';
 
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('ename'=>'vtiger_users.ename'), 'Users');
 		$q_elsegroupname = $related_module != 'Users' ? 'ELSE vtiger_groups.groupname ' : '';
-		$query .= ", CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN $userNameSql {$q_elsegroupname}END AS user_name";
+		$query .= ", CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN ename {$q_elsegroupname}END AS user_name";
 
 		$more_relation = '';
 		// Select Custom Field Table Columns if present
@@ -2693,8 +2693,8 @@ class CRMEntity {
 
 			$query = "SELECT vtiger_crmentity.*, $other->table_name.*";
 
-			$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name','last_name' => 'vtiger_users.last_name'), 'Users');
-			$query .= ", CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN $userNameSql ELSE vtiger_groups.groupname END AS user_name";
+			$userNameSql = getSqlForNameInDisplayFormat(array('ename'=>'vtiger_users.ename'), 'Users');
+			$query .= ", CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN ename ELSE vtiger_groups.groupname END AS user_name";
 
 			$more_relation = '';
 			if (isset($other->customFieldTable) && empty($other->related_tables[$other->customFieldTable[0]])) {
@@ -2829,8 +2829,8 @@ class CRMEntity {
 
 			$query = "SELECT vtiger_crmentity.*, $other->table_name.*";
 
-			$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name','last_name' => 'vtiger_users.last_name'), 'Users');
-			$query .= ", CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN $userNameSql ELSE vtiger_groups.groupname END AS user_name";
+			$userNameSql = getSqlForNameInDisplayFormat(array('ename'=>'vtiger_users.ename'), 'Users');
+			$query .= ", CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN ename ELSE vtiger_groups.groupname END AS user_name";
 
 			$more_relation = '';
 			if (!empty($other->related_tables)) {
