@@ -502,13 +502,19 @@ function getSalesEntityType($crmid) {
 /**
  * Function to get all denormalized modules
  * @param string $module - check for a specific module
- * @return tables
+ * @return array list of application fields table for denormalized modules
  */
 function getDenormalizedModules($module = '') {
 	global $log, $adb;
 	$log->debug('> getDenormalizedModules');
-	$where = $module != '' ? "and modulename='$module'" : '';
-	$result = $adb->pquery("select denormtable from vtiger_entityname where isdenormalized=1 $where", array());
+	if ($module != '') {
+		 $where = 'and modulename=?';
+		$params = array($module);
+	} else {
+		$where = '';
+		$params = array();
+	}
+	$result = $adb->pquery("select denormtable from vtiger_entityname where isdenormalized=1 $where", $params);
 	$tables = array();
 	while ($row = $result->FetchRow()) {
 		$denormtable = $row['denormtable'];
