@@ -151,6 +151,7 @@ $workflow = $workflows[$workflowid_to_evaluate];
 $entityData = $entityCache->forId($crm_record_to_evaluate);
 $data = $entityData->getData();
 if ($workflows[$workflowid_to_evaluate]->executionCondition==VTWorkflowManager::$ON_SCHEDULE) {
+	echo '<h3>Now it is: '.date('Y-m-d H:i:s').'</h3>';
 	echo "<h2>Scheduled: SQL for affected records:</h2>";
 	$workflowScheduler = new WorkFlowScheduler($adb);
 	$query = $workflowScheduler->getWorkflowQuery($workflow);
