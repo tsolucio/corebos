@@ -259,10 +259,10 @@ class Accounts extends CRMEntity {
 		$button .= '<input type="hidden" name="email_directing_module"><input type="hidden" name="record">';
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
 		$accountContacts = $adb->pquery(
-			'SELECT contactid,firstname,lastname
+			'SELECT vtiger_contactdetails.contactid,vtiger_contactdetails.firstname,vtiger_contactdetails.lastname
 				FROM vtiger_contactdetails
 				INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid
-				WHERE vtiger_contactdetails.accountid = ? AND vtiger_crmentity.deleted = 0 ORDER BY firstname,lastname',
+				WHERE vtiger_contactdetails.accountid = ? AND vtiger_crmentity.deleted = 0 ORDER BY vtiger_contactdetails.firstname,vtiger_contactdetails.lastname',
 			array($id)
 		);
 		$relid = $adb->run_query_field('select relation_id from vtiger_relatedlists where tabid='.$cur_tab_id.' and related_tabid='.$rel_tab_id, 'relation_id');

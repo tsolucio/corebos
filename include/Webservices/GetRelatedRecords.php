@@ -424,6 +424,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 					$relatedField = ($module == 'Accounts' ? 'accountid' : 'contactid');
 					$pstable = $meta->getEntityBaseTable();
 					$psfield = $meta->getIdColumn();
+					$psmodule = CRMEntity::getInstance($relatedModule);
 
 					if (substr($productDiscriminator, -4)=='only') {
 						$productDiscriminator = substr($productDiscriminator, 0, strlen($productDiscriminator)-4);
@@ -434,11 +435,11 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 						$q = "select distinct $qfields from vtiger_quotes
 							inner join ".$mod->crmentityTable." as crmq on crmq.crmid=vtiger_quotes.quoteid
 							left join vtiger_inventoryproductrel on vtiger_inventoryproductrel.id=vtiger_quotes.quoteid
-							inner join ".$mod->crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
+							inner join ".$psmodule->crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
 							left join vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
 							left join $pstable on $pstable.$psfield = vtiger_inventoryproductrel.productid
 							where vtiger_inventoryproductrel.productid = $pstable.$psfield AND crmq.deleted=0
-							and $relatedField = $crmid";
+							and vtiger_quotes.$relatedField = $crmid";
 						$query .= ($query=='' ? '' : ' UNION DISTINCT ').$q;
 					}
 					if ($productDiscriminator=='productlineinvoice' || $productDiscriminator=='productlineall') {
@@ -446,11 +447,11 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 						$q = "select distinct $qfields from vtiger_invoice
 							inner join ".$mod->crmentityTable." as crmi on crmi.crmid=vtiger_invoice.invoiceid
 							left join vtiger_inventoryproductrel on vtiger_inventoryproductrel.id=vtiger_invoice.invoiceid
-							inner join ".$mod->crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
+							inner join ".$psmodule->crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
 							left join vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid 
 							left join $pstable on $pstable.$psfield = vtiger_inventoryproductrel.productid
 							where vtiger_inventoryproductrel.productid = $pstable.$psfield AND crmi.deleted=0
-							and $relatedField = $crmid";
+							and vtiger_invoice.$relatedField = $crmid";
 						$query .= ($query=='' ? '' : ' UNION DISTINCT ').$q;
 					}
 					if ($productDiscriminator=='productlinesalesorder' || $productDiscriminator=='productlineall') {
@@ -458,11 +459,11 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 						$q = "select distinct $qfields from vtiger_salesorder
 						inner join ".$mod->crmentityTable." as crms on crms.crmid=vtiger_salesorder.salesorderid
 						left join vtiger_inventoryproductrel on vtiger_inventoryproductrel.id=vtiger_salesorder.salesorderid
-						inner join ".$mod->crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
+						inner join ".$psmodule->crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
 						left join vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
 						left join $pstable on $pstable.$psfield = vtiger_inventoryproductrel.productid
 						where vtiger_inventoryproductrel.productid = $pstable.$psfield AND crms.deleted=0
-						and $relatedField = $crmid";
+						and vtiger_salesorder.$relatedField = $crmid";
 						$query .= ($query=='' ? '' : ' UNION DISTINCT ').$q;
 					}
 				}

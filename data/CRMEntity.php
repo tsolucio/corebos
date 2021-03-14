@@ -2597,13 +2597,13 @@ class CRMEntity {
 		}
 		$query .= ', '.$other->table_name.'.*';
 		$query .= " FROM $other->table_name";
-		$query .= ' INNER JOIN '.$this->crmentityTableAlias." ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
+		$query .= ' INNER JOIN '.$other->crmentityTableAlias." ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
 		$query .= ' INNER JOIN vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid = vtiger_crmentity.crmid OR vtiger_crmentityrel.crmid = vtiger_crmentity.crmid)';
 		$query .= $more_relation;
 		if ($related_module != 'Users') {
-			$query .= ' LEFT JOIN vtiger_users ON vtiger_users.id = '.$this->crmentityTable.'.smownerid';
-			$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$this->crmentityTable.'.smownerid';
-			$del_table = $this->crmentityTable;
+			$query .= ' LEFT JOIN vtiger_users ON vtiger_users.id = '.$other->crmentityTable.'.smownerid';
+			$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$other->crmentityTable.'.smownerid';
+			$del_table = $other->crmentityTable;
 		} else {
 			$del_table = 'vtiger_users';
 		}
@@ -2725,13 +2725,13 @@ class CRMEntity {
 			} else {
 				$query .= " INNER JOIN $this->table_name ON $relationconditions";
 			}
-			$query .= ' LEFT JOIN vtiger_users ON vtiger_users.id = '.$this->crmentityTable.'.smownerid';
-			$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$this->crmentityTable.'.smownerid';
+			$query .= ' LEFT JOIN vtiger_users ON vtiger_users.id = '.$other->crmentityTable.'.smownerid';
+			$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$other->crmentityTable.'.smownerid';
 
 			if ($relWithSelf) {
-				$query .= ' WHERE '.$this->crmentityTable.'.deleted=0 AND '.$this->table_name."RelSelf.$this->table_index = $id";
+				$query .= ' WHERE '.$other->crmentityTable.'.deleted=0 AND '.$this->table_name."RelSelf.$this->table_index = $id";
 			} else {
-				$query .= " WHERE ".$this->crmentityTable.".deleted=0 AND $this->table_name.$this->table_index = $id";
+				$query .= " WHERE ".$other->crmentityTable.".deleted=0 AND $this->table_name.$this->table_index = $id";
 			}
 
 			$return_value = GetRelatedList($currentModule, $related_module, $other, $query, $button, $returnset);
