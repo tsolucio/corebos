@@ -23,7 +23,7 @@ if (empty($selected_module) || $selected_module == 'Documents') {
 		$delcrm=$adb->pquery('SELECT crmid FROM vtiger_crmobject WHERE deleted=1 and setype=?', array('Documents'));
 		if ($delcrm) {
 			while ($row = $adb->fetch_array($delcrm)) {
-				$docstodel[] = $row;
+				$docstodel[] = $row['crmid'];
 			}
 		}
 	} elseif ($selected_module == 'Documents') {
@@ -32,14 +32,12 @@ if (empty($selected_module) || $selected_module == 'Documents') {
 
 	foreach ($docstodel as $key => $id) {
 		if (!empty($id)) {
-			$result = $adb->pquery('SELECT * FROM vtiger_notes WHERE notesid = ?', array($id));
+			$result = $adb->pquery('select attachmentsid from vtiger_seattachmentsrel where crmid=?', array($id));
 			if ($adb->num_rows($result) == 1) {
-				$fileType = @$adb->query_result($result, 0, 'filetype');
-				$name = @$adb->query_result($result, 0, 'filename');
+				$fileid = $adb->query_result($result, 0, 'attachmentsid');
+				$pathQuery = $adb->pquery('select name,path from vtiger_attachments where attachmentsid=?', array($fileid));
+				$name = @$adb->query_result($pathQuery, 0, 'name');
 				$name = html_entity_decode($name, ENT_QUOTES, $default_charset);
-				$seQuery = $adb->pquery("select attachmentsid from vtiger_seattachmentsrel where crmid = ?", array($id));
-				$fileid = $adb->query_result($seQuery, 0, 'attachmentsid');
-				$pathQuery = $adb->pquery('select path from vtiger_attachments where attachmentsid = ?', array($fileid));
 				$filepath = $adb->query_result($pathQuery, 0, 'path');
 				$saved_filename = $filepath.$fileid."_".$name;
 				if (file_exists($saved_filename)) {
