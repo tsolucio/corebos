@@ -27,6 +27,8 @@ class cbLogger {
 	public function __construct($name, $logger) {
 		require 'include/logging/config.php';
 		$this->enableLogLevel = $loggerConfig['enableLogLevels'];
+		$this->enableLogLevel['WARN'] = $loggerConfig['enableLogLevels']['WARNING'];
+		$this->enableLogLevel['CRITICAL'] = $loggerConfig['enableLogLevels']['FATAL'];
 		$this->logger = $logger;
 
 		/** For migration log-level we need debug turned-on */
