@@ -29,7 +29,6 @@ if (empty($selected_module) || $selected_module == 'Documents') {
 	} elseif ($selected_module == 'Documents') {
 		$docstodel = $idlists;
 	}
-
 	foreach ($docstodel as $key => $id) {
 		if (!empty($id)) {
 			$result = $adb->pquery('select attachmentsid from vtiger_seattachmentsrel where crmid=?', array($id));
@@ -39,7 +38,7 @@ if (empty($selected_module) || $selected_module == 'Documents') {
 				$name = @$adb->query_result($pathQuery, 0, 'name');
 				$name = html_entity_decode($name, ENT_QUOTES, $default_charset);
 				$filepath = $adb->query_result($pathQuery, 0, 'path');
-				$saved_filename = $filepath.$fileid."_".$name;
+				$saved_filename = $filepath.$fileid.'_'.$name;
 				if (file_exists($saved_filename)) {
 					@unlink($saved_filename);
 				}
@@ -80,7 +79,7 @@ if ($allrec==1 && !empty($selected_module)) {
 		$denormModules = getDenormalizedModules();
 		if (count($denormModules) > 0) {
 			foreach ($denormModules as $key => $table) {
-				$adb->pquery("DELETE FROM $table WHERE deleted=1 and crmid in (".generateQuestionMarks($idlists).")", array($idlists));
+				$adb->pquery("DELETE FROM $table WHERE deleted=1 and crmid in (".generateQuestionMarks($idlists).')', array($idlists));
 			}
 		}
 		$adb->pquery('DELETE FROM vtiger_crmentity WHERE deleted=1 and crmid in ('.generateQuestionMarks($idlists).')', array($idlists));

@@ -15,17 +15,17 @@
  *************************************************************************************************/
 require 'build/cbHeader.inc';
 require_once 'include/Webservices/Utils.php';
-require_once "modules/Users/Users.php";
-require_once "include/Webservices/State.php";
-require_once "include/Webservices/OperationManager.php";
-require_once "include/Webservices/SessionManager.php";
+require_once 'modules/Users/Users.php';
+require_once 'include/Webservices/State.php';
+require_once 'include/Webservices/OperationManager.php';
+require_once 'include/Webservices/SessionManager.php';
 require_once 'include/Webservices/WebserviceField.php';
 require_once 'include/Webservices/EntityMeta.php';
 require_once 'include/Webservices/VtigerWebserviceObject.php';
-require_once "include/Webservices/VtigerCRMObject.php";
-require_once "include/Webservices/VtigerCRMObjectMeta.php";
-require_once "include/Webservices/DataTransform.php";
-require_once "include/Webservices/WebServiceError.php";
+require_once 'include/Webservices/VtigerCRMObject.php';
+require_once 'include/Webservices/VtigerCRMObjectMeta.php';
+require_once 'include/Webservices/DataTransform.php';
+require_once 'include/Webservices/WebServiceError.php';
 require_once 'include/utils/UserInfoUtil.php';
 require_once 'include/Webservices/ModuleTypes.php';
 require_once 'include/utils/VtlibUtils.php';
@@ -44,10 +44,10 @@ require_once 'modules/com_vtiger_workflow/include.inc';
 require_once 'modules/com_vtiger_workflow/WorkFlowScheduler.php';
 
 if (empty($_REQUEST['workflowid']) || empty($_REQUEST['crmid'])) {
-	echo "<h2>Parameters required:</h2>";
-	echo "<b>workflowid</b>: ID of the workflow to evaluate. For example: 19<br>";
-	echo "<b>crmid</b>: webservice enhanced ID of the record to evaluate the workflow against. For example: 12x57<br>";
-	echo "?workflowid=19&crmid=12x57";
+	echo '<h2>Parameters required:</h2>';
+	echo '<b>workflowid</b>: ID of the workflow to evaluate. For example: 19<br>';
+	echo '<b>crmid</b>: webservice enhanced ID of the record to evaluate the workflow against. For example: 12x57<br>';
+	echo '?workflowid=19&crmid=12x57';
 	die();
 }
 /////////////////////////////////////////////////////
@@ -126,14 +126,14 @@ if (strpos($crm_record_to_evaluate, 'x')) {
 }
 $wsrs = $adb->pquery('select name FROM vtiger_ws_entity where id=?', array($wsmod));
 if (!$wsrs || $adb->num_rows($wsrs)==0) {
-	echo "<h2>Incorrect crmid:</h2>";
-	echo "<b>crmid</b> could not be evaluated as a valid webservice enhanced ID<br>";
+	echo '<h2>Incorrect crmid:</h2>';
+	echo '<b>crmid</b> could not be evaluated as a valid webservice enhanced ID<br>';
 	die();
 }
 $currentModule = $adb->query_result($wsrs, 0, 0);
 if ($semod != $currentModule) {
-	echo "<h2>Incorrect crmid:</h2>";
-	echo "<b>crmid</b> could not be evaluated as a valid record ID<br>";
+	echo '<h2>Incorrect crmid:</h2>';
+	echo '<b>crmid</b> could not be evaluated as a valid record ID<br>';
 	die();
 }
 $util = new VTWorkflowUtils();
@@ -142,8 +142,8 @@ $entityCache = new VTEntityCache($adminUser);
 $wfs = new VTWorkflowManager($adb);
 $result = $adb->pquery('select * from com_vtiger_workflows where workflow_id=?', array($workflowid_to_evaluate));
 if (!$result || $adb->num_rows($result)==0) {
-	echo "<h2>Incorrect workflowid:</h2>";
-	echo "<b>workflowid</b> could not be found as a valid workflow<br>";
+	echo '<h2>Incorrect workflowid:</h2>';
+	echo '<b>workflowid</b> could not be found as a valid workflow<br>';
 	die();
 }
 $workflows = $wfs->getWorkflowsForResult($result);
@@ -152,7 +152,7 @@ $entityData = $entityCache->forId($crm_record_to_evaluate);
 $data = $entityData->getData();
 if ($workflows[$workflowid_to_evaluate]->executionCondition==VTWorkflowManager::$ON_SCHEDULE) {
 	echo '<h3>Now it is: '.date('Y-m-d H:i:s').'</h3>';
-	echo "<h2>Scheduled: SQL for affected records:</h2>";
+	echo '<h2>Scheduled: SQL for affected records:</h2>';
 	$workflowScheduler = new WorkFlowScheduler($adb);
 	$query = $workflowScheduler->getWorkflowQuery($workflow);
 	echo "<span style='font-size: large;'>$query</span>";
@@ -165,7 +165,7 @@ if ($workflows[$workflowid_to_evaluate]->executionCondition==VTWorkflowManager::
 	$ntt = $workflow->getNextTriggerTime();
 	echo '</table><br><br>&nbsp;Next trigger time if launched now: '.$ntt;
 } else {
-	echo "<h2>Launch Conditions:</h2>";
+	echo '<h2>Launch Conditions:</h2>';
 	echo "<span style='font-size: large;'>";
 	$test = json_decode($workflow->test, true);
 	$haschanged = false;
@@ -182,7 +182,7 @@ if ($workflows[$workflowid_to_evaluate]->executionCondition==VTWorkflowManager::
 		}
 	}
 	if ($haschanged) {
-		echo "<br><b>** has changed condition being ignored **</b><br>";
+		echo '<br><b>** has changed condition being ignored **</b><br>';
 		$workflow->test = json_encode($newtest);
 	}
 	echo '<b>** RESULT:</b><br>';
@@ -195,7 +195,7 @@ $taskQueue = new VTTaskQueue($adb);
 $tasks = $tm->getTasksForWorkflow($workflow->id);
 foreach ($tasks as $task) {
 	if (is_object($task) && $task->active && get_class($task) == 'VTEmailTask') {
-		echo "<br><br><b>** EMail TASK **</b><br><br>";
+		echo '<br><br><b>** EMail TASK **</b><br><br>';
 		$email = evalwfEmailTask($crm_record_to_evaluate, $task);
 		foreach ($email as $key => $value) {
 			if (is_array($value)) {
