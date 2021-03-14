@@ -220,9 +220,9 @@ class SalesOrder extends CRMEntity {
 			$returnset = '&return_module=SalesOrder&return_action=CallRelatedList&return_id='.$id;
 		}
 		$crmtablealias = CRMEntity::getcrmEntityTableAlias('Invoice');
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('ename'=> 'vtiger_users.ename'), 'Users');
 		$query = "select vtiger_crmentity.*, vtiger_invoice.*, vtiger_account.accountname,
-			vtiger_salesorder.subject as salessubject, case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name
+			vtiger_salesorder.subject as salessubject, case when (vtiger_users.user_name not like '') then ename else vtiger_groups.groupname end as user_name
 			from vtiger_invoice
 			inner join $crmtablealias on vtiger_crmentity.crmid=vtiger_invoice.invoiceid
 			left outer join vtiger_account on vtiger_account.accountid=vtiger_invoice.accountid
@@ -445,9 +445,9 @@ class SalesOrder extends CRMEntity {
 		$sql = getPermittedFieldsQuery('SalesOrder', 'detail_view');
 		$fields_list = getFieldsListFromQuery($sql);
 		$fields_list .= getInventoryFieldsForExport($this->table_name);
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('ename'=> 'vtiger_users.ename'), 'Users');
 
-		$query = "SELECT $fields_list, case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name
+		$query = "SELECT $fields_list, case when (vtiger_users.user_name not like '') then ename else vtiger_groups.groupname end as user_name
 			FROM ".$this->crmentityTableAlias
 			." INNER JOIN vtiger_salesorder ON vtiger_salesorder.salesorderid = vtiger_crmentity.crmid
 			LEFT JOIN vtiger_salesordercf ON vtiger_salesordercf.salesorderid = vtiger_salesorder.salesorderid

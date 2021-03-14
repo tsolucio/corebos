@@ -72,8 +72,8 @@ if ($userprivs->hasGlobalReadPermission() || $module == 'Users' || $module == 'E
 }
 $result = $adb->pquery($query1, $params1);
 $y=$adb->num_rows($result);
-$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-$accountUserNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'usersAccounts.first_name', 'last_name' => 'usersAccounts.last_name'), 'Users');
+$userNameSql = getSqlForNameInDisplayFormat(array('ename'=> 'vtiger_users.ename'), 'Users');
+$accountUserNameSql = getSqlForNameInDisplayFormat(array('ename'=>'usersAccounts.ename'), 'Users');
 
 for ($x=0; $x<$y; $x++) {
 	$tablename = $adb->query_result($result, $x, 'tablename');
@@ -88,10 +88,10 @@ for ($x=0; $x<$y; $x++) {
 	$querycolumns[$x] = $tablename.'.'.$columnname;
 	if ($columnname == 'smownerid') {
 		if ($modulename == 'Accounts') {
-			$querycolumns[$x]="case when (usersAccounts.user_name not like '') then $accountUserNameSql else groupsAccounts.groupname end as username";
+			$querycolumns[$x]="case when (usersAccounts.user_name not like '') then ename else groupsAccounts.groupname end as username";
 		}
 		if ($modulename == 'Contacts') {
-			$querycolumns[$x]="case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as usercname,vtiger_users.first_name,"
+			$querycolumns[$x]="case when (vtiger_users.user_name not like '') then ename else vtiger_groups.groupname end as usercname,vtiger_users.first_name,"
 				.'vtiger_users.last_name,vtiger_users.user_name,vtiger_users.secondaryemail,vtiger_users.title,vtiger_users.phone_work,vtiger_users.department,'
 				.'vtiger_users.phone_mobile,vtiger_users.phone_other,vtiger_users.phone_fax,vtiger_users.email1,vtiger_users.phone_home,vtiger_users.email2,'
 				.'vtiger_users.address_street,vtiger_users.address_city,vtiger_users.address_state,vtiger_users.address_postalcode,vtiger_users.address_country';

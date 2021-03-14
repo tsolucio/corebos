@@ -389,9 +389,9 @@ class HelpDesk extends CRMEntity {
 		//Ticket changes--5198
 		$fields_list = str_replace(",vtiger_ticketcomments.comments as 'Add Comment'", ' ', $fields_list);
 
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('ename'=> 'vtiger_users.ename'), 'Users');
 		$crmEntityTable = $this->denormalized ? 'vtiger_troubletickets as vtiger_crmentity' : 'vtiger_crmentity';
-		$query = "SELECT $fields_list,case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name
+		$query = "SELECT $fields_list,case when (vtiger_users.user_name not like '') then ename else vtiger_groups.groupname end as user_name
 			FROM ".$crmEntityTable.
 			" INNER JOIN vtiger_troubletickets ON vtiger_troubletickets.ticketid =vtiger_crmentity.crmid
 			LEFT JOIN vtiger_crmentity vtiger_crmentityRelatedTo ON vtiger_crmentityRelatedTo.crmid = vtiger_troubletickets.parent_id

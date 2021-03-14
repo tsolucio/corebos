@@ -240,8 +240,8 @@ class Contacts extends CRMEntity {
 			}
 		}
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Potentials');
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-		$query ='select case when (vtiger_users.user_name not like "") then '.$userNameSql.' else vtiger_groups.groupname end as user_name,
+		$userNameSql = getSqlForNameInDisplayFormat(array('ename'=> 'vtiger_users.ename'), 'Users');
+		$query ='select case when (vtiger_users.user_name not like "") then ename else vtiger_groups.groupname end as user_name,
 				vtiger_crmentity.*,vtiger_contactdetails.accountid,vtiger_contactdetails.contactid,vtiger_potential.*,vtiger_potentialscf.*,vtiger_account.accountname
 			from vtiger_contactdetails
 			left join vtiger_contpotentialrel on vtiger_contpotentialrel.contactid=vtiger_contactdetails.contactid
@@ -373,7 +373,7 @@ class Contacts extends CRMEntity {
 
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('PurchaseOrder');
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-		$query = "select case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,vtiger_crmentity.*,
+		$query = "select case when (vtiger_users.user_name not like '') then ename else vtiger_groups.groupname end as user_name,vtiger_crmentity.*,
 				vtiger_purchaseorder.*,vtiger_purchaseordercf.*,vtiger_vendor.vendorname,vtiger_contactdetails.lastname
 			from vtiger_purchaseorder
 			inner join $crmEntityTable on vtiger_crmentity.crmid=vtiger_purchaseorder.purchaseorderid
@@ -439,8 +439,8 @@ class Contacts extends CRMEntity {
 		}
 
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Campaigns');
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-		$query = "SELECT case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
+		$userNameSql = getSqlForNameInDisplayFormat(array('ename'=> 'vtiger_users.ename'), 'Users');
+		$query = "SELECT case when (vtiger_users.user_name not like '') then ename else vtiger_groups.groupname end as user_name,
 				vtiger_campaign.campaignid, vtiger_campaign.campaignname, vtiger_campaign.campaigntype, vtiger_campaign.campaignstatus,
 				vtiger_campaign.expectedrevenue, vtiger_campaign.closingdate, vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_crmentity.modifiedtime
 			from vtiger_campaign
@@ -505,8 +505,8 @@ class Contacts extends CRMEntity {
 		}
 
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Invoice');
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-		$query = "SELECT case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
+		$userNameSql = getSqlForNameInDisplayFormat(array('ename'=> 'vtiger_users.ename'), 'Users');
+		$query = "SELECT case when (vtiger_users.user_name not like '') then ename else vtiger_groups.groupname end as user_name,
 			vtiger_crmentity.*, vtiger_invoice.*, vtiger_contactdetails.lastname,vtiger_contactdetails.firstname, vtiger_salesorder.subject AS salessubject
 			FROM vtiger_invoice
 			INNER JOIN ".$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_invoice.invoiceid
@@ -573,8 +573,8 @@ class Contacts extends CRMEntity {
 		}
 
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Vendors');
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-		$query = "SELECT case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
+		$userNameSql = getSqlForNameInDisplayFormat(array('ename'=> 'vtiger_users.ename'), 'Users');
+		$query = "SELECT case when (vtiger_users.user_name not like '') then ename else vtiger_groups.groupname end as user_name,
 			vtiger_crmentity.crmid, vtiger_vendor.*, vtiger_vendorcf.*
 			from vtiger_vendor inner join ".$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_vendor.vendorid
 			INNER JOIN vtiger_vendorcontactrel on vtiger_vendorcontactrel.vendorid=vtiger_vendor.vendorid

@@ -790,8 +790,8 @@ class CustomView extends CRMEntity {
 					}
 					//Added for assigned to sorting
 					if ($list[1] == 'smownerid') {
-						$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-						$sqllist_column = "case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name";
+						$userNameSql = getSqlForNameInDisplayFormat(array('ename'=> 'vtiger_users.ename'), 'Users');
+						$sqllist_column = "case when (vtiger_users.user_name not like '') then ename else vtiger_groups.groupname end as user_name";
 					}
 					if ($list[0] == 'vtiger_contactdetails' && $list[1] == 'lastname') {
 						$sqllist_column = 'vtiger_contactdetails.lastname,vtiger_contactdetails.firstname';
