@@ -3548,6 +3548,12 @@ function getSqlForNameInDisplayFormat($input, $module, $glue = ' ') {
 	$entity_field_info = getEntityFieldNames($module);
 	//$tableName = $entity_field_info['tablename'];
 	$fieldsName = $entity_field_info['fieldname'];
+	if ($module == 'Users') {
+		unset($fieldsName[0]);
+		unset($fieldsName[1]);
+		$ename_array = array("ename");
+		$fieldsName = array_replace($fieldsName, $ename_array);
+	}
 	if (is_array($fieldsName)) {
 		foreach ($fieldsName as $value) {
 			$formattedNameList[] = $input[$value];

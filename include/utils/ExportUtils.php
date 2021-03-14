@@ -132,11 +132,8 @@ function getFieldsListFromQuery($query) {
 		} elseif (($tablename == 'vtiger_quotes' || $tablename == 'vtiger_salesorder') && $columnName == 'potentialid') {
 			$fields .= 'concat("Potentials::::",vtiger_potential.potentialname) as "'.$fieldlabel.'",';
 		} elseif ($tablename == 'vtiger_quotes' && $columnName == 'inventorymanager') {
-			$userNameSql = getSqlForNameInDisplayFormat(
-				array('first_name' => 'vtiger_inventoryManager.first_name', 'last_name' => 'vtiger_inventoryManager.last_name'),
-				'Users'
-			);
-			$fields .= $userNameSql. ' as "'.$fieldlabel.'",';
+			$userNameSql = getSqlForNameInDisplayFormat(array('ename' => 'vtiger_inventoryManager.ename'), 'Users');
+			$fields .= 'ename as "'.$fieldlabel.'",';
 		} elseif ($tablename == 'vtiger_salesorder' && $columnName == 'quoteid') {
 			$fields .= 'concat("Quotes::::",vtiger_quotes.subject) as "'.$fieldlabel.'",';
 		} elseif ($tablename == 'vtiger_purchaseorder' && $columnName == 'vendorid') {
