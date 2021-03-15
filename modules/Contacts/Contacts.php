@@ -839,7 +839,7 @@ class Contacts extends CRMEntity {
 	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb, $log;
-		$log->debug('> transferRelatedRecords '.$module.','.print_r($transferEntityIds, true).','.$entityId);
+		$log->debug('> transferRelatedRecords', ['module' => $module, 'transferEntityIds' => $transferEntityIds, 'entityId' => $entityId]);
 		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
 		$rel_table_arr = array(
 			'Potentials'=>'vtiger_contpotentialrel',
@@ -1202,7 +1202,7 @@ class Contacts extends CRMEntity {
 	*/
 	public function __getParentContacts($id, &$parent_contacts, &$encountered_contacts) {
 		global $log, $adb;
-		$log->debug('> __getParentContacts '.$id.','.print_r($parent_contacts, true));
+		$log->debug('> __getParentContacts '.$id);
 		$crmEntityTable = $this->denormalized ? $this->crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$query = 'SELECT reportsto FROM vtiger_contactdetails '
 			.' INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid'
@@ -1260,7 +1260,7 @@ class Contacts extends CRMEntity {
 	*/
 	public function __getChildContacts($id, &$child_contacts, $depth) {
 		global $log, $adb;
-		$log->debug('> __getChildContacts '.$id.','.print_r($child_contacts, true).",$depth");
+		$log->debug('> __getChildContacts '.$id);
 		$crmEntityTable = $this->denormalized ? $this->crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$query = 'SELECT vtiger_contactdetails.*, '
 			." CASE when (vtiger_users.user_name not like '') THEN vtiger_users.user_name ELSE vtiger_groups.groupname END as user_name "

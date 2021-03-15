@@ -181,9 +181,9 @@ class ConvertInventoryModule extends VTTask {
 		$from_wf = false;
 		$util->revertUser();
 		$logbg->debug('ConvertInventoryModule: From '.$cbfrommodule.' '.$entity->getId().' to '.$this->convertto);
-		$logbg->debug('ConvertInventoryModule: From '.print_r($wsso, true));
-		$logbg->debug('ConvertInventoryModule: To '.print_r($data, true));
-		$logbg->debug('ConvertInventoryModule: Result '.print_r($invmod, true));
+		$logbg->debug('ConvertInventoryModule: From', $wsso);
+		$logbg->debug('ConvertInventoryModule: To', $data);
+		$logbg->debug('ConvertInventoryModule: Result', $invmod);
 	}
 }
 ?>

@@ -337,7 +337,7 @@ class VTSimpleTemplate {
 			INNER JOIN '.$crmEntityTable.' ON vtiger_inventorydetails.inventorydetailsid=vtiger_crmentity.crmid
 			LEFT JOIN vtiger_products ON vtiger_inventorydetails.productid=vtiger_products.productid
 			LEFT JOIN vtiger_service ON vtiger_inventorydetails.productid=vtiger_service.serviceid
-			WHERE '.$relfield.'=? order by sequence_no';
+			WHERE vtiger_inventorydetails.'.$relfield.'=? order by vtiger_inventorydetails.sequence_no';
 		$retcm = '';
 		$wsid = $this->parent->getId();
 		$cmrs = $adb->pquery($cmsqlws, array($crmid));

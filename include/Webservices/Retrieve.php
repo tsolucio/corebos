@@ -69,7 +69,7 @@ function vtws_retrieve($id, $user) {
 		}
 		$deref = unserialize(vtws_getReferenceValue(serialize($listofrelfields), $user));
 		foreach ($r as $relfield => $mods) {
-			if (!empty($entity[$relfield])) {
+			if (!empty($entity[$relfield]) && !empty($deref[$entity[$relfield]])) {
 				$entity[$relfield.'ename'] = $deref[$entity[$relfield]];
 			}
 		}

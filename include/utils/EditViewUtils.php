@@ -24,7 +24,7 @@ require_once 'modules/PickList/DependentPickListUtils.php';
   */
 function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields, $generatedtype, $module_name, $mode = '', $typeofdata = null, $cbMapFI = array()) {
 	global $log,$app_strings, $adb,$default_charset, $current_user;
-	$log->debug('> getOutputHtml '.$uitype.','. $fieldname.','. $fieldlabel.','. $maxlength.','. print_r($col_fields, true).','.$generatedtype.','.$module_name);
+	$log->debug('> getOutputHtml', [$uitype, $fieldname, $fieldlabel, $maxlength, $col_fields, $generatedtype, $module_name]);
 
 	$userprivs = $current_user->getPrivileges();
 
@@ -1177,7 +1177,7 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 			'Products' AS entitytype
 			FROM vtiger_products
 			INNER JOIN $crmETProduct ON vtiger_crmentity.crmid=vtiger_products.productid
-			WHERE vtiger_crmentity.deleted=0 AND productid=?";
+			WHERE vtiger_crmentity.deleted=0 AND vtiger_products.productid=?";
 			$params = array($seid);
 	} elseif ($module == 'Services') {
 		$query="SELECT vtiger_service.serviceid AS productid, 'NA' AS productcode, vtiger_service.servicename AS productname,
@@ -1185,7 +1185,7 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 			'Services' AS entitytype
 			FROM vtiger_service
 			INNER JOIN $crmETService ON vtiger_crmentity.crmid=vtiger_service.serviceid
-			WHERE vtiger_crmentity.deleted=0 AND serviceid=?";
+			WHERE vtiger_crmentity.deleted=0 AND vtiger_service.serviceid=?";
 			$params = array($seid);
 	} else {
 		$query = "SELECT vtiger_products.productid, vtiger_products.productname, vtiger_products.productcode,
@@ -1658,7 +1658,7 @@ function getNoOfAssocProducts($module, $focus, $seid = '') {
 */
 function getBlockInformation($module, $result, $col_fields, $tabid, $block_label, $mode) {
 	global $log, $adb;
-	$log->debug('> getBlockInformation '.$module.','. print_r($col_fields, true).','.$tabid.','.print_r($block_label, true));
+	$log->debug('> getBlockInformation', [$module, $col_fields, $tabid, $block_label]);
 	$isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : false;
 	$editview_arr = array();
 
@@ -1753,7 +1753,7 @@ function getBlockInformation($module, $result, $col_fields, $tabid, $block_label
 */
 function split_validationdataArray($validationData) {
 	global $log;
-	$log->debug('> split_validationdataArray '.print_r($validationData, true));
+	$log->debug('> split_validationdataArray', $validationData);
 	$fieldName = '';
 	$fieldLabel = '';
 	$fldDataType = '';

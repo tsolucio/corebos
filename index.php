@@ -53,7 +53,7 @@ if ($calculate_response_time) {
 	$startTime = microtime(true);
 }
 
-$log = LoggerManager::getLogger('index');
+$log = LoggerManager::getLogger('APPLICATION');
 
 global $seclog;
 $seclog = LoggerManager::getLogger('SECURITY');

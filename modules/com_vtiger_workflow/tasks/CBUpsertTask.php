@@ -35,7 +35,7 @@ class CBUpsertTask extends VTTask {
 		if (!empty($this->field_value_mapping)) {
 			$fieldValueMapping = json_decode($this->field_value_mapping, true);
 		}
-		$logbg->debug('field mapping: '.print_r($fieldValueMapping, true));
+		$logbg->debug('field mapping', $fieldValueMapping);
 		if (!empty($fieldValueMapping) && count($fieldValueMapping) > 0) {
 			$util = new VTWorkflowUtils();
 			$util->adminUser();
@@ -63,7 +63,6 @@ class CBUpsertTask extends VTTask {
 			if (is_null($current_user)) {
 				$current_user = $hold_user; // make sure current_user is defined
 			}
-			$fieldValue = array();
 			if (empty($entity->WorkflowContext['upsert_data'])) {
 				$entity->WorkflowContext['upsert_data'] = array($focus->column_fields);
 			}
@@ -77,7 +76,10 @@ class CBUpsertTask extends VTTask {
 			$moduleHandlerrel = vtws_getModuleHandlerFromName($relmodule, Users::getActiveAdminUser());
 			$handlerMetarel = $moduleHandlerrel->getMeta();
 			$moduleFieldsrel = $handlerMetarel->getModuleFields();
+			$loopContext = $entity->WorkflowContext;
 			foreach ($upsert_data as $key) {
+				$entity->WorkflowContext = $loopContext;
+				$fieldValue = array();
 				$entity->WorkflowContext['current_upsert_row'] = $key;
 				foreach ($fieldValueMapping as $fieldInfo) {
 					$fieldName = $fieldInfo['fieldname'];
@@ -118,7 +120,7 @@ class CBUpsertTask extends VTTask {
 			list($void, $crmid) = explode('x', $crmid); // suppport WS ID
 		}
 		$logbg->debug('> upsertData: '.$relmodule.' - '.$action);
-		$logbg->debug('data: '.print_r($data, true));
+		$logbg->debug('data', $data);
 		$moduleHandler = vtws_getModuleHandlerFromName($relmodule, $current_user);
 		$handlerMeta = $moduleHandler->getMeta();
 		$focusrel = CRMEntity::getInstance($relmodule);
@@ -142,6 +144,7 @@ class CBUpsertTask extends VTTask {
 		require 'modules/com_vtiger_workflow/tasks/processAttachments.php';
 		$focusrel->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel->column_fields, $handlerMeta);
 		$focusrel->save($relmodule);
+		unset($_REQUEST['createmode']);
 		if (!empty($wsAttachments)) {
 			foreach ($wsAttachments as $file) {
 				@unlink($file);

@@ -211,20 +211,9 @@ class BusinessActions extends CRMEntity {
 			}
 		}
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
-		$query = 'SELECT businessactionsid,
-				elementtype_action,
-				linklabel,
-				linkurl,
-				linkicon,
-				sequence,
-				handler_path,
-				handler_class,
-				handler,
-				onlyonmymodule,
-				brmap,
-				mandatory
-			FROM vtiger_businessactions INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_businessactions.businessactionsid
-			WHERE vtiger_crmentity.deleted = 0  AND active = 1 '.$module_sql.$type_sql;
+		$query = 'SELECT businessactionsid, elementtype_action,linklabel,linkurl,linkicon,sequence,handler_path,handler_class,handler,onlyonmymodule,brmap,mandatory
+			FROM vtiger_businessactions INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_businessactions.businessactionsid
+			WHERE vtiger_crmentity.deleted=0 AND active=1 '.$module_sql.$type_sql;
 
 		$orderby = ' ORDER BY elementtype_action, sequence';
 
@@ -234,7 +223,7 @@ class BusinessActions extends CRMEntity {
 		)";
 		$role_condition = $adb->convert2Sql($role_condition, array($userid));
 
-		$user_condition = $adb->convert2sql('vtiger_crmentity.smownerid = ?', array($userid));
+		$user_condition = $adb->convert2sql('vtiger_crmentity.smownerid=?', array($userid));
 
 		require_once 'include/utils/GetUserGroups.php';
 		$UserGroups = new GetUserGroups();

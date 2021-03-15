@@ -121,7 +121,7 @@ class Products extends CRMEntity {
 			$this->insertIntoAttachment($this->id, $module);
 		}
 		$copyBundle = GlobalVariable::getVariable('Product_Copy_Bundle_OnDuplicate', 'false');
-		if ($copyBundle != 'false' && $_REQUEST['cbcustominfo1'] == 'duplicatingproduct' && !empty($_REQUEST['cbcustominfo2'])) {
+		if ($copyBundle!='false' && $_REQUEST['cbcustominfo1']=='duplicatingproduct' && !empty($_REQUEST['cbcustominfo2']) && vtlib_isModuleActive('ProductComponent')) {
 			include_once 'include/Webservices/Create.php';
 			include_once 'include/Webservices/Retrieve.php';
 			global $adb, $current_user;
@@ -1011,7 +1011,7 @@ class Products extends CRMEntity {
 			}
 		}
 		$crmtablealias = CRMEntity::getcrmEntityTableAlias($related_module);
-		$query = "SELECT vtiger_productcomponent.*,vtiger_productcomponentcf.*,vtiger_crmentity.crmid, vtiger_crmentity.smownerid,vtiger_products.*
+		$query = "SELECT vtiger_productcomponent.*,vtiger_productcomponentcf.*,vtiger_products.*,vtiger_crmentity.crmid, vtiger_crmentity.smownerid
 			FROM vtiger_productcomponent
 			INNER JOIN vtiger_productcomponentcf ON vtiger_productcomponentcf.productcomponentid = vtiger_productcomponent.productcomponentid
 			INNER JOIN $crmtablealias ON vtiger_crmentity.crmid = vtiger_productcomponent.productcomponentid
@@ -1056,7 +1056,7 @@ class Products extends CRMEntity {
 			$returnset = '&return_module=Products&return_action=CallRelatedList&is_parent=1&return_id='.$id;
 		}
 		$crmtablealias = CRMEntity::getcrmEntityTableAlias('ProductComponent');
-		$query = "SELECT vtiger_productcomponent.*,vtiger_productcomponentcf.*,vtiger_crmentity.crmid, vtiger_crmentity.smownerid,vtiger_products.*
+		$query = "SELECT vtiger_productcomponent.*,vtiger_productcomponentcf.*,vtiger_products.*,vtiger_crmentity.crmid, vtiger_crmentity.smownerid
 			FROM vtiger_productcomponent
 			INNER JOIN $crmtablealias ON vtiger_crmentity.crmid = vtiger_productcomponent.productcomponentid
 			INNER JOIN vtiger_productcomponentcf ON vtiger_productcomponentcf.productcomponentid = vtiger_productcomponent.productcomponentid
@@ -1072,6 +1072,9 @@ class Products extends CRMEntity {
 	*/
 	public function isparent_check() {
 		global $adb;
+		if (!vtlib_isModuleActive('ProductComponent')) {
+			return false;
+		}
 		$crmtablealias = CRMEntity::getcrmEntityTableAlias('ProductComponent');
 		$isparent_query = $adb->pquery(
 			'SELECT EXISTS (SELECT 1
@@ -1087,6 +1090,9 @@ class Products extends CRMEntity {
 	*/
 	public function ismember_check() {
 		global $adb;
+		if (!vtlib_isModuleActive('ProductComponent')) {
+			return false;
+		}
 		$SubProductBeParent = GlobalVariable::getVariable('Product_Permit_Subproduct_Be_Parent', 'no');
 		$ismember = 0;
 		if ($SubProductBeParent == 'no') {
@@ -1111,7 +1117,7 @@ class Products extends CRMEntity {
 	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
-		$log->debug('> transferRelatedRecords '.$module.','.print_r($transferEntityIds, true).','.$entityId);
+		$log->debug('> transferRelatedRecords', ['module' => $module, 'transferEntityIds' => $transferEntityIds, 'entityId' => $entityId]);
 		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
 		$rel_table_arr = array(
 			'Products'=>'vtiger_productcomponent',

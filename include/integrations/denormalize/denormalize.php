@@ -101,7 +101,40 @@ class corebos_denormalize {
 			$fcst = $adb->query_result($fkey, 0, 'constraint_name');
 			$adb->query('ALTER TABLE '.$tablename.' DROP FOREIGN KEY '.$fcst);
 			$msg .= 'ALTER TABLE '.$tablename.' DROP FOREIGN KEY '.$fcst;
-			$msg .= 'Foreign Key constraint deleted.<br>';
+			$msg .= '<br>Foreign Key constraint deleted.<br>';
+		}
+		if ($module=='Contacts') {
+			$fkey = $adb->pquery(
+				"SELECT constraint_name
+				FROM information_schema.key_column_usage
+				WHERE table_name='vtiger_seactivityrel' and referenced_table_name='vtiger_crmentity' and constraint_schema=?",
+				array($dbconfig['db_name'])
+			);
+			if ($fkey && $adb->num_rows($fkey)>0) {
+				$fcst = $adb->query_result($fkey, 0, 'constraint_name');
+				$adb->query('ALTER TABLE vtiger_seactivityrel DROP FOREIGN KEY '.$fcst);
+				$msg .= 'ALTER TABLE vtiger_seactivityrel DROP FOREIGN KEY '.$fcst;
+				$msg .= '<br>Foreign Key constraint deleted.<br>';
+			}
+		}
+		if ($module=='Documents') {
+			$fkey = $adb->pquery(
+				"SELECT constraint_name
+				FROM information_schema.key_column_usage
+				WHERE table_name='vtiger_seattachmentsrel' and referenced_table_name='vtiger_crmentity' and constraint_schema=?",
+				array($dbconfig['db_name'])
+			);
+			if ($fkey && $adb->num_rows($fkey)>0) {
+				$fcst = $adb->query_result($fkey, 0, 'constraint_name');
+				$adb->query('ALTER TABLE vtiger_seattachmentsrel DROP FOREIGN KEY '.$fcst);
+				$msg .= 'ALTER TABLE vtiger_seattachmentsrel DROP FOREIGN KEY '.$fcst;
+				$msg .= '<br>Foreign Key constraint deleted.<br>';
+			}
+		}
+		$cncrm = $adb->getColumnNames($tablename);
+		$descfield = 'ADD `description` text NULL DEFAULT NULL,';
+		if (in_array('description', $cncrm)) {
+			$descfield = '';
 		}
 		$query2= "ALTER TABLE $tablename
 			ADD `crmid` INT( 19 ) NOT NULL DEFAULT 0 ,
@@ -113,7 +146,7 @@ class corebos_denormalize {
 			ADD `modifiedtime` datetime NULL DEFAULT NULL,
 			ADD `viewedtime` datetime NULL DEFAULT NULL,
 			ADD `setype` varchar(100) NULL DEFAULT NULL,
-			ADD `description` text NULL DEFAULT NULL,
+			$descfield
 			ADD `deleted` INT( 1 ) NOT NULL DEFAULT 0,
 			ADD INDEX (`crmid`),
 			ADD INDEX (`cbuuid`),
@@ -126,6 +159,7 @@ class corebos_denormalize {
 			$msg .=  "Table $tablename altered with the new crmentity fields.<br>";
 		} else {
 			$msg .= '<span style="color:red;">Table '.$tablename.' COULD NOT be altered with the new crmentity fields.</span><br>';
+			return $msg;
 		}
 		$updfields = 'update vtiger_field set tablename=? where tabid=? and tablename=?';
 		$result2=$adb->pquery($updfields, array($tablename, getTabid($module), 'vtiger_crmentity'));
@@ -133,9 +167,9 @@ class corebos_denormalize {
 			$msg .= 'Field meta-data updated.<br>';
 		} else {
 			$msg .= '<span style="color:red;">Field meta-data COULD NOT be updated.</span><br>';
+			return $msg;
 		}
-		$query3="UPDATE $tablename inner join vtiger_crmentity on vtiger_crmentity.crmid=$join
-			set
+		$query3="UPDATE $tablename inner join vtiger_crmentity on vtiger_crmentity.crmid=$join set
 			$tablename.crmid = vtiger_crmentity.crmid,
 			$tablename.cbuuid = vtiger_crmentity.cbuuid,
 			$tablename.smcreatorid = vtiger_crmentity.smcreatorid,
@@ -153,6 +187,7 @@ class corebos_denormalize {
 			$msg .= "Table $tablename filled with the crmentity data.<br>";
 		} else {
 			$msg .= '<span style="color:red;">Table '.$tablename.' COULD NOT be filled with the crmentity data.</span><br>';
+			return $msg;
 		}
 		$sqlupdentitytable = 'UPDATE vtiger_entityname SET isdenormalized=?, denormtable=? WHERE vtiger_entityname.tabid=?';
 		$result4=$adb->pquery($sqlupdentitytable, array('1',$tablename, getTabid($module)));
@@ -160,6 +195,7 @@ class corebos_denormalize {
 			$msg .= 'Table entityname updated.<br>';
 		} else {
 			$msg .= '<span style="color:red;">Table entityname COULD NOT be updated.</span><br>';
+			return $msg;
 		}
 		$result5=$adb->pquery('DELETE FROM vtiger_crmentity WHERE setype=?', array($module));
 		if ($result5) {

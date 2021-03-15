@@ -204,6 +204,9 @@ class CRMEntity {
 
 	public function insertIntoAttachment($id, $module, $direct_import = false) {
 		global $log, $adb;
+		if (empty($_FILES)) {
+			return;
+		}
 		$log->debug("> insertIntoAttachment $id,$module");
 		$file_saved = false;
 		// get the list of uitype 69 fields so we can set their value
@@ -316,15 +319,15 @@ class CRMEntity {
 	}
 
 	/**
-	 * This function is used to upload the attachment in the server and save that attachment information in db.
-	 * @param int $id - entity id to which the file to be uploaded
+	 * function used to upload the attachment in the server and save that attachment information in db.
+	 * @param int $id - entity id to which the file will be uploaded
 	 * @param string $module - the current module name
-	 * @param array $file_details  - array which contains the file information(name, type, size, tmp_name and error)
-	 * return void
+	 * @param array $file_details - contains the file information (name, type, size, tmp_name and error)
+	 * @return boolean - true if uploaded, false if the image is not secure or some other error occured
 	 */
 	public function uploadAndSaveFile($id, $module, $file_details, $attachmentname = '', $direct_import = false, $forfield = '') {
 		global $log, $adb, $current_user, $upload_badext;
-		$log->debug('> uploadAndSaveFile '.$id.','.$module.','.print_r($file_details, true));
+		$log->debug('> uploadAndSaveFile', [$id, $module, $file_details]);
 
 		$date_var = date('Y-m-d H:i:s');
 
@@ -2241,20 +2244,19 @@ class CRMEntity {
 		}
 
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-		$query = "select case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
-				'Documents' ActivityType,vtiger_attachments.type FileType,crm2.modifiedtime lastmodified,vtiger_crmentity.modifiedtime,
-				vtiger_seattachmentsrel.attachmentsid attachmentsid, vtiger_crmentity.smownerid smownerid, vtiger_notes.notesid crmid,
-				vtiger_notes.notecontent description,vtiger_notes.*
+		$query = "select case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,'Documents' ActivityType,
+				vtiger_attachments.type FileType,crm2.modifiedtime lastmodified,vtiger_crmentity.modifiedtime,vtiger_seattachmentsrel.attachmentsid attachmentsid,
+				vtiger_crmentity.smownerid smownerid, vtiger_notes.notesid crmid,vtiger_notes.notecontent description,vtiger_notes.*
 			from vtiger_notes
-			inner join vtiger_senotesrel on vtiger_senotesrel.notesid= vtiger_notes.notesid
-			left join vtiger_notescf ON vtiger_notescf.notesid= vtiger_notes.notesid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
-			inner join vtiger_crmentity crm2 on crm2.crmid=vtiger_senotesrel.crmid
+			inner join vtiger_senotesrel on vtiger_senotesrel.notesid=vtiger_notes.notesid
+			left join vtiger_notescf ON vtiger_notescf.notesid=vtiger_notes.notesid
+			inner join ".$other->crmentityTableAlias.' on vtiger_crmentity.crmid=vtiger_notes.notesid and vtiger_crmentity.deleted=0
+			inner join vtiger_crmobject crm2 on crm2.crmid=vtiger_senotesrel.crmid
 			left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
-			left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid =vtiger_notes.notesid
-			left join vtiger_attachments on vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
-			left join vtiger_users on vtiger_crmentity.smownerid= vtiger_users.id
-			where crm2.crmid=" . $id;
+			left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_notes.notesid
+			left join vtiger_attachments on vtiger_seattachmentsrel.attachmentsid=vtiger_attachments.attachmentsid
+			left join vtiger_users on vtiger_crmentity.smownerid=vtiger_users.id
+			where crm2.crmid=' . $id;
 
 		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
 
@@ -2595,13 +2597,13 @@ class CRMEntity {
 		}
 		$query .= ', '.$other->table_name.'.*';
 		$query .= " FROM $other->table_name";
-		$query .= ' INNER JOIN '.$this->crmentityTableAlias." ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
+		$query .= ' INNER JOIN '.$other->crmentityTableAlias." ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
 		$query .= ' INNER JOIN vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid = vtiger_crmentity.crmid OR vtiger_crmentityrel.crmid = vtiger_crmentity.crmid)';
 		$query .= $more_relation;
 		if ($related_module != 'Users') {
-			$query .= ' LEFT JOIN vtiger_users ON vtiger_users.id = '.$this->crmentityTable.'.smownerid';
-			$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$this->crmentityTable.'.smownerid';
-			$del_table = $this->crmentityTable;
+			$query .= ' LEFT JOIN vtiger_users ON vtiger_users.id = '.$other->crmentityTable.'.smownerid';
+			$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$other->crmentityTable.'.smownerid';
+			$del_table = $other->crmentityTable;
 		} else {
 			$del_table = 'vtiger_users';
 		}
@@ -2716,20 +2718,20 @@ class CRMEntity {
 			}
 
 			$query .= " FROM $other->table_name";
-			$query .= ' INNER JOIN '.$this->crmentityTableAlias." ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
+			$query .= ' INNER JOIN '.$other->crmentityTableAlias." ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
 			$query .= $more_relation;
 			if ($relWithSelf) {
 				$query .= " INNER JOIN $this->table_name as ".$this->table_name."RelSelf ON $relationconditions";
 			} else {
 				$query .= " INNER JOIN $this->table_name ON $relationconditions";
 			}
-			$query .= ' LEFT JOIN vtiger_users ON vtiger_users.id = '.$this->crmentityTable.'.smownerid';
-			$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$this->crmentityTable.'.smownerid';
+			$query .= ' LEFT JOIN vtiger_users ON vtiger_users.id = '.$other->crmentityTable.'.smownerid';
+			$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$other->crmentityTable.'.smownerid';
 
 			if ($relWithSelf) {
-				$query .= ' WHERE '.$this->crmentityTable.'.deleted=0 AND '.$this->table_name."RelSelf.$this->table_index = $id";
+				$query .= ' WHERE '.$other->crmentityTable.'.deleted=0 AND '.$this->table_name."RelSelf.$this->table_index = $id";
 			} else {
-				$query .= " WHERE ".$this->crmentityTable.".deleted=0 AND $this->table_name.$this->table_index = $id";
+				$query .= " WHERE ".$other->crmentityTable.".deleted=0 AND $this->table_name.$this->table_index = $id";
 			}
 
 			$return_value = GetRelatedList($currentModule, $related_module, $other, $query, $button, $returnset);
@@ -2884,7 +2886,7 @@ class CRMEntity {
 	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb, $log;
-		$log->debug('> transferRelatedRecords '.$module.','.print_r($transferEntityIds, true).','.$entityId);
+		$log->debug('> transferRelatedRecords', [$module, $transferEntityIds, $entityId]);
 		include_once 'include/utils/duplicate.php';
 		$rel_table_arr = array('Activities'=>'vtiger_seactivityrel');
 		$tbl_field_arr = array('vtiger_seactivityrel'=>'activityid');

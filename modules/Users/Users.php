@@ -195,7 +195,7 @@ class Users extends CRMEntity {
 		}
 		if (!array_key_exists($name, $this->user_preferences) || $this->user_preferences[$name] != $value) {
 			global $log;
-			$log->debug('Saving To Preferences:' . $name . '=' . print_r($value, true));
+			$log->debug('Saving To Preferences', [$name, $value]);
 			$this->user_preferences[$name] = $value;
 			$this->savePreferecesToDB();
 		}

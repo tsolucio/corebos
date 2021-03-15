@@ -330,6 +330,9 @@ class ReportRun extends CRMEntity {
 		$fieldName = $selectedfields[3];
 		list($moduleName, $fieldLabel) = explode('_', $moduleFieldLabel, 2);
 		$fieldInfo = getFieldByReportLabel($moduleName, $fieldLabel);
+		if (is_null($fieldInfo)) {
+			return '';
+		}
 		$queryColumn = '';
 		if ($moduleName == 'ModComments' && $fieldName == 'creator') {
 			$concatSql = getSqlForNameInDisplayFormat(

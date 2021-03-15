@@ -658,7 +658,7 @@ class Services extends CRMEntity {
 	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
-		$log->debug('> transferRelatedRecords '.$module.','.print_r($transferEntityIds, true).','.$entityId);
+		$log->debug('> transferRelatedRecords', ['module' => $module, 'transferEntityIds' => $transferEntityIds, 'entityId' => $entityId]);
 		$rel_table_arr = array(
 			'Quotes' => 'vtiger_inventoryproductrel',
 			'PurchaseOrder' => 'vtiger_inventoryproductrel',
