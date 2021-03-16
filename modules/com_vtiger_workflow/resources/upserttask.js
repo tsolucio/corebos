@@ -215,7 +215,8 @@ function CBUpsertTask($, fieldvaluemapping) {
 		var fieldLabel = jQuery('#save_fieldvalues_'+mappingno+'_fieldmodule option:selected').html();
 		validator.validateFieldData[fieldName] = {
 			type: opType.name,
-			label: fieldLabel
+			label: fieldLabel,
+			mapno: mappingno
 		};
 	}
 
