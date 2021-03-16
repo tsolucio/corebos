@@ -9320,7 +9320,7 @@ precacheAndRoute([{
   "revision": "b8243aa64b88f790bbe422b6b6fa741b"
 }, {
   "url": "include/js/Inventory.js",
-  "revision": "194a5778a4ced8a0b8efb8a1a76f0d72"
+  "revision": "b4b6b277dc58fedb603fc90cebeb2c1a"
 }, {
   "url": "include/js/it_it.lang.js",
   "revision": "00f9ba3dddb9e3dffbd251872cc2c8aa"
@@ -9497,7 +9497,7 @@ precacheAndRoute([{
   "revision": "15a73d14b6e91db79ae7847c2c0de1a1"
 }, {
   "url": "modules/com_vtiger_workflow/resources/createentitytaskscript.js",
-  "revision": "f492643e40bc7f965077acf8d68d8fb4"
+  "revision": "68964880f248a94114c5d000d74192e2"
 }, {
   "url": "modules/com_vtiger_workflow/resources/edittaskscript.js",
   "revision": "2246ea2e1c8d902d01ebeb1e70f2dd8c"
@@ -9515,7 +9515,7 @@ precacheAndRoute([{
   "revision": "032a70f9519ad27ae91b48e1c30339a7"
 }, {
   "url": "modules/com_vtiger_workflow/resources/fieldvalidator.js",
-  "revision": "1061e8ade7faf06ee9e2e63590320a10"
+  "revision": "f60f12a21d27e5a9be6f5a6753b24114"
 }, {
   "url": "modules/com_vtiger_workflow/resources/functional.js",
   "revision": "507e0618da87701f11b973970362e3cf"
@@ -9548,13 +9548,13 @@ precacheAndRoute([{
   "revision": "d62dc231921aab35a4b55aabcc5fc96c"
 }, {
   "url": "modules/com_vtiger_workflow/resources/updatefieldstaskscript.js",
-  "revision": "15d69567f5bb39bb9c454e7d1536995a"
+  "revision": "9b8ba09a931d06e88a0b91a7fc6ccceb"
 }, {
   "url": "modules/com_vtiger_workflow/resources/updatemassivefieldstaskscript.js",
-  "revision": "53c91688a4be6a0a08144e1f7b60dea0"
+  "revision": "fce8b262e036470ded2942628cc9bacb"
 }, {
   "url": "modules/com_vtiger_workflow/resources/upserttask.js",
-  "revision": "34b851fddbd3a550f557a0de87f88415"
+  "revision": "32e54e54b17f55e52f6b975af5750a65"
 }, {
   "url": "modules/com_vtiger_workflow/resources/vtigerwebservices.js",
   "revision": "8acb4cd5b3583547db71a8345e8f667e"
