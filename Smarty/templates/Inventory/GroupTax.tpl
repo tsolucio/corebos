@@ -9,7 +9,7 @@
 {foreach item=tax_detail name=group_tax_loop key=loop_count from=$GROUP_TAXES}
 {assign var=taxfilledvalue value=$tax_detail.percentage}
 {assign var=taxfilledpercent value=''}
-{if $MODE != 'edit'}
+{if $MODE != 'edit' && $CONVERT_MODE == ''}
 	{if $TAXFILLINMODE=='None'}
 		{assign var=taxfilledvalue value=0.00}
 		{assign var=taxfilledpercent value=$tax_detail.percentage}
