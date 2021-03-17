@@ -211,8 +211,8 @@ function export($type) {
 	if ($filtercolumns) {
 		$visiblecolumns_array = $oCustomView->getColumnsListByCvid($viewid);
 		array_walk($visiblecolumns_array, 'obtainVisibleColumnNames');
-		$fields_array = array_filter($fields_array, function ($efield) use ($visiblecolumns_array) {
-			return in_array($efield, $visiblecolumns_array);
+		$fields_array = array_filter($visiblecolumns_array, function ($efield) use ($fields_array) {
+			return in_array($efield, $fields_array);
 		});
 		$fields_array[] = 'cbuuid';
 	}
