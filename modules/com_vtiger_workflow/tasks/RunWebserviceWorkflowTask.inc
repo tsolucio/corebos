@@ -106,6 +106,8 @@ class RunWebserviceWorkflowTask extends VTTask {
 			$channel = curl_init();
 			curl_setopt($channel, CURLOPT_URL, $url);
 			curl_setopt($channel, CURLOPT_HTTPHEADER, $headers);
+			curl_setopt($channel, CURLOPT_SSL_VERIFYHOST, 0);
+			curl_setopt($channel, CURLOPT_SSL_VERIFYPEER, 0);
 			if ($method == 'POST') {
 				curl_setopt($channel, CURLOPT_POST, true);
 			} else {
@@ -223,15 +225,28 @@ class RunWebserviceWorkflowTask extends VTTask {
 			error_log("\nURL: ".$url, 3, $logname.'.log');
 
 			try {
+				$arrContextOptions=stream_context_create(array(
+					'ssl' => array(
+						'verify_peer' => false,
+						'verify_peer_name' => false,
+					)
+				));
 				if ($wsuser != '' && $wspass != '') {
 					$options = array(
 						'login' => $wsuser,
 						'password' => $wspass,
+						'stream_context' => $arrContextOptions,
 					);
 					$soapclient = new SoapClient($url, $options);
 				} else {
-					$options = array();
-					$soapclient = new SoapClient($url);
+					$options = array(
+						//'soap_version' => SOAP_1_2,
+						'trace'      => 1,      // enable trace to view what is happening
+						'exceptions' => 0,      // disable exceptions
+						'cache_wsdl' => 0,      // disable any caching on the wsdl, encase you alter the wsdl
+						'stream_context' => $arrContextOptions,
+					);
+					$soapclient = new SoapClient($url, $options);
 				}
 
 				$response = $soapclient->__soapCall($methodname, array('parameters' => $arrconv));
