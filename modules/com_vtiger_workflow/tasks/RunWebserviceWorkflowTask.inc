@@ -114,7 +114,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 				curl_setopt($channel, CURLOPT_CUSTOMREQUEST, $method);
 			}
 			if ($inputtype != 'URL') {
-				if ($inputtype=='XML' || in_array('Content-type:application/x-www-form-urlencoded', $headers) || in_array('Content-type:multipart/form-data', $headers)) {
+				if ($inputtype=='XML' || in_array('Content-type:application/x-www-form-urlencoded', $headers) || in_array('Content-type:multipart/form-data', $headers) || in_array('Content-type:text/plain', $headers) ) {
 					curl_setopt($channel, CURLOPT_POSTFIELDS, http_build_query($listreq));
 				} else {
 					curl_setopt($channel, CURLOPT_POSTFIELDS, json_encode($listreq));
@@ -273,7 +273,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 
 				//write response to record fields
 				if (count($target_fields['Response']) > 0) {
-					if ($outputtype == 'JSON') {
+					if ($outputtype == 'JSON' || $outputtype == 'XML') {
 						$conds = array();
 						foreach ($target_fields['Response'] as $fld => $v) {
 							if (is_array($response)) {
@@ -288,7 +288,11 @@ class RunWebserviceWorkflowTask extends VTTask {
 									}
 								}
 							} else {
-								$r = json_decode($response);
+								if (!is_object($response)) {
+									$r = json_decode($response);
+								} else {
+									$r = $response;
+								}
 								if ($r->$fld != null) {
 									$r2 = $r->$fld;
 								} else {
