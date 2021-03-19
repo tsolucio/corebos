@@ -252,7 +252,7 @@
 			<div class="slds-form-element" style="display:inline-flex;vertical-align:top;">
 				<label class="slds-checkbox_toggle slds-grid" {if $sqlquery != '1'} onclick="toggleSQLView();" {/if}>
 					<span class="slds-form-element__label slds-m-bottom_none"></span>
-					<input type="checkbox" id="checkboxsqlwsq" aria-describedby="show sql or web service query" {if $sqlquery == '1'} disabled {/if} />
+					<input type="checkbox" id="checkboxsqlwsq" aria-describedby="show sql or web service query" {if $sqlquery == '1'} checked {/if} />
 					<span id="checkbox-toggle-16" class="slds-checkbox_faux_container" aria-live="assertive">
 					<span class="slds-checkbox_faux"></span>
 					<span class="slds-checkbox_on">SQL</span>
@@ -277,7 +277,7 @@
 
 	<fieldset class="slds-form-element slds-m-around_x-small">
 		<legend class="slds-form-element__legend slds-form-element__label">{'SQLQuery'|@getTranslatedString:'cbQuestion'}</legend>
-		<textarea id="bqsql" class="slds-textarea" {if $sqlquery != '1'} style="display:none;height:280px;" {else} style="height:280px;" disabled {/if}>{$QSQL}</textarea>
+		<textarea id="bqsql" class="slds-textarea" {if $sqlquery != '1'} style="display:none;height:280px;" {else} style="height:280px;" readonly {/if}>{$QSQL}</textarea>
 		<textarea id="bqwsq" class="slds-textarea" {if $sqlquery == '1'} style="display:none;height:280px;" {else} style="height:280px;" {/if}></textarea>
 		<legend class="slds-form-element__legend slds-form-element__label" {if $sqlquery != '1'} style="display:none;" {/if}>{'qcolumns'|@getTranslatedString:'cbQuestion'}</legend>
 		<textarea id="bqsqlcoulumns" class="slds-textarea" {if $sqlquery != '1'} style="display:none;" {else} style="height:280px;"  {/if}>{$questioncolumns}</textarea>
