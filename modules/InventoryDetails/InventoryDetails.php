@@ -134,7 +134,11 @@ class InventoryDetails extends CRMEntity {
 		$handler = vtws_getModuleHandlerFromName('InventoryDetails', $current_user);
 		$meta = $handler->getMeta();
 		$dbformat = DataTransform::sanitizeCurrencyFieldsForDB($this->column_fields, $meta);
-		$this->column_fields['cost_gross'] = (float)$dbformat['quantity'] * (float)$dbformat['cost_price'];
+		if (isset($dbformat['cost_price'])) {
+			$this->column_fields['cost_gross'] = (float)$dbformat['quantity'] * (float)$dbformat['cost_price'];
+		} else {
+			$this->column_fields['cost_gross'] = 0;
+		}
 		$adb->pquery('update vtiger_inventorydetails set cost_gross=? where inventorydetailsid=?', array($this->column_fields['cost_gross'], $this->id));
 		if (!empty($this->column_fields['productid'])) {
 			$this->column_fields['total_stock'] = getPrdQtyInStck($this->column_fields['productid']);
