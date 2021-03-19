@@ -1,10 +1,10 @@
 <script>
 var wfi18nerror = {
-	'VALIDATION_ERROR': '{$MOD.LBL_VALIDATION_ERROR}',
-	'empty_fields_message': '{$MOD.LBL_VALIDATION_MISSING_MANDATORY_FIELDS}',
-	'invalid_date_range_message': '{$MOD.LBL_VALIDATION_INVALID_DATE_RANGE}',
-	'duplicate_fields_selected_message': '{$MOD.LBL_VALIDATION_DUPLICATE_FIELDNAMES}',
-	'invalid_field_values_message': '{$MOD.LBL_VALIDATION_INVALID_FIELD_VALUES}',
+	'VALIDATION_ERROR': '{$MOD.LBL_VALIDATION_ERROR|@addslashes}',
+	'empty_fields_message': '{$MOD.LBL_VALIDATION_MISSING_MANDATORY_FIELDS|@addslashes}',
+	'invalid_date_range_message': '{$MOD.LBL_VALIDATION_INVALID_DATE_RANGE|@addslashes}',
+	'duplicate_fields_selected_message': '{$MOD.LBL_VALIDATION_DUPLICATE_FIELDNAMES|@addslashes}',
+	'invalid_field_values_message': '{$MOD.LBL_VALIDATION_INVALID_FIELD_VALUES|@addslashes}',
 };
 </script>
 <div id="error_message_box" class="layerPopup"  style="display:none; z-index: 100000220">
