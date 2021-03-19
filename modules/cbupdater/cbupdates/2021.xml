@@ -63,4 +63,11 @@
 	<classname>updatingEntityNameToAllUsers</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>Import Sendgrid email templates to MsgTemplate</description>
+	<filename>build/changeSets/2021/importdefaultemailtemplates.php</filename>
+	<classname>importdefaultemailtemplates</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
