@@ -16,7 +16,7 @@
 
 class importdefaultemailtemplates extends cbupdaterWorker {
 
-	function applyChange() {
+	public function applyChange() {
 		if ($this->hasError()) {
 			$this->sendError();
 		}
