@@ -213,8 +213,17 @@ switch ($focus->column_fields['maptype']) {
 		$mapinfo = $focus->DetailViewLayoutMapping();
 		break;
 	case 'Webservice Mapping':
-		$focus2 = CRMEntity::getInstance('Accounts');
-		$focus2->retrieve_entity_info(74, 'Accounts');
+		if (!empty($_REQUEST['testrecord'])) {
+			$testrecord = vtlib_purify($_REQUEST['testrecord']);
+			if (strpos($testrecord, 'x')>0) {
+				list($wsid, $testrecord) = explode('x', $testrecord);
+			}
+		} else {
+			$testrecord = 74;
+		}
+		$setype = getSalesEntityType($testrecord);
+		$focus2 = CRMEntity::getInstance($setype);
+		$focus2->retrieve_entity_info($testrecord, $setype);
 		$context = array(
 			'myvariable' => 'my var',
 		);
