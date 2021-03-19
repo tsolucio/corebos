@@ -357,12 +357,13 @@ class WebserviceMapping extends processcbMap {
 				}
 			} elseif (!empty($v->Orgfields[0]->Relfield) && isset($v->Orgfields[0]->Relfield)) {
 				$allRelValues = array();
+				$allmergeFields = array();
 				foreach ($v->Orgfields->Relfield as $value1) {
 					$allRelValues = array(
 						'fieldname'=>(String)$value1->RelfieldName,
 						'relmodule'=>(String)$value1->RelModule,
 						'linkfield'=>(String)$value1->linkfield,
-						'linkvalue'=>(String)$value1->Relfieldvalue
+						'linkvalue'=>isset($value1->Relfieldvalue) ? (String)$value1->Relfieldvalue : '',
 					);
 				}
 				$allmergeFields[] = $allRelValues;
