@@ -284,6 +284,9 @@ function editworkflowscript($, conditions) {
 	}
 
 	function resetFields(opType, condno) {
+		if (opType==undefined) {
+			return;
+		}
 		var ops = $('#save_condition_'+condno+'_operation');
 		var selOperations = operations[opType.name];
 		var selTransOperations = new Array();
