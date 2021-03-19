@@ -252,7 +252,7 @@
 			<div class="slds-form-element" style="display:inline-flex;vertical-align:top;">
 				<label class="slds-checkbox_toggle slds-grid" {if $sqlquery != '1'} onclick="toggleSQLView();" {/if}>
 					<span class="slds-form-element__label slds-m-bottom_none"></span>
-				<input type="checkbox" id="checkboxsqlwsq" aria-describedby="show sql or web service query" {if $sqlquery == '1'} checked readonly {/if} />
+					<input type="checkbox" id="checkboxsqlwsq" aria-describedby="show sql or web service query" {if $sqlquery == '1'} checked {/if} />
 					<span id="checkbox-toggle-16" class="slds-checkbox_faux_container" aria-live="assertive">
 					<span class="slds-checkbox_faux"></span>
 					<span class="slds-checkbox_on">SQL</span>
