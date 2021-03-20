@@ -28,7 +28,7 @@
 {literal}
 <form name="EditView" method="POST" ENCTYPE="multipart/form-data" action="index.php" onSubmit="if(email_validate(this.form,'')) { VtigerJS_DialogBox.block();} else { return false; }">
 {/literal}
-<input type="hidden" name="merge_template_with" value="{$MERGE_TEMPLATE_WITH}">
+<input type="hidden" name="merge_template_with" id="merge_template_with" value="{$MERGE_TEMPLATE_WITH}">
 <input type="hidden" name="send_mail" >
 <input type="hidden" name="contact_id" value="{if isset($CONTACT_ID)}{$CONTACT_ID}{/if}">
 <input type="hidden" name="user_id" value="{if isset($USER_ID)}{$USER_ID}{/if}">

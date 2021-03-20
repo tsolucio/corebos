@@ -23,7 +23,8 @@ function submittemplate(recordid, value, target_fieldname, formname) {
 	// we get it again in case the function above has changed the value
 	calltype = (window.opener.document.getElementById('calltype') != null ? window.opener.document.getElementById('calltype').value : 'normalcall');
 	if (calltype =='normalcall') {
-		window.document.location.href = 'index.php?module=MsgTemplate&action=MsgTemplateAjax&file=TemplateMerge&listofids='+idlist+'&action_id='+recordid+'&calltype='+calltype;
+		let mergewith = (window.opener.document.getElementById('merge_template_with')) !=null ? window.opener.document.getElementById('merge_template_with').value: '';
+		window.document.location.href = 'index.php?module=MsgTemplate&action=MsgTemplateAjax&file=TemplateMerge&listofids='+idlist+'&action_id='+recordid+'&calltype='+calltype+'&merge_template_with='+mergewith;
 		closeit = false;
 	}
 	if (calltype =='emailworkflow') {

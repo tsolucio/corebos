@@ -32,6 +32,16 @@ if (isset($_REQUEST['par_module']) && $_REQUEST['par_module']!='') {
 	$smarty->assign('select_module', vtlib_purify($_REQUEST['par_module']));
 } elseif (isset($_REQUEST['pmodule']) && $_REQUEST['pmodule']!='') {
 	$smarty->assign('select_module', vtlib_purify($_REQUEST['pmodule']));
+} elseif (!empty($_REQUEST['invmodid'])) {
+	$crmid = vtlib_purify($_REQUEST['invmodid']);
+	$smarty->assign('select_module', getSalesEntityType($crmid));
+	if (empty($_REQUEST['mergewith'])) {
+		$_REQUEST['mergewith'] = '';
+	}
+	$_REQUEST['mergewith'].= ','.$crmid;
+	$_REQUEST['mergewith'] = trim($_REQUEST['mergewith'], ',');
+} else {
+	$smarty->assign('select_module', $currentModule);
 }
 
 if (isset($_REQUEST['record']) && $_REQUEST['record'] !='') {
