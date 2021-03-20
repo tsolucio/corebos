@@ -15,6 +15,7 @@ require_once 'include/utils/CommonUtils.php';
 require_once 'modules/Messages/Messages.php';
 require_once 'modules/Emails/mail.php';
 include_once 'include/Webservices/VtigerEmailOperation.php';
+include_once 'include/integrations/sendgrid/sendgrid.php';
 require_once 'data/CRMEntity.php';
 
 class VTEmailTask extends VTTask {

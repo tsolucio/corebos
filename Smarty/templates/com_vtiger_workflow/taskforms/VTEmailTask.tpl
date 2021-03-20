@@ -382,6 +382,7 @@ var selectedSGTemplate = {if !empty($task->sgmsgtemplate)}{$task->sgmsgtemplate}
 	</p>
 </div>
 <div class="linked-template {if empty($task->linktemplate)}slds-hide{/if}">
+	<div class="{if !corebos_sendgrid::isActive()}slds-hide{/if}">
 	<div class="slds-page-header">
 		<div class="slds-grid slds-gutters">
 			<div class="slds-col slds-size_1-of-1">
@@ -415,6 +416,7 @@ var selectedSGTemplate = {if !empty($task->sgmsgtemplate)}{$task->sgmsgtemplate}
 				</span>
 			</div>
 		</div>
+	</div>
 	</div>
 </div>
 <script type="text/javascript">
