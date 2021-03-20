@@ -205,7 +205,10 @@ class RunWebserviceWorkflowTask extends VTTask {
 						$focus->column_fields[$key] = $value;
 					}
 					$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $meta);
+					$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
+					$_REQUEST['ajxaction'] = 'Workflow';
 					$focus->saveentity($origin_module);
+					$_REQUEST['ajxaction'] = $hold_ajxaction;
 				}
 			}
 		}
@@ -323,7 +326,10 @@ class RunWebserviceWorkflowTask extends VTTask {
 								$focus->column_fields[$key] = $value;
 							}
 							$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $meta);
+							$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
+							$_REQUEST['ajxaction'] = 'Workflow';
 							$focus->saveentity($origin_module);
+							$_REQUEST['ajxaction'] = $hold_ajxaction;
 						}
 					}
 				}
