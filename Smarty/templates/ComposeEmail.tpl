@@ -162,9 +162,9 @@
 			<span id="limitmsg" style= "color:red; display:'';">{'LBL_MAX_SIZE'|@getTranslatedString:$MODULE} {$UPLOADSIZE}{'LBL_FILESIZEIN_MB'|@getTranslatedString:$MODULE}</span>
 		</div>
 		<script>
-			var multi_selector = new MultiSelector( document.getElementById( 'files_list' ), {$EMail_Maximum_Number_Attachments} );
-			multi_selector.count = 0
-			multi_selector.addElement( document.getElementById( 'my_file_element' ) );
+			var multi_selector = new MultiSelector(document.getElementById('files_list'), {$EMail_Maximum_Number_Attachments});
+			multi_selector.count = 0;
+			multi_selector.addElement(document.getElementById('my_file_element'));
 		</script>
 		<div id="attach_temp_cont" style="display:none;">
 		<table class="small" width="100% ">
