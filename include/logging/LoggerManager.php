@@ -26,7 +26,7 @@ class LoggerManager {
 					$logger = new Logger($name);
 					$formatter = new LineFormatter(self::LOGLINEFORMAT);
 					$logger = self::addHandlers($logger, $formatter);
-					$stream = new RotatingFileHandler('logs/'.$loggerConfig[$name]['File'].'.log', $loggerConfig[$name]['MaxBackup'], self::getLogLevel($loggerConfig[$name]['Level']));
+					$stream = new RotatingFileHandler('logs/'.$loggerConfig[$name]['File'].'.log', $loggerConfig[$name]['MaxBackup'], self::getLogLevel($loggerConfig[$name]['Level']), true, 0664);
 					$stream->setFormatter($formatter);
 					$logger->pushHandler($stream);
 					self::$cacheLoggers[$name] = new cbLogger($name, $logger);
