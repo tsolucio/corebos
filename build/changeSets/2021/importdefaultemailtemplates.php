@@ -53,7 +53,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 								<tbody>
 									<tr>
 										<td width="100px">&nbsp;</td>
-										<td width="400px"><img alt="Birthday" src="HappyBday.png" /></td>
+										<td width="400px"><img alt="Birthday" src="http://localhost/coreboscrm/storage/kcimages/images/happybday.jpg" /></td>
 										<td width="100px">&nbsp;</td>
 									</tr>
 								</tbody>
@@ -1504,7 +1504,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																					<tr>
 																						<td align="center" style="text-align:center;text-decoration:none;padding-left:25px;padding-right:25px;" valign="middle">
 																						<div class="text">
-																						<div style="color:#FFFFFF;font-family:Arial;font-size:20px;line-height:130%;margin:0;text-align:center;font-weight:bold;"><a href="http:\\sendgrid.com" style="text-decoration:none;color:#FFFFFF;" target="_blank">Learn more</a></div>
+																						<div style="color:#FFFFFF;font-family:Arial;font-size:20px;line-height:130%;margin:0;text-align:center;font-weight:bold;"><a href="https://corebos.com" style="text-decoration:none;color:#FFFFFF;" target="_blank">Learn more</a></div>
 																						</div>
 																						</td>
 																					</tr>
@@ -1561,7 +1561,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																					<tr>
 																						<td align="center" style="text-align:center;text-decoration:none;padding-left:25px;padding-right:25px;" valign="middle">
 																						<div class="text">
-																						<div style="color:#FFFFFF;font-family:Arial;font-size:20px;line-height:130%;margin:0;text-align:center;font-weight:bold;"><a href="http:\\sendgrid.com" style="text-decoration:none;color:#FFFFFF;" target="_blank">Learn more</a></div>
+																						<div style="color:#FFFFFF;font-family:Arial;font-size:20px;line-height:130%;margin:0;text-align:center;font-weight:bold;"><a href="https://corebos.com" style="text-decoration:none;color:#FFFFFF;" target="_blank">Learn more</a></div>
 																						</div>
 																						</td>
 																					</tr>
@@ -1715,7 +1715,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																					<tr>
 																						<td align="left" style="vertical-align:top;text-align:left;padding:0;" width="26px"><img src="http://localhost/coreboscrm/storage/kcimages/images/rss.png" style="border: medium none; width: 26px; height: 26px; resize: none; position: relative; display: block; top: 0px; left: 0px;" /></td>
 																						<td style="vertical-align:middle;">
-																						<div class="text" style="word-wrap:break-word;">&nbsp;&nbsp;<a href="http:\\sendgrid.com" style="text-decoration:underline;color:#0F7D27;font-family:Arial;font-size:12px;line-height:170%;margin:0;text-align:left;" target="_blank">Subscribe</a></div>
+																						<div class="text" style="word-wrap:break-word;">&nbsp;&nbsp;<a href="https://corebos.com" style="text-decoration:underline;color:#0F7D27;font-family:Arial;font-size:12px;line-height:170%;margin:0;text-align:left;" target="_blank">Subscribe</a></div>
 																						</td>
 																					</tr>
 																				</tbody>
@@ -2010,7 +2010,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																					<tr>
 																						<td align="center" style="text-align:center; text-decoration:none;" valign="middle">
 																						<div class="text" style="padding-left:20px;padding-right:20px;">
-																						<div style="color:#FFFFFF;font-family:Arial;font-size:20px;line-height:130%;margin:0;text-align:center;font-weight:bold;"><a href="http:\\sendgrid.com" style="text-decoration:none;color:#FFFFFF;" target="_blank">Learn more</a></div>
+																						<div style="color:#FFFFFF;font-family:Arial;font-size:20px;line-height:130%;margin:0;text-align:center;font-weight:bold;"><a href="https://corebos.com" style="text-decoration:none;color:#FFFFFF;" target="_blank">Learn more</a></div>
 																						</div>
 																						</td>
 																					</tr>
@@ -2212,7 +2212,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																		<tr>
 																			<td style="vertical-align:top;">
 																			<div style="word-wrap:break-word;line-height:140%;text-align:left;">
-																			<p style="margin-top:0;margin-right:0;margin-bottom:0;margin-lef:0;text-align:center;font-family:Arial;font-size:13px;line-height:100%;color:#934902;"><a href="http:\\sendgrid.com" style="color:#934902;font-family:Arial;font-size:13px;line-height:100%;margin:0;text-align:center;">SUBSCRIBE TO RSS</a><span style="font-family:Arial;font-size:13px;line-height:100%;margin:0;text-align:center;color:#808080;">&nbsp;|&nbsp;</span><a href="http://facebook.com" style="color:#934902;font-family:Arial;font-size:13px;line-height:100%;margin:0;text-align:center;">LIKE US ON FACEBOOK</a><span style="font-family:Arial;font-size:13px;line-height:100%;margin:0;text-align:center;color:#808080;">&nbsp;|&nbsp;</span><a href="http://twitter.com" style="color:#934902;font-family:Arial;font-size:13px;line-height:100%;margin:0;text-align:center;">FOLLOW US ON TWITTER</a></p>
+																			<p style="margin-top:0;margin-right:0;margin-bottom:0;margin-lef:0;text-align:center;font-family:Arial;font-size:13px;line-height:100%;color:#934902;"><a href="https://corebos.com" style="color:#934902;font-family:Arial;font-size:13px;line-height:100%;margin:0;text-align:center;">SUBSCRIBE TO RSS</a><span style="font-family:Arial;font-size:13px;line-height:100%;margin:0;text-align:center;color:#808080;">&nbsp;|&nbsp;</span><a href="http://facebook.com" style="color:#934902;font-family:Arial;font-size:13px;line-height:100%;margin:0;text-align:center;">LIKE US ON FACEBOOK</a><span style="font-family:Arial;font-size:13px;line-height:100%;margin:0;text-align:center;color:#808080;">&nbsp;|&nbsp;</span><a href="http://twitter.com" style="color:#934902;font-family:Arial;font-size:13px;line-height:100%;margin:0;text-align:center;">FOLLOW US ON TWITTER</a></p>
 																			</div>
 																			</td>
 																		</tr>
@@ -2554,7 +2554,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																								<tr>
 																									<td align="center" style="text-align:center;text-decoration:none;" valign="middle">
 																									<div class="text">
-																									<p style="margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;font-weight:bold;color:#06BDE5;font-family:Georgia,Times New Roman,Times,serif;font-size:16px;line-height:125%;margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;font-style:italic;text-align:left;"><a href="http:\\sendgrid.com" style="font-weight:bold;text-decoration:none;color:#06BDE5;font-family:Georgia,Times New Roman,Times,serif;font-size:16px;line-height:125%;margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;font-style:italic;text-align:left;">Learn More &raquo;</a></p>
+																									<p style="margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;font-weight:bold;color:#06BDE5;font-family:Georgia,Times New Roman,Times,serif;font-size:16px;line-height:125%;margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;font-style:italic;text-align:left;"><a href="https://corebos.com" style="font-weight:bold;text-decoration:none;color:#06BDE5;font-family:Georgia,Times New Roman,Times,serif;font-size:16px;line-height:125%;margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;font-style:italic;text-align:left;">Learn More &raquo;</a></p>
 																									</div>
 																									</td>
 																								</tr>
@@ -2658,7 +2658,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																								<tr>
 																									<td align="center" style="text-align:center;text-decoration:none;" valign="middle">
 																									<div class="text">
-																									<p style="margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;font-weight:bold;color:#06BDE5;font-family:Georgia,Times New Roman,Times,serif;font-size:16px;line-height:125%;margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;font-style:italic;text-align:left;"><a href="http:\\sendgrid.com" style="font-weight:bold;text-decoration:none;color:#06BDE5;font-family:Georgia,Times New Roman,Times,serif;font-size:16px;line-height:125%;margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;font-style:italic;text-align:left;">Learn More &raquo;</a></p>
+																									<p style="margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;font-weight:bold;color:#06BDE5;font-family:Georgia,Times New Roman,Times,serif;font-size:16px;line-height:125%;margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;font-style:italic;text-align:left;"><a href="https://corebos.com" style="font-weight:bold;text-decoration:none;color:#06BDE5;font-family:Georgia,Times New Roman,Times,serif;font-size:16px;line-height:125%;margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;font-style:italic;text-align:left;">Learn More &raquo;</a></p>
 																									</div>
 																									</td>
 																								</tr>
@@ -2985,7 +2985,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																							<tbody>
 																								<tr>
 																									<td align="center" style="text-align:center;text-decoration:none;padding-left:20px;padding-right:20px;" valign="middle">
-																									<div class="text" style="text-align:center;"><a href="http:\\sendgrid.com" style="font-weight:bold;font-family:helvetica;text-decoration:none;font-size:26px;margin:0;text-align:center;line-height:150%;"><span style="color:#010101;">Sign up now</span></a></div>
+																									<div class="text" style="text-align:center;"><a href="https://corebos.com" style="font-weight:bold;font-family:helvetica;text-decoration:none;font-size:26px;margin:0;text-align:center;line-height:150%;"><span style="color:#010101;">Sign up now</span></a></div>
 																									</td>
 																								</tr>
 																							</tbody>
@@ -3235,7 +3235,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 
 																						<p style="font-family:Arial;color:#3E5916;font-size:12px;line-height:165%;margin-top:0;margin-right:0;margin-bottom:15px;margin-left:0;text-align:left;">Yam okra catsear water chestnut scalion pak choy yardlong bean komatsuna plectranthus. Sierra Leone bologi tigemut cauliflower fiddlehead yarrow bitter gourd, Fluted pumpkin sea kale elephant. Lotus root pak choy tepary bean, tepary bean komatsuna tinda lentil camas.</p>
 
-																						<div style="text-align:right"><a href="http:\\sendgrid.com" style="color:#3E5916;font-size:13px;line-height:180%;text-align:right;font-family:Arial;">Learn more &raquo;</a></div>
+																						<div style="text-align:right"><a href="https://corebos.com" style="color:#3E5916;font-size:13px;line-height:180%;text-align:right;font-family:Arial;">Learn more &raquo;</a></div>
 																						</div>
 																						</td>
 																					</tr>
@@ -3366,7 +3366,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 
 																						<p style="font-family:Arial;color:#3E5916;font-size:12px;line-height:165%;margin-top:0;margin-right:0;margin-bottom:15px;margin-left:0;text-align:left;">Plectranthus welsh onion leaves earthnut pea. Fluted pumpkin - lagos bologi - lambs lettuce cucumber collard greens. Horseradish greater plantain camas endive; tatsoi moth bean lentil cucumber, florence fennel onion fat hen.</p>
 
-																						<div style="text-align:right"><a href="http:\\sendgrid.com" style="color:#3E5916;font-size:13px;line-height:180%;text-align:right;font-family:Arial;">Learn more &raquo;</a></div>
+																						<div style="text-align:right"><a href="https://corebos.com" style="color:#3E5916;font-size:13px;line-height:180%;text-align:right;font-family:Arial;">Learn more &raquo;</a></div>
 																						</div>
 																						</td>
 																					</tr>
@@ -7640,7 +7640,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																			<table width="100%">
 																				<tr>
 																					<td align="left" class="logo" style="padding-top:40px;padding-bottom:0;padding-right:0;padding-left:10px;" ><!--Add Logo--> 
-																						<a href="##" target="_blank" style="text-decoration:none;font-family:`Trebuchet MS`;font-size:18px;color:#77C324;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Mercado/Logo.png" width="180" height="40" alt="Serene" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a> 
+																						<a href="##" target="_blank" style="text-decoration:none;font-family:`Trebuchet MS`;font-size:18px;color:#77C324;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Logo.png" width="180" height="40" alt="Serene" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a> 
 																					</td>
 																				</tr>
 																			</table>
@@ -7651,10 +7651,10 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																					<td align="right">
 																						<table cellpadding="0" cellspacing="0" border="0">
 																							<tr>
-																								<td class="facebook" align="right" valign="top" style="padding-top:40px;padding-left:10px;" ><a href="##" target="_blank" style="font-family:Arial, Helvetica, sans-serif;text-decoration:none;font-size:11px;color:#4E4E4E;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Mercado/facebook.png" width="33" height="33" alt="facebook" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a></td>
-																								<td class="twitter" align="right" valign="top" style="padding-top:40px;padding-left:10px;" ><a href="##" target="_blank" style="font-family:Arial, Helvetica, sans-serif;text-decoration:none;font-size:11px;color:#4E4E4E;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Mercado/twitter.png" width="33" height="33" alt="Twitter" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a></td>
-																								<td class="google-plus" align="right" valign="top" style="padding-top:40px;padding-left:10px;" ><a href="##" target="_blank" style="font-family:Arial, Helvetica, sans-serif;text-decoration:none;font-size:11px;color:#4E4E4E;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Mercado/googleplus.png" width="33" height="33" alt="Google+" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a></td>
-																								<td class="Pinterest" align="right" valign="top" style="padding-top:40px;padding-left:10px;" ><a href="##" target="_blank" style="color:inherit;text-decoration:none;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Mercado/pinterest.png" width="33" height="33" alt="Pinterest" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a></td>
+																								<td class="facebook" align="right" valign="top" style="padding-top:40px;padding-left:10px;" ><a href="##" target="_blank" style="font-family:Arial, Helvetica, sans-serif;text-decoration:none;font-size:11px;color:#4E4E4E;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/facebook.png" width="33" height="33" alt="facebook" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a></td>
+																								<td class="twitter" align="right" valign="top" style="padding-top:40px;padding-left:10px;" ><a href="##" target="_blank" style="font-family:Arial, Helvetica, sans-serif;text-decoration:none;font-size:11px;color:#4E4E4E;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/twitter.png" width="33" height="33" alt="Twitter" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a></td>
+																								<td class="google-plus" align="right" valign="top" style="padding-top:40px;padding-left:10px;" ><a href="##" target="_blank" style="font-family:Arial, Helvetica, sans-serif;text-decoration:none;font-size:11px;color:#4E4E4E;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/googleplus.png" width="33" height="33" alt="Google+" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a></td>
+																								<td class="Pinterest" align="right" valign="top" style="padding-top:40px;padding-left:10px;" ><a href="##" target="_blank" style="color:inherit;text-decoration:none;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/pinterest.png" width="33" height="33" alt="Pinterest" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a></td>
 																							</tr>
 																						</table>
 																					</td>
@@ -7673,7 +7673,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 														<td class="body-wrapper" style="background-color:#ffffff;" >
 															<table width="100%" cellpadding="0" cellspacing="0" border="0" >
 																<tr> 
-																	<td align="center" class="hero-image" style="font-family:`Trebuchet MS`;font-size:18px;background-color:#ffffff;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Mercado/header.jpg" alt="" width="600" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;width:100%;max-width:600px;min-width:300px;height:auto;" /></td>
+																	<td align="center" class="hero-image" style="font-family:`Trebuchet MS`;font-size:18px;background-color:#ffffff;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/header.jpg" alt="" width="600" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;width:100%;max-width:600px;min-width:300px;height:auto;" /></td>
 																</tr>
 																<tr>
 																	<td align="center" class="promo" style="background-color:#7BAB26;padding-top:40px;padding-bottom:40px;padding-right:40px;padding-left:40px;" >
@@ -7699,7 +7699,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																						<table width="100%" cellpadding="0" cellspacing="0" border="0">
 																							<tr>
 																								<td align="center" style="font-size:12px;" > 
-																									<img src="http://localhost/coreboscrm/storage/kcimages/images/Mercado/leftimage.jpg" width="250" height="164" alt="" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /> 
+																									<img src="http://localhost/coreboscrm/storage/kcimages/images/leftimage.jpg" width="250" height="164" alt="" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /> 
 																								</td>
 																							</tr>
 																							<tr>
@@ -7741,7 +7741,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																						<table width="100%" cellpadding="0" cellspacing="0" border="0">
 																							<tr>
 																								<td align="center" style="font-size:12px;" > 
-																									<img src="http://localhost/coreboscrm/storage/kcimages/images/Mercado/rightimage.jpg" width="250" height="164" alt="" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /> 
+																									<img src="http://localhost/coreboscrm/storage/kcimages/images/rightimage.jpg" width="250" height="164" alt="" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /> 
 																								</td>
 																							</tr>
 																							<tr>
@@ -7796,7 +7796,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																						<table width="100%" cellpadding="0" cellspacing="0" border="0">
 																							<tr>
 																								<td align="center" style="font-size:12px;" > 
-																									<img src="http://localhost/coreboscrm/storage/kcimages/images/Mercado/leftimage.jpg" width="250" height="164" alt="" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /> 
+																									<img src="http://localhost/coreboscrm/storage/kcimages/images/leftimage.jpg" width="250" height="164" alt="" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /> 
 																								</td>
 																							</tr>
 																							<tr>
@@ -7836,7 +7836,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																						<table width="100%" cellpadding="0" cellspacing="0" border="0">
 																							<tr>
 																								<td align="center" style="font-size:12px;" >
-																									<img src="http://localhost/coreboscrm/storage/kcimages/images/Mercado/rightimage.jpg" width="250" height="164" alt="" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /> 
+																									<img src="http://localhost/coreboscrm/storage/kcimages/images/rightimage.jpg" width="250" height="164" alt="" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /> 
 																								</td>
 																							</tr>
 																							<tr>
@@ -7968,7 +7968,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 												<table cellpadding="0" cellspacing="0" border="0" width="50%" align="left" class="stack-left">
 													<tr>
 														<td class="logo-bottom" align="left" valign="top" style="padding-top:40px;padding-bottom:20px;padding-right:5px;padding-left:0;" > 
-															<a href="##" target="_blank" style="text-decoration:none;font-family:`Trebuchet MS`;font-size:18px;color:#77C324;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Mercado/Logobottom.png" width="180" height="40" alt="Serene" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a> 
+															<a href="##" target="_blank" style="text-decoration:none;font-family:`Trebuchet MS`;font-size:18px;color:#77C324;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Logobottom.png" width="180" height="40" alt="Serene" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a> 
 														</td>
 													</tr>
 													<tr>
@@ -8047,12 +8047,12 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 													<tr>
 														<td align="center" class="logo" style="padding-top:40px;padding-bottom:40px;padding-right:10px;padding-left:10px;" >
 															<a href="##" target="_blank" style="text-decoration:none;font-family:Arial, Helvetica, sans-serif;font-size:18px;color:#F5A623;" >
-																<img src="http://localhost/coreboscrm/storage/kcimages/images/Nurture/Logo.png" width="160" height="44" alt="NURTURE" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" />
+																<img src="http://localhost/coreboscrm/storage/kcimages/images/Logo.png" width="160" height="44" alt="NURTURE" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" />
 															</a> 
 														</td>
 													</tr>
 													<tr> 
-														<td align="center" class="hero-image" style="font-family:Arial, Helvetica, sans-serif;font-size:18px;color:#626262;background-color:#ffffff;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Nurture/Image.jpg" alt="" width="600" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;width:100%;max-width:600px;min-width:320px;height:auto;" /></td>
+														<td align="center" class="hero-image" style="font-family:Arial, Helvetica, sans-serif;font-size:18px;color:#626262;background-color:#ffffff;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Image.jpg" alt="" width="600" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;width:100%;max-width:600px;min-width:320px;height:auto;" /></td>
 													</tr>
 													<tr>
 														<td align="center" class="body-wrapper" style="background-color:#ffffff;" >
@@ -8098,7 +8098,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																			<table width="100%" cellpadding="0" cellspacing="0" border="0">
 																				<tr>
 																					<td align="center" style="font-size:12px;" >
-																						<img src="http://localhost/coreboscrm/storage/kcimages/images/Nurture/Imageleft.jpg" width="280" alt="" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" />
+																						<img src="http://localhost/coreboscrm/storage/kcimages/images/Imageleft.jpg" width="280" alt="" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" />
 																					</td>
 																				</tr>
 																				<tr>
@@ -8133,7 +8133,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																			<table width="100%" cellpadding="0" cellspacing="0" border="0">
 																				<tr>
 																					<td align="center" style="font-size:12px;" >
-																						<img src="http://localhost/coreboscrm/storage/kcimages/images/Nurture/Imageright.jpg" width="280" alt="" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" />
+																						<img src="http://localhost/coreboscrm/storage/kcimages/images/Imageright.jpg" width="280" alt="" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" />
 																					</td>
 																				</tr>
 																				<tr>
@@ -8175,7 +8175,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 										</tr>
 										<tr>
 											<td align="center"  class="logo-bottom" style="padding-top:30px;padding-bottom:15px;padding-right:5px;padding-left:5px;" > 
-												<img src="http://localhost/coreboscrm/storage/kcimages/images/Nurture/Logo_bottom.png" width="160" height="44" alt="NURTURE" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" />
+												<img src="http://localhost/coreboscrm/storage/kcimages/images/Logo_bottom.png" width="160" height="44" alt="NURTURE" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" />
 											</td>
 										</tr>
 										<tr>
@@ -8252,7 +8252,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																			<table width="100%">
 																				<tr>
 																					<td align="left" class="logo" style="padding-top:40px;padding-bottom:0;padding-right:0;padding-left:10px;" ><!--Add Logo--> 
-																						<a href="##" target="_blank" style="text-decoration:none;font-family:Arial, Helvetica, sans-serif;font-size:18px;color:#7ED321;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Serene/Logo.png" width="177" height="32" alt="Serene" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a> 
+																						<a href="##" target="_blank" style="text-decoration:none;font-family:Arial, Helvetica, sans-serif;font-size:18px;color:#7ED321;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Logo.png" width="177" height="32" alt="Serene" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a> 
 																					</td>
 																				</tr>
 																			</table>
@@ -8263,10 +8263,10 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																					<td align="right">
 																						<table cellpadding="0" cellspacing="0" border="0">
 																							<tr>
-																								<td class="facebook" align="right" valign="top" style="padding-top:40px;padding-left:10px;" ><a href="##" target="_blank" style="font-family:Arial, Helvetica, sans-serif;text-decoration:none;font-size:11px;color:#2D2D2D;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Serene/facebook.png" width="33" height="33" alt="facebook" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a></td>
-																								<td class="twitter" align="right" valign="top" style="padding-top:40px;padding-left:10px;" ><a href="##" target="_blank" style="font-family:Arial, Helvetica, sans-serif;text-decoration:none;font-size:11px;color:#2D2D2D;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Serene/twitter.png" width="33" height="33" alt="Twitter" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a></td>
-																								<td class="google-plus" align="right" valign="top" style="padding-top:40px;padding-left:10px;" ><a href="##" target="_blank" style="font-family:Arial, Helvetica, sans-serif;text-decoration:none;font-size:11px;color:#2D2D2D;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Serene/googleplus.png" width="33" height="33" alt="Google+" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a></td>
-																								<td class="Pinterest" align="right" valign="top" style="padding-top:40px;padding-left:10px;" ><a href="##" target="_blank" style="color:inherit;text-decoration:none;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Serene/pinterest.png" width="33" height="33" alt="Pinterest" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a></td>
+																								<td class="facebook" align="right" valign="top" style="padding-top:40px;padding-left:10px;" ><a href="##" target="_blank" style="font-family:Arial, Helvetica, sans-serif;text-decoration:none;font-size:11px;color:#2D2D2D;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/facebook.png" width="33" height="33" alt="facebook" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a></td>
+																								<td class="twitter" align="right" valign="top" style="padding-top:40px;padding-left:10px;" ><a href="##" target="_blank" style="font-family:Arial, Helvetica, sans-serif;text-decoration:none;font-size:11px;color:#2D2D2D;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/twitter.png" width="33" height="33" alt="Twitter" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a></td>
+																								<td class="google-plus" align="right" valign="top" style="padding-top:40px;padding-left:10px;" ><a href="##" target="_blank" style="font-family:Arial, Helvetica, sans-serif;text-decoration:none;font-size:11px;color:#2D2D2D;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/googleplus.png" width="33" height="33" alt="Google+" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a></td>
+																								<td class="Pinterest" align="right" valign="top" style="padding-top:40px;padding-left:10px;" ><a href="##" target="_blank" style="color:inherit;text-decoration:none;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/pinterest.png" width="33" height="33" alt="Pinterest" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a></td>
 																							</tr>
 																						</table>
 																					</td>
@@ -8307,7 +8307,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																	</td>
 																</tr>
 																<tr>
-																	<td align="center" class="hero-image" style="font-family:Arial, Helvetica, sans-serif;font-size:18px;color:#2D2D2D;background-color:#ffffff;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Serene/featuredimage.jpg" alt="" width="600" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;width:100%;max-width:600px;min-width:320px;height:auto;" /></td>
+																	<td align="center" class="hero-image" style="font-family:Arial, Helvetica, sans-serif;font-size:18px;color:#2D2D2D;background-color:#ffffff;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/featuredimage.jpg" alt="" width="600" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;width:100%;max-width:600px;min-width:320px;height:auto;" /></td>
 																</tr>
 																<tr>
 																	<td align="center" class="body-container" style="padding-top:0;padding-bottom:0;padding-right:40px;padding-left:40px;" >
@@ -8350,7 +8350,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																						<table width="100%" cellpadding="0" cellspacing="0" border="0">
 																							<tr>
 																								<td align="center" style="font-size:12px;" >
-																									<img src="http://localhost/coreboscrm/storage/kcimages/images/Serene/imageleft.jpg" width="300" alt="" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /> 
+																									<img src="http://localhost/coreboscrm/storage/kcimages/images/imageleft.jpg" width="300" alt="" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /> 
 																								</td>
 																							</tr>
 																							<tr>
@@ -8379,7 +8379,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																						<table width="100%" cellpadding="0" cellspacing="0" border="0">
 																							<tr>
 																								<td align="center" style="font-size:12px;" >
-																									<img src="http://localhost/coreboscrm/storage/kcimages/images/Serene/imageright.jpg" width="300" alt="" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" />
+																									<img src="http://localhost/coreboscrm/storage/kcimages/images/imageright.jpg" width="300" alt="" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" />
 																								</td>
 																							</tr>
 																							<tr>
@@ -8424,7 +8424,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 															<table cellpadding="0" cellspacing="0" border="0" width="50%" align="left" class="stack-left">
 																<tr>
 																	<td class="logo-bottom" align="left" valign="top" style="color:#000;padding-top:40px;padding-bottom:0px;padding-right:5px;padding-left:40px;" ><!--Bottom Logo--> 
-																		<img src="http://localhost/coreboscrm/storage/kcimages/images/Serene/Logowhite.png" width="155" height="28" alt="NURTURE" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /> 
+																		<img src="http://localhost/coreboscrm/storage/kcimages/images/Logowhite.png" width="155" height="28" alt="NURTURE" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /> 
 																	</td>
 																</tr>
 																<tr>
@@ -8514,7 +8514,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																							<tr>
 																								<td align="left" class="logo" style="padding-top:0;padding-bottom:20px;padding-right:0;padding-left:0;" >
 																									<a href="##" target="_blank" style="text-decoration:none;font-family:Arial, Helvetica, sans-serif;font-size:18px;color:#7ED321;" >
-																										<img src="http://localhost/coreboscrm/storage/kcimages/images/Underwood/Logo.png" width="179" height="42" alt="" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" />
+																										<img src="http://localhost/coreboscrm/storage/kcimages/images/Logo.png" width="179" height="42" alt="" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" />
 																									</a>
 																								</td>
 																							</tr>
@@ -8526,10 +8526,10 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																								<td class="social" align="right" style="padding-top:0;padding-bottom:30px;padding-right:0;padding-left:0;" >
 																									<table cellpadding="0" cellspacing="0" border="0">
 																										<tr>
-																											<td class="facebook" align="right" valign="top" style="padding-top:10px;" ><a href="##" target="_blank" style="font-family:Arial, Helvetica, sans-serif;text-decoration:none;font-size:11px;color:#444444;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Underwood/Facebook.png" width="33" height="33" alt="facebook" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a></td>
-																											<td class="twitter" align="right" valign="top" style="padding-top:10px;padding-left:10px;" ><a href="##" target="_blank" style="font-family:Arial, Helvetica, sans-serif;text-decoration:none;font-size:11px;color:#444444;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Underwood/Twitter.png" width="33" height="33" alt="Twitter" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a></td>
-																											<td class="google-plus" align="right" valign="top" style="padding-top:10px;padding-left:10px;" ><a href="##" target="_blank" style="font-family:Arial, Helvetica, sans-serif;text-decoration:none;font-size:11px;color:#444444;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Underwood/GooglePlus.png" width="33" height="33" alt="Google+" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a></td>
-																											<td class="Pinterest" align="right" valign="top" style="padding-top:10px;padding-left:10px;" ><a href="##" target="_blank" style="color:inherit;text-decoration:none;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Underwood/Pinterest.png" width="33" height="33" alt="Pinterest" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a></td>
+																											<td class="facebook" align="right" valign="top" style="padding-top:10px;" ><a href="##" target="_blank" style="font-family:Arial, Helvetica, sans-serif;text-decoration:none;font-size:11px;color:#444444;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Facebook.png" width="33" height="33" alt="facebook" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a></td>
+																											<td class="twitter" align="right" valign="top" style="padding-top:10px;padding-left:10px;" ><a href="##" target="_blank" style="font-family:Arial, Helvetica, sans-serif;text-decoration:none;font-size:11px;color:#444444;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Twitter.png" width="33" height="33" alt="Twitter" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a></td>
+																											<td class="google-plus" align="right" valign="top" style="padding-top:10px;padding-left:10px;" ><a href="##" target="_blank" style="font-family:Arial, Helvetica, sans-serif;text-decoration:none;font-size:11px;color:#444444;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/GooglePlus.png" width="33" height="33" alt="Google+" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a></td>
+																											<td class="Pinterest" align="right" valign="top" style="padding-top:10px;padding-left:10px;" ><a href="##" target="_blank" style="color:inherit;text-decoration:none;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Pinterest.png" width="33" height="33" alt="Pinterest" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a></td>
 																										</tr>
 																									</table>
 																								</td>
@@ -8548,7 +8548,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																</tr>
 																<tr>
 																	<td align="center" class="hero-image" style="font-family:Arial, Helvetica, sans-serif;font-size:18px;color:#444444 background-color: #ffffff;" >
-																		<img src="http://localhost/coreboscrm/storage/kcimages/images/Underwood/headerimage.jpg" alt="" width="530" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;width:100%;max-width:540px;min-width:200px;height:auto;" />
+																		<img src="http://localhost/coreboscrm/storage/kcimages/images/headerimage.jpg" alt="" width="530" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;width:100%;max-width:540px;min-width:200px;height:auto;" />
 																	</td>
 																</tr>
 																<tr>
@@ -8576,7 +8576,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																	</td>
 																</tr>
 																<tr>
-																	<td align="center" class="sub-image" style="font-family:Arial, Helvetica, sans-serif;font-size:18px;color:#444444 background-color: #ffffff;padding-top:20px;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Underwood/subheaderimage.jpg" alt="" width="530" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;width:100%;max-width:540px;min-width:200px;height:auto;" /></td>
+																	<td align="center" class="sub-image" style="font-family:Arial, Helvetica, sans-serif;font-size:18px;color:#444444 background-color: #ffffff;padding-top:20px;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/subheaderimage.jpg" alt="" width="530" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;width:100%;max-width:540px;min-width:200px;height:auto;" /></td>
 																</tr>
 																<tr>
 																	<td align="left" class="body-copy" style="padding-top:30px;padding-bottom:30px;padding-right:0;padding-left:0;font-family:Courier, `Courier New`;font-size:15px;mso-line-height-rule:exactly;text-align:left;font-weight:100;line-height:24px;color:#000001;" >
@@ -8612,7 +8612,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																<tr>
 																	<td class="logo-bottom" align="left" valign="top" style="padding-top:25px;padding-bottom:10px;padding-right:0;padding-left:0;" >
 																		<a href="##" target="_blank" style="text-decoration:none;font-family:Arial, Helvetica, sans-serif;font-size:18px;color:#7ED321;" >
-																			<img src="http://localhost/coreboscrm/storage/kcimages/images/Underwood/Logo.png" width="179" height="42" alt="Serene" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" />
+																			<img src="http://localhost/coreboscrm/storage/kcimages/images/Logo.png" width="179" height="42" alt="Serene" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" />
 																		</a>
 																	</td>
 																</tr>
@@ -8694,11 +8694,11 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 													</tr>
 													<tr>
 														<td align="center" class="logo" style="padding-top:40px;padding-bottom:40px;padding-right:0;padding-left:0;" >
-															<a href="##" target="_blank" style="text-decoration:none;font-family:Arial, Helvetica, sans-serif;font-size:18px;color:#7ED321;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Bloco/Logo.png" width="136" height="32" alt="NURTURE" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a>
+															<a href="##" target="_blank" style="text-decoration:none;font-family:Arial, Helvetica, sans-serif;font-size:18px;color:#7ED321;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Logo.png" width="136" height="32" alt="NURTURE" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" /></a>
 														</td>
 													</tr>
 													<tr>
-														<td align="center" class="hero-image" style="font-family:Arial, Helvetica, sans-serif;font-size:18px;color:#626262;background-color:#ffffff;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Bloco/featuredimage.jpg" alt="" width="600" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;width:100%;max-width:600px;min-width:320px;height:auto;" /></td>
+														<td align="center" class="hero-image" style="font-family:Arial, Helvetica, sans-serif;font-size:18px;color:#626262;background-color:#ffffff;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/featuredimage.jpg" alt="" width="600" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;width:100%;max-width:600px;min-width:320px;height:auto;" /></td>
 													</tr>
 													<tr>
 														<td align="center" class="body-wrapper" style="background-color:#ffffff;border-bottom-width:2px;border-bottom-style:solid;border-bottom-color:#32A9D6;" >
@@ -8736,7 +8736,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 														<td height="40" class="spacer" style="font-size:0;line-height:0;" >&nbsp;</td>
 													</tr>
 													<tr>
-														<td align="center" class="hero-image" style="font-family:Arial, Helvetica, sans-serif;font-size:18px;color:#626262;background-color:#ffffff;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/Bloco/featureimage.jpg" alt="" width="600" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;width:100%;max-width:600px;min-width:320px;height:auto;" /></td>
+														<td align="center" class="hero-image" style="font-family:Arial, Helvetica, sans-serif;font-size:18px;color:#626262;background-color:#ffffff;" ><img src="http://localhost/coreboscrm/storage/kcimages/images/featureimage.jpg" alt="" width="600" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;width:100%;max-width:600px;min-width:320px;height:auto;" /></td>
 													</tr>
 													<tr>
 														<td align="center" class="body-wrapper" style="background-color:#ffffff;border-bottom-width:2px;border-bottom-style:solid;border-bottom-color:#32A9D6;" >
@@ -8886,7 +8886,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 																		<table cellpadding="0" cellspacing="0" border="0" width="50%" align="left" class="stack-left">
 																			<tr>
 																				<td class="logo-bottom" align="left" valign="top" style="padding-top:40px;padding-bottom:0px;padding-right:5px;padding-left:40px;" >
-																					<img src="http://localhost/coreboscrm/storage/kcimages/images/Bloco/Logowhite.png" width="155" height="28" alt="NURTURE" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" />
+																					<img src="http://localhost/coreboscrm/storage/kcimages/images/Logowhite.png" width="155" height="28" alt="NURTURE" border="0" style="border-width:0;outline-style:none;text-decoration:none;display:block;" />
 																				</td>
 																			</tr>
 																			<tr>
@@ -8924,9 +8924,13 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 			);
 			include_once 'modules/MsgTemplate/MsgTemplate.php';
 			$modimpdata = new MsgTemplate();
-			global $current_user,$site_URL;
+			global $current_user,$site_URL,$adb;
 			$modimpdata->column_fields['assigned_user_id'] = $current_user->id;
 			foreach ($vtiger_actions as $action) {
+				$rs = $adb->pquery('select 1 from vtiger_msgtemplate where reference=?', array($action['reference']));
+				if ($adb->num_rows($rs)>0) {
+					continue;
+				}
 				$modimpdata->column_fields['reference'] = $action['reference'];
 				$modimpdata->column_fields['msgt_type'] = $action['actions_type'];
 				$modimpdata->column_fields['msgt_status'] = $action['actions_status'];
@@ -8935,6 +8939,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 				$modimpdata->column_fields['template'] = str_replace('http://localhost/coreboscrm', $site_URL, $action['template']);
 				$modimpdata->column_fields['templateonlytext'] = $action['templateonlytext'];
 				$modimpdata->save('MsgTemplate');
+				$this->sendMsg('Template '.$action['reference'].' added');
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
