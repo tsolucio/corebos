@@ -252,7 +252,7 @@ var selectedSGTemplate = {if !empty($task->sgmsgtemplate)}{$task->sgmsgtemplate}
 			style="border:1px solid #bababa; width: 75%;"
 			onclick='document.getElementById("calltype").value = "function::vtlib_setvalue_from_popup"; return vtlib_open_popup_window("new_task_form", "cbmsgtemplate", "MsgTemplate", "");'
 			value="{if isset($task->cbmsgtemplate_display)}{$task->cbmsgtemplate_display}{/if}">&nbsp;
-		<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_SELECT'|getTranslatedString}" onclick='return vtlib_open_popup_window("new_task_form", "cbmsgtemplate", "MsgTemplate", "");'>
+		<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_SELECT'|getTranslatedString}" onclick='document.getElementById("calltype").value="function::vtlib_setvalue_from_popup"; return vtlib_open_popup_window("new_task_form", "cbmsgtemplate", "MsgTemplate", "");'>
 			<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
 			</svg>
