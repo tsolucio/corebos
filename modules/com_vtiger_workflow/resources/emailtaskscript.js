@@ -358,7 +358,7 @@ function VTEmailTask($) {
 		}));
 		//Setup the validator
 		validator.mandatoryFields.push('recepient');
-		validator.mandatoryFields.push('subject');
+		//validator.mandatoryFields.push('subject');
 	});
 }
 vtEmailTask = VTEmailTask(jQuery);
