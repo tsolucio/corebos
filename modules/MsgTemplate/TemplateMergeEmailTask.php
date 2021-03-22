@@ -47,7 +47,10 @@ if (isset($_REQUEST['action_id']) && $_REQUEST['action_id'] !='') {
 <script type="text/javascript">
 if (window.opener.document.getElementById('save_subject') != null && window.opener.CKEDITOR.instances.save_content != 'undefined') {
 	window.opener.document.getElementById('save_subject').value = window.document.frmrepstr.subject.value;
-	window.opener.CKEDITOR.instances.save_content.insertHtml(window.document.frmrepstr.repstr.value);
+	try {
+		window.opener.CKEDITOR.instances.save_content.insertHtml(window.document.frmrepstr.repstr.value);
+	} catch(err) {
+	}
 <?php while ($row = $adb->getNextRow($result, false)) { ?>
 	window.opener.addDocs(<?php echo $row['notesid']; ?>, '','Documents','ajax', '');
 <?php } ?>
