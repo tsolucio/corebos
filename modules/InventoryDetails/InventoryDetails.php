@@ -134,7 +134,11 @@ class InventoryDetails extends CRMEntity {
 		$handler = vtws_getModuleHandlerFromName('InventoryDetails', $current_user);
 		$meta = $handler->getMeta();
 		$dbformat = DataTransform::sanitizeCurrencyFieldsForDB($this->column_fields, $meta);
-		$this->column_fields['cost_gross'] = $this->column_fields['quantity'] * (float)$dbformat['cost_price'];
+		if (isset($dbformat['cost_price'])) {
+			$this->column_fields['cost_gross'] = (float)$dbformat['quantity'] * (float)$dbformat['cost_price'];
+		} else {
+			$this->column_fields['cost_gross'] = 0;
+		}
 		$adb->pquery('update vtiger_inventorydetails set cost_gross=? where inventorydetailsid=?', array($this->column_fields['cost_gross'], $this->id));
 		if (!empty($this->column_fields['productid'])) {
 			$this->column_fields['total_stock'] = getPrdQtyInStck($this->column_fields['productid']);
@@ -330,10 +334,11 @@ class InventoryDetails extends CRMEntity {
 		}
 		// Delete all InventoryDetails where related with $related_to
 		$res_to_del = $adb->pquery(
-			'SELECT inventorydetailsid
+			'SELECT vtiger_inventorydetails.inventorydetailsid
 				FROM vtiger_inventorydetails
-				INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_inventorydetails.inventorydetailsid
-				WHERE vtiger_crmentity.deleted = 0 AND related_to = ? and lineitem_id not in (select lineitem_id from vtiger_inventoryproductrel where id=?)',
+				INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_inventorydetails.inventorydetailsid
+				WHERE vtiger_crmentity.deleted=0 AND vtiger_inventorydetails.related_to=?
+					and vtiger_inventorydetails.lineitem_id not in (select lineitem_id from vtiger_inventoryproductrel where id=?)',
 			array($related_to,$related_to)
 		);
 		while ($invdrow = $adb->getNextRow($res_to_del, false)) {
@@ -356,10 +361,10 @@ class InventoryDetails extends CRMEntity {
 			$invdet_focus = array();
 			$invdet_focus = new InventoryDetails();
 			$rec_exists = $adb->pquery(
-				'SELECT inventorydetailsid
+				'SELECT vtiger_inventorydetails.inventorydetailsid
 					FROM vtiger_inventorydetails
-					INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_inventorydetails.inventorydetailsid
-					WHERE vtiger_crmentity.deleted = 0 AND lineitem_id = ?',
+					INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_inventorydetails.inventorydetailsid
+					WHERE vtiger_crmentity.deleted=0 AND vtiger_inventorydetails.lineitem_id=?',
 				array($row['lineitem_id'])
 			);
 			if ($adb->num_rows($rec_exists)>0) {
@@ -389,8 +394,8 @@ class InventoryDetails extends CRMEntity {
 					case 'Invoice':
 						if (array_key_exists('rel_lineitem_id'.$requestindex, $_REQUEST)) {
 							$rel_invdet = $_REQUEST['rel_lineitem_id'.$requestindex];
-							$sel_rel_rec_exists = 'SELECT inventorydetailsid FROM vtiger_inventorydetails INNER JOIN '.$crmEntityTable.' 
-							ON vtiger_crmentity.crmid = vtiger_inventorydetails.inventorydetailsid WHERE deleted = 0 AND lineitem_id = ?';
+							$sel_rel_rec_exists = 'SELECT vtiger_inventorydetails.inventorydetailsid FROM vtiger_inventorydetails INNER JOIN '.$crmEntityTable
+								.' ON vtiger_crmentity.crmid=vtiger_inventorydetails.inventorydetailsid WHERE deleted=0 AND vtiger_inventorydetails.lineitem_id=?';
 							$rel_rec_exists = $adb->pquery($sel_rel_rec_exists, array($rel_invdet));
 							if ($adb->num_rows($rel_rec_exists)>0) {
 								$rel_id_focus = new InventoryDetails();
@@ -477,8 +482,9 @@ class InventoryDetails extends CRMEntity {
 					}
 			}
 			if ($check_invoiced) {
-				$sel_invoiced = 'SELECT COUNT(*) as remaining FROM vtiger_inventorydetails INNER JOIN '.$crmEntityTable.' 
-					ON vtiger_crmentity.crmid = vtiger_inventorydetails.inventorydetailsid WHERE vtiger_crmentity.deleted = 0 AND related_to = ? AND remaining_units > 0';
+				$sel_invoiced = 'SELECT COUNT(*) as remaining FROM vtiger_inventorydetails INNER JOIN '.$crmEntityTable
+					.' ON vtiger_crmentity.crmid=vtiger_inventorydetails.inventorydetailsid'
+					.' WHERE vtiger_crmentity.deleted=0 AND vtiger_inventorydetails.related_to=? AND vtiger_inventorydetails.remaining_units>0';
 				$rel_invoiced = $adb->pquery($sel_invoiced, array($soid));
 				$remaining = $adb->query_result($rel_invoiced, 0, 'remaining');
 				if ($remaining > 0) {
@@ -486,7 +492,7 @@ class InventoryDetails extends CRMEntity {
 				} else {
 					$invoiced = 1;
 				}
-				$adb->pquery('UPDATE vtiger_salesorder SET invoiced = ? WHERE salesorderid =?', array($invoiced,$soid));
+				$adb->pquery('UPDATE vtiger_salesorder SET invoiced=? WHERE salesorderid=?', array($invoiced,$soid));
 			}
 		}
 

@@ -52,8 +52,8 @@ class VTUpdateFieldsTask extends VTTask {
 			$focus->mode = 'edit';
 			$focus->retrieve_entity_info($recordId, $moduleName);
 			$focus->clearSingletonSaveFields();
-			$logbg->debug('field values pre: '.print_r($focus->column_fields, true));
-			$logbg->debug('update info: '.print_r($fieldValueMapping, true));
+			$logbg->debug('field values pre', $focus->column_fields);
+			$logbg->debug('update info', $fieldValueMapping);
 
 			$hold_user = $current_user;
 			$util->loggedInUser();
@@ -112,7 +112,7 @@ class VTUpdateFieldsTask extends VTTask {
 			$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $handlerMeta);
 			$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
 			$_REQUEST['ajxaction'] = 'Workflow';
-			$logbg->debug('field values presave: '.print_r($focus->column_fields, true));
+			$logbg->debug('field values presave', $focus->column_fields);
 			$focus->saveentity($moduleName);
 			if (count($relmodule)>0 && $relId!='' && $relId!=0) {
 				foreach ($relmodule as $mod) {
@@ -135,7 +135,7 @@ class VTUpdateFieldsTask extends VTTask {
 			}
 			$_REQUEST['ajxaction'] = $hold_ajxaction;
 			$util->revertUser();
-			$logbg->debug('field values postsave: '.print_r($focus->column_fields, true));
+			$logbg->debug('field values postsave', $focus->column_fields);
 		}
 		$util->revertUser();
 		$from_wf = false;

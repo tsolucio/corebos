@@ -211,8 +211,8 @@ function export($type) {
 	if ($filtercolumns) {
 		$visiblecolumns_array = $oCustomView->getColumnsListByCvid($viewid);
 		array_walk($visiblecolumns_array, 'obtainVisibleColumnNames');
-		$fields_array = array_filter($fields_array, function ($efield) use ($visiblecolumns_array) {
-			return in_array($efield, $visiblecolumns_array);
+		$fields_array = array_filter($visiblecolumns_array, function ($efield) use ($fields_array) {
+			return in_array($efield, $fields_array);
 		});
 		$fields_array[] = 'cbuuid';
 	}
@@ -243,22 +243,20 @@ function export($type) {
 	while ($val = $adb->fetchByAssoc($result, -1, false)) {
 		$new_arr = array();
 		$val = $__processor->sanitizeValues($val);
-		foreach ($val as $key => $value) {
-			if ($key != 'cbuuid' && !in_array($key, $columnsToExport)) {
-				continue;
-			}
-			if ($type == 'Documents' && $key == 'description') {
+		foreach ($columnsToExport as $col) {
+			$value = $val[$col];
+			if ($type == 'Documents' && $col == 'description') {
 				$value = strip_tags($value);
 				$value = str_replace('&nbsp;', '', $value);
 				$new_arr[] = $value;
-			} elseif ($type == 'com_vtiger_workflow' && $key == 'workflow_id') {
+			} elseif ($type == 'com_vtiger_workflow' && $col == 'workflow_id') {
 				$wfm = new VTworkflowManager($adb);
 				$workflow = $wfm->retrieve($value);
 				$value = $wfm->serializeWorkflow($workflow);
 				$new_arr[] = base64_encode($value);
-			} elseif ($key != 'user_name') {
+			} elseif ($col != 'user_name') {
 				// Let us provide the module to transform the value before we save it to CSV file
-				$value = $focus->transform_export_value($key, $value);
+				$value = $focus->transform_export_value($col, $value);
 				$new_arr[] = preg_replace("/\"/", "\"\"", $value);
 			}
 		}

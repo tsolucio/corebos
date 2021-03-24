@@ -17,7 +17,7 @@ global $log, $app_strings, $mod_strings, $current_user, $currentModule, $default
 $focus = CRMEntity::getInstance($currentModule);
 $smarty = new vtigerCRM_Smarty();
 $upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize', 3000000, $currentModule);
-$smarty->assign("UPLOADSIZE", $upload_maxsize/1000000); // Convert to MB
+$smarty->assign('UPLOADSIZE', $upload_maxsize/1000000); // Convert to MB
 if (isset($_REQUEST['upload_error']) && $_REQUEST['upload_error'] == true) {
 	echo '<br><b><font color="red"> The selected file has no data or a invalid file.</font></b><br>';
 }
@@ -32,6 +32,16 @@ if (isset($_REQUEST['par_module']) && $_REQUEST['par_module']!='') {
 	$smarty->assign('select_module', vtlib_purify($_REQUEST['par_module']));
 } elseif (isset($_REQUEST['pmodule']) && $_REQUEST['pmodule']!='') {
 	$smarty->assign('select_module', vtlib_purify($_REQUEST['pmodule']));
+} elseif (!empty($_REQUEST['invmodid'])) {
+	$crmid = vtlib_purify($_REQUEST['invmodid']);
+	$smarty->assign('select_module', getSalesEntityType($crmid));
+	if (empty($_REQUEST['mergewith'])) {
+		$_REQUEST['mergewith'] = '';
+	}
+	$_REQUEST['mergewith'].= ','.$crmid;
+	$_REQUEST['mergewith'] = trim($_REQUEST['mergewith'], ',');
+} else {
+	$smarty->assign('select_module', $currentModule);
 }
 
 if (isset($_REQUEST['record']) && $_REQUEST['record'] !='') {
@@ -141,7 +151,7 @@ if (isset($_REQUEST['internal_mailer']) && $_REQUEST['internal_mailer'] == 'true
 		} else {
 			$id_list = $rec_id.'@'.vtlib_purify($_REQUEST['field_id']).'|';
 		}
-			$smarty->assign('IDLISTS', $id_list);
+		$smarty->assign('IDLISTS', $id_list);
 	}
 	if ($rec_type == 'record_id') {
 		$type = vtlib_purify($_REQUEST['par_module']);

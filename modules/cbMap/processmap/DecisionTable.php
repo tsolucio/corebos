@@ -119,7 +119,9 @@ class DecisionTable extends processcbMap {
 				$rule['valueraw'] = $testexpression;
 				if (is_array($context)) {
 					foreach ($context as $key => $value) {
-						$testexpression = str_ireplace('$['.$key.']', $value, $testexpression);
+						if (!is_array($value) && !is_object($value)) {
+							$testexpression = str_ireplace('$['.$key.']', $value, $testexpression);
+						}
 					}
 				}
 				$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($testexpression)));

@@ -98,7 +98,7 @@ class VTExpressionParser {
 				}
 				return $val;
 			default:
-				throw new Exception(print_r($token, true));
+				throw new Exception(json_encode($token));
 		}
 	}
 

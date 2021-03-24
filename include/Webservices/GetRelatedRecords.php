@@ -13,6 +13,7 @@
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  ************************************************************************************/
 require_once 'include/Webservices/Utils.php';
+require_once 'include/Webservices/RetrieveDocAttachment.php';
 
 /*
  * Given a record ID and a related module, this function returns the set of related records that belong to that ID
@@ -43,6 +44,7 @@ require_once 'include/Webservices/Utils.php';
  *  columns: a a comma separated string of column names that are to be returned. The special value "*" will return all fields.
  *       for example: 'assigned_user_id,id,createdtime,notes_title,filedownloadcount,filelocationtype,filesize'
  *  relationtouse: label of the relation to select when more than one is found, if not given, or not found an exception will be thrown
+ *  returnattachments: for Document module will return the file attached if present
  *
  * Author: JPL TSolucio, S.L. June 2012.  Joe Bordes
  *
@@ -85,6 +87,11 @@ function getRelatedRecords($id, $module, $relatedModule, $queryParameters, $user
 	$records = array();
 
 	// Return results
+	$returnAttachment = ($relatedModule=='Documents' && !empty($queryParameters['returnattachments']));
+	if ($returnAttachment) {
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents', true);
+		$docquery = "SELECT filelocationtype FROM vtiger_notes INNER JOIN $crmEntityTable ON crmid=notesid WHERE notesid=? and deleted=0";
+	}
 	$pdowsid = vtws_getEntityID('Products').'x';
 	$srvwsid = vtws_getEntityID('Services').'x';
 	while ($row = $adb->fetch_array($result)) {
@@ -107,6 +114,26 @@ function getRelatedRecords($id, $module, $relatedModule, $queryParameters, $user
 				}
 			} else {
 				$rec = DataTransform::sanitizeData($row, $meta);
+				if ($returnAttachment) {
+					$docid = 0;
+					if (!empty($row['id'])) {
+						list($wsid, $docid) = explode('x', $row['id']);
+					} elseif (!empty($row['notesid'])) {
+						$docid = $row['notesid'];
+					}
+					if ($docid) {
+						$doc = $adb->pquery($docquery, array($docid));
+						if ($adb->query_result($doc, 0, 'filelocationtype')=='I') {
+							$attachment = vtws_retrievedocattachment_get_attachment($docid, true, true);
+							$rec['attachments'] = array(
+								'name' => $attachment['filename'],
+								'type' => $attachment['filetype'],
+								'content' => $attachment['attachment'],
+								'size' => $attachment['filesize']
+							);
+						}
+					}
+				}
 			}
 		}
 		if (isset($row['cbuuid'])) {
@@ -397,6 +424,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 					$relatedField = ($module == 'Accounts' ? 'accountid' : 'contactid');
 					$pstable = $meta->getEntityBaseTable();
 					$psfield = $meta->getIdColumn();
+					$psmodule = CRMEntity::getInstance($relatedModule);
 
 					if (substr($productDiscriminator, -4)=='only') {
 						$productDiscriminator = substr($productDiscriminator, 0, strlen($productDiscriminator)-4);
@@ -407,11 +435,11 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 						$q = "select distinct $qfields from vtiger_quotes
 							inner join ".$mod->crmentityTable." as crmq on crmq.crmid=vtiger_quotes.quoteid
 							left join vtiger_inventoryproductrel on vtiger_inventoryproductrel.id=vtiger_quotes.quoteid
-							inner join ".$mod->crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
+							inner join ".$psmodule->crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
 							left join vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
 							left join $pstable on $pstable.$psfield = vtiger_inventoryproductrel.productid
 							where vtiger_inventoryproductrel.productid = $pstable.$psfield AND crmq.deleted=0
-							and $relatedField = $crmid";
+							and vtiger_quotes.$relatedField = $crmid";
 						$query .= ($query=='' ? '' : ' UNION DISTINCT ').$q;
 					}
 					if ($productDiscriminator=='productlineinvoice' || $productDiscriminator=='productlineall') {
@@ -419,11 +447,11 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 						$q = "select distinct $qfields from vtiger_invoice
 							inner join ".$mod->crmentityTable." as crmi on crmi.crmid=vtiger_invoice.invoiceid
 							left join vtiger_inventoryproductrel on vtiger_inventoryproductrel.id=vtiger_invoice.invoiceid
-							inner join ".$mod->crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
+							inner join ".$psmodule->crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
 							left join vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid 
 							left join $pstable on $pstable.$psfield = vtiger_inventoryproductrel.productid
 							where vtiger_inventoryproductrel.productid = $pstable.$psfield AND crmi.deleted=0
-							and $relatedField = $crmid";
+							and vtiger_invoice.$relatedField = $crmid";
 						$query .= ($query=='' ? '' : ' UNION DISTINCT ').$q;
 					}
 					if ($productDiscriminator=='productlinesalesorder' || $productDiscriminator=='productlineall') {
@@ -431,11 +459,11 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 						$q = "select distinct $qfields from vtiger_salesorder
 						inner join ".$mod->crmentityTable." as crms on crms.crmid=vtiger_salesorder.salesorderid
 						left join vtiger_inventoryproductrel on vtiger_inventoryproductrel.id=vtiger_salesorder.salesorderid
-						inner join ".$mod->crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
+						inner join ".$psmodule->crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
 						left join vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
 						left join $pstable on $pstable.$psfield = vtiger_inventoryproductrel.productid
 						where vtiger_inventoryproductrel.productid = $pstable.$psfield AND crms.deleted=0
-						and $relatedField = $crmid";
+						and vtiger_salesorder.$relatedField = $crmid";
 						$query .= ($query=='' ? '' : ' UNION DISTINCT ').$q;
 					}
 				}

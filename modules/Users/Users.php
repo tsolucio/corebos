@@ -195,7 +195,7 @@ class Users extends CRMEntity {
 		}
 		if (!array_key_exists($name, $this->user_preferences) || $this->user_preferences[$name] != $value) {
 			global $log;
-			$log->debug('Saving To Preferences:' . $name . '=' . print_r($value, true));
+			$log->debug('Saving To Preferences', [$name, $value]);
 			$this->user_preferences[$name] = $value;
 			$this->savePreferecesToDB();
 		}
@@ -1172,6 +1172,17 @@ class Users extends CRMEntity {
 		if ($this->column_fields['status']=='Inactive') {
 			coreBOS_Settings::delSetting('cbodUserConnection'.$this->id);
 		}
+		$mapname = 'Users_EntityNameMap';
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$mapname, cbMap::getMapIdByName($mapname));
+		if ($cbMapid) {
+			$cbMap = new cbMap();
+			$cbMap->id = $cbMapid;
+			$cbMap->retrieve_entity_info($cbMapid, 'cbMap');
+			$ename = $cbMap->ConditionExpression(array_merge($this->column_fields, array('record_id'=>0,'module'=>'Users')));
+		} else {
+			$ename = $this->column_fields['first_name'].' '.$this->column_fields['last_name'];
+		}
+		$adb->pquery('update vtiger_users set ename=? where id=?', array($ename, $this->id));
 		// ODController
 		if ($cbodUserLog) {
 			if ($this->mode == 'create') { // creating user, we send to ODController

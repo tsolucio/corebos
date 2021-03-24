@@ -415,7 +415,7 @@ class qactions_Action extends CoreBOS_ActionController {
 				'result' => false,
 				'message' => getTranslatedString('ERR_SQL', 'cbAuditTrail'),
 				'debug_query' => '',
-				'debug_params' => print_r($_REQUEST, true),
+				'debug_params' => json_encode($_REQUEST),
 			);
 			echo json_encode($entries_list);
 			return;
@@ -467,7 +467,7 @@ class qactions_Action extends CoreBOS_ActionController {
 				'result' => false,
 				'message' => getTranslatedString('ERR_SQL', 'cbAuditTrail'),
 				'debug_query' => $builderData['query'].$builderData['limit'],
-				'debug_params' => print_r($_REQUEST, true),
+				'debug_params' => json_encode($_REQUEST),
 			);
 		}
 		$log->debug('< getBuilderData');

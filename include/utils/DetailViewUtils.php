@@ -24,14 +24,14 @@ require_once 'modules/PickList/PickListUtils.php';
  */
 function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, $generatedtype, $tabid = '', $module = '', $cbMapFI = array()) {
 	global $log, $adb, $mod_strings, $app_strings, $current_user, $theme, $default_charset;
-	$log->debug("> getDetailViewOutputHtml $uitype, $fieldname, $fieldlabel," . print_r($col_fields, true) . ", $generatedtype, $tabid");
+	$log->debug('> getDetailViewOutputHtml', [$uitype, $fieldname, $fieldlabel, $col_fields, $generatedtype, $tabid]);
 	$theme_path = 'themes/' . $theme . '/';
 	$image_path = $theme_path . 'images/';
 	$value = '';
 	$label_fld = array();
 	$userprivs = $current_user->getPrivileges();
 
-	// vtlib customization: New uitype to handle relation between modules
+	// uitype to handle relation between modules
 	if ($uitype == '10') {
 		$fieldlabel = getTranslatedString($fieldlabel, $module);
 		$parent_id = $col_fields[$fieldname];
@@ -1618,7 +1618,7 @@ function isPresentRelatedLists($module, $activity_mode = '') {
  */
 function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block_label) {
 	global $log, $adb;
-	$log->debug("> getDetailBlockInformation $module, $result," . print_r($col_fields, true) . ", $tabid, " . print_r($block_label, true));
+	$log->debug('> getDetailBlockInformation', [$module, $result, $col_fields, $tabid, $block_label]);
 	$label_data = array();
 
 	$bmapname = $module.'_FieldInfo';

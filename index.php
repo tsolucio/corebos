@@ -46,7 +46,6 @@ if (isset($_REQUEST['view'])) {
 	coreBOS_Session::set('view', $view);
 }
 
-
 require_once 'include/logging.php';
 require_once 'modules/Users/Users.php';
 $calculate_response_time = GlobalVariable::getVariable('Debug_Calculate_Response_Time', 0, '', Users::getActiveAdminId());
@@ -54,7 +53,7 @@ if ($calculate_response_time) {
 	$startTime = microtime(true);
 }
 
-$log = LoggerManager::getLogger('index');
+$log = LoggerManager::getLogger('APPLICATION');
 
 global $seclog;
 $seclog = LoggerManager::getLogger('SECURITY');

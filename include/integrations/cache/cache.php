@@ -16,8 +16,7 @@
  *  Version   : 1.0
  *  Author    : JPL TSolucio, S. L.
  *************************************************************************************************/
-require_once 'vtlib/Vtiger/Module.php';
-require "vendor/autoload.php";
+require 'vendor/autoload.php';
 
 class corebos_cache {
 

@@ -73,7 +73,7 @@ foreach ($pdoInformation as $pdoline) {
 	if ($cbMap!=null) {
 		$cbMapFields = $cbMap->MasterDetailLayout();
 		foreach ($cbMapFields['detailview']['fieldnames'] as $mdfield) {
-			if (!is_null($pdoline[$mdfield])) {
+			if (isset($pdoline[$mdfield]) && !is_null($pdoline[$mdfield])) {
 				$_REQUEST[$mdfield.$i] = $pdoline[$mdfield];
 			}
 		}

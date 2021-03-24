@@ -225,8 +225,55 @@ var selectedSGTemplate = {if !empty($task->sgmsgtemplate)}{$task->sgmsgtemplate}
 		</div>
 	</div>
 </div>
-<div dir="rtl" class="slds-size--small">
-	<div class="slds-form-element">
+<div class="slds-grid slds-grid_vertical-align-center slds-border_top">
+	<div class="slds-page-header slds-col slds-size_1-of-4 slds-p-around_x-small">
+		<h1>
+			<span class="slds-page-header__title slds-truncate" title="{$MOD.LBL_SELECT_EMAIL_TEMPLATE}">
+				<span class="slds-tabs__left-icon">
+					<span class="slds-icon_container" title="{$MOD.LBL_SELECT_EMAIL_TEMPLATE}">
+						<svg class="slds-icon slds-icon_small" style="color:green;" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#email"></use>
+						</svg>
+					</span>
+				</span>
+					{$MOD.LBL_SELECT_EMAIL_TEMPLATE}
+			</span>
+		</h1>
+	</div>
+	<div class="slds-form-element slds-col slds-size_2-of-4 slds-p-around_x-small">
+		<input type='hidden' class='small' name="cbmsgtemplate_type" id="cbmsgtemplate_type" value="MsgTemplate">
+		<input id="cbmsgtemplate" name="cbmsgtemplate" type="hidden" value="{if isset($task->cbmsgtemplate)}{$task->cbmsgtemplate}{/if}" onchange='document.getElementById("sgMsgTemplate").selectedIndex = "0"; document.getElementById("sgMsgTemplate").value = ""; document.getElementById("sgmsgtemplate").value = ""; var cbTemplateLink = "index.php?module=MsgTemplate&action=DetailView&record="; document.getElementById("cbPreviewLink").href = cbTemplateLink+this.value;'>
+		<input
+			class="slds-input"
+			id="cbmsgtemplate_display"
+			name="cbmsgtemplate_display"
+			readonly
+			type="text"
+			style="border:1px solid #bababa; width: 75%;"
+			onclick='document.getElementById("calltype").value = "function::vtlib_setvalue_from_popup"; return vtlib_open_popup_window("new_task_form", "cbmsgtemplate", "MsgTemplate", "");'
+			value="{if isset($task->cbmsgtemplate_display)}{$task->cbmsgtemplate_display}{/if}">&nbsp;
+		<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_SELECT'|getTranslatedString}" onclick='document.getElementById("calltype").value="function::vtlib_setvalue_from_popup"; return vtlib_open_popup_window("new_task_form", "cbmsgtemplate", "MsgTemplate", "");'>
+			<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
+			</svg>
+		</span>
+		<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_ADD_ITEM'|getTranslatedString}" onclick='return window.open("index.php?module=MsgTemplate&action=EditView");'>
+			<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_create"></use>
+			</svg>
+		</span>
+		<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_CLEAR'|getTranslatedString}" onclick="document.getElementById('cbmsgtemplate').value=''; document.getElementById('cbmsgtemplate_display').value=''; return false;">
+		<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
+		</svg>
+		</span>
+		<a href="{if isset($task->cbmsgtemplate)}index.php?module=MsgTemplate&action=DetailView&record={$task->cbmsgtemplate}{/if}" class="slds-icon_container slds-icon-standard-choice" title="{'LBL_PREVIEW_BUTTON'|getTranslatedString}" id="cbPreviewLink" target="_blank">
+		<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#preview"></use>
+		</svg>
+		</a>
+	</div>
+	<div class="slds-form-element slds-col slds-size_1-of-4 slds-p-around_x-small">
 		<label class="slds-checkbox_toggle slds-grid">
 		<span class="slds-form-element__label slds-m-bottom_none slds-m-left_x-small">{'LINK_EMAIL_TEMPLATE'|@getTranslatedString:$MODULE_NAME}</span>
 		<input type="checkbox" name="linktemplate" onChange="handleToggle()" aria-describedby="toggle-template" {if !empty($task->linktemplate)}checked{/if} />
@@ -335,60 +382,7 @@ var selectedSGTemplate = {if !empty($task->sgmsgtemplate)}{$task->sgmsgtemplate}
 	</p>
 </div>
 <div class="linked-template {if empty($task->linktemplate)}slds-hide{/if}">
-	<div class="slds-page-header">
-		<div class="slds-grid slds-gutters">
-			<div class="slds-col slds-size_1-of-1">
-				<h1>
-					<span class="slds-page-header__title slds-truncate" title="{$MOD.LBL_SELECT_EMAIL_TEMPLATE}">
-						<span class="slds-tabs__left-icon">
-							<span class="slds-icon_container" title="{$MOD.LBL_SELECT_EMAIL_TEMPLATE}">
-								<svg class="slds-icon slds-icon_small" style="color:green;" aria-hidden="true">
-									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#email"></use>
-								</svg>
-							</span>
-						</span>
-							{$MOD.LBL_SELECT_EMAIL_TEMPLATE}
-					</span>
-				</h1>
-			</div>
-		</div>
-	</div>
-	<div class="slds-grid slds-grid_vertical-align-center slds-p-horizontal_xx-large slds-border_top">
-		<div class="slds-col slds-size_1-of-1 slds-p-around_x-small">
-			<div class="slds-form-element">
-				<span class="slds-form-element__label slds-size--1-of-2">
-					<input type='hidden' class='small' name="cbmsgtemplate_type" id="cbmsgtemplate_type" value="MsgTemplate">
-					<input id="cbmsgtemplate" name="cbmsgtemplate" type="hidden" value="{if isset($task->cbmsgtemplate)}{$task->cbmsgtemplate}{/if}" onchange='document.getElementById("sgMsgTemplate").selectedIndex = "0"; document.getElementById("sgMsgTemplate").value = ""; document.getElementById("sgmsgtemplate").value = ""; var cbTemplateLink = "index.php?module=MsgTemplate&action=DetailView&record="; document.getElementById("cbPreviewLink").href = cbTemplateLink+this.value;'>
-					<input
-						class="slds-input"
-						id="cbmsgtemplate_display"
-						name="cbmsgtemplate_display"
-						readonly
-						type="text"
-						style="border:1px solid #bababa; width: 52%;"
-						onclick='document.getElementById("calltype").value = "function::vtlib_setvalue_from_popup"; return vtlib_open_popup_window("new_task_form", "cbmsgtemplate", "MsgTemplate", "");'
-						value="{if isset($task->cbmsgtemplate_display)}{$task->cbmsgtemplate_display}{/if}">&nbsp;
-					<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_SELECT'|getTranslatedString}" onclick='return vtlib_open_popup_window("new_task_form", "cbmsgtemplate", "MsgTemplate", "");'>
-						<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
-						</svg>
-					</span>
-					<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_ADD_ITEM'|getTranslatedString}" onclick='return window.open("index.php?module=MsgTemplate&action=EditView");'>
-						<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_create"></use>
-						</svg>
-					</span>
-					<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_CLEAR'|getTranslatedString}" onclick="document.getElementById('cbmsgtemplate').value=''; document.getElementById('cbmsgtemplate_display').value=''; return false;">
-					<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
-						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
-					</svg>
-					</span>
-					&nbsp;
-					<a class="slds-button slds-button_neutral" href="{if isset($task->cbmsgtemplate)}index.php?module=MsgTemplate&action=DetailView&record={$task->cbmsgtemplate}{/if}" id="cbPreviewLink" target="_blank" style="width: 20%;">{$MOD.LBL_PREVIEW_BUTTON}</a>
-				</span>
-			</div>
-		</div>
-	</div>
+	<div class="{if !corebos_sendgrid::isActive()}slds-hide{/if}">
 	<div class="slds-page-header">
 		<div class="slds-grid slds-gutters">
 			<div class="slds-col slds-size_1-of-1">
@@ -423,6 +417,7 @@ var selectedSGTemplate = {if !empty($task->sgmsgtemplate)}{$task->sgmsgtemplate}
 			</div>
 		</div>
 	</div>
+	</div>
 </div>
 <script type="text/javascript">
 function handleToggle() {
@@ -432,6 +427,8 @@ function handleToggle() {
 	} else {
 		$('.linked-template').addClass('slds-hide');
 		$('.unlinked-template').removeClass('slds-hide');
+		document.getElementById('save_subject').value='';
+		window.CKEDITOR.instances.save_content.setData('');
 	}
 }
 </script>

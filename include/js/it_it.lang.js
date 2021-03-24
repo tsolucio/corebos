@@ -169,6 +169,7 @@ var alert_arr = {
 	'SAME_GROUPS':'Si devono selezionare i record negli stessi gruppi per l\'unione',
 	'ATLEAST_TWO':'Selezionare almeno due record per l\'unione',
 	'MAX_THREE':'\u00E8 consentito selezionare al massimo tre record',
+	'MAX_RECORDS_EXCEEDED': 'You have exceeded the maximum amount of selectable records',
 	'MAX_RECORDS' :'\u00E8 consentito selezionare al massimo quattro record',
 	'CON_MANDATORY' :'Selezionare il campo obbligatorio Cognome',
 	'LE_MANDATORY':'Selezionare i campi obbligatori Cognome e Ditta',

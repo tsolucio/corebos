@@ -9,7 +9,9 @@
  ************************************************************************************/
 require_once 'Smarty_setup.php';
 require 'modules/Vtiger/default_module_view.php';
-
+if (isset($override_singlepane_view)) {
+	$singlepane_view = $override_singlepane_view;
+}
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
 $action = vtlib_purify($_REQUEST['action']);

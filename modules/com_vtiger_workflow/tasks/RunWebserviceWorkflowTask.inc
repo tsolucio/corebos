@@ -80,7 +80,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 			$nr = 0;
 			foreach ($headers as $head) {
 				$findauth = explode(':', $head);
-				if ($findauth[0] == 'Authorization' || $findauth[0] == 'Token') {
+				if (isset($findauth[1]) && (strpos($findauth[1], 'getContext(')!==false || strpos($findauth[1], 'getSetting(')!==false)) {
 					if (strstr($findauth[1], 'getContext')) {
 						$context = str_replace(array('getContext(', ')'), array('', ''), $findauth[1]);
 						$token = $entity->getContext();
@@ -88,12 +88,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 					} else {
 						$token = $this->substituteSetting($findauth[1]);
 					}
-					if ($findauth[0] == 'Token') {
-						$replace = 'Token: '.$token;
-					} else {
-						$replace = 'Authorization:Bearer: '.$token;
-					}
-					$headers[$nr] = $replace;
+					$headers[$nr] = $findauth[0].':'.$token;
 				}
 				$nr++;
 			}
@@ -106,13 +101,17 @@ class RunWebserviceWorkflowTask extends VTTask {
 			$channel = curl_init();
 			curl_setopt($channel, CURLOPT_URL, $url);
 			curl_setopt($channel, CURLOPT_HTTPHEADER, $headers);
+			curl_setopt($channel, CURLOPT_SSL_VERIFYHOST, 0);
+			curl_setopt($channel, CURLOPT_SSL_VERIFYPEER, 0);
 			if ($method == 'POST') {
 				curl_setopt($channel, CURLOPT_POST, true);
 			} else {
 				curl_setopt($channel, CURLOPT_CUSTOMREQUEST, $method);
 			}
 			if ($inputtype != 'URL') {
-				if ($inputtype=='XML' || in_array('Content-type:application/x-www-form-urlencoded', $headers) || in_array('Content-type:multipart/form-data', $headers)) {
+				if ($inputtype=='XML' || in_array('Content-type:application/x-www-form-urlencoded', $headers)
+					|| in_array('Content-type:multipart/form-data', $headers) || in_array('Content-type:text/plain', $headers)
+				) {
 					curl_setopt($channel, CURLOPT_POSTFIELDS, http_build_query($listreq));
 				} else {
 					curl_setopt($channel, CURLOPT_POSTFIELDS, json_encode($listreq));
@@ -156,7 +155,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 								}
 							}
 						}
-						if ((string)$r2 == 'null' || is_null($r2)) {
+						if ((!is_array($r2) && (string)$r2 == 'null') || is_null($r2)) {
 							$r2 = '';
 						}
 						if (!empty($v['field'])) {
@@ -180,7 +179,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 						} else {
 							$r2 = $response2[$fld];
 						}
-						if ((string)$r2 == 'null' || is_null($r2)) {
+						if ((!is_array($r2) && (string)$r2 == 'null') || is_null($r2)) {
 							$r2 = '';
 						}
 						if (!empty($v['field'])) {
@@ -201,7 +200,10 @@ class RunWebserviceWorkflowTask extends VTTask {
 						$focus->column_fields[$key] = $value;
 					}
 					$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $meta);
+					$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
+					$_REQUEST['ajxaction'] = 'Workflow';
 					$focus->saveentity($origin_module);
+					$_REQUEST['ajxaction'] = $hold_ajxaction;
 				}
 			}
 		}
@@ -223,15 +225,28 @@ class RunWebserviceWorkflowTask extends VTTask {
 			error_log("\nURL: ".$url, 3, $logname.'.log');
 
 			try {
+				$arrContextOptions=stream_context_create(array(
+					'ssl' => array(
+						'verify_peer' => false,
+						'verify_peer_name' => false,
+					)
+				));
 				if ($wsuser != '' && $wspass != '') {
 					$options = array(
 						'login' => $wsuser,
 						'password' => $wspass,
+						'stream_context' => $arrContextOptions,
 					);
 					$soapclient = new SoapClient($url, $options);
 				} else {
-					$options = array();
-					$soapclient = new SoapClient($url);
+					$options = array(
+						//'soap_version' => SOAP_1_2,
+						'trace'      => 1,      // enable trace to view what is happening
+						'exceptions' => 0,      // disable exceptions
+						'cache_wsdl' => 0,      // disable any caching on the wsdl, encase you alter the wsdl
+						'stream_context' => $arrContextOptions,
+					);
+					$soapclient = new SoapClient($url, $options);
 				}
 
 				$response = $soapclient->__soapCall($methodname, array('parameters' => $arrconv));
@@ -258,7 +273,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 
 				//write response to record fields
 				if (count($target_fields['Response']) > 0) {
-					if ($outputtype == 'JSON') {
+					if ($outputtype == 'JSON' || $outputtype == 'XML') {
 						$conds = array();
 						foreach ($target_fields['Response'] as $fld => $v) {
 							if (is_array($response)) {
@@ -273,7 +288,11 @@ class RunWebserviceWorkflowTask extends VTTask {
 									}
 								}
 							} else {
-								$r = json_decode($response);
+								if (!is_object($response)) {
+									$r = json_decode($response);
+								} else {
+									$r = $response;
+								}
 								if ($r->$fld != null) {
 									$r2 = $r->$fld;
 								} else {
@@ -302,7 +321,10 @@ class RunWebserviceWorkflowTask extends VTTask {
 								$focus->column_fields[$key] = $value;
 							}
 							$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $meta);
+							$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
+							$_REQUEST['ajxaction'] = 'Workflow';
 							$focus->saveentity($origin_module);
+							$_REQUEST['ajxaction'] = $hold_ajxaction;
 						}
 					}
 				}

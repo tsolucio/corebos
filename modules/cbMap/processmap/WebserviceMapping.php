@@ -191,7 +191,7 @@ require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
 require_once 'modules/com_vtiger_workflow/VTSimpleTemplateOnData.inc';
 require_once 'include/Webservices/Retrieve.php';
 
-class WebserviceMapping extends cbMapcore {
+class WebserviceMapping extends processcbMap {
 
 	public function processMap($arguments) {
 		global $current_user;
@@ -357,12 +357,13 @@ class WebserviceMapping extends cbMapcore {
 				}
 			} elseif (!empty($v->Orgfields[0]->Relfield) && isset($v->Orgfields[0]->Relfield)) {
 				$allRelValues = array();
+				$allmergeFields = array();
 				foreach ($v->Orgfields->Relfield as $value1) {
 					$allRelValues = array(
 						'fieldname'=>(String)$value1->RelfieldName,
 						'relmodule'=>(String)$value1->RelModule,
 						'linkfield'=>(String)$value1->linkfield,
-						'linkvalue'=>(String)$value1->Relfieldvalue
+						'linkvalue'=>isset($value1->Relfieldvalue) ? (String)$value1->Relfieldvalue : '',
 					);
 				}
 				$allmergeFields[] = $allRelValues;

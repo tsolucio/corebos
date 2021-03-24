@@ -476,7 +476,7 @@ class ModTracker {
 				'result' => false,
 				'message' => getTranslatedString('ERR_SQL', 'ModTracker'),
 				'debug_query' => $list_query.$limit,
-				'debug_params' => print_r($params, true),
+				'debug_params' => json_encode($params),
 			);
 		}
 		$log->debug('< getModTrackerJSON');

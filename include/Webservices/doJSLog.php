@@ -27,13 +27,14 @@ function cbws_jslog($level, $message, $user) {
 		case 'fatal':
 			$logjs->fatal($msg);
 			break;
-		case 'trace':
-			$logjs->trace($msg);
+		case 'alert':
+			$logjs->alert($msg);
 			break;
 		case 'error':
 			$logjs->error($msg);
 			break;
 		case 'warn':
+		case 'warning':
 			$logjs->warn($msg);
 			break;
 		case 'debug':

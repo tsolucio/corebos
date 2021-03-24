@@ -109,6 +109,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_CSRF_Valid_IP',
 				'Application_PopupScreen_Width',
 				'Application_PopupScreen_Height',
+				'Application_Merge_Record_Limit',
 				'Application_Textarea_Style',
 				'Application_CSS_Properties',
 
@@ -135,6 +136,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 
 				'CronTasks_cronWatcher_mailto',
 				'CronTasks_cronWatcher_TimeThreshold',
+				'SMSNotifier_SendCopyToUser',
 
 				'BusinessQuestion_TableAnswer_Limit',
 

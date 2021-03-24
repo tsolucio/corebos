@@ -22,8 +22,8 @@ class OperationManager {
 		'stream'=> self::FORMATDEFAULTS,
 		'streamraw'=> self::FORMATDEFAULTS,
 	);
-	private $formatObjects ;
-	private $inParamProcess ;
+	private $formatObjects;
+	private $inParamProcess;
 	private $sessionManager;
 	private $pearDB;
 	private $operationName;

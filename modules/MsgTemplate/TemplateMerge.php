@@ -28,6 +28,19 @@ if (isset($_REQUEST['action_id']) && $_REQUEST['action_id'] !='') {
 	}
 	$tpl = getTemplateDetails($_REQUEST['action_id'], $crmid);
 
+	// Merge template
+	$mids = array();
+	if (isset($_REQUEST['merge_template_with']) && $_REQUEST['merge_template_with'] != '') {
+		$mids = explode(',', $_REQUEST['merge_template_with']);
+	}
+	if (count($mids) > 0) {
+		foreach ($mids as $mid) {
+			$module = getSalesEntityType($mid);
+			$tpl[2] = getMergedDescription($tpl[2], $mid, $module);
+			$tpl[1] = getMergedDescription($tpl[1], $mid, $module);
+		}
+	}
+
 	// Get Related Documents
 	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents');
 	$query='select vtiger_notes.notesid,vtiger_notes.filename

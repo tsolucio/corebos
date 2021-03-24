@@ -13,6 +13,7 @@ require_once 'include/utils/Request.php';
 require_once 'include/database/PearDatabase.php';
 require_once 'include/utils/cbSettings.php';
 require_once 'include/utils/cbCache.php';
+require_once 'include/integrations/cache/cache.php';
 require_once 'include/cbmqtm/cbmqtm_loader.php';
 require_once 'include/events/include.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowManager.inc';
@@ -818,13 +819,13 @@ function getColumnFields($module) {
 	return $column_fld;
 }
 
-/** Function to get a users's mail id
- * @param $userid -- userid :: Type integer
- * @returns $email -- email :: Type string
+/** Function to get a users email
+ * @param integer user ID
+ * @return string email
  */
 function getUserEmail($userid) {
 	global $log, $adb;
-	$log->debug('> getUserEmail '.print_r($userid, true));
+	$log->debug('> getUserEmail', (array)$userid);
 	$email = '';
 	if (!empty($userid) && is_numeric($userid)) {
 		$userid = (array)$userid;

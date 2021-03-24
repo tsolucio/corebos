@@ -184,4 +184,20 @@ if ($mode == 'add') {
 		echo 'SUCCESS';
 	}
 }
+
+if ($mode == 'add' || $mode == 'edit' || $mode == 'delete') {
+	$cache = new corebos_cache();
+	if ($cache->isUsable()) {
+		$allRoles = $adb->query('select roleid from vtiger_role');
+		$rolesCount = $adb->num_rows($allRoles);
+		if ($rolesCount > 0) {
+			$cacheKeys = array();
+			for ($i = 0; $i < $rolesCount; $i++) {
+				$roleId = $adb->query_result($allRoles, $i, 'roleid');
+				$cacheKeys[] = $tableName."#".$roleId;
+			}
+			$cache->getCacheClient()->deleteMultiple($cacheKeys);
+		}
+	}
+}
 ?>

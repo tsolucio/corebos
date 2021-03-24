@@ -166,6 +166,7 @@ var alert_arr = {
 	'SAME_GROUPS': 'Sie haben Daten aus der gleichen Gruppe ausgewählt',
 	'ATLEAST_TWO': 'Sie müssen mindestens 2 Datensätze zm zusammenführen auswählen',
 	'MAX_THREE': 'Sie können maximal 3 Datensätze auswählen',
+	'MAX_RECORDS_EXCEEDED': 'You have exceeded the maximum amount of selectable records',
 	'MAX_RECORDS': 'Sie können maximal 4 Datensätze auswählen',
 	'CON_MANDATORY': 'Bitte das Pflichtfeld Nachname auswählen',
 	'LE_MANDATORY': 'Bitte die Pflichtfelder Nachname und Organisation auswählen',

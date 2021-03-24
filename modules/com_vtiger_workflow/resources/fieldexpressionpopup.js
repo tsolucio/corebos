@@ -413,6 +413,9 @@ function com_vtiger_workflowsetValueFromCapture(recordid, value, target_fieldnam
 		document.getElementById('wfrelfield').value = recordid;
 		document.getElementById('wfrelfield_display').value = value;
 	}
+	if (document.getElementById('cbmsgtemplate')) {
+		document.getElementById('calltype').value='emailworkflow';
+	}
 }
 
 function toggleExpEditorHelp(helpbutton) {

@@ -25,6 +25,7 @@ class generateReportWfTask extends VTTask {
 		global $adb, $root_directory;
 		$path = '';
 		$name = '';
+		$hascontent = 1;
 		if ($this->case_type == 'report') {
 			$reportdata = explode('$$', $this->report_name);
 			$reportId = (int)$reportdata[0];
@@ -67,6 +68,9 @@ class generateReportWfTask extends VTTask {
 				$oReportRun->writeReportToExcelFile($filePath, null, $entity->getModuleName());
 				$name = $baseFileName.'.xls';
 			}
+			if ($oReportRun->number_of_rows <= 0) {
+				$hascontent = 0;
+			}
 		}
 		if ($this->case_type == 'question') {
 			if (!empty($entity->WorkflowContext['GenerateQuestionName'])) {
@@ -78,6 +82,10 @@ class generateReportWfTask extends VTTask {
 			}
 			$res = cbQuestion::getFormattedAnswer((int)$this->qnfield, array());
 			if ($res) {
+				$lines = file($res);
+				if (count($lines) < 2) {
+					$hascontent = 0;
+				}
 				$path_parts = pathinfo($res);
 				$name = $path_parts['basename'];
 				$path =str_replace($root_directory, '', $path_parts['dirname']).'/';
@@ -86,7 +94,7 @@ class generateReportWfTask extends VTTask {
 		if (empty($entity->WorkflowContext['wfgenerated_file'])) {
 			$entity->WorkflowContext['wfgenerated_file'] = array();
 		}
-		$entity->WorkflowContext['wfgenerated_file'][] = array('path'=>$path, 'name'=>$name);
+		$entity->WorkflowContext['wfgenerated_file'][] = array('path'=>$path, 'name'=>$name, 'hascontent' => $hascontent);
 	}
 }
 ?>

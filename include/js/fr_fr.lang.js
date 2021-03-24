@@ -169,6 +169,7 @@ var alert_arr = {
 	'SAME_GROUPS': 'Vous devez sélectionner les enregistrements dans le même groupe pour les fusionner',
 	'ATLEAST_TWO': 'Sélectionner au moins deux enregistrements à fusionner',
 	'MAX_THREE': 'Vous avez la possibilité de sélectionner un maximum de 3 enregistrements',
+	'MAX_RECORDS_EXCEEDED': 'You have exceeded the maximum amount of selectable records',
 	'MAX_RECORDS': 'Vous avez la possibilité de sélectionner un maximum de 4 enregistrements',
 	'CON_MANDATORY': 'Sélectionnez le champ obligatoire "Nom"',
 	'LE_MANDATORY': 'Sélectionnez les champs obligatoires "Nom" et "Société"',
