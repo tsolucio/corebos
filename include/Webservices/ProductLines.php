@@ -25,7 +25,11 @@ if ($elementType != 'PurchaseOrder') {
 	$acvid = $element['vendor_id'];
 }
 if (empty($element['taxtype'])) {
-	$taxtype = 'group'; // Individual
+	if (empty($element['hdnTaxType'])) {
+		$taxtype = 'group'; // Individual
+	} else {
+		$taxtype = $element['hdnTaxType'];
+	}
 } else {
 	$taxtype=$element['taxtype'];
 }
