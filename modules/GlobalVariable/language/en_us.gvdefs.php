@@ -1651,6 +1651,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Edit the filter "All". The default is 1',
 ),
+'Security_ImageCheck' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'none | strict | loose | clean',
+	'definition' => 'This will help to decide if we strictly/loosely check for the security issue to an image file or ignore the check by cleaning.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php', GLOB_BRACE) as $tcode) {
