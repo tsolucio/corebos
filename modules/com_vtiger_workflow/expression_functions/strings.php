@@ -49,6 +49,13 @@ function __cb_stringreplace($arr) {
 	return str_replace($arr[0], $arr[1], $arr[2]);
 }
 
+function __cb_randomstring($arr) {
+	if (empty($arr) || empty($arr[0])) {
+		$arr[0] = 10;
+	}
+	return bin2hex(random_bytes($arr[0]));
+}
+
 function __vt_uppercase($arr) {
 	if (count($arr)==0) {
 		return '';
