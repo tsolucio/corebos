@@ -1655,8 +1655,8 @@ $GlobalVariableDefinitons = array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
 	'category' => 'Application',
-	'values' => 'none | strict | loose | clean',
-	'definition' => 'This will help to decide if we strictly/loosely check for the security issue to an image file or ignore the check by cleaning.',
+	'values' => 'strict | loose | clean',
+	'definition' => 'This variable decides if we strictly/loosely check for the security issue in an image file or ignore the check and clean the image.',
 ),
 );
 

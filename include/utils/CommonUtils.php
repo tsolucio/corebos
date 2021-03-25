@@ -2340,13 +2340,12 @@ function validateImageMetadata($data) {
  * 	return bool - true or false. if the image can be uploaded then true will return otherwise false.
  */
 function validateImageContents($filename) {
-
 	if (!file_exists($filename)) {
 		return true;
 	}
 	// Check for php code injection
 	$contents = file_get_contents($filename);
-	$security_checkimage = GlobalVariable::getVariable('Security_ImageCheck', 'none');
+	$security_checkimage = GlobalVariable::getVariable('Security_ImageCheck', 'strict');
 	switch ($security_checkimage) {
 		case 'loose':
 			$check = preg_match('/(<\?php?(.*?))/si', $contents) === 1
@@ -2361,7 +2360,6 @@ function validateImageContents($filename) {
 				$img->writeImage($filename);
 				$img->clear();
 				$img->destroy();
-				$contents = file_get_contents($filename);
 				$check = false;
 			} catch (Exception $e) {
 				$check = true;
