@@ -2347,6 +2347,7 @@ function validateImageContents($filename) {
 	// Check for php code injection
 	$contents = file_get_contents($filename);
 	$security_checkimage = GlobalVariable::getVariable('Security_ImageCheck', 'none');
+	$security_checkimage= 'clean';
 	switch ($security_checkimage) {
 		case 'loose':
 			$check = preg_match('/(<\?php?(.*?))/si', $contents) === 1
@@ -2355,7 +2356,7 @@ function validateImageContents($filename) {
 			break;
 		case 'clean':
 			// Must be Revisited
-			try {
+			/*try {
 				$img = new Imagick($filename);
 				$img->stripImage();
 				$img->writeImage($filename);
@@ -2365,7 +2366,8 @@ function validateImageContents($filename) {
 				$check = false;
 			} catch (Exception $e) {
 				$check = true;
-			}
+			}*/
+			return false;
 			break;
 		case 'strict':
 		default:
