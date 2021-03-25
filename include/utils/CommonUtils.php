@@ -2347,7 +2347,6 @@ function validateImageContents($filename) {
 	// Check for php code injection
 	$contents = file_get_contents($filename);
 	$security_checkimage = GlobalVariable::getVariable('Security_ImageCheck', 'none');
-	$security_checkimage= 'clean';
 	switch ($security_checkimage) {
 		case 'loose':
 			$check = preg_match('/(<\?php?(.*?))/si', $contents) === 1
