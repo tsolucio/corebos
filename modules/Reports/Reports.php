@@ -547,7 +547,7 @@ class Reports extends CRMEntity {
 				where vtiger_field.tabid=? and vtiger_field.block in ('. generateQuestionMarks($block)
 				.') and vtiger_field.displaytype in (1,2,3,4) and vtiger_field.presence in (0,2) AND tablename NOT IN ('.generateQuestionMarks($skipTalbes)
 				.') order by sequence';
-			$params = array($tabid, $block, $skipTalbes);
+			$params = array_merge([$tabid, $block], $skipTalbes);
 		} else {
 			$sql = 'select distinct vtiger_field.*
 				from vtiger_field
@@ -562,7 +562,7 @@ class Reports extends CRMEntity {
 				$params[] = $profileList;
 			}
 			$sql .= ' and tablename NOT IN ('.generateQuestionMarks($skipTalbes).') ';
-			$params[] = $skipTalbes;
+			$params = array_merge($params, $skipTalbes);
 			$sql.= ' group by vtiger_field.fieldid order by sequence';
 		}
 		$module_columnlist = array();
