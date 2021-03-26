@@ -63,7 +63,8 @@ $app_strings = return_application_language('en_us');
 include_once 'modules/Users/authTypes/TwoFactorAuth/autoload.php';
 use \RobThree\Auth\TwoFactorAuth;
 
-$tfa = new TwoFactorAuth('coreBOSWebApp');
+$coreBOSWebApp = GlobalVariable::getVariable('Application_UI_Name', 'coreBOS').'-'.getUserName($focus->id);
+$tfa = new TwoFactorAuth($coreBOSWebApp);
 $twofasecret = coreBOS_Settings::getSetting('coreBOS_2FA_Secret_'.$focus->id, false);
 if ($twofasecret===false) {
 	$secret = $tfa->createSecret(160);

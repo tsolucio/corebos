@@ -34,11 +34,12 @@ if (!empty($userid) && $_REQUEST['_op']=='setconfig2fa' && $isPermitted=='yes') 
 		array('User_2FAAuthentication', $userid)
 	);
 	if ($isFormActive=='1') {
-		$tfa = new TwoFactorAuth('coreBOSWebApp');
+		$coreBOSWebApp = GlobalVariable::getVariable('Application_UI_Name', 'coreBOS').'-'.getUserName($userid);
+		$tfa = new TwoFactorAuth($coreBOSWebApp);
 		$FASecret = $tfa->createSecret(160);
 		$smarty->assign('FASecret', chunk_split($FASecret, 4, ' '));
 		coreBOS_Settings::setSetting('coreBOS_2FA_Secret_'.$userid, $FASecret);
-		$smarty->assign('QRCODE', $tfa->getQRCodeImageAsDataUri('coreBOSWebApp', $FASecret));
+		$smarty->assign('QRCODE', $tfa->getQRCodeImageAsDataUri($coreBOSWebApp, $FASecret));
 		if ($recexists && $adb->num_rows($recexists)==1) {
 			$gvid = $adb->query_result($recexists, 0, 0);
 			$adb->pquery('update vtiger_globalvariable set value=1 where globalvariableid=?', array($gvid));
