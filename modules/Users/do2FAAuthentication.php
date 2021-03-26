@@ -55,10 +55,10 @@ require_once 'data/Tracker.php';
 require_once 'include/utils/utils.php';
 require_once 'vtigerversion.php';
 
-global $currentModule, $adb, $coreBOS_app_version;
+global $currentModule, $adb, $coreBOS_app_version, $default_language;
 $image_path='include/images/';
 
-$app_strings = return_application_language('en_us');
+$app_strings = return_application_language($default_language);
 
 include_once 'modules/Users/authTypes/TwoFactorAuth/autoload.php';
 use \RobThree\Auth\TwoFactorAuth;
