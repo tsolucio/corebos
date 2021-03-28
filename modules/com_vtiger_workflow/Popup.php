@@ -14,7 +14,6 @@ require_once 'include/ListView/ListView.php';
 require_once 'include/utils/utils.php';
 require_once 'modules/com_vtiger_workflow/VTWorkflow.php';
 global $app_strings, $default_charset, $currentModule, $current_user, $theme, $adb;
-
 $url_string = '';
 $smarty = new vtigerCRM_Smarty;
 if (!isset($where)) {
@@ -27,7 +26,6 @@ $smarty->assign('CATEGORY', $parent_tab);
 $url = '';
 $popuptype = '';
 $popuptype = isset($_REQUEST['popuptype']) ? vtlib_purify($_REQUEST['popuptype']) : '';
-$smarty->assign('QCMODULEARRAY', array());
 
 // Pass on the authenticated user language
 global $current_language;
@@ -48,6 +46,9 @@ $hdrcustomlink_params = array('MODULE'=>$currentModule);
 $COMMONHDRLINKS = Vtiger_Link::getAllByType(Vtiger_Link::IGNORE_MODULE, array('HEADERSCRIPT_POPUP', 'HEADERCSS_POPUP'), $hdrcustomlink_params);
 $smarty->assign('HEADERSCRIPTS', $COMMONHDRLINKS['HEADERSCRIPT_POPUP']);
 $smarty->assign('HEADERCSS', $COMMONHDRLINKS['HEADERCSS_POPUP']);
+$smarty->assign('SET_CSS_PROPERTIES', GlobalVariable::getVariable('Application_CSS_Properties', 'include/LD/assets/styles/properties.php'));
+
+$smarty->assign('QCMODULEARRAY', array());
 
 // This is added to support the type of popup and callback
 if (isset($_REQUEST['popupmode']) && isset($_REQUEST['callback'])) {
@@ -128,6 +129,7 @@ if (isset($order_by) && $order_by != '') {
 $list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $currentModule);
 $count_result = $adb->pquery(mkCountQuery($query), array());
 $noofrows = $adb->query_result($count_result, 0, 'count');
+
 if (isset($_REQUEST['start']) && $_REQUEST['start'] != '') {
 	$start = vtlib_purify($_REQUEST['start']);
 	if ($start == 'last' && $noofrows > 0) {
