@@ -607,7 +607,7 @@ function showDefaultCustomView(selectView, module, parenttab) {
 	var viewName = encodeURIComponent(selectView.options[selectView.options.selectedIndex].value);
 	jQuery.ajax({
 		method: 'POST',
-		url: 'index.php?module=' + module + '&action=' + module + 'Ajax&file=ListView&ajax=true&start=1&viewname=' + viewName + '&parenttab=' + parenttab
+		url: 'index.php?module=' + module + '&action=' + module + 'Ajax&file=ListView&ajax=true&start=1&viewname=' + viewName
 	}).done(function (response) {
 		ListView.ListViewJSON('filter');
 		var result = response.split('&#&#&#');

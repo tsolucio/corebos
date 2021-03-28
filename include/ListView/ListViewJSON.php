@@ -342,8 +342,8 @@ function getListViewHeaders($currentModule, $tabid) {
 	global $app_strings, $mod_strings, $current_user, $adb;
 	include_once 'modules/Tooltip/TooltipUtils.php';
 	require_once "modules/$currentModule/$currentModule.php";
-	$category = getParentTab();
-	$profileid = fetchUserProfileId($current_user->id);
+	$profileid = getUserProfile($current_user->id);
+	$profileid = reset($profileid);
 	if ($currentModule == 'Utilities') {
 		$currentModule = vtlib_purify($_REQUEST['formodule']);
 	}
@@ -363,7 +363,6 @@ function getListViewHeaders($currentModule, $tabid) {
 	$customViewarr['edit_permit'] = $edit_permit;
 	$customViewarr['delete_permit'] = $delete_permit;
 	$customViewarr['customview_html'] = $customview_html;
-	$customViewarr['category'] = $category;
 
 	$queryGenerator = new QueryGenerator($currentModule, $current_user);
 	try {

@@ -730,7 +730,7 @@ const ListView = {
 		select.id = 'viewname';
 		select.name = 'viewname';
 		select.className = 'small';
-		select.setAttribute('onchange', 'showDefaultCustomView(this, "'+lvmodule+'", "'+filters.category+'")');
+		select.setAttribute('onchange', 'showDefaultCustomView(this, "'+lvmodule+'", "")');
 		select.innerHTML = filters.customview_html;
 		document.getElementById('filterOptions').appendChild(select);
 
@@ -740,7 +740,6 @@ const ListView = {
 			'module': lvmodule,
 			'action': 'CustomView',
 			'record': filters.viewid,
-			'parenttab': filters.category,
 			'permitall': 'false'
 		};
 		if (Application_Filter_All_Edit == 1 && filters.viewinfo.viewname == 'All') {
@@ -761,7 +760,6 @@ const ListView = {
 			'action': 'Delete',
 			'dmodule': lvmodule,
 			'record': filters.viewid,
-			'parenttab': filters.category
 		};
 		edit_query_string = ListView.encodeQueryData(edit_query);
 		if (filters.delete_permit == 'yes') {
@@ -915,13 +913,13 @@ const ListView = {
 				let import_template = '';
 				if (response.CreateView == 'yes' && lvmodule != '') {
 					create_template = `
-					<a href="index.php?module=${lvmodule}&action=EditView&return_action=DetailView&parenttab=ptab">
+					<a href="index.php?module=${lvmodule}&action=EditView&return_action=DetailView">
 						<button class="slds-button slds-button_neutral">${alert_arr.LBL_CREATE} ${mod_label}</button>
 					</a>`;
 				}
 				if (response.Import == 'yes' && lvmodule != '') {
 					import_template = `
-					<a class="slds-card__footer-action" href="index.php?module=${lvmodule}&action=Import&step=1&return_module=${lvmodule}&return_action=ListView&parenttab=ptab">
+					<a class="slds-card__footer-action" href="index.php?module=${lvmodule}&action=Import&step=1&return_module=${lvmodule}&return_action=ListView">
 						${alert_arr.LBL_IMPORT} ${mod_label}
 					</a>`;
 				}
