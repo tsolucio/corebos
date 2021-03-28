@@ -32,6 +32,7 @@ function cbexpsql_supportedFunctions() {
 		'stringlength' => 'stringlength(string)',
 		'stringreplace' => 'stringreplace(search,replace,subject)',
 		'substring' => 'substring(stringfield,start,length)',
+		'randomstring' => 'randomstring(length)',
 		'uppercase'=>'uppercase(stringfield)',
 		'lowercase'=>'lowercase(stringfield)',
 		//'uppercasefirst'=>'uppercasefirst(stringfield)',
@@ -316,6 +317,13 @@ function cbexpsql_stringlength($arr, $mmodule) {
 
 function cbexpsql_stringreplace($arr, $mmodule) {
 	return __cbexpsql_functionparams('REPLACE', $arr, $mmodule);
+}
+
+function cbexpsql_randomstring($arr, $mmodule) {
+	if (empty($arr) || empty($arr[0])) {
+		$arr[0] = 10;
+	}
+	return 'SUBSTRING(HEX(CONCAT(NOW(), RAND(), UUID())), 1, '.$arr[0].')';
 }
 
 function cbexpsql_uppercase($arr, $mmodule) {

@@ -707,7 +707,23 @@ $WFExpressionFunctionDefinitons = array(
 	),
 	'categories' => array('Text'),
 	'examples' => array(
-		"stringreplace('ERICA','JON','MIKE AND ERICA ')",//wants to replace erica with jon
+		"stringreplace('ERICA','JON','MIKE AND ERICA ')  //wants to replace erica with jon",
+	),
+),
+'randomstring' => array(
+	'name' => 'randomstring(length)',
+	'desc' => 'This function returns a random string of the given length.',
+	'params' => array(
+		array(
+			'name' => 'length',
+			'type' => 'Integer',
+			'optional' => false,
+			'desc' => 'number of random characters to return',
+		),
+	),
+	'categories' => array('Text'),
+	'examples' => array(
+		'randomstring(12)  // 02E373931343',
 	),
 ),
 'power' => array(

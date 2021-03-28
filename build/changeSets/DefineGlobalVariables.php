@@ -268,6 +268,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'ip_elastic_indexprefix',
 				'esusername',
 				'espassword',
+				'Security_ImageCheck',
 			);
 			$delete_these = array(
 				'preload_prototype',

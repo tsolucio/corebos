@@ -156,6 +156,7 @@ class VTExpressionsManager {
 			'stringreplace' => 'stringreplace(search,replace,subject)',
 			'power(base,exponential)' => 'power(base,exponential)',
 			'substring' => 'substring(stringfield,start,length)',
+			'randomstring' => 'randomstring(length)',
 			'uppercase'=>'uppercase(stringfield)',
 			'lowercase'=>'lowercase(stringfield)',
 			'uppercasefirst'=>'uppercasefirst(stringfield)',

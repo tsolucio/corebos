@@ -2340,20 +2340,43 @@ function validateImageMetadata($data) {
  * 	return bool - true or false. if the image can be uploaded then true will return otherwise false.
  */
 function validateImageContents($filename) {
-
 	if (!file_exists($filename)) {
 		return true;
 	}
 	// Check for php code injection
 	$contents = file_get_contents($filename);
-	if (preg_match('/(<\?php?(.*?))/si', $contents) === 1
-		|| preg_match('/(<?script(.*?)language(.*?)=(.*?)"(.*?)php(.*?)"(.*?))/si', $contents) === 1
-		|| stripos($contents, '<?=') !== false
-		|| stripos($contents, '<%=') !== false
-		|| stripos($contents, '<? ') !== false
-		|| stripos($contents, '<?php ') !== false
-		|| stripos($contents, '<% ') !== false
-	) {
+	$security_checkimage = GlobalVariable::getVariable('Security_ImageCheck', 'strict');
+	switch ($security_checkimage) {
+		case 'loose':
+			$check = preg_match('/(<\?php?(.*?))/si', $contents) === 1
+				|| preg_match('/(<?script(.*?)language(.*?)=(.*?)"(.*?)php(.*?)"(.*?))/si', $contents) === 1
+				|| stripos($contents, '<?php ') !== false;
+			break;
+		case 'clean':
+			// Must be Revisited
+			/*try {
+				$img = new Imagick($filename);
+				$img->stripImage();
+				$img->writeImage($filename);
+				$img->clear();
+				$img->destroy();
+				$check = false;
+			} catch (Exception $e) {
+				$check = true;
+			}*/
+			return false;
+			break;
+		case 'strict':
+		default:
+			$check = preg_match('/(<\?php?(.*?))/si', $contents) === 1
+				|| preg_match('/(<?script(.*?)language(.*?)=(.*?)"(.*?)php(.*?)"(.*?))/si', $contents) === 1
+				|| stripos($contents, '<?=') !== false
+				|| stripos($contents, '<%=') !== false
+				|| stripos($contents, '<? ') !== false
+				|| stripos($contents, '<?php ') !== false
+				|| stripos($contents, '<% ') !== false;
+	}
+	if ($check) {
 		return false;
 	}
 

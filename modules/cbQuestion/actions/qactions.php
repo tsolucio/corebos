@@ -478,6 +478,7 @@ class qactions_Action extends CoreBOS_ActionController {
 	}
 
 	public function getBuilderDataQuery($ret) {
+		global $current_user;
 		$params = array('cbQuestionRecord' => json_decode(urldecode($_REQUEST['cbQuestionRecord']), true));
 		$ctx = $this->getQuestionContext();
 		$sql_question_context_variable = json_decode($params['cbQuestionRecord']['typeprops']);

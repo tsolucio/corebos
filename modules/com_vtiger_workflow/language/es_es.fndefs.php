@@ -704,7 +704,23 @@ $WFExpressionFunctionDefinitons = array(
 	),
 	'categories' => array('Text'),
 	'examples' => array(
-		"stringreplace('ERICA','JON','MIKE AND ERICA ')",//wants to replace erica with jon
+		"stringreplace('ERICA','JON','MIKE AND ERICA ') // cambia erica por jon",
+	),
+),
+'randomstring' => array(
+	'name' => 'randomstring(length)',
+	'desc' => 'Esta función devuelve una cadena aleatoria de la longitud indicada.',
+	'params' => array(
+		array(
+			'name' => 'length',
+			'type' => 'Entero',
+			'optional' => false,
+			'desc' => 'número de caracteres aleatorios a devolver',
+		),
+	),
+	'categories' => array('Text'),
+	'examples' => array(
+		'randomstring(12)  // 02E373931343',
 	),
 ),
 'power' => array(

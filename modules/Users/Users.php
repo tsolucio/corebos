@@ -401,7 +401,8 @@ class Users extends CRMEntity {
 				return null;
 			}
 			// validate 2fa
-			$tfa = new TwoFactorAuth('coreBOSWebApp');
+			$coreBOSWebApp = GlobalVariable::getVariable('Application_UI_Name', 'coreBOS').'-'.getUserName($row['id']);
+			$tfa = new TwoFactorAuth($coreBOSWebApp);
 			$twofasecret = coreBOS_Settings::getSetting('coreBOS_2FA_Secret_'.$row['id'], false);
 			if ($twofasecret === false || $tfa->verifyCode($twofasecret, $_POST['user_2facode']) === false) {
 				return null;
