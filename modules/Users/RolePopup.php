@@ -54,7 +54,7 @@ function indent($hrarray, $roleout, $role_det, $mask_roleid = '') {
 			$roleout .= '<img src="' . vtiger_imageurl('menu_root.gif', $theme) .'" id="img_'.$roleid.'" border="0" alt="'.$app_strings['LBL_ROOT'].'" title="'.
 				$app_strings['LBL_ROOT'].'" align="absmiddle">';
 		}
-		if ($roledepth == 0 || in_array($roleid, $mask_roleid)) {
+		if ($roledepth == 0 || in_array($roleid, (array)$mask_roleid)) {
 			$roleout .= '&nbsp;<b class="genHeaderGray">'.$rolename.'</b>';
 		} else {
 			if (empty($_REQUEST['type'])) {
