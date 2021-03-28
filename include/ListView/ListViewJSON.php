@@ -18,7 +18,6 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	global $current_user, $adb;
 	include_once 'modules/Tooltip/TooltipUtils.php';
 	require_once "modules/$currentModule/$currentModule.php";
-	$profileid = fetchUserProfileId($current_user->id);
 	$lastPage = vtlib_purify($_REQUEST['lastPage']);
 	if ($currentModule == 'Utilities') {
 		$currentModule = vtlib_purify($_REQUEST['formodule']);
@@ -27,7 +26,6 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	$focus = new $currentModule();
 	$focus->initSortbyField($currentModule);
 	$url_string = '';
-	$sorder = $orderBy;
 	if ($sortColumn != '') {
 		$order_by = $sortColumn;
 	} else {
@@ -50,7 +48,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	$search_mode = false;
 	if ($searchtype == 'Basic' && $searchUrl != '') {
 		$search = explode('&', $searchUrl);
-		foreach ($search as $key => $value) {
+		foreach ($search as $value) {
 			if ($value != '') {
 				$arg = explode('=', $value)[0];
 				$val = explode('=', urldecode($value))[1];
@@ -63,7 +61,6 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 		$search_mode = true;
 	} elseif ($searchtype == 'Advanced' && $searchUrl != '') {
 		$search = explode('&', $searchUrl);
-		$advft_criteria = explode('=', $search[1])[1];
 		$_search['advft_criteria'] = urldecode(explode('=', $search[1])[1]);
 		$_search['advft_criteria_groups'] = urldecode(explode('=', $search[2])[1]);
 		$_search['searchtype'] = explode('=', $search[3])[1];
@@ -108,7 +105,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 
 	// Sorting
 	if (!empty($order_by)) {
-		$list_query .= ' ORDER BY '.$queryGenerator->getOrderByColumn(coreBOS_Session::get($currentModule.'_Order_By')).' '.coreBOS_Session::get($currentModule.'_Sort_Order');
+		$list_query.=' ORDER BY '.$queryGenerator->getOrderByColumn($order_by).' '.coreBOS_Session::get($currentModule.'_Sort_Order');
 	}
 
 	if (isset($_REQUEST['isRecycleModule'])) {
@@ -157,8 +154,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 		$sql_error = true;
 	}
 	$field_types = array();
-			$a = '';
-	foreach ($listviewcolumns as $key => $fName) {
+	foreach ($listviewcolumns as $fName) {
 		$fieldnameSql = $adb->pquery('SELECT fieldname, uitype FROM vtiger_field WHERE columnname=? AND tabid=?', array($fName, $tabid));
 		if (!$fieldnameSql || $adb->num_rows($fieldnameSql)==0) {
 			$field_types[] = array(
@@ -180,7 +176,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 		$rows = array();
 		$colorizer_row = array();
 		$linkRow = array();
-		foreach ($field_types as $idx => $val) {
+		foreach ($field_types as $val) {
 			$columnName = $val['columnname'];
 			$fieldName = $val['fieldname'];
 			$fieldType = $val['fieldtype'];
@@ -339,7 +335,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 }
 
 function getListViewHeaders($currentModule, $tabid) {
-	global $app_strings, $mod_strings, $current_user, $adb;
+	global $app_strings, $current_user, $adb;
 	include_once 'modules/Tooltip/TooltipUtils.php';
 	require_once "modules/$currentModule/$currentModule.php";
 	$profileid = getUserProfile($current_user->id);
@@ -376,7 +372,6 @@ function getListViewHeaders($currentModule, $tabid) {
 	}
 	//add action in header
 	$actionPermission = getTabsActionPermission($profileid)[$tabid];
-	$delete = true;
 	$edit = true;
 	if ($actionPermission[1]) {
 		$edit = false;
@@ -483,7 +478,6 @@ function getRecordActions($module, $recordId) {
 	$focus = new $module();
 	$App_LV_Record = GlobalVariable::getVariable('Application_ListView_Record_Change_Indicator', 1, $module);
 	if ($App_LV_Record && method_exists($focus, 'isViewed')) {
-		$isModified = false;
 		if (!$focus->isViewed($recordId)) {
 			$actions['view'] = array(
 				'view' => true,
@@ -565,7 +559,7 @@ function enableColorizer($row, $tabid) {
 				$condition = json_decode($condition, true);
 				if (!empty($condition)) {
 					$conditionRes = array();
-					foreach ($condition as $key => $value) {
+					foreach ($condition as $value) {
 						$field = $value['field'];
 						$not = $value['not'] == 1 ? true : false;
 						$condition = $value['condition'];
@@ -630,13 +624,8 @@ function enableColorizer($row, $tabid) {
 			}
 		}
 	}
-	$rows = array(
-		'className'=> array(
-			'row' => array()
-		)
-	);
 	$columns = array();
-	foreach ($classNames as $c => $name) {
+	foreach ($classNames as $name) {
 		if (isset($name['row'])) {
 			$columns['className']['row'] = $name['row'];
 		} else {
