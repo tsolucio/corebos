@@ -261,7 +261,6 @@ if (isset($_REQUEST['select'])) {
 
 $smarty->assign('RETURN_ACTION', isset($_REQUEST['return_action']) ? vtlib_purify($_REQUEST['return_action']) : '');
 
-//Retreive the list from Database
 if ($currentModule == 'PriceBooks' && isset($_REQUEST['productid'])) {
 	$productid= isset($_REQUEST['productid']) ? vtlib_purify($_REQUEST['productid']) : 0;
 	$currency_id= isset($_REQUEST['currencyid']) ? vtlib_purify($_REQUEST['currencyid']) : fetchCurrency($current_user->id);
@@ -446,7 +445,7 @@ if (method_exists($focus, 'getQueryByModuleField')) {
 $list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $currentModule);
 $count_result = $adb->pquery(mkCountQuery($query), array());
 $noofrows = $adb->query_result($count_result, 0, 'count');
-//Retreiving the start value from request
+
 if (isset($_REQUEST['start']) && $_REQUEST['start'] != '') {
 	$start = vtlib_purify($_REQUEST['start']);
 	if ($start == 'last' && $noofrows > 0) {
@@ -468,10 +467,8 @@ if (GlobalVariable::getVariable('Debug_Popup_Query', '0')=='1') {
 	echo '<br>'.$query.'<br>';
 }
 
-//Retreive the Navigation array
 $navigation_array = getNavigationValues($start, $noofrows, $list_max_entries_per_page);
 
-//Retreive the List View Table Header
 $focus->initSortbyField($currentModule);
 $focus->list_mode='search';
 $focus->popup_type=$popuptype;

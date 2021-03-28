@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-/** Class to retreive all the Parent Groups of the specified Group */
+/** Class to retrieve all the Parent Groups of the specified Group */
 require_once 'include/utils/UserInfoUtil.php';
 require_once 'include/utils/GetParentGroups.php';
 
@@ -18,15 +18,13 @@ class GetUserGroups {
 	//var $userRole='';
 
 	/** to get all the parent groups of the specified group
-	 * @params $groupId --> Group Id :: Type Integer
-	 * @returns updates the parent group in the varibale $parent_groups of the class
+	 * @param integer Group ID
+	 * @return array updates the parent group in the varibale $parent_groups of the class
 	 */
 	public function getAllUserGroups($userid) {
 		global $adb, $log;
 		$log->debug('> getAllUserGroups '.$userid);
-		//Retreiving from the user2grouptable
-		$query='select groupid from vtiger_users2group where userid=?';
-		$result = $adb->pquery($query, array($userid));
+		$result = $adb->pquery('select groupid from vtiger_users2group where userid=?', array($userid));
 		$num_rows=$adb->num_rows($result);
 		for ($i=0; $i<$num_rows; $i++) {
 			$now_group_id=$adb->query_result($result, $i, 'groupid');
@@ -37,9 +35,7 @@ class GetUserGroups {
 
 		//Setting the User Role
 		$userRole = fetchUserRole($userid);
-		//Retreiving from the vtiger_user2role
-		$query='select groupid from vtiger_group2role where roleid=?';
-		$result = $adb->pquery($query, array($userRole));
+		$result = $adb->pquery('select groupid from vtiger_group2role where roleid=?', array($userRole));
 		$num_rows=$adb->num_rows($result);
 		for ($i=0; $i<$num_rows; $i++) {
 			$now_group_id=$adb->query_result($result, $i, 'groupid');
@@ -48,15 +44,13 @@ class GetUserGroups {
 			}
 		}
 
-		//Retreiving from the user2rs
 		$parentRoles=getParentRole($userRole);
 		$parentRolelist= array();
 		foreach ($parentRoles as $par_rol_id) {
 			$parentRolelist[] = $par_rol_id;
 		}
 		$parentRolelist[] = $userRole;
-		$query='select groupid from vtiger_group2rs where roleandsubid in ('. generateQuestionMarks($parentRolelist) .')';
-		$result = $adb->pquery($query, array($parentRolelist));
+		$result = $adb->pquery('select groupid from vtiger_group2rs where roleandsubid in ('. generateQuestionMarks($parentRolelist) .')', array($parentRolelist));
 		$num_rows=$adb->num_rows($result);
 		for ($i=0; $i<$num_rows; $i++) {
 			$now_group_id=$adb->query_result($result, $i, 'groupid');

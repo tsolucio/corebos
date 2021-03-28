@@ -15,27 +15,26 @@ global $mod_strings, $app_strings, $adb, $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 
-//Retreiving the hierarchy
+//Retrieving the hierarchy
 $hrarray = getRoleAndSubordinatesHierarchy();
 //Constructing the Roledetails array
 $role_det = getAllRoleDetails();
-$query = 'select * from vtiger_role';
-$result = $adb->pquery($query, array());
+$result = $adb->pquery('select * from vtiger_role', array());
 $num_rows = $adb->num_rows($result);
 
 $roleout = '';
 $roleout = indent($hrarray, $roleout, $role_det);
 
 /** recursive function to construct the role tree ui
-  * @param $hrarray -- Hierarchial role tree array with only the roleid:: Type array
-  * @param $roleout -- html string ouput of the constucted role tree ui:: Type varchar
-  * @param $role_det -- Roledetails array got from calling getAllRoleDetails():: Type array
-  * @returns $role_out -- html string ouput of the constucted role tree ui:: Type string
+ * @param array Hierarchial role tree array with only the roleid
+ * @param string html string ouput of the constucted role tree ui
+ * @param array Role details array got from calling getAllRoleDetails()
+ * @return string html string ouput of the constucted role tree ui
  */
 function indent($hrarray, $roleout, $role_det) {
 	global $theme, $mod_strings, $app_strings;
 	foreach ($hrarray as $roleid => $value) {
-		//retreiving the vtiger_role details
+		//retrieving the role details
 		$role_det_arr=$role_det[$roleid];
 		$roleid_arr=$role_det_arr[2];
 		$rolename = $role_det_arr[0];

@@ -12,15 +12,13 @@ require_once 'Smarty_setup.php';
 $smarty = new vtigerCRM_Smarty;
 
 global $mod_strings, $app_strings, $adb, $theme, $default_charset;
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
 
-//Retreiving the hierarchy
 $hrarray = getRoleAndSubordinatesHierarchy();
 //Constructing the Roledetails array
 $role_det = getAllRoleDetails();
-$query = 'select * from vtiger_role';
-$result = $adb->pquery($query, array());
+$result = $adb->pquery('select * from vtiger_role', array());
 $num_rows=$adb->num_rows($result);
 $mask_roleid=array();
 $del_roleid = (isset($_REQUEST['maskid']) ? vtlib_purify($_REQUEST['maskid']) : '');
@@ -31,16 +29,15 @@ $roleout = '';
 $roleout = indent($hrarray, $roleout, $role_det, $mask_roleid);
 
 /** recursive function to construct the role tree ui
-  * @param $hrarray -- Hierarchial role tree array with only the roleid:: Type array
-  * @param $roleout -- html string ouput of the constucted role tree ui:: Type varchar
-  * @param $role_det -- Roledetails array got from calling getAllRoleDetails():: Type array
-  * @param $mask_roleid -- role id to be masked from selecting in the tree:: Type integer
-  * @returns $role_out -- html string ouput of the constucted role tree ui:: Type string
+  * @param array Hierarchial role tree array with only the roleid
+  * @param string html string ouput of the constucted role tree ui
+  * @param array Roledetails array got from calling getAllRoleDetails()
+  * @param integer role id to be masked from selecting in the tree
+  * @return string html string ouput of the constucted role tree ui
  */
 function indent($hrarray, $roleout, $role_det, $mask_roleid = '') {
 	global $theme, $app_strings, $default_charset;
 	foreach ($hrarray as $roleid => $value) {
-		//retreiving the vtiger_role details
 		$role_det_arr=$role_det[$roleid];
 		$roleid_arr=$role_det_arr[2];
 		$rolename = htmlentities($role_det_arr[0], ENT_QUOTES, $default_charset);

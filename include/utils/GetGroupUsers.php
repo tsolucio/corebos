@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-/** Class to retreive all the users present in a group */
+/** Class to retrieve all the users present in a group */
 require_once 'include/utils/UserInfoUtil.php';
 require_once 'include/utils/GetParentGroups.php';
 
@@ -18,16 +18,14 @@ class GetGroupUsers {
 	public $group_subgroups=array();
 
 	/** to get all the users and groups of the specified group
-	 * @params $groupId --> Group Id :: Type Integer
-	 * @returns the users present in the group in the variable $parent_groups of the class
-	 * @returns the sub groups present in the group in the variable $group_subgroups of the class
+	 * @param integer Group ID
+	 * @return array users present in the group in the variable $parent_groups of the class
+	 * @return array sub groups present in the group in the variable $group_subgroups of the class
 	 */
 	public function getAllUsersInGroup($groupid) {
 		global $adb, $log;
 		$log->debug('> getAllUsersInGroup '.$groupid);
-		//Retreiving from the user2grouptable
-		$query='select userid from vtiger_users2group where groupid=?';
-		$result = $adb->pquery($query, array($groupid));
+		$result = $adb->pquery('select userid from vtiger_users2group where groupid=?', array($groupid));
 		$num_rows=$adb->num_rows($result);
 		for ($i=0; $i<$num_rows; $i++) {
 			$now_user_id=$adb->query_result($result, $i, 'userid');
@@ -36,9 +34,7 @@ class GetGroupUsers {
 			}
 		}
 
-		//Retreiving from the group2role
-		$query='select roleid from vtiger_group2role where groupid=?';
-		$result = $adb->pquery($query, array($groupid));
+		$result = $adb->pquery('select roleid from vtiger_group2role where groupid=?', array($groupid));
 		$num_rows=$adb->num_rows($result);
 		for ($i=0; $i<$num_rows; $i++) {
 			$now_role_id=$adb->query_result($result, $i, 'roleid');
@@ -51,9 +47,7 @@ class GetGroupUsers {
 			}
 		}
 
-		//Retreiving from the group2rs
-		$query='select roleandsubid from vtiger_group2rs where groupid=?';
-		$result = $adb->pquery($query, array($groupid));
+		$result = $adb->pquery('select roleandsubid from vtiger_group2rs where groupid=?', array($groupid));
 		$num_rows=$adb->num_rows($result);
 		for ($i=0; $i<$num_rows; $i++) {
 			$now_rs_id=$adb->query_result($result, $i, 'roleandsubid');
@@ -64,9 +58,7 @@ class GetGroupUsers {
 				}
 			}
 		}
-		//Retreving from group2group
-		$query='select containsgroupid from vtiger_group2grouprel where groupid=?';
-		$result = $adb->pquery($query, array($groupid));
+		$result = $adb->pquery('select containsgroupid from vtiger_group2grouprel where groupid=?', array($groupid));
 		$num_rows=$adb->num_rows($result);
 		for ($i=0; $i<$num_rows; $i++) {
 			$now_grp_id=$adb->query_result($result, $i, 'containsgroupid');

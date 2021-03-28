@@ -28,7 +28,6 @@ $profile_id = $adb->getUniqueID('vtiger_profile');
 $sql1 = 'insert into vtiger_profile(profileid, profilename, description) values(?,?,?)';
 $adb->pquery($sql1, array($profile_id,$profilename, $description));
 
-//Retreiving the profileid
 $result2 = $adb->pquery('select max(profileid) as current_id from vtiger_profile', array());
 $profileid = $adb->query_result($result2, 0, 'current_id');
 

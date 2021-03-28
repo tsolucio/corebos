@@ -78,7 +78,6 @@ if (isset($_REQUEST['select'])) {
 
 $smarty->assign('RETURN_ACTION', isset($_REQUEST['return_action']) ? vtlib_purify($_REQUEST['return_action']) : '');
 
-//Retreive the list from Database
 $where_relquery = '';
 if (!empty($_REQUEST['recordid'])) {
 	$recid = vtlib_purify($_REQUEST['recordid']);
@@ -129,7 +128,6 @@ if (isset($order_by) && $order_by != '') {
 $list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $currentModule);
 $count_result = $adb->pquery(mkCountQuery($query), array());
 $noofrows = $adb->query_result($count_result, 0, 'count');
-//Retreiving the start value from request
 if (isset($_REQUEST['start']) && $_REQUEST['start'] != '') {
 	$start = vtlib_purify($_REQUEST['start']);
 	if ($start == 'last' && $noofrows > 0) {
@@ -151,10 +149,8 @@ if (GlobalVariable::getVariable('Debug_Popup_Query', '0')=='1') {
 	echo '<br>'.$query.'<br>';
 }
 
-//Retreive the Navigation array
 $navigation_array = getNavigationValues($start, $noofrows, $list_max_entries_per_page);
 
-//Retreive the List View Table Header
 $url_string .='&popuptype='.$popuptype;
 if (isset($_REQUEST['select']) && $_REQUEST['select'] == 'enable') {
 	$url_string .='&select=enable';

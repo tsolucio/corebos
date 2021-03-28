@@ -8,14 +8,14 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-/** Class to retreive all the Parent Groups of the specified Group */
+/** Class to retrieve all the Parent Groups of the specified Group */
 class GetParentGroups {
 
 	public $parent_groups=array();
 
-	/** to get all the parent vtiger_groups of the specified group
-	 * @params $groupId --> Group Id :: Type Integer
-	 * @returns updates the parent group in the varibale $parent_groups of the class
+	/** to get all the parent groups of the specified group
+	 * @param integer Group ID
+	 * @return array updates the parent group in the varibale $parent_groups of the class
 	 */
 	public function getAllParentGroups($groupid) {
 		global $adb,$log;

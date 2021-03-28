@@ -47,7 +47,7 @@ if (isset($_FILES['binFile']['tmp_name']) && move_uploaded_file($_FILES['binFile
 		$data = base64_encode(fread(fopen($uploaddir.$binFile, "r"), $filesize));
 		$date_entered = date('Y-m-d H:i:s');
 
-		//Retreiving the return module and setting the parent type
+		// Retrieve the return module and set the parent type
 		$ret_module = vtlib_purify($_REQUEST['return_module']);
 		$parent_type = '';
 		if ($_REQUEST['return_module'] == 'Leads') {
