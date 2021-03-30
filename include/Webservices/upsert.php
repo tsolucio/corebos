@@ -74,7 +74,7 @@ function vtws_upsert($elementType, $element, $searchOn, $updatedfields, $user) {
 	$query = $queryGenerator->getQuery();
 	// special case for cbuuid
 	if (in_array('cbuuid', array_keys($searchWithValues))) {
-		$query .= " and cbuuid='".$searchWithValues['cbuuid']."'";
+		$query .= $adb->convert2Sql(' and cbuuid=?', array($searchWithValues['cbuuid']));
 	}
 	$query .= ' limit 0,1';
 	$result = $adb->pquery($query, []);
