@@ -53,11 +53,8 @@ function MassCreate($elements, $user) {
 	foreach ($mcRecords as &$record) {
 		foreach ($record['element'] as $key => $value) {
 			if (strpos($value, '@{') !== false) {
-				$start = '@{';
-				$end = '}';
-				preg_match_all("/$start([a-zA-Z0-9_]*)$end/", $value, $match);
-				if (isset($match[1][0])) {
-					$reference = $match[1][0];
+				$reference = trim($value, '@{}');
+				if (!empty($reference)) {
 					$id = mcGetRecordId($mcRecords, $reference);
 					$record['element'][$key] = $id;
 				}
@@ -118,21 +115,16 @@ function mcProcessReference($element, &$elements) {
 	global $mcProcessedReferences, $mcRecords, $mcModules;
 	foreach ($element['element'] as $value) {
 		if (strpos($value, '@{') !== false) {
-			$start = '@{';
-			$end = '}';
-			preg_match_all("/$start([a-zA-Z0-9_]*)$end/", $value, $match);
-			if (isset($match[1][0])) {
-				$reference = $match[1][0];
-				if (!in_array($reference, $mcProcessedReferences)) {
-					$lastReferenceId = $element['referenceId'];
-					list($index, $array) = mcGetReferenceRecord($elements, $reference, $lastReferenceId);
-					if ($index !== null && $array) {
-						mcProcessReference($array, $elements);
-						unset($elements[$index]);
-						$mcProcessedReferences[] = $reference;
-					} else {
-						throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, 'Invalid reference specified');
-					}
+			$reference = trim($value, '{@}');
+			if (!empty($reference) && !in_array($reference, $mcProcessedReferences)) {
+				$lastReferenceId = $element['referenceId'];
+				list($index, $array) = mcGetReferenceRecord($elements, $reference, $lastReferenceId);
+				if ($index !== null && $array) {
+					mcProcessReference($array, $elements);
+					unset($elements[$index]);
+					$mcProcessedReferences[] = $reference;
+				} else {
+					throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, 'Invalid reference specified');
 				}
 			}
 		}
@@ -150,7 +142,6 @@ function mcInArray($needle, $arrays) {
 		foreach ($arrays as $array) {
 			if ($array === $needle) {
 				return true;
-				break;
 			}
 		}
 	}
@@ -160,14 +151,9 @@ function mcInArray($needle, $arrays) {
 function mcIsCyclicReference($array, $lastReferenceId) {
 	foreach ($array['element'] as $value) {
 		if (strpos($value, '@{') !== false) {
-			$start = '@{';
-			$end = '}';
-			preg_match_all("/$start([a-zA-Z0-9_]*)$end/", $value, $match);
-			if (isset($match[1][0])) {
-				if ($match[1][0] == $lastReferenceId) {
-					return true;
-					break;
-				}
+			$reference = trim($value, '{@}');
+			if (!empty($reference) && $reference == $lastReferenceId) {
+				return true;
 			}
 		}
 	}
