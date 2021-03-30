@@ -14,7 +14,7 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 
-require_once 'include/Webservices/Create.php';
+require_once 'include/Webservices/upsert.php';
 
 $mcProcessedReferences = array();
 $mcRecords = array();
@@ -61,7 +61,13 @@ function MassCreate($elements, $user) {
 			}
 		}
 		try {
-			$rec = vtws_create($record['elementType'], $record['element'], $user);
+			$updatedfields = implode(',', array_keys($record['element'])); // all fields
+			if (!empty($record['searchon'])) {
+				$searchOn = $record['searchon'];
+			} else {
+				$searchOn = $updatedfields;
+			}
+			$rec = vtws_upsert($record['elementType'], $record['element'], $searchOn, $updatedfields, $user);
 			$record['id'] = $rec['id'];
 			$successCreates[] = $rec;
 		} catch (Exception $e) {
