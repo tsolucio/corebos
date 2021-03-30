@@ -96,6 +96,10 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         array (
             'Firebase\\JWT\\' => 13,
         ),
+        'A' => 
+        array (
+            'Automattic\\WooCommerce\\' => 23,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -264,6 +268,10 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         'Firebase\\JWT\\' => 
         array (
             0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
+        ),
+        'Automattic\\WooCommerce\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/automattic/woocommerce/src/WooCommerce',
         ),
     );
 
