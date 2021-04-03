@@ -1058,9 +1058,7 @@ function createRecords($obj) {
 		$entityInfo = null;
 		$fieldData = array();
 		$lineItems = array();
-		$subject = $row['subject'];
-		$sql = 'SELECT * FROM ' . $tableName . ' WHERE status = '.Import_Data_Controller::$IMPORT_RECORD_NONE .' AND subject = "'.str_replace("\"", "\\\"", $subject).'"';
-		$subjectResult = $adb->query($sql);
+		$subjectResult = $adb->pquery('SELECT * FROM '.$tableName.' WHERE status='.Import_Data_Controller::$IMPORT_RECORD_NONE.' AND subject=?', array($row['subject']));
 		$count = $adb->num_rows($subjectResult);
 		$subjectRowIDs = array();
 		for ($j = 0; $j < $count; ++$j) {
