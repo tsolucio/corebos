@@ -8,6 +8,7 @@
  ********************************************************************************/
 
 var inventoryi18n = '',
+	inventoryLinesShown = true,
 	defaultProdQty = 1,
 	defaultSerQty = 1;
 
@@ -26,6 +27,12 @@ document.addEventListener('DOMContentLoaded', function () {
 		defaultSerQty = obj.Inventory_Service_Default_Units;
 	}, function (error) {
 		defaultSerQty = 1; // units
+	});
+	GlobalVariable_getVariable('Inventory_DoNotUseLines', '', gVTModule, gVTUserID).then(function (response) {
+		var obj = JSON.parse(response);
+		inventoryLinesShown = !obj.Inventory_DoNotUseLines.includes(gVTModule);
+	}, function (error) {
+		inventoryLinesShown = true;
 	});
 });
 
@@ -377,7 +384,7 @@ function finishValidateInventory() {
 
 function validateInventoryLines(module) {
 	//for products, vendors and pricebook modules we won't validate the product details. here return the control
-	if (module == 'Products' || module == 'Vendors' || module == 'PriceBooks' || module == 'Services') {
+	if (module == 'Products' || module == 'Vendors' || module == 'PriceBooks' || module == 'Services' || !inventoryLinesShown) {
 		return true;
 	}
 

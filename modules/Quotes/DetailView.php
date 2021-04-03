@@ -37,6 +37,7 @@ if (isPermitted('Invoice', 'CreateView', $record) == 'yes') {
 $smarty->assign('CONVERTMODE', 'quotetoinvoice');
 //Get the associated Products and then display above Terms and Conditions
 $smarty->assign('ASSOCIATED_PRODUCTS', getDetailAssociatedProducts($currentModule, $focus));
+$smarty->assign('ShowInventoryLines', strpos(GlobalVariable::getVariable('Inventory_DoNotUseLines', '', $currentModule, $current_user->id), $currentModule)===false);
 $smarty->assign('CREATEPDF', 'permitted');
 $quote_no = getModuleSequenceNumber($currentModule, $record);
 $smarty->assign('QUO_NO', $quote_no);

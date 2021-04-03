@@ -108,18 +108,14 @@
 										{/foreach}
 
 										<!-- Added to display the Product Details in Inventory-->
-										{if in_array($MODULE, getInventoryModules())}
+										{if in_array($MODULE, getInventoryModules()) && $ShowInventoryLines}
 										<tr>
 										<td colspan=4>
-										{if $OP_MODE eq 'create_view'}
 											{if isset($AVAILABLE_PRODUCTS) && $AVAILABLE_PRODUCTS eq 'true'}
 												{include file="Inventory/ProductDetailsEditView.tpl"}
 											{else}
 												{include file="Inventory/ProductDetails.tpl"}
 											{/if}
-										{else}
-											{include file="Inventory/ProductDetailsEditView.tpl"}
-										{/if}
 										</td>
 										</tr>
 										{/if}

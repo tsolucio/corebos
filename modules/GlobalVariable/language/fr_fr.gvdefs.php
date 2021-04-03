@@ -734,6 +734,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'comma separated list of other inventory modules',
 	'definition' => 'Inventory modules are special due to their product lines, this variable will permit you to add that type of functionality to your custom modules by adding it here.',
 ),
+'Inventory_DoNotUseLines' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'comma separated list of inventory modules that will not use product lines',
+	'definition' => 'The modules listed in this variable will act as normal modules, not showing the product detail lines, only the header fields of the module.',
+),
 'Report_Send_Scheduled_ifEmpty' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Booléen',

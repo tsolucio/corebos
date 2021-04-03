@@ -266,7 +266,7 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																	{*-- End of Blocks--*}
 
 																	<!-- Inventory - Product Details informations -->
-																	{if isset($ASSOCIATED_PRODUCTS)}
+																	{if isset($ASSOCIATED_PRODUCTS) && $ShowInventoryLines}
 																	<tr><td>
 																		{$ASSOCIATED_PRODUCTS}
 																	</td></tr>

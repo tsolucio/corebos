@@ -1070,7 +1070,7 @@ function createRecords($obj) {
 			$lineItemData = array();
 			$lineItemData['discount'] = 0;
 			foreach ($fieldMapping as $fieldName => $index) {
-				if ($moduleFields[$fieldName]->getTableName() == 'vtiger_inventoryproductrel') {
+				if (!empty($moduleFields[$fieldName]) && $moduleFields[$fieldName]->getTableName() == 'vtiger_inventoryproductrel') {
 					if ($fieldName=='productid') {
 						$fieldValue = $subjectRow[$fieldName];
 						if (strpos($fieldValue, '::::') > 0) {
@@ -1157,10 +1157,8 @@ function createRecords($obj) {
 			$fieldData['assigned_user_id'] = $obj->user->id;
 		}
 
-		if (!empty($lineItems)) {
-			if (method_exists($focus, 'importRecord')) {
-				$entityInfo = $focus->importRecord($obj, $fieldData, $lineItems);
-			}
+		if (method_exists($focus, 'importRecord')) {
+			$entityInfo = $focus->importRecord($obj, $fieldData, $lineItems);
 		}
 
 		if ($entityInfo == null) {
@@ -1186,10 +1184,10 @@ function importRecord($obj, $inventoryFieldData, $lineItems) {
 		unset($inventoryFieldData['currency_id']);
 	}
 	$fieldData = $obj->transformForImport($inventoryFieldData, $inventoryMeta);
-	$fieldData['pdoInformation'] = $lineItems;
-	if (empty($fieldData) || empty($fieldData['pdoInformation'])) {
+	if (empty($fieldData)) {
 		return null;
 	}
+	$fieldData['pdoInformation'] = $lineItems;
 	$wsrs=$adb->pquery('select id from vtiger_ws_entity where name=?', array('Currency'));
 	if ($wsrs && $adb->num_rows($wsrs)==1) {
 		$wsid = $adb->query_result($wsrs, 0, 0);

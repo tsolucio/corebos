@@ -372,6 +372,7 @@ if ($focus->mode == 'edit') {
 	$smarty->assign('UPDATEINFO', updateInfo($focus->id));
 	$associated_prod = getAssociatedProducts('Invoice', $focus);
 	$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
+	$smarty->assign('AVAILABLE_PRODUCTS', (empty($associated_prod) ? 'false' : 'true'));
 	$smarty->assign('MODE', $focus->mode);
 } elseif ($isduplicate == 'true') {
 	$associated_prod = $INVOICE_associated_prod;
@@ -516,6 +517,7 @@ $smarty->assign('TAXFILLINMODE', GlobalVariable::getVariable('Inventory_Tax_Fill
 //Show or not the Header to copy address to left or right
 $smarty->assign('SHOW_COPY_ADDRESS', GlobalVariable::getVariable('Application_Show_Copy_Address', 1, $currentModule, $current_user->id));
 $smarty->assign('SHOW_SHIPHAND_CHARGES', GlobalVariable::getVariable('Inventory_Show_ShippingHandlingCharges', 1, $currentModule, $current_user->id));
+$smarty->assign('ShowInventoryLines', strpos(GlobalVariable::getVariable('Inventory_DoNotUseLines', '', $currentModule, $current_user->id), $currentModule)===false);
 
 if (empty($associated_prod) && GlobalVariable::getVariable('Inventory_Check_Invoiced_Lines', 0, $currentModule) == 1
 	 && isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'sotoinvoice') {
