@@ -1216,8 +1216,7 @@ function getImportStatusCount($obj) {
 	$tableName = Import_Utils::getDbTableName($obj->user);
 	$result = $adb->query('SELECT status FROM '.$tableName. ' GROUP BY subject,status');
 
-	$statusCount = array('TOTAL' => 0, 'IMPORTED' => 0, 'FAILED' => 0, 'PENDING' => 0,
-		'CREATED' => 0, 'SKIPPED' => 0, 'UPDATED' => 0, 'MERGED' => 0);
+	$statusCount = array('TOTAL' => 0, 'IMPORTED' => 0, 'FAILED' => 0, 'PENDING' => 0, 'CREATED' => 0, 'SKIPPED' => 0, 'UPDATED' => 0, 'MERGED' => 0);
 
 	if ($result) {
 		$noOfRows = $adb->num_rows($result);

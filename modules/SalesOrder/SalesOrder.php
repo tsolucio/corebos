@@ -33,7 +33,8 @@ class SalesOrder extends CRMEntity {
 		'vtiger_crmentity',
 		'vtiger_salesorder',
 		'vtiger_sobillads',
-		'vtiger_soshipads','vtiger_salesordercf',
+		'vtiger_soshipads',
+		'vtiger_salesordercf',
 		'vtiger_invoice_recurring_info'
 	);
 	public $tab_name_index = array(
