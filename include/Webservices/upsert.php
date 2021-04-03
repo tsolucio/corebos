@@ -60,7 +60,11 @@ function vtws_upsert($elementType, $element, $searchOn, $updatedfields, $user) {
 			continue;
 		}
 		if (isset($r[$fieldName])) { // reference field
-			list($wsid, $crmid) = explode('x', $fieldValue);
+			if (empty($fieldValue)) {
+				$crmid = 0;
+			} else {
+				list($wsid, $crmid) = explode('x', $fieldValue);
+			}
 			$queryGenerator->addReferenceModuleFieldCondition($r[$fieldName][0], $fieldName, 'id', $crmid, 'e', QueryGenerator::$AND);
 		} else {
 			if ($fieldName=='id' && strpos($fieldValue, 'x')>0) {
