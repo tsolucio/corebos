@@ -626,7 +626,7 @@ class CRMEntity {
 		$insertion_mode = $this->mode;
 
 		//Checking if entry is already present so we have to update
-		if ($insertion_mode == 'edit') {
+		if ($insertion_mode == 'edit' && $table_name!='vtiger_invoice_recurring_info') {
 			$tablekey = $this->tab_name_index[$table_name];
 			// Make selection on the primary key of the module table to check.
 			$check_query = "select $tablekey from $table_name where $tablekey=?";
