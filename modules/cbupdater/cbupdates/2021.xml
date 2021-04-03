@@ -70,4 +70,11 @@
 	<classname>importdefaultemailtemplates</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Payment Duration Picklist ID field is incorrectly named</description>
+	<filename>build/changeSets/2021/fixPaymentDurationPicklistID.php</filename>
+	<classname>fixPaymentDurationPicklistID</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
