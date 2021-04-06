@@ -176,6 +176,7 @@ class CustomView extends CRMEntity {
 		$usercv_result = $adb->pquery('select default_cvid from vtiger_user_module_preferences where userid = ? and tabid = ?', array($current_user->id, $tabid));
 		$def_cvid = $adb->query_result($usercv_result, 0, 'default_cvid');
 
+		$customviewlist = array();
 		while ($cvrow = $adb->fetch_array($result)) {
 			$customviewlist['viewname'] = $cvrow['viewname'];
 			if ((isset($def_cvid) || $def_cvid != '') && $def_cvid == $cvid) {
