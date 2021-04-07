@@ -85,12 +85,12 @@ function vtws_update($element, $user) {
 	}
 	// Product line support
 	$hrequest = $_REQUEST;
-	if (in_array($elementType, getInventoryModules())) {
+	if (in_array($entityName, getInventoryModules())) {
 		if (!empty($element['pdoInformation']) && is_array($element['pdoInformation'])) {
 			$elementType = $entityName;
 			include 'include/Webservices/ProductLines.php';
 		} else {
-			$_REQUEST['action'] = $elementType.'Ajax';
+			$_REQUEST['action'] = $entityName.'Ajax';
 		}
 	}
 	if ($entityName == 'HelpDesk') {
