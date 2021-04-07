@@ -1159,8 +1159,7 @@ function addCustomField() {
 					//Adding a  new picklist value in the picklist table
 					if ($mode != 'edit') {
 						$picklistid = $adb->getUniqueID('vtiger_picklist');
-						$sql='insert into vtiger_picklist values(?,?)';
-						$adb->pquery($sql, array($picklistid,$columnName));
+						$adb->pquery('insert into vtiger_picklist values(?,?,1)', array($picklistid, $columnName));
 					}
 					$rs = $adb->pquery('select picklistid from vtiger_picklist where name=?', array($columnName));
 					$picklistid = $adb->query_result($rs, 0, 'picklistid');
