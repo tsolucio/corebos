@@ -73,8 +73,8 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] !='') {
 	}
 	$smarty->assign('TO_MAIL', $to_add);
 	$smarty->assign('IDLISTS', $mailids['idlists']);
-	if (!empty($_REQUEST['idlist']) && ($_REQUEST['pmodule'] != 'Accounts'
-		|| $_REQUEST['pmodule'] != 'Contacts' || $_REQUEST['pmodule'] != 'Leads' || $_REQUEST['pmodule'] != 'Vendors')) {
+	if (!empty($_REQUEST['idlist']) && $_REQUEST['pmodule'] != 'Accounts'
+		&& $_REQUEST['pmodule'] != 'Contacts' && $_REQUEST['pmodule'] != 'Leads' && $_REQUEST['pmodule'] != 'Vendors') {
 		$smarty->assign('relateemailwith', $_REQUEST['idlist']);
 	}
 	if (!empty($mailids['idlists'])) {
