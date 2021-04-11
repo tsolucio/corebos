@@ -52,6 +52,13 @@
   overflow: visible;
 }
 
+#listview-tui-grid .tui-grid-cell {
+  padding-left: calc(0.7rem - 5px);
+}
+#listview-tui-grid .tui-grid-cell-header {
+  padding-left: 0.7rem;
+}
+
 /* ---- CBDS tooltip ---- */
 .cbds-tooltip__trigger .cbds-tooltip__wrapper {
   left: 1000000000000000px;
