@@ -51,6 +51,9 @@ switch ($exptype) {
 				if (gettype($msg)=='boolean') {
 					$msg = $msg ? 'bool(true)' : 'bool(false)';
 				}
+				if (empty($msg)) {
+					$msg = 'empty: '.$msg;
+				}
 			} catch (Exception $e) {
 				$msg = $e->getMessage();
 				$msgtype = 'cb-alert-error';
