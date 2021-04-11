@@ -9647,7 +9647,7 @@ precacheAndRoute([{
   "revision": "9ed4669f524bec38319be63a2ee4ba26"
 }, {
   "url": "modules/MailManager/MailManager.js",
-  "revision": "12d6ddb8c1784c10beadea337823e434"
+  "revision": "0be292e88800261d71f1df3b4f8e6191"
 }, {
   "url": "modules/MailManager/MailManager.png",
   "revision": "1c045d808355b6ed581cd4971f3436f9"
@@ -9656,7 +9656,7 @@ precacheAndRoute([{
   "revision": "2225af5abe843f40dc29d79e0b1ea565"
 }, {
   "url": "modules/MailManager/resources/token-input-facebook.css",
-  "revision": "35d8aea3992991060bddd7dd035717c5"
+  "revision": "cfdd6597c7ee15d2808dedb313a625d9"
 }, {
   "url": "modules/Tooltip/Tooltip.js",
   "revision": "651680d2a9ffb37861fcac6d52d83f24"
