@@ -1197,11 +1197,9 @@ if (typeof(MailManager) == 'undefined') {
 			};
 			var baseurl = MailManager._baseurl();
 			MailManager.Request('index.php?'+baseurl, params, function (transport) {
+				ldsModal.show('modalTitle', transport.responseText, 'medium', "MailManager.search_consume_input(document.getElementById('mm_searchemailform'));ldsModal.close();");
+				ldsModal.updateTitle(MailManageri18nInfo.JSLBL_Search_For_Email);
 				MailManager.progress_hide();
-				var response = MailManager.removeHidElement(transport);
-				jQuery('#_popupsearch_').html(response);
-				MailManager.placeAtCenter(jQuery('#_popupsearch_'));
-				jQuery('#_popupsearch_').show().draggable();
 				MailManager.search_popup_init(target);
 			});
 		},
