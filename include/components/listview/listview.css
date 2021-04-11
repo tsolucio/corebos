@@ -48,6 +48,10 @@
   white-space: normal;
 }
 
+.tui-grid-cell-has-overflow {
+  overflow: visible;
+}
+
 /* ---- CBDS tooltip ---- */
 .cbds-tooltip__trigger .cbds-tooltip__wrapper {
   left: 1000000000000000px;

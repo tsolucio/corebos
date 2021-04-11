@@ -433,13 +433,13 @@ const ListView = {
 				filteredData.innerHTML = '';
 			}
 		});
-		document.addEventListener('click', function () {
-			const dropdown = document.getElementsByClassName('slds-dropdown_right');
-			for (let d in dropdown) {
-				if (dropdown[d].id != '' && dropdown[d].id != undefined) {
-					document.getElementById(dropdown[d].id).style.display = 'none';
+		document.addEventListener('click', function (e) {
+			[...document.getElementById('listview-tui-grid').getElementsByClassName('slds-dropdown_right')].forEach(dd => {
+				if (!e.target.classList.contains('listview-actions-opener')) {
+					dd.classList.remove('slds-is-open')
+					findUp(dd, '.tui-grid-cell').classList.remove('tui-grid-cell-has-overflow')
 				}
-			}
+			})
 		}, false);
 	},
 	/**
@@ -956,12 +956,12 @@ const ListView = {
 	 * @param {String} recordid
 	 */
 	RenderActions: (recordid) => {
-		const dropdown = document.getElementsByClassName('slds-dropdown_right');
-		for (let d in dropdown) {
-			if (dropdown[d].id != `dropdown-${recordid}` && dropdown[d].id != '' && dropdown[d].id != undefined) {
-				document.getElementById(dropdown[d].id).style.display = 'none';
+		[...document.getElementById('listview-tui-grid').getElementsByClassName('slds-dropdown_right')].forEach(dd => {
+			if (dd.id != `dropdown-${recordid}`) {
+				dd.classList.remove('slds-is-open')
+				findUp(dd, '.tui-grid-cell').classList.remove('tui-grid-cell-has-overflow')
 			}
-		}
+		})
 		fetch(
 			'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getRecordActions&formodule='+lvmodule+'&recordid='+recordid,
 			{
@@ -972,22 +972,26 @@ const ListView = {
 				credentials: 'same-origin',
 			}
 		).then(response => response.json()).then(response => {
-			let button_template = '<div class="slds-button-group" role="group">';
+			let button_template = '<ul class="slds-dropdown__list" role="menu">';
 			if (response == true) { //recycle bin module
 				const select_module = document.getElementById('select_module').value;
 				button_template += `
-				<a class="slds-button slds-button_outline-brand" onclick="restore(${recordid}, '${select_module}')">
-					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#refresh"></use>
-					</svg>
-					Restore
-				</a>
-				<a class="slds-button slds-button_outline-brand" onclick="callEmptyRecyclebin('${recordid}');" style="color: red; border: 1px solid;">
-					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
-					</svg>
-					${alert_arr.LNK_EDIT_ACTION}
-				</a>`;
+				<li class="slds-dropdown__item" role="presentation">
+					<a onclick="restore(${recordid}, '${select_module}')">
+						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#refresh"></use>
+						</svg>
+						Restore
+					</a>
+				</li>
+				<li class="slds-dropdown__item" role="presentation">
+					<a onclick="callEmptyRecyclebin('${recordid}');">
+						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+						</svg>
+						${alert_arr.LNK_EDIT_ACTION}
+					</a>
+				</li>`;
 			} else {
 				const edit_action = response.edit;
 				const delete_action = response.delete;
@@ -995,44 +999,61 @@ const ListView = {
 				const calendar_action = (response.calendar) ? response.calendar.status : undefined;
 				if (calendar_action != undefined) {
 					button_template += `
-					<button onclick="ajaxChangeCalendarStatus('${calendar_action}',${recordid});" class="slds-button slds-button_outline-brand">
-						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-						</svg>
-						${alert_arr.LBL_CLOSE_TITLE}
-					</button>`;
+					<li class="slds-dropdown__item" role="presentation">
+						<a onclick="ajaxChangeCalendarStatus('${calendar_action}',${recordid});">
+							<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+							</svg>
+							${alert_arr.LBL_CLOSE_TITLE}
+						</a>
+					</li>`;
 				}
 				if (edit_action.edit == true) {
 					button_template += `
-					<a class="slds-button slds-button_outline-brand" href="${edit_action.link}">
-						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
-						</svg>
-						${alert_arr.LNK_EDIT_ACTION}
-					</a>`;
+					<li class="slds-dropdown__item" role="presentation">
+						<a href="${edit_action.link}">
+							<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
+							</svg>
+							${alert_arr.LNK_EDIT_ACTION}
+						</a>
+					</li>`;
 				}
 				if (delete_action.delete == true) {
 					button_template += `
-					<a class="slds-button slds-button_outline-brand" onclick="javascript:confirmdelete('${delete_action.link}');" style="color: red; border: 1px solid;">
-						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
-						</svg>
-						${alert_arr.LNK_DELETE_ACTION}
-					</a>`;
+					<li class="slds-dropdown__item" role="presentation">
+						<a onclick="javascript:confirmdelete('${delete_action.link}');">
+							<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+							</svg>
+							${alert_arr.LNK_DELETE_ACTION}
+						</a>
+					</li>`;
 				}
 				if (view_action.view == true) {
 					button_template += `
-					<button class="slds-button slds-button_outline-brand" style="color: green; border: 1px solid;">
-						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#notification"></use>
-						</svg>
-						${alert_arr.LBL_MODIFIED}
-					</button>`;
+					<li class="slds-dropdown__item" role="presentation">
+						<div class="
+							cbds-color-compl-red--sober
+							slds-p-vertical_x-small
+							slds-p-horizontal_small
+							"
+						>
+							<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#notification"></use>
+							</svg>
+							${alert_arr.LBL_MODIFIED}
+						</div>
+					</li>`;
 				}
-				button_template += '</div>';
+				button_template += '</ul>';
 			}
-			document.getElementById(`dropdown-${recordid}`).innerHTML = button_template;
-			document.getElementById(`dropdown-${recordid}`).style.display = 'block';
+			let ddWrapper = document.getElementById(`dropdown-${recordid}`);
+			ddWrapper.innerHTML = button_template;
+			findUp(ddWrapper, '.slds-dropdown-trigger_click').classList.add('slds-is-open')
+			findUp(ddWrapper, '.tui-grid-cell').classList.add('tui-grid-cell-has-overflow')
+			// document.getElementById(`dropdown-${recordid}`).style.display = 'block';
+
 		});
 	},
 	/**
