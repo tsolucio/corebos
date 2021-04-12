@@ -1872,6 +1872,10 @@ function toggleSelect(state, relCheckName) {
 			}
 		}
 	}
+	//delete idlist value if select all records
+	if (getObj('idlist')) {
+		getObj('idlist').value = '';
+	}
 }
 
 function toggleSelectAll(relCheckName, selectAllName, el = '') {
@@ -2386,7 +2390,17 @@ function SelectAll(mod, parmod) {
 			}
 		} else {
 			idstring = document.getElementsByName('idlist')[0].value;
-			y = idstring.split(';').length;
+			if (idstring !== '') {
+				y = idstring.split(';').length;
+			} else {
+				y=0;
+				for (i = 0; i < x; i++) {
+					if (document.selectall.selected_id[i].checked) {
+						idstring = document.selectall.selected_id[i].value +';'+idstring;
+						y=y+1;
+					}
+				}
+			}
 		}
 		if (y != 0) {
 			document.selectall.idlist.value=idstring;
