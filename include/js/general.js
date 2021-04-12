@@ -1874,7 +1874,7 @@ function toggleSelect(state, relCheckName) {
 	}
 }
 
-function toggleSelectAll(relCheckName, selectAllName) {
+function toggleSelectAll(relCheckName, selectAllName, el = '') {
 	if (typeof(getObj(relCheckName).length)=='undefined') {
 		getObj(selectAllName).checked=getObj(relCheckName).checked;
 	} else {
@@ -1887,7 +1887,23 @@ function toggleSelectAll(relCheckName, selectAllName) {
 		}
 		getObj(selectAllName).checked=!atleastOneFalse;
 	}
+	orderByUserClick(relCheckName, el);
 }
+
+function orderByUserClick(relCheckName, el) {
+	let idlist = getObj('idlist').value.split(';');
+	if (el.checked) {
+		idlist.push(el.value);
+	} else {
+		if (idlist.includes(el.value)) {
+			let id_tmp = idlist.filter(e => e !== el.value);
+			idlist = id_tmp;
+		}
+	}
+	const filtered_list = idlist.filter(e => e !== '');
+	getObj('idlist').value = filtered_list.join(';');
+}
+
 //added for show/hide 10July
 function expandCont(bn) {
 	var leftTab = document.getElementById(bn);
@@ -2369,13 +2385,8 @@ function SelectAll(mod, parmod) {
 				return false;
 			}
 		} else {
-			y=0;
-			for (i = 0; i < x; i++) {
-				if (document.selectall.selected_id[i].checked) {
-					idstring = document.selectall.selected_id[i].value +';'+idstring;
-					y=y+1;
-				}
-			}
+			idstring = document.getElementsByName('idlist')[0].value;
+			y = idstring.split(';').length;
 		}
 		if (y != 0) {
 			document.selectall.idlist.value=idstring;
