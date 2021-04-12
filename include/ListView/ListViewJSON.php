@@ -132,7 +132,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	//get entityfieldid
 	$entityField = getEntityField($currentModule);
 	$entityidfield = $entityField['entityid'];
-	$reference_field = $focus->list_link_field;
+	$reference_field = getEntityFieldNames($currentModule);
 	//add action in header
 	if ($currentModule == 'cbCalendar') {
 		require_once 'modules/Calendar4You/Calendar4You.php';
@@ -273,7 +273,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 			}
 			$rows['assigned_user_id'] = isset($smownerid) ? getUserFullName($smownerid) : '';
 			$rows['recordid'] = $recordID;
-			$rows['reference_field'] = $reference_field;
+			$rows['reference_field'] = $reference_field['fieldname'];
 			$rows['relatedRows'] = $linkRow;
 		}
 		if ($Colorizer) {

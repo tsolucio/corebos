@@ -78,7 +78,7 @@ class LinkRender {
 			</span>
 			`;
 		}
-		if (columnName == referenceField) {
+		if (referenceField.includes(columnName)) {
 			el = document.createElement('a');
 			if (tooltip) {
 				el.id = `tooltip-el-${recordid}-${columnName}`;
