@@ -54,7 +54,7 @@
 		{foreach key=entity_id item=entity from=$LISTENTITY}
 		<tr bgcolor=white onMouseOver="this.className='lvtColDataHover'" onMouseOut="this.className='lvtColData'" >
 			{if $SELECT eq 'enable'}
-				<td><input type="checkbox" name="selected_id" value="{$entity_id}" onClick=toggleSelectAll(this.name,"select_all")></td>
+				<td><input type="checkbox" name="selected_id" value="{$entity_id}" onClick=toggleSelectAll(this.name,"select_all",this)></td>
 			{/if}
 			{foreach item=data from=$entity}
 				<td onMouseOver="vtlib_listview.trigger('cell.onmouseover', this);" onMouseOut="vtlib_listview.trigger('cell.onmouseout', this)">{$data}</td>

@@ -1665,6 +1665,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'strict | loose | clean',
 	'definition' => 'Esta variable decide si verificamos de manera estricta/vaga problemas de seguridad en un archivo de imagen o ignoramos la verificación y limpiamos la imagen.',
 ),
+'PopupOrderBy_UserClick' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'This variable allow to use function orderByUserClick for sorting records in popup by user click.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {
