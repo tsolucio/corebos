@@ -48,10 +48,10 @@
 						<thead>
 							<tr class="slds-line-height_reset">
 							<th class="" scope="col">
-								<div class="slds-truncate" title="Block Feature">{'Block Feature'|@getTranslatedString:'cbMap'}</div>
+								<div class="slds-truncate" title="{'Block Feature'|@getTranslatedString:'cbMap'}">{'Block Feature'|@getTranslatedString:'cbMap'}</div>
 							</th>
 							<th class="" scope="col">
-								<div class="slds-truncate" title="Value">{'Value'|@getTranslatedString:'cbMap'}</div>
+								<div class="slds-truncate" title="{'Value'|@getTranslatedString:'cbMap'}">{'Value'|@getTranslatedString:'cbMap'}</div>
 							</th>
 							</tr>
 						</thead>
@@ -79,10 +79,10 @@
 						<thead>
 							<tr class="slds-line-height_reset">
 							<th class="" scope="col">
-								<div class="slds-truncate" title="Key Name">{'Key Name'|@getTranslatedString:'cbMap'}</div>
+								<div class="slds-truncate" title="{'Key Name'|@getTranslatedString:'cbMap'}">{'Key Name'|@getTranslatedString:'cbMap'}</div>
 							</th>
 							<th class="" scope="col">
-								<div class="slds-truncate" title="Value">{'Value'|@getTranslatedString:'cbMap'}</div>
+								<div class="slds-truncate" title="{'Value'|@getTranslatedString:'cbMap'}">{'Value'|@getTranslatedString:'cbMap'}</div>
 							</th>
 							</tr>
 						</thead>
@@ -109,10 +109,10 @@
 						<thead>
 							<tr class="slds-line-height_reset">
 							<th class="" scope="col">
-								<div class="slds-truncate" title="Key Name">{'Key Name'|@getTranslatedString:'cbMap'}</div>
+								<div class="slds-truncate" title="{'Key Name'|@getTranslatedString:'cbMap'}">{'Key Name'|@getTranslatedString:'cbMap'}</div>
 							</th>
 							<th class="" scope="col">
-								<div class="slds-truncate" title="Values">{'Values'|@getTranslatedString:'cbMap'}</div>
+								<div class="slds-truncate" title="{'Values'|@getTranslatedString:'cbMap'}">{'Values'|@getTranslatedString:'cbMap'}</div>
 							</th>
 							</tr>
 						</thead>
