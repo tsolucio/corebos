@@ -75,7 +75,8 @@ function export_results() {
 	}
 	const bqname = document.getElementById('bqname').value;
 	const bqmodule = document.getElementById('bqmodule').value;
-	const issqlwsq_disabled = document.getElementById("checkboxsqlwsq").disabled;
+	const issqlwsq_disabled = (document.getElementById("checkboxsqlwsq").checked ? true : false);
+	const recordid = document.getElementById('record').value;
 	let cbq = JSON.stringify({
 		'qname': bqname,
 		'qtype': qtype,
@@ -91,7 +92,8 @@ function export_results() {
 		'sqlquery': qsqlqry,
 		'condfilterformat': '0',
 		'context_variable': context_data,
-		'issqlwsq_disabled': issqlwsq_disabled
+		'issqlwsq_disabled': issqlwsq_disabled,
+		'record_id': recordid
 	});
 	const evaluatewith = document.getElementById('evaluatewith').value;
 	let cbqctx = '';
