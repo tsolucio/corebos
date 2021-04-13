@@ -19,7 +19,6 @@ require_once 'modules/PickList/PickListUtils.php';
 class genDetailViewLayoutMapping extends generatecbMap {
 
 	public function generateMap() {
-		global $log;
 		$Map = $this->getMap();
 		$mapcontent = '';
 		include 'modules/cbMap/generatemap/GenMapHeader.php';
@@ -33,7 +32,6 @@ class genDetailViewLayoutMapping extends generatecbMap {
 		$smarty->assign('type', $type);
 		if ($type == 'Widget' || $type == 'CodeWithHeader' || $type == 'CodeWithoutHeader') {
 			$details = $mapcontentArr['blocks']['block'];
-			$log->fatal('The case '.$details);
 			!empty($details['loadfrom']) ? $smarty->assign('loadfrom', $details['loadfrom']) : $smarty->assign('loadfrom', '');
 			!empty($details['loadcode']) ? $smarty->assign('loadcode', $details['loadcode']) : $smarty->assign('loadcode', '');
 			!empty($details['handler_paths']) ? $smarty->assign('handler_paths', $details['handler_paths']) : $smarty->assign('handler_paths', '');
@@ -55,7 +53,7 @@ class genDetailViewLayoutMapping extends generatecbMap {
 	}
 
 	public function convertToMap() {
-		global $adb, $log;
+		global $adb;
 		$Map = $this->getMap();
 		$module = $Map->column_fields['targetname'];
 		if ($module!=$_REQUEST['tmodule']) {
@@ -64,9 +62,7 @@ class genDetailViewLayoutMapping extends generatecbMap {
 		$xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><map/>');
 		$type = urldecode($_REQUEST['type']);
 		$content = $_REQUEST['content'];
-		$log->fatal($content);
 		$contentArr = array_filter(explode('$$', $content));
-		$log->fatal($contentArr);
 		if ($type == 'ApplicationFields') {
 			$blocks = $xml->addChild('blocks');
 			for ($x=0; $x < count($contentArr); $x++) {
@@ -114,10 +110,8 @@ class genDetailViewLayoutMapping extends generatecbMap {
 			$block = $blocks->addChild('block');
 			$block->addChild('type', $type);
 			for ($i=0; $i < count($contentArr); $i++) {
-				$log->fatal($contentArr[$i]);
 				if (strpos($contentArr[$i], '##') != false) {
 					list($key, $val) = explode('##', $contentArr[$i]);
-					$log->fatal('Key: '.$key. ' val: '.$val);
 					if (!empty($key) && !empty($val) && $block) {
 						$block->addChild($key, $val);
 					}

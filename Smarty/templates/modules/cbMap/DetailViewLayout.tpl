@@ -87,13 +87,13 @@
 			<h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Create New Block</h2>
 			</header>
 			<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-				<div class="slds-form-element slds-m-top--small">
+				<div class="slds-form-element slds-m-top_small">
 					<label class="slds-form-element__label" for="block_modulename">{'Module'|@getTranslatedString:$MODULE}</label>
 					<div class="slds-form-element__control">
 						<input type="text" id="block_modulename" name="block_modulename" readonly value ="" class="slds-input"/>
 					</div>
 				</div>
-				<div class="slds-form-element slds-m-top--small">
+				<div class="slds-form-element slds-m-top_small">
 					<label class="slds-form-element__label" for="blocklabel">{'Block name'|@getTranslatedString:$MODULE}</label>
 					<div class="slds-form-element__control">
 						<input type="text" id="blocklabel" name="blocklabel"  value = "" class="slds-input"/>
@@ -178,7 +178,7 @@
 	{* RelatedList div details *}
 	<div class="slds-p-around_x-small slds-grid  slds-gutters" id="RelatedListDiv">
 			<div class="slds-col slds-size_2-of-4 slds-p-around_xxx-small">
-				<div class="slds-form-element slds-m-top--small">
+				<div class="slds-form-element slds-m-top_small">
 					<label class="slds-form-element__label" for="relloadfrom">{'Loadfrom'|@getTranslatedString:$MODULE}</label>
 					<div class="slds-form-element__control">
 						<input type="text" id="relloadfrom" read_only name="relloadfrom" readonly  value = "{if isset($relloadfrom)} {$relloadfrom}{/if}" class="slds-input"/>
@@ -186,7 +186,7 @@
 				</div>
 			</div>
 			<div class="slds-col slds-size_2-of-4 slds-p-around_xxx-small">
-				<div class="slds-form-element slds-m-top--small">
+				<div class="slds-form-element slds-m-top_small">
 					<label class="slds-form-element__label" for="relmodules">{'Related Modules'|@getTranslatedString:$MODULE}</label>
 					<div class="slds-form-element__control">
 						<div class="slds-select_container">
@@ -199,31 +199,31 @@
 
 	{* Widget, CodeWithHeader and CodeWithoutHeader div details *}
 	<div class="slds-p-around_x-small slds-form-element" id="WidgetDiv" style = "display:none">
-		<div class="slds-form-element slds-m-top--small">
+		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="loadfrom">{'Loadfrom'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="loadfrom" name="loadfrom"  value = "{if isset($loadfrom)}{$loadfrom}{/if}" class="slds-input"/>
 			</div>
 		</div>
-		<div class="slds-form-element slds-m-top--small">
+		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="loadcode">{'Loadcode'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="loadcode" name="loadcode"  value = "{if isset($loadcode)}{$loadcode}{/if}" class="slds-input"/>
 			</div>
 		</div>
-		<div class="slds-form-element slds-m-top--small">
+		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="handler_path">{'Handler path'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="handler_path" name="handler_path" value = "{if isset($handler_path)}{$handler_path}{/if}" class="slds-input"/>
 			</div>
 		</div>
-		<div class="slds-form-element slds-m-top--small">
+		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="handler_class">{'Handler class'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="handler_class" name="handler_class" value = "{if isset($handler_class)}{$handler_class}{/if}" class="slds-input"/>
 			</div>
 		</div>
-		<div class="slds-form-element slds-m-top--small">
+		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="handler">{'Handler'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="handler" name="handler" value = "{if isset($handler)}{$handler}{/if}" class="slds-input"/>
