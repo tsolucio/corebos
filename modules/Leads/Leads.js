@@ -212,7 +212,7 @@ function toggle_converted() {
 	} else {
 		setCookie('LeadConv', 'true');
 	}
-	document.location.reload(true);
+	document.location.reload();
 }
 
 function LeadssetValueFromCapture(recordid, value, target_fieldname) {
