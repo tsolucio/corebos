@@ -3459,6 +3459,8 @@ function ActivityReminderCallback(clicked) {
 					jQuery('#'+ActivityReminder_Newdelay_response_node).remove();
 				}
 			}
+		}).fail(function (response) {
+			ldsModal.show(alert_arr['ERROR'], response.responseText.substring(response.responseText.indexOf('<div class="slds-modal__container">'), response.responseText.indexOf('</section>')), '');
 		});
 	}
 }
