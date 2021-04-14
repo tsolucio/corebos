@@ -164,7 +164,6 @@ var selectedSGTemplate = {if !empty($task->sgmsgtemplate)}{$task->sgmsgtemplate}
 
 <div class="slds-grid slds-grid_vertical-align-center slds-p-horizontal_xx-large">
 	<div class="slds-col slds-size_8-of-12 slds-p-around_x-small">
-		<span id="_messagediv_" style="display: none;z-index:22;" class="cb-alert-info"></span>
 		<div id="file-uploader" class="dropzone mm-dz-div slds-m-top_xx-small" style="display: none;">
 			<span class="dz-message mmdzmessage"><img alt="{'Drag attachment here or click to upload'|@getTranslatedString}" src="include/dropzone/upload_32.png"></span>
 			<span class="dz-message mmdzmessage" id="file-uploader-message">&nbsp;{'Drag attachment here or click to upload'|@getTranslatedString}</span>

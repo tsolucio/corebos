@@ -41,11 +41,10 @@ var __attinfo = {$task->dzattinfo|json_encode};
 
 <div class="slds-grid slds-gutters slds-grid_vertical-align-center slds-p-horizontal_x-large">
 	<div class="slds-col slds-size_8-of-12">
-		<span id="_messagediv_" style="display: none;z-index:22;" class="cb-alert-info"></span>
-			<div id="file-uploader" class="dropzone mm-dz-div slds-m-top_xx-small" style="display: none;">
-				<span class="dz-message mmdzmessage"><img alt="{'Drag attachment here or click to upload'|@getTranslatedString}" src="include/dropzone/upload_32.png"></span>
-				<span class="dz-message mmdzmessage" id="file-uploader-message">&nbsp;{'Drag attachment here or click to upload'|@getTranslatedString}</span>
-			</div>
+		<div id="file-uploader" class="dropzone mm-dz-div slds-m-top_xx-small" style="display: none;">
+			<span class="dz-message mmdzmessage"><img alt="{'Drag attachment here or click to upload'|@getTranslatedString}" src="include/dropzone/upload_32.png"></span>
+			<span class="dz-message mmdzmessage" id="file-uploader-message">&nbsp;{'Drag attachment here or click to upload'|@getTranslatedString}</span>
+		</div>
 	</div>
 	<div class="slds-col slds-size_3-of-12 slds-text-align_right slds-p-around_x-small">
 		<input type="hidden" id="attachmentCount" name="attachmentCount" value="{if isset($task->attachmentids)}{$task->attachmentids|substr_count:','}{else}0{/if}" >
