@@ -159,7 +159,7 @@ function vtlib_toggleModuleAccess($module, $enable_disable, $noevents = false) {
 
 	$__cache_module_activeinfo[$module] = $enable_disable;
 
-	create_tab_data_file();
+	//create_tab_data_file();
 	create_parenttab_data_file();
 	vtlib_RecreateUserPrivilegeFiles();
 
