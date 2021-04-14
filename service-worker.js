@@ -9314,7 +9314,7 @@ precacheAndRoute([{
   "revision": "03a067d91231bf0f881cb1449dfd8efd"
 }, {
   "url": "include/js/general.js",
-  "revision": "7ce9b4b70bf35009bc38222f1e5b8895"
+  "revision": "6b26b2d8431e981786e00a1dc01a2a65"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "b8243aa64b88f790bbe422b6b6fa741b"
@@ -9506,7 +9506,7 @@ precacheAndRoute([{
   "revision": "69310e3e47426f3cf39135b5ec268815"
 }, {
   "url": "modules/com_vtiger_workflow/resources/emailtaskscript.js",
-  "revision": "45c38f0e3540275f50a82fa4cdb066d4"
+  "revision": "2715ec6a92a2e830f6bebe677f73f19f"
 }, {
   "url": "modules/com_vtiger_workflow/resources/entitymethodtask.js",
   "revision": "43155535cd6da302c6ad1c34c077c642"
@@ -9569,7 +9569,7 @@ precacheAndRoute([{
   "revision": "fab39532561524488d757c60df5fedd7"
 }, {
   "url": "modules/com_vtiger_workflow/resources/whatsappworkflowtaskscript.js",
-  "revision": "03215231318fb05a428b2a80b382bb45"
+  "revision": "622c712a323d8be873240868ebe37a96"
 }, {
   "url": "modules/com_vtiger_workflow/resources/workflowlistscript.js",
   "revision": "c772b9cea1354ccf15f30bea58aa0fc2"
@@ -9647,7 +9647,7 @@ precacheAndRoute([{
   "revision": "9ed4669f524bec38319be63a2ee4ba26"
 }, {
   "url": "modules/MailManager/MailManager.js",
-  "revision": "0be292e88800261d71f1df3b4f8e6191"
+  "revision": "a01c212d51878e9736d89a5269349e7f"
 }, {
   "url": "modules/MailManager/MailManager.png",
   "revision": "1c045d808355b6ed581cd4971f3436f9"
@@ -9845,10 +9845,10 @@ precacheAndRoute([{
   "revision": "df1beb66383c404ca19595bfede77a1f"
 }, {
   "url": "modules/cbQuestion/resources/appendcontext.js",
-  "revision": "1cf249c6ecc742fb1ff1d04b3c597ea8"
+  "revision": "e6a31c4f1a44e052c690e06105d4fc71"
 }, {
   "url": "modules/cbQuestion/resources/Builder.js",
-  "revision": "0eec1243725a7c0ff1f3881e2eeb01c8"
+  "revision": "d8b453e44d94eacdec4600cd15c08f2f"
 }, {
   "url": "modules/cbQuestion/resources/editbuilder.js",
   "revision": "882f43f4054b3056e66a674b35112825"
@@ -9896,7 +9896,7 @@ precacheAndRoute([{
   "revision": "c240060c1b952bba5d36d4a506fa0e6e"
 }, {
   "url": "modules/Leads/Leads.js",
-  "revision": "9a96351a66773a3b404c50db5c685385"
+  "revision": "bdb21e42576bc67c93cf41a6742bda52"
 }, {
   "url": "modules/WSAPP/WSAPP.js",
   "revision": "36b3093ded85fbdb78336ed100dae8ac"
@@ -10043,7 +10043,7 @@ precacheAndRoute([{
   "revision": "15bd7822790e2fcd520ed18cdb019883"
 }, {
   "url": "modules/Utilities/Utilities.js",
-  "revision": "864fa0c60694a45cfadf9bc2203c2ac7"
+  "revision": "18844ee70d6993cd1e9bbb8bb412d097"
 }, {
   "url": "modules/Import/resources/ImportStep2.js",
   "revision": "45c632cf97d1f03c7f6805c1f78ae0a7"
