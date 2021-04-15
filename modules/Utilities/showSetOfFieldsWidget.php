@@ -20,6 +20,7 @@ require_once 'modules/Vtiger/DeveloperWidget.php';
 require_once 'modules/cbMap/cbMap.php';
 require_once 'include/utils/CommonUtils.php';
 require_once 'data/CRMEntity.php';
+require_once 'include/Webservices/DescribeObject.php';
 global $currentModule;
 
 class showSetOfFieldsWidget {
@@ -76,21 +77,29 @@ class showSetOfFields_DetailViewBlock extends DeveloperBlock {
 							if (!empty($row['column'])) {
 								$columns = $row['column'];
 								if (!is_array($columns)) {
-									$layoutdataArr['data'][$y][] = array($columns => $data[$columns]);
+									$fieldinfo = getFieldDetails($columns, $module);
+									$label = isset($fieldinfo['label']) ? $fieldinfo['label']: $columns;
+									$layoutdataArr['data'][$y][] = array($label => $data[$columns]);
 								}
 								if (is_array($columns) && count($columns) > 0) {
 									for ($i=0; $i < count($columns); $i++) {
 										$fieldname = $columns[$i];
-										$layoutdataArr['data'][$y][] = array($fieldname => $data[$fieldname]);
+										$fieldinfo = getFieldDetails($fieldname, $module);
+										$label = isset($fieldinfo['label']) ? $fieldinfo['label']: $fieldname;
+										$layoutdataArr['data'][$y][] = array($label => $data[$fieldname]);
 									}
 								}
 							} elseif (!isset($row['column']) && is_array($row)) {
 								for ($x=0; $x < count($row); $x++) {
 									$fieldname = $row[$i];
-									$layoutdataArr['data'][$y][] = array($fieldname => $data[$fieldname]);
+									$fieldinfo = getFieldDetails($fieldname, $module);
+									$label = isset($fieldinfo['label']) ? $fieldinfo['label']: $fieldname;
+									$layoutdataArr['data'][$y][] = array($label => $data[$fieldname]);
 								}
 							} else {
-								$layoutdataArr['data'][$y][] = array($row => $data[$row]);
+								$fieldinfo = getFieldDetails($fieldname, $row);
+								$label = isset($fieldinfo['label']) ? $fieldinfo['label']: $row;
+								$layoutdataArr['data'][$y][] = array($label => $data[$row]);
 							}
 							$y++;
 						}
@@ -209,24 +218,23 @@ function formatDatatoDisplay($data) {
 	}
 }
 
-//Pending for Translation of fieldList case
-/*function translateAndformatListFieldData($fieldata, $module, $fieldarr) {
-	global $adb;
-	$log;
-	$modInstance = CRMEntity::getInstance($module);
-	$tabId = getTabid($module);
-	$fieldsArr = implode('","', $fieldarr);
-	$sql = 'select * from vtiger_field where vtiger_field.tabid=? and vtiger_field.fieldname IN ("' .$fieldsArr. '")';
-	$result = $adb->pquery($sql, array($tabId));
-	$noOfRows = $adb->num_rows($result);
-	$response = array();
-	if ($noOfRows > 0) {
-		for ($i=0; $i < $noOfRows; $i++) {
-			$fieldname = $adb->query_result($result, $i, 'fieldname');
-			$fieldlabel = $adb->query_result($result, $i, 'fieldlabel');
-			$uitype = $adb->query_result($result, $i, 'uitype');
-			$response[] = array($fieldname => $fieldlabel);
+function getFieldDetails($fieldname, $module) {
+	global $current_user;
+	$wsfieldsinfo = vtws_describe($module, $current_user);
+	$fieldsinfo = $wsfieldsinfo['fields'];
+	foreach ($fieldsinfo as $ret => $finfo) {
+		if ($finfo['name']==$fieldname) {
+			break;
 		}
 	}
-	return $response;
-}*/
+	//pending case for UITYPE 10 filed
+	if (isset($fieldsinfo[$ret]['uitype']) && $fieldsinfo[$ret]['uitype']==10) {
+		$refmod = $fieldsinfo[$ret]['type']['refersTo'][0];
+		$rmod = CRMEntity::getInstance($refmod);
+		$WSCodeID = vtws_getEntityId($refmod);
+		$fieldsinfo[$ret]['searchin'] = $refmod;
+		$fieldsinfo[$ret]['searchby'] = $refmod.$rmod->list_link_field;
+		$fieldsinfo[$ret]['searchwsid'] = $WSCodeID;
+	}
+	return $fieldsinfo[$ret];
+}

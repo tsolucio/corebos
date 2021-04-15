@@ -40,7 +40,7 @@
 												{foreach item=fieldvalue from=$field}
 													{foreach item=fieldname key=fieldkey from=$fieldvalue}
 														<td style="background:#F7F7F7; text-align:right;border-left: 1px solid #DEDEDE" data-label="{$fieldkey}">
-															<div class="slds-truncate" title="{$fieldkey}">{$fieldkey}</div>
+															<div class="slds-truncate" title="{$fieldkey|@getTranslatedString: $LAYOUTMODULE}">{$fieldkey|@getTranslatedString: $LAYOUTMODULE}</div>
 														</td>
 														<td data-label="{$fieldname}">
 															<div class="slds-truncate" title="{$fieldname}">{$fieldname}</div>
