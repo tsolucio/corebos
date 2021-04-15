@@ -116,11 +116,9 @@ class genDetailViewLayoutMapping extends generatecbMap {
 			$block = $blocks->addChild('block');
 			$block->addChild('type', $type);
 			$layout = $block->addChild('layout');
-			$log->fatal('Here ', $contentArr);
 			for ($i=0; $i < count($contentArr); $i++) {
 				$item = trim($contentArr[$i]);
 				if ($item == 'row') {
-					$log->fatal('Added Row');
 					$row = $layout->addChild('row');
 				}
 				if (strpos($item, '##') !== false) {
