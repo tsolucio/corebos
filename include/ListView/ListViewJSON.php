@@ -387,7 +387,7 @@ function getListViewHeaders($currentModule, $tabid) {
 			$listview_header_search['modifiedby'] = getTranslatedString('Last Modified By', 'RecycleBin');
 		}
 	}
-	$listview_header_search['action'] = $app_strings['LBL_ACTION'];
+	$listview_header_search['cblvactioncolumn'] = $app_strings['LBL_ACTION'];
 	$listview_header_arr = array();
 	foreach ($listview_header_search as $fName => $fValue) {
 		$fieldType = getUItypeByFieldName($currentModule, $fName);

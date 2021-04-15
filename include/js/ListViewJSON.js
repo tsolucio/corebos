@@ -135,7 +135,7 @@ const ListView = {
 			} else {
 				editor = false;
 			}
-			if (fieldname == 'action') {
+			if (fieldname == 'cblvactioncolumn') {
 				header = {
 					name: fieldname,
 					header: ' ',
@@ -365,7 +365,7 @@ const ListView = {
 					}
 					const getGridCell = document.getElementsByClassName('tui-grid-cell');
 					for (let i = 0; i < getGridCell.length; i++) {
-						if (getGridCell[i].dataset.columnName == 'action') {
+						if (getGridCell[i].dataset.columnName == 'cblvactioncolumn') {
 							getGridCell[i].style.overflow = 'visible';
 						}
 					}
@@ -547,7 +547,7 @@ const ListView = {
 			//update options for basic search
 			document.getElementById('bas_searchfield').innerHTML = '';
 			for (let h in headers) {
-				if (headers[h]['name'] != 'action') {
+				if (headers[h]['name'] != 'cblvactioncolumn') {
 					let option = document.createElement('option');
 					option.innerHTML = headers[h]['header'];
 					option.value = headers[h]['name'];
@@ -581,7 +581,7 @@ const ListView = {
 			let filters = response[1];
 			document.getElementById('bas_searchfield').innerHTML = '';
 			for (let h in headers) {
-				if (headers[h]['name'] != 'action') {
+				if (headers[h]['name'] != 'cblvactioncolumn') {
 					let option = document.createElement('option');
 					option.innerHTML = headers[h]['header'];
 					option.value = headers[h]['name'];
