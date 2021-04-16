@@ -38,14 +38,21 @@
 										{foreach item=field from=$LAYOUT_DATA.data}
 											<tr class="slds-hint-parent">
 												{foreach item=fieldvalue from=$field}
-													{foreach item=fieldname key=fieldkey from=$fieldvalue}
-														<td style="background:#F7F7F7; text-align:right;border-left: 1px solid #DEDEDE" data-label="{$fieldkey}">
-															<div class="slds-truncate" title="{$fieldkey|@getTranslatedString: $LAYOUTMODULE}">{$fieldkey|@getTranslatedString: $LAYOUTMODULE}</div>
+													{if $fieldvalue.uitype eq '19'} {*Needs Review *}
+														<td data-label="{$fieldvalue.label}"style="background:#F7F7F7;border-left:1px solid #DEDEDE">
+															<div class="slds-truncate" title="{$fieldvalue.label|@getTranslatedString: $LAYOUTMODULE}"> {$fieldvalue.label|@getTranslatedString: $LAYOUTMODULE}</div>
 														</td>
-														<td data-label="{$fieldname}">
-															<div class="slds-truncate" title="{$fieldname}">{$fieldname}</div>
+														<td data-label=""  style="word-break: break-all;text-overflow: ellipsis;">
+															<div class="slds-truncate" title="">{$fieldvalue.value}</div>
 														</td>
-													{/foreach}
+													{else}
+														<td data-label="{$fieldvalue.label}"style="background:#F7F7F7;border-left:1px solid #DEDEDE">
+															<div class="slds-truncate" title="{$fieldvalue.label|@getTranslatedString: $LAYOUTMODULE}"> {$fieldvalue.label|@getTranslatedString: $LAYOUTMODULE}</div>
+														</td>
+														<td data-label="">
+															<div class="slds-truncate" title="">{$fieldvalue.value}</div>
+														</td>
+													{/if}
 												{/foreach}
 											</tr>
 										{/foreach}
@@ -77,15 +84,28 @@
 									<tbody>
 										{foreach item=field from=$LAYOUT_DATA.data}
 											<tr class="slds-hint-parent">
-												{foreach item=val key=keyval from=$field}
-													<td data-label="{$keyval}"style="background:#F7F7F7;border-left:1px solid #DEDEDE">
-														<div class="slds-truncate" title="{$keyval|@getTranslatedString: $LAYOUTMODULE}"> {$keyval|@getTranslatedString: $LAYOUTMODULE}</div>
+												{if $field.uitype eq '19'}
+													<article class="slds-card">
+													<div class="slds-card__header slds-grid">
+														<header class="slds-media slds-media_center slds-has-flexi-truncate">
+														<div class="slds-media__body">
+															<h2 class="slds-card__header-title">
+																<span>{$field.label}</span>
+															</h2>
+														</div>
+														</header>
+													</div>
+													<div class="slds-card__body slds-card__body_inner">{$field.value}</div>
+													</article>
+												{else}
+													<td data-label="{$field.label}"style="background:#F7F7F7;border-left:1px solid #DEDEDE">
+														<div class="slds-truncate" title="{$field.label|@getTranslatedString: $LAYOUTMODULE}"> {$field.label|@getTranslatedString: $LAYOUTMODULE}</div>
 													</td>
-													<td data-label="{$val}">
-														<div class="slds-truncate" title="{$val}">{$val}</div>
+													<td data-label="">
+														<div class="slds-truncate" title="">{$field.value}</div>
 													</td>
-												{/foreach}
-											</tr>
+												{/if}
+												</tr>
 										{/foreach}
 									</tbody>
 								</table>

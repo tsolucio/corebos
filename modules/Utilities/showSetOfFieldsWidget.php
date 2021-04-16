@@ -63,8 +63,10 @@ class showSetOfFields_DetailViewBlock extends DeveloperBlock {
 						if ($noOfRows > 0) {
 							for ($i=0; $i < $noOfRows; $i++) {
 								$fieldname = $adb->query_result($result, $i, 'fieldname');
-								$fieldlabel = $adb->query_result($result, $i, 'fieldlabel');
-								$layoutdataArr['data'][$i] = array($fieldlabel => $data[$fieldname]);
+								$info = getFieldDetails($fieldname, $module, $data);
+								if (!empty($info)) {
+									$layoutdataArr['data'][$i] = $info;
+								}
 							}
 						}
 					}
@@ -77,29 +79,33 @@ class showSetOfFields_DetailViewBlock extends DeveloperBlock {
 							if (!empty($row['column'])) {
 								$columns = $row['column'];
 								if (!is_array($columns)) {
-									$fieldinfo = getFieldDetails($columns, $module);
-									$label = isset($fieldinfo['label']) ? $fieldinfo['label']: $columns;
-									$layoutdataArr['data'][$y][] = array($label => $data[$columns]);
+									$info = getFieldDetails($columns, $module, $data);
+									if (!empty($info)) {
+										$layoutdataArr['data'][$y][] = getFieldDetails($columns, $module, $data);
+									}
 								}
 								if (is_array($columns) && count($columns) > 0) {
 									for ($i=0; $i < count($columns); $i++) {
 										$fieldname = $columns[$i];
-										$fieldinfo = getFieldDetails($fieldname, $module);
-										$label = isset($fieldinfo['label']) ? $fieldinfo['label']: $fieldname;
-										$layoutdataArr['data'][$y][] = array($label => $data[$fieldname]);
+										$info = getFieldDetails($fieldname, $module, $data);
+										if (!empty($info)) {
+											$layoutdataArr['data'][$y][] = $info;
+										}
 									}
 								}
 							} elseif (!isset($row['column']) && is_array($row)) {
 								for ($x=0; $x < count($row); $x++) {
 									$fieldname = $row[$i];
-									$fieldinfo = getFieldDetails($fieldname, $module);
-									$label = isset($fieldinfo['label']) ? $fieldinfo['label']: $fieldname;
-									$layoutdataArr['data'][$y][] = array($label => $data[$fieldname]);
+									$info = getFieldDetails($fieldname, $module, $data);
+									if (!empty($info)) {
+										$layoutdataArr['data'][$y][] = $info;
+									}
 								}
 							} else {
-								$fieldinfo = getFieldDetails($fieldname, $row);
-								$label = isset($fieldinfo['label']) ? $fieldinfo['label']: $row;
-								$layoutdataArr['data'][$y][] = array($label => $data[$row]);
+								$info = getFieldDetails($row, $module, $data);
+								if (!empty($info)) {
+									$layoutdataArr['data'][$y][] = $info;
+								}
 							}
 							$y++;
 						}
@@ -218,8 +224,9 @@ function formatDatatoDisplay($data) {
 	}
 }
 
-function getFieldDetails($fieldname, $module) {
+function getFieldDetails($fieldname, $module, $data) {
 	global $current_user;
+	$response = array();
 	$wsfieldsinfo = vtws_describe($module, $current_user);
 	$fieldsinfo = $wsfieldsinfo['fields'];
 	foreach ($fieldsinfo as $ret => $finfo) {
@@ -227,14 +234,23 @@ function getFieldDetails($fieldname, $module) {
 			break;
 		}
 	}
-	//pending case for UITYPE 10 filed
-	if (isset($fieldsinfo[$ret]['uitype']) && $fieldsinfo[$ret]['uitype']==10) {
+	$label = $fieldsinfo[$ret]['label'];
+	$uitype = isset($fieldsinfo[$ret]['uitype']) ? $fieldsinfo[$ret]['uitype']: '';
+	if (isset($fieldsinfo[$ret]['uitype']) && ($fieldsinfo[$ret]['uitype']==10 || $fieldsinfo[$ret]['uitype']==52)) {
 		$refmod = $fieldsinfo[$ret]['type']['refersTo'][0];
 		$rmod = CRMEntity::getInstance($refmod);
 		$WSCodeID = vtws_getEntityId($refmod);
 		$fieldsinfo[$ret]['searchin'] = $refmod;
 		$fieldsinfo[$ret]['searchby'] = $refmod.$rmod->list_link_field;
 		$fieldsinfo[$ret]['searchwsid'] = $WSCodeID;
+		$index = $fieldname.'ename';
+		$fieldval = '';
+		if (isset($data[$index]['reference'])) {
+			$fieldval = $data[$index]['reference'];
+		}
+		$response = array('label'=>$label, 'value'=>$fieldval, 'uitype' => $uitype);
+	} else {
+		$response = array('label'=>$label, 'value'=>$data[$fieldname], 'uitype' => $uitype);
 	}
-	return $fieldsinfo[$ret];
+	return $response;
 }
