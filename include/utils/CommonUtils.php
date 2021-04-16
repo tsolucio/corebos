@@ -1988,6 +1988,12 @@ function QuickCreate($module) {
 		$params = array($tabid, $profileList);
 	}
 	$result = $adb->pquery($quickcreate_query, $params);
+	$log->debug('< QuickCreate');
+	return QuickCreateFieldInformation($result, $module);
+}
+
+function QuickCreateFieldInformation($result, $module) {
+	global $adb;
 	$noofrows = $adb->num_rows($result);
 	$fieldName_array = array();
 	$qcreate_arr = array();
@@ -2033,11 +2039,10 @@ function QuickCreate($module) {
 			$i++;
 		}
 	}
-	$form_data = array();
-	$form_data['form'] = $return_data;
-	$form_data['data'] = $fieldName_array;
-	$log->debug('< QuickCreate', $form_data);
-	return $form_data;
+	return array(
+		'form' => $return_data,
+		'data' => $fieldName_array,
+	);
 }
 
 function getUserslist($setdefval = true, $selecteduser = '') {
