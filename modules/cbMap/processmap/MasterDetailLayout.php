@@ -214,14 +214,7 @@ class MasterDetailLayout extends processcbMap {
 			$wsfieldsinfo = vtws_describe($this->detailModule, $current_user);
 			$this->fieldsinfo = $wsfieldsinfo['fields'];
 		}
-		// PHP 5.5 search and get fieldinfo
-		//$ret = array_search($fieldname, array_column($this->fieldsinfo, 'name'));
-		// PHP 5.4 search and get fieldinfo
-		foreach ($this->fieldsinfo as $ret => $finfo) {
-			if ($finfo['name']==$fieldname) {
-				break;
-			}
-		}
+		$ret = array_search($fieldname, array_column($this->fieldsinfo, 'name'));
 		if (isset($this->fieldsinfo[$ret]['uitype']) && $this->fieldsinfo[$ret]['uitype']==10) {
 			$refmod = $this->fieldsinfo[$ret]['type']['refersTo'][0];
 			$rmod = CRMEntity::getInstance($refmod);
@@ -240,14 +233,7 @@ class MasterDetailLayout extends processcbMap {
 			$wsfieldsinfo = vtws_describe($module, $current_user);
 			$this->relatedfieldsinfo[$module] = $wsfieldsinfo['fields'];
 		}
-		// PHP 5.5 search and get fieldinfo
-		//$ret = array_search($fieldname, array_column($this->fieldsinfo, 'name'));
-		// PHP 5.4 search and get fieldinfo
-		foreach ($this->relatedfieldsinfo[$module] as $ret => $finfo) {
-			if ($finfo['name']==$fieldname) {
-				break;
-			}
-		}
+		$ret = array_search($fieldname, array_column($this->fieldsinfo, 'name'));
 		if ($this->relatedfieldsinfo[$module][$ret]['uitype']==10) {
 			$refmod = $this->relatedfieldsinfo[$module][$ret]['type']['refersTo'][0];
 			$rmod = CRMEntity::getInstance($refmod);
