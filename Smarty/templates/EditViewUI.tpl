@@ -580,7 +580,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 						<span style='display:none;' id='{$fldname}_hidden'></span>
 						<input name="{$fldname}" id="{$fldname}" type="checkbox" tabindex="{$vt_tab}" checked>
 					</td>
-				{elseif $fldname eq 'filestatus'&& $MODE eq 'create'}
+				{elseif $fldname eq 'filestatus'&& ($MODE eq 'create' || $MODE eq '')}
 					<td id="td_val_{$fldname}" width="30%" align=left class="dvtCellInfo">
 						<span style='display:none;' id='{$fldname}_hidden'></span>
 						<input name="{$fldname}" id="{$fldname}" type="checkbox" tabindex="{$vt_tab}" checked>
