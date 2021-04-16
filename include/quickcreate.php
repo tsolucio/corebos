@@ -17,7 +17,12 @@ $image_path=$theme_path.'images/';
 
 $smarty = new vtigerCRM_Smarty;
 
-$qcreate_array = QuickCreate($currentModule);
+if (empty($QCFIELDS_QUERY)) {
+	$qcreate_array = QuickCreate($currentModule);
+} else {
+	$result = $adb->query($QCFIELDS_QUERY);
+	$qcreate_array = QuickCreateFieldInformation($result, $currentModule);
+}
 $validationData = $qcreate_array['data'];
 $data = split_validationdataArray($validationData);
 $smarty->assign('QUICKCREATE', $qcreate_array['form']);
