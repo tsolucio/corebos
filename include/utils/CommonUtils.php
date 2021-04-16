@@ -1950,8 +1950,10 @@ function getQuickCreateModules() {
 
 /**
  * This function is used to get the Quick create form field parameters for a given module.
- * Param $module - module name
- * returns the value in array format
+ * @param string module name
+ * @return array with two elements:
+ * 		data is a list of the fields to show and their information
+ * 		form is a list of the fields to show as HTML to put in the form
  */
 function QuickCreate($module) {
 	global $log, $adb, $current_user;
@@ -1972,7 +1974,7 @@ function QuickCreate($module) {
 	if ($userprivs->hasGlobalReadPermission()) {
 		$quickcreate_query = "select *
 			from vtiger_field
-			where (quickcreate in (0,2) or typeofdata like '%~M%') and tabid = ? and vtiger_field.presence in (0,2) and displaytype != 2 order by quickcreatesequence";
+			where (quickcreate in (0,2) or typeofdata like '%~M%') and tabid=? and vtiger_field.presence in (0,2) and displaytype!=2 order by quickcreatesequence";
 		$params = array($tabid);
 	} else {
 		$profileList = getCurrentUserProfileList();
@@ -1980,14 +1982,15 @@ function QuickCreate($module) {
 			FROM vtiger_field
 			INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid
 			INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid
-			WHERE vtiger_field.tabid=? AND quickcreate in (0,2) AND vtiger_profile2field.visible=0 AND vtiger_profile2field.readonly = 0 AND '.
+			WHERE vtiger_field.tabid=? AND quickcreate in (0,2) AND vtiger_profile2field.visible=0 AND vtiger_profile2field.readonly=0 AND '.
 				'vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN (' . generateQuestionMarks($profileList) . ') and '.
-				'vtiger_field.presence in (0,2) and displaytype != 2 ORDER BY quickcreatesequence';
+				'vtiger_field.presence in (0,2) and displaytype!=2 ORDER BY quickcreatesequence';
 		$params = array($tabid, $profileList);
 	}
 	$result = $adb->pquery($quickcreate_query, $params);
 	$noofrows = $adb->num_rows($result);
 	$fieldName_array = array();
+	$qcreate_arr = array();
 	for ($i = 0; $i < $noofrows; $i++) {
 		//$fieldtablename = $adb->query_result($result, $i, 'tablename');
 		$uitype = $adb->query_result($result, $i, 'uitype');
@@ -2014,6 +2017,7 @@ function QuickCreate($module) {
 		$custfld = getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields, $generatedtype, $module, '', $typeofdata);
 		$qcreate_arr[] = $custfld;
 	}
+	$return_data = array();
 	for ($i = 0, $j = 0, $iMax = count($qcreate_arr); $i < $iMax; $j++) {
 		$key1 = $qcreate_arr[$i];
 		if (isset($qcreate_arr[$i + 1]) && is_array($qcreate_arr[$i + 1]) && ($key1[0][0]!=19 && $key1[0][0]!=20)) {
@@ -2029,6 +2033,7 @@ function QuickCreate($module) {
 			$i++;
 		}
 	}
+	$form_data = array();
 	$form_data['form'] = $return_data;
 	$form_data['data'] = $fieldName_array;
 	$log->debug('< QuickCreate', $form_data);
