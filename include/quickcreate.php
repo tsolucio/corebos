@@ -25,6 +25,12 @@ $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', $image_path);
+$smarty->assign('MODE', '');
+$smarty->assign('MOD_SEQ_ID', '');
+$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize', 3000000, $currentModule);
+$smarty->assign('UPLOADSIZE', $upload_maxsize/1000000); //Convert to MB
+$smarty->assign('UPLOAD_MAXSIZE', $upload_maxsize);
+$smarty->assign('Application_Textarea_Style', GlobalVariable::getVariable('Application_Textarea_Style', 'height:140px;', $currentModule, $current_user->id));
 $smarty->assign('ACTIVITY_MODE', (isset($_REQUEST['activity_mode']) ? vtlib_purify($_REQUEST['activity_mode']) : ''));
 $smarty->assign('FROM', (isset($_REQUEST['from']) ? vtlib_purify($_REQUEST['from']) : ''));
 $smarty->assign('URLPOPUP', (isset($_REQUEST['pop']) ? str_replace('-a;', '&', $_REQUEST['pop']) : ''));
