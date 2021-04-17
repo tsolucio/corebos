@@ -275,8 +275,9 @@ function vtlib_executeJavascriptInElement(element) {
 	// Evaluate all the script tags in the element.
 	var scriptTags = element.getElementsByTagName('script');
 	for (var i = 0; i< scriptTags.length; i++) {
-		var scriptTag = scriptTags[i];
-		eval(scriptTag.innerHTML);
+		if (scriptTags[i].innerHTML != '') {
+			eval(scriptTags[i].innerHTML);
+		}
 	}
 }
 
