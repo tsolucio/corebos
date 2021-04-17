@@ -3408,7 +3408,7 @@ function ActivityReminderCallback(clicked) {
 		}).done(function (response) {
 			if (response=='Login') {
 				document.location.href='index.php?module=Users&action=Login';
-			} else {
+			} else if (document.getElementById('todolist')!=undefined) {
 				var responsedata = trim(response);
 				var responsearray = JSON.parse(responsedata);
 				if (typeof(responsearray['template']) == 'undefined') {
