@@ -45,6 +45,7 @@ const ldsModal = {
 			modalContainer.innerHTML = html;
 			document.body.appendChild(modalContainer);
 			ldsModal.active = true;
+			vtlib_executeJavascriptInElement(document.getElementById('global-modal-container'));
 		}
 	},
 	close : () => {
