@@ -23,13 +23,13 @@ const ldsModal = {
 				</div>
 				<footer class="slds-modal__footer" style="width: 100%;">
 					<button class="slds-button slds-button_neutral" onClick="javascript:ldsModal.close()">${alert_arr.JSLBL_CANCEL}</button>
-	${(() => {
-		if (saveAction!==false && saveAction!='') {
-			return `<button class="slds-button slds-button_brand" onclick="${saveAction}">${alert_arr.JSLBL_SAVE}</button>`;
-		} else {
-			return ``;
-		}
-	})()}
+					${(() => {
+						if (saveAction!==false && saveAction!='') {
+							return `<button class="slds-button slds-button_brand" onclick="${saveAction}">${alert_arr.JSLBL_SAVE}</button>`;
+						} else {
+							return ``;
+						}
+					})()}
 				</footer>
 			</div>
 		</section >

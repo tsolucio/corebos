@@ -268,7 +268,7 @@ function vtlib_loadDetailViewWidget(urldata, target, indicator) {
 			}
 		}
 	});
-	return false; // To stop event propogation
+	return false; // To stop event propagation
 }
 
 function vtlib_executeJavascriptInElement(element) {
