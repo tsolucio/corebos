@@ -68,7 +68,7 @@ function gITSshow(argg1, type, startdate, enddate, starthr, startmin, startfmt, 
 		g = d.getElementsByTagName('body')[0],
 		x = w.innerWidth || e.clientWidth || g.clientWidth,
 		y = w.innerHeight|| e.clientHeight|| g.clientHeight;
-	window.open(url, null, cbPopupWindowSettings + ',dependent=yes', true);
+	window.open(url, null, cbPopupWindowSettings + ',dependent=yes');
 }
 
 function graphicalCalendarRefresh() {
@@ -145,7 +145,7 @@ function C_TCPopup(field, palette) {
 	this.initPalette = !palette || palette > 3 ? 0 : palette;
 	var w = 194, h = 240,
 		move = screen ? ',left=' + ((screen.width - w) >> 1) + ',top=' + ((screen.height - h) >> 1) : '',
-		o_colWindow = window.open('modules/Calendar4You/color_picker.html', null, cbPopupWindowSettings + ',help=no,status=no,dependent=yes', true);
+		o_colWindow = window.open('modules/Calendar4You/color_picker.html', null, cbPopupWindowSettings + ',help=no,status=no,dependent=yes');
 	o_colWindow.opener = window;
 	o_colWindow.focus();
 }
