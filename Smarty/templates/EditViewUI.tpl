@@ -802,6 +802,14 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 						multi_selector.count = {$image_count};
 						{*<!-- Pass in the file element -->*}
 						multi_selector.addElement(document.getElementById('my_file_element'));
+						var ProductImages=new Array();
+						var ProductImagesCount=0;
+						function delRowEmt(imagename) {ldelim}
+							ProductImages[ProductImagesCount++]=imagename;
+							multi_selector.current_element.disabled = false;
+							multi_selector.count--;
+							document.EditView.del_file_list.value=ProductImages.join('###');
+						{rdelim}
 					</script>
 				{/if}
 			</td>

@@ -192,7 +192,6 @@
 								accessKey="{'LBL_SAVE_BUTTON_KEY'|@getTranslatedString:$MODULE}"
 								onclick="
 									document.forms.EditView.action.value='Save';
-									displaydeleted();
 									{if isset($INV_CURRENCY_ID)}
 										return validateInventory('{$MODULE}');
 									{else}
@@ -212,7 +211,7 @@
 									class="slds-button slds-button_success"
 									title="{'LBL_SAVEREPEAT_BUTTON_TITLE'|@getTranslatedString:$MODULE}"
 									accessKey="{'LBL_SAVEREPEAT_BUTTON_KEY'|@getTranslatedString:$MODULE}"
-									onclick="document.EditView.saverepeat.value='1';document.EditView.action.value='Save'; displaydeleted(); return formValidate();"
+									onclick="document.EditView.saverepeat.value='1';document.EditView.action.value='Save'; return formValidate();"
 									type="submit"
 									name="button">
 									<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
@@ -228,7 +227,7 @@
 									class="slds-button slds-button_neutral"
 									title="{'LBL_SKIP_BUTTON_TITLE'|@getTranslatedString:$MODULE}"
 									accessKey="{'LBL_SKIP_BUTTON_KEY'|@getTranslatedString:$MODULE}"
-									onclick="document.EditView.saverepeat.value='skip';document.EditView.action.value='Save'; displaydeleted();document.EditView.submit();"
+									onclick="document.EditView.saverepeat.value='skip';document.EditView.action.value='Save'; document.EditView.submit();"
 									type="button"
 									name="button">
 									<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
@@ -244,7 +243,7 @@
 									class="slds-button slds-button_neutral"
 									title="{'LBL_GOBACK_BUTTON_TITLE'|@getTranslatedString:$MODULE}"
 									accessKey="{'LBL_GOBACK_BUTTON_KEY'|@getTranslatedString:$MODULE}"
-									onclick="document.EditView.saverepeat.value='goback';document.EditView.action.value='Save'; displaydeleted();document.EditView.submit();"
+									onclick="document.EditView.saverepeat.value='goback';document.EditView.action.value='Save'; document.EditView.submit();"
 									type="submit"
 									name="button">
 									<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">

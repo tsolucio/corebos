@@ -152,18 +152,6 @@
 		PERCENT_OF_PRICE:'{$APP.LBL_OF_PRICE}',
 		DIRECT_PRICE_REDUCTION:'{$APP.LBL_DIRECT_PRICE_REDUCTION}'
 	{rdelim};
-	var ProductImages=new Array();
-	var count=0;
-	function delRowEmt(imagename) {ldelim}
-		ProductImages[count++]=imagename;
-		multi_selector.current_element.disabled = false;
-		multi_selector.count--;
-	{rdelim}
-	function displaydeleted() {ldelim}
-		if (ProductImages.length > 0) {ldelim}
-			document.EditView.del_file_list.value=ProductImages.join('###');
-		{rdelim}
-	{rdelim}
 </script>
 
 <!-- vtlib customization: Help information assocaited with the fields -->
