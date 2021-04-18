@@ -394,6 +394,24 @@ function getFieldid($tabid, $fieldname, $onlyactive = true) {
 	return $fieldid;
 }
 
+/**
+ * Function to get a list of fields with default values and their value
+ * @param Integer $tabid
+ * @return array list of default values indexed by fieldname
+ */
+function getFieldsWithDefaultValue($tabid) {
+	if (empty(VTCacheUtils::$_fieldinfo_cache[$tabid])) {
+		getColumnFields(getTabModuleName($tabid));
+	}
+	$finfo = array();
+	foreach (VTCacheUtils::$_fieldinfo_cache[$tabid] as $fname => $fvalues) {
+		if (!empty($fvalues['defaultvalue'])) {
+			$finfo[$fname] = $fvalues['defaultvalue'];
+		}
+	}
+	return $finfo;
+}
+
 function getFieldFromEditViewBlockArray($blocks, $fldlabel) {
 	$result = array();
 	if (is_array($blocks)) {
