@@ -1374,6 +1374,28 @@ class CRMEntity {
 	 * @param $module_name -- module:: Type varchar
 	 */
 	public function save($module_name, $fileid = '') {
+		global $current_user;
+		if ($this->mode!='' && !empty($_REQUEST['FILTERFIELDSMAP'])) {
+			$bmapname = vtlib_purify($_REQUEST['FILTERFIELDSMAP']);
+			$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+			if ($cbMapid) {
+				$cbMap = cbMap::getMapByID($cbMapid);
+				$mtype = $cbMap->column_fields['maptype'];
+				$mdmap = $cbMap->$mtype();
+				if (!empty($mdmap['editfieldnames'])) {
+					$stillindb = CRMEntity::getInstance($module_name);
+					$stillindb->retrieve_entity_info($this->id, $module_name, false, true);
+					$handler = vtws_getModuleHandlerFromName($module_name, $current_user);
+					$meta = $handler->getMeta();
+					$stillindb->column_fields = DataTransform::sanitizeRetrieveEntityInfo($stillindb->column_fields, $meta);
+					foreach ($stillindb->column_fields as $fname => $fvalue) {
+						if (!in_array($fname, $mdmap['editfieldnames'])) {
+							$this->column_fields[$fname] = $fvalue;
+						}
+					}
+				}
+			}
+		}
 		//Check if assigned_user_id is empty for assign the current user.
 		if (empty($this->column_fields['assigned_user_id'])) {
 			global $current_user;
