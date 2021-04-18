@@ -21,7 +21,7 @@ if (empty($QCFIELDS_QUERY)) {
 	$qcreate_array = QuickCreate($currentModule);
 } else {
 	$result = $adb->query($QCFIELDS_QUERY);
-	$qcreate_array = QuickCreateFieldInformation($result, $currentModule);
+	$qcreate_array = QuickCreateFieldInformation($result, $currentModule, (empty($QCDEFAULTFIELDVALUES) ? array() : $QCDEFAULTFIELDVALUES));
 }
 $validationData = $qcreate_array['data'];
 $data = split_validationdataArray($validationData);

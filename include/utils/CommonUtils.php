@@ -2025,10 +2025,10 @@ function QuickCreate($module) {
 	}
 	$result = $adb->pquery($quickcreate_query, $params);
 	$log->debug('< QuickCreate');
-	return QuickCreateFieldInformation($result, $module);
+	return QuickCreateFieldInformation($result, $module, $mapdefaults);
 }
 
-function QuickCreateFieldInformation($result, $module) {
+function QuickCreateFieldInformation($result, $module, $mapdefaults) {
 	global $adb;
 	$noofrows = $adb->num_rows($result);
 	$fieldName_array = array();
