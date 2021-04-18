@@ -450,8 +450,8 @@ if (!$skipSecurityCheck && $use_current_login) {
 			$display = isPermitted($module, $now_action, $_REQUEST['record']);
 		}
 	} else {
-		if ($now_action=='EditView' || $now_action=='EventEditView' || $now_action=='Save'
-			|| ($now_action=='DetailViewAjax' && isset($_REQUEST['ajxaction']) && $_REQUEST['ajxaction']=='WIDGETADDCOMMENT')
+		if ($now_action=='EditView' || $now_action=='Save' || ($now_action=='DetailViewAjax' && isset($_REQUEST['ajxaction'])
+			&& $_REQUEST['ajxaction']=='WIDGETADDCOMMENT')
 		) {
 			$now_action = 'CreateView';
 		}
