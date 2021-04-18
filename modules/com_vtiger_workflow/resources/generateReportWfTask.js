@@ -14,7 +14,7 @@ $(document).ready(function () {
 		} else {
 			$htmloptions += '<option value="">'+mod_alert_arr.selectReport+'</option>';
 		}
-		$.each($reportsdata, function(index, data){
+		$.each($reportsdata, function (index, data) {
 			$htmloptions += '<option value="'+data.reptid+'$$'+data.reptname+'">'+data.reptname+'</option>';
 		});
 		document.getElementById('report_name').innerHTML =$htmloptions;
@@ -22,17 +22,17 @@ $(document).ready(function () {
 });
 
 function displayDivsection() {
-	var caseType = document.getElementById("case_type");
+	var caseType = document.getElementById('case_type');
 	switch (caseType.value) {
-		case 'report':
-			document.getElementById("questionDiv").style.display = "none";
-			document.getElementById("reportDiv").style.display = "";
-			break;
-		case 'question':
-			document.getElementById("questionDiv").style.display = "";
-			document.getElementById("reportDiv").style.display = "none";
-			break;
-		default:
-			break;
+	case 'report':
+		document.getElementById('questionDiv').style.display = 'none';
+		document.getElementById('reportDiv').style.display = '';
+		break;
+	case 'question':
+		document.getElementById('questionDiv').style.display = '';
+		document.getElementById('reportDiv').style.display = 'none';
+		break;
+	default:
+		break;
 	}
 }

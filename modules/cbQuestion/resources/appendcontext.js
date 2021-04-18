@@ -14,27 +14,27 @@
  *************************************************************************************************/
 
 function addRowToContextTable(key ='', value = '') {
- 	const numrow = document.getElementById('context_rows').rows.length;
- 	const tr = document.createElement('tr');
- 	tr.id = `row-${numrow}`;
- 	const td0 = tr.insertCell(0);
- 	td0.innerHTML = `
+	const numrow = document.getElementById('context_rows').rows.length;
+	const tr = document.createElement('tr');
+	tr.id = `row-${numrow}`;
+	const td0 = tr.insertCell(0);
+	td0.innerHTML = `
 	<div class="slds-truncate">
 		<input type="text" class="slds-input" name="context_variable" value=${key}>
 	</div>`;
- 	const td2 = tr.insertCell(1);
- 	td2.innerHTML = `
+	const td2 = tr.insertCell(1);
+	td2.innerHTML = `
 	<div class="slds-truncate">
 		<input type="text" class="slds-input" name="context_value" value=${value}>
 	</div>`;
- 	const td3 = tr.insertCell(2);
- 	td3.innerHTML = `
- 	<a onclick="deleteContextRow(${numrow})" id="delete-${numrow}">
- 	<svg class="slds-button__icon" aria-hidden="true">
+	const td3 = tr.insertCell(2);
+	td3.innerHTML = `
+	<a onclick="deleteContextRow(${numrow})" id="delete-${numrow}">
+	<svg class="slds-button__icon" aria-hidden="true">
 		<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
 	</svg>
 	</a>`;
- 	document.getElementById('context_rows').appendChild(tr);
+	document.getElementById('context_rows').appendChild(tr);
 }
 
 function deleteContextRow(rowid) {
@@ -75,7 +75,7 @@ function export_results() {
 	}
 	const bqname = document.getElementById('bqname').value;
 	const bqmodule = document.getElementById('bqmodule').value;
-	const issqlwsq_disabled = (document.getElementById("checkboxsqlwsq").checked ? true : false);
+	const issqlwsq_disabled = (document.getElementById('checkboxsqlwsq').checked ? true : false);
 	const recordid = document.getElementById('record').value;
 	let cbq = JSON.stringify({
 		'qname': bqname,
@@ -127,9 +127,6 @@ function export_results() {
 		}
 	).then(response => response.json()).then(response => {
 		document.getElementById('export_text').innerHTML = mod_alert_arr.export_results;
-		window.open(
-		  `cache/${response}.csv`,
-		  '_blank'
-		);
+		window.open(`cache/${response}.csv`, '_blank');
 	});
 }

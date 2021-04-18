@@ -71,7 +71,7 @@ function setFunctionInformation(selected) {
 			<div class="slds-truncate slds-cell-wrap">${element.desc}</div>
 			</td></tr>`;
 		});
-		document.getElementById('funcparams').innerHTML = ptbl+`</tbody></table>`;
+		document.getElementById('funcparams').innerHTML = ptbl+'</tbody></table>';
 		document.getElementById('funcex').innerHTML = wfexpfndefs[selected.dataset.value].examples.join('<br/>');
 	}
 }
@@ -113,7 +113,7 @@ function wffnFilterCategories(cat) {
 	if (cat=='' || cat=='All') {
 		fns = wfexpfndefs;
 	} else {
-		var fns = Object.keys(wfexpfndefs)
+		fns = Object.keys(wfexpfndefs)
 			.filter(fn => wfexpfndefs[fn].categories.indexOf(cat) > -1)
 			.sort()
 			.reduce((res, key) => (res[key] = wfexpfndefs[key], res), {});

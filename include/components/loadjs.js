@@ -8,4 +8,4 @@ const loadJS = src => new Promise((resolve, reject) => {
 	document.head.appendChild(script);
 	script.onload = resolve;
 	script.onerror = reject;
-})
+});
