@@ -68,11 +68,9 @@ function vtws_create($elementType, $element, $user) {
 	}
 
 	foreach ($meta->getModuleFields() as $fieldName => $webserviceField) {
-		if ($webserviceField->getUIType() == 15 || $webserviceField->getUIType() == 16) {
-			$dval = $webserviceField->getDefault();
-			if (!isset($element[$fieldName]) && !empty($dval)) {
-				$element[$fieldName] = $dval;
-			}
+		$dval = $webserviceField->getDefault();
+		if (!isset($element[$fieldName]) && !empty($dval)) {
+			$element[$fieldName] = $dval;
 		}
 	}
 

@@ -1788,7 +1788,7 @@ function mkdirs($dir, $mode = 0777, $recursive = true) {
 
 /**
  * This function is used to set the Object values from the REQUEST values.
- * @param  object reference $focus - reference of the object
+ * @param object CRM object to fill with values
  */
 function setObjectValuesFromRequest($focus) {
 	global $log;
@@ -1815,6 +1815,13 @@ function setObjectValuesFromRequest($focus) {
 	}
 	if (!empty($_REQUEST['cbuuid'])) {
 		$focus->column_fields['cbuuid'] = vtlib_purify($_REQUEST['cbuuid']);
+	}
+	if (!empty($_REQUEST['savefromqc']) || !empty($_REQUEST['FILTERFIELDSMAP'])) {
+		foreach (getFieldsWithDefaultValue(getTabid($moduleName)) as $fname => $fvalue) {
+			if (empty($focus->column_fields[$fname]) && !isset($_REQUEST[$fname])) {
+				$focus->column_fields[$fname] = $fvalue;
+			}
+		}
 	}
 	if (isset($_REQUEST['action']) && ($_REQUEST['action'] == 'EditView')) {
 		$cbfrommodule = $moduleName;
