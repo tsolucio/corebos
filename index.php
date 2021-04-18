@@ -495,7 +495,9 @@ if (isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_aut
 }
 $theme = basename(vtlib_purify($theme));
 $Ajx_module = (isset($_REQUEST['module']) ? vtlib_purify($_REQUEST['module']) : $module);
-if (!$viewAttachment && (!$viewAttachment && $action!='home_rss') && $action!=$Ajx_module.'Ajax' && $action!='massdelete' && $action!='DashboardAjax' && $action!='ActivityAjax') {
+if (!$viewAttachment && (!$viewAttachment && $action!='home_rss') && $action!=$Ajx_module.'Ajax' && $action!='massdelete' && $action!='DashboardAjax'
+	&& $action!='ActivityAjax' && empty($_REQUEST['Module_Popup_Edit'])
+) {
 	// ActivityReminder Customization for callback
 	if (!$skipFooters) {
 		if ($current_user->id!=null && isPermitted('cbCalendar', 'index') == 'yes' && vtlib_isModuleActive('cbCalendar')) {

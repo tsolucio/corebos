@@ -92,12 +92,12 @@
 							</span>
 						</li>
 					</ul>
-					<ul class="slds-button-group-list">
+					<ul class="slds-button-group-list" name="cbHeaderButtonGroup">
 					{if $CHECK.CreateView eq 'yes' && $MODULE eq 'Calendar4You'}
 						<li>
 							<button class="slds-button slds-button_neutral" {$ADD_ONMOUSEOVER}>{$MOD.LBL_ADD_EVENT}</button>
 						</li>
-					{elseif $CHECK.CreateView eq 'yes' && $MODULE neq 'Emails' && (empty($OP_MODE) || $OP_MODE != 'create_view') && !(isset($MED1x1MODE) && $MED1x1MODE!=0)}
+					{elseif $CHECK.CreateView eq 'yes' && $MODULE neq 'Emails' && (empty($OP_MODE) || $OP_MODE != 'create_view') && !(isset($MED1x1MODE) && $MED1x1MODE!=0) && empty($Module_Popup_Edit)}
 						<li>
 							<a
 							class="slds-button slds-button_neutral"
@@ -110,7 +110,7 @@
 							</a>
 						</li>
 					{/if}
-					{if isset($isDetailView) && $isDetailView}
+					{if isset($isDetailView) && $isDetailView && empty($Module_Popup_Edit)}
 						{if $CUSTOM_LINKS && $CUSTOM_LINKS.DETAILVIEWBUTTON}
 							{foreach item=CUSTOMLINK from=$CUSTOM_LINKS.DETAILVIEWBUTTON}
 								{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
@@ -259,7 +259,8 @@
 								title="{'LBL_CANCEL_BUTTON_TITLE'|@getTranslatedString:$MODULE}"
 								accessKey="{'LBL_CANCEL_BUTTON_KEY'|@getTranslatedString:$MODULE}"
 								onclick="
-									{if isset($smarty.request.Module_Popup_Edit)}window.close()
+									{if !empty($CANCELACTION)}{$CANCELACTION}
+									{elseif isset($smarty.request.Module_Popup_Edit)}{if empty($smarty.request.Module_Popup_Edit_Modal)}window.close(){else}ldsModal.close(){/if}
 									{elseif isset($CANCELGO)}window.location.href='{$CANCELGO}'
 									{else}if (window.history.length==1) { window.close(); } else { window.history.back(); }
 									{/if};"
@@ -272,7 +273,7 @@
 							</button>
 						</li>
 					{/if}
-					{if isset($EDIT_PERMISSION) && $EDIT_PERMISSION eq 'yes'}
+					{if isset($EDIT_PERMISSION) && $EDIT_PERMISSION eq 'yes' && empty($Module_Popup_Edit)}
 						<li>
 							<button
 								class="slds-button slds-button_neutral"
@@ -293,7 +294,7 @@
 							</button>
 						</li>
 					{/if}
-					{if isset($CREATE_PERMISSION) && $CREATE_PERMISSION eq 'permitted' && !empty($isDetailView)}
+					{if isset($CREATE_PERMISSION) && $CREATE_PERMISSION eq 'permitted' && !empty($isDetailView) && empty($Module_Popup_Edit)}
 						<li>
 							<button
 								class="slds-button slds-button_neutral"
@@ -314,7 +315,7 @@
 							</button>
 						</li>
 					{/if}
-					{if isset($DELETE) && $DELETE eq 'permitted'}
+					{if isset($DELETE) && $DELETE eq 'permitted' && empty($Module_Popup_Edit)}
 						<li>
 							<button
 								class="slds-button slds-button_neutral"

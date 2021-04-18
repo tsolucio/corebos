@@ -70,7 +70,7 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 									<div class="small detailview_utils_table_top">
 										<div class="detailview_utils_table_tabs noprint">
 											<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_top">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</div>
-											{if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
+											{if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0 && empty($Module_Popup_Edit)}
 												{if $HASRELATEDPANES eq 'true'}
 													{include file='RelatedPanes.tpl' tabposition='top' RETURN_RELATEDPANE=''}
 												{else}
@@ -90,6 +90,7 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 										</div>
 										<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_top" id="detailview_utils_table_tabactionsep_top"></div>
 										<div class="detailview_utils_table_actions detailview_utils_table_actions_top" id="detailview_utils_actions_top">
+											{if empty($Module_Popup_Edit)}
 												{if $privrecord neq ''}
 													<span class="detailview_utils_prev" onclick="location.href='index.php?module={$MODULE}&action=DetailView&record={$privrecord}&start={$privrecordstart}'" title="{$APP.LNK_LIST_PREVIOUS}"><img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" accessKey="{$APP.LNK_LIST_PREVIOUS}"  name="privrecord" value="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev.gif'|@vtiger_imageurl:$THEME}"></span>&nbsp;
 												{else}
@@ -104,6 +105,7 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 													<img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" src="{'rec_next_disabled.gif'|@vtiger_imageurl:$THEME}">&nbsp;
 												{/if}
 												<span class="detailview_utils_toggleactions"><img align="absmiddle" title="{$APP.TOGGLE_ACTIONS}" src="{'menu-icon.png'|@vtiger_imageurl:$THEME}" width="16px;" onclick="{literal}if (document.getElementById('actioncolumn').style.display=='none') {document.getElementById('actioncolumn').style.display='table-cell';}else{document.getElementById('actioncolumn').style.display='none';}window.dispatchEvent(new Event('resize'));{/literal}"></span>&nbsp;
+											{/if}
 										</div>
 									</div>
 								</td>
@@ -277,7 +279,7 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 															</table>
 														</td></tr></table>
 											</td>
-
+											{if empty($Module_Popup_Edit)}
 											<td width=22% valign=top style="border-left:1px dashed #cccccc;padding:13px;{$DEFAULT_ACTION_PANEL_STATUS}" class="noprint" id="actioncolumn">
 												<!-- right side relevant info -->
 												<table width="100%" border="0" cellpadding="5" cellspacing="0" class="detailview_actionlinks actionlinks_events_todo">
@@ -419,6 +421,7 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 													{/foreach}
 												{/if}
 											</td>
+											{/if}
 										</tr>
 									</table>
 
@@ -428,6 +431,7 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 							<tr>
 								<td>
 									<div class="small detailview_utils_table_bottom noprint">
+										{if empty($Module_Popup_Edit)}
 										<div class="detailview_utils_table_tabs">
 											<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_bottom">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</div>
 											{if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
@@ -465,6 +469,7 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 												{/if}
 												<span class="detailview_utils_toggleactions"><img align="absmiddle" title="{$APP.TOGGLE_ACTIONS}" src="{'menu-icon.png'|@vtiger_imageurl:$THEME}" width="16px;" onclick="{literal}if (document.getElementById('actioncolumn').style.display=='none') {document.getElementById('actioncolumn').style.display='table-cell';}else{document.getElementById('actioncolumn').style.display='none';}window.dispatchEvent(new Event('resize'));{/literal}"></span>&nbsp;
 										</div>
+										{/if}
 									</div>
 								</td>
 							</tr>
