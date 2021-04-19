@@ -214,8 +214,7 @@ class Vendors extends CRMEntity {
 		}
 
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-		$query = "SELECT case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,vtiger_contactdetails.*,
+		$query = "SELECT case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name,vtiger_contactdetails.*,
 			vtiger_crmentity.crmid, vtiger_crmentity.smownerid,vtiger_vendorcontactrel.vendorid,vtiger_account.accountname
 			from vtiger_contactdetails
 			inner join $crmEntityTable on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
