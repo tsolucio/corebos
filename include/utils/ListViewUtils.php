@@ -2121,7 +2121,6 @@ function getListQuery($module, $where = '') {
 	$log->debug('> getListQuery ' . $module . ',' . $where);
 	$mod = CRMEntity::getInstance($module);
 	$crmTable = $mod->crmentityTable;
-	$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 	switch ($module) {
 		case 'Accounts':
 			$query = 'SELECT vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_account.*, vtiger_accountbillads.bill_city, vtiger_accountscf.*
@@ -2180,7 +2179,7 @@ function getListQuery($module, $where = '') {
 			$query .= ' WHERE vtiger_crmentity.deleted = 0 ' . $where;
 			break;
 		case 'Documents':
-			$query = "SELECT case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,vtiger_crmentity.crmid,
+			$query = "SELECT case when (vtiger_users.user_name not like '') then vtiger_users.ename else vtiger_groups.groupname end as user_name,vtiger_crmentity.crmid,
 					vtiger_crmentity.modifiedtime,vtiger_crmentity.smownerid,vtiger_attachmentsfolder.*,vtiger_notes.*
 				FROM vtiger_notes
 				INNER JOIN $crmTable as vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_notes.notesid
