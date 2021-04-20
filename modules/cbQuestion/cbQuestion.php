@@ -411,7 +411,7 @@ class cbQuestion extends CRMEntity {
 		} else {
 			include_once 'include/Webservices/Query.php';
 			if ($q->column_fields['sqlquery']=='0') {
-				$webserviceObject = VtigerWebserviceObject::fromQuery($adb, $query);
+				$webserviceObject = VtigerWebserviceObject::fromName($adb, $q->column_fields['qmodule']);
 				$handlerPath = $webserviceObject->getHandlerPath();
 				$handlerClass = $webserviceObject->getHandlerClass();
 				require_once $handlerPath;
