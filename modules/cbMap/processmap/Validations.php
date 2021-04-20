@@ -522,12 +522,10 @@ class Validations extends processcbMap {
 					$qty_i = 'qty'.$i;
 					$name_i = 'productName'.$i;
 					$type_i = 'lineItemType'.$i;
-					$deleted_i = 'deleted'.$i;
 					$products[$i]['crmid'] = $sv;
 					$products[$i]['qty'] = $screen_values[$qty_i];
 					$products[$i]['name'] = $screen_values[$name_i];
 					$products[$i]['type'] = $screen_values[$type_i];
-					$products[$i]['deleted'] = $screen_values[$deleted_i];
 				}
 			}
 			$screen_values['pdoInformation'] = $products;
