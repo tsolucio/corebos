@@ -162,7 +162,8 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 				$element['id'] = $element['folderid'];
 				unset($element['folderid']);
 			}
-			$rdo[$wid.'x'.$element['id']] = DataTransform::filterAndSanitize($element, $this->meta);
+			$id = (empty($element['id']) ? (empty($element['groupid']) ? '0' : $element['groupid']) : $element['id']);
+			$rdo[$wid.'x'.$id] = DataTransform::filterAndSanitize($element, $this->meta);
 		}
 		return $rdo;
 	}
