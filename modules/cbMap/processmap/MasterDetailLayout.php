@@ -95,7 +95,6 @@ class MasterDetailLayout extends processcbMap {
 	private $detailModule = '';
 
 	public function processMap($arguments) {
-		global $adb, $current_user;
 		$this->mapping=$this->convertMap2Array();
 		return $this->mapping;
 	}
@@ -108,6 +107,8 @@ class MasterDetailLayout extends processcbMap {
 		$mapping['originmodule'] = (String)$xml->originmodule;
 		$mapping['targetmodule'] = (String)$xml->targetmodule;
 		$this->detailModule = $mapping['targetmodule'];
+		$dmf = CRMEntity::getInstance($this->detailModule);
+		$mapping['targetmoduleidfield'] = $dmf->table_index;
 		$mapping['linkfields'] = array(
 			'originfield' => (String)$xml->linkfields->originfield,
 			'targetfield' => (String)$xml->linkfields->targetfield,
@@ -121,7 +122,13 @@ class MasterDetailLayout extends processcbMap {
 		);
 		$mapping['listview'] = array();
 		if (isset($xml->listview->datasource)) {
-			$mapping['listview']['datasource'] = (String)$xml->listview->datasource;
+			$dsrc = (String)$xml->listview->datasource;
+			if (strtolower($dsrc)=='corebos') {
+				$mapping['listview']['datasource'] = 'index.php?module=Utilities&action=UtilitiesAjax&file=MasterDetailGridLayoutActions&mdaction=list&mdmap='
+					.urlencode($mapping['mapnameraw']);
+			} else {
+				$mapping['listview']['datasource'] = $dsrc;
+			}
 		}
 		if (isset($xml->listview->toolbar)) {
 			$mapping['listview']['toolbar'] = array(
@@ -244,6 +251,7 @@ class MasterDetailLayout extends processcbMap {
 			$tabid = getTabid($this->detailModule);
 			foreach ($this->fieldsinfo as $key => $finfo) {
 				$this->fieldsinfo[$key]['fieldid'] = getFieldid($tabid, $finfo['name']);
+				$this->fieldsinfo[$key]['columnname'] = getColumnnameByFieldname($tabid, $finfo['name']);
 			}
 		}
 		$ret = array_search($fieldname, array_column($this->fieldsinfo, 'name'));
