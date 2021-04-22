@@ -982,10 +982,12 @@ class CRMEntity {
 			$rdo = $adb->pquery($sql1, $value);
 			if ($rdo) {
 				$this->column_fields['cbuuid'] = (empty($this->column_fields['cbuuid']) ? $this->getUUID() : $this->column_fields['cbuuid']);
-				$adb->pquery(
-					'INSERT IGNORE INTO vtiger_crmobject (crmid,deleted,setype,smownerid,modifiedtime,cbuuid) values (?,0,?,?,?,?)',
-					array($this->id, $module, $this->column_fields['assigned_user_id'], $this->column_fields['modifiedtime'], $this->column_fields['cbuuid'])
-				);
+				if ($table_name == $this->crmentityTable && $this->denormalized) {
+					$adb->pquery(
+						'INSERT IGNORE INTO vtiger_crmobject (crmid,deleted,setype,smownerid,modifiedtime,cbuuid) values (?,0,?,?,?,?)',
+						array($this->id, $module, $this->column_fields['assigned_user_id'], $this->column_fields['modifiedtime'], $this->column_fields['cbuuid'])
+					);
+				}
 			}
 		}
 		if ($rdo===false) {
