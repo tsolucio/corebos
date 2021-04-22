@@ -4,13 +4,22 @@ var masterdetailwork = {
 		if (rowkey == 0) {
 			return false;
 		}
-		//store = gridinstance.store;
 		gridinstance.moveRow(rowkey, rowkey-1);
-		// updating grid row keys
+		movupdata = gridinstance.getData();
+		for (let x in movupdata) {
+			movupdata[x].rowKey = parseInt(x);
+			movupdata[x].sortKey = parseInt(x);
+		}
+		gridinstance.resetData(movupdata);
 	},
 	movedown: (recordid, gridinstance, rowkey) => {
 		gridinstance.moveRow(rowkey, rowkey+1);
-		// updating grid row keys and limit
+		movdowndata = gridinstance.getData();
+		for (let x in movdowndata) {
+			movdowndata[x].rowKey = parseInt(x);
+			movdowndata[x].sortKey = parseInt(x);
+		}
+		gridinstance.resetData(movdowndata);
 	},
 	delete: (module, recordid, gridinstance, rowkey) => {
 		if (confirm(alert_arr.ARE_YOU_SURE)) {
@@ -22,8 +31,14 @@ var masterdetailwork = {
 				url: 'index.php?' + fileurl
 			}).done(function (response) {
 				gridinstance.removeRow(rowkey);
-				return true;
+				data = gridinstance.getData();
+				for (let x in data) {
+					data[x].rowKey = parseInt(x);
+					data[x].sortKey = parseInt(x);
+				}
+				gridinstance.resetData(data);
 			});
+			return true;
 		}
 	},
 
