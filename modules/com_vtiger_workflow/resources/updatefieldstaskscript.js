@@ -493,15 +493,22 @@ function VTUpdateFieldsTask($, fieldvaluemapping) {
 				var fieldLabels = dict(parentFields);
 
 				function addFieldValueMapping(mappingno) {
-					$('#save_fieldvaluemapping').append(
-						'<div id="save_fieldvalues_'+mappingno+'" style=\'margin-bottom: 5px\'> \
-							<select id="save_fieldvalues_'+mappingno+'_fieldname" class="fieldname"></select><select id="save_fieldvalues10_'+mappingno+'_fieldname" class="fieldname1" style="display:none"></select>  \
-							<input type="hidden" id="save_fieldvalues_'+mappingno+'_value_type" class="type"><input type="hidden" id="save_fieldvalues10_'+mappingno+'_module" class="type1"> \
-							<input type="text" id="save_fieldvalues_'+mappingno+'_value" class="expressionvalue" readonly > \
-							<span id="save_fieldvalues_'+mappingno+'_remove" class="link remove-link"> \
-							<img src="modules/com_vtiger_workflow/resources/remove.png"><input type="hidden" id="modtypes"></span> \
-						</div>'
-					);
+					$('#save_fieldvaluemapping').append(`
+						<div id="save_fieldvalues_${mappingno}" style="margin-bottom: 5px" class="slds-grid slds-gutters slds-p-horizontal_x-large slds-grid_vertical-align-center">
+							<select id="save_fieldvalues_${mappingno}_fieldname" class="fieldname slds-select"></select>
+							<select id="save_fieldvalues10_${mappingno}_fieldname" class="fieldname1 slds-select" style="display:none"></select>
+							<input type="hidden" id="save_fieldvalues_${mappingno}_value_type" class="type">
+							<input type="hidden" id="save_fieldvalues10_${mappingno}_module" class="type1">
+							<input type="text" id="save_fieldvalues_${mappingno}_value" class="expressionvalue slds-input fieldborder slds-m-left_x-small" readonly >
+							<span id="save_fieldvalues_${mappingno}_remove" class="link remove-link slds-m-left_x-small">
+								<svg class="slds-icon slds-icon_small slds-icon-text-light" aria-hidden="true" >
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+								</svg>
+								<input type="hidden" id="modtypes">
+							</span>
+							<input type="hidden" id="modtypes"></span>
+						</div>
+					`);
 					var fe = $('#save_fieldvalues_'+mappingno+'_fieldname');
 					var fe1 = $('#save_fieldvalues10_'+mappingno+'_fieldname');
 					fillOptions(fe, fieldLabels, 0);
