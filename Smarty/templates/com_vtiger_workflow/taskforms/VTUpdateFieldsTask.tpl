@@ -61,4 +61,4 @@
 <br>
 <input type="hidden" name="field_value_mapping" value="" id="save_fieldvaluemapping_json"/>
 <div id="dump" style="display:none;"></div>
-<div id="save_fieldvaluemapping"></div>        
+<div id="save_fieldvaluemapping"></div>
