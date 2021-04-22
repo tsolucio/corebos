@@ -22,6 +22,13 @@ class MasterDetailGridLayout_DetailViewBlock extends DeveloperBlock {
 		} else {
 			return 'No Map Defined';
 		}
+		if (!empty($context['PID'])) {
+			$masterid = $context['PID'];
+		} elseif (!empty($_REQUEST['PID'])) {
+			$masterid = $_REQUEST['PID'];
+		} else {
+			return 'No Master Record';
+		}
 		$cbMap = cbMap::getMapByName($mapname, 'MasterDetailLayout');
 		if (empty($cbMap)) {
 			return 'Map Not Found';
@@ -39,6 +46,7 @@ class MasterDetailGridLayout_DetailViewBlock extends DeveloperBlock {
 			$mdmap['listview']['cbgridactioncol'] = str_replace('"mdActionRender"', 'mdActionRender', json_encode(gridGetActionColumn('mdActionRender', $mdactions)));
 		}
 		$smarty->assign('MasterDetailLayoutMap', $mdmap);
+		$smarty->assign('MasterID', $masterid);
 		return $smarty->fetch('Components/MasterDetail/Grid.tpl');
 	}
 }

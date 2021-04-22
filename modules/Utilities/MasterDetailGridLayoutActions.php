@@ -17,42 +17,22 @@ switch ($_REQUEST['mdaction']) {
 		break;
 	case 'list':
 	default:
-		echo json_encode(
-			array(
-				'data' => array(
-					'contents' => [
-						[
-							'projecttaskname' => 'Beautiful Lies',
-							'projecttaskpriority' => 'Birdy',
-							'startdate' => '2016.03.26',
-							'enddate' => 'Po',
-							'record_module' => 'ProjectTask',
-							'record_id' => 1,
-						],
-						[
-							'projecttaskname' => 'Lies Beautiful',
-							'projecttaskpriority' => 'dBirdy',
-							'startdate' => '2015.03.26',
-							'enddate' => 'Po44',
-							'record_module' => 'ProjectTask',
-							'record_id' => 2,
-						],
-						[
-							'projecttaskname' => 'Lies 3',
-							'projecttaskpriority' => '3',
-							'startdate' => '2013.03.26',
-							'enddate' => '3',
-							'record_module' => 'ProjectTask',
-							'record_id' => 44570,
-						],
-					],
-					'pagination' => array(
-						'page' => 1,
-						'totalCount' => 1,
-					),
-				),
-				'result' => true,
-			)
-		);
+		if (empty($_REQUEST['mdmap'])) {
+			echo getEmptyDataGridResponse();
+		} else {
+			$mname = vtlib_purify($_REQUEST['mdmap']);
+			$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$mname, cbMap::getMapIdByName($mname));
+			if ($cbMapid) {
+				$cbMap = cbMap::getMapByID($cbMapid);
+				$mdmap = $cbMap->MasterDetailLayout();
+				if (!empty($mdmap['listview']) && !empty($mdmap['listview']['fields'] && !empty($_REQUEST['pid']))) {
+					echo getDataGridResponse($mdmap);
+				} else {
+					echo getEmptyDataGridResponse();
+				}
+			} else {
+				echo getEmptyDataGridResponse();
+			}
+		}
 		break;
 }
