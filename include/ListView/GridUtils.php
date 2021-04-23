@@ -47,12 +47,18 @@ function gridGetEditor($module, $fieldname, $uitype) {
 			];
 			break;
 		case Field_Metadata::UITYPE_DATE_TIME:
-			//($current_user->hour_format=='24' ? '24' : 'am/pm');
+			if ($current_user->hour_format=='24') {
+				$tFormat = '';
+				$tValue = array('showMeridiem'=>false);
+			} else {
+				$tFormat = ' A';
+				$tValue = true;
+			}
 			return [
 				'type' => 'datePicker',
 				'options' => [
-					'format' => strtr($current_user->date_format, 'm', 'M').' HH:mm A',
-					'timepicker' => true
+					'format' => strtr($current_user->date_format, 'm', 'M').' HH:mm'.$tFormat,
+					'timepicker' => $tValue
 				]
 			];
 			break;
