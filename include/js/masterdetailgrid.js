@@ -1,17 +1,44 @@
 var masterdetailwork = {
 
-	moveup: (recordid) => {
-		console.log('up'+recordid);
+	moveup: (recordid, gridinstance, rowkey) => {
+		if (rowkey == 0) {
+			return false;
+		}
+		gridinstance.moveRow(rowkey, rowkey-1);
+		movupdata = gridinstance.getData();
+		for (let x in movupdata) {
+			movupdata[x].rowKey = parseInt(x);
+			movupdata[x].sortKey = parseInt(x);
+		}
+		gridinstance.resetData(movupdata);
 	},
-
-	movedown: (recordid) => {
-		console.log('down'+recordid);
+	movedown: (recordid, gridinstance, rowkey) => {
+		gridinstance.moveRow(rowkey, rowkey+1);
+		movdowndata = gridinstance.getData();
+		for (let x in movdowndata) {
+			movdowndata[x].rowKey = parseInt(x);
+			movdowndata[x].sortKey = parseInt(x);
+		}
+		gridinstance.resetData(movdowndata);
 	},
-
-	delete: (module, recordid) => {
+	delete: (module, recordid, gridinstance, rowkey) => {
 		if (confirm(alert_arr.ARE_YOU_SURE)) {
-			document.location.href=url;
-			'index.php?module='+Project+'&action=updateRelations&parentid='+Projectid+'&destination_module='+module+'&idlist='+recordid+'&mode=delete';
+			var parentid = document.getElementById('record').value;
+			var pmodule = document.getElementById('module').value;
+			var fileurl = 'module='+pmodule+'&action=updateRelations&parentid='+parentid+'&destination_module='+module+'&idlist='+recordid+'&mode=delete';
+			jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?' + fileurl
+			}).done(function (response) {
+				gridinstance.removeRow(rowkey);
+				data = gridinstance.getData();
+				for (let x in data) {
+					data[x].rowKey = parseInt(x);
+					data[x].sortKey = parseInt(x);
+				}
+				gridinstance.resetData(data);
+			});
+			return true;
 		}
 	},
 
@@ -67,9 +94,10 @@ class mdActionRender {
 		let module = props.grid.getValue(rowKey, 'record_module');
 		el = document.createElement('span');
 		let actions = '<div class="slds-button-group" role="group">';
+		let mdgridob = 'mdgrid'+props.grid.el.id;
 		if (props.columnInfo.renderer.options.moveup) {
 			actions += `
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.moveup(${recordid});" title="${alert_arr['MoveUp']}">
+			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.moveup(${recordid}, ${mdgridob}, ${rowKey});" title="${alert_arr['MoveUp']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#up"></use>
 				</svg>
@@ -77,7 +105,7 @@ class mdActionRender {
 		}
 		if (props.columnInfo.renderer.options.movedown) {
 			actions += `
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.movedown(${recordid});" title="${alert_arr['MoveDown']}">
+			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.movedown(${recordid}, ${mdgridob}, ${rowKey});" title="${alert_arr['MoveDown']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
 				</svg>
@@ -93,7 +121,7 @@ class mdActionRender {
 		}
 		if (props.columnInfo.renderer.options.delete) {
 			actions += `
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.delete('${module}', ${recordid});" title="${alert_arr['LBL_DELETE']}">
+			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.delete('${module}', ${recordid},${mdgridob}, ${rowKey});" title="${alert_arr['LBL_DELETE']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
 				</svg>
