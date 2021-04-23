@@ -422,8 +422,7 @@ class ListViewController {
 						$value = '--';
 					}
 				} elseif ($field->getUIType() == 98) {
-					$value = '<a href="index.php?action=RoleDetailView&module=Settings&parenttab='.
-						'Settings&roleid='.$value.'">'.textlength_check(getRoleName($value)).'</a>';
+					$value = '<a href="index.php?action=RoleDetailView&module=Settings&roleid='.$value.'">'.textlength_check(getRoleName($value)).'</a>';
 				} elseif ($field->getUIType() == '69m') {
 					if ($module == 'Products') {
 						$queryPrdt = 'SELECT vtiger_attachments.path,vtiger_attachments.attachmentsid,vtiger_attachments.`name`

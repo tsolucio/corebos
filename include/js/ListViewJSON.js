@@ -855,8 +855,7 @@ const ListView = {
 									<strong>${label}:</strong>
 								</dt>
 								<dd class="slds-item_detail slds-truncate">${response[label]}</dd>
-							</dl>				
-						`;
+							</dl>`;
 					}
 				}
 				const el = `
