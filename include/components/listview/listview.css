@@ -93,3 +93,9 @@
     transform: rotate(360deg);
   }
 }
+
+.tui-grid-body-area,
+.tui-grid-rside-area,
+[data-column-name="cblvactioncolumn"] {
+  overflow: visible !important;
+}

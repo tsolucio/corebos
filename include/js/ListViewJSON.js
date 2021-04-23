@@ -13,7 +13,7 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 loadJS('index.php?module=cbQuestion&action=cbQuestionAjax&file=getjslanguage');
-let lvmodule = '';
+let lvmodule = gVTModule;
 let PageSize = 20;
 let lvtuiGrid = tui.Grid;
 let lvdataGridInstance;
@@ -362,26 +362,11 @@ const ListView = {
 					if (rows != '') {
 						ListView.checkRows();
 					}
-					const getGridCell = document.getElementsByClassName('tui-grid-cell');
-					for (let i = 0; i < getGridCell.length; i++) {
-						if (getGridCell[i].dataset.columnName == 'cblvactioncolumn') {
-							getGridCell[i].style.overflow = 'visible';
-						}
-					}
 				}
 			});
 			ListView.loader('hide');
 			//load empty create new record template
 			ListView.noData();
-			//change style in grid
-			const getBodyArea = document.getElementsByClassName('tui-grid-body-area');
-			for (let i = 0; i < getBodyArea.length; i++) {
-				getBodyArea[i].style.overflow = 'visible';
-			}
-			const getRside = document.getElementsByClassName('tui-grid-rside-area');
-			for (let i = 0; i < getRside.length; i++) {
-				getRside[i].style.overflow = 'visible';
-			}
 			ListView.registerEvent(url);
 			tui.Grid.applyTheme('striped');
 		});
