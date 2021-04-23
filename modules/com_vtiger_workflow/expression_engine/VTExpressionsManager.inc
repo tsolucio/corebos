@@ -175,6 +175,7 @@ class VTExpressionsManager {
 			'getCurrentUserID' => 'getCurrentUserID()',
 			'getCurrentUserName' => 'getCurrentUserName({full})',
 			'getCurrentUserField' => 'getCurrentUserField(fieldname)',
+			'getCRMIDFromWSID' => 'getCRMIDFromWSID(id)',
 			'getEntityType'=>'getEntityType(field)',
 			'getimageurl'=>'getimageurl(field)',
 			'getLatitude' => 'getLatitude(address)',

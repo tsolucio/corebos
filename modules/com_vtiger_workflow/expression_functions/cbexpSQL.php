@@ -87,6 +87,7 @@ function cbexpsql_supportedFunctions() {
 		// 'getCurrentUserID' => 'getCurrentUserID()',
 		// 'getCurrentUserName' => 'getCurrentUserName({full})',
 		// 'getCurrentUserField' => 'getCurrentUserField(fieldname)',
+		'getCRMIDFromWSID' => 'getCRMIDFromWSID(id)',
 		// 'getEntityType'=>'getEntityType(field)',
 		// 'getimageurl'=>'getimageurl(field)',
 		// 'getLatitude' => 'getLatitude(address)',
@@ -534,6 +535,14 @@ function cbexpsql_getCurrentUserName($arr, $mmodule) {
 }
 function cbexpsql_getCurrentUserField($arr, $mmodule) {
 	return 'TRUE';
+}
+function cbexpsql_getCRMIDFromWSID($arr, $mmodule) {
+
+	if(!empty($arr) && !empty($arr[0])){
+		return 'substring('.$arr[0].', position("x" IN'.$arr[0].')+1)';
+	}else{
+		return "";
+	}
 }
 function cbexpsql_getLatitude($arr, $mmodule) {
 	return 'TRUE';

@@ -1125,6 +1125,22 @@ $WFExpressionFunctionDefinitons = array(
 		"getCurrentUserField('email1')",
 	),
 ),
+'getCRMIDFromWSID' => array(
+    'name' => 'getCRMIDFromWSID(id)',
+    'desc' => 'This function returns the id of a record',
+    'params' => array(
+        array(
+            'name' => 'id',
+            'type' => 'String(WSID)',
+            'optional' => false,
+            'desc' => 'ID of record in web service format',
+        ),
+    ),
+    'categories' => array('Application'),
+    'examples' => array(
+        "getCRMIDFromWSID('33x2222')",
+    ),
+),
 'getEntityType' => array(
 	'name' => 'getEntityType(field)',
 	'desc' => 'This function returns the module name of the given ID.',
