@@ -341,7 +341,12 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 		case Field_Metadata::UITYPE_SKYPE:
 		case Field_Metadata::UITYPE_TEXT:
 		default:
-			$return = $fieldValue;
+			$nameFields = getEntityFieldNames($module);
+			if (in_array($fieldName, (array)$nameFields['fieldname'])) {
+				$return="<a href='index.php?module=$module&action=DetailView&record=$recordID' title='".getTranslatedString($module, $module)."' target='_blank'>$fieldValue</a>";
+			} else {
+				$return = $fieldValue;
+			}
 	}
 	return $return;
 }
