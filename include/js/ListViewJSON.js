@@ -870,7 +870,7 @@ const ListView = {
 								</span>
 							</div>
 							<div class="slds-media__body">
-								<h2 class="slds-truncate slds-text-heading_medium" title="Quick view">Quick view</h2>
+								<h2 class="slds-truncate slds-text-heading_medium" title="${alert_arr.QuickView}">${alert_arr.QuickView}</h2>
 							</div>
 							</div>
 						</header>
@@ -978,7 +978,7 @@ const ListView = {
 					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#refresh"></use>
 					</svg>
-					Restore
+					${alert_arr.Restore}
 				</a>
 				<a class="slds-button slds-button_outline-brand" onclick="callEmptyRecyclebin('${recordid}');" style="color: red; border: 1px solid;">
 					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">

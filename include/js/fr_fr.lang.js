@@ -438,4 +438,6 @@ var alert_arr = {
 	'LBL_IMPORT': 'Import',
 	'LBL_NO_DATA': 'No Data Found',
 	'filterApplied': 'Filter applied',
+	'QuickView': 'Quick view',
+	'Restore': 'Restore',
 };

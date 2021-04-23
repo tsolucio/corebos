@@ -455,4 +455,6 @@ var alert_arr = {
 	'LBL_IMPORT': 'Importa',
 	'LBL_NO_DATA': 'No Hay Registros',
 	'filterApplied': 'Filter applied',
+	'QuickView': 'Vista rápida',
+	'Restore': 'Restaurar',
 };
