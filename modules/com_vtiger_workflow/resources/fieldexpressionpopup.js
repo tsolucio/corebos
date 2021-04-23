@@ -328,7 +328,6 @@ function fieldExpressionPopup(moduleName, $) {
 			}
 			var fieldName = $('#'+fieldelementid).attr('name');
 			if (fieldtype.name == 'reference' && fieldName == 'folderid') {
-				const tmpfieldtype = fieldtype;
 				let picklistValues = [];
 				for (let i in fieldtype.picklistValues) {
 					picklistValues.push({
