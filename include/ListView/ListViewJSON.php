@@ -18,7 +18,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	global $current_user, $adb;
 	include_once 'modules/Tooltip/TooltipUtils.php';
 	require_once "modules/$currentModule/$currentModule.php";
-	$lastPage = vtlib_purify($_REQUEST['lastPage']);
+	$lastPage = isset($_REQUEST['lastPage']) ? vtlib_purify($_REQUEST['lastPage']) : '';
 	if ($currentModule == 'Utilities') {
 		$currentModule = vtlib_purify($_REQUEST['formodule']);
 	}
