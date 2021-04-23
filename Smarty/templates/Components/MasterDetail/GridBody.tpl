@@ -24,7 +24,7 @@ var mdgrid{$MasterDetailLayoutMap.mapname} = new tui.Grid({
 	data: {
 		api: {
 			readData: {
-				url: '{$MasterDetailLayoutMap.listview.datasource}',
+				url: '{$MasterDetailLayoutMap.listview.datasource}&pid={$MasterID}',
 				method: 'GET'
 			}
 		}
