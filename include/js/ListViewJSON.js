@@ -264,11 +264,11 @@ const ListView = {
 					listItems: listItems
 				}
 			};
-		} else if (uitype == '50' || uitype == '70') {
+		} else if (uitype == '50') {
 			editor = {
 				type: 'datePicker',
 				options: {
-					format: 'yyyy-MM-dd HH:mm A',
+					format: userDateFormat.replace(/m/g, 'M')+' HH:mm A',
 					timepicker: true
 				}
 			};
@@ -276,14 +276,13 @@ const ListView = {
 			editor = {
 				type: 'datePicker',
 				options: {
-					format: 'yyyy-MM-dd'
+					format: userDateFormat.replace(/m/g, 'M')
 				}
 			};
-		} else if (uitype == '52' || uitype == '53') {
+		} else if (uitype == '53') {
 			let listItems = [];
 			for (let f in values) {
-				let listValues = {};
-				listValues = {
+				let listValues = {
 					text: values[f],
 					value: f,
 				};
