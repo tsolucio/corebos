@@ -854,8 +854,7 @@ function getEventList(&$calendar, $start_date, $end_date, $info = '') {
 		)
 	)";
 	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCalendar');
-	$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-	$query = "SELECT vtiger_groups.groupname, $userNameSql as user_name,vtiger_crmentity.smownerid, vtiger_crmentity.crmid,vtiger_activity.*
+	$query = "SELECT vtiger_groups.groupname, vtiger_users.ename as user_name,vtiger_crmentity.smownerid, vtiger_crmentity.crmid,vtiger_activity.*
 		FROM vtiger_activity
 		INNER JOIN ".$crmEntityTable." ON vtiger_crmentity.crmid = vtiger_activity.activityid
 		LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
@@ -1067,8 +1066,7 @@ function getTodoList(&$calendar, $start_date, $end_date, $info = '') {
 	$cal_log->debug('> getTodoList');
 	$Entries = array();
 	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCalendar');
-	$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-	$query = "SELECT vtiger_groups.groupname, $userNameSql as user_name, vtiger_crmentity.crmid, vtiger_cntactivityrel.contactid,vtiger_activity.*
+	$query = "SELECT vtiger_groups.groupname, vtiger_users.ename as user_name, vtiger_crmentity.crmid, vtiger_cntactivityrel.contactid,vtiger_activity.*
 		FROM vtiger_activity
 		INNER JOIN ".$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_activity.activityid
 		LEFT JOIN vtiger_cntactivityrel ON vtiger_cntactivityrel.activityid = vtiger_activity.activityid
@@ -1325,12 +1323,11 @@ function constructEventListView(&$cal, $entry_list, $navigation_array = '') {
 		for ($i=0; $i<count($entry_list); $i++) {
 			$list_view .="<tr class='lvtColData' onmouseover='this.className=\"lvtColDataHover\"' onmouseout='this.className=\"lvtColData\"' bgcolor='white'>";
 
-			$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 			$assigned_role_query=$adb->pquery(
 				"select vtiger_user2role.roleid,vtiger_user2role.userid
 					from vtiger_user2role
 					INNER JOIN vtiger_users ON vtiger_users.id=vtiger_user2role.userid
-					WHERE $userNameSql=?",
+					WHERE vtiger_users.ename=?",
 				array($entry_list[$i]['assignedto'])
 			);
 			$assigned_user_role_id = $adb->query_result($assigned_role_query, 0, 'roleid');

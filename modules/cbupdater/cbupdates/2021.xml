@@ -84,4 +84,11 @@
 	<classname>updatecolumnmodulenameinVtigerTracker</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Change entity name field for Users module</description>
+	<filename>build/changeSets/2021/changeEntityNameForUsersModule.php</filename>
+	<classname>changeEntityNameForUsersModule</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

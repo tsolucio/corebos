@@ -651,8 +651,8 @@ function getFullNameFromQResult($result, $row_count, $module) {
 	$name = '';
 	if ($rowdata != '' && count($rowdata) > 0) {
 		$name = getEntityFieldNameDisplay($module, $fieldsName, $rowdata);
+		$name = textlength_check($name);
 	}
-	$name = textlength_check($name);
 	return $name;
 }
 
@@ -3632,11 +3632,11 @@ function getSqlForNameInDisplayFormat($input, $module, $glue = ' ') {
 	$fieldsName = $entity_field_info['fieldname'];
 	if (is_array($fieldsName)) {
 		foreach ($fieldsName as $value) {
-			$formattedNameList[] = $input[$value];
+			$formattedNameList[] = empty($input[$value]) ? '' : $input[$value];
 		}
 		$formattedNameListString = implode(",'" . $glue . "',", $formattedNameList);
 	} else {
-		$formattedNameListString = $input[$fieldsName];
+		$formattedNameListString = empty($input[$fieldsName]) ? '' : $input[$fieldsName];
 	}
 	return concatNamesSql($formattedNameListString);
 }
