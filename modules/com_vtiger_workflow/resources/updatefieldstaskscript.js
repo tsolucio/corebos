@@ -593,8 +593,8 @@ function VTUpdateFieldsTask($, fieldvaluemapping) {
 										if (fullFieldName == 'folderid' && moduleFieldTypes[fieldModule][fieldName]['name']=='reference') {
 											moduleFieldTypes[fieldModule][fieldName]['name']='picklist';
 											moduleFieldTypes[fieldModule][fieldName]['picklistValues']=moduleFieldTypes[fieldModule][fieldName]['picklistValues'].map((plval) => {
-												$wsid = plval.value.split('x');
-												plval.value = $wsid[1];
+												let wsid = plval.value.split('x');
+												plval.value = wsid[1];
 												return plval;
 											});
 										}
@@ -621,10 +621,11 @@ function VTUpdateFieldsTask($, fieldvaluemapping) {
 							$(format('#save_fieldvalues_%s_module', mappingno)).val(module);
 						}
 						$('#dump').html(fieldvaluemap['value']);
+						var text = '';
 						if (fieldvaluemap['valuetype'] == 'rawtext') {
-							var text = $('#dump').html();
+							text = $('#dump').html();
 						} else {
-							var text = $('#dump').text();
+							text = $('#dump').text();
 						}
 						//set property name on hidden field
 						var fv = $('#save_fieldvalues_'+mappingno+'_value');
@@ -675,7 +676,7 @@ function VTUpdateFieldsTask($, fieldvaluemapping) {
 					});
 					var out = '';
 					if (fieldvaluemapping.length!=0) {
-						var out = JSON.stringify(fieldvaluemapping);
+						out = JSON.stringify(fieldvaluemapping);
 					}
 					$('#save_fieldvaluemapping_json').val(out);
 
