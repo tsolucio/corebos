@@ -51,6 +51,7 @@ class VTUpdateFieldsTask extends VTTask {
 			$focus->id = $recordId;
 			$focus->mode = 'edit';
 			$focus->retrieve_entity_info($recordId, $moduleName);
+			$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $handlerMeta);
 			$focus->clearSingletonSaveFields();
 			$logbg->debug('field values pre', $focus->column_fields);
 			$logbg->debug('update info', $fieldValueMapping);

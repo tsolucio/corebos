@@ -1308,7 +1308,7 @@ function getCurrencyId($fieldValue) {
 
 function isFrontendEditViewAction($request, $module) {
 	global $log;
-	$return = ($request['action'] != $module.'Ajax' && $request['action'] != 'MassEditSave' && $request['action'] != 'ProcessDuplicates'
+	$return = ((empty($request['action']) || ($request['action'] != $module.'Ajax' && $request['action'] != 'MassEditSave' && $request['action'] != 'ProcessDuplicates'))
 		&& (empty($request['ajxaction']) || ($request['ajxaction'] != 'DETAILVIEW' && $request['ajxaction'] != 'Workflow')));
 	$log->debug('>< isFrontendEditViewAction '.($return ? 'true':'false'));
 	return $return;
