@@ -1011,12 +1011,10 @@ class QueryGenerator {
 							if (isset($moduleTableIndexList[$referenceTable])) {
 								$referenceTable = "$referenceTable$fieldName";
 							}
-							$columnList[] = "$referenceTable.$column";
+							$columnList[$column] = "$referenceTable.$column";
 						}
 						if (count($columnList) > 1) {
-							$query = substr($columnList[0], 0, strpos($columnList[0], '.'));
-							$new_query = $query.'.ename';
-							$columnSql = $new_query;
+							$columnSql = getSqlForNameInDisplayFormat($columnList, $module);
 						} else {
 							$columnSql = implode('', $columnList);
 						}
