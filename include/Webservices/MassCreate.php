@@ -21,7 +21,7 @@ $mcRecords = array();
 $mcModules = array();
 
 function MassCreate($elements, $user) {
-	global $mcRecords, $mcModules, $adb, $log;
+	global $mcProcessedReferences, $mcRecords, $mcModules, $adb, $log;
 	$mcProcessedReferences = array();
 	$mcRecords = array();
 	$mcModules = array();
