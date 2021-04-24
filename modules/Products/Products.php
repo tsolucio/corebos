@@ -153,7 +153,7 @@ class Products extends CRMEntity {
 		global $adb, $log;
 		$log->debug("> insertTaxInformation $tablename, $module");
 		$tax_details = getAllTaxes();
-		if ($_REQUEST['action'] == 'MassEditSave') {
+		if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'MassEditSave') {
 			$params = json_decode($_REQUEST['params'], true);
 			$_REQUEST = array_merge($params, $_REQUEST);
 		}
