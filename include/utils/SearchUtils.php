@@ -204,8 +204,7 @@ function Search($module, $input = '') {
 function get_usersid($table_name, $column_name, $search_string) {
 	global $log;
 	$log->debug('> get_usersid '.$table_name.','.$column_name.','.$search_string);
-	$concatSql = getSqlForNameInDisplayFormat(array('last_name'=>'vtiger_users.last_name', 'first_name'=>'vtiger_users.first_name'), 'Users');
-	$where = "(trim($concatSql) like '". formatForSqlLike($search_string)  . "' or vtiger_groups.groupname like '". formatForSqlLike($search_string) ."')";
+	$where = "(trim(vtiger_users.ename) like '". formatForSqlLike($search_string)  . "' or vtiger_groups.groupname like '". formatForSqlLike($search_string) ."')";
 	$log->debug('< get_usersid');
 	return $where;
 }
@@ -381,8 +380,7 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 			} elseif ($table_name == 'vtiger_crmentity' && $column_name == 'smownerid') {
 				$where = get_usersid($table_name, $column_name, $search_string);
 			} elseif ($table_name == 'vtiger_crmentity' && $column_name == 'modifiedby') {
-				$concatSql = getSqlForNameInDisplayFormat(array('last_name'=>'vtiger_users2.last_name', 'first_name'=>'vtiger_users2.first_name'), 'Users');
-				$where = "(trim($concatSql) like '". formatForSqlLike($search_string) . "' or vtiger_groups2.groupname like '". formatForSqlLike($search_string) ."')";
+				$where = "(trim(vtiger_users2.ename) like '". formatForSqlLike($search_string) . "' or vtiger_groups2.groupname like '". formatForSqlLike($search_string) ."')";
 			} elseif (in_array($column_name, $column_array)) {
 				$where = getValuesforColumns($column_name, $search_string, 'cts', $input);
 			} elseif (isset($input['type']) && $input['type'] == 'entchar') {
@@ -859,8 +857,7 @@ function getdashboardcondition($input = '') {
 		$url_string .= '&date_closed='.$date_closed;
 	}
 	if (isset($owner) && $owner != '') {
-		$column = getSqlForNameInDisplayFormat(array('last_name'=>'last_name', 'first_name'=>'first_name'), 'Users');
-		$user_qry="select vtiger_users.id from vtiger_users where $column = ?";
+		$user_qry="select vtiger_users.id from vtiger_users where vtiger_users.ename = ?";
 		$res = $adb->pquery($user_qry, array($owner));
 		$uid = $adb->query_result($res, 0, 'id');
 		$where_clauses[] = 'vtiger_crmentity.smownerid = '.$uid;
@@ -1308,11 +1305,7 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 			} elseif ($fieldname == 'modifiedby') {
 				$tableNameSuffix = '2';
 			}
-			$userNameSql = getSqlForNameInDisplayFormat(
-				array('first_name'=>'vtiger_users'.$tableNameSuffix.'.first_name', 'last_name'=>'vtiger_users'.$tableNameSuffix.'.last_name'),
-				'Users'
-			);
-			$temp_value = "( trim($userNameSql)".getAdvancedSearchComparator($comparator, $value, $datatype);
+			$temp_value = "( trim(vtiger_users$tableNameSuffix.ename)".getAdvancedSearchComparator($comparator, $value, $datatype);
 			$temp_value.= " OR vtiger_groups$tableNameSuffix.groupname".getAdvancedSearchComparator($comparator, $value, $datatype);
 			$value = $temp_value . ')';
 		}
