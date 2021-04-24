@@ -1214,8 +1214,7 @@ class QueryGenerator {
 					$orderByColumn = 'vtiger_currency_info.currency_name';
 				}
 			} elseif (in_array('Users', $referenceModules)) {
-				$columnSqlTable = 'vtiger_users'.$parentReferenceField.$fieldName;
-				$orderByColumn = $columnSqlTable.'.ename';
+				$orderByColumn = 'vtiger_users'.$parentReferenceField.$fieldName.'.ename';
 			} else {
 				$orderByColumn = '';
 				foreach ($referenceModules as $mod) {

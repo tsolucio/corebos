@@ -292,7 +292,6 @@ function getCalendar4YouListQuery($userid, $invites, $where = '', $type = '1') {
 	$log->debug('> getCalendar4YouListQuery '.$userid.','.$where);
 	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Calendar4You');
 	//$tab_id = getTabid('Calendar4You');
-	//$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' =>'vtiger_users.last_name'), 'Users');
 
 	$query = 'SELECT distinct vtiger_activity.activityid as act_id, vtiger_crmentity.*, vtiger_activity.*, vtiger_activitycf.*, vtiger_contactdetails.lastname,
 		vtiger_contactdetails.firstname, vtiger_contactdetails.contactid, vtiger_activity.rel_id AS parent_id,its4you_googlesync4you_events.geventid,
