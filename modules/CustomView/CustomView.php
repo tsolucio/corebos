@@ -211,7 +211,7 @@ class CustomView extends CRMEntity {
 			$selected = '';
 		}
 
-		$ssql = 'select vtiger_customview.*, vtiger_users.first_name, vtiger_users.last_name
+		$ssql = 'select vtiger_customview.*, vtiger_users.ename
 			from vtiger_customview
 			inner join vtiger_tab on vtiger_tab.name = vtiger_customview.entitytype
 			left join vtiger_users on vtiger_customview.userid = vtiger_users.id

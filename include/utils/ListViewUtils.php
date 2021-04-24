@@ -2329,7 +2329,7 @@ function getListQuery($module, $where = '') {
 			$query .= 'WHERE vtiger_crmentity.deleted = 0 ' . $where;
 			break;
 		case 'Users':
-			$query = 'SELECT id,user_name,first_name,last_name,email1,phone_mobile,phone_work,is_admin,status,email2,
+			$query = 'SELECT id,user_name,first_name,last_name,email1,phone_mobile,phone_work,is_admin,status,email2,ename,
 					vtiger_user2role.roleid as roleid,vtiger_role.depth as depth
 				FROM vtiger_users
 				INNER JOIN vtiger_user2role ON vtiger_users.id = vtiger_user2role.userid
