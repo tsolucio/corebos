@@ -166,7 +166,7 @@ function getDataGridResponse($mdmap) {
 				'contents' => $ret,
 				'pagination' => array(
 					'page' => 1,
-					'totalCount' => $count,
+					'totalCount' => (int)$count,
 				),
 			),
 			'result' => true,

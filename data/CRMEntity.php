@@ -1379,15 +1379,10 @@ class CRMEntity {
 	 */
 	public function save($module_name, $fileid = '') {
 		global $current_user, $adb;
-		if (empty($_REQUEST['FILTERFIELDSMAP']) && !empty($_REQUEST['return_module'])) {
-			$mdmaps = cbMap::getMapsByType('MasterDetailLayout', vtlib_purify($_REQUEST['return_module']));
-			foreach ($mdmaps as $mapid => $mapname) {
-				$cbMap = cbMap::getMapByID($mapid);
-				$mdmap = $cbMap->MasterDetailLayout();
-				if ($mdmap['targetmodule']==$module_name) {
-					$_REQUEST['FILTERFIELDSMAP'] = $mapname;
-					break;
-				}
+		if (empty($_REQUEST['FILTERFIELDSMAP'])) {
+			$mdmaps = cbMap::getMapsByType('MasterDetailLayout', $module_name);
+			if (count($mdmaps)>0) {
+				$_REQUEST['FILTERFIELDSMAP'] = reset($mdmaps);
 			}
 		}
 		if (!empty($_REQUEST['FILTERFIELDSMAP'])) {
