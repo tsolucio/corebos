@@ -1,7 +1,9 @@
 var mod_alert_arr = {
 	'LBL_CHOOSEFIELDBLOCK': 'Elige un bloque para el campo ',
+	'LBL_CHOOSECUSTOMVIEW': 'Choose fields for filter',
 	'LBL_MB_PROGRESS': 'Progreso',
 	'RecordDeleted': 'El registro se eliminó con éxito.',
+	'RecordSaved': 'The record was successfully saved',
 	'Field': 'Campo',
 	'WasSaved': 'fue guardado con éxito',
 	'LBL_MB_SAVEFIELD': 'Guardar campo',
@@ -82,4 +84,12 @@ var mod_alert_arr = {
 	'default': 'Set as default',
 	'massedit': 'MassEditable',
 	'blockslist': 'Blocks',
+	'FieldsEmpty': 'Field name or label can\'t be empty',
+	'Relmod': 'Related module can\'t be empty',
+	'PickListFld': 'Picklist field can\'t be empty',
+	'ViewnameEmpty_msg': 'View name can\'t be empty',
+	'Related_module_label': 'Related module or label can\'t be empty',
+	'ChoseField': 'Please choose at least one field to continue',
+	'Related_modlabel': 'Module hasn\'t relations fields please finish the module',
+	'FirstFilterAll_msg': 'First Filter should be All',
 };
