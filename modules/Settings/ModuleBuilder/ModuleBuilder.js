@@ -468,7 +468,7 @@ const mb = {
 						name: 'action',
 						header: mod_alert_arr.action,
 						renderer: {
-							type: ActionRender,
+							type: BuilderActionRender,
 							options: {
 								type: 'Fields'
 							}
@@ -524,7 +524,7 @@ const mb = {
 						name: 'action',
 						header: mod_alert_arr.action,
 						renderer: {
-							type: ActionRender,
+							type: BuilderActionRender,
 							options: {
 								type: 'CustomView'
 							}
@@ -584,7 +584,7 @@ const mb = {
 						name: 'action',
 						header: mod_alert_arr.action,
 						renderer: {
-							type: ActionRender,
+							type: BuilderActionRender,
 							options: {
 								type: 'RelatedLists'
 							}
@@ -2144,7 +2144,7 @@ document.addEventListener('click', function (event) {
 	}
 });
 
-class ActionRender {
+class BuilderActionRender {
 
 	constructor(props) {
 		let el;

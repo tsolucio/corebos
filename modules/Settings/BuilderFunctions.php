@@ -15,7 +15,7 @@
 *************************************************************************************************/
 require_once 'include/utils/utils.php';
 require_once 'modules/Settings/ModuleBuilder/builder.php';
-$moduleid = $_COOKIE['ModuleBuilderID'];
+$moduleid = isset($_COOKIE['ModuleBuilderID']) ? $_COOKIE['ModuleBuilderID'] : 0;
 $methodName = vtlib_purify($_REQUEST['methodName']);
 $mb = new ModuleBuilder($moduleid);
 switch ($methodName) {
