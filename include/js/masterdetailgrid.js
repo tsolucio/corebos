@@ -25,7 +25,7 @@ var masterdetailwork = {
 		if (confirm(alert_arr.ARE_YOU_SURE)) {
 			var parentid = document.getElementById('record').value;
 			var pmodule = document.getElementById('module').value;
-			var fileurl = 'module='+pmodule+'&action=updateRelations&parentid='+parentid+'&destination_module='+module+'&idlist='+recordid+'&mode=delete';
+			var fileurl = 'module=Utilities&action=UtilitiesAjax&file=MasterDetailGridLayoutActions&mdaction=delete&parentid='+parentid+'&detail_module='+module+'&parent_module='+pmodule+'&detail_id='+recordid;
 			jQuery.ajax({
 				method: 'POST',
 				url: 'index.php?' + fileurl

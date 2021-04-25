@@ -9,6 +9,8 @@
  ********************************************************************************/
 include_once 'include/fields/metainformation.php';
 require_once 'modules/PickList/PickListUtils.php';
+require_once 'data/CRMEntity.php';
+require_once 'include/utils/CommonUtils.php';
 
 function gridGetEditor($module, $fieldname, $uitype) {
 	global $current_user, $adb, $noof_group_rows;
@@ -373,7 +375,57 @@ function gridGetActionColumn($renderer, $actions) {
 	return '';
 }
 
+function gridInlineCellEdit($request) {
+	global $log;
+	$result = array('success' => false, 'msg' => 'failed');
+	$crmid = vtlib_purify($request['recordid']);
+	$module = vtlib_purify($request['rec_module']);
+	$fieldname = vtlib_purify($request['fldName']);
+	$fieldvalue = vtlib_purify($request['fieldValue']);
+	$modInstance = CRMEntity::getInstance($module);
+	if ($crmid != '') {
+		$modInstance->retrieve_entity_info($crmid, $module);
+		$modInstance->column_fields[$fieldname] = $fieldvalue;
+		$modInstance->id = $crmid;
+		$modInstance->mode = 'edit';
+		list($saveerror,$errormessage,$error_action,$returnvalues) = $modInstance->preSaveCheck($request);
+		if ($saveerror) {
+			$result['msg'] = ':#:ERR'.$errormessage;
+		} else {
+			try {
+				$modInstance->save($module);
+				if ($modInstance->id != '') {
+					$result['success'] = true;
+					$result['msg'] = '';
+				}
+			} catch (Exception $e) {
+				$result['msg'] = $e->getMessage();
+				$log->debug('> gridInlineCellEdit failed!'. $e->getMessage());
+			}
+		}
+	}
+	return $result;
+}
+
 function gridDeleteRow($adb, $request) {
+	global $log;
+	$result = array('success'=> false, 'msg' => 'failed');
+	if (!empty($request['parent_module']) && !empty($request['detail_module']) && !empty($request['detail_id']) && !empty($request['parentid'])) {
+		$pmodule = vtlib_purify($_REQUEST['parent_module']);
+		$relmodule = vtlib_purify($_REQUEST['detail_module']);
+		$pid = vtlib_purify($_REQUEST['parentid']);
+		$relid = vtlib_purify($_REQUEST['detail_id']);
+		try {
+			$focus = CRMEntity::getInstance($pmodule);
+			$focus->delete_related_module($pmodule, $pid, $relmodule, $relid);
+			$result['success'] = true;
+			$result['msg'] = '';
+		} catch (Exception $e) {
+			$result['msg'] =  $e->getMessage();
+			$log->debug('> gridDeleteRow failed!'. $e->getMessage());
+		}
+	}
+	return $result;
 }
 
 function gridMoveRowUpDown($adb, $request) {
