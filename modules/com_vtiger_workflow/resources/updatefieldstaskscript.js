@@ -395,23 +395,23 @@ function VTUpdateFieldsTask($, fieldvaluemapping) {
 		},
 		validator: function () {
 			jQuery('#duplicate_fields_selected_message').css('display', 'none');
-			var result;
 			var successResult = [true];
 			var failureResult = [false, 'duplicate_fields_selected_message', []];
 			var selectedFieldNames = $('.fieldname');
-			result = successResult;
+			var fieldmodule = new Array();
+			var exist = 0;
 			$.each(selectedFieldNames, function (i, ele) {
 				var fieldName = $(ele).val();
-				var fields = $('[name='+fieldName+']');
-				var fldrel=$('#save_fieldvalues10_'+i+'_fieldname').val();
-				if (fldrel!=null) {
-					var fieldsrel = $('[name='+fldrel+']');
-				}
-				if ((fields.length > 1 && fldrel==null) || (fieldsrel!=undefined && fieldsrel.length>1)) {
-					result = failureResult;
+				if (fieldmodule.indexOf(fieldName) >= 0) {
+					exist++;
+				} else {
+					fieldmodule[i] = fieldName;
 				}
 			});
-			return result;
+			if (exist>0) {
+				return failureResult;
+			}
+			return successResult;
 		}
 	};
 
