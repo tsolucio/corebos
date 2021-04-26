@@ -401,7 +401,12 @@ function VTUpdateFieldsTask($, fieldvaluemapping) {
 			var fieldmodule = new Array();
 			var exist = 0;
 			$.each(selectedFieldNames, function (i, ele) {
+				var elId = ele.id.split('_');
 				var fieldName = $(ele).val();
+				var fldrel = $('#save_fieldvalues_'+elId[2]+'_value').attr('name');
+				if (fldrel != null) {
+					fieldName = fldrel;
+				}
 				if (fieldmodule.indexOf(fieldName) >= 0) {
 					exist++;
 				} else {
