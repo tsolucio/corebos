@@ -23,7 +23,7 @@ class addColumnsToNotification extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->ExecuteQuery('ALTER TABLE vtiger_notificationdrivers ADD asignedvalue varchar(20);');
+			$this->ExecuteQuery('ALTER TABLE vtiger_notificationdrivers ADD signedvalue varchar(20);');
 			$this->ExecuteQuery('ALTER TABLE vtiger_notificationdrivers ADD signedkey varchar(20);');
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();

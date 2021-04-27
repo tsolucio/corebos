@@ -21,10 +21,19 @@ include_once 'include/database/PearDatabase.php';
 include_once 'include/utils/utils.php';
 global $adb;
 $type = vtlib_purify($_REQUEST['type']);
-$driver = $adb->pquery('select path, functionname from vtiger_notificationdrivers where type=?', array($type));
+$signedKey = isset($_REQUEST['signedkey'])?vtlib_purify($_REQUEST['signedkey']):"";
+$signedValue = isset($_REQUEST['signedvalue'])?vtlib_purify($_REQUEST['signedvalue']):"";
+$driver = $adb->pquery('select path, functionname ,signedkey, signedvalue from vtiger_notificationdrivers where type=?', array($type));
 if ($driver && $adb->num_rows($driver)>0) {
 	$path = $adb->query_result($driver, 0, 0);
 	$function = $adb->query_result($driver, 0, 1);
+	$signedkey = $adb->query_result($driver, 0, 2);
+	$signedvalue = $adb->query_result($driver, 0, 3);
+	if ($signedkey!="" || $signedvalue!="") {
+		if ($signedValue!=$signedvalue || $signedKey!= $signedkey) {
+			return 0;
+		}
+	}
 	if ($type == 'googlecal' || $type == 'googlestorage') {
 		$input = $_GET['code'];
 	} else {
