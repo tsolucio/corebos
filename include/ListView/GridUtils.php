@@ -11,6 +11,7 @@ include_once 'include/fields/metainformation.php';
 require_once 'modules/PickList/PickListUtils.php';
 require_once 'data/CRMEntity.php';
 require_once 'include/utils/CommonUtils.php';
+require_once 'include/utils/utils.php';
 
 function gridGetEditor($module, $fieldname, $uitype) {
 	global $current_user, $adb, $noof_group_rows;
@@ -417,9 +418,7 @@ function gridDeleteRow($adb, $request) {
 		$relid = vtlib_purify($_REQUEST['detail_id']);
 		$mapname = vtlib_purify($_REQUEST['mapname']);
 		try {
-			$focus = CRMEntity::getInstance($pmodule);
 			$relfocus = CRMEntity::getInstance($relmodule);
-			$focus->delete_related_module($pmodule, $pid, $relmodule, $relid);
 			$cbMap = cbMap::getMapByName($mapname);
 			if ($cbMap) {
 				$mtype = $cbMap->column_fields['maptype'];
@@ -428,13 +427,19 @@ function gridDeleteRow($adb, $request) {
 					$sortfield = $mdmap['sortfield'];
 					$relfocus->retrieve_entity_info($relid, $relmodule);
 					$delseqval = $relfocus->column_fields[$sortfield];
-					$tablename = $relfocus->table_name.'cf';
-					$sql = "update $tablename set $sortfield=($sortfield-1) where $sortfield >= $delseqval";
-					$adb->pquery($sql, array());
+					$tablename = getTableNameForField($relmodule, $sortfield);
+					$relfocus->unlinkRelationship($relid, $pmodule, $pid);
+					$relfocus->trackUnLinkedInfo($pmodule, $pid, $relmodule, $relid);
+					list($delerror,$errormessage) = $relfocus->preDeleteCheck();
+					if (!$delerror) {
+						$relfocus->trash($relmodule, $relid);
+						$sql = "update $tablename set $sortfield=($sortfield-1) where $sortfield >= $delseqval";
+						$adb->pquery($sql, array());
+						$result['success'] = true;
+						$result['msg'] = '';
+					}
 				}
 			}
-			$result['success'] = true;
-			$result['msg'] = '';
 		} catch (Exception $e) {
 			$result['msg'] =  $e->getMessage();
 			$log->debug('> gridDeleteRow failed!'. $e->getMessage());
