@@ -410,14 +410,29 @@ function gridInlineCellEdit($request) {
 function gridDeleteRow($adb, $request) {
 	global $log;
 	$result = array('success'=> false, 'msg' => 'failed');
-	if (!empty($request['parent_module']) && !empty($request['detail_module']) && !empty($request['detail_id']) && !empty($request['parentid'])) {
+	if (!empty($request['parent_module']) && !empty($request['detail_module']) && !empty($request['detail_id']) && !empty($request['parentid']) && !empty($request['mapname'])) {
 		$pmodule = vtlib_purify($_REQUEST['parent_module']);
 		$relmodule = vtlib_purify($_REQUEST['detail_module']);
 		$pid = vtlib_purify($_REQUEST['parentid']);
 		$relid = vtlib_purify($_REQUEST['detail_id']);
+		$mapname = vtlib_purify($_REQUEST['mapname']);
 		try {
 			$focus = CRMEntity::getInstance($pmodule);
+			$relfocus = CRMEntity::getInstance($relmodule);
 			$focus->delete_related_module($pmodule, $pid, $relmodule, $relid);
+			$cbMap = cbMap::getMapByName($mapname);
+			if ($cbMap) {
+				$mtype = $cbMap->column_fields['maptype'];
+				$mdmap = $cbMap->$mtype();
+				if (!empty($mdmap['sortfield'])) {
+					$sortfield = $mdmap['sortfield'];
+					$relfocus->retrieve_entity_info($relid, $relmodule);
+					$delseqval = $relfocus->column_fields[$sortfield];
+					$tablename = $relfocus->table_name.'cf';
+					$sql = "update $tablename set $sortfield=($sortfield-1) where $sortfield >= $delseqval";
+					$adb->pquery($sql, array());
+				}
+			}
 			$result['success'] = true;
 			$result['msg'] = '';
 		} catch (Exception $e) {
@@ -429,21 +444,48 @@ function gridDeleteRow($adb, $request) {
 }
 
 function gridMoveRowUpDown($adb, $request) {
-	$direction = $request['movedirection'];
-	$task_id = $request['wftaskid'];
-	$wfrs = $adb->pquery('select workflow_id,executionorder from com_vtiger_workflowtasks where task_id=?', array($task_id));
-	$wfid = $adb->query_result($wfrs, 0, 'workflow_id');
-	$order = $adb->query_result($wfrs, 0, 'executionorder');
-	$chgtsk = 'update com_vtiger_workflowtasks set executionorder=? where executionorder=? and workflow_id=?';
-	$movtsk = 'update com_vtiger_workflowtasks set executionorder=? where task_id=?';
-	if ($direction=='UP') {
-		$chgtskparams = array($order,$order-1, $wfid);
-		$adb->pquery($chgtsk, $chgtskparams);
-		$adb->pquery($movtsk, array($order-1, $task_id));
-	} else {
-		$chgtskparams = array($order,$order+1 ,$wfid);
-		$adb->pquery($chgtsk, $chgtskparams);
-		$adb->pquery($movtsk, array($order+1, $task_id));
+	global $current_user, $log;
+	$result = array('success' => false, 'msg' => 'failed');
+	if (!empty($request['mapname']) && !empty($_REQUEST['recordid']) && !empty($_REQUEST['detail_module']) && !empty($_REQUEST['direction'])) {
+		$mapname = vtlib_purify($_REQUEST['mapname']);
+		$recordid = vtlib_purify($_REQUEST['recordid']);
+		$module = vtlib_purify($_REQUEST['detail_module']);
+		$direction = vtlib_purify($_REQUEST['direction']);
+		$cbMap = cbMap::getMapByName($mapname);
+		if ($cbMap) {
+			$mtype = $cbMap->column_fields['maptype'];
+			$mdmap = $cbMap->$mtype();
+			$focus = CRMEntity::getInstance($module);
+			if (!empty($mdmap['sortfield'])) {
+				$sortfield = $mdmap['sortfield'];
+				$focus->retrieve_entity_info($recordid, $module);
+				if (isset($focus->column_fields[$sortfield])) {
+					if (!empty($focus->column_fields[$sortfield])) {
+						$focus->column_fields[$sortfield] = ($direction == 'up') ? $focus->column_fields[$sortfield] -1: $focus->column_fields[$sortfield] +1;
+						$focus->mode = 'edit';
+						$focus->id = $recordid;
+						try {
+							$focus->saveentity($module);
+							if (isset($request['previd']) && !empty($request['previd'])) {
+								$previd = vtlib_purify($_REQUEST['previd']);
+								$prevfocus = CRMEntity::getInstance($module);
+								$prevfocus->retrieve_entity_info($previd, $module);
+								if (!empty($prevfocus->column_fields[$sortfield])) {
+									$prevfocus->column_fields[$sortfield] = ($direction == 'up') ? $prevfocus->column_fields[$sortfield] +1: $prevfocus->column_fields[$sortfield] -1;
+									$prevfocus->mode = 'edit';
+									$prevfocus->id = $previd;
+									$prevfocus->saveentity($module);
+								}
+							}
+							$result['success'] = true;
+							$result['msg'] = '';
+						} catch (Exception $e) {
+							$log->debug('> gridMoveRowUpDown failed,'.$e->getMessage());
+						}
+					}
+				}
+			}
+		}
 	}
-	echo 'ok';
+	return $result;
 }

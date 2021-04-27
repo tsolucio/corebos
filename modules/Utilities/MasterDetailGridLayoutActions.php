@@ -16,6 +16,8 @@ switch ($_REQUEST['mdaction']) {
 		echo json_encode($rs);
 		break;
 	case 'move':
+		$rs = gridMoveRowUpDown($adb, $_REQUEST);
+		echo json_encode($rs);
 		break;
 	case 'inline_edit':
 		$res = gridInlineCellEdit($_REQUEST);
