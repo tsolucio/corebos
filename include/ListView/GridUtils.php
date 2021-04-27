@@ -444,7 +444,7 @@ function gridDeleteRow($adb, $request) {
 }
 
 function gridMoveRowUpDown($adb, $request) {
-	global $current_user, $log;
+	global $log;
 	$result = array('success' => false, 'msg' => 'failed');
 	if (!empty($request['mapname']) && !empty($_REQUEST['recordid']) && !empty($_REQUEST['detail_module']) && !empty($_REQUEST['direction'])) {
 		$mapname = vtlib_purify($_REQUEST['mapname']);
