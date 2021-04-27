@@ -91,4 +91,11 @@
 	<classname>changeEntityNameForUsersModule</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>Geofrey Bundala</author>
+	<description>add fields on vtiger_notificationdrivers table</description>
+	<filename>build/changeSets/2021/addColumnsToNotification.php</filename>
+	<classname>addColumnsToNotification</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
