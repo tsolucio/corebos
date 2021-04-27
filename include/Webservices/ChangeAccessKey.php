@@ -12,7 +12,6 @@ include_once 'include/Webservices/Update.php';
 require_once 'modules/Users/Users.php';
 
 /**
-
  * @param User $id
  */
 function changeAccessKey($id, $user) {
@@ -27,13 +26,13 @@ function changeAccessKey($id, $user) {
 			VTWS_PreserveGlobal::flush();
 			throw new WebServiceException(WebServiceErrorCode::$INVALIDUSER, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$INVALIDUSER));
 		}
-			$user = new Users();
-			$user->retrieveCurrentUserInfoFromFile($idComponents[1]);
-			$user->createAccessKey();
-			return array(
-				'message' => 'Changed password successfully. Save your new Access Key, you will not see it again.',
-				'accesskey' => getSingleFieldValue('vtiger_users', 'accesskey', 'id', $idComponents[1]),
-			);
+		$user = new Users();
+		$user->retrieveCurrentUserInfoFromFile($idComponents[1]);
+		$user->createAccessKey();
+		return array(
+		'message' => 'Changed password successfully. Save your new Access Key, you will not see it again.',
+		'accesskey' => getSingleFieldValue('vtiger_users', 'accesskey', 'id', $idComponents[1]),
+		);
 	} else {
 		VTWS_PreserveGlobal::flush();
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'You do not have permission to change the Access Key.');
