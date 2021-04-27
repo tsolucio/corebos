@@ -14,7 +14,7 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	'name'    => 'ChangeAccessKey',
+	'name'    => 'changeAccessKey',
 	'include' => 'include/Webservices/ChangeAccessKey.php',
 	'handler' => 'changeAccessKey',
 	'prelogin'=> 0,

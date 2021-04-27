@@ -12,7 +12,7 @@ include_once 'include/Webservices/Update.php';
 require_once 'modules/Users/Users.php';
 
 /**
- * @param User $id
+ * @param string $id
  */
 function changeAccessKey($id, $user) {
 	vtws_preserveGlobal('current_user', $user);
@@ -30,8 +30,8 @@ function changeAccessKey($id, $user) {
 		$user->retrieveCurrentUserInfoFromFile($idComponents[1]);
 		$user->createAccessKey();
 		return array(
-		'message' => 'Changed password successfully. Save your new Access Key, you will not see it again.',
-		'accesskey' => getSingleFieldValue('vtiger_users', 'accesskey', 'id', $idComponents[1]),
+			'message' => 'Changed Access Key successfully. Save your new Access Key, you will not see it again.',
+			'accesskey' => getSingleFieldValue('vtiger_users', 'accesskey', 'id', $idComponents[1]),
 		);
 	} else {
 		VTWS_PreserveGlobal::flush();
