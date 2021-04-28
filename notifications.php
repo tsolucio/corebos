@@ -21,17 +21,22 @@ include_once 'include/database/PearDatabase.php';
 include_once 'include/utils/utils.php';
 global $adb;
 $type = vtlib_purify($_REQUEST['type']);
-$signedKey = isset($_REQUEST['signedkey'])?vtlib_purify($_REQUEST['signedkey']):"";
-$signedValue = isset($_REQUEST['signedvalue'])?vtlib_purify($_REQUEST['signedvalue']):"";
-$driver = $adb->pquery('select path, functionname ,signedkey, signedvalue from vtiger_notificationdrivers where type=?', array($type));
+$driver = $adb->pquery('select path, functionname ,signedkey, signedvalue,signedvalidation from vtiger_notificationdrivers where type=?', array($type));
 if ($driver && $adb->num_rows($driver)>0) {
-	$path = $adb->query_result($driver, 0, 0);
-	$function = $adb->query_result($driver, 0, 1);
-	$signedkey = $adb->query_result($driver, 0, 2);
-	$signedvalue = $adb->query_result($driver, 0, 3);
-	if ($signedkey!="" || $signedvalue!="") {
-		if ($signedValue!=$signedvalue || $signedKey!= $signedkey) {
-			return 0;
+	$path = $adb->query_result($driver, 0, 'path');
+	$function = $adb->query_result($driver, 0, 'functionname');
+	$signedkey = $adb->query_result($driver, 0, 'signedkey');
+	$signedvalue = $adb->query_result($driver, 0, 'signedvalue');
+	if (!empty($signedkey) && !empty($signedvalue)) {
+		$signedfunction = $adb->query_result($driver, 0, 'signedvalidation');
+		if (empty($signedfunction)) {
+			if (empty($_REQUEST[$signedkey]) || vtlib_purify($_REQUEST[$signedkey])!=$signedvalue) {
+				die();
+			}
+		} else {
+			if (!$signedfunction($signedkey, $signedvalue)) {
+				die();
+			}
 		}
 	}
 	if ($type == 'googlecal' || $type == 'googlestorage') {
