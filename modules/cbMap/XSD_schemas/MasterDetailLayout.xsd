@@ -19,18 +19,21 @@
               <xs:element type="xs:string" name="title"/>
               <xs:element type="xs:byte" name="expandall"/>
               <xs:element type="xs:byte" name="create"/>
+              <xs:element type="xs:string" name="icon" minOccurs="0"/>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
         <xs:element name="listview">
           <xs:complexType>
             <xs:sequence>
+              <xs:element type="xs:string" name="datasource" minOccurs="0"/>
               <xs:element name="toolbar">
                 <xs:complexType mixed="true">
                   <xs:sequence>
                     <xs:element type="xs:byte" name="moveup"/>
                     <xs:element type="xs:byte" name="movedown"/>
                     <xs:element type="xs:byte" name="delete"/>
+                    <xs:element type="xs:byte" name="edit" minOccurs="0"/>
                   </xs:sequence>
                 </xs:complexType>
               </xs:element>
@@ -47,6 +50,9 @@
                           <xs:element type="xs:byte" name="mandatory"/>
                           <xs:element type="xs:byte" name="hidden"/>
                           <xs:element type="xs:string" name="layout"/>
+                          <xs:element type="xs:string" name="editor" minOccurs="0"/>
+                          <xs:element type="xs:byte" name="sortable" minOccurs="0"/>
+                          <xs:element type="xs:string" name="sortingType" minOccurs="0"/>
                         </xs:sequence>
                       </xs:complexType>
                     </xs:element>
