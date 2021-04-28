@@ -326,7 +326,22 @@ function fieldExpressionPopup(moduleName, $) {
 			} else {
 				$('#editpopup_field_type').val(fieldtype.name);
 			}
-
+			var fieldName = $('#'+fieldelementid).attr('name');
+			if (fieldtype.name == 'reference' && fieldName == 'folderid') {
+				let picklistValues = [];
+				for (let i in fieldtype.picklistValues) {
+					picklistValues.push({
+						label: fieldtype.picklistValues[i].label,
+						value: fieldtype.picklistValues[i].value.split('x')[1]
+					});
+				}
+				fieldtype = {
+					name: 'picklist',
+					refersTo: ['DocumentFolders'],
+					picklistValues: picklistValues
+				};
+				$('#editpopup_field_type').val('picklist');
+			}
 			opType = fieldtype;
 			var expressionTypeElement = $('#'+fieldelementid+'_type');
 			var expressionType = expressionTypeElement.val();

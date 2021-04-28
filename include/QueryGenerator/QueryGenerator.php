@@ -1011,10 +1011,10 @@ class QueryGenerator {
 							if (isset($moduleTableIndexList[$referenceTable])) {
 								$referenceTable = "$referenceTable$fieldName";
 							}
-							$columnList[] = "$referenceTable.$column";
+							$columnList[$column] = "$referenceTable.$column";
 						}
 						if (count($columnList) > 1) {
-							$columnSql = getSqlForNameInDisplayFormat(array('first_name'=>$columnList[0],'last_name'=>$columnList[1]), 'Users');
+							$columnSql = getSqlForNameInDisplayFormat($columnList, $module);
 						} else {
 							$columnSql = implode('', $columnList);
 						}
@@ -1027,8 +1027,7 @@ class QueryGenerator {
 						}
 					}
 				} elseif (in_array($fieldName, $this->ownerFields)) {
-					$concatSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name'=>'vtiger_users.last_name'), 'Users');
-					$fieldSql .= "$fieldGlue (trim($concatSql) $valueSql or vtiger_groups.groupname $valueSql)";
+					$fieldSql .= "$fieldGlue (trim(vtiger_users.ename) $valueSql or vtiger_groups.groupname $valueSql)";
 				} else {
 					if ($fieldName == 'birthday' && !$this->isRelativeSearchOperators($conditionInfo['operator'])) {
 						$fieldSql .= "$fieldGlue DATE_FORMAT(".$field->getTableName().'.'.$field->getColumnName().",'%m%d') ".$valueSql;
@@ -1213,9 +1212,7 @@ class QueryGenerator {
 					$orderByColumn = 'vtiger_currency_info.currency_name';
 				}
 			} elseif (in_array('Users', $referenceModules)) {
-				$columnSqlTable = 'vtiger_users'.$parentReferenceField.$fieldName;
-				$orderByColumn = getSqlForNameInDisplayFormat(array('first_name' => $columnSqlTable.'.first_name',
-					'last_name' => $columnSqlTable.'.last_name'), 'Users');
+				$orderByColumn = 'vtiger_users'.$parentReferenceField.$fieldName.'.ename';
 			} else {
 				$orderByColumn = '';
 				foreach ($referenceModules as $mod) {
@@ -1234,9 +1231,9 @@ class QueryGenerator {
 			if ($parentReferenceField) {
 				$userTableName = 'vtiger_users'.$parentReferenceField.$orderByFieldModel->getFieldName();
 				$groupTableName = 'vtiger_groups'.$parentReferenceField.$orderByFieldModel->getFieldName();
-				$orderByColumn = "COALESCE(CONCAT($userTableName.first_name,$userTableName.last_name),$groupTableName.groupname)";
+				$orderByColumn = "COALESCE($userTableName.ename,$groupTableName.groupname)";
 			} else {
-				$orderByColumn = 'COALESCE(CONCAT(vtiger_users.first_name,vtiger_users.last_name),vtiger_groups.groupname)';
+				$orderByColumn = 'COALESCE(vtiger_users.ename,vtiger_groups.groupname)';
 			}
 		} elseif ($orderByFieldModel) {
 			$orderByColumn = $orderByFieldModel->getTableName().$parentReferenceField.'.'.$orderByFieldModel->getColumnName();

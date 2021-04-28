@@ -516,10 +516,8 @@ class qactions_Action extends CoreBOS_ActionController {
 		if (!$ret) {
 			$limit = " limit $from,$rowsperpage";
 		}
-
-		$context_var_array = (array) $sql_question_context_variable->context_variables;
-		if (!empty($context_var_array)) {
-			foreach ($context_var_array as $key => $value) {
+		if (!empty($sql_question_context_variable->context_variables)) {
+			foreach ((array) $sql_question_context_variable->context_variables as $key => $value) {
 				$list_query = str_replace($key, $value, $list_query);
 			}
 		}
