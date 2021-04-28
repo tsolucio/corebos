@@ -377,7 +377,7 @@ function gridGetActionColumn($renderer, $actions) {
 }
 
 function gridInlineCellEdit($request) {
-	global $log;
+	global $current_user, $log;
 	$result = array('success' => false, 'msg' => 'failed');
 	$crmid = vtlib_purify($request['recordid']);
 	$module = vtlib_purify($request['rec_module']);
@@ -389,6 +389,9 @@ function gridInlineCellEdit($request) {
 		$modInstance->column_fields[$fieldname] = $fieldvalue;
 		$modInstance->id = $crmid;
 		$modInstance->mode = 'edit';
+		$entityModuleHandler = vtws_getModuleHandlerFromName($module, $current_user);
+		$meta = $entityModuleHandler->getMeta();
+		$modInstance->column_fields = DataTransform::sanitizeRetrieveEntityInfo($modInstance->column_fields, $meta);
 		list($saveerror,$errormessage,$error_action,$returnvalues) = $modInstance->preSaveCheck($request);
 		if ($saveerror) {
 			$result['msg'] = ':#:ERR'.$errormessage;
@@ -411,10 +414,8 @@ function gridInlineCellEdit($request) {
 function gridDeleteRow($adb, $request) {
 	global $log;
 	$result = array('success'=> false, 'msg' => 'failed');
-	if (!empty($request['parent_module']) && !empty($request['detail_module']) && !empty($request['detail_id']) && !empty($request['parentid']) && !empty($request['mapname'])) {
-		$pmodule = vtlib_purify($_REQUEST['parent_module']);
+	if (!empty($request['detail_module']) && !empty($request['detail_id']) && !empty($request['mapname'])) {
 		$relmodule = vtlib_purify($_REQUEST['detail_module']);
-		$pid = vtlib_purify($_REQUEST['parentid']);
 		$relid = vtlib_purify($_REQUEST['detail_id']);
 		$mapname = vtlib_purify($_REQUEST['mapname']);
 		try {
@@ -428,8 +429,6 @@ function gridDeleteRow($adb, $request) {
 					$relfocus->retrieve_entity_info($relid, $relmodule);
 					$delseqval = $relfocus->column_fields[$sortfield];
 					$tablename = getTableNameForField($relmodule, $sortfield);
-					$relfocus->unlinkRelationship($relid, $pmodule, $pid);
-					$relfocus->trackUnLinkedInfo($pmodule, $pid, $relmodule, $relid);
 					list($delerror,$errormessage) = $relfocus->preDeleteCheck();
 					if (!$delerror) {
 						$relfocus->trash($relmodule, $relid);
@@ -449,7 +448,6 @@ function gridDeleteRow($adb, $request) {
 }
 
 function gridMoveRowUpDown($adb, $request) {
-	global $log;
 	$result = array('success' => false, 'msg' => 'failed');
 	if (!empty($request['mapname']) && !empty($_REQUEST['recordid']) && !empty($_REQUEST['detail_module']) && !empty($_REQUEST['direction'])) {
 		$mapname = vtlib_purify($_REQUEST['mapname']);
@@ -461,36 +459,31 @@ function gridMoveRowUpDown($adb, $request) {
 			$mtype = $cbMap->column_fields['maptype'];
 			$mdmap = $cbMap->$mtype();
 			$focus = CRMEntity::getInstance($module);
+			$tableindex = $focus->table_index;
 			if (!empty($mdmap['sortfield'])) {
 				$sortfield = $mdmap['sortfield'];
-				$focus->retrieve_entity_info($recordid, $module);
-				if (isset($focus->column_fields[$sortfield])) {
-					if (!empty($focus->column_fields[$sortfield])) {
-						$focus->column_fields[$sortfield] = ($direction == 'up') ? $focus->column_fields[$sortfield] -1: $focus->column_fields[$sortfield] +1;
-						$focus->mode = 'edit';
-						$focus->id = $recordid;
-						try {
-							$focus->saveentity($module);
-							if (isset($request['previd']) && !empty($request['previd'])) {
-								$previd = vtlib_purify($_REQUEST['previd']);
-								$prevfocus = CRMEntity::getInstance($module);
-								$prevfocus->retrieve_entity_info($previd, $module);
-								if (!empty($prevfocus->column_fields[$sortfield])) {
-									$prevfocus->column_fields[$sortfield] = ($direction == 'up') ? $prevfocus->column_fields[$sortfield] +1: $prevfocus->column_fields[$sortfield] -1;
-									$prevfocus->mode = 'edit';
-									$prevfocus->id = $previd;
-									$prevfocus->saveentity($module);
-								}
-							}
-							$result['success'] = true;
-							$result['msg'] = '';
-						} catch (Exception $e) {
-							$log->debug('> gridMoveRowUpDown failed,'.$e->getMessage());
+				$tablename = getTableNameForField($module, $sortfield);
+				$rs = $adb->pquery("select $sortfield from $tablename where $tableindex=? limit 1", array($recordid));
+				if ($rs && $adb->num_rows($rs) > 0) {
+					$sortfieldval_ = $adb->query_result($rs, 0, $sortfield);
+					$sortfieldval = ($direction == 'up') ? (int)$sortfieldval_ -1: (int)$sortfieldval_ +1;
+					$sql = "update $tablename set $sortfield=$sortfieldval where  $tableindex = ?";
+					$adb->pquery($sql, array($recordid));
+					if (isset($request['previd']) && !empty($request['previd'])) {
+						$previd = vtlib_purify($_REQUEST['previd']);
+						$res = $adb->pquery("select $sortfield from $tablename where $tableindex=? limit 1", array($previd));
+						if ($res && $adb->num_rows($res) > 0) {
+							$sortfieldval__ = $adb->query_result($res, 0, $sortfield);
+							$sortfieldval1 = ($direction == 'up') ? (int)$sortfieldval__ +1: (int)$sortfieldval__ -1;
+							$sql1 = "update $tablename set $sortfield=$sortfieldval1 where  $tableindex = ?";
+							$adb->pquery($sql1, array($previd));
 						}
 					}
+					$result['success'] = true;
+					$result['msg'] = '';
 				}
 			}
 		}
+		return $result;
 	}
-	return $result;
 }

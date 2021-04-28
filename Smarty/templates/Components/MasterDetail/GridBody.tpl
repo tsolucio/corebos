@@ -43,25 +43,5 @@ var mdgrid{$MasterDetailLayoutMap.mapname} = new tui.Grid({
 });
 
 tui.Grid.applyTheme('striped');
-mdgrid{$MasterDetailLayoutMap.mapname}.on('editingFinish', function(ev) {
-	let rowkey = ev.rowKey;
-	let modulename = ev.instance.getValue(rowkey, 'record_module');
-	let fieldName = ev.columnName;
-	let fieldValue = ev.value;
-	let recordid = ev.instance.getValue(rowkey, 'record_id') || '';
-	let fileurl = 'module=Utilities&action=UtilitiesAjax&file=MasterDetailGridLayoutActions&mdaction=inline_edit&recordid='+recordid+'&rec_module='+modulename+'&fldName='+fieldName+'&fieldValue='+encodeURIComponent(fieldValue);
-	if(recordid != '') {
-		jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?' + fileurl
-		}).done(function (response) {
-			res = JSON.parse(response);
-			if (res.success == true) {
-				ev.instance.readData(1);
-			} else {
-				alert(alert_arr.Failed);
-			}
-		});
-	}
-});
+mdgrid{$MasterDetailLayoutMap.mapname}.on('editingFinish', masterdetailwork.inlineedit);
 </script>

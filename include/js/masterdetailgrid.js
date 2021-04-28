@@ -37,10 +37,8 @@ var masterdetailwork = {
 	},
 	delete: (MDGrid, module, recordid, gridinstance) => {
 		if (confirm(alert_arr.ARE_YOU_SURE)) {
-			var parentid = document.getElementById('record').value;
-			var pmodule = document.getElementById('module').value;
 			let mapname = document.getElementById(MDGrid.substring(6)).dataset.mapname;
-			var fileurl = 'module=Utilities&action=UtilitiesAjax&file=MasterDetailGridLayoutActions&mdaction=delete&parentid='+parentid+'&detail_module='+module+'&parent_module='+pmodule+'&detail_id='+recordid+'&mapname='+mapname;
+			var fileurl = 'module=Utilities&action=UtilitiesAjax&file=MasterDetailGridLayoutActions&mdaction=delete&detail_module='+module+'&detail_id='+recordid+'&mapname='+mapname;
 			jQuery.ajax({
 				method: 'POST',
 				url: 'index.php?' + fileurl
@@ -53,6 +51,27 @@ var masterdetailwork = {
 				}
 			});
 			return true;
+		}
+	},
+	inlineedit:(ev) => {
+		let rowkey = ev.rowKey;
+		let modulename = ev.instance.getValue(rowkey, 'record_module');
+		let fieldName = ev.columnName;
+		let fieldValue = ev.value;
+		let recordid = ev.instance.getValue(rowkey, 'record_id') || '';
+		let fileurl = 'module=Utilities&action=UtilitiesAjax&file=MasterDetailGridLayoutActions&mdaction=inline_edit&recordid='+recordid+'&rec_module='+modulename+'&fldName='+fieldName+'&fieldValue='+encodeURIComponent(fieldValue);
+		if (recordid != '') {
+			jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?' + fileurl
+			}).done(function (response) {
+				res = JSON.parse(response);
+				if (res.success == true) {
+					ev.instance.readData(1);
+				} else {
+					alert(alert_arr.Failed);
+				}
+			});
 		}
 	},
 
