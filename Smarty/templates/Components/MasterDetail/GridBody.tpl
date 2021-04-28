@@ -43,4 +43,5 @@ var mdgrid{$MasterDetailLayoutMap.mapname} = new tui.Grid({
 });
 
 tui.Grid.applyTheme('striped');
+mdgrid{$MasterDetailLayoutMap.mapname}.on('editingFinish', masterdetailwork.inlineedit);
 </script>

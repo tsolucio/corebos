@@ -1,44 +1,77 @@
 var masterdetailwork = {
 
-	moveup: (recordid, gridinstance, rowkey) => {
+	moveup: (MDGrid, recordid, gridinstance, module, rowkey) => {
 		if (rowkey == 0) {
 			return false;
 		}
-		gridinstance.moveRow(rowkey, rowkey-1);
-		movupdata = gridinstance.getData();
-		for (let x in movupdata) {
-			movupdata[x].rowKey = parseInt(x);
-			movupdata[x].sortKey = parseInt(x);
-		}
-		gridinstance.resetData(movupdata);
+		let prevrowkey = rowkey-1;
+		let previd = gridinstance.getValue(prevrowkey, 'record_id') || '';
+		let mapname = document.getElementById(MDGrid.substring(6)).dataset.mapname;
+		var fileurl = 'module=Utilities&action=UtilitiesAjax&file=MasterDetailGridLayoutActions&mdaction=move&direction=up&recordid='+recordid+'&previd='+previd+'&detail_module='+module+'&mapname='+mapname;
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?' + fileurl
+		}).done(function (response) {
+			res = JSON.parse(response);
+			if (res.success == true) {
+				gridinstance.readData(1);
+			}
+		});
 	},
-	movedown: (recordid, gridinstance, rowkey) => {
-		gridinstance.moveRow(rowkey, rowkey+1);
-		movdowndata = gridinstance.getData();
-		for (let x in movdowndata) {
-			movdowndata[x].rowKey = parseInt(x);
-			movdowndata[x].sortKey = parseInt(x);
-		}
-		gridinstance.resetData(movdowndata);
+	movedown: (MDGrid, recordid, gridinstance, module, rowkey) => {
+		let prevrowkey = rowkey+1;
+		let previd = gridinstance.getValue(prevrowkey, 'record_id') || '';
+		let mapname = document.getElementById(MDGrid.substring(6)).dataset.mapname;
+		var fileurl = 'module=Utilities&action=UtilitiesAjax&file=MasterDetailGridLayoutActions&mdaction=move&direction=down&recordid='+recordid+'&previd='+previd+'&detail_module='+module+'&mapname='+mapname;
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?' + fileurl
+		}).done(function (response) {
+			res = JSON.parse(response);
+			if (res.success == true) {
+				gridinstance.readData(1);
+			} else {
+				alert(alert_arr.Failed);
+			}
+		});
 	},
-	delete: (module, recordid, gridinstance, rowkey) => {
+	delete: (MDGrid, module, recordid, gridinstance) => {
 		if (confirm(alert_arr.ARE_YOU_SURE)) {
-			var parentid = document.getElementById('record').value;
-			var pmodule = document.getElementById('module').value;
-			var fileurl = 'module='+pmodule+'&action=updateRelations&parentid='+parentid+'&destination_module='+module+'&idlist='+recordid+'&mode=delete';
+			let mapname = document.getElementById(MDGrid.substring(6)).dataset.mapname;
+			var fileurl = 'module=Utilities&action=UtilitiesAjax&file=MasterDetailGridLayoutActions&mdaction=delete&detail_module='+module+'&detail_id='+recordid+'&mapname='+mapname;
 			jQuery.ajax({
 				method: 'POST',
 				url: 'index.php?' + fileurl
 			}).done(function (response) {
-				gridinstance.removeRow(rowkey);
-				data = gridinstance.getData();
-				for (let x in data) {
-					data[x].rowKey = parseInt(x);
-					data[x].sortKey = parseInt(x);
+				res = JSON.parse(response);
+				if (res.success == true) {
+					gridinstance.readData(1);
+				} else {
+					alert(alert_arr.Failed);
 				}
-				gridinstance.resetData(data);
 			});
 			return true;
+		}
+	},
+	inlineedit:(ev) => {
+		let rowkey = ev.rowKey;
+		let modulename = ev.instance.getValue(rowkey, 'record_module');
+		let fieldName = ev.columnName;
+		let fieldValue = ev.value;
+		let recordid = ev.instance.getValue(rowkey, 'record_id') || '';
+		let fileurl = 'module=Utilities&action=UtilitiesAjax&file=MasterDetailGridLayoutActions&mdaction=inline_edit&recordid='+recordid+'&rec_module='+modulename+'&fldName='+fieldName+'&fieldValue='+encodeURIComponent(fieldValue);
+		if (recordid != '') {
+			jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?' + fileurl
+			}).done(function (response) {
+				res = JSON.parse(response);
+				if (res.success == true) {
+					ev.instance.readData(1);
+				} else {
+					alert(alert_arr.Failed);
+				}
+			});
 		}
 	},
 
@@ -97,7 +130,7 @@ class mdActionRender {
 		let mdgridob = 'mdgrid'+props.grid.el.id;
 		if (props.columnInfo.renderer.options.moveup) {
 			actions += `
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.moveup(${recordid}, ${mdgridob}, ${rowKey});" title="${alert_arr['MoveUp']}">
+			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.moveup('mdgrid${props.grid.el.id}', ${recordid}, ${mdgridob},'${module}', ${rowKey});" title="${alert_arr['MoveUp']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#up"></use>
 				</svg>
@@ -105,7 +138,7 @@ class mdActionRender {
 		}
 		if (props.columnInfo.renderer.options.movedown) {
 			actions += `
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.movedown(${recordid}, ${mdgridob}, ${rowKey});" title="${alert_arr['MoveDown']}">
+			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.movedown('mdgrid${props.grid.el.id}', ${recordid}, ${mdgridob}, '${module}', ${rowKey});" title="${alert_arr['MoveDown']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
 				</svg>
@@ -121,7 +154,7 @@ class mdActionRender {
 		}
 		if (props.columnInfo.renderer.options.delete) {
 			actions += `
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.delete('${module}', ${recordid},${mdgridob}, ${rowKey});" title="${alert_arr['LBL_DELETE']}">
+			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.delete('mdgrid${props.grid.el.id}', '${module}', ${recordid},${mdgridob});" title="${alert_arr['LBL_DELETE']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
 				</svg>

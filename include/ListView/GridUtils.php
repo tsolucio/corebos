@@ -9,6 +9,9 @@
  ********************************************************************************/
 include_once 'include/fields/metainformation.php';
 require_once 'modules/PickList/PickListUtils.php';
+require_once 'data/CRMEntity.php';
+require_once 'include/utils/CommonUtils.php';
+require_once 'include/utils/utils.php';
 
 function gridGetEditor($module, $fieldname, $uitype) {
 	global $current_user, $adb, $noof_group_rows;
@@ -373,25 +376,114 @@ function gridGetActionColumn($renderer, $actions) {
 	return '';
 }
 
+function gridInlineCellEdit($request) {
+	global $current_user, $log;
+	$result = array('success' => false, 'msg' => 'failed');
+	$crmid = vtlib_purify($request['recordid']);
+	$module = vtlib_purify($request['rec_module']);
+	$fieldname = vtlib_purify($request['fldName']);
+	$fieldvalue = vtlib_purify($request['fieldValue']);
+	$modInstance = CRMEntity::getInstance($module);
+	if ($crmid != '') {
+		$modInstance->retrieve_entity_info($crmid, $module);
+		$modInstance->column_fields[$fieldname] = $fieldvalue;
+		$modInstance->id = $crmid;
+		$modInstance->mode = 'edit';
+		$entityModuleHandler = vtws_getModuleHandlerFromName($module, $current_user);
+		$meta = $entityModuleHandler->getMeta();
+		$modInstance->column_fields = DataTransform::sanitizeRetrieveEntityInfo($modInstance->column_fields, $meta);
+		list($saveerror,$errormessage,$error_action,$returnvalues) = $modInstance->preSaveCheck($request);
+		if ($saveerror) {
+			$result['msg'] = ':#:ERR'.$errormessage;
+		} else {
+			try {
+				$modInstance->save($module);
+				if ($modInstance->id != '') {
+					$result['success'] = true;
+					$result['msg'] = '';
+				}
+			} catch (Exception $e) {
+				$result['msg'] = $e->getMessage();
+				$log->debug('> gridInlineCellEdit failed!'. $e->getMessage());
+			}
+		}
+	}
+	return $result;
+}
+
 function gridDeleteRow($adb, $request) {
+	global $log;
+	$result = array('success'=> false, 'msg' => 'failed');
+	if (!empty($request['detail_module']) && !empty($request['detail_id']) && !empty($request['mapname'])) {
+		$relmodule = vtlib_purify($_REQUEST['detail_module']);
+		$relid = vtlib_purify($_REQUEST['detail_id']);
+		$mapname = vtlib_purify($_REQUEST['mapname']);
+		try {
+			$relfocus = CRMEntity::getInstance($relmodule);
+			$cbMap = cbMap::getMapByName($mapname);
+			if ($cbMap) {
+				$mtype = $cbMap->column_fields['maptype'];
+				$mdmap = $cbMap->$mtype();
+				if (!empty($mdmap['sortfield'])) {
+					$sortfield = $mdmap['sortfield'];
+					$relfocus->retrieve_entity_info($relid, $relmodule);
+					$delseqval = $relfocus->column_fields[$sortfield];
+					$tablename = getTableNameForField($relmodule, $sortfield);
+					list($delerror,$errormessage) = $relfocus->preDeleteCheck();
+					if (!$delerror) {
+						$relfocus->trash($relmodule, $relid);
+						$sql = "update $tablename set $sortfield=($sortfield-1) where $sortfield >= $delseqval";
+						$adb->pquery($sql, array());
+						$result['success'] = true;
+						$result['msg'] = '';
+					}
+				}
+			}
+		} catch (Exception $e) {
+			$result['msg'] =  $e->getMessage();
+			$log->debug('> gridDeleteRow failed!'. $e->getMessage());
+		}
+	}
+	return $result;
 }
 
 function gridMoveRowUpDown($adb, $request) {
-	$direction = $request['movedirection'];
-	$task_id = $request['wftaskid'];
-	$wfrs = $adb->pquery('select workflow_id,executionorder from com_vtiger_workflowtasks where task_id=?', array($task_id));
-	$wfid = $adb->query_result($wfrs, 0, 'workflow_id');
-	$order = $adb->query_result($wfrs, 0, 'executionorder');
-	$chgtsk = 'update com_vtiger_workflowtasks set executionorder=? where executionorder=? and workflow_id=?';
-	$movtsk = 'update com_vtiger_workflowtasks set executionorder=? where task_id=?';
-	if ($direction=='UP') {
-		$chgtskparams = array($order,$order-1, $wfid);
-		$adb->pquery($chgtsk, $chgtskparams);
-		$adb->pquery($movtsk, array($order-1, $task_id));
-	} else {
-		$chgtskparams = array($order,$order+1 ,$wfid);
-		$adb->pquery($chgtsk, $chgtskparams);
-		$adb->pquery($movtsk, array($order+1, $task_id));
+	$result = array('success' => false, 'msg' => 'failed');
+	if (!empty($request['mapname']) && !empty($_REQUEST['recordid']) && !empty($_REQUEST['detail_module']) && !empty($_REQUEST['direction'])) {
+		$mapname = vtlib_purify($_REQUEST['mapname']);
+		$recordid = vtlib_purify($_REQUEST['recordid']);
+		$module = vtlib_purify($_REQUEST['detail_module']);
+		$direction = vtlib_purify($_REQUEST['direction']);
+		$cbMap = cbMap::getMapByName($mapname);
+		if ($cbMap) {
+			$mtype = $cbMap->column_fields['maptype'];
+			$mdmap = $cbMap->$mtype();
+			$focus = CRMEntity::getInstance($module);
+			$tableindex = $focus->table_index;
+			if (!empty($mdmap['sortfield'])) {
+				$sortfield = $mdmap['sortfield'];
+				$tablename = getTableNameForField($module, $sortfield);
+				$rs = $adb->pquery("select $sortfield from $tablename where $tableindex=? limit 1", array($recordid));
+				if ($rs && $adb->num_rows($rs) > 0) {
+					$sortfieldval_ = $adb->query_result($rs, 0, $sortfield);
+					$sortfieldval = ($direction == 'up') ? (int)$sortfieldval_ -1: (int)$sortfieldval_ +1;
+					$sql = "update $tablename set $sortfield=$sortfieldval where  $tableindex = ?";
+					$adb->pquery($sql, array($recordid));
+					if (isset($request['previd']) && !empty($request['previd'])) {
+						$previd = vtlib_purify($_REQUEST['previd']);
+						$res = $adb->pquery("select $sortfield from $tablename where $tableindex=? limit 1", array($previd));
+						if ($res && $adb->num_rows($res) > 0) {
+							$sortfieldval__ = $adb->query_result($res, 0, $sortfield);
+							$sortfieldval1 = ($direction == 'up') ? (int)$sortfieldval__ +1: (int)$sortfieldval__ -1;
+							$sql1 = "update $tablename set $sortfield=$sortfieldval1 where  $tableindex = ?";
+							$adb->pquery($sql1, array($previd));
+						}
+					}
+					$result['success'] = true;
+					$result['msg'] = '';
+				}
+			}
+		}
+		return $result;
 	}
-	echo 'ok';
 }

@@ -12,8 +12,16 @@ include_once 'include/ListView/GridUtils.php';
 $mdaction = empty($_REQUEST['mdaction']) ? 'list' : $_REQUEST['mdaction'];
 switch ($_REQUEST['mdaction']) {
 	case 'delete':
+		$rs = gridDeleteRow($adb, $_REQUEST);
+		echo json_encode($rs);
 		break;
 	case 'move':
+		$rs = gridMoveRowUpDown($adb, $_REQUEST);
+		echo json_encode($rs);
+		break;
+	case 'inline_edit':
+		$res = gridInlineCellEdit($_REQUEST);
+		echo json_encode($res);
 		break;
 	case 'list':
 	default:
