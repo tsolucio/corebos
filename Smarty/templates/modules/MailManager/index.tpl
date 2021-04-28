@@ -44,7 +44,6 @@ var emailSignatureBeforeQuote = {$emailSignatureBeforeQuote};
 					</div>
 				</td>
 				<td width="85%">
-					<span id="_messagediv_">{if $ERROR}<p>{$ERROR}</p>{/if}</span>
 						<div id="_contentdiv_"></div>
 						<div id="_contentdiv2_"></div>
 						<div id="_settingsdiv_"></div>

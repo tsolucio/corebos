@@ -9,13 +9,25 @@
  ************************************************************************************/
 
 $mod_strings = array(
-	'ModuleName' => 'Nome Modulo',
-	'SINGLE_ModuleName' => 'Nome Modulo',
-	'ModuleName ID' => 'ID Nome Modulo',
+	'ProductComponent' => 'Componenti Prodotto',
+	'SINGLE_ProductComponent' => 'Componente Prodotto',
+	'ProductComponent ID' => 'ID Componente Prodotto',
+	'frompdo' => 'Dal Prodotto',
+	'topdo' => 'Al Prodotto',
+	'Relation Mode' => 'Modalit&agrave; Relazione',
+	'Relation from' => 'Valido dal',
+	'Relation Number' => 'Numero Relazione',
+	'Relation to' => 'Valido al',
+	'quantity' => 'Quantit&agrave;',
+	'instructions' => 'Istruzioni',
 
+	'Required' => 'Obbligatorio',
+	'Optional' => 'Opzionale',
+	'Substituable' => 'Sostituibile',
+	'Incompatible' => 'Incompatibile',
+
+	'LBL_PRODUCTCOMPONENT_INFORMATION' => 'Informazione Componente Prodotto',
 	'LBL_CUSTOM_INFORMATION' => 'Informazione Personalizzata',
-	'LBL_MODULEBLOCK_INFORMATION' => 'Informazione Blocco del Modulo',
-
-	'ModuleFieldLabel' => 'Testo Etichetta Campo Modulo',
+	'LBL_DESCRIPTION_INFORMATION' => 'Descrizione',
 );
 ?>

@@ -1069,9 +1069,12 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
  * Return type string
  */
 function getDetailAssociatedProducts($module, $focus) {
-	global $log, $adb, $theme, $log, $app_strings;
+	global $log, $adb, $theme, $app_strings;
 	$log->debug('> getDetailAssociatedProducts ' . $module . ',' . get_class($focus));
 
+	if (strpos(GlobalVariable::getVariable('Inventory_DoNotUseLines', '', $module), $module)!==false) {
+		return '';
+	}
 	if (vtlib_isModuleActive('Products')) {
 		$hide_stock = 'no';
 	} else {

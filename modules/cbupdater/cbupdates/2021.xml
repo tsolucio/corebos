@@ -70,4 +70,25 @@
 	<classname>importdefaultemailtemplates</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Payment Duration Picklist ID field is incorrectly named</description>
+	<filename>build/changeSets/2021/fixPaymentDurationPicklistID.php</filename>
+	<classname>fixPaymentDurationPicklistID</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>glorymoshi</author>
+	<description>Alter column module name in vtiger tracker</description>
+	<filename>build/changeSets/2021/updatecolumnmodulenameinVtigerTracker.php</filename>
+	<classname>updatecolumnmodulenameinVtigerTracker</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Change entity name field for Users module</description>
+	<filename>build/changeSets/2021/changeEntityNameForUsersModule.php</filename>
+	<classname>changeEntityNameForUsersModule</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

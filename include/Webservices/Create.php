@@ -68,11 +68,9 @@ function vtws_create($elementType, $element, $user) {
 	}
 
 	foreach ($meta->getModuleFields() as $fieldName => $webserviceField) {
-		if ($webserviceField->getUIType() == 15 || $webserviceField->getUIType() == 16) {
-			$dval = $webserviceField->getDefault();
-			if (!isset($element[$fieldName]) && !empty($dval)) {
-				$element[$fieldName] = $dval;
-			}
+		$dval = $webserviceField->getDefault();
+		if (!isset($element[$fieldName]) && !empty($dval)) {
+			$element[$fieldName] = $dval;
 		}
 	}
 
@@ -87,10 +85,12 @@ function vtws_create($elementType, $element, $user) {
 		}
 		// Product line support
 		$hrequest = $_REQUEST;
-		if (in_array($elementType, getInventoryModules()) && (is_array($element['pdoInformation']))) {
-			include 'include/Webservices/ProductLines.php';
-		} else {
-			$_REQUEST['action'] = $elementType.'Ajax';
+		if (in_array($elementType, getInventoryModules())) {
+			if (!empty($element['pdoInformation']) && is_array($element['pdoInformation'])) {
+				include 'include/Webservices/ProductLines.php';
+			} else {
+				$_REQUEST['action'] = $elementType.'Ajax';
+			}
 		}
 		if ($elementType == 'HelpDesk') {
 			//Added to construct the update log for Ticket history

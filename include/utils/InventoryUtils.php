@@ -1058,9 +1058,7 @@ function createRecords($obj) {
 		$entityInfo = null;
 		$fieldData = array();
 		$lineItems = array();
-		$subject = $row['subject'];
-		$sql = 'SELECT * FROM ' . $tableName . ' WHERE status = '.Import_Data_Controller::$IMPORT_RECORD_NONE .' AND subject = "'.str_replace("\"", "\\\"", $subject).'"';
-		$subjectResult = $adb->query($sql);
+		$subjectResult = $adb->pquery('SELECT * FROM '.$tableName.' WHERE status='.Import_Data_Controller::$IMPORT_RECORD_NONE.' AND subject=?', array($row['subject']));
 		$count = $adb->num_rows($subjectResult);
 		$subjectRowIDs = array();
 		for ($j = 0; $j < $count; ++$j) {
@@ -1072,7 +1070,7 @@ function createRecords($obj) {
 			$lineItemData = array();
 			$lineItemData['discount'] = 0;
 			foreach ($fieldMapping as $fieldName => $index) {
-				if ($moduleFields[$fieldName]->getTableName() == 'vtiger_inventoryproductrel') {
+				if (!empty($moduleFields[$fieldName]) && $moduleFields[$fieldName]->getTableName() == 'vtiger_inventoryproductrel') {
 					if ($fieldName=='productid') {
 						$fieldValue = $subjectRow[$fieldName];
 						if (strpos($fieldValue, '::::') > 0) {
@@ -1159,10 +1157,8 @@ function createRecords($obj) {
 			$fieldData['assigned_user_id'] = $obj->user->id;
 		}
 
-		if (!empty($lineItems)) {
-			if (method_exists($focus, 'importRecord')) {
-				$entityInfo = $focus->importRecord($obj, $fieldData, $lineItems);
-			}
+		if (method_exists($focus, 'importRecord')) {
+			$entityInfo = $focus->importRecord($obj, $fieldData, $lineItems);
 		}
 
 		if ($entityInfo == null) {
@@ -1188,10 +1184,10 @@ function importRecord($obj, $inventoryFieldData, $lineItems) {
 		unset($inventoryFieldData['currency_id']);
 	}
 	$fieldData = $obj->transformForImport($inventoryFieldData, $inventoryMeta);
-	$fieldData['pdoInformation'] = $lineItems;
-	if (empty($fieldData) || empty($fieldData['pdoInformation'])) {
+	if (empty($fieldData)) {
 		return null;
 	}
+	$fieldData['pdoInformation'] = $lineItems;
 	$wsrs=$adb->pquery('select id from vtiger_ws_entity where name=?', array('Currency'));
 	if ($wsrs && $adb->num_rows($wsrs)==1) {
 		$wsid = $adb->query_result($wsrs, 0, 0);
@@ -1216,8 +1212,7 @@ function getImportStatusCount($obj) {
 	$tableName = Import_Utils::getDbTableName($obj->user);
 	$result = $adb->query('SELECT status FROM '.$tableName. ' GROUP BY subject,status');
 
-	$statusCount = array('TOTAL' => 0, 'IMPORTED' => 0, 'FAILED' => 0, 'PENDING' => 0,
-		'CREATED' => 0, 'SKIPPED' => 0, 'UPDATED' => 0, 'MERGED' => 0);
+	$statusCount = array('TOTAL' => 0, 'IMPORTED' => 0, 'FAILED' => 0, 'PENDING' => 0, 'CREATED' => 0, 'SKIPPED' => 0, 'UPDATED' => 0, 'MERGED' => 0);
 
 	if ($result) {
 		$noOfRows = $adb->num_rows($result);
@@ -1313,7 +1308,7 @@ function getCurrencyId($fieldValue) {
 
 function isFrontendEditViewAction($request, $module) {
 	global $log;
-	$return = ($request['action'] != $module.'Ajax' && $request['action'] != 'MassEditSave' && $request['action'] != 'ProcessDuplicates'
+	$return = ((empty($request['action']) || ($request['action'] != $module.'Ajax' && $request['action'] != 'MassEditSave' && $request['action'] != 'ProcessDuplicates'))
 		&& (empty($request['ajxaction']) || ($request['ajxaction'] != 'DETAILVIEW' && $request['ajxaction'] != 'Workflow')));
 	$log->debug('>< isFrontendEditViewAction '.($return ? 'true':'false'));
 	return $return;

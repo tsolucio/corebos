@@ -116,6 +116,18 @@ class Emails extends CRMEntity {
 				$actid = $_REQUEST['record'];
 			}
 			$parentid = $_REQUEST['parent_id'];
+			if (!empty($_REQUEST['relateemailwith'])) {
+				$relatewithids = explode(':', vtlib_purify($_REQUEST['relateemailwith']));
+				for ($i=0; $i < count($relatewithids); $i++) {
+					$relid= $relatewithids[$i];
+					if (strpos($parentid, $relatewithids[$i]) === false) {
+						$del_q = 'delete from vtiger_seactivityrel where crmid=? and activityid=?';
+						$adb->pquery($del_q, array($relid, $actid));
+						$mysql = 'insert into vtiger_seactivityrel values(?,?)';
+						$adb->pquery($mysql, array($relid, $actid));
+					}
+				}
+			}
 			if ($_REQUEST['module'] != 'Emails') {
 				if (!$parentid) {
 					$parentid = $adb->getUniqueID('vtiger_seactivityrel');

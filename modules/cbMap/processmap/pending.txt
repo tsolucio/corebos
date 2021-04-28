@@ -1,6 +1,0 @@
-<picklistvalue>Block Access</picklistvalue>
-<picklistvalue>Import</picklistvalue>
-<picklistvalue>Map Fields</picklistvalue>
-<picklistvalue>IOMap</picklistvalue>
-<picklistvalue>Search and Update</picklistvalue>
-<picklistvalue>Field Dependency</picklistvalue>

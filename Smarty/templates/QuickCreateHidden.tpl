@@ -10,7 +10,7 @@
 -->*}
 
 <form name="QcEditView" onSubmit="return getFormValidate();" method="POST" action="index.php" ENCTYPE="multipart/form-data">
-
+	<input type="hidden" name="savefromqc" value="1">
 {if isset($FROM) && $FROM eq 'popup'}
 	<input type="hidden" name="from" value="{$FROM}">
 	<input type="hidden" name="return_action" value="Popup">

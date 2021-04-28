@@ -450,8 +450,8 @@ if (!$skipSecurityCheck && $use_current_login) {
 			$display = isPermitted($module, $now_action, $_REQUEST['record']);
 		}
 	} else {
-		if ($now_action=='EditView' || $now_action=='EventEditView' || $now_action=='Save'
-			|| ($now_action=='DetailViewAjax' && isset($_REQUEST['ajxaction']) && $_REQUEST['ajxaction']=='WIDGETADDCOMMENT')
+		if ($now_action=='EditView' || $now_action=='Save' || ($now_action=='DetailViewAjax' && isset($_REQUEST['ajxaction'])
+			&& $_REQUEST['ajxaction']=='WIDGETADDCOMMENT')
 		) {
 			$now_action = 'CreateView';
 		}
@@ -495,7 +495,9 @@ if (isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_aut
 }
 $theme = basename(vtlib_purify($theme));
 $Ajx_module = (isset($_REQUEST['module']) ? vtlib_purify($_REQUEST['module']) : $module);
-if (!$viewAttachment && (!$viewAttachment && $action!='home_rss') && $action!=$Ajx_module.'Ajax' && $action!='massdelete' && $action!='DashboardAjax' && $action!='ActivityAjax') {
+if (!$viewAttachment && (!$viewAttachment && $action!='home_rss') && $action!=$Ajx_module.'Ajax' && $action!='massdelete' && $action!='DashboardAjax'
+	&& $action!='ActivityAjax' && empty($_REQUEST['Module_Popup_Edit'])
+) {
 	// ActivityReminder Customization for callback
 	if (!$skipFooters) {
 		if ($current_user->id!=null && isPermitted('cbCalendar', 'index') == 'yes' && vtlib_isModuleActive('cbCalendar')) {

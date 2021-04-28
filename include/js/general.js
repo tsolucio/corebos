@@ -1881,9 +1881,13 @@ function toggleSelect(state, relCheckName) {
 			}
 		}
 	}
+	//delete idlist value if select all records
+	if (getObj('idlist')) {
+		getObj('idlist').value = '';
+	}
 }
 
-function toggleSelectAll(relCheckName, selectAllName) {
+function toggleSelectAll(relCheckName, selectAllName, el = '') {
 	if (typeof(getObj(relCheckName).length)=='undefined') {
 		getObj(selectAllName).checked=getObj(relCheckName).checked;
 	} else {
@@ -1896,7 +1900,23 @@ function toggleSelectAll(relCheckName, selectAllName) {
 		}
 		getObj(selectAllName).checked=!atleastOneFalse;
 	}
+	orderByUserClick(relCheckName, el);
 }
+
+function orderByUserClick(relCheckName, el) {
+	let idlist = getObj('idlist').value.split(';');
+	if (el.checked) {
+		idlist.push(el.value);
+	} else {
+		if (idlist.includes(el.value)) {
+			let id_tmp = idlist.filter(e => e !== el.value);
+			idlist = id_tmp;
+		}
+	}
+	const filtered_list = idlist.filter(e => e !== '');
+	getObj('idlist').value = filtered_list.join(';');
+}
+
 //added for show/hide 10July
 function expandCont(bn) {
 	var leftTab = document.getElementById(bn);
@@ -2378,11 +2398,16 @@ function SelectAll(mod, parmod) {
 				return false;
 			}
 		} else {
-			y=0;
-			for (i = 0; i < x; i++) {
-				if (document.selectall.selected_id[i].checked) {
-					idstring = document.selectall.selected_id[i].value +';'+idstring;
-					y=y+1;
+			idstring = document.getElementsByName('idlist')[0].value;
+			if (idstring !== '') {
+				y = idstring.split(';').length;
+			} else {
+				y=0;
+				for (i = 0; i < x; i++) {
+					if (document.selectall.selected_id[i].checked) {
+						idstring = document.selectall.selected_id[i].value +';'+idstring;
+						y=y+1;
+					}
 				}
 			}
 		}
@@ -3392,7 +3417,7 @@ function ActivityReminderCallback(clicked) {
 		}).done(function (response) {
 			if (response=='Login') {
 				document.location.href='index.php?module=Users&action=Login';
-			} else {
+			} else if (document.getElementById('todolist')!=undefined) {
 				var responsedata = trim(response);
 				var responsearray = JSON.parse(responsedata);
 				if (typeof(responsearray['template']) == 'undefined') {
@@ -3443,6 +3468,8 @@ function ActivityReminderCallback(clicked) {
 					jQuery('#'+ActivityReminder_Newdelay_response_node).remove();
 				}
 			}
+		}).fail(function (response) {
+			ldsModal.show(alert_arr['ERROR'], response.responseText.substring(response.responseText.indexOf('<div class="slds-modal__container">'), response.responseText.indexOf('</section>')), '');
 		});
 	}
 }
@@ -5368,7 +5395,6 @@ function handleAcKeys(e) {
 		}
 	} else if (e.keyCode==13 && appSubmitFormWithEnter && document.forms.EditView && e.srcElement.nodeName!='TEXTAREA') {
 		document.forms.EditView.action.value='Save';
-		displaydeleted();
 		formValidate();
 	}
 }

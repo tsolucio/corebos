@@ -55,31 +55,17 @@ if (typeof(MailManager) == 'undefined') {
 
 		/* Show error message */
 		show_error: function (message) {
-			var errordiv = jQuery('#_messagediv_');
-
-			if (message == '') {
-				errordiv.text('').hide();
-			} else {
-				errordiv.html('<p>' + message + '</p>').css('display', 'block').addClass('mm_error').removeClass('mm_message');
-				MailManager.placeAtCenter(errordiv);
-			}
-			MailManager.hide_error();
+			ldsModal.show(alert_arr['ERROR'], DOMPurify.sanitize(message), 'small', '');
 		},
 
 		hide_error: function () {
 			setTimeout(function () {
-				jQuery('#_messagediv_').hide();
+				ldsModal.close();
 			}, 5000);
 		},
 
 		show_message: function (message) {
-			var errordiv = jQuery('#_messagediv_');
-			if (message == '') {
-				errordiv.text('').hide();
-			} else {
-				errordiv.html('<p>' + message + '</p>').css('display', 'block').removeClass('mm_error').addClass('mm_message');
-				MailManager.placeAtCenter(errordiv);
-			}
+			ldsModal.show('', DOMPurify.sanitize(message), 'small', '');
 			MailManager.hide_error();
 		},
 
@@ -253,9 +239,6 @@ if (typeof(MailManager) == 'undefined') {
 			}
 			if (jQuery('#_contentdiv2_')) {
 				jQuery('#_contentdiv2_').hide();
-			}
-			if (jQuery('#_messagediv_')) {
-				jQuery('#_messagediv_').hide();
 			}
 			if (jQuery('#_settingsdiv_')) {
 				jQuery('#_settingsdiv_').hide();
@@ -1197,11 +1180,9 @@ if (typeof(MailManager) == 'undefined') {
 			};
 			var baseurl = MailManager._baseurl();
 			MailManager.Request('index.php?'+baseurl, params, function (transport) {
+				ldsModal.show('modalTitle', transport.responseText, 'medium', "MailManager.search_consume_input(document.getElementById('mm_searchemailform'));ldsModal.close();");
+				ldsModal.updateTitle(MailManageri18nInfo.JSLBL_Search_For_Email);
 				MailManager.progress_hide();
-				var response = MailManager.removeHidElement(transport);
-				jQuery('#_popupsearch_').html(response);
-				MailManager.placeAtCenter(jQuery('#_popupsearch_'));
-				jQuery('#_popupsearch_').show().draggable();
 				MailManager.search_popup_init(target);
 			});
 		},

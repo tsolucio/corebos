@@ -394,6 +394,24 @@ function getFieldid($tabid, $fieldname, $onlyactive = true) {
 	return $fieldid;
 }
 
+/**
+ * Function to get a list of fields with default values and their value
+ * @param Integer $tabid
+ * @return array list of default values indexed by fieldname
+ */
+function getFieldsWithDefaultValue($tabid) {
+	if (empty(VTCacheUtils::$_fieldinfo_cache[$tabid])) {
+		getColumnFields(getTabModuleName($tabid));
+	}
+	$finfo = array();
+	foreach (VTCacheUtils::$_fieldinfo_cache[$tabid] as $fname => $fvalues) {
+		if (!empty($fvalues['defaultvalue'])) {
+			$finfo[$fname] = $fvalues['defaultvalue'];
+		}
+	}
+	return $finfo;
+}
+
 function getFieldFromEditViewBlockArray($blocks, $fldlabel) {
 	$result = array();
 	if (is_array($blocks)) {
@@ -633,8 +651,8 @@ function getFullNameFromQResult($result, $row_count, $module) {
 	$name = '';
 	if ($rowdata != '' && count($rowdata) > 0) {
 		$name = getEntityFieldNameDisplay($module, $fieldsName, $rowdata);
+		$name = textlength_check($name);
 	}
-	$name = textlength_check($name);
 	return $name;
 }
 
@@ -1258,6 +1276,24 @@ function getBlockOpenClosedStatus($module, $disp_view) {
 function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = '') {
 	global $log, $adb, $current_user;
 	$log->debug('> getBlocks', [$module, $disp_view, $mode, $col_fields, $info_type]);
+	$fieldsin = '';
+	if (!empty($_REQUEST['FILTERFIELDSMAP'])) {
+		$bmapname = vtlib_purify($_REQUEST['FILTERFIELDSMAP']);
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+		if ($cbMapid) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$mtype = $cbMap->column_fields['maptype'];
+			$mdmap = $cbMap->$mtype();
+			if ($disp_view == 'detail_view') {
+				$fieldview = 'viewfields';
+			} else {
+				$fieldview = 'editfields';
+			}
+			if (!empty($mdmap[$fieldview])) {
+				$fieldsin = $adb->convert2Sql('and fieldid IN (' . generateQuestionMarks($mdmap[$fieldview]) . ')', $mdmap[$fieldview]);
+			}
+		}
+	}
 	$tabid = getTabid($module);
 	$getBlockInfo = array();
 	$query = "select blockid,blocklabel,display_status,isrelatedlist from vtiger_blocks where tabid=? and $disp_view=0 and visible = 0 order by sequence";
@@ -1308,7 +1344,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 			$uniqueFieldsRestriction = 'vtiger_field.fieldid IN
 				(select max(vtiger_field.fieldid) from vtiger_field where vtiger_field.tabid=? GROUP BY vtiger_field.columnname)';
 			$sql = "SELECT distinct $selectSql, '0' as readonly
-				FROM vtiger_field WHERE $uniqueFieldsRestriction AND vtiger_field.block IN (".
+				FROM vtiger_field WHERE $uniqueFieldsRestriction $fieldsin AND vtiger_field.block IN (".
 				generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4,5) and vtiger_field.presence in (0,2) ORDER BY block,sequence';
 			$params = array($tabid, $blockid_list);
 		} elseif ($userprivs->hasGlobalViewPermission()) { // view all
@@ -1316,7 +1352,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 			$sql = "SELECT distinct $selectSql, vtiger_profile2field.readonly
 				FROM vtiger_field
 				INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid
-				WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4,5) and '.
+				WHERE vtiger_field.tabid=? $fieldsin AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4,5) and '.
 					'vtiger_field.presence in (0,2) AND vtiger_profile2field.profileid IN (' . generateQuestionMarks($profileList) . ') ORDER BY block,sequence';
 			$params = array($tabid, $blockid_list, $profileList);
 		} else {
@@ -1325,7 +1361,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 				FROM vtiger_field
 				INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid
 				INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid
-				WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4,5) and '.
+				WHERE vtiger_field.tabid=? $fieldsin AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4,5) and '.
 					'vtiger_field.presence in (0,2) AND vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN ('.
 					generateQuestionMarks($profileList) . ') ORDER BY block,sequence';
 			$params = array($tabid, $blockid_list, $profileList);
@@ -1341,7 +1377,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 			if ($userprivs->hasGlobalWritePermission() || $module == 'Users' || $module == 'Emails') {
 				$sql = "SELECT $selectSql, vtiger_field.readonly
 					FROM vtiger_field
-					WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND $display_type_check AND info_type = ? and ".
+					WHERE vtiger_field.tabid=? $fieldsin AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND $display_type_check AND info_type = ? and ".
 						'vtiger_field.presence in (0,2) ORDER BY block,sequence';
 				$params = array($tabid, $blockid_list, $info_type);
 			} else {
@@ -1350,7 +1386,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 					FROM vtiger_field
 					INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid
 					INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid
-					WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND $display_type_check AND info_type = ? AND ".
+					WHERE vtiger_field.tabid=? $fieldsin AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND $display_type_check AND info_type = ? AND ".
 						'vtiger_profile2field.visible=0 AND vtiger_profile2field.readonly = 0 AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN ('.
 						generateQuestionMarks($profileList) . ') and vtiger_field.presence in (0,2) ORDER BY block,sequence';
 				$params = array($tabid, $blockid_list, $info_type, $profileList);
@@ -1359,7 +1395,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 			if ($userprivs->hasGlobalWritePermission() || $module == 'Users' || $module == 'Emails') {
 				$sql = "SELECT $selectSql, vtiger_field.readonly
 					FROM vtiger_field
-					WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND $display_type_check and ".
+					WHERE vtiger_field.tabid=? $fieldsin AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND $display_type_check and ".
 						'vtiger_field.presence in (0,2) ORDER BY block,sequence';
 				$params = array($tabid, $blockid_list);
 			} else {
@@ -1368,7 +1404,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 					FROM vtiger_field
 					INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid
 					INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid
-					WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND $display_type_check AND ".
+					WHERE vtiger_field.tabid=? $fieldsin AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND $display_type_check AND ".
 						'vtiger_profile2field.visible=0 AND vtiger_profile2field.readonly = 0 AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN ('.
 						generateQuestionMarks($profileList) . ') and vtiger_field.presence in (0,2) ORDER BY block,sequence';
 				$params = array($tabid, $blockid_list, $profileList);
@@ -1752,7 +1788,7 @@ function mkdirs($dir, $mode = 0777, $recursive = true) {
 
 /**
  * This function is used to set the Object values from the REQUEST values.
- * @param  object reference $focus - reference of the object
+ * @param object CRM object to fill with values
  */
 function setObjectValuesFromRequest($focus) {
 	global $log;
@@ -1780,7 +1816,14 @@ function setObjectValuesFromRequest($focus) {
 	if (!empty($_REQUEST['cbuuid'])) {
 		$focus->column_fields['cbuuid'] = vtlib_purify($_REQUEST['cbuuid']);
 	}
-	if (isset($_REQUEST['action']) && ($_REQUEST['action'] == 'EditView' || $_REQUEST['action'] == 'EventEditView')) {
+	if (!empty($_REQUEST['savefromqc']) || !empty($_REQUEST['FILTERFIELDSMAP'])) {
+		foreach (getFieldsWithDefaultValue(getTabid($moduleName)) as $fname => $fvalue) {
+			if (empty($focus->column_fields[$fname]) && !isset($_REQUEST[$fname])) {
+				$focus->column_fields[$fname] = $fvalue;
+			}
+		}
+	}
+	if (isset($_REQUEST['action']) && ($_REQUEST['action'] == 'EditView')) {
 		$cbfrommodule = $moduleName;
 		$cbfrom = CRMEntity::getInstance($cbfrommodule);
 		$bmapname = $moduleName.'2'.$moduleName;
@@ -1950,8 +1993,10 @@ function getQuickCreateModules() {
 
 /**
  * This function is used to get the Quick create form field parameters for a given module.
- * Param $module - module name
- * returns the value in array format
+ * @param string module name
+ * @return array with two elements:
+ * 		data is a list of the fields to show and their information
+ * 		form is a list of the fields to show as HTML to put in the form
  */
 function QuickCreate($module) {
 	global $log, $adb, $current_user;
@@ -1972,7 +2017,7 @@ function QuickCreate($module) {
 	if ($userprivs->hasGlobalReadPermission()) {
 		$quickcreate_query = "select *
 			from vtiger_field
-			where (quickcreate in (0,2) or typeofdata like '%~M%') and tabid = ? and vtiger_field.presence in (0,2) and displaytype != 2 order by quickcreatesequence";
+			where (quickcreate in (0,2) or typeofdata like '%~M%') and tabid=? and vtiger_field.presence in (0,2) and displaytype!=2 order by quickcreatesequence";
 		$params = array($tabid);
 	} else {
 		$profileList = getCurrentUserProfileList();
@@ -1980,14 +2025,21 @@ function QuickCreate($module) {
 			FROM vtiger_field
 			INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid
 			INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid
-			WHERE vtiger_field.tabid=? AND quickcreate in (0,2) AND vtiger_profile2field.visible=0 AND vtiger_profile2field.readonly = 0 AND '.
+			WHERE vtiger_field.tabid=? AND quickcreate in (0,2) AND vtiger_profile2field.visible=0 AND vtiger_profile2field.readonly=0 AND '.
 				'vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN (' . generateQuestionMarks($profileList) . ') and '.
-				'vtiger_field.presence in (0,2) and displaytype != 2 ORDER BY quickcreatesequence';
+				'vtiger_field.presence in (0,2) and displaytype!=2 ORDER BY quickcreatesequence';
 		$params = array($tabid, $profileList);
 	}
 	$result = $adb->pquery($quickcreate_query, $params);
+	$log->debug('< QuickCreate');
+	return QuickCreateFieldInformation($result, $module, $mapdefaults);
+}
+
+function QuickCreateFieldInformation($result, $module, $mapdefaults) {
+	global $adb;
 	$noofrows = $adb->num_rows($result);
 	$fieldName_array = array();
+	$qcreate_arr = array();
 	for ($i = 0; $i < $noofrows; $i++) {
 		//$fieldtablename = $adb->query_result($result, $i, 'tablename');
 		$uitype = $adb->query_result($result, $i, 'uitype');
@@ -2014,6 +2066,7 @@ function QuickCreate($module) {
 		$custfld = getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields, $generatedtype, $module, '', $typeofdata);
 		$qcreate_arr[] = $custfld;
 	}
+	$return_data = array();
 	for ($i = 0, $j = 0, $iMax = count($qcreate_arr); $i < $iMax; $j++) {
 		$key1 = $qcreate_arr[$i];
 		if (isset($qcreate_arr[$i + 1]) && is_array($qcreate_arr[$i + 1]) && ($key1[0][0]!=19 && $key1[0][0]!=20)) {
@@ -2029,10 +2082,10 @@ function QuickCreate($module) {
 			$i++;
 		}
 	}
-	$form_data['form'] = $return_data;
-	$form_data['data'] = $fieldName_array;
-	$log->debug('< QuickCreate', $form_data);
-	return $form_data;
+	return array(
+		'form' => $return_data,
+		'data' => $fieldName_array,
+	);
 }
 
 function getUserslist($setdefval = true, $selecteduser = '') {
@@ -3579,11 +3632,11 @@ function getSqlForNameInDisplayFormat($input, $module, $glue = ' ') {
 	$fieldsName = $entity_field_info['fieldname'];
 	if (is_array($fieldsName)) {
 		foreach ($fieldsName as $value) {
-			$formattedNameList[] = $input[$value];
+			$formattedNameList[] = empty($input[$value]) ? '' : $input[$value];
 		}
 		$formattedNameListString = implode(",'" . $glue . "',", $formattedNameList);
 	} else {
-		$formattedNameListString = $input[$fieldsName];
+		$formattedNameListString = empty($input[$fieldsName]) ? '' : $input[$fieldsName];
 	}
 	return concatNamesSql($formattedNameListString);
 }

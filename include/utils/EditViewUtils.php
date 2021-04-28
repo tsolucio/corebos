@@ -315,28 +315,23 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	} elseif ($uitype == 53) {
 		global $noof_group_rows;
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		// Get Group calculations > $noof_group_rows
-		if ($fieldname == 'assigned_user_id' && !$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid($module_name))) {
-			$result = get_current_user_access_groups($module_name);
-		} else {
-			$result = get_group_options();
-		}
-
 		$assigned_user_id = empty($value) ? $current_user->id : $value;
-
+		$groups_combo = '';
 		if ($fieldname == 'assigned_user_id' && !$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid($module_name))) {
+			get_current_user_access_groups($module_name); // calculate global variable $noof_group_rows
+			if ($noof_group_rows!=0) {
+				$ga = get_group_array(false, 'Active', $assigned_user_id, 'private');
+			}
 			$ua = get_user_array(false, 'Active', $assigned_user_id, 'private');
 		} else {
+			get_group_options();// calculate global variable $noof_group_rows
+			if ($noof_group_rows!=0) {
+				$ga = get_group_array(false, 'Active', $assigned_user_id);
+			}
 			$ua = get_user_array(false, 'Active', $assigned_user_id);
 		}
 		$users_combo = get_select_options_array($ua, $assigned_user_id);
-		$groups_combo = '';
 		if ($noof_group_rows!=0) {
-			if ($fieldname == 'assigned_user_id' && !$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid($module_name))) {
-				$ga = get_group_array(false, 'Active', $assigned_user_id, 'private');
-			} else {
-				$ga = get_group_array(false, 'Active', $assigned_user_id);
-			}
 			$groups_combo = get_select_options_array($ga, $assigned_user_id);
 		}
 		if (GlobalVariable::getVariable('Application_Group_Selection_Permitted', 1)!=1) {

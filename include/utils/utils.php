@@ -203,7 +203,7 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 		$userOrder = GlobalVariable::getVariable('Application_User_SortBy', 'user_name ASC', $module, $current_user->id);
 		// Including deleted users for now.
 		if (empty($status)) {
-			$query = 'SELECT id, user_name from vtiger_users';
+			$query = 'SELECT id, user_name,ename from vtiger_users';
 			$params = array();
 		} else {
 			$assignUP = GlobalVariable::getVariable('Application_Permit_Assign_Up', 0, $module, $current_user->id);
@@ -222,16 +222,16 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 					$orderFields = '';
 				}
 				$assignBrothers = GlobalVariable::getVariable('Application_Permit_Assign_SameRole', 0, $module, $current_user->id);
-				$query = "select $orderFields id as id,user_name as user_name,first_name,last_name
+				$query = "select $orderFields id as id,user_name as user_name,first_name,last_name,ename
 					from vtiger_users
 					where id=? and status='Active'
 					union
-					select $orderFields vtiger_user2role.userid as id,vtiger_users.user_name as user_name,vtiger_users.first_name as first_name,vtiger_users.last_name as last_name
+					select $orderFields vtiger_user2role.userid as id,vtiger_users.user_name as user_name,vtiger_users.first_name as first_name,vtiger_users.last_name as last_name,ename
 					from vtiger_user2role
 					inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
 					inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
 					where vtiger_role.parentrole like ? and status='Active'
-					union select $orderFields shareduserid as id,vtiger_users.user_name as user_name, vtiger_users.first_name as first_name, vtiger_users.last_name as last_name
+					union select $orderFields shareduserid as id,vtiger_users.user_name as user_name, vtiger_users.first_name as first_name, vtiger_users.last_name as last_name,ename
 					from vtiger_tmp_write_user_sharing_per
 					inner join vtiger_users on vtiger_users.id=vtiger_tmp_write_user_sharing_per.shareduserid
 					where status='Active' and vtiger_tmp_write_user_sharing_per.userid=? and vtiger_tmp_write_user_sharing_per.tabid=?";
@@ -242,7 +242,7 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 					getTabid($module)
 				);
 			} else {
-				$query = 'SELECT id, user_name,first_name,last_name from vtiger_users WHERE status=?';
+				$query = 'SELECT id, user_name,first_name,last_name,ename from vtiger_users WHERE status=?';
 				$params = array($status);
 			}
 		}
@@ -783,7 +783,7 @@ function getColumnFields($module) {
 	if ($cachedModuleFields === false) {
 		$tabid = getTabid($module);
 		// Let us pick up all the fields first so that we can cache information
-		$sql = 'SELECT tabid, fieldname, fieldid, fieldlabel, columnname, tablename, uitype, typeofdata, presence FROM vtiger_field WHERE tabid=?';
+		$sql = 'SELECT tabid, fieldname, fieldid, fieldlabel, columnname, tablename, uitype, typeofdata, presence, defaultvalue FROM vtiger_field WHERE tabid=?';
 		$result = $adb->pquery($sql, array($tabid));
 		$noofrows = $adb->num_rows($result);
 
@@ -799,7 +799,8 @@ function getColumnFields($module) {
 					$resultrow['tablename'],
 					$resultrow['uitype'],
 					$resultrow['typeofdata'],
-					$resultrow['presence']
+					$resultrow['presence'],
+					$resultrow['defaultvalue']
 				);
 			}
 		}

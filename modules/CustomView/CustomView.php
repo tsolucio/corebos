@@ -176,6 +176,7 @@ class CustomView extends CRMEntity {
 		$usercv_result = $adb->pquery('select default_cvid from vtiger_user_module_preferences where userid = ? and tabid = ?', array($current_user->id, $tabid));
 		$def_cvid = $adb->query_result($usercv_result, 0, 'default_cvid');
 
+		$customviewlist = array();
 		while ($cvrow = $adb->fetch_array($result)) {
 			$customviewlist['viewname'] = $cvrow['viewname'];
 			if ((isset($def_cvid) || $def_cvid != '') && $def_cvid == $cvid) {
@@ -210,7 +211,7 @@ class CustomView extends CRMEntity {
 			$selected = '';
 		}
 
-		$ssql = 'select vtiger_customview.*, vtiger_users.first_name, vtiger_users.last_name
+		$ssql = 'select vtiger_customview.*, vtiger_users.ename
 			from vtiger_customview
 			inner join vtiger_tab on vtiger_tab.name = vtiger_customview.entitytype
 			left join vtiger_users on vtiger_customview.userid = vtiger_users.id
@@ -809,8 +810,7 @@ class CustomView extends CRMEntity {
 					}
 					//Added for assigned to sorting
 					if ($list[1] == 'smownerid') {
-						$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-						$sqllist_column = "case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name";
+						$sqllist_column = "case when (vtiger_users.user_name not like '') then vtiger_users.ename else vtiger_groups.groupname end as user_name";
 					}
 					if ($list[0] == 'vtiger_contactdetails' && $list[1] == 'lastname') {
 						$sqllist_column = 'vtiger_contactdetails.lastname,vtiger_contactdetails.firstname';

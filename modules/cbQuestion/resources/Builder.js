@@ -56,7 +56,7 @@ function toggleSQLView() {
 function saveQuestion(update) {
 	const qname = document.getElementById('bqname').value;
 	const qmodule = document.getElementById('bqmodule').value;
-	const issqlwsq_disabled = document.getElementById("checkboxsqlwsq").disabled;
+	const issqlwsq_disabled = (document.getElementById('checkboxsqlwsq').checked ? true : false);
 	if (qname=='') {
 		ldsPrompt.show(alert_arr.ERROR, mod_alert_arr.NameNotEmpty, 'error');
 		document.getElementById('bqname').focus();
@@ -91,7 +91,7 @@ function saveQuestion(update) {
 	} else {
 		type_properties = document.getElementById('qprops').value;
 	}
-	
+
 	let cbq = {
 		'qname': qname,
 		//'cbquestionno': ,
@@ -150,7 +150,8 @@ function getQuestionResults() {
 	const qsqlqry = (document.getElementById('sqlquery').checked ? '1' : '0');
 	const context_var = document.getElementsByName('context_variable');
 	const context_val = document.getElementsByName('context_value');
-	const issqlwsq_disabled = document.getElementById("checkboxsqlwsq").disabled;
+	const issqlwsq_disabled = (document.getElementById('checkboxsqlwsq').checked ? true : false);
+	const recordid = document.getElementById('record').value;
 	let context_data = Array();
 	for (var i = 0; i < context_var.length; i++) {
 		const variable = context_var[i].value;
@@ -173,7 +174,8 @@ function getQuestionResults() {
 		'sqlquery': qsqlqry,
 		'condfilterformat': '0',
 		'context_variable': context_data,
-		'issqlwsq_disabled': issqlwsq_disabled
+		'issqlwsq_disabled': issqlwsq_disabled,
+		'record_id': recordid
 	});
 	const evaluatewith = document.getElementById('evaluatewith').value;
 	let cbqctx = '';

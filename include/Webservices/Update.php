@@ -85,11 +85,13 @@ function vtws_update($element, $user) {
 	}
 	// Product line support
 	$hrequest = $_REQUEST;
-	if (in_array($entityName, getInventoryModules()) && isset($element['pdoInformation']) && (is_array($element['pdoInformation']))) {
-		$elementType = $entityName;
-		include 'include/Webservices/ProductLines.php';
-	} else {
-		$_REQUEST['action'] = $entityName.'Ajax';
+	if (in_array($entityName, getInventoryModules())) {
+		if (!empty($element['pdoInformation']) && is_array($element['pdoInformation'])) {
+			$elementType = $entityName;
+			include 'include/Webservices/ProductLines.php';
+		} else {
+			$_REQUEST['action'] = $entityName.'Ajax';
+		}
 	}
 	if ($entityName == 'HelpDesk') {
 		//Added to construct the update log for Ticket history

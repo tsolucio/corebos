@@ -672,7 +672,7 @@ function editbuilderscript($, conditions) {
 
 					$('#save_submit').unbind('click').bind('click', function () {
 						var conditions = [];
-						i=0;
+						var i=0;
 						$('#save_conditions').children('.condition_group_block').each(function (j, conditiongroupblock) {
 							$(conditiongroupblock).children('.save_condition_group').each(function (k, conditiongroup) {
 								$(conditiongroup).children().each(function (l) {

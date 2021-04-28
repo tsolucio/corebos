@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese | 13/04/2012 |Curitiba/Paraná/Brasil.| www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 08/03/2020 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 12/04/2021 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
  ********************************************************************************/
 $app_strings = array (
 'LBL_BROWSER_TITLE' => 'coreBOS',
@@ -1313,7 +1313,7 @@ $app_strings = array (
 'LBL_RECORDS_IN' => 'registros em',
 'LBL_FOLDER' => 'pasta',
 'Add Event' => 'Adicionar evento',
-'Create Invoice' => 'Create Invoice',
+'Create Invoice' => 'Cria fatura',
 'Send Email With PDF' => 'Enviar e-mail com PDF',
 'Export To PDF' => 'Exportar para PDF',
 'Generate Sales Order' => 'Gerar pedido vendas',
@@ -1360,8 +1360,8 @@ $app_strings = array (
 'No Module' => 'Sem módulos relacionados',
 'Entity Name' => 'Nome entidade',
 'LBL_NOPRODUCTS' => 'Não é possível converter pedido de vendas em Fatura porque não há produtos restantes na fatura.',
-'VALIDATION_FAILED' => 'Validation failed',
-'Select Module To Upsert' => 'Select Module To Upsert',
+'VALIDATION_FAILED' => 'Falha na validação',
+'Select Module To Upsert' => 'Selecione módulo p/upsert',
 );
 
 // Translation for currency names

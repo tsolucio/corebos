@@ -143,7 +143,10 @@ class CBUpsertTask extends VTTask {
 		$attmodule = $relmodule;
 		require 'modules/com_vtiger_workflow/tasks/processAttachments.php';
 		$focusrel->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel->column_fields, $handlerMeta);
+		$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
+		$_REQUEST['ajxaction'] = 'Workflow';
 		$focusrel->save($relmodule);
+		$_REQUEST['ajxaction'] = $hold_ajxaction;
 		unset($_REQUEST['createmode']);
 		if (!empty($wsAttachments)) {
 			foreach ($wsAttachments as $file) {
