@@ -251,7 +251,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				<span style='display:none;' id='{$fldname}_hidden'></span>
 				<div style="position: relative;">
 					<input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}"
-					{if isset($maindata['extendedfieldinfo']['combobox'])}
+					{if isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['combobox'])}
 						autocomplete="off"
 						class="autocomplete-input detailedViewTextBox"
 						data-autocomp='{$maindata['extendedfieldinfo']['combobox']|@json_encode}' />
@@ -266,7 +266,6 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 						<div id="listbox-unique-id" role="listbox" class="">
 							<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; width: 100%; list-style-type: none; width: 90%; left: 0; transform: translateX(0); max-width: none;" role="presentation"></ul>
 						</div>
-					</div>
 					{else}
 						class="detailedViewTextBox" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" />
 					{/if}
