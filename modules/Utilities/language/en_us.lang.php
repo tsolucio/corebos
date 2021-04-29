@@ -149,5 +149,13 @@ $mod_strings = array(
 	'DENORMALIZE' => 'Denormalize',
 	'DENORMALIZED' => 'Denormalized',
 	'SELECT_OPERATION' => 'Select Operation',
+	'Mautic Activation' => 'Mautic Activation',
+	'Mautic Activation_Desc' => 'Configuration for Mautic API Library',
+	'mautic_baseurl' => 'Base URL',
+	'mautic_version' => 'Version',
+	'mautic_version_oauth2' => 'Oauth2',
+	'mautic_clientkey' => 'Client Key',
+	'mautic_clientsecret' => 'Client Secret',
+	'mautic_callback' => 'Callback',
 );
 ?>

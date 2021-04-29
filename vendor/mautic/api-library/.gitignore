@@ -1,0 +1,14 @@
+/.idea
+/.buildpath
+/.project
+/.settings
+/.phpintel
+/phpunit.xml
+/tests/local.config.php
+/tests/local.config.php_*
+/tests/local.tokens.php
+/tests/phpunit.phar
+/vendor
+.DS_Store
+/.ddev
+.phpunit.result.cache

@@ -122,6 +122,10 @@ switch ($_REQUEST['_op']) {
 	case 'setconfigwc':
 		include_once 'include/integrations/woocommerce/settings.php';
 		break;
+	case 'getconfigmautic':
+	case 'setconfigmautic':
+		include_once 'include/integrations/mautic/settings.php';
+		break;
 	default:
 		$smarty = new vtigerCRM_Smarty();
 		$titlemessage = getTranslatedString('Available Integrations', $currentModule);
@@ -215,6 +219,12 @@ switch ($_REQUEST['_op']) {
 				'title' => getTranslatedString('Woocommerce Activation', 'Utilities'),
 				'desc' => getTranslatedString('Woocommerce Desc', 'Utilities'),
 				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigwc',
+			),
+			array(
+				'abbr' => 'MA',
+				'title' => getTranslatedString('Mautic Activation', 'Utilities'),
+				'desc' => getTranslatedString('Mautic Activation_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigmautic',
 			),
 		);
 		if (file_exists('build/wsChanges/LoginSession.php')) {
