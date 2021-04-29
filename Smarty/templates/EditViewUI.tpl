@@ -258,6 +258,15 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 						<div id="listbox-unique-id-{$fldname}" role="listbox" class="">
 							<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; width: 100%; list-style-type: none; width: 90%; left: 0; transform: translateX(0); max-width: none;" role="presentation"></ul>
 						</div>
+					{elseif ( isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['searchfields']) )}
+					{assign var="autocomp" value=$maindata['extendedfieldinfo'] }
+						autocomplete="off"
+						class="autocomplete-input detailedViewTextBox"
+						data-autocomp='{$maindata["extendedfieldinfo"]|@json_encode}' />
+						<div id="listbox-unique-id" role="listbox" class="">
+							<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; width: 100%; list-style-type: none; width: 90%; left: 0; transform: translateX(0); max-width: none;" role="presentation"></ul>
+						</div>
+					</div>
 					{else}
 						class="detailedViewTextBox" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" />
 					{/if}
