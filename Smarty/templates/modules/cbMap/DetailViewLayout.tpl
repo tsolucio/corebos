@@ -32,11 +32,11 @@
 	</tbody>
 </table>
 <div class="slds-modal__content slds-app-launcher__content slds-p-around_medium">
-	<div class="slds-p-around_x-small slds-grid  slds-gutters">
+	<div class="slds-p-around_x-small slds-grid slds-gutters">
 		<div class="slds-col slds-size_2-of-4 slds-p-around_xxx-small">
 			<div class="slds-form-element__control">
 				<div class="slds-select_container">
-					<select id="msmodules" required name="msmodules" class="slds-select" onchange="detailViewSetValues(this.value); document.getElementById('block_modulename').value = this.value;">
+					<select id="msmodules" required name="msmodules" class="slds-select" onchange="detailViewSetValues(this.value); document.getElementById('block_modulename').value=this.value;">
 						{foreach item=arr from=$MODULES}
 							<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
 						{/foreach}
@@ -45,10 +45,10 @@
 			</div>
 		</div>
 		<div class="slds-col slds-size_2-of-4 slds-p-around_xxx-small">
-			<button class="slds-button slds-button_neutral" id="addfield" onclick="fillBlocks('after_block');document.getElementById('newBlockcDiv').style.display = '';">
+			<button class="slds-button slds-button_neutral" id="addfield" onclick="fillBlocks('after_block');document.getElementById('newBlockcDiv').style.display='';">
 				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
-				</svg>{'Add Block'|@getTranslatedString:$MODULE}
+				</svg>{'LBL_ADD_BLOCK'|@getTranslatedString:'Settings'}
 			</button>
 		</div>
 	</div>
@@ -57,7 +57,7 @@
 			<div class="slds-col slds-size_1-of-2 slds-form-element">
 				<legend class="slds-form-element__label" for="fieldtype">{'Type'|@getTranslatedString:$MODULE}</legend>
 				<div class="slds-select_container">
-					<select class="slds-select" name ="fieldtype" id="fieldtype" onChange="changeFieldTypeListener(this.value)">
+					<select class="slds-select" name="fieldtype" id="fieldtype" onChange="changeFieldTypeListener(this.value)">
 						<option value="">{'Select type'|@getTranslatedString}</option>
 						<option {if $type eq 'ApplicationFields'} selected {/if} value="ApplicationFields">{'Application Fields'|@getTranslatedString}</option>
 						<option {if $type eq 'FieldList'} selected {/if} value="FieldList">{'Field List'|@getTranslatedString}</option>
@@ -70,29 +70,29 @@
 		</div>
 	</div>
 	{* New Block section *}
-	<div class="slds-p-around_x-small slds-form-element" id="newBlockcDiv" style = "display:none">
+	<div class="slds-p-around_x-small slds-form-element" id="newBlockcDiv" style="display:none">
 		<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
 			<div class="slds-modal__container">
 				<header class="slds-modal__header">
-					<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+					<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="{'Close'|@getTranslatedString:$MODULE}">
 						<svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
-							<use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
 						</svg>
 						<span class="slds-assistive-text">{'Close'|@getTranslatedString:$MODULE}</span>
 					</button>
-					<h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{'Create New Block'|@getTranslatedString:$MODULE}</h2>
+					<h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{'LBL_ADD_BLOCK'|@getTranslatedString:'Settings'}</h2>
 				</header>
 				<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
 					<div class="slds-form-element slds-m-top_small">
 						<label class="slds-form-element__label" for="block_modulename">{'Module'|@getTranslatedString:$MODULE}</label>
 						<div class="slds-form-element__control">
-							<input type="text" id="block_modulename" name="block_modulename" readonly value ="" class="slds-input"/>
+							<input type="text" id="block_modulename" name="block_modulename" readonly value="" class="slds-input"/>
 						</div>
 					</div>
 					<div class="slds-form-element slds-m-top_small">
 						<label class="slds-form-element__label" for="blocklabel">{'Block name'|@getTranslatedString:$MODULE}</label>
 						<div class="slds-form-element__control">
-							<input type="text" id="blocklabel" name="blocklabel"  value = "" class="slds-input"/>
+							<input type="text" id="blocklabel" name="blocklabel" value="" class="slds-input"/>
 						</div>
 					</div>
 					<div class="slds-col slds-form-element slds-text-align_center">
@@ -105,7 +105,7 @@
 					</div>
 					<br/>
 					<footer class="slds-modal__footer">
-						<button class="slds-button slds-button_neutral" onclick="document.getElementById('newBlockcDiv').style.display = 'none';">{'Cancel'|@getTranslatedString:$MODULE}</button>
+						<button class="slds-button slds-button_neutral" onclick="document.getElementById('newBlockcDiv').style.display='none';">{'Cancel'|@getTranslatedString:$MODULE}</button>
 						<button class="slds-button slds-button_brand" onClick="saveNewBlock();">{'Save'|@getTranslatedString:$MODULE}</button>
 					</footer>
 				</div>
@@ -114,7 +114,7 @@
 		<div class="slds-backdrop slds-backdrop_open"></div>
 	</div>
 	{* AppField Div details *}
-	<div class="slds-p-around_x-small slds-grid slds-gutters" id="AppFieldselectedDiv" style = "display:none">
+	<div class="slds-p-around_x-small slds-grid slds-gutters" id="AppFieldselectedDiv" style="display:none">
 		<div class="slds-col slds-size_1-of-2 slds-form-element slds-p-around_xxx-small">
 			<legend class="slds-form-element__legend slds-form-element__label">{'LBL_BLOCK'|@getTranslatedString:$MODULE}</legend>
 			<div class="slds-form-element__control">
@@ -125,12 +125,12 @@
 		</div>
 	</div>
 	{* FieldList Div details *}
-	<div class="slds-p-around_x-small slds-form-element" id="FieldListselectedDiv" style = "display:none">
+	<div class="slds-p-around_x-small slds-form-element" id="FieldListselectedDiv" style="display:none">
 		<div class="slds-p-around_x-small slds-grid slds-gutters">
 			<div class="slds-col slds-form-element slds-text-align_center">
 				<div class="slds-form-element__control">
 					<div class="slds-button-group" role="group">
-						<button class="slds-button slds-button_neutral" id = "addRowBtn" onclick = "fillTempContainer('row')">{'Add Row'|@getTranslatedString:$MODULE}</button>
+						<button class="slds-button slds-button_neutral" id="addRowBtn" onclick="fillTempContainer('row')">{'Add Row'|@getTranslatedString:$MODULE}</button>
 					</div>
 				</div>
 			</div>
@@ -152,7 +152,7 @@
 			<div class="slds-col slds-form-element slds-text-align_center">
 				<div class="slds-form-element__control">
 					<div class="slds-button-group" role="group">
-						<input type="hidden" id="originvalue" name="originvalue" value ="{if isset($originvalue)}{$originvalue}{else}row$${/if}"/>
+						<input type="hidden" id="originvalue" name="originvalue" value="{if isset($originvalue)}{$originvalue}{else}row$${/if}"/>
 						<button class="slds-button slds-button_text-destructive slds-button_outline-brand" id="erase" onclick="document.getElementById('content_holder').value=document.getElementById('originvalue').value">
 							<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#redo"></use>
@@ -173,44 +173,44 @@
 		</div>
 	</div>
 	{* Widget div details *}
-	<div class="slds-p-around_x-small slds-form-element" id="WidgetDiv" style = "display:none">
+	<div class="slds-p-around_x-small slds-form-element" id="WidgetDiv" style="display:none">
 		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="widloadfrom">{'Loadfrom'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
-				<input type="text" id="widloadfrom" name="widloadfrom"  value = "{if isset($widloadfrom)}{$widloadfrom}{/if}" class="slds-input"/>
+				<input type="text" id="widloadfrom" name="widloadfrom" value="{if isset($widloadfrom)}{$widloadfrom}{/if}" class="slds-input"/>
 			</div>
 		</div>
 	</div>
 	{* CodeWithHeader and CodeWithoutHeader div details *}
-	<div class="slds-p-around_x-small slds-form-element" id="codeDiv" style = "display:none">
+	<div class="slds-p-around_x-small slds-form-element" id="codeDiv" style="display:none">
 		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="loadfrom">{'Loadfrom'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
-				<input type="text" id="loadfrom" name="loadfrom"  value = "{if isset($loadfrom)}{$loadfrom}{/if}" class="slds-input"/>
+				<input type="text" id="loadfrom" name="loadfrom" value="{if isset($loadfrom)}{$loadfrom}{/if}" class="slds-input"/>
 			</div>
 		</div>
 		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="loadcode">{'Loadcode'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
-				<input type="text" id="loadcode" name="loadcode"  value = "{if isset($loadcode)}{$loadcode}{/if}" class="slds-input"/>
+				<input type="text" id="loadcode" name="loadcode" value="{if isset($loadcode)}{$loadcode}{/if}" class="slds-input"/>
 			</div>
 		</div>
 		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="handler_path">{'Handler path'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
-				<input type="text" id="handler_path" name="handler_path" value = "{if isset($handler_path)}{$handler_path}{/if}" class="slds-input"/>
+				<input type="text" id="handler_path" name="handler_path" value="{if isset($handler_path)}{$handler_path}{/if}" class="slds-input"/>
 			</div>
 		</div>
 		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="handler_class">{'Handler class'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
-				<input type="text" id="handler_class" name="handler_class" value = "{if isset($handler_class)}{$handler_class}{/if}" class="slds-input"/>
+				<input type="text" id="handler_class" name="handler_class" value="{if isset($handler_class)}{$handler_class}{/if}" class="slds-input"/>
 			</div>
 		</div>
 		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="handler">{'Handler'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
-				<input type="text" id="handler" name="handler" value = "{if isset($handler)}{$handler}{/if}" class="slds-input"/>
+				<input type="text" id="handler" name="handler" value="{if isset($handler)}{$handler}{/if}" class="slds-input"/>
 			</div>
 		</div>
 	</div>

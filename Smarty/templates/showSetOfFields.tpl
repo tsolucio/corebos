@@ -16,7 +16,7 @@
 -->*}
 {assign var="slds_role" value=""}
 <div id="setfieldsdiv" class="slds-m-top_x-small slds-m-bottom_x-small">
-    {if isset($LAYOUT_DATA.data) && !empty($LAYOUT_DATA.data)}
+	{if !empty($LAYOUT_DATA.data)}
 		{if {$LAYOUT_DATA.type} eq "FieldList"}
 			<article class="slds-card">
 				<ul class="slds-accordion">
@@ -26,7 +26,7 @@
 								<h2 class="slds-accordion__summary-heading">
 									<button class="slds-button slds-button_reset slds-accordion__summary-action" id="fldbtnswitch" onClick="handleToggle('fieldlistdiv', 'fldbtnswitch');" aria-controls="fieldlistDiv" aria-expanded="true" title="">
 										<svg class="slds-accordion__summary-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
-											<use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
 										</svg>
 										<span class="slds-accordion__summary-content">{$LAYOUT_DATA.section_header|@getTranslatedString: $LAYOUTMODULE}</span>
 									</button>
@@ -73,7 +73,7 @@
 								<h2 class="slds-accordion__summary-heading">
 									<button class="slds-button slds-button_reset slds-accordion__summary-action" id="appfbtnswitch" onClick="handleToggle('appfieldlistdiv', 'appfbtnswitch');" aria-controls="appfieldlistDiv" aria-expanded="true" title="">
 										<svg class="slds-accordion__summary-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
-											<use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
 										</svg>
 										<span class="slds-accordion__summary-content">{$LAYOUT_DATA.blocklabel|@getTranslatedString: $LAYOUTMODULE}</span>
 									</button>
@@ -124,7 +124,7 @@
 								<h2 class="slds-accordion__summary-heading">
 									<button class="slds-button slds-button_reset slds-accordion__summary-action" id="widbtnswitch" onClick="handleToggle('widgetdiv', 'widbtnswitch');" aria-controls="widgetDiv" aria-expanded="true" title="">
 										<svg class="slds-accordion__summary-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
-											<use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
 										</svg>
 										<span class="slds-accordion__summary-content">{$LAYOUT_DATA.section_header|@getTranslatedString: $LAYOUTMODULE}</span>
 									</button>
@@ -147,7 +147,7 @@
 								<h2 class="slds-accordion__summary-heading">
 									<button class="slds-button slds-button_reset slds-accordion__summary-action" id="codewithhbtnswitch" onClick="handleToggle('codewithhdiv', 'codewithhbtnswitch');" aria-controls="codewithhDiv" aria-expanded="true" title="">
 										<svg class="slds-accordion__summary-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
-											<use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
 										</svg>
 										<span class="slds-accordion__summary-content">{$LAYOUT_DATA.section_header|@getTranslatedString: $LAYOUTMODULE}</span>
 									</button>
@@ -177,7 +177,7 @@
 								<h2 class="slds-accordion__summary-heading">
 									<button class="slds-button slds-button_reset slds-accordion__summary-action" id="codewithnobtnswitch" onClick="handleToggle('codewithnodiv', 'codewithnobtnswitch');" aria-controls="codewithNoDiv" aria-expanded="true" title="">
 										<svg class="slds-accordion__summary-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
-											<use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
 										</svg>
 										<span class="slds-accordion__summary-content"></span>
 									</button>
@@ -203,7 +203,7 @@
 <script type ="text/javascript">
 	function handleToggle(divId, btnId) {
 		var idInstance = document.getElementById(divId);
-		if(idInstance.className == 'slds-accordion__section slds-is-open') {
+		if (idInstance.className == 'slds-accordion__section slds-is-open') {
 			idInstance.className = 'slds-accordion__section';
 			document.getElementById(btnId).setAttribute('aria-expanded', 'false');
 		} else {
