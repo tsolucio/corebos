@@ -14,7 +14,10 @@ var mdgrid{$MasterDetailLayoutMap.mapname} = new tui.Grid({
 			{if !empty($mdfield.editor)}
 			editor: {$mdfield.editor},
 			{/if}
-			whiteSpace: 'normal'
+			whiteSpace: 'normal',
+			renderer: {
+				type: mdLinkRender
+			}
 		},
 		{/foreach}
 		{if !empty($MasterDetailLayoutMap.listview.cbgridactioncol)}

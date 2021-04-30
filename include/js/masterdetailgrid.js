@@ -81,10 +81,13 @@ var masterdetailwork = {
 		}, 1300);
 	},
 
-	MDUpsert: (MDGrid, module, recordid) => {
+	MDUpsert: (MDGrid, module, recordid, CurrentRecord = '') => {
 		record = recordid || '';
 		if (record!='') {
 			record = '&record='+record;
+		}
+		if (CurrentRecord!='') {
+			CurrentRecord = '&MDCurrentRecord='+CurrentRecord;
 		}
 		let mapname = document.getElementById(MDGrid.substring(6)).dataset.mapname;
 		let mdgridinfo = JSON.stringify({
@@ -92,7 +95,7 @@ var masterdetailwork = {
 			'module': module,
 			'mapname': mapname,
 		});
-		window.open('index.php?module='+module+'&action=EditView&Module_Popup_Edit=1&FILTERFIELDSMAP='+mapname+'&MDGridInfo='+mdgridinfo+record, null, cbPopupWindowSettings + ',dependent=yes');
+		window.open('index.php?module='+module+'&action=EditView&Module_Popup_Edit=1&FILTERFIELDSMAP='+mapname+'&MDGridInfo='+mdgridinfo+record+CurrentRecord, null, cbPopupWindowSettings + ',dependent=yes');
 	},
 
 	MDView: (MDGrid, module, recordid) => {
@@ -162,6 +165,37 @@ class mdActionRender {
 		}
 		actions += '</div>';
 		el.innerHTML = actions;
+		this.el = el;
+		this.render(props);
+	}
+
+	getElement() {
+		return this.el;
+	}
+
+	render(props) {
+		this.el.value = String(props.value);
+	}
+}
+
+class mdLinkRender {
+
+	constructor(props) {
+		let el;
+		let rowKey = props.rowKey;
+		let columnName = props.columnInfo.name;
+		let fieldValue = props.grid.getValue(rowKey, `${columnName}_attributes`);
+		if (fieldValue.length > 0) {
+			el = document.createElement('a');
+			el.href = fieldValue[0].mdLink;
+			if (fieldValue[0].mdTarget) {
+				el.target = fieldValue[0].mdTarget;
+			}
+			el.innerHTML = String(fieldValue[0].mdValue);
+		} else {
+			el = document.createElement('span');
+			el.innerHTML = String(props.value);
+		}
 		this.el = el;
 		this.render(props);
 	}

@@ -46,6 +46,7 @@ class MasterDetailGridLayout_DetailViewBlock extends DeveloperBlock {
 			$mdmap['listview']['cbgridactioncol'] = str_replace('"mdActionRender"', 'mdActionRender', json_encode(gridGetActionColumn('mdActionRender', $mdactions)));
 		}
 		$smarty->assign('MasterDetailLayoutMap', $mdmap);
+		$smarty->assign('MasterDetaiCurrentRecord', $_REQUEST['record']);
 		$smarty->assign('MasterID', $masterid);
 		return $smarty->fetch('Components/MasterDetail/Grid.tpl');
 	}

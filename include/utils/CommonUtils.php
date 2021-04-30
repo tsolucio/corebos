@@ -1280,6 +1280,9 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 	if (!empty($_REQUEST['FILTERFIELDSMAP'])) {
 		$bmapname = vtlib_purify($_REQUEST['FILTERFIELDSMAP']);
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+		if (isset($_REQUEST['MDCurrentRecord'])) {
+			coreBOS_Session::set('MDCurrentRecord', $_REQUEST['MDCurrentRecord']);
+		}
 		if ($cbMapid) {
 			$cbMap = cbMap::getMapByID($cbMapid);
 			$mtype = $cbMap->column_fields['maptype'];

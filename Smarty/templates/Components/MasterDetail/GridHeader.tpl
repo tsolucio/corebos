@@ -43,7 +43,7 @@
 <li>
 <div>
 <button class="slds-button slds-button_icon slds-button_icon-border-filled" title="{$APP.LBL_CREATE_BUTTON_LABEL}"
-	onclick="masterdetailwork.MDUpsert('mdgrid{$MasterDetailLayoutMap.mapname}', '{$MasterDetailLayoutMap.targetmodule}', '')">
+	onclick="masterdetailwork.MDUpsert('mdgrid{$MasterDetailLayoutMap.mapname}', '{$MasterDetailLayoutMap.targetmodule}', '', {$MasterDetaiCurrentRecord})">
 <svg class="slds-button__icon" aria-hidden="true">
 <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
 </svg>

@@ -159,7 +159,9 @@ function getDataGridResponse($mdmap) {
 			'record_id' => $row[$mdmap['targetmoduleidfield']],
 		);
 		foreach ($mdmap['listview']['fields'] as $finfo) {
-			$r[$finfo['fieldinfo']['name']] = getDataGridValue($mdmap['targetmodule'], $row[$mdmap['targetmoduleidfield']], $finfo, $row[$finfo['fieldinfo']['columnname']]);
+			$dataGridValue = getDataGridValue($mdmap['targetmodule'], $row[$mdmap['targetmoduleidfield']], $finfo, $row[$finfo['fieldinfo']['columnname']]);
+			$r[$finfo['fieldinfo']['name']] = $dataGridValue[0];
+			$r[$finfo['fieldinfo']['name'].'_attributes'] = $dataGridValue[1];
 		}
 		$ret[] = $r;
 	}
@@ -180,6 +182,7 @@ function getDataGridResponse($mdmap) {
 function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 	global $current_user, $adb;
 	static $ownerNameList = array();
+	$fieldAttrs = array();
 	$fieldtype = $fieldinfo['fieldtype'];
 	$fieldinfo = $fieldinfo['fieldinfo'];
 	$fieldName = $fieldinfo['name'];
@@ -241,6 +244,12 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 				$displayValueArray = getEntityName($parent_module, $fieldValue);
 				if (!empty($displayValueArray)) {
 					$field10Value = '<a href="index.php?action=DetailView&module='.$parent_module.'&record='.$fieldValue.'">'.$displayValueArray[$fieldValue].'</a>';
+					array_push($fieldAttrs, array(
+						'mdField' => $fieldName,
+						'mdValue' => $displayValueArray[$fieldValue],
+						'mdLink' => "index.php?action=DetailView&module=$parent_module&record=$fieldValue",
+						'mdUitype' => Field_Metadata::UITYPE_RECORD_RELATION
+					));
 				}
 				$linkRow[$fieldName] = array($parent_module, $fieldValue, $field10Value);
 			}
@@ -323,18 +332,43 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 			break;
 		case Field_Metadata::UITYPE_EMAIL:
 			if ($_SESSION['internal_mailer'] == 1) {
-				$return = "<a href=\"javascript:InternalMailer($recordID, ".$fieldinfo['fieldid']. ','
-					."'$fieldName','$module','record_id');\">".textlength_check($fieldValue).'</a>';
+				$return = textlength_check($fieldValue);
+				array_push($fieldAttrs, array(
+					'mdField' => $fieldName,
+					'mdValue' => textlength_check($fieldValue),
+					'mdLink' => "javascript:InternalMailer($recordID, '".$fieldinfo['fieldid']."','$fieldName','$module','record_id');",
+					'mdUitype' => Field_Metadata::UITYPE_EMAIL
+				));
 			} else {
-				$return = '<a href="mailto:'.$fieldValue.'">'.textlength_check($fieldValue).'</a>';
+				$return = textlength_check($fieldValue);
+				array_push($fieldAttrs, array(
+					'mdField' => $fieldName,
+					'mdValue' => textlength_check($fieldValue),
+					'mdLink' => "mailto:".$fieldValue,
+					'mdUitype' => Field_Metadata::UITYPE_EMAIL
+				));
 			}
 			break;
 		case Field_Metadata::UITYPE_URL:
 			preg_match('^[\w]+:\/\/^', $fieldValue, $matches);
 			if (!empty($matches[0])) {
-				$return = '<a href="'.$fieldValue.'" target="_blank">'.textlength_check($fieldValue).'</a>';
-			} else {
-				$return = '<a href="http://'.$fieldValue.'" target="_blank">'.textlength_check($fieldValue).'</a>';
+				$return = textlength_check($fieldValue);
+				array_push($fieldAttrs, array(
+					'mdField' => $fieldName,
+					'mdValue' => textlength_check($fieldValue),
+					'mdLink' => $fieldValue,
+					'mdTarget' => '_blank',
+					'mdUitype' => Field_Metadata::UITYPE_URL
+				));
+			} else {textlength_check($fieldValue);
+				$return = 'http://'.textlength_check($fieldValue);
+				array_push($fieldAttrs, array(
+					'mdField' => $fieldName,
+					'mdValue' => textlength_check($fieldValue),
+					'mdLink' => 'http://'.$fieldValue,
+					'mdTarget' => '_blank',
+					'mdUitype' => Field_Metadata::UITYPE_URL
+				));
 			}
 			break;
 		case Field_Metadata::UITYPE_RECORD_NO:
@@ -346,12 +380,19 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 		default:
 			$nameFields = getEntityFieldNames($module);
 			if (in_array($fieldName, (array)$nameFields['fieldname'])) {
-				$return="<a href='index.php?module=$module&action=DetailView&record=$recordID' title='".getTranslatedString($module, $module)."' target='_blank'>$fieldValue</a>";
+				array_push($fieldAttrs, array(
+					'mdField' => $fieldName,
+					'mdValue' => $fieldValue,
+					'mdLink' => "index.php?module=$module&action=DetailView&record=$recordID",
+					'mdTarget' => '_blank',
+					'mdUitype' => Field_Metadata::UITYPE_TEXT
+				));
+				$return = $fieldValue;
 			} else {
 				$return = $fieldValue;
 			}
 	}
-	return $return;
+	return array($return, $fieldAttrs);
 }
 
 function gridGetActionColumn($renderer, $actions) {
