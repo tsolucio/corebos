@@ -75,7 +75,7 @@
 										<svg class="slds-accordion__summary-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
 											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
 										</svg>
-										<span class="slds-accordion__summary-content">{$LAYOUT_DATA.blocklabel|@getTranslatedString: $LAYOUTMODULE}</span>
+										<span class="slds-accordion__summary-content">{$LAYOUT_DATA.blocklabel|@getTranslatedString:$LAYOUT_DATA.blockmodule}</span>
 									</button>
 								</h2>
 							</div>

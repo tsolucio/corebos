@@ -16,6 +16,7 @@
 // BA block://showSetOfFieldsWidget:modules/Utilities/showSetOfFieldsWidget.php:record_id=$RECORD$&mapid=XXXXXX
 
 require_once 'include/utils/utils.php';
+require_once 'include/fields/metainformation.php';
 require_once 'modules/Vtiger/DeveloperWidget.php';
 require_once 'modules/cbMap/cbMap.php';
 require_once 'include/utils/CommonUtils.php';
@@ -53,21 +54,31 @@ class showSetOfFields_DetailViewBlock extends DeveloperBlock {
 				$layoutdataArr['data'] = array();
 				if ($type == 'ApplicationFields' && $data) {
 					$blockid = isset($decodedcontent['blocks']['block']['blockid']) ? $decodedcontent['blocks']['block']['blockid']: '';
-					if (!empty($blockid)) {
+					$dvrecord = $this->getFromContext('dvrecord');
+					if (!empty($blockid) && !empty($dvrecord)) {
+						$dvmodule = $this->getFromContext('dvmodule');
+						$dvtabid = getTabid($dvmodule);
+						$dvdata = vtws_retrieve($dvrecord, $current_user);
 						$blocklabel = getBlockName($blockid);
 						$layoutdataArr['blocklabel'] = $blocklabel;
-						$sql = 'select * from vtiger_field where vtiger_field.tabid=? and vtiger_field.block = ? 
-							and vtiger_field.displaytype in (1,3,4) order by sequence';
-						$result = $adb->pquery($sql, array($tabid, $blockid));
+						$layoutdataArr['blockmodule'] = $dvmodule;
+						$sql = 'select fieldname,fieldlabel,uitype from vtiger_field
+							where vtiger_field.tabid=? and vtiger_field.block=? and vtiger_field.displaytype in (1,3,4) order by sequence';
+						$result = $adb->pquery($sql, array($dvtabid, $blockid));
 						$noOfRows = $adb->num_rows($result);
-						if ($noOfRows > 0) {
-							for ($i=0; $i < $noOfRows; $i++) {
-								$fieldname = $adb->query_result($result, $i, 'fieldname');
-								$info = getFieldDetails($fieldname, $module, $data);
-								if (!empty($info)) {
-									$layoutdataArr['data'][$i] = $info;
-								}
+						for ($i=0; $i < $noOfRows; $i++) {
+							$uitype = $adb->query_result($result, $i, 'uitype');
+							$fname = $adb->query_result($result, $i, 'fieldname');
+							if (in_array($uitype, Field_Metadata::RELATION_TYPES)) {
+								$value = isset($dvdata[$fname.'ename']) ? $dvdata[$fname.'ename']['reference'] : '';
+							} else {
+								$value = $dvdata[$fname];
 							}
+							$layoutdataArr['data'][$i] = array(
+								'label' => getTranslatedString($adb->query_result($result, $i, 'fieldlabel'), $dvmodule),
+								'uitype' => $uitype,
+								'value' => $value
+							);
 						}
 					}
 				} elseif ($type == 'FieldList') {
