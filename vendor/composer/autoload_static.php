@@ -276,6 +276,17 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
     );
 
     public static $prefixesPsr0 = array (
+        'Z' => 
+        array (
+            'Zendesk\\Console\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/zendesk/zendesk_api_client_php/src',
+            ),
+            'Zendesk\\API\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/zendesk/zendesk_api_client_php/src',
+            ),
+        ),
         'S' => 
         array (
             'Smalot\\PdfParser\\' => 
@@ -288,6 +299,13 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
             'PHPSQLParser\\' => 
             array (
                 0 => __DIR__ . '/..' . '/greenlion/php-sql-parser/src',
+            ),
+        ),
+        'I' => 
+        array (
+            'Inflect' => 
+            array (
+                0 => __DIR__ . '/..' . '/mmucklo/inflect/src',
             ),
         ),
         'G' => 

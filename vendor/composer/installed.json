@@ -2073,6 +2073,58 @@
         ]
     },
     {
+        "name": "mmucklo/inflect",
+        "version": "v0.3.0",
+        "version_normalized": "0.3.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/mmucklo/inflect.git",
+            "reference": "b665bcd3d4c23b6aa1990b6405ff96dd437689e9"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/mmucklo/inflect/zipball/b665bcd3d4c23b6aa1990b6405ff96dd437689e9",
+            "reference": "b665bcd3d4c23b6aa1990b6405ff96dd437689e9",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.17"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "3.7.*"
+        },
+        "time": "2015-05-16T04:16:08+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Inflect": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Sho Kuwamoto",
+                "email": "sho@kuwamoto.org"
+            },
+            {
+                "name": "Matthew J. Mucklo",
+                "email": "mmucklo@gmail.com"
+            }
+        ],
+        "description": "inflect - a memoizing inflector for php",
+        "keywords": [
+            "inflect",
+            "inflector",
+            "pluralize",
+            "singularize",
+            "urlify"
+        ]
+    },
+    {
         "name": "monolog/monolog",
         "version": "2.2.0",
         "version_normalized": "2.2.0.0",
@@ -3430,5 +3482,48 @@
             "sms",
             "twilio"
         ]
+    },
+    {
+        "name": "zendesk/zendesk_api_client_php",
+        "version": "v2.2.11",
+        "version_normalized": "2.2.11.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zendesk/zendesk_api_client_php.git",
+            "reference": "b451b743d9d6d81a9abf7cb86e70ec9c5332123e"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/zendesk/zendesk_api_client_php/zipball/b451b743d9d6d81a9abf7cb86e70ec9c5332123e",
+            "reference": "b451b743d9d6d81a9abf7cb86e70ec9c5332123e",
+            "shasum": ""
+        },
+        "require": {
+            "guzzlehttp/guzzle": "^6.0 || ^7.0",
+            "mmucklo/inflect": "0.3.*",
+            "php": ">=5.5.0"
+        },
+        "require-dev": {
+            "fzaninotto/faker": ">=1.5.0",
+            "phpmd/phpmd": "@stable",
+            "phpunit/phpunit": "4.5.*",
+            "psy/psysh": "@stable",
+            "squizlabs/php_codesniffer": "2.*"
+        },
+        "time": "2021-04-28T21:55:42+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Zendesk\\API\\": "src/",
+                "Zendesk\\Console\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0"
+        ],
+        "description": "PHP Client for Zendesk REST API. See https://developer.zendesk.com/rest_api/docs/core/introduction .",
+        "homepage": "https://github.com/zendesk/zendesk_api_client_php"
     }
 ]
