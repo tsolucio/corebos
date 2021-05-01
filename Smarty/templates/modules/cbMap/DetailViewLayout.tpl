@@ -59,11 +59,11 @@
 				<div class="slds-select_container">
 					<select class="slds-select" name="fieldtype" id="fieldtype" onChange="changeFieldTypeListener(this.value)">
 						<option value="">{'Select type'|@getTranslatedString}</option>
-						<option {if $type eq 'ApplicationFields'} selected {/if} value="ApplicationFields">{'Application Fields'|@getTranslatedString}</option>
-						<option {if $type eq 'FieldList'} selected {/if} value="FieldList">{'Field List'|@getTranslatedString}</option>
-						<option {if $type eq 'Widget'} selected {/if} value="Widget">{'Widget'|@getTranslatedString}</option>
-						<option {if $type eq 'CodeWithHeader'} selected {/if} value="CodeWithHeader">{'CodeWithHeader'|@getTranslatedString}</option>
-						<option {if $type eq 'CodeWithoutHeader'} selected {/if} value="CodeWithoutHeader">{'CodeWithoutHeader'|@getTranslatedString}</option>
+						<option {if $type eq 'ApplicationFields'} selected {/if} value="ApplicationFields">Application Fields</option>
+						<option {if $type eq 'FieldList'} selected {/if} value="FieldList">Field List</option>
+						<option {if $type eq 'Widget'} selected {/if} value="Widget">Widget</option>
+						<option {if $type eq 'CodeWithHeader'} selected {/if} value="CodeWithHeader">CodeWithHeader</option>
+						<option {if $type eq 'CodeWithoutHeader'} selected {/if} value="CodeWithoutHeader">CodeWithoutHeader</option>
 					</select>
 				</div>
 			</div>
@@ -85,19 +85,19 @@
 				</header>
 				<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
 					<div class="slds-form-element slds-m-top_small">
-						<label class="slds-form-element__label" for="block_modulename">{'Module'|@getTranslatedString:$MODULE}</label>
+						<label class="slds-form-element__label" for="block_modulename">{'LBL_MODULE'|@getTranslatedString:$MODULE}</label>
 						<div class="slds-form-element__control">
 							<input type="text" id="block_modulename" name="block_modulename" readonly value="" class="slds-input"/>
 						</div>
 					</div>
 					<div class="slds-form-element slds-m-top_small">
-						<label class="slds-form-element__label" for="blocklabel">{'Block name'|@getTranslatedString:$MODULE}</label>
+						<label class="slds-form-element__label" for="blocklabel">{'LBL_BLOCK_NAME'|@getTranslatedString:'Settings'}</label>
 						<div class="slds-form-element__control">
 							<input type="text" id="blocklabel" name="blocklabel" value="" class="slds-input"/>
 						</div>
 					</div>
 					<div class="slds-col slds-form-element slds-text-align_center">
-						<legend class="slds-form-element__legend slds-form-element__label">{'After'|@getTranslatedString:$MODULE}</legend>
+						<legend class="slds-form-element__legend slds-form-element__label">{'LBL_AFTER'|@getTranslatedString:'Settings'}</legend>
 						<div class="slds-form-element__control">
 							<div class="slds-select_container">
 								<select id="after_block" name="after_block" class="slds-select"></select>
@@ -106,8 +106,8 @@
 					</div>
 					<br/>
 					<footer class="slds-modal__footer">
-						<button class="slds-button slds-button_neutral" onclick="document.getElementById('newBlockcDiv').style.display='none';">{'Cancel'|@getTranslatedString:$MODULE}</button>
-						<button class="slds-button slds-button_brand" onClick="saveNewBlock();">{'Save'|@getTranslatedString:$MODULE}</button>
+						<button class="slds-button slds-button_neutral" onclick="document.getElementById('newBlockcDiv').style.display='none';">{'LBL_CANCEL_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
+						<button class="slds-button slds-button_brand" onClick="saveNewBlock();">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
 					</footer>
 				</div>
 			</div>
@@ -117,7 +117,7 @@
 	{* AppField Div details *}
 	<div class="slds-p-around_x-small slds-grid slds-gutters" id="AppFieldselectedDiv" style="display:none">
 		<div class="slds-col slds-size_1-of-2 slds-form-element slds-p-around_xxx-small">
-			<legend class="slds-form-element__legend slds-form-element__label">{'LBL_BLOCK'|@getTranslatedString:$MODULE}</legend>
+			<legend class="slds-form-element__legend slds-form-element__label">{'LBL_BLOCK_NAME'|@getTranslatedString:'Settings'}</legend>
 			<div class="slds-form-element__control">
 				<div class="slds-select_container">
 					<select id="appfield_block" name="appfield_block" class="slds-select"></select>
@@ -176,7 +176,7 @@
 	{* Widget div details *}
 	<div class="slds-p-around_x-small slds-form-element" id="WidgetDiv" style="display:none">
 		<div class="slds-form-element slds-m-top_small">
-			<label class="slds-form-element__label" for="widloadfrom">{'Loadfrom'|@getTranslatedString:$MODULE}</label>
+			<label class="slds-form-element__label" for="widloadfrom">Load from</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="widloadfrom" name="widloadfrom" value="{if isset($widloadfrom)}{$widloadfrom}{/if}" class="slds-input"/>
 			</div>
@@ -185,19 +185,19 @@
 	{* CodeWithHeader and CodeWithoutHeader div details *}
 	<div class="slds-p-around_x-small slds-form-element" id="codeDiv" style="display:none">
 		<div class="slds-form-element slds-m-top_small">
-			<label class="slds-form-element__label" for="loadfrom">{'Loadfrom'|@getTranslatedString:$MODULE}</label>
+			<label class="slds-form-element__label" for="loadfrom">Load from</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="loadfrom" name="loadfrom" value="{if isset($loadfrom)}{$loadfrom}{/if}" class="slds-input"/>
 			</div>
 		</div>
 		<div class="slds-form-element slds-m-top_small">
-			<label class="slds-form-element__label" for="handler_class">{'Handler class'|@getTranslatedString:$MODULE}</label>
+			<label class="slds-form-element__label" for="handler_class">Handler class</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="handler_class" name="handler_class" value="{if isset($handler_class)}{$handler_class}{/if}" class="slds-input"/>
 			</div>
 		</div>
 		<div class="slds-form-element slds-m-top_small">
-			<label class="slds-form-element__label" for="handler">{'Handler'|@getTranslatedString:$MODULE}</label>
+			<label class="slds-form-element__label" for="handler">Handler Method</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="handler" name="handler" value="{if isset($handler)}{$handler}{/if}" class="slds-input"/>
 			</div>

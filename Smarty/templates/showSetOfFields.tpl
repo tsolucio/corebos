@@ -98,8 +98,8 @@
 													<div class="slds-card__body slds-card__body_inner">{$field.value}</div>
 													</article>
 												{else}
-													<td data-label="{$field.label}"style="background:#F7F7F7;border-left:1px solid #DEDEDE">
-														<div class="slds-truncate" title="{$field.label|@getTranslatedString: $LAYOUTMODULE}"> {$field.label|@getTranslatedString: $LAYOUTMODULE}</div>
+													<td data-label="{$field.labelraw}"style="background:#F7F7F7;border-left:1px solid #DEDEDE">
+														<div class="slds-truncate" title="{$field.label}">{$field.label}</div>
 													</td>
 													<td data-label="">
 														<div class="slds-truncate" title="">{$field.value}</div>

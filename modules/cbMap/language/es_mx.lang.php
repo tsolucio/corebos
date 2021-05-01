@@ -73,5 +73,11 @@ $mod_strings = array(
 	'Expression' => 'Expresión',
 	'Examples' => 'Ejemplos',
 	'Example' => 'Ejemplo',
+	'Select type' => 'Selecciona tipo',
+	'Add Row' => 'Añadir Fila',
+	'Add field' => 'Añadir Campo',
+	'Reset content' => 'Contenido original',
+	'Clear content' => 'Limpiar contenido',
+	'Content Holder' => 'Contenido',
 );
 ?>
