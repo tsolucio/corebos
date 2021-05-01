@@ -101,7 +101,7 @@
 						<li>
 							<a
 							class="slds-button slds-button_neutral"
-							href="index.php?module={$MODULE}&action=EditView&return_action=DetailView&parenttab={$CATEGORY}"
+							href="index.php?module={$MODULE}&action=EditView&return_action=DetailView"
 							title="{$APP.LBL_CREATE_BUTTON_LABEL} {$SINGLE_MOD|getTranslatedString:$MODULE}...">
 								<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
@@ -512,7 +512,7 @@
 								class="slds-button slds-button_icon slds-button_icon-border-filled"
 								aria-haspopup="true"
 								title="{$APP.LBL_IMPORT} {$MODULE|getTranslatedString:$MODULE}"
-								href="index.php?module={$MODULE}&action=Import&step=1&return_module={$MODULE}&return_action=index&parenttab={$CATEGORY}">
+								href="index.php?module={$MODULE}&action=Import&step=1&return_module={$MODULE}&return_action=index">
 									<svg class="slds-button__icon" aria-hidden="true">
 										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#download"></use>
 									</svg>
@@ -609,7 +609,7 @@
 								class="slds-button slds-button_icon slds-button_icon-border-filled"
 								aria-haspopup="true"
 								title="{$MODULE|getTranslatedString:$MODULE} {$APP.LBL_SETTINGS}"
-								href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$MODULE}&parenttab=Settings">
+								href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$MODULE}">
 									<svg class="slds-button__icon" aria-hidden="true">
 										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#settings"></use>
 									</svg>

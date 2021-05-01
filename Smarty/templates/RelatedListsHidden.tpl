@@ -28,7 +28,6 @@
 <input type="hidden" name="cbfromid" id="cbfromid" value="{$ID}">
 <input type="hidden" name="parent_id" id="parent_id" value="{$ID}">
 <input type="hidden" name="RLparent_id" id="RLparent_id" value="{$ID}">
-<input type="hidden" name="parenttab" id="parenttab" value="{$CATEGORY}">
 <input type="hidden" name="action">
 {if $MODULE eq 'Accounts'}
 	<input type="hidden" name="account_id" value="{$ID}">

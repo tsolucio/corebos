@@ -557,8 +557,6 @@ class Migration_Utils {
 		}
 		echo '</table><br><br>';
 
-		create_tab_data_file();
-		create_parenttab_data_file();
 		return $completed;
 	}
 
