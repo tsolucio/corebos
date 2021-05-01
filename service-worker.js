@@ -9548,7 +9548,7 @@ precacheAndRoute([{
   "revision": "d62dc231921aab35a4b55aabcc5fc96c"
 }, {
   "url": "modules/com_vtiger_workflow/resources/updatefieldstaskscript.js",
-  "revision": "fa1f17839dbfe12902fdb7ba38e68bfc"
+  "revision": "708676228d0bacd72cb400b71c4e4759"
 }, {
   "url": "modules/com_vtiger_workflow/resources/updatemassivefieldstaskscript.js",
   "revision": "fce8b262e036470ded2942628cc9bacb"
@@ -9939,6 +9939,15 @@ precacheAndRoute([{
 }, {
   "url": "modules/cbMap/language/ro_ro.js",
   "revision": "07af75347840dd7440241b543551a284"
+}, {
+  "url": "modules/cbMap/generatemap/DecisionTable.js",
+  "revision": "d3ce497440169e6df9dad29baf5fdd0a"
+}, {
+  "url": "modules/cbMap/generatemap/DetailViewLayoutMapping.js",
+  "revision": "9c143edba03a440b06ecfe4d791b0cd8"
+}, {
+  "url": "modules/cbMap/generatemap/DuplicateRelations.js",
+  "revision": "66a11b08efdeabf8a4e0d0bb3632baaa"
 }, {
   "url": "modules/cbTermConditions/cbTermConditions.js",
   "revision": "c240060c1b952bba5d36d4a506fa0e6e"
