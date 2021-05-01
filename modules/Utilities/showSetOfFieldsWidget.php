@@ -57,26 +57,20 @@ class showSetOfFields_DetailViewBlock extends DeveloperBlock {
 					$blockid = isset($blockinfo['blockid']) ? $blockinfo['blockid'] : '';
 					$dvrecord = $this->getFromContext('dvrecord');
 					if (!empty($blockid) && !empty($dvrecord)) {
-						$dvmodule = $this->getFromContext('dvmodule');
-						$dvtabid = getTabid($dvmodule);
+						$layoutdataArr['blocklabel'] = $blockinfo['label'];
 						$dvdata = vtws_retrieve($dvrecord, $current_user);
-						$blocklabel = getBlockName($blockid);
-						$layoutdataArr['blocklabel'] = $blocklabel;
-						$layoutdataArr['blockmodule'] = $dvmodule;
-						$sql = 'select fieldname,fieldlabel,uitype from vtiger_field
-							where vtiger_field.tabid=? and vtiger_field.block=? and vtiger_field.displaytype in (1,3,4) order by sequence';
-						$result = $adb->pquery($sql, array($dvtabid, $blockid));
-						$noOfRows = $adb->num_rows($result);
+						$layoutdataArr['blockmodule'] = $this->getFromContext('dvmodule');
+						$noOfRows = count($blockinfo['layout']);
 						for ($i=0; $i < $noOfRows; $i++) {
-							$uitype = $adb->query_result($result, $i, 'uitype');
-							$fname = $adb->query_result($result, $i, 'fieldname');
+							$uitype = $blockinfo['layout'][$i]['uitype'];
+							$fname = $blockinfo['layout'][$i]['fieldname'];
 							if (in_array($uitype, Field_Metadata::RELATION_TYPES)) {
 								$value = isset($dvdata[$fname.'ename']) ? $dvdata[$fname.'ename']['reference'] : '';
 							} else {
 								$value = $dvdata[$fname];
 							}
 							$layoutdataArr['data'][$i] = array(
-								'label' => getTranslatedString($adb->query_result($result, $i, 'fieldlabel'), $dvmodule),
+								'label' => $blockinfo['layout'][$i]['label'],
 								'uitype' => $uitype,
 								'value' => $value
 							);
