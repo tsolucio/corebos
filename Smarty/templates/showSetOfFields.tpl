@@ -28,7 +28,7 @@
 										<svg class="slds-accordion__summary-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
 											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
 										</svg>
-										<span class="slds-accordion__summary-content">{$LAYOUT_DATA.section_header|@getTranslatedString: $LAYOUTMODULE}</span>
+										<span class="slds-accordion__summary-content">{$LAYOUT_DATA.blocklabel|@getTranslatedString:$LAYOUT_DATA.blockmodule}</span>
 									</button>
 								</h2>
 							</div>
@@ -39,15 +39,15 @@
 											<tr class="slds-hint-parent">
 												{foreach item=fieldvalue from=$field}
 													{if $fieldvalue.uitype eq '19'} {*Needs Review *}
-														<td data-label="{$fieldvalue.label}"style="background:#F7F7F7;border-left:1px solid #DEDEDE">
-															<div class="slds-truncate" title="{$fieldvalue.label|@getTranslatedString: $LAYOUTMODULE}"> {$fieldvalue.label|@getTranslatedString: $LAYOUTMODULE}</div>
+														<td data-label="{$fieldvalue.labelraw}"style="background:#F7F7F7;border-left:1px solid #DEDEDE">
+															<div class="slds-truncate" title="{$fieldvalue.label}">{$fieldvalue.label}</div>
 														</td>
-														<td data-label=""  style="word-break: break-all;text-overflow: ellipsis;">
+														<td data-label="" style="word-break: break-all;text-overflow: ellipsis;">
 															<div class="slds-truncate" title="">{$fieldvalue.value}</div>
 														</td>
 													{else}
-														<td data-label="{$fieldvalue.label}"style="background:#F7F7F7;border-left:1px solid #DEDEDE">
-															<div class="slds-truncate" title="{$fieldvalue.label|@getTranslatedString: $LAYOUTMODULE}"> {$fieldvalue.label|@getTranslatedString: $LAYOUTMODULE}</div>
+														<td data-label="{$fieldvalue.labelraw}"style="background:#F7F7F7;border-left:1px solid #DEDEDE">
+															<div class="slds-truncate" title="{$fieldvalue.label}">{$fieldvalue.label}</div>
 														</td>
 														<td data-label="">
 															<div class="slds-truncate" title="">{$fieldvalue.value}</div>

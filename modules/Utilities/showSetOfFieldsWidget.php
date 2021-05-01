@@ -77,44 +77,22 @@ class showSetOfFields_DetailViewBlock extends DeveloperBlock {
 						}
 					}
 				} elseif ($type == 'FieldList') {
-					if (isset($decodedcontent['blocks']['block']['layout']['row']) && !empty($decodedcontent['blocks']['block']['layout']['row'])) {
-						$rowdetail = $decodedcontent['blocks']['block']['layout']['row'];
-						$y = 0;
-						foreach ($rowdetail as $row) {
-							$layoutdataArr['data'][$y] = isset($layoutdataArr['data'][$y]) ? $layoutdataArr['data'][$y] : array();
-							if (!empty($row['column'])) {
-								$columns = $row['column'];
-								if (!is_array($columns)) {
-									$info = getFieldDetails($columns, $module, $data);
-									if (!empty($info)) {
-										$layoutdataArr['data'][$y][] = getFieldDetails($columns, $module, $data);
-									}
+					$layoutdataArr['blocklabel'] = $blockinfo['label'];
+					$layoutdataArr['blockmodule'] = $this->getFromContext('dvmodule');
+					$dvrecord = $this->getFromContext('dvrecord');
+					if (!empty($dvrecord)) {
+						$dvdata = vtws_retrieve($dvrecord, $current_user);
+						foreach ($blockinfo['layout'] as &$row) {
+							foreach ($row as &$column) {
+								if (in_array($column['uitype'], Field_Metadata::RELATION_TYPES)) {
+									$value = isset($dvdata[$column['fieldname'].'ename']) ? $dvdata[$column['fieldname'].'ename']['reference'] : '';
+								} else {
+									$value = $dvdata[$column['fieldname']];
 								}
-								if (is_array($columns) && count($columns) > 0) {
-									for ($i=0; $i < count($columns); $i++) {
-										$fieldname = $columns[$i];
-										$info = getFieldDetails($fieldname, $module, $data);
-										if (!empty($info)) {
-											$layoutdataArr['data'][$y][] = $info;
-										}
-									}
-								}
-							} elseif (!isset($row['column']) && is_array($row)) {
-								for ($x=0; $x < count($row); $x++) {
-									$fieldname = $row[$x];
-									$info = getFieldDetails($fieldname, $module, $data);
-									if (!empty($info)) {
-										$layoutdataArr['data'][$y][] = $info;
-									}
-								}
-							} else {
-								$info = getFieldDetails($row, $module, $data);
-								if (!empty($info)) {
-									$layoutdataArr['data'][$y][] = $info;
-								}
+								$column['value'] = $value;
 							}
-							$y++;
 						}
+						$layoutdataArr['data'] = $blockinfo['layout'];
 					}
 				} elseif ($type == 'Widget') {
 					$layoutdataArr['data'] = $blockinfo['instance'];
