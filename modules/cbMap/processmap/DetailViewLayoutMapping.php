@@ -87,7 +87,6 @@ class DetailViewLayoutMapping extends processcbMap {
 			$block['sequence'] = (String)$value->sequence;
 			$block['label'] = getTranslatedString((String)$value->label, $mapping['origin']);
 			$block['loadfrom'] = (String)$value->loadfrom;
-			$block['loadcode'] = (isset($value->loadcode) ? (String)$value->loadcode : '');
 			$block['blockid'] = (isset($value->blockid) ? (String)$value->blockid : '');
 
 			if ($block['type']=='RelatedList') {
