@@ -33,11 +33,10 @@ class showSetOfFieldsWidget {
 class showSetOfFields_DetailViewBlock extends DeveloperBlock {
 	private $widgetName = 'showSetOfFieldsWidget';
 	public function process($context = false) {
-		global $adb, $current_user, $log;
+		global $current_user;
 		$this->context = $context;
 		$recordid = $this->getFromContext('RECORDID');
 		$module = $this->getFromContext('MODULE');
-		$tabid = getTabid($module);
 		$recordId = vtws_getEntityId($module).'x'.$recordid;
 		$data = vtws_retrieve($recordId, $current_user);
 		$cbmapid = $this->getFromContext('mapid');
@@ -45,9 +44,6 @@ class showSetOfFields_DetailViewBlock extends DeveloperBlock {
 		if ($mapres) {
 			$map = $mapres->DetailViewLayoutMapping($this->getFromContext('RECORDID'));
 			$blockinfo = reset($map['blocks']);
-			$xmlcontent = $mapres->column_fields['contentjson'];
-			$decodedcontent = html_entity_decode($xmlcontent);
-			$decodedcontent = json_decode($decodedcontent, true);
 			$layoutdataArr = array();
 			$type = isset($blockinfo['type']) ? $blockinfo['type'] : '';
 			$layoutdataArr['type'] = $type;
@@ -132,51 +128,4 @@ class showSetOfFields_DetailViewBlock extends DeveloperBlock {
 if (isset($_REQUEST['action']) && $_REQUEST['action']==$currentModule.'Ajax') {
 	$setfield = new showSetOfFields_DetailViewBlock();
 	echo $setfield->process($_REQUEST);
-}
-
-function formatDatatoDisplay($data) {
-	$datatype = gettype($data);
-	switch ($datatype) {
-		case 'array':
-		case 'object':
-			return json_encode($data);
-			break;
-		case 'string':
-		case 'double':
-		case 'integer':
-		default:
-			return $data;
-			break;
-	}
-}
-
-function getFieldDetails($fieldname, $module, $data) {
-	global $current_user;
-	$response = array();
-	$wsfieldsinfo = vtws_describe($module, $current_user);
-	$fieldsinfo = $wsfieldsinfo['fields'];
-	foreach ($fieldsinfo as $ret => $finfo) {
-		if ($finfo['name']==$fieldname) {
-			break;
-		}
-	}
-	$label = $fieldsinfo[$ret]['label'];
-	$uitype = isset($fieldsinfo[$ret]['uitype']) ? $fieldsinfo[$ret]['uitype']: '';
-	if (isset($fieldsinfo[$ret]['uitype']) && ($fieldsinfo[$ret]['uitype']==10 || $fieldsinfo[$ret]['uitype']==52)) {
-		$refmod = $fieldsinfo[$ret]['type']['refersTo'][0];
-		$rmod = CRMEntity::getInstance($refmod);
-		$WSCodeID = vtws_getEntityId($refmod);
-		$fieldsinfo[$ret]['searchin'] = $refmod;
-		$fieldsinfo[$ret]['searchby'] = $refmod.$rmod->list_link_field;
-		$fieldsinfo[$ret]['searchwsid'] = $WSCodeID;
-		$index = $fieldname.'ename';
-		$fieldval = '';
-		if (isset($data[$index]['reference'])) {
-			$fieldval = $data[$index]['reference'];
-		}
-		$response = array('label'=>$label, 'value'=>$fieldval, 'uitype' => $uitype);
-	} else {
-		$response = array('label'=>$label, 'value'=>$data[$fieldname], 'uitype' => $uitype);
-	}
-	return $response;
 }
