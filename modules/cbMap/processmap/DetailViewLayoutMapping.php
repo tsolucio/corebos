@@ -147,8 +147,11 @@ class DetailViewLayoutMapping extends processcbMap {
 					$idx++;
 				}
 			} elseif ($block['type']=='ApplicationFields') {
+				if (empty($block['label'])) {
+					$block['label'] = getTranslatedString(getBlockName($block['blockid']), $mapping['origin']);
+				}
 				if ($userPrivs->hasGlobalWritePermission() || $mapping['origin'] == 'Users' || $mapping['origin'] == 'Emails') {
-					$sql = "SELECT distinct vtiger_field.columnname, vtiger_field.uitype, sequence
+					$sql = "SELECT distinct vtiger_field.columnname, vtiger_field.fieldname, vtiger_field.fieldlabel, vtiger_field.uitype, sequence
 						FROM vtiger_field
 						WHERE vtiger_field.fieldid IN (
 								SELECT MAX(vtiger_field.fieldid) FROM vtiger_field WHERE vtiger_field.tabid=? GROUP BY vtiger_field.columnname
@@ -157,7 +160,7 @@ class DetailViewLayoutMapping extends processcbMap {
 					$params = array($origintab, $block['blockid']);
 				} elseif ($userPrivs->hasGlobalViewPermission()) { // view all
 					$profileList = getCurrentUserProfileList();
-					$sql = "SELECT distinct vtiger_field.columnname, vtiger_field.uitype, sequence
+					$sql = "SELECT distinct vtiger_field.columnname, vtiger_field.fieldname, vtiger_field.fieldlabel, vtiger_field.uitype, sequence
 						FROM vtiger_field
 						INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid
 						WHERE vtiger_field.tabid=? AND vtiger_field.block=? AND vtiger_field.displaytype IN (1,2,4)
@@ -166,7 +169,7 @@ class DetailViewLayoutMapping extends processcbMap {
 					$params = array($origintab, $block['blockid'], $profileList);
 				} else {
 					$profileList = getCurrentUserProfileList();
-					$sql = "SELECT distinct vtiger_field.columnname, vtiger_field.uitype, sequence
+					$sql = "SELECT distinct vtiger_field.columnname, vtiger_field.fieldname, vtiger_field.fieldlabel, vtiger_field.uitype, sequence
 						FROM vtiger_field
 						INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid
 						INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid
@@ -180,22 +183,16 @@ class DetailViewLayoutMapping extends processcbMap {
 
 				$result = $adb->pquery($sql, $params);
 				$noofrows = $adb->num_rows($result);
-
 				$block['layout'] = array();
-				$idx = 0;
-				for ($i = 0; $i < $noofrows; $i++) {
-					$fieldcolname = $adb->query_result($result, $i, 'columnname');
-					$uitype = $adb->query_result($result, $i, 'uitype');
-
-					if (!isset($block['layout'][$idx])) {
-						$block['layout'][$idx] = array($fieldcolname);
-						if ($uitype == 19) {
-							$idx++;
-						}
-					} else {
-						$block['layout'][$idx][] = $fieldcolname;
-						$idx++;
-					}
+				for ($idx = 0; $idx < $noofrows; $idx++) {
+					$lblraw = $adb->query_result($result, $idx, 'fieldlabel');
+					$block['layout'][$idx] = array(
+						'columnname' => $adb->query_result($result, $idx, 'columnname'),
+						'fieldname' => $adb->query_result($result, $idx, 'fieldname'),
+						'label' => getTranslatedString($lblraw, $mapping['origin']),
+						'labelraw' => $lblraw,
+						'uitype' => $adb->query_result($result, $idx, 'uitype'),
+					);
 				}
 			} elseif ($block['type']=='CodeWithHeader' || $block['type']=='CodeWithoutHeader') {
 				$block['loadfrom'] = (isset($value->loadfrom) ? (String)$value->loadfrom : '');
