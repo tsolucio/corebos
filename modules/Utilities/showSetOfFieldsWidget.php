@@ -39,18 +39,22 @@ class showSetOfFields_DetailViewBlock extends DeveloperBlock {
 		$this->context = $context;
 		$recordid = $this->getFromContext('RECORDID');
 		$module = $this->getFromContext('MODULE');
-		$recordId = vtws_getEntityId($module).'x'.$recordid;
-		$data = vtws_retrieve($recordId, $current_user);
+		if (empty($recordid)) {
+			$data = null;
+		} else {
+			$recordid = vtws_getEntityId($module).'x'.$recordid;
+			$data = vtws_retrieve($recordid, $current_user);
+		}
+		$layoutdataArr = array();
+		$layoutdataArr['data'] = array();
 		$cbmapid = $this->getFromContext('mapid');
 		$mapres = cbMap::getMapByID($cbmapid);
 		if ($mapres) {
 			$map = $mapres->DetailViewLayoutMapping($this->getFromContext('RECORDID'));
 			$blockinfo = reset($map['blocks']);
-			$layoutdataArr = array();
 			$type = isset($blockinfo['type']) ? $blockinfo['type'] : '';
 			$layoutdataArr['type'] = $type;
 			if (!empty($type)) {
-				$layoutdataArr['data'] = array();
 				if ($type == 'ApplicationFields' && $data) {
 					$blockid = isset($blockinfo['blockid']) ? $blockinfo['blockid'] : '';
 					$dvrecord = $this->getFromContext('dvrecord');
