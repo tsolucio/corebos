@@ -1,36 +1,33 @@
 jQuery(document).ready(function () {
-	fieldtype = document.getElementById('fieldtype').value;
-	selmodule = document.getElementById('msmodules').value;
-	changeFieldTypeListener(fieldtype);
+	changeFieldTypeListener(document.getElementById('fieldtype').value);
 	document.getElementById('block_modulename').value = document.getElementById('msmodules').value;
 	fillBlocks('appfield_block');
 });
 
-function detailViewSetValues(selmodule) {
-	fieldtype = document.getElementById('fieldtype').value;
-	changeFieldTypeListener(fieldtype);
+function detailViewSetValues() {
+	changeFieldTypeListener(document.getElementById('fieldtype').value);
 }
 
 function changeFieldTypeListener(fieldtype) {
 	switch (fieldtype) {
-		case 'ApplicationFields':
-			handleApplicationFieldsCase();
+	case 'ApplicationFields':
+		handleApplicationFieldsCase();
 		break;
-		case 'FieldList':
-			handleFieldListCase();
+	case 'FieldList':
+		handleFieldListCase();
 		break;
-		case 'Widget':
-			handleWidget();
-			break;
-		case 'CodeWithHeader':
-		case 'CodeWithoutHeader':
-			handleInputDisplay();
+	case 'Widget':
+		handleWidget();
 		break;
-		default:
-			document.getElementById('WidgetDiv').style.display = 'none';
-			document.getElementById('FieldListselectedDiv').style.display = 'none';
-			document.getElementById('AppFieldselectedDiv').style.display = 'none';
-			document.getElementById('codeDiv').style.display = 'none';
+	case 'CodeWithHeader':
+	case 'CodeWithoutHeader':
+		handleInputDisplay();
+		break;
+	default:
+		document.getElementById('WidgetDiv').style.display = 'none';
+		document.getElementById('FieldListselectedDiv').style.display = 'none';
+		document.getElementById('AppFieldselectedDiv').style.display = 'none';
+		document.getElementById('codeDiv').style.display = 'none';
 	}
 }
 
@@ -44,9 +41,9 @@ function handleApplicationFieldsCase() {
 }
 
 function handleFieldListCase() {
-	listoffields = document.getElementById('list_of_fields');
+	var listoffields = document.getElementById('list_of_fields');
 	listoffields.innerHTML = '';
-	var selectedmodule = document.getElementById("msmodules").value;
+	var selectedmodule = document.getElementById('msmodules').value;
 	jQuery.ajax({
 		method: 'POST',
 		url: 'index.php?action=cbMapAjax&mode=ajax&file=getModuleDetailsforLayoutSetup&module=cbMap&selmodule='+selectedmodule+'&query=fields'
@@ -58,7 +55,7 @@ function handleFieldListCase() {
 		document.getElementById('FieldListselectedDiv').style.display = '';
 		document.getElementById('contentHolderDiv').style.display = '';
 		response.forEach(function (fields) {
-			var option = document.createElement("option");
+			var option = document.createElement('option');
 			option.value = fields.fieldname;
 			option.text = fields.fieldlabel;
 			listoffields.appendChild(option);
@@ -82,7 +79,7 @@ function handleInputDisplay() {
 }
 
 function fillTempContainer(content) {
-	tempdetail = document.getElementById('content_holder').value;
+	var tempdetail = document.getElementById('content_holder').value;
 	var somelastval = tempdetail.slice(-5);
 	if (somelastval === 'row$$') {
 		return;
@@ -91,8 +88,8 @@ function fillTempContainer(content) {
 }
 
 function fillSelectedField() {
-	field = document.getElementById('list_of_fields').value;
-	tempdetail = document.getElementById('content_holder').value;
+	var field = document.getElementById('list_of_fields').value;
+	var tempdetail = document.getElementById('content_holder').value;
 	document.getElementById('content_holder').value = tempdetail +'column##' +field + '$$';
 }
 
@@ -104,16 +101,16 @@ function getWidgetCodeContent() {
 }
 
 function fillBlocks(target) {
-	blockfield = document.getElementById(target);
+	var blockfield = document.getElementById(target);
 	blockfield.innerHTML = '';
-	var selectedmodule = document.getElementById("msmodules").value;
+	var selectedmodule = document.getElementById('msmodules').value;
 	jQuery.ajax({
 		method: 'POST',
 		url: 'index.php?action=cbMapAjax&mode=ajax&file=getModuleDetailsforLayoutSetup&module=cbMap&selmodule='+selectedmodule+'&query=blocks'
 	}).done(function (response) {
 		response = JSON.parse(response);
 		response.forEach(function (block) {
-			var option = document.createElement("option");
+			var option = document.createElement('option');
 			option.value = block.blockid;
 			option.text = block.blocklabel;
 			blockfield.appendChild(option);
@@ -142,24 +139,23 @@ function saveNewBlock() {
 }
 
 function saveDetailLayoutMapAction() {
-	type = document.getElementById('fieldtype').value;
 	let params = 'mapid='+document.getElementById('MapID').value+'&tmodule='+document.getElementById('msmodules').value;
 	params += '&type='+document.getElementById('fieldtype').value;
-	switch (type) {
-		case 'ApplicationFields':
-			params +='&content=blockid##'+document.getElementById('appfield_block').value;
-			break;
-		case 'FieldList':
-			params +='&content='+document.getElementById('content_holder').value;
-			break;
-		case 'Widget':
-			params +='&content=loadfrom##'+document.getElementById('widloadfrom').value;
-			break;
-		case 'CodeWithHeader':
-		case 'CodeWithoutHeader':
-			param = getWidgetCodeContent();
-			params += '&content='+param;
-			break;
+	switch (document.getElementById('fieldtype').value) {
+	case 'ApplicationFields':
+		params +='&content=blockid##'+document.getElementById('appfield_block').value;
+		break;
+	case 'FieldList':
+		params +='&content='+document.getElementById('content_holder').value;
+		break;
+	case 'Widget':
+		params +='&content=loadfrom##'+document.getElementById('widloadfrom').value;
+		break;
+	case 'CodeWithHeader':
+	case 'CodeWithoutHeader':
+		var param = getWidgetCodeContent();
+		params += '&content='+param;
+		break;
 	}
 	params = encodeURI(params);
 	saveMapAction(params);

@@ -36,7 +36,7 @@
 		<div class="slds-col slds-size_2-of-4 slds-p-around_xxx-small">
 			<div class="slds-form-element__control">
 				<div class="slds-select_container">
-					<select id="msmodules" required name="msmodules" class="slds-select" onchange="detailViewSetValues(this.value); document.getElementById('block_modulename').value=this.value;">
+					<select id="msmodules" required name="msmodules" class="slds-select" onchange="detailViewSetValues(); document.getElementById('block_modulename').value=this.value;">
 						{foreach item=arr from=$MODULES}
 							<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
 						{/foreach}
@@ -74,7 +74,8 @@
 		<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
 			<div class="slds-modal__container">
 				<header class="slds-modal__header">
-					<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="{'Close'|@getTranslatedString:$MODULE}">
+					<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="{'Close'|@getTranslatedString:$MODULE}"
+					onclick="document.getElementById('newBlockcDiv').style.display='none';">
 						<svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
 						</svg>
@@ -187,18 +188,6 @@
 			<label class="slds-form-element__label" for="loadfrom">{'Loadfrom'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="loadfrom" name="loadfrom" value="{if isset($loadfrom)}{$loadfrom}{/if}" class="slds-input"/>
-			</div>
-		</div>
-		<div class="slds-form-element slds-m-top_small">
-			<label class="slds-form-element__label" for="loadcode">{'Loadcode'|@getTranslatedString:$MODULE}</label>
-			<div class="slds-form-element__control">
-				<input type="text" id="loadcode" name="loadcode" value="{if isset($loadcode)}{$loadcode}{/if}" class="slds-input"/>
-			</div>
-		</div>
-		<div class="slds-form-element slds-m-top_small">
-			<label class="slds-form-element__label" for="handler_path">{'Handler path'|@getTranslatedString:$MODULE}</label>
-			<div class="slds-form-element__control">
-				<input type="text" id="handler_path" name="handler_path" value="{if isset($handler_path)}{$handler_path}{/if}" class="slds-input"/>
 			</div>
 		</div>
 		<div class="slds-form-element slds-m-top_small">

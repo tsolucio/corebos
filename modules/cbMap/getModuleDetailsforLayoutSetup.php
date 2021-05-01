@@ -2,7 +2,7 @@
 /*+********************************************************************************
  * The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
- * The Original Code is:  vtiger CRM Open Source
+ * The Original Code is:  coreBOS Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
@@ -30,9 +30,7 @@ if (!empty($_REQUEST['selmodule']) && !empty($_REQUEST['query'])) {
 function retrieveBlockInfoByModule($selmodule) {
 	global $adb;
 	$lockInfoArr = array();
-	$tabid = getTabid($selmodule);
-	$query = "select blockid, blocklabel,sequence from vtiger_blocks where tabid=? and visible = 0";
-	$result = $adb->pquery($query, array($tabid));
+	$result = $adb->pquery('select blockid, blocklabel,sequence from vtiger_blocks where tabid=? and visible=0', array(getTabid($selmodule)));
 	$noofrows = $adb->num_rows($result);
 	for ($i = 0; $i < $noofrows; $i++) {
 		$translatedBlocklabel = $adb->query_result($result, $i, 'blocklabel');
@@ -50,9 +48,7 @@ function retrieveBlockInfoByModule($selmodule) {
 function retrieveModuleFields($selmodule) {
 	global $adb;
 	$fieldsArr = array();
-	$tabid = getTabid($selmodule);
-	$query = "select fieldid, fieldname, fieldlabel from vtiger_field where tabid=?";
-	$result = $adb->pquery($query, array($tabid));
+	$result = $adb->pquery('select fieldid, fieldname, fieldlabel from vtiger_field where tabid=?', array(getTabid($selmodule)));
 	$noofrows = $adb->num_rows($result);
 	for ($i = 0; $i < $noofrows; $i++) {
 		$translatedfieldlabel = $adb->query_result($result, $i, 'fieldlabel');
@@ -68,19 +64,21 @@ function retrieveModuleFields($selmodule) {
 }
 
 function getRelatedListDetails($selmodule) {
-	global $adb, $log;
-	$tabid = getTabid($selmodule);
-	$related_query = 'select * from vtiger_relatedlists
-		left join vtiger_tab on vtiger_relatedlists.related_tabid = vtiger_tab.tabid and vtiger_tab.presence = 0
-		where vtiger_relatedlists.tabid = ? order by sequence';
-	$relinfo = $adb->pquery($related_query, array($tabid));
+	global $adb;
+	$relinfo = $adb->pquery(
+		'select name,label,related_tabid
+		from vtiger_relatedlists
+		left join vtiger_tab on vtiger_relatedlists.related_tabid=vtiger_tab.tabid and vtiger_tab.presence=0
+		where vtiger_relatedlists.tabid=? order by sequence',
+		array(getTabid($selmodule))
+	);
 	$noofrows = $adb->num_rows($relinfo);
 	$rellistinfo = array();
 	for ($i=0; $i<$noofrows; $i++) {
 		$rellistinfo[$i]['name'] = $adb->query_result($relinfo, $i, 'name');
 		$label = $adb->query_result($relinfo, $i, 'label');
 		$relatedModule = getTabname($adb->query_result($relinfo, $i, 'related_tabid'));
-		$rellistinfo[$i]['label'] = (empty($relatedModule) ? getTranslatedString($label, $module) : getTranslatedString($label, $relatedModule));
+		$rellistinfo[$i]['label'] = (empty($relatedModule) ? getTranslatedString($label, $selmodule) : getTranslatedString($label, $relatedModule));
 	}
 	return $rellistinfo;
 }

@@ -34,21 +34,9 @@ class genDetailViewLayoutMapping extends generatecbMap {
 			$details = $mapcontentArr['blocks']['block'];
 			!empty($details['loadfrom']) ? $smarty->assign('widloadfrom', $details['loadfrom']) : $smarty->assign('widloadfrom', '');
 		}
-		if ($type == 'CodeWithHeader') {
+		if ($type == 'CodeWithHeader' || $type == 'CodeWithoutHeader') {
 			$details = $mapcontentArr['blocks']['block'];
 			!empty($details['loadfrom']) ? $smarty->assign('loadfrom', $details['loadfrom']) : $smarty->assign('loadfrom', '');
-			!empty($details['loadcode']) ? $smarty->assign('loadcode', $details['loadcode']) : $smarty->assign('loadcode', '');
-			!empty($details['handler_paths']) ? $smarty->assign('handler_paths', $details['handler_paths']) : $smarty->assign('handler_paths', '');
-			!empty($details['handler_path']) ? $smarty->assign('handler_path', $details['handler_path']) : $smarty->assign('handler_path', '');
-			!empty($details['handler_class']) ? $smarty->assign('handler_class', $details['handler_class']) : $smarty->assign('handler_class', '');
-			!empty($details['handler']) ? $smarty->assign('handler', $details['handler']) : $smarty->assign('handler', '');
-		}
-		if ($type == 'CodeWithoutHeader') {
-			$details = $mapcontentArr['blocks']['block'];
-			!empty($details['loadfrom']) ? $smarty->assign('loadfrom', $details['loadfrom']) : $smarty->assign('loadfrom', '');
-			!empty($details['loadcode']) ? $smarty->assign('loadcode', $details['loadcode']) : $smarty->assign('loadcode', '');
-			!empty($details['handler_paths']) ? $smarty->assign('handler_paths', $details['handler_paths']) : $smarty->assign('handler_paths', '');
-			!empty($details['handler_path']) ? $smarty->assign('handler_path', $details['handler_path']) : $smarty->assign('handler_path', '');
 			!empty($details['handler_class']) ? $smarty->assign('handler_class', $details['handler_class']) : $smarty->assign('handler_class', '');
 			!empty($details['handler']) ? $smarty->assign('handler', $details['handler']) : $smarty->assign('handler', '');
 		}
@@ -90,7 +78,7 @@ class genDetailViewLayoutMapping extends generatecbMap {
 	}
 
 	public function convertToMap() {
-		global $adb, $log;
+		global $adb;
 		$Map = $this->getMap();
 		$module = $Map->column_fields['targetname'];
 		if ($module!=$_REQUEST['tmodule']) {
