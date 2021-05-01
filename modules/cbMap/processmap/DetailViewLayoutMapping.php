@@ -34,8 +34,6 @@
 		 </row>
 	   </layout>
 	   <loadfrom></loadfrom> related list label or id | file to load | widget reference
-	   <loadcode></loadcode>
-	   <handler_path></handler_path>
 	   <handler_class></handler_class>
 	   <handler></handler>
 	 </block>
@@ -118,8 +116,9 @@ class DetailViewLayoutMapping extends processcbMap {
 				$row['linkurl']  = decode_html($block['loadfrom']);
 				$row['linkicon'] = '';
 				$row['sequence'] = $block['sequence'];
+				$row['onlyonmymodule'] = 1;
 				//$row['status'] = '';
-				$row['handler_path'] = (isset($value->handler_path) ? (String)$value->handler_path : '');
+				$row['handler_path'] = (isset($value->loadfrom) ? (String)$value->loadfrom : '');
 				$row['handler_class'] = (isset($value->handler_class) ? (String)$value->handler_class : '');
 				$row['handler'] = (isset($value->handler) ? (String)$value->handler : '');
 				$instance->initialize($row);
@@ -197,6 +196,16 @@ class DetailViewLayoutMapping extends processcbMap {
 						$block['layout'][$idx][] = $fieldcolname;
 						$idx++;
 					}
+				}
+			} elseif ($block['type']=='CodeWithHeader' || $block['type']=='CodeWithoutHeader') {
+				$block['loadfrom'] = (isset($value->loadfrom) ? (String)$value->loadfrom : '');
+				$block['handler_class'] = '';
+				$block['handler'] = '';
+				if (!empty($block['loadfrom']) && file_exists($block['loadfrom']) && isInsideApplication($block['loadfrom'])) {
+					$block['handler_class'] = (isset($value->handler_class) ? (String)$value->handler_class : '');
+					$block['handler'] = (isset($value->handler) ? (String)$value->handler : '');
+				} else {
+					$block['loadfrom'] = '';
 				}
 			}
 			$mapping['blocks'][$block['sequence']] = $block;
