@@ -126,12 +126,14 @@
 										<svg class="slds-accordion__summary-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
 											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
 										</svg>
-										<span class="slds-accordion__summary-content">{$LAYOUT_DATA.section_header|@getTranslatedString: $LAYOUTMODULE}</span>
+										<span class="slds-accordion__summary-content">{$LAYOUT_DATA.data->linklabel|@getTranslatedString: $LAYOUTMODULE}</span>
 									</button>
 								</h2>
 							</div>
 							<div class="slds-accordion__content" id="widgetDiv">
-								{$LAYOUT_DATA.data}
+								{if preg_match("/^block:\/\/.*/", $LAYOUT_DATA.data->linkurl)}
+									{process_widget widgetLinkInfo=$LAYOUT_DATA.data}
+								{/if}
 							</div>
 						</section>
 					</li>
@@ -149,20 +151,13 @@
 										<svg class="slds-accordion__summary-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
 											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
 										</svg>
-										<span class="slds-accordion__summary-content">{$LAYOUT_DATA.section_header|@getTranslatedString: $LAYOUTMODULE}</span>
+										<span class="slds-accordion__summary-content">{$LAYOUT_DATA.label|@getTranslatedString: $LAYOUTMODULE}</span>
 									</button>
 								</h2>
 							</div>
-							{if {$LAYOUT_DATA.casetype} eq "HANDLER_ISSET"}
-								<div class="slds-accordion__content" id="codewithhDiv">
-									{$LAYOUT_DATA.data}
-								</div>
-							{/if}
-							{if {$LAYOUT_DATA.casetype} eq "LOADFROM_ISSET"}
-								<div class="slds-accordion__content" id="codewithhDiv">
-									{include file=$LAYOUT_DATA.data}
-								</div>
-							{/if}
+							<div class="slds-accordion__content" id="codewithhDiv">
+								{$LAYOUT_DATA.data}
+							</div>
 						</section>
 					</li>
 				</ul>
@@ -170,32 +165,9 @@
 		{/if}
 		{if {$LAYOUT_DATA.type} eq "CodeWithoutHeader"}
 			<article class="slds-card">
-				<ul class="slds-accordion">
-					<li class="slds-accordion__list-item">
-						<section class="slds-accordion__section slds-is-open" id ="codewithnodiv">
-							<div class="slds-accordion__summary">
-								<h2 class="slds-accordion__summary-heading">
-									<button class="slds-button slds-button_reset slds-accordion__summary-action" id="codewithnobtnswitch" onClick="handleToggle('codewithnodiv', 'codewithnobtnswitch');" aria-controls="codewithNoDiv" aria-expanded="true" title="">
-										<svg class="slds-accordion__summary-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
-											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
-										</svg>
-										<span class="slds-accordion__summary-content"></span>
-									</button>
-								</h2>
-							</div>
-							{if {$LAYOUT_DATA.casetype} eq "HANDLER_ISSET"}
-								<div class="slds-accordion__content" id="codewithNoDiv">
-									{$LAYOUT_DATA.data}
-								</div>
-							{/if}
-							{if {$LAYOUT_DATA.casetype} eq "LOADFROM_ISSET"}
-								<div class="slds-accordion__content" id="codewithNoDiv">
-									{include file=$LAYOUT_DATA.data}
-								</div>
-							{/if}
-						</section>
-					</li>
-				</ul>
+				<div class="slds-accordion__content" id="codewithNoDiv">
+					{$LAYOUT_DATA.data}
+				</div>
 			</article>
 		{/if}
 	{/if}

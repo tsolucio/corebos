@@ -43,17 +43,18 @@ class showSetOfFields_DetailViewBlock extends DeveloperBlock {
 		$cbmapid = $this->getFromContext('mapid');
 		$mapres = cbMap::getMapByID($cbmapid);
 		if ($mapres) {
+			$map = $mapres->DetailViewLayoutMapping($this->getFromContext('RECORDID'));
+			$blockinfo = reset($map['blocks']);
 			$xmlcontent = $mapres->column_fields['contentjson'];
 			$decodedcontent = html_entity_decode($xmlcontent);
 			$decodedcontent = json_decode($decodedcontent, true);
 			$layoutdataArr = array();
-			$type =  isset($decodedcontent['blocks']['block']['type']) ? $decodedcontent['blocks']['block']['type'] : '';
+			$type = isset($blockinfo['type']) ? $blockinfo['type'] : '';
 			$layoutdataArr['type'] = $type;
-			$layoutdataArr['section_header'] = 'Generated from DetailView Layout Map';
 			if (!empty($type)) {
 				$layoutdataArr['data'] = array();
 				if ($type == 'ApplicationFields' && $data) {
-					$blockid = isset($decodedcontent['blocks']['block']['blockid']) ? $decodedcontent['blocks']['block']['blockid']: '';
+					$blockid = isset($blockinfo['blockid']) ? $blockinfo['blockid'] : '';
 					$dvrecord = $this->getFromContext('dvrecord');
 					if (!empty($blockid) && !empty($dvrecord)) {
 						$dvmodule = $this->getFromContext('dvmodule');
@@ -106,7 +107,7 @@ class showSetOfFields_DetailViewBlock extends DeveloperBlock {
 								}
 							} elseif (!isset($row['column']) && is_array($row)) {
 								for ($x=0; $x < count($row); $x++) {
-									$fieldname = $row[$i];
+									$fieldname = $row[$x];
 									$info = getFieldDetails($fieldname, $module, $data);
 									if (!empty($info)) {
 										$layoutdataArr['data'][$y][] = $info;
@@ -122,91 +123,33 @@ class showSetOfFields_DetailViewBlock extends DeveloperBlock {
 						}
 					}
 				} elseif ($type == 'Widget') {
-					$loadfrom = isset($decodedcontent['blocks']['block']['loadfrom']) ? $decodedcontent['blocks']['block']['loadfrom']: '';
-					if (!empty($loadfrom)) {
-						$details = explode(':', $loadfrom);
-						if (strpos($details[1], '//') !== false && isset($details[2]) && file_exists($details[2])) {
-							$filepath = $details[2];
-							include $filepath;
-							$classname = trim(str_replace('//', '', $details[1]));
-							$classinstance = new $classname();
-							$layoutdataArr['data'] = $classinstance->process();
-						}
-					}
-				} elseif ($type == 'CodeWithHeader') {
-					$dataArr = !empty($decodedcontent['blocks']['block']) ? $decodedcontent['blocks']['block']: array();
-					if (isset($dataArr['loadfrom']) && !empty($dataArr['loadfrom'])) {
-						$layoutdataArr['casetype'] = 'LOADFROM_ISSET';
-						$layoutdataArr['data'] = trim($dataArr['loadfrom']);
-					}
-					if (isset($dataArr['handler_path']) && !empty($dataArr['handler_path'])) {
-						$handlerpath = $dataArr['handler_path'];
-						if (isset($dataArr['handler_class']) && !empty($dataArr['handler_class']) && isset($dataArr['handler']) && !empty($dataArr['handler'])) {
-							$handlerclass = $dataArr['handler_class'];
-							$handler = $dataArr['handler'];
-							if (file_exists($handlerpath)) {
-								include $handlerpath;
-								$classhandler = new $handlerclass();
-								$response = $classhandler->$handler();
-								$layoutdataArr['data'] = formatDatatoDisplay($response);
-								$layoutdataArr['casetype'] = 'HANDLER_ISSET';
-							}
-						}
-						if (empty($dataArr['handler_class']) && empty($dataArr['handler'])) {
-							include $handlerpath;
-						}
-					}
-					if (isset($dataArr['loadcode']) && !empty($dataArr['loadcode'])) {
-						$codes = $dataArr['loadcode'];
-						$layoutdataArr['casetype'] = 'LOADCODE_ISSET';
-						try {
-							eval($codes);
-						} catch (Exeption $e) {
-							$log->debug('debug > showSetOfFields_DetailViewBlock');
-						}
-					}
-				} elseif ($type == 'CodeWithoutHeader') {
-					$dataArr = !empty($decodedcontent['blocks']['block']) ? $decodedcontent['blocks']['block']: array();
-					if (isset($dataArr['handler_path']) && !empty($dataArr['handler_path'])) {
-						$handlerpath = $dataArr['handler_path'];
-						if (isset($dataArr['handler_class']) && !empty($dataArr['handler_class']) && isset($dataArr['handler']) && !empty($dataArr['handler'])) {
-							$handlerclass = $dataArr['handler_class'];
-							$handler = $dataArr['handler'];
-							if (file_exists($handlerpath)) {
-								include $handlerpath;
-								$classhandler = new $handlerclass();
-								$response = $classhandler->$handler();
-								$layoutdataArr['data'] = formatDatatoDisplay($response);
-								$layoutdataArr['casetype'] = 'HANDLER_ISSET';
-							}
-						}
-						if (empty($dataArr['handler_class']) && empty($dataArr['handler'])) {
-							include $handlerpath;
-						}
-					}
-					if (isset($dataArr['loadfrom']) && !empty($dataArr['loadfrom'])) {
-						$layoutdataArr['casetype'] = 'LOADFROM_ISSET';
-						$layoutdataArr['data'] = trim($dataArr['loadfrom']);
-					}
-					if (isset($dataArr['loadcode']) && !empty($dataArr['loadcode'])) {
-						$codes = $dataArr['loadcode'];
-						$layoutdataArr['casetype'] = 'LOADCODE_ISSET';
-						try {
-							eval($codes);
-						} catch (Exeption $e) {
-							$log->debug('debug > showSetOfFields_DetailViewBlock');
+					$layoutdataArr['data'] = $blockinfo['instance'];
+				} elseif ($type == 'CodeWithHeader' || $type == 'CodeWithoutHeader') {
+					$layoutdataArr['data'] = '';
+					$layoutdataArr['label'] = $blockinfo['label'];
+					if (!empty($blockinfo['loadfrom'])) {
+						if (empty($blockinfo['handler_class']) || empty($blockinfo['handler'])) {
+							ob_start();
+							include_once $blockinfo['loadfrom'];
+							$layoutdataArr['data'] = ob_get_contents();
+							ob_end_clean();
+						} else {
+							$handlerclass = $blockinfo['handler_class'];
+							$handler = $blockinfo['handler'];
+							include_once $blockinfo['loadfrom'];
+							$classhandler = new $handlerclass();
+							$layoutdataArr['data'] = $classhandler->$handler();
 						}
 					}
 				}
 			}
 		}
-		if (isset($layoutdataArr['data']['type'])) {
+		if (is_array($layoutdataArr['data']) && isset($layoutdataArr['data']['type'])) {
 			unset($layoutdataArr['data']['type']);
 		}
 		if (empty($layoutdataArr['data'])) {
 			unset($layoutdataArr['data']);
 		}
-		$module = $this->getFromContext('MODULE');
 		$smarty = $this->getViewer();
 		$smarty->assign('LAYOUTMODULE', $module);
 		$smarty->assign('LAYOUT_DATA', $layoutdataArr);
