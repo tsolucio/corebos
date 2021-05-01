@@ -36,8 +36,9 @@ class showSetOfFields_DetailViewBlock extends DeveloperBlock {
 
 	public function process($context = false) {
 		global $current_user;
+		$smarty = $this->getViewer();
 		$this->context = $context;
-		$recordid = $this->getFromContext('RECORDID');
+		$recordid = $crmid = $this->getFromContext('RECORDID');
 		$module = $this->getFromContext('MODULE');
 		if (empty($recordid)) {
 			$data = null;
@@ -98,6 +99,18 @@ class showSetOfFields_DetailViewBlock extends DeveloperBlock {
 					}
 				} elseif ($type == 'Widget') {
 					$layoutdataArr['data'] = $blockinfo['instance'];
+				} elseif ($type == 'RelatedList' && !empty($blockinfo['relatedid'])) {
+					$layoutdataArr['relatedlistname'] = $blockinfo['loadfrom'];
+					$layoutdataArr['relatedlistid'] = $blockinfo['relatedid'];
+					$layoutdataArr['data'] = getRelatedLists($module, null, [$blockinfo['relatedid']]);
+					require_once 'include/ListView/RelatedListViewSession.php';
+					if (!empty($_REQUEST['selected_header']) && !empty($_REQUEST['relation_id'])) {
+						RelatedListViewSession::addRelatedModuleToSession(vtlib_purify($blockinfo['relatedid']), vtlib_purify($blockinfo['loadfrom']));
+					}
+					$open_related_modules = RelatedListViewSession::getRelatedModulesFromSession();
+					$smarty->assign('MODULE', $module);
+					$smarty->assign('ID', $crmid);
+					$smarty->assign('SELECTEDHEADERS', $open_related_modules);
 				} elseif ($type == 'CodeWithHeader' || $type == 'CodeWithoutHeader') {
 					$layoutdataArr['data'] = '';
 					$layoutdataArr['label'] = $blockinfo['label'];
@@ -124,7 +137,6 @@ class showSetOfFields_DetailViewBlock extends DeveloperBlock {
 		if (empty($layoutdataArr['data'])) {
 			unset($layoutdataArr['data']);
 		}
-		$smarty = $this->getViewer();
 		$smarty->assign('LAYOUTMODULE', $module);
 		$smarty->assign('LAYOUT_DATA', $layoutdataArr);
 		return $smarty->fetch('showSetOfFields.tpl');

@@ -115,6 +115,9 @@
 				</ul>
 			</article>
 		{/if}
+		{if {$LAYOUT_DATA.type} eq "RelatedList"}
+			{include file='RelatedListNew.tpl' RELATEDLISTS=$LAYOUT_DATA.data RELLISTID=$LAYOUT_DATA.relatedlistname}
+		{/if}
 		{if {$LAYOUT_DATA.type} eq "Widget"}
 			<article class="slds-card">
 				<ul class="slds-accordion">
