@@ -137,12 +137,27 @@ class DetailViewLayoutMapping extends processcbMap {
 				$instance->linkurl = $strtemplate->merge($instance->linkurl);
 				$block['instance'] = $instance;
 			} elseif ($block['type']=='FieldList') {
+				$orgtabid = getTabid($mapping['origin']);
+				if (empty(VTCacheUtils::$_fieldinfo_cache[$orgtabid])) {
+					getColumnFields($mapping['origin']);
+				}
 				$block['layout'] = array();
 				$idx = 0;
-				foreach ($value->layout->row as $k => $v) {
+				foreach ($value->layout->row as $v) {
 					$block['layout'][$idx] = array();
 					foreach ($v->column as $column) {
-						$block['layout'][$idx][] = (String) $column;
+						if (getFieldVisibilityPermission($mapping['origin'], $current_user->id, (String)$column) != '0') {
+							continue;
+						}
+						$finfo = VTCacheUtils::lookupFieldInfo($orgtabid, (String)$column);
+						$lblraw = $finfo['fieldlabel'];
+						$block['layout'][$idx][] = array(
+							'columnname' => $finfo['columnname'],
+							'fieldname' => $finfo['fieldname'],
+							'label' => getTranslatedString($lblraw, $mapping['origin']),
+							'labelraw' => $lblraw,
+							'uitype' => $finfo['uitype'],
+						);
 					}
 					$idx++;
 				}
