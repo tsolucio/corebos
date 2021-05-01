@@ -31,7 +31,9 @@ class showSetOfFieldsWidget {
 }
 
 class showSetOfFields_DetailViewBlock extends DeveloperBlock {
-	private $widgetName = 'showSetOfFieldsWidget';
+
+	protected $widgetName = 'showSetOfFieldsWidget';
+
 	public function process($context = false) {
 		global $current_user;
 		$this->context = $context;

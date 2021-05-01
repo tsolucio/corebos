@@ -26,8 +26,8 @@ class REVISIONBLOCK {
 }
 
 class REVISIONBLOCK_DetailViewBlock extends DeveloperBlock {
-	// Implement widget functionality
-	private $widgetName = 'REVISION';
+
+	protected $widgetName = 'REVISION';
 
 	// This one is called to get the contents to show on screen
 	public function process($context = false) {
