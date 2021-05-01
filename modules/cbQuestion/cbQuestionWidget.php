@@ -25,6 +25,8 @@ class bqanswer {
 
 class bqAnswer_DetailViewBlock extends DeveloperBlock {
 
+	protected $widgetName = 'BusinessQuestionAnswer';
+
 	// This one is called to get the contents to show on screen
 	public function process($context = false) {
 		global $current_user, $currentModule;

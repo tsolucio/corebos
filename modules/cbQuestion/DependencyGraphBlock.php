@@ -29,7 +29,7 @@ class DependencyGraphBlock {
 
 class DependencyGraphBlock_DetailViewBlock extends DeveloperBlock {
 
-	private $widgetName = 'DependencyGraphBlock';
+	protected $widgetName = 'DependencyGraphBlock';
 
 	public function process($context = false) {
 		$this->context = $context;
