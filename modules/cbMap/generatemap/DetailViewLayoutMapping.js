@@ -109,8 +109,8 @@ function fillSelectedField() {
 }
 
 function getWidgetCodeContent() {
-	var prms = 'loadfrom##'+document.getElementById('loadfrom').value+'$$loadcode##'+document.getElementById('loadcode').value
-	+'$$handler_path##'+document.getElementById('handler_path').value+'$$handler_class##'+document.getElementById('handler_class').value
+	var prms = 'loadfrom##'+document.getElementById('loadfrom').value
+	+'$$handler_class##'+document.getElementById('handler_class').value
 	+'$$handler##'+document.getElementById('handler').value;
 	return prms;
 }

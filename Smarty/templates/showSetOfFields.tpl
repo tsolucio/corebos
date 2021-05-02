@@ -17,7 +17,7 @@
 {assign var="slds_role" value=""}
 <div id="setfieldsdiv" class="slds-m-top_x-small slds-m-bottom_x-small">
 	{if !empty($LAYOUT_DATA.data)}
-		{if {$LAYOUT_DATA.type} eq "FieldList"}
+		{if $LAYOUT_DATA.type eq "FieldList"}
 			<article class="slds-card">
 				<ul class="slds-accordion">
 					<li class="slds-accordion__list-item">
@@ -64,7 +64,7 @@
 				</ul>
 			</article>
 		{/if}
-		{if {$LAYOUT_DATA.type} eq "ApplicationFields"}
+		{if $LAYOUT_DATA.type eq "ApplicationFields"}
 			<article class="slds-card">
 				<ul class="slds-accordion">
 					<li class="slds-accordion__list-item">
@@ -115,10 +115,10 @@
 				</ul>
 			</article>
 		{/if}
-		{if {$LAYOUT_DATA.type} eq "RelatedList"}
+		{if $LAYOUT_DATA.type eq "RelatedList"}
 			{include file='RelatedListNew.tpl' RELATEDLISTS=$LAYOUT_DATA.data RELLISTID=$LAYOUT_DATA.relatedlistname}
 		{/if}
-		{if {$LAYOUT_DATA.type} eq "Widget"}
+		{if $LAYOUT_DATA.type eq "Widget"}
 			<article class="slds-card">
 				<ul class="slds-accordion">
 					<li class="slds-accordion__list-item">
@@ -143,11 +143,11 @@
 				</ul>
 			</article>
 		{/if}
-		{if {$LAYOUT_DATA.type} eq "CodeWithHeader"}
+		{if $LAYOUT_DATA.type eq "CodeWithHeader"}
 			<article class="slds-card">
 				<ul class="slds-accordion">
 					<li class="slds-accordion__list-item">
-						<section class="slds-accordion__section slds-is-open" id ="codewithhdiv">
+						<section class="slds-accordion__section slds-is-open" id="codewithhdiv">
 							<div class="slds-accordion__summary">
 								<h2 class="slds-accordion__summary-heading">
 									<button class="slds-button slds-button_reset slds-accordion__summary-action" id="codewithhbtnswitch" onClick="handleToggle('codewithhdiv', 'codewithhbtnswitch');" aria-controls="codewithhDiv" aria-expanded="true" title="">
@@ -158,7 +158,7 @@
 									</button>
 								</h2>
 							</div>
-							<div class="slds-accordion__content" id="codewithhDiv">
+							<div class="slds-accordion__content" id="codewithDiv">
 								{$LAYOUT_DATA.data}
 							</div>
 						</section>
@@ -166,9 +166,9 @@
 				</ul>
 			</article>
 		{/if}
-		{if {$LAYOUT_DATA.type} eq "CodeWithoutHeader"}
+		{if $LAYOUT_DATA.type eq "CodeWithoutHeader"}
 			<article class="slds-card">
-				<div class="slds-accordion__content" id="codewithNoDiv">
+				<div id="codewithNoDiv">
 					{$LAYOUT_DATA.data}
 				</div>
 			</article>

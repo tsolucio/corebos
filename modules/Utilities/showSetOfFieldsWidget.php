@@ -74,6 +74,7 @@ class showSetOfFields_DetailViewBlock extends DeveloperBlock {
 							}
 							$layoutdataArr['data'][$i] = array(
 								'label' => $blockinfo['layout'][$i]['label'],
+								'labelraw' => $blockinfo['layout'][$i]['labelraw'],
 								'uitype' => $uitype,
 								'value' => $value
 							);
