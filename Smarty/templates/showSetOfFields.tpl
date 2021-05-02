@@ -176,7 +176,7 @@
 	{/if}
 </div>
 <script type ="text/javascript">
-	function handleToggle(divId, btnId) {
+	window.handleToggle = function (divId, btnId) {
 		var idInstance = document.getElementById(divId);
 		if (idInstance.className == 'slds-accordion__section slds-is-open') {
 			idInstance.className = 'slds-accordion__section';
