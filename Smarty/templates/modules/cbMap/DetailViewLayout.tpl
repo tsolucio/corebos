@@ -62,8 +62,9 @@
 						<option {if $type eq 'ApplicationFields'} selected {/if} value="ApplicationFields">Application Fields</option>
 						<option {if $type eq 'FieldList'} selected {/if} value="FieldList">Field List</option>
 						<option {if $type eq 'Widget'} selected {/if} value="Widget">Widget</option>
-						<option {if $type eq 'CodeWithHeader'} selected {/if} value="CodeWithHeader">CodeWithHeader</option>
-						<option {if $type eq 'CodeWithoutHeader'} selected {/if} value="CodeWithoutHeader">CodeWithoutHeader</option>
+						<option {if $type eq 'RelatedList'} selected {/if} value="RelatedList">Related List</option>
+						<option {if $type eq 'CodeWithHeader'} selected {/if} value="CodeWithHeader">Code With Header</option>
+						<option {if $type eq 'CodeWithoutHeader'} selected {/if} value="CodeWithoutHeader">Code Without Header</option>
 					</select>
 				</div>
 			</div>
@@ -179,6 +180,15 @@
 			<label class="slds-form-element__label" for="widloadfrom">Load from</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="widloadfrom" name="widloadfrom" value="{if isset($widloadfrom)}{$widloadfrom}{/if}" class="slds-input"/>
+			</div>
+		</div>
+	</div>
+	{* RelatedList div details *}
+	<div class="slds-p-around_x-small slds-form-element" id="RelatedListDiv" style="display:none">
+		<div class="slds-form-element slds-m-top_small">
+			<label class="slds-form-element__label" for="rlidloadfrom">Load from</label>
+			<div class="slds-form-element__control">
+				<input type="text" id="rlidloadfrom" name="rlidloadfrom" value="{if isset($rlidloadfrom)}{$rlidloadfrom}{/if}" class="slds-input"/>
 			</div>
 		</div>
 	</div>

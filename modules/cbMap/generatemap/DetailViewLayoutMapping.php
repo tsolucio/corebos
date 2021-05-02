@@ -34,6 +34,10 @@ class genDetailViewLayoutMapping extends generatecbMap {
 			$details = $mapcontentArr['blocks']['block'];
 			!empty($details['loadfrom']) ? $smarty->assign('widloadfrom', $details['loadfrom']) : $smarty->assign('widloadfrom', '');
 		}
+		if ($type == 'RelatedList') {
+			$details = $mapcontentArr['blocks']['block'];
+			!empty($details['loadfrom']) ? $smarty->assign('rlidloadfrom', $details['loadfrom']) : $smarty->assign('rlidloadfrom', '');
+		}
 		if ($type == 'CodeWithHeader' || $type == 'CodeWithoutHeader') {
 			$details = $mapcontentArr['blocks']['block'];
 			!empty($details['loadfrom']) ? $smarty->assign('loadfrom', $details['loadfrom']) : $smarty->assign('loadfrom', '');

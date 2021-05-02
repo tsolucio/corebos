@@ -19,6 +19,9 @@ function changeFieldTypeListener(fieldtype) {
 	case 'Widget':
 		handleWidget();
 		break;
+	case 'RelatedList':
+		handleRelatedList();
+		break;
 	case 'CodeWithHeader':
 	case 'CodeWithoutHeader':
 		handleInputDisplay();
@@ -34,6 +37,7 @@ function changeFieldTypeListener(fieldtype) {
 function handleApplicationFieldsCase() {
 	document.getElementById('FieldListselectedDiv').style.display = 'none';
 	document.getElementById('WidgetDiv').style.display = 'none';
+	document.getElementById('RelatedListDiv').style.display = 'none';
 	document.getElementById('codeDiv').style.display = 'none';
 	document.getElementById('contentHolderDiv').style.display = 'none';
 	document.getElementById('AppFieldselectedDiv').style.display = '';
@@ -51,6 +55,7 @@ function handleFieldListCase() {
 		response = JSON.parse(response);
 		document.getElementById('AppFieldselectedDiv').style.display = 'none';
 		document.getElementById('WidgetDiv').style.display = 'none';
+		document.getElementById('RelatedListDiv').style.display = 'none';
 		document.getElementById('codeDiv').style.display = 'none';
 		document.getElementById('FieldListselectedDiv').style.display = '';
 		document.getElementById('contentHolderDiv').style.display = '';
@@ -68,6 +73,15 @@ function handleWidget() {
 	document.getElementById('FieldListselectedDiv').style.display = 'none';
 	document.getElementById('AppFieldselectedDiv').style.display = 'none';
 	document.getElementById('WidgetDiv').style.display = '';
+	document.getElementById('RelatedListDiv').style.display = 'none';
+}
+
+function handleRelatedList() {
+	document.getElementById('codeDiv').style.display = 'none';
+	document.getElementById('FieldListselectedDiv').style.display = 'none';
+	document.getElementById('AppFieldselectedDiv').style.display = 'none';
+	document.getElementById('WidgetDiv').style.display = 'none';
+	document.getElementById('RelatedListDiv').style.display = '';
 }
 
 function handleInputDisplay() {
@@ -76,6 +90,7 @@ function handleInputDisplay() {
 	document.getElementById('contentHolderDiv').style.display = 'none';
 	document.getElementById('WidgetDiv').style.display = 'none';
 	document.getElementById('codeDiv').style.display = '';
+	document.getElementById('RelatedListDiv').style.display = 'none';
 }
 
 function fillTempContainer(content) {
