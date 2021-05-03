@@ -1392,17 +1392,10 @@ class CRMEntity {
 				$cbMap = cbMap::getMapByID($cbMapid);
 				$mtype = $cbMap->column_fields['maptype'];
 				$mdmap = $cbMap->$mtype();
-				$originmodule = $mdmap['originmodule'];
-				$targetmodule = $mdmap['targetmodule'];
-				$qg = new QueryGenerator($targetmodule, $current_user);
-				$refField = $qg->getReferenceFieldInfoList();
-				$refField = array_map(function($key) use ($originmodule) {
-					return $key[0] === $originmodule;
-				}, $refField);
-				$referenceFieldValue = array_search($originmodule, $refField);
-				if ($referenceFieldValue) {
+				$targetfield = $mdmap['linkfields']['targetfield'];
+				if ($targetfield != '') {
 					$MDCurrentRecord = coreBOS_Session::get('MDCurrentRecord');
-					$this->column_fields[$referenceFieldValue] = $MDCurrentRecord;
+					$this->column_fields[$targetfield] = $MDCurrentRecord;
 				}
 				if ($this->mode=='' && $mtype=='MasterDetailLayout' && !empty($mdmap['sortfield'])) {
 					$qg = new QueryGenerator($mdmap['targetmodule'], $current_user);
