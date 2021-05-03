@@ -9,7 +9,6 @@
 ./docker/phpmd.phar
 ./include/cbmqtm/reboot
 ./include/cbmqtm/run.php
-./include/integrations/zendesk/vendor/zendesk/zendesk_api_client_php/bin/console
 ./include/sw-precache/regen_swprecache
 ./modules/evvtgendoc/unoservice.sh
 ./vendor/sabre/dav/bin/build.php
@@ -23,3 +22,4 @@
 ./vendor/sabre/vobject/bin/mergeduplicates.php
 ./vendor/sabre/vobject/bin/vobject
 ./vendor/tecnickcom/tcpdf/tools/tcpdf_addfont.php
+./vendor/zendesk/zendesk_api_client_php/bin/console
