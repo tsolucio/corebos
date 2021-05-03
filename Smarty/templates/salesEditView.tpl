@@ -159,6 +159,13 @@
 	var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
 	var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
 	var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
+	{if !empty($smarty.request.MDGridInfo)}
+	{assign var='mdgridinfo' value=$smarty.request.MDGridInfo|json_decode:true}
+	function windowopenermasterdetailworksave() {
+		window.opener.masterdetailwork.save('{$mdgridinfo.name|vtlib_purify}', '{$mdgridinfo.module|vtlib_purify}');
+	}
+	corebosjshook.after(window, 'corebosjshook_submitFormForAction', windowopenermasterdetailworksave);
+	{/if}
 </script>
 
 <!-- vtlib customization: Help information assocaited with the fields -->

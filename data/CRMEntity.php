@@ -982,10 +982,12 @@ class CRMEntity {
 			$rdo = $adb->pquery($sql1, $value);
 			if ($rdo) {
 				$this->column_fields['cbuuid'] = (empty($this->column_fields['cbuuid']) ? $this->getUUID() : $this->column_fields['cbuuid']);
-				$adb->pquery(
-					'INSERT IGNORE INTO vtiger_crmobject (crmid,deleted,setype,smownerid,modifiedtime,cbuuid) values (?,0,?,?,?,?)',
-					array($this->id, $module, $this->column_fields['assigned_user_id'], $this->column_fields['modifiedtime'], $this->column_fields['cbuuid'])
-				);
+				if ($table_name == $this->crmentityTable && $this->denormalized) {
+					$adb->pquery(
+						'INSERT IGNORE INTO vtiger_crmobject (crmid,deleted,setype,smownerid,modifiedtime,cbuuid) values (?,0,?,?,?,?)',
+						array($this->id, $module, $this->column_fields['assigned_user_id'], $this->column_fields['modifiedtime'], $this->column_fields['cbuuid'])
+					);
+				}
 			}
 		}
 		if ($rdo===false) {
@@ -1376,23 +1378,52 @@ class CRMEntity {
 	 * @param $module_name -- module:: Type varchar
 	 */
 	public function save($module_name, $fileid = '') {
-		global $current_user;
-		if ($this->mode!='' && !empty($_REQUEST['FILTERFIELDSMAP'])) {
+		global $current_user, $adb;
+		if (empty($_REQUEST['FILTERFIELDSMAP'])) {
+			$mdmaps = cbMap::getMapsByType('MasterDetailLayout', $module_name);
+			if (count($mdmaps)>0) {
+				$_REQUEST['FILTERFIELDSMAP'] = reset($mdmaps);
+			}
+		}
+		if (!empty($_REQUEST['FILTERFIELDSMAP'])) {
 			$bmapname = vtlib_purify($_REQUEST['FILTERFIELDSMAP']);
 			$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 			if ($cbMapid) {
 				$cbMap = cbMap::getMapByID($cbMapid);
 				$mtype = $cbMap->column_fields['maptype'];
 				$mdmap = $cbMap->$mtype();
-				if (!empty($mdmap['editfieldnames'])) {
-					$stillindb = CRMEntity::getInstance($module_name);
-					$stillindb->retrieve_entity_info($this->id, $module_name, false, true);
-					$handler = vtws_getModuleHandlerFromName($module_name, $current_user);
-					$meta = $handler->getMeta();
-					$stillindb->column_fields = DataTransform::sanitizeRetrieveEntityInfo($stillindb->column_fields, $meta);
-					foreach ($stillindb->column_fields as $fname => $fvalue) {
-						if (!in_array($fname, $mdmap['editfieldnames'])) {
-							$this->column_fields[$fname] = $fvalue;
+				$targetfield = $mdmap['linkfields']['targetfield'];
+				if ($targetfield != '') {
+					$MDCurrentRecord = coreBOS_Session::get('MDCurrentRecord');
+					$this->column_fields[$targetfield] = $MDCurrentRecord;
+				}
+				if ($this->mode=='' && $mtype=='MasterDetailLayout' && !empty($mdmap['sortfield'])) {
+					$qg = new QueryGenerator($mdmap['targetmodule'], $current_user);
+					$qg->setFields([$mdmap['sortfield']]);
+					$qg->addReferenceModuleFieldCondition(
+						$mdmap['originmodule'],
+						$mdmap['linkfields']['targetfield'],
+						'id',
+						$this->column_fields[$mdmap['linkfields']['targetfield']],
+						'e',
+						QueryGenerator::$AND
+					);
+					$sql = $qg->getQuery(); // No conditions
+					$maxsql = mkMaxQuery($sql, $mdmap['sortfield']);
+					$rs = $adb->query($maxsql);
+					$max = $rs->fields['max'];
+					$this->column_fields[$mdmap['sortfield']] = $max+1;
+				} else {
+					if (!empty($mdmap['editfieldnames'])) {
+						$stillindb = CRMEntity::getInstance($module_name);
+						$stillindb->retrieve_entity_info($this->id, $module_name, false, true);
+						$handler = vtws_getModuleHandlerFromName($module_name, $current_user);
+						$meta = $handler->getMeta();
+						$stillindb->column_fields = DataTransform::sanitizeRetrieveEntityInfo($stillindb->column_fields, $meta);
+						foreach ($stillindb->column_fields as $fname => $fvalue) {
+							if (!in_array($fname, $mdmap['editfieldnames'])) {
+								$this->column_fields[$fname] = $fvalue;
+							}
 						}
 					}
 				}

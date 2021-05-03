@@ -221,6 +221,26 @@ class cbMap extends CRMEntity {
 		}
 	}
 
+	public static function getMapsByType($type, $module = '') {
+		global $adb;
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap');
+		$sql = 'select cbmapid,mapname
+			from vtiger_cbmap
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=cbmapid
+			where vtiger_crmentity.deleted=0 and maptype=?';
+		$prm = array($type);
+		if ($module!='') {
+			$sql .= ' and targetname=?';
+			$prm[] = $module;
+		}
+		$mrs = $adb->pquery($sql, $prm);
+		$maps = array();
+		while ($map = $adb->fetch_array($mrs)) {
+			$maps[$map['cbmapid']] = $map['mapname'];
+		}
+		return $maps;
+	}
+
 	public static function getMapByName($name, $type = '') {
 		global $adb;
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap');

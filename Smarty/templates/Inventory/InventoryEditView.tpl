@@ -152,6 +152,13 @@
 		PERCENT_OF_PRICE:'{$APP.LBL_OF_PRICE}',
 		DIRECT_PRICE_REDUCTION:'{$APP.LBL_DIRECT_PRICE_REDUCTION}'
 	{rdelim};
+	{if !empty($smarty.request.MDGridInfo)}
+	{assign var='mdgridinfo' value=$smarty.request.MDGridInfo|json_decode:true}
+	function windowopenermasterdetailworksave() {
+		window.opener.masterdetailwork.save('{$mdgridinfo.name|vtlib_purify}', '{$mdgridinfo.module|vtlib_purify}');
+	}
+	corebosjshook.after(window, 'corebosjshook_submitFormForAction', windowopenermasterdetailworksave);
+	{/if}
 </script>
 
 <!-- vtlib customization: Help information assocaited with the fields -->
