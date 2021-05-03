@@ -11,7 +11,7 @@ class MasterDetailGridLayoutWidget {
 
 class MasterDetailGridLayout_DetailViewBlock extends DeveloperBlock {
 	// Implement widget functionality
-	private $widgetName = 'MasterDetailGridLayout';
+	protected $widgetName = 'MasterDetailGridLayout';
 
 	// This one is called to get the contents to show on screen
 	public function process($context = false) {
