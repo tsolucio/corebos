@@ -360,12 +360,12 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 					'mdTarget' => '_blank',
 					'mdUitype' => Field_Metadata::UITYPE_URL
 				));
-			} else {textlength_check($fieldValue);
-				$return = 'http://'.textlength_check($fieldValue);
+			} else {
+				$return = 'https://'.textlength_check($fieldValue);
 				array_push($fieldAttrs, array(
 					'mdField' => $fieldName,
 					'mdValue' => textlength_check($fieldValue),
-					'mdLink' => 'http://'.$fieldValue,
+					'mdLink' => 'https://'.$fieldValue,
 					'mdTarget' => '_blank',
 					'mdUitype' => Field_Metadata::UITYPE_URL
 				));
