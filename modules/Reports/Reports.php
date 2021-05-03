@@ -703,7 +703,7 @@ class Reports extends CRMEntity {
 			'custom','prevfy','thisfy','nextfy','prevfq','thisfq','nextfq',
 			'yesterday','today','tomorrow','lastweek','thisweek','nextweek','lastmonth','thismonth',
 			'nextmonth','last7days','last14days','last30days', 'last60days','last90days','last120days',
-			'next30days','next60days','next90days','next120days'
+			'next7days','next30days','next60days','next90days','next120days'
 		);
 		$datefilterdisplay = array(
 			'Custom','Previous FY', 'Current FY','Next FY','Previous FQ','Current FQ','Next FQ','Yesterday',

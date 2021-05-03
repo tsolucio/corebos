@@ -581,6 +581,7 @@ class CustomView extends CRMEntity {
 			'last60days' => '' . $mod_strings['Last 60 Days'] . '',
 			'last90days' => '' . $mod_strings['Last 90 Days'] . '',
 			'last120days' => '' . $mod_strings['Last 120 Days'] . '',
+			'next7days' => '' . getTranslatedString('Next 7 Days', 'Reports') . '',
 			'next30days' => '' . $mod_strings['Next 30 Days'] . '',
 			'next60days' => '' . $mod_strings['Next 60 Days'] . '',
 			'next90days' => '' . $mod_strings['Next 90 Days'] . '',
