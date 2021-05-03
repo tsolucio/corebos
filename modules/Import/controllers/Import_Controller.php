@@ -55,6 +55,7 @@ class Import_Controller {
 		if ($setBatchImport) {
 			$importDataController->batchImport = false;
 		}
+		Import_Queue_Controller::updateStatus($importInfo['id'], Import_Queue_Controller::$IMPORT_STATUS_RUNNING);
 		$importDataController->importData();
 		Import_Queue_Controller::updateStatus($importInfo['id'], Import_Queue_Controller::$IMPORT_STATUS_HALTED);
 		$importInfo = Import_Queue_Controller::getImportInfo($this->userInputObject->get('module'), $this->user);

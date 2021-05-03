@@ -618,7 +618,9 @@ class Import_Data_Controller {
 			if (!$importDataController->initializeImport()) {
 				continue;
 			}
+			Import_Queue_Controller::updateStatus($importDataController->id, Import_Queue_Controller::$IMPORT_STATUS_RUNNING);
 			$importDataController->importData();
+			Import_Queue_Controller::updateStatus($importDataController->id, Import_Queue_Controller::$IMPORT_STATUS_COMPLETED);
 
 			$importStatusCount = $importDataController->getImportStatusCount();
 
