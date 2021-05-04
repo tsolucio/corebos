@@ -91,4 +91,11 @@
 	<classname>changeEntityNameForUsersModule</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>Fixing Module List field length to module Global Variable</description>
+	<filename>build/changeSets/2021/fixModuleListfieldlength2moduleglobalvariable.php</filename>
+	<classname>fixModuleListfieldlength2moduleglobalvariable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
