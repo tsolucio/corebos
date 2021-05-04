@@ -260,8 +260,10 @@ class cbQuestion extends CRMEntity {
 						}
 					}
 				}
-				foreach ($params as $param => $value) {
-					$conds = str_replace($param, $value, $conds);
+				if (!empty($params) && is_array($params)) {
+					foreach ($params as $param => $value) {
+						$conds = str_replace($param, $value, $conds);
+					}
 				}
 				$query .= ' WHERE '.$conds;
 			}
