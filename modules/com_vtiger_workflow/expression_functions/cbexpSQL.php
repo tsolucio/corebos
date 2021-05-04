@@ -536,14 +536,15 @@ function cbexpsql_getCurrentUserName($arr, $mmodule) {
 function cbexpsql_getCurrentUserField($arr, $mmodule) {
 	return 'TRUE';
 }
+
 function cbexpsql_getCRMIDFromWSID($arr, $mmodule) {
 
-	if(!empty($arr) && !empty($arr[0])){
-		return 'substring('.$arr[0].', position("x" IN'.$arr[0].')+1)';
-	}else{
-		return "";
+	if (!empty($arr) && !empty($arr[0])) {
+		return 'substring_index("'.$arr[0].'","x",-1)';
 	}
+	return "";
 }
+
 function cbexpsql_getLatitude($arr, $mmodule) {
 	return 'TRUE';
 }
