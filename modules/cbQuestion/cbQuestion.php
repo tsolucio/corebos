@@ -260,8 +260,10 @@ class cbQuestion extends CRMEntity {
 						}
 					}
 				}
-				foreach ($params as $param => $value) {
-					$conds = str_replace($param, $value, $conds);
+				if (!empty($params) && is_array($params)) {
+					foreach ($params as $param => $value) {
+						$conds = str_replace($param, $value, $conds);
+					}
 				}
 				$query .= ' WHERE '.$conds;
 			}
@@ -411,39 +413,21 @@ class cbQuestion extends CRMEntity {
 		} else {
 			include_once 'include/Webservices/Query.php';
 			if ($q->column_fields['sqlquery']=='0') {
-				$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.decode_html($q->column_fields['qmodule']);
-				if (!empty($q->column_fields['qcondition'])) {
-					$conds = decode_html($q->column_fields['qcondition']);
-					if (!empty($_REQUEST['cbQuestionRecord'])) {
-						$context_variable = vtlib_purify(json_decode(urldecode($_REQUEST['cbQuestionRecord']), true));
-						if (isset($context_variable['context_variable'])) {
-							foreach ($context_variable['context_variable'] as $value) {
-								$conds = str_replace($value['variable'], $value['value'], $conds);
-							}
-						}
-					}
-					foreach ((array)$params as $param => $value) {
-						$conds = str_replace($param, $value, $conds);
-					}
-					$query .= ' WHERE '.$conds;
-				}
-				if (!empty($q->column_fields['groupby'])) {
-					$query .= ' GROUP BY '.$q->column_fields['groupby'];
-				}
-				if (!empty($q->column_fields['orderby'])) {
-					$query .= ' ORDER BY '.$q->column_fields['orderby'];
-				}
-				if (!empty($q->column_fields['qpagesize'])) {
-					$query .= ' LIMIT '.$q->column_fields['qpagesize'];
-				}
-				$query .= ';';
+				$webserviceObject = VtigerWebserviceObject::fromName($adb, $q->column_fields['qmodule']);
+				$handlerPath = $webserviceObject->getHandlerPath();
+				$handlerClass = $webserviceObject->getHandlerClass();
+				require_once $handlerPath;
+				$handler = new $handlerClass($webserviceObject, $current_user, $adb, $log);
+				$meta = $handler->getMeta();
+				$queryRelatedModules = array();
+				$sql_query = cbQuestion::getSQL($qid, $params);
 				return array(
 					'module' => $q->column_fields['qmodule'],
 					'columns' =>  html_entity_decode($q->column_fields['qcolumns'], ENT_QUOTES, $default_charset),
 					'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
 					'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
 					'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),
-					'answer' => vtws_query($query, $current_user)
+					'answer' => $handler->querySQLResults($sql_query, ' not in ', $meta, $queryRelatedModules),
 				);
 			} else {
 				require_once 'include/Webservices/GetExtendedQuery.php';
