@@ -2,7 +2,7 @@
 
 namespace SendGrid\EventWebhook;
 
-require_once 'include/integrations/sendgrid/vendor/autoload.php';
+require_once 'vendor/autoload.php';
 use EllipticCurve\Ecdsa;
 use EllipticCurve\PublicKey;
 use EllipticCurve\Signature;

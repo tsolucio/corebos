@@ -16,7 +16,7 @@
  *  Version   : 1.0
  *  Author    : JPL TSolucio, S. L.
  *************************************************************************************************/
-require_once 'include/integrations/sendgrid/vendor/autoload.php';
+require_once 'vendor/autoload.php';
 include_once 'vtlib/Vtiger/Module.php';
 require_once 'include/events/include.inc';
 
