@@ -1292,7 +1292,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 			} else {
 				$fieldview = 'editfields';
 			}
-			if (!empty($mdmap[$fieldview])) {
+			if (!empty($mdmap[$fieldview]) && !empty($mdmap['targetmodule']) && $module==$mdmap['targetmodule']) {
 				$fieldsin = $adb->convert2Sql('and fieldid IN (' . generateQuestionMarks($mdmap[$fieldview]) . ')', $mdmap[$fieldview]);
 			}
 		}
