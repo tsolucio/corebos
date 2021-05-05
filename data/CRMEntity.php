@@ -1392,37 +1392,40 @@ class CRMEntity {
 				$cbMap = cbMap::getMapByID($cbMapid);
 				$mtype = $cbMap->column_fields['maptype'];
 				$mdmap = $cbMap->$mtype();
+				$targetmodule = $mdmap['targetmodule'];
 				$targetfield = $mdmap['linkfields']['targetfield'];
-				if ($targetfield != '') {
-					$MDCurrentRecord = coreBOS_Session::get('MDCurrentRecord');
-					$this->column_fields[$targetfield] = $MDCurrentRecord;
-				}
-				if ($this->mode=='' && $mtype=='MasterDetailLayout' && !empty($mdmap['sortfield'])) {
-					$qg = new QueryGenerator($mdmap['targetmodule'], $current_user);
-					$qg->setFields([$mdmap['sortfield']]);
-					$qg->addReferenceModuleFieldCondition(
-						$mdmap['originmodule'],
-						$mdmap['linkfields']['targetfield'],
-						'id',
-						$this->column_fields[$mdmap['linkfields']['targetfield']],
-						'e',
-						QueryGenerator::$AND
-					);
-					$sql = $qg->getQuery(); // No conditions
-					$maxsql = mkMaxQuery($sql, $mdmap['sortfield']);
-					$rs = $adb->query($maxsql);
-					$max = $rs->fields['max'];
-					$this->column_fields[$mdmap['sortfield']] = $max+1;
-				} else {
-					if (!empty($mdmap['editfieldnames'])) {
-						$stillindb = CRMEntity::getInstance($module_name);
-						$stillindb->retrieve_entity_info($this->id, $module_name, false, true);
-						$handler = vtws_getModuleHandlerFromName($module_name, $current_user);
-						$meta = $handler->getMeta();
-						$stillindb->column_fields = DataTransform::sanitizeRetrieveEntityInfo($stillindb->column_fields, $meta);
-						foreach ($stillindb->column_fields as $fname => $fvalue) {
-							if (!in_array($fname, $mdmap['editfieldnames'])) {
-								$this->column_fields[$fname] = $fvalue;
+				if ($targetmodule == $module_name) {
+					if ($targetfield != '') {
+						$MDCurrentRecord = coreBOS_Session::get('MDCurrentRecord');
+						$this->column_fields[$targetfield] = $MDCurrentRecord;
+					}
+					if ($this->mode=='' && $mtype=='MasterDetailLayout' && !empty($mdmap['sortfield'])) {
+						$qg = new QueryGenerator($mdmap['targetmodule'], $current_user);
+						$qg->setFields([$mdmap['sortfield']]);
+						$qg->addReferenceModuleFieldCondition(
+							$mdmap['originmodule'],
+							$mdmap['linkfields']['targetfield'],
+							'id',
+							$this->column_fields[$mdmap['linkfields']['targetfield']],
+							'e',
+							QueryGenerator::$AND
+						);
+						$sql = $qg->getQuery(); // No conditions
+						$maxsql = mkMaxQuery($sql, $mdmap['sortfield']);
+						$rs = $adb->query($maxsql);
+						$max = $rs->fields['max'];
+						$this->column_fields[$mdmap['sortfield']] = $max+1;
+					} else {
+						if (!empty($mdmap['editfieldnames'])) {
+							$stillindb = CRMEntity::getInstance($module_name);
+							$stillindb->retrieve_entity_info($this->id, $module_name, false, true);
+							$handler = vtws_getModuleHandlerFromName($module_name, $current_user);
+							$meta = $handler->getMeta();
+							$stillindb->column_fields = DataTransform::sanitizeRetrieveEntityInfo($stillindb->column_fields, $meta);
+							foreach ($stillindb->column_fields as $fname => $fvalue) {
+								if (!in_array($fname, $mdmap['editfieldnames'])) {
+									$this->column_fields[$fname] = $fvalue;
+								}
 							}
 						}
 					}
