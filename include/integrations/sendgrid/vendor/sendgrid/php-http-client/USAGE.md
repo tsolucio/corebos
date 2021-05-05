@@ -50,6 +50,23 @@ echo $response->body();
 echo $response->headers();
 ```
 
+#### GET with array of values
+
+```
+$query_params = [
+    'aggregated_by' => 'month',
+    'subusers' => ['one', 'two', 'three'],
+    'start_date' => '2019-01-01',
+    'end_date' => '2019-01-31',
+];
+$request_headers = ['X-Mock: 200'];
+$retryOnLimit = true;
+$response = $client->subusers()->stats()->get(null, $query_params, $request_headers, $retryOnLimit);
+echo $response->statusCode();
+echo $response->body();
+echo $response->headers();
+```
+
 <a name="delete"></a>
 ## DELETE
 

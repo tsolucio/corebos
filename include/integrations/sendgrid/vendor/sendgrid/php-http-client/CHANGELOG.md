@@ -3,6 +3,104 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[2021-03-24] Version 3.14.0
+---------------------------
+**Library - Feature**
+- [PR #136](https://github.com/sendgrid/php-http-client/pull/136): Build URL with multiple instances of the same param. Thanks to [@agh1](https://github.com/agh1)!
+
+
+[2020-11-05] Version 3.13.0
+---------------------------
+**Library - Feature**
+- [PR #101](https://github.com/sendgrid/php-http-client/pull/101): Allows for a user to utilize self-signed certificates. Thanks to [@davcpas1234](https://github.com/davcpas1234)!
+
+
+[2020-10-14] Version 3.12.0
+---------------------------
+**Library - Feature**
+- [PR #103](https://github.com/sendgrid/php-http-client/pull/103): Throw an InvalidRequest whenever a curl request fails. Thanks to [@colinodell](https://github.com/colinodell)!
+
+
+[2020-08-19] Version 3.11.1
+---------------------------
+**Library - Docs**
+- [PR #116](https://github.com/sendgrid/php-http-client/pull/116): Add first-timers.md for newcomers. Thanks to [@daniloff200](https://github.com/daniloff200)!
+
+**Library - Chore**
+- [PR #145](https://github.com/sendgrid/php-http-client/pull/145): update GitHub branch references to use HEAD. Thanks to [@thinkingserious](https://github.com/thinkingserious)!
+
+
+[2020-07-22] Version 3.11.0
+---------------------------
+**Library - Test**
+- [PR #120](https://github.com/sendgrid/php-http-client/pull/120): test enhancements. Thanks to [@peter279k](https://github.com/peter279k)!
+
+**Library - Feature**
+- [PR #109](https://github.com/sendgrid/php-http-client/pull/109): automatic code style checking. Thanks to [@misantron](https://github.com/misantron)!
+
+
+[2020-06-24] Version 3.10.8
+---------------------------
+**Library - Fix**
+- [PR #143](https://github.com/sendgrid/php-http-client/pull/143): Composer configuration, typos and type hints. Thanks to [@kampalex](https://github.com/kampalex)!
+
+
+[2020-06-10] Version 3.10.7
+---------------------------
+**Library - Fix**
+- [PR #144](https://github.com/sendgrid/php-http-client/pull/144): replace Throwable with Exception. Thanks to [@childish-sambino](https://github.com/childish-sambino)!
+
+
+[2020-04-29] Version 3.10.6
+---------------------------
+**Library - Fix**
+- [PR #141](https://github.com/sendgrid/php-http-client/pull/141): add the singular 'suppression' method. Thanks to [@childish-sambino](https://github.com/childish-sambino)!
+
+
+[2020-03-18] Version 3.10.5
+---------------------------
+**Library - Docs**
+- [PR #111](https://github.com/sendgrid/php-http-client/pull/111): run .md files through grammarly. Thanks to [@redbrickone](https://github.com/redbrickone)!
+
+
+[2020-03-04] Version 3.10.4
+---------------------------
+**Library - Chore**
+- [PR #140](https://github.com/sendgrid/php-http-client/pull/140): add PHP 7.4 to Travis and test with lowest dependencies. Thanks to [@childish-sambino](https://github.com/childish-sambino)!
+
+
+[2020-02-19] Version 3.10.3
+---------------------------
+**Library - Fix**
+- [PR #134](https://github.com/sendgrid/php-http-client/pull/134): Change contactsdb to marketing api #133. Thanks to [@murich](https://github.com/murich)!
+
+
+[2020-01-22] Version 3.10.2
+---------------------------
+**Library - Docs**
+- [PR #139](https://github.com/sendgrid/php-http-client/pull/139): baseline all the templated markdown docs. Thanks to [@childish-sambino](https://github.com/childish-sambino)!
+
+
+[2020-01-09] Version 3.10.1
+---------------------------
+**Library - Chore**
+- [PR #138](https://github.com/sendgrid/php-http-client/pull/138): prep the repo for automated releasing. Thanks to [@childish-sambino](https://github.com/childish-sambino)!
+- [PR #135](https://github.com/sendgrid/php-http-client/pull/135): add more PHP versions to .travis.yml. Thanks to [@PaiizZ](https://github.com/PaiizZ)!
+
+**Library - Docs**
+- [PR #122](https://github.com/sendgrid/php-http-client/pull/122): fix grammar in Readme. Thanks to [@jmauerhan](https://github.com/jmauerhan)!
+
+
+[2019-12-11] Version 3.10.0
+---------------------------
+
+**Library - Fix**
+- [PR #99](https://github.com/sendgrid/php-http-client/pull/99): Throw InvalidRequest exception on invalid CURL request. Thanks to [@alextech](https://github.com/alextech)!
+
+**Library - Docs**
+- [PR #102](https://github.com/sendgrid/php-http-client/pull/102): Create a Use Cases Directory. Thanks to [@ProZsolt](https://github.com/ProZsolt)!
+- [PR #106](https://github.com/sendgrid/php-http-client/pull/106): Only mention the lowest required PHP version in README. Thanks to [@svenluijten](https://github.com/svenluijten)!
+
 ## [3.9.6] - 2018-04-10
 ### Added
 - PR [#98](https://github.com/sendgrid/php-http-client/pull/98). Updated documention of `Client.php` using PHPDoc.

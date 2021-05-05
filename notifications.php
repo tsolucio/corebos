@@ -27,14 +27,21 @@ if ($driver && $adb->num_rows($driver)>0) {
 	$function = $adb->query_result($driver, 0, 'functionname');
 	$signedkey = $adb->query_result($driver, 0, 'signedkey');
 	$signedvalue = $adb->query_result($driver, 0, 'signedvalue');
+	include_once $path;
+	if ($type == 'googlecal' || $type == 'googlestorage') {
+		$input = $_GET['code'];
+	} else {
+		$input = file_get_contents('php://input');
+	}
+
 	if (!empty($signedkey) && !empty($signedvalue)) {
 		$signedfunction = $adb->query_result($driver, 0, 'signedvalidation');
 		if (empty($signedfunction)) {
-			if (empty($_REQUEST[$signedkey]) || vtlib_purify($_REQUEST[$signedkey])!=$signedvalue) {
+			if (empty($_REQUEST[$signedvalue]) || $_REQUEST[$signedvalue]!=$signedkey) {
 				die();
 			}
 		} else {
-			if (!$signedfunction($signedkey, $signedvalue)) {
+			if (!$signedfunction($signedvalue, $signedkey, $input)) {
 				die();
 			}
 		}
@@ -45,6 +52,5 @@ if ($driver && $adb->num_rows($driver)>0) {
 		$input = file_get_contents('php://input');
 	}
 	//run function
-	include_once $path;
 	$function($input);
 }
