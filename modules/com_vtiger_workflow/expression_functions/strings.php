@@ -148,4 +148,12 @@ function __cb_explode($arr) {
 	}
 	return explode($arr[0], $arr[1]);
 }
+
+function cb_getCRMIDFromWSID($arr) {
+	if (!empty($arr) && !empty($arr[0])) {
+		return explode("x", $arr[0])[1];
+	}
+	return "";
+}
+
 ?>
