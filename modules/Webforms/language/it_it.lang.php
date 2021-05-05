@@ -9,6 +9,8 @@
  ************************************************************************************/
 $mod_strings = array (
 'Webforms' => 'Moduli web (webforms)',
+'SINGLE_Webforms' => 'Webform',
+'Webforms ID' => 'Webform ID',
 'LBL_SUCCESS' => 'Aggiungi voce a vtiger CRM.',
 'LBL_FAILURE' => 'Impossibile aggiungere la voce in vtiger CRM.',
 'LBL_ERROR_CODE' => 'Codice Errore',

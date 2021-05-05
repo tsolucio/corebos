@@ -54,7 +54,7 @@
 							</select>
 						</td>
 						<td class="dvtCellInfo" width="25%">
-							<select id="stdDateFilter" name="stdDateFilter" id="stdDateFilter" onchange='showDateRange( this.options[ this.selectedIndex ].value )' class="repBox">
+							<select id="stdDateFilter" name="stdDateFilter" id="stdDateFilter" onchange='showDateRange(this.options[this.selectedIndex].value)' class="repBox">
 							</select>
 						</td>
 						<td class="dvtCellInfo">

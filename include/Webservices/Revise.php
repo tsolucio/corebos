@@ -11,7 +11,7 @@ include_once 'include/Webservices/CustomerPortalWS.php';
 include_once 'include/Webservices/getRecordImages.php';
 
 function vtws_revise($element, $user) {
-	global $log, $adb, $root_directory;
+	global $log, $adb;
 	if (empty($element['id'])) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Id specified is incorrect');
 	}
@@ -26,22 +26,7 @@ function vtws_revise($element, $user) {
 	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 	$meta = $handler->getMeta();
 	$entityName = $meta->getObjectEntityName($element['id']);
-	$wsAttachments = array();
-	if (!empty($element['attachments'])) {
-		foreach ($element['attachments'] as $fieldname => $attachment) {
-			$filepath = $root_directory.'cache/'.$attachment['name'];
-			file_put_contents($filepath, base64_decode($attachment['content']));
-			$_FILES[$fieldname] = array(
-				'name' => $attachment['name'],
-				'type' => $attachment['type'],
-				'tmp_name' => $filepath,
-				'error' => 0,
-				'size' => $attachment['size']
-			);
-			$wsAttachments[] = $filepath;
-		}
-		unset($element['attachments']);
-	}
+	require 'include/Webservices/processAttachments.php';
 
 	$types = vtws_listtypes(null, $user);
 	if (!in_array($entityName, $types['types'])) {
@@ -73,7 +58,7 @@ function vtws_revise($element, $user) {
 			$elemTypeId = $ids[0];
 			$referenceObject = VtigerWebserviceObject::fromId($adb, $elemTypeId);
 			if (!in_array($referenceObject->getEntityName(), $details)) {
-				throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, 'Invalid reference specified for $fieldName');
+				throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, "Invalid reference specified for $fieldName");
 			}
 			if ($referenceObject->getEntityName() == 'Users') {
 				if (!$meta->hasAssignPrivilege($element[$fieldName])) {
@@ -97,6 +82,7 @@ function vtws_revise($element, $user) {
 		}
 	}
 	//  Product line support
+	$hrequest = $_REQUEST;
 	if (in_array($entityName, getInventoryModules()) && isset($element['pdoInformation']) && is_array($element['pdoInformation'])) {
 		$elementType = $entityName;
 		include 'include/Webservices/ProductLines.php';
@@ -106,6 +92,7 @@ function vtws_revise($element, $user) {
 
 	$entity = $handler->revise($element);
 	VTWS_PreserveGlobal::flush();
+	$_REQUEST = $hrequest;
 	if (!empty($wsAttachments)) {
 		foreach ($wsAttachments as $file) {
 			if (file_exists($file)) {
@@ -128,7 +115,7 @@ function vtws_revise($element, $user) {
 	if (count($listofrelfields)>0) {
 		$deref = unserialize(vtws_getReferenceValue(serialize($listofrelfields), $user));
 		foreach ($r as $relfield => $mods) {
-			if (!empty($entity[$relfield])) {
+			if (!empty($entity[$relfield]) && !empty($deref[$entity[$relfield]])) {
 				$entity[$relfield.'ename'] = $deref[$entity[$relfield]];
 			}
 		}

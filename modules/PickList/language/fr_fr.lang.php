@@ -51,5 +51,8 @@ $mod_strings = array(
 	'LBL_REMOVE' => 'Remove',
 	'NTC_DELETE_CONFIRMATION'=>'Êtes vous sûr de vouloir supprimer cette liste dépendante?',
 	'picklisthasdependency' => 'Warning: this list has dependencies configured',
+	'multii18n' => 'Multi-Language',
+	'monoi18n' => 'Mono-Language',
+	'ERR_MustBeTranslated' => 'This picklist must support multi-language',
 );
 ?>

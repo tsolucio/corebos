@@ -24,7 +24,7 @@ require_once 'modules/PickList/DependentPickListUtils.php';
   */
 function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields, $generatedtype, $module_name, $mode = '', $typeofdata = null, $cbMapFI = array()) {
 	global $log,$app_strings, $adb,$default_charset, $current_user;
-	$log->debug('> getOutputHtml '.$uitype.','. $fieldname.','. $fieldlabel.','. $maxlength.','. print_r($col_fields, true).','.$generatedtype.','.$module_name);
+	$log->debug('> getOutputHtml', [$uitype, $fieldname, $fieldlabel, $maxlength, $col_fields, $generatedtype, $module_name]);
 
 	$userprivs = $current_user->getPrivileges();
 
@@ -315,28 +315,23 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	} elseif ($uitype == 53) {
 		global $noof_group_rows;
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		// Get Group calculations > $noof_group_rows
-		if ($fieldname == 'assigned_user_id' && !$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid($module_name))) {
-			$result = get_current_user_access_groups($module_name);
-		} else {
-			$result = get_group_options();
-		}
-
 		$assigned_user_id = empty($value) ? $current_user->id : $value;
-
+		$groups_combo = '';
 		if ($fieldname == 'assigned_user_id' && !$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid($module_name))) {
+			get_current_user_access_groups($module_name); // calculate global variable $noof_group_rows
+			if ($noof_group_rows!=0) {
+				$ga = get_group_array(false, 'Active', $assigned_user_id, 'private');
+			}
 			$ua = get_user_array(false, 'Active', $assigned_user_id, 'private');
 		} else {
+			get_group_options();// calculate global variable $noof_group_rows
+			if ($noof_group_rows!=0) {
+				$ga = get_group_array(false, 'Active', $assigned_user_id);
+			}
 			$ua = get_user_array(false, 'Active', $assigned_user_id);
 		}
 		$users_combo = get_select_options_array($ua, $assigned_user_id);
-		$groups_combo = '';
 		if ($noof_group_rows!=0) {
-			if ($fieldname == 'assigned_user_id' && !$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid($module_name))) {
-				$ga = get_group_array(false, 'Active', $assigned_user_id, 'private');
-			} else {
-				$ga = get_group_array(false, 'Active', $assigned_user_id);
-			}
 			$groups_combo = get_select_options_array($ga, $assigned_user_id);
 		}
 		if (GlobalVariable::getVariable('Application_Group_Selection_Permitted', 1)!=1) {
@@ -770,7 +765,11 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$day_options = getReminderSelectOption(0, 31, 'remdays', $rem_days);
 		$hr_options = getReminderSelectOption(0, 23, 'remhrs', $rem_hrs);
 		$min_options = getReminderSelectOption(10, 59, 'remmin', $rem_min);
-		$fieldvalue[] = array(array(0,32,'remdays',getTranslatedString('LBL_DAYS', 'Calendar'),$rem_days),array(0,24,'remhrs',getTranslatedString('LBL_HOURS', 'Calendar'),$rem_hrs),array(10,60,'remmin',getTranslatedString('LBL_MINUTES', 'Calendar').'&nbsp;&nbsp;'.getTranslatedString('LBL_BEFORE_EVENT', 'Calendar'),$rem_min));
+		$fieldvalue[] = array(
+			array(0, 32, 'remdays', getTranslatedString('LBL_DAYS', 'cbCalendar'), $rem_days),
+			array(0, 24, 'remhrs', getTranslatedString('LBL_HOURS', 'cbCalendar'), $rem_hrs),
+			array(10, 60, 'remmin', getTranslatedString('LBL_MINUTES', 'cbCalendar').'&nbsp;&nbsp;'.getTranslatedString('LBL_BEFORE_EVENT', 'cbCalendar'), $rem_min)
+		);
 		$fieldvalue[] = array($SET_REM,getTranslatedString('LBL_YES'),getTranslatedString('LBL_NO'));
 		$SET_REM = '';
 	} elseif ($uitype == 115) {
@@ -1115,6 +1114,8 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 	if (GlobalVariable::getVariable('PurchaseOrder_IgnoreTransferDiscount', '0', isset($_REQUEST['return_module']) ? $_REQUEST['return_module'] : '') == '1' && $currentModule == 'PurchaseOrder' && $_REQUEST['return_module'] != 'PurchaseOrder') {
 		$zerodiscount = true;
 	}
+	$crmETProduct = CRMEntity::getcrmEntityTableAlias('Products');
+	$crmETService = CRMEntity::getcrmEntityTableAlias('Services');
 
 	if (in_array($module, getInventoryModules())) {
 		$query="SELECT
@@ -1154,14 +1155,14 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 			vtiger_products.unit_price, vtiger_products.qtyinstock, vtiger_crmentity.description AS product_description,
 			'Products' AS entitytype
 			FROM vtiger_products
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
+			INNER JOIN $crmETProduct ON vtiger_crmentity.crmid=vtiger_products.productid
 			INNER JOIN vtiger_seproductsrel ON vtiger_seproductsrel.productid=vtiger_products.productid
 			WHERE vtiger_seproductsrel.crmid=?";
 		$query.=" UNION SELECT vtiger_service.serviceid AS productid, vtiger_service.servicename AS productname,
 			'NA' AS productcode, vtiger_service.unit_price AS unit_price, 'NA' AS qtyinstock,
 			vtiger_crmentity.description AS product_description, 'Services' AS entitytype
 			FROM vtiger_service
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_service.serviceid
+			INNER JOIN $crmETService ON vtiger_crmentity.crmid=vtiger_service.serviceid
 			INNER JOIN vtiger_crmentityrel ON vtiger_crmentityrel.relcrmid=vtiger_service.serviceid
 			WHERE vtiger_crmentityrel.crmid=?";
 			$params = array($seid,$seid);
@@ -1170,23 +1171,23 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 			vtiger_products.unit_price, vtiger_products.qtyinstock, vtiger_crmentity.description AS product_description,
 			'Products' AS entitytype
 			FROM vtiger_products
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
-			WHERE vtiger_crmentity.deleted=0 AND productid=?";
+			INNER JOIN $crmETProduct ON vtiger_crmentity.crmid=vtiger_products.productid
+			WHERE vtiger_crmentity.deleted=0 AND vtiger_products.productid=?";
 			$params = array($seid);
 	} elseif ($module == 'Services') {
 		$query="SELECT vtiger_service.serviceid AS productid, 'NA' AS productcode, vtiger_service.servicename AS productname,
 			vtiger_service.unit_price AS unit_price, 'NA' AS qtyinstock, vtiger_crmentity.description AS product_description,
 			'Services' AS entitytype
 			FROM vtiger_service
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_service.serviceid
-			WHERE vtiger_crmentity.deleted=0 AND serviceid=?";
+			INNER JOIN $crmETService ON vtiger_crmentity.crmid=vtiger_service.serviceid
+			WHERE vtiger_crmentity.deleted=0 AND vtiger_service.serviceid=?";
 			$params = array($seid);
 	} else {
 		$query = "SELECT vtiger_products.productid, vtiger_products.productname, vtiger_products.productcode,
 			vtiger_products.unit_price, vtiger_products.qtyinstock, vtiger_crmentity.description AS product_description,
 			'Products' AS entitytype
 			FROM vtiger_products
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
+			INNER JOIN $crmETProduct ON vtiger_crmentity.crmid=vtiger_products.productid
 			INNER JOIN vtiger_crmentityrel ON (
 				(vtiger_crmentityrel.crmid=vtiger_products.productid and vtiger_crmentityrel.relcrmid=?) or
 				(vtiger_crmentityrel.crmid=? and vtiger_crmentityrel.relcrmid=vtiger_products.productid)
@@ -1196,7 +1197,7 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 			'NA' AS productcode, vtiger_service.unit_price AS unit_price, 'NA' AS qtyinstock,
 			vtiger_crmentity.description AS product_description, 'Services' AS entitytype
 			FROM vtiger_service
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_service.serviceid
+			INNER JOIN $crmETService ON vtiger_crmentity.crmid=vtiger_service.serviceid
 			INNER JOIN vtiger_crmentityrel ON (
 				(vtiger_crmentityrel.crmid=vtiger_service.serviceid and vtiger_crmentityrel.relcrmid=?) or
 				(vtiger_crmentityrel.crmid=? and vtiger_crmentityrel.relcrmid=vtiger_service.serviceid)
@@ -1223,20 +1224,22 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 		$so_line = 0;
 		$min_qty = null;
 		if (GlobalVariable::getVariable('Inventory_Check_Invoiced_Lines', 0, $currentModule) == 1) {
+			$crmETID = CRMEntity::getcrmEntityTableAlias('InventoryDetails', true);
 			if ($module == 'SalesOrder' && vtlib_isModuleActive('InventoryDetails')) {
 				if (isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'sotoinvoice') {
 					$so_line = $adb->query_result($result, $i-1, 'lineitem_id');
-
-					$sel_min_qty = "SELECT remaining_units FROM vtiger_inventorydetails inde 
-					LEFT JOIN vtiger_crmentity crm ON inde.inventorydetailsid=crm.crmid WHERE crm.deleted = 0 AND lineitem_id=?";
+					$sel_min_qty = "SELECT remaining_units
+						FROM vtiger_inventorydetails inde
+						LEFT JOIN $crmETID crm ON inde.inventorydetailsid=crm.crmid WHERE crm.deleted=0 AND lineitem_id=?";
 					$res_min_qty = $adb->pquery($sel_min_qty, array($so_line));
 					if ($adb->num_rows($res_min_qty) == 1) {
 						$min_qty = $adb->query_result($res_min_qty, 0, 'remaining_units');
 					}
 				}
 			} elseif ($module == 'Invoice' && vtlib_isModuleActive('InventoryDetails')) {
-				$sel_soline = "SELECT rel_lineitem_id FROM vtiger_inventorydetails inde 
-				LEFT JOIN vtiger_crmentity crm ON inde.inventorydetailsid=crm.crmid WHERE crm.deleted = 0 AND lineitem_id=?";
+				$sel_soline = "SELECT rel_lineitem_id
+					FROM vtiger_inventorydetails inde
+					LEFT JOIN $crmETID crm ON inde.inventorydetailsid=crm.crmid WHERE crm.deleted=0 AND lineitem_id=?";
 				$res_soline = $adb->pquery($sel_soline, array($adb->query_result($result, $i-1, 'lineitem_id')));
 				if ($adb->num_rows($res_soline) == 1) {
 					$so_line = $adb->query_result($res_soline, 0, 'rel_lineitem_id');
@@ -1281,10 +1284,11 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 			$product_Detail[$i]['delRow'.$i]="Del";
 		}
 		if (empty($focus->mode) && $seid!='') {
+			$crmETPC = CRMEntity::getcrmEntityTableAlias('ProductComponent');
 			$sub_prod_query = $adb->pquery(
 				'SELECT topdo as prod_id
 					FROM vtiger_productcomponent
-					INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
+					INNER JOIN '.$crmETPC.' ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
 					WHERE vtiger_crmentity.deleted=0 AND frompdo=?',
 				array($seid)
 			);
@@ -1326,9 +1330,10 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 		}
 		if ($MDMapFound) {
 			foreach ($cbMapFields['detailview']['fields'] as $mdfield) {
+				$crmETID = CRMEntity::getcrmEntityTableAlias('InventoryDetails');
 				$mdrs = $adb->pquery(
 					'select '.$mdfield['fieldinfo']['name'].',vtiger_inventorydetails.inventorydetailsid from vtiger_inventorydetails
-						inner join vtiger_crmentity on crmid=vtiger_inventorydetails.inventorydetailsid
+						inner join '.$crmETID.' on crmid=vtiger_inventorydetails.inventorydetailsid
 						inner join vtiger_inventorydetailscf on vtiger_inventorydetailscf.inventorydetailsid=vtiger_inventorydetails.inventorydetailsid
 						where deleted=0 and related_to=? and lineitem_id=?',
 					array($focus->id,$adb->query_result($result, $i - 1, 'lineitem_id'))
@@ -1623,9 +1628,10 @@ function getNoOfAssocProducts($module, $focus, $seid = '') {
 			where crmid=?';
 		$params = array($seid);
 	} elseif ($module == 'Products') {
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Products');
 		$query="select vtiger_products.productname,vtiger_products.unit_price, vtiger_crmentity.*
 			from vtiger_products
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_products.productid
+			inner join $crmEntityTable on vtiger_crmentity.crmid=vtiger_products.productid
 			where vtiger_crmentity.deleted=0 and productid=?";
 		$params = array($seid);
 	}
@@ -1647,7 +1653,7 @@ function getNoOfAssocProducts($module, $focus, $seid = '') {
 */
 function getBlockInformation($module, $result, $col_fields, $tabid, $block_label, $mode) {
 	global $log, $adb;
-	$log->debug('> getBlockInformation '.$module.','. print_r($col_fields, true).','.$tabid.','.print_r($block_label, true));
+	$log->debug('> getBlockInformation', [$module, $col_fields, $tabid, $block_label]);
 	$isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : false;
 	$editview_arr = array();
 
@@ -1742,7 +1748,7 @@ function getBlockInformation($module, $result, $col_fields, $tabid, $block_label
 */
 function split_validationdataArray($validationData) {
 	global $log;
-	$log->debug('> split_validationdataArray '.print_r($validationData, true));
+	$log->debug('> split_validationdataArray', $validationData);
 	$fieldName = '';
 	$fieldLabel = '';
 	$fldDataType = '';

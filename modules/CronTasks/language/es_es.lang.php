@@ -52,5 +52,6 @@ $mod_strings = array (
 	'mailsubject' => '[Aviso]: algunas tareas programadas superan el umbral de tiempo normal',
 	'mailheader' => 'Algunas tareas programadas en <b>%s</b> han excedido el tiempo máximo de ejecución.',
 	'LBL_CRONALERT' => 'Notificar Después de',
+	'LBL_NTT' => 'Siguiente Ejecución',
 );
 ?>

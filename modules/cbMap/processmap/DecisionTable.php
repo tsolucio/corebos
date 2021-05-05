@@ -87,6 +87,9 @@ class DecisionTable extends processcbMap {
 				$entity->setData($context);
 			}
 		} else {
+			if (empty($context['module'])) {
+				$context['module'] = 'Accounts'; // should be set, but... so we just pick one
+			}
 			$entity = new cbexpsql_environmentstub($context['module'], 0);
 			$entity->setData($context);
 		}
@@ -110,12 +113,15 @@ class DecisionTable extends processcbMap {
 			);
 			$eval = '';
 			if (isset($value->expression)) {
+				$this->mapExecutionInfo['type'] = 'Expression';
 				$testexpression = (String)$value->expression;
 				$rule['type'] = 'expression';
 				$rule['valueraw'] = $testexpression;
 				if (is_array($context)) {
 					foreach ($context as $key => $value) {
-						$testexpression = str_ireplace('$['.$key.']', $value, $testexpression);
+						if (!is_array($value) && !is_object($value)) {
+							$testexpression = str_ireplace('$['.$key.']', $value, $testexpression);
+						}
 					}
 				}
 				$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($testexpression)));
@@ -134,6 +140,7 @@ class DecisionTable extends processcbMap {
 					$outputs[$sequence] = '__DoesNotPass__';
 				}
 			} elseif (isset($value->mapid)) {
+				$this->mapExecutionInfo['type'] = 'Map';
 				$mapid = (String)$value->mapid;
 				$eval = coreBOS_Rule::evaluate($mapid, $context);
 				$rule['type'] = 'map';
@@ -149,6 +156,8 @@ class DecisionTable extends processcbMap {
 					$outputs[$sequence] = '__DoesNotPass__';
 				}
 			} elseif (isset($value->decisionTable)) {
+				$this->mapExecutionInfo['type'] = 'DecisionTable';
+				$this->mapExecutionInfo['queries'] = array();
 				$module = (String)$value->decisionTable->module;
 				$queryGenerator = new QueryGenerator($module, $current_user);
 				if (isset($value->decisionTable->conditions)) {
@@ -181,19 +190,18 @@ class DecisionTable extends processcbMap {
 								$uitype = getUItypeByFieldName($module, (String)$v->field);
 								$queryGenerator->startGroup($queryGenerator::$AND);
 								if ($uitype==10) {
-									if (!empty($conditionvalue)) {
-										if (strpos($conditionvalue, 'x') > 0) {
-											list($wsid, $crmid) = explode('x', $conditionvalue);
-										} else {
-											$crmid = $conditionvalue;
-										}
+									if (strpos($conditionvalue, 'x') > 0) {
+										list($wsid, $crmid) = explode('x', $conditionvalue);
+									} else {
+										$crmid = $conditionvalue;
+									}
 										$relmod = getSalesEntityType($crmid);
 										$queryGenerator->addReferenceModuleFieldCondition($relmod, (String)$v->field, 'id', $crmid, (String)$v->operation);
-									}
+										$queryGenerator->addReferenceModuleFieldCondition($relmod, (String)$v->field, 'id', '', 'y', $queryGenerator::$OR);
 								} else {
 									$queryGenerator->addCondition((String)$v->field, $conditionvalue, (String)$v->operation);
+									$queryGenerator->addCondition((String)$v->field, '__IGNORE__', 'e', $queryGenerator::$OR);
 								}
-								$queryGenerator->addCondition((String)$v->field, '__IGNORE__', 'e', $queryGenerator::$OR);
 								$queryGenerator->endGroup();
 							}
 						}
@@ -215,6 +223,7 @@ class DecisionTable extends processcbMap {
 					$query .= ' ORDER BY '.$queryGenerator->getOrderByColumn($orderby);
 				}
 				$result = $adb->pquery($query, array());
+				$this->mapExecutionInfo['queries'][] = $query;
 				$rule['type'] = 'module';
 				$rule['valueraw'] = $module;
 				$rule['valueevaluate'] = $query;

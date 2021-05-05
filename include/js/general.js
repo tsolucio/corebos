@@ -74,6 +74,13 @@ GlobalVariable_getVariable('Application_PopupScreen_Height', 80, (typeof gVTModu
 }, function (error) {
 	cbPopupScreenHeightPercentage = 80;
 });
+var Application_Merge_Record_Limit = 8;
+GlobalVariable_getVariable('Application_Merge_Record_Limit', 8, (typeof gVTModule=='undefined' ? '' : gVTModule), '').then(function (response) {
+	var obj = JSON.parse(response);
+	Application_Merge_Record_Limit = obj.Application_Merge_Record_Limit;
+}, function (error) {
+	Application_Merge_Record_Limit = 8; // set default value on error
+});
 
 function setApplicationPopupWindowSize(w, h, r, s, t, l) {
 	w = w || cbPopupScreenWidthPercentage || 80;
@@ -1865,9 +1872,13 @@ function toggleSelect(state, relCheckName) {
 			}
 		}
 	}
+	//delete idlist value if select all records
+	if (getObj('idlist')) {
+		getObj('idlist').value = '';
+	}
 }
 
-function toggleSelectAll(relCheckName, selectAllName) {
+function toggleSelectAll(relCheckName, selectAllName, el = '') {
 	if (typeof(getObj(relCheckName).length)=='undefined') {
 		getObj(selectAllName).checked=getObj(relCheckName).checked;
 	} else {
@@ -1880,7 +1891,23 @@ function toggleSelectAll(relCheckName, selectAllName) {
 		}
 		getObj(selectAllName).checked=!atleastOneFalse;
 	}
+	orderByUserClick(relCheckName, el);
 }
+
+function orderByUserClick(relCheckName, el) {
+	let idlist = getObj('idlist').value.split(';');
+	if (el.checked) {
+		idlist.push(el.value);
+	} else {
+		if (idlist.includes(el.value)) {
+			let id_tmp = idlist.filter(e => e !== el.value);
+			idlist = id_tmp;
+		}
+	}
+	const filtered_list = idlist.filter(e => e !== '');
+	getObj('idlist').value = filtered_list.join(';');
+}
+
 //added for show/hide 10July
 function expandCont(bn) {
 	var leftTab = document.getElementById(bn);
@@ -1916,9 +1943,7 @@ function toggleDiv(id) {
 //set_cookie(id,listTableObj.style.display)
 }
 
-/** This is Javascript Function which is used to toogle between
-  * assigntype user and group/team select options while assigning owner to entity.
-  */
+/** Toogle between assigntype user and group/team select options while assigning owner to entity. */
 function toggleAssignType(currType) {
 	if (currType=='U') {
 		getObj('assign_user').style.display='block';
@@ -2364,11 +2389,16 @@ function SelectAll(mod, parmod) {
 				return false;
 			}
 		} else {
-			y=0;
-			for (i = 0; i < x; i++) {
-				if (document.selectall.selected_id[i].checked) {
-					idstring = document.selectall.selected_id[i].value +';'+idstring;
-					y=y+1;
+			idstring = document.getElementsByName('idlist')[0].value;
+			if (idstring !== '') {
+				y = idstring.split(';').length;
+			} else {
+				y=0;
+				for (i = 0; i < x; i++) {
+					if (document.selectall.selected_id[i].checked) {
+						idstring = document.selectall.selected_id[i].value +';'+idstring;
+						y=y+1;
+					}
 				}
 			}
 		}
@@ -2550,28 +2580,6 @@ function selectContact(check, frmName) {
 			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView'+module_string+'&relmod_id='+record_id, 'test', cbPopupWindowSettings);
 		} else {
 			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView', 'test', cbPopupWindowSettings);
-		}
-	} else if ((document.getElementById('parentid'))) {
-		if (getObj('parent_type')) {
-			rel_parent_module = frmName.parent_type.value;
-			record_id = frmName.parent_id.value;
-			module = rel_parent_module.split('&');
-			if (record_id != '' && module[0] == 'Leads') {
-				ldsPrompt.show(alert_arr['ERROR'], alert_arr.CANT_SELECT_CONTACTS);
-			} else {
-				if (check == 'true') {
-					search_string = '&return_module=Calendar&select=enable&popuptype=detailview&form_submit=false';
-				} else {
-					search_string='&popuptype=specific';
-				}
-				if (record_id != '') {
-					window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&form=EditView'+search_string+'&relmod_id='+record_id+'&parent_module='+module[0], 'test', cbPopupWindowSettings);
-				} else {
-					window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&form=EditView'+search_string, 'test', cbPopupWindowSettings);
-				}
-			}
-		} else {
-			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&return_module=Calendar&select=enable&popuptype=detailview&form=EditView&form_submit=false', 'test', cbPopupWindowSettings);
 		}
 	} else {
 		window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView&recordid='+record, 'test', cbPopupWindowSettings);
@@ -3356,7 +3364,7 @@ var ActivityReminder_Deactivated = 0;
 GlobalVariable_getVariable('Debug_ActivityReminder_Deactivated', 0, 'cbCalendar', '').then(function (response) {
 	var obj = JSON.parse(response);
 	ActivityReminder_Deactivated = obj.Debug_ActivityReminder_Deactivated;
-	ExecuteFunctions('ispermitted', 'checkmodule=Calendar&checkaction=index').then(function (response) {
+	ExecuteFunctions('ispermitted', 'checkmodule=cbCalendar&checkaction=index').then(function (response) {
 		try {
 			var obj = JSON.parse(response);
 			if (obj.isPermitted == false) {
@@ -3400,7 +3408,7 @@ function ActivityReminderCallback(clicked) {
 		}).done(function (response) {
 			if (response=='Login') {
 				document.location.href='index.php?module=Users&action=Login';
-			} else {
+			} else if (document.getElementById('todolist')!=undefined) {
 				var responsedata = trim(response);
 				var responsearray = JSON.parse(responsedata);
 				if (typeof(responsearray['template']) == 'undefined') {
@@ -3451,6 +3459,8 @@ function ActivityReminderCallback(clicked) {
 					jQuery('#'+ActivityReminder_Newdelay_response_node).remove();
 				}
 			}
+		}).fail(function (response) {
+			ldsModal.show(alert_arr['ERROR'], response.responseText.substring(response.responseText.indexOf('<div class="slds-modal__container">'), response.responseText.indexOf('</section>')), '');
 		});
 	}
 }
@@ -3790,7 +3800,7 @@ function getMergeRecords(selectedNames, upperlimit, lowerlimit) {
 		lowerlimit = 2;
 	}
 	if (typeof upperlimit == 'undefined' || upperlimit == null) {
-		upperlimit = 3;
+		upperlimit = Application_Merge_Record_Limit;
 	}
 	var select_options=document.getElementsByName(selectedNames);
 	var x = select_options.length;
@@ -3807,7 +3817,7 @@ function getMergeRecords(selectedNames, upperlimit, lowerlimit) {
 	var tmp = 0;
 	if (xx != 0) {
 		if (xx > upperlimit) {
-			ldsPrompt.show(alert_arr['ERROR'], alert_arr.MAX_THREE);
+			ldsPrompt.show(alert_arr['ERROR'], alert_arr.MAX_RECORDS_EXCEEDED);
 			return false;
 		}
 		if (xx > 0) {
@@ -5379,7 +5389,6 @@ function handleAcKeys(e) {
 		}
 	} else if (e.keyCode==13 && appSubmitFormWithEnter && document.forms.EditView && e.srcElement.nodeName!='TEXTAREA') {
 		document.forms.EditView.action.value='Save';
-		displaydeleted();
 		formValidate();
 	}
 }

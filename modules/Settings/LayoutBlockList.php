@@ -101,7 +101,7 @@ $smarty->assign('CFENTRIES', $cfentries);
 $rellistinfo = getRelatedListInfo($fld_module);
 $smarty->assign('RELATEDLIST', $rellistinfo);
 $pickListResult=getAllowedPicklistModules();
-$nonRelatableModules = array('PBXManager','SMSNotifier','cbupdater','GlobalVariable','Calendar','Emails','ModComments');
+$nonRelatableModules = array('PBXManager','SMSNotifier','cbupdater','GlobalVariable','Emails','ModComments');
 $smsRelatableModules = array('Accounts','Contacts','Leads');
 $entityrelmods=array();
 foreach ($pickListResult as $pValue) {
@@ -682,6 +682,15 @@ function updateFieldProperties() {
 	$oldmassedit = $adb->query_result($req_result, 0, 'masseditable');
 	$oldpresence = $adb->query_result($req_result, 0, 'presence');
 
+	$cal_uitype = vtlib_purify($_REQUEST['uitype']);
+	$longfield_check = isset($_REQUEST['longfield']) ? vtlib_purify($_REQUEST['longfield']) : '';
+	if ($cal_uitype == 19 && $longfield_check == 'false') {
+		$adb->pquery('UPDATE vtiger_field SET uitype=? WHERE fieldid=?', array(21, $fieldid));
+	}
+	if ($cal_uitype == 21 && $longfield_check == 'true') {
+		$adb->pquery('UPDATE vtiger_field SET uitype=? WHERE fieldid=?', array(19, $fieldid));
+	}
+
 	if (!empty($_REQUEST['fld_module'])) {
 		$fld_module = vtlib_purify($_REQUEST['fld_module']);
 	} else {
@@ -978,24 +987,7 @@ function addCustomField() {
 	$blockid = vtlib_purify($_REQUEST['blockid']);
 
 	$tabid = getTabid($fldmodule);
-	if ($fldmodule == 'Calendar' && isset($_REQUEST['activity_type'])) {
-		$activitytype = vtlib_purify($_REQUEST['activity_type']);
-		if ($activitytype == 'E') {
-			$tabid = '16';
-		}
-		if ($activitytype == 'T') {
-			$tabid = '9';
-		}
-	}
-
-	$dup_check_tab_id = $tabid;
-	if ($fldmodule == 'Calendar') {
-		$dup_check_tab_id = array('9', '16');
-	}
-	$checkquery='select * from vtiger_field where tabid in ('. generateQuestionMarks($dup_check_tab_id) .') and fieldlabel=?';
-	$params =  array($dup_check_tab_id, $fldlabel);
-	$checkresult=$adb->pquery($checkquery, $params);
-
+	$checkresult=$adb->pquery('select * from vtiger_field where tabid=? and fieldlabel=?', array($tabid, $fldlabel));
 	if ($adb->num_rows($checkresult) > 0) {
 		return 'yes';
 	} else {
@@ -1167,8 +1159,7 @@ function addCustomField() {
 					//Adding a  new picklist value in the picklist table
 					if ($mode != 'edit') {
 						$picklistid = $adb->getUniqueID('vtiger_picklist');
-						$sql='insert into vtiger_picklist values(?,?)';
-						$adb->pquery($sql, array($picklistid,$columnName));
+						$adb->pquery('insert into vtiger_picklist values(?,?,1)', array($picklistid, $columnName));
 					}
 					$rs = $adb->pquery('select picklistid from vtiger_picklist where name=?', array($columnName));
 					$picklistid = $adb->query_result($rs, 0, 'picklistid');

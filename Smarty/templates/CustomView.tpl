@@ -223,7 +223,7 @@ function mandatoryCheck()
 			  <tr>
 			     <td align="right" class="dvtCellLabel">{$MOD.Select_Duration} :</td>
 			     <td class="dvtCellInfo">
-			        <select name="stdDateFilter" id="stdDateFilter" class="select small" onchange='showDateRange(this.options[this.selectedIndex].value )'>
+			        <select name="stdDateFilter" id="stdDateFilter" class="select small" onchange='showDateRange(this.options[this.selectedIndex].value)'>
 				{foreach item=duration from=$STDFILTERCRITERIA}
 					<option {$duration.selected} value={$duration.value}>{$duration.text}</option>
 				{/foreach}
@@ -309,14 +309,16 @@ var colOpts;
 var manCheck = new Array({$MANDATORYCHECK});
 var permitAll = {$PERMITALL};
 {literal}
-if(document.CustomView.record.value == '') {
-	for(k=0;k<manCheck.length;k++) {
+if (document.CustomView.record.value == '') {
+	for (k=0; k<manCheck.length; k++) {
 		selname = "column"+(k+1);
 		selelement = document.getElementById(selname);
-		if(selelement == null || typeof selelement == 'undefined') continue;
+		if (selelement == null || typeof selelement == 'undefined') {
+			continue;
+		}
 		colOpts = selelement.options;
-		for (l=0;l<colOpts.length;l++) {
-			if(colOpts[l].value == manCheck[k]) {
+		for (l=0; l<colOpts.length; l++) {
+			if (colOpts[l].value == manCheck[k]) {
 				colOpts[l].selected = true;
 			}
 		}
@@ -324,14 +326,14 @@ if(document.CustomView.record.value == '') {
 }
 
 function validateCV() {
-	if(checkDuplicate()) {
+	if (checkDuplicate()) {
 		return checkAdvancedFilter();
 	}
 	return false;
 }
 
 function checkDuplicate() {
-	if(getObj('viewName').value.toLowerCase() == 'all' && !permitAll) {
+	if (getObj('viewName').value.toLowerCase() == 'all' && !permitAll) {
 		alert(alert_arr.ALL_FILTER_CREATION_DENIED);
 		return false;
 	}
@@ -339,43 +341,37 @@ function checkDuplicate() {
 	for (var cols=1;cols<={/literal}{$ListView_MaxColumns}{literal};cols++) {
 		cvselect_array.push('column'+cols);
 	}
-	for(var loop=0;loop < cvselect_array.length-1;loop++) {
+	for (var loop=0;loop < cvselect_array.length-1;loop++) {
 		selected_cv_columnvalue = document.getElementById(cvselect_array[loop]).options[document.getElementById(cvselect_array[loop]).selectedIndex].value;
-		if(selected_cv_columnvalue != '') {
-			for(var iloop=loop+1;iloop < cvselect_array.length;iloop++) {
+		if (selected_cv_columnvalue != '') {
+			for (var iloop=loop+1;iloop < cvselect_array.length;iloop++) {
 				selected_cv_icolumnvalue = document.getElementById(cvselect_array[iloop]).options[document.getElementById(cvselect_array[iloop]).selectedIndex].value;
-				if(selected_cv_columnvalue == selected_cv_icolumnvalue) {
-					{/literal}
+				if (selected_cv_columnvalue == selected_cv_icolumnvalue) {{/literal}
 					alert('{$APP.COLUMNS_CANNOT_BE_DUPLICATED}');
 					document.getElementById(cvselect_array[iloop]).selectedIndex = 0;
 					return false;
 					{literal}
 				}
-
 			}
 		}
 	}
 	return true;
 }
 
-function stdfilterdateValidate()
-{
-	if(!dateValidate("startdate",alert_arr.STDFILTER+" - "+alert_arr.STARTDATE,"OTH"))
-	{
-		getObj("startdate").focus()
+function stdfilterdateValidate() {
+	if (!dateValidate('startdate', alert_arr.STDFILTER+' - '+alert_arr.STARTDATE, 'OTH')) {
+		getObj('startdate').focus()
 		return false;
-	}
-	else if(!dateValidate("enddate",alert_arr.STDFILTER+" - "+alert_arr.ENDDATE,"OTH"))
-	{
-		getObj("enddate").focus()
+	} else if (!dateValidate('enddate', alert_arr.STDFILTER+' - '+alert_arr.ENDDATE, 'OTH')) {
+		getObj('enddate').focus()
 		return false;
-	}
-	else
-	{
-		if (!dateComparison("enddate",alert_arr.STDFILTER+" - "+alert_arr.ENDDATE,"startdate",alert_arr.STDFILTER+" - "+alert_arr.STARTDATE,"GE")) {
-                        getObj("enddate").focus()
-                        return false
-                } else return true;
+	} else {
+		if (!dateComparison('enddate', alert_arr.STDFILTER+' - '+alert_arr.ENDDATE, 'startdate', alert_arr.STDFILTER+' - '+alert_arr.STARTDATE, 'GE')) {
+			getObj('enddate').focus()
+			return false
+		} else {
+			return true;
+		}
 	}
 }
 standardFilterDisplay();

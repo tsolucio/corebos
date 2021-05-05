@@ -14,6 +14,10 @@
 *************************************************************************************************/
 
 function cbws_jslog($level, $message, $user) {
+	global $LOG4PHP_DEBUG;
+	if ($LOG4PHP_DEBUG!=true) {
+		return;
+	}
 	$logjs= LoggerManager::getLogger('JAVASCRIPT');
 	$msg = json_decode($message, true);
 	if (json_last_error() !== JSON_ERROR_NONE) {
@@ -23,13 +27,14 @@ function cbws_jslog($level, $message, $user) {
 		case 'fatal':
 			$logjs->fatal($msg);
 			break;
-		case 'trace':
-			$logjs->trace($msg);
+		case 'alert':
+			$logjs->alert($msg);
 			break;
 		case 'error':
 			$logjs->error($msg);
 			break;
 		case 'warn':
+		case 'warning':
 			$logjs->warn($msg);
 			break;
 		case 'debug':

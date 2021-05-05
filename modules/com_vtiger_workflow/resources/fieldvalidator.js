@@ -159,40 +159,42 @@ var validateFieldData = {
 		for (var fieldName in fieldInfo) {
 			var fieldDetails = fieldInfo[fieldName];
 			var fieldType = fieldDetails['type'];
+			var mapno = fieldDetails['mapno'];
 			var fieldValue = this.fieldValue(fieldName);
-
-			if (typeof fieldValue == 'undefined' || fieldValue == ''
-				|| fieldValue.replace(/^\s+/g, '').replace(/\s+$/g, '').length == 0) {
-			// Empty value, no value validation required.
-			} else if (fieldType == 'email') {
-				if (!this.validateEmail(fieldValue)) {
-					invalidFieldValues[fieldName] = fieldDetails;
-					validationFailed = true;
-				}
-			} else if (fieldType == 'integer') {
-				if (!this.validateInteger(fieldValue)) {
-					invalidFieldValues[fieldName] = fieldDetails;
-					validationFailed = true;
-				}
-			} else if (fieldType == 'double' || fieldType == 'currency') {
-				if (!this.validateNumeric(fieldValue)) {
-					invalidFieldValues[fieldName] = fieldDetails;
-					validationFailed = true;
-				}
-			} else if (fieldType == 'datetime') {
-				if (!this.validateDateTime(fieldValue)) {
-					invalidFieldValues[fieldName] = fieldDetails;
-					validationFailed = true;
-				}
-			} else if (fieldType == 'date') {
-				if (!this.validateDate(fieldValue)) {
-					invalidFieldValues[fieldName] = fieldDetails;
-					validationFailed = true;
-				}
-			} else if (fieldType == 'time') {
-				if (!this.validateTime(fieldValue)) {
-					invalidFieldValues[fieldName] = fieldDetails;
-					validationFailed = true;
+			var xpType = jQuery('#save_fieldvalues_'+mapno+'_value_type').val();
+			if (xpType != 'fieldname' && xpType != 'expression') {
+				if (typeof fieldValue == 'undefined' || fieldValue == ''
+					|| fieldValue.replace(/^\s+/g, '').replace(/\s+$/g, '').length == 0) {
+				} else if (fieldType == 'email') {
+					if (!this.validateEmail(fieldValue)) {
+						invalidFieldValues[fieldName] = fieldDetails;
+						validationFailed = true;
+					}
+				} else if (fieldType == 'integer') {
+					if (!this.validateInteger(fieldValue)) {
+						invalidFieldValues[fieldName] = fieldDetails;
+						validationFailed = true;
+					}
+				} else if (fieldType == 'double' || fieldType == 'currency') {
+					if (!this.validateNumeric(fieldValue)) {
+						invalidFieldValues[fieldName] = fieldDetails;
+						validationFailed = true;
+					}
+				} else if (fieldType == 'datetime') {
+					if (!this.validateDateTime(fieldValue)) {
+						invalidFieldValues[fieldName] = fieldDetails;
+						validationFailed = true;
+					}
+				} else if (fieldType == 'date') {
+					if (!this.validateDate(fieldValue)) {
+						invalidFieldValues[fieldName] = fieldDetails;
+						validationFailed = true;
+					}
+				} else if (fieldType == 'time') {
+					if (!this.validateTime(fieldValue)) {
+						invalidFieldValues[fieldName] = fieldDetails;
+						validationFailed = true;
+					}
 				}
 			}
 		}
@@ -218,13 +220,12 @@ var VTFieldValidatorPrototype = {
 			var validator = validators[i];
 			var result = validator.call(this);
 			if (result[0]==false) {
-				jQuery('#'+result[1]).css('display', 'block');
 				isValid = false;
+				break;
 			}
 		}
 		if (!isValid) {
-			//this.messageBoxPopup.show();
-			ldsPrompt.show(alert_arr['ERROR'], alert_arr['ERR_MANDATORY_FIELD_VALUE']);
+			ldsPrompt.show(wfi18nerror['VALIDATION_ERROR'], wfi18nerror[result[1]]);
 		}
 		return isValid;
 	},
@@ -240,7 +241,6 @@ var VTFieldValidatorPrototype = {
 function VTFieldValidator(form) {
 	var _this = this;
 	_this.form = form;
-	_this.messageBoxPopup = MessageBoxPopup();
 	form.submit(function () {
 		return _this.validate();
 	});

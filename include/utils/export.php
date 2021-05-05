@@ -15,7 +15,6 @@ require_once 'modules/Contacts/Contacts.php';
 require_once 'modules/Leads/Leads.php';
 require_once 'modules/Contacts/Contacts.php';
 require_once 'modules/Emails/Emails.php';
-require_once 'modules/Calendar/Activity.php';
 require_once 'modules/Documents/Documents.php';
 require_once 'modules/Potentials/Potentials.php';
 require_once 'modules/Users/Users.php';
@@ -124,7 +123,7 @@ function export($type) {
 	}
 
 	$query = $focus->create_export_query($where);
-	if ($search_type != 'includesearch' && $type != 'Calendar') {
+	if ($search_type != 'includesearch') {
 		$stdfiltersql = $oCustomView->getCVStdFilterSQL($viewid);
 		$advfiltersql = $oCustomView->getCVAdvFilterSQL($viewid);
 		if (isset($stdfiltersql) && $stdfiltersql != '') {
@@ -212,8 +211,8 @@ function export($type) {
 	if ($filtercolumns) {
 		$visiblecolumns_array = $oCustomView->getColumnsListByCvid($viewid);
 		array_walk($visiblecolumns_array, 'obtainVisibleColumnNames');
-		$fields_array = array_filter($fields_array, function ($efield) use ($visiblecolumns_array) {
-			return in_array($efield, $visiblecolumns_array);
+		$fields_array = array_filter($visiblecolumns_array, function ($efield) use ($fields_array) {
+			return in_array($efield, $fields_array);
 		});
 		$fields_array[] = 'cbuuid';
 	}
@@ -244,22 +243,20 @@ function export($type) {
 	while ($val = $adb->fetchByAssoc($result, -1, false)) {
 		$new_arr = array();
 		$val = $__processor->sanitizeValues($val);
-		foreach ($val as $key => $value) {
-			if ($key != 'cbuuid' && !in_array($key, $columnsToExport)) {
-				continue;
-			}
-			if ($type == 'Documents' && $key == 'description') {
+		foreach ($columnsToExport as $col) {
+			$value = $val[$col];
+			if ($type == 'Documents' && $col == 'description') {
 				$value = strip_tags($value);
 				$value = str_replace('&nbsp;', '', $value);
 				$new_arr[] = $value;
-			} elseif ($type == 'com_vtiger_workflow' && $key == 'workflow_id') {
+			} elseif ($type == 'com_vtiger_workflow' && $col == 'workflow_id') {
 				$wfm = new VTworkflowManager($adb);
 				$workflow = $wfm->retrieve($value);
 				$value = $wfm->serializeWorkflow($workflow);
 				$new_arr[] = base64_encode($value);
-			} elseif ($key != 'user_name') {
+			} elseif ($col != 'user_name') {
 				// Let us provide the module to transform the value before we save it to CSV file
-				$value = $focus->transform_export_value($key, $value);
+				$value = $focus->transform_export_value($col, $value);
 				$new_arr[] = preg_replace("/\"/", "\"\"", $value);
 			}
 		}
@@ -333,7 +330,7 @@ class ExportUtils {
 			} elseif ($uitype == 10) {
 				//have to handle uitype 10
 				$value = trim($value);
-				if (!empty($value)) {
+				if (!empty($value) && is_numeric($value)) {
 					$parent_module = getSalesEntityType($value);
 					$Export_RelatedField_GetValueFrom = GlobalVariable::getVariable('Export_RelatedField_GetValueFrom', '', $parent_module);
 					if ($Export_RelatedField_GetValueFrom != '') {
@@ -365,7 +362,7 @@ class ExportUtils {
 						$value = '';
 					}
 				} else {
-					$value = '';
+					$value = empty($value) ? '' : $value;
 				}
 			} elseif ($uitype == 71) {
 				$value = CurrencyField::convertToUserFormat($value);

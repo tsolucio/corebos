@@ -71,9 +71,6 @@ if ($userprivs->hasGlobalReadPermission() || $module == 'Users' || $module == 'E
 }
 $result = $adb->pquery($query1, $params1);
 $y=$adb->num_rows($result);
-$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-$contactUserNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'usersContacts.first_name', 'last_name' => 'usersContacts.last_name'), 'Users');
-$accountUserNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'usersAccounts.first_name', 'last_name' => 'usersAccounts.last_name'), 'Users');
 
 for ($x=0; $x<$y; $x++) {
 	$tablename = $adb->query_result($result, $x, 'tablename');
@@ -102,13 +99,13 @@ for ($x=0; $x<$y; $x++) {
 
 	if ($columnname == 'smownerid') {
 		if ($modulename == 'Accounts') {
-			$column_name = "case when (usersAccounts.user_name not like '') then $accountUserNameSql else groupsAccounts.groupname end as username";
+			$column_name = "case when (usersAccounts.user_name not like '') then usersAccounts.ename else groupsAccounts.groupname end as username";
 		}
 		if ($modulename == 'Contacts') {
-			$column_name = "case when (usersContacts.user_name not like '') then $contactUserNameSql else groupsContacts.groupname end as username";
+			$column_name = "case when (usersContacts.user_name not like '') then usersContacts.ename else groupsContacts.groupname end as username";
 		}
 		if ($modulename == 'HelpDesk') {
-			$column_name = "case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as userhelpname,".
+			$column_name = "case when (vtiger_users.user_name not like '') then vtiger_users.ename else vtiger_groups.groupname end as userhelpname,".
 				'vtiger_users.first_name,vtiger_users.last_name,vtiger_users.user_name,vtiger_users.secondaryemail,vtiger_users.title,vtiger_users.phone_work,'.
 				'vtiger_users.department,vtiger_users.phone_mobile,vtiger_users.phone_other,vtiger_users.phone_fax,vtiger_users.email1,vtiger_users.phone_home,'.
 				'vtiger_users.email2,vtiger_users.address_street,vtiger_users.address_city,vtiger_users.address_state,vtiger_users.address_postalcode,'.
@@ -158,10 +155,14 @@ $csvheader = implode(',', $field_label);
 //<<<<<<<<<<<<<<<<End>>>>>>>>>>>>>>>>>>>>>>>>
 
 if (count($querycolumns) > 0) {
+	require_once 'data/CRMEntity.php';
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('HelpDesk');
+	$crmEntityTable1 = CRMEntity::getcrmEntityTableAlias('Accounts', true);
+	$crmEntityTable2 = CRMEntity::getcrmEntityTableAlias('Contacts', true);
 	$selectcolumns = implode(',', $querycolumns);
 
 	$query ='select '.$selectcolumns.' from vtiger_troubletickets
-		inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_troubletickets.ticketid
+		inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_troubletickets.ticketid
 		inner join vtiger_ticketcf on vtiger_ticketcf.ticketid = vtiger_troubletickets.ticketid
 		left join vtiger_crmentity as crmentityRelHelpDesk on crmentityRelHelpDesk.crmid = vtiger_troubletickets.parent_id
 		left join vtiger_account as accountRelHelpDesk on accountRelHelpDesk.accountid=crmentityRelHelpDesk.crmid
@@ -170,7 +171,7 @@ if (count($querycolumns) > 0) {
 		left join vtiger_users on vtiger_crmentity.smownerid=vtiger_users.id
 		LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 		left join vtiger_account on vtiger_account.accountid = vtiger_troubletickets.parent_id
-		left join vtiger_crmentity as crmentityAccounts on crmentityAccounts.crmid = vtiger_account.accountid
+		left join '.$crmEntityTable1.' as crmentityAccounts on crmentityAccounts.crmid = vtiger_account.accountid
 		left join vtiger_accountbillads on vtiger_accountbillads.accountaddressid = vtiger_account.accountid
 		left join vtiger_accountshipads on vtiger_accountshipads.accountaddressid = vtiger_account.accountid
 		left join vtiger_accountscf on vtiger_accountbillads.accountaddressid = vtiger_accountscf.accountid
@@ -178,7 +179,7 @@ if (count($querycolumns) > 0) {
 		left join vtiger_users as usersAccounts on usersAccounts.id = crmentityAccounts.smownerid
 		LEFT JOIN vtiger_groups as groupsAccounts ON groupsAccounts.groupid = vtiger_crmentity.smownerid
 		left join vtiger_contactdetails on vtiger_contactdetails.contactid = vtiger_troubletickets.parent_id
-		left join vtiger_crmentity as crmentityContacts on crmentityContacts.crmid = vtiger_contactdetails.contactid
+		left join '.$crmEntityTable2.' as crmentityContacts on crmentityContacts.crmid = vtiger_contactdetails.contactid
 		left join vtiger_contactaddress on vtiger_contactdetails.contactid = vtiger_contactaddress.contactaddressid
 		left join vtiger_contactsubdetails on vtiger_contactdetails.contactid = vtiger_contactsubdetails.contactsubscriptionid
 		left join vtiger_contactscf on vtiger_contactdetails.contactid = vtiger_contactscf.contactid

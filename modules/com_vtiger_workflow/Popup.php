@@ -49,15 +49,6 @@ $COMMONHDRLINKS = Vtiger_Link::getAllByType(Vtiger_Link::IGNORE_MODULE, array('H
 $smarty->assign('HEADERSCRIPTS', $COMMONHDRLINKS['HEADERSCRIPT_POPUP']);
 $smarty->assign('HEADERCSS', $COMMONHDRLINKS['HEADERCSS_POPUP']);
 
-//added to get relatedto field value for todo, while selecting from the popup list, after done the alphabet or basic search.
-if (isset($_REQUEST['maintab']) && $_REQUEST['maintab'] != '') {
-	$act_tab = vtlib_purify($_REQUEST['maintab']);
-	$url = '&maintab='.$act_tab;
-} else {
-	$act_tab = '';
-}
-$smarty->assign('MAINTAB', $act_tab);
-
 // This is added to support the type of popup and callback
 if (isset($_REQUEST['popupmode']) && isset($_REQUEST['callback'])) {
 	$url = '&popupmode='.vtlib_purify($_REQUEST['popupmode']).'&callback='.vtlib_purify($_REQUEST['callback']);

@@ -168,7 +168,7 @@ function getCustomFieldSupportedModules() {
 	$sql = 'SELECT distinct vtiger_field.tabid,name
 		FROM vtiger_field
 		INNER JOIN vtiger_tab ON vtiger_field.tabid=vtiger_tab.tabid
-		WHERE vtiger_field.tabid NOT IN(9,10,16,29) AND vtiger_tab.presence != 1'; // Both 9 and 16 point to Calendar itself
+		WHERE vtiger_field.tabid NOT IN(10,29) AND vtiger_tab.presence != 1';
 	$result = $adb->pquery($sql, array());
 	$modulelist = array();
 	while ($moduleinfo = $adb->fetch_array($result)) {

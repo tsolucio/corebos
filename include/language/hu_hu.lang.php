@@ -183,6 +183,7 @@ $app_strings = array(
 	'NTC_TIME_FORMAT' => '(24:00)',
 	'NTC_DATE_TIME_FORMAT' => '(yyyy-mm-dd 24:00)',
 	'NTC_DELETE_CONFIRMATION' => 'Biztos vagy abban, hogy törölni kívánod ezt a rekordot?',
+	'SMTP_DELETE_CONFIRMATION' => 'Are you sure you want to delete this SMTP settings?',
 	'NTC_ACCOUNT_DELETE_CONFIRMATION' => 'A Cég(ek) törlése el fogja távolítani a kapcsolódó Lehetőségeket és Árajánlatokat is. Biztos vagy abban, hogy törölni kívánod a Cége(ke)t?',
 	'NTC_VENDOR_DELETE_CONFIRMATION' => 'A Beszállító(k) törlése el fogja távolítani a kapcsolódó Beszerzés rendeléseket is. Biztos vagy abban, hogy törölni kívánod a Beszállító(ka)t?',
 	'ERR_DELETE_RECORD' => 'Adj meg egy rekord azonosítót a Kapcsolat törléséhez.',
@@ -868,6 +869,7 @@ $app_strings = array(
 	'MSG_VTIGERTEAM' => ' coreBOS Team',
 	'MSG_IS_NOT_UPLOADED' => 'nem került feltöltésre. Megengedett fájl típusok - jpeg, png, jpg, pjpeg, x-png vagy gif',
 	'MSG_IMAGE_ERROR' => 'A kép nem található',
+	'LBL_IMAGESECURITY_ERROR' => 'Invalid image: contains potential malicious contents',
 	'Information' => 'Információ',
 	'Address' => 'Cím',
 	'Custom Information' => 'Egyedi adatok',
@@ -1125,6 +1127,8 @@ $app_strings = array(
 	'LBL_CALLER_INFORMATION' => 'Hívó adatai',
 	'LBL_CALLER_NUMBER' => 'Szám :',
 	'LBL_CALLER_NAME' => 'Név :',
+	'LBL_VIEW_CONTACT' => 'View Contact',
+	'LBL_CLICK_NOTIFICATION_TO'=> 'Click Notification to ',
 	'LBL_DUPLICATE' => 'Duplikáció',
 	'LBL_CLICK' => 'Kattints',
 	'LNK_PRIVACY_POLICY' => 'Adatvédelmi irányelvek',
@@ -1288,6 +1292,7 @@ $app_strings = array(
 	'csrf_reload' => 'Reload the page',
 	'LBL_NOPRODUCTS' => 'Can\'t convert SalesOrder to Invoice because there aren\'t any remaining products to invoice.',
 	'VALIDATION_FAILED' => 'Validation failed',
+	'Select Module To Upsert' => 'Select Module To Upsert',
 );
 
 // Translation for currency names

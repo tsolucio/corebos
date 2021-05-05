@@ -32,6 +32,7 @@ function cbexpsql_supportedFunctions() {
 		'stringlength' => 'stringlength(string)',
 		'stringreplace' => 'stringreplace(search,replace,subject)',
 		'substring' => 'substring(stringfield,start,length)',
+		'randomstring' => 'randomstring(length)',
 		'uppercase'=>'uppercase(stringfield)',
 		'lowercase'=>'lowercase(stringfield)',
 		//'uppercasefirst'=>'uppercasefirst(stringfield)',
@@ -44,6 +45,7 @@ function cbexpsql_supportedFunctions() {
 		'time_diffyears(a,b)' => 'time_diffyears(a,b)',
 		//'time_diffweekdays(a)' => 'time_diffweekdays(a)',
 		//'time_diffweekdays(a,b)' => 'time_diffweekdays(a,b)',
+		'networkdays' => 'networkdays(startDate, endDate, holidays)',
 		'add_days' => 'add_days(datefield, noofdays)',
 		'sub_days' => 'sub_days(datefield, noofdays)',
 		'add_months' => 'add_months(datefield, noofmonths)',
@@ -101,7 +103,9 @@ function cbexpsql_supportedFunctions() {
 		// 'getGEODistanceFromUser2ContactShipping' => 'getGEODistanceFromUser2ContactShipping(contact,address_specification)',
 		// 'getGEODistanceFromAssignUser2ContactShipping' => 'getGEODistanceFromAssignUser2ContactShipping(contact,assigned_user,address_specification)',
 		// 'getGEODistanceFromCoordinates' => 'getGEODistanceFromCoordinates({lat1},{long1},{lat2},{long2})',
+		'getIDof' => 'getIDof(module, searchon, searchfor)',
 		// 'getFromContext' => 'getFromContext(variablename)',
+		// 'getFromContextSearching' => 'getFromContextSearching(variablename, searchon, searchfor, returnthis)',
 		// 'setToContext' => 'setToContext(variablename, value)',
 		'getSetting' => "getSetting('setting_key', 'default')",
 		// 'setSetting' => 'setSetting('setting_key', value)',
@@ -189,6 +193,17 @@ function cbexpsql_time_diffyears($arr, $mmodule) {
 	$arr[1] = $arr[0];
 	$arr[0] = new VTExpressionSymbol('YEAR', 'constant');
 	return __cbexpsql_functionparams('TIMESTAMPDIFF', $arr, $mmodule);
+}
+
+function cbexpsql_networkdays($arr, $mmodule) {
+	$s = $arr[0]->value;
+	$e = $arr[1]->value;
+	// https://stackoverflow.com/questions/1828948/mysql-function-to-find-the-number-of-working-days-between-two-dates
+	// 0123444401233334012222340111123400001234000123440 > I increment one day to match our function
+	return "(SELECT CASE
+		WHEN '$e' < '$s' THEN -5 * (DATEDIFF('$e', '$s') DIV 7) + SUBSTRING('1234555512344445123333451222234511112345001234550', 7 * WEEKDAY('$e') + WEEKDAY('$s') + 1, 1)
+		ELSE 5 * (DATEDIFF('$e', '$s') DIV 7) + SUBSTRING('1234555512344445123333451222234511112345001234550', 7 * WEEKDAY('$s') + WEEKDAY('$e') + 1, 1)
+	END)";
 }
 
 function cbexpsql_add_days($arr, $mmodule) {
@@ -304,6 +319,13 @@ function cbexpsql_stringreplace($arr, $mmodule) {
 	return __cbexpsql_functionparams('REPLACE', $arr, $mmodule);
 }
 
+function cbexpsql_randomstring($arr, $mmodule) {
+	if (empty($arr) || empty($arr[0])) {
+		$arr[0] = 10;
+	}
+	return 'SUBSTRING(HEX(CONCAT(NOW(), RAND(), UUID())), 1, '.$arr[0].')';
+}
+
 function cbexpsql_uppercase($arr, $mmodule) {
 	return __cbexpsql_functionparams('UPPER', $arr, $mmodule);
 }
@@ -323,7 +345,22 @@ function cbexpsql_setype($arr, $mmodule) {
 		if (count($crmidmatches)>0) {
 			list($void, $crmid) = explode('x', $crmid);
 		}
-		$ret = '(select setype from vtiger_crmentity where vtiger_crmentity.crmid='.$crmid.')';
+		$ret = '(select setype from vtiger_crmobject where vtiger_crmobject.crmid='.$crmid.')';
+	}
+	return $ret;
+}
+
+function cbexpsql_getidof($arr, $mmodule) {
+	global $current_user;
+	$ret = '';
+	if (!empty($arr[0])) {
+		$mod = trim(__cbexpsql_functionparamsvalue($arr[0], $mmodule), "'");
+		$fld = trim(__cbexpsql_functionparamsvalue($arr[1], $mmodule), "'");
+		$val = trim(__cbexpsql_functionparamsvalue($arr[2], $mmodule), "'");
+		$qg = new QueryGenerator($mod, $current_user);
+		$qg->setFields(array('id'));
+		$qg->addCondition($fld, $val, 'e');
+		$ret = 'coalesce(('.$qg->getQuery(false, 1).'), 0)';
 	}
 	return $ret;
 }

@@ -55,5 +55,8 @@ $mod_strings = array(
 	'LBL_MOVE_RIGHT' => 'Muta Dreapta',
 	'LBL_REMOVE' => 'Stergere',
 	'NTC_DELETE_CONFIRMATION' => 'Sigur doriti stergerea acestei dependinte picklist?',
+	'multii18n' => 'Multi-Language',
+	'monoi18n' => 'Mono-Language',
+	'ERR_MustBeTranslated' => 'This picklist must support multi-language',
 );
 ?>

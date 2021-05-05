@@ -82,8 +82,8 @@ $num_rows = $adb->num_rows($list_result);
 //Retreiving the array of already releated Pdo/Srv
 $sql1 = 'select productid
 	FROM vtiger_pricebookproductrel
-	INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_pricebookproductrel.productid
-	WHERE vtiger_crmentity.setype=? AND vtiger_crmentity.deleted=0 AND pricebookid=?';
+	INNER JOIN vtiger_crmobject ON vtiger_crmobject.crmid = vtiger_pricebookproductrel.productid
+	WHERE vtiger_crmobject.setype=? AND vtiger_crmobject.deleted=0 AND pricebookid=?';
 $res1 = $adb->pquery($sql1, array($currentModule, $pricebook_id));
 $num_prod_rows = $adb->num_rows($res1);
 $prod_array = array();

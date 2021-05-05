@@ -95,7 +95,7 @@ class MailManager_MailController extends MailManager_Controller {
 
 			$to_string = rtrim($request->get('to'), ',');
 			$connector = $this->getConnector('__vt_drafts');
-
+			$status = false;
 			if (!empty($to_string)) {
 				$toArray = explode(',', $to_string);
 				foreach ($toArray as $to) {

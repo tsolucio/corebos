@@ -15,7 +15,6 @@
 require_once 'include/Webservices/Utils.php';
 require_once 'modules/com_vtiger_workflow/include.inc';
 require_once 'modules/com_vtiger_workflow/WorkFlowScheduler.php';
-require_once 'include/QueryGenerator/PHPSQLParserInclude.php';
 use \PHPSQLParser\PHPSQLParser;
 use \PHPSQLParser\utils\ExpressionType;
 
@@ -97,6 +96,8 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 			$hasDistinct = true;
 		} elseif (strtolower($colspec['base_expr'])=='count') {
 			$countSelect = true;
+		} elseif ($colspec['expr_type']=='expression') {
+			throw new WebServiceException(WebServiceErrorCode::$QUERYSYNTAX, 'expressions not supported');
 		}
 	}
 	if (!$hasDistinct) {

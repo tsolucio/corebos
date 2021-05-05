@@ -293,5 +293,7 @@ $mod_strings = array(
 'SYNC_RESULTS'=>'Synchronisierung-Ergebnisse',
 'ERR_GContactsSync'=>'Es gab einen Fehler beim Zugriff auf Google. Die Einstellungen wurden gelöscht. Bitte konfigurieren Sie den Zugang neu.',
 'Template Language' => 'Template Language',
+'ship_countrycode' => 'Shipping Country Code',
+'bill_countrycode' => 'Billing Country Code'
 );
 ?>

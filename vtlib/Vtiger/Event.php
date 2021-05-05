@@ -79,7 +79,7 @@ class Vtiger_Event {
 		}
 
 		global $adb;
-		$checkres = $adb->pquery('SELECT setype, crmid, deleted FROM vtiger_crmentity WHERE crmid=?', array($crmid));
+		$checkres = $adb->pquery('SELECT setype, crmid, deleted FROM vtiger_crmobject WHERE crmid=?', array($crmid));
 		if ($adb->num_rows($checkres)) {
 			$result = $adb->fetch_array($checkres, 0);
 			if ($result['deleted'] == '0') {

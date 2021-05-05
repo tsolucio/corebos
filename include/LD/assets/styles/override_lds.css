@@ -38,6 +38,15 @@ hr {
 	height: 1.875rem;
 }
 
+.slds-dropdown {
+  font-size: var(--cbslds-dropdown-fontsize, 0.75rem);
+}
+.slds-context-bar__label-action {
+  font-size: var(--cbslds-context-bar__label-action-fontsize, 0.8125rem);
+}
+.slds-context-bar__app-name {
+  font-size: var(--cbslds-context-bar__app-name-fontsize, 1.125rem);
+}
 @media print {
 	a[href]:after {
 		content: none;
@@ -415,4 +424,13 @@ symbol#search {
 .cblds-autowidth {
   width: auto !important;
   max-width: 100000000px !important;
+}
+
+.containernpanel {
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
+}
+.containernpanel::-webkit-scrollbar { /* WebKit */
+  width: 0px;
 }

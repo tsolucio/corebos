@@ -55,6 +55,7 @@ class Import_Controller {
 		if ($setBatchImport) {
 			$importDataController->batchImport = false;
 		}
+		Import_Queue_Controller::updateStatus($importInfo['id'], Import_Queue_Controller::$IMPORT_STATUS_RUNNING);
 		$importDataController->importData();
 		Import_Queue_Controller::updateStatus($importInfo['id'], Import_Queue_Controller::$IMPORT_STATUS_HALTED);
 		$importInfo = Import_Queue_Controller::getImportInfo($this->userInputObject->get('module'), $this->user);
@@ -109,10 +110,10 @@ class Import_Controller {
 		$viewer->assign('OWNER_ID', $ownerId);
 		$viewer->assign('IMPORT_RESULT', $importStatusCount);
 		$viewer->assign('MERGE_ENABLED', $importInfo['merge_type']);
-		if (strpos(PHP_SAPI, 'apache')!==false) {
-			$viewer->display('ImportResult.tpl');
-		} else {
+		if (PHP_SAPI == 'cli') {
 			$viewer->display('ImportResultCLI.tpl');
+		} else {
+			$viewer->display('ImportResult.tpl');
 		}
 	}
 

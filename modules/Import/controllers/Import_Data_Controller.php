@@ -457,8 +457,7 @@ class Import_Data_Controller {
 				foreach ($allPicklistDetails as $picklistDetails) {
 					$allPicklistValues[] = $picklistDetails['value'];
 				}
-				$encodePicklistValue = $fieldValue;
-				if (!in_array($encodePicklistValue, $allPicklistValues)) {
+				if (!empty($fieldValue) && !in_array($fieldValue, $allPicklistValues)) {
 					$moduleObject = Vtiger_Module::getInstance($moduleMeta->getEntityName());
 					$fieldObject = Vtiger_Field::getInstance($fieldName, $moduleObject);
 					$fieldObject->setPicklistValues(array($fieldValue));
@@ -619,7 +618,9 @@ class Import_Data_Controller {
 			if (!$importDataController->initializeImport()) {
 				continue;
 			}
+			Import_Queue_Controller::updateStatus($importDataController->id, Import_Queue_Controller::$IMPORT_STATUS_RUNNING);
 			$importDataController->importData();
+			Import_Queue_Controller::updateStatus($importDataController->id, Import_Queue_Controller::$IMPORT_STATUS_COMPLETED);
 
 			$importStatusCount = $importDataController->getImportStatusCount();
 

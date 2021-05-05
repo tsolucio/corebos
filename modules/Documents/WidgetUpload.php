@@ -28,6 +28,8 @@ class massdocumentupload {
 
 class massdocumentupload_DetailViewBlock extends DeveloperBlock {
 
+	protected $widgetName = 'massDocumentUpload';
+
 	// This one is called to get the contents to show on screen
 	public function process($context = false) {
 		global $currentModule;

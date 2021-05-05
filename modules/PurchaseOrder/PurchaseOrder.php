@@ -119,13 +119,12 @@ class PurchaseOrder extends CRMEntity {
 
 	public function registerInventoryHistory() {
 		global $app_strings;
-		if (isset($_REQUEST['ajxaction']) && $_REQUEST['ajxaction'] == 'DETAILVIEW') { //if we use ajax edit
+		if (!empty($this->column_fields['vendor_id'])) {
 			$relatedname = getVendorName($this->column_fields['vendor_id']);
-			$total = $this->column_fields['hdnGrandTotal'];
-		} else { //using edit button and save
-			$relatedname = $_REQUEST['vendor_name'];
-			$total = $_REQUEST['total'];
+		} else {
+			$relatedname = getVendorName(getSingleFieldValue($this->table_name, 'vendorid', $this->table_index, $this->id));
 		}
+		$total = getSingleFieldValue($this->table_name, 'total', $this->table_index, $this->id);
 		if ($this->column_fields['postatus'] == $app_strings['LBL_NOT_ACCESSIBLE']) {
 			//If the value in the request is Not Accessible for a picklist, the existing value will be replaced instead of Not Accessible value.
 			$stat_value = getSingleFieldValue($this->table_name, 'postatus', $this->table_index, $this->id);
@@ -173,7 +172,7 @@ class PurchaseOrder extends CRMEntity {
 		$query = 'select vtiger_postatushistory.*, vtiger_purchaseorder.purchaseorder_no
 			from vtiger_postatushistory
 			inner join vtiger_purchaseorder on vtiger_purchaseorder.purchaseorderid = vtiger_postatushistory.purchaseorderid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_purchaseorder.purchaseorderid
+			inner join '.$this->crmentityTableAlias.' on vtiger_crmentity.crmid=vtiger_purchaseorder.purchaseorderid
 			where vtiger_crmentity.deleted = 0 and vtiger_purchaseorder.purchaseorderid = ?';
 		$result=$adb->pquery($query, array($id));
 		$header = array();
@@ -282,7 +281,6 @@ class PurchaseOrder extends CRMEntity {
 	 */
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
-			'Calendar' =>array('vtiger_seactivityrel'=>array('crmid','activityid'),'vtiger_purchaseorder'=>'purchaseorderid'),
 			'Documents' => array('vtiger_senotesrel'=>array('crmid','notesid'),'vtiger_purchaseorder'=>'purchaseorderid'),
 			'Contacts' => array('vtiger_purchaseorder'=>array('purchaseorderid','contactid')),
 		);
@@ -297,8 +295,13 @@ class PurchaseOrder extends CRMEntity {
 		}
 
 		if ($return_module == 'Vendors') {
-			$sql_req ='UPDATE vtiger_crmentity SET deleted = 1 WHERE crmid= ?';
-			$adb->pquery($sql_req, array($id));
+			$mtime = $adb->formatDate(date('Y-m-d H:i:s'), true);
+			$adb->pquery('UPDATE vtiger_crmentity SET deleted=1,modifiedtime=? WHERE crmid=?', array($mtime, $id));
+			$adb->pquery('UPDATE vtiger_crmobject SET deleted=1,modifiedtime=? WHERE crmid=?', array($mtime, $id));
+			$crmtable = CRMEntity::getcrmEntityTableAlias(getSalesEntityType($id), true);
+			if ($crmtable!='vtiger_crmentity') {
+				$adb->pquery('UPDATE '.$crmtable.' SET deleted=1,modifiedtime=? WHERE crmid=?', array($mtime, $id));
+			}
 		} elseif ($return_module == 'Contacts') {
 			$sql_req ='UPDATE vtiger_purchaseorder SET contactid=? WHERE purchaseorderid = ?';
 			$adb->pquery($sql_req, array(null, $id));
@@ -346,10 +349,9 @@ class PurchaseOrder extends CRMEntity {
 		$sql = getPermittedFieldsQuery('PurchaseOrder', 'detail_view');
 		$fields_list = getFieldsListFromQuery($sql);
 		$fields_list .= getInventoryFieldsForExport($this->table_name);
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 
-		$query = "SELECT $fields_list FROM vtiger_crmentity
-			INNER JOIN vtiger_purchaseorder ON vtiger_purchaseorder.purchaseorderid = vtiger_crmentity.crmid
+		$query = "SELECT $fields_list FROM ".$this->crmentityTableAlias
+			." INNER JOIN vtiger_purchaseorder ON vtiger_purchaseorder.purchaseorderid = vtiger_crmentity.crmid
 			LEFT JOIN vtiger_purchaseordercf ON vtiger_purchaseordercf.purchaseorderid = vtiger_purchaseorder.purchaseorderid
 			LEFT JOIN vtiger_pobillads ON vtiger_pobillads.pobilladdressid = vtiger_purchaseorder.purchaseorderid
 			LEFT JOIN vtiger_poshipads ON vtiger_poshipads.poshipaddressid = vtiger_purchaseorder.purchaseorderid

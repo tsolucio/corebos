@@ -21,6 +21,7 @@ require_once 'include/logging.php';
 require_once 'data/Tracker.php';
 require_once 'include/utils/utils.php';
 require_once 'modules/evvtgendoc/OpenDocument.php';
+require_once 'data/CRMEntity.php';
 if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php')) {
 	include 'modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php';
 } else {
@@ -224,7 +225,9 @@ function compile($text, $id, $module, $changeamp = false, $applyformat = true) {
 				$replacewith = eval_expression($marcador, $id);
 			} elseif ($changeamp) {
 				$compiled_marc = retrieve_from_db($marcador, $id, $module, $applyformat);
-				$replacewith = str_replace('&', '&amp;', $compiled_marc);
+				$compiledtext = mb_convert_encoding($compiled_marc, 'UTF-8', 'HTML-ENTITIES');
+				$compiledtext = str_replace('<br>', '<text:line-break/>', $compiledtext);
+				$replacewith = str_replace('&', '&amp;', $compiledtext);
 			} else {
 				$replacewith = retrieve_from_db($marcador, $id, $module, $applyformat);
 			}
@@ -546,6 +549,7 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 		$reemplazo = '{'.$marcador.'}';
 	}
 
+	$reemplazo = str_replace("\r\n", '<br>', $reemplazo);
 	$reemplazo = str_replace("\n", '<br>', $reemplazo);
 	return $reemplazo;
 }
@@ -1212,7 +1216,8 @@ function entity_exists($focus, $id, $module) {
 			$SQL = 'SELECT COUNT(*) as qtab FROM vtiger_users WHERE id=? AND deleted=0';
 			break;
 		default:
-			$SQL = 'SELECT COUNT(*) as qtab FROM vtiger_crmentity WHERE crmid=? AND setype=? AND deleted=0';
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias($module);
+			$SQL = 'SELECT COUNT(*) as qtab FROM '.$crmEntityTable.' WHERE vtiger_crmentity.crmid=? AND vtiger_crmentity.setype=? AND vtiger_crmentity.deleted=0';
 			$params[] = $module;
 	}
 	$res = $adb->pquery($SQL, $params);
@@ -1603,7 +1608,7 @@ function is_picklist($field, $module) {
 function get_plantilla($entid) {
 	global $adb,$root_directory,$app_strings,$current_user;
 
-	$SQL = 'SELECT setype FROM vtiger_crmentity WHERE crmid=?';
+	$SQL = 'SELECT setype FROM vtiger_crmobject WHERE crmid=?';
 	$res = $adb->pquery($SQL, array($entid));
 	$relmodule = $adb->query_result($res, 0, 'setype');
 	switch ($relmodule) {
@@ -1705,7 +1710,7 @@ function get_plantilla($entid) {
 function getEntityModule($crmid) {
 	global $adb;
 
-	$seltype = "SELECT setype FROM vtiger_crmentity WHERE crmid=$crmid AND deleted=0";
+	$seltype = "SELECT setype FROM vtiger_crmobject WHERE crmid=$crmid AND deleted=0";
 	$restype = $adb->query($seltype);
 	if ($restype) {
 		$modname = $adb->query_result($restype, 0, 'setype');

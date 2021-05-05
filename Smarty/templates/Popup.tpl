@@ -14,7 +14,6 @@
 	<meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
 	<title>{$MODULE|@getTranslatedString:$MODULE} - {$coreBOS_uiapp_name}</title>
 	<link REL="SHORTCUT ICON" HREF="themes/images/blank.gif">
-	<link rel="stylesheet" type="text/css" href="include/LD/assets/styles/override_lds.css">
 {include file='BrowserVariables.tpl'}
 {include file='Components/Components.tpl'}
 <script type="text/javascript">
@@ -40,9 +39,13 @@ var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
 var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
 var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 </script>
+{if !empty($SET_CSS_PROPERTIES) && is_file($SET_CSS_PROPERTIES)}
+	<link rel="stylesheet" type="text/css" media="all" href="{$SET_CSS_PROPERTIES}">
+{/if}
 <link rel="stylesheet" type="text/css" href="{$THEME_PATH}style.css">
 <link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
 <link rel="stylesheet" type="text/css" href="include/LD/assets/styles/salesforce-lightning-design-system.css" />
+<link rel="stylesheet" type="text/css" href="include/LD/assets/styles/override_lds.css">
 {* corebos customization: Inclusion of custom javascript and css as registered in popup *}
 {if $HEADERCSS}
 	<!-- Custom Header CSS -->
@@ -145,7 +148,6 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 								<input name="record_id" id="record_id" type="hidden" value="{$RECORD_ID}">
 								<input name="return_module" id="return_module" type="hidden" value="{$RETURN_MODULE}">
 								<input name="from_link" id="from_link" type="hidden" value="{if isset($smarty.request.fromlink)}{$smarty.request.fromlink|@vtlib_purify}{/if}">
-								<input name="maintab" id="maintab" type="hidden" value="{$MAINTAB}">
 								<input type="hidden" id="relmod" name="{$mod_var_name}" value="{$mod_var_value}">
 								<input type="hidden" id="relrecord_id" name="{$recid_var_name}" value="{$recid_var_value}">
 								<input name="form" id="popupform" type="hidden" value="{$smarty.request.form|@vtlib_purify}">

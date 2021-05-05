@@ -206,7 +206,8 @@ function CBMassiveUpdateRelatedTask($, fieldvaluemapping) {
 		var fieldLabel = jQuery('#save_fieldvalues_'+mappingno+'_fieldmodule option:selected').html();
 		validator.validateFieldData[fieldName] = {
 			type: opType.name,
-			label: fieldLabel
+			label: fieldLabel,
+			mapno: mappingno
 		};
 	}
 
@@ -306,13 +307,19 @@ function CBMassiveUpdateRelatedTask($, fieldvaluemapping) {
 				}
 				function addFieldValueMapping(mappingno) {
 					$('#save_fieldvaluemapping').append(
-						'<div id="save_fieldvalues_'+mappingno+'" style=\'margin-bottom: 5px\'> \
-							<select id="save_fieldvalues_'+mappingno+'_fieldmodule" class="fieldmodule"></select><select id="save_fieldvalues_'+mappingno+'_fieldname" class="fieldname"></select>  \
-							<input type="hidden" id="save_fieldvalues_'+mappingno+'_value_type" class="type"> \
-							<input type="hidden" id="save_fieldvalues_'+mappingno+'_valuemodule" readonly ><input type="text" id="save_fieldvalues_'+mappingno+'_value" class="expressionvalue" readonly > \
-							<span id="save_fieldvalues_'+mappingno+'_remove" class="link remove-link"> \
-							<img src="modules/com_vtiger_workflow/resources/remove.png"><input type="hidden" id="modtypes"></span> \
-						</div>'
+						`<div id="save_fieldvalues_${mappingno}" style="margin-bottom: 5px" class="slds-grid slds-gutters slds-p-horizontal_x-large slds-grid_vertical-align-center">
+							<select id="save_fieldvalues_${mappingno}_fieldmodule" class="fieldmodule slds-page-header__meta-text slds-select"></select>
+							<select id="save_fieldvalues_${mappingno}_fieldname" class="fieldname slds-page-header__meta-text slds-select slds-m-left_x-small"></select>
+							<input type="hidden" id="save_fieldvalues_${mappingno}_value_type" class="type">
+							<input type="hidden" id="save_fieldvalues_${mappingno}_valuemodule" class="fieldborder" readonly >
+							<input type="text" id="save_fieldvalues_${mappingno}_value" class="expressionvalue slds-input fieldborder slds-m-left_x-small" readonly >
+							<span id="save_fieldvalues_${mappingno}_remove" class="link remove-link slds-m-left_x-small">
+								<svg class="slds-icon slds-icon_small slds-icon-text-light" aria-hidden="true" >
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+								</svg>
+								<input type="hidden" id="modtypes">
+							</span>
+						</div>`
 					);
 					var fe = $('#save_fieldvalues_'+mappingno+'_fieldmodule');
 					var i = 1;
@@ -363,6 +370,14 @@ function CBMassiveUpdateRelatedTask($, fieldvaluemapping) {
 									alert(alert_arr.WF_UPDATE_MAP_ERROR_INFO);
 									return {name:'string'};
 								}
+								if (fullFieldName == 'folderid' && moduleFieldTypes[fieldModule][fieldName]['name']=='reference') {
+									moduleFieldTypes[fieldModule][fieldName]['name']='picklist';
+									moduleFieldTypes[fieldModule][fieldName]['picklistValues']=moduleFieldTypes[fieldModule][fieldName]['picklistValues'].map((plval) => {
+										$wsid = plval.value.split('x');
+										plval.value = $wsid[1];
+										return plval;
+									});
+								}
 								return moduleFieldTypes[fieldModule][fieldName];
 							}
 
@@ -389,6 +404,7 @@ function CBMassiveUpdateRelatedTask($, fieldvaluemapping) {
 							fillOptions(fe1, fieldLabels, 0);
 							var fullFieldName = fe1.val();
 							resetFields(getFieldType(fullFieldName), fullFieldName, mappingno, module[0]+'__'+module[1]);
+							fe1.unbind('change');
 							fe1.bind('change', function () {
 								var select = $(this);
 								var mappingno = select.prop('id').match(/save_fieldvalues_(\d+)_fieldname/)[1];
@@ -442,6 +458,14 @@ function CBMassiveUpdateRelatedTask($, fieldvaluemapping) {
 									alert(alert_arr.WF_UPDATE_MAP_ERROR+fieldModule+'.'+fieldName);
 									alert(alert_arr.WF_UPDATE_MAP_ERROR_INFO);
 									return {name:'string'};
+								}
+								if (fullFieldName == 'folderid' && moduleFieldTypes[fieldModule][fieldName]['name']=='reference') {
+									moduleFieldTypes[fieldModule][fieldName]['name']='picklist';
+									moduleFieldTypes[fieldModule][fieldName]['picklistValues']=moduleFieldTypes[fieldModule][fieldName]['picklistValues'].map((plval) => {
+										$wsid = plval.value.split('x');
+										plval.value = $wsid[1];
+										return plval;
+									});
 								}
 								return moduleFieldTypes[fieldModule][fieldName];
 							}
@@ -497,6 +521,7 @@ function CBMassiveUpdateRelatedTask($, fieldvaluemapping) {
 
 				$('#save_fieldvaluemapping_add').bind('click', function () {
 					addFieldValueMapping(mappingno++);
+					return false;
 				});
 
 				$('#save').bind('click', function () {

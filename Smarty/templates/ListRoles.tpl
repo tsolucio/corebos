@@ -50,19 +50,18 @@ ul {ldelim}color:black;{rdelim}
 {rdelim}
 </style>
 <script>
-if(typeof(e) != 'undefined')
-	window.captureEvents(Event.MOUSEMOVE);
-
+	if (typeof(e) != 'undefined') {
+		window.captureEvents(Event.MOUSEMOVE);
+	}
 //  window.onmousemove= displayCoords;
 //  window.onclick = fnRevert;
 
 	function displayCoords(event) {ldelim}
 		var move_Element = document.getElementById('Drag_content').style;
-		if(!event){ldelim}
+		if (!event) {ldelim}
 			move_Element.left = e.pageX +'px' ;
 			move_Element.top = e.pageY+10 + 'px';
-		{rdelim}
-		else{ldelim}
+		{rdelim} else {ldelim}
 			move_Element.left = event.clientX +'px' ;
 			move_Element.top = event.clientY+10 + 'px';
 		{rdelim}
@@ -72,10 +71,10 @@ if(typeof(e) != 'undefined')
 		if (e.button == 2) {ldelim}
 			document.getElementById('Drag_content').style.display = 'none';
 			hideAll = false;
-			parentId = "Head";
-			parentName = "DEPARTMENTS";
-			childId ="NULL";
-			childName = "NULL";
+			parentId = 'Head';
+			parentName = 'DEPARTMENTS';
+			childId = 'NULL';
+			childName = 'NULL';
 		{rdelim}
 	{rdelim}
 </script>
@@ -148,93 +147,80 @@ if(typeof(e) != 'undefined')
 
 <script type="text/javascript">
 	var hideAll = false;
-	var parentId = "";
-	var parentName = "";
-	var childId ="NULL";
-	var childName = "NULL";
+	var parentId = '';
+	var parentName = '';
+	var childId = 'NULL';
+	var childName = 'NULL';
 
-	function get_parent_ID(obj,currObj)
-	{ldelim}
-			var leftSide = findPosX(obj);
-			var topSide = findPosY(obj);
-			var move_Element = document.getElementById('Drag_content');
-			childName  = document.getElementById(currObj).innerHTML;
-			childId = currObj;
-			move_Element.innerHTML = childName;
-			move_Element.style.left = leftSide + 15 + 'px';
-			move_Element.style.top = topSide + 15+ 'px';
-			move_Element.style.display = 'block';
-			hideAll = true;
+	function get_parent_ID(obj,currObj) {ldelim}
+		var leftSide = findPosX(obj);
+		var topSide = findPosY(obj);
+		var move_Element = document.getElementById('Drag_content');
+		childName  = document.getElementById(currObj).innerHTML;
+		childId = currObj;
+		move_Element.innerHTML = childName;
+		move_Element.style.left = leftSide + 15 + 'px';
+		move_Element.style.top = topSide + 15+ 'px';
+		move_Element.style.display = 'block';
+		hideAll = true;
 	{rdelim}
 
-	function put_child_ID(currObj)
-	{ldelim}
+	function put_child_ID(currObj) {ldelim}
 		var move_Element = document.getElementById('Drag_content');
 		parentName = document.getElementById(currObj).innerHTML;
 		parentId = currObj;
 		move_Element.style.display = 'none';
 		hideAll = false;
-		if (childId == "NULL")
-		{ldelim}
-	//				alert("Please Select the Node");
+		if (childId == 'NULL') {ldelim}
 			parentId = parentId.replace(/user_/gi, '');
-			window.location.href = "index.php?module=Settings&action=RoleDetailView&parenttab=Settings&roleid=" + parentId;
-		{rdelim}
-		else
-		{ldelim}
+			window.location.href = 'index.php?module=Settings&action=RoleDetailView&parenttab=Settings&roleid=' + parentId;
+		{rdelim} else {ldelim}
 			childId = childId.replace(/user_/gi, '');
 			parentId = parentId.replace(/user_/gi, '');
 			jQuery.ajax({ldelim}
 				method: 'POST',
 				url: 'index.php?module=Users&action=UsersAjax&file=RoleDragDrop&ajax=true&parentId=' + parentId + '&childId=' + childId,
 			{rdelim}).done(function (response) {ldelim}
-				if (response != alert_arr.ROLE_DRAG_ERR_MSG)
-				{ldelim}
+				if (response != alert_arr.ROLE_DRAG_ERR_MSG) {ldelim}
 					document.getElementById('RoleTreeFull').innerHTML = response;
 					hideAll = false;
-					parentId = "";
-					parentName = "";
-					childId = "NULL";
-					childName = "NULL";
-				{rdelim}
-				else
+					parentId = '';
+					parentName = '';
+					childId = 'NULL';
+					childName = 'NULL';
+				{rdelim} else {ldelim}
 					alert(response);
+				{rdelim}
 			{rdelim}
 			);
 		{rdelim}
 	{rdelim}
 
-	function fnVisible(Obj)
-	{ldelim}
-			if(!hideAll)
-				document.getElementById(Obj).style.visibility = 'visible';
+	function fnVisible(Obj) {ldelim}
+		if (!hideAll) {ldelim}
+			document.getElementById(Obj).style.visibility = 'visible';
+		{rdelim}
 	{rdelim}
 
-	function fnInVisible(Obj)
-	{ldelim}
+	function fnInVisible(Obj) {ldelim}
 		document.getElementById(Obj).style.visibility = 'hidden';
 	{rdelim}
 
-function showhide(argg,imgId)
-{ldelim}
-	var harray=argg.split(",");
-	var harrlen = harray.length;
-	var i;
-	for(i=0; i<harrlen; i++)
-	{ldelim}
-		var x=document.getElementById(harray[i]).style;
-		if (x.display=="none")
-		{ldelim}
-			x.display="block";
-			document.getElementById(imgId).src="{'minus.gif'|@vtiger_imageurl:$THEME}";
-		{rdelim}
-		else
-		{ldelim}
-			x.display="none";
-			document.getElementById(imgId).src="{'plus.gif'|@vtiger_imageurl:$THEME}";
+	function showhide(argg,imgId) {ldelim}
+		var harray=argg.split(',');
+		var harrlen = harray.length;
+		var i;
+		for (i=0; i<harrlen; i++) {ldelim}
+			var x=document.getElementById(harray[i]).style;
+			if (x.display=='none') {ldelim}
+				x.display='block';
+				document.getElementById(imgId).src="{'minus.gif'|@vtiger_imageurl:$THEME}";
+			{rdelim} else {ldelim}
+				x.display='none';
+				document.getElementById(imgId).src="{'plus.gif'|@vtiger_imageurl:$THEME}";
+			{rdelim}
 		{rdelim}
 	{rdelim}
-{rdelim}
 </script>
 </div>
 </section>

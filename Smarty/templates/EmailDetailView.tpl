@@ -74,7 +74,7 @@
 	</tr>
 	<tr>
 	<td class="lvtCol" style="padding: 5px;" align="right"><b>{$MOD.LBL_SUBJECT}</b></td>
-	<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$elements.value}</td>
+	<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$elements.value|vtlib_purify}</td>
 	</tr>
 	<tr>
 	<td colspan=3><table width="100%" border=0>
@@ -108,7 +108,7 @@
 	</tr>
 	{elseif $elements.fldname eq 'description'}
 	<tr>
-	<td style="padding: 5px;" colspan="3" valign="top"><div style="overflow:auto;height:415px;width:100%;">{$elements.value}</div></td>
+	<td style="padding: 5px;" colspan="3" valign="top"><div style="overflow:auto;height:415px;width:100%;">{$elements.value|vtlib_purify}</div></td>
 	</tr>
 	{elseif $elements.fldname eq 'filename'}
 	<tr><td colspan="3">

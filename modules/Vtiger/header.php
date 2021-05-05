@@ -106,11 +106,19 @@ $Application_Global_Search_Active = GlobalVariable::getVariable('Application_Glo
 $smarty->assign('Application_Global_Search_Active', $Application_Global_Search_Active);
 
 $smarty->assign('HELP_URL', GlobalVariable::getVariable('Application_Help_URL', 'https://corebos.org/documentation'));
+$smarty->assign('SET_CSS_PROPERTIES', GlobalVariable::getVariable('Application_CSS_Properties', 'include/LD/assets/styles/properties.php'));
 ob_start();
 cbEventHandler::do_action('corebos.header.premenu');
 $smarty->assign('COREBOS_HEADER_PREMENU', ob_get_clean());
 getBrowserVariables($smarty);
 $smarty->assign('Module_Popup_Edit', isset($_REQUEST['Module_Popup_Edit']) ? vtlib_purify($_REQUEST['Module_Popup_Edit']) : 0);
+
+if (coreBOS_Settings::getSetting('onesignal_isactive', '0') == '1') {
+	$smarty->assign('ONESIGNAL_APP_ID', coreBOS_Settings::getSetting('onesignal_app_id', ''));
+	$smarty->assign('ONESIGNAL_IS_ACTIVE', true);
+} else {
+	$smarty->assign('ONESIGNAL_IS_ACTIVE', false);
+}
 
 $smarty->display('Header.tpl');
 ?>

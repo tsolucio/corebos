@@ -378,7 +378,7 @@ function getPrimaryColumnsHTML($module, $secondmodule) {
 	$ogReport = new Reports();
 	$ogReport->getPriModuleColumnsList($module);
 	$ogReport->getSecModuleColumnsList($secondmodule);
-
+	$crmtable = CRMEntity::getcrmEntityTableAlias($module, true);
 	$block_listed = array();
 	$modules_list = array();
 	foreach ($ogReport->module_list[$module] as $value) {
@@ -386,7 +386,7 @@ function getPrimaryColumnsHTML($module, $secondmodule) {
 		if (isset($ogReport->pri_module_columnslist[$module][$value]) && !isset($block_listed[$value])) {
 			$block_listed[$value] = true;
 			if ($id_added==false) {
-				$v = 'vtiger_crmentity:crmid:'.$module.'_ID:crmid:I';
+				$v = $crmtable.':crmid:'.$module.'_ID:crmid:I';
 				$label = getTranslatedString($module.' ID', $module);
 				$modules_optgroup[] = array('value'=>$v,'label'=>$label);
 				$id_added=true;
@@ -453,7 +453,7 @@ function getPrimaryColumns_GroupingHTML($module, $selected = '') {
 
 	$block_listed = array();
 	$selected = decode_html($selected);
-
+	$crmtable = CRMEntity::getcrmEntityTableAlias($module, true);
 	$oReport->getPriModuleColumnsList($module);
 	$list = array();
 	foreach ($oReport->module_list[$module] as $value) {
@@ -468,11 +468,11 @@ function getPrimaryColumns_GroupingHTML($module, $selected = '') {
 
 			if ($id_added==false) {
 				$option = array(
-					'value' => 'vtiger_crmentity:crmid:'.$module.'_ID:crmid:I',
+					'value' => $crmtable.':crmid:'.$module.'_ID:crmid:I',
 					'label' => getTranslatedString($module, $module).' '.getTranslatedString('ID', $module)
 				);
 
-				if ($selected == 'vtiger_crmentity:crmid:'.$module.'_ID:crmid:I') {
+				if ($selected == $crmtable.':crmid:'.$module.'_ID:crmid:I') {
 					$option['selected'] = true;
 				}
 				$optgroup['options'][] = $option;

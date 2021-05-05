@@ -191,7 +191,7 @@ require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
 require_once 'modules/com_vtiger_workflow/VTSimpleTemplateOnData.inc';
 require_once 'include/Webservices/Retrieve.php';
 
-class WebserviceMapping extends cbMapcore {
+class WebserviceMapping extends processcbMap {
 
 	public function processMap($arguments) {
 		global $current_user;
@@ -261,7 +261,15 @@ class WebserviceMapping extends cbMapcore {
 							$entity->setContext($ctx);
 							$exprEvaluation = $exprEvaluater->evaluate($entity);
 						}
-						$value.= $exprEvaluation.$delim;
+						if (is_array($exprEvaluation)) {
+							if (is_array($value)) {
+								$value = array_merge($value, $exprEvaluation);
+							} else {
+								$value = $exprEvaluation;
+							}
+						} else {
+							$value.= $exprEvaluation.$delim;
+						}
 					} elseif (!empty($ofields['record_id']) && (strtoupper($idx[0])=='FIELD' || strtoupper($idx[0])=='TEMPLATE')) {
 						$util = new VTWorkflowUtils();
 						$adminUser = $util->adminUser();
@@ -312,7 +320,9 @@ class WebserviceMapping extends cbMapcore {
 					}
 				}
 			}
-			$value = rtrim($value, $delim);
+			if (!is_array($value)) {
+				$value = rtrim($value, $delim);
+			}
 			if ($targetfield =='Response' || $targetfield =='WSConfig') {
 				$value = $sourcefields;
 			}
@@ -347,12 +357,13 @@ class WebserviceMapping extends cbMapcore {
 				}
 			} elseif (!empty($v->Orgfields[0]->Relfield) && isset($v->Orgfields[0]->Relfield)) {
 				$allRelValues = array();
+				$allmergeFields = array();
 				foreach ($v->Orgfields->Relfield as $value1) {
 					$allRelValues = array(
 						'fieldname'=>(String)$value1->RelfieldName,
 						'relmodule'=>(String)$value1->RelModule,
 						'linkfield'=>(String)$value1->linkfield,
-						'linkvalue'=>(String)$value1->Relfieldvalue
+						'linkvalue'=>isset($value1->Relfieldvalue) ? (String)$value1->Relfieldvalue : '',
 					);
 				}
 				$allmergeFields[] = $allRelValues;

@@ -31,7 +31,7 @@ if ($have_access_data) {
 		} else {
 			$format = $current_user->hour_format;
 		}
-		$c_mod_strings = return_specified_module_language($current_language, 'Calendar');
+		$c_mod_strings = return_specified_module_language($current_language, 'cbCalendar');
 		$event = $GoogleSync4You->getGoogleCalEvent($geventid);
 		$recurrence = $event->recurrence;
 		if ($recurrence != '') {

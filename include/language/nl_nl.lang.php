@@ -186,6 +186,7 @@ $app_strings = array(
 	'NTC_TIME_FORMAT' => '(24:00)',
 	'NTC_DATE_TIME_FORMAT' => '(dd-mm-jjjj 24:00)',
 	'NTC_DELETE_CONFIRMATION' => 'Weet u dit zeker?',
+	'SMTP_DELETE_CONFIRMATION' => 'Are you sure you want to delete this SMTP settings?',
 	'NTC_ACCOUNT_DELETE_CONFIRMATION' => 'Als u dit Account verwijderd dan zal ook andere informatie worden gewist. Weet u het zeker?',
 	'NTC_VENDOR_DELETE_CONFIRMATION' => 'Als u dit Account verwijderd dan zal ook andere informatie worden gewist. Weet u het zeker?',
 	'ERR_DELETE_RECORD' => 'U moet eerst een selectie maken voor u kunt verwijderen.',
@@ -890,6 +891,7 @@ $app_strings = array(
 	'MSG_VTIGERTEAM' => ' coreBOS Team',
 	'MSG_IS_NOT_UPLOADED' => 'Niet voltooid. U mag alleen deze types gebruiken- jpeg, png, jpg, pjpeg, x-png or gif',
 	'MSG_IMAGE_ERROR' => 'afbeelding niet gevonden',
+	'LBL_IMAGESECURITY_ERROR' => 'Invalid image: contains potential malicious contents',
 	'Information' => 'Informatie',
 	'Address' => 'Adres',
 	'Custom Information' => 'Standaard informatie',
@@ -1137,6 +1139,8 @@ $app_strings = array(
 	'LBL_CALLER_INFORMATION' => 'Beller Informatie',
 	'LBL_CALLER_NUMBER' => 'Nummer :',
 	'LBL_CALLER_NAME' => 'Naam :',
+	'LBL_VIEW_CONTACT' => 'View Contact',
+	'LBL_CLICK_NOTIFICATION_TO'=> 'Click Notification to ',
 	'LBL_DUPLICATE' => 'Duplicaat',
 	'LBL_CLICK' => 'Click',
 	'LNK_PRIVACY_POLICY' => 'Privacy Policy',
@@ -1258,6 +1262,7 @@ $app_strings = array(
 	'csrf_reload' => 'Herlaad de pagina',
 	'LBL_NOPRODUCTS' => 'Can\'t convert SalesOrder to Invoice because there aren\'t any remaining products to invoice.',
 	'VALIDATION_FAILED' => 'Validation failed',
+	'Select Module To Upsert' => 'Select Module To Upsert',
 );
 
 // Translation for currency names

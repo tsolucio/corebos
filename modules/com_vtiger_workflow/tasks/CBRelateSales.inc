@@ -36,7 +36,7 @@ class CBRelateSales extends VTTask {
 		list($inv,$inv_id) = explode('x', $entity->getId());
 		if (!empty($inv_id)) {
 			$setype = getSalesEntityType($inv_id);
-			$query = 'select productid from vtiger_inventoryproductrel inner join vtiger_crmentity on crmid=productid where deleted=0 and id=?';
+			$query = 'select productid from vtiger_inventoryproductrel inner join vtiger_crmobject on crmid=productid where deleted=0 and id=?';
 			$srvs = $adb->pquery($query, array($inv_id));
 			if ($srvs && $adb->num_rows($srvs) > 0) {
 				if ($setype=='PurchaseOrder') {

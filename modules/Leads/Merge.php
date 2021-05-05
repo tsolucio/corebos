@@ -68,14 +68,13 @@ if ($userprivs->hasGlobalReadPermission() || $module == 'Users' || $module == 'E
 }
 $result = $adb->pquery($query1, $params1);
 $y=$adb->num_rows($result);
-$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 
 for ($x=0; $x<$y; $x++) {
 	$tablename = $adb->query_result($result, $x, 'tablename');
 	$columnname = $adb->query_result($result, $x, 'columnname');
 	$querycolumns[$x] = $tablename.'.'.$columnname;
 	if ($columnname == 'smownerid') {
-		$querycolumns[$x] = "case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as username,vtiger_users.first_name,vtiger_users.last_name,vtiger_users.user_name,vtiger_users.secondaryemail,vtiger_users.title,vtiger_users.phone_work,vtiger_users.department,vtiger_users.phone_mobile,vtiger_users.phone_other,vtiger_users.phone_fax,vtiger_users.email1,vtiger_users.phone_home,vtiger_users.email2,vtiger_users.address_street,vtiger_users.address_city,vtiger_users.address_state,vtiger_users.address_postalcode,vtiger_users.address_country";
+		$querycolumns[$x] = "case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as username,vtiger_users.first_name,vtiger_users.last_name,vtiger_users.user_name,vtiger_users.secondaryemail,vtiger_users.title,vtiger_users.phone_work,vtiger_users.department,vtiger_users.phone_mobile,vtiger_users.phone_other,vtiger_users.phone_fax,vtiger_users.email1,vtiger_users.phone_home,vtiger_users.email2,vtiger_users.address_street,vtiger_users.address_city,vtiger_users.address_state,vtiger_users.address_postalcode,vtiger_users.address_country";
 	}
 	$field_label[$x] = 'LEAD_'.strtoupper(str_replace(' ', '', $adb->query_result($result, $x, 'fieldlabel')));
 	if ($columnname == 'smownerid') {
@@ -100,9 +99,10 @@ $csvheader = implode(',', $field_label);
 
 if (count($querycolumns) > 0) {
 	$selectcolumns = implode(',', $querycolumns);
-
+	require_once 'data/CRMEntity.php';
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Leads');
 	$query = 'select '.$selectcolumns.' from vtiger_leaddetails
-	  inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_leaddetails.leadid
+	  inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_leaddetails.leadid
 	  inner join vtiger_leadsubdetails on vtiger_leadsubdetails.leadsubscriptionid=vtiger_leaddetails.leadid
 	  inner join vtiger_leadaddress on vtiger_leadaddress.leadaddressid=vtiger_leadsubdetails.leadsubscriptionid
 	  inner join vtiger_leadscf on vtiger_leaddetails.leadid = vtiger_leadscf.leadid

@@ -45,11 +45,13 @@ function GetRelatedModulesOneToMany($module, $user) {
 	);
 	$modules=array();
 	while ($rel = $result->fetchRow()) {
-		$modules[] = array(
-			'label' => getTranslatedString($rel['relmodule'], $rel['relmodule']),
-			'name' => $rel['relmodule'],
-			'field' => $rel['fieldname'],
-		);
+		if (in_array($rel['relmodule'], $types['types'])) {
+			$modules[] = array(
+				'label' => getTranslatedString($rel['relmodule'], $rel['relmodule']),
+				'name' => $rel['relmodule'],
+				'field' => $rel['fieldname'],
+			);
+		}
 	}
 	return $modules;
 }

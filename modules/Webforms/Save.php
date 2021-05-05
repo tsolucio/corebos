@@ -14,9 +14,9 @@ global $current_user, $theme;
 
 if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] == 'true') {
 	if (Webforms_Model::existWebformWithName(vtlib_purify($_REQUEST['name']))) {
-		print_r(json_encode(array('success' => false, 'result' => false)));
+		echo json_encode(array('success' => false, 'result' => false));
 	} else {
-		print_r(json_encode(array('success' => true, 'result' => true)));
+		echo json_encode(array('success' => true, 'result' => true));
 	}
 } else {
 	Webforms::checkAdminAccess($current_user);

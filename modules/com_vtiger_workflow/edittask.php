@@ -15,6 +15,7 @@ require_once 'VTWorkflowApplication.inc';
 require_once 'VTTaskManager.inc';
 require_once 'VTWorkflowManager.inc';
 require_once 'VTWorkflowUtils.php';
+require_once 'modules/com_vtiger_workflow/expression_engine/VTExpressionsManager.inc';
 
 function vtTaskEdit($adb, $request, $current_language, $app_strings) {
 	global $theme, $current_user;
@@ -113,7 +114,7 @@ function vtTaskEdit($adb, $request, $current_language, $app_strings) {
 	$smarty->assign('USER_DATE', $date->getDisplayDate());
 	$smarty->assign('MOD', array_merge(
 		return_module_language($current_language, 'Settings'),
-		return_module_language($current_language, 'Calendar'),
+		return_module_language($current_language, 'cbCalendar'),
 		return_module_language($current_language, $module->name)
 	));
 	$smarty->assign('APP', $app_strings);
@@ -124,6 +125,9 @@ function vtTaskEdit($adb, $request, $current_language, $app_strings) {
 	$smarty->assign('MODULE_NAME', $module->label);
 	$smarty->assign('PAGE_NAME', $mod['LBL_EDIT_TASK']);
 	$smarty->assign('PAGE_TITLE', $mod['LBL_EDIT_TASK_TITLE']);
+	$emgr = new VTExpressionsManager($adb);
+	$smarty->assign('FNDEFS', json_encode($emgr->expressionFunctionDetails()));
+	$smarty->assign('FNCATS', $emgr->expressionFunctionCategories());
 
 	$users = array();
 	$users['user'] = get_user_array();

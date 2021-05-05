@@ -6,6 +6,7 @@ modules/Campaigns
 modules/cbAuditTrail
 modules/cbCalendar
 modules/cbCompany
+modules/cbCredentials
 modules/cbCVManagement
 modules/cbLoginHistory
 modules/cbMap
@@ -126,7 +127,6 @@ modules/Calendar4You/ProfilesPrivilegies.php
 modules/Calendar4You/SaveEvent.php
 modules/Calendar4You/SaveEventSettings.php
 modules/Calendar4You/Save.php
-modules/Calendar4You/SaveTodo.php
 modules/Calendar4You/Settings.php
 modules/Calendar4You/updateCalendarSharing.php
 modules/Calendar4You/UpdateEvents.php

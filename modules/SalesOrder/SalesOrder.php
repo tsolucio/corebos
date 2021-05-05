@@ -12,10 +12,9 @@ require_once 'data/Tracker.php';
 require 'modules/Vtiger/default_module_view.php';
 require_once 'modules/Invoice/Invoice.php';
 require_once 'modules/InventoryDetails/InventoryDetails.php';
+include_once 'include/Webservices/Revise.php';
 
 class SalesOrder extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_salesorder';
 	public $table_index= 'salesorderid';
 	public $column_fields = array();
@@ -29,14 +28,13 @@ class SalesOrder extends CRMEntity {
 	 * Mandatory table for supporting custom fields.
 	 */
 	public $customFieldTable = array('vtiger_salesordercf', 'salesorderid');
-	// Uncomment the line below to support custom field columns on related lists
-	public $related_tables = array('vtiger_account'=>array('accountid'));
 
 	public $tab_name = array(
 		'vtiger_crmentity',
 		'vtiger_salesorder',
 		'vtiger_sobillads',
-		'vtiger_soshipads','vtiger_salesordercf',
+		'vtiger_soshipads',
+		'vtiger_salesordercf',
 		'vtiger_invoice_recurring_info'
 	);
 	public $tab_name_index = array(
@@ -116,25 +114,33 @@ class SalesOrder extends CRMEntity {
 	}
 
 	public function save_module($module) {
-		global $updateInventoryProductRel_deduct_stock, $adb;
+		global $updateInventoryProductRel_deduct_stock, $current_user;
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
 		}
 		if ($this->mode=='edit' && !empty($this->record_status) && $this->record_status != $this->column_fields['sostatus'] && $this->column_fields['sostatus'] != '') {
 			$this->registerInventoryHistory();
 		}
-		$updateInventoryProductRel_deduct_stock = true;
 		//Checking if quote_id is present and updating the quote status
 		if (!empty($this->column_fields['quote_id'])) {
 			$newStatus = GlobalVariable::getVariable('Quote_StatusOnSalesOrderSave', 'Accepted');
 			if ($newStatus!='DoNotChange') {
-				$qt_id = $this->column_fields['quote_id'];
-				$query1 = 'update vtiger_quotes set quotestage=? where quoteid=?';
-				$adb->pquery($query1, array($newStatus, $qt_id));
+				$h = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : 'NOTSET';
+				$_REQUEST['ajxaction'] = 'Workflow';
+				try {
+					vtws_revise(array('id'=>vtws_getEntityId('Quotes').'x'.$this->column_fields['quote_id'], 'quotestage'=>$newStatus), $current_user);
+				} catch (\Throwable $th) {
+				}
+				if ($h=='NOTSET') {
+					unset($_REQUEST['ajxaction']);
+				} else {
+					$_REQUEST['ajxaction'] = $h;
+				}
 			}
 		}
 
 		//in ajax save we should not call this function, because this will delete all the existing product values
+		$updateInventoryProductRel_deduct_stock = true;
 		if (inventoryCanSaveProductLines($_REQUEST, 'SalesOrder')) {
 			//Based on the total Number of rows we will save the product relationship with this entity
 			saveInventoryProductDetails($this, 'SalesOrder');
@@ -148,21 +154,20 @@ class SalesOrder extends CRMEntity {
 
 	public function registerInventoryHistory() {
 		global $app_strings;
-		if (isset($_REQUEST['ajxaction']) && $_REQUEST['ajxaction'] == 'DETAILVIEW') { //if we use ajax edit
-			if (GlobalVariable::getVariable('Application_B2B', '1')) {
+		if (GlobalVariable::getVariable('Application_B2B', '1')) {
+			if (!empty($this->column_fields['account_id'])) {
 				$relatedname = getAccountName($this->column_fields['account_id']);
 			} else {
+				$relatedname = getAccountName(getSingleFieldValue($this->table_name, 'accountid', $this->table_index, $this->id));
+			}
+		} else {
+			if (!empty($this->column_fields['contact_id'])) {
 				$relatedname = getContactName($this->column_fields['contact_id']);
-			}
-			$total = $this->column_fields['hdnGrandTotal'];
-		} else { //using edit button and save
-			if (GlobalVariable::getVariable('Application_B2B', '1')) {
-				$relatedname = $_REQUEST['account_name'];
 			} else {
-				$relatedname = $_REQUEST['contact_name'];
+				$relatedname = getContactName(getSingleFieldValue($this->table_name, 'contactid', $this->table_index, $this->id));
 			}
-			$total = $_REQUEST['total'];
 		}
+		$total = getSingleFieldValue($this->table_name, 'total', $this->table_index, $this->id);
 		if ($this->column_fields['sostatus'] == $app_strings['LBL_NOT_ACCESSIBLE']) {
 			//If the value in the request is Not Accessible for a picklist, the existing value will be replaced instead of Not Accessible value.
 			$stat_value = getSingleFieldValue($this->table_name, 'sostatus', $this->table_index, $this->id);
@@ -215,12 +220,11 @@ class SalesOrder extends CRMEntity {
 		} else {
 			$returnset = '&return_module=SalesOrder&return_action=CallRelatedList&return_id='.$id;
 		}
-
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$crmtablealias = CRMEntity::getcrmEntityTableAlias('Invoice');
 		$query = "select vtiger_crmentity.*, vtiger_invoice.*, vtiger_account.accountname,
-			vtiger_salesorder.subject as salessubject, case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name
+			vtiger_salesorder.subject as salessubject, case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name
 			from vtiger_invoice
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_invoice.invoiceid
+			inner join $crmtablealias on vtiger_crmentity.crmid=vtiger_invoice.invoiceid
 			left outer join vtiger_account on vtiger_account.accountid=vtiger_invoice.accountid
 			inner join vtiger_salesorder on vtiger_salesorder.salesorderid=vtiger_invoice.salesorderid
 			LEFT JOIN vtiger_invoicecf ON vtiger_invoicecf.invoiceid = vtiger_invoice.invoiceid
@@ -246,7 +250,7 @@ class SalesOrder extends CRMEntity {
 		$query = 'select vtiger_sostatushistory.*, vtiger_salesorder.salesorder_no
 			from vtiger_sostatushistory
 			inner join vtiger_salesorder on vtiger_salesorder.salesorderid = vtiger_sostatushistory.salesorderid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_salesorder.salesorderid
+			inner join '.$this->crmentityTableAlias.' on vtiger_crmentity.crmid = vtiger_salesorder.salesorderid
 			where vtiger_crmentity.deleted = 0 and vtiger_salesorder.salesorderid = ?';
 		$result=$adb->pquery($query, array($id));
 		$header = array();
@@ -361,7 +365,6 @@ class SalesOrder extends CRMEntity {
 	 */
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
-			'Calendar' =>array('vtiger_seactivityrel'=>array('crmid','activityid'),'vtiger_salesorder'=>'salesorderid'),
 			'Invoice' =>array('vtiger_invoice'=>array('salesorderid','invoiceid'),'vtiger_salesorder'=>'salesorderid'),
 			'Quotes' =>array('vtiger_quotes'=>array('salesorderid','quoteid')),
 			'Potentials' =>array('vtiger_salesorder'=>array('salesorderid','potentialid')),
@@ -442,11 +445,10 @@ class SalesOrder extends CRMEntity {
 		$sql = getPermittedFieldsQuery('SalesOrder', 'detail_view');
 		$fields_list = getFieldsListFromQuery($sql);
 		$fields_list .= getInventoryFieldsForExport($this->table_name);
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 
-		$query = "SELECT $fields_list, case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name
-			FROM vtiger_crmentity
-			INNER JOIN vtiger_salesorder ON vtiger_salesorder.salesorderid = vtiger_crmentity.crmid
+		$query = "SELECT $fields_list, case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name
+			FROM ".$this->crmentityTableAlias
+			." INNER JOIN vtiger_salesorder ON vtiger_salesorder.salesorderid = vtiger_crmentity.crmid
 			LEFT JOIN vtiger_salesordercf ON vtiger_salesordercf.salesorderid = vtiger_salesorder.salesorderid
 			LEFT JOIN vtiger_sobillads ON vtiger_sobillads.sobilladdressid = vtiger_salesorder.salesorderid
 			LEFT JOIN vtiger_soshipads ON vtiger_soshipads.soshipaddressid = vtiger_salesorder.salesorderid

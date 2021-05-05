@@ -16,6 +16,7 @@ $image_path=$theme_path.'images/';
 $userName = getFullNameFromArray('Users', $current_user->column_fields);
 $smarty = new vtigerCRM_Smarty;
 $smarty->assign('THEME', $theme);
+$smarty->assign('SET_CSS_PROPERTIES', GlobalVariable::getVariable('Application_CSS_Properties', 'include/LD/assets/styles/properties.php'));
 $smarty->assign('IMAGEPATH', $image_path);
 $smarty->assign('USER', $userName);
 

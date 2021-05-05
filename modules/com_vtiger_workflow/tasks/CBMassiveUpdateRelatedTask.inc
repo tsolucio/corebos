@@ -55,7 +55,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 		if (!empty($this->field_value_mapping)) {
 			$fieldValueMapping = json_decode($this->field_value_mapping, true);
 		}
-		$logbg->debug("field mapping: ".print_r($fieldValueMapping, true));
+		$logbg->debug('field mapping', $fieldValueMapping);
 		if (!empty($fieldValueMapping) && count($fieldValueMapping) > 0) {
 			include_once 'data/CRMEntity.php';
 			$focus = CRMEntity::getInstance($moduleName);
@@ -122,7 +122,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 				);
 				$relationInfo = $adb->fetch_array($relationResult);
 				$params = array($recordId, $rectabid, $relatedModuleId);
-				$logbg->debug('rel func: '.$relationInfo['name'].', params: '.print_r($params, true));
+				$logbg->debug(['rel func' => $relationInfo['name'], 'params' => $params]);
 				$holdCM = $currentModule;
 				$currentModule = $moduleName;
 				$relationData = call_user_func_array(array($focus, $relationInfo['name']), $params);
@@ -145,7 +145,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 								$focusrel[$fldmod]->column_fields[$key]=$value;
 							}
 							$focusrel[$fldmod]->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel[$fldmod]->column_fields, $handlerMetarel[$fldmod]);
-							$logbg->debug("Saving: $relmodule, info: ".print_r($focusrel[$fldmod]->column_fields, true));
+							$logbg->debug("Saving: $relmodule", $focusrel[$fldmod]->column_fields);
 							if ($this->launchrelwf) {
 								$focusrel[$fldmod]->save($relmodule);
 							} else {

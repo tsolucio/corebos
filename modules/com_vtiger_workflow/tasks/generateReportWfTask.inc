@@ -25,6 +25,7 @@ class generateReportWfTask extends VTTask {
 		global $adb, $root_directory;
 		$path = '';
 		$name = '';
+		$hascontent = 1;
 		if ($this->case_type == 'report') {
 			$reportdata = explode('$$', $this->report_name);
 			$reportId = (int)$reportdata[0];
@@ -39,12 +40,11 @@ class generateReportWfTask extends VTTask {
 				}
 			}
 			$now = date('YmdHis');
-			$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_\.\%\s]/', '', $reportName));
+			$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_\.\%]/', '', $reportName));
 			if (strpos($baseFileName, '%s')===false) {
 				$baseFileName .= '_%s';
 			} else {
-				$spos = strpos($baseFileName, '%s');
-				$baseFileName = substr($baseFileName, 0, $spos+2).str_replace('%s', '', substr($baseFileName, $spos+2));
+				$baseFileName = suppressAllButFirst('%s', $baseFileName);
 			}
 			$baseFileName = sprintf($baseFileName, $now);
 			$path = 'cache/';
@@ -65,8 +65,11 @@ class generateReportWfTask extends VTTask {
 			if ($this->file_type  == 'excel') {
 				$fileName = $path.$baseFileName.'.xls';
 				$filePath = $root_directory.$fileName;
-				$oReportRun->writeReportToExcelFile($filePath, null, $entity->moduleName);
+				$oReportRun->writeReportToExcelFile($filePath, null, $entity->getModuleName());
 				$name = $baseFileName.'.xls';
+			}
+			if ($oReportRun->number_of_rows <= 0) {
+				$hascontent = 0;
 			}
 		}
 		if ($this->case_type == 'question') {
@@ -79,6 +82,10 @@ class generateReportWfTask extends VTTask {
 			}
 			$res = cbQuestion::getFormattedAnswer((int)$this->qnfield, array());
 			if ($res) {
+				$lines = file($res);
+				if (count($lines) < 2) {
+					$hascontent = 0;
+				}
 				$path_parts = pathinfo($res);
 				$name = $path_parts['basename'];
 				$path =str_replace($root_directory, '', $path_parts['dirname']).'/';
@@ -87,7 +94,7 @@ class generateReportWfTask extends VTTask {
 		if (empty($entity->WorkflowContext['wfgenerated_file'])) {
 			$entity->WorkflowContext['wfgenerated_file'] = array();
 		}
-		$entity->WorkflowContext['wfgenerated_file'][] = array('path'=>$path, 'name'=>$name);
+		$entity->WorkflowContext['wfgenerated_file'][] = array('path'=>$path, 'name'=>$name, 'hascontent' => $hascontent);
 	}
 }
 ?>

@@ -165,13 +165,13 @@ class Campaigns extends CRMEntity {
 			}
 		}
 
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Accounts');
 		$query = "SELECT vtiger_account.*,
-				CASE when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
+				CASE when (vtiger_users.user_name not like '') then vtiger_users.ename else vtiger_groups.groupname end as user_name,
 				vtiger_crmentity.*, vtiger_crmentity.modifiedtime, vtiger_campaignrelstatus.*, vtiger_accountbillads.*
 				FROM vtiger_account
 				INNER JOIN vtiger_campaignaccountrel ON vtiger_campaignaccountrel.accountid = vtiger_account.accountid
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_account.accountid
+				INNER JOIN ".$crmEntityTable." ON vtiger_crmentity.crmid = vtiger_account.accountid
 				LEFT JOIN vtiger_groups ON vtiger_groups.groupid=vtiger_crmentity.smownerid
 				LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid=vtiger_users.id
 				LEFT JOIN vtiger_accountbillads ON vtiger_accountbillads.accountaddressid = vtiger_account.accountid
@@ -269,9 +269,9 @@ class Campaigns extends CRMEntity {
 			}
 		}
 
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
 		$query = "SELECT vtiger_contactdetails.accountid, vtiger_account.accountname,
-				CASE when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name ,
+				CASE when (vtiger_users.user_name not like '') then vtiger_users.ename else vtiger_groups.groupname end as user_name ,
 				vtiger_contactdetails.contactid, vtiger_contactdetails.lastname, vtiger_contactdetails.firstname, vtiger_contactdetails.title,
 				vtiger_contactdetails.department, vtiger_contactdetails.email, vtiger_contactdetails.phone, vtiger_crmentity.crmid,
 				vtiger_crmentity.smownerid, vtiger_crmentity.modifiedtime, vtiger_campaignrelstatus.*
@@ -280,7 +280,7 @@ class Campaigns extends CRMEntity {
 				INNER JOIN vtiger_contactaddress ON vtiger_contactdetails.contactid = vtiger_contactaddress.contactaddressid
 				INNER JOIN vtiger_contactsubdetails ON vtiger_contactdetails.contactid = vtiger_contactsubdetails.contactsubscriptionid
 				INNER JOIN vtiger_customerdetails ON vtiger_contactdetails.contactid = vtiger_customerdetails.customerid
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid
+				INNER JOIN ".$crmEntityTable." ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid
 				LEFT JOIN vtiger_groups ON vtiger_groups.groupid=vtiger_crmentity.smownerid
 				LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid=vtiger_users.id
 				LEFT JOIN vtiger_account ON vtiger_account.accountid = vtiger_contactdetails.accountid
@@ -377,13 +377,13 @@ class Campaigns extends CRMEntity {
 			}
 		}
 
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Leads');
 		$query = "SELECT vtiger_leaddetails.*, vtiger_crmentity.crmid,vtiger_leadaddress.phone,vtiger_leadsubdetails.website,
-				CASE when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
+				CASE when (vtiger_users.user_name not like '') then vtiger_users.ename else vtiger_groups.groupname end as user_name,
 				vtiger_crmentity.smownerid, vtiger_campaignrelstatus.*
 				FROM vtiger_leaddetails
 				INNER JOIN vtiger_campaignleadrel ON vtiger_campaignleadrel.leadid=vtiger_leaddetails.leadid
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_leaddetails.leadid
+				INNER JOIN ".$crmEntityTable." ON vtiger_crmentity.crmid = vtiger_leaddetails.leadid
 				INNER JOIN vtiger_leadsubdetails  ON vtiger_leadsubdetails.leadsubscriptionid = vtiger_leaddetails.leadid
 				INNER JOIN vtiger_leadaddress ON vtiger_leadaddress.leadaddressid = vtiger_leadsubdetails.leadsubscriptionid
 				INNER JOIN vtiger_leadscf ON vtiger_leaddetails.leadid = vtiger_leadscf.leadid
@@ -456,7 +456,6 @@ class Campaigns extends CRMEntity {
 			"Leads" => array("vtiger_campaignleadrel"=>array("campaignid","leadid"),"vtiger_campaign"=>"campaignid"),
 			"Accounts" => array("vtiger_campaignaccountrel"=>array("campaignid","accountid"),"vtiger_campaign"=>"campaignid"),
 			"Potentials" => array("vtiger_potential"=>array("campaignid","potentialid"),"vtiger_campaign"=>"campaignid"),
-			"Calendar" => array("vtiger_seactivityrel"=>array("crmid","activityid"),"vtiger_campaign"=>"campaignid"),
 			"Products" => array("vtiger_campaign"=>array("campaignid","product_id")),
 		);
 		return isset($rel_tables[$secmodule]) ? $rel_tables[$secmodule] : '';
@@ -554,10 +553,11 @@ class Campaigns extends CRMEntity {
 	/* Create potential */
 	public static function createPotentialRelatedTo($relatedto, $campaignid) {
 		global $adb, $current_user;
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Potentials');
 		$checkrs = $adb->pquery('select 1
 			from vtiger_potential
-			inner join vtiger_crmentity on crmid=potentialid
-			where deleted=0 and related_to=? and campaignid=?', array($relatedto,$campaignid));
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=potentialid
+			where vtiger_crmentity.deleted=0 and related_to=? and campaignid=?', array($relatedto,$campaignid));
 		if ($adb->num_rows($checkrs)==0) {
 			require_once 'modules/Potentials/Potentials.php';
 			$entity = new Potentials();
@@ -610,7 +610,7 @@ class Campaigns extends CRMEntity {
 	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
-		$log->debug('> transferRelatedRecords '.$module.','.print_r($transferEntityIds, true).','.$entityId);
+		$log->debug('> transferRelatedRecords', ['module' => $module, 'transferEntityIds' => $transferEntityIds, 'entityId' => $entityId]);
 		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
 		$rel_table_arr = array(
 			'Contacts'=>'vtiger_campaigncontrel',

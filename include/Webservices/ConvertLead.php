@@ -14,7 +14,6 @@ require_once 'include/Webservices/DescribeObject.php';
 require_once 'modules/Vtiger/ExecuteFunctionsfromphp.php';
 
 function vtws_convertlead($entityvalues, $user) {
-
 	global $adb, $log;
 	if (empty($entityvalues['assignedTo'])) {
 		$entityvalues['assignedTo'] = vtws_getWebserviceEntityId('Users', $user->id);
@@ -35,8 +34,30 @@ function vtws_convertlead($entityvalues, $user) {
 
 	$leadHandler = new $handlerClass($leadObject, $user, $adb, $log);
 
-	$leadInfo = vtws_retrieve($entityvalues['leadId'], $user);
 	$leadIdComponents = vtws_getIdComponents($entityvalues['leadId']);
+	$meta = $leadHandler->getMeta();
+	$types = vtws_listtypes(null, $user);
+	$entityName = $meta->getObjectEntityName($entityvalues['leadId']);
+	if (!in_array($entityName, $types['types'])) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
+	}
+
+	if ($entityName !== $leadObject->getEntityName()) {
+		throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Id specified is incorrect');
+	}
+
+	if (!$meta->exists($leadIdComponents[1])) {
+		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record you are trying to access is not found');
+	}
+
+	if (!$meta->hasPermission(EntityMeta::$UPDATE, $entityvalues['leadId'])) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
+	}
+
+	if (!leadCanBeConverted($leadIdComponents[1])) {
+		throw new WebServiceException(WebServiceErrorCode::$LEAD_CONVERTCONDITIONSNOTMET, 'Conditions to convert Lead are not met');
+	}
+
 	$result = $adb->pquery('select converted from vtiger_leaddetails where converted = 1 and leadid=?', array($leadIdComponents[1]));
 	if ($result === false) {
 		throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, vtws_getWebserviceTranslatedString('LBL_' . WebServiceErrorCode::$DATABASEQUERYERROR));
@@ -54,6 +75,7 @@ function vtws_convertlead($entityvalues, $user) {
 		return null;
 	}
 
+	$leadInfo = vtws_retrieve($entityvalues['leadId'], $user);
 	foreach ($availableModules as $entityName) {
 		if (isset($entityvalues['entities'][$entityName]['create'])) {
 			$entityvalue = $entityvalues['entities'][$entityName];
@@ -87,8 +109,9 @@ function vtws_convertlead($entityvalues, $user) {
 
 			$create = true;
 			if ($entityvalue['name'] == 'Accounts' && empty($entityvalue['forcecreate'])) {
+				$crmEntityTable = CRMEntity::getcrmEntityTableAlias($entityvalue['name']);
 				$sql = 'SELECT vtiger_account.accountid
-					FROM vtiger_account, vtiger_crmentity
+					FROM vtiger_account, '.$crmEntityTable.'
 					WHERE vtiger_crmentity.crmid=vtiger_account.accountid AND vtiger_account.accountname=? AND vtiger_crmentity.deleted=0';
 				$result = $adb->pquery($sql, array($entityvalue['accountname']));
 				if ($adb->num_rows($result) > 0) {
@@ -99,7 +122,7 @@ function vtws_convertlead($entityvalues, $user) {
 			if ($create) {
 				$screen_values = $entityObjectValues;
 				$screen_values['module'] = $entityvalue['name'];
-				$holdRecord = $_REQUEST['record'];
+				$holdRecord = isset($_REQUEST['record']) ? $_REQUEST['record'] : '';
 				unset($screen_values['name'], $_REQUEST['record']);
 				$vals = executefunctionsvalidate('ValidationLoad', $entityvalue['name'], json_encode($screen_values));
 				$_REQUEST['record'] = $holdRecord;
@@ -273,8 +296,9 @@ function vtws_updateConvertLeadStatus($entityIds, $leadId, $user) {
 		$adb->pquery('DELETE FROM vtiger_tracker WHERE item_id=?', array($leadIdComponents[1]));
 
 		//update the modifiedtime and modified by information for the record
+		$mod = CRMEntity::getInstance('Leads');
 		$leadModifiedTime = $adb->formatDate(date('Y-m-d H:i:s'), true);
-		$adb->pquery('UPDATE vtiger_crmentity SET modifiedtime=?, modifiedby=? WHERE crmid=?', array($leadModifiedTime, $user->id, $leadIdComponents[1]));
+		$adb->pquery('UPDATE '.$mod->crmentityTable.' SET modifiedtime=?, modifiedby=? WHERE crmid=?', array($leadModifiedTime, $user->id, $leadIdComponents[1]));
 	}
 	$moduleArray = array('Accounts','Contacts','Potentials');
 	foreach ($moduleArray as $module) {

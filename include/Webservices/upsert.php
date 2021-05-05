@@ -60,7 +60,11 @@ function vtws_upsert($elementType, $element, $searchOn, $updatedfields, $user) {
 			continue;
 		}
 		if (isset($r[$fieldName])) { // reference field
-			list($wsid, $crmid) = explode('x', $fieldValue);
+			if (empty($fieldValue)) {
+				$crmid = 0;
+			} else {
+				list($wsid, $crmid) = explode('x', $fieldValue);
+			}
 			$queryGenerator->addReferenceModuleFieldCondition($r[$fieldName][0], $fieldName, 'id', $crmid, 'e', QueryGenerator::$AND);
 		} else {
 			if ($fieldName=='id' && strpos($fieldValue, 'x')>0) {
@@ -74,7 +78,7 @@ function vtws_upsert($elementType, $element, $searchOn, $updatedfields, $user) {
 	$query = $queryGenerator->getQuery();
 	// special case for cbuuid
 	if (in_array('cbuuid', array_keys($searchWithValues))) {
-		$query .= " and cbuuid='".$searchWithValues['cbuuid']."'";
+		$query .= $adb->convert2Sql(' and cbuuid=?', array($searchWithValues['cbuuid']));
 	}
 	$query .= ' limit 0,1';
 	$result = $adb->pquery($query, []);

@@ -198,10 +198,10 @@ class ModTracker {
 	public static function isModtrackerLinkPresent($tabid) {
 		global $adb;
 		$module_name = getTabModuleName($tabid);
-
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
 		$rs=$adb->pquery(
 			"SELECT businessactionsid
-			FROM vtiger_businessactions INNER JOIN vtiger_crmentity ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid
+			FROM vtiger_businessactions INNER JOIN '.$crmEntityTable.' ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid
 			WHERE deleted = 0 AND elementtype_action='DETAILVIEWBASIC' AND linklabel = 'View History'
 				AND (module_list = ? OR module_list LIKE ? OR module_list LIKE ? OR module_list LIKE ?)",
 			array($module_name, $module_name.' %', '% '.$module_name.' %', '% '.$module_name,)
@@ -261,10 +261,10 @@ class ModTracker {
 			throw new Exception('Modtracker not enabled for any modules');
 		}
 
-		$query = 'SELECT id, module, modifiedtime, vtiger_crmentity.crmid, smownerid, vtiger_modtracker_basic.status
+		$query = 'SELECT id, module, modifiedtime, vtiger_crmobject.crmid, smownerid, vtiger_modtracker_basic.status
 			FROM vtiger_modtracker_basic
-			INNER JOIN vtiger_crmentity ON vtiger_modtracker_basic.crmid = vtiger_crmentity.crmid
-				AND vtiger_modtracker_basic.changedon = vtiger_crmentity.modifiedtime
+			INNER JOIN vtiger_crmobject ON vtiger_modtracker_basic.crmid = vtiger_crmobject.crmid
+				AND vtiger_modtracker_basic.changedon = vtiger_crmobject.modifiedtime
 			WHERE id > ? AND changedon >= ? AND module IN ('.generateQuestionMarks($accessibleModules).') ORDER BY id';
 
 		$params = array($uniqueId, $datetime);
@@ -475,7 +475,7 @@ class ModTracker {
 				'result' => false,
 				'message' => getTranslatedString('ERR_SQL', 'ModTracker'),
 				'debug_query' => $list_query.$limit,
-				'debug_params' => print_r($params, true),
+				'debug_params' => json_encode($params),
 			);
 		}
 		$log->debug('< getModTrackerJSON');

@@ -10,7 +10,7 @@
 require_once 'modules/Documents/Documents.php';
 require_once 'include/logging.php';
 require_once 'include/database/PearDatabase.php';
-
+require_once 'data/CRMEntity.php';
 global $adb, $current_user;
 if ($current_user->is_admin != 'on') {
 	echo 'NOT_PERMITTED';
@@ -24,9 +24,10 @@ if ($current_user->is_admin != 'on') {
 		die;
 	}
 	if (isset($_REQUEST['deletechk']) && $_REQUEST['deletechk'] == 'true') {
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents');
 		$query = 'select notesid
 			from vtiger_notes
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_notes.notesid
+			INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_notes.notesid
 			WHERE vtiger_notes.folderid = ? and vtiger_crmentity.deleted = 0';
 		$result = $adb->pquery($query, array($folderId));
 		if ($adb->num_rows($result) > 0) {

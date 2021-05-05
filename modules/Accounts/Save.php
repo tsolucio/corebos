@@ -7,11 +7,12 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
+require_once 'data/CRMEntity.php';
 global $current_user, $currentModule, $adb, $singlepane_view;
-
+$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Accounts');
 if (isset($_REQUEST['dup_check']) && $_REQUEST['dup_check'] != '') {
 	$value = vtlib_purify($_REQUEST['accountname']);
-	$query = 'SELECT 1 FROM vtiger_account,vtiger_crmentity WHERE accountname=? and vtiger_account.accountid=vtiger_crmentity.crmid and vtiger_crmentity.deleted!=1';
+	$query = 'SELECT 1 FROM vtiger_account,'.$crmEntityTable.' WHERE accountname=? and vtiger_account.accountid=vtiger_crmentity.crmid and vtiger_crmentity.deleted!=1';
 	$params = array($value);
 	$id = vtlib_purify($_REQUEST['record']);
 	if (isset($id) && $id !='') {

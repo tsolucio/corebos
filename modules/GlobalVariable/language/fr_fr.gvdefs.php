@@ -685,6 +685,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Maximum númber of results to be shown in autocomplete global search.',
 ),
+'Application_ProductService_Search_Autocomplete_Limit' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Maximum number of results to be shown in product/service autocomplete search.',
+),
 'Product_Copy_Bundle_OnDuplicate' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Chaîne',
@@ -726,6 +733,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'comma separated list of other inventory modules',
 	'definition' => 'Inventory modules are special due to their product lines, this variable will permit you to add that type of functionality to your custom modules by adding it here.',
+),
+'Inventory_DoNotUseLines' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'comma separated list of inventory modules that will not use product lines',
+	'definition' => 'The modules listed in this variable will act as normal modules, not showing the product detail lines, only the header fields of the module.',
 ),
 'Report_Send_Scheduled_ifEmpty' => array(
 	'status' => 'Implémenté',
@@ -1546,6 +1560,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'SQL sort specification|DO NOT SORT',
 	'definition' => 'If given will be feeded directly into the SQL query to retrieve users that appear in the Assigned To dropdown permitting us to customize the sort order of these users.',
 ),
+'Application_Merge_Record_Limit' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'The maximum number of records to perform deduplication merging. The default is 8 records',
+),
 'Workflow_ListView_PageSize' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',
@@ -1636,6 +1657,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'Edit the filter "All". The default is 1',
+),
+'Security_ImageCheck' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'strict | loose | clean',
+	'definition' => 'This variable decides if we strictly/loosely check for the security issue in an image file or ignore the check and clean the image.',
 ),
 );
 

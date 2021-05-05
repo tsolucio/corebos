@@ -46,7 +46,6 @@ if (isset($_REQUEST['view'])) {
 	coreBOS_Session::set('view', $view);
 }
 
-
 require_once 'include/logging.php';
 require_once 'modules/Users/Users.php';
 $calculate_response_time = GlobalVariable::getVariable('Debug_Calculate_Response_Time', 0, '', Users::getActiveAdminId());
@@ -54,7 +53,7 @@ if ($calculate_response_time) {
 	$startTime = microtime(true);
 }
 
-$log = LoggerManager::getLogger('index');
+$log = LoggerManager::getLogger('APPLICATION');
 
 global $seclog;
 $seclog = LoggerManager::getLogger('SECURITY');
@@ -305,7 +304,7 @@ if ($use_current_login) {
 
 	/* Skip audit trail log for special request types */
 	$skip_auditing = false;
-	if (($action == 'ActivityReminderCallbackAjax' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'ActivityReminderCallbackAjax')) && $module == 'Calendar') {
+	if (($action == 'ActivityReminderCallbackAjax' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'ActivityReminderCallbackAjax')) && $module == 'cbCalendar') {
 		$skip_auditing = true;
 	} elseif (($action == 'TraceIncomingCall' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'TraceIncomingCall')) && $module == 'PBXManager') {
 		$skip_auditing = true;
@@ -350,7 +349,8 @@ if ($use_current_login) {
 }
 // Force password change
 if ($current_user->mustChangePassword() && $_REQUEST['action']!='Logout' && $_REQUEST['action']!='CalendarAjax' && $_REQUEST['action']!='UsersAjax'
-	&& $_REQUEST['action']!='ChangePassword' && $_REQUEST['action'] != 'PBXManagerAjax' && !($_REQUEST['module']=='Users' && $_REQUEST['action']=='Save')
+	&& ($_REQUEST['action']!='UtilitiesAjax' && (empty($_REQUEST['functiontocall']) || $_REQUEST['functiontocall']!='setNewPassword')) && $_REQUEST['action'] != 'PBXManagerAjax'
+	&& !($_REQUEST['module']=='Users' && $_REQUEST['action']=='Save')
 ) {
 	$currentModule = 'Users';
 	$currentModuleFile = 'modules/Users/DetailView.php';
@@ -444,10 +444,14 @@ if (!$skipSecurityCheck && $use_current_login) {
 	}
 
 	if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
-		$display = isPermitted($module, $now_action, $_REQUEST['record']);
+		if ($now_action=='EditView' && isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate']=='true') {
+			$display = isPermitted($module, 'CreateView', $_REQUEST['record']);
+		} else {
+			$display = isPermitted($module, $now_action, $_REQUEST['record']);
+		}
 	} else {
-		if ($now_action=='EditView' || $now_action=='EventEditView' || $now_action=='Save'
-			|| ($now_action=='DetailViewAjax' && isset($_REQUEST['ajxaction']) && $_REQUEST['ajxaction']=='WIDGETADDCOMMENT')
+		if ($now_action=='EditView' || $now_action=='Save' || ($now_action=='DetailViewAjax' && isset($_REQUEST['ajxaction'])
+			&& $_REQUEST['ajxaction']=='WIDGETADDCOMMENT')
 		) {
 			$now_action = 'CreateView';
 		}
@@ -491,7 +495,9 @@ if (isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_aut
 }
 $theme = basename(vtlib_purify($theme));
 $Ajx_module = (isset($_REQUEST['module']) ? vtlib_purify($_REQUEST['module']) : $module);
-if (!$viewAttachment && (!$viewAttachment && $action!='home_rss') && $action!=$Ajx_module.'Ajax' && $action!='massdelete' && $action!='DashboardAjax' && $action!='ActivityAjax') {
+if (!$viewAttachment && (!$viewAttachment && $action!='home_rss') && $action!=$Ajx_module.'Ajax' && $action!='massdelete' && $action!='DashboardAjax'
+	&& $action!='ActivityAjax' && empty($_REQUEST['Module_Popup_Edit'])
+) {
 	// ActivityReminder Customization for callback
 	if (!$skipFooters) {
 		if ($current_user->id!=null && isPermitted('cbCalendar', 'index') == 'yes' && vtlib_isModuleActive('cbCalendar')) {

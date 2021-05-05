@@ -22,9 +22,11 @@
 global $adb, $log, $mod_strings, $app_strings, $currentModule, $current_user, $theme;
 include_once 'modules/cbupdater/cbupdater.php';
 include_once 'modules/cbupdater/cbupdaterHelper.php';
+require_once 'data/CRMEntity.php';
 
 $error = false;
 $errmsg = '';
+$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbupdater');
 $cbupdatesfound = array();
 $cbupdate_files = array();
 if (!empty($_REQUEST['update_file'])) {
@@ -83,10 +85,10 @@ if (count($cbupdate_files)>0) {
 							}
 						} else {
 							// we check for empty pathnames
-							$sql = "select cbupdaterid
+							$sql = 'select cbupdaterid
 								from vtiger_cbupdater
-								inner join vtiger_crmentity on crmid=cbupdaterid
-								where deleted=0 and (pathfilename='' or pathfilename is null) and classname=? and filename=?";
+								inner join '.$crmEntityTable." on vtiger_crmentity.crmid=cbupdaterid
+								where vtiger_crmentity.deleted=0 and (pathfilename='' or pathfilename is null) and classname=? and filename=?";
 							$rs = $adb->pquery($sql, array($cbupd['classname'], basename($cbupd['filename'], '.php')));
 							if ($rs && $adb->num_rows($rs)>0) {
 								$adb->pquery('update vtiger_cbupdater set pathfilename=? where cbupdaterid=?', array($cbupd['filename'], $rs->fields['cbupdaterid']));

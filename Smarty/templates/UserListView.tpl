@@ -75,7 +75,7 @@ function deleteUser(obj, userid) {
 	}).done(function(response) {
 		document.getElementById('status').style.display='none';
 		document.getElementById('tempdiv').innerHTML= response;
-		fnvshobj(obj,'tempdiv');
+		positionDivToCenter('tempdiv');
 	});
 }
 
@@ -98,7 +98,7 @@ function transferUser(del_userid) {
 		method:'POST',
 		url:'index.php?module=Users&action=UsersAjax&file=DeleteUser&ajax=true&delete_user_id='+del_userid+'&transfer_user_id='+trans_userid
 	}).done(function(response) {
-		location.reload(true);
+		location.reload();
 	});
 }
 </script>

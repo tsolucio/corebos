@@ -1,14 +1,18 @@
 var searchConditions = [
-	{"groupid":"1",
-	 "columnname":"vtiger_cbmap:maptype:maptype:cbMap_Map_Type:V",
-	 "comparator":"e",
-	 "value":"Condition Expression",
-	 "columncondition":"or"},
-	{"groupid":"1",
-	 "columnname":"vtiger_cbmap:maptype:maptype:cbMap_Map_Type:V",
-	 "comparator":"e",
-	 "value":"Condition Query",
-	 "columncondition":""}
+	{
+		'groupid':'1',
+		'columnname':'vtiger_cbmap:maptype:maptype:cbMap_Map_Type:V',
+		'comparator':'e',
+		'value':'Condition Expression',
+		'columncondition':'or'
+	},
+	{
+		'groupid':'1',
+		'columnname':'vtiger_cbmap:maptype:maptype:cbMap_Map_Type:V',
+		'comparator':'e',
+		'value':'Condition Query',
+		'columncondition':''
+	}
 ];
 var advSearch = '&query=true&searchtype=advance&advft_criteria='+convertArrayOfJsonObjectsToString(searchConditions);
 var SpecialSearch = encodeURI(advSearch);
@@ -45,54 +49,54 @@ function setRuleDefinition(ev) {
 		const idx = parseInt(ev.rowKey) + 1;
 		const ruletype = rulegridInstance.getValue(ev.rowKey, 'ruletype');
 		switch (ruletype) {
-			case 'businessmap':
-				for (var j = 1; j <= ruleData.length; j++) {
-					if (j != idx && document.getElementById(`bmeditsection-${j}`)) {
-						document.getElementById(`bmeditsection-${j}`).style.display='none';
-					}
-					if (document.getElementById(`expeditsection-${j}`)) {
-						document.getElementById(`expeditsection-${j}`).style.display='none';
-					}
-					if (document.getElementById(`dteditsection-${j}`)) {
-						document.getElementById(`dteditsection-${j}`).style.display='none';
-					}
+		case 'businessmap':
+			for (var j = 1; j <= ruleData.length; j++) {
+				if (j != idx && document.getElementById(`bmeditsection-${j}`)) {
+					document.getElementById(`bmeditsection-${j}`).style.display='none';
 				}
-				if (document.getElementById(`bmeditsection-${idx}`)) {
-	 				document.getElementById(`bmeditsection-${idx}`).style.display='block';
-	 			}
-				break;
-			case 'decisiontable':
-				for (var j = 1; j <= ruleData.length; j++) {
-					if (j != idx && document.getElementById(`dteditsection-${j}`)) {
-						document.getElementById(`dteditsection-${j}`).style.display='none';
-					}
-					if (document.getElementById(`expeditsection-${j}`)) {
-						document.getElementById(`expeditsection-${j}`).style.display='none';
-					}
-					if (document.getElementById(`bmeditsection-${j}`)) {
-						document.getElementById(`bmeditsection-${j}`).style.display='none';
-					}
+				if (document.getElementById(`expeditsection-${j}`)) {
+					document.getElementById(`expeditsection-${j}`).style.display='none';
 				}
-				if (document.getElementById(`dteditsection-${idx}`)) {
-	 				document.getElementById(`dteditsection-${idx}`).style.display='block';
-	 			}
-	 			break;
-	 		default:
-				for (var j = 1; j <= ruleData.length; j++) {
-					if (j != idx && document.getElementById(`expeditsection-${j}`)) {
-						document.getElementById(`expeditsection-${j}`).style.display='none';
-					}
-					if (document.getElementById(`bmeditsection-${j}`)) {
-						document.getElementById(`bmeditsection-${j}`).style.display='none';
-					}
-					if (document.getElementById(`dteditsection-${j}`)) {
-						document.getElementById(`dteditsection-${j}`).style.display='none';
-					}
+				if (document.getElementById(`dteditsection-${j}`)) {
+					document.getElementById(`dteditsection-${j}`).style.display='none';
 				}
-				if (document.getElementById(`expeditsection-${idx}`)) {
-	 				document.getElementById(`expeditsection-${idx}`).style.display='block';
-	 			}
-	 			break;
+			}
+			if (document.getElementById(`bmeditsection-${idx}`)) {
+				document.getElementById(`bmeditsection-${idx}`).style.display='block';
+			}
+			break;
+		case 'decisiontable':
+			for (var j = 1; j <= ruleData.length; j++) {
+				if (j != idx && document.getElementById(`dteditsection-${j}`)) {
+					document.getElementById(`dteditsection-${j}`).style.display='none';
+				}
+				if (document.getElementById(`expeditsection-${j}`)) {
+					document.getElementById(`expeditsection-${j}`).style.display='none';
+				}
+				if (document.getElementById(`bmeditsection-${j}`)) {
+					document.getElementById(`bmeditsection-${j}`).style.display='none';
+				}
+			}
+			if (document.getElementById(`dteditsection-${idx}`)) {
+				document.getElementById(`dteditsection-${idx}`).style.display='block';
+			}
+			break;
+		default:
+			for (var j = 1; j <= ruleData.length; j++) {
+				if (j != idx && document.getElementById(`expeditsection-${j}`)) {
+					document.getElementById(`expeditsection-${j}`).style.display='none';
+				}
+				if (document.getElementById(`bmeditsection-${j}`)) {
+					document.getElementById(`bmeditsection-${j}`).style.display='none';
+				}
+				if (document.getElementById(`dteditsection-${j}`)) {
+					document.getElementById(`dteditsection-${j}`).style.display='none';
+				}
+			}
+			if (document.getElementById(`expeditsection-${idx}`)) {
+				document.getElementById(`expeditsection-${idx}`).style.display='block';
+			}
+			break;
 		}
 	}
 }
@@ -149,10 +153,10 @@ async function loadFields(id, rowKey) {
 	for (let fields in DTModuleFields) {
 		listFields += `
 		<li class="slds-dropdown__item">
-            <a tabindex="${fields}" id="${fields}" onclick="setFieldValues('${id}', ${rowKey}, this.id, '${DTModuleFields[fields]}')">
-                <span class="slds-truncate">${DTModuleFields[fields]}</span>
-            </a>
-        </li>`;
+			<a tabindex="${fields}" id="${fields}" onclick="setFieldValues('${id}', ${rowKey}, this.id, '${DTModuleFields[fields]}')">
+				<span class="slds-truncate">${DTModuleFields[fields]}</span>
+			</a>
+		</li>`;
 	}
 	listFields += '</ul>';
 	document.getElementById(`${id}`).innerHTML = listFields;
@@ -165,16 +169,16 @@ async function loadFields(id, rowKey) {
  */
 function setFieldValues(inputid, rowKey, value, translatedValue) {
 	let template = `
-    <li class="slds-listbox-item" role="presentation" id="${inputid}-${value}">
-      	<span class="slds-pill" role="option" aria-selected="true">
-        <span class="slds-pill__label" title="${value}">${translatedValue}</span>
-        <span class="slds-icon_container slds-pill__remove" id="remove-${inputid}-${value}" onclick="removeField(this, ${rowKey}, '${value}')" style="cursor: pointer">
-          	<svg class="slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
-            	<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-          	</svg>
-        </span>
-      	</span>
-    </li>`;
+<li class="slds-listbox-item" role="presentation" id="${inputid}-${value}">
+	<span class="slds-pill" role="option" aria-selected="true">
+	<span class="slds-pill__label" title="${value}">${translatedValue}</span>
+	<span class="slds-icon_container slds-pill__remove" id="remove-${inputid}-${value}" onclick="removeField(this, ${rowKey}, '${value}')" style="cursor: pointer">
+		<svg class="slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+		</svg>
+	</span>
+	</span>
+</li>`;
 	if (inputid == `showReturnFields-${rowKey}`) {
 		const returnfields = document.getElementById(`returnfields-${rowKey}`).value;
 		const getreturnfields = document.getElementById(`setreturnfields-${rowKey}`).innerHTML;
@@ -206,7 +210,7 @@ function removeField(el, rowKey, val) {
 	let newValues = '';
 	pills.parentNode.removeChild(pills);
 	id = el.id.split('-')[3];
-	if (type == `showReturnFields`) {
+	if (type == 'showReturnFields') {
 		const returnfields = document.getElementById(`returnfields-${rowKey}`).value;
 		objValues = returnfields.split(',');
 		for (let i in objValues) {
@@ -216,7 +220,7 @@ function removeField(el, rowKey, val) {
 		}
 		document.getElementById(`returnfields-${rowKey}`).value = newValues;
 	}
-	if (type == `showOrderByFields`) {
+	if (type == 'showOrderByFields') {
 		const orderbyrule = document.getElementById(`orderbyrule-${rowKey}`).value;
 		objValues = orderbyrule.split(',');
 		for (let i in objValues) {
@@ -232,8 +236,8 @@ function removeField(el, rowKey, val) {
  */
 document.addEventListener('click', function (event) {
 	const getSection = document.getElementsByClassName('closeList');
-	let getIds = Array.prototype.filter.call(getSection, function(el){
-	  	return el.nodeName;
+	let getIds = Array.prototype.filter.call(getSection, function (el) {
+		return el.nodeName;
 	});
 	for (let i in getIds) {
 		document.getElementById(getIds[i].id).innerHTML = '';
@@ -372,7 +376,7 @@ function getEmptyFieldRow(type) {
 			'preprocess': 'e',
 			'operation': 'expression',
 			'field': 'fieldvalue',
-		}
+		};
 	}
 }
 /**
@@ -421,13 +425,13 @@ function deleteFieldRow() {
 			value = 'dteditsection';
 		}
 		const sectionToRemove = document.getElementById(`${value}-${idx}`);
-		sectionToRemove.parentNode.removeChild(sectionToRemove);		
+		sectionToRemove.parentNode.removeChild(sectionToRemove);
 	}
 	rulegridInstance.removeCheckedRows();
 	//udpdate ids on sections
 	const getSection = document.getElementsByClassName('expeditsection');
-	let getIds = Array.prototype.filter.call(getSection, function(el){
-	  	return el.nodeName;
+	let getIds = Array.prototype.filter.call(getSection, function (el) {
+		return el.nodeName;
 	});
 	let inc = 1;
 	for (let n in getIds) {
@@ -570,7 +574,7 @@ function setNewIds(data, id, inc) {
 function deleteSrchRow(rowKey) {
 	const checkedRows = srchgridInstance[rowKey].getCheckedRowKeys();
 	for (var i = checkedRows.length-1; i >= 0; i--) {
-		srchData[rowKey].splice(checkedRows[i], 1);		
+		srchData[rowKey].splice(checkedRows[i], 1);
 	}
 	for (let i in srchData[rowKey]) {
 		srchData[rowKey][i].rowKey = parseInt(i);
@@ -586,7 +590,7 @@ function deleteSrchRow(rowKey) {
 function deleteCondRow(rowKey) {
 	const checkedRows = condgridInstance[rowKey].getCheckedRowKeys();
 	for (var i = checkedRows.length-1; i >= 0; i--) {
-		condGroup[rowKey].splice(checkedRows[i], 1);		
+		condGroup[rowKey].splice(checkedRows[i], 1);
 	}
 	for (let i in condGroup[rowKey]) {
 		condGroup[rowKey][i].rowKey = parseInt(i);
@@ -638,12 +642,12 @@ function generateRuleDefinition(rowKey, show = '') {
 	};
 	if (show == 'none') {
 		inStyle = {
-			style: "display: none;"
-		}
+			style: 'display: none;'
+		};
 	}
 	let createSection = document.createElement('section');
 	createSection.id = `expeditsection-${rowKey}`;
-	createSection.className = `expeditsection`;
+	createSection.className = 'expeditsection';
 	createSection.style = `${inStyle.style}`;
 	document.getElementById('show-ruleeditsection').appendChild(createSection);
 	const template = `
@@ -664,8 +668,7 @@ function generateRuleDefinition(rowKey, show = '') {
 			<div class="slds-col slds-size_1-of-1 slds-text-align_left">
 				<textarea id="exptextarea-${rowKey}" class="slds-textarea"></textarea>
 			</div>
-		</div>
-	`;
+		</div>`;
 	document.getElementById(`expeditsection-${rowKey}`).innerHTML = template;
 }
 /**
@@ -705,26 +708,26 @@ async function generateSection(ev, preLoadMap = {}) {
 		}
 		let createSection = document.createElement('section');
 		createSection.id = `bmeditsection-${rowKey}`;
-		createSection.className = `expeditsection`;
+		createSection.className = 'expeditsection';
 		createSection.style = `${inStyle.style}`;
 		document.getElementById('show-ruleeditsection').appendChild(createSection);
 		template = `
-        <div class="slds-form slds-p-around_small">
-            <form name="dtbmselection_${rowKey}">
-            <label class="slds-form-element__label"> ${mod_alert_arr.LBL_MAP} </label>
-            <div class="slds-form-element__control slds-input-has-fixed-addon">
-                <input id="bmapid_${rowKey}" name="bmapid_${rowKey}" class="slds-input" type="hidden" value="${mapId}">
-                <input id="bmapid_${rowKey}_display" class="slds-input" name="bmapid_${rowKey}_display" readonly="" style="border:1px solid #bababa;" type="text" value="" onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=dtbmselection_${rowKey}&forfield=bmapid_${rowKey}&srcmodule=GlobalVariable'+SpecialSearch, 'vtlibui10wf', cbPopupWindowSettings);">
-                <span class="slds-form-element__addon">
-                    <button type="image" id="clear-btn-${rowKey}" class="slds-button" alt="${mod_alert_arr.LBL_CLEAR}" title="${mod_alert_arr.LBL_CLEAR}" onClick="this.form.bmapid_${rowKey}.value=''; this.form.bmapid_${rowKey}_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
-                        <svg class="slds-icon slds-icon_small slds-icon-text-light" aria-hidden="true" >
-                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use> 
-                        </svg>
-                    </button>
-                </span>
-            </div>
-            </form>
-        </div>`;
+		<div class="slds-form slds-p-around_small">
+			<form name="dtbmselection_${rowKey}">
+			<label class="slds-form-element__label"> ${mod_alert_arr.LBL_MAP} </label>
+			<div class="slds-form-element__control slds-input-has-fixed-addon">
+				<input id="bmapid_${rowKey}" name="bmapid_${rowKey}" class="slds-input" type="hidden" value="${mapId}">
+				<input id="bmapid_${rowKey}_display" class="slds-input" name="bmapid_${rowKey}_display" readonly="" style="border:1px solid #bababa;" type="text" value="" onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=dtbmselection_${rowKey}&forfield=bmapid_${rowKey}&srcmodule=GlobalVariable'+SpecialSearch, 'vtlibui10wf', cbPopupWindowSettings);">
+				<span class="slds-form-element__addon">
+					<button type="image" id="clear-btn-${rowKey}" class="slds-button" alt="${mod_alert_arr.LBL_CLEAR}" title="${mod_alert_arr.LBL_CLEAR}" onClick="this.form.bmapid_${rowKey}.value=''; this.form.bmapid_${rowKey}_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
+						<svg class="slds-icon slds-icon_small slds-icon-text-light" aria-hidden="true" >
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use> 
+						</svg>
+					</button>
+				</span>
+			</div>
+			</form>
+		</div>`;
 		document.getElementById(`bmeditsection-${rowKey}`).innerHTML = template;
 		if (preLoadMap.mapid) {
 			fetch(
@@ -754,7 +757,7 @@ async function generateSection(ev, preLoadMap = {}) {
 		}
 		let createSection = document.createElement('section');
 		createSection.id = `expeditsection-${rowKey}`;
-		createSection.className = `expeditsection`;
+		createSection.className = 'expeditsection';
 		createSection.style = `${inStyle.style}`;
 		document.getElementById('show-ruleeditsection').appendChild(createSection);
 		const template = `
@@ -775,9 +778,8 @@ async function generateSection(ev, preLoadMap = {}) {
 				<div class="slds-col slds-size_1-of-1 slds-text-align_left">
 					<textarea id="exptextarea-${rowKey}" class="slds-textarea">${expVal}</textarea>
 				</div>
-			</div>
-		`;
-		document.getElementById(`expeditsection-${rowKey}`).innerHTML = template;		
+			</div>`;
+		document.getElementById(`expeditsection-${rowKey}`).innerHTML = template;
 	}
 
 	if (value == 'decisiontable') {
@@ -808,7 +810,7 @@ async function generateSection(ev, preLoadMap = {}) {
 		const MapID = document.getElementById('MapID').value;
 		let createSection = document.createElement('section');
 		createSection.id = `dteditsection-${rowKey}`;
-		createSection.className = `expeditsection`;
+		createSection.className = 'expeditsection';
 		createSection.style = `${inStyle.style}`;
 		document.getElementById('show-ruleeditsection').appendChild(createSection);
 		fetch(
@@ -828,7 +830,7 @@ async function generateSection(ev, preLoadMap = {}) {
 					'module': response[i][1],
 					'label': response[i][0],
 					'selected': response[i][2]
-				}
+				};
 				moduleList.push(objList);
 			}
 			const moduleListObj = moduleList.sort((a, b) => (a.label > b.label) ? 1 : -1);
@@ -838,14 +840,14 @@ async function generateSection(ev, preLoadMap = {}) {
 				<div class="slds-form-element__control">
 					<div class="slds-select_container">
 						<select id="dtmodule-${rowKey}" required name="dtmodule-${rowKey}" class="slds-select" onchange="getDTModuleFields(this.value, ${rowKey});updateFieldList(${rowKey})">`;
-						for (let i in moduleListObj) {
-							let selected = '';
-							if (moduleListObj[i].module == module ) {
-								selected = 'selected';
-							}
-							template += `<option value="${moduleListObj[i].module}" ${selected}>${moduleListObj[i].label}</option>`;
-						}	
-						template += `
+			for (let i in moduleListObj) {
+				let selected = '';
+				if (moduleListObj[i].module == module ) {
+					selected = 'selected';
+				}
+				template += `<option value="${moduleListObj[i].module}" ${selected}>${moduleListObj[i].label}</option>`;
+			}
+			template += `
 						</select>
 					</div>
 				</div>
@@ -967,16 +969,16 @@ async function generatePill(type, rowKey, data, module) {
 		if (data[i] != '') {
 			FIELD = await getFieldLabel(data[i], module);
 			template += `
-		    <li class="slds-listbox-item" role="presentation" id="${type}-${rowKey}-${data[i]}">
-		      	<span class="slds-pill" role="option" aria-selected="true">
-		        <span class="slds-pill__label" title="${data[i]}">${FIELD}</span>
-		        <span class="slds-icon_container slds-pill__remove" id="remove-${type}-${rowKey}-${data[i]}" onclick="removeField(this, ${rowKey}, '${data[i]}')" style="cursor: pointer">
-		          	<svg class="slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
-		            	<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-		          	</svg>
-		        </span>
-		      	</span>
-		    </li>`;
+			<li class="slds-listbox-item" role="presentation" id="${type}-${rowKey}-${data[i]}">
+				<span class="slds-pill" role="option" aria-selected="true">
+				<span class="slds-pill__label" title="${data[i]}">${FIELD}</span>
+				<span class="slds-icon_container slds-pill__remove" id="remove-${type}-${rowKey}-${data[i]}" onclick="removeField(this, ${rowKey}, '${data[i]}')" style="cursor: pointer">
+					<svg class="slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+					</svg>
+				</span>
+				</span>
+			</li>`;
 		}
 	}
 	return template;
@@ -1259,7 +1261,7 @@ function preLoadMap() {
 	document.getElementById('hitpolicy').value = hitpolicy;
 	if (hitpolicy == 'G') {
 		changeHitPolicy(hitpolicy);
-		document.getElementById('aggregate').value = DecisionTableMap.aggregate; 
+		document.getElementById('aggregate').value = DecisionTableMap.aggregate;
 	} else if (hitpolicy == undefined) {
 		document.getElementById('hitpolicy').value = 'U';
 	}
@@ -1323,38 +1325,38 @@ function setRows(ruletype, rules) {
 		const ev = {
 			rowKey: parseInt(rules.sequence) - 1,
 			value: 'expression',
-			prevValue: 'expression',	
-		}
+			prevValue: 'expression',
+		};
 		const values = {
 			expression: rules.expression
-		}
+		};
 		generateSection(ev, values);
 	} else if (ruletype == 'businessmap') {
 		const ev = {
 			rowKey: parseInt(rules.sequence) - 1,
 			value: 'businessmap',
-			prevValue: 'businessmap',	
-		}
+			prevValue: 'businessmap',
+		};
 		const values = {
 			mapid: rules.mapid
-		}
+		};
 		generateSection(ev, values);
 	} else {
 		const ev = {
 			rowKey: parseInt(rules.sequence) - 1,
 			value: 'decisiontable',
-			prevValue: 'decisiontable',	
-		}
+			prevValue: 'decisiontable',
+		};
 		const values = {
 			module: rules.decisionTable.module,
 			orderby: Object.keys(rules.decisionTable.orderby).length == 0 ? '' : rules.decisionTable.orderby+',',
 			output: Object.keys(rules.decisionTable.output).length == 0 ? '' : rules.decisionTable.output+',',
 			searches: rules.decisionTable.searches.search.condition,
 			conditions: rules.decisionTable.conditions == undefined ? '' : rules.decisionTable.conditions.condition,
-		}
+		};
 		generateSection(ev, values);
 		updateFieldList(rules.sequence, values.module);
-	}	
+	}
 }
 
 async function updateFieldList(rowKey, module = '') {
@@ -1366,7 +1368,7 @@ async function updateFieldList(rowKey, module = '') {
 	for (let i in DTModuleFields) {
 		const fieldObj = {
 			text: DTModuleFields[i], value: i
-		}
+		};
 		fieldList.push(fieldObj);
 	}
 }

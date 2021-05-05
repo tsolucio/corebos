@@ -27,6 +27,10 @@ function vtws_changePassword($id, $oldPassword, $newPassword, $confirmPassword, 
 			VTWS_PreserveGlobal::flush();
 			throw new WebServiceException(WebServiceErrorCode::$INVALIDUSER, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$INVALIDUSER));
 		}
+		if (preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/i', $newPassword) != 1) {
+			VTWS_PreserveGlobal::flush();
+			throw new WebServiceException(WebServiceErrorCode::$PASSWORDNOTSTRONG, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$PASSWORDNOTSTRONG));
+		}
 		$newUser = new Users();
 		$newUser->retrieveCurrentUserInfoFromFile($idComponents[1]);
 		if (!is_admin($user)) {
@@ -57,7 +61,10 @@ function vtws_changePassword($id, $oldPassword, $newPassword, $confirmPassword, 
 			VTWS_PreserveGlobal::flush();
 			throw new WebServiceException(WebServiceErrorCode::$CHANGEPASSWORDFAILURE, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$CHANGEPASSWORDFAILURE));
 		}
-		return array('message' => 'Changed password successfully');
+		return array(
+			'message' => 'Changed password successfully. Save your new Access Key, you will not see it again.',
+			'accesskey' => getSingleFieldValue('vtiger_users', 'accesskey', 'id', $idComponents[1]),
+		);
 	} else {
 		VTWS_PreserveGlobal::flush();
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'You do not have permission to change the password.');

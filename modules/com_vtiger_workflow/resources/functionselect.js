@@ -15,12 +15,14 @@ function openFunctionSelection(fillin) {
 		document.getElementById(wfexpselectionDIV).innerHTML = response;
 		show(wfexpselectionDIV);
 	});
+	return false;
 }
 
 function setSelectedFunction(fillinID) {
 	var fi = document.getElementById(fillinID);
 	fi.value += document.getElementById('selectedfunction').value;
 	hide(wfexpselectionDIV);
+	return false;
 }
 
 function dblClickFunctionSelect(selected) {
@@ -69,7 +71,7 @@ function setFunctionInformation(selected) {
 			<div class="slds-truncate slds-cell-wrap">${element.desc}</div>
 			</td></tr>`;
 		});
-		document.getElementById('funcparams').innerHTML = ptbl+`</tbody></table>`;
+		document.getElementById('funcparams').innerHTML = ptbl+'</tbody></table>';
 		document.getElementById('funcex').innerHTML = wfexpfndefs[selected.dataset.value].examples.join('<br/>');
 	}
 }
@@ -111,8 +113,9 @@ function wffnFilterCategories(cat) {
 	if (cat=='' || cat=='All') {
 		fns = wfexpfndefs;
 	} else {
-		var fns = Object.keys(wfexpfndefs)
+		fns = Object.keys(wfexpfndefs)
 			.filter(fn => wfexpfndefs[fn].categories.indexOf(cat) > -1)
+			.sort()
 			.reduce((res, key) => (res[key] = wfexpfndefs[key], res), {});
 	}
 	setFilteredFunctions(fns);

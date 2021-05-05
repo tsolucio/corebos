@@ -159,24 +159,13 @@
 	var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
 	var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
 	var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
-
-	var ProductImages=new Array();
-	var count=0;
-	function delRowEmt(imagename)
-	{ldelim}
-		ProductImages[count++]=imagename;
-	{rdelim}
-	function displaydeleted()
-	{ldelim}
-		var imagelists='';
-		for(var x = 0; x < ProductImages.length; x++)
-		{ldelim}
-			imagelists+=ProductImages[x]+'###';
-		{rdelim}
-
-		if(imagelists != '')
-			document.EditView.imagelist.value=imagelists
-	{rdelim}
+	{if !empty($smarty.request.MDGridInfo)}
+	{assign var='mdgridinfo' value=$smarty.request.MDGridInfo|json_decode:true}
+	function windowopenermasterdetailworksave() {
+		window.opener.masterdetailwork.save('{$mdgridinfo.name|vtlib_purify}', '{$mdgridinfo.module|vtlib_purify}');
+	}
+	corebosjshook.after(window, 'corebosjshook_submitFormForAction', windowopenermasterdetailworksave);
+	{/if}
 </script>
 
 <!-- vtlib customization: Help information assocaited with the fields -->

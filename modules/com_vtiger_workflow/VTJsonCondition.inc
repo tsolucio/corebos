@@ -476,6 +476,7 @@ class VTJsonCondition {
 
 				if ($value != 0) {
 					require_once 'vtlib/Vtiger/Module.php';
+					require_once 'data/CRMEntity.php';
 
 					list($child_wsid, $child_id) = explode('x', $data['id']);
 					list($parent_wsid, $parent_id) = explode('x', $data[$cond['fieldname']]);
@@ -483,11 +484,12 @@ class VTJsonCondition {
 					$children = array();
 
 					$mod = Vtiger_Module::getInstance($child_setype);
+					$crmEntityTable = CRMEntity::getcrmEntityTableAlias($mod);
 					$field = Vtiger_Field::getInstance($cond['fieldname'], $mod);
 
 					$r = $adb->query("SELECT {$field->table}.{$mod->basetableid}
 						FROM {$field->table}
-						INNER JOIN vtiger_crmentity ON {$field->table}.{$mod->basetableid} = vtiger_crmentity.crmid
+						INNER JOIN {$crmEntityTable} ON {$field->table}.{$mod->basetableid} = vtiger_crmentity.crmid
 						WHERE {$field->table}.{$cond['fieldname']}={$parent_id} AND vtiger_crmentity.deleted=0
 						ORDER BY vtiger_crmentity.createdtime ASC");
 					while ($child = $adb->fetch_array($r)) {

@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese | 13/04/2012 |Curitiba/Paraná/Brasil.| www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 08/03/2020 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 12/04/2021 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
  ********************************************************************************/
 $app_strings = array (
 'LBL_BROWSER_TITLE' => 'coreBOS',
@@ -184,6 +184,7 @@ $app_strings = array (
 'NTC_TIME_FORMAT' => '(24:00)',
 'NTC_DATE_TIME_FORMAT' => '(yyyy-mm-dd 24:00)',
 'NTC_DELETE_CONFIRMATION' => 'Você tem certeza que deseja apagar este registro?',
+'SMTP_DELETE_CONFIRMATION' => 'Are you sure you want to delete this SMTP settings?',
 'NTC_ACCOUNT_DELETE_CONFIRMATION' => 'Apagando esta Conta removerá as oportunidades e cotações relacionadas. Tem certeza que deseja apagar esta conta?',
 'NTC_VENDOR_DELETE_CONFIRMATION' => 'Apagando este fornecedor serão removidas os pedidos de compras relacionados. Tem certeza que deseja apagar este fornecedor?',
 'ERR_DELETE_RECORD' => 'Um registro dever ser especificado para apagar o contato.',
@@ -874,7 +875,7 @@ $app_strings = array (
 'MSG_VTIGERTEAM'=>'Equipe CRM',
 'MSG_IS_NOT_UPLOADED'=>'não foi atualizado. São permitidos arquivos do tipo - jpeg, png, jpg, pjpeg, x-png or gif',
 'MSG_IMAGE_ERROR'=>'Imagem não encontrada',
-
+'LBL_IMAGESECURITY_ERROR' => 'Invalid image: contains potential malicious contents',
 'Information'=>'Informação',
 'Address'=>'Endereço',
 'Custom Information'=>'Informação customizada',
@@ -1176,6 +1177,8 @@ $app_strings = array (
 'LBL_CALLER_INFORMATION'=>'Informação de quem liga',
 'LBL_CALLER_NUMBER'=>'Número :',
 'LBL_CALLER_NAME'=>'Nome :',
+'LBL_VIEW_CONTACT' => 'View Contact',
+'LBL_CLICK_NOTIFICATION_TO'=> 'Click Notification to ',
 
 // Module Sequence Numbering
 'LBL_DUPLICATE' => 'Duplicar',
@@ -1310,7 +1313,7 @@ $app_strings = array (
 'LBL_RECORDS_IN' => 'registros em',
 'LBL_FOLDER' => 'pasta',
 'Add Event' => 'Adicionar evento',
-'Create Invoice' => 'Create Invoice',
+'Create Invoice' => 'Cria fatura',
 'Send Email With PDF' => 'Enviar e-mail com PDF',
 'Export To PDF' => 'Exportar para PDF',
 'Generate Sales Order' => 'Gerar pedido vendas',
@@ -1357,7 +1360,8 @@ $app_strings = array (
 'No Module' => 'Sem módulos relacionados',
 'Entity Name' => 'Nome entidade',
 'LBL_NOPRODUCTS' => 'Não é possível converter pedido de vendas em Fatura porque não há produtos restantes na fatura.',
-'VALIDATION_FAILED' => 'Validation failed',
+'VALIDATION_FAILED' => 'Falha na validação',
+'Select Module To Upsert' => 'Selecione módulo p/upsert',
 );
 
 // Translation for currency names

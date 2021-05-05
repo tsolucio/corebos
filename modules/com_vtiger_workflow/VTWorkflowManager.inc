@@ -198,9 +198,12 @@ class VTWorkflowManager {
 		return GlobalVariable::getVariable('Workflow_Maximum_Scheduled', 10);
 	}
 
-	public function getWorkflowsForModule($moduleName) {
+	public function getWorkflowsForModule($moduleName, $onlyActive = false) {
 		global $current_user;
 		$where = is_admin($current_user) ? '' : ' and defaultworkflow=2';
+		if ($onlyActive) {
+			$where .= " and active='true'";
+		}
 		$result = $this->adb->pquery(
 			'select workflow_id, module_name, summary, test, execution_condition, defaultworkflow, type, purpose, wfstarton, wfendon, active from com_vtiger_workflows where module_name=?'.$where,
 			array($moduleName)
@@ -217,7 +220,7 @@ class VTWorkflowManager {
 		if (strpos($recordid, 'x')>0) {
 			list($void,$recordid) = explode('x', $recordid);
 		}
-		$rrs = $adb->pquery('select setype,deleted from vtiger_crmentity where crmid=?', array($recordid));
+		$rrs = $adb->pquery('select setype,deleted from vtiger_crmobject where crmid=?', array($recordid));
 		if (!$rrs) {
 			return false;
 		}
@@ -226,19 +229,10 @@ class VTWorkflowManager {
 		if ($deleted!=0 || in_array($moduleName, $not_supported)) {
 			return false;
 		}
-		if ($moduleName=='Calendar') {
+		if ($moduleName=='cbCalendar') {
 			$actrs = $adb->pquery('select activitytype from vtiger_activity where activityid=?', array($recordid));
-			$actvity_type = $adb->query_result($actrs, 0, 'activitytype');
-			switch ($actvity_type) {
-				case 'Emails':
-					$moduleName = 'Emails';
-					break;
-				case 'Task':
-					$moduleName = 'Calendar';
-					break;
-				default:
-					$moduleName = 'Events';
-					break;
+			if ($adb->query_result($actrs, 0, 'activitytype') == 'Emails') {
+				$moduleName = 'Emails';
 			}
 		}
 		$result = $adb->pquery('select id from vtiger_ws_entity where name=?', array($moduleName));
@@ -356,9 +350,10 @@ class VTWorkflowManager {
 	}
 
 	public function newWorkflow($moduleName) {
+		global $current_user;
 		$workflow = $this->getWorkflowInstance();
 		$workflow->moduleName = $moduleName;
-		$workflow->executionCondition = self::$ON_EVERY_SAVE;
+		$workflow->executionCondition = (is_admin($current_user) ? self::$ON_EVERY_SAVE : self::$ON_SCHEDULE);
 		$workflow->type = 'basic';
 		$workflow->id = 0;
 		$workflow->description = '';

@@ -85,6 +85,7 @@
 </map>
  *************************************************************************************************/
 include_once 'include/Webservices/DescribeObject.php';
+include_once 'include/ListView/GridUtils.php';
 
 class MasterDetailLayout extends processcbMap {
 
@@ -94,7 +95,6 @@ class MasterDetailLayout extends processcbMap {
 	private $detailModule = '';
 
 	public function processMap($arguments) {
-		global $adb, $current_user;
 		$this->mapping=$this->convertMap2Array();
 		return $this->mapping;
 	}
@@ -102,9 +102,13 @@ class MasterDetailLayout extends processcbMap {
 	private function convertMap2Array() {
 		$xml = $this->getXMLContent();
 		$mapping=array();
+		$mapping['mapnameraw'] = $this->getMap()->column_fields['mapname'];
+		$mapping['mapname'] = strtolower(preg_replace('/[^A-Za-z0-9]/', '', $mapping['mapnameraw'])); // Removes special chars.
 		$mapping['originmodule'] = (String)$xml->originmodule;
 		$mapping['targetmodule'] = (String)$xml->targetmodule;
 		$this->detailModule = $mapping['targetmodule'];
+		$dmf = CRMEntity::getInstance($this->detailModule);
+		$mapping['targetmoduleidfield'] = $dmf->table_index;
 		$mapping['linkfields'] = array(
 			'originfield' => (String)$xml->linkfields->originfield,
 			'targetfield' => (String)$xml->linkfields->targetfield,
@@ -112,14 +116,25 @@ class MasterDetailLayout extends processcbMap {
 		$mapping['sortfield'] = (String)$xml->sortfield;
 		$mapping['toolbar'] = array(
 			'title' => (String)$xml->toolbar->title,
+			'icon' => (String)$xml->toolbar->icon,
 			'expandall' => (String)$xml->toolbar->expandall,
 			'create' => (String)$xml->toolbar->create,
 		);
 		$mapping['listview'] = array();
+		if (isset($xml->listview->datasource)) {
+			$dsrc = (String)$xml->listview->datasource;
+			if (strtolower($dsrc)=='corebos') {
+				$mapping['listview']['datasource'] = 'index.php?module=Utilities&action=UtilitiesAjax&file=MasterDetailGridLayoutActions&mdaction=list&mdmap='
+					.urlencode($mapping['mapnameraw']);
+			} else {
+				$mapping['listview']['datasource'] = $dsrc;
+			}
+		}
 		if (isset($xml->listview->toolbar)) {
 			$mapping['listview']['toolbar'] = array(
 				'moveup' => isset($xml->listview->toolbar->moveup) ? (String)$xml->listview->toolbar->moveup : '1',
 				'movedown' => isset($xml->listview->toolbar->movedown) ? (String)$xml->listview->toolbar->movedown : '1',
+				'edit' => isset($xml->listview->toolbar->edit) ? (String)$xml->listview->toolbar->edit : '1',
 				'delete' => isset($xml->listview->toolbar->delete) ? (String)$xml->listview->toolbar->delete : '1',
 			);
 		}
@@ -151,10 +166,17 @@ class MasterDetailLayout extends processcbMap {
 					'mandatory' => isset($v->mandatory) ? (String)$v->mandatory : '',
 					'hidden' => isset($v->hidden) ? (String)$v->hidden : '0',
 					'layout' => isset($v->layout) ? (String)$v->layout : '',
+					'editor' => !empty($v->editable) ? json_encode(gridGetEditor($mapping['targetmodule'], $fieldinfo['name'], $fieldinfo['uitype'])) : '',
+					'sortable' => !empty($v->sortable),
+					'sortingType' => isset($v->sortingType) ? (String)$v->sortingType : '',
 				);
 				$mapping['listview']['fieldnames'][] = $fieldinfo['name'];
 			}
 		}
+		$mapping['viewfields'] = array();
+		$mapping['viewfieldnames'] = array();
+		$mapping['editfields'] = array();
+		$mapping['editfieldnames'] = array();
 		$mapping['detailview'] = array();
 		$mapping['detailview']['layout'] = isset($xml->detailview->layout) ? (String)$xml->detailview->layout : '';
 		$mapping['detailview']['fields'] = array();
@@ -178,16 +200,29 @@ class MasterDetailLayout extends processcbMap {
 							break;
 					}
 				}
+				$editable = isset($v->editable) ? (String)$v->editable : '';
 				$mapping['detailview']['fields'][] = array(
 					'fieldtype' => $fieldtype,
 					'fieldinfo' => $fieldinfo,
-					'editable' => isset($v->editable) ? (String)$v->editable : '',
+					'editable' => $editable,
 					'mandatory' => isset($v->mandatory) ? (String)$v->mandatory : '',
 					'hidden' => isset($v->hidden) ? (String)$v->hidden : '0',
 					'value' => isset($v->value) ? (String)$v->value : '',
 					'layout' => isset($v->layout) ? (String)$v->layout : '',
 				);
 				$mapping['detailview']['fieldnames'][] = $fieldinfo['name'];
+				if (!empty($editable) || $fieldinfo['mandatory']) {
+					$mapping['editfields'][] = $fieldinfo['fieldid'];
+					$mapping['editfieldnames'][] = $fieldinfo['name'];
+				}
+				$mapping['viewfields'][] = $fieldinfo['fieldid'];
+				$mapping['viewfieldnames'][] = $fieldinfo['name'];
+			}
+		}
+		foreach ($this->fieldsinfo as $finfo) {
+			if ($finfo['mandatory']) {
+				$mapping['editfields'][] = $finfo['fieldid'];
+				$mapping['editfieldnames'][] = $finfo['name'];
 			}
 		}
 		$mapping['aggregations'] = array();
@@ -213,15 +248,13 @@ class MasterDetailLayout extends processcbMap {
 		if (count($this->fieldsinfo)==0) {
 			$wsfieldsinfo = vtws_describe($this->detailModule, $current_user);
 			$this->fieldsinfo = $wsfieldsinfo['fields'];
-		}
-		// PHP 5.5 search and get fieldinfo
-		//$ret = array_search($fieldname, array_column($this->fieldsinfo, 'name'));
-		// PHP 5.4 search and get fieldinfo
-		foreach ($this->fieldsinfo as $ret => $finfo) {
-			if ($finfo['name']==$fieldname) {
-				break;
+			$tabid = getTabid($this->detailModule);
+			foreach ($this->fieldsinfo as $key => $finfo) {
+				$this->fieldsinfo[$key]['fieldid'] = getFieldid($tabid, $finfo['name']);
+				$this->fieldsinfo[$key]['columnname'] = getColumnnameByFieldname($tabid, $finfo['name']);
 			}
 		}
+		$ret = array_search($fieldname, array_column($this->fieldsinfo, 'name'));
 		if (isset($this->fieldsinfo[$ret]['uitype']) && $this->fieldsinfo[$ret]['uitype']==10) {
 			$refmod = $this->fieldsinfo[$ret]['type']['refersTo'][0];
 			$rmod = CRMEntity::getInstance($refmod);
@@ -240,14 +273,7 @@ class MasterDetailLayout extends processcbMap {
 			$wsfieldsinfo = vtws_describe($module, $current_user);
 			$this->relatedfieldsinfo[$module] = $wsfieldsinfo['fields'];
 		}
-		// PHP 5.5 search and get fieldinfo
-		//$ret = array_search($fieldname, array_column($this->fieldsinfo, 'name'));
-		// PHP 5.4 search and get fieldinfo
-		foreach ($this->relatedfieldsinfo[$module] as $ret => $finfo) {
-			if ($finfo['name']==$fieldname) {
-				break;
-			}
-		}
+		$ret = array_search($fieldname, array_column($this->fieldsinfo, 'name'));
 		if ($this->relatedfieldsinfo[$module][$ret]['uitype']==10) {
 			$refmod = $this->relatedfieldsinfo[$module][$ret]['type']['refersTo'][0];
 			$rmod = CRMEntity::getInstance($refmod);

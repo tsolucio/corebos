@@ -17,6 +17,7 @@
 *  Author       : OpenCubed
 *************************************************************************************************/
 require_once 'include/utils/CommonUtils.php';
+require_once 'data/CRMEntity.php';
 global $default_charset;
 
 if (isset($_REQUEST['action_id']) && $_REQUEST['action_id'] !='') {
@@ -27,13 +28,26 @@ if (isset($_REQUEST['action_id']) && $_REQUEST['action_id'] !='') {
 	}
 	$tpl = getTemplateDetails($_REQUEST['action_id'], $crmid);
 
+	// Merge template
+	$mids = array();
+	if (isset($_REQUEST['merge_template_with']) && $_REQUEST['merge_template_with'] != '') {
+		$mids = explode(',', $_REQUEST['merge_template_with']);
+	}
+	if (count($mids) > 0) {
+		foreach ($mids as $mid) {
+			$module = getSalesEntityType($mid);
+			$tpl[2] = getMergedDescription($tpl[2], $mid, $module);
+			$tpl[1] = getMergedDescription($tpl[1], $mid, $module);
+		}
+	}
+
 	// Get Related Documents
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents');
 	$query='select vtiger_notes.notesid,vtiger_notes.filename
 		from vtiger_notes
 		inner join vtiger_senotesrel on vtiger_senotesrel.notesid= vtiger_notes.notesid
-		inner join vtiger_crmentity on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
-		inner join vtiger_crmentity crm2 on crm2.crmid=vtiger_senotesrel.crmid
-		where crm2.crmid=?';
+		inner join '.$crmEntityTable.' on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
+		where vtiger_senotesrel.crmid=?';
 	$result = $adb->pquery($query, array($_REQUEST['action_id']));
 }
 ?>

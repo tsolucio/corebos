@@ -17,7 +17,7 @@ global $log, $app_strings, $mod_strings, $current_user, $currentModule, $default
 $focus = CRMEntity::getInstance($currentModule);
 $smarty = new vtigerCRM_Smarty();
 $upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize', 3000000, $currentModule);
-$smarty->assign("UPLOADSIZE", $upload_maxsize/1000000); // Convert to MB
+$smarty->assign('UPLOADSIZE', $upload_maxsize/1000000); // Convert to MB
 if (isset($_REQUEST['upload_error']) && $_REQUEST['upload_error'] == true) {
 	echo '<br><b><font color="red"> The selected file has no data or a invalid file.</font></b><br>';
 }
@@ -32,6 +32,16 @@ if (isset($_REQUEST['par_module']) && $_REQUEST['par_module']!='') {
 	$smarty->assign('select_module', vtlib_purify($_REQUEST['par_module']));
 } elseif (isset($_REQUEST['pmodule']) && $_REQUEST['pmodule']!='') {
 	$smarty->assign('select_module', vtlib_purify($_REQUEST['pmodule']));
+} elseif (!empty($_REQUEST['invmodid'])) {
+	$crmid = vtlib_purify($_REQUEST['invmodid']);
+	$smarty->assign('select_module', getSalesEntityType($crmid));
+	if (empty($_REQUEST['mergewith'])) {
+		$_REQUEST['mergewith'] = '';
+	}
+	$_REQUEST['mergewith'].= ','.$crmid;
+	$_REQUEST['mergewith'] = trim($_REQUEST['mergewith'], ',');
+} else {
+	$smarty->assign('select_module', $currentModule);
 }
 
 if (isset($_REQUEST['record']) && $_REQUEST['record'] !='') {
@@ -63,6 +73,10 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] !='') {
 	}
 	$smarty->assign('TO_MAIL', $to_add);
 	$smarty->assign('IDLISTS', $mailids['idlists']);
+	if (!empty($_REQUEST['idlist']) && $_REQUEST['pmodule'] != 'Accounts'
+		&& $_REQUEST['pmodule'] != 'Contacts' && $_REQUEST['pmodule'] != 'Leads' && $_REQUEST['pmodule'] != 'Vendors') {
+		$smarty->assign('relateemailwith', $_REQUEST['idlist']);
+	}
 	if (!empty($mailids['idlists'])) {
 		$crmidsinfo = explode('|', trim($mailids['idlists'], '|'));
 		if (count($crmidsinfo)==1) {
@@ -91,7 +105,8 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] !='') {
 	$focus->mode = '';
 } elseif (!empty($_REQUEST['invmodid'])) {
 	$crmid = vtlib_purify($_REQUEST['invmodid']);
-	switch (getSalesEntityType($crmid)) {
+	$invmodule = getSalesEntityType($crmid);
+	switch ($invmodule) {
 		case 'PurchaseOrder':
 			$rs = $adb->pquery('select case vendorid when 0 then contactid else vendorid end from vtiger_purchaseorder where purchaseorderid=?', array($crmid));
 			$emailcrmid=$adb->query_result($rs, 0, 0);
@@ -123,6 +138,19 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] !='') {
 	}
 	$smarty->assign('TO_MAIL', $to_add);
 	$smarty->assign('IDLISTS', $mailids['idlists']);
+	if (!empty($_REQUEST['templatename'])) {
+		$Users_Default_Send_Email_Template = vtlib_purify($_REQUEST['templatename']);
+	} else {
+		$Users_Default_Send_Email_Template = GlobalVariable::getVariable('Users_Default_Send_Email_Template', 0, $invmodule);
+	}
+	if (!empty($Users_Default_Send_Email_Template)) {
+		$emltpl = getTemplateDetails($Users_Default_Send_Email_Template, $crmid);
+		if (count($emltpl)>0) {
+			$focus->column_fields['subject'] = $emltpl[2];
+			$focus->column_fields['description'] = $emltpl[1];
+			$focus->column_fields['from_email'] = $emltpl[3];
+		}
+	}
 	setObjectValuesFromRequest($focus);
 	$focus->mode = '';
 }
@@ -141,7 +169,7 @@ if (isset($_REQUEST['internal_mailer']) && $_REQUEST['internal_mailer'] == 'true
 		} else {
 			$id_list = $rec_id.'@'.vtlib_purify($_REQUEST['field_id']).'|';
 		}
-			$smarty->assign('IDLISTS', $id_list);
+		$smarty->assign('IDLISTS', $id_list);
 	}
 	if ($rec_type == 'record_id') {
 		$type = vtlib_purify($_REQUEST['par_module']);

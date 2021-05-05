@@ -23,8 +23,8 @@ class showmsgwidget {
 }
 
 class showmsgwidget_DetailViewBlock extends DeveloperBlock {
-	// Implement widget functionality
-	private $widgetName = 'showMessageWidget';
+
+	protected $widgetName = 'showMessageWidget';
 
 	// This one is called to get the contents to show on screen
 	public function process($context = false) {

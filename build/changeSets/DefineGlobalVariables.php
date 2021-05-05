@@ -44,6 +44,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Global_Search_TopModules',
 				'Application_Global_Search_Active',
 				'Application_Global_Search_Autocomplete_Limit',
+				'Application_ProductService_Search_Autocomplete_Limit',
 				'Application_Storage_Directory',
 				'Application_Storage_SaveStrategy',
 				'Application_OpenRecordInNewXOnRelatedList',
@@ -108,7 +109,9 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_CSRF_Valid_IP',
 				'Application_PopupScreen_Width',
 				'Application_PopupScreen_Height',
+				'Application_Merge_Record_Limit',
 				'Application_Textarea_Style',
+				'Application_CSS_Properties',
 
 				'Graph_DataLabels',
 				'Graph_DataLabels_Color',
@@ -133,6 +136,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 
 				'CronTasks_cronWatcher_mailto',
 				'CronTasks_cronWatcher_TimeThreshold',
+				'SMSNotifier_SendCopyToUser',
 
 				'BusinessQuestion_TableAnswer_Limit',
 
@@ -153,8 +157,12 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'WebService_Session_Idle_Time',
 				'Webservice_Describe_ReturnUserList',
 				'Webservice_Describe_ReturnGroupList',
+				'Webservice_Sync_RecordLimit',
+				'Webservice_Sync_RecordLimitStreaming',
+				'Webservice_GenDocConversion_Active',
 				'SOAP_CustomerPortal_Enabled',
 				'SOAP_Outlook_Enabled',
+				'WEBDAV_Enabled',
 
 				'Users_ReplyTo_SecondEmail',
 				'Users_Default_Send_Email_Template',
@@ -244,6 +252,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Inventory_Tax_FillInMode',
 				'Inventory_Quantity_Precision',
 				'Inventory_Other_Modules',
+				'Inventory_DoNotUseLines',
 				'GContacts_Max_Results',
 
 				'CustomerPortal_PDF_Modules',
@@ -260,6 +269,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'ip_elastic_indexprefix',
 				'esusername',
 				'espassword',
+				'Security_ImageCheck',
 			);
 			$delete_these = array(
 				'preload_prototype',

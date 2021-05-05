@@ -132,6 +132,7 @@ class VtigerEmailOperation extends VtigerModuleOperation {
 	 */
 	public function update($element) {
 		global $adb;
+		$mod = CRMEntity::getInstance('Emails');
 		list($wsid, $crmid) = vtws_getIdComponents($element['id']);
 		$em = new VTEventsManager($adb);
 		// Initialize Event trigger cache
@@ -151,7 +152,7 @@ class VtigerEmailOperation extends VtigerModuleOperation {
 		$sql = 'UPDATE vtiger_emaildetails set '.implode(',', $updfields).' where emailid=?';
 		$rs = $adb->pquery($sql, $params);
 		$modby = (isset($element['modifiedby']) ? ',modifiedby='.substr($element['modifiedby'], strpos($element['modifiedby'], 'x')+1) : '');
-		$adb->pquery('update vtiger_crmentity set modifiedtime=now()'.$modby.' where crmid=?', array($crmid));
+		$adb->pquery('update '.$mod->crmentityTable.' set modifiedtime=now()'.$modby.' where crmid=?', array($crmid));
 		//Event triggering code
 		$em->triggerEvent('vtiger.entity.aftersave', $entityData);
 		//Event triggering code ends

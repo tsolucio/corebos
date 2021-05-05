@@ -18,8 +18,6 @@ class Google_Oauth2_Connector {
 
 	public $user_id;
 
-	public $db;
-
 	public $table_name = 'its4you_googlesync4you_access';
 
 	public $service_name;
@@ -113,15 +111,12 @@ class Google_Oauth2_Connector {
 	}
 
 	public function hasStoredToken() {
+		global $adb;
 		if (!isset($this->user_id)) {
 			$this->user_id = $_SESSION['authenticated_user_id'];
 		}
-		if (!isset($this->db)) {
-			$this->db = PearDatabase::getInstance();
-		}
-		$res = $this->db->pquery('SELECT 1 FROM ' . $this->table_name . ' WHERE userid = ? AND service = ?', array($this->user_id, $this->service_name));
-		$hasStoredToken = $this->db->num_rows($res) > 0;
-		return $hasStoredToken;
+		$res = $adb->pquery('SELECT 1 FROM ' . $this->table_name . ' WHERE userid=? AND service=?', array($this->user_id, $this->service_name));
+		return $adb->num_rows($res) > 0;
 	}
 
 	public function getState($source) {
@@ -175,12 +170,9 @@ class Google_Oauth2_Connector {
 	}
 
 	public function storeToken($token) {
-		global $current_user;
+		global $current_user, $adb;
 		if (!isset($this->user_id)) {
 			$this->user_id = $current_user->id;
-		}
-		if (!isset($this->db)) {
-			$this->db = PearDatabase::getInstance();
 		}
 		$decodedToken = json_decode($token, true);
 		if (!empty($decodedToken['error'])) {
@@ -204,18 +196,18 @@ class Google_Oauth2_Connector {
 		$accessToken = json_encode($decodedToken);
 		$params = array($this->service_name,$accessToken,$refresh_token,$this->user_id);
 		$sql = 'INSERT INTO ' . $this->table_name . '(service,synctoken,refresh_token,userid) VALUES (' . generateQuestionMarks($params) . ')';
-		$this->db->pquery($sql, $params);
+		$adb->pquery($sql, $params);
 	}
 
 	public function retreiveToken() {
-		global $current_user;
+		global $current_user, $adb;
 		if (empty($this->user_id)) {
 			$this->user_id = $current_user->id;
 		}
 		$query = 'SELECT synctoken,refresh_token FROM ' . $this->table_name . ' WHERE userid=? AND service =?';
 		$params = array($this->user_id, $this->service_name);
-		$result = $this->db->pquery($query, $params);
-		$data = $this->db->fetch_array($result);
+		$result = $adb->pquery($query, $params);
+		$data = $adb->fetch_array($result);
 		$decodedAccessToken = json_decode(decode_html($data['synctoken']), true);
 		$refreshToken = decode_html($data['refresh_token']);
 		return array(
@@ -238,12 +230,8 @@ class Google_Oauth2_Connector {
 	}
 
 	public function updateAccessToken($accesstoken, $refreshtoken) {
-		if (!isset($this->db)) {
-			$this->db = PearDatabase::getInstance();
-		}
-		$sql = 'UPDATE ' . $this->table_name . ' SET synctoken = ? WHERE refresh_token = ? AND service = ?';
-		$params = array($accesstoken,$refreshtoken,$this->service_name);
-		$this->db->pquery($sql, $params);
+		global $adb;
+		$adb->pquery('UPDATE '.$this->table_name.' SET synctoken=? WHERE refresh_token=? AND service=?', array($accesstoken, $refreshtoken, $this->service_name));
 	}
 
 	public function refreshToken() {

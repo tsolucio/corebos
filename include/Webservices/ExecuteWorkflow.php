@@ -61,11 +61,11 @@ function cbwsExecuteWorkflowWithContext($workflow, $entities, $context, $user) {
 	}
 	$crmids = json_decode($entities, true);
 	if (json_last_error() !== JSON_ERROR_NONE) {
-		throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid parameter: entities');
+		throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid entities parameter: '.json_last_error_msg());
 	}
 	$ctx = json_decode($context, true);
 	if (json_last_error() !== JSON_ERROR_NONE) {
-		throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid parameter: context');
+		throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid context parameter: '.json_last_error_msg());
 	}
 	$util = new VTWorkflowUtils();
 	$entityCache = new VTEntityCache($user);
@@ -73,11 +73,19 @@ function cbwsExecuteWorkflowWithContext($workflow, $entities, $context, $user) {
 	$workflows = $wfs->getWorkflowsForResult($result);
 	$workflow = reset($workflows);
 	$workflow_mod = $workflow->moduleName; // it return module from workflow
+	$types = vtws_listtypes(null, $user);
+	if (!in_array($workflow_mod, $types['types'])) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied for module');
+	}
 	$errortasks = array();
 	foreach ($crmids as $crmid) {
 		$entityData = $entityCache->forId($crmid);
 		$modPrefix = $entityData->getModuleName(); // it return module from webservice
 		if ($workflow_mod == $modPrefix) { // compare workflow module with webservice module to execute
+			if (isPermitted($workflow_mod, 'DetailView', $crmid)=='no' || isPermitted($workflow_mod, 'Save', $crmid)=='no') {
+				$errortasks[$crmid] = "Permission to access $crmid is denied";
+				continue;
+			}
 			if ($workflow->evaluate($entityCache, $entityData->getId())) {
 				if (VTWorkflowManager::$ONCE == $workflow->executionCondition) {
 					$entity_id = vtws_getIdComponents($entityData->getId());
@@ -95,10 +103,12 @@ function cbwsExecuteWorkflowWithContext($workflow, $entities, $context, $user) {
 					$errortasks[$crmid] = $e->getMessage();
 				}
 			}
+		} else {
+			$errortasks[$crmid] = "Workflow and record ($crmid) modules do not match";
 		}
 	}
 	if (count($errortasks)>0) {
-		throw new WebServiceException(WebServiceErrorCode::$WORKFLOW_TASK_FAILED, print_r($errortasks, true));
+		throw new WebServiceException(WebServiceErrorCode::$WORKFLOW_TASK_FAILED, json_encode($errortasks));
 	}
 	return true;
 }

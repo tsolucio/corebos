@@ -42,14 +42,16 @@ switch ($exptype) {
 			$adminUser = Users::getActiveAdminUser();
 			$entityId = vtws_getEntityId($crmmod).'x'.$crmid;
 			$entity = new VTWorkflowEntity($adminUser, $entityId);
-			$testexpression = $exp;
 			try {
-				$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($testexpression)));
+				$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer(rawurldecode($exp))));
 				$expression = $parser->expression();
 				$exprEvaluater = new VTFieldExpressionEvaluater($expression);
 				$msg = $exprEvaluater->evaluate($entity);
 				if (gettype($msg)=='boolean') {
 					$msg = $msg ? 'bool(true)' : 'bool(false)';
+				}
+				if (empty($msg)) {
+					$msg = 'empty: '.$msg;
 				}
 			} catch (Exception $e) {
 				$msg = $e->getMessage();

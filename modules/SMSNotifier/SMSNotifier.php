@@ -56,7 +56,7 @@ class SMSNotifier extends SMSNotifierBase {
 				relateEntities($focus, $moduleName, $focus->id, $linktoModule, $linktoids);
 			} else {
 				// Link modulename not provided (linktoids can belong to mix of module so determine proper modulename)
-				$linkidsetypes = $adb->pquery('SELECT setype,crmid FROM vtiger_crmentity WHERE crmid IN ('.generateQuestionMarks($linktoids) . ')', array($linktoids));
+				$linkidsetypes = $adb->pquery('SELECT setype,crmid FROM vtiger_crmobject WHERE crmid IN ('.generateQuestionMarks($linktoids) . ')', array($linktoids));
 				if ($linkidsetypes && $adb->num_rows($linkidsetypes)) {
 					while ($linkidsetypesrow = $adb->fetch_array($linkidsetypes)) {
 						relateEntities($focus, $moduleName, $focus->id, $linkidsetypesrow['setype'], $linkidsetypesrow['crmid']);
@@ -77,12 +77,12 @@ class SMSNotifier extends SMSNotifierBase {
 		// Pick the distinct modulenames based on related records.
 		$result = $adb->pquery(
 			'SELECT distinct setype
-			FROM vtiger_crmentity
+			FROM vtiger_crmobject
 			WHERE crmid in (
 				SELECT relcrmid
 				FROM vtiger_crmentityrel
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_crmentityrel.crmid
-				WHERE vtiger_crmentity.crmid = ? AND vtiger_crmentity.deleted=0)',
+				INNER JOIN vtiger_crmobject ON vtiger_crmobject.crmid=vtiger_crmentityrel.crmid
+				WHERE vtiger_crmobject.crmid=? AND vtiger_crmobject.deleted=0)',
 			array($this->id)
 		);
 
@@ -130,6 +130,9 @@ class SMSNotifier extends SMSNotifierBase {
 
 	protected function smsAssignedTo() {
 		global $adb;
+		if (empty(GlobalVariable::getVariable('SMSNotifier_SendCopyToUser', 1, 'SMSNotifier'))) {
+			return;
+		}
 
 		// Determine the number based on Assign To
 		$assignedtoid = $this->column_fields['assigned_user_id'];
@@ -141,14 +144,14 @@ class SMSNotifier extends SMSNotifierBase {
 			require_once 'include/utils/GetGroupUsers.php';
 			$getGroupObj=new GetGroupUsers();
 			$getGroupObj->getAllUsersInGroup($assignedtoid);
-			  $userIds = $getGroupObj->group_users;
+			$userIds = $getGroupObj->group_users;
 		}
 
 		$tonumbers = array();
 
 		if (count($userIds) > 0) {
-			   $phoneSqlQuery = "select phone_mobile, id from vtiger_users WHERE status='Active' AND id in(". generateQuestionMarks($userIds) .')';
-			   $phoneSqlResult = $adb->pquery($phoneSqlQuery, array($userIds));
+			$phoneSqlQuery = "select phone_mobile, id from vtiger_users WHERE status='Active' AND id in(". generateQuestionMarks($userIds) .')';
+			$phoneSqlResult = $adb->pquery($phoneSqlQuery, array($userIds));
 			while ($phoneSqlResultRow = $adb->fetch_array($phoneSqlResult)) {
 				$number = $phoneSqlResultRow['phone_mobile'];
 				if (!empty($number)) {
@@ -164,7 +167,6 @@ class SMSNotifier extends SMSNotifierBase {
 	}
 
 	private function processFireSendSMSResponse($responses) {
-
 		if (empty($responses)) {
 			return;
 		}
@@ -242,7 +244,7 @@ class SMSNotifier extends SMSNotifierBase {
 		$qresult = $adb->pquery('SELECT * FROM vtiger_smsnotifier_status WHERE smsnotifierid=?', array($record));
 		if ($qresult && $adb->num_rows($qresult)) {
 			while ($resultrow = $adb->fetch_array($qresult)) {
-				 $results[] = $resultrow;
+				$results[] = $resultrow;
 			}
 		}
 		return $results;
@@ -270,7 +272,6 @@ class SMSNotifierManager {
 				$provider->setParameter($k, $v);
 			}
 			$provider->setAuthParameters($resultrow['username'], $resultrow['password']);
-
 			return $provider;
 		}
 		return false;
@@ -284,6 +285,7 @@ class SMSNotifierManager {
 		}
 		return false;
 	}
+
 	public static function listConfiguredServers() {
 		global $adb;
 		$result = $adb->pquery('SELECT * FROM vtiger_smsnotifier_servers', array());
@@ -295,6 +297,7 @@ class SMSNotifierManager {
 		}
 		return $servers;
 	}
+
 	public static function updateConfiguredServer($id, $frmvalues) {
 		global $adb;
 		$providertype = vtlib_purify($frmvalues['smsserver_provider']);
@@ -329,6 +332,7 @@ class SMSNotifierManager {
 			);
 		}
 	}
+
 	public static function deleteConfiguredServer($id) {
 		global $adb;
 		$adb->pquery('DELETE FROM vtiger_smsnotifier_servers WHERE id=?', array($id));

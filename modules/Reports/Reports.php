@@ -115,7 +115,6 @@ class Reports extends CRMEntity {
 					$ssql .= ' and ( ('.$non_admin_query.") or vtiger_report.sharingtype='Public' or vtiger_report.owner = ?
 						or vtiger_report.owner in (select vtiger_user2role.userid
 							from vtiger_user2role
-							inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
 							inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
 							where vtiger_role.parentrole like '".$userprivs->getParentRoleSequence()."::%'))";
 					$params[] = $current_user->id;
@@ -125,7 +124,6 @@ class Reports extends CRMEntity {
 				$query = $adb->pquery(
 					"select userid
 					from vtiger_user2role
-					inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
 					inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
 					where vtiger_role.parentrole like '".$userprivs->getParentRoleSequence()."::%'",
 					array()
@@ -368,7 +366,6 @@ class Reports extends CRMEntity {
 			$sql .= " or vtiger_report.owner in (
 				select vtiger_user2role.userid
 				from vtiger_user2role
-				inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
 				inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
 				where vtiger_role.parentrole like '".$userprivs->getParentRoleSequence()."::%'))";
 			$params[] = $current_user->id;
@@ -377,7 +374,6 @@ class Reports extends CRMEntity {
 		$query = $adb->pquery(
 			"select userid
 			from vtiger_user2role
-			inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
 			inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
 			where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%'",
 			array()
@@ -551,7 +547,7 @@ class Reports extends CRMEntity {
 				where vtiger_field.tabid=? and vtiger_field.block in ('. generateQuestionMarks($block)
 				.') and vtiger_field.displaytype in (1,2,3,4) and vtiger_field.presence in (0,2) AND tablename NOT IN ('.generateQuestionMarks($skipTalbes)
 				.') order by sequence';
-			$params = array($tabid, $block, $skipTalbes);
+			$params = array_merge([$tabid, $block], $skipTalbes);
 		} else {
 			$sql = 'select distinct vtiger_field.*
 				from vtiger_field
@@ -566,7 +562,7 @@ class Reports extends CRMEntity {
 				$params[] = $profileList;
 			}
 			$sql .= ' and tablename NOT IN ('.generateQuestionMarks($skipTalbes).') ';
-			$params[] = $skipTalbes;
+			$params = array_merge($params, $skipTalbes);
 			$sql.= ' group by vtiger_field.fieldid order by sequence';
 		}
 		$module_columnlist = array();
@@ -707,7 +703,7 @@ class Reports extends CRMEntity {
 			'custom','prevfy','thisfy','nextfy','prevfq','thisfq','nextfq',
 			'yesterday','today','tomorrow','lastweek','thisweek','nextweek','lastmonth','thismonth',
 			'nextmonth','last7days','last14days','last30days', 'last60days','last90days','last120days',
-			'next30days','next60days','next90days','next120days'
+			'next7days','next30days','next60days','next90days','next120days'
 		);
 		$datefilterdisplay = array(
 			'Custom','Previous FY', 'Current FY','Next FY','Previous FQ','Current FQ','Next FQ','Yesterday',

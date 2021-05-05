@@ -95,9 +95,7 @@ function callSearch(searchtype) {
 	}
 	var popuptype = document.getElementsByName('popuptype')[0].value;
 	var module = document.getElementById('module').value;
-	var act_tab = document.getElementById('maintab').value;
 	urlstring += '&popuptype='+popuptype;
-	urlstring += '&maintab='+act_tab;
 	urlstring += '&query=true&file=Popup&module=' + module + '&action=' + module + 'Ajax&ajax=true&search=true';
 	urlstring += gethiddenelements();
 	var record_id = document.basicSearch.record_id.value;

@@ -25,7 +25,7 @@ include_once 'vtlib/Vtiger/Module.php';
 require_once 'vtlib/Vtiger/Cron.php';
 require_once 'modules/Emails/mail.php';
 require_once 'modules/Emails/Emails.php';
-global $site_URL, $currentModule;
+global $site_URL, $currentModule, $current_user;
 
 // Time Threshold: after these minutes running we will send email
 $auser = Users::getActiveAdminUser();
@@ -34,6 +34,9 @@ $warningTimeThreshold = $warningMinutes*60; // $warningMinutes minutes.
 ///////////////////////////////////
 if (empty($current_language)) {
 	$current_language = $auser->column_fields['language'];
+}
+if (empty($current_user)) {
+	$current_user = $auser;
 }
 // i18n
 //$i18nInactive = getTranslatedString('LBL_INACTIVE','CronTasks');
@@ -47,9 +50,6 @@ $currentModule = 'CronTasks';
 foreach ($wcronTasks as $wcronTask) {
 	$cron_st = $wcronTask->getStatus();
 	$alerttime = $wcronTask->getAlert();
-	if ($cron_st!=Vtiger_Cron::$STATUS_RUNNING || $alerttime==-1) {
-		continue;
-	}
 	if ($wcronTask->getLastStart() != 0) {
 		$start_ts = $wcronTask->getLastStart();
 		$end_ts = time();
@@ -64,7 +64,10 @@ foreach ($wcronTasks as $wcronTask) {
 	} else {
 		$thisAlertTime = $warningTimeThreshold;
 	}
-	if ($elapsed<$thisAlertTime) {
+	if ($alerttime==-1
+		|| ($cron_st!=Vtiger_Cron::$STATUS_RUNNING && $elapsed<($thisAlertTime+$wcronTask->getFrequency()))
+		|| ($cron_st==Vtiger_Cron::$STATUS_RUNNING && $elapsed<$thisAlertTime)
+	) {
 		continue;
 	}
 	$out = array();

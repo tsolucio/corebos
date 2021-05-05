@@ -20,7 +20,8 @@ function getTopPotentials($maxval, $calCnt) {
 	require_once 'modules/Potentials/Potentials.php';
 	require_once 'include/logging.php';
 	require_once 'include/ListView/ListView.php';
-
+	require_once 'data/CRMEntity.php';
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Potentials');
 	global $adb, $current_language, $current_user;
 	$current_module_strings = return_module_language($current_language, 'Potentials');
 
@@ -40,7 +41,7 @@ function getTopPotentials($maxval, $calCnt) {
 	$list_query = 'SELECT vtiger_crmentity.crmid, vtiger_potential.potentialname,
 		vtiger_potential.amount, potentialid
 		FROM vtiger_potential
-		IGNORE INDEX(PRIMARY) INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_potential.potentialid';
+		IGNORE INDEX(PRIMARY) INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_potential.potentialid';
 	$list_query .= getNonAdminAccessControlQuery('Potentials', $current_user);
 	$list_query .= 'WHERE vtiger_crmentity.deleted = 0 '.$where;
 	$list_query .=' ORDER BY amount DESC';

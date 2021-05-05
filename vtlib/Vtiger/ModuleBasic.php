@@ -112,7 +112,7 @@ class Vtiger_ModuleBasic {
 	 */
 	public function __getNextSequence() {
 		global $adb;
-		$result = $adb->pquery("SELECT MAX(tabsequence) AS max_tabseq FROM vtiger_tab", array());
+		$result = $adb->pquery('SELECT MAX(tabsequence) AS max_tabseq FROM vtiger_tab', array());
 		$maxtabseq = $adb->query_result($result, 0, 'max_tabseq');
 		return ++$maxtabseq;
 	}
@@ -501,7 +501,7 @@ class Vtiger_ModuleBasic {
 	 */
 	public static function syncfile() {
 		self::log('Updating tabdata file ... ', false);
-		create_tab_data_file();
+		//create_tab_data_file();
 		self::log('DONE');
 	}
 }

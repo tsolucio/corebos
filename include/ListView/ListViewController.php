@@ -559,9 +559,9 @@ class ListViewController {
 						$setype = getSalesEntityType($value);
 						$moduleList = array($setype);
 						if (!isset($this->nameList[$fieldName])) {
-							$this->nameList[$fieldName] = array($fieldName=>array());
+							$this->nameList[$fieldName] = array();
 						}
-						if (!isset($this->nameList[$fieldName][$value])) {
+						if (!isset($this->nameList[$fieldName][$value]) && !empty($value)) {
 							$en = getEntityName($setype, $value);
 							$this->nameList[$fieldName][$value] = $en[$value];
 						}
@@ -709,43 +709,17 @@ class ListViewController {
 		if ($module == 'Emails') {
 			return 'javascript:;" onclick="OpenCompose(\''.$recordId.'\',\'edit\');';
 		}
-		if ($module != 'Calendar') {
-			$return_action = 'index';
-		} else {
-			$return_action = 'ListView';
-		}
-		//Added to fix 4600
 		$url = getBasic_Advance_SearchURL();
-		$parent = getParentTab();
 		//Appending view name while editing from ListView
-		$link = "index.php?module=$module&action=EditView&record=$recordId&return_module=$module".
-			"&return_action=$return_action&parenttab=$parent".$url."&return_viewname=".
+		return "index.php?module=$module&action=EditView&record=$recordId&return_module=$module&return_action=index$url&return_viewname=".
 			((isset($_SESSION['lvs']) && isset($_SESSION['lvs'][$module])) ? $_SESSION['lvs'][$module]['viewname'] : '');
-
-		if ($module == 'Calendar') {
-			if ($activityType == 'Task') {
-				$link .= '&activity_mode=Task';
-			} else {
-				$link .= '&activity_mode=Events';
-			}
-		}
-		return $link;
 	}
 
 	public function getListViewDeleteLink($module, $recordId) {
-		$parenttab = getParentTab();
 		$viewname = ((isset($_SESSION['lvs']) && isset($_SESSION['lvs'][$module])) ? $_SESSION['lvs'][$module]['viewname'] : '');
-		//Added to fix 4600
 		$url = getBasic_Advance_SearchURL();
-		if ($module == "Calendar") {
-			$return_action = "ListView";
-		} else {
-			$return_action = "index";
-		}
 		//This is added to avoid the del link in Product related list for the following modules
-		$link = "index.php?module=$module&action=Delete&record=$recordId".
-			"&return_module=$module&return_action=$return_action".
-			"&parenttab=$parenttab&return_viewname=".$viewname.$url;
+		$link = "index.php?module=$module&action=Delete&record=$recordId&return_module=$module&return_action=index&return_viewname=".$viewname.$url;
 
 		// vtlib customization: override default delete link for custom modules
 		$requestModule = isset($_REQUEST['module']) ? vtlib_purify($_REQUEST['module']) : '';
@@ -754,10 +728,10 @@ class ListViewController {
 		$requestFile = isset($_REQUEST['file']) ? vtlib_purify($_REQUEST['file']) : '';
 		$isCustomModule = vtlib_isCustomModule($requestModule);
 
-		if ($isCustomModule && (!in_array($requestAction, array('index','ListView')) &&
-				($requestAction == $requestModule.'Ajax' && !in_array($requestFile, array('index','ListView'))))) {
-			$link = "index.php?module=$requestModule&action=updateRelations&parentid=$requestRecord";
-			$link .= "&destination_module=$module&idlist=$recordId&mode=delete&parenttab=$parenttab";
+		if ($isCustomModule && (!in_array($requestAction, array('index','ListView'))
+			&& ($requestAction == $requestModule.'Ajax' && !in_array($requestFile, array('index','ListView'))))
+		) {
+			$link = "index.php?module=$requestModule&action=updateRelations&parentid=$requestRecord&destination_module=$module&idlist=$recordId&mode=delete";
 		}
 		return $link;
 	}
@@ -766,6 +740,7 @@ class ListViewController {
 		global $theme, $current_user;
 
 		$arrow='';
+		$sorder=trim($sorder);
 		$header = array();
 
 		//$tabid = getTabid($module);

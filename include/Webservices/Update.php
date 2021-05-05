@@ -11,7 +11,7 @@ include_once 'include/Webservices/CustomerPortalWS.php';
 include_once 'include/Webservices/getRecordImages.php';
 
 function vtws_update($element, $user) {
-	global $log,$adb,$root_directory;
+	global $log,$adb;
 	if (empty($element['id'])) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Id specified is incorrect');
 	}
@@ -26,22 +26,7 @@ function vtws_update($element, $user) {
 	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 	$meta = $handler->getMeta();
 	$entityName = $meta->getObjectEntityName($element['id']);
-	$wsAttachments = array();
-	if (!empty($element['attachments'])) {
-		foreach ($element['attachments'] as $fieldname => $attachment) {
-			$filepath = $root_directory.'cache/'.$attachment['name'];
-			file_put_contents($filepath, base64_decode($attachment['content']));
-			$_FILES[$fieldname] = array(
-				'name' => $attachment['name'],
-				'type' => $attachment['type'],
-				'tmp_name' => $filepath,
-				'error' => 0,
-				'size' => $attachment['size']
-			);
-			$wsAttachments[] = $filepath;
-		}
-		unset($element['attachments']);
-	}
+	require 'include/Webservices/processAttachments.php';
 
 	$types = vtws_listtypes(null, $user);
 	if (!in_array($entityName, $types['types'])) {
@@ -99,11 +84,14 @@ function vtws_update($element, $user) {
 		}
 	}
 	// Product line support
-	if (in_array($entityName, getInventoryModules()) && isset($element['pdoInformation']) && (is_array($element['pdoInformation']))) {
-		$elementType = $entityName;
-		include 'include/Webservices/ProductLines.php';
-	} else {
-		$_REQUEST['action'] = $entityName.'Ajax';
+	$hrequest = $_REQUEST;
+	if (in_array($entityName, getInventoryModules())) {
+		if (!empty($element['pdoInformation']) && is_array($element['pdoInformation'])) {
+			$elementType = $entityName;
+			include 'include/Webservices/ProductLines.php';
+		} else {
+			$_REQUEST['action'] = $entityName.'Ajax';
+		}
 	}
 	if ($entityName == 'HelpDesk') {
 		//Added to construct the update log for Ticket history
@@ -116,6 +104,7 @@ function vtws_update($element, $user) {
 		$adb->pquery('update vtiger_troubletickets set update_log=? where ticketid=?', array($updlog, $idList[1]));
 	}
 	VTWS_PreserveGlobal::flush();
+	$_REQUEST = $hrequest;
 	if (!empty($wsAttachments)) {
 		foreach ($wsAttachments as $file) {
 			@unlink($file);
@@ -139,7 +128,7 @@ function vtws_update($element, $user) {
 		}
 		$deref = unserialize(vtws_getReferenceValue(serialize($listofrelfields), $user));
 		foreach ($r as $relfield => $mods) {
-			if (!empty($entity[$relfield])) {
+			if (!empty($entity[$relfield]) && !empty($deref[$entity[$relfield]])) {
 				$entity[$relfield.'ename'] = $deref[$entity[$relfield]];
 			}
 		}

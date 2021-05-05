@@ -251,11 +251,19 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				<span style='display:none;' id='{$fldname}_hidden'></span>
 				<div style="position: relative;">
 					<input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}"
-					{if isset($maindata['extendedfieldinfo']['combobox'])}
+					{if isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['combobox'])}
 						autocomplete="off"
 						class="autocomplete-input detailedViewTextBox"
 						data-autocomp='{$maindata['extendedfieldinfo']['combobox']|@json_encode}' />
 						<div id="listbox-unique-id-{$fldname}" role="listbox" class="">
+							<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; width: 100%; list-style-type: none; width: 90%; left: 0; transform: translateX(0); max-width: none;" role="presentation"></ul>
+						</div>
+					{elseif ( isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['searchfields']) )}
+					{assign var="autocomp" value=$maindata['extendedfieldinfo'] }
+						autocomplete="off"
+						class="autocomplete-input detailedViewTextBox"
+						data-autocomp='{$maindata["extendedfieldinfo"]|@json_encode}' />
+						<div id="listbox-unique-id" role="listbox" class="">
 							<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; width: 100%; list-style-type: none; width: 90%; left: 0; transform: translateX(0); max-width: none;" role="presentation"></ul>
 						</div>
 					{else}
@@ -325,11 +333,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			</td>
 			<td id="td_val_{$fldname}" width="30%" align=left class="dvtCellInfo">
 				<span style='display:none;' id='{$fldname}_hidden'></span>
-				{if $MODULE eq 'Calendar'}
-					<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small" style="width:160px;">
-				{else}
-					<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small" style="width:280px;">
-				{/if}
+				<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small" style="width:280px;">
 				{foreach item=arr from=$fldvalue}
 					<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
 				{foreachelse}
@@ -584,7 +588,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 						<span style='display:none;' id='{$fldname}_hidden'></span>
 						<input name="{$fldname}" id="{$fldname}" type="checkbox" tabindex="{$vt_tab}" checked>
 					</td>
-				{elseif $fldname eq 'filestatus'&& $MODE eq 'create'}
+				{elseif $fldname eq 'filestatus'&& ($MODE eq 'create' || $MODE eq '')}
 					<td id="td_val_{$fldname}" width="30%" align=left class="dvtCellInfo">
 						<span style='display:none;' id='{$fldname}_hidden'></span>
 						<input name="{$fldname}" id="{$fldname}" type="checkbox" tabindex="{$vt_tab}" checked>
@@ -787,7 +791,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					<input name="del_file_list" type="hidden" value="">
 					<div id="files_list" style="border: 1px solid grey; width: 500px; padding: 5px; background: rgb(255, 255, 255) none repeat scroll 0%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; font-size: x-small">
 						<span id="limitmsg" style= "color:red;"> {'LBL_MAX_SIZE'|@getTranslatedString:$MODULE} {$UPLOADSIZE}{'LBL_FILESIZEIN_MB'|@getTranslatedString:$MODULE}, {$APP.Files_Maximum}{$Product_Maximum_Number_Images}</span>
-						<input id="my_file_element" type="file" name="file_1" tabindex="{$vt_tab}"  onchange="validateFilename(this)"/>
+						<input id="my_file_element" type="file" name="file_1" tabindex="{$vt_tab}" onchange="validateFilename(this)"/>
 						<!--input type="hidden" name="file_1_hidden" value=""/-->
 						{assign var=image_count value=0}
 						{if isset($maindata[3].0.name) && $maindata[3].0.name neq '' && $DUPLICATE neq 'true'}
@@ -802,10 +806,18 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 
 					<script>
 						{*<!-- Create an instance of the multiSelector class, pass it the output target and the max number of files -->*}
-						var multi_selector = new MultiSelector( document.getElementById( 'files_list' ), {$Product_Maximum_Number_Images} );
+						var multi_selector = new MultiSelector(document.getElementById('files_list'), {$Product_Maximum_Number_Images});
 						multi_selector.count = {$image_count};
 						{*<!-- Pass in the file element -->*}
-						multi_selector.addElement( document.getElementById( 'my_file_element' ) );
+						multi_selector.addElement(document.getElementById('my_file_element'));
+						var ProductImages=new Array();
+						var ProductImagesCount=0;
+						function delRowEmt(imagename) {ldelim}
+							ProductImages[ProductImagesCount++]=imagename;
+							multi_selector.current_element.disabled = false;
+							multi_selector.count--;
+							document.EditView.del_file_list.value=ProductImages.join('###');
+						{rdelim}
 					</script>
 				{/if}
 			</td>
@@ -813,7 +825,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			<td id="td_{$fldname}" width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
 				<font color="red">{$mandatory_field}</font>{$usefldlabel}
 				{if $MASS_EDIT eq '1'}
-					<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small"  >
+					<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small">
 				{/if}
 			</td>
 			<td id="td_val_{$fldname}" colspan="1" width="30%" align=left class="dvtCellInfo">

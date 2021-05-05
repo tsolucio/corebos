@@ -13,7 +13,7 @@ $attachmentsid = vtlib_purify($_REQUEST['fileid']);
 $entityid = vtlib_purify($_REQUEST['entityid']);
 $deletecheck = false;
 if (!empty($entityid)) {
-	$deletecheck = $adb->pquery('SELECT deleted FROM vtiger_crmentity WHERE crmid=?', array($entityid));
+	$deletecheck = $adb->pquery('SELECT deleted FROM vtiger_crmobject WHERE crmid=?', array($entityid));
 }
 if (!empty($deletecheck) && $adb->query_result($deletecheck, 0, 'deleted') == 1) {
 	echo $app_strings['LBL_RECORD_DELETE'];

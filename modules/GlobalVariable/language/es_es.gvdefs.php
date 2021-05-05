@@ -685,6 +685,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Número máximo de resultados a mostrar en la pantalla de búsqueda global autocompletada.',
 ),
+'Application_ProductService_Search_Autocomplete_Limit' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'Aplicación',
+	'values' => '',
+	'definition' => 'Número máximo de resultados a mostrar en la pantalla de búsqueda autocompletada de productos/servicios en líneas de inventario.',
+),
 'Product_Copy_Bundle_OnDuplicate' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
@@ -726,6 +733,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => 'lista separada por comas de módulos con soporte de líneas de producto',
 	'definition' => 'Los módulos de inventario son especiales debido a sus líneas de productos, esta variable le permitirá agregar ese tipo de funcionalidad a tus módulos personalizados añadiendolo aquí.',
+),
+'Inventory_DoNotUseLines' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'lista separada por comas de módulos de inventario que no usarán líneas de productos',
+	'definition' => 'Los módulos enumerados en esta variable actuarán como módulos normales, sin mostrar las líneas de detalles del producto, solo los campos de encabezado del módulo.',
 ),
 'Report_Send_Scheduled_ifEmpty' => array(
 	'status' => 'Implementada',
@@ -1546,6 +1560,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Especificación SQL para order by|DO NOT SORT',
 	'definition' => 'Si se proporciona, se incorporará directamente a la consulta SQL para recuperar los usuarios que aparecen en el menú desplegable Asignado a, lo que nos permite personalizar el orden de aparición de estos usuarios.',
 ),
+'Application_Merge_Record_Limit' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'Aplicación',
+	'values' => '',
+	'definition' => 'El número máximo de registros para realizar la combinación de deduplicación. El valor predeterminado es 8 registros',
+),
 'Workflow_ListView_PageSize' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Entero',
@@ -1636,6 +1657,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => '0 | 1',
 	'definition' => 'Permitir la edición del filtro "Todos". Por defecto es 1',
+),
+'Security_ImageCheck' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'strict | loose | clean',
+	'definition' => 'Esta variable decide si verificamos de manera estricta/vaga problemas de seguridad en un archivo de imagen o ignoramos la verificación y limpiamos la imagen.',
 ),
 );
 

@@ -26,8 +26,8 @@ class databasechangesToMoveTocbCalendar extends cbupdaterWorker {
 		} else {
 			$this->ExecuteQuery('DELETE FROM vtiger_relatedlists WHERE related_tabid=9 and name=? and label=?', array('get_history','Activity History'));
 			$this->ExecuteQuery('DELETE FROM vtiger_fieldmodulerel WHERE fieldid not in (SELECT fieldid from vtiger_field)');
-			$this->ExecuteQuery('UPDATE vtiger_fieldmodulerel SET relmodule=? WHERE relmodule=?', array('cbCalendar', 'Calendar'));
-			$this->ExecuteQuery('UPDATE vtiger_fieldmodulerel SET module=? WHERE module=?', array('cbCalendar', 'Calendar'));
+			$this->ExecuteQuery('UPDATE IGNORE vtiger_fieldmodulerel SET relmodule=? WHERE relmodule=?', array('cbCalendar', 'Calendar'));
+			$this->ExecuteQuery('UPDATE IGNORE vtiger_fieldmodulerel SET module=? WHERE module=?', array('cbCalendar', 'Calendar'));
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
 		}

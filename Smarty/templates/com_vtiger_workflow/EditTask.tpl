@@ -5,6 +5,7 @@
 <script src="modules/{$module->name}/resources/parallelexecuter.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/vtigerwebservices.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/fieldexpressionpopup.js" type="text/javascript" charset="utf-8"></script>
+<script src="modules/{$module->name}/resources/functionselect.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/editworkflowscript.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
 	fn.addStylesheet('modules/{$module->name}/resources/style.css');

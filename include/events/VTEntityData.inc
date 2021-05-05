@@ -25,8 +25,7 @@ class VTEntityData {
 	public static function fromEntityId($adb, $entityId) {
 		$obj = new VTEntityData();
 		$obj->entityId = $entityId;
-		$result = $adb->pquery('select setype from vtiger_crmentity where crmid=?', array($entityId));
-		$setype = $adb->query_result($result, 0, 'setype');
+		$setype = getSalesEntityType($entityId);
 		$obj->moduleName = $setype;
 
 		require_once 'data/CRMEntity.php';

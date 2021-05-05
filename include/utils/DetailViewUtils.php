@@ -24,14 +24,14 @@ require_once 'modules/PickList/PickListUtils.php';
  */
 function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, $generatedtype, $tabid = '', $module = '', $cbMapFI = array()) {
 	global $log, $adb, $mod_strings, $app_strings, $current_user, $theme, $default_charset;
-	$log->debug("> getDetailViewOutputHtml $uitype, $fieldname, $fieldlabel," . print_r($col_fields, true) . ", $generatedtype, $tabid");
+	$log->debug('> getDetailViewOutputHtml', [$uitype, $fieldname, $fieldlabel, $col_fields, $generatedtype, $tabid]);
 	$theme_path = 'themes/' . $theme . '/';
 	$image_path = $theme_path . 'images/';
 	$value = '';
 	$label_fld = array();
 	$userprivs = $current_user->getPrivileges();
 
-	// vtlib customization: New uitype to handle relation between modules
+	// uitype to handle relation between modules
 	if ($uitype == '10') {
 		$fieldlabel = getTranslatedString($fieldlabel, $module);
 		$parent_id = $col_fields[$fieldname];
@@ -925,9 +925,9 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$rem_days = floor($col_fields[$fieldname] / (24 * 60));
 			$rem_hrs = floor(($col_fields[$fieldname] - $rem_days * 24 * 60) / 60);
 			$rem_min = ($col_fields[$fieldname] - $rem_days * 24 * 60) % 60;
-			$reminder_str = $rem_days . '&nbsp;' . getTranslatedString('LBL_DAYS', 'Calendar') . '&nbsp;' . $rem_hrs . '&nbsp;'
-				. getTranslatedString('LBL_HOURS', 'Calendar') . '&nbsp;' . $rem_min . '&nbsp;' . getTranslatedString('LBL_MINUTES', 'Calendar') . '&nbsp;&nbsp;'
-				. getTranslatedString('LBL_BEFORE_EVENT', 'Calendar');
+			$reminder_str = $rem_days . '&nbsp;' . getTranslatedString('LBL_DAYS', 'cbCalendar') . '&nbsp;' . $rem_hrs . '&nbsp;'
+				. getTranslatedString('LBL_HOURS', 'cbCalendar') . '&nbsp;' . $rem_min . '&nbsp;' . getTranslatedString('LBL_MINUTES', 'cbCalendar') . '&nbsp;&nbsp;'
+				. getTranslatedString('LBL_BEFORE_EVENT', 'cbCalendar');
 		} else {
 			$rem_days = 0;
 			$rem_hrs = 0;
@@ -1069,9 +1069,12 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
  * Return type string
  */
 function getDetailAssociatedProducts($module, $focus) {
-	global $log, $adb, $theme, $log, $app_strings;
+	global $log, $adb, $theme, $app_strings;
 	$log->debug('> getDetailAssociatedProducts ' . $module . ',' . get_class($focus));
 
+	if (strpos(GlobalVariable::getVariable('Inventory_DoNotUseLines', '', $module), $module)!==false) {
+		return '';
+	}
 	if (vtlib_isModuleActive('Products')) {
 		$hide_stock = 'no';
 	} else {
@@ -1261,11 +1264,12 @@ function getDetailAssociatedProducts($module, $focus) {
 				}
 				$output .= '<br>';
 				$output .= '<b>'.$mdfield['fieldinfo']['label'].'</b>:&nbsp;';
+				$crmEntityTable = CRMEntity::getcrmEntityTableAlias('InventoryDetails');
 				$mdrs = $adb->pquery(
 					'select '.$mdfield['fieldinfo']['name'].',vtiger_inventorydetails.inventorydetailsid from vtiger_inventorydetails
-						inner join vtiger_crmentity on crmid=vtiger_inventorydetails.inventorydetailsid
+						inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_inventorydetails.inventorydetailsid
 						inner join vtiger_inventorydetailscf on vtiger_inventorydetailscf.inventorydetailsid=vtiger_inventorydetails.inventorydetailsid
-						where deleted=0 and related_to=? and lineitem_id=?',
+						where vtiger_crmentity.deleted=0 and related_to=? and lineitem_id=?',
 					array($focus->id,$adb->query_result($result, $i - 1, 'lineitem_id'))
 				);
 				if ($mdrs) {
@@ -1586,7 +1590,7 @@ function isPresentRelatedLists($module, $activity_mode = '') {
 		array($tab_id)
 	);
 	$count = $adb->num_rows($result);
-	if ($count < 1 || ($module == 'Calendar' && $activity_mode == 'task')) {
+	if ($count < 1) {
 		$retval = 'false';
 	} elseif (empty($moduleRelatedListCache[$module])) {
 		for ($i = 0; $i < $count; ++$i) {
@@ -1617,7 +1621,7 @@ function isPresentRelatedLists($module, $activity_mode = '') {
  */
 function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block_label) {
 	global $log, $adb;
-	$log->debug("> getDetailBlockInformation $module, $result," . print_r($col_fields, true) . ", $tabid, " . print_r($block_label, true));
+	$log->debug('> getDetailBlockInformation', [$module, $result, $col_fields, $tabid, $block_label]);
 	$label_data = array();
 
 	$bmapname = $module.'_FieldInfo';

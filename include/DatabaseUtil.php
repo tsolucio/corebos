@@ -7,6 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
+use \PHPSQLParser\PHPSQLParser;
+use \PHPSQLParser\PHPSQLCreator;
 
 // check database charset and collation are set to UTF8.
 function check_db_utf8_support($conn) {
@@ -126,5 +128,73 @@ function mkCountWithFullQuery($query) {
 		$query = substr($query, 0, stripos($query, ' ORDER BY '));
 	}
 	return "SELECT count(*) AS count FROM ($query) as sqlcount";
+}
+
+/**
+ * @param String $module - module name for which query needs to be generated.
+ * @param Users $user - user for which query needs to be generated.
+ * @return String Access control Query for the user.
+ */
+function getNonAdminAccessControlQuery($module, $user, $scope = '') {
+	$instance = CRMEntity::getInstance($module);
+	return $instance->getNonAdminAccessControlQuery($module, $user, $scope);
+}
+
+function getFromClauseAlreadyPresent($parsed, $fromClause) {
+	$found = '';
+	if (isset($parsed['FROM'])) {
+		$fromClause = substr($fromClause, stripos($fromClause, ' join ')+6); // strip join
+		$fromClause = str_replace(' ', '', $fromClause);
+		foreach ($parsed['FROM'] as $clause) {
+			if ($clause['ref_type']=='ON') {
+				if (str_replace(' ', '', $clause['base_expr'])==$fromClause) {
+					return ($clause['join_type']=='JOIN' ? 'INNER' : $clause['join_type']).' join '.$clause['base_expr'];
+				}
+			}
+		}
+	}
+	return $found;
+}
+
+function appendFromClauseToQuery($query, $fromClause, $fromClauseNoConditions = '') {
+	$query = preg_replace('/\s+/', ' ', $query);
+	if (trim($fromClause)=='') {
+		return $query;
+	}
+	$fromClause = trim($fromClause);
+	$parser = new PHPSQLParser();
+	$parsed = $parser->parse($query);
+	$alreadyPresent = getFromClauseAlreadyPresent($parsed, ($fromClauseNoConditions=='' ? $fromClause : $fromClauseNoConditions));
+	if ($alreadyPresent=='') {
+		if (!isset($parsed['WHERE'])) {
+			return $query.' '.$fromClause;
+		} else {
+			unset($parsed['WHERE'], $parsed['ORDER'], $parsed['LIMIT'], $parsed['GROUP'], $parsed['HAVING']);
+			$creator = new PHPSQLCreator($parsed);
+			// we need to find the 'where' of the SQL, $creator->created contains the query up to that 'where' so we start searching from there backwards
+			$whereposition = strripos(substr($query, 0, strlen($creator->created)+8), ' where ');
+			return substr($query, 0, $whereposition).' '.$fromClause.substr($query, $whereposition);
+		}
+	} else {
+		return str_ireplace($alreadyPresent, $fromClause, $query);
+	}
+}
+
+function appendConditionClauseToQuery($query, $condClause, $glue = 'and') {
+	$query = preg_replace('/\s+/', ' ', $query);
+	if (trim($condClause)=='') {
+		return $query;
+	}
+	$parser = new PHPSQLParser();
+	$parsed = $parser->parse($query);
+	if (!isset($parsed['WHERE'])) {
+		return $query.' WHERE '.$condClause;
+	} else {
+		unset($parsed['WHERE'], $parsed['ORDER'], $parsed['LIMIT'], $parsed['GROUP'], $parsed['HAVING']);
+		$creator = new PHPSQLCreator($parsed);
+		// we need to find the 'where' of the SQL, $creator->created contains the query up to that 'where' so we start searching from there backwards
+		$whereposition = strripos(substr($query, 0, strlen($creator->created)+8), ' where ');
+		return substr($query, 0, $whereposition).' WHERE ('.$condClause.') '.$glue.' '.substr($query, $whereposition+7);
+	}
 }
 ?>

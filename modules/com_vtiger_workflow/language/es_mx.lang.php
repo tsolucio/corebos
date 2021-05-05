@@ -241,5 +241,13 @@ $mod_strings = array(
 'LBL_SELECT_CREDENTIAL' => 'Selecciona Credenciales',
 'LBL_SEND_FILE' => 'Enviar fichero a',
 'FILENAME' => 'Nombre en destino',
+'LINK_EMAIL_TEMPLATE' => 'Enlazar con plantilla de email',
+'LBL_LINKED' => 'enlazado',
+'LBL_UNLINKED' => 'no enlazado',
+'LBL_SELECT_EMAIL_TEMPLATE' => 'Selecciona Plantilla de Email',
+'LBL_SELECT_SENDGRID_EMAIL_TEMPLATE' => 'Selecciona Plantilla de SendGrid',
+'LBL_LOAD_SENDGRID_TEMPLATES' => 'Cargar Plantillas de SendGrid',
+'LBL_PREVIEW_BUTTON' => 'Previsualizar',
+'CBUpsertTask' => 'Upsert',
 );
 ?>

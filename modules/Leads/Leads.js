@@ -120,16 +120,6 @@ function set_return(product_id, product_name) {
 	}
 }
 
-function set_return_todo(product_id, product_name) {
-	if (document.getElementById('from_link').value != '') {
-		window.opener.document.QcEditView.task_parent_name.value = product_name;
-		window.opener.document.QcEditView.task_parent_id.value = product_id;
-	} else {
-		window.opener.document.createTodo.task_parent_name.value = product_name;
-		window.opener.document.createTodo.task_parent_id.value = product_id;
-	}
-}
-
 function set_return_specific(product_id, product_name) {
 	//Used for DetailView, Removed 'EditView' formname hardcoding
 	var fldName = getOpenerObj('lead_name');
@@ -222,7 +212,7 @@ function toggle_converted() {
 	} else {
 		setCookie('LeadConv', 'true');
 	}
-	document.location.reload(true);
+	document.location.reload();
 }
 
 function LeadssetValueFromCapture(recordid, value, target_fieldname) {
