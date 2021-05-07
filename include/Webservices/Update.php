@@ -88,6 +88,7 @@ function vtws_update($element, $user) {
 	if (in_array($entityName, getInventoryModules())) {
 		if (!empty($element['pdoInformation']) && is_array($element['pdoInformation'])) {
 			$elementType = $entityName;
+			$elementCRMID = $idList[1];
 			include 'include/Webservices/ProductLines.php';
 		} else {
 			$_REQUEST['action'] = $entityName.'Ajax';

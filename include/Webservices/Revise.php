@@ -85,6 +85,7 @@ function vtws_revise($element, $user) {
 	$hrequest = $_REQUEST;
 	if (in_array($entityName, getInventoryModules()) && isset($element['pdoInformation']) && is_array($element['pdoInformation'])) {
 		$elementType = $entityName;
+		$elementCRMID = $idList[1];
 		include 'include/Webservices/ProductLines.php';
 	} else {
 		$_REQUEST['action'] = $entityName.'Ajax';
