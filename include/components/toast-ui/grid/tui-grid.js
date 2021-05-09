@@ -3476,8 +3476,10 @@ function resetData(store, inputData, options) {
     summary_1.updateAllSummaryValues(store);
     setLoadingState(store, data_2.getLoadingState(rawData));
     setCheckedAllRows(store);
+    if (instance_1.getDataManager(id)) {
     instance_1.getDataManager(id).setOriginData(inputData);
     instance_1.getDataManager(id).clearAll();
+    }
     column_2.setColumnWidthsByText(store);
     setTimeout(function () {
         /**
