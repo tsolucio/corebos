@@ -18,11 +18,6 @@
 require_once 'include/utils/utils.php';
 require_once 'modules/cbAuditTrail/AuditTrail.php';
 
-$response = array(
-	'total' => 0,
-	'data' => array(),
-	'error' => true,
-);
 $focus = new AuditTrail();
 if (isset($_REQUEST['page'])) {
 	$page = vtlib_purify($_REQUEST['page']);
@@ -39,33 +34,21 @@ if (isset($_REQUEST['action_search'])) {
 } else {
 	$action_search = '';
 }
-if (isset($_REQUEST['order_by']) && is_numeric($_REQUEST['order_by'])) {
-	$order_by = vtlib_purify($_REQUEST['order_by']);
-	switch ($order_by) {
-		case 0:
-			$order_by = $focus->list_fields_name['User Name'];
-			break;
-		case 1:
-			$order_by = $focus->list_fields_name['Module'];
-			break;
-		case 2:
-			$order_by = $focus->list_fields_name['Action'];
-			break;
-		case 3:
-			$order_by = $focus->list_fields_name['Record'];
-			break;
-		default:
-		case 4:
-			$order_by = $focus->list_fields_name['Action Date'];
-			break;
+if (isset($_REQUEST['sortColumn'])) {
+	$order_by = vtlib_purify($_REQUEST['sortColumn']);
+	if (isset($focus->list_fields_name[$order_by])) {
+		$order_by = $focus->list_fields_name[$order_by];
+	} else {
+		$order_by = $focus->default_order_by;
 	}
 } else {
 	$order_by = $focus->default_order_by;
 }
-if (isset($_REQUEST['order_rule'])) {
-	$sorder = vtlib_purify($_REQUEST['order_rule']);
+if (!isset($_REQUEST['sortAscending'])) {
+	$sorder = '';
+} elseif ($_REQUEST['sortAscending']=='true') {
+	$sorder = 'ASC';
 } else {
 	$sorder = 'DESC';
 }
-$response = $focus->getAuditJSON($userid, $page, $order_by, $sorder, $action_search);
-echo $response;
+echo $focus->getAuditJSON($userid, $page, $order_by, $sorder, $action_search);

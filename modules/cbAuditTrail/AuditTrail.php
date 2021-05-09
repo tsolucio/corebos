@@ -109,76 +109,99 @@ class AuditTrail {
 	public function getAuditJSON($userid, $page, $order_by = 'actiondate', $sorder = 'DESC', $action_search = '') {
 		global $log, $adb;
 		$log->debug('> getAuditJSON');
-
-		$where = ' where 1 ';
+		$where = ' where 1';
 		$params = array();
 		if (!empty($userid)) {
-			$where .= ' and userid = ? ';
+			$where .= ' and userid=?';
 			array_push($params, $userid);
 		}
 		if (!empty($action_search)) {
-			$where .= ' and action like ? ';
+			$where .= ' and action like ?';
 			array_push($params, '%' . $action_search . '%');
 		}
 		if ($sorder != '' && $order_by != '') {
-			$list_query = "Select * from vtiger_audit_trial $where order by $order_by $sorder";
+			$list_query = "select * from vtiger_audit_trial $where order by $order_by $sorder";
 		} else {
-			$list_query = "Select * from vtiger_audit_trial $where order by ".$this->default_order_by.' '.$this->default_sort_order;
+			$list_query = "select * from vtiger_audit_trial $where order by ".$this->default_order_by.' '.$this->default_sort_order;
 		}
-		$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize', 40);
+		if (!empty($_REQUEST['perPage']) && is_numeric($_REQUEST['perPage'])) {
+			$rowsperpage = (int) vtlib_purify($_REQUEST['perPage']);
+		} else {
+			$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize', 40);
+		}
 		$from = ($page-1)*$rowsperpage;
 		$limit = " limit $from,$rowsperpage";
-
 		$result = $adb->pquery($list_query.$limit, $params);
-		$rscnt = $adb->pquery("select count(*) from vtiger_audit_trial $where", array($params));
-		$noofrows = $adb->query_result($rscnt, 0, 0);
-		$last_page = ceil($noofrows/$rowsperpage);
-		if ($page*$rowsperpage>$noofrows-($noofrows % $rowsperpage)) {
-			$islastpage = true;
-			$to = $noofrows;
-		} else {
-			$islastpage = false;
-			$to = $page*$rowsperpage;
-		}
-		$entries_list = array(
-			'total' => $noofrows,
-			'per_page' => $rowsperpage,
-			'current_page' => $page,
-			'last_page' => $last_page,
-			'next_page_url' => '',
-			'prev_page_url' => '',
-			'from' => $from+1,
-			'to' => $to,
-			'data' => array(),
-		);
-		if ($islastpage && $page!=1) {
-			$entries_list['next_page_url'] = null;
-		} else {
-			$entries_list['next_page_url'] = 'index.php?module=cbAuditTrail&action=cbAuditTrailAjax&file=getJSON&page='.($islastpage ? $page : $page+1);
-		}
-		$entries_list['prev_page_url'] = 'index.php?module=cbAuditTrail&action=cbAuditTrailAjax&file=getJSON&page='.($page == 1 ? 1 : $page-1);
-		$unames = array();
-		while ($lgn = $adb->fetch_array($result)) {
-			$entry = array();
-			if (!isset($unames[$lgn['userid']])) {
-				$unames[$lgn['userid']] = getUserFullName($lgn['userid']);
-			}
-			$entry['User Name'] = $unames[$lgn['userid']];
-			$entry['Module'] = $lgn['module'];
-			$entry['Action'] = $lgn['action'];
-			if (empty($lgn['recordid'])) {
-				$rurl = '';
-			} else {
-				if ($lgn['module']=='Reports') {
-					$rurl = 'index.php?module=Reports&action=SaveAndRun&record='.$lgn['recordid'];
-				} else {
-					$rurl = 'index.php?module='.$lgn['module'].'&action=DetailView&record='.$lgn['recordid'];
+		$count_result = $adb->pquery('SELECT count(*) FROM vtiger_audit_trial '.$where, $params);
+		$noofrows = $adb->query_result($count_result, 0, 0);
+		if ($result) {
+			if ($noofrows>0) {
+				$entries_list = array(
+					'data' => array(
+						'contents' => array(),
+						'pagination' => array(
+							'page' => (int)$page,
+							'totalCount' => (int)$noofrows,
+						),
+					),
+					'result' => true,
+				);
+				$unames = array();
+				while ($lgn = $adb->fetch_array($result)) {
+					$entry = array();
+					if (!isset($unames[$lgn['userid']])) {
+						$unames[$lgn['userid']] = getUserFullName($lgn['userid']);
+					}
+					$entry['User Name'] = $unames[$lgn['userid']];
+					$entry['Module'] = $lgn['module'];
+					$entry['Action'] = $lgn['action'];
+					if (empty($lgn['recordid'])) {
+						$rurl = '';
+					} else {
+						if ($lgn['module']=='Reports') {
+							$rname = $adb->pquery('select vtiger_report.reportname from vtiger_report where vtiger_report.reportid=?', array($lgn['recordid']));
+							$rurl = '<a href="index.php?module=Reports&action=SaveAndRun&record='.$lgn['recordid'].'">'.$rname->fields['reportname'].'</a>';
+						} else {
+							$rinfo = getEntityName($lgn['module'], $lgn['recordid']);
+							if (empty($rinfo)) {
+								$rurl = $lgn['recordid'];
+							} else {
+								$rurl = '<a href="index.php?module='.$lgn['module'].'&action=DetailView&record='.$lgn['recordid'].'">'.$rinfo[$lgn['recordid']].'</a>';
+							}
+						}
+					}
+					$entry['Record'] = $rurl;
+					$entry['RecordDetail'] = $lgn['recordid'];
+					$entry['Action Date'] = $lgn['actiondate'];
+					$entries_list['data']['contents'][] = $entry;
 				}
+			} else {
+				$entries_list = array(
+					'data' => array(
+						'contents' => array(),
+						'pagination' => array(
+							'page' => 1,
+							'totalCount' => 0,
+						),
+					),
+					'result' => false,
+					'message' => getTranslatedString('NoData', 'cbAuditTrail'),
+				);
 			}
-			$entry['Record'] = $rurl;
-			$entry['RecordDetail'] = $lgn['recordid'];
-			$entry['Action Date'] = $lgn['actiondate'];
-			$entries_list['data'][] = $entry;
+		} else {
+			$entries_list = array(
+				'data' => array(
+					'contents' => array(),
+					'pagination' => array(
+						'page' => 1,
+						'totalCount' => 0,
+					),
+				),
+				'result' => false,
+				'message' => getTranslatedString('ERR_SQL', 'cbAuditTrail'),
+				'debug_query' => $list_query.$limit,
+				'debug_params' => print_r($params, true),
+			);
 		}
 		$log->debug('< getAuditJSON');
 		return json_encode($entries_list);
