@@ -538,10 +538,7 @@ function cbexpsql_getCurrentUserField($arr, $mmodule) {
 }
 
 function cbexpsql_getCRMIDFromWSID($arr, $mmodule) {
-	if (!empty($arr) && !empty($arr[0])) {
-		return 'substring_index("'.$arr[0].'","x",-1)';
-	}
-	return "";
+	return 'crmid';
 }
 
 function cbexpsql_getLatitude($arr, $mmodule) {
