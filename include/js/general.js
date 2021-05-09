@@ -3460,7 +3460,13 @@ function ActivityReminderCallback(clicked) {
 				}
 			}
 		}).fail(function (response) {
-			ldsModal.show(alert_arr['ERROR'], response.responseText.substring(response.responseText.indexOf('<div class="slds-modal__container">'), response.responseText.indexOf('</section>')), '');
+			if (gcbpageisdirty) {
+				gcbpagewhyisdirty = 'CSRF+'+gcbpagewhyisdirty;
+			} else {
+				gcbpageisdirty = true;
+				gcbpagewhyisdirty = 'CSRF';
+			}
+			ldsModal.show('', response.responseText.substring(response.responseText.indexOf('<div class="slds-modal__container">')+35, response.responseText.indexOf('</section>')-7), '');
 		});
 	}
 }
