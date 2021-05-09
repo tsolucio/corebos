@@ -431,7 +431,7 @@ var alert_arr = {
 	'ERR_ENTER_OLD_PASSWORD': 'Por favor, introduzca su contraseña actual.',
 	'ERR_ENTER_NEW_PASSWORD': 'Por favor, introduzca su nueva contraseña.',
 	'PASSWORD REQUIREMENTS NOT MET': 'NO SE CUMPLEN LOS REQUISITOS DE CONTRASEÑA',
-	'Old password is incorrect': 'Actual contraseña es incorrecta!',
+	'Old password is incorrect': 'Contraseña actual es incorrecta!',
 	'LBL_OLD_PASSWORD': 'Contraseña Actual',
 	'LBL_NEW_PASSWORD': 'Nueva Contraseña',
 	'PASSWORD REQUIREMENTS': 'REQUISITOS CONTRASEÑA',
