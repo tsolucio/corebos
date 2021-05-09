@@ -235,18 +235,12 @@ class PearDatabase {
 	}
 
 	public function startTransaction() {
-		if ($this->isPostgres()) {
-			return;
-		}
 		$this->checkConnection();
 		$this->println('TRANS Started');
 		$this->database->StartTrans();
 	}
 
 	public function completeTransaction() {
-		if ($this->isPostgres()) {
-			return;
-		}
 		if ($this->database->HasFailedTrans()) {
 			$this->println('TRANS Rolled Back');
 		} else {
@@ -1144,23 +1138,12 @@ class PearDatabase {
 		if (is_null($str)) {
 			return 'NULL';
 		}
-		$result_data = $this->database->qstr($str);
-		$result_data = substr($result_data, 1, -1);
-		return $result_data;
+		return substr($this->database->qstr($str), 1, -1);
 	}
 
 	// Function to get the last insert id based on the type of database
 	public function getLastInsertID($seqname = '') {
-		if ($this->isPostgres()) {
-			$result = pg_query("SELECT currval('".$seqname."_seq')");
-			if ($result) {
-				$row = pg_fetch_row($result);
-				$last_insert_id = $row[0];
-			}
-		} else {
-			$last_insert_id = $this->database->Insert_ID();
-		}
-		return $last_insert_id;
+		return $this->database->Insert_ID();
 	}
 
 	// Function to escape the special characters in database name based on database type.
