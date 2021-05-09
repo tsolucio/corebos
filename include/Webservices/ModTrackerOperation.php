@@ -239,9 +239,11 @@ class ModTrackerOperation extends WebserviceEntityOperation {
 	}
 
 	public function query($q) {
-		$meta = null;
-		$queryRelatedModules = array();
 		$mysql_query = $this->wsVTQL2SQL($q, $meta, $queryRelatedModules);
+		return $this->querySQLResults($mysql_query, $q, $meta, $queryRelatedModules);
+	}
+
+	public function querySQLResults($mysql_query, $q, $meta, $queryRelatedModules) {
 		$this->pearDB->startTransaction();
 		$result = $this->pearDB->pquery($mysql_query, array());
 		$error = $this->pearDB->hasFailedTransaction();
