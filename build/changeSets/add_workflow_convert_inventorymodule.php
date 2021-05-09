@@ -46,7 +46,7 @@ class add_workflow_convert_inventorymodule extends cbupdaterWorker {
 			global $adb;
 			$result = $adb->pquery("SELECT * FROM `com_vtiger_workflowtasks` WHERE `task` like '%ConvertInventoryModule%'", array());
 			if ($result && $adb->num_rows($result)>1) {
-				$this->sendMsg('<span style="font-size:large;weight:bold;">Workflows that use this task exist!! Please eliminate them before undoing this change.</span>');
+				$this->sendMsg('<span style="font-size:large;font-weight:bold;">Workflows that use this task exist!! Please eliminate them before undoing this change.</span>');
 			} else {
 				$adb->pquery("DELETE FROM com_vtiger_workflow_tasktypes WHERE
 						tasktypename = 'ConvertInventoryModule' and label = 'ConvertInventoryModule' and classname = 'ConvertInventoryModule'", array());

@@ -25,7 +25,7 @@ class RemoveMomentLink extends cbupdaterWorker {
 		} else {
 			$query=$adb->query("select tabid from vtiger_tab where name='Calendar4You'");
 			$tabid=$adb->query_result($query, 0, 0);
-			$link = Vtiger_Link::deleteLink($tabid, 'HEADERSCRIPT', 'Calendar4You_HeaderScript3', 'modules/Calendar4You/fullcalendar/lib/moment.min.js');
+			Vtiger_Link::deleteLink($tabid, 'HEADERSCRIPT', 'Calendar4You_HeaderScript3', 'modules/Calendar4You/fullcalendar/lib/moment.min.js');
 
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
