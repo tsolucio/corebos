@@ -634,7 +634,6 @@ class Import_Data_Controller {
 				$importResult . '<br/><br/>'.
 				'We recommend you to login and check a few records to confirm that the import has been successful.';
 
-			//$userName = getFullNameFromArray('Users', $importDataController->user->column_fields);
 			$userEmail = $importDataController->user->email1;
 
 			send_mail('Emails', $userEmail, $HELPDESK_SUPPORT_NAME, $HELPDESK_SUPPORT_EMAIL_ID, $emailSubject, $emailData, '', '');
