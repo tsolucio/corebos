@@ -79,12 +79,12 @@ class Tracker {
 	 * return - return the array of result set rows from the query. All of the table fields are included
 	 */
 	public function get_recently_viewed($user_id, $module_name = '') {
+		$list = array();
 		if (empty($user_id)) {
-			return;
+			return $list;
 		}
 		global $current_user;
 
-		//$query = "SELECT * from $this->table_name WHERE user_id='$user_id' ORDER BY id DESC";
 		$crmTable = 'vtiger_crmentity';
 		if ($module_name != '') {
 			$mod = CRMEntity::getInstance($module_name);
@@ -94,7 +94,6 @@ class Tracker {
 			from {$this->table_name}
 			inner join {$crmTable} as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_tracker.item_id WHERE user_id=? and vtiger_crmentity.deleted=0 ORDER BY id DESC";
 		$result = $this->db->pquery($query, array($user_id), true);
-		$list = array();
 		while ($row = $this->db->fetchByAssoc($result, -1, false)) {
 			// If the module was not specified or the module matches the module of the row, add the row to the list
 			if ($module_name == '' || $row['module_name'] == $module_name) {
@@ -103,7 +102,6 @@ class Tracker {
 				require_once 'include/utils/UserInfoUtil.php';
 				$entity_id = $row['item_id'];
 				$module = $row['module_name'];
-				$per = 'no';
 				if ($module == 'Users' && is_admin($current_user)) {
 					$per = 'yes';
 				} else {

@@ -723,7 +723,6 @@ class CRMEntity {
 			$fieldname = $this->resolve_query_result_value($result, $i, 'fieldname');
 			$columname = $this->resolve_query_result_value($result, $i, 'columnname');
 			$uitype = $this->resolve_query_result_value($result, $i, 'uitype');
-			//$generatedtype = $this->resolve_query_result_value($result, $i, 'generatedtype');
 			$typeofdata = $this->resolve_query_result_value($result, $i, 'typeofdata');
 
 			$typeofdata_array = explode('~', $typeofdata);
@@ -840,9 +839,6 @@ class CRMEntity {
 						$fldvalue = DateTimeField::formatDatebaseTimeString($fldvalue, $timefmt);
 						$this->column_fields[$fieldname] = $fldvalue;
 					}
-				//} elseif ($uitype == 7) {
-					//strip out the spaces and commas in numbers if given ie., in amounts there may be ,
-					//$fldvalue = str_replace(",", "", $this->column_fields[$fieldname]); //trim($this->column_fields[$fieldname],",");
 				} elseif ($uitype == 26) {
 					if (empty($this->column_fields[$fieldname])) {
 						$fldvalue = 1; //the documents will stored in default folder
@@ -2209,9 +2205,9 @@ class CRMEntity {
 		$returninfo = array();
 
 		if ($fieldinfo && $adb->num_rows($fieldinfo)) {
-			// TODO: We assume the following for module sequencing field
-			// 1. There will be only field per module
-			// 2. This field is linked to module base table column
+			// We assume the following for module sequencing fields
+			// 1. There will be only one field per module
+			// 2. This field is linked to module base table
 			$fld_table = $adb->query_result($fieldinfo, 0, 'tablename');
 			$fld_column = $adb->query_result($fieldinfo, 0, 'columnname');
 
@@ -3325,10 +3321,6 @@ class CRMEntity {
 		if (!empty($tables[1]) && !empty($fields[1])) {
 			$condvalue = $tables[1] . '.' . $fields[1];
 			$condtable = $table_name;
-// 			$cntbl = $adb->getColumnNames($condtable);
-// 			if (!in_array($prifieldname, $cntbl)) {
-// 				$condtable = $pritablename;
-// 			}
 			$condition = "$condtable.$prifieldname=$condvalue";
 		} else {
 			$condvalue = $table_name . '.' . $column_name;
