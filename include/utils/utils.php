@@ -783,7 +783,7 @@ function getColumnFields($module) {
 	if ($cachedModuleFields === false) {
 		$tabid = getTabid($module);
 		// Let us pick up all the fields first so that we can cache information
-		$sql = 'SELECT tabid, fieldname, fieldid, fieldlabel, columnname, tablename, uitype, typeofdata, presence, defaultvalue FROM vtiger_field WHERE tabid=?';
+		$sql = 'SELECT tabid, fieldname, fieldid, fieldlabel, columnname, tablename, uitype, typeofdata, presence, defaultvalue, generatedtype FROM vtiger_field WHERE tabid=?';
 		$result = $adb->pquery($sql, array($tabid));
 		$noofrows = $adb->num_rows($result);
 
@@ -800,7 +800,8 @@ function getColumnFields($module) {
 					$resultrow['uitype'],
 					$resultrow['typeofdata'],
 					$resultrow['presence'],
-					$resultrow['defaultvalue']
+					$resultrow['defaultvalue'],
+					$resultrow['generatedtype']
 				);
 			}
 		}
