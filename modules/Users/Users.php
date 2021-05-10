@@ -114,6 +114,9 @@ class Users extends CRMEntity {
 
 	public $popup_fields = array('last_name');
 
+	// For Alphabetical search
+	public $def_basicsearch_col = 'user_name';
+
 	// This is the list of fields that are in the lists.
 	public $default_order_by = 'user_name';
 	public $default_sort_order = 'ASC';
