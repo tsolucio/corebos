@@ -120,7 +120,8 @@ class VTCacheUtils {
 		$uitype,
 		$typeofdata,
 		$presence,
-		$defaultvalue
+		$defaultvalue,
+		$generatedtype
 	) {
 		self::$_fieldinfo_cache[$tabid][$fieldname] = array(
 			'tabid'     => $tabid,
@@ -133,6 +134,7 @@ class VTCacheUtils {
 			'typeofdata'=> $typeofdata,
 			'presence'  => $presence,
 			'defaultvalue'  => $defaultvalue,
+			'generatedtype'  => $generatedtype,
 		);
 	}
 	public static function lookupFieldInfo($tabid, $fieldname) {
