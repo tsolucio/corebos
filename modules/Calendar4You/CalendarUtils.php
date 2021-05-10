@@ -6,7 +6,7 @@
  * Portions created by IT-Solutions4You s.r.o. are Copyright(C) IT-Solutions4You s.r.o.
  * All Rights Reserved.
  ********************************************************************************/
-include_once 'modules/Reports/ReportUtils.php';
+include_once 'include/fields/metainformation.php';
 require_once 'data/CRMEntity.php';
 include_once 'modules/cbCalendar/CalendarCommon.php';
 
@@ -357,7 +357,7 @@ function transferForAddIntoTitle($type, $row, $CD) {
 	}
 	if ($CD['module']=='cbCalendar') {
 		$Cal_Data = getDetailViewOutputHtml($CD['uitype'], $CD['fieldname'], $CD['fieldlabel'], $Col_Field, '2', getTabid('cbCalendar'), 'cbCalendar');
-		if (isPicklistUIType($CD['uitype'])) {
+		if (Field_Metadata::isPicklistUIType($CD['uitype'])) {
 			$Cal_Data[1] = getTranslatedString($Cal_Data[1], $CD['module']);
 		}
 		if ($CD['fieldname'] == 'subject' && strpos($Cal_Data[1], 'a href') === false) {
@@ -384,8 +384,13 @@ function transferForAddIntoTitle($type, $row, $CD) {
 		$Cal_Data = array();
 		$Cal_Data[0] = getTranslatedString($CD['fieldlabel'], $CD['module']);
 		$Cal_Data[1] = $adb->query_result($recinfo, 0, $CD['columnname']);
-		if (isPicklistUIType($CD['uitype'])) {
+		if (Field_Metadata::isPicklistUIType($CD['uitype'])) {
 			$Cal_Data[1] = getTranslatedString($Cal_Data[1], $CD['module']);
+		}
+		if (Field_Metadata::isReferenceUIType($CD['uitype']) && !empty($Cal_Data[1])) {
+			$relModule = getSalesEntityType($Cal_Data[1]);
+			$einfo = getEntityName($relModule, $Cal_Data[1]);
+			$Cal_Data[1] = '<a href="index.php?module='.$relModule.'&action=DetailView&record='.$Cal_Data[1].'">'.$einfo[$Cal_Data[1]].'</a>';
 		}
 	}
 
