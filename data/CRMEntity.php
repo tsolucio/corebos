@@ -1133,7 +1133,7 @@ class CRMEntity {
 			$tabid = getTabid($module);
 
 			// Let us pick up all the fields first so that we can cache information
-			$sql1 = 'SELECT fieldname, fieldid, fieldlabel, columnname, tablename, uitype, typeofdata, presence, defaultvalue FROM vtiger_field WHERE tabid=?';
+			$sql1 = 'SELECT fieldname, fieldid, fieldlabel, columnname, tablename, uitype, typeofdata, presence, defaultvalue, generatedtype FROM vtiger_field WHERE tabid=?';
 
 			// NOTE: Need to skip in-active fields which we will be done later.
 			$result1 = $adb->pquery($sql1, array($tabid));
@@ -1152,7 +1152,8 @@ class CRMEntity {
 						$resultrow['uitype'],
 						$resultrow['typeofdata'],
 						$resultrow['presence'],
-						$resultrow['defaultvalue']
+						$resultrow['defaultvalue'],
+						$resultrow['generatedtype']
 					);
 				}
 			}
@@ -1223,7 +1224,7 @@ class CRMEntity {
 			$tabid = getTabid($module);
 
 			// Let us pick up all the fields first so that we can cache information
-			$sql1 = 'SELECT fieldname, fieldid, fieldlabel, columnname, tablename, uitype, typeofdata, presence, defaultvalue FROM vtiger_field WHERE tabid=?';
+			$sql1 = 'SELECT fieldname, fieldid, fieldlabel, columnname, tablename, uitype, typeofdata, presence, defaultvalue, generatedtype FROM vtiger_field WHERE tabid=?';
 
 			// NOTE: Need to skip in-active fields which we will be done later.
 			$result1 = $adb->pquery($sql1, array($tabid));
@@ -1242,7 +1243,8 @@ class CRMEntity {
 						$resultrow['uitype'],
 						$resultrow['typeofdata'],
 						$resultrow['presence'],
-						$resultrow['defaultvalue']
+						$resultrow['defaultvalue'],
+						$resultrow['generatedtype']
 					);
 				}
 			}
