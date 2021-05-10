@@ -91,4 +91,11 @@
 	<classname>changeEntityNameForUsersModule</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Adding Contacts fields and workflow for Mautic Integration</description>
+	<filename>build/changeSets/2021/mauticIntegationWorkflowAndFields.php</filename>
+	<classname>mauticIntegationWorkflowAndFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

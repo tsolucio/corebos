@@ -38,26 +38,61 @@
 			<label class="slds-form-element__label" for="version">{'mautic_version'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<select id="version" name="version" class="slds-input">
-					<option value="OAuth2" {if $version eq 'Oauth2'}checked{/if}>{'mautic_version_oauth2'|@getTranslatedString:$MODULE}</option>
+					<option value="BasicAuth" {if $version eq 'BasicAuth'}checked{/if}>{'mautic_version_basicauth'|@getTranslatedString:$MODULE}</option>
+					<option value="OAuth2" {if $version eq 'Oauth2'}checked{/if} disabled>{'mautic_version_oauth2'|@getTranslatedString:$MODULE}</option>
 				</select>
 			</div>
 		</div>
-		<div class="slds-form-element slds-m-top--small">
-			<label class="slds-form-element__label" for="clientkey">{'mautic_clientkey'|@getTranslatedString:$MODULE}</label>
-			<div class="slds-form-element__control">
-				<input type="text" id="clientKey" name="clientKey" class="slds-input" value="{$clientKey}" />
+
+		<div class="basic-auth-fields">
+			<div class="slds-form-element slds-m-top--small">
+				<label class="slds-form-element__label" for="mautic_username">{'mautic_username'|@getTranslatedString:$MODULE}</label>
+				<div class="slds-form-element__control">
+					<input type="text" id="mautic_username" name="mautic_username" class="slds-input" value="{$mauticUsername}" />
+				</div>
+			</div>
+			<div class="slds-form-element slds-m-top--small">
+				<label class="slds-form-element__label" for="mautic_password">{'mautic_password'|@getTranslatedString:$MODULE}</label>
+				<div class="slds-form-element__control">
+					<input type="text" id="mautic_password" name="mautic_password" class="slds-input" value="{$mauticPassword}" />
+				</div>
 			</div>
 		</div>
-		<div class="slds-form-element slds-m-top--small">
-			<label class="slds-form-element__label" for="clientSecret">{'mautic_clientsecret'|@getTranslatedString:$MODULE}</label>
-			<div class="slds-form-element__control">
-				<input type="text" id="clientSecret" name="clientSecret" class="slds-input" value="{$clientSecret}" />
+		
+		<div class="oauth2-fields" style="display: none;">
+			<div class="slds-form-element slds-m-top--small">
+				<label class="slds-form-element__label" for="clientkey">{'mautic_clientkey'|@getTranslatedString:$MODULE}</label>
+				<div class="slds-form-element__control">
+					<input type="text" id="clientKey" name="clientKey" class="slds-input" value="{$clientKey}" />
+				</div>
+			</div>
+			<div class="slds-form-element slds-m-top--small">
+				<label class="slds-form-element__label" for="clientSecret">{'mautic_clientsecret'|@getTranslatedString:$MODULE}</label>
+				<div class="slds-form-element__control">
+					<input type="text" id="clientSecret" name="clientSecret" class="slds-input" value="{$clientSecret}" />
+				</div>
+			</div>
+			<div class="slds-form-element slds-m-top--small">
+				<label class="slds-form-element__label" for="callback">{'mautic_callback'|@getTranslatedString:$MODULE}</label>
+				<div class="slds-form-element__control">
+					<input type="text" id="callback" name="callback" class="slds-input" value="{$callback}" />
+				</div>
 			</div>
 		</div>
-		<div class="slds-form-element slds-m-top--small">
-			<label class="slds-form-element__label" for="callback">{'mautic_callback'|@getTranslatedString:$MODULE}</label>
-			<div class="slds-form-element__control">
-				<input type="text" id="callback" name="callback" class="slds-input" value="{$callback}" />
+
+		<div class="slds-grid slds-gutters slds-m-top_medium">
+			<div class="slds-col">
+				<div class="slds-form-element">
+					<label class="slds-checkbox--toggle slds-grid">
+					<span class="slds-form-element__label slds-m-bottom--none">{'mautic_sync_with_contacts'|@getTranslatedString:$MODULE}</span>
+					<input type="checkbox" name="mautic_sync_lead" aria-describedby="toggle-desc" {if $isLeadSyncActive}checked{/if} />
+					<span id="toggle-desc" class="slds-checkbox--faux_container" aria-live="assertive">
+						<span class="slds-checkbox--faux"></span>
+						<span class="slds-checkbox--on">{'LBL_ENABLED'|@getTranslatedString:'Settings'}</span>
+						<span class="slds-checkbox--off">{'LBL_DISABLED'|@getTranslatedString:'Settings'}</span>
+					</span>
+					</label>
+				</div>
 			</div>
 		</div>
 		<div class="slds-m-top--large">

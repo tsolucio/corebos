@@ -157,5 +157,9 @@ $mod_strings = array(
 	'mautic_clientkey' => 'Client Key',
 	'mautic_clientsecret' => 'Client Secret',
 	'mautic_callback' => 'Callback',
+	'mautic_sync_with_contacts' => 'Sync Mautic Leads with Contacts',
+	'mautic_version_basicauth' => 'BasicAuth',
+	'mautic_username' => 'Username',
+	'mautic_password' => 'Password'
 );
 ?>
