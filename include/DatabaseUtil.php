@@ -18,13 +18,11 @@ function check_db_utf8_support($conn) {
 	while (!$dbvarRS->EOF) {
 		$arr = $dbvarRS->FetchRow();
 		$arr = array_change_key_case($arr);
-		switch ($arr['variable_name']) {
-			case 'character_set_database':
-				$db_character_set = $arr['value'];
-				break;
-			case 'collation_database':
-				$db_collation_type = $arr['value'];
-				break;
+		if ($arr['variable_name'] == 'character_set_database') {
+			$db_character_set = $arr['value'];
+		}
+		if ($arr['variable_name'] == 'collation_database') {
+			$db_collation_type = $arr['value'];
 		}
 		// If we have all the required information break the loop.
 		if ($db_character_set != null && $db_collation_type != null) {
@@ -146,10 +144,8 @@ function getFromClauseAlreadyPresent($parsed, $fromClause) {
 		$fromClause = substr($fromClause, stripos($fromClause, ' join ')+6); // strip join
 		$fromClause = str_replace(' ', '', $fromClause);
 		foreach ($parsed['FROM'] as $clause) {
-			if ($clause['ref_type']=='ON') {
-				if (str_replace(' ', '', $clause['base_expr'])==$fromClause) {
-					return ($clause['join_type']=='JOIN' ? 'INNER' : $clause['join_type']).' join '.$clause['base_expr'];
-				}
+			if ($clause['ref_type']=='ON' && str_replace(' ', '', $clause['base_expr'])==$fromClause) {
+				return ($clause['join_type']=='JOIN' ? 'INNER' : $clause['join_type']).' join '.$clause['base_expr'];
 			}
 		}
 	}

@@ -16,30 +16,25 @@ class VTEntityDelta extends VTEventHandler {
 	private static $newEntity_pimages = array();
 	private static $entityDelta;
 
-	public function __construct() {
-	}
-
 	public function handleEvent($eventName, $entityData) {
 		$adb = PearDatabase::getInstance();
 		$moduleName = $entityData->getModuleName();
 		$recordId = $entityData->getId();
 
-		if ($eventName == 'vtiger.entity.beforesave' || $eventName == 'corebos.beforesave.workflow') {
-			if (!empty($recordId)) {
-				$entityData = VTEntityData::fromEntityId($adb, $recordId);
-				if ($moduleName == 'HelpDesk') {
-					$entityData->set('comments', getTicketComments($recordId));
-				}
-				self::$oldEntity[$moduleName][$recordId] = $entityData;
-				if ($moduleName=='Products') {
-					self::$oldEntity_pimages = array();
-					$sql = 'SELECT vtiger_attachments.`attachmentsid`,name FROM `vtiger_seattachmentsrel`
-						inner join vtiger_attachments on vtiger_attachments.`attachmentsid` = `vtiger_seattachmentsrel`.`attachmentsid`
-						WHERE `crmid`=?';
-					$imagesrs = $adb->pquery($sql, array($recordId));
-					while ($image = $adb->fetch_array($imagesrs)) {
-						self::$oldEntity_pimages[$image['attachmentsid']] = $image['name'];
-					}
+		if (($eventName == 'vtiger.entity.beforesave' || $eventName == 'corebos.beforesave.workflow') && !empty($recordId)) {
+			$entityData = VTEntityData::fromEntityId($adb, $recordId);
+			if ($moduleName == 'HelpDesk') {
+				$entityData->set('comments', getTicketComments($recordId));
+			}
+			self::$oldEntity[$moduleName][$recordId] = $entityData;
+			if ($moduleName=='Products') {
+				self::$oldEntity_pimages = array();
+				$sql = 'SELECT vtiger_attachments.`attachmentsid`,name FROM `vtiger_seattachmentsrel`
+					inner join vtiger_attachments on vtiger_attachments.`attachmentsid` = `vtiger_seattachmentsrel`.`attachmentsid`
+					WHERE `crmid`=?';
+				$imagesrs = $adb->pquery($sql, array($recordId));
+				while ($image = $adb->fetch_array($imagesrs)) {
+					self::$oldEntity_pimages[$image['attachmentsid']] = $image['name'];
 				}
 			}
 		}

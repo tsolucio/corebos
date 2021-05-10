@@ -7,11 +7,11 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-$ajaxaction = vtlib_purify($_REQUEST['ajxaction']);
+require_once 'include/freetag/freetag.class.php';
 global $current_user, $default_charset;
 
+$ajaxaction = vtlib_purify($_REQUEST['ajxaction']);
 if ($ajaxaction == 'MASSTAG') {
-	require_once 'include/freetag/freetag.class.php';
 	$ids = explode(';', trim($_REQUEST['ids'], ';'));
 	$addTag    = vtlib_purify($_REQUEST['add_tag']);
 	$removeTag = vtlib_purify($_REQUEST['remove_tag']);
@@ -33,7 +33,6 @@ $module = vtlib_purify($_REQUEST['module']);
 $userid = $current_user->id;
 if ($ajaxaction == 'SAVETAG') {
 	if (isset($_REQUEST['tagfields']) && trim($_REQUEST['tagfields']) != '') {
-		require_once 'include/freetag/freetag.class.php';
 		$tagfields = function_exists('iconv') ? @iconv('UTF-8', $default_charset, $_REQUEST['tagfields']) : $_REQUEST['tagfields'];
 		$tagfields = str_replace(array("'", '"'), '', $tagfields);
 		if ($tagfields != '') {
@@ -46,7 +45,6 @@ if ($ajaxaction == 'SAVETAG') {
 		echo ':#:FAILURE';
 	}
 } elseif ($ajaxaction == 'GETTAGCLOUD') {
-	require_once 'include/freetag/freetag.class.php';
 	$freetag = new freetag();
 	if (trim($module) != '') {
 		$tagcloud = $freetag->get_tag_cloud_html($module, $userid, $crmid);
@@ -58,7 +56,6 @@ if ($ajaxaction == 'SAVETAG') {
 } elseif ($ajaxaction == 'DELETETAG') {
 	if (is_numeric($_REQUEST['tagid'])) {
 		$tagid = vtlib_purify($_REQUEST['tagid']);
-		require_once 'include/freetag/freetag.class.php';
 		$freetag = new freetag();
 		$tag = $freetag->get_tag_from_id($tagid);
 		$delok = $freetag->delete_object_tag($userid, $crmid, $tag);
