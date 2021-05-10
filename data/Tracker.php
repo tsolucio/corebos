@@ -134,9 +134,8 @@ class Tracker {
 	/**
 	 * This method cleans out any entry for a record.
 	 */
-	private function delete_item_history($item_id) {
-		$query = "DELETE from $this->table_name WHERE item_id=?";
-		$this->db->pquery($query, array($item_id), true);
+	public function delete_item_history($item_id) {
+		$this->db->pquery("DELETE from $this->table_name WHERE item_id=?", array($item_id), true);
 	}
 
 	/**
@@ -151,8 +150,7 @@ class Tracker {
 			$query = "SELECT * from $this->table_name WHERE user_id='$user_id' ORDER BY id ASC";
 			$result = $this->db->limitQuery($query, 0, 1);
 			$oldest_item = $this->db->fetchByAssoc($result, -1, false);
-			$query = "DELETE from $this->table_name WHERE id=?";
-			$result = $this->db->pquery($query, array($oldest_item['id']), true);
+			$this->db->pquery("DELETE from $this->table_name WHERE id=?", array($oldest_item['id']), true);
 			$count--;
 		}
 	}

@@ -74,11 +74,9 @@ class VTEntityDelta extends VTEventHandler {
 
 		$oldData = array();
 		if (!empty(self::$oldEntity[$moduleName][$recordId])) {
-			$oldEntity = self::$oldEntity[$moduleName][$recordId];
-			$oldData = $oldEntity->getData();
+			$oldData = self::$oldEntity[$moduleName][$recordId]->getData();
 		}
-		$newEntity = self::$newEntity[$moduleName][$recordId];
-		$newData = $newEntity->getData();
+		$newData = self::$newEntity[$moduleName][$recordId]->getData();
 		/** Detect field value changes **/
 		foreach ($newData as $fieldName => $fieldValue) {
 			$isModified = false;
@@ -123,22 +121,19 @@ class VTEntityDelta extends VTEventHandler {
 	}
 
 	public function getOldValue($moduleName, $recordId, $fieldName) {
-		$entityDelta = self::$entityDelta[$moduleName][$recordId];
-		return (isset($entityDelta[$fieldName]) ? $entityDelta[$fieldName]['oldValue'] : '');
+		return (isset(self::$entityDelta[$moduleName][$recordId][$fieldName]) ? self::$entityDelta[$moduleName][$recordId][$fieldName]['oldValue'] : '');
 	}
 
 	public function getOldEntityValue($moduleName, $recordId, $fieldName) {
 		$oldData = array();
 		if (!empty(self::$oldEntity[$moduleName][$recordId])) {
-			$oldEntity = self::$oldEntity[$moduleName][$recordId];
-			$oldData = $oldEntity->getData();
+			$oldData = self::$oldEntity[$moduleName][$recordId]->getData();
 		}
 		return (isset($oldData[$fieldName]) ? $oldData[$fieldName] : '');
 	}
 
 	public function getCurrentValue($moduleName, $recordId, $fieldName) {
-		$entityDelta = self::$entityDelta[$moduleName][$recordId];
-		return $entityDelta[$fieldName]['currentValue'];
+		return self::$entityDelta[$moduleName][$recordId][$fieldName]['currentValue'];
 	}
 
 	public function getOldEntity($moduleName, $recordId) {

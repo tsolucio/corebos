@@ -2184,17 +2184,11 @@ class CRMEntity {
 	/* Function to check if the mod number already exits */
 	public function checkModuleSeqNumber($table, $column, $no) {
 		global $adb;
-		$result = $adb->pquery('select ' . $adb->sql_escape_string($column) .
-				' from ' . $adb->sql_escape_string($table) .
-				' where ' . $adb->sql_escape_string($column) . ' = ?', array($no));
-
-		$num_rows = $adb->num_rows($result);
-
-		if ($num_rows > 0) {
-			return true;
-		} else {
-			return false;
-		}
+		$result = $adb->pquery(
+			'select ' . $adb->sql_escape_string($column).' from ' . $adb->sql_escape_string($table).' where ' . $adb->sql_escape_string($column) . '=?',
+			array($no)
+		);
+		return ($adb->num_rows($result) > 0);
 	}
 
 	public function updateMissingSeqNumber($module) {
