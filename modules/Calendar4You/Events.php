@@ -380,14 +380,12 @@ foreach ($Users_Ids as $userid) {
 					.nl2br(vtlib_purify($into_title));
 			}
 			$title = "<font style='font-size:12px'>".$into_title.'</font>';
-			if ($add_more_info) {
-				if (isset($Event_Info[$event]) && count($Event_Info[$event]) > 0) {
-					$titlemi = '';
-					foreach ($Event_Info[$event] as $CD) {
-						$titlemi .= transferForAddIntoTitle(2, $row, $CD);
-					}
-					$title .= vtlib_purify($titlemi);
+			if ($add_more_info && isset($Event_Info[$event]) && count($Event_Info[$event]) > 0) {
+				$titlemi = '';
+				foreach ($Event_Info[$event] as $CD) {
+					$titlemi .= transferForAddIntoTitle(2, $row, $CD);
 				}
+				$title .= vtlib_purify($titlemi);
 			}
 			if (in_array($activitytypeid, $tasklabel)) {
 				$stfst = $row[$stfields['start']];

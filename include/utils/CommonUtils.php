@@ -215,15 +215,13 @@ function parse_calendardate($local_format) {
 
 /**
  * Rudimentary/Trusted input clean up for XSS
- * input values $string - string to be cleaned
- * returns the cleaned value in string format
+ * @param string to be cleaned
+ * @return string the cleaned value
  */
 function from_html($string) {
-	if (is_string($string)) {
-		if (preg_match('/(script).*(\/script)/i', $string)) {
-			$string = preg_replace(array('/<\s*script/', '/<\/\s*script\s*>/'), array('&lt;script', '&lt;/script&gt;', '&quot;'), $string);
-			$string = str_replace('"', '&quot;', $string);
-		}
+	if (is_string($string) && preg_match('/(script).*(\/script)/i', $string)) {
+		$string = preg_replace(array('/<\s*script/', '/<\/\s*script\s*>/'), array('&lt;script', '&lt;/script&gt;', '&quot;'), $string);
+		$string = str_replace('"', '&quot;', $string);
 	}
 	return $string;
 }
