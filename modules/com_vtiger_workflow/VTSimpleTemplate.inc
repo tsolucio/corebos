@@ -788,7 +788,7 @@ class VTSimpleTemplate {
 				if ($moduleName == 'Products') {
 					$recorIdName = 'productid';
 				}
-				$PORTAL_URL = GlobalVariable::getVariable('Application_Customer_Portal_URL', 'http://your_support_domain.tld/customerportal');
+				$PORTAL_URL = GlobalVariable::getVariable('Application_Customer_Portal_URL', 'https://your_support_domain.tld/customerportal');
 				$PORTALUSED = GlobalVariable::getVariable('Application_Customer_Portal_BeingUsed', 'vtigercrmportal');
 				switch ($PORTALUSED) {
 					case 'coreboscp':
@@ -802,7 +802,7 @@ class VTSimpleTemplate {
 			case 'siteurl':
 				return $site_URL;
 			case 'portalurl':
-				return GlobalVariable::getVariable('Application_Customer_Portal_URL', 'http://your_support_domain.tld/customerportal');
+				return GlobalVariable::getVariable('Application_Customer_Portal_URL', 'https://your_support_domain.tld/customerportal');
 			case 'logo':
 				return '<img src="cid:logo" />';
 			case 'recordId':

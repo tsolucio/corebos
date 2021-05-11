@@ -21,10 +21,10 @@ class SMSMasivos implements ISMSProvider {
 	private $_username;
 	private $_password;
 	private $_parameters = array('numregion');
-	public $helpURL = 'http://www.smasivos.com';
+	public $helpURL = 'https://www.smasivos.com';
 	public $helpLink = 'SMSMasivos';
 
-	const SERVICE_URI = 'http://www.smasivos.com';
+	const SERVICE_URI = 'https://www.smasivos.com';
 	private static $REQUIRED_PARAMETERS = array();
 
 	public function __construct() {

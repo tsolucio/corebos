@@ -14,10 +14,10 @@ class Versatile implements ISMSProvider {
 	private $userName;
 	private $password;
 	private $parameters = array();
-	public $helpURL = 'http://versatilesmshub.com/';
+	public $helpURL = 'https://versatilesmshub.com/';
 	public $helpLink = 'Versatile';
 
-	const SERVICE_URI = 'http://sms.versatilesmshub.com/api/mt';
+	const SERVICE_URI = 'https://sms.versatilesmshub.com/api/mt';
 	private static $REQUIRED_PARAMETERS = array('senderid', 'channel', 'DCS', 'flashsms', 'route');
 
 	public function __construct() {
