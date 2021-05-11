@@ -133,14 +133,4 @@ class Field_Metadata {
 	public static function isPicklistUIType($uitype) {
 		return in_array($uitype, self::PICKLIST_TYPES);
 	}
-
-	public static function getBooleanDisplayValue($value, $module) {
-		if ($value == 1) {
-			return getTranslatedString('yes', $module);
-		}
-		if ($value == 0) {
-			return getTranslatedString('no', $module);
-		}
-		return '--';
-	}
 }

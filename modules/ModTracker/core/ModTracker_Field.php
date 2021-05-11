@@ -51,7 +51,7 @@ class ModTracker_Field {
 					$value = round($filesize / (1024 * 1024), 2) . ' MB';
 				}
 			} elseif ($fieldName == 'filestatus' || $fieldName == 'filetype') {
-				$value = Field_Metadata::getBooleanDisplayValue($value, $moduleName);
+				$value = BooleanField::getBooleanDisplayValue($value, $moduleName);
 			}
 		}
 
@@ -118,7 +118,7 @@ class ModTracker_Field {
 			}
 		}
 		if ($fieldInstance->getFieldDataType() == 'boolean') {
-			$value = Field_Metadata::getBooleanDisplayValue($value, $moduleName);
+			$value = BooleanField::getBooleanDisplayValue($value, $moduleName);
 		}
 
 		if ($fieldInstance->getFieldDataType() == 'multipicklist') {

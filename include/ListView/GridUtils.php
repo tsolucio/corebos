@@ -188,7 +188,7 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 	$fieldName = $fieldinfo['name'];
 	switch ($fieldinfo['uitype']) {
 		case Field_Metadata::UITYPE_CHECKBOX:
-			$return = Field_Metadata::getBooleanDisplayValue($fieldValue, $module);
+			$return = BooleanField::getBooleanDisplayValue($fieldValue, $module);
 			break;
 		case Field_Metadata::UITYPE_DOWNLOAD_TYPE:
 			if ($fieldValue == 'I') {

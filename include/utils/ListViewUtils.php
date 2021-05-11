@@ -749,7 +749,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 								}
 							}
 							if ($fieldname == 'filestatus') {
-								$value = Field_Metadata::getBooleanDisplayValue($value, $module);
+								$value = BooleanField::getBooleanDisplayValue($value, $module);
 							}
 							if ($fieldname == 'filetype') {
 								$downloadtype = $adb->query_result($list_result, $i, 'filelocationtype');
