@@ -51,7 +51,6 @@ class crmtogo_UI_ListModuleRecords extends crmtogo_WS_ListModuleRecords {
 			$response = $wsResponse;
 		} else {
 			$wsResponseResult = $wsResponse->getResult();
-			//$tabid = getTabid($wsResponseResult['module']);
 			$CATEGORY = getParentTabFromModule($wsResponseResult['module']);
 			if (($request->get('compact') !='true')) {
 				$customView = new CustomView($wsResponseResult['module']);

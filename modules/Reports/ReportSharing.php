@@ -46,13 +46,13 @@ foreach ($user_array as $userid => $username) {
 
 $user_groups = getAllGroupName();
 asort($user_groups);
-$groupIdStr = "";
-$groupNameStr = "";
+$groupIdStr = '';
+$groupNameStr = '';
 $l=0;
 foreach ($user_groups as $grpid => $groupname) {
 	if ($l!=0) {
-		$groupIdStr .= ",";
-		$groupNameStr .= ",";
+		$groupIdStr .= ',';
+		$groupNameStr .= ',';
 	}
 	$groupIdStr .= "'".$grpid."'";
 	$groupNameStr .= "'".addslashes(decode_html($groupname))."'";
@@ -69,9 +69,5 @@ $report_std_filter->assign('GROUPNAMESTR', $groupNameStr);
 $report_std_filter->assign('USERNAMESTR', $userNameStr);
 $report_std_filter->assign('GROUPIDSTR', $groupIdStr);
 $report_std_filter->assign('USERIDSTR', $userIdStr);
-
-//include("modules/Reports/StandardFilter.php");
-//include("modules/Reports/AdvancedFilter.php");
-
 $report_std_filter->display('ReportSharing.tpl');
 ?>

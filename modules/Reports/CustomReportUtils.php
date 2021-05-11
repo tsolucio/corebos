@@ -35,10 +35,7 @@ class CustomReportUtils {
 		$groupBy = $oReportRun->getGroupingList($reportid);
 		$module_field = $fieldDetails = '';
 		foreach ($groupBy as $key => $value) {
-			// $groupByConditon = explode(" ",$value);
-			//$groupByNew = explode("'",$groupByConditon[0]);
 			list($tablename, $colname, $module_field, $fieldname, $single) = explode(':', $key);
-			//list($module, $field) = explode('_', $module_field);
 			$fieldDetails = $key;
 			break;
 		}
@@ -71,7 +68,6 @@ class CustomReportUtils {
 
 	public static function getAdvanceSearchCondition($fieldDetails, $criteria, $fieldvalue) {
 		list($tablename, $colname, $module_field, $fieldname, $single) = explode(':', $fieldDetails);
-		//list($module, $field) = explode('_', $module_field);
 		list($year, $month, $day) = explode('-', $fieldvalue);
 		$grteqCondition = 'h';
 		$eqCondition = 'e';
@@ -183,8 +179,6 @@ class CustomReportUtils {
 	public static function getXAxisDateFieldValue($dateFieldValue, $criteria) {
 		$timeStamp = strtotime($dateFieldValue);
 		$year = date('Y', $timeStamp);
-		//$month = date('m', $timeStamp);
-		//$day = date('d', $timeStamp);
 		$xaxisLabel = "";
 		if (strtolower($criteria) == 'year') {
 			$xaxisLabel = "Year $year";

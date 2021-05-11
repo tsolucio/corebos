@@ -469,10 +469,6 @@ class Import_Data_Controller {
 					$fieldValue = 1;
 				}
 				$fieldData[$fieldName] = $fieldValue;
-			//} else if($fieldInstance->getFieldDataType() == 'currency'){
-				// While exporting we are exporting as user format, we should import as db format while importing
-				//$fieldData[$fieldName] = CurrencyField::convertToDBFormat($fieldValue, $current_user,false);
-				// We do not need this as we correctly support currency formatting on webservice
 			} else {
 				if ($fieldInstance->getFieldDataType() == 'datetime' && !empty($fieldValue)) {
 					if ($fieldValue == null || $fieldValue == '0000-00-00 00:00:00') {
@@ -613,7 +609,7 @@ class Import_Data_Controller {
 		foreach ($scheduledImports as $importDataController) {
 			$current_user = $importDataController->user;
 			$importDataController->batchImport = false;
-			$VTIGER_BULK_SAVE_MODE = (GlobalVariable::getVariable('Import_Launch_EventsAndWorkflows', 'no', $importDataController->module)=='no'); //true;
+			$VTIGER_BULK_SAVE_MODE = (GlobalVariable::getVariable('Import_Launch_EventsAndWorkflows', 'no', $importDataController->module)=='no');
 
 			if (!$importDataController->initializeImport()) {
 				continue;

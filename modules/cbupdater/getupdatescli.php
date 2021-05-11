@@ -86,7 +86,6 @@ if (count($cbupdate_files)>0) {
 								$focus->column_fields['systemupdate'] = (empty($cbupd['systemupdate']) ? '0' : ($cbupd['systemupdate']=='true' ? '1' : '0'));
 								$focus->column_fields['blocked'] = (empty($cbupd['blocked']) ? '0' : ($cbupd['blocked']=='true' ? '1' : '0'));
 								$focus->column_fields['perspective'] = (empty($cbupd['perspective']) ? '0' : ($cbupd['perspective']=='true' ? '1' : '0'));
-								//$focus->column_fields['execdate'] = '';
 								$focus->column_fields['execorder'] = $execorder++;
 								$focus->save('cbupdater');
 								$cbupd['cbupdaterid'] = $focus->id;

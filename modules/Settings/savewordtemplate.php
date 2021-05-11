@@ -98,10 +98,7 @@ if (isset($_FILES['binFile']['tmp_name']) && move_uploaded_file($_FILES['binFile
 	} elseif ($errorCode == 2) {
 		include 'modules/Vtiger/header.php';
 		include 'upload.php';
-		//$errormessage = "<B><font color='red'>Sorry, the uploaded file exceeds the maximum filesize limit. Please try a smaller file</font></B> <br>";
 		echo "<script>alert('".$mod_strings['FILESIZE_EXCEEDS_INFO_CONFIG_INC']."')</script>";
-		//echo $errormessage;
-		//echo $errorCode;
 	} elseif ($errorCode == 1) {
 		include 'modules/Vtiger/header.php';
 		include 'upload.php';

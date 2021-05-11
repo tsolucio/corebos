@@ -222,7 +222,6 @@ class Import extends processcbMap {
 		$fp = fopen($filename, 'r');
 		$frow = fgetcsv($fp, 1000, $delimiter);
 
-		//$allHeaders = implode(',', $frow);
 		$columns = '`id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, `selected` varchar(3) ';
 		foreach ($frow as $column) {
 			if ($column=='') {
@@ -381,7 +380,7 @@ class Import extends processcbMap {
 		require_once 'modules/Import/api/Request.php';
 		include_once 'modules/Import/controllers/Import_Controller.php';
 		$rs = $adb->pquery('select module,field_mapping,defaultvalues from vtiger_import_maps where id=?', array($this->mapping['mapid']));
-		$VTIGER_BULK_SAVE_MODE = (GlobalVariable::getVariable('Import_Launch_EventsAndWorkflows', 'no', $rs->fields['module'])=='no'); //true;
+		$VTIGER_BULK_SAVE_MODE = (GlobalVariable::getVariable('Import_Launch_EventsAndWorkflows', 'no', $rs->fields['module'])=='no');
 		$requestArray = array(
 			'module' => $rs->fields['module'],
 			'action' => 'Import',

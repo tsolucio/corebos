@@ -25,7 +25,6 @@ class WS_saveSignature extends crmtogo_WS_Controller {
 		global $adb;
 
 		if (isset($signature) && !empty($signature)) {
-			//$parentmodule = crmtogo_WS_Utils::detectModulenameFromRecordId($parentid);
 			$current_user = $this->getActiveUser();
 			$hdresult = $adb->pquery('SELECT ticket_no FROM vtiger_troubletickets WHERE ticketid = ?', array($parentrecordid));
 			$ticket_no = $adb->query_result($hdresult, 0, 'ticket_no');

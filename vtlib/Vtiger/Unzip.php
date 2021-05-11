@@ -157,7 +157,6 @@ class Vtiger_Unzip {
 	}
 
 	public function each($EachCallback) {
-		// $EachCallback(filename, fileinfo);
 		if (!is_callable($EachCallback)) {
 			die(get_class($this).":: You called 'each' method, but failed to provide a Callback as argument. Usage: \$zip->each(function(\$filename, \$fileinfo) use (\$zip){ ... \$zip->unzip(\$filename, 'uncompress/\$filename'); }).");
 		}

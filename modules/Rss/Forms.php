@@ -15,7 +15,6 @@ $allrsshtml = $oRss->getAllRssFeeds();
 function get_rssfeeds_form() {
 	$oRss = new vtigerRSS();
 	$allrsshtml = $oRss->getRSSCategoryHTML();
-	//$starred_rss_html = $oRss->getStarredRssFolder();
 	$the_form  = '<table width="100%" border="0" cellspacing="2" cellpadding="0" style="margin-top:10px">';
 	$the_form .= $allrsshtml;
 	$the_form .= '</table>';

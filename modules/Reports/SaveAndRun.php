@@ -98,14 +98,11 @@ if ($numOfRows > 0) {
 			$groupBy = $oReportRun->getGroupingList($reportid);
 			if (count($groupBy) > 0) {
 				foreach ($groupBy as $key => $value) {
-					//$groupByConditon = explode(" ",$value);
-					//$groupByNew = explode("'",$groupByConditon[0]);
 					list($tablename,$colname,$module_field,$fieldname,$single) = explode(":", $key);
 					list($module,$field)= explode("_", $module_field);
 					$fieldDetails = $key;
 					break;
 				}
-				//$groupByField = $oReportRun->GetFirstSortByField($reportid);
 				$queryReports = CustomReportUtils::getCustomReportsQuery($Report_ID, $filtersql);
 				$queryResult = $adb->pquery($queryReports, array());
 				if ($queryResult && $adb->num_rows($queryResult)) {

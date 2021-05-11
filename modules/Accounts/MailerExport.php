@@ -212,10 +212,8 @@ if ($step == 'ask') {
 			$fields_array = $adb->getFieldsArray($result);
 			// Walk through the array and replace any cf_* with the content of the name array, index is the cf_ var name
 			for ($arraywalk = 0; $arraywalk < count($fields_array); $arraywalk++) {
-				// echo "Checking: ".$fields_array[$arraywalk];
 				if (strstr($fields_array[$arraywalk], 'vtiger_cf_')) {
 					$fields_array[$arraywalk] = $name[$fields_array[$arraywalk]];
-					// echo "Changing to: ".$fields_array[$arraywalk];
 				} else {
 					$fields_array[$arraywalk] = (!empty($fld_label_arr[$fields_array[$arraywalk]]))?$fld_label_arr[$fields_array[$arraywalk]]:$fields_array[$arraywalk];
 				}
@@ -239,7 +237,6 @@ if ($step == 'ask') {
 			$content .= $line;
 		}
 	}
-	// echo "<br>Rows: ".$adb->num_rows($result);
 	header("Content-Disposition: inline; filename=MailerExport.csv");
 	header("Content-Type: text/csv; charset=".$default_charset);
 	header("Expires: Mon, 26 Jul 2007 05:00:00 GMT");

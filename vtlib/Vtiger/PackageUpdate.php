@@ -135,12 +135,6 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 			Vtiger_Module::EVENT_MODULE_PREUPDATE
 		);
 
-		// TODO Handle module property changes like menu, label etc...
-		/*if(!empty($parenttab) && $parenttab != '') {
-			$menuInstance = Vtiger_Menu::getInstance($parenttab);
-			$menuInstance->addModule($moduleInstance);
-		}*/
-
 		$this->handle_Migration($this->_modulexml, $moduleInstance);
 
 		$this->update_Tables($this->_modulexml);

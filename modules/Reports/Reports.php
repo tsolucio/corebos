@@ -573,10 +573,8 @@ class Reports extends CRMEntity {
 			$fieldcolname = $adb->query_result($result, $i, 'columnname');
 			$fieldname = $adb->query_result($result, $i, 'fieldname');
 			$fieldtype = $adb->query_result($result, $i, 'typeofdata');
-			//$uitype = $adb->query_result($result, $i, 'uitype');
 			$fieldtype = explode('~', $fieldtype);
 			$fieldtypeofdata = $fieldtype[0];
-			//$blockid = $adb->query_result($result, $i, 'block');
 
 			//Here we Changing the displaytype of the field. So that its criteria will be displayed correctly in Reports Advance Filter.
 			$fieldtypeofdata=ChangeTypeOfData_Filter($fieldtablename, $fieldcolname, $fieldtypeofdata);
@@ -887,7 +885,6 @@ class Reports extends CRMEntity {
 			}
 
 			while ($relcriteriarow = $adb->fetch_array($result)) {
-				//$columnIndex = $relcriteriarow['columnindex'];
 				$criteria = array();
 				$criteria['columnname'] = html_entity_decode($relcriteriarow['columnname']);
 				$criteria['comparator'] = $relcriteriarow['comparator'];
@@ -895,7 +892,6 @@ class Reports extends CRMEntity {
 				$col = explode(':', $relcriteriarow['columnname']);
 
 				$moduleFieldLabel = $col[2];
-				//$fieldName = $col[3];
 
 				list($module, $fieldLabel) = explode('_', $moduleFieldLabel, 2);
 				$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
@@ -972,7 +968,6 @@ class Reports extends CRMEntity {
 		$options = array();
 		$options[]= $this->sgetColumnstoTotalHTML($primarymodule, 0);
 		if (!empty($secondarymodule)) {
-			//$secondarymodule = explode(':',$secondarymodule);
 			for ($i=0; $i < count($secondarymodule); $i++) {
 				$options[]= $this->sgetColumnstoTotalHTML($secondarymodule[$i], ($i+1));
 			}
@@ -1224,7 +1219,6 @@ function updateAdvancedCriteria($reportid, $advft_criteria, $advft_criteria_grou
 
 		$column_info = explode(':', $adv_filter_column);
 		$moduleFieldLabel = $column_info[2];
-		//$fieldName = $column_info[3];
 
 		list($module, $fieldLabel) = explode('_', $moduleFieldLabel, 2);
 		$fieldInfo = getFieldByReportLabel($module, $fieldLabel);

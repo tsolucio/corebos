@@ -409,7 +409,6 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 	 * @param String $subject
 	 */
 	public function setSubject($subject) {
-		//$mailSubject = str_replace('_', ' ', $subject);
 		$this->_subject = @self::__mime_decode($subject);
 	}
 

@@ -336,10 +336,8 @@ class Homestuff {
 						);
 						$field_label = $adb->query_result($field_query, 0, 'fieldlabel');
 					}
-					//$fieldcolumns[$fldlabel] = array($tabname=>$colname);
 				}
 
-				// $list= getListViewEntries($focus,$modname,$list_result,6,'','','','',$oCustomView,'HomePage',$fieldcolumns);
 				if (getUItype($modname, $colname) == 71) {
 					$isCurrencyField = true;
 				} else {

@@ -16,7 +16,6 @@ class Vtiger_MailRecord {
 	public $_from;
 	// TO address(es) list
 	public $_to;
-	//var $_replyto;
 
 	// CC address(es) list
 	public $_cc;

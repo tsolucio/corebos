@@ -49,8 +49,6 @@ define('RB_RECORD_DELETED', 'delete');
 define('RB_RECORD_INSERTED', 'insert');
 define('RB_RECORD_UPDATED', 'update');
 
-//libxml_disable_entity_loader(true);
-
 /** Function to load global browser variables for javascript
  * @param smarty object to load the variables, if empty it will only return the variables in an array
  * @returns array with the variables
@@ -657,16 +655,6 @@ function ensure_length(&$string, $length) {
 	}
 	$log->debug('< ensure_length');
 }
-/*
-function microtime_diff($a, $b) {
-	global $log;
-	$log->debug('> microtime_diff '.$a.','. $b);
-	list($a_dec, $a_sec) = explode(' ', $a);
-	list($b_dec, $b_sec) = explode(' ', $b);
-	$log->debug('< microtime_diff');
-	return $b_sec - $a_sec + $b_dec - $a_dec;
-}
-*/
 
 /**
  * Return an array of directory names.
@@ -1169,7 +1157,6 @@ function upload_product_image_file($mode, $id) {
 		$file_name = ltrim(basename(' '.$file_path_name)); // basename($file_path_name);
 	}
 	$file_name = $id.'_'.$file_name;
-	//$filetype= $_FILES['imagename']['type'];
 	$filesize = $_FILES['imagename']['size'];
 
 	$ret_array = array();
@@ -1928,7 +1915,6 @@ function utf8RawUrlDecode($source) {
 	} else {
 		return $decodedStr;
 	}
-	//return html_to_utf8($decodedStr);
 }
 
 /**
@@ -2256,7 +2242,6 @@ function getRecordValues($id_array, $module) {
 		if (getFieldVisibilityPermission($module, $current_user->id, $fld_name, 'readwrite') == '0') {
 			$fld_array []= $fld_name;
 			$record_values[$c][$fld_label] = array();
-			//$ui_value[]=$ui_type;
 			for ($j=0, $jMax = count($field_values); $j < $jMax; $j++) {
 				if ($ui_type ==56) {
 					if ($field_values[$j][$fld_name] == 0) {
@@ -2353,7 +2338,6 @@ function getDuplicateRecordsArr($module, $use_limit = true) {
 	$start = (!empty($_SESSION['dup_nav_start'.$module]) ? $_SESSION['dup_nav_start'.$module] : 1);
 	$navigation_array = getNavigationValues($start, $no_of_rows, $list_max_entries_per_page);
 	$start_rec = $navigation_array['start'];
-	//$end_rec = $navigation_array['end_val'];
 	$navigationOutput = getTableHeaderNavigation($navigation_array, '', $module, 'FindDuplicate', '');
 	if ($start_rec == 0) {
 		$limit_start_rec = 0;
@@ -2478,7 +2462,6 @@ function getDuplicateRecordsArr($module, $use_limit = true) {
 			continue;
 		}
 		$dis_group[]=$fld_values[$gro.$i][0];
-		//$count_group[$i]=count($fld_values[$gro.$i]);
 		$new_group[]=$dis_group[$i];
 	}
 	$fld_nam=$new_group[0];
@@ -2528,7 +2511,6 @@ function get_special_on_clause($field_list) {
 		$sub_arr = explode('.', $fld);
 		$tbl_name = $sub_arr[0];
 		$col_name = $sub_arr[1];
-		//$fld_name = $sub_arr[2];
 
 		//need to handle aditional conditions with sub tables for further modules of duplicate check
 		if ($tbl_name == 'vtiger_leadsubdetails' || $tbl_name == 'vtiger_contactsubdetails') {
@@ -2574,7 +2556,6 @@ function get_on_clause($field_list, $uitype_arr, $module) {
 		$sub_arr = explode('.', $fld);
 		$tbl_name = $sub_arr[0];
 		$col_name = $sub_arr[1];
-		//$fld_name = $sub_arr[2];
 
 		$ret_str .= " ifnull($tbl_name.$col_name,'null') = ifnull(temp.$col_name,'null')";
 
@@ -3162,7 +3143,6 @@ function getRelationTables($module, $secmodule) {
 					$reltables = array($ui10_tablename=>array($ui10_columnname, $rel_field), $primary_obj->table_name => $primary_obj->table_index);
 				} else {
 					$rel_field = $primary_obj->tab_name_index[$ui10_tablename];
-					//$reltables = array($ui10_tablename=>array("$rel_field","$ui10_columnname"),$primary_obj->table_name => $primary_obj->table_index);
 					$reltables = array($ui10_tablename => array($rel_field, $ui10_columnname));
 				}
 			}
@@ -3790,7 +3770,6 @@ function retrieveCompanyDetails() {
 		array()
 	);
 	if ($query && $adb->num_rows($query) > 0) {
-		//$record = $adb->query_result($query, 0, 'cbcompanyid');
 		$companyDetails['name']     = $companyDetails['companyname'] = decode_html($adb->query_result($query, 0, 'companyname'));
 		$companyDetails['website']  = $adb->query_result($query, 0, 'website');
 		$companyDetails['email']  = $adb->query_result($query, 0, 'email');

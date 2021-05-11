@@ -28,7 +28,6 @@ class Calendar {
 	/*
 	constructor
 	*/
-	//var $groupTable = Array('vtiger_activitygrouprelation','activityid');
 	public function __construct($view = '', $data = array()) {
 		$this->view = $view;
 		$this->date_time = new vt_DateTime($data, true);

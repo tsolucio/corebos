@@ -18,7 +18,7 @@ $returnaction = isset($_REQUEST['return_action']) ? vtlib_purify($_REQUEST['retu
 if ((($returnmodule != 'Emails') || ($returnmodule == 'Emails' && empty($_REQUEST['record']))) && !empty($_REQUEST['return_id'])) {
 	$returnid = vtlib_purify($_REQUEST['return_id']);
 } else {
-	$returnid = $focus->id;//$_REQUEST['record'];
+	$returnid = $focus->id;
 }
 
 $adb->println("\n\nMail Sending Process has been started.");

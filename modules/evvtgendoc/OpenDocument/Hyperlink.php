@@ -135,9 +135,7 @@ class OpenDocument_Hyperlink extends OpenDocument_StyledElement {
 		$node->appendChild($element->node);
 
 		$element->__set('location', $location);
-		//$element->__set('type', $type);
 		$element->__set('target', $target);
-		//$element->__set('name', $name);
 
 		if (is_scalar($content)) {
 			$element->createTextElement($content);
@@ -184,9 +182,6 @@ class OpenDocument_Hyperlink extends OpenDocument_StyledElement {
 	 * @return mixed
 	 */
 	public function __get($name) {
-		/*if ($value = parent::__get($name)) {
-			return $value;
-		}*/
 		if (isset($this->$name)) {
 			return $this->$name;
 		}

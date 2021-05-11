@@ -38,7 +38,6 @@ if ($mass_merge != '') {
 	if (array_pop($temp_mass_merge)=='') {
 		array_pop($mass_merge);
 	}
-	//$mass_merge = implode(',',$mass_merge);
 } elseif ($single_record != '') {
 	$mass_merge = $single_record;
 } else {

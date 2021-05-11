@@ -605,7 +605,6 @@ function getParentMailId($parentmodule, $parentid) {
 		$second_email = 'email2';
 	}
 	if ($parentid != '') {
-		//$query = 'select * from '.$tablename.' where '.$idname.' = '.$parentid;
 		$query = 'select * from '.$tablename.' where '. $idname.' = ?';
 		$res = $adb->pquery($query, array($parentid));
 		$mailid = $adb->query_result($res, 0, $first_email);
@@ -754,12 +753,10 @@ function getDefaultAssigneeEmailIds($groupId) {
 				}
 				$emails[] = $email;
 			}
-			//$adb->println("Email ids are selected => '".implode(',', $emails)."'");
-		} else {
-			//$adb->println("No users found in Group id $groupId");
+			// Email ids are selected => implode(',', $emails)
+		// else => No users found in Group id $groupId
 		}
-	} else {
-		//$adb->println('Group id is empty, so return value is empty');
+	// else Group id is empty, so return value as empty;
 	}
 	return $emails;
 }

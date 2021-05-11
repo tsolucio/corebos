@@ -43,7 +43,6 @@ if (isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 	$ogReport = new Reports();
 	if (!empty($ogReport->related_modules[$primarymodule])) {
 		foreach ($ogReport->related_modules[$primarymodule] as $value) {
-			//$BLOCK1 .= getSecondaryColumnsHTML($_REQUEST["secondarymodule_".$value]);
 			$COLUMNS_BLOCK .= getSecondaryColumns_AdvFilterHTML($_REQUEST["secondarymodule_".$value]);
 		}
 	}

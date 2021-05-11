@@ -134,7 +134,7 @@ if ($have_access_data) {
 			echo ' '.$time_arr['endhour'].':'.$time_arr['endmin'].$time_arr['endfmt'];
 		}
 		echo '<br />';
-		echo $c_mod_strings['Location'].": <span id='google_info_".$eventid."_location'>" .implode(',', $event->where).'</span><br />'; //$Where[0];
+		echo $c_mod_strings['Location'].": <span id='google_info_".$eventid."_location'>" .implode(',', $event->where).'</span><br />';
 	} else {
 		echo $GoogleSync4You->getStatus();
 	}

@@ -27,10 +27,7 @@ class UploadFile {
 	public function get_url($stored_file_name, $bean_id) {
 		global $log, $site_URL, $upload_dir;
 		$log->debug('>< get_url '.$stored_file_name.','.$bean_id);
-		//echo $site_URL.'/'.$upload_dir.$bean_id.$stored_file_name;
-		//echo $_ENV['HOSTNAME'] .':' .$_SERVER['SERVER_PORT'].'/'.$upload_dir.$bean_id.$stored_file_name;
 		return 'http://'.$_ENV['HOSTNAME'] .':' .$_SERVER['SERVER_PORT'].'/'.$upload_dir.$bean_id.$stored_file_name;
-		//return $site_URL.'/'.$upload_dir.$bean_id.$stored_file_name;
 	}
 
 	/** Function to duplicate and copy a file to another location

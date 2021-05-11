@@ -490,8 +490,6 @@ class ReportRun extends CRMEntity {
 			$fieldtablename = $adb->query_result($field_query, 0, 'tablename');
 			$fieldcolname = $adb->query_result($field_query, 0, 'columnname');
 			$typeofdata = $adb->query_result($field_query, 0, 'typeofdata');
-			//$fieldtypeofdata=ChangeTypeOfData_Filter($fieldtablename, $fieldcolname, $typeofdata[0]);
-			//$uitype = $adb->query_result($field_query, 0, 'uitype');
 		if ($fieldtablename == 'vtiger_crmentity') {
 			$fieldtablename = $fieldtablename.$module;
 		}
@@ -547,7 +545,6 @@ class ReportRun extends CRMEntity {
 			}
 
 			while ($relcriteriarow = $adb->fetch_array($result)) {
-				//$columnIndex = $relcriteriarow['columnindex'];
 				$criteria = array();
 				$criteria['columnname'] = html_entity_decode($relcriteriarow['columnname']);
 				$criteria['comparator'] = $relcriteriarow['comparator'];
@@ -2871,7 +2868,6 @@ class ReportRun extends CRMEntity {
 					$module_name = $modulename_cache[$cachekey];
 				}
 
-				//$fieldlabel = trim($fieldlist[3]);
 				$field_columnalias = $module_name.'_'.$fieldlist[3];
 				$field_columnalias = decode_html($field_columnalias);
 				$query_columnalias = substr($field_columnalias, 0, strrpos($field_columnalias, '_'));
@@ -2901,7 +2897,6 @@ class ReportRun extends CRMEntity {
 					}
 					if ($fieldlist[4] == 2) {
 						if ($fieldlist[2]=='totaltime') {
-							//$stdfilterlist[$fieldcolname] = "sec_to_time(sum(time_to_sec(".$query_columnalias."))) '".$field_columnalias."'";
 							$summinutes = "sum(SUBSTRING_INDEX($query_columnalias, ':', 1)*60+SUBSTRING_INDEX($query_columnalias, ':', -1))";
 							$stdfilterlist[$fieldcolname] = "concat(floor($summinutes / 60), ':', floor($summinutes % 60)) '$field_columnalias'";
 						} else {
@@ -2912,7 +2907,6 @@ class ReportRun extends CRMEntity {
 						//when we use avg() function, NULL values will be ignored.to avoid this we use (sum/count) to find average.
 						//$stdfilterlist[$fieldcolname] = "avg(".$fieldlist[1].".".$fieldlist[2].") '".$fieldlist[3]."'";
 						if ($fieldlist[2]=='totaltime') {
-							//$stdfilterlist[$fieldcolname] = 'sec_to_time(sum(time_to_sec('.$query_columnalias."))/count(*)) '".$field_columnalias."'";
 							$avgminutes = "sum(SUBSTRING_INDEX($query_columnalias, ':', 1)*60+SUBSTRING_INDEX($query_columnalias, ':', -1))/count(*)";
 							$stdfilterlist[$fieldcolname] = "concat(floor($avgminutes / 60), ':', floor($avgminutes % 60)) '$field_columnalias'";
 						} else {
@@ -2921,7 +2915,6 @@ class ReportRun extends CRMEntity {
 					}
 					if ($fieldlist[4] == 4) {
 						if ($fieldlist[2]=='totaltime') {
-							//$stdfilterlist[$fieldcolname] = 'sec_to_time(min(time_to_sec('.$query_columnalias."))) '".$field_columnalias."'";
 							$minminutes = "min(SUBSTRING_INDEX($query_columnalias, ':', 1)*60+SUBSTRING_INDEX($query_columnalias, ':', -1))";
 							$stdfilterlist[$fieldcolname] = "concat(floor($minminutes / 60), ':', floor($minminutes % 60)) '$field_columnalias'";
 						} else {
@@ -2930,7 +2923,6 @@ class ReportRun extends CRMEntity {
 					}
 					if ($fieldlist[4] == 5) {
 						if ($fieldlist[2]=='totaltime') {
-							//$stdfilterlist[$fieldcolname] = 'sec_to_time(max(time_to_sec('.$query_columnalias."))) '".$field_columnalias."'";
 							$maxminutes = "max(SUBSTRING_INDEX($query_columnalias, ':', 1)*60+SUBSTRING_INDEX($query_columnalias, ':', -1))";
 							$stdfilterlist[$fieldcolname] = "concat(floor($maxminutes / 60), ':', floor($maxminutes % 60)) '$field_columnalias'";
 						} else {
@@ -3141,14 +3133,12 @@ class ReportRun extends CRMEntity {
 		$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 		$pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
 		$pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-		//$pdf->setLanguageArray($l);
 		$pdf->AddPage();
 
 		$pdf->SetFillColor(224, 235, 255);
 		$pdf->SetTextColor(0);
 		$pdf->SetFont('FreeSerif', 'B', 14);
 		$pdf->Cell(($columnlength*50), 10, getTranslatedString($this->reportname), 0, 0, 'C', 0);
-		//$pdf->writeHTML($oReport->reportname);
 		$pdf->Ln();
 
 		$pdf->SetFont('FreeSerif', '', 10);
@@ -3195,7 +3185,6 @@ class ReportRun extends CRMEntity {
 				}
 			}
 			$BoolTrue = getTranslatedString('LBL_YES');
-			//$BoolFalse = getTranslatedString('LBL_NO');
 			$count = 1;
 			$rowcount = 1;
 			$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);

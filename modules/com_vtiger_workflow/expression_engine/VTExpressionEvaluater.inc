@@ -386,7 +386,6 @@ class VTFieldExpressionEvaluater {
 					}
 				}
 				$params = $prms;
-				//$params = $expr->getParams();
 			}
 			$debugparams = $params;
 			if (in_array($func, $this->needscontext)) {

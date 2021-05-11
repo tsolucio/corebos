@@ -1009,7 +1009,6 @@ function eval_paracada($condition, $id, $module, $check = false) {
 			}
 		}
 	}
-	//error_log(print_r($iter_modules,true)."\n",3,'gendoc.log');
 }
 
 function eval_imagen($entity, $id, $module) {
@@ -1017,7 +1016,6 @@ function eval_imagen($entity, $id, $module) {
 	OpenDocument::debugmsg("eval_image: $entity, $id, $module");
 	list($mod,$field) = explode('.', $entity);
 	$att_name = '';
-	// if (array_key_exists($entity,$image_modules)){
 	if ($mod == $module) {
 		$entid = $id;
 	} elseif (array_key_exists($mod, $iter_modules)) {
@@ -1115,9 +1113,6 @@ function eval_imagen($entity, $id, $module) {
 			return 'modules/evvtgendoc/not_found.jpg';
 		}
 	}
-	// }else{
-	//     return 'modules/evvtgendoc/no_image_entity.jpg';
-	// }
 }
 
 function eval_incluir($entity, $id, $module) {
@@ -1656,7 +1651,6 @@ function get_plantilla($entid) {
 			array_push($sqlfields, $fld_no);
 		}
 		$queryGenerator->setFields($sqlfields);
-		//$queryGenerator->addCondition('id',$entid,'e');
 		$query = $queryGenerator->getQuery();
 		$query.= ' and vtiger_crmentity.crmid=? ';
 		$res = $adb->pquery($query, array($entid));

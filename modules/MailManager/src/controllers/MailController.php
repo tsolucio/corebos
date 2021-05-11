@@ -169,10 +169,6 @@ class MailManager_MailController extends MailManager_Controller {
 					$mailer->ConfigSenderInfo($fromEmail, $userFullName, $replyTo);
 					$mailer->Subject = $subject;
 					$mailer->Body = $description;
-					// $mailer->addSignature($userId);
-					// if ($mailer->Signature != '') {
-					// 	$mailer->Body.= $mailer->Signature;
-					// }
 
 					$ccs = empty($cc_string)? array() : explode(',', $cc_string);
 					$bccs= empty($bcc_string)?array() : explode(',', $bcc_string);

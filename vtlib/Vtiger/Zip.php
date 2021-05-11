@@ -65,7 +65,6 @@ class Vtiger_Zip {
 		header('Cache-Control: private', false);
 		header('Content-Type: application/zip');
 		header('Content-Disposition: attachment; filename='.basename($zipfileName).';');
-		//header("Content-Transfer-Encoding: binary");
 		$disk_file_size = filesize($zipfileName);
 		header('Content-Length: '.$disk_file_size);
 		readfile($zipfileName);

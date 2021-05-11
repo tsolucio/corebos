@@ -47,7 +47,6 @@ class crmtogo_WS_FetchRecord extends crmtogo_WS_Controller {
 	public function process(crmtogo_API_Request $request) {
 		$response = new crmtogo_API_Response();
 		$current_user = $this->getActiveUser();
-		//$module = $request->get('module');
 		$module = $this->detectModuleName($request->get('record'));
 		$record = $this->processRetrieve($request, $module);
 		$record['createdtime'] = DateTimeField::convertToUserFormat($record['createdtime']);

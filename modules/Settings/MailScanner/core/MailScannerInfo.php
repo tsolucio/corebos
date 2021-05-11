@@ -295,7 +295,6 @@ class Vtiger_MailScannerInfo {
 				for ($index = 0; $index < $rulescount; ++$index) {
 					$ruleid = $adb->query_result($rulesres, $index, 'ruleid');
 					$scannerrule = new Vtiger_MailScannerRule($ruleid);
-					//$scannerrule->debug = $this->debug;
 					$this->rules[] = $scannerrule;
 				}
 			}

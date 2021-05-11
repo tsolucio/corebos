@@ -17,8 +17,6 @@ $parentRoleList=$adb->query_result($result, 0, 'parentrole');
 $replace_with=$parentRoleList;
 $orgDepth=$adb->query_result($result, 0, 'depth');
 
-//echo 'replace with is '.$replace_with;
-//echo '<BR>org depth '.$orgDepth;
 $parentRoles=explode('::', $parentRoleList);
 
 if (in_array($fromid, $parentRoles)) {

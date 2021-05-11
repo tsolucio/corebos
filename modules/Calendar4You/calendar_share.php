@@ -122,15 +122,6 @@ $Calendar_Settings = $Calendar4You->getSettings();
 			<td align="left">
 			<?php
 			echo $mod_strings['LBL_WEEK_STARTS_AT'].': ';
-			/*
-			$Days_Values = array("Sunday"=>$c_mod_strings["LBL_DAY0"],
-			"Monday"=>$c_mod_strings["LBL_DAY1"],
-			"Tuesday"=>$c_mod_strings["LBL_DAY2"],
-			"Wednesday"=>$c_mod_strings["LBL_DAY3"],
-			"Thursday"=>$c_mod_strings["LBL_DAY4"],
-			"Friday"=>$c_mod_strings["LBL_DAY5"],
-			"Saturday"=>$c_mod_strings["LBL_DAY6"]);
-			*/
 			$Days_Values = array("Sunday"=>$c_mod_strings["LBL_DAY0"], "Monday"=>$c_mod_strings["LBL_DAY1"]);
 			echo '<select name="dayoftheweek" tabindex="" class="small">';
 			foreach ($Days_Values as $day_key => $day_label) {

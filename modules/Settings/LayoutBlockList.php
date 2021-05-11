@@ -477,7 +477,6 @@ function getListLeadMapping($cfid) {
 		$accountid = $adb->query_result($result, $i, 'accountfid');
 		$contactid = $adb->query_result($result, $i, 'contactfid');
 		$potentialid = $adb->query_result($result, $i, 'potentialfid');
-		//$cfmid = $adb->query_result($result, $i, 'cfmid');
 
 		$sql2='select fieldlabel from vtiger_field where fieldid = ? and vtiger_field.presence in (0,2)';
 		$result2 = $adb->pquery($sql2, array($accountid));
@@ -675,9 +674,6 @@ function updateFieldProperties() {
 	$tabid = $adb->query_result($req_result, 0, 'tabid');
 	$fieldname = $adb->query_result($req_result, 0, 'fieldname');
 	$uitype = $adb->query_result($req_result, 0, 'uitype');
-	//$oldfieldlabel = $adb->query_result($req_result, 0, 'fieldlabel');
-	//$tablename = $adb->query_result($req_result, 0, 'tablename');
-	//$columnname = $adb->query_result($req_result, 0, 'columnname');
 	$oldquickcreate = $adb->query_result($req_result, 0, 'quickcreate');
 	$oldmassedit = $adb->query_result($req_result, 0, 'masseditable');
 	$oldpresence = $adb->query_result($req_result, 0, 'presence');
@@ -1184,8 +1180,6 @@ function addCustomField() {
 								$picklist_valueid = getUniquePicklistID();
 								$query = 'insert into vtiger_'.$columnName.' values(?,?,?,?)';
 								$adb->pquery($query, array($adb->getUniqueID('vtiger_'.$columnName),$pickArray[$i],1,$picklist_valueid));
-								/*$sql='update vtiger_picklistvalues_seq set id = ?';
-								$adb->pquery($sql, array(++$picklist_valueid));*/
 							}
 							$sql = "select picklist_valueid from vtiger_$columnName where $columnName=?";
 							$rs = $adb->pquery($sql, array($pickArray[$i]));

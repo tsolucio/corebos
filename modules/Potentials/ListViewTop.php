@@ -33,7 +33,6 @@ function getTopPotentials($maxval, $calCnt) {
 			$current_module_strings['Closed Lost']."') AND vtiger_crmentity.smownerid='".$current_user->id."' AND vtiger_potential.amount > 0";
 	$header=array();
 	$header[]=$current_module_strings['LBL_LIST_OPPORTUNITY_NAME'];
-	//$header[]=$current_module_strings['LBL_LIST_ACCOUNT_NAME'];
 	$currencyid=fetchCurrency($current_user->id);
 	$rate_symbol = getCurrencySymbolandCRate($currencyid);
 	$curr_symbol = $rate_symbol['symbol'];

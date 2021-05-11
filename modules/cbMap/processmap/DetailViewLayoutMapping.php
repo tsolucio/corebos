@@ -116,7 +116,6 @@ class DetailViewLayoutMapping extends processcbMap {
 				$row['linkicon'] = '';
 				$row['sequence'] = $block['sequence'];
 				$row['onlyonmymodule'] = 1;
-				//$row['status'] = '';
 				$row['handler_path'] = (isset($value->loadfrom) ? (String)$value->loadfrom : '');
 				$row['handler_class'] = (isset($value->handler_class) ? (String)$value->handler_class : '');
 				$row['handler'] = (isset($value->handler) ? (String)$value->handler : '');

@@ -33,7 +33,6 @@ if ($mode == 'add') {
 	$picklistid = $adb->query_result($result, 0, 'picklistid');
 
 	foreach ($arr as $val) {
-		//$val = htmlentities(trim($val), ENT_QUOTES, $default_charset);
 		if (!empty($val)) {
 			$id = $adb->getUniqueID("vtiger_$tableName");
 			$picklist_valueid = getUniquePicklistID();

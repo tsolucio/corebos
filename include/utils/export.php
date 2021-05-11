@@ -238,8 +238,6 @@ function export($type) {
 	/** Output header information */
 	echo $header;
 
-	//$column_list = implode(',', array_values($fields_array));
-
 	while ($val = $adb->fetchByAssoc($result, -1, false)) {
 		$new_arr = array();
 		$val = $__processor->sanitizeValues($val);

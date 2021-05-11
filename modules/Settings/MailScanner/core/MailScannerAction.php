@@ -161,8 +161,7 @@ class Vtiger_MailScannerAction {
 
 		$usesubject = false;
 		if ($this->lookup == 'SUBJECT') {
-			// If regex match was performed on subject use the matched group
-			// to lookup the ticket record
+			// If regex match was performed on subject use the matched group to lookup the ticket record
 			if ($regexMatchInfo) {
 				$usesubject = $regexMatchInfo['matches'];
 			} else {
@@ -173,7 +172,6 @@ class Vtiger_MailScannerAction {
 			$fromemail = $mailrecord->_from[0];
 
 			$linkfocus = $mailscanner->GetTicketRecord($usesubject, $fromemail, $mailscannerrule->must_be_related);
-//			$relatedid = $linkfocus->column_fields['parent_id'];
 			$relatedid = $mailscanner->linkedid;
 			$this->otherEmailRelations = $mailscanner->otherEmailRelations;
 

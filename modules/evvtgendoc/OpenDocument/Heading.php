@@ -112,8 +112,6 @@ class OpenDocument_Heading extends OpenDocument_StyledElement {
 		if (is_scalar($content)) {
 			$element->createTextElement($content);
 		}
-
-		//$element->__set('level', $level);
 		return $element;
 	}
 

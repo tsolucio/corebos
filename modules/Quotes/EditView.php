@@ -240,7 +240,7 @@ if ($focus->mode == 'edit' || $isduplicate == 'true') {
 	$smarty->assign('UPDATEINFO', updateInfo($record));
 }
 if ($focus->mode == 'edit') {
-	$associated_prod = getAssociatedProducts('Quotes', $focus);//getProductDetailsBlockInfo('edit','Quotes',$focus);
+	$associated_prod = getAssociatedProducts('Quotes', $focus);
 	$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
 	$smarty->assign('AVAILABLE_PRODUCTS', (empty($associated_prod) ? 'false' : 'true'));
 } elseif ($isduplicate == 'true') {

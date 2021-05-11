@@ -413,28 +413,24 @@ class OpenDocument {
 		if (!$this->metaDOM->loadXML(ZipWrapper::read($filename, self::FILE_META))) {
 			throw new OpenDocument_Exception(OpenDocument_Exception::LOAD_META_ERR);
 		}
-		//$this->metaXPath = new DOMXPath($this->metaDOM);
 
 		//get settings
 		$this->settingsDOM = new DOMDocument();
 		if (!$this->settingsDOM->loadXML(ZipWrapper::read($filename, self::FILE_SETTINGS))) {
 			throw new OpenDocument_Exception(OpenDocument_Exception::LOAD_SETTINGS_ERR);
 		}
-		//$this->settingsXPath = new DOMXPath($this->settingsDOM);
 
 		//get styles
 		$this->stylesDOM = new DOMDocument();
 		if (!$this->stylesDOM->loadXML(ZipWrapper::read($filename, self::FILE_STYLES))) {
 			throw new OpenDocument_Exception(OpenDocument_Exception::LOAD_STYLES_ERR);
 		}
-		//$this->stylesXPath = new DOMXPath($this->stylesDOM);
 
 		//get manifest information
 		$this->manifestDOM = new DOMDocument();
 		if (!$this->manifestDOM->loadXML(ZipWrapper::read($filename, self::FILE_MANIFEST))) {
 			throw new OpenDocument_Exception(OpenDocument_Exception::LOAD_MANIFEST_ERR);
 		}
-		//$this->manifestXPath = new DOMXPath($this->manifestDOM);
 
 		//set cursor
 		$this->cursor = $this->contentXPath->query('/office:document-content/office:body/office:text')->item(0);
@@ -923,7 +919,6 @@ class OpenDocument {
 			// Process and save
 			$filename = escapeshellarg('file://'.$filename);
 			$command = "{$root_directory}modules/evvtgendoc/unoservice.sh {$pFilename} {$filename} {$filename}";
-			//$command = "{$root_directory}modules/evvtgendoc/unoservice.sh {$pFilename} {$filename} {$filename} >>{$root_directory}/modules/evvtgendoc/unoservice.log 2>&1";
 			$status = exec($command);
 			$this->debugmsg('Post processing: '.json_encode(array($command, $status)));
 			// Remove temp files
@@ -1007,7 +1002,6 @@ class OpenDocument {
 		$this->changedImages=array();
 		$this->newImages=array();
 		$this->originGenDocStyles = $obj->getStyles();
-		//$styleXML = $obj->stylesDOM->saveXML($obj->stylesDOM->documentElement);
 		$styleXML = $obj->stylesDOM->saveXML();
 		$endcompile = microtime(true)-$startcompile;
 		$this->debugmsg($originFile." START Compile $endcompile");
@@ -1025,7 +1019,7 @@ class OpenDocument {
 		$endcompile = microtime(true)-$startcompile;
 		$this->debugmsg($originFile." START toGenDoc $endcompile");
 		set_time_limit(0);
-		$this->toGenDoc($obj, $id, $module, $root_module);//exit;
+		$this->toGenDoc($obj, $id, $module, $root_module);
 		$this->processInclude();
 		$endcompile = microtime(true)-$startcompile;
 		$this->debugmsg("END GenDOC $endcompile s");
@@ -1201,13 +1195,8 @@ class OpenDocument {
 					}
 					if (substr($texto_plow, 0, $lenimageGD)==$imageGD) {
 						$entidadimagen=rtrim(trim(substr($texto_p, $lenimageGD)), '}');
-						//Comento codigo para una sola imagen, nada nos asegura que sólo haya una, pueden haber campos personalizados de imagen
-						// if ($this->contextoParacada[$this->contextoActual]['repe']>0) { // en un paracada y ya hemos agotado la primera imagen, todas las demas son nuevas
 						$this->newImages[]=eval_imagen($entidadimagen, $id, $module);
 						$newImageAdded=true;
-						// } else {   // sustituimos imagen existente
-						//     $changedImage=eval_imagen($entidadimagen,$id,$module);
-						// }
 						continue 2;
 					}
 					if (substr($texto_plow, 0, $lenincludeGD)==$includeGD) {
@@ -1300,7 +1289,6 @@ class OpenDocument {
 	public function GenHTML($originFile, $id, $module) {
 		global $parentArray;
 		$obj = new OpenDocument($originFile);
-		//$obj->output();
 		$this->originGenDocStyles = $obj->getStyles();
 		$this->stylesDOM=$obj->stylesDOM;
 		array_push($parentArray, $this);
@@ -1599,14 +1587,13 @@ class OpenDocument {
 			$style = $this->contentDOM->createElementNS(self::NS_STYLE, 'style');
 			$style->setAttributeNS(self::NS_STYLE, 'name', $style_name);
 			$style->setAttributeNS(self::NS_STYLE, 'family', ($name=='family' ? $value : 'paragraph'));
-			//$style->setAttributeNS(self::NS_STYLE, 'parent-style-name', 'Standard');
 			$this->styles->appendChild($style);
 			return $style->getAttributeNS(self::NS_STYLE, 'name');
 		} else {
 			$style = $this->getStyleNode($style_name)->cloneNode(true);
 			$this->styles->appendChild($style);
 			$generate = true;
-			$style_name = $object->generateStyleName();//uniqid('tmp');
+			$style_name = $object->generateStyleName();
 			$style->setAttributeNS(self::NS_STYLE, 'name', $style_name);
 		}
 
@@ -1618,19 +1605,6 @@ class OpenDocument {
 			return $style->getAttributeNS(self::NS_STYLE, 'name');
 		}
 
-/*        $ReflectionClass = new ReflectionClass($object);
-		if ($ReflectionClass->getConstant('nodePrefix')=='table')
-		  $nodes = $style->getElementsByTagNameNS(self::NS_STYLE, $ReflectionClass->getConstant('nodeName').'-properties');
-		elseif ($ReflectionClass->getConstant('nodePrefix')=='paragraph')
-		  $nodes = $style->getElementsByTagNameNS(self::NS_STYLE, 'paragraph-properties');
-		else
-		  $nodes = $style->getElementsByTagNameNS(self::NS_STYLE, 'text-properties');
-		/*
-		if (in_array($value,$this->NS_ENTITIES)) {
-			$nodes = $style->getElementsByTagNameNS(self::NS_STYLE, $value.'-properties');
-		} else {
-			$nodes = $style->getElementsByTagNameNS(self::NS_STYLE, 'text-properties');
-		}*/
 		if (empty($elemtype)) {
 			$elemtype='text';
 		}
@@ -1638,18 +1612,6 @@ class OpenDocument {
 		if ($nodes->length) {
 			$text_properties = $nodes->item(0);
 		} else {
-			/*
-			if ($ReflectionClass->getConstant('nodePrefix')=='table')
-			  $text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, $ReflectionClass->getConstant('nodeName').'-properties');
-			elseif ($ReflectionClass->getConstant('nodePrefix')=='paragraph')
-			  $text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, 'paragraph-properties');
-			else
-			  $text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, 'text-properties');
-			if (in_array($value,$this->NS_ENTITIES)) {
-				$text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, $value.'-properties');
-			} else {
-				$text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, 'text-properties');
-			}*/
 			$text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, (strpos($elemtype, 'properties') ? $elemtype : $elemtype.'-properties'));
 			$style->appendChild($text_properties);
 		}
@@ -1661,8 +1623,6 @@ class OpenDocument {
 			$text_properties->setAttribute('draw:'.$name, $value);
 		} elseif (!is_array($value)) {
 			$text_properties->setAttribute('style:'.$name, $value);
-		//} else {
-				//$text_properties->setAttribute($name, $value);
 		}
 
 		//find alike style
@@ -1691,7 +1651,6 @@ class OpenDocument {
 	public function addStyles($node, $elem, $elemtype, $keepname = false) {
 		$style_name = $this->getStyleName($node);
 		$ReservedStyles=implode('|', OpenDocument::$ReservedStyles);
-		//echo "$ReservedStyles<br>";
 		if (preg_match("[$ReservedStyles]", $style_name)) {
 			$elem->getNode()->setAttributeNS(OpenDocument::NS_TEXT, 'style-name', $style_name);
 			return 0;
@@ -1916,7 +1875,6 @@ class OpenDocument {
 			$stylename = $node->getAttributeNS(self::NS_STYLE, 'name');
 			$styles[$stylename] = $this->getStyleInfo($node);
 		}
-		//return $styles;
 		$nodes = $this->styles->getElementsByTagNameNS(self::NS_TEXT, 'list-style');
 		foreach ($nodes as $node) {
 			$stylename = $node->getAttributeNS(self::NS_STYLE, 'name');
@@ -2463,7 +2421,7 @@ class OpenDocument {
 			|| stripos($compiledtext, '<div')!==false
 		) { // hay html, traducir a odt
 			$dochtml = new DOMDocument();
-			$compiledtext = mb_convert_encoding($compiledtext, 'HTML-ENTITIES', "UTF-8");//echo $compiledtext;
+			$compiledtext = mb_convert_encoding($compiledtext, 'HTML-ENTITIES', 'UTF-8');
 			$compiledtext = str_replace('<div', '<span', $compiledtext);
 			$compiledtext = str_replace('</div>', '</span>', $compiledtext);
 			$compiledtext = str_replace("\n", '<br>', $compiledtext);
@@ -2579,7 +2537,6 @@ class OpenDocument {
 		switch (get_class($child)) {
 			case 'OpenDocument_TextElement':
 				$compiledtext=compile($child->text, $id, $module);
-	//            $this->processHTML('<div>'.$compiledtext.'</div>',$child);
 				$this->processHTML($compiledtext, $child);
 				break;
 			case 'OpenDocument_TextTab':
@@ -2758,7 +2715,6 @@ class OpenDocument {
 				$elem=array_pop($parentArray);
 				break;
 			case 'OpenDocument_TableColumn':
-				//Reflection::export(new ReflectionClass($child));
 				$elem=$topofarray->createTableColumn($child->numcolsrepeated);
 				OpenDocument::copyAttributes($child, $elem);
 				break;

@@ -26,7 +26,6 @@ class crmtogo_UI_LoginAndFetchModules extends crmtogo_WS_LoginAndFetchModules {
 			$wsResponseResult = $wsResponse->getResult();
 			$modules = crmtogo_UI_ModuleModel::buildModelsFromResponse($wsResponseResult['modules']);
 			$this->cacheModules($modules);
-			//$config = $this->getUserConfigSettings();
 			$module_by_default = GlobalVariable::getVariable('Mobile_Module_by_default', 'cbCalendar', 'Mobile');
 			header('Location:index.php?_operation=listModuleRecords&module='.$module_by_default);
 		}

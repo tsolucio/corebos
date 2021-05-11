@@ -533,8 +533,6 @@ class Leads extends CRMEntity {
 		$response = array();
 		$response['list'] = $list;
 		$response['row_count'] = $rows_found;
-		//$response['next_offset'] = $next_offset;
-		//$response['previous_offset'] = $previous_offset;
 		$log->debug('< process_list_query');
 		return $response;
 	}

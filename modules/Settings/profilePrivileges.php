@@ -394,7 +394,6 @@ if ($mode=='view') {
 				} else {
 					$visible = "<img src='".vtiger_imageurl('unlocked.png', $theme)."'>";
 				}
-				//$visible = "<img src='".vtiger_imageurl('prvPrfSelectedTick.gif', $theme)."'>";
 			} else {
 				$visible = "<img src='".vtiger_imageurl('no.gif', $theme)."'>";
 			}

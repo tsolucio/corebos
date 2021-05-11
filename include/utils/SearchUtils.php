@@ -860,7 +860,6 @@ function getdashboardcondition($input = '') {
 		$res = $adb->pquery('select vtiger_users.id from vtiger_users where vtiger_users.ename=?', array($owner));
 		$uid = $adb->query_result($res, 0, 'id');
 		$where_clauses[] = 'vtiger_crmentity.smownerid = '.$uid;
-		//$url_string .= '&assigned_user_id='.$uid;
 		$url_string .= '&owner='.$owner;
 	}
 	if (isset($campaign) && $campaign != '') {

@@ -50,7 +50,6 @@ class CBUpsertTask extends VTTask {
 			$logbg->debug("Module: $moduleName, Record: $entityId");
 			$moduleHandler = vtws_getModuleHandlerFromName($moduleName, Users::getActiveAdminUser());
 			$handlerMeta = $moduleHandler->getMeta();
-			//$moduleFields = $handlerMeta->getModuleFields();
 			include_once 'data/CRMEntity.php';
 			$focus = CRMEntity::getInstance($moduleName);
 			$focus->id = $recordId;

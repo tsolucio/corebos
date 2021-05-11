@@ -26,7 +26,6 @@ class crmtogo_UI_GetRelatedLists extends crmtogo_WS_RelatedRecords {
 			$detailresponse_record = array();
 			foreach ($relatedlistsmodule as $module) {
 				$moduleWSId = crmtogo_WS_Utils::getEntityModuleWSId($module);
-				//$fieldnames = crmtogo_WS_Utils::getEntityFieldnames($module);
 				foreach ($wsResponseResult[$module] as $key => $shortrecordid) {
 					if ($shortrecordid > 0) {
 						$recordid = $moduleWSId.'x'.$shortrecordid;

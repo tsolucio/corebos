@@ -22,8 +22,7 @@ require_once 'include/utils/CommonUtils.php';
 require_once 'include/freetag/freetag.class.php';
 require_once 'modules/Home/HomeUtils.php';
 
-global $app_strings, $mod_strings;
-global $adb, $current_user, $theme, $current_language;
+global $app_strings, $mod_strings, $adb, $current_user, $theme, $current_language;
 
 $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
@@ -31,12 +30,8 @@ $image_path=$theme_path.'images/';
 $smarty = new vtigerCRM_Smarty;
 $homeObj=new Homestuff;
 
-// Performance Optimization
 $tabrows = vtlib_prefetchModuleActiveInfo();
 
-//$query="select name,tabid from vtiger_tab where tabid in (select distinct(tabid) from vtiger_field where tabid <> 29 and tabid <> 16 and tabid <>10) order by name";
-
-// Performance Optimization: Re-written to ignore extension and inactive modules
 $modulenamearr = array();
 foreach ($tabrows as $resultrow) {
 	if ($resultrow['isentitytype'] != '0') {

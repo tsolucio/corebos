@@ -274,7 +274,6 @@ class crmtogo_WS_Utils {
 				$picklistValues = self::getassignedtoValues($current_user, $module);
 				$fieldInfo['type']['name'] = 'picklist';
 				$fieldInfo['type']['picklistValues'] = $picklistValues;
-				//$fieldInfo['type']['defaultValue'] = $picklistValues[0];
 				$describeInfo['fields'][$index] = $fieldInfo;
 			}
 		}

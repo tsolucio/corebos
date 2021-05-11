@@ -79,10 +79,6 @@ class Import_Controller {
 		$importStatusCount = $importDataController->getImportStatusCount();
 		$totalRecords = $importStatusCount['TOTAL'];
 		if ($totalRecords > ($importStatusCount['IMPORTED'] + $importStatusCount['FAILED']) && strpos(PHP_SAPI, 'apache')!==false) {
-//			if ($importInfo['status'] == Import_Queue_Controller::$IMPORT_STATUS_SCHEDULED) {
-//				self::showScheduledStatus($importInfo);
-//				exit;
-//			}
 			self::showCurrentStatus($importInfo, $importStatusCount, $continueImport);
 			exit;
 		} else {

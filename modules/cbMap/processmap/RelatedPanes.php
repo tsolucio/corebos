@@ -131,7 +131,6 @@ class RelatedPanes extends processcbMap {
 						$row['linkurl']  = decode_html($block['loadfrom']);
 						$row['linkicon'] = '';
 						$row['sequence'] = $block['sequence'];
-						//$row['status'] = '';
 						$row['handler_path'] = (isset($value->handler_path) ? (String)$value->handler_path : '');
 						$row['handler_class'] = (isset($value->handler_class) ? (String)$value->handler_class : '');
 						$row['handler'] = (isset($value->handler) ? (String)$value->handler : '');

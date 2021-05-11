@@ -22,7 +22,6 @@ function display_date($view, $date_time) {
 	global $cal_log;
 	$cal_log->debug('> display_date');
 	if ($view == 'day') {
-		//$label = $date_time->getdayofWeek().' ';
 		$label = $date_time->get_Date().' ';
 		$label .= $date_time->getmonthName().' ';
 		$label .= $date_time->year;

@@ -66,7 +66,6 @@ class Vtiger_Request {
 		//Handled for null because vtlib_purify returns empty string
 		if (!empty($value)) {
 			$value = vtlib_purify($value);
-			//$value = str_replace(array(chr(10),chr(13)), '', $value);
 		}
 		return $value;
 	}

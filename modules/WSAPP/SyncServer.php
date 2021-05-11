@@ -106,7 +106,6 @@ class SyncServer {
 		$result = $db->pquery('SELECT * FROM vtiger_wsapp_recordmapping WHERE serverid=? and servermodifiedtime < ?', array($recordWsId,$modifiedTime));
 		while ($arre = $db->fetchByAssoc($result)) {
 			$syncServerId = $arre['id'];
-			//$clientId = $arre['clientid'];
 			$clientMappedId = $arre['appid'];
 			if (!$this->checkIdExistInQueue($syncServerId)) {
 				$this->idmap_storeRecordsInQueue($syncServerId, $recordValues, $this->delete, $clientMappedId);
@@ -413,7 +412,6 @@ class SyncServer {
 				} elseif (empty($updatedLookupIds[$u['id']])) {
 					$u['_id'] = $u['id'];// Rename the id key
 					$u['_modifiedtime'] = $u['modifiedtime'];
-					//unset($u['id']);
 					$filteredCreates[] = $u;
 				}
 			}
@@ -446,7 +444,6 @@ class SyncServer {
 		$deleteQueueSyncServerIds = array();
 		$serverKey = wsapp_getAppKey('vtigerCRM');
 		$serverAppId = $this->appid_with_key($serverKey);
-		//$lookups = $this->idmap_get_clientmap($appid, array_values($createDetails));
 		foreach ($createDetails as $clientid => $serverDetails) {
 			$this->idmap_put($appid, $serverDetails['serverid'], $clientid, $serverDetails['modifiedtime'], $serverDetails['_modifiedtime'], $serverAppId, $this->create);
 		}
