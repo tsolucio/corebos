@@ -864,14 +864,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 								}
 							}
 							if ($fieldname == 'filestatus') {
-								$filestatus = $value;
-								if ($filestatus == 1) {
-									$value = getTranslatedString('yes', $module);
-								} elseif ($filestatus == 0) {
-									$value = getTranslatedString('no', $module);
-								} else {
-									$value = ' --';
-								}
+								$value = Field_Metadata::getBooleanDisplayValue($value, $module);
 							}
 							if ($fieldname == 'filetype') {
 								$downloadtype = $adb->query_result($list_result, $i, 'filelocationtype');

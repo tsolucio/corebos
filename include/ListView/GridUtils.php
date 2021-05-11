@@ -188,13 +188,7 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 	$fieldName = $fieldinfo['name'];
 	switch ($fieldinfo['uitype']) {
 		case Field_Metadata::UITYPE_CHECKBOX:
-			if ($fieldValue == 1) {
-				$return = getTranslatedString('yes', $module);
-			} elseif ($fieldValue == 0) {
-				$return = getTranslatedString('no', $module);
-			} else {
-				$return = '--';
-			}
+			$return = Field_Metadata::getBooleanDisplayValue($fieldValue, $module);
 			break;
 		case Field_Metadata::UITYPE_DOWNLOAD_TYPE:
 			if ($fieldValue == 'I') {

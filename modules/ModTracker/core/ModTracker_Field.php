@@ -50,24 +50,8 @@ class ModTracker_Field {
 				} elseif ($filesize > 1048576) {
 					$value = round($filesize / (1024 * 1024), 2) . ' MB';
 				}
-			}
-			if ($fieldName == 'filestatus') {
-				if ($value == 1) {
-					$value = getTranslatedString('yes', $moduleName);
-				} elseif ($value == 0) {
-					$value = getTranslatedString('no', $moduleName);
-				} else {
-					$value = '--';
-				}
-			}
-			if ($fieldName == 'filetype') {
-				if ($value == 1) {
-					$value = getTranslatedString('yes', $moduleName);
-				} elseif ($value == 0) {
-					$value = getTranslatedString('no', $moduleName);
-				} else {
-					$value = '--';
-				}
+			} elseif ($fieldName == 'filestatus' || $fieldName == 'filetype') {
+				$value = Field_Metadata::getBooleanDisplayValue($value, $moduleName);
 			}
 		}
 
@@ -134,13 +118,7 @@ class ModTracker_Field {
 			}
 		}
 		if ($fieldInstance->getFieldDataType() == 'boolean') {
-			if ($value == 1) {
-				$value = getTranslatedString('yes', $moduleName);
-			} elseif ($value == 0) {
-				$value = getTranslatedString('no', $moduleName);
-			} else {
-				$value = '--';
-			}
+			$value = Field_Metadata::getBooleanDisplayValue($value, $moduleName);
 		}
 
 		if ($fieldInstance->getFieldDataType() == 'multipicklist') {

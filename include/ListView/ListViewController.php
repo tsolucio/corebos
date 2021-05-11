@@ -331,13 +331,7 @@ class ListViewController {
 						$value = ' --';
 					}
 				} elseif ($module == 'Documents' && $fieldName == 'filestatus') {
-					if ($value == 1) {
-						$value=getTranslatedString('yes', $module);
-					} elseif ($value == 0) {
-						$value=getTranslatedString('no', $module);
-					} else {
-						$value='--';
-					}
+					$value = Field_Metadata::getBooleanDisplayValue($value, $module);
 				} elseif ($module == 'Documents' && $fieldName == 'filetype') {
 					$downloadType = $db->query_result($result, $i, 'filelocationtype');
 					if ($downloadType == 'E' || $downloadType != 'I') {
@@ -413,13 +407,7 @@ class ListViewController {
 						$value = '<a href="mailto:'.$rawValue.'">'.textlength_check($value).'</a>';
 					}
 				} elseif ($field->getFieldDataType() == 'boolean') {
-					if ($value == 1) {
-						$value = getTranslatedString('yes', $module);
-					} elseif ($value == 0) {
-						$value = getTranslatedString('no', $module);
-					} else {
-						$value = '--';
-					}
+					$value = Field_Metadata::getBooleanDisplayValue($value, $module);
 				} elseif ($field->getUIType() == 98) {
 					$value = '<a href="index.php?action=RoleDetailView&module=Settings&parenttab='.
 						'Settings&roleid='.$value.'">'.textlength_check(getRoleName($value)).'</a>';
