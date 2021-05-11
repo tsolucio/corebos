@@ -55,7 +55,7 @@ class VtigerCRMObject {
 		$this->instance->id = $id;
 	}
 
-	private function titleCase($str) {
+	public function titleCase($str) {
 		$first = substr($str, 0, 1);
 		return strtoupper($first).substr($str, 1);
 	}
@@ -65,12 +65,10 @@ class VtigerCRMObject {
 
 		if ($tid === false) {
 			global $adb;
-
-			$sql = 'select tabid from vtiger_tab where name=?;';
 			$params = array($objectName);
-			$result = $adb->pquery($sql, $params);
+			$result = $adb->pquery('select tabid from vtiger_tab where name=?;', $params);
 			$data1 = $adb->fetchByAssoc($result, 1, false);
-			$tid = $data1["tabid"];
+			$tid = $data1['tabid'];
 		}
 		return $tid;
 	}

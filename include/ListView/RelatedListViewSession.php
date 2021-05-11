@@ -65,14 +65,10 @@ class RelatedListViewSession {
 
 	public static function getRequestStartPage() {
 		$relstart = isset($_REQUEST['relstart']) ? $_REQUEST['relstart'] : 1;
-		if (!is_numeric($relstart)) {
+		if (!is_numeric($relstart) || $relstart < 1) {
 			$relstart = 1;
 		}
-		if ($relstart < 1) {
-			$relstart = 1;
-		}
-		$relstart = ceil($relstart);
-		return $relstart;
+		return ceil($relstart);
 	}
 
 	public static function getRequestCurrentPage($relationId, $query) {
@@ -88,9 +84,7 @@ class RelatedListViewSession {
 					$relstart = ceil($noofrows/$list_max_entries_per_page);
 				}
 			}
-			if (!is_numeric($relstart)) {
-				$relstart = 1;
-			} elseif ($relstart < 1) {
+			if (!is_numeric($relstart) || $relstart < 1) {
 				$relstart = 1;
 			}
 			$relstart = ceil($relstart);

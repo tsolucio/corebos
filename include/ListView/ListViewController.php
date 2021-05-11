@@ -799,8 +799,7 @@ class ListViewController {
 		if (!$skipActions && (isPermitted($module, 'EditView', '') == 'yes' || isPermitted($module, 'Delete', '') == 'yes')) {
 			$header[] = getTranslatedString('LBL_ACTION', $module);
 		}
-		$header = cbEventHandler::do_filter('corebos.filter.listview.header', $header);
-		return $header;
+		return cbEventHandler::do_filter('corebos.filter.listview.header', $header);
 	}
 
 	public function getBasicSearchFieldInfoList() {
