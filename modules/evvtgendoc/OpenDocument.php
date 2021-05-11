@@ -1463,8 +1463,8 @@ class OpenDocument {
 					foreach ($classes as $class) {
 						$reflection = new ReflectionClass($class);
 						$prefix = $reflection->getConstant('styleNamePrefix');
-						if (preg_match("/^$prefix(\d)+$/", $style_name, $m)) {
-							$max[$class] = isset($max[$class]) ? ($max[$class] < $m[1] ? $m[1] : $max[$class]) : $m[1];
+						if (preg_match("/^$prefix(\d)+$/", $style_name, $m) && (!isset($max[$class]) || $max[$class] < $m[1])) {
+							$max[$class] = $m[1];
 						}
 					}
 				}

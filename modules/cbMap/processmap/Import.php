@@ -396,9 +396,17 @@ class Import extends processcbMap {
 			'merge_fields' => '',
 		);
 		if ($this->mapping['duphandling']!='none') {
-			$requestArray['merge_type'] = ($this->mapping['duphandling'] == 'overwrite' ?
-				Import_Utils::$AUTO_MERGE_OVERWRITE :
-				($this->mapping['duphandling'] == 'merge' ? Import_Utils::$AUTO_MERGE_MERGEFIELDS : Import_Utils::$AUTO_MERGE_IGNORE));
+			switch ($this->mapping['duphandling']) {
+				case 'overwrite':
+					$requestArray['merge_type'] = Import_Utils::$AUTO_MERGE_OVERWRITE;
+					break;
+				case 'merge':
+					$requestArray['merge_type'] = Import_Utils::$AUTO_MERGE_MERGEFIELDS;
+					break;
+				default:
+					$requestArray['merge_type'] = Import_Utils::$AUTO_MERGE_IGNORE;
+					break;
+			}
 			$requestArray['merge_fields'] = json_encode($this->mapping['dupmatches']);
 		}
 		$requestObject = new Import_API_Request($requestArray);
