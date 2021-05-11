@@ -17,10 +17,10 @@
 class BooleanField {
 
 	public static function getBooleanDisplayValue($value, $module) {
-		if ($value == 1) {
+		if ($value === 1 || $value === true) {
 			return getTranslatedString('yes', $module);
 		}
-		if ($value == 0) {
+		if ($value === 0 || $value === false || $value === '') {
 			return getTranslatedString('no', $module);
 		}
 		return '--';
