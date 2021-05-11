@@ -211,7 +211,6 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 			} else {
 				$imageattachment = 'Attachment';
 			}
-			//$imgpath = getModuleFileStoragePath('Contacts').$col_fields[$fieldname];
 			$sql = "select vtiger_attachments.*,vtiger_crmentity.setype
 				from vtiger_attachments
 				inner join vtiger_seattachmentsrel on vtiger_seattachmentsrel.attachmentsid=vtiger_attachments.attachmentsid

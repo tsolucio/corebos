@@ -15,7 +15,6 @@ require_once 'include/utils/GetParentGroups.php';
 class GetUserGroups {
 
 	public $user_groups=array();
-	//var $userRole='';
 
 	/** to get all the parent groups of the specified group
 	 * @params $groupId --> Group Id :: Type Integer

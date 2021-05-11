@@ -193,9 +193,6 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 	}
 	$smarty->assign('LISTHEADER', $listview_header);
 
-	if ($module == 'PriceBook' && $relatedmodule == 'Products') {
-		$listview_entries = getListViewEntries($focus, $relatedmodule, $list_result, $navigation_array, 'relatedlist', $returnset, $edit_val, $del_val, '', '', '', '', $skipActions);
-	}
 	if ($module == 'Products' && $relatedmodule == 'PriceBooks') {
 		$listview_entries = getListViewEntries($focus, $relatedmodule, $list_result, $navigation_array, 'relatedlist', $returnset, 'EditListPrice', 'DeletePriceBookProductRel', '', '', '', '', $skipActions);
 	} elseif ($relatedmodule == 'SalesOrder') {

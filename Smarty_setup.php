@@ -34,7 +34,6 @@ class vtigerCRM_Smarty extends Smarty {
 		$this->setCacheDir('Smarty/cache');
 		$this->setPluginsDir('Smarty/libs/plugins');
 
-		//$this->caching = true;
 		$CALENDAR_DISPLAY = GlobalVariable::getVariable('Application_Display_Mini_Calendar', 1, $currentModule);
 		$CALENDAR_DISPLAY = empty($CALENDAR_DISPLAY) ? 'false' : 'true';
 		$WORLD_CLOCK_DISPLAY = GlobalVariable::getVariable('Application_Display_World_Clock', 1, $currentModule);

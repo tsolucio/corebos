@@ -118,7 +118,6 @@ class ListViewController {
 		$is_admin = is_admin($current_user);
 		$listview_max_textlength = GlobalVariable::getVariable('Application_ListView_Max_Text_Length', 40, $currentModule);
 		$fields = $this->queryGenerator->getFields();
-		//$whereFields = $this->queryGenerator->getWhereFields();
 		$meta = $this->queryGenerator->getMeta($this->queryGenerator->getModule());
 
 		$moduleFields = $meta->getModuleFields();
@@ -447,7 +446,6 @@ class ListViewController {
 					} else {
 						$imageattachment = 'Attachment';
 					}
-					//$imgpath = getModuleFileStoragePath('Contacts').$col_fields[$fieldname];
 					$sql = "select vtiger_attachments.*,vtiger_crmentity.setype
 						from vtiger_attachments
 						inner join vtiger_seattachmentsrel on vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
@@ -743,11 +741,7 @@ class ListViewController {
 		$sorder=trim($sorder);
 		$header = array();
 
-		//$tabid = getTabid($module);
-		$tabname = getParentTab();
-
 		$fields = $this->queryGenerator->getFields();
-		//$whereFields = $this->queryGenerator->getWhereFields();
 		$meta = $this->queryGenerator->getMeta($this->queryGenerator->getModule());
 
 		$moduleFields = $meta->getModuleFields();
@@ -786,8 +780,7 @@ class ListViewController {
 				}
 				if ($module == 'Users' && $fieldName == 'User Name') {
 					$name = "<a href='javascript:;' onClick='getListViewEntries_js(\"".$module.
-						"\",\"parenttab=".$tabname.'&order_by='.$field->getFieldName().'&sorder='.
-						$temp_sorder.$sort_qry."\");' class='listFormHeaderLinks'>".
+						'","order_by='.$field->getFieldName().'&sorder='.$temp_sorder.$sort_qry."\");' class='listFormHeaderLinks'>".
 						getTranslatedString('LBL_LIST_USER_NAME_ROLE', $module).$arrow.'</a>';
 				} else {
 					if ($this->isHeaderSortingEnabled()) {
@@ -801,7 +794,7 @@ class ListViewController {
 							$sesStart = '';
 						}
 						$name = "<a href='javascript:;' onClick='getListViewEntries_js(\"".$module.
-							"\",\"parenttab=".$tabname.'&foldername=Default&order_by='.$field->getFieldName().'&start='.
+							'","foldername=Default&order_by='.$field->getFieldName().'&start='.
 							$sesStart.'&sorder='.$temp_sorder.$sort_qry."\");' class='listFormHeaderLinks'>".$label.$arrow.'</a>';
 					} else {
 						$name = $label;
@@ -824,7 +817,6 @@ class ListViewController {
 
 	public function getBasicSearchFieldInfoList() {
 		$fields = $this->queryGenerator->getFields();
-		//$whereFields = $this->queryGenerator->getWhereFields();
 		$meta = $this->queryGenerator->getMeta($this->queryGenerator->getModule());
 
 		$moduleFields = $meta->getModuleFields();
@@ -860,16 +852,12 @@ class ListViewController {
 			if (empty($label)) {
 				$label = $field->getFieldLabelKey();
 			}
-// 			if ($label == "Start Date & Time") {
-// 				$fieldlabel = "Start Date";
-// 			}
 			$selected = '';
 			if ($i++ == 0) {
 				$selected = 'selected';
 			}
 
 			// place option in array for sorting later
-			//$blockName = getTranslatedString(getBlockName($field->getBlockId()), $module);
 			$blockName = getTranslatedString($field->getBlockName(), $module);
 
 			$fieldLabelEscaped = str_replace(' ', '_', $field->getFieldLabelKey());
