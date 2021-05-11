@@ -1141,6 +1141,15 @@ class QueryGenerator {
 				$fieldObject = $fields[$fieldName];
 				$columnName = $fieldObject->getColumnName();
 				$tableName = $fieldObject->getTableName();
+				$uiType = $fieldObject->getUIType();
+				if ($uiType == Field_Metadata::UITYPE_CHECKBOX) {
+					if ($conditionInfo['value'] == 'true:boolean') {
+						$conditionInfo['value'] = '1';
+					}
+					if ($conditionInfo['value'] == 'false:boolean') {
+						$conditionInfo['value'] = '0';
+					}
+				}
 				$valueSQL = $this->getConditionValue($conditionInfo['value'], $conditionInfo['SQLOperator'], $fieldObject, $tableName.$conditionInfo['referenceField']);
 				if ($conditionInfo['SQLOperator']=='exists') {
 					$fieldSqlList[$index] = '('.$valueSQL[0].')';
