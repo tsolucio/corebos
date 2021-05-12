@@ -73,7 +73,7 @@ class VTFieldExpressionEvaluater {
 			'getCurrentUserID' => '__getCurrentUserID',
 			'getCurrentUserName' => '__getCurrentUserName',
 			'getCurrentUserField' => '__getCurrentUserField',
-			'getCRMIDFromWSID' => '__getCRMIDFromWSID',
+			'getCRMIDFromWSID' => 'cb_getCRMIDFromWSID',
 			'getEntityType' => '__cbwf_setype',
 			'getLatitude' => '__cb_getLatitude',
 			'getLongitude' => '__cb_getLongitude',
