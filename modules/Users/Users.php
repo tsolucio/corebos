@@ -969,7 +969,7 @@ class Users extends CRMEntity {
 		}
 
 		if ($insertion_mode == 'edit') {
-			//Check done by Don. If update is empty the the query fails
+			// If update is empty the the query fails
 			if (trim($update) != '') {
 				$sql1 = "update $table_name set $update where " . $this->tab_name_index[$table_name] . '=?';
 				$update_params[] = $this->id;

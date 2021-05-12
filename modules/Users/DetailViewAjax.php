@@ -51,7 +51,7 @@ if ($ajaxaction == 'DETAILVIEW') {
 			coreBOS_Session::set('internal_mailer', $userObj->column_fields['internal_mailer']);
 		}
 		$userObj->id = $userid;
-		$userObj->mode = "edit";
+		$userObj->mode = 'edit';
 		$userObj->homeorder_array[] = 'Tag Cloud';
 		$homeStuffOrder = $userObj->getHomeStuffOrder($userid);
 		foreach ($homeStuffOrder as $widget => $visible) {
