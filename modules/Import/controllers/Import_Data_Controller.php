@@ -206,6 +206,9 @@ class Import_Data_Controller {
 
 					$mergeFields = $this->mergeFields;
 					foreach ($mergeFields as $mergeField) {
+						if (!isset($fieldData[$mergeField])) {
+							continue;
+						}
 						$comparisonValue = $fieldData[$mergeField];
 						$fieldInstance = $moduleFields[$mergeField];
 						if ($fieldInstance->getFieldDataType() == 'owner') {
