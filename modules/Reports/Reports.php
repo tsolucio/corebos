@@ -1181,12 +1181,10 @@ function getReportsModuleList($focus) {
  */
 function getReportRelatedModules($module, $focus) {
 	$optionhtml = array();
-	if (vtlib_isModuleActive($module)) {
-		if (!empty($focus->related_modules[$module])) {
-			foreach ($focus->related_modules[$module] as $rel_modules) {
-				if (isPermitted($rel_modules, 'index') == 'yes') {
-					$optionhtml[]= $rel_modules;
-				}
+	if (vtlib_isModuleActive($module) && !empty($focus->related_modules[$module])) {
+		foreach ($focus->related_modules[$module] as $rel_modules) {
+			if (isPermitted($rel_modules, 'index') == 'yes') {
+				$optionhtml[]= $rel_modules;
 			}
 		}
 	}

@@ -134,11 +134,7 @@ function validate_notDuplicate($field, $fieldval, $params, $fields) {
 	}
 	$query = $queryGenerator->getQuery();
 	$result = $adb->pquery($query, array());
-	if ($result && $adb->num_rows($result) == 0) {
-		return true;
-	} else {
-		return false;
-	}
+	return ($result && $adb->num_rows($result) == 0);
 }
 
 /** check if related record exists on given module
@@ -243,10 +239,8 @@ function cbTaxclassRequired($field, $fieldval, $params, $fields) {
 		$i++;
 	}
 	// and it's value positive
-	if ($accepted) {
-		if ($fields[$tax_details[$i-1]['taxname']] < 0) {
-			return false;
-		}
+	if ($accepted && $fields[$tax_details[$i-1]['taxname']] < 0) {
+		return false;
 	}
 	return $accepted;
 }

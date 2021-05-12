@@ -1087,106 +1087,104 @@ function addCustomField() {
 			$uichekdata='V~O';
 		}
 
-		if (is_numeric($blockid)) {
-			if (empty($_REQUEST['fieldid'])) {
-				$rdoadd = $adb->alterTable($tableName, $columnName.' '.$type, 'Add_Column');
-				if ($rdoadd==1) {
-					if (substr($adb->database->ErrorMsg(), 0, 18) == 'Row size too large') {
-						echo 'ROWSIZEERROR::' . getTranslatedString('ROWSIZEERROR', 'Settings');
-					} else {
-						echo 'ADDFIELDERROR::' . getTranslatedString('ADDFIELDERROR', 'Settings');
-					}
-					die();
-				}
-				$res = $adb->pquery('select coalesce(max(sequence), 0) as maxsequence from vtiger_field where block = ?', array($blockid));
-				$max_seq = $adb->query_result($res, 0, 'maxsequence');
-				if ($fldmodule == 'Quotes' || $fldmodule == 'PurchaseOrder' || $fldmodule == 'SalesOrder' || $fldmodule == 'Invoice') {
-					$quickcreate = 3;
+		if (is_numeric($blockid) && empty($_REQUEST['fieldid'])) {
+			$rdoadd = $adb->alterTable($tableName, $columnName.' '.$type, 'Add_Column');
+			if ($rdoadd==1) {
+				if (substr($adb->database->ErrorMsg(), 0, 18) == 'Row size too large') {
+					echo 'ROWSIZEERROR::' . getTranslatedString('ROWSIZEERROR', 'Settings');
 				} else {
-					$quickcreate = 1;
+					echo 'ADDFIELDERROR::' . getTranslatedString('ADDFIELDERROR', 'Settings');
 				}
-				$query = 'insert into vtiger_field
-					(tabid, fieldid, columnname, tablename, generatedtype, uitype, fieldname, fieldlabel, readonly, presence, defaultvalue, maximumlength, sequence,
-						block, displaytype, typeofdata, quickcreate, quickcreatesequence, info_type, masseditable)
-					values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
-				$qparams = array(
-					$tabid, $custfld_fieldid, $columnName, $tableName, 2, $uitype, $columnName, $fldlabel,
-					0, 2, '', 100, $max_seq+1, $blockid, 1, $uichekdata, $quickcreate, 0, 'BAS', 1
-				);
-				$adb->pquery($query, $qparams);
-				//Inserting values into vtiger_profile2field tables
-				$sql1_result = $adb->pquery('select * from vtiger_profile', array());
-				$sql1_num = $adb->num_rows($sql1_result);
-				$sql2 = 'insert into vtiger_profile2field values(?,?,?,?,?,?)';
-				for ($i=0; $i<$sql1_num; $i++) {
-					$profileid = $adb->query_result($sql1_result, $i, 'profileid');
-					$adb->pquery($sql2, array($profileid, $tabid, $custfld_fieldid, 0, 0, 'B'));
-				}
+				die();
+			}
+			$res = $adb->pquery('select coalesce(max(sequence), 0) as maxsequence from vtiger_field where block = ?', array($blockid));
+			$max_seq = $adb->query_result($res, 0, 'maxsequence');
+			if ($fldmodule == 'Quotes' || $fldmodule == 'PurchaseOrder' || $fldmodule == 'SalesOrder' || $fldmodule == 'Invoice') {
+				$quickcreate = 3;
+			} else {
+				$quickcreate = 1;
+			}
+			$query = 'insert into vtiger_field
+				(tabid, fieldid, columnname, tablename, generatedtype, uitype, fieldname, fieldlabel, readonly, presence, defaultvalue, maximumlength, sequence,
+					block, displaytype, typeofdata, quickcreate, quickcreatesequence, info_type, masseditable)
+				values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+			$qparams = array(
+				$tabid, $custfld_fieldid, $columnName, $tableName, 2, $uitype, $columnName, $fldlabel,
+				0, 2, '', 100, $max_seq+1, $blockid, 1, $uichekdata, $quickcreate, 0, 'BAS', 1
+			);
+			$adb->pquery($query, $qparams);
+			//Inserting values into vtiger_profile2field tables
+			$sql1_result = $adb->pquery('select * from vtiger_profile', array());
+			$sql1_num = $adb->num_rows($sql1_result);
+			$sql2 = 'insert into vtiger_profile2field values(?,?,?,?,?,?)';
+			for ($i=0; $i<$sql1_num; $i++) {
+				$profileid = $adb->query_result($sql1_result, $i, 'profileid');
+				$adb->pquery($sql2, array($profileid, $tabid, $custfld_fieldid, 0, 0, 'B'));
+			}
 
-				//Inserting values into def_org tables
-				$adb->pquery('insert into vtiger_def_org_field values(?,?,?,?)', array($tabid, $custfld_fieldid, 0, 0));
+			//Inserting values into def_org tables
+			$adb->pquery('insert into vtiger_def_org_field values(?,?,?,?)', array($tabid, $custfld_fieldid, 0, 0));
 
-				if ($fldType == 'Relation') {
-					$moduleInstance = Vtiger_Module::getInstance($tabid);
-					$field = Vtiger_Field::getInstance($custfld_fieldid, $moduleInstance);
-					if ($field) {
-						$moduleNames = explode(';', trim($_REQUEST['relationmodules'], ';'));
-						$field->setRelatedModules($moduleNames);
-						foreach ($moduleNames as $mod) {
-							$modrel = Vtiger_Module::getInstance($mod);
-							$modrel->setRelatedList($moduleInstance, $fldmodule, array('ADD'), 'get_dependents_list', $custfld_fieldid, '1:N');
-						}
+			if ($fldType == 'Relation') {
+				$moduleInstance = Vtiger_Module::getInstance($tabid);
+				$field = Vtiger_Field::getInstance($custfld_fieldid, $moduleInstance);
+				if ($field) {
+					$moduleNames = explode(';', trim($_REQUEST['relationmodules'], ';'));
+					$field->setRelatedModules($moduleNames);
+					foreach ($moduleNames as $mod) {
+						$modrel = Vtiger_Module::getInstance($mod);
+						$modrel->setRelatedList($moduleInstance, $fldmodule, array('ADD'), 'get_dependents_list', $custfld_fieldid, '1:N');
 					}
 				}
-				if ($fldType == 'Picklist' || $fldType == 'MultiSelectCombo') {
-					$columnName = $adb->sql_escape_string($columnName);
-					// Creating the PickList Table and Populating Values
-					if (empty($_REQUEST['fieldid'])) {
-						$qur = 'CREATE TABLE vtiger_'.$columnName.' (
-							'.$columnName.'id int(19) NOT NULL auto_increment,
-							'.$columnName." varchar(200) NOT NULL,
-							presence int(1) NOT NULL default '1',
-							picklist_valueid int(19) NOT NULL default '0',
-							PRIMARY KEY  (".$columnName.'id)
-						)';
-						$adb->pquery($qur, array());
-					}
+			}
+			if ($fldType == 'Picklist' || $fldType == 'MultiSelectCombo') {
+				$columnName = $adb->sql_escape_string($columnName);
+				// Creating the PickList Table and Populating Values
+				if (empty($_REQUEST['fieldid'])) {
+					$qur = 'CREATE TABLE vtiger_'.$columnName.' (
+						'.$columnName.'id int(19) NOT NULL auto_increment,
+						'.$columnName." varchar(200) NOT NULL,
+						presence int(1) NOT NULL default '1',
+						picklist_valueid int(19) NOT NULL default '0',
+						PRIMARY KEY  (".$columnName.'id)
+					)';
+					$adb->pquery($qur, array());
+				}
 
-					//Adding a  new picklist value in the picklist table
-					if ($mode != 'edit') {
-						$picklistid = $adb->getUniqueID('vtiger_picklist');
-						$adb->pquery('insert into vtiger_picklist values(?,?,1)', array($picklistid, $columnName));
-					}
-					$rs = $adb->pquery('select picklistid from vtiger_picklist where name=?', array($columnName));
-					$picklistid = $adb->query_result($rs, 0, 'picklistid');
-					$pickArray = array();
-					$fldPickList = vtlib_purify($_REQUEST['fldPickList']);
-					$pickArray = explode("\n", $fldPickList);
-					$count = count($pickArray);
-					for ($i = 0; $i < $count; $i++) {
-						$pickArray[$i] = trim($pickArray[$i]);
-						if ($pickArray[$i] != '') {
-							$picklistcount=0;
-							$sql ="select $columnName from vtiger_$columnName";
-							$rs = $adb->pquery($sql, array());
-							$numrow = $adb->num_rows($rs);
-							for ($x=0; $x < $numrow; $x++) {
-								$picklistvalues = $adb->query_result($rs, $x, $columnName);
-								if ($pickArray[$i] == $picklistvalues) {
-									$picklistcount++;
-								}
+				//Adding a  new picklist value in the picklist table
+				if ($mode != 'edit') {
+					$picklistid = $adb->getUniqueID('vtiger_picklist');
+					$adb->pquery('insert into vtiger_picklist values(?,?,1)', array($picklistid, $columnName));
+				}
+				$rs = $adb->pquery('select picklistid from vtiger_picklist where name=?', array($columnName));
+				$picklistid = $adb->query_result($rs, 0, 'picklistid');
+				$pickArray = array();
+				$fldPickList = vtlib_purify($_REQUEST['fldPickList']);
+				$pickArray = explode("\n", $fldPickList);
+				$count = count($pickArray);
+				for ($i = 0; $i < $count; $i++) {
+					$pickArray[$i] = trim($pickArray[$i]);
+					if ($pickArray[$i] != '') {
+						$picklistcount=0;
+						$sql ="select $columnName from vtiger_$columnName";
+						$rs = $adb->pquery($sql, array());
+						$numrow = $adb->num_rows($rs);
+						for ($x=0; $x < $numrow; $x++) {
+							$picklistvalues = $adb->query_result($rs, $x, $columnName);
+							if ($pickArray[$i] == $picklistvalues) {
+								$picklistcount++;
 							}
-							if ($picklistcount == 0) {
-								$picklist_valueid = getUniquePicklistID();
-								$query = 'insert into vtiger_'.$columnName.' values(?,?,?,?)';
-								$adb->pquery($query, array($adb->getUniqueID('vtiger_'.$columnName),$pickArray[$i],1,$picklist_valueid));
-							}
-							$sql = "select picklist_valueid from vtiger_$columnName where $columnName=?";
-							$rs = $adb->pquery($sql, array($pickArray[$i]));
-							$pick_valueid = $adb->query_result($rs, 0, 'picklist_valueid');
-							$sql = "insert into vtiger_role2picklist select roleid,$pick_valueid,$picklistid,$i from vtiger_role";
-							$adb->pquery($sql, array());
 						}
+						if ($picklistcount == 0) {
+							$picklist_valueid = getUniquePicklistID();
+							$query = 'insert into vtiger_'.$columnName.' values(?,?,?,?)';
+							$adb->pquery($query, array($adb->getUniqueID('vtiger_'.$columnName),$pickArray[$i],1,$picklist_valueid));
+						}
+						$sql = "select picklist_valueid from vtiger_$columnName where $columnName=?";
+						$rs = $adb->pquery($sql, array($pickArray[$i]));
+						$pick_valueid = $adb->query_result($rs, 0, 'picklist_valueid');
+						$sql = "insert into vtiger_role2picklist select roleid,$pick_valueid,$picklistid,$i from vtiger_role";
+						$adb->pquery($sql, array());
 					}
 				}
 			}

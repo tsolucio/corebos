@@ -1186,10 +1186,8 @@ Array (
 #line 1191 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
 #line 30 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
 	public function yy_r7() {
-		if (!in_array('*', $this->out['column_list']) && !in_array('count(*)', array_map('strtolower', $this->out['column_list']))) {
-			if (!in_array('id', $this->out['column_list'])) {
-				$this->out['column_list'][] = 'id';
-			}
+		if (!in_array('*', $this->out['column_list']) && !in_array('count(*)', array_map('strtolower', $this->out['column_list'])) && !in_array('id', $this->out['column_list'])) {
+			$this->out['column_list'][] = 'id';
 		}
 		$moduleName = $this->yystack[$this->yyidx + 0]->minor;
 		if (!$moduleName) {

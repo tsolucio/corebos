@@ -41,18 +41,16 @@ while ($rel = $adb->fetch_array($result)) {
 	$relatedTabId = $rel['related_tabid'];
 	//check for disabled module.
 	$permitted = $rel['presence'];
-	if ($permitted == 0 || empty($relatedTabId)) {
-		if ($is_admin || $userprivs->hasModuleAccess($relatedTabId) || empty($relatedTabId)) {
-			if (count($Modules2Show)==0 || in_array($rel['name'], $Modules2Show)) {
-				$rls[$relatedId] = array(
-					'label'=>$relationLabel,
-					'tabid'=>$relatedTabId,
-					'module'=>$rel['name'],
-					'actions'=>$rel['actions'],
-					'relationfieldid'=>$rel['relationfieldid'],
-				);
-			}
-		}
+	if ((empty($relatedTabId) || $permitted == 0) && (empty($relatedTabId) || $is_admin || $userprivs->hasModuleAccess($relatedTabId))
+		&& (count($Modules2Show)==0 || in_array($rel['name'], $Modules2Show))
+	) {
+		$rls[$relatedId] = array(
+			'label'=>$relationLabel,
+			'tabid'=>$relatedTabId,
+			'module'=>$rel['name'],
+			'actions'=>$rel['actions'],
+			'relationfieldid'=>$rel['relationfieldid'],
+		);
 	}
 }
 $goto = getTranslatedString('LBL_JUMP_BTN');

@@ -283,18 +283,16 @@ if (isset($_REQUEST['product_id']) && $_REQUEST['product_id'] != '') {
 	$smarty->assign('AVAILABLE_PRODUCTS', 'true');
 	$smarty->assign('MODE', $focus->mode);
 }
-if (!empty($_REQUEST['parent_id']) && !empty($_REQUEST['return_module'])) {
-	if ($_REQUEST['return_module'] == 'Services') {
-		$focus->column_fields['product_id'] = vtlib_purify($_REQUEST['parent_id']);
-		$associated_prod = getAssociatedProducts('Services', $focus, $focus->column_fields['product_id']);
-		for ($i=1; $i<=count($associated_prod); $i++) {
-			$associated_prod_id = $associated_prod[$i]['hdnProductId'.$i];
-			$associated_prod_prices = getPricesForProducts($currencyid, array($associated_prod_id), 'Services');
-			$associated_prod[$i]['listPrice'.$i] = $associated_prod_prices[$associated_prod_id];
-		}
-		$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
-		$smarty->assign('AVAILABLE_PRODUCTS', 'true');
+if (!empty($_REQUEST['parent_id']) && !empty($_REQUEST['return_module']) && $_REQUEST['return_module'] == 'Services') {
+	$focus->column_fields['product_id'] = vtlib_purify($_REQUEST['parent_id']);
+	$associated_prod = getAssociatedProducts('Services', $focus, $focus->column_fields['product_id']);
+	for ($i=1; $i<=count($associated_prod); $i++) {
+		$associated_prod_id = $associated_prod[$i]['hdnProductId'.$i];
+		$associated_prod_prices = getPricesForProducts($currencyid, array($associated_prod_id), 'Services');
+		$associated_prod[$i]['listPrice'.$i] = $associated_prod_prices[$associated_prod_id];
 	}
+	$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
+	$smarty->assign('AVAILABLE_PRODUCTS', 'true');
 }
 
 if (!empty($_REQUEST['account_id']) && (is_null($record) || (isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'potentoinvoice'))

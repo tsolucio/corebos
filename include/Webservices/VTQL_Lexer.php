@@ -26,11 +26,9 @@ function incState($lexer) {
 	}
 }
 function handleselect($lexer, $val) {
-	if ($lexer->mandatory) {
-		if (strcasecmp($val, $lexer->mandatory_states [$lexer->current_state]) === 0) {
-			incState($lexer);
-			return VTQL_Parser::SELECT;
-		}
+	if ($lexer->mandatory && strcasecmp($val, $lexer->mandatory_states[$lexer->current_state]) === 0) {
+		incState($lexer);
+		return VTQL_Parser::SELECT;
 	}
 }
 function handlecolumn_list($lexer, $val) {

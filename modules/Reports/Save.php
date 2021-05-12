@@ -148,14 +148,12 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 				}
 				$pivotcolumns = implode(',', $pcols);
 			}
-			if ($shared_entities != '') {
-				if ($sharetype == 'Shared') {
-					$selectedcolumn = explode(';', $shared_entities);
-					for ($i=0; $i< count($selectedcolumn) -1; $i++) {
-						$temp = explode('::', $selectedcolumn[$i]);
-						$icolumnsql = 'insert into vtiger_reportsharing (reportid,shareid,setype) values (?,?,?)';
-						$icolumnsqlresult = $adb->pquery($icolumnsql, array($genQueryId,$temp[1],$temp[0]));
-					}
+			if ($shared_entities != '' && $sharetype == 'Shared') {
+				$selectedcolumn = explode(';', $shared_entities);
+				for ($i=0; $i< count($selectedcolumn) -1; $i++) {
+					$temp = explode('::', $selectedcolumn[$i]);
+					$icolumnsql = 'insert into vtiger_reportsharing (reportid,shareid,setype) values (?,?,?)';
+					$icolumnsqlresult = $adb->pquery($icolumnsql, array($genQueryId,$temp[1],$temp[0]));
 				}
 			}
 			$log->debug('Reports :: Save-> saved vtiger_selectcolumn');

@@ -120,12 +120,10 @@ class MailManager_MailController extends MailManager_Controller {
 							break;
 						}
 					}
-					if (empty($parentIds)) {
-						if ($numreltos > 0) {
-							$relateto = vtws_getIdComponents($relatedtos[0]['record']);
-							$parentIds = $relateto[1].'@'.($relatedtos[0]['module']=='Users' ? '-' : '').'1';
-							break;
-						}
+					if (empty($parentIds) && $numreltos > 0) {
+						$relateto = vtws_getIdComponents($relatedtos[0]['record']);
+						$parentIds = $relateto[1].'@'.($relatedtos[0]['module']=='Users' ? '-' : '').'1';
+						break;
 					}
 
 					$cc_string = rtrim($request->get('cc'), ',');

@@ -101,14 +101,12 @@ class Google_Vtiger_Handler extends vtigerCRMHandler {
 				$meta = $handler->getMeta();
 				$hasDeleteAccess = $meta->hasDeleteAccess();
 			}
-			if ($hasDeleteAccess) {
-				if (in_array($idComp[1], $assignedDeletedRecordIds)) {
-					try {
-						vtws_delete($record, $this->user);
-					} catch (Exception $e) {
-						unset($deletedRecords[$index]);
-						continue;
-					}
+			if ($hasDeleteAccess && in_array($idComp[1], $assignedDeletedRecordIds)) {
+				try {
+					vtws_delete($record, $this->user);
+				} catch (Exception $e) {
+					unset($deletedRecords[$index]);
+					continue;
 				}
 			}
 		}

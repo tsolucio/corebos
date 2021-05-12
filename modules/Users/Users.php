@@ -949,13 +949,11 @@ class Users extends CRMEntity {
 			}
 			if ($fldvalue == '') {
 				$fldvalue = $this->get_column_value($columname, $fldvalue, $fieldname, $uitype, $datatype);
-				//$fldvalue =null;
 			}
-			if ($columname == 'is_admin' && !is_admin($current_user)) {// only admin users can change admin field
-				if ($insertion_mode == 'edit') {// we force the same value that is currently set in database
-					$rs = $adb->pquery('select is_admin from vtiger_users where id=?', array($this->id));
-					$fldvalue = $adb->query_result($rs, 0, 0);
-				}
+			if ($columname == 'is_admin' && !is_admin($current_user) && $insertion_mode == 'edit') {
+				// only admin users can change admin field > we force the same value that is currently set in database
+				$rs = $adb->pquery('select is_admin from vtiger_users where id=?', array($this->id));
+				$fldvalue = $adb->query_result($rs, 0, 0);
 			}
 			if ($insertion_mode == 'edit') {
 				if ($i == 0) {

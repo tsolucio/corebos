@@ -484,23 +484,21 @@ function calendarview_getSelectedUserFilterQuerySuffix() {
 	global $current_user, $adb;
 	$only_for_user = calendarview_getSelectedUserId();
 	$qcondition = '';
-	if (!empty($only_for_user)) {
-		if ($only_for_user != 'ALL') {
-			$mod = CRMEntity::getInstance('cbCalendar');
-			// For logged in user include the group records also.
-			if ($only_for_user == $current_user->id) {
-				$user_group_ids = fetchUserGroupids($current_user->id);
-				// User does not belong to any group? Let us reset to non-existent group
-				if (!empty($user_group_ids)) {
-					$user_group_ids .= ',';
-				} else {
-					$user_group_ids = '';
-				}
-				$user_group_ids .= $current_user->id;
-				$qcondition = ' AND '.$mod->crmentityTable.'.smownerid IN (' . $user_group_ids .')';
+	if (!empty($only_for_user) && $only_for_user != 'ALL') {
+		$mod = CRMEntity::getInstance('cbCalendar');
+		// For logged in user include the group records also.
+		if ($only_for_user == $current_user->id) {
+			$user_group_ids = fetchUserGroupids($current_user->id);
+			// User does not belong to any group? Let us reset to non-existent group
+			if (!empty($user_group_ids)) {
+				$user_group_ids .= ',';
 			} else {
-				$qcondition = ' AND '.$mod->crmentityTable.'.smownerid = ' . $adb->sql_escape_string($only_for_user);
+				$user_group_ids = '';
 			}
+			$user_group_ids .= $current_user->id;
+			$qcondition = ' AND '.$mod->crmentityTable.'.smownerid IN (' . $user_group_ids .')';
+		} else {
+			$qcondition = ' AND '.$mod->crmentityTable.'.smownerid = ' . $adb->sql_escape_string($only_for_user);
 		}
 	}
 	return $qcondition;

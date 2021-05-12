@@ -139,11 +139,9 @@ function webforms_init() {
 		if ($active === false) {
 			webforms_returnError(array('code'=>'WEBFORMS_DISABLED','message'=>'Webforms module is disabled'), 'Webforms');
 		}
-		if ($enableAppKeyValidation ==true) {
-			if ($application_unique_key !== $_REQUEST['appKey']) {
-				webforms_returnError(array('code'=>'WEBFORMS_INVALID_APPKEY','message'=>'AppKey provided is invalid'), null);
-				return ;
-			}
+		if ($enableAppKeyValidation && $application_unique_key !== $_REQUEST['appKey']) {
+			webforms_returnError(array('code'=>'WEBFORMS_INVALID_APPKEY','message'=>'AppKey provided is invalid'), null);
+			return;
 		}
 		$module = $_REQUEST['moduleName'];
 		$challengeResult = vtws_getchallenge($defaultUserName);

@@ -1998,14 +1998,9 @@ function is_uitype($uitype, $reqtype) {
 		'_picklist_' => array(15, 16, 55, 63, 115, 357),
 		'_users_list_' => array(52, 53, 77, 98, 101,),
 	);
-
-	if ($ui_type_arr[$reqtype] != null) {
-		if (in_array($uitype, $ui_type_arr[$reqtype])) {
-			return true;
-		}
-	}
-	return false;
+	return ($ui_type_arr[$reqtype] != null && in_array($uitype, $ui_type_arr[$reqtype]));
 }
+
 /**
  * Function to escape quotes
  * @param $value - String in which single quotes have to be replaced.
@@ -3399,11 +3394,9 @@ function getValidDBInsertDateTimeValue($value) {
  */
 function _phpset_memorylimit_MB($newvalue) {
 	$current = @ini_get('memory_limit');
-	if (preg_match("/(.*)M/", $current, $matches)) {
+	if (preg_match("/(.*)M/", $current, $matches) && $matches[1] < $newvalue) {
 		// Check if current value is less then new value
-		if ($matches[1] < $newvalue) {
-			@ini_set('memory_limit', "{$newvalue}M");
-		}
+		@ini_set('memory_limit', "{$newvalue}M");
 	}
 }
 

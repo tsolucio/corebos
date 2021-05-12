@@ -585,18 +585,14 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 	}
 
 	//Checking for view all permission
-	if ($userprivs->hasGlobalReadPermission()) {
-		if ($actionid == 3 || $actionid == 4) {
-			$log->debug('< isPermitted view all permission yes');
-			return 'yes';
-		}
+	if ($userprivs->hasGlobalReadPermission() && ($actionid == 3 || $actionid == 4)) {
+		$log->debug('< isPermitted view all permission yes');
+		return 'yes';
 	}
 	//Checking for edit all permission
-	if ($userprivs->hasGlobalWritePermission()) {
-		if ($actionid == 3 || $actionid == 4 || $actionid ==0 || $actionid ==1) {
-			$log->debug('< isPermitted edit all permission yes');
-			return 'yes';
-		}
+	if ($userprivs->hasGlobalWritePermission() && ($actionid == 3 || $actionid == 4 || $actionid ==0 || $actionid ==1)) {
+		$log->debug('< isPermitted edit all permission yes');
+		return 'yes';
 	}
 	//Checking for tab permission
 	if (!is_null($tabid) && !$userprivs->hasModuleAccess($tabid)) {
@@ -632,11 +628,9 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 	}
 
 	//If module is not shareable, everyone has access. Faq, PriceBook, among others
-	if ($record_id != '') {
-		if (getTabOwnedBy($module) == 1) {
-			$log->debug('< isPermitted TabOwnedBy sharing disabled yes');
-			return 'yes';
-		}
+	if ($record_id != '' && getTabOwnedBy($module) == 1) {
+		$log->debug('< isPermitted TabOwnedBy sharing disabled yes');
+		return 'yes';
 	}
 
 	// has access to module, now let's check the record

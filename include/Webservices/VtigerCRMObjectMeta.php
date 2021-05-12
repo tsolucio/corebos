@@ -436,10 +436,8 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		$seType = null;
 		if ($this->objectName == 'Users') {
 			$result = $adb->pquery('select user_name from vtiger_users where id=? and deleted=?', array($id,$deleted));
-			if ($result != null && isset($result)) {
-				if ($adb->num_rows($result)>0) {
-					$seType = 'Users';
-				}
+			if ($result != null && isset($result) && $adb->num_rows($result)>0) {
+				$seType = 'Users';
 			}
 		} else {
 			$result = $adb->pquery('select setype from vtiger_crmobject where crmid=? and deleted=?', array($id, $deleted));

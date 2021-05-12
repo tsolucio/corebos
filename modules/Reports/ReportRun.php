@@ -1696,10 +1696,8 @@ class ReportRun extends CRMEntity {
 			}
 			$where_condition = '';
 			if ($advfiltersql != '') {
-				if ($type == 'COLUMNSTOTOTAL') {
-					if (strstr($advfiltersql, 'vtiger_products'.$this->primarymodule) || strstr($advfiltersql, 'vtiger_service'.$this->primarymodule)) {
-						$where_condition='add';
-					}
+				if ($type=='COLUMNSTOTOTAL' && (strstr($advfiltersql, 'vtiger_products'.$this->primarymodule) || strstr($advfiltersql, 'vtiger_service'.$this->primarymodule))) {
+					$where_condition='add';
 				}
 				$wheresql .= ' and '.$advfiltersql;
 			}
@@ -1897,12 +1895,10 @@ class ReportRun extends CRMEntity {
 					}
 
 					if (empty($headerLabel)) {
-							$headerLabel = getTranslatedString(str_replace('_', ' ', $fld->name));
+						$headerLabel = getTranslatedString(str_replace('_', ' ', $fld->name));
 					}
-					if (!empty($this->secondarymodule)) {
-						if ($moduleLabel != '') {
-							$headerLabel = $moduleLabel.' '. $headerLabel;
-						}
+					if (!empty($this->secondarymodule) && $moduleLabel != '') {
+						$headerLabel = $moduleLabel.' '. $headerLabel;
 					}
 					$header .= "<td class='rptCellLabel'>".$headerLabel.'</td>';
 
@@ -2328,12 +2324,10 @@ class ReportRun extends CRMEntity {
 						}
 
 						if (empty($headerLabel)) {
-								$headerLabel = getTranslatedString(str_replace('_', ' ', $fld->name));
+							$headerLabel = getTranslatedString(str_replace('_', ' ', $fld->name));
 						}
-						if (!empty($this->secondarymodule)) {
-							if ($moduleLabel != '') {
-								$headerLabel = $moduleLabel.' '. $headerLabel;
-							}
+						if (!empty($this->secondarymodule) && $moduleLabel != '') {
+							$headerLabel = $moduleLabel.' '. $headerLabel;
 						}
 						$fieldvalue = getReportFieldValue($this, $picklistarray, $fld, $custom_field_values, $i);
 						if (empty($returnfieldinfo[$headerLabel]) && !empty($field)) {
@@ -2351,102 +2345,100 @@ class ReportRun extends CRMEntity {
 			$escapedchars = array('_SUM','_AVG','_MIN','_MAX');
 			$totalpdf=array();
 			$sSQL = $this->sGetSQLforReport($this->reportid, $filtersql, 'COLUMNSTOTOTAL');
-			if (isset($this->totallist) && count($this->totallist)>0) {
-				if ($sSQL != '') {
-					$result = $adb->query($sSQL);
-					$y=$adb->num_fields($result);
-					$custom_field_values = $adb->fetch_array($result);
+			if (isset($this->totallist) && count($this->totallist)>0 && $sSQL != '') {
+				$result = $adb->query($sSQL);
+				$y=$adb->num_fields($result);
+				$custom_field_values = $adb->fetch_array($result);
 
-					foreach ($this->totallist as $key => $value) {
-						$fieldlist = explode(':', $key);
-						$mod_query = $adb->pquery(
-							'SELECT distinct(tabid) as tabid, uitype as uitype from vtiger_field where tablename = ? and columnname=?',
-							array($fieldlist[1], $fieldlist[2])
-						);
-						if ($adb->num_rows($mod_query)>0) {
-							$module_name = getTabModuleName($adb->query_result($mod_query, 0, 'tabid'));
-							$fieldlabel = trim(str_replace($escapedchars, ' ', $fieldlist[3]));
-							$fieldlabel = str_replace('_', ' ', $fieldlabel);
-							if ($module_name) {
-								$field = getTranslatedString($module_name, $module_name).' '.getTranslatedString($fieldlabel, $module_name);
-							} else {
-								$field = getTranslatedString($fieldlabel);
-							}
+				foreach ($this->totallist as $key => $value) {
+					$fieldlist = explode(':', $key);
+					$mod_query = $adb->pquery(
+						'SELECT distinct(tabid) as tabid, uitype as uitype from vtiger_field where tablename=? and columnname=?',
+						array($fieldlist[1], $fieldlist[2])
+					);
+					if ($adb->num_rows($mod_query)>0) {
+						$module_name = getTabModuleName($adb->query_result($mod_query, 0, 'tabid'));
+						$fieldlabel = trim(str_replace($escapedchars, ' ', $fieldlist[3]));
+						$fieldlabel = str_replace('_', ' ', $fieldlabel);
+						if ($module_name) {
+							$field = getTranslatedString($module_name, $module_name).' '.getTranslatedString($fieldlabel, $module_name);
+						} else {
+							$field = getTranslatedString($fieldlabel);
 						}
-						$uitype_arr[str_replace($escapedchars, ' ', $module_name.'_'.$fieldlist[3])] = $adb->query_result($mod_query, 0, 'uitype');
-						$totclmnflds[str_replace($escapedchars, ' ', $module_name.'_'.$fieldlist[3])] = $field;
 					}
-					for ($i =0; $i<$y; $i++) {
-						$fld = $adb->field_name($result, $i);
-						$keyhdr[$fld->name] = $custom_field_values[$i];
+					$uitype_arr[str_replace($escapedchars, ' ', $module_name.'_'.$fieldlist[3])] = $adb->query_result($mod_query, 0, 'uitype');
+					$totclmnflds[str_replace($escapedchars, ' ', $module_name.'_'.$fieldlist[3])] = $field;
+				}
+				for ($i =0; $i<$y; $i++) {
+					$fld = $adb->field_name($result, $i);
+					$keyhdr[$fld->name] = $custom_field_values[$i];
+				}
+
+				$rowcount=0;
+				foreach ($totclmnflds as $key => $value) {
+					$col_header = trim(str_replace($modules, ' ', $value));
+					$fld_name_1 = $this->primarymodule . '_' . trim($value);
+					$fld_name_2 = $this->secondarymodule . '_' . trim($value);
+					if ($uitype_arr[$key] == 71 || $uitype_arr[$key] == 72 ||
+						in_array($fld_name_1, $this->append_currency_symbol_to_value) || in_array($fld_name_2, $this->append_currency_symbol_to_value)
+					) {
+						$col_header .= ' ('.$app_strings['LBL_IN'].' '.$current_user->currency_symbol.')';
+						$convert_price = true;
+					} else {
+						$convert_price = false;
 					}
-
-					$rowcount=0;
-					foreach ($totclmnflds as $key => $value) {
-						$col_header = trim(str_replace($modules, ' ', $value));
-						$fld_name_1 = $this->primarymodule . '_' . trim($value);
-						$fld_name_2 = $this->secondarymodule . '_' . trim($value);
-						if ($uitype_arr[$key] == 71 || $uitype_arr[$key] == 72 ||
-							in_array($fld_name_1, $this->append_currency_symbol_to_value) || in_array($fld_name_2, $this->append_currency_symbol_to_value)
-						) {
-							$col_header .= ' ('.$app_strings['LBL_IN'].' '.$current_user->currency_symbol.')';
-							$convert_price = true;
+					$value = decode_html(trim($key));
+					$arraykey = $value.'_SUM';
+					if (isset($keyhdr[$arraykey])) {
+						if ($convert_price) {
+							$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
 						} else {
-							$convert_price = false;
+							$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
 						}
-						$value = decode_html(trim($key));
-						$arraykey = $value.'_SUM';
-						if (isset($keyhdr[$arraykey])) {
-							if ($convert_price) {
-								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
-							} else {
-								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
-							}
-							if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' || substr($arraykey, 0, 18)=='TCTotals_TotalTime') {
-								$conv_value=$keyhdr[$arraykey];
-							}
-								$totalpdf[$rowcount][$arraykey] = $conv_value;
-						} else {
-								$totalpdf[$rowcount][$arraykey] = '';
+						if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' || substr($arraykey, 0, 18)=='TCTotals_TotalTime') {
+							$conv_value=$keyhdr[$arraykey];
 						}
-
-						$arraykey = $value.'_AVG';
-						if (isset($keyhdr[$arraykey])) {
-							if ($convert_price) {
-								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
-							} else {
-								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
-							}
 							$totalpdf[$rowcount][$arraykey] = $conv_value;
-						} else {
-								$totalpdf[$rowcount][$arraykey] = '';
-						}
-
-						$arraykey = $value.'_MIN';
-						if (isset($keyhdr[$arraykey])) {
-							if ($convert_price) {
-								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
-							} else {
-								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
-							}
-							$totalpdf[$rowcount][$arraykey] = $conv_value;
-						} else {
+					} else {
 							$totalpdf[$rowcount][$arraykey] = '';
-						}
-
-						$arraykey = $value.'_MAX';
-						if (isset($keyhdr[$arraykey])) {
-							if ($convert_price) {
-								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
-							} else {
-								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
-							}
-							$totalpdf[$rowcount][$arraykey] = $conv_value;
-						} else {
-							$totalpdf[$rowcount][$arraykey] = '';
-						}
-						$rowcount++;
 					}
+
+					$arraykey = $value.'_AVG';
+					if (isset($keyhdr[$arraykey])) {
+						if ($convert_price) {
+							$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
+						} else {
+							$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
+						}
+						$totalpdf[$rowcount][$arraykey] = $conv_value;
+					} else {
+							$totalpdf[$rowcount][$arraykey] = '';
+					}
+
+					$arraykey = $value.'_MIN';
+					if (isset($keyhdr[$arraykey])) {
+						if ($convert_price) {
+							$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
+						} else {
+							$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
+						}
+						$totalpdf[$rowcount][$arraykey] = $conv_value;
+					} else {
+						$totalpdf[$rowcount][$arraykey] = '';
+					}
+
+					$arraykey = $value.'_MAX';
+					if (isset($keyhdr[$arraykey])) {
+						if ($convert_price) {
+							$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
+						} else {
+							$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
+						}
+						$totalpdf[$rowcount][$arraykey] = $conv_value;
+					} else {
+						$totalpdf[$rowcount][$arraykey] = '';
+					}
+					$rowcount++;
 				}
 			}
 			return $totalpdf;
@@ -2454,136 +2446,134 @@ class ReportRun extends CRMEntity {
 			$escapedchars = array('_SUM','_AVG','_MIN','_MAX');
 			$sSQL = $this->sGetSQLforReport($this->reportid, $filtersql, 'COLUMNSTOTOTAL');
 			$coltotalhtml = '';
-			if (isset($this->totallist) && count($this->totallist)>0) {
-				if ($sSQL != '') {
-					$result = $adb->query($sSQL);
-					$y=$adb->num_fields($result);
-					$custom_field_values = $adb->fetch_array($result);
-					$coltotalhtml = "<table align='center' width='60%' cellpadding='3' cellspacing='0' border='0' class='rptTable'><tr><td class='rptCellLabel'>"
-						.$mod_strings['Totals']."</td><td class='rptCellLabel'>".$mod_strings['SUM']."</td><td class='rptCellLabel'>".$mod_strings['AVG']
-						."</td><td class='rptCellLabel'>".$mod_strings['MIN']."</td><td class='rptCellLabel'>".$mod_strings['MAX'].'</td></tr>';
+			if (isset($this->totallist) && count($this->totallist)>0 && $sSQL != '') {
+				$result = $adb->query($sSQL);
+				$y=$adb->num_fields($result);
+				$custom_field_values = $adb->fetch_array($result);
+				$coltotalhtml = "<table align='center' width='60%' cellpadding='3' cellspacing='0' border='0' class='rptTable'><tr><td class='rptCellLabel'>"
+					.$mod_strings['Totals']."</td><td class='rptCellLabel'>".$mod_strings['SUM']."</td><td class='rptCellLabel'>".$mod_strings['AVG']
+					."</td><td class='rptCellLabel'>".$mod_strings['MIN']."</td><td class='rptCellLabel'>".$mod_strings['MAX'].'</td></tr>';
+
+				// Performation Optimization: If Direct output is desired
+				if ($directOutput) {
+					echo $coltotalhtml;
+					$coltotalhtml = '';
+				}
+
+				foreach ($this->totallist as $key => $value) {
+					$fieldlist = explode(':', $key);
+					$mod_query = $adb->pquery(
+						'SELECT distinct(tabid) as tabid, uitype as uitype from vtiger_field where tablename = ? and columnname=?',
+						array($fieldlist[1], $fieldlist[2])
+					);
+					if ($adb->num_rows($mod_query)>0) {
+						$module_name = getTabModuleName($adb->query_result($mod_query, 0, 'tabid'));
+						$fieldlabel = trim(str_replace($escapedchars, ' ', $fieldlist[3]));
+						$fieldlabel = str_replace('_', ' ', $fieldlabel);
+						if ($module_name) {
+							$field = getTranslatedString($module_name, $module_name).' '.getTranslatedString($fieldlabel, $module_name);
+						} else {
+							$field = getTranslatedString($fieldlabel);
+						}
+					}
+					$uitype_arr[str_replace($escapedchars, ' ', $module_name.'_'.$fieldlist[3])] = $adb->query_result($mod_query, 0, 'uitype');
+					$totclmnflds[str_replace($escapedchars, ' ', $module_name.'_'.$fieldlist[3])] = $field;
+				}
+				for ($i =0; $i<$y; $i++) {
+					$fld = $adb->field_name($result, $i);
+					$keyhdr[$fld->name] = $custom_field_values[$i];
+				}
+
+				foreach ($totclmnflds as $key => $value) {
+					$coltotalhtml .= '<tr class="rptGrpHead" valign=top>';
+					$col_header = trim(str_replace($modules, ' ', $value));
+					$fld_name_1 = $this->primarymodule . '_' . trim($value);
+					$fld_name_2 = $this->secondarymodule . '_' . trim($value);
+					if ($uitype_arr[$key]==71 || $uitype_arr[$key] == 72 ||
+						in_array($fld_name_1, $this->append_currency_symbol_to_value) || in_array($fld_name_2, $this->append_currency_symbol_to_value)
+					) {
+						$col_header .= ' ('.$app_strings['LBL_IN'].' '.$current_user->currency_symbol.')';
+						$convert_price = true;
+					} else {
+						$convert_price = false;
+					}
+					$coltotalhtml .= '<td class="rptData">'. $col_header .'</td>';
+					$value = decode_html(trim($key));
+					$arraykey = $value.'_SUM';
+					if (isset($keyhdr[$arraykey])) {
+						if ($convert_price) {
+							$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
+						} else {
+							$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
+						}
+						if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' || substr($arraykey, 0, 18)=='TCTotals_TotalTime') {
+							$conv_value=$keyhdr[$arraykey];
+						}
+						$coltotalhtml .= '<td class="rptTotal">'.$conv_value.'</td>';
+					} else {
+						$coltotalhtml .= '<td class="rptTotal">&nbsp;</td>';
+					}
+
+					$arraykey = $value.'_AVG';
+					if (isset($keyhdr[$arraykey])) {
+						if ($convert_price) {
+							$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
+						} else {
+							$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
+						}
+						if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' || substr($arraykey, 0, 18)=='TCTotals_TotalTime') {
+							$conv_value=$keyhdr[$arraykey];
+						}
+						$coltotalhtml .= '<td class="rptTotal">'.$conv_value.'</td>';
+					} else {
+						$coltotalhtml .= '<td class="rptTotal">&nbsp;</td>';
+					}
+
+					$arraykey = $value.'_MIN';
+					if (isset($keyhdr[$arraykey])) {
+						if ($convert_price) {
+							$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
+						} else {
+							$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
+						}
+						if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' || substr($arraykey, 0, 18)=='TCTotals_TotalTime') {
+							$conv_value=$keyhdr[$arraykey];
+						}
+						$coltotalhtml .= '<td class="rptTotal">'.$conv_value.'</td>';
+					} else {
+						$coltotalhtml .= '<td class="rptTotal">&nbsp;</td>';
+					}
+
+					$arraykey = $value.'_MAX';
+					if (isset($keyhdr[$arraykey])) {
+						if ($convert_price) {
+							$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
+						} else {
+							$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
+						}
+						if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' || substr($arraykey, 0, 18)=='TCTotals_TotalTime') {
+							$conv_value=$keyhdr[$arraykey];
+						}
+						$coltotalhtml .= '<td class="rptTotal">'.$conv_value.'</td>';
+					} else {
+						$coltotalhtml .= '<td class="rptTotal">&nbsp;</td>';
+					}
+
+					$coltotalhtml .= '<tr>';
 
 					// Performation Optimization: If Direct output is desired
 					if ($directOutput) {
 						echo $coltotalhtml;
 						$coltotalhtml = '';
 					}
+				}
 
-					foreach ($this->totallist as $key => $value) {
-						$fieldlist = explode(':', $key);
-						$mod_query = $adb->pquery(
-							'SELECT distinct(tabid) as tabid, uitype as uitype from vtiger_field where tablename = ? and columnname=?',
-							array($fieldlist[1], $fieldlist[2])
-						);
-						if ($adb->num_rows($mod_query)>0) {
-							$module_name = getTabModuleName($adb->query_result($mod_query, 0, 'tabid'));
-							$fieldlabel = trim(str_replace($escapedchars, ' ', $fieldlist[3]));
-							$fieldlabel = str_replace('_', ' ', $fieldlabel);
-							if ($module_name) {
-								$field = getTranslatedString($module_name, $module_name).' '.getTranslatedString($fieldlabel, $module_name);
-							} else {
-								$field = getTranslatedString($fieldlabel);
-							}
-						}
-						$uitype_arr[str_replace($escapedchars, ' ', $module_name.'_'.$fieldlist[3])] = $adb->query_result($mod_query, 0, 'uitype');
-						$totclmnflds[str_replace($escapedchars, ' ', $module_name.'_'.$fieldlist[3])] = $field;
-					}
-					for ($i =0; $i<$y; $i++) {
-						$fld = $adb->field_name($result, $i);
-						$keyhdr[$fld->name] = $custom_field_values[$i];
-					}
+				$coltotalhtml .= '</table>';
 
-					foreach ($totclmnflds as $key => $value) {
-						$coltotalhtml .= '<tr class="rptGrpHead" valign=top>';
-						$col_header = trim(str_replace($modules, ' ', $value));
-						$fld_name_1 = $this->primarymodule . '_' . trim($value);
-						$fld_name_2 = $this->secondarymodule . '_' . trim($value);
-						if ($uitype_arr[$key]==71 || $uitype_arr[$key] == 72 ||
-							in_array($fld_name_1, $this->append_currency_symbol_to_value) || in_array($fld_name_2, $this->append_currency_symbol_to_value)
-						) {
-							$col_header .= ' ('.$app_strings['LBL_IN'].' '.$current_user->currency_symbol.')';
-							$convert_price = true;
-						} else {
-							$convert_price = false;
-						}
-						$coltotalhtml .= '<td class="rptData">'. $col_header .'</td>';
-						$value = decode_html(trim($key));
-						$arraykey = $value.'_SUM';
-						if (isset($keyhdr[$arraykey])) {
-							if ($convert_price) {
-								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
-							} else {
-								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
-							}
-							if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' || substr($arraykey, 0, 18)=='TCTotals_TotalTime') {
-								$conv_value=$keyhdr[$arraykey];
-							}
-							$coltotalhtml .= '<td class="rptTotal">'.$conv_value.'</td>';
-						} else {
-							$coltotalhtml .= '<td class="rptTotal">&nbsp;</td>';
-						}
-
-						$arraykey = $value.'_AVG';
-						if (isset($keyhdr[$arraykey])) {
-							if ($convert_price) {
-								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
-							} else {
-								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
-							}
-							if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' || substr($arraykey, 0, 18)=='TCTotals_TotalTime') {
-								$conv_value=$keyhdr[$arraykey];
-							}
-							$coltotalhtml .= '<td class="rptTotal">'.$conv_value.'</td>';
-						} else {
-							$coltotalhtml .= '<td class="rptTotal">&nbsp;</td>';
-						}
-
-						$arraykey = $value.'_MIN';
-						if (isset($keyhdr[$arraykey])) {
-							if ($convert_price) {
-								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
-							} else {
-								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
-							}
-							if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' || substr($arraykey, 0, 18)=='TCTotals_TotalTime') {
-								$conv_value=$keyhdr[$arraykey];
-							}
-							$coltotalhtml .= '<td class="rptTotal">'.$conv_value.'</td>';
-						} else {
-							$coltotalhtml .= '<td class="rptTotal">&nbsp;</td>';
-						}
-
-						$arraykey = $value.'_MAX';
-						if (isset($keyhdr[$arraykey])) {
-							if ($convert_price) {
-								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
-							} else {
-								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
-							}
-							if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' || substr($arraykey, 0, 18)=='TCTotals_TotalTime') {
-								$conv_value=$keyhdr[$arraykey];
-							}
-							$coltotalhtml .= '<td class="rptTotal">'.$conv_value.'</td>';
-						} else {
-							$coltotalhtml .= '<td class="rptTotal">&nbsp;</td>';
-						}
-
-						$coltotalhtml .= '<tr>';
-
-						// Performation Optimization: If Direct output is desired
-						if ($directOutput) {
-							echo $coltotalhtml;
-							$coltotalhtml = '';
-						}
-					}
-
-					$coltotalhtml .= '</table>';
-
-					// Performation Optimization: If Direct output is desired
-					if ($directOutput) {
-						echo $coltotalhtml;
-						$coltotalhtml = '';
-					}
+				// Performation Optimization: If Direct output is desired
+				if ($directOutput) {
+					echo $coltotalhtml;
+					$coltotalhtml = '';
 				}
 			}
 			return $coltotalhtml;
@@ -2620,12 +2610,10 @@ class ReportRun extends CRMEntity {
 					}
 
 					if (empty($headerLabel)) {
-							$headerLabel = getTranslatedString(str_replace('_', ' ', $fld->name));
+						$headerLabel = getTranslatedString(str_replace('_', ' ', $fld->name));
 					}
-					if (!empty($this->secondarymodule)) {
-						if ($moduleLabel != '') {
-							$headerLabel = $moduleLabel.' '.$headerLabel;
-						}
+					if (!empty($this->secondarymodule) && $moduleLabel != '') {
+						$headerLabel = $moduleLabel.' '.$headerLabel;
 					}
 					$header .= '<th>'.$headerLabel.'</th>';
 				}
@@ -2705,126 +2693,124 @@ class ReportRun extends CRMEntity {
 			$escapedchars = array('_SUM','_AVG','_MIN','_MAX');
 			$sSQL = $this->sGetSQLforReport($this->reportid, $filtersql, 'COLUMNSTOTOTAL');
 			$coltotalhtml = '';
-			if (isset($this->totallist) && count($this->totallist)>0) {
-				if ($sSQL != '') {
-					$result = $adb->query($sSQL);
-					$y=$adb->num_fields($result);
-					$custom_field_values = $adb->fetch_array($result);
+			if (isset($this->totallist) && count($this->totallist)>0 && $sSQL != '') {
+				$result = $adb->query($sSQL);
+				$y=$adb->num_fields($result);
+				$custom_field_values = $adb->fetch_array($result);
 
-					$coltotalhtml = "<br /><table align='center' width='60%' cellpadding='3' cellspacing='0' border='1' class='printReport'><tr><td class='rptCellLabel'>"
-						.$mod_strings['Totals'].'</td><td><b>'.$mod_strings['SUM'].'</b></td><td><b>'.$mod_strings['AVG'].'</b></td><td><b>'.$mod_strings['MIN']
-						.'</b></td><td><b>'.$mod_strings['MAX'].'</b></td></tr>';
+				$coltotalhtml = "<br /><table align='center' width='60%' cellpadding='3' cellspacing='0' border='1' class='printReport'><tr><td class='rptCellLabel'>"
+					.$mod_strings['Totals'].'</td><td><b>'.$mod_strings['SUM'].'</b></td><td><b>'.$mod_strings['AVG'].'</b></td><td><b>'.$mod_strings['MIN']
+					.'</b></td><td><b>'.$mod_strings['MAX'].'</b></td></tr>';
+
+				// Performation Optimization: If Direct output is desired
+				if ($directOutput) {
+					echo $coltotalhtml;
+					$coltotalhtml = '';
+				}
+
+				foreach ($this->totallist as $key => $value) {
+					$fieldlist = explode(':', $key);
+					$mod_query = $adb->pquery(
+						'SELECT distinct(tabid) as tabid, uitype as uitype from vtiger_field where tablename = ? and columnname=?',
+						array($fieldlist[1],$fieldlist[2])
+					);
+					if ($adb->num_rows($mod_query)>0) {
+						$module_name = getTabModuleName($adb->query_result($mod_query, 0, 'tabid'));
+						$fieldlabel = trim(str_replace($escapedchars, ' ', $fieldlist[3]));
+						$fieldlabel = str_replace('_', ' ', $fieldlabel);
+						if ($module_name) {
+							$field = getTranslatedString($module_name, $module_name).' '.getTranslatedString($fieldlabel, $module_name);
+						} else {
+							$field = getTranslatedString($fieldlabel);
+						}
+					}
+					$uitype_arr[str_replace($escapedchars, ' ', $module_name.'_'.$fieldlist[3])] = $adb->query_result($mod_query, 0, 'uitype');
+					$totclmnflds[str_replace($escapedchars, ' ', $module_name.'_'.$fieldlist[3])] = $field;
+				}
+
+				for ($i =0; $i<$y; $i++) {
+					$fld = $adb->field_name($result, $i);
+					$keyhdr[$fld->name] = $custom_field_values[$i];
+				}
+				foreach ($totclmnflds as $key => $value) {
+					$coltotalhtml .= '<tr class="rptGrpHead">';
+					$col_header = getTranslatedString(trim(str_replace($modules, ' ', $value)));
+					$fld_name_1 = $this->primarymodule . '_' . trim($value);
+					$fld_name_2 = $this->secondarymodule . '_' . trim($value);
+					if ($uitype_arr[$key]==71 || $uitype_arr[$key] == 72 ||
+									in_array($fld_name_1, $this->append_currency_symbol_to_value) || in_array($fld_name_2, $this->append_currency_symbol_to_value)) {
+						$col_header .= ' ('.$app_strings['LBL_IN'].' '.$current_user->currency_symbol.')';
+						$convert_price = true;
+					} else {
+						$convert_price = false;
+					}
+					$coltotalhtml .= '<td class="rptData">'. $col_header .'</td>';
+					$value = decode_html(trim($key));
+					$arraykey = $value.'_SUM';
+					if (isset($keyhdr[$arraykey])) {
+						if ($convert_price) {
+							$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
+						} else {
+							$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
+						}
+						if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' || substr($arraykey, 0, 18)=='TCTotals_TotalTime') {
+							$conv_value=$keyhdr[$arraykey];
+						}
+						$coltotalhtml .= "<td class='rptTotal'>".$conv_value.'</td>';
+					} else {
+						$coltotalhtml .= "<td class='rptTotal'>&nbsp;</td>";
+					}
+
+					$arraykey = $value.'_AVG';
+					if (isset($keyhdr[$arraykey])) {
+						if ($convert_price) {
+							$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
+						} else {
+							$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
+						}
+						$coltotalhtml .= "<td class='rptTotal'>".$conv_value.'</td>';
+					} else {
+						$coltotalhtml .= "<td class='rptTotal'>&nbsp;</td>";
+					}
+
+					$arraykey = $value.'_MIN';
+					if (isset($keyhdr[$arraykey])) {
+						if ($convert_price) {
+							$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
+						} else {
+							$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
+						}
+						$coltotalhtml .= "<td class='rptTotal'>".$conv_value.'</td>';
+					} else {
+						$coltotalhtml .= "<td class='rptTotal'>&nbsp;</td>";
+					}
+
+					$arraykey = $value.'_MAX';
+					if (isset($keyhdr[$arraykey])) {
+						if ($convert_price) {
+							$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
+						} else {
+							$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
+						}
+						$coltotalhtml .= "<td class='rptTotal'>".$conv_value.'</td>';
+					} else {
+						$coltotalhtml .= "<td class='rptTotal'>&nbsp;</td>";
+					}
+
+					$coltotalhtml .= '</tr>';
 
 					// Performation Optimization: If Direct output is desired
 					if ($directOutput) {
 						echo $coltotalhtml;
 						$coltotalhtml = '';
 					}
+				}
 
-					foreach ($this->totallist as $key => $value) {
-						$fieldlist = explode(':', $key);
-						$mod_query = $adb->pquery(
-							'SELECT distinct(tabid) as tabid, uitype as uitype from vtiger_field where tablename = ? and columnname=?',
-							array($fieldlist[1],$fieldlist[2])
-						);
-						if ($adb->num_rows($mod_query)>0) {
-							$module_name = getTabModuleName($adb->query_result($mod_query, 0, 'tabid'));
-							$fieldlabel = trim(str_replace($escapedchars, ' ', $fieldlist[3]));
-							$fieldlabel = str_replace('_', ' ', $fieldlabel);
-							if ($module_name) {
-								$field = getTranslatedString($module_name, $module_name).' '.getTranslatedString($fieldlabel, $module_name);
-							} else {
-								$field = getTranslatedString($fieldlabel);
-							}
-						}
-						$uitype_arr[str_replace($escapedchars, ' ', $module_name.'_'.$fieldlist[3])] = $adb->query_result($mod_query, 0, 'uitype');
-						$totclmnflds[str_replace($escapedchars, ' ', $module_name.'_'.$fieldlist[3])] = $field;
-					}
-
-					for ($i =0; $i<$y; $i++) {
-						$fld = $adb->field_name($result, $i);
-						$keyhdr[$fld->name] = $custom_field_values[$i];
-					}
-					foreach ($totclmnflds as $key => $value) {
-						$coltotalhtml .= '<tr class="rptGrpHead">';
-						$col_header = getTranslatedString(trim(str_replace($modules, ' ', $value)));
-						$fld_name_1 = $this->primarymodule . '_' . trim($value);
-						$fld_name_2 = $this->secondarymodule . '_' . trim($value);
-						if ($uitype_arr[$key]==71 || $uitype_arr[$key] == 72 ||
-										in_array($fld_name_1, $this->append_currency_symbol_to_value) || in_array($fld_name_2, $this->append_currency_symbol_to_value)) {
-							$col_header .= ' ('.$app_strings['LBL_IN'].' '.$current_user->currency_symbol.')';
-							$convert_price = true;
-						} else {
-							$convert_price = false;
-						}
-						$coltotalhtml .= '<td class="rptData">'. $col_header .'</td>';
-						$value = decode_html(trim($key));
-						$arraykey = $value.'_SUM';
-						if (isset($keyhdr[$arraykey])) {
-							if ($convert_price) {
-								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
-							} else {
-								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
-							}
-							if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' || substr($arraykey, 0, 18)=='TCTotals_TotalTime') {
-								$conv_value=$keyhdr[$arraykey];
-							}
-							$coltotalhtml .= "<td class='rptTotal'>".$conv_value.'</td>';
-						} else {
-							$coltotalhtml .= "<td class='rptTotal'>&nbsp;</td>";
-						}
-
-						$arraykey = $value.'_AVG';
-						if (isset($keyhdr[$arraykey])) {
-							if ($convert_price) {
-								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
-							} else {
-								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
-							}
-							$coltotalhtml .= "<td class='rptTotal'>".$conv_value.'</td>';
-						} else {
-							$coltotalhtml .= "<td class='rptTotal'>&nbsp;</td>";
-						}
-
-						$arraykey = $value.'_MIN';
-						if (isset($keyhdr[$arraykey])) {
-							if ($convert_price) {
-								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
-							} else {
-								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
-							}
-							$coltotalhtml .= "<td class='rptTotal'>".$conv_value.'</td>';
-						} else {
-							$coltotalhtml .= "<td class='rptTotal'>&nbsp;</td>";
-						}
-
-						$arraykey = $value.'_MAX';
-						if (isset($keyhdr[$arraykey])) {
-							if ($convert_price) {
-								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
-							} else {
-								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
-							}
-							$coltotalhtml .= "<td class='rptTotal'>".$conv_value.'</td>';
-						} else {
-							$coltotalhtml .= "<td class='rptTotal'>&nbsp;</td>";
-						}
-
-						$coltotalhtml .= '</tr>';
-
-						// Performation Optimization: If Direct output is desired
-						if ($directOutput) {
-							echo $coltotalhtml;
-							$coltotalhtml = '';
-						}
-					}
-
-					$coltotalhtml .= '</table>';
-					// Performation Optimization: If Direct output is desired
-					if ($directOutput) {
-						echo $coltotalhtml;
-						$coltotalhtml = '';
-					}
+				$coltotalhtml .= '</table>';
+				// Performation Optimization: If Direct output is desired
+				if ($directOutput) {
+					echo $coltotalhtml;
+					$coltotalhtml = '';
 				}
 			}
 			return $coltotalhtml;

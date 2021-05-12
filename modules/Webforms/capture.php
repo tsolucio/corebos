@@ -57,10 +57,8 @@ class Webform_Capture {
 				if (empty($parameters[$webformField->getFieldName()]) && $webformField->getDefaultValue()!=null) {
 					$parameters[$webformField->getFieldName()] = decode_html($webformField->getDefaultValue());
 				}
-				if ($webformField->getRequired()) {
-					if (empty($parameters[$webformField->getFieldName()])) {
-						throw new Exception('Required fields not filled');
-					}
+				if ($webformField->getRequired() && empty($parameters[$webformField->getFieldName()])) {
+					throw new Exception('Required fields not filled');
 				}
 			}
 			switch ($webform->getTargetModule()) {

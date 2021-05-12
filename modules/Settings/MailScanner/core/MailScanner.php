@@ -484,10 +484,8 @@ class Vtiger_MailScanner {
 		$ticketid = false;
 		if ($checkTicketId) {
 			$crmres = $adb->pquery('SELECT setype, deleted FROM vtiger_crmobject WHERE crmid=?', array($checkTicketId));
-			if ($adb->num_rows($crmres)) {
-				if ($adb->query_result($crmres, 0, 'setype') == 'HelpDesk' && $adb->query_result($crmres, 0, 'deleted') == '0') {
-					$ticketid = $checkTicketId;
-				}
+			if ($adb->num_rows($crmres) && $adb->query_result($crmres, 0, 'setype') == 'HelpDesk' && $adb->query_result($crmres, 0, 'deleted') == '0') {
+				$ticketid = $checkTicketId;
 			}
 		}
 		if ($ticketid) {
@@ -532,10 +530,8 @@ class Vtiger_MailScanner {
 		$projectid = false;
 		if ($checkProjectId) {
 			$crmres = $adb->pquery('SELECT setype, deleted FROM vtiger_crmobject WHERE crmid=?', array($checkProjectId));
-			if ($adb->num_rows($crmres)) {
-				if ($adb->query_result($crmres, 0, 'setype') == 'Project' && $adb->query_result($crmres, 0, 'deleted') == '0') {
-					$projectid = $checkProjectId;
-				}
+			if ($adb->num_rows($crmres) && $adb->query_result($crmres, 0, 'setype') == 'Project' && $adb->query_result($crmres, 0, 'deleted') == '0') {
+				$projectid = $checkProjectId;
 			}
 		}
 		if ($projectid) {

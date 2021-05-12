@@ -200,10 +200,8 @@ if ($foldercount > 0) {
 			$start[$folder_id] = 1;
 			if (!empty($_REQUEST['start'])) {
 				$start[$folder_id] = ListViewSession::getRequestStartPage();
-				if ($start[$folder_id] == 'last') {
-					if ($num_records > 0) {
-						$start[$folder_id] = ceil($num_records/$max_entries_per_page);
-					}
+				if ($start[$folder_id] == 'last' && $num_records > 0) {
+					$start[$folder_id] = ceil($num_records/$max_entries_per_page);
 				}
 				if (!is_numeric($start[$folder_id])) {
 					$start[$folder_id] = 1;

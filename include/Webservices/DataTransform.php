@@ -64,14 +64,12 @@ class DataTransform {
 		global $adb;
 		$associatedToUser = false;
 		$parentTypeId = null;
-		if (strtolower($meta->getEntityName()) == 'emails') {
-			if (isset($row['parent_id'])) {
-				$components = vtws_getIdComponents($row['parent_id']);
-				$userObj = VtigerWebserviceObject::fromName($adb, 'Users');
-				$parentTypeId = $components[0];
-				if ($components[0] == $userObj->getEntityId()) {
-					$associatedToUser = true;
-				}
+		if (strtolower($meta->getEntityName()) == 'emails' && isset($row['parent_id'])) {
+			$components = vtws_getIdComponents($row['parent_id']);
+			$userObj = VtigerWebserviceObject::fromName($adb, 'Users');
+			$parentTypeId = $components[0];
+			if ($components[0] == $userObj->getEntityId()) {
+				$associatedToUser = true;
 			}
 		}
 		// added to handle the setting reminder time
@@ -132,18 +130,16 @@ class DataTransform {
 				$row[$field] = $ownerDetails[1];
 			}
 		}
-		if (strtolower($meta->getEntityName()) == 'emails') {
-			if (isset($row['parent_id'])) {
-				if ($associatedToUser === true) {
-					$_REQUEST['module'] = 'Emails';
-					$row['parent_id'] = $row['parent_id'].'@-1|';
-					$_REQUEST['parent_id'] = $row['parent_id'];
-				} else {
-					$referenceHandler = vtws_getModuleHandlerFromId($parentTypeId, $meta->getUser());
-					$referenceMeta = $referenceHandler->getMeta();
-					$fieldId = getEmailFieldId($referenceMeta, $row['parent_id']);
-					$row['parent_id'] .= "@$fieldId|";
-				}
+		if (strtolower($meta->getEntityName()) == 'emails' && isset($row['parent_id'])) {
+			if ($associatedToUser === true) {
+				$_REQUEST['module'] = 'Emails';
+				$row['parent_id'] = $row['parent_id'].'@-1|';
+				$_REQUEST['parent_id'] = $row['parent_id'];
+			} else {
+				$referenceHandler = vtws_getModuleHandlerFromId($parentTypeId, $meta->getUser());
+				$referenceMeta = $referenceHandler->getMeta();
+				$fieldId = getEmailFieldId($referenceMeta, $row['parent_id']);
+				$row['parent_id'] .= "@$fieldId|";
 			}
 		}
 		if (isset($row['id'])) {
@@ -152,10 +148,6 @@ class DataTransform {
 		if (isset($row[$meta->getObectIndexColumn()])) {
 			unset($row[$meta->getObectIndexColumn()]);
 		}
-
-		//$row = DataTransform::sanitizeDateFieldsForInsert($row,$meta);
-		//$row = DataTransform::sanitizeCurrencyFieldsForInsert($row,$meta);
-
 		return $row;
 	}
 
@@ -183,10 +175,8 @@ class DataTransform {
 			unset($row[$recordModuleString]);
 		}
 
-		if (isset($row['id'])) {
-			if (strpos($row['id'], 'x')===false) {
-				$row['id'] = vtws_getId($meta->getEntityId(), $row['id']);
-			}
+		if (isset($row['id']) && strpos($row['id'], 'x')===false) {
+			$row['id'] = vtws_getId($meta->getEntityId(), $row['id']);
 		}
 
 		if (isset($row[$recordString])) {
@@ -283,17 +273,13 @@ class DataTransform {
 		global $current_user;
 		$moduleFields = $meta->getModuleFields();
 		foreach ($moduleFields as $fieldName => $fieldObj) {
-			if ($fieldObj->getFieldDataType()=='date') {
-				if (!empty($row[$fieldName])) {
-					$dateFieldObj = new DateTimeField($row[$fieldName]);
-					$row[$fieldName] = $dateFieldObj->getDBInsertDateValue($current_user);
-				}
+			if ($fieldObj->getFieldDataType()=='date' && !empty($row[$fieldName])) {
+				$dateFieldObj = new DateTimeField($row[$fieldName]);
+				$row[$fieldName] = $dateFieldObj->getDBInsertDateValue($current_user);
 			}
-			if ($fieldObj->getFieldDataType()=='datetime') {
-				if (!empty($row[$fieldName])) {
-					$dateFieldObj = new DateTimeField($row[$fieldName]);
-					$row[$fieldName] = substr($dateFieldObj->getDBInsertDateTimeValue(), 0, 16);
-				}
+			if ($fieldObj->getFieldDataType()=='datetime' && !empty($row[$fieldName])) {
+				$dateFieldObj = new DateTimeField($row[$fieldName]);
+				$row[$fieldName] = substr($dateFieldObj->getDBInsertDateTimeValue(), 0, 16);
 			}
 		}
 		return $row;
@@ -303,17 +289,13 @@ class DataTransform {
 		global $current_user;
 		$moduleFields = $meta->getModuleFields();
 		foreach ($moduleFields as $fieldName => $fieldObj) {
-			if ($fieldObj->getFieldDataType()=='date') {
-				if (!empty($row[$fieldName])) {
-					$dateFieldObj = new DateTimeField($row[$fieldName]);
-					$row[$fieldName] = $dateFieldObj->getDisplayDate($current_user);
-				}
+			if ($fieldObj->getFieldDataType()=='date' && !empty($row[$fieldName])) {
+				$dateFieldObj = new DateTimeField($row[$fieldName]);
+				$row[$fieldName] = $dateFieldObj->getDisplayDate($current_user);
 			}
-			if ($fieldObj->getFieldDataType()=='datetime') {
-				if (!empty($row[$fieldName])) {
-					$dateFieldObj = new DateTimeField($row[$fieldName]);
-					$row[$fieldName] = substr($dateFieldObj->getDisplayDateTimeValue(), 0, 16);
-				}
+			if ($fieldObj->getFieldDataType()=='datetime' && !empty($row[$fieldName])) {
+				$dateFieldObj = new DateTimeField($row[$fieldName]);
+				$row[$fieldName] = substr($dateFieldObj->getDisplayDateTimeValue(), 0, 16);
 			}
 		}
 		return $row;

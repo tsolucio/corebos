@@ -218,10 +218,8 @@ class Vtiger_FieldBasic {
 			Vtiger_Profile::initForField($this);
 		}
 		$colrs = $adb->getColumnNames($this->table);
-		if (!in_array($this->column, $colrs)) {
-			if (!empty($this->columntype)) {
-				Vtiger_Utils::AddColumn($this->table, $this->column, $this->columntype);
-			}
+		if (!in_array($this->column, $colrs) && !empty($this->columntype)) {
+			Vtiger_Utils::AddColumn($this->table, $this->column, $this->columntype);
 		}
 		if (!empty($result)) {
 			self::log("Creating Field $this->name ... DONE");

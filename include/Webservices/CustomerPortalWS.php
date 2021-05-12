@@ -379,11 +379,9 @@ function cbwsgetSearchResults($query, $search_onlyin, $restrictionids, $user) {
 			$oCustomView->list_fields = $focus->list_fields;
 			$oCustomView->list_fields_name = $focus->list_fields_name;
 		}
-		if ($oCustomView) {
-			if (isset($oCustomView->list_fields)) {
-				$focus->list_fields = $oCustomView->list_fields;
-				$focus->list_fields_name = $oCustomView->list_fields_name;
-			}
+		if ($oCustomView && isset($oCustomView->list_fields)) {
+			$focus->list_fields = $oCustomView->list_fields;
+			$focus->list_fields_name = $oCustomView->list_fields_name;
 		}
 
 		// Remove fields which are made inactive
@@ -645,10 +643,8 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 	$userprivs = $current_user->getPrivileges();
 	foreach ($focus->list_fields as $name => $tableinfo) {
 		$fieldname = $focus->list_fields_name[$name];
-		if ($oCv) {
-			if (isset($oCv->list_fields_name)) {
-				$fieldname = $oCv->list_fields_name[$name];
-			}
+		if ($oCv && isset($oCv->list_fields_name)) {
+			$fieldname = $oCv->list_fields_name[$name];
 		}
 		if ($fieldname == 'accountname' && $module != 'Accounts') {
 			$fieldname = 'account_id';

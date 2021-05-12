@@ -361,10 +361,8 @@ class corebos_saml {
 			if (isset($_POST['RelayState'])) {
 				$vars = array();
 				parse_str(parse_url('?'.$_POST['RelayState'], PHP_URL_QUERY), $vars);
-				if (!empty($vars['RTURL']) && is_numeric($vars['RTURL'])) {
-					if ($vars['RTURL']>1) {
-						$redirectTo = $settings['WSRURL'.$vars['RTURL']];
-					}
+				if (!empty($vars['RTURL']) && is_numeric($vars['RTURL']) && $vars['RTURL']>1) {
+					$redirectTo = $settings['WSRURL'.$vars['RTURL']];
 				}
 			}
 			if ($portal!='LoginPortal') {

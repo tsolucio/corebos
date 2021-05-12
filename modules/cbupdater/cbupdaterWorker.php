@@ -521,13 +521,11 @@ class cbupdaterWorker {
 						$seq = 1;
 						foreach ($fields as $fname) {
 							$field = Vtiger_Field::getInstance($fname, $moduleInstance);
-							if ($field) {
-								if ($field->block->id == $block->id) {
-									$this->ExecuteQuery('UPDATE vtiger_field SET sequence = ? WHERE fieldid=?', array($seq, $field->id));
-									$seq++;
-									if (isset($currentSequence[$field->name])) {
-										unset($currentSequence[$field->name]);
-									}
+							if ($field && $field->block->id == $block->id) {
+								$this->ExecuteQuery('UPDATE vtiger_field SET sequence = ? WHERE fieldid=?', array($seq, $field->id));
+								$seq++;
+								if (isset($currentSequence[$field->name])) {
+									unset($currentSequence[$field->name]);
 								}
 							}
 						}

@@ -461,14 +461,12 @@ class corebos_sendgrid {
 	}
 	public function checkForRelatedInfo($dataArr) {
 		$relmods = array();
-		foreach ($dataArr as $key => $el) {
-			if (is_array($el) && !empty($el['module']) && !empty($el['cbuuid'])) {
-				if (!in_array($el['module'], $relmods)) {
-					$relmods[] = array(
+		foreach ($dataArr as $el) {
+			if (is_array($el) && !empty($el['module']) && !empty($el['cbuuid']) && !in_array($el['module'], $relmods)) {
+				$relmods[] = array(
 					'modulename' => $el['module'],
 					'cbuuid' => $el['cbuuid']
-					);
-				}
+				);
 			}
 		}
 		return $relmods;

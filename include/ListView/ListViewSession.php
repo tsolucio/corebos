@@ -173,9 +173,7 @@ class ListViewSession {
 					$start = ceil($noofrows/$list_max_entries_per_page);
 				}
 			}
-			if (!is_numeric($start)) {
-				$start = 1;
-			} elseif ($start < 1) {
+			if (!is_numeric($start) || $start < 1) {
 				$start = 1;
 			}
 			$start = ceil($start);
@@ -189,10 +187,8 @@ class ListViewSession {
 	}
 
 	public static function setSessionQuery($currentModule, $query, $viewid) {
-		if (isset($_SESSION[$currentModule.'_listquery'])) {
-			if ($_SESSION[$currentModule.'_listquery'] != $query) {
-				coreBOS_Session::delete($currentModule.'_DetailView_Navigation'.$viewid);
-			}
+		if (isset($_SESSION[$currentModule.'_listquery']) && $_SESSION[$currentModule.'_listquery'] != $query) {
+			coreBOS_Session::delete($currentModule.'_DetailView_Navigation'.$viewid);
 		}
 		coreBOS_Session::set($currentModule.'_listquery', $query);
 	}

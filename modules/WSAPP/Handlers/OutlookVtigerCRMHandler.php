@@ -143,12 +143,10 @@ class OutlookVtigerCRMHandler extends vtigerCRMHandler {
 		$assignedDeletedRecordIds = wsapp_checkIfRecordsAssignToUser($deletedCrmIds, $this->user->id);
 
 		// To get record id's assigned to group of the current user
-		if ($this->isClientUserAndGroupSyncType()) {
-			if (!empty($groupIds)) {
-				foreach ($groupIds as $group) {
-					$groupRecordId = wsapp_checkIfRecordsAssignToUser($deletedCrmIds, $group);
-					$assignedDeletedRecordIds = array_merge($assignedDeletedRecordIds, $groupRecordId);
-				}
+		if ($this->isClientUserAndGroupSyncType() && !empty($groupIds)) {
+			foreach ($groupIds as $group) {
+				$groupRecordId = wsapp_checkIfRecordsAssignToUser($deletedCrmIds, $group);
+				$assignedDeletedRecordIds = array_merge($assignedDeletedRecordIds, $groupRecordId);
 			}
 		}
 
@@ -159,13 +157,11 @@ class OutlookVtigerCRMHandler extends vtigerCRMHandler {
 				$meta = $handler->getMeta();
 				$hasDeleteAccess = $meta->hasDeleteAccess();
 			}
-			if ($hasDeleteAccess) {
-				if (in_array($idComp[1], $assignedDeletedRecordIds)) {
-					try {
-						vtws_delete($record, $this->user);
-					} catch (Exception $e) {
-						continue;
-					}
+			if ($hasDeleteAccess && in_array($idComp[1], $assignedDeletedRecordIds)) {
+				try {
+					vtws_delete($record, $this->user);
+				} catch (Exception $e) {
+					continue;
 				}
 			}
 		}

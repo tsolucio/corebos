@@ -338,25 +338,20 @@ class VTTaskType {
 			$includeModules = $modules['include'];
 			$excludeModules = $modules['exclude'];
 
-			if (!empty($sourceModule)) {
-				if (getTabid($sourceModule) == null || !vtlib_isModuleActive($sourceModule)) {
-					continue;
-				}
+			if (!empty($sourceModule) && (getTabid($sourceModule) == null || !vtlib_isModuleActive($sourceModule))) {
+				continue;
 			}
 
 			if (empty($includeModules) && empty($excludeModules)) {
 				$taskTypeInstances[] = $taskName;
-				continue;
 			} elseif (!empty($includeModules)) {
 				if (in_array($moduleName, $includeModules)) {
 					$taskTypeInstances[] = $taskName;
 				}
-				continue;
 			} elseif (!empty($excludeModules)) {
 				if (!(in_array($moduleName, $excludeModules))) {
 					$taskTypeInstances[] = $taskName;
 				}
-				continue;
 			}
 		}
 		return $taskTypeInstances;

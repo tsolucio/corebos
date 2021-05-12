@@ -92,19 +92,8 @@ class SMSNotifier extends SMSNotifierBase {
 		if ($result && $adb->num_rows($result)) {
 			$userprivs = $current_user->getPrivileges();
 			while ($resultrow = $adb->fetch_array($result)) {
-				$accessCheck = false;
 				$relatedTabId = getTabid($resultrow['setype']);
-				if ($relatedTabId == 0) {
-					$accessCheck = true;
-				} else {
-					if ($userprivs->hasModuleAccess($relatedTabId)) {
-						if ($userprivs->hasModulePermission($relatedTabId, 3)) {
-							$accessCheck = true;
-						}
-					}
-				}
-
-				if ($accessCheck) {
+				if ($relatedTabId==0 || ($userprivs->hasModuleAccess($relatedTabId) && $userprivs->hasModulePermission($relatedTabId, 3))) {
 					$relatedModules[$relatedTabId] = $resultrow['setype'];
 				}
 			}

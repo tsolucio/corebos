@@ -205,10 +205,8 @@ class Quotes extends CRMEntity {
 
 	// Function to get column name - Overriding function of base class
 	public function get_column_value($columname, $fldvalue, $fieldname, $uitype, $datatype = '') {
-		if ($columname == 'potentialid' || $columname == 'contactid') {
-			if ($fldvalue == '') {
-				return null;
-			}
+		if (($columname == 'potentialid' || $columname == 'contactid') && $fldvalue == '') {
+			return null;
 		}
 		return parent::get_column_value($columname, $fldvalue, $fieldname, $uitype, $datatype);
 	}

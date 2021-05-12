@@ -60,10 +60,8 @@ function vtws_update($element, $user) {
 			if (!in_array($referenceObject->getEntityName(), $details)) {
 				throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, "Invalid reference specified for $fieldName");
 			}
-			if ($referenceObject->getEntityName() == 'Users') {
-				if (!$meta->hasAssignPrivilege($element[$fieldName])) {
-					throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Cannot assign record to the given user');
-				}
+			if ($referenceObject->getEntityName() == 'Users' && !$meta->hasAssignPrivilege($element[$fieldName])) {
+				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Cannot assign record to the given user');
 			}
 			if (!in_array($referenceObject->getEntityName(), $types['types']) && $referenceObject->getEntityName() != 'Users') {
 				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to access reference type is denied '.$referenceObject->getEntityName());

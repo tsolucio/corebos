@@ -285,10 +285,8 @@ class VTCacheUtils {
 	/** Report module information based on used. */
 	public static $_reportmodule_infoperuser_cache = array();
 	public static function lookupReport_Info($userid, $reportid) {
-		if (isset(self::$_reportmodule_infoperuser_cache[$userid])) {
-			if (isset(self::$_reportmodule_infoperuser_cache[$userid][$reportid])) {
-				return self::$_reportmodule_infoperuser_cache[$userid][$reportid];
-			}
+		if (isset(self::$_reportmodule_infoperuser_cache[$userid]) && isset(self::$_reportmodule_infoperuser_cache[$userid][$reportid])) {
+			return self::$_reportmodule_infoperuser_cache[$userid][$reportid];
 		}
 		return false;
 	}
@@ -352,11 +350,8 @@ class VTCacheUtils {
 	/** Report module information based on used. */
 	public static $_reportmodule_scheduledinfoperuser_cache = array();
 	public static function lookupReport_ScheduledInfo($userid, $reportid) {
-
-		if (isset(self::$_reportmodule_scheduledinfoperuser_cache[$userid])) {
-			if (isset(self::$_reportmodule_scheduledinfoperuser_cache[$userid][$reportid])) {
-				return self::$_reportmodule_scheduledinfoperuser_cache[$userid][$reportid];
-			}
+		if (isset(self::$_reportmodule_scheduledinfoperuser_cache[$userid]) && isset(self::$_reportmodule_scheduledinfoperuser_cache[$userid][$reportid])) {
+			return self::$_reportmodule_scheduledinfoperuser_cache[$userid][$reportid];
 		}
 		return false;
 	}

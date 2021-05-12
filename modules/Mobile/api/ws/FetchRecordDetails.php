@@ -33,10 +33,8 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 	}
 
 	protected function cachedDescribeFieldInfo($fieldname) {
-		if ($this->_cachedDescribeFieldInfo !== false) {
-			if (isset($this->_cachedDescribeFieldInfo[$fieldname])) {
-				return $this->_cachedDescribeFieldInfo[$fieldname];
-			}
+		if ($this->_cachedDescribeFieldInfo !== false && isset($this->_cachedDescribeFieldInfo[$fieldname])) {
+			return $this->_cachedDescribeFieldInfo[$fieldname];
 		}
 		return false;
 	}

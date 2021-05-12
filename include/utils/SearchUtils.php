@@ -47,20 +47,16 @@ function getSearchListHeaderValues($focus, $module, $sort_qry = '', $sorder = ''
 			$oCv->list_fields_name = $focus->list_fields_name;
 		}
 	}
-	if ($oCv) {
-		if (isset($oCv->list_fields)) {
-			$focus->list_fields = $oCv->list_fields;
-		}
+	if ($oCv && isset($oCv->list_fields)) {
+		$focus->list_fields = $oCv->list_fields;
 	}
 	//Added to reduce the no. of queries logging for non-admin users
 	$field_list = array();
 	$userprivs = $current_user->getPrivileges();
 	foreach ($focus->list_fields as $name => $tableinfo) {
 		$fieldname = $focus->list_fields_name[$name];
-		if ($oCv) {
-			if (isset($oCv->list_fields_name)) {
-				$fieldname = $oCv->list_fields_name[$name];
-			}
+		if ($oCv && isset($oCv->list_fields_name)) {
+			$fieldname = $oCv->list_fields_name[$name];
 		}
 		if ($fieldname == 'accountname' && $module !='Accounts') {
 			$fieldname = 'account_id';
@@ -136,16 +132,14 @@ function getSearchListHeaderValues($focus, $module, $sort_qry = '', $sorder = ''
 				$fieldname = 'contact_id';
 			}
 		}
-		if ($userprivs->hasGlobalReadPermission() || in_array($fieldname, $field)) {
-			if ($fieldname!='parent_id') {
-				$fld_name=$fieldname;
-				if ($fieldname == 'contact_id' && $module !='Contacts') {
-					$name = $app_strings['LBL_CONTACT_LAST_NAME'];
-				} elseif ($fieldname == 'contact_id' && $module =='Contacts') {
-					$name = $mod_strings['Reports To'].' - '.$mod_strings['LBL_LIST_LAST_NAME'];
-				}
-				$search_header[$fld_name] = getTranslatedString($name);
+		if (($userprivs->hasGlobalReadPermission() || in_array($fieldname, $field)) && $fieldname!='parent_id') {
+			$fld_name=$fieldname;
+			if ($fieldname == 'contact_id' && $module !='Contacts') {
+				$name = $app_strings['LBL_CONTACT_LAST_NAME'];
+			} elseif ($fieldname == 'contact_id' && $module =='Contacts') {
+				$name = $mod_strings['Reports To'].' - '.$mod_strings['LBL_LIST_LAST_NAME'];
 			}
+			$search_header[$fld_name] = getTranslatedString($name);
 		}
 		if ($module == 'HelpDesk' && $fieldname == 'crmid') {
 			$fld_name=$fieldname;

@@ -91,13 +91,10 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	 * Are we trying to import language package?
 	 */
 	public function isLanguageType($zipfile = null) {
-		if (!empty($zipfile)) {
-			if (!$this->checkZip($zipfile)) {
-				return false;
-			}
+		if (!empty($zipfile) && !$this->checkZip($zipfile)) {
+			return false;
 		}
 		$packagetype = $this->type();
-
 		if ($packagetype) {
 			$lcasetype = strtolower($packagetype);
 			if ($lcasetype == 'language') {
@@ -114,12 +111,9 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	 */
 	public function isModuleBundle($zipfile = null) {
 		// If data is not yet available
-		if (!empty($zipfile)) {
-			if (!$this->checkZip($zipfile)) {
-				return false;
-			}
+		if (!empty($zipfile) && !$this->checkZip($zipfile)) {
+			return false;
 		}
-
 		return (boolean)$this->_modulexml->modulebundle;
 	}
 
@@ -203,18 +197,16 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 			$validzip = true;
 		}
 
-		if ($validzip) {
-			if (!empty($this->_modulexml->license)) {
-				if (!empty($this->_modulexml->license->inline)) {
-					$this->_licensetext = $this->_modulexml->license->inline;
-				} elseif (!empty($this->_modulexml->license->file)) {
-					$licensefile = $this->_modulexml->license->file;
-					$licensefile = "$licensefile";
-					if (!empty($filelist[$licensefile])) {
-						$this->_licensetext = $unzip->unzip($licensefile);
-					} else {
-						$this->_licensetext = "Missing $licensefile!";
-					}
+		if ($validzip && !empty($this->_modulexml->license)) {
+			if (!empty($this->_modulexml->license->inline)) {
+				$this->_licensetext = $this->_modulexml->license->inline;
+			} elseif (!empty($this->_modulexml->license->file)) {
+				$licensefile = $this->_modulexml->license->file;
+				$licensefile = "$licensefile";
+				if (!empty($filelist[$licensefile])) {
+					$this->_licensetext = $unzip->unzip($licensefile);
+				} else {
+					$this->_licensetext = "Missing $licensefile!";
 				}
 			}
 		}

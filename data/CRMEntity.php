@@ -254,13 +254,11 @@ class CRMEntity {
 				}
 				$file_saved = $this->uploadAndSaveFile($id, $module, $files, $attachmentname, $direct_import, $fldname);
 				// Remove the deleted attachments from db
-				if ($file_saved && !empty($old_attachmentid)) {
-					if ($setype == 'Contacts Image' || $setype == $module.' Attachment') {
-						if ($numrels == 1) {
-							$adb->pquery('delete from vtiger_attachments where attachmentsid=?', array($old_attachmentid));
-						}
-						$adb->pquery('delete from vtiger_seattachmentsrel where crmid = ? and attachmentsid=?', array($id, $old_attachmentid));
+				if ($file_saved && !empty($old_attachmentid) && ($setype == 'Contacts Image' || $setype == $module.' Attachment')) {
+					if ($numrels == 1) {
+						$adb->pquery('delete from vtiger_attachments where attachmentsid=?', array($old_attachmentid));
 					}
+					$adb->pquery('delete from vtiger_seattachmentsrel where crmid = ? and attachmentsid=?', array($id, $old_attachmentid));
 				}
 			} elseif (isset($_REQUEST[$fileindex.'_canvas_image_set']) && $_REQUEST[$fileindex.'_canvas_image_set']==1 && !empty($_REQUEST[$fileindex.'_canvas_image'])) {
 				$saveasfile = $module . '_' . $fileindex . '_' . date('YmdHis') . '.png';
@@ -402,12 +400,8 @@ class CRMEntity {
 			$params2 = array($current_id, $filename, $description_val, $filetype, $upload_file_path);
 			$adb->pquery($sql2, $params2);
 
-			if ((isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'edit') || $this->mode == 'edit') {
-				if ($id != '' && isset($_REQUEST['fileid']) && $_REQUEST['fileid'] != '') {
-					$delquery = 'delete from vtiger_seattachmentsrel where crmid = ? and attachmentsid = ?';
-					$delparams = array($id, vtlib_purify($_REQUEST['fileid']));
-					$adb->pquery($delquery, $delparams);
-				}
+			if (((isset($_REQUEST['mode']) && $_REQUEST['mode']=='edit') || $this->mode=='edit') && $id!='' && isset($_REQUEST['fileid']) && $_REQUEST['fileid']!='') {
+				$adb->pquery('delete from vtiger_seattachmentsrel where crmid=? and attachmentsid=?', array($id, vtlib_purify($_REQUEST['fileid'])));
 			}
 			if ($module == 'Documents') {
 				$query = 'delete from vtiger_seattachmentsrel where crmid = ?';
@@ -1165,11 +1159,9 @@ class CRMEntity {
 				$fieldname = $fieldinfo['fieldname'];
 				//Here we check if user has permissions to access this field.
 				//If it is allowed then it will get the actual value, otherwise it gets an empty string.
-				if (!isset($from_wf) || !$from_wf) {
-					if (getFieldVisibilityPermission($module, $current_user->id, $fieldname) != '0') {
-						$this->column_fields[$fieldname] = '';
-						continue;
-					}
+				if ((!isset($from_wf) || !$from_wf) && getFieldVisibilityPermission($module, $current_user->id, $fieldname) != '0') {
+					$this->column_fields[$fieldname] = '';
+					continue;
 				}
 				// To avoid ADODB execption pick the entries that are in $tablename
 				if (isset($result[$tablename])) {

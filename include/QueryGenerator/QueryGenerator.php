@@ -1532,13 +1532,11 @@ class QueryGenerator {
 		$moduleFields = $this->getModuleFields();
 		$field = $moduleFields[$name];
 		$type = $field ? $field->getFieldDataType() : false;
-		if ($type == 'datetime') {
-			if (strrpos($value, ' ') === false) {
-				if ($first) {
-					return $value.' 00:00:00';
-				} else {
-					return $value.' 23:59:59';
-				}
+		if ($type == 'datetime' && strrpos($value, ' ') === false) {
+			if ($first) {
+				return $value.' 00:00:00';
+			} else {
+				return $value.' 23:59:59';
 			}
 		}
 		return $value;

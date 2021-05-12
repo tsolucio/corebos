@@ -177,10 +177,8 @@ class Homestuff {
 				if ($adb->num_rows($result_setype)>0) {
 					$module_name = $adb->query_result($result_setype, 0, 'setype');
 				}
-				if (!empty($module_name) && $module_name!='NULL') {
-					if (!vtlib_isModuleActive($module_name)) {
-						continue;
-					}
+				if (!empty($module_name) && $module_name!='NULL' && !vtlib_isModuleActive($module_name)) {
+					continue;
 				}
 			} elseif ($stufftype == 'DashBoard') {
 				if (!vtlib_isModuleActive('Dashboard')) {
@@ -320,7 +318,7 @@ class Homestuff {
 						$fldlabel=str_replace('_', ' ', $fldlabel);
 					}
 
-					$field_label=isset($app_strings[$fldlabel])?$app_strings[$fldlabel]:(isset($fieldmod_strings[$fldlabel])?$fieldmod_strings[$fldlabel]:$fldlabel);
+					$field_label=isset($app_strings[$fldlabel]) ? $app_strings[$fldlabel] : (isset($fieldmod_strings[$fldlabel]) ? $fieldmod_strings[$fldlabel] : $fldlabel);
 					$cv_presence=$adb->pquery("SELECT * from vtiger_cvcolumnlist WHERE cvid = ? and columnname LIKE '%".$fldname."%'", array($cvid));
 
 					if (!is_admin($current_user)) {

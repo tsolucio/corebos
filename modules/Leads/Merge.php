@@ -118,12 +118,8 @@ if (count($querycolumns) > 0) {
 		for ($x=0; $x<$y; $x++) {
 			$value = $columnValues[$x];
 			foreach ($columnValues as $key => $val) {
-				if ($val == $value && $value != '') {
-					if (array_key_exists($key, $avail_pick_arr)) {
-						if (!in_array($val, $avail_pick_arr[$key])) {
-							$value = 'Not Accessible';
-						}
-					}
+				if ($val == $value && $value != '' && array_key_exists($key, $avail_pick_arr) && !in_array($val, $avail_pick_arr[$key])) {
+					$value = 'Not Accessible';
 				}
 			}
 			//<<<<<<<<<<<<<<< For blank Fields >>>>>>>>>>>>>>>>>>>>>>>>>>>>

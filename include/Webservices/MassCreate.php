@@ -102,15 +102,13 @@ function mcGetReferenceRecord(&$arr, $reference, $lastReferenceId) {
 	$array = array();
 	$index = null;
 	for ($x = 0; $x <= count($arr); $x++) {
-		if (isset($arr[$x])) {
-			if ($arr[$x]['referenceId'] == $reference) {
-				if (!mcIsCyclicReference($arr[$x], $lastReferenceId)) {
-					$array = $arr[$x];
-					$index = $x;
-					break;
-				} else {
-					throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, 'Invalid reference specified');
-				}
+		if (isset($arr[$x]) && $arr[$x]['referenceId'] == $reference) {
+			if (!mcIsCyclicReference($arr[$x], $lastReferenceId)) {
+				$array = $arr[$x];
+				$index = $x;
+				break;
+			} else {
+				throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, 'Invalid reference specified');
 			}
 		}
 	}

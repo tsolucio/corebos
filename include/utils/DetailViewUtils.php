@@ -1477,16 +1477,12 @@ function getRelatedListsInformation($module, $focus) {
 		$function_name = $adb->query_result($result, $i, 'name');
 		$label = $adb->query_result($result, $i, 'label');
 		$actions = $adb->query_result($result, $i, 'actions');
-		//$relationId = $adb->query_result($result, $i, 'relation_id');
+		// vtlib customization: Send more information (from module, related module) to the callee
 		if ($rel_tab_id != 0) {
-			if ($is_admin || $userprivs->hasModuleAccess($rel_tab_id)) {
-				if ($is_admin || $userprivs->getModulePermission($rel_tab_id, 3) == 0) {
-					// vtlib customization: Send more information (from module, related module) to the callee
-					$focus_list[$label] = $focus->$function_name($focus->id, $cur_tab_id, $rel_tab_id, $actions);
-				}
+			if ($is_admin || ($userprivs->hasModuleAccess($rel_tab_id) && $userprivs->getModulePermission($rel_tab_id, 3) == 0)) {
+				$focus_list[$label] = $focus->$function_name($focus->id, $cur_tab_id, $rel_tab_id, $actions);
 			}
 		} else {
-			// vtlib customization: Send more information (from module, related module) to the callee
 			$focus_list[$label] = $focus->$function_name($focus->id, $cur_tab_id, $rel_tab_id, $actions);
 		}
 	}
@@ -1522,19 +1518,15 @@ function getRelatedLists($module, $focus, $restrictedRelations = null) {
 	$focus_list = array();
 	for ($i = 0; $i < $num_row; $i++) {
 		$rel_tab_id = $adb->query_result($result, $i, 'related_tabid');
-		//$function_name = $adb->query_result($result, $i, 'name');
 		$label = $adb->query_result($result, $i, 'label');
 		$actions = $adb->query_result($result, $i, 'actions');
 		$relationId = $adb->query_result($result, $i, 'relation_id');
+		// vtlib customization: Send more information (from module, related module) to the callee
 		if ($rel_tab_id != 0) {
-			if ($is_admin || $userprivs->hasModuleAccess($rel_tab_id)) {
-				if ($is_admin || $userprivs->getModulePermission($rel_tab_id, 3) == 0) {
-					// vtlib customization: Send more information (from module, related module) to the callee
-					$focus_list[$label] = array('related_tabid' => $rel_tab_id, 'relationId' => $relationId, 'actions' => $actions);
-				}
+			if ($is_admin || ($userprivs->hasModuleAccess($rel_tab_id) && $userprivs->getModulePermission($rel_tab_id, 3) == 0)) {
+				$focus_list[$label] = array('related_tabid' => $rel_tab_id, 'relationId' => $relationId, 'actions' => $actions);
 			}
 		} else {
-			// vtlib customization: Send more information (from module, related module) to the callee
 			$focus_list[$label] = array('related_tabid' => $rel_tab_id, 'relationId' => $relationId, 'actions' => $actions);
 		}
 	}
@@ -1635,12 +1627,10 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 	$noofrows = $adb->num_rows($result);
 	for ($i = 0; $i < $noofrows; $i++) {
 		$fieldtablename = $adb->query_result($result, $i, 'tablename');
-		//$fieldcolname = $adb->query_result($result, $i, 'columnname');
 		$uitype = $adb->query_result($result, $i, 'uitype');
 		$fieldname = $adb->query_result($result, $i, 'fieldname');
 		$fieldid = $adb->query_result($result, $i, 'fieldid');
 		$fieldlabel = $adb->query_result($result, $i, 'fieldlabel');
-		//$maxlength = $adb->query_result($result, $i, 'maximumlength');
 		$block = $adb->query_result($result, $i, 'block');
 		$generatedtype = $adb->query_result($result, $i, 'generatedtype');
 		$tabid = $adb->query_result($result, $i, 'tabid');

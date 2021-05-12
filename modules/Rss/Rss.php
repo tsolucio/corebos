@@ -234,19 +234,15 @@ class vtigerRSS extends CRMEntity {
 		$sreturnhtml = array();
 		$shtml = '';
 		while ($allrssrow = $adb->fetch_array($result)) {
-			if ($this->setRSSUrl($allrssrow["rssurl"])) {
+			if ($this->setRSSUrl($allrssrow['rssurl'])) {
 				$rss_html = $this->getListViewRSSHtml();
 			}
 			$shtml .= $rss_html;
-			if (isset($this->rss_object)) {
-				if (count($this->rss_object) > 10) {
-					$shtml .= "<tr><td colspan='3' align=\"right\">
-						<a target=\"_BLANK\" href=\"$this->rss_link\">".$mod_strings['LBL_MORE']."</a>
-						</td></tr>";
-				}
+			if (isset($this->rss_object) && count($this->rss_object) > 10) {
+				$shtml .= "<tr><td colspan='3' align=\"right\"><a target=\"_BLANK\" href=\"$this->rss_link\">".$mod_strings['LBL_MORE'].'</a></td></tr>';
 			}
 			$sreturnhtml[] = $shtml;
-			$shtml = "";
+			$shtml = '';
 		}
 
 		$recordcount = round((count($sreturnhtml))/2);
@@ -277,12 +273,8 @@ class vtigerRSS extends CRMEntity {
 				$rss_html = $this->getListViewRSSHtml();
 			}
 			$shtml .= $rss_html;
-			if (isset($this->rss_object)) {
-				if (count($this->rss_object) > 10) {
-					$shtml .= "<tr><td colspan='3' align=\"right\">
-							<a target=\"_BLANK\" href=\"$this->rss_link\">".$mod_strings['LBL_MORE']."</a>
-							</td></tr>";
-				}
+			if (isset($this->rss_object) && count($this->rss_object) > 10) {
+				$shtml .= "<tr><td colspan='3' align=\"right\"><a target=\"_BLANK\" href=\"$this->rss_link\">".$mod_strings['LBL_MORE'].'</a></td></tr>';
 			}
 			$sreturnhtml[] = $shtml;
 		}

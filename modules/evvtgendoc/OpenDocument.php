@@ -2885,10 +2885,8 @@ class OpenDocument {
 					$condition_pair = explode(' !en ', $condicion);
 				}
 			}
-			if (count($condition_pair) == 2) {
-				if (strpos($condition_pair[0], '.')===false) {
-					$condicion=$entidad.'.'.$condicion;  // si el campo de la condición no tiene la entidad, la añadimos
-				}
+			if (count($condition_pair) == 2 && strpos($condition_pair[0], '.')===false) {
+				$condicion=$entidad.'.'.$condicion;  // si el campo de la condición no tiene la entidad, la añadimos
 			}
 			if (empty($condicion)) {
 				$condicion = $entidad;

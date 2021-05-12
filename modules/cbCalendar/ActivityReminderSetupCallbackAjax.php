@@ -16,19 +16,17 @@ $cbaction = isset($_REQUEST['cbaction']) ? vtlib_purify($_REQUEST['cbaction']) :
 $cbmodule = isset($_REQUEST['cbmodule']) ? vtlib_purify($_REQUEST['cbmodule']) : '';
 $cbrecord = isset($_REQUEST['cbrecord']) ? vtlib_purify($_REQUEST['cbrecord']) : '';
 
-if ($cbaction == 'POSTPONE') {
-	if (!empty($cbmodule) && !empty($cbrecord)) {
-		$reminderid = isset($_REQUEST['cbreminderid']) ? vtlib_purify($_REQUEST['cbreminderid']) : '';
-		if (!empty($reminderid)) {
-			coreBOS_Session::delete('next_reminder_time');
-			$adb->pquery(
-				'UPDATE vtiger_activity_reminder_popup set status=0 WHERE reminderid=? AND semodule=? AND recordid=?',
-				array($reminderid, $cbmodule, $cbrecord)
-			);
-			echo ":#:SUCCESS";
-		} else {
-			echo ":#:FAILURE";
-		}
+if ($cbaction == 'POSTPONE' && !empty($cbmodule) && !empty($cbrecord)) {
+	$reminderid = isset($_REQUEST['cbreminderid']) ? vtlib_purify($_REQUEST['cbreminderid']) : '';
+	if (!empty($reminderid)) {
+		coreBOS_Session::delete('next_reminder_time');
+		$adb->pquery(
+			'UPDATE vtiger_activity_reminder_popup set status=0 WHERE reminderid=? AND semodule=? AND recordid=?',
+			array($reminderid, $cbmodule, $cbrecord)
+		);
+		echo ":#:SUCCESS";
+	} else {
+		echo ":#:FAILURE";
 	}
 }
 ?>

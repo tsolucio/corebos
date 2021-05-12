@@ -49,11 +49,9 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 			$oCv->list_fields_name = $focus->list_fields_name;
 		}
 	}
-	if ($oCv) {
-		if (isset($oCv->list_fields)) {
-			$focus->list_fields = $oCv->list_fields;
-			$focus->list_fields_name = $oCv->list_fields_name;
-		}
+	if ($oCv && isset($oCv->list_fields)) {
+		$focus->list_fields = $oCv->list_fields;
+		$focus->list_fields_name = $oCv->list_fields_name;
 	}
 
 	// Remove fields which are made inactive
@@ -64,10 +62,8 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 	$userprivs = $current_user->getPrivileges();
 	foreach ($focus->list_fields as $name => $tableinfo) {
 		$fieldname = $focus->list_fields_name[$name];
-		if ($oCv) {
-			if (isset($oCv->list_fields_name)) {
-				$fieldname = $oCv->list_fields_name[$name];
-			}
+		if ($oCv && isset($oCv->list_fields_name)) {
+			$fieldname = $oCv->list_fields_name[$name];
 		}
 		if ($fieldname == 'accountname' && $module != 'Accounts') {
 			$fieldname = 'account_id';
@@ -465,11 +461,9 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 			$oCv->list_fields_name = $focus->list_fields_name;
 		}
 	}
-	if ($oCv) {
-		if (isset($oCv->list_fields)) {
-			$focus->list_fields = $oCv->list_fields;
-			$focus->list_fields_name = $oCv->list_fields_name;
-		}
+	if ($oCv && isset($oCv->list_fields)) {
+		$focus->list_fields = $oCv->list_fields;
+		$focus->list_fields_name = $oCv->list_fields_name;
 	}
 	if (is_array($selectedfields) && $selectedfields != '') {
 		$focus->list_fields = $selectedfields;
@@ -483,10 +477,8 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 	$userprivs = $current_user->getPrivileges();
 	foreach ($focus->list_fields as $name => $tableinfo) {
 		$fieldname = $focus->list_fields_name[$name];
-		if ($oCv) {
-			if (isset($oCv->list_fields_name)) {
-				$fieldname = $oCv->list_fields_name[$name];
-			}
+		if ($oCv && isset($oCv->list_fields_name)) {
+			$fieldname = $oCv->list_fields_name[$name];
 		}
 		if ($fieldname == 'accountname' && $module != 'Accounts') {
 			$fieldname = 'account_id';
@@ -904,12 +896,9 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 			}
 
 			// Record Change Notification
-			if (method_exists($focus, 'isViewed') && GlobalVariable::getVariable('Application_ListView_Record_Change_Indicator', 1, $module)) {
-				if (!$focus->isViewed($entity_id)) {
-					$links_info .= " | <img src='" . vtiger_imageurl('important1.gif', $theme) . "' border=0>";
-				}
+			if (method_exists($focus, 'isViewed') && GlobalVariable::getVariable('Application_ListView_Record_Change_Indicator', 1, $module) && !$focus->isViewed($entity_id)) {
+				$links_info .= " | <img src='" . vtiger_imageurl('important1.gif', $theme) . "' border=0>";
 			}
-			// END
 			if ($links_info != '' && !$skipActions) {
 				$list_header[] = $links_info;
 			}
@@ -3381,7 +3370,7 @@ function getMergeFields($module, $str) {
 	$tabid = getTabid($module);
 	if ($str == 'available_fields') {
 		$result = getFieldsResultForMerge($tabid);
-	} else { //if($str == fields_to_merge)
+	} else { // $str == fields_to_merge
 		$result = $adb->pquery('select fieldid from vtiger_user2mergefields where tabid=? and userid=? and visible=1', array($tabid, $current_user->id));
 	}
 
@@ -3399,12 +3388,10 @@ function getMergeFields($module, $str) {
 	while ($row = $adb->getNextRow($result, false)) {
 		$field_id = $row['fieldid'];
 		foreach ($permitted_list as $field => $data) {
-			if ($data[4] == $field_id && $data[1] == 0) {
-				if ($is_admin || (in_array($field_id, $permitted_org_list))) {
-					$field = '<option value="' . $field_id . '">' . getTranslatedString($data[0], $module) . '</option>';
-					$fields.=$field;
-					break;
-				}
+			if ($data[4] == $field_id && $data[1] == 0 && ($is_admin || in_array($field_id, $permitted_org_list))) {
+				$field = '<option value="' . $field_id . '">' . getTranslatedString($data[0], $module) . '</option>';
+				$fields.=$field;
+				break;
 			}
 		}
 	}

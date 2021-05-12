@@ -88,23 +88,21 @@ class ModTracker_Field {
 			}
 		}
 
-		if ($fieldInstance->getFieldDataType() == 'currency') {
-			if ($value != '' && $value != 0) {
-				if ($fieldInstance->getUIType() == 72) {
-					if ($fieldName == 'unit_price') {
-						$currencyId = getProductBaseCurrency($recordId, $moduleName);
-						$cursym_convrate = getCurrencySymbolandCRate($currencyId);
-						$currencySymbol = $cursym_convrate['symbol'];
-					} else {
-						$currencyInfo = getInventoryCurrencyInfo($moduleName, $recordId);
-						$currencySymbol = $currencyInfo['currency_symbol'];
-					}
-					$currencyValue = CurrencyField::convertToUserFormat($value, null, true);
-					$value = CurrencyField::appendCurrencySymbol($currencyValue, $currencySymbol);
+		if ($fieldInstance->getFieldDataType() == 'currency' && $value != '' && $value != 0) {
+			if ($fieldInstance->getUIType() == 72) {
+				if ($fieldName == 'unit_price') {
+					$currencyId = getProductBaseCurrency($recordId, $moduleName);
+					$cursym_convrate = getCurrencySymbolandCRate($currencyId);
+					$currencySymbol = $cursym_convrate['symbol'];
 				} else {
-					$currencyField = new CurrencyField($value);
-					$value = $currencyField->getDisplayValueWithSymbol();
+					$currencyInfo = getInventoryCurrencyInfo($moduleName, $recordId);
+					$currencySymbol = $currencyInfo['currency_symbol'];
 				}
+				$currencyValue = CurrencyField::convertToUserFormat($value, null, true);
+				$value = CurrencyField::appendCurrencySymbol($currencyValue, $currencySymbol);
+			} else {
+				$currencyField = new CurrencyField($value);
+				$value = $currencyField->getDisplayValueWithSymbol();
 			}
 		}
 

@@ -181,10 +181,8 @@ class PearDatabase {
 	 * Reset query result for resuing if cache is enabled.
 	 */
 	public function resetQueryResultToEOF(&$result) {
-		if ($result) {
-			if ($result->MoveLast()) {
-				$result->MoveNext();
-			}
+		if ($result && $result->MoveLast()) {
+			$result->MoveNext();
 		}
 	}
 

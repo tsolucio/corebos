@@ -364,11 +364,9 @@ function __cb_next_date($arr) {
 	$daterange = new DatePeriod($startDate, $interval, $endDate);
 	$result = '';
 	foreach ($daterange as $date) {
-		if ($date->format('N') < $lastdow && !in_array($date->format('Y-m-d'), $holiday)) {
-			if (in_array($date->format('d'), $nextDays)) {
-				$result = $date->format('Y-m-d');
-				break;
-			}
+		if ($date->format('N') < $lastdow && !in_array($date->format('Y-m-d'), $holiday) && in_array($date->format('d'), $nextDays)) {
+			$result = $date->format('Y-m-d');
+			break;
 		}
 	}
 	return $result;

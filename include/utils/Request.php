@@ -168,10 +168,8 @@ class Vtiger_Request {
 	}
 
 	public function validateWriteAccess($skipRequestTypeCheck = false) {
-		if (!$skipRequestTypeCheck) {
-			if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-				throw new Exception('Invalid request - validate Write Access');
-			}
+		if (!$skipRequestTypeCheck && $_SERVER['REQUEST_METHOD'] != 'POST') {
+			throw new Exception('Invalid request - validate Write Access');
 		}
 		$this->validateReadAccess();
 		$this->validateCSRF();

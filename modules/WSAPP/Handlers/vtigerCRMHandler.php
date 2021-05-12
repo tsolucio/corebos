@@ -122,13 +122,11 @@ class vtigerCRMHandler extends SyncHandler {
 				$meta = $handler->getMeta();
 				$hasDeleteAccess = $meta->hasDeleteAccess();
 			}
-			if ($hasDeleteAccess) {
-				if (in_array($idComp[1], $assignedDeletedRecordIds)) {
-					try {
-						vtws_delete($record, $this->user);
-					} catch (Exception $e) {
-						continue;
-					}
+			if ($hasDeleteAccess && in_array($idComp[1], $assignedDeletedRecordIds)) {
+				try {
+					vtws_delete($record, $this->user);
+				} catch (Exception $e) {
+					continue;
 				}
 			}
 		}

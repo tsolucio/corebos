@@ -255,10 +255,8 @@ class Invoice extends CRMEntity {
 
 	// Function to get column name - Overriding function of base class
 	public function get_column_value($columname, $fldvalue, $fieldname, $uitype, $datatype = '') {
-		if ($columname == 'salesorderid') {
-			if ($fldvalue == '') {
-				return null;
-			}
+		if ($columname == 'salesorderid' && $fldvalue == '') {
+			return null;
 		}
 		return parent::get_column_value($columname, $fldvalue, $fieldname, $uitype, $datatype);
 	}

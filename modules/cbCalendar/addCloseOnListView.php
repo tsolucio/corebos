@@ -17,43 +17,44 @@
 class cbCalendar_addCloseOnListView extends VTEventHandler {
 
 	public function handleEvent($handlerType, $entityData) {
+		// mandatory method
 	}
 
 	public function handleFilter($handlerType, $parameter) {
 		global $currentModule, $adb;
 		$relatedList = (isset($_REQUEST['ajxaction']) && isset($_REQUEST['header']) && $_REQUEST['ajxaction']=='LOADRELATEDLIST' && $_REQUEST['header']=='Activities');
-		if (($currentModule=='cbCalendar' && $handlerType=='corebos.filter.listview.render' &&
-			(($_REQUEST['action']=='ListView' || $_REQUEST['action']=='index') || ($_REQUEST['action']=='cbCalendarAjax' && $_REQUEST['file']=='ListView') ||
-				($_REQUEST['action']=='cbCalendarAjax' && $_REQUEST['file']=='calendarops' && $_REQUEST['op']=='changestatus'))) || $relatedList
+		if (($currentModule=='cbCalendar' && $handlerType=='corebos.filter.listview.render' && !empty($parameter[2]) &&
+				(($_REQUEST['action']=='ListView' || $_REQUEST['action']=='index') || ($_REQUEST['action']=='cbCalendarAjax' && $_REQUEST['file']=='ListView') ||
+					($_REQUEST['action']=='cbCalendarAjax' && $_REQUEST['file']=='calendarops' && $_REQUEST['op']=='changestatus'))
+			)
+			|| ($relatedList && !empty($parameter[2]))
 		) {
-			if (!empty($parameter[2])) {
-				$evtrs = $adb->pquery('select eventstatus,activitytype from vtiger_activity where activityid=?', array($parameter[2]));
-				$status = $adb->query_result($evtrs, 0, 'eventstatus');
-				$activitytype = $adb->query_result($evtrs, 0, 'activitytype');
-				if ($activitytype != 'Email' && !($status == 'Deferred' || $status == 'Completed' || $status == 'Held' || $status == '')) {
-					if (isPermitted('cbCalendar', 'EditView', $parameter[2]) == 'yes') {
-						if ($activitytype == 'Task') {
-							$evt_status = 'Completed';
-						} else {
-							$evt_status = 'Held';
-						}
-						$actionpos = count($parameter[0])-1;
-						if ($relatedList) {
-							$rlModule = vtlib_purify($_REQUEST['module']);
-							$rlRecord = vtlib_purify($_REQUEST['record']);
-							$rlRelationID = vtlib_purify($_REQUEST['relation_id']);
-							$rlCFilter = isset($_REQUEST['cbcalendar_filter']) ? vtlib_purify($_REQUEST['cbcalendar_filter']) : 'all';
-							$lnk = "ajaxChangeCalendarStatus('" . $evt_status . "'," . $parameter[2] . ');';
-							$lnk .= "loadRelatedListBlock('module=" . $rlModule . '&action=' . $rlModule . 'Ajax&file=DetailViewAjax&record=' . $rlRecord .
-								'&ajxaction=LOADRELATEDLIST&header=Activities&relation_id=' . $rlRelationID . '&cbcalendar_filter=' . $rlCFilter .
-								"&actions=add&parenttab=Support','tbl_" . $rlModule . "_Activities','" . $rlModule . "_Activities');";
-							$parameter[0][$actionpos] = '<a href="javascript:void(0);" onclick="' . $lnk . 'return false;">' .
-								getTranslatedString('LBL_CLOSE', 'cbCalendar') . '</a> | ' . $parameter[0][$actionpos];
-						} else {
-							$parameter[0][$actionpos] = '<a href="javascript:void(0);" onclick="ajaxChangeCalendarStatus(\''.$evt_status."',".$parameter[2].');">'.
-								getTranslatedString('LBL_CLOSE', 'cbCalendar') . '</a> | ' . $parameter[0][$actionpos];
-						}
-					}
+			$evtrs = $adb->pquery('select eventstatus,activitytype from vtiger_activity where activityid=?', array($parameter[2]));
+			$status = $adb->query_result($evtrs, 0, 'eventstatus');
+			$activitytype = $adb->query_result($evtrs, 0, 'activitytype');
+			if ($activitytype != 'Email' && !($status == 'Deferred' || $status == 'Completed' || $status == 'Held' || $status == '')
+				&& isPermitted('cbCalendar', 'EditView', $parameter[2]) == 'yes'
+			) {
+				if ($activitytype == 'Task') {
+					$evt_status = 'Completed';
+				} else {
+					$evt_status = 'Held';
+				}
+				$actionpos = count($parameter[0])-1;
+				if ($relatedList) {
+					$rlModule = vtlib_purify($_REQUEST['module']);
+					$rlRecord = vtlib_purify($_REQUEST['record']);
+					$rlRelationID = vtlib_purify($_REQUEST['relation_id']);
+					$rlCFilter = isset($_REQUEST['cbcalendar_filter']) ? vtlib_purify($_REQUEST['cbcalendar_filter']) : 'all';
+					$lnk = "ajaxChangeCalendarStatus('" . $evt_status . "'," . $parameter[2] . ');';
+					$lnk .= "loadRelatedListBlock('module=" . $rlModule . '&action=' . $rlModule . 'Ajax&file=DetailViewAjax&record=' . $rlRecord .
+						'&ajxaction=LOADRELATEDLIST&header=Activities&relation_id=' . $rlRelationID . '&cbcalendar_filter=' . $rlCFilter .
+						"&actions=add&parenttab=Support','tbl_" . $rlModule . "_Activities','" . $rlModule . "_Activities');";
+					$parameter[0][$actionpos] = '<a href="javascript:void(0);" onclick="' . $lnk . 'return false;">' .
+						getTranslatedString('LBL_CLOSE', 'cbCalendar') . '</a> | ' . $parameter[0][$actionpos];
+				} else {
+					$parameter[0][$actionpos] = '<a href="javascript:void(0);" onclick="ajaxChangeCalendarStatus(\''.$evt_status."',".$parameter[2].');">'.
+						getTranslatedString('LBL_CLOSE', 'cbCalendar') . '</a> | ' . $parameter[0][$actionpos];
 				}
 			}
 		}
