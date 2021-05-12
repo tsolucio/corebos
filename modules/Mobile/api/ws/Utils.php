@@ -210,7 +210,7 @@ class crmtogo_WS_Utils {
 		}
 		//add prefix to key
 		$data = array_flip($resultuser);
-		foreach ($data as $key => &$val) {
+		foreach ($data as &$val) {
 			$val = $recordprefix.'x'.$val;
 		}
 		$resultuser = array_flip($data);
@@ -228,7 +228,7 @@ class crmtogo_WS_Utils {
 		$group_array = array();
 		if (count($resultgroups) > 0) {
 			$newgrouporder = array ();
-			foreach ($resultgroups as $key => &$val) {
+			foreach ($resultgroups as &$val) {
 				$newgrouporder[$val['id']] = $val['name'];
 			}
 			foreach ($newgrouporder as $groupid => $groupname) {
