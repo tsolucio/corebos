@@ -87,7 +87,6 @@ class ModTrackerOperation extends WebserviceEntityOperation {
 			throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record not found');
 		}
 		$element = $this->getElement();
-		//var_dump($this->meta->getModuleFields());
 		return DataTransform::filterAndSanitize($element, $this->meta);
 	}
 
@@ -233,7 +232,6 @@ class ModTrackerOperation extends WebserviceEntityOperation {
 			return $parser->getError();
 		}
 		$mysql_query = $parser->getSql();
-		//$mysql_query = appendFromClauseToQuery($mysql_query, ' inner join vtiger_users on vtiger_users.id=whodid');
 		$meta = $parser->getObjectMetaData();
 		return $mysql_query;
 	}

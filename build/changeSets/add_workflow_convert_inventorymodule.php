@@ -24,7 +24,6 @@ class add_workflow_convert_inventorymodule extends cbupdaterWorker {
 			$this->markApplied(false);
 		} else {
 			require_once 'modules/com_vtiger_workflow/VTTaskManager.inc';
-			$taskTypes = array();
 			$defaultModules = array('include' => getInventoryModules(), 'exclude'=>array());
 			$taskType= array("name"=>"ConvertInventoryModule", "label"=>"ConvertInventoryModule", "classname"=>"ConvertInventoryModule",
 					 "classpath"=>"modules/com_vtiger_workflow/tasks/convert_inventorymodule.inc",

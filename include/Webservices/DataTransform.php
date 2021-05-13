@@ -49,7 +49,6 @@ class DataTransform {
 		$newRow = DataTransform::sanitizeReferences($newRow, $meta);
 		$newRow = DataTransform::sanitizeOwnerFields($newRow, $meta, $t);
 		$newRow = DataTransform::sanitizeFields($newRow, $meta);
-		//$newRow = DataTransform::sanitizeCurrencyFieldsForDisplay($newRow,$meta);
 		return $newRow;
 	}
 
@@ -79,7 +78,6 @@ class DataTransform {
 				$_REQUEST['mode'] = 'edit';
 
 				$reminder = $row['reminder_time'];
-				$seconds = (int)$reminder%60;
 				$minutes = (int)($reminder/60)%60;
 				$hours = (int)($reminder/(60*60))%24;
 				$days = (int)($reminder/(60*60*24));
@@ -343,7 +341,6 @@ class DataTransform {
 		$moduleFields = $meta->getModuleFields();
 		foreach ($moduleFields as $fieldName => $fieldObj) {
 			if (($fieldObj->getFieldDataType()=='currency' || $fieldObj->getFieldDataType()=='double') && !empty($row[$fieldName])) {
-				$uitype = $fieldObj->getUIType();
 				$cryFields = new CurrencyField($row[$fieldName]);
 				$cryFields->initialize($current_user);
 				$cryFields->setNumberofDecimals($cryFields::$maxNumberOfDecimals);

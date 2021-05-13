@@ -88,7 +88,6 @@ class CRMEntity {
 		$hcols['record_id'] = empty($this->column_fields['record_id']) ? $_REQUEST['currentid'] : $this->column_fields['record_id'];
 		$hcols['creator'] = isset($this->column_fields['created_user_id']) ? getUserEmail($this->column_fields['created_user_id']) : 'email@lost.tld';
 		$hcols['owner'] = isset($this->column_fields['assigned_user_id']) ? getUserEmail($this->column_fields['assigned_user_id']) : 'nouser@module.tld';
-		//$hcols['description'] = $this->column_fields['description'];
 		$hcols['createdtime'] = $this->column_fields['createdtime'];
 		return sha1(json_encode($hcols));
 	}
@@ -279,18 +278,15 @@ class CRMEntity {
 					'error' => 0,
 					'size' => 0
 				);
-				$file_saved = $this->uploadAndSaveFile($id, $module, $fi, '', true, $fileindex);
+				$this->uploadAndSaveFile($id, $module, $fi, '', true, $fileindex);
 				$result = $adb->pquery($sql, array($fileindex,$tabid));
 				$tblname = $adb->query_result($result, 0, 'tablename');
 				$colname = $adb->query_result($result, 0, 'columnname');
-				$fldname = $fileindex;
-				$upd = "update $tblname set $colname=? where ".$this->tab_name_index[$tblname].'=?';
-				$adb->pquery($upd, array($saveasfile,$this->id));
+				$adb->pquery("update $tblname set $colname=? where ".$this->tab_name_index[$tblname].'=?', array($saveasfile,$this->id));
 			} elseif (empty($files['name']) && $files['size'] == 0) {
 				$result = $adb->pquery($sql, array($fileindex,$tabid));
 				$tblname = $adb->query_result($result, 0, 'tablename');
 				$colname = $adb->query_result($result, 0, 'columnname');
-				$fldname = $fileindex;
 				if (empty($_REQUEST[$fileindex.'_hidden'])) {
 					$upd = "update $tblname set $colname='' where ".$this->tab_name_index[$tblname].'=?';
 					$adb->pquery($upd, array($this->id));
@@ -347,7 +343,6 @@ class CRMEntity {
 
 		$filename = ltrim(basename(' ' . $binFile)); //allowed filename like UTF-8 characters
 		$filetype = $file_details['type'];
-		//$filesize = $file_details['size'];
 		$filetmp_name = $file_details['tmp_name'];
 
 		if (validateImageFile($file_details) == 'true' && validateImageContents($filetmp_name) == false) {
@@ -1750,7 +1745,6 @@ class CRMEntity {
 		$rel_mods[$this->table_name] = 1;
 		for ($i=0; $i<$linkedFieldsCount; $i++) {
 			$related_module = $adb->query_result($linkedModulesQuery, $i, 'relmodule');
-			//$fieldname = $adb->query_result($linkedModulesQuery, $i, 'fieldname');
 			$columnname = $adb->query_result($linkedModulesQuery, $i, 'columnname');
 			$tablename = $adb->query_result($linkedModulesQuery, $i, 'tablename');
 

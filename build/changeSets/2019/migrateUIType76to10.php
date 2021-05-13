@@ -26,7 +26,6 @@ class migrateUIType76to10 extends cbupdaterWorker {
 		} else {
 			$rs76 = $adb->pquery('select fieldid from vtiger_field where uitype=?', array('76'));
 			while ($ui76 = $adb->fetch_row($rs76)) {
-				//$mod = Vtiger_Module::getInstance($ui76['tabid']);
 				$fld = Vtiger_Field::getInstance($ui76['fieldid']);
 				$this->ExecuteQuery('update vtiger_field set uitype=? where fieldid=?', array('10', $ui76['fieldid']));
 				$fld->setRelatedModules(array('Potentials'));

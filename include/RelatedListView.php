@@ -247,7 +247,6 @@ function getHistory($parentmodule, $query, $id) {
 		$header[] = $app_strings['LBL_RELATED_TO'];
 		$header[] = $app_strings['LBL_START_DATE'].' & '.$app_strings['LBL_TIME'];
 		$header[] = $app_strings['LBL_END_DATE'].' & '.$app_strings['LBL_TIME'];
-		//$header[] = $app_strings['LBL_DESCRIPTION'];
 		$header[] = $app_strings['LBL_STATUS'];
 		$header[] = $app_strings['LBL_ASSIGNED_TO'];
 
@@ -256,12 +255,10 @@ function getHistory($parentmodule, $query, $id) {
 			$entries = array();
 			if ($row['activitytype'] == 'Task') {
 				$activitymode = 'Task';
-				$icon = 'Tasks.gif';
 				$status = $row['status'];
 				$status = $app_strings[$status];
 			} else {
 				$activitymode = 'Events';
-				$icon = 'Activities.gif';
 				$status = $row['eventstatus'];
 				$status = $app_strings[$status];
 			}

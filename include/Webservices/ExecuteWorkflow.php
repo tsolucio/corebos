@@ -67,7 +67,6 @@ function cbwsExecuteWorkflowWithContext($workflow, $entities, $context, $user) {
 	if (json_last_error() !== JSON_ERROR_NONE) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid context parameter: '.json_last_error_msg());
 	}
-	$util = new VTWorkflowUtils();
 	$entityCache = new VTEntityCache($user);
 	$wfs = new VTWorkflowManager($adb);
 	$workflows = $wfs->getWorkflowsForResult($result);

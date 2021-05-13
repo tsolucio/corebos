@@ -26,7 +26,6 @@ class migrateUIType7581to10 extends cbupdaterWorker {
 		} else {
 			$rs75 = $adb->pquery('select fieldid from vtiger_field where uitype=?', array('75'));
 			while ($ui75 = $adb->fetch_row($rs75)) {
-				//$mod = Vtiger_Module::getInstance($ui75['tabid']);
 				$fld = Vtiger_Field::getInstance($ui75['fieldid']);
 				$this->ExecuteQuery('update vtiger_field set uitype=? where fieldid=?', array('10', $ui75['fieldid']));
 				$fld->setRelatedModules(array('Vendors'));
@@ -40,7 +39,6 @@ class migrateUIType7581to10 extends cbupdaterWorker {
 			);
 			$rs81 = $adb->pquery('select fieldid from vtiger_field where uitype=?', array('81'));
 			while ($ui81 = $adb->fetch_row($rs81)) {
-				//$mod = Vtiger_Module::getInstance($ui81['tabid']);
 				$fld = Vtiger_Field::getInstance($ui81['fieldid']);
 				$this->ExecuteQuery('update vtiger_field set uitype=? where fieldid=?', array('10', $ui81['fieldid']));
 				$fld->setRelatedModules(array('Vendors'));

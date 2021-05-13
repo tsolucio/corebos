@@ -111,7 +111,6 @@ function cbws_getCustomViewCombo($viewid, $module, $customView) {
 			$disp_viewname = $viewname . ' [' . $userName . '] ';
 		}
 
-		//$advft_criteria = json_encode($customView->getAdvFilterByCvid($cvrow['cvid']));
 		$advft_criteria = $customView->getAdvFilterByCvid($cvrow['cvid']);
 		$advft = array();
 		$groupnum = 1;

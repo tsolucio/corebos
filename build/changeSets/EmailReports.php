@@ -104,7 +104,6 @@ class EmailReports extends cbupdaterWorker {
 					$this->insertAdvFilter($queryid, $advfilters[$report['advfilterid']]);
 				}
 			}
-			//$this->ExecuteQuery("UPDATE vtiger_report SET sharingtype='Public'", array());
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}

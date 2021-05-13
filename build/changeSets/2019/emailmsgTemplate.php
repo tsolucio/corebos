@@ -39,7 +39,6 @@ class emailmsgTemplate extends cbupdaterWorker {
 				$focus->column_fields['msgt_type'] = 'Email';
 				$focus->column_fields['msgt_status'] = 'Active';
 				$focus->column_fields['msgt_language'] = $shortcode;
-				// $focus->column_fields['msgt_language'] = 'en';
 				$focus->column_fields['subject'] = $mod_strings['LBL_SUBJECT_PORTAL_LOGIN_DETAILS'];
 				$focus->column_fields['template'] = $contents;
 				$focus->column_fields['templateonlytext'] = $contents;

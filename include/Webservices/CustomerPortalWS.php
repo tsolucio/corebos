@@ -563,10 +563,10 @@ function evvt_PortalModuleRestrictions($module, $accountId, $contactId, $company
 			$condition = 'vtiger_account.accountid'.(is_array($accountId) ? ' IN ('.implode(',', $accountId).')' : '='.$accountId);
 			break;
 		case 'Products':
-			//$condition = "related.Contacts='".$contactId."'";
+			// we could set the condition to show only products related to the contact
 			break;
 		case 'Services':
-			//$condition = "related.Contacts='".$contactId."'";
+			// we could set the condition to show only Services related to the contact
 			break;
 		case 'Faq':
 			$condition = "faqstatus='Published'";
@@ -708,12 +708,10 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 			//Getting the entityid
 			if ($module != 'Users') {
 				$entity_id = $adb->query_result($list_result, $i, 'crmid');
-				//$owner_id = $adb->query_result($list_result, $i, 'smownerid');
 			} else {
 				$entity_id = $adb->query_result($list_result, $i, 'id');
 			}
 			foreach ($focus->list_fields as $name => $tableinfo) {
-				$fieldname = $focus->list_fields_name[$name];
 				if ($oCv) {
 					if (isset($oCv->list_fields_name)) {
 						$fieldname = $oCv->list_fields_name[$name];
@@ -745,10 +743,8 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 				}
 				if ($userprivs->hasGlobalReadPermission() || in_array($fieldname, $field) || $fieldname == '') {
 					if ($fieldname == '') {
-						//$table_name = '';
 						$column_name = '';
 						foreach ($tableinfo as $colname) {
-							//$table_name = $tablename;
 							$column_name = $colname;
 						}
 						$value = $adb->query_result($list_result, $i, $column_name);
@@ -824,7 +820,6 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 
 								$file_name = $adb->query_result($list_result, $i, 'filename');
 								$notes_id = $adb->query_result($list_result, $i, 'crmid');
-								//$folder_id = $adb->query_result($list_result, $i, 'folderid');
 								$download_type = $adb->query_result($list_result, $i, 'filelocationtype');
 								$file_status = $adb->query_result($list_result, $i, 'filestatus');
 								$fileidQuery = 'select attachmentsid from vtiger_seattachmentsrel where crmid=?';
@@ -891,13 +886,10 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 							$value = $product_id;
 						} elseif ($name == 'Account Name') {
 							if ($module == 'Accounts') {
-								$account_id = $adb->query_result($list_result, $i, 'crmid');
-								//$account_name = getAccountName($account_id);
 								$account_name = textlength_check($adb->query_result($list_result, $i, 'accountname'));
 								$value = $account_name;
 							} elseif ($module == 'Potentials' || $module == 'Contacts' || $module == 'Invoice' || $module == 'SalesOrder' || $module == 'Quotes') {
 								//Potential,Contacts,Invoice,SalesOrder & Quotes records sort by Account Name
-								//$accountname = textlength_check($adb->query_result($list_result,$i,'accountname'));
 								$accountid = $adb->query_result($list_result, $i, 'accountid');
 								$accountname = textlength_check(getAccountName($accountid));
 								$value = $accountname;

@@ -25,7 +25,6 @@ class ticket191 extends cbupdaterWorker {
 			$this->markApplied(false);
 		} else {
 			require_once 'modules/com_vtiger_workflow/VTTaskManager.inc';
-			$taskTypes = array();
 			$defaultModules = array('include' => array('Quotes','SalesOrder','Invoice','PurchaseOrder'), 'exclude'=>array());
 			$taskType= array("name"=>"CBRelateSales", "label"=>"CBRelateSales", "classname"=>"CBRelateSales",
 					 "classpath"=>"modules/com_vtiger_workflow/tasks/CBRelateSales.inc",

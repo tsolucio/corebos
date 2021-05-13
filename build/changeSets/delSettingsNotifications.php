@@ -54,7 +54,6 @@ class delSettingsNotifications extends cbupdaterWorker {
 					} else {
 						$task->active = false;
 					}
-					$subject = $adb->query_result($result_main, 0, 'notificationsubject');
 					$subject = getTranslatedString('Reminder', 'cbCalendar').' $activitytype @ $date_start $time_start'.
 						'] ($(general : (__VtigerMeta__) dbtimezone)) '.getTranslatedString($adb->query_result($result_main, 0, 'notificationsubject'), 'cbCalendar');
 					$content = nl2br(getTranslatedString($adb->query_result($result_main, 0, 'notificationbody'), 'cbCalendar')) ."\n\n ".

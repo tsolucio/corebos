@@ -27,7 +27,6 @@ class databasechangesToMoveTocbCalendar3 extends cbupdaterWorker {
 			$this->ExecuteQuery("DELETE FROM vtiger_customview WHERE entitytype='Calendar';");
 			$this->ExecuteQuery("update vtiger_homedefault set setype='cbCalendar' where setype='Calendar'", array());
 			// Reports
-			$contacts = Vtiger_Module::getInstance('Contacts');
 			$reps = $adb->query("select reportmodulesid,secondarymodules from vtiger_reportmodules where primarymodule='Calendar' or secondarymodules like '%Calendar%'");
 			while ($rep = $adb->fetch_array($reps)) {
 				$repid = $rep['reportmodulesid'];

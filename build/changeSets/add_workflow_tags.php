@@ -25,7 +25,6 @@ class add_workflow_tags extends cbupdaterWorker {
 			$this->markApplied(false);
 		} else {
 			require_once 'modules/com_vtiger_workflow/VTTaskManager.inc';
-			$taskTypes = array();
 			$defaultModules = array('include' => array(), 'exclude'=>array());
 			$taskType= array("name"=>"CBTagTask", "label"=>"CBTagTask", "classname"=>"CBTagTask",
 					 "classpath"=>"modules/com_vtiger_workflow/tasks/CBTagTask.inc",
