@@ -67,7 +67,6 @@ class DirectoryGroup extends Sabre\DAV\Collection {
 		$folder = array();
 		$records = $adb->query('select * from vtiger_attachmentsfolder ORDER BY sequence');
 		while ($row = $adb->fetch_array($records)) {
-			//$folder[] = new DirectoryGroup( $row['foldername'].' [D-'.$row['folderid'].']');
 			$folder[] = new DirectoryFolder($row['foldername'], $row['folderid']);
 		}
 		return $folder;

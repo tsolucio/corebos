@@ -48,9 +48,7 @@ class SessionManager {
 			HTTP_Session2::destroy();
 			throw new WebServiceException(WebServiceErrorCode::$SESSIONIDLE, 'Session has been invalidated due to lack of activity');
 		}
-		//echo '<br>is new: ', HTTP_Session2::isNew();
 		//invalid sessionId provided.
-		//echo '<br>get: ',$this->get($this->sessionVar);
 		if (!$this->get($this->sessionVar) && !HTTP_Session2::isNew()) {
 			$valid = false;
 			HTTP_Session2::destroy();
@@ -60,10 +58,6 @@ class SessionManager {
 	}
 
 	public function startSession($sid = null, $adoptSession = false, $sname = null) {
-		//if ($sid) {
-		//	HTTP_Session2::id($sid);
-		//}
-
 		if (!$sid || strlen($sid) ===0) {
 			$sid = null;
 		}
@@ -97,7 +91,6 @@ class SessionManager {
 	}
 
 	public function get($name) {
-		//echo "<br> getting for: ",$name," :value: ",HTTP_Session2::get($name);
 		return HTTP_Session2::get($name);
 	}
 

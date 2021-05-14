@@ -1582,7 +1582,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						array($entity_id)
 					);
 					for ($i = 0; $i < $adb->num_rows($sub_prod_query); $i++) {
-						//$sub_prod=array();
 						$id = $adb->query_result($sub_prod_query, $i, 'productid');
 						$str_sep = '';
 						if ($i > 0) {
@@ -1636,7 +1635,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						array($entity_id)
 					);
 					for ($i = 0; $i < $adb->num_rows($sub_prod_query); $i++) {
-						//$sub_prod=array();
 						$id = $adb->query_result($sub_prod_query, $i, 'productid');
 						$str_sep = '';
 						if ($i > 0) {
