@@ -1877,8 +1877,7 @@ function useInternalMailer() {
 }
 
 /**
- * the function is like unescape in javascript
- * added by dingjianting on 2006-10-1 for picklist editor
+ * the function is like unescape in javascript added for picklist editor
  */
 function utf8RawUrlDecode($source) {
 	global $default_charset;
@@ -2292,6 +2291,7 @@ function getRecordValues($id_array, $module) {
 function getDuplicateQuery($module, $field_values, $ui_type_arr) {
 	$tbl_col_fld = explode(',', $field_values);
 	$i=0;
+	$tbl = $cols = $fields = $tbl_cols = array();
 	foreach ($tbl_col_fld as $val) {
 		list($tbl[$i], $cols[$i], $fields[$i]) = explode('.', $val);
 		$tbl_cols[$i] = $tbl[$i]. '.' . $cols[$i];

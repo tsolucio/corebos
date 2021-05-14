@@ -3638,7 +3638,7 @@ function movefieldsStep1() {
 				for (var j=0; j<selectedColumnsObj.length; j++) {
 					selectedColumnsObj.options[j].value==availListObj.options[i].value;
 					if (selectedColumnsObj.options[j].value==availListObj.options[i].value) {
-						var rowFound=true;
+						rowFound=true;
 						var existingObj=selectedColumnsObj.options[j];
 						break;
 					}

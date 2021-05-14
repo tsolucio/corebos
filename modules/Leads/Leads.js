@@ -234,9 +234,9 @@ function callConvertLeadDiv(id) {
 			credentials: 'same-origin',
 			body: params
 		}
-	).then(response => response.text().then(response => {
+	).then(response => response.text().then(resptext => {
 		VtigerJS_DialogBox.unblock();
-		ldsModal.show('modalTitle', response, 'medium', "document.getElementById('ConvertLead').action.value='LeadConvertToEntities'; if (verifyConvertLeadData(ConvertLead)) {VtigerJS_DialogBox.block();document.getElementById('ConvertLead').submit();}");
+		ldsModal.show('modalTitle', resptext, 'medium', "document.getElementById('ConvertLead').action.value='LeadConvertToEntities'; if (verifyConvertLeadData(ConvertLead)) {VtigerJS_DialogBox.block();document.getElementById('ConvertLead').submit();}");
 		ldsModal.updateTitle(document.getElementById('convertLeadHeaderTitle').innerHTML);
 		vtlib_executeJavascriptInElement(document.getElementById('ConvertLead'));
 	}));

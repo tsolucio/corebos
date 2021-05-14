@@ -176,15 +176,13 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 	}
 	$list_result = $adb->pquery($query." LIMIT $limit_start_rec, $list_max_entries_per_page", array());
 
-	/* Save the related list in session for when we click in a register
-	 * from this list we will can navigate with the arrows left and right, to move only in this related list
-	 */
+	// Save the related list in the session so when we click on a register from this list we can navigate with the arrows and move only in this related list
 	$relcv = new CustomView();
 	$relviewId = $relcv->getViewId($relatedmodule);
 	ListViewSession::setSessionQuery($relatedmodule, $query, $relviewId);
 	coreBOS_Session::set('lvs^'.$relatedmodule.'^'.$relviewId.'^start', $start);
 
-	//Retreive the List View Table Header
+	//Retrieve the List View Table Header
 	$id = vtlib_purify($_REQUEST['record']);
 	$listview_header = getListViewHeader($focus, $relatedmodule, '', $sorder, $order_by, $id, '', $module, $skipActions);//"Accounts");
 	if ($noofrows > 15) {

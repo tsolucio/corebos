@@ -243,7 +243,7 @@ class VTQL_Lexer {
 				} else {
 					$yy_yymore_patterns = array (
 							1 => "^([ \t\r\n]+)",
-							4 => ""
+							4 => ''
 					);
 					// yymore is needed
 					do {

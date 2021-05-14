@@ -956,8 +956,7 @@ function vtws_getWebserviceTranslatedString($label) {
 		return $translation;
 	}
 
-	//if default language is not en_us then do the translation in en_us to eliminate the LBL_ bit
-	//of label.
+	//if default language is not en_us then do the translation in en_us to eliminate the LBL_ bit of label.
 	if ('en_us' != $defaultLanguage) {
 		$translation = vtws_getWebserviceTranslatedStringForLanguage($label, 'en_us');
 		if (!empty($translation)) {

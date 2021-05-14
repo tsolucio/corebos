@@ -40,18 +40,18 @@ class stubDAVDirectory extends Sabre\DAV\Collection {
 		switch ($treffer[2]) {
 			case '1':
 				return new MyDirectoryGroup('Leads');
-			break;
+				break;
 			case '2':
 				return new MyDirectoryGroup('Contacts');
-			break;
+				break;
 			case '3':
 				return new MyDirectoryGroup('Accounts');
-			break;
+				break;
+			default:
+				break;
 		}
 
-		if ($name == 'Leads') {
-		}
-		if ($name == '1. Leads') {
+		if ($name == 'Leads' || $name == '1. Leads') {
 			return new stubDAVDirectory('1. Leads');
 		}
 		$path = $this->myPath . '/' . $name;

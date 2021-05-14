@@ -745,13 +745,13 @@ class PearDatabase {
 			throw new Exception('empty arrays not allowed');
 		}
 		$l = '';
-		foreach ($a as $walk => $cur) {
-			$l .= ($l?',':'').$this->quote($cur);
+		foreach ($a as $cur) {
+			$l .= ($l ? ',' : '').$this->quote($cur);
 		}
 		return ' ( '.$l.' ) ';
 	}
 
-	// create an IN expression from an record list, take $field within each record
+	// create an IN expression from a record list, take $field within each record
 	public function sql_expr_datalist_from_records($a, $field) {
 		if (!is_array($a)) {
 			throw new Exception('not an array');
@@ -762,8 +762,9 @@ class PearDatabase {
 		if (!count($a)) {
 			throw new Exception('empty arrays not allowed');
 		}
-		foreach ($a as $walk => $cur) {
-			$l .= ($l?',':'').$this->quote($cur[$field]);
+		$l = '';
+		foreach ($a as $cur) {
+			$l .= ($l ? ',' : '').$this->quote($cur[$field]);
 		}
 		return ' ( '.$l.' ) ';
 	}

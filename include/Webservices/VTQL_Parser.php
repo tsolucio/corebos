@@ -1043,11 +1043,11 @@ Array (
 				self::$yyTracePrompt,
 				$yyNewState
 			);
-			fprintf(self::$yyTraceFILE, "%sStack:", self::$yyTracePrompt);
+			fprintf(self::$yyTraceFILE, '%sStack:', self::$yyTracePrompt);
 			for ($i = 1; $i <= $this->yyidx; $i++) {
 				fprintf(
 					self::$yyTraceFILE,
-					" %s",
+					' %s',
 					self::$yyTokenName[$this->yystack[$i]->major]
 				);
 			}
