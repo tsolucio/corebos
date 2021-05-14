@@ -926,7 +926,9 @@ function vtws_transferOwnership($ownerId, $newOwnerId, $delete = true) {
 
 function vtws_getWebserviceTranslatedStringForLanguage($label, $currentLanguage) {
 	static $translations = array();
-	$currentLanguage = vtws_getWebserviceCurrentLanguage();
+	if (empty($currentLanguage)) {
+		$currentLanguage = vtws_getWebserviceCurrentLanguage();
+	}
 	if (empty($translations[$currentLanguage])) {
 		include 'include/Webservices/language/'.$currentLanguage.'.lang.php';
 		$translations[$currentLanguage] = $webservice_strings;
