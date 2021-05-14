@@ -25,7 +25,6 @@ class stubDAVDirectory extends Sabre\DAV\Collection {
 	}
 
 	public function getChildren() {
-		$children = array();
 		// Loop through the directory, and create objects for each node
 	}
 

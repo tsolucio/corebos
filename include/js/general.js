@@ -3771,7 +3771,6 @@ function moveFieldDown() {
 			tempdisabled = selectedColumnsObj.options[nextpos].disabled;
 			selectedColumnsObj.options[nextpos].innerText=selectedColumnsObj.options[currpos].innerText;
 			selectedColumnsObj.options[nextpos].disabled = false;
-			selectedColumnsObj.options[nextpos];
 			selectedColumnsObj.options[currpos].innerText=temp;
 			selectedColumnsObj.options[currpos].disabled = tempdisabled;
 		} else if (browser_nn4 || browser_nn6) {
@@ -3779,7 +3778,6 @@ function moveFieldDown() {
 			tempdisabled = selectedColumnsObj.options[nextpos].disabled;
 			selectedColumnsObj.options[nextpos].text=selectedColumnsObj.options[currpos].text;
 			selectedColumnsObj.options[nextpos].disabled = false;
-			selectedColumnsObj.options[nextpos];
 			selectedColumnsObj.options[currpos].text=temp;
 			selectedColumnsObj.options[currpos].disabled = tempdisabled;
 		}

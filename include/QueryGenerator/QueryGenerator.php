@@ -338,14 +338,10 @@ class QueryGenerator {
 							} elseif ($fldmod=='UsersSec') {
 								if ($alias) {
 									$fldname=$fldname.' as userssec'.$fldname;
-								} else {
-									$fldname=$fldname;
 								}
 							} elseif ($fldmod=='UsersCreator') {
 								if ($alias) {
 									$fldname=$fldname.' as userscreator'.$fldname;
-								} else {
-									$fldname=$fldname;
 								}
 							} else {
 								if ($alias) {

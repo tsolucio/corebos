@@ -266,7 +266,6 @@ class VTQL_Lexer {
 			} else {
 				throw new Exception('Unexpected input at line' . $this->linenum . ': ' . $this->data [$this->index]);
 			}
-			break;
 		} while (true);
 	} // end function
 

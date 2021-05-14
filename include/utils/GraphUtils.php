@@ -51,9 +51,6 @@ function calculate_font_name($locale) {
 			$log->debug('< calculate_font_name');
 			return FF_DEJAVUSAN;
 	}
-
-	$log->debug('< calculate_font_name');
-	return FF_DEJAVUSAN;
 }
 
 /**This function is used to generate the n colors.

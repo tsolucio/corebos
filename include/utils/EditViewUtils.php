@@ -945,9 +945,7 @@ function getConvertSoToInvoice($focus, $so_focus, $soid) {
 		'ship_street','ship_city','ship_code','ship_pobox','ship_country','ship_state'
 	);
 	foreach ($fields as $fieldname) {
-		if (getFieldVisibilityPermission('SalesOrder', $current_user->id, $fieldname) == '0') {
-			$so_focus->column_fields[$fieldname] = $so_focus->column_fields[$fieldname];
-		} else {
+		if (getFieldVisibilityPermission('SalesOrder', $current_user->id, $fieldname) != '0') {
 			$so_focus->column_fields[$fieldname] = '';
 		}
 	}
@@ -1002,9 +1000,7 @@ function getConvertQuoteToInvoice($focus, $quote_focus, $quoteid) {
 		'ship_street','ship_city','ship_code','ship_pobox','ship_country','ship_state'
 	);
 	foreach ($fields as $fieldname) {
-		if (getFieldVisibilityPermission('Quotes', $current_user->id, $fieldname) == '0') {
-			$quote_focus->column_fields[$fieldname] = $quote_focus->column_fields[$fieldname];
-		} else {
+		if (getFieldVisibilityPermission('Quotes', $current_user->id, $fieldname) != '0') {
 			$quote_focus->column_fields[$fieldname] = '';
 		}
 	}
@@ -1053,9 +1049,7 @@ function getConvertQuoteToSoObject($focus, $quote_focus, $quoteid) {
 		'ship_street','ship_city','ship_code','ship_pobox','ship_country','ship_state'
 	);
 	foreach ($fields as $fieldname) {
-		if (getFieldVisibilityPermission('Quotes', $current_user->id, $fieldname) == '0') {
-			$quote_focus->column_fields[$fieldname] = $quote_focus->column_fields[$fieldname];
-		} else {
+		if (getFieldVisibilityPermission('Quotes', $current_user->id, $fieldname) != '0') {
 			$quote_focus->column_fields[$fieldname] = '';
 		}
 	}

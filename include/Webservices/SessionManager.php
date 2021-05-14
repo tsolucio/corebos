@@ -79,7 +79,6 @@ class SessionManager {
 			if (!$this->get($this->sessionVar)) {
 				HTTP_Session2::destroy();
 				throw new WebServiceException(WebServiceErrorCode::$SESSIONIDINVALID, 'Session Identifier provided is invalid');
-				$newSID = null;
 			}
 		}
 

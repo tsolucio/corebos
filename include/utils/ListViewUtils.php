@@ -1221,7 +1221,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 	global $log, $app_strings, $current_language, $currentModule, $adb, $current_user, $default_charset;
 	$log->debug('> getValue', [$field_result, 'list_result', $fieldname, 'focus', $module, $entity_id, $list_result_count, $mode, $popuptype]);
 
-	$tabid = getTabid($module);
 	return_module_language($current_language, $module);
 	$uicolarr = isset($field_result[$fieldname]) ? $field_result[$fieldname] : array('1'=>$fieldname);
 	foreach ($uicolarr as $key => $value) {
@@ -1243,9 +1242,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 
 			$displayValueArray = getEntityName($parent_module, $parent_id);
 			if (!empty($displayValueArray)) {
-				foreach ($displayValueArray as $key => $value) {
-					$value = $value;
-				}
+				$value = $displayValueArray[$parent_id];
 			}
 			$value = "<a href='index.php?module=$parent_module&action=DetailView&record=$parent_id' title='$valueTitle'>" . textlength_check($value) . '</a>';
 		} else {
@@ -1378,8 +1375,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		}
 	} elseif ($uitype == 13 && (!empty($_REQUEST['action']) && $_REQUEST['action'] != 'Popup' && (empty($_REQUEST['file']) || $_REQUEST['file'] != 'Popup'))) {
 		if (isset($_SESSION['internal_mailer']) && $_SESSION['internal_mailer'] == 1) {
-			$tabid = getTabid($module);
-			$fieldid = getFieldid($tabid, $fieldname);
+			$fieldid = getFieldid(getTabid($module), $fieldname);
 			if (empty($popuptype)) {
 				$value = '<a href="javascript:InternalMailer(' . $entity_id . ',' . $fieldid . ',\'' . $fieldname . '\',\'' . $module . '\',\'record_id\');">' . textlength_check($field_valEncoded) . '</a>';
 			} else {
@@ -1504,9 +1500,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						//ADDED TO CHECK THE FIELD PERMISSIONS FOR
 						$xyz = array('mailingstreet', 'mailingcity', 'mailingzip', 'mailingpobox', 'mailingcountry', 'mailingstate', 'otherstreet', 'othercity', 'otherzip', 'otherpobox', 'othercountry', 'otherstate');
 						for ($i = 0; $i < 12; $i++) {
-							if (getFieldVisibilityPermission($module, $current_user->id, $xyz[$i]) == '0') {
-								$cntct_focus->column_fields[$xyz[$i]] = $cntct_focus->column_fields[$xyz[$i]];
-							} else {
+							if (getFieldVisibilityPermission($module, $current_user->id, $xyz[$i]) != '0') {
 								$cntct_focus->column_fields[$xyz[$i]] = '';
 							}
 						}
@@ -1727,9 +1721,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
 					$xyz = array('bill_street', 'bill_city', 'bill_code', 'bill_pobox', 'bill_country', 'bill_state', 'ship_street', 'ship_city', 'ship_code', 'ship_pobox', 'ship_country', 'ship_state');
 					for ($i = 0; $i < 12; $i++) {
-						if (getFieldVisibilityPermission($module, $current_user->id, $xyz[$i]) == '0') {
-							$acct_focus->column_fields[$xyz[$i]] = $acct_focus->column_fields[$xyz[$i]];
-						} else {
+						if (getFieldVisibilityPermission($module, $current_user->id, $xyz[$i]) != '0') {
 							$acct_focus->column_fields[$xyz[$i]] = '';
 						}
 					}
@@ -1796,9 +1788,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 
 						$xyz = array('bill_street', 'bill_city', 'bill_code', 'bill_pobox', 'bill_country', 'bill_state', 'ship_street', 'ship_city', 'ship_code', 'ship_pobox', 'ship_country', 'ship_state');
 						for ($i = 0; $i < 12; $i++) {
-							if (getFieldVisibilityPermission('Accounts', $current_user->id, $xyz[$i]) == '0') {
-								$acct_focus->column_fields[$xyz[$i]] = $acct_focus->column_fields[$xyz[$i]];
-							} else {
+							if (getFieldVisibilityPermission('Accounts', $current_user->id, $xyz[$i]) != '0') {
 								$acct_focus->column_fields[$xyz[$i]] = '';
 							}
 						}

@@ -27,7 +27,7 @@ function verifyConvertLeadData(form) {
 			return false;
 		}
 	}
-	var i=0;
+	var i;
 	if (form.select_account!=null && form.select_account.checked) {
 		for (i=0; i<no_ele; i++) {
 			if ((convertForm[i].getAttribute('module')=='Accounts') && (convertForm[i].getAttribute('record')=='true')) {
@@ -96,7 +96,7 @@ function verifyConvertLeadData(form) {
 }
 
 function togglePotFields(form) {
-	if (form.createpotential.checked == true) {
+	if (form.createpotential.checked) {
 		form.potential_name.disabled = true;
 		form.closedate.disabled = true;
 		form.potential_amount.disabled = true;

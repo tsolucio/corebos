@@ -56,13 +56,7 @@ function validate_IBAN_BankAccount($field, $iban, $params, $fields) {
 		// obtenemos los siguientes dos valores
 		$siguienteNumeros = substr($iban, 2, 2);
 		$valor = substr($iban, 4, strlen($iban)) . $valorLetra1 . $valorLetra2 . $siguienteNumeros;
-		if (bcmod($valor, 97) == 1) {
-			return true;
-		} else {
-			return false;
-		}
-	} else {
-		return false;
+		return (bcmod($valor, 97) == 1);
 	}
 	return false;
 }

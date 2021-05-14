@@ -391,7 +391,6 @@ function validateTypeforCFMapping(leadtype, leadtypeofdata, type, typeofdata, fi
 						document.getElementById(field_name).value = '';
 						return false;
 					}
-					break;
 				case 'N':
 					if (lead_tod[2].indexOf(',')>0) {
 						var lead_dec = lead_tod[2].split(',');
@@ -413,7 +412,6 @@ function validateTypeforCFMapping(leadtype, leadtypeofdata, type, typeofdata, fi
 						document.getElementById(field_name).value = '';
 						return false;
 					}
-					break;
 				}
 			}
 		} else {

@@ -723,13 +723,12 @@ Array (
 	}
 
 	/**
-	 * The following function deletes the value associated with a
-	 * symbol.  The symbol can be either a terminal or nonterminal.
+	 * The following function deletes the value associated with a symbol. The symbol can be either a terminal or nonterminal.
 	 * @param int the symbol code
 	 * @param mixed the symbol's value
 	 */
 	public static function yy_destructor($yymajor, $yypminor) {
-		switch ($yymajor) {
+		//switch ($yymajor) {
 		/* Here is inserted the actions which take place when a
 		** terminal or non-terminal is destroyed.  This can happen
 		** when the symbol is popped from the stack during a
@@ -740,9 +739,9 @@ Array (
 		** which appear on the RHS of the rule, but which are not used
 		** inside the C code.
 		*/
-			default:
-				break;   /* If no destructor action specified: do nothing */
-		}
+		// 	default:
+		// 		break;   /* If no destructor action specified: do nothing */
+		// }
 	}
 
 	/**
@@ -1031,8 +1030,6 @@ Array (
 #line 462 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
 
 			throw new WebServiceException(WebServiceErrorCode::$QUERYSYNTAX, 'Parser stack overflow');
-#line 1046 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
-			return;
 		}
 		$yytos = new VTQL_ParseryyStackEntry;
 		$yytos->stateno = $yyNewState;
