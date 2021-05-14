@@ -166,7 +166,7 @@ class CRMFile extends Sabre\DAV\File {
 	public function get() {
 		global $log;
 		if (empty($this->filepath)) {
-			return;
+			return false;
 		}
 		$file = fopen($this->filepath, 'r');
 		if ($file) {
@@ -174,7 +174,7 @@ class CRMFile extends Sabre\DAV\File {
 		} else {
 			$log->debug('WEBDAV: unable to open file: '.$this->filepath);
 		}
-		return;
+		return false;
 	}
 
 	public function getSize() {
