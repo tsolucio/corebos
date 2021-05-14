@@ -299,9 +299,7 @@ function vtws_getWebserviceEntityId($entityName, $id) {
 }
 
 function vtws_addDefaultModuleTypeEntity($moduleName) {
-	$isModule = 1;
-	$moduleHandler = array('file'=>'include/Webservices/VtigerModuleOperation.php', 'class'=>'VtigerModuleOperation');
-	return vtws_addModuleTypeWebserviceEntity($moduleName, $moduleHandler['file'], $moduleHandler['class'], $isModule);
+	vtws_addModuleTypeWebserviceEntity($moduleName, 'include/Webservices/VtigerModuleOperation.php', 'VtigerModuleOperation');
 }
 
 function vtws_addModuleTypeWebserviceEntity($moduleName, $filePath, $className) {
@@ -311,11 +309,9 @@ function vtws_addModuleTypeWebserviceEntity($moduleName, $filePath, $className) 
 		array($moduleName, $filePath, $className)
 	);
 	if ($checkres && $adb->num_rows($checkres) == 0) {
-		$isModule=1;
-		$entityId = $adb->getUniqueID('vtiger_ws_entity');
 		$adb->pquery(
 			'insert into vtiger_ws_entity(id,name,handler_path,handler_class,ismodule) values (?,?,?,?,?)',
-			array($entityId,$moduleName,$filePath,$className,$isModule)
+			array($adb->getUniqueID('vtiger_ws_entity'), $moduleName, $filePath, $className, 1)
 		);
 	}
 }

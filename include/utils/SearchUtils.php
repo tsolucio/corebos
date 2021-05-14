@@ -1115,8 +1115,8 @@ function generateAdvancedSearchSql($advfilterlist) {
 						}
 						$advfiltersql = ' ('.$advorsqls.') ';
 					} elseif ($comparator == 'bw' && count($valuearray) == 2) {
-						$advfiltersql = '('.$columns[0].'.'.$columns[1]." between '".getValidDBInsertDateTimeValue(trim($valuearray[0]), $datatype)."' and '"
-							.getValidDBInsertDateTimeValue(trim($valuearray[1]), $datatype)."')";
+						$advfiltersql = '('.$columns[0].'.'.$columns[1]." between '".getValidDBInsertDateTimeValue(trim($valuearray[0]))."' and '"
+							.getValidDBInsertDateTimeValue(trim($valuearray[1]))."')";
 					} else {
 						if ($currentModule == 'Documents' && $columns[1]=='folderid') {
 							$advfiltersql = 'vtiger_attachmentsfolder.foldername'.getAdvancedSearchComparator($comparator, trim($value), $datatype);
@@ -1158,7 +1158,7 @@ function getAdvancedSearchComparator($comparator, $value, $datatype = '') {
 	$value=html_entity_decode(trim($value), ENT_QUOTES, $default_charset);
 	$value = $adb->sql_escape_string($value);
 	if ($datatype == 'DT' || $datatype == 'D') {
-		$value = getValidDBInsertDateTimeValue($value, $datatype);
+		$value = getValidDBInsertDateTimeValue($value);
 	}
 
 	if ($comparator == 'e') {
