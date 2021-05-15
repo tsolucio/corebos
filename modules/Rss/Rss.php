@@ -16,10 +16,12 @@ require_once 'vtlib/Vtiger/Feed/Parser.php';
 
 class Rss extends CRMEntity {
 	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-account', 'class' => 'slds-icon', 'icon'=>'news');
+	public $tab_name = array();
 }
 
 class vtigerRSS extends CRMEntity {
 	public $rsscache_time = 1200;
+	public $tab_name = array();
 
 	/** Function to get the Rss Feeds from the Given URL
 	  * This Function accepts the url string as the argument
