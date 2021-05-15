@@ -307,11 +307,11 @@ function displayCoords(currObj,obj,mode,curr_row)
    <tr>
 	<td colspan="3">
 		{if 'Products'|vtlib_isModuleActive}
-		<input type="button" name="Button" class="crmbutton small create" value="{$APP.LBL_ADD_PRODUCT}" onclick="fnAddProductRow('{$MODULE}','{$IMAGE_PATH}');" />
+		<input type="button" name="Button" class="crmbutton small create" value="{$APP.LBL_ADD_PRODUCT}" onclick="fnAddProductRow('{$MODULE}');" />
 		{/if}
 		{if 'Services'|vtlib_isModuleActive}
 		&nbsp;&nbsp;
-		<input type="button" name="Button" class="crmbutton small create" value="{$APP.LBL_ADD_SERVICE}" onclick="fnAddServiceRow('{$MODULE}','{$IMAGE_PATH}');" />
+		<input type="button" name="Button" class="crmbutton small create" value="{$APP.LBL_ADD_SERVICE}" onclick="fnAddServiceRow('{$MODULE}');" />
 		{/if}
 	</td>
    </tr>

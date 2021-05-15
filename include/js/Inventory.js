@@ -207,7 +207,7 @@ function getProdListBody() {
 	return prodListBody;
 }
 
-function deleteRow(module, i, image_path) {
+function deleteRow(module, i) {
 	rowCnt--;
 
 	document.getElementById('row'+i).style.display = 'none';
@@ -221,7 +221,6 @@ function deleteRow(module, i, image_path) {
 		}
 	}
 	// Added For product Reordering starts
-	image_path = document.getElementById('hidImagePath').value;
 	var iMax = document.getElementById('proTab').querySelectorAll('[id^="row"]').length;
 	for (var iCount=i; iCount>=1; iCount--) {
 		if (document.getElementById('row'+iCount) && document.getElementById('row'+iCount).style.display != 'none') {
@@ -669,7 +668,7 @@ function validateTaxes(countname) {
 }
 
 //Function used to add a new product row in PO, SO, Quotes and Invoice
-function fnAddProductRow(module, image_path) {
+function fnAddProductRow(module) {
 	rowCnt++;
 
 	var tableName = document.getElementById('proTab');
@@ -702,7 +701,7 @@ function fnAddProductRow(module, image_path) {
 
 	//Delete link
 	colone.className = 'crmTableRow small';
-	colone.innerHTML='<img src="themes/softed/images/delete.gif" border="0" onclick="deleteRow(\''+module+'\','+count+',\'themes/images/\')" style="cursor:pointer;" title="'+alert_arr.LBL_DELETE_EMAIL+'"><input id="deleted'+count+'" name="deleted'+count+'" type="hidden" value="0"><br/><br/>&nbsp;<a href="javascript:moveUpDown(\'UP\',\''+module+'\','+count+')" title="'+alert_arr.MoveUp+'"><img src="themes/images/up_layout.gif" border="0"></a>';
+	colone.innerHTML='<img src="themes/softed/images/delete.gif" border="0" onclick="deleteRow(\''+module+'\','+count+')" style="cursor:pointer;" title="'+alert_arr.LBL_DELETE_EMAIL+'"><input id="deleted'+count+'" name="deleted'+count+'" type="hidden" value="0"><br/><br/>&nbsp;<a href="javascript:moveUpDown(\'UP\',\''+module+'\','+count+')" title="'+alert_arr.MoveUp+'"><img src="themes/images/up_layout.gif" border="0"></a>';
 	/* Product Re-Ordering Feature Code Addition Starts */
 	var prevLineItemId = document.getElementById('lineitem_id'+iPrevCount) == undefined ? '' : document.getElementById('lineitem_id'+iPrevCount).value;
 
@@ -1410,7 +1409,7 @@ function moveUpDown(sType, oModule, iIndex) {
 	calcTotal();
 }
 
-function InventorySelectAll(mod, image_pth) {
+function InventorySelectAll(mod) {
 	if (document.selectall.selected_id != undefined) {
 		var x = document.selectall.selected_id.length;
 		var y=0;
@@ -1456,7 +1455,7 @@ function InventorySelectAll(mod, image_pth) {
 					var dto = prod_array['dto'];
 					var subprod_ids = prod_array['subprod_ids'];
 					if (y>0) {
-						row_id = window.opener.fnAddProductRow(mod, image_pth);
+						row_id = window.opener.fnAddProductRow(mod);
 					} else {
 						row_id = prod_array['rowid'];
 					}
