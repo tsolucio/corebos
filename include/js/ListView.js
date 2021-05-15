@@ -729,8 +729,7 @@ function check_object(sel_id, groupParentElementId) {
 		selected = trim(document.getElementById('allselectedboxes').value);
 		skip = document.getElementById('excludedRecords').value;
 	}
-	var select_global = new Array();
-	select_global = selected.split(';');
+	var select_global = selected.split(';');
 	var box_value = sel_id.checked;
 	var id = sel_id.value;
 	var duplicate = select_global.indexOf(id);
@@ -798,13 +797,8 @@ function check_object(sel_id, groupParentElementId) {
 function update_selected_checkbox() {
 	var cur = document.getElementById('current_page_boxes').value;
 	var tocheck = document.getElementById('allselectedboxes').value;
-	var cursplit = new Array();
-	cursplit = cur.split(';');
-
-	var selsplit = new Array();
-	selsplit = tocheck.split(';');
-
-	//	var n=selsplit.length;
+	var cursplit = cur.split(';');
+	var selsplit = tocheck.split(';');
 	var selectCurrentPageRecCheckValue = true;
 	for (var j=0; j<cursplit.length; j++) {
 		if (selsplit.indexOf(cursplit[j])!= '-1') {

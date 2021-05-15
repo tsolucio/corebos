@@ -226,7 +226,7 @@ function saveEntries(selMaxName) {
 	var sid=sidarr[1];
 	document.getElementById('refresh_'+sid).innerHTML=document.getElementById('vtbusy_homeinfo').innerHTML;
 	cancelEntries('editRowmodrss_'+sid);
-	showmax=document.getElementById(selMaxName).value;
+	var showmax=document.getElementById(selMaxName).value;
 	jQuery.ajax({
 		method: 'POST',
 		url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&showmaxval='+showmax+'&sid='+sid

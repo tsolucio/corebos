@@ -191,17 +191,18 @@ function fnAddEvent(obj, CurrObj, start_date, end_date, start_hr, start_min, sta
 }
 
 function fnRemoveEvent() {
-	var tagName = document.getElementById('addEventDropDown').style.display = 'none';
+	document.getElementById('addEventDropDown').style.display = 'none';
 }
+
 function fnRemoveButton() {
-	var tagName = document.getElementById('addButtonDropDown').style.display = 'none';
+	document.getElementById('addButtonDropDown').style.display = 'none';
 }
 
 function fnShowEvent() {
-	var tagName = document.getElementById('addEventDropDown').style.display= 'block';
+	document.getElementById('addEventDropDown').style.display = 'block';
 }
 function fnShowButton() {
-	var tagName = document.getElementById('addButtonDropDown').style.display= 'block';
+	document.getElementById('addButtonDropDown').style.display = 'block';
 }
 
 function updateStatus(record, status, view, hour, day, month, year, type) {
