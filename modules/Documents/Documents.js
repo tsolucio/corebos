@@ -7,59 +7,6 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-function UpdateAjaxSave(label, fid, fldname, fileOrFolder) {
-	var fldVal = document.getElementById('txtbox_' + label).value;
-	if (fldVal.replace(/^\s+/g, '').replace(/\s+$/g, '').length == 0) {
-		alert(alert_arr.FOLDERNAME_EMPTY);
-		return false;
-	}
-	if (fldVal.replace(/^\s+/g, '').replace(/\s+$/g, '').length >= 21) {
-		alert(alert_arr.FOLDER_NAME_TOO_LONG);
-		return false;
-	}
-	if (fldVal.match(/['"\\%+?]/)) {
-		alert(alert_arr.NO_SPECIAL_CHARS_DOCS);
-		return false;
-	}
-	if (fileOrFolder == 'file') {
-		var url = 'action=DocumentsAjax&mode=ajax&ajax=true&file=Save&module=Documents&fileid=' + fid + '&fldVal=' + fldVal + '&fldname=' + fldname + '&act=ajaxEdit';
-	} else {
-		var foldername = encodeURIComponent(fldVal);
-		foldername = foldername.replace(/^\s+/g, '').replace(/\s+$/g, '');
-		foldername = foldername.replace(/&/gi, '*amp*');
-		var url = 'action=DocumentsAjax&mode=ajax&ajax=true&file=SaveFolder&module=Documents&record=' + fid + '&foldername=' + fldVal + '&savemode=Save';
-	}
-	if (fldname == 'status') {
-		fldVal = document.getElementById('txtbox_'+label).options[document.getElementById('txtbox_' + label).options.selectedIndex].text;
-		gtempselectedIndex = document.getElementById('txtbox_' + label).options.selectedIndex;
-	}
-	document.getElementById('status').style.display = 'block';
-	jQuery.ajax({
-		method: 'POST',
-		url: 'index.php?'+ url
-	}).done(function (response) {
-		var item = response;
-		document.getElementById('status').style.display = 'none';
-		if (item.indexOf('Failure') > -1) {
-			var ihtml = '<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td class=small bgcolor=red><font color=white size=2><b>'
-				+ alert_arr.LBL_UNABLE_TO_UPDATE + '</b></font></td></tr></table>';
-			document.getElementById('lblError').innerHTML = ihtml;
-			setTimeout(hidelblError, 3000);
-		} else if (item.indexOf('DUPLICATE_FOLDERNAME') > -1) {
-			alert(alert_arr.DUPLICATE_FOLDER_NAME);
-		} else {
-			document.getElementById('dtlview_' + label).innerHTML = fldVal;
-			eval('hndCancel(\'dtlview_' + label + '\',\'editarea_' + label + '\',\'' + label + '\')');
-			if (fldname == 'status') {
-				document.getElementById('txtbox_' + label).selectedIndex = gtempselectedIndex;
-			} else {
-				document.getElementById('txtbox_' + label).value = fldVal;
-			}
-			eval(item);
-		}
-	});
-}
-
 function closeFolderCreate() {
 	document.getElementById('folder_id').value = '';
 	document.getElementById('folder_name').value = '';
