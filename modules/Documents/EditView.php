@@ -171,7 +171,7 @@ if (isset($_REQUEST['contact_id'])) {
 		if ($res && $adb->num_rows($res)>0) {
 			$focus->column_fields['folderid'] = $adb->query_result($res, 0, 0);
 		} else {
-			$fid = Documents::createFolder(html_entity_decode(getAccountName($accid, ENT_QUOTES, $default_charset)));
+			$fid = Documents::createFolder(html_entity_decode(getAccountName($accid), ENT_QUOTES, $default_charset));
 			if ($fid) {
 				$focus->column_fields['folderid'] = $fid;
 			}
