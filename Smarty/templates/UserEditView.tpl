@@ -8,17 +8,8 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/ColorPicker2.js"></script>
 <script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
-var cp2 = new ColorPicker('window');
-
-function pickColor(color)
-{ldelim}
-	ColorPicker_targetInput.value = color;
-	ColorPicker_targetInput.style.backgroundColor = color;
-{rdelim}
-
 function openPopup(){ldelim}
 	window.open("index.php?module=Users&action=UsersAjax&file=RolePopup","roles_popup_window","height=425,width=640,toolbar=no,menubar=no,dependent=yes,resizable =no");
 {rdelim}

@@ -8,7 +8,6 @@
 * All Rights Reserved.
 ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/ColorPicker2.js"></script>
 <script type="text/javascript" src="include/js/dtlviewajax.js"></script>
 <script type='text/javascript' src="include/js/PasswordManagement.js"></script>
 <script type="text/javascript" src="modules/Users/ChangePassword.js"></script>
