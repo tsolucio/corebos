@@ -962,6 +962,8 @@ $app_strings = array (
 'Mailing Po Box' => 'Cx. Postal correspondência',
 'Other Po Box' => 'Cx. Postal alternativo',
 'Image' => 'Imagem',
+'Unknown' => 'Unknown',
+'Compressed' => 'Compressed',
 
 //Export Records STARTS--->
 'LBL_EXPORT_TYPE_1'=>'Exportar Tipo1:',

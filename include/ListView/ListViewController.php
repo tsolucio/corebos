@@ -276,31 +276,8 @@ class ListViewController {
 					$fileIdQuery = 'select attachmentsid from vtiger_seattachmentsrel where crmid=?';
 					$fileIdRes = $db->pquery($fileIdQuery, array($docid));
 					$fileId = $db->query_result($fileIdRes, 0, 'attachmentsid');
-					$fileicon = '';
-					if ($downloadtype == 'I') {
-						$ext =substr($value, strrpos($value, '.') + 1);
-						$ext = strtolower($ext);
-						if ($value != '') {
-							if ($ext == 'bin' || $ext == 'exe' || $ext == 'rpm') {
-								$fileicon = "<img src='" . vtiger_imageurl('fExeBin.gif', $theme)."' hspace='3' align='absmiddle' border='0'>";
-							} elseif ($ext == 'jpg' || $ext == 'gif' || $ext == 'bmp') {
-								$fileicon = "<img src='".vtiger_imageurl('fbImageFile.gif', $theme)."' hspace='3' align='absmiddle' border='0'>";
-							} elseif ($ext == 'txt' || $ext == 'doc' || $ext == 'xls') {
-								$fileicon = "<img src='".vtiger_imageurl('fbTextFile.gif', $theme)."' hspace='3' align='absmiddle' border='0'>";
-							} elseif ($ext == 'zip' || $ext == 'gz' || $ext == 'rar') {
-								$fileicon = "<img src='".vtiger_imageurl('fbZipFile.gif', $theme)."' hspace='3' align='absmiddle'	border='0'>";
-							} else {
-								$fileicon = "<img src='".vtiger_imageurl('fbUnknownFile.gif', $theme)."' hspace='3' align='absmiddle' border='0'>";
-							}
-						}
-					} elseif ($downloadtype == 'E') {
-						if (trim($value) != '') {
-							$fileicon = "<img src='" . vtiger_imageurl('fbLink.gif', $theme)."' alt='".getTranslatedString('LBL_EXTERNAL_LNK', $module).
-								"' title='".getTranslatedString('LBL_EXTERNAL_LNK', $module)."' hspace='3' align='absmiddle' border='0'>";
-						} else {
-							$value = '--';
-						}
-					} else {
+					$fileicon = FileField::getFileIcon($value, $downloadtype, $module);
+					if ($fileicon=='') {
 						$value = ' --';
 					}
 					if ($fileName != '' && $status == 1) {

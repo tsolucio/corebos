@@ -668,37 +668,10 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							}
 							if ($fieldname == 'filename') {
 								$downloadtype = $adb->query_result($list_result, $i, 'filelocationtype');
-								$fileicon = '';
-								if ($downloadtype == 'I') {
-									$fld_value = $value;
-									$ext_pos = strrpos($fld_value, '.');
-									$ext = substr($fld_value, $ext_pos + 1);
-									$ext = strtolower($ext);
-									if ($value != '') {
-										if ($ext == 'bin' || $ext == 'exe' || $ext == 'rpm') {
-											$fileicon = "<img src='" . vtiger_imageurl('fExeBin.gif', $theme) . "' hspace='3' align='absmiddle' border='0'>";
-										} elseif ($ext == 'jpg' || $ext == 'gif' || $ext == 'bmp') {
-											$fileicon = "<img src='" . vtiger_imageurl('fbImageFile.gif', $theme) . "' hspace='3' align='absmiddle' border='0'>";
-										} elseif ($ext == 'txt' || $ext == 'doc' || $ext == 'xls') {
-											$fileicon = "<img src='" . vtiger_imageurl('fbTextFile.gif', $theme) . "' hspace='3' align='absmiddle' border='0'>";
-										} elseif ($ext == 'zip' || $ext == 'gz' || $ext == 'rar') {
-											$fileicon = "<img src='" . vtiger_imageurl('fbZipFile.gif', $theme) . "' hspace='3' align='absmiddle'	border='0'>";
-										} else {
-											$fileicon = "<img src='" . vtiger_imageurl('fbUnknownFile.gif', $theme) . "' hspace='3' align='absmiddle' border='0'>";
-										}
-									}
-								} elseif ($downloadtype == 'E') {
-									if (trim($value) != '') {
-										$fld_value = $value;
-										$fileicon = "<img src='" . vtiger_imageurl('fbLink.gif', $theme) . "' alt='" . getTranslatedString('LBL_EXTERNAL_LNK', $module)
-											."' title='" . getTranslatedString('LBL_EXTERNAL_LNK', $module) . "' hspace='3' align='absmiddle' border='0'>";
-									} else {
-										$fld_value = '--';
-										$fileicon = '';
-									}
-								} else {
-									$fld_value = ' --';
-									$fileicon = '';
+								$fld_value = $value;
+								$fileicon = FileField::getFileIcon($value, $downloadtype, $module);
+								if ($fileicon=='') {
+									$fld_value = '--';
 								}
 
 								$file_name = $adb->query_result($list_result, $i, 'filename');
