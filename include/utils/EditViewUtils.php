@@ -1509,7 +1509,7 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 				$tax_percent = $tax_details[$tax_count]['percentage'];
 			}
 		} else {
-			$tax_percent = $tax_details[$tax_count]['percentage'];//$adb->query_result($result,0,$tax_name);
+			$tax_percent = $tax_details[$tax_count]['percentage'];
 		}
 
 		if ($tax_percent == '' || $tax_percent == 'NULL') {
@@ -1561,7 +1561,6 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 	$product_Detail[$j]['final_details']['grandTotal'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($grandTotal, null, true), null, true);
 
 	$log->debug('< getAssociatedProducts');
-	// return array();
 	if (GlobalVariable::getVariable('Inventory_Check_Invoiced_Lines', 0, $currentModule) == 1) {
 		$res_prddtl = array();
 		$prdkey = 1;

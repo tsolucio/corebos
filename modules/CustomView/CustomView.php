@@ -856,7 +856,6 @@ class CustomView extends CRMEntity {
 		if (isset($stdfilterlist)) {
 			$startDateTime = $endDateTime = '';
 			$filtercolumn = $stdfilterlist['columnname'];
-			//$filtertype = $stdfilterlist['stdfilter'];
 			if (!empty($stdfilterlist['startdate'])) {
 				$startDateTime = new DateTimeField($stdfilterlist['startdate'] . ' ' . date('H:i:s'));
 				$userStartDate = $startDateTime->getDisplayDate();

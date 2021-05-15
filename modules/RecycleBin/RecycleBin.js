@@ -48,7 +48,6 @@ function changeModule(pickmodule) {
 function massRestore() {
 	var excludedRecords = document.getElementById('excludedRecords').value;
 	var select_options  =  document.getElementById('allselectedboxes').value;
-	//var searchurl = document.getElementById('search_url').value;
 	var numOfRows = document.getElementById('numOfRows').value;
 	var idstring = '';
 	if (select_options=='all') {
@@ -197,7 +196,6 @@ function callEmptyRecyclebin(id) {
 	}
 	var recbutton  =  document.getElementById('selectCurrentPageRec');
 	var allrec;
-	//var searchurl = document.getElementById('search_url').value;
 	var numOfRows = document.getElementById('numOfRows').value;
 	var idstring = '';
 	if (recbutton.checked) {

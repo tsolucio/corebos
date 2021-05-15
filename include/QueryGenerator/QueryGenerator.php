@@ -616,9 +616,7 @@ class QueryGenerator {
 				foreach ($moduleList as $module) {
 					if ($module == 'Users' && $baseModule != 'Users') {
 						$tableJoinCondition[$fieldName]['vtiger_users'.$fieldName] = $baseTable.'.'.$fldcolname.' = vtiger_users'.$fieldName.'.id';
-						//$tableJoinCondition[$fieldName]['vtiger_groups'.$fieldName] = $baseTable.'.'.$fldcolname.' = vtiger_groups'.$fieldName.'.groupid';
 						$tableJoinMapping['vtiger_users'.$fieldName] = 'LEFT JOIN vtiger_users AS';
-						//$tableJoinMapping['vtiger_groups'.$fieldName] = 'LEFT JOIN vtiger_groups AS';
 					}
 				}
 			} elseif ($field->getFieldDataType() == 'owner') {

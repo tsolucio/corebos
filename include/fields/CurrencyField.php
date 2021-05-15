@@ -351,8 +351,6 @@ class CurrencyField {
 		if ($skipConversion == false) {
 			$value = self::convertToDollar($value, $this->conversionRate);
 		}
-		//$value = round($value, $this->numberOfDecimal);
-
 		return $value;
 	}
 

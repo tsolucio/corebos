@@ -10,7 +10,6 @@
 
 function Contacts_sendCustomerPortalLoginDetails($entityData) {
 	$adb = PearDatabase::getInstance();
-	//$moduleName = $entityData->getModuleName();
 	$wsId = $entityData->getId();
 	$parts = explode('x', $wsId);
 	$entityId = $parts[1];

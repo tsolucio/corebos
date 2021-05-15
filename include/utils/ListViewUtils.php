@@ -618,10 +618,8 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 				}
 				if ($hasGlobalReadPermission || in_array($fieldname, $field) || $fieldname == '') {
 					if ($fieldname == '') {
-						//$table_name = '';
 						$column_name = '';
 						foreach ($tableinfo as $colname) {
-							//$table_name = $tablename;
 							$column_name = $colname;
 						}
 						$value = $adb->query_result($list_result, $i, $column_name);
@@ -997,10 +995,8 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 
 				if ($hasGlobalReadPermission || in_array($fieldname, $field) || $module == 'Users') {
 					if ($fieldname == '') {
-						//$table_name = '';
 						$column_name = '';
 						foreach ($tableinfo as $colname) {
-							//$table_name = $tablename;
 							$column_name = $colname;
 						}
 						$value = $adb->query_result($list_result, $i, $column_name);
@@ -1093,7 +1089,6 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 					array($entity_id)
 				);
 				for ($k = 0; $k < $adb->num_rows($sub_prod_query); $k++) {
-					//$sub_prod=array();
 					$id = $adb->query_result($sub_prod_query, $k, 'productid');
 					$str_sep = '';
 					if ($k > 0) {
@@ -3075,7 +3070,6 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
 	$urldata = "module=$module&action={$module}Ajax&file=DetailViewAjax&record={$recordid}&" .
 			"ajxaction=LOADRELATEDLIST&header={$header}&relation_id={$relatedListRow['relation_id']}" .
 			"&actions={$actions}&{$url_qry}";
-	// $formattedHeader = str_replace(' ', '', $related_module);
 	$formattedHeader = str_replace(' ', '', $header);
 	$target = 'tbl_' . $module . '_' . $formattedHeader;
 	$imagesuffix = $module . '_' . $formattedHeader;

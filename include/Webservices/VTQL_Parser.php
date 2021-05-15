@@ -988,8 +988,6 @@ Array (
 	 * @param int The look-ahead token
 	 */
 	public function yy_find_reduce_action($stateno, $iLookAhead) {
-		/* $stateno = $this->yystack[$this->yyidx]->stateno; */
-
 		if (!isset(self::$yy_reduce_ofst[$stateno])) {
 			return self::$yy_default[$stateno];
 		}
@@ -1158,9 +1156,6 @@ Array (
 		if ($this->yystack[$this->yyidx + -5]->minor) {
 			$this->out['from'] = $this->yystack[$this->yyidx + -5]->minor ;
 		}
-// if ($this->yystack[$this->yyidx]->minor) {
-// 	$this->out['semi_colon'] = self::SEMICOLON;
-// }
 		if ($this->out['select']) {
 			$this->buildSelectStmt($this->out);
 		}
@@ -1523,8 +1518,7 @@ Array (
 		while ($this->yyidx >= 0) {
 			$this->yy_pop_parser_stack();
 		}
-		/* Here code is inserted which will be executed whenever the
-		** parser accepts */
+		/* Here code is inserted which will be executed whenever the parser accepts */
 #line 452 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
 
 		$this->success = true;
@@ -1542,9 +1536,9 @@ Array (
 	 * @param mixed any extra arguments that should be passed to handlers
 	 */
 	public function doParse($yymajor, $yytokenvalue) {
-//		$yyact;			/* The parser action. */
-//		$yyendofinput;	 /* True if we are at the end of input */
-		$yyerrorhit = 0;   /* True if yymajor has invoked an error */
+		// $yyact contians the parser action
+		// $yyendofinput containss True if we are at the end of input
+		$yyerrorhit = 0; /* True if yymajor has invoked an error */
 
 		/* (re)initialize the parser, if necessary */
 		if ($this->yyidx === null || $this->yyidx < 0) {

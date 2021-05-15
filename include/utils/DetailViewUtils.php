@@ -219,8 +219,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$options = array();
 		$selected_entries = array();
 		$selected_entries = explode(' |##| ', $col_fields[$fieldname]);
-		//$selected_entries = array_combine($selected_entries, $selected_entries);
-		//$picklistValues = array_merge($picklistValues, $selected_entries);
 
 		if (!empty($picklistValues)) {
 			foreach ($picklistValues as $order => $pickListValue) {
@@ -321,8 +319,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			} else {
 				$label_fld['link'][] = 'index.php?module=Users&action=DetailView&record=' . $owner_id;
 			}
-			//$label_fld["secid"][] = $groupid;
-			//$label_fld["link"][] = "index.php?module=Settings&action=GroupDetailView&groupId=".$groupid;
 		}
 
 		//Security Checks
@@ -337,7 +333,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		}
 
 		global $current_user;
-		//$value = $user_id;
 		if ($owner_id != '') {
 			if ($user == 'yes') {
 				$label_fld ['options'][] = 'User';
@@ -347,10 +342,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 				$user_style = 'display:block';
 				$team_style = 'display:none';
 			} else {
-				//$record = $col_fields["record_id"];
-				//$module = $col_fields['record_module'];
 				$label_fld ['options'][] = 'Group';
-				//$assigned_group_id = $owner_id;
 				$assigned_user_id = '';
 				$user_checked = '';
 				$team_checked = 'checked';
@@ -580,7 +572,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 				//decode_html  - added to handle UTF-8   characters in file names
 				//urlencode    - added to handle special characters like #, %, etc.,
 				$image_array[] = urlencode(decode_html($adb->query_result($result_image, $image_iter, 'name')));
-				//$image_orgname_array[] = decode_html($adb->query_result($result_image, $image_iter, 'name'));
 
 				$imagepath_array[] = $adb->query_result($result_image, $image_iter, 'path');
 			}
@@ -1013,16 +1004,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			if ($fieldname == 'filetype' && $col_fields['filelocationtype'] == 'E') {
 				$label_fld[] = ' --';
 			}
-			/* if($fieldname == 'filestatus')
-			  {
-			  $filestatus = $col_fields[$fieldname];
-			  if($filestatus == 0)
-			  $label_fld[]=$mod_strings['LBL_ACTIVE'];
-			  else
-			  $label_fld[]=$mod_strings['LBL_INACTIVE'];
-			  } */
 		}
-		//code for Documents module :end
 		$label_fld[] = $col_fields[$fieldname];
 	}
 	$label_fld[] = $uitype;
@@ -1147,7 +1129,6 @@ function getDetailAssociatedProducts($module, $focus) {
 		$qtyinstockshow = CurrencyField::convertToUserFormat($qtyinstock, null, true);
 		$qty = $adb->query_result($result, $i - 1, 'quantity');
 		$qtyshow = CurrencyField::convertToUserFormat($qty, null, true);
-		//$unitprice = $adb->query_result($result, $i - 1, 'unit_price');
 		$listprice = $adb->query_result($result, $i - 1, 'listprice');
 		$total = $qty * $listprice;
 

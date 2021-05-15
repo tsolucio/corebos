@@ -328,18 +328,6 @@ function patternValidateObject(fldObject, fldLabel, type) {
 	}
 
 	if (typeUC=='DATE') { //DATE validation
-		//YMD
-		//var reg1 = /^\d{2}(\-|\/|\.)\d{1,2}\1\d{1,2}$/ //2 digit year
-		//var re = /^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$/ //4 digit year
-
-		//MYD
-		//var reg1 = /^\d{1,2}(\-|\/|\.)\d{2}\1\d{1,2}$/
-		//var reg2 = /^\d{1,2}(\-|\/|\.)\d{4}\1\d{1,2}$/
-
-		//DMY
-		//var reg1 = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{2}$/
-		//var reg2 = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/
-
 		switch (userDateFormat) {
 		case 'yyyy-mm-dd' :
 			var re = /^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$/;
@@ -2897,7 +2885,6 @@ function hideErrorMsg1() {
 
 // Replace the % sign with %25 to make sure the AJAX url is going wel.
 function escapeAll(tagValue) {
-	//return escape(tagValue.replace(/%/g, '%25'));
 	if (default_charset.toLowerCase() == 'utf-8') {
 		return encodeURIComponent(tagValue.replace(/%/g, '%25'));
 	} else {
@@ -4141,7 +4128,6 @@ function startCall(number, recordid) {
 	outgoingPopup.content = div;
 	outgoingPopup.displayPopup(outgoingPopup.content);
 
-	//var ASTERISK_DIV_TIMEOUT = 6000;
 	jQuery.ajax({
 		method: 'POST',
 		url: 'index.php?action=PBXManagerAjax&mode=ajax&file=StartCall&ajax=true&module=PBXManager&number='+encodeURIComponent(number)+'&recordid='+recordid
@@ -4334,19 +4320,11 @@ VtigerJS_DialogBox = {
 			olayer.id = olayerid;
 			olayer.className = 'slds-spinner_container slds-is-fixed';
 
-			// Avoid zIndex going beyond integer max
-			//olayer.style.zIndex = parseInt((new Date()).getTime() / 1000);
-
-			// In case zIndex goes to negative side!
-			//if (olayer.style.zIndex < 0) {
-			//	olayer.style.zIndex *= -1;
-			//}
 			if (browser_ie) {
 				olayer.style.height = document.body.offsetHeight + (document.body.scrollHeight - document.body.offsetHeight) + 'px';
 			} else if (browser_nn4 || browser_nn6) {
 				olayer.style.height = document.body.offsetHeight + 'px';
 			}
-			//olayer.style.width = '100%';
 			var spinner = document.createElement('div');
 			spinner.role = 'status';
 			spinner.className = 'slds-spinner slds-spinner_inline slds-spinner_large slds-spinner_brand';
@@ -4770,7 +4748,6 @@ function fnvshobjMore(obj, Lay) {
 		topSide = topSide - 225;
 	} else if (Lay == 'transferdiv') {
 		leftSide = leftSide - 10;
-		//topSide = topSide;
 	}
 	var IE = document.all?true:false;
 	if (IE) {
@@ -4815,7 +4792,6 @@ function fnvshobjsearch(obj, Lay) {
 		topSide = topSide - 125;
 	} else if (Lay == 'transferdiv') {
 		leftSide = leftSide - 10;
-		//topSide = topSide;
 	}
 	var IE = document.all?true:false;
 	if (IE) {
@@ -5609,17 +5585,10 @@ AutocompleteRelation.prototype.set = function (items) {
 };
 
 AutocompleteRelation.prototype.select = function (params) {
-	// var label = params.label;
-	// var value = params.value;
-
-	// this.inputField.value 	= label;
-	// this.hiddenInput.value 	= value;
-
 	// Housekeeping after selection
 	this.clearTargetUL();
 	this.targetUL.hide();
 	this.deactivate();
-	// Schedular.AutoComplete.Current.clear();
 };
 
 AutocompleteRelation.prototype.goToRec = function (params) {
@@ -5793,8 +5762,6 @@ AutocompleteRelation.prototype.isReferenceField = function (e) {
 		var reference_type_field = document.getElementsByName(field_root_name + '_type');
 		if (reference_type_field.length > 0) {
 			var ref_module = reference_type_field[0].value;
-			//var ref_field_id = document.getElementsByName(field_root_name);
-			//var ref_record_id = ref_field_id[0].value;
 			this.data.referencefield = {module:ref_module, fieldname:field_root_name};
 			this.extendFillFields([field_root_name +'='+field_root_name, field_root_name+'_display='+field_root_name+'_display']);
 		}

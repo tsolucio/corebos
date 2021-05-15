@@ -144,7 +144,6 @@ function generateImageCode($) {
 		}
 
 		var referenceFields = reduceR(concat, map(fieldReferenceNames, referenceFieldTypes), []);
-		// var fieldLabels = dict(parentFields.concat(referenceFields));
 		var fieldLabels = dict(parentFields);
 		var select = $('#'+id);
 		var optionClass = id+'_option';

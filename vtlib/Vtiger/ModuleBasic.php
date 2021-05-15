@@ -501,7 +501,7 @@ class Vtiger_ModuleBasic {
 	 */
 	public static function syncfile() {
 		self::log('Updating tabdata file ... ', false);
-		//create_tab_data_file();
+		// used to create tab_data file
 		self::log('DONE');
 	}
 }

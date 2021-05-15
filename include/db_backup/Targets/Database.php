@@ -110,8 +110,6 @@ class Database extends Target {
 	}
 
 	public function processTableCreateStatement($data) {
-		//$tableName = $data[0];
-		//$stmt = $data[1];
 		$this->processStatement(array($data[1]));
 	}
 

@@ -105,7 +105,6 @@ if (window.cbRelatedListsLoaded == undefined) {
 					}
 				} else {
 					jQuery('#'+imagesuffix+'_linkForSelectAll').hide();
-					//rel_toggleSelect(false,imagesuffix+'_selected_id',relatedModule);
 				}
 				updateParentCheckbox(obj, imagesuffix);
 			}

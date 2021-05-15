@@ -63,7 +63,6 @@ function chooseType(typeName) {
 		document.getElementById('homewidget').style.display='none';
 		document.getElementById('reportNameRow').style.display='none';
 		document.getElementById('reportTypeRow').style.display='none';
-		//document.getElementById('homeURLField').style.display = "none";
 	} else if (typeName=='CustomWidget') {
 		document.getElementById('moduleNameRow').style.display='block';
 		document.getElementById('showrow').style.display='none';
@@ -77,7 +76,6 @@ function chooseType(typeName) {
 		document.getElementById('filterbyim').style.display='table-cell';
 		document.getElementById('filterby').style.display='none';
 		document.getElementById('selModFilter_id').style.display='table-cell';
-		//$('homeURLField').style.display = "none";
 	} else if (typeName=='DashBoard') {
 		document.getElementById('moduleNameRow').style.display='none';
 		document.getElementById('rssRow').style.display='none';
@@ -91,7 +89,6 @@ function chooseType(typeName) {
 		document.getElementById('reportNameRow').style.display='none';
 		document.getElementById('reportTypeRow').style.display='none';
 		document.getElementById('homewidget').style.display='none';
-		//document.getElementById('homeURLField').style.display = "none";
 		jQuery.ajax({
 			method: 'POST',
 			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&dash=dashboard'
@@ -115,7 +112,6 @@ function chooseType(typeName) {
 		document.getElementById('moduleLabelsRow').style.display='none';
 		document.getElementById('moduleCombosRow').style.display='none';
 		document.getElementById('moduleFilters').style.display='none';
-		//document.getElementById('homeURLField').style.display = "none";
 	} else if (typeName=='Default') {
 		document.getElementById('moduleNameRow').style.display='none';
 		document.getElementById('showrow').style.display='none';
@@ -144,11 +140,8 @@ function chooseType(typeName) {
 		document.getElementById('moduleLabelsRow').style.display='none';
 		document.getElementById('moduleCombosRow').style.display='none';
 		document.getElementById('moduleFilters').style.display='none';
-		//document.getElementById('homeURLField').style.display = "none";
 	} else if (typeName == 'ReportCharts') {
 		document.getElementById('moduleNameRow').style.display='none';
-		//document.getElementById('moduleFilterRow').style.display='none';
-		//document.getElementById('modulePrimeRow').style.display='none';
 		document.getElementById('rssRow').style.display='none';
 		document.getElementById('showrow').style.display='none';
 		document.getElementById('StuffTitleId').style.display='block';
@@ -168,18 +161,6 @@ function chooseType(typeName) {
 			VtigerJS_DialogBox.hidebusy();
 		});
 	}
-	/*else if(typeName == 'URL'){
-		document.getElementById('moduleNameRow').style.display="none";
-		document.getElementById('moduleFilterRow').style.display="none";
-		document.getElementById('modulePrimeRow').style.display="none";
-		document.getElementById('showrow').style.display="none";
-		document.getElementById('rssRow').style.display="none";
-		document.getElementById('dashNameRow').style.display="none";
-		document.getElementById('dashTypeRow').style.display="none";
-		document.getElementById('StuffTitleId').style.display="block";
-		VtigerJS_DialogBox.hidebusy();
-		//document.getElementById('homeURLField').style.display = "block";
-	}*/
 }
 
 /**
@@ -484,13 +465,6 @@ function frmValidate() {
 				return false;
 			}
 		}
-		/*if($('stufftype_id').value=="URL"){
-			if($('url_id').value==""){
-				alert("Please enter URL");
-				$('url_id').focus();
-				return false;
-			}
-		}*/
 		if (document.getElementById('stufftype_id').value=='Module' || document.getElementById('stufftype_id').value=='CustomWidget') {
 			var fieldval=new Array();
 			var cnt=0;
@@ -523,7 +497,6 @@ function frmValidate() {
 		var seldeftype='';
 		var selreport='';
 		var selreportcharttype='';
-		//var txtURL = '';
 
 		if (stufftype=='Module') {
 			selFiltername =document.Homestuff.selFiltername[document.Homestuff.selFiltername.selectedIndex].value;
@@ -554,7 +527,6 @@ function frmValidate() {
 			method: 'POST',
 			url: 'index.php?module=Home&action=HomeAjax&file=Homestuff&'+url
 		}).done(function (response) {
-			// alert(response);
 			if (!response) {
 				alert(alert_arr.LBL_ADD_HOME_WIDGET);
 				VtigerJS_DialogBox.hidebusy();
@@ -589,13 +561,6 @@ function filterValidate() {
 			return false;
 		}
 	}
-	/*if($('stufftype_id').value=="URL"){
-		if($('url_id').value==""){
-			alert("Please enter URL");
-			$('url_id').focus();
-			return false;
-		}
-	}*/
 	if (document.getElementById('stufftype_id').value=='CustomWidget' ) {
 		var fieldval=new Array();
 		var cnt=0;
@@ -617,7 +582,6 @@ function filterValidate() {
 	var stufftype=document.getElementById('stufftype_id').value;
 	var stufftitle=document.getElementById('stufftitle_id').value;
 
-	//	$('stufftitle_id').value = '';
 	var selFiltername='';
 	var fldname='';
 	var selAggregatename='';
@@ -629,7 +593,6 @@ function filterValidate() {
 	var seldeftype='';
 	var selreport='';
 	var selreportcharttype='';
-	//var txtURL = '';
 
 	if (stufftype=='Module') {
 		selFiltername =document.Homestuff.selFiltername[document.Homestuff.selFiltername.selectedIndex].value;

@@ -428,7 +428,6 @@ function module_Chart($user_id, $date_start = '2000-01-01', $end_date = '2017-01
 						$link_val="index.php?module=".$module."&action=ListView&from_dashboard=true&type=dbrd&query=true&".$searchField."=".$id_name."&viewname=".$cvid;
 					} else {
 						$esc_search_str = urlencode(vtlib_purify($search_str));
-						//$esc_search_str = htmlentities($search_str, ENT_QUOTES, $default_charset);
 						$link_val="index.php?module=".$module."&action=index&from_dashboard=true&search_text=".$esc_search_str."&search_field=".$searchField
 							.'&searchtype=BasicSearch&query=true&type=entchar&operator=e&viewname='.$cvid;
 					}
@@ -500,10 +499,6 @@ function get_graph_by_type($graph_by, $graph_title, $module, $where, $query, $wi
 		$values = $graph_details[1];
 		$graph_title = $graph_details[2];
 		$target_values = ChartUtils::convertToArray($graph_details[3], false, true);
-		//$graph_date = $graph_details[4];
-		//$urlstring = $graph_details[5];
-		//$cnt_table = $graph_details[6];
-		//$test_target_val = $graph_details[7];
 
 		if (isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX') {
 			$width = 450;

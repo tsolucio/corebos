@@ -124,7 +124,7 @@ class Users extends CRMEntity {
 	public $record_id;
 
 	public $DEFAULT_PASSWORD_CRYPT_TYPE;
-	//'BLOWFISH', /* before PHP5.3*/ MD5;
+	// BLOWFISH before PHP5.3 MD5
 
 	/**
 	 * @var UserPrivileges
@@ -553,12 +553,6 @@ class Users extends CRMEntity {
 			$this->error_string = getTranslatedString('ERR_PASSWORD_CHANGE_FAILED_1', 'Users').$usr_name.getTranslatedString('ERR_PASSWORD_CHANGE_FAILED_2', 'Users');
 			return false;
 		}
-
-		// if (!$this->verifyPassword($user_password) && !is_admin($current_user)) {
-		// 	$log->warn("Incorrect old password for $usr_name");
-		// 	$this->error_string = getTranslatedString('ERR_PASSWORD_INCORRECT_OLD', 'Users');
-		// 	return false;
-		// }
 
 		//set new password
 		$crypt_type = $this->DEFAULT_PASSWORD_CRYPT_TYPE;
@@ -1156,7 +1150,6 @@ class Users extends CRMEntity {
 		$query_prev_interval = $adb->pquery('SELECT reminder_interval from vtiger_users where id=?', array($this->id));
 		$prev_reminder_interval = $adb->query_result($query_prev_interval, 0, 'reminder_interval');
 
-		//$focus->imagename = $image_upload_array['imagename'];
 		$this->saveHomeStuffOrder($this->id);
 		SaveTagCloudView($this->id);
 

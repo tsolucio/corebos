@@ -389,7 +389,6 @@ FieldDependencies.prototype.callFunc = function (sourcename, allParam) {
 		//check if the function is already declared
 		//make sure it is not going to be called the first time the page is loaded
 		if (window[funcName]!==undefined && typeof(fld.data('initialVal')) !== 'undefined') {
-			//document.getElementsByName(sourcename).item(0).onchange=window[funcName](sourcename,action_field,fldValue,fld.data('initialVal'),parameters);
 			window[funcName](sourcename, action_field, fldValue, fld.data('initialVal'), parameters);
 		}
 		if (typeof(fld.data('initialVal')) == 'undefined') {

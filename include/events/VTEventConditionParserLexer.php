@@ -209,7 +209,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 						break;
 					default:
 						if ($cnt1 >= 1) {
-							break 2;//loop1;
+							break 2;//loop1
 						}
 						throw new EarlyExitException(1, $this->input);
 				}
@@ -259,7 +259,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 						break;
 					default:
 						if ($cnt2 >= 1) {
-							break 2;//loop2;
+							break 2;//loop2
 						}
 						throw new EarlyExitException(2, $this->input);
 				}
@@ -311,7 +311,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 								}
 								break;
 							default:
-								break 2;//loop3;
+								break 2;//loop3
 						}
 					} while (true);
 					break;
@@ -338,7 +338,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 								break;
 							default:
 								if ($cnt4 >= 1) {
-									break 2;//loop4;
+									break 2;//loop4
 								}
 								throw new EarlyExitException(4, $this->input);
 						}
@@ -414,7 +414,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 						break;
 					default:
 						if ($cnt7 >= 1) {
-							break 2;//loop7;
+							break 2;//loop7
 						}
 						$eee = new EarlyExitException(7, $this->input);
 						throw $eee;
@@ -482,7 +482,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 						break;
 					default:
 						if ($cnt8 >= 1) {
-							break 2;//loop8;
+							break 2;//loop8
 						}
 						throw new EarlyExitException(8, $this->input);
 				}

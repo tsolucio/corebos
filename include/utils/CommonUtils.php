@@ -245,7 +245,6 @@ function popup_from_html($string, $encode = true) {
 		"'" => '&#039;',
 	);
 
-	//if($encode && is_string($string))$string = html_entity_decode($string, ENT_QUOTES);
 	if ($encode && is_string($string)) {
 		$string = addslashes(str_replace(array_values($popup_toHtml), array_keys($popup_toHtml), $string));
 	}
@@ -1572,7 +1571,6 @@ function updateInfoSinceMessage($id) {
 	$current_time = date('Y-m-d H:i:s');
 	$values = explode(' ', $modifiedtime);
 	$date_info = explode('-', $values[0]);
-	//$time_info = explode(':', $values[1]);
 	$date = $date_info[2] . ' ' . $app_strings[date('M', mktime(0, 0, 0, $date_info[1], $date_info[2], $date_info[0]))] . ' ' . $date_info[0];
 	$time_modified = strtotime($modifiedtime);
 	$time_now = strtotime($current_time);
@@ -1648,7 +1646,6 @@ function SaveImage($files, $module, $id, $mode) {
 		$filesize = $files['imagename']['size'];
 
 		$filetype_array = explode('/', $filetype);
-		//$file_type_val_image = strtolower($filetype_array[0]);
 		$file_type_val = strtolower($filetype_array[1]);
 		//checking the uploaded image is if an image type or not
 		if (!$move_upload_status) { //if any error during file uploading
@@ -2042,7 +2039,6 @@ function QuickCreateFieldInformation($result, $module, $mapdefaults) {
 	$fieldName_array = array();
 	$qcreate_arr = array();
 	for ($i = 0; $i < $noofrows; $i++) {
-		//$fieldtablename = $adb->query_result($result, $i, 'tablename');
 		$uitype = $adb->query_result($result, $i, 'uitype');
 		$fieldname = $adb->query_result($result, $i, 'fieldname');
 		$fieldlabel = $adb->query_result($result, $i, 'fieldlabel');
@@ -2197,10 +2193,7 @@ function getEntityName($module, $ids_list) {
 		}
 		$entityDisplay = array();
 		$entity_field_info = getEntityFieldNames($module);
-		//$tableName = $entity_field_info['tablename'];
 		$fieldsName = $entity_field_info['fieldname'];
-		//$moduleName = $entity_field_info['modulename'];
-		//$entityIdField = $entity_field_info['entityidfield'];
 		$entity_FieldValue = getEntityFieldValues($entity_field_info, $ids_list);
 
 		foreach ($entity_FieldValue as $entityInfo) {
@@ -3522,7 +3515,6 @@ function getEntityFieldValues($entity_field_info, $ids_list) {
 	global $adb;
 	$tableName = $entity_field_info['tablename'];
 	$fieldsName = $entity_field_info['fieldname'];
-	//$moduleName = $entity_field_info['modulename'];
 	$entityIdField = $entity_field_info['entityidfield'];
 	if (is_array($fieldsName)) {
 		$fieldsNameString = implode(',', $fieldsName);
@@ -3629,7 +3621,6 @@ function joinName($input, $glue = ' ') {
 
 function getSqlForNameInDisplayFormat($input, $module, $glue = ' ') {
 	$entity_field_info = getEntityFieldNames($module);
-	//$tableName = $entity_field_info['tablename'];
 	$fieldsName = $entity_field_info['fieldname'];
 	if (is_array($fieldsName)) {
 		foreach ($fieldsName as $value) {

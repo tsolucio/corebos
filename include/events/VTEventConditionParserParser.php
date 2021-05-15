@@ -245,7 +245,7 @@ class VTEventConditionParserParser extends AntlrParser {
 						}
 						break;
 					default:
-						break 2;//loop2;
+						break 2;//loop2
 				}
 			} while (true);
 

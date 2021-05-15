@@ -280,8 +280,6 @@ class PearDatabase {
 		if (!isset($this->database)) {
 			$this->println('TRANS creating new connection');
 			$this->connect(false);
-		} else {
-			//$this->println('checkconnect using old connection');
 		}
 	}
 
@@ -558,7 +556,6 @@ class PearDatabase {
 	}
 
 	public function getFieldsDefinition(&$result) {
-		//$this->println("ADODB getFieldsArray");
 		$field_array = array();
 		if (!isset($result) || empty($result)) {
 			return 0;
@@ -574,13 +571,10 @@ class PearDatabase {
 			$field_array[] = $meta;
 			$i++;
 		}
-
-		//$this->println($field_array);
 		return $field_array;
 	}
 
 	public function getFieldsArray(&$result) {
-		//$this->println("ADODB getFieldsArray");
 		$field_array = array();
 		if (! isset($result) || empty($result)) {
 			return 0;
@@ -596,8 +590,6 @@ class PearDatabase {
 			$field_array[] = $meta->name;
 			$i++;
 		}
-
-		//$this->println($field_array);
 		return $field_array;
 	}
 
@@ -623,7 +615,6 @@ class PearDatabase {
 	/* ADODB newly added. replacement for mysql_fetch_array() */
 	public function fetch_array(&$result) {
 		if ($result->EOF) {
-			//$this->println("ADODB fetch_array return null");
 			return null;
 		}
 		$arr = $result->FetchRow();
@@ -633,8 +624,6 @@ class PearDatabase {
 		return $this->change_key_case($arr);
 	}
 
-	// adds new functions to the PearDatabase class to come around the whole broken query_result() idea
-	// Code-Contribution given by weigelt@metux.de - Starts
 	public function run_query_record_html($query) {
 		if (!is_array($rec = $this->run_query_record($query))) {
 			return $rec;
@@ -780,7 +769,6 @@ class PearDatabase {
 				throw new Exception('unsupported dbtype: '.$this->dbType);
 		}
 	}
-	// Code-Contribution given by weigelt@metux.de - Ends
 
 	/* ADODB newly added. replacement for mysql_result() */
 	public function query_result(&$result, $row, $col = 0) {
@@ -1161,5 +1149,4 @@ if (empty($adb)) {
 	$adb = new PearDatabase();
 	$adb->connect();
 }
-//$adb->database->setFetchMode(ADODB_FETCH_NUM);
 ?>

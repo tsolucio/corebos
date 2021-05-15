@@ -380,9 +380,6 @@ class Documents extends CRMEntity {
 		return false;
 	}
 
-	/*function save_related_module($module, $crmid, $with_module, $with_crmid){
-	}*/
-
 	/*
 	 * Function to get the primary query part of a report
 	 * @param - $module Primary module name

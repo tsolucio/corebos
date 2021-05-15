@@ -45,7 +45,6 @@ function massPrint(module) {
 	var pagenumber= document.getElementsByName('pagenum')[0].value;
 	var idstring = '';
 	if (count > 1) {
-		// document.getElementById('idlist').value=idstring;
 		document.getElementById('idlist').value=select_options;
 		idstring = select_options;
 	} else {

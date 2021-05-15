@@ -20,7 +20,6 @@ if (isset($_REQUEST['act']) && $_REQUEST['act'] == 'updateDldCnt') {
 if (isset($_REQUEST['act']) && $_REQUEST['act'] == 'checkFileIntegrityDetailView') {
 	$result = $adb->pquery('SELECT * FROM vtiger_notes where notesid=?', array($_REQUEST['noteid']));
 	$fileidResult = $adb->pquery('select attachmentsid from vtiger_seattachmentsrel where crmid=?', array($_REQUEST['noteid']));
-	//$activeToinactive_count = 0;
 
 	$file_status = $adb->query_result($result, 0, 'filestatus');
 	$download_type = $adb->query_result($result, 0, 'filelocationtype');

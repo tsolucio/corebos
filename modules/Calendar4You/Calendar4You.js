@@ -74,13 +74,6 @@ function gITSshow(argg1, type, startdate, enddate, starthr, startmin, startfmt, 
 function graphicalCalendarRefresh() {
 	jQuery('#calendar_div').fullCalendar('refetchEvents');
 	VtigerJS_DialogBox.unblock();
-//	if (return_data[0] != "undefined" && return_data[1] != "undefined" && return_data[2] != "undefined"){
-//		var date=return_data[0]+'-'+return_data[1]+'-'+return_data[2];
-//		jQuery('#calendar_div').fullCalendar('gotoDate',date);
-//		alert(return_data[3]);
-//	} else {
-//		alert("error:"+data);
-//	}
 }
 
 function getITSCalSettings() {
@@ -161,7 +154,6 @@ function showGoogleSyncAccDiv(value) {
 
 function controlGoogleSync() {
 	if (document.getElementById('google_apikey')) {
-		// var google_password_val = document.getElementById('google_password').value;
 		var google_login_val = document.getElementById('google_login').value;
 		var google_apikey_val = document.getElementById('google_apikey').value;
 		var google_clientid_val = document.getElementById('google_clientid').value;

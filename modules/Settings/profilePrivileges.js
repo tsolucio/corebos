@@ -166,7 +166,6 @@ function initialiseprofile() {
 		hideTab(module_array[i]);
 	}
 }
-//initialiseprofile();
 
 function toogleAccess(elementId) {
 	var element = document.getElementById(elementId);

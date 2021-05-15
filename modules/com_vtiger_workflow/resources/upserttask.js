@@ -235,9 +235,6 @@ function CBUpsertTask($, fieldvaluemapping) {
 		}
 		function forStringField(opType, mappingno) {
 			var value = $(format('#save_fieldvalues_%s_value', mappingno));
-			//value.replaceWith(format('<input type="text" id="save_fieldvalues_%s_value" '+
-			//	'value="" class="expressionvalue" readonly />', mappingno));
-
 			var fv = $(format('#save_fieldvalues_%s_value', mappingno));
 			fv.bind('focus', function () {
 				editFieldExpression($(this), opType);

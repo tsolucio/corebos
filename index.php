@@ -405,7 +405,6 @@ $cookieDomain = $siteURLParts['host'];
 if (isset($_SESSION['authenticated_user_id'])) {
 	$sitepath = empty($siteURLParts['path']) ? '' : ' path='.$siteURLParts['path'].';';
 	header('Set-Cookie: ck_login_id_vtiger='.$_SESSION['authenticated_user_id'].'; SameSite=Lax; expires=0;'.$sitepath.' domain='.$cookieDomain, false);
-	//setcookie('ck_login_id_vtiger', $_SESSION['authenticated_user_id'], 0, null, $cookieDomain, false, true);
 }
 
 if ($_REQUEST['module'] == 'Documents' && $action == 'DownloadFile') {
@@ -415,17 +414,8 @@ if ($_REQUEST['module'] == 'Documents' && $action == 'DownloadFile') {
 }
 
 //skip headers for popups, deleting, saving, importing and other actions
-if (!$skipHeaders) {
-	if ($use_current_login) {
-		include 'modules/Vtiger/header.php';
-	}
-} else {
-	/*if(($action != 'mytkt_rss') && ($action != 'home_rss') && ($action != $module."Ajax") && ($action != "body") && ($action != 'ActivityAjax')) {
-		require_once 'Smarty_setup.php';
-		$vartpl = new vtigerCRM_Smarty;
-		getBrowserVariables($vartpl);
-		$vartpl->display('BrowserVariables.tpl');
-	}*/
+if (!$skipHeaders && $use_current_login) {
+	include 'modules/Vtiger/header.php';
 }
 
 //logging the security Information

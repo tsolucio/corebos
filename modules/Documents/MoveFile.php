@@ -19,7 +19,7 @@ if ($current_user->is_admin != 'on') {
 	$excludedRecords=vtlib_purify($_REQUEST['excludedRecords']);
 
 	if (isset($_REQUEST['idlist']) && $_REQUEST['idlist']!= '') {
-		$id_array = getSelectedRecords($_REQUEST, 'Documents', $idlist, $excludedRecords);//explode(';',$_REQUEST['idlist']);
+		$id_array = getSelectedRecords($_REQUEST, 'Documents', $idlist, $excludedRecords);
 		$id_array = array_filter($id_array);
 		$sql = 'update vtiger_notes set folderid=? where notesid=?';
 		for ($i = 0; $i < count($id_array); $i++) {

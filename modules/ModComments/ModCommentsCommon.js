@@ -10,7 +10,6 @@ if (typeof(ModCommentsCommon) == 'undefined') {
 	ModCommentsCommon = {
 		addComment : function (domkeyid, parentid) {
 			var textBoxField = document.getElementById('txtbox_'+domkeyid);
-			//var editareaDOM = document.getElementById('editarea_'+domkeyid);
 			var contentWrapDOM = document.getElementById('contentwrap_'+domkeyid);
 			if (textBoxField.value == '') {
 				return;

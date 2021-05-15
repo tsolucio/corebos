@@ -1087,10 +1087,6 @@ if (typeof(MailManager) == 'undefined') {
 				if (responseJSON['success']) {
 					MailManager.mail_reply_close();
 					MailManager.show_message(MailManager.i18n('JSLBL_MAIL_SENT'));
-
-					//                    var currentSelectedFolder = jQuery('#mm_selected_folder').val();
-					//                    MailManager.updateSelectedFolder(currentSelectedFolder);
-					//                    jQuery('#mm_selected_folder').val(currentSelectedFolder);
 				} else {
 					MailManager.show_error(MailManager.i18n('JSLBL_Failed_To_Send_Mail') +
 						': ' + responseJSON['error']['message']);
@@ -1597,7 +1593,6 @@ if (typeof(MailManager) == 'undefined') {
 		},
 
 		Request : function (url, params, callback) {
-			//var encodedParams = MailManager.getEncodedParameterString(params);
 			return jQuery.ajax({
 				url  : url,
 				type : 'POST',

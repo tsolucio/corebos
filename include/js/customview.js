@@ -154,13 +154,6 @@ var fieldTypeArr=new Array('text', 'number', 'percent', 'currency', 'date', 'ema
 var currFieldIdx=0, totFieldType;
 var focusFieldType;
 
-/*function init() {
-	lengthLayer=getObj("lengthdetails")
-	decimalLayer=getObj("decimaldetails")
-	pickListLayer=getObj("picklist")
-	totFieldType=fieldTypeArr.length-1
-}*/
-
 function setVisible() {
 	if (focusFieldType==true) {
 		var selFieldType=fieldLayer.getObj('field'+currFieldIdx);

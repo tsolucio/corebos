@@ -130,7 +130,6 @@ function handleCopyClipboard(event) {
 			document.getElementById('clipcopylink').dataset.clipboardText = assigne_value;
 		}
 	}
-	//if (event) event.stopPropagation();
 	return false;
 }
 

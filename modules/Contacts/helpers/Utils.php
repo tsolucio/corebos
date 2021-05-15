@@ -21,7 +21,6 @@ class Google_Utils_Helper {
 	public static function updateSyncTime($sourceModule, $modifiedTime = false) {
 		$db = PearDatabase::getInstance();
 		self::intialiseUpdateSchema();
-		//$user = Users_Record_Model::getCurrentUserModel();
 		global $current_user;
 		$user = $current_user;
 		if (!$modifiedTime) {
@@ -61,7 +60,7 @@ class Google_Utils_Helper {
 		$user = $current_user;
 		$db = PearDatabase::getInstance();
 		self::intialiseUpdateSchema();
-		$user = $current_user;//Users_Record_Model::getCurrentUserModel();
+		$user = $current_user;
 		$result = $db->pquery('SELECT synctime FROM vtiger_google_sync WHERE user=? AND googlemodule=?', array($user->id, $sourceModule));
 		if ($result && $db->num_rows($result) > 0) {
 			$row = $db->fetch_array($result);
@@ -81,7 +80,6 @@ class Google_Utils_Helper {
 		global $current_user;
 		$user = $current_user;
 		self::intialiseUpdateSchema();
-		//$user = Users_Record_Model::getCurrentUserModel();
 		$result = $db->pquery('SELECT lastsynctime FROM vtiger_google_sync WHERE user=? AND googlemodule=?', array($user->id, $sourceModule));
 		if ($result && $db->num_rows($result) > 0) {
 			$row = $db->fetch_array($result);
@@ -116,7 +114,6 @@ class Google_Utils_Helper {
 
 	public static function saveSettings($request) {
 		$db = PearDatabase::getInstance();
-		//$user = Users_Record_Model::getCurrentUserModel();
 		global $current_user;
 		$user = $current_user;
 		$userId = $user->id;
@@ -135,7 +132,6 @@ class Google_Utils_Helper {
 
 	public static function saveFieldMappings($sourceModule, $fieldMappings) {
 		$db = PearDatabase::getInstance();
-		//$user = Users_Record_Model::getCurrentUserModel();
 		global $current_user;
 		$user = $current_user;
 		$sql = 'SELECT 1 FROM ' . self::FIELDMAPPING_TABLE_NAME . ' WHERE user = ?';

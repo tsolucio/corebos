@@ -487,16 +487,7 @@ function getSQLConditions() {
 					var fieldname = this.querySelector('div > .cefieldname').value;
 					var operation = this.querySelector('div > .ceoperation').value;
 					var value = this.querySelector('div > .ceexpressionvalue').value;
-					//var valuetype = this.querySelector('div > .ceexpressiontype').value;
 					var joincondition = this.querySelector('div > .cejoincondition').value;
-					// var groupid = this.querySelector('div > .groupid').value;
-					// var groupjoin = '';
-					// if (groupid != '') {
-					// 	let scgj = document.getElementById('save_condition_group_'+groupid+'_joincondition');
-					// 	if (scgj != null) {
-					// 		groupjoin = scgj.value;
-					// 	}
-					// }
 					switch (operation) {
 					case 'contains':
 						conditions += fieldname+' LIKE \'%'+value+'%\' '+joincondition;

@@ -754,7 +754,6 @@ function check_object(sel_id, groupParentElementId) {
 					result=select_global[i]+';'+result;
 				}
 			}
-			//default_togglestate(sel_id.name,groupParentElementId);
 			if (document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents' && Document_Folder_View) {
 				document.getElementById('selectedboxes_'+groupParentElementId).value = result;
 			} else {

@@ -58,16 +58,10 @@ function rptoptDisp(Opt) {
 		ghide('repeatWeekUI');
 		ghide('repeatMonthUI');
 	} else if (currOpt == 'Weekly') {
-		// if (document.getElementById('repeatWeekUI').style.display == 'none') {
-
-		// }
 		document.getElementById('repeatWeekUI').style.display = 'block';
 		ghide('repeatMonthUI');
 	} else if (currOpt == 'Monthly') {
 		ghide('repeatWeekUI');
-		// if (document.getElementById('repeatMonthUI').style.display == 'none') {
-
-		// }
 		document.getElementById('repeatMonthUI').style.display = 'block';
 	} else if (currOpt == 'Yearly') {
 		ghide('repeatWeekUI');
@@ -220,13 +214,11 @@ function updateStatus(record, status, view, hour, day, month, year, type) {
 			var result = response.split('####');
 			if (OptionData == 'listview') {
 				document.getElementById('total_activities').innerHTML = result[1];
-				//document.getElementById("listView").innerHTML=result[0];
 				document.EventViewOption.action.value = 'index';
 				window.document.EventViewOption.submit();
 			}
 			if (OptionData == 'hourview') {
 				document.getElementById('total_activities').innerHTML = result[1];
-				//document.getElementById("hrView").innerHTML=result[0];
 				document.EventViewOption.action.value = 'index';
 				window.document.EventViewOption.submit();
 			}

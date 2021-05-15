@@ -368,8 +368,7 @@ class GoogleSync4You {
 		$num_rows=$this->db->num_rows($result);
 		if ($num_rows > 0) {
 			for ($i=0; $i<$num_rows; $i++) {
-				//$userid=$this->db->query_result($result,$i,'inviteeid');
-						$googleEmail=$this->db->query_result($result, $i, 'email1');
+				$googleEmail=$this->db->query_result($result, $i, 'email1');
 				$who  = new Google_Service_Calendar_EventAttendee();
 				$who->setEmail($googleEmail);
 				$whos[] = $who;

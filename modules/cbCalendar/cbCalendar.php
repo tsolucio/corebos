@@ -749,7 +749,6 @@ class cbCalendar extends CRMEntity {
 				$field1->label= $fldrow['fieldlabel'];
 				$field1->column = $fldrow['columnname'];
 				$field1->table = $fldrow['tablename'];
-				//$field1->columntype = 'VARCHAR(28)';
 				$field1->uitype = $fldrow['uitype'];
 				$field1->typeofdata = $fldrow['typeofdata'];
 				$field1->displaytype = $fldrow['displaytype'];
@@ -1008,7 +1007,6 @@ class cbCalendar extends CRMEntity {
 			define('_BENNU_VERSION', '0.1');
 		}
 		require_once 'include/utils/utils.php';
-		//require_once 'modules/cbCalendar/CalendarCommon.php';
 		require_once 'modules/cbCalendar/iCal/iCalendar_rfc2445.php';
 		require_once 'modules/cbCalendar/iCal/iCalendar_components.php';
 		require_once 'modules/cbCalendar/iCal/iCalendar_properties.php';

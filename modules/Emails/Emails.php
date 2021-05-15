@@ -168,18 +168,15 @@ class Emails extends CRMEntity {
 					$usrrs = $adb->pquery('select id from vtiger_users where id=?', array($mycrmid));
 					if ($adb->num_rows($usrrs)==0) {
 						$adb->pquery('DELETE FROM vtiger_seactivityrel WHERE crmid=? AND activityid=?', array($mycrmid, $this->id));
-						//$this->insertIntoEntityTable('vtiger_seactivityrel', $module);
 						$sql = 'insert into vtiger_seactivityrel values(?,?)';
 						$params = array($mycrmid, $this->id);
 					} else {
 						$adb->pquery('DELETE FROM vtiger_salesmanactivityrel WHERE smid=? AND activityid=?', array($mycrmid, $this->id));
-						//$this->insertIntoEntityTable('vtiger_seactivityrel', $module);
 						$sql = 'insert into vtiger_salesmanactivityrel values (?,?)';
 						$params = array($mycrmid, $this->id);
 					}
 				} else {
 					$adb->pquery('DELETE FROM vtiger_seactivityrel WHERE crmid=? AND activityid=?', array($mycrmid, $this->id));
-					//$this->insertIntoEntityTable('vtiger_seactivityrel', $module);
 					$sql = 'insert into vtiger_seactivityrel values(?,?)';
 					$params = array($mycrmid, $this->id);
 				}
@@ -560,7 +557,6 @@ class Emails extends CRMEntity {
 function get_to_emailids($module) {
 	global $adb, $current_user;
 	require_once 'include/Webservices/Query.php';
-	//$idlists1 = '';
 	if (empty($_REQUEST['field_lists'])) {
 		switch ($module) {
 			case 'Accounts':

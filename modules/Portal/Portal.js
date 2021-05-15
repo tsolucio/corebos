@@ -19,8 +19,7 @@ function fetchAddSite(id) {
 }
 
 function fetchContents(mode) {
-	// Reloading the window is better, If not reloaded ... mysitesArray variable needs to be updated
-	// using eval method on javascript.
+	// Reloading the window is better, If not reloaded ... mysitesArray variable needs to be updated using eval method on javascript.
 	if (mode == 'data') {
 		window.location.href = 'index.php?module=Portal&action=ListView';
 		return;
@@ -76,7 +75,6 @@ function SaveSite(id) {
 }
 
 function setSite(oUrllist) {
-	//var url = oUrllist.options[oUrllist.options.selectedIndex].value;
 	var id = oUrllist.options[oUrllist.options.selectedIndex].value;
 	var url = mysitesArray[id].url;
 	document.getElementById('mysites_noload_message').style.display = 'none';
@@ -99,7 +97,6 @@ function defaultMysites(oSelectlist) {
 		method: 'POST',
 		url: 'index.php?action=PortalAjax&mode=ajax&file=Save&module=Portal&check=true&passing_var=' + id
 	}).done(function (response) {
-		//alert(response);
 		document.getElementById('status').style.display = 'none';
 	});
 }

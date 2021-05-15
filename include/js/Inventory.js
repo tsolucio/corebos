@@ -252,7 +252,6 @@ function deleteRow(module, i) {
 	}
 	// Product reordering addition ends
 	document.getElementById('hdnProductId'+i).value = '';
-	//document.getElementById("productName"+i).value = "";
 	document.getElementById('deleted'+i).value = 1;
 	calcTotal();
 }
@@ -412,7 +411,6 @@ function validateInventoryLines(module) {
 		if (!numValidate('qty'+i, 'Qty', 'any', true)) {
 			return false;
 		}
-		//if (!numConstComp("qty"+i,"Qty","G","0")) return false;
 		if (!emptyCheck('listPrice'+i, alert_arr.LIST_PRICE, 'text')) {
 			return false;
 		}
@@ -517,7 +515,6 @@ function FindDuplicate() {
 		}
 	}
 	if (duplicate) {
-		//alert("You have selected < "+duplicate_products+" > more than once in line items  "+positions+".\n It is advisable to select the product just once but change the Qty. Thank You");
 		if (!confirm(alert_arr.SELECTED_MORE_THAN_ONCE+'\n'+duplicate_products+'\n '+alert_arr.WANT_TO_CONTINUE)) {
 			return false;
 		}
@@ -1024,7 +1021,6 @@ function calcCurrentTax(tax_name, curr_row, tax_row) {
 	if (product_total.substring(0, 3) == 'NaN') {
 		product_total = 0;
 	}
-	//var product_total = document.getElementById("productTotal"+curr_row).innerHTML
 	var new_tax_percent = document.getElementById(tax_name).value;
 
 	var new_amount_lbl = document.getElementsByName('popup_tax_row'+curr_row);
@@ -1380,7 +1376,6 @@ function moveUpDown(sType, oModule, iIndex) {
 			document.getElementById(sSwapId).title = sTemp;
 		}
 	}
-	//FindDuplicate();
 	settotalnoofrows();
 	calcTotal();
 	loadTaxes_Ajax(iIndex);
@@ -1389,23 +1384,6 @@ function moveUpDown(sType, oModule, iIndex) {
 	callTaxCalc(iSwapIndex);
 	setDiscount(this, iIndex);
 	setDiscount(this, iSwapIndex);
-	// sId = 'tax1_percentage' + iIndex;
-	// var sTaxRowId = 'hidtax_row_no' + iIndex;
-	// if (document.getElementById(sTaxRowId)) {
-	// 	if (!(iTaxVal = document.getElementById(sTaxRowId).value)) {
-	// 		iTaxVal = 0;
-	// 	}
-	// 	//calcCurrentTax(sId,iIndex,iTaxVal);
-	// }
-
-	// sSwapId = 'tax1_percentage' + iSwapIndex;
-	// var sSwapTaxRowId = 'hidtax_row_no' + iSwapIndex;
-	// if (document.getElementById(sSwapTaxRowId)) {
-	// 	if (!(iSwapTaxVal = document.getElementById(sSwapTaxRowId).value)) {
-	// 		iSwapTaxVal = 0;
-	// 	}
-	// 	//calcCurrentTax(sSwapId,iSwapIndex,iSwapTaxVal);
-	// }
 	calcTotal();
 }
 
