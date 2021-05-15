@@ -231,7 +231,6 @@ function saveEntries(selMaxName) {
 		method: 'POST',
 		url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&showmaxval='+showmax+'&sid='+sid
 	}).done(function (response) {
-		var responseVal=response;
 		eval(response);
 		document.getElementById('refresh_'+sid).innerHTML='';
 	});
