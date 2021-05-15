@@ -242,7 +242,6 @@ function getDataColumns() {
 					}
 				}
 			}
-			(finfo.operators=='custom' ? (finfo.fieldname.indexOf(': (')!=-1 ? fnam : finfo.fieldname) : finfo.fieldname),
 			slflds.push({
 				'name': fnam,
 				'header': (finfo.alias=='' ? (finfo.fieldname.indexOf(': (')!=-1 ? fhdr : finfo.fieldname) : finfo.alias),

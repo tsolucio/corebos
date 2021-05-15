@@ -772,14 +772,14 @@ if (typeof(MailManager) == 'undefined') {
 					jQuery.ajax({
 						method: 'POST',
 						url: 'index.php?'+baseurl + encodeURIComponent(emltpl.Users_Default_Send_Email_Template)
-					}).done(function (response) {
-						emltpl = JSON.parse(response);
+					}).done(function (resp) {
+						emltpl = JSON.parse(resp);
 						document.getElementById('_mail_replyfrm_subject_').value = emltpl.subject;
-						document.getElementById('_mail_replyfrm_body_').value = emltpl.body + emailSignature,
+						document.getElementById('_mail_replyfrm_body_').value = emltpl.body + emailSignature;
 						MailManager.mail_reply_rteinit(emltpl.body);
 					});
 				} else {
-					document.getElementById('_mail_replyfrm_body_').value = '<p></p>' + emailSignature,
+					document.getElementById('_mail_replyfrm_body_').value = '<p></p>' + emailSignature;
 					MailManager.mail_reply_rteinit(emltpl.body);
 				}
 			});
