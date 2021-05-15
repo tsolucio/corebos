@@ -155,7 +155,7 @@ var currFieldIdx=0, totFieldType;
 var focusFieldType;
 
 function setVisible() {
-	if (focusFieldType==true) {
+	if (focusFieldType) {
 		var selFieldType=fieldLayer.getObj('field'+currFieldIdx);
 		var height=findPosY(selFieldType)+selFieldType.offsetHeight;
 
@@ -250,7 +250,7 @@ function srchFieldType(ev) {
 		}
 	}
 
-	if (doSearch==true) {
+	if (doSearch) {
 		switch (keyCode) {
 		case 9  : //Reset Field Type
 			resetFieldTypeHilite();

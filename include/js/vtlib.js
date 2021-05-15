@@ -190,7 +190,7 @@ var vtlib_listview = {
 					break;
 				}
 			}
-			if (cellhandler == false) {
+			if (!cellhandler) {
 				return;
 			}
 			event_params = {
@@ -218,7 +218,7 @@ var vtlib_listview = {
 						break;
 					}
 				}
-				if (cellhandler == false) {
+				if (!cellhandler) {
 					return;
 				}
 				var event_params = {

@@ -735,7 +735,7 @@ function check_object(sel_id, groupParentElementId) {
 	var duplicate = select_global.indexOf(id);
 	var size = select_global.length-1;
 	var result = '';
-	if (box_value == true) {
+	if (box_value) {
 		if (document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents' && Document_Folder_View && document.getElementById('selectedboxes_'+groupParentElementId).value == 'all') {
 			document.getElementById('excludedRecords_'+groupParentElementId).value = skip.replace(skip.match(id+';'), '');
 			document.getElementById('selectedboxes_'+groupParentElementId).value = 'all';

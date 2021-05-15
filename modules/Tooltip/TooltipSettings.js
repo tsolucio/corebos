@@ -17,7 +17,7 @@ function getRelatedFieldInfo(id) {
 		method: 'POST',
 		url: 'index.php?module=Tooltip&action=TooltipAjax&file=EditQuickView&field_name='+fieldname+'&module_name='+modulename+'&ajax=true'
 	}).done(function (response) {
-		if (response == false) {
+		if (!response) {
 			alert(alert_arr.ERR_FIELD_SELECTION);
 		} else {
 			var related_fields = response;
@@ -55,7 +55,7 @@ function doSaveTooltipInfo() {
 	var checkedFields = [];
 
 	for (var i=0, j=0; i<fields.length; i++) {
-		if (fields[i].type == 'checkbox' && fields[i].checked == true) {
+		if (fields[i].type == 'checkbox' && fields[i].checked) {
 			checkedFields[j++] = fields[i].value;
 		}
 	}

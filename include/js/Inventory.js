@@ -428,14 +428,14 @@ function validateInventoryLines(module) {
 	discount_checks = document.getElementsByName('discount_final');
 
 	//Percentage selected, so validate the percentage
-	if (discount_checks[1].checked == true) {
+	if (discount_checks[1].checked) {
 		var temp = /^(0|[1-9]{1}\d{0,})(\.(\d{1}\d{0,}))?$/.test(document.getElementById('discount_percentage_final').value);
 		if (!temp) {
 			alert(alert_arr.VALID_FINAL_PERCENT);
 			return false;
 		}
 	}
-	if (discount_checks[2].checked == true) {
+	if (discount_checks[2].checked) {
 		temp = /^(0|[1-9]{1}\d{0,})(\.(\d{1}\d{0,}))?$/.test(document.getElementById('discount_amount_final').value);
 		if (!temp) {
 			alert(alert_arr.VALID_FINAL_AMOUNT);
@@ -533,7 +533,7 @@ function fnshow_Hide(Lay) {
 
 function ValidateTax(txtObj) {
 	var temp= /^\d+(\.\d\d*)*$/.test(document.getElementById(txtObj).value);
-	if (temp == false) {
+	if (!temp) {
 		alert(alert_arr.ENTER_VALID_TAX);
 	}
 }
@@ -943,13 +943,13 @@ function setDiscount(currObj, curr_row) {
 
 	discount_checks = document.getElementsByName('discount'+curr_row);
 	calcProductTotal(curr_row);
-	if (discount_checks[0].checked == true) {
+	if (discount_checks[0].checked) {
 		document.getElementById('discount_type'+curr_row).value = 'zero';
 		document.getElementById('discount_percentage'+curr_row).style.visibility = 'hidden';
 		document.getElementById('discount_amount'+curr_row).style.visibility = 'hidden';
 		document.getElementById('discountTotal'+curr_row).innerHTML = 0.00;
 	}
-	if (discount_checks[1].checked == true) {
+	if (discount_checks[1].checked) {
 		document.getElementById('discount_type'+curr_row).value = 'percentage';
 		document.getElementById('discount_percentage'+curr_row).style.visibility = 'visible';
 		document.getElementById('discount_amount'+curr_row).style.visibility = 'hidden';
@@ -981,7 +981,7 @@ function setDiscount(currObj, curr_row) {
 		//Rounded the decimal part of discount amount to two digits
 		document.getElementById('discountTotal'+curr_row).innerHTML = roundValue(discount_amount.toString());
 	}
-	if (discount_checks[2].checked == true) {
+	if (discount_checks[2].checked) {
 		document.getElementById('discount_type'+curr_row).value = 'amount';
 		document.getElementById('discount_percentage'+curr_row).style.visibility = 'hidden';
 		document.getElementById('discount_amount'+curr_row).style.visibility = 'visible';
@@ -1114,14 +1114,14 @@ function validateProductDiscounts() {
 		discount_checks = document.getElementsByName('discount'+i);
 
 		//Percentage selected, so validate the percentage
-		if (discount_checks[1].checked == true) {
+		if (discount_checks[1].checked) {
 			temp = /^(0|[1-9]{1}\d{0,})(\.(\d{1}\d{0,}))?$/.test(document.getElementById('discount_percentage'+i).value);
 			if (!temp) {
 				alert(alert_arr.VALID_DISCOUNT_PERCENT);
 				return false;
 			}
 		}
-		if (discount_checks[2].checked == true) {
+		if (discount_checks[2].checked) {
 			temp = /^(0|[1-9]{1}\d{0,})(\.(\d{1}\d{0,}))?$/.test(document.getElementById('discount_amount'+i).value);
 			if (!temp) {
 				alert(alert_arr.VALID_DISCOUNT_AMOUNT);

@@ -120,7 +120,7 @@ function validate_sendmail(idlist, module) {
 	var email_type = new Array();
 	for (var i=0; i < chk_emails; i++) {
 		if (oFsendmail[i].type != 'button') {
-			if (oFsendmail[i].checked != false) {
+			if (oFsendmail[i].checked) {
 				email_type [j++]= oFsendmail[i].value;
 			}
 		}

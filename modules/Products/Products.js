@@ -8,7 +8,7 @@
  ************************************************************************************/
 
 function updateListPrice(unitprice, fieldname, oSelect) {
-	if (oSelect.checked == true) {
+	if (oSelect.checked) {
 		document.getElementById(fieldname).style.visibility = 'visible';
 		document.getElementById(fieldname).value = unitprice;
 	} else {

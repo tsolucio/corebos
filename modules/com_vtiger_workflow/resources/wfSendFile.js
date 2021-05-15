@@ -54,7 +54,7 @@ var auth = {
 					body: '&'+csrfMagicName+'='+csrfMagicToken+'&service='+value+'&credentialid='+credentialid
 				}
 			).then(response => response.json()).then(response => {
-				if (response.session != true) {
+				if (!response.session) {
 					window.open(response.session, '', 'width=500,height=500');
 				}
 			});

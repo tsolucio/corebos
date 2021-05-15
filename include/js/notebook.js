@@ -22,7 +22,7 @@ function saveContents(node, notebookid) {
 	}).done(function (response) {
 		var responsedata = trim(response);
 		var responsearray = JSON.parse(responsedata);
-		if (responsearray['status'] == false) {
+		if (!responsearray['status']) {
 			alert('Some error has occurred during save');
 		} else {
 			//success

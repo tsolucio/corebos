@@ -11,7 +11,7 @@
 var hide_stock = 'no';
 ExecuteFunctions('ismoduleactive', 'checkmodule=Products').then(function (response) {
 	var obj = JSON.parse(response);
-	if (obj.isactive == true) {
+	if (obj.isactive) {
 		hide_stock = 'no';
 	} else {
 		hide_stock = 'yes';

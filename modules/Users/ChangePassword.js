@@ -122,7 +122,7 @@ function changepassword(is_admin, userid) {
 			data: data
 		}).done(function (response) {
 			const res = JSON.parse(response);
-			if (res.password == false) {
+			if (!res.password) {
 				document.getElementById('show-err_msg').style.display = 'block';
 				document.getElementById('err_msg').innerHTML = alert_arr['Old password is incorrect'];
 			} else {

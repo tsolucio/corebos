@@ -42,7 +42,7 @@ function verify_data(form) {
 		errorMessage += '\nRSS Feed URL';
 	}
 	// Here we decide whether to submit the form.
-	if (isError == true) {
+	if (isError) {
 		alert(alert_arr.MISSING_REQUIRED_FIELDS + errorMessage);
 		return false;
 	}

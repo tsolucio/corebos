@@ -90,11 +90,7 @@ function switchClass(myModule, toStatus) {
 }
 
 function enableCalstarttime() {
-	if (document.SharingForm.sttime_check.checked == true) {
-		document.SharingForm.start_hour.disabled = false;
-	} else {
-		document.SharingForm.start_hour.disabled = true;
-	}
+	document.SharingForm.start_hour.disabled = !document.SharingForm.sttime_check.checked;
 }
 
 var moveupLinkObj, moveupDisabledObj, movedownLinkObj, movedownDisabledObj;
@@ -111,7 +107,7 @@ function incUser(avail_users, sel_users) {
 		selectedColumnsObj.options[i].selected=false;
 	}
 	for (i=0; i<availListObj.length; i++) {
-		if (availListObj.options[i].selected==true) {
+		if (availListObj.options[i].selected) {
 			var rowFound = false;
 			var existingObj = null;
 			for (var j=0; j<selectedColumnsObj.length; j++) {
@@ -121,7 +117,7 @@ function incUser(avail_users, sel_users) {
 					break;
 				}
 			}
-			if (rowFound!=true) {
+			if (!rowFound) {
 				var newColObj=document.createElement('OPTION');
 				newColObj.value=availListObj.options[i].value;
 				if (browser_ie) {
@@ -132,7 +128,6 @@ function incUser(avail_users, sel_users) {
 				selectedColumnsObj.appendChild(newColObj);
 				availListObj.options[i].selected=false;
 				newColObj.selected=true;
-				rowFound=false;
 			} else {
 				if (existingObj != null) {
 					existingObj.selected=true;

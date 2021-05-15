@@ -26,7 +26,7 @@ function addColumn() {
 	}
 
 	for (i = 0; i < availListObj.length; i++) {
-		if (availListObj.options[i].selected == true) {
+		if (availListObj.options[i].selected) {
 			var rowFound = false;
 			var existingObj = null;
 			for (var j = 0; j < selectedColumnsObj.length; j++) {
@@ -36,7 +36,7 @@ function addColumn() {
 					break;
 				}
 			}
-			if (rowFound != true) {
+			if (!rowFound) {
 				var newColObj = document.createElement('OPTION');
 				newColObj.value = availListObj.options[i].value;
 				if (browser_ie) {
@@ -47,7 +47,6 @@ function addColumn() {
 				selectedColumnsObj.appendChild(newColObj);
 				availListObj.options[i].selected = false;
 				newColObj.selected = true;
-				rowFound = false;
 			} else {
 				if (existingObj != null) {
 					existingObj.selected = true;

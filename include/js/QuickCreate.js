@@ -28,7 +28,7 @@ function qcemptyCheck(fldName, fldLabel, fldType) {
 }
 
 function qcdateValidate(fldName, fldLabel, type) {
-	if (patternValidateObject(window.document.QcEditView[fldName], fldLabel, 'DATE')==false) {
+	if (!patternValidateObject(window.document.QcEditView[fldName], fldLabel, 'DATE')) {
 		return false;
 	}
 	return dateValidateObject(window.document.QcEditView[fldName], fldLabel, type);

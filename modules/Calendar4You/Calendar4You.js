@@ -159,7 +159,7 @@ function controlGoogleSync() {
 		var google_clientid_val = document.getElementById('google_clientid').value;
 		var google_keyfile_val = document.getElementById('google_keyfile').value;
 		var google_refresh = document.getElementById('google_refresh').value;
-		if (document.getElementById('googleinsert').checked==true) {
+		if (document.getElementById('googleinsert').checked) {
 			var googleinsert =1;
 			document.getElementById('googleinsert').value=1;
 		} else {

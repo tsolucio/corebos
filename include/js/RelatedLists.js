@@ -61,7 +61,7 @@ if (window.cbRelatedListsLoaded == undefined) {
 
 		var hidedata = 'hide_'+imagesuffix;
 		var hidedata_element = document.getElementById(hidedata);
-		if (isRelatedListBlockLoaded(target, urldata) == true) {
+		if (isRelatedListBlockLoaded(target, urldata)) {
 			jQuery('#'+target).show();
 			jQuery(showdata_element).hide();
 			showdata_element.parentElement.style.display = 'none';

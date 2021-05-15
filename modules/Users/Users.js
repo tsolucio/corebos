@@ -121,7 +121,7 @@ function closeWindow() {
 function manageWidgets(id, check) {
 	var str = '';
 	var checkBox = document.getElementById('VallWidgets_'+id);
-	if (checkBox.checked == true) {
+	if (checkBox.checked) {
 		str = 'module=Users&action=UsersAjax&activity=widgetUpdate&id='+id+'&update=0&type=delete';
 	} else {
 		str = 'module=Users&action=UsersAjax&activity=widgetUpdate&id='+id+'&update=1&type=delete';

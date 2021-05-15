@@ -77,7 +77,7 @@ var TOOLTIP = {
 		if (typeof(TOOLTIP._cache[module]) == 'undefined') {
 			TOOLTIP._cache[module] = {};
 		}
-		if (TOOLTIP._cache[module][fieldname] == false) {
+		if (!TOOLTIP._cache[module][fieldname]) {
 			if (!this._relinguishStatusControl) {
 				document.getElementById('status').style.display = 'none';
 			}
@@ -96,7 +96,7 @@ var TOOLTIP = {
 				url: 'index.php?module=Tooltip&action=TooltipAjax&file=ComputeTooltip&fieldname='+fieldname+'&id='+recordid+'&modname='+module+'&ajax=true&submode=getTooltip'
 			}).done(function (response) {
 				var data = response;
-				if (data != false) {
+				if (data) {
 					TOOLTIP._cache[module][fieldname][recordid] = data;
 					TOOLTIP.show(node, module, fieldname, recordid);
 					if (!this._relinguishStatusControl) {
