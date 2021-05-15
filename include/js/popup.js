@@ -22,9 +22,9 @@ function showAllRecords() {
 	for (var i=0; i< emp_url.length; i++) {
 		if (emp_url[i] != '') {
 			var split_value = emp_url[i].split('=');
-			if (split_value[0] == modname || split_value[0] == idname ) {
-				emp_url[i]='';
-			} else if (split_value[0] == 'fromPotential' || split_value[0] == 'acc_id' || emp_url[i] == 'query=true' || emp_url[i] == 'search=true' || split_value[0] == 'searchtype') {
+			if (split_value[0] == modname || split_value[0] == idname || split_value[0] == 'fromPotential' || split_value[0] == 'acc_id'
+				|| emp_url[i] == 'query=true' || emp_url[i] == 'search=true' || split_value[0] == 'searchtype'
+			) {
 				emp_url[i]='';
 			}
 		}
