@@ -140,16 +140,7 @@ function set_return_product(product_id, product_name) {
 	}
 }
 function getImageListBody() {
-	if (browser_ie) {
-		var ImageListBody=getObj('ImageList');
-	} else if (browser_nn4 || browser_nn6) {
-		if (getObj('ImageList').childNodes.item(0).tagName=='TABLE') {
-			var ImageListBody=getObj('ImageList');
-		} else {
-			var ImageListBody=getObj('ImageList');
-		}
-	}
-	return ImageListBody;
+	return getObj('ImageList');
 }
 
 // Function to Round off the Price Value
