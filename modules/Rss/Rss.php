@@ -125,6 +125,7 @@ class vtigerRSS extends CRMEntity {
 	public function getCRMRssFeeds() {
 		global $adb, $theme;
 		$result = $adb->pquery('select * from vtiger_rss where rsstype=1', array());
+		$shtml = '';
 		while ($allrssrow = $adb->fetch_array($result)) {
 			$shtml .= '<tr>';
 			if ($allrssrow["starred"] == 1) {

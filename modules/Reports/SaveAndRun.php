@@ -222,11 +222,12 @@ if ($numOfRows > 0) {
  *  This Generates the HTML Combo strings for the standard filter for the given reports module
  *  This Returns a HTML sring
  */
-function getPrimaryStdFilterHTML($module, $selected = "") {
+function getPrimaryStdFilterHTML($module, $selected = '') {
 	global $ogReport, $current_language;
 	$ogReport->oCustomView=new CustomView();
 	$result = $ogReport->oCustomView->getStdCriteriaByModule($module);
 	$mod_strings = return_module_language($current_language, $module);
+	$shtml = '';
 	if (isset($result)) {
 		foreach ($result as $key => $value) {
 			if (isset($mod_strings[$value])) {
@@ -256,6 +257,7 @@ function getPrimaryStdFilterHTML($module, $selected = "") {
 function getSecondaryStdFilterHTML($module, $selected = '') {
 	global $ogReport, $current_language;
 	$ogReport->oCustomView=new CustomView();
+	$shtml = '';
 	if ($module != '') {
 		$secmodule = explode(":", $module);
 		for ($i=0; $i < count($secmodule); $i++) {
@@ -316,7 +318,7 @@ function getPrimaryColumns_AdvFilter_HTML($module, $ogReport, $selected = '') {
 	return $shtml;
 }
 
-function getSecondaryColumns_AdvFilter_HTML($module, $ogReport, $selected = "") {
+function getSecondaryColumns_AdvFilter_HTML($module, $ogReport, $selected = '') {
 	global $current_language;
 	$shtml = '';
 	if ($module != '') {
@@ -352,12 +354,13 @@ function getSecondaryColumns_AdvFilter_HTML($module, $ogReport, $selected = "") 
 	return $shtml;
 }
 
-function getAdvCriteria_HTML($adv_filter_options, $selected = "") {
+function getAdvCriteria_HTML($adv_filter_options, $selected = '') {
+	$shtml = '';
 	foreach ($adv_filter_options as $key => $value) {
 		if ($selected == $key) {
-			$shtml .= "<option selected value=\"".$key."\">".$value."</option>";
+			$shtml .= '<option selected value="'.$key.'">'.$value.'</option>';
 		} else {
-			$shtml .= "<option value=\"".$key."\">".$value."</option>";
+			$shtml .= '<option value="'.$key.'">'.$value.'</option>';
 		}
 	}
 	return $shtml;

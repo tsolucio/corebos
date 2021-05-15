@@ -48,6 +48,7 @@ function uiLDAPQuerySearchUser($user) {
 
 	asort($userArray);
 
+	$sOpt = '';
 	foreach ($userArray as $account => $fullname) {
 		$sOpt .= "\n$account\t$fullname";
 	}
@@ -92,6 +93,7 @@ function uiLDAPQueryGetUserValues($account) {
 		$valueArray['ldap_lastname'] = $valueArray['ldap_fullname'];
 	}
 
+	$sVal = '';
 	foreach ($fields as $key => $input) {
 		$value = $valueArray[$key];
 		$sVal .= "\n$input\t$value";

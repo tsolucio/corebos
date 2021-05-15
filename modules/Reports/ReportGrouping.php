@@ -145,10 +145,10 @@ function getPrimaryColumns_GroupingHTML($module, $selected = '') {
  */
 function getSecondaryColumns_GroupingHTML($module, $selected = '') {
 	global $ogReport, $current_language;
-
+	$shtml = '';
 	$selected = decode_html($selected);
-	if ($module != "") {
-		$secmodule = explode(":", $module);
+	if ($module != '') {
+		$secmodule = explode(':', $module);
 		for ($i=0; $i < count($secmodule); $i++) {
 			if (vtlib_isModuleActive($secmodule[$i])) {
 				$mod_strings = return_module_language($current_language, $secmodule[$i]);
