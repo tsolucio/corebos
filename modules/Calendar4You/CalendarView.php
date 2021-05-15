@@ -26,11 +26,7 @@ $Calendar4You->GetDefPermission($current_user);
 $Calendar4You->setgoogleaccessparams($current_user->id);
 $Ch_Views = $Calendar4You->GetView();
 
-if (count($Ch_Views) > 0) {
-	$load_ch = true;
-} else {
-	$load_ch = false;
-}
+$load_ch = !empty($Ch_Views);
 
 $Calendar_Settings = $Calendar4You->getSettings();
 $smarty->assign('CALENDAR_SETTINGS', $Calendar_Settings);

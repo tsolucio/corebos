@@ -34,8 +34,8 @@ function handleselect($lexer, $val) {
 function handlecolumn_list($lexer, $val) {
 	global $vtqlp_count;
 	if ($lexer->mandatory) {
-		if (! (strcasecmp($val, $lexer->mandatory_states [2]) === 0)) {
-			if (strcmp($val, "*") === 0) {
+		if (strcasecmp($val, $lexer->mandatory_states [2]) !== 0) {
+			if (strcmp($val, '*') === 0) {
 				if (!$vtqlp_count) {
 					incrementN($lexer, 1);
 				}
@@ -68,7 +68,7 @@ function handletable($lexer, $val) {
 	if ($lexer->mandatory) {
 		$lexer->current_state = 0;
 		$lexer->mandatory = false;
-		if (! (strcasecmp($val, $lexer->optional_states [$lexer->current_state]) === 0)) {
+		if (strcasecmp($val, $lexer->optional_states[$lexer->current_state]) !== 0) {
 			return VTQL_Parser::TABLENAME;
 		}
 	}

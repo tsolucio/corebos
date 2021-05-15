@@ -468,16 +468,15 @@ function getActivityMailInfo($return_id, $status, $activity_type) {
 
 // User Select Customization
 /**
- * Function returns the id of the User selected by current user in the picklist of the ListView or Calendar view of Current User
- * return String -  Id of the user that the current user has selected
+ * get the id of the User selected by current user in the picklist of the ListView or Calendar view
+ * @return String Id of the user that the current user has selected
  */
 function calendarview_getSelectedUserId() {
 	global $current_user, $default_charset;
-	$only_for_user = htmlspecialchars(strip_tags($_REQUEST['onlyforuser']), ENT_QUOTES, $default_charset);
-	if ($only_for_user == '') {
-		$only_for_user = $current_user->id;
+	if (empty($_REQUEST['onlyforuser'])) {
+		return $current_user->id;
 	}
-	return $only_for_user;
+	return htmlspecialchars(strip_tags($_REQUEST['onlyforuser']), ENT_QUOTES, $default_charset);
 }
 
 function calendarview_getSelectedUserFilterQuerySuffix() {
