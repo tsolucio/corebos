@@ -383,8 +383,7 @@ a:hover {
 .rightMailMergeHeader {
 	border-bottom:1px solid #ffffff;
 	padding:5px;
-	background-color:#000000;
-	background:  url(images/level2Bg.gif) bottom repeat-x;
+	background: #000000 url(images/level2Bg.gif) repeat-x bottom;
 	color:#555555;
 
 }
@@ -398,7 +397,7 @@ a:hover {
 
 	border:1px solid #DDDDDD;
 	padding:12px;
-	background:  #dddcdd   url(images/inner.gif) bottom repeat-x;
+	background: #dddcdd url(images/inner.gif) repeat-x bottom;
 	color: #000000;
 }
 
@@ -840,7 +839,7 @@ a.submenu:Hover{
 	border-right: 0px;
 	border-bottom: 1px solid #CCC;
 	background-color: #FFFFCC;/*CBDFD6*/
-	font-family: Arial;
+	font-family: Arial, sans-serif;
 	font-size: 10px;
 	color: #BBB;
 	text-align: left;
@@ -1259,7 +1258,6 @@ a.alpha:Hover{
 	border-bottom:0px solid #dedede;
 	border-top:1px solid #dedede;
 	/* background:#ffffff url(images/softedHomeMark.gif) repeat-x; */
-	background:#ffffff;
 	background-position:bottom left;
 	width:31%;
 	visibility:visible;
@@ -1527,7 +1525,7 @@ a.calMnu:Hover{
 
 /* Level 2 Menu Selected*/
 
-level2Sel{
+.level2Sel {
 	color:#000000;
 	font-weight:bold;
 	text-decoration:underline;
@@ -1617,16 +1615,10 @@ footer {
 	border: 1px solid #ddd;
 }
 
-datatable stats {
-	float: right;
-	line-height: 2rem;
-	color: #999;
-}
-
 .disabled {
-  cursor: not-allowed;
-  opacity: .65;
-  pointer-events: none;
+	cursor: not-allowed;
+	opacity: .65;
+	pointer-events: none;
 }
 
 .rptGrp1Total, .rptGrp2Total, .rptTotal {
@@ -1847,11 +1839,8 @@ ul {
 }
 
 .settingsSelectedUI {
-	padding-bottom: 5px;
-	background-color:#ffffff;
-	background:url(../images/settingsSelUIBg.gif) repeat-x;
-	padding:  15px 25px ;
-
+	background: #ffffff url(../images/settingsSelUIBg.gif) repeat-x;
+	padding: 15px 5px 25px 25px;
 }
 
 .settingsIconDisplay {
@@ -1910,9 +1899,9 @@ ul {
 
 .listTableRow{
 	border-bottom:1px solid #eaeaea;
-	border-right	:1px solid #eaeaea;
-	border-bottom:1px solid #eaeaea;
-	border-bottom:1px solid #eaeaea;
+	border-right:1px solid #eaeaea;
+	border-left:1px solid #eaeaea;
+	border-top:1px solid #eaeaea;
 }
 
 .listRow{
@@ -2107,7 +2096,7 @@ textarea {
 	border-left:1px solid #eaeaea;
 	border-top:1px solid #eaeaea;
 	border-right:1px solid #939271;
-	border-left:1px solid #939271;
+	border-bottom:1px solid #939271;
 }
 
 .mailClientCSSButton {
@@ -2826,7 +2815,6 @@ a.allMnu:Hover{
 	overflow-y:hidden;
 	background-color:#ffffff;
 	margin-top: 0px; /* added */
-	display:none;
 }
 .userName{
 	font-family: Arial, Helvetica, sans-serif;

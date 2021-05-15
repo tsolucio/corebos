@@ -295,7 +295,7 @@ a.primary, a.primary:link, a.primary:visited, a.primary:hover, a.primary:active 
 	color: white;
 }
 
-a.secondary, a.secondary:link, a.secondary:primary, a.secondary:hover, a.secondary:active {
+a.secondary, a.secondary:link, a.secondary:visited, a.secondary:hover, a.secondary:active {
 	color: #0070d2;
 }
 
