@@ -63,7 +63,6 @@ function set_return_inventory_po(product_id, product_name, unitprice, taxstr, cu
 	window.opener.document.EditView.elements['hdnProductId'+curr_row].value = product_id;
 	window.opener.document.EditView.elements['listPrice'+curr_row].value = unitprice;
 	window.opener.document.EditView.elements['comment'+curr_row].value = desc;
-	//getOpenerObj("unitPrice"+curr_row).innerHTML = unitprice;
 
 	// Apply decimal round-off to value
 	if (!isNaN(parseFloat(unitprice))) {

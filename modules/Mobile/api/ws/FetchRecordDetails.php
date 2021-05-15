@@ -159,14 +159,6 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 				if (isset($resultRecord[$fieldname])) {
 					$value = $resultRecord[$fieldname];
 					//get standard content & perform special settings
-					if ($fieldinfo['uitype'] == 17 && strlen($resultRecord[$fieldname])) {
-						//www fields
-						$resultRecord[$fieldname]= $resultRecord[$fieldname];
-					}
-					if ($fieldinfo['uitype'] == 13 && strlen($resultRecord[$fieldname])) {
-						// email fields
-						$resultRecord[$fieldname]= $resultRecord[$fieldname];
-					}
 					if ($fieldinfo['uitype'] == 72 && strlen($resultRecord[$fieldname])) {
 						//currency fields
 						$resultRecord[$fieldname]= round($resultRecord[$fieldname], 2);
