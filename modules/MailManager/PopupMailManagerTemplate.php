@@ -27,8 +27,8 @@ $theme_path='themes/'.$theme.'/';
 		<input type="hidden" name="module" value="Users">
 		<table style="background-color: rgb(204, 204, 204);" class="small" border="0" cellpadding="5" cellspacing="1" width="100%">
 		<tr>
-		<th width="35%" class="lvtCol"><b><?php echo getTranslatedString('LBL_TEMPLATE_NAME', 'Emails'); ?></b></th>
-		<th width="65%" class="lvtCol"><b><?php echo getTranslatedString('LBL_DESCRIPTION', 'Emails'); ?></b></th>
+		<th width="35%" class="lvtCol"><strong><?php echo getTranslatedString('LBL_TEMPLATE_NAME', 'Emails'); ?></strong></th>
+		<th width="65%" class="lvtCol"><strong><?php echo getTranslatedString('LBL_DESCRIPTION', 'Emails'); ?></strong></th>
 		</tr>
 <?php
 $result = $adb->pquery(

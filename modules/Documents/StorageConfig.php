@@ -59,7 +59,7 @@ if (!is_admin($current_user)) {
 	<img src="modules/Documents/images/HardDrive4848.png" alt="<?php echo getTranslatedString('STORAGESIZE_CONFIGURATION');?>" width="48" height="48" border=0 title="<?php echo getTranslatedString('STORAGESIZE_CONFIGURATION');?>">
 	</td>
 	<td class=heading2 valign=bottom>
-	<b><a href="index.php?module=Settings&action=index"><?php echo getTranslatedString('LBL_SETTINGS');?></a> > <?php echo getTranslatedString('STORAGESIZE_CONFIGURATION');?> </b>
+	<strong><a href="index.php?module=Settings&action=index"><?php echo getTranslatedString('LBL_SETTINGS');?></a> > <?php echo getTranslatedString('STORAGESIZE_CONFIGURATION');?> </strong>
 	</td>
 </tr>
 <tr>
@@ -75,13 +75,13 @@ if (!is_admin($current_user)) {
 	<tr>
 		<td>
 		<canvas id="chart-area" width="570" height="285" style="display: block; width: 570px; height: 285px;"></canvas>
-		<b><?php echo getTranslatedString('Total', 'Documents').':</b>&nbsp;&nbsp;'.$sistoragesizelimit;?> Gb<br>
-		<b><?php echo getTranslatedString('Occupied', 'Documents').':</b>&nbsp;&nbsp;'.$sistoragesize;?> Gb<br>
-		<b><?php echo getTranslatedString('Free', 'Documents').':</b>&nbsp;&nbsp;'.($sistoragesizelimit-$sistoragesize);?> Gb<br>
+		<strong><?php echo getTranslatedString('Total', 'Documents').':</strong>&nbsp;&nbsp;'.$sistoragesizelimit;?> Gb<br>
+		<strong><?php echo getTranslatedString('Occupied', 'Documents').':</strong>&nbsp;&nbsp;'.$sistoragesize;?> Gb<br>
+		<strong><?php echo getTranslatedString('Free', 'Documents').':</strong>&nbsp;&nbsp;'.($sistoragesizelimit-$sistoragesize);?> Gb<br>
 		</td>
 	<?php if (!empty($coreBOSOnDemandActive)) {?>
 		<td valign="bottom">
-		<?php echo getTranslatedString('NewSize', 'Documents');?>: <input type="text" name='storagenewsize' id='storagenewsize' style="width:30px;" maxlength=2 value="<?php echo $sistoragesizelimit; ?>"> <b>Gb</b><br>
+		<?php echo getTranslatedString('NewSize', 'Documents');?>: <input type="text" name='storagenewsize' id='storagenewsize' style="width:30px;" maxlength=2 value="<?php echo $sistoragesizelimit; ?>"> <strong>Gb</strong><br>
 		<p width=90% align=center><input type="checkbox" id="accept_charge"><span style="font-size: 12px;font-weight: bold;"><?php echo getTranslatedString('accept_charge', 'Documents'); ?></span><br/><input title="<?php echo $app_strings['LBL_SAVE_BUTTON_TITLE']; ?>" accessKey="<?php echo $app_strings['LBL_SAVE_BUTTON_KEY']; ?>" class="crmbutton small save" type="submit" name="button" value="  <?php echo trim($app_strings['LBL_SAVE_BUTTON_LABEL']); ?>  " style="width:70px;" align=center onclick="return jQuery('#accept_charge').is(':checked');"></p>
 		<?php include "modules/Documents/language/{$current_language}.showLicense.html";?><br/><br/><br/>
 		</td>
