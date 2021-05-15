@@ -888,14 +888,11 @@ class CustomView extends CRMEntity {
 		return $stdfiltersql;
 	}
 
-	/** to get the customview AdvancedFilter Query for the given customview Id
-	 * @param $cvid :: Type Integer
-	 * @returns  $advfiltersql as a string
-	 * This function will return the advanced filter criteria for the given customfield
+	/** Get the customview AdvancedFilter Query for the given customview Id
+	 * @param integer custom view ID
+	 * @return string advanced filter SQL
 	 */
 	public function getCVAdvFilterSQL($cvid, $webserviceQL = false) {
-		global $current_user;
-
 		$advfilter = $this->getAdvFilterByCvid($cvid);
 
 		$advcvsql = '';

@@ -628,8 +628,8 @@ function create_guid() {
 }
 
 /** Function to create guid section for a given character
- * @param $characters -- characters:: Type string
- * @returns $return -- integer:: Type integer``
+ * @param string characters
+ * @return integer
  */
 function create_guid_section($characters) {
 	global $log;
