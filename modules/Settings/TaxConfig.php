@@ -305,10 +305,10 @@ function addTaxType($taxlabel, $taxvalue, $sh = '', $retention = 0) {
 			$params1 = array($taxid, $taxname, $taxlabel, $taxvalue, 0);
 		} else {
 			$query1 = 'insert into vtiger_inventorytaxinfo (taxid,taxname,taxlabel,percentage,retention,tdefault,qcreate,deleted) values(?,?,?,?,?,?,?,?)';
-			$retention = (isset($_REQUEST['addTaxLabelretention']) && $_REQUEST['addTaxLabelretention']=='on' ? 1 : 0);
+			$reten = (isset($_REQUEST['addTaxLabelretention']) && $_REQUEST['addTaxLabelretention']=='on' ? 1 : 0);
 			$taxdefault = (isset($_REQUEST['addTaxLabeldefault']) && $_REQUEST['addTaxLabeldefault']=='on' ? 1 : 0);
 			$taxqcreate = (isset($_REQUEST['addTaxLabelqcreate']) && $_REQUEST['addTaxLabelqcreate']=='on' ? 1 : 0);
-			$params1 = array($taxid, $taxname, $taxlabel, $taxvalue, $retention, $taxdefault, $taxqcreate, 0);
+			$params1 = array($taxid, $taxname, $taxlabel, $taxvalue, $reten, $taxdefault, $taxqcreate, 0);
 		}
 		$res1 = $adb->pquery($query1, $params1);
 	}
