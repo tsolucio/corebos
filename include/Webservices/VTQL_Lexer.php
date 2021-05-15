@@ -238,8 +238,7 @@ class VTQL_Lexer {
 					if ($this->index >= strlen($this->data)) {
 						return false; // end of input
 					}
-					// skip this token
-					continue;
+					// skip this token > continue
 				} else {
 					$yy_yymore_patterns = array (
 							1 => "^([ \t\r\n]+)",

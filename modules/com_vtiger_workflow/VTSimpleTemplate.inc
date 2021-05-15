@@ -872,7 +872,7 @@ class VTSimpleTemplate {
 					return '';
 				}
 			default:
-				'';
+				return '';
 		}
 	}
 

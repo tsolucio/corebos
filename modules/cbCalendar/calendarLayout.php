@@ -340,8 +340,8 @@ function getWeekViewLayout(&$cal) {
 		$weekview_layout .= '</tr>';
 	}
 	$weekview_layout .= '</table>';
-	return $weekview_layout;
 	$cal_log->debug('< getWeekViewLayout');
+	return $weekview_layout;
 }
 
 /**
@@ -429,8 +429,8 @@ function getMonthViewLayout(&$cal) {
 		$monthview_layout .= '</tr>';
 	}
 	$monthview_layout .= '</table>';
-	return $monthview_layout;
 	$cal_log->debug('< getMonthViewLayout');
+	return $monthview_layout;
 }
 
 /**
@@ -523,8 +523,8 @@ function getYearViewLayout(&$cal) {
 		$yearview_layout .= '</tr>';
 	}
 	$yearview_layout .= '</table>';
-	return $yearview_layout;
 	$cal_log->debug('< getYearViewLayout');
+	return $yearview_layout;
 }
 
 /**

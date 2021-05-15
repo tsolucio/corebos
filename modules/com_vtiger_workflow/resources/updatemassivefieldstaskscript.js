@@ -295,7 +295,6 @@ function CBMassiveUpdateRelatedTask($, fieldvaluemapping) {
 
 		vtinst.extendSession(handleError(function (result) {
 			vtinst.post('getRelatedModulesInfomation', {'module':moduleName}, handleError(function (result) {
-				getTranslatedString;
 				var modarray={};
 				var combination;
 				for (var prop in result) {

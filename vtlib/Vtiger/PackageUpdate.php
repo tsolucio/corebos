@@ -292,7 +292,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 		foreach ($modulenode->customviews->customview as $customviewnode) {
 			$filterInstance = Vtiger_Filter::getInstance($customviewnode->viewname, $moduleInstance);
 			if (!$filterInstance) {
-				$filterInstance = $this->import_CustomView($modulenode, $moduleInstance, $customviewnode);
+				$this->import_CustomView($modulenode, $moduleInstance, $customviewnode);
 			} else {
 				$this->update_CustomView($modulenode, $moduleInstance, $customviewnode, $filterInstance);
 			}

@@ -295,11 +295,13 @@ switch ($functiontocall) {
 	case 'setSetting':
 		$skey = vtlib_purify($_REQUEST['skey']);
 		$svalue = vtlib_purify($_REQUEST['svalue']);
-		$ret = coreBOS_Settings::setSetting($skey, $svalue);
+		coreBOS_Settings::setSetting($skey, $svalue);
+		$ret = '';
 		break;
 	case 'delSetting':
 		$skey = vtlib_purify($_REQUEST['skey']);
-		$ret = coreBOS_Settings::delSetting($skey);
+		coreBOS_Settings::delSetting($skey);
+		$ret = '';
 		break;
 	case 'getTranslatedStrings':
 		global $currentModule;

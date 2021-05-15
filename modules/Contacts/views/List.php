@@ -18,13 +18,13 @@ class Google_List_View {
 	public function process($request) {
 		switch ($request['operation']) {
 			case 'signin':
-				return $this->signin($request);
+				$this->signin($request);
 				break;
 			case 'sync':
 				return $this->renderSyncUI($request);
 				break;
 			case 'removeSync':
-				return $this->deleteSync($request);
+				$this->deleteSync($request);
 				break;
 			default:
 				$this->renderWidgetUI($request);

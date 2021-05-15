@@ -25,7 +25,7 @@ function showLicense() {
 $smarty=new vtigerCRM_Smarty;
 $focus = new Users();
 
-if (isset($_REQUEST['record']) && isset($_REQUEST['record'])) {
+if (!empty($_REQUEST['record'])) {
 	$smarty->assign('ID', vtlib_purify($_REQUEST['record']));
 	$mode='edit';
 	if (!is_admin($current_user) && $_REQUEST['record'] != $current_user->id) {
