@@ -101,7 +101,6 @@ $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
 $smarty->assign('THEME', $theme);
 $smarty->assign('CURRENCIES', $currencies_not_listed);
-$smarty->assign('PARENTTAB', getParentTab());
 $smarty->assign('MASTER_CURRENCY', $currency_name);
 $smarty->assign('IMAGE_PATH', $image_path);
 

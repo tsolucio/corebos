@@ -25,7 +25,6 @@
 <form name="myform" action="index.php" method="POST">
 	<input type="hidden" name="module" value="CobroPago">
 	<input type="hidden" name="action" value="CobroPagoConfigServer">
-	<input type="hidden" name="parenttab" value="Settings">
 	<input type="hidden" name="mode" value="Save">
 	<div class="slds-form-element slds-m-top_small">
 		<label class="slds-checkbox_toggle slds-grid">

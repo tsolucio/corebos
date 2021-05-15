@@ -40,7 +40,7 @@ function performScanNow(app_key, scannername) {
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 				<tr>
 					<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'mailScanner.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_MAIL_SCANNER}" width="48" height="48" border=0 title="{$MOD.LBL_MAIL_SCANNER}"></td>
-					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_MAIL_SCANNER}</b></td>
+					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_MAIL_SCANNER}</b></td>
 				</tr>
 				<tr>
 					<td valign=top class="small cblds-p-v_none">{$MOD.LBL_MAIL_SCANNER_DESCRIPTION}</td>
@@ -73,7 +73,7 @@ function performScanNow(app_key, scannername) {
 						<tr>
 							<td class="big" width="60%"><strong>{$MOD.LBL_MAILBOX}</strong></td>
 							<td width="30%" nowrap align="right" class="cblds-t-align_right">
-								<a href="index.php?module=Settings&action=MailScanner&parenttab=Settings&mode=edit&scannername="><img src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" border="0" /></a>
+								<a href="index.php?module=Settings&action=MailScanner&mode=edit&scannername="><img src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" border="0" /></a>
 							</td>
 						</tr>
 						</table>
@@ -93,7 +93,6 @@ function performScanNow(app_key, scannername) {
 				<input type='hidden' name='scannername' value='{$SCANNERINFO.scannername}'>
 				<input type='hidden' name='return_action' value='MailScanner'>
 				<input type='hidden' name='return_module' value='Settings'>
-				<input type='hidden' name='parenttab' value='Settings'>
 
 				{* When mode is Ajax, xmode will be set *}
 				<input type='hidden' name='xmode' value=''>

@@ -38,8 +38,6 @@ $image_path=$theme_path.'images/';
 
 //the user might belong to multiple groups
 
-$category = getParenttab();
-
 $smarty->assign('UMOD', $mod_strings);
 global $current_language;
 $smod_strings = return_module_language($current_language, 'Settings');
@@ -56,10 +54,8 @@ $smarty->assign('GROUP_COUNT', count($oGetUserGroups->user_groups));
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', $image_path);
 $smarty->assign('ID', $focus->id);
-$smarty->assign('CATEGORY', $category);
 
 if (!empty($_REQUEST['modechk'])) {
-	$modepref = vtlib_purify($_REQUEST['modechk']);
 	if ($_REQUEST['modechk'] == 'prefview') {
 		$parenttab = '';
 	} else {

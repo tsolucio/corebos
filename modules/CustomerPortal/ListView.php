@@ -26,7 +26,6 @@ $mode = isset($_REQUEST['mode']) ? $_REQUEST['mode'] : '';
 if ($mode !='' && $mode == 'save') {
 	cp_saveCustomerPortalSettings($_REQUEST);
 }
-$category = getParentTab();
 $portalmodules = cp_getPortalModuleinfo();
 $moduleInfo = json_encode($portalmodules);
 
@@ -36,7 +35,6 @@ $smarty->assign('MOD', $mod_strings);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
-$smarty->assign('CATEGORY', $category);
 include 'modules/cbupdater/forcedButtons.php';
 $smarty->assign('CHECK', $tool_buttons);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");

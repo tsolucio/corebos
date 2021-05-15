@@ -42,12 +42,12 @@ if (!is_admin($current_user)) {
 
 	$menu_array = array();
 
-	$menu_array['CONFIGURATION']['location'] = 'index.php?module=evvtgendoc&action=BasicSettings&parenttab=Settings&formodule=evvtgendoc';
+	$menu_array['CONFIGURATION']['location'] = 'index.php?module=evvtgendoc&action=BasicSettings&formodule=evvtgendoc';
 	$menu_array['CONFIGURATION']['image_src']= 'modules/evvtgendoc/images/oomerge.jpg';
 	$menu_array['CONFIGURATION']['desc'] = getTranslatedString('LBL_CONFIGURATION_DESCRIPTION', 'evvtgendoc');
 	$menu_array['CONFIGURATION']['label']= getTranslatedString('LBL_evvtgendoc_SETTINGS', 'evvtgendoc');
 
-	$menu_array['SERVERCONFIGURATION']['location'] = 'index.php?module=evvtgendoc&action=ServerSettings&parenttab=Settings&formodule=evvtgendoc';
+	$menu_array['SERVERCONFIGURATION']['location'] = 'index.php?module=evvtgendoc&action=ServerSettings&formodule=evvtgendoc';
 	$menu_array['SERVERCONFIGURATION']['image_src']= 'modules/evvtgendoc/images/gendoc_server.png';
 	$menu_array['SERVERCONFIGURATION']['desc'] = getTranslatedString('LBL_SERVERCONFIGURATION_DESCRIPTION', 'evvtgendoc');
 	$menu_array['SERVERCONFIGURATION']['label']= getTranslatedString('LBL_evvtgendoc_SERVERSETTINGS', 'evvtgendoc');

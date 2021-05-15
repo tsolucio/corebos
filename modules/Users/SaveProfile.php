@@ -164,7 +164,7 @@ foreach ($modArr as $fld_module => $fld_label) {
 		$adb->pquery('insert into vtiger_profile2field values(?,?,?,?,?,?)', array($profileid, $tab_id, $fieldid, $visible_value, $readOnlyValue, $positionValue));
 	}
 }
-$loc = 'index.php?action=ListProfiles&module=Settings&mode=view&parenttab=Settings&profileid='.urlencode(vtlib_purify($profileid))
+$loc = 'index.php?action=ListProfiles&module=Settings&mode=view&profileid='.urlencode(vtlib_purify($profileid))
 	.'&selected_tab=' . urlencode(vtlib_purify($def_tab)) . '&selected_module=' . urlencode(vtlib_purify($def_module));
 echo $loc;
 

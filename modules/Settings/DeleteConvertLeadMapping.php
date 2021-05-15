@@ -9,11 +9,7 @@
  ********************************************************************************/
 require_once 'include/utils/CommonUtils.php';
 global $adb,$log,$current_user;
-
 $cfmid=vtlib_purify($_REQUEST['cfmid']);
-
 $result=$adb->pquery('DELETE FROM vtiger_convertleadmapping WHERE cfmid=?', array($cfmid));
-
-$listURL='index.php?action=CustomFieldList&module=Settings&parenttab=Settings';
-header(sprintf('Location: %s', $listURL));
+header(sprintf('Location: %s', 'index.php?action=CustomFieldList&module=Settings'));
 ?>

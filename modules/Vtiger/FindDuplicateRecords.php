@@ -33,7 +33,6 @@ $tool_buttons = array(
 );
 $smarty->assign('CHECK', $tool_buttons);
 $smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
-$smarty->assign('CATEGORY', getParentTab($currentModule));
 $ids_list = array();
 $errormsg = '';
 if (isset($_REQUEST['del_rec'])) {

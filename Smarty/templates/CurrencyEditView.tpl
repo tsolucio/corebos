@@ -23,7 +23,6 @@
 			<!-- DISPLAY -->
 	<form action="index.php" method="post" name="index" id="form" onsubmit="VtigerJS_DialogBox.block();">
 	<input type="hidden" name="module" value="Settings">
-	<input type="hidden" name="parenttab" value="{$PARENTTAB}">
 	<input type="hidden" name="action" value="index">
 	<input type="hidden" name="record" value="{$ID}">
 	<div class="slds-grid slds-gutters slds-p-right_small">

@@ -17,16 +17,12 @@ Webforms::checkAdminAccess($current_user);
 $webformFields=Webforms::getFieldInfos($_REQUEST['targetmodule']);
 
 $smarty = new vtigerCRM_Smarty();
-
-$category = getParentTab();
-
 $smarty->assign('WEBFORM', new Webforms_Model());
 $smarty->assign('WEBFORMFIELDS', $webformFields);
-$smarty->assign("THEME", $theme);
+$smarty->assign('THEME', $theme);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MODULE', $currentModule);
-$smarty->assign('CATEGORY', $category);
 if (isset($tool_buttons)==false) {
 	$tool_buttons = Button_Check($currentModule);
 }

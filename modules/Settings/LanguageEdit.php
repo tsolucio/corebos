@@ -32,7 +32,6 @@ $smod_strings = return_module_language($current_language, 'Settings');
 $smarty->assign('MOD', $smod_strings);
 $smarty->assign('MODULE', 'Settings');
 $smarty->assign('IMAGE_PATH', $image_path);
-$smarty->assign('PARENTTAB', $_REQUEST['parenttab']);
 $smarty->assign('APP', $app_strings);
 $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';

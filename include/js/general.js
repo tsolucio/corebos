@@ -2828,7 +2828,7 @@ function LTrim( value ) {
 	return value.replace(re, '$1');
 }
 
-function selectedRecords(module, category) {
+function selectedRecords(module) {
 	var allselectedboxes = document.getElementById('allselectedboxes');
 	var idstring = (allselectedboxes == null)? '' : allselectedboxes.value;
 	var viewid = getviewId();
@@ -2839,23 +2839,23 @@ function selectedRecords(module, category) {
 		url = url+searchurl+'&excludedRecords='+excludedRecords;
 	}
 	if (idstring != '') {
-		window.location.href='index.php?module='+module+'&action=ExportRecords&parenttab='+category+'&idstring='+idstring+url;
+		window.location.href='index.php?module='+module+'&action=ExportRecords&idstring='+idstring+url;
 	} else {
-		window.location.href='index.php?module='+module+'&action=ExportRecords&parenttab='+category;
+		window.location.href='index.php?module='+module+'&action=ExportRecords';
 	}
 	return false;
 }
 
-function record_export(module, category, exform, idstring) {
+function record_export(module, exform, idstring) {
 	var searchType = document.getElementsByName('search_type');
 	var exportData = document.getElementsByName('export_data');
 	for (var i=0; i<2; i++) {
-		if (searchType[i].checked == true) {
+		if (searchType[i].checked) {
 			var sel_type = searchType[i].value;
 		}
 	}
 	for (i=0; i<3; i++) {
-		if (exportData[i].checked == true) {
+		if (exportData[i].checked) {
 			var exp_type = exportData[i].value;
 		}
 	}
@@ -3791,11 +3791,10 @@ function moveFieldDown() {
 
 function lastImport(module, req_module) {
 	var module_name= module;
-	var parent_tab= document.getElementById('parenttab').value;
 	if (module == '') {
 		return false;
 	} else {
-		window.open('index.php?module='+module_name+'&action=lastImport&req_mod='+req_module+'&parenttab='+parent_tab, 'lastImport', cbPopupWindowSettings+',menubar=no,toolbar=no,location=no,status=no,scrollbars=yes');
+		window.open('index.php?module='+module_name+'&action=lastImport&req_mod='+req_module, 'lastImport', cbPopupWindowSettings+',menubar=no,toolbar=no,location=no,status=no,scrollbars=yes');
 	}
 }
 

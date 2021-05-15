@@ -360,7 +360,7 @@ function getPicklistValuesSpecialUitypes($uitype, $fieldname, $value, $action = 
 				$roleid=$arr_evo[$i];
 				$rolename=getRoleName($roleid);
 				if ((is_admin($current_user))) {
-					$options[$i]='<a href="index.php?module=Settings&action=RoleDetailView&parenttab=Settings&roleid='.$roleid.'">'.$rolename.'</a>';
+					$options[$i]='<a href="index.php?module=Settings&action=RoleDetailView&roleid='.$roleid.'">'.$rolename.'</a>';
 				} else {
 					$options[$i]=$rolename;
 				}

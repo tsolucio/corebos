@@ -20,15 +20,12 @@ $theme_path = 'themes/' . $theme . '/';
 if (isset($_REQUEST['record'])) {
 	$id = vtlib_purify($_REQUEST['record']);
 }
-$category = getParentTab();
-
 require_once 'modules/Leads/ConvertLeadUI.php';
 $uiinfo = new ConvertLeadUI($id, $current_user);
 
 $smarty = new vtigerCRM_Smarty();
 $smarty->assign('UIINFO', $uiinfo);
 $smarty->assign('MODULE', 'Leads');
-$smarty->assign('CATEGORY', $category);
 $smarty->assign('THEME', $theme_path);
 $smarty->assign('DATE_FORMAT', $current_user->date_format);
 $smarty->assign('CAL_DATE_FORMAT', parse_calendardate($app_strings['NTC_DATE_FORMAT']));

@@ -553,10 +553,10 @@ function setCoOrdinate(elemId) {
 	tagName.style.left= leftpos - 276 + 'px';
 }
 
-function getListOfRecords(obj, sModule, iId, sParentTab) {
+function getListOfRecords(obj, sModule, iId) {
 	jQuery.ajax({
 		method:'POST',
-		url:'index.php?module=Users&action=getListOfRecords&ajax=true&CurModule='+sModule+'&CurRecordId='+iId+'&CurParentTab='+sParentTab,
+		url:'index.php?module=Users&action=getListOfRecords&ajax=true&CurModule='+sModule+'&CurRecordId='+iId,
 	}).done(function (response) {
 		document.getElementById('lstRecordLayout').innerHTML = response;
 		Lay = 'lstRecordLayout';

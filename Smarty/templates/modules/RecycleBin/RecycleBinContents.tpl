@@ -148,7 +148,6 @@
 			</div>
 			<input type="hidden" name="searchtype" value="BasicSearch">
 			<input type="hidden" name="module" value="{$SELECTED_MODULE}">
-			<input type="hidden" name="parenttab" value="{$CATEGORY}">
 			<input type="hidden" name="action" value="index">
 			<input type="hidden" name="query" value="true">
 			<input type="hidden" name="search_cnt">

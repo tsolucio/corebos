@@ -38,7 +38,6 @@ if (!empty($_REQUEST['newsave'])) {
 	$_REQUEST['setStatus'] = CV_STATUS_PENDING;
 }
 $cvmodule = vtlib_purify($_REQUEST['cvmodule']);
-$parenttab = getParentTab();
 $return_action = vtlib_purify($_REQUEST['return_action']);
 if ($cvmodule != '') {
 	$cv_tabid = getTabid($cvmodule);

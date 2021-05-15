@@ -22,7 +22,7 @@ function fetchContents(mode) {
 	// Reloading the window is better, If not reloaded ... mysitesArray variable needs to be updated
 	// using eval method on javascript.
 	if (mode == 'data') {
-		window.location.href = 'index.php?module=Portal&action=ListView&parenttab=Tools';
+		window.location.href = 'index.php?module=Portal&action=ListView';
 		return;
 	}
 	document.getElementById('status').style.display = 'inline';

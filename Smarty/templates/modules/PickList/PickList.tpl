@@ -22,7 +22,7 @@
 		<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 		<tr>
 			<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'picklist.gif'|@vtiger_imageurl:$THEME}" width="48" height="48" border=0 ></td>
-			<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_PICKLIST_EDITOR}</b></td>
+			<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_PICKLIST_EDITOR}</b></td>
 		</tr>
 		<tr>
 			<td valign=top class="small cblds-p-v_none">{$MOD.LBL_PICKLIST_DESCRIPTION}</td>

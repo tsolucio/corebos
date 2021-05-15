@@ -131,7 +131,7 @@ EOT;
 	showMandatoryFieldsAndValues($entityValues);
 	echo '<div class="slds-align_absolute-center slds-p-around_large">';
 	if (is_admin($current_user)) {
-		echo "<button class='slds-button slds-button_outline-brand' type='button' onclick='gotourl(\"index.php?module=Settings&action=CustomFieldList&parenttab=Settings&formodule=Leads\")'>"
+		echo "<button class='slds-button slds-button_outline-brand' type='button' onclick='gotourl(\"index.php?module=Settings&action=CustomFieldList&formodule=Leads\")'>"
 			.getTranslatedString('LBL_LEADS_FIELD_MAPPING', $currentModule) . '</button>';
 	}
 	echo "<button class='slds-button slds-button_outline-brand' type='button' onclick='window.history.back();'>". getTranslatedString('LBL_GO_BACK', $currentModule) .'</button><br>';

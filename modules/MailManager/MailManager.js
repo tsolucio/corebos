@@ -1344,10 +1344,10 @@ if (typeof(MailManager) == 'undefined') {
 					}
 					emailId = responseText.result.emailid;
 					jQuery('#emailid').val(emailId);
-					window.open('index.php?module=Documents&return_module=MailManager&action=Popup&popuptype=detailview&form=EditView&form_submit=false&recordid='+emailId+'&forrecord='+emailId+'&parenttab=Marketing&srcmodule=MailManager&popupmode=ajax&RLreturn_module=MailManager&RLparent_id='+emailId+'&parenttab=My Home Page&callback=MailManager.add_data_to_relatedlist', 'test', cbPopupWindowSettings);
+					window.open('index.php?module=Documents&return_module=MailManager&action=Popup&popuptype=detailview&form=EditView&form_submit=false&recordid='+emailId+'&forrecord='+emailId+'&srcmodule=MailManager&popupmode=ajax&RLreturn_module=MailManager&RLparent_id='+emailId+'&callback=MailManager.add_data_to_relatedlist', 'test', cbPopupWindowSettings);
 				});
 			} else {
-				window.open('index.php?module=Documents&return_module=MailManager&action=Popup&popuptype=detailview&form=EditView&form_submit=false&recordid='+emailId+'&forrecord='+emailId+'&parenttab=Marketing&srcmodule=MailManager&popupmode=ajax&RLreturn_module=MailManager&RLparent_id='+emailId+'&parenttab=My Home Page&callback=MailManager.add_data_to_relatedlist', 'test', cbPopupWindowSettings);
+				window.open('index.php?module=Documents&return_module=MailManager&action=Popup&popuptype=detailview&form=EditView&form_submit=false&recordid='+emailId+'&forrecord='+emailId+'&srcmodule=MailManager&popupmode=ajax&RLreturn_module=MailManager&RLparent_id='+emailId+'&callback=MailManager.add_data_to_relatedlist', 'test', cbPopupWindowSettings);
 			}
 			VtigerJS_DialogBox.unblock();
 		},

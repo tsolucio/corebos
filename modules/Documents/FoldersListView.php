@@ -19,7 +19,6 @@ $log = LoggerManager::getLogger('note_list');
 
 global $app_strings,$mod_strings,$currentModule,$image_path,$theme;
 $list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $currentModule);
-$category = getParentTab();
 
 $focus = new Documents();
 // Initialize sort by fields
@@ -97,7 +96,6 @@ $smarty->assign('IMAGE_PATH', $image_path);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('BUTTONS', $other_text);
-$smarty->assign('CATEGORY', $category);
 $smarty->assign('MAX_RECORDS', $list_max_entries_per_page);
 $smarty->assign('Document_Folder_View', 1);
 //Retreive the list from Database
@@ -279,7 +277,7 @@ $smarty->assign('CHECK', $check_button);
 
 // Gather the custom link information to display
 include_once 'vtlib/Vtiger/Link.php';
-$customlink_params = array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_REQUEST['action']), 'CATEGORY'=> $category);
+$customlink_params = array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_REQUEST['action']));
 $smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('LISTVIEWBASIC','LISTVIEW'), $customlink_params));
 
 // Search Panel Status

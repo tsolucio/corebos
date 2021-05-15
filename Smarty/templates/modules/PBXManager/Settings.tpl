@@ -21,13 +21,12 @@
 			<input type='hidden' name='action' value='DefModuleView'>
 			<input type='hidden' name='return_action' value='ListView'>
 			<input type='hidden' name='return_module' value='Users'>
-			<input type='hidden' name='parenttab' value='Settings'>
 			<br>
 			<div align=center>
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 					<tr>
 						<td width=50 rowspan=3 valign=top><img src="include/LD/assets/icons/standard/call_60.png" alt="{$MOD.LBL_SOFTPHONE_SERVER_SETTINGS}" style="background-color: #f2cf5b;width:48px;" title="{$MOD.LBL_SOFTPHONE_SERVER_SETTINGS}"></td>
-						<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_SOFTPHONE_SERVER_SETTINGS}</b></td>
+						<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_SOFTPHONE_SERVER_SETTINGS}</b></td>
 					</tr>
 					<tr>
 						<td valign=top class="small">{$MOD.LBL_SOFTPHONE_SERVER_SETTINGS_DESCRIPTION}</td>

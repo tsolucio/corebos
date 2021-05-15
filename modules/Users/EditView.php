@@ -124,7 +124,16 @@ $smarty->assign('tagshow_options', array(
 ));
 $smarty->assign('DUPLICATE', (isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : ''));
 $smarty->assign('USER_MODE', $mode);
-$smarty->assign('PARENTTAB', getParentTab());
+if (!empty($_REQUEST['modechk'])) {
+	if ($_REQUEST['modechk'] == 'prefview') {
+		$parenttab = '';
+	} else {
+		$parenttab = 'Settings';
+	}
+} else {
+	$parenttab = 'Settings';
+}
+$smarty->assign('PARENTTAB', $parenttab);
 coreBOS_Session::set('Users_FORM_TOKEN', rand(5, 2000) * rand(2, 7));
 $smarty->assign('FORM_TOKEN', $_SESSION['Users_FORM_TOKEN']);
 $smarty->assign('Application_Textarea_Style', GlobalVariable::getVariable('Application_Textarea_Style', 'height:140px;', $currentModule, $current_user->id));

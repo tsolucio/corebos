@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 $custom_menu_array = array();
-$custom_menu_array['SyncHelpDesk']['location'] = 'index.php?module=ServiceContracts&action=HDSync&parenttab=Settings';
+$custom_menu_array['SyncHelpDesk']['location'] = 'index.php?module=ServiceContracts&action=HDSync';
 $custom_menu_array['SyncHelpDesk']['image_src'] = 'include/LD/assets/icons/utility/sync_60.png';
 $custom_menu_array['SyncHelpDesk']['label'] = getTranslatedString('SyncHelpDesk', 'ServiceContracts');
 $custom_menu_array['SyncHelpDesk']['desc'] = getTranslatedString('SyncHelpDeskDescription', 'ServiceContracts');

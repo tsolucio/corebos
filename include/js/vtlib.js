@@ -375,6 +375,6 @@ function vtlib_toggleModule(module, action, type) {
 	}).done(function (response) {
 		VtigerJS_DialogBox.unblock();
 		// Reload the page to apply the effect of module setting
-		window.location.href = 'index.php?module=Settings&action=ModuleManager&parenttab=Settings';
+		window.location.href = 'index.php?module=Settings&action=ModuleManager';
 	});
 }

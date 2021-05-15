@@ -1737,10 +1737,10 @@ class Users extends CRMEntity {
 			if ($lgn['user_name'] == 'admin') {
 				$entry['isblockeduser'] = true;
 			}
-			$entry['duplicateuser'] = 'index.php?action=EditView&return_action=ListView&return_module=Users&module=Users&parenttab=Settings&record='.$lgn['id'].'&isDuplicate=true';
-			$entry['viewuser'] = 'index.php?module=Users&action=DetailView&parenttab=Settings&record='.$lgn['id'];
-			$entry['viewusername'] = 'index.php?module=Users&action=DetailView&parenttab=Settings&record='.$lgn['id'];
-			$entry['edituser'] = 'index.php?action=EditView&return_action=ListView&return_module=Users&module=Users&parenttab=Settings&record='.$lgn['id'];
+			$entry['duplicateuser'] = 'index.php?action=EditView&return_action=ListView&return_module=Users&module=Users&record='.$lgn['id'].'&isDuplicate=true';
+			$entry['viewuser'] = 'index.php?module=Users&action=DetailView&record='.$lgn['id'];
+			$entry['viewusername'] = 'index.php?module=Users&action=DetailView&record='.$lgn['id'];
+			$entry['edituser'] = 'index.php?action=EditView&return_action=ListView&return_module=Users&module=Users&record='.$lgn['id'];
 			$entry['Admin'] = $lgn['is_admin'];
 			if ($lgn['is_admin'] == 'on') {
 				$entry['Admin'] = getTranslatedString('LBL_ON', 'Users');
@@ -1763,7 +1763,7 @@ class Users extends CRMEntity {
 			$entry['roleid'] = fetchUserRole($lgn['id']);
 			$rolename = $adb->getone("select rolename from vtiger_role where roleid='".$entry['roleid']."'");
 			$entry['rolename'] = $rolename;
-			$entry['viewrole'] = 'index.php?action=RoleDetailView&module=Settings&parenttab=Settings&roleid='.$entry['roleid'];
+			$entry['viewrole'] = 'index.php?action=RoleDetailView&module=Settings&roleid='.$entry['roleid'];
 			$entries_list['data'][] = $entry;
 		}
 		$log->debug('< getUsersJSON');

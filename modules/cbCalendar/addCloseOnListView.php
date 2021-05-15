@@ -49,7 +49,7 @@ class cbCalendar_addCloseOnListView extends VTEventHandler {
 					$lnk = "ajaxChangeCalendarStatus('" . $evt_status . "'," . $parameter[2] . ');';
 					$lnk .= "loadRelatedListBlock('module=" . $rlModule . '&action=' . $rlModule . 'Ajax&file=DetailViewAjax&record=' . $rlRecord .
 						'&ajxaction=LOADRELATEDLIST&header=Activities&relation_id=' . $rlRelationID . '&cbcalendar_filter=' . $rlCFilter .
-						"&actions=add&parenttab=Support','tbl_" . $rlModule . "_Activities','" . $rlModule . "_Activities');";
+						"&actions=add','tbl_" . $rlModule . "_Activities','" . $rlModule . "_Activities');";
 					$parameter[0][$actionpos] = '<a href="javascript:void(0);" onclick="' . $lnk . 'return false;">' .
 						getTranslatedString('LBL_CLOSE', 'cbCalendar') . '</a> | ' . $parameter[0][$actionpos];
 				} else {

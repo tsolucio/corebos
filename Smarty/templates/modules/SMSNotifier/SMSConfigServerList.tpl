@@ -37,7 +37,7 @@
 			<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 				<tr>
 					<td width="50" rowspan="2" valign="top"><img src="{'proxy.gif'|@vtiger_imageurl:$THEME}" alt="{$CMOD.SERVER_CONFIGURATION}" width="48" height="48" border=0 title="{$CMOD.SERVER_CONFIGURATION}"></td>
-					<td colspan="2" class="heading2" valign=bottom align="left"><b><a href="index.php?module=Settings&action=ModuleManager&parenttab=Settings">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a> &gt; {$CMOD.SMSNotifier} > {$CMOD.SERVER_CONFIGURATION} </b></td>
+					<td colspan="2" class="heading2" valign=bottom align="left"><b><a href="index.php?module=Settings&action=ModuleManager">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a> &gt; {$CMOD.SMSNotifier} > {$CMOD.SERVER_CONFIGURATION} </b></td>
 					<td rowspan=2 class="small" align=right>&nbsp;</td>
 				</tr>
 				<tr>

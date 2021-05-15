@@ -15,8 +15,6 @@ global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $c
 require_once 'Smarty_setup.php';
 $tasklabel = getAllModulesWithDateFields();
 
-$category = getParentTab($currentModule);
-
 $smarty = new vtigerCRM_Smarty();
 
 $smarty->assign('APP', $app_strings);
@@ -42,7 +40,6 @@ $smarty->assign('CMOD', $c_mod_strings);
 
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
-$smarty->assign('CATEGORY', $category);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('ID', '');

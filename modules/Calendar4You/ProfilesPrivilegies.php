@@ -38,7 +38,7 @@ if (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'save') {
 			$adb->pquery($sqlins, $params);
 		}
 	}
-	echo '<meta http-equiv="refresh" content="0; url=index.php?module=Settings&action=ModuleManager&module_settings=true&formodule=Calendar4You&parenttab=Settings">';
+	echo '<meta http-equiv="refresh" content="0; url=index.php?module=Settings&action=ModuleManager&module_settings=true&formodule=Calendar4You">';
 } else {
 	$permissionNames = array();
 	foreach ($permissions as $profileid => $subArr) {

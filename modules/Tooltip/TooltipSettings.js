@@ -15,7 +15,7 @@ function getRelatedFieldInfo(id) {
 	var fieldname = id.options[id.options.selectedIndex].value;
 	jQuery.ajax({
 		method: 'POST',
-		url: 'index.php?module=Tooltip&action=TooltipAjax&file=EditQuickView&field_name='+fieldname+'&module_name='+modulename+'&parenttab=Settings&ajax=true'
+		url: 'index.php?module=Tooltip&action=TooltipAjax&file=EditQuickView&field_name='+fieldname+'&module_name='+modulename+'&ajax=true'
 	}).done(function (response) {
 		if (response == false) {
 			alert(alert_arr.ERR_FIELD_SELECTION);
@@ -32,7 +32,7 @@ function getRelatedFieldInfo(id) {
 function saveTooltipInformation(fieldid, checkedFields) {
 	jQuery.ajax({
 		method: 'POST',
-		url: 'index.php?module=Tooltip&action=TooltipAjax&file=SaveTooltipInformation&fieldid='+fieldid+'&checkedFields='+checkedFields+'&parenttab=Settings&ajax=true'
+		url: 'index.php?module=Tooltip&action=TooltipAjax&file=SaveTooltipInformation&fieldid='+fieldid+'&checkedFields='+checkedFields+'&ajax=true'
 	}).done(function (response) {
 		if (response == 'FAILURE') {
 			alert(alert_arr.ERR_FIELD_SELECTION);

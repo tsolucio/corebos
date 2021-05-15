@@ -42,7 +42,6 @@ if ($currentModule=='Products' || $currentModule=='Services') {
 	}
 	$smarty->assign('TAX_DETAILS', $tax_details);
 }
-$smarty->assign('CATEGORY', getParentTab());
 $upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize', 3000000, $currentModule);
 $smarty->assign('UPLOADSIZE', $upload_maxsize/1000000); //Convert to MB
 $smarty->assign('UPLOAD_MAXSIZE', $upload_maxsize);

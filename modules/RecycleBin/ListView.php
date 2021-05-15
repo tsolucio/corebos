@@ -173,8 +173,6 @@ $indexField = $moduleFieldName;
 
 $alphabetical = AlphabeticalSearch($currentModule, 'index', $indexField, 'true', 'basic', '', '', '', '', $viewid);
 
-$category = getParentTab();
-
 $check_button = Button_Check($_REQUEST['module']);
 $check_button['EditView'] = 'no';
 $check_button['CreateView'] = 'no';
@@ -195,7 +193,6 @@ $smarty->assign('MODULE_DATA', $rb_listview_header);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
-$smarty->assign('CATEGORY', $category);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', $image_path);
 // Pass on the authenticated user language

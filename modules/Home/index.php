@@ -75,7 +75,6 @@ $smarty->assign('CHECK', $buttoncheck);
 $smarty->assign('CALENDAR_ACTIVE', (vtlib_isModuleActive('cbCalendar') ? 'yes' : 'no'));
 $smarty->assign('IMAGE_PATH', $image_path);
 $smarty->assign('MODULE', 'Home');
-$smarty->assign('CATEGORY', getParenttab('Home'));
 $smarty->assign('CURRENTUSER', $user_name);
 $smarty->assign('ALL_TAG', $freetag->get_tag_cloud_html('', $current_user->id));
 $smarty->assign('USER_TAG_SHOWAS', getTagCloudShowAs($current_user->id));

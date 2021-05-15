@@ -38,7 +38,7 @@
 		document.getElementById('status').style.display='inline';
 		jQuery.ajax({
 			method: 'POST',
-			url:'index.php?action=SettingsAjax&file=CurrencyDeleteStep1&return_action=CurrencyListView&return_module=Settings&module=Settings&parenttab=Settings&id='+currid,
+			url:'index.php?action=SettingsAjax&file=CurrencyDeleteStep1&return_action=CurrencyListView&return_module=Settings&module=Settings&id='+currid,
 		}).done(function(response) {
 			jQuery('#status').hide();
 			jQuery('#currencydiv').html(response);

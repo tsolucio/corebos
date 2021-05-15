@@ -130,7 +130,6 @@ if ($mode == 'create') {
 
 $output.='<div class="layerPopup" id="sharingRule"><form name="newGroupForm" action="index.php" method="post" onsubmit="VtigerJS_DialogBox.block();">
 <input type="hidden" name="module" value="Settings">
-<input type="hidden" name="parenttab" value="Settings">
 <input type="hidden" name="action" value="SaveSharingRule">
 <input type="hidden" name="sharing_module" value="'.$sharing_module.'">
 <input type="hidden" name="shareId" value="'.$shareid.'">

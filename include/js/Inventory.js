@@ -616,7 +616,7 @@ function fnAddTaxConfigRow(sh) {
 		col4.innerHTML='<input type=\'checkbox\' id=\''+label_name+'default\' name=\''+label_name+'default\' class=\'slds-checkbox\' />';
 		col5.innerHTML='<input type=\'checkbox\' id=\''+label_name+'qcreate\' name=\''+label_name+'qcreate\' class=\'slds-checkbox\' />';
 	}
-	document.getElementById(td_id).innerHTML='<input type=\'submit\' name=\'Save\' value=\' '+tax_labelarr.SAVE_BUTTON+' \' class=\'slds-button slds-button_success save\' onclick="this.form.action.value=\'TaxConfig\'; this.form.'+add_tax_flag+'.value=\'true\'; return validateNewTaxType(\''+label_name+'\',\''+label_val+'\');">&nbsp;<input type=\'submit\' name=\'Cancel\' value=\' '+tax_labelarr.CANCEL_BUTTON+' \' class=\'slds-button slds-button_destructive cancel\' onclick="this.form.action.value=\'TaxConfig\'; this.form.module.value=\'Settings\'; this.form.'+add_tax_flag+'.value=\'false\'; this.form.parenttab.value=\'Settings\';">';
+	document.getElementById(td_id).innerHTML='<input type=\'submit\' name=\'Save\' value=\' '+tax_labelarr.SAVE_BUTTON+' \' class=\'slds-button slds-button_success save\' onclick="this.form.action.value=\'TaxConfig\'; this.form.'+add_tax_flag+'.value=\'true\'; return validateNewTaxType(\''+label_name+'\',\''+label_val+'\');">&nbsp;<input type=\'submit\' name=\'Cancel\' value=\' '+tax_labelarr.CANCEL_BUTTON+' \' class=\'slds-button slds-button_destructive cancel\' onclick="this.form.action.value=\'TaxConfig\'; this.form.module.value=\'Settings\'; this.form.'+add_tax_flag+'.value=\'false\';">';
 }
 
 function validateNewTaxType(fieldname, fieldvalue) {

@@ -25,7 +25,6 @@ $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
-$smarty->assign('CATEGORY', getParentTab($currentModule));
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('THEME', $theme);
 $gmailBookmarklet = "javascript:(function()%7Bvar%20doc=document;var%20bodyElement=document.body;doc.vtigerURL=%22$site_URL/%22;".

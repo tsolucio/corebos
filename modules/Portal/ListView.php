@@ -71,7 +71,6 @@ $smarty->assign('PORTALS', $portal_info);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('DEFAULT', 'yes');
-$smarty->assign('CATEGORY', getParentTab());
 $tool_buttons = array(
 	'EditView' => 'no',
 	'CreateView' => 'no',

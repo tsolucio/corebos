@@ -22,7 +22,6 @@ $recordid = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : '';
 $permit_all = isset($_REQUEST['permitall']) ? vtlib_purify($_REQUEST['permitall']) : 'false';
 
 $smarty->assign('MOD', $mod_strings);
-$smarty->assign('CATEGORY', getParentTab());
 $smarty->assign('APP', $app_strings);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', $image_path);

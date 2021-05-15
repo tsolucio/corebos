@@ -58,7 +58,6 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	$smarty->assign('MOD', $mod_strings);
 	$smarty->assign('MODULE', $currentModule);
 	$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule, $currentModule));
-	$smarty->assign('CATEGORY', getParentTab());
 	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 	$smarty->assign('THEME', $theme);
 	$smarty->assign('ID', $focus->id);

@@ -23,7 +23,6 @@
 		<input type='hidden' name='scannername' value='{$SCANNERINFO.scannername}'>
 		<input type='hidden' name='return_action' value='MailScanner'>
 		<input type='hidden' name='return_module' value='Settings'>
-		<input type='hidden' name='parenttab' value='Settings'>
 
 		<br>
 
@@ -32,7 +31,7 @@
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 				<tr>
 					<td width=50 rowspan=2 valign=top><img src="{'mailScanner.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_MAIL_SCANNER}" width="48" height="48" border=0 title="{$MOD.LBL_MAIL_SCANNER}"></td>
-					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_MAIL_SCANNER}</b></td>
+					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_MAIL_SCANNER}</b></td>
 				</tr>
 				<tr>
 					<td valign=top class="small">{$MOD.LBL_MAIL_SCANNER_DESCRIPTION}</td>
@@ -48,7 +47,7 @@
 				<td class="big" width="70%"><strong>{$MOD.LBL_RULES} {$MOD.LBL_FOR} {$MOD.LBL_MAIL_SCANNER} [{$SCANNERINFO.scannername}]</strong></td>
 				<td width="30%" nowrap align="right">
 					<input type="button" class="crmbutton small cancel" value="{$APP.LBL_BACK}"
-						onclick="location.href='index.php?module=Settings&action=MailScanner&parenttab=Settings'" />
+						onclick="location.href='index.php?module=Settings&action=MailScanner'" />
 					<input type="submit" class="crmbutton small create" onclick="this.form.mode.value='ruleedit'" value="{$APP.LBL_ADD_NEW} {$MOD.LBL_RULE}" />
 				</td>
 				</tr>
@@ -70,16 +69,16 @@
 								<strong>{$MOD.LBL_PRIORITY}</strong>
 								<span style='margin-left: 100px;'>
 								{if $NEXT_RULEID}
-<a href="index.php?module=Settings&action=MailScanner&parenttabl=Settings&mode=rulemove_down&scannername={$SCANNERINFO.scannername}&targetruleid={$NEXT_RULEID}&ruleid={$SCANNERRULE->ruleid}" title="{$MOD.LBL_MOVE} {$MOD.LBL_DOWN}"><img src="{'arrow_down.gif'|@vtiger_imageurl:$THEME}" border=0></a>
+<a href="index.php?module=Settings&action=MailScanner&mode=rulemove_down&scannername={$SCANNERINFO.scannername}&targetruleid={$NEXT_RULEID}&ruleid={$SCANNERRULE->ruleid}" title="{$MOD.LBL_MOVE} {$MOD.LBL_DOWN}"><img src="{'arrow_down.gif'|@vtiger_imageurl:$THEME}" border=0></a>
 								{/if}
 								{if $PREV_RULEID}
-<a href="index.php?module=Settings&action=MailScanner&parenttabl=Settings&mode=rulemove_up&scannername={$SCANNERINFO.scannername}&targetruleid={$PREV_RULEID}&ruleid={$SCANNERRULE->ruleid}" title="{$MOD.LBL_MOVE} {$MOD.LBL_UP}"><img src="{'arrow_up.gif'|@vtiger_imageurl:$THEME}" border=0></a>
+<a href="index.php?module=Settings&action=MailScanner&mode=rulemove_up&scannername={$SCANNERINFO.scannername}&targetruleid={$PREV_RULEID}&ruleid={$SCANNERRULE->ruleid}" title="{$MOD.LBL_MOVE} {$MOD.LBL_UP}"><img src="{'arrow_up.gif'|@vtiger_imageurl:$THEME}" border=0></a>
 								{/if}
 								</span>
 							</td>
 							<td nowrap class="small cellLabel" align=right colspan=2>
-								<a href="index.php?module=Settings&action=MailScanner&parenttab=Settings&mode=ruleedit&scannername={$SCANNERINFO.scannername}&ruleid={$SCANNERRULE->ruleid}">{$APP.LBL_EDIT}</a> |
-								<a href="index.php?module=Settings&action=MailScanner&parenttab=Settings&mode=ruledelete&scannername={$SCANNERINFO.scannername}&ruleid={$SCANNERRULE->ruleid}" onclick="return confirm('Are you sure to delete this Rule?');">{$APP.LBL_DELETE}</a>
+								<a href="index.php?module=Settings&action=MailScanner&mode=ruleedit&scannername={$SCANNERINFO.scannername}&ruleid={$SCANNERRULE->ruleid}">{$APP.LBL_EDIT}</a> |
+								<a href="index.php?module=Settings&action=MailScanner&mode=ruledelete&scannername={$SCANNERINFO.scannername}&ruleid={$SCANNERRULE->ruleid}" onclick="return confirm('Are you sure to delete this Rule?');">{$APP.LBL_DELETE}</a>
 							</td>
 						</tr>
 						<tr>

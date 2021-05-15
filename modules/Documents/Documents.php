@@ -199,7 +199,7 @@ class Documents extends CRMEntity {
 			if ($sistoragesize > $sistoragesizelimit) {
 				$adminlink = '';
 				if (is_admin($current_user)) {
-					$adminlink = '<a href="'.$site_URL.'/index.php?module=Documents&action=StorageConfig&parenttab=Settings&formodule=Documents">';
+					$adminlink = '<a href="'.$site_URL.'/index.php?module=Documents&action=StorageConfig&formodule=Documents">';
 					$adminlink.= getTranslatedString('ExtendStorageLink', 'Documents').'</a>';
 				}
 				$saveerror = true;
@@ -595,7 +595,7 @@ class Documents extends CRMEntity {
 			$edata = getEntityName($row['setype'], array($row['crmid']));
 			$ename = $edata[$row['crmid']];
 			$elink = '<a href="index.php?module='.$row['setype'].'&action=DetailView&return_module=Documents&return_action=DetailView&record='.$row['crmid'].
-				'&return_id='.$id.'&parenttab='.vtlib_purify($_REQUEST['parenttab']).'">'.$ename.'</a>';
+				'&return_id='.$id.'">'.$ename.'</a>';
 			$entries[] = $elink;
 			$entries[] = getTranslatedString($row['setype']) ;
 			$entries[] = $row['user_name'];

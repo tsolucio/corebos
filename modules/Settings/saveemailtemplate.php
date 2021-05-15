@@ -31,5 +31,5 @@ if (!empty($templateid)) {
 		array($folderName, $templateName, $subject, $description, $body, 0, $templateid, $emailfrom)
 	);
 }
-header('Location:index.php?module=Settings&action=detailviewemailtemplate&parenttab=Settings&templateid='.urlencode($templateid));
+header('Location:index.php?module=Settings&action=detailviewemailtemplate&templateid='.urlencode($templateid));
 ?>

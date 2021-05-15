@@ -17,7 +17,6 @@ require_once 'include/DatabaseUtil.php';
 checkFileAccess("modules/$currentModule/$currentModule.php");
 require_once "modules/$currentModule/$currentModule.php";
 
-$category = getParentTab();
 $url_string = '';
 
 $tool_buttons = Button_Check($currentModule);
@@ -47,7 +46,6 @@ $smarty->assign('MOD', $mod_strings);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
-$smarty->assign('CATEGORY', $category);
 $smarty->assign('BUTTONS', $list_buttons);
 $smarty->assign('CHECK', $tool_buttons);
 $smarty->assign('THEME', $theme);
@@ -167,7 +165,7 @@ coreBOS_Session::set($currentModule.'_listquery', $list_query);
 
 // Gather the custom link information to display
 include_once 'vtlib/Vtiger/Link.php';
-$customlink_params = array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_REQUEST['action']), 'CATEGORY'=> $category);
+$customlink_params = array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_REQUEST['action']));
 $smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('LISTVIEWBASIC','LISTVIEW'), $customlink_params));
 
 if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {

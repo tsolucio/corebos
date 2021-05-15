@@ -141,7 +141,7 @@ function saveNewBlock() {
 	var relblock = 'no';
 	jQuery.ajax({
 		method:'POST',
-		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=addBlock&fld_module='+blockmodname+'&parenttab=Settings&ajax=true&mode=add&blocklabel='+
+		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=addBlock&fld_module='+blockmodname+'&ajax=true&mode=add&blocklabel='+
 		encodeURIComponent(blocklabelval)+'&after_blockid='+afterblockid+'&relblock='+relblock
 	}).done(function (response) {
 		if (str == 'ERROR') {

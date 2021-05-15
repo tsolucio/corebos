@@ -25,5 +25,5 @@ foreach ($map as $mapping) {
 		);
 	}
 }
-header('Location: index.php?action=CustomFieldList&module=Settings&parenttab=Settings');
+header('Location: index.php?action=CustomFieldList&module=Settings');
 ?>

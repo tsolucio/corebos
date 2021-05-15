@@ -39,7 +39,6 @@
 		<form name="{$formname}" method="POST" action="index.php" onsubmit="VtigerJS_DialogBox.block();">
 		<input type="hidden" name="module" value="Settings" class="slds-input">
 		<input type="hidden" name="action" value="" class="slds-input">
-		<input type="hidden" name="parenttab" value="Settings" class="slds-input">
 		<input type="hidden" name="save_tax" value="" class="slds-input">
 		<input type="hidden" name="edit_tax" value="" class="slds-input">
 		<input type="hidden" name="add_tax_type" value="" class="slds-input">
@@ -57,16 +56,16 @@
 						</button>
 					{/if}
 					{if $EDIT_MODE eq 'true'}
-						<button class="slds-button slds-button_success save" title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.save_tax.value='true'; this.form.parenttab.value='Settings'; return validateTaxes('tax_count');" type="submit" name="button2">
+						<button class="slds-button slds-button_success save" title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.save_tax.value='true'; return validateTaxes('tax_count');" type="submit" name="button2">
 						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use> </svg>
 						&nbsp;{$APP.LBL_SAVE_BUTTON_LABEL}
 						</button>
-						<button class="slds-button slds-button_destructive cancel" title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.module.value='Settings'; this.form.save_tax.value='false'; this.form.parenttab.value='Settings';" type="submit" name="button22">
+						<button class="slds-button slds-button_destructive cancel" title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.module.value='Settings'; this.form.save_tax.value='false';" type="submit" name="button22">
 						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use> </svg>
 						{$APP.LBL_CANCEL_BUTTON_LABEL}
 						</button>&nbsp;&nbsp;&nbsp;&nbsp;
 					{elseif $TAX_COUNT > 0}
-						<button title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.add_tax_type.value=''; this.form.edit_tax.value='true'; this.form.parenttab.value='Settings';" type="submit" name="button" class="slds-button slds-button_success edit">
+						<button title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.add_tax_type.value=''; this.form.edit_tax.value='true';" type="submit" name="button" class="slds-button slds-button_success edit">
 						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use> </svg>
 						{$APP.LBL_EDIT_BUTTON_LABEL}
 						</button>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -137,7 +136,7 @@
 				</td>
 				<td >
 					{if $tax.deleted eq 0}
-						<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&disable=true&taxname={$tax.taxname}&taxid={$tax.taxid}">
+						<a href="index.php?module=Settings&action=TaxConfig&disable=true&taxname={$tax.taxname}&taxid={$tax.taxid}">
 							<span class="slds-icon_container slds-icon_container_circle slds-icon-action-approval" title="{$MOD.LBL_ENABLED}">
 								<svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#approval"></use>
@@ -146,7 +145,7 @@
 							</span>
 						</a>
 					{else}
-						<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&enable=true&taxname={$tax.taxname}&taxid={$tax.taxid}">
+						<a href="index.php?module=Settings&action=TaxConfig&enable=true&taxname={$tax.taxname}&taxid={$tax.taxid}">
 							<span class="slds-icon_container slds-icon_container_circle slds-icon-action-close" title="{$MOD.LBL_DISABLED}">
 								<svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#close"></use>
@@ -169,7 +168,6 @@
 		<form name="{$shformname}" method="POST" action="index.php">
 		<input type="hidden" name="module" value="Settings">
 		<input type="hidden" name="action" value="">
-		<input type="hidden" name="parenttab" value="Settings">
 		<input type="hidden" name="sh_save_tax" value="">
 		<input type="hidden" name="sh_edit_tax" value="">
 		<input type="hidden" name="sh_add_tax_type" value="">
@@ -187,16 +185,16 @@
 						</button>
 					{/if}
 					{if $SH_EDIT_MODE eq 'true'}
-						<button class="slds-button slds-button_success save" title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.sh_save_tax.value='true'; this.form.parenttab.value='Settings'; return validateTaxes('sh_tax_count');" type="submit" name="button2" >
+						<button class="slds-button slds-button_success save" title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.sh_save_tax.value='true'; return validateTaxes('sh_tax_count');" type="submit" name="button2" >
 						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use> </svg>
 						{$APP.LBL_SAVE_BUTTON_LABEL}
 						</button>
-						<button class="slds-button slds-button_destructive cancel" title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.module.value='Settings'; this.form.sh_save_tax.value='false'; this.form.parenttab.value='Settings';" type="submit" name="button22">
+						<button class="slds-button slds-button_destructive cancel" title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.module.value='Settings'; this.form.sh_save_tax.value='false';" type="submit" name="button22">
 						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use> </svg>
 						{$APP.LBL_CANCEL_BUTTON_LABEL}
 						</button>&nbsp;&nbsp;&nbsp;
 					{elseif $SH_TAX_COUNT > 0}
-						<button title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.sh_add_tax_type.value=''; this.form.sh_edit_tax.value='true'; this.form.parenttab.value='Settings';" type="submit" name="button" class="slds-button slds-button_success edit">
+						<button title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.sh_add_tax_type.value=''; this.form.sh_edit_tax.value='true';" type="submit" name="button" class="slds-button slds-button_success edit">
 						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use> </svg>
 							{$APP.LBL_EDIT_BUTTON_LABEL}
 						</button>&nbsp;&nbsp;&nbsp;
@@ -236,7 +234,7 @@
 			</td>
 			<td width=17% >
 				{if $tax.deleted eq 0}
-					<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&sh_disable=true&sh_taxname={$tax.taxname}&taxid={$tax.taxid}">
+					<a href="index.php?module=Settings&action=TaxConfig&sh_disable=true&sh_taxname={$tax.taxname}&taxid={$tax.taxid}">
 						<span class="slds-icon_container slds-icon_container_circle slds-icon-action-approval" title="{$MOD.LBL_ENABLED}">
 							<svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#approval"></use>
@@ -245,7 +243,7 @@
 						</span>
 					</a>
 				{else}
-					<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&sh_enable=true&sh_taxname={$tax.taxname}&taxid={$tax.taxid}">
+					<a href="index.php?module=Settings&action=TaxConfig&sh_enable=true&sh_taxname={$tax.taxname}&taxid={$tax.taxid}">
 						<span class="slds-icon_container slds-icon_container_circle slds-icon-action-close" title="{$MOD.LBL_DISABLED}">
 							<svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#close"></use>

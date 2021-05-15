@@ -19,9 +19,6 @@ if (!isset($where)) {
 	$where = '';
 }
 
-$parent_tab=getParentTab();
-$smarty->assign('CATEGORY', $parent_tab);
-
 $url = '';
 $popuptype = '';
 $popuptype = isset($_REQUEST['popuptype']) ? vtlib_purify($_REQUEST['popuptype']) : '';

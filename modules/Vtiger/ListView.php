@@ -17,7 +17,6 @@ require_once 'include/DatabaseUtil.php';
 checkFileAccessForInclusion("modules/$currentModule/$currentModule.php");
 require_once "modules/$currentModule/$currentModule.php";
 
-$category = getParentTab();
 $url_string = '';
 $massedit1x1 = isset($_REQUEST['massedit1x1']) ? vtlib_purify($_REQUEST['massedit1x1']) : 0;
 if ($massedit1x1=='c') { // mass edit 1x1 cancelled
@@ -51,7 +50,6 @@ $smarty->assign('MOD', $mod_strings);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
-$smarty->assign('CATEGORY', $category);
 $smarty->assign('BUTTONS', $list_buttons);
 $smarty->assign('CHECK', $tool_buttons);
 $smarty->assign('THEME', $theme);
@@ -258,7 +256,7 @@ if ($sql_error) {
 
 	// Gather the custom link information to display
 		include_once 'vtlib/Vtiger/Link.php';
-		$customlink_params = array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_REQUEST['action']), 'CATEGORY'=> $category);
+		$customlink_params = array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_REQUEST['action']));
 		$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('LISTVIEWBASIC','LISTVIEW'), $customlink_params));
 	}
 } // try query

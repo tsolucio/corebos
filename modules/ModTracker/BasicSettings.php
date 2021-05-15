@@ -15,8 +15,6 @@ global $app_strings, $mod_strings, $current_language,$currentModule, $theme,$cur
 $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
 
-$category = getParentTab();
-
 $smarty = new vtigerCRM_Smarty;
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('APP', $app_strings);
@@ -26,7 +24,6 @@ if (!is_admin($current_user)) {
 }
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', $image_path);
-$smarty->assign('CATEGORY', $category);
 
 $tabid = isset($_REQUEST['tabid']) ? vtlib_purify($_REQUEST['tabid']) : '';
 $status = isset($_REQUEST['status']) ? vtlib_purify($_REQUEST['status']) : '';

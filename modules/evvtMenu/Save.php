@@ -218,6 +218,5 @@ switch ($do) {
 		}
 		break;
 }
-$parenttab = getParentTab();
-header("Location:index.php?action=index&module=evvtMenu&parenttab=$parenttab");
+header('Location:index.php?action=index&module=evvtMenu');
 ?>

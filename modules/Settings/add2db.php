@@ -242,11 +242,11 @@ if ($error_flag == '') {
 	$adb->pquery($sql, $params);
 
 	if ($savelogo == 'true') {
-		header('Location: index.php?parenttab=Settings&module=Settings&action=OrganizationConfig');
+		header('Location: index.php?module=Settings&action=OrganizationConfig');
 	} elseif ($savelogo == 'false') {
-		header('Location: index.php?parenttab=Settings&module=Settings&action=EditCompanyDetails&flag=' . $error_flag);
+		header('Location: index.php?module=Settings&action=EditCompanyDetails&flag=' . $error_flag);
 	}
 } else {
-	header('Location: index.php?parenttab=Settings&module=Settings&action=EditCompanyDetails&flag=' . $error_flag);
+	header('Location: index.php?module=Settings&action=EditCompanyDetails&flag=' . $error_flag);
 }
 ?>

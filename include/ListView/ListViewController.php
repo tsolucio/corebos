@@ -409,8 +409,7 @@ class ListViewController {
 				} elseif ($field->getFieldDataType() == 'boolean') {
 					$value = BooleanField::getBooleanDisplayValue($value, $module);
 				} elseif ($field->getUIType() == 98) {
-					$value = '<a href="index.php?action=RoleDetailView&module=Settings&parenttab='.
-						'Settings&roleid='.$value.'">'.textlength_check(getRoleName($value)).'</a>';
+					$value = '<a href="index.php?action=RoleDetailView&module=Settings&roleid='.$value.'">'.textlength_check(getRoleName($value)).'</a>';
 				} elseif ($field->getUIType() == '69m') {
 					if ($module == 'Products') {
 						$queryPrdt = 'SELECT vtiger_attachments.path,vtiger_attachments.attachmentsid,vtiger_attachments.`name`
@@ -599,20 +598,19 @@ class ListViewController {
 					}
 				}
 				if ($field->getFieldDataType() != 'reference') {
-					$parenttab = getParentTab();
 					$nameFields = $this->queryGenerator->getModuleNameFields($module);
 					$nameFieldList = explode(',', $nameFields);
 					if (($fieldName == $focus->list_link_field || in_array($fieldName, $nameFieldList)) && $module != 'Emails') {
 						$opennewtab = GlobalVariable::getVariable('Application_OpenRecordInNewXOnListView', '', $module);
 						if ($opennewtab=='') {
-							$value = "<a href='index.php?module=$module&parenttab=$parenttab&action=DetailView&record=".
+							$value = "<a href='index.php?module=$module&action=DetailView&record=".
 								"$recordId' title='".getTranslatedString($module, $module)."'>$value</a>";
 						} elseif ($opennewtab=='window') {
-							$value = "<a href='#' onclick='window.open(\"index.php?module=$module&parenttab=$parenttab&action=DetailView&record="
+							$value = "<a href='#' onclick='window.open(\"index.php?module=$module&action=DetailView&record="
 								."$recordId\", \"$module".'_'."$recordId\", cbPopupWindowSettings); return false;' title='"
 								.getTranslatedString($module, $module)."'>$value</a>";
 						} else {
-							$value = "<a href='index.php?module=$module&parenttab=$parenttab&action=DetailView&record="
+							$value = "<a href='index.php?module=$module&action=DetailView&record="
 								."$recordId' title='".getTranslatedString($module, $module)."' target='_blank'>$value</a>";
 						}
 					}

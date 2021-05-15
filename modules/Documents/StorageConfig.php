@@ -59,7 +59,7 @@ if (!is_admin($current_user)) {
 	<img src="modules/Documents/images/HardDrive4848.png" alt="<?php echo getTranslatedString('STORAGESIZE_CONFIGURATION');?>" width="48" height="48" border=0 title="<?php echo getTranslatedString('STORAGESIZE_CONFIGURATION');?>">
 	</td>
 	<td class=heading2 valign=bottom>
-	<b><a href="index.php?module=Settings&action=index&parenttab=Settings"><?php echo getTranslatedString('LBL_SETTINGS');?></a> > <?php echo getTranslatedString('STORAGESIZE_CONFIGURATION');?> </b>
+	<b><a href="index.php?module=Settings&action=index"><?php echo getTranslatedString('LBL_SETTINGS');?></a> > <?php echo getTranslatedString('STORAGESIZE_CONFIGURATION');?> </b>
 	</td>
 </tr>
 <tr>
@@ -69,7 +69,6 @@ if (!is_admin($current_user)) {
 <form name="myform" action="index.php" method="GET">
 <input type="hidden" name="module" value="Documents">
 <input type="hidden" name="action" value="StorageConfig">
-<input type="hidden" name="parenttab" value="Settings">
 <input type="hidden" name="formodule" value="Documents">
 <input type="hidden" name="mode" value="Save">
 <table>

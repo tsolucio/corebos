@@ -61,7 +61,7 @@ class ModTracker {
 					$seq = $cur_seq + 1;
 				}
 			}
-			$mturl = 'index.php?module=ModTracker&action=BasicSettings&parenttab=Settings&formodule=ModTracker';
+			$mturl = 'index.php?module=ModTracker&action=BasicSettings&formodule=ModTracker';
 			$adb->pquery(
 				'INSERT INTO vtiger_settings_field(fieldid, blockid, name, iconpath, description, linkto, sequence) VALUES (?,?,?,?,?,?,?)',
 				array($fieldid, $blockid, 'ModTracker', 'set-IcoLoginHistory.gif', 'LBL_MODTRACKER_DESCRIPTION', $mturl, $seq)

@@ -44,7 +44,6 @@ $smarty->assign('MOD', $smod_strings);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('THEME', $theme);
 $smarty->assign('UMOD', $mod_strings);
-$smarty->assign('PARENTTAB', getParentTab());
 $smarty->assign('IMAGE_PATH', $image_path);
 
 $smarty->assign('WORDTEMPLATES', $return_data);

@@ -178,7 +178,6 @@
 								<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="false" aria-haspopup="listbox" id="primary-search-combobox-id-1" role="combobox">
 									<input type="hidden" name="action" value="UnifiedSearch">
 									<input type="hidden" name="module" value="Utilities">
-									<input type="hidden" name="parenttab" value="{$CATEGORY}">
 									<input type="hidden" name="search_onlyin" value="--USESELECTED--">
 									<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left slds-global-search__form-element" role="none">
 										<span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_left">
@@ -268,7 +267,7 @@
 				{if !empty($ADMIN_LINK)}
 				<li class="slds-global-actions__item">
 					<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
-						<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-haspopup="true" title="{$APP.LBL_CRM_SETTINGS}" onclick="window.location.assign('index.php?module=Settings&action=index&parenttab=')">
+						<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-haspopup="true" title="{$APP.LBL_CRM_SETTINGS}" onclick="window.location.assign('index.php?module=Settings&action=index')">
 							<svg class="slds-button__icon" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#settings"></use>
 							</svg>
@@ -285,7 +284,7 @@
 								{/foreach}
 								<li class="slds-has-divider_top-space" role="separator"></li>
 								<li class="slds-dropdown__item" role="presentation">
-									<a href="index.php?module=Settings&action=index&parenttab=" role="menuitem" tabindex="-1">
+									<a href="index.php?module=Settings&action=index" role="menuitem" tabindex="-1">
 										<span class="slds-truncate" title="{$APP.LBL_CRM_SETTINGS}">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</span>
 									</a>
 								</li>
@@ -476,7 +475,7 @@
 					</div>
 					<div class="slds-media__body">
 						<h2 class="slds-card__header-title slds-truncate">
-							<a href="index.php?module={$trackelements.module_name}&action=DetailView&record={$trackelements.crmid}&parenttab={$CATEGORY}" class="slds-card__header-link" title="{$trackelements.module_name}">
+							<a href="index.php?module={$trackelements.module_name}&action=DetailView&record={$trackelements.crmid}}" class="slds-card__header-link" title="{$trackelements.module_name}">
 								<span>{$trackelements.item_summary}</span>
 							</a>
 						</h2>
@@ -500,7 +499,7 @@
 			</li>
 		{/foreach}
 		<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_hover" aria-haspopup="true">
-			<a href="index.php?module=Settings&action=index&parenttab=" class="slds-context-bar__label-action" title="{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}">
+			<a href="index.php?module=Settings&action=index" class="slds-context-bar__label-action" title="{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}">
 				<span class="slds-truncate">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</span>
 			</a>
 		</li>

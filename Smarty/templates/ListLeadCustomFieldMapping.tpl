@@ -22,7 +22,7 @@
                         <tr><td>&nbsp;</td></tr>
                         <tr>
                                 </td>
-                                <form action="index.php?module=Settings&action=LeadCustomFieldMapping&parenttab=Settings" method="post" name="index" onsubmit="VtigerJS_DialogBox.block();">
+                                <form action="index.php?module=Settings&action=LeadCustomFieldMapping" method="post" name="index" onsubmit="VtigerJS_DialogBox.block();">
                                 <table class="leadTable" align="center" cellpadding="5" cellspacing="0" width="95%">
                                         <tr>
                                                 <td style="border-bottom: 2px dotted rgb(204, 204, 204); padding: 5px;" width="5%">
@@ -67,7 +67,7 @@
                                         <tr>
                                                 <td colspan="2" style="border-bottom: 2px dotted rgb(170, 170, 170); padding: 5px;" align="center">
 							<input title="{$APP.LBL_EDIT_BUTTON_LABEL}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="crmbutton small edit" type="submit" name="button" value="{$APP.LBL_EDIT_BUTTON_LABEL}">
-							<input title="{$APP.LBL_CANCEL_BUTTON_LABEL}>" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" type="button" onclick = "gotourl('index.php?action=CustomFieldList&module=Settings&fld_module=Leads&parenttab=Settings')" name="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}">
+							<input title="{$APP.LBL_CANCEL_BUTTON_LABEL}>" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" type="button" onclick = "gotourl('index.php?action=CustomFieldList&module=Settings&fld_module=Leads')" name="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}">
                                                 </td>
                                         </tr>
                                         <tr>

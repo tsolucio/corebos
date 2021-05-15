@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 $custom_menu_array = array();
-$custom_menu_array['CONFIGURATION']['location'] = 'index.php?module=ModComments&action=BasicSettings&parenttab=Settings&formodule=ModComments';
+$custom_menu_array['CONFIGURATION']['location'] = 'index.php?module=ModComments&action=BasicSettings&formodule=ModComments';
 $custom_menu_array['CONFIGURATION']['image_src']= 'themes/images/toggleactive.png';
 $custom_menu_array['CONFIGURATION']['desc'] = getTranslatedString('LBL_CONFIGURATION_DESCRIPTION', 'ModComments');
 $custom_menu_array['CONFIGURATION']['label']= getTranslatedString('LBL_ModComments_SETTINGS', 'ModComments');

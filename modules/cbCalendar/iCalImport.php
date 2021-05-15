@@ -81,7 +81,6 @@ if (empty($_REQUEST['step']) || $_REQUEST['step']!='undo') {
 	$smarty->assign("IMAGE_PATH", $image_path);
 	$smarty->assign('MODULE', 'cbCalendar');
 	$smarty->assign('SINGLE_MOD', 'SINGLE_cbCalendar');
-	$smarty->assign('CATEGORY', 'ptab');
 	$smarty->display("Buttons_List.tpl");
 	$imported_tasks = $cnt - $skip_count;
 	$message= "<b>".$mod_strings['LBL_SUCCESS']."</b>"
@@ -108,7 +107,6 @@ if (empty($_REQUEST['step']) || $_REQUEST['step']!='undo') {
 	$smarty->assign("IMAGE_PATH", $image_path);
 	$smarty->assign('MODULE', 'cbCalendar');
 	$smarty->assign('SINGLE_MOD', 'SINGLE_cbCalendar');
-	$smarty->assign('CATEGORY', 'ptab');
 	$smarty->display("Buttons_List.tpl");
 
 	$last_import = new iCalLastImport();

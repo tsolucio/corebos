@@ -8,7 +8,6 @@
  ********************************************************************************/
 -->
 <script>
-var parenttab = '{$CATEGORY}';
 function updateAllListPrice() {ldelim}
 	var unitprice_array = new Array({$UNIT_PRICE_ARRAY});
 	var fieldname_array = new Array({$FIELD_NAME_ARRAY});

@@ -15,9 +15,6 @@
 <span id="crmspanid" style="display:none;position:absolute;"  onmouseover="show('crmspanid');">
 	<a class="link"  align="right" href="javascript:;">{$APP.LBL_EDIT_BUTTON}</a>
 </span>
-{if $CATEGORY eq 'Settings'}
-	{include file='SetMenu.tpl'}
-{/if}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 <div class="slds-modal__container slds-p-around_none">
 <!-- Shadow table -->
@@ -35,7 +32,7 @@
 							<input type="hidden" name="isDuplicate" value=false style="margin:0px">
 							<input type="hidden" name="action" style="margin:0px">
 							<input type="hidden" name="changepassword" style="margin:0px">
-							{if $CATEGORY neq 'Settings'}
+							{if $PARENTTAB neq 'Settings'}
 								<input type="hidden" name="modechk" value="prefview" style="margin:0px">
 							{/if}
 							<input type="hidden" name="old_password" style="margin:0px">
@@ -47,9 +44,6 @@
 							<input type="hidden" name="hour_format" id="hour_format" value="{$HOUR_FORMAT}" style="margin:0px">
 							<input type="hidden" name="start_hour" id="start_hour" value="{$START_HOUR}" style="margin:0px">
 							<input type="hidden" name="form_token" value="{$FORM_TOKEN}">
-							{if $CATEGORY eq 'Settings'}
-							<input type="hidden" name="parenttab" value="{$PARENTTAB}" style="margin:0px">
-							{/if}
 							<input type="hidden" id="hdtxt_IsAdmin" value="{if $IS_ADMIN eq 'true'}1{else}0{/if}">
 							{include file='applicationmessage.tpl'}
 							<table width="100%" border="0" cellpadding="0" cellspacing="0" >
@@ -60,9 +54,9 @@
 									<tr>
 										<td width=50 rowspan="2" class="cblds-p_none"><img src="{'ico-users.gif'|@vtiger_imageurl:$THEME}" align="absmiddle"></td>
 										<td>
-											{if $CATEGORY eq 'Settings'}
+											{if $PARENTTAB eq 'Settings'}
 											<span class="heading2">
-											<b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString} </a> &gt; <a href="index.php?module=Users&action=index&parenttab=Settings"> {$MOD.LBL_USERS} </a>&gt;"{$USERNAME}" </b></span>
+											<b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString} </a> &gt; <a href="index.php?module=Users&action=index"> {$MOD.LBL_USERS} </a>&gt;"{$USERNAME}" </b></span>
 											{else}
 											<span class="heading2">
 											<b>{$APP.LBL_MY_PREFERENCES}</b>
@@ -286,7 +280,7 @@ function deleteUser(userid) {
 	document.getElementById('status').style.display='inline';
 	jQuery.ajax({
 		method:'POST',
-		url:'index.php?action=UsersAjax&file=UserDeleteStep1&return_action=ListView&return_module=Users&module=Users&parenttab=Settings&record='+userid
+		url:'index.php?action=UsersAjax&file=UserDeleteStep1&return_action=ListView&return_module=Users&module=Users&record='+userid
 	}).done(function(response) {
 		document.getElementById('status').style.display='none';
 		document.getElementById('tempdiv').innerHTML= response;

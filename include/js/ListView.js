@@ -342,7 +342,7 @@ function mass_edit1x1(obj) {
 	return false;
 }
 
-function mass_edit(obj, divid, module, parenttab) {
+function mass_edit(obj, divid, module) {
 	var select_options = document.getElementById('allselectedboxes').value;
 	var numOfRows = document.getElementById('numOfRows').value;
 	var excludedRecords = document.getElementById('excludedRecords').value;
@@ -368,7 +368,7 @@ function mass_edit(obj, divid, module, parenttab) {
 		}
 
 		if (confirm_status) {
-			mass_edit_formload(idstring, module, parenttab);
+			mass_edit_formload(idstring, module);
 		}
 	} else {
 		var x = select_options.split(';');
@@ -387,7 +387,7 @@ function mass_edit(obj, divid, module, parenttab) {
 			}
 
 			if (confirm_status) {
-				mass_edit_formload(idstring, module, parenttab);
+				mass_edit_formload(idstring, module);
 			}
 		} else {
 			ldsPrompt.show(alert_arr['ERROR'], alert_arr.SELECT);
@@ -412,10 +412,7 @@ function mergeMassEditRecords(selectedNames, obj, divid, module) {
 	}
 }
 
-function mass_edit_formload(idstring, module, parenttab) {
-	if (typeof (parenttab) == 'undefined') {
-		parenttab = '';
-	}
+function mass_edit_formload(idstring, module) {
 	var excludedRecords = document.getElementById('excludedRecords');
 	if (excludedRecords) {
 		excludedRecords = excludedRecords.value;
@@ -441,7 +438,7 @@ function mass_edit_formload(idstring, module, parenttab) {
 	}
 	jQuery.ajax({
 		method: 'POST',
-		url: 'index.php?module='+encodeURIComponent(module)+'&action='+encodeURIComponent(module+'Ajax')+'&parenttab='+encodeURIComponent(parenttab)+'&file=MassEdit&mode=ajax&idstring='+idstring+'&viewname='+viewid+'&excludedRecords='+excludedRecords+urlstring
+		url: 'index.php?module='+encodeURIComponent(module)+'&action='+encodeURIComponent(module+'Ajax')+'&file=MassEdit&mode=ajax&idstring='+idstring+'&viewname='+viewid+'&excludedRecords='+excludedRecords+urlstring
 	}).done(function (response) {
 		document.getElementById('status').style.display='none';
 		var result = response;
@@ -595,12 +592,12 @@ function massDelete(module) {
 	}
 }
 
-function showDefaultCustomView(selectView, module, parenttab) {
+function showDefaultCustomView(selectView, module) {
 	document.getElementById('status').style.display = 'inline';
 	var viewName = encodeURIComponent(selectView.options[selectView.options.selectedIndex].value);
 	jQuery.ajax({
 		method: 'POST',
-		url: 'index.php?module=' + module + '&action=' + module + 'Ajax&file=ListView&ajax=true&start=1&viewname=' + viewName + '&parenttab=' + parenttab
+		url: 'index.php?module=' + module + '&action=' + module + 'Ajax&file=ListView&ajax=true&start=1&viewname=' + viewName
 	}).done(function (response) {
 		document.getElementById('status').style.display = 'none';
 		var result = response.split('&#&#&#');
@@ -823,7 +820,7 @@ function update_selected_checkbox() {
 }
 
 //Function to Set the status as Approve/Deny for Public access by Admin
-function ChangeCustomViewStatus(viewid, now_status, changed_status, module, parenttab) {
+function ChangeCustomViewStatus(viewid, now_status, changed_status, module) {
 	document.getElementById('status').style.display = 'block';
 	jQuery.ajax({
 		method: 'POST',
@@ -834,7 +831,7 @@ function ChangeCustomViewStatus(viewid, now_status, changed_status, module, pare
 			ldsPrompt.show(alert_arr['ERROR'], alert_arr.Failed);
 		} else if (responseVal.indexOf(':#:SUCCESS') > -1) {
 			var customview_ele = document.getElementById('viewname');
-			showDefaultCustomView(customview_ele, module, parenttab);
+			showDefaultCustomView(customview_ele, module);
 		} else {
 			document.getElementById('ListViewContents').innerHTML = responseVal;
 		}
@@ -999,15 +996,12 @@ function callSearch(searchtype) {
 	var search_txt_val = encodeURIComponent(document.basicSearch.search_text.value);
 	var urlstring = '';
 	if (searchtype == 'Basic') {
-		var p_tab = document.getElementsByName('parenttab');
 		urlstring = 'search_field=' + search_fld_val + '&searchtype=BasicSearch&search_text=' + search_txt_val + '&';
-		urlstring = urlstring + 'parenttab=' + p_tab[0].value + '&';
 	} else if (searchtype == 'Advanced') {
 		checkAdvancedFilter();
 		var advft_criteria = encodeURIComponent(document.getElementById('advft_criteria').value);
 		var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
-		urlstring += '&advft_criteria=' + advft_criteria + '&advft_criteria_groups=' + advft_criteria_groups + '&';
-		urlstring += 'searchtype=advance&';
+		urlstring += '&advft_criteria=' + advft_criteria + '&advft_criteria_groups=' + advft_criteria_groups + '&searchtype=advance&';
 	}
 	document.getElementById('status').style.display = 'inline';
 	jQuery.ajax({

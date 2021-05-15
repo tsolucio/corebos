@@ -123,7 +123,7 @@
 								</tr>
 								<tr>
 									<td align="center" colspan="2" border=0 cellspacing=0 cellpadding=5 width=98% class="layerPopupTransport cblds-p_large cblds-t-align_center">
-										<input type="button" name="{$APP.LBL_EXPORT}" value="{$APP.LBL_EXPORT} {$MODULELABEL} " class="crmbutton small create" onclick="record_export('{$MODULE}','{$CATEGORY}',this.form,'{if isset($smarty.request.idstring)}{$smarty.request.idstring}{/if}')"/>&nbsp;&nbsp;
+										<input type="button" name="{$APP.LBL_EXPORT}" value="{$APP.LBL_EXPORT} {$MODULELABEL} " class="crmbutton small create" onclick="record_export('{$MODULE}', this.form, '{if isset($smarty.request.idstring)}{$smarty.request.idstring}{/if}')"/>&nbsp;&nbsp;
 										<input type="button" name="{$APP.LBL_CANCEL_BUTTON_LABEL}" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmbutton small cancel" onclick="window.history.back()" />
 									</td>
 								</tr>

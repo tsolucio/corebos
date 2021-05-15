@@ -1,4 +1,4 @@
-function postListViewSelection(module, action, parenttab) {
+function postListViewSelection(module, action) {
 	var method = 'post'; // Set method to post by default, if not specified.
 	var idlist = document.getElementById('allselectedboxes').value;
 	var excludedRecords = document.getElementById('excludedRecords').value;
@@ -13,7 +13,6 @@ function postListViewSelection(module, action, parenttab) {
 	var params = {
 		'module': module,
 		'action': action,
-		'parenttab': parenttab,
 		'idlist': idlist,
 		'viewname' : viewid,
 		'excludedRecords' : excludedRecords,

@@ -142,7 +142,6 @@ $output .= '<div id="customfield" style="display:block;" class="layerPopup"><scr
 			<input type="hidden" name="module" value="Settings">
 			<input type="hidden" name="fld_module" value="'.vtlib_purify($_REQUEST['fld_module']).'">
 			<input type="hidden" name="activity_type" value="'.$activitytype.'">
-			<input type="hidden" name="parenttab" value="Settings">
 			<input type="hidden" name="action" value="AddCustomFieldToDB">
 			<input type="hidden" name="fieldid" value="'.$fieldid.'">
 			<input type="hidden" name="column" value="'.$customfield_columnname.'">

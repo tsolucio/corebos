@@ -145,9 +145,9 @@ foreach ($modArr as $fld_module => $fld_label) {
 	}
 }
 if ($return_action == 'profilePrivileges' || $return_action == 'ListProfiles') {
-	$loc="index.php?action=$return_action&module=Settings&mode=view&parenttab=Settings&profileid=$profileid&selected_tab=$def_tab&selected_module=$def_module";
+	$loc="index.php?action=$return_action&module=Settings&mode=view&profileid=$profileid&selected_tab=$def_tab&selected_module=$def_module";
 } else {
-	$loc="index.php?action=$return_action&module=Users&mode=view&parenttab=Settings&profileid=$profileid&selected_tab=$def_tab&selected_module=$def_module";
+	$loc="index.php?action=$return_action&module=Users&mode=view&profileid=$profileid&selected_tab=$def_tab&selected_module=$def_module";
 }
 echo $loc;
 

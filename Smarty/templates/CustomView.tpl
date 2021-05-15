@@ -18,7 +18,6 @@
 {/literal}
 <input type="hidden" name="module" value="CustomView">
 <input type="hidden" name="action" value="Save">
-<input type="hidden" name="parenttab" value="{$CATEGORY}">
 <input type="hidden" name="cvmodule" value="{$CVMODULE}">
 <input type="hidden" name="return_module" value="{$RETURN_MODULE}">
 <input type="hidden" name="record" value="{$CUSTOMVIEWID}">
@@ -82,7 +81,7 @@ function mandatoryCheck()
  <tbody><tr>
   <td class="showPanelBg" valign="top" width="100%">
    <div class="small" style="padding: 20px;">
-	<span class="lvtHeaderText"><a class="hdrLink" href="index.php?action=ListView&module={$MODULE}&parenttab={$CATEGORY}">{$MODULELABEL}</a> &gt;
+	<span class="lvtHeaderText"><a class="hdrLink" href="index.php?action=ListView&module={$MODULE}">{$MODULELABEL}</a> &gt;
 	{if $EXIST eq "true" && $EXIST neq ''}
 		{$MOD.Edit_Custom_View} {$VIEWNAME}
 	{else}

@@ -13,7 +13,7 @@
 <tr>
 	<td class="big tableHeading" colspan=5 width="10%" align="right">
 {if !$coreBOSOnDemandActive}
-		<form style="display: inline;" action="index.php?module=Settings&action=ModuleManager&module_import=Step1&parenttab=Settings" method="POST">
+		<form style="display: inline;" action="index.php?module=Settings&action=ModuleManager&module_import=Step1" method="POST">
 			<input type="submit" class="crmbutton small create" value='{$APP.LBL_IMPORT} {$APP.LBL_NEW}' title='{$APP.LBL_IMPORT}'>
 		</form>
 {/if}
@@ -32,7 +32,7 @@
 	<tr>
 		<!--td class="cellLabel small" width="20px">&nbsp;</td -->
 		<td class="cellText small" width="20px"><img src="{'appmodule.jpg'|@vtiger_imageurl:$THEME}" border="0"></td>
-		<td class="cellLabel small" {if $modinfo.presence eq 0 && $modinfo.hassettings} onclick="location.href='index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$modulename}&parenttab=Settings';"{/if}>{$modulelabel}</td>
+		<td class="cellLabel small" {if $modinfo.presence eq 0 && $modinfo.hassettings} onclick="location.href='index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$modulename}';"{/if}>{$modulelabel}</td>
 		<td class="cellText small" width="15px" align=center>
 			{if $modinfo.presence eq 0}
 				<a href="javascript:void(0);" onclick="vtlib_toggleModule('{$modulename}', 'module_disable');"><img src="{'enabled.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$MOD.LBL_DISABLE} {$modulelabel}" title="{$MOD.LBL_DISABLE} {$modulelabel}"></a>
@@ -43,7 +43,7 @@
 		<td class="cellText small" width="15px" align=center>&nbsp;</td>
 		<td class="cellText small" width="15px" align=center>&nbsp;</td>
 		<td class="cellText small" width="15px" align=center>
-			{if $modinfo.presence eq 0 && $modinfo.hassettings}<a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$modulename}&parenttab=Settings"><img src="{'Settings.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$modulelabel} {'LBL_SETTINGS'|@getTranslatedString}" title="{$modulelabel} {'LBL_SETTINGS'|@getTranslatedString}"></a>
+			{if $modinfo.presence eq 0 && $modinfo.hassettings}<a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$modulename}"><img src="{'Settings.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$modulelabel} {'LBL_SETTINGS'|@getTranslatedString}" title="{$modulelabel} {'LBL_SETTINGS'|@getTranslatedString}"></a>
 			{elseif $modinfo.hassettings eq false}&nbsp;
 			{/if}
 		</td>
@@ -62,10 +62,10 @@
 	{assign var="totalCustomModules" value=$totalCustomModules+1}
 	<tr>
 		<td class="cellText small"><img src="{'text.gif'|@vtiger_imageurl:$THEME}" border=0"></td>
-		<td class="cellLabel small" onclick="location.href='index.php?module=Settings&action=LanguageEdit&parenttab=Settings&languageid={$langinfo.id}';">{$langinfo.label}</td>
+		<td class="cellLabel small" onclick="location.href='index.php?module=Settings&action=LanguageEdit&languageid={$langinfo.id}';">{$langinfo.label}</td>
 		<td class="cellText small" width="15px" align=center>
 		{if !$coreBOSOnDemandActive}
-			<a href="index.php?module=Settings&action=ModuleManager&module_update=Step1&src_module={$langprefix}&parenttab=Settings"><img src="{'reload.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$MOD.LBL_UPGRADE} {$langinfo.label}" title="{$MOD.LBL_UPGRADE} {$langinfo.label}"></a>
+			<a href="index.php?module=Settings&action=ModuleManager&module_update=Step1&src_module={$langprefix}"><img src="{'reload.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$MOD.LBL_UPGRADE} {$langinfo.label}" title="{$MOD.LBL_UPGRADE} {$langinfo.label}"></a>
 		{/if}
 		</td>
 		<td class="cellText small" width="15px" align=center>
@@ -85,7 +85,7 @@
 		{/if}
 		</td>
 		<td class="cellText small" width="10px" align=left>
-			<a href="index.php?module=Settings&action=LanguageEdit&parenttab=Settings&languageid={$langinfo.id}"><img src="{'Settings.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$langinfo.label} {'LBL_SETTINGS'|@getTranslatedString}" title="{$langinfo.label} {'LBL_SETTINGS'|@getTranslatedString}"></a>
+			<a href="index.php?module=Settings&action=LanguageEdit&languageid={$langinfo.id}"><img src="{'Settings.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$langinfo.label} {'LBL_SETTINGS'|@getTranslatedString}" title="{$langinfo.label} {'LBL_SETTINGS'|@getTranslatedString}"></a>
 		</td>
 	</tr>
 {/foreach}
@@ -110,10 +110,10 @@
 	{assign var="modulelabel" value=$modulename|getTranslatedString:$modulename}
 	<tr height="30px">
 		<td class="cellText small" width="20px"><img src="{'uparrow.gif'|@vtiger_imageurl:$THEME}" border="0"></td>
-		<td class="cellLabel small"{if $modinfo.presence eq 0 && $modinfo.hassettings} onclick="location.href='index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$modulename}&parenttab=Settings';"{/if}>{$modulelabel}</td>
+		<td class="cellLabel small"{if $modinfo.presence eq 0 && $modinfo.hassettings} onclick="location.href='index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$modulename}';"{/if}>{$modulelabel}</td>
 		<td class="cellText small" width="15px" align=center>
 		{if !$coreBOSOnDemandActive}
-			<a href="index.php?module=Settings&action=ModuleManager&module_update=Step1&src_module={$modulename}&parenttab=Settings"><img src="{'reload.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$MOD.LBL_UPGRADE} {$modulelabel}" title="{$MOD.LBL_UPGRADE} {$modulelabel}"></a>
+			<a href="index.php?module=Settings&action=ModuleManager&module_update=Step1&src_module={$modulename}"><img src="{'reload.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$MOD.LBL_UPGRADE} {$modulelabel}" title="{$MOD.LBL_UPGRADE} {$modulelabel}"></a>
 		{/if}
 		</td>
 		<td class="cellText small" width="15px" align=center>
@@ -131,7 +131,7 @@
 			{/if}
 		</td>
 		<td class="cellText small" width="15px" align=center>
-			{if $modinfo.presence eq 0 && $modinfo.hassettings}<a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$modulename}&parenttab=Settings"><img src="{'Settings.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$modulelabel} {'LBL_SETTINGS'|@getTranslatedString}" title="{$modulelabel} {'LBL_SETTINGS'|@getTranslatedString}"></a>
+			{if $modinfo.presence eq 0 && $modinfo.hassettings}<a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$modulename}"><img src="{'Settings.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$modulelabel} {'LBL_SETTINGS'|@getTranslatedString}" title="{$modulelabel} {'LBL_SETTINGS'|@getTranslatedString}"></a>
 			{elseif $modinfo.hassettings eq false}&nbsp;
 			{/if}
 		</td>

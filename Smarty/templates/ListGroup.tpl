@@ -23,10 +23,9 @@
 				<input type="hidden" name="module" value="Settings">
 				<input type="hidden" name="action" value="createnewgroup">
 				<input type="hidden" name="mode" value="create">
-				<input type="hidden" name="parenttab" value="Settings">
 				<tr>
 					<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'ico-groups.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_GROUPS}" width="48" height="48" border=0 title="{$MOD.LBL_GROUPS}"></td>
-					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$CMOD.LBL_GROUPS}</b></td>
+					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$CMOD.LBL_GROUPS}</b></td>
 				</tr>
 				<tr>
 					<td valign=top class="small cblds-p-v_none">{$MOD.LBL_GROUP_DESC}</td>
@@ -64,11 +63,11 @@
 					  <tr>
 						<td class="listTableRow small" valign=top>{$smarty.foreach.grouplist.iteration}</td>
 						<td class="listTableRow small" valign=top nowrap>
-							<a href="index.php?module=Settings&action=createnewgroup&returnaction=listgroups&parenttab=Settings&mode=edit&groupId={$groupvalues.groupid}"><img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LNK_EDIT}" title="{$APP.LNK_EDIT}" border="0" align="absmiddle"></a>&nbsp;|
+							<a href="index.php?module=Settings&action=createnewgroup&returnaction=listgroups&mode=edit&groupId={$groupvalues.groupid}"><img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LNK_EDIT}" title="{$APP.LNK_EDIT}" border="0" align="absmiddle"></a>&nbsp;|
 							<a href="#" onClick="deletegroup(this,'{$groupvalues.groupid}')";><img src="{'delete.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LNK_DELETE}" title="{$APP.LNK_DELETE}" border="0" align="absmiddle"></a>
 						</td>
 						<td class="listTableRow small" valign=top><strong>
-							<a href="index.php?module=Settings&action=GroupDetailView&parenttab=Settings&groupId={$groupvalues.groupid}">{$groupvalues.groupname}</a></strong>
+							<a href="index.php?module=Settings&action=GroupDetailView&groupId={$groupvalues.groupid}">{$groupvalues.groupname}</a></strong>
 						</td>
 						<td class="listTableRow small" valign=top>{$groupvalues.description}</td>
 					  </tr>

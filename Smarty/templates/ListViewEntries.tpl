@@ -43,13 +43,13 @@
 										<table cellpadding="5" cellspacing="0" class="small cblds-table-border_sep cblds-table-bordersp_medium">
 											<tr>
 												<td style="padding-left:5px;padding-right:5px" align="center">
-													<b><font size=2>{$APP.LBL_VIEW}</font></b> <SELECT NAME="viewname" id="viewname" class="small" style="max-width:240px;" onchange="showDefaultCustomView(this,'{$MODULE}','{$CATEGORY}')">{$CUSTOMVIEW_OPTION}</SELECT>
+													<b><font size=2>{$APP.LBL_VIEW}</font></b> <SELECT NAME="viewname" id="viewname" class="small" style="max-width:240px;" onchange="showDefaultCustomView(this, '{$MODULE}')">{$CUSTOMVIEW_OPTION}</SELECT>
 												</td>
 												{if isset($ALL) && $ALL eq 'All'}
-												<td style="padding-left:5px;padding-right:5px" align="center"><a href="index.php?module={$MODULE}&action=CustomView&parenttab={$CATEGORY}">{$APP.LNK_CV_CREATEVIEW}</a>
+												<td style="padding-left:5px;padding-right:5px" align="center"><a href="index.php?module={$MODULE}&action=CustomView">{$APP.LNK_CV_CREATEVIEW}</a>
 													<span class="small">|</span>
 													{if isset($EDIT_FILTER_ALL) && $EDIT_FILTER_ALL eq '1'}
-														<a href="index.php?module={$MODULE}&action=CustomView&record={$VIEWID}&parenttab={$CATEGORY}&permitall=true">{$APP.LNK_CV_EDIT}</a>
+														<a href="index.php?module={$MODULE}&action=CustomView&record={$VIEWID}&permitall=true">{$APP.LNK_CV_EDIT}</a>
 													{else}
 														<span class="small">{$APP.LNK_CV_EDIT}</span>
 													{/if}
@@ -58,22 +58,22 @@
 												</td>
 												{else}
 												<td style="padding-left:5px;padding-right:5px" align="center">
-													<a href="index.php?module={$MODULE}&action=CustomView&parenttab={$CATEGORY}">{$APP.LNK_CV_CREATEVIEW}</a>
+													<a href="index.php?module={$MODULE}&action=CustomView">{$APP.LNK_CV_CREATEVIEW}</a>
 													<span class="small">|</span>
 													{if $CV_EDIT_PERMIT neq 'yes' || $SQLERROR}
 														<span class="small" disabled>{$APP.LNK_CV_EDIT}</span>
 													{else}
-														<a href="index.php?module={$MODULE}&action=CustomView&record={$VIEWID}&parenttab={$CATEGORY}">{$APP.LNK_CV_EDIT}</a>
+														<a href="index.php?module={$MODULE}&action=CustomView&record={$VIEWID}">{$APP.LNK_CV_EDIT}</a>
 													{/if}
 													<span class="small">|</span>
 													{if $CV_DELETE_PERMIT neq 'yes'}
 														<span class="small" disabled>{$APP.LNK_CV_DELETE}</span>
 													{else}
-														<a href="javascript:confirmdelete('index.php?module=CustomView&action=Delete&dmodule={$MODULE}&record={$VIEWID}&parenttab={$CATEGORY}')">{$APP.LNK_CV_DELETE}</a>
+														<a href="javascript:confirmdelete('index.php?module=CustomView&action=Delete&dmodule={$MODULE}&record={$VIEWID}')">{$APP.LNK_CV_DELETE}</a>
 													{/if}
 													{if $CUSTOMVIEW_PERMISSION.ChangedStatus neq '' && $CUSTOMVIEW_PERMISSION.Label neq ''}
 														<span class="small">|</span>
-														<a href="#" id="customstatus_id" onClick="ChangeCustomViewStatus({$VIEWID},{$CUSTOMVIEW_PERMISSION.Status},{$CUSTOMVIEW_PERMISSION.ChangedStatus},'{$MODULE}','{$CATEGORY}')">{$CUSTOMVIEW_PERMISSION.Label}</a>
+														<a href="#" id="customstatus_id" onClick="ChangeCustomViewStatus({$VIEWID}, {$CUSTOMVIEW_PERMISSION.Status}, {$CUSTOMVIEW_PERMISSION.ChangedStatus}, '{$MODULE}')">{$CUSTOMVIEW_PERMISSION.Label}</a>
 													{/if}
 												</td>
 												{/if}
@@ -159,11 +159,11 @@
 						</tr>
 						<tr>
 							<td class="small" align="left" nowrap="nowrap">
-								<b><a class="nef_action" href="index.php?module={$MODULE}&action=EditView&return_action=DetailView&parenttab={$CATEGORY}">{$APP.LBL_CREATE} {$APP.$vowel_conf}
+								<b><a class="nef_action" href="index.php?module={$MODULE}&action=EditView&return_action=DetailView">{$APP.LBL_CREATE} {$APP.$vowel_conf}
 									{$MODULE_CREATE|@getTranslatedString:$MODULE}
 									{if $CHECK.Import eq 'yes' && $MODULE neq 'Documents'}
 									</a></b><br>
-									<b><a class="nef_action" href="index.php?module={$MODULE}&action=Import&step=1&return_module={$MODULE}&return_action=ListView&parenttab={$CATEGORY}">{$APP.LBL_IMPORT} {$MODULE|@getTranslatedString:$MODULE}
+									<b><a class="nef_action" href="index.php?module={$MODULE}&action=Import&step=1&return_module={$MODULE}&return_action=ListView">{$APP.LBL_IMPORT} {$MODULE|@getTranslatedString:$MODULE}
 									{/if}
 								</a></b><br>
 							</td>

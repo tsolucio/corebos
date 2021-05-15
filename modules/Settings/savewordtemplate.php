@@ -70,10 +70,10 @@ if (isset($_FILES['binFile']['tmp_name']) && move_uploaded_file($_FILES['binFile
 				);
 				$result = $adb->updateBlob('vtiger_wordtemplates', 'data', " filename='". $adb->sql_escape_string($filename) ."'", $data);
 				deleteFile($uploaddir, $filename);
-				header('Location: index.php?action=listwordtemplates&module=Settings&parenttab=Settings');
+				header('Location: index.php?action=listwordtemplates&module=Settings');
 			} elseif ($savefile=='false') {
 				$module = vtlib_purify($_REQUEST['target_module']);
-				header('Location: index.php?action=upload&module=Settings&parenttab=Settings&flag='.$error_flag.'&description='.urlencode($strDescription).'&tempModule='.urlencode($module));
+				header('Location: index.php?action=upload&module=Settings&flag='.$error_flag.'&description='.urlencode($strDescription).'&tempModule='.urlencode($module));
 			} else {
 				include 'modules/Vtiger/header.php';
 				$errormessage = "<font color='red'><b>".getTranslatedString('Error Message', 'Settings')."<ul>
@@ -87,7 +87,7 @@ if (isset($_FILES['binFile']['tmp_name']) && move_uploaded_file($_FILES['binFile
 		}
 	} else { //Added for Invaild file path
 		$module = vtlib_purify($_REQUEST['target_module']);
-		header('Location: index.php?action=upload&module=Settings&parenttab=Settings&flag=2&description='.urlencode($strDescription).'&tempModule='.urlencode($module));
+		header('Location: index.php?action=upload&module=Settings&flag=2&description='.urlencode($strDescription).'&tempModule='.urlencode($module));
 	}
 } else {
 	$errorCode = isset($_FILES['binFile']['error']) ? $_FILES['binFile']['error'] : 0;

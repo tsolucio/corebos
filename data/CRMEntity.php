@@ -2235,8 +2235,6 @@ class CRMEntity {
 	public function get_attachments($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $currentModule, $singlepane_view, $adb;
 		$this_module = $currentModule;
-		$parenttab = getParentTab();
-
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		$other = CRMEntity::getInstance($related_module);
 
@@ -2252,7 +2250,7 @@ class CRMEntity {
 				if (!$racbr || $racbr->hasRelatedListPermissionTo('select', $related_module)) {
 					$button .= "<input title='" . getTranslatedString('LBL_SELECT') . ' ' . getTranslatedString($related_module, $related_module).
 						"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
-						"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',".
+						"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test',".
 						"cbPopupWindowSettings);\" value='" . getTranslatedString('LBL_SELECT') . ' ' .
 						getTranslatedString($related_module, $related_module) . "'>&nbsp;";
 				}
@@ -2315,8 +2313,6 @@ class CRMEntity {
 		require_once "modules/$related_module/$related_module.php";
 		$other = new $related_module();
 
-		$parenttab = getParentTab();
-
 		if ($singlepane_view == 'true') {
 			$returnset = '&return_module='.$this_module.'&return_action=DetailView&return_id='.$id;
 		} else {
@@ -2333,7 +2329,7 @@ class CRMEntity {
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module).
 					"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
-					"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',".
+					"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test',".
 					"cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT'). ' ' .
 					getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
@@ -2502,8 +2498,6 @@ class CRMEntity {
 		require_once 'modules/com_vtiger_workflow/VTWorkflow.php';
 		global $currentModule, $singlepane_view;
 
-		$parenttab = getParentTab();
-
 		$related_module = 'com_vtiger_workflow';
 		$other = new Workflow();
 		unset($other->list_fields['Tools'], $other->list_fields_name['Tools']);
@@ -2515,7 +2509,7 @@ class CRMEntity {
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
 				$button .= "<input title='" . getTranslatedString('LBL_SELECT') . ' ' . getTranslatedString($related_module, $related_module).
 					"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
-					"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',".
+					"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test',".
 					"cbPopupWindowSettings);\" value='" . getTranslatedString('LBL_SELECT') . ' '.
 					getTranslatedString($related_module, $related_module) . "'>&nbsp;";
 			}
@@ -2558,8 +2552,6 @@ class CRMEntity {
 	public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $currentModule, $singlepane_view, $adb;
 
-		$parenttab = getParentTab();
-
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		$other = CRMEntity::getInstance($related_module);
 
@@ -2575,7 +2567,7 @@ class CRMEntity {
 				if (!$racbr || $racbr->hasRelatedListPermissionTo('select', $related_module)) {
 					$button .= "<input title='" . getTranslatedString('LBL_SELECT') . ' ' . getTranslatedString($related_module, $related_module).
 						"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
-						"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',".
+						"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test',".
 						"cbPopupWindowSettings);\" value='" . getTranslatedString('LBL_SELECT') . ' '.
 						getTranslatedString($related_module, $related_module) . "'>&nbsp;";
 				}
@@ -2831,7 +2823,7 @@ class CRMEntity {
 			$relid = $adb->run_query_field('select relation_id from vtiger_relatedlists where tabid='.$cur_tab_id.' and related_tabid='.$rel_tab_id, 'relation_id');
 			$button .= '<select name="cbcalendar_filter" class="small" onchange="loadRelatedListBlock(\'module='.$currentModule.'&action='.$currentModule.
 				'Ajax&file=DetailViewAjax&record='.$id.'&ajxaction=LOADRELATEDLIST&header=Activities&relation_id='.$relid.
-				'&cbcalendar_filter=\'+this.options[this.options.selectedIndex].value+\'&actions=add&parenttab=Support\',\'tbl_'.$currentModule.'_Activities\',\''.
+				'&cbcalendar_filter=\'+this.options[this.options.selectedIndex].value+\'&actions=add\',\'tbl_'.$currentModule.'_Activities\',\''.
 				$currentModule.'_Activities\');"><option value="all">'.getTranslatedString('LBL_ALL').'</option>';
 			if (!isset($_REQUEST['cbcalendar_filter'])) {
 				$_REQUEST['cbcalendar_filter'] = GlobalVariable::getVariable('RelatedList_Activity_DefaultStatusFilter', 'all', $currentModule);
