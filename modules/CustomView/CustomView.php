@@ -932,8 +932,7 @@ class CustomView extends CRMEntity {
 						$advfiltersql = ' (' . $advorsqls . ') ';
 					} elseif ($comparator == 'bw' && count($valuearray) == 2) {
 						$advfiltersql = '(' . $columns[0] . '.' . $columns[1] . " between '" .
-							getValidDBInsertDateTimeValue(trim($valuearray[0]), $datatype) .
-							"' and '" . getValidDBInsertDateTimeValue(trim($valuearray[1]), $datatype) . "')";
+							getValidDBInsertDateTimeValue(trim($valuearray[0])) . "' and '" . getValidDBInsertDateTimeValue(trim($valuearray[1])) . "')";
 					} else {
 						if ($this->customviewmodule == 'Documents' && $columns[1] == 'folderid') {
 							$advfiltersql = 'vtiger_attachmentsfolder.foldername' . $this->getAdvComparator($comparator, trim($value), $datatype);
