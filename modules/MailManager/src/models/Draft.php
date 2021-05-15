@@ -318,14 +318,7 @@ class MailManager_Model_DraftEmail {
 	}
 
 	public function getFormattedFileSize($filesize) {
-		if ($filesize < 1024) {
-			$filesize = sprintf('%0.2f', round($filesize, 2)).'b';
-		} elseif ($filesize > 1024 && $filesize < 1048576) {
-			$filesize = sprintf('%0.2f', round($filesize/1024, 2)).'kB';
-		} elseif ($filesize > 1048576) {
-			$filesize = sprintf('%0.2f', round($filesize/(1024*1024), 2)).'MB';
-		}
-		return $filesize;
+		return FileField::getFileSizeDisplayValue($filesize);
 	}
 }
 ?>

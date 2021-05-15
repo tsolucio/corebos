@@ -1005,14 +1005,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			}
 			if ($fieldname == 'filesize') {
 				if ($col_fields['filelocationtype'] == 'I') {
-					$filesize = $col_fields[$fieldname];
-					if ($filesize < 1024) {
-						$label_fld[] = $filesize . ' B';
-					} elseif ($filesize > 1024 && $filesize < 1048576) {
-						$label_fld[] = round($filesize / 1024, 2) . ' KB';
-					} elseif ($filesize > 1048576) {
-						$label_fld[] = round($filesize / (1024 * 1024), 2) . ' MB';
-					}
+					$label_fld[] = FileField::getFileSizeDisplayValue($col_fields[$fieldname]);
 				} else {
 					$label_fld[] = ' --';
 				}

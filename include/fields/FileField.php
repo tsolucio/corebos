@@ -16,6 +16,18 @@
 
 class FileField {
 
+	public static function getFileSizeDisplayValue($filesize) {
+		$format = '%0.2f ';
+		if ($filesize < 1024) {
+			$filesize = sprintf($format, round($filesize, 2)).'b';
+		} elseif ($filesize > 1024 && $filesize < 1048576) {
+			$filesize = sprintf($format, round($filesize/1024, 2)).'kB';
+		} elseif ($filesize > 1048576) {
+			$filesize = sprintf($format, round($filesize/(1024*1024), 2)).'MB';
+		}
+		return $filesize;
+	}
+
 	public static function getFileIcon($value, $downloadtype, $module) {
 		global $theme;
 		$value = trim($value);

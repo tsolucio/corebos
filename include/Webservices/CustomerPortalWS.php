@@ -815,14 +815,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 							if ($fieldname == 'filesize') {
 								$downloadtype = $adb->query_result($list_result, $i, 'filelocationtype');
 								if ($downloadtype == 'I') {
-									$filesize = $value;
-									if ($filesize < 1024) {
-										$value = $filesize . ' B';
-									} elseif ($filesize > 1024 && $filesize < 1048576) {
-										$value = round($filesize / 1024, 2) . ' KB';
-									} elseif ($filesize > 1048576) {
-										$value = round($filesize / (1024 * 1024), 2) . ' MB';
-									}
+									$value = FileField::getFileSizeDisplayValue($value);
 								} else {
 									$value = ' --';
 								}

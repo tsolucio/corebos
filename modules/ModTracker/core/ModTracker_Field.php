@@ -40,15 +40,10 @@ class ModTracker_Field {
 
 		if ($moduleName == 'Documents') {
 			if ($fieldName == 'filesize') {
-				$filesize = $value;
-				if (empty($filesize)) {
+				if (empty($value)) {
 					$value = '--';
-				} elseif ($filesize < 1024) {
-					$value = $filesize . ' B';
-				} elseif ($filesize > 1024 && $filesize < 1048576) {
-					$value = round($filesize / 1024, 2) . ' KB';
-				} elseif ($filesize > 1048576) {
-					$value = round($filesize / (1024 * 1024), 2) . ' MB';
+				} else {
+					$value = FileField::getFileSizeDisplayValue($value);
 				}
 			} elseif ($fieldName == 'filestatus' || $fieldName == 'filetype') {
 				$value = BooleanField::getBooleanDisplayValue($value, $moduleName);
