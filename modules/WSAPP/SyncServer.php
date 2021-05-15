@@ -505,12 +505,9 @@ class SyncServer {
 	*/
 	public function idmap_get_serverId($clientid, $appId) {
 		$db = PearDatabase::getInstance();
-
-		$result = $db->pquery('SELECT serverid, clientid FROM vtiger_wsapp_recordmapping WHERE clientid = ? and appid=?', array($clientid,$appId));
+		$result = $db->pquery('SELECT serverid FROM vtiger_wsapp_recordmapping WHERE clientid=? and appid=?', array($clientid, $appId));
 		if ($db->num_rows($result)) {
-			while ($row = $db->fetch_array($result)) {
-				return $row['serverid'];
-			}
+			return $db->query_result($result, 0, 'serverid');
 		}
 		return false;
 	}
@@ -520,12 +517,9 @@ class SyncServer {
 	*/
 	public function idmap_get_clientId($serverid, $appId) {
 		$db = PearDatabase::getInstance();
-
-		$result = $db->pquery('SELECT serverid, clientid FROM vtiger_wsapp_recordmapping WHERE serverid = ? and appid=?', array($serverid,$appId));
+		$result = $db->pquery('SELECT clientid FROM vtiger_wsapp_recordmapping WHERE serverid=? and appid=?', array($serverid, $appId));
 		if ($db->num_rows($result)) {
-			while ($row = $db->fetch_array($result)) {
-				return $row['clientid'];
-			}
+			return $db->query_result($result, 0, 'clientid');
 		}
 		return false;
 	}
