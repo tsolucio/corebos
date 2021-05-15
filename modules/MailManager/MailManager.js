@@ -624,11 +624,7 @@ if (typeof(MailManager) == 'undefined') {
 				MailManager.progress_hide();
 				var response = MailManager.removeHidElement(transport);
 				jQuery('#_relationpopupdiv_').get(0).innerHTML = (response);
-				var scriptTags = document.getElementById('_relationpopupdiv_').getElementsByTagName('script');
-				for (var i = 0; i< scriptTags.length; i++) {
-					var scriptTag = scriptTags[i];
-					eval(scriptTag.innerHTML);
-				}
+				vtlib_executeJavascriptInElement(document.getElementById('_relationpopupdiv_'))
 				// Place the popup at center
 				MailManager.placeAtCenter(jQuery('#_relationpopupdiv_'));
 				jQuery('#_relationpopupdiv_').css('visibility', '').show();

@@ -66,7 +66,7 @@ function ClockAndAssign(){
 
 	mins=(isItLocal)?now.getMinutes():now.getUTCMinutes();
 	if (oddMinutes){ 
-	 mins=eval(mins+addOddMinutes);
+	 mins=mins+addOddMinutes;
 	}
 	min=Math.PI*(mins-15)/30;
 	if (mins<0){
@@ -109,7 +109,7 @@ function ClockAndAssign(){
 	if (year<2000){
 	 year=year+1900;
 	}
-	leap_year=(eval(year%4)==0)?true:false;
+	leap_year=(year%4==0)?true:false;
 	if (leap_year&&month==2){
 	 daysInMonth=29;
 	}

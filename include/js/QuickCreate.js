@@ -75,12 +75,7 @@ function QCreate(qcoptions) {
 			document.getElementById('qcform').style.display='inline';
 			document.getElementById('qcform').innerHTML = response;
 			jQuery('#qcform').draggable();
-			// Evaluate all the script tags in the response text.
-			var scriptTags = document.getElementById('qcform').getElementsByTagName('script');
-			for (var i = 0; i< scriptTags.length; i++) {
-				var scriptTag = scriptTags[i];
-				eval(scriptTag.innerHTML);
-			}
+			vtlib_executeJavascriptInElement(document.getElementById('qcform'))
 			posLay(qcoptions, 'qcform');
 		});
 	} else {

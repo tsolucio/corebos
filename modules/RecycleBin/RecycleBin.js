@@ -9,8 +9,7 @@
 
 function callRBSearch(searchtype) {
 	for (var i=1; i<=26; i++) {
-		var data_td_id = 'alpha_'+ eval(i);
-		getObj(data_td_id).className = 'searchAlph';
+		getObj('alpha_'+ i).className = 'searchAlph';
 	}
 	gPopupAlphaSearchUrl = '';
 	search_fld_val= document.getElementById('bas_searchfield').options[document.getElementById('bas_searchfield').selectedIndex].value;
@@ -153,8 +152,7 @@ function getListViewEntries_js(module, url) {
 
 function alphabetic(module, url, dataid) {
 	for (var i=1; i<=26; i++) {
-		var data_td_id = 'alpha_'+ eval(i);
-		getObj(data_td_id).className = 'searchAlph';
+		getObj('alpha_'+ i).className = 'searchAlph';
 	}
 	var selectedmodule = document.getElementById('select_module').options[document.getElementById('select_module').selectedIndex].value;
 	url += '&selected_module='+selectedmodule;

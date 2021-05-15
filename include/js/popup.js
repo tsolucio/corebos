@@ -77,8 +77,7 @@ function set_focus() {
 function callSearch(searchtype) {
 	gstart='';
 	for (var i=1; i<=26; i++) {
-		var data_td_id = 'alpha_'+ eval(i);
-		getObj(data_td_id).className = 'searchAlph';
+		getObj('alpha_'+ i).className = 'searchAlph';
 	}
 	gPopupAlphaSearchUrl = '';
 	var search_fld_val= document.basicSearch.search_field[document.basicSearch.search_field.selectedIndex].value;
@@ -121,8 +120,7 @@ function alphabetic(module, url, dataid) {
 	gstart='';
 	document.basicSearch.search_text.value = '';
 	for (var i=1; i<=26; i++) {
-		var data_td_id = 'alpha_' + eval(i);
-		getObj(data_td_id).className = 'searchAlph';
+		getObj('alpha_'+ i).className = 'searchAlph';
 	}
 	getObj(dataid).className = 'searchAlphselected';
 	gPopupAlphaSearchUrl = '&'+url;
@@ -279,12 +277,7 @@ function QCreatePop(module, urlpop) {
 			document.getElementById('status').style.display='none';
 			document.getElementById('qcformpop').style.display='inline';
 			document.getElementById('qcformpop').innerHTML = response;
-			// Evaluate all the script tags in the response text.
-			var scriptTags = document.getElementById('qcformpop').getElementsByTagName('script');
-			for (var i = 0; i< scriptTags.length; i++) {
-				var scriptTag = scriptTags[i];
-				eval(scriptTag.innerHTML);
-			}
+			vtlib_executeJavascriptInElement(document.getElementById('qcformpop'))
 		});
 	} else {
 		hide('qcformpop');

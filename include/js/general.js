@@ -2196,9 +2196,9 @@ function fnvshobj(obj, Lay) {
 		}
 	}
 
-	var getVal = eval(leftSide) + eval(widthM);
+	var getVal = leftSide + widthM;
 	if (getVal > document.body.clientWidth ) {
-		leftSide = eval(leftSide) - eval(widthM);
+		leftSide = leftSide - widthM;
 		tagName.style.left = leftSide + 34 + 'px';
 	} else {
 		tagName.style.left= leftSide + 'px';
@@ -2214,9 +2214,9 @@ function posLay(obj, Lay) {
 	var topSide = findPosY(obj);
 	var maxW = tagName.style.width;
 	var widthM = maxW.substring(0, maxW.length-2);
-	var getVal = eval(leftSide) + eval(widthM);
+	var getVal = leftSide + widthM;
 	if (getVal > document.body.clientWidth ) {
-		leftSide = eval(leftSide) - eval(widthM);
+		leftSide = leftSide - widthM;
 		tagName.style.left = leftSide + 'px';
 	} else {
 		tagName.style.left= leftSide + 'px';
@@ -2413,32 +2413,15 @@ function ShowEmail(id) {
 	openPopUp('xComposeEmail', this, url, 'createemailWin', 820, 695, 'menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes');
 }
 
-var bSaf = (navigator.userAgent.indexOf('Safari') != -1);
-var bOpera = (navigator.userAgent.indexOf('Opera') != -1);
-var bMoz = (navigator.appName == 'Netscape');
-
 function execJS(node) {
-	var st = node.getElementsByTagName('SCRIPT');
-	var strExec;
-	for (var i=0; i<st.length; i++) {
-		if (bSaf) {
-			strExec = st[i].innerHTML;
-		} else if (bOpera) {
-			strExec = st[i].text;
-		} else if (bMoz) {
-			strExec = st[i].textContent;
-		} else {
-			strExec = st[i].text;
-		}
-		try {
-			eval(strExec);
-		} catch (e) {
-			ldsPrompt.show(alert_arr['ERROR'], e);
-		}
+	try {
+		vtlib_executeJavascriptInElement(node);
+	} catch (e) {
+		ldsPrompt.show(alert_arr['ERROR'], e);
 	}
 }
 
-//Function added for getting the Tab Selected Values (Standard/Advanced Filters) for Custom View - Ahmed
+//Function added for getting the Tab Selected Values (Standard/Advanced Filters) for Custom View
 function fnLoadCvValues(obj1, obj2, SelTab, unSelTab) {
 	var tabName1 = document.getElementById(obj1);
 	var tabName2 = document.getElementById(obj2);
@@ -2463,9 +2446,9 @@ function fnDropDown(obj, Lay) {
 	var topSide = findPosY(obj);
 	var maxW = tagName.style.width;
 	var widthM = maxW.substring(0, maxW.length-2);
-	var getVal = eval(leftSide) + eval(widthM);
+	var getVal = leftSide + widthM;
 	if (getVal > document.body.clientWidth ) {
-		leftSide = eval(leftSide) - eval(widthM);
+		leftSide = leftSide - widthM;
 		tagName.style.left = leftSide + 34 + 'px';
 	} else {
 		tagName.style.left= leftSide + 'px';
@@ -4239,16 +4222,16 @@ function ToolTipManager() {
 		var topSide = findPosY(obj);
 		var dimensions = getDimension(tooltip);
 		var widthM = dimensions.x;
-		var getVal = eval(leftSide) + eval(widthM);
+		var getVal = leftSide + widthM;
 		var tooltipDimensions = getDimension(obj);
 		var tooltipWidth = tooltipDimensions.x;
 		if (leftSide == 0 && topSide == 0) {
 			tooltip.style.display = 'none';
 		} else {
 			if (getVal > document.body.clientWidth ) {
-				leftSide = eval(leftSide) - eval(widthM);
+				leftSide = leftSide - widthM;
 			} else {
-				leftSide = eval(leftSide) + (eval(tooltipWidth)/2);
+				leftSide = leftSide + (tooltipWidth/2);
 			}
 			if (leftSide < 0) {
 				leftSide = findPosX(obj) + tooltipWidth;
@@ -4256,14 +4239,14 @@ function ToolTipManager() {
 			tooltip.style.left = leftSide + 'px';
 
 			var heightTooltip = dimensions.y;
-			var bottomSide = eval(topSide) + eval(heightTooltip);
+			var bottomSide = topSide + heightTooltip;
 			if (bottomSide > document.body.clientHeight) {
 				topSide = topSide - (bottomSide - document.body.clientHeight) - 10;
 				if (topSide < 0 ) {
 					topSide = 10;
 				}
 			} else {
-				topSide = eval(topSide) - eval(heightTooltip)/2;
+				topSide = topSide - heightTooltip/2;
 				if (topSide<0) {
 					topSide = 10;
 				}
@@ -4802,9 +4785,9 @@ function fnvshobjsearch(obj, Lay) {
 		}
 	}
 
-	var getVal = eval(leftSide) + eval(widthM);
+	var getVal = leftSide + widthM;
 	if (getVal > document.body.clientWidth ) {
-		leftSide = eval(leftSide) - eval(widthM);
+		leftSide = leftSide - widthM;
 		tagName.style.left = leftSide + 91 + 'px';
 	} else {
 		tagName.style.left= leftSide - 324 + 'px';
@@ -4820,9 +4803,9 @@ function fnDropDownUser(obj, Lay) {
 	var topSide = findPosY(obj);
 	var maxW = tagName.style.width;
 	var widthM = maxW.substring(0, maxW.length-2);
-	var getVal = eval(leftSide) + eval(widthM);
+	var getVal = leftSide + widthM;
 	if (getVal > document.body.clientWidth ) {
-		leftSide = eval(leftSide) - eval(widthM);
+		leftSide = leftSide - widthM;
 		tagName.style.left = leftSide + 34 + 'px';
 	} else {
 		tagName.style.left= leftSide - 50 + 'px';

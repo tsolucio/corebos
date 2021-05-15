@@ -280,7 +280,7 @@ function calcProductTotal(rowId) {
 		var total=getObj('qty'+rowId).value * getObj('listPrice'+rowId).value;
 		getObj('productTotal'+rowId).innerHTML=roundValue(total.toString());
 
-		var totalAfterDiscount = eval(total-document.getElementById('discountTotal'+rowId).innerHTML);
+		var totalAfterDiscount = total-document.getElementById('discountTotal'+rowId).innerHTML;
 		getObj('totalAfterDiscount'+rowId).innerHTML=roundValue(totalAfterDiscount.toString());
 
 		var tax_type = document.getElementById('taxtype').value;
@@ -288,7 +288,7 @@ function calcProductTotal(rowId) {
 		var netprice = 0;
 		if (tax_type == 'individual') {
 			callTaxCalc(rowId);
-			netprice = totalAfterDiscount+eval(document.getElementById('taxTotal'+rowId).innerHTML);
+			netprice = totalAfterDiscount+document.getElementById('taxTotal'+rowId).innerHTML;
 		} else {
 			netprice = totalAfterDiscount;
 		}
@@ -965,7 +965,7 @@ function setDiscount(currObj, curr_row) {
 			if (discount_percentage_final_value == '') {
 				discount_percentage_final_value = 0;
 			}
-			discount_amount = eval(document.getElementById('netTotal').innerHTML)*discount_percentage_final_value/100;
+			discount_amount = document.getElementById('netTotal').innerHTML*discount_percentage_final_value/100;
 		} else {
 			// This is to calculate the product discount
 			var discount_percentage_value = document.getElementById('discount_percentage'+curr_row).value;
@@ -1288,9 +1288,10 @@ function moveUpDown(sType, oModule, iIndex) {
 	var iCheckIndex = 0;
 	var iSwapCheckIndex = 0;
 	var sFormElement = '';
+	var domFormElements = document.getElementById('frmEditView').elements;
 	for (var j=0; j<=2; j++) {
-		if (eval('document.getElementById(\'frmEditView\').discount'+iIndex+'['+j+']')) {
-			sFormElement = eval('document.getElementById(\'frmEditView\').discount'+iIndex+'['+j+']');
+		if (domFormElements['discount'+iIndex] && domFormElements['discount'+iIndex][j]) {
+			sFormElement = domFormElements['discount'+iIndex][j];
 			if (sFormElement.checked) {
 				iCheckIndex = j;
 				break;
@@ -1299,20 +1300,20 @@ function moveUpDown(sType, oModule, iIndex) {
 	}
 
 	for (j=0; j<=2; j++) {
-		if (eval('document.getElementById(\'frmEditView\').discount'+iSwapIndex+'['+j+']')) {
-			sFormElement = eval('document.getElementById(\'frmEditView\').discount'+iSwapIndex+'['+j+']');
+		if (domFormElements['discount'+iSwapIndex] && domFormElements['discount'+iSwapIndex][j]) {
+			sFormElement = domFormElements['discount'+iSwapIndex][j];
 			if (sFormElement.checked) {
 				iSwapCheckIndex = j;
 				break;
 			}
 		}
 	}
-	if (eval('document.getElementById(\'frmEditView\').discount'+iIndex+'['+iSwapCheckIndex+']')) {
-		var oElement = eval('document.getElementById(\'frmEditView\').discount'+iIndex+'['+iSwapCheckIndex+']');
+	if (domFormElements['discount'+iIndex] && domFormElements['discount'+iIndex][iSwapCheckIndex]) {
+		var oElement = domFormElements['discount'+iIndex][iSwapCheckIndex];
 		oElement.checked = true;
 	}
-	if (eval('document.getElementById(\'frmEditView\').discount'+iSwapIndex+'['+iCheckIndex+']')) {
-		var oSwapElement = eval('document.getElementById(\'frmEditView\').discount'+iSwapIndex+'['+iCheckIndex+']');
+	if (domFormElements['discount'+iSwapIndex] && domFormElements['discount'+iSwapIndex][iCheckIndex]) {
+		var oSwapElement = domFormElements['discount'+iSwapIndex][iCheckIndex];
 		oSwapElement.checked = true;
 	}
 

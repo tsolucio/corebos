@@ -243,13 +243,13 @@ function getcalAction(obj, Lay, id, view, hour, dateVal, type) {
 	var topSide = findPosY(obj);
 	var maxW = tagName.style.width;
 	var widthM = maxW.substring(0, maxW.length-2);
-	var getVal = eval(leftSide) + eval(widthM);
+	var getVal = leftSide + widthM;
 	var vtDate = dateVal.split('-');
 	var day = parseInt(vtDate[2], 10);
 	var month = parseInt(vtDate[1], 10);
 	var year = parseInt(vtDate[0], 10);
 	if (getVal  > window.innerWidth ) {
-		leftSide = eval(leftSide) - eval(widthM);
+		leftSide = leftSide - widthM;
 		tagName.style.left = leftSide + 'px';
 	} else {
 		tagName.style.left= leftSide + 'px';

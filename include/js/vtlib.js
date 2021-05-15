@@ -276,7 +276,11 @@ function vtlib_executeJavascriptInElement(element) {
 	var scriptTags = element.getElementsByTagName('script');
 	for (var i = 0; i< scriptTags.length; i++) {
 		if (scriptTags[i].innerHTML != '') {
-			eval(scriptTags[i].innerHTML);
+			try {
+				eval(scriptTags[i].innerHTML);
+			} catch (e) {
+				throw e;
+			}
 		}
 	}
 }

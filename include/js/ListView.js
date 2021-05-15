@@ -981,8 +981,7 @@ function mailer_export() {
 
 function callSearch(searchtype) {
 	for (var i = 1; i <= 26; i++) {
-		var data_td_id = 'alpha_' + eval(i);
-		getObj(data_td_id).className = 'searchAlph';
+		getObj('alpha_' + i).className = 'searchAlph';
 	}
 	gPopupAlphaSearchUrl = '';
 	var search_fld_val = document.getElementById('bas_searchfield').options[document.getElementById('bas_searchfield').selectedIndex].value;
@@ -1016,8 +1015,7 @@ function callSearch(searchtype) {
 
 function alphabetic(module, url, dataid) {
 	for (var i = 1; i <= 26; i++) {
-		var data_td_id = 'alpha_' + eval(i);
-		getObj(data_td_id).className = 'searchAlph';
+		getObj('alpha_' + i).className = 'searchAlph';
 	}
 	getObj(dataid).className = 'searchAlphselected';
 	document.getElementById('status').style.display = 'inline';

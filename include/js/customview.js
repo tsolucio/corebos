@@ -94,7 +94,7 @@ function validate(blockid) {
 		if (decimallength == '') {
 			decimallength = 0;
 		}
-		nummaxlength = 65 - (eval(decimallength) + 1);
+		nummaxlength = 65 - (decimallength + 1);
 	}
 	var lengthObj = document.getElementById('lengthdetails_'+blockid);
 	if ( lengthObj != null && lengthObj.style.display == 'table-row' && !numConstComp('fldLength_'+blockid, 'Length', 'LE', nummaxlength)) {
