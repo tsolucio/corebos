@@ -360,7 +360,7 @@ function VTEmailTask($) {
 		validator.mandatoryFields.push('recepient');
 	});
 }
-vtEmailTask = VTEmailTask(jQuery);
+VTEmailTask(jQuery);
 /*
  * Namespaced javascript class for attachmentManager
  */

@@ -697,4 +697,4 @@ function VTUpdateFieldsTask($, fieldvaluemapping) {
 
 	});
 }
-vtUpdateFieldsTask = VTUpdateFieldsTask(jQuery, fieldvaluemapping);
+VTUpdateFieldsTask(jQuery, fieldvaluemapping);

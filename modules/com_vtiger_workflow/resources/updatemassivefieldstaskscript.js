@@ -578,4 +578,4 @@ function CBMassiveUpdateRelatedTask($, fieldvaluemapping) {
 
 	});
 }
-vtCBMassiveUpdateRelatedTask = CBMassiveUpdateRelatedTask(jQuery, fieldvaluemapping);
+CBMassiveUpdateRelatedTask(jQuery, fieldvaluemapping);
