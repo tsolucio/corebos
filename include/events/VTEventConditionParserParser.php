@@ -80,12 +80,12 @@ class VTEventConditionParserParser extends AntlrParser {
 			$alt1=2;
 			$LA1_0 = $this->input->LA(1);
 
-			if (($LA1_0==$this->getToken('SYMBOL'))) {
+			if ($LA1_0==$this->getToken('SYMBOL')) {
 				$LA1_1 = $this->input->LA(2);
 
-				if (($LA1_1==$this->getToken('13'))) {
+				if ($LA1_1==$this->getToken('13')) {
 					$alt1=1;
-				} elseif (($LA1_1==$this->getToken('IN'))) {
+				} elseif ($LA1_1==$this->getToken('IN')) {
 					$alt1=2;
 				} else {
 					if ($this->state->backtracking>0) {
@@ -222,7 +222,7 @@ class VTEventConditionParserParser extends AntlrParser {
 				$alt2=2;
 				$LA2_0 = $this->input->LA(1);
 
-				if (($LA2_0==$this->getToken('15'))) {
+				if ($LA2_0==$this->getToken('15')) {
 					$alt2=1;
 				}
 

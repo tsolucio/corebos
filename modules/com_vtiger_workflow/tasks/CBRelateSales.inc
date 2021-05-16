@@ -55,7 +55,7 @@ class CBRelateSales extends VTTask {
 				$ctoid = $adb->query_result($ctors, 0, 0);
 				while ($srv = $adb->fetch_array($srvs)) {
 					$pdosrv = getSalesEntityType($srv['productid']);
-					if (($pdosrv == 'Products' && $this->relpdo) || (($pdosrv == 'Services' && $this->relsrv))) {
+					if (($pdosrv == 'Products' && $this->relpdo) || ($pdosrv == 'Services' && $this->relsrv)) {
 						if ($this->withaccvnd && !empty($accid)) {
 							relateEntities($acc, $accmodule, $accid, $pdosrv, $srv['productid']);
 						}

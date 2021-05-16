@@ -1120,7 +1120,7 @@ class QueryGenerator {
 							if (strpos($this->fromClause, $tname)===false) {
 								$tname = $bTable;
 							}
-							if (($conditionInfo['SQLOperator'] == 'empty' || $conditionInfo['SQLOperator'] == 'y')) {
+							if ($conditionInfo['SQLOperator'] == 'empty' || $conditionInfo['SQLOperator'] == 'y') {
 								$fieldSqlList[$index] = "($tname.$fname IS NULL OR $tname.$fname = '' OR $tname.$fname = '0')";
 								continue;
 							}

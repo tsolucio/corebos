@@ -397,7 +397,7 @@ function __cb_next_dateLaborable($arr) {
 		}
 	}
 	if ($found) {
-		while ((in_array($found->format('N'), $weekend) || in_array($found->format('Y-m-d'), $holiday))) {
+		while (in_array($found->format('N'), $weekend) || in_array($found->format('Y-m-d'), $holiday)) {
 			$found->add($interval);
 		}
 		return $found->format('Y-m-d');

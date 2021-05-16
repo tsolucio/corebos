@@ -138,7 +138,7 @@ class ReportRun extends CRMEntity {
 			$fieldlabel = trim(str_replace('_', ' ', $fieldlabel));
 			//modified code to support i18n issue
 			$fld_arr = explode(' ', $fieldlabel);
-			if (($mod_arr[0] == '')) {
+			if ($mod_arr[0] == '') {
 				$mod = $module;
 				$mod_lbl = getTranslatedString($module, $module); //module
 			} else {
@@ -3419,7 +3419,7 @@ class ReportRun extends CRMEntity {
 					$groupByField = implode(', ', $groupByCondition);
 				}
 			} elseif (CheckFieldPermission($fieldname, $modulename) != 'true') {
-				if ((strpos($tablename, 'vtiger_inventoryproductrel') === false && ($colname != 'productid' || $colname != 'serviceid'))) {
+				if (strpos($tablename, 'vtiger_inventoryproductrel') === false && ($colname != 'productid' || $colname != 'serviceid')) {
 					$groupByField = $tablename.'.'.$colname;
 				}
 			}

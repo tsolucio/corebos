@@ -199,7 +199,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 				$alt1=2;
 				$LA1_0 = $this->input->LA(1);
 
-				if ((($LA1_0>=$this->getToken('48') && $LA1_0<=$this->getToken('57')))) {
+				if (($LA1_0>=$this->getToken('48') && $LA1_0<=$this->getToken('57'))) {
 					$alt1=1;
 				}
 
@@ -235,13 +235,13 @@ class VTEventConditionParserLexer extends AntlrLexer {
 				$alt2=3;
 				$LA2_0 = $this->input->LA(1);
 
-				if (($LA2_0==$this->getToken('39'))) {
+				if ($LA2_0==$this->getToken('39')) {
 					$LA2_1 = $this->input->LA(2);
 
-					if (($LA2_1==$this->getToken('39'))) {
+					if ($LA2_1==$this->getToken('39')) {
 						$alt2=2;
 					}
-				} elseif ((($LA2_0>=$this->getToken('0') && $LA2_0<=$this->getToken('38')) || ($LA2_0>=$this->getToken('40') && $LA2_0<=$this->getToken('65534')))) {
+				} elseif (($LA2_0>=$this->getToken('0') && $LA2_0<=$this->getToken('38')) || ($LA2_0>=$this->getToken('40') && $LA2_0<=$this->getToken('65534'))) {
 					$alt2=1;
 				}
 				switch ($alt2) {
@@ -282,9 +282,9 @@ class VTEventConditionParserLexer extends AntlrLexer {
 			$alt5=2;
 			$LA5_0 = $this->input->LA(1);
 
-			if ((($LA5_0>=$this->getToken('65') && $LA5_0<=$this->getToken('90')) || ($LA5_0>=$this->getToken('97') && $LA5_0<=$this->getToken('122')))) {
+			if (($LA5_0>=$this->getToken('65') && $LA5_0<=$this->getToken('90')) || ($LA5_0>=$this->getToken('97') && $LA5_0<=$this->getToken('122'))) {
 				$alt5=1;
-			} elseif (($LA5_0==$this->getToken('96'))) {
+			} elseif ($LA5_0==$this->getToken('96')) {
 				$alt5=2;
 			} else {
 				throw new NoViableAltException('', 5, 0, $this->input);
@@ -297,7 +297,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 						$alt3=2;
 						$LA3_0 = $this->input->LA(1);
 
-						if ((($LA3_0>=$this->getToken('48') && $LA3_0<=$this->getToken('57')) || ($LA3_0>=$this->getToken('65') && $LA3_0<=$this->getToken('90')) || $LA3_0==$this->getToken('95') || ($LA3_0>=$this->getToken('97') && $LA3_0<=$this->getToken('122')))) {
+						if (($LA3_0>=$this->getToken('48') && $LA3_0<=$this->getToken('57')) || ($LA3_0>=$this->getToken('65') && $LA3_0<=$this->getToken('90')) || $LA3_0==$this->getToken('95') || ($LA3_0>=$this->getToken('97') && $LA3_0<=$this->getToken('122'))) {
 							$alt3=1;
 						}
 						switch ($alt3) {
@@ -323,7 +323,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 						$alt4=2;
 						$LA4_0 = $this->input->LA(1);
 
-						if ((($LA4_0>=$this->getToken('0') && $LA4_0<=$this->getToken('95')) || ($LA4_0>=$this->getToken('97') && $LA4_0<=$this->getToken('65534')))) {
+						if (($LA4_0>=$this->getToken('0') && $LA4_0<=$this->getToken('95')) || ($LA4_0>=$this->getToken('97') && $LA4_0<=$this->getToken('65534'))) {
 							$alt4=1;
 						}
 						switch ($alt4) {
@@ -381,7 +381,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 				$alt6=2;
 				$LA6_0 = $this->input->LA(1);
 
-				if ((($LA6_0>=$this->getToken('48') && $LA6_0<=$this->getToken('57')))) {
+				if ($LA6_0>=$this->getToken('48') && $LA6_0<=$this->getToken('57')) {
 					$alt6=1;
 				}
 				switch ($alt6) {
@@ -404,7 +404,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 				$alt7=2;
 				$LA7_0 = $this->input->LA(1);
 
-				if ((($LA7_0>=$this->getToken('48') && $LA7_0<=$this->getToken('57')))) {
+				if ($LA7_0>=$this->getToken('48') && $LA7_0<=$this->getToken('57')) {
 					$alt7=1;
 				}
 				switch ($alt7) {
@@ -465,7 +465,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 				$alt8=2;
 				$LA8_0 = $this->input->LA(1);
 
-				if ((($LA8_0>=$this->getToken('9') && $LA8_0<=$this->getToken('10')) || $LA8_0==$this->getToken('13') || $LA8_0==$this->getToken('32'))) {
+				if (($LA8_0>=$this->getToken('9') && $LA8_0<=$this->getToken('10')) || $LA8_0==$this->getToken('13') || $LA8_0==$this->getToken('32')) {
 					$alt8=1;
 				}
 				switch ($alt8) {

@@ -1981,7 +1981,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$value = '<a href="index.php?action=DetailView&module='.$module.'&record='.$entity_id.'" id='.$count.'>'.textlength_check($field_valEncoded).'</a>';
 				} elseif ($module == 'Emails') {
 					$value = $field_valHTML;
-				} elseif (($module == 'Users' && $colname == 'last_name')) {
+				} elseif ($module == 'Users' && $colname == 'last_name') {
 					$field_valEncoded = getFullNameFromQResult($list_result, $list_result_count, $module);
 					$value = '<a href="index.php?action=DetailView&module='.$module.'&record='.$entity_id.'">'.textlength_check($field_valEncoded).'</a>';
 				} else {

@@ -756,7 +756,7 @@ function updateFieldProperties() {
 	$datatype = implode('~', $fieldtype);
 	$maxseq = 0;
 	if ($oldquickcreate != 3) {
-		if (($quickcreate_checked == 'true' || $quickcreate_checked == '' )) {
+		if ($quickcreate_checked == 'true' || $quickcreate_checked == '') {
 			$qcdata = 2;
 			$quickcreateseq_Query = 'select max(quickcreatesequence) as maxseq from vtiger_field where tabid = ?';
 			$res = $adb->pquery($quickcreateseq_Query, array($tabid));
@@ -776,7 +776,7 @@ function updateFieldProperties() {
 	}
 
 	if ($oldmassedit != 3) {
-		if (($massedit_check == 'true' || $massedit_check == '')) {
+		if ($massedit_check == 'true' || $massedit_check == '') {
 			$massedit = 1;
 		} else {
 			$massedit = 2;

@@ -666,7 +666,7 @@ function get_themes() {
 	$log->debug('> get_themes');
 	$filelist = array();
 	if ($dir = @opendir('./themes')) {
-		while (($file = readdir($dir))) {
+		while ($file = readdir($dir)) {
 			if ($file != '..' && $file != '.' && is_dir('./themes/'.$file) && $file[0] != '.' && is_file("./themes/$file/style.css")) {
 				$filelist[$file] = $file;
 			}

@@ -86,9 +86,9 @@ class Webforms_Model {
 			$fieldModel->setFieldName($fieldname);
 			$fieldModel->setNeutralizedField($fieldname, $fieldInfo['label']);
 			$field = Webforms::getFieldInfo($this->getTargetModule(), $fieldname);
-			if (($field['type']['name'] == 'date')) {
+			if ($field['type']['name'] == 'date') {
 				$defaultvalue = DateTimeField::convertToDBFormat($value[$fieldname]);
-			} elseif (($field['type']['name'] == 'boolean')) {
+			} elseif ($field['type']['name'] == 'boolean') {
 				if (in_array($fieldname, $required)) {
 					if (empty($value[$fieldname])) {
 						$defaultvalue='off';
@@ -102,7 +102,7 @@ class Webforms_Model {
 				$defaultvalue = vtlib_purify($value[$fieldname]);
 			}
 			$fieldModel->setDefaultValue($defaultvalue);
-			if ((!empty($required) && in_array($fieldname, $required))) {
+			if (!empty($required) && in_array($fieldname, $required)) {
 				$fieldModel->setRequired(1);
 			} else {
 				$fieldModel->setRequired(0);

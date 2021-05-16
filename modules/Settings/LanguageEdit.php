@@ -282,7 +282,7 @@ if (!empty($filter)) {
 				$hidden_fields[$key][2]=$resulttrl[2];
 				$hidden_fields[$key][3]=$resulttrl[3];
 			}
-		} elseif (($filter=='fieldstranslated')) {
+		} elseif ($filter=='fieldstranslated') {
 			if ($resulttrl[3]=='fieldstranslated') {
 				$resultft[$key][0]=$resulttrl[0];
 				$resultft[$key][1]=$resulttrl[1];
