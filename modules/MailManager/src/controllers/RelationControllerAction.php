@@ -16,9 +16,6 @@ require_once 'include/utils/utils.php';
  */
 class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 
-	public function __construct() {
-	}
-
 	/**
 	 * Create new Email record (and link to given record) including attachments
 	 * @global Users $current_user

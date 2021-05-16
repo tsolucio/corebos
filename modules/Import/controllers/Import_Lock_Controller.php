@@ -10,9 +10,6 @@
 
 class Import_Lock_Controller {
 
-	public function __construct() {
-	}
-
 	public static function lock($importId, $module, $user) {
 		$adb = PearDatabase::getInstance();
 

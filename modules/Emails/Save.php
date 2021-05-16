@@ -46,8 +46,7 @@ $_REQUEST['saved_toid'] = $all_to_ids;
 //we always save the email with 'save' status and when it is sent it is marked as SENT
 $_REQUEST['email_flag'] = 'SAVED';
 setObjectValuesFromRequest($focus);
-//Check if the file is exist or not.
-//$file_name = '';
+//Check if the file exists or not
 if (isset($_REQUEST['filename_hidden'])) {
 	$file_name = $_REQUEST['filename_hidden'];
 } else {

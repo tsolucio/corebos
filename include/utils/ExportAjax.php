@@ -13,19 +13,19 @@ $idstring = rtrim($_REQUEST['idstring'], ';');
 if ($_REQUEST['export_record']) {
 	// user can select includesearch & (all |currentpage|selecteddata) but not search
 	//  or withoutsearch & (all |currentpage|selecteddata) but search
-	if (($_REQUEST['search_type'] == 'includesearch' && $_REQUEST['export_data'] == 'all') && $_SESSION['export_where'] == '') {
+	if ($_REQUEST['search_type'] == 'includesearch' && $_REQUEST['export_data'] == 'all' && $_SESSION['export_where'] == '') {
 		echo 'NOT_SEARCH_WITHSEARCH_ALL';
 		exit();
-	} elseif (($_REQUEST['search_type'] == 'includesearch' && $_REQUEST['export_data'] == 'currentpage') && $_SESSION['export_where'] == '') {
+	} elseif ($_REQUEST['search_type'] == 'includesearch' && $_REQUEST['export_data'] == 'currentpage' && $_SESSION['export_where'] == '') {
 		echo 'NOT_SEARCH_WITHSEARCH_CURRENTPAGE';
 		exit();
 	} elseif (($_REQUEST['search_type'] == 'includesearch' && $_REQUEST['export_data'] == 'selecteddata') && $idstring == '') {
 		echo 'NO_DATA_SELECTED';
 		exit();
-	} elseif (($_REQUEST['search_type'] == 'withoutsearch' && $_REQUEST['export_data'] == 'all') && !empty($_SESSION['export_where'])) {
+	} elseif ($_REQUEST['search_type'] == 'withoutsearch' && $_REQUEST['export_data'] == 'all' && !empty($_SESSION['export_where'])) {
 		echo 'SEARCH_WITHOUTSEARCH_ALL';
 		exit();
-	} elseif (($_REQUEST['search_type'] == 'withoutsearch' && $_REQUEST['export_data'] == 'currentpage') && !empty($_SESSION['export_where'])) {
+	} elseif ($_REQUEST['search_type'] == 'withoutsearch' && $_REQUEST['export_data'] == 'currentpage' && !empty($_SESSION['export_where'])) {
 		echo 'SEARCH_WITHOUTSEARCH_CURRENTPAGE';
 		exit();
 	} elseif (($_REQUEST['search_type'] == 'withoutsearch' && $_REQUEST['export_data'] == 'selecteddata') && $idstring == '') {

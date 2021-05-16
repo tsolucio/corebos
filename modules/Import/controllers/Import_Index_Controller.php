@@ -16,9 +16,6 @@ class Import_Index_Controller {
 
 	public static $_cached_module_meta;
 
-	public function __construct() {
-	}
-
 	private function isEditableField($fieldInstance) {
 		return !(((int)$fieldInstance->getDisplayType()) === 2 ||
 				in_array($fieldInstance->getPresence(), array(1, 3)) ||
@@ -80,9 +77,7 @@ class Import_Index_Controller {
 			$moduleFields = $this->getAccessibleFields($moduleName);
 			$mandatoryFields = array();
 			foreach ($moduleFields as $fieldName => $fieldInstance) {
-				if ($fieldInstance->isMandatory()
-						//&& $fieldInstance->getFieldDataType() != 'owner'
-						&& $this->isEditableField($fieldInstance)) {
+				if ($fieldInstance->isMandatory() && $this->isEditableField($fieldInstance)) {
 					$mandatoryFields[$fieldName] = getTranslatedString($fieldInstance->getFieldLabelKey(), $moduleName);
 				}
 			}

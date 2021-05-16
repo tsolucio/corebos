@@ -47,7 +47,7 @@ class File extends Response {
 
 	public function getDefaultFilePath() {
 		$folder = $this->getDefaultFolderPath();
-		return $folder.strtotime("now").'.sql';
+		return $folder.strtotime('now').'.sql';
 	}
 
 	public function startBackup() {

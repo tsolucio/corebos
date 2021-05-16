@@ -54,7 +54,6 @@ function webforms_getUserData($ownerId, $describeFields, $source) {
 			$userData[$fieldName] = $ownerId;
 			continue;
 		}
-		/* TODO: if($describeFields[$i]['type']['name'] == 'reference'){ continue; }*/
 
 		/**
 		 * Support for specifying (fieldname or label:fieldlabel)
