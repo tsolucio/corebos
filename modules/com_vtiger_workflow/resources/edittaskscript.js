@@ -50,16 +50,16 @@ function edittaskscript($) {
 		if ($('#select_date_days').val() != '') {
 			$('#select_date_days').css('display', 'block');
 			$('#select_date_hours').css('display', 'none');
-			$("select option[value='days']").attr("selected","selected");
+			$("select option[value='days']").attr("selected", "selected");
 			NumberBox($('#select_date_days'), $('#select_days_hours_option').val());
-			$('#select_days_hours_option').on('change', function() {
+			$('#select_days_hours_option').on('change', function () {
 				$('#select_date_days').val('');
 				$('#select_date_hours').val('');
 				if ($('#select_days_hours_option').val() == 'days') {
 					NumberBox($('#select_date_days'), $('#select_days_hours_option').val());
 					$('#select_date_hours').css('display', 'none');
 					$('#select_date_days').css('display', 'block');
-				} 
+				}
 				if ($('#select_days_hours_option').val() == 'hours') {
 					NumberBox($('#select_date_hours'), $('#select_days_hours_option').val());
 					$('#select_date_days').css('display', 'none');
@@ -69,16 +69,16 @@ function edittaskscript($) {
 		} else if ($('#select_date_hours').val() != '') {
 			$('#select_date_hours').css('display', 'block');
 			$('#select_date_days').css('display', 'none');
-			$("select option[value='hours']").attr("selected","selected");
+			$("select option[value='hours']").attr("selected", "selected");
 			NumberBox($('#select_date_hours'), $('#select_days_hours_option').val());
-			$('#select_days_hours_option').on('change', function() {
+			$('#select_days_hours_option').on('change', function () {
 				$('#select_date_days').val('');
 				$('#select_date_hours').val('');
 				if ($('#select_days_hours_option').val() == 'days') {
 					NumberBox($('#select_date_days'), $('#select_days_hours_option').val());
 					$('#select_date_hours').css('display', 'none');
 					$('#select_date_days').css('display', 'block');
-				} 
+				}
 				if ($('#select_days_hours_option').val() == 'hours') {
 					NumberBox($('#select_date_hours'), $('#select_days_hours_option').val());
 					$('#select_date_days').css('display', 'none');
@@ -92,14 +92,14 @@ function edittaskscript($) {
 					$('#select_date').css('display', 'block');
 					$('#select_date_hours').css('display', 'none');
 					NumberBox($('#select_date_days'), $('#select_days_hours_option').val());
-					$('#select_days_hours_option').on('change', function() {
+					$('#select_days_hours_option').on('change', function () {
 						$('#select_date_days').val('');
 						$('#select_date_hours').val('');
 						if ($('#select_days_hours_option').val() == 'days') {
 							NumberBox($('#select_date_days'), $('#select_days_hours_option').val());
 							$('#select_date_hours').css('display', 'none');
 							$('#select_date_days').css('display', 'block');
-						} 
+						}
 						if ($('#select_days_hours_option').val() == 'hours') {
 							NumberBox($('#select_date_hours'), $('#select_days_hours_option').val());
 							$('#select_date_days').css('display', 'none');
