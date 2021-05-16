@@ -141,9 +141,7 @@ if (isset($query_string) && $query_string != '') {
 							$start = ceil($noofrows/$list_max_entries_per_page);
 						}
 					}
-					if (!is_numeric($start)) {
-						$start = 1;
-					} elseif ($start < 0) {
+					if (!is_numeric($start) || $start < 0) {
 						$start = 1;
 					}
 					$start = ceil($start);

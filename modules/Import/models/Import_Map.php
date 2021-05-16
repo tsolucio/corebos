@@ -49,8 +49,7 @@ class Import_Map {
 	}
 
 	public function getId() {
-		$map = $this->map;
-		return $map['id'];
+		return $this->map['id'];
 	}
 
 	public function getAllValues() {
@@ -58,8 +57,7 @@ class Import_Map {
 	}
 
 	public function getValue($key) {
-		$map = $this->map;
-		return $map[$key];
+		return $this->map[$key];
 	}
 
 	public function getStringifiedContent() {
@@ -80,8 +78,7 @@ class Import_Map {
 		if (empty($this->map['defaultvalues'])) {
 			return;
 		}
-		$defaultvalues = $this->map['defaultvalues'];
-		return $defaultvalues;
+		return $this->map['defaultvalues'];
 	}
 
 	public function save() {
