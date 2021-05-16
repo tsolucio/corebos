@@ -405,7 +405,7 @@ class Invoice extends CRMEntity {
 			$row = $adb->query_result_rowdata($res, $j);
 			$col_value = array();
 			for ($k=0; $k<count($fieldsList); $k++) {
-					$col_value[$fieldsList[$k]] = $row[$fieldsList[$k]];
+				$col_value[$fieldsList[$k]] = $row[$fieldsList[$k]];
 			}
 			if (!empty($col_value)) {
 				$col_value['id'] = $this->id;

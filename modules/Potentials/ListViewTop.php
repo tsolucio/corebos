@@ -29,22 +29,20 @@ function getTopPotentials($maxval, $calCnt) {
 	$title[]='myTopOpenPotentials.gif';
 	$title[]=$current_module_strings['LBL_TOP_OPPORTUNITIES'];
 	$title[]='home_mypot';
-	$where = "AND vtiger_potential.potentialid > 0 AND vtiger_potential.sales_stage not in ('Closed Won','Closed Lost','".$current_module_strings['Closed Won']."','".
-			$current_module_strings['Closed Lost']."') AND vtiger_crmentity.smownerid='".$current_user->id."' AND vtiger_potential.amount > 0";
+	$where = "AND vtiger_potential.potentialid > 0 AND vtiger_potential.sales_stage not in ('Closed Won','Closed Lost','".$current_module_strings['Closed Won']."','"
+		.$current_module_strings['Closed Lost']."') AND vtiger_crmentity.smownerid='".$current_user->id."' AND vtiger_potential.amount > 0";
 	$header=array();
 	$header[]=$current_module_strings['LBL_LIST_OPPORTUNITY_NAME'];
 	$currencyid=fetchCurrency($current_user->id);
 	$rate_symbol = getCurrencySymbolandCRate($currencyid);
 	$curr_symbol = $rate_symbol['symbol'];
 	$header[]=$current_module_strings['LBL_LIST_AMOUNT'].'('.$curr_symbol.')';
-	$list_query = 'SELECT vtiger_crmentity.crmid, vtiger_potential.potentialname,
-		vtiger_potential.amount, potentialid
+	$list_query = 'SELECT vtiger_crmentity.crmid, vtiger_potential.potentialname, vtiger_potential.amount, potentialid
 		FROM vtiger_potential
-		IGNORE INDEX(PRIMARY) INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_potential.potentialid';
+		INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_potential.potentialid';
 	$list_query .= getNonAdminAccessControlQuery('Potentials', $current_user);
-	$list_query .= 'WHERE vtiger_crmentity.deleted = 0 '.$where;
+	$list_query .= 'WHERE vtiger_crmentity.deleted=0 '.$where;
 	$list_query .=' ORDER BY amount DESC';
-
 	$list_query .=' LIMIT ' . $adb->sql_escape_string($maxval);
 
 	if ($calCnt == 'calculateCnt') {
