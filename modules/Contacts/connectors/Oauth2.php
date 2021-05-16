@@ -225,8 +225,7 @@ class Google_Oauth2_Connector {
 			return true;
 		}
 		// If the token is set to expire in the next 30 seconds.
-		$expired = ($this->token['access_token']['created'] + ($this->token['access_token']['expires_in'] - 30)) < time();
-		return $expired;
+		return ($this->token['access_token']['created'] + ($this->token['access_token']['expires_in'] - 30)) < time();
 	}
 
 	public function updateAccessToken($accesstoken, $refreshtoken) {

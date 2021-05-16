@@ -367,9 +367,7 @@ class VTTaskType {
 		$taskTypes['classpath'] = $adb->query_result($result, 0, 'classpath');
 		$taskTypes['templatepath'] = $adb->query_result($result, 0, 'templatepath');
 		$taskTypes['sourcemodule'] = $adb->query_result($result, 0, 'sourcemodule');
-
-		$taskDetails = self::getInstance($taskTypes);
-		return $taskDetails;
+		return self::getInstance($taskTypes);
 	}
 }
 ?>

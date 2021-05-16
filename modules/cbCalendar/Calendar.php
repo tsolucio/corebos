@@ -208,7 +208,6 @@ function getCalendarDaysInMonth($date_time) {
 		$slices[] = $date;
 	}
 
-	$result = array('month_array'=>$month_array, 'slices'=>$slices, 'date_time'=>$date_time);
-	return $result;
+	return array('month_array'=>$month_array, 'slices'=>$slices, 'date_time'=>$date_time);
 }
 ?>

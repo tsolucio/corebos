@@ -413,8 +413,7 @@ class PearDatabase {
 				$vals[$index] = 'NULL';
 			}
 		}
-		$sql = preg_replace_callback("/('[^']*')|(\"[^\"]*\")|([?])/", array(new PreparedQMark2SqlValue($vals), 'call'), $ps);
-		return $sql;
+		return preg_replace_callback("/('[^']*')|(\"[^\"]*\")|([?])/", array(new PreparedQMark2SqlValue($vals), 'call'), $ps);
 	}
 
 	/* ADODB prepared statement Execution

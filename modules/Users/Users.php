@@ -711,9 +711,8 @@ class Users extends CRMEntity {
 
 	/** Function to return the column name array */
 	public function getColumnNames_User() {
-		$mergeflds = array('FIRSTNAME', 'LASTNAME', 'USERNAME', 'SECONDARYEMAIL', 'TITLE', 'OFFICEPHONE', 'DEPARTMENT', 'MOBILE', 'OTHERPHONE', 'FAX', 'EMAIL',
+		return array('FIRSTNAME', 'LASTNAME', 'USERNAME', 'SECONDARYEMAIL', 'TITLE', 'OFFICEPHONE', 'DEPARTMENT', 'MOBILE', 'OTHERPHONE', 'FAX', 'EMAIL',
 			'HOMEPHONE', 'OTHEREMAIL', 'PRIMARYADDRESS', 'CITY', 'STATE', 'POSTALCODE', 'COUNTRY');
-		return $mergeflds;
 	}
 
 	public function fill_in_additional_list_fields() {

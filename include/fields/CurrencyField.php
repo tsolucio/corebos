@@ -226,8 +226,7 @@ class CurrencyField {
 
 		if ($currencyPattern == $this->CURRENCY_PATTERN_PLAIN) {
 			// Replace '.' with Decimal Separator
-			$number = str_replace('.', $decimalSeparator, $value);
-			return $number;
+			return str_replace('.', $decimalSeparator, $value);
 		}
 		$negativeNumber=($value<0);
 		// Separate the numeric and decimal parts

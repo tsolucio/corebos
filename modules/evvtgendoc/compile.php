@@ -1686,7 +1686,7 @@ function get_plantilla($entid) {
 		list($name,$ext) = explode('.', $plantilla);
 	}
 
-	$ret = array(
+	return array(
 		'documentid' => $IDplantilla,
 		'document' => (empty($plantilla) ? '' : $root_directory.$ruta.$prefix.$plantilla),
 		'relmodule' => $relmodule,
@@ -1698,7 +1698,6 @@ function get_plantilla($entid) {
 		'categoria' => $cat,
 		'entityname' => (empty($entityname) ? '' : elimina_puntuacion(elimina_acentos($entityname))),
 	);
-	return $ret;
 }
 
 function getEntityModule($crmid) {

@@ -728,19 +728,18 @@ class Reports extends CRMEntity {
 		$fieldname = $selectedfields[3];
 		if ($fieldname == 'parent_id') {
 			if ($this->primarymodule == 'HelpDesk' && $selectedfields[0] == 'vtiger_crmentityRelHelpDesk') {
-				$querycolumn = "case vtiger_crmentityRelHelpDesk.setype
+				return "case vtiger_crmentityRelHelpDesk.setype
 					when 'Accounts' then vtiger_accountRelHelpDesk.accountname
 					when 'Contacts' then vtiger_contactdetailsRelHelpDesk.lastname End '".$selectedfields[2]."', vtiger_crmentityRelHelpDesk.setype 'Entity_type'";
-				return $querycolumn;
 			}
 			if ($this->primarymodule == 'Products' || $this->secondarymodule == 'Products') {
-				$querycolumn = "case vtiger_crmentityRelProducts.setype
+				return "case vtiger_crmentityRelProducts.setype
 					when 'Accounts' then vtiger_accountRelProducts.accountname
 					when 'Leads' then vtiger_leaddetailsRelProducts.lastname
 					when 'Potentials' then vtiger_potentialRelProducts.potentialname End '".$selectedfields[2]."', vtiger_crmentityRelProducts.setype 'Entity_type'";
 			}
 		}
-		return $querycolumn;
+		return '';
 	}
 
 	public function getaccesfield() {

@@ -197,8 +197,7 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 		}
 
 		$name = getEntityName($modulename, $linkto);
-		$detailInformation =  self::buildDetailViewLink($modulename, $linkfocus->id, $name[$linkto]);
-		return $detailInformation;
+		return  self::buildDetailViewLink($modulename, $linkfocus->id, $name[$linkto]);
 	}
 
 	/**

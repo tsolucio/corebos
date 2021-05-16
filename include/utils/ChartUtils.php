@@ -197,7 +197,7 @@ class ChartUtils {
 		} else {
 			$respproperty = 'false';
 		}
-		$sHTML = <<<EOF
+		return <<<EOF
 <canvas id="$html_imagename" style="width:{$width}px;height:{$height}px;margin:auto;padding:10px;"></canvas>
 <script type="text/javascript">
 window.doChart{$html_imagename} = function(charttype) {
@@ -257,7 +257,6 @@ window.doChart{$html_imagename} = function(charttype) {
 doChart{$html_imagename}('{$graph_type}');
 </script>
 EOF;
-		return $sHTML;
 	}
 
 	public static function getChartHTMLwithObject($chartObject, $targetObject, $html_imagename, $width, $height, $left, $right, $top, $bottom) {
@@ -268,7 +267,7 @@ EOF;
 		} else {
 			$czone = 'clickzone[activePoint[0]._index]';
 		}
-		$sHTML = <<<EOF
+		return <<<EOF
 <canvas id="$html_imagename" style="width:{$width}px;height:{$height}px;margin:auto;padding:10px;"></canvas>
 <script type="text/javascript">
 window.doChart{$html_imagename} = function() {
@@ -289,7 +288,6 @@ window.doChart{$html_imagename} = function() {
 doChart{$html_imagename}();
 </script>
 EOF;
-		return $sHTML;
 	}
 
 	public static function convertToArray($values, $translate = false, $withquotes = false) {

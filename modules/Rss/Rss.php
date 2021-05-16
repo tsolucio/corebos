@@ -356,7 +356,6 @@ function gerRssTitle($id = '') {
 		$params = array($id);
 	}
 	$result = $adb->pquery($query, $params);
-	$title = $adb->query_result($result, 0, 'rsstitle');
-	return $title;
+	return $adb->query_result($result, 0, 'rsstitle');
 }
 ?>

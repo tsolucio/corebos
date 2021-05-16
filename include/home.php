@@ -239,8 +239,7 @@ class Homestuff {
 	public function getSelectedStuff($sid, $stuffType) {
 		global $adb;
 		$resultstuff=$adb->pquery('select stufftitle from vtiger_homestuff where visible=0 and stuffid=?', array($sid));
-		$homeval=array('Stuffid'=>$sid, 'Stufftype'=>$stuffType, 'Stufftitle'=>$adb->query_result($resultstuff, 0, 'stufftitle'));
-		return $homeval;
+		return array('Stuffid'=>$sid, 'Stufftype'=>$stuffType, 'Stufftitle'=>$adb->query_result($resultstuff, 0, 'stufftitle'));
 	}
 
 	/**

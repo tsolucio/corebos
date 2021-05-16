@@ -149,8 +149,7 @@ function __cb_networkdays($arr) {
  */
 function __vt_time_diffdays($arr) {
 	$timediff  = __vt_time_diff($arr);
-	$days_diff = floor($timediff / (60 * 60 * 24));
-	return $days_diff;
+	return floor($timediff / (60 * 60 * 24));
 }
 
 function __cb_time_diffyears($arr) {
@@ -218,8 +217,7 @@ function __vt_add_days($arr) {
 		$baseDate = date('Y-m-d'); // Current date
 	}
 	$baseDate = strtotime($baseDate);
-	$date = strftime('%Y-%m-%d', $baseDate + ($noOfDays * 24 * 60 * 60));
-	return $date;
+	return strftime('%Y-%m-%d', $baseDate + ($noOfDays * 24 * 60 * 60));
 }
 
 function __vt_sub_days($arr) {
@@ -236,8 +234,7 @@ function __vt_sub_days($arr) {
 		$baseDate = date('Y-m-d'); // Current date
 	}
 	$baseDate = strtotime($baseDate);
-	$date = strftime('%Y-%m-%d', $baseDate - ($noOfDays * 24 * 60 * 60));
-	return $date;
+	return strftime('%Y-%m-%d', $baseDate - ($noOfDays * 24 * 60 * 60));
 }
 
 function __vt_add_months($arr) {
@@ -254,8 +251,7 @@ function __vt_add_months($arr) {
 		$baseDate = date('Y-m-d'); // Current date
 	}
 	$baseDate = strtotime("+$noOfMonths months", strtotime($baseDate));
-	$date = strftime('%Y-%m-%d', $baseDate);
-	return $date;
+	return strftime('%Y-%m-%d', $baseDate);
 }
 
 function __vt_sub_months($arr) {
@@ -272,8 +268,7 @@ function __vt_sub_months($arr) {
 		$baseDate = date('Y-m-d'); // Current date
 	}
 	$baseDate = strtotime("-$noOfMonths months", strtotime($baseDate));
-	$date = strftime('%Y-%m-%d', $baseDate);
-	return $date;
+	return strftime('%Y-%m-%d', $baseDate);
 }
 
 function __vt_get_date($arr) {

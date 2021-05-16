@@ -33,8 +33,7 @@ class crmtogo_UI_GlobalSearch extends crmtogo_WS_ListModuleRecords {
 		$searchFilter = false;
 		if (!empty($search)) {
 			$criterias = array('search' => $search, 'fieldnames' => $this->cachedSearchFields($module));
-			$searchFilter = crmtogo_UI_SearchFilterModel::modelWithCriterias($module, $criterias);
-			return $searchFilter;
+			return crmtogo_UI_SearchFilterModel::modelWithCriterias($module, $criterias);
 		}
 		return $searchFilter;
 	}

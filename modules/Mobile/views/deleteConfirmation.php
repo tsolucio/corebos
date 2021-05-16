@@ -24,8 +24,7 @@ class crmtogo_UI_Delete extends crmtogo_WS_Controller {
 		$viewer->assign('MOD', $current_module_strings);
 		$viewer->assign('_MODULE', $module);
 		$viewer->assign('id', $record);
-		$response = $viewer->process('deleteConfirmation.tpl');
-		return $response;
+		return $viewer->process('deleteConfirmation.tpl');
 	}
 }
 ?>

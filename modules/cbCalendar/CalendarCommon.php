@@ -339,8 +339,7 @@ function timeString($datetime, $fmt) {
 	$timeStr = formatUserTimeString($datetime, $fmt);
 	$date = new DateTimeField($dateStr.' '.$timeStr);
 	list($h, $m) = explode(':', $date->getDisplayTime());
-	$timeStr = formatUserTimeString(array('hour'=>$h, 'minute'=>$m), $fmt);
-	return $timeStr;
+	return formatUserTimeString(array('hour'=>$h, 'minute'=>$m), $fmt);
 }
 
 /**

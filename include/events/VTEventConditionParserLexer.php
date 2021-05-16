@@ -390,10 +390,9 @@ class VTEventConditionParserLexer extends AntlrLexer {
 						break;
 					default:
 						if ($cnt6 >= 1) {
-							break 2;//loop6;
+							break 2;//loop6
 						}
-						$eee = new EarlyExitException(6, $this->input);
-						throw $eee;
+						throw new EarlyExitException(6, $this->input);
 				}
 				$cnt6++;
 			} while (true);
@@ -416,8 +415,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 						if ($cnt7 >= 1) {
 							break 2;//loop7
 						}
-						$eee = new EarlyExitException(7, $this->input);
-						throw $eee;
+						throw new EarlyExitException(7, $this->input);
 				}
 				$cnt7++;
 			} while (true);

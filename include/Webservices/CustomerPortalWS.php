@@ -1471,7 +1471,6 @@ function getGlobalSearch($term, $searchin, $limit, $user) {
 		}
 	}
 	VTWS_PreserveGlobal::flush();
-	$final=array('data'=>$respuesta,'total'=>$total);
-	return $final;
+	return array('data' => $respuesta, 'total' => $total);
 }
 ?>

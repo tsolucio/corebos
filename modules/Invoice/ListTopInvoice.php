@@ -121,8 +121,7 @@ function getTopInvoice($maxval, $calCnt) {
 		true
 	);
 
-	$values=array('ModuleName'=>'Invoice', 'Title'=>$title, 'Header'=>$header, 'Entries'=>$entries, 'search_qry'=>$search_qry);
-	return $values;
+	return array('ModuleName'=>'Invoice', 'Title'=>$title, 'Header'=>$header, 'Entries'=>$entries, 'search_qry'=>$search_qry);
 }
 
 function getTopInvoiceSearch($output) {

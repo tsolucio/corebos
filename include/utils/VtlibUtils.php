@@ -131,10 +131,9 @@ function vtlib_RecreateUserPrivilegeFiles() {
  * Get list module names which are always active (cannot be disabled)
  */
 function vtlib_moduleAlwaysActive() {
-	$modules = array (
+	return array (
 		'CustomView', 'Settings', 'Users', 'Migration', 'Utilities', 'Import', 'com_vtiger_workflow', 'PickList',
 	);
-	return $modules;
 }
 
 /**

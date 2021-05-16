@@ -31,8 +31,7 @@ class crmtogo_WS_FilterModel {
 
 	public function query() {
 		$listquery = getListQuery($this->moduleName);
-		$query = $this->customView->getModifiedCvListQuery($this->filterid, $listquery, $this->moduleName);
-		return $query;
+		return $this->customView->getModifiedCvListQuery($this->filterid, $listquery, $this->moduleName);
 	}
 
 	public function queryParameters() {

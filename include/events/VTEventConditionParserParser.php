@@ -92,16 +92,14 @@ class VTEventConditionParserParser extends AntlrParser {
 						$this->state->failed=true;
 						return $result;
 					}
-					$nvae = new NoViableAltException('', 1, 1, $this->input);
-					throw $nvae;
+					throw new NoViableAltException('', 1, 1, $this->input);
 				}
 			} else {
 				if ($this->state->backtracking>0) {
 					$this->state->failed=true;
 					return $result;
 				}
-				$nvae = new NoViableAltException('', 1, 0, $this->input);
-				throw $nvae;
+				throw new NoViableAltException('', 1, 0, $this->input);
 			}
 			switch ($alt1) {
 				case 1:

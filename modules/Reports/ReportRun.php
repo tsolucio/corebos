@@ -2060,14 +2060,13 @@ class ReportRun extends CRMEntity {
 					$error_msg = $adb->database->ErrorMsg();
 				}
 				if (!$result && $error_msg!='') {
-					$resp = array(
+					return array(
 						'has_contents' => false,
 						'jsonheaders' => array(),
 						'i18nheaders' => array(),
 						'error' => true,
 						'error_message' => getTranslatedString('LBL_REPORT_GENERATION_FAILED', 'Reports') . ':' . $error_msg,
 					);
-					return $resp;
 				}
 			}
 			$fldcnt=$adb->num_fields($result);
@@ -2108,13 +2107,12 @@ class ReportRun extends CRMEntity {
 				}
 				$i18nheader[] = $i18nheaderLabel;
 			}
-			$resp = array(
+			return array(
 				'has_contents' => ($adb->num_rows($result) == 1),
 				'jsonheaders' => $jsonheader,
 				'i18nheaders' => $i18nheader,
 				'error' => false,
 			);
-			return $resp;
 		} elseif ($outputformat == 'JSON' || $outputformat == 'JSONPAGED') {
 			$sSQL = $this->sGetSQLforReport($this->reportid, $filtersql, ($outputformat == 'JSON' ? 'HTML' : 'HTMLPAGED'));
 			$sSQL = 'SELECT SQL_CALC_FOUND_ROWS'.substr($sSQL, 6);

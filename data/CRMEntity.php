@@ -1633,12 +1633,11 @@ class CRMEntity {
 			$sub_query = "SELECT $table_cols $from_clausesub $where_clause GROUP BY $table_cols HAVING COUNT(*)>1";
 		}
 
-		$query = $select_clause . $from_clause .
+		return $select_clause . $from_clause .
 			' LEFT JOIN vtiger_users_last_import ON vtiger_users_last_import.bean_id=' . $this->table_name .'.'.$this->table_index .
 			' INNER JOIN (' . $sub_query . ') AS temp ON '.get_on_clause($field_values, $ui_type_arr, $module) .
 			$where_clause .
 			" ORDER BY $table_cols,". $this->table_name .'.'.$this->table_index .' ASC';
-		return $query;
 	}
 
 	/**
@@ -1788,7 +1787,7 @@ class CRMEntity {
 	 */
 	public function create_import_query($module) {
 		global $current_user;
-		$query = 'SELECT '.$this->crmentityTable.".crmid,
+		return 'SELECT '.$this->crmentityTable.".crmid,
 				case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name, $this->table_name.*
 			FROM $this->table_name"
 			.($this->denormalized ? '' : "INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=$this->table_name.$this->table_index")
@@ -1798,7 +1797,6 @@ class CRMEntity {
 			WHERE vtiger_users_last_import.assigned_user_id='$current_user->id'
 			AND vtiger_users_last_import.bean_type='$module'
 			AND vtiger_users_last_import.deleted=0";
-		return $query;
 	}
 
 	/**

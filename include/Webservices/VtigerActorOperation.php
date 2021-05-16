@@ -86,8 +86,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		//Insert into group vtiger_table
 		$query = "insert into {$this->entityTableName}(".implode(',', array_keys($element)).') values('.generateQuestionMarks(array_keys($element)).')';
 		$result = null;
-		$transactionSuccessful = vtws_runQueryAsTransaction($query, array_values($element), $result);
-		return $transactionSuccessful;
+		return vtws_runQueryAsTransaction($query, array_values($element), $result);
 	}
 
 	public function create($elementType, $element) {
@@ -229,8 +228,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 	public function __delete($elemId) {
 		$result = null;
 		$query = 'delete from '.$this->entityTableName.' where '. $this->meta->getObectIndexColumn().'=?';
-		$transactionSuccessful = vtws_runQueryAsTransaction($query, array($elemId), $result);
-		return $transactionSuccessful;
+		return vtws_runQueryAsTransaction($query, array($elemId), $result);
 	}
 
 	public function delete($id) {

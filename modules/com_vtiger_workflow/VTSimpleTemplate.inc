@@ -617,8 +617,7 @@ class VTSimpleTemplate {
 				$parts[] = $data[$fieldname];
 			}
 		}
-		$result = implode(',', $parts);
-		return $result;
+		return implode(',', $parts);
 	}
 
 	protected function useValue($data, $fieldname) {
@@ -880,8 +879,7 @@ class VTSimpleTemplate {
 		$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($tplexpression)));
 		$expression = $parser->expression();
 		$exprEvaluater = new VTFieldExpressionEvaluater($expression);
-		$exprEvaluation = $exprEvaluater->evaluate($this->parent);
-		return $exprEvaluation;
+		return $exprEvaluater->evaluate($this->parent);
 	}
 }
 ?>

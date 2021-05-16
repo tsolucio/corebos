@@ -186,8 +186,7 @@ function getToolTip($text, $format = 'default') {
 		return $tip;
 	}
 	$smarty->assign('TEXT', $text);
-	$tip = $smarty->fetch("modules/Tooltip/$format.tpl");
-	return $tip;
+	return $smarty->fetch("modules/Tooltip/$format.tpl");
 }
 
 /**

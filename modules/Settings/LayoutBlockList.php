@@ -908,15 +908,13 @@ function addblock() {
 		$blklbltran = getTranslatedString($blklbl, $fldmodule);
 		if (strtolower($blklbltran) == strtolower($newblocklabel)) {
 			$flag = 1;
-			$duplicate='yes';
-			return $duplicate;
+			return 'yes';
 		}
 	}
 	$length = strlen($newblocklabel);
 	if ($length > 50) {
 		$flag = 1;
-		$duplicate='LENGTH_ERROR';
-		return $duplicate;
+		return 'LENGTH_ERROR';
 	}
 
 	if ($flag!=1) {

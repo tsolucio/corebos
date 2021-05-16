@@ -27,8 +27,7 @@ class MailManager_DraftController extends MailManager_Controller {
 	* @return Array of vtiger Email Fields
 	*/
 	public static function getSearchOptions() {
-		$options = array('subject'=>'SUBJECT', 'saved_toid'=>'TO','description'=>'BODY','bccmail'=>'BCC','ccmail'=>'CC');
-		return $options;
+		return array('subject'=>'SUBJECT', 'saved_toid'=>'TO', 'description'=>'BODY', 'bccmail'=>'BCC', 'ccmail'=>'CC');
 	}
 
 	/**

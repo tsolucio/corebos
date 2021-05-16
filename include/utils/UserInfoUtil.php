@@ -858,8 +858,7 @@ function isReadPermittedBySharing($module, $tabid, $actionid, $record_id) {
 
 	$sharingModuleList=getSharingModuleList();
 	if (! in_array($module, $sharingModuleList)) {
-		$sharePer='no';
-		return $sharePer;
+		return 'no';
 	}
 
 	$recordOwnerArr=getRecordOwnerId($record_id);
@@ -961,8 +960,7 @@ function isReadWritePermittedBySharing($module, $tabid, $actionid, $record_id) {
 
 	$sharingModuleList=getSharingModuleList();
 	if (! in_array($module, $sharingModuleList)) {
-		$sharePer='no';
-		return $sharePer;
+		return 'no';
 	}
 
 	$recordOwnerArr=getRecordOwnerId($record_id);

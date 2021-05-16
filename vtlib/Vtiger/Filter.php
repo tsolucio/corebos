@@ -136,8 +136,7 @@ class Vtiger_Filter {
 	public function __getColumnValue($fieldInstance) {
 		$tod = explode('~', $fieldInstance->typeofdata);
 		$displayinfo = $fieldInstance->getModuleName().'_'.str_replace(' ', '_', $fieldInstance->label).':'.$tod[0];
-		$cvcolvalue = "$fieldInstance->table:$fieldInstance->column:$fieldInstance->name:$displayinfo";
-		return $cvcolvalue;
+		return "$fieldInstance->table:$fieldInstance->column:$fieldInstance->name:$displayinfo";
 	}
 
 	/**

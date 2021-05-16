@@ -25,8 +25,7 @@ class CustomReportUtils {
 		if (!empty($groupby)) {
 			$showcharts = true;
 		}
-		$reportQuery = $reportnew->sGetSQLforReport($reportid, $filterlist, 'HTML', $showcharts);
-		return $reportQuery;
+		return $reportnew->sGetSQLforReport($reportid, $filterlist, 'HTML', $showcharts);
 	}
 
 	public static function getReportChart($reportid, $chartType) {
@@ -59,11 +58,7 @@ class CustomReportUtils {
 			return false;
 		}
 		list($tablename, $colname, $module_field, $fieldname, $typeOfData) = explode(':', $reportColDetails);
-		if ($typeOfData == 'D') {
-			return true;
-		} else {
-			return false;
-		}
+		return ($typeOfData == 'D');
 	}
 
 	public static function getAdvanceSearchCondition($fieldDetails, $criteria, $fieldvalue) {
@@ -75,8 +70,7 @@ class CustomReportUtils {
 		$advft_criteria_groups = array('1' => array('groupcondition' => null));
 		$advft_criteria = array();
 		if (empty($fieldvalue)) {
-			$condition = 'query=true&searchtype=advance&advft_criteria=' . json_encode($advft_criteria) . '&advft_criteria_groups=' . json_encode($advft_criteria_groups);
-			return $condition;
+			return 'query=true&searchtype=advance&advft_criteria=' . json_encode($advft_criteria) . '&advft_criteria_groups=' . json_encode($advft_criteria_groups);
 		}
 		if (strtolower($criteria) == 'year') {
 			$firstDate = DateTimeField::convertToUserFormat($year);

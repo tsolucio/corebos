@@ -252,12 +252,11 @@ class Vtiger_InventoryPDFController {
 			$additionalCompanyInfo[]= "\n".getTranslatedString('Website: ', $this->moduleName). $resultrow['website'];
 		}
 
-		$modelColumnLeft = array(
+		return array(
 			'logo' => $resultrow['applogo'],
 			'summary' => decode_html($resultrow['companyname']),
 			'content' => $this->joinValues($addressValues, ' '). $this->joinValues($additionalCompanyInfo, ' ')
 		);
-		return $modelColumnLeft;
 	}
 
 	public function buildHeaderModelColumnCenter() {
@@ -265,11 +264,10 @@ class Vtiger_InventoryPDFController {
 		$contactName = $this->resolveReferenceLabel($this->focusColumnValue('contact_id'), 'Contacts');
 		$customerNameLabel = getTranslatedString('Customer Name', $this->moduleName);
 		$contactNameLabel = getTranslatedString('Contact Name', $this->moduleName);
-		$modelColumnCenter = array(
+		return array(
 			$customerNameLabel => $customerName,
 			$contactNameLabel  => $contactName,
 		);
-		return $modelColumnCenter;
 	}
 
 	public function buildHeaderModelColumnRight() {
@@ -277,7 +275,7 @@ class Vtiger_InventoryPDFController {
 		$validDateLabel = getTranslatedString('Valid Date', $this->moduleName);
 		$billingAddressLabel = getTranslatedString('Billing Address', $this->moduleName);
 		$shippingAddressLabel = getTranslatedString('Shipping Address', $this->moduleName);
-		$modelColumnRight = array(
+		return array(
 			'dates' => array(
 				$issueDateLabel => $this->formatDate(date('Y-m-d')),
 				$validDateLabel => $this->formatDate($this->focusColumnValue('validtill')),
@@ -285,7 +283,6 @@ class Vtiger_InventoryPDFController {
 			$billingAddressLabel  => $this->buildHeaderBillingAddress(),
 			$shippingAddressLabel => $this->buildHeaderShippingAddress()
 		);
-		return $modelColumnRight;
 	}
 
 	public function buildFooterModel() {

@@ -2780,15 +2780,14 @@ function getrecurringObjValue() {
 	}
 }
 
-/** 	Function used to get the translated string to the input string
+/** Function used to get the translated string to the input string
  * 	@param string $str - input string which we want to translate
  * 	@return string $str - translated string, if the translated string is available then the translated string other wise original string will be returned
  */
 function getTranslatedString($str, $module = '') {
 	global $app_strings, $mod_strings, $current_language;
 	$temp_mod_strings = ($module != '' ) ? return_module_language($current_language, $module) : $mod_strings;
-	$trans_str = (!empty($temp_mod_strings[$str]) ? $temp_mod_strings[$str] : (!empty($app_strings[$str]) ? $app_strings[$str] : cbtranslation::get($str, $module)));
-	return $trans_str;
+	return (!empty($temp_mod_strings[$str]) ? $temp_mod_strings[$str] : (!empty($app_strings[$str]) ? $app_strings[$str] : cbtranslation::get($str, $module)));
 }
 
 /**
@@ -3470,8 +3469,7 @@ function getEntityField($module, $fqn = false) {
 	} else {
 		$tablename  = $fieldsname = $entityidfield = '';
 	}
-	$data = array('tablename' => $tablename, 'fieldname' => $fieldsname, 'entityid' => $entityidfield);
-	return $data;
+	return array('tablename' => $tablename, 'fieldname' => $fieldsname, 'entityid' => $entityidfield);
 }
 
 /**

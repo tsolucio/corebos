@@ -96,8 +96,7 @@ class VTWorkflowEntity {
 			}
 			$entityCache = new VTEntityCache($current_user);
 			$entityCache->setCache($this->getId(), $this);
-			$info = $ct->render($entityCache, $this->getId());
-			return $info;
+			return $ct->render($entityCache, $this->getId());
 		}
 		return (isset($this->data[$fieldName]) ? $this->data[$fieldName] : null);
 	}

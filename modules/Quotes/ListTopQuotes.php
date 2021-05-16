@@ -119,8 +119,7 @@ function getTopQuotes($maxval, $calCnt) {
 	$header = $controller->getListViewHeader($focus, $currentModule, $url_string, $sorder, $order_by, true);
 	$entries = $controller->getListViewEntries($focus, $currentModule, $list_result, $navigation_array, true);
 
-	$values=array('ModuleName'=>'Quotes','Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
-	return $values;
+	return array('ModuleName'=>'Quotes', 'Title'=>$title, 'Header'=>$header, 'Entries'=>$entries, 'search_qry'=>$search_qry);
 }
 
 function getTopQuotesSearch($output) {

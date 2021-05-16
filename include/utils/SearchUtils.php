@@ -285,8 +285,7 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 		$search_field_first = $search_field;
 		if ($module=='HelpDesk') {
 			if ($search_field == 'contactid') {
-				$where = "(vtiger_contactdetails.contact_no like '". formatForSqlLike($search_string) ."')";
-				return $where;
+				return "(vtiger_contactdetails.contact_no like '". formatForSqlLike($search_string) ."')";
 			} elseif ($search_field == 'account_id') {
 				$search_field = 'parent_id';
 			}
@@ -1523,7 +1522,7 @@ function getCriteriaJS($formName) {
 		$cFqEndDateTime = new DateTimeField($cFq1.' '. date('H:i:s'));
 	}
 
-	$sjsStr = '<script type="text/javaScript">
+	return '<script type="text/javaScript">
 		function showDateRange( type ) {
 			if (type!="custom") {
 				document.'.$formName.'.startdate.readOnly=true
@@ -1620,7 +1619,6 @@ function getCriteriaJS($formName) {
 			}
 		}
 	</script>';
-	return $sjsStr;
 }
 
 function getDateforStdFilterBytype($type) {

@@ -84,8 +84,7 @@ function getKeyMetrics($maxval, $calCnt) {
 			$entries[$metriclist['id']]=$value;
 		}
 	}
-	$values=array('Title'=>$title, 'Header'=>$header, 'Entries'=>$entries, 'search_qry'=>'');
-	return $values;
+	return array('Title'=>$title, 'Header'=>$header, 'Entries'=>$entries, 'search_qry'=>'');
 }
 
 /** to get the details of a customview Entries
