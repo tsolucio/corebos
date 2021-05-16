@@ -1580,11 +1580,7 @@ function is_date($field, $module) {
 	$res = $adb->pquery($SQL, array($field,$tabid));
 	$uitype = $adb->query_result($res, 0, 'uitype');
 
-	if (in_array($uitype, $ui_date)) {
-		return true;
-	} else {
-		return false;
-	}
+	return in_array($uitype, $ui_date);
 }
 
 function is_picklist($field, $module) {

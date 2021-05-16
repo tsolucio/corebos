@@ -492,11 +492,7 @@ class VTJsonCondition {
 					while ($child = $adb->fetch_array($r)) {
 						$children[] = $child[$mod->basetableid];
 					}
-					if ($value = $adb->num_rows($r) && $children[$value - 1] == $child_id) {
-						return true;
-					} else {
-						return false;
-					}
+					return ($value = $adb->num_rows($r) && $children[$value - 1] == $child_id);
 				} else {
 					return false;
 				}

@@ -51,15 +51,8 @@ class ConvertLeadUI {
 
 	public function isActive($field, $mod) {
 		global $adb;
-		$tabid = getTabid($mod);
-		$query = 'select * from vtiger_field where fieldname = ? and tabid = ? and presence in (0,2)';
-		$res = $adb->pquery($query, array($field, $tabid));
-		$rows = $adb->num_rows($res);
-		if ($rows > 0) {
-			return true;
-		} else {
-			return false;
-		}
+		$res = $adb->pquery('select 1 from vtiger_field where fieldname=? and tabid=? and presence in (0,2)', array($field, getTabid($mod)));
+		return ($adb->num_rows($res) > 0);
 	}
 
 	public function isMandatory($module, $fieldname) {

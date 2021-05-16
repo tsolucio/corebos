@@ -304,23 +304,14 @@ class Users extends CRMEntity {
 			case 'LDAP':
 				$log->debug('Using LDAP authentication');
 				require_once 'modules/Users/authTypes/LDAP.php';
-				$result = ldapAuthenticate($usr_name, $user_password);
-				if ($result == null) {
-					return false;
-				} else {
-					return true;
-				}
+				return (ldapAuthenticate($usr_name, $user_password) != null);
 				break;
 
 			case 'AD':
 				$log->debug('Using Active Directory authentication');
 				require_once 'modules/Users/authTypes/adLDAP.php';
 				$adldap = new adLDAP();
-				if ($adldap->authenticate($usr_name, $user_password)) {
-					return true;
-				} else {
-					return false;
-				}
+				return $adldap->authenticate($usr_name, $user_password);
 				break;
 
 			default:
@@ -340,12 +331,7 @@ class Users extends CRMEntity {
 					$query.= ' AND COALESCE(failed_login_attempts,0)<?';
 					$params[] = $maxFailedLoginAttempts;
 				}
-				$result = $adb->requirePsSingleResult($query, $params, false);
-				if (empty($result)) {
-					return false;
-				} else {
-					return true;
-				}
+				return $adb->requirePsSingleResult($query, $params, false);
 				break;
 		}
 		return false;

@@ -139,16 +139,11 @@ class Homestuff {
 	public function addCustomWidgetFilter() {
 		global $adb;
 		$stuffid=$adb->getUniqueId('vtiger_homestuff');
-		$result=$adb->pquery('insert into vtiger_seq_temp values(?)', array($stuffid));
+		$adb->pquery('insert into vtiger_seq_temp values(?)', array($stuffid));
 		$rs = $adb->pquery('select min(value) from vtiger_seq_temp', array());
 		$id=$adb->query_result($rs, 0, 0);
 		$fieldarray=explode(',', $this->fieldvalue);
-		$result=$adb->pquery('insert into vtiger_home_cw_fields values(? ,?,?,?)', array($id, $this->selFiltername, $this->selAggregatename, $fieldarray[0]));
-		if (!$result) {
-			return false;
-		} else {
-			return true;
-		}
+		return $adb->pquery('insert into vtiger_home_cw_fields values(? ,?,?,?)', array($id, $this->selFiltername, $this->selAggregatename, $fieldarray[0]));
 	}
 
 	/**

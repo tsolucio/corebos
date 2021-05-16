@@ -497,11 +497,7 @@ class Validations extends processcbMap {
 				return ($adb->query_result($usrrs, 0, 'status')!='Active');
 			} else {
 				$grprs = $adb->pquery('select 1 from vtiger_groups where groupid=?', array($screen_values['assigned_user_id']));
-				if ($grprs && $adb->num_rows($grprs)==1) {
-					return false;
-				} else {
-					return true;
-				}
+				return !($grprs && $adb->num_rows($grprs)==1);
 			}
 		} elseif ($screen_values['module']=='Users') {
 			return false;
