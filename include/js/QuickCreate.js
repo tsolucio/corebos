@@ -44,10 +44,9 @@ function qcintValidate(fldName, fldLabel) {
 		alert(alert_arr.INVALID+fldLabel);
 		window.document.QcEditView[fldName].focus();
 		return false;
-	} else if ((fldName != 'employees' || fldName != 'noofemployees') && (val < -2147483648 || val > 2147483647)) {
-		alert(fldLabel +alert_arr.OUT_OF_RANGE);
-		return false;
-	} else if ((fldName == 'employees' || fldName == 'noofemployees') && (val < 0 || val > 2147483647)) {
+	} else if ((fldName != 'employees' && fldName != 'noofemployees' && (val < -2147483648 || val > 2147483647))
+		|| ((fldName == 'employees' || fldName == 'noofemployees') && (val < 0 || val > 2147483647))
+	) {
 		alert(fldLabel +alert_arr.OUT_OF_RANGE);
 		return false;
 	} else {
