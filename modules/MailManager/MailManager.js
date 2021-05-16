@@ -624,7 +624,7 @@ if (typeof(MailManager) == 'undefined') {
 				MailManager.progress_hide();
 				var response = MailManager.removeHidElement(transport);
 				jQuery('#_relationpopupdiv_').get(0).innerHTML = (response);
-				vtlib_executeJavascriptInElement(document.getElementById('_relationpopupdiv_'))
+				vtlib_executeJavascriptInElement(document.getElementById('_relationpopupdiv_'));
 				// Place the popup at center
 				MailManager.placeAtCenter(jQuery('#_relationpopupdiv_'));
 				jQuery('#_relationpopupdiv_').css('visibility', '').show();

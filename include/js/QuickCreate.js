@@ -74,7 +74,7 @@ function QCreate(qcoptions) {
 			document.getElementById('qcform').style.display='inline';
 			document.getElementById('qcform').innerHTML = response;
 			jQuery('#qcform').draggable();
-			vtlib_executeJavascriptInElement(document.getElementById('qcform'))
+			vtlib_executeJavascriptInElement(document.getElementById('qcform'));
 			posLay(qcoptions, 'qcform');
 		});
 	} else {

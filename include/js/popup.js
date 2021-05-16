@@ -277,7 +277,7 @@ function QCreatePop(module, urlpop) {
 			document.getElementById('status').style.display='none';
 			document.getElementById('qcformpop').style.display='inline';
 			document.getElementById('qcformpop').innerHTML = response;
-			vtlib_executeJavascriptInElement(document.getElementById('qcformpop'))
+			vtlib_executeJavascriptInElement(document.getElementById('qcformpop'));
 		});
 	} else {
 		hide('qcformpop');
