@@ -19,7 +19,7 @@ if ($_REQUEST['export_record']) {
 	} elseif ($_REQUEST['search_type'] == 'includesearch' && $_REQUEST['export_data'] == 'currentpage' && $_SESSION['export_where'] == '') {
 		echo 'NOT_SEARCH_WITHSEARCH_CURRENTPAGE';
 		exit();
-	} elseif (($_REQUEST['search_type'] == 'includesearch' && $_REQUEST['export_data'] == 'selecteddata') && $idstring == '') {
+	} elseif (($_REQUEST['search_type']=='includesearch' || $_REQUEST['search_type']=='withoutsearch') && $_REQUEST['export_data'] == 'selecteddata' && $idstring == '') {
 		echo 'NO_DATA_SELECTED';
 		exit();
 	} elseif ($_REQUEST['search_type'] == 'withoutsearch' && $_REQUEST['export_data'] == 'all' && !empty($_SESSION['export_where'])) {
@@ -27,9 +27,6 @@ if ($_REQUEST['export_record']) {
 		exit();
 	} elseif ($_REQUEST['search_type'] == 'withoutsearch' && $_REQUEST['export_data'] == 'currentpage' && !empty($_SESSION['export_where'])) {
 		echo 'SEARCH_WITHOUTSEARCH_CURRENTPAGE';
-		exit();
-	} elseif (($_REQUEST['search_type'] == 'withoutsearch' && $_REQUEST['export_data'] == 'selecteddata') && $idstring == '') {
-		echo 'NO_DATA_SELECTED';
 		exit();
 	}
 }

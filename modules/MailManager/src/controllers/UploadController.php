@@ -174,9 +174,7 @@ class MailManager_UploadFileForm extends MailManager_UploadFile {
 	 */
 	public function save($path) {
 		global $root_directory;
-		if (is_file($root_directory.'/'.$path)) {
-			return true;
-		} elseif (move_uploaded_file($_FILES['qqfile']['tmp_name'], $path)) {
+		if (is_file($root_directory.'/'.$path) || move_uploaded_file($_FILES['qqfile']['tmp_name'], $path)) {
 			return true;
 		}
 		return false;

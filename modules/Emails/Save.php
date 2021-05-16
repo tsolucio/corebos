@@ -55,7 +55,7 @@ if (isset($_REQUEST['filename_hidden'])) {
 $errorCode = isset($_FILES['filename']) ? $_FILES['filename']['error'] : 0;
 $errormessage = '';
 if ($file_name != '' && $_FILES['filename']['size'] == 0) {
-	if ($errorCode == 4 || $errorCode == 0) {
+	if ($errorCode == 4 || $errorCode == 0 || $errorCode == 3) {
 		if ($_FILES['filename']['size'] == 0) {
 			$errormessage = '<b><span style="color:red;">'.$mod_strings['LBL_PLEASE_ATTACH'].'</span></b><br>';
 		}
@@ -64,10 +64,6 @@ if ($file_name != '' && $_FILES['filename']['size'] == 0) {
 		$errormessage = '<b><span style="color:red;">'.$mod_strings['LBL_EXCEED_MAX'].$upload_maxsize.$mod_strings['LBL_BYTES'].' </span></b><br>';
 	} elseif ($errorCode == 6) {
 		$errormessage = '<b>'.$mod_strings['LBL_KINDLY_UPLOAD'].'</b> <br>';
-	} elseif ($errorCode == 3) {
-		if ($_FILES['filename']['size'] == 0) {
-			$errormessage = '<b><span style="color:red;">'.$mod_strings['LBL_PLEASE_ATTACH'].'</span></b><br>';
-		}
 	}
 	if ($errormessage != '') {
 		$ret_error = 1;

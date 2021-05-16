@@ -234,18 +234,17 @@ function selFieldType(id, scrollLayer, bool, blockid) {
 
 function srchFieldType(ev) {
 	var keyCode='';
+	var currElement;
 	var doSearch = false;
 	if (browser_ie) {
 		keyCode=window.fieldLayer.event.keyCode;
-		var currElement=window.fieldLayer.event.srcElement;
+		currElement=window.fieldLayer.event.srcElement;
 		doSearch = (currElement.id.indexOf('field')>=0);
 		window.fieldLayer.event.cancelBubble=true;
 	} else if (browser_nn4 || browser_nn6) {
 		keyCode=ev.which;
-		var currElement=ev.target;
-		if (currElement.type) {
-			doSearch=false;
-		} else {
+		currElement=ev.target;
+		if (!currElement.type) {
 			doSearch=true;
 		}
 	}
