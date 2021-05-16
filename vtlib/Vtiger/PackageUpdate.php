@@ -106,7 +106,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 					self::log('Module name mismatch!');
 					return false;
 				}
-				$module = $this->initUpdate($moduleInstance, $zipfile, $overwrite);
+				$this->initUpdate($moduleInstance, $zipfile, $overwrite);
 				// Call module update function
 				$this->update_Module($moduleInstance);
 			}

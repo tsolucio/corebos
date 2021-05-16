@@ -376,9 +376,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 			array($attachid, $binFile, $binFile, $mimetype, $dirname)
 		);
 
-		$attachInfo = array('attachid'=>$attachid, 'path'=>$dirname, 'name'=>$binFile, 'type'=>$mimetype, 'size'=>filesize($saveasfile));
-
-		return $attachInfo;
+		return array('attachid'=>$attachid, 'path'=>$dirname, 'name'=>$binFile, 'type'=>$mimetype, 'size'=>filesize($saveasfile));
 	}
 
 	/**

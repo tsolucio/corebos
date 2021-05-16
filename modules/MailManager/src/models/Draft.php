@@ -157,8 +157,6 @@ class MailManager_Model_DraftEmail {
 			return false;
 		}
 
-		$email = CRMEntity::getInstance('Emails');
-
 		$to_string = rtrim($request->get('to'), ',');
 		$cc_string = rtrim($request->get('cc'), ',');
 		$bcc_string= rtrim($request->get('bcc'), ',');

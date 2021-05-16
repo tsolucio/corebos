@@ -377,7 +377,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 					}
 				}
 			} else {
-				$module = $this->initImport($zipfile, $overwrite);
+				$this->initImport($zipfile, $overwrite);
 				// Call module import function
 				$this->import_Module();
 			}

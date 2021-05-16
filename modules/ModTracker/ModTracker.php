@@ -227,11 +227,7 @@ class ModTracker {
 	 * @param Integer $tabid
 	 */
 	public static function checkModuleInModTrackerCache($tabid) {
-		if (isset(self::$__cache_modtracker[$tabid])) {
-			return true;
-		} else {
-			return false;
-		}
+		return isset(self::$__cache_modtracker[$tabid]);
 	}
 
 	/**
