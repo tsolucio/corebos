@@ -114,7 +114,7 @@ class VTUpdateFieldsTask extends VTTask {
 			$_REQUEST['ajxaction'] = 'Workflow';
 			$logbg->debug('field values presave', $focus->column_fields);
 			$focus->saveentity($moduleName);
-			if (count($relmodule)>0 && $relId!='' && $relId!=0) {
+			if (!empty($relmodule) && !empty($relId)) {
 				foreach ($relmodule as $mod) {
 					$focusrel[$mod]->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel[$mod]->column_fields, $handlerMetarel[$mod]);
 					if ($this->launchrelwf) {

@@ -561,7 +561,7 @@ class VTSimpleTemplate {
 				$ulist[] = $user_result_row['email1'];
 			}
 		}
-		if (count($ulist)>0) {
+		if (!empty($ulist)) {
 			return implode(',', $ulist);
 		}
 		return '';
@@ -588,7 +588,7 @@ class VTSimpleTemplate {
 				$ulist[] = $user_result_row['email'];
 			}
 		}
-		if (count($ulist)>0) {
+		if (!empty($ulist)) {
 			return implode(',', $ulist);
 		}
 		return '';

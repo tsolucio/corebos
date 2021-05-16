@@ -106,7 +106,7 @@ function cbwsExecuteWorkflowWithContext($workflow, $entities, $context, $user) {
 			$errortasks[$crmid] = "Workflow and record ($crmid) modules do not match";
 		}
 	}
-	if (count($errortasks)>0) {
+	if (!empty($errortasks)) {
 		throw new WebServiceException(WebServiceErrorCode::$WORKFLOW_TASK_FAILED, json_encode($errortasks));
 	}
 	return true;

@@ -53,7 +53,7 @@ if (isset($argv) && count($argv)==2) {
 	}
 }
 $adb->pquery("ALTER TABLE vtiger_cbupdater ADD COLUMN appcs varchar(3) DEFAULT '1'", array());
-if (count($cbupdate_files)>0) {
+if (!empty($cbupdate_files)) {
 	libxml_use_internal_errors(true);
 	foreach ($cbupdate_files as $cbupdate_file) {
 		$cbupdate_file = realpath($cbupdate_file);

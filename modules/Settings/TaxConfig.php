@@ -94,10 +94,10 @@ if ($getlist) {
 $smarty->assign('TAX_COUNT', count($tax_details));
 $smarty->assign('SH_TAX_COUNT', count($sh_tax_details));
 
-if (count($tax_details) == 0) {
+if (empty($tax_details)) {
 	$smarty->assign('TAX_COUNT', 0);
 }
-if (count($sh_tax_details) == 0) {
+if (empty($sh_tax_details)) {
 	$smarty->assign('SH_TAX_COUNT', 0);
 }
 

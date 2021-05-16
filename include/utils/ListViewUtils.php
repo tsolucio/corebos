@@ -868,7 +868,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 			$list_block[$entity_id] = $list_header;
 		}
 	}
-	if (count($totals) > 0 && GlobalVariable::getVariable('Application_ListView_Sum_Currency', 1, $module)) {
+	if (!empty($totals) && GlobalVariable::getVariable('Application_ListView_Sum_Currency', 1, $module)) {
 		$trow = array();
 		foreach ($focus->list_fields as $name => $tableinfo) {
 			$field_name = $focus->list_fields_name[$name];
@@ -1373,7 +1373,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$roleids = $roleid;
 				}
 
-				if (count($roleids) > 0) {
+				if (!empty($roleids)) {
 					$pick_query = "select distinct $fieldname
 						from vtiger_$fieldname
 						inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$fieldname.picklist_valueid

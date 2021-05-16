@@ -25,7 +25,7 @@ if ($result && $adb->num_rows($result) > 0) {
 		$qid = $adb->query_result($result, $x, 'cbquestionid');
 		$sql = cbQuestion::getSQL($qid);
 		$crmentity_table = !empty($crmentity_table) ? $crmentity_table : 'vtiger_crmentity';
-		if (count($relatedModulesArr) > 0) {
+		if (!empty($relatedModulesArr)) {
 			for ($z = 0; $z < count($relatedModulesArr); $z++) {
 				$setype = $relatedModulesArr[$z];
 				$crmEntityTable = CRMEntity::getcrmEntityTableAlias($setype);
@@ -42,7 +42,7 @@ if ($result && $adb->num_rows($result) > 0) {
 					$rel_records = getRelatedRecords($crmid, $setype, $qmodule, $queryParameters, $current_user);
 					$rel_recordsArr = $rel_records['records'];
 					$rec_ids = array();
-					if (count($rel_recordsArr) > 0) {
+					if (!empty($rel_recordsArr)) {
 						for ($y = 0; $y < count($rel_recordsArr); $y++) {
 							$rec_id = $rel_recordsArr[$y][0];
 							array_push($rec_ids, $rec_id);

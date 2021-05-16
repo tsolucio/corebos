@@ -109,7 +109,7 @@ function get_its_mini_calendar(&$cal) {
 			}
 
 			//To differentiate day having events from other days
-			if (count($acts)>0 && (in_array($cal['slice']->start_time->get_formatted_date(), $events))) {
+			if (!empty($acts) && (in_array($cal['slice']->start_time->get_formatted_date(), $events))) {
 				$event_class = 'class="eventDay"';
 			} else {
 				$event_class = '';
@@ -657,7 +657,7 @@ function getModuleCalendarFields($module) {
 		// it isn't registered > we look for custom fields
 		$tid = getTabid($module);
 		$dtflds = getDateFieldsOfModule($tid);
-		if (count($dtflds)>0) {
+		if (!empty($dtflds)) {
 			$tmflds = getTimeFieldsOfModule($tid);
 			$efields = getEntityFieldNames($module);
 			$Module_StartEnd_Fields = array(

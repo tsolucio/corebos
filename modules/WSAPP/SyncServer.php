@@ -350,7 +350,7 @@ class SyncServer {
 			$queueRecordIds[] = $record['id'];
 			$queueRecordDetails[$record['id']] = $this->convertToQueueRecordFormat($record, $this->delete);
 		}
-		if (count($queueRecordIds) > 0) {
+		if (!empty($queueRecordIds)) {
 			$syncServerDetails = $this->idmap_get_clientmap($appid, $queueRecordIds);
 			foreach ($queueRecordIds as $serverId) {
 				$syncServerId = $syncServerDetails[$serverId]['id'];
@@ -467,7 +467,7 @@ class SyncServer {
 				}
 			}
 		}
-		if (count($deleteQueueSyncServerIds)>0) {
+		if (!empty($deleteQueueSyncServerIds)) {
 			$this->deleteQueueRecords($deleteQueueSyncServerIds);
 		}
 	}

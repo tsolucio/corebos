@@ -189,7 +189,7 @@ function getAllTaxes($available = 'all', $sh = '', $mode = '', $id = '') {
 	$log->debug("> getAllTaxes $available,$sh,$mode,$id");
 	$taxtypes = array();
 	list($void1,$void2,$void3,$void4,$taxtypes) = cbEventHandler::do_filter('corebos.filter.TaxCalculation.getAllTaxes', array($available,$sh,$mode,$id, array()));
-	if (count($taxtypes)==0) {
+	if (empty($taxtypes)) {
 		if ($sh != '' && $sh == 'sh') {
 			$tablename = 'vtiger_shippingtaxinfo';
 			$value_table='vtiger_inventoryshippingrel';
@@ -219,7 +219,7 @@ function getAllTaxes($available = 'all', $sh = '', $mode = '', $id = '') {
 			}
 			//We are selecting taxes using that taxids. So It will get the tax even if the tax is disabled.
 			$where_ids='';
-			if (count($result_ids) > 0) {
+			if (!empty($result_ids)) {
 				$insert_str = str_repeat('?,', count($result_ids)-1);
 				$insert_str .= '?';
 				$where_ids="taxid in ($insert_str) or";
@@ -272,7 +272,7 @@ function getTaxDetailsForProduct($productid, $available = 'all', $acvid = 0) {
 			'corebos.filter.TaxCalculation.getTaxDetailsForProduct',
 			array($productid, $available, $acvid, array())
 		);
-		if (count($tax_details)==0) {
+		if (empty($tax_details)) {
 		//where condition added to avoid to retrieve the non available taxes
 			$where = '';
 			if ($available != 'all' && $available == 'available') {

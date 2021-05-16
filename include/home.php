@@ -394,7 +394,7 @@ class Homestuff {
 		$header[]=getTranslatedString('LBL_HOME_VALUE');
 		$return_value = array('ModuleName'=>'Home', 'cvid'=>0, 'Header'=>$header, 'Entries'=>$list);
 
-		if (count($header)!=0) {
+		if (!empty($list)) {
 			 return $return_value;
 		} else {
 			echo getTranslatedString('LBL_FIELDINFILTERNOTFOUND');
@@ -934,7 +934,7 @@ function getGroupTaskLists($maxval) {
 		}
 
 		$values=array('Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>'');
-		if (count($entries)>0) {
+		if (!empty($entries)) {
 			return $values;
 		}
 	}

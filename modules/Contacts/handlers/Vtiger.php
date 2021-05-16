@@ -21,7 +21,7 @@ class Google_Vtiger_Handler extends vtigerCRMHandler {
 		$updatedRecords = $recordDetails['updated'];
 		$deletedRecords = $recordDetails['deleted'];
 
-		if (count($createdRecords) > 0) {
+		if (!empty($createdRecords)) {
 			$createdRecords = $this->translateReferenceFieldNamesToIds($createdRecords, $user);
 			$createdRecords = $this->fillNonExistingMandatoryPicklistValues($createdRecords);
 			$createdRecords = $this->fillMandatoryFields($createdRecords, $user);
@@ -35,7 +35,7 @@ class Google_Vtiger_Handler extends vtigerCRMHandler {
 			}
 		}
 
-		if (count($updatedRecords) > 0) {
+		if (!empty($updatedRecords)) {
 			$updatedRecords = $this->translateReferenceFieldNamesToIds($updatedRecords, $user);
 		}
 

@@ -442,7 +442,7 @@ class CustomView extends CRMEntity {
 						unset($columnlist[$col]);
 					}
 				}
-				if (count($columnlist)>0) {
+				if (!empty($columnlist)) {
 					$ret_module_list[$mod][$key] = $columnlist;
 				}
 			}

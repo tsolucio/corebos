@@ -53,7 +53,7 @@ while ($row = $adb->fetch_array($result)) {
 	$deleted_id[] = $row['crmid'];
 }
 
-if (count($deleted_id) > 0) {
+if (!empty($deleted_id)) {
 	$update_query = "update vtiger_contactdetails set accountid = 0 where contactid in (". generateQuestionMarks($deleted_id) .")";
 	$result = $adb->pquery($update_query, array($deleted_id));
 }
@@ -146,7 +146,7 @@ $labels_length=array_reverse($labels_length);
 $csvheader = implode(',', $field_label);
 //<<<<<<<<<<<<<<<<End>>>>>>>>>>>>>>>>>>>>>>>>
 
-if (count($querycolumns) > 0) {
+if (!empty($querycolumns)) {
 	$selectcolumns = implode(',', $querycolumns);
 	$crmEntityTable1 = CRMEntity::getcrmEntityTableAlias('Accounts');
 	$crmEntityTable2 = CRMEntity::getcrmEntityTableAlias('Contacts', true);

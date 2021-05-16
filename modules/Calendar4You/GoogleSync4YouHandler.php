@@ -60,7 +60,7 @@ class GoogleSync4YouHandler extends VTEventHandler {
 					}
 				}
 			}
-			if (count($InGCalendars) > 0) {
+			if (!empty($InGCalendars)) {
 				foreach ($InGCalendars as $event => $Events) {
 					foreach ($Events as $userid => $eventURL) {
 						$this->DeleteGCalendarEvent($id, $userid, $eventURL, $event);

@@ -174,7 +174,7 @@ function getByModule_ColumnsList($mod, $columnslist, $selected = '') {
 						$check_dup[] = $module.$fieldlabel;
 					}
 				}
-				if (count($advfilter)>0) {
+				if (!empty($advfilter)) {
 					$advfilter_out[$modname.' - '.$label]= $advfilter;
 				}
 			}

@@ -62,10 +62,10 @@ class com_vtiger_workflow extends CRMEntity {
 						default:
 					}
 				}
-				if (count($conds)>0) {
-					$conds = 'where '.$adb->convert2Sql(implode(' and ', $conds), $params);
-				} else {
+				if (empty($conds)) {
 					$conds = '';
+				} else {
+					$conds = 'where '.$adb->convert2Sql(implode(' and ', $conds), $params);
 				}
 			}
 			return 'select * from com_vtiger_workflows '.$conds;

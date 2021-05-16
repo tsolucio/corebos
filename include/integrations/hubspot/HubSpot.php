@@ -714,7 +714,7 @@ class corebos_hubspot {
 			$cto['module'] = $module;
 			$cto['record_id'] = 0;
 			$wsinfo = $this->getPropertiesFromHubSpot($cto);
-			if (count($wsinfo)>0) {
+			if (!empty($wsinfo)) {
 				$wsinfo = DataTransform::sanitizeReferences($wsinfo, $meta);
 				$wsinfo['hubspotcreated'] = 1;
 				$wsinfo['hubspotsyncwith'] = 1;
@@ -748,7 +748,7 @@ class corebos_hubspot {
 				$cto['module'] = $module;
 				$cto['record_id'] = $crmid;
 				$wsinfo = $this->getPropertiesFromHubSpot($cto);
-				if (count($wsinfo)>0) {
+				if (!empty($wsinfo)) {
 					$wsinfo = DataTransform::sanitizeReferences($wsinfo, $meta);
 					$wsinfo['id'] = $wsid.$crmid;
 					try {
@@ -775,7 +775,7 @@ class corebos_hubspot {
 			$cmp['module'] = 'Accounts';
 			$cmp['record_id'] = 0;
 			$wsinfo = $this->getPropertiesFromHubSpot($cmp);
-			if (count($wsinfo)>0) {
+			if (!empty($wsinfo)) {
 				$wsinfo = DataTransform::sanitizeReferences($wsinfo, $this->accountMeta);
 				$wsinfo['hubspotcreated'] = 1;
 				$wsinfo['hubspotsyncwith'] = 1;
@@ -819,7 +819,7 @@ class corebos_hubspot {
 				$cmp['module'] = 'Accounts';
 				$cmp['record_id'] = $crmid;
 				$wsinfo = $this->getPropertiesFromHubSpot($cmp);
-				if (count($wsinfo)>0) {
+				if (!empty($wsinfo)) {
 					$wsinfo = DataTransform::sanitizeReferences($wsinfo, $this->accountMeta);
 					$wsinfo['id'] = $this->AccountWSID.$crmid;
 					$wsinfo['assigned_user_id'] = $this->UserWSID.$wsinfo['assigned_user_id'];
@@ -885,7 +885,7 @@ class corebos_hubspot {
 					$this->logMessage('createDeal', 'No related account or contact found', $dal, 0);
 				}
 			}
-			if (count($wsinfo)>0) {
+			if (!empty($wsinfo)) {
 				$wsinfo = DataTransform::sanitizeReferences($wsinfo, $this->potentialMeta);
 				$wsinfo['hubspotcreated'] = 1;
 				$wsinfo['hubspotsyncwith'] = 1;
@@ -933,7 +933,7 @@ class corebos_hubspot {
 				$dal['module'] = 'Potentials';
 				$dal['record_id'] = $crmid;
 				$wsinfo = $this->getPropertiesFromHubSpot($dal);
-				if (count($wsinfo)>0) {
+				if (!empty($wsinfo)) {
 					$wsinfo = DataTransform::sanitizeReferences($wsinfo, $this->potentialMeta);
 					$wsinfo['id'] = $this->PotentialWSID.$crmid;
 					try {

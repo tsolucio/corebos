@@ -166,7 +166,7 @@ function getNonEditablePicklistValues($fieldName, $lang, $adb) {
 			$values[]=$non_val;
 		}
 	}
-	if (count($values)==0) {
+	if (empty($values)) {
 		$values = '';
 	}
 	return $values;

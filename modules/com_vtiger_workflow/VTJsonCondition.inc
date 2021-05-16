@@ -132,9 +132,9 @@ class VTJsonCondition {
 			if ($referredEntityData != null) {
 				$referredData = $referredEntityData->getData();
 				preg_match('/(\w+) : \((\w+)\) (\w+)/', $value, $valuematches);
-				if (isset($referredEntityData->user) && count($valuematches) > 0 && $valuematches[1]=='assigned_user_id') {
+				if (isset($referredEntityData->user) && !empty($valuematches) && $valuematches[1]=='assigned_user_id') {
 					$referredData[$value] = $referredEntityData->user->column_fields[$valuematches[3]];
-				} elseif (count($valuematches) > 0) {
+				} elseif (!empty($valuematches)) {
 					$value = $valuematches[3];
 				}
 			} else {

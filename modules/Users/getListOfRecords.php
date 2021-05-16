@@ -84,7 +84,7 @@ $output = '<table width="100%" border="0" cellpadding="5" cellspacing="0" class=
 $output .= '<div style="height:270px;overflow-y:auto;">';
 $output .= '<table cellpadding="2">';
 
-if (count($recordList) > 0) {
+if (!empty($recordList)) {
 	$displayRecordCount = 10;
 	$count = count($recordList);
 	$idListEndIndex = ($count < ($recordIndex+$displayRecordCount))? ($count+1) : ($recordIndex+$displayRecordCount+1);

@@ -287,7 +287,7 @@ class cbQuestion extends CRMEntity {
 			$linkStyle = '';
 			if ($propertyody != null) {
 				$graph = $propertyody->graph;
-				if (count($params)> 0 && isset($params['states'])) {
+				if (!empty($params) && isset($params['states'])) {
 					include_once 'modules/cbMap/cbRule.php';
 					$record_id = $params['recordid'];
 					$states = $params['states'];

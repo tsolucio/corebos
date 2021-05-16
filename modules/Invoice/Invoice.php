@@ -385,7 +385,7 @@ class Invoice extends CRMEntity {
 					$col_value[$fieldsList[$k]] = $row[$fieldsList[$k]];
 				}
 			}
-			if (count($col_value) > 0) {
+			if (!empty($col_value)) {
 				$col_value['id'] = $this->id;
 				$col_value['comment']= decode_html($col_value['comment']);
 				$columns = array_keys($col_value);
@@ -407,7 +407,7 @@ class Invoice extends CRMEntity {
 			for ($k=0; $k<count($fieldsList); $k++) {
 					$col_value[$fieldsList[$k]] = $row[$fieldsList[$k]];
 			}
-			if (count($col_value) > 0) {
+			if (!empty($col_value)) {
 				$col_value['id'] = $this->id;
 				$columns = array_keys($col_value);
 				$values = array_values($col_value);
@@ -431,7 +431,7 @@ class Invoice extends CRMEntity {
 					$col_value[$fieldsList[$k]] = $row[$fieldsList[$k]];
 				}
 			}
-			if (count($col_value) > 0) {
+			if (!empty($col_value)) {
 				$col_value['id'] = $this->id;
 				$columns = array_keys($col_value);
 				$values = array_values($col_value);
@@ -458,7 +458,7 @@ class Invoice extends CRMEntity {
 			$updatecols[] = "$col=?";
 			$updateparams[] = $this->column_fields[$field];
 		}
-		if (count($updatecols) > 0) {
+		if (!empty($updatecols)) {
 			$updatequery .= implode(',', $updatecols);
 
 			$updatequery .= ' WHERE invoiceid=?';

@@ -95,7 +95,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] !='') {
 	}
 	if (!empty($Users_Default_Send_Email_Template)) {
 		$emltpl = getTemplateDetails($Users_Default_Send_Email_Template, $crmid);
-		if (count($emltpl)>0) {
+		if (!empty($emltpl)) {
 			$focus->column_fields['subject'] = $emltpl[2];
 			$focus->column_fields['description'] = $emltpl[1];
 			$focus->column_fields['from_email'] = $emltpl[3];
@@ -145,7 +145,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] !='') {
 	}
 	if (!empty($Users_Default_Send_Email_Template)) {
 		$emltpl = getTemplateDetails($Users_Default_Send_Email_Template, $crmid);
-		if (count($emltpl)>0) {
+		if (!empty($emltpl)) {
 			$focus->column_fields['subject'] = $emltpl[2];
 			$focus->column_fields['description'] = $emltpl[1];
 			$focus->column_fields['from_email'] = $emltpl[3];

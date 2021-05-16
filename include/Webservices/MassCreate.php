@@ -33,7 +33,7 @@ function MassCreate($elements, $user) {
 	}
 
 	$types = vtws_listtypes(null, $user);
-	if ($mcModules && count($mcModules) > 0) {
+	if ($mcModules && !empty($mcModules)) {
 		foreach ($mcModules as $module) {
 			if (!in_array($module, $types['types'])) {
 				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied on module'.$module);

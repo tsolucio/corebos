@@ -47,7 +47,7 @@ class ChartUtils {
 			}
 		}
 
-		if (is_array($restrictedModules) && count($restrictedModules) > 0) {
+		if (is_array($restrictedModules) && !empty($restrictedModules)) {
 			$ChartDataArray['error'] = '<h4>'.getTranslatedString('LBL_NO_ACCESS', 'Reports').' - '.implode(',', $restrictedModules).'</h4>';
 			return $ChartDataArray;
 		}
@@ -128,7 +128,7 @@ class ChartUtils {
 						$link_val = 'index.php?module=' . $module . '&query=true&action=index&' . $advanceSearchCondition;
 					} else {
 						$conditions = $oReport->advft_criteria;
-						if (count($conditions)>0) {
+						if (!empty($conditions)) {
 							$conditions[count($conditions)]['condition'] = 'and';
 						}
 						$conditions[count($conditions)+1] = array(  // this array index is important: do not change to push for optimization
@@ -147,7 +147,7 @@ class ChartUtils {
 				}
 			}
 		}
-		if (count($groupByFields) == 0) {
+		if (empty($groupByFields)) {
 			$ChartDataArray['error'] = "<div class='componentName'>".getTranslatedString('LBL_NO_DATA', 'Reports').'</div>';
 		}
 		$ChartDataArray['xaxisData'] = $groupByFields;

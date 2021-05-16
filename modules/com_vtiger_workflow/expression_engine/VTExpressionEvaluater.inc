@@ -263,7 +263,7 @@ class VTFieldExpressionEvaluater {
 			$logbg->debug("VTExpressionSymbol: $loginfo");
 			$this->debug[] = $loginfo;
 			preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $expr->value, $matches);
-			if (count($matches)>0 && isset($matches[3])) {
+			if (!empty($matches) && isset($matches[3])) {
 				$module = Vtiger_Module::getInstance($matches[2]);
 				$field = Vtiger_Field::getInstance($matches[3], $module);
 				if ($field && in_array($field->uitype, array(71, 72, 7, 9))) {
@@ -428,13 +428,13 @@ class VTFieldExpressionEvaluater {
 				$fieldType = $field->getFieldDataType();
 				if ($fieldType=='reference' || $fieldType=='owner') {
 					preg_match("/([0-9]+)x([0-9]+)/", $val, $results);
-					if (count($results)>0) {  // if it has the form of a webserviceid
+					if (!empty($results)) {  // if it has the form of a webserviceid
 						$query = 'select name from vtiger_ws_entity where id = ?';
 						$rs = $adb->pquery($query, array($results[1]));
 						if ($rs && $adb->num_rows($rs)==1) {  // if the first part is a valid webservice entity id
 							$modname = $adb->query_result($rs, 0, 'name');
 							$modinfo = getEntityName($modname, array($results[2]));
-							if (is_array($modinfo) && count($modinfo)>0) {  // if the second part is recognized as a module record
+							if (is_array($modinfo) && !empty($modinfo)) {  // if the second part is recognized as a module record
 								$val = $modinfo[$results[2]];
 							}
 						}

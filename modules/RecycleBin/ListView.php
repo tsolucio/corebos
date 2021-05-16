@@ -39,7 +39,7 @@ for ($i=0; $i<count($skip_modules); $i++) {
 }
 
 $sql = 'SELECT tabid, name FROM vtiger_tab WHERE presence=0 AND isentitytype=1 ';
-if (count($skip_tab_ids) > 0) {
+if (!empty($skip_tab_ids)) {
 	$sql .= ' AND tabid NOT IN ('. generateQuestionMarks($skip_tab_ids) .')';
 }
 $sql .= ' ORDER BY name';
@@ -66,7 +66,7 @@ if (isset($_REQUEST['selected_module']) && $_REQUEST['selected_module'] != '') {
 		show_error_msg();
 	}
 } else {
-	if (count($module_name) > 0) {
+	if (!empty($module_name)) {
 		$select_module = $module_name[0];
 	} else {
 		show_error_msg('no_permitted_modules');
@@ -77,7 +77,7 @@ $focus = CRMEntity::getInstance($select_module);
 $sorder = $focus->getSortOrder();
 $order_by = $focus->getOrderBy();
 
-if (count($module_name) > 0) {
+if (!empty($module_name)) {
 	$cur_mod_view = new CustomView($select_module);
 	$viewid = $cur_mod_view->getViewIdByName('All', $select_module);
 

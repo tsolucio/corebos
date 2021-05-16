@@ -55,7 +55,7 @@ function __vt_div($arr) {
 }
 
 function __vt_round($arr) {
-	if (!is_array($arr) || count($arr)==0) {
+	if (!is_array($arr) || empty($arr)) {
 		return 0;
 	}
 	$decs = (isset($arr[1]) ? $arr[1] : 0);
@@ -98,7 +98,7 @@ function __vt_power($elements) {
 }
 
 function __cb_number_format($arr) {
-	if (count($arr)>0) {
+	if (!empty($arr)) {
 		$number = $arr[0];
 		$decimals = isset($arr[1]) ? $arr[1] : 0;
 		$dec_points = isset($arr[2]) ? $arr[2] : '.';

@@ -446,7 +446,7 @@ function addAttachment($mail, $filename, $record) {
 	if (is_file($root_directory.$filename) && ($root_directory.$filename) != '') {
 		$bn = basename($filename);
 		$parts = explode('_', $bn);
-		if (count($parts)>0 && is_attachmentid($parts[0])) {
+		if (!empty($parts) && is_attachmentid($parts[0])) {
 			$name = substr($bn, strlen($parts[0])+1);
 		} else {
 			$name = $bn;

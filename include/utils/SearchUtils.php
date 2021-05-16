@@ -1089,7 +1089,7 @@ function generateAdvancedSearchSql($advfilterlist) {
 		$groupcondition = (isset($groupinfo['condition']) ? $groupinfo['condition'] : '');
 		$groupcolumns = $groupinfo['columns'];
 
-		if (count($groupcolumns) > 0) {
+		if (!empty($groupcolumns)) {
 			$advfiltergroupsql = '';
 			foreach ($groupcolumns as $columninfo) {
 				$advorsql = array();
@@ -1103,7 +1103,7 @@ function generateAdvancedSearchSql($advfilterlist) {
 
 				if ($fieldcolname != '' && $comparator != '') {
 					$valuearray = explode(',', trim($value));
-					if (isset($valuearray) && count($valuearray) > 0 && $comparator != 'bw') {
+					if (isset($valuearray) && !empty($valuearray) && $comparator != 'bw') {
 						foreach ($valuearray as $val) {
 							$advorsql[] = getAdvancedSearchValue($columns[0], $columns[1], $comparator, trim($val), $datatype);
 						}

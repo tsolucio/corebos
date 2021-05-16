@@ -57,7 +57,7 @@ function __cb_randomstring($arr) {
 }
 
 function __vt_uppercase($arr) {
-	if (count($arr)==0) {
+	if (empty($arr)) {
 		return '';
 	} else {
 		return strtoupper($arr[0]);
@@ -65,7 +65,7 @@ function __vt_uppercase($arr) {
 }
 
 function __vt_lowercase($arr) {
-	if (count($arr)==0) {
+	if (empty($arr)) {
 		return '';
 	} else {
 		return strtolower($arr[0]);
@@ -73,7 +73,7 @@ function __vt_lowercase($arr) {
 }
 
 function __vt_uppercasefirst($arr) {
-	if (count($arr)==0) {
+	if (empty($arr)) {
 		return '';
 	} else {
 		return ucfirst($arr[0]);
@@ -81,7 +81,7 @@ function __vt_uppercasefirst($arr) {
 }
 
 function __vt_uppercasewords($arr) {
-	if (count($arr)==0) {
+	if (empty($arr)) {
 		return '';
 	} else {
 		return ucwords(strtolower($arr[0]));
@@ -111,7 +111,7 @@ function __cb_translate($arr) {
 }
 
 function __cb_hash($arr) {
-	if (count($arr)>2 || count($arr)==0) {
+	if (empty($arr) || count($arr)>2) {
 		return -1;
 	} elseif (count($arr)==1) {
 		return sha1($arr[0]);

@@ -97,7 +97,7 @@ if ($record && cbCalendar::getCalendarActivityType($record)=='Emails') {
 		foreach ($act_data as $header => $blockitem) {
 			foreach ($blockitem as $row => $data) {
 				foreach ($data as $key => $maindata) {
-					if (count($maindata)==0) {
+					if (empty($maindata)) {
 						continue;
 					}
 					$fldlabel[$maindata[2][0]] = isset($maindata[1][0]) ? $maindata[1][0] : '';

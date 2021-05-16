@@ -18,7 +18,7 @@ $product_ids = explode('::', $products_list);
 
 $price_list = array();
 
-if (count($product_ids) > 0) {
+if (!empty($product_ids)) {
 	$product_prices = getPricesForProducts($currencyid, $product_ids);
 }
 

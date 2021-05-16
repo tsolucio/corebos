@@ -120,7 +120,7 @@ class ModTracker_Field {
 		if ($fieldInstance->getFieldDataType() == 'reference') {
 			if (!empty($value)) {
 				$referenceList = $fieldInstance->getReferenceList();
-				if (count($referenceList) > 0) {
+				if (!empty($referenceList)) {
 					$firstReferenceModule = $referenceList[0];
 					if ($firstReferenceModule == 'Users') {
 						$value = getUserFullName($value);

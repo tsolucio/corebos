@@ -75,9 +75,9 @@ if ($allrec==1 && !empty($selected_module)) {
 	// It needs lookup in the related tables and needs to be removed if doesn't have a reference record in vtiger_crmentity
 	$adb->query('DELETE FROM vtiger_relatedlists_rb');
 } else {
-	if (count($idlists)>0) {
+	if (!empty($idlists)) {
 		$denormModules = getDenormalizedModules();
-		if (count($denormModules) > 0) {
+		if (!empty($denormModules)) {
 			foreach ($denormModules as $key => $table) {
 				$adb->pquery("DELETE FROM $table WHERE deleted=1 and crmid in (".generateQuestionMarks($idlists).')', array($idlists));
 			}

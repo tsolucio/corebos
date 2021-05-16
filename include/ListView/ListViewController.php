@@ -68,7 +68,7 @@ class ListViewController {
 		}
 
 		$idList = array_keys($idList);
-		if (count($idList) == 0) {
+		if (empty($idList)) {
 			return;
 		}
 		if (isset($referenceFieldInfoList[$fieldName])) {
@@ -157,7 +157,7 @@ class ListViewController {
 						$idList[] = $id;
 					}
 				}
-				if (count($idList) > 0) {
+				if (!empty($idList)) {
 					if (!isset($this->ownerNameList[$fieldName]) || !is_array($this->ownerNameList[$fieldName])) {
 						$this->ownerNameList[$fieldName] = getOwnerNameList($idList);
 					} else {
@@ -196,7 +196,7 @@ class ListViewController {
 			} elseif (getTabid($currentModule)!=$field->getTabId() && $field->getFieldDataType()=='reference') {
 				$this->fetchNameList($field, $result, 1);
 			}
-			if (count($idList) > 0) {
+			if (!empty($idList)) {
 				if (!isset($this->ownerNameListrel[$fieldName]) || !is_array($this->ownerNameListrel[$fieldName])) {
 					$this->ownerNameListrel[$fieldName] = getOwnerNameList($idList);
 				} else {
@@ -641,7 +641,7 @@ class ListViewController {
 			list($row,$unused,$unused2) = cbEventHandler::do_filter('corebos.filter.listview.render', array($row,$this->db->query_result_rowdata($result, $i),$recordId));
 			$data[$recordId] = $row;
 		}
-		if (count($totals) > 0 && GlobalVariable::getVariable('Application_ListView_Sum_Currency', 1, $module)) {
+		if (!empty($totals) && GlobalVariable::getVariable('Application_ListView_Sum_Currency', 1, $module)) {
 			$trow = array();
 			foreach ($listViewFields as $fieldName) {
 				if (isset($totals[$fieldName])) {

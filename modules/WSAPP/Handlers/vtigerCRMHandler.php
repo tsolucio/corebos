@@ -51,7 +51,7 @@ class vtigerCRMHandler extends SyncHandler {
 		$updatedRecords = $recordDetails['updated'];
 		$deletedRecords = $recordDetails['deleted'];
 
-		if (count($createdRecords) > 0) {
+		if (!empty($createdRecords)) {
 			$createdRecords = $this->translateReferenceFieldNamesToIds($createdRecords, $user);
 			$createdRecords = $this->fillNonExistingMandatoryPicklistValues($createdRecords);
 			$createdRecords = $this->fillMandatoryFields($createdRecords, $user);
@@ -60,7 +60,7 @@ class vtigerCRMHandler extends SyncHandler {
 			$createdRecords[$index] = vtws_create($record['module'], $record, $this->user);
 		}
 
-		if (count($updatedRecords) > 0) {
+		if (!empty($updatedRecords)) {
 			$updatedRecords = $this->translateReferenceFieldNamesToIds($updatedRecords, $user);
 		}
 

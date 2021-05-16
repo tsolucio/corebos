@@ -96,7 +96,7 @@ $labels_length=array_reverse($labels_length);
 $csvheader = implode(',', $field_label);
 //<<<<<<<<<<<<<<<<End>>>>>>>>>>>>>>>>>>>>>>>>
 
-if (count($querycolumns) > 0) {
+if (!empty($querycolumns)) {
 	$selectcolumns = implode(',', $querycolumns);
 	require_once 'data/CRMEntity.php';
 	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Leads');

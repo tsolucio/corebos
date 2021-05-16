@@ -1110,7 +1110,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		}
 	}
 
-	$prodcondquery .= count($prodconds) > 0 ? 'AND (' : '';
+	$prodcondquery .= empty($prodconds) ? '' : 'AND (';
 	for ($i=0; $i < count($prodconds); $i++) {
 		if ($i % 2 == 0) {
 			$prodcondoperation = $prodconds[$i]['field'] . ' ' . $opmap[$prodconds[$i]['operator']] . ' ' . $prodconds[$i]['value'];
@@ -1119,9 +1119,9 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 			$prodcondquery .= ' ' . $prodconds[$i] . ' ';
 		}
 	}
-	$prodcondquery .= count($prodconds) > 0 ? ')' : '';
+	$prodcondquery .= empty($prodconds) ? '' : ')';
 
-	$servcondquery .= count($servconds) > 0 ? 'AND (' : '';
+	$servcondquery .= empty($servconds) ? '' : 'AND (';
 	for ($i=0; $i < count($servconds); $i++) {
 		if ($i % 2 == 0) {
 			$servcondoperation = $servconds[$i]['field'] . ' ' . $opmap[$servconds[$i]['operator']] . ' ' . $servconds[$i]['value'];
@@ -1130,7 +1130,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 			$servcondquery .= ' ' . $servconds[$i] . ' ';
 		}
 	}
-	$servcondquery .= count($servconds) > 0 ? ')' : '';
+	$servcondquery .= empty($servconds) ? '' : ')';
 	$prod_aliasquery = '';
 	$modProducts = CRMEntity::getInstance('Products');
 	$crmTableProducts = $modProducts->crmentityTable;

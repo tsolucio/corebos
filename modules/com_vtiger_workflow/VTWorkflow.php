@@ -259,7 +259,7 @@ class Workflow {
 				}
 			}
 		}
-		if (count($errortasks)>0) {
+		if (!empty($errortasks)) {
 			$logbg->fatal('> *** Workflow Tasks Errors:');
 			$logbg->fatal($errortasks);
 			$logbg->fatal('> **************************');

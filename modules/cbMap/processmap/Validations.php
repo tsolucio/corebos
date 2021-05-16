@@ -276,7 +276,7 @@ class Validations extends processcbMap {
 						}
 						break;
 					case 'creditCard':
-						if (count($restrictions)>0) {
+						if (!empty($restrictions)) {
 							if (isset($val['msg'])) {
 								$v->rule($rule, $valfield, $restrictions)->message($val['msg'])->label($i18n);
 							} else {
@@ -575,7 +575,7 @@ class Validations extends processcbMap {
 		}
 		$valmaps = array_unique($valmaps);
 		$validation = true;
-		if (count($valmaps)>0) {
+		if (!empty($valmaps)) {
 			$focus = new cbMap();
 			$focus->mode = '';
 			$addFieldValidations = true;

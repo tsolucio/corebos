@@ -486,7 +486,7 @@ function cbexpsql_groupconcat($arr, $mmodule) {
 }
 
 function cbexpsql_number_format($arr, $mmodule) {
-	if (count($arr)>0) {
+	if (!empty($arr)) {
 		$number = $arr[0];
 		$decimals = isset($arr[1]) ? $arr[1] : 0;
 		$dec_points = isset($arr[2]) ? $arr[2] : '.';

@@ -385,7 +385,7 @@ class Reports extends CRMEntity {
 		$result = $adb->pquery($sql, $params);
 
 		$report = $adb->fetch_array($result);
-		if (count($report)>0) {
+		if (!empty($report)) {
 			do {
 				$report_details = array();
 				$report_details['customizable'] = $report['customizable'];
@@ -671,7 +671,7 @@ class Reports extends CRMEntity {
 			where vtiger_report.reportid=?';
 		$result = $adb->pquery($sSQL, array($reportid));
 		$selectedstdfilter = $adb->fetch_array($result);
-		if ($selectedstdfilter && count($selectedstdfilter)>0) {
+		if ($selectedstdfilter && !empty($selectedstdfilter)) {
 			$this->stdselectedcolumn = $selectedstdfilter['datecolumnname'];
 			$this->stdselectedfilter = $selectedstdfilter['datefilter'];
 		} else {

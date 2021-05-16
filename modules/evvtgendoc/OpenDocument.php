@@ -1106,7 +1106,7 @@ class OpenDocument {
 				}
 				continue;
 			}
-			$hayqueincluir=(count($siincluir)==0 || $siincluir[count($siincluir)-1]);
+			$hayqueincluir=(empty($siincluir) || $siincluir[count($siincluir)-1]);
 			$topofarray=$parentArray[count($parentArray)-1];
 
 			switch (get_class($child)) {
@@ -1334,7 +1334,7 @@ class OpenDocument {
 				}
 				continue;
 			}
-			$hayqueincluir=(count($siincluir)==0 || $siincluir[count($siincluir)-1]);
+			$hayqueincluir=(empty($siincluir) || $siincluir[count($siincluir)-1]);
 			switch (get_class($child)) {
 				case 'OpenDocument_TextElement':
 					if ($hayqueincluir) {

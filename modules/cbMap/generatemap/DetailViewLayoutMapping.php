@@ -53,7 +53,7 @@ class genDetailViewLayoutMapping extends generatecbMap {
 					if (!is_array($columns)) {
 						$oldvalue .='column##'.$columns.'$$';
 					}
-					if (is_array($columns) && count($columns) > 0) {
+					if (is_array($columns) && !empty($columns)) {
 						for ($i=0; $i < count($columns); $i++) {
 							$oldvalue .= 'column##'.$columns[$i].'$$';
 						}

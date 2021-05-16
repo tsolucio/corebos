@@ -159,8 +159,8 @@ if (!empty($moduleid) && $_REQUEST['_op']=='setconfigelasticsearch') {
 		$adb->pquery("delete from elasticsearch_indexes where module=?", array($moduleid));
 		$index = array_search($moduleid, $module_list);
 		unset($module_list[$index]);
-		if (count($module_list)>0) {
-			$module_del = implode(" |##| ", $module_list);
+		if (!empty($module_list)) {
+			$module_del = implode(' |##| ', $module_list);
 		} else {
 			$module_del = "";
 		}

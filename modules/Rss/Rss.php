@@ -175,7 +175,7 @@ class vtigerRSS extends CRMEntity {
 		if ($rssid != '') {
 			$result = $adb->pquery('select * from vtiger_rss where rssid=?', array($rssid));
 			$rssrow = $adb->fetch_array($result);
-			if (count($rssrow) > 0) {
+			if (!empty($rssrow)) {
 				$rssurl = $rssrow['rssurl'];
 			}
 		}
@@ -189,7 +189,7 @@ class vtigerRSS extends CRMEntity {
 			$result = $adb->pquery('select * from vtiger_rss where rssid=?', array($rssid));
 			$rssrow = $adb->fetch_array($result);
 
-			if (count($rssrow) > 0) {
+			if (!empty($rssrow)) {
 				$shtml = "<table width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"4\">
 					<tr>
 					<td class=\"rssPgTitle\">";

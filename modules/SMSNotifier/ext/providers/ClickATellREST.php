@@ -96,7 +96,7 @@ class ClickATellREST implements ISMSProvider {
 		if (empty($rsp['error'])) {
 			$responseLines = $rsp['messages'];
 			foreach ($responseLines as $responseLine) {
-				if (!is_array($responseLine) || count($responseLine)==0) {
+				if (!is_array($responseLine) || empty($responseLine)) {
 					continue;
 				}
 

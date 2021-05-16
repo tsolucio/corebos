@@ -319,7 +319,7 @@ class ServiceContracts extends CRMEntity {
 		$updateCols[] = $progressUpdate;
 		$updateParams[] = $progressUpdateParams;
 
-		if (count($updateCols) > 0) {
+		if (!empty($updateCols)) {
 			$updateQuery = 'UPDATE vtiger_servicecontracts SET '. implode(',', $updateCols) .' WHERE servicecontractsid = ?';
 			$updateParams[] = $this->id;
 			$adb->pquery($updateQuery, $updateParams);

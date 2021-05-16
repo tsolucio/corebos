@@ -121,7 +121,7 @@ function vtws_update($element, $user) {
 			$listofrelfields[] = $entity[$relfield];
 		}
 	}
-	if (count($listofrelfields)>0) {
+	if (!empty($listofrelfields)) {
 		if ($entityName=='Emails' && $entity['parent_id']!='') {
 			unset($listofrelfields['parent_id'], $r['parent_id']);
 		}
@@ -137,7 +137,7 @@ function vtws_update($element, $user) {
 	}
 	// Add attachment information
 	$imgs = $meta->getImageFields();
-	if (count($imgs)>0) {
+	if (!empty($imgs)) {
 		$imginfo = cbws_getrecordimageinfo($element['id'], $user);
 		if ($imginfo['results']>0) {
 			foreach ($imgs as $img) {

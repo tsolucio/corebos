@@ -105,8 +105,6 @@ function getTopPotentials($maxval, $calCnt) {
 	$values=array('ModuleName'=>'Potentials', 'Title'=>$title, 'Header'=>$header, 'Entries'=>$entries, 'search_qry'=>$search_qry);
 
 	$log->debug('< getTopPotentials');
-	if ((count($open_potentials_list) == 0 ) || (count($open_potentials_list)>0)) {
-		return $values;
-	}
+	return $values;
 }
 ?>

@@ -97,7 +97,7 @@ class EmailTemplate {
 			// record type from the given record id. non webservice id.
 			// can extend to non-module entity without many changes as long as the reference field
 			// refers to one type of entity, either module entities or non-module entities.
-			if (count($tableList) > 0) {
+			if (!empty($tableList)) {
 				$sql = 'select '.implode(', ', $columnList_full).' from '.$tableList[0];
 				$moduleTableIndexList = $meta->getEntityTableIndexList();
 				foreach ($tableList as $tableName) {

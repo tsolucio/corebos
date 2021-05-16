@@ -202,7 +202,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$valueArr[$key] = trim(html_entity_decode($value, ENT_QUOTES, $default_charset));
 		}
 		if ($uitype == 15) {
-			if (count($valueArr)>0) {
+			if (!empty($valueArr)) {
 				$valueArr = array_combine($valueArr, $valueArr);
 			}
 			$picklistValues = array_merge($picklistValues, $valueArr);
@@ -538,7 +538,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 
 				$image_path_array[] = $adb->query_result($result_image, $image_iter, 'path');
 			}
-			if (count($image_array)>0) {
+			if (!empty($image_array)) {
 				for ($img_itr=0, $img_itrMax = count($image_array); $img_itr< $img_itrMax; $img_itr++) {
 					$fieldvalue[] = array('name'=>$image_array[$img_itr],'path'=>$image_path_array[$img_itr].$image_id_array[$img_itr]."_","orgname"=>$image_orgname_array[$img_itr]);
 				}
@@ -834,7 +834,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				$image_path_array[] = $adb->query_result($result_image, $image_iter, 'path');
 			}
 		}
-		if (count($image_array)>0) {
+		if (!empty($image_array)) {
 			for ($img_itr=0, $img_itrMax = count($image_array); $img_itr< $img_itrMax; $img_itr++) {
 				$fieldvalue[] = array('name'=>$image_array[$img_itr],'path'=>$image_path_array[$img_itr]);
 			}

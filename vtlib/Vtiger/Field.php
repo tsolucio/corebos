@@ -329,7 +329,7 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 	public function getReferenceList($hideDisabledModules = true, $presenceZero = true) {
 		$webserviceField = $this->getWebserviceFieldObject();
 		$referenceList = $webserviceField->getReferenceList($hideDisabledModules);
-		if ($presenceZero && is_array($referenceList) && count($referenceList) > 0) {
+		if ($presenceZero && is_array($referenceList) && !empty($referenceList)) {
 			foreach ($referenceList as $key => $referenceModule) {
 				$moduleModel = Vtiger_Module::getInstance($referenceModule);
 				if ($moduleModel && $moduleModel->presence != 0) {

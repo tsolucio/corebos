@@ -948,7 +948,7 @@ class CRMEntity {
 		$rdo = true;
 		if ($insertion_mode == 'edit') {
 			// If update is empty the query fails
-			if (count($update) > 0) {
+			if (!empty($update)) {
 				$sql1 = "update $table_name set " . implode(',', $update) . ' where ' . $this->tab_name_index[$table_name] . '=?';
 				$update_params[] = $this->id;
 				$rdo = $adb->pquery($sql1, $update_params);
@@ -3326,7 +3326,7 @@ class CRMEntity {
 				//remove the primary key since it will conflict with base table column name or else creating temporary table will fail for duplicate columns
 				//eg : vtiger_potential has potentialid and vtiger_potentialscf has same potentialid
 				unset($columns[array_search($modulecfindex, $columns)]);
-				if (count($columns) > 0) {
+				if (!empty($columns)) {
 					$cfSelectString = implode(',', $columns);
 					$selectColumns .= ','.$cfSelectString;
 				}

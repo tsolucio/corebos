@@ -119,7 +119,7 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 	} elseif ($fieldType == 'picklist' && !empty($value)) {
 		$fieldvalue = getTranslatedString($value, $module);
 	} elseif ($fieldType == 'multipicklist' && !empty($value)) {
-		if (count($picklistArray)>0 && is_array($picklistArray[1])) {
+		if (!empty($picklistArray) && is_array($picklistArray[1])) {
 			$valueList = explode(' |##| ', $value);
 			$translatedValueList = array();
 			foreach ($valueList as $value) {
@@ -129,7 +129,7 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 				$translatedValueList[] = getTranslatedString($value, $module);
 			}
 		}
-		if (count($picklistArray)==0 || !is_array($picklistArray[1]) || !is_array($picklistArray[1][$dbField->name])) {
+		if (empty($picklistArray) || !is_array($picklistArray[1]) || !is_array($picklistArray[1][$dbField->name])) {
 			$fieldvalue = str_replace(' |##| ', ', ', $value);
 		} else {
 			$fieldvalue = implode(', ', $translatedValueList);

@@ -45,7 +45,7 @@ if (isset($_REQUEST['del_rec'])) {
 			$ids_list[] = $id;
 		}
 	}
-	if (count($ids_list) > 0) {
+	if (!empty($ids_list)) {
 		$ret = getEntityName($req_module, $ids_list);
 		if (count($ret) > 0) {
 			$errormsg = implode(',', $ret);

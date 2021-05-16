@@ -254,7 +254,7 @@ class Products extends CRMEntity {
 	public function insertIntoAttachment($id, $module, $direct_import = false) {
 		global $log, $adb;
 		$log->debug("> insertIntoAttachment $id,$module");
-		if (!(isset($_FILES) && is_array($_FILES) && count($_FILES)>0)) {
+		if (empty($_FILES) || !is_array($_FILES)) {
 			$log->debug('< insertIntoAttachment: no FILES');
 			return;
 		}
@@ -292,7 +292,7 @@ class Products extends CRMEntity {
 			}
 		}
 
-		if (count($_FILES)>0) {
+		if (!empty($_FILES)) {
 			parent::insertIntoAttachment($id, $module, $direct_import);
 		}
 		$log->debug('< insertIntoAttachment');

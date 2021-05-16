@@ -265,7 +265,7 @@ if (isset($_REQUEST['convertfromid']) && $_REQUEST['convertfromid'] != '') {
 	$cffocus = CRMEntity::getInstance($cfrom);
 	$associated_prod = getAssociatedProducts($cfrom, $cffocus, $cfromid);
 	$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
-	$smarty->assign('AVAILABLE_PRODUCTS', count($associated_prod)>0 ? 'true' : 'false');
+	$smarty->assign('AVAILABLE_PRODUCTS', empty($associated_prod) ? 'false' : 'true');
 	$smarty->assign('MODE', $focus->mode);
 	$_REQUEST['account_id'] = getRelatedAccountContact($cfromid, 'Accounts');
 	$_REQUEST['contact_id'] = getRelatedAccountContact($cfromid, 'Contacts');

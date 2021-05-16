@@ -121,7 +121,7 @@ class VTScheduledReport extends Reports {
 			}
 		}
 		$recipientsEmails = array();
-		if (!empty($recipientsList) && count($recipientsList) > 0) {
+		if (!empty($recipientsList)) {
 			foreach ($recipientsList as $userId) {
 				$userName = getUserFullName($userId);
 				$userEmail = getUserEmail($userId);

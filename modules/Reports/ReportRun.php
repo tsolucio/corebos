@@ -3274,7 +3274,7 @@ class ReportRun extends CRMEntity {
 			$rowcount++;
 			$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
 			$count=0;
-			if (isset($totalxls) && is_array($totalxls) && count($totalxls)>0) {
+			if (isset($totalxls) && is_array($totalxls) && !empty($totalxls)) {
 				if (is_array($totalxls[0])) {
 					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, getTranslatedString('Totals', 'Reports'), \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
 					$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);

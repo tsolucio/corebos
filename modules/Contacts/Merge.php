@@ -136,7 +136,7 @@ $csvheader = implode(',', $field_label);
 // check if custom field CONTACT_MAILINGADDRESS exists and is not empty
 // if not empty remove all other relevant address fields fom $csvheader & query
 
-if (count($querycolumns) > 0) {
+if (!empty($querycolumns)) {
 	$selectcolumns = implode(',', $querycolumns);
 	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
 	$crmEntityTable1 = CRMEntity::getcrmEntityTableAlias('Accounts', true);

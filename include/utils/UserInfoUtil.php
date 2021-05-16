@@ -1622,7 +1622,7 @@ function getRoleAndSubordinatesHierarchy() {
 		$i=0;
 		$k=array();
 		$y=$hrarray;
-		if (count($hrarray) == 0) {
+		if (empty($hrarray)) {
 			$hrarray[$temp_list[0]]= array();
 		} else {
 			while ($i<$size-1) {

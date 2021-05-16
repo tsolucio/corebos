@@ -64,10 +64,10 @@ if (!empty($_REQUEST['filters'])) {
 				default:
 			}
 		}
-		if (count($conds)>0) {
-			$conds = 'where '.implode(' and ', $conds);
-		} else {
+		if (empty($conds)) {
 			$conds = '';
+		} else {
+			$conds = 'where '.implode(' and ', $conds);
 		}
 	}
 }

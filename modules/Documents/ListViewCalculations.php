@@ -39,7 +39,7 @@ if ($foldercount > 0) {
 			$default_folder_details = $folder_details;
 		}
 	}
-	if (count($folders) == 0) {
+	if (empty($folders)) {
 		$folders[$default_folder_details['foldername']] = $default_folder_details;
 	}
 }

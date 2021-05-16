@@ -1413,7 +1413,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 		$result = $adb->pquery($sql, $params);
 		$getBlockInfo = getBlockInformation($module, $result, $col_fields, $tabid, $block_label, $mode);
 	}
-	if (count($getBlockInfo) > 0) {
+	if (!empty($getBlockInfo)) {
 		foreach ($getBlockInfo as $label => $contents) {
 			if (empty($getBlockInfo[$label])) {
 				unset($getBlockInfo[$label]);
@@ -1981,7 +1981,7 @@ function getQuickCreateModules() {
 			$return_qcmodule[] = $tabname;
 		}
 	}
-	if (count($return_qcmodule) > 0) {
+	if (!empty($return_qcmodule)) {
 		$return_qcmodule = array_chunk($return_qcmodule, 2);
 	}
 
@@ -2643,7 +2643,7 @@ function getMergedDescriptionForURL($url, $id, $parent_type) {
 	$log->debug('< getMergedDescriptionForURL');
 	return (isset($pieces['scheme']) ? $pieces['scheme'].'://' : (substr($url, 0, 2)=='//' ? '//' : ''))
 		.(isset($pieces['host']) ? $pieces['host'] : '')
-		.(isset($pieces['path']) ? $pieces['path'].(count($params)>0 ? '?' : '') : '')
+		.(isset($pieces['path']) ? $pieces['path'].(empty($params) ? '' : '?') : '')
 		.http_build_query($params);
 }
 
@@ -3558,7 +3558,7 @@ function getEntityFieldNameDisplay($module, $fieldsName, $fieldValues) {
 				$accessibleFieldNames[] = $fieldValues[$field];
 			}
 		}
-		if (count($accessibleFieldNames) > 0) {
+		if (!empty($accessibleFieldNames)) {
 			return implode(' ', $accessibleFieldNames);
 		}
 	}

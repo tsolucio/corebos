@@ -188,7 +188,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 						$entity->WorkflowContext[$v['context']] = $r2;
 					}
 				}
-				if (count($conds)>0) {
+				if (!empty($conds)) {
 					$q = $adb->pquery('select * from vtiger_entityname where modulename=?', array($origin_module));
 					$table = $adb->query_result($q, 0, 'tablename');
 					$id = $adb->query_result($q, 0, 'entityidfield');
@@ -308,7 +308,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 						}
 						$entity->WorkflowContext[$v['context']] = $r2;
 					}
-					if (count($conds)>0) {
+					if (!empty($conds)) {
 						$q = $adb->pquery('select * from vtiger_entityname where modulename=?', array($origin_module));
 						$table = $adb->query_result($q, 0, 'tablename');
 						$id = $adb->query_result($q, 0, 'entityidfield');

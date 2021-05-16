@@ -714,7 +714,7 @@ class QueryGenerator {
 			}
 		}
 		$ownerFields = $this->meta->getOwnerFields();
-		if (count($ownerFields) > 0) {
+		if (!empty($ownerFields)) {
 			$ownerField = $ownerFields[0];
 		}
 		$baseTable = $this->meta->getEntityBaseTable();

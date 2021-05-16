@@ -54,7 +54,7 @@ class Import_ListView_Controller {
 		for ($i=0; $i<$noOfRecords; ++$i) {
 			$importedRecordIds[] = $adb->query_result($result, $i, 'recordid');
 		}
-		if (count($importedRecordIds) == 0) {
+		if (empty($importedRecordIds)) {
 			$importedRecordIds[] = 0;
 		}
 

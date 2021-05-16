@@ -153,7 +153,7 @@ class OutlookSyncServer extends SyncServer {
 			$queueRecordIds[] = $record['id'];
 			$queueRecordDetails[$record['id']] = parent::convertToQueueRecordFormat($record, $this->delete);
 		}
-		if (count($queueRecordIds) > 0) {
+		if (!empty($queueRecordIds)) {
 			$syncServerDetails = parent::idmap_get_clientmap($appid, $queueRecordIds);
 			foreach ($queueRecordIds as $serverId) {
 				$syncServerId = $syncServerDetails[$serverId]['id'];

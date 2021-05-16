@@ -1846,7 +1846,7 @@ function getUserImageNames() {
 			$image_name[] = $adb->query_result($result, $i, 'imagename');
 		}
 	}
-	if (count($image_name) > 0) {
+	if (!empty($image_name)) {
 		$log->debug('< getUserImageNames');
 		return $image_name;
 	}
@@ -2699,7 +2699,7 @@ function transferProductCurrency($old_cur, $new_cur) {
 	for ($i=0; $i<$numRows; $i++) {
 		$prod_ids[] = $adb->query_result($prod_res, $i, 'productid');
 	}
-	if (count($prod_ids) > 0) {
+	if (!empty($prod_ids)) {
 		$prod_price_list = getPricesForProducts($new_cur, $prod_ids);
 		$query = 'update vtiger_products set currency_id=?, unit_price=? where productid=?';
 		foreach ($prod_ids as $product_id) {
@@ -2721,7 +2721,7 @@ function transferPriceBookCurrency($old_cur, $new_cur) {
 		$pb_ids[] = $adb->query_result($pb_res, $i, 'pricebookid');
 	}
 
-	if (count($pb_ids) > 0) {
+	if (!empty($pb_ids)) {
 		require_once 'modules/PriceBooks/PriceBooks.php';
 		foreach ($pb_ids as $pb_id) {
 			$focus = new PriceBooks();
@@ -2984,7 +2984,7 @@ function getSettingsFields() {
 
 		//add blanks for 4-column layout
 		foreach ($fields as $blockid => &$field) {
-			if (count($field)>0 && count($field)<4) {
+			if (!empty($field) && count($field)<4) {
 				for ($i=count($field); $i<4; $i++) {
 					$field[$i] = array('icon'=>'', 'description'=>'', 'link'=>'', 'name'=>'', 'action'=>'', 'module'=>'');
 				}
@@ -3241,7 +3241,7 @@ function getRecordInfoFromID($id) {
 	if ($adb->num_rows($result)>0) {
 		$data = getEntityName($result->fields['setype'], $id);
 	}
-	if (count($data)>0) {
+	if (!empty($data)) {
 		$data = array_values($data);
 		$data = $data[0];
 	} else {

@@ -38,7 +38,7 @@ if (!empty($_REQUEST['update_file'])) {
 }
 
 $adb->query("ALTER TABLE vtiger_cbupdater ADD COLUMN appcs varchar(3) DEFAULT '1'");
-if (count($cbupdate_files)>0) {
+if (!empty($cbupdate_files)) {
 	libxml_use_internal_errors(true);
 	foreach ($cbupdate_files as $cbupdate_file) {
 		$cbupdate_file = realpath($cbupdate_file);

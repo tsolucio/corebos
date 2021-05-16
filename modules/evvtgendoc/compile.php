@@ -739,7 +739,7 @@ function eval_paracada($condition, $id, $module, $check = false) {
 		$module = 'cbCompany';
 	}
 	preg_match('/(.+)\s*(>|<|=|!=|<=|>=| '.$enGD.' | !'.$enGD.' )\s*(.+)/', $condition, $splitcondition);
-	if (count($splitcondition)>0) {
+	if (!empty($splitcondition)) {
 		$condition_pair = array(
 			$splitcondition[1],
 			$splitcondition[3],
@@ -770,7 +770,7 @@ function eval_paracada($condition, $id, $module, $check = false) {
 	$token_pair = explode('.', $condition_pair[0]);
 
 	preg_match('/(\w+)\s\[(.+)+\]/', $condition, $cond_elements); // Multiple conditions?
-	if (count($cond_elements) > 0 && isset($cond_elements[2])) {
+	if (!empty($cond_elements) && isset($cond_elements[2])) {
 		$json_condition = make_json_condition($cond_elements[1], $cond_elements[2]);
 		OpenDocument::debugmsg($json_condition);
 		$comp = 'wfeval';
@@ -779,7 +779,7 @@ function eval_paracada($condition, $id, $module, $check = false) {
 	}
 
 	preg_match('/\*((\w+)\s(ASC|DESC|asc|desc))\*/', $condition, $sortinfo); // Has sort condition?
-	if (count($sortinfo) > 0) {
+	if (!empty($sortinfo)) {
 		$token_pair[0] = str_replace($sortinfo[0], '', $token_pair[0]);
 	}
 
@@ -817,7 +817,7 @@ function eval_paracada($condition, $id, $module, $check = false) {
 				$GetRelatedList_ReturnOnlyQuery = true;
 				$relatedsql = $focus->$func_rel($id, $tab_mod, $tab_rel);
 				$GetRelatedList_ReturnOnlyQuery = false;
-				if (count($sortinfo) > 0) {
+				if (!empty($sortinfo)) {
 					list($sortstring, $bare_sortstring, $fieldname, $sortorder) = $sortinfo;
 					$columnname = getColumnnameByFieldname($tab_rel, $fieldname);
 					$sortinfo = array('cname' => $columnname, 'order' => $sortorder);
@@ -1142,7 +1142,7 @@ function eval_incluir($entity, $id, $module) {
 
 function iterations() {
 	global $iter_modules;
-	if (count($iter_modules)>0) {
+	if (!empty($iter_modules)) {
 		$keys = array_keys($iter_modules);
 		$last_module = $keys[count($iter_modules)-1];
 		$iter = count($iter_modules[$last_module]);

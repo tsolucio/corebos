@@ -1619,7 +1619,7 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 				for ($index = 0; $index < $adb->num_rows($fldmod_result); ++$index) {
 					$entityTypes[] = $adb->query_result($fldmod_result, $index, 'relmodule');
 				}
-				if (count($entityTypes)==0) {
+				if (empty($entityTypes)) {
 					continue;
 				}
 				if (!empty($parent_id)) {

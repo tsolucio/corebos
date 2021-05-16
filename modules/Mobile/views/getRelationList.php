@@ -38,8 +38,7 @@ class crmtogo_UI_GetRelatedLists extends crmtogo_WS_RelatedRecords {
 					}
 				}
 			}
-			$relatedresponse->setResult((count($detailresponse_record)>0 ? $detailresponse_record : null));
-			$response = new crmtogo_API_Response();
+			$relatedresponse->setResult((empty($detailresponse_record) ? null : $detailresponse_record));
 			$config = $this->getUserConfigSettings();
 			$viewer = new crmtogo_UI_Viewer();
 			$viewer->assign('RECORDID', $request->get('record'));

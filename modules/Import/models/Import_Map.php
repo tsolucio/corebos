@@ -91,7 +91,7 @@ class Import_Map {
 		$map['content'] = ''.$adb->getEmptyBlob().'';
 		$columnNames = array_keys($map);
 		$columnValues = array_values($map);
-		if (count($map) > 0) {
+		if (!empty($map)) {
 			$adb->pquery(
 				'INSERT INTO '.self::$tableName.' ('. implode(',', $columnNames).',date_entered) VALUES ('. generateQuestionMarks($columnValues).',now())',
 				array($columnValues)
