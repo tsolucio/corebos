@@ -263,7 +263,7 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 
 		$result = $db->pquery($query, $params, true, 'Error filling in user array');
 
-		if ($add_blank==true) {
+		if ($add_blank) {
 			// Add in a blank row
 			$temp_result[''] = '';
 		}
@@ -341,7 +341,7 @@ function get_group_array($add_blank = true, $status = 'Active', $assigned_user =
 
 		$result = $db->pquery($query, $params, true, 'Error filling in user array: ');
 
-		if ($add_blank==true) {
+		if ($add_blank) {
 			// Add in a blank row
 			$temp_result[''] = '';
 		}
@@ -709,7 +709,7 @@ decide_to_html();//call the function once when loading
  */
 function to_html($string) {
 	global $doconvert,$default_charset;
-	if ($doconvert == true) {
+	if ($doconvert) {
 		list($cachedresult,$found) = VTCacheUtils::lookupCachedInformation('to_html::'.$string);
 		if ($found) {
 			return $cachedresult;
@@ -2020,7 +2020,7 @@ function escape_single_quotes($value) {
 function formatForSqlLike($str, $flag = 0, $is_field = false) {
 	global $adb;
 	if (isset($str)) {
-		if ($is_field==false) {
+		if (!$is_field) {
 			$str = str_replace('%', '\%', $str);
 			$str = str_replace('_', '\_', $str);
 			if ($flag == 0) {
@@ -2747,7 +2747,7 @@ function getCallerName($from) {
 	//information found
 	$callerInfo = getCallerInfo($from);
 
-	if ($callerInfo != false) {
+	if ($callerInfo) {
 		$callerName = decode_html($callerInfo['name']);
 		$module = $callerInfo['module'];
 		$callerModule = " (<a href='index.php?module=$module&action=index'>$module</a>)";

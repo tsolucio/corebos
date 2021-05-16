@@ -256,7 +256,7 @@ class ReportRun extends CRMEntity {
 							}
 							$this->queryPlanner->addTable('vtiger_inventoryproductrel'.$module);
 						}
-					} elseif (stristr($selectedfields[1], 'cf_')==true && stripos($selectedfields[1], 'cf_')==0) {
+					} elseif (stristr($selectedfields[1], 'cf_') && stripos($selectedfields[1], 'cf_')==0) {
 						$columnslist[$fieldcolname] = $selectedfields[0].'.'.$selectedfields[1]." AS '".$adb->sql_escape_string(decode_html($header_label))."'";
 						$this->queryPlanner->addTable($selectedfields[0]);
 					} else {
@@ -410,7 +410,7 @@ class ReportRun extends CRMEntity {
 			$value = str_replace('yes', '1', str_replace('no', '0', $value));
 		}
 		$rtvalue = ' = ';
-		if ($is_field==true) {
+		if ($is_field) {
 			$value = $this->getFilterComparedField($temp);
 		}
 		if ($comparator == 'e') {
@@ -465,7 +465,7 @@ class ReportRun extends CRMEntity {
 		if ($comparator == 'a') {
 			$rtvalue = ' > '.$adb->quote($value);
 		}
-		if ($is_field==true) {
+		if ($is_field) {
 			$rtvalue = str_replace("'", '', $rtvalue);
 			$rtvalue = str_replace("\\", '', $rtvalue);
 		}
@@ -1104,7 +1104,7 @@ class ReportRun extends CRMEntity {
 				if ($selectedfields[0] == 'vtiger_crmentity'.$this->primarymodule) {
 					$selectedfields[0] = 'vtiger_crmentity';
 				}
-				if (stripos($selectedfields[1], 'cf_')==0 && stristr($selectedfields[1], 'cf_')==true) {
+				if (stripos($selectedfields[1], 'cf_')==0 && stristr($selectedfields[1], 'cf_')) {
 					$sqlvalue = '`'.$adb->sql_escape_string(decode_html($selectedfields[2])).'` '.$sortorder;
 				} else {
 					$sqlvalue = '`'.self::replaceSpecialChar($selectedfields[2]).'` '.$sortorder;
@@ -1750,7 +1750,7 @@ class ReportRun extends CRMEntity {
 		$reportquery = listQueryNonAdminChange($reportquery, $this->primarymodule);
 
 		if (trim($groupsquery) != '' && $type !== 'COLUMNSTOTOTAL') {
-			if ($chartReport == true) {
+			if ($chartReport) {
 				reset($groupslist);
 				$first_key = key($groupslist);
 				$reportquery='select '.$columnlist[$first_key].", count(*) AS 'groupby_count' $basereportquery $wheresql group by ".$this->GetFirstSortByField($reportid);
@@ -2865,7 +2865,7 @@ class ReportRun extends CRMEntity {
 				if (CheckColumnPermission($field_tablename, $field_columnname, $module_name) != 'false') {
 					$field_permitted = true;
 				}
-				if ($field_permitted == true) {
+				if ($field_permitted) {
 					if ($field_tablename == 'vtiger_products' && $field_columnname == 'unit_price') {
 						// Query needs to be rebuild to get the value in user preferred currency. [innerProduct and actual_unit_price are table and column alias.]
 						$query_columnalias = ' actual_unit_price';

@@ -75,7 +75,7 @@ function webforms_getUserData($ownerId, $describeFields, $source) {
 			if ($value !== null) {
 				$userData[$fieldName] = $value;
 			}
-		} elseif ($describeFields[$i]['mandatory'] == true) {
+		} elseif ($describeFields[$i]['mandatory']) {
 			return null;
 		}
 	}

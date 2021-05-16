@@ -15,7 +15,7 @@
 
 function cbws_jslog($level, $message, $user) {
 	global $LOG4PHP_DEBUG;
-	if ($LOG4PHP_DEBUG!=true) {
+	if (!$LOG4PHP_DEBUG) {
 		return;
 	}
 	$logjs= LoggerManager::getLogger('JAVASCRIPT');

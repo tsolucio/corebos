@@ -74,7 +74,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 	private function computeAccess() {
 		global $adb;
 		$active = vtlib_isModuleActive($this->getTabName());
-		if ($active == false) {
+		if (!$active) {
 			$this->hasAccess = false;
 			$this->hasReadAccess = false;
 			$this->hasWriteAccess = false;

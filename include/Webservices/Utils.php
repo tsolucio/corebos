@@ -263,10 +263,10 @@ function vtws_isRecordOwnerGroup($ownerId) {
 }
 
 function vtws_getOwnerType($ownerId) {
-	if (vtws_isRecordOwnerGroup($ownerId) == true) {
+	if (vtws_isRecordOwnerGroup($ownerId)) {
 		return 'Groups';
 	}
-	if (vtws_isRecordOwnerUser($ownerId) == true) {
+	if (vtws_isRecordOwnerUser($ownerId)) {
 		return 'Users';
 	}
 	throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Invalid owner of the record');
@@ -323,7 +323,7 @@ function vtws_deleteWebserviceEntity($moduleName) {
 
 function vtws_addDefaultActorTypeEntity($actorName, $actorNameDetails, $withName = true) {
 	$actorHandler = array('file'=>'include/Webservices/VtigerActorOperation.php', 'class'=>'VtigerActorOperation');
-	if ($withName == true) {
+	if ($withName) {
 		vtws_addActorTypeWebserviceEntityWithName($actorName, $actorHandler['file'], $actorHandler['class'], $actorNameDetails);
 	} else {
 		vtws_addActorTypeWebserviceEntityWithoutName($actorName, $actorHandler['file'], $actorHandler['class'], $actorNameDetails);

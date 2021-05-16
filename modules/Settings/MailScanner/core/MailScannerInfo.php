@@ -357,7 +357,7 @@ class Vtiger_MailScannerInfo {
 		$usepassword = $this->__crypt($this->password);
 
 		global $adb;
-		if ($this->scannerid == false) {
+		if (!$this->scannerid) {
 			$adb->pquery(
 				'INSERT INTO vtiger_mailscanner(scannername,server,protocol,username,password,ssltype,
 				sslmethod,connecturl,searchfor,markas,isvalid) VALUES(?,?,?,?,?,?,?,?,?,?,?)',

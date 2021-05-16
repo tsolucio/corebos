@@ -23,7 +23,7 @@ if ($massedit1x1=='c') { // mass edit 1x1 cancelled
 	coreBOS_Session::delete('ME1x1Info');
 }
 
-if (isset($tool_buttons)==false) {
+if (!isset($tool_buttons)) {
 	$tool_buttons = Button_Check($currentModule);
 }
 

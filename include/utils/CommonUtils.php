@@ -2098,7 +2098,7 @@ function getUserslist($setdefval = true, $selecteduser = '') {
 	$change_owner = '';
 	foreach ($users_combo as $userid => $value) {
 		foreach ($value as $username => $selected) {
-			if ($setdefval == false) {
+			if (!$setdefval) {
 				$change_owner .= "<option value=$userid>" . $username . '</option>';
 			} elseif (is_numeric($selecteduser)) {
 				$change_owner .= "<option value=$userid ". ($userid==$selecteduser ? 'selected' : '') .'>'. $username . '</option>';

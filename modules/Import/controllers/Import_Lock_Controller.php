@@ -39,7 +39,7 @@ class Import_Lock_Controller {
 		if (Vtiger_Utils::CheckTable('vtiger_import_locks')) {
 			$query = 'DELETE FROM vtiger_import_locks WHERE userid=?';
 			$params = array($user->id);
-			if ($module != false) {
+			if ($module) {
 				$query .= ' AND tabid=?';
 				$params[] = getTabid($module);
 			}

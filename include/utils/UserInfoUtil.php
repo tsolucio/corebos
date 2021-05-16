@@ -502,7 +502,7 @@ function leadCanBeConverted($leadid) {
 			&& (isPermitted('Accounts', 'CreateView') == 'yes' || isPermitted('Contacts', 'CreateView') == 'yes')
 			&& (vtlib_isModuleActive('Contacts') || vtlib_isModuleActive('Accounts'))
 			&& !isLeadConverted($leadid)
-			&& ($uiinfo->getCompany() != null || $uiinfo->isModuleActive('Contacts') == true);
+			&& ($uiinfo->getCompany() != null || $uiinfo->isModuleActive('Contacts'));
 	}
 	return $leadCanBeConverted;
 }
@@ -3010,8 +3010,7 @@ function getFieldVisibilityPermission($fld_module, $userid, $fieldname, $accessm
 	$log->debug('> getFieldVisibilityPermission '.$fld_module.','. $userid.','. $fieldname.','.$accessmode);
 
 	// Check if field is in-active
-	$fieldActive = isFieldActive($fld_module, $fieldname);
-	if ($fieldActive == false) {
+	if (!isFieldActive($fld_module, $fieldname)) {
 		return '1';
 	}
 

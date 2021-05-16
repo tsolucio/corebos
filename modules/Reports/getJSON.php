@@ -44,7 +44,7 @@ if ($res && $adb->num_rows($res) > 0) {
 	$modules_permitted = true;
 	$modules_export_permitted = true;
 	foreach ($rep_modules as $mod) {
-		if (isPermitted($mod, 'index')!= 'yes' || vtlib_isModuleActive($mod)==false) {
+		if (isPermitted($mod, 'index')!= 'yes' || !vtlib_isModuleActive($mod)) {
 			$modules_permitted = false;
 			$restrictedmodules[] = $mod;
 		}
@@ -53,7 +53,7 @@ if ($res && $adb->num_rows($res) > 0) {
 		}
 	}
 
-	if (isPermitted($primarymodule, 'index') == 'yes' && $modules_permitted == true) {
+	if (isPermitted($primarymodule, 'index') == 'yes' && $modules_permitted) {
 		$oReportRun = new ReportRun($reportid);
 		$advft_criteria = coreBOS_Session::get('ReportAdvCriteria'.$_COOKIE['corebos_browsertabID'], '');
 		if (!empty($advft_criteria)) {

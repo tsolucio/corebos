@@ -175,7 +175,7 @@ abstract class WebserviceEntityOperation {
 	}
 
 	public function isEditable($webserviceField) {
-		if (((int)$webserviceField->getDisplayType()) === 2 || strcasecmp($webserviceField->getFieldDataType(), 'id')===0 || $webserviceField->isReadOnly() == true) {
+		if (((int)$webserviceField->getDisplayType()) === 2 || strcasecmp($webserviceField->getFieldDataType(), 'id')===0 || $webserviceField->isReadOnly()) {
 			return false;
 		}
 		// created time, modified time, created by, modified by and autonumber fields.

@@ -130,7 +130,7 @@ class Vtiger_Utils {
 		global $Vtiger_Utils_Log, $log;
 
 		$log->debug($message);
-		if (!isset($Vtiger_Utils_Log) || $Vtiger_Utils_Log == false) {
+		if (!isset($Vtiger_Utils_Log) || !$Vtiger_Utils_Log) {
 			return;
 		}
 

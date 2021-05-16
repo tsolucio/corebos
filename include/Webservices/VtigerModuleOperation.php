@@ -96,7 +96,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$crmObject = new VtigerCRMObject($this->tabId, true);
 		$crmObject->setObjectId($ids[1]);
 		$error = $crmObject->read($crmObject->getObjectId());
-		if ($error == false) {
+		if (!$error) {
 			return $error;
 		}
 		$cfields = $crmObject->getFields();

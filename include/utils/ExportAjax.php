@@ -10,7 +10,7 @@
 
 $idstring = rtrim($_REQUEST['idstring'], ';');
 
-if ($_REQUEST['export_record'] == true) {
+if ($_REQUEST['export_record']) {
 	// user can select includesearch & (all |currentpage|selecteddata) but not search
 	//  or withoutsearch & (all |currentpage|selecteddata) but search
 	if (($_REQUEST['search_type'] == 'includesearch' && $_REQUEST['export_data'] == 'all') && $_SESSION['export_where'] == '') {

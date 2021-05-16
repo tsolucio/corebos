@@ -107,7 +107,7 @@ function getPrimaryColumns_GroupingHTML($module, $selected = '') {
 		if (isset($ogReport->pri_module_columnslist[$module][$value]) && !$block_listed[$value]) {
 			$block_listed[$value] = true;
 			$shtml .= "<optgroup label=\"".$i18nModule." ".getTranslatedString($value, $module)."\" class=\"select\" style=\"border:none\">";
-			if ($id_added==false) {
+			if (!$id_added) {
 				$is_selected ='';
 				if ($selected == $crmtable.':crmid:'.$module.'_ID:crmid:I') {
 					$is_selected = 'selected';

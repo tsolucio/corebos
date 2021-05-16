@@ -272,7 +272,7 @@ class ModTracker {
 			$params[] = $entityModule;
 		}
 
-		if ($limit != false) {
+		if ($limit) {
 			$query .=" LIMIT $limit";
 		}
 

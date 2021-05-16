@@ -345,7 +345,7 @@ class CRMEntity {
 		$filetype = $file_details['type'];
 		$filetmp_name = $file_details['tmp_name'];
 
-		if (validateImageFile($file_details) == 'true' && validateImageContents($filetmp_name) == false) {
+		if (validateImageFile($file_details) == 'true' && !validateImageContents($filetmp_name)) {
 			$log->debug('< uploadAndSaveFile: skip save attachment process');
 			return false;
 		}
@@ -1318,7 +1318,7 @@ class CRMEntity {
 			cbEventHandler::do_filter('corebos.filter.preSaveCheck', array($request,$this,false,'','',''));
 		if (!$saveerror && !empty($_FILES)) {
 			foreach ($_FILES as $file_details) {
-				if (validateImageFile($file_details) == 'true' && validateImageContents($file_details['tmp_name']) == false) {
+				if (validateImageFile($file_details) == 'true' && !validateImageContents($file_details['tmp_name'])) {
 					$saveerror = true;
 					$errormessage = getTranslatedString('LBL_IMAGESECURITY_ERROR');
 					$error_action = 'EditView';
@@ -1571,7 +1571,7 @@ class CRMEntity {
 			if ($fieldname == 'record_id' || $fieldname == 'record_module') {
 				$reset_value = false;
 			}
-			if ($reset_value == true) {
+			if ($reset_value) {
 				$this->column_fields[$fieldname] = '';
 			}
 		}

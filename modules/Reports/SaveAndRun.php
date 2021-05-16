@@ -58,7 +58,7 @@ if ($numOfRows > 0) {
 	$modules_permitted = true;
 	$modules_export_permitted = true;
 	foreach ($rep_modules as $mod) {
-		if (isPermitted($mod, 'index')!= 'yes' || vtlib_isModuleActive($mod)==false) {
+		if (isPermitted($mod, 'index')!= 'yes' || !vtlib_isModuleActive($mod)) {
 			$modules_permitted = false;
 			$restrictedmodules[] = $mod;
 		}
@@ -67,7 +67,7 @@ if ($numOfRows > 0) {
 		}
 	}
 
-	if (isPermitted($primarymodule, 'index') == 'yes' && $modules_permitted == true) {
+	if (isPermitted($primarymodule, 'index') == 'yes' && $modules_permitted) {
 		$oReportRun = new ReportRun($reportid);
 		$groupBy = $oReportRun->getGroupingList($reportid);
 		$showCharts = (count($groupBy) > 0);
@@ -91,7 +91,7 @@ if ($numOfRows > 0) {
 
 		$list_report_form = new vtigerCRM_Smarty;
 		$list_report_form->assign('THEME', $theme);
-		if ($showCharts == true) {
+		if ($showCharts) {
 			require_once 'modules/Reports/CustomReportUtils.php';
 			require_once 'include/utils/ChartUtils.php';
 

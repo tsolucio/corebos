@@ -230,7 +230,7 @@ class Workflow {
 				} else {
 					$delay = 0;
 				}
-				if ($task->executeImmediately==true || $this->executionCondition==VTWorkflowManager::$MANUAL) {
+				if ($task->executeImmediately || $this->executionCondition==VTWorkflowManager::$MANUAL) {
 					// we permit update field delayed tasks even though some may not make sense
 					// for example a mathematical operation or a decision on a value of a field that
 					// may change during the delay. This is for some certain types of updates, generally

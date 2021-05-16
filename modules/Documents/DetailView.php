@@ -15,7 +15,7 @@ global $mod_strings, $app_strings, $currentModule, $current_user, $theme;
 
 $focus = CRMEntity::getInstance($currentModule);
 
-if (isset($tool_buttons)==false) {
+if (!isset($tool_buttons)) {
 	$tool_buttons = Button_Check($currentModule);
 }
 $smarty = new vtigerCRM_Smarty();

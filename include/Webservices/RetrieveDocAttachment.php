@@ -88,7 +88,7 @@ function vtws_retrievedocattachment_get_attachment($fileid, $nr = false, $return
 	INNER JOIN vtiger_notes ON vtiger_notes.notesid = vtiger_seattachmentsrel.crmid
 	WHERE vtiger_notes.notesid = ?';
 	$result = $adb->pquery($query, array($fileid));
-	if ($adb->num_rows($result)==0 && $nr==false) {
+	if ($adb->num_rows($result)==0 && !$nr) {
 		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, "Attachment Record you are trying to access is not found ($fileid)");
 	}
 	if ($adb->num_rows($result) == 1) {

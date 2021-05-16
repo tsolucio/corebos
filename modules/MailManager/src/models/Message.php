@@ -398,7 +398,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 	 * @return String
 	 */
 	public function subject($safehtml = true) {
-		if ($safehtml==true) {
+		if ($safehtml) {
 			return MailManager_Utils::safe_html_string($this->_subject);
 		}
 		return $this->_subject;

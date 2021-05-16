@@ -207,7 +207,7 @@ class CustomView extends CRMEntity {
 		$shtml_others = '';
 
 		$selected = 'selected';
-		if ($markselected == false) {
+		if (!$markselected) {
 			$selected = '';
 		}
 
@@ -234,7 +234,7 @@ class CustomView extends CRMEntity {
 				$cvrow['viewname'] = $app_strings['COMBO_ALL'];
 			} else { /** Should the filter shown?  */
 				$return = cbEventHandler::do_filter('corebos.filter.listview.filter.show', $cvrow);
-				if ($return == false) {
+				if (!$return) {
 					continue;
 				}
 			}
@@ -831,7 +831,7 @@ class CustomView extends CRMEntity {
 		$sSQL = 'select vtiger_cvstdfilter.* from vtiger_cvstdfilter inner join vtiger_customview on vtiger_customview.cvid = vtiger_cvstdfilter.cvid';
 		$sSQL .= ' where vtiger_cvstdfilter.cvid=?';
 		$result = $adb->pquery($sSQL, array($cvid));
-		if ($result==false || $adb->num_rows($result)==0) {
+		if (!$result || $adb->num_rows($result)==0) {
 			return '';
 		}
 		$stdfilterrow = $adb->fetch_array($result);

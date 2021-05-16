@@ -35,7 +35,7 @@ function Contacts_sendCustomerPortalLoginDetails($entityData) {
 				$update = false;
 			}
 		}
-		if ($insert == true) {
+		if ($insert) {
 			$password = makeRandomPassword();
 			$adb->pquery(
 				'INSERT INTO vtiger_portalinfo(id,user_name,user_password,type,isactive) VALUES(?,?,?,?,?)',
@@ -43,7 +43,7 @@ function Contacts_sendCustomerPortalLoginDetails($entityData) {
 			);
 		}
 
-		if ($insert == true || $update == true) {
+		if ($insert || $update) {
 			require_once 'modules/Emails/mail.php';
 			global $current_user;
 			$emailData = Contacts::getPortalEmailContents($entityData, $password, 'LoginDetails');

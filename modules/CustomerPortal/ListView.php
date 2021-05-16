@@ -44,7 +44,7 @@ $smarty->assign('GROUPS', cp_getUserGroups());
 $smarty->assign('USERID', cp_getCurrentUser());
 $smarty->assign('DEFAULTASSIGNEE', cp_getCurrentDefaultAssignee());
 
-if (empty($_REQUEST['ajax']) || $_REQUEST['ajax'] != true) {
+if (empty($_REQUEST['ajax']) || !$_REQUEST['ajax']) {
 	$smarty->display(vtlib_getModuleTemplate($currentModule, 'BasicSetttings.tpl'));
 } else {
 	$smarty->display(vtlib_getModuleTemplate($currentModule, 'BasicSetttingsContents.tpl'));

@@ -45,7 +45,7 @@ class Database extends Target {
 
 	public function setup() {
 		if ($this->isType('mysql')) {
-			if ($this->getCreateTarget() == true) {
+			if ($this->getCreateTarget()) {
 				$this->connection = &NewADOConnection($this->dbConfig->getDBType());
 				$ok = $this->connection->NConnect(
 					$this->dbConfig->getHostName(),
@@ -64,7 +64,7 @@ class Database extends Target {
 				$this->checkError($result, $sql);
 
 				$sql = 'create database '.$this->dbConfig->getDatabaseName();
-				if ($this->supportUTF8 == true) {
+				if ($this->supportUTF8) {
 					$sql .= " default character set utf8 default collate utf8_general_ci";
 				}
 				$result = $this->connection->Execute($sql);

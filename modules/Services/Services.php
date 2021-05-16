@@ -540,7 +540,7 @@ class Services extends CRMEntity {
 		$pricebook_id = $_REQUEST['record'];
 
 		$computeCount = (isset($_REQUEST['withCount']) ? $_REQUEST['withCount'] : false);
-		if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, 'PriceBooks') || ((boolean) $computeCount) == true) {
+		if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, 'PriceBooks') || ((boolean)$computeCount)) {
 			$rs = $adb->query(mkCountQuery($query));
 			$noofrows = $adb->query_result($rs, 0, 'count');
 		} else {

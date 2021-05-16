@@ -47,7 +47,7 @@ class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
 			$filterOrAlertInstance->setUser($current_user);
 		}
 		if ($this->isCalendarModule($module)) {
-			if ($request->get('compact')== true) {
+			if ($request->get('compact')) {
 				//no limits for compact calendar
 				return $this->processSearchRecordLabelForCalendar($request, false);
 			} else {
@@ -97,7 +97,7 @@ class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
 		$current_user = $this->getActiveUser();
 
 		// Fetch both Calendar (Todo) and Event information
-		if ($request->get('compact')== true) {
+		if ($request->get('compact')) {
 			//without paging per month
 			$datetimeevent=$request->get('datetime');
 			if (empty($datetimeevent)) {
@@ -105,7 +105,7 @@ class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
 				$datestoconsider['end'] =date('Y-m-t');
 			} else {
 				$strDate = substr($datetimeevent, 4, 11);
-				if ($request->get('inweek')== true) {
+				if ($request->get('inweek')) {
 					$tsDate = strtotime($strDate);
 					$daysAfterWeekStart = (date('w', $tsDate)+6)%7; // +6%7 is for monday as first day of week
 					$datestoconsider['start'] = date('Y-m-d', strtotime('-'.$daysAfterWeekStart.' days', $tsDate));

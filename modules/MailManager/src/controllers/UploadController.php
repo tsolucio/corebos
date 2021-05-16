@@ -248,7 +248,7 @@ class MailManager_Uploader {
 		}
 
 		$response = $this->file->process();
-		if ($response['success'] == true) {
+		if ($response['success']) {
 			return $response;
 		} else {
 			return array('error'=> 'Could not save uploaded file. The upload was cancelled, or server error encountered');

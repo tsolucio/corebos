@@ -199,7 +199,7 @@ class CustomReportUtils {
 	public static function getEntityTypeFromName($entityName, $modules = false) {
 		global $adb;
 
-		if ($modules == false) {
+		if (!$modules) {
 			$modules = array();
 			$result = $adb->pquery('SELECT modulename FROM vtiger_entityname', array());
 			$noOfModules = $adb->num_rows($result);

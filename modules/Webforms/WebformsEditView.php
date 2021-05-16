@@ -35,7 +35,7 @@ $targetModules = array('Leads','Contacts','Accounts','Potentials','HelpDesk');
 
 $usersList = get_user_array(false);
 $groupsList = get_group_array(false);
-if (isset($tool_buttons)==false) {
+if (!isset($tool_buttons)) {
 	$tool_buttons = Button_Check($currentModule);
 }
 $smarty->assign('CHECK', $tool_buttons);

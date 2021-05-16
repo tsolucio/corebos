@@ -27,7 +27,7 @@ $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('LANGUAGE', $current_language);
-if (isset($tool_buttons)==false) {
+if (!isset($tool_buttons)) {
 	$tool_buttons = Button_Check($currentModule);
 }
 $tool_buttons['Merge'] = $tool_buttons['DuplicatesHandling'] = 'no';

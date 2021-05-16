@@ -62,13 +62,13 @@ foreach ($pdoInformation as $pdoline) {
 	$qty=$pdoline['qty'];
 	$_REQUEST['qty'.$i]=$qty;
 	$setype=getSalesEntityType($pdoline['productid']);
-	$_REQUEST['listPrice'.$i] = $skipCurDBConv == true ? $pdoline['listprice'] : CurrencyField::convertToDBFormat($pdoline['listprice']);
+	$_REQUEST['listPrice'.$i] = $skipCurDBConv ? $pdoline['listprice'] : CurrencyField::convertToDBFormat($pdoline['listprice']);
 	$discount=0;
 	if (!empty($pdoline['discount'])) {
 		$_REQUEST["discount$i"]='on';
 		$_REQUEST["discount_type$i"]=$pdoline['discount_type'];
 		if ($pdoline['discount_type']=='amount') {
-			$_REQUEST["discount_amount$i"] = $skipCurDBConv == true ? $pdoline['discount_amount'] : CurrencyField::convertToDBFormat($pdoline['discount_amount']);
+			$_REQUEST["discount_amount$i"] = $skipCurDBConv ? $pdoline['discount_amount'] : CurrencyField::convertToDBFormat($pdoline['discount_amount']);
 			$discount=$pdoline['discount_amount'];
 		} else {
 			$_REQUEST["discount_percentage$i"]=$pdoline['discount_percentage'];

@@ -345,7 +345,7 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 	 * @return WebserviceField instance
 	 */
 	public function getWebserviceFieldObject() {
-		if ($this->webserviceField == false) {
+		if (!$this->webserviceField) {
 			$db = PearDatabase::getInstance();
 
 			$row = array();

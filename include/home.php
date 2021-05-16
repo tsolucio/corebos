@@ -314,7 +314,7 @@ class Homestuff {
 					$fldlabel=$fieldheader[1];
 					$pos=strpos($fldlabel, '_');
 
-					if ($pos==true) {
+					if ($pos) {
 						$fldlabel=str_replace('_', ' ', $fldlabel);
 					}
 

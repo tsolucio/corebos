@@ -55,7 +55,7 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 			$secondarymodule = $get_secondmodules[1];
 		}
 
-		if (isPermitted($primarymodule, 'index') == 'yes' && $permission!=false) {
+		if (isPermitted($primarymodule, 'index') == 'yes' && $permission) {
 			$response = array(
 				'permission'=>1,
 				'primarymodule' => $primarymodule,
@@ -84,7 +84,7 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 			$BLOCK1 = array_merge((array)$BLOCK1, $SECMODFIELDS);
 
 			$BLOCK2 = $oReport->getSelectedColumnsList($recordid);
-			if ($permission == false) {
+			if (!$permission) {
 				echo json_encode(array('permission'=>0));
 			} else {
 				if (isset($_REQUEST['cbreporttype']) && $_REQUEST['cbreporttype']=='crosstabsql') {
@@ -109,7 +109,7 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 			$AGGFIELDS = $BLOCK1;
 			$SECMODFIELDS = (array)getSecondaryColumnsHTML($secondarymodule);
 			$BLOCK1 = array_merge((array)$BLOCK1, $SECMODFIELDS);
-			if ($permission == false) {
+			if (!$permission) {
 				echo json_encode(array('permission'=>0));
 			} else {
 				if (isset($_REQUEST['cbreporttype']) && $_REQUEST['cbreporttype']=='crosstabsql') {
@@ -385,7 +385,7 @@ function getPrimaryColumnsHTML($module, $secondmodule) {
 		$modules_optgroup = array();
 		if (isset($ogReport->pri_module_columnslist[$module][$value]) && !isset($block_listed[$value])) {
 			$block_listed[$value] = true;
-			if ($id_added==false) {
+			if (!$id_added) {
 				$v = $crmtable.':crmid:'.$module.'_ID:crmid:I';
 				$label = getTranslatedString($module.' ID', $module);
 				$modules_optgroup[] = array('value'=>$v,'label'=>$label);
@@ -466,7 +466,7 @@ function getPrimaryColumns_GroupingHTML($module, $selected = '') {
 				'style' => 'border:none'
 			);
 
-			if ($id_added==false) {
+			if (!$id_added) {
 				$option = array(
 					'value' => $crmtable.':crmid:'.$module.'_ID:crmid:I',
 					'label' => getTranslatedString($module, $module).' '.getTranslatedString('ID', $module)

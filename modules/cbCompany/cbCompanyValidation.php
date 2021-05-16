@@ -40,7 +40,7 @@ $query = $adb->pquery(
 $cnt = $adb->query_result($query, 0, 'cnt');
 $dfltcomp = vtlib_purify($screen_values['defaultcompany']);
 
-if (!empty($dfltcomp) && $dfltcomp==true && $query && $cnt>0) {
+if (!empty($dfltcomp) && $dfltcomp && $query && $cnt>0) {
 	echo getTranslatedString('LBL_COMPANY_EXISTS', 'cbCompany');
 } else {
 	echo '%%%OK%%%';

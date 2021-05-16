@@ -80,7 +80,7 @@ function setVAT($entity) {
 		$finalDiscount = $hdnDiscountAmount;
 	}
 	$taxinfo['pl_dto_global'] = array('label'=>'Global Discount', 'field' => 'pl_dto_global');
-	$taxsum['pl_dto_global'] = (is_null($hdnDiscountAmount) == true ? 0 : $hdnDiscountAmount);
+	$taxsum['pl_dto_global'] = (is_null($hdnDiscountAmount) ? 0 : $hdnDiscountAmount);
 	$taxinfo['pl_sh_total'] = array('label'=>'SH Total', 'field' => 'pl_sh_total');
 	$taxsum['pl_sh_total'] = $adb->query_result($ent, 0, 's_h_amount');
 	$taxinfo['pl_sh_tax'] = array('label'=>'SH Tax', 'field' => 'pl_sh_tax');

@@ -234,7 +234,7 @@ if ($foldercount > 0) {
 		$folder_details['entries']= $folder_files;
 		$folder_details['navigation'] = getTableHeaderSimpleNavigation($navigation_array, $url_string, 'Documents', $folder_id, $viewid);
 		$folder_details['recordListRange'] = getRecordRangeMessage($list_result, $limit_start_rec, $num_records);
-		if ($displayFolder == true) {
+		if ($displayFolder) {
 			$folders[$foldername] = $folder_details;
 		} else {
 			$emptyfolders[$foldername] = $folder_details;

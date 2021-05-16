@@ -69,7 +69,7 @@ class crmtogo_UI_ListModuleRecords extends crmtogo_WS_ListModuleRecords {
 			} else {
 				//compact calendar
 				$response = new crmtogo_API_Response();
-				if ($request->get('module')== 'cbCalendar' && $request->get('compact')== true) {
+				if ($request->get('module')== 'cbCalendar' && $request->get('compact')) {
 					$datetime_displayed = $request->get('datetime');
 					$month = date('m', strtotime($datetime_displayed));
 				}

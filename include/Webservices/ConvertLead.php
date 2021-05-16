@@ -247,7 +247,7 @@ function vtws_validateConvertLeadEntityMandatoryValues($entity, $entityHandler, 
 			$fieldInfo = vtws_getConvertLeadFieldInfo($module, $field);
 			if (($fieldInfo['type']['name'] == 'picklist' || $fieldInfo['type']['name'] == 'multipicklist'
 					|| $fieldInfo['type']['name'] == 'date' || $fieldInfo['type']['name'] == 'datetime')
-				&& ($fieldInfo['editable'] == true)
+				&& ($fieldInfo['editable'])
 			) {
 				$entity[$field] = $fieldInfo['default'];
 			} else {

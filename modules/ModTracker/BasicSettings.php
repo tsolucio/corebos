@@ -35,7 +35,7 @@ $infomodules = ModTrackerUtils::modTrac_getModuleinfo();
 $smarty->assign('INFOMODULES', $infomodules);
 $smarty->assign('MODULE', $module);
 
-if (empty($_REQUEST['ajax']) || $_REQUEST['ajax'] != true) {
+if (empty($_REQUEST['ajax']) || !$_REQUEST['ajax']) {
 	$smarty->display(vtlib_getModuleTemplate($currentModule, 'BasicSettings.tpl'));
 } else {
 	$smarty->display(vtlib_getModuleTemplate($currentModule, 'BasicSettingsContents.tpl'));

@@ -70,7 +70,7 @@ if (empty($_REQUEST['step']) || $_REQUEST['step']!='undo') {
 	unlink($file);
 	$smarty = new vtigerCRM_Smarty;
 
-	if (isset($tool_buttons)==false) {
+	if (!isset($tool_buttons)) {
 		$tool_buttons = Button_Check('cbCalendar');
 	}
 	$smarty->assign('CHECK', $tool_buttons);
@@ -97,7 +97,7 @@ if (empty($_REQUEST['step']) || $_REQUEST['step']!='undo') {
 } else {
 	$smarty = new vtigerCRM_Smarty;
 
-	if (isset($tool_buttons)==false) {
+	if (!isset($tool_buttons)) {
 		$tool_buttons = Button_Check('cbCalendar');
 	}
 	$smarty->assign('CHECK', $tool_buttons);

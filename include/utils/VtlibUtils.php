@@ -448,7 +448,7 @@ function vtlib_purify($input, $ignore = false) {
 	$value = $input;
 	if (!$ignore) {
 		// Initialize the instance if it has not yet done
-		if ($__htmlpurifier_instance == false) {
+		if (!$__htmlpurifier_instance) {
 			if (empty($use_charset)) {
 				$use_charset = 'UTF-8';
 			}

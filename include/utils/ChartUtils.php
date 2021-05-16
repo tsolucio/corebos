@@ -39,7 +39,7 @@ class ChartUtils {
 
 		$restrictedModules = false;
 		foreach ($reportModules as $mod) {
-			if (isPermitted($mod, 'index') != 'yes' || vtlib_isModuleActive($mod) == false) {
+			if (isPermitted($mod, 'index') != 'yes' || !vtlib_isModuleActive($mod)) {
 				if (!is_array($restrictedModules)) {
 					$restrictedModules = array();
 				}

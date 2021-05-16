@@ -208,10 +208,10 @@ function module_Chart($user_id, $date_start = '2000-01-01', $end_date = '2017-01
 
 			$mod_tot_cnt_array[$crtd_date]+=1;
 
-			if (in_array($mod_name, $mod_name_array) == false) {
+			if (!in_array($mod_name, $mod_name_array)) {
 				$mod_name_array[] = $mod_name;
 			}
-			if (in_array($search_str, $search_str_array) == false) {
+			if (!in_array($search_str, $search_str_array)) {
 				$search_str_array[] = $search_str;
 			}
 

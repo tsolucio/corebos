@@ -138,7 +138,7 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 
 	$url_qry ='&order_by='.$order_by.'&sorder='.$sorder;
 	$computeCount = isset($_REQUEST['withCount']) ? $_REQUEST['withCount'] : '';
-	if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, $module) || (boolean) $computeCount == true) {
+	if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, $module) || (boolean)$computeCount) {
 		// Retreiving the no of rows
 		list($specialPermissionWithDuplicateRows,$cached) = VTCacheUtils::lookupCachedInformation('SpecialPermissionWithDuplicateRows');
 		if (false && $specialPermissionWithDuplicateRows) {
@@ -311,7 +311,7 @@ function getPriceBookRelatedProducts($query, $focus, $returnset = '') {
 	$pricebook_id = vtlib_purify($_REQUEST['record']);
 
 	$computeCount = (isset($_REQUEST['withCount']) ? $_REQUEST['withCount'] : false);
-	if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, 'PriceBooks') || ((boolean) $computeCount) == true) {
+	if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, 'PriceBooks') || ((boolean)$computeCount)) {
 		$rs = $adb->query(mkCountQuery($query));
 		$noofrows = $adb->query_result($rs, 0, 'count');
 	} else {

@@ -232,8 +232,8 @@ class MailManager_Model_DraftEmail {
 
 		$emailId = $this->saveDraft($request);
 
-		if ($emailId != false) {
-			if ($uploadResponse && $uploadResponse['success'] == true) {
+		if ($emailId) {
+			if ($uploadResponse && $uploadResponse['success']) {
 				// Link document to base record
 				if (!empty($uploadResponse['docid'])) {
 					$this->saveEmailDocumentRel($emailId, $uploadResponse['docid']);

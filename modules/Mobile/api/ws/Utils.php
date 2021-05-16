@@ -203,7 +203,7 @@ class crmtogo_WS_Utils {
 		} else {
 			$assigned_user_id_ws = $assigned_user_id;
 		}
-		if ($userObj->is_admin==false) {
+		if (!$userObj->is_admin) {
 			$resultuser =get_user_array(false, 'Active', $assigned_user_id_ws, 'private');
 		} else {
 			$resultuser =get_user_array(false, 'Active', $assigned_user_id_ws);

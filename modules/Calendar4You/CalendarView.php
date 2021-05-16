@@ -252,7 +252,7 @@ $Users = $Calendar4You->GetCalendarUsersData();
 $smarty->assign('CALENDAR_USERS', $Users);
 $smarty->assign('CURRENT_USER_ID', $current_user->id);
 
-if (isset($tool_buttons)==false) {
+if (!isset($tool_buttons)) {
 	$tool_buttons = Button_Check('cbCalendar');
 }
 

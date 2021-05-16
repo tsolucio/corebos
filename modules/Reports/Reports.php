@@ -111,7 +111,7 @@ class Reports extends CRMEntity {
 				}
 
 				$non_admin_query = " vtiger_report.reportid IN (SELECT reportid from vtiger_reportsharing WHERE $user_group_query (shareid=? AND setype='users'))";
-				if ($is_admin==false) {
+				if (!$is_admin) {
 					$ssql .= ' and ( ('.$non_admin_query.") or vtiger_report.sharingtype='Public' or vtiger_report.owner = ?
 						or vtiger_report.owner in (select vtiger_user2role.userid
 							from vtiger_user2role
@@ -831,7 +831,7 @@ class Reports extends CRMEntity {
 					break;
 				}
 			}
-			if ($selmod_field_disabled==false) {
+			if (!$selmod_field_disabled) {
 				list($tablename, $colname, $module_field, $fieldname, $single) = explode(':', $fieldcolname);
 				list($module,$field) = explode('_', $module_field);
 				if (count($permitted_fields) == 0 && !$hasGlobalReadPermission) {

@@ -34,7 +34,7 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 		}
 		$handler = vtws_getModuleHandlerFromName('Emails', $current_user);
 		$meta = $handler->getMeta();
-		if ($meta->hasWriteAccess() != true) {
+		if (!$meta->hasWriteAccess()) {
 			return false;
 		}
 
@@ -163,7 +163,7 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 		global $current_user;
 		$handler = vtws_getModuleHandlerFromName('Documents', $current_user);
 		$meta = $handler->getMeta();
-		if ($meta->hasWriteAccess() != true) {
+		if (!$meta->hasWriteAccess()) {
 			return false;
 		}
 		$document = CRMEntity::getInstance('Documents');

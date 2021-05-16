@@ -159,7 +159,7 @@ class CurrencyField {
 			$this->initialize($user);
 		}
 		$value = $this->value;
-		if ($skipConversion == false) {
+		if (!$skipConversion) {
 			$value = self::convertFromDollar($value, $this->conversionRate);
 		}
 		return $this->formatCurrencyValue($value);
@@ -348,7 +348,7 @@ class CurrencyField {
 		$value = str_replace("$currencySeparator", "", $value);
 		$value = str_replace("$decimalSeparator", ".", $value);
 
-		if ($skipConversion == false) {
+		if (!$skipConversion) {
 			$value = self::convertToDollar($value, $this->conversionRate);
 		}
 		return $value;

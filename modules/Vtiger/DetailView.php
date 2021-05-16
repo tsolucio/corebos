@@ -10,7 +10,7 @@
 
 $focus = CRMEntity::getInstance($currentModule);
 
-if (isset($tool_buttons)==false) {
+if (!isset($tool_buttons)) {
 	$tool_buttons = Button_Check($currentModule);
 }
 

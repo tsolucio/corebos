@@ -71,7 +71,7 @@ if ((is_admin($current_user) || $_REQUEST['record'] == $current_user->id)
 		&& isset($default_user_name)
 		&& $default_user_name == $focus->user_name
 		&& isset($lock_default_user_name)
-		&& $lock_default_user_name == true
+		&& $lock_default_user_name
 ) {
 	$buttons = "<button title='".$app_strings['LBL_EDIT_BUTTON_TITLE']."' accessKey='".$app_strings['LBL_EDIT_BUTTON_KEY']."' class='slds-button slds-button_neutral'"
 		." onclick=\"this.form.return_module.value='Users'; this.form.return_action.value='DetailView'; this.form.return_id.value='$focus->id'; "
@@ -129,7 +129,7 @@ $tabid = getTabid('Users');
 $validationData = getDBValidationData($lead_tables, $tabid);
 $data = split_validationdataArray($validationData);
 
-if ($current_user->id == $_REQUEST['record'] || is_admin($current_user) == true) {
+if ($current_user->id == $_REQUEST['record'] || is_admin($current_user)) {
 	$smarty->assign('VALIDATION_DATA_FIELDNAME', $data['fieldname']);
 	$smarty->assign('VALIDATION_DATA_FIELDDATATYPE', $data['datatype']);
 	$smarty->assign('VALIDATION_DATA_FIELDLABEL', $data['fieldlabel']);

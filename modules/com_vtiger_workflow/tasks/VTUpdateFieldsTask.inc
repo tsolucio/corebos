@@ -89,7 +89,7 @@ class VTUpdateFieldsTask extends VTTask {
 						$focusrel[$fieldmodule]->retrieve_entity_info($relId, $fieldmodule, false, $from_wf);
 						$focusrel[$fieldmodule]->clearSingletonSaveFields();
 					}
-					if (count($relmodule)>3 && $isqueue==false) {
+					if (count($relmodule)>3 && !$isqueue) {
 						$delay = strtotime(' +5 minutes');
 						$taskQueue->queueTask($this->id, $entityId, $delay);
 						return;

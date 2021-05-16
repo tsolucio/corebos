@@ -67,7 +67,7 @@ class SessionManager {
 
 		$newSID = HTTP_Session2::id();
 
-		if (!$sid || $adoptSession==true) {
+		if (!$sid || $adoptSession) {
 			$this->set($this->sessionVar, 'true');
 		} else {
 			if (!$this->get($this->sessionVar)) {

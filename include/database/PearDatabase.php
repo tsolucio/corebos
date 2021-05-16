@@ -153,7 +153,7 @@ class PearDatabase {
 		return $this->_cacheinstance;
 	}
 	public function isCacheEnabled() {
-		return ($this->enableCache && ($this->getCacheInstance() != false));
+		return ($this->enableCache && $this->getCacheInstance());
 	}
 	public function clearCache() {
 		if ($this->isCacheEnabled()) {
@@ -954,7 +954,7 @@ class PearDatabase {
 			$this->setDatabaseHost($dbconfig['db_hostname']);
 			$this->setDatabaseName($dbconfig['db_name']);
 			if ($dbconfig['log_sql']) {
-				$this->enableSQLlog = ($dbconfig['log_sql'] == true);
+				$this->enableSQLlog = true;
 			}
 		} else {
 			$this->disconnect();
@@ -991,19 +991,19 @@ class PearDatabase {
 	// ADODB newly added methods
 	public function createTables($schemaFile, $dbHostName = false, $userName = false, $userPassword = false, $dbName = false, $dbType = false) {
 		$this->println('DB createTables '.$schemaFile);
-		if ($dbHostName!=false) {
+		if ($dbHostName) {
 			$this->dbHostName=$dbHostName;
 		}
-		if ($userName!=false) {
+		if ($userName) {
 			$this->userName=$userPassword;
 		}
-		if ($userPassword!=false) {
+		if ($userPassword) {
 			$this->userPassword=$userPassword;
 		}
-		if ($dbName!=false) {
+		if ($dbName) {
 			$this->dbName=$dbName;
 		}
-		if ($dbType!=false) {
+		if ($dbType) {
 			$this->dbType=$dbType;
 		}
 
@@ -1095,8 +1095,8 @@ class PearDatabase {
 		$this->checkConnection();
 		$db = $this->database;
 		$date = $db->DBTimeStamp($datetime);
-		/* Asha: Stripping single quotes to use the date as parameter for Prepared statement */
-		if ($strip_quotes == true) {
+		/* Stripping single quotes to use the date as parameter for Prepared statement */
+		if ($strip_quotes) {
 			return trim($date, "'");
 		}
 		return $date;

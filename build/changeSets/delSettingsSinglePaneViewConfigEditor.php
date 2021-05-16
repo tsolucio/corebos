@@ -144,7 +144,7 @@ class delSettingsSinglePaneViewConfigEditor extends cbupdaterWorker {
 				$rec['value'] = $PORTAL_URL;
 				vtws_create('GlobalVariable', $rec, $current_user);
 			}
-			if (!empty($display_empty_home_blocks) && $display_empty_home_blocks != false) {
+			if (!empty($display_empty_home_blocks) && $display_empty_home_blocks) {
 				$rec = $default_values;
 				$rec['gvname'] = 'Home_Display_Empty_Blocks';
 				$rec['value'] = 1;

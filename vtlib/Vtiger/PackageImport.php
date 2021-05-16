@@ -357,7 +357,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 			$buildModuleArray = array();
 			$installSequenceArray = array();
 			$moduleBundle = (boolean)$this->_modulexml->modulebundle;
-			if ($moduleBundle == true) {
+			if ($moduleBundle) {
 				$moduleList = (Array)$this->_modulexml->modulelist;
 				foreach ($moduleList as $moduleInfos) {
 					foreach ($moduleInfos as $moduleInfo) {
@@ -455,7 +455,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		} else {
 			$moduleInstance->parent='Tools';
 		}
-		$moduleInstance->isentitytype = ($isextension != true);
+		$moduleInstance->isentitytype = !$isextension;
 		$moduleInstance->version = (!$tabversion)? 0 : $tabversion;
 		$moduleInstance->minversion = (!$vtigerMinVersion)? false : $vtigerMinVersion;
 		$moduleInstance->maxversion = (!$vtigerMaxVersion)?  false : $vtigerMaxVersion;

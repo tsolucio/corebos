@@ -262,7 +262,7 @@ class BusinessActions extends CRMEntity {
 		foreach ($accumulator as $row) {
 			/** Should the widget be shown */
 			$return = cbEventHandler::do_filter('corebos.filter.link.show', array($row, $type, $parameters));
-			if ($return == false) {
+			if (!$return) {
 				continue;
 			}
 

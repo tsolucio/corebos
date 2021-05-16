@@ -46,7 +46,7 @@ function getStdContactFlds($queryFields, $adb, $valueArray) {
 if ($step == 'ask') {
 	require_once 'Smarty_setup.php';
 	$smarty = new vtigerCRM_Smarty;
-	if (isset($tool_buttons)==false) {
+	if (!isset($tool_buttons)) {
 		$tool_buttons = Button_Check($currentModule);
 	}
 	$smarty->assign('CHECK', $tool_buttons);

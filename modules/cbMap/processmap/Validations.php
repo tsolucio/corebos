@@ -130,7 +130,7 @@ class Validations extends processcbMap {
 	public function processMap($arguments) {
 		$mapping=$this->convertMap2Array();
 		$tabid = getTabid($mapping['origin']);
-		if (isset($arguments[2]) && $arguments[2]==true) {
+		if (isset($arguments[2]) && $arguments[2]) {
 			$mapping = self::addFieldValidations($mapping, $tabid);
 		}
 		return self::doValidations($mapping, $arguments[0], $arguments[1], $tabid);

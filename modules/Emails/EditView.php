@@ -18,7 +18,7 @@ $focus = CRMEntity::getInstance($currentModule);
 $smarty = new vtigerCRM_Smarty();
 $upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize', 3000000, $currentModule);
 $smarty->assign('UPLOADSIZE', $upload_maxsize/1000000); // Convert to MB
-if (isset($_REQUEST['upload_error']) && $_REQUEST['upload_error'] == true) {
+if (isset($_REQUEST['upload_error']) && $_REQUEST['upload_error']) {
 	echo '<br><b><font color="red"> The selected file has no data or a invalid file.</font></b><br>';
 }
 
