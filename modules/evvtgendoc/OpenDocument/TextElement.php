@@ -94,12 +94,9 @@ class OpenDocument_TextElement extends OpenDocument_Element {
 	 * @param mixed $value
 	 */
 	public function __set($name, $value) {
-		switch ($name) {
-			case 'text':
-				$this->text = $value;
-				$this->setText($value);
-				break;
-			default:
+		if ($name=='text') {
+			$this->text = $value;
+			$this->setText($value);
 		}
 	}
 

@@ -104,14 +104,11 @@ class OpenDocument_PageNumber extends OpenDocument_StyledElement {
 	 * @param mixed $value
 	 */
 	public function __set($name, $value) {
-		switch ($name) {
-			case 'select':
-				if (empty($value)) {
-					$value='current';
-				}
-				$this->node->setAttributeNS(OpenDocument::NS_TEXT, 'select-page', $value);
-				break;
-			default:
+		if ($name=='select') {
+			if (empty($value)) {
+				$value='current';
+			}
+			$this->node->setAttributeNS(OpenDocument::NS_TEXT, 'select-page', $value);
 		}
 	}
 

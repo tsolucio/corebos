@@ -101,14 +101,11 @@ class OpenDocument_TableColumn extends OpenDocument_StyledElement {
 	 * @param mixed $value
 	 */
 	public function __set($name, $value) {
-		switch ($name) {
-			case 'numcolsrepeated':
-				if (!is_int($value) && !ctype_digit($value)) {
-					$value = 1;
-				}
-				$this->node->setAttributeNS(OpenDocument::NS_TABLE, 'number-columns-repeated', $value);
-				break;
-			default:
+		if ($name=='numcolsrepeated') {
+			if (!is_int($value) && !ctype_digit($value)) {
+				$value = 1;
+			}
+			$this->node->setAttributeNS(OpenDocument::NS_TABLE, 'number-columns-repeated', $value);
 		}
 	}
 

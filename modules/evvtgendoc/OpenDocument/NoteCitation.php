@@ -104,14 +104,11 @@ class OpenDocument_NoteCitation extends OpenDocument_StyledElement {
 	 * @param mixed $value
 	 */
 	public function __set($name, $value) {
-		switch ($name) {
-			case 'label':
-				if (empty($value)) {
-					$value='i';
-				}
-				$this->node->setAttributeNS(OpenDocument::NS_TEXT, 'label', $value);
-				break;
-			default:
+		if ($name=='label') {
+			if (empty($value)) {
+				$value='i';
+			}
+			$this->node->setAttributeNS(OpenDocument::NS_TEXT, 'label', $value);
 		}
 	}
 
