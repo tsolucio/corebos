@@ -3448,7 +3448,6 @@ function isModuleSettingPermitted($module) {
  */
 function getEntityField($module, $fqn = false) {
 	global $adb;
-	$data = array();
 	if (!empty($module)) {
 		$query = 'select fieldname,tablename,entityidfield from vtiger_entityname where modulename = ?';
 		$result = $adb->pquery($query, array($module));

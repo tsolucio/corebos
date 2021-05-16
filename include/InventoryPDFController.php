@@ -222,8 +222,6 @@ class Vtiger_InventoryPDFController {
 	}
 
 	public function buildHeaderModelColumnLeft() {
-		global $adb;
-		$modelColumnLeft = array();
 		// Company information
 		$resultrow = retrieveCompanyDetails();
 
