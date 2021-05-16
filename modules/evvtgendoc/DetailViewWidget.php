@@ -50,7 +50,7 @@ if ($number==0) {
 	$gendoc_active = ($gendoc_pdfactive==1 || $gendoc_showpdf==1);
 	?>
 	</select><br/>
-	<table>
+	<table aria-describedby="GenDoc Templates">
 	<?php
 	$htmltrtdo = '<tr class="actionlink"><td align="left" style="padding-left:10px;">';
 	$htmltrtdc = '</td></tr>';
@@ -76,7 +76,7 @@ if ($number==0) {
 	echo $linko."'save','doc','$moduletemplate','$forrecord','$modulei18n');".'">'.getTranslatedString('Save Doc', 'evvtgendoc').$linkc.$htmltrtdc;
 	?>
 	</table>
-	<iframe id="gendociframe" style="display:none"></iframe>
+	<iframe id="gendociframe" style="display:none" title="download document"></iframe>
 	<?php
 }
 ?>

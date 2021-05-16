@@ -14,6 +14,7 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 global $adb,$current_user,$singlepane_view, $app_strings, $theme, $default_charset;
+require_once 'modules/cbtranslation/cbtranslation.php';
 $formodule = vtlib_purify($_REQUEST['formodule']);
 $forrecord = vtlib_purify($_REQUEST['forrecord']);
 $wsuserid = vtws_getEntityId('Users').'x'.$current_user->id;
@@ -21,7 +22,7 @@ $wsfolderid = vtws_getEntityId('DocumentFolders').'x';
 $wsrecid = vtws_getEntityId($formodule).'x'.$forrecord;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html lang="<?php echo cbtranslation::getShortLanguageName(); ?>">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $default_charset; ?>">
 	<title><?php echo $app_strings['Photo2Document']; ?></title>
