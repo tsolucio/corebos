@@ -804,7 +804,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 											.getTranslatedString('LBL_DOWNLOAD_FILE', $module) . "' onclick='javascript:dldCntIncrease($notes_id);'>"
 											.textlength_check($fld_value) . '</a>';
 									} elseif ($download_type == 'E') {
-										$fld_value = "<a target='_blank' href='$file_name' onclick='javascript:dldCntIncrease($notes_id);' title='"
+										$fld_value = "<a target='_blank' rel='noopener' href='$file_name' onclick='javascript:dldCntIncrease($notes_id);' title='"
 											.getTranslatedString('LBL_DOWNLOAD_FILE', $module) . "'>" . textlength_check($fld_value) . '</a>';
 									} else {
 										$fld_value = ' --';
