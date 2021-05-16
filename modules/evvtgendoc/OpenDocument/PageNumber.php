@@ -67,16 +67,6 @@ class OpenDocument_PageNumber extends OpenDocument_StyledElement {
 	public function __construct(DOMNode $node, OpenDocument $document, $content, $sel = '') {
 		parent::__construct($node, $document);
 		return true;
-		$select = $node->getAttributeNS(OpenDocument::NS_TEXT, 'select-page');
-		if (empty($select)) {
-			$select=$sel;
-		}
-		if (!empty($select)) {
-			$this->node->setAttributeNS(OpenDocument::NS_TEXT, 'select-page', $select);
-			$this->select = $select;
-		}
-
-		$this->allowedElements = array();
 	}
 
 	/**

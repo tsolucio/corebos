@@ -83,18 +83,6 @@ class OpenDocument_Table extends OpenDocument_StyledElement {
 	public function __construct(DOMNode $node, OpenDocument $document, $subtable = '') {
 		parent::__construct($node, $document);
 		return true;
-		$this->level = $node->getAttributeNS(OpenDocument::NS_TABLE, 'outline-level');
-		$issubtable = $node->getAttributeNS(OpenDocument::NS_TABLE, 'is-sub-table');
-		if (empty($issubtable)) {
-			$issubtable=$subtable;
-		}
-		if (!empty($issubtable)) {
-			$this->node->setAttributeNS(OpenDocument::NS_TABLE, 'is-sub-table', $issubtable);
-			$this->issubtable = $issubtable;
-		}
-		$this->cells = array ();
-
-		$this->allowedElements = array();
 	}
 
 	/**
