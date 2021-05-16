@@ -153,8 +153,8 @@ class Homestuff {
 	public function getHomePageFrame() {
 		global $adb, $current_user;
 		$querystuff ='select vtiger_homestuff.stuffid,stufftype,stufftitle,setype from vtiger_homestuff
-						left join vtiger_homedefault on vtiger_homedefault.stuffid=vtiger_homestuff.stuffid
-						where visible=0 and userid=? order by stuffsequence desc';
+			left join vtiger_homedefault on vtiger_homedefault.stuffid=vtiger_homestuff.stuffid
+			where visible=0 and userid=? order by stuffsequence desc';
 		$resultstuff=$adb->pquery($querystuff, array($current_user->id));
 		$homeval = array();
 		for ($i=0; $i<$adb->num_rows($resultstuff); $i++) {

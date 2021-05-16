@@ -312,7 +312,6 @@ class VTWorkflowManager {
 		$workflowTypeConfig = $configReader->getConfig($type);
 		$workflowClassPath = $workflowTypeConfig['classpath'];
 		$workflowClass = $workflowTypeConfig['class'];
-
 		require_once $workflowClassPath;
 		return new $workflowClass();
 	}
