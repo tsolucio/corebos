@@ -18,9 +18,6 @@ class Import_ListView_Controller {
 	public $module;
 	public static $_cached_module_meta;
 
-	public function __construct() {
-	}
-
 	public static function getModuleMeta($moduleName, $user) {
 		if (empty(self::$_cached_module_meta[$moduleName][$user->id])) {
 			$moduleHandler = vtws_getModuleHandlerFromName($moduleName, $user);

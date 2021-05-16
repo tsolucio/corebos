@@ -355,9 +355,9 @@ class Invoice extends CRMEntity {
 		}
 	}
 
-	/*
+	/**
 	 * Function to get the relations of salesorder to invoice for recurring invoice procedure
-	 * @param - $salesorder_id Salesorder ID
+	 * @param integer $_salesorderid Salesorder ID through object property
 	 */
 	public function createRecurringInvoiceFromSO() {
 		global $adb;

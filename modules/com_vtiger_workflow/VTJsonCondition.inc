@@ -10,9 +10,6 @@
 
 class VTJsonCondition {
 
-	public function __construct() {
-	}
-
 	public function evaluate($condition, $entityCache, $id) {
 		global $logbg;
 		$logbg->debug("> evaluate($condition,$id)");

@@ -51,24 +51,15 @@ function getTopPotentials($maxval, $calCnt) {
 	}
 
 	$list_result = $adb->query($list_query);
-
-	$open_potentials_list = array();
 	$noofrows = $adb->num_rows($list_result);
-
 	$entries=array();
 	if ($noofrows) {
 		for ($i=0; $i<$noofrows; $i++) {
-			$open_potentials_list[] = array(
-				'name' => $adb->query_result($list_result, $i, 'potentialname'),
-				'id' => $adb->query_result($list_result, $i, 'potentialid'),
-				'amount' => $adb->query_result($list_result, $i, 'amount'),
-			);
 			$potentialid=$adb->query_result($list_result, $i, 'potentialid');
 			$potentialname = $adb->query_result($list_result, $i, 'potentialname');
 			$Top_Potential = (strlen($potentialname) > 20) ? (substr($potentialname, 0, 20).'...') : $potentialname;
 			$value=array();
 			$value[]='<a href="index.php?action=DetailView&module=Potentials&record='.$potentialid.'">'.$Top_Potential.'</a>';
-
 			$value[] = CurrencyField::convertToUserFormat($adb->query_result($list_result, $i, 'amount'));
 			$entries[$potentialid]=$value;
 		}

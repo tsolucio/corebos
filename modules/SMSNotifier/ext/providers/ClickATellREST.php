@@ -21,9 +21,6 @@ class ClickATellREST implements ISMSProvider {
 	const SERVICE_URI = 'https://platform.clickatell.com';
 	private static $REQUIRED_PARAMETERS = array('api_id', 'from');
 
-	public function __construct() {
-	}
-
 	/**
 	 * Function to get provider name
 	 * @return <String> provider name
