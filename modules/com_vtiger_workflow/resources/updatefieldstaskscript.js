@@ -623,12 +623,6 @@ function VTUpdateFieldsTask($, fieldvaluemapping) {
 							$(format('#save_fieldvalues_%s_module', mappingno)).val(module);
 						}
 						$('#dump').html(fieldvaluemap['value']);
-						var text = '';
-						if (fieldvaluemap['valuetype'] == 'rawtext') {
-							text = $('#dump').html();
-						} else {
-							text = $('#dump').text();
-						}
 						//set property name on hidden field
 						var fv = $('#save_fieldvalues_'+mappingno+'_value');
 						if (fldrelname!='' && fldrelname!=undefined && fldrelname!=null) {
@@ -636,7 +630,7 @@ function VTUpdateFieldsTask($, fieldvaluemapping) {
 						} else {
 							fv.prop('name', fieldname);
 						}
-						$(format('#save_fieldvalues_%s_value', mappingno)).val(text);
+						$(format('#save_fieldvalues_%s_value', mappingno)).val(fieldvaluemap['value']);
 						mappingno+=1;
 					});
 				}

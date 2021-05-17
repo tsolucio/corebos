@@ -473,15 +473,10 @@ function CBUpsertTask($, fieldvaluemapping) {
 						resetFields(getFieldType(fieldname), fieldname, mappingno, fieldmodule);
 						$(format('#save_fieldvalues_%s_value_type', mappingno)).val(fieldvaluemap['valuetype']);
 						$('#dump').html(fieldvaluemap['value']);
-						if (fieldvaluemap['valuetype'] == 'rawtext') {
-							var text = $('#dump').html();
-						} else {
-							var text = $('#dump').text();
-						}
 						//set property name on hidden field
 						var fv = $('#save_fieldvalues_'+mappingno+'_value');
 						fv.prop('name', fieldname);
-						$(format('#save_fieldvalues_%s_value', mappingno)).val(text);
+						$(format('#save_fieldvalues_%s_value', mappingno)).val(fieldvaluemap['value']);
 						var fv1 = $('#save_fieldvalues_'+mappingno+'_valuemodule');
 						fv1.prop('name', fieldmodule);
 						mappingno+=1;

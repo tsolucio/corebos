@@ -59,7 +59,11 @@ function vtSaveTask($adb, $request) {
 				if (is_array($result)) {
 					$cleanarray = array();
 					foreach ($result as $key => $value) {
-						$cleanarray[$key] = vtlib_purify($value);
+						if (empty($value['valuetype'])) {
+							$cleanarray[$key] = vtlib_purify($value);
+						} else {
+							$cleanarray[$key] = $value;
+						}
 					}
 					$task->$fieldName = json_encode($cleanarray, JSON_UNESCAPED_UNICODE);
 				} else {

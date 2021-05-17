@@ -352,8 +352,7 @@ function VTCreateEntityTask($, fieldvaluemapping) {
 					resetFields(entityFieldTypes[fieldname], fieldname, mappingno);
 					$(format('#save_fieldvalues_%s_value_type', mappingno)).val(fieldvaluemap['valuetype']);
 					$('#dump').html(fieldvaluemap['value']);
-					var text = $('#dump').text();
-					$(format('#save_fieldvalues_%s_value', mappingno)).val(text);
+					$(format('#save_fieldvalues_%s_value', mappingno)).val(fieldvaluemap['value']);
 					mappingno+=1;
 				});
 			}
