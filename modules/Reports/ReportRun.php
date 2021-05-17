@@ -1336,15 +1336,15 @@ class ReportRun extends CRMEntity {
 			}
 			if ($this->queryPlanner->requireTable('innerProduct')) {
 				$query .= ' LEFT JOIN (
-						SELECT vtiger_products.productid,
-							(CASE WHEN (vtiger_products.currency_id = 1 ) THEN vtiger_products.unit_price
-								ELSE (vtiger_products.unit_price / vtiger_currency_info.conversion_rate) END
-							) AS actual_unit_price
-						FROM vtiger_products
-						LEFT JOIN vtiger_currency_info ON vtiger_products.currency_id = vtiger_currency_info.id
-						LEFT JOIN vtiger_productcurrencyrel ON vtiger_products.productid = vtiger_productcurrencyrel.productid
-						AND vtiger_productcurrencyrel.currencyid=' . $current_user->currency_id
-					.') AS innerProduct ON innerProduct.productid = vtiger_products.productid';
+					SELECT vtiger_products.productid,
+						(CASE WHEN (vtiger_products.currency_id = 1 ) THEN vtiger_products.unit_price
+							ELSE (vtiger_products.unit_price / vtiger_currency_info.conversion_rate) END
+						) AS actual_unit_price
+					FROM vtiger_products
+					LEFT JOIN vtiger_currency_info ON vtiger_products.currency_id = vtiger_currency_info.id
+					LEFT JOIN vtiger_productcurrencyrel ON vtiger_products.productid = vtiger_productcurrencyrel.productid
+					AND vtiger_productcurrencyrel.currencyid=' . $current_user->currency_id
+				.') AS innerProduct ON innerProduct.productid = vtiger_products.productid';
 			}
 			$query .= ' '.$this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition).
 				getNonAdminAccessControlQuery($this->primarymodule, $current_user).

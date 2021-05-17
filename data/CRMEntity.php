@@ -3006,8 +3006,8 @@ class CRMEntity {
 		$fields_query = $adb->pquery(
 			'SELECT vtiger_field.columnname,vtiger_field.tablename,vtiger_field.fieldid
 				FROM vtiger_field
-				INNER JOIN vtiger_tab on vtiger_tab.name = ?
-				WHERE vtiger_tab.tabid=vtiger_field.tabid AND vtiger_field.uitype IN (10) and vtiger_field.presence in (0,2)',
+				INNER JOIN vtiger_tab on vtiger_tab.name=?
+				WHERE vtiger_tab.tabid=vtiger_field.tabid AND vtiger_field.uitype=10 and vtiger_field.presence in (0,2)',
 			array($module)
 		);
 		if ($adb->num_rows($fields_query) > 0) {
@@ -3126,8 +3126,8 @@ class CRMEntity {
 		$fields_query = $adb->pquery(
 			'SELECT vtiger_field.columnname,vtiger_field.tablename,vtiger_field.fieldid
 				FROM vtiger_field
-				INNER JOIN vtiger_tab on vtiger_tab.name = ?
-				WHERE vtiger_tab.tabid=vtiger_field.tabid AND vtiger_field.uitype IN (10) and vtiger_field.presence in (0,2)',
+				INNER JOIN vtiger_tab on vtiger_tab.name=?
+				WHERE vtiger_tab.tabid=vtiger_field.tabid AND vtiger_field.uitype=10 and vtiger_field.presence in (0,2)',
 			array($secmodule)
 		);
 
