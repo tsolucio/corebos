@@ -226,7 +226,12 @@ class Workflow {
 				$logbg->debug($task->summary);
 				$trigger = (empty($task->trigger) ? null : $task->trigger);
 				if ($trigger != null) {
-					$delay = strtotime($data[$trigger['field']])+$trigger['days']*86400;
+					if (array_key_exists('hours', $trigger)) {
+						$delay = strtotime($data[$trigger['field']])+$trigger['hours']*3600;
+					}
+					if (array_key_exists('days', $trigger)) {
+						$delay = strtotime($data[$trigger['field']])+$trigger['days']*86400;
+					}
 				} else {
 					$delay = 0;
 				}

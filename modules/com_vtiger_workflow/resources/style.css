@@ -54,6 +54,9 @@
 #select_date_days{
 	width:100%;
 }
+#select_date_hours{
+	width:100%;
+}
 
 .box{
 	background-color: white;
