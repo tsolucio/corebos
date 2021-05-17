@@ -183,7 +183,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			}
 		}
 		$fieldvalue [] = $options;
-	} elseif ($uitype == 1613 || $uitype == 1614 || $uitype == 1615 || $uitype == 1616) {
+	} elseif ($uitype == 1613 || $uitype == 1614 || $uitype == 1615 || $uitype == 1616 || $uitype == 3313 || $uitype == 3314 || $uitype == 1024) {
 		require_once 'modules/PickList/PickListUtils.php';
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = getPicklistValuesSpecialUitypes($uitype, $fieldname, $value);
@@ -222,14 +222,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = $options;
-	} elseif ($uitype == 3313 || $uitype == 3314) {
-		require_once 'modules/PickList/PickListUtils.php';
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue [] = getPicklistValuesSpecialUitypes($uitype, $fieldname, $value);
-	} elseif ($uitype == 1024) {
-		require_once 'modules/PickList/PickListUtils.php';
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue [] = getPicklistValuesSpecialUitypes($uitype, $fieldname, $value);
 	} elseif ($uitype == 1025) {
 		$entityTypes = array();
 		$parent_id = $value;
@@ -260,13 +252,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 		$editview_label[] = array('options'=>$entityTypes, 'selected'=>$valueType, 'displaylabel'=>getTranslatedString($fieldlabel, $module_name));
 		$fieldvalue[] = array('displayvalue'=>$displayValue,'entityid'=>$parent_id);
-	} elseif ($uitype == 17) {
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue [] = $value;
-	} elseif ($uitype == 85) { //added for Skype
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue [] = $value;
-	} elseif ($uitype == 14) { //added for Time Field
+	} elseif ($uitype == 17 || $uitype == 85 || $uitype == 14 || $uitype == 21 || $uitype == 56) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue [] = $value;
 	} elseif ($uitype == 19) {
@@ -284,9 +270,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			}
 		}
 
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue [] = $value;
-	} elseif ($uitype == 21) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue [] = $value;
 	} elseif ($uitype == 52 || $uitype == 77) {
@@ -419,9 +402,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = $value;
 		$fieldvalue[] = is_admin($current_user);
-	} elseif ($uitype == 56) {
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue[] = $value;
 	} elseif ($uitype == 61) {
 		if ($value != '') {
 			$assigned_user_id = $value;

@@ -99,7 +99,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$options[$currency_id] = array($pickListValue => $chk_val);
 		}
 		$label_fld ['options'] = $options;
-	} elseif ($uitype == 13) {
+	} elseif ($uitype == 13 || $uitype == 11 || $uitype == 85) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = $col_fields[$fieldname];
 	} elseif ($uitype == 16) {
@@ -289,9 +289,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$users_combo = get_select_options_array($ua, $assigned_user_id);
 		}
 		$label_fld ['options'] = $users_combo;
-	} elseif ($uitype == 11) {
-		$label_fld[] = getTranslatedString($fieldlabel, $module);
-		$label_fld[] = $col_fields[$fieldname];
 	} elseif ($uitype == 53) {
 		global $noof_group_rows, $adb;
 		$owner_id = $col_fields[$fieldname];
@@ -928,9 +925,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		} else {
 			$label_fld[] = getRoleName($col_fields[$fieldname]);
 		}
-	} elseif ($uitype == 85) { //Added for Skype
-		$label_fld[] = getTranslatedString($fieldlabel, $module);
-		$label_fld[] = $col_fields[$fieldname];
 	} elseif ($uitype == 26) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$result = $adb->pquery('select foldername from vtiger_attachmentsfolder where folderid = ?', array($col_fields[$fieldname]));
