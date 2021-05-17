@@ -1211,8 +1211,7 @@ class ReportRun extends CRMEntity {
 		global $log,$current_user;
 		$query = '';
 		if ($secmodule!='') {
-			$secondarymodule = explode(':', $secmodule);
-			foreach ($secondarymodule as $value) {
+			foreach (explode(':', $secmodule) as $value) {
 				$foc = CRMEntity::getInstance($value);
 				// Case handling: Force table requirement ahead of time.
 				$this->queryPlanner->addTable('vtiger_crmentity' . $value);
@@ -1230,10 +1229,6 @@ class ReportRun extends CRMEntity {
 	 */
 	public function getReportsQuery($module, $type = '', $where_condition = '') {
 		global $log, $current_user;
-		$secondary_module = "'";
-		$secondary_module .= str_replace(':', "','", $this->secondarymodule);
-		$secondary_module .="'";
-
 		if ($module == 'Leads') {
 			$crmtalias = CRMEntity::getcrmEntityTableAlias('Leads');
 			$val_conv = ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') ? 1 : 0);
@@ -1276,8 +1271,7 @@ class ReportRun extends CRMEntity {
 				$query .= ' left join vtiger_account as vtiger_accountAccounts on vtiger_accountAccounts.accountid = vtiger_account.parentid';
 			}
 			$query.= ' '.$this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition).
-				getNonAdminAccessControlQuery($this->primarymodule, $current_user).
-				' where vtiger_crmentity.deleted=0 ';
+				getNonAdminAccessControlQuery($this->primarymodule, $current_user).' where vtiger_crmentity.deleted=0 ';
 		} elseif ($module == 'Contacts') {
 			$crmtalias = CRMEntity::getcrmEntityTableAlias('Contacts');
 			$query = "from vtiger_contactdetails
@@ -1316,8 +1310,7 @@ class ReportRun extends CRMEntity {
 			}
 
 			$query .= ' '.$this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition).
-					getNonAdminAccessControlQuery($this->primarymodule, $current_user).
-					' where vtiger_crmentity.deleted=0';
+				getNonAdminAccessControlQuery($this->primarymodule, $current_user).' where vtiger_crmentity.deleted=0';
 		} elseif ($module == 'Potentials') {
 			$focus = CRMEntity::getInstance($module);
 			$query = $focus->generateReportsQuery($module, $this->queryPlanner);
@@ -1325,8 +1318,7 @@ class ReportRun extends CRMEntity {
 				$query .= ' left join vtiger_campaign as vtiger_campaignPotentials on vtiger_potential.campaignid = vtiger_campaignPotentials.campaignid';
 			}
 			$query .= ' '.$this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition).
-				getNonAdminAccessControlQuery($this->primarymodule, $current_user).
-				' where vtiger_crmentity.deleted=0 ';
+				getNonAdminAccessControlQuery($this->primarymodule, $current_user).' where vtiger_crmentity.deleted=0 ';
 		} elseif ($module == 'Products') {
 			//For this Product - we can related Accounts, Contacts (Also Leads, Potentials)
 			$focus = CRMEntity::getInstance($module);
@@ -1347,8 +1339,7 @@ class ReportRun extends CRMEntity {
 				.') AS innerProduct ON innerProduct.productid = vtiger_products.productid';
 			}
 			$query .= ' '.$this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition).
-				getNonAdminAccessControlQuery($this->primarymodule, $current_user).
-				' where vtiger_crmentity.deleted=0';
+				getNonAdminAccessControlQuery($this->primarymodule, $current_user).' where vtiger_crmentity.deleted=0';
 		} elseif ($module == 'HelpDesk') {
 			$focus = CRMEntity::getInstance($module);
 			$query = $focus->generateReportsQuery($module, $this->queryPlanner);
@@ -1368,8 +1359,7 @@ class ReportRun extends CRMEntity {
 			}
 
 			$query .= ' '.$this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition).
-				getNonAdminAccessControlQuery($this->primarymodule, $current_user).
-				' where vtiger_crmentity.deleted=0 ';
+				getNonAdminAccessControlQuery($this->primarymodule, $current_user).' where vtiger_crmentity.deleted=0 ';
 		} elseif ($module == 'Quotes') {
 			$matrix = $this->queryPlanner->newDependencyMatrix();
 
@@ -1413,8 +1403,7 @@ class ReportRun extends CRMEntity {
 				$query .= ' LEFT JOIN vtiger_currency_info ON vtiger_currency_info.id = vtiger_quotes.currency_id';
 			}
 			$query .= ' ' . $this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition).
-				getNonAdminAccessControlQuery($this->primarymodule, $current_user).
-				' where vtiger_crmentity.deleted=0';
+				getNonAdminAccessControlQuery($this->primarymodule, $current_user).' where vtiger_crmentity.deleted=0';
 		} elseif ($module == 'PurchaseOrder') {
 			$matrix = $this->queryPlanner->newDependencyMatrix();
 
@@ -1456,8 +1445,7 @@ class ReportRun extends CRMEntity {
 				$query .= ' LEFT JOIN vtiger_currency_info ON vtiger_currency_info.id = vtiger_purchaseorder.currency_id';
 			}
 			$query .= ' ' . $this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition) .
-				getNonAdminAccessControlQuery($this->primarymodule, $current_user) .
-				' where vtiger_crmentity.deleted=0';
+				getNonAdminAccessControlQuery($this->primarymodule, $current_user).' where vtiger_crmentity.deleted=0';
 		} elseif ($module == 'Invoice') {
 			$matrix = $this->queryPlanner->newDependencyMatrix();
 
@@ -1498,8 +1486,7 @@ class ReportRun extends CRMEntity {
 				$query .= ' LEFT JOIN vtiger_currency_info ON vtiger_currency_info.id = vtiger_invoice.currency_id';
 			}
 			$query .= ' ' . $this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition) .
-				getNonAdminAccessControlQuery($this->primarymodule, $current_user) .
-				' where vtiger_crmentity.deleted=0';
+				getNonAdminAccessControlQuery($this->primarymodule, $current_user).' where vtiger_crmentity.deleted=0';
 		} elseif ($module == 'SalesOrder') {
 			$matrix = $this->queryPlanner->newDependencyMatrix();
 
@@ -1546,8 +1533,7 @@ class ReportRun extends CRMEntity {
 				$query .= ' LEFT JOIN vtiger_currency_info ON vtiger_currency_info.id = vtiger_salesorder.currency_id';
 			}
 			$query .= ' ' . $this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition) .
-				getNonAdminAccessControlQuery($this->primarymodule, $current_user) .
-				' where vtiger_crmentity.deleted=0';
+				getNonAdminAccessControlQuery($this->primarymodule, $current_user).' where vtiger_crmentity.deleted=0';
 		} elseif ($module == 'Emails') {
 			$crmtalias = CRMEntity::getcrmEntityTableAlias('Emails');
 			$query = "from vtiger_activity
@@ -1562,7 +1548,6 @@ class ReportRun extends CRMEntity {
 				$query .= ' LEFT JOIN vtiger_groups AS vtiger_groupsEmails ON vtiger_groupsEmails.groupid = vtiger_crmentity.smownerid';
 			}
 
-			// TODO optimize inclusion of these tables
 			$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
 			$query .= ' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid';
 
@@ -1574,8 +1559,7 @@ class ReportRun extends CRMEntity {
 			}
 
 			$query .= ' '.$this->getRelatedModulesQuery($module, $this->secondarymodule).
-				getNonAdminAccessControlQuery($this->primarymodule, $current_user).
-				' WHERE vtiger_crmentity.deleted = 0';
+				getNonAdminAccessControlQuery($this->primarymodule, $current_user).' WHERE vtiger_crmentity.deleted = 0';
 		} elseif ($module == 'Issuecards') {
 			$focus = CRMEntity::getInstance($module);
 			$query = $focus->generateReportsQuery($module, $this->queryPlanner);
@@ -1586,15 +1570,13 @@ class ReportRun extends CRMEntity {
 					left join vtiger_service as vtiger_serviceIssuecards on vtiger_serviceIssuecards.serviceid = vtiger_inventoryproductrelIssuecards.productid';
 			}
 			$query .= ' '.$this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition).
-				getNonAdminAccessControlQuery($this->primarymodule, $current_user) .
-				' WHERE vtiger_crmentity.deleted=0';
+				getNonAdminAccessControlQuery($this->primarymodule, $current_user).' WHERE vtiger_crmentity.deleted=0';
 		} else {
 			if ($module != '') {
 				$focus = CRMEntity::getInstance($module);
 				$query = $focus->generateReportsQuery($module, $this->queryPlanner) .
 					$this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition) .
-					getNonAdminAccessControlQuery($this->primarymodule, $current_user) .
-					' WHERE vtiger_crmentity.deleted=0';
+					getNonAdminAccessControlQuery($this->primarymodule, $current_user).' WHERE vtiger_crmentity.deleted=0';
 			}
 		}
 		$log->debug('ReportRun :: getReportsQuery'.$module);

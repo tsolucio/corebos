@@ -3025,9 +3025,7 @@ class CRMEntity {
 					for ($j = 0; $j < $adb->num_rows($ui10_modules_query); $j++) {
 						$rel_mod = $adb->query_result($ui10_modules_query, $j, 'relmodule');
 						$rel_obj = CRMEntity::getInstance($rel_mod);
-
 						$rel_tab_name = $rel_obj->table_name;
-						$rel_tab_index = $rel_obj->table_index;
 						$crmentityRelModuleFieldTableDeps[] = $rel_tab_name . "Rel$module$field_id";
 					}
 					$matrix->setDependency($crmentityRelModuleFieldTable, $crmentityRelModuleFieldTableDeps);
@@ -3136,7 +3134,7 @@ class CRMEntity {
 				$col_name = $adb->query_result($fields_query, $i, 'columnname');
 				$field_id = $adb->query_result($fields_query, $i, 'fieldid');
 				$tab_name = $adb->query_result($fields_query, $i, 'tablename');
-				$ui10_modules_query = $adb->pquery("SELECT relmodule FROM vtiger_fieldmodulerel WHERE fieldid=?", array($field_id));
+				$ui10_modules_query = $adb->pquery('SELECT relmodule FROM vtiger_fieldmodulerel WHERE fieldid=?', array($field_id));
 
 				if ($adb->num_rows($ui10_modules_query) > 0) {
 					// Capture the forward table dependencies due to dynamic related-field
@@ -3146,9 +3144,7 @@ class CRMEntity {
 					for ($j = 0; $j < $adb->num_rows($ui10_modules_query); $j++) {
 						$rel_mod = $adb->query_result($ui10_modules_query, $j, 'relmodule');
 						$rel_obj = CRMEntity::getInstance($rel_mod);
-
 						$rel_tab_name = $rel_obj->table_name;
-						$rel_tab_index = $rel_obj->table_index;
 						$crmentityRelSecModuleTableDeps[] = $rel_tab_name . "Rel$secmodule" . $field_id;
 					}
 					$matrix->setDependency($crmentityRelSecModuleTable, $crmentityRelSecModuleTableDeps);

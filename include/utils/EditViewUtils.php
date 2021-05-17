@@ -166,14 +166,12 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 
 		$options = array();
 		$pickcount=0;
-		$found = false;
 		for ($j = 0; $j < $noofpickrows; $j++) {
 			$value = decode_html($value);
 			$pickListValue=decode_html($adb->query_result($pickListResult, $j, strtolower($fieldname)));
 			if ($value == trim($pickListValue)) {
 				$chk_val = 'selected';
 				$pickcount++;
-				$found = true;
 			} else {
 				$chk_val = '';
 			}
@@ -779,13 +777,11 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$noofpickrows = $adb->num_rows($pickListResult);
 
 		$options = array();
-		$found = false;
 		for ($j = 0; $j < $noofpickrows; $j++) {
 			$pickListValue=$adb->query_result($pickListResult, $j, strtolower($fieldname));
 
 			if ($value == $pickListValue) {
 				$chk_val = 'selected';
-				$found = true;
 			} else {
 				$chk_val = '';
 			}
@@ -800,13 +796,11 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$noofpickrows = $adb->num_rows($pickListResult);
 
 		$options = array();
-		$found = false;
 		for ($j = 0; $j < $noofpickrows; $j++) {
 			$pickListValue=$adb->query_result($pickListResult, $j, 'currency_name');
 			$currency_id=$adb->query_result($pickListResult, $j, 'id');
 			if ($value == $currency_id) {
 				$chk_val = 'selected';
-				$found = true;
 			} else {
 				$chk_val = '';
 			}

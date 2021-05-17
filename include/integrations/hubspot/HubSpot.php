@@ -344,7 +344,7 @@ class corebos_hubspot {
 	}
 
 	public function getPropertiesFromHubSpot($change) {
-		global $adb, $current_user;
+		global $current_user;
 		$send2hs = array();
 		$cbfrommodule = $change['module'];
 		$bmapname = 'HubSpot2' . $cbfrommodule;
@@ -384,7 +384,7 @@ class corebos_hubspot {
 	}
 
 	public function getPropertyFieldNames($cbfrommodule) {
-		global $adb, $current_user;
+		global $adb;
 		$fields = array('firstname','lastname','phone','email','lastmodifieddate'); // default fields
 		$bmapname = 'HubSpot2' . $cbfrommodule;
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
@@ -393,8 +393,8 @@ class corebos_hubspot {
 			$xmlcontent=html_entity_decode($cbMap->column_fields['content']);
 			$xml=simplexml_load_string($xmlcontent);
 			$allmergeFields = array();
-			foreach ($xml->fields->field as $k => $v) {
-				foreach ($v->Orgfields->Orgfield as $key => $value) {
+			foreach ($xml->fields->field as $v) {
+				foreach ($v->Orgfields->Orgfield as $value) {
 					$allmergeFields[] = (String)$value->OrgfieldName;
 				}
 			}

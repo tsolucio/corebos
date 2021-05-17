@@ -58,7 +58,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$displayValueArray = getEntityName($parent_module, $parent_id);
 			$displayValue = '';
 			if (!empty($displayValueArray)) {
-				foreach ($displayValueArray as $key => $value) {
+				foreach ($displayValueArray as $value) {
 					$displayValue = $value;
 				}
 			}
@@ -88,13 +88,11 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 
 		// fix to correctly default for custom pick lists
 		$options = array();
-		$found = false;
 		for ($j = 0; $j < $noofpickrows; $j++) {
 			$pickListValue = $adb->query_result($pickListResult, $j, 'currency_name');
 			$currency_id = $adb->query_result($pickListResult, $j, 'id');
 			if ($col_fields[$fieldname] == $currency_id) {
 				$chk_val = 'selected';
-				$found = true;
 			} else {
 				$chk_val = '';
 			}
@@ -116,7 +114,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 
 		$options = array();
 		$count = 0;
-		$found = false;
 		for ($j = 0; $j < $noofpickrows; $j++) {
 			$pickListValue = decode_html($adb->query_result($pickListResult, $j, strtolower($fieldname)));
 			$col_fields[$fieldname] = decode_html($col_fields[$fieldname]);
@@ -124,7 +121,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			if ($col_fields[$fieldname] == $pickListValue) {
 				$chk_val = 'selected';
 				$count++;
-				$found = true;
 			} else {
 				$chk_val = '';
 			}
@@ -160,7 +156,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$options = array();
 		if (!empty($picklistValues)) {
 			$pickcount = 0;
-			foreach ($picklistValues as $order => $pickListValue) {
+			foreach ($picklistValues as $pickListValue) {
 				if (trim($pickListValue) == $valueArr) {
 					$chk_val = 'selected';
 					$pickcount++;
@@ -196,13 +192,11 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$pickListResult = $adb->pquery($pick_query, array());
 		$noofpickrows = $adb->num_rows($pickListResult);
 		$options = array();
-		$found = false;
 		for ($j = 0; $j < $noofpickrows; $j++) {
 			$pickListValue = $adb->query_result($pickListResult, $j, strtolower($fieldname));
 
 			if ($col_fields[$fieldname] == $pickListValue) {
 				$chk_val = 'selected';
-				$found = true;
 			} else {
 				$chk_val = '';
 			}
