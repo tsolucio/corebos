@@ -696,7 +696,7 @@ class corebos_woocommerce {
 				if (!isset($wcprops['regular_price'])) {
 					$wcprops['regular_price'] = $cbfrom->column_fields['unit_price'];
 				}
-				if (!empty($data['status'])) {
+				if (!isset($wcprops['status'])) {
 					$wcprops['status'] = ($cbfrom->column_fields['wcsyncstatus']=='Published' ? 'publish' : 'pending');
 				}
 				if (vtlib_isModuleActive('wcProductCategory')) {
