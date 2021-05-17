@@ -154,6 +154,7 @@ $mod_strings = array(
 	'LBL_AFTER' => 'Nach',
 	'LBL_BEFORE' => 'Vor',
 	'LBL_DAYS' => 'Tagen',
+	'LBL_HOURS' => 'Hours',
 	'LBL_HELPDESK_SUPPORT_EMAILID'=>'Trouble Ticket E-Mail-Id',
 	'LBL_HELPDESK_SUPPORT_NAME'=>'Trouble Ticket Support Name',
 	'LBL_ORGANIZATION_LOGO'=>'Logo Name',

@@ -154,6 +154,7 @@ $mod_strings = array(
 'LBL_AFTER' => 'Depois de',
 'LBL_BEFORE' => 'Antes',
 'LBL_DAYS' => 'dias',
+'LBL_HOURS' => 'Hours',
 'LBL_HELPDESK_SUPPORT_EMAILID'=>'E-mail suporte',
 'LBL_HELPDESK_SUPPORT_NAME'=>'Nome suporte',
 'LBL_ORGANIZATION_LOGO'=>'Logo da empresa',
