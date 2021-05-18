@@ -122,6 +122,9 @@ class ListColumns extends processcbMap {
 	private function convertMap2Array() {
 		global $adb;
 		$xml = $this->getXMLContent();
+		if (empty($xml)) {
+			return false;
+		}
 		$this->modulename = (String)$xml->originmodule->originname;
 		$this->moduleid = (isset($xml->originmodule->originid) ? (String)$xml->originmodule->originid : 0);
 		$f = CRMEntity::getInstance($this->modulename);
@@ -183,13 +186,13 @@ class ListColumns extends processcbMap {
 			$this->mapping['cbmapSUMMARY']['HEADER']['ListFields'] = array();
 			$this->mapping['cbmapSUMMARY']['BODY']['ListFields'] = array();
 
-			foreach ($xml->summary->header->fields as $k => $v) {
+			foreach ($xml->summary->header->fields as $v) {
 				foreach ($v->field as $vf) {
 					$this->mapping['cbmapSUMMARY']['HEADER']['ListFields'][(String)$vf->label] = (String)$vf->name;
 				}
 			}
 
-			foreach ($xml->summary->body->fields as $k => $v) {
+			foreach ($xml->summary->body->fields as $v) {
 				foreach ($v->field as $vf) {
 					$this->mapping['cbmapSUMMARY']['BODY']['ListFields'][(String)$vf->label] = (String)$vf->name;
 				}
