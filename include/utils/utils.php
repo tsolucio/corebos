@@ -3119,7 +3119,7 @@ function getRelationTables($module, $secmodule) {
 			'SELECT vtiger_field.tabid AS tabid,vtiger_field.tablename AS tablename, vtiger_field.columnname AS columnname
 				FROM vtiger_field
 				INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid
-				WHERE (vtiger_fieldmodulerel.module=? AND vtiger_fieldmodulerel.relmodule=?) OR (vtiger_fieldmodulerel.module=? AND vtiger_fieldmodulerel.relmodule=?)',
+				WHERE (vtiger_fieldmodulerel.module=? AND vtiger_fieldmodulerel.relmodule=?) OR (vtiger_fieldmodulerel.module=? AND vtiger_fieldmodulerel.relmodule=?) ORDER BY vtiger_fieldmodulerel.sequence ASC',
 			array($module, $secmodule, $secmodule, $module)
 		);
 		if ($adb->num_rows($ui10_query)>0) {
