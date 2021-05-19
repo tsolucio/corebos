@@ -88,10 +88,17 @@ function fieldExpressionPopup(moduleName, $) {
 			showElement($('#editpopup_functions'));
 			setFieldType('string')(opType);
 		} else {
-			hideElement($('#editpopup_fieldnames'));
-			hideElement($('#editpopup_functions'));
-			var fieldType = $('#editpopup_field_type').val();
-			setFieldType(fieldType)(opType);
+			var selectorval_ = ele.selector;
+			var opval_ = selectorval_.replace(/value_type/g, 'operation');
+			var op = $(opval_).val();
+			if (opType.name === 'picklist' && (op === 'contains' || op === 'does not contain')) {
+				setFieldType('string')(opType);
+			} else {
+				var fieldType = $('#editpopup_field_type').val();
+				setFieldType(fieldType)(opType);
+			}
+				hideElement($('#editpopup_fieldnames'));
+				hideElement($('#editpopup_functions'));
 		}
 	}
 
