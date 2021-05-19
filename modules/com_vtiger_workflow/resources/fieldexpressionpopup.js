@@ -88,6 +88,8 @@ function fieldExpressionPopup(moduleName, $) {
 			showElement($('#editpopup_functions'));
 			setFieldType('string')(opType);
 		} else {
+			hideElement($('#editpopup_fieldnames'));
+			hideElement($('#editpopup_functions'));
 			var selectorval_ = ele.selector;
 			var opval_ = selectorval_.replace(/value_type/g, 'operation');
 			var op = $(opval_).val();
@@ -97,8 +99,6 @@ function fieldExpressionPopup(moduleName, $) {
 				var fieldType = $('#editpopup_field_type').val();
 				setFieldType(fieldType)(opType);
 			}
-				hideElement($('#editpopup_fieldnames'));
-				hideElement($('#editpopup_functions'));
 		}
 	}
 
