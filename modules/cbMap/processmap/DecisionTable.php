@@ -71,9 +71,14 @@ require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
 
 class DecisionTable extends processcbMap {
 
+	const DOESNOTPASS = 'constant value';
+
 	public function processMap($ctx) {
 		global $adb, $current_user;
 		$xml = $this->getXMLContent();
+		if (empty($xml)) {
+			return self::DOESNOTPASS;
+		}
 		$context = $ctx[0];
 		$holduser = $current_user;
 		$current_user = Users::getActiveAdminUser(); // in order to retrieve all entity data for evaluation
@@ -137,7 +142,7 @@ class DecisionTable extends processcbMap {
 					$crmobj->retrieve_entity_info($eval);
 					$outputs[$sequence] = $crmobj;
 				} else {
-					$outputs[$sequence] = '__DoesNotPass__';
+					$outputs[$sequence] = self::DOESNOTPASS;
 				}
 			} elseif (isset($value->mapid)) {
 				$this->mapExecutionInfo['type'] = 'Map';
@@ -153,7 +158,7 @@ class DecisionTable extends processcbMap {
 					$crmobj->retrieve_entity_info($eval);
 					$outputs[$sequence] = $crmobj;
 				} else {
-					$outputs[$sequence] = '__DoesNotPass__';
+					$outputs[$sequence] = self::DOESNOTPASS;
 				}
 			} elseif (isset($value->decisionTable)) {
 				$this->mapExecutionInfo['type'] = 'DecisionTable';
@@ -252,7 +257,7 @@ class DecisionTable extends processcbMap {
 							$crmobj->retrieve_entity_info($eval);
 							$outputs[$seqidx] = $crmobj;
 						} else {
-							$outputs[$seqidx] = '__DoesNotPass__';
+							$outputs[$seqidx] = self::DOESNOTPASS;
 						}
 					}
 				}
@@ -267,8 +272,8 @@ class DecisionTable extends processcbMap {
 			$desiredoutput = null;
 			$unique = false;
 			$count = 0;
-			foreach ($outputs as $k => $v) {
-				if ($v != '__DoesNotPass__') {
+			foreach ($outputs as $v) {
+				if ($v != self::DOESNOTPASS) {
 					if (!$desiredoutput) {
 						$desiredoutput = $v;
 						$unique = true;
@@ -284,23 +289,23 @@ class DecisionTable extends processcbMap {
 				$output = $desiredoutput;
 			}
 		} elseif ($hitpolicy == 'F') {
-			foreach ($outputs as $k => $v) {
-				if ($v != '__DoesNotPass__') {
+			foreach ($outputs as $v) {
+				if ($v != self::DOESNOTPASS) {
 					$output = $v;
 					break;
 				}
 			}
 		} elseif ($hitpolicy == 'C') {
-			foreach ($outputs as $k => $v) {
-				if ($v != '__DoesNotPass__') {
+			foreach ($outputs as $v) {
+				if ($v != self::DOESNOTPASS) {
 					$output[] = $v;
 				}
 			}
 		} elseif ($hitpolicy == 'A') {
 			$desiredoutput = null;
 			$sameoutput = false;
-			foreach ($outputs as $k => $v) {
-				if ($v != '__DoesNotPass__') {
+			foreach ($outputs as $v) {
+				if ($v != self::DOESNOTPASS) {
 					if (!$desiredoutput) {
 						$desiredoutput = $v;
 						$sameoutput = true;
@@ -315,8 +320,8 @@ class DecisionTable extends processcbMap {
 			}
 		} elseif ($hitpolicy == 'R') {
 			ksort($outputs);
-			foreach ($outputs as $k => $v) {
-				if ($v != '__DoesNotPass__') {
+			foreach ($outputs as $v) {
+				if ($v != self::DOESNOTPASS) {
 					$output[] = $v;
 				}
 			}
@@ -368,7 +373,7 @@ class DecisionTable extends processcbMap {
 			}
 		}
 		if (!$output) {
-			$output = '__DoesNotPass__';
+			$output = self::DOESNOTPASS;
 		}
 		cbEventHandler::do_action('corebos.audit.decision', array($current_user->id, $ctx, $mapvalues, $output, date('Y-m-d H:i:s')));
 		return $output;
