@@ -3634,7 +3634,7 @@ class CRMEntity {
 	 * For eg: Comments of HelpDesk should be saved only once during one save of a Trouble Ticket
 	 */
 	public function clearSingletonSaveFields() {
-		return;
+		// just return here
 	}
 
 	/**

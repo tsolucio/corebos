@@ -1941,7 +1941,6 @@ function create_tab_data_file() {
 	} else {
 		echo "The file $filename does not exist";
 		$log->debug('< create_tab_data_file');
-		return;
 	}
 }
 

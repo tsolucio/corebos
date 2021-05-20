@@ -78,7 +78,6 @@ class corebos_denormalize {
 		}
 		$smarty->assign('DENORM_RESPONSE', $msg);
 		$smarty->display('modules/Utilities/denormalizefeedback.tpl');
-		return;
 	}
 
 	public function denormalizeProcess($module) {
@@ -219,7 +218,6 @@ class corebos_denormalize {
 		}
 		$smarty->assign('DENORM_RESPONSE', $msg);
 		$smarty->display('modules/Utilities/denormalizefeedback.tpl');
-		return;
 	}
 
 	public function undoDenormalizeProcess($module) {

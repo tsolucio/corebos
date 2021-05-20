@@ -334,7 +334,6 @@ function setMailerProperties($mail, $subject, $contents, $from_email, $from_name
 
 	$mail->IsHTML(true); // set email format to HTML
 	$mail->AllowEmpty = true; //allow sent empty body.
-	return;
 }
 
 /** Function to set the Mail Server Properties in the object passed

@@ -26,16 +26,12 @@ class WSAPP {
 			$this->registerSynclibEventHandler();
 		} elseif ($event_type == 'module.disabled') {
 			// Handle actions when this module is disabled.
-			return;
 		} elseif ($event_type == 'module.enabled') {
 			// Handle actions when this module is enabled.
-			return;
 		} elseif ($event_type == 'module.preuninstall') {
 			// Handle actions when this module is about to be deleted.
-			return;
 		} elseif ($event_type == 'module.preupdate') {
 			// Handle actions before this module is updated.
-			return;
 		} elseif ($event_type == 'module.postupdate') {
 			$this->registerSynclibEventHandler();
 		}

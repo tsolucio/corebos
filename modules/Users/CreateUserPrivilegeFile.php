@@ -117,10 +117,9 @@ function createUserSharingPrivilegesfile($userid) {
 		$user_focus->retrieve_entity_info($userid, "Users");
 		if ($user_focus->is_admin == 'on') {
 			$newbuf .= "\n";
-			$newbuf .= "?>";
+			$newbuf .= '?>';
 			fputs($handle, $newbuf);
 			fclose($handle);
-			return;
 		} else {
 			//Constructig the Default Org Share Array
 			$def_org_share=getAllDefaultSharingAction();

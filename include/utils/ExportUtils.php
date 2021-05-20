@@ -121,8 +121,6 @@ function getFieldsListFromQuery($query) {
 			$fields .= $tablename.".name as '".$fieldlabel."',";
 		} elseif ($tablename == 'vtiger_troubletickets' && $columnName == 'product_id') {//Ticket - Product
 			$fields .= "vtiger_products.productname as '".$fieldlabel."',";
-		} elseif ($tablename == 'vtiger_notes' && ($columnName == 'filename' || $columnName == 'filetype' || $columnName == 'filesize' || $columnName == 'filelocationtype' || $columnName == 'filestatus' || $columnName == 'filedownloadcount' ||$columnName == 'folderid')) {
-			continue;
 		} elseif (($tablename == 'vtiger_invoice' || $tablename == 'vtiger_quotes' || $tablename == 'vtiger_salesorder')&& $columnName == 'accountid') {
 			$fields .= 'concat("Accounts::::",vtiger_account.accountname) as "'.$fieldlabel.'",';
 		} elseif (($tablename == 'vtiger_invoice' || $tablename == 'vtiger_quotes' || $tablename == 'vtiger_salesorder' || $tablename == 'vtiger_purchaseorder') && $columnName == 'contactid') {
@@ -137,8 +135,10 @@ function getFieldsListFromQuery($query) {
 			$fields .= 'concat("Quotes::::",vtiger_quotes.subject) as "'.$fieldlabel.'",';
 		} elseif ($tablename == 'vtiger_purchaseorder' && $columnName == 'vendorid') {
 			$fields .= 'concat("Vendors::::",vtiger_vendor.vendorname) as "'.$fieldlabel.'",';
-		} elseif ($tablename == 'vtiger_users' && ($columnName == 'user_password' || $columnName == 'confirm_password' || $columnName == 'accesskey')) {
-			continue;
+		} elseif (($tablename == 'vtiger_users' && ($columnName == 'user_password' || $columnName == 'confirm_password' || $columnName == 'accesskey'))
+			|| ($tablename == 'vtiger_notes' && ($columnName == 'filename' || $columnName == 'filetype' || $columnName == 'filesize' || $columnName == 'filelocationtype' || $columnName == 'filestatus' || $columnName == 'filedownloadcount' ||$columnName == 'folderid'))
+		) {
+			// do nothing, just continue
 		} else {
 			$fields .= $tablename.'.'.$columnName. " as '" .$fieldlabel."',";
 		}

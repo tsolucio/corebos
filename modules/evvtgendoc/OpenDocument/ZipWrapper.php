@@ -108,8 +108,6 @@ class ZipWrapper {
 		if ($deleteRootToo) {
 			@rmdir($dir);
 		}
-
-		return;
 	}
 }
 ?>

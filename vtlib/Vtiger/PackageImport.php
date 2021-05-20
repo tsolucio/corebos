@@ -177,7 +177,6 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 			preg_match("/modules\/([^\/]+)\/language\/en_us.lang.php/", $filename, $matches);
 			if (count($matches)) {
 				$language_modulename = $matches[1];
-				continue;
 			}
 		}
 

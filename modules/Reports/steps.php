@@ -785,7 +785,7 @@ function getRelatedColumns($selected = '') {
 	} elseif ($selected=='All') {
 		return $related_fields;
 	} else {
-		return ;
+		return array();
 	}
 }
 

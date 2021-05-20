@@ -93,7 +93,7 @@ class Workflow {
 	}
 
 	public function filterInactiveFields($module) {
-		return;
+		// none
 	}
 
 	/**

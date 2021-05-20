@@ -1108,7 +1108,6 @@ class Users extends CRMEntity {
 			//we should update the imagename in the users table
 			$adb->pquery('update vtiger_users set imagename=? where id=?', array($filename, $id));
 		}
-		return;
 	}
 
 	/** Function to save the user information into the database
