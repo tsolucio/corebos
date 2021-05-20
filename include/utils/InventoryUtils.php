@@ -1014,24 +1014,9 @@ function createRecords($obj) {
 	$ilfields = new InventoryLineField();
 	$moduleFields = array_merge($moduleFields, $ilfields->getInventoryLineFieldsByObject());
 	$focus = CRMEntity::getInstance($moduleName);
-	$wsrs=$adb->pquery('select id from vtiger_ws_entity where name=?', array('Products'));
-	if ($wsrs && $adb->num_rows($wsrs)==1) {
-		$pdowsid = $adb->query_result($wsrs, 0, 0).'x';
-	} else {
-		$pdowsid = '0x';
-	}
-	$wsrs=$adb->pquery('select id from vtiger_ws_entity where name=?', array('Services'));
-	if ($wsrs && $adb->num_rows($wsrs)==1) {
-		$srvwsid = $adb->query_result($wsrs, 0, 0).'x';
-	} else {
-		$srvwsid = '0x';
-	}
-	$wsrs=$adb->pquery('select id from vtiger_ws_entity where name=?', array('Users'));
-	if ($wsrs && $adb->num_rows($wsrs)==1) {
-		$usrwsid = $adb->query_result($wsrs, 0, 0).'x';
-	} else {
-		$usrwsid = '0x';
-	}
+	$pdowsid = vtws_getEntityId('Products').'x';
+	$srvwsid = vtws_getEntityId('Services').'x';
+	$usrwsid = vtws_getEntityId('Users').'x';
 
 	$tableName = Import_Utils::getDbTableName($obj->user);
 	$sql = 'SELECT subject FROM ' . $tableName . ' WHERE status = '. Import_Data_Controller::$IMPORT_RECORD_NONE .' GROUP BY subject';
