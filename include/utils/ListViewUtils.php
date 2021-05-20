@@ -2991,10 +2991,7 @@ function getRelCheckquery($currentmodule, $returnmodule, $recordid) {
 function setSessionVar($lv_array, $noofrows, $max_ent, $module = '', $related = '') {
 	global $currentModule;
 	$start = '';
-	if ($noofrows >= 1) {
-		$lv_array['start'] = 1;
-		$start = 1;
-	} elseif ($related != '' && $noofrows == 0) {
+	if ($noofrows >= 1 || ($noofrows == 0 && $related != '')) {
 		$lv_array['start'] = 1;
 		$start = 1;
 	} else {

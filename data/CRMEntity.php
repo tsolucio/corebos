@@ -1855,9 +1855,7 @@ class CRMEntity {
 		if ($cachedModuleFields) {
 			foreach ($cachedModuleFields as $fieldinfo) {
 				// Skip non-supported fields
-				if (in_array($fieldinfo['uitype'], $skip_uitypes)) {
-					continue;
-				} else {
+				if (!in_array($fieldinfo['uitype'], $skip_uitypes)) {
 					$colf[$fieldinfo['fieldname']] = $fieldinfo['uitype'];
 				}
 			}
@@ -2080,9 +2078,7 @@ class CRMEntity {
 		$num_rows = $adb->num_rows($result);
 		for ($i = 0; $i < $num_rows; $i++) {
 			$columnname = $adb->query_result($result, $i, 'columnname');
-			if (in_array($columnname, $this->sortby_fields)) {
-				continue;
-			} else {
+			if (!in_array($columnname, $this->sortby_fields)) {
 				$this->sortby_fields[] = $columnname;
 			}
 		}
