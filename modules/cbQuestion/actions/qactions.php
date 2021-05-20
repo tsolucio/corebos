@@ -217,7 +217,6 @@ class qactions_Action extends CoreBOS_ActionController {
 		$smarty = new vtigerCRM_Smarty();
 		$rdo = array();
 		require 'modules/com_vtiger_workflow/VTEntityMethodManager.inc';
-		$emm = new VTEntityMethodManager($adb);
 		$rs = $adb->pquery('select qname,qmodule,uniqueid,qmodule from vtiger_cbquestion where cbquestionid=?', array($record));
 		if (empty($rs->fields['uniqueid']) || empty($rs->fields['qmodule']) || !vtlib_isModuleActive($rs->fields['qmodule'])) {
 			$rdo['status'] = 'NOK';
@@ -228,12 +227,24 @@ class qactions_Action extends CoreBOS_ActionController {
 			echo json_encode($rdo);
 			die();
 		}
+		$wfname = 'Sync materialized view for Update on '.$rs->fields['qname'];
+		$wfrs = $adb->pquery('SELECT workflow_id FROM com_vtiger_workflows WHERE summary=? and module_name=?', array($wfname, $rs->fields['qmodule']));
+		if ($wfrs && $adb->num_rows($wfrs)==1) {
+			$rdo['status'] = 'NOK';
+			$rdo['msg'] = getTranslatedString('MVIEWWFWFAlredyExists', 'cbQuestion');
+			$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
+			$smarty->assign('ERROR_MESSAGE', $rdo['msg']);
+			$rdo['notify'] = $smarty->fetch('applicationmessage.tpl');
+			echo json_encode($rdo);
+			die();
+		}
+		$emm = new VTEntityMethodManager($adb);
 		$emm->addEntityMethod($rs->fields['qmodule'], 'CBQuestionMViewFunction', 'modules/cbQuestion/workflow/mview.php', 'CBQuestionMViewFunction');
 		$this->updateMViewField($record, 'mviewwf', '1');
 		// create workflow tasks for sync
 		$WorkFlowMgr = new VTWorkflowManager($adb);
 		$WorkFlow = $WorkFlowMgr->newWorkFlow($rs->fields['qmodule']);
-		$WorkFlow->description = 'Sync materialized view for Update on '.$rs->fields['qname'];
+		$WorkFlow->description = $wfname;
 		$WorkFlow->executionCondition = VTWorkflowManager::$ON_EVERY_SAVE;
 		$WorkFlow->defaultworkflow = 0;
 		$WorkFlow->schtypeid = 0;
@@ -248,7 +259,7 @@ class qactions_Action extends CoreBOS_ActionController {
 		$tm = new VTTaskManager($adb);
 		$task = $tm->createTask('VTEntityMethodTask', $WorkFlow->id);
 		$task->active = true;
-		$task->summary = 'Sync materialized view for Update on '.$rs->fields['qname'];
+		$task->summary = $wfname;
 		$task->methodName = 'CBQuestionMViewFunction';
 		$task->executeImmediately = '1';
 		$task->test = '';
