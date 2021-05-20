@@ -859,7 +859,7 @@ function vtws_transferOwnership($ownerId, $newOwnerId, $delete = true) {
 	//Updating the smcreatorid,smownerid, modifiedby in vtiger_crmentity
 	$denormModules = getDenormalizedModules();
 	if (count($denormModules) > 0) {
-		foreach ($denormModules as $key => $table) {
+		foreach ($denormModules as $table) {
 			$db->pquery('update '.$table.' set smcreatorid=? where smcreatorid=?', array($newOwnerId, $ownerId));
 			$db->pquery('update '.$table.' set smownerid=? where smownerid=?', array($newOwnerId, $ownerId));
 			$db->pquery('update '.$table.' set modifiedby=? where modifiedby=?', array($newOwnerId, $ownerId));

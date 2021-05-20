@@ -215,7 +215,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$selected_entries = explode(' |##| ', $col_fields[$fieldname]);
 
 		if (!empty($picklistValues)) {
-			foreach ($picklistValues as $order => $pickListValue) {
+			foreach ($picklistValues as $pickListValue) {
 				foreach ($selected_entries as $selected_entries_value) {
 					if (trim($selected_entries_value) == trim(htmlentities($pickListValue, ENT_QUOTES, $default_charset))) {
 						$chk_val = 'selected';
@@ -380,14 +380,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		if ($uitype == 255 && $fieldpermission == 0 && $fieldpermission != '') {
 			$fieldvalue[] = '';
 		} else {
-			$roleid = $current_user->roleid;
-			$subrole = getRoleSubordinates($roleid);
-			if (count($subrole) > 0) {
-				$roleids = implode("','", $subrole);
-				$roleids = $roleids . "','" . $roleid;
-			} else {
-				$roleids = $roleid;
-			}
 			if ($userprivs->hasGlobalReadPermission()) {
 				$pick_query = 'select salutationtype from vtiger_salutationtype order by salutationtype';
 				$params = array();
@@ -406,10 +398,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			for ($j = 0; $j < $noofpickrows; $j++) {
 				$pickListValue = $adb->query_result($pickListResult, $j, 'salutationtype');
 				if ($sal_value == $pickListValue) {
-					$chk_val = 'selected';
 					$salcount++;
-				} else {
-					$chk_val = '';
 				}
 			}
 			$notacc = '';
@@ -652,7 +641,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 				$label_fld[] = $app_strings['LBL_LEAD_NAME'];
 				$displayValueArray = getEntityName($parent_module, $value);
 				if (!empty($displayValueArray)) {
-					foreach ($displayValueArray as $key => $field_value) {
+					foreach ($displayValueArray as $field_value) {
 						$lead_name = $field_value;
 					}
 				}

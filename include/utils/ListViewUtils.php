@@ -2612,7 +2612,7 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 	$output .= '</td>';
 	$log->debug('< getTableHeaderNavigation');
 	if ($navigation_array['first'] == '') {
-		return;
+		return '';
 	} else {
 		return $output;
 	}
@@ -2697,7 +2697,6 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 			$result = $adb->pquery($query, array($relmod_recordid));
 			$rows = $adb->num_rows($result);
 			if ($rows != 0) {
-				$j = 0;
 				$contactid_comma = '(';
 				for ($k = 0; $k < $rows; $k++) {
 					$contactid = $adb->query_result($result, $k, 'contactid');
@@ -2716,7 +2715,6 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 			$result = $adb->pquery($query, array($relmod_recordid, 'Contacts'));
 			$rows = $adb->num_rows($result);
 			if ($rows != 0) {
-				$j = 0;
 				$contactid_comma = '(';
 				for ($k = 0; $k < $rows; $k++) {
 					$contactid = $adb->query_result($result, $k, 'crmid');
@@ -2760,11 +2758,10 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 					inner join '.$mod->crmentityTable.' as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_account.accountid
 					where vtiger_crmentity.deleted=0 and vtiger_potential.related_to=?';
 			}
-			$pot_result = $result = $adb->pquery($pot_query, array($relmod_recordid));
+			$pot_result = $adb->pquery($pot_query, array($relmod_recordid));
 			$rows = $adb->num_rows($pot_result);
 			$potids_comma = '';
 			if ($rows != 0) {
-				$j = 0;
 				$potids_comma .= '(';
 				for ($k = 0; $k < $rows; $k++) {
 					$potential_ids = $adb->query_result($pot_result, $k, 'potentialid');
@@ -2781,8 +2778,7 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 		}
 	} elseif ($current_module == 'Products') {
 		if ($relmodule == 'Accounts') {
-			$pro_query = "select productid from vtiger_seproductsrel where setype='Accounts' and crmid=?";
-			$pro_result = $result = $adb->pquery($pro_query, array($relmod_recordid));
+			$pro_result = $adb->pquery("select productid from vtiger_seproductsrel where setype='Accounts' and crmid=?", array($relmod_recordid));
 			$rows = $adb->num_rows($pro_result);
 			if ($rows != 0) {
 				$proids_comma = '(';
@@ -2804,11 +2800,9 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 		}
 	} elseif ($current_module == 'Quotes') {
 		if ($relmodule == 'Accounts') {
-			$quote_query = 'select quoteid from vtiger_quotes where accountid=?';
-			$quote_result = $result = $adb->pquery($quote_query, array($relmod_recordid));
+			$quote_result = $adb->pquery('select quoteid from vtiger_quotes where accountid=?', array($relmod_recordid));
 			$rows = $adb->num_rows($quote_result);
 			if ($rows != 0) {
-				$j = 0;
 				$qtids_comma = '(';
 				for ($k = 0; $k < $rows; $k++) {
 					$quote_ids = $adb->query_result($quote_result, $k, 'quoteid');
@@ -2825,8 +2819,7 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 		}
 	} elseif ($current_module == 'SalesOrder') {
 		if ($relmodule == 'Accounts') {
-			$SO_query = 'select salesorderid from vtiger_salesorder where accountid=?';
-			$SO_result = $result = $adb->pquery($SO_query, array($relmod_recordid));
+			$SO_result = $adb->pquery('select salesorderid from vtiger_salesorder where accountid=?', array($relmod_recordid));
 			$rows = $adb->num_rows($SO_result);
 			if ($rows != 0) {
 				$SOids_comma = '(';
@@ -3065,7 +3058,6 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
 	$relatedListRow = $adb->fetch_row($relatedListResult);
 	$header = $relatedListRow['label'];
 	$actions = $relatedListRow['actions'];
-	$functionName = $relatedListRow['name'];
 
 	$urldata = "module=$module&action={$module}Ajax&file=DetailViewAjax&record={$recordid}&" .
 			"ajxaction=LOADRELATEDLIST&header={$header}&relation_id={$relatedListRow['relation_id']}" .
@@ -3110,7 +3102,7 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
 	$output .= '</td>';
 	$log->debug('< getRelatedTableHeaderNavigation');
 	if ($navigation_array['first'] == '') {
-		return;
+		return '';
 	} else {
 		return $output;
 	}
@@ -3507,7 +3499,7 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 	}
 	$output .= '</td>';
 	if ($navigation_array['first'] == '') {
-		return;
+		return '';
 	} else {
 		return $output;
 	}

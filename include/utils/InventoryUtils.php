@@ -1009,7 +1009,6 @@ function createRecords($obj) {
 
 	$moduleHandler = vtws_getModuleHandlerFromName($moduleName, $obj->user);
 	$moduleMeta = $moduleHandler->getMeta();
-	$moduleObjectId = $moduleMeta->getEntityId();
 	$moduleFields = $moduleMeta->getModuleFields();
 	include_once 'include/fields/InventoryLineField.php';
 	$ilfields = new InventoryLineField();
@@ -1047,11 +1046,10 @@ function createRecords($obj) {
 	$numberOfRecords = $adb->num_rows($result);
 
 	if ($numberOfRecords <= 0) {
-		return;
+		return false;
 	}
 
 	$fieldMapping = $obj->fieldMapping;
-	$fieldColumnMapping = $moduleMeta->getFieldColumnMapping();
 
 	for ($i = 0; $i < $numberOfRecords; ++$i) {
 		$row = $adb->raw_query_result_rowdata($result, $i);

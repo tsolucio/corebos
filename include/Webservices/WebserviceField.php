@@ -477,7 +477,6 @@ class WebserviceField {
 		static $purified_plcache = array();
 		$fieldName = $this->getFieldName();
 
-		$default_charset = VTWS_PreserveGlobal::getGlobal('default_charset');
 		$moduleName = getTabModuleName($this->getTabId());
 		$temp_mod_strings = ($moduleName != '' ) ? return_module_language($current_language, $moduleName) : $mod_strings;
 		if (array_key_exists($moduleName.$fieldName, $purified_plcache)) {

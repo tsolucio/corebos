@@ -1672,12 +1672,10 @@ function SaveImage($files, $module, $id, $mode) {
 					$saveimage = 'true';
 					$image_error = 'false';
 				} else {
-					$savelogo = 'false';
 					$image_error = 'true';
 					$errormessage = 'image';
 				}
 			} else {
-				$savelogo = 'false';
 				$image_error = 'true';
 				$errormessage = 'invalid';
 			}

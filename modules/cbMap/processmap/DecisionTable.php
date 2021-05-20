@@ -104,7 +104,7 @@ class DecisionTable extends processcbMap {
 			$aggregate = (String)$xml->aggregate;
 		}
 		$rules = array();
-		foreach ($xml->rules->rule as $key => $value) {
+		foreach ($xml->rules->rule as $value) {
 			$sequence = (String)$value->sequence;
 			$ruleOutput = (String)$value->output;
 			$rule = array(
@@ -118,9 +118,9 @@ class DecisionTable extends processcbMap {
 				$rule['type'] = 'expression';
 				$rule['valueraw'] = $testexpression;
 				if (is_array($context)) {
-					foreach ($context as $key => $value) {
-						if (!is_array($value) && !is_object($value)) {
-							$testexpression = str_ireplace('$['.$key.']', $value, $testexpression);
+					foreach ($context as $ctxkey => $ctxvalue) {
+						if (!is_array($ctxvalue) && !is_object($ctxvalue)) {
+							$testexpression = str_ireplace('$['.$ctxkey.']', $ctxvalue, $testexpression);
 						}
 					}
 				}
@@ -324,7 +324,7 @@ class DecisionTable extends processcbMap {
 			if (isset($aggregate)) {
 				if ($aggregate == 'sum') {
 					$sum = 0;
-					foreach ($outputs as $k => $v) {
+					foreach ($outputs as $v) {
 						if (is_numeric($v)) {
 							$sum += $v;
 						}
@@ -332,7 +332,7 @@ class DecisionTable extends processcbMap {
 					$output = $sum;
 				} elseif ($aggregate == 'min') {
 					$min = null;
-					foreach ($outputs as $k => $v) {
+					foreach ($outputs as $v) {
 						if (is_numeric($v)) {
 							if (!$min) {
 								$min = $v;
@@ -345,7 +345,7 @@ class DecisionTable extends processcbMap {
 					$output = $min;
 				} elseif ($aggregate == 'max') {
 					$max = null;
-					foreach ($outputs as $k => $v) {
+					foreach ($outputs as $v) {
 						if (is_numeric($v)) {
 							if (!$max) {
 								$max = $v;
@@ -358,7 +358,7 @@ class DecisionTable extends processcbMap {
 					$output = $max;
 				} elseif ($aggregate == 'count') {
 					$count = 0;
-					foreach ($outputs as $k => $v) {
+					foreach ($outputs as $v) {
 						if (is_numeric($v)) {
 							$count++;
 						}

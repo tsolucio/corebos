@@ -280,12 +280,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		} else {
 			$assigned_user_id = $current_user->id;
 		}
-		if ($uitype == 52) {
-			$combo_lbl_name = 'assigned_user_id';
-		} elseif ($uitype == 77) {
-			$combo_lbl_name = 'assigned_user_id1';
-		}
-
 		if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid($module_name))) {
 			$ua = get_user_array(false, 'Active', $assigned_user_id, 'private');
 		} else {
@@ -1634,8 +1628,8 @@ function getBlockInformation($module, $result, $col_fields, $tabid, $block_label
 	}
 	$noofrows = $adb->num_rows($result);
 	for ($i=0; $i<$noofrows; $i++) {
-		$fieldtablename = $adb->query_result($result, $i, 'tablename');
-		$fieldcolname = $adb->query_result($result, $i, 'columnname');
+		// $result > 'tablename'
+		// $result > 'columnname'
 		$uitype = $adb->query_result($result, $i, 'uitype');
 		$fieldname = $adb->query_result($result, $i, 'fieldname');
 		$fieldlabel = $adb->query_result($result, $i, 'fieldlabel');

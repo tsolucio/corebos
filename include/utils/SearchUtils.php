@@ -489,14 +489,13 @@ function getAdvSearchfields($module) {
 
 	$result = $adb->pquery($sql, $params);
 	$noofrows = $adb->num_rows($result);
-	$block = '';
 	$select_flag = '';
 	$OPTION_SET = '';
 	for ($i=0; $i<$noofrows; $i++) {
 		$fieldtablename = $adb->query_result($result, $i, 'tablename');
 		$fieldcolname = $adb->query_result($result, $i, 'columnname');
 		$fieldname = $adb->query_result($result, $i, 'fieldname');
-		$block = $adb->query_result($result, $i, 'block');
+		// $result > 'block'
 		$fieldtype = $adb->query_result($result, $i, 'typeofdata');
 		$fieldtype = explode('~', $fieldtype);
 		$fieldtypeofdata = $fieldtype[0];

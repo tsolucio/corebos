@@ -108,7 +108,7 @@ class QueryGenerator {
 	}
 
 	private function setHasUserReferenceField() {
-		foreach ($this->meta->getModuleFields() as $fname => $finfo) {
+		foreach ($this->meta->getModuleFields() as $finfo) {
 			$this->hasUserReferenceField = ($finfo->getUIType()=='101');
 			if ($this->hasUserReferenceField) {
 				break;
@@ -663,7 +663,7 @@ class QueryGenerator {
 					$meta = $this->getMeta($module);
 					$nameFields = $this->getModuleNameFields($module);
 					$nameFieldList = explode(',', $nameFields);
-					foreach ($nameFieldList as $index => $column) {
+					foreach ($nameFieldList as $column) {
 						$joinas = 'LEFT JOIN';
 						// for non admin user users module is inaccessible.
 						// so need hard code the tablename.
@@ -775,7 +775,7 @@ class QueryGenerator {
 			$alreadyinfrom = array_keys($tableJoinMapping);
 			$alreadyinfrom[] = $baseTable;
 			if (isset($this->referenceModuleField) && is_array($this->referenceModuleField)) {
-				foreach ($this->referenceModuleField as $index => $conditionInfo) {
+				foreach ($this->referenceModuleField as $conditionInfo) {
 					if ($conditionInfo['relatedModule'] == 'Users' && $baseModule != 'Users'
 					 && !in_array('vtiger_users', $referenceFieldTableList) && !in_array('vtiger_users', $tableList)) {
 						$sql .= ' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid ';

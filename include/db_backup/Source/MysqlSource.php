@@ -46,10 +46,10 @@ class MysqlSource extends BackupSource {
 			);
 		}
 		$this->connection->_Execute("SET NAMES 'utf8'", false);
-		$result = $this->connection->_Execute("SET interactive_timeout=28800", false);
-		$result = $this->connection->_Execute("SET wait_timeout=28800", false);
-		$result = $this->connection->_Execute("SET net_write_timeout=900", false);
-		$result = $this->connection->_Execute("SET net_read_timeout=900", false);
+		$this->connection->_Execute("SET interactive_timeout=28800", false);
+		$this->connection->_Execute("SET wait_timeout=28800", false);
+		$this->connection->_Execute("SET net_write_timeout=900", false);
+		$this->connection->_Execute("SET net_read_timeout=900", false);
 	}
 
 	public function next() {

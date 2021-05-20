@@ -343,7 +343,6 @@ class PearDatabase {
 	 */
 	public function query_batch($prefixsql, $valuearray) {
 		if ($this->ALLOW_SQL_QUERY_BATCH) {
-			$sql = $prefixsql;
 			$suffixsql = $valuearray;
 			if (!is_array($valuearray)) {
 				$suffixsql = implode(',', $valuearray);
@@ -359,7 +358,7 @@ class PearDatabase {
 	}
 
 	public function query($sql, $dieOnError = false, $msg = '') {
-		global $log, $default_charset;
+		global $log;
 		// Performance Tuning: Have we cached the result earlier?
 		if ($this->isCacheEnabled()) {
 			$fromcache = $this->getCacheInstance()->getCacheResult($sql);
@@ -423,7 +422,7 @@ class PearDatabase {
 	* @param $msg -- Error message on query execution failure
 	*/
 	public function pquery($sql, $params, $dieOnError = false, $msg = '') {
-		global $log, $default_charset;
+		global $log;
 		if (!isset($params)) {
 			$params = array();
 		}
@@ -674,7 +673,7 @@ class PearDatabase {
 
 	public function run_insert_data($table, $data) {
 		$query = $this->sql_insert_data($table, $data);
-		$res = $this->query($query);
+		$this->query($query);
 		$this->query('commit;');
 	}
 
@@ -711,7 +710,7 @@ class PearDatabase {
 
 	public function run_query_list($query, $field) {
 		$records = $this->run_query_allrecords($query);
-		foreach ($records as $walk => $cur) {
+		foreach ($records as $cur) {
 			$list[] = $cur[$field];
 		}
 	}
