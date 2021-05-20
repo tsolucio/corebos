@@ -4,11 +4,12 @@
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 20/05/2021 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
  ********************************************************************************/
 
 var mod_alert_arr = {
-	'LBL_USER_NAME': 'User Name',
-	'LBL_ACTION': 'Action',
-	'LBL_RECORD_ID': 'Record ID',
-	'LBL_ACTION_DATE': 'Action Date',
+	'LBL_USER_NAME': 'Nome usuário',
+	'LBL_ACTION': 'Ação',
+	'LBL_RECORD_ID': 'Nr Registro',
+	'LBL_ACTION_DATE': 'Data ação',
 };
