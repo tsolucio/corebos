@@ -6,3 +6,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
+function exportUserComments(recordid) {
+	if (recordid) {
+		window.location.href = "index.php?module=ProjectTask&action=ProjectTaskAjax&file=exportUserComments&recordid="+recordid;
+	}
+}
