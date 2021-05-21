@@ -91,4 +91,11 @@
 	<classname>changeEntityNameForUsersModule</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>Add export comments business action to module</description>
+	<filename>build/changeSets/2021/addCommentsBusinessAction.php</filename>
+	<classname>addCommentsBusinessAction</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
