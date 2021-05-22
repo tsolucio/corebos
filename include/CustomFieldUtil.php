@@ -78,27 +78,6 @@ function getCustomFieldArray($module) {
 }
 
 /**
- * Function to get columnname and vtiger_fieldlabel from vtiger_field vtiger_table
- * @param $module :: module name -- Type string
- * @param $trans_array :: translated column vtiger_fields -- Type array
- * returns trans_array in key-value pair array format
- */
-function getCustomFieldTrans($module, $trans_array) {
-	global $log, $adb;
-	$log->debug('> getCustomFieldTrans '.$module.','. $trans_array);
-	$tab_id = getTabid($module);
-	$custquery = 'select columnname,fieldlabel from vtiger_field where generatedtype=2 and vtiger_field.presence in (0,2) and tabid=?';
-	$custresult = $adb->pquery($custquery, array($tab_id));
-	$noofrows = $adb->num_rows($custresult);
-	for ($i=0; $i<$noofrows; $i++) {
-		$colName=$adb->query_result($custresult, $i, 'columnname');
-		$fldLbl = $adb->query_result($custresult, $i, 'fieldlabel');
-		$trans_array[$colName] = $fldLbl;
-	}
-	$log->debug('< getCustomFieldTrans');
-}
-
-/**
  * Function to get customfield record from vtiger_field vtiger_table
  * @param $tab :: Tab ID -- Type integer
  * @param $datatype :: vtiger_field name -- Type string
