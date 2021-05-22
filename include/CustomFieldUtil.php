@@ -114,4 +114,44 @@ function getCustomFieldTableInfo($module) {
 	$log->debug('< getCustomFieldTableInfo');
 	return $cfinfo;
 }
+
+/**
+ * Function to get Lead custom field Mapping entries
+ * @param integer Lead custom field id
+ * @return array custom field mapping
+ */
+function getListLeadMapping($cfid) {
+	global $adb;
+	$label = array();
+	$result = $adb->pquery('select * from vtiger_convertleadmapping where cfmid=?', array($cfid));
+	$noofrows = $adb->num_rows($result);
+	$flabelsql = 'select fieldlabel from vtiger_field where fieldid=?';
+	for ($i = 0; $i < $noofrows; $i++) {
+		$accountid = $adb->query_result($result, $i, 'accountfid');
+		$contactid = $adb->query_result($result, $i, 'contactfid');
+		$potentialid = $adb->query_result($result, $i, 'potentialfid');
+		if (empty($accountid)) {
+			$label['accountlabel'] = '';
+		} else {
+			$flresult = $adb->pquery($flabelsql, array($accountid));
+			$accountfield = $adb->query_result($flresult, 0, 'fieldlabel');
+			$label['accountlabel'] = getTranslatedString($accountfield, 'Accounts');
+		}
+		if (empty($contactid)) {
+			$label['contactlabel'] = '';
+		} else {
+			$flresult = $adb->pquery($flabelsql, array($contactid));
+			$contactfield = $adb->query_result($flresult, 0, 'fieldlabel');
+			$label['contactlabel'] = getTranslatedString($contactfield, 'Contacts');
+		}
+		if (empty($potentialid)) {
+			$label['potentiallabel'] = '';
+		} else {
+			$flresult = $adb->pquery($flabelsql, array($potentialid));
+			$potentialfield = $adb->query_result($flresult, 0, 'fieldlabel');
+			$label['potentiallabel'] = getTranslatedString($potentialfield, 'Potentials');
+		}
+	}
+	return $label;
+}
 ?>

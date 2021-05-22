@@ -461,39 +461,6 @@ function insertDetailViewBlockWidgets($cfentries, $fld_module) {
 	return $retarr;
 }
 
-/**
- * Function to Lead customfield Mapping entries
- * @param integer  $cfid   - Lead customfield id
- * return array    $label  - customfield mapping
- */
-function getListLeadMapping($cfid) {
-	global $adb;
-	$sql='select * from vtiger_convertleadmapping where cfmid = ?';
-	$result = $adb->pquery($sql, array($cfid));
-	$noofrows = $adb->num_rows($result);
-	for ($i =0; $i <$noofrows; $i++) {
-		$leadid = $adb->query_result($result, $i, 'leadfid');
-		$accountid = $adb->query_result($result, $i, 'accountfid');
-		$contactid = $adb->query_result($result, $i, 'contactfid');
-		$potentialid = $adb->query_result($result, $i, 'potentialfid');
-
-		$sql2='select fieldlabel from vtiger_field where fieldid = ? and vtiger_field.presence in (0,2)';
-		$result2 = $adb->pquery($sql2, array($accountid));
-		$accountfield = $adb->query_result($result2, 0, 'fieldlabel');
-		$label['accountlabel'] = $accountfield;
-
-		$sql3='select fieldlabel from vtiger_field where fieldid = ? and vtiger_field.presence in (0,2)';
-		$result3 = $adb->pquery($sql3, array($contactid));
-		$contactfield = $adb->query_result($result3, 0, 'fieldlabel');
-		$label['contactlabel'] = $contactfield;
-		$sql4='select fieldlabel from vtiger_field where fieldid = ? and vtiger_field.presence in (0,2)';
-		$result4 = $adb->pquery($sql4, array($potentialid));
-		$potentialfield = $adb->query_result($result4, 0, 'fieldlabel');
-		$label['potentiallabel'] = $potentialfield;
-	}
-	return $label;
-}
-
 /* function to get the modules supports Custom Fields
 */
 function getCustomFieldSupportedModules() {
