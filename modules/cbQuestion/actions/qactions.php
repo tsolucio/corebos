@@ -411,7 +411,7 @@ class qactions_Action extends CoreBOS_ActionController {
 	}
 
 	public function getBuilderData($ret = false) {
-		global $log, $adb, $current_user;
+		global $log, $adb;
 		$log->debug('> getBuilderData');
 
 		if (empty($_REQUEST['cbQuestionRecord'])) {

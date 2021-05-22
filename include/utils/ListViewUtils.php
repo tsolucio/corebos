@@ -3056,9 +3056,8 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
 	$header = $relatedListRow['label'];
 	$actions = $relatedListRow['actions'];
 
-	$urldata = "module=$module&action={$module}Ajax&file=DetailViewAjax&record={$recordid}&" .
-			"ajxaction=LOADRELATEDLIST&header={$header}&relation_id={$relatedListRow['relation_id']}" .
-			"&actions={$actions}&{$url_qry}";
+	$urldata = "module=$module&action={$module}Ajax&file=DetailViewAjax&record={$recordid}&"
+		."ajxaction=LOADRELATEDLIST&header={$header}&relation_id={$relatedListRow['relation_id']}&actions={$actions}&{$url_qry}";
 	$formattedHeader = str_replace(' ', '', $header);
 	$target = 'tbl_' . $module . '_' . $formattedHeader;
 	$imagesuffix = $module . '_' . $formattedHeader;
