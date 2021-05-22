@@ -176,7 +176,7 @@ class Import_Data_Controller {
 		$numberOfRecords = $adb->num_rows($result);
 
 		if ($numberOfRecords <= 0) {
-			return;
+			return true;
 		}
 
 		$afterImportRecordExists = method_exists($focus, 'afterImportRecord');

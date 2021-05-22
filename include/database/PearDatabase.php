@@ -74,7 +74,7 @@ class PearDatabaseCache {
 	public function cacheResult($result, $sql, $params = false) {
 		// We don't want to cache NON-SELECT query results now
 		if (stripos(trim($sql), 'SELECT ') !== 0) {
-			return;
+			return false;
 		}
 		// If the result is too big, don't cache it
 		if ($this->_parent->num_rows($result) > $this->_CACHE_RESULT_ROW_LIMIT) {
@@ -87,6 +87,7 @@ class PearDatabaseCache {
 			$usekey = $this->_parent->convert2Sql($sql, $this->_parent->flatten_array($params));
 		}
 		$this->_queryResultCache[$usekey] = $result;
+		return true;
 	}
 
 	/**
@@ -680,7 +681,7 @@ class PearDatabase {
 	public function run_query_record($query) {
 		$result = $this->query($query);
 		if (!$result) {
-			return;
+			return false;
 		}
 		if (!is_object($result)) {
 			throw new Exception("query $query failed: ".json_encode($result));

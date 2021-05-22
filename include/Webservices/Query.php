@@ -20,7 +20,7 @@ function vtws_query($q, $user, $emptyCache = false) {
 		}
 		$vtws_query_cache = array();
 		VtigerWebserviceObject::emptyCache();
-		return;
+		return array();
 	}
 	// Cache the instance for re-use
 	$moduleRegex = "/[fF][rR][Oo][Mm]\s+([^\s;]+)/";

@@ -428,8 +428,10 @@ class qactions_Action extends CoreBOS_ActionController {
 				'debug_query' => '',
 				'debug_params' => json_encode($_REQUEST),
 			);
+			if ($ret) {
+				return $entries_list;
+			}
 			echo json_encode($entries_list);
-			return;
 		}
 		$builderData = $this->getBuilderDataQuery($ret);
 		$result = $adb->query(trim($builderData['query'], ';').$builderData['limit']);

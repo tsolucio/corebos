@@ -437,7 +437,7 @@ class Reports extends CRMEntity {
 	 */
 	public function getPriModuleColumnsList($module) {
 		if (empty($module)) {
-			return;
+			return false;
 		}
 		$ret_module_list = array();
 		foreach ($this->module_list[$module] as $key => $value) {

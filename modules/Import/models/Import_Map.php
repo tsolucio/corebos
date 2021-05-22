@@ -62,7 +62,7 @@ class Import_Map {
 
 	public function getStringifiedContent() {
 		if (empty($this->map['content'])) {
-			return;
+			return '';
 		}
 		$content = $this->map['content'];
 		$keyValueStrings = array();
@@ -76,7 +76,7 @@ class Import_Map {
 
 	public function getDefaultValues() {
 		if (empty($this->map['defaultvalues'])) {
-			return;
+			return '';
 		}
 		return $this->map['defaultvalues'];
 	}

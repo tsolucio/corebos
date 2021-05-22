@@ -2176,7 +2176,7 @@ class CRMEntity {
 		}
 
 		if (!$this->isModuleSequenceConfigured($module)) {
-			return;
+			return array();
 		}
 
 		$tabid = getTabid($module);

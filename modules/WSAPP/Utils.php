@@ -35,17 +35,12 @@ function wsapp_getApplicationName($key) {
 }
 
 function wsapp_getRecordEntityNameIds($entityNames, $modules, $user) {
-	$entityMetaList = array();
-	$db = PearDatabase::getInstance();
-
-	if (empty($entityNames)) {
-		return;
-	}
-
-	$entityNames = (array)$entityNames;
-	if (empty($modules)) {
+	if (empty($entityNames) || empty($modules)) {
 		return array();
 	}
+	$entityMetaList = array();
+	$db = PearDatabase::getInstance();
+	$entityNames = (array)$entityNames;
 	$modules = (array)$modules;
 	$entityNameIds = array();
 	foreach ($modules as $moduleName) {

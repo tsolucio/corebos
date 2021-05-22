@@ -73,7 +73,7 @@ class Vtiger_InventoryPDFController {
 
 	public function Output($filename, $type) {
 		if (is_null($this->focus)) {
-			return;
+			return '';
 		}
 		$pdfgenerator = $this->getPDFGenerator();
 		$pdfgenerator->setPagerViewer($this->getPagerViewer());

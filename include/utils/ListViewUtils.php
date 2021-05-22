@@ -3050,7 +3050,7 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
 		}
 	}
 	if (empty($relatedListResult)) {
-		return;
+		return '';
 	}
 	$relatedListRow = $adb->fetch_row($relatedListResult);
 	$header = $relatedListRow['label'];

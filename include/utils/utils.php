@@ -2883,7 +2883,7 @@ function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $us
 	$userID = $adb->query_result($result, 0, 'userid');
 	if (empty($userID)) {
 		// call to extension not configured in application > return NULL
-		return;
+		return 0;
 	}
 	$crmID = $adb->getUniqueID('vtiger_crmentity');
 	$timeOfCall = date('Y-m-d H:i:s');

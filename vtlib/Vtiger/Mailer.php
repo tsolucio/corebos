@@ -133,7 +133,7 @@ class Vtiger_Mailer extends PHPMailer {
 	 */
 	public function Send($sync = false, $linktoid = false) {
 		if (!$this->_serverConfigured) {
-			return;
+			return false;
 		}
 
 		if ($sync) {
