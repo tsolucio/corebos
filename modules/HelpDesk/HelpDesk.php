@@ -691,7 +691,7 @@ class HelpDesk extends CRMEntity {
 		$PORTAL_URL = GlobalVariable::getVariable('Application_Customer_Portal_URL', 'http://your_support_domain.tld/customerportal');
 		$portalUrl = "<a href='" . $PORTAL_URL . '/index.php?module=HelpDesk&action=index&ticketid=' . $entityId . "&fun=detail'>"
 			. getTranslatedString('LBL_TICKET_DETAILS', $moduleName) . "</a>";
-		$contents = getTranslatedString('Dear', $moduleName) . " " . getParentName(parentId) . ',<br><br>';
+		$contents = getTranslatedString('Dear', $moduleName) . ' ' . getParentName($parentId) . ',<br><br>';
 		$contents .= getTranslatedString('reply', $moduleName) . ' <b>' . $entityData->get('ticket_title')
 			. '</b>' . getTranslatedString('customer_portal', $moduleName);
 		$contents .= getTranslatedString('link', $moduleName) . '<br>';
