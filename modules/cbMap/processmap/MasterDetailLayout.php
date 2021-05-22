@@ -230,7 +230,7 @@ class MasterDetailLayout extends processcbMap {
 		}
 		$mapping['aggregations'] = array();
 		if (is_object($xml->aggregations->operation)) {
-			foreach ($xml->aggregations->operation as $k => $v) {
+			foreach ($xml->aggregations->operation as $v) {
 				$mapping['aggregations'][] = array(
 					'type' => isset($v->type) ? (String)$v->type : '',
 					'items' => isset($v->items) ? (String)$v->items : '',
