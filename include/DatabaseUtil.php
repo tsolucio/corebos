@@ -74,13 +74,13 @@ function mkTotQuery($query, $column) {
 	$query = mkXQuery($query, 'sum('.$column.') AS total');
 
 	// Strip off any "GROUP BY" clause
-	if (strpos($query, ' GROUP BY ') > 0) {
-		$query = substr($query, 0, strpos($query, ' GROUP BY '));
+	if (strripos($query, ' GROUP BY ') > 0) {
+		$query = substr($query, 0, strripos($query, ' GROUP BY '));
 	}
 
 	// Strip off any "ORDER BY" clause
-	if (strpos($query, ' ORDER BY ') > 0) {
-		$query = substr($query, 0, strpos($query, ' ORDER BY '));
+	if (strripos($query, ' ORDER BY ') > 0) {
+		$query = substr($query, 0, strripos($query, ' ORDER BY '));
 	}
 
 	return $query;
@@ -88,14 +88,14 @@ function mkTotQuery($query, $column) {
 
 //Strip tailing commands
 function stripTailCommandsFromQuery($query, $stripgroup = true) {
-	if ($stripgroup && stripos($query, ' GROUP BY ') > 0) {
-		$query = substr($query, 0, stripos($query, ' GROUP BY '));
+	if ($stripgroup && strripos($query, ' GROUP BY ') > 0) {
+		$query = substr($query, 0, strripos($query, ' GROUP BY '));
 	}
-	if (stripos($query, ' ORDER BY ') > 0) {
-		$query = substr($query, 0, stripos($query, ' ORDER BY '));
+	if (strripos($query, ' ORDER BY ') > 0) {
+		$query = substr($query, 0, strripos($query, ' ORDER BY '));
 	}
-	if (stripos($query, ' LIMIT ') > 0) {
-		$query = substr($query, 0, stripos($query, ' LIMIT '));
+	if (strripos($query, ' LIMIT ') > 0) {
+		$query = substr($query, 0, strripos($query, ' LIMIT '));
 	}
 	return $query;
 }
