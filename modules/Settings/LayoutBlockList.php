@@ -307,10 +307,9 @@ function getFieldListEntries($module) {
 					$fieldlabel = getTranslatedString($row_field['fieldlabel'], $module);
 					$defaultPermitted = true;
 					$strictlyMandatory = false;
-					if (isset($focus->mandatory_fields) && (!empty($focus->mandatory_fields)) && in_array($fieldname, $focus->mandatory_fields)) {
-						$strictlyMandatory = true;
-						$defaultPermitted = false;
-					} elseif (in_array($uitype, $nonEditableUiTypes) || $displaytype == 2) {
+					if ((isset($focus->mandatory_fields) && !empty($focus->mandatory_fields) && in_array($fieldname, $focus->mandatory_fields))
+						|| (in_array($uitype, $nonEditableUiTypes) || $displaytype == 2)
+					) {
 						$strictlyMandatory = true;
 						$defaultPermitted = false;
 					}

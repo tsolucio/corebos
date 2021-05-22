@@ -945,16 +945,11 @@ class cbCalendar extends CRMEntity {
 	 */
 	public function setActivityReminder($status) {
 		global $adb;
-		if ($status == 'on') {
-			$flag = 0;
-		} elseif ($status == 'off') {
-			$flag = 1;
-		} else {
-			return false;
+		if ($status == 'on' || $status == 'off') {
+			$adb->pquery('update vtiger_activity_reminder_popup set status=1 where recordid=?', array($this->id));
+			return true;
 		}
-		$sql = 'update vtiger_activity_reminder_popup set status=1 where recordid=?';
-		$adb->pquery($sql, array($this->id));
-		return true;
+		return false;
 	}
 
 	public function clearSingletonSaveFields() {
