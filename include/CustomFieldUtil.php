@@ -102,14 +102,14 @@ function getCustomFieldData($tab, $id, $datatype) {
 function getCustomFieldTableInfo($module) {
 	global $log;
 	$log->debug('> getCustomFieldTableInfo '.$module);
+	$cfinfo = array();
 	if (empty($module) || !vtlib_isModuleActive($module) || !vtlib_isEntityModule($module)) {
-		return array();
+		$log->debug('< getCustomFieldTableInfo');
+		return $cfinfo;
 	}
 	$primary = CRMEntity::getInstance($module);
 	if (isset($primary->customFieldTable)) {
 		$cfinfo = $primary->customFieldTable;
-	} else {
-		$cfinfo = '';
 	}
 	$log->debug('< getCustomFieldTableInfo');
 	return $cfinfo;
