@@ -290,7 +290,11 @@ class BusinessActions extends CRMEntity {
 					include_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 					$entityCache = new VTEntityCache($current_user);
 					$ct = new VTSimpleTemplate($link->linkurl, true);
-					$link->linkurl = $ct->render($entityCache, vtws_getEntityId(getSalesEntityType($parameters['RECORD'])).'x'.$parameters['RECORD']);
+					if ($module_name=='Users') {
+						$link->linkurl = $ct->render($entityCache, vtws_getEntityId('Users').'x'.$parameters['RECORD']);
+					} else {
+						$link->linkurl = $ct->render($entityCache, vtws_getEntityId(getSalesEntityType($parameters['RECORD'])).'x'.$parameters['RECORD']);
+					}
 				}
 			}
 			if ($multitype) {
