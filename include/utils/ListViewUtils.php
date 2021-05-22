@@ -3507,8 +3507,7 @@ function getRecordRangeMessage($listResult, $limitStartRecord, $totalRows = '') 
 	$numRows = $adb->num_rows($listResult);
 	$recordListRangeMsg = '';
 	if ($numRows > 0) {
-		$recordListRangeMsg = $app_strings['LBL_SHOWING'] . ' ' . $app_strings['LBL_RECORDS'] .
-				' ' . ($limitStartRecord + 1) . ' - ' . ($limitStartRecord + $numRows);
+		$recordListRangeMsg = $app_strings['LBL_SHOWING'] . ' ' . $app_strings['LBL_RECORDS'] . ' ' . ($limitStartRecord + 1) . ' - ' . ($limitStartRecord + $numRows);
 		if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0)) {
 			$recordListRangeMsg .= ' ' . $app_strings['LBL_LIST_OF'] . " $totalRows";
 		}

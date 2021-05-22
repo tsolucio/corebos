@@ -17,7 +17,7 @@ function getValuesforRBColumns($column_name, $search_string) {
 	$num_rows = $adb->num_rows($result);
 	if ($num_rows >= 1) {
 		$val = $tablename;
-		$explode_column=explode(",", $val);
+		$explode_column=explode(',', $val);
 		$x=count($explode_column);
 		if ($x >= 1) {
 			$main_tablename = explode(':', $explode_column[0]);
@@ -32,17 +32,16 @@ function RBSearch($module) {
 	global $log;
 	$log->debug('> RBSearch '.$module);
 	$url_string='';
-	if (isset($_REQUEST['search_field']) && $_REQUEST['search_field'] !="") {
+	if (isset($_REQUEST['search_field']) && $_REQUEST['search_field'] != '') {
 		$search_column=vtlib_purify($_REQUEST['search_field']);
 	}
-	if (isset($_REQUEST['search_text']) && $_REQUEST['search_text']!="") {
+	if (isset($_REQUEST['search_text']) && $_REQUEST['search_text']!= '') {
 		$search_string=$_REQUEST['search_text'];
 	}
-	if (isset($_REQUEST['searchtype']) && $_REQUEST['searchtype']!="") {
+	if (isset($_REQUEST['searchtype']) && $_REQUEST['searchtype']!= '') {
 		$search_type=vtlib_purify($_REQUEST['searchtype']);
-		if ($search_type == "BasicSearch") {
+		if ($search_type == 'BasicSearch') {
 			$where=basicRBsearch($module, $search_column, $search_string);
-		} else {
 		}
 
 		$url_string = "&search_field=".$search_column."&search_text=".$search_string."&searchtype=BasicSearch";
@@ -50,7 +49,7 @@ function RBSearch($module) {
 			$url_string .= "&type=".vtlib_purify($_REQUEST['type']);
 		}
 		$log->debug('< RBSearch');
-		return $where."#@@#".$url_string;
+		return $where.'#@@#'.$url_string;
 	}
 }
 
@@ -87,11 +86,11 @@ function basicRBsearch($module, $search_field, $search_string) {
 			}
 			//Check ends
 			$table_name=$adb->query_result($result, 0, 'tablename');
-			if ($table_name == "vtiger_crmentity" && $column_name == "smownerid") {
+			if ($table_name == 'vtiger_crmentity' && $column_name == 'smownerid') {
 				$where = get_usersid($table_name, $column_name, $search_string);
-			} elseif ($table_name == "vtiger_activity" && $column_name == "status") {
+			} elseif ($table_name == 'vtiger_activity' && $column_name == 'status') {
 				$where="($table_name.$column_name like '".formatForSqlLike($search_string)."' or vtiger_activity.eventstatus like '".formatForSqlLike($search_string)."')";
-			} elseif ($table_name == "vtiger_pricebook" && $column_name == "active") {
+			} elseif ($table_name == 'vtiger_pricebook' && $column_name == 'active') {
 				if (stristr('yes', $search_string)) {
 					$where="$table_name.$column_name = 1";
 				} elseif (stristr('no', $search_string)) {

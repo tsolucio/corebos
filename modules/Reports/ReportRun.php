@@ -474,22 +474,21 @@ class ReportRun extends CRMEntity {
 	}
 
 	/** Function to get field that is to be compared in query form for the given Comparator and field
-	 *  @ param $field : field
-	 *  returns the value for the comparator
+	 *  @param string field expression
+	 *  @return string the value for the comparator
 	 */
 	public function getFilterComparedField($field) {
 		global $adb;
-			$field = explode('#', $field);
-			$module = $field[0];
-			$fieldname = trim($field[1]);
-			$tabid = getTabId($module);
-			$field_query = $adb->pquery(
-				'SELECT tablename,columnname,typeofdata,fieldname,uitype FROM vtiger_field WHERE tabid = ? AND fieldname= ?',
-				array($tabid,$fieldname)
-			);
-			$fieldtablename = $adb->query_result($field_query, 0, 'tablename');
-			$fieldcolname = $adb->query_result($field_query, 0, 'columnname');
-			$typeofdata = $adb->query_result($field_query, 0, 'typeofdata');
+		$field = explode('#', $field);
+		$module = $field[0];
+		$fieldname = trim($field[1]);
+		$tabid = getTabId($module);
+		$field_query = $adb->pquery(
+			'SELECT tablename,columnname FROM vtiger_field WHERE tabid=? AND fieldname=?',
+			array($tabid,$fieldname)
+		);
+		$fieldtablename = $adb->query_result($field_query, 0, 'tablename');
+		$fieldcolname = $adb->query_result($field_query, 0, 'columnname');
 		if ($fieldtablename == 'vtiger_crmentity') {
 			$fieldtablename = $fieldtablename.$module;
 		}

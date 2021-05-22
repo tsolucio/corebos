@@ -222,7 +222,7 @@ class Webforms_Model {
 
 		$model = false;
 		// Retrieve model and populate information
-		$result = $adb->pquery("SELECT * FROM vtiger_webforms WHERE publicid=? AND enabled=?", array($publicid, 1));
+		$result = $adb->pquery('SELECT * FROM vtiger_webforms WHERE publicid=? AND enabled=?', array($publicid, 1));
 		if ($adb->num_rows($result)) {
 			$model = new Webforms_Model($adb->fetch_array($result));
 			$model->retrieveFields();
@@ -236,7 +236,7 @@ class Webforms_Model {
 		$id = $data;
 		$model = false;
 		// Retrieve model and populate information
-		$result = $adb->pquery("SELECT * FROM vtiger_webforms WHERE id=?", array($id));
+		$result = $adb->pquery('SELECT * FROM vtiger_webforms WHERE id=?', array($id));
 		if ($adb->num_rows($result)) {
 			$model = new Webforms_Model($adb->fetch_array($result));
 			$model->retrieveFields();
