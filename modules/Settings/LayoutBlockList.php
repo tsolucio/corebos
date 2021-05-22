@@ -528,8 +528,7 @@ function changeFieldOrder() {
 		if ($_REQUEST['what_to_do']=='block_down') {
 			$blockid = vtlib_purify($_REQUEST['blockid']);
 			if (substr($blockid, 0, 3)=='dvb') { // detail view block
-				$sql_up_current='update vtiger_businessactions set sequence=sequence+1 where businessactionsid=?';
-				$result_up_current = $adb->pquery($sql_up_current, array(substr($blockid, 3)));
+				$adb->pquery('update vtiger_businessactions set sequence=sequence+1 where businessactionsid=?', array(substr($blockid, 3)));
 			} else {  // normal block
 				$sql='select sequence from vtiger_blocks where blockid=?';
 				$result = $adb->pquery($sql, array($blockid));
@@ -542,19 +541,15 @@ function changeFieldOrder() {
 				$next_sequence=$row_next['sequence'];
 				$next_id=$row_next['blockid'];
 
-				$sql_up_current='update vtiger_blocks set sequence=? where blockid=?';
-				$result_up_current = $adb->pquery($sql_up_current, array($next_sequence, $blockid));
-
-				$sql_up_next='update vtiger_blocks set sequence=? where blockid=?';
-				$result_up_next = $adb->pquery($sql_up_next, array($current_sequence,$next_id));
+				$adb->pquery('update vtiger_blocks set sequence=? where blockid=?', array($next_sequence, $blockid));
+				$adb->pquery('update vtiger_blocks set sequence=? where blockid=?', array($current_sequence,$next_id));
 			}
 		}
 
 		if ($_REQUEST['what_to_do']=='block_up') {
 			$blockid = vtlib_purify($_REQUEST['blockid']);
 			if (substr($blockid, 0, 3)=='dvb') { // detail view block
-				$sql_up_current='update vtiger_businessactions set sequence=if (sequence-1<0,0,sequence-1) where businessactionsid=?';
-				$result_up_current = $adb->pquery($sql_up_current, array(substr($blockid, 3)));
+				$adb->pquery('update vtiger_businessactions set sequence=if (sequence-1<0,0,sequence-1) where businessactionsid=?', array(substr($blockid, 3)));
 			} else {  // normal block
 				$sql='select * from vtiger_blocks where blockid=?';
 				$result = $adb->pquery($sql, array($blockid));
@@ -567,11 +562,8 @@ function changeFieldOrder() {
 				$previous_sequence=$row_previous['sequence'];
 				$previous_id=$row_previous['blockid'];
 
-				$sql_up_current='update vtiger_blocks set sequence=? where blockid=?';
-				$result_up_current = $adb->pquery($sql_up_current, array($previous_sequence,$blockid));
-
-				$sql_up_previous='update vtiger_blocks set sequence=? where blockid=?';
-				$result_up_previous = $adb->pquery($sql_up_previous, array($current_sequence,$previous_id));
+				$adb->pquery('update vtiger_blocks set sequence=? where blockid=?', array($previous_sequence,$blockid));
+				$adb->pquery('update vtiger_blocks set sequence=? where blockid=?', array($current_sequence,$previous_id));
 			}
 		}
 
@@ -582,22 +574,18 @@ function changeFieldOrder() {
 			$current_sequence=$row['sequence'];
 			if ($_REQUEST['what_to_do']=='down') {
 				$sql_next='select * from vtiger_field where sequence > ? and block = ? and vtiger_field.presence in (0,2) order by sequence limit 1,1';
-				$sql_next_params = array($current_sequence, vtlib_purify($_REQUEST['blockid']));
 			} else {
 				$sql_next='select * from vtiger_field where sequence > ? and block = ? and vtiger_field.presence in (0,2) order by sequence limit 0,1';
-				$sql_next_params = array($current_sequence, vtlib_purify($_REQUEST['blockid']));
 			}
+			$sql_next_params = array($current_sequence, vtlib_purify($_REQUEST['blockid']));
 
 			$result_next = $adb->pquery($sql_next, $sql_next_params);
 			$row_next= $adb->fetch_array($result_next);
 			$next_sequence=$row_next['sequence'];
 			$next_id=$row_next['fieldid'];
 
-			$sql_up_current='update vtiger_field  set sequence=? where fieldid=?';
-			$result_up_current = $adb->pquery($sql_up_current, array($next_sequence,  vtlib_purify($_REQUEST['fieldid'])));
-
-			$sql_up_next='update vtiger_field  set sequence=? where fieldid=?';
-			$result_up_next = $adb->pquery($sql_up_next, array($current_sequence,$next_id));
+			$adb->pquery('update vtiger_field  set sequence=? where fieldid=?', array($next_sequence,  vtlib_purify($_REQUEST['fieldid'])));
+			$adb->pquery('update vtiger_field  set sequence=? where fieldid=?', array($current_sequence,$next_id));
 			$smarty->assign('COLORID', vtlib_purify($_REQUEST['fieldid']));
 		}
 
@@ -609,33 +597,27 @@ function changeFieldOrder() {
 
 			if ($_REQUEST['what_to_do']=='up') {
 				$sql_previous='select * from vtiger_field where sequence < ? and block=? and vtiger_field.presence in (0,2) order by sequence desc limit 1,1';
-				$sql_prev_params = array($current_sequence,  vtlib_purify($_REQUEST['blockid']));
 			} else {
 				$sql_previous='select * from vtiger_field where sequence < ? and block=? and vtiger_field.presence in (0,2) order by sequence desc limit 0,1';
-				$sql_prev_params = array($current_sequence,  vtlib_purify($_REQUEST['blockid']));
 			}
+			$sql_prev_params = array($current_sequence,  vtlib_purify($_REQUEST['blockid']));
 
 			$result_previous = $adb->pquery($sql_previous, $sql_prev_params);
 			$row_previous= $adb->fetch_array($result_previous);
 			$previous_sequence=$row_previous['sequence'];
 			$previous_id=$row_previous['fieldid'];
 
-			$sql_up_current='update vtiger_field  set sequence=? where fieldid=?';
-			$result_up_current = $adb->pquery($sql_up_current, array($previous_sequence,  vtlib_purify($_REQUEST['fieldid'])));
-
-			$sql_up_previous='update vtiger_field  set sequence=? where fieldid=?';
-			$result_up_previous = $adb->pquery($sql_up_previous, array($current_sequence,$previous_id));
+			$adb->pquery('update vtiger_field set sequence=? where fieldid=?', array($previous_sequence,  vtlib_purify($_REQUEST['fieldid'])));
+			$adb->pquery('update vtiger_field set sequence=? where fieldid=?', array($current_sequence,$previous_id));
 			$smarty->assign('COLORID', vtlib_purify($_REQUEST['fieldid']));
 		}
 
 		if ($_REQUEST['what_to_do']=='show') {
-			$sql_up_display="update vtiger_blocks  set display_status='1' where blockid=?";
-			$result_up_display = $adb->pquery($sql_up_display, array(vtlib_purify($_REQUEST['blockid'])));
+			$adb->pquery("update vtiger_blocks set display_status='1' where blockid=?", array(vtlib_purify($_REQUEST['blockid'])));
 		}
 
 		if ($_REQUEST['what_to_do']=='hide') {
-			$sql_up_display="update vtiger_blocks  set display_status='0' where blockid=?";
-			$result_up_display = $adb->pquery($sql_up_display, array(vtlib_purify($_REQUEST['blockid'])));
+			$adb->pquery("update vtiger_blocks set display_status='0' where blockid=?", array(vtlib_purify($_REQUEST['blockid'])));
 		}
 	}
 }
@@ -1205,16 +1187,16 @@ function show_move_hiddenfields($submode) {
 
 	if ($submode == 'showhiddenfields') {
 		for ($i=0; $i< count($sel_arr); $i++) {
-			$res = $adb->pquery(
-				'update vtiger_field set presence = 2,sequence = ? where block = ? and fieldid = ?',
+			$adb->pquery(
+				'update vtiger_field set presence=2,sequence=? where block=? and fieldid=?',
 				array($max_seq, vtlib_purify($_REQUEST['blockid']),$sel_arr[$i])
 			);
 			$max_seq++;
 		}
 	} else {
 		for ($i=0; $i< count($sel_arr); $i++) {
-			$res = $adb->pquery(
-				'update vtiger_field set sequence = ?, block = ? where fieldid = ?',
+			$adb->pquery(
+				'update vtiger_field set sequence=?, block=? where fieldid=?',
 				array($max_seq, vtlib_purify($_REQUEST['blockid']),$sel_arr[$i])
 			);
 			$max_seq++;

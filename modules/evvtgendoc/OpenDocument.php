@@ -2215,7 +2215,7 @@ class OpenDocument {
 	 * @todo remove or finish function
 	 */
 	public function output() {
-		$list = $this->contentXPath->query('/office:document-content/office:font-face-decls/style:font-face');
+		$this->contentXPath->query('/office:document-content/office:font-face-decls/style:font-face');
 		return $this->contentDOM->saveXML();
 	}
 

@@ -293,7 +293,7 @@ class GoogleSync4You {
 			$createdEvent = $this->gService->events->insert($this->selected_calendar, $event);
 			$eventid = urldecode($createdEvent->getId());
 		} catch (Exception $e) {
-			$status=null;
+			// ignore it
 		}
 		set_include_path($this->root_directory);
 		return $eventid;

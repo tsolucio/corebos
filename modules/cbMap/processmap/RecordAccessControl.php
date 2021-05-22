@@ -133,7 +133,7 @@ class RecordAccessControl extends processcbMap {
 			$this->mapping['detailview']['condition'] = array();
 		}
 		if (isset($xml->relatedlists)) {
-			foreach ($xml->relatedlists->relatedlist as $k => $v) {
+			foreach ($xml->relatedlists->relatedlist as $v) {
 				$modulename = (String)$v->modulename;
 				if (isset($v->c)) {
 					$this->mapping['relatedlist'][$modulename]['c'] = (Integer)$v->c;

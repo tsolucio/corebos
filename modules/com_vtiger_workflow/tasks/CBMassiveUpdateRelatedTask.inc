@@ -76,7 +76,6 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 
 			foreach ($fieldValueMapping as $fieldInfo) {
 				$fieldName = $fieldInfo['fieldname'];
-				$fieldType = '';
 				$fldmod = '';
 				$fieldValueType = $fieldInfo['valuetype'];
 				$fieldValue1 = trim($fieldInfo['value']);

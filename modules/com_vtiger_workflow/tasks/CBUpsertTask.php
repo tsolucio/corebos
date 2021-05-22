@@ -139,7 +139,6 @@ class CBUpsertTask extends VTTask {
 			$_REQUEST['createmode'] = 'link';
 			unset($focusrel->column_fields['linkmodeid']);
 		}
-		$attmodule = $relmodule;
 		require 'modules/com_vtiger_workflow/tasks/processAttachments.php';
 		$focusrel->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel->column_fields, $handlerMeta);
 		$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';

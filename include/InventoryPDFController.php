@@ -27,11 +27,11 @@ class Vtiger_InventoryPDFController {
 	}
 
 	public function loadRecord($id) {
-		$this->focus = $focus = CRMEntity::getInstance($this->moduleName);
-		$focus->retrieve_entity_info($id, $this->moduleName);
-		$focus->apply_field_security();
-		$focus->id = $id;
-		$this->associated_products = getAssociatedProducts($this->moduleName, $focus);
+		$this->focus = CRMEntity::getInstance($this->moduleName);
+		$this->focus->retrieve_entity_info($id, $this->moduleName);
+		$this->focus->apply_field_security();
+		$this->focus->id = $id;
+		$this->associated_products = getAssociatedProducts($this->moduleName, $this->focus);
 	}
 
 	public function getPDFGenerator() {
@@ -94,28 +94,19 @@ class Vtiger_InventoryPDFController {
 
 			$contentModel = new Vtiger_PDF_Model();
 
-			$discountPercentage = 0.00;
 			$total_tax_percent = 0.00;
 			$producttotal_taxes = 0.00;
-			$quantity = '';
-			$listPrice = '';
-			$discount = '';
-			$taxable_total = '';
-			$tax_amount = '';
-			$producttotal = '';
 
 			$quantity	= $productLineItem["qty{$productLineItemIndex}"];
 			$listPrice	= $productLineItem["listPrice{$productLineItemIndex}"];
 			$discount	= $productLineItem["discountTotal{$productLineItemIndex}"];
 			$taxable_total = $quantity * $listPrice - $discount;
 			$taxable_total = number_format($taxable_total, 2, '.', ''); //Convert to 2 decimals
-			$producttotal = $taxable_total;
 			if ($this->focus->column_fields['hdnTaxType'] == 'individual') {
 				foreach ($productLineItem['taxes'] as $taxItem) {
 					$tax_percent = $taxItem['percentage'];
 					$total_tax_percent += $tax_percent;
-					$tax_amount = (($taxable_total*$tax_percent)/100);
-					$producttotal_taxes += $tax_amount;
+					$producttotal_taxes += (($taxable_total*$tax_percent)/100);
 				}
 			}
 
@@ -362,9 +353,8 @@ class Vtiger_InventoryPDFController {
 	}
 
 	public function focusColumnValue($key, $defvalue = '') {
-		$focus = $this->focus;
-		if (isset($focus->column_fields[$key])) {
-			return $focus->column_fields[$key];
+		if (isset($this->focus->column_fields[$key])) {
+			return $this->focus->column_fields[$key];
 		}
 		return $defvalue;
 	}

@@ -159,7 +159,6 @@ class MailManager_MailController extends MailManager_Controller {
 					}
 					$fromEmail = $connector->getFromEmailAddress();
 					$userFullName = getFullNameFromArray('Users', $current_user->column_fields);
-					$userId = $current_user->id;
 
 					$mailer = new Vtiger_Mailer();
 					$mailer->IsHTML(true);

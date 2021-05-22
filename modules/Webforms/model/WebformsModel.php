@@ -178,7 +178,7 @@ class Webforms_Model {
 			}
 			$this->setPublicId($this->generatePublicId($this->getName()));
 			$insertSQL = 'INSERT INTO vtiger_webforms(name, targetmodule, publicid, enabled, description,ownerid,returnurl,web_domain) VALUES(?,?,?,?,?,?,?,?)';
-			$result = $adb->pquery(
+			$adb->pquery(
 				$insertSQL,
 				array(
 					$this->getName(), $this->getTargetModule(), $this->getPublicid(), $this->getEnabled(),
@@ -189,7 +189,7 @@ class Webforms_Model {
 		} else {
 			// Udpate
 			$updateSQL = 'UPDATE vtiger_webforms SET description=? ,returnurl=?,ownerid=?,enabled=?,web_domain=? WHERE id=?';
-			$result = $adb->pquery(
+			$adb->pquery(
 				$updateSQL,
 				array($this->getDescription(), $this->getReturnUrl(), $this->getOwnerId(), $this->getEnabled(), $this->getWebDomain(), $this->getId())
 			);

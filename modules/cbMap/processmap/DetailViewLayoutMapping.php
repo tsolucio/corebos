@@ -81,7 +81,7 @@ class DetailViewLayoutMapping extends processcbMap {
 		$mapping['origin'] = (String)$xml->originmodule->originname;
 		$origintab = getTabid($mapping['origin']);
 
-		foreach ($xml->blocks->block as $key => $value) {
+		foreach ($xml->blocks->block as $value) {
 			$block = array();
 			$block['type'] = (String)$value->type;
 			$block['sequence'] = (String)$value->sequence;

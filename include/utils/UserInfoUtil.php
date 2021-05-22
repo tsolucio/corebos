@@ -2129,7 +2129,7 @@ function tranferGroupOwnership($groupId, $transferId) {
 	$log->debug('> tranferGroupOwnership '.$groupId);
 	$denormModules = getDenormalizedModules();
 	if (count($denormModules) > 0) {
-		foreach ($denormModules as $key => $table) {
+		foreach ($denormModules as $table) {
 			$adb->pquery('update '.$table.' set smownerid=? where smownerid=?', array($transferId, $groupId));
 		}
 	}

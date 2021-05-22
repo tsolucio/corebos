@@ -99,7 +99,6 @@ class SMSMasivos implements ISMSProvider {
 			$httpClient = new Vtiger_Net_Client($serviceURL);
 			$response = $httpClient->doPost($params);
 			$responseobj = json_decode($response);
-			$referencia = $responseobj->referencia;
 			$responseLines = explode("\n", $response);
 			$i = 0;
 			foreach ($responseLines as $responseLine) {

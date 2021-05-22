@@ -232,12 +232,11 @@ class Documents extends CRMEntity {
 	public function insertIntoAttachment($id, $module, $direct_import = false) {
 		global $log;
 		$log->debug('> insertIntoAttachment '.$id.','.$module);
-		$file_saved = false;
 		if (isset($_FILES)) {
 			foreach ($_FILES as $fileindex => $files) {
 				if ($files['name'] != '' && $files['size'] > 0) {
 					$files['original_name'] = (empty($_REQUEST[$fileindex.'_hidden']) ? vtlib_purify($files['name']) : vtlib_purify($_REQUEST[$fileindex.'_hidden']));
-					$file_saved = $this->uploadAndSaveFile($id, $module, $files);
+					$this->uploadAndSaveFile($id, $module, $files);
 				}
 			}
 		}

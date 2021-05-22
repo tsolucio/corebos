@@ -59,8 +59,7 @@ function basicRBsearch($module, $search_field, $search_string) {
 	$log->debug('> basicRBsearch '.$module.','.$search_field.','.$search_string);
 	if ($search_field =='crmid') {
 		$column_name='crmid';
-		$table_name='vtiger_entity';
-		$where="$table_name.$column_name like '".formatForSqlLike($search_string)."'";
+		$where="vtiger_entity.$column_name like '".formatForSqlLike($search_string)."'";
 	} else {
 		//Check added for tickets by accounts/contacts in dashboard
 		$search_field_first = $search_field;
@@ -110,7 +109,6 @@ function basicRBsearch($module, $search_field, $search_string) {
 				&& ($table_name != 'vtiger_crmentity' || $column_name != 'smownerid')
 				&& ($table_name != 'vtiger_pricebook' || $column_name != 'active')
 			) {
-				$tableName=explode(':', $table_name);
 				$where="$table_name.$column_name like '".formatForSqlLike($search_string) ."'";
 			}
 		}

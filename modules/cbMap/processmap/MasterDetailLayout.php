@@ -140,7 +140,7 @@ class MasterDetailLayout extends processcbMap {
 		}
 		$mapping['listview']['fields'] = array();
 		if (isset($xml->listview->fields->field) && is_object($xml->listview->fields->field)) {
-			foreach ($xml->listview->fields->field as $k => $v) {
+			foreach ($xml->listview->fields->field as $v) {
 				$fieldtype = isset($v->fieldtype) ? (String)$v->fieldtype : '';
 				$fieldname = isset($v->fieldname) ? (String)$v->fieldname : '';
 				$fieldinfo = array();

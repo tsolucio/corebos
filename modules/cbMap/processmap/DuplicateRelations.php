@@ -76,7 +76,7 @@ class DuplicateRelations extends processcbMap {
 
 	private function convertMap2Array() {
 		$xml = $this->getXMLContent();
-		$mapping=$target_fields=array();
+		$mapping = array();
 		$mapping['originid'] = (String)$xml->originmodule->originid;
 		$mapping['originname'] = (String)$xml->originmodule->originname;
 		$mapping['DuplicateDirectRelations'] = (String)$xml->DuplicateDirectRelations;

@@ -2268,7 +2268,7 @@ class ReportRun extends CRMEntity {
 						} else {
 							if (in_array($module, $invMods)) {
 								if (substr($fld->table, 0, 26) == 'vtiger_inventoryproductrel') {
-									foreach ($ILF->getInventoryLineFieldsByName() as $ilfname => $ilfinfo) {
+									foreach ($ILF->getInventoryLineFieldsByName() as $ilfinfo) {
 										$ilflabel = getTranslatedString($ilfinfo['fieldlabel'], $module);
 										if ($ilflabel==$fieldLabel) {
 											$fieldInfo = $ilfinfo;
@@ -2279,7 +2279,7 @@ class ReportRun extends CRMEntity {
 										}
 									}
 								} elseif (substr($fld->table, 0, 15) == 'vtiger_products' || substr($fld->table, 0, 14) == 'vtiger_service') {
-									foreach ($ILF->getInventoryLineProductServiceNameFields() as $ilfname => $ilfinfo) {
+									foreach ($ILF->getInventoryLineProductServiceNameFields() as $ilfinfo) {
 										$ilflabel = getTranslatedString($ilfinfo['fieldlabel'], $module);
 										if ($ilflabel==$fieldLabel) {
 											$fieldInfo = $ilfinfo;

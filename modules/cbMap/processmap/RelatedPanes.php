@@ -80,7 +80,7 @@ class RelatedPanes extends processcbMap {
 		$mapping['origin'] = (String)$xml->originmodule->originname;
 		$origintab=getTabid($mapping['origin']);
 		$mapping['panes'] = array();
-		foreach ($xml->panes->pane as $k => $v) {
+		foreach ($xml->panes->pane as $v) {
 			$pane = array('label'=>getTranslatedString((String)$v->label, $mapping['origin']));
 			$pane['blocks'] = $restrictedRelations = array();
 			if (isset($v->defaultMoreInformation)) {
@@ -98,7 +98,7 @@ class RelatedPanes extends processcbMap {
 				}
 				$pane['restrictedRelations'] = null;
 			} else {
-				foreach ($v->blocks->block as $key => $value) {
+				foreach ($v->blocks->block as $value) {
 					$block = array();
 					$block['type'] = (String)$value->type;
 					$block['sequence'] = (String)$value->sequence;

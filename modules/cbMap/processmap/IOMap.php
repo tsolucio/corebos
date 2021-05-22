@@ -75,13 +75,13 @@ class IOMap extends processcbMap {
 		$mapping=array();
 		$mapping['input'] = array();
 		$mapping['input']['fields']=array();
-		foreach ($xml->input->fields->field as $k => $v) {
+		foreach ($xml->input->fields->field as $v) {
 			$fieldname[]= isset($v->fieldname) ? (String)$v->fieldname : '';
 		}
 		$mapping['input']['fields']=$fieldname;
 		$mapping['output']=array();
 		$mapping['output']['fields']=array();
-		foreach ($xml->output->fields->field as $k1 => $v1) {
+		foreach ($xml->output->fields->field as $v1) {
 			$fieldname1[]= isset($v1->fieldname) ? (String)$v1->fieldname : '';
 		}
 		$mapping['output']['fields']=$fieldname1;

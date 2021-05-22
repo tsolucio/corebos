@@ -504,7 +504,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 
 			$tabids = array($tabid);
 			if (isset($focus->related_tables)) {
-				foreach ($focus->related_tables as $reltable => $reltableinfo) {
+				foreach ($focus->related_tables as $reltableinfo) {
 					if (isset($reltableinfo[3]) && is_string($reltableinfo[3])) {
 						$tid = getTabid($reltableinfo[3]);
 						if (is_numeric($tid) && $tid>0) {
