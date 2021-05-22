@@ -66,6 +66,9 @@ class FieldInfo extends processcbMap {
 
 	private function convertMap2Array() {
 		$xml = $this->getXMLContent();
+		if (empty($xml)) {
+			return array();
+		}
 		$mapping = array();
 		$mapping['origin'] = (String)$xml->originmodule->originname;
 		$target_fields = array();

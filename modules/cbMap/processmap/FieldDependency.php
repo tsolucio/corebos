@@ -135,6 +135,9 @@ class FieldDependency extends processcbMap {
 
 	public function convertMap2Array() {
 		$xml = $this->getXMLContent();
+		if (empty($xml)) {
+			return array();
+		}
 		$mapping = array();
 		$mapping['origin'] = (String)$xml->originmodule->originname;
 		$target_fields = array();

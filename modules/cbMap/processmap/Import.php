@@ -69,12 +69,12 @@ class Import extends processcbMap {
 		$contentok = $this->isXML(htmlspecialchars_decode($map->column_fields['content']));
 		if ($contentok !== true) {
 			echo '<b>Incorrect Content</b>';
-			return;
+			return null;
 		}
 		$this->convertMap2Array();
 		if ($this->importtype == 'error') {
 			echo '<b>Incorrect Map Content</b>';
-			return;
+			return null;
 		}
 		$this->doImport($argv);
 		return $this;

@@ -358,6 +358,9 @@ class Validations extends processcbMap {
 
 	private function convertMap2Array() {
 		$xml = $this->getXMLContent();
+		if (empty($xml)) {
+			return array();
+		}
 		$mapping=$val_fields=array();
 		$mapping['origin'] = (String)$xml->originmodule->originname;
 		foreach ($xml->fields->field as $v) {

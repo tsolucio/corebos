@@ -72,6 +72,9 @@ class IOMap extends processcbMap {
 
 	private function convertMap2Array() {
 		$xml = $this->getXMLContent();
+		if (empty($xml)) {
+			return array();
+		}
 		$mapping=array();
 		$mapping['input'] = array();
 		$mapping['input']['fields']=array();

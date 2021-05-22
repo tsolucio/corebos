@@ -49,6 +49,9 @@ class RecordSetMapping extends processcbMap {
 	private function convertMap2Array() {
 		global $adb, $current_user;
 		$xml = $this->getXMLContent();
+		if (empty($xml)) {
+			return array();
+		}
 		if (isset($xml->records)) {
 			foreach ($xml->records->record as $v) {
 				if (isset($v->action)) {

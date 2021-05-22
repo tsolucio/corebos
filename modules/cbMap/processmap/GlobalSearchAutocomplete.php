@@ -42,6 +42,9 @@ class GlobalSearchAutocomplete extends processcbMap {
 
 	private function convertMap2Array() {
 		$xml = $this->getXMLContent();
+		if (empty($xml)) {
+			return array();
+		}
 		$mapping = array();
 		$mapping['mincharstosearch'] = (isset($xml->mincharstosearch) ? (Integer)$xml->mincharstosearch : 3);
 		$mapping['maxresults'] = (

@@ -76,6 +76,9 @@ class RelatedPanes extends processcbMap {
 	private function convertMap2Array($crmid) {
 		global $current_user;
 		$xml = $this->getXMLContent();
+		if (empty($xml)) {
+			return array();
+		}
 		$mapping=array();
 		$mapping['origin'] = (String)$xml->originmodule->originname;
 		$origintab=getTabid($mapping['origin']);

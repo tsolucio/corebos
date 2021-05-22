@@ -72,9 +72,11 @@ class DetailViewLayoutMapping extends processcbMap {
 
 	private function convertMap2Array($crmid) {
 		global $adb, $current_user;
-		$userPrivs = $current_user->getPrivileges();
-
 		$xml = $this->getXMLContent();
+		if (empty($xml)) {
+			return array();
+		}
+		$userPrivs = $current_user->getPrivileges();
 		$mapping = array();
 		$restrictedRelations = array();
 		$mapping['blocks'] = array();

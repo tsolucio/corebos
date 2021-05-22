@@ -34,9 +34,11 @@ class ModuleSetMapping extends processcbMap {
 	}
 
 	private function convertMap2Array() {
-		$module_set = array();
-
 		$xml = $this->getXMLContent();
+		if (empty($xml)) {
+			return array();
+		}
+		$module_set = array();
 		if (isset($xml->modules)) {
 			foreach ($xml->modules->module as $v) {
 				$module_set[] = (String)$v;

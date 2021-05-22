@@ -101,6 +101,9 @@ class MasterDetailLayout extends processcbMap {
 
 	private function convertMap2Array() {
 		$xml = $this->getXMLContent();
+		if (empty($xml)) {
+			return array();
+		}
 		$mapping=array();
 		$mapping['mapnameraw'] = $this->getMap()->column_fields['mapname'];
 		$mapping['mapname'] = strtolower(preg_replace('/[^A-Za-z0-9]/', '', $mapping['mapnameraw'])); // Removes special chars.
@@ -181,7 +184,7 @@ class MasterDetailLayout extends processcbMap {
 		$mapping['detailview']['layout'] = isset($xml->detailview->layout) ? (String)$xml->detailview->layout : '';
 		$mapping['detailview']['fields'] = array();
 		if (is_object($xml->detailview->fields->field)) {
-			foreach ($xml->detailview->fields->field as $k => $v) {
+			foreach ($xml->detailview->fields->field as $v) {
 				$fieldtype = isset($v->fieldtype) ? (String)$v->fieldtype : '';
 				$fieldname = isset($v->fieldname) ? (String)$v->fieldname : '';
 				$fieldinfo = array();
