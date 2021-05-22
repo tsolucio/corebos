@@ -11,9 +11,9 @@ require_once 'include/database/PearDatabase.php';
 require_once 'include/utils/utils.php';
 
 /**
- * Function to get vtiger_field typename
- * @param $uitype :: uitype -- Type integer
- * returns the vtiger_field type name -- Type string
+ * Function to get field type name
+ * @param integer uitype
+ * @return string field type name
  */
 function getCustomFieldTypeName($uitype) {
 	global $mod_strings, $log;
@@ -57,16 +57,18 @@ function getCustomFieldTypeName($uitype) {
 
 /**
  * Function to get custom fields
- * @param $module :: Type string
- * returns customfields in key-value pair array format
+ * @param string module
+ * @return array customfields in key-value pairs
  */
 function getCustomFieldArray($module) {
 	global $log, $adb;
 	$log->debug('> getCustomFieldArray '.$module);
-	$custquery = 'select tablename,fieldname from vtiger_field where tablename=? and vtiger_field.presence in (0,2) order by tablename';
+	if (empty($module) || !vtlib_isModuleActive($module) || !vtlib_isEntityModule($module)) {
+		return array();
+	}
 	$mod = CRMEntity::getInstance($module);
 	$param = array($mod->customFieldTable[0]);
-	$custresult = $adb->pquery($custquery, $param);
+	$custresult = $adb->pquery('select tablename,fieldname from vtiger_field where tablename=? and vtiger_field.presence in (0,2)', $param);
 	$custFldArray = array();
 	$noofrows = $adb->num_rows($custresult);
 	for ($i=0; $i<$noofrows; $i++) {
@@ -78,30 +80,31 @@ function getCustomFieldArray($module) {
 }
 
 /**
- * Function to get customfield record from vtiger_field vtiger_table
- * @param $tab :: Tab ID -- Type integer
- * @param $datatype :: vtiger_field name -- Type string
- * @param $id :: vtiger_field Id -- Type integer
- * returns the data result in string format
+ * Function to get a column from a vtiger_field table record
+ * @param integer tab ID
+ * @param integer field id
+ * @param string column to return
+ * @return string value of the given column in the row
  */
 function getCustomFieldData($tab, $id, $datatype) {
 	global $log, $adb;
 	$log->debug('> getCustomFieldData '.$tab.','.$id.','.$datatype);
-	$query = 'select * from vtiger_field where tabid=? and fieldid=? and vtiger_field.presence in (0,2)';
-	$result = $adb->pquery($query, array($tab, $id));
-	$return_data=$adb->fetch_array($result);
+	$result = $adb->pquery('select * from vtiger_field where tabid=? and fieldid=? and vtiger_field.presence in (0,2)', array($tab, $id));
 	$log->debug('< getCustomFieldData');
-	return $return_data[$datatype];
+	return $adb->query_result($result, 0, $datatype);
 }
 
 /**
  * Function to get customfield table and index field from a given module
- * @param $module :: Module name -- Type string
- * returns the corresponding custom field table name and index
+ * @param string Module name
+ * @return the corresponding custom field table name and index
  */
 function getCustomFieldTableInfo($module) {
 	global $log;
 	$log->debug('> getCustomFieldTableInfo '.$module);
+	if (empty($module) || !vtlib_isModuleActive($module) || !vtlib_isEntityModule($module)) {
+		return array();
+	}
 	$primary = CRMEntity::getInstance($module);
 	if (isset($primary->customFieldTable)) {
 		$cfinfo = $primary->customFieldTable;
