@@ -49,27 +49,6 @@ function deleteCustomField(id, fld_module, colName, uitype) {
 	}
 }
 
-function getCreateCustomFieldForm(customField, id, tabid, ui) {
-	var modulename = customField;
-	//To handle Events and Todo's separately while adding Custom fields
-	var activitytype = '';
-	var activityobj = document.getElementsByName('activitytype');
-	if (activityobj != null) {
-		for (var i=0; i<activityobj.length; i++) {
-			if (activityobj[i].checked == true) {
-				activitytype = activityobj[i].value;
-			}
-		}
-	}
-	jQuery.ajax({
-		method:'POST',
-		url:'index.php?module=Settings&action=SettingsAjax&file=CreateCustomField&fld_module='+customField+'&ajax=true&fieldid='+id+'&tabid='+tabid+'&uitype='+ui+'&activity_type='+activitytype
-	}).done(function (response) {
-		document.getElementById('createcf').innerHTML=response;
-		gselected_fieldtype = '';
-	});
-}
-
 function makeFieldSelected(oField, fieldid, blockid) {
 	if (gselected_fieldtype != '') {
 		document.getElementById(gselected_fieldtype).className = 'customMnu';
