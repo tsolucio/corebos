@@ -55,6 +55,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
 	$smarty->assign('OTHER_CURRENCIES', $other_currencies_list);
 	$smarty->assign('ID', $tempid);
 } else {
+	$smarty->assign('OTHER_CURRENCIES', array());
 	$smarty->assign('ID', '');
 	$smarty->assign('INACTSELECT', '');
 	$smarty->assign('ACTSELECT', '');
