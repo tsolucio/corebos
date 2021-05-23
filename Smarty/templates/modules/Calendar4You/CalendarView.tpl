@@ -457,135 +457,121 @@ function hideITSEventInfo(){
 {/literal}
 </script>
 {include file='Buttons_List.tpl'}
-<table style="width:98%;margin:auto;">
-    <tbody>
-        <tr>
-            <td valign="top">
-                <img src="themes/softed/images/showPanelTopLeft.gif"></td>
-            <td class="showPanelBg" style="padding:10px;" valign="top" width="100%">
-                <!-- Calendar Tabs starts -->
-                <div class="small" style="padding: 10px;">
-                    <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
-                        <tbody>
-                            <tr>
-                                  <td width="200px" valign="top" class="noprint">
-                                  {foreach item=PANEL_NAME from=$Calendar_Panel_Order}
-                                    {if $PANEL_NAME eq 'ActivityType'}
-                                    <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
-                                        <tbody>
-                                            <tr>
-                                                <td align="left" class="ui-widget-header"><div style="font-size:13px;padding:5px" class="ui-widget" onclick="jQuery('#event_type_wrapper').toggle();">{$CMOD.LBL_LIST_FORM_TITLE}</div></td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding:5px" class="ui-widget-content">
-                                                  <div id="event_type_wrapper" style="display:{$upEVENTBLOCK_DISPLAY}">
-                                                    {foreach name=act_types2 item=typedata key=typeid from=$ACTIVITYTYPES}
-                                                    <table width="98%" id="event_type_{$typeid}" style="font-weight:bold;font-size:12px;{if $USER_VIEW_TYPE neq "all"}color:{$typedata.textColor};background-color:{$typedata.color};border: 2px solid {$typedata.title_color}{else}background-color:#ffffff;border: 2px solid #dedede{/if};margin:0px 3px 3px 3px;padding:1px;border-top-left-radius: 3px;border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;" onMouseOver="showEventIcon('event_type_{$typeid}_icon')" onMouseOut="hideEventIcon('event_type_{$typeid}_icon')"><tr><td class="cblds-p-v_small"><input class="cblds-m-r_small" type="checkbox" id="calendar_event_{$typeid}" name="calendar_event_{$typeid}" onClick="changeCalendarEvents(this)" value="{$typeid}" {if $typedata.checked eq 'true'}checked="checked"{/if}>{$typedata.label}<td><td align="right" class="cblds-t-align_right"><a id="event_type_{$typeid}_icon" href="javascript:;" style="display:none" onClick="loadITSEventSettings(this,'type','{$typeid}')"><img src="themes/images/activate.gif" border="0"></a></td></tr></table>
-                                                    {/foreach}
-                                                  </div>
-                                                 </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    {/if}
-                                    {if $Calendar_Modules_Panel_Visible && $PANEL_NAME eq 'ModulePanel'}
-                                    <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
-                                        <tbody>
-                                            <tr>
-                                                <td align="left" class="ui-widget-header"><div style="font-size:13px;padding:5px" class="ui-widget" onclick="jQuery('#module_type_wrapper').toggle();">{'LIST_MODULES'|@getTranslatedString:$MODULE}</div></td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding:5px" class="ui-widget-content">
-                                                  <div id="module_type_wrapper" style="display:{$upMODULEBLOCK_DISPLAY}">
-                                                    {foreach name=act_types2 item=typedata key=typeid from=$MODULETYPES}
-                                                    <table width="98%" id="event_type_{$typeid}" style="font-weight:bold;font-size:12px;{if $USER_VIEW_TYPE neq "all"}color:{$typedata.textColor};background-color:{$typedata.color};border: 2px solid {$typedata.title_color}{else}background-color:#ffffff;border: 2px solid #dedede{/if};margin:0px 3px 3px 3px;padding:1px;border-top-left-radius: 3px;border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;"><tr><td class="cblds-p-v_small"><input class="cblds-m-r_small" type="checkbox" id="calendar_event_{$typeid}" name="calendar_event_{$typeid}" onClick="changeCalendarEvents(this)" value="{$typeid}" {if $typedata.checked eq 'T'}checked="checked"{/if}>{$typedata.label}<td><td align="right" class="cblds-t-align_right"><a id="event_type_{$typeid}_icon" href="javascript:;" style="display:none" onClick="loadITSEventSettings(this,'type','{$typeid}')"><img src="themes/images/activate.gif" border="0"></a></td></tr></table>
-                                                    {/foreach}
-                                                  </div>
-                                                 </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    {/if}
-                                    {if $PANEL_NAME eq 'AssignedUser'}
-                                    <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
-                                        <tbody>
-                                            <tr>
-                                                <td align="left" class="ui-widget-header"><div style="font-size:13px;padding:5px">{$APP.LBL_ASSIGNED_TO}</div></td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding:5px" class="ui-widget-content">
-                                                    <select id="user_view_type" onChange="changeCalendarUserView(this.value);" style="width:100%;padding:2px">
-                                                    <option value="all" {if $SHOW_ONLY_ME neq "true"}selected{/if}>{$MOD.LBL_ALL_USERS}</option>
-                                                    {foreach name=calendar_users item=userdata key=userid from=$CALENDAR_USERS}
-                                                    <option value="{$userid}" {if $USER_VIEW_TYPE eq $userid}selected{/if}>{$userdata.fullname} {if $userdata.status eq "Inactive"} ({$APP.Inactive}){/if}</option>
-                                                    {/foreach}
-                                                    </select><br>
-                                                    <div id="users_list" {if $USER_VIEW_TYPE neq "all"}style="display:none"{/if}>
-                                                    {foreach name=calendar_users item=userdata key=userid from=$CALENDAR_USERS}
-                                                    <table width="98%" style="font-weight:bold;font-size:12px;color:{$userdata.textColor};background-color:{$userdata.color};border: 2px solid {$userdata.title_color};margin:3px;padding:1px;border-top-left-radius: 3px;border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;" onMouseOver="showEventIcon('event_user_{$userid}_icon')" onMouseOut="hideEventIcon('event_user_{$userid}_icon')"><tr><td><input type="checkbox" id="calendar_user_{$userid}" name="calendar_user_{$userid}" onClick="changeCalendarEvents(this)" value="{$userid}" {if $userdata.checked eq 'true'}checked="checked"{/if}>{$userdata.fullname}<td><td align="right"><a href="javascript:;" id="event_user_{$userid}_icon"  style="display:none"><img src="themes/images/activate.gif" onClick="loadITSEventSettings(this,'user','{$userid}')" border="0"></a></td></tr></table>
-                                                    {/foreach}
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    {/if}
-                                    {if $Calendar_Status_Panel_Visible && $PANEL_NAME eq 'ActivityStatus'}
-                                    <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
-                                        <tbody>
-                                            <tr>
-                                                <td align="left" class="ui-widget-header"><div style="font-size:13px;padding:5px" onclick="jQuery('#et_status_wrapper').toggle();">{$CMOD.Status}</div></td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding:5px" class="ui-widget-content">
-                                                	<div id="et_status_wrapper" style="display:{$upESTATUSBLOCK_DISPLAY}">
-                                                    <div id="event_status_list" style="font-size:12px;">
-                                                    {foreach name=calendar_event_status item=estatusdata key=estatus_key from=$EVENT_STATUS}
-                                                    <table width="98%" style="font-weight:bold;margin:3px;padding:1px;"><tr><td><input type="checkbox" id="calendar_event_status_{$estatusdata.id}" name="calendar_event_status_{$estatusdata.id}" onClick="changeCalendarEvents(this)" value="{$estatusdata.id}" {if $estatusdata.checked eq 'true'}checked="checked"{/if}>{$estatusdata.label}</td></tr></table>
-                                                    {/foreach}
-                                                    </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    {/if}
-                                    {if $Calendar_Priority_Panel_Visible && $PANEL_NAME eq 'ActivityPriority'}
-                                    <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
-                                        <tbody>
-                                            <tr>
-                                                <td align="left" class="ui-widget-header"><div style="font-size:13px;padding:5px" onclick="jQuery('#task_priority_list').toggle();">{$CMOD.Priority}</div></td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding:5px" class="ui-widget-content">
-                                                 <div id="task_priority_list" style="font-size:12px;display:{$upTPRIORITYBLOCK_DISPLAY};">
-                                                    {foreach name=calendar_task_priority item=tprioritydata key=tpriority_key from=$TASK_PRIORITY}
-                                                    <table width="98%" style="font-weight:bold;font-size:12px;margin:3px;padding:1px;"><tr><td><input type="checkbox" id="calendar_task_priority_{$tprioritydata.id}" name="calendar_task_priority_{$tprioritydata.id}" onClick="changeCalendarEvents(this)" value="{$tprioritydata.id}" {if $tprioritydata.checked eq 'true'}checked="checked"{/if}>{$tprioritydata.label}</td></tr></table>
-                                                    {/foreach}
-                                                 </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    {/if}
-                                    <br/>
-                                    {/foreach}
-                                  </td>
-                                  <td align="left" valign="top"><!-- content cache -->
-                                    <div style="padding:0px 10px 0px 10px">
-                                    <div id="calendar_div" onMouseOver="hideITSEventInfo();">
-                                        <br>
-                                    </div></div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div></td>
-            <td valign="top">
-                <img src="themes/softed/images/showPanelTopRight.gif"></td>
-        </tr>
-    </tbody>
-</table>
+<div style="width:98%;margin:auto;" class="slds-card">
+    <!-- Calendar Tabs starts -->
+    <div class="small" style="padding: 10px;width:100%;display:flex;">
+        <div style="min-width:215px;" class="noprint">
+            {foreach item=PANEL_NAME from=$Calendar_Panel_Order}
+            {if $PANEL_NAME eq 'ActivityType'}
+            <div class="dvtContentSpace" style="border:0;width:100%;">
+                <div class="ui-widget-header">
+                    <div style="font-size:13px;padding:5px" class="ui-widget" onclick="jQuery('#event_type_wrapper').toggle();">{$CMOD.LBL_LIST_FORM_TITLE}</div>
+                </div>
+                <div style="padding:5px" class="ui-widget-content">
+                    <div id="event_type_wrapper" style="display:{$upEVENTBLOCK_DISPLAY}">
+                        {foreach name=act_types2 item=typedata key=typeid from=$ACTIVITYTYPES}
+                        <div id="event_type_{$typeid}" class="cblds-p-v_small" style="font-weight:bold;font-size:12px;width:98%;{if $USER_VIEW_TYPE neq "all"}color:{$typedata.textColor};background-color:{$typedata.color};border: 2px solid {$typedata.title_color}{else}background-color:#ffffff;border: 2px solid #dedede{/if};margin:0px 3px 3px 3px;padding:1px;border-top-left-radius: 3px;border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;" onMouseOver="showEventIcon('event_type_{$typeid}_icon')" onMouseOut="hideEventIcon('event_type_{$typeid}_icon')">
+                            <input class="cblds-m-r_small" type="checkbox" id="calendar_event_{$typeid}" name="calendar_event_{$typeid}" onClick="changeCalendarEvents(this)" value="{$typeid}" {if $typedata.checked eq 'true'}checked="checked"{/if}>
+                            {$typedata.label}
+                            <span class="cblds-t-align_right" style="float:right;">
+                            <a id="event_type_{$typeid}_icon" href="javascript:;" style="display:none" onClick="loadITSEventSettings(this,'type','{$typeid}')"><img src="themes/images/activate.gif" border="0"></a>
+                            </span>
+                        </div>
+                        {/foreach}
+                    </div>
+                </div>
+            </div>
+            {/if}
+            {if $Calendar_Modules_Panel_Visible && $PANEL_NAME eq 'ModulePanel'}
+            <div class="dvtContentSpace" style="border:0;width:100%;">
+                <div class="ui-widget-header">
+                    <div style="font-size:13px;padding:5px" class="ui-widget" onclick="jQuery('#module_type_wrapper').toggle();">{'LIST_MODULES'|@getTranslatedString:$MODULE}</div>
+                </div>
+                <div style="padding:5px" class="ui-widget-content">
+                    <div id="module_type_wrapper" style="display:{$upMODULEBLOCK_DISPLAY}">
+                        {foreach name=act_types2 item=typedata key=typeid from=$MODULETYPES}
+                        <div id="event_type_{$typeid}" style="font-weight:bold;font-size:12px;width:98%;{if $USER_VIEW_TYPE neq "all"}color:{$typedata.textColor};background-color:{$typedata.color};border: 2px solid {$typedata.title_color}{else}background-color:#ffffff;border: 2px solid #dedede{/if};margin:0px 3px 3px 3px;padding:1px;border-top-left-radius: 3px;border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;">
+                            <input class="cblds-m-r_small" type="checkbox" id="calendar_event_{$typeid}" name="calendar_event_{$typeid}" onClick="changeCalendarEvents(this)" value="{$typeid}" {if $typedata.checked eq 'T'}checked="checked"{/if}>
+                            {$typedata.label}
+                            <span class="cblds-t-align_right" style="float:right;">
+                            <a id="event_type_{$typeid}_icon" href="javascript:;" style="display:none" onClick="loadITSEventSettings(this,'type','{$typeid}')"><img src="themes/images/activate.gif" border="0"></a>
+                            </span>
+                        </div>
+                        {/foreach}
+                    </div>
+                </div>
+            </div>
+            {/if}
+            {if $PANEL_NAME eq 'AssignedUser'}
+            <div class="dvtContentSpace" style="border:0;width:100%;">
+                <div class="ui-widget-header">
+                    <div style="font-size:13px;padding:5px">{$APP.LBL_ASSIGNED_TO}</div>
+                </div>
+                <div style="padding:5px" class="ui-widget-content">
+                    <select id="user_view_type" onChange="changeCalendarUserView(this.value);" style="width:100%;padding:2px">
+                    <option value="all" {if $SHOW_ONLY_ME neq "true"}selected{/if}>{$MOD.LBL_ALL_USERS}</option>
+                    {foreach name=calendar_users item=userdata key=userid from=$CALENDAR_USERS}
+                    <option value="{$userid}" {if $USER_VIEW_TYPE eq $userid}selected{/if}>{$userdata.fullname} {if $userdata.status eq "Inactive"} ({$APP.Inactive}){/if}</option>
+                    {/foreach}
+                    </select><br>
+                    <div id="users_list" {if $USER_VIEW_TYPE neq "all"}style="display:none"{/if}>
+                    {foreach name=calendar_users item=userdata key=userid from=$CALENDAR_USERS}
+                    <div style="font-weight:bold;font-size:12px;width:98%;color:{$userdata.textColor};background-color:{$userdata.color};border: 2px solid {$userdata.title_color};margin:3px;padding:1px;border-top-left-radius: 3px;border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;" onMouseOver="showEventIcon('event_user_{$userid}_icon')" onMouseOut="hideEventIcon('event_user_{$userid}_icon')">
+                    <input type="checkbox" id="calendar_user_{$userid}" name="calendar_user_{$userid}" onClick="changeCalendarEvents(this)" value="{$userid}" {if $userdata.checked eq 'true'}checked="checked"{/if}>
+                    {$userdata.fullname}
+                    <span class="cblds-t-align_right" style="float:right;">
+                        <a href="javascript:;" id="event_user_{$userid}_icon"  style="display:none"><img src="themes/images/activate.gif" onClick="loadITSEventSettings(this,'user','{$userid}')" border="0"></a>
+                    </span>
+                    </div>
+                    {/foreach}
+                    </div>
+                </div>
+            </div>
+            {/if}
+            {if $Calendar_Status_Panel_Visible && $PANEL_NAME eq 'ActivityStatus'}
+            <div class="dvtContentSpace" style="border:0;width:100%;">
+                <div class="ui-widget-header">
+                    <div style="font-size:13px;padding:5px" onclick="jQuery('#et_status_wrapper').toggle();">{$CMOD.Status}</div>
+                </div>
+                <div style="padding:5px" class="ui-widget-content">
+                    <div id="et_status_wrapper" style="display:{$upESTATUSBLOCK_DISPLAY}">
+                        <div id="event_status_list" style="font-size:12px;">
+                            {foreach name=calendar_event_status item=estatusdata key=estatus_key from=$EVENT_STATUS}
+                            <div style="font-weight:bold;margin:3px;padding:1px;width:98%;">
+                                <input type="checkbox" id="calendar_event_status_{$estatusdata.id}" name="calendar_event_status_{$estatusdata.id}" onClick="changeCalendarEvents(this)" value="{$estatusdata.id}" {if $estatusdata.checked eq 'true'}checked="checked"{/if}>
+                                {$estatusdata.label}
+                            </div>
+                            {/foreach}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/if}
+            {if $Calendar_Priority_Panel_Visible && $PANEL_NAME eq 'ActivityPriority'}
+            <div class="dvtContentSpace" style="border:0;width:100%;">
+                <div align="left" class="ui-widget-header">
+                    <div style="font-size:13px;padding:5px" onclick="jQuery('#task_priority_list').toggle();">{$CMOD.Priority}</div>
+                </div>
+                <div style="padding:5px" class="ui-widget-content">
+                    <div id="task_priority_list" style="font-size:12px;display:{$upTPRIORITYBLOCK_DISPLAY};">
+                        {foreach name=calendar_task_priority item=tprioritydata key=tpriority_key from=$TASK_PRIORITY}
+                        <div style="font-weight:bold;font-size:12px;margin:3px;padding:1px;width:98%;">
+                            <input type="checkbox" id="calendar_task_priority_{$tprioritydata.id}" name="calendar_task_priority_{$tprioritydata.id}" onClick="changeCalendarEvents(this)" value="{$tprioritydata.id}" {if $tprioritydata.checked eq 'true'}checked="checked"{/if}>
+                            {$tprioritydata.label}
+                        </div>
+                        {/foreach}
+                    </div>
+                </div>
+            </div>
+            {/if}
+            <br/>
+            {/foreach}
+        </div>
+        <div style="padding:0px 10px 0px 10px;float:right;">
+            <div id="calendar_div" onMouseOver="hideITSEventInfo();"><br></div>
+        </div>
+    </div>
+</div>
 <div id="calendar_div2"><br></div>
 <input type="hidden" name="logged_user" id="logged_user" value="">
 <form id="EditView" name="EditView" method="POST" action="index.php">
