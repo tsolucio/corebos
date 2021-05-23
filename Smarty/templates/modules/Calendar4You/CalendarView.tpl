@@ -490,11 +490,11 @@ function hideITSEventInfo(){
                 <div style="padding:5px" class="ui-widget-content">
                     <div id="module_type_wrapper" style="display:{$upMODULEBLOCK_DISPLAY}">
                         {foreach name=act_types2 item=typedata key=typeid from=$MODULETYPES}
-                        <div id="event_type_{$typeid}" style="font-weight:bold;font-size:12px;width:98%;{if $USER_VIEW_TYPE neq "all"}color:{$typedata.textColor};background-color:{$typedata.color};border: 2px solid {$typedata.title_color}{else}background-color:#ffffff;border: 2px solid #dedede{/if};margin:0px 3px 3px 3px;padding:1px;border-top-left-radius: 3px;border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;">
+                        <div id="event_type_{$typeid}" style="font-weight:bold;font-size:12px;width:98%;{if $USER_VIEW_TYPE neq "all"}color:{$typedata.textColor};background-color:{$typedata.color};border: 2px solid {$typedata.title_color}{else}background-color:#ffffff;border: 2px solid #dedede{/if};margin:0px 3px 3px 3px;padding:1px;border-top-left-radius: 3px;border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;" onMouseOver="showEventIcon('event_type_{$typeid}_icon')" onMouseOut="hideEventIcon('event_type_{$typeid}_icon')">
                             <input class="cblds-m-r_small" type="checkbox" id="calendar_event_{$typeid}" name="calendar_event_{$typeid}" onClick="changeCalendarEvents(this)" value="{$typeid}" {if $typedata.checked eq 'T'}checked="checked"{/if}>
                             {$typedata.label}
                             <span class="cblds-t-align_right" style="float:right;">
-                            <a id="event_type_{$typeid}_icon" href="javascript:;" style="display:none" onClick="loadITSEventSettings(this,'type','{$typeid}')"><img src="themes/images/activate.gif" border="0"></a>
+                            <a id="event_type_{$typeid}_icon" href="javascript:;" style="display:none" onClick="loadITSEventSettings(this,'module','{$typeid}')"><img src="themes/images/activate.gif" border="0"></a>
                             </span>
                         </div>
                         {/foreach}

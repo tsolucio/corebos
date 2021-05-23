@@ -370,6 +370,9 @@ class Calendar4You extends CRMEntity {
 
 	public function getEventColor($mode, $entity) {
 		global $adb,$current_user;
+		if ($mode=='module') {
+			$mode = 'type';
+		}
 		$result1 = $adb->pquery('SELECT type, color FROM its4you_calendar4you_colors WHERE userid=? AND mode=? AND entity=?', array($current_user->id, $mode, $entity));
 		$Colors = array();
 		if ($adb->num_rows($result1) > 0) {

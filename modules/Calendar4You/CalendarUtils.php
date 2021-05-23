@@ -376,20 +376,28 @@ function transferForAddIntoTitle($type, $row, $CD) {
 				where relmodule=? and module=?',
 			array($CD['module'],'cbCalendar')
 		);
-		$relfield = $adb->query_result($frs, 0, 0);
-		$queryGenerator->addCondition('id', $row[$relfield], 'e', $queryGenerator::$AND);
-		$rec_query = $queryGenerator->getQuery();
-		$recinfo = $adb->pquery($rec_query, array());
-		$Cal_Data = array();
-		$Cal_Data[0] = getTranslatedString($CD['fieldlabel'], $CD['module']);
-		$Cal_Data[1] = $adb->query_result($recinfo, 0, $CD['columnname']);
-		if (Field_Metadata::isPicklistUIType($CD['uitype'])) {
-			$Cal_Data[1] = getTranslatedString($Cal_Data[1], $CD['module']);
-		}
-		if (Field_Metadata::isReferenceUIType($CD['uitype']) && !empty($Cal_Data[1])) {
-			$relModule = getSalesEntityType($Cal_Data[1]);
-			$einfo = getEntityName($relModule, $Cal_Data[1]);
-			$Cal_Data[1] = '<a href="index.php?module='.$relModule.'&action=DetailView&record='.$Cal_Data[1].'">'.$einfo[$Cal_Data[1]].'</a>';
+		if ($frs && $adb->num_rows($frs)>0) {
+			$relfield = $adb->query_result($frs, 0, 0);
+			$queryGenerator->addCondition('id', $row[$relfield], 'e', $queryGenerator::$AND);
+			$rec_query = $queryGenerator->getQuery();
+			$recinfo = $adb->pquery($rec_query, array());
+			$Cal_Data = array();
+			$Cal_Data[0] = getTranslatedString($CD['fieldlabel'], $CD['module']);
+			$Cal_Data[1] = $adb->query_result($recinfo, 0, $CD['columnname']);
+			if (Field_Metadata::isPicklistUIType($CD['uitype'])) {
+				$Cal_Data[1] = getTranslatedString($Cal_Data[1], $CD['module']);
+			}
+			if (Field_Metadata::isReferenceUIType($CD['uitype']) && !empty($Cal_Data[1])) {
+				$relModule = getSalesEntityType($Cal_Data[1]);
+				$einfo = getEntityName($relModule, $Cal_Data[1]);
+				$Cal_Data[1] = '<a href="index.php?module='.$relModule.'&action=DetailView&record='.$Cal_Data[1].'">'.$einfo[$Cal_Data[1]].'</a>';
+			}
+		} else {
+			if (empty($row[$CD['columnname']])) {
+				$Cal_Data[1] = '';
+			} else {
+				$Cal_Data[1] = '<a href="index.php?module='.$CD['module'].'&action=DetailView&record='.$row['crmid'].'">'.$row[$CD['columnname']].'</a>';
+			}
 		}
 	}
 

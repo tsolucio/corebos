@@ -48,6 +48,8 @@ $Event_Colors = $Calendar4You->getEventColor($mode, $id);
 	echo '&quot;';
 if ($mode == 'user') {
 	$event_name = getITSUserFullName($id);
+} elseif ($mode == 'module') {
+	$event_name = vtlib_purify($_REQUEST['id']);
 } else {
 	if ($id == 'task') {
 		$event_name = $c_mod_strings['LBL_TASK'];
@@ -75,7 +77,7 @@ if ($mode == 'user') {
 <input type="hidden" name="month" value="<?php echo (isset($_REQUEST['month']) ? vtlib_purify($_REQUEST['month']) : ''); ?>">
 <input type="hidden" name="year" value="<?php echo (isset($_REQUEST['year']) ? vtlib_purify($_REQUEST['year']) : ''); ?>">
 <input type="hidden" name="user_view_type" value="<?php echo $user_view_type; ?>">
-<input type="hidden" name="save_fields" value="<?php echo ($mode != 'user' && $id != 'invite') ? '1' : '0'; ?>">
+<input type="hidden" name="save_fields" value="<?php echo ($mode != 'user' && $id != 'invite' && $mode != 'module') ? '1' : '0'; ?>">
 <input type="hidden" name="mode" value="<?php echo $mode; ?>">
 <input type="hidden" name="id" value="<?php echo $id; ?>">
 <input type="hidden" name="current_userid" value="<?php echo $current_user->id; ?>" >
@@ -88,7 +90,7 @@ if ($mode == 'user') {
 	<table border="0" cellpadding="3" cellspacing="0" width="100%">
 	<tbody><tr>
 <?php
-if ($mode != "user" && $id != "invite") {
+if ($mode != 'user' && $id != 'invite' && $mode != 'module') {
 	?>
 	<td class="dvtTabCache" style="width:10px" nowrap="">&nbsp;</td>
 	<td id="cellTabEventColor" class="dvtSelectedCell" align="center" nowrap="">
@@ -148,7 +150,7 @@ if ($mode != "user" && $id != "invite") {
 		<!-- Displayed info -->
 		<div id="TabEventInfoInCalendar" style="display: none; width: 100%;">
 		<?php
-		if ($mode != 'user' && $id != 'invite') {
+		if ($mode != 'user' && $id != 'invite' && $mode != 'module') {
 			$Event_Fields = array();
 			$Fields_Label = array();
 
