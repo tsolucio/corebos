@@ -12,9 +12,9 @@
 {assign var="MODULESECTION" value=$MOD.LBL_CURRENCY_LIST}
 {assign var="MODULESECTIONDESC" value=$MOD.LBL_CURRENCY_DESCRIPTION}
 {include file='SetMenu.tpl'}
-<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
-<div class="slds-modal__container slds-p-around_none slds-card">
-<div align=center>
+<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="currencies list">
+<div class="slds-modal__container slds-p-around_none slds-card" style="min-height:400px;">
+<div class="slds-align-content-center" style="align-self:normal;">
 	<form action="index.php" onsubmit="VtigerJS_DialogBox.block();">
 		<input type="hidden" name="module" value="Settings">
 		<input type="hidden" name="action" value="CurrencyEditView">
