@@ -78,7 +78,7 @@ var moduleName = '{$entityName}';
 <div class="slds-grid slds-p-horizontal_x-large">
 	<div class="slds-col slds-size_1-of-1 slds-p-around_x-small">
 		<input type="hidden" id="gendoctemplate" name="gendoctemplate" value="{if !empty($task->gendoctemplate)}{$task->gendoctemplate}{/if}">
-		<select class="small" size="18" style="width:540px;overflow:auto;" id="gdtplsel" name="gdtplsel" multiple onchange="fillGenDocTemplate(this);"></select>
+		<select class="slds-select" size="12" style="width:540px;overflow:auto;" id="gdtplsel" name="gdtplsel" multiple onchange="fillGenDocTemplate(this);"></select>
 	</div>
 </div>
 <script type="text/javascript" charset="utf-8">
