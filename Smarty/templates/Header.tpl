@@ -475,7 +475,7 @@
 					</div>
 					<div class="slds-media__body">
 						<h2 class="slds-card__header-title slds-truncate">
-							<a href="index.php?module={$trackelements.module_name}&action=DetailView&record={$trackelements.crmid}}" class="slds-card__header-link" title="{$trackelements.module_name}">
+							<a href="index.php?module={$trackelements.module_name}&action=DetailView&record={$trackelements.crmid}" class="slds-card__header-link" title="{$trackelements.module_name}">
 								<span>{$trackelements.item_summary}</span>
 							</a>
 						</h2>
