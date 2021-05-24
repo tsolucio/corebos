@@ -2195,7 +2195,7 @@ function fnvshobj(obj, Lay) {
 		}
 	}
 
-	var getVal = leftSide + widthM;
+	var getVal = +leftSide + +widthM;
 	if (getVal > document.body.clientWidth ) {
 		leftSide = leftSide - widthM;
 		tagName.style.left = leftSide + 34 + 'px';
@@ -2213,7 +2213,7 @@ function posLay(obj, Lay) {
 	var topSide = findPosY(obj);
 	var maxW = tagName.style.width;
 	var widthM = maxW.substring(0, maxW.length-2);
-	var getVal = leftSide + widthM;
+	var getVal = +leftSide + +widthM;
 	if (getVal > document.body.clientWidth ) {
 		leftSide = leftSide - widthM;
 		tagName.style.left = leftSide + 'px';
@@ -2445,7 +2445,7 @@ function fnDropDown(obj, Lay) {
 	var topSide = findPosY(obj);
 	var maxW = tagName.style.width;
 	var widthM = maxW.substring(0, maxW.length-2);
-	var getVal = leftSide + widthM;
+	var getVal = +leftSide + +widthM;
 	if (getVal > document.body.clientWidth ) {
 		leftSide = leftSide - widthM;
 		tagName.style.left = leftSide + 34 + 'px';
@@ -4221,7 +4221,7 @@ function ToolTipManager() {
 		var topSide = findPosY(obj);
 		var dimensions = getDimension(tooltip);
 		var widthM = dimensions.x;
-		var getVal = leftSide + widthM;
+		var getVal = +leftSide + +widthM;
 		var tooltipDimensions = getDimension(obj);
 		var tooltipWidth = tooltipDimensions.x;
 		if (leftSide == 0 && topSide == 0) {
@@ -4238,14 +4238,14 @@ function ToolTipManager() {
 			tooltip.style.left = leftSide + 'px';
 
 			var heightTooltip = dimensions.y;
-			var bottomSide = topSide + heightTooltip;
+			var bottomSide = +topSide + +heightTooltip;
 			if (bottomSide > document.body.clientHeight) {
 				topSide = topSide - (bottomSide - document.body.clientHeight) - 10;
 				if (topSide < 0 ) {
 					topSide = 10;
 				}
 			} else {
-				topSide = topSide - heightTooltip/2;
+				topSide = topSide - (heightTooltip/2);
 				if (topSide<0) {
 					topSide = 10;
 				}
@@ -4784,7 +4784,7 @@ function fnvshobjsearch(obj, Lay) {
 		}
 	}
 
-	var getVal = leftSide + widthM;
+	var getVal = +leftSide + +widthM;
 	if (getVal > document.body.clientWidth ) {
 		leftSide = leftSide - widthM;
 		tagName.style.left = leftSide + 91 + 'px';
@@ -4802,7 +4802,7 @@ function fnDropDownUser(obj, Lay) {
 	var topSide = findPosY(obj);
 	var maxW = tagName.style.width;
 	var widthM = maxW.substring(0, maxW.length-2);
-	var getVal = leftSide + widthM;
+	var getVal = +leftSide + +widthM;
 	if (getVal > document.body.clientWidth ) {
 		leftSide = leftSide - widthM;
 		tagName.style.left = leftSide + 34 + 'px';

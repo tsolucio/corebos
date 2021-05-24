@@ -94,7 +94,7 @@ function validate(blockid) {
 		if (decimallength == '') {
 			decimallength = 0;
 		}
-		nummaxlength = 65 - (decimallength + 1);
+		nummaxlength = 65 - (+decimallength + 1); // plus sign to convert to number
 	}
 	var lengthObj = document.getElementById('lengthdetails_'+blockid);
 	if ( lengthObj != null && lengthObj.style.display == 'table-row' && !numConstComp('fldLength_'+blockid, 'Length', 'LE', nummaxlength)) {

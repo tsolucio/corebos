@@ -288,7 +288,7 @@ function calcProductTotal(rowId) {
 		var netprice = 0;
 		if (tax_type == 'individual') {
 			callTaxCalc(rowId);
-			netprice = totalAfterDiscount+document.getElementById('taxTotal'+rowId).innerHTML;
+			netprice = totalAfterDiscount + +document.getElementById('taxTotal'+rowId).innerHTML; // double plus to avoid concatenation
 		} else {
 			netprice = totalAfterDiscount;
 		}
