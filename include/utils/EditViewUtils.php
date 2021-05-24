@@ -1255,7 +1255,7 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 				array($seid)
 			);
 		} else {
-			$sub_prod_query = $adb->pquery("SELECT productid as prod_id from vtiger_inventorysubproductrel WHERE id=? AND sequence_no=?", array($focus->id,$i));
+			$sub_prod_query = $adb->pquery('SELECT productid as prod_id from vtiger_inventorysubproductrel WHERE id=? AND sequence_no=?', array($focus->id,$i));
 		}
 		$subprodid_str='';
 		$subprodname_str='';
@@ -1264,16 +1264,16 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 			for ($j=0; $j<$adb->num_rows($sub_prod_query); $j++) {
 				$sprod_id = $adb->query_result($sub_prod_query, $j, 'prod_id');
 				$sprod_name = $subProductArray[] = getProductName($sprod_id);
-				$str_sep = "";
+				$str_sep = '';
 				if ($j>0) {
-					$str_sep = ":";
+					$str_sep = ':';
 				}
 				$subprodid_str .= $str_sep.$sprod_id;
-				$subprodname_str .= $str_sep." - ".$sprod_name;
+				$subprodname_str .= $str_sep.' - '.$sprod_name;
 			}
 		}
 
-		$subprodname_str = str_replace(":", "<br>", $subprodname_str);
+		$subprodname_str = str_replace(':', '<br>', $subprodname_str);
 
 		$product_Detail[$i]['subProductArray'.$i] = $subProductArray;
 		$product_Detail[$i]['hdnProductId'.$i] = $hdnProductId;

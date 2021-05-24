@@ -71,7 +71,6 @@
 </div>
 
 </td>
-<td valign="top"><img src="{$IMAGE_PATH}showPanelTopRight.gif"></td>
 </tr>
 </tbody>
 </table>

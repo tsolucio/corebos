@@ -76,7 +76,7 @@
 			</a>
 		</td>
 			{foreach item=element from=$row}
-		<td align="left"/>
+		<td>
 			{$element}
 		</td>
 			{/foreach}
