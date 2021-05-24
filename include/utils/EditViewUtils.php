@@ -1382,7 +1382,6 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 		for ($tax_count=0, $tax_countMax = count($tax_details); $tax_count< $tax_countMax; $tax_count++) {
 			$tax_name = $tax_details[$tax_count]['taxname'];
 			$tax_label = $tax_details[$tax_count]['taxlabel'];
-			$tax_value = '0.00';
 
 			//condition to avoid this function call when create new PO/SO/Quotes/Invoice from Product module
 			if ($focus->id != '') {
