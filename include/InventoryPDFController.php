@@ -102,7 +102,7 @@ class Vtiger_InventoryPDFController {
 			$discount	= $productLineItem["discountTotal{$productLineItemIndex}"];
 			$taxable_total = $quantity * $listPrice - $discount;
 			$taxable_total = number_format($taxable_total, 2, '.', ''); //Convert to 2 decimals
-			if ($this->focus->column_fields['hdnTaxType'] == 'individual') {
+			if ($this->focus->column_fields['hdnTaxType'] == 'individual' && !empty($productLineItem['taxes'])) {
 				foreach ($productLineItem['taxes'] as $taxItem) {
 					$tax_percent = $taxItem['percentage'];
 					$total_tax_percent += $tax_percent;

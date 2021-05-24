@@ -168,7 +168,7 @@ class SMSNotifier extends SMSNotifierBase {
 			$responseStatusMessage = '';
 
 			$needlookup = 1;
-			if ($response['error']) {
+			if (!empty($response['error'])) {
 				$responseStatus = ISMSProvider::MSG_STATUS_FAILED;
 				$needlookup = 0;
 			} else {

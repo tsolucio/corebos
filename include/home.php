@@ -640,8 +640,8 @@ class Homestuff {
 
 	/**
 	 * this function returns the URL for a given widget id from the database
-	 * @param integer $widgetid - the notebookid
-	 * @return $url - the url for the widget
+	 * @param integer the widget id
+	 * @return string the url for the widget
 	 */
 	public function getWidgetURL($widgetid) {
 		global $adb;
