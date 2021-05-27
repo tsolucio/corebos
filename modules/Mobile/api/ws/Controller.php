@@ -76,10 +76,23 @@ class crmtogo_WS_Controller {
 	}
 
 	public function getConfigDefaults() {
+		global $current_language, $default_language;
 		//cache config information
 		static $crmtogoDefaultsConfigCache = null;
 		if (is_null($crmtogoDefaultsConfigCache)) {
 			$crmtogoDefaultsConfigCache = crmtogo_WS_Utils::getConfigDefaults();
+		}
+		if (empty($current_language)) {
+			if (!empty($crmtogoDefaultsConfigCache['language'])) {
+				$current_language = $crmtogoDefaultsConfigCache['language'];
+			} elseif (!empty($default_language)) {
+				$current_language = $default_language;
+			} else {
+				$current_language = 'en_us';
+			}
+		}
+		if (empty($crmtogoDefaultsConfigCache['language'])) {
+			$crmtogoDefaultsConfigCache['language'] = $current_language;
 		}
 		return $crmtogoDefaultsConfigCache;
 	}
