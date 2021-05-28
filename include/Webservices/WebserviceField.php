@@ -173,7 +173,7 @@ class WebserviceField {
 	}
 
 	public function getMassEditable() {
-		return $this->isMassEditable;
+		return $this->massEditable;
 	}
 
 	public function isReferenceField() {
