@@ -111,6 +111,23 @@
 													<input type="checkbox" name="visiblecolumns">
 												</td>
 											</tr>
+											<tr>
+												<td colspan="2" align="left" valign="top" style="padding-left:40px;">
+													<span class="genHeaderSmall">{$APP.LBL_EXPORT_FORMAT}:</span>
+												</td>
+											</tr>
+											<tr>
+												<td align="right" valign="top" width="50%" class="small cblds-p_large cblds-t-align_right">{$APP.LBL_EXPORT_FILE_IN_EXCEL_FORMAT}</td>
+												<td align="left" valign="top" width="5%" class="small cblds-p_large">
+													<input type="radio" name="exportfile" value="exportexcelfile" checked  {if $MODULE eq 'Users'}disabled{/if}>
+												</td>
+											</tr>
+											<tr>
+												<td align="right" valign="top" width="50%" class="small cblds-p_large cblds-t-align_right">{$APP.LBL_EXPORT_FILE_IN_CSV_FORMAT}</td>
+												<td align="left" valign="top" width="5%" class="small cblds-p_large">
+													<input type="radio" name="exportfile" value="exportcsvfile" {if $MODULE eq 'Users'}disabled{/if}>
+												</td>
+											</tr>
 										</table>
 									</td>
 									<td border="0" cellpadding="5" cellspacing="0" width="50%">
