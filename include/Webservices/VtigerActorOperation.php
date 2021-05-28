@@ -189,12 +189,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 	}
 
 	public function __revise($element, $id) {
-		$columnStr = 'set '.implode('=?,', array_keys($element)).' =? ';
-		$query = 'update '.$this->entityTableName.' '.$columnStr.'where '.$this->meta->getObectIndexColumn().'=?';
-		$params = array_values($element);
-		$params[] = $id;
-		$result = null;
-		return vtws_runQueryAsTransaction($query, $params, $result);
+		return $this->__update($element, $id);
 	}
 
 	public function revise($element) {

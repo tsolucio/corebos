@@ -756,22 +756,11 @@ if ($mode == 'view') {
 	$smarty->display('EditProfile.tpl');
 }
 
-/** returns html image code based on the input id
- * @param $id -- Role Name:: Type varchar
- * @returns $value -- html image code:: Type varcha:w
+/** use getDisplayValue
+ * @deprecated
  */
 function getGlobalDisplayValue($id, $actionid) {
-	global $theme;
-	if ($id == '') {
-		$value = '&nbsp;';
-	} elseif ($id == 0) {
-		$value = '<img src="' . vtiger_imageurl('prvPrfSelectedTick.gif', $theme) . '">';
-	} elseif ($id == 1) {
-		$value = '<img src="' . vtiger_imageurl('no.gif', $theme) . '">';
-	} else {
-		$value = '&nbsp;';
-	}
-	return $value;
+	return getDisplayValue($id);
 }
 
 /** returns html check box code based on the input id
@@ -796,14 +785,12 @@ function getGlobalDisplayOutput($id, $actionid) {
 }
 
 /** returns html image code based on the input id
- * @param $id -- Role Name:: Type varchar
- * @returns $value -- html image code:: Type varcha:w
+ * @param integer next/prev image URL
+ * @return string html image code
  */
 function getDisplayValue($id) {
 	global $theme;
-	if ($id == '') {
-		$value = '&nbsp;';
-	} elseif ($id == 0) {
+	if ($id == 0) {
 		$value = '<img src="' . vtiger_imageurl('prvPrfSelectedTick.gif', $theme) .'">';
 	} elseif ($id == 1) {
 		$value = '<img src="' . vtiger_imageurl('no.gif', $theme) .'">';

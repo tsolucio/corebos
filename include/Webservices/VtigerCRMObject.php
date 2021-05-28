@@ -82,7 +82,7 @@ class VtigerCRMObject {
 	}
 
 	private function getTabName() {
-		return $this->moduleName;
+		return $this->getModuleName();
 	}
 
 	public function read($id, $deleted = false) {

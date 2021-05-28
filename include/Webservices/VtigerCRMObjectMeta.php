@@ -294,7 +294,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 	}
 
 	public function getEntityName() {
-		return $this->objectName;
+		return $this->getTabName();
 	}
 
 	public function getEntityId() {

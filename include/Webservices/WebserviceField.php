@@ -169,7 +169,11 @@ class WebserviceField {
 	}
 
 	public function isMassEditable() {
-		return $this->massEditable;
+		return $this->getMassEditable();
+	}
+
+	public function getMassEditable() {
+		return $this->isMassEditable;
 	}
 
 	public function isReferenceField() {
@@ -186,10 +190,6 @@ class WebserviceField {
 
 	public function getDisplayType() {
 		return $this->displayType;
-	}
-
-	public function getMassEditable() {
-		return $this->massEditable;
 	}
 
 	public function getFieldId() {

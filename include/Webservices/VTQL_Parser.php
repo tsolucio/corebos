@@ -332,14 +332,10 @@ Array (
 	public function getReferenceValue($whereValue) {
 		$whereValue = trim($whereValue, '\'"');
 		$whereValue = vtws_getIdComponents($whereValue);
-		$whereValue = $whereValue[1];
-		return $whereValue;
+		return $whereValue[1];
 	}
 	public function getOwner($whereValue) {
-		$whereValue = trim($whereValue, '\'"');
-		$whereValue = vtws_getIdComponents($whereValue);
-		$whereValue = $whereValue[1];
-		return $whereValue;
+		return $this->getReferenceValue($whereValue);
 	}
 	public function isSuccess() {
 		return $this->success;

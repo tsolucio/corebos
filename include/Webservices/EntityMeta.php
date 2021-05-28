@@ -113,10 +113,6 @@ abstract class EntityMeta {
 		return $this->ownerFields;
 	}
 
-	public function getObectIndexColumn() {
-		return $this->idColumn;
-	}
-
 	public function getUserAccessibleColumns() {
 		if ($this->userAccessibleColumns === null) {
 			$this->userAccessibleColumns = array();
@@ -219,6 +215,10 @@ abstract class EntityMeta {
 
 	public function getIdColumn() {
 		return $this->idColumn;
+	}
+
+	public function getObectIndexColumn() {
+		return $this->getIdColumn();
 	}
 
 	public function getEntityBaseTable() {
