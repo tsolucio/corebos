@@ -238,7 +238,7 @@ function getFieldListEntries($module) {
 				$smarty->assign('SOLUTIONBLOCKID', 0);
 			}
 			if ($row['blocklabel'] == '') {
-				continue;
+				$row['blocklabel'] = '{{'.getTranslatedString('Not Labeled').'}}';
 			}
 			$cflist[$i]['tabpresence']= $row['tabpresence'];
 			$cflist[$i]['module'] = $module;
