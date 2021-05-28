@@ -35,6 +35,56 @@ function getPermittedBlocks($module, $disp_view) {
 	return $blockid_list;
 }
 
+/**	function used to get the user comments
+ *	@params $module, $recordid, $format, $field_arr
+ *	Return csv or xls rows to export
+ */
+function exportUserCommentsForModule($module, $recordid, $format, $field_arr = array('commentcontent', 'createdtime')) {
+	global $adb, $current_user;
+	if (!empty($recordid)) {
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_Comments_Export_Columns', cbMap::getMapIdByName('Comments_Export_Columns'));
+		if ($cbMapid) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$arr = $cbMap->FieldSetMapping()->getFieldSetModule($module);
+			$field_arr = array();
+			for ($i=0; $i<sizeof($arr); $i++) {
+				$field_arr[] = $arr[$i]['name'];
+			}
+		}
+		$queryGenerator = new QueryGenerator('ModComments', $current_user);
+		$queryGenerator->setFields($field_arr);
+		$queryGenerator->addReferenceModuleFieldCondition($module, 'related_to', 'id', $recordid, 'e');
+		$query = $queryGenerator->getQuery();
+		$queryres = $adb->pquery($query, array());
+		$fields_array = $adb->getFieldsArray($queryres);
+
+		$columnsToExport = array_map(
+			function ($field) {
+				return strtolower($field);
+			},
+			$fields_array
+		);
+		$translated_fields_array = array_map(
+			function ($field) use ($module) {
+				return getTranslatedString($field, $module);
+			},
+			$fields_array
+		);
+
+		$focus = CRMEntity::getInstance($module);
+		if ($format == 'CSV') {
+			$CSV_Separator = GlobalVariable::getVariable('Export_Field_Separator_Symbol', ',', $module);
+			$header = '"'.implode('"'.$CSV_Separator.'"', $translated_fields_array)."\"\r\n";
+			/** Output header information */
+			echo $header;
+			$dumprows = dumpRowsToCSV($module, $CSV_Separator, $columnsToExport, $queryres, $focus);
+		} else {
+			$dumprows = dumpRowsToXLS($columnsToExport, $translated_fields_array, $queryres);
+		}
+	}
+	return $dumprows;
+}
+
 /**	function used to get the query which will list the permitted fields
  *	@param string $module - module name
  *	@param string $disp_view - view name, this may be create_view, edit_view or detail_view
