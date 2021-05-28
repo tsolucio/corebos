@@ -141,12 +141,12 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		if (!$success) {
 			throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record not found');
 		}
-		$element = $this->getElement();
-		if (isset($element['folderid']) && !isset($element['id'])) {
-			$element['id'] = $element['folderid'];
-			unset($element['folderid']);
+		$elem = $this->getElement();
+		if (isset($elem['folderid']) && !isset($elem['id'])) {
+			$elem['id'] = $elem['folderid'];
+			unset($elem['folderid']);
 		}
-		return DataTransform::filterAndSanitize($element, $this->meta);
+		return DataTransform::filterAndSanitize($elem, $this->meta);
 	}
 
 	public function massRetrieve($wsIds) {
@@ -156,13 +156,13 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		$query = "select * from {$this->entityTableName} where {$this->meta->getObectIndexColumn()} in (" . generateQuestionMarks($wsIds) . ')';
 		$rs = $adb->pquery($query, $wsIds);
 		while (!$rs->EOF) {
-			$element = $rs->FetchRow();
-			if (isset($element['folderid']) && !isset($element['id'])) {
-				$element['id'] = $element['folderid'];
-				unset($element['folderid']);
+			$elem = $rs->FetchRow();
+			if (isset($elem['folderid']) && !isset($elem['id'])) {
+				$elem['id'] = $elem['folderid'];
+				unset($elem['folderid']);
 			}
-			$id = (empty($element['id']) ? (empty($element['groupid']) ? '0' : $element['groupid']) : $element['id']);
-			$rdo[$wid.'x'.$id] = DataTransform::filterAndSanitize($element, $this->meta);
+			$elemid = (empty($elem['id']) ? (empty($elem['groupid']) ? '0' : $elem['groupid']) : $elem['id']);
+			$rdo[$wid.'x'.$elemid] = DataTransform::filterAndSanitize($elem, $this->meta);
 		}
 		return $rdo;
 	}
@@ -271,8 +271,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 	public function getModuleFields() {
 		if ($this->moduleFields === null) {
 			$fields = array();
-			$moduleFields = $this->meta->getModuleFields();
-			foreach ($moduleFields as $webserviceField) {
+			foreach ($this->meta->getModuleFields() as $webserviceField) {
 				$fields[] = $this->getDescribeFieldArray($webserviceField);
 			}
 			$this->moduleFields = $fields;

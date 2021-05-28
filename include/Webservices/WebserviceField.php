@@ -313,8 +313,8 @@ class WebserviceField {
 
 	public function fillColumnMeta() {
 		$tableFields = $this->getTableFields();
-		foreach ($tableFields as $fieldName => $dbField) {
-			if (strcmp($fieldName, $this->getColumnName())===0) {
+		foreach ($tableFields as $fName => $dbField) {
+			if (strcmp($fName, $this->getColumnName())===0) {
 				$this->setNullable(!$dbField->not_null);
 				if ($dbField->has_default === true && !$this->explicitDefaultValue) {
 					$this->defaultValuePresent = $dbField->has_default;
@@ -327,17 +327,17 @@ class WebserviceField {
 
 	public function getFieldDataType() {
 		if ($this->fieldDataType === null) {
-			$fieldDataType = $this->getFieldTypeFromUIType();
-			if ($fieldDataType === null) {
-				$fieldDataType = $this->getFieldTypeFromTypeOfData();
+			$fType = $this->getFieldTypeFromUIType();
+			if ($fType === null) {
+				$fType = $this->getFieldTypeFromTypeOfData();
 			}
-			if ($fieldDataType == 'date' || $fieldDataType == 'datetime' || $fieldDataType == 'time') {
+			if ($fType == 'date' || $fType == 'datetime' || $fType == 'time') {
 				$tableFieldDataType = $this->getFieldTypeFromTable();
 				if ($tableFieldDataType == 'datetime') {
-					$fieldDataType = $tableFieldDataType;
+					$fType = $tableFieldDataType;
 				}
 			}
-			$this->fieldDataType = $fieldDataType;
+			$this->fieldDataType = $fType;
 		}
 		return $this->fieldDataType;
 	}
@@ -386,8 +386,8 @@ class WebserviceField {
 
 	private function getFieldTypeFromTable() {
 		$tableFields = $this->getTableFields();
-		foreach ($tableFields as $fieldName => $dbField) {
-			if (strcmp($fieldName, $this->getColumnName())===0) {
+		foreach ($tableFields as $fName => $dbField) {
+			if (strcmp($fName, $this->getColumnName())===0) {
 				return $dbField->type;
 			}
 		}
@@ -456,15 +456,15 @@ class WebserviceField {
 		if (in_array(strtolower($this->getFieldName()), $hardCodedPickListNames)) {
 			return $hardCodedPickListValues[strtolower($this->getFieldName())];
 		}
-		$uitype = $this->getUIType();
-		switch ($uitype) {
+		$uit = $this->getUIType();
+		switch ($uit) {
 			case '1613':
 			case '1614':
 			case '1615':
 			case '3313':
 			case '3314':
 			case '1024':
-				return $this->getPickListOptionsSpecialUitypes($uitype);
+				return $this->getPickListOptionsSpecialUitypes($uit);
 				break;
 			default: // 15 and 33
 				return $this->getPickListOptions($this->getFieldName());
@@ -475,22 +475,22 @@ class WebserviceField {
 	public function getPickListOptions() {
 		global $app_strings, $mod_strings, $current_language, $adb;
 		static $purified_plcache = array();
-		$fieldName = $this->getFieldName();
+		$fName = $this->getFieldName();
 
 		$moduleName = getTabModuleName($this->getTabId());
 		$temp_mod_strings = ($moduleName != '' ) ? return_module_language($current_language, $moduleName) : $mod_strings;
-		if (array_key_exists($moduleName.$fieldName, $purified_plcache)) {
-			return $purified_plcache[$moduleName.$fieldName];
+		if (array_key_exists($moduleName.$fName, $purified_plcache)) {
+			return $purified_plcache[$moduleName.$fName];
 		}
 		$options = array();
-		$result = $this->pearDB->pquery('select picklistid from vtiger_picklist where name=?', array($fieldName));
+		$result = $this->pearDB->pquery('select picklistid from vtiger_picklist where name=?', array($fName));
 		$numRows = $this->pearDB->num_rows($result);
 		if ($numRows == 0) {
-			$result = $this->pearDB->pquery("select $fieldName from vtiger_$fieldName", array());
+			$result = $this->pearDB->pquery("select $fName from vtiger_$fName", array());
 			$numRows = $this->pearDB->num_rows($result);
 			for ($i=0; $i<$numRows; ++$i) {
 				$elem = array();
-				$picklistValue = $this->pearDB->query_result($result, $i, $fieldName);
+				$picklistValue = $this->pearDB->query_result($result, $i, $fName);
 				$picklistValue = decode_html($picklistValue);
 				$trans_str = (!empty($temp_mod_strings[$picklistValue])) ?
 					$temp_mod_strings[$picklistValue] :
@@ -504,7 +504,7 @@ class WebserviceField {
 			}
 		} else {
 			$user = VTWS_PreserveGlobal::getGlobal('current_user');
-			$details = getAssignedPicklistValues($fieldName, $user->roleid, $adb);
+			$details = getAssignedPicklistValues($fName, $user->roleid, $adb);
 			foreach ($details as $plval) {
 				$elem = array();
 				$picklistValue = decode_html($plval);
@@ -519,7 +519,7 @@ class WebserviceField {
 				$options[] = $elem;
 			}
 		}
-		$purified_plcache[$moduleName.$fieldName] = $options;
+		$purified_plcache[$moduleName.$fName] = $options;
 		return $options;
 	}
 
@@ -528,23 +528,23 @@ class WebserviceField {
 	}
 
 	public function getPickListOptionsSpecialUitypes($uitype) {
-		global $log, $current_language;
+		global $log, $current_language; // used inside required PickListUtils
 		require_once 'modules/PickList/PickListUtils.php';
 		static $purified_plcache = array();
-		$fieldName = $this->getFieldName();
+		$fName = $this->getFieldName();
 		$moduleName = getTabModuleName($this->getTabId());
-		if (array_key_exists($moduleName.$fieldName, $purified_plcache)) {
-			return $purified_plcache[$moduleName.$fieldName];
+		if (array_key_exists($moduleName.$fName, $purified_plcache)) {
+			return $purified_plcache[$moduleName.$fName];
 		}
 		$options = array();
-		$list_options = getPicklistValuesSpecialUitypes($uitype, $fieldName, '');
+		$list_options = getPicklistValuesSpecialUitypes($uitype, $fName, '');
 		foreach ($list_options as $value) {
 			$elem = array();
 			$elem['label'] = $value[0];
 			$elem['value'] = $value[1];
 			$options[] = $elem;
 		}
-		$purified_plcache[$moduleName.$fieldName] = $options;
+		$purified_plcache[$moduleName.$fName] = $options;
 		return $options;
 	}
 

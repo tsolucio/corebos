@@ -225,8 +225,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 			}
 			return in_array($userId, array_keys($this->assignUsers));
 		} elseif (strcasecmp($webserviceObject->getEntityName(), 'Groups') === 0) {
-			$tabId = $this->getTabId();
-			$groups = vtws_getUserAccessibleGroups($tabId, $this->user);
+			$groups = vtws_getUserAccessibleGroups($this->getTabId(), $this->user);
 			foreach ($groups as $group) {
 				if ($group['id'] == $userId) {
 					return true;
@@ -461,7 +460,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		} else {
 			$module = $this->getTabName();
 			$mod = CRMEntity::getInstance($module);
-			$sql = "select 1 from ".$mod->crmentityTable." where crmid=? and deleted=0 and setype='".$this->getTabName()."'";
+			$sql = 'select 1 from '.$mod->crmentityTable." where crmid=? and deleted=0 and setype='".$this->getTabName()."'";
 		}
 
 		if ($sql) {
