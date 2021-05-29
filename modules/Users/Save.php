@@ -66,10 +66,8 @@ if ((empty($_SESSION['Users_FORM_TOKEN']) || $_SESSION['Users_FORM_TOKEN']!==(in
 	die;
 }
 
-if (isset($_POST['record']) && !is_admin($current_user) && $_POST['record'] != $current_user->id) {
-	echo ('Unauthorized access to user administration.');
-} elseif (!isset($_POST['record']) && !is_admin($current_user)) {
-	echo ('Unauthorized access to user administration.');
+if ((isset($_POST['record']) && !is_admin($current_user) && $_POST['record'] != $current_user->id) || (!isset($_POST['record']) && !is_admin($current_user))) {
+	echo 'Unauthorized access to user administration.';
 }
 
 $focus = new Users();

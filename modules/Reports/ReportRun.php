@@ -155,14 +155,9 @@ class ReportRun extends CRMEntity {
 				continue;
 			}
 
-			if ((CheckFieldPermission($fieldname, $mod) != 'true' && $colname!='crmid' && (!in_array($fieldname, $inventory_fields) && in_array($module, $inventory_modules))) || empty($fieldname)) {
-				continue;
-			} else {
+			if (!((CheckFieldPermission($fieldname, $mod) != 'true' && $colname!='crmid' && (!in_array($fieldname, $inventory_fields) && in_array($module, $inventory_modules))) || empty($fieldname))) {
 				$header_label = $selectedfields[2]; // Header label to be displayed in the reports table
-				// To check if the field in the report is a custom field
-				// and if yes, get the label of this custom field freshly from the vtiger_field as it would have been changed.
-				// Asha - Reference ticket : #4906
-
+				// check if the field in the report is a custom field. If it is, get the label from the vtiger_field as it would have been changed.
 				if ($querycolumns == '') {
 					if ($selectedfields[4] == 'C') {
 						$field_label_data = explode('_', $selectedfields[2]);
