@@ -1642,20 +1642,20 @@ class ReportRun extends CRMEntity {
 
 			$this->totallist = $columnstotallist;
 			$selectlist = $columnlist;
-		//columns list
+			//columns list
 			if (isset($selectlist)) {
 				$selectedcolumns = implode(', ', $selectlist);
 			}
-		//groups list
+			//groups list
 			if (isset($groupslist)) {
 				$groupsquery = implode(', ', $groupslist);
 			}
 
-		//standard list
+			//standard list
 			if (isset($stdfilterlist)) {
 				$stdfiltersql = implode(', ', $stdfilterlist);
 			}
-		//columns to total list
+			//columns to total list
 			if (isset($columnstotallist)) {
 				$columnstotalsql = implode(', ', $columnstotallist);
 			} else {
@@ -1717,7 +1717,7 @@ class ReportRun extends CRMEntity {
 					.$reportquery.' '.$wheresql.') as summary_calcs';
 			}
 		} elseif ($this->cbreporttype != 'directsql' && $this->cbreporttype != 'crosstabsql') {
-			if ($selectedcolumns == '') { // Fix for: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/4758 - Prasad
+			if ($selectedcolumns == '') {
 				$selectedcolumns = "''"; // "''" to get blank column name
 				$allColumnsRestricted = true;
 			}

@@ -14,12 +14,12 @@ include_once __DIR__ . '/MailManager.php';
 class MailManager_IndexController extends MailManager_Controller {
 
 	public static $controllers = array(
-		'mainui' => array( 'file' => 'src/controllers/MainUIController.php', 'class' => 'MailManager_MainUIController' ),
-		'folder' => array( 'file' => 'src/controllers/FolderController.php', 'class' => 'MailManager_FolderController' ),
-		'mail'   => array( 'file' => 'src/controllers/MailController.php',   'class' => 'MailManager_MailController'   ),
-		'relation'=>array( 'file' => 'src/controllers/RelationController.php','class'=> 'MailManager_RelationController'),
-		'settings'=>array( 'file' => 'src/controllers/SettingsController.php','class'=> 'MailManager_SettingsController'),
-		'search'  =>array( 'file' => 'src/controllers/SearchController.php','class'=> 'MailManager_SearchController'),
+		'mainui' => array('file' => 'src/controllers/MainUIController.php', 'class' => 'MailManager_MainUIController'),
+		'folder' => array('file' => 'src/controllers/FolderController.php', 'class' => 'MailManager_FolderController'),
+		'mail'   => array('file' => 'src/controllers/MailController.php', 'class' => 'MailManager_MailController'),
+		'relation'=>array('file' => 'src/controllers/RelationController.php', 'class'=> 'MailManager_RelationController'),
+		'settings'=>array('file' => 'src/controllers/SettingsController.php', 'class'=> 'MailManager_SettingsController'),
+		'search'  =>array('file' => 'src/controllers/SearchController.php', 'class'=> 'MailManager_SearchController'),
 	);
 
 	public function process(MailManager_Request $request) {
