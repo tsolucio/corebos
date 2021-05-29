@@ -1626,10 +1626,10 @@ class ReportRun extends CRMEntity {
 			} else {
 				$glue = ' WHERE ';
 			}
-			if (isset($filtersql) && !empty($filtersql)) {
-				$wheresql = $advfiltersql = $glue . $filtersql;
+			if (empty($filtersql)) {
+				$wheresql = '';
 			} else {
-				$wheresql = $advfiltersql = '';
+				$wheresql = $glue . $filtersql;
 			}
 			$reportquery .= $wheresql . $groupbyquery;
 		} else {
@@ -1694,7 +1694,7 @@ class ReportRun extends CRMEntity {
 					}
 				}
 				if (isset($this->_columnstotallistaddtoselect) && is_array($this->_columnstotallistaddtoselect) && count($this->_columnstotallistaddtoselect)>0) {
-					$_columnstotallistaddtoselect = ', '.implode(', ', $this->_columnstotallistaddtoselect);
+					$columnstotallistaddtoselect = ', '.implode(', ', $this->_columnstotallistaddtoselect);
 					$totalscolalias = array();
 					foreach ($this->_columnstotallistaddtoselect as $key => $value) {
 						list($void,$calias) = explode(' AS ', $value);
@@ -1710,10 +1710,10 @@ class ReportRun extends CRMEntity {
 						}
 					}
 				} else {
-					$_columnstotallistaddtoselect = '';
+					$columnstotallistaddtoselect = '';
 				}
 				$totalsselectedcolumns = implode(', ', $totalsselectedcolumns);
-				$reportquery = 'select '.$columnstotalsql.' from (select DISTINCT '.$totalsselectedcolumns.$_columnstotallistaddtoselect.' '
+				$reportquery = 'select '.$columnstotalsql.' from (select DISTINCT '.$totalsselectedcolumns.$columnstotallistaddtoselect.' '
 					.$reportquery.' '.$wheresql.') as summary_calcs';
 			}
 		} elseif ($this->cbreporttype != 'directsql' && $this->cbreporttype != 'crosstabsql') {
