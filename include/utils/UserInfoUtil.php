@@ -871,7 +871,7 @@ function isReadPermittedBySharing($module, $tabid, $actionid, $record_id) {
 	if ($ownertype == 'Users') {
 		//Checking the Read Sharing Permission Array in Role Users
 		$read_role_per=$read_per_arr['ROLE'];
-		foreach ($read_role_per as $roleid => $userids) {
+		foreach ($read_role_per as $userids) {
 			if (in_array($ownerid, $userids)) {
 				$sharePer='yes';
 				$log->debug('< isReadPermittedBySharing');
@@ -880,7 +880,7 @@ function isReadPermittedBySharing($module, $tabid, $actionid, $record_id) {
 		}
 		//Checking the Read Sharing Permission Array in Groups Users
 		$read_grp_per=$read_per_arr['GROUP'];
-		foreach ($read_grp_per as $grpid => $userids) {
+		foreach ($read_grp_per as $userids) {
 			if (in_array($ownerid, $userids)) {
 				$sharePer='yes';
 				$log->debug('< isReadPermittedBySharing');
@@ -912,7 +912,7 @@ function isReadPermittedBySharing($module, $tabid, $actionid, $record_id) {
 				if ($rel_owner_type=='Users') {
 					//Checking in Role Users
 					$read_related_role_per=$read_related_per_arr['ROLE'];
-					foreach ($read_related_role_per as $roleid => $userids) {
+					foreach ($read_related_role_per as $userids) {
 						if (in_array($rel_owner_id, $userids)) {
 							$sharePer='yes';
 							$log->debug('< isReadPermittedBySharing');
@@ -921,7 +921,7 @@ function isReadPermittedBySharing($module, $tabid, $actionid, $record_id) {
 					}
 					//Checking in Group Users
 					$read_related_grp_per=$read_related_per_arr['GROUP'];
-					foreach ($read_related_grp_per as $grpid => $userids) {
+					foreach ($read_related_grp_per as $userids) {
 						if (in_array($rel_owner_id, $userids)) {
 							$sharePer='yes';
 							$log->debug('< isReadPermittedBySharing');
@@ -974,7 +974,7 @@ function isReadWritePermittedBySharing($module, $tabid, $actionid, $record_id) {
 	if ($ownertype == 'Users') {
 		//Checking the Write Sharing Permission Array in Role Users
 		$write_role_per=$write_per_arr['ROLE'];
-		foreach ($write_role_per as $roleid => $userids) {
+		foreach ($write_role_per as $userids) {
 			if (in_array($ownerid, $userids)) {
 				$sharePer='yes';
 				$log->debug('< isReadWritePermittedBySharing');
@@ -983,7 +983,7 @@ function isReadWritePermittedBySharing($module, $tabid, $actionid, $record_id) {
 		}
 		//Checking the Write Sharing Permission Array in Groups Users
 		$write_grp_per=$write_per_arr['GROUP'];
-		foreach ($write_grp_per as $grpid => $userids) {
+		foreach ($write_grp_per as $userids) {
 			if (in_array($ownerid, $userids)) {
 				$sharePer='yes';
 				$log->debug('< isReadWritePermittedBySharing');
@@ -1015,7 +1015,7 @@ function isReadWritePermittedBySharing($module, $tabid, $actionid, $record_id) {
 				if ($rel_owner_type=='Users') {
 					//Checking in Role Users
 					$write_related_role_per=$write_related_per_arr['ROLE'];
-					foreach ($write_related_role_per as $roleid => $userids) {
+					foreach ($write_related_role_per as $userids) {
 						if (in_array($rel_owner_id, $userids)) {
 							$sharePer='yes';
 							$log->debug('< isReadWritePermittedBySharing');
@@ -1024,7 +1024,7 @@ function isReadWritePermittedBySharing($module, $tabid, $actionid, $record_id) {
 					}
 					//Checking in Group Users
 					$write_related_grp_per=$write_related_per_arr['GROUP'];
-					foreach ($write_related_grp_per as $grpid => $userids) {
+					foreach ($write_related_grp_per as $userids) {
 						if (in_array($rel_owner_id, $userids)) {
 							$sharePer='yes';
 							$log->debug('< isReadWritePermittedBySharing');
