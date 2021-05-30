@@ -199,7 +199,6 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 	$module = isset($_REQUEST['module']) ? $_REQUEST['module'] : '';
 
 	if ($user_array == null) {
-		require_once 'include/database/PearDatabase.php';
 		$db = PearDatabase::getInstance();
 		$temp_result = array();
 		$userOrder = GlobalVariable::getVariable('Application_User_SortBy', 'user_name ASC', $module, $current_user->id);
@@ -298,7 +297,6 @@ function get_group_array($add_blank = true, $status = 'Active', $assigned_user =
 	$module= (isset($_REQUEST['module']) ? vtlib_purify($_REQUEST['module']) : $currentModule);
 
 	if ($group_array == null || $force) {
-		require_once 'include/database/PearDatabase.php';
 		$db = PearDatabase::getInstance();
 		$temp_result = array();
 		// Sharing is Public. All users should be listed
