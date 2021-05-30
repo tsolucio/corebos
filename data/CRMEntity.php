@@ -540,17 +540,7 @@ class CRMEntity {
 		}
 		$crmvalues['modified_date'] = $crmvalues['date'];
 
-		$ownerid = empty($this->column_fields['assigned_user_id']) ? $current_user->id : $this->column_fields['assigned_user_id'];
-		if (strpos($ownerid, 'x')>0) { // we have a WSid
-			$usrWSid = vtws_getEntityId('Users');
-			$grpWSid = vtws_getEntityId('Groups');
-			list($inputWSid,$inputCRMid) = explode('x', $ownerid);
-			if ($usrWSid==$inputWSid || $grpWSid==$inputWSid) {
-				$ownerid = $inputCRMid;
-			} else {
-				die('Invalid user id!');
-			}
-		}
+		$ownerid = $this->sanitizeOwnerField($this->column_fields['assigned_user_id']);
 
 		$res = $adb->pquery('select ownedby from vtiger_tab where name=?', array($module));
 		$this->ownedby = $adb->query_result($res, 0, 'ownedby');
