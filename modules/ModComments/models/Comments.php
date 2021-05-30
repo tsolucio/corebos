@@ -33,4 +33,8 @@ class ModComments_CommentsModel {
 	public function content() {
 		return vtlib_purify(decode_html($this->data['commentcontent']));
 	}
+
+	public function id() {
+		return isset($this->data['modcommentsid'])?vtlib_purify($this->data['modcommentsid']):vtlib_purify($this->data['record_id']);
+	}
 }
