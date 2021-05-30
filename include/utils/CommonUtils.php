@@ -21,7 +21,7 @@ require_once 'modules/cbtranslation/cbtranslation.php';
  */
 function is_admin($user) {
 	global $log;
-	if (empty($user)) {
+	if (empty($user) || !is_object($user)) {
 		return false;
 	}
 	$log->debug('> is_admin ' . $user->user_name);
@@ -39,6 +39,9 @@ function is_admin($user) {
  * Check if user id belongs to a system admin.
  */
 function is_adminID($userID) {
+	if (empty($userID) || !is_numeric($userID) || $userID<1) {
+		return false;
+	}
 	require_once 'modules/Users/Users.php';
 	$privs = UserPrivileges::privsWithoutSharing($userID);
 	return $privs->isAdmin();
