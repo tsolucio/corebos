@@ -39,8 +39,6 @@ if ($ajaxaction == 'WIDGETADDCOMMENT') {
 				vtws_revise($newValues, $current_user);
 				$modObj->retrieve_entity_info(vtlib_purify($_REQUEST['id']), $currentModule);
 				$response=':#:UPDATED';
-				// echo $response.htmlentities($modObj->column_fields['commentcontent'], ENT_QUOTES, $default_charset);
-				// return ;
 			} else {
 				$response =':#:FAILURE';
 			}

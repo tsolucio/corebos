@@ -31,7 +31,7 @@ $loggerConfig = array(
 		'File' => 'installation',
 	],
 	'APPLICATION' => [
-		'Enabled' => true,
+		'Enabled' => false,
 		'Level' => 'FATAL',
 		'MaxBackup' => 10,
 		'File' => 'corebosapp',
