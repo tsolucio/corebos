@@ -8,6 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 include_once 'modules/Settings/configod.php';
+require_once 'include/utils/cbTerminate.php';
 include_once 'include/fields/metainformation.php';
 require_once 'include/utils/Session.php';
 require_once 'include/utils/Request.php';

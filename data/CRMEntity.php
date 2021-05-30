@@ -589,7 +589,7 @@ class CRMEntity {
 			$grpWSid = vtws_getEntityId('Groups');
 			list($inputWSid,$ownerid) = explode('x', $ownerid);
 			if ($usrWSid!=$inputWSid && $grpWSid!=$inputWSid) {
-				die('Invalid user id!');
+				TerminateExecution::die('Invalid user id!');
 			}
 		}
 		return $ownerid;
