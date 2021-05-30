@@ -11,11 +11,11 @@ if (typeof(ModCommentsCommon) == 'undefined') {
 		addComment : function (domkeyid, parentid) {
 			var textBoxField = document.getElementById('txtbox_'+domkeyid);
 			var contentWrapDOM = document.getElementById('contentwrap_'+domkeyid);
-			var ediTcommentId = document.getElementById(`edit_comment_id_${domkeyid}`)
+			var ediTcommentId = document.getElementById('edit_comment_id_'+domkeyid)
 			var id=null
-			if (ediTcommentId.value!="") {
+			if (ediTcommentId.value != '') {
 				id = ediTcommentId.value
-				ediTcommentId.value=""
+				ediTcommentId.value = ''
 			}
 			if (textBoxField.value == '') {
 				return;
@@ -39,8 +39,8 @@ if (typeof(ModCommentsCommon) == 'undefined') {
 					contentWrapDOM.innerHTML = responseTextTrimmed.substring(10)+contentWrapDOM.innerHTML;
 				} else if (responseTextTrimmed.substring(0, 10) == ':#:UPDATED') {
 					textBoxField.value = '';
-					var div_comment = document.getElementById(`comment_div_${id}`);
-					div_comment.innerHTML	=responseTextTrimmed.substring(10)
+					var div_comment = document.getElementById('comment_div_'+id);
+					div_comment.innerHTML = responseTextTrimmed.substring(10)
 				} else {
 					alert(alert_arr.OPERATION_DENIED);
 				}
@@ -48,7 +48,7 @@ if (typeof(ModCommentsCommon) == 'undefined') {
 		},
 		reloadContentWithFiltering : function (widget, parentid, criteria, targetdomid, indicator) {
 			if (document.getElementById(indicator)) {
-				document.getElementById(indicator).style.display='inline';
+				document.getElementById(indicator).style.display = 'inline';
 			}
 
 			var url = 'module=ModComments&action=ModCommentsAjax&file=ModCommentsWidgetHandler&ajax=true';
@@ -59,7 +59,7 @@ if (typeof(ModCommentsCommon) == 'undefined') {
 				url: 'index.php?'+url,
 			}).done(function (response) {
 				if (document.getElementById(indicator)) {
-					document.getElementById(indicator).style.display='none';
+					document.getElementById(indicator).style.display = 'none';
 				}
 				if (document.getElementById(targetdomid)) {
 					document.getElementById(targetdomid).innerHTML = response;
@@ -67,8 +67,8 @@ if (typeof(ModCommentsCommon) == 'undefined') {
 			});
 		},
 		editCommentMode : function (parentId,commentId,comment) {
-			document.getElementById(`edit_comment_id_${parentId}`).value=commentId;
-			document.getElementById(`txtbox_${parentId}`).value = comment;
+			document.getElementById('edit_comment_id_'+parentId).value = commentId;
+			document.getElementById('txtbox_'+parentId).value = comment;
 		},
 	};
 }
